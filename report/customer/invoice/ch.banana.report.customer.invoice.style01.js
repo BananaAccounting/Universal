@@ -12,17 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-// @id = ch.banana.report.customer.invoice.style01.js
+// @id = ch.banana.uni.invoice.template1.js
 // @api = 1.0
-// @pubdate = 2018-01-05
+// @pubdate = 2018-01-08
 // @publisher = Banana.ch SA
-// @description = Universal - Style 1
-// @description.it = Universal - Stile 1
-// @description.de = Universal - Stil 1
-// @description.fr = Universal - Style 1
-// @description.nl = Universal - Stijl 1
-// @description.en = Universal - Style 1
-// @description.zh = Universal - 样式 1
+// @description = Invoice with total column (Style 1)
+// @description.it = Fattura con colonna totale (Stile 1)
+// @description.de = Rechnung mit Summenspalte (Stil 1)
+// @description.fr = Facture avec total colonne (Style 1)
+// @description.nl = Factuur met totale kolom (Stijl 1)
+// @description.en = Invoice with total column (style 1)
+// @description.zh = 发票与总列 (样式 1)
 // @doctype = *
 // @task = report.customer.invoice
 
@@ -615,7 +615,7 @@ function setInvoiceStyle(reportObj, repStyleObj, param) {
    repStyleObj.addStyle(".border-top", "border-top:2px solid " + param.color_1);
    repStyleObj.addStyle(".padding-right", "padding-right:5px");
    repStyleObj.addStyle(".padding-left", "padding-left:5px");
-   repStyleObj.addStyle(".vatInfo", "font-size: 9pt;vertical-align:top;");
+   repStyleObj.addStyle(".vatInfo", "font-size: 12pt;vertical-align:top;");
    repStyleObj.addStyle(".col1", "width:100%");
    repStyleObj.addStyle(".addressCol1", "width:43%");
    repStyleObj.addStyle(".addressCol2", "width:43%");
