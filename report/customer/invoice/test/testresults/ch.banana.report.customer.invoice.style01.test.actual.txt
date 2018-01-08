@@ -2,7 +2,7 @@
 %%info_test_app{Banana90}{9.0.1}
 %%info_test_os{macOS Sierra (10.12)}
 %%info_test_qt{5.9.0}
-%%info_test_date{2018-01-05}{12:27:44.852}
+%%info_test_date{2018-01-08}{10:48:23.587}
 \documentclass{report}
 \usepackage{color}
 \usepackage{adjustbox}
@@ -187,9 +187,9 @@ TOTAL CHF  &  & 1'550.00 \\
 
 \end{reportvalue}
 \keyvalue{Result}{Passed}
-%%info_test_time_elapsed{00:00:00.064}
+%%info_test_time_elapsed{00:00:00.107}
 \end{test}
-%%info_test_time_elapsed{00:00:00.064}
+%%info_test_time_elapsed{00:00:00.108}
 \end{testcase}
-%%info_test_time_elapsed{00:00:00.077}
+%%info_test_time_elapsed{00:00:00.972}
 \end{document}
