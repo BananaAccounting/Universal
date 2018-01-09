@@ -2,7 +2,7 @@
 %%info_test_app{Banana90}{9.0.1}
 %%info_test_os{macOS Sierra (10.12)}
 %%info_test_qt{5.9.0}
-%%info_test_date{2018-01-09}{11:52:53.923}
+%%info_test_date{2018-01-09}{12:01:20.572}
 \documentclass{report}
 \usepackage{color}
 \usepackage{adjustbox}
@@ -184,10 +184,53 @@ TOTAL CHF  &  & 8'600.00 \\
 \end{tabular}
 
 \end{reportvalue}
+\subsection{Test Invoice 47}
+\begin{reportvalue}{Test Invoice 47}
+\begin{tabular}{ l }
+BANANA.CH SA \\
+\\
+Banana.ch SA - Via Trevano 7a - 6900 Lugano - Switzerland \\
+info@banana.ch - www.banana.ch \\
+\\
+\end{tabular}
+\begin{tabular}{ l  l }
+Date: 11.11.2018 \\
+Customer No: 100003 \\
+Due date: 11.12.2018 \\
+Page: 2 \\
+ & Marco Alberti \\
+V. CampurÃ©ta 40 \\
+6883 Novazzano \\
+Switzerland \\
+\\
+\end{tabular}
+\begin{tabular}{ l }
+Invoice 47 \\
+\end{tabular}
+\begin{tabular}{ l  l  l }
+Description  &  & Total CHF \\
+\multicolumn{2}{l}{Product A \\
+\\
+} & 22.00 \\
+\multicolumn{2}{l}{Product B \\
+\\
+} & 30.00 \\
+\multicolumn{2}{l}{Discount 10% product B \\
+\\
+} & -3.00 \\
+\multicolumn{3}{l}{}\\
+\multicolumn{3}{l}{}\\
+TOTAL CHF  &  & 49.00 \\
+\multicolumn{3}{l}{}\\
+\multicolumn{3}{l}{VAT 8.00% = 3.63 CHF \\
+}\\
+\end{tabular}
+
+\end{reportvalue}
 \keyvalue{Result}{Passed}
-%%info_test_time_elapsed{00:00:00.061}
+%%info_test_time_elapsed{00:00:00.048}
 \end{test}
-%%info_test_time_elapsed{00:00:00.061}
+%%info_test_time_elapsed{00:00:00.048}
 \end{testcase}
-%%info_test_time_elapsed{00:00:00.077}
+%%info_test_time_elapsed{00:00:00.061}
 \end{document}

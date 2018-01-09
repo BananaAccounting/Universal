@@ -116,6 +116,9 @@ ReportCustomerInvoiceStyle01.prototype.testReport = function() {
   Test.logger.addSubSection("Test Invoice 37");
   aggiungiReport("37", "Test Invoice 37");
 
+  //Invoice 47
+  Test.logger.addSubSection("Test Invoice 47");
+  aggiungiReport("47", "Test Invoice 47");
 }
 
 //Function that creates the report for the test
@@ -159,6 +162,12 @@ function getJsonInvoice(invoiceNumber) {
   }
   else if (invoiceNumber === "37") {
     file = Banana.IO.getLocalFile("file:script/../test/testcases/json_invoice_37.json");
+    parsedfile = JSON.stringify(file.read(), "", "");
+    jsonInvoice = JSON.parse(parsedfile);
+    // Banana.console.log(jsonInvoice);
+  }
+  else if (invoiceNumber === "47") {
+    file = Banana.IO.getLocalFile("file:script/../test/testcases/json_invoice_47.json");
     parsedfile = JSON.stringify(file.read(), "", "");
     jsonInvoice = JSON.parse(parsedfile);
     // Banana.console.log(jsonInvoice);
