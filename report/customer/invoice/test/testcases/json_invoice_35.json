@@ -29,26 +29,26 @@
    },
    "customer_info":{
       "address1":"Via Trevano",
-      "balance":"30400.00",
-      "balance_base_currency":"30400.00",
+      "balance":"16500.00",
+      "balance_base_currency":"16500.00",
       "city":"Pregassona",
       "first_name":"Mario",
       "last_name":"Bianchi",
       "number":"100002",
-      "origin_row":"259",
+      "origin_row":"105",
       "origin_table":"Accounts",
       "postal_code":"6963"
    },
    "document_info":{
       "currency":"CHF",
-      "date":"2018-01-10",
+      "date":"2018-01-29",
       "decimals_amounts":2,
       "description":"",
       "doc_type":"10",
       "greetings":"Best regards, Banana.ch SA",
       "locale":"en",
       "number":"35",
-      "origin_row":"1",
+      "origin_row":"3",
       "origin_table":"Transactions",
       "printed":"",
       "rounding_total":"0.05",
@@ -57,13 +57,13 @@
    "items":[
       {
          "account_assignment":"100002",
-         "description":"Vendita merce tipo A, fattura Nr.35, cliente B",
+         "description":"Sales merchandise, invoice #35, customer B",
          "details":"",
          "index":"0",
          "item_type":"item",
          "mesure_unit":"",
          "number":"",
-         "origin_row":"1",
+         "origin_row":"3",
          "origin_table":"Transactions",
          "quantity":"1",
          "total_amount_vat_exclusive":"1851.85",
@@ -82,13 +82,13 @@
       },
       {
          "account_assignment":"100002",
-         "description":"Vendita merce tipo B, fattura Nr.35, cliente B",
+         "description":"Sales merchandise, invoice #35, customer B",
          "details":"",
          "index":"1",
          "item_type":"item",
          "mesure_unit":"",
          "number":"",
-         "origin_row":"2",
+         "origin_row":"4",
          "origin_table":"Transactions",
          "quantity":"1",
          "total_amount_vat_exclusive":"925.93",
@@ -107,13 +107,13 @@
       },
       {
          "account_assignment":"100002",
-         "description":"Vendita merce tipo C, fattura Nr.35, cliente B",
+         "description":"Sales merchandise, invoice #35, customer B",
          "details":"",
          "index":"2",
          "item_type":"item",
          "mesure_unit":"",
          "number":"",
-         "origin_row":"3",
+         "origin_row":"5",
          "origin_table":"Transactions",
          "quantity":"1",
          "total_amount_vat_exclusive":"462.96",
@@ -135,25 +135,25 @@
       {
          "date":"",
          "description":"This is the first note.",
-         "origin_row":"10",
-         "origin_table":"Transactions"
-      },
-      {
-         "date":"",
-         "description":"This is the secon note.",
-         "origin_row":"11",
-         "origin_table":"Transactions"
-      },
-      {
-         "date":"",
-         "description":" ",
          "origin_row":"12",
          "origin_table":"Transactions"
       },
       {
          "date":"",
-         "description":" ",
+         "description":"This is the secon note.",
          "origin_row":"13",
+         "origin_table":"Transactions"
+      },
+      {
+         "date":"",
+         "description":" ",
+         "origin_row":"14",
+         "origin_table":"Transactions"
+      },
+      {
+         "date":"",
+         "description":" ",
+         "origin_row":"15",
          "origin_table":"Transactions"
       }
    ],
@@ -161,8 +161,8 @@
 
    },
    "payment_info":{
-      "date_expected":"2018-02-09",
-      "due_date":"2018-02-09",
+      "date_expected":"2018-02-28",
+      "due_date":"2018-02-28",
       "due_days":"",
       "due_period":"4_Current",
       "last_reminder":"",
@@ -173,17 +173,24 @@
       "different_shipping_address":false
    },
    "supplier_info":{
-      "address1":"Via Trevano 71",
+      "address1":"Via Trevano 7a",
       "business_name":"Banana.ch SA",
       "city":"Lugano",
-      "country":"Svizzera",
+      "country":"Switzerland",
       "email":"info@banana.ch",
       "postal_code":"6900",
-      "state":"TI",
       "web":"www.banana.ch"
    },
    "transactions":[
-
+      {
+         "balance":"-5000.00",
+         "balance_base_currency":"",
+         "currency":"CHF",
+         "date":"20180131",
+         "description":"Payment Client B",
+         "origin_row":"18",
+         "origin_table":"Transactions"
+      }
    ],
    "type":"invoice",
    "version":"1.0"
