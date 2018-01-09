@@ -14,15 +14,15 @@
 //
 // @id = ch.banana.uni.invoice.template1.js
 // @api = 1.0
-// @pubdate = 2018-01-08
+// @pubdate = 2018-01-09
 // @publisher = Banana.ch SA
-// @description = Invoice with total column (Style 1)
-// @description.it = Fattura con colonna totale (Stile 1)
-// @description.de = Rechnung mit Summenspalte (Stil 1)
-// @description.fr = Facture avec total colonne (Style 1)
-// @description.nl = Factuur met totale kolom (Stijl 1)
-// @description.en = Invoice with total column (style 1)
-// @description.zh = 发票与总列 (样式 1)
+// @description = Invoice with total column
+// @description.it = Fattura con colonna totale
+// @description.de = Rechnung mit Summenspalte
+// @description.fr = Facture avec total colonne
+// @description.nl = Factuur met totale kolom
+// @description.en = Invoice with total column
+// @description.zh = 发票与总列
 // @doctype = *
 // @task = report.customer.invoice
 
