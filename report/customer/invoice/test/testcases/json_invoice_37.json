@@ -1,10 +1,10 @@
 {
    "billing_info":{
       "payment_term":"",
-      "total_amount_vat_exclusive":"1435.17",
-      "total_amount_vat_exclusive_before_discount":"1435.17",
-      "total_amount_vat_inclusive":"1550.00",
-      "total_amount_vat_inclusive_before_discount":"1550.00",
+      "total_amount_vat_exclusive":"7962.95",
+      "total_amount_vat_exclusive_before_discount":"7962.95",
+      "total_amount_vat_inclusive":"8600.00",
+      "total_amount_vat_inclusive_before_discount":"8600.00",
       "total_categories":[
 
       ],
@@ -12,31 +12,34 @@
       "total_discount_vat_exclusive":"",
       "total_discount_vat_inclusive":"",
       "total_rounding_difference":"",
-      "total_to_pay":"1550.00",
-      "total_vat_amount":"114.83",
-      "total_vat_amount_before_discount":"114.83",
+      "total_to_pay":"8600.00",
+      "total_vat_amount":"637.05",
+      "total_vat_amount_before_discount":"637.05",
       "total_vat_codes":[
 
       ],
       "total_vat_rates":[
          {
-            "total_amount_vat_exclusive":"1435.17",
-            "total_amount_vat_inclusive":"1550.00",
-            "total_vat_amount":"114.83",
+            "total_amount_vat_exclusive":"7962.95",
+            "total_amount_vat_inclusive":"8600.00",
+            "total_vat_amount":"637.05",
             "vat_rate":"8.00"
          }
       ]
    },
    "customer_info":{
       "address1":"Via Trevano",
-      "balance":"18550.00",
-      "balance_base_currency":"18550.00",
+      "balance":"10600.00",
+      "balance_base_currency":"10600.00",
       "business_name":"Rossi SA",
+      "city":"Pregassona",
+      "country":"Switzerland",
       "first_name":"Carlo",
       "last_name":"Rossi",
       "number":"100001",
-      "origin_row":"258",
-      "origin_table":"Accounts"
+      "origin_row":"104",
+      "origin_table":"Accounts",
+      "postal_code":"6963"
    },
    "document_info":{
       "currency":"CHF",
@@ -46,7 +49,7 @@
       "doc_type":"10",
       "locale":"en",
       "number":"37",
-      "origin_row":"19",
+      "origin_row":"20",
       "origin_table":"Transactions",
       "printed":"",
       "rounding_total":"0.05",
@@ -55,49 +58,24 @@
    "items":[
       {
          "account_assignment":"100001",
-         "description":"Vendita merce, fattura Nr.37, cliente A",
+         "description":"Sales merchandise, invoice #37, customer A",
          "details":"",
          "index":"0",
-         "item_type":"item",
-         "mesure_unit":"",
-         "number":"",
-         "origin_row":"19",
-         "origin_table":"Transactions",
-         "quantity":"1",
-         "total_amount_vat_exclusive":"925.93",
-         "total_amount_vat_inclusive":"1000.00",
-         "total_vat_amount":"74.07",
-         "unit_price":{
-            "amount_vat_exclusive":null,
-            "amount_vat_inclusive":"1000.00",
-            "calculated_amount_vat_exclusive":"925.93",
-            "calculated_amount_vat_inclusive":"1000.00",
-            "calculated_vat_amount":"74.07",
-            "currency":"CHF",
-            "vat_code":"V80",
-            "vat_rate":"8.00"
-         }
-      },
-      {
-         "account_assignment":"100001",
-         "description":"Ritorno merce gennaio",
-         "details":"",
-         "index":"1",
          "item_type":"item",
          "mesure_unit":"",
          "number":"",
          "origin_row":"20",
          "origin_table":"Transactions",
          "quantity":"1",
-         "total_amount_vat_exclusive":"-46.30",
-         "total_amount_vat_inclusive":"-50.00",
-         "total_vat_amount":"-3.70",
+         "total_amount_vat_exclusive":"7407.41",
+         "total_amount_vat_inclusive":"8000.00",
+         "total_vat_amount":"592.59",
          "unit_price":{
             "amount_vat_exclusive":null,
-            "amount_vat_inclusive":"-50.00",
-            "calculated_amount_vat_exclusive":"-46.30",
-            "calculated_amount_vat_inclusive":"-50.00",
-            "calculated_vat_amount":"-3.70",
+            "amount_vat_inclusive":"8000.00",
+            "calculated_amount_vat_exclusive":"7407.41",
+            "calculated_amount_vat_inclusive":"8000.00",
+            "calculated_vat_amount":"592.59",
             "currency":"CHF",
             "vat_code":"V80",
             "vat_rate":"8.00"
@@ -105,9 +83,9 @@
       },
       {
          "account_assignment":"100001",
-         "description":"Consulenza",
+         "description":"Consultancy",
          "details":"",
-         "index":"2",
+         "index":"1",
          "item_type":"item",
          "mesure_unit":"",
          "number":"",
@@ -130,9 +108,9 @@
       },
       {
          "account_assignment":"100001",
-         "description":"Consulenza",
+         "description":"Consultancy",
          "details":"",
-         "index":"3",
+         "index":"2",
          "item_type":"item",
          "mesure_unit":"",
          "number":"",
@@ -155,9 +133,9 @@
       },
       {
          "account_assignment":"100001",
-         "description":"Consulenza",
+         "description":"Consultancy",
          "details":"",
-         "index":"4",
+         "index":"3",
          "item_type":"item",
          "mesure_unit":"",
          "number":"",
@@ -180,9 +158,9 @@
       },
       {
          "account_assignment":"100001",
-         "description":"Consulenza",
+         "description":"Consultancy",
          "details":"",
-         "index":"5",
+         "index":"4",
          "item_type":"item",
          "mesure_unit":"",
          "number":"",
@@ -205,9 +183,9 @@
       },
       {
          "account_assignment":"100001",
-         "description":"Consulenza",
+         "description":"Consultancy",
          "details":"",
-         "index":"6",
+         "index":"5",
          "item_type":"item",
          "mesure_unit":"",
          "number":"",
@@ -230,9 +208,9 @@
       },
       {
          "account_assignment":"100001",
-         "description":"Consulenza",
+         "description":"Consultancy",
          "details":"",
-         "index":"7",
+         "index":"6",
          "item_type":"item",
          "mesure_unit":"",
          "number":"",
@@ -273,13 +251,12 @@
       "different_shipping_address":false
    },
    "supplier_info":{
-      "address1":"Via Trevano 71",
+      "address1":"Via Trevano 7a",
       "business_name":"Banana.ch SA",
       "city":"Lugano",
-      "country":"Svizzera",
+      "country":"Switzerland",
       "email":"info@banana.ch",
       "postal_code":"6900",
-      "state":"TI",
       "web":"www.banana.ch"
    },
    "transactions":[
@@ -287,9 +264,9 @@
          "balance":"-4000.00",
          "balance_base_currency":"",
          "currency":"CHF",
-         "date":"20180215",
-         "description":"Incasso acconto fattura 37",
-         "origin_row":"31",
+         "date":"20180401",
+         "description":"Down payment invoice 37",
+         "origin_row":"30",
          "origin_table":"Transactions"
       }
    ],

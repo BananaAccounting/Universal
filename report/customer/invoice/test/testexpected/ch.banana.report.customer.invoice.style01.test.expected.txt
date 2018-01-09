@@ -2,7 +2,7 @@
 %%info_test_app{Banana90}{9.0.1}
 %%info_test_os{macOS Sierra (10.12)}
 %%info_test_qt{5.9.0}
-%%info_test_date{2018-01-05}{12:26:35.388}
+%%info_test_date{2018-01-09}{11:52:53.923}
 \documentclass{report}
 \usepackage{color}
 \usepackage{adjustbox}
@@ -36,12 +36,12 @@
 \begin{tabular}{ l }
 BANANA.CH SA \\
 \\
-Banana.ch SA - Via Trevano 71 - 6900 Lugano - Svizzera \\
+Banana.ch SA - Via Trevano 7a - 6900 Lugano - Switzerland \\
 info@banana.ch - www.banana.ch \\
 \\
 \end{tabular}
 \begin{tabular}{ l  l }
-Date: 10.01.2018 \\
+Date: 29.01.2018 \\
 Customer No: 100002 \\
 Payment: 30 days \\
 Page: 1 \\
@@ -56,13 +56,13 @@ Invoice 35 \\
 \end{tabular}
 \begin{tabular}{ l  l  l }
 Description  &  & Total CHF \\
-\multicolumn{2}{l}{Vendita merce tipo A, fattura Nr.35, cliente B \\
+\multicolumn{2}{l}{Sales merchandise, invoice #35, customer B \\
 \\
 } & 2'000.00 \\
-\multicolumn{2}{l}{Vendita merce tipo B, fattura Nr.35, cliente B \\
+\multicolumn{2}{l}{Sales merchandise, invoice #35, customer B \\
 \\
 } & 1'000.00 \\
-\multicolumn{2}{l}{Vendita merce tipo C, fattura Nr.35, cliente B \\
+\multicolumn{2}{l}{Sales merchandise, invoice #35, customer B \\
 \\
 } & 500.00 \\
 \multicolumn{3}{l}{}\\
@@ -84,7 +84,7 @@ TOTAL CHF  &  & 3'500.00 \\
 \begin{tabular}{ l }
 BANANA.CH SA \\
 \\
-Banana.ch SA - Via Trevano 71 - 6900 Lugano - Svizzera \\
+Banana.ch SA - Via Trevano 7a - 6900 Lugano - Switzerland \\
 info@banana.ch - www.banana.ch \\
 \\
 \end{tabular}
@@ -96,7 +96,7 @@ Page: 1 \\
  & Susanna Lanfranchi \\
 V.Meggiagra 3 \\
 6599 Robasacco \\
-\\
+Switzerland \\
 \\
 \end{tabular}
 \begin{tabular}{ l }
@@ -104,7 +104,7 @@ Invoice 36 \\
 \end{tabular}
 \begin{tabular}{ l  l  l }
 Description  &  & Total CHF \\
-\multicolumn{2}{l}{Vendita merce, fattura Nr.36, cliente D \\
+\multicolumn{2}{l}{Sales merchandise, invoice #36, customer D \\
 \\
 } & 7'000.00 \\
 \multicolumn{3}{l}{}\\
@@ -121,7 +121,7 @@ TOTAL CHF  &  & 7'000.00 \\
 \begin{tabular}{ l }
 BANANA.CH SA \\
 \\
-Banana.ch SA - Via Trevano 71 - 6900 Lugano - Svizzera \\
+Banana.ch SA - Via Trevano 7a - 6900 Lugano - Switzerland \\
 info@banana.ch - www.banana.ch \\
 \\
 \end{tabular}
@@ -133,7 +133,8 @@ Page: 1 \\
  & Carlo Rossi \\
 Rossi SA \\
 Via Trevano \\
-\\
+6963 Pregassona \\
+Switzerland \\
 \\
 \end{tabular}
 \begin{tabular}{ l }
@@ -141,30 +142,28 @@ Invoice 37 \\
 \end{tabular}
 \begin{tabular}{ l  l  l }
 Description  &  & Total CHF \\
-\multicolumn{2}{l}{Vendita merce, fattura Nr.37, cliente A \\
+\multicolumn{2}{l}{Sales merchandise, invoice #37, customer A \\
 \\
-} & 1'000.00 \\
-\multicolumn{2}{l}{Ritorno merce gennaio \\
-\\
-} & -50.00 \\
-\multicolumn{2}{l}{Consulenza \\
+} & 8'000.00 \\
+\multicolumn{2}{l}{Consultancy \\
 \\
 } & 100.00 \\
-\multicolumn{2}{l}{Consulenza \\
+\multicolumn{2}{l}{Consultancy \\
 \\
 } & 100.00 \\
-\multicolumn{2}{l}{Consulenza \\
+\multicolumn{2}{l}{Consultancy \\
 \\
 } & 100.00 \\
-\multicolumn{2}{l}{Consulenza \\
+\multicolumn{2}{l}{Consultancy \\
 \\
 } & 100.00 \\
-\multicolumn{2}{l}{Consulenza \\
+\multicolumn{2}{l}{Consultancy \\
 \\
 } & 100.00 \\
-\multicolumn{2}{l}{Consulenza \\
+\multicolumn{2}{l}{Consultancy \\
 \\
 } & 100.00 \\
+\multicolumn{3}{l}{}\\
 \end{tabular}
 \\
 \begin{tabular}{ l }
@@ -178,10 +177,9 @@ Page: 2 \\
 \begin{tabular}{ l  l  l  l }
 Description  &  & Total CHF \\
 \multicolumn{3}{l}{}\\
+TOTAL CHF  &  & 8'600.00 \\
 \multicolumn{3}{l}{}\\
-TOTAL CHF  &  & 1'550.00 \\
-\multicolumn{3}{l}{}\\
-\multicolumn{3}{l}{VAT 8.00% = 114.83 CHF \\
+\multicolumn{3}{l}{VAT 8.00% = 637.05 CHF \\
 }\\
 \end{tabular}
 
@@ -191,5 +189,5 @@ TOTAL CHF  &  & 1'550.00 \\
 \end{test}
 %%info_test_time_elapsed{00:00:00.061}
 \end{testcase}
-%%info_test_time_elapsed{00:00:00.075}
+%%info_test_time_elapsed{00:00:00.077}
 \end{document}

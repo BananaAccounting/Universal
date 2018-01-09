@@ -29,13 +29,14 @@
    },
    "customer_info":{
       "address1":"V.Meggiagra 3",
-      "balance":"38900.00",
-      "balance_base_currency":"38900.00",
+      "balance":"12000.00",
+      "balance_base_currency":"12000.00",
       "city":"Robasacco",
+      "country":"Switzerland",
       "first_name":"Susanna",
       "last_name":"Lanfranchi",
       "number":"100004",
-      "origin_row":"261",
+      "origin_row":"107",
       "origin_table":"Accounts",
       "postal_code":"6599"
    },
@@ -47,7 +48,7 @@
       "doc_type":"10",
       "locale":"en",
       "number":"36",
-      "origin_row":"17",
+      "origin_row":"19",
       "origin_table":"Transactions",
       "printed":"",
       "rounding_total":"0.05",
@@ -56,13 +57,13 @@
    "items":[
       {
          "account_assignment":"100004",
-         "description":"Vendita merce, fattura Nr.36, cliente D",
+         "description":"Sales merchandise, invoice #36, customer D",
          "details":"",
          "index":"0",
          "item_type":"item",
          "mesure_unit":"",
          "number":"",
-         "origin_row":"17",
+         "origin_row":"19",
          "origin_table":"Transactions",
          "quantity":"1",
          "total_amount_vat_exclusive":"6481.48",
@@ -99,13 +100,12 @@
       "different_shipping_address":false
    },
    "supplier_info":{
-      "address1":"Via Trevano 71",
+      "address1":"Via Trevano 7a",
       "business_name":"Banana.ch SA",
       "city":"Lugano",
-      "country":"Svizzera",
+      "country":"Switzerland",
       "email":"info@banana.ch",
       "postal_code":"6900",
-      "state":"TI",
       "web":"www.banana.ch"
    },
    "transactions":[
