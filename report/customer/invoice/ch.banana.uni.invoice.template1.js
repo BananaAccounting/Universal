@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.uni.invoice.template1.js
 // @api = 1.0
-// @pubdate = 2018-01-09
+// @pubdate = 2018-01-10
 // @publisher = Banana.ch SA
 // @description = Invoice with total column
 // @description.it = Fattura con colonna totale
