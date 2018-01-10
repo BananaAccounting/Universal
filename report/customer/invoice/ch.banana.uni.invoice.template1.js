@@ -782,8 +782,6 @@ function setInvoiceTexts(language) {
       texts.param_color_2 = '颜色 2';
       texts.param_font_family = '字体类型';
       texts.param_print_header = '包括页眉 (1=是, 0=否)';
-      texts.param_personal_text_1 = '个人文本 (行 1)';
-      texts.param_personal_text_2 = '个人文本 (行 2)';
       texts.payment_due_date_label = '截止日期';
       texts.payment_terms_label = '付款';
       //texts.param_max_items_per_page = '每页上的项目数';
