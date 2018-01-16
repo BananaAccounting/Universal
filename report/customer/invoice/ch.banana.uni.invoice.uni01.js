@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-// @id = ch.banana.uni.invoice.template1.js
+// @id = ch.banana.uni.invoice.uni01
 // @api = 1.0
-// @pubdate = 2018-01-10
+// @pubdate = 2018-01-16
 // @publisher = Banana.ch SA
 // @description = Invoice with total column
 // @description.it = Fattura con colonna totale
