@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-// @id = ch.banana.uni.invoice.template2.js
+// @id = ch.banana.uni.invoice.uni02
 // @api = 1.0
-// @pubdate = 2018-01-10
+// @pubdate = 2018-01-16
 // @publisher = Banana.ch SA
 // @description = Invoice with quantity and unit price columns - style 1
 // @description.it = Fattura con colonne quantità e prezzo unitario - stile 1
