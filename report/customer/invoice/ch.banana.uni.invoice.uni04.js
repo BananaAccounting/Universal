@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-// @id = ch.banana.uni.invoice.template4
+// @id = ch.banana.uni.invoice.uni04
 // @api = 1.0
-// @pubdate = 2018-01-15
+// @pubdate = 2018-01-17
 // @publisher = Banana.ch SA
 // @description = Invoice with quantity and unit price columns - style 4
 // @description.it = Fattura con colonne quantità e prezzo unitario - stile 4
