@@ -48,6 +48,10 @@ function settingsDialog() {
    if (param.print_header === undefined)
       return;
 
+   param.image_height = Banana.Ui.getInt('Settings', texts.param_image_height, param.image_height);
+   if (param.image_height === undefined)
+      return;
+
    param.color_1 = Banana.Ui.getText('Settings', texts.param_color_1, param.color_1);
    if (param.color_1 === undefined)
       return;
@@ -56,10 +60,6 @@ function settingsDialog() {
    if (param.color_2 === undefined)
       return;
    
-   param.image_width = Banana.Ui.getInt('Settings', texts.param_image_width, param.image_width);
-   if (param.image_width === undefined)
-      return;
-
    var paramToString = JSON.stringify(param);
    var value = Banana.document.scriptSaveSettings(paramToString);
 }
@@ -71,7 +71,7 @@ function initParam() {
    param.color_2 = '#ffffff';
    param.color_3 = '';
    param.color_4 = '';
-   param.image_width = '30';
+   param.image_height = '30';
    return param;
 }
 
@@ -86,8 +86,8 @@ function verifyParam(param) {
      param.color_3 = '';
    if (!param.color_4)
      param.color_4 = '';
-   if (!param.image_width)
-     param.image_width = '';
+   if (!param.image_height)
+     param.image_height = '30';
    
    return param;
 }
@@ -626,8 +626,8 @@ function setInvoiceStyle(reportObj, repStyleObj, param) {
         param.color_4 = "#dddddd";
     }
 
-    if (!param.image_width) {
-        param.image_width = "30";
+    if (!param.image_height) {
+        param.image_height = "30";
     }
 
     //====================================================================//
@@ -664,7 +664,7 @@ function setInvoiceStyle(reportObj, repStyleObj, param) {
     logoStyle.setAttribute("position", "absolute");
     logoStyle.setAttribute("margin-top", "10mm");
     logoStyle.setAttribute("margin-left", "20mm");
-    logoStyle.setAttribute("height", param.image_width + "mm"); 
+    logoStyle.setAttribute("height", param.image_height + "mm"); 
 
 
     //====================================================================//
@@ -738,7 +738,7 @@ function setInvoiceTexts(language) {
     texts.to = 'A:';
     texts.param_color_1 = 'Colore sfondo';
     texts.param_color_2 = 'Colore testo';
-    texts.param_image_width = 'Larghezza immagine (mm)';
+    texts.param_image_height = 'Altezza immagine (mm)';
     texts.param_print_header = 'Includi intestazione pagina (1=si, 0=no)';
     texts.payment_due_date_label = 'Scadenza';
     texts.payment_terms_label = 'Pagamento';
@@ -765,7 +765,7 @@ function setInvoiceTexts(language) {
     texts.to = 'ZU:';
     texts.param_color_1 = 'Hintergrundfarbe';
     texts.param_color_2 = 'Textfarbe';
-    texts.param_image_width = 'Bildbreite (mm)';
+    texts.param_image_height = 'Bildhöhe (mm)';
     texts.param_print_header = 'Seitenüberschrift einschliessen (1=ja, 0=nein)';
     texts.payment_due_date_label = 'Fälligkeitsdatum';
     texts.payment_terms_label = 'Zahlungsbedingungen';
@@ -792,7 +792,7 @@ function setInvoiceTexts(language) {
     texts.to = 'À:';
     texts.param_color_1 = 'Couleur de fond';
     texts.param_color_2 = 'Couleur du texte';
-    texts.param_image_width = 'Largeur de l\'image (mm)';
+    texts.param_image_height = 'Hauteur de l\'image (mm)';
     texts.param_print_header = 'Inclure en-tête de page (1=oui, 0=non)';
     texts.payment_due_date_label = 'Echéance';
     texts.payment_terms_label = 'Paiement';
@@ -819,7 +819,7 @@ function setInvoiceTexts(language) {
     texts.to = '至:';
     texts.param_color_1 = '背景色';
     texts.param_color_2 = '文本颜色';
-    texts.param_image_width = '图像宽度 (mm)';
+    texts.param_image_height = '图像高度 (mm)';
     texts.param_print_header = '包括页眉 (1=是, 0=否)';
     texts.payment_due_date_label = '截止日期';
     texts.payment_terms_label = '付款';
@@ -846,7 +846,7 @@ function setInvoiceTexts(language) {
     texts.to = 'TOT:';
     texts.param_color_1 = 'Achtergrond kleur';
     texts.param_color_2 = 'tekstkleur';
-    texts.param_image_width = 'Afbeelding breedte (mm)';
+    texts.param_image_height = 'Beeldhoogte (mm)';
     texts.param_print_header = 'Pagina-koptekst opnemen (1=ja, 0=nee)';
     texts.payment_due_date_label = 'Vervaldatum';
     texts.payment_terms_label = 'Betaling';
@@ -873,7 +873,7 @@ function setInvoiceTexts(language) {
     texts.to = 'TO:';
     texts.param_color_1 = 'Background Color';
     texts.param_color_2 = 'Text Color';
-    texts.param_image_width = 'Image width (mm)';
+    texts.param_image_height = 'Image height (mm)';
     texts.param_print_header = 'Include page header (1=yes, 0=no)';
     texts.payment_due_date_label = 'Due date';
     texts.payment_terms_label = 'Payment';
