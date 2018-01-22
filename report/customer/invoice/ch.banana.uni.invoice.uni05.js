@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.uni.invoice.uni05
 // @api = 1.0
-// @pubdate = 2018-01-16
+// @pubdate = 2018-01-22
 // @publisher = Banana.ch SA
 // @description = Invoice with quantity and unit price columns - style 5
 // @description.it = Fattura con colonne quantità e prezzo unitario - stile 5
@@ -51,11 +51,15 @@ function settingsDialog() {
    param.color_1 = Banana.Ui.getText('Settings', texts.param_color_1, param.color_1);
    if (param.color_1 === undefined)
       return;
-	  
+  
    param.color_2 = Banana.Ui.getText('Settings', texts.param_color_2, param.color_2);
    if (param.color_2 === undefined)
       return;
    
+   param.image_width = Banana.Ui.getInt('Settings', texts.param_image_width, param.image_width);
+   if (param.image_width === undefined)
+      return;
+
    var paramToString = JSON.stringify(param);
    var value = Banana.document.scriptSaveSettings(paramToString);
 }
@@ -63,30 +67,27 @@ function settingsDialog() {
 function initParam() {
    var param = {};
    param.print_header = true;
-   param.font_family = '';
-   param.color_1 = '';
-   param.color_2 = '';
+   param.color_1 = '#337ab7';
+   param.color_2 = '#ffffff';
    param.color_3 = '';
    param.color_4 = '';
-   param.color_5 = '';
+   param.image_width = '30';
    return param;
 }
 
 function verifyParam(param) {
    if (!param.print_header)
      param.print_header = false;
-   if (!param.font_family)
-     param.font_family = '';
    if (!param.color_1)
-     param.color_1 = '';
+     param.color_1 = '#337ab7';
    if (!param.color_2)
-     param.color_2 = '';
+     param.color_2 = '#ffffff';
    if (!param.color_3)
      param.color_3 = '';
    if (!param.color_4)
      param.color_4 = '';
-   if (!param.color_5)
-     param.color_5 = '';
+   if (!param.image_width)
+     param.image_width = '';
    
    return param;
 }
@@ -121,10 +122,10 @@ function printInvoice(jsonInvoice, repDocObj, param) {
 
   // Invoice document
   var reportObj = Banana.Report;
-	
+
   if (!repDocObj) {
-		repDocObj = reportObj.newReport(getTitle(invoiceObj, texts) + " " + invoiceObj.document_info.number);
-	} else {
+    repDocObj = reportObj.newReport(getTitle(invoiceObj, texts) + " " + invoiceObj.document_info.number);
+  } else {
     var pageBreak = repDocObj.addPageBreak();
     pageBreak.addClass("pageReset");
   }
@@ -152,7 +153,6 @@ function printInvoice(jsonInvoice, repDocObj, param) {
     for (var i=0; i < supplierLines.length; i++) {
       cell2.addParagraph(supplierLines[i], "", 1);
     }
-    cell2.addParagraph(getTitle(invoiceObj, texts), "bold");
   }
   else {
     var cell1 = tableRow.addCell("", "");
@@ -161,10 +161,7 @@ function printInvoice(jsonInvoice, repDocObj, param) {
     cell2.addParagraph(" ");
     cell2.addParagraph(" ");
     cell2.addParagraph(" ");
-    cell2.addParagraph(getTitle(invoiceObj, texts), "bold amount");
   }
-
-
 
   /**********************
     2. INVOICE TEXTS INFO
@@ -210,6 +207,14 @@ function printInvoice(jsonInvoice, repDocObj, param) {
     cell3.addParagraph(addressLines[i]);
   }
 
+  //Text begin
+  if (invoiceObj.document_info.text_begin) {
+    var textBeginTable = repDocObj.addTable("text_begin_table");
+    var col1 = textBeginTable.addColumn("textBeginCol1");
+    tableRow = textBeginTable.addRow();
+    cell1 = tableRow.addCell("", "text_begin");
+    cell1.addParagraph(invoiceObj.document_info.text_begin);
+  }
 
   /***************
     3. TABLE ITEMS
@@ -605,10 +610,6 @@ function setInvoiceStyle(reportObj, repStyleObj, param) {
     }
 
     //Set default values
-    if (!param.font_family) {
-        param.font_family = "Helvetica";
-    }
-
     if (!param.color_1) {
         param.color_1 = "#337ab7";
     }
@@ -625,15 +626,15 @@ function setInvoiceStyle(reportObj, repStyleObj, param) {
         param.color_4 = "#dddddd";
     }
 
-    if (!param.color_5) {
-        param.color_5 = "#eeeeee";
+    if (!param.image_width) {
+        param.image_width = "30";
     }
 
     //====================================================================//
     // GENERAL
     //====================================================================//
     repStyleObj.addStyle(".pageReset", "counter-reset: page");
-    repStyleObj.addStyle("body", "font-size: 11pt; font-family:" + param.font_family);
+    repStyleObj.addStyle("body", "font-size: 11pt; font-family:Helvetica");
     repStyleObj.addStyle(".amount", "text-align:right");
     repStyleObj.addStyle(".bold", "font-weight: bold");
     repStyleObj.addStyle(".doc_table_header", "font-weight:bold; background-color:" + param.color_1 + "; color:" + param.color_2);
@@ -663,8 +664,7 @@ function setInvoiceStyle(reportObj, repStyleObj, param) {
     logoStyle.setAttribute("position", "absolute");
     logoStyle.setAttribute("margin-top", "10mm");
     logoStyle.setAttribute("margin-left", "20mm");
-    //logoStyle.setAttribute("width", "120px"); 
-    logoStyle.setAttribute("height", "75px"); 
+    logoStyle.setAttribute("height", param.image_width + "mm"); 
 
 
     //====================================================================//
@@ -678,7 +678,6 @@ function setInvoiceStyle(reportObj, repStyleObj, param) {
     //repStyleObj.addStyle("table.header_table td", "border: thin solid black");
     headerStyle.setAttribute("width", "100%");
 
-
     var infoStyle = repStyleObj.addStyle(".info_table");
     infoStyle.setAttribute("position", "absolute");
     infoStyle.setAttribute("margin-top", "45mm");
@@ -691,10 +690,14 @@ function setInvoiceStyle(reportObj, repStyleObj, param) {
     infoStyle.setAttribute("margin-top", "10mm");
     infoStyle.setAttribute("margin-left", "22mm");
     infoStyle.setAttribute("margin-right", "10mm");
-    //repStyleObj.addStyle("table.info_table td", "border: thin solid black");
+    //repStyleObj.addStyle("table.info_table_row0 td", "border: thin solid black");
     infoStyle.setAttribute("width", "100%");
 
-
+    var infoStyle = repStyleObj.addStyle(".text_begin_table");
+    infoStyle.setAttribute("position", "absolute");
+    infoStyle.setAttribute("margin-top", "87mm");
+    infoStyle.setAttribute("margin-left", "23mm");
+    infoStyle.setAttribute("width", "100%");
 
     var itemsStyle = repStyleObj.addStyle(".doc_table");
     itemsStyle.setAttribute("margin-top", "110mm"); //106
@@ -708,7 +711,7 @@ function setInvoiceStyle(reportObj, repStyleObj, param) {
     itemsStyle.setAttribute("margin-top", "50mm"); //106
     itemsStyle.setAttribute("margin-left", "23mm"); //20
     itemsStyle.setAttribute("margin-right", "10mm");
-    //repStyleObj.addStyle("table.doc_table td", "border: thin solid black; padding: 3px;");
+    //repStyleObj.addStyle("table.doc_table_row0 td", "border: thin solid black; padding: 3px;");
     itemsStyle.setAttribute("width", "100%");
 }
 
@@ -733,9 +736,9 @@ function setInvoiceTexts(language) {
     texts.shipping_to = 'Indirizzo spedizione';
     texts.from = 'DA:';
     texts.to = 'A:';
-    texts.param_color_1 = 'Colore 1';
-    texts.param_color_2 = 'Colore 2';
-    texts.param_font_family = 'Tipo carattere';
+    texts.param_color_1 = 'Colore sfondo';
+    texts.param_color_2 = 'Colore testo';
+    texts.param_image_width = 'Larghezza immagine (mm)';
     texts.param_print_header = 'Includi intestazione pagina (1=si, 0=no)';
     texts.payment_due_date_label = 'Scadenza';
     texts.payment_terms_label = 'Pagamento';
@@ -760,9 +763,9 @@ function setInvoiceTexts(language) {
     texts.shipping_to = 'Lieferadresse';
     texts.from = 'VON:';
     texts.to = 'ZU:';
-    texts.param_color_1 = 'Farbe 1';
-    texts.param_color_2 = 'Farbe 2';
-    texts.param_font_family = 'Typ Schriftzeichen';
+    texts.param_color_1 = 'Hintergrundfarbe';
+    texts.param_color_2 = 'Textfarbe';
+    texts.param_image_width = 'Bildbreite (mm)';
     texts.param_print_header = 'Seitenüberschrift einschliessen (1=ja, 0=nein)';
     texts.payment_due_date_label = 'Fälligkeitsdatum';
     texts.payment_terms_label = 'Zahlungsbedingungen';
@@ -787,9 +790,9 @@ function setInvoiceTexts(language) {
     texts.shipping_to = 'Adresse de livraison';
     texts.from = 'DE:';
     texts.to = 'À:';
-    texts.param_color_1 = 'Couleur 1';
-    texts.param_color_2 = 'Couleur 2';
-    texts.param_font_family = 'Type caractère';
+    texts.param_color_1 = 'Couleur de fond';
+    texts.param_color_2 = 'Couleur du texte';
+    texts.param_image_width = 'Largeur de l\'image (mm)';
     texts.param_print_header = 'Inclure en-tête de page (1=oui, 0=non)';
     texts.payment_due_date_label = 'Echéance';
     texts.payment_terms_label = 'Paiement';
@@ -814,9 +817,9 @@ function setInvoiceTexts(language) {
     texts.shipping_to = '邮寄地址';
     texts.from = '来自:';
     texts.to = '至:';
-    texts.param_color_1 = '颜色 1';
-    texts.param_color_2 = '颜色 2';
-    texts.param_font_family = '字体类型';
+    texts.param_color_1 = '背景色';
+    texts.param_color_2 = '文本颜色';
+    texts.param_image_width = '图像宽度 (mm)';
     texts.param_print_header = '包括页眉 (1=是, 0=否)';
     texts.payment_due_date_label = '截止日期';
     texts.payment_terms_label = '付款';
@@ -841,9 +844,9 @@ function setInvoiceTexts(language) {
     texts.shipping_to = 'Leveringsadres';
     texts.from = 'VAN:';
     texts.to = 'TOT:';
-    texts.param_color_1 = 'Kleur 1';
-    texts.param_color_2 = 'Kleur 2';
-    texts.param_font_family = 'Lettertype';
+    texts.param_color_1 = 'Achtergrond kleur';
+    texts.param_color_2 = 'tekstkleur';
+    texts.param_image_width = 'Afbeelding breedte (mm)';
     texts.param_print_header = 'Pagina-koptekst opnemen (1=ja, 0=nee)';
     texts.payment_due_date_label = 'Vervaldatum';
     texts.payment_terms_label = 'Betaling';
@@ -868,9 +871,9 @@ function setInvoiceTexts(language) {
     texts.shipping_to = 'Shipping address';
     texts.from = 'FROM:';
     texts.to = 'TO:';
-    texts.param_color_1 = 'Color 1';
-    texts.param_color_2 = 'Color 2';
-    texts.param_font_family = 'Font type';
+    texts.param_color_1 = 'Background Color';
+    texts.param_color_2 = 'Text Color';
+    texts.param_image_width = 'Image width (mm)';
     texts.param_print_header = 'Include page header (1=yes, 0=no)';
     texts.payment_due_date_label = 'Due date';
     texts.payment_terms_label = 'Payment';
