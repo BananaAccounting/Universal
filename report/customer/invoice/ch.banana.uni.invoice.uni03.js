@@ -14,15 +14,15 @@
 //
 // @id = ch.banana.uni.invoice.uni03
 // @api = 1.0
-// @pubdate = 2018-01-16
+// @pubdate = 2018-01-23
 // @publisher = Banana.ch SA
-// @description = Invoice with quantity and unit price columns - style 3
-// @description.it = Fattura con colonne quantità e prezzo unitario - stile 3
-// @description.de = Rechnung mit Menge und Einheitspreisspalten - Stil 3
-// @description.fr = Facture avec colonnes de quantité et prix unitaire - style 3
-// @description.nl = Factuur met hoeveelheids en eenheidsprijskolommen - stijl 3
-// @description.en = Invoice with quantity and unit price columns - style 3
-// @description.zh = 具有数量和单价列的发票-样式3
+// @description = Style 3: Invoice with net amounts, quantity column, address on the left, 2 colours
+// @description.it = Stile 3: Fattura con importi netti, colonna quantità, indirizzo a sinistra, 2 colori
+// @description.de = Stil 3: Rechnung mit Nettobeträgen, Mengenspalte, Adresse links, 2 Farben
+// @description.fr = Style 3: Facture avec montants nets, colonne quantité, adresse à gauche, 2 couleurs
+// @description.nl = Stijl 3: Factuur met netto bedragen, hoeveelheid kolom, adres aan de linkerkant, 2 kleuren
+// @description.en = Style 3: Invoice with net amounts, quantity column, address on the left, 2 colours
+// @description.zh = 样式 3: 发票与净额, 数量列, 地址在左边, 2 颜色
 // @doctype = *
 // @task = report.customer.invoice
 
@@ -64,8 +64,8 @@ function initParam() {
    var param = {};
    param.print_header = true;
    param.font_family = '';
-   param.color_1 = '';
-   param.color_2 = '';
+   param.color_1 = '#005392';
+   param.color_2 = '#F4F4F4';
    param.color_3 = '';
    param.color_4 = '';
    param.color_5 = '';
@@ -78,9 +78,9 @@ function verifyParam(param) {
    if (!param.font_family)
      param.font_family = '';
    if (!param.color_1)
-     param.color_1 = '';
+     param.color_1 = '#005392';
    if (!param.color_2)
-     param.color_2 = '';
+     param.color_2 = '#F4F4F4';
    if (!param.color_3)
      param.color_3 = '';
    if (!param.color_4)
@@ -227,6 +227,11 @@ function printInvoice(jsonInvoice, repDocObj, param) {
 
   tableRow = infoTable.addRow();
   tableRow.addCell(" " + texts.page + ": " + pageNr, "", 2);
+
+  //Text begin
+  if (invoiceObj.document_info.text_begin) {
+    repDocObj.addParagraph(invoiceObj.document_info.text_begin, "begin_text");
+  }
 
 
  /***************
@@ -694,6 +699,15 @@ function setInvoiceStyle(reportObj, repStyleObj, param) {
     repStyleObj.addStyle(".repTableCol3","width:18%");
     repStyleObj.addStyle(".repTableCol4","width:18%");
 
+    /* 
+      Text begin
+    */
+    var beginStyle = repStyleObj.addStyle(".begin_text");
+    beginStyle.setAttribute("position", "absolute");
+    beginStyle.setAttribute("top", "90mm");
+    beginStyle.setAttribute("left", "20mm");
+    beginStyle.setAttribute("right", "10mm");
+    beginStyle.setAttribute("font-size", "10px");
 
     //====================================================================//
     // TABLES
@@ -768,8 +782,8 @@ function setInvoiceTexts(language) {
     texts.shipping_to = 'Indirizzo spedizione';
     texts.from = 'DA';
     texts.to = 'A';
-    texts.param_color_1 = 'Colore 1';
-    texts.param_color_2 = 'Colore 2';
+    texts.param_color_1 = 'Colore sfondo';
+    texts.param_color_2 = 'Colore testo';
     texts.param_font_family = 'Tipo carattere';
     texts.param_print_header = 'Includi intestazione pagina (1=si, 0=no)';
     texts.param_personal_text_1 = 'Testo libero (riga 1)';
@@ -797,8 +811,8 @@ function setInvoiceTexts(language) {
     texts.shipping_to = 'Lieferadresse';
     texts.from = 'VON';
     texts.to = 'ZU';
-    texts.param_color_1 = 'Farbe 1';
-    texts.param_color_2 = 'Farbe 2';
+    texts.param_color_1 = 'Hintergrundfarbe';
+    texts.param_color_2 = 'Textfarbe';
     texts.param_font_family = 'Typ Schriftzeichen';
     texts.param_print_header = 'Seitenüberschrift einschliessen (1=ja, 0=nein)';
     texts.param_personal_text_1 = 'Freier Text (Zeile 1)';
@@ -826,8 +840,8 @@ function setInvoiceTexts(language) {
     texts.shipping_to = 'Adresse de livraison';
     texts.from = 'DE';
     texts.to = 'À';
-    texts.param_color_1 = 'Couleur 1';
-    texts.param_color_2 = 'Couleur 2';
+    texts.param_color_1 = 'Couleur de fond';
+    texts.param_color_2 = 'Couleur du texte';
     texts.param_font_family = 'Type caractère';
     texts.param_print_header = 'Inclure en-tête de page (1=oui, 0=non)';
     texts.param_personal_text_1 = 'Texte libre (ligne 1)';
@@ -855,8 +869,8 @@ function setInvoiceTexts(language) {
     texts.shipping_to = '邮寄地址';
     texts.from = '来自';
     texts.to = '至';
-    texts.param_color_1 = '颜色 1';
-    texts.param_color_2 = '颜色 2';
+    texts.param_color_1 = '背景色';
+    texts.param_color_2 = '文本颜色';
     texts.param_font_family = '字体类型';
     texts.param_print_header = '包括页眉 (1=是, 0=否)';
     texts.param_personal_text_1 = '个人文本 (行 1)';
@@ -884,8 +898,8 @@ function setInvoiceTexts(language) {
     texts.shipping_to = 'Leveringsadres';
     texts.from = 'VAN';
     texts.to = 'TOT';
-    texts.param_color_1 = 'Kleur 1';
-    texts.param_color_2 = 'Kleur 2';
+    texts.param_color_1 = 'Achtergrond kleur';
+    texts.param_color_2 = 'tekstkleur';
     texts.param_font_family = 'Lettertype';
     texts.param_print_header = 'Pagina-koptekst opnemen (1=ja, 0=nee)';
     texts.param_personal_text_1 = 'Persoonlijke tekst (rij 1)';
@@ -913,8 +927,8 @@ function setInvoiceTexts(language) {
     texts.shipping_to = 'Shipping address';
     texts.from = 'FROM';
     texts.to = 'TO';
-    texts.param_color_1 = 'Color 1';
-    texts.param_color_2 = 'Color 2';
+    texts.param_color_1 = 'Background Color';
+    texts.param_color_2 = 'Text Color';
     texts.param_font_family = 'Font type';
     texts.param_print_header = 'Include page header (1=yes, 0=no)';
     texts.param_personal_text_1 = 'Personal text (row 1)';
