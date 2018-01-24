@@ -34,7 +34,7 @@ var max_items_per_page = 21;
 /*Update script's parameters*/
 function settingsDialog() {
    var param = initParam();
-   var savedParam = Banana.document.scriptReadSettings();
+   var savedParam = Banana.document.getScriptSettings();
    if (savedParam.length > 0) {
       param = JSON.parse(savedParam);
    }   
@@ -69,7 +69,7 @@ function settingsDialog() {
       return;
 
    var paramToString = JSON.stringify(param);
-   var value = Banana.document.scriptSaveSettings(paramToString);
+   var value = Banana.document.setScriptSettings(paramToString);
 }
 
 function initParam() {
@@ -105,7 +105,7 @@ function verifyParam(param) {
 
 function printDocument(jsonInvoice, repDocObj, repStyleObj) {
   var param = initParam();
-  var savedParam = Banana.document.scriptReadSettings();
+  var savedParam = Banana.document.getScriptSettings();
   if (savedParam.length > 0) {
     param = JSON.parse(savedParam);
     param = verifyParam(param);
