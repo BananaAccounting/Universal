@@ -1,8 +1,8 @@
 %%info_test_name{/Users/ivan/Documents/GitHub/Universal/report/customer/invoice/test/ch.banana.uni.invoice.uni06.test.js}
-%%info_test_app{Banana90}{9.0.1}
+%%info_test_app{Banana90}{9.0.2}
 %%info_test_os{macOS Sierra (10.12)}
 %%info_test_qt{5.9.0}
-%%info_test_date{2018-01-17}{11:44:02.556}
+%%info_test_date{2018-01-26}{16:00:45.972}
 \documentclass{report}
 \usepackage{color}
 \usepackage{adjustbox}
@@ -22,7 +22,7 @@
 \begin{testcase}{ReportInvoiceTemplate6}
 \begin{test}{test1}
 \keyvalue{Result}{Passed}
-%%info_test_time_elapsed{00:00:00.000}
+%%info_test_time_elapsed{00:00:00.001}
 \end{test}
 \begin{test}{test2}
 \keyvalue{Result}{Passed}
@@ -34,13 +34,13 @@
 \subsection{Test Invoice 35}
 \begin{reportvalue}{Test Invoice 35}
 \begin{tabular}{ l  l }
-FROM: \\
+  \\
 Banana.ch SA \\
 Via Trevano 7a 6900 Lugano \\
 info@banana.ch \\
 www.banana.ch \\
 \\
- & TO: \\
+ &   \\
 Mario Bianchi \\
 Via Trevano \\
 6963 Pregassona \\
@@ -77,18 +77,19 @@ Sales merchandise, invoice #35, customer B \\
 \multicolumn{4}{l}{  }\\
 \multicolumn{4}{l}{Best regards, Banana.ch SA }\\
 \end{tabular}
+This is the beginning text... \\
 
 \end{reportvalue}
 \subsection{Test Invoice 36}
 \begin{reportvalue}{Test Invoice 36}
 \begin{tabular}{ l  l }
-FROM: \\
+  \\
 Banana.ch SA \\
 Via Trevano 7a 6900 Lugano \\
 info@banana.ch \\
 www.banana.ch \\
 \\
- & TO: \\
+ &   \\
 Susanna Lanfranchi \\
 V.Meggiagra 3 \\
 6599 Robasacco \\
@@ -112,19 +113,21 @@ Sales merchandise, invoice #36, customer D \\
  &  &  & \\
  &    & TOTAL CHF  & 7'000.00 \\
 \multicolumn{4}{l}{}\\
+Due date: 03.03.2018 \\
 \end{tabular}
+This is the beginning text... \\
 
 \end{reportvalue}
 \subsection{Test Invoice 37}
 \begin{reportvalue}{Test Invoice 37}
 \begin{tabular}{ l  l }
-FROM: \\
+  \\
 Banana.ch SA \\
 Via Trevano 7a 6900 Lugano \\
 info@banana.ch \\
 www.banana.ch \\
 \\
- & TO: \\
+ &   \\
 Carlo Rossi \\
 Rossi SA \\
 Via Trevano \\
@@ -153,6 +156,7 @@ Consultancy \\
 \\
  & 1.00  & 92.59  & 92.59 \\
 \end{tabular}
+This is the beginning text... \\
 \\
 \begin{tabular}{ l  l  l  l }
 Date:  03.02.2018  & Customer No:  100001  & Total:  CHF 8'600.00  & Page:  2 \\
@@ -174,19 +178,20 @@ Consultancy \\
  &  &  & \\
  &    & TOTAL CHF  & 8'600.00 \\
 \multicolumn{4}{l}{}\\
+Due date: 05.03.2018 \\
 \end{tabular}
 
 \end{reportvalue}
 \subsection{Test Invoice 47}
 \begin{reportvalue}{Test Invoice 47}
 \begin{tabular}{ l  l }
-FROM: \\
+  \\
 Banana.ch SA \\
 Via Trevano 7a 6900 Lugano \\
 info@banana.ch \\
 www.banana.ch \\
 \\
- & TO: \\
+ &   \\
 Marco Alberti \\
 V. CampurÃ©ta 40 \\
 6883 Novazzano \\
@@ -216,13 +221,15 @@ Discount 10% product B \\
  &  &  & \\
  &    & TOTAL CHF  & 49.00 \\
 \multicolumn{4}{l}{}\\
+Due date: 11.12.2018 \\
 \end{tabular}
+This is the beginning text... \\
 
 \end{reportvalue}
 \keyvalue{Result}{Passed}
-%%info_test_time_elapsed{00:00:00.056}
+%%info_test_time_elapsed{00:00:00.061}
 \end{test}
-%%info_test_time_elapsed{00:00:00.056}
+%%info_test_time_elapsed{00:00:00.062}
 \end{testcase}
-%%info_test_time_elapsed{00:00:00.072}
+%%info_test_time_elapsed{00:00:00.077}
 \end{document}
