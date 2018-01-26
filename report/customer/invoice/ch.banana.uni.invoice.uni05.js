@@ -14,15 +14,15 @@
 //
 // @id = ch.banana.uni.invoice.uni05
 // @api = 1.0
-// @pubdate = 2018-01-22
+// @pubdate = 2018-01-26
 // @publisher = Banana.ch SA
-// @description = Invoice with quantity and unit price columns - style 5
-// @description.it = Fattura con colonne quantità e prezzo unitario - stile 5
-// @description.de = Rechnung mit Menge und Einheitspreisspalten - Stil 5
-// @description.fr = Facture avec colonnes de quantité et prix unitaire - style 5
-// @description.nl = Factuur met hoeveelheids en eenheidsprijskolommen - stijl 5
-// @description.en = Invoice with quantity and unit price columns - style 5
-// @description.zh = 具有数量和单价列的发票-样式5
+// @description = Style 5: Invoice with net amounts, quantity column, with logo, 2 colours
+// @description.it = Stile 5: Fattura con importi netti, colonna quantità, con logo, 2 colori
+// @description.de = Stil 5: Rechnung mit Nettobeträgen, Mengenspalte, mit Logo, 2 Farben
+// @description.fr = Style 5: Facture avec montants nets, colonne quantité, avec logo, 2 couleurs
+// @description.nl = Stijl 5: Factuur met netto bedragen, hoeveelheid kolom, met logo, 2 kleuren
+// @description.en = Style 5: Invoice with net amounts, quantity column, with logo, 2 colours
+// @description.zh = 样式 5: 发票与净额, 数量列, 标志, 2颜色
 // @doctype = *
 // @task = report.customer.invoice
 
@@ -34,7 +34,7 @@ var max_items_per_page = 31;
 /*Update script's parameters*/
 function settingsDialog() {
    var param = initParam();
-   var savedParam = Banana.document.scriptReadSettings();
+   var savedParam = Banana.document.getScriptSettings();
    if (savedParam.length > 0) {
       param = JSON.parse(savedParam);
    }   
@@ -61,7 +61,7 @@ function settingsDialog() {
       return;
    
    var paramToString = JSON.stringify(param);
-   var value = Banana.document.scriptSaveSettings(paramToString);
+   var value = Banana.document.setScriptSettings(paramToString);
 }
 
 function initParam() {
@@ -71,7 +71,7 @@ function initParam() {
    param.color_2 = '#ffffff';
    param.color_3 = '';
    param.color_4 = '';
-   param.image_height = '30';
+   param.image_height = '20';
    return param;
 }
 
@@ -87,14 +87,14 @@ function verifyParam(param) {
    if (!param.color_4)
      param.color_4 = '';
    if (!param.image_height)
-     param.image_height = '30';
+     param.image_height = '20';
    
    return param;
 }
 
 function printDocument(jsonInvoice, repDocObj, repStyleObj) {
   var param = initParam();
-  var savedParam = Banana.document.scriptReadSettings();
+  var savedParam = Banana.document.getScriptSettings();
   if (savedParam.length > 0) {
     param = JSON.parse(savedParam);
     param = verifyParam(param);
@@ -209,17 +209,17 @@ function printInvoice(jsonInvoice, repDocObj, param) {
 
   //Text begin
   if (invoiceObj.document_info.text_begin) {
-    var textBeginTable = repDocObj.addTable("text_begin_table");
-    var col1 = textBeginTable.addColumn("textBeginCol1");
-    tableRow = textBeginTable.addRow();
-    cell1 = tableRow.addCell("", "text_begin");
-    cell1.addParagraph(invoiceObj.document_info.text_begin);
+    repTableObj = repDocObj.addTable("doc_table1");
+    repDocObj.addParagraph(invoiceObj.document_info.text_begin, "begin_text");
+  }
+  else {
+    repTableObj = repDocObj.addTable("doc_table");
   }
 
   /***************
     3. TABLE ITEMS
   ***************/
-  repTableObj = repDocObj.addTable("doc_table");
+  //repTableObj = repDocObj.addTable("doc_table");
   var repTableCol1 = repTableObj.addColumn("repTableCol1");
   var repTableCol2 = repTableObj.addColumn("repTableCol2");
   var repTableCol3 = repTableObj.addColumn("repTableCol3");
@@ -627,7 +627,7 @@ function setInvoiceStyle(reportObj, repStyleObj, param) {
     }
 
     if (!param.image_height) {
-        param.image_height = "30";
+        param.image_height = "20";
     }
 
     //====================================================================//
@@ -656,6 +656,15 @@ function setInvoiceStyle(reportObj, repStyleObj, param) {
     repStyleObj.addStyle(".repTableCol3","width:20%");
     repStyleObj.addStyle(".repTableCol4","width:20%");
 
+    /* 
+      Text begin
+    */
+    var beginStyle = repStyleObj.addStyle(".begin_text");
+    beginStyle.setAttribute("position", "absolute");
+    beginStyle.setAttribute("top", "90mm");
+    beginStyle.setAttribute("left", "20mm");
+    beginStyle.setAttribute("right", "10mm");
+    beginStyle.setAttribute("font-size", "10px");
 
     //====================================================================//
     // LOGO
@@ -693,12 +702,6 @@ function setInvoiceStyle(reportObj, repStyleObj, param) {
     //repStyleObj.addStyle("table.info_table_row0 td", "border: thin solid black");
     infoStyle.setAttribute("width", "100%");
 
-    var infoStyle = repStyleObj.addStyle(".text_begin_table");
-    infoStyle.setAttribute("position", "absolute");
-    infoStyle.setAttribute("margin-top", "87mm");
-    infoStyle.setAttribute("margin-left", "23mm");
-    infoStyle.setAttribute("width", "100%");
-
     var itemsStyle = repStyleObj.addStyle(".doc_table");
     itemsStyle.setAttribute("margin-top", "110mm"); //106
     itemsStyle.setAttribute("margin-left", "23mm"); //20
@@ -706,6 +709,12 @@ function setInvoiceStyle(reportObj, repStyleObj, param) {
     //repStyleObj.addStyle("table.doc_table td", "border: thin solid black; padding: 3px;");
     itemsStyle.setAttribute("width", "100%");
 
+    var itemsStyle = repStyleObj.addStyle(".doc_table1");
+    itemsStyle.setAttribute("margin-top", "125mm"); //106
+    itemsStyle.setAttribute("margin-left", "23mm"); //20
+    itemsStyle.setAttribute("margin-right", "10mm");
+    //repStyleObj.addStyle("table.doc_table1 td", "border: thin solid black; padding: 3px;");
+    itemsStyle.setAttribute("width", "100%");
 
     var itemsStyle = repStyleObj.addStyle(".doc_table_row0");
     itemsStyle.setAttribute("margin-top", "50mm"); //106
@@ -792,7 +801,7 @@ function setInvoiceTexts(language) {
     texts.to = 'À:';
     texts.param_color_1 = 'Couleur de fond';
     texts.param_color_2 = 'Couleur du texte';
-    texts.param_image_height = 'Hauteur de l\'image (mm)';
+    texts.param_image_height = "Hauteur de l'image (mm)";
     texts.param_print_header = 'Inclure en-tête de page (1=oui, 0=non)';
     texts.payment_due_date_label = 'Echéance';
     texts.payment_terms_label = 'Paiement';
