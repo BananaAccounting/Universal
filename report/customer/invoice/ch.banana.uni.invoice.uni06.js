@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.uni.invoice.uni06
 // @api = 1.0
-// @pubdate = 2018-01-26
+// @pubdate = 2018-01-29
 // @publisher = Banana.ch SA
 // @description = Style 6: Invoice with net amounts, quantity column, logo, 2 colours
 // @description.it = Stile 6: Fattura con importi netti, colonna quantità, logo, 2 colori
@@ -151,7 +151,7 @@ function printInvoice(jsonInvoice, repDocObj, param) {
   }
 
   tableRow = tab.addRow();
-  var cell = tableRow.addCell("", "border-left", 1);
+  var cell = tableRow.addCell("", "", 1);
   cell.addParagraph(" ", "");
   // cell.addParagraph(texts.from, "bold");
 
@@ -160,7 +160,7 @@ function printInvoice(jsonInvoice, repDocObj, param) {
     cell.addParagraph(supplierLines[i], "", 1);
   }
 
-  var cell2 = tableRow.addCell("","border-left",1); 
+  var cell2 = tableRow.addCell("","",1); 
   cell2.addParagraph(" ", "");
   // cell2.addParagraph(texts.to, "bold");
 
