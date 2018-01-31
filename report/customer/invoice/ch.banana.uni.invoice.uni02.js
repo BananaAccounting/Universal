@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.uni.invoice.uni02
 // @api = 1.0
-// @pubdate = 2018-01-23
+// @pubdate = 2018-01-31
 // @publisher = Banana.ch SA
 // @description = Style 2: Invoice with net amounts, quantity column, 3 colours
 // @description.it = Stile 2: Fattura con importi netti, colonna quantità, 3 colori
@@ -29,7 +29,8 @@
 var rowNumber = 0;
 var pageNr = 1;
 var repTableObj = "";
-var max_items_per_page = 26;
+var max_items_per_page = "";
+var isFirstPage = true;
 
 
 /*Update script's parameters*/
@@ -544,19 +545,46 @@ function getTitle(invoiceObj, texts) {
 }
 
 function checkFileLength(invoiceObj, repDocObj, param, texts, rowNumber) {
-  if (rowNumber >= max_items_per_page) 
-  {
-    repDocObj.addPageBreak();
-    pageNr++;
+  
+  if (isFirstPage) { // page 1
 
-    printInvoiceDetails(invoiceObj, repDocObj, param, texts, rowNumber);
-    printItemsHeader(invoiceObj, repDocObj, param, texts, rowNumber);
+    max_items_per_page = 25;
 
-    return 0;
+    if (rowNumber <= max_items_per_page) {
+      rowNumber++;
+      return rowNumber;
+    }
+    else {
+      repDocObj.addPageBreak();
+      pageNr++;
+
+      printInvoiceDetails(invoiceObj, repDocObj, param, texts, rowNumber);
+      printItemsHeader(invoiceObj, repDocObj, param, texts, rowNumber);
+
+      isFirstPage = false;
+      return 0; //row counter = 0
+    }
   }
 
-  rowNumber++;
-  return rowNumber;
+  else { // page 2+
+
+    max_items_per_page = 35;
+
+    if (rowNumber <= max_items_per_page) {
+      rowNumber++;
+      return rowNumber;
+    }
+    else {
+      repDocObj.addPageBreak();
+      pageNr++;
+
+      printInvoiceDetails(invoiceObj, repDocObj, param, texts, rowNumber);
+      printItemsHeader(invoiceObj, repDocObj, param, texts, rowNumber);
+
+      isFirstPage = false;
+      return 0; //row counter = 0
+    }
+  }
 }
 
 function printInvoiceDetails(invoiceObj, repDocObj, param, texts, rowNumber) {
