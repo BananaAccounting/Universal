@@ -2,7 +2,7 @@
 %%info_test_app{Banana90}{9.0.2}
 %%info_test_os{macOS Sierra (10.12)}
 %%info_test_qt{5.9.0}
-%%info_test_date{2018-02-16}{10:29:38.382}
+%%info_test_date{2018-02-27}{14:05:07.514}
 \documentclass{report}
 \usepackage{color}
 \usepackage{adjustbox}
@@ -43,6 +43,7 @@ www.banana.ch \\
 \\
 \\
 \end{tabular}
+\\
 \begin{tabular}{ l  l  l }
 \multicolumn{3}{l}{  }\\
 Invoice: \\
@@ -100,6 +101,7 @@ www.banana.ch \\
 \\
 \\
 \end{tabular}
+\\
 \begin{tabular}{ l  l  l }
 \multicolumn{3}{l}{  }\\
 Invoice: \\
@@ -146,6 +148,7 @@ www.banana.ch \\
 \\
 \\
 \end{tabular}
+\\
 \begin{tabular}{ l  l  l }
 \multicolumn{3}{l}{  }\\
 Invoice: \\
@@ -229,6 +232,7 @@ www.banana.ch \\
 \\
 \\
 \end{tabular}
+\\
 \begin{tabular}{ l  l  l }
 \multicolumn{3}{l}{  }\\
 Invoice: \\
@@ -272,7 +276,7 @@ This is the beginning text... \\
 \keyvalue{Result}{Passed}
 %%info_test_time_elapsed{00:00:00.060}
 \end{test}
-%%info_test_time_elapsed{00:00:00.060}
+%%info_test_time_elapsed{00:00:00.061}
 \end{testcase}
 %%info_test_time_elapsed{00:00:00.073}
 \end{document}

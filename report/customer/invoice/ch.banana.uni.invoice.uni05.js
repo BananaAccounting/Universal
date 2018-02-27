@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.uni.invoice.uni05
 // @api = 1.0
-// @pubdate = 2018-01-26
+// @pubdate = 2018-02-27
 // @publisher = Banana.ch SA
 // @description = Style 5: Invoice with net amounts, quantity column, with logo, 2 colours
 // @description.it = Stile 5: Fattura con importi netti, colonna quantità, con logo, 2 colori
@@ -30,6 +30,7 @@ var rowNumber = 0;
 var pageNr = 1;
 var repTableObj = "";
 var max_items_per_page = 31;
+
 
 /*Update script's parameters*/
 function settingsDialog() {
@@ -99,11 +100,11 @@ function printDocument(jsonInvoice, repDocObj, repStyleObj) {
     param = JSON.parse(savedParam);
     param = verifyParam(param);
   }
-  repDocObj = printInvoice(jsonInvoice, repDocObj, param);
+  repDocObj = printInvoice(jsonInvoice, repDocObj, param, repStyleObj);
   setInvoiceStyle(repDocObj, repStyleObj, param);
 }
 
-function printInvoice(jsonInvoice, repDocObj, param) {
+function printInvoice(jsonInvoice, repDocObj, param, repStyleObj) {
   // jsonInvoice can be a json string or a js object
   var invoiceObj = null;
   if (typeof(jsonInvoice) === 'object') {
@@ -137,12 +138,31 @@ function printInvoice(jsonInvoice, repDocObj, param) {
   var tab = repDocObj.addTable("header_table");
   var col1 = tab.addColumn("col1");
   var col2 = tab.addColumn("col2");
-  
-  tableRow = tab.addRow();
+  var headerLogoSection = repDocObj.addSection("");
 
   if (param.print_header) {
-    repDocObj.addImage("documents:logo", "logoStyle");
+    //Check the version of Banana:
+    //If 9.0.3 or greater we try to use the defined logo (not the one of the table documents).
+    //If logo doesn't exists or Banana version is older than 9.0.3, we use the logo of the table Documents
+    var requiredVersion = "9.0.3";
+    if (Banana.compareVersion && Banana.compareVersion(Banana.application.version, requiredVersion) >= 0) {
+      // If there is a defined logo it is used as default logo
+      var logoFormat = Banana.Report.logoFormat("Logo");
+      if (logoFormat) {
+        var logoElement = logoFormat.createDocNode(headerLogoSection, repStyleObj, "logo");
+        repDocObj.getHeader().addChild(logoElement);
+      }
+      // If there is not a defined logo, than it is used the logo of the Documents table
+      else {
+        repDocObj.addImage("documents:logo", "logoStyle");
+      }
+    }
+    // If the version of Banana is older than 9.0.3 it is used the logo of the Documents table
+    else {
+      repDocObj.addImage("documents:logo", "logoStyle");
+    }
 
+    tableRow = tab.addRow();
     var cell1 = tableRow.addCell("", "");
     var cell2 = tableRow.addCell("", "amount");
     var supplierNameLines = getInvoiceSupplierName(invoiceObj.supplier_info).split('\n');
@@ -155,6 +175,7 @@ function printInvoice(jsonInvoice, repDocObj, param) {
     }
   }
   else {
+    tableRow = tab.addRow();
     var cell1 = tableRow.addCell("", "");
     var cell2 = tableRow.addCell("", "");
     cell2.addParagraph(" ");
@@ -162,6 +183,7 @@ function printInvoice(jsonInvoice, repDocObj, param) {
     cell2.addParagraph(" ");
     cell2.addParagraph(" ");
   }
+
 
   /**********************
     2. INVOICE TEXTS INFO
@@ -675,6 +697,10 @@ function setInvoiceStyle(reportObj, repStyleObj, param) {
     logoStyle.setAttribute("margin-left", "20mm");
     logoStyle.setAttribute("height", param.image_height + "mm"); 
 
+    var logoStyle = repStyleObj.addStyle(".logo");
+    logoStyle.setAttribute("margin-top", "10mm");
+    logoStyle.setAttribute("margin-left", "20mm");
+    logoStyle.setAttribute("position", "absolute");
 
     //====================================================================//
     // TABLES
