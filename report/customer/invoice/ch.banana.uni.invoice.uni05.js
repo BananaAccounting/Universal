@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.uni.invoice.uni05
 // @api = 1.0
-// @pubdate = 2018-02-27
+// @pubdate = 2018-03-26
 // @publisher = Banana.ch SA
 // @description = Style 5: Invoice with net amounts, quantity column, with logo, 2 colours
 // @description.it = Stile 5: Fattura con importi netti, colonna quantità, con logo, 2 colori
@@ -788,7 +788,7 @@ function setInvoiceTexts(language) {
     texts.page = 'Seite';
     texts.rounding = 'Rundung';
     texts.total = 'Total';
-    texts.totalnet = 'Total net';
+    texts.totalnet = 'Netto-Betrag';
     texts.vat = 'MwSt.';
     texts.qty = 'Menge';
     texts.unit_ref = 'Einheit';
