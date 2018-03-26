@@ -2,7 +2,7 @@
 %%info_test_app{Banana90}{9.0.2}
 %%info_test_os{macOS Sierra (10.12)}
 %%info_test_qt{5.9.0}
-%%info_test_date{2018-03-26}{09:10:06.693}
+%%info_test_date{2018-03-26}{11:22:32.472}
 \documentclass{report}
 \usepackage{color}
 \usepackage{adjustbox}
@@ -22,7 +22,7 @@
 \begin{testcase}{ReportInvoiceTemplate4}
 \begin{test}{test1}
 \keyvalue{Result}{Passed}
-%%info_test_time_elapsed{00:00:00.001}
+%%info_test_time_elapsed{00:00:00.000}
 \end{test}
 \begin{test}{test2}
 \keyvalue{Result}{Passed}
@@ -35,9 +35,9 @@
 \begin{reportvalue}{Test Invoice 35}
 \begin{tabular}{ l  l }
 BANANA.CH SA \\
- & Banana.ch SA - Via Trevano 7a 6900 Lugano \\
+ & Banana.ch SA - Via Trevano 7a - 6900 Lugano \\
 \\
-info@banana.ch www.banana.ch \\
+info@banana.ch - www.banana.ch \\
 \\
 \end{tabular}
 \begin{tabular}{ l  l  l  l }
@@ -86,9 +86,9 @@ This is the beginning text... \\
 \begin{reportvalue}{Test Invoice 36}
 \begin{tabular}{ l  l }
 BANANA.CH SA \\
- & Banana.ch SA - Via Trevano 7a 6900 Lugano \\
+ & Banana.ch SA - Via Trevano 7a - 6900 Lugano \\
 \\
-info@banana.ch www.banana.ch \\
+info@banana.ch - www.banana.ch \\
 \\
 \end{tabular}
 \begin{tabular}{ l  l  l  l }
@@ -126,9 +126,9 @@ This is the beginning text... \\
 \begin{reportvalue}{Test Invoice 37}
 \begin{tabular}{ l  l }
 BANANA.CH SA \\
- & Banana.ch SA - Via Trevano 7a 6900 Lugano \\
+ & Banana.ch SA - Via Trevano 7a - 6900 Lugano \\
 \\
-info@banana.ch www.banana.ch \\
+info@banana.ch - www.banana.ch \\
 \\
 \end{tabular}
 \begin{tabular}{ l  l  l  l }
@@ -196,9 +196,9 @@ Consultancy \\
 \begin{reportvalue}{Test Invoice 47}
 \begin{tabular}{ l  l }
 BANANA.CH SA \\
- & Banana.ch SA - Via Trevano 7a 6900 Lugano \\
+ & Banana.ch SA - Via Trevano 7a - 6900 Lugano \\
 \\
-info@banana.ch www.banana.ch \\
+info@banana.ch - www.banana.ch \\
 \\
 \end{tabular}
 \begin{tabular}{ l  l  l  l }
@@ -239,9 +239,9 @@ This is the beginning text... \\
 
 \end{reportvalue}
 \keyvalue{Result}{Passed}
-%%info_test_time_elapsed{00:00:00.065}
+%%info_test_time_elapsed{00:00:00.046}
 \end{test}
-%%info_test_time_elapsed{00:00:00.066}
+%%info_test_time_elapsed{00:00:00.046}
 \end{testcase}
-%%info_test_time_elapsed{00:00:00.078}
+%%info_test_time_elapsed{00:00:00.065}
 \end{document}
