@@ -2,7 +2,7 @@
 %%info_test_app{Banana90}{9.0.2}
 %%info_test_os{macOS Sierra (10.12)}
 %%info_test_qt{5.9.0}
-%%info_test_date{2018-01-31}{10:07:32.310}
+%%info_test_date{2018-03-27}{11:11:53.084}
 \documentclass{report}
 \usepackage{color}
 \usepackage{adjustbox}
@@ -26,7 +26,7 @@
 \end{test}
 \begin{test}{test2}
 \keyvalue{Result}{Passed}
-%%info_test_time_elapsed{00:00:00.000}
+%%info_test_time_elapsed{00:00:00.001}
 \end{test}
 \begin{test}{testReport}
 %Test ch.banana.uni.invoice.uni01.js
@@ -36,8 +36,8 @@
 \begin{tabular}{ l }
 BANANA.CH SA \\
 \\
-Banana.ch SA - Via Trevano 7a - 6900 Lugano - Switzerland \\
-info@banana.ch - www.banana.ch \\
+Banana.ch SA, Via Trevano 7a, 6900 Lugano, Switzerland \\
+info@banana.ch, www.banana.ch \\
 \\
 \end{tabular}
 \begin{tabular}{ l  l }
@@ -85,8 +85,8 @@ TOTAL CHF  &  & 3'500.00 \\
 \begin{tabular}{ l }
 BANANA.CH SA \\
 \\
-Banana.ch SA - Via Trevano 7a - 6900 Lugano - Switzerland \\
-info@banana.ch - www.banana.ch \\
+Banana.ch SA, Via Trevano 7a, 6900 Lugano, Switzerland \\
+info@banana.ch, www.banana.ch \\
 \\
 \end{tabular}
 \begin{tabular}{ l  l }
@@ -123,8 +123,8 @@ TOTAL CHF  &  & 7'000.00 \\
 \begin{tabular}{ l }
 BANANA.CH SA \\
 \\
-Banana.ch SA - Via Trevano 7a - 6900 Lugano - Switzerland \\
-info@banana.ch - www.banana.ch \\
+Banana.ch SA, Via Trevano 7a, 6900 Lugano, Switzerland \\
+info@banana.ch, www.banana.ch \\
 \\
 \end{tabular}
 \begin{tabular}{ l  l }
@@ -192,8 +192,8 @@ TOTAL CHF  &  & 8'600.00 \\
 \begin{tabular}{ l }
 BANANA.CH SA \\
 \\
-Banana.ch SA - Via Trevano 7a - 6900 Lugano - Switzerland \\
-info@banana.ch - www.banana.ch \\
+Banana.ch SA, Via Trevano 7a, 6900 Lugano, Switzerland \\
+info@banana.ch, www.banana.ch \\
 \\
 \end{tabular}
 \begin{tabular}{ l  l }
@@ -232,9 +232,9 @@ TOTAL CHF  &  & 49.00 \\
 
 \end{reportvalue}
 \keyvalue{Result}{Passed}
-%%info_test_time_elapsed{00:00:00.064}
+%%info_test_time_elapsed{00:00:00.062}
 \end{test}
-%%info_test_time_elapsed{00:00:00.064}
+%%info_test_time_elapsed{00:00:00.063}
 \end{testcase}
 %%info_test_time_elapsed{00:00:00.078}
 \end{document}
