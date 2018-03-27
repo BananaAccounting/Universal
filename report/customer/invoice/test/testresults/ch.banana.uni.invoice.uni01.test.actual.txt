@@ -2,7 +2,7 @@
 %%info_test_app{Banana90}{9.0.2}
 %%info_test_os{macOS Sierra (10.12)}
 %%info_test_qt{5.9.0}
-%%info_test_date{2018-03-26}{11:20:05.407}
+%%info_test_date{2018-03-27}{11:12:22.159}
 \documentclass{report}
 \usepackage{color}
 \usepackage{adjustbox}
@@ -36,8 +36,8 @@
 \begin{tabular}{ l }
 BANANA.CH SA \\
 \\
-Banana.ch SA - Via Trevano 7a - 6900 Lugano - Switzerland \\
-info@banana.ch - www.banana.ch \\
+Banana.ch SA, Via Trevano 7a, 6900 Lugano, Switzerland \\
+info@banana.ch, www.banana.ch \\
 \\
 \end{tabular}
 \begin{tabular}{ l  l }
@@ -85,8 +85,8 @@ TOTAL CHF  &  & 3'500.00 \\
 \begin{tabular}{ l }
 BANANA.CH SA \\
 \\
-Banana.ch SA - Via Trevano 7a - 6900 Lugano - Switzerland \\
-info@banana.ch - www.banana.ch \\
+Banana.ch SA, Via Trevano 7a, 6900 Lugano, Switzerland \\
+info@banana.ch, www.banana.ch \\
 \\
 \end{tabular}
 \begin{tabular}{ l  l }
@@ -123,8 +123,8 @@ TOTAL CHF  &  & 7'000.00 \\
 \begin{tabular}{ l }
 BANANA.CH SA \\
 \\
-Banana.ch SA - Via Trevano 7a - 6900 Lugano - Switzerland \\
-info@banana.ch - www.banana.ch \\
+Banana.ch SA, Via Trevano 7a, 6900 Lugano, Switzerland \\
+info@banana.ch, www.banana.ch \\
 \\
 \end{tabular}
 \begin{tabular}{ l  l }
@@ -192,8 +192,8 @@ TOTAL CHF  &  & 8'600.00 \\
 \begin{tabular}{ l }
 BANANA.CH SA \\
 \\
-Banana.ch SA - Via Trevano 7a - 6900 Lugano - Switzerland \\
-info@banana.ch - www.banana.ch \\
+Banana.ch SA, Via Trevano 7a, 6900 Lugano, Switzerland \\
+info@banana.ch, www.banana.ch \\
 \\
 \end{tabular}
 \begin{tabular}{ l  l }
@@ -232,9 +232,9 @@ TOTAL CHF  &  & 49.00 \\
 
 \end{reportvalue}
 \keyvalue{Result}{Passed}
-%%info_test_time_elapsed{00:00:00.050}
+%%info_test_time_elapsed{00:00:00.057}
 \end{test}
-%%info_test_time_elapsed{00:00:00.050}
+%%info_test_time_elapsed{00:00:00.057}
 \end{testcase}
-%%info_test_time_elapsed{00:00:00.071}
+%%info_test_time_elapsed{00:00:00.073}
 \end{document}

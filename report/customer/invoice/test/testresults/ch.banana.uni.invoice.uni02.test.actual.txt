@@ -2,7 +2,7 @@
 %%info_test_app{Banana90}{9.0.2}
 %%info_test_os{macOS Sierra (10.12)}
 %%info_test_qt{5.9.0}
-%%info_test_date{2018-03-26}{11:21:01.007}
+%%info_test_date{2018-03-27}{11:12:27.565}
 \documentclass{report}
 \usepackage{color}
 \usepackage{adjustbox}
@@ -211,9 +211,9 @@ Discount 10% product B \\
 
 \end{reportvalue}
 \keyvalue{Result}{Passed}
-%%info_test_time_elapsed{00:00:00.046}
+%%info_test_time_elapsed{00:00:00.059}
 \end{test}
-%%info_test_time_elapsed{00:00:00.046}
+%%info_test_time_elapsed{00:00:00.060}
 \end{testcase}
-%%info_test_time_elapsed{00:00:00.065}
+%%info_test_time_elapsed{00:00:00.075}
 \end{document}
