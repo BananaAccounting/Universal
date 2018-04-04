@@ -83,15 +83,6 @@ ReportCustomerInvoiceStyle01.prototype.cleanup = function() {
 
 }
 
-// All methods starting wiht 'test' will be executed
-ReportCustomerInvoiceStyle01.prototype.test1 = function() {
-   //Test.logger.addKeyValue("key1", "test1");
-}
-
-ReportCustomerInvoiceStyle01.prototype.test2 = function() {
-   //Test.logger.addKeyValue("key1", "test2");
-}
-
 ReportCustomerInvoiceStyle01.prototype.testReport = function() {
    
   Test.logger.addComment("Test ch.banana.uni.invoice.uni01.js");
