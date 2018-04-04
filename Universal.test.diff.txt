@@ -1,0 +1,1452 @@
+Test Banana Apps
+----------------
+
+Date:        2018-04-04 17:12:51.929
+Duration:    00:00:00.389
+Application: Banana90 9.0.3
+OS:          macOS High Sierra (10.13)
+Qt:          5.9.4
+
+Test summary
+------------
+
+Test failed
+
+> Fatal errors:  0
+> Differences:   352
+> Added:         0
+> Deleted:       684
+> Identical:     781
+> Total results: 1817
+> Total files:   8
+
+Differences Summary
+-------------------
+
+> Files with differences
+>> report/customer/invoice/test/testresults/ch.banana.uni.invoice.uni03.test/ch.banana.uni.invoice.uni03.test.txt
+>> report/customer/invoice/test/testresults/ch.banana.uni.invoice.uni02.test/ch.banana.uni.invoice.uni02.test.txt
+>> report/customer/invoice/test/testresults/ch.banana.uni.invoice.uni01.test/ch.banana.uni.invoice.uni01.test.txt
+>> report/customer/invoice/test/testresults/ch.banana.uni.invoice.uni08.test/ch.banana.uni.invoice.uni08.test.txt
+>> report/customer/invoice/test/testresults/ch.banana.uni.invoice.uni04.test/ch.banana.uni.invoice.uni04.test.txt
+>> report/customer/invoice/test/testresults/ch.banana.uni.invoice.uni05.test/ch.banana.uni.invoice.uni05.test.txt
+>> report/customer/invoice/test/testresults/ch.banana.uni.invoice.uni07.test/ch.banana.uni.invoice.uni07.test.txt
+>> report/customer/invoice/test/testresults/ch.banana.uni.invoice.uni06.test/ch.banana.uni.invoice.uni06.test.txt
+
+> Files with results only in expected
+>> report/customer/invoice/test/testresults/ch.banana.uni.invoice.uni03.test/ch.banana.uni.invoice.uni03.test.txt
+>> report/customer/invoice/test/testresults/ch.banana.uni.invoice.uni02.test/ch.banana.uni.invoice.uni02.test.txt
+>> report/customer/invoice/test/testresults/ch.banana.uni.invoice.uni01.test/ch.banana.uni.invoice.uni01.test.txt
+>> report/customer/invoice/test/testresults/ch.banana.uni.invoice.uni08.test/ch.banana.uni.invoice.uni08.test.txt
+>> report/customer/invoice/test/testresults/ch.banana.uni.invoice.uni04.test/ch.banana.uni.invoice.uni04.test.txt
+>> report/customer/invoice/test/testresults/ch.banana.uni.invoice.uni05.test/ch.banana.uni.invoice.uni05.test.txt
+>> report/customer/invoice/test/testresults/ch.banana.uni.invoice.uni07.test/ch.banana.uni.invoice.uni07.test.txt
+>> report/customer/invoice/test/testresults/ch.banana.uni.invoice.uni06.test/ch.banana.uni.invoice.uni06.test.txt
+
+Differences Details
+-------------------
+
+>> report/customer/invoice/test/testresults/ch.banana.uni.invoice.uni03.test/ch.banana.uni.invoice.uni03.test.txt
+			 4 - \begin{test}{test1}
+			 5 - \keyvalue{Result}{Passed}
+			 6 - \end{test}
+			 7 - \begin{test}{test2}
+			 8 - \keyvalue{Result}{Passed}
+			 9 - \end{test}
+			9  + BANANA.CH SA  & Via Trevano 7a \newline \newline 6900 Lugano \newline \newline info@banana.ch www.banana.ch \newline \\
+			10  + \end{tabular}\\
+			 15 - BANANA.CH SA  & Via Trevano 7a \\
+			 16 - \\
+			 17 - 6900 Lugano \\
+			 18 - \\
+			 19 - info@banana.ch www.banana.ch \\
+			 20 - \\
+			 21 - \end{tabular}
+			13  + \end{tabular}\\
+			 24 - \end{tabular}
+			15  +  & Mario Bianchi \newline Via Trevano \newline 6963 Pregassona \newline \newline \\
+			16  + \end{tabular}\\
+			 26 -  & Mario Bianchi \\
+			 27 - Via Trevano \\
+			 28 - 6963 Pregassona \\
+			 29 - \\
+			 30 - \\
+			 31 - \end{tabular}
+			23  + \end{tabular}\\
+			 38 - \end{tabular}
+			27  + Sales merchandise, invoice \#35, customer B \newline \newline  & 1.00  & 1'851.85  & 1'851.85 \\
+			28  + Sales merchandise, invoice \#35, customer B \newline \newline  & 1.00  & 925.93  & 925.93 \\
+			29  + Sales merchandise, invoice \#35, customer B \newline \newline  & 1.00  & 462.96  & 462.96 \\
+			 42 - Sales merchandise, invoice #35, customer B \\
+			 43 - \\
+			 44 -  & 1.00  & 1'851.85  & 1'851.85 \\
+			 45 - Sales merchandise, invoice #35, customer B \\
+			 46 - \\
+			 47 -  & 1.00  & 925.93  & 925.93 \\
+			 48 - Sales merchandise, invoice #35, customer B \\
+			 49 - \\
+			 50 -  & 1.00  & 462.96  & 462.96 \\
+			33  +  & VAT 8.00\%  & 3'240.74  & 259.26 \\
+			 54 -  & VAT 8.00%  & 3'240.74  & 259.26 \\
+			42  + \end{tabular}\\
+			 63 - \end{tabular}
+			47  + BANANA.CH SA  & Via Trevano 7a \newline \newline 6900 Lugano \newline \newline info@banana.ch www.banana.ch \newline \\
+			48  + \end{tabular}\\
+			 68 - BANANA.CH SA  & Via Trevano 7a \\
+			 69 - \\
+			 70 - 6900 Lugano \\
+			 71 - \\
+			 72 - info@banana.ch www.banana.ch \\
+			 73 - \\
+			 74 - \end{tabular}
+			51  + \end{tabular}\\
+			 77 - \end{tabular}
+			53  +  & Susanna Lanfranchi \newline V.Meggiagra 3 \newline 6599 Robasacco \newline Switzerland \newline \\
+			54  + \end{tabular}\\
+			 79 -  & Susanna Lanfranchi \\
+			 80 - V.Meggiagra 3 \\
+			 81 - 6599 Robasacco \\
+			 82 - Switzerland \\
+			 83 - \\
+			 84 - \end{tabular}
+			61  + \end{tabular}\\
+			 91 - \end{tabular}
+			65  + Sales merchandise, invoice \#36, customer D \newline \newline  & 1.00  & 6'481.48  & 6'481.48 \\
+			 95 - Sales merchandise, invoice #36, customer D \\
+			 96 - \\
+			 97 -  & 1.00  & 6'481.48  & 6'481.48 \\
+			69  +  & VAT 8.00\%  & 6'481.48  & 518.52 \\
+			 101 -  & VAT 8.00%  & 6'481.48  & 518.52 \\
+			73  + \end{tabular}\\
+			 105 - \end{tabular}
+			78  + BANANA.CH SA  & Via Trevano 7a \newline \newline 6900 Lugano \newline \newline info@banana.ch www.banana.ch \newline \\
+			79  + \end{tabular}\\
+			 110 - BANANA.CH SA  & Via Trevano 7a \\
+			 111 - \\
+			 112 - 6900 Lugano \\
+			 113 - \\
+			 114 - info@banana.ch www.banana.ch \\
+			 115 - \\
+			 116 - \end{tabular}
+			82  + \end{tabular}\\
+			 119 - \end{tabular}
+			84  +  & Carlo Rossi \newline Rossi SA \newline Via Trevano \newline 6963 Pregassona \newline Switzerland \newline \\
+			85  + \end{tabular}\\
+			 121 -  & Carlo Rossi \\
+			 122 - Rossi SA \\
+			 123 - Via Trevano \\
+			 124 - 6963 Pregassona \\
+			 125 - Switzerland \\
+			 126 - \\
+			 127 - \end{tabular}
+			92  + \end{tabular}\\
+			 134 - \end{tabular}
+			96  + Sales merchandise, invoice \#37, customer A \newline \newline  & 1.00  & 7'407.41  & 7'407.41 \\
+			97  + Consultancy \newline \newline  & 1.00  & 92.59  & 92.59 \\
+			98  + Consultancy \newline \newline  & 1.00  & 92.59  & 92.59 \\
+			99  + \end{tabular}\\
+			 138 - Sales merchandise, invoice #37, customer A \\
+			 139 - \\
+			 140 -  & 1.00  & 7'407.41  & 7'407.41 \\
+			 141 - Consultancy \\
+			 142 - \\
+			 143 -  & 1.00  & 92.59  & 92.59 \\
+			 144 - Consultancy \\
+			 145 - \\
+			 146 -  & 1.00  & 92.59  & 92.59 \\
+			 147 - \end{tabular}
+			107  + \end{tabular}\\
+			 155 - \end{tabular}
+			110  + Consultancy \newline \newline  & 1.00  & 92.59  & 92.59 \\
+			111  + Consultancy \newline \newline  & 1.00  & 92.59  & 92.59 \\
+			112  + Consultancy \newline \newline  & 1.00  & 92.59  & 92.59 \\
+			113  + Consultancy \newline \newline  & 1.00  & 92.59  & 92.59 \\
+			 158 - Consultancy \\
+			 159 - \\
+			 160 -  & 1.00  & 92.59  & 92.59 \\
+			 161 - Consultancy \\
+			 162 - \\
+			 163 -  & 1.00  & 92.59  & 92.59 \\
+			 164 - Consultancy \\
+			 165 - \\
+			 166 -  & 1.00  & 92.59  & 92.59 \\
+			 167 - Consultancy \\
+			 168 - \\
+			 169 -  & 1.00  & 92.59  & 92.59 \\
+			117  +  & VAT 8.00\%  & 7'962.95  & 637.05 \\
+			 173 -  & VAT 8.00%  & 7'962.95  & 637.05 \\
+			121  + \end{tabular}\\
+			 177 - \end{tabular}
+			126  + BANANA.CH SA  & Via Trevano 7a \newline \newline 6900 Lugano \newline \newline info@banana.ch www.banana.ch \newline \\
+			127  + \end{tabular}\\
+			 182 - BANANA.CH SA  & Via Trevano 7a \\
+			 183 - \\
+			 184 - 6900 Lugano \\
+			 185 - \\
+			 186 - info@banana.ch www.banana.ch \\
+			 187 - \\
+			 188 - \end{tabular}
+			130  + \end{tabular}\\
+			 191 - \end{tabular}
+			132  +  & Marco Alberti \newline V. Campuréta 40 \newline 6883 Novazzano \newline Switzerland \newline \\
+			133  + \end{tabular}\\
+			 193 -  & Marco Alberti \\
+			 194 - V. CampurÃ©ta 40 \\
+			 195 - 6883 Novazzano \\
+			 196 - Switzerland \\
+			 197 - \\
+			 198 - \end{tabular}
+			140  + \end{tabular}\\
+			 205 - \end{tabular}
+			144  + Product A \newline \newline  & 1.00  & 20.37  & 20.37 \\
+			145  + Product B \newline \newline  & 1.00  & 27.78  & 27.78 \\
+			146  + Discount 10\% product B \newline \newline  & 1.00  & -2.78  & -2.78 \\
+			 209 - Product A \\
+			 210 - \\
+			 211 -  & 1.00  & 20.37  & 20.37 \\
+			 212 - Product B \\
+			 213 - \\
+			 214 -  & 1.00  & 27.78  & 27.78 \\
+			 215 - Discount 10% product B \\
+			 216 - \\
+			 217 -  & 1.00  & -2.78  & -2.78 \\
+			150  +  & VAT 8.00\%  & 45.37  & 3.63 \\
+			 221 -  & VAT 8.00%  & 45.37  & 3.63 \\
+			154  + \end{tabular}\\
+			 225 - \end{tabular}
+
+>> report/customer/invoice/test/testresults/ch.banana.uni.invoice.uni02.test/ch.banana.uni.invoice.uni02.test.txt
+			 4 - \begin{test}{test1}
+			 5 - \keyvalue{Result}{Passed}
+			 6 - \end{test}
+			 7 - \begin{test}{test2}
+			 8 - \keyvalue{Result}{Passed}
+			 9 - \end{test}
+			13  + \end{tabular}\\
+			 19 - \end{tabular}
+			20  + \end{tabular}\\
+			 26 - \end{tabular}
+			30  + Sales merchandise, invoice \#35, customer B \newline \newline  & 1.00  & 1'851.85  & 1'851.85 \\
+			31  + Sales merchandise, invoice \#35, customer B \newline \newline  & 1.00  & 925.93  & 925.93 \\
+			32  + Sales merchandise, invoice \#35, customer B \newline \newline  & 1.00  & 462.96  & 462.96 \\
+			 36 - Sales merchandise, invoice #35, customer B \\
+			 37 - \\
+			 38 -  & 1.00  & 1'851.85  & 1'851.85 \\
+			 39 - Sales merchandise, invoice #35, customer B \\
+			 40 - \\
+			 41 -  & 1.00  & 925.93  & 925.93 \\
+			 42 - Sales merchandise, invoice #35, customer B \\
+			 43 - \\
+			 44 -  & 1.00  & 462.96  & 462.96 \\
+			34  +  & VAT 8.00\%  & 3'240.74  & 259.26 \\
+			 46 -  & VAT 8.00%  & 3'240.74  & 259.26 \\
+			41  + \end{tabular}\\
+			 53 - \end{tabular}
+			50  + \end{tabular}\\
+			 62 - \end{tabular}
+			57  + \end{tabular}\\
+			 69 - \end{tabular}
+			67  + Sales merchandise, invoice \#36, customer D \newline \newline  & 1.00  & 6'481.48  & 6'481.48 \\
+			 79 - Sales merchandise, invoice #36, customer D \\
+			 80 - \\
+			 81 -  & 1.00  & 6'481.48  & 6'481.48 \\
+			69  +  & VAT 8.00\%  & 6'481.48  & 518.52 \\
+			 83 -  & VAT 8.00%  & 6'481.48  & 518.52 \\
+			71  + \end{tabular}\\
+			 85 - \end{tabular}
+			80  + \end{tabular}\\
+			 94 - \end{tabular}
+			87  + \end{tabular}\\
+			 101 - \end{tabular}
+			98  + Sales merchandise, invoice \#37, customer A \newline \newline  & 1.00  & 7'407.41  & 7'407.41 \\
+			99  + Consultancy \newline \newline  & 1.00  & 92.59  & 92.59 \\
+			100  + Consultancy \newline \newline  & 1.00  & 92.59  & 92.59 \\
+			101  + Consultancy \newline \newline  & 1.00  & 92.59  & 92.59 \\
+			102  + Consultancy \newline \newline  & 1.00  & 92.59  & 92.59 \\
+			103  + Consultancy \newline \newline  & 1.00  & 92.59  & 92.59 \\
+			104  + Consultancy \newline \newline  & 1.00  & 92.59  & 92.59 \\
+			 112 - Sales merchandise, invoice #37, customer A \\
+			 113 - \\
+			 114 -  & 1.00  & 7'407.41  & 7'407.41 \\
+			 115 - Consultancy \\
+			 116 - \\
+			 117 -  & 1.00  & 92.59  & 92.59 \\
+			 118 - Consultancy \\
+			 119 - \\
+			 120 -  & 1.00  & 92.59  & 92.59 \\
+			 121 - Consultancy \\
+			 122 - \\
+			 123 -  & 1.00  & 92.59  & 92.59 \\
+			 124 - Consultancy \\
+			 125 - \\
+			 126 -  & 1.00  & 92.59  & 92.59 \\
+			 127 - Consultancy \\
+			 128 - \\
+			 129 -  & 1.00  & 92.59  & 92.59 \\
+			 130 - Consultancy \\
+			 131 - \\
+			 132 -  & 1.00  & 92.59  & 92.59 \\
+			106  + \end{tabular}\\
+			 134 - \end{tabular}
+			114  + \end{tabular}\\
+			 142 - \end{tabular}
+			117  +  & VAT 8.00\%  & 7'962.95  & 637.05 \\
+			 145 -  & VAT 8.00%  & 7'962.95  & 637.05 \\
+			119  + \end{tabular}\\
+			 147 - \end{tabular}
+			128  + \end{tabular}\\
+			 156 - \end{tabular}
+			135  + \end{tabular}\\
+			 163 - \end{tabular}
+			138  + V. Campuréta 40 \\
+			 166 - V. CampurÃ©ta 40 \\
+			145  + Product A \newline \newline  & 1.00  & 20.37  & 20.37 \\
+			146  + Product B \newline \newline  & 1.00  & 27.78  & 27.78 \\
+			147  + Discount 10\% product B \newline \newline  & 1.00  & -2.78  & -2.78 \\
+			 173 - Product A \\
+			 174 - \\
+			 175 -  & 1.00  & 20.37  & 20.37 \\
+			 176 - Product B \\
+			 177 - \\
+			 178 -  & 1.00  & 27.78  & 27.78 \\
+			 179 - Discount 10% product B \\
+			 180 - \\
+			 181 -  & 1.00  & -2.78  & -2.78 \\
+			149  +  & VAT 8.00\%  & 45.37  & 3.63 \\
+			 183 -  & VAT 8.00%  & 45.37  & 3.63 \\
+			151  + \end{tabular}\\
+			 185 - \end{tabular}
+
+>> report/customer/invoice/test/testresults/ch.banana.uni.invoice.uni01.test/ch.banana.uni.invoice.uni01.test.txt
+			 4 - \begin{test}{test1}
+			 5 - \keyvalue{Result}{Passed}
+			 6 - \end{test}
+			 7 - \begin{test}{test2}
+			 8 - \keyvalue{Result}{Passed}
+			 9 - \end{test}
+			9  + BANANA.CH SA \newline \\
+			10  + Banana.ch SA, Via Trevano 7a, 6900 Lugano, Switzerland \newline info@banana.ch, www.banana.ch \newline \\
+			11  + \end{tabular}\\
+			 15 - BANANA.CH SA \\
+			 16 - \\
+			 17 - Banana.ch SA, Via Trevano 7a, 6900 Lugano, Switzerland \\
+			 18 - info@banana.ch, www.banana.ch \\
+			 19 - \\
+			 20 - \end{tabular}
+			13  + Date: 29.01.2018 \newline Customer No: 100002 \newline Payment: 30 days \newline Page: 1 \newline  & Mario Bianchi \newline Via Trevano \newline 6963 Pregassona \newline \newline \\
+			14  + \end{tabular}\\
+			 22 - Date: 29.01.2018 \\
+			 23 - Customer No: 100002 \\
+			 24 - Payment: 30 days \\
+			 25 - Page: 1 \\
+			 26 -  & Mario Bianchi \\
+			 27 - Via Trevano \\
+			 28 - 6963 Pregassona \\
+			 29 - \\
+			 30 - \\
+			 31 - \end{tabular}
+			17  + \end{tabular}\\
+			 34 - \end{tabular}
+			21  + \multicolumn{2}{l}{Sales merchandise, invoice \#35, customer B \newline \newline } & 2'000.00 \\
+			22  + \multicolumn{2}{l}{Sales merchandise, invoice \#35, customer B \newline \newline } & 1'000.00 \\
+			23  + \multicolumn{2}{l}{Sales merchandise, invoice \#35, customer B \newline \newline } & 500.00 \\
+			 38 - \multicolumn{2}{l}{Sales merchandise, invoice #35, customer B \\
+			 39 - \\
+			 40 - } & 2'000.00 \\
+			 41 - \multicolumn{2}{l}{Sales merchandise, invoice #35, customer B \\
+			 42 - \\
+			 43 - } & 1'000.00 \\
+			 44 - \multicolumn{2}{l}{Sales merchandise, invoice #35, customer B \\
+			 45 - \\
+			 46 - } & 500.00 \\
+			28  + \multicolumn{3}{l}{VAT 8.00\% = 259.26 CHF \newline }\\
+			 51 - \multicolumn{3}{l}{VAT 8.00% = 259.26 CHF \\
+			 52 - }\\
+			34  + \end{tabular}\\
+			 58 - \end{tabular}
+			39  + BANANA.CH SA \newline \\
+			40  + Banana.ch SA, Via Trevano 7a, 6900 Lugano, Switzerland \newline info@banana.ch, www.banana.ch \newline \\
+			41  + \end{tabular}\\
+			 63 - BANANA.CH SA \\
+			 64 - \\
+			 65 - Banana.ch SA, Via Trevano 7a, 6900 Lugano, Switzerland \\
+			 66 - info@banana.ch, www.banana.ch \\
+			 67 - \\
+			 68 - \end{tabular}
+			43  + Date: 01.02.2018 \newline Customer No: 100004 \newline Due date: 03.03.2018 \newline Page: 1 \newline  & Susanna Lanfranchi \newline V.Meggiagra 3 \newline 6599 Robasacco \newline Switzerland \newline \\
+			44  + \end{tabular}\\
+			 70 - Date: 01.02.2018 \\
+			 71 - Customer No: 100004 \\
+			 72 - Due date: 03.03.2018 \\
+			 73 - Page: 1 \\
+			 74 -  & Susanna Lanfranchi \\
+			 75 - V.Meggiagra 3 \\
+			 76 - 6599 Robasacco \\
+			 77 - Switzerland \\
+			 78 - \\
+			 79 - \end{tabular}
+			47  + \end{tabular}\\
+			 82 - \end{tabular}
+			51  + \multicolumn{2}{l}{Sales merchandise, invoice \#36, customer D \newline \newline } & 7'000.00 \\
+			 86 - \multicolumn{2}{l}{Sales merchandise, invoice #36, customer D \\
+			 87 - \\
+			 88 - } & 7'000.00 \\
+			56  + \multicolumn{3}{l}{VAT 8.00\% = 518.52 CHF \newline }\\
+			57  + \end{tabular}\\
+			 93 - \multicolumn{3}{l}{VAT 8.00% = 518.52 CHF \\
+			 94 - }\\
+			 95 - \end{tabular}
+			62  + BANANA.CH SA \newline \\
+			63  + Banana.ch SA, Via Trevano 7a, 6900 Lugano, Switzerland \newline info@banana.ch, www.banana.ch \newline \\
+			64  + \end{tabular}\\
+			 100 - BANANA.CH SA \\
+			 101 - \\
+			 102 - Banana.ch SA, Via Trevano 7a, 6900 Lugano, Switzerland \\
+			 103 - info@banana.ch, www.banana.ch \\
+			 104 - \\
+			 105 - \end{tabular}
+			66  + Date: 03.02.2018 \newline Customer No: 100001 \newline Due date: 05.03.2018 \newline Page: 1 \newline  & Carlo Rossi \newline Rossi SA \newline Via Trevano \newline 6963 Pregassona \newline Switzerland \newline \\
+			67  + \end{tabular}\\
+			 107 - Date: 03.02.2018 \\
+			 108 - Customer No: 100001 \\
+			 109 - Due date: 05.03.2018 \\
+			 110 - Page: 1 \\
+			 111 -  & Carlo Rossi \\
+			 112 - Rossi SA \\
+			 113 - Via Trevano \\
+			 114 - 6963 Pregassona \\
+			 115 - Switzerland \\
+			 116 - \\
+			 117 - \end{tabular}
+			70  + \end{tabular}\\
+			 120 - \end{tabular}
+			74  + \multicolumn{2}{l}{Sales merchandise, invoice \#37, customer A \newline \newline } & 8'000.00 \\
+			75  + \multicolumn{2}{l}{Consultancy \newline \newline } & 100.00 \\
+			76  + \multicolumn{2}{l}{Consultancy \newline \newline } & 100.00 \\
+			77  + \multicolumn{2}{l}{Consultancy \newline \newline } & 100.00 \\
+			78  + \end{tabular}\\
+			 124 - \multicolumn{2}{l}{Sales merchandise, invoice #37, customer A \\
+			 125 - \\
+			 126 - } & 8'000.00 \\
+			 127 - \multicolumn{2}{l}{Consultancy \\
+			 128 - \\
+			 129 - } & 100.00 \\
+			 130 - \multicolumn{2}{l}{Consultancy \\
+			 131 - \\
+			 132 - } & 100.00 \\
+			 133 - \multicolumn{2}{l}{Consultancy \\
+			 134 - \\
+			 135 - } & 100.00 \\
+			 136 - \end{tabular}
+			81  + Invoice 37 \newline Date: 03.02.2018 \newline Customer No: 100001 \newline Due date: 05.03.2018 \newline Page: 2 \newline \\
+			82  + \end{tabular}\\
+			 139 - Invoice 37 \\
+			 140 - Date: 03.02.2018 \\
+			 141 - Customer No: 100001 \\
+			 142 - Due date: 05.03.2018 \\
+			 143 - Page: 2 \\
+			 144 - \\
+			 145 - \end{tabular}
+			85  + \multicolumn{2}{l}{Consultancy \newline \newline } & 100.00 \\
+			86  + \multicolumn{2}{l}{Consultancy \newline \newline } & 100.00 \\
+			87  + \multicolumn{2}{l}{Consultancy \newline \newline } & 100.00 \\
+			 148 - \multicolumn{2}{l}{Consultancy \\
+			 149 - \\
+			 150 - } & 100.00 \\
+			 151 - \multicolumn{2}{l}{Consultancy \\
+			 152 - \\
+			 153 - } & 100.00 \\
+			 154 - \multicolumn{2}{l}{Consultancy \\
+			 155 - \\
+			 156 - } & 100.00 \\
+			92  + \multicolumn{3}{l}{VAT 8.00\% = 637.05 CHF \newline }\\
+			93  + \end{tabular}\\
+			 161 - \multicolumn{3}{l}{VAT 8.00% = 637.05 CHF \\
+			 162 - }\\
+			 163 - \end{tabular}
+			98  + BANANA.CH SA \newline \\
+			99  + Banana.ch SA, Via Trevano 7a, 6900 Lugano, Switzerland \newline info@banana.ch, www.banana.ch \newline \\
+			100  + \end{tabular}\\
+			 168 - BANANA.CH SA \\
+			 169 - \\
+			 170 - Banana.ch SA, Via Trevano 7a, 6900 Lugano, Switzerland \\
+			 171 - info@banana.ch, www.banana.ch \\
+			 172 - \\
+			 173 - \end{tabular}
+			102  + Date: 11.11.2018 \newline Customer No: 100003 \newline Due date: 11.12.2018 \newline Page: 2 \newline  & Marco Alberti \newline V. Campuréta 40 \newline 6883 Novazzano \newline Switzerland \newline \\
+			103  + \end{tabular}\\
+			 175 - Date: 11.11.2018 \\
+			 176 - Customer No: 100003 \\
+			 177 - Due date: 11.12.2018 \\
+			 178 - Page: 2 \\
+			 179 -  & Marco Alberti \\
+			 180 - V. CampurÃ©ta 40 \\
+			 181 - 6883 Novazzano \\
+			 182 - Switzerland \\
+			 183 - \\
+			 184 - \end{tabular}
+			106  + \end{tabular}\\
+			 187 - \end{tabular}
+			110  + \multicolumn{2}{l}{Product A \newline \newline } & 22.00 \\
+			111  + \multicolumn{2}{l}{Product B \newline \newline } & 30.00 \\
+			112  + \multicolumn{2}{l}{Discount 10\% product B \newline \newline } & -3.00 \\
+			 191 - \multicolumn{2}{l}{Product A \\
+			 192 - \\
+			 193 - } & 22.00 \\
+			 194 - \multicolumn{2}{l}{Product B \\
+			 195 - \\
+			 196 - } & 30.00 \\
+			 197 - \multicolumn{2}{l}{Discount 10% product B \\
+			 198 - \\
+			 199 - } & -3.00 \\
+			117  + \multicolumn{3}{l}{VAT 8.00\% = 3.63 CHF \newline }\\
+			118  + \end{tabular}\\
+			 204 - \multicolumn{3}{l}{VAT 8.00% = 3.63 CHF \\
+			 205 - }\\
+			 206 - \end{tabular}
+
+>> report/customer/invoice/test/testresults/ch.banana.uni.invoice.uni08.test/ch.banana.uni.invoice.uni08.test.txt
+			 4 - \begin{test}{test1}
+			 5 - \keyvalue{Result}{Passed}
+			 6 - \end{test}
+			 7 - \begin{test}{test2}
+			 8 - \keyvalue{Result}{Passed}
+			 9 - \end{test}
+			9  +  & Banana.ch SA \newline \newline Via Trevano 7a \newline 6900 Lugano \newline info@banana.ch \newline www.banana.ch \newline \newline \\
+			10  + \end{tabular}\\
+			 15 -  & Banana.ch SA \\
+			 16 - \\
+			 17 - Via Trevano 7a \\
+			 18 - 6900 Lugano \\
+			 19 - info@banana.ch \\
+			 20 - www.banana.ch \\
+			 21 - \\
+			 22 - \\
+			 23 - \end{tabular}
+			14  + Invoice: \newline Date: \newline Customer No: \newline Payment: \newline Page: \newline  & 35 \newline 29.01.2018 \newline 100002 \newline 30 days \newline 1 \newline  & Mario Bianchi \newline Via Trevano \newline 6963 Pregassona \newline \newline \\
+			15  + \end{tabular}\\
+			 27 - Invoice: \\
+			 28 - Date: \\
+			 29 - Customer No: \\
+			 30 - Payment: \\
+			 31 - Page: \\
+			 32 -  & 35 \\
+			 33 - 29.01.2018 \\
+			 34 - 100002 \\
+			 35 - 30 days \\
+			 36 - 1 \\
+			 37 -  & Mario Bianchi \\
+			 38 - Via Trevano \\
+			 39 - 6963 Pregassona \\
+			 40 - \\
+			 41 - \\
+			 42 - \end{tabular}
+			18  + Sales merchandise, invoice \#35, customer B \newline \newline  &  &  & 1'851.85 \\
+			19  + Sales merchandise, invoice \#35, customer B \newline \newline  &  &  & 925.93 \\
+			20  + Sales merchandise, invoice \#35, customer B \newline \newline  &  &  & 462.96 \\
+			 45 - Sales merchandise, invoice #35, customer B \\
+			 46 - \\
+			 47 -  &  &  & 1'851.85 \\
+			 48 - Sales merchandise, invoice #35, customer B \\
+			 49 - \\
+			 50 -  &  &  & 925.93 \\
+			 51 - Sales merchandise, invoice #35, customer B \\
+			 52 - \\
+			 53 -  &  &  & 462.96 \\
+			24  +  & VAT 8.00\%  &  & 259.26 \\
+			 57 -  & VAT 8.00%  &  & 259.26 \\
+			33  + \end{tabular}\\
+			 66 - \end{tabular}
+			39  +  & Banana.ch SA \newline \newline Via Trevano 7a \newline 6900 Lugano \newline info@banana.ch \newline www.banana.ch \newline \newline \\
+			40  + \end{tabular}\\
+			 72 -  & Banana.ch SA \\
+			 73 - \\
+			 74 - Via Trevano 7a \\
+			 75 - 6900 Lugano \\
+			 76 - info@banana.ch \\
+			 77 - www.banana.ch \\
+			 78 - \\
+			 79 - \\
+			 80 - \end{tabular}
+			44  + Invoice: \newline Date: \newline Customer No: \newline Due date: \newline Page: \newline  & 36 \newline 01.02.2018 \newline 100004 \newline 03.03.2018 \newline 1 \newline  & Susanna Lanfranchi \newline V.Meggiagra 3 \newline 6599 Robasacco \newline Switzerland \newline \\
+			45  + \end{tabular}\\
+			 84 - Invoice: \\
+			 85 - Date: \\
+			 86 - Customer No: \\
+			 87 - Due date: \\
+			 88 - Page: \\
+			 89 -  & 36 \\
+			 90 - 01.02.2018 \\
+			 91 - 100004 \\
+			 92 - 03.03.2018 \\
+			 93 - 1 \\
+			 94 -  & Susanna Lanfranchi \\
+			 95 - V.Meggiagra 3 \\
+			 96 - 6599 Robasacco \\
+			 97 - Switzerland \\
+			 98 - \\
+			 99 - \end{tabular}
+			48  + Sales merchandise, invoice \#36, customer D \newline \newline  &  &  & 6'481.48 \\
+			 102 - Sales merchandise, invoice #36, customer D \\
+			 103 - \\
+			 104 -  &  &  & 6'481.48 \\
+			52  +  & VAT 8.00\%  &  & 518.52 \\
+			 108 -  & VAT 8.00%  &  & 518.52 \\
+			56  + \end{tabular}\\
+			 112 - \end{tabular}
+			62  +  & Banana.ch SA \newline \newline Via Trevano 7a \newline 6900 Lugano \newline info@banana.ch \newline www.banana.ch \newline \newline \\
+			63  + \end{tabular}\\
+			 118 -  & Banana.ch SA \\
+			 119 - \\
+			 120 - Via Trevano 7a \\
+			 121 - 6900 Lugano \\
+			 122 - info@banana.ch \\
+			 123 - www.banana.ch \\
+			 124 - \\
+			 125 - \\
+			 126 - \end{tabular}
+			67  + Invoice: \newline Date: \newline Customer No: \newline Due date: \newline Page: \newline  & 37 \newline 03.02.2018 \newline 100001 \newline 05.03.2018 \newline 1 \newline  & Carlo Rossi \newline Rossi SA \newline Via Trevano \newline 6963 Pregassona \newline Switzerland \newline \\
+			68  + \end{tabular}\\
+			 130 - Invoice: \\
+			 131 - Date: \\
+			 132 - Customer No: \\
+			 133 - Due date: \\
+			 134 - Page: \\
+			 135 -  & 37 \\
+			 136 - 03.02.2018 \\
+			 137 - 100001 \\
+			 138 - 05.03.2018 \\
+			 139 - 1 \\
+			 140 -  & Carlo Rossi \\
+			 141 - Rossi SA \\
+			 142 - Via Trevano \\
+			 143 - 6963 Pregassona \\
+			 144 - Switzerland \\
+			 145 - \\
+			 146 - \end{tabular}
+			71  + Sales merchandise, invoice \#37, customer A \newline \newline  &  &  & 7'407.41 \\
+			72  + Consultancy \newline \newline  &  &  & 92.59 \\
+			73  + Consultancy \newline \newline  &  &  & 92.59 \\
+			74  + Consultancy \newline \newline  &  &  & 92.59 \\
+			75  + Consultancy \newline \newline  &  &  & 92.59 \\
+			76  + \end{tabular}\\
+			 149 - Sales merchandise, invoice #37, customer A \\
+			 150 - \\
+			 151 -  &  &  & 7'407.41 \\
+			 152 - Consultancy \\
+			 153 - \\
+			 154 -  &  &  & 92.59 \\
+			 155 - Consultancy \\
+			 156 - \\
+			 157 -  &  &  & 92.59 \\
+			 158 - Consultancy \\
+			 159 - \\
+			 160 -  &  &  & 92.59 \\
+			 161 - Consultancy \\
+			 162 - \\
+			 163 -  &  &  & 92.59 \\
+			 164 - \end{tabular}
+			81  + Invoice: \newline Date: \newline Customer No: \newline Due date: \newline Page: \newline  & 37 \newline 03.02.2018 \newline 100001 \newline 05.03.2018 \newline 2 \newline  & \\
+			82  + \end{tabular}\\
+			 169 - Invoice: \\
+			 170 - Date: \\
+			 171 - Customer No: \\
+			 172 - Due date: \\
+			 173 - Page: \\
+			 174 -  & 37 \\
+			 175 - 03.02.2018 \\
+			 176 - 100001 \\
+			 177 - 05.03.2018 \\
+			 178 - 2 \\
+			 179 -  & \\
+			 180 - \end{tabular}
+			85  + Consultancy \newline \newline  &  &  & 92.59 \\
+			86  + Consultancy \newline \newline  &  &  & 92.59 \\
+			 183 - Consultancy \\
+			 184 - \\
+			 185 -  &  &  & 92.59 \\
+			 186 - Consultancy \\
+			 187 - \\
+			 188 -  &  &  & 92.59 \\
+			90  +  & VAT 8.00\%  &  & 637.05 \\
+			 192 -  & VAT 8.00%  &  & 637.05 \\
+			94  + \end{tabular}\\
+			 196 - \end{tabular}
+			99  +  & Banana.ch SA \newline \newline Via Trevano 7a \newline 6900 Lugano \newline info@banana.ch \newline www.banana.ch \newline \newline \\
+			100  + \end{tabular}\\
+			 201 -  & Banana.ch SA \\
+			 202 - \\
+			 203 - Via Trevano 7a \\
+			 204 - 6900 Lugano \\
+			 205 - info@banana.ch \\
+			 206 - www.banana.ch \\
+			 207 - \\
+			 208 - \\
+			 209 - \end{tabular}
+			104  + Invoice: \newline Date: \newline Customer No: \newline Due date: \newline Page: \newline  & 47 \newline 11.11.2018 \newline 100003 \newline 11.12.2018 \newline 2 \newline  & Marco Alberti \newline V. Campuréta 40 \newline 6883 Novazzano \newline Switzerland \newline \\
+			105  + \end{tabular}\\
+			 213 - Invoice: \\
+			 214 - Date: \\
+			 215 - Customer No: \\
+			 216 - Due date: \\
+			 217 - Page: \\
+			 218 -  & 47 \\
+			 219 - 11.11.2018 \\
+			 220 - 100003 \\
+			 221 - 11.12.2018 \\
+			 222 - 2 \\
+			 223 -  & Marco Alberti \\
+			 224 - V. CampurÃ©ta 40 \\
+			 225 - 6883 Novazzano \\
+			 226 - Switzerland \\
+			 227 - \\
+			 228 - \end{tabular}
+			108  + Product A \newline \newline  &  &  & 20.37 \\
+			109  + Product B \newline \newline  &  &  & 27.78 \\
+			110  + Discount 10\% product B \newline \newline  &  &  & -2.78 \\
+			 231 - Product A \\
+			 232 - \\
+			 233 -  &  &  & 20.37 \\
+			 234 - Product B \\
+			 235 - \\
+			 236 -  &  &  & 27.78 \\
+			 237 - Discount 10% product B \\
+			 238 - \\
+			 239 -  &  &  & -2.78 \\
+			114  +  & VAT 8.00\%  &  & 3.63 \\
+			 243 -  & VAT 8.00%  &  & 3.63 \\
+			118  + \end{tabular}\\
+			 247 - \end{tabular}
+
+>> report/customer/invoice/test/testresults/ch.banana.uni.invoice.uni04.test/ch.banana.uni.invoice.uni04.test.txt
+			 4 - \begin{test}{test1}
+			 5 - \keyvalue{Result}{Passed}
+			 6 - \end{test}
+			 7 - \begin{test}{test2}
+			 8 - \keyvalue{Result}{Passed}
+			 9 - \end{test}
+			9  + BANANA.CH SA \newline  & Via Trevano 7a \newline \newline 6900 Lugano \newline \newline info@banana.ch www.banana.ch \newline \\
+			10  + \end{tabular}\\
+			 15 - BANANA.CH SA \\
+			 16 -  & Via Trevano 7a \\
+			 17 - \\
+			 18 - 6900 Lugano \\
+			 19 - \\
+			 20 - info@banana.ch www.banana.ch \\
+			 21 - \\
+			 22 - \end{tabular}
+			17  + \end{tabular}\\
+			 29 - \end{tabular}
+			20  + \end{tabular}\\
+			 32 - \end{tabular}
+			22  +  & Mario Bianchi \newline Via Trevano \newline 6963 Pregassona \newline \newline \\
+			23  + \end{tabular}\\
+			 34 -  & Mario Bianchi \\
+			 35 - Via Trevano \\
+			 36 - 6963 Pregassona \\
+			 37 - \\
+			 38 - \\
+			 39 - \end{tabular}
+			26  + Sales merchandise, invoice \#35, customer B \newline \newline  &  & 1.00  &  & 1'851.85  &  & 1'851.85 \\
+			27  + Sales merchandise, invoice \#35, customer B \newline \newline  &  & 1.00  &  & 925.93  &  & 925.93 \\
+			28  + Sales merchandise, invoice \#35, customer B \newline \newline  &  & 1.00  &  & 462.96  &  & 462.96 \\
+			 42 - Sales merchandise, invoice #35, customer B \\
+			 43 - \\
+			 44 -  &  & 1.00  &  & 1'851.85  &  & 1'851.85 \\
+			 45 - Sales merchandise, invoice #35, customer B \\
+			 46 - \\
+			 47 -  &  & 1.00  &  & 925.93  &  & 925.93 \\
+			 48 - Sales merchandise, invoice #35, customer B \\
+			 49 - \\
+			 50 -  &  & 1.00  &  & 462.96  &  & 462.96 \\
+			32  + \multicolumn{2}{l}{} & VAT 8.00\%  &  & 3'240.74  &  & 259.26 \\
+			 54 - \multicolumn{2}{l}{} & VAT 8.00%  &  & 3'240.74  &  & 259.26 \\
+			39  + \end{tabular}\\
+			 61 - \end{tabular}
+			45  + BANANA.CH SA \newline  & Via Trevano 7a \newline \newline 6900 Lugano \newline \newline info@banana.ch www.banana.ch \newline \\
+			46  + \end{tabular}\\
+			 67 - BANANA.CH SA \\
+			 68 -  & Via Trevano 7a \\
+			 69 - \\
+			 70 - 6900 Lugano \\
+			 71 - \\
+			 72 - info@banana.ch www.banana.ch \\
+			 73 - \\
+			 74 - \end{tabular}
+			53  + \end{tabular}\\
+			 81 - \end{tabular}
+			56  + \end{tabular}\\
+			 84 - \end{tabular}
+			58  +  & Susanna Lanfranchi \newline V.Meggiagra 3 \newline 6599 Robasacco \newline Switzerland \newline \\
+			59  + \end{tabular}\\
+			 86 -  & Susanna Lanfranchi \\
+			 87 - V.Meggiagra 3 \\
+			 88 - 6599 Robasacco \\
+			 89 - Switzerland \\
+			 90 - \\
+			 91 - \end{tabular}
+			62  + Sales merchandise, invoice \#36, customer D \newline \newline  &  & 1.00  &  & 6'481.48  &  & 6'481.48 \\
+			 94 - Sales merchandise, invoice #36, customer D \\
+			 95 - \\
+			 96 -  &  & 1.00  &  & 6'481.48  &  & 6'481.48 \\
+			66  + \multicolumn{2}{l}{} & VAT 8.00\%  &  & 6'481.48  &  & 518.52 \\
+			 100 - \multicolumn{2}{l}{} & VAT 8.00%  &  & 6'481.48  &  & 518.52 \\
+			68  + \end{tabular}\\
+			 102 - \end{tabular}
+			74  + BANANA.CH SA \newline  & Via Trevano 7a \newline \newline 6900 Lugano \newline \newline info@banana.ch www.banana.ch \newline \\
+			75  + \end{tabular}\\
+			 108 - BANANA.CH SA \\
+			 109 -  & Via Trevano 7a \\
+			 110 - \\
+			 111 - 6900 Lugano \\
+			 112 - \\
+			 113 - info@banana.ch www.banana.ch \\
+			 114 - \\
+			 115 - \end{tabular}
+			82  + \end{tabular}\\
+			 122 - \end{tabular}
+			85  + \end{tabular}\\
+			 125 - \end{tabular}
+			87  +  & Carlo Rossi \newline Rossi SA \newline Via Trevano \newline 6963 Pregassona \newline Switzerland \newline \\
+			88  + \end{tabular}\\
+			 127 -  & Carlo Rossi \\
+			 128 - Rossi SA \\
+			 129 - Via Trevano \\
+			 130 - 6963 Pregassona \\
+			 131 - Switzerland \\
+			 132 - \\
+			 133 - \end{tabular}
+			90  + \end{tabular}\\
+			 135 - \end{tabular}
+			99  + \end{tabular}\\
+			 144 - \end{tabular}
+			103  + Sales merchandise, invoice \#37, customer A \newline \newline  &  & 1.00  &  & 7'407.41  &  & 7'407.41 \\
+			104  + Consultancy \newline \newline  &  & 1.00  &  & 92.59  &  & 92.59 \\
+			105  + Consultancy \newline \newline  &  & 1.00  &  & 92.59  &  & 92.59 \\
+			106  + Consultancy \newline \newline  &  & 1.00  &  & 92.59  &  & 92.59 \\
+			107  + Consultancy \newline \newline  &  & 1.00  &  & 92.59  &  & 92.59 \\
+			108  + Consultancy \newline \newline  &  & 1.00  &  & 92.59  &  & 92.59 \\
+			109  + Consultancy \newline \newline  &  & 1.00  &  & 92.59  &  & 92.59 \\
+			 148 - Sales merchandise, invoice #37, customer A \\
+			 149 - \\
+			 150 -  &  & 1.00  &  & 7'407.41  &  & 7'407.41 \\
+			 151 - Consultancy \\
+			 152 - \\
+			 153 -  &  & 1.00  &  & 92.59  &  & 92.59 \\
+			 154 - Consultancy \\
+			 155 - \\
+			 156 -  &  & 1.00  &  & 92.59  &  & 92.59 \\
+			 157 - Consultancy \\
+			 158 - \\
+			 159 -  &  & 1.00  &  & 92.59  &  & 92.59 \\
+			 160 - Consultancy \\
+			 161 - \\
+			 162 -  &  & 1.00  &  & 92.59  &  & 92.59 \\
+			 163 - Consultancy \\
+			 164 - \\
+			 165 -  &  & 1.00  &  & 92.59  &  & 92.59 \\
+			 166 - Consultancy \\
+			 167 - \\
+			 168 -  &  & 1.00  &  & 92.59  &  & 92.59 \\
+			113  + \multicolumn{2}{l}{} & VAT 8.00\%  &  & 7'962.95  &  & 637.05 \\
+			 172 - \multicolumn{2}{l}{} & VAT 8.00%  &  & 7'962.95  &  & 637.05 \\
+			115  + \end{tabular}\\
+			 174 - \end{tabular}
+			120  + BANANA.CH SA \newline  & Via Trevano 7a \newline \newline 6900 Lugano \newline \newline info@banana.ch www.banana.ch \newline \\
+			121  + \end{tabular}\\
+			 179 - BANANA.CH SA \\
+			 180 -  & Via Trevano 7a \\
+			 181 - \\
+			 182 - 6900 Lugano \\
+			 183 - \\
+			 184 - info@banana.ch www.banana.ch \\
+			 185 - \\
+			 186 - \end{tabular}
+			128  + \end{tabular}\\
+			 193 - \end{tabular}
+			131  + \end{tabular}\\
+			 196 - \end{tabular}
+			133  +  & Marco Alberti \newline V. Campuréta 40 \newline 6883 Novazzano \newline Switzerland \newline \\
+			134  + \end{tabular}\\
+			 198 -  & Marco Alberti \\
+			 199 - V. CampurÃ©ta 40 \\
+			 200 - 6883 Novazzano \\
+			 201 - Switzerland \\
+			 202 - \\
+			 203 - \end{tabular}
+			137  + Product A \newline \newline  &  & 1.00  &  & 20.37  &  & 20.37 \\
+			138  + Product B \newline \newline  &  & 1.00  &  & 27.78  &  & 27.78 \\
+			139  + Discount 10\% product B \newline \newline  &  & 1.00  &  & -2.78  &  & -2.78 \\
+			 206 - Product A \\
+			 207 - \\
+			 208 -  &  & 1.00  &  & 20.37  &  & 20.37 \\
+			 209 - Product B \\
+			 210 - \\
+			 211 -  &  & 1.00  &  & 27.78  &  & 27.78 \\
+			 212 - Discount 10% product B \\
+			 213 - \\
+			 214 -  &  & 1.00  &  & -2.78  &  & -2.78 \\
+			143  + \multicolumn{2}{l}{} & VAT 8.00\%  &  & 45.37  &  & 3.63 \\
+			 218 - \multicolumn{2}{l}{} & VAT 8.00%  &  & 45.37  &  & 3.63 \\
+			145  + \end{tabular}\\
+			 220 - \end{tabular}
+
+>> report/customer/invoice/test/testresults/ch.banana.uni.invoice.uni05.test/ch.banana.uni.invoice.uni05.test.txt
+			 4 - \begin{test}{test1}
+			 5 - \keyvalue{Result}{Passed}
+			 6 - \end{test}
+			 7 - \begin{test}{test2}
+			 8 - \keyvalue{Result}{Passed}
+			 9 - \end{test}
+			9  +  & Banana.ch SA \newline \newline Via Trevano 7a \newline 6900 Lugano \newline info@banana.ch \newline www.banana.ch \newline \newline \\
+			10  + \end{tabular}\\
+			 15 -  & Banana.ch SA \\
+			 16 - \\
+			 17 - Via Trevano 7a \\
+			 18 - 6900 Lugano \\
+			 19 - info@banana.ch \\
+			 20 - www.banana.ch \\
+			 21 - \\
+			 22 - \\
+			 23 - \end{tabular}
+			14  + Invoice: \newline Date: \newline Customer No: \newline Payment: \newline Page: \newline  & 35 \newline 29.01.2018 \newline 100002 \newline 30 days \newline 1 \newline  & Mario Bianchi \newline Via Trevano \newline 6963 Pregassona \newline \newline \\
+			15  + \end{tabular}\\
+			 27 - Invoice: \\
+			 28 - Date: \\
+			 29 - Customer No: \\
+			 30 - Payment: \\
+			 31 - Page: \\
+			 32 -  & 35 \\
+			 33 - 29.01.2018 \\
+			 34 - 100002 \\
+			 35 - 30 days \\
+			 36 - 1 \\
+			 37 -  & Mario Bianchi \\
+			 38 - Via Trevano \\
+			 39 - 6963 Pregassona \\
+			 40 - \\
+			 41 - \\
+			 42 - \end{tabular}
+			18  + Sales merchandise, invoice \#35, customer B \newline \newline  & 1.00  & 1'851.85  & 1'851.85 \\
+			19  + Sales merchandise, invoice \#35, customer B \newline \newline  & 1.00  & 925.93  & 925.93 \\
+			20  + Sales merchandise, invoice \#35, customer B \newline \newline  & 1.00  & 462.96  & 462.96 \\
+			 45 - Sales merchandise, invoice #35, customer B \\
+			 46 - \\
+			 47 -  & 1.00  & 1'851.85  & 1'851.85 \\
+			 48 - Sales merchandise, invoice #35, customer B \\
+			 49 - \\
+			 50 -  & 1.00  & 925.93  & 925.93 \\
+			 51 - Sales merchandise, invoice #35, customer B \\
+			 52 - \\
+			 53 -  & 1.00  & 462.96  & 462.96 \\
+			24  +  & VAT 8.00\%  & 3'240.74  & 259.26 \\
+			 57 -  & VAT 8.00%  & 3'240.74  & 259.26 \\
+			33  + \end{tabular}\\
+			 66 - \end{tabular}
+			39  +  & Banana.ch SA \newline \newline Via Trevano 7a \newline 6900 Lugano \newline info@banana.ch \newline www.banana.ch \newline \newline \\
+			40  + \end{tabular}\\
+			 72 -  & Banana.ch SA \\
+			 73 - \\
+			 74 - Via Trevano 7a \\
+			 75 - 6900 Lugano \\
+			 76 - info@banana.ch \\
+			 77 - www.banana.ch \\
+			 78 - \\
+			 79 - \\
+			 80 - \end{tabular}
+			44  + Invoice: \newline Date: \newline Customer No: \newline Due date: \newline Page: \newline  & 36 \newline 01.02.2018 \newline 100004 \newline 03.03.2018 \newline 1 \newline  & Susanna Lanfranchi \newline V.Meggiagra 3 \newline 6599 Robasacco \newline Switzerland \newline \\
+			45  + \end{tabular}\\
+			 84 - Invoice: \\
+			 85 - Date: \\
+			 86 - Customer No: \\
+			 87 - Due date: \\
+			 88 - Page: \\
+			 89 -  & 36 \\
+			 90 - 01.02.2018 \\
+			 91 - 100004 \\
+			 92 - 03.03.2018 \\
+			 93 - 1 \\
+			 94 -  & Susanna Lanfranchi \\
+			 95 - V.Meggiagra 3 \\
+			 96 - 6599 Robasacco \\
+			 97 - Switzerland \\
+			 98 - \\
+			 99 - \end{tabular}
+			48  + Sales merchandise, invoice \#36, customer D \newline \newline  & 1.00  & 6'481.48  & 6'481.48 \\
+			 102 - Sales merchandise, invoice #36, customer D \\
+			 103 - \\
+			 104 -  & 1.00  & 6'481.48  & 6'481.48 \\
+			52  +  & VAT 8.00\%  & 6'481.48  & 518.52 \\
+			 108 -  & VAT 8.00%  & 6'481.48  & 518.52 \\
+			56  + \end{tabular}\\
+			 112 - \end{tabular}
+			62  +  & Banana.ch SA \newline \newline Via Trevano 7a \newline 6900 Lugano \newline info@banana.ch \newline www.banana.ch \newline \newline \\
+			63  + \end{tabular}\\
+			 118 -  & Banana.ch SA \\
+			 119 - \\
+			 120 - Via Trevano 7a \\
+			 121 - 6900 Lugano \\
+			 122 - info@banana.ch \\
+			 123 - www.banana.ch \\
+			 124 - \\
+			 125 - \\
+			 126 - \end{tabular}
+			67  + Invoice: \newline Date: \newline Customer No: \newline Due date: \newline Page: \newline  & 37 \newline 03.02.2018 \newline 100001 \newline 05.03.2018 \newline 1 \newline  & Carlo Rossi \newline Rossi SA \newline Via Trevano \newline 6963 Pregassona \newline Switzerland \newline \\
+			68  + \end{tabular}\\
+			 130 - Invoice: \\
+			 131 - Date: \\
+			 132 - Customer No: \\
+			 133 - Due date: \\
+			 134 - Page: \\
+			 135 -  & 37 \\
+			 136 - 03.02.2018 \\
+			 137 - 100001 \\
+			 138 - 05.03.2018 \\
+			 139 - 1 \\
+			 140 -  & Carlo Rossi \\
+			 141 - Rossi SA \\
+			 142 - Via Trevano \\
+			 143 - 6963 Pregassona \\
+			 144 - Switzerland \\
+			 145 - \\
+			 146 - \end{tabular}
+			71  + Sales merchandise, invoice \#37, customer A \newline \newline  & 1.00  & 7'407.41  & 7'407.41 \\
+			72  + Consultancy \newline \newline  & 1.00  & 92.59  & 92.59 \\
+			73  + Consultancy \newline \newline  & 1.00  & 92.59  & 92.59 \\
+			74  + Consultancy \newline \newline  & 1.00  & 92.59  & 92.59 \\
+			75  + Consultancy \newline \newline  & 1.00  & 92.59  & 92.59 \\
+			76  + \end{tabular}\\
+			 149 - Sales merchandise, invoice #37, customer A \\
+			 150 - \\
+			 151 -  & 1.00  & 7'407.41  & 7'407.41 \\
+			 152 - Consultancy \\
+			 153 - \\
+			 154 -  & 1.00  & 92.59  & 92.59 \\
+			 155 - Consultancy \\
+			 156 - \\
+			 157 -  & 1.00  & 92.59  & 92.59 \\
+			 158 - Consultancy \\
+			 159 - \\
+			 160 -  & 1.00  & 92.59  & 92.59 \\
+			 161 - Consultancy \\
+			 162 - \\
+			 163 -  & 1.00  & 92.59  & 92.59 \\
+			 164 - \end{tabular}
+			81  + Invoice: \newline Date: \newline Customer No: \newline Due date: \newline Page: \newline  & 37 \newline 03.02.2018 \newline 100001 \newline 05.03.2018 \newline 2 \newline  & \\
+			82  + \end{tabular}\\
+			 169 - Invoice: \\
+			 170 - Date: \\
+			 171 - Customer No: \\
+			 172 - Due date: \\
+			 173 - Page: \\
+			 174 -  & 37 \\
+			 175 - 03.02.2018 \\
+			 176 - 100001 \\
+			 177 - 05.03.2018 \\
+			 178 - 2 \\
+			 179 -  & \\
+			 180 - \end{tabular}
+			85  + Consultancy \newline \newline  & 1.00  & 92.59  & 92.59 \\
+			86  + Consultancy \newline \newline  & 1.00  & 92.59  & 92.59 \\
+			 183 - Consultancy \\
+			 184 - \\
+			 185 -  & 1.00  & 92.59  & 92.59 \\
+			 186 - Consultancy \\
+			 187 - \\
+			 188 -  & 1.00  & 92.59  & 92.59 \\
+			90  +  & VAT 8.00\%  & 7'962.95  & 637.05 \\
+			 192 -  & VAT 8.00%  & 7'962.95  & 637.05 \\
+			94  + \end{tabular}\\
+			 196 - \end{tabular}
+			99  +  & Banana.ch SA \newline \newline Via Trevano 7a \newline 6900 Lugano \newline info@banana.ch \newline www.banana.ch \newline \newline \\
+			100  + \end{tabular}\\
+			 201 -  & Banana.ch SA \\
+			 202 - \\
+			 203 - Via Trevano 7a \\
+			 204 - 6900 Lugano \\
+			 205 - info@banana.ch \\
+			 206 - www.banana.ch \\
+			 207 - \\
+			 208 - \\
+			 209 - \end{tabular}
+			104  + Invoice: \newline Date: \newline Customer No: \newline Due date: \newline Page: \newline  & 47 \newline 11.11.2018 \newline 100003 \newline 11.12.2018 \newline 2 \newline  & Marco Alberti \newline V. Campuréta 40 \newline 6883 Novazzano \newline Switzerland \newline \\
+			105  + \end{tabular}\\
+			 213 - Invoice: \\
+			 214 - Date: \\
+			 215 - Customer No: \\
+			 216 - Due date: \\
+			 217 - Page: \\
+			 218 -  & 47 \\
+			 219 - 11.11.2018 \\
+			 220 - 100003 \\
+			 221 - 11.12.2018 \\
+			 222 - 2 \\
+			 223 -  & Marco Alberti \\
+			 224 - V. CampurÃ©ta 40 \\
+			 225 - 6883 Novazzano \\
+			 226 - Switzerland \\
+			 227 - \\
+			 228 - \end{tabular}
+			108  + Product A \newline \newline  & 1.00  & 20.37  & 20.37 \\
+			109  + Product B \newline \newline  & 1.00  & 27.78  & 27.78 \\
+			110  + Discount 10\% product B \newline \newline  & 1.00  & -2.78  & -2.78 \\
+			 231 - Product A \\
+			 232 - \\
+			 233 -  & 1.00  & 20.37  & 20.37 \\
+			 234 - Product B \\
+			 235 - \\
+			 236 -  & 1.00  & 27.78  & 27.78 \\
+			 237 - Discount 10% product B \\
+			 238 - \\
+			 239 -  & 1.00  & -2.78  & -2.78 \\
+			114  +  & VAT 8.00\%  & 45.37  & 3.63 \\
+			 243 -  & VAT 8.00%  & 45.37  & 3.63 \\
+			118  + \end{tabular}\\
+			 247 - \end{tabular}
+
+>> report/customer/invoice/test/testresults/ch.banana.uni.invoice.uni07.test/ch.banana.uni.invoice.uni07.test.txt
+			 4 - \begin{test}{test1}
+			 5 - \keyvalue{Result}{Passed}
+			 6 - \end{test}
+			 7 - \begin{test}{test2}
+			 8 - \keyvalue{Result}{Passed}
+			 9 - \end{test}
+			9  + BANANA.CH SA \newline  & Via Trevano 7a \newline \newline 6900 Lugano \newline \newline info@banana.ch www.banana.ch \newline \\
+			10  + \end{tabular}\\
+			 15 - BANANA.CH SA \\
+			 16 -  & Via Trevano 7a \\
+			 17 - \\
+			 18 - 6900 Lugano \\
+			 19 - \\
+			 20 - info@banana.ch www.banana.ch \\
+			 21 - \\
+			 22 - \end{tabular}
+			13  + \end{tabular}\\
+			 25 - \end{tabular}
+			15  +  & \newline \\
+			16  +  & Mario Bianchi \newline Via Trevano \newline 6963 Pregassona \newline \newline \\
+			17  + \end{tabular}\\
+			 27 -  & \\
+			 28 - \\
+			 29 -  & Mario Bianchi \\
+			 30 - Via Trevano \\
+			 31 - 6963 Pregassona \\
+			 32 - \\
+			 33 - \\
+			 34 - \end{tabular}
+			25  + \end{tabular}\\
+			 42 - \end{tabular}
+			28  + Sales merchandise, invoice \#35, customer B \newline \newline  & 1.00  & 1'851.85  & 1'851.85 \\
+			29  + Sales merchandise, invoice \#35, customer B \newline \newline  & 1.00  & 925.93  & 925.93 \\
+			30  + Sales merchandise, invoice \#35, customer B \newline \newline  & 1.00  & 462.96  & 462.96 \\
+			 45 - Sales merchandise, invoice #35, customer B \\
+			 46 - \\
+			 47 -  & 1.00  & 1'851.85  & 1'851.85 \\
+			 48 - Sales merchandise, invoice #35, customer B \\
+			 49 - \\
+			 50 -  & 1.00  & 925.93  & 925.93 \\
+			 51 - Sales merchandise, invoice #35, customer B \\
+			 52 - \\
+			 53 -  & 1.00  & 462.96  & 462.96 \\
+			33  + VAT 8.00\%  &  & 3'240.74  & 259.26 \\
+			 56 - VAT 8.00%  &  & 3'240.74  & 259.26 \\
+			46  + \end{tabular}\\
+			 69 - \end{tabular}
+			52  + BANANA.CH SA \newline  & Via Trevano 7a \newline \newline 6900 Lugano \newline \newline info@banana.ch www.banana.ch \newline \\
+			53  + \end{tabular}\\
+			 75 - BANANA.CH SA \\
+			 76 -  & Via Trevano 7a \\
+			 77 - \\
+			 78 - 6900 Lugano \\
+			 79 - \\
+			 80 - info@banana.ch www.banana.ch \\
+			 81 - \\
+			 82 - \end{tabular}
+			56  + \end{tabular}\\
+			 85 - \end{tabular}
+			58  +  & \newline \\
+			59  +  & Susanna Lanfranchi \newline V.Meggiagra 3 \newline 6599 Robasacco \newline Switzerland \newline \\
+			60  + \end{tabular}\\
+			 87 -  & \\
+			 88 - \\
+			 89 -  & Susanna Lanfranchi \\
+			 90 - V.Meggiagra 3 \\
+			 91 - 6599 Robasacco \\
+			 92 - Switzerland \\
+			 93 - \\
+			 94 - \end{tabular}
+			68  + \end{tabular}\\
+			 102 - \end{tabular}
+			71  + \end{tabular}\\
+			 105 - \end{tabular}
+			81  + \end{tabular}\\
+			 115 - \end{tabular}
+			84  + Sales merchandise, invoice \#36, customer D \newline \newline  & 1.00  & 6'481.48  & 6'481.48 \\
+			 118 - Sales merchandise, invoice #36, customer D \\
+			 119 - \\
+			 120 -  & 1.00  & 6'481.48  & 6'481.48 \\
+			87  + VAT 8.00\%  &  & 6'481.48  & 518.52 \\
+			 123 - VAT 8.00%  &  & 6'481.48  & 518.52 \\
+			90  + \end{tabular}\\
+			 126 - \end{tabular}
+			95  + BANANA.CH SA \newline  & Via Trevano 7a \newline \newline 6900 Lugano \newline \newline info@banana.ch www.banana.ch \newline \\
+			96  + \end{tabular}\\
+			 131 - BANANA.CH SA \\
+			 132 -  & Via Trevano 7a \\
+			 133 - \\
+			 134 - 6900 Lugano \\
+			 135 - \\
+			 136 - info@banana.ch www.banana.ch \\
+			 137 - \\
+			 138 - \end{tabular}
+			99  + \end{tabular}\\
+			 141 - \end{tabular}
+			101  +  & \newline \\
+			102  +  & Carlo Rossi \newline Rossi SA \newline Via Trevano \newline 6963 Pregassona \newline Switzerland \newline \\
+			103  + \end{tabular}\\
+			 143 -  & \\
+			 144 - \\
+			 145 -  & Carlo Rossi \\
+			 146 - Rossi SA \\
+			 147 - Via Trevano \\
+			 148 - 6963 Pregassona \\
+			 149 - Switzerland \\
+			 150 - \\
+			 151 - \end{tabular}
+			111  + \end{tabular}\\
+			 159 - \end{tabular}
+			114  + Sales merchandise, invoice \#37, customer A \newline \newline  & 1.00  & 7'407.41  & 7'407.41 \\
+			115  + Consultancy \newline \newline  & 1.00  & 92.59  & 92.59 \\
+			116  + Consultancy \newline \newline  & 1.00  & 92.59  & 92.59 \\
+			117  + Consultancy \newline \newline  & 1.00  & 92.59  & 92.59 \\
+			118  + Consultancy \newline \newline  & 1.00  & 92.59  & 92.59 \\
+			119  + Consultancy \newline \newline  & 1.00  & 92.59  & 92.59 \\
+			120  + Consultancy \newline \newline  & 1.00  & 92.59  & 92.59 \\
+			 162 - Sales merchandise, invoice #37, customer A \\
+			 163 - \\
+			 164 -  & 1.00  & 7'407.41  & 7'407.41 \\
+			 165 - Consultancy \\
+			 166 - \\
+			 167 -  & 1.00  & 92.59  & 92.59 \\
+			 168 - Consultancy \\
+			 169 - \\
+			 170 -  & 1.00  & 92.59  & 92.59 \\
+			 171 - Consultancy \\
+			 172 - \\
+			 173 -  & 1.00  & 92.59  & 92.59 \\
+			 174 - Consultancy \\
+			 175 - \\
+			 176 -  & 1.00  & 92.59  & 92.59 \\
+			 177 - Consultancy \\
+			 178 - \\
+			 179 -  & 1.00  & 92.59  & 92.59 \\
+			 180 - Consultancy \\
+			 181 - \\
+			 182 -  & 1.00  & 92.59  & 92.59 \\
+			123  + VAT 8.00\%  &  & 7'962.95  & 637.05 \\
+			 185 - VAT 8.00%  &  & 7'962.95  & 637.05 \\
+			126  + \end{tabular}\\
+			 188 - \end{tabular}
+			132  + BANANA.CH SA \newline  & Via Trevano 7a \newline \newline 6900 Lugano \newline \newline info@banana.ch www.banana.ch \newline \\
+			133  + \end{tabular}\\
+			 194 - BANANA.CH SA \\
+			 195 -  & Via Trevano 7a \\
+			 196 - \\
+			 197 - 6900 Lugano \\
+			 198 - \\
+			 199 - info@banana.ch www.banana.ch \\
+			 200 - \\
+			 201 - \end{tabular}
+			136  + \end{tabular}\\
+			 204 - \end{tabular}
+			138  +  & \newline \\
+			139  +  & Marco Alberti \newline V. Campuréta 40 \newline 6883 Novazzano \newline Switzerland \newline \\
+			140  + \end{tabular}\\
+			 206 -  & \\
+			 207 - \\
+			 208 -  & Marco Alberti \\
+			 209 - V. CampurÃ©ta 40 \\
+			 210 - 6883 Novazzano \\
+			 211 - Switzerland \\
+			 212 - \\
+			 213 - \end{tabular}
+			148  + \end{tabular}\\
+			 221 - \end{tabular}
+			151  + Product A \newline \newline  & 1.00  & 20.37  & 20.37 \\
+			152  + Product B \newline \newline  & 1.00  & 27.78  & 27.78 \\
+			153  + Discount 10\% product B \newline \newline  & 1.00  & -2.78  & -2.78 \\
+			 224 - Product A \\
+			 225 - \\
+			 226 -  & 1.00  & 20.37  & 20.37 \\
+			 227 - Product B \\
+			 228 - \\
+			 229 -  & 1.00  & 27.78  & 27.78 \\
+			 230 - Discount 10% product B \\
+			 231 - \\
+			 232 -  & 1.00  & -2.78  & -2.78 \\
+			156  + VAT 8.00\%  &  & 45.37  & 3.63 \\
+			 235 - VAT 8.00%  &  & 45.37  & 3.63 \\
+			159  + \end{tabular}\\
+			 238 - \end{tabular}
+
+>> report/customer/invoice/test/testresults/ch.banana.uni.invoice.uni06.test/ch.banana.uni.invoice.uni06.test.txt
+			 4 - \begin{test}{test1}
+			 5 - \keyvalue{Result}{Passed}
+			 6 - \end{test}
+			 7 - \begin{test}{test2}
+			 8 - \keyvalue{Result}{Passed}
+			 9 - \end{test}
+			9  +   \newline Banana.ch SA \newline Via Trevano 7a 6900 Lugano \newline info@banana.ch \newline www.banana.ch \newline \newline  &   \newline Mario Bianchi \newline Via Trevano \newline 6963 Pregassona \newline \newline \\
+			10  + \end{tabular}\\
+			 15 -   \\
+			 16 - Banana.ch SA \\
+			 17 - Via Trevano 7a 6900 Lugano \\
+			 18 - info@banana.ch \\
+			 19 - www.banana.ch \\
+			 20 - \\
+			 21 -  &   \\
+			 22 - Mario Bianchi \\
+			 23 - Via Trevano \\
+			 24 - 6963 Pregassona \\
+			 25 - \\
+			 26 - \\
+			 27 - \end{tabular}
+			14  + \end{tabular}\\
+			 31 - \end{tabular}
+			17  + \end{tabular}\\
+			 34 - \end{tabular}
+			20  + Sales merchandise, invoice \#35, customer B \newline \newline  & 1.00  & 1'851.85  & 1'851.85 \\
+			21  + Sales merchandise, invoice \#35, customer B \newline \newline  & 1.00  & 925.93  & 925.93 \\
+			22  + Sales merchandise, invoice \#35, customer B \newline \newline  & 1.00  & 462.96  & 462.96 \\
+			 37 - Sales merchandise, invoice #35, customer B \\
+			 38 - \\
+			 39 -  & 1.00  & 1'851.85  & 1'851.85 \\
+			 40 - Sales merchandise, invoice #35, customer B \\
+			 41 - \\
+			 42 -  & 1.00  & 925.93  & 925.93 \\
+			 43 - Sales merchandise, invoice #35, customer B \\
+			 44 - \\
+			 45 -  & 1.00  & 462.96  & 462.96 \\
+			25  +  &  & VAT 8.00\% (3'240.74)  & 259.26 \\
+			 48 -  &  & VAT 8.00% (3'240.74)  & 259.26 \\
+			35  + \end{tabular}\\
+			 58 - \end{tabular}
+			41  +   \newline Banana.ch SA \newline Via Trevano 7a 6900 Lugano \newline info@banana.ch \newline www.banana.ch \newline \newline  &   \newline Susanna Lanfranchi \newline V.Meggiagra 3 \newline 6599 Robasacco \newline Switzerland \newline \\
+			42  + \end{tabular}\\
+			 64 -   \\
+			 65 - Banana.ch SA \\
+			 66 - Via Trevano 7a 6900 Lugano \\
+			 67 - info@banana.ch \\
+			 68 - www.banana.ch \\
+			 69 - \\
+			 70 -  &   \\
+			 71 - Susanna Lanfranchi \\
+			 72 - V.Meggiagra 3 \\
+			 73 - 6599 Robasacco \\
+			 74 - Switzerland \\
+			 75 - \\
+			 76 - \end{tabular}
+			46  + \end{tabular}\\
+			 80 - \end{tabular}
+			49  + \end{tabular}\\
+			 83 - \end{tabular}
+			52  + Sales merchandise, invoice \#36, customer D \newline \newline  & 1.00  & 6'481.48  & 6'481.48 \\
+			 86 - Sales merchandise, invoice #36, customer D \\
+			 87 - \\
+			 88 -  & 1.00  & 6'481.48  & 6'481.48 \\
+			55  +  &  & VAT 8.00\% (6'481.48)  & 518.52 \\
+			 91 -  &  & VAT 8.00% (6'481.48)  & 518.52 \\
+			60  + \end{tabular}\\
+			 96 - \end{tabular}
+			66  +   \newline Banana.ch SA \newline Via Trevano 7a 6900 Lugano \newline info@banana.ch \newline www.banana.ch \newline \newline  &   \newline Carlo Rossi \newline Rossi SA \newline Via Trevano \newline 6963 Pregassona \newline Switzerland \newline \\
+			67  + \end{tabular}\\
+			 102 -   \\
+			 103 - Banana.ch SA \\
+			 104 - Via Trevano 7a 6900 Lugano \\
+			 105 - info@banana.ch \\
+			 106 - www.banana.ch \\
+			 107 - \\
+			 108 -  &   \\
+			 109 - Carlo Rossi \\
+			 110 - Rossi SA \\
+			 111 - Via Trevano \\
+			 112 - 6963 Pregassona \\
+			 113 - Switzerland \\
+			 114 - \\
+			 115 - \end{tabular}
+			71  + \end{tabular}\\
+			 119 - \end{tabular}
+			74  + \end{tabular}\\
+			 122 - \end{tabular}
+			77  + Sales merchandise, invoice \#37, customer A \newline \newline  & 1.00  & 7'407.41  & 7'407.41 \\
+			78  + Consultancy \newline \newline  & 1.00  & 92.59  & 92.59 \\
+			79  + Consultancy \newline \newline  & 1.00  & 92.59  & 92.59 \\
+			80  + Consultancy \newline \newline  & 1.00  & 92.59  & 92.59 \\
+			81  + \end{tabular}\\
+			 125 - Sales merchandise, invoice #37, customer A \\
+			 126 - \\
+			 127 -  & 1.00  & 7'407.41  & 7'407.41 \\
+			 128 - Consultancy \\
+			 129 - \\
+			 130 -  & 1.00  & 92.59  & 92.59 \\
+			 131 - Consultancy \\
+			 132 - \\
+			 133 -  & 1.00  & 92.59  & 92.59 \\
+			 134 - Consultancy \\
+			 135 - \\
+			 136 -  & 1.00  & 92.59  & 92.59 \\
+			 137 - \end{tabular}
+			86  + \end{tabular}\\
+			 142 - \end{tabular}
+			89  + Consultancy \newline \newline  & 1.00  & 92.59  & 92.59 \\
+			90  + Consultancy \newline \newline  & 1.00  & 92.59  & 92.59 \\
+			91  + Consultancy \newline \newline  & 1.00  & 92.59  & 92.59 \\
+			 145 - Consultancy \\
+			 146 - \\
+			 147 -  & 1.00  & 92.59  & 92.59 \\
+			 148 - Consultancy \\
+			 149 - \\
+			 150 -  & 1.00  & 92.59  & 92.59 \\
+			 151 - Consultancy \\
+			 152 - \\
+			 153 -  & 1.00  & 92.59  & 92.59 \\
+			94  +  &  & VAT 8.00\% (7'962.95)  & 637.05 \\
+			 156 -  &  & VAT 8.00% (7'962.95)  & 637.05 \\
+			99  + \end{tabular}\\
+			 161 - \end{tabular}
+			104  +   \newline Banana.ch SA \newline Via Trevano 7a 6900 Lugano \newline info@banana.ch \newline www.banana.ch \newline \newline  &   \newline Marco Alberti \newline V. Campuréta 40 \newline 6883 Novazzano \newline Switzerland \newline \\
+			105  + \end{tabular}\\
+			 166 -   \\
+			 167 - Banana.ch SA \\
+			 168 - Via Trevano 7a 6900 Lugano \\
+			 169 - info@banana.ch \\
+			 170 - www.banana.ch \\
+			 171 - \\
+			 172 -  &   \\
+			 173 - Marco Alberti \\
+			 174 - V. CampurÃ©ta 40 \\
+			 175 - 6883 Novazzano \\
+			 176 - Switzerland \\
+			 177 - \\
+			 178 - \end{tabular}
+			109  + \end{tabular}\\
+			 182 - \end{tabular}
+			112  + \end{tabular}\\
+			 185 - \end{tabular}
+			115  + Product A \newline \newline  & 1.00  & 20.37  & 20.37 \\
+			116  + Product B \newline \newline  & 1.00  & 27.78  & 27.78 \\
+			117  + Discount 10\% product B \newline \newline  & 1.00  & -2.78  & -2.78 \\
+			 188 - Product A \\
+			 189 - \\
+			 190 -  & 1.00  & 20.37  & 20.37 \\
+			 191 - Product B \\
+			 192 - \\
+			 193 -  & 1.00  & 27.78  & 27.78 \\
+			 194 - Discount 10% product B \\
+			 195 - \\
+			 196 -  & 1.00  & -2.78  & -2.78 \\
+			120  +  &  & VAT 8.00\% (45.37)  & 3.63 \\
+			 199 -  &  & VAT 8.00% (45.37)  & 3.63 \\
+			125  + \end{tabular}\\
+			 204 - \end{tabular}
+
