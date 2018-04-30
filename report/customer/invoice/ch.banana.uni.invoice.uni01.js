@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.uni.invoice.uni01
 // @api = 1.0
-// @pubdate = 2018-04-06
+// @pubdate = 2018-04-30
 // @publisher = Banana.ch SA
 // @description = Style 1: Invoice with gross amounts, 2 colours
 // @description.it = Stile 1: Fattura con importi lordi, 2 colori
@@ -43,9 +43,15 @@ function settingsDialog() {
    param = verifyParam(param);
 
    if (typeof (Banana.Ui.openPropertyEditor) !== 'undefined') {
-      param = Banana.Ui.openPropertyEditor('Settings', convertParam(param));
-      if (!param)
+      var dialogTitle = 'Settings';
+      var convertedParam = convertParam(param);
+      var pageAnchor = 'dlgSettings';
+      if (!Banana.Ui.openPropertyEditor(dialogTitle, convertedParam, pageAnchor))
          return;
+      for (var i = 0; i < convertedParam.data.length; i++) {
+         // Read values to param (through the readValue function)
+         convertedParam.data[i].readValue();
+      }
    }
    else {
    var lang = Banana.document.locale;
@@ -87,41 +93,41 @@ function convertParam(param) {
    currentParam.name = 'print_header';
    currentParam.title = texts.param_print_header;
    currentParam.type = 'bool';
-   currentParam.value = false;
-   if (param.print_header)
-     currentParam.value = true;
-   var paramToString = JSON.stringify(currentParam);
-   convertedParam.data.push(paramToString);
+   currentParam.value = param.print_header ? true : false;
+   currentParam.readValue = function() {
+     param.print_header = this.value;
+   }
+   convertedParam.data.push(currentParam);
    
    currentParam = {};
    currentParam.name = 'font_family';
    currentParam.title = texts.param_font_family;
    currentParam.type = 'string';
-   currentParam.value = '';
-   if (param.font_family)
-     currentParam.value = param.font_family;
-   paramToString = JSON.stringify(currentParam);
-   convertedParam.data.push(paramToString);
+   currentParam.value = param.font_family ? param.font_family : '';
+   currentParam.readValue = function() {
+     param.font_family = this.value;
+   }
+   convertedParam.data.push(currentParam);
 
    currentParam = {};
    currentParam.name = 'color_1';
    currentParam.title = texts.param_color_1;
    currentParam.type = 'string';
-   currentParam.value = '#005392';
-   if (param.color_1)
-     currentParam.value = param.color_1;
-   paramToString = JSON.stringify(currentParam);
-   convertedParam.data.push(paramToString);
+   currentParam.value = param.color_1 ? param.color_1 : '#005392';
+   currentParam.readValue = function() {
+     param.color_1 = this.value;
+   }
+   convertedParam.data.push(currentParam);
 
    currentParam = {};
    currentParam.name = 'color_2';
    currentParam.title = texts.param_color_2;
    currentParam.type = 'string';
-   currentParam.value = '#ffffff';
-   if (param.color_2)
-     currentParam.value = param.color_2;
-   paramToString = JSON.stringify(currentParam);
-   convertedParam.data.push(paramToString);
+   currentParam.value = param.color_2 ? param.color_2 : '#ffffff';
+   currentParam.readValue = function() {
+     param.color_2 = this.value;
+   }
+   convertedParam.data.push(currentParam);
 
    return convertedParam;
 }

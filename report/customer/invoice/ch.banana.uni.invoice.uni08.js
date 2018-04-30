@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.uni.invoice.uni08
 // @api = 1.0
-// @pubdate = 2018-03-26
+// @pubdate = 2018-04-30
 // @publisher = Banana.ch SA
 // @description = Style 8: Total column, logo, 2 colors
 // @description.it = Stile 8: colonna totale, logo, 2 colori
@@ -39,6 +39,19 @@ function settingsDialog() {
       param = JSON.parse(savedParam);
    }   
    param = verifyParam(param);
+
+   if (typeof (Banana.Ui.openPropertyEditor) !== 'undefined') {
+      var dialogTitle = 'Settings';
+      var convertedParam = convertParam(param);
+      var pageAnchor = 'dlgSettings';
+      if (!Banana.Ui.openPropertyEditor(dialogTitle, convertedParam, pageAnchor))
+         return;
+      for (var i = 0; i < convertedParam.data.length; i++) {
+         // Read values to param (through the readValue function)
+         convertedParam.data[i].readValue();
+      }
+   }
+   else {
    var lang = Banana.document.locale;
    if (lang.length>2)
       lang = lang.substr(0,2);
@@ -59,9 +72,86 @@ function settingsDialog() {
    param.color_2 = Banana.Ui.getText('Settings', texts.param_color_2, param.color_2);
    if (param.color_2 === undefined)
       return;
+   }
    
    var paramToString = JSON.stringify(param);
    var value = Banana.document.setScriptSettings(paramToString);
+}
+
+function convertParam(param) {
+   var lang = 'en';
+   if (Banana.document.locale)
+     lang = Banana.document.locale;
+   if (lang.length > 2)
+      lang = lang.substr(0, 2);
+   var texts = setInvoiceTexts(lang);
+
+   var convertedParam = {};
+   convertedParam.version = '1.0';
+   /*array dei parametri dello script*/
+   convertedParam.data = [];
+   
+   var currentParam = {};
+   currentParam.name = 'print_header';
+   currentParam.title = texts.param_print_header;
+   currentParam.type = 'bool';
+   currentParam.value = param.print_header ? true : false;
+   currentParam.readValue = function() {
+     param.print_header = this.value;
+   }
+   convertedParam.data.push(currentParam);
+   
+   currentParam = {};
+   currentParam.name = 'color_1';
+   currentParam.title = texts.param_color_1;
+   currentParam.type = 'string';
+   currentParam.value = param.color_1 ? param.color_1 : '#337ab7';
+   currentParam.readValue = function() {
+     param.color_1 = this.value;
+   }
+   convertedParam.data.push(currentParam);
+
+   currentParam = {};
+   currentParam.name = 'color_2';
+   currentParam.title = texts.param_color_2;
+   currentParam.type = 'string';
+   currentParam.value = param.color_2 ? param.color_2 : '#ffffff';
+   currentParam.readValue = function() {
+     param.color_2 = this.value;
+   }
+   convertedParam.data.push(currentParam);
+
+   currentParam = {};
+   currentParam.name = 'color_3';
+   currentParam.title = texts.param_color_3;
+   currentParam.type = 'string';
+   currentParam.value = param.color_3 ? param.color_3 : '#000000';
+   currentParam.readValue = function() {
+     param.color_3 = this.value;
+   }
+   convertedParam.data.push(currentParam);
+
+   currentParam = {};
+   currentParam.name = 'color_4';
+   currentParam.title = texts.param_color_4;
+   currentParam.type = 'string';
+   currentParam.value = param.color_4 ? param.color_4 : '#dddddd';
+   currentParam.readValue = function() {
+     param.color_4 = this.value;
+   }
+   convertedParam.data.push(currentParam);
+
+   currentParam = {};
+   currentParam.name = 'image_height';
+   currentParam.title = texts.param_image_height;
+   currentParam.type = 'number';
+   currentParam.value = param.image_height ? param.image_height : '20';
+   currentParam.readValue = function() {
+     param.image_height = this.value;
+   }
+   convertedParam.data.push(currentParam);
+
+   return convertedParam;
 }
 
 function initParam() {
@@ -69,8 +159,8 @@ function initParam() {
    param.print_header = true;
    param.color_1 = '#337ab7';
    param.color_2 = '#ffffff';
-   param.color_3 = '';
-   param.color_4 = '';
+   param.color_3 = '#000000';
+   param.color_4 = '#dddddd';
    param.image_height = '20';
    return param;
 }
@@ -83,9 +173,9 @@ function verifyParam(param) {
    if (!param.color_2)
      param.color_2 = '#ffffff';
    if (!param.color_3)
-     param.color_3 = '';
+     param.color_3 = '#000000';
    if (!param.color_4)
-     param.color_4 = '';
+     param.color_4 = '#dddddd';
    if (!param.image_height)
      param.image_height = '20';
    
