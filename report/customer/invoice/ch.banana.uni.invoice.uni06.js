@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.uni.invoice.uni06
 // @api = 1.0
-// @pubdate = 2018-08-06
+// @pubdate = 2018-08-16
 // @publisher = Banana.ch SA
 // @description = Style 6: Invoice with net amounts, quantity column, logo, 2 colours
 // @description.it = Stile 6: Fattura con importi netti, colonna quantità, logo, 2 colori
@@ -26,8 +26,8 @@
 // @doctype = *
 // @task = report.customer.invoice
 
-var infoTableStart = "";
-var docTableStart = "";
+var infoTableStart = "100mm";
+var docTableStart = "130mm";
 
 /*Update script's parameters*/
 function settingsDialog() {
@@ -223,7 +223,7 @@ function printInvoice(jsonInvoice, repDocObj, param, repStyleObj) {
   /***********
     1. HEADER
   ***********/
-  var tab = repDocObj.addTable("header_table");
+  var tab = repDocObj.getHeader().addTable("header_table");
   var col1 = tab.addColumn("col1");
   var col2 = tab.addColumn("col2");
   var headerLogoSection = repDocObj.addSection("");
@@ -758,7 +758,7 @@ function setInvoiceStyle(reportObj, repStyleObj, param) {
 
     var infoStyle = repStyleObj.addStyle(".info_table_row0");
     infoStyle.setAttribute("position", "absolute");
-    infoStyle.setAttribute("margin-top", "10mm");
+    infoStyle.setAttribute("margin-top", infoTableStart);
     infoStyle.setAttribute("margin-left", "22mm");
     infoStyle.setAttribute("margin-right", "10mm");
     //repStyleObj.addStyle("table.info_table td", "border: thin solid black");
@@ -767,11 +767,11 @@ function setInvoiceStyle(reportObj, repStyleObj, param) {
     var infoStyle = repStyleObj.addStyle("@page:first-view table.info_table_row0");
     infoStyle.setAttribute("display", "none");
 
-    var itemsStyle = repStyleObj.addStyle(".doc_table:first-view");
-    itemsStyle.setAttribute("margin-top", docTableStart); //130mm
+    //var itemsStyle = repStyleObj.addStyle(".doc_table:first-view");
+    //itemsStyle.setAttribute("margin-top", docTableStart); //130mm
 
     var itemsStyle = repStyleObj.addStyle(".doc_table");
-    itemsStyle.setAttribute("margin-top", "35mm");
+    itemsStyle.setAttribute("margin-top", docTableStart);
     itemsStyle.setAttribute("margin-left", "23mm");
     itemsStyle.setAttribute("margin-right", "10mm");
     //repStyleObj.addStyle("table.doc_table td", "border: thin solid black; padding: 3px;");
