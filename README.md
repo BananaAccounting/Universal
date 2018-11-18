@@ -6,7 +6,7 @@ This repository contains file that can be used in any nation.
 For 
 ## Directory structure
 
-Conventions:
+### Conventions
 * directory and file name are English, lower case.
 * do not use space (for separation use underscore "_")
 * create a directory for a specific sector. 
@@ -15,11 +15,24 @@ Conventions:
     * for following sub languages use
       * zh-Hant (Chinese traditional)
       * 
+    
+single language sub-directory structure: 
+
+* english
+  Contain basic or advanced template.
+  * images
+    Contains images that are needed for the documentation
+  * specific subdir
+    When there is a spcific need with many  templates.
+    * images
 
 
-Structure
+### Structure
 * export
+* holding\
+  Holding, trust and other financial companies with the main activity of managing funds and investments.
 * import
+  Banana Apps for importi
   * transactions
 * family\
   * italian
@@ -27,6 +40,8 @@ Structure
   * french
     * images
   Templates for family accounting
+* property\
+  Properties management, rent and condominium
 * sme\
   Small and medium enterprise templates
 * report\
@@ -41,4 +56,6 @@ Structure
 		* images
 * restaurant\
   Small and medium enterprise templates
+* yacht\
+  Yacht accounting 
 
