@@ -18,7 +18,7 @@
 \newenvironment{testcase}[1]{\section*{Test: #1}}{\newpage}
 \newenvironment{test}[1]{\section*{Test case: #1}}{}
 %Begin test data
-%%SCRIPT{C:/Users/claudia/Documents/GitHub/Universal/report/customer/invoice/test/ch.banana.uni.invoice.uni04.test.js}
+%%SCRIPT{/Users/ivan/Documents/GitHub/Universal/report/customer/invoice/test/ch.banana.uni.invoice.uni04.test.js}
 %
 \begin{testcase}{ReportInvoiceTemplate4}
 \begin{test}{testReport}
@@ -26,6 +26,13 @@
 \section{Invoice tests}
 \subsection{Test Invoice 35}
 \begin{reportvalue}{Test Invoice 35}
+\begin{longtable}[l]{ l  l  l  l }
+\multicolumn{4}{l}{ Invoice 35 }\\
+\multicolumn{4}{l}{ Date: 29.01.2018 }\\
+\multicolumn{4}{l}{ Customer No: 100002 }\\
+\multicolumn{4}{l}{ Payment: 30 days }\\
+\multicolumn{4}{l}{ Page:  }\\
+\end{longtable}
 \begin{longtable}[l]{ l  l }
 BANANA.CH SA \newline  & Via Trevano 7a \newline \newline 6900 Lugano \newline \newline info@banana.ch www.banana.ch \newline \\
 \end{longtable}
@@ -34,7 +41,7 @@ BANANA.CH SA \newline  & Via Trevano 7a \newline \newline 6900 Lugano \newline \
 \multicolumn{4}{l}{ Date: 29.01.2018 }\\
 \multicolumn{4}{l}{ Customer No: 100002 }\\
 \multicolumn{4}{l}{ Payment: 30 days }\\
-\multicolumn{4}{l}{ Page: 1 }\\
+\multicolumn{4}{l}{ Page:  }\\
 \end{longtable}
 \begin{longtable}[l]{ l  l }
 \\
@@ -42,6 +49,7 @@ BANANA.CH SA \newline  & Via Trevano 7a \newline \newline 6900 Lugano \newline \
 \begin{longtable}[l]{ l  l }
  & Mario Bianchi \newline Via Trevano \newline 6963 Pregassona \newline \newline \\
 \end{longtable}
+This is the beginning text... \\
 \begin{longtable}[l]{ l  l  l  l  l  l  l }
 Description  &  & Quantity  &  & Unit price  &  & Total CHF \\
 Sales merchandise, invoice \#35, customer B \newline \newline  &  & 1.00  &  & 1'851.85  &  & 1'851.85 \\
@@ -58,10 +66,16 @@ Sales merchandise, invoice \#35, customer B \newline \newline  &  & 1.00  &  & 4
 \multicolumn{7}{l}{  }\\
 \multicolumn{7}{l}{Best regards, Banana.ch SA }\\
 \end{longtable}
-This is the beginning text... \\
 \end{reportvalue}
 \subsection{Test Invoice 36}
 \begin{reportvalue}{Test Invoice 36}
+\begin{longtable}[l]{ l  l  l  l }
+\multicolumn{4}{l}{ Invoice 36 }\\
+\multicolumn{4}{l}{ Date: 01.02.2018 }\\
+\multicolumn{4}{l}{ Customer No: 100004 }\\
+\multicolumn{4}{l}{ Due date: 03.03.2018 }\\
+\multicolumn{4}{l}{ Page:  }\\
+\end{longtable}
 \begin{longtable}[l]{ l  l }
 BANANA.CH SA \newline  & Via Trevano 7a \newline \newline 6900 Lugano \newline \newline info@banana.ch www.banana.ch \newline \\
 \end{longtable}
@@ -70,7 +84,7 @@ BANANA.CH SA \newline  & Via Trevano 7a \newline \newline 6900 Lugano \newline \
 \multicolumn{4}{l}{ Date: 01.02.2018 }\\
 \multicolumn{4}{l}{ Customer No: 100004 }\\
 \multicolumn{4}{l}{ Due date: 03.03.2018 }\\
-\multicolumn{4}{l}{ Page: 1 }\\
+\multicolumn{4}{l}{ Page:  }\\
 \end{longtable}
 \begin{longtable}[l]{ l  l }
 \\
@@ -78,6 +92,7 @@ BANANA.CH SA \newline  & Via Trevano 7a \newline \newline 6900 Lugano \newline \
 \begin{longtable}[l]{ l  l }
  & Susanna Lanfranchi \newline V.Meggiagra 3 \newline 6599 Robasacco \newline Switzerland \newline \\
 \end{longtable}
+This is the beginning text... \\
 \begin{longtable}[l]{ l  l  l  l  l  l  l }
 Description  &  & Quantity  &  & Unit price  &  & Total CHF \\
 Sales merchandise, invoice \#36, customer D \newline \newline  &  & 1.00  &  & 6'481.48  &  & 6'481.48 \\
@@ -87,10 +102,16 @@ Sales merchandise, invoice \#36, customer D \newline \newline  &  & 1.00  &  & 6
 \multicolumn{2}{l}{} & VAT 8.00\%  &  & 6'481.48  &  & 518.52 \\
 \multicolumn{2}{l}{} & TOTAL CHF  & \multicolumn{3}{l}{} & 7'000.00 \\
 \end{longtable}
-This is the beginning text... \\
 \end{reportvalue}
 \subsection{Test Invoice 37}
 \begin{reportvalue}{Test Invoice 37}
+\begin{longtable}[l]{ l  l  l  l }
+\multicolumn{4}{l}{ Invoice 37 }\\
+\multicolumn{4}{l}{ Date: 03.02.2018 }\\
+\multicolumn{4}{l}{ Customer No: 100001 }\\
+\multicolumn{4}{l}{ Due date: 05.03.2018 }\\
+\multicolumn{4}{l}{ Page:  }\\
+\end{longtable}
 \begin{longtable}[l]{ l  l }
 BANANA.CH SA \newline  & Via Trevano 7a \newline \newline 6900 Lugano \newline \newline info@banana.ch www.banana.ch \newline \\
 \end{longtable}
@@ -99,7 +120,7 @@ BANANA.CH SA \newline  & Via Trevano 7a \newline \newline 6900 Lugano \newline \
 \multicolumn{4}{l}{ Date: 03.02.2018 }\\
 \multicolumn{4}{l}{ Customer No: 100001 }\\
 \multicolumn{4}{l}{ Due date: 05.03.2018 }\\
-\multicolumn{4}{l}{ Page: 1 }\\
+\multicolumn{4}{l}{ Page:  }\\
 \end{longtable}
 \begin{longtable}[l]{ l  l }
 \\
@@ -107,18 +128,8 @@ BANANA.CH SA \newline  & Via Trevano 7a \newline \newline 6900 Lugano \newline \
 \begin{longtable}[l]{ l  l }
  & Carlo Rossi \newline Rossi SA \newline Via Trevano \newline 6963 Pregassona \newline Switzerland \newline \\
 \end{longtable}
-\begin{longtable}[l]{ l  l  l  l  l  l  l }
-\end{longtable}
 This is the beginning text... \\
-\begin{longtable}[l]{ l  l  l  l }
-\multicolumn{4}{l}{ Invoice 37 }\\
-\multicolumn{4}{l}{ Date: 03.02.2018 }\\
-\multicolumn{4}{l}{ Customer No: 100001 }\\
-\multicolumn{4}{l}{ Due date: 05.03.2018 }\\
-\multicolumn{4}{l}{ Page: 2 }\\
-\end{longtable}
 \begin{longtable}[l]{ l  l  l  l  l  l  l }
-Description  &  & Quantity  &  & Unit price  &  & Total CHF \\
 Description  &  & Quantity  &  & Unit price  &  & Total CHF \\
 Sales merchandise, invoice \#37, customer A \newline \newline  &  & 1.00  &  & 7'407.41  &  & 7'407.41 \\
 Consultancy \newline \newline  &  & 1.00  &  & 92.59  &  & 92.59 \\
@@ -136,6 +147,13 @@ Consultancy \newline \newline  &  & 1.00  &  & 92.59  &  & 92.59 \\
 \end{reportvalue}
 \subsection{Test Invoice 47}
 \begin{reportvalue}{Test Invoice 47}
+\begin{longtable}[l]{ l  l  l  l }
+\multicolumn{4}{l}{ Invoice 47 }\\
+\multicolumn{4}{l}{ Date: 11.11.2018 }\\
+\multicolumn{4}{l}{ Customer No: 100003 }\\
+\multicolumn{4}{l}{ Due date: 11.12.2018 }\\
+\multicolumn{4}{l}{ Page:  }\\
+\end{longtable}
 \begin{longtable}[l]{ l  l }
 BANANA.CH SA \newline  & Via Trevano 7a \newline \newline 6900 Lugano \newline \newline info@banana.ch www.banana.ch \newline \\
 \end{longtable}
@@ -144,7 +162,7 @@ BANANA.CH SA \newline  & Via Trevano 7a \newline \newline 6900 Lugano \newline \
 \multicolumn{4}{l}{ Date: 11.11.2018 }\\
 \multicolumn{4}{l}{ Customer No: 100003 }\\
 \multicolumn{4}{l}{ Due date: 11.12.2018 }\\
-\multicolumn{4}{l}{ Page: 2 }\\
+\multicolumn{4}{l}{ Page:  }\\
 \end{longtable}
 \begin{longtable}[l]{ l  l }
 \\
@@ -152,6 +170,7 @@ BANANA.CH SA \newline  & Via Trevano 7a \newline \newline 6900 Lugano \newline \
 \begin{longtable}[l]{ l  l }
  & Marco Alberti \newline V. Campuréta 40 \newline 6883 Novazzano \newline Switzerland \newline \\
 \end{longtable}
+This is the beginning text... \\
 \begin{longtable}[l]{ l  l  l  l  l  l  l }
 Description  &  & Quantity  &  & Unit price  &  & Total CHF \\
 Product A \newline \newline  &  & 1.00  &  & 20.37  &  & 20.37 \\
@@ -163,7 +182,6 @@ Discount 10\% product B \newline \newline  &  & 1.00  &  & -2.78  &  & -2.78 \\
 \multicolumn{2}{l}{} & VAT 8.00\%  &  & 45.37  &  & 3.63 \\
 \multicolumn{2}{l}{} & TOTAL CHF  & \multicolumn{3}{l}{} & 49.00 \\
 \end{longtable}
-This is the beginning text... \\
 \end{reportvalue}
 \keyvalue{Result}{Passed}
 \end{test}
