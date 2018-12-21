@@ -1313,7 +1313,7 @@ function loadTexts(banDoc,lang) {
         texts.text2 = "Text 2 (optional)";
         texts.text3 = "Text 3 (optional)";
         texts.text4 = "Text 4 (optional)";
-        texts.useDefaultTexts = "useDefaultTextse verwenden";
+        texts.useDefaultTexts = "DefaultTexte verwenden";
         texts.multiTransactionText = "Hiermit bestätigen wir, dass **<FirstName> <FamilyName>, <Address>** in der Zeit vom **<StartDate> - <EndDate>** **<Currency> <Amount>** unserem Verein gespendet hat.";
         texts.textsGroup = "Texte";
         texts.details = "Geben Sie die Spendendaten an";
