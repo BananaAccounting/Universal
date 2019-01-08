@@ -1,0 +1,2403 @@
+%%info_test_name{ch.banana.uni.app.donationstatement.test}
+\documentclass{report}
+\usepackage{longtable}
+\usepackage{color}
+\usepackage{listings}
+\usepackage[margin=1cm]{geometry}
+\begin{document}
+\newenvironment{tablevalue}[2]{\textbf{Table: #1}\begin{longtable}[l]{#2}}{\end{longtable}}
+\newenvironment{reportvalue}[1]{\textbf{Report: #1}\\}{}
+\lstnewenvironment{jsonvalue}[1]{\textbf{Json: #1}\lstset{language=Java}}{}
+\lstnewenvironment{xmlvalue}[1]{\textbf{Xml: #1}\lstset{language=Xml}}{}
+\newcommand{\info}[2]{\textit{#1: #2}\\}
+\newcommand{\fatalerror}[1]{\textbf{\textcolor[rgb]{1,0,0}{Fatal error: #1}}\\}
+\newcommand{\keyvalue}[2]{\textbf{Keyvalue: #1} #2\\}
+\newcommand{\textvalue}[1]{#1\\}
+\newcommand{\excltest}[1]{\\Excluded from compare: #1}
+\newcommand{\lognewpage}{\newpage}
+\newenvironment{testcase}[1]{\section*{Test: #1}}{\newpage}
+\newenvironment{test}[1]{\section*{Test case: #1}}{}
+%Begin test data
+%%SCRIPT{/Users/ivan/Documents/GitHub/Universal/report/association/donationstatement/./test/ch.banana.uni.app.donationstatement.test.js}
+%
+\begin{testcase}{ReportTest}
+\begin{test}{testBananaApp}
+%****************************************************************************** TEST #1 ******************************************************************************
+\begin{reportvalue}{Whole year report}
+\begin{longtable}[l]{ l  l }
+Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
+   & Sig. \\
+   & Gianpaolo Bianchi \\
+   & Via Beltramina \\
+   & 6962 Viganello \\
+\end{longtable}
+  \\
+  \\
+  \\
+  \\
+  \\
+  \\
+Attestato di donazione 2018 \\
+  \\
+  \\
+  \\
+Con la presente dichiariamo che  Gianpaolo Bianchi, Via Beltramina, 6962 Viganello  nel periodo  01.01.2018 - 31.12.2018  ha donato  CHF 500.35  alla nostra Associazione. \\
+  \\
+  \\
+\begin{longtable}[l]{ l  l  l  l  l }
+1  & 30.03.2018  & CHF  & 500.35  & Associazione Sportiva xyz \\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+ &  &  & 500.35  & \\
+\end{longtable}
+  \\
+  \\
+  \\
+  \\
+  \\
+\begin{longtable}[l]{ l  l }
+Lugano, 2 ottobre 2018  & Pinco Pallino \\
+ & Associazione Sportiva xyz \\
+\end{longtable}
+\begin{longtable}[l]{ l  l }
+Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
+   & Sig. \\
+   & Mario Rossi \\
+   & Via Trevano \\
+   & 6900 Lugano \\
+\end{longtable}
+  \\
+  \\
+  \\
+  \\
+  \\
+  \\
+Attestato di donazione 2018 \\
+  \\
+  \\
+  \\
+Con la presente dichiariamo che  Mario Rossi, Via Trevano, 6900 Lugano  nel periodo  01.01.2018 - 31.12.2018  ha donato  CHF 1'200.00  alla nostra Associazione. \\
+  \\
+  \\
+\begin{longtable}[l]{ l  l  l  l  l }
+\\
+\\
+\\
+\\
+\\
+\\
+1  & 01.01.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+2  & 01.02.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+3  & 01.03.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+4  & 01.04.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+5  & 01.05.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+6  & 01.06.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+7  & 01.07.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+8  & 01.08.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+9  & 01.09.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+10  & 01.10.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+11  & 01.11.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+12  & 01.12.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+ &  &  & 1'200.00  & \\
+\end{longtable}
+  \\
+  \\
+  \\
+  \\
+  \\
+\begin{longtable}[l]{ l  l }
+Lugano, 2 ottobre 2018  & Pinco Pallino \\
+ & Associazione Sportiva xyz \\
+\end{longtable}
+\begin{longtable}[l]{ l  l }
+Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
+   & Signora \\
+   & Sara Guidi \\
+   & Via Boschetto 45 \\
+   & 6901 Lugano \\
+\end{longtable}
+  \\
+  \\
+  \\
+  \\
+  \\
+  \\
+Attestato di donazione 2018 \\
+  \\
+  \\
+  \\
+Con la presente dichiariamo che  Sara Guidi, Via Boschetto 45, 6901 Lugano  nel periodo  01.01.2018 - 31.12.2018  ha donato  CHF 270.00  alla nostra Associazione. \\
+  \\
+  \\
+\begin{longtable}[l]{ l  l  l  l  l }
+\\
+1  & 01.04.2018  & CHF  & 60.00  & Associazione Sportiva xyz \\
+\\
+2  & 01.08.2018  & CHF  & 210.00  & Associazione Sportiva xyz \\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+ &  &  & 270.00  & \\
+\end{longtable}
+  \\
+  \\
+  \\
+  \\
+  \\
+\begin{longtable}[l]{ l  l }
+Lugano, 2 ottobre 2018  & Pinco Pallino \\
+ & Associazione Sportiva xyz \\
+\end{longtable}
+\begin{longtable}[l]{ l  l }
+Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
+   & Sig. \\
+   & Voit Ulrich \\
+   & Via alla Chiesa \\
+   & 6800 Mendrisio \\
+\end{longtable}
+  \\
+  \\
+  \\
+  \\
+  \\
+  \\
+Attestato di donazione 2018 \\
+  \\
+  \\
+  \\
+Con la presente dichiariamo che  Voit Ulrich, Via alla Chiesa, 6800 Mendrisio  nel periodo  01.01.2018 - 31.12.2018  ha donato  CHF 250.00  alla nostra Associazione. \\
+  \\
+  \\
+\begin{longtable}[l]{ l  l  l  l  l }
+\\
+\\
+1  & 01.05.2018  & CHF  & 150.00  & Associazione Sportiva xyz \\
+\\
+2  & 01.09.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+ &  &  & 250.00  & \\
+\end{longtable}
+  \\
+  \\
+  \\
+  \\
+  \\
+\begin{longtable}[l]{ l  l }
+Lugano, 2 ottobre 2018  & Pinco Pallino \\
+ & Associazione Sportiva xyz \\
+\end{longtable}
+\end{reportvalue}
+\begin{reportvalue}{Whole year report}
+\begin{longtable}[l]{ l  l }
+Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
+   & Sig. \\
+   & Gianpaolo Bianchi \\
+   & Via Beltramina \\
+   & 6962 Viganello \\
+\end{longtable}
+  \\
+  \\
+  \\
+  \\
+  \\
+  \\
+Attestato di donazione 1. Trimestre 2018 \\
+  \\
+  \\
+  \\
+Con la presente dichiariamo che  Gianpaolo Bianchi, Via Beltramina, 6962 Viganello  nel periodo  01.01.2018 - 31.03.2018  ha donato  CHF 500.35  alla nostra Associazione. \\
+  \\
+  \\
+\begin{longtable}[l]{ l  l  l  l  l }
+1  & 30.03.2018  & CHF  & 500.35  & Associazione Sportiva xyz \\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+ &  &  & 500.35  & \\
+\end{longtable}
+  \\
+  \\
+  \\
+  \\
+  \\
+\begin{longtable}[l]{ l  l }
+Lugano, 2 ottobre 2018  & Pinco Pallino \\
+ & Associazione Sportiva xyz \\
+\end{longtable}
+\begin{longtable}[l]{ l  l }
+Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
+   & Sig. \\
+   & Mario Rossi \\
+   & Via Trevano \\
+   & 6900 Lugano \\
+\end{longtable}
+  \\
+  \\
+  \\
+  \\
+  \\
+  \\
+Attestato di donazione 1. Trimestre 2018 \\
+  \\
+  \\
+  \\
+Con la presente dichiariamo che  Mario Rossi, Via Trevano, 6900 Lugano  nel periodo  01.01.2018 - 31.03.2018  ha donato  CHF 300.00  alla nostra Associazione. \\
+  \\
+  \\
+\begin{longtable}[l]{ l  l  l  l  l }
+\\
+\\
+\\
+\\
+\\
+\\
+1  & 01.01.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+2  & 01.02.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+3  & 01.03.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+ &  &  & 300.00  & \\
+\end{longtable}
+  \\
+  \\
+  \\
+  \\
+  \\
+\begin{longtable}[l]{ l  l }
+Lugano, 2 ottobre 2018  & Pinco Pallino \\
+ & Associazione Sportiva xyz \\
+\end{longtable}
+\begin{longtable}[l]{ l  l }
+Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
+   & Signora \\
+   & Sara Guidi \\
+   & Via Boschetto 45 \\
+   & 6901 Lugano \\
+\end{longtable}
+  \\
+  \\
+  \\
+  \\
+  \\
+  \\
+Attestato di donazione 1. Trimestre 2018 \\
+  \\
+  \\
+  \\
+Con la presente dichiariamo che  Sara Guidi, Via Boschetto 45, 6901 Lugano  nel periodo  01.01.2018 - 31.03.2018  ha donato  CHF 0.00  alla nostra Associazione. \\
+  \\
+  \\
+\begin{longtable}[l]{ l  l  l  l  l }
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+ &  &  & 0.00  & \\
+\end{longtable}
+  \\
+  \\
+  \\
+  \\
+  \\
+\begin{longtable}[l]{ l  l }
+Lugano, 2 ottobre 2018  & Pinco Pallino \\
+ & Associazione Sportiva xyz \\
+\end{longtable}
+\begin{longtable}[l]{ l  l }
+Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
+   & Sig. \\
+   & Voit Ulrich \\
+   & Via alla Chiesa \\
+   & 6800 Mendrisio \\
+\end{longtable}
+  \\
+  \\
+  \\
+  \\
+  \\
+  \\
+Attestato di donazione 1. Trimestre 2018 \\
+  \\
+  \\
+  \\
+Con la presente dichiariamo che  Voit Ulrich, Via alla Chiesa, 6800 Mendrisio  nel periodo  01.01.2018 - 31.03.2018  ha donato  CHF 0.00  alla nostra Associazione. \\
+  \\
+  \\
+\begin{longtable}[l]{ l  l  l  l  l }
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+ &  &  & 0.00  & \\
+\end{longtable}
+  \\
+  \\
+  \\
+  \\
+  \\
+\begin{longtable}[l]{ l  l }
+Lugano, 2 ottobre 2018  & Pinco Pallino \\
+ & Associazione Sportiva xyz \\
+\end{longtable}
+\end{reportvalue}
+\begin{reportvalue}{Whole year report}
+\begin{longtable}[l]{ l  l }
+Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
+   & Sig. \\
+   & Gianpaolo Bianchi \\
+   & Via Beltramina \\
+   & 6962 Viganello \\
+\end{longtable}
+  \\
+  \\
+  \\
+  \\
+  \\
+  \\
+Attestato di donazione 1. Semestre 2018 \\
+  \\
+  \\
+  \\
+Con la presente dichiariamo che  Gianpaolo Bianchi, Via Beltramina, 6962 Viganello  nel periodo  01.01.2018 - 30.06.2018  ha donato  CHF 500.35  alla nostra Associazione. \\
+  \\
+  \\
+\begin{longtable}[l]{ l  l  l  l  l }
+1  & 30.03.2018  & CHF  & 500.35  & Associazione Sportiva xyz \\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+ &  &  & 500.35  & \\
+\end{longtable}
+  \\
+  \\
+  \\
+  \\
+  \\
+\begin{longtable}[l]{ l  l }
+Lugano, 2 ottobre 2018  & Pinco Pallino \\
+ & Associazione Sportiva xyz \\
+\end{longtable}
+\begin{longtable}[l]{ l  l }
+Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
+   & Sig. \\
+   & Mario Rossi \\
+   & Via Trevano \\
+   & 6900 Lugano \\
+\end{longtable}
+  \\
+  \\
+  \\
+  \\
+  \\
+  \\
+Attestato di donazione 1. Semestre 2018 \\
+  \\
+  \\
+  \\
+Con la presente dichiariamo che  Mario Rossi, Via Trevano, 6900 Lugano  nel periodo  01.01.2018 - 30.06.2018  ha donato  CHF 600.00  alla nostra Associazione. \\
+  \\
+  \\
+\begin{longtable}[l]{ l  l  l  l  l }
+\\
+\\
+\\
+\\
+\\
+\\
+1  & 01.01.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+2  & 01.02.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+3  & 01.03.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+4  & 01.04.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+5  & 01.05.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+6  & 01.06.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+\\
+\\
+\\
+\\
+\\
+\\
+ &  &  & 600.00  & \\
+\end{longtable}
+  \\
+  \\
+  \\
+  \\
+  \\
+\begin{longtable}[l]{ l  l }
+Lugano, 2 ottobre 2018  & Pinco Pallino \\
+ & Associazione Sportiva xyz \\
+\end{longtable}
+\begin{longtable}[l]{ l  l }
+Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
+   & Signora \\
+   & Sara Guidi \\
+   & Via Boschetto 45 \\
+   & 6901 Lugano \\
+\end{longtable}
+  \\
+  \\
+  \\
+  \\
+  \\
+  \\
+Attestato di donazione 1. Semestre 2018 \\
+  \\
+  \\
+  \\
+Con la presente dichiariamo che  Sara Guidi, Via Boschetto 45, 6901 Lugano  nel periodo  01.01.2018 - 30.06.2018  ha donato  CHF 60.00  alla nostra Associazione. \\
+  \\
+  \\
+\begin{longtable}[l]{ l  l  l  l  l }
+\\
+1  & 01.04.2018  & CHF  & 60.00  & Associazione Sportiva xyz \\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+ &  &  & 60.00  & \\
+\end{longtable}
+  \\
+  \\
+  \\
+  \\
+  \\
+\begin{longtable}[l]{ l  l }
+Lugano, 2 ottobre 2018  & Pinco Pallino \\
+ & Associazione Sportiva xyz \\
+\end{longtable}
+\begin{longtable}[l]{ l  l }
+Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
+   & Sig. \\
+   & Voit Ulrich \\
+   & Via alla Chiesa \\
+   & 6800 Mendrisio \\
+\end{longtable}
+  \\
+  \\
+  \\
+  \\
+  \\
+  \\
+Attestato di donazione 1. Semestre 2018 \\
+  \\
+  \\
+  \\
+Con la presente dichiariamo che  Voit Ulrich, Via alla Chiesa, 6800 Mendrisio  nel periodo  01.01.2018 - 30.06.2018  ha donato  CHF 150.00  alla nostra Associazione. \\
+  \\
+  \\
+\begin{longtable}[l]{ l  l  l  l  l }
+\\
+\\
+1  & 01.05.2018  & CHF  & 150.00  & Associazione Sportiva xyz \\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+ &  &  & 150.00  & \\
+\end{longtable}
+  \\
+  \\
+  \\
+  \\
+  \\
+\begin{longtable}[l]{ l  l }
+Lugano, 2 ottobre 2018  & Pinco Pallino \\
+ & Associazione Sportiva xyz \\
+\end{longtable}
+\end{reportvalue}
+\begin{reportvalue}{Whole year report}
+\begin{longtable}[l]{ l  l }
+Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
+   & Sig. \\
+   & Gianpaolo Bianchi \\
+   & Via Beltramina \\
+   & 6962 Viganello \\
+\end{longtable}
+  \\
+  \\
+  \\
+  \\
+  \\
+  \\
+Attestato di donazione 01.01.2018 - 30.11.2018 \\
+  \\
+  \\
+  \\
+Con la presente dichiariamo che  Gianpaolo Bianchi, Via Beltramina, 6962 Viganello  nel periodo  01.01.2018 - 30.11.2018  ha donato  CHF 500.35  alla nostra Associazione. \\
+  \\
+  \\
+\begin{longtable}[l]{ l  l  l  l  l }
+1  & 30.03.2018  & CHF  & 500.35  & Associazione Sportiva xyz \\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+ &  &  & 500.35  & \\
+\end{longtable}
+  \\
+  \\
+  \\
+  \\
+  \\
+\begin{longtable}[l]{ l  l }
+Lugano, 2 ottobre 2018  & Pinco Pallino \\
+ & Associazione Sportiva xyz \\
+\end{longtable}
+\begin{longtable}[l]{ l  l }
+Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
+   & Sig. \\
+   & Mario Rossi \\
+   & Via Trevano \\
+   & 6900 Lugano \\
+\end{longtable}
+  \\
+  \\
+  \\
+  \\
+  \\
+  \\
+Attestato di donazione 01.01.2018 - 30.11.2018 \\
+  \\
+  \\
+  \\
+Con la presente dichiariamo che  Mario Rossi, Via Trevano, 6900 Lugano  nel periodo  01.01.2018 - 30.11.2018  ha donato  CHF 1'100.00  alla nostra Associazione. \\
+  \\
+  \\
+\begin{longtable}[l]{ l  l  l  l  l }
+\\
+\\
+\\
+\\
+\\
+\\
+1  & 01.01.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+2  & 01.02.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+3  & 01.03.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+4  & 01.04.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+5  & 01.05.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+6  & 01.06.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+7  & 01.07.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+8  & 01.08.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+9  & 01.09.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+10  & 01.10.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+11  & 01.11.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+\\
+ &  &  & 1'100.00  & \\
+\end{longtable}
+  \\
+  \\
+  \\
+  \\
+  \\
+\begin{longtable}[l]{ l  l }
+Lugano, 2 ottobre 2018  & Pinco Pallino \\
+ & Associazione Sportiva xyz \\
+\end{longtable}
+\begin{longtable}[l]{ l  l }
+Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
+   & Signora \\
+   & Sara Guidi \\
+   & Via Boschetto 45 \\
+   & 6901 Lugano \\
+\end{longtable}
+  \\
+  \\
+  \\
+  \\
+  \\
+  \\
+Attestato di donazione 01.01.2018 - 30.11.2018 \\
+  \\
+  \\
+  \\
+Con la presente dichiariamo che  Sara Guidi, Via Boschetto 45, 6901 Lugano  nel periodo  01.01.2018 - 30.11.2018  ha donato  CHF 270.00  alla nostra Associazione. \\
+  \\
+  \\
+\begin{longtable}[l]{ l  l  l  l  l }
+\\
+1  & 01.04.2018  & CHF  & 60.00  & Associazione Sportiva xyz \\
+\\
+2  & 01.08.2018  & CHF  & 210.00  & Associazione Sportiva xyz \\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+ &  &  & 270.00  & \\
+\end{longtable}
+  \\
+  \\
+  \\
+  \\
+  \\
+\begin{longtable}[l]{ l  l }
+Lugano, 2 ottobre 2018  & Pinco Pallino \\
+ & Associazione Sportiva xyz \\
+\end{longtable}
+\begin{longtable}[l]{ l  l }
+Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
+   & Sig. \\
+   & Voit Ulrich \\
+   & Via alla Chiesa \\
+   & 6800 Mendrisio \\
+\end{longtable}
+  \\
+  \\
+  \\
+  \\
+  \\
+  \\
+Attestato di donazione 01.01.2018 - 30.11.2018 \\
+  \\
+  \\
+  \\
+Con la presente dichiariamo che  Voit Ulrich, Via alla Chiesa, 6800 Mendrisio  nel periodo  01.01.2018 - 30.11.2018  ha donato  CHF 250.00  alla nostra Associazione. \\
+  \\
+  \\
+\begin{longtable}[l]{ l  l  l  l  l }
+\\
+\\
+1  & 01.05.2018  & CHF  & 150.00  & Associazione Sportiva xyz \\
+\\
+2  & 01.09.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+ &  &  & 250.00  & \\
+\end{longtable}
+  \\
+  \\
+  \\
+  \\
+  \\
+\begin{longtable}[l]{ l  l }
+Lugano, 2 ottobre 2018  & Pinco Pallino \\
+ & Associazione Sportiva xyz \\
+\end{longtable}
+\end{reportvalue}
+%****************************************************************************** TEST #2 ******************************************************************************
+\begin{reportvalue}{Whole year report}
+\begin{longtable}[l]{ l  l }
+Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
+   & Sig. \\
+   & Mario Rossi \\
+   & Via Trevano \\
+   & 6900 Lugano \\
+\end{longtable}
+  \\
+  \\
+  \\
+  \\
+  \\
+  \\
+Donazioni \#;10002: 2018 \\
+  \\
+  \\
+  \\
+Con la presente attestiamo che  Mario Rossi  ha donato alla nostra associazione  CHF 1'200.00 . \\
+  \\
+Periodo delle donazioni: dal 01.01.2018 al 31.12.2018. \\
+  \\
+Indirizzo: Via Trevano, 6900 Lugano. \\
+  \\
+Ringraziamo cordialmente. \\
+  \\
+  \\
+  \\
+  \\
+\begin{longtable}[l]{ l  l }
+Lugano, dicembre 2018  & Pinco Pallino \\
+ & Associazione Sportiva xyz \\
+\end{longtable}
+\begin{longtable}[l]{ l  l }
+Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
+   & Sig. \\
+   & Gianpaolo Bianchi \\
+   & Via Beltramina \\
+   & 6962 Viganello \\
+\end{longtable}
+  \\
+  \\
+  \\
+  \\
+  \\
+  \\
+Donazioni \#;10001: 2018 \\
+  \\
+  \\
+  \\
+Con la presente attestiamo che  Gianpaolo Bianchi  ha donato alla nostra associazione  CHF 500.35 . \\
+  \\
+Periodo delle donazioni: dal 01.01.2018 al 31.12.2018. \\
+  \\
+Indirizzo: Via Beltramina, 6962 Viganello. \\
+  \\
+Ringraziamo cordialmente. \\
+  \\
+  \\
+  \\
+  \\
+\begin{longtable}[l]{ l  l }
+Lugano, dicembre 2018  & Pinco Pallino \\
+ & Associazione Sportiva xyz \\
+\end{longtable}
+\begin{longtable}[l]{ l  l }
+Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
+   & Signora \\
+   & Sara Guidi \\
+   & Via Boschetto 45 \\
+   & 6901 Lugano \\
+\end{longtable}
+  \\
+  \\
+  \\
+  \\
+  \\
+  \\
+Donazioni \#;10003: 2018 \\
+  \\
+  \\
+  \\
+Con la presente attestiamo che  Sara Guidi  ha donato alla nostra associazione  CHF 270.00 . \\
+  \\
+Periodo delle donazioni: dal 01.01.2018 al 31.12.2018. \\
+  \\
+Indirizzo: Via Boschetto 45, 6901 Lugano. \\
+  \\
+Ringraziamo cordialmente. \\
+  \\
+  \\
+  \\
+  \\
+\begin{longtable}[l]{ l  l }
+Lugano, dicembre 2018  & Pinco Pallino \\
+ & Associazione Sportiva xyz \\
+\end{longtable}
+\begin{longtable}[l]{ l  l }
+Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
+   & Sig. \\
+   & Voit Ulrich \\
+   & Via alla Chiesa \\
+   & 6800 Mendrisio \\
+\end{longtable}
+  \\
+  \\
+  \\
+  \\
+  \\
+  \\
+Donazioni \#;10004: 2018 \\
+  \\
+  \\
+  \\
+Con la presente attestiamo che  Voit Ulrich  ha donato alla nostra associazione  CHF 250.00 . \\
+  \\
+Periodo delle donazioni: dal 01.01.2018 al 31.12.2018. \\
+  \\
+Indirizzo: Via alla Chiesa, 6800 Mendrisio. \\
+  \\
+Ringraziamo cordialmente. \\
+  \\
+  \\
+  \\
+  \\
+\begin{longtable}[l]{ l  l }
+Lugano, dicembre 2018  & Pinco Pallino \\
+ & Associazione Sportiva xyz \\
+\end{longtable}
+\end{reportvalue}
+\begin{reportvalue}{Whole year report}
+\begin{longtable}[l]{ l  l }
+Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
+   & Sig. \\
+   & Mario Rossi \\
+   & Via Trevano \\
+   & 6900 Lugano \\
+\end{longtable}
+  \\
+  \\
+  \\
+  \\
+  \\
+  \\
+Donazioni \#;10002: 1. Trimestre 2018 \\
+  \\
+  \\
+  \\
+Con la presente attestiamo che  Mario Rossi  ha donato alla nostra associazione  CHF 300.00 . \\
+  \\
+Periodo delle donazioni: dal 01.01.2018 al 31.03.2018. \\
+  \\
+Indirizzo: Via Trevano, 6900 Lugano. \\
+  \\
+Ringraziamo cordialmente. \\
+  \\
+  \\
+  \\
+  \\
+\begin{longtable}[l]{ l  l }
+Lugano, dicembre 2018  & Pinco Pallino \\
+ & Associazione Sportiva xyz \\
+\end{longtable}
+\begin{longtable}[l]{ l  l }
+Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
+   & Sig. \\
+   & Gianpaolo Bianchi \\
+   & Via Beltramina \\
+   & 6962 Viganello \\
+\end{longtable}
+  \\
+  \\
+  \\
+  \\
+  \\
+  \\
+Donazioni \#;10001: 1. Trimestre 2018 \\
+  \\
+  \\
+  \\
+Con la presente attestiamo che  Gianpaolo Bianchi  ha donato alla nostra associazione  CHF 500.35 . \\
+  \\
+Periodo delle donazioni: dal 01.01.2018 al 31.03.2018. \\
+  \\
+Indirizzo: Via Beltramina, 6962 Viganello. \\
+  \\
+Ringraziamo cordialmente. \\
+  \\
+  \\
+  \\
+  \\
+\begin{longtable}[l]{ l  l }
+Lugano, dicembre 2018  & Pinco Pallino \\
+ & Associazione Sportiva xyz \\
+\end{longtable}
+\begin{longtable}[l]{ l  l }
+Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
+   & Signora \\
+   & Sara Guidi \\
+   & Via Boschetto 45 \\
+   & 6901 Lugano \\
+\end{longtable}
+  \\
+  \\
+  \\
+  \\
+  \\
+  \\
+Donazioni \#;10003: 1. Trimestre 2018 \\
+  \\
+  \\
+  \\
+Con la presente attestiamo che  Sara Guidi  ha donato alla nostra associazione  CHF 0.00 . \\
+  \\
+Periodo delle donazioni: dal 01.01.2018 al 31.03.2018. \\
+  \\
+Indirizzo: Via Boschetto 45, 6901 Lugano. \\
+  \\
+Ringraziamo cordialmente. \\
+  \\
+  \\
+  \\
+  \\
+\begin{longtable}[l]{ l  l }
+Lugano, dicembre 2018  & Pinco Pallino \\
+ & Associazione Sportiva xyz \\
+\end{longtable}
+\begin{longtable}[l]{ l  l }
+Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
+   & Sig. \\
+   & Voit Ulrich \\
+   & Via alla Chiesa \\
+   & 6800 Mendrisio \\
+\end{longtable}
+  \\
+  \\
+  \\
+  \\
+  \\
+  \\
+Donazioni \#;10004: 1. Trimestre 2018 \\
+  \\
+  \\
+  \\
+Con la presente attestiamo che  Voit Ulrich  ha donato alla nostra associazione  CHF 0.00 . \\
+  \\
+Periodo delle donazioni: dal 01.01.2018 al 31.03.2018. \\
+  \\
+Indirizzo: Via alla Chiesa, 6800 Mendrisio. \\
+  \\
+Ringraziamo cordialmente. \\
+  \\
+  \\
+  \\
+  \\
+\begin{longtable}[l]{ l  l }
+Lugano, dicembre 2018  & Pinco Pallino \\
+ & Associazione Sportiva xyz \\
+\end{longtable}
+\end{reportvalue}
+\begin{reportvalue}{Whole year report}
+\begin{longtable}[l]{ l  l }
+Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
+   & Sig. \\
+   & Mario Rossi \\
+   & Via Trevano \\
+   & 6900 Lugano \\
+\end{longtable}
+  \\
+  \\
+  \\
+  \\
+  \\
+  \\
+Donazioni \#;10002: 2. Semestre 2018 \\
+  \\
+  \\
+  \\
+Con la presente attestiamo che  Mario Rossi  ha donato alla nostra associazione  CHF 600.00 . \\
+  \\
+Periodo delle donazioni: dal 01.07.2018 al 31.12.2018. \\
+  \\
+Indirizzo: Via Trevano, 6900 Lugano. \\
+  \\
+Ringraziamo cordialmente. \\
+  \\
+  \\
+  \\
+  \\
+\begin{longtable}[l]{ l  l }
+Lugano, dicembre 2018  & Pinco Pallino \\
+ & Associazione Sportiva xyz \\
+\end{longtable}
+\begin{longtable}[l]{ l  l }
+Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
+   & Sig. \\
+   & Gianpaolo Bianchi \\
+   & Via Beltramina \\
+   & 6962 Viganello \\
+\end{longtable}
+  \\
+  \\
+  \\
+  \\
+  \\
+  \\
+Donazioni \#;10001: 2. Semestre 2018 \\
+  \\
+  \\
+  \\
+Con la presente attestiamo che  Gianpaolo Bianchi  ha donato alla nostra associazione  CHF 0.00 . \\
+  \\
+Periodo delle donazioni: dal 01.07.2018 al 31.12.2018. \\
+  \\
+Indirizzo: Via Beltramina, 6962 Viganello. \\
+  \\
+Ringraziamo cordialmente. \\
+  \\
+  \\
+  \\
+  \\
+\begin{longtable}[l]{ l  l }
+Lugano, dicembre 2018  & Pinco Pallino \\
+ & Associazione Sportiva xyz \\
+\end{longtable}
+\begin{longtable}[l]{ l  l }
+Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
+   & Signora \\
+   & Sara Guidi \\
+   & Via Boschetto 45 \\
+   & 6901 Lugano \\
+\end{longtable}
+  \\
+  \\
+  \\
+  \\
+  \\
+  \\
+Donazioni \#;10003: 2. Semestre 2018 \\
+  \\
+  \\
+  \\
+Con la presente attestiamo che  Sara Guidi  ha donato alla nostra associazione  CHF 210.00 . \\
+  \\
+Periodo delle donazioni: dal 01.07.2018 al 31.12.2018. \\
+  \\
+Indirizzo: Via Boschetto 45, 6901 Lugano. \\
+  \\
+Ringraziamo cordialmente. \\
+  \\
+  \\
+  \\
+  \\
+\begin{longtable}[l]{ l  l }
+Lugano, dicembre 2018  & Pinco Pallino \\
+ & Associazione Sportiva xyz \\
+\end{longtable}
+\begin{longtable}[l]{ l  l }
+Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
+   & Sig. \\
+   & Voit Ulrich \\
+   & Via alla Chiesa \\
+   & 6800 Mendrisio \\
+\end{longtable}
+  \\
+  \\
+  \\
+  \\
+  \\
+  \\
+Donazioni \#;10004: 2. Semestre 2018 \\
+  \\
+  \\
+  \\
+Con la presente attestiamo che  Voit Ulrich  ha donato alla nostra associazione  CHF 100.00 . \\
+  \\
+Periodo delle donazioni: dal 01.07.2018 al 31.12.2018. \\
+  \\
+Indirizzo: Via alla Chiesa, 6800 Mendrisio. \\
+  \\
+Ringraziamo cordialmente. \\
+  \\
+  \\
+  \\
+  \\
+\begin{longtable}[l]{ l  l }
+Lugano, dicembre 2018  & Pinco Pallino \\
+ & Associazione Sportiva xyz \\
+\end{longtable}
+\end{reportvalue}
+\begin{reportvalue}{Whole year report}
+\begin{longtable}[l]{ l  l }
+Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
+   & Sig. \\
+   & Mario Rossi \\
+   & Via Trevano \\
+   & 6900 Lugano \\
+\end{longtable}
+  \\
+  \\
+  \\
+  \\
+  \\
+  \\
+Donazioni \#;10002: 01.01.2018 - 30.10.2018 \\
+  \\
+  \\
+  \\
+Con la presente attestiamo che  Mario Rossi  ha donato alla nostra associazione  CHF 1'000.00 . \\
+  \\
+Periodo delle donazioni: dal 01.01.2018 al 30.10.2018. \\
+  \\
+Indirizzo: Via Trevano, 6900 Lugano. \\
+  \\
+Ringraziamo cordialmente. \\
+  \\
+  \\
+  \\
+  \\
+\begin{longtable}[l]{ l  l }
+Lugano, dicembre 2018  & Pinco Pallino \\
+ & Associazione Sportiva xyz \\
+\end{longtable}
+\begin{longtable}[l]{ l  l }
+Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
+   & Sig. \\
+   & Gianpaolo Bianchi \\
+   & Via Beltramina \\
+   & 6962 Viganello \\
+\end{longtable}
+  \\
+  \\
+  \\
+  \\
+  \\
+  \\
+Donazioni \#;10001: 01.01.2018 - 30.10.2018 \\
+  \\
+  \\
+  \\
+Con la presente attestiamo che  Gianpaolo Bianchi  ha donato alla nostra associazione  CHF 500.35 . \\
+  \\
+Periodo delle donazioni: dal 01.01.2018 al 30.10.2018. \\
+  \\
+Indirizzo: Via Beltramina, 6962 Viganello. \\
+  \\
+Ringraziamo cordialmente. \\
+  \\
+  \\
+  \\
+  \\
+\begin{longtable}[l]{ l  l }
+Lugano, dicembre 2018  & Pinco Pallino \\
+ & Associazione Sportiva xyz \\
+\end{longtable}
+\begin{longtable}[l]{ l  l }
+Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
+   & Signora \\
+   & Sara Guidi \\
+   & Via Boschetto 45 \\
+   & 6901 Lugano \\
+\end{longtable}
+  \\
+  \\
+  \\
+  \\
+  \\
+  \\
+Donazioni \#;10003: 01.01.2018 - 30.10.2018 \\
+  \\
+  \\
+  \\
+Con la presente attestiamo che  Sara Guidi  ha donato alla nostra associazione  CHF 270.00 . \\
+  \\
+Periodo delle donazioni: dal 01.01.2018 al 30.10.2018. \\
+  \\
+Indirizzo: Via Boschetto 45, 6901 Lugano. \\
+  \\
+Ringraziamo cordialmente. \\
+  \\
+  \\
+  \\
+  \\
+\begin{longtable}[l]{ l  l }
+Lugano, dicembre 2018  & Pinco Pallino \\
+ & Associazione Sportiva xyz \\
+\end{longtable}
+\begin{longtable}[l]{ l  l }
+Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
+   & Sig. \\
+   & Voit Ulrich \\
+   & Via alla Chiesa \\
+   & 6800 Mendrisio \\
+\end{longtable}
+  \\
+  \\
+  \\
+  \\
+  \\
+  \\
+Donazioni \#;10004: 01.01.2018 - 30.10.2018 \\
+  \\
+  \\
+  \\
+Con la presente attestiamo che  Voit Ulrich  ha donato alla nostra associazione  CHF 250.00 . \\
+  \\
+Periodo delle donazioni: dal 01.01.2018 al 30.10.2018. \\
+  \\
+Indirizzo: Via alla Chiesa, 6800 Mendrisio. \\
+  \\
+Ringraziamo cordialmente. \\
+  \\
+  \\
+  \\
+  \\
+\begin{longtable}[l]{ l  l }
+Lugano, dicembre 2018  & Pinco Pallino \\
+ & Associazione Sportiva xyz \\
+\end{longtable}
+\end{reportvalue}
+%****************************************************************************** TEST #3 ******************************************************************************
+\begin{reportvalue}{Whole year report}
+\begin{longtable}[l]{ l  l }
+Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
+   & Sig. \\
+   & Mario Rossi \\
+   & Via Trevano \\
+   & 6900 Lugano \\
+\end{longtable}
+  \\
+  \\
+  \\
+  \\
+  \\
+  \\
+Statement of donation 2018 \\
+  \\
+  \\
+  \\
+We hereby declare that  Mario Rossi, Via Trevano, 6900 Lugano  between  01.01.2018  and  31.12.2018 donated  CHF 1'200.00  to our Association. \\
+  \\
+  \\
+\begin{longtable}[l]{ l  l  l  l  l }
+\\
+\\
+\\
+\\
+\\
+\\
+1  & 01.01.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+2  & 01.02.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+3  & 01.03.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+4  & 01.04.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+5  & 01.05.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+6  & 01.06.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+7  & 01.07.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+8  & 01.08.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+9  & 01.09.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+10  & 01.10.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+11  & 01.11.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+12  & 01.12.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+ &  &  & 1'200.00  & \\
+\end{longtable}
+  \\
+  \\
+  \\
+  \\
+  \\
+\begin{longtable}[l]{ l  l }
+Lugano, october 2nd 2018  & Pinco Pallino \\
+ & Associazione Sportiva xyz \\
+\end{longtable}
+\end{reportvalue}
+\begin{reportvalue}{Whole year report}
+\begin{longtable}[l]{ l  l }
+Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
+   & Sig. \\
+   & Mario Rossi \\
+   & Via Trevano \\
+   & 6900 Lugano \\
+\end{longtable}
+  \\
+  \\
+  \\
+  \\
+  \\
+  \\
+Statement of donation 1. Trimestre 2018 \\
+  \\
+  \\
+  \\
+We hereby declare that  Mario Rossi, Via Trevano, 6900 Lugano  between  01.01.2018  and  31.03.2018 donated  CHF 300.00  to our Association. \\
+  \\
+  \\
+\begin{longtable}[l]{ l  l  l  l  l }
+\\
+\\
+\\
+\\
+\\
+\\
+1  & 01.01.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+2  & 01.02.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+3  & 01.03.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+ &  &  & 300.00  & \\
+\end{longtable}
+  \\
+  \\
+  \\
+  \\
+  \\
+\begin{longtable}[l]{ l  l }
+Lugano, october 2nd 2018  & Pinco Pallino \\
+ & Associazione Sportiva xyz \\
+\end{longtable}
+\end{reportvalue}
+\begin{reportvalue}{Whole year report}
+\begin{longtable}[l]{ l  l }
+Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
+   & Sig. \\
+   & Mario Rossi \\
+   & Via Trevano \\
+   & 6900 Lugano \\
+\end{longtable}
+  \\
+  \\
+  \\
+  \\
+  \\
+  \\
+Statement of donation 1. Semestre 2018 \\
+  \\
+  \\
+  \\
+We hereby declare that  Mario Rossi, Via Trevano, 6900 Lugano  between  01.01.2018  and  30.06.2018 donated  CHF 600.00  to our Association. \\
+  \\
+  \\
+\begin{longtable}[l]{ l  l  l  l  l }
+\\
+\\
+\\
+\\
+\\
+\\
+1  & 01.01.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+2  & 01.02.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+3  & 01.03.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+4  & 01.04.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+5  & 01.05.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+6  & 01.06.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+\\
+\\
+\\
+\\
+\\
+\\
+ &  &  & 600.00  & \\
+\end{longtable}
+  \\
+  \\
+  \\
+  \\
+  \\
+\begin{longtable}[l]{ l  l }
+Lugano, october 2nd 2018  & Pinco Pallino \\
+ & Associazione Sportiva xyz \\
+\end{longtable}
+\end{reportvalue}
+\begin{reportvalue}{Whole year report}
+\begin{longtable}[l]{ l  l }
+Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
+   & Sig. \\
+   & Mario Rossi \\
+   & Via Trevano \\
+   & 6900 Lugano \\
+\end{longtable}
+  \\
+  \\
+  \\
+  \\
+  \\
+  \\
+Statement of donation 01.01.2018 - 30.11.2018 \\
+  \\
+  \\
+  \\
+We hereby declare that  Mario Rossi, Via Trevano, 6900 Lugano  between  01.01.2018  and  30.11.2018 donated  CHF 1'100.00  to our Association. \\
+  \\
+  \\
+\begin{longtable}[l]{ l  l  l  l  l }
+\\
+\\
+\\
+\\
+\\
+\\
+1  & 01.01.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+2  & 01.02.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+3  & 01.03.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+4  & 01.04.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+5  & 01.05.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+6  & 01.06.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+7  & 01.07.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+8  & 01.08.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+9  & 01.09.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+10  & 01.10.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+11  & 01.11.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+\\
+ &  &  & 1'100.00  & \\
+\end{longtable}
+  \\
+  \\
+  \\
+  \\
+  \\
+\begin{longtable}[l]{ l  l }
+Lugano, october 2nd 2018  & Pinco Pallino \\
+ & Associazione Sportiva xyz \\
+\end{longtable}
+\end{reportvalue}
+%****************************************************************************** TEST #4 ******************************************************************************
+\begin{reportvalue}{Whole year report}
+\begin{longtable}[l]{ l  l }
+Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
+   & Sig. \\
+   & Mario Rossi \\
+   & Via Trevano \\
+   & 6900 Lugano \\
+\end{longtable}
+  \\
+  \\
+  \\
+  \\
+  \\
+  \\
+Spendenbescheinigung 2018 \\
+  \\
+  \\
+  \\
+Hiermit bestätigen wir, dass  Mario Rossi, Via Trevano, 6900 Lugano  in der Zeit vom  01.01.2018 - 31.12.2018   CHF 1'200.00  unserem Verein gespendet hat. \\
+  \\
+  \\
+\begin{longtable}[l]{ l  l  l  l  l }
+\\
+\\
+\\
+\\
+\\
+\\
+1  & 01.01.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+2  & 01.02.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+3  & 01.03.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+4  & 01.04.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+5  & 01.05.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+6  & 01.06.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+7  & 01.07.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+8  & 01.08.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+9  & 01.09.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+10  & 01.10.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+11  & 01.11.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+12  & 01.12.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+ &  &  & 1'200.00  & \\
+\end{longtable}
+  \\
+  \\
+  \\
+  \\
+  \\
+\begin{longtable}[l]{ l  l }
+Lugano, 2 Oktober 2018  & Pinco Pallino \\
+ & Associazione Sportiva xyz \\
+\end{longtable}
+\end{reportvalue}
+\begin{reportvalue}{Whole year report}
+\begin{longtable}[l]{ l  l }
+Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
+   & Sig. \\
+   & Mario Rossi \\
+   & Via Trevano \\
+   & 6900 Lugano \\
+\end{longtable}
+  \\
+  \\
+  \\
+  \\
+  \\
+  \\
+Spendenbescheinigung 1. Trimestre 2018 \\
+  \\
+  \\
+  \\
+Hiermit bestätigen wir, dass  Mario Rossi, Via Trevano, 6900 Lugano  in der Zeit vom  01.01.2018 - 31.03.2018   CHF 300.00  unserem Verein gespendet hat. \\
+  \\
+  \\
+\begin{longtable}[l]{ l  l  l  l  l }
+\\
+\\
+\\
+\\
+\\
+\\
+1  & 01.01.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+2  & 01.02.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+3  & 01.03.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+ &  &  & 300.00  & \\
+\end{longtable}
+  \\
+  \\
+  \\
+  \\
+  \\
+\begin{longtable}[l]{ l  l }
+Lugano, 2 Oktober 2018  & Pinco Pallino \\
+ & Associazione Sportiva xyz \\
+\end{longtable}
+\end{reportvalue}
+\begin{reportvalue}{Whole year report}
+\begin{longtable}[l]{ l  l }
+Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
+   & Sig. \\
+   & Mario Rossi \\
+   & Via Trevano \\
+   & 6900 Lugano \\
+\end{longtable}
+  \\
+  \\
+  \\
+  \\
+  \\
+  \\
+Spendenbescheinigung 1. Semestre 2018 \\
+  \\
+  \\
+  \\
+Hiermit bestätigen wir, dass  Mario Rossi, Via Trevano, 6900 Lugano  in der Zeit vom  01.01.2018 - 30.06.2018   CHF 600.00  unserem Verein gespendet hat. \\
+  \\
+  \\
+\begin{longtable}[l]{ l  l  l  l  l }
+\\
+\\
+\\
+\\
+\\
+\\
+1  & 01.01.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+2  & 01.02.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+3  & 01.03.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+4  & 01.04.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+5  & 01.05.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+6  & 01.06.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+\\
+\\
+\\
+\\
+\\
+\\
+ &  &  & 600.00  & \\
+\end{longtable}
+  \\
+  \\
+  \\
+  \\
+  \\
+\begin{longtable}[l]{ l  l }
+Lugano, 2 Oktober 2018  & Pinco Pallino \\
+ & Associazione Sportiva xyz \\
+\end{longtable}
+\end{reportvalue}
+\begin{reportvalue}{Whole year report}
+\begin{longtable}[l]{ l  l }
+Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
+   & Sig. \\
+   & Mario Rossi \\
+   & Via Trevano \\
+   & 6900 Lugano \\
+\end{longtable}
+  \\
+  \\
+  \\
+  \\
+  \\
+  \\
+Spendenbescheinigung 01.01.2018 - 30.11.2018 \\
+  \\
+  \\
+  \\
+Hiermit bestätigen wir, dass  Mario Rossi, Via Trevano, 6900 Lugano  in der Zeit vom  01.01.2018 - 30.11.2018   CHF 1'100.00  unserem Verein gespendet hat. \\
+  \\
+  \\
+\begin{longtable}[l]{ l  l  l  l  l }
+\\
+\\
+\\
+\\
+\\
+\\
+1  & 01.01.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+2  & 01.02.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+3  & 01.03.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+4  & 01.04.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+5  & 01.05.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+6  & 01.06.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+7  & 01.07.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+8  & 01.08.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+9  & 01.09.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+10  & 01.10.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+11  & 01.11.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+\\
+ &  &  & 1'100.00  & \\
+\end{longtable}
+  \\
+  \\
+  \\
+  \\
+  \\
+\begin{longtable}[l]{ l  l }
+Lugano, 2 Oktober 2018  & Pinco Pallino \\
+ & Associazione Sportiva xyz \\
+\end{longtable}
+\end{reportvalue}
+%****************************************************************************** TEST #5 ******************************************************************************
+\begin{reportvalue}{Whole year report}
+\begin{longtable}[l]{ l  l }
+Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
+   & Sig. \\
+   & Mario Rossi \\
+   & Via Trevano \\
+   & 6900 Lugano \\
+\end{longtable}
+  \\
+  \\
+  \\
+  \\
+  \\
+  \\
+Certificat de don 2018 \\
+  \\
+  \\
+  \\
+Nous déclarons par la présente que  Mario Rossi, Via Trevano, 6900 Lugano  dans la période  01.01.2018 - 31.12.2018  a fait don de  CHF 1'200.00  à notre Association. \\
+  \\
+  \\
+\begin{longtable}[l]{ l  l  l  l  l }
+\\
+\\
+\\
+\\
+\\
+\\
+1  & 01.01.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+2  & 01.02.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+3  & 01.03.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+4  & 01.04.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+5  & 01.05.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+6  & 01.06.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+7  & 01.07.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+8  & 01.08.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+9  & 01.09.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+10  & 01.10.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+11  & 01.11.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+12  & 01.12.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+ &  &  & 1'200.00  & \\
+\end{longtable}
+  \\
+  \\
+  \\
+  \\
+  \\
+\begin{longtable}[l]{ l  l }
+Lugano, 2 octobre 2018  & Pinco Pallino \\
+ & Associazione Sportiva xyz \\
+\end{longtable}
+\end{reportvalue}
+\begin{reportvalue}{Whole year report}
+\begin{longtable}[l]{ l  l }
+Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
+   & Sig. \\
+   & Mario Rossi \\
+   & Via Trevano \\
+   & 6900 Lugano \\
+\end{longtable}
+  \\
+  \\
+  \\
+  \\
+  \\
+  \\
+Certificat de don 1. Trimestre 2018 \\
+  \\
+  \\
+  \\
+Nous déclarons par la présente que  Mario Rossi, Via Trevano, 6900 Lugano  dans la période  01.01.2018 - 31.03.2018  a fait don de  CHF 300.00  à notre Association. \\
+  \\
+  \\
+\begin{longtable}[l]{ l  l  l  l  l }
+\\
+\\
+\\
+\\
+\\
+\\
+1  & 01.01.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+2  & 01.02.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+3  & 01.03.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+ &  &  & 300.00  & \\
+\end{longtable}
+  \\
+  \\
+  \\
+  \\
+  \\
+\begin{longtable}[l]{ l  l }
+Lugano, 2 octobre 2018  & Pinco Pallino \\
+ & Associazione Sportiva xyz \\
+\end{longtable}
+\end{reportvalue}
+\begin{reportvalue}{Whole year report}
+\begin{longtable}[l]{ l  l }
+Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
+   & Sig. \\
+   & Mario Rossi \\
+   & Via Trevano \\
+   & 6900 Lugano \\
+\end{longtable}
+  \\
+  \\
+  \\
+  \\
+  \\
+  \\
+Certificat de don 1. Semestre 2018 \\
+  \\
+  \\
+  \\
+Nous déclarons par la présente que  Mario Rossi, Via Trevano, 6900 Lugano  dans la période  01.01.2018 - 30.06.2018  a fait don de  CHF 600.00  à notre Association. \\
+  \\
+  \\
+\begin{longtable}[l]{ l  l  l  l  l }
+\\
+\\
+\\
+\\
+\\
+\\
+1  & 01.01.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+2  & 01.02.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+3  & 01.03.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+4  & 01.04.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+5  & 01.05.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+6  & 01.06.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+\\
+\\
+\\
+\\
+\\
+\\
+ &  &  & 600.00  & \\
+\end{longtable}
+  \\
+  \\
+  \\
+  \\
+  \\
+\begin{longtable}[l]{ l  l }
+Lugano, 2 octobre 2018  & Pinco Pallino \\
+ & Associazione Sportiva xyz \\
+\end{longtable}
+\end{reportvalue}
+\begin{reportvalue}{Whole year report}
+\begin{longtable}[l]{ l  l }
+Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
+   & Sig. \\
+   & Mario Rossi \\
+   & Via Trevano \\
+   & 6900 Lugano \\
+\end{longtable}
+  \\
+  \\
+  \\
+  \\
+  \\
+  \\
+Certificat de don 01.01.2018 - 30.11.2018 \\
+  \\
+  \\
+  \\
+Nous déclarons par la présente que  Mario Rossi, Via Trevano, 6900 Lugano  dans la période  01.01.2018 - 30.11.2018  a fait don de  CHF 1'100.00  à notre Association. \\
+  \\
+  \\
+\begin{longtable}[l]{ l  l  l  l  l }
+\\
+\\
+\\
+\\
+\\
+\\
+1  & 01.01.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+2  & 01.02.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+3  & 01.03.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+4  & 01.04.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+5  & 01.05.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+6  & 01.06.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+7  & 01.07.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+8  & 01.08.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+9  & 01.09.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+10  & 01.10.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+11  & 01.11.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+\\
+ &  &  & 1'100.00  & \\
+\end{longtable}
+  \\
+  \\
+  \\
+  \\
+  \\
+\begin{longtable}[l]{ l  l }
+Lugano, 2 octobre 2018  & Pinco Pallino \\
+ & Associazione Sportiva xyz \\
+\end{longtable}
+\end{reportvalue}
+%****************************************************************************** TEST #6 ******************************************************************************
+\begin{reportvalue}{Whole year report}
+\begin{longtable}[l]{ l  l }
+Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
+   & Sig. \\
+   & Mario Rossi \\
+   & Via Trevano \\
+   & 6900 Lugano \\
+\end{longtable}
+  \\
+  \\
+  \\
+  \\
+  \\
+  \\
+Kwitantie voor giften 2018 \\
+  \\
+  \\
+  \\
+Wij verklaren hierbij dat  Mario Rossi, Via Trevano, 6900 Lugano  tussen  01.01.2018  en  31.12.2018  het bedrag van  CHF 1'200.00  geschonken heeft aan onze instelling. \\
+  \\
+  \\
+\begin{longtable}[l]{ l  l  l  l  l }
+\\
+\\
+\\
+\\
+\\
+\\
+1  & 01.01.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+2  & 01.02.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+3  & 01.03.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+4  & 01.04.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+5  & 01.05.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+6  & 01.06.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+7  & 01.07.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+8  & 01.08.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+9  & 01.09.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+10  & 01.10.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+11  & 01.11.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+12  & 01.12.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+ &  &  & 1'200.00  & \\
+\end{longtable}
+  \\
+  \\
+  \\
+  \\
+  \\
+\begin{longtable}[l]{ l  l }
+Lugano, 2 oktober 2018  & Pinco Pallino \\
+ & Associazione Sportiva xyz \\
+\end{longtable}
+\end{reportvalue}
+\begin{reportvalue}{Whole year report}
+\begin{longtable}[l]{ l  l }
+Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
+   & Sig. \\
+   & Mario Rossi \\
+   & Via Trevano \\
+   & 6900 Lugano \\
+\end{longtable}
+  \\
+  \\
+  \\
+  \\
+  \\
+  \\
+Kwitantie voor giften 1. Trimestre 2018 \\
+  \\
+  \\
+  \\
+Wij verklaren hierbij dat  Mario Rossi, Via Trevano, 6900 Lugano  tussen  01.01.2018  en  31.03.2018  het bedrag van  CHF 300.00  geschonken heeft aan onze instelling. \\
+  \\
+  \\
+\begin{longtable}[l]{ l  l  l  l  l }
+\\
+\\
+\\
+\\
+\\
+\\
+1  & 01.01.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+2  & 01.02.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+3  & 01.03.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+ &  &  & 300.00  & \\
+\end{longtable}
+  \\
+  \\
+  \\
+  \\
+  \\
+\begin{longtable}[l]{ l  l }
+Lugano, 2 oktober 2018  & Pinco Pallino \\
+ & Associazione Sportiva xyz \\
+\end{longtable}
+\end{reportvalue}
+\begin{reportvalue}{Whole year report}
+\begin{longtable}[l]{ l  l }
+Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
+   & Sig. \\
+   & Mario Rossi \\
+   & Via Trevano \\
+   & 6900 Lugano \\
+\end{longtable}
+  \\
+  \\
+  \\
+  \\
+  \\
+  \\
+Kwitantie voor giften 1. Semestre 2018 \\
+  \\
+  \\
+  \\
+Wij verklaren hierbij dat  Mario Rossi, Via Trevano, 6900 Lugano  tussen  01.01.2018  en  30.06.2018  het bedrag van  CHF 600.00  geschonken heeft aan onze instelling. \\
+  \\
+  \\
+\begin{longtable}[l]{ l  l  l  l  l }
+\\
+\\
+\\
+\\
+\\
+\\
+1  & 01.01.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+2  & 01.02.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+3  & 01.03.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+4  & 01.04.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+5  & 01.05.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+6  & 01.06.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+\\
+\\
+\\
+\\
+\\
+\\
+ &  &  & 600.00  & \\
+\end{longtable}
+  \\
+  \\
+  \\
+  \\
+  \\
+\begin{longtable}[l]{ l  l }
+Lugano, 2 oktober 2018  & Pinco Pallino \\
+ & Associazione Sportiva xyz \\
+\end{longtable}
+\end{reportvalue}
+\begin{reportvalue}{Whole year report}
+\begin{longtable}[l]{ l  l }
+Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
+   & Sig. \\
+   & Mario Rossi \\
+   & Via Trevano \\
+   & 6900 Lugano \\
+\end{longtable}
+  \\
+  \\
+  \\
+  \\
+  \\
+  \\
+Kwitantie voor giften 01.01.2018 - 30.11.2018 \\
+  \\
+  \\
+  \\
+Wij verklaren hierbij dat  Mario Rossi, Via Trevano, 6900 Lugano  tussen  01.01.2018  en  30.11.2018  het bedrag van  CHF 1'100.00  geschonken heeft aan onze instelling. \\
+  \\
+  \\
+\begin{longtable}[l]{ l  l  l  l  l }
+\\
+\\
+\\
+\\
+\\
+\\
+1  & 01.01.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+2  & 01.02.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+3  & 01.03.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+4  & 01.04.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+5  & 01.05.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+6  & 01.06.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+7  & 01.07.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+8  & 01.08.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+9  & 01.09.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+10  & 01.10.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+11  & 01.11.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+\\
+ &  &  & 1'100.00  & \\
+\end{longtable}
+  \\
+  \\
+  \\
+  \\
+  \\
+\begin{longtable}[l]{ l  l }
+Lugano, 2 oktober 2018  & Pinco Pallino \\
+ & Associazione Sportiva xyz \\
+\end{longtable}
+\end{reportvalue}
+%****************************************************************************** TEST #7 ******************************************************************************
+\begin{reportvalue}{Whole year report}
+\begin{longtable}[l]{ l  l }
+Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
+   & Sig. \\
+   & Mario Rossi \\
+   & Via Trevano \\
+   & 6900 Lugano \\
+\end{longtable}
+  \\
+  \\
+  \\
+  \\
+  \\
+  \\
+Certificado de doação 2018 \\
+  \\
+  \\
+  \\
+Declaramos pela presente que  Mario Rossi, Via Trevano, 6900 Lugano  entre  01.01.2018  e  31.12.2018 doou  CHF 1'200.00  para nossa Associação. \\
+  \\
+  \\
+\begin{longtable}[l]{ l  l  l  l  l }
+\\
+\\
+\\
+\\
+\\
+\\
+1  & 01.01.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+2  & 01.02.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+3  & 01.03.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+4  & 01.04.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+5  & 01.05.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+6  & 01.06.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+7  & 01.07.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+8  & 01.08.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+9  & 01.09.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+10  & 01.10.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+11  & 01.11.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+12  & 01.12.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+ &  &  & 1'200.00  & \\
+\end{longtable}
+  \\
+  \\
+  \\
+  \\
+  \\
+\begin{longtable}[l]{ l  l }
+Lugano, 2 oktober 2018  & Pinco Pallino \\
+ & Associazione Sportiva xyz \\
+\end{longtable}
+\end{reportvalue}
+\begin{reportvalue}{Whole year report}
+\begin{longtable}[l]{ l  l }
+Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
+   & Sig. \\
+   & Mario Rossi \\
+   & Via Trevano \\
+   & 6900 Lugano \\
+\end{longtable}
+  \\
+  \\
+  \\
+  \\
+  \\
+  \\
+Certificado de doação 1. Trimestre 2018 \\
+  \\
+  \\
+  \\
+Declaramos pela presente que  Mario Rossi, Via Trevano, 6900 Lugano  entre  01.01.2018  e  31.03.2018 doou  CHF 300.00  para nossa Associação. \\
+  \\
+  \\
+\begin{longtable}[l]{ l  l  l  l  l }
+\\
+\\
+\\
+\\
+\\
+\\
+1  & 01.01.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+2  & 01.02.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+3  & 01.03.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+ &  &  & 300.00  & \\
+\end{longtable}
+  \\
+  \\
+  \\
+  \\
+  \\
+\begin{longtable}[l]{ l  l }
+Lugano, 2 oktober 2018  & Pinco Pallino \\
+ & Associazione Sportiva xyz \\
+\end{longtable}
+\end{reportvalue}
+\begin{reportvalue}{Whole year report}
+\begin{longtable}[l]{ l  l }
+Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
+   & Sig. \\
+   & Mario Rossi \\
+   & Via Trevano \\
+   & 6900 Lugano \\
+\end{longtable}
+  \\
+  \\
+  \\
+  \\
+  \\
+  \\
+Certificado de doação 1. Semestre 2018 \\
+  \\
+  \\
+  \\
+Declaramos pela presente que  Mario Rossi, Via Trevano, 6900 Lugano  entre  01.01.2018  e  30.06.2018 doou  CHF 600.00  para nossa Associação. \\
+  \\
+  \\
+\begin{longtable}[l]{ l  l  l  l  l }
+\\
+\\
+\\
+\\
+\\
+\\
+1  & 01.01.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+2  & 01.02.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+3  & 01.03.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+4  & 01.04.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+5  & 01.05.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+6  & 01.06.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+\\
+\\
+\\
+\\
+\\
+\\
+ &  &  & 600.00  & \\
+\end{longtable}
+  \\
+  \\
+  \\
+  \\
+  \\
+\begin{longtable}[l]{ l  l }
+Lugano, 2 oktober 2018  & Pinco Pallino \\
+ & Associazione Sportiva xyz \\
+\end{longtable}
+\end{reportvalue}
+\begin{reportvalue}{Whole year report}
+\begin{longtable}[l]{ l  l }
+Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
+   & Sig. \\
+   & Mario Rossi \\
+   & Via Trevano \\
+   & 6900 Lugano \\
+\end{longtable}
+  \\
+  \\
+  \\
+  \\
+  \\
+  \\
+Certificado de doação 01.01.2018 - 30.11.2018 \\
+  \\
+  \\
+  \\
+Declaramos pela presente que  Mario Rossi, Via Trevano, 6900 Lugano  entre  01.01.2018  e  30.11.2018 doou  CHF 1'100.00  para nossa Associação. \\
+  \\
+  \\
+\begin{longtable}[l]{ l  l  l  l  l }
+\\
+\\
+\\
+\\
+\\
+\\
+1  & 01.01.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+2  & 01.02.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+3  & 01.03.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+4  & 01.04.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+5  & 01.05.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+6  & 01.06.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+7  & 01.07.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+8  & 01.08.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+9  & 01.09.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+10  & 01.10.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+11  & 01.11.2018  & CHF  & 100.00  & Associazione Sportiva xyz \\
+\\
+ &  &  & 1'100.00  & \\
+\end{longtable}
+  \\
+  \\
+  \\
+  \\
+  \\
+\begin{longtable}[l]{ l  l }
+Lugano, 2 oktober 2018  & Pinco Pallino \\
+ & Associazione Sportiva xyz \\
+\end{longtable}
+\end{reportvalue}
+\keyvalue{Result}{Passed}
+\end{test}
+\end{testcase}
+\end{document}
