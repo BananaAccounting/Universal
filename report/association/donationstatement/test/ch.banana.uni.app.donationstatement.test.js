@@ -16,7 +16,7 @@
 
 // @id = ch.banana.uni.app.donationstatement.test
 // @api = 1.0
-// @pubdate = 2018-12-19
+// @pubdate = 2019-02-12
 // @publisher = Banana.ch SA
 // @description = <TEST ch.banana.uni.app.donationstatement.js>
 // @task = app.command
@@ -63,17 +63,19 @@ ReportTest.prototype.testBananaApp = function() {
 
   //Test file 1
   var file = "file:script/../test/testcases/test001.ac2";
+  var banDoc = Banana.application.openDocument(file);
+  Test.assert(banDoc);
+
   var userParam = {};
   var texts = {};
   var lang;
 
   // Test #1 - it
   Test.logger.addComment("****************************************************************************** TEST #1 ******************************************************************************");
-  var banDoc = Banana.application.openDocument(file);
-  Test.assert(banDoc);
   lang = "it";
   texts = loadTexts(banDoc,lang);
   userParam.costcenter = ';10001,;10002,;10003,;10004';
+  userParam.costcenterAmountZero = true;
   userParam.texts = '';
   userParam.useDefaultTexts = true;
   userParam.titleText = texts.title;
@@ -94,11 +96,10 @@ ReportTest.prototype.testBananaApp = function() {
   
   // Test #2 - it
   Test.logger.addComment("****************************************************************************** TEST #2 ******************************************************************************");
-  var banDoc = Banana.application.openDocument(file);
-  Test.assert(banDoc);
   lang = "it";
   texts = loadTexts(banDoc,lang);
   userParam.costcenter = '';
+  userParam.costcenterAmountZero = true;
   userParam.texts = '';
   userParam.useDefaultTexts = false;
   userParam.titleText = 'Donazioni #<Account>: <Period>';
@@ -119,11 +120,10 @@ ReportTest.prototype.testBananaApp = function() {
 
   // Test #3 - en
   Test.logger.addComment("****************************************************************************** TEST #3 ******************************************************************************");
-  var banDoc = Banana.application.openDocument(file);
-  Test.assert(banDoc);
   lang = "en";
   texts = loadTexts(banDoc,lang);
   userParam.costcenter = '10002';
+  userParam.costcenterAmountZero = true;
   userParam.texts = '';
   userParam.useDefaultTexts = true;
   userParam.titleText = texts.title;
@@ -144,11 +144,10 @@ ReportTest.prototype.testBananaApp = function() {
 
   // Test #4 - de
   Test.logger.addComment("****************************************************************************** TEST #4 ******************************************************************************");
-  var banDoc = Banana.application.openDocument(file);
-  Test.assert(banDoc);
   lang = "de";
   texts = loadTexts(banDoc,lang);
   userParam.costcenter = '10002';
+  userParam.costcenterAmountZero = true;
   userParam.texts = '';
   userParam.useDefaultTexts = true;
   userParam.titleText = texts.title;
@@ -169,11 +168,10 @@ ReportTest.prototype.testBananaApp = function() {
 
   // Test #5 - fr
   Test.logger.addComment("****************************************************************************** TEST #5 ******************************************************************************");
-  var banDoc = Banana.application.openDocument(file);
-  Test.assert(banDoc);
   lang = "fr";
   texts = loadTexts(banDoc,lang);
   userParam.costcenter = '10002';
+  userParam.costcenterAmountZero = true;
   userParam.texts = '';
   userParam.useDefaultTexts = true;
   userParam.titleText = texts.title;
@@ -194,11 +192,10 @@ ReportTest.prototype.testBananaApp = function() {
 
   // Test #6 - nl
   Test.logger.addComment("****************************************************************************** TEST #6 ******************************************************************************");
-  var banDoc = Banana.application.openDocument(file);
-  Test.assert(banDoc);
   lang = "nl";
   texts = loadTexts(banDoc,lang);
   userParam.costcenter = '10002';
+  userParam.costcenterAmountZero = true;
   userParam.texts = '';
   userParam.useDefaultTexts = true;
   userParam.titleText = texts.title;
@@ -219,11 +216,10 @@ ReportTest.prototype.testBananaApp = function() {
 
   // Test #7 - pt
   Test.logger.addComment("****************************************************************************** TEST #7 ******************************************************************************");
-  var banDoc = Banana.application.openDocument(file);
-  Test.assert(banDoc);
   lang = "pt";
   texts = loadTexts(banDoc,lang);
   userParam.costcenter = '10002';
+  userParam.costcenterAmountZero = true;
   userParam.texts = '';
   userParam.useDefaultTexts = true;
   userParam.titleText = texts.title;
@@ -242,12 +238,34 @@ ReportTest.prototype.testBananaApp = function() {
   this.report_test(banDoc, "2018-01-01", "2018-06-30", userParam, lang, "Whole year report");
   this.report_test(banDoc, "2018-01-01", "2018-11-30", userParam, lang, "Whole year report");
 
+  // Test #8 - en, without accounts with balance zero (10003 and 10004 are not printed)
+  Test.logger.addComment("****************************************************************************** TEST #8 ******************************************************************************");
+  lang = "en";
+  texts = loadTexts(banDoc,lang);
+  userParam.costcenter = ';10001,;10003,;10004';
+  userParam.costcenterAmountZero = false;
+  userParam.texts = '';
+  userParam.useDefaultTexts = true;
+  userParam.titleText = texts.title;
+  userParam.text1 = texts.multiTransactionText;
+  userParam.text2 = '';
+  userParam.text3 = '';
+  userParam.text4 = '';
+  userParam.details = true;
+  userParam.signature = 'Pinco Pallino';
+  userParam.localityAndDate = 'Lugano, 12 february 2019';
+  userParam.printLogo = false;
+  userParam.signatureImage = '';
+  userParam.imageHeight = '';
+  this.report_test(banDoc, "2018-01-01", "2018-03-31", userParam, lang, "Whole year report");
+
 }
 
 //Function that create the report for the test
 ReportTest.prototype.report_test = function(banDoc, startDate, endDate, userParam, lang, reportName) {
   texts = loadTexts(banDoc,lang);
-  var report = createReport(banDoc, startDate, endDate, userParam, lang);
+  var accounts = getAccountsToPrint(banDoc, startDate, endDate, userParam);
+  var report = createReport(banDoc, startDate, endDate, userParam, accounts,lang);
   Test.logger.addReport(reportName, report);
 }
 

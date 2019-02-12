@@ -18,7 +18,7 @@
 \newenvironment{testcase}[1]{\section*{Test: #1}}{\newpage}
 \newenvironment{test}[1]{\section*{Test case: #1}}{}
 %Begin test data
-%%SCRIPT{/Users/ivan/Documents/GitHub/Universal/report/association/donationstatement/./test/ch.banana.uni.app.donationstatement.test.js}
+%%SCRIPT{/Users/ivan/Documents/GitHub/Universal/report/association/donationstatement/test/ch.banana.uni.app.donationstatement.test.js}
 %
 \begin{testcase}{ReportTest}
 \begin{test}{testBananaApp}
@@ -346,7 +346,7 @@ Attestato di donazione 1. Trimestre 2018 \\
 Con la presente dichiariamo che  Sara Guidi, Via Boschetto 45, 6901 Lugano  nel periodo  01.01.2018 - 31.03.2018  ha donato  CHF 0.00  alla nostra Associazione. \\
   \\
   \\
-\begin{longtable}[l]{ l  l  l  l  l }
+\begin{longtable}[l]{}
 \\
 \\
 \\
@@ -365,7 +365,6 @@ Con la presente dichiariamo che  Sara Guidi, Via Boschetto 45, 6901 Lugano  nel 
 \\
 \\
 \\
- &  &  & 0.00  & \\
 \end{longtable}
   \\
   \\
@@ -396,7 +395,7 @@ Attestato di donazione 1. Trimestre 2018 \\
 Con la presente dichiariamo che  Voit Ulrich, Via alla Chiesa, 6800 Mendrisio  nel periodo  01.01.2018 - 31.03.2018  ha donato  CHF 0.00  alla nostra Associazione. \\
   \\
   \\
-\begin{longtable}[l]{ l  l  l  l  l }
+\begin{longtable}[l]{}
 \\
 \\
 \\
@@ -415,7 +414,6 @@ Con la presente dichiariamo che  Voit Ulrich, Via alla Chiesa, 6800 Mendrisio  n
 \\
 \\
 \\
- &  &  & 0.00  & \\
 \end{longtable}
   \\
   \\
@@ -2394,6 +2392,59 @@ Declaramos pela presente que  Mario Rossi, Via Trevano, 6900 Lugano  entre  01.0
   \\
 \begin{longtable}[l]{ l  l }
 Lugano, 2 oktober 2018  & Pinco Pallino \\
+ & Associazione Sportiva xyz \\
+\end{longtable}
+\end{reportvalue}
+%****************************************************************************** TEST #8 ******************************************************************************
+\begin{reportvalue}{Whole year report}
+\begin{longtable}[l]{ l  l }
+Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
+   & Sig. \\
+   & Gianpaolo Bianchi \\
+   & Via Beltramina \\
+   & 6962 Viganello \\
+\end{longtable}
+  \\
+  \\
+  \\
+  \\
+  \\
+  \\
+Statement of donation 1. Trimestre 2018 \\
+  \\
+  \\
+  \\
+We hereby declare that  Gianpaolo Bianchi, Via Beltramina, 6962 Viganello  between  01.01.2018  and  31.03.2018 donated  CHF 500.35  to our Association. \\
+  \\
+  \\
+\begin{longtable}[l]{ l  l  l  l  l }
+1  & 30.03.2018  & CHF  & 500.35  & Associazione Sportiva xyz \\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+ &  &  & 500.35  & \\
+\end{longtable}
+  \\
+  \\
+  \\
+  \\
+  \\
+\begin{longtable}[l]{ l  l }
+Lugano, 12 february 2019  & Pinco Pallino \\
  & Associazione Sportiva xyz \\
 \end{longtable}
 \end{reportvalue}
