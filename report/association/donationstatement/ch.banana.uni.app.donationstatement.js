@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.uni.app.donationstatement.js
 // @api = 1.0
-// @pubdate = 2018-12-21
+// @pubdate = 2019-02-15
 // @publisher = Banana.ch SA
 // @description = Statement of donation for Associations
 // @description.de = Spendenbescheinigung für Vereine
@@ -69,14 +69,21 @@ function exec(inData, options) {
         return "@Cancel";
     }
 
-    /* 3) Creates the report */
-    var report = createReport(Banana.document, userParam.selectionStartDate, userParam.selectionEndDate, userParam, "");            
-    var stylesheet = createStyleSheet(userParam);
-    Banana.Report.preview(report, stylesheet);
+    // Retrieves all the donors to print
+    var accounts = getAccountsToPrint(Banana.document, userParam.selectionStartDate, userParam.selectionEndDate, userParam);
+
+    // Creates the report
+    if (accounts.length > 0) {
+        var report = createReport(Banana.document, userParam.selectionStartDate, userParam.selectionEndDate, userParam, accounts, "");            
+        var stylesheet = createStyleSheet(userParam);
+        Banana.Report.preview(report, stylesheet);
+    } else {
+        return "@Cancel";
+    }
 }
 
 /* The report is created using the selected period and the data of the dialog */
-function createReport(banDoc, startDate, endDate, userParam, lang) {
+function createReport(banDoc, startDate, endDate, userParam, accounts, lang) {
 
     if (lang) {
         texts = loadTexts(banDoc,lang);
@@ -84,42 +91,13 @@ function createReport(banDoc, startDate, endDate, userParam, lang) {
 
     var report = Banana.Report.newReport(texts.reportTitle);
 
-    // Get the list of all the donors (CC3)
-    var membershipList = getCc3Accounts(banDoc);
-    var donorsToPrint = [];
-
-    if (userParam.costcenter) {
-        var list = userParam.costcenter.split(",");
-        for (var i = 0; i < list.length; i++) {
-            list[i] = list[i].trim();
-            
-            // If user insert the Cc3 account without ";" we add it
-            if (list[i].substring(0,1) !== ";") {
-                list[i] = ";"+list[i];
-            }
-
-            if (membershipList.indexOf(list[i]) > -1) { //Cc3 exists
-                donorsToPrint.push(list[i]);           
-            }
-            else { // Cc3 does not exists
-                Banana.document.addMessage(texts.warningMessage + ": <" + list[i] + ">");              
-            }
-        }
-        if (donorsToPrint.length < 1) {
-            return "@Cancel";
-        }
-    }
-    else if (!userParam.costcenter || userParam.costcenter === "" || userParam.costcenter === undefined) { //Empty field, so we take all the Cc3
-        donorsToPrint = membershipList;
-    }
-
     // Create the report for the inserted cc3 accounts (or all cc3 accounts if empty)
-    for (var k = 0; k < donorsToPrint.length; k++) {
+    for (var k = 0; k < accounts.length; k++) {
 
-        var transactionsObj = calculateTotalTransactions(banDoc, donorsToPrint[k], startDate, endDate);
+        var transactionsObj = calculateTotalTransactions(banDoc, accounts[k], startDate, endDate);
         var totalOfDonations = transactionsObj.total;
         var numberOfDonations = transactionsObj.numberOfTransactions;
-        var trDate = getTransactionDate(banDoc, donorsToPrint[k], startDate, endDate);
+        var trDate = getTransactionDate(banDoc, accounts[k], startDate, endDate);
         var titleText = "";
         var text = "";
 
@@ -184,7 +162,7 @@ function createReport(banDoc, startDate, endDate, userParam, lang) {
         }
 
         // Address of the membership (donor)
-        var address = getAddress(banDoc, donorsToPrint[k]);
+        var address = getAddress(banDoc, accounts[k]);
         if (address.nameprefix) {
             var row = tableAddress.addRow();
             row.addCell(" ", "", 1);
@@ -221,28 +199,28 @@ function createReport(banDoc, startDate, endDate, userParam, lang) {
         report.addParagraph(" ", "");
 
         // Title, text and table details of donations
-        titleText = convertFields(banDoc, userParam.titleText, address, trDate, startDate, endDate, totalOfDonations, donorsToPrint[k]);
+        titleText = convertFields(banDoc, userParam.titleText, address, trDate, startDate, endDate, totalOfDonations, accounts[k]);
         report.addParagraph(titleText, "bold");
         report.addParagraph(" ", "");
         report.addParagraph(" ", "");
         report.addParagraph(" ", "");
         if (userParam.text1) {
-            text = convertFields(banDoc, userParam.text1, address, trDate, startDate, endDate, totalOfDonations, donorsToPrint[k]);
+            text = convertFields(banDoc, userParam.text1, address, trDate, startDate, endDate, totalOfDonations, accounts[k]);
             addNewLine(report, text);
             report.addParagraph(" ", "");
         }   
         if (userParam.text2) {
-            text = convertFields(banDoc, userParam.text2, address, trDate, startDate, endDate, totalOfDonations, donorsToPrint[k]);
+            text = convertFields(banDoc, userParam.text2, address, trDate, startDate, endDate, totalOfDonations, accounts[k]);
             addNewLine(report, text);
             report.addParagraph(" ", "");
         }
         if (userParam.text3) {
-            text = convertFields(banDoc, userParam.text3, address, trDate, startDate, endDate, totalOfDonations, donorsToPrint[k]);
+            text = convertFields(banDoc, userParam.text3, address, trDate, startDate, endDate, totalOfDonations, accounts[k]);
             addNewLine(report, text);
             report.addParagraph(" ", "");
         }
         if (userParam.text4) {
-            text = convertFields(banDoc, userParam.text4, address, trDate, startDate, endDate, totalOfDonations, donorsToPrint[k]);
+            text = convertFields(banDoc, userParam.text4, address, trDate, startDate, endDate, totalOfDonations, accounts[k]);
             addNewLine(report, text);
             report.addParagraph(" ", "");
         }
@@ -250,7 +228,7 @@ function createReport(banDoc, startDate, endDate, userParam, lang) {
         // Print a transactions detail in case there is more than one donation
         if (userParam.details) {
             report.addParagraph(" ", "");
-            printTransactionTable(banDoc, report, donorsToPrint[k], startDate, endDate);
+            printTransactionTable(banDoc, report, accounts[k], startDate, endDate);
             report.addParagraph(" ", "");
             report.addParagraph(" ", "");
         }
@@ -279,12 +257,61 @@ function createReport(banDoc, startDate, endDate, userParam, lang) {
         }
 
         // Page break at the end of all the pages (except the last)
-        if (k < donorsToPrint.length-1) {
+        if (k < accounts.length-1) {
             report.addPageBreak();
         }
     }
 
     return report;
+}
+
+/* Function that retrieves the donors account to print.
+   As default, accounts with donation amount 0 are not taken.
+   User can choose to include them or not */
+function getAccountsToPrint(banDoc, startDate, endDate, userParam) {
+
+    // Get the list of all the donors (CC3)
+    var membershipList = getCC3Accounts(banDoc);
+    var accounts = [];
+    var transactionsObj = "";
+    var totalOfDonations = "";
+
+    if (userParam.costcenter) {
+        var list = userParam.costcenter.split(",");
+        for (var i = 0; i < list.length; i++) {
+            list[i] = list[i].trim();
+            
+            // If user insert the Cc3 account without ";" we add it
+            if (list[i].substring(0,1) !== ";") {
+                list[i] = ";"+list[i];
+            }
+
+            // The inserted Cc3 exists
+            // Check if the amount of the donation is > 0 or user checked userParam.costcenterAmountZero
+            if (membershipList.indexOf(list[i]) > -1) {
+                transactionsObj = calculateTotalTransactions(banDoc, list[i], startDate, endDate);
+                totalOfDonations = transactionsObj.total;
+                if (totalOfDonations > 0 || userParam.costcenterAmountZero) {
+                    accounts.push(list[i]);
+                }
+            }
+            else { // The inserted Cc3 does not exists
+                Banana.document.addMessage(texts.warningMessage + ": <" + list[i] + ">");              
+            }
+        }
+    }
+    // Empty field = take all the Cc3
+    // Check if the Cc3 amounts of the donation is > 0 or user checked userParam.costcenterAmountZero
+    else if (!userParam.costcenter || userParam.costcenter === "" || userParam.costcenter === undefined) {
+        for (var i = 0; i < membershipList.length; i++) {
+            transactionsObj = calculateTotalTransactions(banDoc, membershipList[i], startDate, endDate);
+            totalOfDonations = transactionsObj.total;
+            if (totalOfDonations > 0 || userParam.costcenterAmountZero) {
+                accounts.push(membershipList[i]);
+            }
+        }
+    }
+    return accounts;
 }
 
 /* Function that converts a month to a readable string */
@@ -957,16 +984,18 @@ function printTransactionTable(banDoc, report, costcenter, startDate, endDate) 
         }
     }
 
-    tableRow = table.addRow();
-    tableRow.addCell("", "borderTop borderBottom", 1);
-    tableRow.addCell("", "borderTop borderBottom", 1);
-    tableRow.addCell(texts.text06, "bold borderTop borderBottom", 1);
-    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(total), "bold right borderTop borderBottom", 1);
-    tableRow.addCell("", "borderTop borderBottom", 1);
+    if (total > 0) {
+        tableRow = table.addRow();
+        tableRow.addCell("", "borderTop borderBottom", 1);
+        tableRow.addCell("", "borderTop borderBottom", 1);
+        tableRow.addCell(texts.text06, "bold borderTop borderBottom", 1);
+        tableRow.addCell(Banana.Converter.toLocaleNumberFormat(total), "bold right borderTop borderBottom", 1);
+        tableRow.addCell("", "borderTop borderBottom", 1);
+    }
 }
 
 /* Function that retrieves in a list all the CC3 accounts */
-function getCc3Accounts(banDoc) {
+function getCC3Accounts(banDoc) {
     var membershipList = [];
     var accountsTable = banDoc.table("Accounts");
     for (var i = 0; i < accountsTable.rowCount; i++) {
@@ -994,6 +1023,17 @@ function convertParam(userParam) {
     currentParam.value = '';
     currentParam.readValue = function() {
         userParam.costcenter = this.value;
+    }
+    convertedParam.data.push(currentParam);
+
+    // cc3 with amount of the donation 0
+    var currentParam = {};
+    currentParam.name = 'costcenterAmountZero';
+    currentParam.title = texts.includeAmountZero;
+    currentParam.type = 'bool';
+    currentParam.value = userParam.costcenterAmountZero ? true : false;
+    currentParam.readValue = function() {
+     userParam.costcenterAmountZero = this.value;
     }
     convertedParam.data.push(currentParam);
 
@@ -1178,6 +1218,7 @@ function convertParam(userParam) {
 function initUserParam() {
     var userParam = {};
     userParam.costcenter = '';
+    userParam.costcenterAmountZero = false;
     userParam.texts = '';
     userParam.useDefaultTexts = false;
     userParam.titleText = texts.title;
@@ -1317,6 +1358,7 @@ function loadTexts(banDoc,lang) {
         texts.multiTransactionText = "Hiermit bestätigen wir, dass **<FirstName> <FamilyName>, <Address>** in der Zeit vom **<StartDate> - <EndDate>** **<Currency> <Amount>** unserem Verein gespendet hat.";
         texts.textsGroup = "Texte";
         texts.details = "Geben Sie die Spendendaten an";
+        texts.includeAmountZero = "Konten mit 0-Saldo einbeziehen";
     }
     else if (lang === "fr") {
         texts.reportTitle = "Certificat de don";
@@ -1340,6 +1382,7 @@ function loadTexts(banDoc,lang) {
         texts.multiTransactionText = "Nous déclarons par la présente que **<FirstName> <FamilyName>, <Address>** dans la période **<StartDate> - <EndDate>** a fait don de **<Currency> <Amount>** à notre Association.";
         texts.textsGroup = "Textes";
         texts.details = "Inclure les détails du don";
+        texts.includeAmountZero = "Inclure comptes avec solde zéro";
     }
     else if (lang === "it") {
         texts.reportTitle = "Attestato di donazione";
@@ -1363,10 +1406,11 @@ function loadTexts(banDoc,lang) {
         texts.multiTransactionText = "Con la presente dichiariamo che **<FirstName> <FamilyName>, <Address>** nel periodo **<StartDate> - <EndDate>** ha donato **<Currency> <Amount>** alla nostra Associazione.";
         texts.textsGroup = "Testi";
         texts.details = "Includi dettagli donazioni";
+        texts.includeAmountZero = "Includi conti con saldo zero";
     }
     else if (lang === "nl") {
         texts.reportTitle = "Kwitantie voor giften";
-        texts.dialogTitle = "Omgevingen";
+        texts.dialogTitle = "Instellingen";
         texts.title = "Kwitantie voor giften <Period>";
         texts.warningMessage = "Ongeldige rekening gever";
         texts.accountNumber = "Rekening gever invoeren (leeg = alles afdrukken)";
@@ -1386,6 +1430,7 @@ function loadTexts(banDoc,lang) {
         texts.multiTransactionText = "Wij verklaren hierbij dat **<FirstName> <FamilyName>, <Address>** tussen **<StartDate>** en **<EndDate>** het bedrag van **<Currency> <Amount>** geschonken heeft aan onze instelling.";
         texts.textsGroup = "Teksten";
         texts.details = "Giften detail opnemen";
+        texts.includeAmountZero = "Rekeningen met nulsaldo opnemen";
     }
     else if (lang === "pt") {
         texts.reportTitle = "Certificado de doação";
@@ -1409,6 +1454,7 @@ function loadTexts(banDoc,lang) {
         texts.multiTransactionText = "Declaramos pela presente que **<FirstName> <FamilyName>, <Address>** entre **<StartDate>** e **<EndDate>**doou **<Currency> <Amount>** para nossa Associação.";
         texts.textsGroup = "Textos";
         texts.details = "Incluir detalhes da doação";
+        texts.includeAmountZero = "Incluir contas com saldo zero";
     }
     else { //lang == en
         texts.reportTitle = "Statement of donation";
@@ -1432,6 +1478,7 @@ function loadTexts(banDoc,lang) {
         texts.multiTransactionText = "We hereby declare that **<FirstName> <FamilyName>, <Address>** between **<StartDate>** and **<EndDate>**donated **<Currency> <Amount>** to our Association.";
         texts.textsGroup = "Texts";
         texts.details = "Include donation details";
+        texts.includeAmountZero = "Include accounts with zero balance";
     }
 
     return texts;
