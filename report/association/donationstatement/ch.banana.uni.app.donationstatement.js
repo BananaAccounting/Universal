@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.uni.app.donationstatement.js
 // @api = 1.0
-// @pubdate = 2019-02-12
+// @pubdate = 2019-02-15
 // @publisher = Banana.ch SA
 // @description = Statement of donation for Associations
 // @description.de = Spendenbescheinigung für Vereine
@@ -1410,7 +1410,7 @@ function loadTexts(banDoc,lang) {
     }
     else if (lang === "nl") {
         texts.reportTitle = "Kwitantie voor giften";
-        texts.dialogTitle = "Omgevingen";
+        texts.dialogTitle = "Instellingen";
         texts.title = "Kwitantie voor giften <Period>";
         texts.warningMessage = "Ongeldige rekening gever";
         texts.accountNumber = "Rekening gever invoeren (leeg = alles afdrukken)";
