@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.uni.app.donationstatement.js
 // @api = 1.0
-// @pubdate = 2019-02-15
+// @pubdate = 2019-02-22
 // @publisher = Banana.ch SA
 // @description = Statement of donation for Associations
 // @description.de = Spendenbescheinigung für Vereine
@@ -122,73 +122,73 @@ function createReport(banDoc, startDate, endDate, userParam, accounts, lang) {
         var row = tableAddress.addRow();
         var addressCell = row.addCell();
         if (company) {
-            addressCell.addParagraph(company, "");
+            addressCell.addParagraph(company, "address");
         }
         if (name && familyName) {
-            addressCell.addParagraph(name + " " + familyName, "");
+            addressCell.addParagraph(name + " " + familyName, "address");
         } else if (!name && familyName) {
-            addressCell.addParagraph(familyName, "");
+            addressCell.addParagraph(familyName, "address");
         } else if (name && !familyName) {
-            addressCell.addParagraph(name, "");
+            addressCell.addParagraph(name, "address");
         }
 
         if (address1) {
-            addressCell.addParagraph(address1, "");
+            addressCell.addParagraph(address1, "address");
         }
         if (address2) {
-            addressCell.addParagraph(address2, "");
+            addressCell.addParagraph(address2, "address");
         }
 
         if (zip && city) {
-            addressCell.addParagraph(zip + " " + city, "");
+            addressCell.addParagraph(zip + " " + city, "address");
         }
 
         if (phone) {
-            addressCell.addParagraph("Tel. " + phone);
+            addressCell.addParagraph("Tel. " + phone, "address");
         } else {
-            addressCell.addParagraph(" ", "");
+            addressCell.addParagraph(" ", "address");
         }
 
         if (web) {
-            addressCell.addParagraph("Web: " + web);
+            addressCell.addParagraph("Web: " + web, "address");
         } else {
-            addressCell.addParagraph(" ", "");
+            addressCell.addParagraph(" ", "address");
         }
 
         if (email) {
-            addressCell.addParagraph("Email: " + email);
+            addressCell.addParagraph("Email: " + email, "address");
         } else {
-            addressCell.addParagraph(" ", "");
+            addressCell.addParagraph(" ", "address");
         }
 
         // Address of the membership (donor)
         var address = getAddress(banDoc, accounts[k]);
         if (address.nameprefix) {
             var row = tableAddress.addRow();
-            row.addCell(" ", "", 1);
-            row.addCell(address.nameprefix, "", 1);
+            row.addCell(" ", "address", 1);
+            row.addCell(address.nameprefix, "address", 1);
         }
 
         if (address.firstname && address.familyname) {
             var row = tableAddress.addRow();
-            row.addCell(" ", "", 1);
-            row.addCell(address.firstname + " " + address.familyname, "", 1);
+            row.addCell(" ", "address", 1);
+            row.addCell(address.firstname + " " + address.familyname, "address", 1);
         } else if (!address.firstname && address.familyname) {
             var row = tableAddress.addRow();
-            row.addCell(" ", "", 1);
-            row.addCell(address.familyname, "", 1);
+            row.addCell(" ", "address", 1);
+            row.addCell(address.familyname, "address", 1);
         }
 
         if (address.street) {
             var row = tableAddress.addRow();
-            row.addCell(" ", "", 1);
-            row.addCell(address.street, "", 1);
+            row.addCell(" ", "address", 1);
+            row.addCell(address.street, "address", 1);
         }
 
         if (address.postalcode && address.locality) {
             var row = tableAddress.addRow();
-            row.addCell(" ", "", 1);
-            row.addCell(address.postalcode + " " + address.locality, "", 1);
+            row.addCell(" ", "address", 1);
+            row.addCell(address.postalcode + " " + address.locality, "address", 1);
         }
 
         report.addParagraph(" ", "");
@@ -287,11 +287,11 @@ function getAccountsToPrint(banDoc, startDate, endDate, userParam) {
             }
 
             // The inserted Cc3 exists
-            // Check if the amount of the donation is > 0 or user checked userParam.costcenterAmountZero
+            // Check the minimum amount of the donation
             if (membershipList.indexOf(list[i]) > -1) {
                 transactionsObj = calculateTotalTransactions(banDoc, list[i], startDate, endDate);
                 totalOfDonations = transactionsObj.total;
-                if (totalOfDonations > 0 || userParam.costcenterAmountZero) {
+                if (Banana.SDecimal.compare(totalOfDonations, userParam.minimumAmount) > -1) { //totalOfDonation >= mimimunAmount
                     accounts.push(list[i]);
                 }
             }
@@ -301,12 +301,12 @@ function getAccountsToPrint(banDoc, startDate, endDate, userParam) {
         }
     }
     // Empty field = take all the Cc3
-    // Check if the Cc3 amounts of the donation is > 0 or user checked userParam.costcenterAmountZero
+    // Check the mimimun amount of the donation
     else if (!userParam.costcenter || userParam.costcenter === "" || userParam.costcenter === undefined) {
         for (var i = 0; i < membershipList.length; i++) {
             transactionsObj = calculateTotalTransactions(banDoc, membershipList[i], startDate, endDate);
             totalOfDonations = transactionsObj.total;
-            if (totalOfDonations > 0 || userParam.costcenterAmountZero) {
+            if (Banana.SDecimal.compare(totalOfDonations, userParam.minimumAmount) > -1) { //totalOfDonation >= mimimunAmount
                 accounts.push(membershipList[i]);
             }
         }
@@ -1020,20 +1020,20 @@ function convertParam(userParam) {
     currentParam.name = 'costcenter';
     currentParam.title = texts.accountNumber;
     currentParam.type = 'string';
-    currentParam.value = '';
+    currentParam.value = userParam.costcenter ? userParam.costcenter : '';
     currentParam.readValue = function() {
         userParam.costcenter = this.value;
     }
     convertedParam.data.push(currentParam);
 
-    // cc3 with amount of the donation 0
+    // minimun amount for cc3
     var currentParam = {};
-    currentParam.name = 'costcenterAmountZero';
-    currentParam.title = texts.includeAmountZero;
-    currentParam.type = 'bool';
-    currentParam.value = userParam.costcenterAmountZero ? true : false;
+    currentParam.name = 'minimumAmount';
+    currentParam.title = texts.minimumAmount;
+    currentParam.type = 'string';
+    currentParam.value = userParam.minimumAmount ? userParam.minimumAmount : '1.00';
     currentParam.readValue = function() {
-     userParam.costcenterAmountZero = this.value;
+     userParam.minimumAmount = this.value;
     }
     convertedParam.data.push(currentParam);
 
@@ -1211,14 +1211,50 @@ function convertParam(userParam) {
     }
     convertedParam.data.push(currentParam);
 
+    // Styles
+    var currentParam = {};
+    currentParam.name = 'styles';
+    currentParam.title = texts.styles;
+    currentParam.type = 'string';
+    currentParam.value = userParam.styles ? userParam.styles : '';
+    currentParam.readValue = function() {
+        userParam.styles = this.value;
+    }
+    convertedParam.data.push(currentParam);
+
+    // Font type
+    var currentParam = {};
+    currentParam.name = 'fontFamily';
+    currentParam.parentObject = 'styles'
+    currentParam.title = texts.fontFamily;
+    currentParam.type = 'string';
+    currentParam.value = userParam.fontFamily ? userParam.fontFamily : 'Helvetica';
+    currentParam.readValue = function() {
+        userParam.fontFamily = this.value;
+    }
+    convertedParam.data.push(currentParam);
+
+    // Font size
+    var currentParam = {};
+    currentParam.name = 'fontSize';
+    currentParam.parentObject = 'styles'
+    currentParam.title = texts.fontSize;
+    currentParam.type = 'string';
+    currentParam.value = userParam.fontSize ? userParam.fontSize : '10';
+    currentParam.readValue = function() {
+        userParam.fontSize = this.value;
+    }
+    convertedParam.data.push(currentParam);
+
     return convertedParam;
 }
 
 /* Function that initializes the user parameters */
 function initUserParam() {
     var userParam = {};
+    userParam.version = '1.0';
     userParam.costcenter = '';
-    userParam.costcenterAmountZero = false;
+    userParam.minimumAmount = '';
     userParam.texts = '';
     userParam.useDefaultTexts = false;
     userParam.titleText = texts.title;
@@ -1232,6 +1268,9 @@ function initUserParam() {
     userParam.printLogo = '';
     userParam.signatureImage = '';
     userParam.imageHeight = '';
+    userParam.styles = '';
+    userParam.fontFamily = '';
+    userParam.fontSize = '';
     return userParam;
 }
 
@@ -1312,9 +1351,18 @@ function getLang(banDoc) {
 
 /* Function that creates styles */
 function createStyleSheet(userParam) {
+
+    if (!userParam.fontFamily) {
+        userParam.fontFamily = 'Helvetica';
+    }
+    if (!userParam.fontSize) {
+        userParam.fontSize = '10';
+    }
+
     var stylesheet = Banana.Report.newStyleSheet();
     stylesheet.addStyle("@page", "margin:20mm 10mm 10mm 20mm;");
-    stylesheet.addStyle("body", "font-family:Helvetica; font-size:10pt");
+    stylesheet.addStyle("body", "font-family:"+userParam.fontFamily+"; font-size:"+userParam.fontSize+"pt;");
+    stylesheet.addStyle(".address", "font-family:"+userParam.fontFamily+"; font-size:"+userParam.fontSize+"pt;");
     stylesheet.addStyle(".bold", "font-weight:bold;");
     stylesheet.addStyle(".borderLeft", "border-left:thin solid black");
     stylesheet.addStyle(".borderTop", "border-top:thin solid black");
@@ -1322,8 +1370,6 @@ function createStyleSheet(userParam) {
     stylesheet.addStyle(".borderBottom", "border-bottom:thin solid black");
     stylesheet.addStyle(".right", "text-align:right;");
     stylesheet.addStyle(".center", "text-align:center;");
-    stylesheet.addStyle(".headerStyle", "background-color:#E0EFF6; text-align:center; font-weight:bold;");
-    stylesheet.addStyle(".address", "font-size:11pt");
     
     style = stylesheet.addStyle(".imgSignature");
     style.setAttribute("height", userParam.imageHeight + "mm");
@@ -1358,7 +1404,10 @@ function loadTexts(banDoc,lang) {
         texts.multiTransactionText = "Hiermit bestätigen wir, dass **<FirstName> <FamilyName>, <Address>** in der Zeit vom **<StartDate> - <EndDate>** **<Currency> <Amount>** unserem Verein gespendet hat.";
         texts.textsGroup = "Texte";
         texts.details = "Geben Sie die Spendendaten an";
-        texts.includeAmountZero = "Konten mit 0-Saldo einbeziehen";
+        texts.minimumAmount = "Mindestspendenbetrag";
+        texts.styles = "Stilarten";
+        texts.fontFamily = "Schriftarttyp";
+        texts.fontSize = "Schriftgrad";
     }
     else if (lang === "fr") {
         texts.reportTitle = "Certificat de don";
@@ -1382,7 +1431,10 @@ function loadTexts(banDoc,lang) {
         texts.multiTransactionText = "Nous déclarons par la présente que **<FirstName> <FamilyName>, <Address>** dans la période **<StartDate> - <EndDate>** a fait don de **<Currency> <Amount>** à notre Association.";
         texts.textsGroup = "Textes";
         texts.details = "Inclure les détails du don";
-        texts.includeAmountZero = "Inclure comptes avec solde zéro";
+        texts.minimumAmount = "Montant minimum du don";
+        texts.styles = "Styles";
+        texts.fontFamily = "Type de police";
+        texts.fontSize = "Taille de police";
     }
     else if (lang === "it") {
         texts.reportTitle = "Attestato di donazione";
@@ -1406,7 +1458,10 @@ function loadTexts(banDoc,lang) {
         texts.multiTransactionText = "Con la presente dichiariamo che **<FirstName> <FamilyName>, <Address>** nel periodo **<StartDate> - <EndDate>** ha donato **<Currency> <Amount>** alla nostra Associazione.";
         texts.textsGroup = "Testi";
         texts.details = "Includi dettagli donazioni";
-        texts.includeAmountZero = "Includi conti con saldo zero";
+        texts.minimumAmount = "Importo minimo della donazione";
+        texts.styles = "Stili";
+        texts.fontFamily = "Tipo di carattere";
+        texts.fontSize = "Dimensione carattere";
     }
     else if (lang === "nl") {
         texts.reportTitle = "Kwitantie voor giften";
@@ -1430,7 +1485,10 @@ function loadTexts(banDoc,lang) {
         texts.multiTransactionText = "Wij verklaren hierbij dat **<FirstName> <FamilyName>, <Address>** tussen **<StartDate>** en **<EndDate>** het bedrag van **<Currency> <Amount>** geschonken heeft aan onze instelling.";
         texts.textsGroup = "Teksten";
         texts.details = "Giften detail opnemen";
-        texts.includeAmountZero = "Rekeningen met nulsaldo opnemen";
+        texts.minimumAmount = "Minimumbedrag van de gift";
+        texts.styles = "Stijl";
+        texts.fontFamily = "Type lettertype";
+        texts.fontSize = "Lettergrootte";
     }
     else if (lang === "pt") {
         texts.reportTitle = "Certificado de doação";
@@ -1454,7 +1512,10 @@ function loadTexts(banDoc,lang) {
         texts.multiTransactionText = "Declaramos pela presente que **<FirstName> <FamilyName>, <Address>** entre **<StartDate>** e **<EndDate>**doou **<Currency> <Amount>** para nossa Associação.";
         texts.textsGroup = "Textos";
         texts.details = "Incluir detalhes da doação";
-        texts.includeAmountZero = "Incluir contas com saldo zero";
+        texts.minimumAmount = "Valor mínimo da doação";
+        texts.styles = "Estilos";
+        texts.fontFamily = "Tipo de letra";
+        texts.fontSize = "Tamanho da letra";
     }
     else { //lang == en
         texts.reportTitle = "Statement of donation";
@@ -1478,7 +1539,10 @@ function loadTexts(banDoc,lang) {
         texts.multiTransactionText = "We hereby declare that **<FirstName> <FamilyName>, <Address>** between **<StartDate>** and **<EndDate>**donated **<Currency> <Amount>** to our Association.";
         texts.textsGroup = "Texts";
         texts.details = "Include donation details";
-        texts.includeAmountZero = "Include accounts with zero balance";
+        texts.minimumAmount = "Minimum amount of the donation";
+        texts.styles = "Styles";
+        texts.fontFamily = "Font type";
+        texts.fontSize = "Font size";
     }
 
     return texts;
