@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.uni.invoice.uni08
 // @api = 1.0
-// @pubdate = 2018-08-16
+// @pubdate = 2019-04-26
 // @publisher = Banana.ch SA
 // @description = Style 8: Total column, logo, 2 colors
 // @description.it = Stile 8: colonna totale, logo, 2 colori
@@ -781,7 +781,7 @@ function setInvoiceStyle(reportObj, repStyleObj, param) {
     var infoStyle = repStyleObj.addStyle(".info_table");
     infoStyle.setAttribute("position", "absolute");
     infoStyle.setAttribute("margin-top", "45mm");
-    infoStyle.setAttribute("margin-left", "22mm");
+    infoStyle.setAttribute("margin-left", "20mm");
     infoStyle.setAttribute("margin-right", "10mm");
     //repStyleObj.addStyle("table.info_table td", "border: thin solid black");
 
@@ -864,7 +864,7 @@ function setInvoiceTexts(language) {
     texts.param_print_header = 'Seitenüberschrift einschliessen (1=ja, 0=nein)';
     texts.param_print_logo = 'Logo ausdrucken (1=ja, 0=nein)';
     texts.payment_due_date_label = 'Fälligkeitsdatum';
-    texts.payment_terms_label = 'Zahlungsbedingungen';
+    texts.payment_terms_label = 'Zahlungsfrist';
     //texts.param_max_items_per_page = 'Anzahl der Zeilen auf jeder Rechnung';
   }
   else if (language == 'fr')
