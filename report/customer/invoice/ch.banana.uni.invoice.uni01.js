@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.uni.invoice.uni01
 // @api = 1.0
-// @pubdate = 2018-08-06
+// @pubdate = 2019-04-26
 // @publisher = Banana.ch SA
 // @description = Style 1: Invoice with gross amounts, 2 colours
 // @description.it = Stile 1: Fattura con importi lordi, 2 colori
@@ -783,7 +783,7 @@ function setInvoiceTexts(language) {
       texts.param_font_family = 'Typ Schriftzeichen';
       texts.param_print_header = 'Seitenüberschrift einschliessen (1=ja, 0=nein)';
       texts.payment_due_date_label = 'Fälligkeitsdatum';
-      texts.payment_terms_label = 'Zahlungsbedingungen';
+      texts.payment_terms_label = 'Zahlungsfrist';
       //texts.param_max_items_per_page = 'Anzahl der Zeilen auf jeder Rechnung';
    } else if (language == 'fr') {
       texts.customer = 'No Client';
