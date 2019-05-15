@@ -438,13 +438,13 @@ function convertParam(param) {
   convertedParam.data.push(currentParam);
 
   currentParam = {};
-  currentParam.name = 'custom_javascript_name';
+  currentParam.name = 'custom_javascript_filename';
   currentParam.parentObject = 'custom_javascript';
-  currentParam.title = texts.param_custom_javascript_name;
+  currentParam.title = texts.param_custom_javascript_filename;
   currentParam.type = 'string';
-  currentParam.value = param.custom_javascript_name ? param.custom_javascript_name : '';
+  currentParam.value = param.custom_javascript_filename ? param.custom_javascript_filename : '';
   currentParam.readValue = function() {
-   param.custom_javascript_name = this.value;
+   param.custom_javascript_filename = this.value;
   }
   convertedParam.data.push(currentParam);
 
@@ -491,7 +491,7 @@ function initParam() {
   param.color_4 = '';
   param.font_family = 'Helvetica';
 
-  param.custom_javascript_name = '';
+  param.custom_javascript_filename = '';
 
 
   return param;
@@ -594,8 +594,8 @@ function verifyParam(param) {
   }
 
 
-  if (!param.custom_javascript_name) {
-    param.custom_javascript_name = '';
+  if (!param.custom_javascript_filename) {
+    param.custom_javascript_filename = '';
   }
 
 
@@ -647,143 +647,128 @@ function printInvoice(jsonInvoice, repDocObj, param, repStyleObj) {
     pageBreak.addClass("pageReset");
   }
 
+ 
+
+ //"_customer.invoice.js"
+ // Se c'e' quel file js includo anche quello (oltre a quell'altro)
+ // dopo l'include chiudo l'if e le chiamate alle funzioni le lascio fuori
+
+ /*
+    DA CHIEDERE A DOMENICO:
+    Non ho capito in che modo deve essere INCLUSO anche il file _customer_invoice.js".
+    a) se esiste un parametro (es. file1.js), includo cmq il _customer_invoice.js?
+       => dopo come faccio a capire da quale js leggere le funzioni?
+    b) se esiste un parametro, allora non includo il _customer_invoice.js?
+       => le funzioni le leggo solo dal parametro.
+    c) se NON esiste il parametro, allora includo il _customer_invoice.js?
+       => le funzioni le leggo solo dal _customer_invoice.js.
+  */
+
 
   // User entered a javascript file name
-  if (param.custom_javascript_name) {
+  if (param.custom_javascript_filename) {
     Banana.console.log(" ");
-    Banana.console.log("1. '" + param.custom_javascript_name + "' inserito nei parametri.");
-    
+    Banana.console.log("'" + param.custom_javascript_filename + "' inserito nei parametri.");
+
     // Take from the table documents all the javascript file names
     var jsFiles = [];
     jsFiles = getJsFilesFromDocumentsTable();
-  
+
     // Table documents contains javascript files
     if (jsFiles.length > 0) {
-      Banana.console.log("2. Tabella documenti contiene uno o più file javascript => " + jsFiles);
+      Banana.console.log("Tabella documenti contiene uno o più file javascript => " + jsFiles);
       
-      // The javascript file name entered by user exists on documents table
-      if (jsFiles.indexOf(param.custom_javascript_name) > -1) {
-        Banana.console.log("3. '" + param.custom_javascript_name + "' esiste nella tabella documenti.");
-
-        // Include the javascript file
+      // The javascript file name entered by user exists on documents table. Include this file
+      if (jsFiles.indexOf(param.custom_javascript_filename) > -1) {
+        Banana.console.log("'" + param.custom_javascript_filename + "' esiste nella tabella documenti.");
         try {
-          Banana.include("documents:" + param.custom_javascript_name);
-          Banana.console.log("4. '" + param.custom_javascript_name + "' incluso nello script.");
-
-          /* Header */
-          if (_hook_print_header) {
-            hook_print_header(repDocObj);
-          } 
-          else {
-            print_header(repDocObj, param, repStyleObj, invoiceObj);
-          }
-
-          /* Invoice texts info */
-          if (_hook_print_info_invoice) {
-            hook_print_info_invoice(repDocObj, invoiceObj, texts);
-          }
-          else {
-            print_info_invoice(repDocObj, invoiceObj, texts);
-          }
-
-          /* Customer address */
-          if (_hook_print_customer_address) {
-            hook_print_customer_address(repDocObj, invoiceObj, texts);
-          }
-          else {
-            print_customer_address(repDocObj, invoiceObj, texts);
-          }
-
-          /* Begin text (before invoice details table) */
-          if (_hook_print_text_begin) {
-            hook_print_text_begin(repDocObj, invoiceObj);
-          }
-          else {
-            print_text_begin(repDocObj, invoiceObj);
-          }
-
-          /* Invoice texts info for pages 2+ */
-          if (_hook_print_info_invoice_multiple_pages) {
-            hook_print_info_invoice_multiple_pages(repDocObj.getHeader(), invoiceObj, texts);
-          }
-          else {
-            print_info_invoice_multiple_pages(repDocObj.getHeader(), invoiceObj, texts);
-          }
-
-          /* Invoice details with all the items and amounts */
-          if (_hook_print_invoice_details) {
-            hook_print_invoice_details(repDocObj, invoiceObj, texts);
-          }
-          else {
-            print_invoice_details(repDocObj, invoiceObj, texts);
-          }
-
-          /* Notes */
-          if (_hook_print_notes) {
-            hook_print_notes(repDocObj, invoiceObj);
-          }
-          else {
-            print_notes(repDocObj, invoiceObj);
-          }
-
-          /* Greetings */
-          if (_hook_print_greetings) {
-            hook_print_greetings(repDocObj, invoiceObj);
-          }
-          else {
-            print_greetings(repDocObj, invoiceObj);
-          }
+          Banana.include("documents:" + param.custom_javascript_filename);
+          Banana.console.log("'" + param.custom_javascript_filename + "' incluso nello script.");
         }
         catch(error) {
-          Banana.console.log(error);
-          Banana.console.log("Table Documents: JavaScript file '" + param.custom_javascript_name + "' not found or not valid");
+          Banana.console.log("Table Documents: JavaScript file '" + param.custom_javascript_filename + "' not found or not valid. Default functions are used.");
+          print_header(repDocObj, param, repStyleObj, invoiceObj);
+          print_info_invoice(repDocObj, invoiceObj, texts, param);
+          print_customer_address(repDocObj, invoiceObj, param);
+          print_text_begin(repDocObj, invoiceObj);
+          print_info_invoice_multiple_pages(repDocObj.getHeader(), invoiceObj, texts);
+          print_invoice_details(repDocObj, invoiceObj, texts);
+          print_notes(repDocObj, invoiceObj);
+          print_greetings(repDocObj, invoiceObj);
         }
       }
 
-      // The javascript file name entered by user doesn't exists on documents table.
-      // We use the default functions
-      else {
-        Banana.console.log("3. '" + param.custom_javascript_name + "' non esiste nella tabella documenti.");
-        Banana.console.log("Table Documents: JavaScript file '" + param.custom_javascript_name + "' not found. Default functions are used.");
-        print_header(repDocObj, param, repStyleObj, invoiceObj);
-        print_info_invoice(repDocObj, invoiceObj, texts);
-        print_customer_address(repDocObj, invoiceObj, texts);
-        print_text_begin(repDocObj, invoiceObj);
-        print_info_invoice_multiple_pages(repDocObj.getHeader(), invoiceObj, texts);
-        print_invoice_details(repDocObj, invoiceObj, texts);
-        print_notes(repDocObj, invoiceObj);
-        print_greetings(repDocObj, invoiceObj);
-      }
+      // // Include the _customer.invoice.js in case it exists
+      // else if (jsFiles.indexOf("_customer.invoice.js") > -1) {
+      //   try {
+      //     Banana.include("documents:_customer.invoice.js");
+      //     Banana.console.log("'_customer.invoice.js' incluso nello script.");
+      //   }
+      //   catch(error) {
+      //     Banana.console.log("Table Documents: JavaScript file '_customer.invoice.js' not found or not valid. Default functions are used.");
+      //   }        
+      // }
+
+
     }
   }
 
-  // User didn't entered any javascript file name (empty prameter).
-  // We use the default functions
-  else {
+  /* Header */
+  if (typeof(hook_print_header) === typeof(Function)) {
+    hook_print_header(repDocObj);
+  } else {
     print_header(repDocObj, param, repStyleObj, invoiceObj);
-    print_info_invoice(repDocObj, invoiceObj, texts);
-    print_customer_address(repDocObj, invoiceObj, texts);
-    print_text_begin(repDocObj, invoiceObj);
-    print_info_invoice_multiple_pages(repDocObj.getHeader(), invoiceObj, texts);
-    print_invoice_details(repDocObj, invoiceObj, texts);
-    print_notes(repDocObj, invoiceObj);
-    print_greetings(repDocObj, invoiceObj);
   }
 
+  /* Invoice texts info */
+  if (typeof(hook_print_info_invoice) === typeof(Function)) {
+    hook_print_info_invoice(repDocObj, invoiceObj, texts, param);
+  } else {
+    print_info_invoice(repDocObj, invoiceObj, texts, param);
+  }
 
+  /* Customer address */
+  if (typeof(hook_print_customer_address) === typeof(Function)) {
+    hook_print_customer_address(repDocObj, invoiceObj, param);
+  } else {
+    print_customer_address(repDocObj, invoiceObj, param);
+  }
 
+  /* Begin text (before invoice details table) */
+  if (typeof(hook_print_text_begin) === typeof(Function)) {
+    hook_print_text_begin(repDocObj, invoiceObj);
+  } else {
+    print_text_begin(repDocObj, invoiceObj);
+  }
 
+  /* Invoice texts info for pages 2+ */
+  if (typeof(hook_print_info_invoice_multiple_pages) === typeof(Function)) {
+    hook_print_info_invoice_multiple_pages(repDocObj.getHeader(), invoiceObj, texts);
+  } else {
+    print_info_invoice_multiple_pages(repDocObj.getHeader(), invoiceObj, texts);
+  }
 
+  /* Invoice details with all the items and amounts */
+  if (typeof(hook_print_invoice_details) === typeof(Function)) {
+    hook_print_invoice_details(repDocObj, invoiceObj, texts);
+  } else {
+    print_invoice_details(repDocObj, invoiceObj, texts);
+  }
 
+  /* Notes */
+  if (typeof(hook_print_notes) === typeof(Function)) {
+    hook_print_notes(repDocObj, invoiceObj);
+  } else {
+    print_notes(repDocObj, invoiceObj);
+  }
 
-
-
-
-
-
-
-
-
+  /* Greetings */
+  if (typeof(hook_print_greetings) === typeof(Function)) {
+    hook_print_greetings(repDocObj, invoiceObj);
+  } else {
+    print_greetings(repDocObj, invoiceObj);
+  }  
+  
 
   return repDocObj;
 }
@@ -805,14 +790,10 @@ function print_header(repDocObj, param, repStyleObj, invoiceObj) {
   var headerLogoSection = repDocObj.addSection("");
 
   if (param.print_logo) {
-    var requiredVersion = "9.0.4";
-    if (Banana.compareVersion && Banana.compareVersion(Banana.application.version, requiredVersion) >= 0) {
-      // If there is a defined logo it is used as default logo
-      var logoFormat = Banana.Report.logoFormat("Logo");
-      if (logoFormat) {
-        var logoElement = logoFormat.createDocNode(headerLogoSection, repStyleObj, "logo");
-        repDocObj.getHeader().addChild(logoElement);
-      }
+    var logoFormat = Banana.Report.logoFormat("Logo");
+    if (logoFormat) {
+      var logoElement = logoFormat.createDocNode(headerLogoSection, repStyleObj, "logo");
+      repDocObj.getHeader().addChild(logoElement);
     }
   }
 
@@ -840,8 +821,15 @@ function print_header(repDocObj, param, repStyleObj, invoiceObj) {
   }
 }
 
-function print_info_invoice(repDocObj, invoiceObj, texts) {
-  var infoTable = repDocObj.addTable("info_table");
+function print_info_invoice(repDocObj, invoiceObj, texts, param) {
+
+  var infoTable = "";
+  if (param.address_left) {
+    infoTable = repDocObj.addTable("info_table_right");
+  } else {
+    infoTable = repDocObj.addTable("info_table_left");
+  }
+
   tableRow = infoTable.addRow();
   tableRow.addCell(" ", "", 1);
   tableRow.addCell(" ", "", 1);
@@ -911,9 +899,15 @@ function print_info_invoice_multiple_pages(repDocObj, invoiceObj, texts) {
   cell2.addParagraph("", "").addFieldPageNr();
 }
 
-function print_customer_address(repDocObj, invoiceObj, texts) {
-  var customerAddressTable = repDocObj.addTable("address_table");
-  
+function print_customer_address(repDocObj, invoiceObj, param) {
+
+  var customerAddressTable = "";
+  if (param.address_left) {
+    customerAddressTable = repDocObj.addTable("address_table_left");
+  } else {
+    customerAddressTable = repDocObj.addTable("address_table_right");
+  }
+
   //Small line of the supplier address
   tableRow = customerAddressTable.addRow();
   var cell1 = tableRow.addCell("", "", 1);
@@ -1285,27 +1279,6 @@ function setInvoiceStyle(reportObj, repStyleObj, param) {
         repStyleObj = reportObj.newStyleSheet();
     }
 
-    //Set default values
-    if (!param.font_family) {
-      param.font_family = "Helvetica";
-    }
-
-    if (!param.color_1) {
-      param.color_1 = "#337ab7";
-    }
-
-    if (!param.color_2) {
-      param.color_2 = "#ffffff";
-    }
-
-    if (!param.color_3) {
-      param.color_3 = "";
-    }
-    
-    if (!param.color_4) {
-      param.color_4 = "";
-    }
-
     //====================================================================//
     // GENERAL
     //====================================================================//
@@ -1359,24 +1332,37 @@ function setInvoiceStyle(reportObj, repStyleObj, param) {
     //====================================================================//
     var headerStyle = repStyleObj.addStyle(".header_table");
     headerStyle.setAttribute("position", "absolute");
-    headerStyle.setAttribute("margin-top", "10mm"); //106
-    headerStyle.setAttribute("margin-left", "22mm"); //20
+    headerStyle.setAttribute("margin-top", "10mm");
+    headerStyle.setAttribute("margin-left", "22mm");
     headerStyle.setAttribute("margin-right", "10mm");
     headerStyle.setAttribute("width", "100%");
     //repStyleObj.addStyle("table.header_table td", "border: thin solid black");
     
 
-    var infoStyle = repStyleObj.addStyle(".info_table");
+    var infoStyle = repStyleObj.addStyle(".info_table_left");
     infoStyle.setAttribute("position", "absolute");
     infoStyle.setAttribute("margin-top", "45mm");
     infoStyle.setAttribute("margin-left", "20mm");
     infoStyle.setAttribute("margin-right", "10mm");
-    //repStyleObj.addStyle("table.info_table td", "border: thin solid black");
+    //repStyleObj.addStyle("table.info_table_left td", "border: thin solid black");
+
+    var infoStyle = repStyleObj.addStyle(".info_table_right");
+    infoStyle.setAttribute("position", "absolute");
+    infoStyle.setAttribute("margin-top", "45mm");
+    infoStyle.setAttribute("margin-left", "113mm");
+    infoStyle.setAttribute("margin-right", "10mm");
+    //repStyleObj.addStyle("table.info_table_right td", "border: thin solid black");
+
+
+
+
+
+
 
     var infoStyle = repStyleObj.addStyle(".info_table_row0");
     infoStyle.setAttribute("position", "absolute");
     infoStyle.setAttribute("margin-top", "45mm");
-    infoStyle.setAttribute("margin-left", "22mm");
+    infoStyle.setAttribute("margin-left", "20mm");
     infoStyle.setAttribute("margin-right", "10mm");
     //repStyleObj.addStyle("table.info_table_row0 td", "border: thin solid black");
 
@@ -1384,13 +1370,20 @@ function setInvoiceStyle(reportObj, repStyleObj, param) {
     infoStyle.setAttribute("display", "none");
 
 
-    var infoStyle = repStyleObj.addStyle(".address_table");
+    var infoStyle = repStyleObj.addStyle(".address_table_right");
     infoStyle.setAttribute("position", "absolute");
     infoStyle.setAttribute("margin-top", "45mm");
     infoStyle.setAttribute("margin-left", "113mm");
     infoStyle.setAttribute("margin-right", "10mm");
-    //repStyleObj.addStyle("table.address_table td", "border: thin solid black");
+    //repStyleObj.addStyle("table.address_table_right td", "border: thin solid black");
     
+    var infoStyle = repStyleObj.addStyle(".address_table_left");
+    infoStyle.setAttribute("position", "absolute");
+    infoStyle.setAttribute("margin-top", "45mm");
+    infoStyle.setAttribute("margin-left", "20mm");
+    infoStyle.setAttribute("margin-right", "10mm");
+    //repStyleObj.addStyle("table.address_table_left td", "border: thin solid black");
+
     var infoStyle = repStyleObj.addStyle(".small_address");
     infoStyle.setAttribute("text-align", "center");
     infoStyle.setAttribute("font-size", "7");
@@ -1489,7 +1482,7 @@ function setInvoiceTexts(language) {
     texts.param_styles = "Stili";
 
     texts.param_custom_javascript = "File JavaScript personale";
-    texts.param_custom_javascript_name = "Inserisci nome file (colonna 'ID' tabella 'Documenti')";
+    texts.param_custom_javascript_filename = "Inserisci nome file (colonna 'ID' tabella 'Documenti')";
 
   }
   else if (language == 'de')
@@ -1662,7 +1655,7 @@ function setInvoiceTexts(language) {
     texts.param_styles = "Styles";
 
     texts.param_custom_javascript = "Custom JavaScript file";
-    texts.param_custom_javascript_name = "Insert the file name ('ID' column of the 'Documents' table)";
+    texts.param_custom_javascript_filename = "Insert the file name ('ID' column of the 'Documents' table)";
 
   }
   return texts;
