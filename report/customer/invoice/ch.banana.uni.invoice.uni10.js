@@ -27,7 +27,7 @@
 // @task = report.customer.invoice
 
 
-var docTableStart = "";
+var docTableStart = "110mm";
 
 
 
@@ -842,10 +842,6 @@ function print_header(repDocObj, param, repStyleObj, invoiceObj) {
 
 function print_info_invoice(repDocObj, invoiceObj, texts) {
   var infoTable = repDocObj.addTable("info_table");
-  // var col1 = infoTable.addColumn("infoCol1");
-  // var col2 = infoTable.addColumn("infoCol2");
-  // var col3 = infoTable.addColumn("infoCol3");
-
   tableRow = infoTable.addRow();
   tableRow.addCell(" ", "", 1);
   tableRow.addCell(" ", "", 1);
@@ -853,7 +849,6 @@ function print_info_invoice(repDocObj, invoiceObj, texts) {
   tableRow = infoTable.addRow();
   var cell1 = tableRow.addCell("","",1);
   var cell2 = tableRow.addCell("", "bold", 1);
-  // var cell3 = tableRow.addCell("", "", 1);
 
   var invoiceDate = Banana.Converter.toLocaleDateFormat(invoiceObj.document_info.date);
   cell1.addParagraph(getTitle(invoiceObj, texts) + ":", "");
@@ -883,10 +878,6 @@ function print_info_invoice(repDocObj, invoiceObj, texts) {
 function print_info_invoice_multiple_pages(repDocObj, invoiceObj, texts) {
 
   var infoTable = repDocObj.addTable("info_table_row0");
-  // var col1 = infoTable.addColumn("infoCol1");
-  // var col2 = infoTable.addColumn("infoCol2");
-  // var col3 = infoTable.addColumn("infoCol3");
-
   tableRow = infoTable.addRow();
   tableRow.addCell(" ", "", 1);
   tableRow.addCell(" ", "", 1);
@@ -894,7 +885,6 @@ function print_info_invoice_multiple_pages(repDocObj, invoiceObj, texts) {
   tableRow = infoTable.addRow();
   var cell1 = tableRow.addCell("", "", 1);
   var cell2 = tableRow.addCell("", "bold", 1);
-  // var cell3 = tableRow.addCell("", "", 1);
   
   var invoiceDate = Banana.Converter.toLocaleDateFormat(invoiceObj.document_info.date);
   cell1.addParagraph(getTitle(invoiceObj, texts) + ":", "");
@@ -923,17 +913,21 @@ function print_info_invoice_multiple_pages(repDocObj, invoiceObj, texts) {
 
 function print_customer_address(repDocObj, invoiceObj, texts) {
   var customerAddressTable = repDocObj.addTable("address_table");
-  var col3 = customerAddressTable.addColumn("customerAddressCol3");
-
+  
+  //Small line of the supplier address
   tableRow = customerAddressTable.addRow();
-  tableRow.addCell(" ", "", 1);
+  var cell1 = tableRow.addCell("", "", 1);
+  var supplierNameLines = getInvoiceSupplierName(invoiceObj.supplier_info).split('\n');
+  cell1.addText(supplierNameLines[0], "small_address");
+  var supplierLines = getInvoiceSupplier(invoiceObj.supplier_info).split('\n');
+  cell1.addText(" - " + supplierLines[0] + " - " + supplierLines[1], "small_address");
 
+  // Customer address
   tableRow = customerAddressTable.addRow();
-  var cell3 = tableRow.addCell("", "", 1);
-
+  var cell2 = tableRow.addCell("", "", 1);
   var addressLines = getInvoiceAddress(invoiceObj.customer_info).split('\n');
   for (var i=0; i < addressLines.length; i++) {
-    cell3.addParagraph(addressLines[i]);
+    cell2.addParagraph(addressLines[i]);
   }
 }
 
@@ -941,9 +935,6 @@ function print_text_begin(repDocObj, invoiceObj) {
   if (invoiceObj.document_info.text_begin) {
     docTableStart = "125mm";
     repDocObj.addParagraph(invoiceObj.document_info.text_begin, "begin_text");
-  } 
-  else {
-    docTableStart = "110mm";
   }
 }
 
@@ -1329,11 +1320,6 @@ function setInvoiceStyle(reportObj, repStyleObj, param) {
     repStyleObj.addStyle(".col1","width:50%");
     repStyleObj.addStyle(".col2","width:49%");
     
-    // repStyleObj.addStyle(".infoCol1","");
-    // repStyleObj.addStyle(".infoCol2","");
-    // repStyleObj.addStyle(".infoCol3","");
-    // repStyleObj.addStyle(".customerAddressCol3","");
-
     repStyleObj.addStyle(".border-bottom", "border-bottom:2px solid " + param.color_1);
     repStyleObj.addStyle(".thin-border-top", "border-top:thin solid " + param.color_1);
     repStyleObj.addStyle(".padding-right", "padding-right:5px");
@@ -1404,6 +1390,11 @@ function setInvoiceStyle(reportObj, repStyleObj, param) {
     infoStyle.setAttribute("margin-left", "113mm");
     infoStyle.setAttribute("margin-right", "10mm");
     //repStyleObj.addStyle("table.address_table td", "border: thin solid black");
+    
+    var infoStyle = repStyleObj.addStyle(".small_address");
+    infoStyle.setAttribute("text-align", "center");
+    infoStyle.setAttribute("font-size", "7");
+    infoStyle.setAttribute("border-bottom", "solid 1px black");
 
 
     //var itemsStyle = repStyleObj.addStyle(".doc_table:first-view");

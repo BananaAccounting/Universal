@@ -38,7 +38,7 @@ Invoice: \newline Date: \newline Customer No: \newline Payment: \newline Page: \
 Invoice: \newline Date: \newline Customer No: \newline Payment: \newline Page: \newline  & 35 \newline 29.01.2018 \newline 100002 \newline 30 days \newline \#page-nr \newline \\
 \end{longtable}
 \begin{longtable}[l]{ l }
-  \\
+Banana.ch SA  - Via Trevano 7a - 6900 Lugano \\
 Mario Bianchi \newline Via Trevano \newline 6963 Pregassona \newline \newline \\
 \end{longtable}
 This is the beginning text using the '10:beg' command in DocType column. \\
@@ -83,7 +83,7 @@ Invoice: \newline Date: \newline Customer No: \newline Due date: \newline Page: 
 Invoice: \newline Date: \newline Customer No: \newline Due date: \newline Page: \newline  & 36 \newline 01.02.2018 \newline 100004 \newline 03.03.2018 \newline \#page-nr \newline \\
 \end{longtable}
 \begin{longtable}[l]{ l }
-  \\
+Banana.ch SA  - Via Trevano 7a - 6900 Lugano \\
 Susanna Lanfranchi \newline V.Meggiagra 3 \newline 6599 Robasacco \newline Switzerland \newline \\
 \end{longtable}
 \begin{longtable}[l]{ l  l  l  l }
@@ -119,7 +119,7 @@ Invoice: \newline Date: \newline Customer No: \newline Due date: \newline Page: 
 Invoice: \newline Date: \newline Customer No: \newline Due date: \newline Page: \newline  & 37 \newline 03.02.2018 \newline 100001 \newline 05.03.2018 \newline \#page-nr \newline \\
 \end{longtable}
 \begin{longtable}[l]{ l }
-  \\
+Banana.ch SA  - Via Trevano 7a - 6900 Lugano \\
 Carlo Rossi \newline Rossi SA \newline Via Trevano \newline 6963 Pregassona \newline Switzerland \newline \\
 \end{longtable}
 \begin{longtable}[l]{ l  l  l  l }
@@ -161,7 +161,7 @@ Invoice: \newline Date: \newline Customer No: \newline Due date: \newline Page: 
 Invoice: \newline Date: \newline Customer No: \newline Due date: \newline Page: \newline  & 47 \newline 11.11.2018 \newline 100003 \newline 11.12.2018 \newline \#page-nr \newline \\
 \end{longtable}
 \begin{longtable}[l]{ l }
-  \\
+Banana.ch SA  - Via Trevano 7a - 6900 Lugano \\
 Marco Alberti \newline V. Campuréta 40 \newline 6883 Novazzano \newline Switzerland \newline \\
 \end{longtable}
 \begin{longtable}[l]{ l  l  l  l }
