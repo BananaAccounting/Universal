@@ -97,33 +97,83 @@ ReportInvoiceTemplate10.prototype.testReport = function() {
 
   //Invoice 35
   Test.logger.addSubSection("Test Invoice 35");
-  aggiungiReport("35", "Test Invoice 35");
+  aggiungiReport(banDoc, "35", "Test Invoice 35");
   
   //Invoice 36
   Test.logger.addSubSection("Test Invoice 36");
-  aggiungiReport("36", "Test Invoice 36");
+  aggiungiReport(banDoc, "36", "Test Invoice 36");
 
   //Invoice 37
   Test.logger.addSubSection("Test Invoice 37");
-  aggiungiReport("37", "Test Invoice 37");
+  aggiungiReport(banDoc, "37", "Test Invoice 37");
 
   //Invoice 47
   Test.logger.addSubSection("Test Invoice 47");
-  aggiungiReport("47", "Test Invoice 47");
+  aggiungiReport(banDoc, "47", "Test Invoice 47");
 }
 
 //Function that creates the report for the test
-function aggiungiReport(invoiceNumber, reportName) {
+function aggiungiReport(banDoc, invoiceNumber, reportName) {
   
+  var lang = 'en';
+  if (banDoc.locale)
+    lang = banDoc.locale;
+  if (lang.length > 2)
+    lang = lang.substr(0, 2);
+  var texts = setInvoiceTexts(lang);
+
   //Set params (normally are taken from settings)
   var param = {};
+
+  //Include
   param.print_header = true;
-  param.font_family = '';
-  param.color_1 = '';
-  param.color_2 = '';
+  param.print_logo = true;
+  param.info_invoice_number = true;
+  param.info_date = true;
+  param.info_customer = true;
+  param.info_due_date = true;
+  param.info_page = true;
+  param.items_description = true;
+  param.items_quantity = true;
+  param.items_unit_price = true;
+  param.items_total = true;
+  
+  //Texts
+  param.header_row_1 = "";
+  param.header_row_2 = "";
+  param.header_row_3 = "";
+  param.header_row_4 = "";
+  param.header_row_5 = "";
+  param.info_invoice_number_text = texts.invoice;
+  param.info_date_text = texts.date;
+  param.info_customer_text = texts.customer;
+  param.info_due_date_text = texts.payment_terms_label;
+  param.info_page_text = texts.page;
+  param.items_description_text = texts.description;
+  param.items_quantity_text = texts.qty;
+  param.items_unit_price_text = texts.unit_price;
+  param.items_total_text = texts.total;
+
+  //Styles
+  param.color_1 = '#337ab7';
+  param.color_2 = '#ffffff';
   param.color_3 = '';
   param.color_4 = '';
-  param.color_5 = '';
+  param.font_family = 'Helvetica';
+
+  //Invoice elements
+  param.small_address_line = '';
+  param.address_left = false;
+  param.invoice_details_iva_netto = false;
+  param.invoice_details_iva_lordo = false;
+  param.invoice_details_senza_iva = false;
+  param_footer = '';
+
+  //Embedded JavaScript file
+  param.custom_javascript_filename = '';
+
+
+
 
   //Banana.console.log(JSON.stringify(jsonInvoice, "", ""));
 

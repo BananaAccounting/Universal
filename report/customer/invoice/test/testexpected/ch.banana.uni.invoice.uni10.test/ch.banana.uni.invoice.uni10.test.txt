@@ -31,11 +31,19 @@
 \end{longtable}
 \begin{longtable}[l]{ l  l }
    &   \\
-Invoice: \newline Date: \newline Customer No: \newline Payment: \newline Page: \newline  & 35 \newline 29.01.2018 \newline 100002 \newline 30 days \newline \#page-nr \newline \\
+Invoice  & 35 \\
+Date  & 29.01.2018 \\
+Customer No  & 100002 \\
+Payment  & 30 days \\
+Page  & \#page-nr \\
 \end{longtable}
 \begin{longtable}[l]{ l  l }
    &   \\
-Invoice: \newline Date: \newline Customer No: \newline Payment: \newline Page: \newline  & 35 \newline 29.01.2018 \newline 100002 \newline 30 days \newline \#page-nr \newline \\
+Invoice  & 35 \\
+Date  & 29.01.2018 \\
+Customer No  & 100002 \\
+Payment  & 30 days \\
+Page  & \#page-nr \\
 \end{longtable}
 \begin{longtable}[l]{ l }
 Banana.ch SA  - Via Trevano 7a - 6900 Lugano \\
@@ -76,11 +84,19 @@ Sales merchandise, invoice \#35, customer B \newline \newline  &  &  & 462.96 \\
 \end{longtable}
 \begin{longtable}[l]{ l  l }
    &   \\
-Invoice: \newline Date: \newline Customer No: \newline Due date: \newline Page: \newline  & 36 \newline 01.02.2018 \newline 100004 \newline 03.03.2018 \newline \#page-nr \newline \\
+Invoice  & 36 \\
+Date  & 01.02.2018 \\
+Customer No  & 100004 \\
+Payment  & 03.03.2018 \\
+Page  & \#page-nr \\
 \end{longtable}
 \begin{longtable}[l]{ l  l }
    &   \\
-Invoice: \newline Date: \newline Customer No: \newline Due date: \newline Page: \newline  & 36 \newline 01.02.2018 \newline 100004 \newline 03.03.2018 \newline \#page-nr \newline \\
+Invoice  & 36 \\
+Date  & 01.02.2018 \\
+Customer No  & 100004 \\
+Payment  & 03.03.2018 \\
+Page  & \#page-nr \\
 \end{longtable}
 \begin{longtable}[l]{ l }
 Banana.ch SA  - Via Trevano 7a - 6900 Lugano \\
@@ -112,11 +128,19 @@ Sales merchandise, invoice \#36, customer D \newline \newline  &  &  & 6'481.48 
 \end{longtable}
 \begin{longtable}[l]{ l  l }
    &   \\
-Invoice: \newline Date: \newline Customer No: \newline Due date: \newline Page: \newline  & 37 \newline 03.02.2018 \newline 100001 \newline 05.03.2018 \newline \#page-nr \newline \\
+Invoice  & 37 \\
+Date  & 03.02.2018 \\
+Customer No  & 100001 \\
+Payment  & 05.03.2018 \\
+Page  & \#page-nr \\
 \end{longtable}
 \begin{longtable}[l]{ l  l }
    &   \\
-Invoice: \newline Date: \newline Customer No: \newline Due date: \newline Page: \newline  & 37 \newline 03.02.2018 \newline 100001 \newline 05.03.2018 \newline \#page-nr \newline \\
+Invoice  & 37 \\
+Date  & 03.02.2018 \\
+Customer No  & 100001 \\
+Payment  & 05.03.2018 \\
+Page  & \#page-nr \\
 \end{longtable}
 \begin{longtable}[l]{ l }
 Banana.ch SA  - Via Trevano 7a - 6900 Lugano \\
@@ -154,11 +178,19 @@ Consultancy \newline \newline  &  &  & 92.59 \\
 \end{longtable}
 \begin{longtable}[l]{ l  l }
    &   \\
-Invoice: \newline Date: \newline Customer No: \newline Due date: \newline Page: \newline  & 47 \newline 11.11.2018 \newline 100003 \newline 11.12.2018 \newline \#page-nr \newline \\
+Invoice  & 47 \\
+Date  & 11.11.2018 \\
+Customer No  & 100003 \\
+Payment  & 11.12.2018 \\
+Page  & \#page-nr \\
 \end{longtable}
 \begin{longtable}[l]{ l  l }
    &   \\
-Invoice: \newline Date: \newline Customer No: \newline Due date: \newline Page: \newline  & 47 \newline 11.11.2018 \newline 100003 \newline 11.12.2018 \newline \#page-nr \newline \\
+Invoice  & 47 \\
+Date  & 11.11.2018 \\
+Customer No  & 100003 \\
+Payment  & 11.12.2018 \\
+Page  & \#page-nr \\
 \end{longtable}
 \begin{longtable}[l]{ l }
 Banana.ch SA  - Via Trevano 7a - 6900 Lugano \\
