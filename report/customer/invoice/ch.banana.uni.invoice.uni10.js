@@ -27,6 +27,37 @@
 // @task = report.customer.invoice
 
 
+
+
+  /*
+
+  
+  1) Funzione "print_info()"
+
+    Come fare per il TITOLO? 
+    Di default usiamo "Invoice" e poi l'utente può cambiarlo manualmente?
+    getTitle(invoiceObj, texts)
+
+
+  2) Funzione "printInvoice()"
+
+    In che modo deve essere INCLUSO anche il file _customer_invoice.js"?
+    a) se esiste un parametro (es. file1.js), includo cmq il _customer_invoice.js?
+       => dopo come faccio a capire da quale js leggere le funzioni?
+    b) se esiste un parametro, allora non includo il _customer_invoice.js?
+       => le funzioni le leggo solo dal parametro.
+    c) se NON esiste il parametro, allora includo il _customer_invoice.js?
+       => le funzioni le leggo solo dal _customer_invoice.js.
+
+
+  */
+
+
+
+
+
+
+
 var docTableStart = "110mm";
 
 
@@ -75,118 +106,59 @@ function convertParam(param) {
 
   var convertedParam = {};
   convertedParam.version = '1.0';
-  /*array dei parametri dello script*/
+  /* array of script's parameters */
   convertedParam.data = [];
 
 
   /*
-  * HEADER
+  * INCLUDE
   */
   var currentParam = {};
-  currentParam.name = 'header';
-  currentParam.title = texts.param_header;
+  currentParam.name = 'include';
+  currentParam.title = texts.param_include;
   currentParam.type = 'string';
   currentParam.value = '';
   currentParam.editable = false;
   currentParam.readValue = function() {
-    param.header = this.value;
-  }
-  convertedParam.data.push(currentParam);
-
-  currentParam = {};
-  currentParam.name = 'print_logo';
-  currentParam.parentObject = 'header';
-  currentParam.title = texts.param_print_logo;
-  currentParam.type = 'bool';
-  currentParam.value = param.print_logo ? true : false;
-  currentParam.readValue = function() {
-    param.print_logo = this.value;
+    param.include = this.value;
   }
   convertedParam.data.push(currentParam);
 
   var currentParam = {};
   currentParam.name = 'print_header';
-  currentParam.parentObject = 'header';
+  currentParam.parentObject = 'include';
   currentParam.title = texts.param_print_header;
   currentParam.type = 'bool';
   currentParam.value = param.print_header ? true : false;
+  currentParam.defaultvalue = true;
+  currentParam.tooltip = texts.param_tooltip_print_header;
   currentParam.readValue = function() {
     param.print_header = this.value;
   }
   convertedParam.data.push(currentParam);
+
+
+  currentParam = {};
+  currentParam.name = 'print_logo';
+  currentParam.parentObject = 'include';
+  currentParam.title = texts.param_print_logo;
+  currentParam.type = 'bool';
+  currentParam.value = param.print_logo ? true : false;
+  currentParam.defaultvalue = false;
+  currentParam.tooltip = texts.param_tooltip_print_logo;
+  currentParam.readValue = function() {
+    param.print_logo = this.value;
+  }
+  convertedParam.data.push(currentParam);
   
   currentParam = {};
-  currentParam.name = 'header_left';
-  currentParam.parentObject = 'header';
-  currentParam.title = texts.param_header_left;
-  currentParam.type = 'bool';
-  currentParam.value = param.header_left ? true : false;
-  currentParam.readValue = function() {
-   param.header_left = this.value;
-  }
-  convertedParam.data.push(currentParam);
-
-  currentParam = {};
-  currentParam.name = 'header_right';
-  currentParam.parentObject = 'header';
-  currentParam.title = texts.param_header_right;
-  currentParam.type = 'bool';
-  currentParam.value = param.header_right ? true : false;
-  currentParam.readValue = function() {
-   param.header_right = this.value;
-  }
-  convertedParam.data.push(currentParam);
-
-
-
-  /*
-  * ADDRESS
-  */
-
-  var currentParam = {};
-  currentParam.name = 'address';
-  currentParam.title = texts.param_address;
-  currentParam.type = 'string';
-  currentParam.value = '';
-  currentParam.editable = false;
-  currentParam.readValue = function() {
-    param.param_address = this.value;
-  }
-  convertedParam.data.push(currentParam);
-
-  currentParam = {};
-  currentParam.name = 'address_left';
-  currentParam.parentObject = 'address';
-  currentParam.title = texts.param_address_left;
-  currentParam.type = 'bool';
-  currentParam.value = param.address_left ? true : false;
-  currentParam.readValue = function() {
-   param.address_left = this.value;
-  }
-  convertedParam.data.push(currentParam);
-
-
-  /*
-  * INFO INVOICE
-  */
-
-  var currentParam = {};
-  currentParam.name = 'info_invoice';
-  currentParam.title = texts.param_info_invoice;
-  currentParam.type = 'string';
-  currentParam.value = '';
-  currentParam.editable = false;
-  currentParam.readValue = function() {
-    param.info_invoice = this.value;
-  }
-  convertedParam.data.push(currentParam);
-
-  currentParam = {};
   currentParam.name = 'info_invoice_number';
-  currentParam.parentObject = 'info_invoice';
+  currentParam.parentObject = 'include';
   currentParam.title = texts.param_info_invoice_number;
   currentParam.type = 'bool';
   currentParam.value = param.info_invoice_number ? true : false;
+  currentParam.defaultvalue = true;
+  currentParam.tooltip = texts.param_tooltip_info_invoice_number;
   currentParam.readValue = function() {
     param.info_invoice_number = this.value;
   }
@@ -194,10 +166,12 @@ function convertParam(param) {
 
   currentParam = {};
   currentParam.name = 'info_date';
-  currentParam.parentObject = 'info_invoice';
+  currentParam.parentObject = 'include';
   currentParam.title = texts.param_info_date;
   currentParam.type = 'bool';
   currentParam.value = param.info_date ? true : false;
+  currentParam.defaultvalue = true;
+  currentParam.tooltip = texts.param_tooltip_info_date;
   currentParam.readValue = function() {
     param.info_date = this.value;
   }
@@ -205,10 +179,12 @@ function convertParam(param) {
 
   currentParam = {};
   currentParam.name = 'info_customer';
-  currentParam.parentObject = 'info_invoice';
+  currentParam.parentObject = 'include';
   currentParam.title = texts.param_info_customer;
   currentParam.type = 'bool';
   currentParam.value = param.info_customer ? true : false;
+  currentParam.defaultvalue = true;
+  currentParam.tooltip = texts.param_tooltip_info_customer;
   currentParam.readValue = function() {
     param.info_customer = this.value;
   }
@@ -216,10 +192,12 @@ function convertParam(param) {
 
   currentParam = {};
   currentParam.name = 'info_due_date';
-  currentParam.parentObject = 'info_invoice';
+  currentParam.parentObject = 'include';
   currentParam.title = texts.param_info_due_date;
   currentParam.type = 'bool';
   currentParam.value = param.info_due_date ? true : false;
+  currentParam.defaultvalue = true;
+  currentParam.tooltip = texts.param_tooltip_info_due_date;
   currentParam.readValue = function() {
     param.info_due_date = this.value;
   }
@@ -227,149 +205,371 @@ function convertParam(param) {
 
   currentParam = {};
   currentParam.name = 'info_page';
-  currentParam.parentObject = 'info_invoice';
+  currentParam.parentObject = 'include';
   currentParam.title = texts.param_info_page;
   currentParam.type = 'bool';
   currentParam.value = param.info_page ? true : false;
+  currentParam.defaultvalue = true;
+  currentParam.tooltip = texts.param_tooltip_info_page;
   currentParam.readValue = function() {
     param.info_page = this.value;
   }
   convertedParam.data.push(currentParam);
 
-
-
-  /*
-  * ITEMS TABLE
-  */
-  var currentParam = {};
-  currentParam.name = 'items_table';
-  currentParam.title = texts.param_items_table;
-  currentParam.type = 'string';
-  currentParam.value = '';
-  currentParam.editable = false;
-  currentParam.readValue = function() {
-    param.items_table = this.value;
-  }
-  convertedParam.data.push(currentParam);
-
   currentParam = {};
   currentParam.name = 'items_description';
-  currentParam.parentObject = 'items_table';
+  currentParam.parentObject = 'include';
   currentParam.title = texts.param_items_description;
   currentParam.type = 'bool';
   currentParam.value = param.items_description ? true : false;
+  currentParam.defaultvalue = true;
+  currentParam.tooltip = texts.param_tooltip_items_description;
   currentParam.readValue = function() {
     param.items_description = this.value;
   }
   convertedParam.data.push(currentParam);
 
   currentParam = {};
-  currentParam.name = 'items_description_rename';
-  currentParam.parentObject = 'items_table';
-  currentParam.title = texts.param_items_description_rename;
-  currentParam.type = 'string';
-  currentParam.value = param.items_description_rename ? param.items_description_rename : texts.description;
-  currentParam.readValue = function() {
-    param.items_description_rename = this.value;
-  }
-  convertedParam.data.push(currentParam);
-
-  currentParam = {};
   currentParam.name = 'items_quantity';
-  currentParam.parentObject = 'items_table';
+  currentParam.parentObject = 'include';
   currentParam.title = texts.param_items_quantity;
   currentParam.type = 'bool';
   currentParam.value = param.items_quantity ? true : false;
+  currentParam.defaultvalue = true;
+  currentParam.tooltip = texts.param_tooltip_items_quantity;
   currentParam.readValue = function() {
     param.items_quantity = this.value;
   }
   convertedParam.data.push(currentParam);
 
   currentParam = {};
-  currentParam.name = 'items_quantity_rename';
-  currentParam.parentObject = 'items_table';
-  currentParam.title = texts.param_items_quantity_rename;
-  currentParam.type = 'string';
-  currentParam.value = param.items_quantity_rename ? param.items_quantity_rename : texts.description;
-  currentParam.readValue = function() {
-    param.items_quantity_rename = this.value;
-  }
-  convertedParam.data.push(currentParam);
-
-  currentParam = {};
   currentParam.name = 'items_unit_price';
-  currentParam.parentObject = 'items_table';
+  currentParam.parentObject = 'include';
   currentParam.title = texts.param_items_unit_price;
   currentParam.type = 'bool';
   currentParam.value = param.items_unit_price ? true : false;
+  currentParam.defaultvalue = true;
+  currentParam.tooltip = texts.param_tooltip_items_unit_price;
   currentParam.readValue = function() {
     param.items_unit_price = this.value;
   }
   convertedParam.data.push(currentParam);
 
   currentParam = {};
-  currentParam.name = 'items_unit_price_rename';
-  currentParam.parentObject = 'items_table';
-  currentParam.title = texts.param_items_unit_price_rename;
-  currentParam.type = 'string';
-  currentParam.value = param.items_unit_price_rename ? param.items_unit_price_rename : texts.description;
-  currentParam.readValue = function() {
-    param.items_unit_price_rename = this.value;
-  }
-  convertedParam.data.push(currentParam);
-
-  currentParam = {};
   currentParam.name = 'items_total';
-  currentParam.parentObject = 'items_table';
+  currentParam.parentObject = 'include';
   currentParam.title = texts.param_items_total;
   currentParam.type = 'bool';
   currentParam.value = param.items_total ? true : false;
+  currentParam.defaultvalue = true;
+  currentParam.tooltip = texts.param_tooltip_items_total;
   currentParam.readValue = function() {
     param.items_total = this.value;
   }
   convertedParam.data.push(currentParam);
 
-  currentParam = {};
-  currentParam.name = 'items_total_rename';
-  currentParam.parentObject = 'items_table';
-  currentParam.title = texts.param_items_total_rename;
-  currentParam.type = 'string';
-  currentParam.value = param.items_total_rename ? param.items_total_rename : texts.description;
-  currentParam.readValue = function() {
-    param.items_total_rename = this.value;
-  }
-  convertedParam.data.push(currentParam);
-
-
 
 
   /*
-  * LANGUAGE
+  * TEXTS
   */
   var currentParam = {};
+  currentParam.name = 'texts';
+  currentParam.title = texts.param_texts;
+  currentParam.type = 'string';
+  currentParam.value = '';
+  currentParam.editable = false;
+  currentParam.readValue = function() {
+    param.texts = this.value;
+  }
+  convertedParam.data.push(currentParam);
+
+  var currentParam = {};
   currentParam.name = 'language';
+  currentParam.parentObject = 'texts';
   currentParam.title = texts.param_language;
   currentParam.type = 'string';
   currentParam.value = '';
   currentParam.editable = false;
   currentParam.readValue = function() {
-    param.param_language = this.value;
+    param.language = this.value;
   }
   convertedParam.data.push(currentParam);
 
   currentParam = {};
-  currentParam.name = 'language_new';
+  currentParam.name = 'info_invoice_number_text';
   currentParam.parentObject = 'language';
-  currentParam.title = texts.param_language_new;
+  currentParam.title = texts.param_info_invoice_number_text;
   currentParam.type = 'string';
-  currentParam.value = param.language_new ? param.language_new : '';
+  currentParam.value = param.info_invoice_number_text ? param.info_invoice_number_text : texts.invoice;
+  currentParam.defaultvalue = texts.invoice;
+  currentParam.tooltip = texts.param_tooltip_info_invoice_number_text;
   currentParam.readValue = function() {
-    param.language_new = this.value;
+    param.info_invoice_number_text = this.value;
+  }
+  convertedParam.data.push(currentParam);
+
+  currentParam = {};
+  currentParam.name = 'info_date_text';
+  currentParam.parentObject = 'language';
+  currentParam.title = texts.param_info_date_text;
+  currentParam.type = 'string';
+  currentParam.value = param.info_date_text ? param.info_date_text : texts.date;
+  currentParam.defaultvalue = texts.date;
+  currentParam.tooltip = texts.param_tooltip_info_date_text;
+  currentParam.readValue = function() {
+    param.info_date_text = this.value;
+  }
+  convertedParam.data.push(currentParam);
+
+  currentParam = {};
+  currentParam.name = 'info_customer_text';
+  currentParam.parentObject = 'language';
+  currentParam.title = texts.param_info_customer_text;
+  currentParam.type = 'string';
+  currentParam.value = param.info_customer_text ? param.info_customer_text : texts.customer;
+  currentParam.defaultvalue = texts.customer;
+  currentParam.tooltip = texts.param_tooltip_info_customer_text;
+  currentParam.readValue = function() {
+    param.info_customer_text = this.value;
+  }
+  convertedParam.data.push(currentParam);
+
+  currentParam = {};
+  currentParam.name = 'info_due_date_text';
+  currentParam.parentObject = 'language';
+  currentParam.title = texts.param_info_due_date_text;
+  currentParam.type = 'string';
+  currentParam.value = param.info_due_date_text ? param.info_due_date_text : texts.payment_terms_label;
+  currentParam.defaultvalue = texts.payment_terms_label;
+  currentParam.tooltip = texts.param_tooltip_payment_terms_label;
+  currentParam.readValue = function() {
+    param.info_due_date_text = this.value;
+  }
+  convertedParam.data.push(currentParam);
+
+  currentParam = {};
+  currentParam.name = 'info_page_text';
+  currentParam.parentObject = 'language';
+  currentParam.title = texts.param_info_page_text;
+  currentParam.type = 'string';
+  currentParam.value = param.info_page_text ? param.info_page_text : texts.page;
+  currentParam.defaultvalue = texts.page;
+  currentParam.tooltip = texts.param_tooltip_info_page_text;
+  currentParam.readValue = function() {
+    param.info_page_text = this.value;
+  }
+  convertedParam.data.push(currentParam);
+
+  currentParam = {};
+  currentParam.name = 'items_description_text';
+  currentParam.parentObject = 'language';
+  currentParam.title = texts.param_items_description_text;
+  currentParam.type = 'string';
+  currentParam.value = param.items_description_text ? param.items_description_text : texts.description;
+  currentParam.defaultvalue = texts.description;
+  currentParam.tooltip = texts.param_tooltip_items_description_text;
+  currentParam.readValue = function() {
+    param.items_description_text = this.value;
+  }
+  convertedParam.data.push(currentParam);
+
+  currentParam = {};
+  currentParam.name = 'items_quantity_text';
+  currentParam.parentObject = 'language';
+  currentParam.title = texts.param_items_quantity_text;
+  currentParam.type = 'string';
+  currentParam.value = param.items_quantity_text ? param.items_quantity_text : texts.qty;
+  currentParam.defaultvalue = texts.qty;
+  currentParam.tooltip = texts.param_tooltip_items_quantity_text;
+  currentParam.readValue = function() {
+    param.items_quantity_text = this.value;
+  }
+  convertedParam.data.push(currentParam);
+
+  currentParam = {};
+  currentParam.name = 'items_unit_price_text';
+  currentParam.parentObject = 'language';
+  currentParam.title = texts.param_items_unit_price_text;
+  currentParam.type = 'string';
+  currentParam.value = param.items_unit_price_text ? param.items_unit_price_text : texts.unit_price;
+  currentParam.defaultvalue = texts.unit_price;
+  currentParam.tooltip = texts.param_tooltip_items_unit_price_text;
+  currentParam.readValue = function() {
+    param.items_unit_price_text = this.value;
+  }
+  convertedParam.data.push(currentParam);
+
+  currentParam = {};
+  currentParam.name = 'items_total_text';
+  currentParam.parentObject = 'language';
+  currentParam.title = texts.param_items_total_text;
+  currentParam.type = 'string';
+  currentParam.value = param.items_total_text ? param.items_total_text : texts.total;
+  currentParam.defaultvalue = texts.total;
+  currentParam.tooltip = texts.param_tooltip_items_total_text;
+  currentParam.readValue = function() {
+    param.items_total_text = this.value;
   }
   convertedParam.data.push(currentParam);
 
 
+  /*
+  * IVOICE ELEMENTS
+  */
+  var currentParam = {};
+  currentParam.name = 'invoice_elements';
+  currentParam.title = texts.param_invoice_elements;
+  currentParam.type = 'string';
+  currentParam.value = '';
+  currentParam.editable = false;
+  currentParam.readValue = function() {
+    param.invoice_elements = this.value;
+  }
+  convertedParam.data.push(currentParam);
 
+  currentParam = {};
+  currentParam.name = 'header_row_1';
+  currentParam.parentObject = 'invoice_elements';
+  currentParam.title = texts.param_header_row_1;
+  currentParam.type = 'string';
+  currentParam.value = param.header_row_1 ? param.header_row_1 : '';
+  currentParam.defaultvalue = "";
+  currentParam.tooltip = texts.param_tooltip_header_row_1;
+  currentParam.readValue = function() {
+    param.header_row_1 = this.value;
+  }
+  convertedParam.data.push(currentParam);
+
+  currentParam = {};
+  currentParam.name = 'header_row_2';
+  currentParam.parentObject = 'invoice_elements';
+  currentParam.title = texts.param_header_row_2;
+  currentParam.type = 'string';
+  currentParam.value = param.header_row_2 ? param.header_row_2 : '';
+  currentParam.defaultvalue = "";
+  currentParam.tooltip = texts.param_tooltip_header_row_2;
+  currentParam.readValue = function() {
+    param.header_row_2 = this.value;
+  }
+  convertedParam.data.push(currentParam);
+
+  currentParam = {};
+  currentParam.name = 'header_row_3';
+  currentParam.parentObject = 'invoice_elements';
+  currentParam.title = texts.param_header_row_3;
+  currentParam.type = 'string';
+  currentParam.value = param.header_row_3 ? param.header_row_3 : '';
+  currentParam.defaultvalue = "";
+  currentParam.tooltip = texts.param_tooltip_header_row_3;
+  currentParam.readValue = function() {
+    param.header_row_3 = this.value;
+  }
+  convertedParam.data.push(currentParam);
+
+  currentParam = {};
+  currentParam.name = 'header_row_4';
+  currentParam.parentObject = 'invoice_elements';
+  currentParam.title = texts.param_header_row_4;
+  currentParam.type = 'string';
+  currentParam.value = param.header_row_4 ? param.header_row_4 : '';
+  currentParam.defaultvalue = "";
+  currentParam.tooltip = texts.param_tooltip_header_row_4;
+  currentParam.readValue = function() {
+    param.header_row_4 = this.value;
+  }
+  convertedParam.data.push(currentParam);
+
+  currentParam = {};
+  currentParam.name = 'header_row_5';
+  currentParam.parentObject = 'invoice_elements';
+  currentParam.title = texts.param_header_row_5;
+  currentParam.type = 'string';
+  currentParam.value = param.header_row_5 ? param.header_row_5 : '';
+  currentParam.defaultvalue = "";
+  currentParam.tooltip = texts.param_tooltip_header_row_5;
+  currentParam.readValue = function() {
+    param.header_row_5 = this.value;
+  }
+  convertedParam.data.push(currentParam);
+
+  currentParam = {};
+  currentParam.name = 'small_address_line';
+  currentParam.parentObject = 'invoice_elements';
+  currentParam.title = texts.param_small_address_line;
+  currentParam.type = 'string';
+  currentParam.value = param.small_address_line ? param.small_address_line : '';
+  currentParam.defaultvalue = '';
+  currentParam.tooltip = texts.param_tooltip_small_address_line;
+  currentParam.readValue = function() {
+   param.small_address_line = this.value;
+  }
+  convertedParam.data.push(currentParam);
+
+  currentParam = {};
+  currentParam.name = 'address_left';
+  currentParam.parentObject = 'invoice_elements';
+  currentParam.title = texts.param_address_left;
+  currentParam.type = 'bool';
+  currentParam.value = param.address_left ? true : false;
+  currentParam.defaultvalue = false;
+  currentParam.tooltip = texts.param_tooltip_address_left;
+  currentParam.readValue = function() {
+   param.address_left = this.value;
+  }
+  convertedParam.data.push(currentParam);
+
+  currentParam = {};
+  currentParam.name = 'invoice_details_iva_netto';
+  currentParam.parentObject = 'invoice_elements';
+  currentParam.title = texts.param_invoice_details_iva_netto;
+  currentParam.type = 'bool';
+  currentParam.value = param.invoice_details_iva_netto ? true : false;
+  currentParam.defaultvalue = false;
+  currentParam.tooltip = texts.param_tooltip_invoice_details_iva_netto;
+  currentParam.readValue = function() {
+   param.invoice_details_iva_netto = this.value;
+  }
+  convertedParam.data.push(currentParam);
+
+  currentParam = {};
+  currentParam.name = 'invoice_details_iva_lordo';
+  currentParam.parentObject = 'invoice_elements';
+  currentParam.title = texts.param_invoice_details_iva_lordo;
+  currentParam.type = 'bool';
+  currentParam.value = param.invoice_details_iva_lordo ? true : false;
+  currentParam.defaultvalue = false;
+  currentParam.tooltip = texts.param_tooltip_invoice_details_iva_lordo;
+  currentParam.readValue = function() {
+   param.invoice_details_iva_lordo = this.value;
+  }
+  convertedParam.data.push(currentParam);
+
+  currentParam = {};
+  currentParam.name = 'invoice_details_senza_iva';
+  currentParam.parentObject = 'invoice_elements';
+  currentParam.title = texts.param_invoice_details_senza_iva;
+  currentParam.type = 'bool';
+  currentParam.value = param.invoice_details_senza_iva ? true : false;
+  currentParam.defaultvalue = false;
+  currentParam.tooltip = texts.param_tooltip_invoice_details_senza_iva;
+  currentParam.readValue = function() {
+   param.invoice_details_senza_iva = this.value;
+  }
+  convertedParam.data.push(currentParam);
+
+  currentParam = {};
+  currentParam.name = 'footer';
+  currentParam.parentObject = 'invoice_elements';
+  currentParam.title = texts.param_footer;
+  currentParam.type = 'string';
+  currentParam.value = param.footer ? param.footer : '';
+  currentParam.defaultvalue = '';
+  currentParam.tooltip = texts.param_tooltip_footer;
+  currentParam.readValue = function() {
+   param.footer = this.value;
+  }
+  convertedParam.data.push(currentParam);
 
 
 
@@ -392,7 +592,9 @@ function convertParam(param) {
   currentParam.parentObject = 'styles';
   currentParam.title = texts.param_font_family;
   currentParam.type = 'string';
-  currentParam.value = param.font_family ? param.font_family : '';
+  currentParam.value = param.font_family ? param.font_family : 'Helvetica';
+  currentParam.defaultvalue = 'Helvetica';
+  currentParam.tooltip = texts.param_tooltip_font_family;
   currentParam.readValue = function() {
    param.font_family = this.value;
   }
@@ -404,6 +606,8 @@ function convertParam(param) {
   currentParam.title = texts.param_color_1;
   currentParam.type = 'string';
   currentParam.value = param.color_1 ? param.color_1 : '#337ab7';
+  currentParam.defaultvalue = '#337ab7';
+  currentParam.tooltip = texts.param_tooltip_color_1;
   currentParam.readValue = function() {
    param.color_1 = this.value;
   }
@@ -415,16 +619,16 @@ function convertParam(param) {
   currentParam.title = texts.param_color_2;
   currentParam.type = 'string';
   currentParam.value = param.color_2 ? param.color_2 : '#ffffff';
+  currentParam.defaultvalue = '#ffffff';
+  currentParam.tooltip = texts.param_tooltip_color_2;
   currentParam.readValue = function() {
    param.color_2 = this.value;
   }
   convertedParam.data.push(currentParam);
 
-  
-
 
   /*
-  * Embedded JavaScript file
+  * EMBEDDED JAVASCRIPT FILEE
   */
   var currentParam = {};
   currentParam.name = 'custom_javascript';
@@ -443,13 +647,39 @@ function convertParam(param) {
   currentParam.title = texts.param_custom_javascript_filename;
   currentParam.type = 'string';
   currentParam.value = param.custom_javascript_filename ? param.custom_javascript_filename : '';
+  currentParam.defaultvalue = '';
+  currentParam.tooltip = texts.param_tooltip_javascript_filename;
   currentParam.readValue = function() {
    param.custom_javascript_filename = this.value;
   }
   convertedParam.data.push(currentParam);
 
 
-  
+  /*
+  * LANGUAGE
+  */
+  // var currentParam = {};
+  // currentParam.name = 'language';
+  // currentParam.title = texts.param_language;
+  // currentParam.type = 'string';
+  // currentParam.value = '';
+  // currentParam.editable = false;
+  // currentParam.readValue = function() {
+  //   param.param_language = this.value;
+  // }
+  // convertedParam.data.push(currentParam);
+
+  // currentParam = {};
+  // currentParam.name = 'language_new';
+  // currentParam.parentObject = 'language';
+  // currentParam.title = texts.param_language_new;
+  // currentParam.type = 'string';
+  // currentParam.value = param.language_new ? param.language_new : '';
+  // currentParam.readValue = function() {
+  //   param.language_new = this.value;
+  // }
+  // convertedParam.data.push(currentParam);
+
 
   return convertedParam;
 }
@@ -464,11 +694,9 @@ function initParam() {
     lang = lang.substr(0, 2);
   var texts = setInvoiceTexts(lang);
 
+  //Include
   param.print_header = true;
   param.print_logo = true;
-  param.address_left = false;
-  param.header_left = false;
-  param.header_right = true;
   param.info_invoice_number = true;
   param.info_date = true;
   param.info_customer = true;
@@ -478,21 +706,43 @@ function initParam() {
   param.items_quantity = true;
   param.items_unit_price = true;
   param.items_total = true;
-  param.items_description_rename = texts.description;
-  param.items_quantity_rename = texts.qty;
-  param.items_unit_price_rename = texts.unit_price;
-  param.items_total_rename = texts.total;
+  
+  //Texts
+  param.header_row_1 = "";
+  param.header_row_2 = "";
+  param.header_row_3 = "";
+  param.header_row_4 = "";
+  param.header_row_5 = "";
+  param.info_invoice_number_text = texts.invoice;
+  param.info_date_text = texts.date;
+  param.info_customer_text = texts.customer;
+  param.info_due_date_text = texts.payment_terms_label;
+  param.info_page_text = texts.page;
+  param.items_description_text = texts.description;
+  param.items_quantity_text = texts.qty;
+  param.items_unit_price_text = texts.unit_price;
+  param.items_total_text = texts.total;
 
-  param.language_new = '';
-
+  //Styles
   param.color_1 = '#337ab7';
   param.color_2 = '#ffffff';
   param.color_3 = '';
   param.color_4 = '';
   param.font_family = 'Helvetica';
 
+  //Invoice elements
+  param.small_address_line = '';
+  param.address_left = false;
+  param.invoice_details_iva_netto = false;
+  param.invoice_details_iva_lordo = false;
+  param.invoice_details_senza_iva = false;
+  param_footer = '';
+
+  //Embedded JavaScript file
   param.custom_javascript_filename = '';
 
+  //Language
+  //param.language_new = '';
 
   return param;
 }
@@ -506,23 +756,12 @@ function verifyParam(param) {
     lang = lang.substr(0, 2);
   var texts = setInvoiceTexts(lang);
 
-
+  //Include
   if (!param.print_header) {
     param.print_header = false;
   }
-  if (!param.header_left && !param.header_right) {
-    param.header_left = false;
-    param.header_right = true;
-  }
-  if (param.header_left && param.header_right) {
-    param.header_left = false;
-    param.header_right = true;
-  }
   if (!param.print_logo) {
     param.print_logo = false;
-  }
-  if (!param.address_left) {
-    param.address_left = false;
   }
   if (!param.info_invoice_number) {
     param.info_invoice_number = false;
@@ -551,32 +790,72 @@ function verifyParam(param) {
   if (!param.items_total) {
     param.items_total = false;
   }
-  if (!param.items_description && !param.items_quantity && !param.items_unit_price && !param.items_total) {
-    param.items_description = true;
-    param.items_quantity = true;
-    param.items_unit_price = true;
-    param.items_total = true;    
+
+  //Texts
+  if(!param.header_row_1) {
+    param.header_row_1 = '';
   }
-  if (!param.items_description_rename) {
-      param.items_description_rename = texts.description;
+  if(!param.header_row_2) {
+    param.header_row_2 = '';
   }
-  if (!param.items_quantity_rename) {
-    param.items_quantity_rename = texts.qty;
+  if(!param.header_row_3) {
+    param.header_row_3 = '';
   }
-  if (!param.items_unit_price_rename) {
-    param.items_unit_price_rename = texts.unit_price;
+  if(!param.header_row_4) {
+    param.header_row_4 = '';
   }
-  if (!param.items_total_rename) {
-    param.items_total_rename = texts.total;
+  if(!param.header_row_5) {
+    param.header_row_5 = '';
   }
-  if (!param.language_new) {
-    param.language_new = '';
+  if (!param.info_invoice_number_text) {
+    param.info_invoice_number_text = texts.invoice;
+  }
+  if (!param.info_date_text) {
+    param.info_date_text = texts.date;
+  }
+  if (!param.info_customer_text) {
+    param.info_customer_text = texts.customer;
+  }
+  if (!param.info_due_date_text) {
+    param.info_due_date_text = texts.payment_terms_label;
+  }
+  if (!param.info_page_text) {
+    param.info_page_text = texts.page;
+  }
+  if (!param.items_description_text) {
+    param.items_description_text = texts.description;
+  }
+  if (!param.items_quantity_text) {
+    param.items_quantity_text = texts.qty;
+  }
+  if (!param.items_unit_price_text) {
+    param.items_unit_price_text = texts.unit_price;
+  }
+  if (!param.items_total_text) {
+    param.items_total_text = texts.total;
   }
 
+  //Invoice elements
+  if (!param.small_address_line) {
+    param.small_address_line = '';
+  }
+  if (!param.address_left) {
+    param.address_left = false;
+  }
+  if (!param.invoice_details_iva_netto) {
+    param.invoice_details_iva_netto = false;
+  }
+  if (!param.invoice_details_iva_lordo) {
+    param.invoice_details_iva_lordo = false;
+  }
+  if (!param.invoice_details_senza_iva) {
+    param.invoice_details_senza_iva = false;
+  }
+  if (!param.footer) {
+    param.footer = '';
+  }
 
-
-
-
+  // Styles
   if (!param.color_1) {
     param.color_1 = '#337ab7';
   }
@@ -593,12 +872,15 @@ function verifyParam(param) {
     param.font_family = 'Helvetica';
   }
 
-
+  //Embedded JavaScript files
   if (!param.custom_javascript_filename) {
     param.custom_javascript_filename = '';
   }
 
-
+  //Language
+  // if (!param.language_new) {
+  //   param.language_new = '';
+  // }
 
   return param;
 }
@@ -653,16 +935,7 @@ function printInvoice(jsonInvoice, repDocObj, param, repStyleObj) {
  // Se c'e' quel file js includo anche quello (oltre a quell'altro)
  // dopo l'include chiudo l'if e le chiamate alle funzioni le lascio fuori
 
- /*
-    DA CHIEDERE A DOMENICO:
-    Non ho capito in che modo deve essere INCLUSO anche il file _customer_invoice.js".
-    a) se esiste un parametro (es. file1.js), includo cmq il _customer_invoice.js?
-       => dopo come faccio a capire da quale js leggere le funzioni?
-    b) se esiste un parametro, allora non includo il _customer_invoice.js?
-       => le funzioni le leggo solo dal parametro.
-    c) se NON esiste il parametro, allora includo il _customer_invoice.js?
-       => le funzioni le leggo solo dal _customer_invoice.js.
-  */
+
 
 
   // User entered a javascript file name
@@ -688,11 +961,11 @@ function printInvoice(jsonInvoice, repDocObj, param, repStyleObj) {
         catch(error) {
           Banana.console.log("Table Documents: JavaScript file '" + param.custom_javascript_filename + "' not found or not valid. Default functions are used.");
           print_header(repDocObj, param, repStyleObj, invoiceObj);
-          print_info_invoice(repDocObj, invoiceObj, texts, param);
+          print_info(repDocObj, invoiceObj, texts, param, "");
           print_customer_address(repDocObj, invoiceObj, param);
           print_text_begin(repDocObj, invoiceObj);
-          print_info_invoice_multiple_pages(repDocObj.getHeader(), invoiceObj, texts);
-          print_invoice_details(repDocObj, invoiceObj, texts);
+          print_info(repDocObj.getHeader(), invoiceObj, texts, "info_table_row0");
+          print_details(repDocObj, invoiceObj, texts, param);
           print_notes(repDocObj, invoiceObj);
           print_greetings(repDocObj, invoiceObj);
         }
@@ -721,10 +994,10 @@ function printInvoice(jsonInvoice, repDocObj, param, repStyleObj) {
   }
 
   /* Invoice texts info */
-  if (typeof(hook_print_info_invoice) === typeof(Function)) {
-    hook_print_info_invoice(repDocObj, invoiceObj, texts, param);
+  if (typeof(hook_print_info) === typeof(Function)) {
+    hook_print_info(repDocObj, invoiceObj, texts, param);
   } else {
-    print_info_invoice(repDocObj, invoiceObj, texts, param);
+    print_info(repDocObj, invoiceObj, texts, param);
   }
 
   /* Customer address */
@@ -742,17 +1015,17 @@ function printInvoice(jsonInvoice, repDocObj, param, repStyleObj) {
   }
 
   /* Invoice texts info for pages 2+ */
-  if (typeof(hook_print_info_invoice_multiple_pages) === typeof(Function)) {
-    hook_print_info_invoice_multiple_pages(repDocObj.getHeader(), invoiceObj, texts);
+  if (typeof(hook_print_info) === typeof(Function)) {
+    hook_print_info(repDocObj.getHeader(), invoiceObj, texts, param, "info_table_row0");
   } else {
-    print_info_invoice_multiple_pages(repDocObj.getHeader(), invoiceObj, texts);
+    print_info(repDocObj.getHeader(), invoiceObj, texts, param, "info_table_row0");
   }
 
   /* Invoice details with all the items and amounts */
-  if (typeof(hook_print_invoice_details) === typeof(Function)) {
-    hook_print_invoice_details(repDocObj, invoiceObj, texts);
+  if (typeof(hook_print_details) === typeof(Function)) {
+    hook_print_details(repDocObj, invoiceObj, texts, param);
   } else {
-    print_invoice_details(repDocObj, invoiceObj, texts);
+    print_details(repDocObj, invoiceObj, texts, param);
   }
 
   /* Notes */
@@ -767,8 +1040,14 @@ function printInvoice(jsonInvoice, repDocObj, param, repStyleObj) {
     hook_print_greetings(repDocObj, invoiceObj);
   } else {
     print_greetings(repDocObj, invoiceObj);
-  }  
-  
+  }
+
+  /* Footer */
+  if (typeof(hook_print_footer) === typeof(Function)) {
+    hook_print_footer(repDocObj, param);
+  } else {
+    print_footer(repDocObj, param);
+  }
 
   return repDocObj;
 }
@@ -799,15 +1078,35 @@ function print_header(repDocObj, param, repStyleObj, invoiceObj) {
 
   if (param.print_header) {
     tableRow = tab.addRow();
-    var cell1 = tableRow.addCell("", "");
-    var cell2 = tableRow.addCell("", "amount");
-    var supplierNameLines = getInvoiceSupplierName(invoiceObj.supplier_info).split('\n');
-    for (var i=0; i < supplierNameLines.length; i++) {
-      cell2.addParagraph(supplierNameLines[i], "bold", 1);
+    var cell1 = tableRow.addCell("", "", 1);
+    var cell2 = tableRow.addCell("", "amount", 1);
+    
+    if (param.header_row_1) {
+      if (param.header_row_1.length > 0) {
+        cell2.addParagraph(param.header_row_1, "headerRow1");
+      }
+      if (param.header_row_2.length > 0) {
+        cell2.addParagraph(param.header_row_2, "headerRow2");
+      }
+      if (param.header_row_3.length > 0) {
+        cell2.addParagraph(param.header_row_3, "headerRow3");
+      }
+      if (param.header_row_4.length > 0) {
+        cell2.addParagraph(param.header_row_4, "headerRow4");
+      }
+      if (param.header_row_5.length > 0) {
+        cell2.addParagraph(param.header_row_5, "headerRow5");
+      }
     }
-    var supplierLines = getInvoiceSupplier(invoiceObj.supplier_info).split('\n');
-    for (var i=0; i < supplierLines.length; i++) {
-      cell2.addParagraph(supplierLines[i], "", 1);
+    else {
+      var supplierNameLines = getInvoiceSupplierName(invoiceObj.supplier_info).split('\n');
+      for (var i = 0; i < supplierNameLines.length; i++) {
+        cell2.addParagraph(supplierNameLines[i], "bold");
+      }
+      var supplierLines = getInvoiceSupplier(invoiceObj.supplier_info).split('\n');
+      for (var i = 0; i < supplierLines.length; i++) {
+        cell2.addParagraph(supplierLines[i], "");
+      }      
     }
   }
   else {
@@ -821,82 +1120,62 @@ function print_header(repDocObj, param, repStyleObj, invoiceObj) {
   }
 }
 
-function print_info_invoice(repDocObj, invoiceObj, texts, param) {
+function print_info(repDocObj, invoiceObj, texts, param, tableStyleRow0) {
 
   var infoTable = "";
-  if (param.address_left) {
-    infoTable = repDocObj.addTable("info_table_right");
-  } else {
-    infoTable = repDocObj.addTable("info_table_left");
+
+  // info table that starts at row 0, for pages 2+
+  if (tableStyleRow0) {
+    infoTable = repDocObj.addTable(tableStyleRow0);
+  }
+  else {
+    if (param.address_left) {
+      infoTable = repDocObj.addTable("info_table_right");
+    } else {
+      infoTable = repDocObj.addTable("info_table_left");
+    }
   }
 
   tableRow = infoTable.addRow();
   tableRow.addCell(" ", "", 1);
   tableRow.addCell(" ", "", 1);
 
-  tableRow = infoTable.addRow();
-  var cell1 = tableRow.addCell("","",1);
-  var cell2 = tableRow.addCell("", "bold", 1);
-
-  var invoiceDate = Banana.Converter.toLocaleDateFormat(invoiceObj.document_info.date);
-  cell1.addParagraph(getTitle(invoiceObj, texts) + ":", "");
-  cell1.addParagraph(texts.date + ":", "");
-  cell1.addParagraph(texts.customer + ":", "");
-  
-  //Payment Terms
-  var payment_terms_label = texts.payment_terms_label;
-  var payment_terms = '';
-  if (invoiceObj.billing_info.payment_term) {
-    payment_terms = invoiceObj.billing_info.payment_term;
+  if (param.info_invoice_number) {
+    tableRow = infoTable.addRow();
+    tableRow.addCell(param.info_invoice_number_text,"",1);
+    tableRow.addCell(invoiceObj.document_info.number,"",1);
   }
-  else if (invoiceObj.payment_info.due_date) {
-    payment_terms_label = texts.payment_due_date_label
-    payment_terms = Banana.Converter.toLocaleDateFormat(invoiceObj.payment_info.due_date);
+  if (param.info_date) {
+    tableRow = infoTable.addRow();
+    tableRow.addCell(param.info_date_text,"",1);
+    tableRow.addCell(Banana.Converter.toLocaleDateFormat(invoiceObj.document_info.date),"",1);    
   }
-  cell1.addParagraph(payment_terms_label + ":", "");
-  cell1.addParagraph(texts.page + ":", "");
-
-  cell2.addParagraph(invoiceObj.document_info.number, "");
-  cell2.addParagraph(invoiceDate, "");
-  cell2.addParagraph(invoiceObj.customer_info.number, "");
-  cell2.addParagraph(payment_terms, "");
-  cell2.addParagraph("", "").addFieldPageNr();
-}
-
-function print_info_invoice_multiple_pages(repDocObj, invoiceObj, texts) {
-
-  var infoTable = repDocObj.addTable("info_table_row0");
-  tableRow = infoTable.addRow();
-  tableRow.addCell(" ", "", 1);
-  tableRow.addCell(" ", "", 1);
-
-  tableRow = infoTable.addRow();
-  var cell1 = tableRow.addCell("", "", 1);
-  var cell2 = tableRow.addCell("", "bold", 1);
-  
-  var invoiceDate = Banana.Converter.toLocaleDateFormat(invoiceObj.document_info.date);
-  cell1.addParagraph(getTitle(invoiceObj, texts) + ":", "");
-  cell1.addParagraph(texts.date + ":", "");
-  cell1.addParagraph(texts.customer + ":", "");
-  
-  //Payment Terms
-  var payment_terms_label = texts.payment_terms_label;
-  var payment_terms = '';
-  if (invoiceObj.billing_info.payment_term) {
-    payment_terms = invoiceObj.billing_info.payment_term;
+  if (param.info_customer) {
+    tableRow = infoTable.addRow();
+    tableRow.addCell(param.info_customer_text,"",1);
+    tableRow.addCell(invoiceObj.customer_info.number,"",1);    
   }
-  else if (invoiceObj.payment_info.due_date) {
-    payment_terms_label = texts.payment_due_date_label
-    payment_terms = Banana.Converter.toLocaleDateFormat(invoiceObj.payment_info.due_date);
-  }
-  cell1.addParagraph(payment_terms_label + ":", "");
-  cell1.addParagraph(texts.page + ":", "");
+  if (param.info_due_date) {
+    //Payment Terms
+    var payment_terms_label = texts.payment_terms_label;
+    var payment_terms = '';
+    if (invoiceObj.billing_info.payment_term) {
+      payment_terms = invoiceObj.billing_info.payment_term;
+    }
+    else if (invoiceObj.payment_info.due_date) {
+      payment_terms_label = texts.payment_due_date_label
+      payment_terms = Banana.Converter.toLocaleDateFormat(invoiceObj.payment_info.due_date);
+    }
 
-  cell2.addParagraph(invoiceObj.document_info.number, "");
-  cell2.addParagraph(invoiceDate, "");
-  cell2.addParagraph(invoiceObj.customer_info.number, "");
-  cell2.addParagraph(payment_terms, "");
-  cell2.addParagraph("", "").addFieldPageNr();
+    tableRow = infoTable.addRow();
+    tableRow.addCell(param.info_due_date_text,"",1);
+    tableRow.addCell(payment_terms,"",1);    
+  }
+  if (param.info_page) {
+    tableRow = infoTable.addRow();
+    tableRow.addCell(param.info_page_text,"",1);
+    tableRow.addCell("","",1).addFieldPageNr();    
+  }
 }
 
 function print_customer_address(repDocObj, invoiceObj, param) {
@@ -907,15 +1186,18 @@ function print_customer_address(repDocObj, invoiceObj, param) {
   } else {
     customerAddressTable = repDocObj.addTable("address_table_right");
   }
-
   //Small line of the supplier address
   tableRow = customerAddressTable.addRow();
   var cell1 = tableRow.addCell("", "", 1);
-  var supplierNameLines = getInvoiceSupplierName(invoiceObj.supplier_info).split('\n');
-  cell1.addText(supplierNameLines[0], "small_address");
-  var supplierLines = getInvoiceSupplier(invoiceObj.supplier_info).split('\n');
-  cell1.addText(" - " + supplierLines[0] + " - " + supplierLines[1], "small_address");
-
+  if (param.small_address_line) {
+    cell1.addText(param.small_address_line, "small_address");
+  }
+  else {
+    var supplierNameLines = getInvoiceSupplierName(invoiceObj.supplier_info).split('\n');
+    cell1.addText(supplierNameLines[0], "small_address");
+    var supplierLines = getInvoiceSupplier(invoiceObj.supplier_info).split('\n');
+    cell1.addText(" - " + supplierLines[0] + " - " + supplierLines[1], "small_address");
+  }
   // Customer address
   tableRow = customerAddressTable.addRow();
   var cell2 = tableRow.addCell("", "", 1);
@@ -925,6 +1207,7 @@ function print_customer_address(repDocObj, invoiceObj, param) {
   }
 }
 
+// print_befor_details
 function print_text_begin(repDocObj, invoiceObj) {
   if (invoiceObj.document_info.text_begin) {
     docTableStart = "125mm";
@@ -932,18 +1215,46 @@ function print_text_begin(repDocObj, invoiceObj) {
   }
 }
 
-function print_invoice_details(repDocObj, invoiceObj, texts) {
+function print_details(repDocObj, invoiceObj, texts, param) {
 
   var repTableObj = repDocObj.addTable("doc_table");
-  var repTableCol1 = repTableObj.addColumn("repTableCol1");
-  var repTableCol2 = repTableObj.addColumn("repTableCol2");
-  var repTableCol3 = repTableObj.addColumn("repTableCol3");
-  var repTableCol4 = repTableObj.addColumn("repTableCol4");
+  // var repTableCol1 = repTableObj.addColumn("repTableCol1");
+  // var repTableCol2 = repTableObj.addColumn("repTableCol2");
+  // var repTableCol3 = repTableObj.addColumn("repTableCol3");
+  // var repTableCol4 = repTableObj.addColumn("repTableCol4");
+
+  // var tableHeader = repTableObj.getHeader().addRow();
+  // if (param.items_description) {
+  //   tableHeader.addCell(texts.description, "doc_table_header", 1);
+  // }
+  // if (param.items_quantity) {
+  //   tableHeader.addCell(texts.qty, "doc_table_header amount", 1);
+  // }
+  // if (param.items_unit_price) {
+  //   tableHeader.addCell(texts.unit_price, "doc_table_header amount", 1);
+  // }
+  // if (param.items_total) {
+  //   tableHeader.addCell(texts.total + " " + invoiceObj.document_info.currency, "doc_table_header amount", 1);
+  // }
+
+
+
+
+
+
+
+  ///////////////////////////
+
 
   var dd = repTableObj.getHeader().addRow();
-  dd.addCell(texts.description, "doc_table_header", 1);
-  dd.addCell("", "doc_table_header", 1); //dd.addCell(texts.qty, "doc_table_header amount", 1);
-  dd.addCell("", "doc_table_header", 1); //dd.addCell(texts.unit_price, "doc_table_header amount", 1);
+  if (param.items_quantity) {
+    dd.addCell(texts.description, "doc_table_header", 1);
+    dd.addCell(texts.qty, "doc_table_header amount", 1);
+    dd.addCell(texts.unit_price, "doc_table_header amount", 1);
+  }
+  else {
+    dd.addCell(texts.description, "doc_table_header", 3);
+  }
   dd.addCell(texts.total + " " + invoiceObj.document_info.currency, "doc_table_header amount", 1);
 
   //ITEMS
@@ -1064,6 +1375,7 @@ function print_invoice_details(repDocObj, invoiceObj, texts) {
   }
 }
 
+// print_after_details
 function print_notes(repDocObj, invoiceObj) {
   var repTableObj = repDocObj.addTable("notes_table");
   for (var i = 0; i < invoiceObj.note.length; i++) {
@@ -1082,8 +1394,16 @@ function print_greetings(repDocObj, invoiceObj) {
   }
 }
 
-
-
+function print_footer(repDocObj, param) {
+  if (param.footer && param.footer.length > 0) {
+    var tabFooter = repDocObj.getFooter().addTable("footer_table");
+    var lines = param.footer.split("\n");
+    for (var i = 0; i < lines.length; i++) {
+      var tableRow = tabFooter.addRow();
+      tableRow.addCell(lines[i], "");
+    }
+  }
+}
 
 
 //====================================================================//
@@ -1275,150 +1595,149 @@ function getTitle(invoiceObj, texts) {
 //====================================================================//
 function setInvoiceStyle(reportObj, repStyleObj, param) {
 
-    if (!repStyleObj) {
-        repStyleObj = reportObj.newStyleSheet();
-    }
+  if (!repStyleObj) {
+      repStyleObj = reportObj.newStyleSheet();
+  }
 
-    //====================================================================//
-    // GENERAL
-    //====================================================================//
-    repStyleObj.addStyle(".pageReset", "counter-reset: page");
-    repStyleObj.addStyle("body", "font-size: 11pt; font-family:" + param.font_family);
-    repStyleObj.addStyle(".amount", "text-align:right");
-    repStyleObj.addStyle(".bold", "font-weight: bold");
-    repStyleObj.addStyle(".doc_table_header", "font-weight:bold; background-color:" + param.color_1 + "; color:" + param.color_2);
-    repStyleObj.addStyle(".doc_table_header td", "padding:5px;");
-    repStyleObj.addStyle(".total_cell", "font-weight:bold; background-color:" + param.color_1 + "; color: " + param.color_2 + "; padding:5px");
-    repStyleObj.addStyle(".subtotal_cell", "font-weight:bold; background-color:" + param.color_1 + "; color: " + param.color_2 + "; padding:5px");
-    repStyleObj.addStyle(".col1","width:50%");
-    repStyleObj.addStyle(".col2","width:49%");
-    
-    repStyleObj.addStyle(".border-bottom", "border-bottom:2px solid " + param.color_1);
-    repStyleObj.addStyle(".thin-border-top", "border-top:thin solid " + param.color_1);
-    repStyleObj.addStyle(".padding-right", "padding-right:5px");
-    repStyleObj.addStyle(".padding-left", "padding-left:5px");
-
-    repStyleObj.addStyle(".repTableCol1","width:45%");
-    repStyleObj.addStyle(".repTableCol2","width:15%");
-    repStyleObj.addStyle(".repTableCol3","width:20%");
-    repStyleObj.addStyle(".repTableCol4","width:20%");
-
-    /* 
-      Text begin
-    */
-    var beginStyle = repStyleObj.addStyle(".begin_text");
-    beginStyle.setAttribute("position", "absolute");
-    beginStyle.setAttribute("top", "90mm");
-    beginStyle.setAttribute("left", "20mm");
-    beginStyle.setAttribute("right", "10mm");
-    beginStyle.setAttribute("font-size", "10px");
-
-    //====================================================================//
-    // LOGO
-    //====================================================================//
-    var logoStyle = repStyleObj.addStyle(".logoStyle");
-    logoStyle.setAttribute("position", "absolute");
-    logoStyle.setAttribute("margin-top", "10mm");
-    logoStyle.setAttribute("margin-left", "20mm");
-    logoStyle.setAttribute("height", param.image_height + "mm"); 
-
-    var logoStyle = repStyleObj.addStyle(".logo");
-    logoStyle.setAttribute("position", "absolute");
-    logoStyle.setAttribute("margin-top", "10mm");
-    logoStyle.setAttribute("margin-left", "20mm");
-
-    //====================================================================//
-    // TABLES
-    //====================================================================//
-    var headerStyle = repStyleObj.addStyle(".header_table");
-    headerStyle.setAttribute("position", "absolute");
-    headerStyle.setAttribute("margin-top", "10mm");
-    headerStyle.setAttribute("margin-left", "22mm");
-    headerStyle.setAttribute("margin-right", "10mm");
-    headerStyle.setAttribute("width", "100%");
-    //repStyleObj.addStyle("table.header_table td", "border: thin solid black");
-    
-
-    var infoStyle = repStyleObj.addStyle(".info_table_left");
-    infoStyle.setAttribute("position", "absolute");
-    infoStyle.setAttribute("margin-top", "45mm");
-    infoStyle.setAttribute("margin-left", "20mm");
-    infoStyle.setAttribute("margin-right", "10mm");
-    //repStyleObj.addStyle("table.info_table_left td", "border: thin solid black");
-
-    var infoStyle = repStyleObj.addStyle(".info_table_right");
-    infoStyle.setAttribute("position", "absolute");
-    infoStyle.setAttribute("margin-top", "45mm");
-    infoStyle.setAttribute("margin-left", "113mm");
-    infoStyle.setAttribute("margin-right", "10mm");
-    //repStyleObj.addStyle("table.info_table_right td", "border: thin solid black");
+  //====================================================================//
+  // GENERAL
+  //====================================================================//
+  repStyleObj.addStyle(".pageReset", "counter-reset: page");
+  repStyleObj.addStyle("body", "font-size: 11pt; font-family:" + param.font_family);
+  repStyleObj.addStyle(".amount", "text-align:right");
+  repStyleObj.addStyle(".bold", "font-weight: bold");
+  repStyleObj.addStyle(".doc_table_header", "font-weight:bold; background-color:" + param.color_1 + "; color:" + param.color_2);
+  repStyleObj.addStyle(".doc_table_header td", "padding:5px;");
+  repStyleObj.addStyle(".total_cell", "font-weight:bold; background-color:" + param.color_1 + "; color: " + param.color_2 + "; padding:5px");
+  repStyleObj.addStyle(".subtotal_cell", "font-weight:bold; background-color:" + param.color_1 + "; color: " + param.color_2 + "; padding:5px");
+  repStyleObj.addStyle(".invoice_title","font-weight:bold");
 
 
+  // Header rows
+  repStyleObj.addStyle(".headerRow1", "font-weight:bold; font-size:20pt; color:" + param.color_1);
+  repStyleObj.addStyle(".headerRow2", "font-weight:bold; font-size:12pt;");
+  repStyleObj.addStyle(".headerRow3", "font-weight:bold; font-size:12pt;");
+  repStyleObj.addStyle(".headerRow4", "font-weight:bold; font-size:12pt;");
+  repStyleObj.addStyle(".headerRow5", "font-weight:bold; font-size:12pt;");
+
+  repStyleObj.addStyle(".border-bottom", "border-bottom:2px solid " + param.color_1);
+  repStyleObj.addStyle(".thin-border-top", "border-top:thin solid " + param.color_1);
+  repStyleObj.addStyle(".padding-right", "padding-right:5px");
+  repStyleObj.addStyle(".padding-left", "padding-left:5px");
+
+  // repStyleObj.addStyle(".repTableCol1","width:45%");
+  // repStyleObj.addStyle(".repTableCol2","width:15%");
+  // repStyleObj.addStyle(".repTableCol3","width:20%");
+  // repStyleObj.addStyle(".repTableCol4","width:20%");
+
+  /* 
+    Text begin
+  */
+  var beginStyle = repStyleObj.addStyle(".begin_text");
+  beginStyle.setAttribute("position", "absolute");
+  beginStyle.setAttribute("top", "90mm");
+  beginStyle.setAttribute("left", "20mm");
+  beginStyle.setAttribute("right", "10mm");
+  beginStyle.setAttribute("font-size", "10px");
+
+  //====================================================================//
+  // LOGO
+  //====================================================================//
+  var logoStyle = repStyleObj.addStyle(".logo");
+  logoStyle.setAttribute("position", "absolute");
+  logoStyle.setAttribute("margin-top", "10mm");
+  logoStyle.setAttribute("margin-left", "20mm");
+
+  //====================================================================//
+  // TABLES
+  //====================================================================//
+  var headerStyle = repStyleObj.addStyle(".header_table");
+  headerStyle.setAttribute("position", "absolute");
+  headerStyle.setAttribute("margin-top", "10mm");
+  headerStyle.setAttribute("margin-left", "22mm");
+  headerStyle.setAttribute("margin-right", "10mm");
+  headerStyle.setAttribute("width", "100%");
+  //repStyleObj.addStyle("table.header_table td", "border: thin solid black");
 
 
+  var infoStyle = repStyleObj.addStyle(".info_table_left");
+  infoStyle.setAttribute("position", "absolute");
+  infoStyle.setAttribute("margin-top", "45mm");
+  infoStyle.setAttribute("margin-left", "20mm");
+  infoStyle.setAttribute("margin-right", "10mm");
+  repStyleObj.addStyle("table.info_table_left td", "padding-top:0px; padding-bottom:0px");
+  //repStyleObj.addStyle("table.info_table_left td", "border: thin solid black;");
+
+  var infoStyle = repStyleObj.addStyle(".info_table_right");
+  infoStyle.setAttribute("position", "absolute");
+  infoStyle.setAttribute("margin-top", "45mm");
+  infoStyle.setAttribute("margin-left", "113mm");
+  infoStyle.setAttribute("margin-right", "10mm");
+  repStyleObj.addStyle("table.info_table_right td", "padding-top:0px; padding-bottom:0px");
+  //repStyleObj.addStyle("table.info_table_right td", "border: thin solid black");
 
 
+  var infoStyle = repStyleObj.addStyle(".info_table_row0");
+  infoStyle.setAttribute("position", "absolute");
+  infoStyle.setAttribute("margin-top", "45mm");
+  infoStyle.setAttribute("margin-left", "20mm");
+  infoStyle.setAttribute("margin-right", "10mm");
+  repStyleObj.addStyle("table.info_table_row0 td", "padding-top:0px; padding-bottom:0px");
+  //repStyleObj.addStyle("table.info_table_row0 td", "border: thin solid black");
 
-    var infoStyle = repStyleObj.addStyle(".info_table_row0");
-    infoStyle.setAttribute("position", "absolute");
-    infoStyle.setAttribute("margin-top", "45mm");
-    infoStyle.setAttribute("margin-left", "20mm");
-    infoStyle.setAttribute("margin-right", "10mm");
-    //repStyleObj.addStyle("table.info_table_row0 td", "border: thin solid black");
-
-    var infoStyle = repStyleObj.addStyle("@page:first-view table.info_table_row0");
-    infoStyle.setAttribute("display", "none");
-
-
-    var infoStyle = repStyleObj.addStyle(".address_table_right");
-    infoStyle.setAttribute("position", "absolute");
-    infoStyle.setAttribute("margin-top", "45mm");
-    infoStyle.setAttribute("margin-left", "113mm");
-    infoStyle.setAttribute("margin-right", "10mm");
-    //repStyleObj.addStyle("table.address_table_right td", "border: thin solid black");
-    
-    var infoStyle = repStyleObj.addStyle(".address_table_left");
-    infoStyle.setAttribute("position", "absolute");
-    infoStyle.setAttribute("margin-top", "45mm");
-    infoStyle.setAttribute("margin-left", "20mm");
-    infoStyle.setAttribute("margin-right", "10mm");
-    //repStyleObj.addStyle("table.address_table_left td", "border: thin solid black");
-
-    var infoStyle = repStyleObj.addStyle(".small_address");
-    infoStyle.setAttribute("text-align", "center");
-    infoStyle.setAttribute("font-size", "7");
-    infoStyle.setAttribute("border-bottom", "solid 1px black");
+  var infoStyle = repStyleObj.addStyle("@page:first-view table.info_table_row0");
+  infoStyle.setAttribute("display", "none");
 
 
-    //var itemsStyle = repStyleObj.addStyle(".doc_table:first-view");
-    //itemsStyle.setAttribute("margin-top", docTableStart);
+  var infoStyle = repStyleObj.addStyle(".address_table_right");
+  infoStyle.setAttribute("position", "absolute");
+  infoStyle.setAttribute("margin-top", "45mm");
+  infoStyle.setAttribute("margin-left", "113mm");
+  infoStyle.setAttribute("margin-right", "10mm");
+  //repStyleObj.addStyle("table.address_table_right td", "border: thin solid black");
 
-    var itemsStyle = repStyleObj.addStyle(".doc_table");
-    itemsStyle.setAttribute("margin-top", docTableStart); //106
-    itemsStyle.setAttribute("margin-left", "23mm"); //20
-    itemsStyle.setAttribute("margin-right", "10mm");
-    itemsStyle.setAttribute("width", "100%");
-    //repStyleObj.addStyle("table.doc_table td", "border: thin solid black; padding: 3px;");
-    
+  var infoStyle = repStyleObj.addStyle(".address_table_left");
+  infoStyle.setAttribute("position", "absolute");
+  infoStyle.setAttribute("margin-top", "45mm");
+  infoStyle.setAttribute("margin-left", "20mm");
+  infoStyle.setAttribute("margin-right", "10mm");
+  //repStyleObj.addStyle("table.address_table_left td", "border: thin solid black");
 
-
-
-    var itemsStyle = repStyleObj.addStyle(".notes_table");
-    itemsStyle.setAttribute("margin-left", "23mm");
-    itemsStyle.setAttribute("margin-right", "10mm");
-    itemsStyle.setAttribute("width", "100%");
-    //repStyleObj.addStyle("table.notes_table td", "border: thin solid black; padding: 3px;");
-    
-
+  var infoStyle = repStyleObj.addStyle(".small_address");
+  infoStyle.setAttribute("text-align", "center");
+  infoStyle.setAttribute("font-size", "7");
+  infoStyle.setAttribute("border-bottom", "solid 1px black");
 
 
-    var itemsStyle = repStyleObj.addStyle(".greetings_table");
-    itemsStyle.setAttribute("margin-left", "23mm");
-    itemsStyle.setAttribute("margin-right", "10mm");
-    itemsStyle.setAttribute("width", "100%");
-    //repStyleObj.addStyle("table.greetings_table td", "border: thin solid black; padding: 3px;");
+  var itemsStyle = repStyleObj.addStyle(".doc_table");
+  itemsStyle.setAttribute("margin-top", docTableStart);
+  itemsStyle.setAttribute("margin-left", "23mm")
+  itemsStyle.setAttribute("margin-right", "10mm");
+  itemsStyle.setAttribute("width", "100%");
+  //repStyleObj.addStyle("table.doc_table td", "border: thin solid black; padding: 3px;");
+
+
+  var itemsStyle = repStyleObj.addStyle(".notes_table");
+  itemsStyle.setAttribute("margin-left", "23mm");
+  itemsStyle.setAttribute("margin-right", "10mm");
+  itemsStyle.setAttribute("width", "100%");
+  //repStyleObj.addStyle("table.notes_table td", "border: thin solid black; padding: 3px;");
+
+
+  var itemsStyle = repStyleObj.addStyle(".greetings_table");
+  itemsStyle.setAttribute("margin-left", "23mm");
+  itemsStyle.setAttribute("margin-right", "10mm");
+  itemsStyle.setAttribute("width", "100%");
+  //repStyleObj.addStyle("table.greetings_table td", "border: thin solid black; padding: 3px;");
     
 
+  var footerStyle = repStyleObj.addStyle(".footer_table");
+  footerStyle.setAttribute("margin-bottom", "20mm");
+  footerStyle.setAttribute("margin-top", "10mm");
+  footerStyle.setAttribute("margin-left", "23mm");
+  footerStyle.setAttribute("margin-right", "10mm");
+  footerStyle.setAttribute("width", "100%");
+  //repStyleObj.addStyle("table.footer_table td", "border-top: thin solid black");
 }
 
 
@@ -1441,49 +1760,20 @@ function setInvoiceTexts(language) {
     texts.qty = 'Quantità';
     texts.unit_ref = 'Unità';
     texts.unit_price = 'Prezzo unità';
-    texts.vat_number = 'Partita IVA: ';
-    texts.bill_to = 'Indirizzo fatturazione';
-    texts.shipping_to = 'Indirizzo spedizione';
-    texts.from = 'DA:';
-    texts.to = 'A:';
+    // texts.vat_number = 'Partita IVA: ';
+    // texts.bill_to = 'Indirizzo fatturazione';
+    // texts.shipping_to = 'Indirizzo spedizione';
+    // texts.from = 'DA:';
+    // texts.to = 'A:';
     texts.param_color_1 = 'Colore sfondo';
     texts.param_color_2 = 'Colore testo';
     texts.param_font_family = 'Tipo carattere';
-    texts.param_image_height = 'Altezza immagine (mm)';
+    // texts.param_image_height = 'Altezza immagine (mm)';
     texts.param_print_header = 'Includi intestazione pagina';
     texts.param_print_logo = 'Stampa logo';
     texts.payment_due_date_label = 'Scadenza';
     texts.payment_terms_label = 'Pagamento';
     //texts.param_max_items_per_page = 'Numero di linee su ogni fattura';
-    texts.param_header = 'Intestazione';
-    texts.param_header_left = 'Posizione testo a sinistra';
-    texts.param_header_right = 'Posizione testo a destra';
-    texts.param_logo = 'Logo';
-    texts.param_address = 'Indirizzo';
-    texts.param_address_left = 'Stampa indirizzo a sinistra';
-    texts.param_address_right = 'Stampa indirizzo a destra';
-    texts.param_info_invoice = 'Informazioni fattura';
-    texts.param_info_invoice_number = 'Includi numero fattura';
-    texts.param_info_date = 'Includi data fattura';
-    texts.param_info_customer = 'Includi numero cliente';
-    texts.param_info_due_date = 'Includi data scadenza fattura';
-    texts.param_info_page = 'Includi numero di pagina';
-    texts.param_items_table = 'Tabella articoli';
-    texts.param_items_description = "Includi colonna 'Descrizione'";
-    texts.param_items_quantity = "Includi colonna 'Quantità'";
-    texts.param_items_unit_price = "Includi colonna 'Prezzo unità'";
-    texts.param_items_total = "Includi colonna 'Totale'";
-    texts.param_items_description_rename = "Rinomina la colonna 'Descrizione'";
-    texts.param_items_quantity_rename = "Rinomina la colonna 'Quantità'";
-    texts.param_items_unit_price_rename = "Rinomina la colonna 'Prezzo unità'";
-    texts.param_items_total_rename = "Rinomina la colonna 'Totale'";
-    texts.param_language = "Lingua";
-    texts.param_language_new = "Aggiungi nuova lingua";
-    texts.param_styles = "Stili";
-
-    texts.param_custom_javascript = "File JavaScript personale";
-    texts.param_custom_javascript_filename = "Inserisci nome file (colonna 'ID' tabella 'Documenti')";
-
   }
   else if (language == 'de')
   {
@@ -1499,15 +1789,15 @@ function setInvoiceTexts(language) {
     texts.qty = 'Menge';
     texts.unit_ref = 'Einheit';
     texts.unit_price = 'Preiseinheit';
-    texts.vat_number = 'Mehrwertsteuernummer: ';
-    texts.bill_to = 'Rechnungsadresse';
-    texts.shipping_to = 'Lieferadresse';
-    texts.from = 'VON:';
-    texts.to = 'ZU:';
+    // texts.vat_number = 'Mehrwertsteuernummer: ';
+    // texts.bill_to = 'Rechnungsadresse';
+    // texts.shipping_to = 'Lieferadresse';
+    // texts.from = 'VON:';
+    // texts.to = 'ZU:';
     texts.param_color_1 = 'Hintergrundfarbe';
     texts.param_color_2 = 'Textfarbe';
     texts.param_font_family = 'Typ Schriftzeichen';
-    texts.param_image_height = 'Bildhöhe (mm)';
+    // texts.param_image_height = 'Bildhöhe (mm)';
     texts.param_print_header = 'Seitenüberschrift einschliessen';
     texts.param_print_logo = 'Logo ausdrucken';
     texts.payment_due_date_label = 'Fälligkeitsdatum';
@@ -1528,15 +1818,15 @@ function setInvoiceTexts(language) {
     texts.qty = 'Quantité';
     texts.unit_ref = 'Unité';
     texts.unit_price = 'Prix unité';
-    texts.vat_number = 'Numéro de TVA: ';
-    texts.bill_to = 'Adresse de facturation';
-    texts.shipping_to = 'Adresse de livraison';
-    texts.from = 'DE:';
-    texts.to = 'À:';
+    // texts.vat_number = 'Numéro de TVA: ';
+    // texts.bill_to = 'Adresse de facturation';
+    // texts.shipping_to = 'Adresse de livraison';
+    // texts.from = 'DE:';
+    // texts.to = 'À:';
     texts.param_color_1 = 'Couleur de fond';
     texts.param_color_2 = 'Couleur du texte';
     texts.param_font_family = 'Police de caractère';
-    texts.param_image_height = "Hauteur de l'image (mm)";
+    // texts.param_image_height = "Hauteur de l'image (mm)";
     texts.param_print_header = 'Inclure en-tête de page';
     texts.param_print_logo = 'Imprimer logo';
     texts.payment_due_date_label = 'Echéance';
@@ -1557,9 +1847,9 @@ function setInvoiceTexts(language) {
     texts.qty = '数量';
     texts.unit_ref = '单位';
     texts.unit_price = '单价';
-    texts.vat_number = '增值税号: ';
-    texts.bill_to = '账单地址';
-    texts.shipping_to = '邮寄地址';
+    // texts.vat_number = '增值税号: ';
+    // texts.bill_to = '账单地址';
+    // texts.shipping_to = '邮寄地址';
     texts.from = '来自:';
     texts.to = '至:';
     texts.param_color_1 = '背景色';
@@ -1586,11 +1876,11 @@ function setInvoiceTexts(language) {
     texts.qty = 'Hoeveelheid';
     texts.unit_ref = 'Eenheid';
     texts.unit_price = 'Eenheidsprijs';
-    texts.vat_number = 'BTW-nummer: ';
-    texts.bill_to = 'Factuuradres';
-    texts.shipping_to = 'Leveringsadres';
-    texts.from = 'VAN:';
-    texts.to = 'TOT:';
+    // texts.vat_number = 'BTW-nummer: ';
+    // texts.bill_to = 'Factuuradres';
+    // texts.shipping_to = 'Leveringsadres';
+    // texts.from = 'VAN:';
+    // texts.to = 'TOT:';
     texts.param_color_1 = 'Achtergrond kleur';
     texts.param_color_2 = 'tekstkleur';
     texts.param_font_family = 'Lettertype';
@@ -1603,59 +1893,136 @@ function setInvoiceTexts(language) {
   }
   else
   {
-    texts.customer = 'Customer No';
-    texts.date = 'Date';
-    texts.description = 'Description';
+
+
+
+
+
+    texts.param_logo = 'Logo';
+    texts.param_address = 'Address';
+    texts.param_info_invoice = 'Invoice information';
+    texts.param_items_table = 'Invoice details';
+
+
+    // texts.vat_number = 'VAT Number: ';
+    // texts.bill_to = 'Billing address';
+    // texts.shipping_to = 'Shipping address';
+    // texts.param_image_height = 'Image height (mm)';
+
+    //////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+    //Info
     texts.invoice = 'Invoice';
+    texts.date = 'Date';
+    texts.customer = 'Customer No';
+    texts.payment_due_date_label = 'Due date';
+    texts.payment_terms_label = 'Payment';
     texts.page = 'Page';
-    texts.rounding = 'Rounding';
+
+    //Details
+    texts.description = 'Description';
+    texts.qty = 'Quantity';
+    texts.unit_price = 'Unit price';
     texts.total = 'Total';
+    texts.rounding = 'Rounding';
     texts.totalnet = 'Total net';
     texts.vat = 'VAT';
-    texts.qty = 'Quantity';
     texts.unit_ref = 'Unit';
-    texts.unit_price = 'Unit price';
-    texts.vat_number = 'VAT Number: ';
-    texts.bill_to = 'Billing address';
-    texts.shipping_to = 'Shipping address';
-    texts.from = 'FROM:';
-    texts.to = 'TO:';
+    
+    //Include
+    texts.param_include = "Include";
+    texts.param_print_header = 'Page header';
+    texts.param_print_logo = 'Header logo';
+    texts.param_info_invoice_number = 'Invoice number';
+    texts.param_info_date = 'Invoice date';
+    texts.param_info_customer = 'Invoice customer number';
+    texts.param_info_due_date = 'Invoice due date';
+    texts.param_info_page = 'Invoice page number';
+    texts.param_items_description = "Invoice details column 'Description'";
+    texts.param_items_quantity = "Invoice details column 'Quantity'";
+    texts.param_items_unit_price = "Invoice details column 'Unit price'";
+    texts.param_items_total = "Invoice details column 'Total'";
+
+    //Texts
+    texts.param_texts = "Texts (empty = default values)";
+    texts.param_language = "en";
+    texts.param_header_row_1 = "Header row 1";
+    texts.param_header_row_2 = "Header row 2";
+    texts.param_header_row_3 = "Header row 3";
+    texts.param_header_row_4 = "Header row 4";
+    texts.param_header_row_5 = "Header row 5";
+    texts.param_info_invoice_number_text = 'Invoice number';
+    texts.param_info_date_text = 'Invoice date';
+    texts.param_info_customer_text = 'Invoice customer number';
+    texts.param_info_due_date_text = 'Invoice due date';
+    texts.param_info_page_text = 'Invoice page number';
+    texts.param_items_description_text = "Invoice details column 'Description'";
+    texts.param_items_quantity_text = "Invoice details column 'Quantity'";
+    texts.param_items_unit_price_text = "Invoice details column 'Unit price'";
+    texts.param_items_total_text = "Invoice details column 'Total'";
+
+    //Invoice elements
+    texts.param_invoice_elements = "Invoice elements";
+    texts.param_small_address_line = "Small supplier address line";
+    texts.param_address_left = 'Customer address on left position';
+    texts.param_invoice_details_iva_netto = "Details with net VAT";
+    texts.param_invoice_details_iva_lordo = "Details with gross VAT";
+    texts.param_invoice_details_senza_iva = "Details without VAT";
+    texts.param_footer = "Footer";
+
+    //Styles
+    texts.param_styles = "Styles";
     texts.param_color_1 = 'Background Color';
     texts.param_color_2 = 'Text Color';
     texts.param_font_family = 'Font type';
-    texts.param_image_height = 'Image height (mm)';
-    texts.param_print_header = 'Include page header';
-    texts.param_print_logo = 'Print logo';
-    texts.payment_due_date_label = 'Due date';
-    texts.payment_terms_label = 'Payment';
-    //texts.param_max_items_per_page = 'Number of items on each page';
-    texts.param_header = 'Header';
-    texts.param_header_left = 'Header on left position';
-    texts.param_header_right = 'Header on right position';
-    texts.param_logo = 'Logo';
-    texts.param_address = 'Address';
-    texts.param_address_left = 'Address on left position';
-    texts.param_info_invoice = 'Invoice information';
-    texts.param_info_invoice_number = 'Include invoice number';
-    texts.param_info_date = 'Include invoice date';
-    texts.param_info_customer = 'Include customer number';
-    texts.param_info_due_date = 'Include invoice due date';
-    texts.param_info_page = 'Include page number';
-    texts.param_items_table = 'Invoice details';
-    texts.param_items_description = "Include column 'Description'";
-    texts.param_items_quantity = "Include column 'Quantity'";
-    texts.param_items_unit_price = "Include column 'Unit price'";
-    texts.param_items_total = "Include column 'Total'";
-    texts.param_items_description_rename = "Rename column 'Description'";
-    texts.param_items_quantity_rename = "Rename column 'Quantity'";
-    texts.param_items_unit_price_rename = "Rename column 'Unit price'";
-    texts.param_items_total_rename = "Rename column 'Total'";
-    texts.param_language = "Language";
-    texts.param_language_new = "Add new";
-    texts.param_styles = "Styles";
 
+    //Embedded JavaScript file
     texts.param_custom_javascript = "Custom JavaScript file";
     texts.param_custom_javascript_filename = "Insert the file name ('ID' column of the 'Documents' table)";
+
+    // //Language
+    // texts.param_lang = "Language";
+    // texts.param_lang_new = "Add new";
+
+    //Tooltips for the parameters
+    texts.param_tooltip_print_header = "Check to include the page header";
+    texts.param_tooltip_print_logo = "Check to include the logo";
+    texts.param_tooltip_info_invoice_number = "Check to include the invoice number";
+    texts.param_tooltip_info_date = "Check to include the invoice date";
+    texts.param_tooltip_info_customer = "Check to include the invoice customer number";
+    texts.param_tooltip_info_due_date = "Check to include the invoice due date";
+    texts.param_tooltip_info_page = "Check to include the page invoice number";
+    texts.param_tooltip_items_description = "Check to include the column 'Description' on the invoice details";
+    texts.param_tooltip_items_quantity = "Check to include the column 'Quantity' on the invoice details";
+    texts.param_tooltip_items_unit_price = "Check to include the column 'Unit price' on the invoice details";
+    texts.param_tooltip_items_total = "Check to include the column 'Total' on the invoice details";
+    texts.param_tooltip_info_invoice_number_text = "Enter a text to replace the default one";
+    texts.param_tooltip_info_date_text = "Enter a text to replace the default one";
+    texts.param_tooltip_info_customer_text = "Enter a text to replace the default one";
+    texts.param_tooltip_payment_terms_label = "Enter a text to replace the default one";
+    texts.param_tooltip_info_page_text = "Enter a text to replace the default one";
+    texts.param_tooltip_items_description_text = "Enter a text to replace the default one";
+    texts.param_tooltip_items_quantity_text = "Enter a text to replace the default one";
+    texts.param_tooltip_items_unit_price_text = "Enter a text to replace the default one";
+    texts.param_tooltip_items_total_text = "Enter a text to replace the default one";
+    texts.param_tooltip_header_row_1 = "Enter a text to replace the default one";
+    texts.param_tooltip_header_row_2 = "Enter a text to replace the default one";
+    texts.param_tooltip_header_row_3 = "Enter a text to replace the default one";
+    texts.param_tooltip_header_row_4 = "Enter a text to replace the default one";
+    texts.param_tooltip_header_row_5 = "Enter a text to replace the default one";
+    texts.param_tooltip_small_address_line = "Enter supplier address line above the customer address";
+    texts.param_tooltip_address_left = "Check to print the customer address on left position";
+    texts.param_tooltip_invoice_details_iva_netto = "Check to print the invoice details with net VAT";
+    texts.param_tooltip_invoice_details_iva_lordo = "Check to print the invoice details with gross VAT";
+    texts.param_tooltip_invoice_details_senza_iva = "Check to print the invoice details without VAT";
+    texts.param_tooltip_footer = "Enter a footer text";
+    texts.param_tooltip_font_family = "Enter the font type";
+    texts.param_tooltip_color_1 = "Enter the background color";
+    texts.param_tooltip_color_2 = "Enter the text color";
+    texts.param_tooltip_javascript_filename = "Enter the name of the javascript file taken from the 'ID' column of the table 'Documents' (i.e. file.js)";
 
   }
   return texts;
