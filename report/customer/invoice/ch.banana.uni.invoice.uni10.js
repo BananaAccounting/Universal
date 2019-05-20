@@ -216,57 +216,34 @@ function convertParam(param) {
   }
   convertedParam.data.push(currentParam);
 
+
+
   currentParam = {};
-  currentParam.name = 'items_description';
+  currentParam.name = 'items_invoice_details';
   currentParam.parentObject = 'include';
-  currentParam.title = texts.param_items_description;
-  currentParam.type = 'bool';
-  currentParam.value = param.items_description ? true : false;
-  currentParam.defaultvalue = true;
-  currentParam.tooltip = texts.param_tooltip_items_description;
+  currentParam.title = texts.param_items_invoice_details;
+  currentParam.type = 'string';
+  currentParam.value = param.items_invoice_details ? param.items_invoice_details : '';
+  currentParam.defaultvalue = '<Description>;<Quantity>;<UnitPrice>;<Total>';
+  currentParam.tooltip = texts.param_tooltip_items_invoice_details;
   currentParam.readValue = function() {
-    param.items_description = this.value;
+    param.items_invoice_details = this.value;
   }
   convertedParam.data.push(currentParam);
 
   currentParam = {};
-  currentParam.name = 'items_quantity';
+  currentParam.name = 'items_invoice_details_dimensions';
   currentParam.parentObject = 'include';
-  currentParam.title = texts.param_items_quantity;
-  currentParam.type = 'bool';
-  currentParam.value = param.items_quantity ? true : false;
-  currentParam.defaultvalue = true;
-  currentParam.tooltip = texts.param_tooltip_items_quantity;
+  currentParam.title = texts.param_items_invoice_details_dimensions;
+  currentParam.type = 'string';
+  currentParam.value = param.items_invoice_details_dimensions ? param.items_invoice_details_dimensions : '';
+  currentParam.defaultvalue = '45%;15%;20%;20%';
+  currentParam.tooltip = texts.param_tooltip_items_invoice_details_dimensions;
   currentParam.readValue = function() {
-    param.items_quantity = this.value;
+    param.items_invoice_details_dimensions = this.value;
   }
   convertedParam.data.push(currentParam);
 
-  currentParam = {};
-  currentParam.name = 'items_unit_price';
-  currentParam.parentObject = 'include';
-  currentParam.title = texts.param_items_unit_price;
-  currentParam.type = 'bool';
-  currentParam.value = param.items_unit_price ? true : false;
-  currentParam.defaultvalue = true;
-  currentParam.tooltip = texts.param_tooltip_items_unit_price;
-  currentParam.readValue = function() {
-    param.items_unit_price = this.value;
-  }
-  convertedParam.data.push(currentParam);
-
-  currentParam = {};
-  currentParam.name = 'items_total';
-  currentParam.parentObject = 'include';
-  currentParam.title = texts.param_items_total;
-  currentParam.type = 'bool';
-  currentParam.value = param.items_total ? true : false;
-  currentParam.defaultvalue = true;
-  currentParam.tooltip = texts.param_tooltip_items_total;
-  currentParam.readValue = function() {
-    param.items_total = this.value;
-  }
-  convertedParam.data.push(currentParam);
 
 
 
@@ -361,57 +338,57 @@ function convertParam(param) {
   }
   convertedParam.data.push(currentParam);
 
-  currentParam = {};
-  currentParam.name = 'items_description_text';
-  currentParam.parentObject = 'language';
-  currentParam.title = texts.param_items_description_text;
-  currentParam.type = 'string';
-  currentParam.value = param.items_description_text ? param.items_description_text : texts.description;
-  currentParam.defaultvalue = texts.description;
-  currentParam.tooltip = texts.param_tooltip_items_description_text;
-  currentParam.readValue = function() {
-    param.items_description_text = this.value;
-  }
-  convertedParam.data.push(currentParam);
+  // currentParam = {};
+  // currentParam.name = 'items_description_text';
+  // currentParam.parentObject = 'language';
+  // currentParam.title = texts.param_items_description_text;
+  // currentParam.type = 'string';
+  // currentParam.value = param.items_description_text ? param.items_description_text : texts.description;
+  // currentParam.defaultvalue = texts.description;
+  // currentParam.tooltip = texts.param_tooltip_items_description_text;
+  // currentParam.readValue = function() {
+  //   param.items_description_text = this.value;
+  // }
+  // convertedParam.data.push(currentParam);
 
-  currentParam = {};
-  currentParam.name = 'items_quantity_text';
-  currentParam.parentObject = 'language';
-  currentParam.title = texts.param_items_quantity_text;
-  currentParam.type = 'string';
-  currentParam.value = param.items_quantity_text ? param.items_quantity_text : texts.qty;
-  currentParam.defaultvalue = texts.qty;
-  currentParam.tooltip = texts.param_tooltip_items_quantity_text;
-  currentParam.readValue = function() {
-    param.items_quantity_text = this.value;
-  }
-  convertedParam.data.push(currentParam);
+  // currentParam = {};
+  // currentParam.name = 'items_quantity_text';
+  // currentParam.parentObject = 'language';
+  // currentParam.title = texts.param_items_quantity_text;
+  // currentParam.type = 'string';
+  // currentParam.value = param.items_quantity_text ? param.items_quantity_text : texts.qty;
+  // currentParam.defaultvalue = texts.qty;
+  // currentParam.tooltip = texts.param_tooltip_items_quantity_text;
+  // currentParam.readValue = function() {
+  //   param.items_quantity_text = this.value;
+  // }
+  // convertedParam.data.push(currentParam);
 
-  currentParam = {};
-  currentParam.name = 'items_unit_price_text';
-  currentParam.parentObject = 'language';
-  currentParam.title = texts.param_items_unit_price_text;
-  currentParam.type = 'string';
-  currentParam.value = param.items_unit_price_text ? param.items_unit_price_text : texts.unit_price;
-  currentParam.defaultvalue = texts.unit_price;
-  currentParam.tooltip = texts.param_tooltip_items_unit_price_text;
-  currentParam.readValue = function() {
-    param.items_unit_price_text = this.value;
-  }
-  convertedParam.data.push(currentParam);
+  // currentParam = {};
+  // currentParam.name = 'items_unit_price_text';
+  // currentParam.parentObject = 'language';
+  // currentParam.title = texts.param_items_unit_price_text;
+  // currentParam.type = 'string';
+  // currentParam.value = param.items_unit_price_text ? param.items_unit_price_text : texts.unit_price;
+  // currentParam.defaultvalue = texts.unit_price;
+  // currentParam.tooltip = texts.param_tooltip_items_unit_price_text;
+  // currentParam.readValue = function() {
+  //   param.items_unit_price_text = this.value;
+  // }
+  // convertedParam.data.push(currentParam);
 
-  currentParam = {};
-  currentParam.name = 'items_total_text';
-  currentParam.parentObject = 'language';
-  currentParam.title = texts.param_items_total_text;
-  currentParam.type = 'string';
-  currentParam.value = param.items_total_text ? param.items_total_text : texts.total;
-  currentParam.defaultvalue = texts.total;
-  currentParam.tooltip = texts.param_tooltip_items_total_text;
-  currentParam.readValue = function() {
-    param.items_total_text = this.value;
-  }
-  convertedParam.data.push(currentParam);
+  // currentParam = {};
+  // currentParam.name = 'items_total_text';
+  // currentParam.parentObject = 'language';
+  // currentParam.title = texts.param_items_total_text;
+  // currentParam.type = 'string';
+  // currentParam.value = param.items_total_text ? param.items_total_text : texts.total;
+  // currentParam.defaultvalue = texts.total;
+  // currentParam.tooltip = texts.param_tooltip_items_total_text;
+  // currentParam.readValue = function() {
+  //   param.items_total_text = this.value;
+  // }
+  // convertedParam.data.push(currentParam);
 
 
   /*
@@ -626,6 +603,32 @@ function convertParam(param) {
   }
   convertedParam.data.push(currentParam);
 
+  currentParam = {};
+  currentParam.name = 'address_margin_left';
+  currentParam.parentObject = 'styles';
+  currentParam.title = texts.param_address_margin_left;
+  currentParam.type = 'string';
+  currentParam.value = param.address_margin_left ? param.address_margin_left : '113';
+  currentParam.defaultvalue = '113';
+  currentParam.tooltip = texts.param_tooltip_address_margin_left;
+  currentParam.readValue = function() {
+   param.address_margin_left = this.value;
+  }
+  convertedParam.data.push(currentParam);
+
+  currentParam = {};
+  currentParam.name = 'address_margin_top';
+  currentParam.parentObject = 'styles';
+  currentParam.title = texts.param_address_margin_top;
+  currentParam.type = 'string';
+  currentParam.value = param.address_margin_top ? param.address_margin_top : '45';
+  currentParam.defaultvalue = '45';
+  currentParam.tooltip = texts.param_tooltip_address_margin_top;
+  currentParam.readValue = function() {
+   param.address_margin_top = this.value;
+  }
+  convertedParam.data.push(currentParam);
+
 
   /*
   * EMBEDDED JAVASCRIPT FILEE
@@ -702,11 +705,11 @@ function initParam() {
   param.info_customer = true;
   param.info_due_date = true;
   param.info_page = true;
-  param.items_description = true;
   param.items_quantity = true;
-  param.items_unit_price = true;
-  param.items_total = true;
-  
+
+  param.items_invoice_details = '<Description>;<Quantity>;<UnitPrice>;<Total>';
+  param.items_invoice_details_dimensions = '45%;15%;20%;20%';
+
   //Texts
   param.header_row_1 = "";
   param.header_row_2 = "";
@@ -729,6 +732,8 @@ function initParam() {
   param.color_3 = '';
   param.color_4 = '';
   param.font_family = 'Helvetica';
+  param.address_margin_left = '113';
+  param.address_margin_top = '45';
 
   //Invoice elements
   param.small_address_line = '';
@@ -778,17 +783,14 @@ function verifyParam(param) {
   if (!param.info_page) {
     param.info_page = false;
   }
-  if (!param.items_description) {
-    param.items_description = false;
-  }
   if (!param.items_quantity) {
     param.items_quantity = false;
   }
-  if (!param.items_unit_price) {
-    param.items_unit_price = false;
+  if (!param.items_invoice_details) {
+    param.items_invoice_details = '<Description>;<Quantity>;<UnitPrice>;<Total>';
   }
-  if (!param.items_total) {
-    param.items_total = false;
+  if (!param.items_invoice_details_dimensions) {
+    param.items_invoice_details_dimensions = '45%;15%;20%;20%';
   }
 
   //Texts
@@ -870,6 +872,12 @@ function verifyParam(param) {
   }
   if (!param.font_family) {
     param.font_family = 'Helvetica';
+  }
+  if (!param.address_margin_left) {
+    param.address_margin_left = '113';
+  }
+  if (!param.address_margin_top) {
+    param.address_margin_top = '45';
   }
 
   //Embedded JavaScript files
@@ -1207,7 +1215,7 @@ function print_customer_address(repDocObj, invoiceObj, param) {
   }
 }
 
-// print_befor_details
+// print befor details
 function print_text_begin(repDocObj, invoiceObj) {
   if (invoiceObj.document_info.text_begin) {
     docTableStart = "125mm";
@@ -1217,51 +1225,47 @@ function print_text_begin(repDocObj, invoiceObj) {
 
 function print_details(repDocObj, invoiceObj, texts, param) {
 
+  var _columns_number = 0;
+
+  // Creates the header with the parameter's values
+  var columnNames = param.items_invoice_details.split(";");
+
   var repTableObj = repDocObj.addTable("doc_table");
-  // var repTableCol1 = repTableObj.addColumn("repTableCol1");
-  // var repTableCol2 = repTableObj.addColumn("repTableCol2");
-  // var repTableCol3 = repTableObj.addColumn("repTableCol3");
-  // var repTableCol4 = repTableObj.addColumn("repTableCol4");
-
-  // var tableHeader = repTableObj.getHeader().addRow();
-  // if (param.items_description) {
-  //   tableHeader.addCell(texts.description, "doc_table_header", 1);
-  // }
-  // if (param.items_quantity) {
-  //   tableHeader.addCell(texts.qty, "doc_table_header amount", 1);
-  // }
-  // if (param.items_unit_price) {
-  //   tableHeader.addCell(texts.unit_price, "doc_table_header amount", 1);
-  // }
-  // if (param.items_total) {
-  //   tableHeader.addCell(texts.total + " " + invoiceObj.document_info.currency, "doc_table_header amount", 1);
-  // }
+  var repTableCol1 = repTableObj.addColumn("repTableCol1");
+  var repTableCol2 = repTableObj.addColumn("repTableCol2");
+  var repTableCol3 = repTableObj.addColumn("repTableCol3");
+  var repTableCol4 = repTableObj.addColumn("repTableCol4");
+  var repTableCol5 = repTableObj.addColumn("repTableCol5");
+  var repTableCol6 = repTableObj.addColumn("repTableCol6");
+  var repTableCol7 = repTableObj.addColumn("repTableCol7");
+  var repTableCol8 = repTableObj.addColumn("repTableCol8");
+  var repTableCol9 = repTableObj.addColumn("repTableCol9");
+  var repTableCol10 = repTableObj.addColumn("repTableCol10");
 
 
+  var header = repTableObj.getHeader().addRow();
 
-
-
-
-
-  ///////////////////////////
-
-
-  var dd = repTableObj.getHeader().addRow();
-  if (param.items_quantity) {
-    dd.addCell(texts.description, "doc_table_header", 1);
-    dd.addCell(texts.qty, "doc_table_header amount", 1);
-    dd.addCell(texts.unit_price, "doc_table_header amount", 1);
+  for (var i = 0; i < columnNames.length; i++) {
+    var headerName = columnNames[i];
+    // Banana columns are between "<>", we remove them for the header texts
+    if (headerName.indexOf("<") > -1 && headerName.indexOf(">") > -1) {
+      headerName = headerName.replace("<","");
+      headerName = headerName.replace(">","");
+    }
+    // Add text to header
+    header.addCell(headerName, "doc_table_header", 1);
+    _columns_number ++;
+    //Banana.console.log(headerName + " : " + _columns_number);
   }
-  else {
-    dd.addCell(texts.description, "doc_table_header", 3);
-  }
-  dd.addCell(texts.total + " " + invoiceObj.document_info.currency, "doc_table_header amount", 1);
+
+
+
+
 
   //ITEMS
-  for (var i = 0; i < invoiceObj.items.length; i++)
-  {
-    var item = invoiceObj.items[i];
+  for (var i = 0; i < invoiceObj.items.length; i++) {
 
+    var item = invoiceObj.items[i];
     var className = "item_cell";
     if (item.item_type && item.item_type.indexOf("total") === 0) {
       className = "subtotal_cell";
@@ -1269,79 +1273,249 @@ function print_details(repDocObj, invoiceObj, texts, param) {
     if (item.item_type && item.item_type.indexOf("note") === 0) {
       className = "note_cell";
     }
-  
+
     tableRow = repTableObj.addRow();
-    var descriptionCell = tableRow.addCell("", "padding-left padding-right thin-border-top " + className, 1);
-    descriptionCell.addParagraph(item.description);
-    descriptionCell.addParagraph(item.description2);
-  
-    if (className == "note_cell") {
-      tableRow.addCell("", "padding-left padding-right thin-border-top " + className, 3);
-    }
-    else if (className == "subtotal_cell") {
-        tableRow.addCell("", "amount padding-left padding-right thin-border-top " + className, 2);
+
+    for (var j = 0; j < columnNames.length; j++) {
+      if (columnNames[j] === "<Description>") {
+        var descriptionCell = tableRow.addCell("", "padding-left padding-right thin-border-top " + className, 1);
+        descriptionCell.addParagraph(item.description);
+        descriptionCell.addParagraph(item.description2);
+      }
+      else if (columnNames[j] === "<Quantity>") {
+        tableRow.addCell(Banana.Converter.toLocaleNumberFormat(item.quantity), "amount padding-left padding-right thin-border-top " + className, 1);
+      }
+      else if (columnNames[j] === "<ReferenceUnit>") {
+        tableRow.addCell(item.mesure_unit, "padding-left padding-right thin-border-top " + className, 1);
+      }
+      else if (columnNames[j] === "<UnitPrice>") {
+        tableRow.addCell(Banana.Converter.toLocaleNumberFormat(item.unit_price.calculated_amount_vat_exclusive), "amount padding-left padding-right thin-border-top " + className, 1);
+      }
+      else if (columnNames[j] === "<Total>") {
         tableRow.addCell(toInvoiceAmountFormat(invoiceObj, item.total_amount_vat_exclusive), "amount padding-left padding-right thin-border-top " + className, 1);
-    }
-    else {
-        //tableRow.addCell(Banana.Converter.toLocaleNumberFormat(item.quantity), "amount padding-left padding-right thin-border-top " + className, 1);
-        //tableRow.addCell(Banana.Converter.toLocaleNumberFormat(item.unit_price.calculated_amount_vat_exclusive), "amount padding-left padding-right thin-border-top " + className, 1);
-        tableRow.addCell("", "padding-left padding-right thin-border-top " + className, 1);
-        tableRow.addCell("", "padding-left padding-right thin-border-top " + className, 1);
-        tableRow.addCell(toInvoiceAmountFormat(invoiceObj, item.total_amount_vat_exclusive), "amount padding-left padding-right thin-border-top " + className, 1);
+      }
+      else {
+        var userColumnValue = "";
+        userColumnValue = getUserColumnValue(invoiceObj.document_info.number, item.origin_row, columnNames[j]);
+        tableRow.addCell(userColumnValue, "padding-left padding-right thin-border-top " + className, 1);
+      }
     }
   }
 
-  tableRow = repTableObj.addRow();
-  tableRow.addCell("", "border-bottom", 4);
 
   tableRow = repTableObj.addRow();
-  tableRow.addCell("", "", 4);
+  tableRow.addCell("", "border-bottom", _columns_number);
+
+  tableRow = repTableObj.addRow();
+  tableRow.addCell("", "", _columns_number);
+
 
 
   //TOTAL NET
-  if (invoiceObj.billing_info.total_vat_rates.length > 0)
-  {
-    tableRow = repTableObj.addRow();   
-    tableRow.addCell(" ", "padding-left padding-right", 1)
-    tableRow.addCell(texts.totalnet, "padding-left padding-right", 1);
-    tableRow.addCell(" ", "padding-left padding-right", 1)
-    tableRow.addCell(toInvoiceAmountFormat(invoiceObj, invoiceObj.billing_info.total_amount_vat_exclusive), "amount padding-left padding-right", 1);
+  if (_columns_number >= 4) {
 
-    for (var i = 0; i < invoiceObj.billing_info.total_vat_rates.length; i++) 
-    {
+    if (invoiceObj.billing_info.total_vat_rates.length > 0) {
       tableRow = repTableObj.addRow();
+      for (var i = 1; i <= _columns_number-3; i++) {
+        tableRow.addCell("", "padding-left padding-right", 1);
+      }
+      tableRow.addCell(texts.totalnet, "padding-left padding-right", 1);
       tableRow.addCell("", "padding-left padding-right", 1);
-      tableRow.addCell(texts.vat + " " + invoiceObj.billing_info.total_vat_rates[i].vat_rate + "%", "padding-left padding-right", 1);
-      //tableRow.addCell(toInvoiceAmountFormat(invoiceObj, invoiceObj.billing_info.total_vat_rates[i].total_amount_vat_exclusive), "amount padding-left padding-right", 1);
-      tableRow.addCell("", "amount padding-left padding-right", 1);
-      tableRow.addCell(toInvoiceAmountFormat(invoiceObj, invoiceObj.billing_info.total_vat_rates[i].total_vat_amount), "amount padding-left padding-right", 1);
+      tableRow.addCell(toInvoiceAmountFormat(invoiceObj, invoiceObj.billing_info.total_amount_vat_exclusive), "amount padding-left padding-right", 1);
+
+      for (var i = 0; i < invoiceObj.billing_info.total_vat_rates.length; i++) {
+        tableRow = repTableObj.addRow();
+        for (var j = 1; j <= _columns_number-3; j++) {
+          tableRow.addCell("", "padding-left padding-right", 1);
+        }
+        tableRow.addCell(texts.vat + " " + invoiceObj.billing_info.total_vat_rates[i].vat_rate + "%", "padding-left padding-right", 1);
+        tableRow.addCell(toInvoiceAmountFormat(invoiceObj, invoiceObj.billing_info.total_vat_rates[i].total_amount_vat_exclusive), "amount padding-left padding-right", 1);
+        tableRow.addCell(toInvoiceAmountFormat(invoiceObj, invoiceObj.billing_info.total_vat_rates[i].total_vat_amount), "amount padding-left padding-right", 1);
+      }
+    }
+  }
+  else if (_columns_number == 3) {
+    if (invoiceObj.billing_info.total_vat_rates.length > 0) {
+      tableRow = repTableObj.addRow();
+      tableRow.addCell(texts.totalnet, "amount padding-left padding-right", 1);
+      tableRow.addCell("", "padding-left padding-right", 1);
+      tableRow.addCell(toInvoiceAmountFormat(invoiceObj, invoiceObj.billing_info.total_amount_vat_exclusive), "amount padding-left padding-right", 1);
+
+      for (var i = 0; i < invoiceObj.billing_info.total_vat_rates.length; i++) {
+        tableRow = repTableObj.addRow();
+        tableRow.addCell(texts.vat + " " + invoiceObj.billing_info.total_vat_rates[i].vat_rate + "%", "amount padding-left padding-right", 1);
+        tableRow.addCell(toInvoiceAmountFormat(invoiceObj, invoiceObj.billing_info.total_vat_rates[i].total_amount_vat_exclusive), "amount padding-left padding-right", 1);
+        tableRow.addCell(toInvoiceAmountFormat(invoiceObj, invoiceObj.billing_info.total_vat_rates[i].total_vat_amount), "amount padding-left padding-right", 1);
+      }
+    }
+  }
+  else if (_columns_number == 2) {
+    if (invoiceObj.billing_info.total_vat_rates.length > 0) {
+      tableRow = repTableObj.addRow();
+      tableRow.addCell(texts.totalnet, "amount padding-left padding-right", 1);
+      tableRow.addCell(toInvoiceAmountFormat(invoiceObj, invoiceObj.billing_info.total_amount_vat_exclusive), "amount padding-left padding-right", 1);
+
+      for (var i = 0; i < invoiceObj.billing_info.total_vat_rates.length; i++) {
+        tableRow = repTableObj.addRow();
+        tableRow.addCell(texts.vat + " " + invoiceObj.billing_info.total_vat_rates[i].vat_rate + "% (" + invoiceObj.billing_info.total_vat_rates[i].total_amount_vat_exclusive + ")" , "amount padding-left padding-right", 1);
+        tableRow.addCell(toInvoiceAmountFormat(invoiceObj, invoiceObj.billing_info.total_vat_rates[i].total_vat_amount), "amount padding-left padding-right", 1);
+      }
+    }
+  }
+  else if (_columns_number == 1) {
+    if (invoiceObj.billing_info.total_vat_rates.length > 0) {
+      tableRow = repTableObj.addRow();
+      tableRow.addCell(texts.totalnet + "      " + toInvoiceAmountFormat(invoiceObj, invoiceObj.billing_info.total_amount_vat_exclusive), "amount padding-left padding-right", 1);
+
+      for (var i = 0; i < invoiceObj.billing_info.total_vat_rates.length; i++) {
+        tableRow = repTableObj.addRow();
+        tableRow.addCell(texts.vat + " " + invoiceObj.billing_info.total_vat_rates[i].vat_rate + "% (" + invoiceObj.billing_info.total_vat_rates[i].total_amount_vat_exclusive + ")     " + toInvoiceAmountFormat(invoiceObj, invoiceObj.billing_info.total_vat_rates[i].total_vat_amount) , "amount padding-left padding-right", 1);
+      }
     }
   }
 
 
+  
+
+
+
+
+
+
+
+
+
+  //////////////////////////////////////////////////////
+
+  // //Header table texts
+  // var columnDescription = "";
+  // var columnQuantity = "";
+  // var columnUnitPrice = "";
+  // var columnTotal = "";
+  // columnDescription = param.items_description_text;
+  // columnQuantity = param.items_quantity_text;
+  // columnUnitPrice = param.items_unit_price_text;
+  // columnTotal = param.items_total_text;
+
+  // header.addCell(columnDescription, "doc_table_header", 1);
+  // if (param.items_quantity) {
+  //   header.addCell(columnQuantity, "doc_table_header amount", 1);
+  //   header.addCell(columnUnitPrice, "doc_table_header amount", 1);
+  // } 
+  // else {
+  //   header.addCell(" ", "doc_table_header", 1);
+  //   header.addCell(" ", "doc_table_header", 1);
+  // }
+  // header.addCell(columnTotal, "doc_table_header", 1);
+
+
+
+
+
+  // //ITEMS
+  // for (var i = 0; i < invoiceObj.items.length; i++) {
+    
+  //   var item = invoiceObj.items[i];
+
+
+  //   var className = "item_cell";
+  //   if (item.item_type && item.item_type.indexOf("total") === 0) {
+  //     className = "subtotal_cell";
+  //   }
+  //   if (item.item_type && item.item_type.indexOf("note") === 0) {
+  //     className = "note_cell";
+  //   }
+
+
+  //   tableRow = repTableObj.addRow();
+  //   var descriptionCell = tableRow.addCell("", "padding-left padding-right thin-border-top " + className, 1);
+  //   descriptionCell.addParagraph(item.description);
+  //   descriptionCell.addParagraph(item.description2);
+
+  //   if (className == "note_cell") {
+  //     if (param.items_quantity) {
+  //       tableRow.addCell("", "padding-left padding-right thin-border-top " + className, 2);
+  //     }
+  //     tableRow.addCell("", "padding-left padding-right thin-border-top " + className, 1);
+  //   }
+  //   else if (className == "subtotal_cell") {
+  //     if (param.items_quantity) {
+  //       tableRow.addCell("", "padding-left padding-right thin-border-top " + className, 2);
+  //     }
+  //     tableRow.addCell(toInvoiceAmountFormat(invoiceObj, item.total_amount_vat_exclusive), "amount padding-left padding-right thin-border-top " + className, 1);
+  //   }
+  //   else {
+  //     if (param.items_quantity) {
+  //       tableRow.addCell(Banana.Converter.toLocaleNumberFormat(item.quantity), "amount padding-left padding-right thin-border-top " + className, 1);
+  //       tableRow.addCell(Banana.Converter.toLocaleNumberFormat(item.unit_price.calculated_amount_vat_exclusive), "amount padding-left padding-right thin-border-top " + className, 1);
+  //     }
+  //     else {
+  //       tableRow.addCell(" ", "amount padding-left padding-right thin-border-top " + className, 1);
+  //       tableRow.addCell(" ", "amount padding-left padding-right thin-border-top " + className, 1);      
+  //     }
+  //     tableRow.addCell(toInvoiceAmountFormat(invoiceObj, item.total_amount_vat_exclusive), "amount padding-left padding-right thin-border-top " + className, 1);
+  //   }
+  // }
+
+  // tableRow = repTableObj.addRow();
+  // tableRow.addCell("", "border-bottom", 4);
+
+  // tableRow = repTableObj.addRow();
+  // tableRow.addCell("", "", 4);
+
+
+  // //TOTAL NET
+  // if (invoiceObj.billing_info.total_vat_rates.length > 0) {
+  //   tableRow = repTableObj.addRow();
+  //   for (var i = 1; i <= _columns_number-3; i++) {
+  //     tableRow.addCell("", "padding-left padding-right", 1);
+  //   }
+  //   tableRow.addCell(texts.totalnet, "padding-left padding-right", 1);
+  //   tableRow.addCell("", "padding-left padding-right", 1);
+  //   tableRow.addCell(toInvoiceAmountFormat(invoiceObj, invoiceObj.billing_info.total_amount_vat_exclusive), "amount padding-left padding-right", 1);
+
+  //   for (var i = 0; i < invoiceObj.billing_info.total_vat_rates.length; i++) {
+  //     tableRow = repTableObj.addRow();
+  //     for (var j = 1; j <= _columns_number-3; j++) {
+  //       tableRow.addCell("", "padding-left padding-right", 1);
+  //     }
+  //     tableRow.addCell(texts.vat + " " + invoiceObj.billing_info.total_vat_rates[i].vat_rate + "%", "padding-left padding-right", 1);
+  //     tableRow.addCell(toInvoiceAmountFormat(invoiceObj, invoiceObj.billing_info.total_vat_rates[i].total_amount_vat_exclusive), "amount padding-left padding-right", 1);
+  //     tableRow.addCell(toInvoiceAmountFormat(invoiceObj, invoiceObj.billing_info.total_vat_rates[i].total_vat_amount), "amount padding-left padding-right", 1);
+  //   }
+  // }
+
+
   //TOTAL ROUNDING DIFFERENCE
-  if (invoiceObj.billing_info.total_rounding_difference.length) 
-  {
+  if (invoiceObj.billing_info.total_rounding_difference.length) {
     tableRow = repTableObj.addRow();
-    tableRow.addCell(" ", "padding-left padding-right", 1);
+    for (var j = 1; j <= _columns_number-3; j++) {
+      tableRow.addCell("", "padding-left padding-right", 1);
+    }
     tableRow.addCell(texts.rounding, "padding-left padding-right", 1);
-    tableRow.addCell(" ", "padding-left padding-right", 1)
+    tableRow.addCell("", "padding-left padding-right", 1)
     tableRow.addCell(toInvoiceAmountFormat(invoiceObj, invoiceObj.billing_info.total_rounding_difference), "amount padding-left padding-right", 1);
   }
 
   tableRow = repTableObj.addRow();
-  tableRow.addCell("", "", 4);
+  tableRow.addCell("", "", _columns_number);
 
 
   //FINAL TOTAL
   tableRow = repTableObj.addRow();
-  tableRow.addCell("", "", 1)
-  tableRow.addCell(texts.total.toUpperCase() + " " + invoiceObj.document_info.currency, "total_cell", 2);
-  //tableRow.addCell(" ", "total_cell", 1);
+  for (var j = 1; j <= _columns_number-3; j++) {
+    tableRow.addCell("", "", 1)
+  }
+  tableRow.addCell(texts.total.toUpperCase() + " " + invoiceObj.document_info.currency, "total_cell", 1);
+  tableRow.addCell("", "total_cell", 1);
   tableRow.addCell(toInvoiceAmountFormat(invoiceObj, invoiceObj.billing_info.total_to_pay), "total_cell amount", 1);
 
   tableRow = repTableObj.addRow();
-  tableRow.addCell("", "", 4);
+  tableRow.addCell("", "", _columns_number);
+
+
+
+
 
 
   //Template params
@@ -1370,12 +1544,12 @@ function print_details(repDocObj, invoiceObj, texts, param) {
     }
     for (var i=0; i < text.length; i++) {
       tableRow = repTableObj.addRow();
-      tableRow.addCell(text[i], "", 4);
+      tableRow.addCell(text[i], "", _columns_number);
     }
   }
 }
 
-// print_after_details
+// print after details
 function print_notes(repDocObj, invoiceObj) {
   var repTableObj = repDocObj.addTable("notes_table");
   for (var i = 0; i < invoiceObj.note.length; i++) {
@@ -1406,9 +1580,36 @@ function print_footer(repDocObj, param) {
 }
 
 
+
+
+
+
+
+
+
+
+
+
+
 //====================================================================//
 // OTHER UTILITIES FUNCTIONS
 //====================================================================//
+
+// Get the value from a custom user column
+function getUserColumnValue(docInvoice, originRow, column) {
+  var table = Banana.document.table('Transactions');
+  var values = [];
+  for (var i = 0; i < table.rowCount; i++) {
+    var tRow = table.row(i);
+    if (tRow.value('DocInvoice') === docInvoice && tRow.value(column)) {
+      var rowNr = tRow.rowNr;
+      if (rowNr.toString() === originRow.toString()) {
+        values.push(tRow.value(column));
+      }
+    }
+  }
+  return values;
+}
 
 /* Check if there are javascript with hook functions on the table Documents */
 function getJsFilesFromDocumentsTable() {
@@ -1613,6 +1814,19 @@ function setInvoiceStyle(reportObj, repStyleObj, param) {
   repStyleObj.addStyle(".invoice_title","font-weight:bold");
 
 
+  // Invoice details table columns width
+  var columnsDimension = param.items_invoice_details_dimensions.split(";");
+  repStyleObj.addStyle(".repTableCol1","width:"+columnsDimension[0]);
+  repStyleObj.addStyle(".repTableCol2","width:"+columnsDimension[1]);
+  repStyleObj.addStyle(".repTableCol3","width:"+columnsDimension[2]);
+  repStyleObj.addStyle(".repTableCol4","width:"+columnsDimension[3]);
+  repStyleObj.addStyle(".repTableCol5","width:"+columnsDimension[4]);
+  repStyleObj.addStyle(".repTableCol6","width:"+columnsDimension[5]);
+  repStyleObj.addStyle(".repTableCol7","width:"+columnsDimension[6]);
+  repStyleObj.addStyle(".repTableCol8","width:"+columnsDimension[7]);
+  repStyleObj.addStyle(".repTableCol9","width:"+columnsDimension[8]);
+  repStyleObj.addStyle(".repTableCol10","width:"+columnsDimension[9]);
+
   // Header rows
   repStyleObj.addStyle(".headerRow1", "font-weight:bold; font-size:20pt; color:" + param.color_1);
   repStyleObj.addStyle(".headerRow2", "font-weight:bold; font-size:12pt;");
@@ -1689,10 +1903,12 @@ function setInvoiceStyle(reportObj, repStyleObj, param) {
   infoStyle.setAttribute("display", "none");
 
 
+
+
   var infoStyle = repStyleObj.addStyle(".address_table_right");
   infoStyle.setAttribute("position", "absolute");
-  infoStyle.setAttribute("margin-top", "45mm");
-  infoStyle.setAttribute("margin-left", "113mm");
+  infoStyle.setAttribute("margin-top", param.address_margin_top + "mm"); //45mm
+  infoStyle.setAttribute("margin-left", param.address_margin_left + "mm"); //113mm
   infoStyle.setAttribute("margin-right", "10mm");
   //repStyleObj.addStyle("table.address_table_right td", "border: thin solid black");
 
@@ -1702,6 +1918,14 @@ function setInvoiceStyle(reportObj, repStyleObj, param) {
   infoStyle.setAttribute("margin-left", "20mm");
   infoStyle.setAttribute("margin-right", "10mm");
   //repStyleObj.addStyle("table.address_table_left td", "border: thin solid black");
+
+
+
+
+
+
+
+
 
   var infoStyle = repStyleObj.addStyle(".small_address");
   infoStyle.setAttribute("text-align", "center");
@@ -1941,10 +2165,12 @@ function setInvoiceTexts(language) {
     texts.param_info_customer = 'Invoice customer number';
     texts.param_info_due_date = 'Invoice due date';
     texts.param_info_page = 'Invoice page number';
-    texts.param_items_description = "Invoice details column 'Description'";
-    texts.param_items_quantity = "Invoice details column 'Quantity'";
-    texts.param_items_unit_price = "Invoice details column 'Unit price'";
-    texts.param_items_total = "Invoice details column 'Total'";
+    //texts.param_items_description = "Invoice details column 'Description'";
+    //texts.param_items_quantity = "Invoice details columns 'Quantity' and 'Unit price'";
+    //texts.param_items_unit_price = "Invoice details column 'Unit price'";
+    //texts.param_items_total = "Invoice details column 'Total'";
+    texts.param_items_invoice_details = "Invoice details columns";
+    texts.param_items_invoice_details_dimensions = "Invoice details columns width";
 
     //Texts
     texts.param_texts = "Texts (empty = default values)";
@@ -1959,10 +2185,10 @@ function setInvoiceTexts(language) {
     texts.param_info_customer_text = 'Invoice customer number';
     texts.param_info_due_date_text = 'Invoice due date';
     texts.param_info_page_text = 'Invoice page number';
-    texts.param_items_description_text = "Invoice details column 'Description'";
-    texts.param_items_quantity_text = "Invoice details column 'Quantity'";
-    texts.param_items_unit_price_text = "Invoice details column 'Unit price'";
-    texts.param_items_total_text = "Invoice details column 'Total'";
+    // texts.param_items_description_text = "Invoice details column 'Description'";
+    // texts.param_items_quantity_text = "Invoice details column 'Quantity'";
+    // texts.param_items_unit_price_text = "Invoice details column 'Unit price'";
+    // texts.param_items_total_text = "Invoice details column 'Total'";
 
     //Invoice elements
     texts.param_invoice_elements = "Invoice elements";
@@ -1978,6 +2204,8 @@ function setInvoiceTexts(language) {
     texts.param_color_1 = 'Background Color';
     texts.param_color_2 = 'Text Color';
     texts.param_font_family = 'Font type';
+    texts.param_address_margin_top = 'Address margin top (mm)';
+    texts.param_address_margin_left = 'Address margin left (mm)';
 
     //Embedded JavaScript file
     texts.param_custom_javascript = "Custom JavaScript file";
@@ -1995,19 +2223,21 @@ function setInvoiceTexts(language) {
     texts.param_tooltip_info_customer = "Check to include the invoice customer number";
     texts.param_tooltip_info_due_date = "Check to include the invoice due date";
     texts.param_tooltip_info_page = "Check to include the page invoice number";
-    texts.param_tooltip_items_description = "Check to include the column 'Description' on the invoice details";
-    texts.param_tooltip_items_quantity = "Check to include the column 'Quantity' on the invoice details";
-    texts.param_tooltip_items_unit_price = "Check to include the column 'Unit price' on the invoice details";
-    texts.param_tooltip_items_total = "Check to include the column 'Total' on the invoice details";
+    // texts.param_tooltip_items_description = "Check to include the column 'Description' on the invoice details";
+    // texts.param_tooltip_items_quantity = "Check to include the column 'Quantity' on the invoice details";
+    // texts.param_tooltip_items_unit_price = "Check to include the column 'Unit price' on the invoice details";
+    // texts.param_tooltip_items_total = "Check to include the column 'Total' on the invoice details";
     texts.param_tooltip_info_invoice_number_text = "Enter a text to replace the default one";
     texts.param_tooltip_info_date_text = "Enter a text to replace the default one";
     texts.param_tooltip_info_customer_text = "Enter a text to replace the default one";
     texts.param_tooltip_payment_terms_label = "Enter a text to replace the default one";
     texts.param_tooltip_info_page_text = "Enter a text to replace the default one";
-    texts.param_tooltip_items_description_text = "Enter a text to replace the default one";
-    texts.param_tooltip_items_quantity_text = "Enter a text to replace the default one";
-    texts.param_tooltip_items_unit_price_text = "Enter a text to replace the default one";
-    texts.param_tooltip_items_total_text = "Enter a text to replace the default one";
+    // texts.param_tooltip_items_description_text = "Enter a text to replace the default one";
+    // texts.param_tooltip_items_quantity_text = "Enter a text to replace the default one";
+    // texts.param_tooltip_items_unit_price_text = "Enter a text to replace the default one";
+    // texts.param_tooltip_items_total_text = "Enter a text to replace the default one";
+    texts.param_tooltip_items_invoice_details = "Enter the names of the columns in the order you prefer";
+    texts.param_tooltip_items_invoice_details_dimensions = "Enter the width of the columns in % (sum = 100%)";
     texts.param_tooltip_header_row_1 = "Enter a text to replace the default one";
     texts.param_tooltip_header_row_2 = "Enter a text to replace the default one";
     texts.param_tooltip_header_row_3 = "Enter a text to replace the default one";
@@ -2022,6 +2252,8 @@ function setInvoiceTexts(language) {
     texts.param_tooltip_font_family = "Enter the font type";
     texts.param_tooltip_color_1 = "Enter the background color";
     texts.param_tooltip_color_2 = "Enter the text color";
+    texts.param_tooltip_address_margin_left = "Enter the address margin left (mm)";
+    texts.param_tooltip_address_margin_top = "Enter the address margin top (mm)";
     texts.param_tooltip_javascript_filename = "Enter the name of the javascript file taken from the 'ID' column of the table 'Documents' (i.e. file.js)";
 
   }
