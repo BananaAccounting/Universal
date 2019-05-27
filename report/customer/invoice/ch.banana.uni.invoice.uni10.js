@@ -39,15 +39,7 @@
     getTitle(invoiceObj, texts)
 
 
-  2) Funzione "printInvoice()"
 
-    In che modo deve essere INCLUSO anche il file _customer_invoice.js"?
-    a) se esiste un parametro (es. file1.js), includo cmq il _customer_invoice.js?
-       => dopo come faccio a capire da quale js leggere le funzioni?
-    b) se esiste un parametro, allora non includo il _customer_invoice.js?
-       => le funzioni le leggo solo dal parametro.
-    c) se NON esiste il parametro, allora includo il _customer_invoice.js?
-       => le funzioni le leggo solo dal _customer_invoice.js.
 
 
   */
