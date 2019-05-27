@@ -2228,8 +2228,8 @@ function setInvoiceTexts(language) {
     texts.param_include_details = "Details";
     texts.param_items_invoice_details = "Invoice details columns";
     texts.param_items_invoice_details_dimensions = "Invoice details columns width";
-    texts.param_invoice_details_vat_net = "Details with net VAT";
-    texts.param_invoice_details_vat_gross = "Details with gross VAT";
+    texts.param_invoice_details_vat_net = "Details with net amounts (VAT excluded)";
+    texts.param_invoice_details_vat_gross = "Details with gross amounts (VAT included)";
     texts.param_invoice_details_without_vat = "Details without VAT";
     texts.param_include_footer = 'Footer';
     texts.param_footer = "Footer at the bottom of the page";
