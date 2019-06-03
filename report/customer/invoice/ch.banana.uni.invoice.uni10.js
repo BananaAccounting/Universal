@@ -51,8 +51,13 @@
          "postal_code":"9999"
       },
 
-  3) Logo
-     vedere se inserire nei parametri il nome del logo
+      "customer_info":{
+         "address1":"Via Trevano",
+         "city":"Pregassona",
+         "first_name":"Mario",
+         "last_name":"Bianchi",
+         "postal_code":"6963"
+      }
 
 
   */
@@ -62,8 +67,11 @@
 
 
 
-
-var docTableStart = "110mm";
+var _columns_number = 0;
+var invoice_billing_shipping_address = "72mm";
+var invoice_title_start = "105mm";
+var invoice_text_begin_start = "115mm";
+var invoice_details_start = "120mm";
 
 
 
@@ -289,6 +297,19 @@ function convertParam(param) {
   }
   convertedParam.data.push(currentParam);
   
+  currentParam = {};
+  currentParam.name = 'billing_shipping_address';
+  currentParam.parentObject = 'include_address';
+  currentParam.title = texts.param_billing_shipping_address;
+  currentParam.type = 'bool';
+  currentParam.value = param.billing_shipping_address ? true : false;
+  currentParam.defaultvalue = false;
+  currentParam.tooltip = texts.param_tooltip_billing_shipping_address;
+  currentParam.readValue = function() {
+    param.billing_shipping_address = this.value;
+  }
+  convertedParam.data.push(currentParam);
+
   var currentParam = {};
   currentParam.name = 'include_info';
   currentParam.parentObject = 'include';
@@ -602,6 +623,32 @@ function convertParam(param) {
   convertedParam.data.push(currentParam);
 
   currentParam = {};
+  currentParam.name = 'texts_billing_address';
+  currentParam.parentObject = 'texts_language';
+  currentParam.title = texts.param_texts_billing_address;
+  currentParam.type = 'string';
+  currentParam.value = param.texts_billing_address ? param.texts_billing_address : '';
+  currentParam.defaultvalue = texts.billing_address;
+  currentParam.tooltip = texts.param_tooltip_texts_billing_address;
+  currentParam.readValue = function() {
+    param.texts_billing_address = this.value;
+  }
+  convertedParam.data.push(currentParam);
+
+  currentParam = {};
+  currentParam.name = 'texts_shipping_address';
+  currentParam.parentObject = 'texts_language';
+  currentParam.title = texts.param_texts_shipping_address;
+  currentParam.type = 'string';
+  currentParam.value = param.texts_shipping_address ? param.texts_shipping_address : '';
+  currentParam.defaultvalue = texts.shipping_address;
+  currentParam.tooltip = texts.param_tooltip_texts_shipping_address;
+  currentParam.readValue = function() {
+    param.texts_shipping_address = this.value;
+  }
+  convertedParam.data.push(currentParam);
+
+  currentParam = {};
   currentParam.name = 'title';
   currentParam.parentObject = 'texts_language';
   currentParam.title = texts.param_title;
@@ -846,6 +893,7 @@ function initParam() {
   param.logo_name = 'Logo';
   param.small_address_line = '';
   param.address_left = false;
+  param.billing_shipping_address = false;
   param.info_invoice_number = true;
   param.info_date = true;
   param.info_customer = true;
@@ -872,6 +920,8 @@ function initParam() {
   param.texts_info_customer_text = texts.customer;
   param.texts_info_due_date_text = texts.payment_terms_label;
   param.texts_info_page_text = texts.page;
+  param.texts_billing_address = texts.billing_address;
+  param.texts_shipping_address = texts.shipping_address;
   param.title = texts.invoice;
   param.texts_items_details_columns = texts.description+";"+texts.qty+";"+texts.unit+";"+texts.unit_price+";"+texts.total;
 
@@ -924,6 +974,9 @@ function verifyParam(param) {
   }
   if (!param.address_left) {
     param.address_left = false;
+  }
+  if (!param.billing_shipping_address) {
+    param.billing_shipping_address = false;
   }
   if (!param.info_invoice_number) {
     param.info_invoice_number = false;
@@ -1008,6 +1061,12 @@ function verifyParam(param) {
   }
   if (!param.texts_info_page_text) {
     param.texts_info_page_text = texts.page;
+  }
+  if (!param.texts_billing_address) {
+    param.texts_billing_address = texts.billing_address;
+  }
+  if (!param.texts_shipping_address) {
+    param.texts_shipping_address = texts.shipping_address;
   }
   if (!param.title) {
     param.title = '';
@@ -1108,8 +1167,8 @@ function printInvoice(jsonInvoice, repDocObj, param, repStyleObj) {
 
   // User entered a javascript file name
   if (param.custom_javascript_filename) {
-    Banana.console.log(" ");
-    Banana.console.log("'" + param.custom_javascript_filename + "' inserito nei parametri.");
+    //Banana.console.log(" ");
+    //Banana.console.log("'" + param.custom_javascript_filename + "' inserito nei parametri.");
 
     // Take from the table documents all the javascript file names
     var jsFiles = [];
@@ -1117,46 +1176,36 @@ function printInvoice(jsonInvoice, repDocObj, param, repStyleObj) {
 
     // Table documents contains javascript files
     if (jsFiles.length > 0) {
-      Banana.console.log("Tabella documenti contiene uno o più file javascript => " + jsFiles);
+      //Banana.console.log("Tabella documenti contiene uno o più file javascript => " + jsFiles);
       
       // The javascript file name entered by user exists on documents table. Include this file
       if (jsFiles.indexOf(param.custom_javascript_filename) > -1) {
-        Banana.console.log("'" + param.custom_javascript_filename + "' esiste nella tabella documenti.");
+        //Banana.console.log("'" + param.custom_javascript_filename + "' esiste nella tabella documenti.");
         try {
           Banana.include("documents:" + param.custom_javascript_filename);
-          Banana.console.log("'" + param.custom_javascript_filename + "' incluso nello script.");
+          //Banana.console.log("'" + param.custom_javascript_filename + "' incluso nello script.");
         }
         catch(error) {
-          Banana.console.log("Table Documents: JavaScript file '" + param.custom_javascript_filename + "' not found or not valid. Default functions are used.");
+          //Banana.console.log("Table Documents: JavaScript file '" + param.custom_javascript_filename + "' not found or not valid. Default functions are used.");
           print_header(repDocObj, param, repStyleObj, invoiceObj);
           print_info(repDocObj, invoiceObj, texts, param, "");
           print_customer_address(repDocObj, invoiceObj, param);
+          if (param.billing_shipping_address) {
+            print_billing_and_shipping_addresses(repDocObj, invoiceObj, texts, param);
+          }
           print_text_begin(repDocObj, invoiceObj, param);
           print_info(repDocObj.getHeader(), invoiceObj, texts, "info_table_row0");
 
+          var detailsTable = repDocObj.addTable("doc_table");
           if (param.details_net_amounts) {
-            print_details_net_amounts(repDocObj, invoiceObj, texts, param);
-            print_details_net_amounts_totals(repDocObj, invoiceObj, texts, param);
+            print_details_net_amounts(repDocObj, invoiceObj, texts, param, detailsTable);
           }
           else if (param.details_gross_amounts) {
-            print_details_gross_amounts(repDocObj, invoiceObj, texts, param);
-            print_details_gross_amounts_totals(repDocObj, invoiceObj, texts, param);
-          }
-          // else if (param.invoice_details_without_vat) {
-          //   print_details_without_vat(repDocObj, invoiceObj, texts, param);
-          //   print_details_total_without_vat(repDocObj, invoiceObj, texts, param);
-          // }
-
-          if (param.add_qr_code) {
-            print_qr_code(repDocObj, invoiceObj, texts, param);
+            print_details_gross_amounts(repDocObj, invoiceObj, texts, param, detailsTable);
           }
 
-          print_final_text(repDocObj, invoiceObj);
-          print_notes(repDocObj, invoiceObj);
-          print_greetings(repDocObj, invoiceObj);
-          if (param.add_footer) {
-            print_footer(repDocObj, param);
-          }
+          print_final_texts(repDocObj, invoiceObj, detailsTable)
+          print_footer(repDocObj, param);
         }
       }
     }
@@ -1183,6 +1232,15 @@ function printInvoice(jsonInvoice, repDocObj, param, repStyleObj) {
     print_customer_address(repDocObj, invoiceObj, param);
   }
 
+  /* Billing/Shipping addresses */
+  if (param.billing_shipping_address) {
+    if (typeof(hook_print_billing_and_shipping_addresses) === typeof(Function)) {
+      hook_print_billing_and_shipping_addresses(repDocObj, invoiceObj, texts, param);
+    } else {
+      print_billing_and_shipping_addresses(repDocObj, invoiceObj, texts, param);
+    }
+  }
+
   /* Begin text (before invoice details table) */
   if (typeof(hook_print_text_begin) === typeof(Function)) {
     hook_print_text_begin(repDocObj, invoiceObj, param);
@@ -1199,82 +1257,34 @@ function printInvoice(jsonInvoice, repDocObj, param, repStyleObj) {
 
   /* Invoice details with all the items and amounts */
   /* Invoice details total rows */
+  var detailsTable = repDocObj.addTable("doc_table");
   if (param.details_net_amounts) {  
     if (typeof(hook_print_details_net_amounts) === typeof(Function)) {
-      hook_print_details_net_amounts(repDocObj, invoiceObj, texts, param);
+      hook_print_details_net_amounts(repDocObj, invoiceObj, texts, param, detailsTable);
     } else {
-      print_details_net_amounts(repDocObj, invoiceObj, texts, param);
-    }
-    if (typeof(hook_print_details_net_amounts_totals) === typeof(Function)) {
-      hook_print_details_net_amounts_totals(repDocObj, invoiceObj, texts, param);
-    } else {
-      print_details_net_amounts_totals(repDocObj, invoiceObj, texts, param);
+      print_details_net_amounts(repDocObj, invoiceObj, texts, param, detailsTable);
     }
   }
   else if (param.details_gross_amounts) {
     if (typeof(hook_print_details_gross_amounts) === typeof(Function)) {
-      hook_print_details_gross_amounts(repDocObj, invoiceObj, texts, param);
+      hook_print_details_gross_amounts(repDocObj, invoiceObj, texts, param, detailsTable);
     } else {
-      print_details_gross_amounts(repDocObj, invoiceObj, texts, param);
-    }
-    if (typeof(hook_print_details_gross_amounts_totals) === typeof(Function)) {
-      hook_print_details_gross_amounts_totals(repDocObj, invoiceObj, texts, param);
-    } else {
-      print_details_gross_amounts_totals(repDocObj, invoiceObj, texts, param);
-    }
-  }
-  // else if (param.invoice_details_without_vat) {
-  //   if (typeof(hook_print_details_without_vat) === typeof(Function)) {
-  //     hook_print_details_without_vat(repDocObj, invoiceObj, texts, param);
-  //   } else {
-  //     print_details_without_vat(repDocObj, invoiceObj, texts, param);
-  //   }
-  //   if (typeof(hook_print_details_total_without_vat) === typeof(Function)) {
-  //     hook_print_details_total_without_vat(repDocObj, invoiceObj, texts, param);
-  //   } else {
-  //     print_details_total_without_vat(repDocObj, invoiceObj, texts, param);
-  //   }
-  // }
-
-
-
-  /* Print the QR Code after invoice details table */
-  if (param.add_qr_code) {
-    if (typeof(hook_print_qr_code) === typeof(Function)) {
-      hook_print_qr_code(repDocObj, invoiceObj, texts, param);
-    } else {
-      print_qr_code(repDocObj, invoiceObj, texts, param);
+      print_details_gross_amounts(repDocObj, invoiceObj, texts, param, detailsTable);
     }
   }
 
-  /* Final text (after invoice details table) */
-  if (typeof(hook_print_final_text) === typeof(Function)) {
-    hook_print_final_text(repDocObj, invoiceObj);
+  /* Final texts  (after invoice details table) */
+  if (typeof(hook_print_final_texts) === typeof(Function)) {
+    hook_print_final_texts(repDocObj, invoiceObj, detailsTable);
   } else {
-    print_final_text(repDocObj, invoiceObj);
-  }
-  
-  /* Notes */
-  if (typeof(hook_print_notes) === typeof(Function)) {
-    hook_print_notes(repDocObj, invoiceObj);
-  } else {
-    print_notes(repDocObj, invoiceObj);
-  }
-
-  /* Greetings */
-  if (typeof(hook_print_greetings) === typeof(Function)) {
-    hook_print_greetings(repDocObj, invoiceObj);
-  } else {
-    print_greetings(repDocObj, invoiceObj);
+    print_final_texts(repDocObj, invoiceObj, detailsTable);
   }
 
   /* Footer */
-  if (param.add_footer) {
-    if (typeof(hook_print_footer) === typeof(Function)) {
-      hook_print_footer(repDocObj, param);
-    } else {
-      print_footer(repDocObj, param);
-    }
+  if (typeof(hook_print_footer) === typeof(Function)) {
+    hook_print_footer(repDocObj, param);
+  } else {
+    print_footer(repDocObj, param);
   }
 
   return repDocObj;
@@ -1415,12 +1425,60 @@ function print_customer_address(repDocObj, invoiceObj, param) {
     var supplierLines = getInvoiceSupplier(invoiceObj.supplier_info).split('\n');
     cell.addText(" - " + supplierLines[0] + " - " + supplierLines[1], "small_address");
   }
-  // Customer address
+  
+  // Invoice address / shipping address
   tableRow = customerAddressTable.addRow();
   var cell = tableRow.addCell("", "", 1);
-  var addressLines = getInvoiceAddress(invoiceObj.customer_info).split('\n');
-  for (var i=0; i < addressLines.length; i++) {
-    cell.addParagraph(addressLines[i]);
+
+  // Shipping address
+  if (invoiceObj.shipping_info.different_shipping_address) { //true = shipping address
+    var shippingAddress = getInvoiceAddress(invoiceObj.shipping_info).split('\n');
+    for (var i = 0; i < shippingAddress.length; i++) {
+      cell.addParagraph(shippingAddress[i]);
+    }
+  }
+  else {
+    // Customer address
+    var customerAddress = getInvoiceAddress(invoiceObj.customer_info).split('\n');
+    for (var i = 0; i < customerAddress.length; i++) {
+      cell.addParagraph(customerAddress[i]);
+    }
+  }
+}
+
+function print_billing_and_shipping_addresses(repDocObj, invoiceObj, texts, param) {
+
+  var billingAndShippingAddress = repDocObj.addTable("billing_shipping_address");
+  var tableRow;
+  
+  tableRow = billingAndShippingAddress.addRow();
+  var billingCell = tableRow.addCell("","",1);
+  var emptyCell = tableRow.addCell(" ", "", 1);
+  var shippingCell = tableRow.addCell("","",1);
+
+
+  // Billing address (customer address)
+  if (param.texts_billing_address) {
+    billingCell.addParagraph(param.texts_billing_address,"").setStyleAttributes("font-weight:bold;color:"+param.color_1+";");
+  } else {
+    billingCell.addParagraph(texts.billing_address,"").setStyleAttributes("font-weight:bold;color:"+param.color_1+";");
+  }
+  var customerAddress = getInvoiceAddress(invoiceObj.customer_info).split('\n');
+  for (var i = 0; i < customerAddress.length; i++) {
+    billingCell.addParagraph(customerAddress[i]);
+  }
+
+  // Shipping address
+  if (invoiceObj.shipping_info.different_shipping_address) {
+    if (param.texts_shipping_address) {
+      shippingCell.addParagraph(param.texts_shipping_address,"").setStyleAttributes("font-weight:bold;color:"+param.color_1+";");
+    } else {
+      shippingCell.addParagraph(texts.shipping_address, "").setStyleAttributes("font-weight:bold;color:"+param.color_1+";");
+    }
+    var shippingAddress = getInvoiceAddress(invoiceObj.shipping_info).split('\n');
+    for (var i = 0; i < shippingAddress.length; i++) {
+      shippingCell.addParagraph(shippingAddress[i]);
+    }
   }
 }
 
@@ -1442,12 +1500,12 @@ function print_text_begin(repDocObj, invoiceObj, param) {
 
 
 /* Amounts net (VAT excluded) */
-function print_details_net_amounts(repDocObj, invoiceObj, texts, param) {
+function print_details_net_amounts(repDocObj, invoiceObj, texts, param, detailsTable) {
 
-  var _columns_number = 0;
   var columnsDimension = param.items_invoice_details_dimensions.split(";");
 
-  var repTableObj = repDocObj.addTable("doc_table");
+  //var repTableObj = repDocObj.addTable("doc_table");
+  var repTableObj = detailsTable;
   var repTableCol1 = repTableObj.addColumn().setStyleAttributes("width:"+columnsDimension[0]);
   var repTableCol2 = repTableObj.addColumn().setStyleAttributes("width:"+columnsDimension[1]);
   var repTableCol3 = repTableObj.addColumn().setStyleAttributes("width:"+columnsDimension[2]);
@@ -1529,28 +1587,17 @@ function print_details_net_amounts(repDocObj, invoiceObj, texts, param) {
 
   tableRow = repTableObj.addRow();
   tableRow.addCell("", "thin-border-top", _columns_number);
-}
-function print_details_net_amounts_totals(repDocObj, invoiceObj, texts, param) {
-  var repTableObj = repDocObj.addTable("doc_table_total");
-  var totalCol1 = repTableObj.addColumn().setStyleAttributes("width:55%");
-  var totalCol2 = repTableObj.addColumn().setStyleAttributes("width:15%");
-  var totalCol3 = repTableObj.addColumn().setStyleAttributes("width:15%");
-  var totalCol4 = repTableObj.addColumn().setStyleAttributes("width:15%");
-  var tableRow;
 
   //TOTAL NET
   if (invoiceObj.billing_info.total_vat_rates.length > 0) {
     tableRow = repTableObj.addRow();
-    tableRow.addCell("","padding-left padding-right",1);
-    tableRow.addCell(texts.totalnet, "padding-left padding-right", 1);
-    tableRow.addCell("", "padding-left padding-right", 1);
+    tableRow.addCell(texts.totalnet, "padding-left padding-right", _columns_number-1);
     tableRow.addCell(toInvoiceAmountFormat(invoiceObj, invoiceObj.billing_info.total_amount_vat_exclusive), "amount padding-left padding-right", 1);
 
     for (var i = 0; i < invoiceObj.billing_info.total_vat_rates.length; i++) {
       tableRow = repTableObj.addRow();
-      tableRow.addCell(" ","padding-left padding-right",1);
-      tableRow.addCell(texts.vat + " " + invoiceObj.billing_info.total_vat_rates[i].vat_rate + "%", "padding-left padding-right", 1);
-      tableRow.addCell(toInvoiceAmountFormat(invoiceObj, invoiceObj.billing_info.total_vat_rates[i].total_amount_vat_exclusive), "amount padding-left padding-right", 1);
+      tableRow.addCell(texts.vat + " " + invoiceObj.billing_info.total_vat_rates[i].vat_rate + "%", "padding-left padding-right", _columns_number-1);
+      //tableRow.addCell(toInvoiceAmountFormat(invoiceObj, invoiceObj.billing_info.total_vat_rates[i].total_amount_vat_exclusive), "amount padding-left padding-right", 1);
       tableRow.addCell(toInvoiceAmountFormat(invoiceObj, invoiceObj.billing_info.total_vat_rates[i].total_vat_amount), "amount padding-left padding-right", 1);
     }
   }
@@ -1558,33 +1605,71 @@ function print_details_net_amounts_totals(repDocObj, invoiceObj, texts, param) {
   //TOTAL ROUNDING DIFFERENCE
   if (invoiceObj.billing_info.total_rounding_difference.length) {
     tableRow = repTableObj.addRow();
-    tableRow.addCell("","padding-left padding-right",1);
-    tableRow.addCell(texts.rounding, "padding-left padding-right", 1);
-    tableRow.addCell("", "padding-left padding-right", 1)
+    tableRow.addCell(texts.rounding, "padding-left padding-right", _columns_number-1);
     tableRow.addCell(toInvoiceAmountFormat(invoiceObj, invoiceObj.billing_info.total_rounding_difference), "amount padding-left padding-right", 1);
   }
   tableRow = repTableObj.addRow();
-  tableRow.addCell("","",1);
-  tableRow.addCell("", "thin-border-top", 3);
+  tableRow.addCell("", "thin-border-top", _columns_number);
 
   //FINAL TOTAL
   tableRow = repTableObj.addRow();
-  tableRow.addCell("","padding-left padding-right",1);
-  tableRow.addCell(texts.total.toUpperCase() + " " + invoiceObj.document_info.currency, "total_cell", 1);
-  tableRow.addCell("", "total_cell", 1);
+  tableRow.addCell(texts.total.toUpperCase() + " " + invoiceObj.document_info.currency, "total_cell", _columns_number-1);
   tableRow.addCell(toInvoiceAmountFormat(invoiceObj, invoiceObj.billing_info.total_to_pay), "total_cell amount", 1);
   
   tableRow = repTableObj.addRow();
-  tableRow.addCell("", "", 4);
+  tableRow.addCell("", "", _columns_number);
+
+
+  // Print QR Code
+  if (param.add_qr_code) {
+    var text = '';
+    text += 'Currency:\n';
+    text += 'CHF\n';
+    text += 'Amount:\n';
+    text += '3500.00\n';
+    text += 'Account/Payable to:\n';
+    text += '1234567890\n';
+    text += 'Banana.ch SA\n';
+    text += 'Via alla Santa 7\n';
+    text += '6962 Viganello\n';
+    text += 'Reference:\n';
+    text += '12 00000 00001 12345 67890 09876\n';
+    text += 'Addidtional information:\n';
+    text += '35/20180129/100002/30 days\n';
+    text += 'Sales merchandise/2000.00/Sales merchandise/1000.00/Sales merchandise/500.00/\n';
+    text += 'VAT 8.00% included/259.26\n';
+    text += 'Payable by:\n';
+    text += 'Mario Bianchi\n';
+    text += 'Via Trevano\n';
+    text += '6963 Pregassona\n';
+
+    var qrCodeParam = {};
+    qrCodeParam.errorCorrectionLevel = 'M';
+    qrCodeParam.binaryCodingVersion = 25;
+    qrCodeParam.border = 0;
+
+    var qrCodeSvgImage = Banana.Report.qrCodeImage(text, qrCodeParam);
+    if (qrCodeParam.errorMsg && qrCodeParam.errorMsg.length>0) {
+      Banana.document.addMessage(qrCodeParam.errorMsg);
+    }
+    if (qrCodeSvgImage) {
+      tableRow = repTableObj.addRow();
+      var qrCodeCell = tableRow.addCell("","",_columns_number);
+      qrCodeCell.addParagraph(" ","");
+      qrCodeCell.addImage(qrCodeSvgImage, 'qr_code');
+      qrCodeCell.addParagraph(" ","");
+      qrCodeCell.addParagraph(" ","");
+    }
+  }
 }
 
 /* Amount gross (VAT included) */
-function print_details_gross_amounts(repDocObj, invoiceObj, texts, param) {
+function print_details_gross_amounts(repDocObj, invoiceObj, texts, param, detailsTable) {
 
-  var _columns_number = 0;
   var columnsDimension = param.items_invoice_details_dimensions.split(";");
 
-  var repTableObj = repDocObj.addTable("doc_table");
+  //var repTableObj = repDocObj.addTable("doc_table");
+  var repTableObj = detailsTable;
   var repTableCol1 = repTableObj.addColumn().setStyleAttributes("width:"+columnsDimension[0]);
   var repTableCol2 = repTableObj.addColumn().setStyleAttributes("width:"+columnsDimension[1]);
   var repTableCol3 = repTableObj.addColumn().setStyleAttributes("width:"+columnsDimension[2]);
@@ -1666,39 +1751,27 @@ function print_details_gross_amounts(repDocObj, invoiceObj, texts, param) {
 
   tableRow = repTableObj.addRow();
   tableRow.addCell("", "thin-border-top", _columns_number);
-}
-function print_details_gross_amounts_totals(repDocObj, invoiceObj, texts, param) {
-  var repTableObj = repDocObj.addTable("doc_table_total");
-  var totalCol1 = repTableObj.addColumn().setStyleAttributes("width:55%");
-  var totalCol2 = repTableObj.addColumn().setStyleAttributes("width:15%");
-  var totalCol3 = repTableObj.addColumn().setStyleAttributes("width:15%");
-  var totalCol4 = repTableObj.addColumn().setStyleAttributes("width:15%");
-  var tableRow;
 
   //TOTAL ROUNDING DIFFERENCE
   if (invoiceObj.billing_info.total_rounding_difference.length) {
     tableRow = repTableObj.addRow();
-    tableRow.addCell("","padding-left padding-right",1);
-    tableRow.addCell(texts.rounding, "padding-left padding-right", 1);
-    tableRow.addCell("", "padding-left padding-right", 1)
+    tableRow.addCell(texts.rounding, "padding-left padding-right", _columns_number-1);
     tableRow.addCell(toInvoiceAmountFormat(invoiceObj, invoiceObj.billing_info.total_rounding_difference), "amount padding-left padding-right", 1);
   }
   tableRow = repTableObj.addRow();
-  tableRow.addCell("", "", 4);
+  tableRow.addCell("", "", _columns_number);
 
   //FINAL TOTAL
   tableRow = repTableObj.addRow();
-  tableRow.addCell("","padding-left padding-right",1);
-  tableRow.addCell(texts.total.toUpperCase() + " " + invoiceObj.document_info.currency, "total_cell", 1);
-  tableRow.addCell("", "total_cell", 1);
+  tableRow.addCell(texts.total.toUpperCase() + " " + invoiceObj.document_info.currency, "total_cell", _columns_number-1);
   tableRow.addCell(toInvoiceAmountFormat(invoiceObj, invoiceObj.billing_info.total_to_pay), "total_cell amount", 1);
   
   tableRow = repTableObj.addRow();
-  tableRow.addCell("", "", 4);
+  tableRow.addCell("", "", _columns_number);
 
   //VAT INFO
   tableRow = repTableObj.addRow();
-  var cellVatInfo = tableRow.addCell("", "padding-right amount vatInfo", 4);
+  var cellVatInfo = tableRow.addCell("", "padding-right amount vatInfo", _columns_number);
   for (var i = 0; i < invoiceObj.billing_info.total_vat_rates.length; i++) {
     var vatInfo = texts.vat + " " + invoiceObj.billing_info.total_vat_rates[i].vat_rate + "%";
     vatInfo += " = " + toInvoiceAmountFormat(invoiceObj, invoiceObj.billing_info.total_vat_rates[i].total_vat_amount) + " " + invoiceObj.document_info.currency;
@@ -1706,64 +1779,159 @@ function print_details_gross_amounts_totals(repDocObj, invoiceObj, texts, param)
   }
   
   tableRow = repTableObj.addRow();
-  tableRow.addCell("", "", 4);
+  tableRow.addCell("", "", _columns_number);
+
+
+  // Print QR Code
+  if (param.add_qr_code) {
+    var text = '';
+    text += 'Currency:\n';
+    text += 'CHF\n';
+    text += 'Amount:\n';
+    text += '3500.00\n';
+    text += 'Account/Payable to:\n';
+    text += '1234567890\n';
+    text += 'Banana.ch SA\n';
+    text += 'Via alla Santa 7\n';
+    text += '6962 Viganello\n';
+    text += 'Reference:\n';
+    text += '12 00000 00001 12345 67890 09876\n';
+    text += 'Addidtional information:\n';
+    text += '35/20180129/100002/30 days\n';
+    text += 'Sales merchandise/2000.00/Sales merchandise/1000.00/Sales merchandise/500.00/\n';
+    text += 'VAT 8.00% included/259.26\n';
+    text += 'Payable by:\n';
+    text += 'Mario Bianchi\n';
+    text += 'Via Trevano\n';
+    text += '6963 Pregassona\n';
+
+    var qrCodeParam = {};
+    qrCodeParam.errorCorrectionLevel = 'M';
+    qrCodeParam.binaryCodingVersion = 25;
+    qrCodeParam.border = 0;
+
+    var qrCodeSvgImage = Banana.Report.qrCodeImage(text, qrCodeParam);
+    if (qrCodeParam.errorMsg && qrCodeParam.errorMsg.length>0) {
+      Banana.document.addMessage(qrCodeParam.errorMsg);
+    }
+    if (qrCodeSvgImage) {
+      tableRow = repTableObj.addRow();
+      var qrCodeCell = tableRow.addCell("","",_columns_number);
+      qrCodeCell.addParagraph(" ","");
+      qrCodeCell.addImage(qrCodeSvgImage, 'qr_code');
+      qrCodeCell.addParagraph(" ","");
+      qrCodeCell.addParagraph(" ","");
+    }
+  }
 }
 
-function print_qr_code(repDocObj, invoiceObj, texts, param) {
-  var text = '';
-  text += 'Currency:\n';
-  text += 'CHF\n';
-  text += 'Amount:\n';
-  text += '3500.00\n';
-  text += 'Account/Payable to:\n';
-  text += '1234567890\n';
-  text += 'Banana.ch SA\n';
-  text += 'Via alla Santa 7\n';
-  text += '6962 Viganello\n';
-  text += 'Reference:\n';
-  text += '12 00000 00001 12345 67890 09876\n';
-  text += 'Addidtional information:\n';
-  text += '35/20180129/100002/30 days\n';
-  text += 'Sales merchandise/2000.00/Sales merchandise/1000.00/Sales merchandise/500.00/\n';
-  text += 'VAT 8.00% included/259.26\n';
-  text += 'Payable by:\n';
-  text += 'Mario Bianchi\n';
-  text += 'Via Trevano\n';
-  text += '6963 Pregassona\n';
-
-  var qrCodeParam = {};
-  qrCodeParam.errorCorrectionLevel = 'M';
-  qrCodeParam.binaryCodingVersion = 25;
-  qrCodeParam.border = 0;
-
-  var qrCodeSvgImage = Banana.Report.qrCodeImage(text, qrCodeParam);
-  if (qrCodeParam.errorMsg && qrCodeParam.errorMsg.length>0) {
-    Banana.document.addMessage(qrCodeParam.errorMsg);
-  }
-  if (qrCodeSvgImage) {
-    repDocObj.addParagraph(" ","");
-    repDocObj.addImage(qrCodeSvgImage, 'qr_code');
-    repDocObj.addParagraph(" ","");
-    repDocObj.addParagraph(" ","");
-  }
-}
 
 
 
 
 
+// function print_qr_code(repDocObj, invoiceObj, texts, param) {
+//   var text = '';
+//   text += 'Currency:\n';
+//   text += 'CHF\n';
+//   text += 'Amount:\n';
+//   text += '3500.00\n';
+//   text += 'Account/Payable to:\n';
+//   text += '1234567890\n';
+//   text += 'Banana.ch SA\n';
+//   text += 'Via alla Santa 7\n';
+//   text += '6962 Viganello\n';
+//   text += 'Reference:\n';
+//   text += '12 00000 00001 12345 67890 09876\n';
+//   text += 'Addidtional information:\n';
+//   text += '35/20180129/100002/30 days\n';
+//   text += 'Sales merchandise/2000.00/Sales merchandise/1000.00/Sales merchandise/500.00/\n';
+//   text += 'VAT 8.00% included/259.26\n';
+//   text += 'Payable by:\n';
+//   text += 'Mario Bianchi\n';
+//   text += 'Via Trevano\n';
+//   text += '6963 Pregassona\n';
+
+//   var qrCodeParam = {};
+//   qrCodeParam.errorCorrectionLevel = 'M';
+//   qrCodeParam.binaryCodingVersion = 25;
+//   qrCodeParam.border = 0;
+
+//   var qrCodeSvgImage = Banana.Report.qrCodeImage(text, qrCodeParam);
+//   if (qrCodeParam.errorMsg && qrCodeParam.errorMsg.length>0) {
+//     Banana.document.addMessage(qrCodeParam.errorMsg);
+//   }
+//   if (qrCodeSvgImage) {
+//     repDocObj.addParagraph(" ","");
+//     repDocObj.addImage(qrCodeSvgImage, 'qr_code');
+//     repDocObj.addParagraph(" ","");
+//     repDocObj.addParagraph(" ","");
+//   }
+// }
+
+// // print final text after details table
+// function print_final_text(repDocObj, invoiceObj) {
+//   //Template params
+//   //Default text starts with "(" and ends with ")" (default), (Vorderfiniert)
+//   if (invoiceObj.template_parameters && invoiceObj.template_parameters.footer_texts) {
+//     repDocObj.addParagraph(" ", "final_text");
+//     var lang = '';
+//     if (invoiceObj.customer_info.lang) {
+//       lang = invoiceObj.customer_info.lang;
+//     }
+//     if (lang.length <= 0 && invoiceObj.document_info.locale) {
+//       lang = invoiceObj.document_info.locale;
+//     }
+//     var textDefault = [];
+//     var text = [];
+//     for (var i = 0; i < invoiceObj.template_parameters.footer_texts.length; i++) {
+//       var textLang = invoiceObj.template_parameters.footer_texts[i].lang;
+//       if (textLang.indexOf('(') === 0 && textLang.indexOf(')') === textLang.length-1) {
+//         textDefault = invoiceObj.template_parameters.footer_texts[i].text;
+//       }
+//       else if (textLang == lang) {
+//         text = invoiceObj.template_parameters.footer_texts[i].text;
+//       }
+//     }
+//     if (text.join().length <= 0) {
+//       text = textDefault;
+//     }
+//     for (var i=0; i < text.length; i++) {
+//       repDocObj.addParagraph(text[i], "final_text");
+//     }
+//   }
+// }
+
+// // print notes after final text
+// function print_notes(repDocObj, invoiceObj) {
+//   repDocObj.addParagraph(" ","notes_text");
+//   for (var i = 0; i < invoiceObj.note.length; i++) {
+//     if (invoiceObj.note[i].description) {
+//       repDocObj.addParagraph(invoiceObj.note[i].description, "notes_text");
+//     }
+//   }
+// }
+
+// // print greetings after notes, before the footer
+// function print_greetings(repDocObj, invoiceObj) {
+//   repDocObj.addParagraph(" ", "greetings_text");
+//   if (invoiceObj.document_info.greetings) {
+//       repDocObj.addParagraph(invoiceObj.document_info.greetings, "greetings_text");
+//   }
+// }
 
 
 
+function print_final_texts(repDocObj, invoiceObj, detailsTable) {
 
+  //var textsTable = repDocObj.addTable("table_texts");
 
+  tableRow = detailsTable.addRow();
+  tableRow.addCell(" ", "", _columns_number);
 
-// print final text after details table
-function print_final_text(repDocObj, invoiceObj) {
-  //Template params
-  //Default text starts with "(" and ends with ")" (default), (Vorderfiniert)
+  // Template params, default text starts with "(" and ends with ")" (default), (Vorderfiniert)
   if (invoiceObj.template_parameters && invoiceObj.template_parameters.footer_texts) {
-    repDocObj.addParagraph(" ", "final_text");
+    repDocObj.addParagraph(" ", "");
     var lang = '';
     if (invoiceObj.customer_info.lang) {
       lang = invoiceObj.customer_info.lang;
@@ -1786,63 +1954,70 @@ function print_final_text(repDocObj, invoiceObj) {
       text = textDefault;
     }
     for (var i=0; i < text.length; i++) {
-      repDocObj.addParagraph(text[i], "final_text");
+      tableRow = detailsTable.addRow();
+      tableRow.addCell(text[i], "", _columns_number);
     }
   }
-}
 
-// print notes after final text
-function print_notes(repDocObj, invoiceObj) {
-  repDocObj.addParagraph(" ","notes_text");
+  // Notes
+  repDocObj.addParagraph(" ","");
   for (var i = 0; i < invoiceObj.note.length; i++) {
     if (invoiceObj.note[i].description) {
-      repDocObj.addParagraph(invoiceObj.note[i].description, "notes_text");
+      tableRow = detailsTable.addRow();
+      tableRow.addCell(invoiceObj.note[i].description, "", _columns_number);
     }
+  }
+
+  // Greetings
+  repDocObj.addParagraph(" ", "");
+  if (invoiceObj.document_info.greetings) {
+    tableRow = detailsTable.addRow();
+    tableRow.addCell(invoiceObj.document_info.greetings, "", _columns_number);
   }
 }
 
-// print greetings after notes, before the footer
-function print_greetings(repDocObj, invoiceObj) {
-  repDocObj.addParagraph(" ", "greetings_text");
-  if (invoiceObj.document_info.greetings) {
-      repDocObj.addParagraph(invoiceObj.document_info.greetings, "greetings_text");
-  }
-}
 
 // print the footer at the bottom of the page
 function print_footer(repDocObj, param) {
   
-  var paragraph = repDocObj.getFooter().addParagraph("","footer_line");
-  var tabFooter = repDocObj.getFooter().addTable("footer_table");
-  var col1 = tabFooter.addColumn().setStyleAttributes("width:33%");
-  var col2 = tabFooter.addColumn().setStyleAttributes("width:33%");
-  var col3 = tabFooter.addColumn().setStyleAttributes("width:33%");
+  if (param.add_footer) {
+    var paragraph = repDocObj.getFooter().addParagraph("","footer_line");
+    var tabFooter = repDocObj.getFooter().addTable("footer_table");
+    var col1 = tabFooter.addColumn().setStyleAttributes("width:33%");
+    var col2 = tabFooter.addColumn().setStyleAttributes("width:33%");
+    var col3 = tabFooter.addColumn().setStyleAttributes("width:33%");
 
-  var tableRow = tabFooter.addRow();
-  var cell1 = tableRow.addCell("","",1);
-  var cell2 = tableRow.addCell("","",1);
-  var cell3 = tableRow.addCell("","",1);
+    var tableRow = tabFooter.addRow();
+    var cell1 = tableRow.addCell("","",1);
+    var cell2 = tableRow.addCell("","",1);
+    var cell3 = tableRow.addCell("","",1);
 
-  // footer left
-  if (param.footer_left && param.footer_left.length > 0) {
-    var lines = param.footer_left.split("\n");
-    for (var i = 0; i < lines.length; i++) {
-      cell1.addParagraph(lines[i], "");
+    // footer left
+    if (param.footer_left && param.footer_left.length > 0) {
+      var lines = param.footer_left.split("\n");
+      for (var i = 0; i < lines.length; i++) {
+        cell1.addParagraph(lines[i], "");
+      }
+    }
+    // footer center
+    if (param.footer_center && param.footer_center.length > 0) {
+      var lines = param.footer_center.split("\n");
+      for (var i = 0; i < lines.length; i++) {
+        cell2.addParagraph(lines[i], "");
+      }
+    }
+    // footer right
+    if (param.footer_right && param.footer_right.length > 0) {
+      var lines = param.footer_right.split("\n");
+      for (var i = 0; i < lines.length; i++) {
+        cell3.addParagraph(lines[i], "amount");
+      }
     }
   }
-  // footer center
-  if (param.footer_center && param.footer_center.length > 0) {
-    var lines = param.footer_center.split("\n");
-    for (var i = 0; i < lines.length; i++) {
-      cell2.addParagraph(lines[i], "");
-    }
-  }
-  // footer right
-  if (param.footer_right && param.footer_right.length > 0) {
-    var lines = param.footer_right.split("\n");
-    for (var i = 0; i < lines.length; i++) {
-      cell3.addParagraph(lines[i], "");
-    }
+  else {
+    var tabFooter = repDocObj.getFooter().addTable("footer_table");
+    var tableRow = tabFooter.addRow();
+    tableRow.addCell("","",1);
   }
 }
 
@@ -2105,7 +2280,7 @@ function setInvoiceStyle(reportObj, repStyleObj, param) {
   /* Title */
   var titleStyle = repStyleObj.addStyle(".title_text");
   titleStyle.setAttribute("position", "absolute");
-  titleStyle.setAttribute("top", "90mm");
+  titleStyle.setAttribute("top", invoice_title_start);
   titleStyle.setAttribute("left", "20mm");
   titleStyle.setAttribute("right", "10mm");
   titleStyle.setAttribute("font-size", (parseInt(param.font_size)+4) +"pt");
@@ -2115,7 +2290,7 @@ function setInvoiceStyle(reportObj, repStyleObj, param) {
   /* Text begin */
   var beginStyle = repStyleObj.addStyle(".begin_text");
   beginStyle.setAttribute("position", "absolute");
-  beginStyle.setAttribute("top", "100mm");
+  beginStyle.setAttribute("top", invoice_text_begin_start);
   beginStyle.setAttribute("left", "20mm");
   beginStyle.setAttribute("right", "10mm");
   beginStyle.setAttribute("font-size", param.font_size + "pt");
@@ -2127,28 +2302,23 @@ function setInvoiceStyle(reportObj, repStyleObj, param) {
   logoStyle.setAttribute("margin-left", "20mm");
   logoStyle.setAttribute("margin-right", "10mm");
 
-  /* Final text */
-  var finalTextStyle = repStyleObj.addStyle(".final_text");
-  finalTextStyle.setAttribute("margin-left", "20mm");
-  finalTextStyle.setAttribute("margin-right", "10mm");
-  finalTextStyle.setAttribute("font-size", param.font_size + "pt");
+  // /* Final text */
+  // var finalTextStyle = repStyleObj.addStyle(".final_text");
+  // finalTextStyle.setAttribute("margin-left", "20mm");
+  // finalTextStyle.setAttribute("margin-right", "10mm");
+  // finalTextStyle.setAttribute("font-size", param.font_size + "pt");
 
-  /* Notes text */
-  var notesStyle = repStyleObj.addStyle(".notes_text");
-  notesStyle.setAttribute("margin-left", "20mm");
-  notesStyle.setAttribute("margin-right", "10mm");
-  notesStyle.setAttribute("font-size", param.font_size + "pt");
+  // /* Notes text */
+  // var notesStyle = repStyleObj.addStyle(".notes_text");
+  // notesStyle.setAttribute("margin-left", "20mm");
+  // notesStyle.setAttribute("margin-right", "10mm");
+  // notesStyle.setAttribute("font-size", param.font_size + "pt");
 
-  /* Greetings */
-  var greetingsStyle = repStyleObj.addStyle(".greetings_text");
-  greetingsStyle.setAttribute("margin-left", "20mm");
-  greetingsStyle.setAttribute("margin-right", "10mm");
-  greetingsStyle.setAttribute("font-size", param.font_size + "pt");
-
-
-
-
-
+  // /* Greetings */
+  // var greetingsStyle = repStyleObj.addStyle(".greetings_text");
+  // greetingsStyle.setAttribute("margin-left", "20mm");
+  // greetingsStyle.setAttribute("margin-right", "10mm");
+  // greetingsStyle.setAttribute("font-size", param.font_size + "pt");
 
 
 
@@ -2207,23 +2377,23 @@ function setInvoiceStyle(reportObj, repStyleObj, param) {
   infoStyle.setAttribute("font-size", "7pt");
   infoStyle.setAttribute("border-bottom", "solid 1px black");
 
+  var billingShippingStyle = repStyleObj.addStyle(".billing_shipping_address");
+  billingShippingStyle.setAttribute("position", "absolute");
+  billingShippingStyle.setAttribute("margin-top", invoice_billing_shipping_address);
+  billingShippingStyle.setAttribute("margin-left", "20mm")
+  billingShippingStyle.setAttribute("margin-right", "10mm");
+  billingShippingStyle.setAttribute("font-size", param.font_size + "pt");
+  //repStyleObj.addStyle("table.billing_shipping_address td", "border: thin solid black;");
+
   var itemsStyle = repStyleObj.addStyle(".doc_table");
-  itemsStyle.setAttribute("margin-top", docTableStart);
+  itemsStyle.setAttribute("margin-top", invoice_details_start);
   itemsStyle.setAttribute("margin-left", "23mm")
   itemsStyle.setAttribute("margin-right", "10mm");
   itemsStyle.setAttribute("width", "100%");
+  itemsStyle.setAttribute("font-size", param.font_size + "pt");
   //repStyleObj.addStyle("table.doc_table td", "border: thin solid black; padding: 3px;");
 
-  var itemsStyle = repStyleObj.addStyle(".doc_table_total");
-  itemsStyle.setAttribute("margin-left", "23mm")
-  itemsStyle.setAttribute("margin-right", "10mm");
-  itemsStyle.setAttribute("width", "100%");
-  //repStyleObj.addStyle("table.doc_table_total td", "border: thin solid black; padding: 3px;");
-
-
   var qr_codeStyle = repStyleObj.addStyle(".qr_code");
-  qr_codeStyle.setAttribute("margin-left", "20mm");
-  qr_codeStyle.setAttribute("margin-right", "10mm");
   qr_codeStyle.setAttribute("text-align", "right");
 
 
@@ -2240,6 +2410,7 @@ function setInvoiceStyle(reportObj, repStyleObj, param) {
   footerStyle.setAttribute("width", "100%");
   footerStyle.setAttribute("font-size", "8pt");
   //repStyleObj.addStyle("table.footer_table td", "border: thin solid black");
+
 }
 
 
@@ -2405,6 +2576,9 @@ function setInvoiceTexts(language) {
 
 
 
+    //Address
+    texts.billing_address = "Billing address";
+    texts.shipping_address = "Shipping address";
 
     //Info
     texts.invoice = 'Invoice';
@@ -2437,11 +2611,12 @@ function setInvoiceTexts(language) {
     texts.param_header_row_3 = "Header row 3";
     texts.param_header_row_4 = "Header row 4";
     texts.param_header_row_5 = "Header row 5";
-    texts.param_print_logo = 'Header logo';
+    texts.param_print_logo = 'Logo';
     texts.param_logo_name = 'Logo name';
     texts.param_include_address = "Customer address";
     texts.param_small_address_line = "Small supplier address line";
     texts.param_address_left = 'Address on left position';
+    texts.param_billing_shipping_address = 'Billing and Shipping addresses';
     texts.param_include_info = 'Info';
     texts.param_info_invoice_number = 'Invoice number';
     texts.param_info_date = 'Invoice date';
@@ -2470,6 +2645,8 @@ function setInvoiceTexts(language) {
     texts.param_texts_info_customer_text = 'Invoice customer number';
     texts.param_texts_info_due_date_text = 'Invoice due date';
     texts.param_texts_info_page_text = 'Invoice page number';
+    texts.param_texts_billing_address = 'Billing address';
+    texts.param_texts_shipping_address = 'Shipping address';
     texts.param_texts_items_details_columns = 'Invoice details columns names';
 
 
@@ -2524,6 +2701,7 @@ function setInvoiceTexts(language) {
     texts.param_tooltip_header_row_4 = "Enter a text to replace the default one";
     texts.param_tooltip_header_row_5 = "Enter a text to replace the default one";
     texts.param_tooltip_small_address_line = "Enter supplier address line above the customer address";
+    texts.param_tooltip_billing_shipping_address = "Check to print billing and shipping addresses";
     texts.param_tooltip_address_left = "Check to print the customer address on left position";
     texts.param_tooltip_details_net_amounts = "Check to print the invoice details with net VAT";
     texts.param_tooltip_details_gross_amounts = "Check to print the invoice details with gross VAT";
