@@ -103,9 +103,9 @@ function convertParam(param) {
   convertedParam.data = [];
 
 
-  /*
+  /*******************************************************************************************
   * INCLUDE
-  */
+  *******************************************************************************************/
   var currentParam = {};
   currentParam.name = 'include';
   currentParam.title = texts.param_include;
@@ -496,7 +496,7 @@ function convertParam(param) {
   currentParam.title = texts.param_footer_center;
   currentParam.type = 'string';
   currentParam.value = param.footer_center ? param.footer_center : '';
-  currentParam.defaultvalue = '';
+  currentParam.defaultvalue = '&['+texts.date+']';
   currentParam.tooltip = texts.param_tooltip_footer;
   currentParam.readValue = function() {
    param.footer_center = this.value;
@@ -518,9 +518,9 @@ function convertParam(param) {
 
 
 
-  /*
+  /*******************************************************************************************
   * TEXTS
-  */
+  ********************************************************************************************/
   var currentParam = {};
   currentParam.name = 'texts';
   currentParam.title = texts.param_texts;
@@ -731,9 +731,9 @@ function convertParam(param) {
 
 
 
-  /*
+  /*******************************************************************************************
   * STYLES
-  */
+  *******************************************************************************************/
   var currentParam = {};
   currentParam.name = 'styles';
   currentParam.title = texts.param_styles;
@@ -849,9 +849,9 @@ function convertParam(param) {
   convertedParam.data.push(currentParam);
 
 
-  /*
+  /*******************************************************************************************
   * EMBEDDED JAVASCRIPT FILEE
-  */
+  *******************************************************************************************/
   var currentParam = {};
   currentParam.name = 'custom_javascript';
   currentParam.title = texts.param_custom_javascript;
@@ -878,9 +878,9 @@ function convertParam(param) {
 
 
 
-  /*
+  /*******************************************************************************************
   * QR CODE
-  */
+  *******************************************************************************************/
   var currentParam = {};
   currentParam.name = 'qr_code';
   currentParam.title = texts.param_qr_code;
@@ -942,8 +942,8 @@ function initParam() {
   param.items_invoice_details_dimensions = '50%;10%;10%;15%;15%';
   param.details_gross_amounts = false;
   param_add_footer = false;
-  param_footer_left = '';
-  param_footer_center = '';
+  param_footer_left = texts.invoice;
+  param_footer_center = '&['+texts.date+']';
   param_footer_right = texts.page+' &['+texts.page+']';
 
   //Texts
@@ -1061,10 +1061,10 @@ function verifyParam(param) {
     param.add_footer = false;
   }
   if (!param.footer_left) {
-    param.footer_left = '';
+    param.footer_left = texts.invoice;
   }
   if (!param.footer_center) {
-    param.footer_center = '';
+    param.footer_center = '&['+texts.date+']';
   }
   if (!param.footer_right) {
     param.footer_right = texts.page+' &['+texts.page+']';
@@ -1607,11 +1607,17 @@ function print_details_net_amounts(repDocObj, invoiceObj, texts, param, detailsT
       }
       else if (columnsSelected[j] === "Quantity" || columnsSelected[j] === "quantity") {
         // If referenceUnit is empty we do not print the quantity.
-        // With this we can avoit to print the quantity "1.00" for transactions that do not have  quantity,unit,unitprice 
+        // With this we can avoit to print the quantity "1.00" for transactions that do not have  quantity,unit,unitprice.
+        // Default quantity uses 2 decimals. We check if there is a quantity with 4 decimals and in case we use it.
         if (item.mesure_unit) {
-          tableRow.addCell(Banana.Converter.toLocaleNumberFormat(item.quantity), classNameEvenRow + " center padding-left padding-right " + className, 1);
+          var decimals = 2;
+          var res = item.quantity.split(".");
+          if (res[1].length == 4 && res[1] !== "0000") {
+            decimals = 4;
+          }
+          tableRow.addCell(Banana.Converter.toLocaleNumberFormat(item.quantity,decimals), classNameEvenRow + " amount padding-left padding-right " + className, 1);
         } else {
-          tableRow.addCell("", classNameEvenRow + " center padding-left padding-right " + className, 1);
+          tableRow.addCell("", classNameEvenRow + " amount padding-left padding-right " + className, 1);
         }
       }
       else if (columnsSelected[j] === "ReferenceUnit" || columnsSelected[j] === "referenceunit" || columnsSelected[j] === "mesure_unit") {
@@ -1784,11 +1790,17 @@ function print_details_gross_amounts(repDocObj, invoiceObj, texts, param, detail
       }
       else if (columnsSelected[j] === "Quantity" || columnsSelected[j] === "quantity") {
         // If referenceUnit is empty we do not print the quantity.
-        // With this we can avoit to print the quantity "1.00" for transactions that do not have  quantity,unit,unitprice 
+        // With this we can avoit to print the quantity "1.00" for transactions that do not have  quantity,unit,unitprice.
+        // Default quantity uses 2 decimals. We check if there is a quantity with 4 decimals and in case we use it.
         if (item.mesure_unit) {
-          tableRow.addCell(Banana.Converter.toLocaleNumberFormat(item.quantity), classNameEvenRow + " center padding-left padding-right " + className, 1);
+          var decimals = 2;
+          var res = item.quantity.split(".");
+          if (res[1].length == 4 && res[1] !== "0000") {
+            decimals = 4;
+          }
+          tableRow.addCell(Banana.Converter.toLocaleNumberFormat(item.quantity,decimals), classNameEvenRow + " amount padding-left padding-right " + className, 1);
         } else {
-          tableRow.addCell("", classNameEvenRow + " center padding-left padding-right " + className, 1);
+          tableRow.addCell("", classNameEvenRow + " amount padding-left padding-right " + className, 1);
         }
       }
       else if (columnsSelected[j] === "ReferenceUnit" || columnsSelected[j] === "referenceunit" || columnsSelected[j] === "mesure_unit") {
@@ -1938,9 +1950,17 @@ function print_final_texts(repDocObj, invoiceObj, detailsTable) {
   }
 }
 
-// print the footer at the bottom of the page
+/* print the footer at the bottom of the page */
 function print_footer(repDocObj, texts, param) {
-  
+
+  /*
+    Values "&[Page]", "&[Pagina]", "&[Seite]",.. are replaced with the page number.
+    Values "&[Date]", "&[Data]", "&[Datum]",.. are replaced with the current day date.
+    It is possible to add only one value in a row.
+    It is possible to add more values on multiple rows.
+    For empty value insert <none>.
+  */
+
   if (param.add_footer) {
     var paragraph = repDocObj.getFooter().addParagraph("","footer_line");
     var tabFooter = repDocObj.getFooter().addTable("footer_table");
@@ -1959,7 +1979,13 @@ function print_footer(repDocObj, texts, param) {
       for (var i = 0; i < lines.length; i++) {
         if (lines[i].indexOf("&["+texts.page+"]") > -1) {
           cell1.addParagraph(lines[i].replace("&["+texts.page+"]",""), "").addFieldPageNr();
-        } else {
+        }
+        else if (lines[i].indexOf("&["+texts.date+"]") > -1) {
+          var date = new Date();
+          date = Banana.Converter.toLocaleDateFormat(date);
+          cell1.addParagraph(lines[i].replace("&["+texts.date+"]",date), "");
+        }
+        else {
           cell1.addParagraph(lines[i], "");
         }
       }
@@ -1970,7 +1996,13 @@ function print_footer(repDocObj, texts, param) {
       for (var i = 0; i < lines.length; i++) {
         if (lines[i].indexOf("&["+texts.page+"]") > -1) {
           cell2.addParagraph(lines[i].replace("&["+texts.page+"]",""), "center").addFieldPageNr();
-        } else {
+        }
+        else if (lines[i].indexOf("&["+texts.date+"]") > -1) {
+          var date = new Date();
+          date = Banana.Converter.toLocaleDateFormat(date);
+          cell2.addParagraph(lines[i].replace("&["+texts.date+"]",date), "center");
+        }
+        else {
           cell2.addParagraph(lines[i], "center");
         }
       }
@@ -1981,7 +2013,13 @@ function print_footer(repDocObj, texts, param) {
       for (var i = 0; i < lines.length; i++) {
         if (lines[i].indexOf("&["+texts.page+"]") > -1) {
           cell3.addParagraph(lines[i].replace("&["+texts.page+"]",""), "amount").addFieldPageNr();
-        } else {
+        }
+        else if (lines[i].indexOf("&["+texts.date+"]") > -1) {
+          var date = new Date();
+          date = Banana.Converter.toLocaleDateFormat(date);
+          cell3.addParagraph(lines[i].replace("&["+texts.date+"]",date), "amount");
+        }
+        else {
           cell3.addParagraph(lines[i], "amount");
         }
       }
@@ -2698,4 +2736,124 @@ function setInvoiceTexts(language) {
     texts.param_tooltip_add_qr_code = "Check to print the QR Code"; 
   }
   return texts;
+}
+
+
+
+
+function change_parameters(param) {
+
+  var $body = "font_size:"+param.font_size+";font_family:"+param.font_family;
+  var $amount = "text_align:right";
+  var $center = "text_align:center";
+  var $bold = "font_weight:bold";
+  var $doc_table_header = "font-weight:bold; background-color:" + param.color_1 + "; color:" + param.color_2;
+  var $doc_table_header_td = "padding:5px;";
+  var $total_cell = "font-weight:bold; color: " + param.color_1 + "; border-bottom:1px double " + param.color_1 + "; font-size:"+(parseInt(param.font_size)+2)+"pt";
+  var $subtotal_cell = "font-weight:bold; background-color:" + param.color_1 + "; color: " + param.color_2 + "; padding:5px";
+  var $vatInfo = "font-size:"+ param.font_size + "pt";
+  var $evenRowsBackgroundColor = "background-color:" + param.color_3;
+  var $border_bottom = "border-bottom:2px solid " + param.color_1;
+  var $thin_border_top = "border-top:thin solid " + param.color_1;
+  var $padding_right = "padding-right:5px";
+  var $padding_left = "padding-left:5px";
+
+  /* Header */
+  var $header_left_text = "position:absolute;margin-top:10mm;margin-left:20mm;margin-right:10mm";
+  var $header_right_text = "position:absolute;margin-top:10mm;margin-left:20mm;margin-right:10mm;text-align:right";
+
+  /* Title */
+  var $title_text = "position:absolute;top:"+invoice_title_start+";left:20mm;right:10mm;font-size:"+(parseInt(param.font_size)+4) +"pt;font-weight:bold;color:"+param.color_1;
+
+  /* Text begin */
+  var $begin_text = "position:absolute;top:"+invoice_text_begin_start+";left:20mm;right:10mm;font-size:"+param.font_size+"pt";
+
+  /* Logo */
+  var $logo = "position:absolute;margin-top:10mm;margin-left:20mm;margin-right:10mm";
+
+
+
+  //====================================================================//
+  // TABLES
+  //====================================================================//
+  var $info_table_left = "position:absolute;margin-top:45mm;margin-left:20mm;margin-right:10mm;font-size:"+param.font_size+"pt";
+  var $table_info_table_left_td = "table.info_table_left td:padding-top:0px; padding-bottom:0px";
+  
+  
+
+  var infoStyle = repStyleObj.addStyle(".info_table_right");
+  infoStyle.setAttribute("position", "absolute");
+  infoStyle.setAttribute("margin-top", "45mm");
+  infoStyle.setAttribute("margin-left", "113mm");
+  infoStyle.setAttribute("margin-right", "10mm");
+  infoStyle.setAttribute("font-size", param.font_size + "pt");
+  repStyleObj.addStyle("table.info_table_right td", "padding-top:0px; padding-bottom:0px");
+  //repStyleObj.addStyle("table.info_table_right td", "border: thin solid black");
+
+  var infoStyle = repStyleObj.addStyle(".info_table_row0");
+  infoStyle.setAttribute("position", "absolute");
+  infoStyle.setAttribute("margin-top", "45mm");
+  infoStyle.setAttribute("margin-left", "20mm");
+  infoStyle.setAttribute("margin-right", "10mm");
+  infoStyle.setAttribute("font-size", param.font_size + "pt");
+  repStyleObj.addStyle("table.info_table_row0 td", "padding-top:0px; padding-bottom:0px");
+  //repStyleObj.addStyle("table.info_table_row0 td", "border: thin solid black");
+
+  var infoStyle = repStyleObj.addStyle("@page:first-view table.info_table_row0");
+  infoStyle.setAttribute("display", "none");
+
+  var infoStyle = repStyleObj.addStyle(".address_table_right");
+  infoStyle.setAttribute("position", "absolute");
+  infoStyle.setAttribute("margin-top", param.address_margin_top + "mm"); //45mm
+  infoStyle.setAttribute("margin-left", param.address_margin_left + "mm"); //113mm
+  infoStyle.setAttribute("margin-right", "10mm");
+  infoStyle.setAttribute("font-size", param.font_size + "pt");
+  //repStyleObj.addStyle("table.address_table_right td", "border: thin solid black");
+
+  var infoStyle = repStyleObj.addStyle(".address_table_left");
+  infoStyle.setAttribute("position", "absolute");
+  infoStyle.setAttribute("margin-top", "45mm");
+  infoStyle.setAttribute("margin-left", "20mm");
+  infoStyle.setAttribute("margin-right", "10mm");
+  //repStyleObj.addStyle("table.address_table_left td", "border: thin solid black");
+
+  var infoStyle = repStyleObj.addStyle(".small_address");
+  infoStyle.setAttribute("text-align", "center");
+  infoStyle.setAttribute("font-size", "7pt");
+  infoStyle.setAttribute("border-bottom", "solid 1px black");
+
+  var billingShippingStyle = repStyleObj.addStyle(".shipping_address");
+  billingShippingStyle.setAttribute("position", "absolute");
+  billingShippingStyle.setAttribute("margin-top", invoice_shipping_address);
+  billingShippingStyle.setAttribute("margin-left", "20mm")
+  billingShippingStyle.setAttribute("margin-right", "10mm");
+  billingShippingStyle.setAttribute("font-size", param.font_size + "pt");
+  //repStyleObj.addStyle("table.shipping_address td", "border: thin solid black;");
+
+  var itemsStyle = repStyleObj.addStyle(".doc_table");
+  itemsStyle.setAttribute("margin-top", invoice_details_start);
+  itemsStyle.setAttribute("margin-left", "23mm")
+  itemsStyle.setAttribute("margin-right", "10mm");
+  itemsStyle.setAttribute("width", "100%");
+  itemsStyle.setAttribute("font-size", param.font_size + "pt");
+  //repStyleObj.addStyle("table.doc_table td", "border: thin solid black; padding: 3px;");
+
+  var qr_codeStyle = repStyleObj.addStyle(".qr_code");
+  qr_codeStyle.setAttribute("text-align", "right");
+
+
+  var footerLine = repStyleObj.addStyle(".footer_line");
+  footerLine.setAttribute("margin-left", "20mm");
+  footerLine.setAttribute("margin-right", "10mm");
+  footerLine.setAttribute("border-top", "thin solid " + param.color_1);
+
+  var footerStyle = repStyleObj.addStyle(".footer_table");
+  footerStyle.setAttribute("margin-bottom", "20mm");
+  //footerStyle.setAttribute("margin-top", "10mm");
+  footerStyle.setAttribute("margin-left", "23mm");
+  footerStyle.setAttribute("margin-right", "10mm");
+  footerStyle.setAttribute("width", "100%");
+  footerStyle.setAttribute("font-size", "8pt");
+  //repStyleObj.addStyle("table.footer_table td", "border: thin solid black");
+
 }
