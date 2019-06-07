@@ -44,21 +44,49 @@
   - final texts
   - footer
 
-
-
-
 */
 
 
-
-
-
-
 var _columns_number = 0;
-var invoice_shipping_address = "77mm";
-var invoice_title_start = "105mm";
-var invoice_text_begin_start = "115mm";
-var invoice_details_start = "120mm";
+
+var cssStyle = {
+  "$body" : "",
+  "$right" : "",
+  "$center" : "",
+  "$bold" : "",
+  "$doc_table_header" : "",
+  "$doc_table_header_td" : "",
+  "$total_cell" : "",
+  "$subtotal_cell" : "",
+  "$vat_info" : "",
+  "$even_rows_background_color" : "",
+  "$border_bottom" : "",
+  "$thin_border_top" : "",
+  "$padding_right" : "",
+  "$padding_left" : "",
+  "$header_left_text" : "",
+  "$header_right_text" : "",
+  "$title_text" : "",
+  "$begin_text" : "",
+  "$logo" : "",
+  "$info_table_left" : "",
+  "$table_info_table_left_td" : "",
+  "$info_table_right" : "",
+  "$table_info_table_right_td" : "",
+  "$info_table_row0" : "",
+  "$table_info_table_row0_td" : "",
+  "$page_first_view_info_table_row0" : "",
+  "$address_table_right" : "",
+  "$address_table_left" : "",
+  "$small_address" : "",
+  "$shipping_address" : "",
+  "$doc_table" : "",
+  "$qr_code" : "",
+  "$footer_line" : "",
+  "$footer_table" : ""
+};
+
+
 
 
 
@@ -772,41 +800,41 @@ function convertParam(param) {
   convertedParam.data.push(currentParam);
 
   currentParam = {};
-  currentParam.name = 'color_1';
+  currentParam.name = 'background_color_1';
   currentParam.parentObject = 'styles';
-  currentParam.title = texts.param_color_1;
+  currentParam.title = texts.param_background_color_1;
   currentParam.type = 'string';
-  currentParam.value = param.color_1 ? param.color_1 : '#337ab7';
+  currentParam.value = param.background_color_1 ? param.background_color_1 : '#337ab7';
   currentParam.defaultvalue = '#337ab7';
-  currentParam.tooltip = texts.param_tooltip_color_1;
+  currentParam.tooltip = texts.param_tooltip_background_color_1;
   currentParam.readValue = function() {
-   param.color_1 = this.value;
+   param.background_color_1 = this.value;
   }
   convertedParam.data.push(currentParam);
 
   currentParam = {};
-  currentParam.name = 'color_2';
+  currentParam.name = 'color';
   currentParam.parentObject = 'styles';
-  currentParam.title = texts.param_color_2;
+  currentParam.title = texts.param_color;
   currentParam.type = 'string';
-  currentParam.value = param.color_2 ? param.color_2 : '#ffffff';
+  currentParam.value = param.color ? param.color : '#ffffff';
   currentParam.defaultvalue = '#ffffff';
-  currentParam.tooltip = texts.param_tooltip_color_2;
+  currentParam.tooltip = texts.param_tooltip_color;
   currentParam.readValue = function() {
-   param.color_2 = this.value;
+   param.color = this.value;
   }
   convertedParam.data.push(currentParam);
 
   currentParam = {};
-  currentParam.name = 'color_3';
+  currentParam.name = 'background_color_2';
   currentParam.parentObject = 'styles';
-  currentParam.title = texts.param_color_3;
+  currentParam.title = texts.param_background_color_2;
   currentParam.type = 'string';
-  currentParam.value = param.color_3 ? param.color_3 : '#F0F8FF';
+  currentParam.value = param.background_color_2 ? param.background_color_2 : '#F0F8FF';
   currentParam.defaultvalue = '#F0F8FF';
-  currentParam.tooltip = texts.param_tooltip_color_3;
+  currentParam.tooltip = texts.param_tooltip_background_color_2;
   currentParam.readValue = function() {
-   param.color_3 = this.value;
+   param.background_color_2 = this.value;
   }
   convertedParam.data.push(currentParam);
 
@@ -853,26 +881,26 @@ function convertParam(param) {
   * EMBEDDED JAVASCRIPT FILEE
   *******************************************************************************************/
   var currentParam = {};
-  currentParam.name = 'custom_javascript';
-  currentParam.title = texts.param_custom_javascript;
+  currentParam.name = 'embedded_javascript';
+  currentParam.title = texts.param_embedded_javascript;
   currentParam.type = 'string';
   currentParam.value = '';
   currentParam.editable = false;
   currentParam.readValue = function() {
-    param.custom_javascript = this.value;
+    param.embedded_javascript = this.value;
   }
   convertedParam.data.push(currentParam);
 
   currentParam = {};
-  currentParam.name = 'custom_javascript_filename';
-  currentParam.parentObject = 'custom_javascript';
-  currentParam.title = texts.param_custom_javascript_filename;
+  currentParam.name = 'embedded_javascript_filename';
+  currentParam.parentObject = 'embedded_javascript';
+  currentParam.title = texts.param_embedded_javascript_filename;
   currentParam.type = 'string';
-  currentParam.value = param.custom_javascript_filename ? param.custom_javascript_filename : '';
+  currentParam.value = param.embedded_javascript_filename ? param.embedded_javascript_filename : '';
   currentParam.defaultvalue = '';
   currentParam.tooltip = texts.param_tooltip_javascript_filename;
   currentParam.readValue = function() {
-   param.custom_javascript_filename = this.value;
+   param.embedded_javascript_filename = this.value;
   }
   convertedParam.data.push(currentParam);
 
@@ -963,9 +991,9 @@ function initParam() {
   param.texts_total = texts.total;
 
   //Styles
-  param.color_1 = '#337ab7';
-  param.color_2 = '#ffffff';
-  param.color_3 = '#F0F8FF';
+  param.background_color_1 = '#337ab7';
+  param.color = '#ffffff';
+  param.background_color_2 = '#F0F8FF';
   param.color_4 = '';
   param.font_family = 'Helvetica';
   param.font_size = '10';
@@ -973,7 +1001,7 @@ function initParam() {
   param.address_margin_top = '45';
 
   //Embedded JavaScript file
-  param.custom_javascript_filename = '';
+  param.embedded_javascript_filename = '';
 
   //QR Code
   param.add_qr_code = false;
@@ -1119,14 +1147,14 @@ function verifyParam(param) {
 
 
   // Styles
-  if (!param.color_1) {
-    param.color_1 = '#337ab7';
+  if (!param.background_color_1) {
+    param.background_color_1 = '#337ab7';
   }
-  if (!param.color_2) {
-    param.color_2 = '#ffffff';
+  if (!param.color) {
+    param.color = '#ffffff';
   }
-  if (!param.color_3) {
-    param.color_3 = '#F0F8FF';
+  if (!param.background_color_2) {
+    param.background_color_2 = '#F0F8FF';
   }
   if (!param.color_4) {
     param.color_4 = '';
@@ -1145,8 +1173,8 @@ function verifyParam(param) {
   }
 
   //Embedded JavaScript files
-  if (!param.custom_javascript_filename) {
-    param.custom_javascript_filename = '';
+  if (!param.embedded_javascript_filename) {
+    param.embedded_javascript_filename = '';
   }
 
   //QR Code
@@ -1155,6 +1183,43 @@ function verifyParam(param) {
   }
 
   return param;
+}
+
+/* Check if there are javascript (.js) files in the table Documents */
+function includeEmbeddedJavascriptFile(texts, param) {
+
+  // User entered a javascript file name
+  // Take from the table documents all the javascript file names
+  if (param.embedded_javascript_filename) {
+    
+    var jsFiles = [];
+    
+    // If Documents table exists, take all the ".js" file names
+    var documentsTable = Banana.document.table("Documents");
+    if (documentsTable) {
+      for (var i = 0; i < documentsTable.rowCount; i++) {
+        var tRow = documentsTable.row(i);
+        var id = tRow.value("RowId");
+        if (id.indexOf(".js") > -1) {
+          jsFiles.push(id);
+        }
+      }
+    }
+
+    // Table documents contains javascript files
+    if (jsFiles.length > 0) {
+
+      // The javascript file name entered by user exists on documents table. Include this file
+      if (jsFiles.indexOf(param.embedded_javascript_filename) > -1) {
+        try {
+          Banana.include("documents:" + param.embedded_javascript_filename);
+        }
+        catch(error) {
+          Banana.document.addMessage(texts.embedded_javascript_file_not_found);
+        }
+      }
+    }
+  }
 }
 
 
@@ -1168,20 +1233,7 @@ function printDocument(jsonInvoice, repDocObj, repStyleObj) {
     param = JSON.parse(savedParam);
     param = verifyParam(param);
   }
-  
-  if (!repStyleObj) {
-    repStyleObj = reportObj.newStyleSheet();
-  }
-  set_invoice_style(repStyleObj, param);
-  if (typeof(hook_set_invoice_style) === typeof(Function)) {
-    hook_set_invoice_style(repStyleObj, param);
-  }
 
-  repDocObj = printInvoice(jsonInvoice, repDocObj, param, repStyleObj);
-}
-
-function printInvoice(jsonInvoice, repDocObj, param, repStyleObj) {
-  
   // jsonInvoice can be a json string or a js object
   var invoiceObj = null;
   if (typeof(jsonInvoice) === 'object') {
@@ -1200,6 +1252,21 @@ function printInvoice(jsonInvoice, repDocObj, param, repStyleObj) {
   }
   var texts = setInvoiceTexts(langDoc);
 
+  // Include the embedded javascript file entered by the user
+  includeEmbeddedJavascriptFile(texts, param);
+
+  // Set the stylesheet
+  if (!repStyleObj) {
+    repStyleObj = reportObj.newStyleSheet();
+  }
+  set_invoice_style(repStyleObj, param);
+  
+  // Print the invoice document
+  repDocObj = printInvoice(jsonInvoice, repDocObj, texts, param, repStyleObj, invoiceObj);
+}
+
+function printInvoice(jsonInvoice, repDocObj, texts, param, repStyleObj, invoiceObj) {
+  
   // Invoice document
   var reportObj = Banana.Report;
   if (!repDocObj) {
@@ -1207,51 +1274,6 @@ function printInvoice(jsonInvoice, repDocObj, param, repStyleObj) {
   } else {
     var pageBreak = repDocObj.addPageBreak();
     pageBreak.addClass("pageReset");
-  }
-
-  // User entered a javascript file name
-  if (param.custom_javascript_filename) {
-    //Banana.console.log(" ");
-    //Banana.console.log("'" + param.custom_javascript_filename + "' inserito nei parametri.");
-
-    // Take from the table documents all the javascript file names
-    var jsFiles = [];
-    jsFiles = getJsFilesFromDocumentsTable();
-
-    // Table documents contains javascript files
-    if (jsFiles.length > 0) {
-      //Banana.console.log("Tabella documenti contiene uno o più file javascript => " + jsFiles);
-      
-      // The javascript file name entered by user exists on documents table. Include this file
-      if (jsFiles.indexOf(param.custom_javascript_filename) > -1) {
-        //Banana.console.log("'" + param.custom_javascript_filename + "' esiste nella tabella documenti.");
-        try {
-          Banana.include("documents:" + param.custom_javascript_filename);
-          //Banana.console.log("'" + param.custom_javascript_filename + "' incluso nello script.");
-        }
-        catch(error) {
-          //Banana.console.log("Table Documents: JavaScript file '" + param.custom_javascript_filename + "' not found or not valid. Default functions are used.");
-          print_header(repDocObj, param, repStyleObj, invoiceObj);
-          print_info(repDocObj, invoiceObj, texts, param, "");
-          print_customer_address(repDocObj, invoiceObj, param);
-          if (param.shipping_address) {
-            print_shipping_address(repDocObj, invoiceObj, texts, param);
-          }
-          print_text_begin(repDocObj, invoiceObj, texts, param);
-          print_info(repDocObj.getHeader(), invoiceObj, texts, "info_table_row0");
-
-          var detailsTable = repDocObj.addTable("doc_table");
-          if (param.details_gross_amounts) {
-            print_details_gross_amounts(repDocObj, invoiceObj, texts, param, detailsTable);
-          } else {
-            print_details_net_amounts(repDocObj, invoiceObj, texts, param, detailsTable);
-          }
-
-          print_final_texts(repDocObj, invoiceObj, detailsTable)
-          print_footer(repDocObj, texts, param);
-        }
-      }
-    }
   }
 
   /* Header */
@@ -1362,7 +1384,7 @@ function print_header(repDocObj, param, repStyleObj, invoiceObj) {
 
     if (param.header_row_1) {
       if (param.header_row_1.length > 0) {
-        headerParagraph.addParagraph(param.header_row_1, "").setStyleAttributes("font-weight:bold; font-size:16pt; color:" + param.color_1);
+        headerParagraph.addParagraph(param.header_row_1, "").setStyleAttributes("font-weight:bold; font-size:16pt; color:" + param.background_color_1);
       }
       if (param.header_row_2.length > 0) {
         headerParagraph.addParagraph(param.header_row_2, "").setStyleAttributes("font-weight:bold; font-size:10pt;");
@@ -1380,7 +1402,7 @@ function print_header(repDocObj, param, repStyleObj, invoiceObj) {
     else {
       var supplierNameLines = getInvoiceSupplierName(invoiceObj.supplier_info).split('\n');
       for (var i = 0; i < supplierNameLines.length; i++) {
-        headerParagraph.addParagraph(supplierNameLines[i], "").setStyleAttributes("font-weight:bold; font-size:16pt; color:" + param.color_1);
+        headerParagraph.addParagraph(supplierNameLines[i], "").setStyleAttributes("font-weight:bold; font-size:16pt; color:" + param.background_color_1);
       }
       var supplierLines = getInvoiceSupplier(invoiceObj.supplier_info).split('\n');
       for (var i = 0; i < supplierLines.length; i++) {
@@ -1504,9 +1526,9 @@ function print_shipping_address(repDocObj, invoiceObj, texts, param) {
   // Shipping address
   if (invoiceObj.shipping_info.different_shipping_address) {
     if (param.texts_shipping_address) {
-      shippingCell.addParagraph(param.texts_shipping_address,"").setStyleAttributes("font-weight:bold;color:"+param.color_1+";");
+      shippingCell.addParagraph(param.texts_shipping_address,"").setStyleAttributes("font-weight:bold;color:"+param.background_color_1+";");
     } else {
-      shippingCell.addParagraph(texts.shipping_address, "").setStyleAttributes("font-weight:bold;color:"+param.color_1+";");
+      shippingCell.addParagraph(texts.shipping_address, "").setStyleAttributes("font-weight:bold;color:"+param.background_color_1+";");
     }
     var shippingAddress = getInvoiceAddress(invoiceObj.shipping_info).split('\n');
     for (var i = 0; i < shippingAddress.length; i++) {
@@ -1520,10 +1542,9 @@ function print_text_begin(repDocObj, invoiceObj, texts, param) {
   var docTypeTitle = getTitle(invoiceObj, texts, param);
   if (docTypeTitle) {
     repDocObj.addParagraph(docTypeTitle + " " + invoiceObj.document_info.number, "title_text");
+    repDocObj.addParagraph(" ", "");
+    repDocObj.addParagraph(" ", "");
   }
-  repDocObj.addParagraph(" ", "");
-  repDocObj.addParagraph(" ", "");
-  
   if (invoiceObj.document_info.text_begin) {
     repDocObj.addParagraph(invoiceObj.document_info.text_begin, "begin_text");
     repDocObj.addParagraph(" ", "");
@@ -2063,25 +2084,6 @@ function getUserColumnValue(docInvoice, originRow, column) {
   return values;
 }
 
-/* Check if there are javascript with hook functions on the table Documents */
-function getJsFilesFromDocumentsTable() {
-
-  var jsFiles = [];
-
-  // If Documents table exists, take all the ".js" file names
-  var documentsTable = Banana.document.table("Documents");
-  if (documentsTable) {
-    for (var i = 0; i < documentsTable.rowCount; i++) {
-      var tRow = documentsTable.row(i);
-      var id = tRow.value("RowId");
-      if (id.indexOf(".js") > -1) {
-        jsFiles.push(id);
-      }
-    }
-  }
-  return jsFiles;
-}
-
 function toInvoiceAmountFormat(invoice, value) {
 
     return Banana.Converter.toLocaleNumberFormat(value, invoice.document_info.decimals_amounts, true);
@@ -2264,165 +2266,7 @@ function getTitle(invoiceObj, texts, param) {
 
 
 
-//====================================================================//
-// STYLES
-//====================================================================//
-function set_invoice_style(repStyleObj, param) {
 
-
-
-  //====================================================================//
-  // GENERAL
-  //====================================================================//
-  repStyleObj.addStyle(".pageReset", "counter-reset: page");
-  repStyleObj.addStyle("body", "font-size: "+ param.font_size + "pt; font-family:" + param.font_family);
-  repStyleObj.addStyle(".amount", "text-align:right");
-  repStyleObj.addStyle(".center", "text-align:center");
-  repStyleObj.addStyle(".bold", "font-weight: bold");
-  repStyleObj.addStyle(".doc_table_header", "font-weight:bold; background-color:" + param.color_1 + "; color:" + param.color_2);
-  repStyleObj.addStyle(".doc_table_header td", "padding:5px;");
-  //repStyleObj.addStyle(".total_cell", "font-weight:bold; background-color:" + param.color_1 + "; color: " + param.color_2 + "; padding:5px");
-  repStyleObj.addStyle(".total_cell", "font-weight:bold; color: " + param.color_1 + "; border-bottom:1px double " + param.color_1 + "; font-size:"+(parseInt(param.font_size)+2)+"pt");
-  repStyleObj.addStyle(".subtotal_cell", "font-weight:bold; background-color:" + param.color_1 + "; color: " + param.color_2 + "; padding:5px");
-  repStyleObj.addStyle(".vatInfo", "font-size: "+ param.font_size + "pt");
-  repStyleObj.addStyle(".evenRowsBackgroundColor", "background-color: " + param.color_3);
-
-
-  /* Header */
-  var headerStyle = repStyleObj.addStyle(".header_left_text");
-  headerStyle.setAttribute("position", "absolute");
-  headerStyle.setAttribute("margin-top", "10mm");
-  headerStyle.setAttribute("margin-left", "20mm");
-  headerStyle.setAttribute("margin-right", "10mm");
-
-  var headerStyle = repStyleObj.addStyle(".header_right_text");
-  headerStyle.setAttribute("position", "absolute");
-  headerStyle.setAttribute("margin-top", "10mm");
-  headerStyle.setAttribute("margin-right", "10mm");
-  headerStyle.setAttribute("text-align", "right");
-
-  repStyleObj.addStyle(".border-bottom", "border-bottom:2px solid " + param.color_1);
-  repStyleObj.addStyle(".thin-border-top", "border-top:thin solid " + param.color_1);
-  repStyleObj.addStyle(".padding-right", "padding-right:5px");
-  repStyleObj.addStyle(".padding-left", "padding-left:5px");
-
-
-  /* Title */
-  var titleStyle = repStyleObj.addStyle(".title_text");
-  titleStyle.setAttribute("position", "absolute");
-  titleStyle.setAttribute("top", invoice_title_start);
-  titleStyle.setAttribute("left", "20mm");
-  titleStyle.setAttribute("right", "10mm");
-  titleStyle.setAttribute("font-size", (parseInt(param.font_size)+4) +"pt");
-  titleStyle.setAttribute("font-weight", "bold");
-  titleStyle.setAttribute("color", param.color_1);
-
-  /* Text begin */
-  var beginStyle = repStyleObj.addStyle(".begin_text");
-  beginStyle.setAttribute("position", "absolute");
-  beginStyle.setAttribute("top", invoice_text_begin_start);
-  beginStyle.setAttribute("left", "20mm");
-  beginStyle.setAttribute("right", "10mm");
-  beginStyle.setAttribute("font-size", param.font_size + "pt");
-
-  /* Logo */
-  var logoStyle = repStyleObj.addStyle(".logo");
-  logoStyle.setAttribute("position", "absolute");
-  logoStyle.setAttribute("margin-top", "10mm");
-  logoStyle.setAttribute("margin-left", "20mm");
-  logoStyle.setAttribute("margin-right", "10mm");
-
-
-
-  //====================================================================//
-  // TABLES
-  //====================================================================//
-
-  var infoStyle = repStyleObj.addStyle(".info_table_left");
-  infoStyle.setAttribute("position", "absolute");
-  infoStyle.setAttribute("margin-top", "45mm");
-  infoStyle.setAttribute("margin-left", "20mm");
-  infoStyle.setAttribute("margin-right", "10mm");
-  infoStyle.setAttribute("font-size", param.font_size + "pt"); //$font-size  font-size:10pt
-  repStyleObj.addStyle("table.info_table_left td", "padding-top:0px; padding-bottom:0px");
-  //repStyleObj.addStyle("table.info_table_left td", "border: thin solid black;");
-
-  var infoStyle = repStyleObj.addStyle(".info_table_right");
-  infoStyle.setAttribute("position", "absolute");
-  infoStyle.setAttribute("margin-top", "45mm");
-  infoStyle.setAttribute("margin-left", "113mm");
-  infoStyle.setAttribute("margin-right", "10mm");
-  infoStyle.setAttribute("font-size", param.font_size + "pt");
-  repStyleObj.addStyle("table.info_table_right td", "padding-top:0px; padding-bottom:0px");
-  //repStyleObj.addStyle("table.info_table_right td", "border: thin solid black");
-
-  var infoStyle = repStyleObj.addStyle(".info_table_row0");
-  infoStyle.setAttribute("position", "absolute");
-  infoStyle.setAttribute("margin-top", "45mm");
-  infoStyle.setAttribute("margin-left", "20mm");
-  infoStyle.setAttribute("margin-right", "10mm");
-  infoStyle.setAttribute("font-size", param.font_size + "pt");
-  repStyleObj.addStyle("table.info_table_row0 td", "padding-top:0px; padding-bottom:0px");
-  //repStyleObj.addStyle("table.info_table_row0 td", "border: thin solid black");
-
-  var infoStyle = repStyleObj.addStyle("@page:first-view table.info_table_row0");
-  infoStyle.setAttribute("display", "none");
-
-  var infoStyle = repStyleObj.addStyle(".address_table_right");
-  infoStyle.setAttribute("position", "absolute");
-  infoStyle.setAttribute("margin-top", param.address_margin_top + "mm"); //45mm
-  infoStyle.setAttribute("margin-left", param.address_margin_left + "mm"); //113mm
-  infoStyle.setAttribute("margin-right", "10mm");
-  infoStyle.setAttribute("font-size", param.font_size + "pt");
-  //repStyleObj.addStyle("table.address_table_right td", "border: thin solid black");
-
-  var infoStyle = repStyleObj.addStyle(".address_table_left");
-  infoStyle.setAttribute("position", "absolute");
-  infoStyle.setAttribute("margin-top", "45mm");
-  infoStyle.setAttribute("margin-left", "20mm");
-  infoStyle.setAttribute("margin-right", "10mm");
-  //repStyleObj.addStyle("table.address_table_left td", "border: thin solid black");
-
-  var infoStyle = repStyleObj.addStyle(".small_address");
-  infoStyle.setAttribute("text-align", "center");
-  infoStyle.setAttribute("font-size", "7pt");
-  infoStyle.setAttribute("border-bottom", "solid 1px black");
-
-  var billingShippingStyle = repStyleObj.addStyle(".shipping_address");
-  billingShippingStyle.setAttribute("position", "absolute");
-  billingShippingStyle.setAttribute("margin-top", invoice_shipping_address);
-  billingShippingStyle.setAttribute("margin-left", "20mm")
-  billingShippingStyle.setAttribute("margin-right", "10mm");
-  billingShippingStyle.setAttribute("font-size", param.font_size + "pt");
-  //repStyleObj.addStyle("table.shipping_address td", "border: thin solid black;");
-
-  var itemsStyle = repStyleObj.addStyle(".doc_table");
-  itemsStyle.setAttribute("margin-top", invoice_details_start);
-  itemsStyle.setAttribute("margin-left", "23mm")
-  itemsStyle.setAttribute("margin-right", "10mm");
-  itemsStyle.setAttribute("width", "100%");
-  itemsStyle.setAttribute("font-size", param.font_size + "pt");
-  //repStyleObj.addStyle("table.doc_table td", "border: thin solid black; padding: 3px;");
-
-  var qr_codeStyle = repStyleObj.addStyle(".qr_code");
-  qr_codeStyle.setAttribute("text-align", "right");
-
-
-  var footerLine = repStyleObj.addStyle(".footer_line");
-  footerLine.setAttribute("margin-left", "20mm");
-  footerLine.setAttribute("margin-right", "10mm");
-  footerLine.setAttribute("border-top", "thin solid " + param.color_1);
-
-  var footerStyle = repStyleObj.addStyle(".footer_table");
-  footerStyle.setAttribute("margin-bottom", "20mm");
-  //footerStyle.setAttribute("margin-top", "10mm");
-  footerStyle.setAttribute("margin-left", "23mm");
-  footerStyle.setAttribute("margin-right", "10mm");
-  footerStyle.setAttribute("width", "100%");
-  footerStyle.setAttribute("font-size", "8pt");
-  //repStyleObj.addStyle("table.footer_table td", "border: thin solid black");
-
-}
 
 
 //====================================================================//
@@ -2448,8 +2292,8 @@ function setInvoiceTexts(language) {
     // texts.shipping_to = 'Indirizzo spedizione';
     // texts.from = 'DA:';
     // texts.to = 'A:';
-    texts.param_color_1 = 'Colore sfondo';
-    texts.param_color_2 = 'Colore testo';
+    texts.param_background_color_1 = 'Colore sfondo';
+    texts.param_color = 'Colore testo';
     texts.param_font_family = 'Tipo carattere';
     // texts.param_image_height = 'Altezza immagine (mm)';
     texts.param_print_header = 'Includi intestazione pagina';
@@ -2476,8 +2320,8 @@ function setInvoiceTexts(language) {
     // texts.shipping_to = 'Lieferadresse';
     // texts.from = 'VON:';
     // texts.to = 'ZU:';
-    texts.param_color_1 = 'Hintergrundfarbe';
-    texts.param_color_2 = 'Textfarbe';
+    texts.param_background_color_1 = 'Hintergrundfarbe';
+    texts.param_color = 'Textfarbe';
     texts.param_font_family = 'Typ Schriftzeichen';
     // texts.param_image_height = 'Bildhöhe (mm)';
     texts.param_print_header = 'Seitenüberschrift einschliessen';
@@ -2504,8 +2348,8 @@ function setInvoiceTexts(language) {
     // texts.shipping_to = 'Adresse de livraison';
     // texts.from = 'DE:';
     // texts.to = 'À:';
-    texts.param_color_1 = 'Couleur de fond';
-    texts.param_color_2 = 'Couleur du texte';
+    texts.param_background_color_1 = 'Couleur de fond';
+    texts.param_color = 'Couleur du texte';
     texts.param_font_family = 'Police de caractère';
     // texts.param_image_height = "Hauteur de l'image (mm)";
     texts.param_print_header = 'Inclure en-tête de page';
@@ -2532,8 +2376,8 @@ function setInvoiceTexts(language) {
     // texts.shipping_to = '邮寄地址';
     texts.from = '来自:';
     texts.to = '至:';
-    texts.param_color_1 = '背景色';
-    texts.param_color_2 = '文本颜色';
+    texts.param_background_color_1 = '背景色';
+    texts.param_color = '文本颜色';
     texts.param_font_family = '字体类型';
     texts.param_image_height = '图像高度 (mm)';
     texts.param_print_header = '包括页眉';
@@ -2560,8 +2404,8 @@ function setInvoiceTexts(language) {
     // texts.shipping_to = 'Leveringsadres';
     // texts.from = 'VAN:';
     // texts.to = 'TOT:';
-    texts.param_color_1 = 'Achtergrond kleur';
-    texts.param_color_2 = 'tekstkleur';
+    texts.param_background_color_1 = 'Achtergrond kleur';
+    texts.param_color = 'tekstkleur';
     texts.param_font_family = 'Lettertype';
     texts.param_image_height = 'Beeldhoogte (mm)';
     texts.param_print_header = 'Pagina-koptekst opnemen';
@@ -2670,9 +2514,9 @@ function setInvoiceTexts(language) {
 
     //Styles
     texts.param_styles = "Styles";
-    texts.param_color_1 = 'Background Color';
-    texts.param_color_2 = 'Text Color';
-    texts.param_color_3 = 'Rows background color';
+    texts.param_background_color_1 = 'Background Color';
+    texts.param_color = 'Text Color';
+    texts.param_background_color_2 = 'Rows background color';
     texts.param_font_family = 'Font type';
     texts.param_font_size = 'Font size';
     texts.param_styles_margins = 'Margins';
@@ -2680,8 +2524,9 @@ function setInvoiceTexts(language) {
     texts.param_address_margin_left = 'Address margin left (mm)';
 
     //Embedded JavaScript file
-    texts.param_custom_javascript = "Custom JavaScript file";
-    texts.param_custom_javascript_filename = "Insert the file name ('ID' column of the 'Documents' table)";
+    texts.embedded_javascript_file_not_found = "Custom Javascript file not found or not valid";
+    texts.param_embedded_javascript = "Custom JavaScript file";
+    texts.param_embedded_javascript_filename = "Insert the file name ('ID' column of the 'Documents' table)";
 
 
     // qr_code
@@ -2727,9 +2572,9 @@ function setInvoiceTexts(language) {
     texts.param_tooltip_add_footer = "Check to print the footer at the bottom of the page";
     texts.param_tooltip_footer = "Enter a footer text";
     texts.param_tooltip_font_family = "Enter the font type";
-    texts.param_tooltip_color_1 = "Enter the background color";
-    texts.param_tooltip_color_2 = "Enter the text color";
-    texts.param_tooltip_color_3 = "Enter the color for the rows background";
+    texts.param_tooltip_background_color_1 = "Enter the background color";
+    texts.param_tooltip_color = "Enter the text color";
+    texts.param_tooltip_background_color_2 = "Enter the color for the rows background";
     texts.param_tooltip_address_margin_left = "Enter the address margin left (mm)";
     texts.param_tooltip_address_margin_top = "Enter the address margin top (mm)";
     texts.param_tooltip_javascript_filename = "Enter the name of the javascript file taken from the 'ID' column of the table 'Documents' (i.e. file.js)";
@@ -2741,119 +2586,154 @@ function setInvoiceTexts(language) {
 
 
 
-function change_parameters(param) {
-
-  var $body = "font_size:"+param.font_size+";font_family:"+param.font_family;
-  var $amount = "text_align:right";
-  var $center = "text_align:center";
-  var $bold = "font_weight:bold";
-  var $doc_table_header = "font-weight:bold; background-color:" + param.color_1 + "; color:" + param.color_2;
-  var $doc_table_header_td = "padding:5px;";
-  var $total_cell = "font-weight:bold; color: " + param.color_1 + "; border-bottom:1px double " + param.color_1 + "; font-size:"+(parseInt(param.font_size)+2)+"pt";
-  var $subtotal_cell = "font-weight:bold; background-color:" + param.color_1 + "; color: " + param.color_2 + "; padding:5px";
-  var $vatInfo = "font-size:"+ param.font_size + "pt";
-  var $evenRowsBackgroundColor = "background-color:" + param.color_3;
-  var $border_bottom = "border-bottom:2px solid " + param.color_1;
-  var $thin_border_top = "border-top:thin solid " + param.color_1;
-  var $padding_right = "padding-right:5px";
-  var $padding_left = "padding-left:5px";
-
-  /* Header */
-  var $header_left_text = "position:absolute;margin-top:10mm;margin-left:20mm;margin-right:10mm";
-  var $header_right_text = "position:absolute;margin-top:10mm;margin-left:20mm;margin-right:10mm;text-align:right";
-
-  /* Title */
-  var $title_text = "position:absolute;top:"+invoice_title_start+";left:20mm;right:10mm;font-size:"+(parseInt(param.font_size)+4) +"pt;font-weight:bold;color:"+param.color_1;
-
-  /* Text begin */
-  var $begin_text = "position:absolute;top:"+invoice_text_begin_start+";left:20mm;right:10mm;font-size:"+param.font_size+"pt";
-
-  /* Logo */
-  var $logo = "position:absolute;margin-top:10mm;margin-left:20mm;margin-right:10mm";
 
 
 
-  //====================================================================//
-  // TABLES
-  //====================================================================//
-  var $info_table_left = "position:absolute;margin-top:45mm;margin-left:20mm;margin-right:10mm;font-size:"+param.font_size+"pt";
-  var $table_info_table_left_td = "table.info_table_left td:padding-top:0px; padding-bottom:0px";
+
+
+
+//====================================================================//
+// STYLES
+//====================================================================//
+
+function set_css_styles(param) {
+
+  var top_shipping_address = "77mm";
+  var top_title = "105mm";
+  var top_text_begin = "115mm";
+  var top_details = "120mm";
+
+  // mm
+  var $margin_top = "10";
+  var $margin_right = "10";
+  var $margin_bottom = "20";
+  var $margin_left = "20";
+  var $margin_left_details = "23";
+
+  cssStyle.$body = "font-size:"+param.font_size+";font-family:"+param.font_family;
+  cssStyle.$right = "text-align:right";
+  cssStyle.$center = "text-align:center";
+  cssStyle.$total_cell = "font-weight:bold; color: " + param.background_color_1 + "; border-bottom:1px double " + param.background_color_1 + "; font-size:"+(parseInt(param.font_size)+2)+"pt";
+  cssStyle.$subtotal_cell = "font-weight:bold; background-color:" + param.background_color_1 + "; color: " + param.color + "; padding:5px";
+  cssStyle.$vat_info = "font-size:"+ param.font_size + "pt";
+  cssStyle.$even_rows_background_color = "background-color:" + param.background_color_2;
+  cssStyle.$border_bottom = "border-bottom:2px solid " + param.background_color_1;
+  cssStyle.$thin_border_top = "border-top:thin solid " + param.background_color_1;
+  cssStyle.$padding_right = "padding-right:5px";
+  cssStyle.$padding_left = "padding-left:5px";
+
+  cssStyle.$bold = "font-weight:bold";
+  cssStyle.$header_left_text = "position:absolute;margin-top:"+$margin_top+"mm;margin-left:"+$margin_left+"mm;margin-right:"+$margin_right+"mm";
+  cssStyle.$header_right_text = "position:absolute;margin-top:"+$margin_top+"mm;margin-left:"+$margin_left+"mm;margin-right:"+$margin_right+"mm;text-align:right";
+  cssStyle.$logo = "position:absolute;margin-top:"+$margin_top+"mm;margin-left:"+$margin_left+"mm;margin-right:"+$margin_right+"mm";
+  cssStyle.$info_table_left = "position:absolute;margin-top:"+param.address_margin_top+"mm;margin-left:"+$margin_left+"mm;margin-right:"+$margin_right+"mm;font-size:"+param.font_size+"pt";
+  cssStyle.$table_info_table_left_td = "padding-top:0px; padding-bottom:0px";
+  cssStyle.$info_table_right = "position:absolute;margin-top:"+param.address_margin_top+"mm;margin-left:113mm;margin-right:"+$margin_right+"mm;font-size:"+param.font_size+"pt";
+  cssStyle.$table_info_table_right_td = "padding-top:0px; padding-bottom:0px";
+  cssStyle.$info_table_row0 = "position:absolute;margin-top:"+param.address_margin_top+"mm;margin-left:"+$margin_left+"mm;margin-right:"+$margin_right+"mm;font-size:"+param.font_size+"pt";
+  cssStyle.$table_info_table_row0_td = "padding-top:0px; padding-bottom:0px";
+  cssStyle.$page_first_view_info_table_row0 = "display:none";
+  cssStyle.$address_table_right = "position:absolute;margin-top:"+param.address_margin_top+"mm;margin-left:"+param.address_margin_left+"mm;margin-right:"+$margin_right+"mm;font-size:"+param.font_size+"pt";
+  cssStyle.$address_table_left = "position:absolute;margin-top:"+param.address_margin_top+"mm;margin-left:"+$margin_left+"mm;margin-right:"+$margin_right+"mm";
+  cssStyle.$small_address = "text-align:center;font-size:7pt;border-bottom:solid 1px black"; 
+  cssStyle.$qr_code = "text-align:right";
+  cssStyle.$footer_line = "margin-left:"+$margin_left+"mm;margin-right:"+$margin_right+"mm;border-top:thin solid "+param.background_color_1;
+  cssStyle.$footer_table = "margin-bottom:"+$margin_bottom+"mm;margin-left:"+$margin_left+"mm;margin-right:"+$margin_right+"mm;width:100%;font-size:8pt";
+  cssStyle.$shipping_address = "position:absolute;margin-top:"+top_shipping_address+";margin-left:"+$margin_left+"mm;margin-right:"+$margin_right+";font-size:"+param.font_size+"pt";
   
+  cssStyle.$title_text = "position:absolute;margin-top:"+top_title+";margin-left:"+$margin_left+"mm;margin-right:"+$margin_right+"mm;font-size:"+(parseInt(param.font_size)+4) +"pt;font-weight:bold;color:"+param.background_color_1;
+  cssStyle.$begin_text = "position:absolute;margin-top:"+top_text_begin+";margin-left:"+$margin_left+"mm;margin-right:"+$margin_right+"mm;font-size:"+param.font_size+"pt";
   
-
-  var infoStyle = repStyleObj.addStyle(".info_table_right");
-  infoStyle.setAttribute("position", "absolute");
-  infoStyle.setAttribute("margin-top", "45mm");
-  infoStyle.setAttribute("margin-left", "113mm");
-  infoStyle.setAttribute("margin-right", "10mm");
-  infoStyle.setAttribute("font-size", param.font_size + "pt");
-  repStyleObj.addStyle("table.info_table_right td", "padding-top:0px; padding-bottom:0px");
-  //repStyleObj.addStyle("table.info_table_right td", "border: thin solid black");
-
-  var infoStyle = repStyleObj.addStyle(".info_table_row0");
-  infoStyle.setAttribute("position", "absolute");
-  infoStyle.setAttribute("margin-top", "45mm");
-  infoStyle.setAttribute("margin-left", "20mm");
-  infoStyle.setAttribute("margin-right", "10mm");
-  infoStyle.setAttribute("font-size", param.font_size + "pt");
-  repStyleObj.addStyle("table.info_table_row0 td", "padding-top:0px; padding-bottom:0px");
-  //repStyleObj.addStyle("table.info_table_row0 td", "border: thin solid black");
-
-  var infoStyle = repStyleObj.addStyle("@page:first-view table.info_table_row0");
-  infoStyle.setAttribute("display", "none");
-
-  var infoStyle = repStyleObj.addStyle(".address_table_right");
-  infoStyle.setAttribute("position", "absolute");
-  infoStyle.setAttribute("margin-top", param.address_margin_top + "mm"); //45mm
-  infoStyle.setAttribute("margin-left", param.address_margin_left + "mm"); //113mm
-  infoStyle.setAttribute("margin-right", "10mm");
-  infoStyle.setAttribute("font-size", param.font_size + "pt");
-  //repStyleObj.addStyle("table.address_table_right td", "border: thin solid black");
-
-  var infoStyle = repStyleObj.addStyle(".address_table_left");
-  infoStyle.setAttribute("position", "absolute");
-  infoStyle.setAttribute("margin-top", "45mm");
-  infoStyle.setAttribute("margin-left", "20mm");
-  infoStyle.setAttribute("margin-right", "10mm");
-  //repStyleObj.addStyle("table.address_table_left td", "border: thin solid black");
-
-  var infoStyle = repStyleObj.addStyle(".small_address");
-  infoStyle.setAttribute("text-align", "center");
-  infoStyle.setAttribute("font-size", "7pt");
-  infoStyle.setAttribute("border-bottom", "solid 1px black");
-
-  var billingShippingStyle = repStyleObj.addStyle(".shipping_address");
-  billingShippingStyle.setAttribute("position", "absolute");
-  billingShippingStyle.setAttribute("margin-top", invoice_shipping_address);
-  billingShippingStyle.setAttribute("margin-left", "20mm")
-  billingShippingStyle.setAttribute("margin-right", "10mm");
-  billingShippingStyle.setAttribute("font-size", param.font_size + "pt");
-  //repStyleObj.addStyle("table.shipping_address td", "border: thin solid black;");
-
-  var itemsStyle = repStyleObj.addStyle(".doc_table");
-  itemsStyle.setAttribute("margin-top", invoice_details_start);
-  itemsStyle.setAttribute("margin-left", "23mm")
-  itemsStyle.setAttribute("margin-right", "10mm");
-  itemsStyle.setAttribute("width", "100%");
-  itemsStyle.setAttribute("font-size", param.font_size + "pt");
-  //repStyleObj.addStyle("table.doc_table td", "border: thin solid black; padding: 3px;");
-
-  var qr_codeStyle = repStyleObj.addStyle(".qr_code");
-  qr_codeStyle.setAttribute("text-align", "right");
-
-
-  var footerLine = repStyleObj.addStyle(".footer_line");
-  footerLine.setAttribute("margin-left", "20mm");
-  footerLine.setAttribute("margin-right", "10mm");
-  footerLine.setAttribute("border-top", "thin solid " + param.color_1);
-
-  var footerStyle = repStyleObj.addStyle(".footer_table");
-  footerStyle.setAttribute("margin-bottom", "20mm");
-  //footerStyle.setAttribute("margin-top", "10mm");
-  footerStyle.setAttribute("margin-left", "23mm");
-  footerStyle.setAttribute("margin-right", "10mm");
-  footerStyle.setAttribute("width", "100%");
-  footerStyle.setAttribute("font-size", "8pt");
-  //repStyleObj.addStyle("table.footer_table td", "border: thin solid black");
+  cssStyle.$doc_table = "margin-top:"+top_details+";margin-left:"+$margin_left_details+"mm;margin-right:"+$margin_right+"mm;width:100%;font-size:"+param.font_size+"pt";
+  cssStyle.$doc_table_header = "font-weight:bold; background-color:" + param.background_color_1 + "; color:" + param.color;
+  cssStyle.$doc_table_header_td = "padding:5px;";
 
 }
+
+function set_invoice_style(repStyleObj, param) {
+
+  /* CSS styles */
+  if (typeof(hook_set_css_styles) === typeof(Function)) {
+    hook_set_css_styles(param);
+  } else {
+    set_css_styles(param);
+  }
+  //Banana.console.log(JSON.stringify(cssStyle, "", " "));
+
+  repStyleObj.addStyle(".pageReset", "counter-reset: page");
+  repStyleObj.addStyle("body", cssStyle.$body);
+  repStyleObj.addStyle(".amount", cssStyle.$right);
+  repStyleObj.addStyle(".center", cssStyle.$center);
+  repStyleObj.addStyle(".bold", cssStyle.$bold);
+  repStyleObj.addStyle(".total_cell", cssStyle.$total_cell);
+  repStyleObj.addStyle(".subtotal_cell", cssStyle.$subtotal_cell);
+  repStyleObj.addStyle(".vatInfo", cssStyle.$vat_info);
+  repStyleObj.addStyle(".evenRowsBackgroundColor", cssStyle.$even_rows_background_color);
+  repStyleObj.addStyle(".border-bottom", cssStyle.$border_bottom);
+  repStyleObj.addStyle(".thin-border-top", cssStyle.$thin_border_top);
+  repStyleObj.addStyle(".padding-right", cssStyle.$padding_right);
+  repStyleObj.addStyle(".padding-left", cssStyle.$padding_left);
+
+  /* Logo */
+  repStyleObj.addStyle(".logo", cssStyle.$logo);
+
+  /* Header */
+  repStyleObj.addStyle(".doc_table_header", cssStyle.$doc_table_header);
+  repStyleObj.addStyle(".doc_table_header td", cssStyle.$doc_table_header_td);
+  repStyleObj.addStyle(".header_left_text", cssStyle.$header_left_text);
+  repStyleObj.addStyle(".header_right_text", cssStyle.$header_right_text);
+
+  /* Info (left) */
+  repStyleObj.addStyle(".info_table_left", cssStyle.$info_table_left);
+  repStyleObj.addStyle("table.info_table_left td", cssStyle.$table_info_table_left_td);
+  //repStyleObj.addStyle("table.info_table_left td", "border: thin solid black;");
+
+  /* Info (right) */
+  repStyleObj.addStyle(".info_table_right", cssStyle.$info_table_right);
+  repStyleObj.addStyle("table.info_table_right td", cssStyle.$table_info_table_right_td);
+  //repStyleObj.addStyle("table.info_table_right td", "border: thin solid black");
+
+  /* Info row 0 */
+  repStyleObj.addStyle(".info_table_row0", cssStyle.$info_table_row0);
+  repStyleObj.addStyle("table.info_table_row0 td", cssStyle.$table_info_table_row0_td);
+  //repStyleObj.addStyle("table.info_table_row0 td", "border: thin solid black");
+
+  repStyleObj.addStyle("@page:first-view table.info_table_row0", cssStyle.$page_first_view_info_table_row0);
+
+  /* Address (right) */
+  repStyleObj.addStyle(".address_table_right", cssStyle.$address_table_right);
+  //repStyleObj.addStyle("table.address_table_right td", "border: thin solid black");
+
+  /* Address (left) */
+  repStyleObj.addStyle(".address_table_left", cssStyle.$address_table_left);
+  //repStyleObj.addStyle("table.address_table_left td", "border: thin solid black");
+
+  /* Small address */
+  repStyleObj.addStyle(".small_address",cssStyle.$small_address);
+
+  /* Shipping address */
+  repStyleObj.addStyle(".shipping_address", cssStyle.$shipping_address);
+  //repStyleObj.addStyle("table.shipping_address td", "border: thin solid black;");
+
+  /* Title */
+  repStyleObj.addStyle(".title_text", cssStyle.$title_text);
+
+  /* Text begin */
+  repStyleObj.addStyle(".begin_text", cssStyle.$begin_text);
+
+  /* Details+Totals+texts table */
+  repStyleObj.addStyle(".doc_table", cssStyle.$doc_table);
+  //repStyleObj.addStyle("table.doc_table td", "border: thin solid black; padding: 3px;");
+
+  /* Qr Code */
+  repStyleObj.addStyle(".qr_code", cssStyle.$qr_code);
+
+  /* Footer horizontal line */
+  repStyleObj.addStyle(".footer_line", cssStyle.$footer_line);
+
+  /* Footer table */
+  repStyleObj.addStyle(".footer_table", cssStyle.$footer_table);
+  //repStyleObj.addStyle("table.footer_table td", "border: thin solid black");
+}
+
+
