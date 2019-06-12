@@ -49,42 +49,8 @@
 
 var _columns_number = 0;
 
-var cssStyle = {
-  "$body" : "",
-  "$right" : "",
-  "$center" : "",
-  "$bold" : "",
-  "$doc_table_header" : "",
-  "$doc_table_header_td" : "",
-  "$total_cell" : "",
-  "$subtotal_cell" : "",
-  "$vat_info" : "",
-  "$even_rows_background_color" : "",
-  "$border_bottom" : "",
-  "$thin_border_top" : "",
-  "$padding_right" : "",
-  "$padding_left" : "",
-  "$header_left_text" : "",
-  "$header_right_text" : "",
-  "$title_text" : "",
-  "$begin_text" : "",
-  "$logo" : "",
-  "$info_table_left" : "",
-  "$table_info_table_left_td" : "",
-  "$info_table_right" : "",
-  "$table_info_table_right_td" : "",
-  "$info_table_row0" : "",
-  "$table_info_table_row0_td" : "",
-  "$page_first_view_info_table_row0" : "",
-  "$address_table_right" : "",
-  "$address_table_left" : "",
-  "$small_address" : "",
-  "$shipping_address" : "",
-  "$doc_table" : "",
-  "$qr_code" : "",
-  "$footer_line" : "",
-  "$footer_table" : ""
-};
+
+
 
 
 
@@ -95,15 +61,15 @@ var cssStyle = {
 //====================================================================//
 /* Update script's parameters */
 function settingsDialog() {
-  var param = initParam();
+  var userParam = initParam();
   var savedParam = Banana.document.getScriptSettings();
   if (savedParam.length > 0) {
-    param = JSON.parse(savedParam);
+    userParam = JSON.parse(savedParam);
   }   
-  param = verifyParam(param);
+  userParam = verifyParam(userParam);
   if (typeof (Banana.Ui.openPropertyEditor) !== 'undefined') {
     var dialogTitle = 'Settings';
-    var convertedParam = convertParam(param);
+    var convertedParam = convertParam(userParam);
     var pageAnchor = 'dlgSettings';
     if (!Banana.Ui.openPropertyEditor(dialogTitle, convertedParam, pageAnchor)) {
       return;
@@ -113,11 +79,11 @@ function settingsDialog() {
       convertedParam.data[i].readValue();
     }
   }
-  var paramToString = JSON.stringify(param);
+  var paramToString = JSON.stringify(userParam);
   var value = Banana.document.setScriptSettings(paramToString);
 }
 
-function convertParam(param) {
+function convertParam(userParam) {
   var lang = 'en';
   if (Banana.document.locale)
     lang = Banana.document.locale;
@@ -141,11 +107,11 @@ function convertParam(param) {
   currentParam.value = '';
   currentParam.editable = false;
   currentParam.readValue = function() {
-    param.include = this.value;
+    userParam.include = this.value;
   }
   convertedParam.data.push(currentParam);
 
-  var currentParam = {};
+  currentParam = {};
   currentParam.name = 'include_header';
   currentParam.parentObject = 'include';
   currentParam.title = texts.param_include_header;
@@ -153,20 +119,20 @@ function convertParam(param) {
   currentParam.value = '';
   currentParam.editable = false;
   currentParam.readValue = function() {
-    param.include_header = this.value;
+    userParam.include_header = this.value;
   }
   convertedParam.data.push(currentParam);
 
-  var currentParam = {};
+  currentParam = {};
   currentParam.name = 'print_header';
   currentParam.parentObject = 'include_header';
   currentParam.title = texts.param_print_header;
   currentParam.type = 'bool';
-  currentParam.value = param.print_header ? true : false;
+  currentParam.value = userParam.print_header ? true : false;
   currentParam.defaultvalue = true;
   currentParam.tooltip = texts.param_tooltip_print_header;
   currentParam.readValue = function() {
-    param.print_header = this.value;
+    userParam.print_header = this.value;
   }
   convertedParam.data.push(currentParam);
 
@@ -175,11 +141,11 @@ function convertParam(param) {
   currentParam.parentObject = 'include_header';
   currentParam.title = texts.param_header_left;
   currentParam.type = 'bool';
-  currentParam.value = param.header_left ? true : false;
+  currentParam.value = userParam.header_left ? true : false;
   currentParam.defaultvalue = false;
   currentParam.tooltip = texts.param_tooltip_header_left;
   currentParam.readValue = function() {
-    param.header_left = this.value;
+    userParam.header_left = this.value;
   }
   convertedParam.data.push(currentParam);
 
@@ -188,11 +154,11 @@ function convertParam(param) {
   currentParam.parentObject = 'include_header';
   currentParam.title = texts.param_header_row_1;
   currentParam.type = 'string';
-  currentParam.value = param.header_row_1 ? param.header_row_1 : '';
+  currentParam.value = userParam.header_row_1 ? userParam.header_row_1 : '';
   currentParam.defaultvalue = "";
   currentParam.tooltip = texts.param_tooltip_header_row_1;
   currentParam.readValue = function() {
-    param.header_row_1 = this.value;
+    userParam.header_row_1 = this.value;
   }
   convertedParam.data.push(currentParam);
 
@@ -201,11 +167,11 @@ function convertParam(param) {
   currentParam.parentObject = 'include_header';
   currentParam.title = texts.param_header_row_2;
   currentParam.type = 'string';
-  currentParam.value = param.header_row_2 ? param.header_row_2 : '';
+  currentParam.value = userParam.header_row_2 ? userParam.header_row_2 : '';
   currentParam.defaultvalue = "";
   currentParam.tooltip = texts.param_tooltip_header_row_2;
   currentParam.readValue = function() {
-    param.header_row_2 = this.value;
+    userParam.header_row_2 = this.value;
   }
   convertedParam.data.push(currentParam);
 
@@ -214,11 +180,11 @@ function convertParam(param) {
   currentParam.parentObject = 'include_header';
   currentParam.title = texts.param_header_row_3;
   currentParam.type = 'string';
-  currentParam.value = param.header_row_3 ? param.header_row_3 : '';
+  currentParam.value = userParam.header_row_3 ? userParam.header_row_3 : '';
   currentParam.defaultvalue = "";
   currentParam.tooltip = texts.param_tooltip_header_row_3;
   currentParam.readValue = function() {
-    param.header_row_3 = this.value;
+    userParam.header_row_3 = this.value;
   }
   convertedParam.data.push(currentParam);
 
@@ -227,11 +193,11 @@ function convertParam(param) {
   currentParam.parentObject = 'include_header';
   currentParam.title = texts.param_header_row_4;
   currentParam.type = 'string';
-  currentParam.value = param.header_row_4 ? param.header_row_4 : '';
+  currentParam.value = userParam.header_row_4 ? userParam.header_row_4 : '';
   currentParam.defaultvalue = "";
   currentParam.tooltip = texts.param_tooltip_header_row_4;
   currentParam.readValue = function() {
-    param.header_row_4 = this.value;
+    userParam.header_row_4 = this.value;
   }
   convertedParam.data.push(currentParam);
 
@@ -240,11 +206,11 @@ function convertParam(param) {
   currentParam.parentObject = 'include_header';
   currentParam.title = texts.param_header_row_5;
   currentParam.type = 'string';
-  currentParam.value = param.header_row_5 ? param.header_row_5 : '';
+  currentParam.value = userParam.header_row_5 ? userParam.header_row_5 : '';
   currentParam.defaultvalue = "";
   currentParam.tooltip = texts.param_tooltip_header_row_5;
   currentParam.readValue = function() {
-    param.header_row_5 = this.value;
+    userParam.header_row_5 = this.value;
   }
   convertedParam.data.push(currentParam);
 
@@ -253,11 +219,11 @@ function convertParam(param) {
   currentParam.parentObject = 'include_header';
   currentParam.title = texts.param_print_logo;
   currentParam.type = 'bool';
-  currentParam.value = param.print_logo ? true : false;
+  currentParam.value = userParam.print_logo ? true : false;
   currentParam.defaultvalue = false;
   currentParam.tooltip = texts.param_tooltip_print_logo;
   currentParam.readValue = function() {
-    param.print_logo = this.value;
+    userParam.print_logo = this.value;
   }
   convertedParam.data.push(currentParam);
 
@@ -266,15 +232,15 @@ function convertParam(param) {
   currentParam.parentObject = 'include_header';
   currentParam.title = texts.param_logo_name;
   currentParam.type = 'string';
-  currentParam.value = param.logo_name ? param.logo_name : '';
+  currentParam.value = userParam.logo_name ? userParam.logo_name : '';
   currentParam.defaultvalue = "Logo";
   currentParam.tooltip = texts.param_tooltip_logo_name;
   currentParam.readValue = function() {
-    param.logo_name = this.value;
+    userParam.logo_name = this.value;
   }
   convertedParam.data.push(currentParam);
 
-  var currentParam = {};
+  currentParam = {};
   currentParam.name = 'include_address';
   currentParam.parentObject = 'include';
   currentParam.title = texts.param_include_address;
@@ -282,7 +248,7 @@ function convertParam(param) {
   currentParam.value = '';
   currentParam.editable = false;
   currentParam.readValue = function() {
-    param.include_address = this.value;
+    userParam.include_address = this.value;
   }
   convertedParam.data.push(currentParam);
 
@@ -291,11 +257,11 @@ function convertParam(param) {
   currentParam.parentObject = 'include_address';
   currentParam.title = texts.param_small_address_line;
   currentParam.type = 'string';
-  currentParam.value = param.small_address_line ? param.small_address_line : '';
+  currentParam.value = userParam.small_address_line ? userParam.small_address_line : '';
   currentParam.defaultvalue = '<none>';
   currentParam.tooltip = texts.param_tooltip_small_address_line;
   currentParam.readValue = function() {
-   param.small_address_line = this.value;
+   userParam.small_address_line = this.value;
   }
   convertedParam.data.push(currentParam);
 
@@ -304,11 +270,11 @@ function convertParam(param) {
   currentParam.parentObject = 'include_address';
   currentParam.title = texts.param_address_left;
   currentParam.type = 'bool';
-  currentParam.value = param.address_left ? true : false;
+  currentParam.value = userParam.address_left ? true : false;
   currentParam.defaultvalue = false;
   currentParam.tooltip = texts.param_tooltip_address_left;
   currentParam.readValue = function() {
-   param.address_left = this.value;
+   userParam.address_left = this.value;
   }
   convertedParam.data.push(currentParam);
   
@@ -317,15 +283,15 @@ function convertParam(param) {
   currentParam.parentObject = 'include_address';
   currentParam.title = texts.param_shipping_address;
   currentParam.type = 'bool';
-  currentParam.value = param.shipping_address ? true : false;
+  currentParam.value = userParam.shipping_address ? true : false;
   currentParam.defaultvalue = false;
   currentParam.tooltip = texts.param_tooltip_shipping_address;
   currentParam.readValue = function() {
-    param.shipping_address = this.value;
+    userParam.shipping_address = this.value;
   }
   convertedParam.data.push(currentParam);
 
-  var currentParam = {};
+  currentParam = {};
   currentParam.name = 'include_info';
   currentParam.parentObject = 'include';
   currentParam.title = texts.param_include_info;
@@ -333,7 +299,7 @@ function convertParam(param) {
   currentParam.value = '';
   currentParam.editable = false;
   currentParam.readValue = function() {
-    param.include_info = this.value;
+    userParam.include_info = this.value;
   }
   convertedParam.data.push(currentParam);
 
@@ -342,11 +308,11 @@ function convertParam(param) {
   currentParam.parentObject = 'include_info';
   currentParam.title = texts.param_info_invoice_number;
   currentParam.type = 'bool';
-  currentParam.value = param.info_invoice_number ? true : false;
+  currentParam.value = userParam.info_invoice_number ? true : false;
   currentParam.defaultvalue = true;
   currentParam.tooltip = texts.param_tooltip_info_invoice_number;
   currentParam.readValue = function() {
-    param.info_invoice_number = this.value;
+    userParam.info_invoice_number = this.value;
   }
   convertedParam.data.push(currentParam);
 
@@ -355,11 +321,11 @@ function convertParam(param) {
   currentParam.parentObject = 'include_info';
   currentParam.title = texts.param_info_date;
   currentParam.type = 'bool';
-  currentParam.value = param.info_date ? true : false;
+  currentParam.value = userParam.info_date ? true : false;
   currentParam.defaultvalue = true;
   currentParam.tooltip = texts.param_tooltip_info_date;
   currentParam.readValue = function() {
-    param.info_date = this.value;
+    userParam.info_date = this.value;
   }
   convertedParam.data.push(currentParam);
 
@@ -368,11 +334,11 @@ function convertParam(param) {
   currentParam.parentObject = 'include_info';
   currentParam.title = texts.param_info_customer;
   currentParam.type = 'bool';
-  currentParam.value = param.info_customer ? true : false;
+  currentParam.value = userParam.info_customer ? true : false;
   currentParam.defaultvalue = true;
   currentParam.tooltip = texts.param_tooltip_info_customer;
   currentParam.readValue = function() {
-    param.info_customer = this.value;
+    userParam.info_customer = this.value;
   }
   convertedParam.data.push(currentParam);
 
@@ -381,11 +347,11 @@ function convertParam(param) {
   currentParam.parentObject = 'include_info';
   currentParam.title = texts.param_info_customer_vat_number;
   currentParam.type = 'bool';
-  currentParam.value = param.info_customer_vat_number ? true : false;
+  currentParam.value = userParam.info_customer_vat_number ? true : false;
   currentParam.defaultvalue = false;
   currentParam.tooltip = texts.param_tooltip_info_customer_vat_number;
   currentParam.readValue = function() {
-    param.info_customer_vat_number = this.value;
+    userParam.info_customer_vat_number = this.value;
   }
   convertedParam.data.push(currentParam);
 
@@ -394,11 +360,11 @@ function convertParam(param) {
   currentParam.parentObject = 'include_info';
   currentParam.title = texts.param_info_customer_fiscal_number;
   currentParam.type = 'bool';
-  currentParam.value = param.info_customer_fiscal_number ? true : false;
+  currentParam.value = userParam.info_customer_fiscal_number ? true : false;
   currentParam.defaultvalue = false;
   currentParam.tooltip = texts.param_tooltip_info_customer_fiscal_number;
   currentParam.readValue = function() {
-    param.info_customer_fiscal_number = this.value;
+    userParam.info_customer_fiscal_number = this.value;
   }
   convertedParam.data.push(currentParam);
 
@@ -407,11 +373,11 @@ function convertParam(param) {
   currentParam.parentObject = 'include_info';
   currentParam.title = texts.param_info_due_date;
   currentParam.type = 'bool';
-  currentParam.value = param.info_due_date ? true : false;
+  currentParam.value = userParam.info_due_date ? true : false;
   currentParam.defaultvalue = true;
   currentParam.tooltip = texts.param_tooltip_info_due_date;
   currentParam.readValue = function() {
-    param.info_due_date = this.value;
+    userParam.info_due_date = this.value;
   }
   convertedParam.data.push(currentParam);
 
@@ -420,16 +386,16 @@ function convertParam(param) {
   currentParam.parentObject = 'include_info';
   currentParam.title = texts.param_info_page;
   currentParam.type = 'bool';
-  currentParam.value = param.info_page ? true : false;
+  currentParam.value = userParam.info_page ? true : false;
   currentParam.defaultvalue = true;
   currentParam.tooltip = texts.param_tooltip_info_page;
   currentParam.readValue = function() {
-    param.info_page = this.value;
+    userParam.info_page = this.value;
   }
   convertedParam.data.push(currentParam);
 
 
-  var currentParam = {};
+  currentParam = {};
   currentParam.name = 'include_details';
   currentParam.parentObject = 'include';
   currentParam.title = texts.param_include_details;
@@ -437,7 +403,7 @@ function convertParam(param) {
   currentParam.value = '';
   currentParam.editable = false;
   currentParam.readValue = function() {
-    param.include_details = this.value;
+    userParam.include_details = this.value;
   }
   convertedParam.data.push(currentParam);
 
@@ -446,11 +412,11 @@ function convertParam(param) {
   currentParam.parentObject = 'include_details';
   currentParam.title = texts.param_items_invoice_details;
   currentParam.type = 'string';
-  currentParam.value = param.items_invoice_details ? param.items_invoice_details : '';
+  currentParam.value = userParam.items_invoice_details ? userParam.items_invoice_details : '';
   currentParam.defaultvalue = texts.description+";"+texts.quantity+";"+texts.reference_unit+";"+texts.unit_price+";"+texts.amount;
   currentParam.tooltip = texts.param_tooltip_items_invoice_details;
   currentParam.readValue = function() {
-    param.items_invoice_details = this.value;
+    userParam.items_invoice_details = this.value;
   }
   convertedParam.data.push(currentParam);
 
@@ -459,11 +425,11 @@ function convertParam(param) {
   currentParam.parentObject = 'include_details';
   currentParam.title = texts.param_items_invoice_details_dimensions;
   currentParam.type = 'string';
-  currentParam.value = param.items_invoice_details_dimensions ? param.items_invoice_details_dimensions : '';
+  currentParam.value = userParam.items_invoice_details_dimensions ? userParam.items_invoice_details_dimensions : '';
   currentParam.defaultvalue = '50%;10%;10%;15%;15%';
   currentParam.tooltip = texts.param_tooltip_items_invoice_details_dimensions;
   currentParam.readValue = function() {
-    param.items_invoice_details_dimensions = this.value;
+    userParam.items_invoice_details_dimensions = this.value;
   }
   convertedParam.data.push(currentParam);
 
@@ -472,15 +438,15 @@ function convertParam(param) {
   currentParam.parentObject = 'include_details';
   currentParam.title = texts.param_details_gross_amounts;
   currentParam.type = 'bool';
-  currentParam.value = param.details_gross_amounts ? true : false;
+  currentParam.value = userParam.details_gross_amounts ? true : false;
   currentParam.defaultvalue = false;
   currentParam.tooltip = texts.param_tooltip_details_gross_amounts;
   currentParam.readValue = function() {
-   param.details_gross_amounts = this.value;
+   userParam.details_gross_amounts = this.value;
   }
   convertedParam.data.push(currentParam);
 
-  var currentParam = {};
+  currentParam = {};
   currentParam.name = 'include_footer';
   currentParam.parentObject = 'include';
   currentParam.title = texts.param_include_footer;
@@ -488,7 +454,7 @@ function convertParam(param) {
   currentParam.value = '';
   currentParam.editable = false;
   currentParam.readValue = function() {
-    param.include_footer = this.value;
+    userParam.include_footer = this.value;
   }
   convertedParam.data.push(currentParam);
 
@@ -497,11 +463,11 @@ function convertParam(param) {
   currentParam.parentObject = 'include_footer';
   currentParam.title = texts.param_add_footer;
   currentParam.type = 'bool';
-  currentParam.value = param.add_footer ? true : false;
+  currentParam.value = userParam.add_footer ? true : false;
   currentParam.defaultvalue = false;
   currentParam.tooltip = texts.add_footer;
   currentParam.readValue = function() {
-   param.add_footer = this.value;
+   userParam.add_footer = this.value;
   }
   convertedParam.data.push(currentParam);
 
@@ -510,11 +476,11 @@ function convertParam(param) {
   currentParam.parentObject = 'include_footer';
   currentParam.title = texts.param_footer_left;
   currentParam.type = 'string';
-  currentParam.value = param.footer_left ? param.footer_left : '';
+  currentParam.value = userParam.footer_left ? userParam.footer_left : '';
   currentParam.defaultvalue = '';
   currentParam.tooltip = texts.param_tooltip_footer;
   currentParam.readValue = function() {
-   param.footer_left = this.value;
+   userParam.footer_left = this.value;
   }
   convertedParam.data.push(currentParam);
 
@@ -523,11 +489,11 @@ function convertParam(param) {
   currentParam.parentObject = 'include_footer';
   currentParam.title = texts.param_footer_center;
   currentParam.type = 'string';
-  currentParam.value = param.footer_center ? param.footer_center : '';
+  currentParam.value = userParam.footer_center ? userParam.footer_center : '';
   currentParam.defaultvalue = '&['+texts.date+']';
   currentParam.tooltip = texts.param_tooltip_footer;
   currentParam.readValue = function() {
-   param.footer_center = this.value;
+   userParam.footer_center = this.value;
   }
   convertedParam.data.push(currentParam); 
 
@@ -536,27 +502,51 @@ function convertParam(param) {
   currentParam.parentObject = 'include_footer';
   currentParam.title = texts.param_footer_right;
   currentParam.type = 'string';
-  currentParam.value = param.footer_right ? param.footer_right : '';
+  currentParam.value = userParam.footer_right ? userParam.footer_right : '';
   currentParam.defaultvalue = texts.page+' &['+texts.page+']';
   currentParam.tooltip = texts.param_tooltip_footer;
   currentParam.readValue = function() {
-   param.footer_right = this.value;
+   userParam.footer_right = this.value;
   }
   convertedParam.data.push(currentParam);
 
+  currentParam = {};
+  currentParam.name = 'qr_code';
+  currentParam.parentObject = 'include';
+  currentParam.title = texts.param_qr_code;
+  currentParam.type = 'string';
+  currentParam.value = '';
+  currentParam.editable = false;
+  currentParam.readValue = function() {
+    userParam.qr_code = this.value;
+  }
+  convertedParam.data.push(currentParam);
+
+  currentParam = {};
+  currentParam.name = 'add_qr_code';
+  currentParam.parentObject = 'qr_code';
+  currentParam.title = texts.param_add_qr_code;
+  currentParam.type = 'bool';
+  currentParam.value = userParam.add_qr_code ? true : false;
+  currentParam.defaultvalue = false;
+  currentParam.tooltip = texts.param_tooltip_add_qr_code;
+  currentParam.readValue = function() {
+   userParam.add_qr_code = this.value;
+  }
+  convertedParam.data.push(currentParam);
 
 
   /*******************************************************************************************
   * TEXTS
   ********************************************************************************************/
-  var currentParam = {};
+  currentParam = {};
   currentParam.name = 'texts';
   currentParam.title = texts.param_texts;
   currentParam.type = 'string';
   currentParam.value = '';
   currentParam.editable = false;
   currentParam.readValue = function() {
-    param.texts = this.value;
+    userParam.texts = this.value;
   }
   convertedParam.data.push(currentParam);
 
@@ -565,192 +555,179 @@ function convertParam(param) {
   currentParam.parentObject = 'texts';
   currentParam.title = texts.param_add_language;
   currentParam.type = 'string';
-  currentParam.value = param.add_language ? param.add_language : '';
+  currentParam.value = userParam.add_language ? userParam.add_language : '';
   currentParam.defaultvalue = '';
   currentParam.tooltip = texts.param_tooltip_add_language;
   currentParam.readValue = function() {
-    param.add_language = this.value;
+    userParam.add_language = this.value;
   }
   convertedParam.data.push(currentParam);
 
-  var currentParam = {};
-  currentParam.name = 'texts_language';
+  currentParam = {};
+  currentParam.name = 'texts_language_en';
   currentParam.parentObject = 'texts';
-  currentParam.title = texts.param_texts_language;
+  currentParam.title = texts.param_texts_language_en;
   currentParam.type = 'string';
   currentParam.value = '';
   currentParam.editable = false;
   currentParam.readValue = function() {
-    param.texts_language = this.value;
+    userParam.texts_language_en = this.value;
   }
   convertedParam.data.push(currentParam);
 
   currentParam = {};
   currentParam.name = 'texts_info_invoice_number_text';
-  currentParam.parentObject = 'texts_language';
+  currentParam.parentObject = 'texts_language_en';
   currentParam.title = texts.param_texts_info_invoice_number_text;
   currentParam.type = 'string';
-  currentParam.value = param.texts_info_invoice_number_text ? param.texts_info_invoice_number_text : '';
+  currentParam.value = userParam.texts_info_invoice_number_text ? userParam.texts_info_invoice_number_text : '';
   currentParam.defaultvalue = texts.invoice;
   currentParam.tooltip = texts.param_tooltip_texts_info_invoice_number_text;
   currentParam.readValue = function() {
-    param.texts_info_invoice_number_text = this.value;
+    userParam.texts_info_invoice_number_text = this.value;
   }
   convertedParam.data.push(currentParam);
 
   currentParam = {};
   currentParam.name = 'texts_info_date_text';
-  currentParam.parentObject = 'texts_language';
+  currentParam.parentObject = 'texts_language_en';
   currentParam.title = texts.param_texts_info_date_text;
   currentParam.type = 'string';
-  currentParam.value = param.texts_info_date_text ? param.texts_info_date_text : '';
+  currentParam.value = userParam.texts_info_date_text ? userParam.texts_info_date_text : '';
   currentParam.defaultvalue = texts.date;
   currentParam.tooltip = texts.param_tooltip_texts_info_date_text;
   currentParam.readValue = function() {
-    param.texts_info_date_text = this.value;
+    userParam.texts_info_date_text = this.value;
   }
   convertedParam.data.push(currentParam);
 
   currentParam = {};
   currentParam.name = 'texts_info_customer_text';
-  currentParam.parentObject = 'texts_language';
+  currentParam.parentObject = 'texts_language_en';
   currentParam.title = texts.param_texts_info_customer_text;
   currentParam.type = 'string';
-  currentParam.value = param.texts_info_customer_text ? param.texts_info_customer_text : '';
+  currentParam.value = userParam.texts_info_customer_text ? userParam.texts_info_customer_text : '';
   currentParam.defaultvalue = texts.customer;
   currentParam.tooltip = texts.param_tooltip_texts_info_customer_text;
   currentParam.readValue = function() {
-    param.texts_info_customer_text = this.value;
+    userParam.texts_info_customer_text = this.value;
   }
   convertedParam.data.push(currentParam);
 
   currentParam = {};
   currentParam.name = 'texts_info_customer_vat_number';
-  currentParam.parentObject = 'texts_language';
+  currentParam.parentObject = 'texts_language_en';
   currentParam.title = texts.param_texts_info_customer_vat_number;
   currentParam.type = 'string';
-  currentParam.value = param.texts_info_customer_vat_number ? param.texts_info_customer_vat_number : '';
+  currentParam.value = userParam.texts_info_customer_vat_number ? userParam.texts_info_customer_vat_number : '';
   currentParam.defaultvalue = texts.vat_number;
   currentParam.tooltip = texts.param_tooltip_texts_info_customer_vat_number_text;
   currentParam.readValue = function() {
-    param.texts_info_customer_vat_number = this.value;
+    userParam.texts_info_customer_vat_number = this.value;
   }
   convertedParam.data.push(currentParam);
 
   currentParam = {};
   currentParam.name = 'texts_info_customer_fiscal_number';
-  currentParam.parentObject = 'texts_language';
+  currentParam.parentObject = 'texts_language_en';
   currentParam.title = texts.param_texts_info_customer_fiscal_number;
   currentParam.type = 'string';
-  currentParam.value = param.texts_info_customer_fiscal_number ? param.texts_info_customer_fiscal_number : '';
+  currentParam.value = userParam.texts_info_customer_fiscal_number ? userParam.texts_info_customer_fiscal_number : '';
   currentParam.defaultvalue = texts.fiscal_number;
   currentParam.tooltip = texts.param_tooltip_texts_info_customer_fiscal_number;
   currentParam.readValue = function() {
-    param.texts_info_customer_fiscal_number = this.value;
+    userParam.texts_info_customer_fiscal_number = this.value;
   }
   convertedParam.data.push(currentParam);
 
   currentParam = {};
   currentParam.name = 'texts_info_due_date_text';
-  currentParam.parentObject = 'texts_language';
+  currentParam.parentObject = 'texts_language_en';
   currentParam.title = texts.param_texts_info_due_date_text;
   currentParam.type = 'string';
-  currentParam.value = param.texts_info_due_date_text ? param.texts_info_due_date_text : '';
+  currentParam.value = userParam.texts_info_due_date_text ? userParam.texts_info_due_date_text : '';
   currentParam.defaultvalue = texts.payment_terms_label;
   currentParam.tooltip = texts.param_tooltip_texts_payment_terms_label;
   currentParam.readValue = function() {
-    param.texts_info_due_date_text = this.value;
+    userParam.texts_info_due_date_text = this.value;
   }
   convertedParam.data.push(currentParam);
 
   currentParam = {};
   currentParam.name = 'texts_info_page_text';
-  currentParam.parentObject = 'texts_language';
+  currentParam.parentObject = 'texts_language_en';
   currentParam.title = texts.param_texts_info_page_text;
   currentParam.type = 'string';
-  currentParam.value = param.texts_info_page_text ? param.texts_info_page_text : '';
+  currentParam.value = userParam.texts_info_page_text ? userParam.texts_info_page_text : '';
   currentParam.defaultvalue = texts.page;
   currentParam.tooltip = texts.param_tooltip_texts_info_page_text;
   currentParam.readValue = function() {
-    param.texts_info_page_text = this.value;
-  }
-  convertedParam.data.push(currentParam);
-
-  currentParam = {};
-  currentParam.name = 'texts_billing_address';
-  currentParam.parentObject = 'texts_language';
-  currentParam.title = texts.param_texts_billing_address;
-  currentParam.type = 'string';
-  currentParam.value = param.texts_billing_address ? param.texts_billing_address : '';
-  currentParam.defaultvalue = texts.billing_address;
-  currentParam.tooltip = texts.param_tooltip_texts_billing_address;
-  currentParam.readValue = function() {
-    param.texts_billing_address = this.value;
+    userParam.texts_info_page_text = this.value;
   }
   convertedParam.data.push(currentParam);
 
   currentParam = {};
   currentParam.name = 'texts_shipping_address';
-  currentParam.parentObject = 'texts_language';
+  currentParam.parentObject = 'texts_language_en';
   currentParam.title = texts.param_texts_shipping_address;
   currentParam.type = 'string';
-  currentParam.value = param.texts_shipping_address ? param.texts_shipping_address : '';
+  currentParam.value = userParam.texts_shipping_address ? userParam.texts_shipping_address : '';
   currentParam.defaultvalue = texts.shipping_address;
   currentParam.tooltip = texts.param_tooltip_texts_shipping_address;
   currentParam.readValue = function() {
-    param.texts_shipping_address = this.value;
+    userParam.texts_shipping_address = this.value;
   }
   convertedParam.data.push(currentParam);
 
   currentParam = {};
   currentParam.name = 'title_doctype_10';
-  currentParam.parentObject = 'texts_language';
+  currentParam.parentObject = 'texts_language_en';
   currentParam.title = texts.param_title_doctype_10;
   currentParam.type = 'string';
-  currentParam.value = param.title_doctype_10 ? param.title_doctype_10 : '';
-  currentParam.defaultvalue = texts.invoice;
+  currentParam.value = userParam.title_doctype_10 ? userParam.title_doctype_10 : '';
+  currentParam.defaultvalue = texts.invoice + " <DocInvoice>";
   currentParam.tooltip = texts.param_tooltip_title_doctype_10;
   currentParam.readValue = function() {
-    param.title_doctype_10 = this.value;
+    userParam.title_doctype_10 = this.value;
   }
   convertedParam.data.push(currentParam);
 
   currentParam = {};
   currentParam.name = 'title_doctype_12';
-  currentParam.parentObject = 'texts_language';
+  currentParam.parentObject = 'texts_language_en';
   currentParam.title = texts.param_title_doctype_12;
   currentParam.type = 'string';
-  currentParam.value = param.title_doctype_12 ? param.title_doctype_12 : '';
-  currentParam.defaultvalue = texts.credit_note;
+  currentParam.value = userParam.title_doctype_12 ? userParam.title_doctype_12 : '';
+  currentParam.defaultvalue = texts.credit_note  + " <DocInvoice>";
   currentParam.tooltip = texts.param_tooltip_title_doctype_12;
   currentParam.readValue = function() {
-    param.title_doctype_12 = this.value;
+    userParam.title_doctype_12 = this.value;
   }
   convertedParam.data.push(currentParam);
 
   currentParam = {};
   currentParam.name = 'texts_items_details_columns';
-  currentParam.parentObject = 'texts_language';
+  currentParam.parentObject = 'texts_language_en';
   currentParam.title = texts.param_texts_items_details_columns;
   currentParam.type = 'string';
-  currentParam.value = param.texts_items_details_columns ? param.texts_items_details_columns : '';
+  currentParam.value = userParam.texts_items_details_columns ? userParam.texts_items_details_columns : '';
   currentParam.defaultvalue = texts.description+";"+texts.quantity+";"+texts.reference_unit+";"+texts.unit_price+";"+texts.amount;
   currentParam.tooltip = texts.param_tooltip_texts_items_details_columns;
   currentParam.readValue = function() {
-    param.texts_items_details_columns = this.value;
+    userParam.texts_items_details_columns = this.value;
   }
   convertedParam.data.push(currentParam);
 
   currentParam = {};
   currentParam.name = 'texts_total';
-  currentParam.parentObject = 'texts_language';
+  currentParam.parentObject = 'texts_language_en';
   currentParam.title = texts.param_texts_total;
   currentParam.type = 'string';
-  currentParam.value = param.texts_total ? param.texts_total : '';
+  currentParam.value = userParam.texts_total ? userParam.texts_total : '';
   currentParam.defaultvalue = texts.total;
   currentParam.tooltip = texts.param_tooltip_texts_total;
   currentParam.readValue = function() {
-    param.texts_total = this.value;
+    userParam.texts_total = this.value;
   }
   convertedParam.data.push(currentParam);
 
@@ -762,14 +739,14 @@ function convertParam(param) {
   /*******************************************************************************************
   * STYLES
   *******************************************************************************************/
-  var currentParam = {};
+  currentParam = {};
   currentParam.name = 'styles';
   currentParam.title = texts.param_styles;
   currentParam.type = 'string';
   currentParam.value = '';
   currentParam.editable = false;
   currentParam.readValue = function() {
-    param.param_styles = this.value;
+    userParam.param_styles = this.value;
   }
   convertedParam.data.push(currentParam);
 
@@ -778,11 +755,11 @@ function convertParam(param) {
   currentParam.parentObject = 'styles';
   currentParam.title = texts.param_font_family;
   currentParam.type = 'string';
-  currentParam.value = param.font_family ? param.font_family : 'Helvetica';
+  currentParam.value = userParam.font_family ? userParam.font_family : 'Helvetica';
   currentParam.defaultvalue = 'Helvetica';
   currentParam.tooltip = texts.param_tooltip_font_family;
   currentParam.readValue = function() {
-   param.font_family = this.value;
+   userParam.font_family = this.value;
   }
   convertedParam.data.push(currentParam);
 
@@ -791,11 +768,11 @@ function convertParam(param) {
   currentParam.parentObject = 'styles';
   currentParam.title = texts.param_font_size;
   currentParam.type = 'string';
-  currentParam.value = param.font_size ? param.font_size : '10';
+  currentParam.value = userParam.font_size ? userParam.font_size : '10';
   currentParam.defaultvalue = '10';
   currentParam.tooltip = texts.param_tooltip_font_size;
   currentParam.readValue = function() {
-   param.font_size = this.value;
+   userParam.font_size = this.value;
   }
   convertedParam.data.push(currentParam);
 
@@ -804,11 +781,11 @@ function convertParam(param) {
   currentParam.parentObject = 'styles';
   currentParam.title = texts.param_background_color_1;
   currentParam.type = 'string';
-  currentParam.value = param.background_color_1 ? param.background_color_1 : '#337ab7';
+  currentParam.value = userParam.background_color_1 ? userParam.background_color_1 : '#337ab7';
   currentParam.defaultvalue = '#337ab7';
   currentParam.tooltip = texts.param_tooltip_background_color_1;
   currentParam.readValue = function() {
-   param.background_color_1 = this.value;
+   userParam.background_color_1 = this.value;
   }
   convertedParam.data.push(currentParam);
 
@@ -817,11 +794,11 @@ function convertParam(param) {
   currentParam.parentObject = 'styles';
   currentParam.title = texts.param_color;
   currentParam.type = 'string';
-  currentParam.value = param.color ? param.color : '#ffffff';
+  currentParam.value = userParam.color ? userParam.color : '#ffffff';
   currentParam.defaultvalue = '#ffffff';
   currentParam.tooltip = texts.param_tooltip_color;
   currentParam.readValue = function() {
-   param.color = this.value;
+   userParam.color = this.value;
   }
   convertedParam.data.push(currentParam);
 
@@ -830,15 +807,15 @@ function convertParam(param) {
   currentParam.parentObject = 'styles';
   currentParam.title = texts.param_background_color_2;
   currentParam.type = 'string';
-  currentParam.value = param.background_color_2 ? param.background_color_2 : '#F0F8FF';
+  currentParam.value = userParam.background_color_2 ? userParam.background_color_2 : '#F0F8FF';
   currentParam.defaultvalue = '#F0F8FF';
   currentParam.tooltip = texts.param_tooltip_background_color_2;
   currentParam.readValue = function() {
-   param.background_color_2 = this.value;
+   userParam.background_color_2 = this.value;
   }
   convertedParam.data.push(currentParam);
 
-  var currentParam = {};
+  currentParam = {};
   currentParam.name = 'styles_margins';
   currentParam.parentObject = 'styles';
   currentParam.title = texts.param_styles_margins;
@@ -846,33 +823,7 @@ function convertParam(param) {
   currentParam.value = '';
   currentParam.editable = false;
   currentParam.readValue = function() {
-    param.styles_margins = this.value;
-  }
-  convertedParam.data.push(currentParam);
-
-  currentParam = {};
-  currentParam.name = 'address_margin_left';
-  currentParam.parentObject = 'styles_margins';
-  currentParam.title = texts.param_address_margin_left;
-  currentParam.type = 'string';
-  currentParam.value = param.address_margin_left ? param.address_margin_left : '113';
-  currentParam.defaultvalue = '113';
-  currentParam.tooltip = texts.param_tooltip_address_margin_left;
-  currentParam.readValue = function() {
-   param.address_margin_left = this.value;
-  }
-  convertedParam.data.push(currentParam);
-
-  currentParam = {};
-  currentParam.name = 'address_margin_top';
-  currentParam.parentObject = 'styles_margins';
-  currentParam.title = texts.param_address_margin_top;
-  currentParam.type = 'string';
-  currentParam.value = param.address_margin_top ? param.address_margin_top : '45';
-  currentParam.defaultvalue = '45';
-  currentParam.tooltip = texts.param_tooltip_address_margin_top;
-  currentParam.readValue = function() {
-   param.address_margin_top = this.value;
+    userParam.styles_margins = this.value;
   }
   convertedParam.data.push(currentParam);
 
@@ -880,14 +831,14 @@ function convertParam(param) {
   /*******************************************************************************************
   * EMBEDDED JAVASCRIPT FILEE
   *******************************************************************************************/
-  var currentParam = {};
+  currentParam = {};
   currentParam.name = 'embedded_javascript';
   currentParam.title = texts.param_embedded_javascript;
   currentParam.type = 'string';
   currentParam.value = '';
   currentParam.editable = false;
   currentParam.readValue = function() {
-    param.embedded_javascript = this.value;
+    userParam.embedded_javascript = this.value;
   }
   convertedParam.data.push(currentParam);
 
@@ -896,48 +847,71 @@ function convertParam(param) {
   currentParam.parentObject = 'embedded_javascript';
   currentParam.title = texts.param_embedded_javascript_filename;
   currentParam.type = 'string';
-  currentParam.value = param.embedded_javascript_filename ? param.embedded_javascript_filename : '';
+  currentParam.value = userParam.embedded_javascript_filename ? userParam.embedded_javascript_filename : '';
   currentParam.defaultvalue = '';
   currentParam.tooltip = texts.param_tooltip_javascript_filename;
   currentParam.readValue = function() {
-   param.embedded_javascript_filename = this.value;
+   userParam.embedded_javascript_filename = this.value;
   }
   convertedParam.data.push(currentParam);
 
 
 
-  /*******************************************************************************************
-  * QR CODE
-  *******************************************************************************************/
-  var currentParam = {};
-  currentParam.name = 'qr_code';
-  currentParam.title = texts.param_qr_code;
-  currentParam.type = 'string';
-  currentParam.value = '';
-  currentParam.editable = false;
-  currentParam.readValue = function() {
-    param.qr_code = this.value;
-  }
-  convertedParam.data.push(currentParam);
+  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // ADD A NEW LANGUAGE
+  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  currentParam = {};
-  currentParam.name = 'add_qr_code';
-  currentParam.parentObject = 'qr_code';
-  currentParam.title = texts.param_add_qr_code;
-  currentParam.type = 'bool';
-  currentParam.value = param.add_qr_code ? true : false;
-  currentParam.defaultvalue = false;
-  currentParam.tooltip = texts.param_tooltip_add_qr_code;
-  currentParam.readValue = function() {
-   param.add_qr_code = this.value;
+  /* 
+  if (userParam.add_language) {
+
+    var languageCode = userParam.add_language;
+
+    //if (convertedParam.added_languages.indexOf(languageCode) < 0) {
+
+      Banana.console.log("New language: " + languageCode);
+      added_languages.push(languageCode);
+
+
+      currentParam = {};
+      currentParam.name = languageCode;
+      currentParam.parentObject = 'texts';
+      currentParam.title = texts.languageCode;
+      currentParam.type = 'string';
+      currentParam.value = '';
+      currentParam.editable = false;
+      currentParam.readValue = function() {
+        userParam.languageCode = this.value;
+      }
+      convertedParam.data.push(currentParam);
+
+      currentParam = {};
+      currentParam.name = languageCode+'_texts_info_invoice_number_text';
+      currentParam.parentObject = languageCode;
+      currentParam.title = texts.param_texts_info_invoice_number_text;
+      currentParam.type = 'string';
+      currentParam.value = userParam[languageCode+'_texts_info_invoice_number_text'] ? userParam[languageCode+'_texts_info_invoice_number_text'] : ''; //param.xxx ? param.xxx : ''
+      currentParam.defaultvalue = '';
+      currentParam.tooltip = texts.param_tooltip_texts_info_invoice_number_text;
+      currentParam.readValue = function() {
+        userParam[languageCode+'_texts_info_invoice_number_text'] = this.value;
+      }
+      convertedParam.data.push(currentParam);
+
+    //}
+
   }
-  convertedParam.data.push(currentParam);
+
+  */
+
+  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
   return convertedParam;
 }
 
 function initParam() {
-  var param = {};
+  var userParam = {};
 
   var lang = 'en';
   if (Banana.document.locale)
@@ -947,69 +921,66 @@ function initParam() {
   var texts = setInvoiceTexts(lang);
 
   //Include
-  param.print_header = true;
-  param.header_left = false;
-  param.header_row_1 = "";
-  param.header_row_2 = "";
-  param.header_row_3 = "";
-  param.header_row_4 = "";
-  param.header_row_5 = "";
-  param.print_logo = true;
-  param.logo_name = 'Logo';
-  param.small_address_line = '<none>';
-  param.address_left = false;
-  param.shipping_address = false;
-  param.info_invoice_number = true;
-  param.info_date = true;
-  param.info_customer = true;
-  param.info_customer_vat_number = false;
-  param.info_customer_fiscal_number = false
-  param.info_due_date = true;
-  param.info_page = true;
-  param.items_invoice_details = texts.description+";"+texts.qty+";"+texts.unit+";"+texts.unit_price+";"+texts.amount;
-  param.items_invoice_details_dimensions = '50%;10%;10%;15%;15%';
-  param.details_gross_amounts = false;
-  param_add_footer = false;
-  param_footer_left = texts.invoice;
-  param_footer_center = '&['+texts.date+']';
-  param_footer_right = texts.page+' &['+texts.page+']';
+  userParam.print_header = true;
+  userParam.header_left = false;
+  userParam.header_row_1 = "";
+  userParam.header_row_2 = "";
+  userParam.header_row_3 = "";
+  userParam.header_row_4 = "";
+  userParam.header_row_5 = "";
+  userParam.print_logo = true;
+  userParam.logo_name = 'Logo';
+  userParam.small_address_line = '<none>';
+  userParam.address_left = false;
+  userParam.shipping_address = false;
+  userParam.info_invoice_number = true;
+  userParam.info_date = true;
+  userParam.info_customer = true;
+  userParam.info_customer_vat_number = false;
+  userParam.info_customer_fiscal_number = false
+  userParam.info_due_date = true;
+  userParam.info_page = true;
+  userParam.items_invoice_details = texts.description+";"+texts.qty+";"+texts.unit+";"+texts.unit_price+";"+texts.amount;
+  userParam.items_invoice_details_dimensions = '50%;10%;10%;15%;15%';
+  userParam.details_gross_amounts = false;
+  userParam.add_footer = false;
+  userParam.footer_left = texts.invoice;
+  userParam.footer_center = '&['+texts.date+']';
+  userParam.footer_right = texts.page+' &['+texts.page+']';
+  userParam.add_qr_code = false;
 
   //Texts
-  param.add_language = "";
-  param.texts_info_invoice_number_text = texts.invoice;
-  param.texts_info_date_text = texts.date;
-  param.texts_info_customer_text = texts.customer;
-  param.texts_info_customer_vat_number = texts.vat_number;
-  param.texts_info_customer_fiscal_number = texts.fiscal_number;
-  param.texts_info_due_date_text = texts.payment_terms_label;
-  param.texts_info_page_text = texts.page;
-  param.texts_billing_address = texts.billing_address;
-  param.texts_shipping_address = texts.shipping_address;
-  param.title_doctype_10 = texts.invoice;
-  param.title_doctype_12 = texts.credit_note;
-  param.texts_items_details_columns = texts.description+";"+texts.qty+";"+texts.unit+";"+texts.unit_price+";"+texts.amount;
-  param.texts_total = texts.total;
+  userParam.add_language = "";
+  userParam.texts_info_invoice_number_text = texts.invoice;
+  userParam.texts_info_date_text = texts.date;
+  userParam.texts_info_customer_text = texts.customer;
+  userParam.texts_info_customer_vat_number = texts.vat_number;
+  userParam.texts_info_customer_fiscal_number = texts.fiscal_number;
+  userParam.texts_info_due_date_text = texts.payment_terms_label;
+  userParam.texts_info_page_text = texts.page;
+  userParam.texts_shipping_address = texts.shipping_address;
+  userParam.title_doctype_10 = texts.invoice + " <DocInvoice>";
+  userParam.title_doctype_12 = texts.credit_note + " <DocInvoice>";
+  userParam.texts_items_details_columns = texts.description+";"+texts.qty+";"+texts.unit+";"+texts.unit_price+";"+texts.amount;
+  userParam.texts_total = texts.total;
 
   //Styles
-  param.background_color_1 = '#337ab7';
-  param.color = '#ffffff';
-  param.background_color_2 = '#F0F8FF';
-  param.color_4 = '';
-  param.font_family = 'Helvetica';
-  param.font_size = '10';
-  param.address_margin_left = '113';
-  param.address_margin_top = '45';
+  userParam.background_color_1 = '#337ab7';
+  userParam.color = '#ffffff';
+  userParam.background_color_2 = '#F0F8FF';
+  userParam.color_4 = '';
+  userParam.font_family = 'Helvetica';
+  userParam.font_size = '10';
+  userParam.address_margin_left = '113';
+  userParam.address_margin_top = '45';
 
   //Embedded JavaScript file
-  param.embedded_javascript_filename = '';
+  userParam.embedded_javascript_filename = '';
 
-  //QR Code
-  param.add_qr_code = false;
-
-  return param;
+  return userParam;
 }
 
-function verifyParam(param) {
+function verifyParam(userParam) {
 
   var lang = 'en';
   if (Banana.document.locale)
@@ -1019,178 +990,171 @@ function verifyParam(param) {
   var texts = setInvoiceTexts(lang);
 
   //Include
-  if (!param.print_header) {
-    param.print_header = false;
+  if (!userParam.print_header) {
+    userParam.print_header = false;
   }
-  if (!param.header_left) {
-    param.header_left = false;
+  if (!userParam.header_left) {
+    userParam.header_left = false;
   }
-  if(!param.header_row_1) {
-    param.header_row_1 = '';
+  if(!userParam.header_row_1) {
+    userParam.header_row_1 = '';
   }
-  if(!param.header_row_2) {
-    param.header_row_2 = '';
+  if(!userParam.header_row_2) {
+    userParam.header_row_2 = '';
   }
-  if(!param.header_row_3) {
-    param.header_row_3 = '';
+  if(!userParam.header_row_3) {
+    userParam.header_row_3 = '';
   }
-  if(!param.header_row_4) {
-    param.header_row_4 = '';
+  if(!userParam.header_row_4) {
+    userParam.header_row_4 = '';
   }
-  if(!param.header_row_5) {
-    param.header_row_5 = '';
+  if(!userParam.header_row_5) {
+    userParam.header_row_5 = '';
   }
-  if (!param.print_logo) {
-    param.print_logo = false;
+  if (!userParam.print_logo) {
+    userParam.print_logo = false;
   }
-  if (!param.logo_name) {
-    param.logo_name = 'Logo';
+  if (!userParam.logo_name) {
+    userParam.logo_name = 'Logo';
   }
-  if (!param.small_address_line) {
-    param.small_address_line = '';
+  if (!userParam.small_address_line) {
+    userParam.small_address_line = '';
   }
-  if (!param.address_left) {
-    param.address_left = false;
+  if (!userParam.address_left) {
+    userParam.address_left = false;
   }
-  if (!param.shipping_address) {
-    param.shipping_address = false;
+  if (!userParam.shipping_address) {
+    userParam.shipping_address = false;
   }
-  if (!param.info_invoice_number) {
-    param.info_invoice_number = false;
+  if (!userParam.info_invoice_number) {
+    userParam.info_invoice_number = false;
   }
-  if (!param.info_date) {
-    param.info_date = false;
+  if (!userParam.info_date) {
+    userParam.info_date = false;
   }
-  if (!param.info_customer) {
-    param.info_customer = false;
+  if (!userParam.info_customer) {
+    userParam.info_customer = false;
   }
-  if (!param.info_customer_vat_number) {
-    param.info_customer_vat_number = false;
+  if (!userParam.info_customer_vat_number) {
+    userParam.info_customer_vat_number = false;
   }
-  if (!param.info_customer_fiscal_number) {
-    param.info_customer_fiscal_number = false;
+  if (!userParam.info_customer_fiscal_number) {
+    userParam.info_customer_fiscal_number = false;
   }
-  if (!param.info_due_date) {
-    param.info_due_date = false;
+  if (!userParam.info_due_date) {
+    userParam.info_due_date = false;
   }
-  if (!param.info_page) {
-    param.info_page = false;
+  if (!userParam.info_page) {
+    userParam.info_page = false;
   }
-  if (!param.items_invoice_details) {
-    param.items_invoice_details = texts.description+";"+texts.quantity+";"+texts.reference_unit+";"+texts.unit_price+";"+texts.amount;
+  if (!userParam.items_invoice_details) {
+    userParam.items_invoice_details = texts.description+";"+texts.quantity+";"+texts.reference_unit+";"+texts.unit_price+";"+texts.amount;
   }
-  if (!param.items_invoice_details_dimensions) {
-    param.items_invoice_details_dimensions = '50%;10%;10%;15%;15%';
+  if (!userParam.items_invoice_details_dimensions) {
+    userParam.items_invoice_details_dimensions = '50%;10%;10%;15%;15%';
   }
-  if (!param.details_gross_amounts) {
-    param.details_gross_amounts = false;
+  if (!userParam.details_gross_amounts) {
+    userParam.details_gross_amounts = false;
   }
-  if (!param.add_footer) {
-    param.add_footer = false;
+  if (!userParam.add_footer) {
+    userParam.add_footer = false;
   }
-  if (!param.footer_left) {
-    param.footer_left = texts.invoice;
+  if (!userParam.footer_left) {
+    userParam.footer_left = texts.invoice;
   }
-  if (!param.footer_center) {
-    param.footer_center = '&['+texts.date+']';
+  if (!userParam.footer_center) {
+    userParam.footer_center = '&['+texts.date+']';
   }
-  if (!param.footer_right) {
-    param.footer_right = texts.page+' &['+texts.page+']';
+  if (!userParam.footer_right) {
+    userParam.footer_right = texts.page+' &['+texts.page+']';
   }
-
+  if(!userParam.add_qr_code) {
+    userParam.add_qr_code = false;
+  }
 
 
   //Texts
-  if (!param.add_language) {
-    param.add_language = '';
+  if (!userParam.add_language) {
+    userParam.add_language = '';
   }
-  if (!param.texts_info_invoice_number_text) {
-    param.texts_info_invoice_number_text = texts.invoice;
+  if (!userParam.texts_info_invoice_number_text) {
+    userParam.texts_info_invoice_number_text = texts.invoice;
   }
-  if (!param.texts_info_date_text) {
-    param.texts_info_date_text = texts.date;
+  if (!userParam.texts_info_date_text) {
+    userParam.texts_info_date_text = texts.date;
   }
-  if (!param.texts_info_customer_text) {
-    param.texts_info_customer_text = texts.customer;
+  if (!userParam.texts_info_customer_text) {
+    userParam.texts_info_customer_text = texts.customer;
   }
-  if (!param.texts_info_customer_vat_number) {
-    param.texts_info_customer_vat_number = texts.vat_number;
+  if (!userParam.texts_info_customer_vat_number) {
+    userParam.texts_info_customer_vat_number = texts.vat_number;
   }
-  if (!param.texts_info_customer_fiscal_number) {
-    param.texts_info_customer_fiscal_number = texts.fiscal_number;
+  if (!userParam.texts_info_customer_fiscal_number) {
+    userParam.texts_info_customer_fiscal_number = texts.fiscal_number;
   }
-  if (!param.texts_info_due_date_text) {
-    param.texts_info_due_date_text = texts.payment_terms_label;
+  if (!userParam.texts_info_due_date_text) {
+    userParam.texts_info_due_date_text = texts.payment_terms_label;
   }
-  if (!param.texts_info_page_text) {
-    param.texts_info_page_text = texts.page;
+  if (!userParam.texts_info_page_text) {
+    userParam.texts_info_page_text = texts.page;
   }
-  if (!param.texts_billing_address) {
-    param.texts_billing_address = texts.billing_address;
+  if (!userParam.texts_shipping_address) {
+    userParam.texts_shipping_address = texts.shipping_address;
   }
-  if (!param.texts_shipping_address) {
-    param.texts_shipping_address = texts.shipping_address;
+  if (!userParam.title_doctype_10) {
+    userParam.title_doctype_10 = texts.invoice + " <DocInvoice>";
   }
-  if (!param.title_doctype_10) {
-    param.title_doctype_10 = texts.invoice;
+  if (!userParam.title_doctype_12) {
+    userParam.title_doctype_12 = texts.credit_note + " <DocInvoice>";
   }
-  if (!param.title_doctype_12) {
-    param.title_doctype_12 = texts.credit_note;
+  if (!userParam.texts_items_details_columns) {
+    userParam.texts_items_details_columns = texts.description+";"+texts.quantity+";"+texts.reference_unit+";"+texts.unit_price+";"+texts.amount;
   }
-  if (!param.texts_items_details_columns) {
-    param.texts_items_details_columns = texts.description+";"+texts.quantity+";"+texts.reference_unit+";"+texts.unit_price+";"+texts.amount;
+  if (!userParam.texts_total) {
+    userParam.texts_total = texts.total;
   }
-  if (!param.texts_total) {
-    param.texts_total = texts.total;
-  }
-
 
 
   // Styles
-  if (!param.background_color_1) {
-    param.background_color_1 = '#337ab7';
+  if (!userParam.background_color_1) {
+    userParam.background_color_1 = '#337ab7';
   }
-  if (!param.color) {
-    param.color = '#ffffff';
+  if (!userParam.color) {
+    userParam.color = '#ffffff';
   }
-  if (!param.background_color_2) {
-    param.background_color_2 = '#F0F8FF';
+  if (!userParam.background_color_2) {
+    userParam.background_color_2 = '#F0F8FF';
   }
-  if (!param.color_4) {
-    param.color_4 = '';
+  if (!userParam.color_4) {
+    userParam.color_4 = '';
   }
-  if (!param.font_family) {
-    param.font_family = 'Helvetica';
+  if (!userParam.font_family) {
+    userParam.font_family = 'Helvetica';
   }
-  if (!param.font_size) {
-    param.font_size = '10';
+  if (!userParam.font_size) {
+    userParam.font_size = '10';
   }
-  if (!param.address_margin_left) {
-    param.address_margin_left = '113';
+  if (!userParam.address_margin_left) {
+    userParam.address_margin_left = '113';
   }
-  if (!param.address_margin_top) {
-    param.address_margin_top = '45';
+  if (!userParam.address_margin_top) {
+    userParam.address_margin_top = '45';
   }
 
   //Embedded JavaScript files
-  if (!param.embedded_javascript_filename) {
-    param.embedded_javascript_filename = '';
+  if (!userParam.embedded_javascript_filename) {
+    userParam.embedded_javascript_filename = '';
   }
 
-  //QR Code
-  if(!param.add_qr_code) {
-    param.add_qr_code = false;
-  }
-
-  return param;
+  return userParam;
 }
 
 /* Check if there are javascript (.js) files in the table Documents */
-function includeEmbeddedJavascriptFile(texts, param) {
+function includeEmbeddedJavascriptFile(texts, userParam) {
 
   // User entered a javascript file name
   // Take from the table documents all the javascript file names
-  if (param.embedded_javascript_filename) {
+  if (userParam.embedded_javascript_filename) {
     
     var jsFiles = [];
     
@@ -1210,9 +1174,9 @@ function includeEmbeddedJavascriptFile(texts, param) {
     if (jsFiles.length > 0) {
 
       // The javascript file name entered by user exists on documents table. Include this file
-      if (jsFiles.indexOf(param.embedded_javascript_filename) > -1) {
+      if (jsFiles.indexOf(userParam.embedded_javascript_filename) > -1) {
         try {
-          Banana.include("documents:" + param.embedded_javascript_filename);
+          Banana.include("documents:" + userParam.embedded_javascript_filename);
         }
         catch(error) {
           Banana.document.addMessage(texts.embedded_javascript_file_not_found);
@@ -1227,11 +1191,11 @@ function includeEmbeddedJavascriptFile(texts, param) {
 // MAIN FUNCTIONS THAT PRINT THE INVOICE
 //====================================================================//
 function printDocument(jsonInvoice, repDocObj, repStyleObj) {
-  var param = initParam();
+  var userParam = initParam();
   var savedParam = Banana.document.getScriptSettings();
   if (savedParam.length > 0) {
-    param = JSON.parse(savedParam);
-    param = verifyParam(param);
+    userParam = JSON.parse(savedParam);
+    userParam = verifyParam(userParam);
   }
 
   // jsonInvoice can be a json string or a js object
@@ -1253,24 +1217,63 @@ function printDocument(jsonInvoice, repDocObj, repStyleObj) {
   var texts = setInvoiceTexts(langDoc);
 
   // Include the embedded javascript file entered by the user
-  includeEmbeddedJavascriptFile(texts, param);
+  includeEmbeddedJavascriptFile(texts, userParam);
 
   // Set the stylesheet
   if (!repStyleObj) {
     repStyleObj = reportObj.newStyleSheet();
   }
-  set_invoice_style(repStyleObj, param);
+
+  var cssStyle = {
+    "body" : "",
+    "right" : "",
+    "center" : "",
+    "bold" : "",
+    "doc_table_header" : "",
+    "doc_table_header_td" : "",
+    "total_cell" : "",
+    "subtotal_cell" : "",
+    "vat_info" : "",
+    "even_rows_background_color" : "",
+    "border_bottom" : "",
+    "thin_border_top" : "",
+    "padding_right" : "",
+    "padding_left" : "",
+    "header_left_text" : "",
+    "header_right_text" : "",
+    "begin_text_table":"",
+    "title_text" : "",
+    "begin_text" : "",
+    "logo" : "",
+    "info_table_left" : "",
+    "table_info_table_left_td" : "",
+    "info_table_right" : "",
+    "table_info_table_right_td" : "",
+    "info_table_row0" : "",
+    "table_info_table_row0_td" : "",
+    "page_first_view_info_table_row0" : "",
+    "address_table_right" : "",
+    "address_table_left" : "",
+    "small_address" : "",
+    "shipping_address" : "",
+    "doc_table" : "",
+    "qr_code" : "",
+    "footer_line" : "",
+    "footer_table" : ""
+  };
+
+  set_invoice_style(repStyleObj, cssStyle, userParam);
   
   // Print the invoice document
-  repDocObj = printInvoice(jsonInvoice, repDocObj, texts, param, repStyleObj, invoiceObj);
+  repDocObj = printInvoice(jsonInvoice, repDocObj, texts, userParam, repStyleObj, invoiceObj);
 }
 
-function printInvoice(jsonInvoice, repDocObj, texts, param, repStyleObj, invoiceObj) {
+function printInvoice(jsonInvoice, repDocObj, texts, userParam, repStyleObj, invoiceObj) {
   
   // Invoice document
   var reportObj = Banana.Report;
   if (!repDocObj) {
-    repDocObj = reportObj.newReport(getTitle(invoiceObj, texts, param) + " " + invoiceObj.document_info.number);
+    repDocObj = reportObj.newReport(getTitle(invoiceObj, texts, userParam) + " " + invoiceObj.document_info.number);
   } else {
     var pageBreak = repDocObj.addPageBreak();
     pageBreak.addClass("pageReset");
@@ -1280,60 +1283,60 @@ function printInvoice(jsonInvoice, repDocObj, texts, param, repStyleObj, invoice
   if (typeof(hook_print_header) === typeof(Function)) {
     hook_print_header(repDocObj);
   } else {
-    print_header(repDocObj, param, repStyleObj, invoiceObj);
+    print_header(repDocObj, userParam, repStyleObj, invoiceObj);
   }
 
   /* Invoice texts info */
   if (typeof(hook_print_info) === typeof(Function)) {
-    hook_print_info(repDocObj, invoiceObj, texts, param);
+    hook_print_info(repDocObj, invoiceObj, texts, userParam);
   } else {
-    print_info(repDocObj, invoiceObj, texts, param);
+    print_info(repDocObj, invoiceObj, texts, userParam);
   }
 
   /* Customer address */
   if (typeof(hook_print_customer_address) === typeof(Function)) {
-    hook_print_customer_address(repDocObj, invoiceObj, param);
+    hook_print_customer_address(repDocObj, invoiceObj, userParam);
   } else {
-    print_customer_address(repDocObj, invoiceObj, param);
+    print_customer_address(repDocObj, invoiceObj, userParam);
   }
 
   /* Billing/Shipping addresses */
-  if (param.shipping_address) {
+  if (userParam.shipping_address) {
     if (typeof(hook_print_shipping_address) === typeof(Function)) {
-      hook_print_shipping_address(repDocObj, invoiceObj, texts, param);
+      hook_print_shipping_address(repDocObj, invoiceObj, texts, userParam);
     } else {
-      print_shipping_address(repDocObj, invoiceObj, texts, param);
+      print_shipping_address(repDocObj, invoiceObj, texts, userParam);
     }
   }
 
   /* Begin text (before invoice details table) */
   if (typeof(hook_print_text_begin) === typeof(Function)) {
-    hook_print_text_begin(repDocObj, invoiceObj, texts, param);
+    hook_print_text_begin(repDocObj, invoiceObj, texts, userParam);
   } else {
-    print_text_begin(repDocObj, invoiceObj, texts, param);
+    print_text_begin(repDocObj, invoiceObj, texts, userParam);
   }
 
   /* Invoice texts info for pages 2+ */
   if (typeof(hook_print_info) === typeof(Function)) {
-    hook_print_info(repDocObj.getHeader(), invoiceObj, texts, param, "info_table_row0");
+    hook_print_info(repDocObj.getHeader(), invoiceObj, texts, userParam, "info_table_row0");
   } else {
-    print_info(repDocObj.getHeader(), invoiceObj, texts, param, "info_table_row0");
+    print_info(repDocObj.getHeader(), invoiceObj, texts, userParam, "info_table_row0");
   }
 
   /* Invoice details */
   var detailsTable = repDocObj.addTable("doc_table");
-  if (param.details_gross_amounts) {
+  if (userParam.details_gross_amounts) {
     if (typeof(hook_print_details_gross_amounts) === typeof(Function)) {
-      hook_print_details_gross_amounts(repDocObj, invoiceObj, texts, param, detailsTable);
+      hook_print_details_gross_amounts(repDocObj, invoiceObj, texts, userParam, detailsTable);
     } else {
-      print_details_gross_amounts(repDocObj, invoiceObj, texts, param, detailsTable);
+      print_details_gross_amounts(repDocObj, invoiceObj, texts, userParam, detailsTable);
     }
   }
   else {
     if (typeof(hook_print_details_net_amounts) === typeof(Function)) {
-      hook_print_details_net_amounts(repDocObj, invoiceObj, texts, param, detailsTable);
+      hook_print_details_net_amounts(repDocObj, invoiceObj, texts, userParam, detailsTable);
     } else {
-      print_details_net_amounts(repDocObj, invoiceObj, texts, param, detailsTable);
+      print_details_net_amounts(repDocObj, invoiceObj, texts, userParam, detailsTable);
     }
   }
 
@@ -1346,10 +1349,19 @@ function printInvoice(jsonInvoice, repDocObj, texts, param, repStyleObj, invoice
 
   /* Footer */
   if (typeof(hook_print_footer) === typeof(Function)) {
-    hook_print_footer(repDocObj, texts, param);
+    hook_print_footer(repDocObj, texts, userParam);
   } else {
-    print_footer(repDocObj, texts, param);
+    print_footer(repDocObj, texts, userParam);
   }
+
+
+
+
+  var d = new Date();
+  Banana.console.log("PrintInvoice() FINISHED... " + d);
+
+
+
 
   return repDocObj;
 }
@@ -1364,45 +1376,45 @@ function printInvoice(jsonInvoice, repDocObj, texts, param, repStyleObj, invoice
 // USER CAN REPLACE THEM WITH 'HOOK' FUNCTIONS DEFINED ON EMBEDDED 
 // JAVASCRIPT FILES OF THE DOCUMENTS TABLE
 //====================================================================//
-function print_header(repDocObj, param, repStyleObj, invoiceObj) {
+function print_header(repDocObj, userParam, repStyleObj, invoiceObj) {
   var headerLogoSection = repDocObj.addSection("");
-  if (param.print_logo) {
-    var logoFormat = Banana.Report.logoFormat(param.logo_name); //Logo
+  if (userParam.print_logo) {
+    var logoFormat = Banana.Report.logoFormat(userParam.logo_name); //Logo
     if (logoFormat) {
       var logoElement = logoFormat.createDocNode(headerLogoSection, repStyleObj, "logo");
       repDocObj.getHeader().addChild(logoElement);
     }
   }
 
-  if (param.print_header) {
+  if (userParam.print_header) {
 
-    if (param.header_left) {
+    if (userParam.header_left) {
       var headerParagraph = repDocObj.getHeader().addSection("header_left_text");
     } else {
       var headerParagraph = repDocObj.getHeader().addSection("header_right_text");
     }
 
-    if (param.header_row_1) {
-      if (param.header_row_1.length > 0) {
-        headerParagraph.addParagraph(param.header_row_1, "").setStyleAttributes("font-weight:bold; font-size:16pt; color:" + param.background_color_1);
+    if (userParam.header_row_1) {
+      if (userParam.header_row_1.length > 0) {
+        headerParagraph.addParagraph(userParam.header_row_1, "").setStyleAttributes("font-weight:bold; font-size:16pt; color:" + userParam.background_color_1);
       }
-      if (param.header_row_2.length > 0) {
-        headerParagraph.addParagraph(param.header_row_2, "").setStyleAttributes("font-weight:bold; font-size:10pt;");
+      if (userParam.header_row_2.length > 0) {
+        headerParagraph.addParagraph(userParam.header_row_2, "").setStyleAttributes("font-weight:bold; font-size:10pt;");
       }
-      if (param.header_row_3.length > 0) {
-        headerParagraph.addParagraph(param.header_row_3, "").setStyleAttributes("font-weight:bold; font-size:10pt;");
+      if (userParam.header_row_3.length > 0) {
+        headerParagraph.addParagraph(userParam.header_row_3, "").setStyleAttributes("font-weight:bold; font-size:10pt;");
       }
-      if (param.header_row_4.length > 0) {
-        headerParagraph.addParagraph(param.header_row_4, "").setStyleAttributes("font-weight:bold; font-size:10pt;");
+      if (userParam.header_row_4.length > 0) {
+        headerParagraph.addParagraph(userParam.header_row_4, "").setStyleAttributes("font-weight:bold; font-size:10pt;");
       }
-      if (param.header_row_5.length > 0) {
-        headerParagraph.addParagraph(param.header_row_5, "").setStyleAttributes("font-weight:bold; font-size:10pt;");
+      if (userParam.header_row_5.length > 0) {
+        headerParagraph.addParagraph(userParam.header_row_5, "").setStyleAttributes("font-weight:bold; font-size:10pt;");
       }
     }
     else {
       var supplierNameLines = getInvoiceSupplierName(invoiceObj.supplier_info).split('\n');
       for (var i = 0; i < supplierNameLines.length; i++) {
-        headerParagraph.addParagraph(supplierNameLines[i], "").setStyleAttributes("font-weight:bold; font-size:16pt; color:" + param.background_color_1);
+        headerParagraph.addParagraph(supplierNameLines[i], "").setStyleAttributes("font-weight:bold; font-size:16pt; color:" + userParam.background_color_1);
       }
       var supplierLines = getInvoiceSupplier(invoiceObj.supplier_info).split('\n');
       for (var i = 0; i < supplierLines.length; i++) {
@@ -1412,7 +1424,7 @@ function print_header(repDocObj, param, repStyleObj, invoiceObj) {
   }
 }
 
-function print_info(repDocObj, invoiceObj, texts, param, tableStyleRow0) {
+function print_info(repDocObj, invoiceObj, texts, userParam, tableStyleRow0) {
 
   var infoTable = "";
 
@@ -1421,43 +1433,39 @@ function print_info(repDocObj, invoiceObj, texts, param, tableStyleRow0) {
     infoTable = repDocObj.addTable(tableStyleRow0);
   }
   else {
-    if (param.address_left) {
+    if (userParam.address_left) {
       infoTable = repDocObj.addTable("info_table_right");
     } else {
       infoTable = repDocObj.addTable("info_table_left");
     }
   }
 
-  tableRow = infoTable.addRow();
-  tableRow.addCell(" ", "", 1);
-  tableRow.addCell(" ", "", 1);
-
-  if (param.info_invoice_number) {
+  if (userParam.info_invoice_number) {
     tableRow = infoTable.addRow();
-    tableRow.addCell(param.texts_info_invoice_number_text + ":","",1);
+    tableRow.addCell(userParam.texts_info_invoice_number_text + ":","",1);
     tableRow.addCell(invoiceObj.document_info.number,"",1);
   }
-  if (param.info_date) {
+  if (userParam.info_date) {
     tableRow = infoTable.addRow();
-    tableRow.addCell(param.texts_info_date_text + ":","",1);
+    tableRow.addCell(userParam.texts_info_date_text + ":","",1);
     tableRow.addCell(Banana.Converter.toLocaleDateFormat(invoiceObj.document_info.date),"",1);    
   }
-  if (param.info_customer) {
+  if (userParam.info_customer) {
     tableRow = infoTable.addRow();
-    tableRow.addCell(param.texts_info_customer_text + ":","",1);
+    tableRow.addCell(userParam.texts_info_customer_text + ":","",1);
     tableRow.addCell(invoiceObj.customer_info.number,"",1);    
   }
-  if (param.info_customer_vat_number) {
+  if (userParam.info_customer_vat_number) {
     tableRow = infoTable.addRow();
-    tableRow.addCell(param.texts_info_customer_vat_number + ":","",1);
+    tableRow.addCell(userParam.texts_info_customer_vat_number + ":","",1);
     tableRow.addCell(invoiceObj.customer_info.vat_number);
   }
-  if (param.info_customer_fiscal_number) {
+  if (userParam.info_customer_fiscal_number) {
     tableRow = infoTable.addRow();
-    tableRow.addCell(param.texts_info_customer_fiscal_number + ":","",1);
+    tableRow.addCell(userParam.texts_info_customer_fiscal_number + ":","",1);
     tableRow.addCell(invoiceObj.customer_info.fiscal_number);
   }
-  if (param.info_due_date) {
+  if (userParam.info_due_date) {
     //Payment Terms
     var payment_terms_label = texts.payment_terms_label;
     var payment_terms = '';
@@ -1470,19 +1478,19 @@ function print_info(repDocObj, invoiceObj, texts, param, tableStyleRow0) {
     }
 
     tableRow = infoTable.addRow();
-    tableRow.addCell(param.texts_info_due_date_text + ":","",1);
+    tableRow.addCell(userParam.texts_info_due_date_text + ":","",1);
     tableRow.addCell(payment_terms,"",1);    
   }
-  if (param.info_page) {
+  if (userParam.info_page) {
     tableRow = infoTable.addRow();
-    tableRow.addCell(param.texts_info_page_text + ":","",1);
+    tableRow.addCell(userParam.texts_info_page_text + ":","",1);
     tableRow.addCell("","",1).addFieldPageNr();    
   }
 }
 
-function print_customer_address(repDocObj, invoiceObj, param) {
+function print_customer_address(repDocObj, invoiceObj, userParam) {
   var customerAddressTable = "";
-  if (param.address_left) {
+  if (userParam.address_left) {
     customerAddressTable = repDocObj.addTable("address_table_left");
   } else {
     customerAddressTable = repDocObj.addTable("address_table_right");
@@ -1490,11 +1498,11 @@ function print_customer_address(repDocObj, invoiceObj, param) {
   //Small line of the supplier address
   tableRow = customerAddressTable.addRow();
   var cell = tableRow.addCell("", "", 1);
-  if (param.small_address_line) {
-    if (param.small_address_line === "<none>") {
+  if (userParam.small_address_line) {
+    if (userParam.small_address_line === "<none>") {
       cell.addText("","");
     } else {
-      cell.addText(param.small_address_line, "small_address");
+      cell.addText(userParam.small_address_line, "small_address");
     }
   }
   else {
@@ -1515,7 +1523,7 @@ function print_customer_address(repDocObj, invoiceObj, param) {
   }
 }
 
-function print_shipping_address(repDocObj, invoiceObj, texts, param) {
+function print_shipping_address(repDocObj, invoiceObj, texts, userParam) {
 
   var billingAndShippingAddress = repDocObj.addTable("shipping_address");
   var tableRow;
@@ -1525,10 +1533,10 @@ function print_shipping_address(repDocObj, invoiceObj, texts, param) {
 
   // Shipping address
   if (invoiceObj.shipping_info.different_shipping_address) {
-    if (param.texts_shipping_address) {
-      shippingCell.addParagraph(param.texts_shipping_address,"").setStyleAttributes("font-weight:bold;color:"+param.background_color_1+";");
+    if (userParam.texts_shipping_address) {
+      shippingCell.addParagraph(userParam.texts_shipping_address,"").setStyleAttributes("font-weight:bold;color:"+userParam.background_color_1+";");
     } else {
-      shippingCell.addParagraph(texts.shipping_address, "").setStyleAttributes("font-weight:bold;color:"+param.background_color_1+";");
+      shippingCell.addParagraph(texts.shipping_address, "").setStyleAttributes("font-weight:bold;color:"+userParam.background_color_1+";");
     }
     var shippingAddress = getInvoiceAddress(invoiceObj.shipping_info).split('\n');
     for (var i = 0; i < shippingAddress.length; i++) {
@@ -1538,24 +1546,31 @@ function print_shipping_address(repDocObj, invoiceObj, texts, param) {
 }
 
 // print befor details
-function print_text_begin(repDocObj, invoiceObj, texts, param) {
-  var docTypeTitle = getTitle(invoiceObj, texts, param);
+function print_text_begin(repDocObj, invoiceObj, texts, userParam) {
+  var docTypeTitle = getTitle(invoiceObj, texts, userParam);
+  var table = repDocObj.addTable("begin_text_table");
+  var tableRow;
+
   if (docTypeTitle) {
-    repDocObj.addParagraph(docTypeTitle + " " + invoiceObj.document_info.number, "title_text");
-    repDocObj.addParagraph(" ", "");
-    repDocObj.addParagraph(" ", "");
+    tableRow = table.addRow();
+    var titleCell = tableRow.addCell("","",1);
+    titleCell.addParagraph(docTypeTitle.replace(/<DocInvoice>/g,invoiceObj.document_info.number), "title_text");
+    titleCell.addParagraph("", "");
+    titleCell.addParagraph("", "");
   }
   if (invoiceObj.document_info.text_begin) {
-    repDocObj.addParagraph(invoiceObj.document_info.text_begin, "begin_text");
-    repDocObj.addParagraph(" ", "");
-    repDocObj.addParagraph(" ", "");
+    tableRow = table.addRow();
+    var textCell = tableRow.addCell("","begin_text",1);
+    addMdBoldText(textCell, invoiceObj.document_info.text_begin);
+    textCell.addParagraph(" ", "");
+    textCell.addParagraph(" ", "");  
   }
 }
 
 /* Amounts net (VAT excluded) */
-function print_details_net_amounts(repDocObj, invoiceObj, texts, param, detailsTable) {
+function print_details_net_amounts(repDocObj, invoiceObj, texts, userParam, detailsTable) {
 
-  var columnsDimension = param.items_invoice_details_dimensions.split(";");
+  var columnsDimension = userParam.items_invoice_details_dimensions.split(";");
 
   //var repTableObj = repDocObj.addTable("doc_table");
   var repTableObj = detailsTable;
@@ -1575,14 +1590,14 @@ function print_details_net_amounts(repDocObj, invoiceObj, texts, param, detailsT
   // Creates the header with the parameter's values
   // If user insert other columns names we use them,
   // otherwise we use the XmlValue inserted when choosing the columns to display
-  var columnsSelected = param.items_invoice_details.split(";");
-  var columnsNames = param.texts_items_details_columns.split(";");
+  var columnsSelected = userParam.items_invoice_details.split(";");
+  var columnsNames = userParam.texts_items_details_columns.split(";");
 
   // remove all empty values ("", null, undefined): 
   columnsSelected = columnsSelected.filter(function(e){return e});
   columnsNames = columnsNames.filter(function(e){return e});
 
-  if (param.texts_items_details_columns) {
+  if (userParam.texts_items_details_columns) {
     for (var i = 0; i < columnsNames.length; i++) {
       columnsNames[i] = columnsNames[i].trim();
       if (columnsNames[i] === "<none>") {
@@ -1685,7 +1700,7 @@ function print_details_net_amounts(repDocObj, invoiceObj, texts, param, detailsT
 
   //FINAL TOTAL
   tableRow = repTableObj.addRow();
-  tableRow.addCell(param.texts_total + " " + invoiceObj.document_info.currency, "total_cell", _columns_number-1);
+  tableRow.addCell(userParam.texts_total + " " + invoiceObj.document_info.currency, "total_cell", _columns_number-1);
   tableRow.addCell(toInvoiceAmountFormat(invoiceObj, invoiceObj.billing_info.total_to_pay), "total_cell amount", 1);
   
   tableRow = repTableObj.addRow();
@@ -1693,52 +1708,15 @@ function print_details_net_amounts(repDocObj, invoiceObj, texts, param, detailsT
 
 
   // Print QR Code
-  if (param.add_qr_code) {
-    var text = '';
-    text += 'Currency:\n';
-    text += 'CHF\n';
-    text += 'Amount:\n';
-    text += '3500.00\n';
-    text += 'Account/Payable to:\n';
-    text += '1234567890\n';
-    text += 'Banana.ch SA\n';
-    text += 'Via alla Santa 7\n';
-    text += '6962 Viganello\n';
-    text += 'Reference:\n';
-    text += '12 00000 00001 12345 67890 09876\n';
-    text += 'Addidtional information:\n';
-    text += '35/20180129/100002/30 days\n';
-    text += 'Sales merchandise/2000.00/Sales merchandise/1000.00/Sales merchandise/500.00/\n';
-    text += 'VAT 8.00% included/259.26\n';
-    text += 'Payable by:\n';
-    text += 'Mario Bianchi\n';
-    text += 'Via Trevano\n';
-    text += '6963 Pregassona\n';
-
-    var qrCodeParam = {};
-    qrCodeParam.errorCorrectionLevel = 'M';
-    qrCodeParam.binaryCodingVersion = 25;
-    qrCodeParam.border = 0;
-
-    var qrCodeSvgImage = Banana.Report.qrCodeImage(text, qrCodeParam);
-    if (qrCodeParam.errorMsg && qrCodeParam.errorMsg.length>0) {
-      Banana.document.addMessage(qrCodeParam.errorMsg);
-    }
-    if (qrCodeSvgImage) {
-      tableRow = repTableObj.addRow();
-      var qrCodeCell = tableRow.addCell("","",_columns_number);
-      qrCodeCell.addParagraph(" ","");
-      qrCodeCell.addImage(qrCodeSvgImage, 'qr_code');
-      qrCodeCell.addParagraph(" ","");
-      qrCodeCell.addParagraph(" ","");
-    }
+  if (userParam.add_qr_code) {
+    print_qr_code(invoiceObj, texts, userParam, repTableObj);
   }
 }
 
 /* Amount gross (VAT included) */
-function print_details_gross_amounts(repDocObj, invoiceObj, texts, param, detailsTable) {
+function print_details_gross_amounts(repDocObj, invoiceObj, texts, userParam, detailsTable) {
 
-  var columnsDimension = param.items_invoice_details_dimensions.split(";");
+  var columnsDimension = userParam.items_invoice_details_dimensions.split(";");
 
   //var repTableObj = repDocObj.addTable("doc_table");
   var repTableObj = detailsTable;
@@ -1758,14 +1736,14 @@ function print_details_gross_amounts(repDocObj, invoiceObj, texts, param, detail
   // Creates the header with the parameter's values
   // If user insert other columns names we use them,
   // otherwise we use the XmlValue inserted when choosing the columns to display
-  var columnsSelected = param.items_invoice_details.split(";");
-  var columnsNames = param.texts_items_details_columns.split(";");
+  var columnsSelected = userParam.items_invoice_details.split(";");
+  var columnsNames = userParam.texts_items_details_columns.split(";");
 
   // remove all empty values ("", null, undefined): 
   columnsSelected = columnsSelected.filter(function(e){return e});
   columnsNames = columnsNames.filter(function(e){return e});
 
-  if (param.texts_items_details_columns) {
+  if (userParam.texts_items_details_columns) {
     for (var i = 0; i < columnsNames.length; i++) {
       columnsNames[i] = columnsNames[i].trim();
       if (columnsNames[i] === "<none>") {
@@ -1855,7 +1833,7 @@ function print_details_gross_amounts(repDocObj, invoiceObj, texts, param, detail
 
   //FINAL TOTAL
   tableRow = repTableObj.addRow();
-  tableRow.addCell(param.texts_total + " " + invoiceObj.document_info.currency, "total_cell", _columns_number-1);
+  tableRow.addCell(userParam.texts_total + " " + invoiceObj.document_info.currency, "total_cell", _columns_number-1);
   tableRow.addCell(toInvoiceAmountFormat(invoiceObj, invoiceObj.billing_info.total_to_pay), "total_cell amount", 1);
   
   tableRow = repTableObj.addRow();
@@ -1875,45 +1853,52 @@ function print_details_gross_amounts(repDocObj, invoiceObj, texts, param, detail
 
 
   // Print QR Code
-  if (param.add_qr_code) {
-    var text = '';
-    text += 'Currency:\n';
-    text += 'CHF\n';
-    text += 'Amount:\n';
-    text += '3500.00\n';
-    text += 'Account/Payable to:\n';
-    text += '1234567890\n';
-    text += 'Banana.ch SA\n';
-    text += 'Via alla Santa 7\n';
-    text += '6962 Viganello\n';
-    text += 'Reference:\n';
-    text += '12 00000 00001 12345 67890 09876\n';
-    text += 'Addidtional information:\n';
-    text += '35/20180129/100002/30 days\n';
-    text += 'Sales merchandise/2000.00/Sales merchandise/1000.00/Sales merchandise/500.00/\n';
-    text += 'VAT 8.00% included/259.26\n';
-    text += 'Payable by:\n';
-    text += 'Mario Bianchi\n';
-    text += 'Via Trevano\n';
-    text += '6963 Pregassona\n';
+  if (userParam.add_qr_code) {
+    print_qr_code(invoiceObj, texts, userParam, repTableObj);
+  }
+}
 
-    var qrCodeParam = {};
-    qrCodeParam.errorCorrectionLevel = 'M';
-    qrCodeParam.binaryCodingVersion = 25;
-    qrCodeParam.border = 0;
+function print_qr_code(invoiceObj, texts, userParam, detailsTable) {
+  var repTableObj = detailsTable;
+  var text = '';
+  text += 'Currency:\n';
+  text += invoiceObj.document_info.currency+'\n';
+  text += 'Amount:\n';
+  text += invoiceObj.billing_info.total_amount_vat_inclusive+'\n';
+  text += 'VAT amount:\n';
+  text += invoiceObj.billing_info.total_vat_amount+'\n';
+  text += 'Account/Payable to:\n';
+  text += invoiceObj.supplier_info.business_name+'\n';
+  text += invoiceObj.supplier_info.address1+'\n';
+  text += invoiceObj.supplier_info.postal_code+" "+invoiceObj.supplier_info.city+'\n';
+  text += 'Reference:\n';
+  text += '12 00000 00001 12345 67890 09876\n';
+  text += 'Addidtional information:\n';
+  text += 'Invoice:'+invoiceObj.document_info.number+"/Date:"+invoiceObj.document_info.date+"/Customer number:"+invoiceObj.customer_info.number+"/Payment:"+invoiceObj.billing_info.payment_term+'\n';
+  // for (var i = 0; i < invoiceObj.items.length; i++) {
+  //   text += 'Description:'+invoiceObj.items[i].description+'/Amount:'+invoiceObj.items[i].total_amount_vat_inclusive+'\n';
+  // }
+  text += 'Payable by:\n';
+  text += invoiceObj.customer_info.first_name+ ' '+invoiceObj.customer_info.last_name+'\n';
+  text += invoiceObj.customer_info.address1+'\n';
+  text += invoiceObj.customer_info.postal_code+ ' '+invoiceObj.customer_info.city+'\n';
 
-    var qrCodeSvgImage = Banana.Report.qrCodeImage(text, qrCodeParam);
-    if (qrCodeParam.errorMsg && qrCodeParam.errorMsg.length>0) {
-      Banana.document.addMessage(qrCodeParam.errorMsg);
-    }
-    if (qrCodeSvgImage) {
-      tableRow = repTableObj.addRow();
-      var qrCodeCell = tableRow.addCell("","",_columns_number);
-      qrCodeCell.addParagraph(" ","");
-      qrCodeCell.addImage(qrCodeSvgImage, 'qr_code');
-      qrCodeCell.addParagraph(" ","");
-      qrCodeCell.addParagraph(" ","");
-    }
+  var qrCodeParam = {};
+  qrCodeParam.errorCorrectionLevel = 'M';
+  qrCodeParam.binaryCodingVersion = 25;
+  qrCodeParam.border = 0;
+
+  var qrCodeSvgImage = Banana.Report.qrCodeImage(text, qrCodeParam);
+  if (qrCodeParam.errorMsg && qrCodeParam.errorMsg.length>0) {
+    Banana.document.addMessage(qrCodeParam.errorMsg);
+  }
+  if (qrCodeSvgImage) {
+    tableRow = repTableObj.addRow();
+    var qrCodeCell = tableRow.addCell("","",_columns_number);
+    qrCodeCell.addParagraph(" ","");
+    qrCodeCell.addImage(qrCodeSvgImage, 'qr_code');
+    qrCodeCell.addParagraph(" ","");
+    qrCodeCell.addParagraph(" ","");
   }
 }
 
@@ -1950,7 +1935,8 @@ function print_final_texts(repDocObj, invoiceObj, detailsTable) {
     }
     for (var i=0; i < text.length; i++) {
       tableRow = detailsTable.addRow();
-      tableRow.addCell(text[i], "", _columns_number);
+      var cellText = tableRow.addCell("","",_columns_number);
+      addMdBoldText(cellText, text[i]);
     }
   }
 
@@ -1959,7 +1945,8 @@ function print_final_texts(repDocObj, invoiceObj, detailsTable) {
   for (var i = 0; i < invoiceObj.note.length; i++) {
     if (invoiceObj.note[i].description) {
       tableRow = detailsTable.addRow();
-      tableRow.addCell(invoiceObj.note[i].description, "", _columns_number);
+      var cellText = tableRow.addCell("","", _columns_number);
+      addMdBoldText(cellText, invoiceObj.note[i].description);
     }
   }
 
@@ -1967,12 +1954,13 @@ function print_final_texts(repDocObj, invoiceObj, detailsTable) {
   repDocObj.addParagraph(" ", "");
   if (invoiceObj.document_info.greetings) {
     tableRow = detailsTable.addRow();
-    tableRow.addCell(invoiceObj.document_info.greetings, "", _columns_number);
+    var cellText = tableRow.addCell("","",_columns_number);
+    addMdBoldText(cellText, invoiceObj.document_info.greetings);
   }
 }
 
 /* print the footer at the bottom of the page */
-function print_footer(repDocObj, texts, param) {
+function print_footer(repDocObj, texts, userParam) {
 
   /*
     Values "&[Page]", "&[Pagina]", "&[Seite]",.. are replaced with the page number.
@@ -1982,7 +1970,7 @@ function print_footer(repDocObj, texts, param) {
     For empty value insert <none>.
   */
 
-  if (param.add_footer) {
+  if (userParam.add_footer) {
     var paragraph = repDocObj.getFooter().addParagraph("","footer_line");
     var tabFooter = repDocObj.getFooter().addTable("footer_table");
     var col1 = tabFooter.addColumn().setStyleAttributes("width:33%");
@@ -1995,8 +1983,8 @@ function print_footer(repDocObj, texts, param) {
     var cell3 = tableRow.addCell("","",1);
 
     // footer left
-    if (param.footer_left && param.footer_left.length > 0) {
-      var lines = param.footer_left.split("\n");
+    if (userParam.footer_left && userParam.footer_left.length > 0) {
+      var lines = userParam.footer_left.split("\n");
       for (var i = 0; i < lines.length; i++) {
         if (lines[i].indexOf("&["+texts.page+"]") > -1) {
           cell1.addParagraph(lines[i].replace("&["+texts.page+"]",""), "").addFieldPageNr();
@@ -2012,8 +2000,8 @@ function print_footer(repDocObj, texts, param) {
       }
     }
     // footer center
-    if (param.footer_center && param.footer_center.length > 0) {
-      var lines = param.footer_center.split("\n");
+    if (userParam.footer_center && userParam.footer_center.length > 0) {
+      var lines = userParam.footer_center.split("\n");
       for (var i = 0; i < lines.length; i++) {
         if (lines[i].indexOf("&["+texts.page+"]") > -1) {
           cell2.addParagraph(lines[i].replace("&["+texts.page+"]",""), "center").addFieldPageNr();
@@ -2029,8 +2017,8 @@ function print_footer(repDocObj, texts, param) {
       }
     }
     // footer right
-    if (param.footer_right && param.footer_right.length > 0) {
-      var lines = param.footer_right.split("\n");
+    if (userParam.footer_right && userParam.footer_right.length > 0) {
+      var lines = userParam.footer_right.split("\n");
       for (var i = 0; i < lines.length; i++) {
         if (lines[i].indexOf("&["+texts.page+"]") > -1) {
           cell3.addParagraph(lines[i].replace("&["+texts.page+"]",""), "amount").addFieldPageNr();
@@ -2228,7 +2216,7 @@ function getAddressLines(jsonAddress, fullAddress) {
    return address;
 }
 
-function getTitle(invoiceObj, texts, param) {
+function getTitle(invoiceObj, texts, userParam) {
 
   /*
     Return the title based on the DocType value (10="Invoice", 12="Credit note")
@@ -2240,16 +2228,16 @@ function getTitle(invoiceObj, texts, param) {
   var documentTitle = "";
   if (invoiceObj.document_info.doc_type && invoiceObj.document_info.doc_type === "10") {
     documentTitle = texts.invoice;
-    if (param.title_doctype_10 && param.title_doctype_10 !== "<none>") {
-      documentTitle = param.title_doctype_10;
+    if (userParam.title_doctype_10 && userParam.title_doctype_10 !== "<none>") {
+      documentTitle = userParam.title_doctype_10;
     } else {
       documentTitle = "";
     }
   }
   if (invoiceObj.document_info.doc_type && invoiceObj.document_info.doc_type === "12") {
     documentTitle = texts.credit_note;
-    if (param.title_doctype_12 && param.title_doctype_12 !== "<none>") {
-      documentTitle = param.title_doctype_12;
+    if (userParam.title_doctype_12 && userParam.title_doctype_12 !== "<none>") {
+      documentTitle = userParam.title_doctype_12;
     } else {
       documentTitle = "";
     }
@@ -2257,16 +2245,39 @@ function getTitle(invoiceObj, texts, param) {
   return documentTitle;
 }
 
+/* Function that add bold style to the text between '**' */
+function addMdBoldText(reportElement, text) {
+    
+    /*
+    * BOLD TEXT STYLE
+    *
+    * Use '**' characters where the bold starts and ends.
+    *
+    * - set bold all the paragraph => **This is bold paragraph
+    *                              => **This is bold paragraph**
+    *
+    * - set bold single/multiple words => This is **bold** text
+    *                                  => This **is bold** text
+    *                                  => **This** is **bold** text
+    */
 
+    var p = reportElement.addParagraph();
+    var printBold = false;
+    var startPosition = 0;
+    var endPosition = -1;
 
-
-
-
-
-
-
-
-
+    do {
+        endPosition = text.indexOf("**", startPosition);
+        var charCount = endPosition === -1 ? text.length - startPosition : endPosition - startPosition;
+        if (charCount > 0) {
+            var span = p.addText(text.substr(startPosition, charCount), "");
+            if (printBold)
+                span.setStyleAttribute("font-weight", "bold");
+        }
+        printBold = !printBold;
+        startPosition = endPosition >= 0 ? endPosition + 2 : text.length;
+    } while (startPosition < text.length && endPosition >= 0);
+}
 
 
 //====================================================================//
@@ -2416,21 +2427,6 @@ function setInvoiceTexts(language) {
   }
   else {
 
-    texts.param_logo = 'Logo';
-    texts.param_address = 'Address';
-    texts.param_info_invoice = 'Invoice information';
-    texts.param_items_table = 'Invoice details';
-
-
-    // texts.vat_number = 'VAT Number: ';
-    // texts.bill_to = 'Billing address';
-    // texts.shipping_to = 'Shipping address';
-    // texts.param_image_height = 'Image height (mm)';
-
-    //////////////////////////////////////////////////////////////////////////////////
-
-
-
     //Address
     texts.shipping_address = "Shipping address";
 
@@ -2492,11 +2488,13 @@ function setInvoiceTexts(language) {
     texts.param_footer_left = "Left footer at the bottom of the page";
     texts.param_footer_center = "Center footer at the bottom of the page";
     texts.param_footer_right = "Right footer at the bottom of the page";
+    texts.param_qr_code = "QR Code";
+    texts.param_add_qr_code = "Print the QR Code";
 
     //Texts
     texts.param_texts = "Texts (empty = default values)";
     texts.param_add_language = "Add a new language";
-    texts.param_texts_language = "en";
+    texts.param_texts_language_en = "en";
     texts.param_texts_info_invoice_number_text = 'Invoice number';
     texts.param_texts_info_date_text = 'Invoice date';
     texts.param_texts_info_customer_text = 'Invoice customer number';
@@ -2504,13 +2502,9 @@ function setInvoiceTexts(language) {
     texts.param_texts_info_customer_fiscal_number = 'Customer fiscal number';
     texts.param_texts_info_due_date_text = 'Invoice due date';
     texts.param_texts_info_page_text = 'Invoice page number';
-    texts.param_texts_billing_address = 'Billing address';
     texts.param_texts_shipping_address = 'Shipping address';
     texts.param_texts_items_details_columns = 'Invoice details columns names';
     texts.param_texts_total = 'Invoice total';
-
-
-
 
     //Styles
     texts.param_styles = "Styles";
@@ -2527,13 +2521,6 @@ function setInvoiceTexts(language) {
     texts.embedded_javascript_file_not_found = "Custom Javascript file not found or not valid";
     texts.param_embedded_javascript = "Custom JavaScript file";
     texts.param_embedded_javascript_filename = "Insert the file name ('ID' column of the 'Documents' table)";
-
-
-    // qr_code
-    texts.param_qr_code = "QR Code";
-    texts.param_add_qr_code = "Print the QR Code";
-
-
 
     //Tooltips for the parameters
     texts.param_tooltip_print_header = "Check to include the page header";
@@ -2596,144 +2583,180 @@ function setInvoiceTexts(language) {
 // STYLES
 //====================================================================//
 
-function set_css_styles(param) {
 
-  var top_shipping_address = "77mm";
-  var top_title = "105mm";
-  var top_text_begin = "115mm";
-  var top_details = "120mm";
 
-  // mm
-  var $margin_top = "10";
-  var $margin_right = "10";
-  var $margin_bottom = "20";
-  var $margin_left = "20";
-  var $margin_left_details = "23";
+function replaceVariable(cssStyle, cssVariable) {
 
-  cssStyle.$body = "font-size:"+param.font_size+";font-family:"+param.font_family;
-  cssStyle.$right = "text-align:right";
-  cssStyle.$center = "text-align:center";
-  cssStyle.$total_cell = "font-weight:bold; color: " + param.background_color_1 + "; border-bottom:1px double " + param.background_color_1 + "; font-size:"+(parseInt(param.font_size)+2)+"pt";
-  cssStyle.$subtotal_cell = "font-weight:bold; background-color:" + param.background_color_1 + "; color: " + param.color + "; padding:5px";
-  cssStyle.$vat_info = "font-size:"+ param.font_size + "pt";
-  cssStyle.$even_rows_background_color = "background-color:" + param.background_color_2;
-  cssStyle.$border_bottom = "border-bottom:2px solid " + param.background_color_1;
-  cssStyle.$thin_border_top = "border-top:thin solid " + param.background_color_1;
-  cssStyle.$padding_right = "padding-right:5px";
-  cssStyle.$padding_left = "padding-left:5px";
+  var result = "";
+  var keyNames = [];
+  var keyNamesWith$ = [];
 
-  cssStyle.$bold = "font-weight:bold";
-  cssStyle.$header_left_text = "position:absolute;margin-top:"+$margin_top+"mm;margin-left:"+$margin_left+"mm;margin-right:"+$margin_right+"mm";
-  cssStyle.$header_right_text = "position:absolute;margin-top:"+$margin_top+"mm;margin-left:"+$margin_left+"mm;margin-right:"+$margin_right+"mm;text-align:right";
-  cssStyle.$logo = "position:absolute;margin-top:"+$margin_top+"mm;margin-left:"+$margin_left+"mm;margin-right:"+$margin_right+"mm";
-  cssStyle.$info_table_left = "position:absolute;margin-top:"+param.address_margin_top+"mm;margin-left:"+$margin_left+"mm;margin-right:"+$margin_right+"mm;font-size:"+param.font_size+"pt";
-  cssStyle.$table_info_table_left_td = "padding-top:0px; padding-bottom:0px";
-  cssStyle.$info_table_right = "position:absolute;margin-top:"+param.address_margin_top+"mm;margin-left:113mm;margin-right:"+$margin_right+"mm;font-size:"+param.font_size+"pt";
-  cssStyle.$table_info_table_right_td = "padding-top:0px; padding-bottom:0px";
-  cssStyle.$info_table_row0 = "position:absolute;margin-top:"+param.address_margin_top+"mm;margin-left:"+$margin_left+"mm;margin-right:"+$margin_right+"mm;font-size:"+param.font_size+"pt";
-  cssStyle.$table_info_table_row0_td = "padding-top:0px; padding-bottom:0px";
-  cssStyle.$page_first_view_info_table_row0 = "display:none";
-  cssStyle.$address_table_right = "position:absolute;margin-top:"+param.address_margin_top+"mm;margin-left:"+param.address_margin_left+"mm;margin-right:"+$margin_right+"mm;font-size:"+param.font_size+"pt";
-  cssStyle.$address_table_left = "position:absolute;margin-top:"+param.address_margin_top+"mm;margin-left:"+$margin_left+"mm;margin-right:"+$margin_right+"mm";
-  cssStyle.$small_address = "text-align:center;font-size:7pt;border-bottom:solid 1px black"; 
-  cssStyle.$qr_code = "text-align:right";
-  cssStyle.$footer_line = "margin-left:"+$margin_left+"mm;margin-right:"+$margin_right+"mm;border-top:thin solid "+param.background_color_1;
-  cssStyle.$footer_table = "margin-bottom:"+$margin_bottom+"mm;margin-left:"+$margin_left+"mm;margin-right:"+$margin_right+"mm;width:100%;font-size:8pt";
-  cssStyle.$shipping_address = "position:absolute;margin-top:"+top_shipping_address+";margin-left:"+$margin_left+"mm;margin-right:"+$margin_right+";font-size:"+param.font_size+"pt";
+  // Take the string that must be replaced with variables values
+  result = cssVariable;
+  Banana.console.log("STRING TO BE REPLACED: " + result+ "\n");
+
+  // Take all the key names of the cssStyle object => i.e. [body, right, $font_size, $font_family, ...]
+  keyNames = Object.keys(cssStyle); 
+  Banana.console.log("ALL KEYNAMES: " + keyNames + "\n");
+
+  // Take all the keyNames that starts with "$" => i.e. [$font_size, $font_family, ...]
+  for (var i = 0; i < keyNames.length; i++) {
+    if (keyNames[i].substring(0,1) === "$") {
+      keyNamesWith$.push(keyNames[i]);
+    }
+  }
+  Banana.console.log("ALL KEYNAMES WITH $: " + keyNamesWith$+ "\n");
+
+  // Replace each "$variable" with his value
+  for (var i = 0; i < keyNamesWith$.length; i++) {
+    result = result.replace(keyNamesWith$[i], cssStyle[keyNamesWith$[i]]);
+  }
+  Banana.console.log("FINAL STRING (INSIDE): " + result + "\n");
+
+  return result;
+}
+
+
+
+
+function set_css_variables(repStyleObj, cssStyle, userParam) {
+
   
-  cssStyle.$title_text = "position:absolute;margin-top:"+top_title+";margin-left:"+$margin_left+"mm;margin-right:"+$margin_right+"mm;font-size:"+(parseInt(param.font_size)+4) +"pt;font-weight:bold;color:"+param.background_color_1;
-  cssStyle.$begin_text = "position:absolute;margin-top:"+top_text_begin+";margin-left:"+$margin_left+"mm;margin-right:"+$margin_right+"mm;font-size:"+param.font_size+"pt";
+  var $margin_top = "10mm";
+  var $margin_right = "10mm";
+  var $margin_bottom = "20mm";
+  var $margin_left = "20mm";
+  var $margin_left_details = "23mm";
+  var $top_shipping_address = "75mm";
+  var $top_begin_text = "120mm";
+  var $top_details = "140mm";
+
+  // var cssStyle.$margin_top = '10mm';
+
+
+
+  /////////////////////////////////////////////////////////////////////////////////
+
+  cssStyle.$font_size = userParam.font_size+"pt";
+  cssStyle.$font_family = userParam.font_family;
   
-  cssStyle.$doc_table = "margin-top:"+top_details+";margin-left:"+$margin_left_details+"mm;margin-right:"+$margin_right+"mm;width:100%;font-size:"+param.font_size+"pt";
-  cssStyle.$doc_table_header = "font-weight:bold; background-color:" + param.background_color_1 + "; color:" + param.color;
-  cssStyle.$doc_table_header_td = "padding:5px;";
+
+  cssStyle.body = "font-size:$font_size;font-family:$font_family";
+  cssStyle.body = replaceVariable(cssStyle, cssStyle.body);
+  Banana.console.log("FINAL STRING (OUTSIDE): " + cssStyle.body + "\n");
+  repStyleObj.addStyle("body ", cssStyle.body);
+
+  
+
+
+
+  ////////////////////////////////////////////////////////////////////////////////
+
+
+
+  //cssStyle.body = "font-size:"+userParam.font_size+";font-family:"+userParam.font_family;
+  cssStyle.right = "text-align:right";
+  cssStyle.center = "text-align:center";
+  cssStyle.total_cell = "font-weight:bold; color: " + userParam.background_color_1 + "; border-bottom:1px double " + userParam.background_color_1 + "; font-size:"+(parseInt(userParam.font_size)+2)+"pt";
+  cssStyle.subtotal_cell = "font-weight:bold; background-color:" + userParam.background_color_1 + "; color: " + userParam.color + "; padding:5px";
+  cssStyle.vat_info = "font-size:"+ userParam.font_size + "pt";
+  cssStyle.even_rows_background_color = "background-color:" + userParam.background_color_2;
+  cssStyle.border_bottom = "border-bottom:2px solid " + userParam.background_color_1;
+  cssStyle.thin_border_top = "border-top:thin solid " + userParam.background_color_1;
+  cssStyle.padding_right = "padding-right:5px";
+  cssStyle.padding_left = "padding-left:5px";
+
+  cssStyle.bold = "font-weight:bold";
+  cssStyle.header_left_text = "position:absolute;margin-top:"+$margin_top+";margin-left:"+$margin_left+";margin-right:"+$margin_right;
+  cssStyle.header_right_text = "position:absolute;margin-top:"+$margin_top+";margin-left:"+$margin_left+";margin-right:"+$margin_right+";text-align:right";
+  cssStyle.logo = "position:absolute;margin-top:"+$margin_top+";margin-left:"+$margin_left+";margin-right:"+$margin_right;
+  
+  cssStyle.info_table_left = "position:absolute;margin-top:45mm;margin-left:"+$margin_left+";margin-right:"+$margin_right+";font-size:"+userParam.font_size+"pt;";
+  cssStyle.table_info_table_left_td = "padding-top:0px; padding-bottom:0px";
+  cssStyle.info_table_right = "position:absolute;margin-top:45mm;margin-left:113mm;margin-right:"+$margin_right+";font-size:"+userParam.font_size+"pt";
+  cssStyle.table_info_table_right_td = "padding-top:0px; padding-bottom:0px";
+  cssStyle.info_table_row0 = "position:absolute;margin-top:45mm;margin-left:"+$margin_left+";margin-right:"+$margin_right+";font-size:"+userParam.font_size+"pt";
+  cssStyle.table_info_table_row0_td = "padding-top:0px; padding-bottom:0px";
+  cssStyle.page_first_view_info_table_row0 = "display:none";
+  
+  cssStyle.address_table_right = "position:absolute;margin-top:45mm;margin-left:113mm;margin-right:"+$margin_right+";font-size:"+userParam.font_size+"pt";
+  cssStyle.address_table_left = "position:absolute;margin-top:45mm;margin-left:"+$margin_left+";margin-right:"+$margin_right;
+  cssStyle.small_address = "text-align:center;font-size:7pt;border-bottom:solid 1px black"; 
+  cssStyle.qr_code = "text-align:right";
+  cssStyle.footer_line = "margin-left:"+$margin_left+";margin-right:"+$margin_right+";border-top:thin solid "+userParam.background_color_1;
+  cssStyle.footer_table = "margin-bottom:"+$margin_bottom+";margin-left:"+$margin_left+";margin-right:"+$margin_right+";width:100%;font-size:8pt";
+  
+  cssStyle.shipping_address = "position:absolute;margin-top:"+$top_shipping_address+";margin-left:"+$margin_left+";margin-right:"+$margin_right+";font-size:"+userParam.font_size+"pt;";
+  
+  cssStyle.begin_text_table = "position:absolute;margin-top:"+$top_begin_text+";margin-left:"+$margin_left_details+";margin-right:"+$margin_right+";width:100%;";
+  cssStyle.title_text = "font-size:"+(parseInt(userParam.font_size)+4) +"pt;font-weight:bold;color:"+userParam.background_color_1;
+  cssStyle.begin_text = "font-size:"+userParam.font_size+"pt"; 
+
+  cssStyle.doc_table = "margin-top:"+$top_details+";margin-left:"+$margin_left_details+";margin-right:"+$margin_right+";width:100%;font-size:"+userParam.font_size+"pt";
+  cssStyle.doc_table_header = "font-weight:bold; background-color:" + userParam.background_color_1 + "; color:" + userParam.color;
+  cssStyle.doc_table_header_td = "padding:5px;";
 
 }
 
-function set_invoice_style(repStyleObj, param) {
+function set_invoice_style(repStyleObj, cssStyle, userParam) {
 
-  /* CSS styles */
-  if (typeof(hook_set_css_styles) === typeof(Function)) {
-    hook_set_css_styles(param);
-  } else {
-    set_css_styles(param);
-  }
+  set_css_variables(repStyleObj, cssStyle, userParam);
+
+
   //Banana.console.log(JSON.stringify(cssStyle, "", " "));
-
   repStyleObj.addStyle(".pageReset", "counter-reset: page");
-  repStyleObj.addStyle("body", cssStyle.$body);
-  repStyleObj.addStyle(".amount", cssStyle.$right);
-  repStyleObj.addStyle(".center", cssStyle.$center);
-  repStyleObj.addStyle(".bold", cssStyle.$bold);
-  repStyleObj.addStyle(".total_cell", cssStyle.$total_cell);
-  repStyleObj.addStyle(".subtotal_cell", cssStyle.$subtotal_cell);
-  repStyleObj.addStyle(".vatInfo", cssStyle.$vat_info);
-  repStyleObj.addStyle(".evenRowsBackgroundColor", cssStyle.$even_rows_background_color);
-  repStyleObj.addStyle(".border-bottom", cssStyle.$border_bottom);
-  repStyleObj.addStyle(".thin-border-top", cssStyle.$thin_border_top);
-  repStyleObj.addStyle(".padding-right", cssStyle.$padding_right);
-  repStyleObj.addStyle(".padding-left", cssStyle.$padding_left);
+  
+  // repStyleObj.addStyle("body", cssStyle.body);
+  repStyleObj.addStyle(".amount", cssStyle.right);
+  repStyleObj.addStyle(".center", cssStyle.center);
+  repStyleObj.addStyle(".bold", cssStyle.bold);
+  repStyleObj.addStyle(".total_cell", cssStyle.total_cell);
+  repStyleObj.addStyle(".subtotal_cell", cssStyle.subtotal_cell);
+  repStyleObj.addStyle(".vatInfo", cssStyle.vat_info);
+  repStyleObj.addStyle(".evenRowsBackgroundColor", cssStyle.even_rows_background_color);
+  repStyleObj.addStyle(".border-bottom", cssStyle.border_bottom);
+  repStyleObj.addStyle(".thin-border-top", cssStyle.thin_border_top);
+  repStyleObj.addStyle(".padding-right", cssStyle.padding_right);
+  repStyleObj.addStyle(".padding-left", cssStyle.padding_left);
+  repStyleObj.addStyle(".logo", cssStyle.logo);
+  repStyleObj.addStyle(".header_left_text", cssStyle.header_left_text);
+  repStyleObj.addStyle(".header_right_text", cssStyle.header_right_text);
+  repStyleObj.addStyle(".info_table_left", cssStyle.info_table_left);
+  repStyleObj.addStyle("table.info_table_left td", cssStyle.table_info_table_left_td);
+  repStyleObj.addStyle(".info_table_right", cssStyle.info_table_right);
+  repStyleObj.addStyle("table.info_table_right td", cssStyle.table_info_table_right_td);
+  repStyleObj.addStyle(".info_table_row0", cssStyle.info_table_row0);
+  repStyleObj.addStyle("table.info_table_row0 td", cssStyle.table_info_table_row0_td);
+  repStyleObj.addStyle("@page:first-view table.info_table_row0", cssStyle.page_first_view_info_table_row0);
+  repStyleObj.addStyle(".address_table_right", cssStyle.address_table_right);
+  repStyleObj.addStyle(".address_table_left", cssStyle.address_table_left);
+  repStyleObj.addStyle(".small_address",cssStyle.small_address);
+  repStyleObj.addStyle(".shipping_address", cssStyle.shipping_address);
+  repStyleObj.addStyle(".begin_text_table", cssStyle.begin_text_table);
+  repStyleObj.addStyle(".title_text", cssStyle.title_text);
+  repStyleObj.addStyle(".begin_text", cssStyle.begin_text);
+  repStyleObj.addStyle(".doc_table_header", cssStyle.doc_table_header);
+  repStyleObj.addStyle(".doc_table_header td", cssStyle.doc_table_header_td);
+  repStyleObj.addStyle(".doc_table", cssStyle.doc_table);
+  repStyleObj.addStyle(".qr_code", cssStyle.qr_code);
+  repStyleObj.addStyle(".footer_line", cssStyle.footer_line);
+  repStyleObj.addStyle(".footer_table", cssStyle.footer_table);
 
-  /* Logo */
-  repStyleObj.addStyle(".logo", cssStyle.$logo);
-
-  /* Header */
-  repStyleObj.addStyle(".doc_table_header", cssStyle.$doc_table_header);
-  repStyleObj.addStyle(".doc_table_header td", cssStyle.$doc_table_header_td);
-  repStyleObj.addStyle(".header_left_text", cssStyle.$header_left_text);
-  repStyleObj.addStyle(".header_right_text", cssStyle.$header_right_text);
-
-  /* Info (left) */
-  repStyleObj.addStyle(".info_table_left", cssStyle.$info_table_left);
-  repStyleObj.addStyle("table.info_table_left td", cssStyle.$table_info_table_left_td);
-  //repStyleObj.addStyle("table.info_table_left td", "border: thin solid black;");
-
-  /* Info (right) */
-  repStyleObj.addStyle(".info_table_right", cssStyle.$info_table_right);
-  repStyleObj.addStyle("table.info_table_right td", cssStyle.$table_info_table_right_td);
-  //repStyleObj.addStyle("table.info_table_right td", "border: thin solid black");
-
-  /* Info row 0 */
-  repStyleObj.addStyle(".info_table_row0", cssStyle.$info_table_row0);
-  repStyleObj.addStyle("table.info_table_row0 td", cssStyle.$table_info_table_row0_td);
-  //repStyleObj.addStyle("table.info_table_row0 td", "border: thin solid black");
-
-  repStyleObj.addStyle("@page:first-view table.info_table_row0", cssStyle.$page_first_view_info_table_row0);
-
-  /* Address (right) */
-  repStyleObj.addStyle(".address_table_right", cssStyle.$address_table_right);
-  //repStyleObj.addStyle("table.address_table_right td", "border: thin solid black");
-
-  /* Address (left) */
-  repStyleObj.addStyle(".address_table_left", cssStyle.$address_table_left);
-  //repStyleObj.addStyle("table.address_table_left td", "border: thin solid black");
-
-  /* Small address */
-  repStyleObj.addStyle(".small_address",cssStyle.$small_address);
-
-  /* Shipping address */
-  repStyleObj.addStyle(".shipping_address", cssStyle.$shipping_address);
-  //repStyleObj.addStyle("table.shipping_address td", "border: thin solid black;");
-
-  /* Title */
-  repStyleObj.addStyle(".title_text", cssStyle.$title_text);
-
-  /* Text begin */
-  repStyleObj.addStyle(".begin_text", cssStyle.$begin_text);
-
-  /* Details+Totals+texts table */
-  repStyleObj.addStyle(".doc_table", cssStyle.$doc_table);
-  //repStyleObj.addStyle("table.doc_table td", "border: thin solid black; padding: 3px;");
-
-  /* Qr Code */
-  repStyleObj.addStyle(".qr_code", cssStyle.$qr_code);
-
-  /* Footer horizontal line */
-  repStyleObj.addStyle(".footer_line", cssStyle.$footer_line);
-
-  /* Footer table */
-  repStyleObj.addStyle(".footer_table", cssStyle.$footer_table);
-  //repStyleObj.addStyle("table.footer_table td", "border: thin solid black");
+  /* Uncomment to show all the borders of the tables */
+  // // Info
+  // repStyleObj.addStyle("table.info_table_left td", "border: thin solid black;");
+  // repStyleObj.addStyle("table.info_table_right td", "border: thin solid black");
+  // repStyleObj.addStyle("table.info_table_row0 td", "border: thin solid black");
+  // // // Address
+  // repStyleObj.addStyle("table.address_table_right td", "border: thin solid black");
+  // repStyleObj.addStyle("table.address_table_left td", "border: thin solid black");
+  // repStyleObj.addStyle("table.shipping_address td", "border: thin solid black;");
+  // // // Begin
+  // repStyleObj.addStyle("table.begin_text_table td", "border: thin solid black;");
+  // // // Details
+  // repStyleObj.addStyle("table.doc_table td", "border: thin solid black;");
+  // // // Footer
+  // repStyleObj.addStyle("table.footer_table td", "border: thin solid black");
 }
 
 
