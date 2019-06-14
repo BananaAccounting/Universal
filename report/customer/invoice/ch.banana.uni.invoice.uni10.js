@@ -815,17 +815,6 @@ function convertParam(userParam) {
   }
   convertedParam.data.push(currentParam);
 
-  currentParam = {};
-  currentParam.name = 'styles_margins';
-  currentParam.parentObject = 'styles';
-  currentParam.title = texts.param_styles_margins;
-  currentParam.type = 'string';
-  currentParam.value = '';
-  currentParam.editable = false;
-  currentParam.readValue = function() {
-    userParam.styles_margins = this.value;
-  }
-  convertedParam.data.push(currentParam);
 
 
   /*******************************************************************************************
@@ -1224,45 +1213,12 @@ function printDocument(jsonInvoice, repDocObj, repStyleObj) {
     repStyleObj = reportObj.newStyleSheet();
   }
 
-  var cssStyle = {
-    "body" : "",
-    "right" : "",
-    "center" : "",
-    "bold" : "",
-    "doc_table_header" : "",
-    "doc_table_header_td" : "",
-    "total_cell" : "",
-    "subtotal_cell" : "",
-    "vat_info" : "",
-    "even_rows_background_color" : "",
-    "border_bottom" : "",
-    "thin_border_top" : "",
-    "padding_right" : "",
-    "padding_left" : "",
-    "header_left_text" : "",
-    "header_right_text" : "",
-    "begin_text_table":"",
-    "title_text" : "",
-    "begin_text" : "",
-    "logo" : "",
-    "info_table_left" : "",
-    "table_info_table_left_td" : "",
-    "info_table_right" : "",
-    "table_info_table_right_td" : "",
-    "info_table_row0" : "",
-    "table_info_table_row0_td" : "",
-    "page_first_view_info_table_row0" : "",
-    "address_table_right" : "",
-    "address_table_left" : "",
-    "small_address" : "",
-    "shipping_address" : "",
-    "doc_table" : "",
-    "qr_code" : "",
-    "footer_line" : "",
-    "footer_table" : ""
-  };
-
-  set_invoice_style(repStyleObj, cssStyle, userParam);
+  /*
+    variable starts with $
+  */
+  var cssVariables = {};
+  set_css_variables(repStyleObj, cssVariables, userParam);
+  set_invoice_style(repStyleObj, cssVariables, userParam);
   
   // Print the invoice document
   repDocObj = printInvoice(jsonInvoice, repDocObj, texts, userParam, repStyleObj, invoiceObj);
@@ -2513,9 +2469,6 @@ function setInvoiceTexts(language) {
     texts.param_background_color_2 = 'Rows background color';
     texts.param_font_family = 'Font type';
     texts.param_font_size = 'Font size';
-    texts.param_styles_margins = 'Margins';
-    texts.param_address_margin_top = 'Address margin top (mm)';
-    texts.param_address_margin_left = 'Address margin left (mm)';
 
     //Embedded JavaScript file
     texts.embedded_javascript_file_not_found = "Custom Javascript file not found or not valid";
@@ -2585,162 +2538,216 @@ function setInvoiceTexts(language) {
 
 
 
-function replaceVariable(cssStyle, cssVariable) {
+function replaceVariable(cssText, cssVariables) {
 
   var result = "";
-  var keyNames = [];
-  var keyNamesWith$ = [];
+  var varname = "";
+  var insideVariable = false;
+  var variablesNotFound = [];
 
-  // Take the string that must be replaced with variables values
-  result = cssVariable;
-  Banana.console.log("STRING TO BE REPLACED: " + result+ "\n");
+  Banana.console.log(">>STRING TO REPLACE: " + cssText+ "\n");
+  for (var i = 0; i < cssText.length; i++) {
+    
+    var currentChar = cssText[i];
 
-  // Take all the key names of the cssStyle object => i.e. [body, right, $font_size, $font_family, ...]
-  keyNames = Object.keys(cssStyle); 
-  Banana.console.log("ALL KEYNAMES: " + keyNames + "\n");
-
-  // Take all the keyNames that starts with "$" => i.e. [$font_size, $font_family, ...]
-  for (var i = 0; i < keyNames.length; i++) {
-    if (keyNames[i].substring(0,1) === "$") {
-      keyNamesWith$.push(keyNames[i]);
+    if (currentChar === "$") {
+      insideVariable = true;
+      varname = currentChar;
+    }
+    else if (insideVariable) {
+      if (currentChar.match(/^[0-9a-zA-Z]+$/) || currentChar === "_" || currentChar === "-") {
+        // still a variable name
+        varname += currentChar;
+      } 
+      else {
+        // end variable, any other charcter
+        
+        if (!(varname in cssVariables)) {
+          variablesNotFound.push(varname);
+          result += varname;
+        }
+        else {
+          result += cssVariables[varname];
+        }
+        
+        result += currentChar;
+        insideVariable = false;
+        varname = "";
+        Banana.console.log(">>VARNAME: " + varname+ "\n");
+      }
+    }
+    else {
+      result += currentChar;
     }
   }
-  Banana.console.log("ALL KEYNAMES WITH $: " + keyNamesWith$+ "\n");
 
-  // Replace each "$variable" with his value
-  for (var i = 0; i < keyNamesWith$.length; i++) {
-    result = result.replace(keyNamesWith$[i], cssStyle[keyNamesWith$[i]]);
+  if (insideVariable) {
+    // end of text, end of variable
+
+    if (!(varname in cssVariables)) {
+      variablesNotFound.push(varname);
+      result += varname;
+    }
+    else {
+      result += cssVariables[varname];
+    }
+
+    insideVariable = false;
+    Banana.console.log(">>VARNAME: " + varname+ "\n");
   }
-  Banana.console.log("FINAL STRING (INSIDE): " + result + "\n");
 
+  if (variablesNotFound.length > 0) {
+    Banana.console.log(">>VARIABLESNOTFOUND :" + variablesNotFound);
+  }
+
+
+  Banana.console.log(">>RESULT: " + result+ "\n");
   return result;
 }
 
 
 
 
-function set_css_variables(repStyleObj, cssStyle, userParam) {
+function set_css_variables(repStyleObj, cssVariables, userParam) {
 
-  
-  var $margin_top = "10mm";
-  var $margin_right = "10mm";
-  var $margin_bottom = "20mm";
-  var $margin_left = "20mm";
-  var $margin_left_details = "23mm";
-  var $top_shipping_address = "75mm";
-  var $top_begin_text = "120mm";
-  var $top_details = "140mm";
+  cssVariables.$font_size = userParam.font_size+"pt";
+  cssVariables.$font_family = userParam.font_family;
+  cssVariables.$font = "XXX";
 
-  // var cssStyle.$margin_top = '10mm';
-
-
-
-  /////////////////////////////////////////////////////////////////////////////////
-
-  cssStyle.$font_size = userParam.font_size+"pt";
-  cssStyle.$font_family = userParam.font_family;
-  
-
-  cssStyle.body = "font-size:$font_size;font-family:$font_family";
-  cssStyle.body = replaceVariable(cssStyle, cssStyle.body);
-  Banana.console.log("FINAL STRING (OUTSIDE): " + cssStyle.body + "\n");
-  repStyleObj.addStyle("body ", cssStyle.body);
+  cssVariables.$margin_top = "10mm";
+  cssVariables.$margin_right = "10mm";
+  cssVariables.$margin_bottom = "20mm";
+  cssVariables.$margin_left = "20mm";
+  cssVariables.$margin_left_details = "23mm";
+  cssVariables.$top_shipping_address = "75mm";
+  cssVariables.$top_begin_text = "120mm";
+  cssVariables.$top_details = "140mm";
 
   
 
 
 
-  ////////////////////////////////////////////////////////////////////////////////
-
-
-
-  //cssStyle.body = "font-size:"+userParam.font_size+";font-family:"+userParam.font_family;
-  cssStyle.right = "text-align:right";
-  cssStyle.center = "text-align:center";
-  cssStyle.total_cell = "font-weight:bold; color: " + userParam.background_color_1 + "; border-bottom:1px double " + userParam.background_color_1 + "; font-size:"+(parseInt(userParam.font_size)+2)+"pt";
-  cssStyle.subtotal_cell = "font-weight:bold; background-color:" + userParam.background_color_1 + "; color: " + userParam.color + "; padding:5px";
-  cssStyle.vat_info = "font-size:"+ userParam.font_size + "pt";
-  cssStyle.even_rows_background_color = "background-color:" + userParam.background_color_2;
-  cssStyle.border_bottom = "border-bottom:2px solid " + userParam.background_color_1;
-  cssStyle.thin_border_top = "border-top:thin solid " + userParam.background_color_1;
-  cssStyle.padding_right = "padding-right:5px";
-  cssStyle.padding_left = "padding-left:5px";
-
-  cssStyle.bold = "font-weight:bold";
-  cssStyle.header_left_text = "position:absolute;margin-top:"+$margin_top+";margin-left:"+$margin_left+";margin-right:"+$margin_right;
-  cssStyle.header_right_text = "position:absolute;margin-top:"+$margin_top+";margin-left:"+$margin_left+";margin-right:"+$margin_right+";text-align:right";
-  cssStyle.logo = "position:absolute;margin-top:"+$margin_top+";margin-left:"+$margin_left+";margin-right:"+$margin_right;
+  // ... modificare tutti i valori delle variabili quà sotto in modo che contengano una stringa con all'interno le variabili $xxx 
   
-  cssStyle.info_table_left = "position:absolute;margin-top:45mm;margin-left:"+$margin_left+";margin-right:"+$margin_right+";font-size:"+userParam.font_size+"pt;";
-  cssStyle.table_info_table_left_td = "padding-top:0px; padding-bottom:0px";
-  cssStyle.info_table_right = "position:absolute;margin-top:45mm;margin-left:113mm;margin-right:"+$margin_right+";font-size:"+userParam.font_size+"pt";
-  cssStyle.table_info_table_right_td = "padding-top:0px; padding-bottom:0px";
-  cssStyle.info_table_row0 = "position:absolute;margin-top:45mm;margin-left:"+$margin_left+";margin-right:"+$margin_right+";font-size:"+userParam.font_size+"pt";
-  cssStyle.table_info_table_row0_td = "padding-top:0px; padding-bottom:0px";
-  cssStyle.page_first_view_info_table_row0 = "display:none";
+  // Quando fatto, le stringhe spostarle sotto " tmp = xxx "
   
-  cssStyle.address_table_right = "position:absolute;margin-top:45mm;margin-left:113mm;margin-right:"+$margin_right+";font-size:"+userParam.font_size+"pt";
-  cssStyle.address_table_left = "position:absolute;margin-top:45mm;margin-left:"+$margin_left+";margin-right:"+$margin_right;
-  cssStyle.small_address = "text-align:center;font-size:7pt;border-bottom:solid 1px black"; 
-  cssStyle.qr_code = "text-align:right";
-  cssStyle.footer_line = "margin-left:"+$margin_left+";margin-right:"+$margin_right+";border-top:thin solid "+userParam.background_color_1;
-  cssStyle.footer_table = "margin-bottom:"+$margin_bottom+";margin-left:"+$margin_left+";margin-right:"+$margin_right+";width:100%;font-size:8pt";
+  // Qui dovrebbero restare solo le variabili con il $ (quelle sopra per intenderci)
   
-  cssStyle.shipping_address = "position:absolute;margin-top:"+$top_shipping_address+";margin-left:"+$margin_left+";margin-right:"+$margin_right+";font-size:"+userParam.font_size+"pt;";
-  
-  cssStyle.begin_text_table = "position:absolute;margin-top:"+$top_begin_text+";margin-left:"+$margin_left_details+";margin-right:"+$margin_right+";width:100%;";
-  cssStyle.title_text = "font-size:"+(parseInt(userParam.font_size)+4) +"pt;font-weight:bold;color:"+userParam.background_color_1;
-  cssStyle.begin_text = "font-size:"+userParam.font_size+"pt"; 
+  // Trasformare ad esempio tutte le variabili "userParam.background_color_1" in
+  // "cssVariables.$background_color_1 = userParam.background_color_1" e metterle sopra 
 
-  cssStyle.doc_table = "margin-top:"+$top_details+";margin-left:"+$margin_left_details+";margin-right:"+$margin_right+";width:100%;font-size:"+userParam.font_size+"pt";
-  cssStyle.doc_table_header = "font-weight:bold; background-color:" + userParam.background_color_1 + "; color:" + userParam.color;
-  cssStyle.doc_table_header_td = "padding:5px;";
+
+
+
+
+  /// Valori da modificare e poi spostare sotto:
+  
+  //cssVariables.body = "font-size:"+userParam.font_size+";font-family:"+userParam.font_family;
+  //cssVariables.right = "text-align:right";
+  cssVariables.center = "text-align:center";
+  cssVariables.total_cell = "font-weight:bold; color: " + userParam.background_color_1 + "; border-bottom:1px double " + userParam.background_color_1 + "; font-size:"+(parseInt(userParam.font_size)+2)+"pt";
+  cssVariables.subtotal_cell = "font-weight:bold; background-color:" + userParam.background_color_1 + "; color: " + userParam.color + "; padding:5px";
+  cssVariables.vat_info = "font-size:"+ userParam.font_size + "pt";
+  cssVariables.even_rows_background_color = "background-color:" + userParam.background_color_2;
+  cssVariables.border_bottom = "border-bottom:2px solid " + userParam.background_color_1;
+  cssVariables.thin_border_top = "border-top:thin solid " + userParam.background_color_1;
+  cssVariables.padding_right = "padding-right:5px";
+  cssVariables.padding_left = "padding-left:5px";
+
+  cssVariables.bold = "font-weight:bold";
+  cssVariables.header_left_text = "position:absolute;margin-top:$margin_top;margin-left:$margin_left;margin-right:$margin_right";
+  //cssVariables.header_right_text = "position:absolute;margin-top:"+$margin_top+";margin-left:"+$margin_left+";margin-right:"+$margin_right+";text-align:right";
+  cssVariables.logo = "position:absolute;margin-top:"+$margin_top+";margin-left:"+$margin_left+";margin-right:"+$margin_right;
+  
+  cssVariables.info_table_left = "position:absolute;margin-top:45mm;margin-left:"+$margin_left+";margin-right:"+$margin_right+";font-size:"+userParam.font_size+"pt;";
+  cssVariables.table_info_table_left_td = "padding-top:0px; padding-bottom:0px";
+  cssVariables.info_table_right = "position:absolute;margin-top:45mm;margin-left:113mm;margin-right:"+$margin_right+";font-size:"+userParam.font_size+"pt";
+  cssVariables.table_info_table_right_td = "padding-top:0px; padding-bottom:0px";
+  cssVariables.info_table_row0 = "position:absolute;margin-top:45mm;margin-left:"+$margin_left+";margin-right:"+$margin_right+";font-size:"+userParam.font_size+"pt";
+  cssVariables.table_info_table_row0_td = "padding-top:0px; padding-bottom:0px";
+  cssVariables.page_first_view_info_table_row0 = "display:none";
+  
+  cssVariables.address_table_right = "position:absolute;margin-top:45mm;margin-left:113mm;margin-right:"+$margin_right+";font-size:"+userParam.font_size+"pt";
+  cssVariables.address_table_left = "position:absolute;margin-top:45mm;margin-left:"+$margin_left+";margin-right:"+$margin_right;
+  cssVariables.small_address = "text-align:center;font-size:7pt;border-bottom:solid 1px black"; 
+  cssVariables.qr_code = "text-align:right";
+  cssVariables.footer_line = "margin-left:"+$margin_left+";margin-right:"+$margin_right+";border-top:thin solid "+userParam.background_color_1;
+  cssVariables.footer_table = "margin-bottom:"+$margin_bottom+";margin-left:"+$margin_left+";margin-right:"+$margin_right+";width:100%;font-size:8pt";
+  
+  cssVariables.shipping_address = "position:absolute;margin-top:"+$top_shipping_address+";margin-left:"+$margin_left+";margin-right:"+$margin_right+";font-size:"+userParam.font_size+"pt;";
+  
+  cssVariables.begin_text_table = "position:absolute;margin-top:"+$top_begin_text+";margin-left:"+$margin_left_details+";margin-right:"+$margin_right+";width:100%;";
+  cssVariables.title_text = "font-size:"+(parseInt(userParam.font_size)+4) +"pt;font-weight:bold;color:"+userParam.background_color_1;
+  cssVariables.begin_text = "font-size:"+userParam.font_size+"pt"; 
+
+  cssVariables.doc_table = "margin-top:"+$top_details+";margin-left:"+$margin_left_details+";margin-right:"+$margin_right+";width:100%;font-size:"+userParam.font_size+"pt";
+  cssVariables.doc_table_header = "font-weight:bold; background-color:" + userParam.background_color_1 + "; color:" + userParam.color;
+  cssVariables.doc_table_header_td = "padding:5px;";
+
+
+
+  /* CSS styles */
+  if (typeof(hook_set_css_variables) === typeof(Function)) {
+    hook_set_css_variables(repStyleObj, cssVariables, userParam);
+  }
 
 }
 
-function set_invoice_style(repStyleObj, cssStyle, userParam) {
-
-  set_css_variables(repStyleObj, cssStyle, userParam);
 
 
-  //Banana.console.log(JSON.stringify(cssStyle, "", " "));
+function set_invoice_style(repStyleObj, cssVariables, userParam) {
+
+  //Banana.console.log(JSON.stringify(cssVariables, "", " "));
   repStyleObj.addStyle(".pageReset", "counter-reset: page");
   
-  // repStyleObj.addStyle("body", cssStyle.body);
-  repStyleObj.addStyle(".amount", cssStyle.right);
-  repStyleObj.addStyle(".center", cssStyle.center);
-  repStyleObj.addStyle(".bold", cssStyle.bold);
-  repStyleObj.addStyle(".total_cell", cssStyle.total_cell);
-  repStyleObj.addStyle(".subtotal_cell", cssStyle.subtotal_cell);
-  repStyleObj.addStyle(".vatInfo", cssStyle.vat_info);
-  repStyleObj.addStyle(".evenRowsBackgroundColor", cssStyle.even_rows_background_color);
-  repStyleObj.addStyle(".border-bottom", cssStyle.border_bottom);
-  repStyleObj.addStyle(".thin-border-top", cssStyle.thin_border_top);
-  repStyleObj.addStyle(".padding-right", cssStyle.padding_right);
-  repStyleObj.addStyle(".padding-left", cssStyle.padding_left);
-  repStyleObj.addStyle(".logo", cssStyle.logo);
-  repStyleObj.addStyle(".header_left_text", cssStyle.header_left_text);
-  repStyleObj.addStyle(".header_right_text", cssStyle.header_right_text);
-  repStyleObj.addStyle(".info_table_left", cssStyle.info_table_left);
-  repStyleObj.addStyle("table.info_table_left td", cssStyle.table_info_table_left_td);
-  repStyleObj.addStyle(".info_table_right", cssStyle.info_table_right);
-  repStyleObj.addStyle("table.info_table_right td", cssStyle.table_info_table_right_td);
-  repStyleObj.addStyle(".info_table_row0", cssStyle.info_table_row0);
-  repStyleObj.addStyle("table.info_table_row0 td", cssStyle.table_info_table_row0_td);
-  repStyleObj.addStyle("@page:first-view table.info_table_row0", cssStyle.page_first_view_info_table_row0);
-  repStyleObj.addStyle(".address_table_right", cssStyle.address_table_right);
-  repStyleObj.addStyle(".address_table_left", cssStyle.address_table_left);
-  repStyleObj.addStyle(".small_address",cssStyle.small_address);
-  repStyleObj.addStyle(".shipping_address", cssStyle.shipping_address);
-  repStyleObj.addStyle(".begin_text_table", cssStyle.begin_text_table);
-  repStyleObj.addStyle(".title_text", cssStyle.title_text);
-  repStyleObj.addStyle(".begin_text", cssStyle.begin_text);
-  repStyleObj.addStyle(".doc_table_header", cssStyle.doc_table_header);
-  repStyleObj.addStyle(".doc_table_header td", cssStyle.doc_table_header_td);
-  repStyleObj.addStyle(".doc_table", cssStyle.doc_table);
-  repStyleObj.addStyle(".qr_code", cssStyle.qr_code);
-  repStyleObj.addStyle(".footer_line", cssStyle.footer_line);
-  repStyleObj.addStyle(".footer_table", cssStyle.footer_table);
+  var tmp = "";
+
+  tmp = "font:$font;font-size:$font1_size;font-family:$font1_family";
+  add_style(repStyleObj, "body", tmp, cssVariables);
+
+  tmp = "text-align:right";
+  add_style(repStyleObj, ".amount", tmp, cssVariables);
+
+
+  //... fare lo stesso lavoro per tutti gli stili seguenti
+
+
+
+  
+  
+  repStyleObj.addStyle(".center", cssVariables.center);
+  repStyleObj.addStyle(".bold", cssVariables.bold);
+  repStyleObj.addStyle(".total_cell", cssVariables.total_cell);
+  repStyleObj.addStyle(".subtotal_cell", cssVariables.subtotal_cell);
+  repStyleObj.addStyle(".vatInfo", cssVariables.vat_info);
+  repStyleObj.addStyle(".evenRowsBackgroundColor", cssVariables.even_rows_background_color);
+  repStyleObj.addStyle(".border-bottom", cssVariables.border_bottom);
+  repStyleObj.addStyle(".thin-border-top", cssVariables.thin_border_top);
+  repStyleObj.addStyle(".padding-right", cssVariables.padding_right);
+  repStyleObj.addStyle(".padding-left", cssVariables.padding_left);
+  repStyleObj.addStyle(".logo", cssVariables.logo);
+  repStyleObj.addStyle(".header_left_text", cssVariables.header_left_text);
+  // repStyleObj.addStyle(".header_right_text", cssVariables.header_right_text);
+  repStyleObj.addStyle(".info_table_left", cssVariables.info_table_left);
+  repStyleObj.addStyle("table.info_table_left td", cssVariables.table_info_table_left_td);
+  repStyleObj.addStyle(".info_table_right", cssVariables.info_table_right);
+  repStyleObj.addStyle("table.info_table_right td", cssVariables.table_info_table_right_td);
+  repStyleObj.addStyle(".info_table_row0", cssVariables.info_table_row0);
+  repStyleObj.addStyle("table.info_table_row0 td", cssVariables.table_info_table_row0_td);
+  repStyleObj.addStyle("@page:first-view table.info_table_row0", cssVariables.page_first_view_info_table_row0);
+  repStyleObj.addStyle(".address_table_right", cssVariables.address_table_right);
+  repStyleObj.addStyle(".address_table_left", cssVariables.address_table_left);
+  repStyleObj.addStyle(".small_address",cssVariables.small_address);
+  repStyleObj.addStyle(".shipping_address", cssVariables.shipping_address);
+  repStyleObj.addStyle(".begin_text_table", cssVariables.begin_text_table);
+  repStyleObj.addStyle(".title_text", cssVariables.title_text);
+  repStyleObj.addStyle(".begin_text", cssVariables.begin_text);
+  repStyleObj.addStyle(".doc_table_header", cssVariables.doc_table_header);
+  repStyleObj.addStyle(".doc_table_header td", cssVariables.doc_table_header_td);
+  repStyleObj.addStyle(".doc_table", cssVariables.doc_table);
+  repStyleObj.addStyle(".qr_code", cssVariables.qr_code);
+  repStyleObj.addStyle(".footer_line", cssVariables.footer_line);
+  repStyleObj.addStyle(".footer_table", cssVariables.footer_table);
 
   /* Uncomment to show all the borders of the tables */
   // // Info
@@ -2757,6 +2764,27 @@ function set_invoice_style(repStyleObj, cssStyle, userParam) {
   // repStyleObj.addStyle("table.doc_table td", "border: thin solid black;");
   // // // Footer
   // repStyleObj.addStyle("table.footer_table td", "border: thin solid black");
+
+
+
+
+
+
+
+  /* CSS styles */
+  if (typeof(hook_set_invoice_style) === typeof(Function)) {
+    hook_set_invoice_style(repStyleObj, cssVariables, userParam);
+  }
+
+
 }
+
+
+
+function add_style(repStyleObj, styleName, style, cssVariables) {
+
+  repStyleObj.addStyle(styleName, replaceVariable(style, cssVariables));
+}
+
 
 
