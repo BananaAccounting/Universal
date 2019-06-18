@@ -26,195 +26,245 @@
 \section{Invoice tests}
 \subsection{Test Invoice 35}
 \begin{reportvalue}{Test Invoice 35}
+Banana.ch SA \\
+Via alla Santa 7 - 6962 Viganello \\
+www.banana.ch - info@banana.ch \\
+IVA 123 456 789 \\
 \begin{longtable}[l]{ l  l }
- & Banana.ch SA \newline \newline Via Trevano 7a \newline 6900 Lugano \newline info@banana.ch \newline www.banana.ch \newline \newline \\
+Invoice:  & 35 \\
+Date:  & 29.01.2019 \\
+Customer No:  & 100002 \\
+VAT number:  & 123 456 789 \\
+Fiscal number:  & 001 002 003 \\
+Payment:  & 30 days \\
+Page:  & \#page-nr \\
 \end{longtable}
 \begin{longtable}[l]{ l  l }
-   &   \\
-Invoice  & 35 \\
-Date  & 29.01.2018 \\
-Customer No  & 100002 \\
-Payment  & 30 days \\
-Page  & \#page-nr \\
-\end{longtable}
-\begin{longtable}[l]{ l  l }
-   &   \\
-Invoice  & 35 \\
-Date  & 29.01.2018 \\
-Customer No  & 100002 \\
-Payment  & 30 days \\
-Page  & \#page-nr \\
+Invoice:  & 35 \\
+Date:  & 29.01.2019 \\
+Customer No:  & 100002 \\
+VAT number:  & 123 456 789 \\
+Fiscal number:  & 001 002 003 \\
+Payment:  & 30 days \\
+Page:  & \#page-nr \\
 \end{longtable}
 \begin{longtable}[l]{ l }
-Banana.ch SA  - Via Trevano 7a - 6900 Lugano \\
+Banana.ch SA - Via alla Santa 7 - 6962 Viganello \\
 Mario Bianchi \newline Via Trevano \newline 6963 Pregassona \newline \newline \\
 \end{longtable}
-This is the beginning text using the '10:beg' command in DocType column. \\
-\begin{longtable}[l]{ l  l  l  l }
-Description  &  &  & Total CHF \\
-Sales merchandise, invoice \#35, customer B \newline \newline  &  &  & 1'851.85 \\
-Sales merchandise, invoice \#35, customer B \newline \newline  &  &  & 925.93 \\
-Sales merchandise, invoice \#35, customer B \newline \newline  &  &  & 462.96 \\
-\multicolumn{4}{l}{}\\
-\multicolumn{4}{l}{}\\
-   & Total net  &    & 3'240.74 \\
- & VAT 8.00\%  &  & 259.26 \\
-\multicolumn{4}{l}{}\\
- & \multicolumn{2}{l}{TOTAL CHF } & 3'500.00 \\
-\multicolumn{4}{l}{}\\
-\multicolumn{4}{l}{}\\
-\multicolumn{4}{l}{}\\
-\multicolumn{4}{l}{Final text taken from the 'Print invoices' ,'Template options' settings. }\\
+\begin{longtable}[l]{ l }
+Shipping address \newline Sig. \newline Aaaa Bbbb \newline Via Cccccc 7 \newline 9999 Paese xx \newline \newline \\
 \end{longtable}
-\begin{longtable}[l]{ l  l  l  l }
-\multicolumn{4}{l}{  }\\
-\multicolumn{4}{l}{This is a note using the '10:not' command in the DocType column. }\\
-\multicolumn{4}{l}{This is another note using the '10:not' command in the DocType column. }\\
-\multicolumn{4}{l}{  }\\
-\multicolumn{4}{l}{  }\\
+\begin{longtable}[l]{ l }
+Invoice 35 \newline \newline \newline \\
+This is the  beginning text  using the '10:beg' command in DocType column. \newline   \newline   \newline \\
 \end{longtable}
-\begin{longtable}[l]{ l  l  l  l }
-\multicolumn{4}{l}{Greetings text using the '10:gre' command in the DocType column }\\
+\begin{longtable}[l]{ l  l  l  l  l  l  l  l  l  l }
+Description  & Quantity  & ReferenceUnit  & UnitPrice  & Amount \\
+Sales merchandise, invoice \#35, customer B \newline \newline  &  &  & 1'851.85  & 1'851.85 \\
+Sales merchandise, invoice \#35, customer B \newline \newline  & 4.9876  & pz.  & 96.43  & 480.96 \\
+Sales merchandise, invoice \#35, customer B \newline \newline  & 10.00  & pz..  & 97.56  & 975.61 \\
+\multicolumn{5}{l}{}\\
+\multicolumn{4}{l}{Total net } & 3'308.42 \\
+\multicolumn{4}{l}{VAT 8.00\% (1'851.85) } & 148.15 \\
+\multicolumn{4}{l}{VAT 3.70\% (480.96) } & 17.80 \\
+\multicolumn{4}{l}{VAT 2.50\% (975.61) } & 24.39 \\
+\multicolumn{4}{l}{Rounding } & -0.01 \\
+\multicolumn{5}{l}{}\\
+\multicolumn{4}{l}{TOTAL CHF } & 3'498.75 \\
+\multicolumn{5}{l}{}\\
+\multicolumn{5}{l}{  \newline   \newline   \newline }\\
+\multicolumn{5}{l}{  }\\
+\multicolumn{5}{l}{Paragraph 1, final text taken from the 'Print invoices' ,'Template options' settings. \newline }\\
+\multicolumn{5}{l}{Paragraph 2,  final text  taken from the 'Print invoices' ,'Template options' settings.  Final text taken from the 'Print invoices' ,'Template options' settings. \newline }\\
+\multicolumn{5}{l}{  \newline }\\
+\multicolumn{5}{l}{This is a note using the '10:not' command in the DocType column. \newline }\\
+\multicolumn{5}{l}{This is another note using the '10:not' command in the DocType column. \newline }\\
+\multicolumn{5}{l}{  \newline }\\
+\multicolumn{5}{l}{  \newline }\\
+\multicolumn{5}{l}{Greetings text  using the  '10:gre' command  in the DocType column \newline }\\
+\end{longtable}
+  \\
+  \\
+  \\
+\begin{longtable}[l]{ l  l  l }
+Invoice \newline  &  & Page  \#page-nr \newline \\
 \end{longtable}
 \end{reportvalue}
 \subsection{Test Invoice 36}
 \begin{reportvalue}{Test Invoice 36}
+Banana.ch SA \\
+Via alla Santa 7 - 6962 Viganello \\
+www.banana.ch - info@banana.ch \\
+IVA 123 456 789 \\
 \begin{longtable}[l]{ l  l }
- & Banana.ch SA \newline \newline Via Trevano 7a \newline 6900 Lugano \newline info@banana.ch \newline www.banana.ch \newline \newline \\
+Invoice:  & 36 \\
+Date:  & 01.02.2018 \\
+Customer No:  & 100004 \\
+VAT number:  & \\
+Fiscal number:  & \\
+Payment:  & 03.03.2018 \\
+Page:  & \#page-nr \\
 \end{longtable}
 \begin{longtable}[l]{ l  l }
-   &   \\
-Invoice  & 36 \\
-Date  & 01.02.2018 \\
-Customer No  & 100004 \\
-Payment  & 03.03.2018 \\
-Page  & \#page-nr \\
-\end{longtable}
-\begin{longtable}[l]{ l  l }
-   &   \\
-Invoice  & 36 \\
-Date  & 01.02.2018 \\
-Customer No  & 100004 \\
-Payment  & 03.03.2018 \\
-Page  & \#page-nr \\
+Invoice:  & 36 \\
+Date:  & 01.02.2018 \\
+Customer No:  & 100004 \\
+VAT number:  & \\
+Fiscal number:  & \\
+Payment:  & 03.03.2018 \\
+Page:  & \#page-nr \\
 \end{longtable}
 \begin{longtable}[l]{ l }
-Banana.ch SA  - Via Trevano 7a - 6900 Lugano \\
+Banana.ch SA - Via alla Santa 7 - 6962 Viganello \\
 Susanna Lanfranchi \newline V.Meggiagra 3 \newline 6599 Robasacco \newline Switzerland \newline \\
 \end{longtable}
-\begin{longtable}[l]{ l  l  l  l }
-Description  &  &  & Total CHF \\
-Sales merchandise, invoice \#36, customer D \newline \newline  &  &  & 6'481.48 \\
-\multicolumn{4}{l}{}\\
-\multicolumn{4}{l}{}\\
-   & Total net  &    & 6'481.48 \\
- & VAT 8.00\%  &  & 518.52 \\
-\multicolumn{4}{l}{}\\
- & \multicolumn{2}{l}{TOTAL CHF } & 7'000.00 \\
-\multicolumn{4}{l}{}\\
-\multicolumn{4}{l}{}\\
-\multicolumn{4}{l}{}\\
-\multicolumn{4}{l}{Final text taken from the 'Print invoices' ,'Template options' settings. }\\
+\begin{longtable}[l]{ l }
+\\
 \end{longtable}
-\begin{longtable}[l]{}
+\begin{longtable}[l]{ l }
+Invoice 36 \newline \newline \newline \\
 \end{longtable}
-\begin{longtable}[l]{}
+\begin{longtable}[l]{ l  l  l  l  l  l  l  l  l  l }
+Description  & Quantity  & ReferenceUnit  & UnitPrice  & Amount \\
+Sales merchandise, invoice \#36, customer D \newline \newline  &  &  & 6'481.48  & 6'481.48 \\
+\multicolumn{10}{l}{}\\
+\multicolumn{9}{l}{Total net } & 6'481.48 \\
+\multicolumn{9}{l}{VAT 8.00\% (6'481.48) } & 518.52 \\
+\multicolumn{10}{l}{}\\
+\multicolumn{9}{l}{TOTAL CHF } & 7'000.00 \\
+\multicolumn{10}{l}{}\\
+\multicolumn{10}{l}{  \newline   \newline   \newline }\\
+\multicolumn{10}{l}{  }\\
+\multicolumn{10}{l}{\newline }\\
+\multicolumn{10}{l}{\newline }\\
+\multicolumn{10}{l}{Final text taken from the 'Print invoices' ,'Template options' settings. \newline }\\
+\end{longtable}
+  \\
+  \\
+  \\
+\begin{longtable}[l]{ l  l  l }
+Invoice \newline  &  & Page  \#page-nr \newline \\
 \end{longtable}
 \end{reportvalue}
 \subsection{Test Invoice 37}
 \begin{reportvalue}{Test Invoice 37}
+Banana.ch SA \\
+Via alla Santa 7 - 6962 Viganello \\
+www.banana.ch - info@banana.ch \\
+IVA 123 456 789 \\
 \begin{longtable}[l]{ l  l }
- & Banana.ch SA \newline \newline Via Trevano 7a \newline 6900 Lugano \newline info@banana.ch \newline www.banana.ch \newline \newline \\
+Invoice:  & 37 \\
+Date:  & 03.02.2018 \\
+Customer No:  & 100001 \\
+VAT number:  & \\
+Fiscal number:  & \\
+Payment:  & 05.03.2018 \\
+Page:  & \#page-nr \\
 \end{longtable}
 \begin{longtable}[l]{ l  l }
-   &   \\
-Invoice  & 37 \\
-Date  & 03.02.2018 \\
-Customer No  & 100001 \\
-Payment  & 05.03.2018 \\
-Page  & \#page-nr \\
-\end{longtable}
-\begin{longtable}[l]{ l  l }
-   &   \\
-Invoice  & 37 \\
-Date  & 03.02.2018 \\
-Customer No  & 100001 \\
-Payment  & 05.03.2018 \\
-Page  & \#page-nr \\
+Invoice:  & 37 \\
+Date:  & 03.02.2018 \\
+Customer No:  & 100001 \\
+VAT number:  & \\
+Fiscal number:  & \\
+Payment:  & 05.03.2018 \\
+Page:  & \#page-nr \\
 \end{longtable}
 \begin{longtable}[l]{ l }
-Banana.ch SA  - Via Trevano 7a - 6900 Lugano \\
+Banana.ch SA - Via alla Santa 7 - 6962 Viganello \\
 Carlo Rossi \newline Rossi SA \newline Via Trevano \newline 6963 Pregassona \newline Switzerland \newline \\
 \end{longtable}
-\begin{longtable}[l]{ l  l  l  l }
-Description  &  &  & Total CHF \\
-Sales merchandise, invoice \#37, customer A \newline \newline  &  &  & 7'407.41 \\
-Consultancy \newline \newline  &  &  & 92.59 \\
-Consultancy \newline \newline  &  &  & 92.59 \\
-Consultancy \newline \newline  &  &  & 92.59 \\
-Consultancy \newline \newline  &  &  & 92.59 \\
-Consultancy \newline \newline  &  &  & 92.59 \\
-Consultancy \newline \newline  &  &  & 92.59 \\
-\multicolumn{4}{l}{}\\
-\multicolumn{4}{l}{}\\
-   & Total net  &    & 7'962.95 \\
- & VAT 8.00\%  &  & 637.05 \\
-\multicolumn{4}{l}{}\\
- & \multicolumn{2}{l}{TOTAL CHF } & 8'600.00 \\
-\multicolumn{4}{l}{}\\
-\multicolumn{4}{l}{}\\
-\multicolumn{4}{l}{}\\
-\multicolumn{4}{l}{Final text taken from the 'Print invoices' ,'Template options' settings. }\\
+\begin{longtable}[l]{ l }
+\\
 \end{longtable}
-\begin{longtable}[l]{}
+\begin{longtable}[l]{ l }
+Invoice 37 \newline \newline \newline \\
 \end{longtable}
-\begin{longtable}[l]{}
+\begin{longtable}[l]{ l  l  l  l  l  l  l  l  l  l  l  l  l  l  l }
+Description  & Quantity  & ReferenceUnit  & UnitPrice  & Amount \\
+Sales merchandise, invoice \#37, customer A \newline \newline  &  &  & 7'407.41  & 7'407.41 \\
+Consultancy \newline \newline  &  &  & 92.59  & 92.59 \\
+Consultancy \newline \newline  &  &  & 92.59  & 92.59 \\
+Consultancy \newline \newline  &  &  & 92.59  & 92.59 \\
+Consultancy \newline \newline  &  &  & 92.59  & 92.59 \\
+Consultancy \newline \newline  &  &  & 92.59  & 92.59 \\
+Consultancy \newline \newline  &  &  & 92.59  & 92.59 \\
+\multicolumn{15}{l}{}\\
+\multicolumn{14}{l}{Total net } & 7'962.95 \\
+\multicolumn{14}{l}{VAT 8.00\% (7'962.95) } & 637.05 \\
+\multicolumn{15}{l}{}\\
+\multicolumn{14}{l}{TOTAL CHF } & 8'600.00 \\
+\multicolumn{15}{l}{}\\
+\multicolumn{15}{l}{  \newline   \newline   \newline }\\
+\multicolumn{15}{l}{  }\\
+\multicolumn{15}{l}{\newline }\\
+\multicolumn{15}{l}{\newline }\\
+\multicolumn{15}{l}{Final text taken from the 'Print invoices' ,'Template options' settings. \newline }\\
+\end{longtable}
+  \\
+  \\
+  \\
+\begin{longtable}[l]{ l  l  l }
+Invoice \newline  &  & Page  \#page-nr \newline \\
 \end{longtable}
 \end{reportvalue}
 \subsection{Test Invoice 47}
 \begin{reportvalue}{Test Invoice 47}
+Banana.ch SA \\
+Via alla Santa 7 - 6962 Viganello \\
+www.banana.ch - info@banana.ch \\
+IVA 123 456 789 \\
 \begin{longtable}[l]{ l  l }
- & Banana.ch SA \newline \newline Via Trevano 7a \newline 6900 Lugano \newline info@banana.ch \newline www.banana.ch \newline \newline \\
+Invoice:  & 47 \\
+Date:  & 11.11.2018 \\
+Customer No:  & 100003 \\
+VAT number:  & \\
+Fiscal number:  & \\
+Payment:  & 11.12.2018 \\
+Page:  & \#page-nr \\
 \end{longtable}
 \begin{longtable}[l]{ l  l }
-   &   \\
-Invoice  & 47 \\
-Date  & 11.11.2018 \\
-Customer No  & 100003 \\
-Payment  & 11.12.2018 \\
-Page  & \#page-nr \\
-\end{longtable}
-\begin{longtable}[l]{ l  l }
-   &   \\
-Invoice  & 47 \\
-Date  & 11.11.2018 \\
-Customer No  & 100003 \\
-Payment  & 11.12.2018 \\
-Page  & \#page-nr \\
+Invoice:  & 47 \\
+Date:  & 11.11.2018 \\
+Customer No:  & 100003 \\
+VAT number:  & \\
+Fiscal number:  & \\
+Payment:  & 11.12.2018 \\
+Page:  & \#page-nr \\
 \end{longtable}
 \begin{longtable}[l]{ l }
-Banana.ch SA  - Via Trevano 7a - 6900 Lugano \\
+Banana.ch SA - Via alla Santa 7 - 6962 Viganello \\
 Marco Alberti \newline V. Campuréta 40 \newline 6883 Novazzano \newline Switzerland \newline \\
 \end{longtable}
-\begin{longtable}[l]{ l  l  l  l }
-Description  &  &  & Total CHF \\
-Product A \newline \newline  &  &  & 20.37 \\
-Product B \newline \newline  &  &  & 27.78 \\
-Discount 10\% product B \newline \newline  &  &  & -2.78 \\
-\multicolumn{4}{l}{}\\
-\multicolumn{4}{l}{}\\
-   & Total net  &    & 45.37 \\
- & VAT 8.00\%  &  & 3.63 \\
-\multicolumn{4}{l}{}\\
- & \multicolumn{2}{l}{TOTAL CHF } & 49.00 \\
-\multicolumn{4}{l}{}\\
-\multicolumn{4}{l}{}\\
-\multicolumn{4}{l}{}\\
-\multicolumn{4}{l}{Final text taken from the 'Print invoices' ,'Template options' settings. }\\
+\begin{longtable}[l]{ l }
+\\
 \end{longtable}
-\begin{longtable}[l]{}
+\begin{longtable}[l]{ l }
+Invoice 47 \newline \newline \newline \\
 \end{longtable}
-\begin{longtable}[l]{}
+\begin{longtable}[l]{ l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l }
+Description  & Quantity  & ReferenceUnit  & UnitPrice  & Amount \\
+Product A \newline \newline  &  &  & 20.37  & 20.37 \\
+Product B \newline \newline  &  &  & 27.78  & 27.78 \\
+Discount 10\% product B \newline \newline  &  &  & -2.78  & -2.78 \\
+\multicolumn{20}{l}{}\\
+\multicolumn{19}{l}{Total net } & 45.37 \\
+\multicolumn{19}{l}{VAT 8.00\% (45.37) } & 3.63 \\
+\multicolumn{20}{l}{}\\
+\multicolumn{19}{l}{TOTAL CHF } & 49.00 \\
+\multicolumn{20}{l}{}\\
+\multicolumn{20}{l}{  \newline   \newline   \newline }\\
+\multicolumn{20}{l}{  }\\
+\multicolumn{20}{l}{\newline }\\
+\multicolumn{20}{l}{\newline }\\
+\multicolumn{20}{l}{Final text taken from the 'Print invoices' ,'Template options' settings. \newline }\\
+\end{longtable}
+  \\
+  \\
+  \\
+\begin{longtable}[l]{ l  l  l }
+Invoice \newline  &  & Page  \#page-nr \newline \\
 \end{longtable}
 \end{reportvalue}
 \keyvalue{Result}{Passed}
