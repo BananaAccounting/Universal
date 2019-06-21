@@ -106,16 +106,16 @@ function setParametres(texts) {
   var userParam = {};
 
   //Include
-  userParam.print_header = true;
+  userParam.header_print = true;
   userParam.header_left = false;
   userParam.header_row_1 = "Banana.ch SA";
   userParam.header_row_2 = "Via alla Santa 7 - 6962 Viganello";
   userParam.header_row_3 = "www.banana.ch - info@banana.ch";
   userParam.header_row_4 = "IVA 123 456 789";
   userParam.header_row_5 = "";
-  userParam.print_logo = true;
+  userParam.logo_print = true;
   userParam.logo_name = 'Logo';
-  userParam.small_address_line = 'Banana.ch SA - Via alla Santa 7 - 6962 Viganello';
+  userParam.address_small_line = 'Banana.ch SA - Via alla Santa 7 - 6962 Viganello';
   userParam.address_left = false;
   userParam.shipping_address = true;
   userParam.info_invoice_number = true;
@@ -125,33 +125,33 @@ function setParametres(texts) {
   userParam.info_customer_fiscal_number = true;
   userParam.info_due_date = true;
   userParam.info_page = true;
-  userParam.items_invoice_details = texts.description+";"+texts.quantity+";"+texts.reference_unit+";"+texts.unit_price+";"+texts.amount;
-  userParam.items_invoice_details_dimensions = '50%;10%;10%;15%;15%';
+  userParam.details_columns = texts.description+";"+texts.quantity+";"+texts.reference_unit+";"+texts.unit_price+";"+texts.amount;
+  userParam.details_columns_widths = '50%;10%;10%;15%;15%';
   userParam.details_gross_amounts = false;
-  userParam.add_footer = true;
+  userParam.footer_add = true;
   userParam.footer_left = texts.invoice;
   userParam.footer_center = '';
   userParam.footer_right = texts.page+' &['+texts.page+']';
-  userParam.add_qr_code = true;
-  userParam.qr_code_position = 'right';
-  userParam.use_different_address = false;
-  userParam.address_row_1 = '';
-  userParam.address_row_2 = '';
-  userParam.address_row_3 = '';
+  userParam.qr_code_add = true;
+  userParam.qr_code_align = 'right';
+  userParam.qr_code_use_different_address = false;
+  userParam.qr_code_address_row_1 = '';
+  userParam.qr_code_address_row_2 = '';
+  userParam.qr_code_address_row_3 = '';
 
   //Texts
   userParam.add_language = "";
-  userParam.texts_info_invoice_number_text = texts.invoice;
-  userParam.texts_info_date_text = texts.date;
-  userParam.texts_info_customer_text = texts.customer;
-  userParam.texts_info_customer_vat_number = texts.vat_number;
-  userParam.texts_info_customer_fiscal_number = texts.fiscal_number;
-  userParam.texts_info_due_date_text = texts.payment_terms_label;
-  userParam.texts_info_page_text = texts.page;
-  userParam.texts_shipping_address = texts.shipping_address;
+  userParam.text_info_invoice_number = texts.invoice;
+  userParam.text_info_date = texts.date;
+  userParam.text_info_customer = texts.customer;
+  userParam.text_info_customer_vat_number = texts.vat_number;
+  userParam.text_info_customer_fiscal_number = texts.fiscal_number;
+  userParam.text_info_due_date = texts.payment_terms_label;
+  userParam.text_info_page = texts.page;
+  userParam.text_shipping_address = texts.shipping_address;
   userParam.title_doctype_10 = texts.invoice + " <DocInvoice>";
   userParam.title_doctype_12 = texts.credit_note + " <DocInvoice>";
-  userParam.texts_items_details_columns = texts.description+";"+texts.quantity+";"+texts.reference_unit+";"+texts.unit_price+";"+texts.amount;
+  userParam.text_details_columns = texts.description+";"+texts.quantity+";"+texts.reference_unit+";"+texts.unit_price+";"+texts.amount;
   userParam.texts_total = texts.total;
 
   //Styles
