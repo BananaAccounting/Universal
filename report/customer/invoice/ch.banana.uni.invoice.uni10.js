@@ -112,33 +112,33 @@ function convertParam(userParam) {
   convertedParam.data.push(currentParam);
 
   currentParam = {};
-  currentParam.name = 'include_header';
+  currentParam.name = 'header_include';
   currentParam.parentObject = 'include';
-  currentParam.title = texts.param_include_header;
+  currentParam.title = texts.param_header_include;
   currentParam.type = 'string';
   currentParam.value = '';
   currentParam.editable = false;
   currentParam.readValue = function() {
-    userParam.include_header = this.value;
+    userParam.header_include = this.value;
   }
   convertedParam.data.push(currentParam);
 
   currentParam = {};
-  currentParam.name = 'print_header';
-  currentParam.parentObject = 'include_header';
-  currentParam.title = texts.param_print_header;
+  currentParam.name = 'header_print';
+  currentParam.parentObject = 'header_include';
+  currentParam.title = texts.param_header_print;
   currentParam.type = 'bool';
-  currentParam.value = userParam.print_header ? true : false;
+  currentParam.value = userParam.header_print ? true : false;
   currentParam.defaultvalue = true;
-  currentParam.tooltip = texts.param_tooltip_print_header;
+  currentParam.tooltip = texts.param_tooltip_header_print;
   currentParam.readValue = function() {
-    userParam.print_header = this.value;
+    userParam.header_print = this.value;
   }
   convertedParam.data.push(currentParam);
 
   currentParam = {};
   currentParam.name = 'header_left';
-  currentParam.parentObject = 'include_header';
+  currentParam.parentObject = 'header_include';
   currentParam.title = texts.param_header_left;
   currentParam.type = 'bool';
   currentParam.value = userParam.header_left ? true : false;
@@ -151,7 +151,7 @@ function convertParam(userParam) {
 
   currentParam = {};
   currentParam.name = 'header_row_1';
-  currentParam.parentObject = 'include_header';
+  currentParam.parentObject = 'header_include';
   currentParam.title = texts.param_header_row_1;
   currentParam.type = 'string';
   currentParam.value = userParam.header_row_1 ? userParam.header_row_1 : '';
@@ -164,7 +164,7 @@ function convertParam(userParam) {
 
   currentParam = {};
   currentParam.name = 'header_row_2';
-  currentParam.parentObject = 'include_header';
+  currentParam.parentObject = 'header_include';
   currentParam.title = texts.param_header_row_2;
   currentParam.type = 'string';
   currentParam.value = userParam.header_row_2 ? userParam.header_row_2 : '';
@@ -177,7 +177,7 @@ function convertParam(userParam) {
 
   currentParam = {};
   currentParam.name = 'header_row_3';
-  currentParam.parentObject = 'include_header';
+  currentParam.parentObject = 'header_include';
   currentParam.title = texts.param_header_row_3;
   currentParam.type = 'string';
   currentParam.value = userParam.header_row_3 ? userParam.header_row_3 : '';
@@ -190,7 +190,7 @@ function convertParam(userParam) {
 
   currentParam = {};
   currentParam.name = 'header_row_4';
-  currentParam.parentObject = 'include_header';
+  currentParam.parentObject = 'header_include';
   currentParam.title = texts.param_header_row_4;
   currentParam.type = 'string';
   currentParam.value = userParam.header_row_4 ? userParam.header_row_4 : '';
@@ -203,7 +203,7 @@ function convertParam(userParam) {
 
   currentParam = {};
   currentParam.name = 'header_row_5';
-  currentParam.parentObject = 'include_header';
+  currentParam.parentObject = 'header_include';
   currentParam.title = texts.param_header_row_5;
   currentParam.type = 'string';
   currentParam.value = userParam.header_row_5 ? userParam.header_row_5 : '';
@@ -215,21 +215,21 @@ function convertParam(userParam) {
   convertedParam.data.push(currentParam);
 
   currentParam = {};
-  currentParam.name = 'print_logo';
-  currentParam.parentObject = 'include_header';
-  currentParam.title = texts.param_print_logo;
+  currentParam.name = 'logo_print';
+  currentParam.parentObject = 'header_include';
+  currentParam.title = texts.param_logo_print;
   currentParam.type = 'bool';
-  currentParam.value = userParam.print_logo ? true : false;
+  currentParam.value = userParam.logo_print ? true : false;
   currentParam.defaultvalue = false;
-  currentParam.tooltip = texts.param_tooltip_print_logo;
+  currentParam.tooltip = texts.param_tooltip_logo_print;
   currentParam.readValue = function() {
-    userParam.print_logo = this.value;
+    userParam.logo_print = this.value;
   }
   convertedParam.data.push(currentParam);
 
   currentParam = {};
   currentParam.name = 'logo_name';
-  currentParam.parentObject = 'include_header';
+  currentParam.parentObject = 'header_include';
   currentParam.title = texts.param_logo_name;
   currentParam.type = 'string';
   currentParam.value = userParam.logo_name ? userParam.logo_name : '';
@@ -241,33 +241,33 @@ function convertParam(userParam) {
   convertedParam.data.push(currentParam);
 
   currentParam = {};
-  currentParam.name = 'include_address';
+  currentParam.name = 'address_include';
   currentParam.parentObject = 'include';
-  currentParam.title = texts.param_include_address;
+  currentParam.title = texts.param_address_include;
   currentParam.type = 'string';
   currentParam.value = '';
   currentParam.editable = false;
   currentParam.readValue = function() {
-    userParam.include_address = this.value;
+    userParam.address_include = this.value;
   }
   convertedParam.data.push(currentParam);
 
   currentParam = {};
-  currentParam.name = 'small_address_line';
-  currentParam.parentObject = 'include_address';
-  currentParam.title = texts.param_small_address_line;
+  currentParam.name = 'address_small_line';
+  currentParam.parentObject = 'address_include';
+  currentParam.title = texts.param_address_small_line;
   currentParam.type = 'string';
-  currentParam.value = userParam.small_address_line ? userParam.small_address_line : '';
+  currentParam.value = userParam.address_small_line ? userParam.address_small_line : '';
   currentParam.defaultvalue = '<none>';
-  currentParam.tooltip = texts.param_tooltip_small_address_line;
+  currentParam.tooltip = texts.param_tooltip_address_small_line;
   currentParam.readValue = function() {
-   userParam.small_address_line = this.value;
+   userParam.address_small_line = this.value;
   }
   convertedParam.data.push(currentParam);
 
   currentParam = {};
   currentParam.name = 'address_left';
-  currentParam.parentObject = 'include_address';
+  currentParam.parentObject = 'address_include';
   currentParam.title = texts.param_address_left;
   currentParam.type = 'bool';
   currentParam.value = userParam.address_left ? true : false;
@@ -280,7 +280,7 @@ function convertParam(userParam) {
   
   currentParam = {};
   currentParam.name = 'shipping_address';
-  currentParam.parentObject = 'include_address';
+  currentParam.parentObject = 'address_include';
   currentParam.title = texts.param_shipping_address;
   currentParam.type = 'bool';
   currentParam.value = userParam.shipping_address ? true : false;
@@ -292,20 +292,20 @@ function convertParam(userParam) {
   convertedParam.data.push(currentParam);
 
   currentParam = {};
-  currentParam.name = 'include_info';
+  currentParam.name = 'info_include';
   currentParam.parentObject = 'include';
-  currentParam.title = texts.param_include_info;
+  currentParam.title = texts.param_info_include;
   currentParam.type = 'string';
   currentParam.value = '';
   currentParam.editable = false;
   currentParam.readValue = function() {
-    userParam.include_info = this.value;
+    userParam.info_include = this.value;
   }
   convertedParam.data.push(currentParam);
 
   currentParam = {};
   currentParam.name = 'info_invoice_number';
-  currentParam.parentObject = 'include_info';
+  currentParam.parentObject = 'info_include';
   currentParam.title = texts.param_info_invoice_number;
   currentParam.type = 'bool';
   currentParam.value = userParam.info_invoice_number ? true : false;
@@ -318,7 +318,7 @@ function convertParam(userParam) {
 
   currentParam = {};
   currentParam.name = 'info_date';
-  currentParam.parentObject = 'include_info';
+  currentParam.parentObject = 'info_include';
   currentParam.title = texts.param_info_date;
   currentParam.type = 'bool';
   currentParam.value = userParam.info_date ? true : false;
@@ -331,7 +331,7 @@ function convertParam(userParam) {
 
   currentParam = {};
   currentParam.name = 'info_customer';
-  currentParam.parentObject = 'include_info';
+  currentParam.parentObject = 'info_include';
   currentParam.title = texts.param_info_customer;
   currentParam.type = 'bool';
   currentParam.value = userParam.info_customer ? true : false;
@@ -344,7 +344,7 @@ function convertParam(userParam) {
 
   currentParam = {};
   currentParam.name = 'info_customer_vat_number';
-  currentParam.parentObject = 'include_info';
+  currentParam.parentObject = 'info_include';
   currentParam.title = texts.param_info_customer_vat_number;
   currentParam.type = 'bool';
   currentParam.value = userParam.info_customer_vat_number ? true : false;
@@ -357,7 +357,7 @@ function convertParam(userParam) {
 
   currentParam = {};
   currentParam.name = 'info_customer_fiscal_number';
-  currentParam.parentObject = 'include_info';
+  currentParam.parentObject = 'info_include';
   currentParam.title = texts.param_info_customer_fiscal_number;
   currentParam.type = 'bool';
   currentParam.value = userParam.info_customer_fiscal_number ? true : false;
@@ -370,7 +370,7 @@ function convertParam(userParam) {
 
   currentParam = {};
   currentParam.name = 'info_due_date';
-  currentParam.parentObject = 'include_info';
+  currentParam.parentObject = 'info_include';
   currentParam.title = texts.param_info_due_date;
   currentParam.type = 'bool';
   currentParam.value = userParam.info_due_date ? true : false;
@@ -383,7 +383,7 @@ function convertParam(userParam) {
 
   currentParam = {};
   currentParam.name = 'info_page';
-  currentParam.parentObject = 'include_info';
+  currentParam.parentObject = 'info_include';
   currentParam.title = texts.param_info_page;
   currentParam.type = 'bool';
   currentParam.value = userParam.info_page ? true : false;
@@ -396,46 +396,46 @@ function convertParam(userParam) {
 
 
   currentParam = {};
-  currentParam.name = 'include_details';
+  currentParam.name = 'details_include';
   currentParam.parentObject = 'include';
-  currentParam.title = texts.param_include_details;
+  currentParam.title = texts.param_details_include;
   currentParam.type = 'string';
   currentParam.value = '';
   currentParam.editable = false;
   currentParam.readValue = function() {
-    userParam.include_details = this.value;
+    userParam.details_include = this.value;
   }
   convertedParam.data.push(currentParam);
 
   currentParam = {};
-  currentParam.name = 'items_invoice_details';
-  currentParam.parentObject = 'include_details';
-  currentParam.title = texts.param_items_invoice_details;
+  currentParam.name = 'details_columns';
+  currentParam.parentObject = 'details_include';
+  currentParam.title = texts.param_details_columns;
   currentParam.type = 'string';
-  currentParam.value = userParam.items_invoice_details ? userParam.items_invoice_details : '';
+  currentParam.value = userParam.details_columns ? userParam.details_columns : '';
   currentParam.defaultvalue = texts.description+";"+texts.quantity+";"+texts.reference_unit+";"+texts.unit_price+";"+texts.amount;
-  currentParam.tooltip = texts.param_tooltip_items_invoice_details;
+  currentParam.tooltip = texts.param_tooltip_details_columns;
   currentParam.readValue = function() {
-    userParam.items_invoice_details = this.value;
+    userParam.details_columns = this.value;
   }
   convertedParam.data.push(currentParam);
 
   currentParam = {};
-  currentParam.name = 'items_invoice_details_dimensions';
-  currentParam.parentObject = 'include_details';
-  currentParam.title = texts.param_items_invoice_details_dimensions;
+  currentParam.name = 'details_columns_widths';
+  currentParam.parentObject = 'details_include';
+  currentParam.title = texts.param_details_columns_widths;
   currentParam.type = 'string';
-  currentParam.value = userParam.items_invoice_details_dimensions ? userParam.items_invoice_details_dimensions : '';
+  currentParam.value = userParam.details_columns_widths ? userParam.details_columns_widths : '';
   currentParam.defaultvalue = '50%;10%;10%;15%;15%';
-  currentParam.tooltip = texts.param_tooltip_items_invoice_details_dimensions;
+  currentParam.tooltip = texts.param_tooltip_details_columns_widths;
   currentParam.readValue = function() {
-    userParam.items_invoice_details_dimensions = this.value;
+    userParam.details_columns_widths = this.value;
   }
   convertedParam.data.push(currentParam);
 
   currentParam = {};
   currentParam.name = 'details_gross_amounts';
-  currentParam.parentObject = 'include_details';
+  currentParam.parentObject = 'details_include';
   currentParam.title = texts.param_details_gross_amounts;
   currentParam.type = 'bool';
   currentParam.value = userParam.details_gross_amounts ? true : false;
@@ -447,33 +447,33 @@ function convertParam(userParam) {
   convertedParam.data.push(currentParam);
 
   currentParam = {};
-  currentParam.name = 'include_footer';
+  currentParam.name = 'footer_include';
   currentParam.parentObject = 'include';
-  currentParam.title = texts.param_include_footer;
+  currentParam.title = texts.param_footer_include;
   currentParam.type = 'string';
   currentParam.value = '';
   currentParam.editable = false;
   currentParam.readValue = function() {
-    userParam.include_footer = this.value;
+    userParam.footer_include = this.value;
   }
   convertedParam.data.push(currentParam);
 
   currentParam = {};
-  currentParam.name = 'add_footer';
-  currentParam.parentObject = 'include_footer';
-  currentParam.title = texts.param_add_footer;
+  currentParam.name = 'footer_add';
+  currentParam.parentObject = 'footer_include';
+  currentParam.title = texts.param_footer_add;
   currentParam.type = 'bool';
-  currentParam.value = userParam.add_footer ? true : false;
+  currentParam.value = userParam.footer_add ? true : false;
   currentParam.defaultvalue = false;
-  currentParam.tooltip = texts.add_footer;
+  currentParam.tooltip = texts.footer_add;
   currentParam.readValue = function() {
-   userParam.add_footer = this.value;
+   userParam.footer_add = this.value;
   }
   convertedParam.data.push(currentParam);
 
   currentParam = {};
   currentParam.name = 'footer_left';
-  currentParam.parentObject = 'include_footer';
+  currentParam.parentObject = 'footer_include';
   currentParam.title = texts.param_footer_left;
   currentParam.type = 'string';
   currentParam.value = userParam.footer_left ? userParam.footer_left : '';
@@ -486,7 +486,7 @@ function convertParam(userParam) {
 
   currentParam = {};
   currentParam.name = 'footer_center';
-  currentParam.parentObject = 'include_footer';
+  currentParam.parentObject = 'footer_include';
   currentParam.title = texts.param_footer_center;
   currentParam.type = 'string';
   currentParam.value = userParam.footer_center ? userParam.footer_center : '';
@@ -499,7 +499,7 @@ function convertParam(userParam) {
 
   currentParam = {};
   currentParam.name = 'footer_right';
-  currentParam.parentObject = 'include_footer';
+  currentParam.parentObject = 'footer_include';
   currentParam.title = texts.param_footer_right;
   currentParam.type = 'string';
   currentParam.value = userParam.footer_right ? userParam.footer_right : '';
@@ -523,80 +523,80 @@ function convertParam(userParam) {
   convertedParam.data.push(currentParam);
 
   currentParam = {};
-  currentParam.name = 'add_qr_code';
+  currentParam.name = 'qr_code_add';
   currentParam.parentObject = 'qr_code';
-  currentParam.title = texts.param_add_qr_code;
+  currentParam.title = texts.param_qr_code_add;
   currentParam.type = 'bool';
-  currentParam.value = userParam.add_qr_code ? true : false;
+  currentParam.value = userParam.qr_code_add ? true : false;
   currentParam.defaultvalue = false;
-  currentParam.tooltip = texts.param_tooltip_add_qr_code;
+  currentParam.tooltip = texts.param_tooltip_qr_code_add;
   currentParam.readValue = function() {
-   userParam.add_qr_code = this.value;
+   userParam.qr_code_add = this.value;
   }
   convertedParam.data.push(currentParam);
 
   currentParam = {};
-  currentParam.name = 'qr_code_position';
+  currentParam.name = 'qr_code_align';
   currentParam.parentObject = 'qr_code';
-  currentParam.title = texts.param_qr_code_position;
+  currentParam.title = texts.param_qr_code_align;
   currentParam.type = 'string';
-  currentParam.value = userParam.qr_code_position ? userParam.qr_code_position : '';
+  currentParam.value = userParam.qr_code_align ? userParam.qr_code_align : '';
   currentParam.defaultvalue = 'right';
-  currentParam.tooltip = texts.param_tooltip_qr_code_position;
+  currentParam.tooltip = texts.param_tooltip_qr_code_align;
   currentParam.readValue = function() {
-    userParam.qr_code_position = this.value;
+    userParam.qr_code_align = this.value;
   }
   convertedParam.data.push(currentParam);
 
   currentParam = {};
-  currentParam.name = 'use_different_address';
+  currentParam.name = 'qr_code_use_different_address';
   currentParam.parentObject = 'qr_code';
-  currentParam.title = texts.param_use_different_address;
+  currentParam.title = texts.param_qr_code_use_different_address;
   currentParam.type = 'bool';
-  currentParam.value = userParam.use_different_address ? true : false;
+  currentParam.value = userParam.qr_code_use_different_address ? true : false;
   currentParam.defaultvalue = false;
-  currentParam.tooltip = texts.param_tooltip_use_different_address;
+  currentParam.tooltip = texts.param_tooltip_qr_code_use_different_address;
   currentParam.readValue = function() {
-   userParam.use_different_address = this.value;
+   userParam.qr_code_use_different_address = this.value;
   }
   convertedParam.data.push(currentParam);
 
   currentParam = {};
-  currentParam.name = 'address_row_1';
+  currentParam.name = 'qr_code_address_row_1';
   currentParam.parentObject = 'qr_code';
-  currentParam.title = texts.param_address_row_1;
+  currentParam.title = texts.param_qr_code_address_row_1;
   currentParam.type = 'string';
-  currentParam.value = userParam.address_row_1 ? userParam.address_row_1 : '';
+  currentParam.value = userParam.qr_code_address_row_1 ? userParam.qr_code_address_row_1 : '';
   currentParam.defaultvalue = '';
-  currentParam.tooltip = '';
+  currentParam.tooltip = texts.param_tooltip_qr_code_address_row_1;
   currentParam.readValue = function() {
-    userParam.address_row_1 = this.value;
+    userParam.qr_code_address_row_1 = this.value;
   }
   convertedParam.data.push(currentParam);
 
   currentParam = {};
-  currentParam.name = 'address_row_2';
+  currentParam.name = 'qr_code_address_row_2';
   currentParam.parentObject = 'qr_code';
-  currentParam.title = texts.param_address_row_2;
+  currentParam.title = texts.param_qr_code_address_row_2;
   currentParam.type = 'string';
-  currentParam.value = userParam.address_row_2 ? userParam.address_row_2 : '';
+  currentParam.value = userParam.qr_code_address_row_2 ? userParam.qr_code_address_row_2 : '';
   currentParam.defaultvalue = '';
-  currentParam.tooltip = '';
+  currentParam.tooltip = texts.param_tooltip_qr_code_address_row_2;
   currentParam.readValue = function() {
-    userParam.address_row_2 = this.value;
+    userParam.qr_code_address_row_2 = this.value;
   }
   convertedParam.data.push(currentParam);
 
   currentParam = {};
-  currentParam.name = 'address_row_3';
+  currentParam.name = 'qr_code_address_row_3';
   currentParam.parentObject = 'qr_code';
-  currentParam.title = texts.param_address_row_3;
+  currentParam.title = texts.param_qr_code_address_row_3;
   currentParam.type = 'string';
-  currentParam.value = userParam.address_row_3 ? userParam.address_row_3 : '';
+  currentParam.value = userParam.qr_code_address_row_3 ? userParam.qr_code_address_row_3 : '';
   currentParam.defaultvalue = '';
-  currentParam.tooltip = '';
+  currentParam.tooltip = texts.param_tooltip_qr_code_address_row_3;
   currentParam.readValue = function() {
-    userParam.address_row_3 = this.value;
+    userParam.qr_code_address_row_3 = this.value;
   }
   convertedParam.data.push(currentParam);
 
@@ -630,125 +630,125 @@ function convertParam(userParam) {
   convertedParam.data.push(currentParam);
 
   currentParam = {};
-  currentParam.name = 'texts_language_en';
+  currentParam.name = 'text_language_en';
   currentParam.parentObject = 'texts';
-  currentParam.title = texts.param_texts_language_en;
+  currentParam.title = texts.param_text_language_en;
   currentParam.type = 'string';
   currentParam.value = '';
   currentParam.editable = false;
   currentParam.readValue = function() {
-    userParam.texts_language_en = this.value;
+    userParam.text_language_en = this.value;
   }
   convertedParam.data.push(currentParam);
 
   currentParam = {};
-  currentParam.name = 'texts_info_invoice_number_text';
-  currentParam.parentObject = 'texts_language_en';
-  currentParam.title = texts.param_texts_info_invoice_number_text;
+  currentParam.name = 'text_info_invoice_number';
+  currentParam.parentObject = 'text_language_en';
+  currentParam.title = texts.param_text_info_invoice_number;
   currentParam.type = 'string';
-  currentParam.value = userParam.texts_info_invoice_number_text ? userParam.texts_info_invoice_number_text : '';
+  currentParam.value = userParam.text_info_invoice_number ? userParam.text_info_invoice_number : '';
   currentParam.defaultvalue = texts.invoice;
-  currentParam.tooltip = texts.param_tooltip_texts_info_invoice_number_text;
+  currentParam.tooltip = texts.param_tooltip_text_info_invoice_number;
   currentParam.readValue = function() {
-    userParam.texts_info_invoice_number_text = this.value;
+    userParam.text_info_invoice_number = this.value;
   }
   convertedParam.data.push(currentParam);
 
   currentParam = {};
-  currentParam.name = 'texts_info_date_text';
-  currentParam.parentObject = 'texts_language_en';
-  currentParam.title = texts.param_texts_info_date_text;
+  currentParam.name = 'text_info_date';
+  currentParam.parentObject = 'text_language_en';
+  currentParam.title = texts.param_text_info_date;
   currentParam.type = 'string';
-  currentParam.value = userParam.texts_info_date_text ? userParam.texts_info_date_text : '';
+  currentParam.value = userParam.text_info_date ? userParam.text_info_date : '';
   currentParam.defaultvalue = texts.date;
-  currentParam.tooltip = texts.param_tooltip_texts_info_date_text;
+  currentParam.tooltip = texts.param_tooltip_text_info_date;
   currentParam.readValue = function() {
-    userParam.texts_info_date_text = this.value;
+    userParam.text_info_date = this.value;
   }
   convertedParam.data.push(currentParam);
 
   currentParam = {};
-  currentParam.name = 'texts_info_customer_text';
-  currentParam.parentObject = 'texts_language_en';
-  currentParam.title = texts.param_texts_info_customer_text;
+  currentParam.name = 'text_info_customer';
+  currentParam.parentObject = 'text_language_en';
+  currentParam.title = texts.param_text_info_customer;
   currentParam.type = 'string';
-  currentParam.value = userParam.texts_info_customer_text ? userParam.texts_info_customer_text : '';
+  currentParam.value = userParam.text_info_customer ? userParam.text_info_customer : '';
   currentParam.defaultvalue = texts.customer;
-  currentParam.tooltip = texts.param_tooltip_texts_info_customer_text;
+  currentParam.tooltip = texts.param_tooltip_text_info_customer;
   currentParam.readValue = function() {
-    userParam.texts_info_customer_text = this.value;
+    userParam.text_info_customer = this.value;
   }
   convertedParam.data.push(currentParam);
 
   currentParam = {};
-  currentParam.name = 'texts_info_customer_vat_number';
-  currentParam.parentObject = 'texts_language_en';
-  currentParam.title = texts.param_texts_info_customer_vat_number;
+  currentParam.name = 'text_info_customer_vat_number';
+  currentParam.parentObject = 'text_language_en';
+  currentParam.title = texts.param_text_info_customer_vat_number;
   currentParam.type = 'string';
-  currentParam.value = userParam.texts_info_customer_vat_number ? userParam.texts_info_customer_vat_number : '';
+  currentParam.value = userParam.text_info_customer_vat_number ? userParam.text_info_customer_vat_number : '';
   currentParam.defaultvalue = texts.vat_number;
-  currentParam.tooltip = texts.param_tooltip_texts_info_customer_vat_number_text;
+  currentParam.tooltip = texts.param_tooltip_text_info_customer_vat_number_text;
   currentParam.readValue = function() {
-    userParam.texts_info_customer_vat_number = this.value;
+    userParam.text_info_customer_vat_number = this.value;
   }
   convertedParam.data.push(currentParam);
 
   currentParam = {};
-  currentParam.name = 'texts_info_customer_fiscal_number';
-  currentParam.parentObject = 'texts_language_en';
-  currentParam.title = texts.param_texts_info_customer_fiscal_number;
+  currentParam.name = 'text_info_customer_fiscal_number';
+  currentParam.parentObject = 'text_language_en';
+  currentParam.title = texts.param_text_info_customer_fiscal_number;
   currentParam.type = 'string';
-  currentParam.value = userParam.texts_info_customer_fiscal_number ? userParam.texts_info_customer_fiscal_number : '';
+  currentParam.value = userParam.text_info_customer_fiscal_number ? userParam.text_info_customer_fiscal_number : '';
   currentParam.defaultvalue = texts.fiscal_number;
-  currentParam.tooltip = texts.param_tooltip_texts_info_customer_fiscal_number;
+  currentParam.tooltip = texts.param_tooltip_text_info_customer_fiscal_number;
   currentParam.readValue = function() {
-    userParam.texts_info_customer_fiscal_number = this.value;
+    userParam.text_info_customer_fiscal_number = this.value;
   }
   convertedParam.data.push(currentParam);
 
   currentParam = {};
-  currentParam.name = 'texts_info_due_date_text';
-  currentParam.parentObject = 'texts_language_en';
-  currentParam.title = texts.param_texts_info_due_date_text;
+  currentParam.name = 'text_info_due_date';
+  currentParam.parentObject = 'text_language_en';
+  currentParam.title = texts.param_text_info_due_date;
   currentParam.type = 'string';
-  currentParam.value = userParam.texts_info_due_date_text ? userParam.texts_info_due_date_text : '';
+  currentParam.value = userParam.text_info_due_date ? userParam.text_info_due_date : '';
   currentParam.defaultvalue = texts.payment_terms_label;
   currentParam.tooltip = texts.param_tooltip_texts_payment_terms_label;
   currentParam.readValue = function() {
-    userParam.texts_info_due_date_text = this.value;
+    userParam.text_info_due_date = this.value;
   }
   convertedParam.data.push(currentParam);
 
   currentParam = {};
-  currentParam.name = 'texts_info_page_text';
-  currentParam.parentObject = 'texts_language_en';
-  currentParam.title = texts.param_texts_info_page_text;
+  currentParam.name = 'text_info_page';
+  currentParam.parentObject = 'text_language_en';
+  currentParam.title = texts.param_text_info_page;
   currentParam.type = 'string';
-  currentParam.value = userParam.texts_info_page_text ? userParam.texts_info_page_text : '';
+  currentParam.value = userParam.text_info_page ? userParam.text_info_page : '';
   currentParam.defaultvalue = texts.page;
-  currentParam.tooltip = texts.param_tooltip_texts_info_page_text;
+  currentParam.tooltip = texts.param_tooltip_text_info_page;
   currentParam.readValue = function() {
-    userParam.texts_info_page_text = this.value;
+    userParam.text_info_page = this.value;
   }
   convertedParam.data.push(currentParam);
 
   currentParam = {};
-  currentParam.name = 'texts_shipping_address';
-  currentParam.parentObject = 'texts_language_en';
-  currentParam.title = texts.param_texts_shipping_address;
+  currentParam.name = 'text_shipping_address';
+  currentParam.parentObject = 'text_language_en';
+  currentParam.title = texts.param_text_shipping_address;
   currentParam.type = 'string';
-  currentParam.value = userParam.texts_shipping_address ? userParam.texts_shipping_address : '';
+  currentParam.value = userParam.text_shipping_address ? userParam.text_shipping_address : '';
   currentParam.defaultvalue = texts.shipping_address;
-  currentParam.tooltip = texts.param_tooltip_texts_shipping_address;
+  currentParam.tooltip = texts.param_tooltip_text_shipping_address;
   currentParam.readValue = function() {
-    userParam.texts_shipping_address = this.value;
+    userParam.text_shipping_address = this.value;
   }
   convertedParam.data.push(currentParam);
 
   currentParam = {};
   currentParam.name = 'title_doctype_10';
-  currentParam.parentObject = 'texts_language_en';
-  currentParam.title = texts.param_title_doctype_10;
+  currentParam.parentObject = 'text_language_en';
+  currentParam.title = texts.param_text_title_doctype_10;
   currentParam.type = 'string';
   currentParam.value = userParam.title_doctype_10 ? userParam.title_doctype_10 : '';
   currentParam.defaultvalue = texts.invoice + " <DocInvoice>";
@@ -760,8 +760,8 @@ function convertParam(userParam) {
 
   currentParam = {};
   currentParam.name = 'title_doctype_12';
-  currentParam.parentObject = 'texts_language_en';
-  currentParam.title = texts.param_title_doctype_12;
+  currentParam.parentObject = 'text_language_en';
+  currentParam.title = texts.param_text_title_doctype_12;
   currentParam.type = 'string';
   currentParam.value = userParam.title_doctype_12 ? userParam.title_doctype_12 : '';
   currentParam.defaultvalue = texts.credit_note  + " <DocInvoice>";
@@ -772,22 +772,22 @@ function convertParam(userParam) {
   convertedParam.data.push(currentParam);
 
   currentParam = {};
-  currentParam.name = 'texts_items_details_columns';
-  currentParam.parentObject = 'texts_language_en';
-  currentParam.title = texts.param_texts_items_details_columns;
+  currentParam.name = 'text_details_columns';
+  currentParam.parentObject = 'text_language_en';
+  currentParam.title = texts.param_text_details_columns;
   currentParam.type = 'string';
-  currentParam.value = userParam.texts_items_details_columns ? userParam.texts_items_details_columns : '';
+  currentParam.value = userParam.text_details_columns ? userParam.text_details_columns : '';
   currentParam.defaultvalue = texts.description+";"+texts.quantity+";"+texts.reference_unit+";"+texts.unit_price+";"+texts.amount;
-  currentParam.tooltip = texts.param_tooltip_texts_items_details_columns;
+  currentParam.tooltip = texts.param_tooltip_text_details_columns;
   currentParam.readValue = function() {
-    userParam.texts_items_details_columns = this.value;
+    userParam.text_details_columns = this.value;
   }
   convertedParam.data.push(currentParam);
 
   currentParam = {};
   currentParam.name = 'texts_total';
-  currentParam.parentObject = 'texts_language_en';
-  currentParam.title = texts.param_texts_total;
+  currentParam.parentObject = 'text_language_en';
+  currentParam.title = texts.param_text_total;
   currentParam.type = 'string';
   currentParam.value = userParam.texts_total ? userParam.texts_total : '';
   currentParam.defaultvalue = texts.total;
@@ -940,15 +940,15 @@ function convertParam(userParam) {
       convertedParam.data.push(currentParam);
 
       currentParam = {};
-      currentParam.name = languageCode+'_texts_info_invoice_number_text';
+      currentParam.name = languageCode+'_text_info_invoice_number';
       currentParam.parentObject = languageCode;
-      currentParam.title = texts.param_texts_info_invoice_number_text;
+      currentParam.title = texts.param_text_info_invoice_number;
       currentParam.type = 'string';
-      currentParam.value = userParam[languageCode+'_texts_info_invoice_number_text'] ? userParam[languageCode+'_texts_info_invoice_number_text'] : ''; //param.xxx ? param.xxx : ''
+      currentParam.value = userParam[languageCode+'_text_info_invoice_number'] ? userParam[languageCode+'_text_info_invoice_number'] : ''; //param.xxx ? param.xxx : ''
       currentParam.defaultvalue = '';
-      currentParam.tooltip = texts.param_tooltip_texts_info_invoice_number_text;
+      currentParam.tooltip = texts.param_tooltip_text_info_invoice_number;
       currentParam.readValue = function() {
-        userParam[languageCode+'_texts_info_invoice_number_text'] = this.value;
+        userParam[languageCode+'_text_info_invoice_number'] = this.value;
       }
       convertedParam.data.push(currentParam);
 
@@ -976,16 +976,16 @@ function initParam() {
   var texts = setInvoiceTexts(lang);
 
   //Include
-  userParam.print_header = true;
+  userParam.header_print = true;
   userParam.header_left = false;
   userParam.header_row_1 = "";
   userParam.header_row_2 = "";
   userParam.header_row_3 = "";
   userParam.header_row_4 = "";
   userParam.header_row_5 = "";
-  userParam.print_logo = true;
+  userParam.logo_print = true;
   userParam.logo_name = 'Logo';
-  userParam.small_address_line = '<none>';
+  userParam.address_small_line = '<none>';
   userParam.address_left = false;
   userParam.shipping_address = false;
   userParam.info_invoice_number = true;
@@ -995,33 +995,33 @@ function initParam() {
   userParam.info_customer_fiscal_number = false;
   userParam.info_due_date = true;
   userParam.info_page = true;
-  userParam.items_invoice_details = texts.description+";"+texts.quantity+";"+texts.reference_unit+";"+texts.unit_price+";"+texts.amount;
-  userParam.items_invoice_details_dimensions = '50%;10%;10%;15%;15%';
+  userParam.details_columns = texts.description+";"+texts.quantity+";"+texts.reference_unit+";"+texts.unit_price+";"+texts.amount;
+  userParam.details_columns_widths = '50%;10%;10%;15%;15%';
   userParam.details_gross_amounts = false;
-  userParam.add_footer = false;
+  userParam.footer_add = false;
   userParam.footer_left = texts.invoice;
   userParam.footer_center = '';
   userParam.footer_right = texts.page+' &['+texts.page+']';
-  userParam.add_qr_code = false;
-  userParam.qr_code_position = 'right';
-  userParam.use_different_address = false;
-  userParam.address_row_1 = '';
-  userParam.address_row_2 = '';
-  userParam.address_row_3 = '';
+  userParam.qr_code_add = false;
+  userParam.qr_code_align = 'right';
+  userParam.qr_code_use_different_address = false;
+  userParam.qr_code_address_row_1 = '';
+  userParam.qr_code_address_row_2 = '';
+  userParam.qr_code_address_row_3 = '';
 
   //Texts
   userParam.add_language = "";
-  userParam.texts_info_invoice_number_text = texts.invoice;
-  userParam.texts_info_date_text = texts.date;
-  userParam.texts_info_customer_text = texts.customer;
-  userParam.texts_info_customer_vat_number = texts.vat_number;
-  userParam.texts_info_customer_fiscal_number = texts.fiscal_number;
-  userParam.texts_info_due_date_text = texts.payment_terms_label;
-  userParam.texts_info_page_text = texts.page;
-  userParam.texts_shipping_address = texts.shipping_address;
+  userParam.text_info_invoice_number = texts.invoice;
+  userParam.text_info_date = texts.date;
+  userParam.text_info_customer = texts.customer;
+  userParam.text_info_customer_vat_number = texts.vat_number;
+  userParam.text_info_customer_fiscal_number = texts.fiscal_number;
+  userParam.text_info_due_date = texts.payment_terms_label;
+  userParam.text_info_page = texts.page;
+  userParam.text_shipping_address = texts.shipping_address;
   userParam.title_doctype_10 = texts.invoice + " <DocInvoice>";
   userParam.title_doctype_12 = texts.credit_note + " <DocInvoice>";
-  userParam.texts_items_details_columns = texts.description+";"+texts.quantity+";"+texts.reference_unit+";"+texts.unit_price+";"+texts.amount;
+  userParam.text_details_columns = texts.description+";"+texts.quantity+";"+texts.reference_unit+";"+texts.unit_price+";"+texts.amount;
   userParam.texts_total = texts.total;
 
   //Styles
@@ -1050,8 +1050,8 @@ function verifyParam(userParam) {
   var texts = setInvoiceTexts(lang);
 
   //Include
-  if (!userParam.print_header) {
-    userParam.print_header = false;
+  if (!userParam.header_print) {
+    userParam.header_print = false;
   }
   if (!userParam.header_left) {
     userParam.header_left = false;
@@ -1071,14 +1071,14 @@ function verifyParam(userParam) {
   if(!userParam.header_row_5) {
     userParam.header_row_5 = '';
   }
-  if (!userParam.print_logo) {
-    userParam.print_logo = false;
+  if (!userParam.logo_print) {
+    userParam.logo_print = false;
   }
   if (!userParam.logo_name) {
     userParam.logo_name = 'Logo';
   }
-  if (!userParam.small_address_line) {
-    userParam.small_address_line = '';
+  if (!userParam.address_small_line) {
+    userParam.address_small_line = '';
   }
   if (!userParam.address_left) {
     userParam.address_left = false;
@@ -1107,17 +1107,17 @@ function verifyParam(userParam) {
   if (!userParam.info_page) {
     userParam.info_page = false;
   }
-  if (!userParam.items_invoice_details) {
-    userParam.items_invoice_details = texts.description+";"+texts.quantity+";"+texts.reference_unit+";"+texts.unit_price+";"+texts.amount;
+  if (!userParam.details_columns) {
+    userParam.details_columns = texts.description+";"+texts.quantity+";"+texts.reference_unit+";"+texts.unit_price+";"+texts.amount;
   }
-  if (!userParam.items_invoice_details_dimensions) {
-    userParam.items_invoice_details_dimensions = '50%;10%;10%;15%;15%';
+  if (!userParam.details_columns_widths) {
+    userParam.details_columns_widths = '50%;10%;10%;15%;15%';
   }
   if (!userParam.details_gross_amounts) {
     userParam.details_gross_amounts = false;
   }
-  if (!userParam.add_footer) {
-    userParam.add_footer = false;
+  if (!userParam.footer_add) {
+    userParam.footer_add = false;
   }
   if (!userParam.footer_left) {
     userParam.footer_left = texts.invoice;
@@ -1128,23 +1128,23 @@ function verifyParam(userParam) {
   if (!userParam.footer_right) {
     userParam.footer_right = texts.page+' &['+texts.page+']';
   }
-  if (!userParam.add_qr_code) {
-    userParam.add_qr_code = false;
+  if (!userParam.qr_code_add) {
+    userParam.qr_code_add = false;
   }
-  if (!userParam.qr_code_position) {
-    userParam.qr_code_position = 'right';
+  if (!userParam.qr_code_align) {
+    userParam.qr_code_align = 'right';
   }
-  if (!userParam.use_different_address) {
-    userParam.use_different_address = false;
+  if (!userParam.qr_code_use_different_address) {
+    userParam.qr_code_use_different_address = false;
   }
-  if (!userParam.address_row_1) {
-    userParam.address_row_1 = '';
+  if (!userParam.qr_code_address_row_1) {
+    userParam.qr_code_address_row_1 = '';
   }
-  if (!userParam.address_row_2) {
-    userParam.address_row_2 = '';
+  if (!userParam.qr_code_address_row_2) {
+    userParam.qr_code_address_row_2 = '';
   }
-  if (!userParam.address_row_3) {
-    userParam.address_row_3 = '';
+  if (!userParam.qr_code_address_row_3) {
+    userParam.qr_code_address_row_3 = '';
   }
 
 
@@ -1152,29 +1152,29 @@ function verifyParam(userParam) {
   if (!userParam.add_language) {
     userParam.add_language = '';
   }
-  if (!userParam.texts_info_invoice_number_text) {
-    userParam.texts_info_invoice_number_text = texts.invoice;
+  if (!userParam.text_info_invoice_number) {
+    userParam.text_info_invoice_number = texts.invoice;
   }
-  if (!userParam.texts_info_date_text) {
-    userParam.texts_info_date_text = texts.date;
+  if (!userParam.text_info_date) {
+    userParam.text_info_date = texts.date;
   }
-  if (!userParam.texts_info_customer_text) {
-    userParam.texts_info_customer_text = texts.customer;
+  if (!userParam.text_info_customer) {
+    userParam.text_info_customer = texts.customer;
   }
-  if (!userParam.texts_info_customer_vat_number) {
-    userParam.texts_info_customer_vat_number = texts.vat_number;
+  if (!userParam.text_info_customer_vat_number) {
+    userParam.text_info_customer_vat_number = texts.vat_number;
   }
-  if (!userParam.texts_info_customer_fiscal_number) {
-    userParam.texts_info_customer_fiscal_number = texts.fiscal_number;
+  if (!userParam.text_info_customer_fiscal_number) {
+    userParam.text_info_customer_fiscal_number = texts.fiscal_number;
   }
-  if (!userParam.texts_info_due_date_text) {
-    userParam.texts_info_due_date_text = texts.payment_terms_label;
+  if (!userParam.text_info_due_date) {
+    userParam.text_info_due_date = texts.payment_terms_label;
   }
-  if (!userParam.texts_info_page_text) {
-    userParam.texts_info_page_text = texts.page;
+  if (!userParam.text_info_page) {
+    userParam.text_info_page = texts.page;
   }
-  if (!userParam.texts_shipping_address) {
-    userParam.texts_shipping_address = texts.shipping_address;
+  if (!userParam.text_shipping_address) {
+    userParam.text_shipping_address = texts.shipping_address;
   }
   if (!userParam.title_doctype_10) {
     userParam.title_doctype_10 = texts.invoice + " <DocInvoice>";
@@ -1182,8 +1182,8 @@ function verifyParam(userParam) {
   if (!userParam.title_doctype_12) {
     userParam.title_doctype_12 = texts.credit_note + " <DocInvoice>";
   }
-  if (!userParam.texts_items_details_columns) {
-    userParam.texts_items_details_columns = texts.description+";"+texts.quantity+";"+texts.reference_unit+";"+texts.unit_price+";"+texts.amount;
+  if (!userParam.text_details_columns) {
+    userParam.text_details_columns = texts.description+";"+texts.quantity+";"+texts.reference_unit+";"+texts.unit_price+";"+texts.amount;
   }
   if (!userParam.texts_total) {
     userParam.texts_total = texts.total;
@@ -1394,7 +1394,7 @@ function printInvoice(banDoc, repDocObj, texts, userParam, repStyleObj, invoiceO
 //====================================================================//
 function print_header(repDocObj, userParam, repStyleObj, invoiceObj) {
   var headerLogoSection = repDocObj.addSection("");
-  if (userParam.print_logo) {
+  if (userParam.logo_print) {
     var logoFormat = Banana.Report.logoFormat(userParam.logo_name); //Logo
     if (logoFormat) {
       var logoElement = logoFormat.createDocNode(headerLogoSection, repStyleObj, "logo");
@@ -1402,7 +1402,7 @@ function print_header(repDocObj, userParam, repStyleObj, invoiceObj) {
     }
   }
 
-  if (userParam.print_header) {
+  if (userParam.header_print) {
 
     if (userParam.header_left) {
       var headerParagraph = repDocObj.getHeader().addSection("header_left_text");
@@ -1458,27 +1458,27 @@ function print_info(repDocObj, invoiceObj, texts, userParam, tableStyleRow0) {
 
   if (userParam.info_invoice_number) {
     tableRow = infoTable.addRow();
-    tableRow.addCell(userParam.texts_info_invoice_number_text + ":","",1);
+    tableRow.addCell(userParam.text_info_invoice_number + ":","",1);
     tableRow.addCell(invoiceObj.document_info.number,"",1);
   }
   if (userParam.info_date) {
     tableRow = infoTable.addRow();
-    tableRow.addCell(userParam.texts_info_date_text + ":","",1);
+    tableRow.addCell(userParam.text_info_date + ":","",1);
     tableRow.addCell(Banana.Converter.toLocaleDateFormat(invoiceObj.document_info.date),"",1);    
   }
   if (userParam.info_customer) {
     tableRow = infoTable.addRow();
-    tableRow.addCell(userParam.texts_info_customer_text + ":","",1);
+    tableRow.addCell(userParam.text_info_customer + ":","",1);
     tableRow.addCell(invoiceObj.customer_info.number,"",1);    
   }
   if (userParam.info_customer_vat_number) {
     tableRow = infoTable.addRow();
-    tableRow.addCell(userParam.texts_info_customer_vat_number + ":","",1);
+    tableRow.addCell(userParam.text_info_customer_vat_number + ":","",1);
     tableRow.addCell(invoiceObj.customer_info.vat_number);
   }
   if (userParam.info_customer_fiscal_number) {
     tableRow = infoTable.addRow();
-    tableRow.addCell(userParam.texts_info_customer_fiscal_number + ":","",1);
+    tableRow.addCell(userParam.text_info_customer_fiscal_number + ":","",1);
     tableRow.addCell(invoiceObj.customer_info.fiscal_number);
   }
   if (userParam.info_due_date) {
@@ -1494,12 +1494,12 @@ function print_info(repDocObj, invoiceObj, texts, userParam, tableStyleRow0) {
     }
 
     tableRow = infoTable.addRow();
-    tableRow.addCell(userParam.texts_info_due_date_text + ":","",1);
+    tableRow.addCell(userParam.text_info_due_date + ":","",1);
     tableRow.addCell(payment_terms,"",1);    
   }
   if (userParam.info_page) {
     tableRow = infoTable.addRow();
-    tableRow.addCell(userParam.texts_info_page_text + ":","",1);
+    tableRow.addCell(userParam.text_info_page + ":","",1);
     tableRow.addCell("","",1).addFieldPageNr();    
   }
 }
@@ -1514,11 +1514,11 @@ function print_customer_address(repDocObj, invoiceObj, userParam) {
   //Small line of the supplier address
   tableRow = customerAddressTable.addRow();
   var cell = tableRow.addCell("", "", 1);
-  if (userParam.small_address_line) {
-    if (userParam.small_address_line === "<none>") {
+  if (userParam.address_small_line) {
+    if (userParam.address_small_line === "<none>") {
       cell.addText("","");
     } else {
-      cell.addText(userParam.small_address_line, "small_address");
+      cell.addText(userParam.address_small_line, "small_address");
     }
   }
   else {
@@ -1549,8 +1549,8 @@ function print_shipping_address(repDocObj, invoiceObj, texts, userParam) {
 
   // Shipping address
   if (invoiceObj.shipping_info.different_shipping_address) {
-    if (userParam.texts_shipping_address) {
-      shippingCell.addParagraph(userParam.texts_shipping_address,"").setStyleAttributes("font-weight:bold;color:"+userParam.background_color_1+";");
+    if (userParam.text_shipping_address) {
+      shippingCell.addParagraph(userParam.text_shipping_address,"").setStyleAttributes("font-weight:bold;color:"+userParam.background_color_1+";");
     } else {
       shippingCell.addParagraph(texts.shipping_address, "").setStyleAttributes("font-weight:bold;color:"+userParam.background_color_1+";");
     }
@@ -1591,7 +1591,7 @@ function print_details_net_amounts(banDoc, repDocObj, invoiceObj, texts, userPar
     Print the invoice details using net Amounts (VAT excluded) 
   */
 
-  var columnsDimension = userParam.items_invoice_details_dimensions.split(";");
+  var columnsDimension = userParam.details_columns_widths.split(";");
 
   //var repTableObj = repDocObj.addTable("doc_table");
   var repTableObj = detailsTable;
@@ -1611,14 +1611,14 @@ function print_details_net_amounts(banDoc, repDocObj, invoiceObj, texts, userPar
   // Creates the header with the parameter's values
   // If user insert other columns names we use them,
   // otherwise we use the XmlValue inserted when choosing the columns to display
-  var columnsSelected = userParam.items_invoice_details.split(";");
-  var columnsNames = userParam.texts_items_details_columns.split(";");
+  var columnsSelected = userParam.details_columns.split(";");
+  var columnsNames = userParam.text_details_columns.split(";");
 
   // remove all empty values ("", null, undefined): 
   columnsSelected = columnsSelected.filter(function(e){return e});
   columnsNames = columnsNames.filter(function(e){return e});
 
-  if (userParam.texts_items_details_columns) {
+  if (userParam.text_details_columns) {
     for (var i = 0; i < columnsNames.length; i++) {
       columnsNames[i] = columnsNames[i].trim();
       if (columnsNames[i] === "<none>") {
@@ -1729,7 +1729,7 @@ function print_details_net_amounts(banDoc, repDocObj, invoiceObj, texts, userPar
 
 
   // Print QR Code
-  if (userParam.add_qr_code) {
+  if (userParam.qr_code_add) {
     print_qr_code(invoiceObj, texts, userParam, repTableObj);
   }
 }
@@ -1740,7 +1740,7 @@ function print_details_gross_amounts(banDoc, repDocObj, invoiceObj, texts, userP
     Prints the invoice details using gross Amounts (VAT included)
   */
 
-  var columnsDimension = userParam.items_invoice_details_dimensions.split(";");
+  var columnsDimension = userParam.details_columns_widths.split(";");
 
   //var repTableObj = repDocObj.addTable("doc_table");
   var repTableObj = detailsTable;
@@ -1760,14 +1760,14 @@ function print_details_gross_amounts(banDoc, repDocObj, invoiceObj, texts, userP
   // Creates the header with the parameter's values
   // If user insert other columns names we use them,
   // otherwise we use the XmlValue inserted when choosing the columns to display
-  var columnsSelected = userParam.items_invoice_details.split(";");
-  var columnsNames = userParam.texts_items_details_columns.split(";");
+  var columnsSelected = userParam.details_columns.split(";");
+  var columnsNames = userParam.text_details_columns.split(";");
 
   // remove all empty values ("", null, undefined): 
   columnsSelected = columnsSelected.filter(function(e){return e});
   columnsNames = columnsNames.filter(function(e){return e});
 
-  if (userParam.texts_items_details_columns) {
+  if (userParam.text_details_columns) {
     for (var i = 0; i < columnsNames.length; i++) {
       columnsNames[i] = columnsNames[i].trim();
       if (columnsNames[i] === "<none>") {
@@ -1877,7 +1877,7 @@ function print_details_gross_amounts(banDoc, repDocObj, invoiceObj, texts, userP
 
 
   // Print QR Code
-  if (userParam.add_qr_code) {
+  if (userParam.qr_code_add) {
     print_qr_code(invoiceObj, texts, userParam, repTableObj);
   }
 }
@@ -1910,15 +1910,15 @@ function print_qr_code(invoiceObj, texts, userParam, detailsTable) {
   text += 'Payable by:\n';
 
   // User has checked to use another address
-  if (userParam.use_different_address) {
-    if (userParam.address_row_1) {
-      text += userParam.address_row_1 + '\n';
+  if (userParam.qr_code_use_different_address) {
+    if (userParam.qr_code_address_row_1) {
+      text += userParam.qr_code_address_row_1 + '\n';
     }
-    if (userParam.address_row_2) {
-      text += userParam.address_row_2 + '\n';
+    if (userParam.qr_code_address_row_2) {
+      text += userParam.qr_code_address_row_2 + '\n';
     }
-    if (userParam.address_row_3) {
-      text += userParam.address_row_3 + '\n';
+    if (userParam.qr_code_address_row_3) {
+      text += userParam.qr_code_address_row_3 + '\n';
     }
   }
   else {
@@ -2017,7 +2017,7 @@ function print_footer(repDocObj, texts, userParam) {
     For empty value insert <none>.
   */
 
-  if (userParam.add_footer) {
+  if (userParam.footer_add) {
     var paragraph = repDocObj.getFooter().addParagraph("","footer_line");
     var tabFooter = repDocObj.getFooter().addTable("footer_table");
     var col1 = tabFooter.addColumn().setStyleAttributes("width:33%");
@@ -2393,8 +2393,8 @@ function setInvoiceTexts(language) {
     texts.param_color = 'Colore testo';
     texts.param_font_family = 'Tipo carattere';
     // texts.param_image_height = 'Altezza immagine (mm)';
-    texts.param_print_header = 'Includi intestazione pagina';
-    texts.param_print_logo = 'Stampa logo';
+    texts.param_header_print = 'Includi intestazione pagina';
+    texts.param_logo_print = 'Stampa logo';
     texts.payment_due_date_label = 'Scadenza';
     texts.payment_terms_label = 'Pagamento';
     //texts.param_max_items_per_page = 'Numero di linee su ogni fattura';
@@ -2421,8 +2421,8 @@ function setInvoiceTexts(language) {
     texts.param_color = 'Textfarbe';
     texts.param_font_family = 'Typ Schriftzeichen';
     // texts.param_image_height = 'Bildhöhe (mm)';
-    texts.param_print_header = 'Seitenüberschrift einschliessen';
-    texts.param_print_logo = 'Logo ausdrucken';
+    texts.param_header_print = 'Seitenüberschrift einschliessen';
+    texts.param_logo_print = 'Logo ausdrucken';
     texts.payment_due_date_label = 'Fälligkeitsdatum';
     texts.payment_terms_label = 'Zahlungsfrist';
     //texts.param_max_items_per_page = 'Anzahl der Zeilen auf jeder Rechnung';
@@ -2449,8 +2449,8 @@ function setInvoiceTexts(language) {
     texts.param_color = 'Couleur du texte';
     texts.param_font_family = 'Police de caractère';
     // texts.param_image_height = "Hauteur de l'image (mm)";
-    texts.param_print_header = 'Inclure en-tête de page';
-    texts.param_print_logo = 'Imprimer logo';
+    texts.param_header_print = 'Inclure en-tête de page';
+    texts.param_logo_print = 'Imprimer logo';
     texts.payment_due_date_label = 'Echéance';
     texts.payment_terms_label = 'Paiement';
     //texts.param_max_items_per_page = 'Nombre d’éléments sur chaque facture';
@@ -2477,8 +2477,8 @@ function setInvoiceTexts(language) {
     texts.param_color = '文本颜色';
     texts.param_font_family = '字体类型';
     texts.param_image_height = '图像高度 (mm)';
-    texts.param_print_header = '包括页眉';
-    texts.param_print_logo = '打印徽标';
+    texts.param_header_print = '包括页眉';
+    texts.param_logo_print = '打印徽标';
     texts.payment_due_date_label = '截止日期';
     texts.payment_terms_label = '付款';
     //texts.param_max_items_per_page = '每页上的项目数';
@@ -2505,8 +2505,8 @@ function setInvoiceTexts(language) {
     texts.param_color = 'tekstkleur';
     texts.param_font_family = 'Lettertype';
     texts.param_image_height = 'Beeldhoogte (mm)';
-    texts.param_print_header = 'Pagina-koptekst opnemen';
-    texts.param_print_logo = 'Druklogo';
+    texts.param_header_print = 'Pagina-koptekst opnemen';
+    texts.param_logo_print = 'Druklogo';
     texts.payment_due_date_label = 'Vervaldatum';
     texts.payment_terms_label = 'Betaling';
     //texts.param_max_items_per_page = 'Aantal artikelen op iedere pagina';
@@ -2540,21 +2540,21 @@ function setInvoiceTexts(language) {
     
     //Include
     texts.param_include = "Print";
-    texts.param_include_header = "Header";
+    texts.param_header_include = "Header";
     texts.param_header_left = "Header on left position";
-    texts.param_print_header = 'Page header';
+    texts.param_header_print = 'Page header';
     texts.param_header_row_1 = "Header row 1";
     texts.param_header_row_2 = "Header row 2";
     texts.param_header_row_3 = "Header row 3";
     texts.param_header_row_4 = "Header row 4";
     texts.param_header_row_5 = "Header row 5";
-    texts.param_print_logo = 'Logo';
+    texts.param_logo_print = 'Logo';
     texts.param_logo_name = 'Logo name';
-    texts.param_include_address = "Customer address";
-    texts.param_small_address_line = "Sender address line";
+    texts.param_address_include = "Customer address";
+    texts.param_address_small_line = "Sender address line";
     texts.param_address_left = 'Address on left position';
     texts.param_shipping_address = 'Shipping address';
-    texts.param_include_info = 'Info';
+    texts.param_info_include = 'Info';
     texts.param_info_invoice_number = 'Invoice number';
     texts.param_info_date = 'Invoice date';
     texts.param_info_customer = 'Invoice customer number';
@@ -2562,40 +2562,39 @@ function setInvoiceTexts(language) {
     texts.param_info_customer_fiscal_number = 'Customer fiscal number';
     texts.param_info_due_date = 'Invoice due date';
     texts.param_info_page = 'Invoice page number';
-    texts.param_include_details = "Details";
-    texts.param_title_doctype_10 = "Title invoice (DocType=10)";
-    texts.param_title_doctype_12 = "Title credit note (DocType=12)";
-    texts.param_items_invoice_details = "Invoice details columns";
-    texts.param_items_invoice_details_dimensions = "Invoice details columns width";
+    texts.param_details_include = "Details";
+    texts.param_details_columns = "Invoice details columns";
+    texts.param_details_columns_widths = "Invoice details columns width";
     texts.param_details_gross_amounts = "Details with gross amounts (VAT included)";
-    texts.param_invoice_details_without_vat = "Details without VAT";
-    texts.param_include_footer = 'Footer';
-    texts.param_add_footer = 'Print footer';
+    texts.param_footer_include = 'Footer';
+    texts.param_footer_add = 'Print footer';
     texts.param_footer_left = "Left footer at the bottom of the page";
     texts.param_footer_center = "Center footer at the bottom of the page";
     texts.param_footer_right = "Right footer at the bottom of the page";
     texts.param_qr_code = "QR Code";
-    texts.param_add_qr_code = "Print the QR Code";
-    texts.param_qr_code_position = "Position (left, center or right)";
-    texts.param_use_different_address = "Use a different address";
-    texts.param_address_row_1 = "Address row 1";
-    texts.param_address_row_2 = "Address row 2";
-    texts.param_address_row_3 = "Address row 3";
+    texts.param_qr_code_add = "Print the QR Code";
+    texts.param_qr_code_align = "Alignment (left, center or right)";
+    texts.param_qr_code_use_different_address = "Use a different address";
+    texts.param_qr_code_address_row_1 = "Address row 1";
+    texts.param_qr_code_address_row_2 = "Address row 2";
+    texts.param_qr_code_address_row_3 = "Address row 3";
 
     //Texts
     texts.param_texts = "Texts (empty = default values)";
     texts.param_add_language = "Add a new language";
-    texts.param_texts_language_en = "en";
-    texts.param_texts_info_invoice_number_text = 'Invoice number';
-    texts.param_texts_info_date_text = 'Invoice date';
-    texts.param_texts_info_customer_text = 'Invoice customer number';
-    texts.param_texts_info_customer_vat_number = 'Customer VAT number';
-    texts.param_texts_info_customer_fiscal_number = 'Customer fiscal number';
-    texts.param_texts_info_due_date_text = 'Invoice due date';
-    texts.param_texts_info_page_text = 'Invoice page number';
-    texts.param_texts_shipping_address = 'Shipping address';
-    texts.param_texts_items_details_columns = 'Invoice details columns names';
-    texts.param_texts_total = 'Invoice total';
+    texts.param_text_language_en = "en";
+    texts.param_text_info_invoice_number = 'Invoice number';
+    texts.param_text_info_date = 'Invoice date';
+    texts.param_text_info_customer = 'Invoice customer number';
+    texts.param_text_info_customer_vat_number = 'Customer VAT number';
+    texts.param_text_info_customer_fiscal_number = 'Customer fiscal number';
+    texts.param_text_info_due_date = 'Invoice due date';
+    texts.param_text_info_page = 'Invoice page number';
+    texts.param_text_shipping_address = 'Shipping address';
+    texts.param_text_title_doctype_10 = "Title invoice (DocType=10)";
+    texts.param_text_title_doctype_12 = "Title credit note (DocType=12)";
+    texts.param_text_details_columns = 'Invoice details columns names';
+    texts.param_text_total = 'Invoice total';
 
     //Styles
     texts.param_styles = "Styles";
@@ -2611,9 +2610,9 @@ function setInvoiceTexts(language) {
     texts.param_embedded_javascript_filename = "Insert the file name ('ID' column of the 'Documents' table)";
 
     //Tooltips for the parameters
-    texts.param_tooltip_print_header = "Check to include the page header";
+    texts.param_tooltip_header_print = "Check to include the page header";
     texts.param_tooltip_header_left = "Check to print the header on left position";
-    texts.param_tooltip_print_logo = "Check to include the logo";
+    texts.param_tooltip_logo_print = "Check to include the logo";
     texts.param_tooltip_logo_name = "Enter the name of the logo";
     texts.param_tooltip_info_invoice_number = "Check to include the invoice number";
     texts.param_tooltip_info_date = "Check to include the invoice date";
@@ -2623,40 +2622,40 @@ function setInvoiceTexts(language) {
     texts.param_tooltip_info_due_date = "Check to include the invoice due date";
     texts.param_tooltip_info_page = "Check to include the page invoice number";
     texts.param_tooltip_add_language = "Enter a new language (i.e. 'es' for spanish)";
-    texts.param_tooltip_texts_info_invoice_number_text = "Enter a text to replace the default one";
-    texts.param_tooltip_texts_info_date_text = "Enter a text to replace the default one";
-    texts.param_tooltip_texts_info_customer_text = "Enter a text to replace the default one";
+    texts.param_tooltip_text_info_invoice_number = "Enter a text to replace the default one";
+    texts.param_tooltip_text_info_date = "Enter a text to replace the default one";
+    texts.param_tooltip_text_info_customer = "Enter a text to replace the default one";
     texts.param_tooltip_texts_payment_terms_label = "Enter a text to replace the default one";
-    texts.param_tooltip_texts_info_page_text = "Enter a text to replace the default one";
+    texts.param_tooltip_text_info_page = "Enter a text to replace the default one";
     texts.param_tooltip_title_doctype_10 = "Enter a text to replace the default one";
     texts.param_tooltip_title_doctype_12 = "Enter a text to replace the default one";
     texts.param_tooltip_texts_total = "Enter a text to replace the default one";
-    texts.param_tooltip_texts_items_details_columns = "Enter the names of the invoice details columns";
-    texts.param_tooltip_items_invoice_details = "Enter the names of the columns in the order you prefer";
-    texts.param_tooltip_items_invoice_details_dimensions = "Enter the width of the columns in % (sum = 100%)";
+    texts.param_tooltip_text_details_columns = "Enter the names of the invoice details columns";
+    texts.param_tooltip_details_columns = "Enter the names of the columns in the order you prefer";
+    texts.param_tooltip_details_columns_widths = "Enter the width of the columns in % (sum = 100%)";
     texts.param_tooltip_header_row_1 = "Enter a text to replace the default one";
     texts.param_tooltip_header_row_2 = "Enter a text to replace the default one";
     texts.param_tooltip_header_row_3 = "Enter a text to replace the default one";
     texts.param_tooltip_header_row_4 = "Enter a text to replace the default one";
     texts.param_tooltip_header_row_5 = "Enter a text to replace the default one";
-    texts.param_tooltip_small_address_line = "Enter supplier address line above the customer address";
+    texts.param_tooltip_address_small_line = "Enter supplier address line above the customer address";
     texts.param_tooltip_shipping_address = "Check to print billing and shipping addresses";
     texts.param_tooltip_address_left = "Check to print the customer address on left position";
     texts.param_tooltip_details_gross_amounts = "Check to print the invoice details with gross amounts with the VAT included";
     texts.param_tooltip_invoice_details_without_vat = "Check to print the invoice details without VAT";
-    texts.param_tooltip_add_footer = "Check to print the footer at the bottom of the page";
+    texts.param_tooltip_footer_add = "Check to print the footer at the bottom of the page";
     texts.param_tooltip_footer = "Enter a footer text";
     texts.param_tooltip_font_family = "Enter the font type";
     texts.param_tooltip_background_color_1 = "Enter the background color";
     texts.param_tooltip_color = "Enter the text color";
     texts.param_tooltip_background_color_2 = "Enter the color for the rows background";
     texts.param_tooltip_javascript_filename = "Enter the name of the javascript file taken from the 'ID' column of the table 'Documents' (i.e. file.js)";
-    texts.param_tooltip_add_qr_code = "Check to print the QR Code";
-    texts.param_tooltip_qr_code_position = "Choose where to print the QR Code";
-    texts.param_tooltip_use_different_address = "Check to use a different address for the QR Code";
-    texts.param_tooltip_address_row1 = "Enter the row 1 text";
-    texts.param_tooltip_address_row2 = "Enter the row 2 text";
-    texts.param_tooltip_address_row3 = "Enter the row 3 text";
+    texts.param_tooltip_qr_code_add = "Check to print the QR Code";
+    texts.param_tooltip_qr_code_align = "Choose where to print the QR Code";
+    texts.param_tooltip_qr_code_use_different_address = "Check to use a different address for the QR Code";
+    texts.param_tooltip_qr_code_address_row_1 = "Enter the row 1 text";
+    texts.param_tooltip_qr_code_address_row_2 = "Enter the row 2 text";
+    texts.param_tooltip_qr_code_address_row_3 = "Enter the row 3 text";
   }
   return texts;
 }
@@ -2674,7 +2673,7 @@ function setInvoiceTexts(language) {
 // STYLES
 //====================================================================//
 
-function replaceVariable(cssText, cssVariables) {
+function replaceVariables(cssText, cssVariables) {
 
   /* 
     Function that replaces all the css variables inside of the given cssText with their values.
@@ -2771,7 +2770,7 @@ function set_css_variables(cssVariables, userParam) {
   cssVariables.$padding_top = "0px";
   cssVariables.$padding_bottom = "0px";
   cssVariables.$padding = "3px";
-  cssVariables.$qr_code_align = userParam.qr_code_position;
+  cssVariables.$qr_code_align = userParam.qr_code_align;
   cssVariables.$header_text_align = "right";
   cssVariables.$small_address_text_align = "center";
   cssVariables.$small_address_font_size = "7pt";
@@ -2800,115 +2799,153 @@ function set_invoice_style(reportObj, repStyleObj, cssVariables, userParam) {
     repStyleObj = reportObj.newStyleSheet();
   }
 
-  var tmp = "";
+  var style = "";
 
-  // tmp = "counter-reset: page";
-  // add_style(repStyleObj, ".pageReset", tmp, cssVariables);
+  // style = "counter-reset: page";
+  // style = replaceVariables(style, cssVariables);
+  // repStyleObj.addStyle(".pageReset", style);
 
-  tmp = "font-size:$font_size; font-family:$font_family";
-  add_style(repStyleObj, "body", tmp, cssVariables);
+  style = "font-size:$font_size; font-family:$font_family";
+  style = replaceVariables(style, cssVariables);
+  repStyleObj.addStyle("body", style);
 
-  tmp = "text-align:right";
-  add_style(repStyleObj, ".right", tmp, cssVariables);
+  style = "text-align:right";
+  style = replaceVariables(style, cssVariables);
+  repStyleObj.addStyle(".right", style);
 
-  tmp = "text-align:center";
-  add_style(repStyleObj, ".center", tmp, cssVariables);
+  style = "text-align:center";
+  style = replaceVariables(style, cssVariables);
+  repStyleObj.addStyle(".center", style);
 
-  tmp = "font-weight:bold";
-  add_style(repStyleObj, ".bold", tmp, cssVariables);
+  style = "font-weight:bold";
+  style = replaceVariables(style, cssVariables);
+  repStyleObj.addStyle(".bold", style);
 
-  tmp = "font-weight:bold; color:$background_color_1; border-bottom:$total_border_bottom $background_color_1; font-size:$total_font_size";
-  add_style(repStyleObj, ".total_cell", tmp, cssVariables);
+  style = "font-weight:bold; color:$background_color_1; border-bottom:$total_border_bottom $background_color_1; font-size:$total_font_size";
+  style = replaceVariables(style, cssVariables);
+  repStyleObj.addStyle(".total_cell", style);
 
-  tmp = "font-weight:bold; background-color:$background_color_1; color:$color; padding:5px";
-  add_style(repStyleObj, ".subtotal_cell",tmp, cssVariables);
+  style = "font-weight:bold; background-color:$background_color_1; color:$color; padding:5px";
+  style = replaceVariables(style, cssVariables);
+  repStyleObj.addStyle(".subtotal_cell",style);
 
-  tmp = "font-size:$font_size";
-  add_style(repStyleObj, ".vat_info", tmp, cssVariables);
+  style = "font-size:$font_size";
+  style = replaceVariables(style, cssVariables);
+  repStyleObj.addStyle(".vat_info", style);
 
-  tmp = "background-color:$background_color_2";
-  add_style(repStyleObj, ".even_rows_background_color", tmp, cssVariables);
+  style = "background-color:$background_color_2";
+  style = replaceVariables(style, cssVariables);
+  repStyleObj.addStyle(".even_rows_background_color", style);
 
-  tmp = "border-bottom:2px solid $background_color_1";
-  add_style(repStyleObj, ".border-bottom", tmp, cssVariables);
+  style = "border-bottom:2px solid $background_color_1";
+  style = replaceVariables(style, cssVariables);
+  repStyleObj.addStyle(".border-bottom", style);
 
-  tmp = "border-top:thin solid $background_color_1";
-  add_style(repStyleObj, ".thin-border-top", tmp, cssVariables);
+  style = "border-top:thin solid $background_color_1";
+  style = replaceVariables(style, cssVariables);
+  repStyleObj.addStyle(".thin-border-top", style);
 
-  tmp = "padding-right:$padding_right";
-  add_style(repStyleObj, ".padding-right", tmp, cssVariables);
+  style = "padding-right:$padding_right";
+  style = replaceVariables(style, cssVariables);
+  repStyleObj.addStyle(".padding-right", style);
 
-  tmp = "padding-left:$padding_left";
-  add_style(repStyleObj, ".padding-left", tmp, cssVariables);
+  style = "padding-left:$padding_left";
+  style = replaceVariables(style, cssVariables);
+  repStyleObj.addStyle(".padding-left", style);
 
-  tmp = "position:absolute; margin-top:$margin_top; margin-left:$margin_left; margin-right:$margin_right";
-  add_style(repStyleObj, ".header_left_text", tmp, cssVariables);
+  style = "position:absolute; margin-top:$margin_top; margin-left:$margin_left; margin-right:$margin_right";
+  style = replaceVariables(style, cssVariables);
+  repStyleObj.addStyle(".header_left_text", style);
 
-  tmp = "position:absolute; margin-top:$margin_top; margin-left:$margin_left; margin-right:$margin_right; text-align:$header_text_align";
-  add_style(repStyleObj, ".header_right_text", tmp, cssVariables);
+  style = "position:absolute; margin-top:$margin_top; margin-left:$margin_left; margin-right:$margin_right; text-align:$header_text_align";
+  style = replaceVariables(style, cssVariables);
+  repStyleObj.addStyle(".header_right_text", style);
 
-  tmp = "position:absolute; margin-top:$margin_top; margin-left:$margin_left; margin-right:$margin_right";
-  add_style(repStyleObj, ".logo", tmp, cssVariables);
+  style = "position:absolute; margin-top:$margin_top; margin-left:$margin_left; margin-right:$margin_right";
+  style = replaceVariables(style, cssVariables);
+  repStyleObj.addStyle(".logo", style);
 
-  tmp = "position:absolute; margin-top:$margin_top_info; margin-left:$margin_left; margin-right:$margin_right; font-size:$font_size";
-  add_style(repStyleObj, ".info_table_left", tmp, cssVariables);
+  style = "position:absolute; margin-top:$margin_top_info; margin-left:$margin_left; margin-right:$margin_right; font-size:$font_size";
+  style = replaceVariables(style, cssVariables);
+  repStyleObj.addStyle(".info_table_left", style);
 
-  tmp = "padding-top:$padding_top; padding-bottom:$padding_bottom";
-  add_style(repStyleObj, "table.info_table_left td", tmp, cssVariables);
+  style = "padding-top:$padding_top; padding-bottom:$padding_bottom";
+  style = replaceVariables(style, cssVariables);
+  repStyleObj.addStyle("table.info_table_left td", style);
 
-  tmp = "position:absolute; margin-top:$margin_top_info; margin-left:$margin_left_info; margin-right:$margin_right; font-size:$font_size";
-  add_style(repStyleObj, ".info_table_right", tmp, cssVariables);
+  style = "position:absolute; margin-top:$margin_top_info; margin-left:$margin_left_info; margin-right:$margin_right; font-size:$font_size";
+  style = replaceVariables(style, cssVariables);
+  repStyleObj.addStyle(".info_table_right", style);
 
-  tmp = "padding-top:$padding_top; padding-bottom:$padding_bottom";
-  add_style(repStyleObj, "table.info_table_right td", tmp, cssVariables);
+  style = "padding-top:$padding_top; padding-bottom:$padding_bottom";
+  style = replaceVariables(style, cssVariables);
+  repStyleObj.addStyle("table.info_table_right td", style);
 
-  tmp = "position:absolute; margin-top:$margin_top_info; margin-left:$margin_left; margin-right:$margin_right; font-size:$font_size";
-  add_style(repStyleObj, ".info_table_row0", tmp, cssVariables);
+  style = "position:absolute; margin-top:$margin_top_info; margin-left:$margin_left; margin-right:$margin_right; font-size:$font_size";
+  style = replaceVariables(style, cssVariables);
+  repStyleObj.addStyle(".info_table_row0", style);
 
-  tmp = "padding-top:$padding_top; padding-bottom:$padding_bottom";
-  add_style(repStyleObj, "table.info_table_row0 td", tmp, cssVariables);
+  style = "padding-top:$padding_top; padding-bottom:$padding_bottom";
+  style = replaceVariables(style, cssVariables);
+  repStyleObj.addStyle("table.info_table_row0 td", style);
 
-  tmp = "display:none";
-  add_style(repStyleObj, "@page:first-view table.info_table_row0", tmp, cssVariables);
+  style = "display:none";
+  style = replaceVariables(style, cssVariables);
+  repStyleObj.addStyle("@page:first-view table.info_table_row0", style);
 
-  tmp = "position:absolute; margin-top:$margin_top_info; margin-left:$margin_left_info; margin-right:$margin_right; font-size:$font_size";
-  add_style(repStyleObj, ".address_table_right", tmp, cssVariables);
+  style = "position:absolute; margin-top:$margin_top_info; margin-left:$margin_left_info; margin-right:$margin_right; font-size:$font_size";
+  style = replaceVariables(style, cssVariables);
+  repStyleObj.addStyle(".address_table_right", style);
 
-  tmp = "position:absolute; margin-top:$margin_top_info; margin-left:$margin_left; margin-right:$margin_right";
-  add_style(repStyleObj, ".address_table_left", tmp, cssVariables);
+  style = "position:absolute; margin-top:$margin_top_info; margin-left:$margin_left; margin-right:$margin_right";
+  style = replaceVariables(style, cssVariables);
+  repStyleObj.addStyle(".address_table_left", style);
 
-  tmp = "text-align:$small_address_text_align; font-size:$small_address_font_size; border-bottom:$small_address_border_bottom"; 
-  add_style(repStyleObj, ".small_address", tmp, cssVariables);
+  style = "text-align:$small_address_text_align; font-size:$small_address_font_size; border-bottom:$small_address_border_bottom"; 
+  style = replaceVariables(style, cssVariables);
+  repStyleObj.addStyle(".small_address", style);
 
-  tmp = "position:absolute; margin-top:$margin_top_shipping_address; margin-left:$margin_left; margin-right:$margin_right; font-size:$font_size";
-  add_style(repStyleObj, ".shipping_address", tmp, cssVariables);
+  style = "position:absolute; margin-top:$margin_top_shipping_address; margin-left:$margin_left; margin-right:$margin_right; font-size:$font_size";
+  style = replaceVariables(style, cssVariables);
+  repStyleObj.addStyle(".shipping_address", style);
 
-  tmp = "font-size:$title_font_size; font-weight:bold; color:$background_color_1";
-  add_style(repStyleObj, ".title_text", tmp, cssVariables);
+  style = "font-size:$title_font_size; font-weight:bold; color:$background_color_1";
+  style = replaceVariables(style, cssVariables);
+  repStyleObj.addStyle(".title_text", style);
 
-  tmp = "position:absolute; margin-top:$margin_top_begin_text; margin-left:$margin_left_table; margin-right:$margin_right; width:100%;";
-  add_style(repStyleObj, ".begin_text_table", tmp, cssVariables);
+  style = "position:absolute; margin-top:$margin_top_begin_text; margin-left:$margin_left_table; margin-right:$margin_right; width:100%;";
+  style = replaceVariables(style, cssVariables);
+  repStyleObj.addStyle(".begin_text_table", style);
 
-  tmp = "font-size:$font_size"; 
-  add_style(repStyleObj, ".begin_text", tmp, cssVariables);
+  style = "font-size:$font_size"; 
+  style = replaceVariables(style, cssVariables);
+  repStyleObj.addStyle(".begin_text", style);
 
-  tmp = "margin-top:$margin_top_details; margin-left:$margin_left_table; margin-right:$margin_right; font-size:$font_size; width:100%";
-  add_style(repStyleObj, ".doc_table", tmp, cssVariables);
+  style = "margin-top:$margin_top_details; margin-left:$margin_left_table; margin-right:$margin_right; font-size:$font_size; width:100%";
+  style = replaceVariables(style, cssVariables);
+  repStyleObj.addStyle(".doc_table", style);
 
-  tmp = "font-weight:bold; background-color:$background_color_1; color:$color";
-  add_style(repStyleObj, ".doc_table_header", tmp, cssVariables);
+  style = "font-weight:bold; background-color:$background_color_1; color:$color";
+  style = replaceVariables(style, cssVariables);
+  repStyleObj.addStyle(".doc_table_header", style);
 
-  tmp = "padding:$padding";
-  add_style(repStyleObj, ".doc_table_header td", tmp, cssVariables);
+  style = "padding:$padding";
+  style = replaceVariables(style, cssVariables);
+  repStyleObj.addStyle(".doc_table_header td", style);
 
-  tmp = "text-align:$qr_code_align";
-  add_style(repStyleObj, ".qr_code", tmp, cssVariables);
+  style = "text-align:$qr_code_align";
+  style = replaceVariables(style, cssVariables);
+  repStyleObj.addStyle(".qr_code", style);
 
-  tmp = "margin-left:$margin_left; margin-right:$margin_right; border-top:$footer_border_top $background_color_1";
-  add_style(repStyleObj, ".footer_line", tmp, cssVariables);
+  style = "margin-left:$margin_left; margin-right:$margin_right; border-top:$footer_border_top $background_color_1";
+  style = replaceVariables(style, cssVariables);
+  repStyleObj.addStyle(".footer_line", style);
 
-  tmp = "margin-bottom:$margin_bottom; margin-left:$margin_left; margin-right:$margin_right; width:100%; font-size:$footer_font_size";
-  add_style(repStyleObj, ".footer_table", tmp, cssVariables);
+  style = "margin-bottom:$margin_bottom; margin-left:$margin_left; margin-right:$margin_right; width:100%; font-size:$footer_font_size";
+  style = replaceVariables(style, cssVariables);
+  repStyleObj.addStyle(".footer_table", style);
+
+
 
 
   /* Uncomment to show all the borders of the tables */
@@ -2930,14 +2967,5 @@ function set_invoice_style(reportObj, repStyleObj, cssVariables, userParam) {
   if (typeof(hook_set_invoice_style) === typeof(Function)) {
     hook_set_invoice_style(repStyleObj, cssVariables, userParam);
   }
-}
-
-function add_style(repStyleObj, styleName, style, cssVariables) {
-
-  /*
-    Function that adds the style to the report invoice object
-  */
-
-  repStyleObj.addStyle(styleName, replaceVariable(style, cssVariables));
 }
 
