@@ -16,7 +16,7 @@
 
 // @id = ch.banana.uni.invoice.uni10.test
 // @api = 1.0
-// @pubdate = 2019-06-18
+// @pubdate = 2019-06-28
 // @publisher = Banana.ch SA
 // @description = <TEST ch.banana.uni.invoice.uni10.js>
 // @task = app.command
@@ -125,7 +125,7 @@ function setParametres(texts) {
   userParam.info_customer_fiscal_number = true;
   userParam.info_due_date = true;
   userParam.info_page = true;
-  userParam.details_columns = texts.description+";"+texts.quantity+";"+texts.reference_unit+";"+texts.unit_price+";"+texts.amount;
+  userParam.details_columns = texts.column_description+";"+texts.column_quantity+";"+texts.column_reference_unit+";"+texts.column_unit_price+";"+texts.column_amount;
   userParam.details_columns_widths = '50%;10%;10%;15%;15%';
   userParam.details_gross_amounts = false;
   userParam.footer_add = true;
@@ -141,18 +141,21 @@ function setParametres(texts) {
 
   //Texts
   userParam.add_language = "";
-  userParam.text_info_invoice_number = texts.invoice;
-  userParam.text_info_date = texts.date;
-  userParam.text_info_customer = texts.customer;
-  userParam.text_info_customer_vat_number = texts.vat_number;
-  userParam.text_info_customer_fiscal_number = texts.fiscal_number;
-  userParam.text_info_due_date = texts.payment_terms_label;
-  userParam.text_info_page = texts.page;
-  userParam.text_shipping_address = texts.shipping_address;
-  userParam.title_doctype_10 = texts.invoice + " <DocInvoice>";
-  userParam.title_doctype_12 = texts.credit_note + " <DocInvoice>";
-  userParam.text_details_columns = texts.description+";"+texts.quantity+";"+texts.reference_unit+";"+texts.unit_price+";"+texts.amount;
-  userParam.texts_total = texts.total;
+  userParam.en_text_info_invoice_number = texts.invoice;
+  userParam.en_text_info_date = texts.date;
+  userParam.en_text_info_customer = texts.customer;
+  userParam.en_text_info_customer_vat_number = texts.vat_number;
+  userParam.en_text_info_customer_fiscal_number = texts.fiscal_number;
+  userParam.en_text_info_due_date = texts.payment_terms_label;
+  userParam.en_text_info_page = texts.page;
+  userParam.en_text_shipping_address = texts.shipping_address;
+  userParam.en_title_doctype_10 = texts.invoice + " <DocInvoice>";
+  userParam.en_title_doctype_12 = texts.credit_note + " <DocInvoice>";
+  userParam.en_text_details_columns = texts.description+";"+texts.quantity+";"+texts.reference_unit+";"+texts.unit_price+";"+texts.amount;
+  userParam.en_texts_total = texts.total;
+  userParam.en_footer_left = texts.invoice;
+  userParam.en_footer_center = '';
+  userParam.en_footer_right = texts.page+' <'+texts.page+'>';
 
   //Styles
   userParam.background_color_1 = '#337ab7';

@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.uni.invoice.uni10
 // @api = 1.0
-// @pubdate = 2019-06-18
+// @pubdate = 2019-06-28
 // @publisher = Banana.ch SA
 // @description = Style 10: Fully customizable invoice template
 // @description.it = Stile 10: Template fattura completamente personalizzabile
@@ -53,6 +53,16 @@ var columnsNumber = 0;
 
 
 
+// Langage codes
+var lang = 'en'; //default language document
+var langCodes = ['en','it','de']; //de fr zh nl
+
+
+
+
+
+
+
 
 //====================================================================//
 // SETTINGS DIALOG FUNCTIONS USED TO SET, INITIALIZE AND VERIFY ALL
@@ -65,7 +75,7 @@ function settingsDialog() {
   var savedParam = Banana.document.getScriptSettings();
   if (savedParam.length > 0) {
     userParam = JSON.parse(savedParam);
-  }   
+  }
   userParam = verifyParam(userParam);
   if (typeof (Banana.Ui.openPropertyEditor) !== 'undefined') {
     var dialogTitle = 'Settings';
@@ -76,7 +86,13 @@ function settingsDialog() {
     }
     for (var i = 0; i < convertedParam.data.length; i++) {
       // Read values to param (through the readValue function)
-      convertedParam.data[i].readValue();
+      if (!convertedParam.data[i].language) {
+        convertedParam.data[i].readValue();
+      }
+      else {
+        // For param with property "language" pass this language as parameter
+        convertedParam.data[i].readValueLang(convertedParam.data[i].language);
+      }
     }
   }
   var paramToString = JSON.stringify(userParam);
@@ -84,7 +100,7 @@ function settingsDialog() {
 }
 
 function convertParam(userParam) {
-  var lang = 'en';
+  //var lang = 'en';
   if (Banana.document.locale) {
     lang = Banana.document.locale;
   }
@@ -97,6 +113,8 @@ function convertParam(userParam) {
   convertedParam.version = '1.0';
   /* array of script's parameters */
   convertedParam.data = [];
+
+
 
 
   /*******************************************************************************************
@@ -415,7 +433,7 @@ function convertParam(userParam) {
   currentParam.title = texts.param_details_columns;
   currentParam.type = 'string';
   currentParam.value = userParam.details_columns ? userParam.details_columns : '';
-  currentParam.defaultvalue = texts.description+";"+texts.quantity+";"+texts.reference_unit+";"+texts.unit_price+";"+texts.amount;
+  currentParam.defaultvalue = texts.column_description+";"+texts.column_quantity+";"+texts.column_reference_unit+";"+texts.column_unit_price+";"+texts.column_amount;
   currentParam.tooltip = texts.param_tooltip_details_columns;
   currentParam.readValue = function() {
     userParam.details_columns = this.value;
@@ -470,45 +488,6 @@ function convertParam(userParam) {
   currentParam.tooltip = texts.footer_add;
   currentParam.readValue = function() {
    userParam.footer_add = this.value;
-  }
-  convertedParam.data.push(currentParam);
-
-  currentParam = {};
-  currentParam.name = 'footer_left';
-  currentParam.parentObject = 'footer_include';
-  currentParam.title = texts.param_footer_left;
-  currentParam.type = 'string';
-  currentParam.value = userParam.footer_left ? userParam.footer_left : '';
-  currentParam.defaultvalue = '';
-  currentParam.tooltip = texts.param_tooltip_footer;
-  currentParam.readValue = function() {
-   userParam.footer_left = this.value;
-  }
-  convertedParam.data.push(currentParam);
-
-  currentParam = {};
-  currentParam.name = 'footer_center';
-  currentParam.parentObject = 'footer_include';
-  currentParam.title = texts.param_footer_center;
-  currentParam.type = 'string';
-  currentParam.value = userParam.footer_center ? userParam.footer_center : '';
-  currentParam.defaultvalue = '';
-  currentParam.tooltip = texts.param_tooltip_footer;
-  currentParam.readValue = function() {
-   userParam.footer_center = this.value;
-  }
-  convertedParam.data.push(currentParam); 
-
-  currentParam = {};
-  currentParam.name = 'footer_right';
-  currentParam.parentObject = 'footer_include';
-  currentParam.title = texts.param_footer_right;
-  currentParam.type = 'string';
-  currentParam.value = userParam.footer_right ? userParam.footer_right : '';
-  currentParam.defaultvalue = texts.page+' &['+texts.page+']';
-  currentParam.tooltip = texts.param_tooltip_footer;
-  currentParam.readValue = function() {
-   userParam.footer_right = this.value;
   }
   convertedParam.data.push(currentParam);
 
@@ -657,179 +636,237 @@ function convertParam(userParam) {
   convertedParam.data.push(currentParam);
 
 
+  // Parameters for each language
+  for (var i = 0; i < langCodes.length; i++) {
+
+    var langCode = langCodes[i];
+    var langTexts = setInvoiceTexts(langCode);
+    
+    currentParam = {};
+    currentParam.name = langCode;
+    currentParam.parentObject = 'texts';
+    currentParam.title = langCode;
+    currentParam.type = 'string';
+    currentParam.value = '';
+    currentParam.editable = false;
+    currentParam.readValue = function() {
+      userParam['text_language_code'] = this.value;
+    }
+    convertedParam.data.push(currentParam);
+
+    currentParam = {};
+    currentParam.name = langCode+'_text_info_invoice_number';
+    currentParam.parentObject = langCode;
+    currentParam.title = langTexts[langCode+'_param_text_info_invoice_number'];
+    currentParam.type = 'string';
+    currentParam.value = userParam[langCode+'_text_info_invoice_number'] ? userParam[langCode+'_text_info_invoice_number'] : '';
+    currentParam.defaultvalue = langTexts.invoice;
+    currentParam.tooltip = langTexts['param_tooltip_text_info_invoice_number'];
+    currentParam.language = langCode;
+    currentParam.readValueLang = function(langCode) {
+      userParam[langCode+'_text_info_invoice_number'] = this.value;
+    }
+    convertedParam.data.push(currentParam);
+
+    currentParam = {};
+    currentParam.name = langCode+'_text_info_date';
+    currentParam.parentObject = langCode;
+    currentParam.title = langTexts[langCode+'_param_text_info_date'];
+    currentParam.type = 'string';
+    currentParam.value = userParam[langCode+'_text_info_date'] ? userParam[langCode+'_text_info_date'] : '';
+    currentParam.defaultvalue = langTexts.date;
+    currentParam.tooltip = langTexts['param_tooltip_text_info_date'];
+    currentParam.language = langCode;
+    currentParam.readValueLang = function(langCode) {
+      userParam[langCode+'_text_info_date'] = this.value;
+      //Banana.console.log(">>"+langCode + ":::"+ userParam[langCode+'_text_info_date']);
+    }
+    convertedParam.data.push(currentParam);
+    
+    currentParam = {};
+    currentParam.name = langCode+'_text_info_customer';
+    currentParam.parentObject = langCode;
+    currentParam.title = langTexts[langCode+'_param_text_info_customer'];
+    currentParam.type = 'string';
+    currentParam.value = userParam[langCode+'_text_info_customer'] ? userParam[langCode+'_text_info_customer'] : '';
+    currentParam.defaultvalue = langTexts.customer;
+    currentParam.tooltip = langTexts['param_tooltip_text_info_customer'];
+    currentParam.language = langCode;
+    currentParam.readValueLang = function(langCode) {
+      userParam[langCode+'_text_info_customer'] = this.value;
+    }
+    convertedParam.data.push(currentParam);
+
+    currentParam = {};
+    currentParam.name = langCode+'_text_info_customer_vat_number';
+    currentParam.parentObject = langCode;
+    currentParam.title = langTexts[langCode+'_param_text_info_customer_vat_number'];
+    currentParam.type = 'string';
+    currentParam.value = userParam[langCode+'_text_info_customer_vat_number'] ? userParam[langCode+'_text_info_customer_vat_number'] : '';
+    currentParam.defaultvalue = langTexts.vat_number;
+    currentParam.tooltip = langTexts['param_tooltip_text_info_customer_vat_number_text'];
+    currentParam.language = langCode;
+    currentParam.readValueLang = function(langCode) {
+      userParam[langCode+'_text_info_customer_vat_number'] = this.value;
+    }
+    convertedParam.data.push(currentParam);
+
+    currentParam = {};
+    currentParam.name = langCode+'_text_info_customer_fiscal_number';
+    currentParam.parentObject = langCode;
+    currentParam.title = langTexts[langCode+'_param_text_info_customer_fiscal_number'];
+    currentParam.type = 'string';
+    currentParam.value = userParam[langCode+'_text_info_customer_fiscal_number'] ? userParam[langCode+'_text_info_customer_fiscal_number'] : '';
+    currentParam.defaultvalue = langTexts.fiscal_number;
+    currentParam.tooltip = langTexts['param_tooltip_text_info_customer_fiscal_number'];
+    currentParam.language = langCode;
+    currentParam.readValueLang = function(langCode) {
+      userParam[langCode+'_text_info_customer_fiscal_number'] = this.value;
+    }
+    convertedParam.data.push(currentParam);
+
+    currentParam = {};
+    currentParam.name = langCode+'_text_info_due_date';
+    currentParam.parentObject = langCode;
+    currentParam.title = langTexts[langCode+'_param_text_info_due_date'];
+    currentParam.type = 'string';
+    currentParam.value = userParam[langCode+'_text_info_due_date'] ? userParam[langCode+'_text_info_due_date'] : '';
+    currentParam.defaultvalue = langTexts.payment_terms_label;
+    currentParam.tooltip = langTexts['param_tooltip_texts_payment_terms_label'];
+    currentParam.language = langCode;
+    currentParam.readValueLang = function(langCode) {
+      userParam[langCode+'_text_info_due_date'] = this.value;
+    }
+    convertedParam.data.push(currentParam);
+
+    currentParam = {};
+    currentParam.name = langCode+'_text_info_page';
+    currentParam.parentObject = langCode;
+    currentParam.title = langTexts[langCode+'_param_text_info_page'];
+    currentParam.type = 'string';
+    currentParam.value = userParam[langCode+'_text_info_page'] ? userParam[langCode+'_text_info_page'] : '';
+    currentParam.defaultvalue = langTexts.page;
+    currentParam.tooltip = langTexts['param_tooltip_text_info_page'];
+    currentParam.language = langCode;
+    currentParam.readValueLang = function(langCode) {
+      userParam[langCode+'_text_info_page'] = this.value;
+    }
+    convertedParam.data.push(currentParam);
+
+    currentParam = {};
+    currentParam.name = langCode+'_text_shipping_address';
+    currentParam.parentObject = langCode;
+    currentParam.title = langTexts[langCode+'_param_text_shipping_address'];
+    currentParam.type = 'string';
+    currentParam.value = userParam[langCode+'_text_shipping_address'] ? userParam[langCode+'_text_shipping_address'] : '';
+    currentParam.defaultvalue = langTexts.shipping_address;
+    currentParam.tooltip = langTexts['param_tooltip_text_shipping_address'];
+    currentParam.language = langCode;
+    currentParam.readValueLang = function(langCode) {
+      userParam[langCode+'_text_shipping_address'] = this.value;
+    }
+    convertedParam.data.push(currentParam);
+
+    currentParam = {};
+    currentParam.name = langCode+'_title_doctype_10';
+    currentParam.parentObject = langCode;
+    currentParam.title = langTexts[langCode+'_param_text_title_doctype_10'];
+    currentParam.type = 'string';
+    currentParam.value = userParam[langCode+'_title_doctype_10'] ? userParam[langCode+'_title_doctype_10'] : '';
+    currentParam.defaultvalue = langTexts.invoice + " <DocInvoice>";
+    currentParam.tooltip = langTexts['param_tooltip_title_doctype_10'];
+    currentParam.language = langCode;
+    currentParam.readValueLang = function(langCode) {
+      userParam[langCode+'_title_doctype_10'] = this.value;
+    }
+    convertedParam.data.push(currentParam);
+
+    currentParam = {};
+    currentParam.name = langCode+'_title_doctype_12';
+    currentParam.parentObject = langCode;
+    currentParam.title = langTexts[langCode+'_param_text_title_doctype_12'];
+    currentParam.type = 'string';
+    currentParam.value = userParam[langCode+'_title_doctype_12'] ? userParam[langCode+'_title_doctype_12'] : '';
+    currentParam.defaultvalue = langTexts.credit_note  + " <DocInvoice>";
+    currentParam.tooltip = langTexts['param_tooltip_title_doctype_12'];
+    currentParam.language = langCode;
+    currentParam.readValueLang = function(langCode) {
+      userParam[langCode+'_title_doctype_12'] = this.value;
+    }
+    convertedParam.data.push(currentParam);
+
+    currentParam = {};
+    currentParam.name = langCode+'_text_details_columns';
+    currentParam.parentObject = langCode;
+    currentParam.title = langTexts[langCode+'_param_text_details_columns'];
+    currentParam.type = 'string';
+    currentParam.value = userParam[langCode+'_text_details_columns'] ? userParam[langCode+'_text_details_columns'] : '';
+    currentParam.defaultvalue = langTexts.description+";"+texts.quantity+";"+texts.reference_unit+";"+texts.unit_price+";"+texts.amount;
+    currentParam.tooltip = langTexts['param_tooltip_text_details_columns'];
+    currentParam.language = langCode;
+    currentParam.readValueLang = function(langCode) {
+      userParam[langCode+'_text_details_columns'] = this.value;
+    }
+    convertedParam.data.push(currentParam);
+
+    currentParam = {};
+    currentParam.name = langCode+'_texts_total';
+    currentParam.parentObject = langCode;
+    currentParam.title = langTexts[langCode+'_param_text_total'];
+    currentParam.type = 'string';
+    currentParam.value = userParam[langCode+'_texts_total'] ? userParam[langCode+'_texts_total'] : '';
+    currentParam.defaultvalue = langTexts.total;
+    currentParam.tooltip = langTexts['param_tooltip_texts_total'];
+    currentParam.language = langCode;
+    currentParam.readValueLang = function(langCode) {
+      userParam[langCode+'_texts_total'] = this.value;
+    }
+    convertedParam.data.push(currentParam);
 
 
+    currentParam = {};
+    currentParam.name = langCode+'_footer_left';
+    currentParam.parentObject = langCode;
+    currentParam.title = langTexts[langCode+'_param_footer_left'];
+    currentParam.type = 'string';
+    currentParam.value = userParam[langCode+'_footer_left'] ? userParam[langCode+'_footer_left'] : '';
+    currentParam.defaultvalue = langTexts.invoice;
+    currentParam.tooltip = langTexts['param_tooltip_footer'];
+    currentParam.language = langCode;
+    currentParam.readValueLang = function(langCode) {
+     userParam[langCode+'_footer_left'] = this.value;
+    }
+    convertedParam.data.push(currentParam);
 
+    currentParam = {};
+    currentParam.name = langCode+'_footer_center';
+    currentParam.parentObject = langCode;
+    currentParam.title = langTexts[langCode+'_param_footer_center'];
+    currentParam.type = 'string';
+    currentParam.value = userParam[langCode+'_footer_center'] ? userParam[langCode+'_footer_center'] : '';
+    currentParam.defaultvalue = '';
+    currentParam.tooltip = langTexts['param_tooltip_footer'];
+    currentParam.language = langCode;
+    currentParam.readValueLang = function(langCode) {
+     userParam[langCode+'_footer_center'] = this.value;
+    }
+    convertedParam.data.push(currentParam); 
 
+    currentParam = {};
+    currentParam.name = langCode+'_footer_right';
+    currentParam.parentObject = langCode;
+    currentParam.title = langTexts[langCode+'_param_footer_right'];
+    currentParam.type = 'string';
+    currentParam.value = userParam[langCode+'_footer_right'] ? userParam[langCode+'_footer_right'] : '';
+    currentParam.defaultvalue = langTexts.page+' <'+langTexts.page+'>'
+    currentParam.tooltip = langTexts['param_tooltip_footer'];
+    currentParam.language = langCode;
+    currentParam.readValueLang = function(langCode) {
+     userParam[langCode+'_footer_right'] = this.value;
+    }
+    convertedParam.data.push(currentParam);
 
-  currentParam = {};
-  currentParam.name = 'text_language_code';
-  currentParam.parentObject = 'texts';
-  currentParam.title = texts.param_text_language_code;
-  currentParam.type = 'string';
-  currentParam.value = '';
-  currentParam.editable = false;
-  currentParam.readValue = function() {
-    userParam.text_language_code = this.value;
   }
-  convertedParam.data.push(currentParam);
-
-  currentParam = {};
-  currentParam.name = 'text_info_invoice_number';
-  currentParam.parentObject = 'text_language_code';
-  currentParam.title = texts.param_text_info_invoice_number;
-  currentParam.type = 'string';
-  currentParam.value = userParam.text_info_invoice_number ? userParam.text_info_invoice_number : '';
-  currentParam.defaultvalue = texts.invoice;
-  currentParam.tooltip = texts.param_tooltip_text_info_invoice_number;
-  currentParam.readValue = function() {
-    userParam.text_info_invoice_number = this.value;
-  }
-  convertedParam.data.push(currentParam);
-
-  currentParam = {};
-  currentParam.name = 'text_info_date';
-  currentParam.parentObject = 'text_language_code';
-  currentParam.title = texts.param_text_info_date;
-  currentParam.type = 'string';
-  currentParam.value = userParam.text_info_date ? userParam.text_info_date : '';
-  currentParam.defaultvalue = texts.date;
-  currentParam.tooltip = texts.param_tooltip_text_info_date;
-  currentParam.readValue = function() {
-    userParam.text_info_date = this.value;
-  }
-  convertedParam.data.push(currentParam);
-
-  currentParam = {};
-  currentParam.name = 'text_info_customer';
-  currentParam.parentObject = 'text_language_code';
-  currentParam.title = texts.param_text_info_customer;
-  currentParam.type = 'string';
-  currentParam.value = userParam.text_info_customer ? userParam.text_info_customer : '';
-  currentParam.defaultvalue = texts.customer;
-  currentParam.tooltip = texts.param_tooltip_text_info_customer;
-  currentParam.readValue = function() {
-    userParam.text_info_customer = this.value;
-  }
-  convertedParam.data.push(currentParam);
-
-  currentParam = {};
-  currentParam.name = 'text_info_customer_vat_number';
-  currentParam.parentObject = 'text_language_code';
-  currentParam.title = texts.param_text_info_customer_vat_number;
-  currentParam.type = 'string';
-  currentParam.value = userParam.text_info_customer_vat_number ? userParam.text_info_customer_vat_number : '';
-  currentParam.defaultvalue = texts.vat_number;
-  currentParam.tooltip = texts.param_tooltip_text_info_customer_vat_number_text;
-  currentParam.readValue = function() {
-    userParam.text_info_customer_vat_number = this.value;
-  }
-  convertedParam.data.push(currentParam);
-
-  currentParam = {};
-  currentParam.name = 'text_info_customer_fiscal_number';
-  currentParam.parentObject = 'text_language_code';
-  currentParam.title = texts.param_text_info_customer_fiscal_number;
-  currentParam.type = 'string';
-  currentParam.value = userParam.text_info_customer_fiscal_number ? userParam.text_info_customer_fiscal_number : '';
-  currentParam.defaultvalue = texts.fiscal_number;
-  currentParam.tooltip = texts.param_tooltip_text_info_customer_fiscal_number;
-  currentParam.readValue = function() {
-    userParam.text_info_customer_fiscal_number = this.value;
-  }
-  convertedParam.data.push(currentParam);
-
-  currentParam = {};
-  currentParam.name = 'text_info_due_date';
-  currentParam.parentObject = 'text_language_code';
-  currentParam.title = texts.param_text_info_due_date;
-  currentParam.type = 'string';
-  currentParam.value = userParam.text_info_due_date ? userParam.text_info_due_date : '';
-  currentParam.defaultvalue = texts.payment_terms_label;
-  currentParam.tooltip = texts.param_tooltip_texts_payment_terms_label;
-  currentParam.readValue = function() {
-    userParam.text_info_due_date = this.value;
-  }
-  convertedParam.data.push(currentParam);
-
-  currentParam = {};
-  currentParam.name = 'text_info_page';
-  currentParam.parentObject = 'text_language_code';
-  currentParam.title = texts.param_text_info_page;
-  currentParam.type = 'string';
-  currentParam.value = userParam.text_info_page ? userParam.text_info_page : '';
-  currentParam.defaultvalue = texts.page;
-  currentParam.tooltip = texts.param_tooltip_text_info_page;
-  currentParam.readValue = function() {
-    userParam.text_info_page = this.value;
-  }
-  convertedParam.data.push(currentParam);
-
-  currentParam = {};
-  currentParam.name = 'text_shipping_address';
-  currentParam.parentObject = 'text_language_code';
-  currentParam.title = texts.param_text_shipping_address;
-  currentParam.type = 'string';
-  currentParam.value = userParam.text_shipping_address ? userParam.text_shipping_address : '';
-  currentParam.defaultvalue = texts.shipping_address;
-  currentParam.tooltip = texts.param_tooltip_text_shipping_address;
-  currentParam.readValue = function() {
-    userParam.text_shipping_address = this.value;
-  }
-  convertedParam.data.push(currentParam);
-
-  currentParam = {};
-  currentParam.name = 'title_doctype_10';
-  currentParam.parentObject = 'text_language_code';
-  currentParam.title = texts.param_text_title_doctype_10;
-  currentParam.type = 'string';
-  currentParam.value = userParam.title_doctype_10 ? userParam.title_doctype_10 : '';
-  currentParam.defaultvalue = texts.invoice + " <DocInvoice>";
-  currentParam.tooltip = texts.param_tooltip_title_doctype_10;
-  currentParam.readValue = function() {
-    userParam.title_doctype_10 = this.value;
-  }
-  convertedParam.data.push(currentParam);
-
-  currentParam = {};
-  currentParam.name = 'title_doctype_12';
-  currentParam.parentObject = 'text_language_code';
-  currentParam.title = texts.param_text_title_doctype_12;
-  currentParam.type = 'string';
-  currentParam.value = userParam.title_doctype_12 ? userParam.title_doctype_12 : '';
-  currentParam.defaultvalue = texts.credit_note  + " <DocInvoice>";
-  currentParam.tooltip = texts.param_tooltip_title_doctype_12;
-  currentParam.readValue = function() {
-    userParam.title_doctype_12 = this.value;
-  }
-  convertedParam.data.push(currentParam);
-
-  currentParam = {};
-  currentParam.name = 'text_details_columns';
-  currentParam.parentObject = 'text_language_code';
-  currentParam.title = texts.param_text_details_columns;
-  currentParam.type = 'string';
-  currentParam.value = userParam.text_details_columns ? userParam.text_details_columns : '';
-  currentParam.defaultvalue = texts.description+";"+texts.quantity+";"+texts.reference_unit+";"+texts.unit_price+";"+texts.amount;
-  currentParam.tooltip = texts.param_tooltip_text_details_columns;
-  currentParam.readValue = function() {
-    userParam.text_details_columns = this.value;
-  }
-  convertedParam.data.push(currentParam);
-
-  currentParam = {};
-  currentParam.name = 'texts_total';
-  currentParam.parentObject = 'text_language_code';
-  currentParam.title = texts.param_text_total;
-  currentParam.type = 'string';
-  currentParam.value = userParam.texts_total ? userParam.texts_total : '';
-  currentParam.defaultvalue = texts.total;
-  currentParam.tooltip = texts.param_tooltip_texts_total;
-  currentParam.readValue = function() {
-    userParam.texts_total = this.value;
-  }
-  convertedParam.data.push(currentParam);
-
 
 
 
@@ -943,57 +980,7 @@ function convertParam(userParam) {
   }
   convertedParam.data.push(currentParam);
 
-
-
-  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  // ADD A NEW LANGUAGE
-  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-  /* 
-  if (userParam.language_add) {
-
-    var languageCode = userParam.language_add;
-
-    //if (convertedParam.added_languages.indexOf(languageCode) < 0) {
-
-      Banana.console.log("New language: " + languageCode);
-      added_languages.push(languageCode);
-
-
-      currentParam = {};
-      currentParam.name = languageCode;
-      currentParam.parentObject = 'texts';
-      currentParam.title = texts.languageCode;
-      currentParam.type = 'string';
-      currentParam.value = '';
-      currentParam.editable = false;
-      currentParam.readValue = function() {
-        userParam.languageCode = this.value;
-      }
-      convertedParam.data.push(currentParam);
-
-      currentParam = {};
-      currentParam.name = languageCode+'_text_info_invoice_number';
-      currentParam.parentObject = languageCode;
-      currentParam.title = texts.param_text_info_invoice_number;
-      currentParam.type = 'string';
-      currentParam.value = userParam[languageCode+'_text_info_invoice_number'] ? userParam[languageCode+'_text_info_invoice_number'] : ''; //param.xxx ? param.xxx : ''
-      currentParam.defaultvalue = '';
-      currentParam.tooltip = texts.param_tooltip_text_info_invoice_number;
-      currentParam.readValue = function() {
-        userParam[languageCode+'_text_info_invoice_number'] = this.value;
-      }
-      convertedParam.data.push(currentParam);
-
-    //}
-
-  }
-
-  */
-
-  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+  //Banana.console.log(JSON.stringify(convertedParam, "", " "));
 
   return convertedParam;
 }
@@ -1001,7 +988,7 @@ function convertParam(userParam) {
 function initParam() {
   var userParam = {};
 
-  var lang = 'en';
+  //var lang = 'en';
   if (Banana.document.locale) {
     lang = Banana.document.locale;
   }
@@ -1030,13 +1017,10 @@ function initParam() {
   userParam.info_customer_fiscal_number = false;
   userParam.info_due_date = true;
   userParam.info_page = true;
-  userParam.details_columns = texts.description+";"+texts.quantity+";"+texts.reference_unit+";"+texts.unit_price+";"+texts.amount;
+  userParam.details_columns = texts.column_description+";"+texts.column_quantity+";"+texts.column_reference_unit+";"+texts.column_unit_price+";"+texts.column_amount;
   userParam.details_columns_widths = '50%;10%;10%;15%;15%';
   userParam.details_gross_amounts = false;
   userParam.footer_add = false;
-  userParam.footer_left = texts.invoice;
-  userParam.footer_center = '';
-  userParam.footer_right = texts.page+' &['+texts.page+']';
   userParam.qr_code_add = false;
   userParam.qr_code_align = 'right';
   userParam.qr_code_use_different_address = false;
@@ -1048,18 +1032,26 @@ function initParam() {
   //Texts
   userParam.language_add = "";
   userParam.language_remove = "";
-  userParam.text_info_invoice_number = texts.invoice;
-  userParam.text_info_date = texts.date;
-  userParam.text_info_customer = texts.customer;
-  userParam.text_info_customer_vat_number = texts.vat_number;
-  userParam.text_info_customer_fiscal_number = texts.fiscal_number;
-  userParam.text_info_due_date = texts.payment_terms_label;
-  userParam.text_info_page = texts.page;
-  userParam.text_shipping_address = texts.shipping_address;
-  userParam.title_doctype_10 = texts.invoice + " <DocInvoice>";
-  userParam.title_doctype_12 = texts.credit_note + " <DocInvoice>";
-  userParam.text_details_columns = texts.description+";"+texts.quantity+";"+texts.reference_unit+";"+texts.unit_price+";"+texts.amount;
-  userParam.texts_total = texts.total;
+
+  // Initialize the parameter for each language
+  for (var i = 0; i < langCodes.length; i++) {
+    var langTexts = setInvoiceTexts(langCodes[i]);
+    userParam[langCodes[i]+'_text_info_invoice_number'] = langTexts.invoice;
+    userParam[langCodes[i]+'_text_info_date'] = langTexts.date;
+    userParam[langCodes[i]+'_text_info_customer'] = langTexts.customer;
+    userParam[langCodes[i]+'_text_info_customer_vat_number'] = langTexts.vat_number;
+    userParam[langCodes[i]+'_text_info_customer_fiscal_number'] = langTexts.fiscal_number;
+    userParam[langCodes[i]+'_text_info_due_date'] = langTexts.payment_terms_label;
+    userParam[langCodes[i]+'_text_info_page'] = langTexts.page;
+    userParam[langCodes[i]+'_text_shipping_address'] = langTexts.shipping_address;
+    userParam[langCodes[i]+'_title_doctype_10'] = langTexts.invoice + " <DocInvoice>";
+    userParam[langCodes[i]+'_title_doctype_12'] = langTexts.credit_note + " <DocInvoice>";
+    userParam[langCodes[i]+'_text_details_columns'] = langTexts.description+";"+langTexts.quantity+";"+langTexts.reference_unit+";"+langTexts.unit_price+";"+langTexts.amount;
+    userParam[langCodes[i]+'_texts_total'] = langTexts.total;
+    userParam[langCodes[i]+'_footer_left'] = langTexts.invoice;
+    userParam[langCodes[i]+'_footer_center'] = '';
+    userParam[langCodes[i]+'_footer_right'] = langTexts.page+' <'+langTexts.page+'>';
+  }
 
   //Styles
   userParam.background_color_1 = '#337ab7';
@@ -1079,7 +1071,7 @@ function initParam() {
 
 function verifyParam(userParam) {
 
-  var lang = 'en';
+  //var lang = 'en';
   if (Banana.document.locale) {
     lang = Banana.document.locale;
   }
@@ -1147,7 +1139,7 @@ function verifyParam(userParam) {
     userParam.info_page = false;
   }
   if (!userParam.details_columns) {
-    userParam.details_columns = texts.description+";"+texts.quantity+";"+texts.reference_unit+";"+texts.unit_price+";"+texts.amount;
+    userParam.details_columns = texts.column_description+";"+texts.column_quantity+";"+texts.column_reference_unit+";"+texts.column_unit_price+";"+texts.column_amount;
   }
   if (!userParam.details_columns_widths) {
     userParam.details_columns_widths = '50%;10%;10%;15%;15%';
@@ -1157,15 +1149,6 @@ function verifyParam(userParam) {
   }
   if (!userParam.footer_add) {
     userParam.footer_add = false;
-  }
-  if (!userParam.footer_left) {
-    userParam.footer_left = texts.invoice;
-  }
-  if (!userParam.footer_center) {
-    userParam.footer_center = '';
-  }
-  if (!userParam.footer_right) {
-    userParam.footer_right = texts.page+' &['+texts.page+']';
   }
   if (!userParam.qr_code_add) {
     userParam.qr_code_add = false;
@@ -1197,41 +1180,58 @@ function verifyParam(userParam) {
   if (!userParam.language_remove) {
     userParam.language_remove = '';
   }
-  if (!userParam.text_info_invoice_number) {
-    userParam.text_info_invoice_number = texts.invoice;
-  }
-  if (!userParam.text_info_date) {
-    userParam.text_info_date = texts.date;
-  }
-  if (!userParam.text_info_customer) {
-    userParam.text_info_customer = texts.customer;
-  }
-  if (!userParam.text_info_customer_vat_number) {
-    userParam.text_info_customer_vat_number = texts.vat_number;
-  }
-  if (!userParam.text_info_customer_fiscal_number) {
-    userParam.text_info_customer_fiscal_number = texts.fiscal_number;
-  }
-  if (!userParam.text_info_due_date) {
-    userParam.text_info_due_date = texts.payment_terms_label;
-  }
-  if (!userParam.text_info_page) {
-    userParam.text_info_page = texts.page;
-  }
-  if (!userParam.text_shipping_address) {
-    userParam.text_shipping_address = texts.shipping_address;
-  }
-  if (!userParam.title_doctype_10) {
-    userParam.title_doctype_10 = texts.invoice + " <DocInvoice>";
-  }
-  if (!userParam.title_doctype_12) {
-    userParam.title_doctype_12 = texts.credit_note + " <DocInvoice>";
-  }
-  if (!userParam.text_details_columns) {
-    userParam.text_details_columns = texts.description+";"+texts.quantity+";"+texts.reference_unit+";"+texts.unit_price+";"+texts.amount;
-  }
-  if (!userParam.texts_total) {
-    userParam.texts_total = texts.total;
+
+  // Verify the parameter for each language
+  for (var i = 0; i < langCodes.length; i++) {
+    var langTexts = setInvoiceTexts(langCodes[i]);
+        
+    if (!userParam[langCodes[i]+'_text_info_invoice_number']) {
+      userParam[langCodes[i]+'_text_info_invoice_number'] = langTexts.invoice;
+    }
+    if (!userParam[langCodes[i]+'_text_info_date']) {
+      userParam[langCodes[i]+'_text_info_date'] = langTexts.date;
+    }
+    if (!userParam[langCodes[i]+'_text_info_customer']) {
+      userParam[langCodes[i]+'_text_info_customer'] = langTexts.customer;
+    }
+    if (!userParam[langCodes[i]+'_text_info_customer_vat_number']) {
+      userParam[langCodes[i]+'_text_info_customer_vat_number'] = langTexts.vat_number;
+    }
+    if (!userParam[langCodes[i]+'_text_info_customer_fiscal_number']) {
+      userParam[langCodes[i]+'_text_info_customer_fiscal_number'] = langTexts.fiscal_number;
+    }
+    if (!userParam[langCodes[i]+'_text_info_due_date']) {
+      userParam[langCodes[i]+'_text_info_due_date'] = langTexts.payment_terms_label;
+    }
+    if (!userParam[langCodes[i]+'_text_info_page']) {
+      userParam[langCodes[i]+'_text_info_page'] = langTexts.page;
+    }
+    if (!userParam[langCodes[i]+'_text_shipping_address']) {
+      userParam[langCodes[i]+'_text_shipping_address'] = langTexts.shipping_address;
+    }
+    if (!userParam[langCodes[i]+'_title_doctype_10']) {
+      userParam[langCodes[i]+'_title_doctype_10'] = langTexts.invoice + " <DocInvoice>";
+    }
+    if (!userParam[langCodes[i]+'_title_doctype_12']) {
+      userParam[langCodes[i]+'_title_doctype_12'] = langTexts.credit_note + " <DocInvoice>";
+    }
+    if (!userParam[langCodes[i]+'_text_details_columns']) {
+      userParam[langCodes[i]+'_text_details_columns'] = langTexts.description+";"+langTexts.quantity+";"+langTexts.reference_unit+";"+langTexts.unit_price+";"+langTexts.amount;
+    }
+    if (!userParam[langCodes[i]+'_texts_total']) {
+      userParam[langCodes[i]+'_texts_total'] = langTexts.total;
+    }
+    if (!userParam[langCodes[i]+'_footer_left']) {
+      userParam[langCodes[i]+'_footer_left'] = langTexts.invoice;
+    }
+    if (!userParam[langCodes[i]+'_footer_center']) {
+      userParam[langCodes[i]+'_footer_center'] = '';
+    }
+    if (!userParam[langCodes[i]+'_footer_right']) {
+      userParam[langCodes[i]+'_footer_right'] = langTexts.page+' <'+langTexts.page+'>';
+    }
+
+
   }
 
 
@@ -1291,14 +1291,14 @@ function printDocument(jsonInvoice, repDocObj, repStyleObj) {
   }
 
   // Invoice texts which need translation
-  var langDoc = '';
+  // var lang = 'en';
   if (invoiceObj.customer_info.lang) {
-    langDoc = invoiceObj.customer_info.lang;
+    lang = invoiceObj.customer_info.lang;
   }
-  if (langDoc.length <= 0) {
-    langDoc = invoiceObj.document_info.locale;
+  if (lang.length <= 0) {
+    lang = invoiceObj.document_info.locale;
   }
-  var texts = setInvoiceTexts(langDoc);
+  var texts = setInvoiceTexts(lang);
   
   // Include the embedded javascript file entered by the user
   includeEmbeddedJavascriptFile(texts, userParam);
@@ -1503,27 +1503,27 @@ function print_info(repDocObj, invoiceObj, texts, userParam, tableStyleRow0) {
 
   if (userParam.info_invoice_number) {
     tableRow = infoTable.addRow();
-    tableRow.addCell(userParam.text_info_invoice_number + ":","",1);
+    tableRow.addCell(userParam[lang+'_text_info_invoice_number'] + ":","",1);
     tableRow.addCell(invoiceObj.document_info.number,"",1);
   }
   if (userParam.info_date) {
     tableRow = infoTable.addRow();
-    tableRow.addCell(userParam.text_info_date + ":","",1);
+    tableRow.addCell(userParam[lang+'_text_info_date'] + ":","",1);
     tableRow.addCell(Banana.Converter.toLocaleDateFormat(invoiceObj.document_info.date),"",1);    
   }
   if (userParam.info_customer) {
     tableRow = infoTable.addRow();
-    tableRow.addCell(userParam.text_info_customer + ":","",1);
+    tableRow.addCell(userParam[lang+'_text_info_customer'] + ":","",1);
     tableRow.addCell(invoiceObj.customer_info.number,"",1);    
   }
   if (userParam.info_customer_vat_number) {
     tableRow = infoTable.addRow();
-    tableRow.addCell(userParam.text_info_customer_vat_number + ":","",1);
+    tableRow.addCell(userParam[lang+'_text_info_customer_vat_number'] + ":","",1);
     tableRow.addCell(invoiceObj.customer_info.vat_number);
   }
   if (userParam.info_customer_fiscal_number) {
     tableRow = infoTable.addRow();
-    tableRow.addCell(userParam.text_info_customer_fiscal_number + ":","",1);
+    tableRow.addCell(userParam[lang+'_text_info_customer_fiscal_number'] + ":","",1);
     tableRow.addCell(invoiceObj.customer_info.fiscal_number);
   }
   if (userParam.info_due_date) {
@@ -1539,12 +1539,12 @@ function print_info(repDocObj, invoiceObj, texts, userParam, tableStyleRow0) {
     }
 
     tableRow = infoTable.addRow();
-    tableRow.addCell(userParam.text_info_due_date + ":","",1);
+    tableRow.addCell(userParam[lang+'_text_info_due_date'] + ":","",1);
     tableRow.addCell(payment_terms,"",1);    
   }
   if (userParam.info_page) {
     tableRow = infoTable.addRow();
-    tableRow.addCell(userParam.text_info_page + ":","",1);
+    tableRow.addCell(userParam[lang+'_text_info_page'] + ":","",1);
     tableRow.addCell("","",1).addFieldPageNr();    
   }
 }
@@ -1657,13 +1657,13 @@ function print_details_net_amounts(banDoc, repDocObj, invoiceObj, texts, userPar
   // If user insert other columns names we use them,
   // otherwise we use the XmlValue inserted when choosing the columns to display
   var columnsSelected = userParam.details_columns.split(";");
-  var columnsNames = userParam.text_details_columns.split(";");
+  var columnsNames = userParam[lang+'_text_details_columns'].split(";");
 
   // remove all empty values ("", null, undefined): 
   columnsSelected = columnsSelected.filter(function(e){return e});
   columnsNames = columnsNames.filter(function(e){return e});
 
-  if (userParam.text_details_columns) {
+  if (userParam[lang+'_text_details_columns']) {
     for (var i = 0; i < columnsNames.length; i++) {
       columnsNames[i] = columnsNames[i].trim();
       if (columnsNames[i] === "<none>") {
@@ -1766,7 +1766,7 @@ function print_details_net_amounts(banDoc, repDocObj, invoiceObj, texts, userPar
 
   //FINAL TOTAL
   tableRow = repTableObj.addRow();
-  tableRow.addCell(userParam.texts_total + " " + invoiceObj.document_info.currency, "total_cell", columnsNumber-1);
+  tableRow.addCell(userParam[lang+'_texts_total'] + " " + invoiceObj.document_info.currency, "total_cell", columnsNumber-1);
   tableRow.addCell(toInvoiceAmountFormat(invoiceObj, invoiceObj.billing_info.total_to_pay), "total_cell right", 1);
   
   tableRow = repTableObj.addRow();
@@ -1806,13 +1806,13 @@ function print_details_gross_amounts(banDoc, repDocObj, invoiceObj, texts, userP
   // If user insert other columns names we use them,
   // otherwise we use the XmlValue inserted when choosing the columns to display
   var columnsSelected = userParam.details_columns.split(";");
-  var columnsNames = userParam.text_details_columns.split(";");
+  var columnsNames = userParam[lang+'_text_details_columns'].split(";");
 
   // remove all empty values ("", null, undefined): 
   columnsSelected = columnsSelected.filter(function(e){return e});
   columnsNames = columnsNames.filter(function(e){return e});
 
-  if (userParam.text_details_columns) {
+  if (userParam[lang+'_text_details_columns']) {
     for (var i = 0; i < columnsNames.length; i++) {
       columnsNames[i] = columnsNames[i].trim();
       if (columnsNames[i] === "<none>") {
@@ -1902,7 +1902,7 @@ function print_details_gross_amounts(banDoc, repDocObj, invoiceObj, texts, userP
 
   //FINAL TOTAL
   tableRow = repTableObj.addRow();
-  tableRow.addCell(userParam.texts_total + " " + invoiceObj.document_info.currency, "total_cell", columnsNumber-1);
+  tableRow.addCell(userParam[lang+'_texts_total'] + " " + invoiceObj.document_info.currency, "total_cell", columnsNumber-1);
   tableRow.addCell(toInvoiceAmountFormat(invoiceObj, invoiceObj.billing_info.total_to_pay), "total_cell right", 1);
   
   tableRow = repTableObj.addRow();
@@ -2058,8 +2058,7 @@ function print_footer(repDocObj, texts, userParam) {
 
   /*
     Prints the footer at the bottom of the page.
-    Values "&[Page]", "&[Pagina]", "&[Seite]",.. are replaced with the page number.
-    Values "&[Date]", "&[Data]", "&[Datum]",.. are replaced with the current day date.
+    Values "<Page>", "<Pagina>", "<Seite>",.. are replaced with the page number.
     It is possible to add only one value in a row.
     It is possible to add more values on multiple rows.
     For empty value insert <none>.
@@ -2078,16 +2077,16 @@ function print_footer(repDocObj, texts, userParam) {
     var cell3 = tableRow.addCell("","",1);
 
     // footer left
-    if (userParam.footer_left && userParam.footer_left.length > 0) {
-      var lines = userParam.footer_left.split("\n");
+    if (userParam[lang+'_footer_left'] && userParam[lang+'_footer_left'].length > 0) {
+      var lines = userParam[lang+'_footer_left'].split("\n");
       for (var i = 0; i < lines.length; i++) {
-        if (lines[i].indexOf("&["+texts.page+"]") > -1) {
-          cell1.addParagraph(lines[i].replace("&["+texts.page+"]",""), "").addFieldPageNr();
+        if (lines[i].indexOf("<"+texts.page+">") > -1) {
+          cell1.addParagraph(lines[i].replace("<"+texts.page+">",""), "").addFieldPageNr();
         }
-        else if (lines[i].indexOf("&["+texts.date+"]") > -1) {
+        else if (lines[i].indexOf("<"+texts.date+">") > -1) {
           var date = new Date();
           date = Banana.Converter.toLocaleDateFormat(date);
-          cell1.addParagraph(lines[i].replace("&["+texts.date+"]",date), "");
+          cell1.addParagraph(lines[i].replace("<"+texts.date+">",date), "");
         }
         else {
           cell1.addParagraph(lines[i], "");
@@ -2095,16 +2094,16 @@ function print_footer(repDocObj, texts, userParam) {
       }
     }
     // footer center
-    if (userParam.footer_center && userParam.footer_center.length > 0) {
-      var lines = userParam.footer_center.split("\n");
+    if (userParam[lang+'_footer_center'] && userParam[lang+'_footer_center'].length > 0) {
+      var lines = userParam[lang+'_footer_center'].split("\n");
       for (var i = 0; i < lines.length; i++) {
-        if (lines[i].indexOf("&["+texts.page+"]") > -1) {
-          cell2.addParagraph(lines[i].replace("&["+texts.page+"]",""), "center").addFieldPageNr();
+        if (lines[i].indexOf("<"+texts.page+">") > -1) {
+          cell2.addParagraph(lines[i].replace("<"+texts.page+">",""), "center").addFieldPageNr();
         }
-        else if (lines[i].indexOf("&["+texts.date+"]") > -1) {
+        else if (lines[i].indexOf("<"+texts.date+">") > -1) {
           var date = new Date();
           date = Banana.Converter.toLocaleDateFormat(date);
-          cell2.addParagraph(lines[i].replace("&["+texts.date+"]",date), "center");
+          cell2.addParagraph(lines[i].replace("<"+texts.date+">",date), "center");
         }
         else {
           cell2.addParagraph(lines[i], "center");
@@ -2112,16 +2111,16 @@ function print_footer(repDocObj, texts, userParam) {
       }
     }
     // footer right
-    if (userParam.footer_right && userParam.footer_right.length > 0) {
-      var lines = userParam.footer_right.split("\n");
+    if (userParam[lang+'_footer_right'] && userParam[lang+'_footer_right'].length > 0) {
+      var lines = userParam[lang+'_footer_right'].split("\n");
       for (var i = 0; i < lines.length; i++) {
-        if (lines[i].indexOf("&["+texts.page+"]") > -1) {
-          cell3.addParagraph(lines[i].replace("&["+texts.page+"]",""), "right").addFieldPageNr();
+        if (lines[i].indexOf("<"+texts.page+">") > -1) {
+          cell3.addParagraph(lines[i].replace("<"+texts.page+">",""), "right").addFieldPageNr();
         }
-        else if (lines[i].indexOf("&["+texts.date+"]") > -1) {
+        else if (lines[i].indexOf("<"+texts.date+">") > -1) {
           var date = new Date();
           date = Banana.Converter.toLocaleDateFormat(date);
-          cell3.addParagraph(lines[i].replace("&["+texts.date+"]",date), "right");
+          cell3.addParagraph(lines[i].replace("<"+texts.date+">",date), "right");
         }
         else {
           cell3.addParagraph(lines[i], "right");
@@ -2357,16 +2356,16 @@ function getTitle(invoiceObj, texts, userParam) {
   else {
     if (invoiceObj.document_info.doc_type && invoiceObj.document_info.doc_type === "10") {
       documentTitle = texts.invoice;
-      if (userParam.title_doctype_10 && userParam.title_doctype_10 !== "<none>") {
-        documentTitle = userParam.title_doctype_10;
+      if (userParam[lang+'_title_doctype_10'] && userParam[lang+'_title_doctype_10'] !== "<none>") {
+        documentTitle = userParam[lang+'_title_doctype_10'];
       } else {
         documentTitle = "";
       }
     }
     if (invoiceObj.document_info.doc_type && invoiceObj.document_info.doc_type === "12") {
       documentTitle = texts.credit_note;
-      if (userParam.title_doctype_12 && userParam.title_doctype_12 !== "<none>") {
-        documentTitle = userParam.title_doctype_12;
+      if (userParam[lang+'_title_doctype_12'] && userParam[lang+'_title_doctype_12'] !== "<none>") {
+        documentTitle = userParam[lang+'_title_doctype_12'];
       } else {
         documentTitle = "";
       }
@@ -2751,9 +2750,6 @@ function setInvoiceTexts(language) {
 
   var texts = {};
   
-  //Banana.console.log(language);
-
-
   if (language === 'it') {
     //Address
     texts.shipping_address = "Indirizzo spedizione";
@@ -2770,11 +2766,17 @@ function setInvoiceTexts(language) {
     texts.credit_note = 'Nota di credito';
 
     //Details
-    texts.description = 'Description';
-    texts.quantity = 'Quantity';
-    texts.reference_unit = 'ReferenceUnit';
-    texts.unit_price = 'UnitPrice';
-    texts.amount = 'Amount';
+    texts.column_description = 'Description';
+    texts.column_quantity = 'Quantity';
+    texts.column_reference_unit = 'ReferenceUnit';
+    texts.column_unit_price = 'UnitPrice';
+    texts.column_amount = 'Amount';
+    texts.description = 'Descrizione';
+    texts.quantity = 'Quantità';
+    texts.reference_unit = 'Unità';
+    texts.unit_price = 'Prezzo Unità';
+    texts.amount = 'Importo';
+    
     texts.totalnet = 'Totale netto';
     texts.vat = 'IVA';
     texts.rounding = 'Arrotondamento';
@@ -2810,9 +2812,6 @@ function setInvoiceTexts(language) {
     texts.param_details_gross_amounts = "Dettagli con importi lordi (IVA inclusa)";
     texts.param_footer_include = 'Piè di pagina';
     texts.param_footer_add = 'Stampa piè di pagina';
-    texts.param_footer_left = "Testo sinistra";
-    texts.param_footer_center = "Testo centro";
-    texts.param_footer_right = "Testo destra";
     texts.param_qr_code = "Codice QR";
     texts.param_qr_code_add = "Stampa codice QR";
     texts.param_qr_code_align = "Allineamento (left=sinistra, center=centro, right=destra)";
@@ -2826,19 +2825,22 @@ function setInvoiceTexts(language) {
     texts.param_texts = "Testi (vuoto = valori predefiniti)";
     texts.param_language_add = "Aggiungi nuova lingua";
     texts.param_language_remove = "Rimuovi lingua";
-    texts.param_text_language_code = "it";
-    texts.param_text_info_invoice_number = 'Numero fattura';
-    texts.param_text_info_date = 'Data fattura';
-    texts.param_text_info_customer = 'Numero cliente';
-    texts.param_text_info_customer_vat_number = 'Numero IVA cliente';
-    texts.param_text_info_customer_fiscal_number = 'Numero fiscale cliente';
-    texts.param_text_info_due_date = 'Scadenza fattura';
-    texts.param_text_info_page = 'Numero pagina';
-    texts.param_text_shipping_address = 'Indirizzo spedizione';
-    texts.param_text_title_doctype_10 = "Titolo fattura (DocType=10)";
-    texts.param_text_title_doctype_12 = "Titolo nota di credito (DocType=12)";
-    texts.param_text_details_columns = 'Nomi colonne dettagli fattura';
-    texts.param_text_total = 'Totale fattura';
+    // texts.param_text_language_code = "it";
+    texts.it_param_text_info_invoice_number = 'Numero fattura';
+    texts.it_param_text_info_date = 'Data fattura';
+    texts.it_param_text_info_customer = 'Numero cliente';
+    texts.it_param_text_info_customer_vat_number = 'Numero IVA cliente';
+    texts.it_param_text_info_customer_fiscal_number = 'Numero fiscale cliente';
+    texts.it_param_text_info_due_date = 'Scadenza fattura';
+    texts.it_param_text_info_page = 'Numero pagina';
+    texts.it_param_text_shipping_address = 'Indirizzo spedizione';
+    texts.it_param_text_title_doctype_10 = "Titolo fattura (DocType=10)";
+    texts.it_param_text_title_doctype_12 = "Titolo nota di credito (DocType=12)";
+    texts.it_param_text_details_columns = 'Nomi colonne dettagli fattura';
+    texts.it_param_text_total = 'Totale fattura';
+    texts.it_param_footer_left = "Piè di pagina testo sinistra";
+    texts.it_param_footer_center = "Piè di pagina testo centro";
+    texts.it_param_footer_right = "Piè di pagina testo destra";
 
     //Styles
     texts.param_styles = "Stili";
@@ -2902,122 +2904,154 @@ function setInvoiceTexts(language) {
     texts.param_tooltip_qr_code_address_row_2 = "Inserisci il testo della riga 2";
     texts.param_tooltip_qr_code_address_row_3 = "Inserisci il testo della riga 3";
     texts.param_tooltip_qr_code_address_row_4 = "Inserisci il testo della riga 4";
-
   }
   else if (language === 'de') {
-    texts.customer = 'Kunden-Nr';
-    texts.date = 'Datum';
-    texts.description = 'Beschreibung';
+    texts.shipping_address = "Lieferadresse";
     texts.invoice = 'Rechnung';
+    texts.date = 'Datum';
+    texts.customer = 'Kunden-Nr.';
+    texts.vat_number = 'MwSt-Nummer';
+    texts.fiscal_number = 'Steuernummer';
+    texts.payment_due_date_label = 'Fälligkeitsdatum';
+    texts.payment_terms_label = 'Bezahlung';
     texts.page = 'Seite';
+    texts.credit_note = 'Gutschrift';
+    texts.column_description = 'Description';
+    texts.column_quantity = 'Quantity';
+    texts.column_reference_unit = 'ReferenceUnit';
+    texts.column_unit_price = 'UnitPrice';
+    texts.column_amount = 'Amount';
+    texts.description = 'Beschreibung';
+    texts.quantity = 'Menge';
+    texts.reference_unit = 'Einheit';
+    texts.unit_price = 'Einheit Preis';
+    texts.amount = 'Betrag';
+    texts.totalnet = 'Total netto';
+    texts.vat = 'MWST';
     texts.rounding = 'Rundung';
-    texts.total = 'Total';
-    texts.totalnet = 'Netto-Betrag';
-    texts.vat = 'MwSt.';
-    texts.qty = 'Menge';
-    texts.unit_ref = 'Einheit';
-    texts.unit_price = 'Preiseinheit';
-    // texts.vat_number = 'Mehrwertsteuernummer: ';
-    // texts.bill_to = 'Rechnungsadresse';
-    // texts.shipping_to = 'Lieferadresse';
-    // texts.from = 'VON:';
-    // texts.to = 'ZU:';
+    texts.total = 'GESAMT';
+    texts.param_include = "Drucken";
+    texts.param_header_include = "Kopfzeile";
+    texts.param_header_left = "Kopfzeile auf der linken Seite";
+    texts.param_header_print = 'Seitenkopf';
+    texts.param_header_row_1 = "Kopfzeile Zeile 1";
+    texts.param_header_row_2 = "Kopfzeile Zeile 2";
+    texts.param_header_row_3 = "Kopfzeile Zeile 3";
+    texts.param_header_row_4 = "Kopfzeile Zeile 4";
+    texts.param_header_row_5 = "Kopfzeile Zeile 5";
+    texts.param_logo_print = 'Logo';
+    texts.param_logo_name = 'Logo-Name';
+    texts.param_address_include = "Kundenadresse";
+    texts.param_address_small_line = "Absenderadresse Zeile";
+    texts.param_address_left = 'Adresse auf der linken Seite';
+    texts.param_shipping_address = 'Lieferadresse';
+    texts.param_info_include = 'Info';
+    texts.param_info_invoice_number = 'Rechnungsnummer';
+    texts.param_info_date = 'Rechnungsdatum';
+    texts.param_info_customer = 'Kundennummer';
+    texts.param_info_customer_vat_number = 'Kunden MwSt-Nummer';
+    texts.param_info_customer_fiscal_number = 'Kunden Steuernummer';
+    texts.param_info_due_date = 'Rechnung Fälligkeitsdatum';
+    texts.param_info_page = 'Rechnung Seite';
+    texts.param_details_include = "Details";
+    texts.param_details_columns = "Rechnung Detailspalten";
+    texts.param_details_columns_widths = "Rechnung Details Spaltenbreite";
+    texts.param_details_gross_amounts = "Details mit Bruttobeträgen (inklusive MwSt)";
+    texts.param_footer_include = 'Fußzeile';
+    texts.param_footer_add = 'Fußzeile drucken';
+    texts.param_qr_code = "QR-Code";
+    texts.param_qr_code_add = "Drucken QR-Codes";
+    texts.param_qr_code_align = "Ausrichtung (left, center or right)";
+    texts.param_qr_code_use_different_address = "Alternative Adresse verwenden";
+    texts.param_qr_code_address_row_1 = "Alternative Adresse Zeile 1";
+    texts.param_qr_code_address_row_2 = "Alternative Adresse Zeile 2";
+    texts.param_qr_code_address_row_3 = "Alternative Adresse Zeile 3";
+    texts.param_qr_code_address_row_4 = "Alternative Adresse Zeile 4";
+    texts.param_texts = "Texte (leer = Standardwerte)";
+    texts.param_language_add = "Neue Sprache hinzufügen";
+    texts.param_language_remove = "Sprache entfernen";
+    
+    texts.de_param_text_info_invoice_number = 'Rechnungsnummer';
+    texts.de_param_text_info_date = 'Rechnungsdatum';
+    texts.de_param_text_info_customer = 'Rechnung Kundennummer';
+    texts.de_param_text_info_customer_vat_number = 'Kunden MwSt-Nummer';
+    texts.de_param_text_info_customer_fiscal_number = 'Kunden Steuernummer';
+    texts.de_param_text_info_due_date = 'Rechnung Fälligkeitsdatum';
+    texts.de_param_text_info_page = 'Rechnung Seite';
+    texts.de_param_text_shipping_address = 'Lieferadresse';
+    texts.de_param_text_title_doctype_10 = "Titelrechnung (DocType=10)";
+    texts.de_param_text_title_doctype_12 = "Titel Gutschrift (DocType=12)";
+    texts.de_param_text_details_columns = 'Rechnung Details Spaltennamen';
+    texts.de_param_text_total = 'Rechnungsbetrag';
+    texts.de_param_footer_left = "Fußzeile Linker Text";
+    texts.de_param_footer_center = "Fußzeile Mitter Text";
+    texts.de_param_footer_right = "Fußzeile Rechter Text";
+
+    texts.param_styles = "Styles";
     texts.param_background_color_1 = 'Hintergrundfarbe';
     texts.param_color = 'Textfarbe';
-    texts.param_font_family = 'Typ Schriftzeichen';
-    // texts.param_image_height = 'Bildhöhe (mm)';
-    texts.param_header_print = 'Seitenüberschrift einschliessen';
-    texts.param_logo_print = 'Logo ausdrucken';
-    texts.payment_due_date_label = 'Fälligkeitsdatum';
-    texts.payment_terms_label = 'Zahlungsfrist';
-    //texts.param_max_items_per_page = 'Anzahl der Zeilen auf jeder Rechnung';
+    texts.param_background_color_2 = 'Zeilen Hintergrundfarbe';
+    texts.param_font_family = 'Schrifttyp';
+    texts.param_font_size = 'Schriftgröße';
+    texts.embedded_javascript_file_not_found = "Benutzerdefinierte Javascript-Datei nicht gefunden oder nicht gültig";
+    texts.param_embedded_javascript = "Benutzerdefinierte JavaScript-Datei";
+    texts.param_embedded_javascript_filename = "Geben Sie den Dateinamen ein ('ID' Spalte der Tabelle Dokumente).";
+    texts.param_tooltip_header_print = "Überprüfen Sie, ob der Seitenkopf berücksichtigt wird.";
+    texts.param_tooltip_header_left = "Überprüfen Sie, ob die Kopfzeile an der linken Position gedruckt wird.";
+    texts.param_tooltip_logo_print = "Überprüfen Sie, ob das Logo enthalten ist.";
+    texts.param_tooltip_logo_name = "Geben Sie den Namen des LogoCheck ein, um das Logo einzubinden.";
+    texts.param_tooltip_info_invoice_number = "Überprüfen Sie, ob die Rechnungsnummer angegeben ist.";
+    texts.param_tooltip_info_date = "Überprüfen Sie, ob das Rechnungsdatum enthalten ist.";
+    texts.param_tooltip_info_customer = "Überprüfen Sie, ob Sie die Kundennummer der Rechnung angeben.";
+    texts.param_tooltip_info_customer_vat_number = "Überprüfen Sie, ob die MwSt-Nummer des Kunden angegeben ist.";
+    texts.param_tooltip_info_customer_fiscal_number = "Überprüfen Sie, ob die Kundensteuernummer enthalten ist.";
+    texts.param_tooltip_info_due_date = "Überprüfen Sie, ob das Fälligkeitsdatum der Rechnung berücksichtigt wird.";
+    texts.param_tooltip_info_page = "Überprüfen Sie, ob Sie die Rechnungsnummer der Seite angeben.";
+    texts.param_tooltip_language_add = "Geben Sie eine neue Sprache ein (z.B. 'es' für Spanisch).";
+    texts.param_tooltip_language_remove = "Geben Sie die Sprachen ein, die Sie entfernen möchten (z.B. 'es' zum Entfernen von Spanisch).";
+    texts.param_tooltip_text_info_invoice_number = "Geben Sie einen Text ein, um den Standardtext zu ersetzen.";
+    texts.param_tooltip_text_info_date = "Geben Sie einen Text ein, um den Standardtext zu ersetzen.";
+    texts.param_tooltip_text_info_customer = "Geben Sie einen Text ein, um den Standardtext zu ersetzen.";
+    texts.param_tooltip_texts_payment_terms_label = "Geben Sie einen Text ein, um den Standardtext zu ersetzen.";
+    texts.param_tooltip_text_info_page = "Geben Sie einen Text ein, um den Standardtext zu ersetzen.";
+    texts.param_tooltip_title_doctype_10 = "Geben Sie einen Text ein, um den Standardtext zu ersetzen.";
+    texts.param_tooltip_title_doctype_12 = "Geben Sie einen Text ein, um den Standardtext zu ersetzen.";
+    texts.param_tooltip_texts_total = "Geben Sie einen Text ein, um den Standardtext zu ersetzen.";
+    texts.param_tooltip_text_details_columns = "Geben Sie die Namen der Spalten für die Rechnungsdetails ein.";
+    texts.param_tooltip_details_columns = "Geben Sie die XML-Namen der Spalten in der von Ihnen gewünschten Reihenfolge ein.";
+    texts.param_tooltip_details_columns_widths = "Geben Sie die Breite der Spalten in % (Summe = 100%) ein.";
+    texts.param_tooltip_header_row_1 = "Geben Sie einen Text ein, um den Standardtext zu ersetzen.";
+    texts.param_tooltip_header_row_2 = "Geben Sie einen Text ein, um den Standardtext zu ersetzen.";
+    texts.param_tooltip_header_row_3 = "Geben Sie einen Text ein, um den Standardtext zu ersetzen.";
+    texts.param_tooltip_header_row_4 = "Geben Sie einen Text ein, um den Standardtext zu ersetzen.";
+    texts.param_tooltip_header_row_5 = "Geben Sie einen Text ein, um den Standardtext zu ersetzen.";
+    texts.param_tooltip_address_small_line = "Lieferantenadresszeile über der Kundenadresse eingeben";
+    texts.param_tooltip_shipping_address = "Überprüfen Sie, ob die Lieferadresse gedruckt werden soll.";
+    texts.param_tooltip_address_left = "Überprüfen Sie, ob die Kundenadresse auf der linken Position gedruckt werden soll.";
+    texts.param_tooltip_details_gross_amounts = "Aktivieren Sie dieses Kontrollkästchen, um die Rechnungsdetails mit Bruttobeträgen und der enthaltenen MwSt. zu drucken.";
+    texts.param_tooltip_footer_add = "Überprüfen Sie, ob die Fußzeile unten auf der Seite gedruckt wird.";
+    texts.param_tooltip_footer = "Geben Sie einen Fußzeilentext ein";
+    texts.param_tooltip_font_family = "Geben Sie die Schriftart ein (z.B. Arial, Helvetica, Times New Roman, ....).";
+    texts.param_tooltip_font_size = "Geben Sie die Schriftgröße ein (z.B. 10, 11, 12, ...).";
+    texts.param_tooltip_background_color_1 = "Geben Sie die Hintergrundfarbe ein (z.B.'#337ab7' oder'Blau').";
+    texts.param_tooltip_color = "Geben Sie die Textfarbe ein (z.B.'#ffffff' oder'Weiß').";
+    texts.param_tooltip_background_color_2 = "Geben Sie die Farbe für den Zeilenhintergrund der Details ein (z.B.'#F0F8FF' oder 'LightSkyBlue').";
+    texts.param_tooltip_javascript_filename = "Geben Sie den Namen der Javascript-Datei aus der Spalte'ID' der Tabelle'Dokumente' ein (z.B. file.js).";
+    texts.param_tooltip_qr_code_add = "Überprüfen Sie, ob der QR-Code gedruckt werden soll.";
+    texts.param_tooltip_qr_code_align = "Wählen Sie aus, wo der QR-Code gedruckt werden soll.";
+    texts.param_tooltip_qr_code_use_different_address = "Überprüfen Sie, ob Sie eine andere Adresse für den QR-Code verwenden.";
+    texts.param_tooltip_qr_code_address_row_1 = "Geben Sie den Text der Zeile 1 ein";
+    texts.param_tooltip_qr_code_address_row_2 = "Geben Sie den Text der Zeile 2 ein";
+    texts.param_tooltip_qr_code_address_row_3 = "Geben Sie den Text der Zeile 3 ein";
+    texts.param_tooltip_qr_code_address_row_4 = "Geben Sie den Text der Zeile 4 ein";
   }
   else if (language === 'fr') {
-    texts.customer = 'No Client';
-    texts.date = 'Date';
-    texts.description = 'Description';
-    texts.invoice = 'Facture';
-    texts.page = 'Page';
-    texts.rounding = 'Arrondi';
-    texts.total = 'Total';
-    texts.totalnet = 'Total net';
-    texts.vat = 'TVA';
-    texts.qty = 'Quantité';
-    texts.unit_ref = 'Unité';
-    texts.unit_price = 'Prix unité';
-    // texts.vat_number = 'Numéro de TVA: ';
-    // texts.bill_to = 'Adresse de facturation';
-    // texts.shipping_to = 'Adresse de livraison';
-    // texts.from = 'DE:';
-    // texts.to = 'À:';
-    texts.param_background_color_1 = 'Couleur de fond';
-    texts.param_color = 'Couleur du texte';
-    texts.param_font_family = 'Police de caractère';
-    // texts.param_image_height = "Hauteur de l'image (mm)";
-    texts.param_header_print = 'Inclure en-tête de page';
-    texts.param_logo_print = 'Imprimer logo';
-    texts.payment_due_date_label = 'Echéance';
-    texts.payment_terms_label = 'Paiement';
-    //texts.param_max_items_per_page = 'Nombre d’éléments sur chaque facture';
   }
   else if (language === 'zh') {
-    texts.customer = '客户编号';
-    texts.date = '日期';
-    texts.description = '摘要';
-    texts.invoice = '发票';
-    texts.page = '页数';
-    texts.rounding = '四舍五入';
-    texts.total = '总计';
-    texts.totalnet = '总净值';
-    texts.vat = '增值税';
-    texts.qty = '数量';
-    texts.unit_ref = '单位';
-    texts.unit_price = '单价';
-    // texts.vat_number = '增值税号: ';
-    // texts.bill_to = '账单地址';
-    // texts.shipping_to = '邮寄地址';
-    texts.from = '来自:';
-    texts.to = '至:';
-    texts.param_background_color_1 = '背景色';
-    texts.param_color = '文本颜色';
-    texts.param_font_family = '字体类型';
-    texts.param_image_height = '图像高度 (mm)';
-    texts.param_header_print = '包括页眉';
-    texts.param_logo_print = '打印徽标';
-    texts.payment_due_date_label = '截止日期';
-    texts.payment_terms_label = '付款';
-    //texts.param_max_items_per_page = '每页上的项目数';
   }
   else if (language === 'nl') {
-    texts.customer = 'Klantennummer';
-    texts.date = 'Datum';
-    texts.description = 'Beschrijving';
-    texts.invoice = 'Factuur';
-    texts.page = 'Pagina';
-    texts.rounding = 'Afronding';
-    texts.total = 'Totaal';
-    texts.totalnet = 'Totaal netto';
-    texts.vat = 'BTW';
-    texts.qty = 'Hoeveelheid';
-    texts.unit_ref = 'Eenheid';
-    texts.unit_price = 'Eenheidsprijs';
-    // texts.vat_number = 'BTW-nummer: ';
-    // texts.bill_to = 'Factuuradres';
-    // texts.shipping_to = 'Leveringsadres';
-    // texts.from = 'VAN:';
-    // texts.to = 'TOT:';
-    texts.param_background_color_1 = 'Achtergrond kleur';
-    texts.param_color = 'tekstkleur';
-    texts.param_font_family = 'Lettertype';
-    texts.param_image_height = 'Beeldhoogte (mm)';
-    texts.param_header_print = 'Pagina-koptekst opnemen';
-    texts.param_logo_print = 'Druklogo';
-    texts.payment_due_date_label = 'Vervaldatum';
-    texts.payment_terms_label = 'Betaling';
-    //texts.param_max_items_per_page = 'Aantal artikelen op iedere pagina';
   }
   else {
-
     //Address
     texts.shipping_address = "Shipping address";
 
@@ -3033,10 +3067,15 @@ function setInvoiceTexts(language) {
     texts.credit_note = 'Credit note';
 
     //Details
+    texts.column_description = 'Description';
+    texts.column_quantity = 'Quantity';
+    texts.column_reference_unit = 'ReferenceUnit';
+    texts.column_unit_price = 'UnitPrice';
+    texts.column_amount = 'Amount';
     texts.description = 'Description';
     texts.quantity = 'Quantity';
-    texts.reference_unit = 'ReferenceUnit';
-    texts.unit_price = 'UnitPrice';
+    texts.reference_unit = 'Unit';
+    texts.unit_price = 'Unit Price';
     texts.amount = 'Amount';
     texts.totalnet = 'Total net';
     texts.vat = 'VAT';
@@ -3073,9 +3112,6 @@ function setInvoiceTexts(language) {
     texts.param_details_gross_amounts = "Details with gross amounts (VAT included)";
     texts.param_footer_include = 'Footer';
     texts.param_footer_add = 'Print footer';
-    texts.param_footer_left = "Left text";
-    texts.param_footer_center = "Center text";
-    texts.param_footer_right = "Right text";
     texts.param_qr_code = "QR Code";
     texts.param_qr_code_add = "Print the QR Code";
     texts.param_qr_code_align = "Alignment (left, center or right)";
@@ -3089,19 +3125,22 @@ function setInvoiceTexts(language) {
     texts.param_texts = "Texts (empty = default values)";
     texts.param_language_add = "Add a new language";
     texts.param_language_remove = "Remove language";
-    texts.param_text_language_code = "en";
-    texts.param_text_info_invoice_number = 'Invoice number';
-    texts.param_text_info_date = 'Invoice date';
-    texts.param_text_info_customer = 'Invoice customer number';
-    texts.param_text_info_customer_vat_number = 'Customer VAT number';
-    texts.param_text_info_customer_fiscal_number = 'Customer fiscal number';
-    texts.param_text_info_due_date = 'Invoice due date';
-    texts.param_text_info_page = 'Invoice page number';
-    texts.param_text_shipping_address = 'Shipping address';
-    texts.param_text_title_doctype_10 = "Title invoice (DocType=10)";
-    texts.param_text_title_doctype_12 = "Title credit note (DocType=12)";
-    texts.param_text_details_columns = 'Invoice details columns names';
-    texts.param_text_total = 'Invoice total';
+    // texts.param_text_language_code = "en";
+    texts.en_param_text_info_invoice_number = 'Invoice number';
+    texts.en_param_text_info_date = 'Invoice date';
+    texts.en_param_text_info_customer = 'Invoice customer number';
+    texts.en_param_text_info_customer_vat_number = 'Customer VAT number';
+    texts.en_param_text_info_customer_fiscal_number = 'Customer fiscal number';
+    texts.en_param_text_info_due_date = 'Invoice due date';
+    texts.en_param_text_info_page = 'Invoice page number';
+    texts.en_param_text_shipping_address = 'Shipping address';
+    texts.en_param_text_title_doctype_10 = "Title invoice (DocType=10)";
+    texts.en_param_text_title_doctype_12 = "Title credit note (DocType=12)";
+    texts.en_param_text_details_columns = 'Invoice details columns names';
+    texts.en_param_text_total = 'Invoice total';
+    texts.en_param_footer_left = "Footer left text";
+    texts.en_param_footer_center = "Footer center text";
+    texts.en_param_footer_right = "Footer right text";
 
     //Styles
     texts.param_styles = "Styles";
@@ -3165,7 +3204,6 @@ function setInvoiceTexts(language) {
     texts.param_tooltip_qr_code_address_row_2 = "Enter the row 2 text";
     texts.param_tooltip_qr_code_address_row_3 = "Enter the row 3 text";
     texts.param_tooltip_qr_code_address_row_4 = "Enter the row 4 text";
-
   }
   return texts;
 }
