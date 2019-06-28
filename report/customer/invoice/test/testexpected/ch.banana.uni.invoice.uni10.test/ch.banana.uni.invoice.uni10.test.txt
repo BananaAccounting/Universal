@@ -60,7 +60,7 @@ Invoice 35 \newline \newline \newline \\
 This is the  beginning text  using the '10:beg' command in DocType column. \newline   \newline   \newline \\
 \end{longtable}
 \begin{longtable}[l]{ l  l  l  l  l  l  l  l  l  l }
-Description  & Quantity  & ReferenceUnit  & UnitPrice  & Amount \\
+Description  & Quantity  & Unit  & Unit Price  & Amount \\
 Sales merchandise, invoice \#35, customer B \newline \newline  &  &  & 1'851.85  & 1'851.85 \\
 Sales merchandise, invoice \#35, customer B \newline \newline  & 4.9876  & pz.  & 96.43  & 480.96 \\
 Sales merchandise, invoice \#35, customer B \newline \newline  & 10.00  & pz..  & 97.56  & 975.61 \\
@@ -126,7 +126,7 @@ Susanna Lanfranchi \newline V.Meggiagra 3 \newline 6599 Robasacco \newline Switz
 Invoice 36 \newline \newline \newline \\
 \end{longtable}
 \begin{longtable}[l]{ l  l  l  l  l  l  l  l  l  l }
-Description  & Quantity  & ReferenceUnit  & UnitPrice  & Amount \\
+Description  & Quantity  & Unit  & Unit Price  & Amount \\
 Sales merchandise, invoice \#36, customer D \newline \newline  &  &  & 6'481.48  & 6'481.48 \\
 \multicolumn{10}{l}{}\\
 \multicolumn{9}{l}{Total net } & 6'481.48 \\
@@ -182,7 +182,7 @@ Carlo Rossi \newline Rossi SA \newline Via Trevano \newline 6963 Pregassona \new
 Invoice 37 \newline \newline \newline \\
 \end{longtable}
 \begin{longtable}[l]{ l  l  l  l  l  l  l  l  l  l  l  l  l  l  l }
-Description  & Quantity  & ReferenceUnit  & UnitPrice  & Amount \\
+Description  & Quantity  & Unit  & Unit Price  & Amount \\
 Sales merchandise, invoice \#37, customer A \newline \newline  &  &  & 7'407.41  & 7'407.41 \\
 Consultancy \newline \newline  &  &  & 92.59  & 92.59 \\
 Consultancy \newline \newline  &  &  & 92.59  & 92.59 \\
@@ -244,7 +244,7 @@ Marco Alberti \newline V. Campuréta 40 \newline 6883 Novazzano \newline Switzer
 Invoice 47 \newline \newline \newline \\
 \end{longtable}
 \begin{longtable}[l]{ l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l }
-Description  & Quantity  & ReferenceUnit  & UnitPrice  & Amount \\
+Description  & Quantity  & Unit  & Unit Price  & Amount \\
 Product A \newline \newline  &  &  & 20.37  & 20.37 \\
 Product B \newline \newline  &  &  & 27.78  & 27.78 \\
 Discount 10\% product B \newline \newline  &  &  & -2.78  & -2.78 \\
