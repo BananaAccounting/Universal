@@ -26,10 +26,6 @@
 \section{Invoice tests}
 \subsection{Test Invoice 35}
 \begin{reportvalue}{Test Invoice 35}
-Banana.ch SA \\
-Via alla Santa 7 - 6962 Viganello \\
-www.banana.ch - info@banana.ch \\
-IVA 123 456 789 \\
 \begin{longtable}[l]{ l  l }
 Invoice:  & 35 \\
 Date:  & 29.01.2019 \\
@@ -39,6 +35,10 @@ Fiscal number:  & 001 002 003 \\
 Payment:  & 30 days \\
 Page:  & \#page-nr \\
 \end{longtable}
+Banana.ch SA \\
+Via alla Santa 7 - 6962 Viganello \\
+www.banana.ch - info@banana.ch \\
+IVA 123 456 789 \\
 \begin{longtable}[l]{ l  l }
 Invoice:  & 35 \\
 Date:  & 29.01.2019 \\
@@ -93,10 +93,6 @@ Invoice \newline  &  & Page  \#page-nr \newline \\
 \end{reportvalue}
 \subsection{Test Invoice 36}
 \begin{reportvalue}{Test Invoice 36}
-Banana.ch SA \\
-Via alla Santa 7 - 6962 Viganello \\
-www.banana.ch - info@banana.ch \\
-IVA 123 456 789 \\
 \begin{longtable}[l]{ l  l }
 Invoice:  & 36 \\
 Date:  & 01.02.2018 \\
@@ -106,6 +102,10 @@ Fiscal number:  & \\
 Payment:  & 03.03.2018 \\
 Page:  & \#page-nr \\
 \end{longtable}
+Banana.ch SA \\
+Via alla Santa 7 - 6962 Viganello \\
+www.banana.ch - info@banana.ch \\
+IVA 123 456 789 \\
 \begin{longtable}[l]{ l  l }
 Invoice:  & 36 \\
 Date:  & 01.02.2018 \\
@@ -149,10 +149,6 @@ Invoice \newline  &  & Page  \#page-nr \newline \\
 \end{reportvalue}
 \subsection{Test Invoice 37}
 \begin{reportvalue}{Test Invoice 37}
-Banana.ch SA \\
-Via alla Santa 7 - 6962 Viganello \\
-www.banana.ch - info@banana.ch \\
-IVA 123 456 789 \\
 \begin{longtable}[l]{ l  l }
 Invoice:  & 37 \\
 Date:  & 03.02.2018 \\
@@ -162,6 +158,10 @@ Fiscal number:  & \\
 Payment:  & 05.03.2018 \\
 Page:  & \#page-nr \\
 \end{longtable}
+Banana.ch SA \\
+Via alla Santa 7 - 6962 Viganello \\
+www.banana.ch - info@banana.ch \\
+IVA 123 456 789 \\
 \begin{longtable}[l]{ l  l }
 Invoice:  & 37 \\
 Date:  & 03.02.2018 \\
@@ -211,10 +211,6 @@ Invoice \newline  &  & Page  \#page-nr \newline \\
 \end{reportvalue}
 \subsection{Test Invoice 47}
 \begin{reportvalue}{Test Invoice 47}
-Banana.ch SA \\
-Via alla Santa 7 - 6962 Viganello \\
-www.banana.ch - info@banana.ch \\
-IVA 123 456 789 \\
 \begin{longtable}[l]{ l  l }
 Invoice:  & 47 \\
 Date:  & 11.11.2018 \\
@@ -224,6 +220,10 @@ Fiscal number:  & \\
 Payment:  & 11.12.2018 \\
 Page:  & \#page-nr \\
 \end{longtable}
+Banana.ch SA \\
+Via alla Santa 7 - 6962 Viganello \\
+www.banana.ch - info@banana.ch \\
+IVA 123 456 789 \\
 \begin{longtable}[l]{ l  l }
 Invoice:  & 47 \\
 Date:  & 11.11.2018 \\

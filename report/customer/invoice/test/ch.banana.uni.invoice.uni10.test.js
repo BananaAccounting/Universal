@@ -16,7 +16,7 @@
 
 // @id = ch.banana.uni.invoice.uni10.test
 // @api = 1.0
-// @pubdate = 2019-06-28
+// @pubdate = 2019-07-01
 // @publisher = Banana.ch SA
 // @description = <TEST ch.banana.uni.invoice.uni10.js>
 // @task = app.command
@@ -107,7 +107,6 @@ function setParametres(texts) {
 
   //Include
   userParam.header_print = true;
-  userParam.header_left = false;
   userParam.header_row_1 = "Banana.ch SA";
   userParam.header_row_2 = "Via alla Santa 7 - 6962 Viganello";
   userParam.header_row_3 = "www.banana.ch - info@banana.ch";
@@ -138,9 +137,10 @@ function setParametres(texts) {
   userParam.qr_code_address_row_1 = '';
   userParam.qr_code_address_row_2 = '';
   userParam.qr_code_address_row_3 = '';
+  userParam.qr_code_address_row_4 = '';
 
   //Texts
-  userParam.add_language = "";
+  userParam.languages = 'en;it;de';
   userParam.en_text_info_invoice_number = texts.invoice;
   userParam.en_text_info_date = texts.date;
   userParam.en_text_info_customer = texts.customer;
