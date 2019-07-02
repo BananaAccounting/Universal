@@ -101,7 +101,7 @@ ReportInvoiceTemplate10.prototype.testReport = function() {
 
 
 //Function used to set all the parameters
-function setParametres(texts) {
+function setUserParam(texts) {
   
   var userParam = {};
 
@@ -174,16 +174,26 @@ function setParametres(texts) {
 }
 
 
+//Function that sets the decimals
+function setParam(param) {
+  param.decimals_quantity = "";
+  param.decimals_unit_price = 2;
+  param.decimals_amount = 2;
+  return param;
+}
+
+
 //Function that creates the report for the test
 function addReport(banDoc, invoiceNumber, reportName) {
 
   var texts = setInvoiceTexts('en');
-  var userParam = setParametres(texts);
+  var userParam = setUserParam(texts);
+  var param = setParam(param);
   
   var jsonInvoice = getJsonInvoice(invoiceNumber);
   var invoiceObj = JSON.parse(jsonInvoice);
   
-  var invoiceReport = printInvoice(banDoc, invoiceReport, texts, userParam, "", invoiceObj);
+  var invoiceReport = printInvoice(banDoc, invoiceReport, texts, userParam, "", invoiceObj, param);
 
   Test.logger.addReport(reportName, invoiceReport);
 }
