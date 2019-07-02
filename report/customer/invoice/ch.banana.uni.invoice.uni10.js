@@ -606,7 +606,27 @@ function convertParam(userParam) {
   currentParam.defaultvalue = 'en;it;de';
   currentParam.tooltip = texts.param_tooltip_languages;
   currentParam.readValue = function() {
+
+    var before = userParam.languages
+    Banana.console.log("before change >> " + before);
+
     userParam.languages = this.value;
+
+    var after = userParam.languages;
+    Banana.console.log("after change >> " + after);
+
+    if (before.length > after.length) {
+      var res = arrDifference(before,after);
+      Banana.console.log("to remove.. >> " + res);
+      var answer = Banana.Ui.showQuestion("Question title", "Do you want to remove '" + res + "' language?");
+      if (!answer) {
+        userParam.languages = before;
+        Banana.console.log("answer NO >> " + userParam.languages);
+      }
+      else {
+        Banana.console.log("answer YES >> " + userParam.languages);
+      }
+    }
   }
   convertedParam.data.push(currentParam);
 
@@ -639,6 +659,12 @@ function convertParam(userParam) {
     currentParam.type = 'string';
     currentParam.value = '';
     currentParam.editable = false;
+    //Collapse when the language is not the same of the document language
+    if (langCode === lang) {
+      currentParam.collapse = false;
+    } else {
+      currentParam.collapse = true;
+    }
     currentParam.readValue = function() {
       userParam['text_language_code'] = this.value;
     }
@@ -975,15 +1001,25 @@ function convertParam(userParam) {
 }
 
 
-// function difference(a1, a2) {
-//   var result = [];
-//   for (var i = 0; i < a1.length; i++) {
-//     if (a2.indexOf(a1[i]) === -1) {
-//       result.push(a1[i]);
-//     }
-//   }
-//   return result;
-// }
+
+function arrDifference(arr1, arr2) {
+  var arr = [];
+  arr1 = arr1.toString().split(';').map(String); //before
+  arr2 = arr2.toString().split(';').map(String); //after
+  // for array1
+  for (var i in arr1) {
+    if(arr2.indexOf(arr1[i]) === -1) {
+      arr.push(arr1[i]);
+    }
+  }
+  // for array2
+  for(i in arr2) {
+    if(arr1.indexOf(arr2[i]) === -1) {
+      arr.push(arr2[i]);
+    }
+  }
+  return arr;
+}
 
 
 
@@ -1313,9 +1349,12 @@ function printDocument(jsonInvoice, repDocObj, repStyleObj) {
   // Variable starts with $
   var cssVariables = {};
   set_css_variables(cssVariables, userParam);
+
+  var param = {};
+  set_parameters(param);
   
   // Function call to print the invoice document
-  repDocObj = printInvoice(Banana.document, repDocObj, texts, userParam, repStyleObj, invoiceObj);
+  repDocObj = printInvoice(Banana.document, repDocObj, texts, userParam, repStyleObj, invoiceObj, param);
   set_invoice_style(repDocObj, repStyleObj, cssVariables, userParam);
 
 
@@ -1324,7 +1363,7 @@ function printDocument(jsonInvoice, repDocObj, repStyleObj) {
 
 }
 
-function printInvoice(banDoc, repDocObj, texts, userParam, repStyleObj, invoiceObj) {
+function printInvoice(banDoc, repDocObj, texts, userParam, repStyleObj, invoiceObj, param) {
 
   /*
     This function build the invoice document calling all the functions that prints
@@ -1404,16 +1443,16 @@ function printInvoice(banDoc, repDocObj, texts, userParam, repStyleObj, invoiceO
   var detailsTable = repDocObj.addTable("doc_table");
   if (userParam.details_gross_amounts) {
     if (typeof(hook_print_details_gross_amounts) === typeof(Function)) {
-      hook_print_details_gross_amounts(banDoc, repDocObj, invoiceObj, texts, userParam, detailsTable);
+      hook_print_details_gross_amounts(banDoc, repDocObj, invoiceObj, texts, userParam, detailsTable, param);
     } else {
-      print_details_gross_amounts(banDoc, repDocObj, invoiceObj, texts, userParam, detailsTable);
+      print_details_gross_amounts(banDoc, repDocObj, invoiceObj, texts, userParam, detailsTable, param);
     }
   }
   else {
     if (typeof(hook_print_details_net_amounts) === typeof(Function)) {
-      hook_print_details_net_amounts(banDoc, repDocObj, invoiceObj, texts, userParam, detailsTable);
+      hook_print_details_net_amounts(banDoc, repDocObj, invoiceObj, texts, userParam, detailsTable, param);
     } else {
-      print_details_net_amounts(banDoc, repDocObj, invoiceObj, texts, userParam, detailsTable);
+      print_details_net_amounts(banDoc, repDocObj, invoiceObj, texts, userParam, detailsTable, param);
     }
   }
 
@@ -1636,7 +1675,7 @@ function print_text_begin(repDocObj, invoiceObj, texts, userParam) {
   }
 }
 
-function print_details_net_amounts(banDoc, repDocObj, invoiceObj, texts, userParam, detailsTable) {
+function print_details_net_amounts(banDoc, repDocObj, invoiceObj, texts, userParam, detailsTable, param) {
 
   /* 
     Print the invoice details using net Amounts (VAT excluded) 
@@ -1723,6 +1762,9 @@ function print_details_net_amounts(banDoc, repDocObj, invoiceObj, texts, userPar
           if (res[1] && res[1].length == 4 && res[1] !== "0000") {
             decimals = 4;
           }
+          if (param.decimals_quantity) {
+            decimals = param.decimals_quantity;
+          }
           tableRow.addCell(Banana.Converter.toLocaleNumberFormat(item.quantity,decimals), classNameEvenRow + " right padding-left padding-right " + className, 1);
         } else {
           tableRow.addCell("", classNameEvenRow + " right padding-left padding-right " + className, 1);
@@ -1732,10 +1774,10 @@ function print_details_net_amounts(banDoc, repDocObj, invoiceObj, texts, userPar
         tableRow.addCell(item.mesure_unit, classNameEvenRow + " center padding-left padding-right " + className, 1);
       }
       else if (columnsSelected[j] === "UnitPrice" || columnsSelected[j] === "unitprice" || columnsSelected[j] === "unit_price") {
-        tableRow.addCell(Banana.Converter.toLocaleNumberFormat(item.unit_price.calculated_amount_vat_exclusive), classNameEvenRow + " right padding-left padding-right " + className, 1);
+        tableRow.addCell(Banana.Converter.toLocaleNumberFormat(item.unit_price.calculated_amount_vat_exclusive, param.decimals_unit_price, true), classNameEvenRow + " right padding-left padding-right " + className, 1);
       }
       else if (columnsSelected[j] === "Amount" || columnsSelected[j] === "amount" || columnsSelected[j] === "total_amount_vat_exclusive") {
-        tableRow.addCell(toInvoiceAmountFormat(invoiceObj, item.total_amount_vat_exclusive), classNameEvenRow + " right padding-left padding-right " + className, 1);
+        tableRow.addCell(Banana.Converter.toLocaleNumberFormat(item.total_amount_vat_exclusive, param.decimals_amounts, true), classNameEvenRow + " right padding-left padding-right " + className, 1);
       }
       else {
         var userColumnValue = "";
@@ -1752,12 +1794,12 @@ function print_details_net_amounts(banDoc, repDocObj, invoiceObj, texts, userPar
   if (invoiceObj.billing_info.total_vat_rates.length > 0) {
     tableRow = repTableObj.addRow();
     tableRow.addCell(texts.totalnet, "padding-left padding-right", columnsNumber-1);
-    tableRow.addCell(toInvoiceAmountFormat(invoiceObj, invoiceObj.billing_info.total_amount_vat_exclusive), "right padding-left padding-right", 1);
+    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(invoiceObj.billing_info.total_amount_vat_exclusive, param.decimals_amounts, true), "right padding-left padding-right", 1);
 
     for (var i = 0; i < invoiceObj.billing_info.total_vat_rates.length; i++) {
       tableRow = repTableObj.addRow();
-      tableRow.addCell(texts.vat + " " + invoiceObj.billing_info.total_vat_rates[i].vat_rate + "% (" + toInvoiceAmountFormat(invoiceObj, invoiceObj.billing_info.total_vat_rates[i].total_amount_vat_exclusive) + ")", "padding-left padding-right", columnsNumber-1);
-      tableRow.addCell(toInvoiceAmountFormat(invoiceObj, invoiceObj.billing_info.total_vat_rates[i].total_vat_amount), "right padding-left padding-right", 1);
+      tableRow.addCell(texts.vat + " " + invoiceObj.billing_info.total_vat_rates[i].vat_rate + "% (" + Banana.Converter.toLocaleNumberFormat(invoiceObj.billing_info.total_vat_rates[i].total_amount_vat_exclusive, param.decimals_amounts, true) + ")", "padding-left padding-right", columnsNumber-1);
+      tableRow.addCell(Banana.Converter.toLocaleNumberFormat(invoiceObj.billing_info.total_vat_rates[i].total_vat_amount, param.decimals_amounts, true), "right padding-left padding-right", 1);
     }
   }
 
@@ -1765,7 +1807,7 @@ function print_details_net_amounts(banDoc, repDocObj, invoiceObj, texts, userPar
   if (invoiceObj.billing_info.total_rounding_difference.length) {
     tableRow = repTableObj.addRow();
     tableRow.addCell(texts.rounding, "padding-left padding-right", columnsNumber-1);
-    tableRow.addCell(toInvoiceAmountFormat(invoiceObj, invoiceObj.billing_info.total_rounding_difference), "right padding-left padding-right", 1);
+    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(invoiceObj.billing_info.total_rounding_difference, param.decimals_amounts, true), "right padding-left padding-right", 1);
   }
   tableRow = repTableObj.addRow();
   tableRow.addCell("", "thin-border-top", columnsNumber);
@@ -1773,7 +1815,7 @@ function print_details_net_amounts(banDoc, repDocObj, invoiceObj, texts, userPar
   //FINAL TOTAL
   tableRow = repTableObj.addRow();
   tableRow.addCell(userParam[lang+'_texts_total'] + " " + invoiceObj.document_info.currency, "total_cell", columnsNumber-1);
-  tableRow.addCell(toInvoiceAmountFormat(invoiceObj, invoiceObj.billing_info.total_to_pay), "total_cell right", 1);
+  tableRow.addCell(Banana.Converter.toLocaleNumberFormat(invoiceObj.billing_info.total_to_pay, param.decimals_amounts, true), "total_cell right", 1);
   
   tableRow = repTableObj.addRow();
   tableRow.addCell("", "", columnsNumber);
@@ -1785,7 +1827,7 @@ function print_details_net_amounts(banDoc, repDocObj, invoiceObj, texts, userPar
   }
 }
 
-function print_details_gross_amounts(banDoc, repDocObj, invoiceObj, texts, userParam, detailsTable) {
+function print_details_gross_amounts(banDoc, repDocObj, invoiceObj, texts, userParam, detailsTable, param) {
 
   /* 
     Prints the invoice details using gross Amounts (VAT included)
@@ -1872,6 +1914,9 @@ function print_details_gross_amounts(banDoc, repDocObj, invoiceObj, texts, userP
           if (res[1] && res[1].length == 4 && res[1] !== "0000") {
             decimals = 4;
           }
+          if (param.decimals_quantity) {
+            decimals = param.decimals_quantity;
+          }
           tableRow.addCell(Banana.Converter.toLocaleNumberFormat(item.quantity,decimals), classNameEvenRow + " right padding-left padding-right " + className, 1);
         } else {
           tableRow.addCell("", classNameEvenRow + " right padding-left padding-right " + className, 1);
@@ -1881,10 +1926,10 @@ function print_details_gross_amounts(banDoc, repDocObj, invoiceObj, texts, userP
         tableRow.addCell(item.mesure_unit, classNameEvenRow + " center padding-left padding-right " + className, 1);
       }
       else if (columnsSelected[j] === "UnitPrice" || columnsSelected[j] === "unitprice" || columnsSelected[j] === "unit_price") {
-        tableRow.addCell(Banana.Converter.toLocaleNumberFormat(item.unit_price.calculated_amount_vat_inclusive), classNameEvenRow + " right padding-left padding-right " + className, 1);
+        tableRow.addCell(Banana.Converter.toLocaleNumberFormat(item.unit_price.calculated_amount_vat_inclusive, param.decimals_unit_price, true), classNameEvenRow + " right padding-left padding-right " + className, 1);
       }
       else if (columnsSelected[j] === "Amount" || columnsSelected[j] === "amount" || columnsSelected[j] === "total_amount_vat_inclusive") {
-        tableRow.addCell(toInvoiceAmountFormat(invoiceObj, item.total_amount_vat_inclusive), classNameEvenRow + " right padding-left padding-right " + className, 1);
+        tableRow.addCell(Banana.Converter.toLocaleNumberFormat(item.total_amount_vat_inclusive, param.decimals_amounts, true), classNameEvenRow + " right padding-left padding-right " + className, 1);
       }
       else {
         var userColumnValue = "";
@@ -1901,7 +1946,7 @@ function print_details_gross_amounts(banDoc, repDocObj, invoiceObj, texts, userP
   if (invoiceObj.billing_info.total_rounding_difference.length) {
     tableRow = repTableObj.addRow();
     tableRow.addCell(texts.rounding, "padding-left padding-right", columnsNumber-1);
-    tableRow.addCell(toInvoiceAmountFormat(invoiceObj, invoiceObj.billing_info.total_rounding_difference), "right padding-left padding-right", 1);
+    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(invoiceObj.billing_info.total_rounding_difference, param.decimals_amounts, true), "right padding-left padding-right", 1);
   }
   tableRow = repTableObj.addRow();
   tableRow.addCell("", "", columnsNumber);
@@ -1909,7 +1954,7 @@ function print_details_gross_amounts(banDoc, repDocObj, invoiceObj, texts, userP
   //FINAL TOTAL
   tableRow = repTableObj.addRow();
   tableRow.addCell(userParam[lang+'_texts_total'] + " " + invoiceObj.document_info.currency, "total_cell", columnsNumber-1);
-  tableRow.addCell(toInvoiceAmountFormat(invoiceObj, invoiceObj.billing_info.total_to_pay), "total_cell right", 1);
+  tableRow.addCell(Banana.Converter.toLocaleNumberFormat(invoiceObj.billing_info.total_to_pay, param.decimals_amounts, true), "total_cell right", 1);
   
   tableRow = repTableObj.addRow();
   tableRow.addCell("", "", columnsNumber);
@@ -1919,7 +1964,7 @@ function print_details_gross_amounts(banDoc, repDocObj, invoiceObj, texts, userP
   var cellVatInfo = tableRow.addCell("", "padding-right right vat_info", columnsNumber);
   for (var i = 0; i < invoiceObj.billing_info.total_vat_rates.length; i++) {
     var vatInfo = texts.vat + " " + invoiceObj.billing_info.total_vat_rates[i].vat_rate + "%";
-    vatInfo += " = " + toInvoiceAmountFormat(invoiceObj, invoiceObj.billing_info.total_vat_rates[i].total_vat_amount) + " " + invoiceObj.document_info.currency;
+    vatInfo += " = " + Banana.Converter.toLocaleNumberFormat(invoiceObj.billing_info.total_vat_rates[i].total_vat_amount, param.decimals_amounts, true) + " " + invoiceObj.document_info.currency;
     cellVatInfo.addParagraph(vatInfo);
   }
   
@@ -2222,15 +2267,6 @@ function getUserColumnValue(banDoc, docInvoice, originRow, column) {
   return values;
 }
 
-function toInvoiceAmountFormat(invoice, value) {
-
-    /*
-      Function used to convert all the amounts of the invoice
-    */
-
-    return Banana.Converter.toLocaleNumberFormat(value, invoice.document_info.decimals_amounts, true);
-}
-
 function getInvoiceAddress(invoiceAddress) {
   var address = "";
   if (invoiceAddress.courtesy) {
@@ -2421,8 +2457,22 @@ function addMdBoldText(reportElement, text) {
 
 
 
+//====================================================================//
+// PARAMETERS
+//====================================================================//
+function set_parameters(param) {
+  /*
+    Sets some parameters
+  */
+  param.decimals_quantity = "";
+  param.decimals_unit_price = 2;
+  param.decimals_amounts = 2;
 
-
+  /* If exists use the function defined by the user */
+  if (typeof(hook_set_parameters) === typeof(Function)) {
+    hook_set_parameters(param);
+  }
+}
 
 
 
@@ -2507,43 +2557,69 @@ function replaceVariables(cssText, cssVariables) {
 function set_css_variables(cssVariables, userParam) {
 
   /* 
-    Sets the values of all the css variables.
+    Sets all the css variables values.
   */
 
+  /* General */
   cssVariables.$background_color_1 = userParam.background_color_1;
   cssVariables.$background_color_2 = userParam.background_color_2;
   cssVariables.$color = userParam.color;
   cssVariables.$font_family = userParam.font_family;
   cssVariables.$font_size = userParam.font_size+"pt";
-  cssVariables.$font_size_sender_address = "7pt";
-  cssVariables.$font_size_title = parseInt(userParam.font_size)+4 +"pt";
-  cssVariables.$font_size_total = parseInt(userParam.font_size)+2 +"pt";
-  cssVariables.$font_size_footer = "8pt";
   
-  cssVariables.$margin_right = "10mm";
-  cssVariables.$margin_left = "20mm";
-  
-  cssVariables.$margin_top_info = "45mm";
-  cssVariables.$margin_left_info = "113mm";
+  /* Header */
   cssVariables.$margin_top_header = "10mm";
-  cssVariables.$margin_top_shipping_address = "75mm";
-  cssVariables.$margin_top_text_begin = "120mm";
-  cssVariables.$margin_left_details = "23mm";
-  cssVariables.$margin_top_details = "140mm";
-  cssVariables.$margin_bottom_footer = "20mm";
+  cssVariables.$margin_right_header = "10mm";
+  cssVariables.$margin_left_header = "20mm";
+  cssVariables.$text_align_header = "right";
 
-  cssVariables.$padding_right = "5px";
-  cssVariables.$padding_left = "5px";
+  /* Info invoice */
+  cssVariables.$margin_top_info = "45mm";
+  cssVariables.$margin_right_info = "10mm";
+  cssVariables.$margin_left_info = "20mm";
   cssVariables.$padding_top = "0px";
   cssVariables.$padding_bottom = "0px";
-  cssVariables.$padding = "3px";
-  cssVariables.$text_align_qrcode = userParam.qr_code_align;
-  cssVariables.$text_align_header = "right";
+
+  /* Address invoice */
+  cssVariables.$font_size_sender_address = "7pt";
   cssVariables.$text_align_sender_address = "center";
   cssVariables.$border_bottom_sender_address = "1px solid black";
+  cssVariables.$margin_top_address = "45mm";
+  cssVariables.$margin_right_address = "10mm";
+  cssVariables.$margin_left_address = "123mm";
+
+  /* Shipping address */
+  cssVariables.$margin_top_shipping_address = "75mm";
+  cssVariables.$margin_right_shipping_address = "10mm";
+  cssVariables.$margin_left_shipping_address = "20mm";
+
+  /* Text begin */
+  cssVariables.$font_size_title = userParam.font_size*1.4 +"pt";
+  cssVariables.$margin_top_text_begin = "120mm";
+  cssVariables.$margin_right_text_begin = "10mm";
+  cssVariables.$margin_left_text_begin = "23mm";
+
+  /* Details invoice */
+  cssVariables.$font_size_total = userParam.font_size*1.2 +"pt";
+  cssVariables.$margin_top_details = "140mm";
+  cssVariables.$margin_right_details = "10mm";
+  cssVariables.$margin_left_details = "23mm";
+  cssVariables.$padding = "3px";
+  cssVariables.$padding_right = "5px";
+  cssVariables.$padding_left = "5px";
   cssVariables.$border_bottom_total = "1px double";
+
+  /* QR Code */
+  cssVariables.$text_align_qrcode = userParam.qr_code_align;
+
+  /* Footer */
+  cssVariables.$font_size_footer = "8pt";
+  cssVariables.$margin_right_footer = "10mm";
+  cssVariables.$margin_bottom_footer = "20mm";
+  cssVariables.$margin_left_footer = "20mm";
   cssVariables.$border_top_footer = "thin solid";
-  
+
+
   /* If exists use the function defined by the user */
   if (typeof(hook_set_css_variables) === typeof(Function)) {
     hook_set_css_variables(cssVariables, userParam);
@@ -2615,19 +2691,19 @@ function set_invoice_style(reportObj, repStyleObj, cssVariables, userParam) {
   style = replaceVariables(style, cssVariables);
   repStyleObj.addStyle(".padding-left", style);
 
-  style = "position:absolute; margin-top:$margin_top_header; margin-left:$margin_left; margin-right:$margin_right";
+  style = "position:absolute; margin-top:$margin_top_header; margin-left:$margin_left_header; margin-right:$margin_right_header";
   style = replaceVariables(style, cssVariables);
   repStyleObj.addStyle(".header_left_text", style);
 
-  style = "position:absolute; margin-top:$margin_top_header; margin-left:$margin_left; margin-right:$margin_right; text-align:$text_align_header";
+  style = "position:absolute; margin-top:$margin_top_header; margin-left:$margin_left_header; margin-right:$margin_right_header; text-align:$text_align_header";
   style = replaceVariables(style, cssVariables);
   repStyleObj.addStyle(".header_right_text", style);
 
-  style = "position:absolute; margin-top:$margin_top_header; margin-left:$margin_left; margin-right:$margin_right";
+  style = "position:absolute; margin-top:$margin_top_header; margin-left:$margin_left_header; margin-right:$margin_right_header";
   style = replaceVariables(style, cssVariables);
   repStyleObj.addStyle(".logo", style);
 
-  style = "position:absolute; margin-top:$margin_top_info; margin-left:$margin_left; margin-right:$margin_right; font-size:$font_size";
+  style = "position:absolute; margin-top:$margin_top_info; margin-left:$margin_left_info; margin-right:$margin_right_info; font-size:$font_size";
   style = replaceVariables(style, cssVariables);
   repStyleObj.addStyle(".info_table_left", style);
 
@@ -2635,7 +2711,7 @@ function set_invoice_style(reportObj, repStyleObj, cssVariables, userParam) {
   style = replaceVariables(style, cssVariables);
   repStyleObj.addStyle("table.info_table_left td", style);
 
-  style = "position:absolute; margin-top:$margin_top_info; margin-left:$margin_left_info; margin-right:$margin_right; font-size:$font_size";
+  style = "position:absolute; margin-top:$margin_top_info; margin-left:$margin_left_address; margin-right:$margin_right_info; font-size:$font_size";
   style = replaceVariables(style, cssVariables);
   repStyleObj.addStyle(".info_table_right", style);
 
@@ -2643,7 +2719,7 @@ function set_invoice_style(reportObj, repStyleObj, cssVariables, userParam) {
   style = replaceVariables(style, cssVariables);
   repStyleObj.addStyle("table.info_table_right td", style);
 
-  style = "position:absolute; margin-top:$margin_top_info; margin-left:$margin_left; margin-right:$margin_right; font-size:$font_size";
+  style = "position:absolute; margin-top:$margin_top_info; margin-left:$margin_left_info; margin-right:$margin_right_info; font-size:$font_size";
   style = replaceVariables(style, cssVariables);
   repStyleObj.addStyle(".info_table_row0", style);
 
@@ -2655,11 +2731,11 @@ function set_invoice_style(reportObj, repStyleObj, cssVariables, userParam) {
   style = replaceVariables(style, cssVariables);
   repStyleObj.addStyle("@page:first-view table.info_table_row0", style);
 
-  style = "position:absolute; margin-top:$margin_top_info; margin-left:$margin_left_info; margin-right:$margin_right; font-size:$font_size";
+  style = "position:absolute; margin-top:$margin_top_address; margin-left:$margin_left_address; margin-right:$margin_right_address; font-size:$font_size";
   style = replaceVariables(style, cssVariables);
   repStyleObj.addStyle(".address_table_right", style);
 
-  style = "position:absolute; margin-top:$margin_top_info; margin-left:$margin_left; margin-right:$margin_right";
+  style = "position:absolute; margin-top:$margin_top_info; margin-left:$margin_left_info; margin-right:$margin_right_info";
   style = replaceVariables(style, cssVariables);
   repStyleObj.addStyle(".address_table_left", style);
 
@@ -2667,7 +2743,7 @@ function set_invoice_style(reportObj, repStyleObj, cssVariables, userParam) {
   style = replaceVariables(style, cssVariables);
   repStyleObj.addStyle(".small_address", style);
 
-  style = "position:absolute; margin-top:$margin_top_shipping_address; margin-left:$margin_left; margin-right:$margin_right; font-size:$font_size";
+  style = "position:absolute; margin-top:$margin_top_shipping_address; margin-left:$margin_left_shipping_address; margin-right:$margin_right_shipping_address; font-size:$font_size";
   style = replaceVariables(style, cssVariables);
   repStyleObj.addStyle(".shipping_address", style);
 
@@ -2675,7 +2751,7 @@ function set_invoice_style(reportObj, repStyleObj, cssVariables, userParam) {
   style = replaceVariables(style, cssVariables);
   repStyleObj.addStyle(".title_text", style);
 
-  style = "position:absolute; margin-top:$margin_top_text_begin; margin-left:$margin_left_details; margin-right:$margin_right; width:100%;";
+  style = "position:absolute; margin-top:$margin_top_text_begin; margin-left:$margin_left_text_begin; margin-right:$margin_right_text_begin; width:100%;";
   style = replaceVariables(style, cssVariables);
   repStyleObj.addStyle(".begin_text_table", style);
 
@@ -2683,7 +2759,7 @@ function set_invoice_style(reportObj, repStyleObj, cssVariables, userParam) {
   style = replaceVariables(style, cssVariables);
   repStyleObj.addStyle(".begin_text", style);
 
-  style = "margin-top:$margin_top_details; margin-left:$margin_left_details; margin-right:$margin_right; font-size:$font_size; width:100%";
+  style = "margin-top:$margin_top_details; margin-left:$margin_left_details; margin-right:$margin_right_details; font-size:$font_size; width:100%";
   style = replaceVariables(style, cssVariables);
   repStyleObj.addStyle(".doc_table", style);
 
@@ -2699,20 +2775,20 @@ function set_invoice_style(reportObj, repStyleObj, cssVariables, userParam) {
   style = replaceVariables(style, cssVariables);
   repStyleObj.addStyle(".qr_code", style);
 
-  style = "margin-left:$margin_left; margin-right:$margin_right; border-top:$border_top_footer $background_color_1";
+  style = "margin-left:$margin_left_footer; margin-right:$margin_right_footer; border-top:$border_top_footer $background_color_1";
   style = replaceVariables(style, cssVariables);
   repStyleObj.addStyle(".footer_line", style);
 
-  style = "margin-bottom:$margin_bottom_footer; margin-left:$margin_left; margin-right:$margin_right; width:100%; font-size:$font_size_footer";
+  style = "margin-bottom:$margin_bottom_footer; margin-left:$margin_left_footer; margin-right:$margin_right_footer; width:100%; font-size:$font_size_footer";
   style = replaceVariables(style, cssVariables);
   repStyleObj.addStyle(".footer_table", style);
 
 
 
 
-  /* Uncomment to show all the borders of the tables */
-
-  /*
+  /* 
+    // Uncomment to show the borders of the tables
+    
     repStyleObj.addStyle("table.info_table_left td", "border: thin solid black;");
     repStyleObj.addStyle("table.info_table_right td", "border: thin solid black");
     repStyleObj.addStyle("table.info_table_row0 td", "border: thin solid black");
