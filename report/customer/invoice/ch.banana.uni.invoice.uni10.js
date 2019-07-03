@@ -625,6 +625,14 @@ function convertParam(userParam) {
 
   // Parameters for each language
   langCodes = userParam.languages.toString().split(";");
+
+  // removes the current lang from the position it is in, and then readds in front
+  // the current document language is always on top
+  if (langCodes.includes(lang)) {
+    langCodes.splice(langCodes.indexOf(lang),1);
+    langCodes.unshift(lang);
+  }
+
   for (var i = 0; i < langCodes.length; i++) {
     var langCode = langCodes[i];
     if (langCode === "it" || langCode === "fr" || langCode === "de" || langCode === "en" || langCode === "nl" || langCode === "zh" || langCode === "pt" || langCode === "es") {
@@ -1033,7 +1041,6 @@ function initParam() {
   userParam.qr_code_address_row_4 = '';
 
   //Texts
-  // userParam.tmpLanguages = 'en;it;de';
   userParam.languages = 'en;it;de';
   var langCodes = userParam.languages.toString().split(";");
 
@@ -1041,7 +1048,7 @@ function initParam() {
   for (var i = 0; i < langCodes.length; i++) {
 
     // Use texts translations
-    if (langCodes[i] === "it" || langCodes[i] === "fr" || langCodes[i] === "de" || langCodes[i] === "en" || langCodes[i] === "nl" || langCodes[i] === "zh") {
+    if (langCodes[i] === "it" || langCodes[i] === "fr" || langCodes[i] === "de" || langCodes[i] === "en" || langCodes[i] === "nl" || langCodes[i] === "zh" || langCodes[i] === "pt" || langCodes[i] === "es") {
       var langTexts = setInvoiceTexts(langCodes[i]);
     }
     else {
@@ -1182,9 +1189,6 @@ function verifyParam(userParam) {
 
 
   //Texts
-  // if (!userParam.tmpLanguages) {
-  //   userParam.tmpLanguages = 'en;it;de';
-  // }
   if (!userParam.languages) {
     userParam.languages = 'en;it;de';
   }
