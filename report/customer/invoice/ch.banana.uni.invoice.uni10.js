@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.uni.invoice.uni10
 // @api = 1.0
-// @pubdate = 2019-07-01
+// @pubdate = 2019-07-03
 // @publisher = Banana.ch SA
 // @description = Style 10: Fully customizable invoice template
 // @description.it = Stile 10: Template fattura completamente personalizzabile
@@ -23,6 +23,8 @@
 // @description.nl = Stijl 10: Fully customizable invoice template
 // @description.en = Style 10: Fully customizable invoice template
 // @description.zh = Style 10: Fully customizable invoice template
+// @description.pt = Style 10: Fully customizable invoice template
+// @description.es = Style 10: Fully customizable invoice template
 // @doctype = *
 // @task = report.customer.invoice
 
@@ -607,43 +609,25 @@ function convertParam(userParam) {
   currentParam.tooltip = texts.param_tooltip_languages;
   currentParam.readValue = function() {
 
-    var before = userParam.languages
-    Banana.console.log("before change >> " + before);
-
+    var before = userParam.languages; //languages before remove
     userParam.languages = this.value;
-
-    var after = userParam.languages;
-    Banana.console.log("after change >> " + after);
-
-    if (before.length > after.length) {
-      var res = arrDifference(before,after);
-      Banana.console.log("to remove.. >> " + res);
-      var answer = Banana.Ui.showQuestion("Question title", "Do you want to remove '" + res + "' language?");
+    var after = userParam.languages; //languages after remove
+    if (before.length > after.length) { //one or more languages has been removed, ask to user to confirm
+      var res = arrayDifferences(before,after);
+      var answer = Banana.Ui.showQuestion("", texts.languages_remove.replace(/<removedLanguages>/g,res));
       if (!answer) {
         userParam.languages = before;
-        Banana.console.log("answer NO >> " + userParam.languages);
-      }
-      else {
-        Banana.console.log("answer YES >> " + userParam.languages);
       }
     }
   }
   convertedParam.data.push(currentParam);
 
 
-
-
-
-
-
-
-
-
   // Parameters for each language
   langCodes = userParam.languages.toString().split(";");
   for (var i = 0; i < langCodes.length; i++) {
     var langCode = langCodes[i];
-    if (langCode === "it" || langCode === "fr" || langCode === "de" || langCode === "en" || langCode === "nl" || langCode === "zh") {
+    if (langCode === "it" || langCode === "fr" || langCode === "de" || langCode === "en" || langCode === "nl" || langCode === "zh" || langCode === "pt" || langCode === "es") {
       var langCodeTitle = langCode;
       var langTexts = setInvoiceTexts(langCode);
     }
@@ -695,7 +679,6 @@ function convertParam(userParam) {
     currentParam.language = langCode;
     currentParam.readValueLang = function(langCode) {
       userParam[langCode+'_text_info_date'] = this.value;
-      //Banana.console.log(">>"+langCode + ":::"+ userParam[langCode+'_text_info_date']);
     }
     convertedParam.data.push(currentParam);
     
@@ -838,7 +821,6 @@ function convertParam(userParam) {
       userParam[langCode+'_texts_total'] = this.value;
     }
     convertedParam.data.push(currentParam);
-
 
     currentParam = {};
     currentParam.name = langCode+'_footer_left';
@@ -995,31 +977,13 @@ function convertParam(userParam) {
   }
   convertedParam.data.push(currentParam);
 
-  //Banana.console.log(JSON.stringify(convertedParam, "", " "));
 
   return convertedParam;
 }
 
 
 
-function arrDifference(arr1, arr2) {
-  var arr = [];
-  arr1 = arr1.toString().split(';').map(String); //before
-  arr2 = arr2.toString().split(';').map(String); //after
-  // for array1
-  for (var i in arr1) {
-    if(arr2.indexOf(arr1[i]) === -1) {
-      arr.push(arr1[i]);
-    }
-  }
-  // for array2
-  for(i in arr2) {
-    if(arr1.indexOf(arr2[i]) === -1) {
-      arr.push(arr2[i]);
-    }
-  }
-  return arr;
-}
+
 
 
 
@@ -1356,11 +1320,6 @@ function printDocument(jsonInvoice, repDocObj, repStyleObj) {
   // Function call to print the invoice document
   repDocObj = printInvoice(Banana.document, repDocObj, texts, userParam, repStyleObj, invoiceObj, param);
   set_invoice_style(repDocObj, repStyleObj, cssVariables, userParam);
-
-
-  var d = new Date();
-  Banana.console.log("...printDocument() FINISHED... " + d);
-
 }
 
 function printInvoice(banDoc, repDocObj, texts, userParam, repStyleObj, invoiceObj, param) {
@@ -2418,18 +2377,18 @@ function getTitle(invoiceObj, texts, userParam) {
 
 function addMdBoldText(reportElement, text) {
     
-    /*
-    * Applies the bold style to a text.
-    * It is used the Markdown syntax.
-    *
-    * Use '**' characters where the bold starts and ends.
-    * - set bold all the paragraph => **This is bold paragraph
-    *                              => **This is bold paragraph**
-    *
-    * - set bold single/multiple words => This is **bold** text
-    *                                  => This **is bold** text
-    *                                  => **This** is **bold** text
-    */
+    //
+    // Applies the bold style to a text.
+    // It is used the Markdown syntax.
+    //
+    // Use '**' characters where the bold starts and ends.
+    // - set bold all the paragraph => **This is bold paragraph
+    //                              => **This is bold paragraph**
+    //
+    // - set bold single/multiple words => This is **bold** text
+    //                                  => This **is bold** text
+    //                                  => **This** is **bold** text
+    //
 
     var p = reportElement.addParagraph();
     var printBold = false;
@@ -2449,6 +2408,28 @@ function addMdBoldText(reportElement, text) {
     } while (startPosition < text.length && endPosition >= 0);
 }
 
+function arrayDifferences(arr1, arr2) {
+  /*
+    Find the difference between two arrays.
+    Used to find the removed languages from the parameters settings
+  */
+  var arr = [];
+  arr1 = arr1.toString().split(';').map(String);
+  arr2 = arr2.toString().split(';').map(String);
+  // for array1
+  for (var i in arr1) {
+    if(arr2.indexOf(arr1[i]) === -1) {
+      arr.push(arr1[i]);
+    }
+  }
+  // for array2
+  for(i in arr2) {
+    if(arr1.indexOf(arr2[i]) === -1) {
+      arr.push(arr2[i]);
+    }
+  }
+  return arr;
+}
 
 
 
@@ -2906,9 +2887,7 @@ function setInvoiceTexts(language) {
     //Texts
     texts.param_texts = "Testi (vuoto = valori predefiniti)";
     texts.param_languages = "Lingue";
-    texts.param_language_add = "Aggiungi nuova lingua";
-    // texts.param_language_remove = "Rimuovi lingua";
-    // texts.param_text_language_code = "it";
+    texts.languages_remove = "Desideri rimuovere '<removedLanguages>' dalla lista delle lingue?";
     texts.it_param_text_info_invoice_number = 'Numero fattura';
     texts.it_param_text_info_date = 'Data fattura';
     texts.it_param_text_info_customer = 'Numero cliente';
@@ -2952,7 +2931,6 @@ function setInvoiceTexts(language) {
     texts.param_tooltip_info_page = "Vista per includere il numero di pagina";
     texts.param_tooltip_languages = "Aggiungi o rimuovi una o più lingue";
     texts.param_tooltip_language_add = "Inserisci una nuova lingua (ad es. 'es' per spagnolo)";
-    // texts.param_tooltip_language_remove = "Inserisci la lingua che vuoi rimuovere (ad es. 'es' per rimuovere lo spagnolo)";
     texts.param_tooltip_text_info_invoice_number = "Inserisci un testo per sostituire quello predefinito";
     texts.param_tooltip_text_info_date = "Inserisci un testo per sostituire quello predefinito";
     texts.param_tooltip_text_info_customer = "Inserisci un testo per sostituire quello predefinito";
@@ -3056,8 +3034,7 @@ function setInvoiceTexts(language) {
     texts.param_qr_code_address_row_4 = "Alternative Adresse Zeile 4";
     texts.param_texts = "Texte (leer = Standardwerte)";
     texts.param_languages = "Sprachen";
-    texts.param_language_add = "Neue Sprache hinzufügen";
-    // texts.param_language_remove = "Sprache entfernen";
+    texts.languages_remove = "Möchten Sie '<removedLanguages>' aus der Liste der Sprachen streichen?";
     
     texts.de_param_text_info_invoice_number = 'Rechnungsnummer';
     texts.de_param_text_info_date = 'Rechnungsdatum';
@@ -3097,7 +3074,6 @@ function setInvoiceTexts(language) {
     texts.param_tooltip_info_page = "Überprüfen Sie, ob Sie die Rechnungsnummer der Seite angeben.";
     texts.param_tooltip_languages = "Sprachen hinzufügen oder entfernen";
     texts.param_tooltip_language_add = "Geben Sie eine neue Sprache ein (z.B. 'es' für Spanisch).";
-    // texts.param_tooltip_language_remove = "Geben Sie die Sprachen ein, die Sie entfernen möchten (z.B. 'es' zum Entfernen von Spanisch).";
     texts.param_tooltip_text_info_invoice_number = "Geben Sie einen Text ein, um den Standardtext zu ersetzen.";
     texts.param_tooltip_text_info_date = "Geben Sie einen Text ein, um den Standardtext zu ersetzen.";
     texts.param_tooltip_text_info_customer = "Geben Sie einen Text ein, um den Standardtext zu ersetzen.";
@@ -3142,6 +3118,10 @@ function setInvoiceTexts(language) {
   else if (language === 'zh') {
   }
   else if (language === 'nl') {
+  }
+  else if (language === 'pt') {
+  }
+  else if (language === 'es') {
   }
   else {
     //Address
@@ -3216,9 +3196,7 @@ function setInvoiceTexts(language) {
     //Texts
     texts.param_texts = "Texts (empty = default values)";
     texts.param_languages = "Languages";
-    texts.param_language_add = "Add a new language";
-    // texts.param_language_remove = "Remove language";
-    // texts.param_text_language_code = "en";
+    texts.languages_remove = "Do you want to remove '<removedLanguages>' from the list of languages?"
     texts.en_param_text_info_invoice_number = 'Invoice number';
     texts.en_param_text_info_date = 'Invoice date';
     texts.en_param_text_info_customer = 'Invoice customer number';
@@ -3262,7 +3240,6 @@ function setInvoiceTexts(language) {
     texts.param_tooltip_info_page = "Check to include the page invoice number";
     texts.param_tooltip_languages = "Add or remove languages";
     texts.param_tooltip_language_add = "Enter a new language (i.e. 'es' for spanish)";
-    // texts.param_tooltip_language_remove = "Enter the languages you want to remove (i.e. 'es' to remove spanish)";
     texts.param_tooltip_text_info_invoice_number = "Enter a text to replace the default one";
     texts.param_tooltip_text_info_date = "Enter a text to replace the default one";
     texts.param_tooltip_text_info_customer = "Enter a text to replace the default one";
