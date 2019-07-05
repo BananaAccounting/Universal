@@ -49,7 +49,7 @@
 */
 
 
-var IS_CURRENT_BAN_VERSION_SUPPORTED = true;
+
 var BAN_REQURED_VERSION = "9.0.4";
 var BAN_REQUIRED_EXPERIMENTAL_VERSION = "";
 
@@ -149,8 +149,8 @@ function bananaRequiredVersion(version, experimentalVersion) {
 function settingsDialog() {
   
   // Verify the banana version when user clicks on settings buttons
-  IS_CURRENT_BAN_VERSION_SUPPORTED = bananaRequiredVersion(BAN_REQURED_VERSION, BAN_REQUIRED_EXPERIMENTAL_VERSION);
-  if (IS_CURRENT_BAN_VERSION_SUPPORTED) {
+  var isBananaVersionSupported = bananaRequiredVersion(BAN_REQURED_VERSION, BAN_REQUIRED_EXPERIMENTAL_VERSION);
+  if (isBananaVersionSupported) {
 
     var userParam = initParam();
     var savedParam = Banana.document.getScriptSettings();
@@ -1374,8 +1374,8 @@ function verifyParam(userParam) {
 function printDocument(jsonInvoice, repDocObj, repStyleObj) {
 
   // Verify the banana version when user clicks ok to print the invoice
-  IS_CURRENT_BAN_VERSION_SUPPORTED = bananaRequiredVersion(BAN_REQURED_VERSION, BAN_REQUIRED_EXPERIMENTAL_VERSION);
-  if (IS_CURRENT_BAN_VERSION_SUPPORTED) {
+  var isBananaVersionSupported = bananaRequiredVersion(BAN_REQURED_VERSION, BAN_REQUIRED_EXPERIMENTAL_VERSION);
+  if (isBananaVersionSupported) {
 
     var userParam = initParam();
     var savedParam = Banana.document.getScriptSettings();
