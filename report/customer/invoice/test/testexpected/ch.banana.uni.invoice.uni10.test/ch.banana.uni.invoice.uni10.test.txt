@@ -73,7 +73,6 @@ Sales merchandise, invoice \#35, customer B \newline \newline  & 10.00  & pz..  
 \multicolumn{5}{l}{}\\
 \multicolumn{4}{l}{TOTAL CHF } & 3'498.75 \\
 \multicolumn{5}{l}{}\\
-\multicolumn{5}{l}{  \newline   \newline   \newline }\\
 \multicolumn{5}{l}{  }\\
 \multicolumn{5}{l}{Paragraph 1, final text taken from the 'Print invoices' ,'Template options' settings. \newline }\\
 \multicolumn{5}{l}{Paragraph 2,  final text  taken from the 'Print invoices' ,'Template options' settings.  Final text taken from the 'Print invoices' ,'Template options' settings. \newline }\\
@@ -134,7 +133,6 @@ Sales merchandise, invoice \#36, customer D \newline \newline  &  &  & 6'481.48 
 \multicolumn{10}{l}{}\\
 \multicolumn{9}{l}{TOTAL CHF } & 7'000.00 \\
 \multicolumn{10}{l}{}\\
-\multicolumn{10}{l}{  \newline   \newline   \newline }\\
 \multicolumn{10}{l}{  }\\
 \multicolumn{10}{l}{\newline }\\
 \multicolumn{10}{l}{\newline }\\
@@ -173,7 +171,7 @@ Page:  & \#page-nr \\
 \end{longtable}
 \begin{longtable}[l]{ l }
 Banana.ch SA - Via alla Santa 7 - 6962 Viganello \\
-Carlo Rossi \newline Rossi SA \newline Via Trevano \newline 6963 Pregassona \newline Switzerland \newline \\
+Rossi SA \newline Carlo Rossi \newline Via Trevano \newline 6963 Pregassona \newline Switzerland \newline \\
 \end{longtable}
 \begin{longtable}[l]{ l }
 \\
@@ -196,7 +194,6 @@ Consultancy \newline \newline  &  &  & 92.59  & 92.59 \\
 \multicolumn{15}{l}{}\\
 \multicolumn{14}{l}{TOTAL CHF } & 8'600.00 \\
 \multicolumn{15}{l}{}\\
-\multicolumn{15}{l}{  \newline   \newline   \newline }\\
 \multicolumn{15}{l}{  }\\
 \multicolumn{15}{l}{\newline }\\
 \multicolumn{15}{l}{\newline }\\
@@ -254,7 +251,6 @@ Discount 10\% product B \newline \newline  &  &  & -2.78  & -2.78 \\
 \multicolumn{20}{l}{}\\
 \multicolumn{19}{l}{TOTAL CHF } & 49.00 \\
 \multicolumn{20}{l}{}\\
-\multicolumn{20}{l}{  \newline   \newline   \newline }\\
 \multicolumn{20}{l}{  }\\
 \multicolumn{20}{l}{\newline }\\
 \multicolumn{20}{l}{\newline }\\

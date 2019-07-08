@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.uni.invoice.uni10
 // @api = 1.0
-// @pubdate = 2019-07-03
+// @pubdate = 2019-07-08
 // @publisher = Banana.ch SA
 // @description = Style 10: Fully customizable invoice template
 // @description.it = [UNI10] Stile 10: Layout di fattura completamente personalizzabile
@@ -50,13 +50,9 @@
 
 
 
+// Define the required version of Banana Accounting / Banana Experimental
 var BAN_VERSION = "9.0.4";
 var BAN_EXPM_VERSION = "";
-
-
-
-
-
 
 // Counter for the columns of the Details table
 var columnsNumber = 0;
@@ -66,125 +62,16 @@ var lang = "en";
 
 
 
-
-
-
-
-
-
-
-
 //====================================================================//
 // SETTINGS DIALOG FUNCTIONS USED TO SET, INITIALIZE AND VERIFY ALL
 // THE PARAMETERS OF THE SETTINGS DIALOG
 //====================================================================//
-
-
-function bananaRequiredVersion(requiredVersion, expmVersion) {
-
-  var isCurrentBananaVersionSupported = true;
-
-  var language = "en";
-  if (Banana.document.locale) {
-    language = Banana.document.locale;
-  }
-  if (language.length > 2) {
-    language = language.substr(0, 2);
-  }
-
-  if (expmVersion) {
-    requiredVersion = requiredVersion + "." + expmVersion;
-  }
-
-  if (Banana.compareVersion && Banana.compareVersion(Banana.application.version, requiredVersion) < 0) {
-    var msg = "";
-    switch(language) {
-      
-      case "en":
-        if (expmVersion) {
-          msg = "This script does not run with this version of Banana Accounting. Please update to Banana Experimental (" + requiredVersion + ").";
-        } else {
-          msg = "This script does not run with this version of Banana Accounting. Please update to version " + requiredVersion + " or later.";
-        }
-        break;
-
-      case "it":
-        if (expmVersion) {
-          msg = "Lo script non funziona con questa versione di Banana Contabilità. Aggiornare a Banana Experimental (" + requiredVersion + ").";
-        } else {
-          msg = "Lo script non funziona con questa versione di Banana Contabilità. Aggiornare alla versione " + requiredVersion + " o successiva.";
-        }
-        break;
-      
-      case "fr":
-        if (expmVersion) {
-          msg = "Ce script ne fonctionne pas avec cette version de Banana Comptabilité. Veuillez mettre à jour à Banana Experimental (" + requiredVersion + ").";
-        } else {
-          msg = "Ce script ne fonctionne pas avec cette version de Banana Comptabilité. Veuillez mettre à jour à la version " + requiredVersion + " ou plus récente.";
-        }
-        break;
-      
-      case "de":
-        if (expmVersion) {
-          msg = "Dieses Skript läuft nicht mit dieser Version von Banana Buchhaltung. Bitte aktualisieren Sie auf Banana Experimental (" + requiredVersion + ").";
-        } else {
-          msg = "Dieses Skript läuft nicht mit dieser Version von Banana Buchhaltung. Bitte aktualisieren Sie auf Version " + requiredVersion + " oder höher.";
-        }
-        break;
-      
-      case "nl":
-        if (expmVersion) {
-          msg = "Dit script draait niet met deze versie van Banana Accounting. Gelieve bij te werken naar Banana Experimental (" + requiredVersion + ").";
-        } else {
-          msg = "Dit script draait niet met deze versie van Banana Boekhouding. Gelieve bij te werken naar " + requiredVersion + " versie of later.";
-        }
-        break;
-      
-      case "zh":
-        if (expmVersion) {
-          msg = "此脚本不适用于此版本的Banana Accounting。 请更新到Banana Experimental ("+ requiredVersion +")。";
-        } else {
-          msg = "此脚本不适用于此版本的Banana Accounting。 请更新为 "+ requiredVersion +" 版本或更高版本。";
-        }
-        break;
-      
-      case "es":
-        if (expmVersion) {
-          msg = "Este script no se ejecuta con esta versión de Banana Accounting. Por favor, actualice a Banana Experimental (" + requiredVersion + ").";
-        } else {
-          msg = "Este script no se ejecuta con esta versión de Banana Contabilidad. Por favor, actualice a la versión " + requiredVersion + " o posterior.";
-        }
-        break;
-      
-      case "pt":
-        if (expmVersion) {
-          msg = "Este script não é executado com esta versão do Banana Accounting. Por favor, atualize para Banana Experimental (" + requiredVersion + ").";
-        } else {
-          msg = "Este script não é executado com esta versão do Banana Contabilidade. Por favor, atualize para a versão " + requiredVersion + " ou posterior.";
-        }
-        break;
-      
-      default:
-        if (expmVersion) {
-          msg = "This script does not run with this version of Banana Accounting. Please update to Banana Experimental (" + requiredVersion + ").";
-        } else {
-          msg = "This script does not run with this version of Banana Accounting. Please update to version " + requiredVersion + " or later.";
-        }
-    }
-
-    Banana.application.showMessages();
-    Banana.document.addMessage(msg);
-
-    isCurrentBananaVersionSupported = false;
-  }
-  return isCurrentBananaVersionSupported;
-}
-
-
-
-// Update script's parameters
 function settingsDialog() {
-  
+
+  /*
+    Update script's parameters
+  */
+
   // Verify the banana version when user clicks on settings buttons
   var isCurrentBananaVersionSupported = bananaRequiredVersion(BAN_VERSION, BAN_EXPM_VERSION);
   if (isCurrentBananaVersionSupported) {
@@ -219,7 +106,11 @@ function settingsDialog() {
 }
 
 function convertParam(userParam) {
-  //var lang = 'en';
+
+  /*
+    Create the parameters of the settings dialog
+  */
+
   if (Banana.document.locale) {
     lang = Banana.document.locale;
   }
@@ -1120,18 +1011,14 @@ function convertParam(userParam) {
   return convertedParam;
 }
 
-
-
-
-
-
-
-
-
 function initParam() {
+
+  /*
+    Initialize the user parameters of the settings dialog
+  */
+
   var userParam = {};
 
-  //var lang = 'en';
   if (Banana.document.locale) {
     lang = Banana.document.locale;
   }
@@ -1218,7 +1105,10 @@ function initParam() {
 
 function verifyParam(userParam) {
 
-  //var lang = 'en';
+  /*
+    Verify the user parameters of the settings dialog
+  */
+
   if (Banana.document.locale) {
     lang = Banana.document.locale;
   }
@@ -1430,7 +1320,6 @@ function printDocument(jsonInvoice, repDocObj, repStyleObj) {
     }
 
     // Invoice texts which need translation
-    // var lang = 'en';
     if (invoiceObj.customer_info.lang) {
       lang = invoiceObj.customer_info.lang;
     }
@@ -1449,18 +1338,13 @@ function printDocument(jsonInvoice, repDocObj, repStyleObj) {
     // Function call to print the invoice document
     repDocObj = printInvoice(Banana.document, repDocObj, texts, userParam, repStyleObj, invoiceObj, variables);
     set_invoice_style(repDocObj, repStyleObj, variables, userParam);
-
-  } 
-
+  }
 }
 
 function printInvoice(banDoc, repDocObj, texts, userParam, repStyleObj, invoiceObj, variables) {
 
   /*
-    This function build the invoice document calling all the functions that prints
-    the different parts of the document.
-
-    Invoice parts:
+    Build the invoice document:
     - header
     - info
     - address
@@ -1470,8 +1354,7 @@ function printInvoice(banDoc, repDocObj, texts, userParam, repStyleObj, invoiceO
     - final texts
     - footer
 
-    By default are used standard functions, but if 'hook' functions are defined we use them.
-
+    By default are used standard functions, but if 'hook' functions are defined by the user, these functions are used instead.
   */
 
   
@@ -1566,15 +1449,15 @@ function printInvoice(banDoc, repDocObj, texts, userParam, repStyleObj, invoiceO
 
 
 
-
-
-
 //====================================================================//
 // FUNCTIONS THAT PRINT ALL THE DIFFERENT PARTS OF THE INVOICE.
 // USER CAN REPLACE THEM WITH 'HOOK' FUNCTIONS DEFINED USING EMBEDDED 
 // JAVASCRIPT FILES ON DOCUMENTS TABLE
 //====================================================================//
 function print_header(repDocObj, userParam, repStyleObj, invoiceObj) {
+  /*
+    Prints the header: logo and text
+  */
   var headerParagraph = repDocObj.getHeader().addSection();
   if (userParam.logo_print) {
     headerParagraph = repDocObj.addSection("");
@@ -1622,7 +1505,9 @@ function print_header(repDocObj, userParam, repStyleObj, invoiceObj) {
 }
 
 function print_info(repDocObj, invoiceObj, texts, userParam, tableStyleRow0) {
-
+  /*
+    Prints the invoice information
+  */
   var infoTable = "";
 
   // info table that starts at row 0, for pages 2+
@@ -1686,6 +1571,9 @@ function print_info(repDocObj, invoiceObj, texts, userParam, tableStyleRow0) {
 }
 
 function print_customer_address(repDocObj, invoiceObj, userParam) {
+  /*
+    Print the customer address
+  */
   var customerAddressTable = "";
   if (userParam.address_left) {
     customerAddressTable = repDocObj.addTable("address_table_left");
@@ -1721,7 +1609,9 @@ function print_customer_address(repDocObj, invoiceObj, userParam) {
 }
 
 function print_shipping_address(repDocObj, invoiceObj, texts, userParam) {
-
+  /*
+    Prints the shipping address
+  */
   var billingAndShippingAddress = repDocObj.addTable("shipping_address");
   var tableRow;
 
@@ -1767,14 +1657,10 @@ function print_text_begin(repDocObj, invoiceObj, texts, userParam) {
 }
 
 function print_details_net_amounts(banDoc, repDocObj, invoiceObj, texts, userParam, detailsTable, variables) {
-
   /* 
     Print the invoice details using net Amounts (VAT excluded) 
   */
-
   var columnsDimension = userParam.details_columns_widths.split(";");
-
-  //var repTableObj = repDocObj.addTable("doc_table");
   var repTableObj = detailsTable;
   var repTableCol1 = repTableObj.addColumn().setStyleAttributes("width:"+columnsDimension[0]);
   var repTableCol2 = repTableObj.addColumn().setStyleAttributes("width:"+columnsDimension[1]);
@@ -1919,14 +1805,10 @@ function print_details_net_amounts(banDoc, repDocObj, invoiceObj, texts, userPar
 }
 
 function print_details_gross_amounts(banDoc, repDocObj, invoiceObj, texts, userParam, detailsTable, variables) {
-
   /* 
     Prints the invoice details using gross Amounts (VAT included)
   */
-
   var columnsDimension = userParam.details_columns_widths.split(";");
-
-  //var repTableObj = repDocObj.addTable("doc_table");
   var repTableObj = detailsTable;
   var repTableCol1 = repTableObj.addColumn().setStyleAttributes("width:"+columnsDimension[0]);
   var repTableCol2 = repTableObj.addColumn().setStyleAttributes("width:"+columnsDimension[1]);
@@ -2070,11 +1952,9 @@ function print_details_gross_amounts(banDoc, repDocObj, invoiceObj, texts, userP
 }
 
 function print_qr_code(invoiceObj, texts, userParam, detailsTable) {
-
   /*
     Prints the QR Code
   */
-
   var repTableObj = detailsTable;
   var text = '';
   text += 'Currency:\n';
@@ -2138,11 +2018,9 @@ function print_qr_code(invoiceObj, texts, userParam, detailsTable) {
 }
 
 function print_final_texts(repDocObj, invoiceObj, detailsTable) {
-
   /*
     Prints all the texts (final texts, notes and greetings) after the invoice details
   */
-
   tableRow = detailsTable.addRow();
   tableRow.addCell(" ", "", columnsNumber);
 
@@ -2197,7 +2075,6 @@ function print_final_texts(repDocObj, invoiceObj, detailsTable) {
 }
 
 function print_footer(repDocObj, texts, userParam) {
-
   /*
     Prints the footer at the bottom of the page.
     Values "<Page>", "<Pagina>", "<Seite>",.. are replaced with the page number.
@@ -2205,7 +2082,6 @@ function print_footer(repDocObj, texts, userParam) {
     It is possible to add more values on multiple rows.
     For empty value insert <none>.
   */
-
   if (userParam.footer_add) {
     var paragraph = repDocObj.getFooter().addParagraph("","footer_line");
     var tabFooter = repDocObj.getFooter().addTable("footer_table");
@@ -2279,18 +2155,108 @@ function print_footer(repDocObj, texts, userParam) {
 
 
 
-
-
-
-
-
-
-
-
-
 //====================================================================//
 // OTHER UTILITIES FUNCTIONS
 //====================================================================//
+function bananaRequiredVersion(requiredVersion, expmVersion) {
+
+  var isCurrentBananaVersionSupported = true;
+
+  var language = "en";
+  if (Banana.document.locale) {
+    language = Banana.document.locale;
+  }
+  if (language.length > 2) {
+    language = language.substr(0, 2);
+  }
+
+  if (expmVersion) {
+    requiredVersion = requiredVersion + "." + expmVersion;
+  }
+
+  if (Banana.compareVersion && Banana.compareVersion(Banana.application.version, requiredVersion) < 0) {
+    var msg = "";
+    switch(language) {
+      
+      case "en":
+        if (expmVersion) {
+          msg = "This script does not run with this version of Banana Accounting. Please update to Banana Experimental (" + requiredVersion + ").";
+        } else {
+          msg = "This script does not run with this version of Banana Accounting. Please update to version " + requiredVersion + " or later.";
+        }
+        break;
+
+      case "it":
+        if (expmVersion) {
+          msg = "Lo script non funziona con questa versione di Banana Contabilità. Aggiornare a Banana Experimental (" + requiredVersion + ").";
+        } else {
+          msg = "Lo script non funziona con questa versione di Banana Contabilità. Aggiornare alla versione " + requiredVersion + " o successiva.";
+        }
+        break;
+      
+      case "fr":
+        if (expmVersion) {
+          msg = "Ce script ne fonctionne pas avec cette version de Banana Comptabilité. Veuillez mettre à jour à Banana Experimental (" + requiredVersion + ").";
+        } else {
+          msg = "Ce script ne fonctionne pas avec cette version de Banana Comptabilité. Veuillez mettre à jour à la version " + requiredVersion + " ou plus récente.";
+        }
+        break;
+      
+      case "de":
+        if (expmVersion) {
+          msg = "Dieses Skript läuft nicht mit dieser Version von Banana Buchhaltung. Bitte aktualisieren Sie auf Banana Experimental (" + requiredVersion + ").";
+        } else {
+          msg = "Dieses Skript läuft nicht mit dieser Version von Banana Buchhaltung. Bitte aktualisieren Sie auf Version " + requiredVersion + " oder höher.";
+        }
+        break;
+      
+      case "nl":
+        if (expmVersion) {
+          msg = "Dit script draait niet met deze versie van Banana Accounting. Gelieve bij te werken naar Banana Experimental (" + requiredVersion + ").";
+        } else {
+          msg = "Dit script draait niet met deze versie van Banana Boekhouding. Gelieve bij te werken naar " + requiredVersion + " versie of later.";
+        }
+        break;
+      
+      case "zh":
+        if (expmVersion) {
+          msg = "此脚本不适用于此版本的Banana Accounting。 请更新到Banana Experimental ("+ requiredVersion +")。";
+        } else {
+          msg = "此脚本不适用于此版本的Banana Accounting。 请更新为 "+ requiredVersion +" 版本或更高版本。";
+        }
+        break;
+      
+      case "es":
+        if (expmVersion) {
+          msg = "Este script no se ejecuta con esta versión de Banana Accounting. Por favor, actualice a Banana Experimental (" + requiredVersion + ").";
+        } else {
+          msg = "Este script no se ejecuta con esta versión de Banana Contabilidad. Por favor, actualice a la versión " + requiredVersion + " o posterior.";
+        }
+        break;
+      
+      case "pt":
+        if (expmVersion) {
+          msg = "Este script não é executado com esta versão do Banana Accounting. Por favor, atualize para Banana Experimental (" + requiredVersion + ").";
+        } else {
+          msg = "Este script não é executado com esta versão do Banana Contabilidade. Por favor, atualize para a versão " + requiredVersion + " ou posterior.";
+        }
+        break;
+      
+      default:
+        if (expmVersion) {
+          msg = "This script does not run with this version of Banana Accounting. Please update to Banana Experimental (" + requiredVersion + ").";
+        } else {
+          msg = "This script does not run with this version of Banana Accounting. Please update to version " + requiredVersion + " or later.";
+        }
+    }
+
+    Banana.application.showMessages();
+    Banana.document.addMessage(msg);
+
+    isCurrentBananaVersionSupported = false;
+  }
+  return isCurrentBananaVersionSupported;
+}
 
 function includeEmbeddedJavascriptFile(texts, userParam) {
 
@@ -2363,6 +2329,9 @@ function getInvoiceAddress(invoiceAddress) {
   if (invoiceAddress.courtesy) {
       address = invoiceAddress.courtesy + "\n";
   }
+  if (invoiceAddress.business_name) {
+    address = address + invoiceAddress.business_name + "\n";
+  }
   if (invoiceAddress.first_name || invoiceAddress.last_name) {
     if (invoiceAddress.first_name) {
       address = address + invoiceAddress.first_name + " ";
@@ -2371,9 +2340,6 @@ function getInvoiceAddress(invoiceAddress) {
       address = address + invoiceAddress.last_name;
     }
     address = address + "\n";
-  }
-  if (invoiceAddress.business_name) {
-    address = address + invoiceAddress.business_name + "\n";
   }
   if (invoiceAddress.address1) {
     address = address + invoiceAddress.address1 + "\n";
@@ -2450,27 +2416,27 @@ function getAddressLines(jsonAddress, fullAddress) {
     This function returns a complete address taken from the JSON
   */
 
-   var address = [];
-   address.push(jsonAddress["business_name"]);
+  var address = [];
+  address.push(jsonAddress["business_name"]);
 
-   var addressName = [jsonAddress["first_name"], jsonAddress["last_name"]];
-   addressName = addressName.filter(function(n){return n}); // remove empty items
-   address.push(addressName.join(" "));
+  var addressName = [jsonAddress["first_name"], jsonAddress["last_name"]];
+  addressName = addressName.filter(function(n){return n}); // remove empty items
+  address.push(addressName.join(" "));
 
-   address.push(jsonAddress["address1"]);
-   if (fullAddress) {
-      address.push(jsonAddress["address2"]);
-      address.push(jsonAddress["address3"]);
-   }
+  address.push(jsonAddress["address1"]);
+  if (fullAddress) {
+    address.push(jsonAddress["address2"]);
+    address.push(jsonAddress["address3"]);
+  }
 
-   var addressCity = [jsonAddress["postal_code"], jsonAddress["city"]].join(" ");
-   if (jsonAddress["country_code"] && jsonAddress["country_code"] !== "CH")
-      addressCity = [jsonAddress["country_code"], addressCity].join(" - ");
-   address.push(addressCity);
+  var addressCity = [jsonAddress["postal_code"], jsonAddress["city"]].join(" ");
+  if (jsonAddress["country_code"] && jsonAddress["country_code"] !== "CH")
+    addressCity = [jsonAddress["country_code"], addressCity].join(" - ");
+  address.push(addressCity);
 
-   address = address.filter(function(n){return n}); // remove empty items
+  address = address.filter(function(n){return n}); // remove empty items
 
-   return address;
+  return address;
 }
 
 function getTitle(invoiceObj, texts, userParam) {
@@ -2508,36 +2474,35 @@ function getTitle(invoiceObj, texts, userParam) {
 }
 
 function addMdBoldText(reportElement, text) {
-    
-    //
-    // Applies the bold style to a text.
-    // It is used the Markdown syntax.
-    //
-    // Use '**' characters where the bold starts and ends.
-    // - set bold all the paragraph => **This is bold paragraph
-    //                              => **This is bold paragraph**
-    //
-    // - set bold single/multiple words => This is **bold** text
-    //                                  => This **is bold** text
-    //                                  => **This** is **bold** text
-    //
 
-    var p = reportElement.addParagraph();
-    var printBold = false;
-    var startPosition = 0;
-    var endPosition = -1;
+  // Applies the bold style to a text.
+  // It is used the Markdown syntax.
+  //
+  // Use '**' characters where the bold starts and ends.
+  // - set bold all the paragraph => **This is bold paragraph
+  //                              => **This is bold paragraph**
+  //
+  // - set bold single/multiple words => This is **bold** text
+  //                                  => This **is bold** text
+  //                                  => **This** is **bold** text
+  //
 
-    do {
-        endPosition = text.indexOf("**", startPosition);
-        var charCount = endPosition === -1 ? text.length - startPosition : endPosition - startPosition;
-        if (charCount > 0) {
-            var span = p.addText(text.substr(startPosition, charCount), "");
-            if (printBold)
-                span.setStyleAttribute("font-weight", "bold");
-        }
-        printBold = !printBold;
-        startPosition = endPosition >= 0 ? endPosition + 2 : text.length;
-    } while (startPosition < text.length && endPosition >= 0);
+  var p = reportElement.addParagraph();
+  var printBold = false;
+  var startPosition = 0;
+  var endPosition = -1;
+
+  do {
+      endPosition = text.indexOf("**", startPosition);
+      var charCount = endPosition === -1 ? text.length - startPosition : endPosition - startPosition;
+      if (charCount > 0) {
+          var span = p.addText(text.substr(startPosition, charCount), "");
+          if (printBold)
+              span.setStyleAttribute("font-weight", "bold");
+      }
+      printBold = !printBold;
+      startPosition = endPosition >= 0 ? endPosition + 2 : text.length;
+  } while (startPosition < text.length && endPosition >= 0);
 }
 
 function arrayDifferences(arr1, arr2) {
@@ -2565,19 +2530,9 @@ function arrayDifferences(arr1, arr2) {
 
 
 
-
-
-
-
-
-
-
-
-
 //====================================================================//
 // STYLES
 //====================================================================//
-
 function replaceVariables(cssText, variables) {
 
   /* 
@@ -2911,21 +2866,9 @@ function set_invoice_style(reportObj, repStyleObj, variables, userParam) {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 //====================================================================//
 // TEXTS
 //====================================================================//
-
 function setInvoiceTexts(language) {
 
   /*
@@ -3029,7 +2972,7 @@ function setInvoiceTexts(language) {
     texts.param_styles = "Stili";
     texts.param_primary_text_color = 'Colore testo primario';
     texts.param_secondary_text_color = 'Colore testo secondario';
-    texts.param_header_table_text_color = 'Colore testo intestazione tabella';
+    texts.param_header_table_text_color = 'Colore testo intestazione dettagli';
     texts.param_table_rows_color = 'Colore sfondo righe';
     texts.param_font_family = 'Tipo carattere';
     texts.param_font_size = 'Dimensione carattere';
@@ -3178,7 +3121,7 @@ function setInvoiceTexts(language) {
     texts.param_styles = "Styles";
     texts.param_primary_text_color = 'Primäre Textfarbe';
     texts.param_secondary_text_color = 'Sekundäre Textfarbe';
-    texts.param_header_table_text_color = 'Textfarbe des Tabellenkopfes';
+    texts.param_header_table_text_color = 'Farbtext Kopfdetails';
     texts.param_table_rows_color = 'Zeilen Hintergrundfarbe';
     texts.param_font_family = 'Schrifttyp';
     texts.param_font_size = 'Schriftgröße';
@@ -3342,7 +3285,7 @@ function setInvoiceTexts(language) {
     texts.param_styles = "Styles";
     texts.param_primary_text_color = 'Primary text color';
     texts.param_secondary_text_color = 'Secondary text color';
-    texts.param_header_table_text_color = 'Table header text color';
+    texts.param_header_table_text_color = 'Header details color text';
     texts.param_table_rows_color = 'Rows background color';
     texts.param_font_family = 'Font type';
     texts.param_font_size = 'Font size';
@@ -3408,5 +3351,4 @@ function setInvoiceTexts(language) {
   }
   return texts;
 }
-
 

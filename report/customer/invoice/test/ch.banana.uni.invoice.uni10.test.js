@@ -16,7 +16,7 @@
 
 // @id = ch.banana.uni.invoice.uni10.test
 // @api = 1.0
-// @pubdate = 2019-07-01
+// @pubdate = 2019-07-08
 // @publisher = Banana.ch SA
 // @description = <TEST ch.banana.uni.invoice.uni10.js>
 // @task = app.command
@@ -99,7 +99,6 @@ ReportInvoiceTemplate10.prototype.testReport = function() {
   addReport(banDoc, "47", "Test Invoice 47");
 }
 
-
 //Function used to set all the parameters
 function setUserParam(texts) {
   
@@ -131,7 +130,7 @@ function setUserParam(texts) {
   userParam.footer_left = texts.invoice;
   userParam.footer_center = '';
   userParam.footer_right = texts.page+' &['+texts.page+']';
-  userParam.qr_code_add = true;
+  userParam.qr_code_add = false;
   userParam.qr_code_align = 'right';
   userParam.qr_code_use_different_address = false;
   userParam.qr_code_address_row_1 = '';
@@ -158,14 +157,12 @@ function setUserParam(texts) {
   userParam.en_footer_right = texts.page+' <'+texts.page+'>';
 
   //Styles
-  userParam.background_color_1 = '#337ab7';
-  userParam.color = '#ffffff';
-  userParam.background_color_2 = '#F0F8FF';
-  userParam.color_4 = '';
+  userParam.primary_text_color = '#000000';
+  userParam.secondary_text_color = '#337AB7';
+  userParam.header_table_text_color = '#FFFFFF';
+  userParam.table_rows_color = '#F0F8FF';
   userParam.font_family = 'Helvetica';
   userParam.font_size = '10';
-  userParam.address_margin_left = '113';
-  userParam.address_margin_top = '45';
 
   //Embedded JavaScript file
   userParam.embedded_javascript_filename = '';
@@ -173,31 +170,24 @@ function setUserParam(texts) {
   return userParam;
 }
 
-
-//Function that sets the decimals
-function setParam(param) {
-  param.decimals_quantity = "";
-  param.decimals_unit_price = 2;
-  param.decimals_amount = 2;
-  return param;
+function setVariables(variables) {
+  var variables = {};
+  variables.decimals_quantity = "";
+  variables.decimals_unit_price = 2;
+  variables.decimals_amounts = 2;
+  return variables;
 }
-
 
 //Function that creates the report for the test
 function addReport(banDoc, invoiceNumber, reportName) {
-
   var texts = setInvoiceTexts('en');
   var userParam = setUserParam(texts);
-  var param = setParam(param);
-  
+  var variables = setVariables(variables);
   var jsonInvoice = getJsonInvoice(invoiceNumber);
   var invoiceObj = JSON.parse(jsonInvoice);
-  
-  var invoiceReport = printInvoice(banDoc, invoiceReport, texts, userParam, "", invoiceObj, param);
-
+  var invoiceReport = printInvoice(banDoc, invoiceReport, texts, userParam, "", invoiceObj, variables);
   Test.logger.addReport(reportName, invoiceReport);
 }
-
 
 function getJsonInvoice(invoiceNumber) {
   var file;
