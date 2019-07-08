@@ -50,8 +50,8 @@
 
 
 
-var BAN_REQURED_VERSION = "9.0.4";
-var BAN_REQUIRED_EXPERIMENTAL_VERSION = "";
+var BAN_VERSION = "9.0.4";
+var BAN_EXPM_VERSION = "";
 
 
 
@@ -80,9 +80,9 @@ var lang = "en";
 //====================================================================//
 
 
-function bananaRequiredVersion(version, experimentalVersion) {
+function bananaRequiredVersion(requiredVersion, expmVersion) {
 
-  var isBananaVersionSupported = true;
+  var isCurrentBananaVersionSupported = true;
 
   var language = "en";
   if (Banana.document.locale) {
@@ -92,55 +92,92 @@ function bananaRequiredVersion(version, experimentalVersion) {
     language = language.substr(0, 2);
   }
 
-  var requiredVersion = "";
-  if (experimentalVersion) {
-    requiredVersion = version + "." + experimentalVersion;
+  if (expmVersion) {
+    requiredVersion = requiredVersion + "." + expmVersion;
   }
-  else {
-    requiredVersion = version;
-  }
-
-  // Banana.console.log(Banana.application.version);
-  // Banana.console.log(requiredVersion);
-  // Banana.console.log(Banana.compareVersion(Banana.application.version, requiredVersion));
 
   if (Banana.compareVersion && Banana.compareVersion(Banana.application.version, requiredVersion) < 0) {
     var msg = "";
     switch(language) {
+      
+      case "en":
+        if (expmVersion) {
+          msg = "This script does not run with this version of Banana Accounting. Please update to Banana Experimental (" + requiredVersion + ").";
+        } else {
+          msg = "This script does not run with this version of Banana Accounting. Please update to version " + requiredVersion + " or later.";
+        }
+        break;
 
-      case "en": msg = "You need to update Banana Accounting to the latest version (" + requiredVersion + ")";
-      break;
+      case "it":
+        if (expmVersion) {
+          msg = "Lo script non funziona con questa versione di Banana Contabilità. Aggiornare a Banana Experimental (" + requiredVersion + ").";
+        } else {
+          msg = "Lo script non funziona con questa versione di Banana Contabilità. Aggiornare alla versione " + requiredVersion + " o successiva.";
+        }
+        break;
       
-      case "it": msg = "È necessario aggiornare Banana Contabilità all'ultima versione (" + requiredVersion + ")";
-      break;
+      case "fr":
+        if (expmVersion) {
+          msg = "Ce script ne fonctionne pas avec cette version de Banana Comptabilité. Veuillez mettre à jour à Banana Experimental (" + requiredVersion + ").";
+        } else {
+          msg = "Ce script ne fonctionne pas avec cette version de Banana Comptabilité. Veuillez mettre à jour à la version " + requiredVersion + " ou plus récente.";
+        }
+        break;
       
-      case "fr": msg = "Vous devez mettre à jour Banana Comptabilité à la dernière version (" + requiredVersion + ")";
-      break;
+      case "de":
+        if (expmVersion) {
+          msg = "Dieses Skript läuft nicht mit dieser Version von Banana Buchhaltung. Bitte aktualisieren Sie auf Banana Experimental (" + requiredVersion + ").";
+        } else {
+          msg = "Dieses Skript läuft nicht mit dieser Version von Banana Buchhaltung. Bitte aktualisieren Sie auf Version " + requiredVersion + " oder höher.";
+        }
+        break;
       
-      case "de": msg = "Sie müssen Banana Buchhaltung auf die neueste Version aktualisieren (" + requiredVersion + ")";
-      break;
+      case "nl":
+        if (expmVersion) {
+          msg = "Dit script draait niet met deze versie van Banana Accounting. Gelieve bij te werken naar Banana Experimental (" + requiredVersion + ").";
+        } else {
+          msg = "Dit script draait niet met deze versie van Banana Boekhouding. Gelieve bij te werken naar " + requiredVersion + " versie of later.";
+        }
+        break;
       
-      case "nl": msg = "U moet Banana Accounting updaten naar de laatste versie (" + requiredVersion + ")";
-      break;
+      case "zh":
+        if (expmVersion) {
+          msg = "此脚本不适用于此版本的Banana Accounting。 请更新到Banana Experimental ("+ requiredVersion +")。";
+        } else {
+          msg = "此脚本不适用于此版本的Banana Accounting。 请更新为 "+ requiredVersion +" 版本或更高版本。";
+        }
+        break;
       
-      case "zh": msg = "您需要将Banana Accounting更新到最新版本 (" + requiredVersion + ")";
-      break;
+      case "es":
+        if (expmVersion) {
+          msg = "Este script no se ejecuta con esta versión de Banana Accounting. Por favor, actualice a Banana Experimental (" + requiredVersion + ").";
+        } else {
+          msg = "Este script no se ejecuta con esta versión de Banana Contabilidad. Por favor, actualice a la versión " + requiredVersion + " o posterior.";
+        }
+        break;
       
-      case "es": msg = "Necesitas actualizar Banana Accounting a la última versión (" + requiredVersion + ")";
-      break;
+      case "pt":
+        if (expmVersion) {
+          msg = "Este script não é executado com esta versão do Banana Accounting. Por favor, atualize para Banana Experimental (" + requiredVersion + ").";
+        } else {
+          msg = "Este script não é executado com esta versão do Banana Contabilidade. Por favor, atualize para a versão " + requiredVersion + " ou posterior.";
+        }
+        break;
       
-      case "pt": msg = "Você precisa atualizar o Banana Accounting para a versão mais recente (" + requiredVersion + ")";
-      break;
-      
-      default: msg = "You need to update Banana Accounting to the latest version (" + requiredVersion + ")";
+      default:
+        if (expmVersion) {
+          msg = "This script does not run with this version of Banana Accounting. Please update to Banana Experimental (" + requiredVersion + ").";
+        } else {
+          msg = "This script does not run with this version of Banana Accounting. Please update to version " + requiredVersion + " or later.";
+        }
     }
-    Banana.application.showMessages();
-    Banana.application.addMessage(msg);
-    Banana.application.showMessages(false);
 
-    isBananaVersionSupported = false;
+    Banana.application.showMessages();
+    Banana.document.addMessage(msg);
+
+    isCurrentBananaVersionSupported = false;
   }
-  return isBananaVersionSupported;
+  return isCurrentBananaVersionSupported;
 }
 
 
@@ -149,8 +186,8 @@ function bananaRequiredVersion(version, experimentalVersion) {
 function settingsDialog() {
   
   // Verify the banana version when user clicks on settings buttons
-  var isBananaVersionSupported = bananaRequiredVersion(BAN_REQURED_VERSION, BAN_REQUIRED_EXPERIMENTAL_VERSION);
-  if (isBananaVersionSupported) {
+  var isCurrentBananaVersionSupported = bananaRequiredVersion(BAN_VERSION, BAN_EXPM_VERSION);
+  if (isCurrentBananaVersionSupported) {
 
     var userParam = initParam();
     var savedParam = Banana.document.getScriptSettings();
@@ -1374,8 +1411,8 @@ function verifyParam(userParam) {
 function printDocument(jsonInvoice, repDocObj, repStyleObj) {
 
   // Verify the banana version when user clicks ok to print the invoice
-  var isBananaVersionSupported = bananaRequiredVersion(BAN_REQURED_VERSION, BAN_REQUIRED_EXPERIMENTAL_VERSION);
-  if (isBananaVersionSupported) {
+  var isCurrentBananaVersionSupported = bananaRequiredVersion(BAN_VERSION, BAN_EXPM_VERSION);
+  if (isCurrentBananaVersionSupported) {
 
     var userParam = initParam();
     var savedParam = Banana.document.getScriptSettings();
