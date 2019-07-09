@@ -14,17 +14,17 @@
 //
 // @id = ch.banana.uni.invoice.uni10
 // @api = 1.0
-// @pubdate = 2019-07-08
+// @pubdate = 2019-07-09
 // @publisher = Banana.ch SA
-// @description = Style 10: Fully customizable invoice template
-// @description.it = [UNI10] Stile 10: Layout di fattura completamente personalizzabile
-// @description.de = Stil 10: Fully customizable invoice template
-// @description.fr = Style 10: Fully customizable invoice template
-// @description.nl = Stijl 10: Fully customizable invoice template
-// @description.en = Style 10: Fully customizable invoice template
-// @description.zh = Style 10: Fully customizable invoice template
-// @description.pt = Style 10: Fully customizable invoice template
-// @description.es = Style 10: Fully customizable invoice template
+// @description = [UNI10] Style 10: Customizable Invoice Layout
+// @description.it = [UNI10] Stile 10: Layout fattura personalizzabile
+// @description.de = [UNI10] Stil 10: Anpassbares Rechnungslayout
+// @description.fr = [UNI10] Style 10 : Mise en page personnalisable de la facture
+// @description.nl = [UNI10] Stijl 10: Aanpasbare factuuropmaak
+// @description.en = [UNI10] Style 10: Customizable Invoice Layout
+// @description.zh = [UNI10] Style 10: Fully customizable invoice template
+// @description.pt = [UNI10] Estilo 10: Layout de fatura personalizável
+// @description.es = [UNI10] Estilo 10: Diseño de factura personalizable
 // @doctype = *
 // @task = report.customer.invoice
 
@@ -34,8 +34,8 @@
 /*
   SUMMARY
   =======
-  New invoice template.
-
+  New invoice layout.
+  This layout of invoice allows to set a lot of settings in order to 
   Invoice zones:
   - header
   - info
@@ -45,7 +45,6 @@
   - details
   - final texts
   - footer
-
 */
 
 
@@ -2160,8 +2159,6 @@ function print_footer(repDocObj, texts, userParam) {
 //====================================================================//
 function bananaRequiredVersion(requiredVersion, expmVersion) {
 
-  var isCurrentBananaVersionSupported = true;
-
   var language = "en";
   if (Banana.document.locale) {
     language = Banana.document.locale;
@@ -2169,11 +2166,9 @@ function bananaRequiredVersion(requiredVersion, expmVersion) {
   if (language.length > 2) {
     language = language.substr(0, 2);
   }
-
   if (expmVersion) {
     requiredVersion = requiredVersion + "." + expmVersion;
   }
-
   if (Banana.compareVersion && Banana.compareVersion(Banana.application.version, requiredVersion) < 0) {
     var msg = "";
     switch(language) {
@@ -2253,9 +2248,9 @@ function bananaRequiredVersion(requiredVersion, expmVersion) {
     Banana.application.showMessages();
     Banana.document.addMessage(msg);
 
-    isCurrentBananaVersionSupported = false;
+    return false;
   }
-  return isCurrentBananaVersionSupported;
+  return true;
 }
 
 function includeEmbeddedJavascriptFile(texts, userParam) {
@@ -2444,8 +2439,8 @@ function getTitle(invoiceObj, texts, userParam) {
   /*
     Returns the title based on the DocType value (10=Invoice, 12=Credit note)
     By default are used these values.
-    User can enter a different text and use it.
-    User can enter "<none>" and none title is printed.
+    User can enter a different text in parameters settings ("<none>" to not print any title).
+    User can define a title in Transactions table by using the command "10:tit" (this has priority over all)
   */
 
   var documentTitle = "";
@@ -2528,11 +2523,6 @@ function arrayDifferences(arr1, arr2) {
   return arr;
 }
 
-
-
-//====================================================================//
-// STYLES
-//====================================================================//
 function replaceVariables(cssText, variables) {
 
   /* 
@@ -2545,11 +2535,8 @@ function replaceVariables(cssText, variables) {
   var insideVariable = false;
   var variablesNotFound = [];
 
-  //Banana.console.log(">>STRING TO REPLACE: " + cssText);
   for (var i = 0; i < cssText.length; i++) {
-    
     var currentChar = cssText[i];
-
     if (currentChar === "$") {
       insideVariable = true;
       varName = currentChar;
@@ -2561,7 +2548,6 @@ function replaceVariables(cssText, variables) {
       } 
       else {
         // end variable, any other charcter
-        
         if (!(varName in variables)) {
           variablesNotFound.push(varName);
           result += varName;
@@ -2569,10 +2555,8 @@ function replaceVariables(cssText, variables) {
         else {
           result += variables[varName];
         }
-        
         result += currentChar;
         insideVariable = false;
-        //Banana.console.log(">>VARNAME (A): " + varName);
         varName = "";
       }
     }
@@ -2583,7 +2567,6 @@ function replaceVariables(cssText, variables) {
 
   if (insideVariable) {
     // end of text, end of variable
-
     if (!(varName in variables)) {
       variablesNotFound.push(varName);
       result += varName;
@@ -2591,19 +2574,19 @@ function replaceVariables(cssText, variables) {
     else {
       result += variables[varName];
     }
-
     insideVariable = false;
-    //Banana.console.log(">>VARNAME (B): " + varName);
   }
 
   if (variablesNotFound.length > 0) {
-    //Banana.console.log(">>VARIABLESNOTFOUND :" + variablesNotFound);
+    //Banana.console.log(">>Variables not found: " + variablesNotFound);
   }
-
-  //Banana.console.log(">>RESULT: " + result+ "\n");
   return result;
 }
 
+
+//====================================================================//
+// STYLES
+//====================================================================//
 function set_variables(variables, userParam) {
 
   /* 
