@@ -14,12 +14,12 @@
 //
 // @id = ch.banana.uni.invoice.uni10
 // @api = 1.0
-// @pubdate = 2019-07-09
+// @pubdate = 2019-07-10
 // @publisher = Banana.ch SA
 // @description = [UNI10] Style 10: Customizable Invoice Layout
 // @description.it = [UNI10] Stile 10: Layout fattura personalizzabile
 // @description.de = [UNI10] Stil 10: Anpassbares Rechnungslayout
-// @description.fr = [UNI10] Style 10 : Mise en page personnalisable de la facture
+// @description.fr = [UNI10] Style 10: Mise en page personnalisable de la facture
 // @description.nl = [UNI10] Stijl 10: Aanpasbare factuuropmaak
 // @description.en = [UNI10] Style 10: Customizable Invoice Layout
 // @description.zh = [UNI10] Style 10: Fully customizable invoice template
