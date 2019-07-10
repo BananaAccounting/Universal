@@ -1436,6 +1436,15 @@ function printInvoice(banDoc, repDocObj, texts, userParam, repStyleObj, invoiceO
     print_final_texts(repDocObj, invoiceObj, detailsTable);
   }
 
+  /* PRINT QR CODE */
+  if (userParam.qr_code_add) {
+    if (typeof(hook_print_qr_code) === typeof(Function)) {
+      hook_print_qr_code(invoiceObj, texts, userParam, detailsTable);
+    } else {
+      print_qr_code(invoiceObj, texts, userParam, detailsTable);
+    }
+  }
+
   /* PRINT FOOTER */
   if (typeof(hook_print_footer) === typeof(Function)) {
     hook_print_footer(repDocObj, texts, userParam);
@@ -1795,12 +1804,6 @@ function print_details_net_amounts(banDoc, repDocObj, invoiceObj, texts, userPar
   
   tableRow = repTableObj.addRow();
   tableRow.addCell("", "", columnsNumber);
-
-
-  // Print QR Code
-  if (userParam.qr_code_add) {
-    print_qr_code(invoiceObj, texts, userParam, repTableObj);
-  }
 }
 
 function print_details_gross_amounts(banDoc, repDocObj, invoiceObj, texts, userParam, detailsTable, variables) {
@@ -1942,12 +1945,6 @@ function print_details_gross_amounts(banDoc, repDocObj, invoiceObj, texts, userP
   
   tableRow = repTableObj.addRow();
   tableRow.addCell("", "", columnsNumber);
-
-
-  // Print QR Code
-  if (userParam.qr_code_add) {
-    print_qr_code(invoiceObj, texts, userParam, repTableObj);
-  }
 }
 
 function print_qr_code(invoiceObj, texts, userParam, detailsTable) {
@@ -2896,18 +2893,17 @@ function setInvoiceTexts(language) {
     //Include
     texts.param_include = "Stampa";
     texts.param_header_include = "Intestazione";
-    texts.param_header_left = "Intestazione a sinistra";
     texts.param_header_print = 'Intestazione pagina';
-    texts.param_header_row_1 = "Intestazione riga 1";
-    texts.param_header_row_2 = "Intestazione riga 2";
-    texts.param_header_row_3 = "Intestazione riga 3";
-    texts.param_header_row_4 = "Intestazione riga 4";
-    texts.param_header_row_5 = "Intestazione riga 5";
+    texts.param_header_row_1 = "Testo riga 1";
+    texts.param_header_row_2 = "Testo riga 2";
+    texts.param_header_row_3 = "Testo riga 3";
+    texts.param_header_row_4 = "Testo riga 4";
+    texts.param_header_row_5 = "Testo riga 5";
     texts.param_logo_print = 'Logo';
-    texts.param_logo_name = 'Nome logo';
+    texts.param_logo_name = 'Nome logo (composizione formati logo)';
     texts.param_address_include = "Indirizzo cliente";
-    texts.param_address_small_line = "Riga indirizzo mittente";
-    texts.param_address_left = 'Indirizzo a sinistra';
+    texts.param_address_small_line = "Testo indirizzo mittente";
+    texts.param_address_left = 'Allinea a sinistra';
     texts.param_shipping_address = 'Indirizzo spedizione';
     texts.param_info_include = 'Informazioni';
     texts.param_info_invoice_number = 'Numero fattura';
@@ -2917,20 +2913,20 @@ function setInvoiceTexts(language) {
     texts.param_info_customer_fiscal_number = 'Numero fiscale cliente';
     texts.param_info_due_date = 'Scadenza fattura';
     texts.param_info_page = 'Numero pagina';
-    texts.param_details_include = "Dettagli";
-    texts.param_details_columns = "Colonne dettagli fattura";
-    texts.param_details_columns_widths = "Larghezza colonne dettagli fattura";
-    texts.param_details_gross_amounts = "Dettagli con importi lordi (IVA inclusa)";
+    texts.param_details_include = "Dettagli fattura";
+    texts.param_details_columns = "Nomi colonne";
+    texts.param_details_columns_widths = "Larghezza colonne";
+    texts.param_details_gross_amounts = "Importi lordi (IVA inclusa)";
     texts.param_footer_include = 'Piè di pagina';
     texts.param_footer_add = 'Stampa piè di pagina';
     texts.param_qr_code = "Codice QR";
     texts.param_qr_code_add = "Stampa codice QR";
     texts.param_qr_code_align = "Allineamento (left=sinistra, center=centro, right=destra)";
     texts.param_qr_code_use_different_address = "Usa un indirizzo alternativo";
-    texts.param_qr_code_address_row_1 = "Indirizzo alternativo riga 1";
-    texts.param_qr_code_address_row_2 = "Indirizzo alternativo riga 2";
-    texts.param_qr_code_address_row_3 = "Indirizzo alternativo riga 3";
-    texts.param_qr_code_address_row_4 = "Indirizzo alternativo riga 4";
+    texts.param_qr_code_address_row_1 = "Testo indirizzo alternativo riga 1";
+    texts.param_qr_code_address_row_2 = "Testo indirizzo alternativo riga 2";
+    texts.param_qr_code_address_row_3 = "Testo indirizzo alternativo riga 3";
+    texts.param_qr_code_address_row_4 = "Testo indirizzo alternativo riga 4";
 
     //Texts
     texts.param_texts = "Testi (vuoto = valori predefiniti)";
@@ -2944,8 +2940,8 @@ function setInvoiceTexts(language) {
     texts.it_param_text_info_due_date = 'Scadenza fattura';
     texts.it_param_text_info_page = 'Numero pagina';
     texts.it_param_text_shipping_address = 'Indirizzo spedizione';
-    texts.it_param_text_title_doctype_10 = "Titolo fattura (DocType=10)";
-    texts.it_param_text_title_doctype_12 = "Titolo nota di credito (DocType=12)";
+    texts.it_param_text_title_doctype_10 = "Titolo fattura";
+    texts.it_param_text_title_doctype_12 = "Titolo nota di credito";
     texts.it_param_text_details_columns = 'Nomi colonne dettagli fattura';
     texts.it_param_text_total = 'Totale fattura';
     texts.it_param_footer_left = "Piè di pagina testo sinistra";
@@ -2954,17 +2950,17 @@ function setInvoiceTexts(language) {
 
     //Styles
     texts.param_styles = "Stili";
-    texts.param_primary_text_color = 'Colore testo primario';
-    texts.param_secondary_text_color = 'Colore testo secondario';
+    texts.param_primary_text_color = 'Colore testo';
+    texts.param_secondary_text_color = 'Colore sfondo intestazione dettagli';
     texts.param_header_table_text_color = 'Colore testo intestazione dettagli';
-    texts.param_table_rows_color = 'Colore sfondo righe';
+    texts.param_table_rows_color = 'Colore sfondo per righe alternate';
     texts.param_font_family = 'Tipo carattere';
     texts.param_font_size = 'Dimensione carattere';
 
     //Embedded JavaScript file
     texts.embedded_javascript_file_not_found = "File JavaScript non trovato o non valido";
     texts.param_embedded_javascript = "File JavaScript";
-    texts.param_embedded_javascript_filename = "Inserisci nome file (colonna 'ID' tabella Documenti)";
+    texts.param_embedded_javascript_filename = "Nome file (colonna 'ID' tabella Documenti)";
 
     //Tooltips for the parameters
     texts.param_tooltip_header_print = "Vista per includere l'intestazione della pagina";
