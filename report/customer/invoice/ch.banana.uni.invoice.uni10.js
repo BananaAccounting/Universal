@@ -2639,7 +2639,8 @@ function set_variables(variables, userParam) {
 
   /* Details invoice */
   variables.$font_size_total = userParam.font_size*1.2 +"pt";
-  variables.$margin_top_details = "140mm";
+  variables.$margin_top_details_first_page = "140mm";
+  variables.$margin_top_details_other_pages = "90mm";
   variables.$margin_right_details = "10mm";
   variables.$margin_left_details = "23mm";
   variables.$padding = "3px";
@@ -2797,7 +2798,11 @@ function set_invoice_style(reportObj, repStyleObj, variables, userParam) {
   style = replaceVariables(style, variables);
   repStyleObj.addStyle(".begin_text", style);
 
-  style = "margin-top:$margin_top_details; margin-left:$margin_left_details; margin-right:$margin_right_details; font-size:$font_size; width:100%";
+  style = "margin-top:$margin_top_details_first_page;";
+  style = replaceVariables(style, variables);
+  repStyleObj.addStyle(".doc_table:first-view", style);
+
+  style = "margin-top:$margin_top_details_other_pages; margin-left:$margin_left_details; margin-right:$margin_right_details; font-size:$font_size; width:100%";
   style = replaceVariables(style, variables);
   repStyleObj.addStyle(".doc_table", style);
 
