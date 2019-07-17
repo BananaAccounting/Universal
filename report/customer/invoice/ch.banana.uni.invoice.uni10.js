@@ -1490,8 +1490,8 @@ function print_shipping_address(repDocObj, invoiceObj, texts, userParam) {
 
   // Shipping address
   if (invoiceObj.shipping_info.different_shipping_address) {
-    if (userParam.text_shipping_address) {
-      shippingCell.addParagraph(userParam.text_shipping_address,"").setStyleAttributes("font-weight:bold;color:"+userParam.background_color_details_header+";");
+    if (userParam[lang+'_text_shipping_address']) {
+      shippingCell.addParagraph(userParam[lang+'_text_shipping_address'],"").setStyleAttributes("font-weight:bold;color:"+userParam.background_color_details_header+";");
     } else {
       shippingCell.addParagraph(texts.shipping_address, "").setStyleAttributes("font-weight:bold;color:"+userParam.background_color_details_header+";");
     }
