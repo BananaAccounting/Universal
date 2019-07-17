@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.uni.invoice.uni10
 // @api = 1.0
-// @pubdate = 2019-07-10
+// @pubdate = 2019-07-17
 // @publisher = Banana.ch SA
 // @description = [UNI10] Style 10: Customizable Invoice Layout
 // @description.it = [UNI10] Stile 10: Layout fattura personalizzabile
@@ -51,7 +51,7 @@
 
 // Define the required version of Banana Accounting / Banana Experimental
 var BAN_VERSION = "9.0.4";
-var BAN_EXPM_VERSION = "";
+var BAN_EXPM_VERSION = "190716";
 
 // Counter for the columns of the Details table
 var columnsNumber = 0;
@@ -487,108 +487,6 @@ function convertParam(userParam) {
   }
   convertedParam.data.push(currentParam);
 
-  currentParam = {};
-  currentParam.name = 'qr_code';
-  currentParam.parentObject = 'include';
-  currentParam.title = texts.param_qr_code;
-  currentParam.type = 'string';
-  currentParam.value = '';
-  currentParam.editable = false;
-  currentParam.readValue = function() {
-    userParam.qr_code = this.value;
-  }
-  convertedParam.data.push(currentParam);
-
-  currentParam = {};
-  currentParam.name = 'qr_code_add';
-  currentParam.parentObject = 'qr_code';
-  currentParam.title = texts.param_qr_code_add;
-  currentParam.type = 'bool';
-  currentParam.value = userParam.qr_code_add ? true : false;
-  currentParam.defaultvalue = false;
-  currentParam.tooltip = texts.param_tooltip_qr_code_add;
-  currentParam.readValue = function() {
-   userParam.qr_code_add = this.value;
-  }
-  convertedParam.data.push(currentParam);
-
-  currentParam = {};
-  currentParam.name = 'qr_code_align';
-  currentParam.parentObject = 'qr_code';
-  currentParam.title = texts.param_qr_code_align;
-  currentParam.type = 'string';
-  currentParam.value = userParam.qr_code_align ? userParam.qr_code_align : '';
-  currentParam.defaultvalue = 'right';
-  currentParam.tooltip = texts.param_tooltip_qr_code_align;
-  currentParam.readValue = function() {
-    userParam.qr_code_align = this.value;
-  }
-  convertedParam.data.push(currentParam);
-
-  currentParam = {};
-  currentParam.name = 'qr_code_use_different_address';
-  currentParam.parentObject = 'qr_code';
-  currentParam.title = texts.param_qr_code_use_different_address;
-  currentParam.type = 'bool';
-  currentParam.value = userParam.qr_code_use_different_address ? true : false;
-  currentParam.defaultvalue = false;
-  currentParam.tooltip = texts.param_tooltip_qr_code_use_different_address;
-  currentParam.readValue = function() {
-   userParam.qr_code_use_different_address = this.value;
-  }
-  convertedParam.data.push(currentParam);
-
-  currentParam = {};
-  currentParam.name = 'qr_code_address_row_1';
-  currentParam.parentObject = 'qr_code';
-  currentParam.title = texts.param_qr_code_address_row_1;
-  currentParam.type = 'string';
-  currentParam.value = userParam.qr_code_address_row_1 ? userParam.qr_code_address_row_1 : '';
-  currentParam.defaultvalue = '';
-  currentParam.tooltip = texts.param_tooltip_qr_code_address_row_1;
-  currentParam.readValue = function() {
-    userParam.qr_code_address_row_1 = this.value;
-  }
-  convertedParam.data.push(currentParam);
-
-  currentParam = {};
-  currentParam.name = 'qr_code_address_row_2';
-  currentParam.parentObject = 'qr_code';
-  currentParam.title = texts.param_qr_code_address_row_2;
-  currentParam.type = 'string';
-  currentParam.value = userParam.qr_code_address_row_2 ? userParam.qr_code_address_row_2 : '';
-  currentParam.defaultvalue = '';
-  currentParam.tooltip = texts.param_tooltip_qr_code_address_row_2;
-  currentParam.readValue = function() {
-    userParam.qr_code_address_row_2 = this.value;
-  }
-  convertedParam.data.push(currentParam);
-
-  currentParam = {};
-  currentParam.name = 'qr_code_address_row_3';
-  currentParam.parentObject = 'qr_code';
-  currentParam.title = texts.param_qr_code_address_row_3;
-  currentParam.type = 'string';
-  currentParam.value = userParam.qr_code_address_row_3 ? userParam.qr_code_address_row_3 : '';
-  currentParam.defaultvalue = '';
-  currentParam.tooltip = texts.param_tooltip_qr_code_address_row_3;
-  currentParam.readValue = function() {
-    userParam.qr_code_address_row_3 = this.value;
-  }
-  convertedParam.data.push(currentParam);
-
-  currentParam = {};
-  currentParam.name = 'qr_code_address_row_4';
-  currentParam.parentObject = 'qr_code';
-  currentParam.title = texts.param_qr_code_address_row_4;
-  currentParam.type = 'string';
-  currentParam.value = userParam.qr_code_address_row_4 ? userParam.qr_code_address_row_4 : '';
-  currentParam.defaultvalue = '';
-  currentParam.tooltip = texts.param_tooltip_qr_code_address_row_4;
-  currentParam.readValue = function() {
-    userParam.qr_code_address_row_4 = this.value;
-  }
-  convertedParam.data.push(currentParam);
 
 
   /*******************************************************************************************
@@ -925,55 +823,55 @@ function convertParam(userParam) {
   convertedParam.data.push(currentParam);
 
   currentParam = {};
-  currentParam.name = 'primary_text_color';
+  currentParam.name = 'text_color';
   currentParam.parentObject = 'styles';
-  currentParam.title = texts.param_primary_text_color;
+  currentParam.title = texts.param_text_color;
   currentParam.type = 'string';
-  currentParam.value = userParam.primary_text_color ? userParam.primary_text_color : '#000000';
+  currentParam.value = userParam.text_color ? userParam.text_color : '#000000';
   currentParam.defaultvalue = '#337ab7';
-  currentParam.tooltip = texts.param_tooltip_primary_text_color;
+  currentParam.tooltip = texts.param_tooltip_text_color;
   currentParam.readValue = function() {
-   userParam.primary_text_color = this.value;
+   userParam.text_color = this.value;
   }
   convertedParam.data.push(currentParam);
 
   currentParam = {};
-  currentParam.name = 'secondary_text_color';
+  currentParam.name = 'background_color_details_header';
   currentParam.parentObject = 'styles';
-  currentParam.title = texts.param_secondary_text_color;
+  currentParam.title = texts.param_background_color_details_header;
   currentParam.type = 'string';
-  currentParam.value = userParam.secondary_text_color ? userParam.secondary_text_color : '#337AB7';
+  currentParam.value = userParam.background_color_details_header ? userParam.background_color_details_header : '#337AB7';
   currentParam.defaultvalue = '#337ab7';
-  currentParam.tooltip = texts.param_tooltip_secondary_text_color;
+  currentParam.tooltip = texts.param_tooltip_background_color_details_header;
   currentParam.readValue = function() {
-   userParam.secondary_text_color = this.value;
+   userParam.background_color_details_header = this.value;
   }
   convertedParam.data.push(currentParam);
 
   currentParam = {};
-  currentParam.name = 'header_table_text_color';
+  currentParam.name = 'text_color_details_header';
   currentParam.parentObject = 'styles';
-  currentParam.title = texts.param_header_table_text_color;
+  currentParam.title = texts.param_text_color_details_header;
   currentParam.type = 'string';
-  currentParam.value = userParam.header_table_text_color ? userParam.header_table_text_color : '#FFFFFF';
+  currentParam.value = userParam.text_color_details_header ? userParam.text_color_details_header : '#FFFFFF';
   currentParam.defaultvalue = '#FFFFFF';
-  currentParam.tooltip = texts.param_tooltip_header_table_text_color;
+  currentParam.tooltip = texts.param_tooltip_text_color_details_header;
   currentParam.readValue = function() {
-   userParam.header_table_text_color = this.value;
+   userParam.text_color_details_header = this.value;
   }
   convertedParam.data.push(currentParam);
 
   /// rimuovere 
   currentParam = {};
-  currentParam.name = 'table_rows_color';
+  currentParam.name = 'background_color_alternate_lines';
   currentParam.parentObject = 'styles';
-  currentParam.title = texts.param_table_rows_color;
+  currentParam.title = texts.param_background_color_alternate_lines;
   currentParam.type = 'string';
-  currentParam.value = userParam.table_rows_color ? userParam.table_rows_color : '#F0F8FF';
+  currentParam.value = userParam.background_color_alternate_lines ? userParam.background_color_alternate_lines : '#F0F8FF';
   currentParam.defaultvalue = '#F0F8FF';
-  currentParam.tooltip = texts.param_tooltip_table_rows_color;
+  currentParam.tooltip = texts.param_tooltip_background_color_alternate_lines;
   currentParam.readValue = function() {
-   userParam.table_rows_color = this.value;
+   userParam.background_color_alternate_lines = this.value;
   }
   convertedParam.data.push(currentParam);
 
@@ -1049,13 +947,7 @@ function initParam() {
   userParam.details_columns_widths = '50%;10%;10%;15%;15%';
   userParam.details_gross_amounts = false;
   userParam.footer_add = false;
-  userParam.qr_code_add = false;
-  userParam.qr_code_align = 'right';
-  userParam.qr_code_use_different_address = false;
-  userParam.qr_code_address_row_1 = '';
-  userParam.qr_code_address_row_2 = '';
-  userParam.qr_code_address_row_3 = '';
-  userParam.qr_code_address_row_4 = '';
+
 
   //Texts
   userParam.languages = 'en;it;de';
@@ -1089,10 +981,10 @@ function initParam() {
   }
 
   //Styles
-  userParam.primary_text_color = '#000000';
-  userParam.secondary_text_color = '#337AB7';
-  userParam.header_table_text_color = '#FFFFFF';
-  userParam.table_rows_color = '#F0F8FF';
+  userParam.text_color = '#000000';
+  userParam.background_color_details_header = '#337AB7';
+  userParam.text_color_details_header = '#FFFFFF';
+  userParam.background_color_alternate_lines = '#F0F8FF';
   userParam.font_family = 'Helvetica';
   userParam.font_size = '10';
 
@@ -1183,27 +1075,6 @@ function verifyParam(userParam) {
   if (!userParam.footer_add) {
     userParam.footer_add = false;
   }
-  if (!userParam.qr_code_add) {
-    userParam.qr_code_add = false;
-  }
-  if (!userParam.qr_code_align) {
-    userParam.qr_code_align = 'right';
-  }
-  if (!userParam.qr_code_use_different_address) {
-    userParam.qr_code_use_different_address = false;
-  }
-  if (!userParam.qr_code_address_row_1) {
-    userParam.qr_code_address_row_1 = '';
-  }
-  if (!userParam.qr_code_address_row_2) {
-    userParam.qr_code_address_row_2 = '';
-  }
-  if (!userParam.qr_code_address_row_3) {
-    userParam.qr_code_address_row_3 = '';
-  }
-  if (!userParam.qr_code_address_row_4) {
-    userParam.qr_code_address_row_4 = '';
-  }
 
 
   //Texts
@@ -1265,17 +1136,17 @@ function verifyParam(userParam) {
 
 
   // Styles
-  if (!userParam.primary_text_color) {
-    userParam.primary_text_color = '#000000';
+  if (!userParam.text_color) {
+    userParam.text_color = '#000000';
   }
-  if (!userParam.secondary_text_color) {
-    userParam.secondary_text_color = '#337AB7';
+  if (!userParam.background_color_details_header) {
+    userParam.background_color_details_header = '#337AB7';
   }
-  if (!userParam.header_table_text_color) {
-    userParam.header_table_text_color = '#FFFFFF';
+  if (!userParam.text_color_details_header) {
+    userParam.text_color_details_header = '#FFFFFF';
   }
-  if (!userParam.table_rows_color) {
-    userParam.table_rows_color = '#F0F8FF';
+  if (!userParam.background_color_alternate_lines) {
+    userParam.background_color_alternate_lines = '#F0F8FF';
   }
   if (!userParam.font_family) {
     userParam.font_family = 'Helvetica';
@@ -1436,15 +1307,6 @@ function printInvoice(banDoc, repDocObj, texts, userParam, repStyleObj, invoiceO
     print_final_texts(repDocObj, invoiceObj, detailsTable);
   }
 
-  /* PRINT QR CODE */
-  if (userParam.qr_code_add) {
-    if (typeof(hook_print_qr_code) === typeof(Function)) {
-      hook_print_qr_code(invoiceObj, texts, userParam, detailsTable);
-    } else {
-      print_qr_code(invoiceObj, texts, userParam, detailsTable);
-    }
-  }
-
   /* PRINT FOOTER */
   if (typeof(hook_print_footer) === typeof(Function)) {
     hook_print_footer(repDocObj, texts, userParam);
@@ -1484,7 +1346,7 @@ function print_header(repDocObj, userParam, repStyleObj, invoiceObj) {
 
     if (userParam.header_row_1) {
       if (userParam.header_row_1.length > 0) {
-        headerParagraph.addParagraph(userParam.header_row_1, "").setStyleAttributes("font-weight:bold; font-size:16pt; color:" + userParam.secondary_text_color);
+        headerParagraph.addParagraph(userParam.header_row_1, "").setStyleAttributes("font-weight:bold; font-size:16pt; color:" + userParam.background_color_details_header);
       }
       if (userParam.header_row_2.length > 0) {
         headerParagraph.addParagraph(userParam.header_row_2, "").setStyleAttributes("font-weight:bold; font-size:10pt;");
@@ -1502,7 +1364,7 @@ function print_header(repDocObj, userParam, repStyleObj, invoiceObj) {
     else {
       var supplierNameLines = getInvoiceSupplierName(invoiceObj.supplier_info).split('\n');
       for (var i = 0; i < supplierNameLines.length; i++) {
-        headerParagraph.addParagraph(supplierNameLines[i], "").setStyleAttributes("font-weight:bold; font-size:16pt; color:" + userParam.secondary_text_color);
+        headerParagraph.addParagraph(supplierNameLines[i], "").setStyleAttributes("font-weight:bold; font-size:16pt; color:" + userParam.background_color_details_header);
       }
       var supplierLines = getInvoiceSupplier(invoiceObj.supplier_info).split('\n');
       for (var i = 0; i < supplierLines.length; i++) {
@@ -1629,9 +1491,9 @@ function print_shipping_address(repDocObj, invoiceObj, texts, userParam) {
   // Shipping address
   if (invoiceObj.shipping_info.different_shipping_address) {
     if (userParam.text_shipping_address) {
-      shippingCell.addParagraph(userParam.text_shipping_address,"").setStyleAttributes("font-weight:bold;color:"+userParam.secondary_text_color+";");
+      shippingCell.addParagraph(userParam.text_shipping_address,"").setStyleAttributes("font-weight:bold;color:"+userParam.background_color_details_header+";");
     } else {
-      shippingCell.addParagraph(texts.shipping_address, "").setStyleAttributes("font-weight:bold;color:"+userParam.secondary_text_color+";");
+      shippingCell.addParagraph(texts.shipping_address, "").setStyleAttributes("font-weight:bold;color:"+userParam.background_color_details_header+";");
     }
     var shippingAddress = getInvoiceAddress(invoiceObj.shipping_info).split('\n');
     for (var i = 0; i < shippingAddress.length; i++) {
@@ -1945,73 +1807,6 @@ function print_details_gross_amounts(banDoc, repDocObj, invoiceObj, texts, userP
   
   tableRow = repTableObj.addRow();
   tableRow.addCell("", "", columnsNumber);
-}
-
-function print_qr_code(invoiceObj, texts, userParam, detailsTable) {
-  /*
-    Prints the QR Code
-  */
-  var repTableObj = detailsTable;
-  var text = '';
-  text += 'Currency:\n';
-  text += invoiceObj.document_info.currency+'\n';
-  text += 'Amount:\n';
-  text += invoiceObj.billing_info.total_to_pay+'\n';
-  // text += 'VAT amount:\n';
-  // text += invoiceObj.billing_info.total_vat_amount+'\n';
-  text += 'Account/Payable to:\n';
-  text += 'CH58 0079 1123 0008 8901 2\n';
-  text += invoiceObj.supplier_info.business_name+'\n';
-  text += invoiceObj.supplier_info.address1+'\n';
-  text += invoiceObj.supplier_info.postal_code+" "+invoiceObj.supplier_info.city+'\n';
-  text += 'Reference:\n';
-  text += '21 00000 00003 13947 14300 09017\n';
-  text += 'Addidtional information:\n';
-  text += 'Invoice:'+invoiceObj.document_info.number+"/Date:"+invoiceObj.document_info.date+"/Customer number:"+invoiceObj.customer_info.number+"/Payment:"+invoiceObj.billing_info.payment_term+'\n';
-  // for (var i = 0; i < invoiceObj.items.length; i++) {
-  //   text += 'Description:'+invoiceObj.items[i].description+'/Amount:'+invoiceObj.items[i].total_amount_vat_inclusive+'\n';
-  // }
-  text += 'Payable by:\n';
-
-  // User has checked to use another address
-  if (userParam.qr_code_use_different_address) {
-    if (userParam.qr_code_address_row_1) {
-      text += userParam.qr_code_address_row_1 + '\n';
-    }
-    if (userParam.qr_code_address_row_2) {
-      text += userParam.qr_code_address_row_2 + '\n';
-    }
-    if (userParam.qr_code_address_row_3) {
-      text += userParam.qr_code_address_row_3 + '\n';
-    }
-    if (userParam.qr_code_address_row_4) {
-      text += userParam.qr_code_address_row_4 + '\n';
-    }
-  }
-  else {
-    // Invoice address is used
-    text += invoiceObj.customer_info.first_name+ ' '+invoiceObj.customer_info.last_name+'\n';
-    text += invoiceObj.customer_info.address1+'\n';
-    text += invoiceObj.customer_info.postal_code+ ' '+invoiceObj.customer_info.city+'\n';
-  }
-
-  var qrCodeParam = {};
-  qrCodeParam.errorCorrectionLevel = 'M';
-  qrCodeParam.binaryCodingVersion = 25;
-  qrCodeParam.border = 0;
-
-  var qrCodeSvgImage = Banana.Report.qrCodeImage(text, qrCodeParam);
-  if (qrCodeParam.errorMsg && qrCodeParam.errorMsg.length>0) {
-    Banana.document.addMessage(qrCodeParam.errorMsg);
-  }
-  if (qrCodeSvgImage) {
-    tableRow = repTableObj.addRow();
-    var qrCodeCell = tableRow.addCell("","",columnsNumber);
-    qrCodeCell.addParagraph(" ","");
-    qrCodeCell.addImage(qrCodeSvgImage, 'qr_code');
-    qrCodeCell.addParagraph(" ","");
-    qrCodeCell.addParagraph(" ","");
-  }
 }
 
 function print_final_texts(repDocObj, invoiceObj, detailsTable) {
@@ -2597,10 +2392,10 @@ function set_variables(variables, userParam) {
 
 
   /* General */
-  variables.$primary_text_color = userParam.primary_text_color;
-  variables.$secondary_text_color = userParam.secondary_text_color;
-  variables.$header_table_text_color = userParam.header_table_text_color;
-  variables.$table_rows_color = userParam.table_rows_color;
+  variables.$text_color = userParam.text_color;
+  variables.$background_color_details_header = userParam.background_color_details_header;
+  variables.$text_color_details_header = userParam.text_color_details_header;
+  variables.$background_color_alternate_lines = userParam.background_color_alternate_lines;
   
   variables.$font_family = userParam.font_family;
   variables.$font_size = userParam.font_size+"pt";
@@ -2648,9 +2443,6 @@ function set_variables(variables, userParam) {
   variables.$padding_left = "5px";
   variables.$border_bottom_total = "1px double";
 
-  /* QR Code */
-  variables.$text_align_qrcode = userParam.qr_code_align;
-
   /* Footer */
   variables.$font_size_footer = "8pt";
   variables.$margin_right_footer = "10mm";
@@ -2682,7 +2474,7 @@ function set_invoice_style(reportObj, repStyleObj, variables, userParam) {
   // style = replaceVariables(style, variables);
   // repStyleObj.addStyle(".pageReset", style);
 
-  style = "font-size:$font_size; font-family:$font_family; color:$primary_text_color";
+  style = "font-size:$font_size; font-family:$font_family; color:$text_color";
   style = replaceVariables(style, variables);
   repStyleObj.addStyle("body", style);
 
@@ -2698,11 +2490,11 @@ function set_invoice_style(reportObj, repStyleObj, variables, userParam) {
   style = replaceVariables(style, variables);
   repStyleObj.addStyle(".bold", style);
 
-  style = "font-weight:bold; color:$secondary_text_color; border-bottom:$border_bottom_total $secondary_text_color; font-size:$font_size_total";
+  style = "font-weight:bold; color:$background_color_details_header; border-bottom:$border_bottom_total $background_color_details_header; font-size:$font_size_total";
   style = replaceVariables(style, variables);
   repStyleObj.addStyle(".total_cell", style);
 
-  style = "font-weight:bold; background-color:$secondary_text_color; color:$header_table_text_color; padding:5px";
+  style = "font-weight:bold; background-color:$background_color_details_header; color:$text_color_details_header; padding:5px";
   style = replaceVariables(style, variables);
   repStyleObj.addStyle(".subtotal_cell",style);
 
@@ -2710,15 +2502,15 @@ function set_invoice_style(reportObj, repStyleObj, variables, userParam) {
   style = replaceVariables(style, variables);
   repStyleObj.addStyle(".vat_info", style);
 
-  style = "background-color:$table_rows_color";
+  style = "background-color:$background_color_alternate_lines";
   style = replaceVariables(style, variables);
   repStyleObj.addStyle(".even_rows_background_color", style);
 
-  style = "border-bottom:2px solid $secondary_text_color";
+  style = "border-bottom:2px solid $background_color_details_header";
   style = replaceVariables(style, variables);
   repStyleObj.addStyle(".border-bottom", style);
 
-  style = "border-top:thin solid $secondary_text_color";
+  style = "border-top:thin solid $background_color_details_header";
   style = replaceVariables(style, variables);
   repStyleObj.addStyle(".thin-border-top", style);
 
@@ -2786,7 +2578,7 @@ function set_invoice_style(reportObj, repStyleObj, variables, userParam) {
   style = replaceVariables(style, variables);
   repStyleObj.addStyle(".shipping_address", style);
 
-  style = "font-size:$font_size_title; font-weight:bold; color:$secondary_text_color";
+  style = "font-size:$font_size_title; font-weight:bold; color:$background_color_details_header";
   style = replaceVariables(style, variables);
   repStyleObj.addStyle(".title_text", style);
 
@@ -2806,7 +2598,7 @@ function set_invoice_style(reportObj, repStyleObj, variables, userParam) {
   style = replaceVariables(style, variables);
   repStyleObj.addStyle(".doc_table", style);
 
-  style = "font-weight:bold; background-color:$secondary_text_color; color:$header_table_text_color";
+  style = "font-weight:bold; background-color:$background_color_details_header; color:$text_color_details_header";
   style = replaceVariables(style, variables);
   repStyleObj.addStyle(".doc_table_header", style);
 
@@ -2814,11 +2606,7 @@ function set_invoice_style(reportObj, repStyleObj, variables, userParam) {
   style = replaceVariables(style, variables);
   repStyleObj.addStyle(".doc_table_header td", style);
 
-  style = "text-align:$text_align_qrcode";
-  style = replaceVariables(style, variables);
-  repStyleObj.addStyle(".qr_code", style);
-
-  style = "margin-left:$margin_left_footer; margin-right:$margin_right_footer; border-top:$border_top_footer $secondary_text_color";
+  style = "margin-left:$margin_left_footer; margin-right:$margin_right_footer; border-top:$border_top_footer $background_color_details_header";
   style = replaceVariables(style, variables);
   repStyleObj.addStyle(".footer_line", style);
 
@@ -2916,14 +2704,6 @@ function setInvoiceTexts(language) {
     texts.param_details_gross_amounts = "Importi lordi (IVA inclusa)";
     texts.param_footer_include = "Piè di pagina";
     texts.param_footer_add = "Stampa piè di pagina";
-    texts.param_qr_code = "Codice QR";
-    texts.param_qr_code_add = "Stampa codice QR";
-    texts.param_qr_code_align = "Allineamento (left=sinistra, center=centro, right=destra)";
-    texts.param_qr_code_use_different_address = "Usa un indirizzo alternativo";
-    texts.param_qr_code_address_row_1 = "Testo indirizzo alternativo riga 1";
-    texts.param_qr_code_address_row_2 = "Testo indirizzo alternativo riga 2";
-    texts.param_qr_code_address_row_3 = "Testo indirizzo alternativo riga 3";
-    texts.param_qr_code_address_row_4 = "Testo indirizzo alternativo riga 4";
     texts.param_texts = "Testi (vuoto = valori predefiniti)";
     texts.param_languages = "Lingue";
     texts.languages_remove = "Desideri rimuovere '<removedLanguages>' dalla lista delle lingue?";
@@ -2943,10 +2723,10 @@ function setInvoiceTexts(language) {
     texts.it_param_footer_center = "Piè di pagina testo centro";
     texts.it_param_footer_right = "Piè di pagina testo destra";
     texts.param_styles = "Stili";
-    texts.param_primary_text_color = "Colore testo";
-    texts.param_secondary_text_color = "Colore sfondo intestazione dettagli";
-    texts.param_header_table_text_color = "Colore testo intestazione dettagli";
-    texts.param_table_rows_color = "Colore sfondo per righe alternate";
+    texts.param_text_color = "Colore testo";
+    texts.param_background_color_details_header = "Colore sfondo intestazione dettagli";
+    texts.param_text_color_details_header = "Colore testo intestazione dettagli";
+    texts.param_background_color_alternate_lines = "Colore sfondo per righe alternate";
     texts.param_font_family = "Tipo carattere";
     texts.param_font_size = "Dimensione carattere";
     texts.embedded_javascript_file_not_found = "File JavaScript non trovato o non valido";
@@ -2990,18 +2770,11 @@ function setInvoiceTexts(language) {
     texts.param_tooltip_footer = "Inserisci il testo piè di pagina";
     texts.param_tooltip_font_family = "Inserisci il tipo di carattere (ad es. Arial, Helvetica, Times New Roman, ...)";
     texts.param_tooltip_font_size = "Inserisci la dimensione del carattere (ad es. 10, 11, 12, ...)";
-    texts.param_tooltip_primary_text_color = "Inserisci il colore per il testo (ad es. '#000000' oppure 'Black')";
-    texts.param_tooltip_secondary_text_color = "Inserisci il colore per lo sfondo dell'intestazione dei dettagli (ad es. '#337ab7' oppure 'Blue')";
-    texts.param_tooltip_header_table_text_color = "Inserisci il colore per il testo dell'intestazione dei dettagli (ad es. '#ffffff' oppure 'White')";
-    texts.param_tooltip_table_rows_color = "Inserisci il colore per lo sfondo delle rige alternate (ad es. '#F0F8FF' oppure 'LightSkyBlue')";
+    texts.param_tooltip_text_color = "Inserisci il colore per il testo (ad es. '#000000' oppure 'Black')";
+    texts.param_tooltip_background_color_details_header = "Inserisci il colore per lo sfondo dell'intestazione dei dettagli (ad es. '#337ab7' oppure 'Blue')";
+    texts.param_tooltip_text_color_details_header = "Inserisci il colore per il testo dell'intestazione dei dettagli (ad es. '#ffffff' oppure 'White')";
+    texts.param_tooltip_background_color_alternate_lines = "Inserisci il colore per lo sfondo delle rige alternate (ad es. '#F0F8FF' oppure 'LightSkyBlue')";
     texts.param_tooltip_javascript_filename = "Inserisci il nome del file JavaScript (.js) della colonna 'ID' tabella Documenti (ad es. File.js)";
-    texts.param_tooltip_qr_code_add = "Vista per stampare il codice QR";
-    texts.param_tooltip_qr_code_align = "Scegli dove stampare il codice QR";
-    texts.param_tooltip_qr_code_use_different_address = "Vista per usare un indirizzo alternativo nel codice QR";
-    texts.param_tooltip_qr_code_address_row_1 = "Inserisci il testo della riga 1";
-    texts.param_tooltip_qr_code_address_row_2 = "Inserisci il testo della riga 2";
-    texts.param_tooltip_qr_code_address_row_3 = "Inserisci il testo della riga 3";
-    texts.param_tooltip_qr_code_address_row_4 = "Inserisci il testo della riga 4";
   }
   else if (language === 'de') {
     texts.shipping_address = "Lieferadresse";
@@ -3057,14 +2830,6 @@ function setInvoiceTexts(language) {
     texts.param_details_gross_amounts = "Details mit Bruttobeträgen (inklusive MwSt)";
     texts.param_footer_include = 'Fußzeile';
     texts.param_footer_add = 'Fußzeile drucken';
-    texts.param_qr_code = "QR-Code";
-    texts.param_qr_code_add = "Drucken QR-Codes";
-    texts.param_qr_code_align = "Ausrichtung (left, center or right)";
-    texts.param_qr_code_use_different_address = "Alternative Adresse verwenden";
-    texts.param_qr_code_address_row_1 = "Alternative Adresse Zeile 1";
-    texts.param_qr_code_address_row_2 = "Alternative Adresse Zeile 2";
-    texts.param_qr_code_address_row_3 = "Alternative Adresse Zeile 3";
-    texts.param_qr_code_address_row_4 = "Alternative Adresse Zeile 4";
     texts.param_texts = "Texte (leer = Standardwerte)";
     texts.param_languages = "Sprachen";
     texts.languages_remove = "Möchten Sie '<removedLanguages>' aus der Liste der Sprachen streichen?";
@@ -3086,10 +2851,10 @@ function setInvoiceTexts(language) {
     texts.de_param_footer_right = "Fußzeile Rechter Text";
 
     texts.param_styles = "Styles";
-    texts.param_primary_text_color = 'Primäre Textfarbe';
-    texts.param_secondary_text_color = 'Sekundäre Textfarbe';
-    texts.param_header_table_text_color = 'Farbtext Kopfdetails';
-    texts.param_table_rows_color = 'Zeilen Hintergrundfarbe';
+    texts.param_text_color = 'Primäre Textfarbe';
+    texts.param_background_color_details_header = 'Sekundäre Textfarbe';
+    texts.param_text_color_details_header = 'Farbtext Kopfdetails';
+    texts.param_background_color_alternate_lines = 'Zeilen Hintergrundfarbe';
     texts.param_font_family = 'Schrifttyp';
     texts.param_font_size = 'Schriftgröße';
     texts.embedded_javascript_file_not_found = "Benutzerdefinierte Javascript-Datei nicht gefunden oder nicht gültig";
@@ -3135,18 +2900,11 @@ function setInvoiceTexts(language) {
     texts.param_tooltip_footer = "Geben Sie einen Fußzeilentext ein";
     texts.param_tooltip_font_family = "Geben Sie die Schriftart ein (z.B. Arial, Helvetica, Times New Roman, ....).";
     texts.param_tooltip_font_size = "Geben Sie die Schriftgröße ein (z.B. 10, 11, 12, ...).";
-    texts.param_tooltip_primary_text_color = "Geben Sie die Farbe ein (z.B.'#000000' oder'Black').";
-    texts.param_tooltip_secondary_text_color = "Geben Sie die Farbe ein (z.B.'#337ab7' oder'Blau').";
-    texts.param_tooltip_header_table_text_color = "Geben Sie die Textfarbe ein (z.B.'#ffffff' oder'Weiß').";
-    texts.param_tooltip_table_rows_color = "Geben Sie die Farbe für den Zeilenhintergrund der Details ein (z.B.'#F0F8FF' oder 'LightSkyBlue').";
+    texts.param_tooltip_text_color = "Geben Sie die Farbe ein (z.B.'#000000' oder'Black').";
+    texts.param_tooltip_background_color_details_header = "Geben Sie die Farbe ein (z.B.'#337ab7' oder'Blau').";
+    texts.param_tooltip_text_color_details_header = "Geben Sie die Textfarbe ein (z.B.'#ffffff' oder'Weiß').";
+    texts.param_tooltip_background_color_alternate_lines = "Geben Sie die Farbe für den Zeilenhintergrund der Details ein (z.B.'#F0F8FF' oder 'LightSkyBlue').";
     texts.param_tooltip_javascript_filename = "Geben Sie den Namen der Javascript-Datei aus der Spalte'ID' der Tabelle'Dokumente' ein (z.B. file.js).";
-    texts.param_tooltip_qr_code_add = "Überprüfen Sie, ob der QR-Code gedruckt werden soll.";
-    texts.param_tooltip_qr_code_align = "Wählen Sie aus, wo der QR-Code gedruckt werden soll.";
-    texts.param_tooltip_qr_code_use_different_address = "Überprüfen Sie, ob Sie eine andere Adresse für den QR-Code verwenden.";
-    texts.param_tooltip_qr_code_address_row_1 = "Geben Sie den Text der Zeile 1 ein";
-    texts.param_tooltip_qr_code_address_row_2 = "Geben Sie den Text der Zeile 2 ein";
-    texts.param_tooltip_qr_code_address_row_3 = "Geben Sie den Text der Zeile 3 ein";
-    texts.param_tooltip_qr_code_address_row_4 = "Geben Sie den Text der Zeile 4 ein";
   }
   else if (language === 'fr') {
   }
@@ -3219,14 +2977,6 @@ function setInvoiceTexts(language) {
     texts.param_details_gross_amounts = "Details with gross amounts (VAT included)";
     texts.param_footer_include = 'Footer';
     texts.param_footer_add = 'Print footer';
-    texts.param_qr_code = "QR Code";
-    texts.param_qr_code_add = "Print the QR Code";
-    texts.param_qr_code_align = "Alignment (left, center or right)";
-    texts.param_qr_code_use_different_address = "Use an alternative address";
-    texts.param_qr_code_address_row_1 = "Alternative address row 1";
-    texts.param_qr_code_address_row_2 = "Alternative address row 2";
-    texts.param_qr_code_address_row_3 = "Alternative address row 3";
-    texts.param_qr_code_address_row_4 = "Alternative address row 4";
 
     //Texts
     texts.param_texts = "Texts (empty = default values)";
@@ -3240,8 +2990,8 @@ function setInvoiceTexts(language) {
     texts.en_param_text_info_due_date = 'Invoice due date';
     texts.en_param_text_info_page = 'Invoice page number';
     texts.en_param_text_shipping_address = 'Shipping address';
-    texts.en_param_text_title_doctype_10 = "Title invoice (DocType=10)";
-    texts.en_param_text_title_doctype_12 = "Title credit note (DocType=12)";
+    texts.en_param_text_title_doctype_10 = "Title invoice";
+    texts.en_param_text_title_doctype_12 = "Title credit note";
     texts.en_param_text_details_columns = 'Invoice details columns names';
     texts.en_param_text_total = 'Invoice total';
     texts.en_param_footer_left = "Footer left text";
@@ -3250,10 +3000,10 @@ function setInvoiceTexts(language) {
 
     //Styles
     texts.param_styles = "Styles";
-    texts.param_primary_text_color = 'Primary text color';
-    texts.param_secondary_text_color = 'Secondary text color';
-    texts.param_header_table_text_color = 'Header details color text';
-    texts.param_table_rows_color = 'Rows background color';
+    texts.param_text_color = 'Primary text color';
+    texts.param_background_color_details_header = 'Secondary text color';
+    texts.param_text_color_details_header = 'Header details color text';
+    texts.param_background_color_alternate_lines = 'Rows background color';
     texts.param_font_family = 'Font type';
     texts.param_font_size = 'Font size';
 
@@ -3303,18 +3053,11 @@ function setInvoiceTexts(language) {
     texts.param_tooltip_footer = "Enter a footer text";
     texts.param_tooltip_font_family = "Enter the font type (i.e. Arial, Helvetica, Times New Roman, ...)";
     texts.param_tooltip_font_size = "Enter the font size (i.e. 10, 11, 12, ...)";
-    texts.param_tooltip_primary_text_color = "Enter the color (i.e. '#000000' or 'Black')";
-    texts.param_tooltip_secondary_text_color = "Enter the color (i.e. '#337ab7' or 'Blue')";
-    texts.param_tooltip_header_table_text_color = "Enter the text color (i.e. '#ffffff' or 'White')";
-    texts.param_tooltip_table_rows_color = "Enter the color for the rows background of the details (i.e. '#F0F8FF' or 'LightSkyBlue')";
+    texts.param_tooltip_text_color = "Enter the color (i.e. '#000000' or 'Black')";
+    texts.param_tooltip_background_color_details_header = "Enter the color (i.e. '#337ab7' or 'Blue')";
+    texts.param_tooltip_text_color_details_header = "Enter the text color (i.e. '#ffffff' or 'White')";
+    texts.param_tooltip_background_color_alternate_lines = "Enter the color for the rows background of the details (i.e. '#F0F8FF' or 'LightSkyBlue')";
     texts.param_tooltip_javascript_filename = "Enter the name of the javascript file taken from the 'ID' column of the table 'Documents' (i.e. file.js)";
-    texts.param_tooltip_qr_code_add = "Check to print the QR Code";
-    texts.param_tooltip_qr_code_align = "Choose where to print the QR Code";
-    texts.param_tooltip_qr_code_use_different_address = "Check to use a different address for the QR Code";
-    texts.param_tooltip_qr_code_address_row_1 = "Enter the row 1 text";
-    texts.param_tooltip_qr_code_address_row_2 = "Enter the row 2 text";
-    texts.param_tooltip_qr_code_address_row_3 = "Enter the row 3 text";
-    texts.param_tooltip_qr_code_address_row_4 = "Enter the row 4 text";
   }
   return texts;
 }
