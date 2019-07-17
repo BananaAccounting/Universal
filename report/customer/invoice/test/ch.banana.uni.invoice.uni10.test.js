@@ -16,7 +16,7 @@
 
 // @id = ch.banana.uni.invoice.uni10.test
 // @api = 1.0
-// @pubdate = 2019-07-08
+// @pubdate = 2019-07-17
 // @publisher = Banana.ch SA
 // @description = <TEST ch.banana.uni.invoice.uni10.js>
 // @task = app.command
@@ -130,13 +130,6 @@ function setUserParam(texts) {
   userParam.footer_left = texts.invoice;
   userParam.footer_center = '';
   userParam.footer_right = texts.page+' &['+texts.page+']';
-  userParam.qr_code_add = false;
-  userParam.qr_code_align = 'right';
-  userParam.qr_code_use_different_address = false;
-  userParam.qr_code_address_row_1 = '';
-  userParam.qr_code_address_row_2 = '';
-  userParam.qr_code_address_row_3 = '';
-  userParam.qr_code_address_row_4 = '';
 
   //Texts
   userParam.languages = 'en;it;de';
@@ -195,7 +188,7 @@ function getJsonInvoice(invoiceNumber) {
   var jsonInvoice;
   
   if (invoiceNumber === "35") {
-    file = Banana.IO.getLocalFile("file:script/../test/testcases/json_invoice_35.json");
+    file = Banana.IO.getLocalFile("file:script/../test/testcases/json_invoice_35_new.json");
     parsedfile = JSON.stringify(file.read(), "", "");
     jsonInvoice = JSON.parse(parsedfile);
     // Banana.console.log(jsonInvoice);
