@@ -59,3 +59,14 @@ single language sub-directory structure:
 * yacht\
   Yacht accounting 
 
+
+
+### Religious organizations 
+
+For the German-speaking countries, please see the templates for Switzerland.
+
+For all other countries see the specific pages: 
+* [Religious organization accounting templates](https://www.banana.ch/area/en/node/11101)
+* [Organizzazioni religiose - modelli contabili](https://www.banana.ch/area/it/node/11098)
+* [Organisations religieuses - modèles comptables](https://www.banana.ch/area/fr/node/11213)
+
