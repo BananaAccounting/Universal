@@ -63,7 +63,7 @@ single language sub-directory structure:
 
 ### Religious organizations 
 
-For the German-speaking countries, please see the templates for Switzerland [Kirchengemeinde](https://www.banana.ch/apps/de/node/8425).
+For the German-speaking countries, please see the templates [Kirchengemeinden](https://www.banana.ch/apps/de/node/8425) created for Switzerland.
 
 For all other countries see the specific pages: 
 * [Religious organization accounting templates](https://www.banana.ch/area/en/node/11101)
