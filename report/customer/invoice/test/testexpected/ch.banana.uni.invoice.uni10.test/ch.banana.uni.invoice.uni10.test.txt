@@ -30,8 +30,8 @@
 Invoice:  & 35 \\
 Date:  & 29.01.2019 \\
 Customer No:  & 100002 \\
-VAT number:  & 123 456 789 \\
-Fiscal number:  & 001 002 003 \\
+VAT No:  & 123 456 789 \\
+Fiscal No:  & 001 002 003 \\
 Payment:  & 30 days \\
 Page:  & \#page-nr \\
 \end{longtable}
@@ -43,8 +43,8 @@ IVA 123 456 789 \\
 Invoice:  & 35 \\
 Date:  & 29.01.2019 \\
 Customer No:  & 100002 \\
-VAT number:  & 123 456 789 \\
-Fiscal number:  & 001 002 003 \\
+VAT No:  & 123 456 789 \\
+Fiscal No:  & 001 002 003 \\
 Payment:  & 30 days \\
 Page:  & \#page-nr \\
 \end{longtable}
@@ -96,8 +96,8 @@ Invoice \newline  &  & Page  \#page-nr \newline \\
 Invoice:  & 36 \\
 Date:  & 01.02.2018 \\
 Customer No:  & 100004 \\
-VAT number:  & \\
-Fiscal number:  & \\
+VAT No:  & \\
+Fiscal No:  & \\
 Payment:  & 03.03.2018 \\
 Page:  & \#page-nr \\
 \end{longtable}
@@ -109,8 +109,8 @@ IVA 123 456 789 \\
 Invoice:  & 36 \\
 Date:  & 01.02.2018 \\
 Customer No:  & 100004 \\
-VAT number:  & \\
-Fiscal number:  & \\
+VAT No:  & \\
+Fiscal No:  & \\
 Payment:  & 03.03.2018 \\
 Page:  & \#page-nr \\
 \end{longtable}
@@ -151,8 +151,8 @@ Invoice \newline  &  & Page  \#page-nr \newline \\
 Invoice:  & 37 \\
 Date:  & 03.02.2018 \\
 Customer No:  & 100001 \\
-VAT number:  & \\
-Fiscal number:  & \\
+VAT No:  & \\
+Fiscal No:  & \\
 Payment:  & 05.03.2018 \\
 Page:  & \#page-nr \\
 \end{longtable}
@@ -164,8 +164,8 @@ IVA 123 456 789 \\
 Invoice:  & 37 \\
 Date:  & 03.02.2018 \\
 Customer No:  & 100001 \\
-VAT number:  & \\
-Fiscal number:  & \\
+VAT No:  & \\
+Fiscal No:  & \\
 Payment:  & 05.03.2018 \\
 Page:  & \#page-nr \\
 \end{longtable}
@@ -212,8 +212,8 @@ Invoice \newline  &  & Page  \#page-nr \newline \\
 Invoice:  & 47 \\
 Date:  & 11.11.2018 \\
 Customer No:  & 100003 \\
-VAT number:  & \\
-Fiscal number:  & \\
+VAT No:  & \\
+Fiscal No:  & \\
 Payment:  & 11.12.2018 \\
 Page:  & \#page-nr \\
 \end{longtable}
@@ -225,8 +225,8 @@ IVA 123 456 789 \\
 Invoice:  & 47 \\
 Date:  & 11.11.2018 \\
 Customer No:  & 100003 \\
-VAT number:  & \\
-Fiscal number:  & \\
+VAT No:  & \\
+Fiscal No:  & \\
 Payment:  & 11.12.2018 \\
 Page:  & \#page-nr \\
 \end{longtable}
