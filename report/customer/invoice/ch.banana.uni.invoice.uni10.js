@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.uni.invoice.uni10
 // @api = 1.0
-// @pubdate = 2019-07-17
+// @pubdate = 2019-07-19
 // @publisher = Banana.ch SA
 // @description = [UNI10] Style 10: Customizable Invoice Layout
 // @description.it = [UNI10] Stile 10: Layout fattura personalizzabile
@@ -510,7 +510,7 @@ function convertParam(userParam) {
   currentParam.title = texts.param_languages;
   currentParam.type = 'string';
   currentParam.value = userParam.languages ? userParam.languages : '';
-  currentParam.defaultvalue = 'en;it;de';
+  currentParam.defaultvalue = 'en;it;de;pt';
   currentParam.tooltip = texts.param_tooltip_languages;
   currentParam.readValue = function() {
 
@@ -950,7 +950,7 @@ function initParam() {
 
 
   //Texts
-  userParam.languages = 'en;it;de';
+  userParam.languages = 'en;it;de;pt';
   var langCodes = userParam.languages.toString().split(";");
 
   // Initialize the parameter for each language
@@ -1079,7 +1079,7 @@ function verifyParam(userParam) {
 
   //Texts
   if (!userParam.languages) {
-    userParam.languages = 'en;it;de';
+    userParam.languages = 'en;it;de;pt';
   }
 
   // Verify the parameter for each language
@@ -2652,6 +2652,7 @@ function setInvoiceTexts(language) {
   var texts = {};
   
   if (language === 'it') {
+    //IT
     texts.shipping_address = "Indirizzo spedizione";
     texts.invoice = "Fattura";
     texts.date = "Data";
@@ -2913,151 +2914,258 @@ function setInvoiceTexts(language) {
   else if (language === 'nl') {
   }
   else if (language === 'pt') {
+    //PT
+    texts.shipping_address = "Endereço Entrega";
+    texts.invoice = "Fatura";
+    texts.date = "Data";
+    texts.customer = "No cliente";
+    texts.vat_number = "No IVA";
+    texts.fiscal_number = "No fiscal";
+    texts.payment_due_date_label = "Prazo";
+    texts.payment_terms_label = "Pagamento";
+    texts.page = "Página";
+    texts.credit_note = "Nota de crédito";
+    texts.column_description = "Description";
+    texts.column_quantity = "Quantity";
+    texts.column_reference_unit = "ReferenceUnit";
+    texts.column_unit_price = "UnitPrice";
+    texts.column_amount = "Amount";
+    texts.description = "Descrição";
+    texts.quantity = "Quantidade";
+    texts.reference_unit = "Unidade";
+    texts.unit_price = "Preço Unidade";
+    texts.amount = "Montante";
+    texts.totalnet = "Total liquído";
+    texts.vat = "IVA";
+    texts.rounding = "Arredondamento";
+    texts.total = "TOTAL";
+    texts.param_include = "Impressão";
+    texts.param_header_include = "Cabeçalho";
+    texts.param_header_print = "Cabeçalho página";
+    texts.param_header_row_1 = "Texto linha 1";
+    texts.param_header_row_2 = "Texto linha 2";
+    texts.param_header_row_3 = "Texto linha 3";
+    texts.param_header_row_4 = "Texto linha 4";
+    texts.param_header_row_5 = "Texto linha 5";
+    texts.param_logo_print = "Logo";
+    texts.param_logo_name = "Nome logo (composição formatos logo)";
+    texts.param_address_include = "Endereço cliente";
+    texts.param_address_small_line = "Texto endereço remetente";
+    texts.param_address_left = "Alinha à esquerda";
+    texts.param_shipping_address = "Endereço envio";
+    texts.param_info_include = "Informações";
+    texts.param_info_invoice_number = "Número fatura";
+    texts.param_info_date = "Data fatura";
+    texts.param_info_customer = "Número cliente";
+    texts.param_info_customer_vat_number = "Número IVA cliente";
+    texts.param_info_customer_fiscal_number = "Número fiscal cliente";
+    texts.param_info_due_date = "Prazo fatura";
+    texts.param_info_page = "Número página";
+    texts.param_details_include = "Detalhes fatura";
+    texts.param_details_columns = "Nomes colunas";
+    texts.param_details_columns_widths = "Largura colunas";
+    texts.param_details_gross_amounts = "Montante bruto (IVA incluído)";
+    texts.param_footer_include = "Rodapé";
+    texts.param_footer_add = "Impressão rodapé";
+    texts.param_texts = "Textos (vazio = valores predefenidos)";
+    texts.param_languages = "Línguas";
+    texts.languages_remove = "Deseja remover '<removedLanguages>' da lista de línguas?";
+    texts.pt_param_text_info_invoice_number = "Número fatura";
+    texts.pt_param_text_info_date = "Data fatura";
+    texts.pt_param_text_info_customer = "Número cliente";
+    texts.pt_param_text_info_customer_vat_number = "Número IVA cliente";
+    texts.pt_param_text_info_customer_fiscal_number = "Número fiscal cliente";
+    texts.pt_param_text_info_due_date = "Prazo fatura";
+    texts.pt_param_text_info_page = "Número página";
+    texts.pt_param_text_shipping_address = "Endereço envio";
+    texts.pt_param_text_title_doctype_10 = "Título fatura";
+    texts.pt_param_text_title_doctype_12 = "Título nota de crédito";
+    texts.pt_param_text_details_columns = "Nome colunas detalhes fatura";
+    texts.pt_param_text_total = "Total fatura";
+    texts.pt_param_footer_left = "Rodapé texto esquerda";
+    texts.pt_param_footer_center = "Rodapé texto centro";
+    texts.pt_param_footer_right = "Rodapé texto direita";
+    texts.param_styles = "Estilos";
+    texts.param_text_color = "Cor texto";
+    texts.param_background_color_details_header = "Cor fundo cabeçalho detalhes";
+    texts.param_text_color_details_header = "Cor texto cabeçalho detalhes";
+    texts.param_background_color_alternate_lines = "Cor fundo para linhas alternadas";
+    texts.param_font_family = "Tipo letra";
+    texts.param_font_size = "Dimensão letra";
+    texts.embedded_javascript_file_not_found = "File JavaScript não encontrado ou não válido";
+    texts.param_embedded_javascript = "File JavaScript";
+    texts.param_embedded_javascript_filename = "Nome ficheiro (coluna 'ID' tabela Documentos)";
+    texts.param_tooltip_header_print = "Vista para incluir cabeçalho da página";
+    texts.param_tooltip_logo_print = "Vista para incluir o logo";
+    texts.param_tooltip_logo_name = "Inserir nome do logo";
+    texts.param_tooltip_info_invoice_number = "Vista para incluir o número da fatura";
+    texts.param_tooltip_info_date = "Vista para incluir a data da fatura";
+    texts.param_tooltip_info_customer = "Vista para incluir o número do cliente";
+    texts.param_tooltip_info_customer_vat_number = "Vista para incluir o número de IVA do cliente";
+    texts.param_tooltip_info_customer_fiscal_number = "Vista para incluir o número fiscal do cliente";
+    texts.param_tooltip_info_due_date = "Vista para incluir o prazo da fatura";
+    texts.param_tooltip_info_page = "Vista para incluir o número da página";
+    texts.param_tooltip_languages = "Adicionar ou remover uma ou mais línguas";
+    texts.param_tooltip_text_info_invoice_number = "Inserir texto para substituir o predefinido";
+    texts.param_tooltip_text_info_date = "Inserir texto para substituir o predefinido";
+    texts.param_tooltip_text_info_customer = "Inserir texto para substituir o predefinido";
+    texts.param_tooltip_text_info_customer_vat_number = "Inserir texto para substituir o predefinido";
+    texts.param_tooltip_text_info_customer_fiscal_number = "Inserir texto para substituir o predefinido";
+    texts.param_tooltip_text_payment_terms_label = "Inserir texto para substituir o predefinido";
+    texts.param_tooltip_text_info_page = "Inserir texto para substituir o predefinido";
+    texts.param_tooltip_text_shipping_address = "Inserir texto para substituir o predefinido";
+    texts.param_tooltip_title_doctype_10 = "Inserir texto para substituir o predefinido";
+    texts.param_tooltip_title_doctype_12 = "Inserir texto para substituir o predefinido";
+    texts.param_tooltip_texts_total = "Inserir texto para substituir o predefinido";
+    texts.param_tooltip_text_details_columns = "Inserir os nomes das colunas dos detalhes da fatura";
+    texts.param_tooltip_details_columns = "Inserir os nomes XML das colunas na ordem que prefere";
+    texts.param_tooltip_details_columns_widths = "Inserir a largura das colunas em % (a soma deve ser 100%)";
+    texts.param_tooltip_header_row_1 = "Inserir texto para substituir o predefinido";
+    texts.param_tooltip_header_row_2 = "Inserir texto para substituir o predefinido";
+    texts.param_tooltip_header_row_3 = "Inserir texto para substituir o predefinido";
+    texts.param_tooltip_header_row_4 = "Inserir texto para substituir o predefinido";
+    texts.param_tooltip_header_row_5 = "Inserir texto para substituir o predefinido";
+    texts.param_tooltip_address_small_line = "Inserir o endereço do remetente imediatamente acima do endereço do cliente";
+    texts.param_tooltip_shipping_address = "Vista para imprimir endereço de envio";
+    texts.param_tooltip_address_left = "Vista para alinhar o endereço do cliente à esquerda";
+    texts.param_tooltip_details_gross_amounts = "Vista para imprimir os detalhes da fatura com os montantes brutos e IVA incluído";
+    texts.param_tooltip_footer_add = "Vista imprimir rodapé";
+    texts.param_tooltip_footer = "Inserir o texto do rodapé";
+    texts.param_tooltip_font_family = "Inserir o tipo de letra (ex. Arial, Helvetica, Times New Roman, ...)";
+    texts.param_tooltip_font_size = "Inserir a dimensão da letra (ex. 10, 11, 12, ...)";
+    texts.param_tooltip_text_color = "Inserir a cor para o texto (ex. '#000000' ou 'Black')";
+    texts.param_tooltip_background_color_details_header = "Inserir a cor para o fundo do cabeçalho dos detalhes (ex. '#337AB7' ou 'Blue')";
+    texts.param_tooltip_text_color_details_header = "Inserir a cor para o texto do cabeçalho dos detalhes (ex. '#FFFFFF' ou 'White')";
+    texts.param_tooltip_background_color_alternate_lines = "Inserir a cor para o fundo das linhas alternadas (ex. '#F0F8FF' ou 'LightSkyBlue')";
+    texts.param_tooltip_javascript_filename = "Inserir o nome do ficheiro JavaScript (.js) das colunas 'ID' tabela Documentos (ex. File.js)";
   }
   else if (language === 'es') {
   }
   else {
-    //Address
+    //EN
     texts.shipping_address = "Shipping address";
-
-    //Info
-    texts.invoice = 'Invoice';
-    texts.date = 'Date';
-    texts.customer = 'Customer No';
-    texts.vat_number = 'VAT number';
-    texts.fiscal_number = 'Fiscal number';
-    texts.payment_due_date_label = 'Due date';
-    texts.payment_terms_label = 'Payment';
-    texts.page = 'Page';
-    texts.credit_note = 'Credit note';
-
-    //Details
-    texts.column_description = 'Description';
-    texts.column_quantity = 'Quantity';
-    texts.column_reference_unit = 'ReferenceUnit';
-    texts.column_unit_price = 'UnitPrice';
-    texts.column_amount = 'Amount';
-    texts.description = 'Description';
-    texts.quantity = 'Quantity';
-    texts.reference_unit = 'Unit';
-    texts.unit_price = 'Unit Price';
-    texts.amount = 'Amount';
-    texts.totalnet = 'Total net';
-    texts.vat = 'VAT';
-    texts.rounding = 'Rounding';
-    texts.total = 'TOTAL';
-    
-    //Include
+    texts.invoice = "Invoice";
+    texts.date = "Date";
+    texts.customer = "Customer No";
+    texts.vat_number = "VAT No";
+    texts.fiscal_number = "Fiscal No";
+    texts.payment_due_date_label = "Due date";
+    texts.payment_terms_label = "Payment";
+    texts.page = "Page";
+    texts.credit_note = "Credit note";
+    texts.column_description = "Description";
+    texts.column_quantity = "Quantity";
+    texts.column_reference_unit = "ReferenceUnit";
+    texts.column_unit_price = "UnitPrice";
+    texts.column_amount = "Amount";
+    texts.description = "Description";
+    texts.quantity = "Quantity";
+    texts.reference_unit = "Unit";
+    texts.unit_price = "Unit Price";
+    texts.amount = "Amount";
+    texts.totalnet = "Total net";
+    texts.vat = "VAT";
+    texts.rounding = "Rounding";
+    texts.total = "TOTAL";
     texts.param_include = "Print";
     texts.param_header_include = "Header";
-    texts.param_header_left = "Header on left position";
-    texts.param_header_print = 'Page header';
-    texts.param_header_row_1 = "Header row 1";
-    texts.param_header_row_2 = "Header row 2";
-    texts.param_header_row_3 = "Header row 3";
-    texts.param_header_row_4 = "Header row 4";
-    texts.param_header_row_5 = "Header row 5";
-    texts.param_logo_print = 'Logo';
-    texts.param_logo_name = 'Logo name';
+    texts.param_header_print = "Page header";
+    texts.param_header_row_1 = "Line 1 text";
+    texts.param_header_row_2 = "Line 2 text";
+    texts.param_header_row_3 = "Line 3 text";
+    texts.param_header_row_4 = "Line 4 text";
+    texts.param_header_row_5 = "Line 5 text";
+    texts.param_logo_print = "Logo";
+    texts.param_logo_name = "Logo name (composition of logo formats)";
     texts.param_address_include = "Customer address";
-    texts.param_address_small_line = "Sender address line";
-    texts.param_address_left = 'Address on left position';
-    texts.param_shipping_address = 'Shipping address';
-    texts.param_info_include = 'Info';
-    texts.param_info_invoice_number = 'Invoice number';
-    texts.param_info_date = 'Invoice date';
-    texts.param_info_customer = 'Customer number';
-    texts.param_info_customer_vat_number = 'Customer VAT number';
-    texts.param_info_customer_fiscal_number = 'Customer fiscal number';
-    texts.param_info_due_date = 'Invoice due date';
-    texts.param_info_page = 'Invoice page number';
-    texts.param_details_include = "Details";
-    texts.param_details_columns = "Invoice details columns";
-    texts.param_details_columns_widths = "Invoice details columns width";
-    texts.param_details_gross_amounts = "Details with gross amounts (VAT included)";
-    texts.param_footer_include = 'Footer';
-    texts.param_footer_add = 'Print footer';
-
-    //Texts
+    texts.param_address_small_line = "Sender address text";
+    texts.param_address_left = "Align left";
+    texts.param_shipping_address = "Shipping address";
+    texts.param_info_include = "Information";
+    texts.param_info_invoice_number = "Invoice number";
+    texts.param_info_date = "Invoice date";
+    texts.param_info_customer = "Customer number";
+    texts.param_info_customer_vat_number = "Customer VAT number";
+    texts.param_info_customer_fiscal_number = "Customer fiscal number";
+    texts.param_info_due_date = "Invoice due date";
+    texts.param_info_page = "Page number";
+    texts.param_details_include = "Invoice details";
+    texts.param_details_columns = "Column names";
+    texts.param_details_columns_widths = "Column width";
+    texts.param_details_gross_amounts = "Gross amounts (VAT included)";
+    texts.param_footer_include = "Footer";
+    texts.param_footer_add = "Print footer";
     texts.param_texts = "Texts (empty = default values)";
     texts.param_languages = "Languages";
-    texts.languages_remove = "Do you want to remove '<removedLanguages>' from the list of languages?"
-    texts.en_param_text_info_invoice_number = 'Invoice number';
-    texts.en_param_text_info_date = 'Invoice date';
-    texts.en_param_text_info_customer = 'Invoice customer number';
-    texts.en_param_text_info_customer_vat_number = 'Customer VAT number';
-    texts.en_param_text_info_customer_fiscal_number = 'Customer fiscal number';
-    texts.en_param_text_info_due_date = 'Invoice due date';
-    texts.en_param_text_info_page = 'Invoice page number';
-    texts.en_param_text_shipping_address = 'Shipping address';
-    texts.en_param_text_title_doctype_10 = "Title invoice";
-    texts.en_param_text_title_doctype_12 = "Title credit note";
-    texts.en_param_text_details_columns = 'Invoice details columns names';
-    texts.en_param_text_total = 'Invoice total';
+    texts.languages_remove = "Do you want to remove '<removedLanguages>' from the language list?";
+    texts.en_param_text_info_invoice_number = "Invoice number";
+    texts.en_param_text_info_date = "Invoice date";
+    texts.en_param_text_info_customer = "Customer number";
+    texts.en_param_text_info_customer_vat_number = "Customer VAT number";
+    texts.en_param_text_info_customer_fiscal_number = "Customer fiscal number";
+    texts.en_param_text_info_due_date = "Invoice due date";
+    texts.en_param_text_info_page = "Page number";
+    texts.en_param_text_shipping_address = "Shipping address";
+    texts.en_param_text_title_doctype_10 = "Invoice title";
+    texts.en_param_text_title_doctype_12 = "Credit note title";
+    texts.en_param_text_details_columns = "Column names invoice details";
+    texts.en_param_text_total = "Invoice total";
     texts.en_param_footer_left = "Footer left text";
     texts.en_param_footer_center = "Footer center text";
     texts.en_param_footer_right = "Footer right text";
-
-    //Styles
     texts.param_styles = "Styles";
-    texts.param_text_color = 'Primary text color';
-    texts.param_background_color_details_header = 'Secondary text color';
-    texts.param_text_color_details_header = 'Header details color text';
-    texts.param_background_color_alternate_lines = 'Rows background color';
-    texts.param_font_family = 'Font type';
-    texts.param_font_size = 'Font size';
-
-    //Embedded JavaScript file
-    texts.embedded_javascript_file_not_found = "Custom Javascript file not found or not valid";
-    texts.param_embedded_javascript = "Custom JavaScript file";
-    texts.param_embedded_javascript_filename = "Insert the file name ('ID' column of the table Documents)";
-
-    //Tooltips for the parameters
-    texts.param_tooltip_header_print = "Check to include the page header";
-    texts.param_tooltip_header_left = "Check to print the header on left position";
-    texts.param_tooltip_logo_print = "Check to include the logo";
-    texts.param_tooltip_logo_name = "Enter the name of the logo";
+    texts.param_text_color = "Text color";
+    texts.param_background_color_details_header = "Background color of details header";
+    texts.param_text_color_details_header = "Text color of details header";
+    texts.param_background_color_alternate_lines = "Background color for alternate lines";
+    texts.param_font_family = "Font type";
+    texts.param_font_size = "Font size";
+    texts.embedded_javascript_file_not_found = "JavaScript file not found or invalid";
+    texts.param_embedded_javascript = "JavaScript file";
+    texts.param_embedded_javascript_filename = "File name (column 'ID' of table Documents)";
+    texts.param_tooltip_header_print = "Check to include page header";
+    texts.param_tooltip_logo_print = "Check to include logo";
+    texts.param_tooltip_logo_name = "Enter the logo name";
     texts.param_tooltip_info_invoice_number = "Check to include the invoice number";
-    texts.param_tooltip_info_date = "Check to include the invoice date";
-    texts.param_tooltip_info_customer = "Check to include the invoice customer number";
-    texts.param_tooltip_info_customer_vat_number = "Check to include the customer VAT number";
-    texts.param_tooltip_info_customer_fiscal_number = "Check to include the customer fiscal number";
-    texts.param_tooltip_info_due_date = "Check to include the invoice due date";
-    texts.param_tooltip_info_page = "Check to include the page invoice number";
-    texts.param_tooltip_languages = "Add or remove languages";
-    texts.param_tooltip_language_add = "Enter a new language (i.e. 'es' for spanish)";
-    texts.param_tooltip_text_info_invoice_number = "Enter a text to replace the default one";
-    texts.param_tooltip_text_info_date = "Enter a text to replace the default one";
-    texts.param_tooltip_text_info_customer = "Enter a text to replace the default one";
-    texts.param_tooltip_text_info_customer_vat_number = "Enter a text to replace the default one";
-    texts.param_tooltip_text_info_customer_fiscal_number = "Enter a text to replace the default one";
-    texts.param_tooltip_text_payment_terms_label = "Enter a text to replace the default one";
-    texts.param_tooltip_text_info_page = "Enter a text to replace the default one";
-    texts.param_tooltip_text_shipping_address = "Enter a text to replace the default one";
-    texts.param_tooltip_title_doctype_10 = "Enter a text to replace the default one";
-    texts.param_tooltip_title_doctype_12 = "Enter a text to replace the default one";
-    texts.param_tooltip_texts_total = "Enter a text to replace the default one";
-    texts.param_tooltip_text_details_columns = "Enter the names of the invoice details columns";
+    texts.param_tooltip_info_date = "Check to include invoice date";
+    texts.param_tooltip_info_customer = "Check to include customer number";
+    texts.param_tooltip_info_customer_vat_number = "Check to include customer's VAT number";
+    texts.param_tooltip_info_customer_fiscal_number = "Check to include customer's fiscal number";
+    texts.param_tooltip_info_due_date = "Check to include the due date of the invoice";
+    texts.param_tooltip_info_page = "Check to include the page number";
+    texts.param_tooltip_languages = "Add or remove one or more languages";
+    texts.param_tooltip_text_info_invoice_number = "Enter text to replace the default one";
+    texts.param_tooltip_text_info_date = "Enter text to replace the default";
+    texts.param_tooltip_text_info_customer = "Enter text to replace the default";
+    texts.param_tooltip_text_info_customer_vat_number = "Enter text to replace the default";
+    texts.param_tooltip_text_info_customer_fiscal_number = "Enter text to replace the default";
+    texts.param_tooltip_text_payment_terms_label = "Enter text to replace the default";
+    texts.param_tooltip_text_info_page = "Enter text to replace the default";
+    texts.param_tooltip_text_shipping_address = "Enter text to replace the default";
+    texts.param_tooltip_title_doctype_10 = "Enter text to replace the default";
+    texts.param_tooltip_title_doctype_12 = "Enter text to replace the default";
+    texts.param_tooltip_texts_total = "Enter text to replace the default";
+    texts.param_tooltip_text_details_columns = "Insert column names of invoice details";
     texts.param_tooltip_details_columns = "Enter the XML names of the columns in the order you prefer";
-    texts.param_tooltip_details_columns_widths = "Enter the width of the columns in % (sum = 100%)";
-    texts.param_tooltip_header_row_1 = "Enter a text to replace the default one";
-    texts.param_tooltip_header_row_2 = "Enter a text to replace the default one";
-    texts.param_tooltip_header_row_3 = "Enter a text to replace the default one";
-    texts.param_tooltip_header_row_4 = "Enter a text to replace the default one";
-    texts.param_tooltip_header_row_5 = "Enter a text to replace the default one";
-    texts.param_tooltip_address_small_line = "Enter supplier address line above the customer address";
+    texts.param_tooltip_details_columns_widths = "Enter column widths in % (sum must be 100%)";
+    texts.param_tooltip_header_row_1 = "Insert text to replace default";
+    texts.param_tooltip_header_row_2 = "Enter text to replace the default";
+    texts.param_tooltip_header_row_3 = "Enter text to replace the default";
+    texts.param_tooltip_header_row_4 = "Enter text to replace the default";
+    texts.param_tooltip_header_row_5 = "Enter text to replace the default";
+    texts.param_tooltip_address_small_line = "Enter the sender's address just above the customer's address";
     texts.param_tooltip_shipping_address = "Check to print the shipping address";
-    texts.param_tooltip_address_left = "Check to print the customer address on left position";
-    texts.param_tooltip_details_gross_amounts = "Check to print the invoice details with gross amounts with the VAT included";
-    texts.param_tooltip_footer_add = "Check to print the footer at the bottom of the page";
-    texts.param_tooltip_footer = "Enter a footer text";
-    texts.param_tooltip_font_family = "Enter the font type (i.e. Arial, Helvetica, Times New Roman, ...)";
-    texts.param_tooltip_font_size = "Enter the font size (i.e. 10, 11, 12, ...)";
-    texts.param_tooltip_text_color = "Enter the color (i.e. '#000000' or 'Black')";
-    texts.param_tooltip_background_color_details_header = "Enter the color (i.e. '#337ab7' or 'Blue')";
-    texts.param_tooltip_text_color_details_header = "Enter the text color (i.e. '#ffffff' or 'White')";
-    texts.param_tooltip_background_color_alternate_lines = "Enter the color for the rows background of the details (i.e. '#F0F8FF' or 'LightSkyBlue')";
-    texts.param_tooltip_javascript_filename = "Enter the name of the javascript file taken from the 'ID' column of the table 'Documents' (i.e. file.js)";
+    texts.param_tooltip_address_left = "Check to align customer address on the left";
+    texts.param_tooltip_details_gross_amounts = "Check to print invoice details with gross amounts and VAT included";
+    texts.param_tooltip_footer_add = "Check to print the footer";
+    texts.param_tooltip_footer = "Enter footer text";
+    texts.param_tooltip_font_family = "Enter font type (e.g. Arial, Helvetica, Times New Roman, ...)";
+    texts.param_tooltip_font_size = "Enter font size (e.g. 10, 11, 12, ...)";
+    texts.param_tooltip_text_color = "Enter color for the text (e.g. '#000000' or 'Black')";
+    texts.param_tooltip_background_color_details_header = "Enter color for the background of header details (e.g. '#337ab7' or 'Blue')";
+    texts.param_tooltip_text_color_details_header = "Enter color for the text of header details (e.g. '#ffffff' or 'White')";
+    texts.param_tooltip_background_color_alternate_lines = "Enter color for the background of alternate lines (e.g. '#F0F8FF' or 'LightSkyBlue')";
+    texts.param_tooltip_javascript_filename = "Enter name of the javascript file taken from the 'ID' column of the table 'Documents' (i.e. file.js)";
   }
   return texts;
 }
