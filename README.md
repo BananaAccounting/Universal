@@ -54,6 +54,7 @@ single language sub-directory structure:
 		* images
 	* statement
 		* images
+* religious organizations
 * restaurant\
   Small and medium enterprise templates
 * yacht\
