@@ -1606,7 +1606,7 @@ function print_details_net_amounts(banDoc, repDocObj, invoiceObj, texts, userPar
         if (item.mesure_unit) {
           var decimals = 2;
           var res = item.quantity.split(".");
-          if (res[1] && res[1].length == 4 && res[1] !== "0000") {
+          if (res[1] && res[1].length == 4 && res[1] !== "0000" && res[1].substring(1,4) !== "000" && res[1].substring(2,4) !== "00") {
             decimals = 4;
           }
           if (variables.decimals_quantity) {
@@ -1748,7 +1748,7 @@ function print_details_gross_amounts(banDoc, repDocObj, invoiceObj, texts, userP
         if (item.mesure_unit) {
           var decimals = 2;
           var res = item.quantity.split(".");
-          if (res[1] && res[1].length == 4 && res[1] !== "0000") {
+          if (res[1] && res[1].length == 4 && res[1] !== "0000" && res[1].substring(1,4) !== "000" && res[1].substring(2,4) !== "00") {
             decimals = 4;
           }
           if (variables.decimals_quantity) {
