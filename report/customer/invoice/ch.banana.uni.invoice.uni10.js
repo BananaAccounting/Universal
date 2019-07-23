@@ -1992,9 +1992,9 @@ function bananaRequiredVersion(requiredVersion, expmVersion) {
       
       case "de":
         if (expmVersion) {
-          msg = "Dieses Skript läuft nicht mit dieser Version von Banana Buchhaltung. Bitte aktualisieren Sie auf Banana Experimental (" + requiredVersion + ").";
+          msg = "Das Skript funktioniert nicht mit dieser Version von Banana Buchhaltung. Auf Banana Experimental aktualisieren (" + requiredVersion + ").";
         } else {
-          msg = "Dieses Skript läuft nicht mit dieser Version von Banana Buchhaltung. Bitte aktualisieren Sie auf Version " + requiredVersion + " oder höher.";
+          msg = "Das Skript funktioniert nicht mit dieser Version von Banana Buchhaltung. Auf Version " + requiredVersion + " oder neuer aktualisiern.";
         }
         break;
       
