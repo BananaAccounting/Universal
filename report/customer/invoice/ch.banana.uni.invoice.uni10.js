@@ -510,7 +510,7 @@ function convertParam(userParam) {
   currentParam.title = texts.param_languages;
   currentParam.type = 'string';
   currentParam.value = userParam.languages ? userParam.languages : '';
-  currentParam.defaultvalue = 'en;it;de;fr;nl;zh;es;pt';
+  currentParam.defaultvalue = 'de;en;fr;it;nl;pt;zh';
   currentParam.tooltip = texts.param_tooltip_languages;
   currentParam.readValue = function() {
 
@@ -950,7 +950,7 @@ function initParam() {
 
 
   //Texts
-  userParam.languages = 'en;it;de;fr;nl;zh;es;pt';
+  userParam.languages = 'de;en;fr;it;nl;pt;zh';
   var langCodes = userParam.languages.toString().split(";");
 
   // Initialize the parameter for each language
@@ -1079,7 +1079,7 @@ function verifyParam(userParam) {
 
   //Texts
   if (!userParam.languages) {
-    userParam.languages = 'en;it;de;fr;nl;zh;es;pt';
+    userParam.languages = 'de;en;fr;it;nl;pt;zh';
   }
 
   // Verify the parameter for each language
