@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.uni.invoice.uni10
 // @api = 1.0
-// @pubdate = 2019-07-22
+// @pubdate = 2019-07-24
 // @publisher = Banana.ch SA
 // @description = [UNI10] Style 10: Customizable Invoice Layout
 // @description.it = [UNI10] Stile 10: Layout fattura personalizzabile
@@ -510,7 +510,7 @@ function convertParam(userParam) {
   currentParam.title = texts.param_languages;
   currentParam.type = 'string';
   currentParam.value = userParam.languages ? userParam.languages : '';
-  currentParam.defaultvalue = 'en;it;de;pt';
+  currentParam.defaultvalue = 'en;it;de;fr;nl;zh;es;pt';
   currentParam.tooltip = texts.param_tooltip_languages;
   currentParam.readValue = function() {
 
@@ -950,7 +950,7 @@ function initParam() {
 
 
   //Texts
-  userParam.languages = 'en;it;de;pt';
+  userParam.languages = 'en;it;de;fr;nl;zh;es;pt';
   var langCodes = userParam.languages.toString().split(";");
 
   // Initialize the parameter for each language
@@ -1079,7 +1079,7 @@ function verifyParam(userParam) {
 
   //Texts
   if (!userParam.languages) {
-    userParam.languages = 'en;it;de;pt';
+    userParam.languages = 'en;it;de;fr;nl;zh;es;pt';
   }
 
   // Verify the parameter for each language
@@ -2494,7 +2494,7 @@ function set_invoice_style(reportObj, repStyleObj, variables, userParam) {
   style = replaceVariables(style, variables);
   repStyleObj.addStyle(".total_cell", style);
 
-  style = "font-weight:bold; background-color:$background_color_details_header; color:$text_color_details_header; padding:5px";
+  style = "font-weight:bold; background-color:$background_color_details_header; color:$text_color_details_header;";
   style = replaceVariables(style, variables);
   repStyleObj.addStyle(".subtotal_cell",style);
 
