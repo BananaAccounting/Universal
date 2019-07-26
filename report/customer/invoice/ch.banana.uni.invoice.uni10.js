@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.uni.invoice.uni10
 // @api = 1.0
-// @pubdate = 2019-07-24
+// @pubdate = 2019-07-26
 // @publisher = Banana.ch SA
 // @description = [UNI10] Style 10: Customizable Invoice Layout
 // @description.it = [UNI10] Stile 10: Layout fattura personalizzabile
@@ -2008,9 +2008,9 @@ function bananaRequiredVersion(requiredVersion, expmVersion) {
       
       case "zh":
         if (expmVersion) {
-          msg = "此脚本不适用于此版本的Banana Accounting。 请更新到Banana Experimental ("+ requiredVersion +")。";
+          msg = "脚本无法在此版本的Banana财务会计软件中运行。请更新至 Banana实验版本 (" + requiredVersion + ").";
         } else {
-          msg = "此脚本不适用于此版本的Banana Accounting。 请更新为 "+ requiredVersion +" 版本或更高版本。";
+          msg = "脚本无法在此版本的Banana财务会计软件中运行。请更新至 " + requiredVersion + "版本或之后的版本。";
         }
         break;
       
@@ -3029,7 +3029,131 @@ function setInvoiceTexts(language) {
     texts.param_tooltip_background_color_alternate_lines = "Insérer la couleur de fond pour les lignes alternées (p. ex. '#F0F8FF' ou 'LightSkyBlue')";
     texts.param_tooltip_javascript_filename = "Insérer le nom du fichier JavaScript (.js) de la colonne 'ID' du tableau Documents (p. ex. File.js)";
   }
-  else if (language === 'zh') { //?
+  else if (language === 'zh') {
+    //ZH
+    texts.shipping_address = "收件地址";
+    texts.invoice = "发票";
+    texts.date = "日期";
+    texts.customer = "客户编号";
+    texts.vat_number = "增值税代码";
+    texts.fiscal_number = "财政编码";
+    texts.payment_due_date_label = "到期日";
+    texts.payment_terms_label = "付款";
+    texts.page = "页";
+    texts.credit_note = "信用票据";
+    texts.column_description = "摘要";
+    texts.column_quantity = "数量";
+    texts.column_reference_unit = "参考单位";
+    texts.column_unit_price = "单价";
+    texts.column_amount = "金额";
+    texts.description = "摘要";
+    texts.quantity = "数量";
+    texts.reference_unit = "单位";
+    texts.unit_price = "单价";
+    texts.amount = "金额";
+    texts.totalnet = "总净额";
+    texts.vat = "增值税";
+    texts.rounding = "四舍五入";
+    texts.total = "合计";
+    texts.param_include = "打印";
+    texts.param_header_include = "页眉";
+    texts.param_header_print = "页眉";
+    texts.param_header_row_1 = "第1行文字";
+    texts.param_header_row_2 = "第2行文字";
+    texts.param_header_row_3 = "第3行文字";
+    texts.param_header_row_4 = "第4行文字";
+    texts.param_header_row_5 = "第5行文字";
+    texts.param_logo_print = "商标";
+    texts.param_logo_name = "商标名称 (商标格式的合成)";
+    texts.param_address_include = "客户地址";
+    texts.param_address_small_line = "发件人地址";
+    texts.param_address_left = "左对齐";
+    texts.param_shipping_address = "收件地址";
+    texts.param_info_include = "信息";
+    texts.param_info_invoice_number = "发票编号";
+    texts.param_info_date = "发票日期";
+    texts.param_info_customer = "客户编号";
+    texts.param_info_customer_vat_number = "客户增值税号";
+    texts.param_info_customer_fiscal_number = "客户财政编号";
+    texts.param_info_due_date = "发票到期日";
+    texts.param_info_page = "页码";
+    texts.param_details_include = "发票细节";
+    texts.param_details_columns = "列名称";
+    texts.param_details_columns_widths = "列宽";
+    texts.param_details_gross_amounts = "总金额 (含增值税)";
+    texts.param_footer_include = "页脚";
+    texts.param_footer_add = "打印页脚";
+    texts.param_texts = "文本 (空=默认值)";
+    texts.param_languages = "语言";
+    texts.languages_remove = "您想从语言列表中删除 '<removedLanguages>' 吗?";
+    texts.zh_param_text_info_invoice_number = "发票号";
+    texts.zh_param_text_info_date = "发票日期";
+    texts.zh_param_text_info_customer = "客户编号";
+    texts.zh_param_text_info_customer_vat_number = "客户增值税号";
+    texts.zh_param_text_info_customer_fiscal_number = "客户财政编号";
+    texts.zh_param_text_info_due_date = "发票到期日";
+    texts.zh_param_text_info_page = "页码";
+    texts.zh_param_text_shipping_address = "收件地址";
+    texts.zh_param_text_title_doctype_10 = "发票标题";
+    texts.zh_param_text_title_doctype_12 = "信用票据标题";
+    texts.zh_param_text_details_columns = "列名称发票明细";
+    texts.zh_param_text_total = "发票总额";
+    texts.zh_param_footer_left = "页脚左侧文字";
+    texts.zh_param_footer_center = "页脚中间文字";
+    texts.zh_param_footer_right = "页脚右侧文字";
+    texts.param_styles = "风格";
+    texts.param_text_color = "文字颜色";
+    texts.param_background_color_details_header = "标题细节的背景色";
+    texts.param_text_color_details_header = "标题细节文本颜色";
+    texts.param_background_color_alternate_lines = "备用线的背景颜色";
+    texts.param_font_family = "字体风格";
+    texts.param_font_size = "字体大小";
+    texts.embedded_javascript_file_not_found = "未找到 JavaScript文件或无效 ";
+    texts.param_embedded_javascript = "JavaScript 文件";
+    texts.param_embedded_javascript_filename = "文件名 (文件表格内的列 'ID')";
+    texts.param_tooltip_header_print = "检查是否包含页眉";
+    texts.param_tooltip_logo_print = "检查是否包含商标";
+    texts.param_tooltip_logo_name = "输入商标名称";
+    texts.param_tooltip_info_invoice_number = "检查是否包含发票号码";
+    texts.param_tooltip_info_date = "检查是否包含发票日期";
+    texts.param_tooltip_info_customer = "检查是否包含客户编号";
+    texts.param_tooltip_info_customer_vat_number = "检查是否包含客户的增值税号";
+    texts.param_tooltip_info_customer_fiscal_number = "检查是否包括客户的财政编号";
+    texts.param_tooltip_info_due_date = "检查是否包含发票的到期日";
+    texts.param_tooltip_info_page = "检查是否包含页码";
+    texts.param_tooltip_languages = "添加或删除一种或多种语言";
+    texts.param_tooltip_text_info_invoice_number = "输入文字以替换默认中的设定";
+    texts.param_tooltip_text_info_date = "输入文字以替换默认中的设定";
+    texts.param_tooltip_text_info_customer = "输入文字以替换默认中的设定";
+    texts.param_tooltip_text_info_customer_vat_number = "输入文字以替换默认中的设定";
+    texts.param_tooltip_text_info_customer_fiscal_number = "输入文字以替换默认中的设定";
+    texts.param_tooltip_text_payment_terms_label = "输入文字以替换默认中的设定";
+    texts.param_tooltip_text_info_page = "输入文字以替换默认中的设定";
+    texts.param_tooltip_text_shipping_address = "输入文字以替换默认中的设定";
+    texts.param_tooltip_title_doctype_10 = "输入文字以替换默认中的设定";
+    texts.param_tooltip_title_doctype_12 = "输入文字以替换默认中的设定";
+    texts.param_tooltip_texts_total = "输入文字以替换默认中的设定";
+    texts.param_tooltip_text_details_columns = "插入发票明细的列名称";
+    texts.param_tooltip_details_columns = "按照您喜欢的顺序输入列的XML名称";
+    texts.param_tooltip_details_columns_widths = "以％输入列宽 (总和必须为100％)";
+    texts.param_tooltip_header_row_1 = "输入文字替换默认中的设定";
+    texts.param_tooltip_header_row_2 = "输入文字替换默认中的设定";
+    texts.param_tooltip_header_row_3 = "输入文字替换默认中的设定";
+    texts.param_tooltip_header_row_4 = "输入文字替换默认中的设定";
+    texts.param_tooltip_header_row_5 = "输入文字替换默认中的设定";
+    texts.param_tooltip_address_small_line = "在客户地址正上方输入发件人地址";
+    texts.param_tooltip_shipping_address = "检查打印收件地址";
+    texts.param_tooltip_address_left = "检查左边的客户地址";
+    texts.param_tooltip_details_gross_amounts = "检查打印发票的详细信息，包括总金额和增值税";
+    texts.param_tooltip_footer_add = "检查打印页脚";
+    texts.param_tooltip_footer = "输入页脚文字";
+    texts.param_tooltip_font_family = "输入字体风格 (例如 Arial, Helvetica, Times New Roman, ...)";
+    texts.param_tooltip_font_size = "输入字体大小 (例如 10, 11, 12, ...)";
+    texts.param_tooltip_text_color = "输入文字颜色 (例如 '#000000' 或 'Black')";
+    texts.param_tooltip_background_color_details_header = "输入标题详细信息背景的颜色 (例如 '#337ab7' 或 'Blue')";
+    texts.param_tooltip_text_color_details_header = "输入标题详细信息文本的颜色 (例如 '#ffffff' 或 'White')";
+    texts.param_tooltip_background_color_alternate_lines = "为备用线条的背景输入颜色 (例如 '#F0F8FF' 或 'LightSkyBlue')";
+    texts.param_tooltip_javascript_filename = "输入从文件表格 (例如: file.js) 的'ID'列中取得的javascript文件的名称";
   }
   else if (language === 'nl') {
     //NL
