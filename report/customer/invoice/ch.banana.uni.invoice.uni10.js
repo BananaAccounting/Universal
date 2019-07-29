@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.uni.invoice.uni10
 // @api = 1.0
-// @pubdate = 2019-07-26
+// @pubdate = 2019-07-29
 // @publisher = Banana.ch SA
 // @description = [UNI10] Style 10: Customizable Invoice Layout
 // @description.it = [UNI10] Stile 10: Layout fattura personalizzabile
@@ -722,16 +722,30 @@ function convertParam(userParam) {
     convertedParam.data.push(currentParam);
 
     currentParam = {};
-    currentParam.name = langCode+'_texts_total';
+    currentParam.name = langCode+'_text_total';
     currentParam.parentObject = langCode;
     currentParam.title = langTexts[langCodeTitle+'_param_text_total'];
     currentParam.type = 'string';
-    currentParam.value = userParam[langCode+'_texts_total'] ? userParam[langCode+'_texts_total'] : '';
+    currentParam.value = userParam[langCode+'_text_total'] ? userParam[langCode+'_text_total'] : '';
     currentParam.defaultvalue = langTexts.total;
-    currentParam.tooltip = langTexts['param_tooltip_texts_total'];
+    currentParam.tooltip = langTexts['param_tooltip_text_total'];
     currentParam.language = langCode;
     currentParam.readValueLang = function(langCode) {
-      userParam[langCode+'_texts_total'] = this.value;
+      userParam[langCode+'_text_total'] = this.value;
+    }
+    convertedParam.data.push(currentParam);
+
+    currentParam = {};
+    currentParam.name = langCode+'_text_final';
+    currentParam.parentObject = langCode;
+    currentParam.title = langTexts[langCodeTitle+'_param_text_final'];
+    currentParam.type = 'multilinestring';
+    currentParam.value = userParam[langCode+'_text_final'] ? userParam[langCode+'_text_final'] : '';
+    currentParam.defaultvalue = '';
+    currentParam.tooltip = langTexts['param_tooltip_text_final'];
+    currentParam.language = langCode;
+    currentParam.readValueLang = function(langCode) {
+      userParam[langCode+'_text_final'] = this.value;
     }
     convertedParam.data.push(currentParam);
 
@@ -974,7 +988,8 @@ function initParam() {
     userParam[langCodes[i]+'_title_doctype_10'] = langTexts.invoice + " <DocInvoice>";
     userParam[langCodes[i]+'_title_doctype_12'] = langTexts.credit_note + " <DocInvoice>";
     userParam[langCodes[i]+'_text_details_columns'] = langTexts.description+";"+langTexts.quantity+";"+langTexts.reference_unit+";"+langTexts.unit_price+";"+langTexts.amount;
-    userParam[langCodes[i]+'_texts_total'] = langTexts.total;
+    userParam[langCodes[i]+'_text_total'] = langTexts.total;
+    userParam[langCodes[i]+'_text_final'] = '';
     userParam[langCodes[i]+'_footer_left'] = langTexts.invoice;
     userParam[langCodes[i]+'_footer_center'] = '';
     userParam[langCodes[i]+'_footer_right'] = langTexts.page+' <'+langTexts.page+'>';
@@ -1120,8 +1135,11 @@ function verifyParam(userParam) {
     if (!userParam[langCodes[i]+'_text_details_columns']) {
       userParam[langCodes[i]+'_text_details_columns'] = langTexts.description+";"+langTexts.quantity+";"+langTexts.reference_unit+";"+langTexts.unit_price+";"+langTexts.amount;
     }
-    if (!userParam[langCodes[i]+'_texts_total']) {
-      userParam[langCodes[i]+'_texts_total'] = langTexts.total;
+    if (!userParam[langCodes[i]+'_text_total']) {
+      userParam[langCodes[i]+'_text_total'] = langTexts.total;
+    }
+    if (!userParam[langCodes[i]+'_text_final']) {
+      userParam[langCodes[i]+'_text_final'] = "";
     }
     if (!userParam[langCodes[i]+'_footer_left']) {
       userParam[langCodes[i]+'_footer_left'] = langTexts.invoice;
@@ -1302,9 +1320,9 @@ function printInvoice(banDoc, repDocObj, texts, userParam, repStyleObj, invoiceO
 
   /* PRINT FINAL TEXTS (AFTER INVOICE DETAILS) */
   if (typeof(hook_print_final_texts) === typeof(Function)) {
-    hook_print_final_texts(repDocObj, invoiceObj, detailsTable);
+    hook_print_final_texts(repDocObj, invoiceObj, detailsTable, userParam);
   } else {
-    print_final_texts(repDocObj, invoiceObj, detailsTable);
+    print_final_texts(repDocObj, invoiceObj, detailsTable, userParam);
   }
 
   /* PRINT FOOTER */
@@ -1661,7 +1679,7 @@ function print_details_net_amounts(banDoc, repDocObj, invoiceObj, texts, userPar
 
   //FINAL TOTAL
   tableRow = repTableObj.addRow();
-  tableRow.addCell(userParam[lang+'_texts_total'] + " " + invoiceObj.document_info.currency, "total_cell", columnsNumber-1);
+  tableRow.addCell(userParam[lang+'_text_total'] + " " + invoiceObj.document_info.currency, "total_cell", columnsNumber-1);
   tableRow.addCell(Banana.Converter.toLocaleNumberFormat(invoiceObj.billing_info.total_to_pay, variables.decimals_amounts, true), "total_cell right", 1);
   
   tableRow = repTableObj.addRow();
@@ -1790,7 +1808,7 @@ function print_details_gross_amounts(banDoc, repDocObj, invoiceObj, texts, userP
 
   //FINAL TOTAL
   tableRow = repTableObj.addRow();
-  tableRow.addCell(userParam[lang+'_texts_total'] + " " + invoiceObj.document_info.currency, "total_cell", columnsNumber-1);
+  tableRow.addCell(userParam[lang+'_text_total'] + " " + invoiceObj.document_info.currency, "total_cell", columnsNumber-1);
   tableRow.addCell(Banana.Converter.toLocaleNumberFormat(invoiceObj.billing_info.total_to_pay, variables.decimals_amounts, true), "total_cell right", 1);
   
   tableRow = repTableObj.addRow();
@@ -1809,23 +1827,32 @@ function print_details_gross_amounts(banDoc, repDocObj, invoiceObj, texts, userP
   tableRow.addCell("", "", columnsNumber);
 }
 
-function print_final_texts(repDocObj, invoiceObj, detailsTable) {
+function print_final_texts(repDocObj, invoiceObj, detailsTable, userParam) {
   /*
-    Prints all the texts (final texts, notes and greetings) after the invoice details
+    Prints all the texts (final texts, notes and greetings) after the invoice details:
+    - Default text is taken from the Print invoices -> Template options.
+    - If user let empty the parameter on Settings dialog -> Final text, it is used the default
+    - If user enter a text as parameter on Settings dialog -> Final text, it is used this instead.
+    - If user enter "<none>" as paramenter on Settings dialog -> Final text, no final text is printed.
   */
   tableRow = detailsTable.addRow();
   tableRow.addCell(" ", "", columnsNumber);
 
+  //Text taken from the Settings dialog's parameter "Final text"
+  if (userParam[lang+'_text_final'] && userParam[lang+'_text_final'] !== "<none>") {
+    var text = userParam[lang+'_text_final'];
+    text = text.split('\n');
+    for (var i = 0; i < text.length; i++) {
+      repDocObj.addParagraph(" ", "");
+      tableRow = detailsTable.addRow();
+      var cellText = tableRow.addCell("","",columnsNumber);
+      addMdBoldText(cellText, text[i]);
+    }
+  }
+
   // Template params, default text starts with "(" and ends with ")" (default), (Vorderfiniert)
-  if (invoiceObj.template_parameters && invoiceObj.template_parameters.footer_texts) {
+  else if (invoiceObj.template_parameters && invoiceObj.template_parameters.footer_texts && !userParam[lang+'_text_final']) {
     repDocObj.addParagraph(" ", "");
-    var lang = '';
-    if (invoiceObj.customer_info.lang) {
-      lang = invoiceObj.customer_info.lang;
-    }
-    if (lang.length <= 0 && invoiceObj.document_info.locale) {
-      lang = invoiceObj.document_info.locale;
-    }
     var textDefault = [];
     var text = [];
     for (var i = 0; i < invoiceObj.template_parameters.footer_texts.length; i++) {
@@ -1840,7 +1867,7 @@ function print_final_texts(repDocObj, invoiceObj, detailsTable) {
     if (text.join().length <= 0) {
       text = textDefault;
     }
-    for (var i=0; i < text.length; i++) {
+    for (var i = 0; i < text.length; i++) {
       tableRow = detailsTable.addRow();
       var cellText = tableRow.addCell("","",columnsNumber);
       addMdBoldText(cellText, text[i]);
@@ -2720,6 +2747,7 @@ function setInvoiceTexts(language) {
     texts.it_param_text_title_doctype_12 = "Titolo nota di credito";
     texts.it_param_text_details_columns = "Nomi colonne dettagli fattura";
     texts.it_param_text_total = "Totale fattura";
+    texts.it_param_text_final = "Testo finale";
     texts.it_param_footer_left = "Piè di pagina testo sinistra";
     texts.it_param_footer_center = "Piè di pagina testo centro";
     texts.it_param_footer_right = "Piè di pagina testo destra";
@@ -2754,7 +2782,7 @@ function setInvoiceTexts(language) {
     texts.param_tooltip_text_shipping_address = "Inserisci un testo per sostituire quello predefinito";
     texts.param_tooltip_title_doctype_10 = "Inserisci un testo per sostituire quello predefinito";
     texts.param_tooltip_title_doctype_12 = "Inserisci un testo per sostituire quello predefinito";
-    texts.param_tooltip_texts_total = "Inserisci un testo per sostituire quello predefinito";
+    texts.param_tooltip_text_total = "Inserisci un testo per sostituire quello predefinito";
     texts.param_tooltip_text_details_columns = "Inserisci i nomi delle colonne dei dettagli della fattura";
     texts.param_tooltip_details_columns = "Inserisci i nomi XML delle colonne nell'ordine che preferisci";
     texts.param_tooltip_details_columns_widths = "Inserisci le larghezze delle colonne in % (la somma deve essere 100%)";
@@ -2767,6 +2795,7 @@ function setInvoiceTexts(language) {
     texts.param_tooltip_shipping_address = "Vista per stampare l'indirizzo di spedizione";
     texts.param_tooltip_address_left = "Vista per allineare l'indirizzo del cliente a sinistra";
     texts.param_tooltip_details_gross_amounts = "Vista per stampare i dettagli della fattura con gli importi al lordo e IVA inclusa";
+    texts.param_tooltip_text_final = "Inserisci un testo per sostituire quello predefinito";
     texts.param_tooltip_footer_add = "Vista stampare il piè di pagina";
     texts.param_tooltip_footer = "Inserisci il testo piè di pagina";
     texts.param_tooltip_font_family = "Inserisci il tipo di carattere (ad es. Arial, Helvetica, Times New Roman, ...)";
@@ -2846,6 +2875,7 @@ function setInvoiceTexts(language) {
     texts.de_param_text_title_doctype_12 = "Gutschriftstitel (Schriftgrösse=12)";
     texts.de_param_text_details_columns = "Spaltennamen Rechnungsdetails";
     texts.de_param_text_total = "Rechnungsbetrag";
+    texts.de_param_text_final = "Text am Ende";
     texts.de_param_footer_left = "Fusszeilentext links";
     texts.de_param_footer_center = "Fusszeilentext zentriert";
     texts.de_param_footer_right = "Fusszeilentext rechts";
@@ -2880,7 +2910,7 @@ function setInvoiceTexts(language) {
     texts.param_tooltip_text_shipping_address = "Text eingeben, um Standardtext zu ersetzen";
     texts.param_tooltip_title_doctype_10 = "Text eingeben, um Standardtext zu ersetzen";
     texts.param_tooltip_title_doctype_12 = "Text eingeben, um Standardtext zu ersetzen";
-    texts.param_tooltip_texts_total = "Text eingeben, um Standardtext zu ersetzen";
+    texts.param_tooltip_text_total = "Text eingeben, um Standardtext zu ersetzen";
     texts.param_tooltip_text_details_columns = "Spaltennamen Rechnungsdetails eingeben";
     texts.param_tooltip_details_columns = "XML-Spaltennamen in gewünschter Reihenfolge eingeben";
     texts.param_tooltip_details_columns_widths = "Spaltenbreite in % (Summe = 100%) eingeben";
@@ -2893,6 +2923,7 @@ function setInvoiceTexts(language) {
     texts.param_tooltip_shipping_address = "Aktivieren, um Lieferadresse zu drucken";
     texts.param_tooltip_address_left = "Aktivieren, um Kundenadresse auf der linken Seite zu drucken";
     texts.param_tooltip_details_gross_amounts = "Aktivieren, um Rechnungsdetails mit Bruttobeträgen und enthaltener MwSt/USt zu drucken";
+    texts.param_tooltip_text_final = "Text eingeben, um Standardtext zu ersetzen";
     texts.param_tooltip_footer_add = "Aktivieren, um Fusszeile unten auf der Seite zu drucken";
     texts.param_tooltip_footer = "Fusszeilentext eingeben";
     texts.param_tooltip_font_family = "Schriftart eingeben (z.B. Arial, Helvetica, Times New Roman, usw.)";
@@ -2972,6 +3003,7 @@ function setInvoiceTexts(language) {
     texts.fr_param_text_title_doctype_12 = "Titre note de crédit ";
     texts.fr_param_text_details_columns = "Noms des colonnes des détails de la facture";
     texts.fr_param_text_total = "Total facture";
+    texts.fr_param_text_final = "Texte final";
     texts.fr_param_footer_left = "Pied de page gauche";
     texts.fr_param_footer_center = "Pied de page centre";
     texts.fr_param_footer_right = "Pied de page droit";
@@ -3006,7 +3038,7 @@ function setInvoiceTexts(language) {
     texts.param_tooltip_text_shipping_address = "Insérez un texte pour remplacer le texte par défaut";
     texts.param_tooltip_title_doctype_10 = "Insérez un texte pour remplacer le texte par défaut";
     texts.param_tooltip_title_doctype_12 = "Insérez un texte pour remplacer le texte par défaut";
-    texts.param_tooltip_texts_total = "Insérez un texte pour remplacer le texte par défaut";
+    texts.param_tooltip_text_total = "Insérez un texte pour remplacer le texte par défaut";
     texts.param_tooltip_text_details_columns = "Insérer les noms des colonnes des détails de la facture";
     texts.param_tooltip_details_columns = "Insérer les noms XML des colonnes dans l'ordre de votre choix";
     texts.param_tooltip_details_columns_widths = "Insérer les largeurs des colonnes en % (la somme doit être de 100%)";
@@ -3019,6 +3051,7 @@ function setInvoiceTexts(language) {
     texts.param_tooltip_shipping_address = "Activer pour imprimer l'adresse de livraison";
     texts.param_tooltip_address_left = "Activer pour aligner l'adresse du client à gauche";
     texts.param_tooltip_details_gross_amounts = "Activer pour imprimer les détails de la facture avec les montants bruts et la TVA incluse";
+    texts.param_tooltip_text_final = "Insérez un texte pour remplacer le texte par défaut";
     texts.param_tooltip_footer_add = "Activer pour imprimer le pied de page";
     texts.param_tooltip_footer = "Insérer le texte pour la pied de page";
     texts.param_tooltip_font_family = "Insérer le type de caractère (p. ex. Arial, Helvetica, Times New Roman, ...)";
@@ -3098,6 +3131,7 @@ function setInvoiceTexts(language) {
     texts.zh_param_text_title_doctype_12 = "信用票据标题";
     texts.zh_param_text_details_columns = "列名称发票明细";
     texts.zh_param_text_total = "发票总额";
+    texts.zh_param_text_final = "最后文本";
     texts.zh_param_footer_left = "页脚左侧文字";
     texts.zh_param_footer_center = "页脚中间文字";
     texts.zh_param_footer_right = "页脚右侧文字";
@@ -3132,7 +3166,7 @@ function setInvoiceTexts(language) {
     texts.param_tooltip_text_shipping_address = "输入文字以替换默认中的设定";
     texts.param_tooltip_title_doctype_10 = "输入文字以替换默认中的设定";
     texts.param_tooltip_title_doctype_12 = "输入文字以替换默认中的设定";
-    texts.param_tooltip_texts_total = "输入文字以替换默认中的设定";
+    texts.param_tooltip_text_total = "输入文字以替换默认中的设定";
     texts.param_tooltip_text_details_columns = "插入发票明细的列名称";
     texts.param_tooltip_details_columns = "按照您喜欢的顺序输入列的XML名称";
     texts.param_tooltip_details_columns_widths = "以％输入列宽 (总和必须为100％)";
@@ -3145,6 +3179,7 @@ function setInvoiceTexts(language) {
     texts.param_tooltip_shipping_address = "检查打印收件地址";
     texts.param_tooltip_address_left = "检查左边的客户地址";
     texts.param_tooltip_details_gross_amounts = "检查打印发票的详细信息，包括总金额和增值税";
+    texts.param_tooltip_text_final = "输入文字替换默认中的设定";
     texts.param_tooltip_footer_add = "检查打印页脚";
     texts.param_tooltip_footer = "输入页脚文字";
     texts.param_tooltip_font_family = "输入字体风格 (例如 Arial, Helvetica, Times New Roman, ...)";
@@ -3224,6 +3259,7 @@ function setInvoiceTexts(language) {
     texts.nl_param_text_title_doctype_12 = "Titel credit nota";
     texts.nl_param_text_details_columns = "Kolomnamen factuur details";
     texts.nl_param_text_total = "Totaal factuur";
+    texts.nl_param_text_final = "Definitieve tekst";
     texts.nl_param_footer_left = "Voettekst links";
     texts.nl_param_footer_center = "Voettekst midden";
     texts.nl_param_footer_right = "Voettekst rechts";
@@ -3258,7 +3294,7 @@ function setInvoiceTexts(language) {
     texts.param_tooltip_text_shipping_address = "Voer een tekst in ter vervanging van de standaardtekst";
     texts.param_tooltip_title_doctype_10 = "Voer een tekst in ter vervanging van de standaardtekst";
     texts.param_tooltip_title_doctype_12 = "Voer een tekst in ter vervanging van de standaardtekst";
-    texts.param_tooltip_texts_total = "Voer een tekst in ter vervanging van de standaardtekst";
+    texts.param_tooltip_text_total = "Voer een tekst in ter vervanging van de standaardtekst";
     texts.param_tooltip_text_details_columns = "Vul de namen van de kolommen met factuurgegevens in";
     texts.param_tooltip_details_columns = "Voer de XML-namen van de kolommen in de door u gewenste volgorde in";
     texts.param_tooltip_details_columns_widths = "Voer de breedtes van de kolommen in % in (de som moet 100% zijn).";
@@ -3271,6 +3307,7 @@ function setInvoiceTexts(language) {
     texts.param_tooltip_shipping_address = "Aanvinken om het verzendadres af te drukken";
     texts.param_tooltip_address_left = "Aanvinken om het adres van de klant links te plaatsen";
     texts.param_tooltip_details_gross_amounts = "Aanvinken om factuurgegevens af te drukken met brutobedragen en BTW inbegrepen";
+    texts.param_tooltip_text_final = "Voer een tekst in ter vervanging van de standaardtekst";
     texts.param_tooltip_footer_add = "Aanvinken om de voettekst af te drukken";
     texts.param_tooltip_footer = "Voer de voettekst in";
     texts.param_tooltip_font_family = "Voer het lettertype in (bijv. Arial, Helvetica, Times New Roman, ...)";
@@ -3350,6 +3387,7 @@ function setInvoiceTexts(language) {
     texts.pt_param_text_title_doctype_12 = "Título nota de crédito";
     texts.pt_param_text_details_columns = "Nome colunas detalhes fatura";
     texts.pt_param_text_total = "Total fatura";
+    texts.pt_param_text_final = "Texto final";
     texts.pt_param_footer_left = "Rodapé texto esquerda";
     texts.pt_param_footer_center = "Rodapé texto centro";
     texts.pt_param_footer_right = "Rodapé texto direita";
@@ -3384,7 +3422,7 @@ function setInvoiceTexts(language) {
     texts.param_tooltip_text_shipping_address = "Inserir texto para substituir o predefinido";
     texts.param_tooltip_title_doctype_10 = "Inserir texto para substituir o predefinido";
     texts.param_tooltip_title_doctype_12 = "Inserir texto para substituir o predefinido";
-    texts.param_tooltip_texts_total = "Inserir texto para substituir o predefinido";
+    texts.param_tooltip_text_total = "Inserir texto para substituir o predefinido";
     texts.param_tooltip_text_details_columns = "Inserir os nomes das colunas dos detalhes da fatura";
     texts.param_tooltip_details_columns = "Inserir os nomes XML das colunas na ordem que prefere";
     texts.param_tooltip_details_columns_widths = "Inserir a largura das colunas em % (a soma deve ser 100%)";
@@ -3397,6 +3435,7 @@ function setInvoiceTexts(language) {
     texts.param_tooltip_shipping_address = "Vista para imprimir endereço de envio";
     texts.param_tooltip_address_left = "Vista para alinhar o endereço do cliente à esquerda";
     texts.param_tooltip_details_gross_amounts = "Vista para imprimir os detalhes da fatura com os montantes brutos e IVA incluído";
+    texts.param_tooltip_text_final = "Inserir texto para substituir o predefinido";
     texts.param_tooltip_footer_add = "Vista imprimir rodapé";
     texts.param_tooltip_footer = "Inserir o texto do rodapé";
     texts.param_tooltip_font_family = "Inserir o tipo de letra (ex. Arial, Helvetica, Times New Roman, ...)";
@@ -3478,6 +3517,7 @@ function setInvoiceTexts(language) {
     texts.en_param_text_title_doctype_12 = "Credit note title";
     texts.en_param_text_details_columns = "Column names invoice details";
     texts.en_param_text_total = "Invoice total";
+    texts.en_param_text_final = "Final text";
     texts.en_param_footer_left = "Footer left text";
     texts.en_param_footer_center = "Footer center text";
     texts.en_param_footer_right = "Footer right text";
@@ -3512,7 +3552,7 @@ function setInvoiceTexts(language) {
     texts.param_tooltip_text_shipping_address = "Enter text to replace the default";
     texts.param_tooltip_title_doctype_10 = "Enter text to replace the default";
     texts.param_tooltip_title_doctype_12 = "Enter text to replace the default";
-    texts.param_tooltip_texts_total = "Enter text to replace the default";
+    texts.param_tooltip_text_total = "Enter text to replace the default";
     texts.param_tooltip_text_details_columns = "Insert column names of invoice details";
     texts.param_tooltip_details_columns = "Enter the XML names of the columns in the order you prefer";
     texts.param_tooltip_details_columns_widths = "Enter column widths in % (sum must be 100%)";
@@ -3525,6 +3565,7 @@ function setInvoiceTexts(language) {
     texts.param_tooltip_shipping_address = "Check to print the shipping address";
     texts.param_tooltip_address_left = "Check to align customer address on the left";
     texts.param_tooltip_details_gross_amounts = "Check to print invoice details with gross amounts and VAT included";
+    texts.param_tooltip_text_final = "Enter text to replace the default";
     texts.param_tooltip_footer_add = "Check to print the footer";
     texts.param_tooltip_footer = "Enter footer text";
     texts.param_tooltip_font_family = "Enter font type (e.g. Arial, Helvetica, Times New Roman, ...)";

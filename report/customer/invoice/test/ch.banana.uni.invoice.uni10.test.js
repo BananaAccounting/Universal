@@ -16,7 +16,7 @@
 
 // @id = ch.banana.uni.invoice.uni10.test
 // @api = 1.0
-// @pubdate = 2019-07-17
+// @pubdate = 2019-07-29
 // @publisher = Banana.ch SA
 // @description = <TEST ch.banana.uni.invoice.uni10.js>
 // @task = app.command
@@ -144,7 +144,8 @@ function setUserParam(texts) {
   userParam.en_title_doctype_10 = texts.invoice + " <DocInvoice>";
   userParam.en_title_doctype_12 = texts.credit_note + " <DocInvoice>";
   userParam.en_text_details_columns = texts.description+";"+texts.quantity+";"+texts.reference_unit+";"+texts.unit_price+";"+texts.amount;
-  userParam.en_texts_total = texts.total;
+  userParam.en_text_total = texts.total;
+  userParam.en_text_final = '';
   userParam.en_footer_left = texts.invoice;
   userParam.en_footer_center = '';
   userParam.en_footer_right = texts.page+' <'+texts.page+'>';
