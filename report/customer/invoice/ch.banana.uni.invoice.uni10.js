@@ -16,15 +16,15 @@
 // @api = 1.0
 // @pubdate = 2019-07-29
 // @publisher = Banana.ch SA
-// @description = [UNI10] Style 10: Customizable Invoice Layout
-// @description.it = [UNI10] Stile 10: Layout fattura personalizzabile
-// @description.de = [UNI10] Stil 10: Anpassbares Rechnungslayout
-// @description.fr = [UNI10] Style 10: Mise en page personnalisable de la facture
-// @description.nl = [UNI10] Stijl 10: Aanpasbare factuuropmaak
-// @description.en = [UNI10] Style 10: Customizable Invoice Layout
-// @description.zh = [UNI10] Style 10: Fully customizable invoice template
-// @description.pt = [UNI10] Estilo 10: Layout de fatura personalizável
-// @description.es = [UNI10] Estilo 10: Diseño de factura personalizable
+// @description = [UNI10] Style 10: Customizable Invoice Layout (BETA)
+// @description.it = [UNI10] Stile 10: Layout fattura personalizzabile (BETA)
+// @description.de = [UNI10] Stil 10: Anpassbares Rechnungslayout (BETA)
+// @description.fr = [UNI10] Style 10: Mise en page personnalisable de la facture (BETA)
+// @description.nl = [UNI10] Stijl 10: Aanpasbare factuuropmaak (BETA)
+// @description.en = [UNI10] Style 10: Customizable Invoice Layout (BETA)
+// @description.zh = [UNI10] Style 10: Fully customizable invoice template (BETA)
+// @description.pt = [UNI10] Estilo 10: Layout de fatura personalizável (BETA)
+// @description.es = [UNI10] Estilo 10: Diseño de factura personalizable (BETA)
 // @doctype = *
 // @task = report.customer.invoice
 
