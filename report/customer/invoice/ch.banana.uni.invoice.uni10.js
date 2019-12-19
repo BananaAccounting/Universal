@@ -14,17 +14,17 @@
 //
 // @id = ch.banana.uni.invoice.uni10
 // @api = 1.0
-// @pubdate = 2019-07-29
+// @pubdate = 2019-12-19
 // @publisher = Banana.ch SA
-// @description = [UNI10] Style 10: Customizable Invoice Layout (BETA)
-// @description.it = [UNI10] Stile 10: Layout fattura personalizzabile (BETA)
-// @description.de = [UNI10] Stil 10: Anpassbares Rechnungslayout (BETA)
-// @description.fr = [UNI10] Style 10: Mise en page personnalisable de la facture (BETA)
-// @description.nl = [UNI10] Stijl 10: Aanpasbare factuuropmaak (BETA)
-// @description.en = [UNI10] Style 10: Customizable Invoice Layout (BETA)
-// @description.zh = [UNI10] Style 10: Fully customizable invoice template (BETA)
-// @description.pt = [UNI10] Estilo 10: Layout de fatura personalizável (BETA)
-// @description.es = [UNI10] Estilo 10: Diseño de factura personalizable (BETA)
+// @description = [UNI10] Layout 10 (BETA)
+// @description.it = [UNI10] Layout 10 (BETA)
+// @description.de = [UNI10] Layout 10 (BETA)
+// @description.fr = [UNI10] Layout 10 (BETA)
+// @description.nl = [UNI10] Layout 10 (BETA)
+// @description.en = [UNI10] Layout 10 (BETA)
+// @description.zh = [UNI10] Layout 10 (BETA)
+// @description.pt = [UNI10] Layout 10 (BETA)
+// @description.es = [UNI10] Layout 10 (BETA)
 // @doctype = *
 // @task = report.customer.invoice
 
@@ -842,7 +842,7 @@ function convertParam(userParam) {
   currentParam.title = texts.param_text_color;
   currentParam.type = 'string';
   currentParam.value = userParam.text_color ? userParam.text_color : '#000000';
-  currentParam.defaultvalue = '#337ab7';
+  currentParam.defaultvalue = '#000000';
   currentParam.tooltip = texts.param_tooltip_text_color;
   currentParam.readValue = function() {
    userParam.text_color = this.value;
@@ -1624,7 +1624,7 @@ function print_details_net_amounts(banDoc, repDocObj, invoiceObj, texts, userPar
         if (item.mesure_unit) {
           var decimals = 2;
           var res = item.quantity.split(".");
-          if (res[1] && res[1].length == 4 && res[1] !== "0000" && res[1].substring(1,4) !== "000" && res[1].substring(2,4) !== "00") {
+          if (res[1] && res[1].length == 4) {
             decimals = 4;
           }
           if (variables.decimals_quantity) {
@@ -1766,7 +1766,8 @@ function print_details_gross_amounts(banDoc, repDocObj, invoiceObj, texts, userP
         if (item.mesure_unit) {
           var decimals = 2;
           var res = item.quantity.split(".");
-          if (res[1] && res[1].length == 4 && res[1] !== "0000" && res[1].substring(1,4) !== "000" && res[1].substring(2,4) !== "00") {
+          Banana.console.log(res);
+          if (res[1] && res[1].length == 4) {
             decimals = 4;
           }
           if (variables.decimals_quantity) {
