@@ -50,8 +50,8 @@
 
 
 // Define the required version of Banana Accounting / Banana Experimental
-var BAN_VERSION = "9.0.4";
-var BAN_EXPM_VERSION = "190716";
+var BAN_VERSION = "9.0.5";
+var BAN_EXPM_VERSION = "";
 
 // Counter for the columns of the Details table
 var columnsNumber = 0;
