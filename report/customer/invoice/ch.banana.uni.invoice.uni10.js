@@ -2414,53 +2414,48 @@ function set_variables(variables, userParam) {
     Sets all the variables values.
   */
 
+  /* Variable that sets the decimals of the Quantity column */
   variables.decimals_quantity = "";
+  /* Variable that sets the decimals of the Unit Price column */
   variables.decimals_unit_price = 2;
+  /* Variable that sets the decimals of the Amount column */
   variables.decimals_amounts = 2;
-
-
-  /* General */
+  /* Variables that set the colors */
   variables.$text_color = userParam.text_color;
   variables.$background_color_details_header = userParam.background_color_details_header;
   variables.$text_color_details_header = userParam.text_color_details_header;
   variables.$background_color_alternate_lines = userParam.background_color_alternate_lines;
-  
+  /* Variables that set the font */
   variables.$font_family = userParam.font_family;
   variables.$font_size = userParam.font_size+"pt";
-  
-  /* Header */
+  /* Variables that set margins and text alignment of the Invoice Header */
   variables.$margin_top_header = "10mm";
   variables.$margin_right_header = "10mm";
   variables.$margin_left_header = "20mm";
   variables.$text_align_header = "right";
-
-  /* Info invoice */
+  /* Variables that set the margins and paddings of the Invoice Information */
   variables.$margin_top_info = "45mm";
   variables.$margin_right_info = "10mm";
   variables.$margin_left_info = "20mm";
   variables.$padding_top = "0px";
   variables.$padding_bottom = "0px";
-
-  /* Address invoice */
+  /* Variables that set font size, text alignment, borders and margins of the Invoice Address */
   variables.$font_size_sender_address = "7pt";
   variables.$text_align_sender_address = "center";
   variables.$border_bottom_sender_address = "1px solid black";
   variables.$margin_top_address = "45mm";
   variables.$margin_right_address = "10mm";
   variables.$margin_left_address = "123mm";
-
-  /* Shipping address */
+  /* Variables that set margins of the Invoice Shipping Address */
   variables.$margin_top_shipping_address = "75mm";
   variables.$margin_right_shipping_address = "10mm";
   variables.$margin_left_shipping_address = "20mm";
-
-  /* Text begin */
+  /* Variables that set the font size and margins of the Invoice Begin Text */
   variables.$font_size_title = userParam.font_size*1.4 +"pt";
   variables.$margin_top_text_begin = "120mm";
   variables.$margin_right_text_begin = "10mm";
   variables.$margin_left_text_begin = "23mm";
-
-  /* Details invoice */
+  /* Variables that set font size, margins, padding and borders of the Invoice Details */
   variables.$font_size_total = userParam.font_size*1.2 +"pt";
   variables.$margin_top_details_first_page = "140mm";
   variables.$margin_top_details_other_pages = "90mm";
@@ -2470,8 +2465,7 @@ function set_variables(variables, userParam) {
   variables.$padding_right = "5px";
   variables.$padding_left = "5px";
   variables.$border_bottom_total = "1px double";
-
-  /* Footer */
+  /* Variables that set the font size, margins and borders of the Invoice Footer */
   variables.$font_size_footer = "8pt";
   variables.$margin_right_footer = "10mm";
   variables.$margin_bottom_footer = "20mm";
