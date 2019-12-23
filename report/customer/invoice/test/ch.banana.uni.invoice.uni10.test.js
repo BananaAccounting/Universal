@@ -129,7 +129,7 @@ function setUserParam(texts) {
   userParam.footer_add = true;
   userParam.footer_left = texts.invoice;
   userParam.footer_center = '';
-  userParam.footer_right = texts.page+' &['+texts.page+']';
+  userParam.footer_right = texts.page+' <'+texts.page+'>';
 
   //Texts
   userParam.languages = 'en;it;de';
@@ -151,10 +151,10 @@ function setUserParam(texts) {
   userParam.en_footer_right = texts.page+' <'+texts.page+'>';
 
   //Styles
-  userParam.primary_text_color = '#000000';
-  userParam.secondary_text_color = '#337AB7';
-  userParam.header_table_text_color = '#FFFFFF';
-  userParam.table_rows_color = '#F0F8FF';
+  userParam.text_color = '#000000';
+  userParam.background_color_details_header = '#337AB7';
+  userParam.text_color_details_header = '#FFFFFF';
+  userParam.background_color_alternate_lines = '#F0F8FF';
   userParam.font_family = 'Helvetica';
   userParam.font_size = '10';
 
@@ -166,7 +166,7 @@ function setUserParam(texts) {
 
 function setVariables(variables) {
   var variables = {};
-  variables.decimals_quantity = "";
+  variables.decimals_quantity = 4;
   variables.decimals_unit_price = 2;
   variables.decimals_amounts = 2;
   return variables;
