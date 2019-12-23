@@ -63,7 +63,7 @@ This is the  beginning text  using the '10:beg' command in DocType column. \newl
 Description  & Quantity  & Unit  & Unit Price  & Amount \\
 Sales merchandise, invoice \#35, customer B \newline \newline  &  &  & 1'851.85  & 1'851.85 \\
 Sales merchandise, invoice \#35, customer B \newline \newline  & 4.9876  & pz.  & 96.43  & 480.96 \\
-Sales merchandise, invoice \#35, customer B \newline \newline  & 10.00  & pz..  & 97.56  & 975.61 \\
+Sales merchandise, invoice \#35, customer B \newline \newline  & 10.0000  & pz..  & 97.56  & 975.61 \\
 \multicolumn{5}{l}{}\\
 \multicolumn{4}{l}{Total net } & 3'308.42 \\
 \multicolumn{4}{l}{VAT 8.00\% (1'851.85) } & 148.15 \\
