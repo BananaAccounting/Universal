@@ -1592,7 +1592,7 @@ function print_details_net_amounts(banDoc, repDocObj, invoiceObj, texts, userPar
     }
   }
 
-  var decimals = getQuantityDecimals(banDoc, invoiceObj.document_info.number);
+  var decimals = getQuantityDecimals(invoiceObj);
 
   //ITEMS
   for (var i = 0; i < invoiceObj.items.length; i++) {
@@ -1730,7 +1730,7 @@ function print_details_gross_amounts(banDoc, repDocObj, invoiceObj, texts, userP
     }
   }
 
-  var decimals = getQuantityDecimals(banDoc, invoiceObj.document_info.number);
+  var decimals = getQuantityDecimals(invoiceObj);
 
   //ITEMS
   for (var i = 0; i < invoiceObj.items.length; i++) {
@@ -1969,30 +1969,26 @@ function print_footer(repDocObj, texts, userParam) {
 //====================================================================//
 // OTHER UTILITIES FUNCTIONS
 //====================================================================//
-function getQuantityDecimals(banDoc, invoiceNumber) {
+function getQuantityDecimals(invoiceObj) {
   /*
-    For the given invoice number, check the decimal used for the quantity in Transactions table.
+    For the given invoice check the decimal used for the quantity.
     Decimals can be 2 or 4.
     Returns the greater value.
   */
   var arr = [];
   var decimals = "";
-  var transactionsTable = banDoc.table("Transactions");
-  for (var i = 0; i < transactionsTable.rowCount; i++) {
-    var tRow = transactionsTable.row(i);
-    var docInvoice = tRow.value("DocInvoice");
-    if (docInvoice === invoiceNumber) {
-      var qty = tRow.value("Quantity");
-      var res = qty.split(".");
-      if (res[1] && res[1] !== "0000" && res[1].substring(1,4) !== "000" && res[1].substring(2,4) !== "00") {
-        decimals = 4;
-        //Banana.console.log(res[1] + " => " + decimals);
-      } else {
-        decimals = 2;
-        //Banana.console.log(res[1] + " => " + decimals);
-      }
-      arr.push(decimals);
+  for (var i = 0; i < invoiceObj.items.length; i++) { //check the qty of each item of the invoice
+    var item = invoiceObj.items[i];
+    var qty = item.quantity;
+    var res = qty.split(".");
+    if (res[1] && res[1] !== "0000" && res[1].substring(1,4) !== "000" && res[1].substring(2,4) !== "00") {
+      decimals = 4;
+      //Banana.console.log(res[1] + " => " + decimals);
+    } else {
+      decimals = 2;
+      //Banana.console.log(res[1] + " => " + decimals);
     }
+    arr.push(decimals);
   }
   //Remove duplicates
   for (var i = 0; i < arr.length; i++) {
