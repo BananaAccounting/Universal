@@ -1906,7 +1906,7 @@ function print_footer(repDocObj, texts, userParam) {
     var cell3 = tableRow.addCell("","",1);
 
     // footer left
-    if (userParam[lang+'_footer_left'] && userParam[lang+'_footer_left'].length > 0) {
+    if (userParam[lang+'_footer_left'] && userParam[lang+'_footer_left'].length > 0 && userParam[lang+'_footer_left'] !== '<none>') {
       var lines = userParam[lang+'_footer_left'].split("\n");
       for (var i = 0; i < lines.length; i++) {
         if (lines[i].indexOf("<"+texts.page+">") > -1) {
@@ -1923,7 +1923,7 @@ function print_footer(repDocObj, texts, userParam) {
       }
     }
     // footer center
-    if (userParam[lang+'_footer_center'] && userParam[lang+'_footer_center'].length > 0) {
+    if (userParam[lang+'_footer_center'] && userParam[lang+'_footer_center'].length > 0 && userParam[lang+'_footer_center'] !== '<none>') {
       var lines = userParam[lang+'_footer_center'].split("\n");
       for (var i = 0; i < lines.length; i++) {
         if (lines[i].indexOf("<"+texts.page+">") > -1) {
@@ -1940,7 +1940,7 @@ function print_footer(repDocObj, texts, userParam) {
       }
     }
     // footer right
-    if (userParam[lang+'_footer_right'] && userParam[lang+'_footer_right'].length > 0) {
+    if (userParam[lang+'_footer_right'] && userParam[lang+'_footer_right'].length > 0 && userParam[lang+'_footer_right'] !== '<none>') {
       var lines = userParam[lang+'_footer_right'].split("\n");
       for (var i = 0; i < lines.length; i++) {
         if (lines[i].indexOf("<"+texts.page+">") > -1) {
