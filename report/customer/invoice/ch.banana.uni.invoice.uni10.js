@@ -14,17 +14,17 @@
 //
 // @id = ch.banana.uni.invoice.uni10
 // @api = 1.0
-// @pubdate = 2019-07-29
+// @pubdate = 2020-01-27
 // @publisher = Banana.ch SA
-// @description = [UNI10] Style 10: Customizable Invoice Layout (BETA)
-// @description.it = [UNI10] Stile 10: Layout fattura personalizzabile (BETA)
-// @description.de = [UNI10] Stil 10: Anpassbares Rechnungslayout (BETA)
-// @description.fr = [UNI10] Style 10: Mise en page personnalisable de la facture (BETA)
-// @description.nl = [UNI10] Stijl 10: Aanpasbare factuuropmaak (BETA)
-// @description.en = [UNI10] Style 10: Customizable Invoice Layout (BETA)
-// @description.zh = [UNI10] Style 10: Fully customizable invoice template (BETA)
-// @description.pt = [UNI10] Estilo 10: Layout de fatura personalizável (BETA)
-// @description.es = [UNI10] Estilo 10: Diseño de factura personalizable (BETA)
+// @description = [UNI10] Layout 10 (BETA)
+// @description.it = [UNI10] Layout 10 (BETA)
+// @description.de = [UNI10] Layout 10 (BETA)
+// @description.fr = [UNI10] Layout 10 (BETA)
+// @description.nl = [UNI10] Layout 10 (BETA)
+// @description.en = [UNI10] Layout 10 (BETA)
+// @description.zh = [UNI10] Layout 10 (BETA)
+// @description.pt = [UNI10] Layout 10 (BETA)
+// @description.es = [UNI10] Layout 10 (BETA)
 // @doctype = *
 // @task = report.customer.invoice
 
@@ -50,8 +50,8 @@
 
 
 // Define the required version of Banana Accounting / Banana Experimental
-var BAN_VERSION = "9.0.4";
-var BAN_EXPM_VERSION = "190716";
+var BAN_VERSION = "9.0.5";
+var BAN_EXPM_VERSION = "";
 
 // Counter for the columns of the Details table
 var columnsNumber = 0;
@@ -842,7 +842,7 @@ function convertParam(userParam) {
   currentParam.title = texts.param_text_color;
   currentParam.type = 'string';
   currentParam.value = userParam.text_color ? userParam.text_color : '#000000';
-  currentParam.defaultvalue = '#337ab7';
+  currentParam.defaultvalue = '#000000';
   currentParam.tooltip = texts.param_tooltip_text_color;
   currentParam.readValue = function() {
    userParam.text_color = this.value;
@@ -1592,6 +1592,8 @@ function print_details_net_amounts(banDoc, repDocObj, invoiceObj, texts, userPar
     }
   }
 
+  var decimals = getQuantityDecimals(invoiceObj);
+
   //ITEMS
   for (var i = 0; i < invoiceObj.items.length; i++) {
 
@@ -1620,13 +1622,7 @@ function print_details_net_amounts(banDoc, repDocObj, invoiceObj, texts, userPar
       else if (columnsSelected[j] === "Quantity" || columnsSelected[j] === "quantity") {
         // If referenceUnit is empty we do not print the quantity.
         // With this we can avoit to print the quantity "1.00" for transactions that do not have  quantity,unit,unitprice.
-        // Default quantity uses 2 decimals. We check if there is a quantity with 4 decimals and in case we use it.
         if (item.mesure_unit) {
-          var decimals = 2;
-          var res = item.quantity.split(".");
-          if (res[1] && res[1].length == 4 && res[1] !== "0000" && res[1].substring(1,4) !== "000" && res[1].substring(2,4) !== "00") {
-            decimals = 4;
-          }
           if (variables.decimals_quantity) {
             decimals = variables.decimals_quantity;
           }
@@ -1734,6 +1730,8 @@ function print_details_gross_amounts(banDoc, repDocObj, invoiceObj, texts, userP
     }
   }
 
+  var decimals = getQuantityDecimals(invoiceObj);
+
   //ITEMS
   for (var i = 0; i < invoiceObj.items.length; i++) {
 
@@ -1762,13 +1760,7 @@ function print_details_gross_amounts(banDoc, repDocObj, invoiceObj, texts, userP
       else if (columnsSelected[j] === "Quantity" || columnsSelected[j] === "quantity") {
         // If referenceUnit is empty we do not print the quantity.
         // With this we can avoit to print the quantity "1.00" for transactions that do not have  quantity,unit,unitprice.
-        // Default quantity uses 2 decimals. We check if there is a quantity with 4 decimals and in case we use it.
         if (item.mesure_unit) {
-          var decimals = 2;
-          var res = item.quantity.split(".");
-          if (res[1] && res[1].length == 4 && res[1] !== "0000" && res[1].substring(1,4) !== "000" && res[1].substring(2,4) !== "00") {
-            decimals = 4;
-          }
           if (variables.decimals_quantity) {
             decimals = variables.decimals_quantity;
           }
@@ -1914,7 +1906,7 @@ function print_footer(repDocObj, texts, userParam) {
     var cell3 = tableRow.addCell("","",1);
 
     // footer left
-    if (userParam[lang+'_footer_left'] && userParam[lang+'_footer_left'].length > 0) {
+    if (userParam[lang+'_footer_left'] && userParam[lang+'_footer_left'].length > 0 && userParam[lang+'_footer_left'] !== '<none>') {
       var lines = userParam[lang+'_footer_left'].split("\n");
       for (var i = 0; i < lines.length; i++) {
         if (lines[i].indexOf("<"+texts.page+">") > -1) {
@@ -1931,7 +1923,7 @@ function print_footer(repDocObj, texts, userParam) {
       }
     }
     // footer center
-    if (userParam[lang+'_footer_center'] && userParam[lang+'_footer_center'].length > 0) {
+    if (userParam[lang+'_footer_center'] && userParam[lang+'_footer_center'].length > 0 && userParam[lang+'_footer_center'] !== '<none>') {
       var lines = userParam[lang+'_footer_center'].split("\n");
       for (var i = 0; i < lines.length; i++) {
         if (lines[i].indexOf("<"+texts.page+">") > -1) {
@@ -1948,7 +1940,7 @@ function print_footer(repDocObj, texts, userParam) {
       }
     }
     // footer right
-    if (userParam[lang+'_footer_right'] && userParam[lang+'_footer_right'].length > 0) {
+    if (userParam[lang+'_footer_right'] && userParam[lang+'_footer_right'].length > 0 && userParam[lang+'_footer_right'] !== '<none>') {
       var lines = userParam[lang+'_footer_right'].split("\n");
       for (var i = 0; i < lines.length; i++) {
         if (lines[i].indexOf("<"+texts.page+">") > -1) {
@@ -1977,6 +1969,41 @@ function print_footer(repDocObj, texts, userParam) {
 //====================================================================//
 // OTHER UTILITIES FUNCTIONS
 //====================================================================//
+function getQuantityDecimals(invoiceObj) {
+  /*
+    For the given invoice check the decimal used for the quantity.
+    Decimals can be 2 or 4.
+    Returns the greater value.
+  */
+  var arr = [];
+  var decimals = "";
+  for (var i = 0; i < invoiceObj.items.length; i++) { //check the qty of each item of the invoice
+    var item = invoiceObj.items[i];
+    var qty = item.quantity;
+    var res = qty.split(".");
+    if (res[1] && res[1] !== "0000" && res[1].substring(1,4) !== "000" && res[1].substring(2,4) !== "00") {
+      decimals = 4;
+      //Banana.console.log(res[1] + " => " + decimals);
+    } else {
+      decimals = 2;
+      //Banana.console.log(res[1] + " => " + decimals);
+    }
+    arr.push(decimals);
+  }
+  //Remove duplicates
+  for (var i = 0; i < arr.length; i++) {
+    for (var x = i+1; x < arr.length; x++) {
+      if (arr[x] === arr[i]) {
+        arr.splice(x,1);
+        --x;
+      }
+    }
+  }
+  arr.sort();
+  arr.reverse();
+  return arr[0]; //first element is the bigger
+}
+
 function bananaRequiredVersion(requiredVersion, expmVersion) {
 
   var language = "en";
@@ -2413,53 +2440,48 @@ function set_variables(variables, userParam) {
     Sets all the variables values.
   */
 
+  /* Variable that sets the decimals of the Quantity column */
   variables.decimals_quantity = "";
+  /* Variable that sets the decimals of the Unit Price column */
   variables.decimals_unit_price = 2;
+  /* Variable that sets the decimals of the Amount column */
   variables.decimals_amounts = 2;
-
-
-  /* General */
+  /* Variables that set the colors */
   variables.$text_color = userParam.text_color;
   variables.$background_color_details_header = userParam.background_color_details_header;
   variables.$text_color_details_header = userParam.text_color_details_header;
   variables.$background_color_alternate_lines = userParam.background_color_alternate_lines;
-  
+  /* Variables that set the font */
   variables.$font_family = userParam.font_family;
   variables.$font_size = userParam.font_size+"pt";
-  
-  /* Header */
+  /* Variables that set margins and text alignment of the Invoice Header */
   variables.$margin_top_header = "10mm";
   variables.$margin_right_header = "10mm";
   variables.$margin_left_header = "20mm";
   variables.$text_align_header = "right";
-
-  /* Info invoice */
+  /* Variables that set the margins and paddings of the Invoice Information */
   variables.$margin_top_info = "45mm";
   variables.$margin_right_info = "10mm";
   variables.$margin_left_info = "20mm";
   variables.$padding_top = "0px";
   variables.$padding_bottom = "0px";
-
-  /* Address invoice */
+  /* Variables that set font size, text alignment, borders and margins of the Invoice Address */
   variables.$font_size_sender_address = "7pt";
   variables.$text_align_sender_address = "center";
   variables.$border_bottom_sender_address = "1px solid black";
   variables.$margin_top_address = "45mm";
   variables.$margin_right_address = "10mm";
   variables.$margin_left_address = "123mm";
-
-  /* Shipping address */
+  /* Variables that set margins of the Invoice Shipping Address */
   variables.$margin_top_shipping_address = "75mm";
   variables.$margin_right_shipping_address = "10mm";
   variables.$margin_left_shipping_address = "20mm";
-
-  /* Text begin */
+  /* Variables that set the font size and margins of the Invoice Begin Text */
   variables.$font_size_title = userParam.font_size*1.4 +"pt";
   variables.$margin_top_text_begin = "120mm";
   variables.$margin_right_text_begin = "10mm";
   variables.$margin_left_text_begin = "23mm";
-
-  /* Details invoice */
+  /* Variables that set font size, margins, padding and borders of the Invoice Details */
   variables.$font_size_total = userParam.font_size*1.2 +"pt";
   variables.$margin_top_details_first_page = "140mm";
   variables.$margin_top_details_other_pages = "90mm";
@@ -2469,8 +2491,7 @@ function set_variables(variables, userParam) {
   variables.$padding_right = "5px";
   variables.$padding_left = "5px";
   variables.$border_bottom_total = "1px double";
-
-  /* Footer */
+  /* Variables that set the font size, margins and borders of the Invoice Footer */
   variables.$font_size_footer = "8pt";
   variables.$margin_right_footer = "10mm";
   variables.$margin_bottom_footer = "20mm";
@@ -2818,11 +2839,11 @@ function setInvoiceTexts(language) {
     texts.payment_terms_label = "Bezahlung";
     texts.page = "Seite";
     texts.credit_note = "Gutschrift";
-    texts.column_description = "Beschreibung";
-    texts.column_quantity = "Menge";
-    texts.column_reference_unit = "Referenzeinheit";
-    texts.column_unit_price = "Preiseinheit";
-    texts.column_amount = "Betrag";
+    texts.column_description = "Description";
+    texts.column_quantity = "Quantity";
+    texts.column_reference_unit = "ReferenceUnit";
+    texts.column_unit_price = "UnitPrice";
+    texts.column_amount = "Amount";
     texts.description = "Beschreibung";
     texts.quantity = "Menge";
     texts.reference_unit = "Einheit";
@@ -2947,10 +2968,10 @@ function setInvoiceTexts(language) {
     texts.page = "Page";
     texts.credit_note = "Note de crédit";
     texts.column_description = "Description";
-    texts.column_quantity = "Quantité";
-    texts.column_reference_unit = "RéférenceUnité";
-    texts.column_unit_price = "PrixUnitaire";
-    texts.column_amount = "Montant";
+    texts.column_quantity = "Quantity";
+    texts.column_reference_unit = "ReferenceUnit";
+    texts.column_unit_price = "UnitPrice";
+    texts.column_amount = "Amount";
     texts.description = "Description";
     texts.quantity = "Quantité";
     texts.reference_unit = "Unité";
@@ -3074,11 +3095,11 @@ function setInvoiceTexts(language) {
     texts.payment_terms_label = "付款";
     texts.page = "页";
     texts.credit_note = "信用票据";
-    texts.column_description = "摘要";
-    texts.column_quantity = "数量";
-    texts.column_reference_unit = "参考单位";
-    texts.column_unit_price = "单价";
-    texts.column_amount = "金额";
+    texts.column_description = "Description";
+    texts.column_quantity = "Quantity";
+    texts.column_reference_unit = "ReferenceUnit";
+    texts.column_unit_price = "UnitPrice";
+    texts.column_amount = "Amount";
     texts.description = "摘要";
     texts.quantity = "数量";
     texts.reference_unit = "单位";
@@ -3202,11 +3223,11 @@ function setInvoiceTexts(language) {
     texts.payment_terms_label = "Betaling";
     texts.page = "Pagina";
     texts.credit_note = "Credit nota";
-    texts.column_description = "Beschrijving";
-    texts.column_quantity = "Hoeveelheid";
-    texts.column_reference_unit = "Eenheidsreferentie ";
-    texts.column_unit_price = "Eenheidsprijs";
-    texts.column_amount = "Bedrag";
+    texts.column_description = "Description";
+    texts.column_quantity = "Quantity";
+    texts.column_reference_unit = "ReferenceUnit";
+    texts.column_unit_price = "UnitPrice";
+    texts.column_amount = "Amount";
     texts.description = "Beschrijving";
     texts.quantity = "Hoeveelheid";
     texts.reference_unit = "Eenheid";
