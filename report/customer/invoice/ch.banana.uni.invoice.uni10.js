@@ -540,7 +540,7 @@ function convertParam(userParam) {
 
   for (var i = 0; i < langCodes.length; i++) {
     var langCode = langCodes[i];
-    if (langCode === "it" || langCode === "fr" || langCode === "de" || langCode === "en" || langCode === "nl" || langCode === "zh" || langCode === "pt" || langCode === "es") {
+    if (langCode === "it" || langCode === "fr" || langCode === "de" || langCode === "en" || langCode === "nl" || langCode === "zh" || langCode === "pt") {
       var langCodeTitle = langCode;
       var langTexts = setInvoiceTexts(langCode);
     }
@@ -971,7 +971,7 @@ function initParam() {
   for (var i = 0; i < langCodes.length; i++) {
 
     // Use texts translations
-    if (langCodes[i] === "it" || langCodes[i] === "fr" || langCodes[i] === "de" || langCodes[i] === "en" || langCodes[i] === "nl" || langCodes[i] === "zh" || langCodes[i] === "pt" || langCodes[i] === "es") {
+    if (langCodes[i] === "it" || langCodes[i] === "fr" || langCodes[i] === "de" || langCodes[i] === "en" || langCodes[i] === "nl" || langCodes[i] === "zh" || langCodes[i] === "pt") {
       var langTexts = setInvoiceTexts(langCodes[i]);
     }
     else {
@@ -3466,8 +3466,6 @@ function setInvoiceTexts(language) {
     texts.param_tooltip_text_color_details_header = "Inserir a cor para o texto do cabeçalho dos detalhes (ex. '#FFFFFF' ou 'White')";
     texts.param_tooltip_background_color_alternate_lines = "Inserir a cor para o fundo das linhas alternadas (ex. '#F0F8FF' ou 'LightSkyBlue')";
     texts.param_tooltip_javascript_filename = "Inserir o nome do ficheiro JavaScript (.js) das colunas 'ID' tabela Documentos (ex. File.js)";
-  }
-  else if (language === 'es') { //?
   }
   else {
     //EN
