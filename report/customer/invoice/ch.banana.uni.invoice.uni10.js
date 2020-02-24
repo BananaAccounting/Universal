@@ -536,6 +536,10 @@ function convertParam(userParam) {
   if (langCodes.includes(lang)) {
     langCodes.splice(langCodes.indexOf(lang),1);
     langCodes.unshift(lang);
+  } else {
+    lang = 'en';
+    langCodes.splice(langCodes.indexOf('en'),1);
+    langCodes.unshift('en');
   }
 
   for (var i = 0; i < langCodes.length; i++) {
@@ -1213,6 +1217,10 @@ function printDocument(jsonInvoice, repDocObj, repStyleObj) {
     }
     if (lang.length <= 0) {
       lang = invoiceObj.document_info.locale;
+    }
+    //Check that lan is in parameter languages
+    if (userParam.languages.indexOf(lang) < 0) {
+      lang = 'en';
     }
     var texts = setInvoiceTexts(lang);
     
