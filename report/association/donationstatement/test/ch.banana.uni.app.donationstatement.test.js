@@ -16,7 +16,7 @@
 
 // @id = ch.banana.uni.app.donationstatement.test
 // @api = 1.0
-// @pubdate = 2019-02-22
+// @pubdate = 2020-03-10
 // @publisher = Banana.ch SA
 // @description = <TEST ch.banana.uni.app.donationstatement.js>
 // @task = app.command
@@ -89,6 +89,8 @@ ReportTest.prototype.testBananaApp = function() {
   userParam.printLogo = false;
   userParam.signatureImage = '';
   userParam.imageHeight = '';
+  userParam.printHeaderLogo = false;
+  userParam.headerLogoName = "";
   this.report_test(banDoc, "2018-01-01", "2018-12-31", userParam, lang, "Whole year report");
   this.report_test(banDoc, "2018-01-01", "2018-03-31", userParam, lang, "Whole year report");
   this.report_test(banDoc, "2018-01-01", "2018-06-30", userParam, lang, "Whole year report");
@@ -113,6 +115,8 @@ ReportTest.prototype.testBananaApp = function() {
   userParam.printLogo = false;
   userParam.signatureImage = '';
   userParam.imageHeight = '';
+  userParam.printHeaderLogo = false;
+  userParam.headerLogoName = "";
   this.report_test(banDoc, "2018-01-01", "2018-12-31", userParam, lang, "Whole year report");
   this.report_test(banDoc, "2018-01-01", "2018-03-31", userParam, lang, "Whole year report");
   this.report_test(banDoc, "2018-07-01", "2018-12-31", userParam, lang, "Whole year report");
@@ -137,6 +141,8 @@ ReportTest.prototype.testBananaApp = function() {
   userParam.printLogo = false;
   userParam.signatureImage = '';
   userParam.imageHeight = '';
+  userParam.printHeaderLogo = false;
+  userParam.headerLogoName = "";
   this.report_test(banDoc, "2018-01-01", "2018-12-31", userParam, lang, "Whole year report");
   this.report_test(banDoc, "2018-01-01", "2018-03-31", userParam, lang, "Whole year report");
   this.report_test(banDoc, "2018-01-01", "2018-06-30", userParam, lang, "Whole year report");
@@ -161,6 +167,8 @@ ReportTest.prototype.testBananaApp = function() {
   userParam.printLogo = false;
   userParam.signatureImage = '';
   userParam.imageHeight = '';
+  userParam.printHeaderLogo = false;
+  userParam.headerLogoName = "";
   this.report_test(banDoc, "2018-01-01", "2018-12-31", userParam, lang, "Whole year report");
   this.report_test(banDoc, "2018-01-01", "2018-03-31", userParam, lang, "Whole year report");
   this.report_test(banDoc, "2018-01-01", "2018-06-30", userParam, lang, "Whole year report");
@@ -185,6 +193,8 @@ ReportTest.prototype.testBananaApp = function() {
   userParam.printLogo = false;
   userParam.signatureImage = '';
   userParam.imageHeight = '';
+  userParam.printHeaderLogo = false;
+  userParam.headerLogoName = "";
   this.report_test(banDoc, "2018-01-01", "2018-12-31", userParam, lang, "Whole year report");
   this.report_test(banDoc, "2018-01-01", "2018-03-31", userParam, lang, "Whole year report");
   this.report_test(banDoc, "2018-01-01", "2018-06-30", userParam, lang, "Whole year report");
@@ -209,6 +219,8 @@ ReportTest.prototype.testBananaApp = function() {
   userParam.printLogo = false;
   userParam.signatureImage = '';
   userParam.imageHeight = '';
+  userParam.printHeaderLogo = false;
+  userParam.headerLogoName = "";
   this.report_test(banDoc, "2018-01-01", "2018-12-31", userParam, lang, "Whole year report");
   this.report_test(banDoc, "2018-01-01", "2018-03-31", userParam, lang, "Whole year report");
   this.report_test(banDoc, "2018-01-01", "2018-06-30", userParam, lang, "Whole year report");
@@ -233,6 +245,8 @@ ReportTest.prototype.testBananaApp = function() {
   userParam.printLogo = false;
   userParam.signatureImage = '';
   userParam.imageHeight = '';
+  userParam.printHeaderLogo = false;
+  userParam.headerLogoName = "";
   this.report_test(banDoc, "2018-01-01", "2018-12-31", userParam, lang, "Whole year report");
   this.report_test(banDoc, "2018-01-01", "2018-03-31", userParam, lang, "Whole year report");
   this.report_test(banDoc, "2018-01-01", "2018-06-30", userParam, lang, "Whole year report");
@@ -257,6 +271,8 @@ ReportTest.prototype.testBananaApp = function() {
   userParam.printLogo = false;
   userParam.signatureImage = '';
   userParam.imageHeight = '';
+  userParam.printHeaderLogo = false;
+  userParam.headerLogoName = "";
   this.report_test(banDoc, "2018-01-01", "2018-03-31", userParam, lang, "Whole year report");
 
 }
