@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.uni.invoice.uni10
 // @api = 1.0
-// @pubdate = 2020-01-27
+// @pubdate = 2020-03-17
 // @publisher = Banana.ch SA
 // @description = [UNI10] Layout 10 (BETA)
 // @description.it = [UNI10] Layout 10 (BETA)
@@ -757,7 +757,7 @@ function convertParam(userParam) {
     currentParam.name = langCode+'_footer_left';
     currentParam.parentObject = langCode;
     currentParam.title = langTexts[langCodeTitle+'_param_footer_left'];
-    currentParam.type = 'string';
+    currentParam.type = 'multilinestring';
     currentParam.value = userParam[langCode+'_footer_left'] ? userParam[langCode+'_footer_left'] : '';
     currentParam.defaultvalue = langTexts.invoice;
     currentParam.tooltip = langTexts['param_tooltip_footer'];
@@ -771,7 +771,7 @@ function convertParam(userParam) {
     currentParam.name = langCode+'_footer_center';
     currentParam.parentObject = langCode;
     currentParam.title = langTexts[langCodeTitle+'_param_footer_center'];
-    currentParam.type = 'string';
+    currentParam.type = 'multilinestring';
     currentParam.value = userParam[langCode+'_footer_center'] ? userParam[langCode+'_footer_center'] : '';
     currentParam.defaultvalue = '';
     currentParam.tooltip = langTexts['param_tooltip_footer'];
@@ -785,7 +785,7 @@ function convertParam(userParam) {
     currentParam.name = langCode+'_footer_right';
     currentParam.parentObject = langCode;
     currentParam.title = langTexts[langCodeTitle+'_param_footer_right'];
-    currentParam.type = 'string';
+    currentParam.type = 'multilinestring';
     currentParam.value = userParam[langCode+'_footer_right'] ? userParam[langCode+'_footer_right'] : '';
     currentParam.defaultvalue = langTexts.page+' <'+langTexts.page+'>'
     currentParam.tooltip = langTexts['param_tooltip_footer'];
