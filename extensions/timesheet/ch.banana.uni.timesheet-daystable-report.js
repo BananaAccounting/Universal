@@ -201,7 +201,7 @@ function printTimeSheetJournal(banDoc, userParam, columns, totals, year) {
     for (var i = monthStartDate; i <= monthEndDate; i++) {
         printTableMonth(texts, userParam, columns, totals, report, i, year);
     }
-    printTableMonth(texts, userParam, columns, totals, report, "TotalYear", year);
+    printTableTotal(texts, userParam, columns, totals, report, "TotalYear", year);
     printFooter(report);
 
     return report;
@@ -211,12 +211,17 @@ function printHeader(banDoc, report, userParam, texts) {
     var headerleft = banDoc.info("Base","HeaderLeft");
     var pageHeader = report.getHeader();
     var paragraph = pageHeader.addParagraph("","center");
-    paragraph.addText(headerleft, "bold");
-    paragraph.addText(" (", "");
-    if (userParam.id_employee) {
-        paragraph.addText(userParam.id_employee + ", ", "");
-    }
-    paragraph.addText(texts.period + ": " + Banana.Converter.toLocaleDateFormat(userParam.selectionStartDate) + " - " + Banana.Converter.toLocaleDateFormat(userParam.selectionEndDate) + ")", "");
+    // paragraph.addText(headerleft, "bold");
+    // paragraph.addText(" (", "");
+    // if (userParam.id_employee) {
+    //     paragraph.addText(userParam.id_employee + ", ", "");
+    // }
+    // paragraph.addText(texts.period + ": " + Banana.Converter.toLocaleDateFormat(userParam.selectionStartDate) + " - " + Banana.Converter.toLocaleDateFormat(userParam.selectionEndDate) + ")", "");
+    pageHeader.addParagraph(headerleft, "heading bold");
+    pageHeader.addParagraph(userParam.id_employee, "heading");
+    pageHeader.addParagraph(texts.period + ": " + Banana.Converter.toLocaleDateFormat(userParam.selectionStartDate) + " - " + Banana.Converter.toLocaleDateFormat(userParam.selectionEndDate), "heading");
+    pageHeader.addParagraph(" ","");
+    pageHeader.addParagraph(" ","");
 }
 
 function printFooter(report) {
@@ -228,12 +233,7 @@ function printFooter(report) {
 
 function printTableMonth(texts, userParam, columns, totals, report, month, year) {
     report.addParagraph(texts.decimalValues,'');
-    
-    if (month === "TotalYear") {
-        report.addParagraph(texts.totalYear + ": " + year);
-    } else {
-        report.addParagraph(texts.month + ": " + month + ", " + texts.year + ": " + year);
-    }
+    report.addParagraph(texts.month + ": " + month + ", " + texts.year + ": " + year);
 
     var table = report.addTable("table01");
     var col1 = table.addColumn("col1");
@@ -280,14 +280,14 @@ function printTableMonth(texts, userParam, columns, totals, report, month, year)
         }
         var style = "header center";
         if (String(totals[month]["Festive"][i]).indexOf('0') >= 0) {
-            style += " red"
+            style += " red";
         }
         else if (String(totals[month]["Festive"][i]).indexOf('1') >= 0) {
-            style += " blue"
+            style += " blue";
         }
         tableRow.addCell(day, style, 1);
     }
-    tableRow.addCell('Total', 'header', 1);
+    tableRow.addCell(texts.total, 'header', 1);
     for (c = 0; c < columns.length; c++) {
         tableRow = table.addRow();
         columnName = columns[c];
@@ -340,8 +340,67 @@ function printTableMonth(texts, userParam, columns, totals, report, month, year)
         tableRow.addCell(value, "right");
     }
     report.addParagraph('  ');
+    report.addParagraph('  ');
 }
 
+function printTableTotal(texts, userParam, columns, totals, report, month, year) {
+    report.addParagraph(texts.decimalValues,'');
+    report.addParagraph(texts.totalYear + ": " + year);
+    
+    var table = report.addTable("table02");
+    var col1 = table.addColumn("coltot1");
+    var col2 = table.addColumn("coltot2");
+    tableRow = table.addRow();
+
+    /* Columns titles */
+    tableRow.addCell(texts.element, 'header', 1);
+    tableRow.addCell(texts.total, 'header', 1);
+    for (c = 0; c < columns.length; c++) {
+        tableRow = table.addRow();
+        columnName = columns[c];
+
+        var colText = "";
+        if (columnName === "TimeWorkedTotal") {
+            colText = texts.param_timeWorkedTotal;
+        }
+        else if (columnName === "TimeAbsenceSick") {
+            colText = texts.param_timeAbsenceSick;
+        }
+        else if (columnName === "TimeAbsenceHoliday") {
+            colText = texts.param_timeAbsenceHoliday;
+        }
+        else if (columnName === "TimeAbsenceService") {
+            colText = texts.param_timeAbsenceService;
+        }
+        else if (columnName === "TimeAbsenceOther") {
+            colText = texts.param_timeAbsenceOther;
+        }
+        else if (columnName === "TimeAbsenceTotal") {
+            colText = texts.param_timeAbsenceTotal;
+        }
+        else if (columnName === "TimeAdjustment") {
+            colText = texts.param_timeAdjustment;
+        }
+        else if (columnName === "TimeDayTotal") {
+            colText = texts.param_timeDayTotal;
+        }
+        else if (columnName === "TimeDueDay") {
+            colText = texts.param_timeDueDay;
+        }
+        else if (columnName === "TimeDifference") {
+            colText = texts.param_timeDifference;
+        }
+        else {
+            colText = columnName
+        }
+
+        tableRow.addCell(colText);
+
+        value = convertToHourDecimals(Number(totals[month][columnName]["TotalMonth"]));
+        //value = convertToHoursMinutes(Number(totals[month][columnName]["TotalMonth"]));
+        tableRow.addCell(value, "right");
+    }
+}
 // Month here is 1-indexed (January is 1, February is 2, etc). This is
 // because we're using 0 as the day so that it returns the last day
 // of the last month, so you have to add 1 to the month number 
@@ -1047,7 +1106,7 @@ function createStyleSheet(userParam) {
     var stylesheet = Banana.Report.newStyleSheet();
 
     var pageStyle = stylesheet.addStyle("@page");
-    pageStyle.setAttribute("margin", "10mm 10mm 9mm 10mm");
+    pageStyle.setAttribute("margin", "15mm 10mm 15mm 10mm");
     pageStyle.setAttribute("size", "landscape");
 
     stylesheet.addStyle("body", "font-size: 7pt; font-family: Helvetica");
@@ -1057,47 +1116,52 @@ function createStyleSheet(userParam) {
     stylesheet.addStyle(".header", "background-color:#F0F8FF");
     stylesheet.addStyle(".red", "color:red");
     stylesheet.addStyle(".blue", "color:blue");
-    stylesheet.addStyle(".heading", "font-size:10pt");   
+    stylesheet.addStyle(".heading", "font-size:9pt");   
     stylesheet.addStyle(".footer", "text-align:center;");
 
 
     var tableStyle = stylesheet.addStyle(".table01");
     stylesheet.addStyle(".col1", "width:12%");
-    stylesheet.addStyle(".col2", "width:3%");
-    stylesheet.addStyle(".col3", "width:3%");
-    stylesheet.addStyle(".col4", "width:3%");
-    stylesheet.addStyle(".col5", "width:3%");
-    stylesheet.addStyle(".col6", "width:3%");
-    stylesheet.addStyle(".col7", "width:3%");
-    stylesheet.addStyle(".col8", "width:3%");
-    stylesheet.addStyle(".col9", "width:3%");
-    stylesheet.addStyle(".col10", "width:3%");
-    stylesheet.addStyle(".col11", "width:3%");
-    stylesheet.addStyle(".col12", "width:3%");
-    stylesheet.addStyle(".col13", "width:3%");
-    stylesheet.addStyle(".col14", "width:3%");
-    stylesheet.addStyle(".col15", "width:3%");
-    stylesheet.addStyle(".col16", "width:3%");
-    stylesheet.addStyle(".col17", "width:3%");
-    stylesheet.addStyle(".col18", "width:3%");
-    stylesheet.addStyle(".col19", "width:3%");
-    stylesheet.addStyle(".col20", "width:3%");
-    stylesheet.addStyle(".col21", "width:3%");
-    stylesheet.addStyle(".col22", "width:3%");
-    stylesheet.addStyle(".col23", "width:3%");
-    stylesheet.addStyle(".col24", "width:3%");
-    stylesheet.addStyle(".col25", "width:3%");
-    stylesheet.addStyle(".col26", "width:3%");
-    stylesheet.addStyle(".col27", "width:3%");
-    stylesheet.addStyle(".col28", "width:3%");
-    stylesheet.addStyle(".col29", "width:3%");
-    stylesheet.addStyle(".col30", "width:3%");
-    stylesheet.addStyle(".col31", "width:3%");
-    stylesheet.addStyle(".col32", "width:3%");
-    stylesheet.addStyle(".col33", "width:4%");
+    stylesheet.addStyle(".col2").setAttribute("width-sym", "daycol");
+    stylesheet.addStyle(".col3").setAttribute("width-sym", "daycol");
+    stylesheet.addStyle(".col4").setAttribute("width-sym", "daycol");
+    stylesheet.addStyle(".col5").setAttribute("width-sym", "daycol");
+    stylesheet.addStyle(".col6").setAttribute("width-sym", "daycol");
+    stylesheet.addStyle(".col7").setAttribute("width-sym", "daycol");
+    stylesheet.addStyle(".col8").setAttribute("width-sym", "daycol");
+    stylesheet.addStyle(".col9").setAttribute("width-sym", "daycol");
+    stylesheet.addStyle(".col10").setAttribute("width-sym", "daycol");
+    stylesheet.addStyle(".col11").setAttribute("width-sym", "daycol");
+    stylesheet.addStyle(".col12").setAttribute("width-sym", "daycol");
+    stylesheet.addStyle(".col13").setAttribute("width-sym", "daycol");
+    stylesheet.addStyle(".col14").setAttribute("width-sym", "daycol");
+    stylesheet.addStyle(".col15").setAttribute("width-sym", "daycol");
+    stylesheet.addStyle(".col16").setAttribute("width-sym", "daycol");
+    stylesheet.addStyle(".col17").setAttribute("width-sym", "daycol");
+    stylesheet.addStyle(".col18").setAttribute("width-sym", "daycol");
+    stylesheet.addStyle(".col19").setAttribute("width-sym", "daycol");
+    stylesheet.addStyle(".col20").setAttribute("width-sym", "daycol");
+    stylesheet.addStyle(".col21").setAttribute("width-sym", "daycol");
+    stylesheet.addStyle(".col22").setAttribute("width-sym", "daycol");
+    stylesheet.addStyle(".col23").setAttribute("width-sym", "daycol");
+    stylesheet.addStyle(".col24").setAttribute("width-sym", "daycol");
+    stylesheet.addStyle(".col25").setAttribute("width-sym", "daycol");
+    stylesheet.addStyle(".col26").setAttribute("width-sym", "daycol");
+    stylesheet.addStyle(".col27").setAttribute("width-sym", "daycol");
+    stylesheet.addStyle(".col28").setAttribute("width-sym", "daycol");
+    stylesheet.addStyle(".col29").setAttribute("width-sym", "daycol");
+    stylesheet.addStyle(".col30").setAttribute("width-sym", "daycol");
+    stylesheet.addStyle(".col31").setAttribute("width-sym", "daycol");
+    stylesheet.addStyle(".col32").setAttribute("width-sym", "daycol");
+    stylesheet.addStyle(".col33").setAttribute("width-sym", "totcol");
     tableStyle.setAttribute("width", "100%");
-
     stylesheet.addStyle("table.table01 td", "border:thin solid black;");
+
+    var table2Style = stylesheet.addStyle(".table02");
+    stylesheet.addStyle(".coltot1", "width:12%");
+    stylesheet.addStyle(".coltot2").setAttribute("width-sym", "totcol");
+    tableStyle.setAttribute("width", "100%");
+    stylesheet.addStyle("table.table02 td", "border:thin solid black;");
 
     return stylesheet;
 }

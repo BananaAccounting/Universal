@@ -24,11 +24,15 @@
 \begin{test}{testBananaExtensions}
 \textvalue{This test will tests the Banana Extension ch.banana.uni.timesheet-daystable-report.js}\\
 \begin{reportvalue}{TEST - Timesheet Daystable Report}
-Mario Rossi  ( AVS: 123.4567.8910.11,  Periodo: 01.03.2020 - 30.04.2020) \\
+Mario Rossi \\
+AVS: 123.4567.8910.11 \\
+Periodo: 01.03.2020 - 30.04.2020 \\
+  \\
+  \\
 Valori di tempo decimali \\
 Mese: 3, Anno: 2020 \\
 \begin{longtable}[l]{ l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l }
-Elemento  & 1  & 2  & 3  & 4  & 5  & 6  & 7  & 8  & 9  & 10  & 11  & 12  & 13  & 14  & 15  & 16  & 17  & 18  & 19  & 20  & 21  & 22  & 23  & 24  & 25  & 26  & 27  & 28  & 29  & 30  & 31  & Total \\
+Elemento  & 1  & 2  & 3  & 4  & 5  & 6  & 7  & 8  & 9  & 10  & 11  & 12  & 13  & 14  & 15  & 16  & 17  & 18  & 19  & 20  & 21  & 22  & 23  & 24  & 25  & 26  & 27  & 28  & 29  & 30  & 31  & Totale \\
 Tempo lavorato totale  &  & 8.00  & 8.00  & 8.00  & 8.00  & 8.00  &  &  & 8.00  & 8.00  & 8.00  & 8.00  & 8.00  &  &  & 4.00  & 3.00  & 3.00  &  &  &  &  &  &  &  &  &  &  &  &  &  & 90.00 \\
 Assenza per malattia  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
 Assenza per vacanza  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
@@ -41,10 +45,11 @@ Dovuto per la giornata  &  & 8.00  & 8.00  & 8.00  & 8.00  & 8.00  &  &  & 8.00 
 Differenza giorno  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & -8.00  & -8.00  & -8.00  & -8.00  & -8.00  &  &  & -8.00  & -8.00  & -56.00 \\
 \end{longtable}
    \\
+   \\
 Valori di tempo decimali \\
 Mese: 4, Anno: 2020 \\
 \begin{longtable}[l]{ l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l }
-Elemento  & 1  & 2  & 3  & 4  & 5  & 6  & 7  & 8  & 9  & 10  & 11  & 12  & 13  & 14  & 15  & 16  & 17  & 18  & 19  & 20  & 21  & 22  & 23  & 24  & 25  & 26  & 27  & 28  & 29  & 30  &  & Total \\
+Elemento  & 1  & 2  & 3  & 4  & 5  & 6  & 7  & 8  & 9  & 10  & 11  & 12  & 13  & 14  & 15  & 16  & 17  & 18  & 19  & 20  & 21  & 22  & 23  & 24  & 25  & 26  & 27  & 28  & 29  & 30  &  & Totale \\
 Tempo lavorato totale  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
 Assenza per malattia  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
 Assenza per vacanza  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
@@ -57,22 +62,22 @@ Dovuto per la giornata  & 8.00  & 8.00  & 8.00  &  &  & 8.00  & 8.00  & 8.00  & 
 Differenza giorno  & -8.00  & -8.00  & -8.00  &  &  & -8.00  & -8.00  & -8.00  & -8.00  & -8.00  &  &  &  & -8.00  & -8.00  & -8.00  & -8.00  &  &  & -8.00  & -8.00  & -8.00  & -8.00  & -8.00  &  &  & -8.00  & -8.00  & -8.00  & -8.00  &  & -168.00 \\
 \end{longtable}
    \\
+   \\
 Valori di tempo decimali \\
 Totale anno: 2020 \\
-\begin{longtable}[l]{ l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l }
-Elemento  & 1  & 2  & 3  & 4  & 5  & 6  & 7  & 8  & 9  & 10  & 11  & 12  & 13  & 14  & 15  & 16  & 17  & 18  & 19  & 20  & 21  & 22  & 23  & 24  & 25  & 26  & 27  & 28  & 29  & 30  & 31  & Total \\
-Tempo lavorato totale  &  & 8.00  & 16.00  & 16.00  & 16.00  & 16.00  & 16.00  & 8.00  & 16.00  & 24.00  & 16.00  & 16.00  & 24.00  & 16.00  & 8.00  & 12.00  & 19.00  & 11.00  & 8.00  & 16.00  & 16.00  & 8.00  & 8.00  & 16.00  & 8.00  & 8.00  & 16.00  & 16.00  & 8.00  & 8.00  & 8.00  & 402.00 \\
-Assenza per malattia  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
-Assenza per vacanza  &  & 8.00  & 8.00  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & 16.00 \\
-Assenza per servizio  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
-Ore perse / Lavoro ridotto  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & 4.00  & 5.00  & 5.00  &  &  &  &  &  &  &  &  &  &  &  &  &  & 14.00 \\
-Assenza totale  &  & 8.00  & 8.00  &  &  &  &  &  &  &  &  &  &  &  &  & 4.00  & 5.00  & 5.00  &  &  &  &  &  &  &  &  &  &  &  &  &  & 30.00 \\
-Aggiustamento  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
-Tempo giorno totale  &  & 16.00  & 24.00  & 16.00  & 16.00  & 16.00  & 16.00  & 8.00  & 16.00  & 24.00  & 16.00  & 16.00  & 24.00  & 16.00  & 8.00  & 16.00  & 24.00  & 16.00  & 8.00  & 16.00  & 16.00  & 8.00  & 8.00  & 16.00  & 8.00  & 8.00  & 16.00  & 16.00  & 8.00  & 8.00  & 8.00  & 432.00 \\
-Dovuto per la giornata  & 40.00  & 72.00  & 80.00  & 64.00  & 56.00  & 64.00  & 72.00  & 56.00  & 72.00  & 80.00  & 56.00  & 56.00  & 64.00  & 72.00  & 64.00  & 72.00  & 80.00  & 64.00  & 48.00  & 64.00  & 64.00  & 64.00  & 72.00  & 80.00  & 56.00  & 56.00  & 72.00  & 72.00  & 56.00  & 72.00  & 40.00  & 2000.00 \\
-Differenza giorno  & -40.00  & -56.00  & -56.00  & -48.00  & -40.00  & -48.00  & -56.00  & -48.00  & -56.00  & -56.00  & -40.00  & -40.00  & -40.00  & -56.00  & -56.00  & -56.00  & -56.00  & -48.00  & -40.00  & -48.00  & -48.00  & -56.00  & -64.00  & -64.00  & -48.00  & -48.00  & -56.00  & -56.00  & -48.00  & -64.00  & -32.00  & -1568.00 \\
+\begin{longtable}[l]{ l  l }
+Elemento  & Totale \\
+Tempo lavorato totale  & 402.00 \\
+Assenza per malattia  & \\
+Assenza per vacanza  & 16.00 \\
+Assenza per servizio  & \\
+Ore perse / Lavoro ridotto  & 14.00 \\
+Assenza totale  & 30.00 \\
+Aggiustamento  & \\
+Tempo giorno totale  & 432.00 \\
+Dovuto per la giornata  & 2000.00 \\
+Differenza giorno  & -1568.00 \\
 \end{longtable}
-   \\
 - \#page-nr - \\
 \end{reportvalue}
 \keyvalue{Result}{Passed}
