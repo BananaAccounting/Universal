@@ -211,10 +211,12 @@ function printHeader(banDoc, report, userParam, texts) {
     var headerleft = banDoc.info("Base","HeaderLeft");
     var pageHeader = report.getHeader();
     var paragraph = pageHeader.addParagraph("","center");
-    paragraph.addText(headerleft, "heading bold");
+    paragraph.addText(headerleft, "bold");
+    paragraph.addText(" (", "");
     if (userParam.id_employee) {
-        paragraph.addText(" (" + userParam.id_employee + ")", "");
+        paragraph.addText(userParam.id_employee + ", ", "");
     }
+    paragraph.addText(texts.period + ": " + Banana.Converter.toLocaleDateFormat(userParam.selectionStartDate) + " - " + Banana.Converter.toLocaleDateFormat(userParam.selectionEndDate) + ")", "");
 }
 
 function printFooter(report) {
@@ -954,6 +956,7 @@ function setTexts(language) {
     var texts = {};
 
     if (language === 'it') {
+        texts.period = "Periodo";
         texts.decimalValues = "Valori di tempo decimali";
         texts.month = "Mese";
         texts.totalYear = "Totale anno";
@@ -973,6 +976,7 @@ function setTexts(language) {
         texts.param_timeDifference = "Differenza giorno";
     }
     else if (language === 'de') {
+        texts.period = "Periode";
         texts.decimalValues = "Dezimale Zeitwerte";
         texts.month = "Monat";
         texts.totalYear = "Total Jahr";
@@ -992,6 +996,7 @@ function setTexts(language) {
         texts.param_timeDifference = "Zeitdifferenz Tag";
     }
     else if (language === 'fr') {
+        texts.period = "Période";
         texts.decimalValues = "Valeurs décimales du temps";
         texts.month = "Mois";
         texts.totalYear = "Total Année";
@@ -1011,6 +1016,7 @@ function setTexts(language) {
         texts.param_timeDifference = "Différence jour";
     }
     else {
+        texts.period = "Period";
         texts.decimalValues = "Decimal time values";
         texts.month = "Month";
         texts.totalYear = "Total Year";
@@ -1041,7 +1047,7 @@ function createStyleSheet(userParam) {
     var stylesheet = Banana.Report.newStyleSheet();
 
     var pageStyle = stylesheet.addStyle("@page");
-    pageStyle.setAttribute("margin", "10mm 10mm 6mm 10mm");
+    pageStyle.setAttribute("margin", "10mm 10mm 9mm 10mm");
     pageStyle.setAttribute("size", "landscape");
 
     stylesheet.addStyle("body", "font-size: 7pt; font-family: Helvetica");
