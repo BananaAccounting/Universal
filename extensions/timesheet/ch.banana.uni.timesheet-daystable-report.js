@@ -1,4 +1,4 @@
-// Copyright [2019] [Banana.ch SA - Lugano Switzerland]
+// Copyright [2020] [Banana.ch SA - Lugano Switzerland]
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,13 +14,14 @@
 //
 // @id = ch.banana.uni.timesheet-daystable-report.js
 // @api = 1.0
-// @pubdate = 2020-03-24
+// @pubdate = 2020-04-08
 // @publisher = Banana.ch SA
 // @description = Time Sheet - monthly summary
 // @description.it = Foglio Ore - Riepilogo Mensile
 // @description.fr = Time Sheet - Résumé Mensuel
 // @description.de = Zeiterfassung - Monatliche Zusammenfassung
 // @description.en = Timesheet - Monthly Summary
+// @description.nl = Timesheet - Maandelijks overzicht
 // @task = app.command
 // @doctype = 400.*
 // @docproperties = 
@@ -950,7 +951,7 @@ function initUserParam() {
 function parametersDialog(userParam) {
 
     if (typeof (Banana.Ui.openPropertyEditor) !== 'undefined') {
-        var dialogTitle = "Settings";
+        var dialogTitle = "";
         var convertedParam = convertParam(userParam);
         var pageAnchor = 'dlgSettings';
         if (!Banana.Ui.openPropertyEditor(dialogTitle, convertedParam, pageAnchor)) {
@@ -1073,6 +1074,26 @@ function setTexts(language) {
         texts.param_timeDayTotal = "Temps jour total";
         texts.param_timeDueDay = "Dû pour la journée";
         texts.param_timeDifference = "Différence jour";
+    }
+    else if (language === 'nl') {
+        texts.period = "Periode";
+        texts.decimalValues = "Decimale tijdwaarden";
+        texts.month = "Maand";
+        texts.totalYear = "Totaal jaar";
+        texts.year = "Jaar";
+        texts.element = "Element";
+        texts.total = "Totaal";
+        texts.param_id_employee = "Burgerservicenummer";
+        texts.param_timeWorkedTotal = "Totaal gewerkte tijd";
+        texts.param_timeAbsenceSick = "Verzuim wegens ziekte";
+        texts.param_timeAbsenceHoliday = "Afwezigheid voor vakantie";
+        texts.param_timeAbsenceService = "Openbare dienst";
+        texts.param_timeAbsenceOther = "Niet gewerkte uren ivm COVID-19";
+        texts.param_timeAbsenceTotal = "Totaal afwezig";
+        texts.param_timeAdjustment = "Aanpassing";
+        texts.param_timeDayTotal = "Totaal tijd dag";
+        texts.param_timeDueDay = "Verschuldigd voor de dag";
+        texts.param_timeDifference = "Tijd dag verschil";        
     }
     else {
         texts.period = "Period";
