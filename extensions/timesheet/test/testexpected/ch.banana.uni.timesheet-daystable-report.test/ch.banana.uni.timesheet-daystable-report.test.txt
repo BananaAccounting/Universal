@@ -1,0 +1,86 @@
+%%info_test_name{ch.banana.uni.timesheet-daystable-report.test}
+\documentclass{report}
+\usepackage{longtable}
+\usepackage{color}
+\usepackage{listings}
+\usepackage[margin=1cm]{geometry}
+\begin{document}
+\newenvironment{tablevalue}[2]{\textbf{Table: #1}\begin{longtable}[l]{#2}}{\end{longtable}}
+\newenvironment{reportvalue}[1]{\textbf{Report: #1}\\}{}
+\lstnewenvironment{jsonvalue}[1]{\textbf{Json: #1}\lstset{language=Java}}{}
+\lstnewenvironment{xmlvalue}[1]{\textbf{Xml: #1}\lstset{language=Xml}}{}
+\newcommand{\info}[2]{\textit{#1: #2}\\}
+\newcommand{\fatalerror}[1]{\textbf{\textcolor[rgb]{1,0,0}{Fatal error: #1}}\\}
+\newcommand{\keyvalue}[2]{\textbf{Keyvalue: #1} #2\\}
+\newcommand{\textvalue}[1]{#1\\}
+\newcommand{\excltest}[1]{\\Excluded from compare: #1}
+\newcommand{\lognewpage}{\newpage}
+\newenvironment{testcase}[1]{\section*{Test: #1}}{\newpage}
+\newenvironment{test}[1]{\section*{Test case: #1}}{}
+%Begin test data
+%%SCRIPT{/Users/ivan/Documents/GitHub/Universal/extenstions/timesheet/test/ch.banana.uni.timesheet-daystable-report.test.js}
+%
+\begin{testcase}{TestTimesheetDaystableReport}
+\begin{test}{testBananaExtensions}
+\textvalue{This test will tests the Banana Extension ch.banana.uni.timesheet-daystable-report.js}\\
+\begin{reportvalue}{TEST - Timesheet Daystable Report}
+Mario Rossi \\
+AVS: 123.4567.8910.11 \\
+Periodo: 01.03.2020 - 30.04.2020 \\
+  \\
+  \\
+Valori di tempo decimali \\
+Mese: 3, Anno: 2020 \\
+\begin{longtable}[l]{ l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l }
+Elemento  & 1  & 2  & 3  & 4  & 5  & 6  & 7  & 8  & 9  & 10  & 11  & 12  & 13  & 14  & 15  & 16  & 17  & 18  & 19  & 20  & 21  & 22  & 23  & 24  & 25  & 26  & 27  & 28  & 29  & 30  & 31  & Totale \\
+Tempo lavorato totale  &  & 8.00  & 8.00  & 8.00  & 8.00  & 8.00  &  &  & 8.00  & 8.00  & 8.00  & 8.00  & 8.00  &  &  & 4.00  & 3.00  & 3.00  &  &  &  &  &  &  &  &  &  &  &  &  &  & 90.00 \\
+Assenza per malattia  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+Assenza per vacanza  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+Assenza per servizio  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+Ore perse / Lavoro ridotto  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & 4.00  & 5.00  & 5.00  &  &  &  &  &  &  &  &  &  &  &  &  &  & 14.00 \\
+Assenza totale  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & 4.00  & 5.00  & 5.00  &  &  &  &  &  &  &  &  &  &  &  &  &  & 14.00 \\
+Aggiustamento  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+Tempo giorno totale  &  & 8.00  & 8.00  & 8.00  & 8.00  & 8.00  &  &  & 8.00  & 8.00  & 8.00  & 8.00  & 8.00  &  &  & 8.00  & 8.00  & 8.00  &  &  &  &  &  &  &  &  &  &  &  &  &  & 104.00 \\
+Dovuto per la giornata  &  & 8.00  & 8.00  & 8.00  & 8.00  & 8.00  &  &  & 8.00  & 8.00  & 8.00  & 8.00  & 8.00  &  &  & 8.00  & 8.00  & 8.00  &  &  &  &  & 8.00  & 8.00  & 8.00  & 8.00  & 8.00  &  &  & 8.00  & 8.00  & 160.00 \\
+Differenza giorno  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & -8.00  & -8.00  & -8.00  & -8.00  & -8.00  &  &  & -8.00  & -8.00  & -56.00 \\
+\end{longtable}
+   \\
+   \\
+Valori di tempo decimali \\
+Mese: 4, Anno: 2020 \\
+\begin{longtable}[l]{ l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l }
+Elemento  & 1  & 2  & 3  & 4  & 5  & 6  & 7  & 8  & 9  & 10  & 11  & 12  & 13  & 14  & 15  & 16  & 17  & 18  & 19  & 20  & 21  & 22  & 23  & 24  & 25  & 26  & 27  & 28  & 29  & 30  &  & Totale \\
+Tempo lavorato totale  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+Assenza per malattia  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+Assenza per vacanza  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+Assenza per servizio  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+Ore perse / Lavoro ridotto  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+Assenza totale  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+Aggiustamento  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+Tempo giorno totale  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+Dovuto per la giornata  & 8.00  & 8.00  & 8.00  &  &  & 8.00  & 8.00  & 8.00  & 8.00  & 8.00  &  &  &  & 8.00  & 8.00  & 8.00  & 8.00  &  &  & 8.00  & 8.00  & 8.00  & 8.00  & 8.00  &  &  & 8.00  & 8.00  & 8.00  & 8.00  &  & 168.00 \\
+Differenza giorno  & -8.00  & -8.00  & -8.00  &  &  & -8.00  & -8.00  & -8.00  & -8.00  & -8.00  &  &  &  & -8.00  & -8.00  & -8.00  & -8.00  &  &  & -8.00  & -8.00  & -8.00  & -8.00  & -8.00  &  &  & -8.00  & -8.00  & -8.00  & -8.00  &  & -168.00 \\
+\end{longtable}
+   \\
+   \\
+Valori di tempo decimali \\
+Totale anno: 2020 \\
+\begin{longtable}[l]{ l  l }
+Elemento  & Totale \\
+Tempo lavorato totale  & 402.00 \\
+Assenza per malattia  & \\
+Assenza per vacanza  & 16.00 \\
+Assenza per servizio  & \\
+Ore perse / Lavoro ridotto  & 14.00 \\
+Assenza totale  & 30.00 \\
+Aggiustamento  & \\
+Tempo giorno totale  & 432.00 \\
+Dovuto per la giornata  & 2000.00 \\
+Differenza giorno  & -1568.00 \\
+\end{longtable}
+- \#page-nr - \\
+\end{reportvalue}
+\keyvalue{Result}{Passed}
+\end{test}
+\end{testcase}
+\end{document}

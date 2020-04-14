@@ -24,12 +24,18 @@
 \begin{test}{testBananaApp}
 %****************************************************************************** TEST #1 ******************************************************************************
 \begin{reportvalue}{Whole year report}
-\begin{longtable}[l]{ l  l }
-Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
-   & Sig. \\
-   & Gianpaolo Bianchi \\
-   & Via Beltramina \\
-   & 6962 Viganello \\
+Associazione Sportiva xyz \\
+Pinco Pallino \\
+Via Boschetto 34 \\
+6900 Lugano \\
+Tel. 1112223344 \\
+Web: www.banana.ch \\
+Email: info@banana.ch \\
+\begin{longtable}[l]{ l }
+Sig. \\
+Gianpaolo Bianchi \\
+Via Beltramina \\
+6962 Viganello \\
 \end{longtable}
   \\
   \\
@@ -74,12 +80,11 @@ Con la presente dichiariamo che  Gianpaolo Bianchi, Via Beltramina, 6962 Viganel
 Lugano, 2 ottobre 2018  & Pinco Pallino \\
  & Associazione Sportiva xyz \\
 \end{longtable}
-\begin{longtable}[l]{ l  l }
-Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
-   & Sig. \\
-   & Mario Rossi \\
-   & Via Trevano \\
-   & 6900 Lugano \\
+\begin{longtable}[l]{ l }
+Sig. \\
+Mario Rossi \\
+Via Trevano \\
+6900 Lugano \\
 \end{longtable}
   \\
   \\
@@ -124,12 +129,11 @@ Con la presente dichiariamo che  Mario Rossi, Via Trevano, 6900 Lugano  nel peri
 Lugano, 2 ottobre 2018  & Pinco Pallino \\
  & Associazione Sportiva xyz \\
 \end{longtable}
-\begin{longtable}[l]{ l  l }
-Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
-   & Signora \\
-   & Sara Guidi \\
-   & Via Boschetto 45 \\
-   & 6901 Lugano \\
+\begin{longtable}[l]{ l }
+Signora \\
+Sara Guidi \\
+Via Boschetto 45 \\
+6901 Lugano \\
 \end{longtable}
   \\
   \\
@@ -174,12 +178,11 @@ Con la presente dichiariamo che  Sara Guidi, Via Boschetto 45, 6901 Lugano  nel 
 Lugano, 2 ottobre 2018  & Pinco Pallino \\
  & Associazione Sportiva xyz \\
 \end{longtable}
-\begin{longtable}[l]{ l  l }
-Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
-   & Sig. \\
-   & Voit Ulrich \\
-   & Via alla Chiesa \\
-   & 6800 Mendrisio \\
+\begin{longtable}[l]{ l }
+Sig. \\
+Voit Ulrich \\
+Via alla Chiesa \\
+6800 Mendrisio \\
 \end{longtable}
   \\
   \\
@@ -226,12 +229,18 @@ Lugano, 2 ottobre 2018  & Pinco Pallino \\
 \end{longtable}
 \end{reportvalue}
 \begin{reportvalue}{Whole year report}
-\begin{longtable}[l]{ l  l }
-Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
-   & Sig. \\
-   & Gianpaolo Bianchi \\
-   & Via Beltramina \\
-   & 6962 Viganello \\
+Associazione Sportiva xyz \\
+Pinco Pallino \\
+Via Boschetto 34 \\
+6900 Lugano \\
+Tel. 1112223344 \\
+Web: www.banana.ch \\
+Email: info@banana.ch \\
+\begin{longtable}[l]{ l }
+Sig. \\
+Gianpaolo Bianchi \\
+Via Beltramina \\
+6962 Viganello \\
 \end{longtable}
   \\
   \\
@@ -276,12 +285,11 @@ Con la presente dichiariamo che  Gianpaolo Bianchi, Via Beltramina, 6962 Viganel
 Lugano, 2 ottobre 2018  & Pinco Pallino \\
  & Associazione Sportiva xyz \\
 \end{longtable}
-\begin{longtable}[l]{ l  l }
-Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
-   & Sig. \\
-   & Mario Rossi \\
-   & Via Trevano \\
-   & 6900 Lugano \\
+\begin{longtable}[l]{ l }
+Sig. \\
+Mario Rossi \\
+Via Trevano \\
+6900 Lugano \\
 \end{longtable}
   \\
   \\
@@ -326,12 +334,11 @@ Con la presente dichiariamo che  Mario Rossi, Via Trevano, 6900 Lugano  nel peri
 Lugano, 2 ottobre 2018  & Pinco Pallino \\
  & Associazione Sportiva xyz \\
 \end{longtable}
-\begin{longtable}[l]{ l  l }
-Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
-   & Signora \\
-   & Sara Guidi \\
-   & Via Boschetto 45 \\
-   & 6901 Lugano \\
+\begin{longtable}[l]{ l }
+Signora \\
+Sara Guidi \\
+Via Boschetto 45 \\
+6901 Lugano \\
 \end{longtable}
   \\
   \\
@@ -375,12 +382,11 @@ Con la presente dichiariamo che  Sara Guidi, Via Boschetto 45, 6901 Lugano  nel 
 Lugano, 2 ottobre 2018  & Pinco Pallino \\
  & Associazione Sportiva xyz \\
 \end{longtable}
-\begin{longtable}[l]{ l  l }
-Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
-   & Sig. \\
-   & Voit Ulrich \\
-   & Via alla Chiesa \\
-   & 6800 Mendrisio \\
+\begin{longtable}[l]{ l }
+Sig. \\
+Voit Ulrich \\
+Via alla Chiesa \\
+6800 Mendrisio \\
 \end{longtable}
   \\
   \\
@@ -426,12 +432,18 @@ Lugano, 2 ottobre 2018  & Pinco Pallino \\
 \end{longtable}
 \end{reportvalue}
 \begin{reportvalue}{Whole year report}
-\begin{longtable}[l]{ l  l }
-Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
-   & Sig. \\
-   & Gianpaolo Bianchi \\
-   & Via Beltramina \\
-   & 6962 Viganello \\
+Associazione Sportiva xyz \\
+Pinco Pallino \\
+Via Boschetto 34 \\
+6900 Lugano \\
+Tel. 1112223344 \\
+Web: www.banana.ch \\
+Email: info@banana.ch \\
+\begin{longtable}[l]{ l }
+Sig. \\
+Gianpaolo Bianchi \\
+Via Beltramina \\
+6962 Viganello \\
 \end{longtable}
   \\
   \\
@@ -476,12 +488,11 @@ Con la presente dichiariamo che  Gianpaolo Bianchi, Via Beltramina, 6962 Viganel
 Lugano, 2 ottobre 2018  & Pinco Pallino \\
  & Associazione Sportiva xyz \\
 \end{longtable}
-\begin{longtable}[l]{ l  l }
-Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
-   & Sig. \\
-   & Mario Rossi \\
-   & Via Trevano \\
-   & 6900 Lugano \\
+\begin{longtable}[l]{ l }
+Sig. \\
+Mario Rossi \\
+Via Trevano \\
+6900 Lugano \\
 \end{longtable}
   \\
   \\
@@ -526,12 +537,11 @@ Con la presente dichiariamo che  Mario Rossi, Via Trevano, 6900 Lugano  nel peri
 Lugano, 2 ottobre 2018  & Pinco Pallino \\
  & Associazione Sportiva xyz \\
 \end{longtable}
-\begin{longtable}[l]{ l  l }
-Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
-   & Signora \\
-   & Sara Guidi \\
-   & Via Boschetto 45 \\
-   & 6901 Lugano \\
+\begin{longtable}[l]{ l }
+Signora \\
+Sara Guidi \\
+Via Boschetto 45 \\
+6901 Lugano \\
 \end{longtable}
   \\
   \\
@@ -576,12 +586,11 @@ Con la presente dichiariamo che  Sara Guidi, Via Boschetto 45, 6901 Lugano  nel 
 Lugano, 2 ottobre 2018  & Pinco Pallino \\
  & Associazione Sportiva xyz \\
 \end{longtable}
-\begin{longtable}[l]{ l  l }
-Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
-   & Sig. \\
-   & Voit Ulrich \\
-   & Via alla Chiesa \\
-   & 6800 Mendrisio \\
+\begin{longtable}[l]{ l }
+Sig. \\
+Voit Ulrich \\
+Via alla Chiesa \\
+6800 Mendrisio \\
 \end{longtable}
   \\
   \\
@@ -628,12 +637,18 @@ Lugano, 2 ottobre 2018  & Pinco Pallino \\
 \end{longtable}
 \end{reportvalue}
 \begin{reportvalue}{Whole year report}
-\begin{longtable}[l]{ l  l }
-Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
-   & Sig. \\
-   & Gianpaolo Bianchi \\
-   & Via Beltramina \\
-   & 6962 Viganello \\
+Associazione Sportiva xyz \\
+Pinco Pallino \\
+Via Boschetto 34 \\
+6900 Lugano \\
+Tel. 1112223344 \\
+Web: www.banana.ch \\
+Email: info@banana.ch \\
+\begin{longtable}[l]{ l }
+Sig. \\
+Gianpaolo Bianchi \\
+Via Beltramina \\
+6962 Viganello \\
 \end{longtable}
   \\
   \\
@@ -678,12 +693,11 @@ Con la presente dichiariamo che  Gianpaolo Bianchi, Via Beltramina, 6962 Viganel
 Lugano, 2 ottobre 2018  & Pinco Pallino \\
  & Associazione Sportiva xyz \\
 \end{longtable}
-\begin{longtable}[l]{ l  l }
-Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
-   & Sig. \\
-   & Mario Rossi \\
-   & Via Trevano \\
-   & 6900 Lugano \\
+\begin{longtable}[l]{ l }
+Sig. \\
+Mario Rossi \\
+Via Trevano \\
+6900 Lugano \\
 \end{longtable}
   \\
   \\
@@ -728,12 +742,11 @@ Con la presente dichiariamo che  Mario Rossi, Via Trevano, 6900 Lugano  nel peri
 Lugano, 2 ottobre 2018  & Pinco Pallino \\
  & Associazione Sportiva xyz \\
 \end{longtable}
-\begin{longtable}[l]{ l  l }
-Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
-   & Signora \\
-   & Sara Guidi \\
-   & Via Boschetto 45 \\
-   & 6901 Lugano \\
+\begin{longtable}[l]{ l }
+Signora \\
+Sara Guidi \\
+Via Boschetto 45 \\
+6901 Lugano \\
 \end{longtable}
   \\
   \\
@@ -778,12 +791,11 @@ Con la presente dichiariamo che  Sara Guidi, Via Boschetto 45, 6901 Lugano  nel 
 Lugano, 2 ottobre 2018  & Pinco Pallino \\
  & Associazione Sportiva xyz \\
 \end{longtable}
-\begin{longtable}[l]{ l  l }
-Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
-   & Sig. \\
-   & Voit Ulrich \\
-   & Via alla Chiesa \\
-   & 6800 Mendrisio \\
+\begin{longtable}[l]{ l }
+Sig. \\
+Voit Ulrich \\
+Via alla Chiesa \\
+6800 Mendrisio \\
 \end{longtable}
   \\
   \\
@@ -831,12 +843,18 @@ Lugano, 2 ottobre 2018  & Pinco Pallino \\
 \end{reportvalue}
 %****************************************************************************** TEST #2 ******************************************************************************
 \begin{reportvalue}{Whole year report}
-\begin{longtable}[l]{ l  l }
-Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
-   & Sig. \\
-   & Mario Rossi \\
-   & Via Trevano \\
-   & 6900 Lugano \\
+Associazione Sportiva xyz \\
+Pinco Pallino \\
+Via Boschetto 34 \\
+6900 Lugano \\
+Tel. 1112223344 \\
+Web: www.banana.ch \\
+Email: info@banana.ch \\
+\begin{longtable}[l]{ l }
+Sig. \\
+Mario Rossi \\
+Via Trevano \\
+6900 Lugano \\
 \end{longtable}
   \\
   \\
@@ -863,12 +881,11 @@ Ringraziamo cordialmente. \\
 Lugano, dicembre 2018  & Pinco Pallino \\
  & Associazione Sportiva xyz \\
 \end{longtable}
-\begin{longtable}[l]{ l  l }
-Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
-   & Sig. \\
-   & Gianpaolo Bianchi \\
-   & Via Beltramina \\
-   & 6962 Viganello \\
+\begin{longtable}[l]{ l }
+Sig. \\
+Gianpaolo Bianchi \\
+Via Beltramina \\
+6962 Viganello \\
 \end{longtable}
   \\
   \\
@@ -895,12 +912,11 @@ Ringraziamo cordialmente. \\
 Lugano, dicembre 2018  & Pinco Pallino \\
  & Associazione Sportiva xyz \\
 \end{longtable}
-\begin{longtable}[l]{ l  l }
-Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
-   & Signora \\
-   & Sara Guidi \\
-   & Via Boschetto 45 \\
-   & 6901 Lugano \\
+\begin{longtable}[l]{ l }
+Signora \\
+Sara Guidi \\
+Via Boschetto 45 \\
+6901 Lugano \\
 \end{longtable}
   \\
   \\
@@ -927,12 +943,11 @@ Ringraziamo cordialmente. \\
 Lugano, dicembre 2018  & Pinco Pallino \\
  & Associazione Sportiva xyz \\
 \end{longtable}
-\begin{longtable}[l]{ l  l }
-Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
-   & Sig. \\
-   & Voit Ulrich \\
-   & Via alla Chiesa \\
-   & 6800 Mendrisio \\
+\begin{longtable}[l]{ l }
+Sig. \\
+Voit Ulrich \\
+Via alla Chiesa \\
+6800 Mendrisio \\
 \end{longtable}
   \\
   \\
@@ -961,12 +976,18 @@ Lugano, dicembre 2018  & Pinco Pallino \\
 \end{longtable}
 \end{reportvalue}
 \begin{reportvalue}{Whole year report}
-\begin{longtable}[l]{ l  l }
-Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
-   & Sig. \\
-   & Mario Rossi \\
-   & Via Trevano \\
-   & 6900 Lugano \\
+Associazione Sportiva xyz \\
+Pinco Pallino \\
+Via Boschetto 34 \\
+6900 Lugano \\
+Tel. 1112223344 \\
+Web: www.banana.ch \\
+Email: info@banana.ch \\
+\begin{longtable}[l]{ l }
+Sig. \\
+Mario Rossi \\
+Via Trevano \\
+6900 Lugano \\
 \end{longtable}
   \\
   \\
@@ -993,12 +1014,11 @@ Ringraziamo cordialmente. \\
 Lugano, dicembre 2018  & Pinco Pallino \\
  & Associazione Sportiva xyz \\
 \end{longtable}
-\begin{longtable}[l]{ l  l }
-Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
-   & Sig. \\
-   & Gianpaolo Bianchi \\
-   & Via Beltramina \\
-   & 6962 Viganello \\
+\begin{longtable}[l]{ l }
+Sig. \\
+Gianpaolo Bianchi \\
+Via Beltramina \\
+6962 Viganello \\
 \end{longtable}
   \\
   \\
@@ -1025,12 +1045,11 @@ Ringraziamo cordialmente. \\
 Lugano, dicembre 2018  & Pinco Pallino \\
  & Associazione Sportiva xyz \\
 \end{longtable}
-\begin{longtable}[l]{ l  l }
-Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
-   & Signora \\
-   & Sara Guidi \\
-   & Via Boschetto 45 \\
-   & 6901 Lugano \\
+\begin{longtable}[l]{ l }
+Signora \\
+Sara Guidi \\
+Via Boschetto 45 \\
+6901 Lugano \\
 \end{longtable}
   \\
   \\
@@ -1057,12 +1076,11 @@ Ringraziamo cordialmente. \\
 Lugano, dicembre 2018  & Pinco Pallino \\
  & Associazione Sportiva xyz \\
 \end{longtable}
-\begin{longtable}[l]{ l  l }
-Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
-   & Sig. \\
-   & Voit Ulrich \\
-   & Via alla Chiesa \\
-   & 6800 Mendrisio \\
+\begin{longtable}[l]{ l }
+Sig. \\
+Voit Ulrich \\
+Via alla Chiesa \\
+6800 Mendrisio \\
 \end{longtable}
   \\
   \\
@@ -1091,12 +1109,18 @@ Lugano, dicembre 2018  & Pinco Pallino \\
 \end{longtable}
 \end{reportvalue}
 \begin{reportvalue}{Whole year report}
-\begin{longtable}[l]{ l  l }
-Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
-   & Sig. \\
-   & Mario Rossi \\
-   & Via Trevano \\
-   & 6900 Lugano \\
+Associazione Sportiva xyz \\
+Pinco Pallino \\
+Via Boschetto 34 \\
+6900 Lugano \\
+Tel. 1112223344 \\
+Web: www.banana.ch \\
+Email: info@banana.ch \\
+\begin{longtable}[l]{ l }
+Sig. \\
+Mario Rossi \\
+Via Trevano \\
+6900 Lugano \\
 \end{longtable}
   \\
   \\
@@ -1123,12 +1147,11 @@ Ringraziamo cordialmente. \\
 Lugano, dicembre 2018  & Pinco Pallino \\
  & Associazione Sportiva xyz \\
 \end{longtable}
-\begin{longtable}[l]{ l  l }
-Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
-   & Sig. \\
-   & Gianpaolo Bianchi \\
-   & Via Beltramina \\
-   & 6962 Viganello \\
+\begin{longtable}[l]{ l }
+Sig. \\
+Gianpaolo Bianchi \\
+Via Beltramina \\
+6962 Viganello \\
 \end{longtable}
   \\
   \\
@@ -1155,12 +1178,11 @@ Ringraziamo cordialmente. \\
 Lugano, dicembre 2018  & Pinco Pallino \\
  & Associazione Sportiva xyz \\
 \end{longtable}
-\begin{longtable}[l]{ l  l }
-Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
-   & Signora \\
-   & Sara Guidi \\
-   & Via Boschetto 45 \\
-   & 6901 Lugano \\
+\begin{longtable}[l]{ l }
+Signora \\
+Sara Guidi \\
+Via Boschetto 45 \\
+6901 Lugano \\
 \end{longtable}
   \\
   \\
@@ -1187,12 +1209,11 @@ Ringraziamo cordialmente. \\
 Lugano, dicembre 2018  & Pinco Pallino \\
  & Associazione Sportiva xyz \\
 \end{longtable}
-\begin{longtable}[l]{ l  l }
-Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
-   & Sig. \\
-   & Voit Ulrich \\
-   & Via alla Chiesa \\
-   & 6800 Mendrisio \\
+\begin{longtable}[l]{ l }
+Sig. \\
+Voit Ulrich \\
+Via alla Chiesa \\
+6800 Mendrisio \\
 \end{longtable}
   \\
   \\
@@ -1221,12 +1242,18 @@ Lugano, dicembre 2018  & Pinco Pallino \\
 \end{longtable}
 \end{reportvalue}
 \begin{reportvalue}{Whole year report}
-\begin{longtable}[l]{ l  l }
-Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
-   & Sig. \\
-   & Mario Rossi \\
-   & Via Trevano \\
-   & 6900 Lugano \\
+Associazione Sportiva xyz \\
+Pinco Pallino \\
+Via Boschetto 34 \\
+6900 Lugano \\
+Tel. 1112223344 \\
+Web: www.banana.ch \\
+Email: info@banana.ch \\
+\begin{longtable}[l]{ l }
+Sig. \\
+Mario Rossi \\
+Via Trevano \\
+6900 Lugano \\
 \end{longtable}
   \\
   \\
@@ -1253,12 +1280,11 @@ Ringraziamo cordialmente. \\
 Lugano, dicembre 2018  & Pinco Pallino \\
  & Associazione Sportiva xyz \\
 \end{longtable}
-\begin{longtable}[l]{ l  l }
-Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
-   & Sig. \\
-   & Gianpaolo Bianchi \\
-   & Via Beltramina \\
-   & 6962 Viganello \\
+\begin{longtable}[l]{ l }
+Sig. \\
+Gianpaolo Bianchi \\
+Via Beltramina \\
+6962 Viganello \\
 \end{longtable}
   \\
   \\
@@ -1285,12 +1311,11 @@ Ringraziamo cordialmente. \\
 Lugano, dicembre 2018  & Pinco Pallino \\
  & Associazione Sportiva xyz \\
 \end{longtable}
-\begin{longtable}[l]{ l  l }
-Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
-   & Signora \\
-   & Sara Guidi \\
-   & Via Boschetto 45 \\
-   & 6901 Lugano \\
+\begin{longtable}[l]{ l }
+Signora \\
+Sara Guidi \\
+Via Boschetto 45 \\
+6901 Lugano \\
 \end{longtable}
   \\
   \\
@@ -1317,12 +1342,11 @@ Ringraziamo cordialmente. \\
 Lugano, dicembre 2018  & Pinco Pallino \\
  & Associazione Sportiva xyz \\
 \end{longtable}
-\begin{longtable}[l]{ l  l }
-Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
-   & Sig. \\
-   & Voit Ulrich \\
-   & Via alla Chiesa \\
-   & 6800 Mendrisio \\
+\begin{longtable}[l]{ l }
+Sig. \\
+Voit Ulrich \\
+Via alla Chiesa \\
+6800 Mendrisio \\
 \end{longtable}
   \\
   \\
@@ -1352,12 +1376,18 @@ Lugano, dicembre 2018  & Pinco Pallino \\
 \end{reportvalue}
 %****************************************************************************** TEST #3 ******************************************************************************
 \begin{reportvalue}{Whole year report}
-\begin{longtable}[l]{ l  l }
-Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
-   & Sig. \\
-   & Mario Rossi \\
-   & Via Trevano \\
-   & 6900 Lugano \\
+Associazione Sportiva xyz \\
+Pinco Pallino \\
+Via Boschetto 34 \\
+6900 Lugano \\
+Tel. 1112223344 \\
+Web: www.banana.ch \\
+Email: info@banana.ch \\
+\begin{longtable}[l]{ l }
+Sig. \\
+Mario Rossi \\
+Via Trevano \\
+6900 Lugano \\
 \end{longtable}
   \\
   \\
@@ -1404,12 +1434,18 @@ Lugano, october 2nd 2018  & Pinco Pallino \\
 \end{longtable}
 \end{reportvalue}
 \begin{reportvalue}{Whole year report}
-\begin{longtable}[l]{ l  l }
-Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
-   & Sig. \\
-   & Mario Rossi \\
-   & Via Trevano \\
-   & 6900 Lugano \\
+Associazione Sportiva xyz \\
+Pinco Pallino \\
+Via Boschetto 34 \\
+6900 Lugano \\
+Tel. 1112223344 \\
+Web: www.banana.ch \\
+Email: info@banana.ch \\
+\begin{longtable}[l]{ l }
+Sig. \\
+Mario Rossi \\
+Via Trevano \\
+6900 Lugano \\
 \end{longtable}
   \\
   \\
@@ -1456,12 +1492,18 @@ Lugano, october 2nd 2018  & Pinco Pallino \\
 \end{longtable}
 \end{reportvalue}
 \begin{reportvalue}{Whole year report}
-\begin{longtable}[l]{ l  l }
-Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
-   & Sig. \\
-   & Mario Rossi \\
-   & Via Trevano \\
-   & 6900 Lugano \\
+Associazione Sportiva xyz \\
+Pinco Pallino \\
+Via Boschetto 34 \\
+6900 Lugano \\
+Tel. 1112223344 \\
+Web: www.banana.ch \\
+Email: info@banana.ch \\
+\begin{longtable}[l]{ l }
+Sig. \\
+Mario Rossi \\
+Via Trevano \\
+6900 Lugano \\
 \end{longtable}
   \\
   \\
@@ -1508,12 +1550,18 @@ Lugano, october 2nd 2018  & Pinco Pallino \\
 \end{longtable}
 \end{reportvalue}
 \begin{reportvalue}{Whole year report}
-\begin{longtable}[l]{ l  l }
-Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
-   & Sig. \\
-   & Mario Rossi \\
-   & Via Trevano \\
-   & 6900 Lugano \\
+Associazione Sportiva xyz \\
+Pinco Pallino \\
+Via Boschetto 34 \\
+6900 Lugano \\
+Tel. 1112223344 \\
+Web: www.banana.ch \\
+Email: info@banana.ch \\
+\begin{longtable}[l]{ l }
+Sig. \\
+Mario Rossi \\
+Via Trevano \\
+6900 Lugano \\
 \end{longtable}
   \\
   \\
@@ -1561,12 +1609,18 @@ Lugano, october 2nd 2018  & Pinco Pallino \\
 \end{reportvalue}
 %****************************************************************************** TEST #4 ******************************************************************************
 \begin{reportvalue}{Whole year report}
-\begin{longtable}[l]{ l  l }
-Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
-   & Sig. \\
-   & Mario Rossi \\
-   & Via Trevano \\
-   & 6900 Lugano \\
+Associazione Sportiva xyz \\
+Pinco Pallino \\
+Via Boschetto 34 \\
+6900 Lugano \\
+Tel. 1112223344 \\
+Web: www.banana.ch \\
+Email: info@banana.ch \\
+\begin{longtable}[l]{ l }
+Sig. \\
+Mario Rossi \\
+Via Trevano \\
+6900 Lugano \\
 \end{longtable}
   \\
   \\
@@ -1613,12 +1667,18 @@ Lugano, 2 Oktober 2018  & Pinco Pallino \\
 \end{longtable}
 \end{reportvalue}
 \begin{reportvalue}{Whole year report}
-\begin{longtable}[l]{ l  l }
-Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
-   & Sig. \\
-   & Mario Rossi \\
-   & Via Trevano \\
-   & 6900 Lugano \\
+Associazione Sportiva xyz \\
+Pinco Pallino \\
+Via Boschetto 34 \\
+6900 Lugano \\
+Tel. 1112223344 \\
+Web: www.banana.ch \\
+Email: info@banana.ch \\
+\begin{longtable}[l]{ l }
+Sig. \\
+Mario Rossi \\
+Via Trevano \\
+6900 Lugano \\
 \end{longtable}
   \\
   \\
@@ -1665,12 +1725,18 @@ Lugano, 2 Oktober 2018  & Pinco Pallino \\
 \end{longtable}
 \end{reportvalue}
 \begin{reportvalue}{Whole year report}
-\begin{longtable}[l]{ l  l }
-Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
-   & Sig. \\
-   & Mario Rossi \\
-   & Via Trevano \\
-   & 6900 Lugano \\
+Associazione Sportiva xyz \\
+Pinco Pallino \\
+Via Boschetto 34 \\
+6900 Lugano \\
+Tel. 1112223344 \\
+Web: www.banana.ch \\
+Email: info@banana.ch \\
+\begin{longtable}[l]{ l }
+Sig. \\
+Mario Rossi \\
+Via Trevano \\
+6900 Lugano \\
 \end{longtable}
   \\
   \\
@@ -1717,12 +1783,18 @@ Lugano, 2 Oktober 2018  & Pinco Pallino \\
 \end{longtable}
 \end{reportvalue}
 \begin{reportvalue}{Whole year report}
-\begin{longtable}[l]{ l  l }
-Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
-   & Sig. \\
-   & Mario Rossi \\
-   & Via Trevano \\
-   & 6900 Lugano \\
+Associazione Sportiva xyz \\
+Pinco Pallino \\
+Via Boschetto 34 \\
+6900 Lugano \\
+Tel. 1112223344 \\
+Web: www.banana.ch \\
+Email: info@banana.ch \\
+\begin{longtable}[l]{ l }
+Sig. \\
+Mario Rossi \\
+Via Trevano \\
+6900 Lugano \\
 \end{longtable}
   \\
   \\
@@ -1770,12 +1842,18 @@ Lugano, 2 Oktober 2018  & Pinco Pallino \\
 \end{reportvalue}
 %****************************************************************************** TEST #5 ******************************************************************************
 \begin{reportvalue}{Whole year report}
-\begin{longtable}[l]{ l  l }
-Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
-   & Sig. \\
-   & Mario Rossi \\
-   & Via Trevano \\
-   & 6900 Lugano \\
+Associazione Sportiva xyz \\
+Pinco Pallino \\
+Via Boschetto 34 \\
+6900 Lugano \\
+Tel. 1112223344 \\
+Web: www.banana.ch \\
+Email: info@banana.ch \\
+\begin{longtable}[l]{ l }
+Sig. \\
+Mario Rossi \\
+Via Trevano \\
+6900 Lugano \\
 \end{longtable}
   \\
   \\
@@ -1822,12 +1900,18 @@ Lugano, 2 octobre 2018  & Pinco Pallino \\
 \end{longtable}
 \end{reportvalue}
 \begin{reportvalue}{Whole year report}
-\begin{longtable}[l]{ l  l }
-Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
-   & Sig. \\
-   & Mario Rossi \\
-   & Via Trevano \\
-   & 6900 Lugano \\
+Associazione Sportiva xyz \\
+Pinco Pallino \\
+Via Boschetto 34 \\
+6900 Lugano \\
+Tel. 1112223344 \\
+Web: www.banana.ch \\
+Email: info@banana.ch \\
+\begin{longtable}[l]{ l }
+Sig. \\
+Mario Rossi \\
+Via Trevano \\
+6900 Lugano \\
 \end{longtable}
   \\
   \\
@@ -1874,12 +1958,18 @@ Lugano, 2 octobre 2018  & Pinco Pallino \\
 \end{longtable}
 \end{reportvalue}
 \begin{reportvalue}{Whole year report}
-\begin{longtable}[l]{ l  l }
-Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
-   & Sig. \\
-   & Mario Rossi \\
-   & Via Trevano \\
-   & 6900 Lugano \\
+Associazione Sportiva xyz \\
+Pinco Pallino \\
+Via Boschetto 34 \\
+6900 Lugano \\
+Tel. 1112223344 \\
+Web: www.banana.ch \\
+Email: info@banana.ch \\
+\begin{longtable}[l]{ l }
+Sig. \\
+Mario Rossi \\
+Via Trevano \\
+6900 Lugano \\
 \end{longtable}
   \\
   \\
@@ -1926,12 +2016,18 @@ Lugano, 2 octobre 2018  & Pinco Pallino \\
 \end{longtable}
 \end{reportvalue}
 \begin{reportvalue}{Whole year report}
-\begin{longtable}[l]{ l  l }
-Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
-   & Sig. \\
-   & Mario Rossi \\
-   & Via Trevano \\
-   & 6900 Lugano \\
+Associazione Sportiva xyz \\
+Pinco Pallino \\
+Via Boschetto 34 \\
+6900 Lugano \\
+Tel. 1112223344 \\
+Web: www.banana.ch \\
+Email: info@banana.ch \\
+\begin{longtable}[l]{ l }
+Sig. \\
+Mario Rossi \\
+Via Trevano \\
+6900 Lugano \\
 \end{longtable}
   \\
   \\
@@ -1979,12 +2075,18 @@ Lugano, 2 octobre 2018  & Pinco Pallino \\
 \end{reportvalue}
 %****************************************************************************** TEST #6 ******************************************************************************
 \begin{reportvalue}{Whole year report}
-\begin{longtable}[l]{ l  l }
-Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
-   & Sig. \\
-   & Mario Rossi \\
-   & Via Trevano \\
-   & 6900 Lugano \\
+Associazione Sportiva xyz \\
+Pinco Pallino \\
+Via Boschetto 34 \\
+6900 Lugano \\
+Tel. 1112223344 \\
+Web: www.banana.ch \\
+Email: info@banana.ch \\
+\begin{longtable}[l]{ l }
+Sig. \\
+Mario Rossi \\
+Via Trevano \\
+6900 Lugano \\
 \end{longtable}
   \\
   \\
@@ -2031,12 +2133,18 @@ Lugano, 2 oktober 2018  & Pinco Pallino \\
 \end{longtable}
 \end{reportvalue}
 \begin{reportvalue}{Whole year report}
-\begin{longtable}[l]{ l  l }
-Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
-   & Sig. \\
-   & Mario Rossi \\
-   & Via Trevano \\
-   & 6900 Lugano \\
+Associazione Sportiva xyz \\
+Pinco Pallino \\
+Via Boschetto 34 \\
+6900 Lugano \\
+Tel. 1112223344 \\
+Web: www.banana.ch \\
+Email: info@banana.ch \\
+\begin{longtable}[l]{ l }
+Sig. \\
+Mario Rossi \\
+Via Trevano \\
+6900 Lugano \\
 \end{longtable}
   \\
   \\
@@ -2083,12 +2191,18 @@ Lugano, 2 oktober 2018  & Pinco Pallino \\
 \end{longtable}
 \end{reportvalue}
 \begin{reportvalue}{Whole year report}
-\begin{longtable}[l]{ l  l }
-Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
-   & Sig. \\
-   & Mario Rossi \\
-   & Via Trevano \\
-   & 6900 Lugano \\
+Associazione Sportiva xyz \\
+Pinco Pallino \\
+Via Boschetto 34 \\
+6900 Lugano \\
+Tel. 1112223344 \\
+Web: www.banana.ch \\
+Email: info@banana.ch \\
+\begin{longtable}[l]{ l }
+Sig. \\
+Mario Rossi \\
+Via Trevano \\
+6900 Lugano \\
 \end{longtable}
   \\
   \\
@@ -2135,12 +2249,18 @@ Lugano, 2 oktober 2018  & Pinco Pallino \\
 \end{longtable}
 \end{reportvalue}
 \begin{reportvalue}{Whole year report}
-\begin{longtable}[l]{ l  l }
-Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
-   & Sig. \\
-   & Mario Rossi \\
-   & Via Trevano \\
-   & 6900 Lugano \\
+Associazione Sportiva xyz \\
+Pinco Pallino \\
+Via Boschetto 34 \\
+6900 Lugano \\
+Tel. 1112223344 \\
+Web: www.banana.ch \\
+Email: info@banana.ch \\
+\begin{longtable}[l]{ l }
+Sig. \\
+Mario Rossi \\
+Via Trevano \\
+6900 Lugano \\
 \end{longtable}
   \\
   \\
@@ -2188,12 +2308,18 @@ Lugano, 2 oktober 2018  & Pinco Pallino \\
 \end{reportvalue}
 %****************************************************************************** TEST #7 ******************************************************************************
 \begin{reportvalue}{Whole year report}
-\begin{longtable}[l]{ l  l }
-Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
-   & Sig. \\
-   & Mario Rossi \\
-   & Via Trevano \\
-   & 6900 Lugano \\
+Associazione Sportiva xyz \\
+Pinco Pallino \\
+Via Boschetto 34 \\
+6900 Lugano \\
+Tel. 1112223344 \\
+Web: www.banana.ch \\
+Email: info@banana.ch \\
+\begin{longtable}[l]{ l }
+Sig. \\
+Mario Rossi \\
+Via Trevano \\
+6900 Lugano \\
 \end{longtable}
   \\
   \\
@@ -2240,12 +2366,18 @@ Lugano, 2 oktober 2018  & Pinco Pallino \\
 \end{longtable}
 \end{reportvalue}
 \begin{reportvalue}{Whole year report}
-\begin{longtable}[l]{ l  l }
-Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
-   & Sig. \\
-   & Mario Rossi \\
-   & Via Trevano \\
-   & 6900 Lugano \\
+Associazione Sportiva xyz \\
+Pinco Pallino \\
+Via Boschetto 34 \\
+6900 Lugano \\
+Tel. 1112223344 \\
+Web: www.banana.ch \\
+Email: info@banana.ch \\
+\begin{longtable}[l]{ l }
+Sig. \\
+Mario Rossi \\
+Via Trevano \\
+6900 Lugano \\
 \end{longtable}
   \\
   \\
@@ -2292,12 +2424,18 @@ Lugano, 2 oktober 2018  & Pinco Pallino \\
 \end{longtable}
 \end{reportvalue}
 \begin{reportvalue}{Whole year report}
-\begin{longtable}[l]{ l  l }
-Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
-   & Sig. \\
-   & Mario Rossi \\
-   & Via Trevano \\
-   & 6900 Lugano \\
+Associazione Sportiva xyz \\
+Pinco Pallino \\
+Via Boschetto 34 \\
+6900 Lugano \\
+Tel. 1112223344 \\
+Web: www.banana.ch \\
+Email: info@banana.ch \\
+\begin{longtable}[l]{ l }
+Sig. \\
+Mario Rossi \\
+Via Trevano \\
+6900 Lugano \\
 \end{longtable}
   \\
   \\
@@ -2344,12 +2482,18 @@ Lugano, 2 oktober 2018  & Pinco Pallino \\
 \end{longtable}
 \end{reportvalue}
 \begin{reportvalue}{Whole year report}
-\begin{longtable}[l]{ l  l }
-Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
-   & Sig. \\
-   & Mario Rossi \\
-   & Via Trevano \\
-   & 6900 Lugano \\
+Associazione Sportiva xyz \\
+Pinco Pallino \\
+Via Boschetto 34 \\
+6900 Lugano \\
+Tel. 1112223344 \\
+Web: www.banana.ch \\
+Email: info@banana.ch \\
+\begin{longtable}[l]{ l }
+Sig. \\
+Mario Rossi \\
+Via Trevano \\
+6900 Lugano \\
 \end{longtable}
   \\
   \\
@@ -2397,12 +2541,18 @@ Lugano, 2 oktober 2018  & Pinco Pallino \\
 \end{reportvalue}
 %****************************************************************************** TEST #8 ******************************************************************************
 \begin{reportvalue}{Whole year report}
-\begin{longtable}[l]{ l  l }
-Associazione Sportiva xyz \newline Pinco Pallino \newline Via Boschetto 34 \newline 6900 Lugano \newline Tel. 1112223344 \newline Web: www.banana.ch \newline Email: info@banana.ch \newline \\
-   & Sig. \\
-   & Gianpaolo Bianchi \\
-   & Via Beltramina \\
-   & 6962 Viganello \\
+Associazione Sportiva xyz \\
+Pinco Pallino \\
+Via Boschetto 34 \\
+6900 Lugano \\
+Tel. 1112223344 \\
+Web: www.banana.ch \\
+Email: info@banana.ch \\
+\begin{longtable}[l]{ l }
+Sig. \\
+Gianpaolo Bianchi \\
+Via Beltramina \\
+6962 Viganello \\
 \end{longtable}
   \\
   \\
