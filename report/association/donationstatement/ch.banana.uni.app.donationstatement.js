@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.uni.app.donationstatement.js
 // @api = 1.0
-// @pubdate = 2019-02-22
+// @pubdate = 2020-03-10
 // @publisher = Banana.ch SA
 // @description = Statement of donation for Associations
 // @description.de = Spendenbescheinigung für Vereine
@@ -74,8 +74,8 @@ function exec(inData, options) {
 
     // Creates the report
     if (accounts.length > 0) {
-        var report = createReport(Banana.document, userParam.selectionStartDate, userParam.selectionEndDate, userParam, accounts, "");            
-        var stylesheet = createStyleSheet(userParam);
+    	var stylesheet = createStyleSheet(userParam);
+        var report = createReport(Banana.document, userParam.selectionStartDate, userParam.selectionEndDate, userParam, accounts, "", stylesheet);            
         Banana.Report.preview(report, stylesheet);
     } else {
         return "@Cancel";
@@ -83,13 +83,72 @@ function exec(inData, options) {
 }
 
 /* The report is created using the selected period and the data of the dialog */
-function createReport(banDoc, startDate, endDate, userParam, accounts, lang) {
+function createReport(banDoc, startDate, endDate, userParam, accounts, lang, stylesheet) {
 
     if (lang) {
         texts = loadTexts(banDoc,lang);
     }
 
     var report = Banana.Report.newReport(texts.reportTitle);
+
+    // Logo
+	var headerParagraph = report.getHeader().addSection();
+	if (userParam.printHeaderLogo) {
+		headerParagraph = report.addSection("");
+		var logoFormat = Banana.Report.logoFormat(userParam.headerLogoName);
+		if (logoFormat) {
+			var logoElement = logoFormat.createDocNode(headerParagraph, stylesheet, "logo");
+			report.getHeader().addChild(logoElement);
+		}
+	}
+
+    // Address of the sender (Organization)
+    var company = banDoc.info("AccountingDataBase","Company");
+    var name = banDoc.info("AccountingDataBase","Name");
+    var familyName = banDoc.info("AccountingDataBase","FamilyName");
+    var address1 = banDoc.info("AccountingDataBase","Address1");
+    var address2 = banDoc.info("AccountingDataBase","Address2");
+    var zip = banDoc.info("AccountingDataBase","Zip");
+    var city = banDoc.info("AccountingDataBase","City");
+    var country = banDoc.info("AccountingDataBase","Country");
+    var phone = banDoc.info("AccountingDataBase","Phone");
+    var web = banDoc.info("AccountingDataBase","Web");
+    var email = banDoc.info("AccountingDataBase","Email");
+
+    if (company) {
+        headerParagraph.addParagraph(company, "address");
+    }
+    if (name && familyName) {
+        headerParagraph.addParagraph(name + " " + familyName, "address");
+    } else if (!name && familyName) {
+        headerParagraph.addParagraph(familyName, "address");
+    } else if (name && !familyName) {
+        headerParagraph.addParagraph(name, "address");
+    }
+
+    if (address1) {
+        headerParagraph.addParagraph(address1, "address");
+    }
+    if (address2) {
+        headerParagraph.addParagraph(address2, "address");
+    }
+
+    if (zip && city) {
+        headerParagraph.addParagraph(zip + " " + city, "address");
+    }
+
+    if (phone) {
+        headerParagraph.addParagraph("Tel. " + phone, "address");
+    }
+
+    if (web) {
+        headerParagraph.addParagraph("Web: " + web, "address");
+    }
+
+    if (email) {
+        headerParagraph.addParagraph("Email: " + email, "address");
+    }
+
 
     // Create the report for the inserted cc3 accounts (or all cc3 accounts if empty)
     for (var k = 0; k < accounts.length; k++) {
@@ -101,93 +160,29 @@ function createReport(banDoc, startDate, endDate, userParam, accounts, lang) {
         var titleText = "";
         var text = "";
 
-        // Address of the sender (Organization)
-        var company = banDoc.info("AccountingDataBase","Company");
-        var name = banDoc.info("AccountingDataBase","Name");
-        var familyName = banDoc.info("AccountingDataBase","FamilyName");
-        var address1 = banDoc.info("AccountingDataBase","Address1");
-        var address2 = banDoc.info("AccountingDataBase","Address2");
-        var zip = banDoc.info("AccountingDataBase","Zip");
-        var city = banDoc.info("AccountingDataBase","City");
-        var country = banDoc.info("AccountingDataBase","Country");
-        var phone = banDoc.info("AccountingDataBase","Phone");
-        var web = banDoc.info("AccountingDataBase","Web");
-        var email = banDoc.info("AccountingDataBase","Email");
-
-        var tableAddress = report.addTable("tableAddress");
-        tableAddress.setStyleAttributes("width:100%");
-        var col1 = tableAddress.addColumn("col1").setStyleAttributes("width:60%");
-        var col2 = tableAddress.addColumn("col2").setStyleAttributes("width:40%");
-        
-        var row = tableAddress.addRow();
-        var addressCell = row.addCell();
-        if (company) {
-            addressCell.addParagraph(company, "address");
-        }
-        if (name && familyName) {
-            addressCell.addParagraph(name + " " + familyName, "address");
-        } else if (!name && familyName) {
-            addressCell.addParagraph(familyName, "address");
-        } else if (name && !familyName) {
-            addressCell.addParagraph(name, "address");
-        }
-
-        if (address1) {
-            addressCell.addParagraph(address1, "address");
-        }
-        if (address2) {
-            addressCell.addParagraph(address2, "address");
-        }
-
-        if (zip && city) {
-            addressCell.addParagraph(zip + " " + city, "address");
-        }
-
-        if (phone) {
-            addressCell.addParagraph("Tel. " + phone, "address");
-        } else {
-            addressCell.addParagraph(" ", "address");
-        }
-
-        if (web) {
-            addressCell.addParagraph("Web: " + web, "address");
-        } else {
-            addressCell.addParagraph(" ", "address");
-        }
-
-        if (email) {
-            addressCell.addParagraph("Email: " + email, "address");
-        } else {
-            addressCell.addParagraph(" ", "address");
-        }
-
         // Address of the membership (donor)
+        var tableAddress = report.addTable("tableAddress");
         var address = getAddress(banDoc, accounts[k]);
         if (address.nameprefix) {
             var row = tableAddress.addRow();
-            row.addCell(" ", "address", 1);
             row.addCell(address.nameprefix, "address", 1);
         }
 
         if (address.firstname && address.familyname) {
             var row = tableAddress.addRow();
-            row.addCell(" ", "address", 1);
             row.addCell(address.firstname + " " + address.familyname, "address", 1);
         } else if (!address.firstname && address.familyname) {
             var row = tableAddress.addRow();
-            row.addCell(" ", "address", 1);
             row.addCell(address.familyname, "address", 1);
         }
 
         if (address.street) {
             var row = tableAddress.addRow();
-            row.addCell(" ", "address", 1);
             row.addCell(address.street, "address", 1);
         }
 
         if (address.postalcode && address.locality) {
             var row = tableAddress.addRow();
-            row.addCell(" ", "address", 1);
             row.addCell(address.postalcode + " " + address.locality, "address", 1);
         }
 
@@ -1222,6 +1217,28 @@ function convertParam(userParam) {
     }
     convertedParam.data.push(currentParam);
 
+	currentParam = {};
+	currentParam.name = 'printHeaderLogo';
+	currentParam.parentObject = 'styles';
+	currentParam.title = texts.printHeaderLogo;
+	currentParam.type = 'bool';
+	currentParam.value = userParam.printHeaderLogo ? true : false;
+	currentParam.readValue = function() {
+	userParam.printHeaderLogo = this.value;
+	}
+	convertedParam.data.push(currentParam);
+
+    var currentParam = {};
+    currentParam.name = 'headerLogoName';
+    currentParam.parentObject = 'styles'
+    currentParam.title = texts.headerLogoName;
+    currentParam.type = 'string';
+    currentParam.value = userParam.headerLogoName ? userParam.headerLogoName : 'Logo';
+    currentParam.readValue = function() {
+        userParam.headerLogoName = this.value;
+    }
+    convertedParam.data.push(currentParam);
+
     // Font type
     var currentParam = {};
     currentParam.name = 'fontFamily';
@@ -1269,6 +1286,8 @@ function initUserParam() {
     userParam.signatureImage = '';
     userParam.imageHeight = '';
     userParam.styles = '';
+    userParam.printHeaderLogo = false;
+    userParam.headerLogoName = 'Logo';
     userParam.fontFamily = '';
     userParam.fontSize = '';
     return userParam;
@@ -1360,7 +1379,12 @@ function createStyleSheet(userParam) {
     }
 
     var stylesheet = Banana.Report.newStyleSheet();
-    stylesheet.addStyle("@page", "margin:20mm 10mm 10mm 20mm;");
+
+    if (userParam.printHeaderLogo) {
+		    stylesheet.addStyle("@page", "margin:10mm 10mm 10mm 20mm;");    	
+    } else {
+    	stylesheet.addStyle("@page", "margin:20mm 10mm 10mm 20mm;");
+    }
     stylesheet.addStyle("body", "font-family:"+userParam.fontFamily+"; font-size:"+userParam.fontSize+"pt;");
     stylesheet.addStyle(".address", "font-family:"+userParam.fontFamily+"; font-size:"+userParam.fontSize+"pt;");
     stylesheet.addStyle(".bold", "font-weight:bold;");
@@ -1373,6 +1397,13 @@ function createStyleSheet(userParam) {
     
     style = stylesheet.addStyle(".imgSignature");
     style.setAttribute("height", userParam.imageHeight + "mm");
+
+    if (userParam.printHeaderLogo) {
+		stylesheet.addStyle(".tableAddress", "margin-top:20mm; margin-left:105mm");
+	} else {
+		stylesheet.addStyle(".tableAddress", "margin-top:16mm; margin-left:105mm");
+	}
+	//stylesheet.addStyle("table.tableAddress td", "border: thin solid black");
 
     return stylesheet;
 }
@@ -1408,6 +1439,8 @@ function loadTexts(banDoc,lang) {
         texts.styles = "Stilarten";
         texts.fontFamily = "Schriftarttyp";
         texts.fontSize = "Schriftgrad";
+		texts.printHeaderLogo = "Logo";
+		texts.headerLogoName = "Logo-Name";
     }
     else if (lang === "fr") {
         texts.reportTitle = "Certificat de don";
@@ -1435,6 +1468,8 @@ function loadTexts(banDoc,lang) {
         texts.styles = "Styles";
         texts.fontFamily = "Type de police";
         texts.fontSize = "Taille de police";
+		texts.printHeaderLogo = "Logo";
+		texts.headerLogoName = "Logo nom";
     }
     else if (lang === "it") {
         texts.reportTitle = "Attestato di donazione";
@@ -1462,6 +1497,8 @@ function loadTexts(banDoc,lang) {
         texts.styles = "Stili";
         texts.fontFamily = "Tipo di carattere";
         texts.fontSize = "Dimensione carattere";
+		texts.printHeaderLogo = "Logo";
+		texts.headerLogoName = "Nome logo";
     }
     else if (lang === "nl") {
         texts.reportTitle = "Kwitantie voor giften";
@@ -1489,6 +1526,8 @@ function loadTexts(banDoc,lang) {
         texts.styles = "Stijl";
         texts.fontFamily = "Type lettertype";
         texts.fontSize = "Lettergrootte";
+		texts.printHeaderLogo = "Logo";
+		texts.headerLogoName = "Logo naam";
     }
     else if (lang === "pt") {
         texts.reportTitle = "Certificado de doação";
@@ -1516,6 +1555,8 @@ function loadTexts(banDoc,lang) {
         texts.styles = "Estilos";
         texts.fontFamily = "Tipo de letra";
         texts.fontSize = "Tamanho da letra";
+        texts.printHeaderLogo = "Logo";
+        texts.headerLogoName = "Nome logótipo";
     }
     else { //lang == en
         texts.reportTitle = "Statement of donation";
@@ -1543,6 +1584,8 @@ function loadTexts(banDoc,lang) {
         texts.styles = "Styles";
         texts.fontFamily = "Font type";
         texts.fontSize = "Font size";
+		texts.printHeaderLogo = "Logo";
+		texts.headerLogoName = "Logo name";
     }
 
     return texts;

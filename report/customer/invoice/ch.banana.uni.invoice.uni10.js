@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.uni.invoice.uni10
 // @api = 1.0
-// @pubdate = 2020-01-27
+// @pubdate = 2020-03-17
 // @publisher = Banana.ch SA
 // @description = [UNI10] Layout 10 (BETA)
 // @description.it = [UNI10] Layout 10 (BETA)
@@ -536,11 +536,15 @@ function convertParam(userParam) {
   if (langCodes.includes(lang)) {
     langCodes.splice(langCodes.indexOf(lang),1);
     langCodes.unshift(lang);
+  } else {
+    lang = 'en';
+    langCodes.splice(langCodes.indexOf('en'),1);
+    langCodes.unshift('en');
   }
 
   for (var i = 0; i < langCodes.length; i++) {
     var langCode = langCodes[i];
-    if (langCode === "it" || langCode === "fr" || langCode === "de" || langCode === "en" || langCode === "nl" || langCode === "zh" || langCode === "pt" || langCode === "es") {
+    if (langCode === "it" || langCode === "fr" || langCode === "de" || langCode === "en" || langCode === "nl" || langCode === "zh" || langCode === "pt") {
       var langCodeTitle = langCode;
       var langTexts = setInvoiceTexts(langCode);
     }
@@ -753,7 +757,7 @@ function convertParam(userParam) {
     currentParam.name = langCode+'_footer_left';
     currentParam.parentObject = langCode;
     currentParam.title = langTexts[langCodeTitle+'_param_footer_left'];
-    currentParam.type = 'string';
+    currentParam.type = 'multilinestring';
     currentParam.value = userParam[langCode+'_footer_left'] ? userParam[langCode+'_footer_left'] : '';
     currentParam.defaultvalue = langTexts.invoice;
     currentParam.tooltip = langTexts['param_tooltip_footer'];
@@ -767,7 +771,7 @@ function convertParam(userParam) {
     currentParam.name = langCode+'_footer_center';
     currentParam.parentObject = langCode;
     currentParam.title = langTexts[langCodeTitle+'_param_footer_center'];
-    currentParam.type = 'string';
+    currentParam.type = 'multilinestring';
     currentParam.value = userParam[langCode+'_footer_center'] ? userParam[langCode+'_footer_center'] : '';
     currentParam.defaultvalue = '';
     currentParam.tooltip = langTexts['param_tooltip_footer'];
@@ -781,7 +785,7 @@ function convertParam(userParam) {
     currentParam.name = langCode+'_footer_right';
     currentParam.parentObject = langCode;
     currentParam.title = langTexts[langCodeTitle+'_param_footer_right'];
-    currentParam.type = 'string';
+    currentParam.type = 'multilinestring';
     currentParam.value = userParam[langCode+'_footer_right'] ? userParam[langCode+'_footer_right'] : '';
     currentParam.defaultvalue = langTexts.page+' <'+langTexts.page+'>'
     currentParam.tooltip = langTexts['param_tooltip_footer'];
@@ -971,7 +975,7 @@ function initParam() {
   for (var i = 0; i < langCodes.length; i++) {
 
     // Use texts translations
-    if (langCodes[i] === "it" || langCodes[i] === "fr" || langCodes[i] === "de" || langCodes[i] === "en" || langCodes[i] === "nl" || langCodes[i] === "zh" || langCodes[i] === "pt" || langCodes[i] === "es") {
+    if (langCodes[i] === "it" || langCodes[i] === "fr" || langCodes[i] === "de" || langCodes[i] === "en" || langCodes[i] === "nl" || langCodes[i] === "zh" || langCodes[i] === "pt") {
       var langTexts = setInvoiceTexts(langCodes[i]);
     }
     else {
@@ -1213,6 +1217,10 @@ function printDocument(jsonInvoice, repDocObj, repStyleObj) {
     }
     if (lang.length <= 0) {
       lang = invoiceObj.document_info.locale;
+    }
+    //Check that lan is in parameter languages
+    if (userParam.languages.indexOf(lang) < 0) {
+      lang = 'en';
     }
     var texts = setInvoiceTexts(lang);
     
@@ -3466,8 +3474,6 @@ function setInvoiceTexts(language) {
     texts.param_tooltip_text_color_details_header = "Inserir a cor para o texto do cabeçalho dos detalhes (ex. '#FFFFFF' ou 'White')";
     texts.param_tooltip_background_color_alternate_lines = "Inserir a cor para o fundo das linhas alternadas (ex. '#F0F8FF' ou 'LightSkyBlue')";
     texts.param_tooltip_javascript_filename = "Inserir o nome do ficheiro JavaScript (.js) das colunas 'ID' tabela Documentos (ex. File.js)";
-  }
-  else if (language === 'es') { //?
   }
   else {
     //EN
