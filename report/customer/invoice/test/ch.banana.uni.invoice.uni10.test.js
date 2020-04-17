@@ -1,4 +1,4 @@
-// Copyright [2018] [Banana.ch SA - Lugano Switzerland]
+// Copyright [2020] [Banana.ch SA - Lugano Switzerland]
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 // @id = ch.banana.uni.invoice.uni10.test
 // @api = 1.0
-// @pubdate = 2019-07-29
+// @pubdate = 2020-04-15
 // @publisher = Banana.ch SA
 // @description = <TEST ch.banana.uni.invoice.uni10.js>
 // @task = app.command
@@ -125,11 +125,13 @@ function setUserParam(texts) {
   userParam.info_page = true;
   userParam.details_columns = texts.column_description+";"+texts.column_quantity+";"+texts.column_reference_unit+";"+texts.column_unit_price+";"+texts.column_amount;
   userParam.details_columns_widths = '50%;10%;10%;15%;15%';
+  userParam.details_columns_alignment = 'left;right;center;right;right';
   userParam.details_gross_amounts = false;
   userParam.footer_add = true;
   userParam.footer_left = texts.invoice;
   userParam.footer_center = '';
   userParam.footer_right = texts.page+' <'+texts.page+'>';
+  userParam.footer_horizontal_line = true;
 
   //Texts
   userParam.languages = 'en;it;de';

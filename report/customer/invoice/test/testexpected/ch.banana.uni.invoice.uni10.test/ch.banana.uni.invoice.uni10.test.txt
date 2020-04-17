@@ -59,7 +59,7 @@ Shipping address \newline Sig. \newline Aaaa Bbbb \newline Via Cccccc 7 \newline
 Invoice 35 \newline \newline \newline \\
 This is the  beginning text  using the '10:beg' command in DocType column. \newline   \newline   \newline \\
 \end{longtable}
-\begin{longtable}[l]{ l  l  l  l  l  l  l  l  l  l }
+\begin{longtable}[l]{ l  l  l  l  l }
 Description  & Quantity  & Unit  & Unit Price  & Amount \\
 Sales merchandise, invoice \#35, customer B \newline \newline  &  &  & 1'851.85  & 1'851.85 \\
 Sales merchandise, invoice \#35, customer B \newline \newline  & 4.9876  & pz.  & 96.43  & 480.96 \\
@@ -86,8 +86,8 @@ Sales merchandise, invoice \#35, customer B \newline \newline  & 10.0000  & pz..
   \\
   \\
   \\
-\begin{longtable}[l]{ l  l  l }
-Invoice \newline  &  & Page  \#page-nr \newline \\
+\begin{longtable}[l]{ l  l }
+Invoice \newline  & Page  \#page-nr \newline \\
 \end{longtable}
 \end{reportvalue}
 \subsection{Test Invoice 36}
@@ -141,8 +141,8 @@ Sales merchandise, invoice \#36, customer D \newline \newline  &  &  & 6'481.48 
   \\
   \\
   \\
-\begin{longtable}[l]{ l  l  l }
-Invoice \newline  &  & Page  \#page-nr \newline \\
+\begin{longtable}[l]{ l  l }
+Invoice \newline  & Page  \#page-nr \newline \\
 \end{longtable}
 \end{reportvalue}
 \subsection{Test Invoice 37}
@@ -202,8 +202,8 @@ Consultancy \newline \newline  &  &  & 92.59  & 92.59 \\
   \\
   \\
   \\
-\begin{longtable}[l]{ l  l  l }
-Invoice \newline  &  & Page  \#page-nr \newline \\
+\begin{longtable}[l]{ l  l }
+Invoice \newline  & Page  \#page-nr \newline \\
 \end{longtable}
 \end{reportvalue}
 \subsection{Test Invoice 47}
@@ -259,8 +259,8 @@ Discount 10\% product B \newline \newline  &  &  & -2.78  & -2.78 \\
   \\
   \\
   \\
-\begin{longtable}[l]{ l  l  l }
-Invoice \newline  &  & Page  \#page-nr \newline \\
+\begin{longtable}[l]{ l  l }
+Invoice \newline  & Page  \#page-nr \newline \\
 \end{longtable}
 \end{reportvalue}
 \keyvalue{Result}{Passed}
