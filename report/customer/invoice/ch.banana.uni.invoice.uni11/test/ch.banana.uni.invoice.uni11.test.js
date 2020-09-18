@@ -75,28 +75,26 @@ ReportInvoiceTemplate11.prototype.testReport = function() {
 
   var fileAC2 = "file:script/../test/testcases/invoice_development_file.ac2";
   var banDoc = Banana.application.openDocument(fileAC2);
-  
   if (!banDoc) {
     return;
   }
 
-  Test.logger.addSection("Invoice tests");
+  var jsonInvoices = getJsonInvoices(banDoc);
 
-  //Invoice 35
-  Test.logger.addSubSection("Test Invoice 35");
-  addReport(banDoc, "35", "Test Invoice 35");
-  
-  //Invoice 36
-  Test.logger.addSubSection("Test Invoice 36");
-  addReport(banDoc, "36", "Test Invoice 36");
+  Test.logger.addSubSection("Test layout UNI11");
+  for (var i = 0; i < jsonInvoices.length; i++) {
+    this.addReport(banDoc, jsonInvoices[i]);
+  }
+}
 
-  //Invoice 37
-  Test.logger.addSubSection("Test Invoice 37");
-  addReport(banDoc, "37", "Test Invoice 37");
-
-  //Invoice 47
-  Test.logger.addSubSection("Test Invoice 47");
-  addReport(banDoc, "47", "Test Invoice 47");
+ReportInvoiceTemplate11.prototype.addReport = function(banDoc, jsonInvoice) {
+  var variables = setVariables(variables);
+  var invoiceObj = jsonInvoice;
+  var texts = setInvoiceTexts('en');
+  var userParam = setUserParam(texts);
+  //Report invoice
+  var reportTest = printInvoice(banDoc, reportTest, texts, userParam, "", invoiceObj, variables);
+  Test.logger.addReport("ReportTest", reportTest);
 }
 
 //Function used to set all the parameters
@@ -177,46 +175,17 @@ function setVariables(variables) {
   return variables;
 }
 
-//Function that creates the report for the test
-function addReport(banDoc, invoiceNumber, reportName) {
-  var texts = setInvoiceTexts('en');
-  var userParam = setUserParam(texts);
-  var variables = setVariables(variables);
-  var jsonInvoice = getJsonInvoice(invoiceNumber);
-  var invoiceObj = JSON.parse(jsonInvoice);
-  var invoiceReport = printInvoice(banDoc, invoiceReport, texts, userParam, "", invoiceObj, variables);
-  Test.logger.addReport(reportName, invoiceReport);
-}
+function getJsonInvoices(banDoc) {
+  var invoicesCustomers = banDoc.invoicesCustomers();
+  var jsonInvoices = [];
 
-function getJsonInvoice(invoiceNumber) {
-  var file;
-  var parsedfile;
-  var jsonInvoice;
-  
-  if (invoiceNumber === "35") {
-    file = Banana.IO.getLocalFile("file:script/../test/testcases/json_invoice_35_new.json");
-    parsedfile = JSON.stringify(file.read(), "", "");
-    jsonInvoice = JSON.parse(parsedfile);
-    // Banana.console.log(jsonInvoice);
-  }
-  else if (invoiceNumber === "36") {
-    file = Banana.IO.getLocalFile("file:script/../test/testcases/json_invoice_36.json");
-    parsedfile = JSON.stringify(file.read(), "", "");
-    jsonInvoice = JSON.parse(parsedfile);
-    // Banana.console.log(jsonInvoice);
-  }
-  else if (invoiceNumber === "37") {
-    file = Banana.IO.getLocalFile("file:script/../test/testcases/json_invoice_37.json");
-    parsedfile = JSON.stringify(file.read(), "", "");
-    jsonInvoice = JSON.parse(parsedfile);
-    // Banana.console.log(jsonInvoice);
-  }
-  else if (invoiceNumber === "47") {
-    file = Banana.IO.getLocalFile("file:script/../test/testcases/json_invoice_47.json");
-    parsedfile = JSON.stringify(file.read(), "", "");
-    jsonInvoice = JSON.parse(parsedfile);
-    // Banana.console.log(jsonInvoice);
+  var length = invoicesCustomers.rowCount;
+
+  for (var i = 0; i < length; i++) {
+    if (JSON.parse(invoicesCustomers.row(i).toJSON()).ObjectType === 'InvoiceDocument') {
+      jsonInvoices.push(JSON.parse(JSON.parse(invoicesCustomers.row(i).toJSON()).ObjectJSonData).InvoiceDocument);
+    }
   }
 
-  return jsonInvoice;
+  return jsonInvoices;
 }
