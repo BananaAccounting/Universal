@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.uni.invoice.uni11
 // @api = 1.0
-// @pubdate = 2020-09-18
+// @pubdate = 2020-09-22
 // @publisher = Banana.ch SA
 // @description = [UNI11] Programmable Invoice layout
 // @description.it = [UNI11] Layout Fattura Programmabile
@@ -55,7 +55,7 @@
 
 
 // Define the required version of Banana Accounting / Banana Experimental
-var BAN_VERSION = "10.0.0";
+var BAN_VERSION = "10.0.1";
 var BAN_EXPM_VERSION = "";
 var BAN_LICENSE_TYPE = "";
 
