@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.uni.invoice.uni11
 // @api = 1.0
-// @pubdate = 2020-09-22
+// @pubdate = 2020-09-23
 // @publisher = Banana.ch SA
 // @description = [UNI11] Programmable Invoice layout
 // @description.it = [UNI11] Layout Fattura Programmabile
@@ -2523,6 +2523,10 @@ function formatItemsValue(value, variables, columnName, className) {
 
   else if (columnName.startsWith("date")) {
     itemValue = Banana.Converter.toLocaleDateFormat(value);
+  }
+
+  else if (columnName === "vatrate" || columnName === "vat_rate") {
+    itemValue = Banana.Converter.toLocaleNumberFormat(Banana.SDecimal.abs(value));
   }
 
   else if (columnName) {
