@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.uni.invoice.uni10
 // @api = 1.0
-// @pubdate = 2020-04-15
+// @pubdate = 2020-09-16
 // @publisher = Banana.ch SA
 // @description = [UNI10] Layout 10 (BETA)
 // @description.it = [UNI10] Layout 10 (BETA)
@@ -923,29 +923,29 @@ function convertParam(userParam) {
   /*******************************************************************************************
   * EMBEDDED JAVASCRIPT FILEE
   *******************************************************************************************/
-  currentParam = {};
-  currentParam.name = 'embedded_javascript';
-  currentParam.title = texts.param_embedded_javascript;
-  currentParam.type = 'string';
-  currentParam.value = '';
-  currentParam.editable = false;
-  currentParam.readValue = function() {
-    userParam.embedded_javascript = this.value;
-  }
-  convertedParam.data.push(currentParam);
+  // currentParam = {};
+  // currentParam.name = 'embedded_javascript';
+  // currentParam.title = texts.param_embedded_javascript;
+  // currentParam.type = 'string';
+  // currentParam.value = '';
+  // currentParam.editable = false;
+  // currentParam.readValue = function() {
+  //   userParam.embedded_javascript = this.value;
+  // }
+  // convertedParam.data.push(currentParam);
 
-  currentParam = {};
-  currentParam.name = 'embedded_javascript_filename';
-  currentParam.parentObject = 'embedded_javascript';
-  currentParam.title = texts.param_embedded_javascript_filename;
-  currentParam.type = 'string';
-  currentParam.value = userParam.embedded_javascript_filename ? userParam.embedded_javascript_filename : '';
-  currentParam.defaultvalue = '';
-  currentParam.tooltip = texts.param_tooltip_javascript_filename;
-  currentParam.readValue = function() {
-   userParam.embedded_javascript_filename = this.value;
-  }
-  convertedParam.data.push(currentParam);
+  // currentParam = {};
+  // currentParam.name = 'embedded_javascript_filename';
+  // currentParam.parentObject = 'embedded_javascript';
+  // currentParam.title = texts.param_embedded_javascript_filename;
+  // currentParam.type = 'string';
+  // currentParam.value = userParam.embedded_javascript_filename ? userParam.embedded_javascript_filename : '';
+  // currentParam.defaultvalue = '';
+  // currentParam.tooltip = texts.param_tooltip_javascript_filename;
+  // currentParam.readValue = function() {
+  //  userParam.embedded_javascript_filename = this.value;
+  // }
+  // convertedParam.data.push(currentParam);
 
 
   return convertedParam;
@@ -1035,7 +1035,7 @@ function initParam() {
   userParam.font_size = '10';
 
   //Embedded JavaScript file
-  userParam.embedded_javascript_filename = '';
+  //userParam.embedded_javascript_filename = '';
 
   return userParam;
 }
@@ -1211,9 +1211,9 @@ function verifyParam(userParam) {
   }
 
   //Embedded JavaScript files
-  if (!userParam.embedded_javascript_filename) {
-    userParam.embedded_javascript_filename = '';
-  }
+  // if (!userParam.embedded_javascript_filename) {
+  //   userParam.embedded_javascript_filename = '';
+  // }
 
   return userParam;
 }
@@ -1258,7 +1258,7 @@ function printDocument(jsonInvoice, repDocObj, repStyleObj) {
     var texts = setInvoiceTexts(lang);
     
     // Include the embedded javascript file entered by the user
-    includeEmbeddedJavascriptFile(texts, userParam);
+    //includeEmbeddedJavascriptFile(texts, userParam);
     
     // Variable starts with $
     var variables = {};
