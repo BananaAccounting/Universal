@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.uni.app.donationstatement.js
 // @api = 1.0
-// @pubdate = 2020-03-10
+// @pubdate = 2020-10-09
 // @publisher = Banana.ch SA
 // @description = Statement of donation for Associations
 // @description.de = Spendenbescheinigung für Vereine
@@ -25,6 +25,7 @@
 // @description.pt = Certificado de doação para Associações
 // @doctype = *
 // @task = app.command
+// @timeout = -1
 
 /*
 *   This BananaApp prints a donation statement for all the selected donators and period.
