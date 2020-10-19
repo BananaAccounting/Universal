@@ -1,0 +1,152 @@
+%%info_test_name{Contabilità in partita doppia con IVA - 1}
+\documentclass{report}
+\usepackage{longtable}
+\usepackage{color}
+\usepackage{listings}
+\usepackage[margin=1cm]{geometry}
+\begin{document}
+\newenvironment{tablevalue}[2]{\textbf{Table: #1}\begin{longtable}[l]{#2}}{\end{longtable}}
+\newenvironment{reportvalue}[1]{\textbf{Report: #1}\\}{}
+\lstnewenvironment{jsonvalue}[1]{\textbf{Json: #1}\lstset{language=Java}}{}
+\lstnewenvironment{xmlvalue}[1]{\textbf{Xml: #1}\lstset{language=Xml}}{}
+\newcommand{\info}[2]{\textit{#1: #2}\\}
+\newcommand{\fatalerror}[1]{\textbf{\textcolor[rgb]{1,0,0}{Fatal error: #1}}\\}
+\newcommand{\keyvalue}[2]{\textbf{Keyvalue: #1} #2\\}
+\newcommand{\textvalue}[1]{#1\\}
+\newcommand{\excltest}[1]{\\Excluded from compare: #1}
+\newcommand{\lognewpage}{\newpage}
+\newenvironment{testcase}[1]{\section*{Test: #1}}{\newpage}
+\newenvironment{test}[1]{\section*{Test case: #1}}{}
+%Begin test data
+\begin{reportvalue}{FILENAME: file:script/../test/testcases/Contabilità in partita doppia con IVA - 1.ac2}
+Financial Statements Analysis \\
+\begin{longtable}[l]{ l  l }
+COMPANY INFORMATION COMPANY NAME  & \\
+HEAD OFFICE  & \\
+COUNTRY  & \\
+TYPE  & PMI / KMU \\
+ANALYSIS PERIOD  &  BUDG-2019-2018 \\
+\end{longtable}
+\begin{longtable}[l]{ l  l  l  l  l  l  l }
+BALANCE Description  & Acronym  & Currency  & BUDGET  & 2019  & 2018 \\
+\multicolumn{7}{l}{Active }\\
+Liquidity  & liqu  & CHF  & -800  & -800  & 720 \\
+Credits  & cred  & CHF  & 10'000  & 10'000  & 2'800 \\
+Stocks  & stoc  & CHF  & 0  & 0  & -2'800 \\
+Current Assets  & cuas  & CHF  & 9'200  & 9'200  & 720 \\
+Fixed assets  & fixa  & CHF  & 0  & 0  & 15'700 \\
+Fixed Assets  & tfix  & CHF  & 0  & 0  & 15'700 \\
+Total Active  & tota  & CHF  & 9'200  & 9'200  & 16'420 \\
+Liabilities and Equity \\
+Short-term debt capital  & stdc  & CHF  & -500  & -500  & 4'720 \\
+Long term debt capital  & ltdc  & CHF  & 0  & 0  & 11'000 \\
+Debt Capital  & deca  & CHF  & -500  & -500  & 15'720 \\
+Own base capital  & obca  & CHF  & 0  & 0  & -4'000 \\
+Reserves and profits  & reut  & CHF  & 9'700  & 9'700  & 4'700 \\
+Own Capital  & owca  & CHF  & 9'700  & 9'700  & 700 \\
+Total Liabilities and Equity  & totp  & CHF  & 9'200  & 9'200  & 16'420 \\
+\end{longtable}
+\begin{longtable}[l]{ l  l  l  l }
+BALANCE CONTROL SUMS  Year  & Sheet Total  & Calculated Total  & Difference \\
+\multicolumn{4}{l}{Active }\\
+BUDG  & 9'200  & 9'200  & 0 \\
+2019  & 9'200  & 9'200  & 0 \\
+2018  & 16'420  & 16'420  & 0 \\
+\multicolumn{4}{l}{Liabilities and Equity }\\
+BUDG  & 9'200  & 9'200  & 0 \\
+2019  & 9'200  & 9'200  & 0 \\
+2018  & 14'220  & 16'420  & 2'200 \\
+\end{longtable}
+\begin{longtable}[l]{ l  l  l  l  l  l }
+PROFIT AND LOSS Description  & Acronym  & Currency  & BUDGET  & 2019  & 2018 \\
++ Sales turnover  & satu  & CHF  & 0  & 0  & 10'800 \\
+- Cost of merchandise and services  & cofm  & CHF  & 0  & 0  & 900 \\
+= Added Value  & adva  & CHF  & 0  & 0  & 11'700 \\
+- Personnel costs  & cope  & CHF  & 0  & 0  & 1'000 \\
+- Different costs  & codi  & CHF  & 0  & 0  & 2'500 \\
+= EBITDA  & ebitda  & CHF  & 0  & 0  & 15'200 \\
+- Depreciations and adjustments  & amre  & CHF  & 0  & 0  & 1'500 \\
+= EBIT  & ebit  & CHF  & 0  & 0  & 16'700 \\
++/- Interests  & inte  & CHF  & 0  & 0  & 200 \\
+Annual result  & anre  & CHF  & 0  & 0  & 16'900 \\
+\end{longtable}
+\begin{longtable}[l]{ l  l  l }
+PROFIT AND LOSS SUMS  Sheet Total  & Calculated Total  & Difference \\
+0  & 0  & 0 \\
+\end{longtable}
+analysis by index \\
+\begin{longtable}[l]{ l  l  l  l  l  l  l }
+LIQUIDITY RATIOS Description  & formula  & Currency  & BUDGET  & 2019  & 2018  & BenchMark \\
+Liquidity 1  & (liqu * 100) / stdc  & CHF  & 160\%  & 160\%  & 15\%  & \\
+Liquidity 2  & (liqu + cred) / stdc  & CHF  & -18\%  & -18\%  & 1\%  & \\
+Liquidity 3  & (cuas * 100) / stdc  & CHF  & -1840\%  & -1840\%  & 15\%  & \\
+Net Current Asset  & cuas-stdc  & CHF  & 9700  & 9700  & -4000  & \\
+\end{longtable}
+\begin{longtable}[l]{ l  l  l  l  l  l  l }
+FINANCING RATIOS Description  & formula  & Currency  & BUDGET  & 2019  & 2018  & BenchMark \\
+degree of circulating active   & cuas / tota  & CHF  & 100\%  & 100\%  & 4\%  & \\
+degree of fixed assets   & fixa / tota  & CHF  & 0\%  & 0\%  & 96\%  & \\
+Level of debt  & (stdc+ltdc * 100) / totp  & CHF  & -5\%  & -5\%  & 96\%  & \\
+Level of equity finance  & (owca * 100) / totp  & CHF  & 105\%  & 105\%  & 4\%  & \\
+Level of self-financing  & (reut * 100) / owca  & CHF  & 100\%  & 100\%  & 671\%  & \\
+ degree of coverage of fixed assets  & ( owca + ltdc ) / tota  & CHF  & 105\%  & 105\%  & 71\%  & \\
+\end{longtable}
+\begin{longtable}[l]{ l  l  l  l  l  l  l }
+PROFITABILITY RATIOS Description  & formula  & Currency  & BUDGET  & 2019  & 2018  & BenchMark \\
+Return of equity  & (profit * 100) / own capital  & CHF  & 0\%  & 0\%  & 2414\%  & \\
+Return of investiment  & (  EBIT * 100) / total employment    & CHF  & 0\%  & 0\%  & 102\%  & \\
+Return of sales  & (ebit * 100) / satu  & CHF  & \%  & \%  & 155\%  & \\
+MOL  & (gross profit * 100) / sales turnover  & CHF  & \%  & \%  & 141\%  & \\
+\end{longtable}
+DUPONT SCHEME YEARS: BUDG-2019-2018 \\
+\begin{longtable}[l]{ l  l  l  l  l  l  l  l  l  l  l  l  l  l  l }
+\multicolumn{14}{l}{  }\\
+\multicolumn{6}{l}{  } & \multicolumn{2}{l}{Capital } &    & \multicolumn{2}{l}{Fixed Asset } & \multicolumn{3}{l}{  }\\
+\multicolumn{6}{l}{  } & 9'200  & 16'420  &    & 0  & 15'700  & \multicolumn{3}{l}{  }\\
+\multicolumn{14}{l}{  }\\
+\multicolumn{3}{l}{  } & \multicolumn{2}{l}{ROT } & \multicolumn{4}{l}{  } & \multicolumn{2}{l}{Current Asset } &    & \multicolumn{2}{l}{liquidity }\\
+\multicolumn{3}{l}{  } & 0  & 1  & \multicolumn{4}{l}{  } & 9'200  & 720  &    & -800  & 720 \\
+\multicolumn{14}{l}{  }\\
+\multicolumn{6}{l}{  } & \multicolumn{2}{l}{Sales } & \multicolumn{4}{l}{  } & \multicolumn{2}{l}{Credits }\\
+\multicolumn{2}{l}{ROI } & \multicolumn{4}{l}{  } & 0  & 10'800  & \multicolumn{4}{l}{  } & 10'000  & 2'800 \\
+\%  & \%  & \multicolumn{12}{l}{  }\\
+\multicolumn{2}{l}{benchmark 10\% } & \multicolumn{10}{l}{  } & \multicolumn{2}{l}{Stocks }\\
+\multicolumn{12}{l}{  } & 0  & -2'800 \\
+\multicolumn{6}{l}{  } & \multicolumn{2}{l}{Sales } & \multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  } & 0  & 10'800  & \multicolumn{6}{l}{  }\\
+\multicolumn{14}{l}{  }\\
+\multicolumn{3}{l}{  } & \multicolumn{2}{l}{MOL } & \multicolumn{9}{l}{  }\\
+\multicolumn{3}{l}{  } &  & 2  & \multicolumn{9}{l}{  }\\
+\multicolumn{14}{l}{  }\\
+\multicolumn{6}{l}{  } & \multicolumn{2}{l}{EBIT } &    & \multicolumn{2}{l}{Sales } & \multicolumn{3}{l}{  }\\
+\multicolumn{6}{l}{  } & 0  & 16'700  &    & 0  & 10'800  & \multicolumn{3}{l}{  }\\
+\multicolumn{14}{l}{  }\\
+\multicolumn{9}{l}{  } & \multicolumn{2}{l}{Total Cost } &    & \multicolumn{2}{l}{Merchandise cost }\\
+\multicolumn{9}{l}{  } & 0  & -5'900  &    & 0  & -900 \\
+\multicolumn{14}{l}{  }\\
+\multicolumn{12}{l}{  } & \multicolumn{2}{l}{Personal costs }\\
+\multicolumn{12}{l}{  } & 0  & -1'000 \\
+\multicolumn{14}{l}{  }\\
+\multicolumn{12}{l}{  } & \multicolumn{2}{l}{Different Costs }\\
+\multicolumn{12}{l}{  } & 0  & -4'000 \\
+\end{longtable}
+\begin{longtable}[l]{ l  l  l }
+Altman Index Z-SCORE BUDGET  & 2019  & 2018 \\
+1.61  & 1.61  & 4.16 \\
+\multicolumn{3}{l}{formula used for the calculation  = 0.717 X1 + 0.847 X2 +3.107 X3 +0.420 X4 + 0.998 X5 }\\
+\multicolumn{3}{l}{X1 = cuas / tota }\\
+\multicolumn{3}{l}{X2 = reut / tota  }\\
+\multicolumn{3}{l}{X3 = Ebit / tota  }\\
+\multicolumn{3}{l}{X4 = pant / totp }\\
+\multicolumn{3}{l}{X5 = sale / tota }\\
+\end{longtable}
+for values > of 3 correspond to low probability of a financial crisis \\
+for values >= of 1.8 but <= to 3 there are possibilities of a financial crisis, to be kept under control \\
+for values < to 3 there is a strong probability of a financial crisis \\
+\begin{longtable}[l]{ l  l }
+Used Setting Number of Previous Years  & 2 \\
+Number of Decimals  & \\
+\end{longtable}
+Banana.ch \\
+\end{reportvalue}
+\end{document}
