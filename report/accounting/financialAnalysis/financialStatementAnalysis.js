@@ -478,10 +478,13 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             var tableRow = tableBalanceControlSums.addRow("styleTablRows");
             var period = this.data[i].period.StartDate;
             var year = period.substr(0, 4);
-            tableRow.addCell(year);
-            tableRow.addCell(this.toLocaleAmountFormat(this.data[i].CalculatedData.TotActiveSheet), "styleAmount");
-            tableRow.addCell(this.toLocaleAmountFormat(this.data[i].CalculatedData.TotActive), "styleAmount");
-            tableRow.addCell(this.toLocaleAmountFormat(this.data[i].CalculatedData.ActiveDifference), "styleAmount");
+            Banana.console.debug(year);
+            if (year != "BUDG") {
+                tableRow.addCell(year);
+                tableRow.addCell(this.toLocaleAmountFormat(this.data[i].CalculatedData.TotActiveSheet), "styleAmount");
+                tableRow.addCell(this.toLocaleAmountFormat(this.data[i].CalculatedData.TotActive), "styleAmount");
+                tableRow.addCell(this.toLocaleAmountFormat(this.data[i].CalculatedData.ActiveDifference), "styleAmount");
+            }
         }
         var tableRow = tableBalanceControlSums.addRow("styleTablRows");
         tableRow.addCell(qsTr("Liabilities and Equity"), "styleUnderGroupTitles", 4);
@@ -489,10 +492,12 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             var tableRow = tableBalanceControlSums.addRow("styleTablRows");
             var period = this.data[i].period.StartDate;
             var year = period.substr(0, 4);
-            tableRow.addCell(year);
-            tableRow.addCell(this.toLocaleAmountFormat(this.data[i].CalculatedData.TotPassiveSheet), "styleAmount");
-            tableRow.addCell(this.toLocaleAmountFormat(this.data[i].CalculatedData.TotPassive), "styleAmount");
-            tableRow.addCell(this.toLocaleAmountFormat(this.data[i].CalculatedData.PassiveDifference), "styleAmount");
+            if (year != "BUDG") {
+                tableRow.addCell(year);
+                tableRow.addCell(this.toLocaleAmountFormat(this.data[i].CalculatedData.TotPassiveSheet), "styleAmount");
+                tableRow.addCell(this.toLocaleAmountFormat(this.data[i].CalculatedData.TotPassive), "styleAmount");
+                tableRow.addCell(this.toLocaleAmountFormat(this.data[i].CalculatedData.PassiveDifference), "styleAmount");
+            }
         }
 
         report.addPageBreak();
