@@ -52,7 +52,7 @@ TestTimesheetReport.prototype.cleanup = function() {
 TestTimesheetReport.prototype.testBananaExtensions = function() {
    Test.logger.addText("This test will tests the Banana Extension ch.banana.uni.timesheetreports.js");
    
-   var banDoc = Banana.application.openDocument("file:script/../test/testcases/muster_zeiterfassung_vereinfacht_für_projektverwaltung.ac2");
+   var banDoc = Banana.application.openDocument("file:script/../test/testcases/muster_zeiterfassung_vereinfacht_for_projektverwaltung.ac2");
    Test.assert(banDoc, "File ac2 not found");
 
    var userParam = {};
