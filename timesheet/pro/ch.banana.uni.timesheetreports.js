@@ -101,21 +101,29 @@ function printTimeSheetJournal(banDoc, userParam) {
 }
 
 function printHeader(banDoc, report, userParam, texts) {
-    var headerleft = banDoc.info("Base","HeaderLeft");
-    var pageHeader = report.getHeader();
-    var paragraph = pageHeader.addParagraph("","center");
-    // paragraph.addText(headerleft, "bold");
-    // paragraph.addText(" (", "");
-    // if (userParam.id_employee) {
-    //     paragraph.addText(userParam.id_employee + ", ", "");
-    // }
-    // paragraph.addText(texts.period + ": " + Banana.Converter.toLocaleDateFormat(userParam.selectionStartDate) + " - " + Banana.Converter.toLocaleDateFormat(userParam.selectionEndDate) + ")", "");
-    
-    pageHeader.addParagraph(headerleft, "heading bold");
-    pageHeader.addParagraph(userParam.id_employee, "heading");
-    // pageHeader.addParagraph(texts.period + ": " + Banana.Converter.toLocaleDateFormat(userParam.selectionStartDate) + " - " + Banana.Converter.toLocaleDateFormat(userParam.selectionEndDate), "heading");
-    pageHeader.addParagraph(" ","");
-    pageHeader.addParagraph(" ","");
+    var headerLogoSection = report.getHeader().addSection();
+
+    if (userParam.logo_print) {
+        headerLogoSection = report.addSection("");
+        var logoFormat = Banana.Report.logoFormat(userParam.logo_name); //Logo
+        if (logoFormat) {
+            var style = Banana.Report.newStyleSheet();
+            var logoElement = logoFormat.createDocNode(headerLogoSection, style, "logo");
+            report.getHeader().addChild(logoElement);
+        } else {
+            report.addImage("documents:logo", "logoStyle"); 
+        }
+    } else {
+        report.addImage("documents:logo", "logoStyle");
+    }
+
+    var table = report.addTable("tableNoBorder");
+    tableRow = table.addRow();
+    tableRow.addCell("", "", 20);
+    tableRow = table.addRow();
+    tableRow.addCell("", "", 20);
+    tableRow = table.addRow();
+    tableRow.addCell("", "", 20);
 
     var table = report.addTable("tableNoBorder");
     tableRow = table.addRow();
@@ -623,117 +631,7 @@ function convertParam(userParam) {
     currentParam.readValue = function () {
         userParam.psp = this.value;
     }
-    convertedParam.data.push(currentParam);   
-
-    var currentParam = {};
-    currentParam.name = 'print_timeWorkedTotal';
-    currentParam.title = texts.param_timeWorkedTotal;
-    currentParam.type = 'bool';
-    currentParam.value = userParam.print_timeWorkedTotal ? true : false;
-    currentParam.defaultvalue = true;
-    currentParam.readValue = function () {
-        userParam.print_timeWorkedTotal = this.value;
-    }
-    convertedParam.data.push(currentParam);
-
-    var currentParam = {};
-    currentParam.name = 'print_timeAbsenceSick';
-    currentParam.title = texts.param_timeAbsenceSick;
-    currentParam.type = 'bool';
-    currentParam.value = userParam.print_timeAbsenceSick ? true : false;
-    currentParam.defaultvalue = true;
-    currentParam.readValue = function () {
-        userParam.print_timeAbsenceSick = this.value;
-    }
-    convertedParam.data.push(currentParam);
-
-    var currentParam = {};
-    currentParam.name = 'print_timeAbsenceHoliday';
-    currentParam.title = texts.param_timeAbsenceHoliday;
-    currentParam.type = 'bool';
-    currentParam.value = userParam.print_timeAbsenceHoliday ? true : false;
-    currentParam.defaultvalue = true;
-    currentParam.readValue = function () {
-        userParam.print_timeAbsenceHoliday = this.value;
-    }
-    convertedParam.data.push(currentParam);
-
-    var currentParam = {};
-    currentParam.name = 'print_timeAbsenceService';
-    currentParam.title = texts.param_timeAbsenceService;
-    currentParam.type = 'bool';
-    currentParam.value = userParam.print_timeAbsenceService ? true : false;
-    currentParam.defaultvalue = true;
-    currentParam.readValue = function () {
-        userParam.print_timeAbsenceService = this.value;
-    }
-    convertedParam.data.push(currentParam);
-
-    var currentParam = {};
-    currentParam.name = 'print_timeAbsenceOther';
-    currentParam.title = texts.param_timeAbsenceOther;
-    currentParam.type = 'bool';
-    currentParam.value = userParam.print_timeAbsenceOther ? true : false;
-    currentParam.defaultvalue = true;
-    currentParam.readValue = function () {
-        userParam.print_timeAbsenceOther = this.value;
-    }
-    convertedParam.data.push(currentParam);
-
-    var currentParam = {};
-    currentParam.name = 'print_timeAbsenceTotal';
-    currentParam.title = texts.param_timeAbsenceTotal;
-    currentParam.type = 'bool';
-    currentParam.value = userParam.print_timeAbsenceTotal ? true : false;
-    currentParam.defaultvalue = true;
-    currentParam.readValue = function () {
-        userParam.print_timeAbsenceTotal = this.value;
-    }
-    convertedParam.data.push(currentParam);
-
-    var currentParam = {};
-    currentParam.name = 'print_timeAdjustment';
-    currentParam.title = texts.param_timeAdjustment;
-    currentParam.type = 'bool';
-    currentParam.value = userParam.print_timeAdjustment ? true : false;
-    currentParam.defaultvalue = true;
-    currentParam.readValue = function () {
-        userParam.print_timeAdjustment = this.value;
-    }
-    convertedParam.data.push(currentParam);
-
-    var currentParam = {};
-    currentParam.name = 'print_timeDayTotal';
-    currentParam.title = texts.param_timeDayTotal;
-    currentParam.type = 'bool';
-    currentParam.value = userParam.print_timeDayTotal ? true : false;
-    currentParam.defaultvalue = true;
-    currentParam.readValue = function () {
-        userParam.print_timeDayTotal = this.value;
-    }
-    convertedParam.data.push(currentParam);
-
-    var currentParam = {};
-    currentParam.name = 'print_timeDueDay';
-    currentParam.title = texts.param_timeDueDay;
-    currentParam.type = 'bool';
-    currentParam.value = userParam.print_timeDueDay ? true : false;
-    currentParam.defaultvalue = true;
-    currentParam.readValue = function () {
-        userParam.print_timeDueDay = this.value;
-    }
-    convertedParam.data.push(currentParam);
-
-    var currentParam = {};
-    currentParam.name = 'print_timeDifference';
-    currentParam.title = texts.param_timeDifference;
-    currentParam.type = 'bool';
-    currentParam.value = userParam.print_timeDifference ? true : false;
-    currentParam.defaultvalue = true;
-    currentParam.readValue = function () {
-        userParam.print_timeDifference = this.value;
-    }
-    convertedParam.data.push(currentParam);
+    convertedParam.data.push(currentParam);      
 
     return convertedParam;
 }
@@ -760,17 +658,6 @@ function initUserParam() {
     userParam.contactPerson = "";
     userParam.changeRequestTask = "";
     userParam.psp = "";
-    userParam.print_timeWorkedTotal = true;
-    userParam.print_timeAbsenceSick = true;
-    userParam.print_timeAbsenceHoliday = true;
-    userParam.print_timeAbsenceService = true;
-    userParam.print_timeAbsenceOther = true;
-    userParam.print_timeAbsenceTotal = true;
-    userParam.print_timeAdjustment = true;
-    userParam.print_timeDayTotal = true;
-    userParam.print_timeDueDay = true;
-    userParam.print_timeDifference = true;
-
     return userParam;
 }
 
@@ -859,16 +746,6 @@ function setTexts(language) {
         texts.param_contactPerson = "Contact Person";
         texts.param_changeRequestTask = "Change request Task";
         texts.param_psp = "PSP/Int.Ord./PO";
-        texts.param_timeWorkedTotal = "Tempo lavorato totale";
-        texts.param_timeAbsenceSick = "Assenza per malattia";
-        texts.param_timeAbsenceHoliday = "Assenza per vacanza";
-        texts.param_timeAbsenceService = "Assenza per servizio";
-        texts.param_timeAbsenceOther = "Ore perse / Lavoro ridotto";
-        texts.param_timeAbsenceTotal = "Assenza totale";
-        texts.param_timeAdjustment = "Aggiustamento";
-        texts.param_timeDayTotal = "Tempo giorno totale";
-        texts.param_timeDueDay = "Dovuto per la giornata";
-        texts.param_timeDifference = "Differenza giorno";
     }
     else if (language === 'de') {
         texts.period = "Periode";
@@ -879,6 +756,8 @@ function setTexts(language) {
         texts.element = "Element";
         texts.total = "Total";
         texts.param_id_employee = "Sozialversicherungs-ID";
+        texts.param_logo_print = "Logo";
+        texts.param_logo_name = "Nom du logo (composition formats de logo)";
         texts.param_call_id = "Call ID";
         texts.param_responsibleEmployee = "Verantwortlicher Mitarbeiter";
         texts.param_customer_id = "Kundennummer";
@@ -886,16 +765,6 @@ function setTexts(language) {
         texts.param_contactPerson = "Contact Person";
         texts.param_changeRequestTask = "Change request Task";
         texts.param_psp = "PSP/Int.Ord./PO";
-        texts.param_timeWorkedTotal = "Arbeitszeit insgesamt";
-        texts.param_timeAbsenceSick = "Abwesenheit wegen Krankheit";
-        texts.param_timeAbsenceHoliday = "Abwesenheit wegen Ferien";
-        texts.param_timeAbsenceService = "Abwesenheit wegen öffentlichem Dienst";
-        texts.param_timeAbsenceOther = "Verlorene Stunden / reduzierte Arbeit";
-        texts.param_timeAbsenceTotal = "Total Abwesenheitsdauer";
-        texts.param_timeAdjustment = "Korrektur";
-        texts.param_timeDayTotal = "Total Tageszeit";
-        texts.param_timeDueDay = "Sollzeit pro Tag";
-        texts.param_timeDifference = "Zeitdifferenz Tag";
     }
     else if (language === 'fr') {
         texts.period = "Période";
@@ -906,6 +775,8 @@ function setTexts(language) {
         texts.element = "Élément";
         texts.total = "Total";
         texts.param_id_employee = "ID sécurité sociale";
+        texts.param_logo_print = "Logo";
+        texts.param_logo_name = "Nom du logo (composition formats de logo)";
         texts.param_call_id = "Call ID";
         texts.param_responsibleEmployee = "Employé Responsable";
         texts.param_customer_id = "Numéro Client";
@@ -913,16 +784,6 @@ function setTexts(language) {
         texts.param_contactPerson = "Contact Person";
         texts.param_changeRequestTask = "Change request Task";
         texts.param_psp = "PSP/Int.Ord./PO";
-        texts.param_timeWorkedTotal = "Temps de travail total";
-        texts.param_timeAbsenceSick = "Absence pour maladie";
-        texts.param_timeAbsenceHoliday = "Absence pour les vacances";
-        texts.param_timeAbsenceService = "Service public";
-        texts.param_timeAbsenceOther = "Heures perdues / Travail réduit";
-        texts.param_timeAbsenceTotal = "Absence totale";
-        texts.param_timeAdjustment = "Ajustement";
-        texts.param_timeDayTotal = "Temps jour total";
-        texts.param_timeDueDay = "Dû pour la journée";
-        texts.param_timeDifference = "Différence jour";
     }
     else if (language === 'nl') {
         texts.period = "Periode";
@@ -933,6 +794,8 @@ function setTexts(language) {
         texts.element = "Element";
         texts.total = "Totaal";
         texts.param_id_employee = "Burgerservicenummer";
+        texts.param_logo_print = "Logo";
+        texts.param_logo_name = "Nom du logo (composition formats de logo)";
         texts.param_call_id = "Call ID";
         texts.param_responsibleEmployee = "Verantwoordelijke Medewerker";
         texts.param_customer_id = "Klanten ID";
@@ -940,16 +803,6 @@ function setTexts(language) {
         texts.param_contactPerson = "Contact Person";
         texts.param_changeRequestTask = "Change request Task";
         texts.param_psp = "PSP/Int.Ord./PO";
-        texts.param_timeWorkedTotal = "Totaal gewerkte tijd";
-        texts.param_timeAbsenceSick = "Verzuim wegens ziekte";
-        texts.param_timeAbsenceHoliday = "Afwezigheid voor vakantie";
-        texts.param_timeAbsenceService = "Openbare dienst";
-        texts.param_timeAbsenceOther = "Niet gewerkte uren ivm COVID-19";
-        texts.param_timeAbsenceTotal = "Totaal afwezig";
-        texts.param_timeAdjustment = "Aanpassing";
-        texts.param_timeDayTotal = "Totaal tijd dag";
-        texts.param_timeDueDay = "Verschuldigd voor de dag";
-        texts.param_timeDifference = "Tijd dag verschil";        
     }
     else {
         texts.period = "Period";
@@ -960,6 +813,8 @@ function setTexts(language) {
         texts.element = "Element";
         texts.total = "Total";
         texts.param_id_employee = "Social security ID";
+        texts.param_logo_print = "Logo";
+        texts.param_logo_name = "Logo name (composition logo formats)";
         texts.param_call_id = "Call ID";
         texts.param_responsibleEmployee = "Responsible Employee";
         texts.param_customer_id = "Client ID";
@@ -967,16 +822,6 @@ function setTexts(language) {
         texts.param_contactPerson = "Contact Person";
         texts.param_changeRequestTask = "Change request Task";
         texts.param_psp = "PSP/Int.Ord./PO";
-        texts.param_timeWorkedTotal = "Time worked total";
-        texts.param_timeAbsenceSick = "Absence for sick leave";
-        texts.param_timeAbsenceHoliday = "Absence for holiday";
-        texts.param_timeAbsenceService = "Public service";
-        texts.param_timeAbsenceOther = "Lost hours / Reduced work";
-        texts.param_timeAbsenceTotal = "Absence total";
-        texts.param_timeAdjustment = "Adjustment";
-        texts.param_timeDayTotal = "Time day total";
-        texts.param_timeDueDay = "Due for the day";
-        texts.param_timeDifference = "Time day difference";
     }
 
     return texts;
@@ -1035,7 +880,6 @@ function createStyleSheet(userParam) {
 
     var pageStyle = stylesheet.addStyle("@page");
     pageStyle.setAttribute("margin", "15mm 10mm 15mm 10mm");
-    // pageStyle.setAttribute("size", "landscape");
 
     stylesheet.addStyle("body", "font-size: 7pt; font-family: Helvetica");
     stylesheet.addStyle(".bold", "font-weight:bold");
