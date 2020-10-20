@@ -92,7 +92,7 @@ function printTimeSheetJournal(banDoc, userParam) {
     var texts = setTexts(lang);
 
     var report = Banana.Report.newReport('Timesheet Report');
-    printHeader(banDoc, report, userParam, texts);
+    printHeader(report, userParam);
     
     printTableMonth(banDoc, texts, userParam, report);
     printFooter(report);
@@ -100,7 +100,7 @@ function printTimeSheetJournal(banDoc, userParam) {
     return report;
 }
 
-function printHeader(banDoc, report, userParam, texts) {
+function printHeader(report, userParam) {
     var headerLogoSection = report.getHeader().addSection();
 
     if (userParam.logo_print) {
@@ -135,7 +135,7 @@ function printHeader(banDoc, report, userParam, texts) {
 
    tableRow = table.addRow();
    tableRow.addCell("Call ID", "", 4).setStyleAttributes("border-left: 1.5px solid grey;color: grey; border-bottom: thin solid grey");
-   tableRow.addCell("", "bold", 4).setStyleAttributes("background-color: #e6ecf5; border: thin solid grey");
+   tableRow.addCell(userParam.call_id, "bold", 4).setStyleAttributes("background-color: #e6ecf5; border: thin solid grey");
    tableRow.addCell("", "", 8);
    tableRow.addCell("State", "", 4).setStyleAttributes("border-left: 1.5px solid grey;color: grey; border-bottom: thin solid grey");
 
@@ -152,14 +152,14 @@ function printHeader(banDoc, report, userParam, texts) {
 
    tableRow = table.addRow();
    tableRow.addCell("Responsible Employee", "", 4).setStyleAttributes("border-left: 1.5px solid grey;color: grey; border-bottom: thin solid grey");
-   tableRow.addCell("", "", 9).setStyleAttributes("background-color: #e6ecf5; border: thin solid grey");
+   tableRow.addCell(userParam.responsibleEmployee, "", 9).setStyleAttributes("background-color: #e6ecf5; border: thin solid grey");
    tableRow.addCell("", "", 7);
 
    var table = report.addTable("tableNoBorder");
 
    tableRow = table.addRow();
    tableRow.addCell("Customer ID", "", 4).setStyleAttributes("border-left: 1.5px solid grey;color: grey; border-bottom: thin solid grey");
-   tableRow.addCell("", "", 4).setStyleAttributes("background-color: #e6ecf5; border: thin solid grey");
+   tableRow.addCell(userParam.customer_id, "", 4).setStyleAttributes("background-color: #e6ecf5; border: thin solid grey");
    tableRow.addCell("", "", 8);
    tableRow.addCell("Call Character", "", 4).setStyleAttributes("border-left: 1.5px solid grey;color: grey; border-bottom: thin solid grey");
 
@@ -167,7 +167,7 @@ function printHeader(banDoc, report, userParam, texts) {
 
    tableRow = table.addRow();
    tableRow.addCell("Name", "", 4).setStyleAttributes("border-left: 1.5px solid grey;color: grey; border-bottom: thin solid grey");
-   tableRow.addCell("", "", 9).setStyleAttributes("background-color: #e6ecf5; border: thin solid grey");
+   tableRow.addCell(userParam.name, "", 9).setStyleAttributes("background-color: #e6ecf5; border: thin solid grey");
    tableRow.addCell("", "", 3);
    tableRow.addCell("", "", 4).setStyleAttributes("background-color: #e6ecf5; border: thin solid grey");
 
@@ -175,20 +175,20 @@ function printHeader(banDoc, report, userParam, texts) {
 
    tableRow = table.addRow();
    tableRow.addCell("Contact Person", "", 4).setStyleAttributes("border-left: 1.5px solid grey;color: grey; border-bottom: thin solid grey");
-   tableRow.addCell("", "", 9).setStyleAttributes("background-color: #e6ecf5; border: thin solid grey");
+   tableRow.addCell(userParam.contactPerson, "", 9).setStyleAttributes("background-color: #e6ecf5; border: thin solid grey");
    tableRow.addCell("", "", 7);
 
    var table = report.addTable("tableNoBorder");
 
    tableRow = table.addRow();
    tableRow.addCell("Change request Task", "", 4).setStyleAttributes("border-left: 1.5px solid grey;color: grey; border-bottom: thin solid grey");
-   tableRow.addCell("", "", 16).setStyleAttributes("background-color: #e6ecf5; border: thin solid grey");
+   tableRow.addCell(userParam.changeRequestTask, "", 16).setStyleAttributes("background-color: #e6ecf5; border: thin solid grey");
 
    var table = report.addTable("tableNoBorder");
 
    tableRow = table.addRow();
    tableRow.addCell("PSP/Int. Ord./PO", "", 4).setStyleAttributes("border-left: 1.5px solid grey; color: grey; border-bottom: thin solid grey");
-   tableRow.addCell("", "", 16).setStyleAttributes("background-color: #e6ecf5; border: thin solid grey");  
+   tableRow.addCell(userParam.psp, "", 16).setStyleAttributes("background-color: #e6ecf5; border: thin solid grey");  
 }
 
 function printFooter(report) {
