@@ -38,24 +38,27 @@
 function exec() {
     if (!Banana.document) {
         return;
-    }
+    }   
+
+    var isCurrentBananaVersionSupported = bananaRequiredVersion("10.0");
+    if (!isCurrentBananaVersionSupported) {
+        Banana.document.addMessage("This extension requires Banana Accounting+ Professional", "ID_ERR_VERSION_NOTSUPPORTED");
+        return;
+    }    
+
     var userParam = initUserParam();
-    // Columns choice only for 9.0.4 and higher
-    // For previous versions we take all columns
-    var isCurrentBananaVersionSupported = bananaRequiredVersion("9.0.4");
-    if (isCurrentBananaVersionSupported) {
-        // Retrieve saved param
-        var savedParam = Banana.document.getScriptSettings();
-        if (savedParam && savedParam.length > 0) {
-            userParam = JSON.parse(savedParam);
-        }
-        // If needed show the settings dialog to the user
-        if (!options || !options.useLastSettings) {
-            userParam = settingsDialog(); // From properties
-        }
-        if (!userParam) {
-            return "@Cancel";
-        }
+        
+    // Retrieve saved param
+    var savedParam = Banana.document.getScriptSettings();
+    if (savedParam && savedParam.length > 0) {
+        userParam = JSON.parse(savedParam);
+    }
+    // If needed show the settings dialog to the user
+    if (!options || !options.useLastSettings) {
+        userParam = settingsDialog(); // From properties
+    }
+    if (!userParam) {
+        return "@Cancel";
     }
 
     var report = printTimeSheetJournal(Banana.document, userParam);
@@ -482,11 +485,15 @@ function formatDate(date) {
  }
 
 
-function bananaRequiredVersion(requiredVersion) {
-    if (Banana.compareVersion && Banana.compareVersion(Banana.application.version, requiredVersion) < 0) {
-        return false;
+ function bananaRequiredVersion(requiredVersion) {
+    if (Banana.compareVersion && Banana.compareVersion(Banana.application.version, requiredVersion) >= 0) {
+        if (Banana.application.license) {
+            if (Banana.application.license.licenseType === "professional" || Banana.application.license.licenseType === "advanced") {
+                return true;
+            }
+        }
     }
-    return true;
+    return false;
 }
 
 /***********************
@@ -633,6 +640,34 @@ function convertParam(userParam) {
     }
     convertedParam.data.push(currentParam);      
 
+    var currentParam = {};
+    currentParam.name = 'filter';
+    currentParam.title = 'Filter';
+    currentParam.editable = false;
+    convertedParam.data.push(currentParam);
+    
+    var currentParam = {};
+    currentParam.name = 'filterProjectId';
+    currentParam.title = 'Project ID';
+    currentParam.parentObject = 'filter';
+    currentParam.type = 'string';
+    currentParam.value = userParam.filterProjectId ? userParam.filterProjectId : "";
+    currentParam.readValue = function () {
+        userParam.filterProjectId = this.value;
+    }
+    convertedParam.data.push(currentParam);      
+    
+    var currentParam = {};
+    currentParam.name = 'filterRessourceId';
+    currentParam.title = 'Ressource ID';
+    currentParam.parentObject = 'filter';
+    currentParam.type = 'string';
+    currentParam.value = userParam.filterRessourceId ? userParam.filterRessourceId : "";
+    currentParam.readValue = function () {
+    userParam.filterRessourceId = this.value;
+    }
+    convertedParam.data.push(currentParam);
+
     return convertedParam;
 }
 
@@ -658,6 +693,8 @@ function initUserParam() {
     userParam.contactPerson = "";
     userParam.changeRequestTask = "";
     userParam.psp = "";
+    userParam.filterProjectId="";
+    userParam.filterRessourceId="";
     return userParam;
 }
 
@@ -673,7 +710,9 @@ function parametersDialog(userParam) {
 
         for (var i = 0; i < convertedParam.data.length; i++) {
             // Read values to userParam (through the readValue function)
-            convertedParam.data[i].readValue();
+            if (typeof (convertedParam.data[i].readValue) !== 'undefined') {
+                convertedParam.data[i].readValue();
+            }            
         }
 
         //  Reset reset default values

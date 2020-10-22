@@ -35,7 +35,7 @@
 \multicolumn{4}{l}{Call ID } & \multicolumn{4}{l}{} & \multicolumn{8}{l}{} & \multicolumn{4}{l}{State }\\
 \end{longtable}
 \begin{longtable}[l]{ l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l }
-\multicolumn{4}{l}{Date } & \multicolumn{4}{l}{20/10/2020 } & \multicolumn{8}{l}{} & \multicolumn{4}{l}{}\\
+\multicolumn{4}{l}{Date } & \multicolumn{4}{l}{22/10/2020 } & \multicolumn{8}{l}{} & \multicolumn{4}{l}{}\\
 \end{longtable}
 \begin{longtable}[l]{ l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l }
 \multicolumn{4}{l}{Responsible Employee } & \multicolumn{9}{l}{} & \multicolumn{7}{l}{}\\
@@ -63,30 +63,30 @@
 \begin{longtable}[l]{ l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l }
 \multicolumn{20}{l}{Service rendered }\\
 \multicolumn{2}{l}{Date } & \multicolumn{3}{l}{Ressource } & \multicolumn{11}{l}{Remarks } & \multicolumn{2}{l}{Duration (h) } & \multicolumn{2}{l}{Billable (h) }\\
-\multicolumn{2}{l}{02/01/20 } & \multicolumn{3}{l}{Nick Scherrer } & \multicolumn{11}{l}{Consulting: Funktioal Test's in QFA. Das fiori Perdiodenvarianten verwalten verursachtprobleme. Lösungssuche, testing, oss-incident abgesezt. Hinweise gefundenund im Test script eingefügt. } & \multicolumn{2}{l}{8.00 } & \multicolumn{2}{l}{8.00 }\\
-\multicolumn{2}{l}{03/01/20 } & \multicolumn{3}{l}{Nick Scherrer } & \multicolumn{11}{l}{Consulting: ... } & \multicolumn{2}{l}{8.50 } & \multicolumn{2}{l}{8.00 }\\
-\multicolumn{2}{l}{07/01/20 } & \multicolumn{3}{l}{Nick Scherrer } & \multicolumn{11}{l}{Consulting: ... } & \multicolumn{2}{l}{9.00 } & \multicolumn{2}{l}{8.00 }\\
-\multicolumn{2}{l}{08/01/20 } & \multicolumn{3}{l}{Nick Scherrer } & \multicolumn{11}{l}{Consulting: ... } & \multicolumn{2}{l}{8.00 } & \multicolumn{2}{l}{8.00 }\\
-\multicolumn{2}{l}{09/01/20 } & \multicolumn{3}{l}{Nick Scherrer } & \multicolumn{11}{l}{Consulting: ... } & \multicolumn{2}{l}{8.00 } & \multicolumn{2}{l}{8.00 }\\
-\multicolumn{2}{l}{10/01/20 } & \multicolumn{3}{l}{Nick Scherrer } & \multicolumn{11}{l}{Consulting: ... } & \multicolumn{2}{l}{8.75 } & \multicolumn{2}{l}{8.00 }\\
-\multicolumn{2}{l}{13/01/20 } & \multicolumn{3}{l}{Nick Scherrer } & \multicolumn{11}{l}{Consulting: ... } & \multicolumn{2}{l}{8.75 } & \multicolumn{2}{l}{8.00 }\\
-\multicolumn{2}{l}{14/01/20 } & \multicolumn{3}{l}{Nick Scherrer } & \multicolumn{11}{l}{Consulting: ... } & \multicolumn{2}{l}{9.00 } & \multicolumn{2}{l}{8.00 }\\
-\multicolumn{2}{l}{15/01/20 } & \multicolumn{3}{l}{Nick Scherrer } & \multicolumn{11}{l}{Consulting: ... } & \multicolumn{2}{l}{8.50 } & \multicolumn{2}{l}{8.00 }\\
-\multicolumn{2}{l}{16/01/20 } & \multicolumn{3}{l}{Nick Scherrer } & \multicolumn{11}{l}{Consulting: ... } & \multicolumn{2}{l}{9.00 } & \multicolumn{2}{l}{8.00 }\\
-\multicolumn{2}{l}{17/01/20 } & \multicolumn{3}{l}{Nick Scherrer } & \multicolumn{11}{l}{Consulting: ... } & \multicolumn{2}{l}{8.50 } & \multicolumn{2}{l}{8.00 }\\
-\multicolumn{2}{l}{20/01/20 } & \multicolumn{3}{l}{Nick Scherrer } & \multicolumn{11}{l}{Consulting: ... } & \multicolumn{2}{l}{8.00 } & \multicolumn{2}{l}{8.00 }\\
-\multicolumn{2}{l}{21/01/20 } & \multicolumn{3}{l}{Nick Scherrer } & \multicolumn{11}{l}{Consulting: ... } & \multicolumn{2}{l}{9.00 } & \multicolumn{2}{l}{8.00 }\\
-\multicolumn{2}{l}{22/01/20 } & \multicolumn{3}{l}{Nick Scherrer } & \multicolumn{11}{l}{Consulting: ... } & \multicolumn{2}{l}{9.00 } & \multicolumn{2}{l}{8.00 }\\
-\multicolumn{2}{l}{23/01/20 } & \multicolumn{3}{l}{Nick Scherrer } & \multicolumn{11}{l}{Consulting: ... } & \multicolumn{2}{l}{9.00 } & \multicolumn{2}{l}{8.00 }\\
-\multicolumn{2}{l}{24/01/20 } & \multicolumn{3}{l}{Nick Scherrer } & \multicolumn{11}{l}{Consulting: ... } & \multicolumn{2}{l}{8.00 } & \multicolumn{2}{l}{8.00 }\\
-\multicolumn{2}{l}{27/01/20 } & \multicolumn{3}{l}{Nick Scherrer } & \multicolumn{11}{l}{Consulting: ... } & \multicolumn{2}{l}{8.00 } & \multicolumn{2}{l}{8.00 }\\
-\multicolumn{2}{l}{28/01/20 } & \multicolumn{3}{l}{Nick Scherrer } & \multicolumn{11}{l}{Consulting: ... } & \multicolumn{2}{l}{8.00 } & \multicolumn{2}{l}{8.00 }\\
-\multicolumn{2}{l}{29/01/20 } & \multicolumn{3}{l}{Nick Scherrer } & \multicolumn{11}{l}{Consulting: ... } & \multicolumn{2}{l}{8.75 } & \multicolumn{2}{l}{8.00 }\\
-\multicolumn{2}{l}{30/01/20 } & \multicolumn{3}{l}{Nick Scherrer } & \multicolumn{11}{l}{Consulting: ... } & \multicolumn{2}{l}{9.00 } & \multicolumn{2}{l}{8.00 }\\
-\multicolumn{2}{l}{31/01/20 } & \multicolumn{3}{l}{Nick Scherrer } & \multicolumn{11}{l}{Consulting: ... } & \multicolumn{2}{l}{9.25 } & \multicolumn{2}{l}{8.00 }\\
+\multicolumn{2}{l}{02/01/20 } & \multicolumn{3}{l}{Nick Scherrer } & \multicolumn{11}{l}{Consulting: Funktioal Test's in QFA. Das fiori Perdiodenvarianten verwalten verursachtprobleme. Lösungssuche, testing, oss-incident abgesezt. Hinweise gefundenund im Test script eingefügt. } & \multicolumn{2}{l}{} & \multicolumn{2}{l}{}\\
+\multicolumn{2}{l}{03/01/20 } & \multicolumn{3}{l}{Nick Scherrer } & \multicolumn{11}{l}{Consulting: ... } & \multicolumn{2}{l}{} & \multicolumn{2}{l}{}\\
+\multicolumn{2}{l}{07/01/20 } & \multicolumn{3}{l}{Nick Scherrer } & \multicolumn{11}{l}{Consulting: ... } & \multicolumn{2}{l}{} & \multicolumn{2}{l}{}\\
+\multicolumn{2}{l}{08/01/20 } & \multicolumn{3}{l}{Nick Scherrer } & \multicolumn{11}{l}{Consulting: ... } & \multicolumn{2}{l}{} & \multicolumn{2}{l}{}\\
+\multicolumn{2}{l}{09/01/20 } & \multicolumn{3}{l}{Nick Scherrer } & \multicolumn{11}{l}{Consulting: ... } & \multicolumn{2}{l}{} & \multicolumn{2}{l}{}\\
+\multicolumn{2}{l}{10/01/20 } & \multicolumn{3}{l}{Nick Scherrer } & \multicolumn{11}{l}{Consulting: ... } & \multicolumn{2}{l}{} & \multicolumn{2}{l}{}\\
+\multicolumn{2}{l}{13/01/20 } & \multicolumn{3}{l}{Nick Scherrer } & \multicolumn{11}{l}{Consulting: ... } & \multicolumn{2}{l}{} & \multicolumn{2}{l}{}\\
+\multicolumn{2}{l}{14/01/20 } & \multicolumn{3}{l}{Nick Scherrer } & \multicolumn{11}{l}{Consulting: ... } & \multicolumn{2}{l}{} & \multicolumn{2}{l}{}\\
+\multicolumn{2}{l}{15/01/20 } & \multicolumn{3}{l}{Nick Scherrer } & \multicolumn{11}{l}{Consulting: ... } & \multicolumn{2}{l}{} & \multicolumn{2}{l}{}\\
+\multicolumn{2}{l}{16/01/20 } & \multicolumn{3}{l}{Nick Scherrer } & \multicolumn{11}{l}{Consulting: ... } & \multicolumn{2}{l}{} & \multicolumn{2}{l}{}\\
+\multicolumn{2}{l}{17/01/20 } & \multicolumn{3}{l}{Nick Scherrer } & \multicolumn{11}{l}{Consulting: ... } & \multicolumn{2}{l}{} & \multicolumn{2}{l}{}\\
+\multicolumn{2}{l}{20/01/20 } & \multicolumn{3}{l}{Nick Scherrer } & \multicolumn{11}{l}{Consulting: ... } & \multicolumn{2}{l}{} & \multicolumn{2}{l}{}\\
+\multicolumn{2}{l}{21/01/20 } & \multicolumn{3}{l}{Nick Scherrer } & \multicolumn{11}{l}{Consulting: ... } & \multicolumn{2}{l}{} & \multicolumn{2}{l}{}\\
+\multicolumn{2}{l}{22/01/20 } & \multicolumn{3}{l}{Nick Scherrer } & \multicolumn{11}{l}{Consulting: ... } & \multicolumn{2}{l}{} & \multicolumn{2}{l}{}\\
+\multicolumn{2}{l}{23/01/20 } & \multicolumn{3}{l}{Nick Scherrer } & \multicolumn{11}{l}{Consulting: ... } & \multicolumn{2}{l}{} & \multicolumn{2}{l}{}\\
+\multicolumn{2}{l}{24/01/20 } & \multicolumn{3}{l}{Nick Scherrer } & \multicolumn{11}{l}{Consulting: ... } & \multicolumn{2}{l}{} & \multicolumn{2}{l}{}\\
+\multicolumn{2}{l}{27/01/20 } & \multicolumn{3}{l}{Nick Scherrer } & \multicolumn{11}{l}{Consulting: ... } & \multicolumn{2}{l}{} & \multicolumn{2}{l}{}\\
+\multicolumn{2}{l}{28/01/20 } & \multicolumn{3}{l}{Nick Scherrer } & \multicolumn{11}{l}{Consulting: ... } & \multicolumn{2}{l}{} & \multicolumn{2}{l}{}\\
+\multicolumn{2}{l}{29/01/20 } & \multicolumn{3}{l}{Nick Scherrer } & \multicolumn{11}{l}{Consulting: ... } & \multicolumn{2}{l}{} & \multicolumn{2}{l}{}\\
+\multicolumn{2}{l}{30/01/20 } & \multicolumn{3}{l}{Nick Scherrer } & \multicolumn{11}{l}{Consulting: ... } & \multicolumn{2}{l}{} & \multicolumn{2}{l}{}\\
+\multicolumn{2}{l}{31/01/20 } & \multicolumn{3}{l}{Nick Scherrer } & \multicolumn{11}{l}{Consulting: ... } & \multicolumn{2}{l}{} & \multicolumn{2}{l}{}\\
 \end{longtable}
 \begin{longtable}[l]{ l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l }
-\multicolumn{3}{l}{Total Efforts } & \multicolumn{2}{l}{} & \multicolumn{11}{l}{} & \multicolumn{2}{l}{180.00 } & \multicolumn{2}{l}{168.00 }\\
+\multicolumn{3}{l}{Total Efforts } & \multicolumn{2}{l}{} & \multicolumn{11}{l}{} & \multicolumn{2}{l}{} & \multicolumn{2}{l}{}\\
 \multicolumn{20}{l}{}\\
 \end{longtable}
 \begin{longtable}[l]{ l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l }
