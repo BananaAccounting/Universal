@@ -42,8 +42,8 @@ function exec() {
 
     var isCurrentBananaVersionSupported = bananaRequiredVersion("10.0");
     if (!isCurrentBananaVersionSupported) {
-        // Banana.document.addMessage("This extension requires Banana Accounting+ Professional", "ID_ERR_VERSION_NOTSUPPORTED");
-        // return;
+        Banana.document.addMessage("This extension requires Banana Accounting+ Professional", "ID_ERR_VERSION_NOTSUPPORTED");
+        return;
     }    
 
     var userParam = initUserParam();
