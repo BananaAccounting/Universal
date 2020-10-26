@@ -192,6 +192,14 @@ function printHeader(report, userParam) {
    tableRow = table.addRow();
    tableRow.addCell("PSP/Int. Ord./PO", "", 4).setStyleAttributes("border-left: 1.5px solid grey; color: grey; border-bottom: thin solid grey");
    tableRow.addCell(userParam.psp, "", 16).setStyleAttributes("background-color: #e6ecf5; border: thin solid grey");  
+
+   var table = report.addTable("tableNoBorder");
+
+   tableRow = table.addRow();
+   tableRow.addCell("Project ID", "", 4).setStyleAttributes("border-left: 1.5px solid grey; color: grey; border-bottom: thin solid grey");
+   tableRow.addCell(userParam.filterProjectId, "", 6).setStyleAttributes("background-color: #e6ecf5; border: thin solid grey");
+   tableRow.addCell("Resource ID", "", 4).setStyleAttributes("color: grey; border-bottom: thin solid grey");
+   tableRow.addCell(userParam.filterRessourceId, "", 6).setStyleAttributes("background-color: #e6ecf5; border: thin solid grey");
 }
 
 function printFooter(report) {
@@ -213,6 +221,8 @@ function getTimesheetJournal(banDoc, startDate, endDate) {
             line.notes = tRow.value("Notes");
             line.duration = tRow.value("TimeDayTotal");
             line.billable = tRow.value("TimeDueDay");
+            line.projectid = tRow.value("ProjectsId");
+            line.resourceid = tRow.value("RessourceId");
             timesheetRows.push(line);
         }
     }
@@ -253,13 +263,34 @@ function printTableMonth(banDoc, texts, userParam, report) {
         // Print only the rows with non empty resources
         if (rows[i].resource) {
             tableRow = table.addRow();
-            tableRow.addCell(formatDateNoFullYear(Banana.Converter.toDate(rows[i].date)), "", 2);
-            tableRow.addCell(rows[i].resource, "", 3);
-            tableRow.addCell(rows[i].notes, "", 11);
-            tableRow.addCell(convertToHourDecimals(rows[i].duration), "right", 2);
-            tableRow.addCell(convertToHourDecimals(rows[i].billable), "right", 2);
-            totalDuration += Number(rows[i].duration);
-            totalBillable += Number(rows[i].billable);
+            if (!userParam.filterProjectId && !userParam.filterRessourceId) {
+                tableRow.addCell(formatDateNoFullYear(Banana.Converter.toDate(rows[i].date)), "", 2);
+                tableRow.addCell(rows[i].resource, "", 3);
+                tableRow.addCell(rows[i].notes, "", 11);
+                tableRow.addCell(convertToHourDecimals(rows[i].duration), "right", 2);
+                tableRow.addCell(convertToHourDecimals(rows[i].billable), "right", 2);
+                totalDuration += parseFloat(convertToHourDecimals(rows[i].duration ? rows[i].duration : '0.0'));
+                totalBillable += parseFloat(convertToHourDecimals(rows[i].billable ? rows[i].billable : '0.0'));
+            } else {
+                if (userParam.filterProjectId && (userParam.filterProjectId === rows[i].projectid)) {
+                    tableRow.addCell(formatDateNoFullYear(Banana.Converter.toDate(rows[i].date)), "", 2);
+                    tableRow.addCell(rows[i].resource, "", 3);
+                    tableRow.addCell(rows[i].notes, "", 11);
+                    tableRow.addCell(convertToHourDecimals(rows[i].duration), "right", 2);
+                    tableRow.addCell(convertToHourDecimals(rows[i].billable), "right", 2);
+                    totalDuration += parseFloat(convertToHourDecimals(rows[i].duration ? rows[i].duration : '0.0'));
+                    totalBillable += parseFloat(convertToHourDecimals(rows[i].billable ? rows[i].billable : '0.0'));
+                }
+                if (userParam.filterRessourceId && (userParam.filterRessourceId === rows[i].resourceid)) {
+                    tableRow.addCell(formatDateNoFullYear(Banana.Converter.toDate(rows[i].date)), "", 2);
+                    tableRow.addCell(rows[i].resource, "", 3);
+                    tableRow.addCell(rows[i].notes, "", 11);
+                    tableRow.addCell(convertToHourDecimals(rows[i].duration), "right", 2);
+                    tableRow.addCell(convertToHourDecimals(rows[i].billable), "right", 2);
+                    totalDuration += parseFloat(convertToHourDecimals(rows[i].duration ? rows[i].duration : '0.0'));
+                    totalBillable += parseFloat(convertToHourDecimals(rows[i].billable ? rows[i].billable : '0.0'));
+                }
+            }
         }   
     }
 
@@ -269,8 +300,8 @@ function printTableMonth(banDoc, texts, userParam, report) {
     tableRow.addCell("Total Efforts", "bold", 3).setStyleAttributes("border-top: 0.5px solid black; background-color: #6495ed");
     tableRow.addCell("", "", 2).setStyleAttributes("border-top: 0.5px solid black; background-color: #6495ed");
     tableRow.addCell("", "", 11).setStyleAttributes("border-top: 0.5px solid black; background-color: #6495ed");
-    tableRow.addCell(convertToHourDecimals(totalDuration), "right", 2).setStyleAttributes("font-weight: bold; border-top: 0.5px solid black; background-color: #6495ed");
-    tableRow.addCell(convertToHourDecimals(totalBillable), "right", 2).setStyleAttributes("font-weight: bold; border-top: 0.5px solid black; background-color: #6495ed");
+    tableRow.addCell(totalDuration, "right", 2).setStyleAttributes("font-weight: bold; border-top: 0.5px solid black; background-color: #6495ed");
+    tableRow.addCell(totalBillable, "right", 2).setStyleAttributes("font-weight: bold; border-top: 0.5px solid black; background-color: #6495ed");
 
     tableRow = table.addRow();
     tableRow.addCell("", "", 20);
@@ -387,11 +418,13 @@ function daysInMonth(month, year) {
 /***********************
 * UTILITIES 
 ***********************/
-function convertToHourDecimals(seconds) {
-    if (seconds) {
-        return Banana.SDecimal.divide(String(seconds), 3600, { 'decimals': 2 });
+function convertToHourDecimals(time) {
+    if (time) {
+        var timeHoursMinutes = time.split(':');
+        var hours = parseInt(timeHoursMinutes[0], 10);
+        var minutes = timeHoursMinutes[1] ? parseInt(timeHoursMinutes[1], 10) : 0;
+        return (hours + minutes / 60).toFixed(2);
     }
-    return "";
 }
 
 function convertToHoursMinutes(seconds) {
