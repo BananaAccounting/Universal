@@ -9,7 +9,7 @@ ChartView {
          'fill': 'rgba(0, 0, 204, 0.4)', 
          'stroke': "#3333cc",
          'point': "#FF008D",
-         'pointStroke': "#FFFFFF"
+         'pointStroke': "#FF008D"
       },
       {
          'fill': 'rgba(102, 255, 102, 0.4)',
@@ -21,6 +21,18 @@ ChartView {
          'fill': 'rgba(255, 0, 0, 0.4)',
          'stroke': "#A0AE6E",
          'point': "#A0AE6E",
+         'pointStroke': "#FFFFFF"
+      },
+      {
+         'fill': 'rgba(255, 153, 51, 0.4)', 
+         'stroke': "#3333cc",
+         'point': "#FF008D",
+         'pointStroke': "#FFFFFF"
+      },
+      {
+         'fill': 'rgba(234, 234, 71, 0.4)', 
+         'stroke': "#3333cc",
+         'point': "#FF008D",
          'pointStroke': "#FFFFFF"
       }
    ]
@@ -55,7 +67,7 @@ ChartView {
                }
             },
             'label' : function(item, data){
-               return Banana.Converter.toLocaleNumberFormat(item.yLabel);
+               return Banana.Converter.toLocaleNumberFormat(item.yLabel) + '%';;
             }
          }
       },

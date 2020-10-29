@@ -22,10 +22,22 @@ ChartView {
          'stroke': "#A0AE6E",
          'point': "#A0AE6E",
          'pointStroke': "#FFFFFF"
+      },
+      {
+         'fill': 'rgba(255, 153, 51, 0.4)', 
+         'stroke': "#3333cc",
+         'point': "#FF008D",
+         'pointStroke': "#FFFFFF"
+      },
+      {
+         'fill': 'rgba(234, 234, 71, 0.4)', 
+         'stroke': "#3333cc",
+         'point': "#FF008D",
+         'pointStroke': "#FFFFFF"
       }
    ]
 
-   chartType: 'bar'; //Charts.ChartType.BAR;
+   chartType: 'bar'; //Charts.ChartType.BAR; 
 
    chartData: {
       'labels' : [
@@ -54,9 +66,19 @@ ChartView {
                }
             },
             'label' : function(item, data){
-               return Banana.Converter.toLocaleNumberFormat(item.yLabel);
+               return Banana.Converter.toLocaleNumberFormat(item.yLabel) + '%';
             }
          }
+      },
+      'scales': {
+         'yAxes': [{
+               'ticks': {
+               callback: function (value) {
+               return value+"%";
+               },
+                  'beginAtZero' : true
+               }
+         }]
       },
       'barValueSpacing': 20,
    }
