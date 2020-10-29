@@ -36,6 +36,19 @@ BasePage {
                Layout.fillWidth: true
                Layout.fillHeight: true
 
+               function convertToPerc(dataSerie, dataSum) {
+                  for (var i = 0; i < dataSerie.length; i++) {
+                     var amount = dataSerie[i];
+                     var sum = dataSum[i];
+                     if (sum && !Banana.SDecimal.isZero(sum)) {
+                        amount = amount/sum*100;
+                        dataSerie[i] = amount;
+                        dataSerie[i]=dataSerie[i];
+                     }
+                  }
+                  return dataSerie;
+               }
+
                function loadData() {
                   showLoadingIndicator(false)
                   // showLoadingIndicator(true)
@@ -43,26 +56,51 @@ BasePage {
                   chartOptions.legend.display = true;
                   chartOptions.legend.position = 'bottom';
 
+
                   var financialStatementAnalysis = new FinancialStatementAnalysis(Banana.document);
+                  //Recovery of current settings.
+                  var savedParam =Banana.document.getScriptSettings("financialStatementAnalysis");
+                  if (savedParam.length > 0) {
+                     var param = JSON.parse(savedParam);
+                     financialStatementAnalysis.setParam(param);
+                  }
                   financialStatementAnalysis.loadData();
                   var yearList = [];
                   var dataSerie1 = [];
                   var dataSerie2 = [];
                   var dataSerie3 = [];
                   var dataSerie4 = [];
+                  var dataSum = [];
                   for (var i = 0; i < financialStatementAnalysis.data.length; i++) {
                      var periodo = financialStatementAnalysis.data[i].period.StartDate;
-                     if (periodo.length<4)
-                        continue;
-                     var year = periodo.substr(0, 4);
+                     //for dont cut the Budget string in Budg.
+                     if (periodo !== "Budget") {
+                     periodo = periodo.substr(0, 4);
+                     }
+                     var year= periodo;
                      if (yearList.indexOf(year)<0){
                         yearList.push(year);
                      }
-                     dataSerie1.push(Banana.SDecimal.abs(financialStatementAnalysis.data[i].bilancio.ct.stdc.balance));
-                     dataSerie2.push(Banana.SDecimal.abs(financialStatementAnalysis.data[i].bilancio.ct.ltdc.balance));
-                     dataSerie3.push(Banana.SDecimal.abs(financialStatementAnalysis.data[i].bilancio.cp.obca.balance));
-                     dataSerie4.push(Banana.SDecimal.abs(financialStatementAnalysis.data[i].bilancio.cp.reut.balance)); 
+                     var sumStdc= Banana.SDecimal.abs(financialStatementAnalysis.data[i].bilancio.ct.stdc.balance);
+                     dataSerie1.push(sumStdc);
+                     var sumLtdc=Banana.SDecimal.abs(financialStatementAnalysis.data[i].bilancio.ct.ltdc.balance);
+                     dataSerie2.push(sumLtdc);
+                     var sumObca=Banana.SDecimal.abs(financialStatementAnalysis.data[i].bilancio.cp.obca.balance);
+                     dataSerie3.push(sumObca);
+                     var sumReut=Banana.SDecimal.abs(financialStatementAnalysis.data[i].bilancio.cp.reut.balance);
+                     dataSerie4.push(sumReut); 
+                     
+                     var sum = sumStdc;
+                     sum = Banana.SDecimal.add(sumLtdc, sum);
+                     sum = Banana.SDecimal.add(sumObca, sum);
+                     sum = Banana.SDecimal.add(sumReut, sum);
+                     dataSum.push(sum);
                   }
+                  dataSerie1 = convertToPerc(dataSerie1, dataSum);
+                  dataSerie2 = convertToPerc(dataSerie2, dataSum);
+                  dataSerie3 = convertToPerc(dataSerie3, dataSum);
+                  dataSerie4 = convertToPerc(dataSerie4, dataSum);
+
                   chartData.labels = []
                   for (var i = 0; i < yearList.length; i++) {
                      var year = yearList[i];
@@ -75,12 +113,7 @@ BasePage {
                   {label: qsTr('reserves and profits'), data: dataSerie4, backgroundColor:defaultColors[3].fill}
                   ]
 
-                  /*chartData.labels = ["risk1","risk2"]
-                  chartData.datasets = [
-                  {label: 'low',data:[67.8,30,20], backgroundColor:'#D6E9C6'},
-                  {label: 'moderate',data:[20.7,30,20], backgroundColor:'#FAEBCC'},
-                  {label: 'high',data:[11.4, 40,60], backgroundColor:'#EBCCD1'}
-                  ]*/
+
                   repaintChart();
                   showLoadingIndicator(false)
                }

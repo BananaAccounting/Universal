@@ -18,7 +18,7 @@ BasePage {
       pageModel.append({'title': 'Profitability index variation','page': 'chartProf.qml'})
       pageModel.append({'title': 'Reclassified Assets variation','page': 'chartRAtt.qml'})
       pageModel.append({'title': 'Reclassified liabilities and equity variation','page': 'chartRPass.qml'})
-      pageModel.append({'title': 'Reclassified Profit and Loss','page': 'chartRProLos.qml'})
+      pageModel.append({'title': 'Reclassified Profit and Loss variation','page': 'chartProfLoss.qml'})
    }
 
    Component.onCompleted: {

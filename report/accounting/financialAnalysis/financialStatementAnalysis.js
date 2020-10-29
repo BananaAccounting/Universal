@@ -18,7 +18,7 @@
 // @task = app.command
 // @doctype = 100.*
 // @publisher = Banana.ch SA
-// @pubdate = 2020-09-24
+// @pubdate = 2020-09-24curr
 // @inputdatasource = none
 // @timeout = -1
 
@@ -85,7 +85,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         tableRow.addCell(qsTr("Acronym"), "styleTableHeader");
         for (var i = 0; i < this.data.length; i++) {
             var year = this.data[i].period.StartDate;
-            if (year !== "BUDGET")
+            if (year !== "Budget")
                 year = year.substr(0, 4);
             tableRow.addCell(year, "styleTableHeader");
         }
@@ -111,7 +111,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
     printReportAddTableConCeControlSums(report) {
         var tableConCeSumsControl = report.addTable('mytableConCeSumsControl');
         tableConCeSumsControl.setStyleAttributes("width:100%;");
-        tableConCeSumsControl.getCaption().addText(qsTr("PROFIT AND LOSS SUMS"), "styleGroupTitles");
+        tableConCeSumsControl.getCaption().addText(qsTr("PROFIT AND LOSS CONTROL SUMS"), "styleGroupTitles");
         tableConCeSumsControl.addColumn("Sheet Total").setStyleAttributes("width:30%");
         tableConCeSumsControl.addColumn("Calculated Total").setStyleAttributes("width:30%");
         tableConCeSumsControl.addColumn("Difference").setStyleAttributes("width:30%");
@@ -144,7 +144,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         tableRow.addCell(qsTr("Acronym"), "styleTableHeader");
         for (var i = 0; i < this.data.length; i++) {
             var year = this.data[i].period.StartDate;
-            if (year !== "BUDGET")
+            if (year !== "Budget")
                 year = year.substr(0, 4);
             tableRow.addCell(year, "styleTableHeader");
         }
@@ -172,7 +172,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         tableRow.addCell(qsTr("formula"), "styleTableHeader");
         for (var i = 0; i < this.data.length; i++) {
             var year = this.data[i].period.StartDate;
-            if (year !== "BUDGET")
+            if (year !== "Budget")
                 year = year.substr(0, 4);
             tableRow.addCell(year, "styleTableHeader");
         }
@@ -199,7 +199,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         tableRow.addCell(qsTr("formula"), "styleTableHeader");
         for (var i = 0; i < this.data.length; i++) {
             var year = this.data[i].period.StartDate;
-            if (year !== "BUDGET")
+            if (year !== "Budget")
                 year = year.substr(0, 4);
             tableRow.addCell(year, "styleTableHeader");
         }
@@ -226,7 +226,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         tableRow.addCell(qsTr("formula"), "styleTableHeader");
         for (var i = 0; i < this.data.length; i++) {
             var year = this.data[i].period.StartDate;
-            if (year !== "BUDGET")
+            if (year !== "Budget")
                 year = year.substr(0, 4);
             tableRow.addCell(year, "styleTableHeader");
         }
@@ -271,7 +271,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var tableRow = tableHeader.addRow();
         for (var i = 0; i < this.data.length; i++) {
             var year = this.data[i].period.StartDate;
-            if (year !== "BUDGET")
+            if (year !== "Budget")
                 year = year.substr(0, 4);
             tableRow.addCell(year, "styleTableHeader");
         }
@@ -338,7 +338,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
          */
     printReport() {
 
-        var report = Banana.Report.newReport('Analisi di Bilancio');
+        var report = Banana.Report.newReport('Financial Statement Analysis Report');
         var docInfo = this.getDocumentInfo()
         var currency = docInfo.basicCurrency;
         var company = docInfo.company;
@@ -364,30 +364,32 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         tableRow.addCell(Country, 'styleCompanyInfocells');
         var tableRow = tableCompanyInfo.addRow();
         tableRow.addCell(qsTr('TYPE'));
-        tableRow.addCell(qsTr("PMI / KMU"), 'styleCompanyInfocells');
+        tableRow.addCell(qsTr("SME"), 'styleCompanyInfocells');
         var tableRow = tableCompanyInfo.addRow();
         tableRow.addCell(qsTr('ANALYSIS PERIOD'));
         var period = " ";
         var sep = "";
         for (var i = 0; i < this.data.length; i++) {
             var endperiod = this.data[i].period.EndDate;
-            endperiod = endperiod.substr(0, 4);
-            if (i >= 1) {
-                sep = '-'
+            if (endperiod !== "Budget") {
+                endperiod = endperiod.substr(0, 4);
+                if (i >= 1) {
+                    sep = '-'
+                }
             }
             period = period + sep + endperiod;
 
         }
         report.addPageBreak();
 
-        tableRow.addCell(qsTr(period), 'styleCompanyInfocells');
+        tableRow.addCell((period), 'styleCompanyInfocells');
 
         //Add Table balance
         var colCountTableBilancio = 0;
         var tableBilancio = this.printReportAddTableBalance(report, this.yearsColumnCount(colCountTableBilancio));
         // current assets
         var tableRow = tableBilancio.addRow("styleTablRows");
-        tableRow.addCell(qsTr('Active'), "styleUnderGroupTitles", 7);
+        tableRow.addCell(qsTr('Assets'), "styleUnderGroupTitles", 7);
         for (var key in this.data[0].bilancio.ac) {
             var tableRow = tableBilancio.addRow("styleTablRows");
             tableRow.addCell(qsTr(this.data[0].bilancio.ac[key].description));
@@ -422,7 +424,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         }
 
         var tableRow = tableBilancio.addRow("styleTablRows");
-        tableRow.addCell(qsTr('Total Active'), 'styleTitlesTotAmount');
+        tableRow.addCell(qsTr('Total Assets'), 'styleTitlesTotAmount');
         tableRow.addCell('tota');
         for (var i = 0; i < this.data.length; i++) {
             tableRow.addCell(this.toLocaleAmountFormat(this.data[i].CalculatedData.TotActive), "styleTotAmount");
@@ -473,13 +475,13 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         // Add the Balance control sums table
         var tableBalanceControlSums = this.printReportAddTableBalanceControlSums(report);
         var tableRow = tableBalanceControlSums.addRow("styleTablRows");
-        tableRow.addCell(qsTr("Active"), "styleUnderGroupTitles", 4);
+        tableRow.addCell(qsTr("Assets"), "styleUnderGroupTitles", 4);
         for (var i = 0; i < this.data.length; i++) {
             var tableRow = tableBalanceControlSums.addRow("styleTablRows");
             var period = this.data[i].period.StartDate;
             var year = period.substr(0, 4);
-            Banana.console.debug(year);
-            if (year != "BUDG") {
+            // we dont want to control the budget table sums
+            if (year != "Budg") {
                 tableRow.addCell(year);
                 tableRow.addCell(this.toLocaleAmountFormat(this.data[i].CalculatedData.TotActiveSheet), "styleAmount");
                 tableRow.addCell(this.toLocaleAmountFormat(this.data[i].CalculatedData.TotActive), "styleAmount");
@@ -492,7 +494,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             var tableRow = tableBalanceControlSums.addRow("styleTablRows");
             var period = this.data[i].period.StartDate;
             var year = period.substr(0, 4);
-            if (year != "BUDG") {
+            if (year != "Budg") {
                 tableRow.addCell(year);
                 tableRow.addCell(this.toLocaleAmountFormat(this.data[i].CalculatedData.TotPassiveSheet), "styleAmount");
                 tableRow.addCell(this.toLocaleAmountFormat(this.data[i].CalculatedData.TotPassive), "styleAmount");
@@ -635,9 +637,11 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var sep = "";
         for (var i = 0; i < this.data.length; i++) {
             var period = this.data[i].period.StartDate;
-            var period = period.substr(0, 4);
-            if (i >= 1) {
-                sep = '-'
+            if (period !== "Budget") {
+                var period = period.substr(0, 4);
+                if (i >= 1) {
+                    sep = '-'
+                }
             }
             year = year + sep + period;
 
@@ -693,13 +697,17 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
         //row n.4
         var tableRow = tabledupont.addRow();
-        tableRow.addCell(" ", "emptyCells", 14);
+        tableRow.addCell(" ", "emptyCells", 9);
+        tableRow.addCell("+", "emptyCells");
+        tableRow.addCell(" ", "emptyCells", 4);
 
         //row n.5
         var tableRow = tabledupont.addRow();
         tableRow.addCell(" ", "emptyCells", 3);
         tableRow.addCell("ROT", "styledupontTexts", 2);
-        tableRow.addCell(" ", "emptyCells", 4);
+        tableRow.addCell(" ", "emptyCells", 1);
+        tableRow.addCell(":", "emptyCells");
+        tableRow.addCell(" ", "emptyCells", 2);
         tableRow.addCell(qsTr("Current Asset"), "styledupontTexts", 2);
         tableRow.addCell(" ", "emptyCells", 1);
         tableRow.addCell(qsTr("liquidity"), "styledupontTexts", 2);
@@ -739,7 +747,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
         //row n.7
         var tableRow = tabledupont.addRow();
-        tableRow.addCell(" ", "emptyCells", 14);
+        tableRow.addCell(" ", "emptyCells", 12);
+        tableRow.addCell("+", "emptyCells");
+        tableRow.addCell(" ", "emptyCells", 1);
 
         //row n.8
         var tableRow = tabledupont.addRow();
@@ -782,8 +792,11 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         if (this.data[Arrayindexprec])
             balance = this.data[Arrayindexprec].DupontData.roi;
         tableRow.addCell(this.toLocaleAmountFormat(balance) + "%", "dupontYearbackValueCells");
-
-        tableRow.addCell(" ", "emptyCells", 12);
+        tableRow.addCell(" ", "emptyCells", 1);
+        tableRow.addCell("x", "emptyCells");
+        tableRow.addCell(" ", "emptyCells", 8);
+        tableRow.addCell("+", "emptyCells");
+        tableRow.addCell(" ", "emptyCells", 1);
 
         //row n.11
         var tableRow = tabledupont.addRow();
@@ -832,7 +845,10 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var tableRow = tabledupont.addRow();
         tableRow.addCell(" ", "emptyCells", 3);
         tableRow.addCell("MOL", "styledupontTexts", 2);
-        tableRow.addCell(" ", "emptyCells", 9);
+        tableRow.addCell(" ", "emptyCells", 1);
+        tableRow.addCell(":", "emptyCells");
+        tableRow.addCell(" ", "emptyCells", 7);
+
 
         //row n.17
         var tableRow = tabledupont.addRow();
@@ -887,7 +903,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
         //row n.21
         var tableRow = tabledupont.addRow();
-        tableRow.addCell(" ", "emptyCells", 14);
+        tableRow.addCell(" ", "emptyCells", 9);
+        tableRow.addCell("-", "emptyCells");
+        tableRow.addCell(" ", "emptyCells", 4);
 
         //row n.22
         var tableRow = tabledupont.addRow();
@@ -918,7 +936,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
         //row n.24
         var tableRow = tabledupont.addRow();
-        tableRow.addCell(" ", "emptyCells", 14);
+        tableRow.addCell(" ", "emptyCells", 12);
+        tableRow.addCell("+", "emptyCells");
+        tableRow.addCell(" ", "emptyCells", 1);
 
         //row n.25
         var tableRow = tabledupont.addRow();
@@ -938,7 +958,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
         //row n.27
         var tableRow = tabledupont.addRow();
-        tableRow.addCell(" ", "emptyCells", 14);
+        tableRow.addCell(" ", "emptyCells", 12);
+        tableRow.addCell("+", "emptyCells");
+        tableRow.addCell(" ", "emptyCells", 1);
 
         //row n.28
         var tableRow = tabledupont.addRow();
@@ -1326,9 +1348,6 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         return param;
     }
 
-
-
-
     /**
      * added the prefix prof because elements: .roe, .roi, .ros, .mol  already exists.
      */
@@ -1361,7 +1380,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
     initParamFinancingBenchmarks() {
         var param = {};
         param.cirract = {};
-        param.cirract.description = qsTr("degree of circulating active");
+        param.cirract.description = qsTr("degree of circulating assets");
         param.cirract.value = qsTr("compare with the industry average data");
         param.fixass = {};
         param.fixass.description = qsTr("percentage fixed assets");
@@ -1399,14 +1418,12 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
     }
 
     /**
-         * @description - assigns the maximum number of previous years to a varaible, if it is less than 5, is reset to 5
-         * - calls up the loadDataBudget and the loadDataYear methods by passing the current document to them.
-         * - Using the values returned by the loadDataBudget and loadDataYear, the methods for calculating the index, intermediate values, dupont scheme and Altman's index are called up.
-         * - Each value returned by the calculation methods is assigned to an object which is then inserted in the "date"[] array.
-         * unlike the loadDataBudget the loadDataYear is called up for each prevous year of the document.
-
-    Translated with www.DeepL.com/Translator (free version)
-         */
+     * @description - assigns the maximum number of previous years to a varaible, if it is less than 5, is reset to 5
+     * - calls up the loadDataBudget and the loadDataYear methods by passing the current document to them.
+     * - Using the values returned by the loadDataBudget and loadDataYear, the methods for calculating the index, intermediate values, dupont scheme and Altman's index are called up.
+     * - Each value returned by the calculation methods is assigned to an object which is then inserted in the "date"[] array.
+     * unlike the loadDataBudget the loadDataYear is called up for each prevous year of the document.
+     */
     loadData() {
             this.data = [];
             var yeardocument = this.banDocument;
@@ -1415,7 +1432,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             if (maxpreviousyear > 5)
                 maxpreviousyear = 5;
 
-            // solo se c'è la tabella Budget, eventualmente aggiungere un parametro così può decidere l'utente
+            // only if the table budget exists
             var withBudget = yeardocument.info("Budget", "TableNameXml");
             if (withBudget) {
                 var dataBudget = this.loadDataBudget(yeardocument);
@@ -1462,7 +1479,6 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             return;
         }
 
-        // parte sempre dai parametri del file principale
         var param = JSON.stringify(this.param);
         param = JSON.parse(param);
 
@@ -1473,8 +1489,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         }
         param.isBudget = true;
         param.period = {};
-        param.period.StartDate = qsTr("BUDGET");
-        param.period.EndDate = qsTr("BUDGET");
+        param.period.StartDate = qsTr("Budget");
+        param.period.EndDate = qsTr("Budget");
         //param.period.StartDate = _banDocument.info("AccountingDataBase", "OpeningDate");
         //param.period.EndDate = _banDocument.info("AccountingDataBase", "ClosureDate");
         return param;
@@ -1566,8 +1582,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
      * Instantiate a *CalculatedData= {}* object that will contain all the calculated data.
      * Calculate the various elements.
      * @param {object} data: the data object created thanks to loadData methods, containing the values and the sums of the paramters recovered from the dialog
-     * @param {date} startDate: the startDate of the document, wich is located in the File Info.
-     * @param {date} EndDate: the EndDate of the document, wich is located in the File Info.
+     * @param {object} _banDocument: the startDate of the document, wich is located in the File Info.
      * @returns an object containing the calculated values
      */
     calculateData(data, _banDocument) {
@@ -1591,10 +1606,10 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             var Totactive = Banana.SDecimal.add(Tota2, Fixa);
             Calcdata.TotActive = Totactive;
 
-            /*calculate the total active resulting from the accounting sheet and then use it for controls*/
+            /*calculate the total assets resulting from the accounting sheet and then use it for controls*/
 
             Calcdata.TotActiveSheet = {}
-            var TotActiveSheet = _banDocument.currentBalance('BClass=1', "", "", null);
+            var TotActiveSheet = _banDocument.currentBalance('Gr=1', "", "", null);
             var TotActiveSheetBalance = TotActiveSheet.amount;
             Calcdata.TotActiveSheet = TotActiveSheetBalance;
 
@@ -1624,7 +1639,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             Calcdata.TotPassiveSheet = {}
                 //da rivedere
 
-            var TotPassiveSheet = _banDocument.currentBalance('BClass=2', "", "", null);
+            var TotPassiveSheet = _banDocument.currentBalance('Gr=2', "", "", null);
             var TotPassiveSheetBalance = TotPassiveSheet.amount;
             Calcdata.TotPassiveSheet = TotPassiveSheetBalance;
 
@@ -1664,11 +1679,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
             Calcdata.TotAnnualSheet = {}
 
-            var TotRicavi = _banDocument.currentBalance('BClass=4', '', '', null);
-            var TotCosti = _banDocument.currentBalance('BClass=3', '', '', null);
-            // Banana.console.debug(data.contoeconomico.fire.balance);
-            var RisAnnual = Banana.SDecimal.subtract(TotRicavi.amount, TotCosti.amount);
-            Calcdata.TotAnnualSheet = RisAnnual;
+            Calcdata.TotAnnualSheet = data.finalresult.fire.balance;
 
             //calculate the difference
             Calcdata.TotAnnualDifference = {};
@@ -1773,7 +1784,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
         //degree of circulating assets
         index.fin.grcuas = {};
-        index.fin.grcuas.description = qsTr("degree of circulating active ");
+        index.fin.grcuas.description = qsTr("degree of circulating assets ");
         index.fin.grcuas.formula = "cuas / tota";
         var totatt = CalculatedData.TotActive;
         var fcalc = Banana.SDecimal.divide(cuastwo, totatt);
@@ -1932,8 +1943,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
         //Active subgroup
         var currentParam = {};
-        currentParam.name = 'Active';
-        currentParam.title = 'Active';
+        currentParam.name = 'Assets';
+        currentParam.title = 'Assets';
         currentParam.editable = false;
         currentParam.parentObject = 'Balance';
 
@@ -2053,7 +2064,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.value = param.bilancio.ac.liqu.gr ? param.bilancio.ac.liqu.gr : '';
         currentParam.defaultvalue = defaultParam.bilancio.ac.liqu.gr;
         //I assign it to a group
-        currentParam.parentObject = 'Active';
+        currentParam.parentObject = 'Assets';
         currentParam.readValue = function() {
             param.bilancio.ac.liqu.gr = this.value;
         }
@@ -2066,7 +2077,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.type = 'string';
         currentParam.value = param.bilancio.ac.cred.gr ? param.bilancio.ac.cred.gr : '';
         currentParam.defaultvalue = defaultParam.bilancio.ac.cred.gr;
-        currentParam.parentObject = 'Active';
+        currentParam.parentObject = 'Assets';
         currentParam.readValue = function() {
             param.bilancio.ac.cred.gr = this.value;
         }
@@ -2078,7 +2089,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.type = 'string';
         currentParam.value = param.bilancio.ac.stoc.gr ? param.bilancio.ac.stoc.gr : '';
         currentParam.defaultvalue = defaultParam.bilancio.ac.stoc.gr;
-        currentParam.parentObject = 'Active';
+        currentParam.parentObject = 'Assets';
         currentParam.readValue = function() {
             param.bilancio.ac.stoc.gr = this.value;
         }
@@ -2090,7 +2101,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.type = 'string';
         currentParam.value = param.bilancio.af.fixa.gr ? param.bilancio.af.fixa.gr : '';
         currentParam.defaultvalue = defaultParam.bilancio.af.fixa.gr;
-        currentParam.parentObject = 'Active';
+        currentParam.parentObject = 'Assets';
         currentParam.readValue = function() {
             param.bilancio.af.fixa.gr = this.value;
         }
@@ -2309,7 +2320,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         }
         convertedParam.data.push(currentParam);
 
-        // degree of circulating active benchmark
+        // degree of circulating assets benchmark
         var currentParam = {};
         currentParam.name = 'cirractbenchmark';
         currentParam.title = param.ratios.financingratios.cirract.description ? param.ratios.financingratios.cirract.description : defaultParam.ratios.financingratios.cirract.description;
@@ -2558,10 +2569,6 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
         return Dupont;
     }
-    getRAttPerc() {
-        //...
-    }
-
 
     /**
      * @description this method verifiy if the amount is negative or positive, and set the correct style to the amounts. In case of negative amount the text is set in red.
@@ -2661,7 +2668,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             return '';
         }
         /**
-         * @description retrieves the language of the current document. 
+         * @description retrieves the language of the current document, and if not defined takes that of the application.
          * @returns the language.
          */
     getLang() {
@@ -2803,7 +2810,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var lang = this.getLang();
 
         //Banana+ is required
-        var requiredVersion = "10.0";
+        var requiredVersion = "10.0.3";
         if (Banana.compareVersion && Banana.compareVersion(Banana.application.version, requiredVersion) < 0) {
             var msg = this.getErrorMessage(this.ID_ERR_VERSION_NOTSUPPORTED, lang);
             msg = msg.replace("%1", requiredVersion);
@@ -2814,12 +2821,12 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             var msg = this.getErrorMessage(this.ID_ERR_EXPERIMENTAL_REQUIRED, lang);
             this.banDocument.addMessage(msg, this.ID_ERR_EXPERIMENTAL_REQUIRED);
             return false;
-        }
+        }*/
         if (!Banana.application.license || Banana.application.license.licenseType !== "advanced") {
             var msg = this.getErrorMessage(this.ID_ERR_LICENSE_NOTVALID, lang);
             this.banDocument.addMessage(msg, this.ID_ERR_LICENSE_NOTVALID);
             return false;
-        }*/
+        }
         return true;
     }
 
@@ -3000,7 +3007,7 @@ function settingsDialog() {
         financialStatementAnalysis.setParam(JSON.parse(savedParam));
     }
 
-    var dialogTitle = 'Conti';
+    var dialogTitle = 'Settings';
     var pageAnchor = 'dlgSettings';
     var convertedParam = financialStatementAnalysis.convertParam();
     if (!Banana.Ui.openPropertyEditor(dialogTitle, convertedParam, pageAnchor))

@@ -7,7 +7,7 @@ import "charts" 1.0
 
 BasePage {
    id: root
-   title: qsTr("Financial Statement Analysis")  
+   title: qsTr("Financial Statement Analysis")
 
    ColumnLayout {
       anchors.fill: parent
@@ -23,12 +23,12 @@ BasePage {
             Layout.fillHeight: true
 
             Text {
-               text: qsTr("Financing index variation")
+               text: qsTr("Reclassified Profit and Loss")
                font.pixelSize: Stylesheet.titleFontSize
                Layout.bottomMargin: Stylesheet.defaultMargin
             }
 
-            StyledChartFin {
+            StyledChartProfLoss {
                id: mainChart
                height: availableHeight
                width: availableWidth
@@ -51,13 +51,10 @@ BasePage {
                   financialStatementAnalysis.loadData();
                   var yearList = [];
                   var data = {};
-                  data.grcuas = {};
-                  data.grfixa = {};
-                  data.gdin = {};
-                  data.gfcp = {};
-                  data.gdau = {};
-                  data.fixaco = {};
-
+                  data.adva = {};
+                  data.ebitda = {};
+                  data.ebit = {};
+                  data.tota = {};
                   for (var i = 0; i < financialStatementAnalysis.data.length; i++) {
                      var periodo = financialStatementAnalysis.data[i].period.StartDate;
                      //for dont cut the Budget string in Budg.
@@ -67,12 +64,10 @@ BasePage {
                      var year= periodo;
                      if (year.length>0 && yearList.indexOf(year)<0)
                         yearList.push(year);
-                     data.grcuas[year] = financialStatementAnalysis.data[i].index.fin.grcuas.amount;
-                     data.grfixa[year] = financialStatementAnalysis.data[i].index.fin.grfixa.amount;
-                     data.gdin[year] = financialStatementAnalysis.data[i].index.fin.gdin.amount;
-                     data.gfcp[year] = financialStatementAnalysis.data[i].index.fin.gfcp.amount;
-                     data.gdau[year] = financialStatementAnalysis.data[i].index.fin.gdau.amount;
-                     data.fixaco[year] = financialStatementAnalysis.data[i].index.fin.fixaco.amount;
+                     data.adva[year] = financialStatementAnalysis.data[i].CalculatedData.AddedValue;
+                     data.ebitda[year] = financialStatementAnalysis.data[i].CalculatedData.EbitDa;
+                     data.ebit[year] = financialStatementAnalysis.data[i].CalculatedData.Ebit;
+                     data.tota[year] = financialStatementAnalysis.data[i].CalculatedData.TotAnnual;
                   }
                   for (var i = 0; i < yearList.length; i++) {
                      var year = yearList[i];
@@ -83,14 +78,11 @@ BasePage {
                         defaultColor = defaultColors[i].fill;
                      chartData.datasets[i].backgroundColor = defaultColor;
                      chartData.datasets[i].data = [];
-                     chartData.datasets[i].data.push(data.grcuas[year]);
-                     chartData.datasets[i].data.push(data.grfixa[year] );
-                     chartData.datasets[i].data.push(data.gdin[year]);
-                     chartData.datasets[i].data.push(data.gfcp[year]);
-                     chartData.datasets[i].data.push(data.gdau[year]);
-                     chartData.datasets[i].data.push(data.fixaco[year]);
-                  }  
-                  
+                     chartData.datasets[i].data.push(data.adva[year]);
+                     chartData.datasets[i].data.push(data.ebitda[year]);
+                     chartData.datasets[i].data.push(data.ebit[year]);
+                     chartData.datasets[i].data.push(data.tota[year]);
+                  } 
                   repaintChart();
                   showLoadingIndicator(false)
                }

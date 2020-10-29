@@ -24,31 +24,31 @@ Financial Statements Analysis \\
 COMPANY INFORMATION COMPANY NAME  & Paraer Colige AN \\
 HEAD OFFICE  & vos in Hare \\
 COUNTRY  & \\
-TYPE  & PMI / KMU \\
+TYPE  & SME \\
 ANALYSIS PERIOD  &  2019-2018-2017-2016-2015-2014 \\
 \end{longtable}
-\begin{longtable}[l]{ l  l  l  l  l  l  l  l  l }
-BALANCE Description  & Acronym  & Currency  & 2019  & 2018  & 2017  & 2016  & 2015  & 2014 \\
-\multicolumn{7}{l}{Active }\\
-Liquidity  & liqu  & CHF  & 2'099'565  & 1'717'092  & 2'019'315  & 1'827'812  & 1'784'854  & 1'660'289 \\
-Credits  & cred  & CHF  &  &  &  &  &  & \\
-Stocks  & stoc  & CHF  &  &  &  &  &  & \\
-Current Assets  & cuas  & CHF  & 2'099'565  & 1'717'092  & 2'019'315  & 1'827'812  & 1'784'854  & 1'660'289 \\
-Fixed assets  & fixa  & CHF  &  &  &  &  &  & \\
-Fixed Assets  & tfix  & CHF  &  &  &  &  &  & \\
-Total Active  & tota  & CHF  & 2'099'565  & 1'717'092  & 2'019'315  & 1'827'812  & 1'784'854  & 1'660'289 \\
+\begin{longtable}[l]{ l  l  l  l  l  l  l  l }
+BALANCE Description  & Acronym  & 2019  & 2018  & 2017  & 2016  & 2015  & 2014 \\
+\multicolumn{7}{l}{Assets }\\
+Liquidity  & liqu  & 2'099'565  & 1'717'092  & 2'019'315  & 1'827'812  & 1'784'854  & 1'660'289 \\
+Credits  & cred  &  &  &  &  &  & \\
+Stocks  & stoc  &  &  &  &  &  & \\
+Current Assets  & cuas  & 2'099'565  & 1'717'092  & 2'019'315  & 1'827'812  & 1'784'854  & 1'660'289 \\
+Fixed assets  & fixa  &  &  &  &  &  & \\
+Fixed Assets  & tfix  &  &  &  &  &  & \\
+Total Assets  & tota  & 2'099'565  & 1'717'092  & 2'019'315  & 1'827'812  & 1'784'854  & 1'660'289 \\
 Liabilities and Equity \\
-Short-term debt capital  & stdc  & CHF  & 1'787'433  & 1'964'131  & 1'970'281  & 1'749'411  & 1'603'830  & 1'448'959 \\
-Long term debt capital  & ltdc  & CHF  &  &  &  &  &  & \\
-Debt Capital  & deca  & CHF  & 1'787'433  & 1'964'131  & 1'970'281  & 1'749'411  & 1'603'830  & 1'448'959 \\
-Own base capital  & obca  & CHF  &  &  &  &  &  & \\
-Reserves and profits  & reut  & CHF  &  &  &  &  &  & \\
-Own Capital  & owca  & CHF  & 0  & 0  & 0  & 0  & 0  & 0 \\
-Total Liabilities and Equity  & totp  & CHF  & 1'787'433  & 1'964'131  & 1'970'281  & 1'749'411  & 1'603'830  & 1'448'959 \\
+Short-term debt capital  & stdc  & 1'787'433  & 1'964'131  & 1'970'281  & 1'749'411  & 1'603'830  & 1'448'959 \\
+Long term debt capital  & ltdc  &  &  &  &  &  & \\
+Debt Capital  & deca  & 1'787'433  & 1'964'131  & 1'970'281  & 1'749'411  & 1'603'830  & 1'448'959 \\
+Own base capital  & obca  &  &  &  &  &  & \\
+Reserves and profits  & reut  &  &  &  &  &  & \\
+Own Capital  & owca  & 0  & 0  & 0  & 0  & 0  & 0 \\
+Total Liabilities and Equity  & totp  & 1'787'433  & 1'964'131  & 1'970'281  & 1'749'411  & 1'603'830  & 1'448'959 \\
 \end{longtable}
 \begin{longtable}[l]{ l  l  l  l }
-BALANCE CONTROL SUMS  Year  & Sheet Total  & Calculated Total  & Difference \\
-\multicolumn{4}{l}{Active }\\
+BALANCE CONTROL SUMS Year  & Sheet Total  & Calculated Total  & Difference \\
+\multicolumn{4}{l}{Assets }\\
 2019  & 2'099'565  & 2'099'565  & 0 \\
 2018  & 1'717'092  & 1'717'092  & 0 \\
 2017  & 2'019'315  & 2'019'315  & 0 \\
@@ -63,76 +63,76 @@ BALANCE CONTROL SUMS  Year  & Sheet Total  & Calculated Total  & Difference \\
 2015  & 1'603'830  & 1'603'830  & 0 \\
 2014  & 1'448'959  & 1'448'959  & 0 \\
 \end{longtable}
-\begin{longtable}[l]{ l  l  l  l  l  l  l  l  l }
-PROFIT AND LOSS Description  & Acronym  & Currency  & 2019  & 2018  & 2017  & 2016  & 2015  & 2014 \\
-+ Sales turnover  & satu  & CHF  & 4'310'657  & 3'503'574  & 3'496'484  & 3'342'941  & 3'498'307  & 3'909'161 \\
-- Cost of merchandise and services  & cofm  & CHF  & -2'180'038  & -2'214'563  & -1'730'983  & -1'626'298  & -1'600'031  & -1'969'508 \\
-= Added Value  & adva  & CHF  & 2'130'619  & 1'289'012  & 1'765'500  & 1'716'643  & 1'898'276  & 1'939'653 \\
-- Personnel costs  & cope  & CHF  & 0  & 0  & 0  & 0  & 0  & 0 \\
-- Different costs  & codi  & CHF  & 0  & 0  & 0  & 0  & 0  & 0 \\
-= EBITDA  & ebitda  & CHF  & 2'130'619  & 1'289'012  & 1'765'500  & 1'716'643  & 1'898'276  & 1'939'653 \\
-- Depreciations and adjustments  & amre  & CHF  & 0  & 0  & 0  & 0  & 0  & 0 \\
-= EBIT  & ebit  & CHF  & 2'130'619  & 1'289'012  & 1'765'500  & 1'716'643  & 1'898'276  & 1'939'653 \\
-+/- Interests  & inte  & CHF  & 0  & 0  & 0  & 0  & 0  & 0 \\
-Annual result  & anre  & CHF  & 2'130'619  & 1'289'012  & 1'765'500  & 1'716'643  & 1'898'276  & 1'939'653 \\
+\begin{longtable}[l]{ l  l  l  l  l  l  l  l }
+PROFIT AND LOSS Description  & Acronym  & 2019  & 2018  & 2017  & 2016  & 2015  & 2014 \\
++ Sales turnover  & satu  & 4'310'657  & 3'503'574  & 3'496'484  & 3'342'941  & 3'498'307  & 3'909'161 \\
+- Cost of merchandise and services  & cofm  & -2'180'038  & -2'214'563  & -1'730'983  & -1'626'298  & -1'600'031  & -1'969'508 \\
+= Added Value  & adva  & 2'130'619  & 1'289'012  & 1'765'500  & 1'716'643  & 1'898'276  & 1'939'653 \\
+- Personnel costs  & cope  & 0  & 0  & 0  & 0  & 0  & 0 \\
+- Different costs  & codi  & 0  & 0  & 0  & 0  & 0  & 0 \\
+= EBITDA  & ebitda  & 2'130'619  & 1'289'012  & 1'765'500  & 1'716'643  & 1'898'276  & 1'939'653 \\
+- Depreciations and adjustments  & amre  & 0  & 0  & 0  & 0  & 0  & 0 \\
+= EBIT  & ebit  & 2'130'619  & 1'289'012  & 1'765'500  & 1'716'643  & 1'898'276  & 1'939'653 \\
++/- Interests  & inte  & 0  & 0  & 0  & 0  & 0  & 0 \\
+Annual result  & anre  & 2'130'619  & 1'289'012  & 1'765'500  & 1'716'643  & 1'898'276  & 1'939'653 \\
 \end{longtable}
 \begin{longtable}[l]{ l  l  l }
-PROFIT AND LOSS SUMS  Sheet Total  & Calculated Total  & Difference \\
-312'132  & 2'130'619  & -1'818'487 \\
+PROFIT AND LOSS CONTROL SUMS Sheet Total  & Calculated Total  & Difference \\
+ & 2'130'619  & -2'130'619 \\
 \end{longtable}
 analysis by index \\
-\begin{longtable}[l]{ l  l  l  l  l  l  l  l  l  l }
-LIQUIDITY RATIOS Description  & formula  & Currency  & 2019  & 2018  & 2017  & 2016  & 2015  & 2014  & BenchMark \\
-Liquidity 1  & (liqu * 100) / stdc  & CHF  & 117\%  & 87\%  & 102\%  & 104\%  & 111\%  & 115\%  & \\
-Liquidity 2  & (liqu + cred) / stdc  & CHF  & 1\%  & 1\%  & 1\%  & 1\%  & 1\%  & 1\%  & \\
-Liquidity 3  & (cuas * 100) / stdc  & CHF  & 117\%  & 87\%  & 102\%  & 104\%  & 111\%  & 115\%  & \\
-Net Current Asset  & cuas-stdc  & CHF  & 312132  & -247039  & 49034  & 78401  & 181024  & 211330  & \\
+\begin{longtable}[l]{ l  l  l  l  l  l  l  l  l }
+LIQUIDITY RATIOS Description  & formula  & 2019  & 2018  & 2017  & 2016  & 2015  & 2014  & BenchMark \\
+cash ratio  & liqu / stdc  & 117\%  & 87\%  & 102\%  & 104\%  & 111\%  & 115\%  & \\
+quick ratio  & (liqu + cred) / stdc  & 1\%  & 1\%  & 1\%  & 1\%  & 1\%  & 1\%  & \\
+current ratio  & cuas / stdc  & 117\%  & 87\%  & 102\%  & 104\%  & 111\%  & 115\%  & \\
+net current asset  & cuas-stdc  & 312132  & -247039  & 49034  & 78401  & 181024  & 211330  & \\
 \end{longtable}
-\begin{longtable}[l]{ l  l  l  l  l  l  l  l  l  l }
-FINANCING RATIOS Description  & formula  & Currency  & 2019  & 2018  & 2017  & 2016  & 2015  & 2014  & BenchMark \\
-degree of circulating active   & cuas / tota  & CHF  & 100\%  & 100\%  & 100\%  & 100\%  & 100\%  & 100\%  & \\
-degree of fixed assets   & fixa / tota  & CHF  & 0\%  & 0\%  & 0\%  & 0\%  & 0\%  & 0\%  & \\
-Level of debt  & (stdc+ltdc * 100) / totp  & CHF  & 100\%  & 100\%  & 100\%  & 100\%  & 100\%  & 100\%  & \\
-Level of equity finance  & (owca * 100) / totp  & CHF  & 0\%  & 0\%  & 0\%  & 0\%  & 0\%  & 0\%  & \\
-Level of self-financing  & (reut * 100) / owca  & CHF  & \%  & \%  & \%  & \%  & \%  & \%  & \\
- degree of coverage of fixed assets  & ( owca + ltdc ) / tota  & CHF  & 0\%  & 0\%  & 0\%  & 0\%  & 0\%  & 0\%  & \\
+\begin{longtable}[l]{ l  l  l  l  l  l  l  l  l }
+FINANCING RATIOS Description  & formula  & 2019  & 2018  & 2017  & 2016  & 2015  & 2014  & BenchMark \\
+degree of circulating assets   & cuas / tota  & 100\%  & 100\%  & 100\%  & 100\%  & 100\%  & 100\%  & \\
+percentage fixed assets  & fixa / tota  & 0\%  & 0\%  & 0\%  & 0\%  & 0\%  & 0\%  & \\
+debt ratio  & stdc+ltdc / totp  & 100\%  & 100\%  & 100\%  & 100\%  & 100\%  & 100\%  & \\
+equity ratio  & owca / totp  & 0\%  & 0\%  & 0\%  & 0\%  & 0\%  & 0\%  & \\
+self-financing ratio  & reut / owca  & \%  & \%  & \%  & \%  & \%  & \%  & \\
+fixed assets coverage  & ( owca + ltdc ) / tota  & 0\%  & 0\%  & 0\%  & 0\%  & 0\%  & 0\%  & \\
 \end{longtable}
-\begin{longtable}[l]{ l  l  l  l  l  l  l  l  l  l }
-PROFITABILITY RATIOS Description  & formula  & Currency  & 2019  & 2018  & 2017  & 2016  & 2015  & 2014  & BenchMark \\
-Return of equity  & (profit * 100) / own capital  & CHF  & \%  & \%  & \%  & \%  & \%  & \%  & \\
-Return of investiment  & (  EBIT * 100) / total employment    & CHF  & 101\%  & 75\%  & 87\%  & 94\%  & 106\%  & 117\%  & \\
-Return of sales  & (ebit * 100) / satu  & CHF  & 49\%  & 37\%  & 50\%  & 51\%  & 54\%  & 50\%  & \\
-MOL  & (gross profit * 100) / sales turnover  & CHF  & 49\%  & 37\%  & 50\%  & 51\%  & 54\%  & 50\%  & \\
+\begin{longtable}[l]{ l  l  l  l  l  l  l  l  l }
+PROFITABILITY RATIOS Description  & formula  & 2019  & 2018  & 2017  & 2016  & 2015  & 2014  & BenchMark \\
+ROE  & profit / own capital  & \%  & \%  & \%  & \%  & \%  & \%  & \\
+ROI  & EBIT / total employment    & 101\%  & 75\%  & 87\%  & 94\%  & 106\%  & 117\%  & \\
+ROS  & ebit / satu  & 49\%  & 37\%  & 50\%  & 51\%  & 54\%  & 50\%  & \\
+MOL  & gross profit / sales turnover  & 49\%  & 37\%  & 50\%  & 51\%  & 54\%  & 50\%  & \\
 \end{longtable}
 DUPONT SCHEME YEARS: 2019-2018-2017-2016-2015-2014 \\
 \begin{longtable}[l]{ l  l  l  l  l  l  l  l  l  l  l  l  l  l  l }
 \multicolumn{14}{l}{  }\\
 \multicolumn{6}{l}{  } & \multicolumn{2}{l}{Capital } &    & \multicolumn{2}{l}{Fixed Asset } & \multicolumn{3}{l}{  }\\
 \multicolumn{6}{l}{  } & 2'099'565  & 1'717'092  &    &  &  & \multicolumn{3}{l}{  }\\
-\multicolumn{14}{l}{  }\\
-\multicolumn{3}{l}{  } & \multicolumn{2}{l}{ROT } & \multicolumn{4}{l}{  } & \multicolumn{2}{l}{Current Asset } &    & \multicolumn{2}{l}{liquidity }\\
+\multicolumn{9}{l}{  } & +  & \multicolumn{4}{l}{  }\\
+\multicolumn{3}{l}{  } & \multicolumn{2}{l}{ROT } &    & :  & \multicolumn{2}{l}{  } & \multicolumn{2}{l}{Current Asset } &    & \multicolumn{2}{l}{liquidity }\\
 \multicolumn{3}{l}{  } & 2  & 2  & \multicolumn{4}{l}{  } & 2'099'565  & 1'717'092  &    & 2'099'565  & 1'717'092 \\
-\multicolumn{14}{l}{  }\\
+\multicolumn{12}{l}{  } & +  &   \\
 \multicolumn{6}{l}{  } & \multicolumn{2}{l}{Sales } & \multicolumn{4}{l}{  } & \multicolumn{2}{l}{Credits }\\
 \multicolumn{2}{l}{ROI } & \multicolumn{4}{l}{  } & 4'310'657  & 3'503'574  & \multicolumn{4}{l}{  } &  & \\
-\%  & \%  & \multicolumn{12}{l}{  }\\
+\%  & \%  &    & x  & \multicolumn{8}{l}{  } & +  &   \\
 \multicolumn{2}{l}{benchmark 10\% } & \multicolumn{10}{l}{  } & \multicolumn{2}{l}{Stocks }\\
 \multicolumn{12}{l}{  } &  & \\
 \multicolumn{6}{l}{  } & \multicolumn{2}{l}{Sales } & \multicolumn{6}{l}{  }\\
 \multicolumn{6}{l}{  } & 4'310'657  & 3'503'574  & \multicolumn{6}{l}{  }\\
 \multicolumn{14}{l}{  }\\
-\multicolumn{3}{l}{  } & \multicolumn{2}{l}{MOL } & \multicolumn{9}{l}{  }\\
+\multicolumn{3}{l}{  } & \multicolumn{2}{l}{MOL } &    & :  & \multicolumn{7}{l}{  }\\
 \multicolumn{3}{l}{  } & 0  & 0  & \multicolumn{9}{l}{  }\\
 \multicolumn{14}{l}{  }\\
 \multicolumn{6}{l}{  } & \multicolumn{2}{l}{EBIT } &    & \multicolumn{2}{l}{Sales } & \multicolumn{3}{l}{  }\\
 \multicolumn{6}{l}{  } & 2'130'619  & 1'289'012  &    & 4'310'657  & 3'503'574  & \multicolumn{3}{l}{  }\\
-\multicolumn{14}{l}{  }\\
+\multicolumn{9}{l}{  } & -  & \multicolumn{4}{l}{  }\\
 \multicolumn{9}{l}{  } & \multicolumn{2}{l}{Total Cost } &    & \multicolumn{2}{l}{Merchandise cost }\\
 \multicolumn{9}{l}{  } & 2'180'038  & 2'214'563  &    & 2'180'038  & 2'214'563 \\
-\multicolumn{14}{l}{  }\\
+\multicolumn{12}{l}{  } & +  &   \\
 \multicolumn{12}{l}{  } & \multicolumn{2}{l}{Personal costs }\\
 \multicolumn{12}{l}{  } &  & \\
-\multicolumn{14}{l}{  }\\
+\multicolumn{12}{l}{  } & +  &   \\
 \multicolumn{12}{l}{  } & \multicolumn{2}{l}{Different Costs }\\
 \multicolumn{12}{l}{  } & 0  & 0 \\
 \end{longtable}
@@ -148,10 +148,11 @@ Altman Index Z-SCORE 2019  & 2018  & 2017  & 2016  & 2015  & 2014 \\
 \end{longtable}
 for values > of 3 correspond to low probability of a financial crisis \\
 for values >= of 1.8 but <= to 3 there are possibilities of a financial crisis, to be kept under control \\
-for values < to 3 there is a strong probability of a financial crisis \\
-\begin{longtable}[l]{ l  l }
+for values < to 1.8 there is a strong probability of a financial crisis \\
+\begin{longtable}[l]{ l  l  l }
 Used Setting Number of Previous Years  & 5 \\
 Number of Decimals  & \\
+Currency  & CHF \\
 \end{longtable}
 Banana.ch \\
 \end{reportvalue}

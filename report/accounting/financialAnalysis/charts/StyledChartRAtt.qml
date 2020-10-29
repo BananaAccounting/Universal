@@ -72,13 +72,21 @@ ChartView {
                }
             },
             'label' : function(item, data){
-               return Banana.Converter.toLocaleNumberFormat(item.yLabel);
+               return Banana.Converter.toLocaleNumberFormat(item.yLabel) + '%';
             }
          }
       },
       'scales': {
          'xAxes': [{stacked:true}],
-         'yAxes': [{stacked:true}]
+         'yAxes': [{
+                     stacked:true,
+         		      interval: 1110, 
+                     ticks: {
+                    callback: function(value, index, values) {
+                        return value + '%';
+                    }
+                }
+         }]
       },
       'barValueSpacing': 20,
    }

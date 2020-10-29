@@ -5,7 +5,7 @@
      <file>chartProf.qml</file>
      <file>chartRAtt.qml</file>
      <file>chartRPass.qml</file>
-     <file>chartRProLos.qml</file>
+     <file>chartProfLoss.qml</file>
      <file>charts.js</file>
      <file>charts.qml</file>
      <file>financialStatementAnalysis.js</file>
@@ -20,7 +20,7 @@
      <file>charts/StyledChartProf.qml</file>
      <file>charts/StyledChartRAtt.qml</file>
      <file>charts/StyledChartRPass.qml</file>
-     <file>charts/StyledChartRProLos.qml</file>
+     <file>charts/StyledChartProfLoss.qml</file>
      <file>components/BasePage.qml</file>     
      <file>components/CountriesList.qml</file>     
      <file>components/ListItemDelegate.qml</file>     

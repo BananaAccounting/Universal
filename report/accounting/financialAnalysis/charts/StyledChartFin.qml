@@ -30,15 +30,9 @@ ChartView {
          'pointStroke': "#FFFFFF"
       },
       {
-         'fill': 'rgba(0, 204, 255, 0.4)',
-         'stroke': "#000066",
-         'point': "#000066",
-         'pointStroke': "#000066"
-      },
-      {
-         'fill': 'rgba(255, 204, 0, 0.4)',
-         'stroke': "#A0AE6E",
-         'point': "#A0AE6E",
+         'fill': 'rgba(234, 234, 71, 0.4)', 
+         'stroke': "#3333cc",
+         'point': "#FF008D",
          'pointStroke': "#FFFFFF"
       }
    ]
@@ -73,7 +67,7 @@ ChartView {
                }
             },
             'label' : function(item, data){
-               return Banana.Converter.toLocaleNumberFormat(item.yLabel);
+               return Banana.Converter.toLocaleNumberFormat(item.yLabel) + '%';
             }
          }
       },
@@ -85,7 +79,7 @@ ChartView {
                },
                   'beginAtZero' : true
                }
-            }]
+         }]
       },
       'barValueSpacing': 20,
    }

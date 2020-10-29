@@ -30,15 +30,9 @@ ChartView {
          'pointStroke': "#FFFFFF"
       },
       {
-         'fill': 'rgba(0, 204, 255, 0.4)',
-         'stroke': "#000066",
-         'point': "#000066",
-         'pointStroke': "#000066"
-      },
-      {
-         'fill': 'rgba(255, 204, 0, 0.4)',
-         'stroke': "#A0AE6E",
-         'point': "#A0AE6E",
+         'fill': 'rgba(234, 234, 71, 0.4)', 
+         'stroke': "#3333cc",
+         'point': "#FF008D",
          'pointStroke': "#FFFFFF"
       }
    ]
@@ -47,20 +41,21 @@ ChartView {
 
    chartData: {
       'labels' : [
-      ],
+            qsTr("Added Value"),"Ebit-Da","Ebit",qsTr("Final Result")
+            ],
        'datasets' : [
        ]
    }
 
-  chartOptions : {
+   chartOptions : {
       'defaultFontSize' : 16,
       'legend':{
          'display': false,
       },
       'tooltips': {
          'mode': 'index',
-         'intersect': true,
-         'titleFontSize': 18,
+         'intersect': false,
+         'titleFontSize': 16,
          'bodyFontSize': 14,
          'callbacks': {
             'labelColor' : function(tooltipItem, chart) {
@@ -72,24 +67,20 @@ ChartView {
                }
             },
             'label' : function(item, data){
-               return Banana.Converter.toLocaleNumberFormat(item.yLabel) + '%';
+               return Banana.Converter.toLocaleNumberFormat(item.yLabel);
             }
          }
       },
       'scales': {
-         'xAxes': [{stacked:true}],
          'yAxes': [{
-                     stacked:true,
-         		      interval: 1110, 
-                     ticks: {
-                    // Include a dollar sign in the ticks
-                    callback: function(value, index, values) {
-                        return value + '%';
-                    }
-                }
-         }]
-      },
-      'barValueSpacing': 20,
+               'ticks': {
+               callback: function (value) {
+               return value;
+               },
+                  'beginAtZero' : true,
+               }
+            }]
+      }
    }
 
    BusyIndicator {

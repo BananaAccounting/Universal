@@ -43,6 +43,7 @@ BasePage {
                      if (sum && !Banana.SDecimal.isZero(sum)) {
                         amount = amount/sum*100;
                         dataSerie[i] = amount;
+                        dataSerie[i]=dataSerie[i];
                      }
                   }
                   return dataSerie;
@@ -55,21 +56,32 @@ BasePage {
                   chartOptions.legend.position = 'bottom';
 
                   var financialStatementAnalysis = new FinancialStatementAnalysis(Banana.document);
+                  //Recovery of current settings.
+                  var savedParam =Banana.document.getScriptSettings("financialStatementAnalysis");
+                  if (savedParam.length > 0) {
+                     var param = JSON.parse(savedParam);
+                     financialStatementAnalysis.setParam(param);
+                  }
                   financialStatementAnalysis.loadData();
+
                   var yearList = [];
                   var dataSerie1 = [];
                   var dataSerie2 = [];
                   var dataSerie3 = [];
                   var dataSerie4 = [];
                   var dataSum = [];
+
                   for (var i = 0; i < financialStatementAnalysis.data.length; i++) {
                      var periodo = financialStatementAnalysis.data[i].period.StartDate;
-                     if (periodo.length<4)
-                        continue;
-                     var year = periodo.substr(0, 4);
+                     //for dont cut the Budget string in Budg.
+                     if (periodo !== "Budget") {
+                     periodo = periodo.substr(0, 4);
+                     }
+                     var year= periodo;
                      if (yearList.indexOf(year)<0){
                         yearList.push(year);
                      }
+                     
                      var sumLiq= Banana.SDecimal.abs(financialStatementAnalysis.data[i].bilancio.ac.liqu.balance);
                      dataSerie1.push(sumLiq);
                      var sumCred=Banana.SDecimal.abs(financialStatementAnalysis.data[i].bilancio.ac.cred.balance);
@@ -118,7 +130,6 @@ BasePage {
             Item {
                 height: 9
             }
-
          }
       }
 
