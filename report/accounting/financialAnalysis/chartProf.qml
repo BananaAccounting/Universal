@@ -43,6 +43,12 @@ BasePage {
                   chartOptions.legend.position = 'bottom';
 
                   var financialStatementAnalysis = new FinancialStatementAnalysis(Banana.document);
+                  //Recovery of current settings.
+                  var savedParam =Banana.document.getScriptSettings("financialStatementAnalysis");
+                  if (savedParam.length > 0) {
+                     var param = JSON.parse(savedParam);
+                     financialStatementAnalysis.setParam(param);
+                  }
                   financialStatementAnalysis.loadData();
                   var yearList = [];
                   var data = {};
@@ -52,9 +58,11 @@ BasePage {
                   data.mol = {};
                   for (var i = 0; i < financialStatementAnalysis.data.length; i++) {
                      var periodo = financialStatementAnalysis.data[i].period.StartDate;
-                     if (periodo.length<4)
-                        continue;
-                     var year = periodo.substr(0, 4);
+                      //for dont cut the Budget string in Budg.
+                     if (periodo !== "Budget") {
+                     periodo = periodo.substr(0, 4);
+                     }
+                     var year= periodo;
                      if (year.length>0 && yearList.indexOf(year)<0)
                         yearList.push(year);
                      data.roe[year] = financialStatementAnalysis.data[i].index.red.roe.amount;
