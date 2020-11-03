@@ -2559,7 +2559,7 @@ function getQuantityDecimals(invoiceObj) {
     var item = invoiceObj.items[i];
     var qty = item.quantity;
     var res = qty.split(".");
-    if (res[1] && res[1] !== "0000" && res[1].substring(1,4) !== "000" && res[1].substring(2,4) !== "00") {
+    if (res[1] && res[1].length == 4 && res[1] !== "0000" && res[1].substring(1,4) !== "000" && res[1].substring(2,4) !== "00") {
       decimals = 4;
       //Banana.console.log(res[1] + " => " + decimals);
     } else {
