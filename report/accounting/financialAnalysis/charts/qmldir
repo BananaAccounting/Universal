@@ -1,0 +1,6 @@
+### qmldir ---
+######################################################################
+
+ChartView 1.0 ChartView.qml
+ChartJs 1.0 Chart.bundle.js
+StyledChart 1.0 StyledChart.qml

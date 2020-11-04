@@ -1,0 +1,155 @@
+%%info_test_name{Documentscontabilita_sa-sagl_partitario_fatturato 2020}
+\documentclass{report}
+\usepackage{longtable}
+\usepackage{color}
+\usepackage{listings}
+\usepackage[margin=1cm]{geometry}
+\begin{document}
+\newenvironment{tablevalue}[2]{\textbf{Table: #1}\begin{longtable}[l]{#2}}{\end{longtable}}
+\newenvironment{reportvalue}[1]{\textbf{Report: #1}\\}{}
+\lstnewenvironment{jsonvalue}[1]{\textbf{Json: #1}\lstset{language=Java}}{}
+\lstnewenvironment{xmlvalue}[1]{\textbf{Xml: #1}\lstset{language=Xml}}{}
+\newcommand{\info}[2]{\textit{#1: #2}\\}
+\newcommand{\fatalerror}[1]{\textbf{\textcolor[rgb]{1,0,0}{Fatal error: #1}}\\}
+\newcommand{\keyvalue}[2]{\textbf{Keyvalue: #1} #2\\}
+\newcommand{\textvalue}[1]{#1\\}
+\newcommand{\excltest}[1]{\\Excluded from compare: #1}
+\newcommand{\lognewpage}{\newpage}
+\newenvironment{testcase}[1]{\section*{Test: #1}}{\newpage}
+\newenvironment{test}[1]{\section*{Test case: #1}}{}
+%Begin test data
+\begin{reportvalue}{FILENAME: file:script/../test/testcases/Documentscontabilita\_sa-sagl\_partitario\_fatturato 2020.ac2}
+Financial Statements Analysis \\
+\begin{longtable}[l]{ l  l }
+COMPANY INFORMATION COMPANY NAME  & My Company \\
+HEAD OFFICE  & Via Delle Scuole, 6900 Lugano \\
+COUNTRY  & \\
+TYPE  & SME \\
+ANALYSIS PERIOD  &  Budget-2020-2019-2018 \\
+\end{longtable}
+\begin{longtable}[l]{ l  l  l  l  l  l  l }
+BALANCE Description  & Acronym  & Budget  & 2020  & 2019  & 2018 \\
+\multicolumn{7}{l}{Assets }\\
+Liquidità  & liqu  & 1'145.00  & 5'670.00  & -1'250.00  & 720.00 \\
+Crediti  & cred  & 220.00  & -1'480.00  & 6'300.00  & 2'800.00 \\
+Merci  & stoc  & 0.00  & -1'880.00  & -3'010.00  & -2'800.00 \\
+Current Assets  & cuas  & 1'365.00  & 2'310.00  & 2'040.00  & 720.00 \\
+Attivo fisso  & fixa  & 800.00  & 13'500.00  & 13'700.00  & 15'700.00 \\
+Fixed Assets  & tfix  & 800.00  & 13'500.00  & 13'700.00  & 15'700.00 \\
+Total Assets  & tota  & 2'165.00  & 15'810.00  & 15'740.00  & 16'420.00 \\
+Liabilities and Equity \\
+Capitale di terzi a corto termine  & stdc  & 1'010.00  & 27'480.00  & 8'850.00  & 11'020.00 \\
+Capitale di terzi a lungo termine  & ltdc  & 0.00  & 9'000.00  & 10'000.00  & 11'000.00 \\
+Debt Capital  & deca  & 1'010.00  & 36'480.00  & 18'850.00  & 22'020.00 \\
+Capitale proprio  & obca  & 0.00  & -4'500.00  & -4'600.00  & -4'000.00 \\
+Riserve e utili  & reut  & 1'155.00  & -16'170.00  & 1'490.00  & -1'600.00 \\
+Own Capital  & owca  & 1'155.00  & -20'670.00  & -3'110.00  & -5'600.00 \\
+Total Liabilities and Equity  & totp  & 2'165.00  & 15'810.00  & 15'740.00  & 16'420.00 \\
+\end{longtable}
+\begin{longtable}[l]{ l  l  l  l }
+BALANCE CONTROL SUMS Year  & Sheet Total  & Calculated Total  & Difference \\
+\multicolumn{4}{l}{Assets }\\
+\\
+2020  & 15'810.00  & 15'810.00  & 0.00 \\
+2019  & 15'740.00  & 15'740.00  & 0.00 \\
+2018  & 16'420.00  & 16'420.00  & 0.00 \\
+\multicolumn{4}{l}{Liabilities and Equity }\\
+\\
+2020  & 15'810.00  & 15'810.00  & 0.00 \\
+2019  & 15'740.00  & 15'740.00  & 0.00 \\
+2018  & 16'420.00  & 16'420.00  & 0.00 \\
+\end{longtable}
+\begin{longtable}[l]{ l  l  l  l  l  l }
+PROFIT AND LOSS Description  & Acronym  & Budget  & 2020  & 2019  & 2018 \\
++ Ricavi da vendite  & satu  & 1'200.00  & 11'500.00  & 11'500.00  & 10'800.00 \\
+- Costi della merce  & cofm  & -55.00  & -23'080.00  & -4'410.00  & -7'200.00 \\
+= Added Value  & adva  & 1'145.00  & -11'580.00  & 7'090.00  & 3'600.00 \\
+- Costi del personale  & cope  & 0.00  & -500.00  & -700.00  & -1'000.00 \\
+- Costi differenti  & codi  & 0.00  & -2'000.00  & -2'700.00  & -2'500.00 \\
+= EBITDA  & ebitda  & 1'145.00  & -14'080.00  & 3'690.00  & 100.00 \\
+- Ammortamenti e rettifiche  & amre  & 0.00  & -1'500.00  & -1'800.00  & -1'500.00 \\
+= EBIT  & ebit  & 1'145.00  & -15'580.00  & 1'890.00  & -1'400.00 \\
++/- Interessi  & inte  & 0.00  & -600.00  & -400.00  & -200.00 \\
+Annual result  & anre  & 1'145.00  & -16'180.00  & 1'490.00  & -1'600.00 \\
+\end{longtable}
+\begin{longtable}[l]{ l  l  l }
+PROFIT AND LOSS CONTROL SUMS Sheet Total  & Calculated Total  & Difference \\
+-16'180.00  & -16'180.00  & 0.00 \\
+\end{longtable}
+analysis by index \\
+\begin{longtable}[l]{ l  l  l  l  l  l  l }
+LIQUIDITY RATIOS Description  & formula  & Budget  & 2020  & 2019  & 2018  & BenchMark \\
+cash ratio  & liqu / stdc  & 113.37\%  & 20.63\%  & -14.12\%  & 6.53\%  & 10\%-35\% \\
+quick ratio  & (liqu + cred) / stdc  & 1.35\%  & 0.15\%  & 0.57\%  & 0.32\%  & 100\% \\
+current ratio  & cuas / stdc  & 135.15\%  & 8.41\%  & 23.05\%  & 6.53\%  & 150\% \\
+net current asset  & cuas-stdc  & 355.00  & -25170.00  & -6810.00  & -10300.00  & compare with the previous internal data \\
+\end{longtable}
+\begin{longtable}[l]{ l  l  l  l  l  l  l }
+FINANCING RATIOS Description  & formula  & Budget  & 2020  & 2019  & 2018  & BenchMark \\
+degree of circulating assets   & cuas / tota  & 63.05\%  & 14.61\%  & 12.96\%  & 4.38\%  & compare with the industry average data \\
+percentage fixed assets  & fixa / tota  & 36.95\%  & 85.39\%  & 87.04\%  & 95.62\%  & compare with the industry average data \\
+debt ratio  & stdc+ltdc / totp  & 46.65\%  & 230.74\%  & 119.76\%  & 134.10\%  & 40\%-70\% \\
+equity ratio  & owca / totp  & 53.35\%  & -130.74\%  & -19.76\%  & -34.10\%  & 30\%-60\% \\
+self-financing ratio  & reut / owca  & 100.00\%  & 78.23\%  & -47.91\%  & 28.57\%  & depends on the company \\
+fixed assets coverage  & ( owca + ltdc ) / tota  & 53.35\%  & -73.81\%  & 43.77\%  & 32.89\%  & >100\% \\
+\end{longtable}
+\begin{longtable}[l]{ l  l  l  l  l  l  l }
+PROFITABILITY RATIOS Description  & formula  & Budget  & 2020  & 2019  & 2018  & BenchMark \\
+ROE  & profit / own capital  & 99.13\%  & 78.28\%  & -47.91\%  & 28.57\%  & 8\%-14\% \\
+ROI  & EBIT / total employment    & 52.89\%  & -98.55\%  & 12.01\%  & -8.53\%  & 10\% \\
+ROS  & ebit / satu  & 95.42\%  & -135.48\%  & 16.43\%  & -12.96\%  & >0 \\
+MOL  & gross profit / sales turnover  & 95.42\%  & -122.43\%  & 32.09\%  & 0.93\%  & compare with the industry average data \\
+\end{longtable}
+DUPONT SCHEME YEARS: Budget-2020-2019-2018 \\
+\begin{longtable}[l]{ l  l  l  l  l  l  l  l  l  l  l  l  l  l  l }
+\multicolumn{14}{l}{  }\\
+\multicolumn{6}{l}{  } & \multicolumn{2}{l}{Capital } &    & \multicolumn{2}{l}{Fixed Asset } & \multicolumn{3}{l}{  }\\
+\multicolumn{6}{l}{  } & 15'810.00  & 15'740.00  &    & 13'500.00  & 13'700.00  & \multicolumn{3}{l}{  }\\
+\multicolumn{9}{l}{  } & +  & \multicolumn{4}{l}{  }\\
+\multicolumn{3}{l}{  } & \multicolumn{2}{l}{ROT } &    & :  & \multicolumn{2}{l}{  } & \multicolumn{2}{l}{Current Asset } &    & \multicolumn{2}{l}{liquidity }\\
+\multicolumn{3}{l}{  } & 0.73  & 0.73  & \multicolumn{4}{l}{  } & 2'310.00  & 2'040.00  &    & 5'670.00  & -1'250.00 \\
+\multicolumn{12}{l}{  } & +  &   \\
+\multicolumn{6}{l}{  } & \multicolumn{2}{l}{Sales } & \multicolumn{4}{l}{  } & \multicolumn{2}{l}{Credits }\\
+\multicolumn{2}{l}{ROI } & \multicolumn{4}{l}{  } & 11'500.00  & 11'500.00  & \multicolumn{4}{l}{  } & -1'480.00  & 6'300.00 \\
+-98.55\%  & 12.01\%  &    & x  & \multicolumn{8}{l}{  } & +  &   \\
+\multicolumn{2}{l}{benchmark 10\% } & \multicolumn{10}{l}{  } & \multicolumn{2}{l}{Stocks }\\
+\multicolumn{12}{l}{  } & -1'880.00  & -3'010.00 \\
+\multicolumn{6}{l}{  } & \multicolumn{2}{l}{Sales } & \multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  } & 11'500.00  & 11'500.00  & \multicolumn{6}{l}{  }\\
+\multicolumn{14}{l}{  }\\
+\multicolumn{3}{l}{  } & \multicolumn{2}{l}{MOL } &    & :  & \multicolumn{7}{l}{  }\\
+\multicolumn{3}{l}{  } & -1.35  & 0.16  & \multicolumn{9}{l}{  }\\
+\multicolumn{14}{l}{  }\\
+\multicolumn{6}{l}{  } & \multicolumn{2}{l}{EBIT } &    & \multicolumn{2}{l}{Sales } & \multicolumn{3}{l}{  }\\
+\multicolumn{6}{l}{  } & -15'580.00  & 1'890.00  &    & 11'500.00  & 11'500.00  & \multicolumn{3}{l}{  }\\
+\multicolumn{9}{l}{  } & -  & \multicolumn{4}{l}{  }\\
+\multicolumn{9}{l}{  } & \multicolumn{2}{l}{Total Cost } &    & \multicolumn{2}{l}{Merchandise cost }\\
+\multicolumn{9}{l}{  } & 27'080.00  & 9'610.00  &    & 23'080.00  & 4'410.00 \\
+\multicolumn{12}{l}{  } & +  &   \\
+\multicolumn{12}{l}{  } & \multicolumn{2}{l}{Personal costs }\\
+\multicolumn{12}{l}{  } & 500.00  & 700.00 \\
+\multicolumn{12}{l}{  } & +  &   \\
+\multicolumn{12}{l}{  } & \multicolumn{2}{l}{Different Costs }\\
+\multicolumn{12}{l}{  } & 3'500.00  & 4'500.00 \\
+\end{longtable}
+\begin{longtable}[l]{ l  l  l  l }
+Altman Index Z-SCORE Budget  & 2020  & 2019  & 2018 \\
+3.10  & -3.10  & 1.28  & 0.34 \\
+\multicolumn{4}{l}{formula used for the calculation  = 0.717 X1 + 0.847 X2 +3.107 X3 +0.420 X4 + 0.998 X5 }\\
+\multicolumn{4}{l}{X1 = cuas / tota }\\
+\multicolumn{4}{l}{X2 = reut / tota  }\\
+\multicolumn{4}{l}{X3 = Ebit / tota  }\\
+\multicolumn{4}{l}{X4 = pant / totp }\\
+\multicolumn{4}{l}{X5 = sale / tota }\\
+\end{longtable}
+for values > of 3 correspond to low probability of a financial crisis \\
+for values >= of 1.8 but <= to 3 there are possibilities of a financial crisis, to be kept under control \\
+for values < to 1.8 there is a strong probability of a financial crisis \\
+\begin{longtable}[l]{ l  l  l }
+Used Setting Number of Previous Years  & 2 \\
+Number of Decimals  & 2 \\
+Currency  & CHF \\
+\end{longtable}
+Banana.ch \\
+\end{reportvalue}
+\end{document}

@@ -1,0 +1,13 @@
+{
+    "category": "productivity",
+    "country": "universal",
+    "countryCode": "un",
+    "description": "Financial Statements Analysis",
+    "description.en": "Financial Statements Analysis",
+    "id": "financialStatementAnalysis",
+    "language": "en",
+    "publisher": "Banana.ch",
+    "title": "Financial Statements Analysis",
+    "title.en": "Financial Statements Analysis",
+    "version": "1.0"
+}
