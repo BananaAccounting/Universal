@@ -1,0 +1,6 @@
+<!DOCTYPE RCC><RCC version="1.0">
+    <qresource>
+        <file alias="manifest.json">ch.banana.uni.timesheetreports.manifest.json</file>
+        <file>ch.banana.uni.timesheetreports.js</file>
+    </qresource>
+</RCC>

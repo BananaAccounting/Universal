@@ -1,0 +1,20 @@
+singleton CountriesList 1.0 CountriesList.qml
+BasePage 1.0 BasePage.qml
+CopyToClipboard 1.0 CopyToClipboard.qml
+InfiniteListView 1.0 InfiniteListView.qml
+ItemInfoPage 1.0 ItemInfoPage.qml
+ItemsGroupPage 1.0 ItemsGroupPage.qml
+ListItemDelegate 1.0 ListItemDelegate.qml
+PinnedWindow 1.0 PinneWindow.qml
+SearchBar 1.0 SearchBar.qml
+SearchField 1.0 SearchField.qml
+StyledButton 1.0 StyledButton.qml
+StyledCheckBox 1.0 StyledCheckBox.qml
+StyledRadioButton 1.0 StyledRadioButton.qml
+StyledScrollableTextArea 1.0 StyledScrollableTextArea.qml
+StyledTabBar 1.0 StyledTabBar.qml
+StyledTabButton 1.0 StyledTabButton.qml
+StyledTextArea 1.0 StyledTextArea.qml
+StyledTextField 1.0 StyledTextField.qml
+singleton Stylesheet 1.0 Stylesheet.qml
+TextViewerPage 1.0 TextViewerPage.qml
