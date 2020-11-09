@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.uni.invoice.uni10
 // @api = 1.0
-// @pubdate = 2020-09-16
+// @pubdate = 2020-11-04
 // @publisher = Banana.ch SA
 // @description = [UNI10] Layout 10 (BETA)
 // @description.it = [UNI10] Layout 10 (BETA)
@@ -1510,16 +1510,16 @@ function print_customer_address(repDocObj, invoiceObj, userParam) {
     customerAddressTable = repDocObj.addTable("address_table_right");
   }
   //Small line of the supplier address
-  tableRow = customerAddressTable.addRow();
-  var cell = tableRow.addCell("", "", 1);
   if (userParam.address_small_line) {
-    if (userParam.address_small_line === "<none>") {
-      cell.addText("","");
-    } else {
+    if (userParam.address_small_line !== "<none>") {
+      tableRow = customerAddressTable.addRow();
+      var cell = tableRow.addCell("", "", 1);
       cell.addText(userParam.address_small_line, "small_address");
     }
   }
   else {
+    tableRow = customerAddressTable.addRow();
+    var cell = tableRow.addCell("", "", 1);
     var name = "";
     var address = "";
     var locality = "";
@@ -2614,7 +2614,7 @@ function set_variables(variables, userParam) {
   variables.$margin_left_header = "20mm";
   variables.$text_align_header = "right";
   /* Variables that set the margins and paddings of the Invoice Information */
-  variables.$margin_top_info = "45mm";
+  variables.$margin_top_info = "46mm";
   variables.$margin_right_info = "10mm";
   variables.$margin_left_info = "20mm";
   variables.$padding_top = "0px";
