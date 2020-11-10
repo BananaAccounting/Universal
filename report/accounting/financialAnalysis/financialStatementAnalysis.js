@@ -69,15 +69,6 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         //columns
         columnsCount = 0;
         tableBilancio.addColumn("Description").setStyleAttributes("width:30%");
-        /*tableBilancio.addColumn("Acronym").setStyleAttributes("width:10%");
-        tableBilancio.addColumn("Currency").setStyleAttributes("width:10%");
-        var width = 50;
-        if (this.data.length > 0)
-            width = width / parseInt(this.data.length);
-        for (var i = 0; i < this.data.length; i++) {
-            tableBilancio.addColumn("Amount").setStyleAttributes("width:" + width.toString() + "%");
-            columnsCount++;
-        }*/
         // header
         var tableHeader = tableBilancio.getHeader();
         var tableRow = tableHeader.addRow();
@@ -237,13 +228,6 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
     printReportAddTableDupont(report) {
         var tableDupont = report.addTable('myDupontTable');
         tableDupont.setStyleAttributes("width:100%;");
-        tableDupont.addColumn("").setStyleAttributes("width:10%");
-        tableDupont.addColumn("").setStyleAttributes("width:10%");
-        tableDupont.addColumn("").setStyleAttributes("width:10%");
-        tableDupont.addColumn("").setStyleAttributes("width:10%");
-        tableDupont.addColumn("").setStyleAttributes("width:10%");
-        tableDupont.addColumn("").setStyleAttributes("width:10%");
-        tableDupont.addColumn("").setStyleAttributes("width:10%");
         tableDupont.addColumn("").setStyleAttributes("width:10%");
         tableDupont.addColumn("").setStyleAttributes("width:10%");
         tableDupont.addColumn("").setStyleAttributes("width:10%");
@@ -635,18 +619,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         report.addPageBreak();
         var year = "";
         var sep = "";
-        for (var i = 0; i < this.data.length; i++) {
-            var period = this.data[i].period.StartDate;
-            if (period !== "Budget") {
-                var period = period.substr(0, 4);
-                if (i >= 1) {
-                    sep = '-'
-                }
-            }
-            year = year + sep + period;
 
-        }
-        report.addParagraph(qsTr("DUPONT SCHEME YEARS: ") + year, "styleGroupTitles");
+        report.addParagraph(qsTr("DUPONT SCHEME "), "styleGroupTitles");
         var Arrayindexcurr;
         var Arrayindexprec;
 
@@ -658,327 +632,286 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             Arrayindexprec = 1;
         }
 
-        //add the dupont scheme for the current year
         var tabledupont = this.printReportAddTableDupont(report);
-        //first row
         var tableRow = tabledupont.addRow();
-        tableRow.addCell(" ", "emptyCells", 14);
+        tableRow.addCell(" ", "emptyCells", 5);
+        tableRow.addCell("Current", "styleTableHeader");
+        tableRow.addCell("Previous", "styleTableHeader");
 
-        //row n.2
         var tableRow = tabledupont.addRow();
-        tableRow.addCell(" ", "emptyCells", 6);
-        tableRow.addCell(qsTr("Capital"), "styledupontTexts", 2);
-        tableRow.addCell(" ", "emptyCells", 1);
-        tableRow.addCell(qsTr("Fixed Asset"), "styledupontTexts", 2);
+        tableRow.addCell("ROI (ROT*MOL)", 'styleTitlesTotAmount', 2);
         tableRow.addCell(" ", "emptyCells", 3);
-
-        //row n.3
-        var tableRow = tabledupont.addRow();
-        tableRow.addCell(" ", "emptyCells", 6);
         var balance = 0;
         if (this.data[Arrayindexcurr])
-            balance = this.data[Arrayindexcurr].DupontData.capital;
-        tableRow.addCell(this.toLocaleAmountFormat(balance), "dupontCurryearValueCells");
+            balance = this.data[Arrayindexcurr].DupontData.roi;
+        tableRow.addCell(this.toLocaleAmountFormat(balance) + "%", "styleTotAmount");
         balance = 0;
         if (this.data[Arrayindexprec])
-            balance = this.data[Arrayindexprec].DupontData.capital;
-        tableRow.addCell(this.toLocaleAmountFormat(balance), "dupontYearbackValueCells");
-        tableRow.addCell(" ", "emptyCells", 1);
-        var balance = 0;
-        if (this.data[Arrayindexcurr])
-            balance = this.data[Arrayindexcurr].DupontData.FixedAsset;
-        tableRow.addCell(this.toLocaleAmountFormat(balance), "dupontCurryearValueCells");
-        balance = 0;
-        if (this.data[Arrayindexprec])
-            balance = this.data[Arrayindexprec].DupontData.FixedAsset;
-        tableRow.addCell(this.toLocaleAmountFormat(balance), "dupontYearbackValueCells");
+            balance = this.data[Arrayindexprec].DupontData.roi;
+        tableRow.addCell(this.toLocaleAmountFormat(balance) + "%", "styleTotAmount");
 
-        tableRow.addCell(" ", "emptyCells", 3);
-
-        //row n.4
+        //2
         var tableRow = tabledupont.addRow();
-        tableRow.addCell(" ", "emptyCells", 9);
-        tableRow.addCell("+", "emptyCells");
-        tableRow.addCell(" ", "emptyCells", 4);
-
-        //row n.5
-        var tableRow = tabledupont.addRow();
-        tableRow.addCell(" ", "emptyCells", 3);
-        tableRow.addCell("ROT", "styledupontTexts", 2);
         tableRow.addCell(" ", "emptyCells", 1);
-        tableRow.addCell(":", "emptyCells");
-        tableRow.addCell(" ", "emptyCells", 2);
-        tableRow.addCell(qsTr("Current Asset"), "styledupontTexts", 2);
-        tableRow.addCell(" ", "emptyCells", 1);
-        tableRow.addCell(qsTr("liquidity"), "styledupontTexts", 2);
-
-
-        //row n.6
-        var tableRow = tabledupont.addRow();
+        tableRow.addCell("ROT", 'styleUnderGroupTitles');
         tableRow.addCell(" ", "emptyCells", 3);
         var balance = 0;
         if (this.data[Arrayindexcurr])
             balance = this.data[Arrayindexcurr].DupontData.rot;
-        tableRow.addCell(this.toLocaleAmountFormat(balance), "dupontCurryearValueCells");
+        tableRow.addCell(this.toLocaleAmountFormat(balance), "styleMidTotal");
         balance = 0;
         if (this.data[Arrayindexprec])
             balance = this.data[Arrayindexprec].DupontData.rot;
-        tableRow.addCell(this.toLocaleAmountFormat(balance), "dupontYearbackValueCells");
+        tableRow.addCell(this.toLocaleAmountFormat(balance), "styleMidTotal");
 
-        tableRow.addCell(" ", "emptyCells", 4);
-        var balance = 0;
-        if (this.data[Arrayindexcurr])
-            balance = this.data[Arrayindexcurr].DupontData.CurrentAsset;
-        tableRow.addCell(this.toLocaleAmountFormat(balance), "dupontCurryearValueCells");
-        balance = 0;
-        if (this.data[Arrayindexprec])
-            balance = this.data[Arrayindexprec].DupontData.CurrentAsset;
-        tableRow.addCell(this.toLocaleAmountFormat(balance), "dupontYearbackValueCells");
-
+        //3
+        var tableRow = tabledupont.addRow();
         tableRow.addCell(" ", "emptyCells", 1);
-        var balance = 0;
-        if (this.data[Arrayindexcurr])
-            balance = this.data[Arrayindexcurr].DupontData.liqu;
-        tableRow.addCell(this.toLocaleAmountFormat(balance), "dupontCurryearValueCells");
-        balance = 0;
-        if (this.data[Arrayindexprec])
-            balance = this.data[Arrayindexprec].DupontData.liqu;
-        tableRow.addCell(this.toLocaleAmountFormat(balance), "dupontYearbackValueCells");
-
-        //row n.7
-        var tableRow = tabledupont.addRow();
-        tableRow.addCell(" ", "emptyCells", 12);
-        tableRow.addCell("+", "emptyCells");
-        tableRow.addCell(" ", "emptyCells", 1);
-
-        //row n.8
-        var tableRow = tabledupont.addRow();
-        tableRow.addCell(" ", "emptyCells", 6);
-        tableRow.addCell(qsTr("Sales"), "styledupontTexts", 2);
-        tableRow.addCell(" ", "emptyCells", 4);
-        tableRow.addCell(qsTr("Credits"), "styledupontTexts", 2);
-
-        //row n.9
-        var tableRow = tabledupont.addRow();
-        tableRow.addCell("ROI", "styledupontTexts", 2);
-        tableRow.addCell(" ", "emptyCells", 4);
-        var balance = 0;
-        if (this.data[Arrayindexcurr])
-            balance = this.data[Arrayindexcurr].DupontData.sales;
-        tableRow.addCell(this.toLocaleAmountFormat(balance), "dupontCurryearValueCells");
-        balance = 0;
-        if (this.data[Arrayindexprec])
-            balance = this.data[Arrayindexprec].DupontData.sales;
-        tableRow.addCell(this.toLocaleAmountFormat(balance), "dupontYearbackValueCells");
-
-        tableRow.addCell(" ", "emptyCells", 4);
-        var balance = 0;
-        if (this.data[Arrayindexcurr])
-            balance = this.data[Arrayindexcurr].DupontData.cred;
-        tableRow.addCell(this.toLocaleAmountFormat(balance), "dupontCurryearValueCells");
-        balance = 0;
-        if (this.data[Arrayindexprec])
-            balance = this.data[Arrayindexprec].DupontData.cred;
-        tableRow.addCell(this.toLocaleAmountFormat(balance), "dupontYearbackValueCells");
-
-
-        //row n.10
-        var tableRow = tabledupont.addRow();
-        var balance = 0;
-        if (this.data[Arrayindexcurr])
-            balance = this.data[Arrayindexcurr].DupontData.roi;
-        tableRow.addCell(this.toLocaleAmountFormat(balance) + "%", "dupontCurryearValueCells");
-        balance = 0;
-        if (this.data[Arrayindexprec])
-            balance = this.data[Arrayindexprec].DupontData.roi;
-        tableRow.addCell(this.toLocaleAmountFormat(balance) + "%", "dupontYearbackValueCells");
-        tableRow.addCell(" ", "emptyCells", 1);
-        tableRow.addCell("x", "emptyCells");
-        tableRow.addCell(" ", "emptyCells", 8);
-        tableRow.addCell("+", "emptyCells");
-        tableRow.addCell(" ", "emptyCells", 1);
-
-        //row n.11
-        var tableRow = tabledupont.addRow();
-        tableRow.addCell("benchmark 10%", "styledupontTexts", 2);
-        tableRow.addCell(" ", "emptyCells", 10);
-        tableRow.addCell(qsTr("Stocks"), "styledupontTexts", 2);
-
-        //row n.12
-        var tableRow = tabledupont.addRow();
-        tableRow.addCell(" ", "emptyCells", 12);
-        var balance = 0;
-        if (this.data[Arrayindexcurr])
-            balance = this.data[Arrayindexcurr].DupontData.stoc;
-        tableRow.addCell(this.toLocaleAmountFormat(balance), "dupontCurryearValueCells");
-        balance = 0;
-        if (this.data[Arrayindexprec])
-            balance = this.data[Arrayindexprec].DupontData.stoc;
-        tableRow.addCell(this.toLocaleAmountFormat(balance), "dupontYearbackValueCells");
-
-
-        //row n.13
-        var tableRow = tabledupont.addRow();
-        tableRow.addCell(" ", "emptyCells", 6);
-        tableRow.addCell(qsTr("Sales"), "styledupontTexts", 2);
-        tableRow.addCell(" ", "emptyCells", 6);
-
-        //row n.14
-        var tableRow = tabledupont.addRow();
-        tableRow.addCell(" ", "emptyCells", 6);
-        var balance = 0;
-        if (this.data[Arrayindexcurr])
-            balance = this.data[Arrayindexcurr].DupontData.sales;
-        tableRow.addCell(this.toLocaleAmountFormat(balance), "dupontCurryearValueCells");
-        balance = 0;
-        if (this.data[Arrayindexprec])
-            balance = this.data[Arrayindexprec].DupontData.sales;
-        tableRow.addCell(this.toLocaleAmountFormat(balance), "dupontYearbackValueCells");
-
-        tableRow.addCell(" ", "emptyCells", 6);
-
-        //row n.15
-        var tableRow = tabledupont.addRow();
-        tableRow.addCell(" ", "emptyCells", 14);
-
-        //row n.16
-        var tableRow = tabledupont.addRow();
-        tableRow.addCell(" ", "emptyCells", 3);
-        tableRow.addCell("MOL", "styledupontTexts", 2);
-        tableRow.addCell(" ", "emptyCells", 1);
-        tableRow.addCell(":", "emptyCells");
-        tableRow.addCell(" ", "emptyCells", 7);
-
-
-        //row n.17
-        var tableRow = tabledupont.addRow();
+        tableRow.addCell("MOL", 'styleUnderGroupTitles');
         tableRow.addCell(" ", "emptyCells", 3);
         var balance = 0;
         if (this.data[Arrayindexcurr])
             balance = this.data[Arrayindexcurr].DupontData.mol;
-        tableRow.addCell(this.toLocaleAmountFormat(balance), "dupontCurryearValueCells");
+        tableRow.addCell(this.toLocaleAmountFormat(balance), "styleMidTotal");
         balance = 0;
         if (this.data[Arrayindexprec])
             balance = this.data[Arrayindexprec].DupontData.mol;
-        tableRow.addCell(this.toLocaleAmountFormat(balance), "dupontYearbackValueCells");
+        tableRow.addCell(this.toLocaleAmountFormat(balance), "styleMidTotal");
 
-        tableRow.addCell(" ", "emptyCells", 9);
-
-        //row n.18
+        //4
         var tableRow = tabledupont.addRow();
-        tableRow.addCell(" ", "emptyCells", 14);
-
-
-        //row n.19
-        var tableRow = tabledupont.addRow();
-        tableRow.addCell(" ", "emptyCells", 6);
-        tableRow.addCell("EBIT", "styledupontTexts", 2);
-        tableRow.addCell(" ", "emptyCells", 1);
-        tableRow.addCell(qsTr("Sales"), "styledupontTexts", 2);
+        tableRow.addCell("ROT (Capital:Sales)", 'styleTitlesTotAmount', 2);
         tableRow.addCell(" ", "emptyCells", 3);
-
-        //row n.20
-        var tableRow = tabledupont.addRow();
-        tableRow.addCell(" ", "emptyCells", 6);
         var balance = 0;
         if (this.data[Arrayindexcurr])
-            balance = this.data[Arrayindexcurr].DupontData.ebit;
-        tableRow.addCell(this.toLocaleAmountFormat(balance), "dupontCurryearValueCells");
+            balance = this.data[Arrayindexcurr].DupontData.rot;
+        tableRow.addCell(this.toLocaleAmountFormat(balance), "styleTotAmount");
         balance = 0;
         if (this.data[Arrayindexprec])
-            balance = this.data[Arrayindexprec].DupontData.ebit;
-        tableRow.addCell(this.toLocaleAmountFormat(balance), "dupontYearbackValueCells");
+            balance = this.data[Arrayindexprec].DupontData.rot;
+        tableRow.addCell(this.toLocaleAmountFormat(balance), "styleTotAmount");
 
+
+        //5
+        var tableRow = tabledupont.addRow();
         tableRow.addCell(" ", "emptyCells", 1);
+        tableRow.addCell("Capital", 'styleUnderGroupTitles');
+        tableRow.addCell(" ", "emptyCells", 3);
+        var balance = 0;
+        if (this.data[Arrayindexcurr])
+            balance = this.data[Arrayindexcurr].DupontData.capital;
+        tableRow.addCell(this.toLocaleAmountFormat(balance), "styleMidTotal");
+        balance = 0;
+        if (this.data[Arrayindexprec])
+            balance = this.data[Arrayindexprec].DupontData.capital;
+        tableRow.addCell(this.toLocaleAmountFormat(balance), "styleMidTotal");
+
+        //6
+        var tableRow = tabledupont.addRow();
+        tableRow.addCell(" ", "emptyCells", 1);
+        tableRow.addCell("Sales", 'styleUnderGroupTitles');
+        tableRow.addCell(" ", "emptyCells", 3);
         var balance = 0;
         if (this.data[Arrayindexcurr])
             balance = this.data[Arrayindexcurr].DupontData.sales;
-        tableRow.addCell(this.toLocaleAmountFormat(balance), "dupontCurryearValueCells");
+        tableRow.addCell(this.toLocaleAmountFormat(balance), "styleMidTotal");
         balance = 0;
         if (this.data[Arrayindexprec])
             balance = this.data[Arrayindexprec].DupontData.sales;
-        tableRow.addCell(this.toLocaleAmountFormat(balance), "dupontYearbackValueCells");
+        tableRow.addCell(this.toLocaleAmountFormat(balance), "styleMidTotal");
 
+        //7
+        var tableRow = tabledupont.addRow();
+        tableRow.addCell("MOL (Sales:Ebit)", 'styleTitlesTotAmount', 2);
         tableRow.addCell(" ", "emptyCells", 3);
+        var balance = 0;
+        if (this.data[Arrayindexcurr])
+            balance = this.data[Arrayindexcurr].DupontData.mol;
+        tableRow.addCell(this.toLocaleAmountFormat(balance), "styleTotAmount");
+        balance = 0;
+        if (this.data[Arrayindexprec])
+            balance = this.data[Arrayindexprec].DupontData.mol;
+        tableRow.addCell(this.toLocaleAmountFormat(balance), "styleTotAmount");
 
-        //row n.21
+        //8
         var tableRow = tabledupont.addRow();
-        tableRow.addCell(" ", "emptyCells", 9);
-        tableRow.addCell("-", "emptyCells");
-        tableRow.addCell(" ", "emptyCells", 4);
+        tableRow.addCell("Capital (Current asset+Fixed asset)", 'styleTitlesTotAmount', 3);
+        tableRow.addCell(" ", "emptyCells", 2);
+        var balance = 0;
+        if (this.data[Arrayindexcurr])
+            balance = this.data[Arrayindexcurr].DupontData.capital;
+        tableRow.addCell(this.toLocaleAmountFormat(balance), "styleTotAmount");
+        balance = 0;
+        if (this.data[Arrayindexprec])
+            balance = this.data[Arrayindexprec].DupontData.capital;
+        tableRow.addCell(this.toLocaleAmountFormat(balance), "styleTotAmount");
 
-        //row n.22
+        //9
         var tableRow = tabledupont.addRow();
-        tableRow.addCell(" ", "emptyCells", 9);
-        tableRow.addCell(qsTr("Total Cost"), "styledupontTexts", 2);
         tableRow.addCell(" ", "emptyCells", 1);
-        tableRow.addCell(qsTr("Merchandise cost"), "styledupontTexts", 2);
+        tableRow.addCell("Current asset", 'styleUnderGroupTitles');
+        tableRow.addCell(" ", "emptyCells", 3);
+        var balance = 0;
+        if (this.data[Arrayindexcurr])
+            balance = this.data[Arrayindexcurr].DupontData.CurrentAsset;
+        tableRow.addCell(this.toLocaleAmountFormat(balance), "styleMidTotal");
+        balance = 0;
+        if (this.data[Arrayindexprec])
+            balance = this.data[Arrayindexprec].DupontData.CurrentAsset;
+        tableRow.addCell(this.toLocaleAmountFormat(balance), "styleMidTotal");
 
-        //row n.23
+        //10
         var tableRow = tabledupont.addRow();
-        tableRow.addCell(" ", "emptyCells", 9);
+        tableRow.addCell(" ", "emptyCells", 2);
+        tableRow.addCell("Liquidity");
+        tableRow.addCell(" ", "emptyCells", 2);
+        var balance = 0;
+        if (this.data[Arrayindexcurr])
+            balance = this.data[Arrayindexcurr].DupontData.liqu;
+        tableRow.addCell(this.toLocaleAmountFormat(balance), "styleAmount");
+        balance = 0;
+        if (this.data[Arrayindexprec])
+            balance = this.data[Arrayindexprec].DupontData.liqu;
+        tableRow.addCell(this.toLocaleAmountFormat(balance), "styleAmount");
+
+        //11
+        var tableRow = tabledupont.addRow();
+        tableRow.addCell(" ", "emptyCells", 2);
+        tableRow.addCell("Credits");
+        tableRow.addCell(" ", "emptyCells", 2);
+        var balance = 0;
+        if (this.data[Arrayindexcurr])
+            balance = this.data[Arrayindexcurr].DupontData.cred;
+        tableRow.addCell(this.toLocaleAmountFormat(balance), "styleAmount");
+        balance = 0;
+        if (this.data[Arrayindexprec])
+            balance = this.data[Arrayindexprec].DupontData.cred;
+        tableRow.addCell(this.toLocaleAmountFormat(balance), "styleAmount");
+
+        //12
+        var tableRow = tabledupont.addRow();
+        tableRow.addCell(" ", "emptyCells", 2);
+        tableRow.addCell("Stocks");
+        tableRow.addCell(" ", "emptyCells", 2);
+        var balance = 0;
+        if (this.data[Arrayindexcurr])
+            balance = this.data[Arrayindexcurr].DupontData.stoc;
+        tableRow.addCell(this.toLocaleAmountFormat(balance), "styleAmount");
+        balance = 0;
+        if (this.data[Arrayindexprec])
+            balance = this.data[Arrayindexprec].DupontData.stoc;
+        tableRow.addCell(this.toLocaleAmountFormat(balance), "styleAmount");
+
+        //13
+        var tableRow = tabledupont.addRow();
+        tableRow.addCell(" ", "emptyCells", 1);
+        tableRow.addCell("Fixed asset", 'styleUnderGroupTitles');
+        tableRow.addCell(" ", "emptyCells", 3);
+        var balance = 0;
+        if (this.data[Arrayindexcurr])
+            balance = this.data[Arrayindexcurr].DupontData.FixedAsset;
+        tableRow.addCell(this.toLocaleAmountFormat(balance), "styleMidTotal");
+        balance = 0;
+        if (this.data[Arrayindexprec])
+            balance = this.data[Arrayindexprec].DupontData.FixedAsset;
+        tableRow.addCell(this.toLocaleAmountFormat(balance), "styleMidTotal");
+
+        //14
+        var tableRow = tabledupont.addRow();
+        tableRow.addCell("Sales", 'styleTitlesTotAmount');
+        tableRow.addCell(" ", "emptyCells", 4);
+        var balance = 0;
+        if (this.data[Arrayindexcurr])
+            balance = this.data[Arrayindexcurr].DupontData.sales;
+        tableRow.addCell(this.toLocaleAmountFormat(balance), "styleTotAmount");
+        balance = 0;
+        if (this.data[Arrayindexprec])
+            balance = this.data[Arrayindexprec].DupontData.sales;
+        tableRow.addCell(this.toLocaleAmountFormat(balance), "styleTotAmount");
+
+        //15
+        var tableRow = tabledupont.addRow();
+        tableRow.addCell("Ebit (Sales-Total Costs)", 'styleTitlesTotAmount', 3);
+        tableRow.addCell(" ", "emptyCells", 2);
+        var balance = 0;
+        if (this.data[Arrayindexcurr])
+            balance = this.data[Arrayindexcurr].DupontData.ebit;
+        tableRow.addCell(this.toLocaleAmountFormat(balance), "styleTotAmount");
+        balance = 0;
+        if (this.data[Arrayindexprec])
+            balance = this.data[Arrayindexprec].DupontData.ebit;
+        tableRow.addCell(this.toLocaleAmountFormat(balance), "styleTotAmount");
+
+        //16
+        var tableRow = tabledupont.addRow();
+        tableRow.addCell(" ", "emptyCells", 1);
+        tableRow.addCell("Total Costs", 'styleUnderGroupTitles');
+        tableRow.addCell(" ", "emptyCells", 3);
         var balance = 0;
         if (this.data[Arrayindexcurr])
             balance = this.data[Arrayindexcurr].DupontData.TotCosts;
-        tableRow.addCell(this.toLocaleAmountFormat(balance), "dupontCurryearValueCells");
+        tableRow.addCell(this.toLocaleAmountFormat(balance), "styleMidTotal");
         balance = 0;
         if (this.data[Arrayindexprec])
             balance = this.data[Arrayindexprec].DupontData.TotCosts;
-        tableRow.addCell(this.toLocaleAmountFormat(balance), "dupontYearbackValueCells");
-        tableRow.addCell(" ", "emptyCells", 1);
+        tableRow.addCell(this.toLocaleAmountFormat(balance), "styleMidTotal");
+
+        //17
+        var tableRow = tabledupont.addRow();
+        tableRow.addCell(" ", "emptyCells", 2);
+        tableRow.addCell("Merchandise costs");
+        tableRow.addCell(" ", "emptyCells", 2);
+        var balance = 0;
         if (this.data[Arrayindexcurr])
             balance = this.data[Arrayindexcurr].DupontData.MerchCost;
-        tableRow.addCell(this.toLocaleAmountFormat(balance), "dupontCurryearValueCells");
+        tableRow.addCell(this.toLocaleAmountFormat(balance), "styleAmount");
         balance = 0;
         if (this.data[Arrayindexprec])
             balance = this.data[Arrayindexprec].DupontData.MerchCost;
-        tableRow.addCell(this.toLocaleAmountFormat(balance), "dupontYearbackValueCells");
+        tableRow.addCell(this.toLocaleAmountFormat(balance), "styleAmount");
 
-        //row n.24
+        //18
         var tableRow = tabledupont.addRow();
-        tableRow.addCell(" ", "emptyCells", 12);
-        tableRow.addCell("+", "emptyCells");
-        tableRow.addCell(" ", "emptyCells", 1);
-
-        //row n.25
-        var tableRow = tabledupont.addRow();
-        tableRow.addCell(" ", "emptyCells", 12);
-        tableRow.addCell(qsTr("Personal costs"), "styledupontTexts", 2);
-
-        //row n.26
-        var tableRow = tabledupont.addRow();
-        tableRow.addCell(" ", "emptyCells", 12);
+        tableRow.addCell(" ", "emptyCells", 2);
+        tableRow.addCell("Personal costs");
+        tableRow.addCell(" ", "emptyCells", 2);
+        var balance = 0;
         if (this.data[Arrayindexcurr])
             balance = this.data[Arrayindexcurr].DupontData.PersonelCost;
-        tableRow.addCell(this.toLocaleAmountFormat(balance), "dupontCurryearValueCells");
+        tableRow.addCell(this.toLocaleAmountFormat(balance), "styleAmount");
         balance = 0;
         if (this.data[Arrayindexprec])
             balance = this.data[Arrayindexprec].DupontData.PersonelCost;
-        tableRow.addCell(this.toLocaleAmountFormat(balance), "dupontYearbackValueCells");
+        tableRow.addCell(this.toLocaleAmountFormat(balance), "styleAmount");
 
-        //row n.27
-        var tableRow = tabledupont.addRow();
-        tableRow.addCell(" ", "emptyCells", 12);
-        tableRow.addCell("+", "emptyCells");
-        tableRow.addCell(" ", "emptyCells", 1);
 
-        //row n.28
+        //19
         var tableRow = tabledupont.addRow();
-        tableRow.addCell(" ", "emptyCells", 12);
-        tableRow.addCell(qsTr("Different Costs"), "styledupontTexts", 2);
-
-        //row n.29
-        /* here the value of the different costs is without the depreciations and adjustments (amre)
-         */
-        var tableRow = tabledupont.addRow();
-        tableRow.addCell(" ", "emptyCells", 12);
+        tableRow.addCell(" ", "emptyCells", 2);
+        tableRow.addCell("Different costs");
+        tableRow.addCell(" ", "emptyCells", 2);
+        var balance = 0;
         if (this.data[Arrayindexcurr])
             balance = this.data[Arrayindexcurr].DupontData.DifferentCost;
-        tableRow.addCell(this.toLocaleAmountFormat(balance), "dupontCurryearValueCells");
+        tableRow.addCell(this.toLocaleAmountFormat(balance), "styleAmount");
         balance = 0;
         if (this.data[Arrayindexprec])
             balance = this.data[Arrayindexprec].DupontData.DifferentCost;
-        tableRow.addCell(this.toLocaleAmountFormat(balance), "dupontYearbackValueCells");
+        tableRow.addCell(this.toLocaleAmountFormat(balance), "styleAmount");
+
+        //20
+        var tableRow = tabledupont.addRow();
+        tableRow.addCell(" ", "emptyCells", 1);
+        tableRow.addCell("Sales", 'styleUnderGroupTitles');
+        tableRow.addCell(" ", "emptyCells", 3);
+        var balance = 0;
+        if (this.data[Arrayindexcurr])
+            balance = this.data[Arrayindexcurr].DupontData.sales;
+        tableRow.addCell(this.toLocaleAmountFormat(balance), "styleMidTotal");
+        balance = 0;
+        if (this.data[Arrayindexprec])
+            balance = this.data[Arrayindexprec].DupontData.sales;
+        tableRow.addCell(this.toLocaleAmountFormat(balance), "styleMidTotal");
 
         report.addPageBreak();
 
@@ -1109,7 +1042,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         stylesheet.addStyle("table.myIndliqTable td", "border: thin solid black");
         stylesheet.addStyle("table.myIndfinTable td", "border: thin solid black");
         stylesheet.addStyle("table.myIndprofTable td", "border: thin solid black");
-        stylesheet.addStyle("table.myDupontTable td", "border: thin solid black");
+        stylesheet.addStyle("table.myDupontTable td");
         stylesheet.addStyle("table.myTableAltmanIndex td", "border: thin solid black", "");
 
 
@@ -1194,24 +1127,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
         //style for the Dupont's empty cells
         style = stylesheet.addStyle(".emptyCells");
-        style.setAttribute("background-color", "#f2f2f2");
         style.setAttribute("padding-bottom", "5px");
         style.setAttribute("text-align", "center");
-
-        //style for the Dupont's currente year value cells
-        style = stylesheet.addStyle(".dupontCurryearValueCells");
-        style.setAttribute("background-color", "#FEDBDA");
-        style.setAttribute("text-align", "right");
-
-        //style for the Dupont's year back values cells
-        style = stylesheet.addStyle(".dupontYearbackValueCells");
-        style.setAttribute("text-align", "right");
-        style.setAttribute("background-color", "#DBFEDA");
-
-        //style for the Dupont's texts
-        style = stylesheet.addStyle(".styledupontTexts");
-        style.setAttribute("text-align", "center");
-        style.setAttribute("font-weight", "bold");
 
         //style for the pharagraphs
         style = stylesheet.addStyle(".styleParagraphs");
@@ -1431,6 +1348,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             var maxpreviousyear = this.param.maxpreviousyears;
             if (maxpreviousyear > 5)
                 maxpreviousyear = 5;
+            if (isNaN(maxpreviousyear) || maxpreviousyear < 0) {
+                maxpreviousyear = 0;
+            }
 
             // only if the table budget exists
             var withBudget = yeardocument.info("Budget", "TableNameXml");
@@ -2559,8 +2479,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var calcroi1 = Banana.SDecimal.multiply(Dupont.rot, Dupont.mol);
         var calcroi = Banana.SDecimal.multiply(calcroi1, 100, { 'decimals': 2 });
         calcroi = calcroi.toString();
-        //check that the first 5 digits are equal, to avoid rounding errors
-        if (calcroi.substr(0, 5) === roi.substr(0, 5)) {
+        //check that the first 10 digits are equal, to avoid rounding errors
+        if (calcroi.substr(0, 10) === roi.substr(0, 10)) {
 
             Dupont.roi = calcroi;
         } else {
@@ -2850,6 +2770,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             this.param.ratios = {};
         if (!this.param.finalresult)
             this.param.finalresult = {};
+        if (this.param.numberofdecimals > 4)
+            this.param.numberofdecimals = 4;
 
 
         //second level
