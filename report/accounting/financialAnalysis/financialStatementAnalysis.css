@@ -1,0 +1,192 @@
+@page {
+    margin-top: 5mm;
+    margin-bottom: 5mm;
+    margin-left: 5mm;
+    margin-right: 5mm;
+}
+
+body {
+    font-family: Calibri;
+    font-size: 8pt;
+}
+
+table {
+    font-size: 12px;
+    width: 100%;
+}
+
+table.myTableCompanyInfo td {
+    border-collapse: collapse;
+    border-style: solid;
+    border-color: rgb(0, 0, 0);
+    width: auto;
+    padding-top: 1px;
+    padding-bottom: 1px;
+}
+
+table.myTableUsedSetting td {
+    border-collapse: collapse;
+    border-style: solid;
+    border-color: rgb(0, 0, 0);
+    width: auto;
+    padding-top: 1px;
+    padding-bottom: 1px;
+}
+
+table.myTableBilancio td {
+    border-collapse: collapse;
+    border-style: solid;
+    border-color: rgb(0, 0, 0);
+    width: auto;
+    padding-top: 1px;
+    padding-bottom: 1px;
+}
+
+table.myTableBilancioSumsControl td {
+    border-collapse: collapse;
+    border-style: solid;
+    border-color: rgb(0, 0, 0);
+    width: auto;
+    padding-top: 1px;
+    padding-bottom: 1px;
+}
+
+table.myConTableCe td {
+    border-collapse: collapse;
+    border-style: solid;
+    border-color: rgb(0, 0, 0);
+    width: auto;
+    padding-top: 1px;
+    padding-bottom: 1px;
+}
+
+table.mytableConCeSumsControl td {
+    border-collapse: collapse;
+    border-style: solid;
+    border-color: rgb(0, 0, 0);
+    width: auto;
+    padding-top: 1px;
+    padding-bottom: 1px;
+}
+
+table.myIndliqTable td {
+    border-collapse: collapse;
+    border-style: solid;
+    border-color: rgb(0, 0, 0);
+    width: auto;
+    padding-top: 1px;
+    padding-bottom: 1px;
+}
+
+table.myIndfinTable td {
+    border-collapse: collapse;
+    border-style: solid;
+    border-color: rgb(0, 0, 0);
+    width: auto;
+    padding-top: 1px;
+    padding-bottom: 1px;
+}
+
+table.myIndprofTable td {
+    border-collapse: collapse;
+    border-style: solid;
+    border-color: rgb(0, 0, 0);
+    width: auto;
+    padding-top: 1px;
+    padding-bottom: 1px;
+}
+
+table.myDupontTable td {
+    border-collapse: collapse;
+    width: auto;
+    padding-top: 1px;
+    padding-bottom: 1px;
+}
+
+table.myTableAltmanIndex td {
+    border-collapse: collapse;
+    border-style: solid;
+    border-color: rgb(0, 0, 0);
+    width: auto;
+    padding-top: 1px;
+    padding-bottom: 1px;
+}
+.styleCompanyInfocells {
+    background-color: #FBF876;
+    text-align: center;
+    font-weight: bold;
+}
+
+.styleGroupTitles {
+    font-weight: bold;
+    color: #0e055a;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.styleTableHeader {
+    color: #0e055a;
+    background-color: #FBF876;
+    font-weight: bold;
+    text-align: center;
+}
+
+.styleUnderGroupTitles {
+    color: #0e055a;
+}
+
+.styleNormal {
+    text-align: center;
+}
+
+.styleAmount {
+    text-align: right;
+}
+
+.styleMidTotal {
+    text-align: right;
+    font-weight: bold;
+}
+
+.styleTotAmount {
+    background-color: #e5f2ff;
+    font-weight: bold;
+    text-align: right;
+}
+
+.styleTitlesTotAmount {
+    font-weight: bold;
+}
+
+.styleRatiosAmount {
+    text-align: center;
+    font-weight: bold;
+}
+
+.styleParagraphs {
+    text-align: left;
+    font-style: italic;
+}
+
+.styleZLow {
+    background-color: #00ff00;
+    text-align: center;
+}
+
+.styleZmid {
+    background-color: #ffff00;
+    text-align: center;
+}
+
+.styleZprob {
+    background-color: #ff0000;
+    text-align: center;
+}
+
+.header {
+    text-align: left;
+}
+
+.footer {
+    text-align: left;
+}
