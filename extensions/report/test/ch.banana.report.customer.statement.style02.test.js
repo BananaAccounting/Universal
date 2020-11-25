@@ -23,32 +23,32 @@
 // @outputformat = none
 // @inputdataform = none
 // @timeout = -1
-// @includejs = ../ch.banana.uni.timesheet-daystable-report.js
+// @includejs = ../ch.banana.report.customer.statement.style02.js
 
 // Register this test case to be executed
-Test.registerTestCase(new TestTimesheetDaystableReport());
+Test.registerTestCase(new TestCustomerStatementReport());
 
 // Define the test class, the name of the class is not important
-function TestTimesheetDaystableReport() {}
+function TestCustomerStatementReport() {}
 
 // This method will be called at the beginning of the test case
-TestTimesheetDaystableReport.prototype.initTestCase = function() {
+TestCustomerStatementReport.prototype.initTestCase = function() {
     this.progressBar = Banana.application.progressBar;
 }
 
 // This method will be called at the end of the test case
-TestTimesheetDaystableReport.prototype.cleanupTestCase = function() {}
+TestCustomerStatementReport.prototype.cleanupTestCase = function() {}
 
 // This method will be called before every test method is executed
-TestTimesheetDaystableReport.prototype.init = function() {}
+TestCustomerStatementReport.prototype.init = function() {}
 
 // This method will be called after every test method is executed
-TestTimesheetDaystableReport.prototype.cleanup = function() {}
+TestCustomerStatementReport.prototype.cleanup = function() {}
 
-TestTimesheetDaystableReport.prototype.testBananaExtensions = function() {
-    Test.logger.addText("This test will tests the Banana Extension ch.banana.uni.timesheet-daystable-report.js");
+TestCustomerStatementReport.prototype.testBananaExtensions = function() {
+    Test.logger.addText("This test will tests the Banana Extension ch.banana.report.customer.statement.style02.js");
 
-    var banDoc = Banana.application.openDocument("file:script/../test/testcases/Foglio_ore_sistematico_lavoro_ridotto_2020_ch-it.ac2");
+    var banDoc = Banana.application.openDocument("file:script/../test/testcases/example.invoice.with.cc.it[1351].ac2");
     Test.assert(banDoc, "File ac2 not found");
 
     var userParam = {};
@@ -94,7 +94,7 @@ TestTimesheetDaystableReport.prototype.testBananaExtensions = function() {
     // var year = dateMin.getFullYear();
     var year = Banana.Converter.toDate(userParam.selectionStartDate).getFullYear();
     var totals = totalizeHours(banDoc, columns, year);
-    var report = printTimeSheetJournal(banDoc, userParam, columns, totals, year);
+    var report = printInvoiceStatement(jsonStatement, repDocObj, repStyleObj, param);
 
     Test.logger.addReport("TEST - Timesheet Daystable Report", report);
 
