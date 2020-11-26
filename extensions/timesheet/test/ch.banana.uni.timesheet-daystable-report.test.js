@@ -29,77 +29,73 @@
 Test.registerTestCase(new TestTimesheetDaystableReport());
 
 // Define the test class, the name of the class is not important
-function TestTimesheetDaystableReport() {
-}
+function TestTimesheetDaystableReport() {}
 
 // This method will be called at the beginning of the test case
 TestTimesheetDaystableReport.prototype.initTestCase = function() {
-   this.progressBar = Banana.application.progressBar;
+    this.progressBar = Banana.application.progressBar;
 }
 
 // This method will be called at the end of the test case
-TestTimesheetDaystableReport.prototype.cleanupTestCase = function() {
-}
+TestTimesheetDaystableReport.prototype.cleanupTestCase = function() {}
 
 // This method will be called before every test method is executed
-TestTimesheetDaystableReport.prototype.init = function() {
-}
+TestTimesheetDaystableReport.prototype.init = function() {}
 
 // This method will be called after every test method is executed
-TestTimesheetDaystableReport.prototype.cleanup = function() {
-}
+TestTimesheetDaystableReport.prototype.cleanup = function() {}
 
 TestTimesheetDaystableReport.prototype.testBananaExtensions = function() {
-   Test.logger.addText("This test will tests the Banana Extension ch.banana.uni.timesheet-daystable-report.js");
-   
-   var banDoc = Banana.application.openDocument("file:script/../test/testcases/Foglio_ore_sistematico_lavoro_ridotto_2020_ch-it.ac2");
-   Test.assert(banDoc, "File ac2 not found");
+    Test.logger.addText("This test will tests the Banana Extension ch.banana.uni.timesheet-daystable-report.js");
 
-   var userParam = {};
-   userParam.selectionStartDate = "2020-03-01";
-   userParam.selectionEndDate = "2020-04-30";
-   userParam.id_employee = "AVS: 123.4567.8910.11";
-   userParam.print_timeWorkedTotal = true;
-   userParam.print_timeAbsenceSick = true;
-   userParam.print_timeAbsenceHoliday = true;
-   userParam.print_timeAbsenceService = true;
-   userParam.print_timeAbsenceOther = true;
-   userParam.print_timeAbsenceTotal = true;
-   userParam.print_timeAdjustment = true;
-   userParam.print_timeDayTotal = true;
-   userParam.print_timeDueDay = true;
-   userParam.print_timeDifference = true;
-   // userParam.print_date = true;
-   // userParam.print_timeDayType = true;
-   // userParam.print_timeDayDescription = true;
-   // userParam.print_description = true;
-   // userParam.print_code1 = true;
-   // userParam.print_notes = true;
-   // userParam.print_timeWork1 = true;
-   // userParam.print_timeWork2 = true;
-   // userParam.print_timeStart1 = true;
-   // userParam.print_timeStop1 = true;
-   // userParam.print_timeStart2 = true;
-   // userParam.print_timeStop2 = true;
-   // userParam.print_timeStart3 = true;
-   // userParam.print_timeStop3 = true;
-   // userParam.print_timeStart4 = true;
-   // userParam.print_timeStop4 = true;
-   // userParam.print_timeStart5 = true;
-   // userParam.print_timeStop5 = true;
-   // userParam.print_timeDueCode = true;
-   // userParam.print_timeProgressive = true;
-   // userParam.print_timeSplit1 = true;
-   // userParam.print_timeSplit2 = true;
-   // userParam.print_km = true;
+    var banDoc = Banana.application.openDocument("file:script/../test/testcases/Foglio_ore_sistematico_lavoro_ridotto_2020_ch-it.ac2");
+    Test.assert(banDoc, "File ac2 not found");
 
-   var columns = getColumns(userParam);
-   // var dateMin = getJounralDateMin(banDoc);
-   // var year = dateMin.getFullYear();
-   var year = Banana.Converter.toDate(userParam.selectionStartDate).getFullYear();
-   var totals = totalizeHours(banDoc, columns, year);
-   var report = printTimeSheetJournal(banDoc, userParam, columns, totals, year);
+    var userParam = {};
+    userParam.selectionStartDate = "2020-03-01";
+    userParam.selectionEndDate = "2020-04-30";
+    userParam.id_employee = "AVS: 123.4567.8910.11";
+    userParam.print_timeWorkedTotal = true;
+    userParam.print_timeAbsenceSick = true;
+    userParam.print_timeAbsenceHoliday = true;
+    userParam.print_timeAbsenceService = true;
+    userParam.print_timeAbsenceOther = true;
+    userParam.print_timeAbsenceTotal = true;
+    userParam.print_timeAdjustment = true;
+    userParam.print_timeDayTotal = true;
+    userParam.print_timeDueDay = true;
+    userParam.print_timeDifference = true;
+    // userParam.print_date = true;
+    // userParam.print_timeDayType = true;
+    // userParam.print_timeDayDescription = true;
+    // userParam.print_description = true;
+    // userParam.print_code1 = true;
+    // userParam.print_notes = true;
+    // userParam.print_timeWork1 = true;
+    // userParam.print_timeWork2 = true;
+    // userParam.print_timeStart1 = true;
+    // userParam.print_timeStop1 = true;
+    // userParam.print_timeStart2 = true;
+    // userParam.print_timeStop2 = true;
+    // userParam.print_timeStart3 = true;
+    // userParam.print_timeStop3 = true;
+    // userParam.print_timeStart4 = true;
+    // userParam.print_timeStop4 = true;
+    // userParam.print_timeStart5 = true;
+    // userParam.print_timeStop5 = true;
+    // userParam.print_timeDueCode = true;
+    // userParam.print_timeProgressive = true;
+    // userParam.print_timeSplit1 = true;
+    // userParam.print_timeSplit2 = true;
+    // userParam.print_km = true;
 
-   Test.logger.addReport("TEST - Timesheet Daystable Report", report);
+    var columns = getColumns(userParam);
+    // var dateMin = getJounralDateMin(banDoc);
+    // var year = dateMin.getFullYear();
+    var year = Banana.Converter.toDate(userParam.selectionStartDate).getFullYear();
+    var totals = totalizeHours(banDoc, columns, year);
+    var report = printTimeSheetJournal(banDoc, userParam, columns, totals, year);
+
+    Test.logger.addReport("TEST - Timesheet Daystable Report", report);
 
 }

@@ -76,12 +76,14 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         }
         for (var i = 0; i < this.data.length; i++) {
             var year = this.data[i].period.StartDate;
-            if (year !== "Budget")
+            if (year !== "Budget" && year !== "Preventivo") {
                 year = year.substr(0, 4);
+            }
             tableRow.addCell(year, "styleTableHeader");
         }
         return tableBilancio;
     }
+
     printReportAddTableBalanceControlSums(report) {
         var tableBilancioSumsControl = report.addTable('myTableBilancioSumsControl');
         tableBilancioSumsControl.getCaption().addText(qsTr("BALANCE CONTROL SUMS"), "styleGroupTitles");
@@ -118,8 +120,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         }
         for (var i = 0; i < this.data.length; i++) {
             var year = this.data[i].period.StartDate;
-            if (year !== "Budget")
+            if (year !== "Budget" && year !== "Preventivo") {
                 year = year.substr(0, 4);
+            }
             tableRow.addCell(year, "styleTableHeader");
         }
         return tableConCe;
@@ -137,9 +140,11 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         }
         for (var i = 0; i < this.data.length; i++) {
             var year = this.data[i].period.StartDate;
-            if (year !== "Budget")
+            if (year !== "Budget" && year !== "Preventivo") {
                 year = year.substr(0, 4);
+            }
             tableRow.addCell(year, "styleTableHeader");
+
         }
         tableRow.addCell(qsTr("BenchMark"), "styleTableHeader");
         return tableIndliq;
@@ -156,8 +161,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         }
         for (var i = 0; i < this.data.length; i++) {
             var year = this.data[i].period.StartDate;
-            if (year !== "Budget")
+            if (year !== "Budget" && year !== "Preventivo") {
                 year = year.substr(0, 4);
+            }
             tableRow.addCell(year, "styleTableHeader");
         }
         tableRow.addCell(qsTr("BenchMark"), "styleTableHeader");
@@ -175,8 +181,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         }
         for (var i = 0; i < this.data.length; i++) {
             var year = this.data[i].period.StartDate;
-            if (year !== "Budget")
+            if (year !== "Budget" && year !== "Preventivo") {
                 year = year.substr(0, 4);
+            }
             tableRow.addCell(year, "styleTableHeader");
         }
         tableRow.addCell(qsTr("BenchMark"), "styleTableHeader");
@@ -197,8 +204,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var tableRow = tableHeader.addRow();
         for (var i = 0; i < this.data.length; i++) {
             var year = this.data[i].period.StartDate;
-            if (year !== "Budget")
+            if (year !== "Budget" && year !== "Preventivo") {
                 year = year.substr(0, 4);
+            }
             tableRow.addCell(year, "styleTableHeader");
         }
 
@@ -242,9 +250,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             var endperiod = this.data[0].period.EndDate;
             endperiod = endperiod.substr(0, 4);
         }*/
-        var currentDate = new Date();
         report.getHeader().addClass("header");
-        report.getHeader().addText(qsTr('Financial Statements Analysis: ' + ' ' + currentDate));
+        report.getHeader().addText(qsTr('Financial Statements Analysis'));
         // report.getHeader().addText("period: " + startperiod + " - " + endperiod);
 
     }
@@ -301,7 +308,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var sep = "";
         for (var i = 0; i < this.data.length; i++) {
             var endperiod = this.data[i].period.EndDate;
-            if (endperiod !== "Budget") {
+            if (endperiod !== "Budget" && endperiod !== "Preventivo") {
                 endperiod = endperiod.substr(0, 4);
                 if (i >= 1) {
                     sep = '-'
@@ -431,7 +438,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             var period = this.data[i].period.StartDate;
             var year = period.substr(0, 4);
             // we dont want to control the budget table sums
-            if (year != "Budg") {
+            if (year != "Budg" && year != "Prev") {
                 tableRow.addCell(year);
                 tableRow.addCell(this.toLocaleAmountFormat(this.data[i].CalculatedData.TotActiveSheet), "styleAmount");
                 tableRow.addCell(this.toLocaleAmountFormat(this.data[i].CalculatedData.TotActive), "styleAmount");
@@ -444,7 +451,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             var tableRow = tableBalanceControlSums.addRow("styleTablRows");
             var period = this.data[i].period.StartDate;
             var year = period.substr(0, 4);
-            if (year != "Budg") {
+            if (year != "Budg" && year != "Prev") {
                 tableRow.addCell(year);
                 tableRow.addCell(this.toLocaleAmountFormat(this.data[i].CalculatedData.TotPassiveSheet), "styleAmount");
                 tableRow.addCell(this.toLocaleAmountFormat(this.data[i].CalculatedData.TotPassive), "styleAmount");
@@ -1628,7 +1635,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var cred = data.bilancio.ac.cred.balance;
         var lcalc3 = Banana.SDecimal.add(liqu, cred);
         var lcalc4 = Banana.SDecimal.divide(lcalc3, stdc, { 'decimals': this.param.numberofdecimals });
-        var lris2 = lcalc4.toString();
+        var lcalc4m = Banana.SDecimal.multiply(lcalc4, 100);
+        var lris2 = lcalc4m.toString();
         index.liqu.dofltwo.amount = lris2;
         index.liqu.dofltwo.benchmark = data.ratios.liquidityratios.liqu2.value;
 
