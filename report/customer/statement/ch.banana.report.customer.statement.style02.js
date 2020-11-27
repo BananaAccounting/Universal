@@ -1,4 +1,4 @@
-// Copyright [2016] [Banana.ch SA - Lugano Switzerland]
+// Copyright [2020] [Banana.ch SA - Lugano Switzerland]
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.report.customer.statement.style02.js
 // @api = 1.0
-// @pubdate = 2019-02-13
+// @pubdate = 2020-11-27
 // @publisher = Banana.ch SA
 // @description = Customer Statement with logo
 // @description.it = Estratto cliente con logo
