@@ -250,8 +250,14 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             var endperiod = this.data[0].period.EndDate;
             endperiod = endperiod.substr(0, 4);
         }*/
+        var today = new Date();
+        var day = today.getDate();
+        var month = today.getMonth() + 1 //As January is 0;
+        var year = today.getFullYear();
+        if (day < 10) day = '0' + day;
+        if (month < 10) month = '0' + month;
         report.getHeader().addClass("header");
-        report.getHeader().addText(qsTr('Financial Statements Analysis'));
+        report.getHeader().addText(qsTr('Financial Statements Analysis: ' + ' ' + day + '-' + month + '-' + year));
         // report.getHeader().addText("period: " + startperiod + " - " + endperiod);
 
     }
