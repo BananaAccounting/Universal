@@ -12,16 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-// @id = ch.banana.report.customer.statement.style01.js
+// @id = ch.banana.report.customer.statement.style02.js
 // @api = 1.0
 // @pubdate = 2019-02-13
 // @publisher = Banana.ch SA
-// @description = Customer Statement
-// @description.it = Estratto cliente 2
-// @description.de = Kundenauszug 2
-// @description.fr = Extrait de compte client 2
-// @description.nl = Rekeninguittreksel klant 2
-// @description.en = Customer statement 2
+// @description = Customer Statement with logo
+// @description.it = Estratto cliente con logo
+// @description.de = Kundenauszug mit Logo
+// @description.fr = Extrait de compte client avec logo
+// @description.nl = Rekeninguittreksel klant with logo
+// @description.en = Customer statement with logo
 // @doctype = *
 // @task = report.customer.statement
 
