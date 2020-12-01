@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.uni.invoice.uni10
 // @api = 1.0
-// @pubdate = 2020-11-23
+// @pubdate = 2020-12-01
 // @publisher = Banana.ch SA
 // @description = [UNI10] Layout 10 (BETA)
 // @description.it = [UNI10] Layout 10 (BETA)
@@ -1634,13 +1634,21 @@ function print_details_net_amounts(banDoc, repDocObj, invoiceObj, texts, userPar
   columnsSelected = columnsSelected.filter(function(e){return e});
   columnsNames = columnsNames.filter(function(e){return e});
 
+  var decimals = getQuantityDecimals(invoiceObj);
+  var columnsAlignment = userParam.details_columns_alignment.split(";");
+  
+  //HEADER
   if (userParam[lang+'_text_details_columns']) {
     for (var i = 0; i < columnsNames.length; i++) {
+      var alignment = columnsAlignment[i];
+      if (alignment !== "left" && alignment !== "center" && alignment !== "right") {
+        alignment = "left";
+      }
       columnsNames[i] = columnsNames[i].trim();
       if (columnsNames[i] === "<none>") {
         header.addCell("", "doc_table_header", 1);
       } else {
-        header.addCell(columnsNames[i], "doc_table_header center", 1);
+        header.addCell(columnsNames[i], "doc_table_header " + alignment, 1);
       }
       columnsNumber ++;
     }
@@ -1652,9 +1660,6 @@ function print_details_net_amounts(banDoc, repDocObj, invoiceObj, texts, userPar
       columnsNumber ++;
     }
   }
-
-  var decimals = getQuantityDecimals(invoiceObj);
-  var columnsAlignment = userParam.details_columns_alignment.split(";");
 
   //ITEMS
   for (var i = 0; i < invoiceObj.items.length; i++) {
@@ -1776,13 +1781,21 @@ function print_details_gross_amounts(banDoc, repDocObj, invoiceObj, texts, userP
   columnsSelected = columnsSelected.filter(function(e){return e});
   columnsNames = columnsNames.filter(function(e){return e});
 
+  var decimals = getQuantityDecimals(invoiceObj);
+  var columnsAlignment = userParam.details_columns_alignment.split(";");
+
+  //HEADER
   if (userParam[lang+'_text_details_columns']) {
     for (var i = 0; i < columnsNames.length; i++) {
+      var alignment = columnsAlignment[i];
+      if (alignment !== "left" && alignment !== "center" && alignment !== "right") {
+        alignment = "left";
+      }
       columnsNames[i] = columnsNames[i].trim();
       if (columnsNames[i] === "<none>") {
         header.addCell("", "doc_table_header", 1);
       } else {
-        header.addCell(columnsNames[i], "doc_table_header center", 1);
+        header.addCell(columnsNames[i], "doc_table_header " + alignment, 1);
       }
       columnsNumber ++;
     }
@@ -1794,9 +1807,6 @@ function print_details_gross_amounts(banDoc, repDocObj, invoiceObj, texts, userP
       columnsNumber ++;
     }
   }
-
-  var decimals = getQuantityDecimals(invoiceObj);
-  var columnsAlignment = userParam.details_columns_alignment.split(";");
 
   //ITEMS
   for (var i = 0; i < invoiceObj.items.length; i++) {
@@ -2645,6 +2655,7 @@ function set_variables(variables, userParam) {
   variables.$padding = "3px";
   variables.$padding_right = "5px";
   variables.$padding_left = "5px";
+  variables.$padding_bottom_total = "5px";
   variables.$border_bottom_total = "1px double";
   /* Variables that set the font size, margins and borders of the Invoice Footer */
   variables.$font_size_footer = "8pt";
@@ -2693,7 +2704,7 @@ function set_invoice_style(reportObj, repStyleObj, variables, userParam) {
   style = replaceVariables(style, variables);
   repStyleObj.addStyle(".bold", style);
 
-  style = "font-weight:bold; color:$background_color_details_header; border-bottom:$border_bottom_total $background_color_details_header; font-size:$font_size_total";
+  style = "font-weight:bold; color:$background_color_details_header; border-bottom:$border_bottom_total $background_color_details_header; font-size:$font_size_total; padding-bottom:$padding_bottom_total;";
   style = replaceVariables(style, variables);
   repStyleObj.addStyle(".total_cell", style);
 
