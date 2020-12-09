@@ -10,6 +10,7 @@
      <file>charts.qml</file>
      <file>financialStatementAnalysis.js</file>
      <file>financialStatementAnalysis.manifest.json</file>
+     <file>financialStatementAnalysis.css</file>
      <file>settings.js</file>
      <file>charts/Chart.bundle.js</file>
      <file>charts/ChartView.qml</file>
