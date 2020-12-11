@@ -19,7 +19,7 @@
 \newenvironment{test}[1]{\section*{Test case: #1}}{}
 %Begin test data
 \begin{reportvalue}{FILENAME: file:script/../test/testcases/accounting 2019.ac2}
-Financial Statements Analysis \\
+Financial Statements Analysis: 10-12-2020 \\
 \begin{longtable}[l]{ l  l }
 COMPANY INFORMATION COMPANY NAME  & Paraer Colige AN \\
 HEAD OFFICE  & vos in Hare \\
@@ -27,9 +27,8 @@ COUNTRY  & \\
 TYPE  & SME \\
 ANALYSIS PERIOD  &  2019 \\
 \end{longtable}
-\begin{longtable}[l]{ l  l  l  l  l  l  l }
+\begin{longtable}[l]{ l  l }
 BALANCE Description  & 2019 \\
-\multicolumn{7}{l}{Assets }\\
 Liquidity  & 2'099'565 \\
 Credits  & \\
 Stocks  & \\
@@ -37,7 +36,6 @@ Current Assets  & 2'099'565 \\
 Fixed assets  & \\
 Fixed Assets  & \\
 Total Assets  & 2'099'565 \\
-Liabilities and Equity \\
 Short-term debt capital  & 1'787'433 \\
 Long term debt capital  & \\
 Debt Capital  & 1'787'433 \\
@@ -93,6 +91,8 @@ ROE  & \%  & \\
 ROI  & 101\%  & \\
 ROS  & 49\%  & \\
 MOL  & 49\%  & \\
+ebit margin  & 49\%  & \\
+profit margin  & 49\%  & \\
 \end{longtable}
 DUPONT SCHEME  \\
 \begin{longtable}[l]{ l  l  l  l  l  l  l }
@@ -118,15 +118,15 @@ Sales  & \multicolumn{4}{l}{  } & 4'310'657  & \\
 \multicolumn{2}{l}{  } & Different costs  & \multicolumn{2}{l}{  } & 0  & \\
    & Sales  & \multicolumn{3}{l}{  } & 4'310'657  & \\
 \end{longtable}
-\begin{longtable}[l]{ l }
+\begin{longtable}[l]{ l  l  l }
 Altman Index Z-SCORE 2019 \\
 5.98 \\
-formula used for the calculation  = 0.717 X1 + 0.847 X2 +3.107 X3 +0.420 X4 + 0.998 X5 \\
-X1 = cuas / tota \\
-X2 = reut / tota  \\
-X3 = Ebit / tota  \\
-X4 = pant / totp \\
-X5 = sale / tota \\
+\multicolumn{3}{l}{formula used for the calculation  = 0.717 X1 + 0.847 X2 +3.107 X3 +0.420 X4 + 0.998 X5 }\\
+\multicolumn{3}{l}{X1 = cuas / tota }\\
+\multicolumn{3}{l}{X2 = reut / tota  }\\
+\multicolumn{3}{l}{X3 = Ebit / tota  }\\
+\multicolumn{3}{l}{X4 = pant / totp }\\
+\multicolumn{3}{l}{X5 = sale / tota }\\
 \end{longtable}
 for values > of 3 correspond to low probability of a financial crisis \\
 for values >= of 1.8 but <= to 3 there are possibilities of a financial crisis, to be kept under control \\

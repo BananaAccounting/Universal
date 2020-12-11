@@ -56,10 +56,12 @@ BasePage {
                   data.roi = {};
                   data.ros = {};
                   data.mol = {};
+                  data.ebm = {};
+                  data.mon = {};
                   for (var i = 0; i < financialStatementAnalysis.data.length; i++) {
                      var periodo = financialStatementAnalysis.data[i].period.StartDate;
                       //for dont cut the Budget string in Budg.
-                     if (periodo !== "Budget") {
+                     if (periodo !== "Budget" && periodo !== "Preventivo") {
                      periodo = periodo.substr(0, 4);
                      }
                      var year= periodo;
@@ -69,6 +71,8 @@ BasePage {
                      data.roi[year] = financialStatementAnalysis.data[i].index.red.roi.amount;
                      data.ros[year] = financialStatementAnalysis.data[i].index.red.ros.amount;
                      data.mol[year] = financialStatementAnalysis.data[i].index.red.mol.amount;
+                     data.ebm[year] = financialStatementAnalysis.data[i].index.red.ebm.amount;
+                     data.mon[year] = financialStatementAnalysis.data[i].index.red.mon.amount;
                   }
                   for (var i = 0; i < yearList.length; i++) {
                      var year = yearList[i];
@@ -83,6 +87,8 @@ BasePage {
                      chartData.datasets[i].data.push(data.roi[year]);
                      chartData.datasets[i].data.push(data.ros[year]);
                      chartData.datasets[i].data.push(data.mol[year]);
+                     chartData.datasets[i].data.push(data.ebm[year]);
+                     chartData.datasets[i].data.push(data.mon[year]);
                   }
                   repaintChart();
                   showLoadingIndicator(false)

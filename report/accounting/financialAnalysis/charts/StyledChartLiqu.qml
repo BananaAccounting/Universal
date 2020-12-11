@@ -41,7 +41,7 @@ ChartView {
 
    chartData: {
       'labels' : [
-            qsTr("Cash ratio"),qsTr("Quick ratio"),qsTr("Current ratio")
+            qsTr("cash ratio"),qsTr("quick ratio"),qsTr("current ratio")
             ],
        'datasets' : [
        ]

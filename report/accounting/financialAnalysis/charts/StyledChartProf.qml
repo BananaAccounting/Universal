@@ -41,7 +41,7 @@ ChartView {
 
    chartData: {
       'labels' : [
-            "ROE","ROI","ROS","MOL"
+            "ROE","ROI","ROS","MOL","ebit margin","profit margin"
             ],
       'datasets' : []
    }
