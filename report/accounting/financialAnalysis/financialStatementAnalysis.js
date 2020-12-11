@@ -130,7 +130,10 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
     printReportAddTableIndliq(report) {
         var tableIndliq = report.addTable('myIndliqTable');
+        tableIndliq.setStyleAttributes("width:100%");
         tableIndliq.getCaption().addText(qsTr("LIQUIDITY RATIOS"), "styleGroupTitles");
+        tableIndliq.addColumn("Description").setStyleAttributes("width:25%");
+        tableIndliq.addColumn("formula").setStyleAttributes("width:20%");
         // header
         var tableHeader = tableIndliq.getHeader();
         var tableRow = tableHeader.addRow();
@@ -151,7 +154,10 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
     }
     printReportAddTableIndfin(report) {
         var tableIndfin = report.addTable('myIndfinTable');
+        tableIndfin.setStyleAttributes("width:100%");
         tableIndfin.getCaption().addText(qsTr("FINANCING RATIOS"), "styleGroupTitles");
+        tableIndfin.addColumn("Description").setStyleAttributes("width:25%");
+        tableIndfin.addColumn("formula").setStyleAttributes("width:20%");
         // header
         var tableHeader = tableIndfin.getHeader();
         var tableRow = tableHeader.addRow();
@@ -171,7 +177,10 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
     }
     printReportAddTableIndprof(report) {
         var tableIndprof = report.addTable('myIndprofTable');
+        tableIndprof.setStyleAttributes("width:100%");
         tableIndprof.getCaption().addText(qsTr("PROFITABILITY RATIOS"), "styleGroupTitles");
+        tableIndprof.addColumn("Description").setStyleAttributes("width:25%");
+        tableIndprof.addColumn("formula").setStyleAttributes("width:20%");
         // header
         var tableHeader = tableIndprof.getHeader();
         var tableRow = tableHeader.addRow();
@@ -198,7 +207,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
     printtableAltmanIndex(report) {
 
         var tableAltmanIndex = report.addTable('myTableAltmanIndex');
-        tableAltmanIndex.getCaption().addText("Altman Index Z-SCORE", "styleGroupTitles");
+        tableAltmanIndex.getCaption().addText(qsTr("Altman Index Z-SCORE"), "styleGroupTitles");
         // header
         var tableHeader = tableAltmanIndex.getHeader();
         var tableRow = tableHeader.addRow();
@@ -215,12 +224,12 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
     }
     printReportAddTableUsedSetting(report, columnsCount) {
         var tableUsedSetting = report.addTable('myTableUsedSetting');
-        tableUsedSetting.getCaption().addText("Used Setting", "styleGroupTitles");
+        tableUsedSetting.getCaption().addText(qsTr("Used Setting"), "styleGroupTitles");
         return tableUsedSetting;
     }
     printReportAddTableUsedGroups(report, columnsCount) {
         var tableUsedGroups = report.addTable('myTableUsedSetting');
-        tableUsedGroups.getCaption().addText("Used Groups", "styleGroupTitles");
+        tableUsedGroups.getCaption().addText(qsTr("Used Groups"), "styleGroupTitles");
         return tableUsedGroups;
     }
 
@@ -235,6 +244,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
             yearcolumns++
         }
+        yearcolumns += 2;
         return yearcolumns;
     }
 
@@ -257,7 +267,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         if (day < 10) day = '0' + day;
         if (month < 10) month = '0' + month;
         report.getHeader().addClass("header");
-        report.getHeader().addText(qsTr('Financial Statements Analysis: ' + ' ' + day + '-' + month + '-' + year));
+        var myheader = qsTr("Financial Statements Analysis");
+        report.getHeader().addText(myheader + ": " + day + '-' + month + '-' + year);
         // report.getHeader().addText("period: " + startperiod + " - " + endperiod);
 
     }
@@ -328,11 +339,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         tableRow.addCell((period), 'styleCompanyInfocells');
 
         //Add Table balance
-        var colCountTableBilancio = 0;
-        var tableBilancio = this.printReportAddTableBalance(report, this.yearsColumnCount(colCountTableBilancio));
+        var colCountTableBilancio = this.yearsColumnCount();
+        var tableBilancio = this.printReportAddTableBalance(report);
         // current assets
-        var tableRow = tableBilancio.addRow("styleTablRows");
-        tableRow.addCell(qsTr('Assets'), "styleUnderGroupTitles", 7);
         for (var key in this.data[0].bilancio.ac) {
             var tableRow = tableBilancio.addRow("styleTablRows");
             tableRow.addCell(qsTr(this.data[0].bilancio.ac[key].description));
@@ -384,8 +393,6 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         }
 
         //add the CT counts, and put the data inside with a loop on the right level
-        var tableRow = tableBilancio.addRow("styleTablRows");
-        tableRow.addCell('Liabilities and Equity', 'styleUnderGroupTitles', colCountTableBilancio);
         for (var key in this.data[0].bilancio.ct) {
             var tableRow = tableBilancio.addRow("styleTablRows");
             tableRow.addCell(qsTr(this.data[0].bilancio.ct[key].description));
@@ -559,7 +566,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
         for (var key in this.data[0].index.liqu) {
             var tableRow = tableindliq.addRow("styleTablRows");
-            tableRow.addCell(qsTr(this.data[0].index.liqu[key].description), "styleNormal");
+            tableRow.addCell(qsTr(this.data[0].index.liqu[key].description), "styleTablRows");
             if (this.param.formulascolumn) {
                 tableRow.addCell(this.data[0].index.liqu[key].formula, "styleNormal");
             }
@@ -585,7 +592,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
         for (var key in this.data[0].index.fin) {
             var tableRow = tableindfin.addRow("styleTablRows");
-            tableRow.addCell(qsTr(this.data[0].index.fin[key].description), "styleNormal");
+            tableRow.addCell(qsTr(this.data[0].index.fin[key].description), "styleTablRows");
             if (this.param.formulascolumn) {
                 tableRow.addCell(this.data[0].index.fin[key].formula, "styleNormal");
             }
@@ -601,7 +608,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
         for (var key in this.data[0].index.red) {
             var tableRow = tableindprof.addRow("styleTablRows");
-            tableRow.addCell(qsTr(this.data[0].index.red[key].description), "styleNormal");
+            tableRow.addCell(qsTr(this.data[0].index.red[key].description), "styleTablRows");
             if (this.param.formulascolumn) {
                 tableRow.addCell(this.data[0].index.red[key].formula, "styleNormal");
             }
@@ -675,7 +682,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
         //4
         var tableRow = tabledupont.addRow();
-        tableRow.addCell("ROT (Capital:Sales)", 'styleTitlesTotAmount', 2);
+        tableRow.addCell(qsTr("ROT (Capital:Sales)"), 'styleTitlesTotAmount', 2);
         tableRow.addCell(" ", "emptyCells", 3);
         var balance = 0;
         if (this.data[Arrayindexcurr])
@@ -690,7 +697,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         //5
         var tableRow = tabledupont.addRow();
         tableRow.addCell(" ", "emptyCells", 1);
-        tableRow.addCell("Capital", 'styleUnderGroupTitles');
+        tableRow.addCell(qsTr("Capital"), 'styleUnderGroupTitles');
         tableRow.addCell(" ", "emptyCells", 3);
         var balance = 0;
         if (this.data[Arrayindexcurr])
@@ -704,7 +711,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         //6
         var tableRow = tabledupont.addRow();
         tableRow.addCell(" ", "emptyCells", 1);
-        tableRow.addCell("Sales", 'styleUnderGroupTitles');
+        tableRow.addCell(qsTr("Sales"), 'styleUnderGroupTitles');
         tableRow.addCell(" ", "emptyCells", 3);
         var balance = 0;
         if (this.data[Arrayindexcurr])
@@ -717,7 +724,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
         //7
         var tableRow = tabledupont.addRow();
-        tableRow.addCell("MOL (Sales:Ebit)", 'styleTitlesTotAmount', 2);
+        tableRow.addCell(qsTr("MOL (Sales:Ebit)"), 'styleTitlesTotAmount', 2);
         tableRow.addCell(" ", "emptyCells", 3);
         var balance = 0;
         if (this.data[Arrayindexcurr])
@@ -730,7 +737,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
         //8
         var tableRow = tabledupont.addRow();
-        tableRow.addCell("Capital (Current asset+Fixed asset)", 'styleTitlesTotAmount', 3);
+        tableRow.addCell(qsTr("Capital (Current asset+Fixed asset)"), 'styleTitlesTotAmount', 3);
         tableRow.addCell(" ", "emptyCells", 2);
         var balance = 0;
         if (this.data[Arrayindexcurr])
@@ -744,7 +751,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         //9
         var tableRow = tabledupont.addRow();
         tableRow.addCell(" ", "emptyCells", 1);
-        tableRow.addCell("Current asset", 'styleUnderGroupTitles');
+        tableRow.addCell(qsTr("Current asset"), 'styleUnderGroupTitles');
         tableRow.addCell(" ", "emptyCells", 3);
         var balance = 0;
         if (this.data[Arrayindexcurr])
@@ -758,7 +765,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         //10
         var tableRow = tabledupont.addRow();
         tableRow.addCell(" ", "emptyCells", 2);
-        tableRow.addCell("Liquidity");
+        tableRow.addCell(qsTr("Liquidity"));
         tableRow.addCell(" ", "emptyCells", 2);
         var balance = 0;
         if (this.data[Arrayindexcurr])
@@ -772,7 +779,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         //11
         var tableRow = tabledupont.addRow();
         tableRow.addCell(" ", "emptyCells", 2);
-        tableRow.addCell("Credits");
+        tableRow.addCell(qsTr("Credits"));
         tableRow.addCell(" ", "emptyCells", 2);
         var balance = 0;
         if (this.data[Arrayindexcurr])
@@ -786,7 +793,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         //12
         var tableRow = tabledupont.addRow();
         tableRow.addCell(" ", "emptyCells", 2);
-        tableRow.addCell("Stocks");
+        tableRow.addCell(qsTr("Stocks"));
         tableRow.addCell(" ", "emptyCells", 2);
         var balance = 0;
         if (this.data[Arrayindexcurr])
@@ -800,7 +807,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         //13
         var tableRow = tabledupont.addRow();
         tableRow.addCell(" ", "emptyCells", 1);
-        tableRow.addCell("Fixed asset", 'styleUnderGroupTitles');
+        tableRow.addCell(qsTr("Fixed asset"), 'styleUnderGroupTitles');
         tableRow.addCell(" ", "emptyCells", 3);
         var balance = 0;
         if (this.data[Arrayindexcurr])
@@ -813,7 +820,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
         //14
         var tableRow = tabledupont.addRow();
-        tableRow.addCell("Sales", 'styleTitlesTotAmount');
+        tableRow.addCell(qsTr("Sales"), 'styleTitlesTotAmount');
         tableRow.addCell(" ", "emptyCells", 4);
         var balance = 0;
         if (this.data[Arrayindexcurr])
@@ -826,7 +833,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
         //15
         var tableRow = tabledupont.addRow();
-        tableRow.addCell("Ebit (Sales-Total Costs)", 'styleTitlesTotAmount', 3);
+        tableRow.addCell(qsTr("Ebit (Sales-Total Costs)"), 'styleTitlesTotAmount', 3);
         tableRow.addCell(" ", "emptyCells", 2);
         var balance = 0;
         if (this.data[Arrayindexcurr])
@@ -840,7 +847,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         //16
         var tableRow = tabledupont.addRow();
         tableRow.addCell(" ", "emptyCells", 1);
-        tableRow.addCell("Total Costs", 'styleUnderGroupTitles');
+        tableRow.addCell(qsTr("Total Costs"), 'styleUnderGroupTitles');
         tableRow.addCell(" ", "emptyCells", 3);
         var balance = 0;
         if (this.data[Arrayindexcurr])
@@ -854,7 +861,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         //17
         var tableRow = tabledupont.addRow();
         tableRow.addCell(" ", "emptyCells", 2);
-        tableRow.addCell("Merchandise costs");
+        tableRow.addCell(qsTr("Merchandise costs"));
         tableRow.addCell(" ", "emptyCells", 2);
         var balance = 0;
         if (this.data[Arrayindexcurr])
@@ -868,7 +875,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         //18
         var tableRow = tabledupont.addRow();
         tableRow.addCell(" ", "emptyCells", 2);
-        tableRow.addCell("Personal costs");
+        tableRow.addCell(qsTr("Personal costs"));
         tableRow.addCell(" ", "emptyCells", 2);
         var balance = 0;
         if (this.data[Arrayindexcurr])
@@ -883,7 +890,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         //19
         var tableRow = tabledupont.addRow();
         tableRow.addCell(" ", "emptyCells", 2);
-        tableRow.addCell("Different costs");
+        tableRow.addCell(qsTr("Different costs"));
         tableRow.addCell(" ", "emptyCells", 2);
         var balance = 0;
         if (this.data[Arrayindexcurr])
@@ -897,7 +904,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         //20
         var tableRow = tabledupont.addRow();
         tableRow.addCell(" ", "emptyCells", 1);
-        tableRow.addCell("Sales", 'styleUnderGroupTitles');
+        tableRow.addCell(qsTr("Sales"), 'styleUnderGroupTitles');
         tableRow.addCell(" ", "emptyCells", 3);
         var balance = 0;
         if (this.data[Arrayindexcurr])
@@ -1262,7 +1269,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         param.liqu3.value = "150%";
         param.netcurrass = {};
         param.netcurrass.description = qsTr("net current asset");
-        param.netcurrass.value = qsTr("compare with the previous internal data");
+        param.netcurrass.value = ">0";
 
         return param;
     }
@@ -1270,10 +1277,10 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var param = {};
         param.cirract = {};
         param.cirract.description = qsTr("degree of circulating assets");
-        param.cirract.value = qsTr("compare with the industry average data");
+        param.cirract.value = "60%";
         param.fixass = {};
         param.fixass.description = qsTr("percentage fixed assets");
-        param.fixass.value = qsTr("compare with the industry average data");
+        param.fixass.value = "40%";
         param.lvldeb = {};
         param.lvldeb.description = qsTr("debt ratio");
         param.lvldeb.value = "40%-70%";
@@ -1282,7 +1289,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         param.lvlequ.value = "30%-60%";
         param.lvlsel = {};
         param.lvlsel.description = qsTr("self financing ratio");
-        param.lvlsel.value = qsTr("depends on the company");
+        param.lvlsel.value = "33,3%";
         param.covfix = {};
         param.covfix.description = qsTr(" fixed asset coverage");
         param.covfix.value = ">100%";
@@ -1302,9 +1309,16 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         param.profros.value = ">0";
         param.profmol = {};
         param.profmol.description = "mol";
-        param.profmol.value = qsTr("compare with the industry average data");
+        param.profmol.value = "40%";
+        param.profebm = {};
+        param.profebm.description = qsTr("ebit margin");
+        param.profebm.value = "2.4%";
+        param.profmon = {};
+        param.profmon.description = qsTr("profit margin");
+        param.profmon.value = "1.4%";
         return param;
     }
+
 
     /**
      * @description - assigns the maximum number of previous years to a varaible, if it is less than 5, is reset to 5
@@ -1705,7 +1719,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         //Level of debt
         index.fin.gdin = {};
         index.fin.gdin.description = qsTr("debt ratio");
-        index.fin.gdin.formula = "stdc+ltdc / totp";
+        index.fin.gdin.formula = "(stdc+ltdc) / totp";
         var deca = Banana.SDecimal.add((data.bilancio.ct.ltdc.balance), (data.bilancio.ct.stdc.balance));
         var tocaone = Banana.SDecimal.add(data.bilancio.cp.obca.balance, data.bilancio.cp.reut.balance);
         var tocatwo = Banana.SDecimal.add(data.bilancio.ct.ltdc.balance, data.bilancio.ct.stdc.balance);
@@ -1742,7 +1756,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         //degree of coverage of fixed assets
         index.fin.fixaco = {};
         index.fin.fixaco.description = qsTr("fixed assets coverage");
-        index.fin.fixaco.formula = "( owca + ltdc ) / tota";
+        index.fin.fixaco.formula = "(owca + ltdc) / tota";
         var ltdc = data.bilancio.ct.ltdc.balance;
         var fcalc8 = Banana.SDecimal.add(owca, ltdc);
         var fcalc9 = Banana.SDecimal.divide(fcalc8, totatt);
@@ -1763,12 +1777,12 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
         index.red = {};
 
-
+        //capital profitability
 
         //ROE il profitto sarà da calcolare
         index.red.roe = {};
         index.red.roe.description = "ROE";
-        index.red.roe.formula = "profit / own capital";
+        index.red.roe.formula = "profit / owca";
         var rcalc1 = Banana.SDecimal.multiply(CalculatedData.TotAnnual, 100);
         var rcalc2 = Banana.SDecimal.divide(rcalc1, owca, { 'decimals': this.param.numberofdecimals });
         var rris = rcalc2.toString();
@@ -1780,7 +1794,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         // il totale degli impieghi (employment) corrisponde al totale degli attivi
         index.red.roi = {};
         index.red.roi.description = "ROI";
-        index.red.roi.formula = "EBIT / total employment  ";
+        index.red.roi.formula = "ebit / tota  ";
         var rcalc3 = Banana.SDecimal.divide(CalculatedData.Ebit, totatt);
         var rcalc4 = Banana.SDecimal.multiply(rcalc3, 100, { 'decimals': this.param.numberofdecimals });
         var rris2 = rcalc4.toString();
@@ -1798,16 +1812,36 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         index.red.ros.amount = rris3;
         index.red.ros.benchmark = data.ratios.profitabilityratios.profros.value;
 
-        // MOL
+        // MOL (Gross profit Margin)
         index.red.mol = {};
         index.red.mol.description = "MOL";
-        index.red.mol.formula = "gross profit / sales turnover";
+        index.red.mol.formula = "gross profit / satu";
         var ebitda = CalculatedData.EbitDa;
         var rcalc7 = Banana.SDecimal.multiply(ebitda, 100);
         var rcalc8 = Banana.SDecimal.divide(rcalc7, satu, { 'decimals': this.param.numberofdecimals });
         var rris4 = rcalc8.toString();
         index.red.mol.amount = rris4;
         index.red.mol.benchmark = data.ratios.profitabilityratios.profmol.value;
+
+        //Ebit Margin
+        index.red.ebm = {};
+        index.red.ebm.description = "ebit margin";
+        index.red.ebm.formula = "ebit / satu";
+        var rcalc9 = Banana.SDecimal.multiply(CalculatedData.Ebit, 100);
+        var rcalc10 = Banana.SDecimal.divide(rcalc9, satu, { 'decimals': this.param.numberofdecimals });
+        var rris5 = rcalc10.toString();
+        index.red.ebm.amount = rris5;
+        index.red.ebm.benchmark = data.ratios.profitabilityratios.profebm.value;
+
+        //MON (Profit Margin)
+        index.red.mon = {};
+        index.red.mon.description = "profit margin";
+        index.red.mon.formula = "net profit / satu";
+        var rcalc11 = Banana.SDecimal.multiply(CalculatedData.TotAnnual, 100);
+        var rcalc12 = Banana.SDecimal.divide(rcalc11, satu, { 'decimals': this.param.numberofdecimals });
+        var rris6 = rcalc12.toString();
+        index.red.mon.amount = rris6;
+        index.red.mon.benchmark = data.ratios.profitabilityratios.profmon.value;
 
         return index;
 
@@ -2378,6 +2412,32 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         }
         convertedParam.data.push(currentParam)
 
+        // Ebit Margin benchmark
+        var currentParam = {};
+        currentParam.name = 'ebmbenchmark';
+        currentParam.title = param.ratios.profitabilityratios.profebm.description ? param.ratios.profitabilityratios.profebm.description : defaultParam.ratios.profitabilityratios.profebm.description;
+        currentParam.type = 'string';
+        currentParam.value = param.ratios.profitabilityratios.profebm.value ? param.ratios.profitabilityratios.profebm.value : '';
+        currentParam.defaultvalue = defaultParam.ratios.profitabilityratios.profebm.value;
+        currentParam.parentObject = 'profitability';
+        currentParam.readValue = function() {
+            param.ratios.profitabilityratios.profebm.value = this.value;
+        }
+        convertedParam.data.push(currentParam)
+
+        // Profit Margin benchmark
+        var currentParam = {};
+        currentParam.name = 'monbenchmark';
+        currentParam.title = param.ratios.profitabilityratios.profmon.description ? param.ratios.profitabilityratios.profmon.description : defaultParam.ratios.profitabilityratios.profebm.description;
+        currentParam.type = 'string';
+        currentParam.value = param.ratios.profitabilityratios.profmon.value ? param.ratios.profitabilityratios.profmon.value : '';
+        currentParam.defaultvalue = defaultParam.ratios.profitabilityratios.profmon.value;
+        currentParam.parentObject = 'profitability';
+        currentParam.readValue = function() {
+            param.ratios.profitabilityratios.profmon.value = this.value;
+        }
+        convertedParam.data.push(currentParam)
+
         return convertedParam;
     }
 
@@ -2876,17 +2936,22 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             this.param.ratios.profitabilityratios.profros = {};
         if (!this.param.ratios.profitabilityratios.profmol)
             this.param.ratios.profitabilityratios.profmol = {};
+        if (!this.param.ratios.profitabilityratios.profebm)
+            this.param.ratios.profitabilityratios.profebm = {};
+        if (!this.param.ratios.profitabilityratios.profmon)
+            this.param.ratios.profitabilityratios.profmon = {};
 
     }
 
     /**
-     * 
+     * Verify if the chosen groups exists, if not, missing value is increased by one, if missing is different from 0, the method return false
      * @param {*} convertedParam 
      */
     verifyIfGroupsExists(convertedParam) {
         var Docgroups = this.loadGroups();
         var missing = 0;
         var exists = true;
+        var Msg = "check the existence of the chosen groups within your chart of accounts ";
 
         for (var i = 0; i < convertedParam.data.length; i++) {
             var object = convertedParam.data[i];
@@ -2896,8 +2961,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                     var valuelist = value.split(";");
                     for (var token in valuelist) {
                         var token = valuelist[token];
+                        var listOfTokens = [];
                         if (Docgroups.indexOf(token) < 0) {
-                            object.errorMsg = "these groups do not exist in the chart of accounts: " + token + ", ";
+                            object.errorMsg = Msg;
                             missing++;
                         }
                     }
@@ -2908,7 +2974,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                     for (var token in valuelist) {
                         var token = valuelist[token];
                         if (Docgroups.indexOf(token) < 0) {
-                            object.errorMsg = "these groups do not exist in the chart of accounts: " + token + ", ";
+                            //if it's necessary i set the error Message
+                            object.errorMsg = Msg;
                             missing++;
                         }
                     }
@@ -2919,7 +2986,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                     for (var token in valuelist) {
                         var token = valuelist[token];
                         if (Docgroups.indexOf(token) < 0) {
-                            object.errorMsg = "these groups do not exist in the chart of accounts: " + token + ", ";
+                            object.errorMsg = Msg;
                             missing++;
                         }
                     }
@@ -2930,7 +2997,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                     for (var token in valuelist) {
                         var token = valuelist[token];
                         if (Docgroups.indexOf(token) < 0) {
-                            object.errorMsg = "these groups do not exist in the chart of accounts: " + token + ", ";
+                            object.errorMsg = Msg;
                             missing++;
                         }
                     }
@@ -2941,7 +3008,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                     for (var token in valuelist) {
                         var token = valuelist[token];
                         if (Docgroups.indexOf(token) < 0) {
-                            object.errorMsg = "these groups do not exist in the chart of accounts: " + token + ", ";
+                            object.errorMsg = Msg;
                             missing++;
                         }
                     }
@@ -2952,7 +3019,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                     for (var token in valuelist) {
                         var token = valuelist[token];
                         if (Docgroups.indexOf(token) < 0) {
-                            object.errorMsg = "these groups do not exist in the chart of accounts: " + token + ", ";
+                            object.errorMsg = Msg;
                             missing++;
                         }
                     }
@@ -2963,7 +3030,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                     for (var token in valuelist) {
                         var token = valuelist[token];
                         if (Docgroups.indexOf(token) < 0) {
-                            object.errorMsg = "these groups do not exist in the chart of accounts: " + token + ", ";
+                            object.errorMsg = Msg;
                             missing++;
                         }
                     }
@@ -2974,7 +3041,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                     for (var token in valuelist) {
                         var token = valuelist[token];
                         if (Docgroups.indexOf(token) < 0) {
-                            object.errorMsg = "these groups do not exist in the chart of accounts: " + token + ", ";
+                            object.errorMsg = Msg;
                             missing++;
                         }
                     }
@@ -2985,7 +3052,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                     for (var token in valuelist) {
                         var token = valuelist[token];
                         if (Docgroups.indexOf(token) < 0) {
-                            object.errorMsg = "these groups do not exist in the chart of accounts: " + token + ", ";
+                            object.errorMsg = Msg;
                             missing++;
                         }
                     }
@@ -2996,7 +3063,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                     for (var token in valuelist) {
                         var token = valuelist[token];
                         if (Docgroups.indexOf(token) < 0) {
-                            object.errorMsg = "these groups do not exist in the chart of accounts: " + token + ", ";
+                            object.errorMsg = Msg;
                             missing++;
                         }
                     }
@@ -3007,7 +3074,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                     for (var token in valuelist) {
                         var token = valuelist[token];
                         if (Docgroups.indexOf(token) < 0) {
-                            object.errorMsg = "these groups do not exist in the chart of accounts: " + token + ", ";
+                            object.errorMsg = Msg;
                             missing++;
                         }
                     }
@@ -3018,7 +3085,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                     for (var token in valuelist) {
                         var token = valuelist[token];
                         if (Docgroups.indexOf(token) < 0) {
-                            object.errorMsg = "these groups do not exist in the chart of accounts: " + token + ", ";
+                            object.errorMsg = Msg;
                             missing++;
                         }
                     }
@@ -3029,7 +3096,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                     for (var token in valuelist) {
                         var token = valuelist[token];
                         if (Docgroups.indexOf(token) < 0) {
-                            object.errorMsg = "these groups do not exist in the chart of accounts: " + token + ", ";
+                            object.errorMsg = Msg;
                             missing++;
                         }
                     }
@@ -3040,7 +3107,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                     for (var token in valuelist) {
                         var token = valuelist[token];
                         if (Docgroups.indexOf(token) < 0) {
-                            object.errorMsg = "these groups do not exist in the chart of accounts: " + token + ", ";
+                            object.errorMsg = Msg;
                             missing++;
                         }
                     }
@@ -3051,7 +3118,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                     for (var token in valuelist) {
                         var token = valuelist[token];
                         if (Docgroups.indexOf(token) < 0) {
-                            object.errorMsg = "these groups do not exist in the chart of accounts: " + token + ", ";
+                            object.errorMsg = Msg;
                             missing++;
                         }
                     }

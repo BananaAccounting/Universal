@@ -41,7 +41,7 @@ ChartView {
 
    chartData: {
       'labels' : [
-           qsTr("degree of circulating active"),qsTr("Percentage fixed assets"),qsTr("Debt ratio"),qsTr("Equity ratio"),qsTr("self financing ratio"),qsTr("fixed asset coverage")
+           qsTr("degree of circulating active"),qsTr("percentage fixed assets"),qsTr("debt ratio"),qsTr("equity ratio"),qsTr("self financing ratio"),qsTr("fixed asset coverage")
       ],
        'datasets' : [
        ]

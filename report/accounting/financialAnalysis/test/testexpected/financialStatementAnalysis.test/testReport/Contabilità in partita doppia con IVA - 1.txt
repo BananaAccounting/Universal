@@ -19,7 +19,7 @@
 \newenvironment{test}[1]{\section*{Test case: #1}}{}
 %Begin test data
 \begin{reportvalue}{FILENAME: file:script/../test/testcases/Contabilità in partita doppia con IVA - 1.ac2}
-Financial Statements Analysis \\
+Financial Statements Analysis: 10-12-2020 \\
 \begin{longtable}[l]{ l  l }
 COMPANY INFORMATION COMPANY NAME  & \\
 HEAD OFFICE  & \\
@@ -27,9 +27,8 @@ COUNTRY  & \\
 TYPE  & SME \\
 ANALYSIS PERIOD  &  Budget-2019 \\
 \end{longtable}
-\begin{longtable}[l]{ l  l  l  l  l  l  l }
+\begin{longtable}[l]{ l  l  l }
 BALANCE Description  & Budget  & 2019 \\
-\multicolumn{7}{l}{Assets }\\
 Liquidity  & -800  & -800 \\
 Credits  & 10'000  & 10'000 \\
 Stocks  & 0  & 0 \\
@@ -37,7 +36,6 @@ Current Assets  & 9'200  & 9'200 \\
 Fixed assets  & 0  & 0 \\
 Fixed Assets  & 0  & 0 \\
 Total Assets  & 9'200  & 9'200 \\
-Liabilities and Equity \\
 Short-term debt capital  & -500  & -500 \\
 Long term debt capital  & 0  & 0 \\
 Debt Capital  & -500  & -500 \\
@@ -95,6 +93,8 @@ ROE  & 0\%  & 0\%  & \\
 ROI  & 0\%  & 0\%  & \\
 ROS  & \%  & \%  & \\
 MOL  & \%  & \%  & \\
+ebit margin  & \%  & \%  & \\
+profit margin  & \%  & \%  & \\
 \end{longtable}
 DUPONT SCHEME  \\
 \begin{longtable}[l]{ l  l  l  l  l  l  l }
@@ -120,15 +120,15 @@ Sales  & \multicolumn{4}{l}{  } & 0  & \\
 \multicolumn{2}{l}{  } & Different costs  & \multicolumn{2}{l}{  } & 0  & \\
    & Sales  & \multicolumn{3}{l}{  } & 0  & \\
 \end{longtable}
-\begin{longtable}[l]{ l  l }
+\begin{longtable}[l]{ l  l  l  l }
 Altman Index Z-SCORE Budget  & 2019 \\
 1.61  & 1.61 \\
-\multicolumn{2}{l}{formula used for the calculation  = 0.717 X1 + 0.847 X2 +3.107 X3 +0.420 X4 + 0.998 X5 }\\
-\multicolumn{2}{l}{X1 = cuas / tota }\\
-\multicolumn{2}{l}{X2 = reut / tota  }\\
-\multicolumn{2}{l}{X3 = Ebit / tota  }\\
-\multicolumn{2}{l}{X4 = pant / totp }\\
-\multicolumn{2}{l}{X5 = sale / tota }\\
+\multicolumn{4}{l}{formula used for the calculation  = 0.717 X1 + 0.847 X2 +3.107 X3 +0.420 X4 + 0.998 X5 }\\
+\multicolumn{4}{l}{X1 = cuas / tota }\\
+\multicolumn{4}{l}{X2 = reut / tota  }\\
+\multicolumn{4}{l}{X3 = Ebit / tota  }\\
+\multicolumn{4}{l}{X4 = pant / totp }\\
+\multicolumn{4}{l}{X5 = sale / tota }\\
 \end{longtable}
 for values > of 3 correspond to low probability of a financial crisis \\
 for values >= of 1.8 but <= to 3 there are possibilities of a financial crisis, to be kept under control \\

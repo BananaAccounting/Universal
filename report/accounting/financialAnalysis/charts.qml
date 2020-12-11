@@ -7,18 +7,25 @@ import QtQuick.Layouts 1.14
 import "components" 1.0
 
 BasePage {
-   title: qsTr("Financing Charts")
+   title: "Financing Charts"
    width: 800
    height: 600
 
    function loadCharts() {
+      var FinancingChart=qsTr(" Financing index variation");
+      var LiquidityChart=qsTr(" Liquidity index variation");
+      var ProfitabilityChart=qsTr(" Profitability index variation");
+      var ReclassifiedAssetsVariationChart=qsTr(" Reclassified Assets variation");
+      var ReclassifiedLiabilitiesAndEquityVariationChart=qsTr(" Reclassified liabilities and equity variation");
+      var ReclassifiedProfitAndLossVariation=qsTr(" Reclassified Profit and Loss variation");
+
       pageModel.clear();
-      pageModel.append({'title': 'Financing index variation','page': 'chartFin.qml'})
-      pageModel.append({'title': 'Liquidity index variation','page': 'chartLiqu.qml'})
-      pageModel.append({'title': 'Profitability index variation','page': 'chartProf.qml'})
-      pageModel.append({'title': 'Reclassified Assets variation','page': 'chartRAtt.qml'})
-      pageModel.append({'title': 'Reclassified liabilities and equity variation','page': 'chartRPass.qml'})
-      pageModel.append({'title': 'Reclassified Profit and Loss variation','page': 'chartProfLoss.qml'})
+      pageModel.append({'title': FinancingChart,'page': 'chartFin.qml'})
+      pageModel.append({'title': LiquidityChart,'page': 'chartLiqu.qml'})
+      pageModel.append({'title': ProfitabilityChart,'page': 'chartProf.qml'})
+      pageModel.append({'title': ReclassifiedAssetsVariationChart,'page': 'chartRAtt.qml'})
+      pageModel.append({'title': ReclassifiedLiabilitiesAndEquityVariationChart,'page': 'chartRPass.qml'})
+      pageModel.append({'title': ReclassifiedProfitAndLossVariation,'page': 'chartProfLoss.qml'})
    }
 
    Component.onCompleted: {
