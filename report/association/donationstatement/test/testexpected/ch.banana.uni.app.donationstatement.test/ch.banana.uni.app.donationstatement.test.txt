@@ -2598,6 +2598,139 @@ Lugano, 12 february 2019  & Pinco Pallino \\
  & Associazione Sportiva xyz \\
 \end{longtable}
 \end{reportvalue}
+%****************************************************************************** TEST #9 ******************************************************************************
+\begin{reportvalue}{Whole year report}
+Associazione Sportiva xyz \\
+Pinco Pallino \\
+Via Boschetto 34 \\
+6900 Lugano \\
+Tel. 1112223344 \\
+Web: www.banana.ch \\
+Email: info@banana.ch \\
+\begin{longtable}[l]{ l }
+Sig. \\
+Mario Rossi \\
+Via Trevano \\
+6900 Lugano \\
+\end{longtable}
+  \\
+  \\
+  \\
+  \\
+  \\
+  \\
+Donazioni \#;10002: 2018 \\
+  \\
+  \\
+  \\
+Con la presente attestiamo che  Sig. Mario Rossi  ha donato alla nostra associazione  CHF 1'200.00 . \\
+  \\
+Periodo delle donazioni: dal 01.01.2018 al 31.12.2018. \\
+Indirizzo: Sig. Via Trevano, 6900 Lugano. \\
+  \\
+Ringraziamo cordialmente. \\
+  \\
+  \\
+  \\
+  \\
+\begin{longtable}[l]{ l  l }
+Lugano, dicembre 2018  & Pinco Pallino \\
+ & Associazione Sportiva xyz \\
+\end{longtable}
+\begin{longtable}[l]{ l }
+Sig. \\
+Gianpaolo Bianchi \\
+Via Beltramina \\
+6962 Viganello \\
+\end{longtable}
+  \\
+  \\
+  \\
+  \\
+  \\
+  \\
+Donazioni \#;10001: 2018 \\
+  \\
+  \\
+  \\
+Con la presente attestiamo che  Sig. Gianpaolo Bianchi  ha donato alla nostra associazione  CHF 500.35 . \\
+  \\
+Periodo delle donazioni: dal 01.01.2018 al 31.12.2018. \\
+  \\
+Indirizzo: Sig. Via Beltramina, 6962 Viganello. \\
+  \\
+Ringraziamo cordialmente. \\
+  \\
+  \\
+  \\
+  \\
+\begin{longtable}[l]{ l  l }
+Lugano, dicembre 2018  & Pinco Pallino \\
+ & Associazione Sportiva xyz \\
+\end{longtable}
+\begin{longtable}[l]{ l }
+Signora \\
+Sara Guidi \\
+Via Boschetto 45 \\
+6901 Lugano \\
+\end{longtable}
+  \\
+  \\
+  \\
+  \\
+  \\
+  \\
+Donazioni \#;10003: 2018 \\
+  \\
+  \\
+  \\
+Con la presente attestiamo che  Signora Sara Guidi  ha donato alla nostra associazione  CHF 270.00 . \\
+  \\
+Periodo delle donazioni: dal 01.01.2018 al 31.12.2018. \\
+  \\
+Indirizzo: Signora Via Boschetto 45, 6901 Lugano. \\
+  \\
+Ringraziamo cordialmente. \\
+  \\
+  \\
+  \\
+  \\
+\begin{longtable}[l]{ l  l }
+Lugano, dicembre 2018  & Pinco Pallino \\
+ & Associazione Sportiva xyz \\
+\end{longtable}
+\begin{longtable}[l]{ l }
+Sig. \\
+Voit Ulrich \\
+Via alla Chiesa \\
+6800 Mendrisio \\
+\end{longtable}
+  \\
+  \\
+  \\
+  \\
+  \\
+  \\
+Donazioni \#;10004: 2018 \\
+  \\
+  \\
+  \\
+Con la presente attestiamo che  Sig. Voit Ulrich  ha donato alla nostra associazione  CHF 250.00 . \\
+  \\
+Periodo delle donazioni: dal 01.01.2018 al 31.12.2018. \\
+  \\
+Indirizzo: Sig. Via alla Chiesa, 6800 Mendrisio. \\
+  \\
+Ringraziamo cordialmente. \\
+  \\
+  \\
+  \\
+  \\
+\begin{longtable}[l]{ l  l }
+Lugano, dicembre 2018  & Pinco Pallino \\
+ & Associazione Sportiva xyz \\
+\end{longtable}
+\end{reportvalue}
 \keyvalue{Result}{Passed}
 \end{test}
 \end{testcase}

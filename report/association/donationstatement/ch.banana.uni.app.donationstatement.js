@@ -1,4 +1,4 @@
-// Copyright [2018] [Banana.ch SA - Lugano Switzerland]
+// Copyright [2020] [Banana.ch SA - Lugano Switzerland]
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.uni.app.donationstatement.js
 // @api = 1.0
-// @pubdate = 2020-10-09
+// @pubdate = 2020-12-11
 // @publisher = Banana.ch SA
 // @description = Statement of donation for Associations
 // @description.de = Spendenbescheinigung für Vereine
@@ -160,10 +160,11 @@ function createReport(banDoc, startDate, endDate, userParam, accounts, lang, sty
         var trDate = getTransactionDate(banDoc, accounts[k], startDate, endDate);
         var titleText = "";
         var text = "";
+        var address = getAddress(banDoc, accounts[k]);
 
         // Address of the membership (donor)
         var tableAddress = report.addTable("tableAddress");
-        var address = getAddress(banDoc, accounts[k]);
+        
         if (address.nameprefix) {
             var row = tableAddress.addRow();
             row.addCell(address.nameprefix, "address", 1);
@@ -782,8 +783,8 @@ function convertFields(banDoc, text, address, trDate, startDate, endDate, totalO
         text = text.replace(/<FamilyName>/g,familyname);
     }    
     if (text.indexOf("<Address>") > -1) {
-        var address = address.street + ", " + address.postalcode + " " + address.locality;
-        text = text.replace(/<Address>/g,address);
+        var addressstring = address.street + ", " + address.postalcode + " " + address.locality;
+        text = text.replace(/<Address>/g,addressstring);
     }
     if (text.indexOf("<TrDate>") > -1) {
         var trdate = Banana.Converter.toLocaleDateFormat(trDate);
@@ -804,6 +805,24 @@ function convertFields(banDoc, text, address, trDate, startDate, endDate, totalO
     if (text.indexOf("<Amount>") > -1) {
         var amount = Banana.Converter.toLocaleNumberFormat(totalOfDonations);
         text = text.replace(/<Amount>/g,amount);
+    }
+    if (text.indexOf("<NamePrefix>") > -1) {
+        text = text.replace(/<NamePrefix>/g,address.nameprefix);
+    }
+    if (text.indexOf("<OrganisationName>") > -1) {
+        text = text.replace(/<OrganisationName>/g,address.organisationname);
+    }
+    if (text.indexOf("<AddressExtra>") > -1) {
+        text = text.replace(/<AddressExtra>/g,address.addressextra);
+    }
+    if (text.indexOf("<POBox>") > -1) {
+        text = text.replace(/<POBox>/g,address.pobox);
+    }
+    if (text.indexOf("<Region>") > -1) {
+        text = text.replace(/<Region>/g,address.region);
+    }
+    if (text.indexOf("<Country>") > -1) {
+        text = text.replace(/<Country>/g,address.country);
     }
     return text;
 }
@@ -869,6 +888,11 @@ function getAddress(banDoc, accountNumber) {
             address.street = tRow.value("Street");
             address.postalcode = tRow.value("PostalCode");
             address.locality = tRow.value("Locality");
+            address.organisationname = tRow.value("OrganisationName");
+            address.addressextra = tRow.value("AddressExtra");
+            address.pobox = tRow.value("POBox");
+            address.region = tRow.value("Region");
+            address.country = tRow.value("Country");
         }
     }
     return address;
