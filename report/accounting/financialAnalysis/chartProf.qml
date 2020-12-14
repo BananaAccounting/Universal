@@ -61,8 +61,9 @@ BasePage {
                   for (var i = 0; i < financialStatementAnalysis.data.length; i++) {
                      var periodo = financialStatementAnalysis.data[i].period.StartDate;
                       //for dont cut the Budget string in Budg.
-                     if (periodo !== "Budget" && periodo !== "Preventivo") {
-                     periodo = periodo.substr(0, 4);
+                     var elementType = financialStatementAnalysis.data[i].period.Type;
+                     if (elementType === "Y") {
+                      periodo = periodo.substr(0, 4);
                      }
                      var year= periodo;
                      if (year.length>0 && yearList.indexOf(year)<0)

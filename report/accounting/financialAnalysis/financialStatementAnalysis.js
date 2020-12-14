@@ -22,7 +22,6 @@
 // @inputdatasource = none
 // @timeout = -1
 
-
 var FinancialStatementAnalysis = class FinancialStatementAnalysis {
     /**
      * @description create the class attributes and give them a default value.
@@ -76,7 +75,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         }
         for (var i = 0; i < this.data.length; i++) {
             var year = this.data[i].period.StartDate;
-            if (year !== "Budget" && year !== "Preventivo") {
+            var elementType = this.data[i].period.Type;
+            if (elementType === "Y") {
                 year = year.substr(0, 4);
             }
             tableRow.addCell(year, "styleTableHeader");
@@ -120,7 +120,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         }
         for (var i = 0; i < this.data.length; i++) {
             var year = this.data[i].period.StartDate;
-            if (year !== "Budget" && year !== "Preventivo") {
+            var elementType = this.data[i].period.Type;
+            if (elementType === "Y") {
                 year = year.substr(0, 4);
             }
             tableRow.addCell(year, "styleTableHeader");
@@ -143,7 +144,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         }
         for (var i = 0; i < this.data.length; i++) {
             var year = this.data[i].period.StartDate;
-            if (year !== "Budget" && year !== "Preventivo") {
+            var elementType = this.data[i].period.Type;
+            if (elementType === "Y") {
                 year = year.substr(0, 4);
             }
             tableRow.addCell(year, "styleTableHeader");
@@ -167,7 +169,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         }
         for (var i = 0; i < this.data.length; i++) {
             var year = this.data[i].period.StartDate;
-            if (year !== "Budget" && year !== "Preventivo") {
+            var elementType = this.data[i].period.Type;
+            if (elementType === "Y") {
                 year = year.substr(0, 4);
             }
             tableRow.addCell(year, "styleTableHeader");
@@ -190,7 +193,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         }
         for (var i = 0; i < this.data.length; i++) {
             var year = this.data[i].period.StartDate;
-            if (year !== "Budget" && year !== "Preventivo") {
+            var elementType = this.data[i].period.Type;
+            if (elementType === "Y") {
                 year = year.substr(0, 4);
             }
             tableRow.addCell(year, "styleTableHeader");
@@ -213,7 +217,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var tableRow = tableHeader.addRow();
         for (var i = 0; i < this.data.length; i++) {
             var year = this.data[i].period.StartDate;
-            if (year !== "Budget" && year !== "Preventivo") {
+            var elementType = this.data[i].period.Type;
+            if (elementType === "Y") {
                 year = year.substr(0, 4);
             }
             tableRow.addCell(year, "styleTableHeader");
@@ -334,7 +339,6 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             period = period + sep + endperiod;
 
         }
-        report.addPageBreak();
 
         tableRow.addCell((period), 'styleCompanyInfocells');
 
@@ -574,10 +578,12 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                 var perc = "";
                 var stile = "";
                 var ratios = this.data[i].index.liqu[key].amount;
-                if (this.data[0].index.liqu[key].description != "net current asset") {
+                var itTrad = "attivo circolante netto";
+                var enTrad = "net current asset";
+                if (this.data[0].index.liqu[key].description != itTrad && this.data[0].index.liqu[key].description != enTrad) {
                     perc = "%";
                 }
-                if (this.data[0].index.liqu[key].description === "net current asset") {
+                if (this.data[0].index.liqu[key].description === itTrad || this.data[0].index.liqu[key].description === enTrad) {
                     stile = "styleAmount";
                 } else {
                     stile = "styleRatiosAmount";
@@ -1291,7 +1297,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         param.lvlsel.description = qsTr("self financing ratio");
         param.lvlsel.value = "33,3%";
         param.covfix = {};
-        param.covfix.description = qsTr(" fixed asset coverage");
+        param.covfix.description = qsTr("fixed asset coverage");
         param.covfix.value = ">100%";
 
         return param;
@@ -1398,6 +1404,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         param.period = {};
         param.period.StartDate = qsTr("Budget");
         param.period.EndDate = qsTr("Budget");
+        param.period.Type = "B";
         //param.period.StartDate = _banDocument.info("AccountingDataBase", "OpeningDate");
         //param.period.EndDate = _banDocument.info("AccountingDataBase", "ClosureDate");
         return param;
@@ -1432,6 +1439,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         param.period = {};
         param.period.StartDate = _banDocument.info("AccountingDataBase", "OpeningDate");
         param.period.EndDate = _banDocument.info("AccountingDataBase", "ClosureDate");
+        param.period.Type = "Y";
         return param;
     }
 
@@ -1867,7 +1875,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         //I create the balance sheet grouping
         var currentParam = {};
         currentParam.name = 'Balance';
-        currentParam.title = 'Balance';
+        currentParam.title = qsTr('Balance');
         currentParam.editable = false;
 
         convertedParam.data.push(currentParam);
@@ -1875,7 +1883,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         //Active subgroup
         var currentParam = {};
         currentParam.name = 'Assets';
-        currentParam.title = 'Assets';
+        currentParam.title = qsTr('Assets');
         currentParam.editable = false;
         currentParam.parentObject = 'Balance';
 
@@ -1884,7 +1892,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         // subgroup Liabilities and Equity
         var currentParam = {};
         currentParam.name = 'Liabilities and Equity';
-        currentParam.title = 'Liabilities and Equity';
+        currentParam.title = qsTr('Liabilities and Equity');
         currentParam.editable = false;
         currentParam.parentObject = 'Balance';
 
@@ -1894,7 +1902,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         // Profit and Loss grouping
         var currentParam = {};
         currentParam.name = 'Profit and Loss';
-        currentParam.title = 'Profit and Loss';
+        currentParam.title = qsTr('Profit and Loss');
         currentParam.editable = false;
 
         convertedParam.data.push(currentParam);
@@ -1902,7 +1910,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         // subgroup Revenues
         var currentParam = {};
         currentParam.name = 'Revenues';
-        currentParam.title = 'Revenues';
+        currentParam.title = qsTr('Revenues');
         currentParam.editable = false;
         currentParam.parentObject = 'Profit and Loss';
 
@@ -1911,7 +1919,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         // sub-grouping of costs
         var currentParam = {};
         currentParam.name = 'Costs';
-        currentParam.title = 'Costs';
+        currentParam.title = qsTr('Costs');
         currentParam.editable = false;
         currentParam.parentObject = 'Profit and Loss';
 
@@ -1920,7 +1928,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         //subgroup Results
         var currentParam = {};
         currentParam.name = 'Results';
-        currentParam.title = 'Results';
+        currentParam.title = qsTr('Results');
         currentParam.editable = false;
         currentParam.parentObject = 'Profit and Loss';
 
@@ -1929,7 +1937,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         //subgroup Final Result
         var currentParam = {};
         currentParam.name = 'Final Result';
-        currentParam.title = 'Final Result';
+        currentParam.title = qsTr('Final Result');
         currentParam.editable = false;
         currentParam.parentObject = 'Results';
 
@@ -1938,7 +1946,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         //I create group of preferences
         var currentParam = {};
         currentParam.name = 'Preferences';
-        currentParam.title = 'Preferences';
+        currentParam.title = qsTr('Preferences');
         currentParam.editable = false;
 
         convertedParam.data.push(currentParam);
@@ -1946,7 +1954,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         // create an another group, Texts
         var currentParam = {};
         currentParam.name = 'Texts';
-        currentParam.title = 'Texts';
+        currentParam.title = qsTr('Texts');
         currentParam.editable = false;
         currentParam.parentObject = false;
         convertedParam.data.push(currentParam);
@@ -1954,7 +1962,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         //we put inside the Texts section, the customizable banchmarks
         var currentParam = {};
         currentParam.name = 'Benchmarks texts';
-        currentParam.title = 'Benchmarks texts';
+        currentParam.title = qsTr('Benchmarks texts');
         currentParam.editable = false;
         currentParam.parentObject = 'Texts';
         convertedParam.data.push(currentParam);
@@ -1966,7 +1974,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         // liquidity ratios
         var currentParam = {};
         currentParam.name = 'liquidity';
-        currentParam.title = 'liquidity';
+        currentParam.title = qsTr('liquidity');
         currentParam.editable = false;
         currentParam.parentObject = 'Benchmarks texts';
         convertedParam.data.push(currentParam);
@@ -1974,7 +1982,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         // financing ratios
         var currentParam = {};
         currentParam.name = 'financing';
-        currentParam.title = 'financing';
+        currentParam.title = qsTr('financing');
         currentParam.editable = false;
         currentParam.parentObject = 'Benchmarks texts';
         convertedParam.data.push(currentParam);
@@ -1982,7 +1990,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         // profitability ratios
         var currentParam = {};
         currentParam.name = 'profitability';
-        currentParam.title = 'profitability';
+        currentParam.title = qsTr('profitability');
         currentParam.editable = false;
         currentParam.parentObject = 'Benchmarks texts';
         convertedParam.data.push(currentParam);
@@ -2173,7 +2181,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         //Previous years
         var currentParam = {};
         currentParam.name = 'maxpreviousyears';
-        currentParam.title = 'Number of previous years';
+        currentParam.title = qsTr('Number of previous years');
         currentParam.type = 'string';
         currentParam.value = param.maxpreviousyears ? param.maxpreviousyears : '2';
         currentParam.defaultvalue = defaultParam.maxpreviousyears;
@@ -2187,7 +2195,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         //Number of decimals
         var currentParam = {};
         currentParam.name = 'numberofdecimals';
-        currentParam.title = 'Number of decimals';
+        currentParam.title = qsTr('Number of decimals');
         currentParam.type = 'string';
         currentParam.value = param.numberofdecimals ? param.numberofdecimals : '2';
         currentParam.defaultvalue = defaultParam.numberofdecimals;
@@ -2201,7 +2209,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         //Show the acronym column 
         var currentParam = {};
         currentParam.name = 'acronymcolumn';
-        currentParam.title = 'Show the acronym column';
+        currentParam.title = qsTr('Show the acronym column');
         currentParam.type = 'bool';
         currentParam.value = param.acronymcolumn ? param.acronymcolumn : 'true';
         currentParam.defaultvalue = defaultParam.acronymcolumn;
@@ -2216,7 +2224,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         //Show the formulas column 
         var currentParam = {};
         currentParam.name = 'formulascolumn';
-        currentParam.title = 'Show the formulas column';
+        currentParam.title = qsTr('Show the formulas column');
         currentParam.type = 'bool';
         currentParam.value = param.formulascolumn ? param.formulascolumn : 'true';
         currentParam.defaultvalue = defaultParam.formulascolumn;
@@ -2948,6 +2956,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
      * @param {*} convertedParam 
      */
     verifyIfGroupsExists(convertedParam) {
+        Banana.console.debug("prova");
         var Docgroups = this.loadGroups();
         var missing = 0;
         var exists = true;
@@ -3130,6 +3139,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         } else {
             exists = false;
         }
+        Banana.console.debug(exists);
         return exists;
     }
 
@@ -3139,7 +3149,6 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
  * 
  * @param {*} params 
  */
-
 function validateParams(params) {
     var financialStatementAnalysis = new FinancialStatementAnalysis(Banana.document);
     return financialStatementAnalysis.verifyIfGroupsExists(params);
