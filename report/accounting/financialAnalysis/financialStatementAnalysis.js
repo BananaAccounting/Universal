@@ -203,6 +203,30 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         return tableIndprof;
     }
 
+    printReportAddTableIndeff(report) {
+        var tableIndeff = report.addTable('myIndeffTable');
+        tableIndeff.setStyleAttributes("width:100%");
+        tableIndeff.getCaption().addText(qsTr("EFFICIENCY RATIOS"), "styleGroupTitles");
+        tableIndeff.addColumn("Description").setStyleAttributes("width:25%");
+        tableIndeff.addColumn("formula").setStyleAttributes("width:20%");
+        // header
+        var tableHeader = tableIndeff.getHeader();
+        var tableRow = tableHeader.addRow();
+        tableRow.addCell(qsTr("Description"), "styleTableHeader");
+        if (this.param.formulascolumn) {
+            tableRow.addCell(qsTr("formula"), "styleTableHeader");
+        }
+        for (var i = 0; i < this.data.length; i++) {
+            var year = this.data[i].period.StartDate;
+            var elementType = this.data[i].period.Type;
+            if (elementType === "Y") {
+                year = year.substr(0, 4);
+            }
+            tableRow.addCell(year, "styleTableHeader");
+        }
+        return tableIndeff;
+    }
+
     printReportAddTableDupont(report) {
         var tableDupont = report.addTable('myDupontTable');
         return tableDupont;
@@ -624,7 +648,24 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             }
             tableRow.addCell(this.data[0].index.red[key].benchmark, "styleNormal");
         }
+
+        //add the efficency ratios table
+        var tableindeff = this.printReportAddTableIndeff(report);
+
+        for (var key in this.data[0].index.eff) {
+            var tableRow = tableindeff.addRow("styleTablRows");
+            tableRow.addCell(qsTr(this.data[0].index.eff[key].description), "styleTablRows");
+            if (this.param.formulascolumn) {
+                tableRow.addCell(this.data[0].index.eff[key].formula, "styleNormal");
+            }
+            for (var i = 0; i < this.data.length; i++) {
+                var ratios = this.data[i].index.eff[key].amount;
+                tableRow.addCell(this.toLocaleAmountFormat(ratios), "styleAmount");
+            }
+        }
+
         report.addPageBreak();
+
         var year = "";
         var sep = "";
 
@@ -961,6 +1002,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var tableRow = tableUsedSsetting.addRow("styleTablRows");
         tableRow.addCell(qsTr("Currency"));
         tableRow.addCell(currency);
+        var tableRow = tableUsedSsetting.addRow("styleTablRows");
+        tableRow.addCell(qsTr("Number of Employees"));
+        tableRow.addCell(this.data[0].numberofemployees);
 
         var tableUsedGroups = this.printReportAddTableUsedGroups(report);
         for (var key in this.data[0].bilancio.ac) {
@@ -1154,6 +1198,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         param.finalresult = this.initParamFinalResult();
         param.maxpreviousyears = 2;
         param.numberofdecimals = 2;
+        param.numberofemployees = 0;
         param.acronymcolumn = true;
         param.formulascolumn = true;
         return param;
@@ -1203,7 +1248,6 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         param.ltdc = {};
         param.ltdc.gr = "24";
         param.ltdc.description = qsTr("Long term debt capital");
-
         return param;
     }
 
@@ -1617,6 +1661,18 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
     }
 
     /**
+     * give the value 0.00 to an index, wich is equal to "";
+     * @param {*} index 
+     */
+    setIndexToZero(index) {
+        var zero = "0";
+        if (index === "") {
+            index = zero;
+        }
+        return index;
+    }
+
+    /**
      * @description Instantiate an *index= {}* object that will contain all the calculated ratios.
      * retrieve the values of the calculated parameters and data.
      * divide the indexes by type thanks to the properties of the objects.
@@ -1686,6 +1742,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         index.liqu.netcuas.formula = "cuas-stdc";
         var lcalc7 = Banana.SDecimal.subtract(cuastwo, stdc, { 'decimals': this.param.numberofdecimals });
         var lris4 = lcalc7.toString();
+        lris4 = this.setIndexToZero(lris4);
         index.liqu.netcuas.amount = lris4;
         index.liqu.netcuas.benchmark = data.ratios.liquidityratios.netcurrass.value;
 
@@ -1833,7 +1890,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
         //Ebit Margin
         index.red.ebm = {};
-        index.red.ebm.description = "ebit margin";
+        index.red.ebm.description = qsTr("ebit margin");
         index.red.ebm.formula = "ebit / satu";
         var rcalc9 = Banana.SDecimal.multiply(CalculatedData.Ebit, 100);
         var rcalc10 = Banana.SDecimal.divide(rcalc9, satu, { 'decimals': this.param.numberofdecimals });
@@ -1843,13 +1900,53 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
         //MON (Profit Margin)
         index.red.mon = {};
-        index.red.mon.description = "profit margin";
+        index.red.mon.description = qsTr("profit margin");
         index.red.mon.formula = "net profit / satu";
         var rcalc11 = Banana.SDecimal.multiply(CalculatedData.TotAnnual, 100);
         var rcalc12 = Banana.SDecimal.divide(rcalc11, satu, { 'decimals': this.param.numberofdecimals });
         var rris6 = rcalc12.toString();
         index.red.mon.amount = rris6;
         index.red.mon.benchmark = data.ratios.profitabilityratios.profmon.value;
+
+
+        /*EFFICENCY INDICATORS
+            financing variables prefix 'e'
+         */
+
+        index.eff = {};
+
+        //Revenue per Employee
+
+        index.eff.rpe = {};
+        index.eff.rpe.description = qsTr("revenue per employee");
+        index.eff.rpe.formula = qsTr("satu/employees");
+        var ecalc1 = Banana.SDecimal.divide(satu, this.param.numberofemployees, { 'decimals': this.param.numberofdecimals });
+        var eris1 = ecalc1.toString();
+        eris1 = this.setIndexToZero(eris1);
+        index.eff.rpe.amount = eris1;
+
+        //Added value per Employee
+
+        index.eff.ape = {};
+        index.eff.ape.description = qsTr("added value per employee");
+        index.eff.ape.formula = qsTr("adva/employees");
+        var adva = CalculatedData.AddedValue
+        var ecalc2 = Banana.SDecimal.divide(adva, this.param.numberofemployees, { 'decimals': this.param.numberofdecimals });
+        var eris2 = ecalc2.toString();
+        eris2 = this.setIndexToZero(eris2);
+        index.eff.ape.amount = eris2;
+
+        //Employees performance
+
+        index.eff.emp = {};
+        index.eff.emp.description = qsTr("personnel cost per employee");
+        index.eff.emp.formula = qsTr("cope/employees");
+        var adva = CalculatedData.AddedValue
+        var ecalc3 = Banana.SDecimal.divide(data.contoeconomico.cope.balance, this.param.numberofemployees, { 'decimals': this.param.numberofdecimals });
+        var eris3 = ecalc3.toString();
+        eris3 = this.setIndexToZero(eris3);
+
+        index.eff.emp.amount = eris3;
 
         return index;
 
@@ -1940,6 +2037,14 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.title = qsTr('Final Result');
         currentParam.editable = false;
         currentParam.parentObject = 'Results';
+
+        convertedParam.data.push(currentParam);
+
+        //I create group of the company information
+        var currentParam = {};
+        currentParam.name = 'Company Information';
+        currentParam.title = qsTr('Company Information');
+        currentParam.editable = false;
 
         convertedParam.data.push(currentParam);
 
@@ -2233,6 +2338,20 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             param.formulascolumn = this.value;
         }
 
+
+        convertedParam.data.push(currentParam);
+
+        //Number of employees (for the productivity ratios) 
+        var currentParam = {};
+        currentParam.name = 'numberofemployees';
+        currentParam.title = qsTr('Average number of employees');
+        currentParam.type = 'string';
+        currentParam.value = param.numberofemployees ? param.numberofemployees : '0';
+        currentParam.defaultvalue = defaultParam.numberofemployees;
+        currentParam.parentObject = 'Company Information';
+        currentParam.readValue = function() {
+            param.numberofemployees = this.value;
+        }
 
         convertedParam.data.push(currentParam);
 
@@ -2910,7 +3029,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         if (!this.param.bilancio.cp.reut)
             this.param.bilancio.cp.reut = {};
 
-        //liquidity ratios
+
+        //liquidity ratios benchmarks
         if (!this.param.ratios.liquidityratios.liqu1)
             this.param.ratios.liquidityratios.liqu1 = {};
         if (!this.param.ratios.liquidityratios.liqu2)
@@ -2920,7 +3040,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         if (!this.param.ratios.liquidityratios.netcurrass)
             this.param.ratios.liquidityratios.netcurrass = {};
 
-        //financing ratios
+        //financing ratios benchmarks
         if (!this.param.ratios.financingratios.cirract)
             this.param.ratios.financingratios.cirract = {};
         if (!this.param.ratios.financingratios.fixass)
@@ -2934,7 +3054,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         if (!this.param.ratios.financingratios.covfix)
             this.param.ratios.financingratios.covfix = {};
 
-        //profitability ratios
+        //profitability ratios benchmarks
 
         if (!this.param.ratios.profitabilityratios.profroe)
             this.param.ratios.profitabilityratios.profroe = {};

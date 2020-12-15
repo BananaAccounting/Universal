@@ -23,6 +23,28 @@
     </message>
 </context>
 <context>
+    <name>StyledChartEff</name>
+    <message>
+        <location filename="../charts/StyledChartEff.qml" line="44"/>
+        <source>revenue per employee</source>
+        <translation>ricavi pro-capite</translation>
+    </message>
+    <message>
+        <location filename="../charts/StyledChartEff.qml" line="44"/>
+        <source>added value per employee</source>
+        <translation>valore aggiunto pro-capite</translation>
+    </message>
+    <message>
+        <location filename="../charts/StyledChartEff.qml" line="44"/>
+        <source>personnel cost per employee</source>
+        <translation>costi del personale pro-capite</translation>
+    </message>
+    <message>
+        <source>employees performance</source>
+        <translation type="vanished">costo del personale  pro-capite</translation>
+    </message>
+</context>
+<context>
     <name>StyledChartFin</name>
     <message>
         <source>circulating active ratio</source>
@@ -57,17 +79,17 @@
     <message>
         <location filename="../charts/StyledChartFin.qml" line="44"/>
         <source>percentage fixed assets</source>
-        <translation type="unfinished">grado delle immobilizzazioni</translation>
+        <translation>grado delle immobilizzazioni</translation>
     </message>
     <message>
         <location filename="../charts/StyledChartFin.qml" line="44"/>
         <source>debt ratio</source>
-        <translation type="unfinished">grado di indebitamento</translation>
+        <translation>grado di indebitamento</translation>
     </message>
     <message>
         <location filename="../charts/StyledChartFin.qml" line="44"/>
         <source>equity ratio</source>
-        <translation type="unfinished">grado di finanziamento con capitale proprio</translation>
+        <translation>grado di finanziamento con capitale proprio</translation>
     </message>
     <message>
         <source>Percentage fixed assets</source>
@@ -116,17 +138,17 @@
     <message>
         <location filename="../charts/StyledChartLiqu.qml" line="44"/>
         <source>cash ratio</source>
-        <translation type="unfinished">liquidità 1</translation>
+        <translation>liquidità 1</translation>
     </message>
     <message>
         <location filename="../charts/StyledChartLiqu.qml" line="44"/>
         <source>quick ratio</source>
-        <translation type="unfinished">liquidità 2</translation>
+        <translation>liquidità 2</translation>
     </message>
     <message>
         <location filename="../charts/StyledChartLiqu.qml" line="44"/>
         <source>current ratio</source>
-        <translation type="unfinished">liquidità 3</translation>
+        <translation>liquidità 3</translation>
     </message>
 </context>
 <context>
@@ -153,12 +175,12 @@
     <message>
         <location filename="../charts/StyledChartProfLoss.qml" line="44"/>
         <source>added value</source>
-        <translation type="unfinished"></translation>
+        <translation>valore aggiunto</translation>
     </message>
     <message>
         <location filename="../charts/StyledChartProfLoss.qml" line="44"/>
         <source>final result</source>
-        <translation type="unfinished"></translation>
+        <translation>risultato finale</translation>
     </message>
 </context>
 <context>
@@ -177,6 +199,19 @@
         <location filename="../components/StyledTextField.qml" line="89"/>
         <source>Paste</source>
         <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>chartEff</name>
+    <message>
+        <location filename="../chartEff.qml" line="10"/>
+        <source>Financial Statement Analysis</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../chartEff.qml" line="26"/>
+        <source>Efficiency index variation</source>
+        <translation>Variazione degli indici di efficienza</translation>
     </message>
 </context>
 <context>
@@ -359,21 +394,26 @@
     </message>
     <message>
         <location filename="../charts.qml" line="18"/>
+        <source> Efficiency index variation</source>
+        <translation> Variazione indici di efficienza</translation>
+    </message>
+    <message>
+        <location filename="../charts.qml" line="19"/>
         <source> Reclassified Assets variation</source>
         <translation> Variazione dell&apos;attivo riclassificato</translation>
     </message>
     <message>
-        <location filename="../charts.qml" line="19"/>
+        <location filename="../charts.qml" line="20"/>
         <source> Reclassified liabilities and equity variation</source>
         <translation> Viariazione del passivo riclassificato</translation>
     </message>
     <message>
-        <location filename="../charts.qml" line="20"/>
+        <location filename="../charts.qml" line="21"/>
         <source> Reclassified Profit and Loss variation</source>
         <translation> Variazione del conto economico riclassificato</translation>
     </message>
     <message>
-        <location filename="../charts.qml" line="50"/>
+        <location filename="../charts.qml" line="52"/>
         <source>Select a chart</source>
         <translation>Seleziona un grafico</translation>
     </message>
@@ -392,75 +432,76 @@
     </message>
     <message>
         <location filename="../financialStatementAnalysis.js" line="72"/>
-        <location filename="../financialStatementAnalysis.js" line="118"/>
-        <location filename="../financialStatementAnalysis.js" line="142"/>
-        <location filename="../financialStatementAnalysis.js" line="167"/>
-        <location filename="../financialStatementAnalysis.js" line="191"/>
+        <location filename="../financialStatementAnalysis.js" line="117"/>
+        <location filename="../financialStatementAnalysis.js" line="141"/>
+        <location filename="../financialStatementAnalysis.js" line="166"/>
+        <location filename="../financialStatementAnalysis.js" line="190"/>
+        <location filename="../financialStatementAnalysis.js" line="215"/>
         <source>Description</source>
         <translation>Descrizione</translation>
     </message>
     <message>
         <location filename="../financialStatementAnalysis.js" line="74"/>
-        <location filename="../financialStatementAnalysis.js" line="120"/>
+        <location filename="../financialStatementAnalysis.js" line="119"/>
         <source>Acronym</source>
         <translation>Acronimo</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="102"/>
+        <location filename="../financialStatementAnalysis.js" line="101"/>
         <source>PROFIT AND LOSS CONTROL SUMS</source>
         <translation>SOMME DI CONTROLLO DEL CONTO ECONOMICO</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="327"/>
+        <location filename="../financialStatementAnalysis.js" line="350"/>
         <source>SME</source>
         <translation>PMI</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="454"/>
-        <location filename="../financialStatementAnalysis.js" line="1888"/>
+        <location filename="../financialStatementAnalysis.js" line="476"/>
+        <location filename="../financialStatementAnalysis.js" line="1983"/>
         <source>Assets</source>
         <translation>Attiivi</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="393"/>
+        <location filename="../financialStatementAnalysis.js" line="415"/>
         <source>Total Assets</source>
         <translation>Totale Attivi</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="633"/>
+        <location filename="../financialStatementAnalysis.js" line="672"/>
         <source>DUPONT SCHEME </source>
         <translation>Schema Dupont </translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="964"/>
+        <location filename="../financialStatementAnalysis.js" line="1003"/>
         <source>Currency</source>
         <translation>Valuta</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="90"/>
+        <location filename="../financialStatementAnalysis.js" line="89"/>
         <source>BALANCE CONTROL SUMS</source>
         <translation>Somme di controllo del Bilancio</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="94"/>
+        <location filename="../financialStatementAnalysis.js" line="93"/>
         <source>Year</source>
         <translation>Anno</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="95"/>
-        <location filename="../financialStatementAnalysis.js" line="106"/>
+        <location filename="../financialStatementAnalysis.js" line="94"/>
+        <location filename="../financialStatementAnalysis.js" line="105"/>
         <source>Sheet Total</source>
         <translation>Totale foglio</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="96"/>
-        <location filename="../financialStatementAnalysis.js" line="107"/>
+        <location filename="../financialStatementAnalysis.js" line="95"/>
+        <location filename="../financialStatementAnalysis.js" line="106"/>
         <source>Calculated Total</source>
         <translation>Totale calcolato</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="97"/>
-        <location filename="../financialStatementAnalysis.js" line="108"/>
+        <location filename="../financialStatementAnalysis.js" line="96"/>
+        <location filename="../financialStatementAnalysis.js" line="107"/>
         <source>Difference</source>
         <translation>Differenza</translation>
     </message>
@@ -469,61 +510,67 @@
         <translation type="vanished">Conto Economico somme </translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="114"/>
+        <location filename="../financialStatementAnalysis.js" line="113"/>
         <source>PROFIT AND LOSS</source>
         <translation>Conto Economico</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="136"/>
+        <location filename="../financialStatementAnalysis.js" line="135"/>
         <source>LIQUIDITY RATIOS</source>
         <translation>INDICI DI LIQUIDITÀ</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="144"/>
-        <location filename="../financialStatementAnalysis.js" line="169"/>
-        <location filename="../financialStatementAnalysis.js" line="193"/>
+        <location filename="../financialStatementAnalysis.js" line="143"/>
+        <location filename="../financialStatementAnalysis.js" line="168"/>
+        <location filename="../financialStatementAnalysis.js" line="192"/>
+        <location filename="../financialStatementAnalysis.js" line="217"/>
         <source>formula</source>
         <translation>formula</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="155"/>
-        <location filename="../financialStatementAnalysis.js" line="179"/>
-        <location filename="../financialStatementAnalysis.js" line="203"/>
+        <location filename="../financialStatementAnalysis.js" line="154"/>
+        <location filename="../financialStatementAnalysis.js" line="178"/>
+        <location filename="../financialStatementAnalysis.js" line="202"/>
         <source>BenchMark</source>
         <translation>BenchMark</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="161"/>
+        <location filename="../financialStatementAnalysis.js" line="160"/>
         <source>FINANCING RATIOS</source>
         <translation>INDICI DI FINANZIAMENTO</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="185"/>
+        <location filename="../financialStatementAnalysis.js" line="184"/>
         <source>PROFITABILITY RATIOS</source>
         <translation>INDICI DI REDDITIVITÀ</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="276"/>
+        <location filename="../financialStatementAnalysis.js" line="209"/>
+        <source>EFFICIENCY RATIOS</source>
+        <translation>INDICI DI EFFICIENZA</translation>
+    </message>
+    <message>
+        <location filename="../financialStatementAnalysis.js" line="299"/>
         <source>Financial Statements Analysis</source>
         <translation>Analisi di Bilancio</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="317"/>
+        <location filename="../financialStatementAnalysis.js" line="340"/>
         <source>COMPANY NAME</source>
         <translation>NOME DELL&apos;AZIENDA</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="320"/>
+        <location filename="../financialStatementAnalysis.js" line="343"/>
         <source>HEAD OFFICE</source>
         <translation>SEDE</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="323"/>
+        <location filename="../financialStatementAnalysis.js" line="346"/>
         <source>COUNTRY</source>
         <translation>NAZIONE</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="326"/>
+        <location filename="../financialStatementAnalysis.js" line="349"/>
         <source>TYPE</source>
         <translation>TIPO</translation>
     </message>
@@ -532,17 +579,17 @@
         <translation type="vanished">PMI</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="329"/>
+        <location filename="../financialStatementAnalysis.js" line="352"/>
         <source>ANALYSIS PERIOD</source>
         <translation>PERIODO DI ANALISI</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="363"/>
+        <location filename="../financialStatementAnalysis.js" line="385"/>
         <source>Current Assets</source>
         <translation>Attivo Circolante</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="384"/>
+        <location filename="../financialStatementAnalysis.js" line="406"/>
         <source>Fixed Assets</source>
         <translation>Attivo Fisso</translation>
     </message>
@@ -551,12 +598,12 @@
         <translation type="vanished">Totale Attivi</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="414"/>
+        <location filename="../financialStatementAnalysis.js" line="436"/>
         <source>Debt Capital</source>
         <translation>Capitale di Terzi</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="435"/>
+        <location filename="../financialStatementAnalysis.js" line="457"/>
         <source>Own Capital</source>
         <comment>styleUnderGroupTitles</comment>
         <translation>Capitale Proprio</translation>
@@ -571,226 +618,283 @@
         <translation type="vanished">Attivi</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="444"/>
+        <location filename="../financialStatementAnalysis.js" line="466"/>
         <source>Total Liabilities and Equity</source>
         <translation>Totale Passivi</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="468"/>
-        <location filename="../financialStatementAnalysis.js" line="1897"/>
+        <location filename="../financialStatementAnalysis.js" line="490"/>
+        <location filename="../financialStatementAnalysis.js" line="1992"/>
         <source>Liabilities and Equity</source>
         <translation>Passivi</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="510"/>
+        <location filename="../financialStatementAnalysis.js" line="532"/>
         <source>= Added Value</source>
         <translation>= Valore Aggiunto</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="886"/>
+        <location filename="../financialStatementAnalysis.js" line="925"/>
         <source>Personal costs</source>
         <translation>Costi del Personale</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="951"/>
+        <location filename="../financialStatementAnalysis.js" line="990"/>
         <source>for values &lt; to 1.8 there is a strong probability of a financial crisis</source>
         <translation>per valori &lt; di 1.8 ce una forte probabilità di crisi finanziaria {1.8 ?}</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="776"/>
-        <location filename="../financialStatementAnalysis.js" line="1179"/>
+        <location filename="../financialStatementAnalysis.js" line="815"/>
+        <location filename="../financialStatementAnalysis.js" line="1222"/>
         <source>Liquidity</source>
         <translation>Liquidità</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="215"/>
+        <source>EFFICENCY RATIOS</source>
+        <translation type="obsolete">INDIC DI EFFICIENZA</translation>
+    </message>
+    <message>
+        <location filename="../financialStatementAnalysis.js" line="238"/>
         <source>Altman Index Z-SCORE</source>
         <translation>Indice Z-SCORE di Altman</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="233"/>
+        <location filename="../financialStatementAnalysis.js" line="256"/>
         <source>Used Setting</source>
         <translation>Settaggi utilizzati</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="238"/>
+        <location filename="../financialStatementAnalysis.js" line="261"/>
         <source>Used Groups</source>
         <translation>Gruppi utilizzati</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="693"/>
+        <location filename="../financialStatementAnalysis.js" line="732"/>
         <source>ROT (Capital:Sales)</source>
         <translation>ROT(Capitale:Vendite)</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="735"/>
+        <location filename="../financialStatementAnalysis.js" line="774"/>
         <source>MOL (Sales:Ebit)</source>
         <translation>MOL(Vendite:Ebit)</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="748"/>
+        <location filename="../financialStatementAnalysis.js" line="787"/>
         <source>Capital (Current asset+Fixed asset)</source>
         <translation>Capitale (Attivo circolante+Attivo fisso</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="762"/>
+        <location filename="../financialStatementAnalysis.js" line="801"/>
         <source>Current asset</source>
         <translation>Attivo Circolante</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="818"/>
+        <location filename="../financialStatementAnalysis.js" line="857"/>
         <source>Fixed asset</source>
         <translation>Attivo fisso</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="844"/>
+        <location filename="../financialStatementAnalysis.js" line="883"/>
         <source>Ebit (Sales-Total Costs)</source>
         <translation>Ebit (Vendite- Costi Totali)</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="858"/>
+        <location filename="../financialStatementAnalysis.js" line="897"/>
         <source>Total Costs</source>
         <translation>Costi totali</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="872"/>
+        <location filename="../financialStatementAnalysis.js" line="911"/>
         <source>Merchandise costs</source>
         <translation>Costi merce</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="1194"/>
+        <location filename="../financialStatementAnalysis.js" line="1006"/>
+        <source>Number of Employees</source>
+        <translation>Numero di dipendenti</translation>
+    </message>
+    <message>
+        <location filename="../financialStatementAnalysis.js" line="1237"/>
         <source>Fixed assets</source>
         <translation>Attivo fisso</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="1204"/>
+        <location filename="../financialStatementAnalysis.js" line="1247"/>
         <source>Short-term debt capital</source>
         <translation>Capitale di terzi a corto termine</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="1207"/>
+        <location filename="../financialStatementAnalysis.js" line="1250"/>
         <source>Long term debt capital</source>
         <translation>Capitale di terzi a lungo termine</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="1216"/>
+        <location filename="../financialStatementAnalysis.js" line="1258"/>
         <source>Own base capital</source>
         <translation>Capitale proprio</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="1219"/>
+        <location filename="../financialStatementAnalysis.js" line="1261"/>
         <source>Reserves and profits</source>
         <translation>Riserve e utili</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="1228"/>
+        <location filename="../financialStatementAnalysis.js" line="1270"/>
         <source>Sales turnover</source>
         <translation>Ricavi da vendite</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="1231"/>
+        <location filename="../financialStatementAnalysis.js" line="1273"/>
         <source>Cost of merchandise and services</source>
         <translation>Costi della merce</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="1234"/>
+        <location filename="../financialStatementAnalysis.js" line="1276"/>
         <source>Personnel costs</source>
         <translation>Costi del personale</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="1302"/>
+        <location filename="../financialStatementAnalysis.js" line="1344"/>
         <source>fixed asset coverage</source>
         <translation>copertura della sostanza fissa</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="1880"/>
+        <location filename="../financialStatementAnalysis.js" line="1921"/>
+        <source>revenue per employee</source>
+        <translation>ricavi pro-capite</translation>
+    </message>
+    <message>
+        <location filename="../financialStatementAnalysis.js" line="1922"/>
+        <source>satu/employees</source>
+        <translation>satu/dipendenti</translation>
+    </message>
+    <message>
+        <location filename="../financialStatementAnalysis.js" line="1931"/>
+        <source>added value per employee</source>
+        <translation>valore aggiunto pro-capite</translation>
+    </message>
+    <message>
+        <location filename="../financialStatementAnalysis.js" line="1932"/>
+        <source>adva/employees</source>
+        <translation>adva/dipendenti</translation>
+    </message>
+    <message>
+        <location filename="../financialStatementAnalysis.js" line="1942"/>
+        <source>personnel cost per employee</source>
+        <translation>costi del personale pro-capite</translation>
+    </message>
+    <message>
+        <location filename="../financialStatementAnalysis.js" line="1943"/>
+        <source>cope/employees</source>
+        <translation>cope/dipendenti</translation>
+    </message>
+    <message>
+        <source>added value per employees</source>
+        <translation type="vanished">valore aggiunto pro-capite</translation>
+    </message>
+    <message>
+        <source>employees performance</source>
+        <translation type="vanished">costo del lavoro pro-capite</translation>
+    </message>
+    <message>
+        <location filename="../financialStatementAnalysis.js" line="1975"/>
         <source>Balance</source>
         <translation>Bilancio</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="1907"/>
+        <location filename="../financialStatementAnalysis.js" line="2002"/>
         <source>Profit and Loss</source>
         <translation>Conto Economico</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="1915"/>
+        <location filename="../financialStatementAnalysis.js" line="2010"/>
         <source>Revenues</source>
         <translation>Ricavi</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="1924"/>
+        <location filename="../financialStatementAnalysis.js" line="2019"/>
         <source>Costs</source>
         <translation>Costi</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="1933"/>
+        <location filename="../financialStatementAnalysis.js" line="2028"/>
         <source>Results</source>
         <translation>Risultato</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="1951"/>
+        <location filename="../financialStatementAnalysis.js" line="2046"/>
+        <source>Company Information</source>
+        <translation>Informazioni aziendali</translation>
+    </message>
+    <message>
+        <location filename="../financialStatementAnalysis.js" line="2054"/>
         <source>Preferences</source>
         <translation>Preferenze</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="1959"/>
+        <location filename="../financialStatementAnalysis.js" line="2062"/>
         <source>Texts</source>
         <translation>Testi</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="1967"/>
+        <location filename="../financialStatementAnalysis.js" line="2070"/>
         <source>Benchmarks texts</source>
         <translation>testi dei Benchmarks</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="1987"/>
+        <location filename="../financialStatementAnalysis.js" line="2090"/>
         <source>financing</source>
         <translation>finanziamento</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="1995"/>
+        <location filename="../financialStatementAnalysis.js" line="2098"/>
         <source>profitability</source>
         <translation>produttività</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="2186"/>
+        <location filename="../financialStatementAnalysis.js" line="2289"/>
         <source>Number of previous years</source>
         <translation>Numero di anni precedenti</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="2200"/>
+        <location filename="../financialStatementAnalysis.js" line="2303"/>
         <source>Number of decimals</source>
         <translation>Numero di decimali</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="2214"/>
+        <location filename="../financialStatementAnalysis.js" line="2317"/>
         <source>Show the acronym column</source>
         <translation>Mostra la colonna degli acronimi</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="2229"/>
+        <location filename="../financialStatementAnalysis.js" line="2332"/>
         <source>Show the formulas column</source>
         <translation>Mostra la colonna delle formule</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="901"/>
-        <location filename="../financialStatementAnalysis.js" line="1237"/>
+        <location filename="../financialStatementAnalysis.js" line="2347"/>
+        <source>Average number of employees</source>
+        <translation>Numero medio di dipendenti</translation>
+    </message>
+    <message>
+        <location filename="../financialStatementAnalysis.js" line="940"/>
+        <location filename="../financialStatementAnalysis.js" line="1279"/>
         <source>Different costs</source>
         <translation>Costi differenti</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="1240"/>
+        <location filename="../financialStatementAnalysis.js" line="1282"/>
         <source>Depreciations and adjustments</source>
         <translation>Ammortamenti e rettifiche</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="1243"/>
+        <location filename="../financialStatementAnalysis.js" line="1285"/>
         <source>Interests</source>
         <translation>Interessi</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="1251"/>
-        <location filename="../financialStatementAnalysis.js" line="1942"/>
+        <location filename="../financialStatementAnalysis.js" line="1293"/>
+        <location filename="../financialStatementAnalysis.js" line="2037"/>
         <source>Final Result</source>
         <translation>Risultato finale</translation>
     </message>
@@ -807,7 +911,7 @@
         <translation type="vanished">confrontare con i dati interni precedenti</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="1299"/>
+        <location filename="../financialStatementAnalysis.js" line="1341"/>
         <source>self financing ratio</source>
         <translation>grado di autofinanziamento</translation>
     </message>
@@ -824,8 +928,8 @@
         <translation type="vanished">Preventivo</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="1270"/>
-        <location filename="../financialStatementAnalysis.js" line="1651"/>
+        <location filename="../financialStatementAnalysis.js" line="1312"/>
+        <location filename="../financialStatementAnalysis.js" line="1705"/>
         <source>cash ratio</source>
         <translation>liquidità 1</translation>
     </message>
@@ -834,51 +938,53 @@
         <translation type="vanished">Somme di controllo del Conto Economico</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="1273"/>
-        <location filename="../financialStatementAnalysis.js" line="1663"/>
+        <location filename="../financialStatementAnalysis.js" line="1315"/>
+        <location filename="../financialStatementAnalysis.js" line="1717"/>
         <source>quick ratio</source>
         <translation>liquidità 2</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="1276"/>
-        <location filename="../financialStatementAnalysis.js" line="1675"/>
+        <location filename="../financialStatementAnalysis.js" line="1318"/>
+        <location filename="../financialStatementAnalysis.js" line="1729"/>
         <source>current ratio</source>
         <translation>liquidità 3</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="1279"/>
-        <location filename="../financialStatementAnalysis.js" line="1687"/>
+        <location filename="../financialStatementAnalysis.js" line="1321"/>
+        <location filename="../financialStatementAnalysis.js" line="1741"/>
         <source>net current asset</source>
         <translation>attivo circolante netto</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="1287"/>
+        <location filename="../financialStatementAnalysis.js" line="1329"/>
         <source>degree of circulating assets</source>
         <translation>livello dell&apos;attivo circolante</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="1322"/>
+        <location filename="../financialStatementAnalysis.js" line="1364"/>
+        <location filename="../financialStatementAnalysis.js" line="1893"/>
         <source>ebit margin</source>
         <translation>margine dell&apos;ebit</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="1325"/>
+        <location filename="../financialStatementAnalysis.js" line="1367"/>
+        <location filename="../financialStatementAnalysis.js" line="1903"/>
         <source>profit margin</source>
         <translation>margine di profitto</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="1407"/>
-        <location filename="../financialStatementAnalysis.js" line="1408"/>
+        <location filename="../financialStatementAnalysis.js" line="1449"/>
+        <location filename="../financialStatementAnalysis.js" line="1450"/>
         <source>Budget</source>
         <translation>Preventivo</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="1707"/>
+        <location filename="../financialStatementAnalysis.js" line="1762"/>
         <source>degree of circulating assets </source>
         <translation>livello dell&apos;attivo circolante </translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="1768"/>
+        <location filename="../financialStatementAnalysis.js" line="1823"/>
         <source>fixed assets coverage</source>
         <translation>grado di finanziamento (copertura)</translation>
     </message>
@@ -891,12 +997,12 @@
         <translation type="vanished">= EBITDA</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="541"/>
+        <location filename="../financialStatementAnalysis.js" line="563"/>
         <source>Annual result</source>
         <translation>Risultato Annuale</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="565"/>
+        <location filename="../financialStatementAnalysis.js" line="587"/>
         <source>analysis by index</source>
         <translation>Analisi per Indici</translation>
     </message>
@@ -905,7 +1011,7 @@
         <translation type="vanished">Anni Schema Dupont: </translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="708"/>
+        <location filename="../financialStatementAnalysis.js" line="747"/>
         <source>Capital</source>
         <translation>Capitale</translation>
     </message>
@@ -922,20 +1028,20 @@
         <translation type="vanished">Attivo Circolante</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="1979"/>
+        <location filename="../financialStatementAnalysis.js" line="2082"/>
         <source>liquidity</source>
         <translation>Liquidità</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="722"/>
-        <location filename="../financialStatementAnalysis.js" line="831"/>
-        <location filename="../financialStatementAnalysis.js" line="915"/>
+        <location filename="../financialStatementAnalysis.js" line="761"/>
+        <location filename="../financialStatementAnalysis.js" line="870"/>
+        <location filename="../financialStatementAnalysis.js" line="954"/>
         <source>Sales</source>
         <translation>Vendite</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="790"/>
-        <location filename="../financialStatementAnalysis.js" line="1182"/>
+        <location filename="../financialStatementAnalysis.js" line="829"/>
+        <location filename="../financialStatementAnalysis.js" line="1225"/>
         <source>Credits</source>
         <translation>Crediti</translation>
     </message>
@@ -944,8 +1050,8 @@
         <translation type="vanished">ROI</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="804"/>
-        <location filename="../financialStatementAnalysis.js" line="1185"/>
+        <location filename="../financialStatementAnalysis.js" line="843"/>
+        <location filename="../financialStatementAnalysis.js" line="1228"/>
         <source>Stocks</source>
         <translation>Merci</translation>
     </message>
@@ -970,25 +1076,25 @@
         <translation type="vanished">intensità dell&apos;attivo circolante </translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="1290"/>
-        <location filename="../financialStatementAnalysis.js" line="1718"/>
+        <location filename="../financialStatementAnalysis.js" line="1332"/>
+        <location filename="../financialStatementAnalysis.js" line="1773"/>
         <source>percentage fixed assets</source>
         <translation>grado delle immobilizzazioni</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="1293"/>
-        <location filename="../financialStatementAnalysis.js" line="1731"/>
+        <location filename="../financialStatementAnalysis.js" line="1335"/>
+        <location filename="../financialStatementAnalysis.js" line="1786"/>
         <source>debt ratio</source>
         <translation>grado di indebitamento</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="1296"/>
-        <location filename="../financialStatementAnalysis.js" line="1746"/>
+        <location filename="../financialStatementAnalysis.js" line="1338"/>
+        <location filename="../financialStatementAnalysis.js" line="1801"/>
         <source>equity ratio</source>
         <translation>grado di finanziamento con capitale proprio</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="1757"/>
+        <location filename="../financialStatementAnalysis.js" line="1812"/>
         <source>self-financing ratio</source>
         <translation>grado di autofinanziamento</translation>
     </message>
@@ -1013,17 +1119,17 @@
         <translation type="vanished">Costi Differenti</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="937"/>
+        <location filename="../financialStatementAnalysis.js" line="976"/>
         <source>formula used for the calculation  = 0.717 X1 + 0.847 X2 +3.107 X3 +0.420 X4 + 0.998 X5</source>
         <translation>formula usata per la calcolazione = 0.717 X1 + 0.847 X2 +3.107 X3 +0.420 X4 + 0.998 X5</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="949"/>
+        <location filename="../financialStatementAnalysis.js" line="988"/>
         <source>for values &gt; of 3 correspond to low probability of a financial crisis</source>
         <translation>per i valori &gt; di 3 corrisponde una bassa probabilità di crisi finanziaria</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="950"/>
+        <location filename="../financialStatementAnalysis.js" line="989"/>
         <source>for values &gt;= of 1.8 but &lt;= to 3 there are possibilities of a financial crisis, to be kept under control</source>
         <translation>per valori &gt;= di 1.8 ma &lt;= di 3 ci sono possibilità di una crisi finanziaria, situazione da tenere sotto controllo</translation>
     </message>
@@ -1032,12 +1138,12 @@
         <translation type="vanished">per valori &lt; di 3 ce una forte probabilità di crisi finanziaria</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="958"/>
+        <location filename="../financialStatementAnalysis.js" line="997"/>
         <source>Number of Previous Years</source>
         <translation>Numero di Anni Precedenti</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="961"/>
+        <location filename="../financialStatementAnalysis.js" line="1000"/>
         <source>Number of Decimals</source>
         <translation>Numero di Decimali</translation>
     </message>
