@@ -96,6 +96,15 @@ table.myIndprofTable td {
     padding-bottom: 1px;
 }
 
+table.myIndeffTable td {
+    border-collapse: collapse;
+    border-style: solid;
+    border-color: rgb(0, 0, 0);
+    width: auto;
+    padding-top: 1px;
+    padding-bottom: 1px;
+}
+
 table.myDupontTable td {
     border-collapse: collapse;
     width: auto;
