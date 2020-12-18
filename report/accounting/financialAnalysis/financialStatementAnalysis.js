@@ -3333,7 +3333,7 @@ function settingsDialog() {
     }
 
     var dialogTitle = 'Settings';
-    var pageAnchor = 'dlgSettings';
+    var pageAnchor = 'financialStatementAnalysis';
     var convertedParam = financialStatementAnalysis.convertParam();
     if (!Banana.Ui.openPropertyEditor(dialogTitle, convertedParam, pageAnchor))
         return false;
