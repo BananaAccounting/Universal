@@ -2974,7 +2974,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
      */
     setParam(param) {
         this.param = param;
-        this.verifyParam();
+        return this.verifyParam();
     }
 
     /**
@@ -3026,17 +3026,16 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
      * @param {object} param: an object containing the parameters recovered from the dialog setting
      */
     verifyParam() {
-        if (!this.param)
-            this.param = {};
-
         // verifico se il parametro non e quello che mi aspetto vuoto allora lo svuoto
         var defaultParam = this.initParam();
 
-        if (this.param.version != defaultParam) {
+        if (!this.param || this.param.version != defaultParam) {
             //al momento resetta tutti i parametri, 
             //per le versioni successive si possono correggere i parametri sbagliati o mancanti
             this.param = defaultParam;
+            return false
         }
+        return true;
     }
 
     /**
@@ -3262,14 +3261,15 @@ function exec(inData, options) {
     }
 
     var param = {};
+    var validParam = true;
     if (inData.length > 0) {
         param = JSON.parse(inData);
-        financialStatementAnalysis.setParam(param);
+        validParam = financialStatementAnalysis.setParam(param);
     } else if (options && options.useLastSettings) {
         var savedParam = Banana.document.getScriptSettings("financialStatementAnalysis");
         if (savedParam.length > 0) {
             param = JSON.parse(savedParam);
-            financialStatementAnalysis.setParam(param);
+            validParam = financialStatementAnalysis.setParam(param);
         }
     } else {
         if (!settingsDialog())
@@ -3277,9 +3277,13 @@ function exec(inData, options) {
         var savedParam = Banana.document.getScriptSettings("financialStatementAnalysis");
         if (savedParam.length > 0) {
             param = JSON.parse(savedParam);
-            financialStatementAnalysis.setParam(param);
+            validParam =financialStatementAnalysis.setParam(param);
         }
     }
+
+    // se i parametri sono stati resettati li salva
+    if (!validParam)
+        Banana.document.setScriptSettings("financialStatementAnalysis", param);
 
     financialStatementAnalysis.loadData();
     var report = financialStatementAnalysis.printReport();
