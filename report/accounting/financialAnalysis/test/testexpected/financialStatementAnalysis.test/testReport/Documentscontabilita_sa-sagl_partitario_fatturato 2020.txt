@@ -19,7 +19,7 @@
 \newenvironment{test}[1]{\section*{Test case: #1}}{}
 %Begin test data
 \begin{reportvalue}{FILENAME: file:script/../test/testcases/Documentscontabilita\_sa-sagl\_partitario\_fatturato 2020.ac2}
-Financial Statements Analysis: 15-12-2020 \\
+Financial Statements Analysis: 22-12-2020 \\
 \begin{longtable}[l]{ l  l }
 COMPANY INFORMATION COMPANY NAME  & My Company \\
 HEAD OFFICE  & Via Delle Scuole, 6900 Lugano \\
@@ -29,23 +29,23 @@ ANALYSIS PERIOD  &  Budget-2020-2019-2018 \\
 \end{longtable}
 \begin{longtable}[l]{ l  l  l  l  l  l }
 BALANCE Description  & Acronym  & Budget  & 2020  & 2019  & 2018 \\
-Liquidità  & liqu  & 1'145.00  & 5'670.00  & -1'250.00  & 720.00 \\
-Crediti  & cred  & 220.00  & -1'480.00  & 6'300.00  & 2'800.00 \\
-Merci  & stoc  & 0.00  & -1'880.00  & -3'010.00  & -2'800.00 \\
+Liquidity  & liqu  & 1'145.00  & 5'670.00  & -1'250.00  & 720.00 \\
+Credits  & cred  & 220.00  & -1'480.00  & 6'300.00  & 2'800.00 \\
+Stocks  & stoc  & 0.00  & -1'880.00  & -3'010.00  & -2'800.00 \\
 Current Assets  & cuas  & 1'365.00  & 2'310.00  & 2'040.00  & 720.00 \\
-Attivo fisso  & fixa  & 800.00  & 13'500.00  & 13'700.00  & 15'700.00 \\
+Fixed assets  & fixa  & 800.00  & 13'500.00  & 13'700.00  & 15'700.00 \\
 Fixed Assets  & tfix  & 800.00  & 13'500.00  & 13'700.00  & 15'700.00 \\
 Total Assets  & tota  & 2'165.00  & 15'810.00  & 15'740.00  & 16'420.00 \\
-Capitale di terzi a corto termine  & stdc  & 1'010.00  & 27'480.00  & 8'850.00  & 11'020.00 \\
-Capitale di terzi a lungo termine  & ltdc  & 0.00  & 9'000.00  & 10'000.00  & 11'000.00 \\
+Short-term debt capital  & stdc  & 1'010.00  & 27'480.00  & 8'850.00  & 11'020.00 \\
+Long term debt capital  & ltdc  & 0.00  & 9'000.00  & 10'000.00  & 11'000.00 \\
 Debt Capital  & deca  & 1'010.00  & 36'480.00  & 18'850.00  & 22'020.00 \\
-Capitale proprio  & obca  & 0.00  & -4'500.00  & -4'600.00  & -4'000.00 \\
-Riserve e utili  & reut  & 1'155.00  & -16'170.00  & 1'490.00  & -1'600.00 \\
+Own base capital  & obca  & 0.00  & -4'500.00  & -4'600.00  & -4'000.00 \\
+Reserves and profits  & reut  & 1'155.00  & -16'170.00  & 1'490.00  & -1'600.00 \\
 Own Capital  & owca  & 1'155.00  & -20'670.00  & -3'110.00  & -5'600.00 \\
 Total Liabilities and Equity  & totp  & 2'165.00  & 15'810.00  & 15'740.00  & 16'420.00 \\
 \end{longtable}
 \begin{longtable}[l]{ l  l  l  l }
-BALANCE CONTROL SUMS Year  & Sheet Total  & Calculated Total  & Difference \\
+BALANCE CONTROL SUMS Year  & Accounting Total  & Calculated Total  & Difference \\
 \multicolumn{4}{l}{Assets }\\
 \\
 2020  & 15'810.00  & 15'810.00  & 0.00 \\
@@ -59,19 +59,19 @@ BALANCE CONTROL SUMS Year  & Sheet Total  & Calculated Total  & Difference \\
 \end{longtable}
 \begin{longtable}[l]{ l  l  l  l  l  l }
 PROFIT AND LOSS Description  & Acronym  & Budget  & 2020  & 2019  & 2018 \\
-+ Ricavi da vendite  & satu  & 1'200.00  & 11'500.00  & 11'500.00  & 10'800.00 \\
-- Costi della merce  & cofm  & -55.00  & -23'080.00  & -4'410.00  & -7'200.00 \\
++ Sales turnover  & satu  & 1'200.00  & 11'500.00  & 11'500.00  & 10'800.00 \\
+- Cost of merchandise and services  & cofm  & -55.00  & -23'080.00  & -4'410.00  & -7'200.00 \\
 = Added Value  & adva  & 1'145.00  & -11'580.00  & 7'090.00  & 3'600.00 \\
-- Costi del personale  & cope  & 0.00  & -500.00  & -700.00  & -1'000.00 \\
-- Costi differenti  & codi  & 0.00  & -2'000.00  & -2'700.00  & -2'500.00 \\
+- Personnel costs  & cope  & 0.00  & -500.00  & -700.00  & -1'000.00 \\
+- Different costs  & codi  & 0.00  & -2'000.00  & -2'700.00  & -2'500.00 \\
 = EBITDA  & ebitda  & 1'145.00  & -14'080.00  & 3'690.00  & 100.00 \\
-- Ammortamenti e rettifiche  & amre  & 0.00  & -1'500.00  & -1'800.00  & -1'500.00 \\
+- Depreciations and adjustments  & amre  & 0.00  & -1'500.00  & -1'800.00  & -1'500.00 \\
 = EBIT  & ebit  & 1'145.00  & -15'580.00  & 1'890.00  & -1'400.00 \\
-+/- Interessi  & inte  & 0.00  & -600.00  & -400.00  & -200.00 \\
-Annual result  & anre  & 1'145.00  & -16'180.00  & 1'490.00  & -1'600.00 \\
++/- Interests  & inte  & 0.00  & -600.00  & -400.00  & -200.00 \\
+Annual result  & fire  & 1'145.00  & -16'180.00  & 1'490.00  & -1'600.00 \\
 \end{longtable}
 \begin{longtable}[l]{ l  l  l }
-PROFIT AND LOSS CONTROL SUMS Sheet Total  & Calculated Total  & Difference \\
+PROFIT AND LOSS CONTROL SUMS Accounting Total  & Calculated Total  & Difference \\
 -16'180.00  & -16'180.00  & 0.00 \\
 \end{longtable}
 analysis by index \\
@@ -101,10 +101,10 @@ ebit margin  & ebit / satu  & 95.42\%  & -135.48\%  & 16.43\%  & -12.96\%  & 2.4
 profit margin  & net profit / satu  & 95.42\%  & -140.70\%  & 12.96\%  & -14.81\%  & 1.4\% \\
 \end{longtable}
 \begin{longtable}[l]{ l  l  l  l  l  l }
-EFFICENCY RATIOS Description  & formula  & Budget  & 2020  & 2019  & 2018 \\
-revenue per employee  & satu/employees  &  &  &  & \\
-added value per employee  & adva/employees  &  &  &  & \\
-personnel cost per employee  & cope/employees  &  &  &  & \\
+EFFICIENCY RATIOS Description  & formula  & Budget  & 2020  & 2019  & 2018 \\
+revenue per employee  & satu/employees  & 0.00  & 0.00  & 0.00  & 0.00 \\
+added value per employee  & adva/employees  & 0.00  & 0.00  & 0.00  & 0.00 \\
+personnel cost per employee  & cope/employees  & 0.00  & 0.00  & 0.00  & 0.00 \\
 \end{longtable}
 DUPONT SCHEME  \\
 \begin{longtable}[l]{ l  l  l  l  l  l  l }
@@ -147,24 +147,24 @@ for values < to 1.8 there is a strong probability of a financial crisis \\
 Used Setting Number of Previous Years  & 2 \\
 Number of Decimals  & 2 \\
 Currency  & CHF \\
-Number of Employees  & \\
+Number of Employees  & 0 \\
 \end{longtable}
 \begin{longtable}[l]{ l  l }
-Used Groups Liquidità  & 100;106;109 \\
-Crediti  & 110;114 \\
-Merci  & 120;130 \\
-Attivo fisso  & 14 \\
-Capitale di terzi a corto termine  & 20 \\
-Capitale di terzi a lungo termine  & 24 \\
-Capitale proprio  & 280;298 \\
-Riserve e utili  & 290;295;296;297 \\
-Ricavi da vendite  & 3 \\
-Costi della merce  & 4 \\
-Costi del personale  & 5 \\
-Costi differenti  & 6 \\
-Ammortamenti e rettifiche  & 68 \\
-Interessi  & 69 \\
-Risultato finale  & E7 \\
+Used Groups Liquidity  & 100;106;109 \\
+Credits  & 110;114 \\
+Stocks  & 120;130 \\
+Fixed assets  & 14 \\
+Short-term debt capital  & 20 \\
+Long term debt capital  & 24 \\
+Own base capital  & 280;298 \\
+Reserves and profits  & 290;295;296;297 \\
+Sales turnover  & 3 \\
+Cost of merchandise and services  & 4 \\
+Personnel costs  & 5 \\
+Different costs  & 6 \\
+Depreciations and adjustments  & 68 \\
+Interests  & 69 \\
+Final Result  & E7 \\
 \end{longtable}
 Banana.ch \\
 \end{reportvalue}

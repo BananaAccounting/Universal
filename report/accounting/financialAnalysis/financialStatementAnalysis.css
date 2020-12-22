@@ -193,6 +193,18 @@ table.myTableAltmanIndex td {
     text-align: center;
 }
 
+.styleDifferencesFound {
+    color: #ff0000;
+    text-align: right;
+}
+
+.styleWarningParagraph {
+    color: #ff0000;
+    text-align: left;
+    font-size: medium;
+    padding-top: 5px;
+}
+
 .header {
     text-align: left;
 }

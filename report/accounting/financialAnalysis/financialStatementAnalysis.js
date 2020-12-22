@@ -33,6 +33,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         this.data = {};
         this.info = this.getDocumentInfo();
         this.param = this.initParam();
+        this.balanceDifferences = 0;
+        this.profitAndLossDifferences = 0;
 
         //errors
         this.ID_ERR_EXPERIMENTAL_REQUIRED = "ID_ERR_EXPERIMENTAL_REQUIRED";
@@ -91,7 +93,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var tableHeader = tableBilancioSumsControl.getHeader();
         var tableRow = tableHeader.addRow();
         tableRow.addCell(qsTr("Year"), "styleTableHeader");
-        tableRow.addCell(qsTr("Sheet Total"), "styleTableHeader");
+        tableRow.addCell(qsTr("Accounting Total"), "styleTableHeader");
         tableRow.addCell(qsTr("Calculated Total"), "styleTableHeader");
         tableRow.addCell(qsTr("Difference"), "styleTableHeader");
         return tableBilancioSumsControl;
@@ -102,7 +104,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         // header
         var tableHeader = tableConCeSumsControl.getHeader();
         var tableRow = tableHeader.addRow();
-        tableRow.addCell(qsTr("Sheet Total"), "styleTableHeader");
+        tableRow.addCell(qsTr("Accounting Total"), "styleTableHeader");
         tableRow.addCell(qsTr("Calculated Total"), "styleTableHeader");
         tableRow.addCell(qsTr("Difference"), "styleTableHeader");
         return tableConCeSumsControl;
@@ -483,7 +485,12 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                 tableRow.addCell(year);
                 tableRow.addCell(this.toLocaleAmountFormat(this.data[i].CalculatedData.TotActiveSheet), "styleAmount");
                 tableRow.addCell(this.toLocaleAmountFormat(this.data[i].CalculatedData.TotActive), "styleAmount");
-                tableRow.addCell(this.toLocaleAmountFormat(this.data[i].CalculatedData.ActiveDifference), "styleAmount");
+                //check if the control sum i equal to 0, if is not, print a paragraf with a message error and the amount with the color red.
+                var differenceStyle = this.setDifferenceStyle(this.data[i].CalculatedData.ActiveDifference, this.data.differences);
+                tableRow.addCell(this.toLocaleAmountFormat(this.data[i].CalculatedData.ActiveDifference), differenceStyle);
+                if (this.data[i].CalculatedData.ActiveDifference != 0) {
+                    this.balanceDifferences++;
+                }
             }
         }
         var tableRow = tableBalanceControlSums.addRow("styleTablRows");
@@ -496,8 +503,18 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                 tableRow.addCell(year);
                 tableRow.addCell(this.toLocaleAmountFormat(this.data[i].CalculatedData.TotPassiveSheet), "styleAmount");
                 tableRow.addCell(this.toLocaleAmountFormat(this.data[i].CalculatedData.TotPassive), "styleAmount");
-                tableRow.addCell(this.toLocaleAmountFormat(this.data[i].CalculatedData.PassiveDifference), "styleAmount");
+                var differenceStyle;
+                //check if the control sum i equal to 0, if is not, print a paragraf with a message error and the amount with the color red.
+                var differenceStyle = this.setDifferenceStyle(this.data[i].CalculatedData.PassiveDifference, this.data.differences);
+                tableRow.addCell(this.toLocaleAmountFormat(this.data[i].CalculatedData.PassiveDifference), differenceStyle);
+                if (this.data[i].CalculatedData.PassiveDifference != 0) {
+                    this.balanceDifferences++;
+                }
             }
+        }
+        //if there are differences between the accounting totals and the calculated totals in the balance, we show a warning message.
+        if (this.balanceDifferences > 0) {
+            report.addParagraph(this.showDifferencesWaring(), "styleWarningParagraph");
         }
 
         report.addPageBreak();
@@ -562,7 +579,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var tableRow = tableCe.addRow("styleTablRows");
         tableRow.addCell(qsTr("Annual result"), "styleTitlesTotAmount");
         if (this.param.acronymcolumn) {
-            tableRow.addCell("anre");
+            tableRow.addCell("fire");
         }
         for (var i = 0; i < this.data.length; i++) {
             tableRow.addCell(this.toLocaleAmountFormat(this.data[i].CalculatedData.TotAnnual), "styleTotAmount");
@@ -580,7 +597,17 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var tableRow = tableConCeControlSums.addRow("styleTablRows");
         tableRow.addCell(this.toLocaleAmountFormat(this.data[Arrayindexcurr].CalculatedData.TotAnnualSheet), "styleAmount");
         tableRow.addCell(this.toLocaleAmountFormat(this.data[Arrayindexcurr].CalculatedData.TotAnnual), "styleAmount");
-        tableRow.addCell(this.toLocaleAmountFormat(this.data[Arrayindexcurr].CalculatedData.TotAnnualDifference), "styleAmount");
+        var differenceStyle;
+        //check if the control sum i equal to 0, if is not, print a paragraf with a message error and the amount with the color red.
+        var differenceStyle = this.setDifferenceStyle(this.data[Arrayindexcurr].CalculatedData.TotAnnualDifference, this.data.differences);
+        tableRow.addCell(this.toLocaleAmountFormat(this.data[Arrayindexcurr].CalculatedData.TotAnnualDifference), differenceStyle);
+        if (this.data[Arrayindexcurr].CalculatedData.TotAnnualDifference != 0) {
+            this.profitAndLossDifferences++;
+        }
+        //control if there are difference between the accounting totals and the calculated totals in the profit and loss, we show a warning message
+        if (this.profitAndLossDifferences > 0) {
+            report.addParagraph(this.showDifferencesWaring(), "styleWarningParagraph");
+        }
 
         report.addPageBreak();
 
@@ -1049,6 +1076,28 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
     }
 
     /**
+     * set the style of the difference value.
+     * @param {*} value the difference between the accounting total and the calculating total
+     */
+    setDifferenceStyle(value) {
+        var differenceStyle;
+        if (value != 0) {
+            differenceStyle = "styleDifferencesFound";
+        } else {
+            differenceStyle = "styleAmount";
+        }
+        return differenceStyle;
+    }
+
+    /**
+     * if there are differences between the accounting total and the calculated total, the user is notified.
+     */
+    showDifferencesWaring() {
+        var WrnMsgg = qsTr("Warning: The difference between the 'Accounting total' and the 'Calculated total' columns should be 0.\n Checks that the groups used are correct. ");
+        return WrnMsgg;
+    }
+
+    /**
      * @description control the result of the Altman index, and set the correct style, there are three different possibilites, therefore three different styles.
      * @param {number} amount
      * @returns the style for the amount
@@ -1220,12 +1269,15 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         param.liqu = {};
         param.liqu.gr = "100;106;109";
         param.liqu.description = qsTr("Liquidity");
+        param.liqu.bclass = "1";
         param.cred = {};
         param.cred.gr = "110;114";
         param.cred.description = qsTr("Credits");
+        param.cred.bclass = "1";
         param.stoc = {};
         param.stoc.gr = "120;130";
         param.stoc.description = qsTr("Stocks");
+        param.stoc.bclass = "1";
 
         return param;
     }
@@ -1235,6 +1287,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         param.fixa = {};
         param.fixa.gr = "14";
         param.fixa.description = qsTr("Fixed assets");
+        param.fixa.bclass = "1";
 
 
         return param;
@@ -1245,9 +1298,11 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         param.stdc = {};
         param.stdc.gr = "20";
         param.stdc.description = qsTr("Short-term debt capital");
+        param.stdc.bclass = "2";
         param.ltdc = {};
         param.ltdc.gr = "24";
         param.ltdc.description = qsTr("Long term debt capital");
+        param.ltdc.bclass = "2";
         return param;
     }
 
@@ -1256,9 +1311,11 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         param.obca = {};
         param.obca.gr = "280;298";
         param.obca.description = qsTr("Own base capital");
+        param.obca.bclass = "2";
         param.reut = {};
         param.reut.gr = "290;295;296;297";
         param.reut.description = qsTr("Reserves and profits");
+        param.reut.bclass = "2";
 
         return param;
     }
@@ -1268,21 +1325,27 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         param.satu = {};
         param.satu.gr = "3";
         param.satu.description = qsTr("Sales turnover");
+        param.satu.bclass = "4";
         param.cofm = {};
         param.cofm.gr = "4";
         param.cofm.description = qsTr("Cost of merchandise and services");
+        param.cofm.bclass = "3";
         param.cope = {};
         param.cope.gr = "5";
         param.cope.description = qsTr("Personnel costs");
+        param.cope.bclass = "3";
         param.codi = {};
         param.codi.gr = "6";
         param.codi.description = qsTr("Different costs");
+        param.codi.bclass = "3";
         param.amre = {};
         param.amre.gr = "68";
         param.amre.description = qsTr("Depreciations and adjustments");
+        param.amre.bclass = "3";
         param.inte = {};
         param.inte.gr = "69";
         param.inte.description = qsTr("Interests");
+        param.inte.bclass = "3";
         return param;
     }
 
@@ -1523,12 +1586,23 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                     bal = _banDocument.currentBalance(value, '', '', null);
                     //Banana.console.debug(bal.amount);
                 }
+                //Banana.console.debug(JSON.stringify(bal.balance));
                 if (bal) {
-                    param[key].balance = bal.amount;
+                    var mult = -1;
+                    if (param[key].bclass === "1") {
+                        param[key].balance = bal.balance;
+                    } else if (param[key].bclass === "2") {
+                        param[key].balance = Banana.SDecimal.multiply(bal.balance, mult);
+                    } else if (param[key].bclass === "3") {
+                        param[key].balance = bal.total;
+                    } else if (param[key].bclass === "4" || !param[key].bclass) {
+                        param[key].balance = Banana.SDecimal.multiply(bal.total, mult);
+                    }
+                    //Banana.console.debug(JSON.stringify(param[key]));
+                    //Banana.console.debug(JSON.stringify("********************************"));
                     if (param[key].balance === "") {
                         param[key].balance = "0.00";
                     }
-
                 }
             } else {
                 if (typeof(param[key]) === "object")
@@ -1570,7 +1644,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
         Calcdata.TotActiveSheet = {}
         var TotActiveSheet = _banDocument.currentBalance('Gr=1', '', '', null);
-        var TotActiveSheetBalance = TotActiveSheet.amount;
+        var TotActiveSheetBalance = TotActiveSheet.balance;
         Calcdata.TotActiveSheet = TotActiveSheetBalance;
 
 
@@ -1597,10 +1671,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         /*calculation of the total passive resulting from the accounting sheet*/
 
         Calcdata.TotPassiveSheet = {}
-            //da rivedere
-
+        var mult = -1;
         var TotPassiveSheet = _banDocument.currentBalance('Gr=2', '', '', null);
-        var TotPassiveSheetBalance = TotPassiveSheet.amount;
+        var TotPassiveSheetBalance = Banana.SDecimal.multiply(TotPassiveSheet.balance, mult);
         Calcdata.TotPassiveSheet = TotPassiveSheetBalance;
 
         //calculate the difference
@@ -1640,6 +1713,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         Calcdata.TotAnnualSheet = {}
 
         Calcdata.TotAnnualSheet = data.finalresult.fire.balance;
+
 
         //calculate the difference
         Calcdata.TotAnnualDifference = {};
@@ -3276,8 +3350,8 @@ function validateParams(params) {
 /**
  * @description is called when the script is executed.
  * Inside it, the **FinancialStatementAnalysis** class is declared and instantiated, which takes the document you want to run the script on as a parameter. In addition, the methods that must be executed when the application runs are called.
- * @param {*} inData, (chiedere)
- * @param {*} options, (chiedere)
+ * @param {*} inData
+ * @param {*} options
  */
 function exec(inData, options) {
     /*per svuotare la tabella dei settings, la setto con vuoto.
