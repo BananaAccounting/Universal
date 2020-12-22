@@ -3277,13 +3277,15 @@ function exec(inData, options) {
         var savedParam = Banana.document.getScriptSettings("financialStatementAnalysis");
         if (savedParam.length > 0) {
             param = JSON.parse(savedParam);
-            validParam =financialStatementAnalysis.setParam(param);
+            validParam = financialStatementAnalysis.setParam(param);
         }
     }
 
     // se i parametri sono stati resettati li salva
-    if (!validParam)
-        Banana.document.setScriptSettings("financialStatementAnalysis", param);
+    if (!validParam) {
+        var paramToString = JSON.stringify(param);
+        Banana.document.setScriptSettings("financialStatementAnalysis", paramToString);
+    }
 
     financialStatementAnalysis.loadData();
     var report = financialStatementAnalysis.printReport();
@@ -3301,6 +3303,7 @@ function exec(inData, options) {
 function settingsDialog() {
     var financialStatementAnalysis = new FinancialStatementAnalysis(Banana.document);
     var savedParam = Banana.document.getScriptSettings("financialStatementAnalysis");
+    //Banana.console.debug(JSON.stringify(savedParam));
     if (savedParam.length > 0) {
         financialStatementAnalysis.setParam(JSON.parse(savedParam));
     }
