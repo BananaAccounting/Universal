@@ -3029,11 +3029,11 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         // verifico se il parametro non e quello che mi aspetto vuoto allora lo svuoto
         var defaultParam = this.initParam();
 
-        if (!this.param || this.param.version != defaultParam) {
+        if (!this.param || this.param.version !== defaultParam.version) {
             //al momento resetta tutti i parametri, 
             //per le versioni successive si possono correggere i parametri sbagliati o mancanti
             this.param = defaultParam;
-            return false
+            return false;
         }
         return true;
     }
@@ -3261,15 +3261,14 @@ function exec(inData, options) {
     }
 
     var param = {};
-    var validParam = true;
     if (inData.length > 0) {
         param = JSON.parse(inData);
-        validParam = financialStatementAnalysis.setParam(param);
+        financialStatementAnalysis.setParam(param);
     } else if (options && options.useLastSettings) {
         var savedParam = Banana.document.getScriptSettings("financialStatementAnalysis");
         if (savedParam.length > 0) {
             param = JSON.parse(savedParam);
-            validParam = financialStatementAnalysis.setParam(param);
+            financialStatementAnalysis.setParam(param);
         }
     } else {
         if (!settingsDialog())
@@ -3277,14 +3276,8 @@ function exec(inData, options) {
         var savedParam = Banana.document.getScriptSettings("financialStatementAnalysis");
         if (savedParam.length > 0) {
             param = JSON.parse(savedParam);
-            validParam = financialStatementAnalysis.setParam(param);
+            financialStatementAnalysis.setParam(param);
         }
-    }
-
-    // se i parametri sono stati resettati li salva
-    if (!validParam) {
-        var paramToString = JSON.stringify(param);
-        Banana.document.setScriptSettings("financialStatementAnalysis", paramToString);
     }
 
     financialStatementAnalysis.loadData();
