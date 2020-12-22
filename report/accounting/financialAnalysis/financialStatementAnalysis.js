@@ -1240,7 +1240,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
      */
     initParam() {
         var param = {};
-        param.version = "1.0";
+        param.version = "v1.0";
         param.bilancio = this.initParamBilancio();
         param.contoeconomico = this.initParamContoEconomico();
         param.ratios = this.initParamRatiosBenchmarks();
@@ -3032,117 +3032,11 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         // verifico se il parametro non e quello che mi aspetto vuoto allora lo svuoto
         var defaultParam = this.initParam();
 
-        //first level
-        if (!this.param.bilancio)
-            this.param.bilancio = {};
-        if (!this.param.contoeconomico)
-            this.param.contoeconomico = {};
-        if (!this.param.ratios)
-            this.param.ratios = {};
-        if (!this.param.finalresult)
-            this.param.finalresult = {};
-        if (this.param.numberofdecimals > 4)
-            this.param.numberofdecimals = 4;
-
-
-        //second level
-        if (!this.param.bilancio.ac)
-            this.param.bilancio.ac = {};
-        if (!this.param.bilancio.af)
-            this.param.bilancio.af = {};
-        if (!this.param.bilancio.ct)
-            this.param.bilancio.ct = {};
-        if (!this.param.bilancio.cp)
-            this.param.bilancio.cp = {};
-
-
-        if (!this.param.contoeconomico.satu)
-            this.param.contoeconomico.satu = {};
-        if (!this.param.contoeconomico.cofm)
-            this.param.contoeconomico.cofm = {};
-        if (!this.param.contoeconomico.cope)
-            this.param.contoeconomico.cope = {};
-        if (!this.param.contoeconomico.codi)
-            this.param.contoeconomico.codi = {};
-        if (!this.param.contoeconomico.amre)
-            this.param.contoeconomico.amre = {};
-        if (!this.param.contoeconomico.inte)
-            this.param.contoeconomico.inte = {};
-
-        if (!this.param.finalresult.fire)
-            this.param.finalresult.fire = {};
-
-        if (!this.param.ratios.liquidityratios)
-            this.param.ratios.liquidityratios = {};
-        if (!this.param.ratios.financingratios)
-            this.param.ratios.financingratios = {};
-        if (!this.param.ratios.profitabilityratios)
-            this.param.ratios.profitabilityratios = {};
-
-        //third level
-        //current asset
-        if (!this.param.bilancio.ac.liqu)
-            this.param.bilancio.ac.liqu = {};
-        if (!this.param.bilancio.ac.cred)
-            this.param.bilancio.ac.cred = {};
-        if (!this.param.bilancio.ac.stoc)
-            this.param.bilancio.ac.stoc = {};
-        //fixed asset
-        if (!this.param.bilancio.af.fixa)
-            this.param.bilancio.af = {};
-
-        //third capital
-        if (!this.param.bilancio.ct.ltdc)
-            this.param.bilancio.ct.ltdc = {};
-        if (!this.param.bilancio.ct.stdc)
-            this.param.bilancio.ct.stdc = {};
-
-        //own capital
-        if (!this.param.bilancio.cp.obca)
-            this.param.bilancio.cp.obca = {};
-        if (!this.param.bilancio.cp.reut)
-            this.param.bilancio.cp.reut = {};
-
-
-        //liquidity ratios benchmarks
-        if (!this.param.ratios.liquidityratios.liqu1)
-            this.param.ratios.liquidityratios.liqu1 = {};
-        if (!this.param.ratios.liquidityratios.liqu2)
-            this.param.ratios.liquidityratios.liqu2 = {};
-        if (!this.param.ratios.liquidityratios.liqu3)
-            this.param.ratios.liquidityratios.liqu3 = {};
-        if (!this.param.ratios.liquidityratios.netcurrass)
-            this.param.ratios.liquidityratios.netcurrass = {};
-
-        //financing ratios benchmarks
-        if (!this.param.ratios.financingratios.cirract)
-            this.param.ratios.financingratios.cirract = {};
-        if (!this.param.ratios.financingratios.fixass)
-            this.param.ratios.financingratios.fixass = {};
-        if (!this.param.ratios.financingratios.lvldeb)
-            this.param.ratios.financingratios.lvldeb = {};
-        if (!this.param.ratios.financingratios.lvlequ)
-            this.param.ratios.financingratios.lvlequ = {};
-        if (!this.param.ratios.financingratios.lvlsel)
-            this.param.ratios.financingratios.lvlsel = {};
-        if (!this.param.ratios.financingratios.covfix)
-            this.param.ratios.financingratios.covfix = {};
-
-        //profitability ratios benchmarks
-
-        if (!this.param.ratios.profitabilityratios.profroe)
-            this.param.ratios.profitabilityratios.profroe = {};
-        if (!this.param.ratios.profitabilityratios.profroi)
-            this.param.ratios.profitabilityratios.profroi = {};
-        if (!this.param.ratios.profitabilityratios.profros)
-            this.param.ratios.profitabilityratios.profros = {};
-        if (!this.param.ratios.profitabilityratios.profmol)
-            this.param.ratios.profitabilityratios.profmol = {};
-        if (!this.param.ratios.profitabilityratios.profebm)
-            this.param.ratios.profitabilityratios.profebm = {};
-        if (!this.param.ratios.profitabilityratios.profmon)
-            this.param.ratios.profitabilityratios.profmon = {};
-
+        if (this.param.version != defaultParam) {
+            //al momento resetta tutti i parametri, 
+            //per le versioni successive si possono correggere i parametri sbagliati o mancanti
+            this.param = defaultParam;
+        }
     }
 
     /**
@@ -3344,8 +3238,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
  * @param {*} params 
  */
 function validateParams(params) {
-    var financialStatementAnalysis = new FinancialStatementAnalysis(Banana.document);
-    return financialStatementAnalysis.verifyIfGroupsExists(params);
+    return true;
+    // var financialStatementAnalysis = new FinancialStatementAnalysis(Banana.document);
+    // return financialStatementAnalysis.verifyIfGroupsExists(params);
 }
 /**
  * @description is called when the script is executed.
