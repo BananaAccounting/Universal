@@ -2748,7 +2748,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var calcroi = Banana.SDecimal.multiply(calcroi1, 100, { 'decimals': 2 });
         calcroi = calcroi.toString();
         //check that the first 10 digits are equal, to avoid rounding errors
-        if (calcroi.substr(0, 2) === roi.substr(0, 2)) {
+        if (calcroi.substr(0, 1) === roi.substr(0, 1)) {
 
             Dupont.roi = calcroi;
         } else {
