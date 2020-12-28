@@ -1597,6 +1597,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                         param[key].balance = bal.total;
                     } else if (param[key].bclass === "4" || !param[key].bclass) {
                         param[key].balance = Banana.SDecimal.multiply(bal.total, mult);
+                    } else {
+                        param[key].balance = bal.balance;
                     }
                     //Banana.console.debug(JSON.stringify(param[key]));
                     //Banana.console.debug(JSON.stringify("********************************"));
