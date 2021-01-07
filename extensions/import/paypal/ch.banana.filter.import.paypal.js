@@ -15,14 +15,14 @@
 //
 // @id = ch.banana.uni.import.paypal
 // @api = 1.0
-// @pubdate = 2021-01-04
+// @pubdate = 2021-01-07
 // @publisher = Banana.ch SA
-// @description = PayPal Import
+// @description = PayPal Import (*.csv)
 // @doctype = *
 // @docproperties =
 // @task = import.transactions
 // @outputformat = tablewithheaders
-// @inputdatasource = openPropertyEditor
+// @inputdatasource = openfiledialog
 // @inputfilefilter = Text files (*.txt *.csv);;All files (*.*)
 // @timeout = -1
 
@@ -31,47 +31,53 @@
  * Parse the paypal file and and return a string in with data in tab separated
  */
 function exec(string) {
-	if (!Banana.document) {
-		return String();
-	}
-
 	var userParam = initUserParam();
-	// var userParam = Param_Initialize();
 	// include all data read and other
 	
 	var fileData = {};
 
-    // Retrieve saved param
-    // Banana.document.setScriptSettings("");
-    var savedParam = Banana.document.getScriptSettings();
-    // Banana.console.debug("------------------ exec" + JSON.stringify(savedParam));
-    if (savedParam && savedParam.length > 0) {
-        userParam = JSON.parse(savedParam);
+	if (Banana.document) {
+		var savedParam = Banana.document.getScriptSettings();
+		if (savedParam && savedParam.length > 0) {
+			userParam = JSON.parse(savedParam);
+		}
 	}
 	
 	if (!readTransactions(userParam, string, fileData)) {
 		return String();
 	}
 	
-	// script correctly started
-	if (!Banana_GetAccountData(userParam, fileData)) {
-		return String();
-	}
-	
-	// If needed show the settings dialog to the user
-	if (!options || !options.useLastSettings) {
-		userParam = settingsDialog(userParam, fileData); // From properties
-	}
+	if (Banana.document) {
+		if (!Banana_GetAccountData(userParam, fileData)) {
+			return String();
+		}
 
-	if (!userParam) {
-		return String();
+		// Load currencies
+		readCurrencies(userParam, fileData);
+
+		// If needed show the settings dialog to the user
+		if (!options || !options.useLastSettings) {
+			userParam = settingsDialog(userParam, fileData); // From properties
+			if (!userParam)
+				return String();
+		}
+	}
+	else {
+		// assume we are in test mode or script has been started
+		// with no file open
+		Banana_GetValuesForTest(userParam, fileData);
 	}
 
 	// Complete param with input
 	if (!Param_Verify(userParam, fileData)) {
 		return String();
 	}
-	
+
+	// Amount conversion
+	if (!CreateAmountsInBasicCurrency(userParam, fileData)) {
+		return String();
+	}
+
 	// Create accounting transactions
 	var exportArray = ProcessTransactions(userParam, fileData);
 	// Own change to export data should be insert here
@@ -306,8 +312,10 @@ function convertParam(userParam, fileData) {
 	}
 	convertedParam.data.push(currentParam);
 
-	// Get used currencies
-	var currencies = CreateAmountsInBasicCurrency(userParam, fileData);
+	var currencies = [];
+	for (var currency in userParam.ExchangeRateList) {
+		currencies.push(currency);
+	}
 
 	if (currencies.length > 0) {
 		var currentParam = {};
@@ -428,7 +436,6 @@ function settingsDialog(userParam, fileData) {
 		userParam = JSON.parse(savedParam);
 	}	
 
-	
 	// see if paypal account has been defined
 	var paypalAccountDefined = Boolean(userParam.AccountList[userParam.BasicCurrency]);
 	if (!paypalAccountDefined) {
@@ -458,14 +465,7 @@ function settingsDialog(userParam, fileData) {
 		userParam.AccountList.PaypalFee = userParam.PaypalFee;
 	}
 
-	// Amount conversion
-	// CreateAmountsInBasicCurrency(userParam, fileData);
-	// 	return String();
-	// }
-
 	userParam = paramatersDialog(userParam, fileData);
-
-	
 
 	if (userParam) {
 		var paramToString = JSON.stringify(userParam);
@@ -544,14 +544,38 @@ function AddMessage(messageText, helpTag) {
 	}
 
 }
-function CreateAmountsInBasicCurrency(param, fileData) {
-	var paramList = {};
-	paramList.version = '1.0';
-	paramList.data = [];
-	var localParam = {};
-	var currencies = [];
+
+function readCurrencies(param, fileData) {
 	param.ExchangeRateList = {};
-	
+	CreateAmountsInBasicCurrency_BasicCurrency(param, fileData);
+	CreateAmountsInBasicCurrency_CurrencyConversion(param, fileData);
+	// repeat while there is no more conversion in BasicCurrency
+	while (CreateAmountsInBasicCurrency_ConvertAmounts(param, fileData)) {
+		;
+	}
+	CreateAmountsInBasicCurrency_CreateListUnconvertedExchangeRates(param, fileData);
+	var unconvertedCurrencies = Object.keys(fileData.listUnconvertedCurrencies).length;
+	if (unconvertedCurrencies) {
+		var savedParam = {};
+		if (Banana.document
+			&& Banana.document.getScriptSettings()) {
+			savedParam = JSON.parse(Banana.document.getScriptSettings());
+		}
+		for (var currency in fileData.listUnconvertedCurrencies) {
+			var exchangeRate = 0;
+			if (savedParam.ExchangeRateList && savedParam.ExchangeRateList[currency])
+				exchangeRate = savedParam.ExchangeRateList[currency];
+			param.ExchangeRateList[currency] = Banana.Converter.toInternalNumberFormat(exchangeRate);
+		}
+		if (Banana.document) {
+			savedParam.ExchangeRateList = param.ExchangeRateList;
+			Banana.document.setScriptSettings(JSON.stringify(savedParam));
+		}
+	}
+}
+
+function CreateAmountsInBasicCurrency(param, fileData) {
+	param.ExchangeRateList = {};
 	CreateAmountsInBasicCurrency_BasicCurrency(param, fileData);
 	CreateAmountsInBasicCurrency_CurrencyConversion(param, fileData);
 	// repeat while there is no more conversion in BasicCurrency
@@ -559,7 +583,6 @@ function CreateAmountsInBasicCurrency(param, fileData) {
 	}
 	CreateAmountsInBasicCurrency_CreateListUnconvertedExchangeRates(param, fileData);
 	var unconvertedCurrencies = Object.keys(fileData.listUnconvertedCurrencies).length;
-
 	var message = '';
 	if (!param.AskForFailingExchangeRates && unconvertedCurrencies) {
 		// Display
@@ -586,13 +609,11 @@ function CreateAmountsInBasicCurrency(param, fileData) {
 			// inputText = Banana.Ui.getText('Paypal Import', message, inputText);
 			// if (!inputText)
 			//  	return false;
-			currencies.push(currency);
 			var exchangeRate = 0;
 			if (savedParam.ExchangeRateList && savedParam.ExchangeRateList[currency])
 				exchangeRate = savedParam.ExchangeRateList[currency];
 			param.ExchangeRateList[currency] = Banana.Converter.toInternalNumberFormat(exchangeRate);
 		}
-		// loadCurrencies(currencies);
 		if (Banana.document) {
 			savedParam.ExchangeRateList = param.ExchangeRateList;
 			Banana.document.setScriptSettings(JSON.stringify(savedParam));
@@ -605,8 +626,7 @@ function CreateAmountsInBasicCurrency(param, fileData) {
 	}
 	// now convert the other amounts  in basic currency
 	CreateAmountsInBasicCurrency_GrossAndFee(param, fileData);
-	return currencies;
-
+	return true;
 }
 
 function CreateAmountsInBasicCurrency_CreateListUnconvertedExchangeRates(param, fileData) {
@@ -1104,7 +1124,7 @@ function ProcessTransactions_SetDescription(param, fileData, exportArray) {
 					if (ppRow.Description.indexOf(ppRow.Currency) < 0) {
 						ppRow.Description += ' ' + ppRow.Currency;
 					}
-					ppRow.Description += ' ' + Banana.Converter.toLocaleNumberFormat(Math.abs(ppRow.Net));
+					ppRow.Description += ' ' + Banana.Converter.toLocaleNumberFormat(Math.abs(ppRow.AmountTransactionCurrency));
 				}
 			}
 		}
