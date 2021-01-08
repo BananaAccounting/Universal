@@ -69,10 +69,10 @@ BasePage {
                      chartData.labels.push(year);
                   }
                   chartData.datasets = [
-                  {label: qsTr('added value'), data: dataSerie1, backgroundColor:defaultColors[0].fill},
-                  {label: 'ebit-da', data: dataSerie2, backgroundColor:defaultColors[1].fill},
-                  {label: 'ebit', data: dataSerie3, backgroundColor:defaultColors[2].fill},
-                  {label: qsTr('annual result'), data: dataSerie4, backgroundColor:defaultColors[3].fill}
+                  {label: qsTr('Added Value'), data: dataSerie1, backgroundColor:defaultColors[0].fill},
+                  {label: 'EBIT-DA', data: dataSerie2, backgroundColor:defaultColors[1].fill},
+                  {label: 'EBIT', data: dataSerie3, backgroundColor:defaultColors[2].fill},
+                  {label: qsTr('Annual Result'), data: dataSerie4, backgroundColor:defaultColors[3].fill}
                   ]
 
                   /*chartData.labels = ["risk1","risk2"]

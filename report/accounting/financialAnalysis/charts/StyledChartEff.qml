@@ -41,7 +41,7 @@ ChartView {
 
    chartData: {
       'labels' : [
-           qsTr("revenue per employee"),qsTr("added value per employee"),qsTr("personnel cost per employee")
+           qsTr("Revenue per Employee"),qsTr("Added Value per Employee"),qsTr("Personnel Cost per Employee")
       ],
        'datasets' : [
        ]

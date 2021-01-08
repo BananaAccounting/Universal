@@ -41,7 +41,7 @@ ChartView {
 
    chartData: {
       'labels' : [
-            qsTr("added value"),"ebit-Da","ebit",qsTr("final result")
+            qsTr("Added value"),"EBIT-DA","EBIT",qsTr("Final Result")
             ],
        'datasets' : [
        ]
