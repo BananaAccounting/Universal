@@ -1,4 +1,4 @@
-// Copyright [2020] [Banana.ch SA - Lugano Switzerland]
+// Copyright [2021] [Banana.ch SA - Lugano Switzerland]
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.uni.app.donationstatement.js
 // @api = 1.0
-// @pubdate = 2020-12-11
+// @pubdate = 2021-01-08
 // @publisher = Banana.ch SA
 // @description = Statement of donation for Associations
 // @description.de = Spendenbescheinigung für Vereine
@@ -1057,6 +1057,51 @@ function convertParam(userParam) {
     }
     convertedParam.data.push(currentParam);
 
+    // Address
+    var currentParam = {};
+    currentParam.name = 'address';
+    currentParam.title = texts.address;
+    currentParam.type = 'string';
+    currentParam.value = userParam.address ? userParam.address : '';
+    currentParam.readValue = function() {
+        userParam.address = this.value;
+    }
+    convertedParam.data.push(currentParam);
+
+    // Address align left
+    var currentParam = {};
+    currentParam.name = 'alignleft';
+    currentParam.parentObject = 'address';
+    currentParam.title = texts.alignleft;
+    currentParam.type = 'bool';
+    currentParam.value = userParam.alignleft ? true : false;
+    currentParam.readValue = function() {
+        userParam.alignleft = this.value;
+    }
+    convertedParam.data.push(currentParam);
+
+    var currentParam = {};
+    currentParam.name = 'addressPositionDX';
+    currentParam.parentObject = 'address';
+    currentParam.title = texts.addressPositionDX;
+    currentParam.type = 'number';
+    currentParam.value = userParam.addressPositionDX ? userParam.addressPositionDX : '0';
+    currentParam.readValue = function() {
+        userParam.addressPositionDX = this.value;
+    }
+    convertedParam.data.push(currentParam);
+
+    var currentParam = {};
+    currentParam.name = 'addressPositionDY';
+    currentParam.parentObject = 'address';
+    currentParam.title = texts.addressPositionDY;
+    currentParam.type = 'number';
+    currentParam.value = userParam.addressPositionDY ? userParam.addressPositionDY : '0';
+    currentParam.readValue = function() {
+        userParam.addressPositionDY = this.value;
+    }
+    convertedParam.data.push(currentParam);
+
     // Texts
     var currentParam = {};
     currentParam.name = 'texts';
@@ -1297,6 +1342,10 @@ function initUserParam() {
     userParam.version = '1.0';
     userParam.costcenter = '';
     userParam.minimumAmount = '';
+    userParam.address = '';
+    userParam.alignleft = false;
+    userParam.addressPositionDX = '0';
+    userParam.addressPositionDY = '0';
     userParam.texts = '';
     userParam.useDefaultTexts = false;
     userParam.titleText = texts.title;
@@ -1423,10 +1472,29 @@ function createStyleSheet(userParam) {
     style = stylesheet.addStyle(".imgSignature");
     style.setAttribute("height", userParam.imageHeight + "mm");
 
+    if (!userParam.addressPositionDX) {
+        userParam.addressPositionDX = '0';
+    }
+    if (!userParam.addressPositionDY) {
+        userParam.addressPositionDY = '0';
+    }
+    var addressMarginTop = parseFloat(2.0)+parseFloat(userParam.addressPositionDY);
+    var addressMarginTopLogo = parseFloat(1.6)+parseFloat(userParam.addressPositionDY);
+    var leftAddressMarginLeft = parseFloat(0.5)+parseFloat(userParam.addressPositionDX);
+    var rightAddressMarginLeft = parseFloat(10.5)+parseFloat(userParam.addressPositionDX);
+
     if (userParam.printHeaderLogo) {
-		stylesheet.addStyle(".tableAddress", "margin-top:20mm; margin-left:105mm");
+        if (userParam.alignleft) {
+            stylesheet.addStyle(".tableAddress", "margin-top:"+addressMarginTop+"cm; margin-left:"+leftAddressMarginLeft+"cm");
+        } else {
+            stylesheet.addStyle(".tableAddress", "margin-top:"+addressMarginTop+"cm; margin-left:"+rightAddressMarginLeft+"cm");
+        }
 	} else {
-		stylesheet.addStyle(".tableAddress", "margin-top:16mm; margin-left:105mm");
+        if (userParam.alignleft) {
+            stylesheet.addStyle(".tableAddress", "margin-top:"+addressMarginTopLogo+"cm; margin-left:"+leftAddressMarginLeft+"cm");
+        } else {
+            stylesheet.addStyle(".tableAddress", "margin-top:"+addressMarginTopLogo+"cm; margin-left:"+rightAddressMarginLeft+"cm");
+        }
 	}
 	//stylesheet.addStyle("table.tableAddress td", "border: thin solid black");
 
@@ -1466,6 +1534,10 @@ function loadTexts(banDoc,lang) {
         texts.fontSize = "Schriftgrad";
 		texts.printHeaderLogo = "Logo";
 		texts.headerLogoName = "Logo-Name";
+        texts.address = "Adresse";
+        texts.alignleft = "Adresse linksbündig";
+        texts.addressPositionDX = 'Horizontal verschieben +/- (in cm, Voreinstellung 0)';
+        texts.addressPositionDY = 'Vertikal verschieben +/- (in cm, Voreinstellung 0)';
     }
     else if (lang === "fr") {
         texts.reportTitle = "Certificat de don";
@@ -1495,6 +1567,10 @@ function loadTexts(banDoc,lang) {
         texts.fontSize = "Taille de police";
 		texts.printHeaderLogo = "Logo";
 		texts.headerLogoName = "Logo nom";
+        texts.address = "Adresse";
+        texts.alignleft = "Aligner à gauche";
+        texts.addressPositionDX = 'Déplacer horizontalement +/- (en cm, défaut 0)';
+        texts.addressPositionDY = 'Déplacer verticalement +/- (en cm, défaut 0)';
     }
     else if (lang === "it") {
         texts.reportTitle = "Attestato di donazione";
@@ -1524,6 +1600,10 @@ function loadTexts(banDoc,lang) {
         texts.fontSize = "Dimensione carattere";
 		texts.printHeaderLogo = "Logo";
 		texts.headerLogoName = "Nome logo";
+        texts.address = "Indirizzo";
+        texts.alignleft = "Allinea a sinistra";
+        texts.addressPositionDX = 'Sposta orizzontalmente +/- (in cm, default 0)';
+        texts.addressPositionDY = 'Sposta verticalmente +/- (in cm, default 0)';
     }
     else if (lang === "nl") {
         texts.reportTitle = "Kwitantie voor giften";
@@ -1553,6 +1633,10 @@ function loadTexts(banDoc,lang) {
         texts.fontSize = "Lettergrootte";
 		texts.printHeaderLogo = "Logo";
 		texts.headerLogoName = "Logo naam";
+        texts.address = "Adres";
+        texts.alignleft = "Links uitlijnen";
+        texts.addressPositionDX = 'Horizontaal verplaatsen +/- (in cm, standaard 0)';
+        texts.addressPositionDY = 'Verplaats verticaal +/- (in cm, standaard 0)';
     }
     else if (lang === "pt") {
         texts.reportTitle = "Certificado de doação";
@@ -1582,6 +1666,10 @@ function loadTexts(banDoc,lang) {
         texts.fontSize = "Tamanho da letra";
         texts.printHeaderLogo = "Logo";
         texts.headerLogoName = "Nome logótipo";
+        texts.address = "Endereço";
+        texts.alignleft = "Alinhar à esquerda";
+        texts.addressPositionDX = 'Mover horizontalmente +/- (em cm, por defeito 0)';
+        texts.addressPositionDY = 'Mover verticalmente +/- (em cm, por defeito 0)';
     }
     else { //lang == en
         texts.reportTitle = "Statement of donation";
@@ -1611,6 +1699,10 @@ function loadTexts(banDoc,lang) {
         texts.fontSize = "Font size";
 		texts.printHeaderLogo = "Logo";
 		texts.headerLogoName = "Logo name";
+        texts.address = "Address";
+        texts.alignleft = "Align left";
+        texts.addressPositionDX = 'Move horizontally +/- (in cm, default 0)';
+        texts.addressPositionDY = 'Move vertically +/- (in cm, default 0)';
     }
 
     return texts;
