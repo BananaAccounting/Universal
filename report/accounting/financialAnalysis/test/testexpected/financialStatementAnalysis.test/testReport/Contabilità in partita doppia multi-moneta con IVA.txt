@@ -19,7 +19,7 @@
 \newenvironment{test}[1]{\section*{Test case: #1}}{}
 %Begin test data
 \begin{reportvalue}{FILENAME: file:script/../test/testcases/Contabilità in partita doppia multi-moneta con IVA.ac2}
-Financial Statements Analysis: 28-12-2020 \\
+Financial Statements Analysis: 08-01-2021 \\
 \begin{longtable}[l]{ l  l }
 COMPANY INFORMATION COMPANY NAME  & \\
 HEAD OFFICE  & \\
@@ -32,11 +32,11 @@ BALANCE Description  & Acronym  & Budget  & 2020 \\
 Liquidity  & liqu  & 110.00  & -9'320.00 \\
 Credits  & cred  & 0.00  & 34'500.00 \\
 Stocks  & stoc  & 0.00  & 120.00 \\
-Current Assets  & cuas  & 110.00  & 25'300.00 \\
-Fixed assets  & fixa  & 0.00  & -1'000.00 \\
-Fixed Assets  & tfix  & 0.00  & -1'000.00 \\
-Total Assets  & tota  & 110.00  & 24'300.00 \\
-Short-term debt capital  & stdc  & 0.00  & 2'970.00 \\
+Current Asset  & cuas  & 110.00  & 25'300.00 \\
+Fixed Asset  & fixa  & 0.00  & -1'000.00 \\
+Fixed Asset  & tfix  & 0.00  & -1'000.00 \\
+Total Asset  & tota  & 110.00  & 24'300.00 \\
+Short term debt capital  & stdc  & 0.00  & 2'970.00 \\
 Long term debt capital  & ltdc  & 0.00  & 9'000.00 \\
 Debt Capital  & deca  & 0.00  & 11'970.00 \\
 Own base capital  & obca  & 0.00  & 0.00 \\
@@ -74,19 +74,19 @@ Warning: The difference between the 'Accounting total' and the 'Calculated total
 analysis by index \\
 \begin{longtable}[l]{ l  l  l  l  l }
 LIQUIDITY RATIOS Description  & formula  & Budget  & 2020  & BenchMark \\
-cash ratio  & liqu / stdc  & \%  & -313.80\%  & 10\%-35\% \\
-quick ratio  & (liqu + cred) / stdc  & 0\%  & 848.00\%  & 100\% \\
-current ratio  & cuas / stdc  & \%  & 851.85\%  & 150\% \\
-net current asset  & cuas-stdc  & 110.00  & 22330.00  & >0 \\
+Cash ratio  & liqu / stdc  & \%  & -313.80\%  & 10\%-35\% \\
+Quick ratio  & (liqu + cred) / stdc  & 0\%  & 848.00\%  & 100\% \\
+Current ratio  & cuas / stdc  & \%  & 851.85\%  & 150\% \\
+Net Current Asset  & cuas-stdc  & 110.00  & 22330.00  & >0 \\
 \end{longtable}
 \begin{longtable}[l]{ l  l  l  l  l }
 FINANCING RATIOS Description  & formula  & Budget  & 2020  & BenchMark \\
-degree of circulating assets   & cuas / tota  & 100.00\%  & 104.12\%  & 60\% \\
-percentage fixed assets  & fixa / tota  & 0.00\%  & -4.12\%  & 40\% \\
-debt ratio  & (stdc+ltdc) / totp  & \%  & 49.48\%  & 40\%-70\% \\
-equity ratio  & owca / totp  & \%  & 50.52\%  & 30\%-60\% \\
-self-financing ratio  & reut / owca  & \%  & 100.00\%  & 33,3\% \\
-fixed assets coverage  & (owca + ltdc) / tota  & 0.00\%  & 87.33\%  & >100\% \\
+Degree of Circulating Asset   & cuas / tota  & 100.00\%  & 104.12\%  & 60\% \\
+Percentage Fixed Asset  & fixa / tota  & 0.00\%  & -4.12\%  & 40\% \\
+Debt ratio  & (stdc+ltdc) / totp  & \%  & 49.48\%  & 40\%-70\% \\
+Equity ratio  & owca / totp  & \%  & 50.52\%  & 30\%-60\% \\
+Self-Financing ratio  & reut / owca  & \%  & 100.00\%  & 33,3\% \\
+Fixed Asset coverage  & (owca + ltdc) / tota  & 0.00\%  & 87.33\%  & >100\% \\
 \end{longtable}
 \begin{longtable}[l]{ l  l  l  l  l }
 PROFITABILITY RATIOS Description  & formula  & Budget  & 2020  & BenchMark \\
@@ -94,14 +94,14 @@ ROE  & profit / owca  & \%  & 100.00\%  & 8\%-14\% \\
 ROI  & ebit / tota    & 0.00\%  & 50.29\%  & 10\% \\
 ROS  & ebit / satu  & \%  & 54.31\%  & >0 \\
 MOL  & gross profit / satu  & \%  & 54.31\%  & 40\% \\
-ebit margin  & ebit / satu  & \%  & 54.31\%  & 2.4\% \\
-profit margin  & net profit / satu  & \%  & 54.31\%  & 1.4\% \\
+EBIT margin  & ebit / satu  & \%  & 54.31\%  & 2.4\% \\
+Profit margin  & net profit / satu  & \%  & 54.31\%  & 1.4\% \\
 \end{longtable}
 \begin{longtable}[l]{ l  l  l  l }
 EFFICIENCY RATIOS Description  & formula  & Budget  & 2020 \\
-revenue per employee  & satu/employees  & 0.00  & 0.00 \\
-added value per employee  & adva/employees  & 0.00  & 0.00 \\
-personnel cost per employee  & cope/employees  & 0.00  & 0.00 \\
+Revenue per Employee  & satu/employees  & 0.00  & 0.00 \\
+Added Value per Employee  & adva/employees  & 0.00  & 0.00 \\
+Personnel Cost per Employee  & cope/employees  & 0.00  & 0.00 \\
 \end{longtable}
 DUPONT SCHEME  \\
 \begin{longtable}[l]{ l  l  l  l  l  l  l }
@@ -140,29 +140,6 @@ Altman Index Z-SCORE Budget  & 2020 \\
 for values > of 3 correspond to low probability of a financial crisis \\
 for values >= of 1.8 but <= to 3 there are possibilities of a financial crisis, to be kept under control \\
 for values < to 1.8 there is a strong probability of a financial crisis \\
-\begin{longtable}[l]{ l  l  l }
-Used Setting Number of Previous Years  & \multicolumn{2}{l}{}\\
-Number of Decimals  & \multicolumn{2}{l}{}\\
-Currency  & CHF \\
-Number of Employees  & \\
-\end{longtable}
-\begin{longtable}[l]{ l  l }
-Used Groups Liquidity  & 100;106;109 \\
-Credits  & 110;114 \\
-Stocks  & 120;130 \\
-Fixed assets  & 14 \\
-Short-term debt capital  & 20 \\
-Long term debt capital  & 24 \\
-Own base capital  & 280;298 \\
-Reserves and profits  & 290;295;296;297 \\
-Sales turnover  & 3 \\
-Cost of merchandise and services  & 4 \\
-Personnel costs  & 5 \\
-Different costs  & 6 \\
-Depreciations and adjustments  & 68 \\
-Interests  & 69 \\
-Final Result  & E7 \\
-\end{longtable}
 Banana.ch \\
 \end{reportvalue}
 \end{document}
