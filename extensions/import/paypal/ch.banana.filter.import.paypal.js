@@ -1,4 +1,4 @@
-// Copyright [2014] [Banana.ch SA - Lugano Switzerland]
+// Copyright [2021] [Banana.ch SA - Lugano Switzerland]
 //
 // Licensed under the Apache License, Version 2.0 (the 'License');
 // you may not use this file except in compliance with the License.
@@ -15,14 +15,14 @@
 //
 // @id = ch.banana.uni.import.paypal
 // @api = 1.0
-// @pubdate = 2020-11-11
+// @pubdate = 2021-01-07
 // @publisher = Banana.ch SA
-// @description = PayPal Import
+// @description = PayPal Import (*.csv)
 // @doctype = *
 // @docproperties =
 // @task = import.transactions
 // @outputformat = tablewithheaders
-// @inputdatasource = openPropertyEditor
+// @inputdatasource = openfiledialog
 // @inputfilefilter = Text files (*.txt *.csv);;All files (*.*)
 // @timeout = -1
 
@@ -31,58 +31,58 @@
  * Parse the paypal file and and return a string in with data in tab separated
  */
 function exec(string) {
-	if (!Banana.document) {
-		return;
-	}
-
 	var userParam = initUserParam();
-	// var userParam = Param_Initialize();
 	// include all data read and other
 	
 	var fileData = {};
 
-	// Retrieve saved param
-    var savedParam = Banana.document.getScriptSettings();
-    if (savedParam && savedParam.length > 0) {
-        userParam = JSON.parse(savedParam);
+	if (Banana.document) {
+		var savedParam = Banana.document.getScriptSettings();
+		if (savedParam && savedParam.length > 0) {
+			userParam = JSON.parse(savedParam);
+		}
 	}
 	
 	if (!readTransactions(userParam, string, fileData)) {
 		return String();
 	}
 	
-	// script correctly started
-	if (!Banana_GetAccountData(userParam, fileData)) {
-		return String();
+	if (Banana.document) {
+		if (!Banana_GetAccountData(userParam, fileData)) {
+			return String();
+		}
+
+		// Load currencies
+		readCurrencies(userParam, fileData);
+
+		// If needed show the settings dialog to the user
+		if (!options || !options.useLastSettings) {
+			userParam = settingsDialog(userParam, fileData); // From properties
+			if (!userParam)
+				return String();
+		}
 	}
-	
-	// If needed show the settings dialog to the user
-	if (!options || !options.useLastSettings) {
-		userParam = settingsDialog(userParam, fileData); // From properties
+	else {
+		// assume we are in test mode or script has been started
+		// with no file open
+		Banana_GetValuesForTest(userParam, fileData);
 	}
 
-	if (!userParam) {
-		return "@Cancel";
-	}
-
-	// else {
-	// 	// assume we are in test mode or script has been started
-	// 	// with no file open
-	// 	Banana_GetValuesForTest(param, fileData);
-	// }
 	// Complete param with input
 	if (!Param_Verify(userParam, fileData)) {
 		return String();
 	}
+
 	// Amount conversion
 	if (!CreateAmountsInBasicCurrency(userParam, fileData)) {
 		return String();
 	}
+
 	// Create accounting transactions
 	var exportArray = ProcessTransactions(userParam, fileData);
 	// Own change to export data should be insert here
 	// OwnFunction(param, exportArray);
-	// export the data
+    // export the data
 	return ExportTransactions(userParam, fileData, exportArray);
 }
 
@@ -196,7 +196,12 @@ function Param_Verify(param, fileData) {
 	AddMessage('Error: Basic currency (File properties) different from paypal used currencies ');
 	return false;
 	} */
-	// Assign account if not defined
+    // Assign account if not defined
+    param.AccountList[param.BasicCurrency] = param.PaypalAccount;
+    param.AccountList['PaypalIn'] = param.PaypalIn;
+    param.AccountList['PaypalOut'] = param.PaypalOut;
+    param.AccountList['PaypalFee'] = param.PaypalFee;
+
 	if (!param.AccountList['PaypalIn']) {
 		AddMessage('Account PaypalIn not defined in accounting plan: using PaypalIn');
 		param.AccountList['PaypalIn'] = 'PaypalIn';
@@ -228,13 +233,15 @@ function Param_Verify(param, fileData) {
 		AddMessage('PaypalAccount not defined using PaypalAccount');
 		param.AccountList[param.BasicCurrency] = 'PaypalAccount';
 	}
+
+	
 	return true;
 }
 
 /***********************
 * MANAGE USER PARAMETERS 
 ***********************/
-function convertParam(userParam) {
+function convertParam(userParam, fileData) {
 	var lang = 'en';
 	
 	if (Banana.document.locale) {
@@ -305,6 +312,32 @@ function convertParam(userParam) {
 	}
 	convertedParam.data.push(currentParam);
 
+	var currencies = [];
+	for (var currency in userParam.ExchangeRateList) {
+		currencies.push(currency);
+	}
+
+	if (currencies.length > 0) {
+		var currentParam = {};
+		currentParam.name = 'filter';
+		currentParam.title = 'Exchange Rate';
+		currentParam.editable = false;
+		convertedParam.data.push(currentParam);
+
+		for (var i = 0; i < currencies.length; i++) {
+			var currentParam = {};
+			currentParam.name = currencies[i];
+			currentParam.title = currencies[i] + ' to ' + userParam.BasicCurrency;
+			currentParam.parentObject = 'filter';
+			currentParam.type = 'string';
+			currentParam.value = userParam.ExchangeRateList[currencies[i]] ? userParam.ExchangeRateList[currencies[i]] : "0.00";
+			currentParam.readValue = function () {
+				userParam.ExchangeRateList[this.name] = this.value;
+			}
+			convertedParam.data.push(currentParam);
+		}
+	}    	
+
 	return convertedParam;
 }
 
@@ -315,6 +348,7 @@ function initUserParam () {
 	userParam.PaypalIn = "";
 	userParam.PaypalOut = "";
 	userParam.PaypalFee = "";
+	userParam.Exchange = [];
 
 	// the paypal date input format
 	userParam.dateFormat = "dd.mm.yyyy";
@@ -370,11 +404,11 @@ function initUserParam () {
 	return userParam;	
 }
 
-function paramatersDialog (userParam) {
+function paramatersDialog (userParam, fileData) {
 
 	if (typeof(Banana.Ui.openPropertyEditor) !== 'undefined') {
 		var dialogTitle = "";
-		var convertedParam = convertParam(userParam);
+		var convertedParam = convertParam(userParam, fileData);
 		var pageAnchor = 'dlgSettings';
 		if (!Banana.Ui.openPropertyEditor(dialogTitle, convertedParam, pageAnchor)) {
 			return null;
@@ -402,7 +436,6 @@ function settingsDialog(userParam, fileData) {
 		userParam = JSON.parse(savedParam);
 	}	
 
-	userParam = paramatersDialog(userParam);
 	// see if paypal account has been defined
 	var paypalAccountDefined = Boolean(userParam.AccountList[userParam.BasicCurrency]);
 	if (!paypalAccountDefined) {
@@ -431,10 +464,15 @@ function settingsDialog(userParam, fileData) {
 	if (!userParam.AccountList.PaypalFee) {
 		userParam.AccountList.PaypalFee = userParam.PaypalFee;
 	}
+
+	userParam = paramatersDialog(userParam, fileData);
+
 	if (userParam) {
 		var paramToString = JSON.stringify(userParam);
 		Banana.document.setScriptSettings(paramToString);
 	}
+	// if (userParam.Exchange[0])
+	// 	Banana.console.log(userParam.Exchange[0]);
 
 	return userParam;
 }
@@ -462,6 +500,7 @@ function setTexts(language) {
 		texts.param_paypal_in = "Paypal In";
 		texts.param_paypal_out = "Paypal Out";
 		texts.param_paypal_fee = "Paypal Fee";
+		texts.param_exchange_rate = "Taux de Change";
 	}
 	else if (language === 'nl') {
 		texts.param_paypal_account = "Paypal Account";
@@ -474,6 +513,7 @@ function setTexts(language) {
 		texts.param_paypal_in = "Paypal In";
 		texts.param_paypal_out = "Paypal Out";
 		texts.param_paypal_fee = "Paypal Fee";
+		texts.param_exchange_rate = "Exchange Rate";
 	}
 
 	return texts;
@@ -504,13 +544,38 @@ function AddMessage(messageText, helpTag) {
 	}
 
 }
-function CreateAmountsInBasicCurrency(param, fileData) {
-	var paramList = {};
-	paramList.version = '1.0';
-	paramList.data = [];
-	var localParam = {};
-	
 
+function readCurrencies(param, fileData) {
+	param.ExchangeRateList = {};
+	CreateAmountsInBasicCurrency_BasicCurrency(param, fileData);
+	CreateAmountsInBasicCurrency_CurrencyConversion(param, fileData);
+	// repeat while there is no more conversion in BasicCurrency
+	while (CreateAmountsInBasicCurrency_ConvertAmounts(param, fileData)) {
+		;
+	}
+	CreateAmountsInBasicCurrency_CreateListUnconvertedExchangeRates(param, fileData);
+	var unconvertedCurrencies = Object.keys(fileData.listUnconvertedCurrencies).length;
+	if (unconvertedCurrencies) {
+		var savedParam = {};
+		if (Banana.document
+			&& Banana.document.getScriptSettings()) {
+			savedParam = JSON.parse(Banana.document.getScriptSettings());
+		}
+		for (var currency in fileData.listUnconvertedCurrencies) {
+			var exchangeRate = 0;
+			if (savedParam.ExchangeRateList && savedParam.ExchangeRateList[currency])
+				exchangeRate = savedParam.ExchangeRateList[currency];
+			param.ExchangeRateList[currency] = Banana.Converter.toInternalNumberFormat(exchangeRate);
+		}
+		if (Banana.document) {
+			savedParam.ExchangeRateList = param.ExchangeRateList;
+			Banana.document.setScriptSettings(JSON.stringify(savedParam));
+		}
+	}
+}
+
+function CreateAmountsInBasicCurrency(param, fileData) {
+	param.ExchangeRateList = {};
 	CreateAmountsInBasicCurrency_BasicCurrency(param, fileData);
 	CreateAmountsInBasicCurrency_CurrencyConversion(param, fileData);
 	// repeat while there is no more conversion in BasicCurrency
@@ -534,41 +599,23 @@ function CreateAmountsInBasicCurrency(param, fileData) {
 		var savedParam = {};
 		if (Banana.document
 			 && Banana.document.getScriptSettings()) {
-			savedParam = JSON.parse(Banana.document.getScriptSettings());
+                savedParam = JSON.parse(Banana.document.getScriptSettings());
 		}
-		localParam.name = 'currency_message';
-		// ask for exchange rate
 		for (var currency in fileData.listUnconvertedCurrencies) {
-			
-			// localParam.title = currency + ' to ' + param.BasicCurrency;
-
-		
-			// localParam.type = 'number';
-			// localParam.value = 0.00;
-			// localParam.readValue = function() {
-			// 	localParam.print_header = this.value;
-			// }
-			// paramList.data.push(localParam);
-			// var dialogTitle = 'Exchange Rate';
-			// var pageAnchor = 'dlgSettings';
-			// if (!Banana.Ui.openPropertyEditor(dialogTitle, paramList, pageAnchor)) {
-			// 	return null;
-			// }
-			// for (var i = 0; i < paramList.data.length; i++) {   
-			// 	paramList.data[i].readValue();
-			// }
-			// localParam.useDefaultTexts = false;
-			message = 'Insert Exchange rate for : ' + currency + ' to ' + param.BasicCurrency;
-			message += ' (' + param.BasicCurrency + ' = ' + currency + ' * Exchange Rate)';
-			var inputText = savedParam[currency] ? savedParam[currency] : '';
-			inputText = Banana.Converter.toLocaleNumberFormat(inputText);
-			inputText = Banana.Ui.getText('Paypal Import', message, inputText);
-			if (!inputText)
-				return false;
-			param.ExchangeRateList[currency] = Banana.Converter.toInternalNumberFormat(inputText);
-			savedParam[currency] = param.ExchangeRateList[currency];
+			// message = 'Insert Exchange rate for : ' + currency + ' to ' + param.BasicCurrency;
+			// message += ' (' + param.BasicCurrency + ' = ' + currency + ' * Exchange Rate)';
+			// var inputText = savedParam[currency] ? savedParam[currency] : '';
+			// inputText = Banana.Converter.toLocaleNumberFormat(inputText);
+			// inputText = Banana.Ui.getText('Paypal Import', message, inputText);
+			// if (!inputText)
+			//  	return false;
+			var exchangeRate = 0;
+			if (savedParam.ExchangeRateList && savedParam.ExchangeRateList[currency])
+				exchangeRate = savedParam.ExchangeRateList[currency];
+			param.ExchangeRateList[currency] = Banana.Converter.toInternalNumberFormat(exchangeRate);
 		}
 		if (Banana.document) {
+			savedParam.ExchangeRateList = param.ExchangeRateList;
 			Banana.document.setScriptSettings(JSON.stringify(savedParam));
 		}
 		// repeat while there is no more conversion in BasicCurrency
@@ -580,7 +627,6 @@ function CreateAmountsInBasicCurrency(param, fileData) {
 	// now convert the other amounts  in basic currency
 	CreateAmountsInBasicCurrency_GrossAndFee(param, fileData);
 	return true;
-
 }
 
 function CreateAmountsInBasicCurrency_CreateListUnconvertedExchangeRates(param, fileData) {

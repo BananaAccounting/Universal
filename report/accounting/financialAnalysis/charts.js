@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-// @id = charts.js
+// @id = financialStatementAnalysis.js
 // @api = 1.0
 // @pubdate = 2020-09-01
 // @publisher = Banana.ch SA
@@ -24,7 +24,7 @@
 
 function exec(inData, options) {
     var dialog = Banana.Ui.createQml("Financing Charts", "charts.qml");
-    Banana.application.progressBar.pause(); 
+    Banana.application.progressBar.pause();
     dialog.exec();
     Banana.application.progressBar.resume();
 }

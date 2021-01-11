@@ -7,11 +7,11 @@
 
 body {
     font-family: Calibri;
-    font-size: 8pt;
+    font-size: 7pt;
 }
 
 table {
-    font-size: 12px;
+    font-size: 10px;
     width: 100%;
 }
 
@@ -72,8 +72,8 @@ table.mytableConCeSumsControl td {
 table.myIndliqTable td {
     border-collapse: collapse;
     border-style: solid;
-    border-color: rgb(0, 0, 0);
     width: auto;
+    border-color: rgb(0, 0, 0);
     padding-top: 1px;
     padding-bottom: 1px;
 }
@@ -88,6 +88,15 @@ table.myIndfinTable td {
 }
 
 table.myIndprofTable td {
+    border-collapse: collapse;
+    border-style: solid;
+    border-color: rgb(0, 0, 0);
+    width: auto;
+    padding-top: 1px;
+    padding-bottom: 1px;
+}
+
+table.myIndeffTable td {
     border-collapse: collapse;
     border-style: solid;
     border-color: rgb(0, 0, 0);
@@ -111,6 +120,7 @@ table.myTableAltmanIndex td {
     padding-top: 1px;
     padding-bottom: 1px;
 }
+
 .styleCompanyInfocells {
     background-color: #FBF876;
     text-align: center;
@@ -181,6 +191,18 @@ table.myTableAltmanIndex td {
 .styleZprob {
     background-color: #ff0000;
     text-align: center;
+}
+
+.styleDifferencesFound {
+    color: #ff0000;
+    text-align: right;
+}
+
+.styleWarningParagraph {
+    color: #ff0000;
+    text-align: left;
+    font-size: medium;
+    padding-top: 5px;
 }
 
 .header {

@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.uni.invoice.uni11
 // @api = 1.0
-// @pubdate = 2020-11-23
+// @pubdate = 2020-12-18
 // @publisher = Banana.ch SA
 // @description = [UNI11] Programmable Invoice layout
 // @description.it = [UNI11] Layout Fattura Programmabile
@@ -816,6 +816,34 @@ function convertParam(userParam) {
     convertedParam.data.push(currentParam);
 
     currentParam = {};
+    currentParam.name = langCode+'_text_totalnet';
+    currentParam.parentObject = langCode;
+    currentParam.title = langTexts[langCodeTitle+'_param_text_totalnet'];
+    currentParam.type = 'string';
+    currentParam.value = userParam[langCode+'_text_totalnet'] ? userParam[langCode+'_text_totalnet'] : '';
+    currentParam.defaultvalue = langTexts.totalnet;
+    currentParam.tooltip = langTexts['param_tooltip_text_totalnet'];
+    currentParam.language = langCode;
+    currentParam.readValueLang = function(langCode) {
+      userParam[langCode+'_text_totalnet'] = this.value;
+    }
+    convertedParam.data.push(currentParam);
+
+    currentParam = {};
+    currentParam.name = langCode+'_text_vat';
+    currentParam.parentObject = langCode;
+    currentParam.title = langTexts[langCodeTitle+'_param_text_vat'];
+    currentParam.type = 'string';
+    currentParam.value = userParam[langCode+'_text_vat'] ? userParam[langCode+'_text_vat'] : '';
+    currentParam.defaultvalue = langTexts.vat;
+    currentParam.tooltip = langTexts['param_tooltip_text_vat'];
+    currentParam.language = langCode;
+    currentParam.readValueLang = function(langCode) {
+      userParam[langCode+'_text_vat'] = this.value;
+    }
+    convertedParam.data.push(currentParam);
+
+    currentParam = {};
     currentParam.name = langCode+'_text_total';
     currentParam.parentObject = langCode;
     currentParam.title = langTexts[langCodeTitle+'_param_text_total'];
@@ -1199,6 +1227,8 @@ function initParam() {
     userParam[langCodes[i]+'_title_doctype_10'] = langTexts.invoice + " <DocInvoice>";
     userParam[langCodes[i]+'_title_doctype_12'] = langTexts.credit_note + " <DocInvoice>";
     userParam[langCodes[i]+'_text_details_columns'] = langTexts.description+";"+langTexts.quantity+";"+langTexts.reference_unit+";"+langTexts.unit_price+";"+langTexts.amount;
+    userParam[langCodes[i]+'_text_totalnet'] = langTexts.totalnet;
+    userParam[langCodes[i]+'_text_vat'] = langTexts.vat;
     userParam[langCodes[i]+'_text_total'] = langTexts.total;
     userParam[langCodes[i]+'_text_final'] = '';
     userParam[langCodes[i]+'_footer_left'] = langTexts.invoice;
@@ -1372,6 +1402,12 @@ function verifyParam(userParam) {
     }
     if (!userParam[langCodes[i]+'_text_details_columns']) {
       userParam[langCodes[i]+'_text_details_columns'] = langTexts.description+";"+langTexts.quantity+";"+langTexts.reference_unit+";"+langTexts.unit_price+";"+langTexts.amount;
+    }
+    if (!userParam[langCodes[i]+'_text_totalnet']) {
+      userParam[langCodes[i]+'_text_totalnet'] = langTexts.totalnet;
+    }
+    if (!userParam[langCodes[i]+'_text_vat']) {
+      userParam[langCodes[i]+'_text_vat'] = langTexts.vat;
     }
     if (!userParam[langCodes[i]+'_text_total']) {
       userParam[langCodes[i]+'_text_total'] = langTexts.total;
@@ -1627,7 +1663,7 @@ function print_header(repDocObj, userParam, repStyleObj, invoiceObj, texts) {
 
   if (userParam.header_print) {
 
-    if (userParam.header_row_1) {
+    if (userParam.header_row_1 || userParam.header_row_2 || userParam.header_row_3 || userParam.header_row_4 || userParam.header_row_5) {
       if (userParam.header_row_1.length > 0) {
         headerParagraph.addParagraph(userParam.header_row_1, "header_row_1");
       }
@@ -2120,12 +2156,12 @@ function print_details_net_amounts(banDoc, repDocObj, invoiceObj, texts, userPar
   //TOTAL NET
   if (invoiceObj.billing_info.total_vat_rates.length > 0) {
     tableRow = repTableObj.addRow();
-    tableRow.addCell(texts.totalnet, "padding-left padding-right", columnsNumber-1);
+    tableRow.addCell(userParam[lang+'_text_totalnet'], "padding-left padding-right", columnsNumber-1);
     tableRow.addCell(Banana.Converter.toLocaleNumberFormat(invoiceObj.billing_info.total_amount_vat_exclusive, variables.decimals_amounts, true), "right padding-left padding-right", 1);
 
     for (var i = 0; i < invoiceObj.billing_info.total_vat_rates.length; i++) {
       tableRow = repTableObj.addRow();
-      tableRow.addCell(texts.vat + " " + invoiceObj.billing_info.total_vat_rates[i].vat_rate + "% (" + Banana.Converter.toLocaleNumberFormat(invoiceObj.billing_info.total_vat_rates[i].total_amount_vat_exclusive, variables.decimals_amounts, true) + ")", "padding-left padding-right", columnsNumber-1);
+      tableRow.addCell(userParam[lang+'_text_vat'] + " " + invoiceObj.billing_info.total_vat_rates[i].vat_rate + "% (" + Banana.Converter.toLocaleNumberFormat(invoiceObj.billing_info.total_vat_rates[i].total_amount_vat_exclusive, variables.decimals_amounts, true) + ")", "padding-left padding-right", columnsNumber-1);
       tableRow.addCell(Banana.Converter.toLocaleNumberFormat(invoiceObj.billing_info.total_vat_rates[i].total_vat_amount, variables.decimals_amounts, true), "right padding-left padding-right", 1);
     }
   }
@@ -2337,7 +2373,7 @@ function print_details_gross_amounts(banDoc, repDocObj, invoiceObj, texts, userP
   tableRow = repTableObj.addRow();
   var cellVatInfo = tableRow.addCell("", "padding-right right vat_info", columnsNumber);
   for (var i = 0; i < invoiceObj.billing_info.total_vat_rates.length; i++) {
-    var vatInfo = texts.vat + " " + invoiceObj.billing_info.total_vat_rates[i].vat_rate + "%";
+    var vatInfo = userParam[lang+'_text_vat'] + " " + invoiceObj.billing_info.total_vat_rates[i].vat_rate + "%";
     vatInfo += " = " + Banana.Converter.toLocaleNumberFormat(invoiceObj.billing_info.total_vat_rates[i].total_vat_amount, variables.decimals_amounts, true) + " " + invoiceObj.document_info.currency;
     cellVatInfo.addParagraph(vatInfo);
   }
@@ -3340,6 +3376,8 @@ function setInvoiceTexts(language) {
     texts.it_param_text_title_doctype_10 = "Titolo fattura";
     texts.it_param_text_title_doctype_12 = "Titolo nota di credito";
     texts.it_param_text_details_columns = "Nomi colonne dettagli fattura";
+    texts.it_param_text_totalnet = "Totale netto fattura";
+    texts.it_param_text_vat = "IVA fattura";
     texts.it_param_text_total = "Totale fattura";
     texts.it_param_text_final = "Testo finale";
     texts.it_param_footer_left = "Piè di pagina testo sinistra";
@@ -3497,6 +3535,8 @@ function setInvoiceTexts(language) {
     texts.de_param_text_title_doctype_10 = "Rechnungstitel (Schriftgrösse=10)";
     texts.de_param_text_title_doctype_12 = "Gutschriftstitel (Schriftgrösse=12)";
     texts.de_param_text_details_columns = "Spaltennamen Rechnungsdetails";
+    texts.de_param_text_totalnet = "Netto-Betrag";
+    texts.de_param_text_vat = "MwSt";
     texts.de_param_text_total = "Rechnungsbetrag";
     texts.de_param_text_final = "Text am Ende";
     texts.de_param_footer_left = "Fusszeilentext links";
@@ -3654,6 +3694,8 @@ function setInvoiceTexts(language) {
     texts.fr_param_text_title_doctype_10 = "Titre de la facture";
     texts.fr_param_text_title_doctype_12 = "Titre note de crédit";
     texts.fr_param_text_details_columns = "Noms des colonnes des détails de la facture";
+    texts.fr_param_text_totalnet = "Total net facture";
+    texts.fr_param_text_vat = "TVA facture";
     texts.fr_param_text_total = "Total facture";
     texts.fr_param_text_final = "Texte final";
     texts.fr_param_footer_left = "Pied de page gauche";
@@ -3811,6 +3853,8 @@ function setInvoiceTexts(language) {
     texts.en_param_text_title_doctype_10 = "Invoice title";
     texts.en_param_text_title_doctype_12 = "Credit note title";
     texts.en_param_text_details_columns = "Column names invoice details";
+    texts.en_param_text_totalnet = "Invoice total net";
+    texts.en_param_text_vat = "Invoice VAT";
     texts.en_param_text_total = "Invoice total";
     texts.en_param_text_final = "Final text";
     texts.en_param_footer_left = "Footer left text";

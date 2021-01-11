@@ -69,8 +69,6 @@ FSAnalysisTest.prototype.initTestCase = function() {
     this.progressBar = Banana.application.progressBar;
     // i file che voglio testare
     this.fileNameList = [];
-    this.fileNameList.push("file:script/../test/testcases/accounting 2019.ac2");
-    this.fileNameList.push("file:script/../test/testcases/Contabilità in partita doppia con IVA - 1.ac2");
     this.fileNameList.push("file:script/../test/testcases/Contabilità in partita doppia multi-moneta con IVA.ac2");
     this.fileNameList.push("file:script/../test/testcases/Documentscontabilita_sa-sagl_partitario_fatturato 2020.ac2");
 }
