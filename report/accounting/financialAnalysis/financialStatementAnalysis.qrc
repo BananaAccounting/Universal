@@ -3,6 +3,7 @@
      <file>chartFin.qml</file>
      <file>chartLiqu.qml</file>
      <file>chartProf.qml</file>
+     <file>chartEff.qml</file>
      <file>chartRAtt.qml</file>
      <file>chartRPass.qml</file>
      <file>chartProfLoss.qml</file>
@@ -18,6 +19,7 @@
      <file>charts/StyledChart.qml</file>
      <file>charts/StyledChartFin.qml</file>
      <file>charts/StyledChartLiqu.qml</file>
+     <file>charts/StyledChartEff.qml</file>
      <file>charts/StyledChartProf.qml</file>
      <file>charts/StyledChartRAtt.qml</file>
      <file>charts/StyledChartRPass.qml</file>
@@ -29,8 +31,8 @@
      <file>components/StyledComboBox.qml</file>
      <file>components/StyledTextField.qml</file>
      <file>components/Stylesheet.qml</file>
+     <file>translations/translations_it.qm</file>
      <file>translations/translations_de.qm</file>
      <file>translations/translations_fr.qm</file>
-     <file>translations/translations_it.qm</file>
  </qresource>
  </RCC>

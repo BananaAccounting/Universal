@@ -74,8 +74,9 @@ BasePage {
                   for (var i = 0; i < financialStatementAnalysis.data.length; i++) {
                      var periodo = financialStatementAnalysis.data[i].period.StartDate;
                      //for dont cut the Budget string in Budg.
-                     if (periodo !== "Budget") {
-                     periodo = periodo.substr(0, 4);
+                     var elementType = financialStatementAnalysis.data[i].period.Type;
+                     if (elementType === "Y") {
+                        periodo = periodo.substr(0, 4);
                      }
                      var year= periodo;
                      if (yearList.indexOf(year)<0){
@@ -108,10 +109,10 @@ BasePage {
                      chartData.labels.push(year);
                   }
                   chartData.datasets = [
-                  {label: qsTr('liquidity'), data: dataSerie1, backgroundColor:defaultColors[0].fill},
-                  {label: qsTr('credits'), data: dataSerie2, backgroundColor:defaultColors[1].fill},
-                  {label: qsTr('stocks'), data: dataSerie3, backgroundColor:defaultColors[2].fill},
-                  {label: qsTr('fixed assets'), data: dataSerie4, backgroundColor:defaultColors[3].fill}
+                  {label: qsTr('Liquidity'), data: dataSerie1, backgroundColor:defaultColors[0].fill},
+                  {label: qsTr('Credits'), data: dataSerie2, backgroundColor:defaultColors[1].fill},
+                  {label: qsTr('Stocks'), data: dataSerie3, backgroundColor:defaultColors[2].fill},
+                  {label: qsTr('Fixed Assets'), data: dataSerie4, backgroundColor:defaultColors[3].fill}
                   ]
 
 

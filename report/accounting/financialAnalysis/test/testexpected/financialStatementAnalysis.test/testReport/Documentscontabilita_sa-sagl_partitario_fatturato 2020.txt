@@ -19,7 +19,7 @@
 \newenvironment{test}[1]{\section*{Test case: #1}}{}
 %Begin test data
 \begin{reportvalue}{FILENAME: file:script/../test/testcases/Documentscontabilita\_sa-sagl\_partitario\_fatturato 2020.ac2}
-Financial Statements Analysis \\
+Financial Statements Analysis: 08-01-2021 \\
 \begin{longtable}[l]{ l  l }
 COMPANY INFORMATION COMPANY NAME  & My Company \\
 HEAD OFFICE  & Via Delle Scuole, 6900 Lugano \\
@@ -27,27 +27,25 @@ COUNTRY  & \\
 TYPE  & SME \\
 ANALYSIS PERIOD  &  Budget-2020 \\
 \end{longtable}
-\begin{longtable}[l]{ l  l  l  l  l  l  l }
+\begin{longtable}[l]{ l  l  l  l }
 BALANCE Description  & Acronym  & Budget  & 2020 \\
-\multicolumn{7}{l}{Assets }\\
-Liquidità  & liqu  & 1'145.00  & 5'670.00 \\
-Crediti  & cred  & 220.00  & -1'480.00 \\
-Merci  & stoc  & 0.00  & -1'880.00 \\
-Current Assets  & cuas  & 1'365.00  & 2'310.00 \\
-Attivo fisso  & fixa  & 800.00  & 13'500.00 \\
-Fixed Assets  & tfix  & 800.00  & 13'500.00 \\
-Total Assets  & tota  & 2'165.00  & 15'810.00 \\
-Liabilities and Equity \\
-Capitale di terzi a corto termine  & stdc  & 1'010.00  & 27'480.00 \\
-Capitale di terzi a lungo termine  & ltdc  & 0.00  & 9'000.00 \\
+Liquidity  & liqu  & 1'145.00  & 5'670.00 \\
+Credits  & cred  & 220.00  & -1'480.00 \\
+Stocks  & stoc  & 0.00  & -1'880.00 \\
+Current Asset  & cuas  & 1'365.00  & 2'310.00 \\
+Fixed Asset  & fixa  & 800.00  & 13'500.00 \\
+Fixed Asset  & tfix  & 800.00  & 13'500.00 \\
+Total Asset  & tota  & 2'165.00  & 15'810.00 \\
+Short term debt capital  & stdc  & 1'010.00  & 27'480.00 \\
+Long term debt capital  & ltdc  & 0.00  & 9'000.00 \\
 Debt Capital  & deca  & 1'010.00  & 36'480.00 \\
-Capitale proprio  & obca  & 0.00  & -4'500.00 \\
-Riserve e utili  & reut  & 1'155.00  & -16'170.00 \\
+Own base capital  & obca  & 0.00  & -4'500.00 \\
+Reserves and profits  & reut  & 1'155.00  & -16'170.00 \\
 Own Capital  & owca  & 1'155.00  & -20'670.00 \\
 Total Liabilities and Equity  & totp  & 2'165.00  & 15'810.00 \\
 \end{longtable}
 \begin{longtable}[l]{ l  l  l  l }
-BALANCE CONTROL SUMS Year  & Sheet Total  & Calculated Total  & Difference \\
+BALANCE CONTROL SUMS Year  & Accounting Total  & Calculated Total  & Difference \\
 \multicolumn{4}{l}{Assets }\\
 \\
 2020  & 15'810.00  & 15'810.00  & 0.00 \\
@@ -57,44 +55,52 @@ BALANCE CONTROL SUMS Year  & Sheet Total  & Calculated Total  & Difference \\
 \end{longtable}
 \begin{longtable}[l]{ l  l  l  l }
 PROFIT AND LOSS Description  & Acronym  & Budget  & 2020 \\
-+ Ricavi da vendite  & satu  & 1'200.00  & 11'500.00 \\
-- Costi della merce  & cofm  & -55.00  & -23'080.00 \\
++ Sales turnover  & satu  & 1'200.00  & 11'500.00 \\
+- Cost of merchandise and services  & cofm  & -55.00  & -23'080.00 \\
 = Added Value  & adva  & 1'145.00  & -11'580.00 \\
-- Costi del personale  & cope  & 0.00  & -500.00 \\
-- Costi differenti  & codi  & 0.00  & -2'000.00 \\
+- Personnel costs  & cope  & 0.00  & -500.00 \\
+- Different costs  & codi  & 0.00  & -2'000.00 \\
 = EBITDA  & ebitda  & 1'145.00  & -14'080.00 \\
-- Ammortamenti e rettifiche  & amre  & 0.00  & -1'500.00 \\
+- Depreciations and adjustments  & amre  & 0.00  & -1'500.00 \\
 = EBIT  & ebit  & 1'145.00  & -15'580.00 \\
-+/- Interessi  & inte  & 0.00  & -600.00 \\
-Annual result  & anre  & 1'145.00  & -16'180.00 \\
++/- Interests  & inte  & 0.00  & -600.00 \\
+Annual result  & fire  & 1'145.00  & -16'180.00 \\
 \end{longtable}
 \begin{longtable}[l]{ l  l  l }
-PROFIT AND LOSS CONTROL SUMS Sheet Total  & Calculated Total  & Difference \\
+PROFIT AND LOSS CONTROL SUMS Accounting Total  & Calculated Total  & Difference \\
 -16'180.00  & -16'180.00  & 0.00 \\
 \end{longtable}
 analysis by index \\
 \begin{longtable}[l]{ l  l  l  l  l }
 LIQUIDITY RATIOS Description  & formula  & Budget  & 2020  & BenchMark \\
-cash ratio  & liqu / stdc  & 113.37\%  & 20.63\%  & 10\%-35\% \\
-quick ratio  & (liqu + cred) / stdc  & 135.00\%  & 15.00\%  & 100\% \\
-current ratio  & cuas / stdc  & 135.15\%  & 8.41\%  & 150\% \\
-net current asset  & cuas-stdc  & 355.00  & -25170.00  & confrontare con i dati interni precedenti \\
+Cash ratio  & liqu / stdc  & 113.37\%  & 20.63\%  & 10\%-35\% \\
+Quick ratio  & (liqu + cred) / stdc  & 135.00\%  & 15.00\%  & 100\% \\
+Current ratio  & cuas / stdc  & 135.15\%  & 8.41\%  & 150\% \\
+Net Current Asset  & cuas-stdc  & 355.00  & -25170.00  & >0 \\
 \end{longtable}
 \begin{longtable}[l]{ l  l  l  l  l }
 FINANCING RATIOS Description  & formula  & Budget  & 2020  & BenchMark \\
-degree of circulating assets   & cuas / tota  & 63.05\%  & 14.61\%  & confrontare con i dati interni precedenti \\
-percentage fixed assets  & fixa / tota  & 36.95\%  & 85.39\%  & confrontare con i dati interni precedenti \\
-debt ratio  & stdc+ltdc / totp  & 46.65\%  & 230.74\%  & 40\%-70\% \\
-equity ratio  & owca / totp  & 53.35\%  & -130.74\%  & 30\%-60\% \\
-self-financing ratio  & reut / owca  & 100.00\%  & 78.23\%  & dipende dall'azienda \\
-fixed assets coverage  & ( owca + ltdc ) / tota  & 53.35\%  & -73.81\%  & >100\% \\
+Degree of Circulating Asset   & cuas / tota  & 63.05\%  & 14.61\%  & 60\% \\
+Percentage Fixed Asset  & fixa / tota  & 36.95\%  & 85.39\%  & 40\% \\
+Debt ratio  & (stdc+ltdc) / totp  & 46.65\%  & 230.74\%  & 40\%-70\% \\
+Equity ratio  & owca / totp  & 53.35\%  & -130.74\%  & 30\%-60\% \\
+Self-Financing ratio  & reut / owca  & 100.00\%  & 78.23\%  & 33,3\% \\
+Fixed Asset coverage  & (owca + ltdc) / tota  & 53.35\%  & -73.81\%  & >100\% \\
 \end{longtable}
 \begin{longtable}[l]{ l  l  l  l  l }
 PROFITABILITY RATIOS Description  & formula  & Budget  & 2020  & BenchMark \\
-ROE  & profit / own capital  & 99.13\%  & 78.28\%  & 8\%-14\% \\
-ROI  & EBIT / total employment    & 52.89\%  & -98.55\%  & 10\% \\
+ROE  & profit / owca  & 99.13\%  & 78.28\%  & 8\%-14\% \\
+ROI  & ebit / tota    & 52.89\%  & -98.55\%  & 10\% \\
 ROS  & ebit / satu  & 95.42\%  & -135.48\%  & >0 \\
-MOL  & gross profit / sales turnover  & 95.42\%  & -122.43\%  & confrontare con i dati interni precedenti \\
+MOL  & gross profit / satu  & 95.42\%  & -122.43\%  & 40\% \\
+EBIT margin  & ebit / satu  & 95.42\%  & -135.48\%  & 2.4\% \\
+Profit margin  & net profit / satu  & 95.42\%  & -140.70\%  & 1.4\% \\
+\end{longtable}
+\begin{longtable}[l]{ l  l  l  l }
+EFFICIENCY RATIOS Description  & formula  & Budget  & 2020 \\
+Revenue per Employee  & satu/employees  & 0.00  & 0.00 \\
+Added Value per Employee  & adva/employees  & 0.00  & 0.00 \\
+Personnel Cost per Employee  & cope/employees  & 0.00  & 0.00 \\
 \end{longtable}
 DUPONT SCHEME  \\
 \begin{longtable}[l]{ l  l  l  l  l  l  l }
@@ -120,41 +126,19 @@ Sales  & \multicolumn{4}{l}{  } & 11'500.00  & \\
 \multicolumn{2}{l}{  } & Different costs  & \multicolumn{2}{l}{  } & 3'500.00  & \\
    & Sales  & \multicolumn{3}{l}{  } & 11'500.00  & \\
 \end{longtable}
-\begin{longtable}[l]{ l  l }
+\begin{longtable}[l]{ l  l  l  l }
 Altman Index Z-SCORE Budget  & 2020 \\
 3.10  & -3.10 \\
-\multicolumn{2}{l}{formula used for the calculation  = 0.717 X1 + 0.847 X2 +3.107 X3 +0.420 X4 + 0.998 X5 }\\
-\multicolumn{2}{l}{X1 = cuas / tota }\\
-\multicolumn{2}{l}{X2 = reut / tota  }\\
-\multicolumn{2}{l}{X3 = Ebit / tota  }\\
-\multicolumn{2}{l}{X4 = pant / totp }\\
-\multicolumn{2}{l}{X5 = sale / tota }\\
+\multicolumn{4}{l}{formula used for the calculation  = 0.717 X1 + 0.847 X2 +3.107 X3 +0.420 X4 + 0.998 X5 }\\
+\multicolumn{4}{l}{X1 = cuas / tota }\\
+\multicolumn{4}{l}{X2 = reut / tota  }\\
+\multicolumn{4}{l}{X3 = Ebit / tota  }\\
+\multicolumn{4}{l}{X4 = pant / totp }\\
+\multicolumn{4}{l}{X5 = sale / tota }\\
 \end{longtable}
 for values > of 3 correspond to low probability of a financial crisis \\
 for values >= of 1.8 but <= to 3 there are possibilities of a financial crisis, to be kept under control \\
 for values < to 1.8 there is a strong probability of a financial crisis \\
-\begin{longtable}[l]{ l  l }
-Used Setting Number of Previous Years  & 2 \\
-Number of Decimals  & 2 \\
-Currency  & CHF \\
-\end{longtable}
-\begin{longtable}[l]{ l  l }
-Used Groups Liquidità  & 100;106;109 \\
-Crediti  & 110;114 \\
-Merci  & 120;130 \\
-Attivo fisso  & 14 \\
-Capitale di terzi a corto termine  & 20 \\
-Capitale di terzi a lungo termine  & 24 \\
-Capitale proprio  & 280;298 \\
-Riserve e utili  & 290;295;296;297 \\
-Ricavi da vendite  & 3 \\
-Costi della merce  & 4 \\
-Costi del personale  & 5 \\
-Costi differenti  & 6 \\
-Ammortamenti e rettifiche  & 68 \\
-Interessi  & 69 \\
-Risultato finale  & E7 \\
-\end{longtable}
 Banana.ch \\
 \end{reportvalue}
 \end{document}

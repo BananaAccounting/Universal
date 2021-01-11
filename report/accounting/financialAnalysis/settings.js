@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-// @id = settings.js
+// @id = financialStatementAnalysis.js
 // @api = 1.0
 // @pubdate = 2020-09-01
 // @publisher = Banana.ch SA
@@ -25,4 +25,3 @@
 function exec(inData, options) {
     settingsDialog();
 }
-

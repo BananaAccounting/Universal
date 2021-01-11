@@ -1,4 +1,4 @@
-// Copyright [2018] [Banana.ch SA - Lugano Switzerland]
+// Copyright [2021] [Banana.ch SA - Lugano Switzerland]
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 // @id = ch.banana.uni.app.donationstatement.test
 // @api = 1.0
-// @pubdate = 2020-03-10
+// @pubdate = 2021-01-08
 // @publisher = Banana.ch SA
 // @description = <TEST ch.banana.uni.app.donationstatement.js>
 // @task = app.command
@@ -76,6 +76,9 @@ ReportTest.prototype.testBananaApp = function() {
   texts = loadTexts(banDoc,lang);
   userParam.costcenter = ';10001,;10002,;10003,;10004';
   userParam.minimumAmount = '0.00';
+  userParam.alignleft = false;
+  userParam.addressPositionDX = '0';
+  userParam.addressPositionDY = '0';
   userParam.texts = '';
   userParam.useDefaultTexts = true;
   userParam.titleText = texts.title;
@@ -102,6 +105,9 @@ ReportTest.prototype.testBananaApp = function() {
   texts = loadTexts(banDoc,lang);
   userParam.costcenter = '';
   userParam.minimumAmount = '0.00';
+  userParam.alignleft = false;
+  userParam.addressPositionDX = '0';
+  userParam.addressPositionDY = '0';
   userParam.texts = '';
   userParam.useDefaultTexts = false;
   userParam.titleText = 'Donazioni #<Account>: <Period>';
@@ -128,6 +134,9 @@ ReportTest.prototype.testBananaApp = function() {
   texts = loadTexts(banDoc,lang);
   userParam.costcenter = '10002';
   userParam.minimumAmount = '0.00';
+  userParam.alignleft = false;
+  userParam.addressPositionDX = '0';
+  userParam.addressPositionDY = '0';
   userParam.texts = '';
   userParam.useDefaultTexts = true;
   userParam.titleText = texts.title;
@@ -154,6 +163,9 @@ ReportTest.prototype.testBananaApp = function() {
   texts = loadTexts(banDoc,lang);
   userParam.costcenter = '10002';
   userParam.minimumAmount = '0.00';
+  userParam.alignleft = false;
+  userParam.addressPositionDX = '0';
+  userParam.addressPositionDY = '0';
   userParam.texts = '';
   userParam.useDefaultTexts = true;
   userParam.titleText = texts.title;
@@ -180,6 +192,9 @@ ReportTest.prototype.testBananaApp = function() {
   texts = loadTexts(banDoc,lang);
   userParam.costcenter = '10002';
   userParam.minimumAmount = '0.00';
+  userParam.alignleft = false;
+  userParam.addressPositionDX = '0';
+  userParam.addressPositionDY = '0';
   userParam.texts = '';
   userParam.useDefaultTexts = true;
   userParam.titleText = texts.title;
@@ -206,6 +221,9 @@ ReportTest.prototype.testBananaApp = function() {
   texts = loadTexts(banDoc,lang);
   userParam.costcenter = '10002';
   userParam.minimumAmount = '0.00';
+  userParam.alignleft = false;
+  userParam.addressPositionDX = '0';
+  userParam.addressPositionDY = '0';
   userParam.texts = '';
   userParam.useDefaultTexts = true;
   userParam.titleText = texts.title;
@@ -232,6 +250,9 @@ ReportTest.prototype.testBananaApp = function() {
   texts = loadTexts(banDoc,lang);
   userParam.costcenter = '10002';
   userParam.minimumAmount = '0.00';
+  userParam.alignleft = false;
+  userParam.addressPositionDX = '0';
+  userParam.addressPositionDY = '0';
   userParam.texts = '';
   userParam.useDefaultTexts = true;
   userParam.titleText = texts.title;
@@ -258,6 +279,9 @@ ReportTest.prototype.testBananaApp = function() {
   texts = loadTexts(banDoc,lang);
   userParam.costcenter = ';10001,;10003,;10004';
   userParam.minimumAmount = '1.00';
+  userParam.alignleft = false;
+  userParam.addressPositionDX = '0';
+  userParam.addressPositionDY = '0';
   userParam.texts = '';
   userParam.useDefaultTexts = true;
   userParam.titleText = texts.title;
@@ -274,6 +298,32 @@ ReportTest.prototype.testBananaApp = function() {
   userParam.printHeaderLogo = false;
   userParam.headerLogoName = "";
   this.report_test(banDoc, "2018-01-01", "2018-03-31", userParam, lang, "Whole year report");
+
+  // Test #9 - it with <NamePrefix>
+  Test.logger.addComment("****************************************************************************** TEST #9 ******************************************************************************");
+  lang = "it";
+  texts = loadTexts(banDoc,lang);
+  userParam.costcenter = '';
+  userParam.minimumAmount = '0.00';
+  userParam.alignleft = false;
+  userParam.addressPositionDX = '0';
+  userParam.addressPositionDY = '0';
+  userParam.texts = '';
+  userParam.useDefaultTexts = false;
+  userParam.titleText = 'Donazioni #<Account>: <Period>';
+  userParam.text1 = 'Con la presente attestiamo che **<NamePrefix> <FirstName> <FamilyName>** ha donato alla nostra associazione **<Currency> <Amount>**.';
+  userParam.text2 = 'Periodo delle donazioni: dal <StartDate> al <EndDate>.';
+  userParam.text3 = 'Indirizzo: <NamePrefix> <Address>.';
+  userParam.text4 = 'Ringraziamo cordialmente.';
+  userParam.details = false;
+  userParam.signature = 'Pinco Pallino';
+  userParam.localityAndDate = 'Lugano, dicembre 2018';
+  userParam.printLogo = false;
+  userParam.signatureImage = '';
+  userParam.imageHeight = '';
+  userParam.printHeaderLogo = false;
+  userParam.headerLogoName = "";
+  this.report_test(banDoc, "2018-01-01", "2018-12-31", userParam, lang, "Whole year report");
 
 }
 

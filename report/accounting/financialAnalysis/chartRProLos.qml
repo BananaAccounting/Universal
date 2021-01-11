@@ -70,8 +70,8 @@ BasePage {
                   }
                   chartData.datasets = [
                   {label: qsTr('Added Value'), data: dataSerie1, backgroundColor:defaultColors[0].fill},
-                  {label: 'Ebit-Da', data: dataSerie2, backgroundColor:defaultColors[1].fill},
-                  {label: 'Ebit', data: dataSerie3, backgroundColor:defaultColors[2].fill},
+                  {label: 'EBIT-DA', data: dataSerie2, backgroundColor:defaultColors[1].fill},
+                  {label: 'EBIT', data: dataSerie3, backgroundColor:defaultColors[2].fill},
                   {label: qsTr('Annual Result'), data: dataSerie4, backgroundColor:defaultColors[3].fill}
                   ]
 
