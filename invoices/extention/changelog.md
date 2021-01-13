@@ -1,5 +1,7 @@
 # Changelog
 
+2021-01-13; [Bug] Fix translations errors;
+
 2020-12-01; [Enhancement] Add fields for deposit's amount and deposit's description;
 
 2020-12-01; [Bug] Fix under macOs' dark mode item's texts are not visible;
