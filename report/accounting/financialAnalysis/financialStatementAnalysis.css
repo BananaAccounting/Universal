@@ -171,6 +171,7 @@ table.myTableAltmanIndex td {
 .styleRatiosAmount {
     text-align: center;
     font-weight: bold;
+    width: 100%;
 }
 
 .styleParagraphs {
@@ -203,6 +204,24 @@ table.myTableAltmanIndex td {
     text-align: left;
     font-size: medium;
     padding-top: 5px;
+}
+
+.styleUpArrow {
+    color: green;
+    font-size: 18px;
+    margin: 0px;
+}
+
+.styleDownArrow {
+    color: red;
+    font-size: 18px;
+    margin: 0px;
+}
+
+.styleEqualArrow {
+    color: yellow;
+    font-size: 18px;
+    margin: 0px;
 }
 
 .header {

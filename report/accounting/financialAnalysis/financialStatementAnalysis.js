@@ -255,6 +255,21 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
     }
 
     /**
+     * this method calculate the rate of growth of two indexes with the following formula: ((Xt-Xt-1)/Xt-1)*100.
+     * @param {*} indexT1 
+     * @param {*} indexT2 
+     */
+    setRateOfGrowth(indexT1, indexT2) {
+        var rateOfGrowth = Banana.SDecimal.subtract(indexT1, indexT2);
+        var form1 = Banana.SDecimal.divide(rateOfGrowth, indexT2);
+        var form2 = Banana.SDecimal.multiply(form1, '100');
+        var rate = Banana.SDecimal.round(form2, { 'decimals': 2 });
+        rate += '%'
+        return rate;
+
+    }
+
+    /**
      * This Method compares two indexes, one at time 't' and one at time 't-1', 
      * according to the evolution of index 't' with respect to 't1', the correct icon is added to the cell
      * @param {*} indexT1 the index at the time 't'
@@ -262,19 +277,24 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
      * @param {*} cell the cell containing the index
      */
     setIndexEvolution(indexT1, indexT2, cell) {
-        var paragraph = cell.addParagraph("", "styleNormal");
+        var rateOfGrowth = this.setRateOfGrowth(indexT1, indexT2);
         var evolution = Banana.SDecimal.compare(indexT1, indexT2)
+        var up = '🠑';
+        var down = '🠓';
+        var equal = '⇆';
+
         if (evolution === 1) {
             //increased
-            paragraph.addImage("file:script/images/svg/arrow-up.svg");
+            cell.addText(up, "styleUpArrow");
         } else if (evolution === -1) {
             //decreased
-            paragraph.addImage("file:script/images/svg/arrow-down.svg")
+            cell.addText(down, "styleDownArrow");
         } else if (evolution === 0) {
             //same
-            paragraph.addImage("file:script/images/svg/repeat.svg")
+            cell.addText(equal, "styleEqualArrow");
         }
-
+        //add the rate of growth of the index
+        cell.addText(rateOfGrowth);
 
     }
 
@@ -651,8 +671,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                 } else {
                     stile = "styleRatiosAmount";
                 }
-                //add the index evolution icons
-                cell = tableRow.addCell(ratios + perc, stile);
+                //add the index evolution icons, the space ' ' is a placeholder for the icon
+                cell = tableRow.addCell(ratios + perc + ' ', stile);
                 if (i < analsysisYears) {
                     var indexT1 = this.data[i].index.liqu[key].amount;
                     var indexT2 = this.data[i + 1].index.liqu[key].amount;
@@ -675,7 +695,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             }
             for (var i = this.data.length - 1; i >= 0; i--) {
                 var ratios = this.data[i].index.fin[key].amount;
-                cell = tableRow.addCell(ratios + "%", "styleRatiosAmount");
+                cell = tableRow.addCell(ratios + "%" + '  ', "styleRatiosAmount");
                 if (i < analsysisYears) {
                     var indexT1 = this.data[i].index.fin[key].amount;
                     var indexT2 = this.data[i + 1].index.fin[key].amount;
@@ -696,7 +716,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             }
             for (var i = this.data.length - 1; i >= 0; i--) {
                 var ratios = this.data[i].index.red[key].amount;
-                cell = tableRow.addCell(ratios + "%", "styleRatiosAmount");
+                cell = tableRow.addCell(ratios + "%" + '  ', "styleRatiosAmount");
                 if (i < analsysisYears) {
                     var indexT1 = this.data[i].index.red[key].amount;
                     var indexT2 = this.data[i + 1].index.red[key].amount;

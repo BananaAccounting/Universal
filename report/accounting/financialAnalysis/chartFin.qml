@@ -58,7 +58,7 @@ BasePage {
                   data.gdau = {};
                   data.fixaco = {};
 
-                  for (var i = 0; i < financialStatementAnalysis.data.length; i++) {
+                  for (var i = financialStatementAnalysis.length - 1; i >= 0; i--) {
                      var periodo = financialStatementAnalysis.data[i].period.StartDate;
                      //for dont cut the Budget string in Budg.
                      var elementType = financialStatementAnalysis.data[i].period.Type;
@@ -75,7 +75,7 @@ BasePage {
                      data.gdau[year] = financialStatementAnalysis.data[i].index.fin.gdau.amount;
                      data.fixaco[year] = financialStatementAnalysis.data[i].index.fin.fixaco.amount;
                   }
-                  for (var i = 0; i < yearList.length; i++) {
+                     for (var i = yearList.length - 1; i >= 0; i--) {
                      var year = yearList[i];
                      chartData.datasets[i] = {};
                      chartData.datasets[i].label = year;

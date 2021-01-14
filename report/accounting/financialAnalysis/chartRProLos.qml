@@ -50,7 +50,7 @@ BasePage {
                   var dataSerie2 = [];
                   var dataSerie3 = [];
                   var dataSerie4 = [];
-                  for (var i = 0; i < financialStatementAnalysis.data.length; i++) {
+                  for (var i = financialStatementAnalysis.length - 1; i >= 0; i--) {
                      var periodo = financialStatementAnalysis.data[i].period.StartDate;
                      if (periodo.length<4)
                         continue;

@@ -55,7 +55,7 @@ BasePage {
                   data.ebitda = {};
                   data.ebit = {};
                   data.tota = {};
-                  for (var i = 0; i < financialStatementAnalysis.data.length; i++) {
+                  for (var i = financialStatementAnalysis.length - 1; i >= 0; i--) {
                      var periodo = financialStatementAnalysis.data[i].period.StartDate;
                      //for dont cut the Budget string in Budg.
                      var elementType = financialStatementAnalysis.data[i].period.Type;
