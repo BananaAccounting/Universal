@@ -1,5 +1,7 @@
 # Changelog
 
+2021-01-18; [Bug] Fix error invoiceObj is not defined in command duplicate;
+
 2021-01-13; [Bug] Fix translations errors;
 
 2020-12-01; [Enhancement] Add fields for deposit's amount and deposit's description;
