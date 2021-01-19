@@ -1,6 +1,6 @@
 <!DOCTYPE RCC><RCC version="1.0">
  <qresource>
-     <file>chartFin.qml</file>
+     <file>chartLev.qml</file>
      <file>chartLiqu.qml</file>
      <file>chartProf.qml</file>
      <file>chartEff.qml</file>
@@ -17,7 +17,7 @@
      <file>charts/ChartView.qml</file>
      <file>charts/qmldir</file>
      <file>charts/StyledChart.qml</file>
-     <file>charts/StyledChartFin.qml</file>
+     <file>charts/StyledChartLev.qml</file>
      <file>charts/StyledChartLiqu.qml</file>
      <file>charts/StyledChartEff.qml</file>
      <file>charts/StyledChartProf.qml</file>

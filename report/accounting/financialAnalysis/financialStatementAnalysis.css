@@ -33,7 +33,7 @@ table.myTableUsedSetting td {
     padding-bottom: 1px;
 }
 
-table.myTableBilancio td {
+table.myTableBalance td {
     border-collapse: collapse;
     border-style: solid;
     border-color: rgb(0, 0, 0);
@@ -42,7 +42,7 @@ table.myTableBilancio td {
     padding-bottom: 1px;
 }
 
-table.myTableBilancioSumsControl td {
+table.myTableBalanceSumsControl td {
     border-collapse: collapse;
     border-style: solid;
     border-color: rgb(0, 0, 0);
@@ -78,7 +78,7 @@ table.myIndliqTable td {
     padding-bottom: 1px;
 }
 
-table.myIndfinTable td {
+table.myIndlevTable td {
     border-collapse: collapse;
     border-style: solid;
     border-color: rgb(0, 0, 0);
@@ -130,6 +130,7 @@ table.myTableAltmanIndex td {
 .styleGroupTitles {
     font-weight: bold;
     color: #0e055a;
+    font-size: 11pt;
     padding-top: 5px;
     padding-bottom: 5px;
 }
@@ -139,10 +140,6 @@ table.myTableAltmanIndex td {
     background-color: #FBF876;
     font-weight: bold;
     text-align: center;
-}
-
-.styleUnderGroupTitles {
-    color: #0e055a;
 }
 
 .styleNormal {

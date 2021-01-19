@@ -23,12 +23,12 @@ BasePage {
             Layout.fillHeight: true
 
             Text {
-               text: qsTr("Financing index variation")
+               text: qsTr("Leverage index variation")
                font.pixelSize: Stylesheet.titleFontSize
                Layout.bottomMargin: Stylesheet.defaultMargin
             }
 
-            StyledChartFin {
+            StyledChartLev {
                id: mainChart
                height: availableHeight
                width: availableWidth
@@ -68,14 +68,14 @@ BasePage {
                      var year= periodo;
                      if (year.length>0 && yearList.indexOf(year)<0)
                         yearList.push(year);
-                     data.grcuas[year] = financialStatementAnalysis.data[i].index.fin.grcuas.amount;
-                     data.grfixa[year] = financialStatementAnalysis.data[i].index.fin.grfixa.amount;
-                     data.gdin[year] = financialStatementAnalysis.data[i].index.fin.gdin.amount;
-                     data.gfcp[year] = financialStatementAnalysis.data[i].index.fin.gfcp.amount;
-                     data.gdau[year] = financialStatementAnalysis.data[i].index.fin.gdau.amount;
-                     data.fixaco[year] = financialStatementAnalysis.data[i].index.fin.fixaco.amount;
+                     data.grcuas[year] = financialStatementAnalysis.data[i].index.lev.grcuas.amount;
+                     data.grfixa[year] = financialStatementAnalysis.data[i].index.lev.grfixa.amount;
+                     data.gdin[year] = financialStatementAnalysis.data[i].index.lev.gdin.amount;
+                     data.gfcp[year] = financialStatementAnalysis.data[i].index.lev.gfcp.amount;
+                     data.gdau[year] = financialStatementAnalysis.data[i].index.lev.gdau.amount;
+                     data.fixaco[year] = financialStatementAnalysis.data[i].index.lev.fixaco.amount;
                   }
-                     for (var i = yearList.length - 1; i >= 0; i--) {
+                  for (var i = 0; i < yearList.length; i++) {
                      var year = yearList[i];
                      chartData.datasets[i] = {};
                      chartData.datasets[i].label = year;
