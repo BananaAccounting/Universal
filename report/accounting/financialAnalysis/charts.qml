@@ -27,7 +27,7 @@ BasePage {
       pageModel.append({'title': EfficiencyChart,'page': 'chartEff.qml'});
       pageModel.append({'title': ReclassifiedAssetsVariationChart,'page': 'chartRAtt.qml'});
       pageModel.append({'title': ReclassifiedLiabilitiesAndEquityVariationChart,'page': 'chartRPass.qml'});
-      pageModel.append({'title': ReclassifiedProfitAndLossVariation,'page': 'chartProfLoss.qml'});
+      pageModel.append({'title': ReclassifiedProfitAndLossVariation,'page': 'chartRProLos.qml'});
    }
 
    Component.onCompleted: {

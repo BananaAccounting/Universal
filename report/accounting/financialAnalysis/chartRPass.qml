@@ -71,7 +71,7 @@ BasePage {
                   var dataSerie3 = [];
                   var dataSerie4 = [];
                   var dataSum = [];
-                  for (var i = financialStatementAnalysis.length - 1; i >= 0; i--) {
+                  for (var i = financialStatementAnalysis.data.length - 1; i >= 0; i--) {
                      var periodo = financialStatementAnalysis.data[i].period.StartDate;
                      //for dont cut the Budget string in Budg.
                      var elementType = financialStatementAnalysis.data[i].period.Type;
@@ -82,13 +82,13 @@ BasePage {
                      if (yearList.indexOf(year)<0){
                         yearList.push(year);
                      }
-                     var sumStdc= Banana.SDecimal.abs(financialStatementAnalysis.data[i].bilancio.ct.stdc.balance);
+                     var sumStdc= Banana.SDecimal.abs(financialStatementAnalysis.data[i].balance.dc.stdc.balance);
                      dataSerie1.push(sumStdc);
-                     var sumLtdc=Banana.SDecimal.abs(financialStatementAnalysis.data[i].bilancio.ct.ltdc.balance);
+                     var sumLtdc=Banana.SDecimal.abs(financialStatementAnalysis.data[i].balance.dc.ltdc.balance);
                      dataSerie2.push(sumLtdc);
-                     var sumObca=Banana.SDecimal.abs(financialStatementAnalysis.data[i].bilancio.cp.obca.balance);
+                     var sumObca=Banana.SDecimal.abs(financialStatementAnalysis.data[i].balance.oc.obca.balance);
                      dataSerie3.push(sumObca);
-                     var sumReut=Banana.SDecimal.abs(financialStatementAnalysis.data[i].bilancio.cp.reut.balance);
+                     var sumReut=Banana.SDecimal.abs(financialStatementAnalysis.data[i].balance.oc.reut.balance);
                      dataSerie4.push(sumReut); 
                      
                      var sum = sumStdc;

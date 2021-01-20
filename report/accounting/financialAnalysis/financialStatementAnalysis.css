@@ -7,7 +7,7 @@
 
 body {
     font-family: Calibri;
-    font-size: 7pt;
+    font-size: 9pt;
 }
 
 table {
@@ -205,19 +205,19 @@ table.myTableAltmanIndex td {
 
 .styleUpArrow {
     color: green;
-    font-size: 18px;
+    font-size: 12px;
     margin: 0px;
 }
 
 .styleDownArrow {
     color: red;
-    font-size: 18px;
+    font-size: 12px;
     margin: 0px;
 }
 
 .styleEqualArrow {
-    color: yellow;
-    font-size: 18px;
+    color: orange;
+    font-size: 12px;
     margin: 0px;
 }
 

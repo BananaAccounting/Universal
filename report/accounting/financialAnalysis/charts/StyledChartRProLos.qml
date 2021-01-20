@@ -28,6 +28,12 @@ ChartView {
          'stroke': "#3333cc",
          'point': "#FF008D",
          'pointStroke': "#FFFFFF"
+      },
+      {
+         'fill': 'rgba(234, 234, 71, 0.4)', 
+         'stroke': "#3333cc",
+         'point': "#FF008D",
+         'pointStroke': "#FFFFFF"
       }
    ]
 
@@ -35,7 +41,8 @@ ChartView {
 
    chartData: {
       'labels' : [
-      ],
+            qsTr("Added value"),"EBIT-DA","EBIT",qsTr("Final Result")
+            ],
        'datasets' : [
        ]
    }
@@ -47,8 +54,8 @@ ChartView {
       },
       'tooltips': {
          'mode': 'index',
-         'intersect': true,
-         'titleFontSize': 18,
+         'intersect': false,
+         'titleFontSize': 16,
          'bodyFontSize': 14,
          'callbacks': {
             'labelColor' : function(tooltipItem, chart) {
@@ -65,10 +72,15 @@ ChartView {
          }
       },
       'scales': {
-         'xAxes': [{stacked:true}],
-         'yAxes': [{stacked:true}]
-      },
-      'barValueSpacing': 15,
+         'yAxes': [{
+               'ticks': {
+               callback: function (value) {
+               return value;
+               },
+                  'beginAtZero' : true,
+               }
+            }]
+      }
    }
 
    BusyIndicator {
