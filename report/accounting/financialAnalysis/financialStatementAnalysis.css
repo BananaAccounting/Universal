@@ -107,6 +107,7 @@ table.myIndeffTable td {
 
 table.myDupontTable td {
     border-collapse: collapse;
+    border-style: solid;
     width: auto;
     padding-top: 1px;
     padding-bottom: 1px;

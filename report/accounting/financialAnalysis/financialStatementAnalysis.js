@@ -77,14 +77,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         if (this.dialogparam.acronymcolumn) {
             tableRow.addCell(texts.acronym, "styleTableHeader");
         }
-        for (var i = this.data.length - 1; i >= 0; i--) {
-            var year = this.data[i].period.StartDate;
-            var elementType = this.data[i].period.Type;
-            if (elementType === "Y") {
-                year = year.substr(0, 4);
-            }
-            tableRow.addCell(year, "styleTableHeader");
-        }
+        this.generateHeaderColumns(tableRow);
         return tableBalance;
     }
 
@@ -104,7 +97,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
     printReportAddTableConCeControlSums(report) {
         var texts = this.initFinancialAnalysisTexts();
         var tableConCeSumsControl = report.addTable('mytableConCeSumsControl');
-        tableConCeSumsControl.getCaption().addText(texts.upperprofandlosscontrolsums, "styleGroupTitles");
+        tableConCeSumsControl.getCaption().addText(texts.profandlosscontrolsums, "styleGroupTitles");
         // header
         var tableHeader = tableConCeSumsControl.getHeader();
         var tableRow = tableHeader.addRow();
@@ -125,14 +118,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         if (this.dialogparam.acronymcolumn) {
             tableRow.addCell(texts.acronym, "styleTableHeader");
         }
-        for (var i = this.data.length - 1; i >= 0; i--) {
-            var year = this.data[i].period.StartDate;
-            var elementType = this.data[i].period.Type;
-            if (elementType === "Y") {
-                year = year.substr(0, 4);
-            }
-            tableRow.addCell(year, "styleTableHeader");
-        }
+        this.generateHeaderColumns(tableRow);
         return tableConCe;
     }
 
@@ -150,15 +136,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         if (this.dialogparam.formulascolumn) {
             tableRow.addCell(texts.formula, "styleTableHeader");
         }
-        for (var i = this.data.length - 1; i >= 0; i--) {
-            var year = this.data[i].period.StartDate;
-            var elementType = this.data[i].period.Type;
-            if (elementType === "Y") {
-                year = year.substr(0, 4);
-            }
-            tableRow.addCell(year, "styleTableHeader");
-
-        }
+        this.generateHeaderColumns(tableRow);
         tableRow.addCell(texts.benchmark, "styleTableHeader");
         return tableIndliq;
     }
@@ -176,14 +154,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         if (this.dialogparam.formulascolumn) {
             tableRow.addCell(texts.formula, "styleTableHeader");
         }
-        for (var i = this.data.length - 1; i >= 0; i--) {
-            var year = this.data[i].period.StartDate;
-            var elementType = this.data[i].period.Type;
-            if (elementType === "Y") {
-                year = year.substr(0, 4);
-            }
-            tableRow.addCell(year, "styleTableHeader");
-        }
+        this.generateHeaderColumns(tableRow);
         tableRow.addCell(texts.benchmark, "styleTableHeader");
         return tableIndlev;
     }
@@ -201,14 +172,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         if (this.dialogparam.formulascolumn) {
             tableRow.addCell(texts.formula, "styleTableHeader");
         }
-        for (var i = this.data.length - 1; i >= 0; i--) {
-            var year = this.data[i].period.StartDate;
-            var elementType = this.data[i].period.Type;
-            if (elementType === "Y") {
-                year = year.substr(0, 4);
-            }
-            tableRow.addCell(year, "styleTableHeader");
-        }
+        this.generateHeaderColumns(tableRow);
         tableRow.addCell(texts.benchmark, "styleTableHeader");
         return tableIndprof;
     }
@@ -227,19 +191,14 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         if (this.dialogparam.formulascolumn) {
             tableRow.addCell(texts.formula, "styleTableHeader");
         }
-        for (var i = this.data.length - 1; i >= 0; i--) {
-            var year = this.data[i].period.StartDate;
-            var elementType = this.data[i].period.Type;
-            if (elementType === "Y") {
-                year = year.substr(0, 4);
-            }
-            tableRow.addCell(year, "styleTableHeader");
-        }
+        this.generateHeaderColumns(tableRow);
         return tableIndeff;
     }
 
     printReportAddTableDupont(report) {
+        var texts = this.initFinancialAnalysisTexts();
         var tableDupont = report.addTable('myDupontTable');
+        tableDupont.getCaption().addText(texts.upperdupontscheme, "styleGroupTitles");
         return tableDupont;
     }
 
@@ -250,6 +209,12 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         // header
         var tableHeader = tableAltmanIndex.getHeader();
         var tableRow = tableHeader.addRow();
+        this.generateHeaderColumns(tableRow);
+        return tableAltmanIndex;
+
+    }
+
+    generateHeaderColumns(tableRow, ) {
         for (var i = this.data.length - 1; i >= 0; i--) {
             var year = this.data[i].period.StartDate;
             var elementType = this.data[i].period.Type;
@@ -258,15 +223,12 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             }
             tableRow.addCell(year, "styleTableHeader");
         }
-
-        return tableAltmanIndex;
-
     }
 
     /**
      * this method calculate the rate of growth of two indexes with the following formula: ((Xt-Xt-1)/Xt-1)*100.
-     * @dialogparam {*} indexT1 
-     * @dialogparam {*} indexT2 
+     * @Param {*} indexT1 
+     * @Param {*} indexT2 
      */
     setRateOfGrowth(indexT1, indexT2) {
         var rateOfGrowth = Banana.SDecimal.subtract(indexT1, indexT2);
@@ -668,7 +630,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             for (var i = this.data.length - 1; i >= 0; i--) {
                 var perc = "";
                 var stile = "";
-                var cell = "";
+                var cell = tableRow.addCell();
                 var ratios = this.data[i].index.liqu[key].amount;
                 if (this.data[0].index.liqu[key].type != "dec") {
                     perc = "%";
@@ -679,12 +641,12 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                     stile = "styleRatiosAmount";
                 }
                 //add the index evolution icons, the space ' ' is a placeholder for the icon
-                cell = tableRow.addCell(ratios + perc + ' ', stile);
                 if (i < analsysisYears) {
                     var indexT1 = this.data[i].index.liqu[key].amount;
                     var indexT2 = this.data[i + 1].index.liqu[key].amount;
                     this.setIndexEvolution(indexT1, indexT2, cell);
                 }
+                cell.addText(ratios + perc + ' ', stile);
 
 
             }
@@ -702,12 +664,13 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             }
             for (var i = this.data.length - 1; i >= 0; i--) {
                 var ratios = this.data[i].index.lev[key].amount;
-                cell = tableRow.addCell(ratios + "%" + '  ', "styleRatiosAmount");
+                var cell = tableRow.addCell();
                 if (i < analsysisYears) {
                     var indexT1 = this.data[i].index.lev[key].amount;
                     var indexT2 = this.data[i + 1].index.lev[key].amount;
                     this.setIndexEvolution(indexT1, indexT2, cell);
                 }
+                cell.addText(ratios + "%" + '  ', "styleRatiosAmount");
             }
             tableRow.addCell(this.data[0].index.lev[key].benchmark, "styleNormal");
         }
@@ -723,12 +686,13 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             }
             for (var i = this.data.length - 1; i >= 0; i--) {
                 var ratios = this.data[i].index.red[key].amount;
-                cell = tableRow.addCell(ratios + "%" + '  ', "styleRatiosAmount");
+                var cell = tableRow.addCell();
                 if (i < analsysisYears) {
                     var indexT1 = this.data[i].index.red[key].amount;
                     var indexT2 = this.data[i + 1].index.red[key].amount;
                     this.setIndexEvolution(indexT1, indexT2, cell);
                 }
+                cell.addText(ratios + "%" + '  ', "styleRatiosAmount");
             }
             tableRow.addCell(this.data[0].index.red[key].benchmark, "styleNormal");
         }
@@ -753,7 +717,6 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var year = "";
         var sep = "";
 
-        report.addParagraph(texts.upperdupontscheme, "styleGroupTitles");
         var Arrayindexcurr;
         var Arrayindexprec;
 
@@ -766,10 +729,12 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         }
 
         var tabledupont = this.printReportAddTableDupont(report);
+
         var tableRow = tabledupont.addRow();
-        tableRow.addCell(" ", "emptyCells", 5);
-        tableRow.addCell(texts.current, "styleTableHeader");
-        tableRow.addCell(texts.previous, "styleTableHeader");
+        tableRow.addCell("Description", "styleTableHeader", 5);
+        tableRow.addCell(qsTr("Current"), "styleTableHeader");
+        tableRow.addCell(qsTr("Previous"), "styleTableHeader")
+
 
         var tableRow = tabledupont.addRow();
         tableRow.addCell("ROI (ROT*MOL)", 'styleTitlesTotAmount', 2);
@@ -1296,6 +1261,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         texts.acronym = qsTr("Acronym");
         texts.formula = qsTr("formula");
         texts.balancecontrolsums = qsTr("BALANCE CONTROL SUMS");
+        texts.profandlosscontrolsums = qsTr("PROFIT AND LOSS CONTROL SUMS");
         texts.profitandloss = qsTr("Profit and Loss");
         texts.year = qsTr("Year");
         texts.accountingtotal = qsTr("Accounting Total");
@@ -1387,6 +1353,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
      * @returns an object named dialogparam with all the parameters initialized with a default value
      */
     initDialogParam() {
+
+
         var texts = this.initFinancialAnalysisTexts();
         var dialogparam = {};
         dialogparam.version = "v1.0";
@@ -1893,6 +1861,16 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
     }
 
     /**
+     * 
+     * 
+     */
+    exportingNegativeLiquidity() {
+
+    }
+
+
+
+    /**
      * @description Instantiate an *index= {}* object that will contain all the calculated ratios.
      * retrieve the values of the calculated parameters and data.
      * divide the indexes by type thanks to the properties of the objects.
@@ -2339,7 +2317,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var currentdialogparam = {};
         currentdialogparam.name = 'liqu';
         currentdialogparam.group = 'balance';
-        currentdialogparam.title = dialogparam.balance.ca.liqu.description ? dialogparam.balance.ca.liqu.description : defaultParam.balance.ca.liqu.description;
+        currentdialogparam.title = defaultParam.balance.ca.liqu.description;
         currentdialogparam.type = 'string';
         currentdialogparam.value = dialogparam.balance.ca.liqu.gr ? dialogparam.balance.ca.liqu.gr : '';
         currentdialogparam.defaultvalue = defaultParam.balance.ca.liqu.gr;
@@ -2354,7 +2332,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var currentdialogparam = {};
         currentdialogparam.name = 'cred';
         currentdialogparam.group = 'balance';
-        currentdialogparam.title = dialogparam.balance.ca.cred.description ? dialogparam.balance.ca.cred.description : defaultParam.balance.ca.cred.description;
+        currentdialogparam.title = defaultParam.balance.ca.cred.description;
         currentdialogparam.type = 'string';
         currentdialogparam.value = dialogparam.balance.ca.cred.gr ? dialogparam.balance.ca.cred.gr : '';
         currentdialogparam.defaultvalue = defaultParam.balance.ca.cred.gr;
@@ -2367,7 +2345,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var currentdialogparam = {};
         currentdialogparam.name = 'stoc';
         currentdialogparam.group = 'balance';
-        currentdialogparam.title = dialogparam.balance.ca.stoc.description ? dialogparam.balance.ca.stoc.description : defaultParam.balance.ca.stoc.description;
+        currentdialogparam.title = defaultParam.balance.ca.stoc.description;
         currentdialogparam.type = 'string';
         currentdialogparam.value = dialogparam.balance.ca.stoc.gr ? dialogparam.balance.ca.stoc.gr : '';
         currentdialogparam.defaultvalue = defaultParam.balance.ca.stoc.gr;
@@ -2380,7 +2358,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var currentdialogparam = {};
         currentdialogparam.name = 'fixa';
         currentdialogparam.group = 'balance';
-        currentdialogparam.title = dialogparam.balance.fa.fixa.description ? dialogparam.balance.fa.fixa.description : defaultParam.balance.fa.fixa.description;
+        currentdialogparam.title = defaultParam.balance.fa.fixa.description;
         currentdialogparam.type = 'string';
         currentdialogparam.value = dialogparam.balance.fa.fixa.gr ? dialogparam.balance.fa.fixa.gr : '';
         currentdialogparam.defaultvalue = defaultParam.balance.fa.fixa.gr;
@@ -2393,7 +2371,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var currentdialogparam = {};
         currentdialogparam.name = 'stdc';
         currentdialogparam.group = 'balance';
-        currentdialogparam.title = dialogparam.balance.dc.stdc.description ? dialogparam.balance.dc.stdc.description : defaultParam.balance.dc.stdc.description;
+        currentdialogparam.title = defaultParam.balance.dc.stdc.description;
         currentdialogparam.type = 'string';
         currentdialogparam.value = dialogparam.balance.dc.stdc.gr ? dialogparam.balance.dc.stdc.gr : '';
         currentdialogparam.defaultvalue = defaultParam.balance.dc.stdc.gr;
@@ -2406,7 +2384,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var currentdialogparam = {};
         currentdialogparam.name = 'ltdc';
         currentdialogparam.group = 'balance';
-        currentdialogparam.title = dialogparam.balance.dc.ltdc.description ? dialogparam.balance.dc.ltdc.description : defaultParam.balance.dc.ltdc.description;
+        currentdialogparam.title = defaultParam.balance.dc.ltdc.description;
         currentdialogparam.type = 'string';
         currentdialogparam.value = dialogparam.balance.dc.ltdc.gr ? dialogparam.balance.dc.ltdc.gr : '';
         currentdialogparam.defaultvalue = defaultParam.balance.dc.ltdc.gr;
@@ -2419,7 +2397,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var currentdialogparam = {};
         currentdialogparam.name = 'obca';
         currentdialogparam.group = 'balance';
-        currentdialogparam.title = dialogparam.balance.oc.obca.description ? dialogparam.balance.oc.obca.description : defaultParam.balance.oc.obca.description;
+        currentdialogparam.title = defaultParam.balance.oc.obca.description;
         currentdialogparam.type = 'string';
         currentdialogparam.value = dialogparam.balance.oc.obca.gr ? dialogparam.balance.oc.obca.gr : '';
         currentdialogparam.defaultvalue = defaultParam.balance.oc.obca.gr;
@@ -2432,7 +2410,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var currentdialogparam = {};
         currentdialogparam.name = 'reut';
         currentdialogparam.group = 'balance';
-        currentdialogparam.title = dialogparam.balance.oc.reut.description ? dialogparam.balance.oc.reut.description : defaultParam.balance.oc.reut.description;
+        currentdialogparam.title = defaultParam.balance.oc.reut.description;
         currentdialogparam.type = 'string';
         currentdialogparam.value = dialogparam.balance.oc.reut.gr ? dialogparam.balance.oc.reut.gr : '';
         currentdialogparam.defaultvalue = defaultParam.balance.oc.reut.gr;
@@ -2445,7 +2423,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var currentdialogparam = {};
         currentdialogparam.name = 'satu';
         currentdialogparam.group = 'profitandloss';
-        currentdialogparam.title = dialogparam.profitandloss.satu.description ? dialogparam.profitandloss.satu.description : defaultParam.profitandloss.satu.description;
+        currentdialogparam.title = defaultParam.profitandloss.satu.description;
         currentdialogparam.type = 'string';
         currentdialogparam.value = dialogparam.profitandloss.satu.gr ? dialogparam.profitandloss.satu.gr : '';
         currentdialogparam.defaultvalue = defaultParam.profitandloss.satu.gr;
@@ -2458,7 +2436,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var currentdialogparam = {};
         currentdialogparam.name = 'cofm';
         currentdialogparam.group = 'profitandloss';
-        currentdialogparam.title = dialogparam.profitandloss.cofm.description ? dialogparam.profitandloss.cofm.description : defaultParam.profitandloss.cofm.description;
+        currentdialogparam.title = defaultParam.profitandloss.cofm.description;
         currentdialogparam.type = 'string';
         currentdialogparam.value = dialogparam.profitandloss.cofm.gr ? dialogparam.profitandloss.cofm.gr : '';
         currentdialogparam.defaultvalue = defaultParam.profitandloss.cofm.gr;
@@ -2471,7 +2449,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var currentdialogparam = {};
         currentdialogparam.name = 'cope';
         currentdialogparam.group = 'profitandloss';
-        currentdialogparam.title = dialogparam.profitandloss.cope.description ? dialogparam.profitandloss.cope.description : defaultParam.profitandloss.cope.description;
+        currentdialogparam.title = defaultParam.profitandloss.cope.description;
         currentdialogparam.type = 'string';
         currentdialogparam.value = dialogparam.profitandloss.cope.gr ? dialogparam.profitandloss.cope.gr : '';
         currentdialogparam.defaultvalue = defaultParam.profitandloss.cope.gr;
@@ -2484,7 +2462,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var currentdialogparam = {};
         currentdialogparam.name = 'codi';
         currentdialogparam.group = 'profitandloss';
-        currentdialogparam.title = dialogparam.profitandloss.codi.description ? dialogparam.profitandloss.codi.description : defaultParam.profitandloss.codi.description;
+        currentdialogparam.title = defaultParam.profitandloss.codi.description;
         currentdialogparam.type = 'string';
         currentdialogparam.value = dialogparam.profitandloss.codi.gr ? dialogparam.profitandloss.codi.gr : '';
         currentdialogparam.defaultvalue = defaultParam.profitandloss.codi.gr;
@@ -2497,7 +2475,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var currentdialogparam = {};
         currentdialogparam.name = 'inte';
         currentdialogparam.group = 'profitandloss';
-        currentdialogparam.title = dialogparam.profitandloss.inte.description ? dialogparam.profitandloss.inte.description : defaultParam.profitandloss.inte.description;
+        currentdialogparam.title = defaultParam.profitandloss.inte.description;
         currentdialogparam.type = 'string';
         currentdialogparam.value = dialogparam.profitandloss.inte.gr ? dialogparam.profitandloss.inte.gr : '';
         currentdialogparam.defaultvalue = defaultParam.profitandloss.inte.gr;
@@ -2510,7 +2488,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var currentdialogparam = {};
         currentdialogparam.name = 'amre';
         currentdialogparam.group = 'profitandloss';
-        currentdialogparam.title = dialogparam.profitandloss.amre.description ? dialogparam.profitandloss.amre.description : defaultParam.profitandloss.amre.description;
+        currentdialogparam.title = defaultParam.profitandloss.amre.description;
         currentdialogparam.type = 'string';
         currentdialogparam.value = dialogparam.profitandloss.amre.gr ? dialogparam.profitandloss.amre.gr : '';
         currentdialogparam.defaultvalue = defaultParam.profitandloss.amre.gr;
@@ -2523,7 +2501,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var currentdialogparam = {};
         currentdialogparam.name = 'fire';
         currentdialogparam.group = 'profitandloss';
-        currentdialogparam.title = dialogparam.finalresult.fire.description ? dialogparam.finalresult.fire.description : defaultParam.finalresult.fire.description;
+        currentdialogparam.title = defaultParam.finalresult.fire.description;
         currentdialogparam.type = 'string';
         currentdialogparam.value = dialogparam.finalresult.fire.gr ? dialogparam.finalresult.fire.gr : '';
         currentdialogparam.defaultvalue = defaultParam.finalresult.fire.gr;
@@ -2630,7 +2608,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var currentdialogparam = {};
         currentdialogparam.name = 'liq1benchmark';
         currentdialogparam.group = 'benchmarks';
-        currentdialogparam.title = dialogparam.ratios.liquidityratios.liqu1.description ? dialogparam.ratios.liquidityratios.liqu1.description : defaultParam.ratios.liquidityratios.liqu1.description;
+        currentdialogparam.title = defaultParam.ratios.liquidityratios.liqu1.description;
         currentdialogparam.type = 'string';
         currentdialogparam.value = dialogparam.ratios.liquidityratios.liqu1.value ? dialogparam.ratios.liquidityratios.liqu1.value : '';
         currentdialogparam.defaultvalue = defaultParam.ratios.liquidityratios.liqu1.value;
@@ -2644,7 +2622,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var currentdialogparam = {};
         currentdialogparam.name = 'liq2benchmark';
         currentdialogparam.group = 'benchmarks';
-        currentdialogparam.title = dialogparam.ratios.liquidityratios.liqu2.description ? dialogparam.ratios.liquidityratios.liqu2.description : defaultParam.ratios.liquidityratios.liqu2.description;
+        currentdialogparam.title = defaultParam.ratios.liquidityratios.liqu2.description;
         currentdialogparam.type = 'string';
         currentdialogparam.value = dialogparam.ratios.liquidityratios.liqu2.value ? dialogparam.ratios.liquidityratios.liqu2.value : '';
         currentdialogparam.defaultvalue = defaultParam.ratios.liquidityratios.liqu2.value;
@@ -2658,7 +2636,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var currentdialogparam = {};
         currentdialogparam.name = 'liq3benchmark';
         currentdialogparam.group = 'benchmarks';
-        currentdialogparam.title = dialogparam.ratios.liquidityratios.liqu3.description ? dialogparam.ratios.liquidityratios.liqu3.description : defaultParam.ratios.liquidityratios.liqu3.description;
+        currentdialogparam.title = defaultParam.ratios.liquidityratios.liqu3.description;
         currentdialogparam.type = 'string';
         currentdialogparam.value = dialogparam.ratios.liquidityratios.liqu3.value ? dialogparam.ratios.liquidityratios.liqu3.value : '';
         currentdialogparam.defaultvalue = defaultParam.ratios.liquidityratios.liqu3.value;
@@ -2672,7 +2650,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var currentdialogparam = {};
         currentdialogparam.name = 'netcurrassbenchmark';
         currentdialogparam.group = 'benchmarks';
-        currentdialogparam.title = dialogparam.ratios.liquidityratios.netcurrass.description ? dialogparam.ratios.liquidityratios.netcurrass.description : defaultParam.ratios.liquidityratios.netcurrass.description;
+        currentdialogparam.title = defaultParam.ratios.liquidityratios.netcurrass.description;
         currentdialogparam.type = 'string';
         currentdialogparam.value = dialogparam.ratios.liquidityratios.netcurrass.value ? dialogparam.ratios.liquidityratios.netcurrass.value : '';
         currentdialogparam.defaultvalue = defaultParam.ratios.liquidityratios.netcurrass.value;
@@ -2686,7 +2664,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var currentdialogparam = {};
         currentdialogparam.name = 'cirractbenchmark';
         currentdialogparam.group = 'benchmarks';
-        currentdialogparam.title = dialogparam.ratios.leverageratios.cirract.description ? dialogparam.ratios.leverageratios.cirract.description : defaultParam.ratios.leverageratios.cirract.description;
+        currentdialogparam.title = defaultParam.ratios.leverageratios.cirract.description;
         currentdialogparam.type = 'string';
         currentdialogparam.value = dialogparam.ratios.leverageratios.cirract.value ? dialogparam.ratios.leverageratios.cirract.value : '';
         currentdialogparam.defaultvalue = defaultParam.ratios.leverageratios.cirract.value;
@@ -2700,7 +2678,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var currentdialogparam = {};
         currentdialogparam.name = 'fixassbenchmark';
         currentdialogparam.group = 'benchmarks';
-        currentdialogparam.title = dialogparam.ratios.leverageratios.fixass.description ? dialogparam.ratios.leverageratios.fixass.description : defaultParam.ratios.leverageratios.fixass.description;
+        currentdialogparam.title = defaultParam.ratios.leverageratios.fixass.description;
         currentdialogparam.type = 'string';
         currentdialogparam.value = dialogparam.ratios.leverageratios.fixass.value ? dialogparam.ratios.leverageratios.fixass.value : '';
         currentdialogparam.defaultvalue = defaultParam.ratios.leverageratios.fixass.value;
@@ -2714,7 +2692,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var currentdialogparam = {};
         currentdialogparam.name = 'lvldebbenchmark';
         currentdialogparam.group = 'benchmarks';
-        currentdialogparam.title = dialogparam.ratios.leverageratios.lvldeb.description ? dialogparam.ratios.leverageratios.lvldeb.description : defaultParam.ratios.leverageratios.lvldeb.description;
+        currentdialogparam.title = defaultParam.ratios.leverageratios.lvldeb.description;
         currentdialogparam.type = 'string';
         currentdialogparam.value = dialogparam.ratios.leverageratios.lvldeb.value ? dialogparam.ratios.leverageratios.lvldeb.value : '';
         currentdialogparam.defaultvalue = defaultParam.ratios.leverageratios.lvldeb.value;
@@ -2728,7 +2706,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var currentdialogparam = {};
         currentdialogparam.name = 'lvlequbenchmark';
         currentdialogparam.group = 'benchmarks';
-        currentdialogparam.title = dialogparam.ratios.leverageratios.lvlequ.description ? dialogparam.ratios.leverageratios.lvlequ.description : defaultParam.ratios.leverageratios.lvlequ.description;
+        currentdialogparam.title = defaultParam.ratios.leverageratios.lvlequ.description;
         currentdialogparam.type = 'string';
         currentdialogparam.value = dialogparam.ratios.leverageratios.lvlequ.value ? dialogparam.ratios.leverageratios.lvlequ.value : '';
         currentdialogparam.defaultvalue = defaultParam.ratios.leverageratios.lvlequ.value;
@@ -2742,7 +2720,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var currentdialogparam = {};
         currentdialogparam.name = 'lvlselbenchmark';
         currentdialogparam.group = 'benchmarks';
-        currentdialogparam.title = dialogparam.ratios.leverageratios.lvlsel.description ? dialogparam.ratios.leverageratios.lvlsel.description : defaultParam.ratios.leverageratios.lvlsel.description;
+        currentdialogparam.title = defaultParam.ratios.leverageratios.lvlsel.description;
         currentdialogparam.type = 'string';
         currentdialogparam.value = dialogparam.ratios.leverageratios.lvlsel.value ? dialogparam.ratios.leverageratios.lvlsel.value : '';
         currentdialogparam.defaultvalue = defaultParam.ratios.leverageratios.lvlsel.value;
@@ -2756,7 +2734,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var currentdialogparam = {};
         currentdialogparam.name = 'covfixbenchmark';
         currentdialogparam.group = 'benchmarks';
-        currentdialogparam.title = dialogparam.ratios.leverageratios.covfix.description ? dialogparam.ratios.leverageratios.covfix.description : defaultParam.ratios.leverageratios.covfix.description;
+        currentdialogparam.title = defaultParam.ratios.leverageratios.covfix.description;
         currentdialogparam.type = 'string';
         currentdialogparam.value = dialogparam.ratios.leverageratios.covfix.value ? dialogparam.ratios.leverageratios.covfix.value : '';
         currentdialogparam.defaultvalue = defaultParam.ratios.leverageratios.covfix.value;
@@ -2784,7 +2762,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var currentdialogparam = {};
         currentdialogparam.name = 'roibenchmark';
         currentdialogparam.group = 'benchmarks';
-        currentdialogparam.title = dialogparam.ratios.profitabilityratios.profroi.description ? dialogparam.ratios.profitabilityratios.profroi.description : defaultParam.ratios.profitabilityratios.profroi.description;
+        currentdialogparam.title = defaultParam.ratios.profitabilityratios.profroi.description;
         currentdialogparam.type = 'string';
         currentdialogparam.value = dialogparam.ratios.profitabilityratios.profroi.value ? dialogparam.ratios.profitabilityratios.profroi.value : '';
         currentdialogparam.defaultvalue = defaultParam.ratios.profitabilityratios.profroi.value;
@@ -2799,7 +2777,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var currentdialogparam = {};
         currentdialogparam.name = 'rosbenchmark';
         currentdialogparam.group = 'benchmarks';
-        currentdialogparam.title = dialogparam.ratios.profitabilityratios.profros.description ? dialogparam.ratios.profitabilityratios.profros.description : defaultParam.ratios.profitabilityratios.profros.description;
+        currentdialogparam.title = defaultParam.ratios.profitabilityratios.profros.description;
         currentdialogparam.type = 'string';
         currentdialogparam.value = dialogparam.ratios.profitabilityratios.profros.value ? dialogparam.ratios.profitabilityratios.profros.value : '';
         currentdialogparam.defaultvalue = defaultParam.ratios.profitabilityratios.profros.value;
@@ -2813,7 +2791,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var currentdialogparam = {};
         currentdialogparam.name = 'molbenchmark';
         currentdialogparam.group = 'benchmarks';
-        currentdialogparam.title = dialogparam.ratios.profitabilityratios.profmol.description ? dialogparam.ratios.profitabilityratios.profmol.description : defaultParam.ratios.profitabilityratios.profmol.description;
+        currentdialogparam.title = defaultParam.ratios.profitabilityratios.profmol.description;
         currentdialogparam.type = 'string';
         currentdialogparam.value = dialogparam.ratios.profitabilityratios.profmol.value ? dialogparam.ratios.profitabilityratios.profmol.value : '';
         currentdialogparam.defaultvalue = defaultParam.ratios.profitabilityratios.profmol.value;
@@ -2827,7 +2805,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var currentdialogparam = {};
         currentdialogparam.name = 'ebmbenchmark';
         currentdialogparam.group = 'benchmarks';
-        currentdialogparam.title = dialogparam.ratios.profitabilityratios.profebm.description ? dialogparam.ratios.profitabilityratios.profebm.description : defaultParam.ratios.profitabilityratios.profebm.description;
+        currentdialogparam.title = defaultParam.ratios.profitabilityratios.profebm.description;
         currentdialogparam.type = 'string';
         currentdialogparam.value = dialogparam.ratios.profitabilityratios.profebm.value ? dialogparam.ratios.profitabilityratios.profebm.value : '';
         currentdialogparam.defaultvalue = defaultParam.ratios.profitabilityratios.profebm.value;
@@ -2841,7 +2819,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var currentdialogparam = {};
         currentdialogparam.name = 'monbenchmark';
         currentdialogparam.group = 'benchmarks';
-        currentdialogparam.title = dialogparam.ratios.profitabilityratios.profmon.description ? dialogparam.ratios.profitabilityratios.profmon.description : defaultParam.ratios.profitabilityratios.profebm.description;
+        currentdialogparam.title = defaultParam.ratios.profitabilityratios.profmon.description;
         currentdialogparam.type = 'string';
         currentdialogparam.value = dialogparam.ratios.profitabilityratios.profmon.value ? dialogparam.ratios.profitabilityratios.profmon.value : '';
         currentdialogparam.defaultvalue = defaultParam.ratios.profitabilityratios.profmon.value;
