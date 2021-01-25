@@ -167,8 +167,7 @@ table.myTableAltmanIndex td {
 }
 
 .styleRatiosAmount {
-    text-align: center;
-    font-weight: bold;
+    text-align: right;
     width: 100%;
 }
 
@@ -205,18 +204,21 @@ table.myTableAltmanIndex td {
 }
 
 .styleUpArrow {
+    text-align: right;
     color: green;
     font-size: 12px;
     margin: 0px;
 }
 
 .styleDownArrow {
+    text-align: right;
     color: red;
     font-size: 12px;
     margin: 0px;
 }
 
 .styleEqualArrow {
+    text-align: right;
     color: orange;
     font-size: 12px;
     margin: 0px;
