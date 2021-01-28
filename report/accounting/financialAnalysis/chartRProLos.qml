@@ -65,10 +65,10 @@ BasePage {
                      var year= periodo;
                      if (year.length>0 && yearList.indexOf(year)<0)
                         yearList.push(year);
-                     data.adva[year] = financialStatementAnalysis.data[i].CalculatedData.AddedValue;
-                     data.ebitda[year] = financialStatementAnalysis.data[i].CalculatedData.EbitDa;
-                     data.ebit[year] = financialStatementAnalysis.data[i].CalculatedData.Ebit;
-                     data.tota[year] = financialStatementAnalysis.data[i].CalculatedData.TotAnnual;
+                     data.adva[year] = financialStatementAnalysis.data[i].CalculatedData.addedvalue;
+                     data.ebitda[year] = financialStatementAnalysis.data[i].CalculatedData.ebitda;
+                     data.ebit[year] = financialStatementAnalysis.data[i].CalculatedData.ebit;
+                     data.tota[year] = financialStatementAnalysis.data[i].CalculatedData.annualresult;
                   }
                   for (var i = 0; i < yearList.length; i++) {
                      var year = yearList[i];

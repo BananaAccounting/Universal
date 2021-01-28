@@ -82,13 +82,13 @@ BasePage {
                      if (yearList.indexOf(year)<0){
                         yearList.push(year);
                      }
-                     var sumStdc= Banana.SDecimal.abs(financialStatementAnalysis.data[i].balance.dc.stdc.balance);
+                     var sumStdc= Banana.SDecimal.abs(financialStatementAnalysis.data[i].balance.dc.shorttermdebtcapital.balance);
                      dataSerie1.push(sumStdc);
-                     var sumLtdc=Banana.SDecimal.abs(financialStatementAnalysis.data[i].balance.dc.ltdc.balance);
+                     var sumLtdc=Banana.SDecimal.abs(financialStatementAnalysis.data[i].balance.dc.longtermdebtcapital.balance);
                      dataSerie2.push(sumLtdc);
-                     var sumObca=Banana.SDecimal.abs(financialStatementAnalysis.data[i].balance.oc.obca.balance);
+                     var sumObca=Banana.SDecimal.abs(financialStatementAnalysis.data[i].balance.oc.ownbasecapital.balance);
                      dataSerie3.push(sumObca);
-                     var sumReut=Banana.SDecimal.abs(financialStatementAnalysis.data[i].balance.oc.reut.balance);
+                     var sumReut=Banana.SDecimal.abs(financialStatementAnalysis.data[i].balance.oc.reservesandprofits.balance);
                      dataSerie4.push(sumReut); 
                      
                      var sum = sumStdc;

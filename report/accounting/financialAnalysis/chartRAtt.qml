@@ -83,13 +83,13 @@ BasePage {
                         yearList.push(year);
                      }
                      
-                     var sumLiq= Banana.SDecimal.abs(financialStatementAnalysis.data[i].balance.ca.liqu.balance);
+                     var sumLiq= Banana.SDecimal.abs(financialStatementAnalysis.data[i].balance.ca.liquidity.balance);
                      dataSerie1.push(sumLiq);
-                     var sumCred=Banana.SDecimal.abs(financialStatementAnalysis.data[i].balance.ca.cred.balance);
+                     var sumCred=Banana.SDecimal.abs(financialStatementAnalysis.data[i].balance.ca.credits.balance);
                      dataSerie2.push(sumCred);
-                     var sumStoc=Banana.SDecimal.abs(financialStatementAnalysis.data[i].balance.ca.stoc.balance);
+                     var sumStoc=Banana.SDecimal.abs(financialStatementAnalysis.data[i].balance.ca.stocks.balance);
                      dataSerie3.push(sumStoc);
-                     var sumFixa=Banana.SDecimal.abs(financialStatementAnalysis.data[i].balance.fa.fixa.balance);
+                     var sumFixa=Banana.SDecimal.abs(financialStatementAnalysis.data[i].balance.fa.fixedassets.balance);
                      dataSerie4.push(sumFixa); 
                      
                      var sum = sumLiq;
