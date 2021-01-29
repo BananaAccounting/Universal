@@ -2116,9 +2116,6 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
     convertParam() {
         var lang = this.getLang();
         var defaultParam = this.initDialogParam();
-        Banana.console.debug(JSON.stringify(defaultParam.ratios.efficiencyratios));
-        Banana.console.debug("*********************************************************");
-        Banana.console.debug(JSON.stringify(this.dialogparam.efficiencyratios));
         var userParam = this.dialogparam;
         var convertedParam = {};
         convertedParam.version = '1.0';
@@ -3118,6 +3115,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
      */
     setParam(dialogparam) {
         this.dialogparam = dialogparam;
+        Banana.console.debug(JSON.stringify(dialogparam));
         return this.verifyParam();
     }
 
