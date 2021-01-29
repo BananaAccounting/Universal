@@ -427,6 +427,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             var tableRow = tableBalance.addRow("styleTablRows");
 
             description = this.data[0].balance.ca[key].description;
+            if (texts[key])
+                description = texts[key];
             //Banana.console.debug(JSON.stringify(this.data[0]balance.ca[key].description));
             acronym = this.data[0].balance.ca[key].acronym;
 
@@ -455,6 +457,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             var tableRow = tableBalance.addRow("styleTablRows");
 
             description = this.data[0].balance.fa[key].description;
+            if (texts[key])
+                description = texts[key];
             acronym = this.data[0].balance.fa[key].acronym;
 
             tableRow.addCell(description);
@@ -495,6 +499,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             var tableRow = tableBalance.addRow("styleTablRows");
 
             description = this.data[0].balance.dc[key].description;
+            if (texts[key])
+                description = texts[key];
             acronym = this.data[0].balance.dc[key].acronym;
 
             tableRow.addCell(description);
@@ -523,6 +529,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             var tableRow = tableBalance.addRow("styleTablRows");
 
             description = this.data[0].balance.oc[key].description;
+            if (texts[key])
+                description = texts[key];
             acronym = this.data[0].balance.oc[key].acronym;
 
             tableRow.addCell(description);
@@ -613,6 +621,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
             var invertAmount = false;
             var description = this.data[0].profitandloss[key].description;
+            if (texts[key])
+                description = texts[key];
             var acronym = this.data[0].profitandloss[key].acronym
 
             if (key == "costofmerchandservices" || key == "personnelcosts" || key == "differentcosts" || key == "depreandadjust") {
