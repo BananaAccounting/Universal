@@ -11,12 +11,15 @@ body {
 }
 
 table {
-    font-size: 10px;
+    font-size: 9pt;
     width: 100%;
 }
 
+.header_text {
+    font-size: 9px;
+}
+
 table.myTableCompanyInfo td {
-    border-collapse: collapse;
     border-style: solid;
     border-color: rgb(0, 0, 0);
     width: auto;
@@ -25,7 +28,6 @@ table.myTableCompanyInfo td {
 }
 
 table.myTableUsedSetting td {
-    border-collapse: collapse;
     border-style: solid;
     border-color: rgb(0, 0, 0);
     width: auto;
@@ -34,7 +36,6 @@ table.myTableUsedSetting td {
 }
 
 table.myTableBalance td {
-    border-collapse: collapse;
     border-style: solid;
     border-color: rgb(0, 0, 0);
     width: auto;
@@ -43,7 +44,6 @@ table.myTableBalance td {
 }
 
 table.myTableBalanceSumsControl td {
-    border-collapse: collapse;
     border-style: solid;
     border-color: rgb(0, 0, 0);
     width: auto;
@@ -52,7 +52,6 @@ table.myTableBalanceSumsControl td {
 }
 
 table.myConTableCe td {
-    border-collapse: collapse;
     border-style: solid;
     border-color: rgb(0, 0, 0);
     width: auto;
@@ -61,7 +60,6 @@ table.myConTableCe td {
 }
 
 table.mytableConCeSumsControl td {
-    border-collapse: collapse;
     border-style: solid;
     border-color: rgb(0, 0, 0);
     width: auto;
@@ -70,7 +68,6 @@ table.mytableConCeSumsControl td {
 }
 
 table.myIndliqTable td {
-    border-collapse: collapse;
     border-style: solid;
     width: auto;
     border-color: rgb(0, 0, 0);
@@ -79,7 +76,6 @@ table.myIndliqTable td {
 }
 
 table.myIndlevTable td {
-    border-collapse: collapse;
     border-style: solid;
     border-color: rgb(0, 0, 0);
     width: auto;
@@ -88,7 +84,6 @@ table.myIndlevTable td {
 }
 
 table.myIndprofTable td {
-    border-collapse: collapse;
     border-style: solid;
     border-color: rgb(0, 0, 0);
     width: auto;
@@ -97,7 +92,6 @@ table.myIndprofTable td {
 }
 
 table.myIndeffTable td {
-    border-collapse: collapse;
     border-style: solid;
     border-color: rgb(0, 0, 0);
     width: auto;
@@ -106,7 +100,6 @@ table.myIndeffTable td {
 }
 
 table.myDupontTable td {
-    border-collapse: collapse;
     border-style: solid;
     width: auto;
     padding-top: 1px;
@@ -114,7 +107,6 @@ table.myDupontTable td {
 }
 
 table.myTableAltmanIndex td {
-    border-collapse: collapse;
     border-style: solid;
     border-color: rgb(0, 0, 0);
     width: auto;

@@ -290,16 +290,30 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
      * @Param {object} report: the report created
      */
     addHeader(report) {
+        var stylesheet = this.getReportStyle();
+        var headerParagraph = report.getHeader().addSection();
+        if (this.dialogparam.printlogo) {
+            var headerParagraph = report.addSection("");
+            var logoFormat = Banana.Report.logoFormat(this.dialogparam.logoname); //Logo
+            if (logoFormat) {
+                var logoElement = logoFormat.createDocNode(headerParagraph, stylesheet, "logo");
+                report.getHeader().addChild(logoElement);
+            } else {
+                headerParagraph.addClass("header_text");
+            }
+
+        } else {
+            headerParagraph.addClass("header_text");
+        }
         var texts = this.initFinancialAnalysisTexts();
         var analsysisYears = this.data.length;
         analsysisYears -= 1;
         var docInfo = this.getDocumentInfo();
         var company = docInfo.company;
         var Address1 = docInfo.address1;
-        var headerParagraph = report.getHeader().addSection();
-        headerParagraph.addParagraph(texts.financialstatementanalysis);
-        headerParagraph.addParagraph(company);
-        headerParagraph.addParagraph(Address1);
+        headerParagraph.addParagraph(texts.financialstatementanalysis, "header_text");
+        headerParagraph.addParagraph(company, "header_text");
+        headerParagraph.addParagraph(Address1, "header_text");
         var sep = "";
         var period = "";
         for (var i = this.data.length - 1; i >= 0; i--) {
@@ -315,24 +329,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             period = period + " " + sep + " " + year;
 
         }
-        headerParagraph.addParagraph(texts.upperanalysisperiod + ": " + period);
-
-        /*
-        var headerParagraph = report.getHeader().addSection();
-        if (this.dialogparam.printlogo) {
-            var headerParagraph = report.addSection("");
-            var logoFormat = Banana.Report.logoFormat(this.dialogparam.logoname); //Logo
-            Banana.console.debug(JSON.stringify(logoFormat));
-            if (logoFormat) {
-                var logoElement = logoFormat.createDocNode(headerParagraph, "header_text", "logo");
-                report.getHeader().addChild(logoElement);
-            } else {
-                headerParagraph.addClass("header_text");
-            }
-
-        } else {
-            headerParagraph.addClass("header_text");
-        }*/
+        headerParagraph.addParagraph(texts.upperanalysisperiod + ": " + period, "header_text");
     }
 
     /**
@@ -357,7 +354,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
      * @param {*} texts the texts presents in the table
      * @param {*} data the document data.
      */
-    createControlSumsSection(tableControlSums, texts, data) {
+    createControlSumsSection(tableControlSums, texts, data, ) {
         var tableRow = tableControlSums.addRow("styleTablRows");
         tableRow.addCell(texts, "styleUnderGroupTitles", 4);
         for (var i = data.length - 1; i >= 0; i--) {
@@ -1047,6 +1044,21 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         texts.ebit_acronym = "EBIT";
         texts.ebitda_acronym = "EBIT-DA";
 
+        /******************************************************************************************
+         * texts for tooltips
+         ******************************************************************************************/
+        texts.groups_tooltip = qsTr("Enter the groups");
+        texts.logo_tooltip = qsTr("Check to include Logo");
+        texts.logoname_tooltip = qsTr("Enter the Logo name");
+        texts.numberofpreviousyear_tooltip = qsTr("Enter the number of previous accounting years you wish to include in the analysis");
+        texts.numberofdecimals_tooltip = qsTr("Enter the number of decimals for the amounts");
+        texts.includebudget_tooltip = qsTr("Check to include the Budget in the Analysis");
+        texts.includedupontanalysis_tooltip = qsTr("Check to include the DuPont Analysis table");
+        texts.includecontrolsums_tooltip = qsTr("Check to include the Control Sums table");
+        texts.showacronymcolumn_tooltip = qsTr("Check to show the Acronym Column");
+        texts.showformulascolumn_tooltip = qsTr("Check to show the Formulas Column");
+        texts.benchmarks_tooltip = qsTr("Enter the Benchmark for this index");
+        texts.averagenumberofemployee_tooltip = qsTr("Enter the number of employees in your company");
 
 
 
@@ -1110,6 +1122,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         texts.costs = qsTr('Costs');
         texts.totalcosts = qsTr("Total Costs");
         texts.preferences = qsTr('Preferences');
+        texts.printdetails = qsTr('Print Details');
+        texts.analysisdetails = qsTr('Analysis Details');
         texts.texts = qsTr('Texts');
         texts.benchmarktexts = qsTr('Benchmarks texts');
         texts.numberofpreviousyear = qsTr('Number of previous years');
@@ -1120,7 +1134,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         texts.showacronymcolumn = qsTr('Show Acronym column');
         texts.showformulascolumn = qsTr('Show Formulas column');
         texts.printlogo = 'Logo';
-        texts.logoname = "Logo alignment";
+        texts.logoname = "Composition for logo and header alignment";
         texts.averageemployees = qsTr('Average number of employees');
         texts.leverage = qsTr('Leverage');
         texts.profitability = qsTr('Profitability');
@@ -2166,6 +2180,25 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
         convertedParam.data.push(currentParam);
 
+        //I create an undergroup for the preferences, the Print Details
+        var currentParam = {};
+        currentParam.name = 'Print Details';
+        currentParam.title = texts.printdetails;
+        currentParam.editable = false;
+        currentParam.parentObject = 'Preferences';
+
+        convertedParam.data.push(currentParam);
+
+        //I create an undergroup for the preferences, the Analysis Details
+        var currentParam = {};
+        currentParam.name = 'Analysis Details';
+        currentParam.title = texts.analysisdetails;
+        currentParam.editable = false;
+        currentParam.parentObject = 'Preferences';
+
+        convertedParam.data.push(currentParam);
+
+
         // create an another group, Texts
         var currentParam = {};
         currentParam.name = 'Texts';
@@ -2227,7 +2260,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.type = 'string';
         currentParam.value = userParam.balance.ca.liquidity.gr ? userParam.balance.ca.liquidity.gr : '';
         currentParam.defaultvalue = defaultParam.balance.ca.liquidity.gr;
-        //I assign it to a group
+        currentParam.tooltip = texts.groups_tooltip;
         currentParam.parentObject = 'Assets';
         currentParam.readValue = function() {
             userParam.balance.ca.liquidity.gr = this.value;
@@ -2242,6 +2275,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.type = 'string';
         currentParam.value = userParam.balance.ca.credits.gr ? userParam.balance.ca.credits.gr : '';
         currentParam.defaultvalue = defaultParam.balance.ca.credits.gr;
+        currentParam.tooltip = texts.groups_tooltip;
         currentParam.parentObject = 'Assets';
         currentParam.readValue = function() {
             userParam.balance.ca.credits.gr = this.value;
@@ -2255,6 +2289,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.type = 'string';
         currentParam.value = userParam.balance.ca.stocks.gr ? userParam.balance.ca.stocks.gr : '';
         currentParam.defaultvalue = defaultParam.balance.ca.stocks.gr;
+        currentParam.tooltip = texts.groups_tooltip;
         currentParam.parentObject = 'Assets';
         currentParam.readValue = function() {
             userParam.balance.ca.stocks.gr = this.value;
@@ -2268,6 +2303,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.type = 'string';
         currentParam.value = userParam.balance.fa.fixedassets.gr ? userParam.balance.fa.fixedassets.gr : '';
         currentParam.defaultvalue = defaultParam.balance.fa.fixedassets.gr;
+        currentParam.tooltip = texts.groups_tooltip;
         currentParam.parentObject = 'Assets';
         currentParam.readValue = function() {
             userParam.balance.fa.fixedassets.gr = this.value;
@@ -2281,6 +2317,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.type = 'string';
         currentParam.value = userParam.balance.dc.shorttermdebtcapital.gr ? userParam.balance.dc.shorttermdebtcapital.gr : '';
         currentParam.defaultvalue = defaultParam.balance.dc.shorttermdebtcapital.gr;
+        currentParam.tooltip = texts.groups_tooltip;
         currentParam.parentObject = 'Liabilities and Equity';
         currentParam.readValue = function() {
             userParam.balance.dc.shorttermdebtcapital.gr = this.value;
@@ -2294,6 +2331,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.type = 'string';
         currentParam.value = userParam.balance.dc.longtermdebtcapital.gr ? userParam.balance.dc.longtermdebtcapital.gr : '';
         currentParam.defaultvalue = defaultParam.balance.dc.longtermdebtcapital.gr;
+        currentParam.tooltip = texts.groups_tooltip;
         currentParam.parentObject = 'Liabilities and Equity';
         currentParam.readValue = function() {
             userParam.balance.dc.longtermdebtcapital.gr = this.value;
@@ -2307,6 +2345,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.type = 'string';
         currentParam.value = userParam.balance.oc.ownbasecapital.gr ? userParam.balance.oc.ownbasecapital.gr : '';
         currentParam.defaultvalue = defaultParam.balance.oc.ownbasecapital.gr;
+        currentParam.tooltip = texts.groups_tooltip;
         currentParam.parentObject = 'Liabilities and Equity';
         currentParam.readValue = function() {
             userParam.balance.oc.ownbasecapital.gr = this.value;
@@ -2320,6 +2359,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.type = 'string';
         currentParam.value = userParam.balance.oc.reservesandprofits.gr ? userParam.balance.oc.reservesandprofits.gr : '';
         currentParam.defaultvalue = defaultParam.balance.oc.reservesandprofits.gr;
+        currentParam.tooltip = texts.groups_tooltip;
         currentParam.parentObject = 'Liabilities and Equity';
         currentParam.readValue = function() {
             userParam.balance.oc.reservesandprofits.gr = this.value;
@@ -2333,6 +2373,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.type = 'string';
         currentParam.value = userParam.profitandloss.salesturnover.gr ? userParam.profitandloss.salesturnover.gr : '';
         currentParam.defaultvalue = defaultParam.profitandloss.salesturnover.gr;
+        currentParam.tooltip = texts.groups_tooltip;
         currentParam.parentObject = 'Revenues';
         currentParam.readValue = function() {
             userParam.profitandloss.salesturnover.gr = this.value;
@@ -2346,6 +2387,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.type = 'string';
         currentParam.value = userParam.profitandloss.costofmerchandservices.gr ? userParam.profitandloss.costofmerchandservices.gr : '';
         currentParam.defaultvalue = defaultParam.profitandloss.costofmerchandservices.gr;
+        currentParam.tooltip = texts.groups_tooltip;
         currentParam.parentObject = 'Costs';
         currentParam.readValue = function() {
             userParam.profitandloss.costofmerchandservices.gr = this.value;
@@ -2359,6 +2401,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.type = 'string';
         currentParam.value = userParam.profitandloss.personnelcosts.gr ? userParam.profitandloss.personnelcosts.gr : '';
         currentParam.defaultvalue = defaultParam.profitandloss.personnelcosts.gr;
+        currentParam.tooltip = texts.groups_tooltip;
         currentParam.parentObject = 'Costs';
         currentParam.readValue = function() {
             userParam.profitandloss.personnelcosts.gr = this.value;
@@ -2372,6 +2415,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.type = 'string';
         currentParam.value = userParam.profitandloss.differentcosts.gr ? userParam.profitandloss.differentcosts.gr : '';
         currentParam.defaultvalue = defaultParam.profitandloss.differentcosts.gr;
+        currentParam.tooltip = texts.groups_tooltip;
         currentParam.parentObject = 'Costs';
         currentParam.readValue = function() {
             userParam.profitandloss.differentcosts.gr = this.value;
@@ -2385,6 +2429,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.type = 'string';
         currentParam.value = userParam.profitandloss.interests.gr ? userParam.profitandloss.interests.gr : '';
         currentParam.defaultvalue = defaultParam.profitandloss.interests.gr;
+        currentParam.tooltip = texts.groups_tooltip;
         currentParam.parentObject = 'Costs';
         currentParam.readValue = function() {
             userParam.profitandloss.interests.gr = this.value;
@@ -2398,6 +2443,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.type = 'string';
         currentParam.value = userParam.profitandloss.depreandadjust.gr ? userParam.profitandloss.depreandadjust.gr : '';
         currentParam.defaultvalue = defaultParam.profitandloss.depreandadjust.gr;
+        currentParam.tooltip = texts.groups_tooltip;
         currentParam.parentObject = 'Costs';
         currentParam.readValue = function() {
             userParam.profitandloss.depreandadjust.gr = this.value;
@@ -2411,6 +2457,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.type = 'string';
         currentParam.value = userParam.finalresult.finalresult.gr ? userParam.finalresult.finalresult.gr : '';
         currentParam.defaultvalue = defaultParam.finalresult.finalresult.gr;
+        currentParam.tooltip = texts.groups_tooltip;
         currentParam.parentObject = 'Final Result';
         currentParam.readValue = function() {
             userParam.finalresult.finalresult.gr = this.value;
@@ -2425,7 +2472,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.type = 'bool';
         currentParam.value = userParam.printlogo ? userParam.printlogo : userParam.printlogo;
         currentParam.defaultvalue = defaultParam.printlogo;
-        currentParam.parentObject = 'Preferences';
+        currentParam.tooltip = texts.logo_tooltip;
+        currentParam.parentObject = 'Print Details';
         currentParam.readValue = function() {
             userParam.printlogo = this.value;
         }
@@ -2439,7 +2487,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.type = 'string';
         currentParam.value = userParam.logoname ? userParam.logoname : userParam.logoname;
         currentParam.defaultvalue = defaultParam.logoname;
-        currentParam.parentObject = 'Preferences';
+        currentParam.tooltip = texts.logoname_tooltip;
+        currentParam.parentObject = 'Print Details';
         currentParam.readValue = function() {
             userParam.logoname = this.value;
         }
@@ -2454,7 +2503,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.type = 'string';
         currentParam.value = userParam.maxpreviousyears ? userParam.maxpreviousyears : '2';
         currentParam.defaultvalue = defaultParam.maxpreviousyears;
-        currentParam.parentObject = 'Preferences';
+        currentParam.tooltip = texts.numberofpreviousyear_tooltip;
+        currentParam.parentObject = 'Analysis Details';
         currentParam.readValue = function() {
             userParam.maxpreviousyears = this.value;
         }
@@ -2469,7 +2519,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.type = 'string';
         currentParam.value = userParam.numberofdecimals ? userParam.numberofdecimals : '2';
         currentParam.defaultvalue = defaultParam.numberofdecimals;
-        currentParam.parentObject = 'Preferences';
+        currentParam.tooltip = texts.numberofdecimals_tooltip;
+        currentParam.parentObject = 'Analysis Details';
         currentParam.readValue = function() {
             userParam.numberofdecimals = this.value;
         }
@@ -2484,14 +2535,15 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.type = 'bool';
         currentParam.value = userParam.includebudgettable ? userParam.includebudgettable : userParam.includebudgettable;
         currentParam.defaultvalue = defaultParam.includebudgettable;
-        currentParam.parentObject = 'Preferences';
+        currentParam.tooltip = texts.includebudget_tooltip;
+        currentParam.parentObject = 'Analysis Details';
         currentParam.readValue = function() {
             userParam.includebudgettable = this.value;
         }
 
         convertedParam.data.push(currentParam);
 
-        //Include the Dupont elements table in the analysis
+        //Include the Dupont analysis table in the analysis
         var currentParam = {};
         currentParam.name = 'includedupontanalysis';
         currentParam.group = 'preferences';
@@ -2499,14 +2551,15 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.type = 'bool';
         currentParam.value = userParam.includedupontanalysis ? userParam.includedupontanalysis : userParam.includedupontanalysis;
         currentParam.defaultvalue = defaultParam.includedupontanalysis;
-        currentParam.parentObject = 'Preferences';
+        currentParam.tooltip = texts.includedupontanalysis_tooltip;
+        currentParam.parentObject = 'Analysis Details';
         currentParam.readValue = function() {
             userParam.includedupontanalysis = this.value;
         }
 
         convertedParam.data.push(currentParam);
 
-        //Include the Dupont elements table in the analysis
+        //Include the control sums table
         var currentParam = {};
         currentParam.name = 'includecontrolsums';
         currentParam.group = 'preferences';
@@ -2514,7 +2567,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.type = 'bool';
         currentParam.value = userParam.includecontrolsums ? userParam.includecontrolsums : userParam.includecontrolsums;
         currentParam.defaultvalue = defaultParam.includecontrolsums;
-        currentParam.parentObject = 'Preferences';
+        currentParam.tooltip = texts.includecontrolsums_tooltip;
+        currentParam.parentObject = 'Analysis Details';
         currentParam.readValue = function() {
             userParam.includecontrolsums = this.value;
         }
@@ -2529,7 +2583,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.type = 'bool';
         currentParam.value = userParam.acronymcolumn ? userParam.acronymcolumn : userParam.acronymcolumn;
         currentParam.defaultvalue = defaultParam.acronymcolumn;
-        currentParam.parentObject = 'Preferences';
+        currentParam.tooltip = texts.showacronymcolumn_tooltip;
+        currentParam.parentObject = 'Analysis Details';
         currentParam.readValue = function() {
             userParam.acronymcolumn = this.value;
         }
@@ -2545,7 +2600,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.type = 'bool';
         currentParam.value = userParam.formulascolumn ? userParam.formulascolumn : userParam.formulascolumn;
         currentParam.defaultvalue = defaultParam.formulascolumn;
-        currentParam.parentObject = 'Preferences';
+        currentParam.tooltip = texts.showformulascolumn_tooltip;
+        currentParam.parentObject = 'Analysis Details';
         currentParam.readValue = function() {
             userParam.formulascolumn = this.value;
         }
@@ -2561,6 +2617,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.type = 'string';
         currentParam.value = userParam.numberofemployees ? userParam.numberofemployees : userParam.numberofemployees;
         currentParam.defaultvalue = defaultParam.numberofemployees;
+        currentParam.tooltip = texts.averagenumberofemployee_tooltip;
         currentParam.parentObject = 'Company Information';
         currentParam.readValue = function() {
             userParam.numberofemployees = this.value;
@@ -2577,6 +2634,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.type = 'string';
         currentParam.value = userParam.ratios.liquidityratios.cashratio.value ? userParam.ratios.liquidityratios.cashratio.value : '';
         currentParam.defaultvalue = defaultParam.ratios.liquidityratios.cashratio.value;
+        currentParam.tooltip = texts.benchmarks_tooltip;
         currentParam.parentObject = 'Liquidity';
         currentParam.readValue = function() {
             userParam.ratios.liquidityratios.cashratio.value = this.value;
@@ -2591,6 +2649,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.type = 'string';
         currentParam.value = userParam.ratios.liquidityratios.quickratio.value ? userParam.ratios.liquidityratios.quickratio.value : '';
         currentParam.defaultvalue = defaultParam.ratios.liquidityratios.quickratio.value;
+        currentParam.tooltip = texts.benchmarks_tooltip;
         currentParam.parentObject = 'Liquidity';
         currentParam.readValue = function() {
             userParam.ratios.liquidityratios.quickratio.value = this.value;
@@ -2605,6 +2664,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.type = 'string';
         currentParam.value = userParam.ratios.liquidityratios.currentratio.value ? userParam.ratios.liquidityratios.currentratio.value : '';
         currentParam.defaultvalue = defaultParam.ratios.liquidityratios.currentratio.value;
+        currentParam.tooltip = texts.benchmarks_tooltip;
         currentParam.parentObject = 'Liquidity';
         currentParam.readValue = function() {
             userParam.ratios.liquidityratios.currentratio.value = this.value;
@@ -2619,6 +2679,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.type = 'string';
         currentParam.value = userParam.ratios.liquidityratios.netcurrentasset.value ? userParam.ratios.liquidityratios.netcurrentasset.value : '';
         currentParam.defaultvalue = defaultParam.ratios.liquidityratios.netcurrentasset.value;
+        currentParam.tooltip = texts.benchmarks_tooltip;
         currentParam.parentObject = 'Liquidity';
         currentParam.readValue = function() {
             userParam.ratios.liquidityratios.netcurrentasset.value = this.value;
@@ -2633,6 +2694,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.type = 'string';
         currentParam.value = userParam.ratios.leverageratios.degreecirculatingasset.value ? userParam.ratios.leverageratios.degreecirculatingasset.value : '';
         currentParam.defaultvalue = defaultParam.ratios.leverageratios.degreecirculatingasset.value;
+        currentParam.tooltip = texts.benchmarks_tooltip;
         currentParam.parentObject = 'Leverage';
         currentParam.readValue = function() {
             userParam.ratios.leverageratios.degreecirculatingasset.value = this.value;
@@ -2647,6 +2709,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.type = 'string';
         currentParam.value = userParam.ratios.leverageratios.percentagefixedasset.value ? userParam.ratios.leverageratios.percentagefixedasset.value : '';
         currentParam.defaultvalue = defaultParam.ratios.leverageratios.percentagefixedasset.value;
+        currentParam.tooltip = texts.benchmarks_tooltip;
         currentParam.parentObject = 'Leverage';
         currentParam.readValue = function() {
             userParam.ratios.leverageratios.percentagefixedasset.value = this.value;
@@ -2661,6 +2724,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.type = 'string';
         currentParam.value = userParam.ratios.leverageratios.debtratio.value ? userParam.ratios.leverageratios.debtratio.value : '';
         currentParam.defaultvalue = defaultParam.ratios.leverageratios.debtratio.value;
+        currentParam.tooltip = texts.benchmarks_tooltip;
         currentParam.parentObject = 'Leverage';
         currentParam.readValue = function() {
             userParam.ratios.leverageratios.debtratio.value = this.value;
@@ -2675,6 +2739,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.type = 'string';
         currentParam.value = userParam.ratios.leverageratios.equityratio.value ? userParam.ratios.leverageratios.equityratio.value : '';
         currentParam.defaultvalue = defaultParam.ratios.leverageratios.equityratio.value;
+        currentParam.tooltip = texts.benchmarks_tooltip;
         currentParam.parentObject = 'Leverage';
         currentParam.readValue = function() {
             userParam.ratios.leverageratios.equityratio.value = this.value;
@@ -2689,6 +2754,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.type = 'string';
         currentParam.value = userParam.ratios.leverageratios.selfinancingratio.value ? userParam.ratios.leverageratios.selfinancingratio.value : '';
         currentParam.defaultvalue = defaultParam.ratios.leverageratios.selfinancingratio.value;
+        currentParam.tooltip = texts.benchmarks_tooltip;
         currentParam.parentObject = 'Leverage';
         currentParam.readValue = function() {
             userParam.ratios.leverageratios.selfinancingratio.value = this.value;
@@ -2703,6 +2769,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.type = 'string';
         currentParam.value = userParam.ratios.leverageratios.fixedassetcoverage.value ? userParam.ratios.leverageratios.fixedassetcoverage.value : '';
         currentParam.defaultvalue = defaultParam.ratios.leverageratios.fixedassetcoverage.value;
+        currentParam.tooltip = texts.benchmarks_tooltip;
         currentParam.parentObject = 'Leverage';
         currentParam.readValue = function() {
             userParam.ratios.leverageratios.fixedassetcoverage.value = this.value;
@@ -2717,6 +2784,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.type = 'string';
         currentParam.value = userParam.ratios.profitabilityratios.profroe.value ? userParam.ratios.profitabilityratios.profroe.value : '';
         currentParam.defaultvalue = defaultParam.ratios.profitabilityratios.profroe.value;
+        currentParam.tooltip = texts.benchmarks_tooltip;
         currentParam.parentObject = 'Profitability';
         currentParam.readValue = function() {
             userParam.ratios.profitabilityratios.profroe.value = this.value;
@@ -2731,6 +2799,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.type = 'string';
         currentParam.value = userParam.ratios.profitabilityratios.profroi.value ? userParam.ratios.profitabilityratios.profroi.value : '';
         currentParam.defaultvalue = defaultParam.ratios.profitabilityratios.profroi.value;
+        currentParam.tooltip = texts.benchmarks_tooltip;
         currentParam.parentObject = 'Profitability';
         currentParam.readValue = function() {
             userParam.ratios.profitabilityratios.profroi.value = this.value;
@@ -2746,6 +2815,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.type = 'string';
         currentParam.value = userParam.ratios.profitabilityratios.profros.value ? userParam.ratios.profitabilityratios.profros.value : '';
         currentParam.defaultvalue = defaultParam.ratios.profitabilityratios.profros.value;
+        currentParam.tooltip = texts.benchmarks_tooltip;
         currentParam.parentObject = 'Profitability';
         currentParam.readValue = function() {
             userParam.ratios.profitabilityratios.profros.value = this.value;
@@ -2760,6 +2830,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.type = 'string';
         currentParam.value = userParam.ratios.profitabilityratios.profmol.value ? userParam.ratios.profitabilityratios.profmol.value : '';
         currentParam.defaultvalue = defaultParam.ratios.profitabilityratios.profmol.value;
+        currentParam.tooltip = texts.benchmarks_tooltip;
         currentParam.parentObject = 'Profitability';
         currentParam.readValue = function() {
             userParam.ratios.profitabilityratios.profmol.value = this.value;
@@ -2774,6 +2845,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.type = 'string';
         currentParam.value = userParam.ratios.profitabilityratios.profebm.value ? userParam.ratios.profitabilityratios.profebm.value : '';
         currentParam.defaultvalue = defaultParam.ratios.profitabilityratios.profebm.value;
+        currentParam.tooltip = texts.benchmarks_tooltip;
         currentParam.parentObject = 'Profitability';
         currentParam.readValue = function() {
             userParam.ratios.profitabilityratios.profebm.value = this.value;
@@ -2788,6 +2860,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.type = 'string';
         currentParam.value = userParam.ratios.profitabilityratios.profmon.value ? userParam.ratios.profitabilityratios.profmon.value : '';
         currentParam.defaultvalue = defaultParam.ratios.profitabilityratios.profmon.value;
+        currentParam.tooltip = texts.benchmarks_tooltip;
         currentParam.parentObject = 'Profitability';
         currentParam.readValue = function() {
             userParam.ratios.profitabilityratios.profmon.value = this.value;
@@ -2802,6 +2875,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.type = 'string';
         currentParam.value = userParam.ratios.efficiencyratios.revenueperemployee.value ? userParam.ratios.efficiencyratios.revenueperemployee.value : '';
         currentParam.defaultvalue = defaultParam.ratios.efficiencyratios.revenueperemployee.value;
+        currentParam.tooltip = texts.benchmarks_tooltip;
         currentParam.parentObject = 'Efficiency';
         currentParam.readValue = function() {
             userParam.ratios.efficiencyratios.revenueperemployee.value = this.value;
@@ -2816,6 +2890,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.type = 'string';
         currentParam.value = userParam.ratios.efficiencyratios.addedvalueperemployee.value ? userParam.ratios.efficiencyratios.addedvalueperemployee.value : '';
         currentParam.defaultvalue = defaultParam.ratios.efficiencyratios.addedvalueperemployee.value;
+        currentParam.tooltip = texts.benchmarks_tooltip;
         currentParam.parentObject = 'Efficiency';
         currentParam.readValue = function() {
             userParam.ratios.efficiencyratios.addedvalueperemployee.value = this.value;
@@ -2830,6 +2905,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.type = 'string';
         currentParam.value = userParam.ratios.efficiencyratios.personnelcostperemployee.value ? userParam.ratios.efficiencyratios.personnelcostperemployee.value : '';
         currentParam.defaultvalue = defaultParam.ratios.efficiencyratios.personnelcostperemployee.value;
+        currentParam.tooltip = texts.benchmarks_tooltip;
         currentParam.parentObject = 'Efficiency';
         currentParam.readValue = function() {
             userParam.ratios.efficiencyratios.personnelcostperemployee.value = this.value;
