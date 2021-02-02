@@ -1,3 +1,7 @@
+/***************************************************
+style for the Report sections/principal objects
+***************************************************/
+
 @page {
     margin-top: 5mm;
     margin-bottom: 5mm;
@@ -18,6 +22,11 @@ table {
 .header_text {
     font-size: 9px;
 }
+
+
+/***************************************************
+style for the tables
+****************************************************/
 
 table.myTableCompanyInfo td {
     border-style: solid;
@@ -114,13 +123,61 @@ table.myTableAltmanIndex td {
     padding-bottom: 1px;
 }
 
-.styleCompanyInfocells {
-    background-color: #FBF876;
-    text-align: center;
+
+/**********************************************************
+style's for the amounts
+**********************************************************/
+
+.styleNormalAmount {
+    text-align: right;
+}
+
+
+/*style for the middle totals*/
+
+.styleMidTotalAmount {
+    text-align: right;
     font-weight: bold;
 }
 
-.styleGroupTitles {
+.styleTotalAmount {
+    background-color: #e5f2ff;
+    font-weight: bold;
+    text-align: right;
+}
+
+
+/*those 3 style's are for the Altman z Score Index values*/
+
+.styleZIndexLow {
+    background-color: #00ff00;
+    text-align: center;
+}
+
+.styleZIndexMid {
+    background-color: #ffff00;
+    text-align: center;
+}
+
+.styleZIndexProb {
+    background-color: #ff0000;
+    text-align: center;
+}
+
+
+/*style for the amount when the difference between calculated total and the accounting total is>than 0*/
+
+.styleDifferenceFoundAmount {
+    color: #ff0000;
+    text-align: right;
+}
+
+
+/*******************************************************
+style's for the texts
+********************************************************/
+
+.styleTitles {
     font-weight: bold;
     color: #0e055a;
     font-size: 11pt;
@@ -128,39 +185,22 @@ table.myTableAltmanIndex td {
     padding-bottom: 5px;
 }
 
-.styleTableHeader {
+.styleTablesHeaderText {
     color: #0e055a;
     background-color: #FBF876;
     font-weight: bold;
     text-align: center;
 }
 
-.styleNormal {
+.styleCentralText {
     text-align: center;
 }
 
-.styleAmount {
-    text-align: right;
-}
 
-.styleMidTotal {
-    text-align: right;
+/*style for the titles of total amounts*/
+
+.styleTitlesTotalAmount {
     font-weight: bold;
-}
-
-.styleTotAmount {
-    background-color: #e5f2ff;
-    font-weight: bold;
-    text-align: right;
-}
-
-.styleTitlesTotAmount {
-    font-weight: bold;
-}
-
-.styleRatiosAmount {
-    text-align: right;
-    width: 100%;
 }
 
 .styleParagraphs {
@@ -168,25 +208,8 @@ table.myTableAltmanIndex td {
     font-style: italic;
 }
 
-.styleZLow {
-    background-color: #00ff00;
-    text-align: center;
-}
 
-.styleZmid {
-    background-color: #ffff00;
-    text-align: center;
-}
-
-.styleZprob {
-    background-color: #ff0000;
-    text-align: center;
-}
-
-.styleDifferencesFound {
-    color: #ff0000;
-    text-align: right;
-}
+/*style for the 'difference founds' warning*/
 
 .styleWarningParagraph {
     color: #ff0000;
@@ -214,12 +237,4 @@ table.myTableAltmanIndex td {
     color: orange;
     font-size: 12px;
     margin: 0px;
-}
-
-.header {
-    text-align: left;
-}
-
-.footer {
-    text-align: left;
 }

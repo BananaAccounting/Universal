@@ -55,16 +55,16 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
     printReportAdd_TableBalance(report) {
         var texts = this.initFinancialAnalysisTexts();
         var tableBalance = report.addTable('myTableBalance');
-        tableBalance.getCaption().addText(texts.upperbalance, "styleGroupTitles");
+        tableBalance.getCaption().addText(texts.upperbalance, "styleTitles");
         //columns
         tableBalance.addColumn("Description").setStyleAttributes("width:30%");
         tableBalance.addColumn("formula").setStyleAttributes("width:10%");
         // header
         var tableHeader = tableBalance.getHeader();
         var tableRow = tableHeader.addRow();
-        tableRow.addCell(texts.description, "styleTableHeader");
+        tableRow.addCell(texts.description, "styleTablesHeaderText");
         if (this.dialogparam.acronymcolumn) {
-            tableRow.addCell(texts.acronym, "styleTableHeader");
+            tableRow.addCell(texts.acronym, "styleTablesHeaderText");
         }
         this.generateHeaderColumns(tableRow);
         return tableBalance;
@@ -73,16 +73,16 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
     printReportAdd_TableConCe(report) {
         var texts = this.initFinancialAnalysisTexts();
         var tableConCe = report.addTable('myConTableCe');
-        tableConCe.getCaption().addText(texts.upperprofitandloss, "styleGroupTitles");
+        tableConCe.getCaption().addText(texts.upperprofitandloss, "styleTitles");
         //columns
         tableConCe.addColumn("Description").setStyleAttributes("width:30%");
         tableConCe.addColumn("formula").setStyleAttributes("width:10%");
         //header
         var tableHeader = tableConCe.getHeader();
         var tableRow = tableHeader.addRow();
-        tableRow.addCell(texts.description, "styleTableHeader");
+        tableRow.addCell(texts.description, "styleTablesHeaderText");
         if (this.dialogparam.acronymcolumn) {
-            tableRow.addCell(texts.acronym, "styleTableHeader");
+            tableRow.addCell(texts.acronym, "styleTablesHeaderText");
         }
         this.generateHeaderColumns(tableRow);
         return tableConCe;
@@ -91,14 +91,14 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
     printReportAdd_TableBalanceControlSums(report) {
         var texts = this.initFinancialAnalysisTexts();
         var tableBalanceSumsControl = report.addTable('myTableBalanceSumsControl');
-        tableBalanceSumsControl.getCaption().addText(texts.controlsums, "styleGroupTitles");
+        tableBalanceSumsControl.getCaption().addText(texts.controlsums, "styleTitles");
         // header
         var tableHeader = tableBalanceSumsControl.getHeader();
         var tableRow = tableHeader.addRow();
-        tableRow.addCell(texts.year, "styleTableHeader");
-        tableRow.addCell(texts.accountingtotal, "styleTableHeader");
-        tableRow.addCell(texts.calculatedtotal, "styleTableHeader");
-        tableRow.addCell(texts.difference, "styleTableHeader");
+        tableRow.addCell(texts.year, "styleTablesHeaderText");
+        tableRow.addCell(texts.accountingtotal, "styleTablesHeaderText");
+        tableRow.addCell(texts.calculatedtotal, "styleTablesHeaderText");
+        tableRow.addCell(texts.difference, "styleTablesHeaderText");
         return tableBalanceSumsControl;
     }
 
@@ -106,7 +106,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var texts = this.initFinancialAnalysisTexts();
         var tableIndliq = report.addTable('myIndliqTable');
         tableIndliq.setStyleAttributes("width:100%");
-        tableIndliq.getCaption().addText(texts.upperliquidityratios, "styleGroupTitles");
+        tableIndliq.getCaption().addText(texts.upperliquidityratios, "styleTitles");
         tableIndliq.addColumn("Description").setStyleAttributes("width:25%");
         tableIndliq.addColumn("formula").setStyleAttributes("width:20%");
         this.setRatiosColumnsWidthDinamically(tableIndliq);
@@ -114,19 +114,19 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         // header
         var tableHeader = tableIndliq.getHeader();
         var tableRow = tableHeader.addRow();
-        tableRow.addCell(texts.description, "styleTableHeader");
+        tableRow.addCell(texts.description, "styleTablesHeaderText");
         if (this.dialogparam.formulascolumn) {
-            tableRow.addCell(texts.formula, "styleTableHeader");
+            tableRow.addCell(texts.formula, "styleTablesHeaderText");
         }
         this.generateHeaderColumns(tableRow);
-        tableRow.addCell(texts.benchmark, "styleTableHeader");
+        tableRow.addCell(texts.benchmark, "styleTablesHeaderText");
         return tableIndliq;
     }
     printReportAdd_TableIndlev(report) {
         var texts = this.initFinancialAnalysisTexts();
         var tableIndlev = report.addTable('myIndlevTable');
         tableIndlev.setStyleAttributes("width:100%");
-        tableIndlev.getCaption().addText(texts.upperleverageratios, "styleGroupTitles");
+        tableIndlev.getCaption().addText(texts.upperleverageratios, "styleTitles");
         tableIndlev.addColumn("Description").setStyleAttributes("width:25%");
         tableIndlev.addColumn("formula").setStyleAttributes("width:20%");
         this.setRatiosColumnsWidthDinamically(tableIndlev);
@@ -134,19 +134,19 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         // header
         var tableHeader = tableIndlev.getHeader();
         var tableRow = tableHeader.addRow();
-        tableRow.addCell(texts.description, "styleTableHeader");
+        tableRow.addCell(texts.description, "styleTablesHeaderText");
         if (this.dialogparam.formulascolumn) {
-            tableRow.addCell(texts.formula, "styleTableHeader");
+            tableRow.addCell(texts.formula, "styleTablesHeaderText");
         }
         this.generateHeaderColumns(tableRow);
-        tableRow.addCell(texts.benchmark, "styleTableHeader");
+        tableRow.addCell(texts.benchmark, "styleTablesHeaderText");
         return tableIndlev;
     }
     printReportAdd_TableIndprof(report) {
         var texts = this.initFinancialAnalysisTexts();
         var tableIndprof = report.addTable('myIndprofTable');
         tableIndprof.setStyleAttributes("width:100%");
-        tableIndprof.getCaption().addText(texts.upperprofitabilityratios, "styleGroupTitles");
+        tableIndprof.getCaption().addText(texts.upperprofitabilityratios, "styleTitles");
         tableIndprof.addColumn("Description").setStyleAttributes("width:25%");
         tableIndprof.addColumn("formula").setStyleAttributes("width:20%");
         this.setRatiosColumnsWidthDinamically(tableIndprof);
@@ -154,12 +154,12 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         // header
         var tableHeader = tableIndprof.getHeader();
         var tableRow = tableHeader.addRow();
-        tableRow.addCell(texts.description, "styleTableHeader");
+        tableRow.addCell(texts.description, "styleTablesHeaderText");
         if (this.dialogparam.formulascolumn) {
-            tableRow.addCell(texts.formula, "styleTableHeader");
+            tableRow.addCell(texts.formula, "styleTablesHeaderText");
         }
         this.generateHeaderColumns(tableRow);
-        tableRow.addCell(texts.benchmark, "styleTableHeader");
+        tableRow.addCell(texts.benchmark, "styleTablesHeaderText");
         return tableIndprof;
     }
 
@@ -167,7 +167,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var texts = this.initFinancialAnalysisTexts();
         var tableIndeff = report.addTable('myIndeffTable');
         tableIndeff.setStyleAttributes("width:100%");
-        tableIndeff.getCaption().addText(texts.upperefficiancyratios, "styleGroupTitles");
+        tableIndeff.getCaption().addText(texts.upperefficiancyratios, "styleTitles");
         tableIndeff.addColumn("Description").setStyleAttributes("width:25%");
         tableIndeff.addColumn("formula").setStyleAttributes("width:20%");
         this.setRatiosColumnsWidthDinamically(tableIndeff);
@@ -175,24 +175,24 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         // header
         var tableHeader = tableIndeff.getHeader();
         var tableRow = tableHeader.addRow();
-        tableRow.addCell(texts.description, "styleTableHeader");
+        tableRow.addCell(texts.description, "styleTablesHeaderText");
         if (this.dialogparam.formulascolumn) {
-            tableRow.addCell(texts.formula, "styleTableHeader");
+            tableRow.addCell(texts.formula, "styleTablesHeaderText");
         }
         this.generateHeaderColumns(tableRow);
-        tableRow.addCell(texts.benchmark, "styleTableHeader");
+        tableRow.addCell(texts.benchmark, "styleTablesHeaderText");
         return tableIndeff;
     }
 
     printReportAdd_TableDupont(report) {
         var texts = this.initFinancialAnalysisTexts();
         var tableDupont = report.addTable('myDupontTable');
-        tableDupont.getCaption().addText(texts.upperdupontscheme, "styleGroupTitles");
+        tableDupont.getCaption().addText(texts.upperdupontscheme, "styleTitles");
         tableDupont.addColumn("Description").setStyleAttributes("width:25%");
         //header
         var tableHeader = tableDupont.getHeader();
         var tableRow = tableHeader.addRow();
-        tableRow.addCell(texts.description, "styleTableHeader");
+        tableRow.addCell(texts.description, "styleTablesHeaderText");
         this.generateHeaderColumns(tableRow);
         return tableDupont;
     }
@@ -200,7 +200,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
     printtableAltmanIndex(report) {
         var texts = this.initFinancialAnalysisTexts();
         var tableAltmanIndex = report.addTable('myTableAltmanIndex');
-        tableAltmanIndex.getCaption().addText(texts.upperaltmanindex, "styleGroupTitles");
+        tableAltmanIndex.getCaption().addText(texts.upperaltmanindex, "styleTitles");
         // header
         var tableHeader = tableAltmanIndex.getHeader();
         var tableRow = tableHeader.addRow();
@@ -216,7 +216,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             if (elementType === "Y") {
                 year = year.substr(0, 4);
             }
-            tableRow.addCell(year, "styleTableHeader");
+            tableRow.addCell(year, "styleTablesHeaderText");
         }
     }
     setRatiosColumnsWidthDinamically(table) {
@@ -310,10 +310,13 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         analsysisYears -= 1;
         var docInfo = this.getDocumentInfo();
         var company = docInfo.company;
-        var Address1 = docInfo.address1;
+        var address1 = docInfo.address1;
+        var city = docInfo.City;
+        Banana.console.debug(city);
         headerParagraph.addParagraph(texts.financialstatementanalysis, "header_text");
         headerParagraph.addParagraph(company, "header_text");
-        headerParagraph.addParagraph(Address1, "header_text");
+        headerParagraph.addParagraph(address1, "header_text");
+        headerParagraph.addParagraph(city, "header_text");
         var sep = "";
         var period = "";
         for (var i = this.data.length - 1; i >= 0; i--) {
@@ -344,37 +347,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         if (day < 10) day = '0' + day;
         if (month < 10) month = '0' + month;
         var headerParagraph = report.getFooter().addSection();
-        headerParagraph.addText(day + '-' + month + '-' + year);
-
-    }
-
-    /**
-     * Thid method set the control sums table Elements (Asset, Liabilities and equity and Profit and Loss)
-     * @param {*} tableControlSums the control sums table
-     * @param {*} texts the texts presents in the table
-     * @param {*} data the document data.
-     */
-    createControlSumsSection(tableControlSums, texts, data, ) {
-        var tableRow = tableControlSums.addRow("styleTablRows");
-        tableRow.addCell(texts, "styleUnderGroupTitles", 4);
-        for (var i = data.length - 1; i >= 0; i--) {
-            var tableRow = tableControlSums.addRow("styleTablRows");
-            var period = data[i].period.StartDate;
-            var element_type = data[i].period.Type;
-            var year = period.substr(0, 4);
-            if (element_type === "Y") {
-                tableRow.addCell(year);
-                tableRow.addCell(this.toLocaleAmountFormat(data[i].CalculatedData.totalassets_sheet), "styleAmount");
-                tableRow.addCell(this.toLocaleAmountFormat(data[i].CalculatedData.totalassets), "styleAmount");
-                //check if the control sum i equal to 0, if is not, print a paragraf with a message error and the amount with the color red.
-                var differenceStyle = this.setDifferenceStyle(data[i].CalculatedData.assets_difference);
-                tableRow.addCell(this.toLocaleAmountFormat(data[i].CalculatedData.assets_difference), differenceStyle);
-                if (data[i].CalculatedData.assets_difference != 0) {
-                    this.controlsums_differences++;
-                }
-            }
-        }
-        return true;
+        headerParagraph.addText(day + '-' + month + '-' + year, "header_text");
 
     }
 
@@ -394,10 +367,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
         var texts = this.initFinancialAnalysisTexts();
         var report = Banana.Report.newReport('Financial Statement Analysis Report');
-        var docInfo = this.getDocumentInfo()
-        var currency = docInfo.basicCurrency;
 
-        var Country = docInfo.country;
         var analsysisYears = this.data.length;
         analsysisYears -= 1;
         var cell = "";
@@ -445,7 +415,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             }
             for (var i = this.data.length - 1; i >= 0; i--) {
                 amount = this.data[i].balance.ca[key].balance;
-                tableRow.addCell(this.toLocaleAmountFormat(amount), "styleAmount");
+                tableRow.addCell(this.toLocaleAmountFormat(amount), "styleNormalAmount");
             }
         }
         tableRow = tableBalance.addRow("styleTablRows");
@@ -454,7 +424,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             tableRow.addCell(texts.currentassets_acronym);
         }
         for (var i = this.data.length - 1; i >= 0; i--) {
-            tableRow.addCell(this.toLocaleAmountFormat(this.data[i].CalculatedData.currentassets), "styleMidTotal");
+            tableRow.addCell(this.toLocaleAmountFormat(this.data[i].CalculatedData.currentassets), "styleMidTotalAmount");
         }
 
         /******************************************************************************************
@@ -474,7 +444,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             }
             for (var i = this.data.length - 1; i >= 0; i--) {
                 amount = this.data[i].balance.fa[key].balance;
-                tableRow.addCell(this.toLocaleAmountFormat(amount), "styleAmount");
+                tableRow.addCell(this.toLocaleAmountFormat(amount), "styleNormalAmount");
             }
         }
         //add the total of fixed assets
@@ -484,19 +454,19 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             tableRow.addCell(texts.totfixedassets_acronym);
         }
         for (var i = this.data.length - 1; i >= 0; i--) {
-            tableRow.addCell(this.toLocaleAmountFormat(this.data[i].CalculatedData.totfixedassets), "styleMidTotal");
+            tableRow.addCell(this.toLocaleAmountFormat(this.data[i].CalculatedData.totfixedassets), "styleMidTotalAmount");
         }
 
         /******************************************************************************************
          * Add the total asset to the balance table
          * ***************************************************************************************/
         var tableRow = tableBalance.addRow("styleTablRows");
-        tableRow.addCell(texts.totalasset, 'styleTitlesTotAmount');
+        tableRow.addCell(texts.totalasset, 'styleTitlesTotalAmount');
         if (this.dialogparam.acronymcolumn) {
             tableRow.addCell(texts.totassets_acronym);
         }
         for (var i = this.data.length - 1; i >= 0; i--) {
-            tableRow.addCell(this.toLocaleAmountFormat(this.data[i].CalculatedData.totalassets), "styleTotAmount");
+            tableRow.addCell(this.toLocaleAmountFormat(this.data[i].CalculatedData.totalassets), "styleTotalAmount");
         }
 
         /******************************************************************************************
@@ -516,7 +486,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             }
             for (var i = this.data.length - 1; i >= 0; i--) {
                 amount = this.data[i].balance.dc[key].balance;
-                tableRow.addCell(this.toLocaleAmountFormat(amount), 'styleAmount');
+                tableRow.addCell(this.toLocaleAmountFormat(amount), 'styleNormalAmount');
             }
         }
         //add the sum of the third capital (debt capital)
@@ -526,7 +496,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             tableRow.addCell(texts.debtcapital_acronym);
         }
         for (var i = this.data.length - 1; i >= 0; i--) {
-            tableRow.addCell(this.toLocaleAmountFormat(this.data[i].CalculatedData.debtcapital), "styleMidTotal");
+            tableRow.addCell(this.toLocaleAmountFormat(this.data[i].CalculatedData.debtcapital), "styleMidTotalAmount");
         }
 
         /******************************************************************************************
@@ -546,7 +516,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             }
             for (var i = this.data.length - 1; i >= 0; i--) {
                 amount = this.data[i].balance.oc[key].balance;
-                tableRow.addCell(this.toLocaleAmountFormat(amount), "styleAmount");
+                tableRow.addCell(this.toLocaleAmountFormat(amount), "styleNormalAmount");
             }
         }
         //add the sum of the owned capital
@@ -556,19 +526,19 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             tableRow.addCell(texts.ownedcapital_acronym);
         }
         for (var i = this.data.length - 1; i >= 0; i--) {
-            tableRow.addCell(this.toLocaleAmountFormat(this.data[i].CalculatedData.totowncapital), "styleMidTotal");
+            tableRow.addCell(this.toLocaleAmountFormat(this.data[i].CalculatedData.totowncapital), "styleMidTotalAmount");
         }
 
         /******************************************************************************************
          * Add the total liabilities and equity to the balance table
          * ***************************************************************************************/
         var tableRow = tableBalance.addRow("styleTablRows");
-        tableRow.addCell(texts.totalliabilitiesandequity, 'styleTitlesTotAmount');
+        tableRow.addCell(texts.totalliabilitiesandequity, 'styleTitlesTotalAmount');
         if (this.dialogparam.acronymcolumn) {
             tableRow.addCell(texts.liabilitiesandequity_acronym);
         }
         for (var i = this.data.length - 1; i >= 0; i--) {
-            tableRow.addCell(this.toLocaleAmountFormat(this.data[i].CalculatedData.totalliabilitiesandequity), "styleTotAmount");
+            tableRow.addCell(this.toLocaleAmountFormat(this.data[i].CalculatedData.totalliabilitiesandequity), "styleTotalAmount");
         }
 
         /******************************************************************************************
@@ -601,7 +571,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                 amount = this.data[i].profitandloss[key].balance;
                 if (invertAmount)
                     amount = Banana.SDecimal.invert(amount);
-                tableRow.addCell(this.toLocaleAmountFormat(amount), "styleAmount");
+                tableRow.addCell(this.toLocaleAmountFormat(amount), "styleNormalAmount");
             }
             if (key === "costofmerchandservices") {
                 var tableRow = tableCe.addRow("styleTablRows");
@@ -610,7 +580,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                     tableRow.addCell(texts.addedvalue_acronym);
                 }
                 for (var i = this.data.length - 1; i >= 0; i--) {
-                    tableRow.addCell(this.toLocaleAmountFormat(this.data[i].CalculatedData.addedvalue), "styleMidTotal");
+                    tableRow.addCell(this.toLocaleAmountFormat(this.data[i].CalculatedData.addedvalue), "styleMidTotalAmount");
                 }
             }
             if (key === "depreandadjust") {
@@ -620,7 +590,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                     tableRow.addCell(texts.ebit_acronym);
                 }
                 for (var i = this.data.length - 1; i >= 0; i--) {
-                    tableRow.addCell(this.toLocaleAmountFormat(this.data[i].CalculatedData.ebit), "styleMidTotal");
+                    tableRow.addCell(this.toLocaleAmountFormat(this.data[i].CalculatedData.ebit), "styleMidTotalAmount");
                 }
             }
             if (key === "differentcosts") {
@@ -630,32 +600,84 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                     tableRow.addCell(texts.ebitda_acronym);
                 }
                 for (var i = this.data.length - 1; i >= 0; i--) {
-                    tableRow.addCell(this.toLocaleAmountFormat(this.data[i].CalculatedData.ebitda), "styleMidTotal");
+                    tableRow.addCell(this.toLocaleAmountFormat(this.data[i].CalculatedData.ebitda), "styleMidTotalAmount");
                 }
 
             }
         }
         var tableRow = tableCe.addRow("styleTablRows");
-        tableRow.addCell(texts.annualresult, "styleTitlesTotAmount");
+        tableRow.addCell(texts.annualresult, "styleTitlesTotalAmount");
         if (this.dialogparam.acronymcolumn) {
             tableRow.addCell(texts.finalresult_acronym);
         }
         for (var i = this.data.length - 1; i >= 0; i--) {
-            tableRow.addCell(this.toLocaleAmountFormat(this.data[i].CalculatedData.annualresult), "styleTotAmount");
+            tableRow.addCell(this.toLocaleAmountFormat(this.data[i].CalculatedData.annualresult), "styleTotalAmount");
         }
 
 
         /******************************************************************************************
-         * Add the control sums table
+         * Add the control sums table (could be done better with a method)
          * ***************************************************************************************/
         if (this.dialogparam.includecontrolsums) {
             var tableControlSums = this.printReportAdd_TableBalanceControlSums(report);
-            this.createControlSumsSection(tableControlSums, texts.asset, this.data);
-            //add the control over the liabilities and equity
-            this.createControlSumsSection(tableControlSums, texts.liabilitiesandequity, this.data);
-            //add the control over the profit and loss
-            this.createControlSumsSection(tableControlSums, texts.profitandloss, this.data);
-            //control if there are differences, i will output a warning
+            var tableRow = tableControlSums.addRow("styleTablRows");
+            tableRow.addCell(texts.asset, "styleUnderGroupTitles", 4);
+            for (var i = this.data.length - 1; i >= 0; i--) {
+                var tableRow = tableControlSums.addRow("styleTablRows");
+                var period = this.data[i].period.StartDate;
+                var element_type = this.data[i].period.Type;
+                var year = period.substr(0, 4);
+                if (element_type === "Y") {
+                    tableRow.addCell(year);
+                    //ADD THE ASSET SECTION
+                    tableRow.addCell(this.toLocaleAmountFormat(this.data[i].CalculatedData.totalassets_sheet), "styleNormalAmount");
+                    tableRow.addCell(this.toLocaleAmountFormat(this.data[i].CalculatedData.totalassets), "styleNormalAmount");
+                    //check if the control sum i equal to 0, if is not, print a paragraf with a message error and the amount with the color red.
+                    var differenceStyle = this.setDifferenceStyle(this.data[i].CalculatedData.assets_difference);
+                    tableRow.addCell(this.toLocaleAmountFormat(this.data[i].CalculatedData.assets_difference), differenceStyle);
+                    if (this.data[i].CalculatedData.assets_difference != 0) {
+                        this.controlsums_differences++;
+                    }
+                }
+            }
+            //ADD THE LIABILITIES AND EQUITY SECTION
+            tableRow.addCell(texts.liabilitiesandequity, "styleUnderGroupTitles", 4);
+            for (var i = this.data.length - 1; i >= 0; i--) {
+                var tableRow = tableControlSums.addRow("styleTablRows");
+                var period = this.data[i].period.StartDate;
+                var element_type = this.data[i].period.Type;
+                var year = period.substr(0, 4);
+                if (element_type === "Y") {
+                    tableRow.addCell(year);
+                    tableRow.addCell(this.toLocaleAmountFormat(this.data[i].CalculatedData.totalliabilitiesandequity_sheet), "styleNormalAmount");
+                    tableRow.addCell(this.toLocaleAmountFormat(this.data[i].CalculatedData.totalliabilitiesandequity), "styleNormalAmount");
+                    //check if the control sum i equal to 0, if is not, print a paragraf with a message error and the amount with the color red.
+                    var differenceStyle = this.setDifferenceStyle(this.data[i].CalculatedData.liabilitiesandequity_difference);
+                    tableRow.addCell(this.toLocaleAmountFormat(this.data[i].CalculatedData.liabilitiesandequity_difference), differenceStyle);
+                    if (this.data[i].CalculatedData.liabilitiesandequity_difference != 0) {
+                        this.controlsums_differences++;
+                    }
+                }
+            }
+            //ADD THE PROFIT AND LOSS SECTION
+            tableRow.addCell(texts.profitandloss, "styleUnderGroupTitles", 4);
+            for (var i = this.data.length - 1; i >= 0; i--) {
+                var tableRow = tableControlSums.addRow("styleTablRows");
+                var period = this.data[i].period.StartDate;
+                var element_type = this.data[i].period.Type;
+                var year = period.substr(0, 4);
+                if (element_type === "Y") {
+                    tableRow.addCell(year);
+                    tableRow.addCell(this.toLocaleAmountFormat(this.data[i].CalculatedData.annualresult_sheet), "styleNormalAmount");
+                    tableRow.addCell(this.toLocaleAmountFormat(this.data[i].CalculatedData.annualresult), "styleNormalAmount");
+                    //check if the control sum i equal to 0, if is not, print a paragraf with a message error and the amount with the color red.
+                    var differenceStyle = this.setDifferenceStyle(this.data[i].CalculatedData.annualresult_difference);
+                    tableRow.addCell(this.toLocaleAmountFormat(this.data[i].CalculatedData.annualresult_difference), differenceStyle);
+                    if (this.data[i].CalculatedData.annualresult_difference != 0) {
+                        this.controlsums_differences++;
+                    }
+                }
+            }
             if (this.controlsums_differences > 0) {
                 report.addParagraph(this.showDifferencesWarning(), "styleWarningParagraph");
             }
@@ -673,14 +695,14 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             var tableRow = tableindliq.addRow("styleTablRows");
             tableRow.addCell(qsTr(this.data[0].index.liqu[key].description), "styleTablRows");
             if (this.dialogparam.formulascolumn) {
-                tableRow.addCell(this.data[0].index.liqu[key].formula, "styleNormal");
+                tableRow.addCell(this.data[0].index.liqu[key].formula, "styleCentralText");
             }
             for (var i = this.data.length - 1; i >= 0; i--) {
                 ratios = this.data[i].index.liqu[key].amount;
                 if (this.data[0].index.liqu[key].type != "dec") {
-                    cell = tableRow.addCell(ratios + perc + ' ', "styleAmount");
+                    cell = tableRow.addCell(ratios + perc + ' ', "styleNormalAmount");
                 } else {
-                    cell = tableRow.addCell(this.toLocaleAmountFormat(ratios) + ' ', "styleAmount");
+                    cell = tableRow.addCell(this.toLocaleAmountFormat(ratios) + ' ', "styleNormalAmount");
                 }
                 //add the index evolution icons, the space ' ' is a placeholder for the icon
                 if (i < analsysisYears) {
@@ -691,7 +713,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
 
             }
-            tableRow.addCell(this.data[0].index.liqu[key].benchmark, "styleNormal");
+            tableRow.addCell(this.data[0].index.liqu[key].benchmark, "styleCentralText");
         }
 
         /******************************************************************************************
@@ -703,18 +725,18 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             var tableRow = tableIndlev.addRow("styleTablRows");
             tableRow.addCell(qsTr(this.data[0].index.lev[key].description), "styleTablRows");
             if (this.dialogparam.formulascolumn) {
-                tableRow.addCell(this.data[0].index.lev[key].formula, "styleNormal");
+                tableRow.addCell(this.data[0].index.lev[key].formula, "styleCentralText");
             }
             for (var i = this.data.length - 1; i >= 0; i--) {
                 ratios = this.data[i].index.lev[key].amount;
-                cell = tableRow.addCell(ratios + perc + ' ', "styleAmount");
+                cell = tableRow.addCell(ratios + perc + ' ', "styleNormalAmount");
                 if (i < analsysisYears) {
                     var indexT1 = this.data[i].index.lev[key].amount;
                     var indexT2 = this.data[i + 1].index.lev[key].amount;
                     this.setIndexEvolution(indexT1, indexT2, cell);
                 }
             }
-            tableRow.addCell(this.data[0].index.lev[key].benchmark, "styleNormal");
+            tableRow.addCell(this.data[0].index.lev[key].benchmark, "styleCentralText");
         }
 
         /******************************************************************************************
@@ -726,18 +748,18 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             var tableRow = tableindprof.addRow("styleTablRows");
             tableRow.addCell(qsTr(this.data[0].index.red[key].description), "styleTablRows");
             if (this.dialogparam.formulascolumn) {
-                tableRow.addCell(this.data[0].index.red[key].formula, "styleNormal");
+                tableRow.addCell(this.data[0].index.red[key].formula, "styleCentralText");
             }
             for (var i = this.data.length - 1; i >= 0; i--) {
                 ratios = this.data[i].index.red[key].amount;
-                cell = tableRow.addCell(ratios + perc + ' ', "styleAmount");
+                cell = tableRow.addCell(ratios + perc + ' ', "styleNormalAmount");
                 if (i < analsysisYears) {
                     var indexT1 = this.data[i].index.red[key].amount;
                     var indexT2 = this.data[i + 1].index.red[key].amount;
                     this.setIndexEvolution(indexT1, indexT2, cell);
                 }
             }
-            tableRow.addCell(this.data[0].index.red[key].benchmark, "styleNormal");
+            tableRow.addCell(this.data[0].index.red[key].benchmark, "styleCentralText");
         }
 
         /******************************************************************************************
@@ -749,13 +771,13 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             var tableRow = tableindeff.addRow("styleTablRows");
             tableRow.addCell(qsTr(this.data[0].index.eff[key].description), "styleTablRows");
             if (this.dialogparam.formulascolumn) {
-                tableRow.addCell(this.data[0].index.eff[key].formula, "styleNormal");
+                tableRow.addCell(this.data[0].index.eff[key].formula, "styleCentralText");
             }
             for (var i = this.data.length - 1; i >= 0; i--) {
                 ratios = this.data[i].index.eff[key].amount;
-                tableRow.addCell(this.toLocaleAmountFormat(ratios), "styleAmount");
+                tableRow.addCell(this.toLocaleAmountFormat(ratios), "styleNormalAmount");
             }
-            tableRow.addCell(this.data[0].index.eff[key].benchmark, "styleNormal");
+            tableRow.addCell(this.data[0].index.eff[key].benchmark, "styleCentralText");
         }
 
 
@@ -773,7 +795,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             for (var key in this.data[0].DupontData) {
                 var tableRow = tabledupont.addRow("styleTablRows");
                 if (this.data[0].DupontData[key].type == "titl") {
-                    textstyle = "styleTitlesTotAmount";
+                    textstyle = "styleTitlesTotalAmount";
                 } else {
                     textstyle = "styleTablRows";
                 }
@@ -781,9 +803,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                 for (var i = this.data.length - 1; i >= 0; i--) {
                     ratios = this.data[i].DupontData[key].amount;
                     if (this.data[i].DupontData[key].description === "ROI") {
-                        cell = tableRow.addCell(ratios + perc + ' ', "styleAmount");
+                        cell = tableRow.addCell(ratios + perc + ' ', "styleNormalAmount");
                     } else {
-                        cell = tableRow.addCell(this.toLocaleAmountFormat(ratios) + ' ', "styleAmount");
+                        cell = tableRow.addCell(this.toLocaleAmountFormat(ratios) + ' ', "styleNormalAmount");
                     }
                     if (i < analsysisYears) {
                         var indexT1 = this.data[i].DupontData[key].amount;
@@ -805,17 +827,17 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             tableRow.addCell(this.data[i].AltmanIndex, this.altmanScoreType(this.data[i].AltmanIndex));
         }
         var tableRow = tableAltmanIndex.addRow("styleTablRows");
-        tableRow.addCell(texts.altmanformula, "styleNormal", this.yearsColumnCount(yearcolumns));
+        tableRow.addCell(texts.altmanformula, "styleCentralText", this.yearsColumnCount(yearcolumns));
         var tableRow = tableAltmanIndex.addRow("styleTablRows");
-        tableRow.addCell("X1 = cuas / tota", "styleNormal", this.yearsColumnCount(yearcolumns));
+        tableRow.addCell("X1 = cuas / tota", "styleCentralText", this.yearsColumnCount(yearcolumns));
         var tableRow = tableAltmanIndex.addRow("styleTablRows");
-        tableRow.addCell("X2 = reut / tota ", "styleNormal", this.yearsColumnCount(yearcolumns));
+        tableRow.addCell("X2 = reut / tota ", "styleCentralText", this.yearsColumnCount(yearcolumns));
         var tableRow = tableAltmanIndex.addRow("styleTablRows");
-        tableRow.addCell("X3 = EBIT / tota ", "styleNormal", this.yearsColumnCount(yearcolumns));
+        tableRow.addCell("X3 = EBIT / tota ", "styleCentralText", this.yearsColumnCount(yearcolumns));
         var tableRow = tableAltmanIndex.addRow("styleTablRows");
-        tableRow.addCell("X4 = pant / totp", "styleNormal", this.yearsColumnCount(yearcolumns));
+        tableRow.addCell("X4 = pant / totp", "styleCentralText", this.yearsColumnCount(yearcolumns));
         var tableRow = tableAltmanIndex.addRow("styleTablRows");
-        tableRow.addCell("X5 = sale / tota", "styleNormal", this.yearsColumnCount(yearcolumns));
+        tableRow.addCell("X5 = sale / tota", "styleCentralText", this.yearsColumnCount(yearcolumns));
 
         report.addParagraph(texts.altmanlowprob, "styleParagraphs");
         report.addParagraph(texts.altmanmediumprob, "styleParagraphs");
@@ -834,9 +856,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
     setDifferenceStyle(value) {
         var differenceStyle;
         if (value != 0) {
-            differenceStyle = "styleDifferencesFound";
+            differenceStyle = "styleDifferenceFoundAmount";
         } else {
-            differenceStyle = "styleAmount";
+            differenceStyle = "styleNormalAmount";
         }
         return differenceStyle;
     }
@@ -845,7 +867,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
      * if there are differences between the accounting total and the calculated total, the user is notified.
      */
     showDifferencesWarning() {
-        var WrnMsgg = qsTr("Warning: The difference between the 'Accounting total' and the 'Calculated total' columns should be 0.\n Check that the groups used are correct. ");
+        var WrnMsgg = qsTr("Warning: The difference between the 'Accounting total' and the 'Calculated total' columns should be 0.\n Check that the groups used are correct.");
         return WrnMsgg;
     }
 
@@ -857,11 +879,11 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
     altmanScoreType(amount) {
         var type = "";
         if (amount > 3) {
-            type = 'styleZLow';
+            type = 'styleZIndexLow';
         } else if (amount <= 3 && amount >= 1.8) {
-            type = 'styleZmid';
+            type = 'styleZIndexMid';
         } else {
-            type = 'styleZprob';
+            type = 'styleZIndexProb';
         }
         return type;
     }
@@ -957,13 +979,10 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
 
         //Style for the tables header
-        style = stylesheet.addStyle(".styleTableHeader");
-
-        //Style for the company info rows
-        style = stylesheet.addStyle(".styleCompanyInfocells");
+        style = stylesheet.addStyle(".styleTablesHeaderText");
 
         //style for the group titles
-        style = stylesheet.addStyle(".styleGroupTitles");
+        style = stylesheet.addStyle(".styleTitles");
 
         //style for the under-group titles
         style = stylesheet.addStyle(".styleUnderGroupTitles");
@@ -972,19 +991,16 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         style = stylesheet.addStyle(".styleNormal");
 
         //Style for amounts
-        style = stylesheet.addStyle(".styleAmount");
+        style = stylesheet.addStyle(".styleNormalAmount");
 
         //style for the accounting mid totals
-        style = stylesheet.addStyle(".styleMidTotal");
+        style = stylesheet.addStyle(".styleMidTotalAmount");
 
         //style for the accounting totals Amount
-        style = stylesheet.addStyle(".styleTotAmount");
+        style = stylesheet.addStyle(".styleTotalAmount");
 
         //style for the titles of the totals
-        style = stylesheet.addStyle(".styleTitlesTotAmount");
-
-        //style fot the ratios  Amount
-        style = stylesheet.addStyle(".styleRatiosAmount");
+        style = stylesheet.addStyle(".styleTitlesTotalAmount");
 
         //style for the  header
         style = stylesheet.addStyle(".header");
@@ -996,13 +1012,13 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         style = stylesheet.addStyle(".styleParagraphs");
 
         //style for the Z-score,low prob. of a financial crysis
-        style = stylesheet.addStyle(".styleZLow");
+        style = stylesheet.addStyle(".styleZIndexLow");
 
         //style for the Z-score,mid prob. of a financial crysis
-        style = stylesheet.addStyle(".styleZmid");
+        style = stylesheet.addStyle(".styleZIndexMid");
 
         //style for the Z-score,prob. of a financial crysis
-        style = stylesheet.addStyle(".styleZprob");
+        style = stylesheet.addStyle(".styleZIndexProb");
 
 
 
@@ -1047,7 +1063,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         /******************************************************************************************
          * texts for tooltips
          ******************************************************************************************/
-        texts.groups_tooltip = qsTr("Enter the groups");
+        texts.groups_tooltip = qsTr("Enter the groups, separated by a semicolon ';'");
         texts.logo_tooltip = qsTr("Check to include Logo");
         texts.logoname_tooltip = qsTr("Enter the Logo name");
         texts.numberofpreviousyear_tooltip = qsTr("Enter the number of previous accounting years you wish to include in the analysis");
@@ -2994,7 +3010,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         if (amount < 0) {
             type = 'styleNegativeAmount';
         } else {
-            type = 'styleAmount';
+            type = 'styleNormalAmount';
         }
         return type;
 
@@ -3120,6 +3136,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         documentInfo.EndPeriod = "";
         documentInfo.Company = "";
         documentInfo.address1 = "";
+        documentInfo.City = "";
 
 
         if (this.banDocument) {
@@ -3189,6 +3206,10 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             if (this.banDocument.info("AccountingDataBase", "Address1"))
                 documentInfo.address1 =
                 this.banDocument.info("AccountingDataBase", "Address1");
+
+            if (this.banDocument.info("AccountingDataBase", "City"))
+                documentInfo.City =
+                this.banDocument.info("AccountingDataBase", "City");
         }
         return documentInfo;
     }
