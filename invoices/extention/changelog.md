@@ -1,5 +1,7 @@
 # Changelog
 
+2021-02-03; [Enhancement] Doesn't print amounts for items used as notes (items without price)
+
 2021-01-18; [Bug] Fix error invoiceObj is not defined in command duplicate;
 
 2021-01-13; [Bug] Fix translations errors;
