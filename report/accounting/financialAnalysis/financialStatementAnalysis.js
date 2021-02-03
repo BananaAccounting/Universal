@@ -1118,7 +1118,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         texts.upperleverageratios = qsTr("LEVERAGE RATIOS");
         texts.upperprofitabilityratios = qsTr("PROFITABILITY RATIOS");
         texts.upperefficiancyratios = qsTr("EFFICIENCY RATIOS");
-        texts.benchmark = qsTr("BenchMark");
+        texts.benchmark = qsTr("Benchmark");
+        texts.benchmarks = qsTr("Benchmarks");
         texts.upperaltmanindex = qsTr("ALTMAN INDEX Z-SCORE");
         texts.upperdupontscheme = qsTr("DUPONT ANALYSIS ");
         texts.financialstatementanalysis = qsTr("Financial Statements Analysis and Ratios");
@@ -1138,6 +1139,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         texts.costs = qsTr('Costs');
         texts.totalcosts = qsTr("Total Costs");
         texts.preferences = qsTr('Preferences');
+        texts.grouping = qsTr('Grouping');
         texts.printdetails = qsTr('Print Details');
         texts.analysisdetails = qsTr('Analysis Details');
         texts.texts = qsTr('Texts');
@@ -2117,11 +2119,24 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         /*array dei parametri dello script*/
         convertedParam.data = [];
 
+
         //I create the balance sheet grouping
+        var currentParam = {};
+        currentParam.name = 'Grouping';
+        currentParam.title = texts.grouping;
+        currentParam.editable = false;
+
+        convertedParam.data.push(currentParam);
+
+
+        //I create the balance group
         var currentParam = {};
         currentParam.name = 'Balance';
         currentParam.title = texts.balance;
         currentParam.editable = false;
+        currentParam.editable = false;
+        currentParam.parentObject = 'Grouping';
+
 
         convertedParam.data.push(currentParam);
 
@@ -2149,6 +2164,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.name = 'Profit and Loss';
         currentParam.title = texts.profitandloss;
         currentParam.editable = false;
+        currentParam.parentObject = 'Grouping';
 
         convertedParam.data.push(currentParam);
 
@@ -2215,21 +2231,11 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         convertedParam.data.push(currentParam);
 
 
-        // create an another group, Texts
-        var currentParam = {};
-        currentParam.name = 'Texts';
-        currentParam.title = texts.texts;
-        currentParam.editable = false;
-        currentParam.collapse = true;
-        currentParam.parentObject = false;
-        convertedParam.data.push(currentParam);
-
         //we put inside the Texts section, the customizable banchmarks
         var currentParam = {};
-        currentParam.name = 'Benchmarks texts';
-        currentParam.title = texts.benchmarktexts;
+        currentParam.name = 'Benchmarks';
+        currentParam.title = texts.benchmarks;
         currentParam.editable = false;
-        currentParam.parentObject = 'Texts';
         convertedParam.data.push(currentParam);
 
         /**
@@ -2241,7 +2247,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.name = 'Liquidity';
         currentParam.title = texts.liquidity;
         currentParam.editable = false;
-        currentParam.parentObject = 'Benchmarks texts';
+        currentParam.parentObject = 'Benchmarks';
         convertedParam.data.push(currentParam);
 
         // leverage ratios
@@ -2249,7 +2255,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.name = 'Leverage';
         currentParam.title = texts.leverage;
         currentParam.editable = false;
-        currentParam.parentObject = 'Benchmarks texts';
+        currentParam.parentObject = 'Benchmarks';
         convertedParam.data.push(currentParam);
 
         // profitability ratios
@@ -2257,7 +2263,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.name = 'Profitability';
         currentParam.title = texts.profitability;
         currentParam.editable = false;
-        currentParam.parentObject = 'Benchmarks texts';
+        currentParam.parentObject = 'Benchmarks';
         convertedParam.data.push(currentParam);
 
         // efficiency ratios
@@ -2265,7 +2271,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.name = 'Efficiency';
         currentParam.title = texts.efficiency;
         currentParam.editable = false;
-        currentParam.parentObject = 'Benchmarks texts';
+        currentParam.parentObject = 'Benchmarks';
         convertedParam.data.push(currentParam);
 
 
