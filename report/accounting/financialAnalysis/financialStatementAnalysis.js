@@ -312,7 +312,6 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var company = docInfo.company;
         var address1 = docInfo.address1;
         var city = docInfo.City;
-        Banana.console.debug(city);
         headerParagraph.addParagraph(texts.financialstatementanalysis, "header_text");
         headerParagraph.addParagraph(company, "header_text");
         headerParagraph.addParagraph(address1, "header_text");
@@ -641,6 +640,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                 }
             }
             //ADD THE LIABILITIES AND EQUITY SECTION
+            var tableRow = tableControlSums.addRow("styleTablRows");
             tableRow.addCell(texts.liabilitiesandequity, "styleUnderGroupTitles", 4);
             for (var i = this.data.length - 1; i >= 0; i--) {
                 var tableRow = tableControlSums.addRow("styleTablRows");
@@ -660,6 +660,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                 }
             }
             //ADD THE PROFIT AND LOSS SECTION
+            var tableRow = tableControlSums.addRow("styleTablRows");
             tableRow.addCell(texts.profitandloss, "styleUnderGroupTitles", 4);
             for (var i = this.data.length - 1; i >= 0; i--) {
                 var tableRow = tableControlSums.addRow("styleTablRows");
@@ -1152,7 +1153,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         texts.showacronymcolumn = qsTr('Show Acronym column');
         texts.showformulascolumn = qsTr('Show Formulas column');
         texts.printlogo = 'Logo';
-        texts.logoname = "Composition for logo and header alignment";
+        texts.logoname = qsTr("Composition for logo and header alignment");
         texts.averageemployees = qsTr('Average number of employees');
         texts.leverage = qsTr('Leverage');
         texts.profitability = qsTr('Profitability');
@@ -3368,6 +3369,12 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         defaultParam.ratios.leverageratios.equityratio.value = userParam.ratios.financingratios.lvlequ.value;
         defaultParam.ratios.leverageratios.selfinancingratio.value = userParam.ratios.financingratios.lvlsel.value;
         defaultParam.ratios.leverageratios.fixedassetcoverage.value = userParam.ratios.financingratios.covfix.value;
+        defaultParam.ratios.profitabilityratios.profroi.value = userParam.ratios.profitabilityratios.profroi.value;
+        defaultParam.ratios.profitabilityratios.profroe.value = userParam.ratios.profitabilityratios.profroe.value;
+        defaultParam.ratios.profitabilityratios.profros.value = userParam.ratios.profitabilityratios.profros.value;
+        defaultParam.ratios.profitabilityratios.profmol.value = userParam.ratios.profitabilityratios.profmol.value;
+        defaultParam.ratios.profitabilityratios.profebm.value = userParam.ratios.profitabilityratios.profebm.value;
+        defaultParam.ratios.profitabilityratios.profmon.value = userParam.ratios.profitabilityratios.profmon.value;
 
 
         return defaultParam;
@@ -3419,6 +3426,10 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
             return false;
         }
+        /**
+         * update the Test Cases.
+         */
+
         return true;
     }
 
