@@ -23,7 +23,8 @@
 // @includejs = financialStatementAnalysis.js
 
 function exec(inData, options) {
-    var dialog = Banana.Ui.createQml("Financing Charts", "charts.qml");
+    var financing_charts = qsTr("Financing Charts");
+    var dialog = Banana.Ui.createQml(financing_charts, "charts.qml");
     Banana.application.progressBar.pause();
     dialog.exec();
     Banana.application.progressBar.resume();

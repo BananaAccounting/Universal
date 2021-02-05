@@ -88,7 +88,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         return tableConCe;
     }
 
-    printReportAdd_TableBalanceControlSums(report) {
+    printReportAdd_TableControlSums(report) {
         var texts = this.initFinancialAnalysisTexts();
         var tableBalanceSumsControl = report.addTable('myTableBalanceSumsControl');
         tableBalanceSumsControl.getCaption().addText(texts.controlsums, "styleTitles");
@@ -305,33 +305,19 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         } else {
             headerParagraph.addClass("header_text");
         }
-        var texts = this.initFinancialAnalysisTexts();
-        var analsysisYears = this.data.length;
-        analsysisYears -= 1;
-        var docInfo = this.getDocumentInfo();
-        var company = docInfo.company;
-        var address1 = docInfo.address1;
-        var city = docInfo.City;
-        headerParagraph.addParagraph(texts.financialstatementanalysis, "header_text");
-        headerParagraph.addParagraph(company, "header_text");
-        headerParagraph.addParagraph(address1, "header_text");
-        headerParagraph.addParagraph(city, "header_text");
-        var sep = "";
-        var period = "";
-        for (var i = this.data.length - 1; i >= 0; i--) {
-            var year = this.data[i].period.EndDate;
-            var elementType = this.data[i].period.Type;
-            if (elementType === "Y") {
-                year = year.substr(0, 4);
-            }
-            if (i < analsysisYears) {
-                sep = '-'
-            }
-
-            period = period + " " + sep + " " + year;
-
+        if (this.dialogparam.pageheader) {
+            //var texts = this.initFinancialAnalysisTexts();
+            var analsysisYears = this.data.length;
+            analsysisYears -= 1;
+            var docInfo = this.getDocumentInfo();
+            var company = docInfo.company;
+            var address1 = docInfo.address1;
+            var city = docInfo.City;
+            //headerParagraph.addParagraph(texts.financialstatementanalysis, "header_rows");
+            headerParagraph.addParagraph(company, "header_row_company_name");
+            headerParagraph.addParagraph(address1, "header_row_address");
+            headerParagraph.addParagraph(city, "header_row_address");
         }
-        headerParagraph.addParagraph(texts.upperanalysisperiod + ": " + period, "header_text");
     }
 
     /**
@@ -381,6 +367,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         if (!this.data || this.data.length <= 0) {
             return report;
         }
+
 
         this.addHeader(report);
         this.addFooter(report);
@@ -618,7 +605,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
          * Add the control sums table (could be done better with a method)
          * ***************************************************************************************/
         if (this.dialogparam.includecontrolsums) {
-            var tableControlSums = this.printReportAdd_TableBalanceControlSums(report);
+            var tableControlSums = this.printReportAdd_TableControlSums(report);
             var tableRow = tableControlSums.addRow("styleTablRows");
             tableRow.addCell(texts.asset, "styleUnderGroupTitles", 4);
             for (var i = this.data.length - 1; i >= 0; i--) {
@@ -1153,6 +1140,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         texts.showacronymcolumn = qsTr('Show Acronym column');
         texts.showformulascolumn = qsTr('Show Formulas column');
         texts.printlogo = 'Logo';
+        texts.pageheader = qsTr("Page header");
         texts.logoname = qsTr("Composition for logo and header alignment");
         texts.averageemployees = qsTr('Average number of employees');
         texts.leverage = qsTr('Leverage');
@@ -1244,6 +1232,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         dialogparam.includedupontanalysis = true;
         dialogparam.includecontrolsums = true;
         dialogparam.printlogo = true;
+        dialogparam.pageheader = true;
         dialogparam.logoname = "Logo";
 
         return dialogparam;
@@ -2121,6 +2110,15 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         convertedParam.data = [];
 
 
+        //I create group of preferences
+        var currentParam = {};
+        currentParam.name = 'Preferences';
+        currentParam.title = texts.preferences;
+        currentParam.editable = false;
+
+        convertedParam.data.push(currentParam);
+
+
         //I create the balance sheet grouping
         var currentParam = {};
         currentParam.name = 'Grouping';
@@ -2205,11 +2203,12 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
         convertedParam.data.push(currentParam);
 
-        //I create group of preferences
+        //I create an undergroup for the preferences, the Analysis Details
         var currentParam = {};
-        currentParam.name = 'Preferences';
-        currentParam.title = texts.preferences;
+        currentParam.name = 'Analysis Details';
+        currentParam.title = texts.analysisdetails;
         currentParam.editable = false;
+        currentParam.parentObject = 'Preferences';
 
         convertedParam.data.push(currentParam);
 
@@ -2222,14 +2221,6 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
         convertedParam.data.push(currentParam);
 
-        //I create an undergroup for the preferences, the Analysis Details
-        var currentParam = {};
-        currentParam.name = 'Analysis Details';
-        currentParam.title = texts.analysisdetails;
-        currentParam.editable = false;
-        currentParam.parentObject = 'Preferences';
-
-        convertedParam.data.push(currentParam);
 
 
         //we put inside the Texts section, the customizable banchmarks
@@ -2484,6 +2475,21 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.parentObject = 'Final Result';
         currentParam.readValue = function() {
             userParam.finalresult.finalresult.gr = this.value;
+        }
+        convertedParam.data.push(currentParam);
+
+        //Page Header
+        var currentParam = {};
+        currentParam.name = 'pageheader';
+        currentParam.group = 'preferences';
+        currentParam.title = texts.pageheader;
+        currentParam.type = 'bool';
+        currentParam.value = userParam.pageheader ? userParam.pageheader : userParam.pageheader;
+        currentParam.defaultvalue = defaultParam.pageheader;
+        currentParam.tooltip = texts.logo_tooltip;
+        currentParam.parentObject = 'Print Details';
+        currentParam.readValue = function() {
+            userParam.pageheader = this.value;
         }
         convertedParam.data.push(currentParam);
 

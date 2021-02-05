@@ -19,8 +19,6 @@
 \newenvironment{test}[1]{\section*{Test case: #1}}{}
 %Begin test data
 \begin{reportvalue}{FILENAME: file:script/../test/testcases/Contabilità in partita doppia multi-moneta con IVA.ac2}
-Financial Statements Analysis and Ratios \\
-ANALYSIS PERIOD:   2020 - Budget \\
 \begin{longtable}[l]{ l  l  l  l }
 BALANCE Description  & Acronym  & 2020  & Budget \\
 Liquidity  & liqu  & -9'320.00  & 110.00 \\
@@ -55,8 +53,10 @@ Annual result  & fire  & 12'220.00  & 0.00 \\
 CONTROL SUMS Year  & Accounting Total  & Calculated Total  & Difference \\
 \multicolumn{4}{l}{Assets }\\
 2020  & 24'300.00  & 24'300.00  & 0.00 \\
+\\
 \multicolumn{4}{l}{Liabilities and Equity }\\
 2020  & 24'190.00  & 24'190.00  & 0.00 \\
+\\
 \multicolumn{4}{l}{Profit and Loss }\\
 2020  & 8'220.00  & 12'220.00  & -4'000.00 \\
 \\
@@ -116,6 +116,6 @@ ALTMAN INDEX Z-SCORE 2020  & Budget \\
 for values > than 3 correspond a low probability of a financial crisis \\
 for values >= than 1.8 but <= than 3 there are possibilities of a financial crisis, should be kept under control \\
 for values < than 1.8 there is a strong probability of a financial crisis \\
-04-02-2021 \\
+05-02-2021 \\
 \end{reportvalue}
 \end{document}

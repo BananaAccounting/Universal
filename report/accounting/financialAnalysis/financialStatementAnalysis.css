@@ -20,7 +20,25 @@ table {
 }
 
 .header_text {
-    font-size: 9px;
+    margin-top: 1.2cm;
+    margin-left: 1.2cm;
+    margin-right: 1.2cm;
+    text-align: right;
+}
+
+.header_row_company_name {
+    font-weight: bold;
+    font-size: 12pt;
+}
+
+.header_row_address {
+    font-size: 10pt;
+}
+
+.logo {
+    margin-top: 1.2cm;
+    margin-left: 1.2cm;
+    margin-right: 1.2cm;
 }
 
 
