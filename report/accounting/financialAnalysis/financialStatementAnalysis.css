@@ -3,27 +3,26 @@ style for the Report sections/principal objects
 ***************************************************/
 
 @page {
-    margin-top: 5mm;
-    margin-bottom: 5mm;
-    margin-left: 5mm;
-    margin-right: 5mm;
+    margin-top: 10mm;
+    margin-bottom: 10mm;
+    margin-left: 10mm;
+    margin-right: 10mm;
 }
 
 body {
-    font-family: Calibri;
     font-size: 9pt;
 }
 
 table {
     font-size: 9pt;
+    margin-bottom: 10px;
     width: 100%;
 }
 
 .header_text {
-    margin-top: 1.2cm;
-    margin-left: 1.2cm;
-    margin-right: 1.2cm;
-    text-align: right;
+    font-size: 9pt;
+    padding: 0;
+    margin: 0;
 }
 
 .header_row_company_name {
@@ -33,12 +32,6 @@ table {
 
 .header_row_address {
     font-size: 10pt;
-}
-
-.logo {
-    margin-top: 1.2cm;
-    margin-left: 1.2cm;
-    margin-right: 1.2cm;
 }
 
 
@@ -128,6 +121,7 @@ table.myIndeffTable td {
 
 table.myDupontTable td {
     border-style: solid;
+    border-color: rgb(0, 0, 0);
     width: auto;
     padding-top: 1px;
     padding-bottom: 1px;
@@ -168,17 +162,17 @@ style's for the amounts
 /*those 3 style's are for the Altman z Score Index values*/
 
 .styleZIndexLow {
-    background-color: #00ff00;
+    background-color: #71FA4C;
     text-align: center;
 }
 
 .styleZIndexMid {
-    background-color: #ffff00;
+    background-color: #FFFD54;
     text-align: center;
 }
 
 .styleZIndexProb {
-    background-color: #ff0000;
+    background-color: #EC3323;
     text-align: center;
 }
 
@@ -186,7 +180,7 @@ style's for the amounts
 /*style for the amount when the difference between calculated total and the accounting total is>than 0*/
 
 .styleDifferenceFoundAmount {
-    color: #ff0000;
+    color: #EC3323;
     text-align: right;
 }
 
@@ -197,15 +191,15 @@ style's for the texts
 
 .styleTitles {
     font-weight: bold;
-    color: #0e055a;
+    color: #354793;
     font-size: 11pt;
     padding-top: 5px;
     padding-bottom: 5px;
 }
 
 .styleTablesHeaderText {
-    color: #0e055a;
-    background-color: #FBF876;
+    color: $headers_texts_color;
+    background-color: $headers_background_color;
     font-weight: bold;
     text-align: center;
 }
@@ -230,9 +224,9 @@ style's for the texts
 /*style for the 'difference founds' warning*/
 
 .styleWarningParagraph {
-    color: #ff0000;
+    color: #EC3323;
     text-align: left;
-    font-size: medium;
+    font-size: 9pt;
     padding-top: 5px;
 }
 
@@ -245,7 +239,7 @@ style's for the texts
 
 .styleDownArrow {
     text-align: right;
-    color: red;
+    color: #EC3323;
     font-size: 12px;
     margin: 0px;
 }

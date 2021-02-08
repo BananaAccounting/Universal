@@ -929,6 +929,70 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         return accountList;
     }
 
+
+    setVariables(variables, dialogparam) {
+        /* Variables that set the colors */
+        variables.$headers_background_color = dialogparam.headers_background_color;
+        variables.$headers_texts_color = dialogparam.headers_texts_color;
+
+    }
+
+    /**
+     *Function that replaces all the css variables inside of the given cssText with their values.
+     *All the css variables start with "$" (i.e. $font_size, $margin_top)
+     * @param {*} cssText 
+     * @param {*} variables 
+     */
+    replaceVariables(cssText, variables) {
+
+        var result = "";
+        var varName = "";
+        var insideVariable = false;
+        var variablesNotFound = [];
+
+        for (var i = 0; i < cssText.length; i++) {
+            var currentChar = cssText[i];
+            if (currentChar === "$") {
+                insideVariable = true;
+                varName = currentChar;
+            } else if (insideVariable) {
+                if (currentChar.match(/^[0-9a-z]+$/) || currentChar === "_" || currentChar === "-") {
+                    // still a variable name
+                    varName += currentChar;
+                } else {
+                    // end variable, any other charcter
+                    if (!(varName in variables)) {
+                        variablesNotFound.push(varName);
+                        result += varName;
+                    } else {
+                        result += variables[varName];
+                    }
+                    result += currentChar;
+                    insideVariable = false;
+                    varName = "";
+                }
+            } else {
+                result += currentChar;
+            }
+        }
+
+        if (insideVariable) {
+            // end of text, end of variable
+            if (!(varName in variables)) {
+                variablesNotFound.push(varName);
+                result += varName;
+            } else {
+                result += variables[varName];
+            }
+            insideVariable = false;
+        }
+
+        if (variablesNotFound.length > 0) {
+            //Banana.console.log(">>Variables not found: " + variablesNotFound);
+        }
+        return result;
+    }
+
     /**
      * @description set the different styles for the report elements.
      * @returns the stylesheet
@@ -944,6 +1008,11 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         } else {
             Banana.console.log(file.errorString);
         }
+        var variables = {};
+        this.setVariables(variables, this.dialogparam);
+        // Replace all the "$xxx" variables with the real value
+        textCSS = this.replaceVariables(textCSS, variables);
+
 
         var stylesheet = Banana.Report.newStyleSheet();
         // Parse the CSS text
@@ -1063,7 +1132,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         texts.showformulascolumn_tooltip = qsTr("Check to show the Formulas Column");
         texts.benchmarks_tooltip = qsTr("Enter the Benchmark for this index");
         texts.averagenumberofemployee_tooltip = qsTr("Enter the number of employees in your company");
-
+        texts.headers_background_color_tooltip = qsTr("Enter the color for the header's background");
+        texts.headers_texts_color_tooltip = qsTr("Enter the color for the header's texts");
 
 
         /******************************************************************************************
@@ -1140,6 +1210,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         texts.showacronymcolumn = qsTr('Show Acronym column');
         texts.showformulascolumn = qsTr('Show Formulas column');
         texts.printlogo = 'Logo';
+        texts.headers_background_color = qsTr("Background color of headers");
+        texts.headers_texts_color = qsTr("Text color of headers");
         texts.pageheader = qsTr("Page header");
         texts.logoname = qsTr("Composition for logo and header alignment");
         texts.averageemployees = qsTr('Average number of employees');
@@ -1234,6 +1306,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         dialogparam.printlogo = true;
         dialogparam.pageheader = true;
         dialogparam.logoname = "Logo";
+        dialogparam.headers_background_color = "#337AB7";
+        dialogparam.headers_texts_color = "#fff";
 
         return dialogparam;
     }
@@ -2523,6 +2597,36 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         }
         convertedParam.data.push(currentParam);
 
+        //Header background color
+        var currentParam = {};
+        currentParam.name = 'headerbackgroundcolor';
+        currentParam.group = 'preferences';
+        currentParam.title = texts.headers_background_color;
+        currentParam.type = 'string';
+        currentParam.value = userParam.headers_background_color ? userParam.headers_background_color : userParam.headers_background_color;
+        currentParam.defaultvalue = defaultParam.headers_background_color;
+        currentParam.tooltip = texts.headers_background_color_tooltip;
+        currentParam.parentObject = 'Print Details';
+        currentParam.readValue = function() {
+            userParam.headers_background_color = this.value;
+        }
+        convertedParam.data.push(currentParam);
+
+        //Header texts color
+        var currentParam = {};
+        currentParam.name = 'headertextscolor';
+        currentParam.group = 'preferences';
+        currentParam.title = texts.headers_texts_color;
+        currentParam.type = 'string';
+        currentParam.value = userParam.headers_texts_color ? userParam.headers_texts_color : userParam.headers_texts_color;
+        currentParam.defaultvalue = defaultParam.headers_texts_color;
+        currentParam.tooltip = texts.headers_texts_color_tooltip;
+        currentParam.parentObject = 'Print Details';
+        currentParam.readValue = function() {
+            userParam.headers_texts_color = this.value;
+        }
+        convertedParam.data.push(currentParam);
+
 
         //Previous years
         var currentParam = {};
@@ -3415,7 +3519,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
         if (!this.dialogparam || this.dialogparam.version < defaultParam.version) {
 
-            Banana.console.debug(JSON.stringify(this.dialogparam));
+            //Banana.console.debug(JSON.stringify(this.dialogparam));
 
             /*************************************************************************************
              * Change the parameters with those defined in the new version(26.01.2021: 1.0-->1.1)
@@ -3425,9 +3529,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             var userParam = this.dialogparam;
             this.dialogparam = this.UpdateParamsData(defaultParam, userParam);
 
-            Banana.console.debug("*************************************");
+            //Banana.console.debug("*************************************");
 
-            Banana.console.debug(JSON.stringify(this.dialogparam));
+            //Banana.console.debug(JSON.stringify(this.dialogparam));
 
 
             return false;
