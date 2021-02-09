@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-// @api = 1.0
+// @api = 1.1
 // @id = financialStatementAnalysis.js
 // @description = Financial Reports
 // @task = app.command
 // @doctype = 100.*
 // @publisher = Banana.ch SA
-// @pubdate = 2021-01-13
+// @pubdate = 2021-02-09
 // @inputdatasource = none
 // @timeout = -1
 
