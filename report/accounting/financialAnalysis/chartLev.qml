@@ -7,7 +7,7 @@ import "charts" 1.0
 
 BasePage {
    id: root
-   title: qsTr("Financial Statement Analysis")
+   title: qsTr("Financial Statement Analysis")  
 
    ColumnLayout {
       anchors.fill: parent
@@ -23,12 +23,12 @@ BasePage {
             Layout.fillHeight: true
 
             Text {
-               text: qsTr("Liquidity index variation")
+               text: qsTr("Leverage index variation")
                font.pixelSize: Stylesheet.titleFontSize
                Layout.bottomMargin: Stylesheet.defaultMargin
             }
 
-            StyledChartLiqu {
+            StyledChartLev {
                id: mainChart
                height: availableHeight
                width: availableWidth
@@ -42,7 +42,6 @@ BasePage {
                   chartOptions.legend.position = 'bottom';
 
                   var financialStatementAnalysis = new FinancialStatementAnalysis(Banana.document);
-                  
                   //Recovery of current settings.
                   var savedParam =Banana.document.getScriptSettings("financialStatementAnalysis");
                   if (savedParam.length > 0) {
@@ -52,9 +51,13 @@ BasePage {
                   financialStatementAnalysis.loadData();
                   var yearList = [];
                   var data = {};
-                  data.doflone = {};
-                  data.dofltwo = {};
-                  data.doflthree = {};
+                  data.grcuas = {};
+                  data.grfixa = {};
+                  data.gdin = {};
+                  data.gfcp = {};
+                  data.gdau = {};
+                  data.fixaco = {};
+
                   for (var i = financialStatementAnalysis.data.length - 1; i >= 0; i--) {
                      var periodo = financialStatementAnalysis.data[i].period.StartDate;
                      //for dont cut the Budget string in Budg.
@@ -65,9 +68,12 @@ BasePage {
                      var year= periodo;
                      if (year.length>0 && yearList.indexOf(year)<0)
                         yearList.push(year);
-                     data.doflone[year] = financialStatementAnalysis.data[i].index.liqu.doflone.amount;
-                     data.dofltwo[year] = financialStatementAnalysis.data[i].index.liqu.dofltwo.amount;
-                     data.doflthree[year] = financialStatementAnalysis.data[i].index.liqu.doflthree.amount;
+                     data.grcuas[year] = financialStatementAnalysis.data[i].index.lev.grcuas.amount;
+                     data.grfixa[year] = financialStatementAnalysis.data[i].index.lev.grfixa.amount;
+                     data.gdin[year] = financialStatementAnalysis.data[i].index.lev.gdin.amount;
+                     data.gfcp[year] = financialStatementAnalysis.data[i].index.lev.gfcp.amount;
+                     data.gdau[year] = financialStatementAnalysis.data[i].index.lev.gdau.amount;
+                     data.fixaco[year] = financialStatementAnalysis.data[i].index.lev.fixaco.amount;
                   }
                   for (var i = 0; i < yearList.length; i++) {
                      var year = yearList[i];
@@ -78,10 +84,14 @@ BasePage {
                         defaultColor = defaultColors[i].fill;
                      chartData.datasets[i].backgroundColor = defaultColor;
                      chartData.datasets[i].data = [];
-                     chartData.datasets[i].data.push(data.doflone[year]);
-                     chartData.datasets[i].data.push(data.dofltwo[year]);
-                     chartData.datasets[i].data.push(data.doflthree[year]);
-                  } 
+                     chartData.datasets[i].data.push(data.grcuas[year]);
+                     chartData.datasets[i].data.push(data.grfixa[year] );
+                     chartData.datasets[i].data.push(data.gdin[year]);
+                     chartData.datasets[i].data.push(data.gfcp[year]);
+                     chartData.datasets[i].data.push(data.gdau[year]);
+                     chartData.datasets[i].data.push(data.fixaco[year]);
+                  }  
+                  
                   repaintChart();
                   showLoadingIndicator(false)
                }

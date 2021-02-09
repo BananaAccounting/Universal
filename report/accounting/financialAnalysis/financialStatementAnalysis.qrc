@@ -1,12 +1,12 @@
 <!DOCTYPE RCC><RCC version="1.0">
  <qresource>
-     <file>chartFin.qml</file>
+     <file>chartLev.qml</file>
      <file>chartLiqu.qml</file>
      <file>chartProf.qml</file>
      <file>chartEff.qml</file>
      <file>chartRAtt.qml</file>
      <file>chartRPass.qml</file>
-     <file>chartProfLoss.qml</file>
+     <file>chartRProLos.qml</file>
      <file>charts.js</file>
      <file>charts.qml</file>
      <file>financialStatementAnalysis.js</file>
@@ -17,13 +17,13 @@
      <file>charts/ChartView.qml</file>
      <file>charts/qmldir</file>
      <file>charts/StyledChart.qml</file>
-     <file>charts/StyledChartFin.qml</file>
+     <file>charts/StyledChartLev.qml</file>
      <file>charts/StyledChartLiqu.qml</file>
      <file>charts/StyledChartEff.qml</file>
      <file>charts/StyledChartProf.qml</file>
      <file>charts/StyledChartRAtt.qml</file>
      <file>charts/StyledChartRPass.qml</file>
-     <file>charts/StyledChartProfLoss.qml</file>
+     <file>charts/StyledChartRProLos.qml</file>
      <file>components/BasePage.qml</file>     
      <file>components/CountriesList.qml</file>     
      <file>components/ListItemDelegate.qml</file>     

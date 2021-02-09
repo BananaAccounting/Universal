@@ -23,13 +23,12 @@ BasePage {
             Layout.fillHeight: true
 
             Text {
-               text: qsTr("Reclassified Profit and loss variation")
+               text: qsTr("Reclassified Profit and Loss")
                font.pixelSize: Stylesheet.titleFontSize
                Layout.bottomMargin: Stylesheet.defaultMargin
-               Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
             }
 
-            StyledChartRAtt {
+            StyledChartRProLos {
                id: mainChart
                height: availableHeight
                width: availableWidth
@@ -37,50 +36,54 @@ BasePage {
                Layout.fillHeight: true
 
                function loadData() {
-                  showLoadingIndicator(false)
-                  // showLoadingIndicator(true)
+                  showLoadingIndicator(true)
 
                   chartOptions.legend.display = true;
                   chartOptions.legend.position = 'bottom';
 
                   var financialStatementAnalysis = new FinancialStatementAnalysis(Banana.document);
+                  //Recovery of current settings.
+                  var savedParam =Banana.document.getScriptSettings("financialStatementAnalysis");
+                  if (savedParam.length > 0) {
+                     var param = JSON.parse(savedParam);
+                     financialStatementAnalysis.setParam(param);
+                  }
                   financialStatementAnalysis.loadData();
                   var yearList = [];
-                  var dataSerie1 = [];
-                  var dataSerie2 = [];
-                  var dataSerie3 = [];
-                  var dataSerie4 = [];
-                  for (var i = 0; i < financialStatementAnalysis.data.length; i++) {
+                  var data = {};
+                  data.adva = {};
+                  data.ebitda = {};
+                  data.ebit = {};
+                  data.tota = {};
+                  for (var i = financialStatementAnalysis.data.length - 1; i >= 0; i--) {
                      var periodo = financialStatementAnalysis.data[i].period.StartDate;
-                     if (periodo.length<4)
-                        continue;
-                     var year = periodo.substr(0, 4);
-                     if (yearList.indexOf(year)<0){
-                        yearList.push(year);
+                     //for dont cut the Budget string in Budg.
+                     var elementType = financialStatementAnalysis.data[i].period.Type;
+                     if (elementType === "Y") {
+                        periodo = periodo.substr(0, 4);
                      }
-                     dataSerie1.push(Banana.SDecimal.abs(financialStatementAnalysis.data[i].CalculatedData.AddedValue));
-                     dataSerie2.push(Banana.SDecimal.abs(financialStatementAnalysis.data[i].CalculatedData.EbitDa));
-                     dataSerie3.push(Banana.SDecimal.abs(financialStatementAnalysis.data[i].CalculatedData.Ebit));
-                     dataSerie4.push(Banana.SDecimal.abs(financialStatementAnalysis.data[i].CalculatedData.TotAnnual)); 
+                     var year= periodo;
+                     if (year.length>0 && yearList.indexOf(year)<0)
+                        yearList.push(year);
+                     data.adva[year] = financialStatementAnalysis.data[i].CalculatedData.addedvalue;
+                     data.ebitda[year] = financialStatementAnalysis.data[i].CalculatedData.ebitda;
+                     data.ebit[year] = financialStatementAnalysis.data[i].CalculatedData.ebit;
+                     data.tota[year] = financialStatementAnalysis.data[i].CalculatedData.annualresult;
                   }
-                  chartData.labels = []
                   for (var i = 0; i < yearList.length; i++) {
                      var year = yearList[i];
-                     chartData.labels.push(year);
-                  }
-                  chartData.datasets = [
-                  {label: qsTr('Added Value'), data: dataSerie1, backgroundColor:defaultColors[0].fill},
-                  {label: 'EBIT-DA', data: dataSerie2, backgroundColor:defaultColors[1].fill},
-                  {label: 'EBIT', data: dataSerie3, backgroundColor:defaultColors[2].fill},
-                  {label: qsTr('Annual Result'), data: dataSerie4, backgroundColor:defaultColors[3].fill}
-                  ]
-
-                  /*chartData.labels = ["risk1","risk2"]
-                  chartData.datasets = [
-                  {label: 'low',data:[67.8,30,20], backgroundColor:'#D6E9C6'},
-                  {label: 'moderate',data:[20.7,30,20], backgroundColor:'#FAEBCC'},
-                  {label: 'high',data:[11.4, 40,60], backgroundColor:'#EBCCD1'}
-                  ]*/
+                     chartData.datasets[i] = {};
+                     chartData.datasets[i].label = year;
+                     var defaultColor = defaultColors[0].fill;
+                     if (i < defaultColors.length)
+                        defaultColor = defaultColors[i].fill;
+                     chartData.datasets[i].backgroundColor = defaultColor;
+                     chartData.datasets[i].data = [];
+                     chartData.datasets[i].data.push(data.adva[year]);
+                     chartData.datasets[i].data.push(data.ebitda[year]);
+                     chartData.datasets[i].data.push(data.ebit[year]);
+                     chartData.datasets[i].data.push(data.tota[year]);
+                  } 
                   repaintChart();
                   showLoadingIndicator(false)
                }
