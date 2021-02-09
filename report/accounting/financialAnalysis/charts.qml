@@ -12,7 +12,7 @@ BasePage {
    height: 600
 
    function loadCharts() {
-      var FinancingChart=qsTr(" Financing index variation");
+      var LeverageChart=qsTr(" Leverage index variation");
       var LiquidityChart=qsTr(" Liquidity index variation");
       var ProfitabilityChart=qsTr(" Profitability index variation");
       var EfficiencyChart=qsTr(" Efficiency index variation");
@@ -21,13 +21,13 @@ BasePage {
       var ReclassifiedProfitAndLossVariation=qsTr(" Reclassified Profit and Loss variation");
 
       pageModel.clear();
-      pageModel.append({'title': FinancingChart,'page': 'chartFin.qml'});
+      pageModel.append({'title': LeverageChart,'page': 'chartLev.qml'});
       pageModel.append({'title': LiquidityChart,'page': 'chartLiqu.qml'});
       pageModel.append({'title': ProfitabilityChart,'page': 'chartProf.qml'});
       pageModel.append({'title': EfficiencyChart,'page': 'chartEff.qml'});
       pageModel.append({'title': ReclassifiedAssetsVariationChart,'page': 'chartRAtt.qml'});
       pageModel.append({'title': ReclassifiedLiabilitiesAndEquityVariationChart,'page': 'chartRPass.qml'});
-      pageModel.append({'title': ReclassifiedProfitAndLossVariation,'page': 'chartProfLoss.qml'});
+      pageModel.append({'title': ReclassifiedProfitAndLossVariation,'page': 'chartRProLos.qml'});
    }
 
    Component.onCompleted: {

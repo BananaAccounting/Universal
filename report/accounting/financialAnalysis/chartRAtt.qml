@@ -71,7 +71,7 @@ BasePage {
                   var dataSerie4 = [];
                   var dataSum = [];
 
-                  for (var i = 0; i < financialStatementAnalysis.data.length; i++) {
+                  for (var i = financialStatementAnalysis.data.length - 1; i >= 0; i--) {
                      var periodo = financialStatementAnalysis.data[i].period.StartDate;
                      //for dont cut the Budget string in Budg.
                      var elementType = financialStatementAnalysis.data[i].period.Type;
@@ -83,13 +83,13 @@ BasePage {
                         yearList.push(year);
                      }
                      
-                     var sumLiq= Banana.SDecimal.abs(financialStatementAnalysis.data[i].bilancio.ac.liqu.balance);
+                     var sumLiq= Banana.SDecimal.abs(financialStatementAnalysis.data[i].balance.ca.liquidity.balance);
                      dataSerie1.push(sumLiq);
-                     var sumCred=Banana.SDecimal.abs(financialStatementAnalysis.data[i].bilancio.ac.cred.balance);
+                     var sumCred=Banana.SDecimal.abs(financialStatementAnalysis.data[i].balance.ca.credits.balance);
                      dataSerie2.push(sumCred);
-                     var sumStoc=Banana.SDecimal.abs(financialStatementAnalysis.data[i].bilancio.ac.stoc.balance);
+                     var sumStoc=Banana.SDecimal.abs(financialStatementAnalysis.data[i].balance.ca.stocks.balance);
                      dataSerie3.push(sumStoc);
-                     var sumFixa=Banana.SDecimal.abs(financialStatementAnalysis.data[i].bilancio.af.fixa.balance);
+                     var sumFixa=Banana.SDecimal.abs(financialStatementAnalysis.data[i].balance.fa.fixedassets.balance);
                      dataSerie4.push(sumFixa); 
                      
                      var sum = sumLiq;

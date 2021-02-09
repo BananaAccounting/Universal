@@ -41,8 +41,8 @@ ChartView {
 
    chartData: {
       'labels' : [
-            qsTr("Added value"),"EBIT-DA","EBIT",qsTr("Final Result")
-            ],
+           qsTr("Degree of Circulating Active"),qsTr("Percentage Fixed Assets"),qsTr("Debt ratio"),qsTr("Equity ratio"),qsTr("Self Financing ratio"),qsTr("Fixed Asset Coverage")
+      ],
        'datasets' : [
        ]
    }
@@ -54,8 +54,8 @@ ChartView {
       },
       'tooltips': {
          'mode': 'index',
-         'intersect': false,
-         'titleFontSize': 16,
+         'intersect': true,
+         'titleFontSize': 18,
          'bodyFontSize': 14,
          'callbacks': {
             'labelColor' : function(tooltipItem, chart) {
@@ -67,7 +67,7 @@ ChartView {
                }
             },
             'label' : function(item, data){
-               return Banana.Converter.toLocaleNumberFormat(item.yLabel);
+               return Banana.Converter.toLocaleNumberFormat(item.yLabel) + '%';
             }
          }
       },
@@ -75,12 +75,13 @@ ChartView {
          'yAxes': [{
                'ticks': {
                callback: function (value) {
-               return value;
+               return value+"%";
                },
-                  'beginAtZero' : true,
+                  'beginAtZero' : true
                }
-            }]
-      }
+         }]
+      },
+      'barValueSpacing': 20,
    }
 
    BusyIndicator {

@@ -1,22 +1,45 @@
+/***************************************************
+style for the Report sections/principal objects
+***************************************************/
+
 @page {
-    margin-top: 5mm;
-    margin-bottom: 5mm;
-    margin-left: 5mm;
-    margin-right: 5mm;
+    margin-top: 10mm;
+    margin-bottom: 10mm;
+    margin-left: 10mm;
+    margin-right: 10mm;
 }
 
 body {
-    font-family: Calibri;
-    font-size: 7pt;
+    font-size: 9pt;
 }
 
 table {
-    font-size: 10px;
+    font-size: 9pt;
+    margin-bottom: 10px;
     width: 100%;
 }
 
+.header_text {
+    font-size: 9pt;
+    padding: 0;
+    margin: 0;
+}
+
+.header_row_company_name {
+    font-weight: bold;
+    font-size: 12pt;
+}
+
+.header_row_address {
+    font-size: 10pt;
+}
+
+
+/***************************************************
+style for the tables
+****************************************************/
+
 table.myTableCompanyInfo td {
-    border-collapse: collapse;
     border-style: solid;
     border-color: rgb(0, 0, 0);
     width: auto;
@@ -25,7 +48,6 @@ table.myTableCompanyInfo td {
 }
 
 table.myTableUsedSetting td {
-    border-collapse: collapse;
     border-style: solid;
     border-color: rgb(0, 0, 0);
     width: auto;
@@ -33,8 +55,7 @@ table.myTableUsedSetting td {
     padding-bottom: 1px;
 }
 
-table.myTableBilancio td {
-    border-collapse: collapse;
+table.myTableBalance td {
     border-style: solid;
     border-color: rgb(0, 0, 0);
     width: auto;
@@ -42,8 +63,7 @@ table.myTableBilancio td {
     padding-bottom: 1px;
 }
 
-table.myTableBilancioSumsControl td {
-    border-collapse: collapse;
+table.myTableBalanceSumsControl td {
     border-style: solid;
     border-color: rgb(0, 0, 0);
     width: auto;
@@ -52,7 +72,6 @@ table.myTableBilancioSumsControl td {
 }
 
 table.myConTableCe td {
-    border-collapse: collapse;
     border-style: solid;
     border-color: rgb(0, 0, 0);
     width: auto;
@@ -61,7 +80,6 @@ table.myConTableCe td {
 }
 
 table.mytableConCeSumsControl td {
-    border-collapse: collapse;
     border-style: solid;
     border-color: rgb(0, 0, 0);
     width: auto;
@@ -70,7 +88,6 @@ table.mytableConCeSumsControl td {
 }
 
 table.myIndliqTable td {
-    border-collapse: collapse;
     border-style: solid;
     width: auto;
     border-color: rgb(0, 0, 0);
@@ -78,8 +95,7 @@ table.myIndliqTable td {
     padding-bottom: 1px;
 }
 
-table.myIndfinTable td {
-    border-collapse: collapse;
+table.myIndlevTable td {
     border-style: solid;
     border-color: rgb(0, 0, 0);
     width: auto;
@@ -88,7 +104,6 @@ table.myIndfinTable td {
 }
 
 table.myIndprofTable td {
-    border-collapse: collapse;
     border-style: solid;
     border-color: rgb(0, 0, 0);
     width: auto;
@@ -97,7 +112,6 @@ table.myIndprofTable td {
 }
 
 table.myIndeffTable td {
-    border-collapse: collapse;
     border-style: solid;
     border-color: rgb(0, 0, 0);
     width: auto;
@@ -106,14 +120,6 @@ table.myIndeffTable td {
 }
 
 table.myDupontTable td {
-    border-collapse: collapse;
-    width: auto;
-    padding-top: 1px;
-    padding-bottom: 1px;
-}
-
-table.myTableAltmanIndex td {
-    border-collapse: collapse;
     border-style: solid;
     border-color: rgb(0, 0, 0);
     width: auto;
@@ -121,55 +127,91 @@ table.myTableAltmanIndex td {
     padding-bottom: 1px;
 }
 
-.styleCompanyInfocells {
-    background-color: #FBF876;
-    text-align: center;
-    font-weight: bold;
+table.myTableAltmanIndex td {
+    border-style: solid;
+    border-color: rgb(0, 0, 0);
+    width: auto;
+    padding-top: 1px;
+    padding-bottom: 1px;
 }
 
-.styleGroupTitles {
-    font-weight: bold;
-    color: #0e055a;
-    padding-top: 5px;
-    padding-bottom: 5px;
-}
 
-.styleTableHeader {
-    color: #0e055a;
-    background-color: #FBF876;
-    font-weight: bold;
-    text-align: center;
-}
+/**********************************************************
+style's for the amounts
+**********************************************************/
 
-.styleUnderGroupTitles {
-    color: #0e055a;
-}
-
-.styleNormal {
-    text-align: center;
-}
-
-.styleAmount {
+.styleNormalAmount {
     text-align: right;
 }
 
-.styleMidTotal {
+
+/*style for the middle totals*/
+
+.styleMidTotalAmount {
     text-align: right;
     font-weight: bold;
 }
 
-.styleTotAmount {
+.styleTotalAmount {
     background-color: #e5f2ff;
     font-weight: bold;
     text-align: right;
 }
 
-.styleTitlesTotAmount {
-    font-weight: bold;
+
+/*those 3 style's are for the Altman z Score Index values*/
+
+.styleZIndexLow {
+    background-color: #71FA4C;
+    text-align: center;
 }
 
-.styleRatiosAmount {
+.styleZIndexMid {
+    background-color: #FFFD54;
     text-align: center;
+}
+
+.styleZIndexProb {
+    background-color: #EC3323;
+    text-align: center;
+}
+
+
+/*style for the amount when the difference between calculated total and the accounting total is>than 0*/
+
+.styleDifferenceFoundAmount {
+    color: #EC3323;
+    text-align: right;
+}
+
+
+/*******************************************************
+style's for the texts
+********************************************************/
+
+.styleTitles {
+    font-weight: bold;
+    color: #354793;
+    font-size: 11pt;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.styleTablesHeaderText {
+    color: $headers_texts_color;
+    background-color: $headers_background_color;
+    font-weight: bold;
+    text-align: center;
+}
+
+.styleCentralText {
+    text-align: center;
+}
+
+
+/*style for the titles of total amounts*/
+
+.styleTitlesTotalAmount {
     font-weight: bold;
 }
 
@@ -178,37 +220,33 @@ table.myTableAltmanIndex td {
     font-style: italic;
 }
 
-.styleZLow {
-    background-color: #00ff00;
-    text-align: center;
-}
 
-.styleZmid {
-    background-color: #ffff00;
-    text-align: center;
-}
-
-.styleZprob {
-    background-color: #ff0000;
-    text-align: center;
-}
-
-.styleDifferencesFound {
-    color: #ff0000;
-    text-align: right;
-}
+/*style for the 'difference founds' warning*/
 
 .styleWarningParagraph {
-    color: #ff0000;
+    color: #EC3323;
     text-align: left;
-    font-size: medium;
+    font-size: 9pt;
     padding-top: 5px;
 }
 
-.header {
-    text-align: left;
+.styleUpArrow {
+    text-align: right;
+    color: green;
+    font-size: 12px;
+    margin: 0px;
 }
 
-.footer {
-    text-align: left;
+.styleDownArrow {
+    text-align: right;
+    color: #EC3323;
+    font-size: 12px;
+    margin: 0px;
+}
+
+.styleEqualArrow {
+    text-align: right;
+    color: orange;
+    font-size: 12px;
+    margin: 0px;
 }
