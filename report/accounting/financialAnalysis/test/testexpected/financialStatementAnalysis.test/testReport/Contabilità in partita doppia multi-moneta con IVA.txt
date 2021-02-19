@@ -63,35 +63,35 @@ CONTROL SUMS Year  & Accounting Total  & Calculated Total  & Difference \\
 \end{longtable}
 Warning: The difference between the 'Accounting total' and the 'Calculated total' columns should be 0.\P  Check that the groups used are correct. \\
 \begin{longtable}[l]{ l  l  l  l  l }
-LIQUIDITY RATIOS Description  & formula  & 2020  & Budget  & Benchmark \\
-Cash ratio  & liqu / stdc  & -313.80\%   & \%  ↑  & 10\%-35\% \\
-Quick ratio  & (liqu + cred) / stdc  & 848.00\%   & 0\%  ↓  & 100\% \\
-Current ratio  & cuas / stdc  & 851.85\%   & \%  ↓  & 150\% \\
-Net Current Assets  & cuas-stdc  & 22'330.00   & 110.00  ↓  & >0 \\
+LIQUIDITY RATIOS Description  & formula  & Benchmark  & 2020  & Budget \\
+Cash ratio  & liqu / stdc  & 10\%-35\%  & -313.80\%   & \%  ↑ \\
+Quick ratio  & (liqu + cred) / stdc  & 100\%  & 848.00\%   & 0\%  ↓ \\
+Current ratio  & cuas / stdc  & 150\%  & 851.85\%   & \%  ↓ \\
+Net Current Assets  & cuas-stdc  & >0  & 22'330.00   & 110.00  ↓ \\
 \end{longtable}
 \begin{longtable}[l]{ l  l  l  l  l }
-LEVERAGE RATIOS Description  & formula  & 2020  & Budget  & Benchmark \\
-Degree of Circulating Assets  & cuas / tota  & 104.12\%   & 100.00\%  ↓  & 60\% \\
-Percentage Fixed Assets  & fixa / tota  & -4.12\%   & 0.00\%  ↑  & 40\% \\
-Debt ratio  & (stdc+ltdc) / totp  & 49.48\%   & \%  ↓  & 40\%-70\% \\
-Equity ratio  & owca / totp  & 50.52\%   & \%  ↓  & 30\%-60\% \\
-Self financing ratio  & reut / owca  & 100.00\%   & \%  ↓  & 33,3\% \\
-Fixed Assets Coverage  & (owca + ltdc) / tota  & 87.33\%   & 0.00\%  ↓  & >100\% \\
+LEVERAGE RATIOS Description  & formula  & Benchmark  & 2020  & Budget \\
+Degree of Circulating Assets  & cuas / tota  & 60\%  & 104.12\%   & 100.00\%  ↓ \\
+Percentage Fixed Assets  & fixa / tota  & 40\%  & -4.12\%   & 0.00\%  ↑ \\
+Debt ratio  & (stdc+ltdc) / totp  & 40\%-70\%  & 49.48\%   & \%  ↓ \\
+Equity ratio  & owca / totp  & 30\%-60\%  & 50.52\%   & \%  ↓ \\
+Self financing ratio  & reut / owca  & 33,3\%  & 100.00\%   & \%  ↓ \\
+Fixed Assets Coverage  & (owca + ltdc) / tota  & >100\%  & 87.33\%   & 0.00\%  ↓ \\
 \end{longtable}
 \begin{longtable}[l]{ l  l  l  l  l }
-PROFITABILITY RATIOS Description  & formula  & 2020  & Budget  & Benchmark \\
-ROE  & profit / owca  & 100.00\%   & \%  ↓  & 8\%-14\% \\
-ROI  & EBIT / tota    & 50.29\%   & 0.00\%  ↓  & 10\% \\
-ROS  & EBIT / satu  & 54.31\%   & \%  ↓  & >0 \\
-MOL  & gross profit / satu  & 54.31\%   & \%  ↓  & 40\% \\
-EBIT margin  & EBIT / satu  & 54.31\%   & \%  ↓  & 2.4\% \\
-Profit margin  & net profit / satu  & 54.31\%   & \%  ↓  & 1.4\% \\
+PROFITABILITY RATIOS Description  & formula  & Benchmark  & 2020  & Budget \\
+ROE  & profit / owca  & 8\%-14\%  & 100.00\%   & \%  ↓ \\
+ROI  & EBIT / tota    & 10\%  & 50.29\%   & 0.00\%  ↓ \\
+ROS  & EBIT / satu  & >0  & 54.31\%   & \%  ↓ \\
+MOL  & gross profit / satu  & 40\%  & 54.31\%   & \%  ↓ \\
+EBIT margin  & EBIT / satu  & 2.4\%  & 54.31\%   & \%  ↓ \\
+Profit margin  & net profit / satu  & 1.4\%  & 54.31\%   & \%  ↓ \\
 \end{longtable}
 \begin{longtable}[l]{ l  l  l  l  l }
-EFFICIENCY RATIOS Description  & formula  & 2020  & Budget  & Benchmark \\
-Revenue per Employee  & satu/employees  & 22'500.00  & 0.00  & >0 \\
-Added Value per Employee  & adva/employees  & 12'220.00  & 0.00  & >0 \\
-Personnel Cost per Employee  & cope/employees  & 0.00  & 0.00  & >0 \\
+EFFICIENCY RATIOS Description  & formula  & Benchmark  & 2020  & Budget \\
+Revenue per Employee  & satu/employees  & >0  & 22'500.00  & 0.00 \\
+Added Value per Employee  & adva/employees  & >0  & 12'220.00  & 0.00 \\
+Personnel Cost per Employee  & cope/employees  & >0  & 0.00  & 0.00 \\
 \end{longtable}
 \begin{longtable}[l]{ l  l  l }
 DUPONT ANALYSIS  Description  & 2020  & Budget \\
@@ -116,6 +116,6 @@ ALTMAN INDEX Z-SCORE 2020  & Budget \\
 for values > than 3 correspond a low probability of a financial crisis \\
 for values >= than 1.8 but <= than 3 there are possibilities of a financial crisis, should be kept under control \\
 for values < than 1.8 there is a strong probability of a financial crisis \\
-08-02-2021 \\
+19-02-2021 \\
 \end{reportvalue}
 \end{document}

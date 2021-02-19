@@ -18,7 +18,7 @@
 // @task = app.command
 // @doctype = 100.*
 // @publisher = Banana.ch SA
-// @pubdate = 2021-02-09
+// @pubdate = 2021-02-19
 // @inputdatasource = none
 // @timeout = -1
 
@@ -58,7 +58,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         tableBalance.getCaption().addText(texts.upperbalance, "styleTitles");
         //columns
         tableBalance.addColumn("Description").setStyleAttributes("width:30%");
-        tableBalance.addColumn("formula").setStyleAttributes("width:10%");
+        if (this.dialogparam.acronymcolumn) {
+            tableBalance.addColumn("formula").setStyleAttributes("width:10%");
+        }
         // header
         var tableHeader = tableBalance.getHeader();
         var tableRow = tableHeader.addRow();
@@ -76,7 +78,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         tableConCe.getCaption().addText(texts.upperprofitandloss, "styleTitles");
         //columns
         tableConCe.addColumn("Description").setStyleAttributes("width:30%");
-        tableConCe.addColumn("formula").setStyleAttributes("width:10%");
+        if (this.dialogparam.acronymcolumn) {
+            tableConCe.addColumn("formula").setStyleAttributes("width:10%");
+        }
         //header
         var tableHeader = tableConCe.getHeader();
         var tableRow = tableHeader.addRow();
@@ -105,12 +109,12 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
     printReportAdd_TableIndliq(report) {
         var texts = this.initFinancialAnalysisTexts();
         var tableIndliq = report.addTable('myIndliqTable');
-        tableIndliq.setStyleAttributes("width:100%");
         tableIndliq.getCaption().addText(texts.upperliquidityratios, "styleTitles");
         tableIndliq.addColumn("Description").setStyleAttributes("width:25%");
-        tableIndliq.addColumn("formula").setStyleAttributes("width:20%");
-        this.setRatiosColumnsWidthDinamically(tableIndliq);
-        tableIndliq.addColumn("benchmark").setStyleAttributes("width:15%");
+        tableIndliq.addColumn("formula").setStyleAttributes("width:15%");
+        if (this.dialogparam.formulascolumn) {
+            tableIndliq.addColumn("benchmark").setStyleAttributes("width:10%");
+        }
         // header
         var tableHeader = tableIndliq.getHeader();
         var tableRow = tableHeader.addRow();
@@ -118,8 +122,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         if (this.dialogparam.formulascolumn) {
             tableRow.addCell(texts.formula, "styleTablesHeaderText");
         }
-        this.generateHeaderColumns(tableRow);
         tableRow.addCell(texts.benchmark, "styleTablesHeaderText");
+        this.generateHeaderColumns(tableRow);
         return tableIndliq;
     }
     printReportAdd_TableIndlev(report) {
@@ -128,9 +132,10 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         tableIndlev.setStyleAttributes("width:100%");
         tableIndlev.getCaption().addText(texts.upperleverageratios, "styleTitles");
         tableIndlev.addColumn("Description").setStyleAttributes("width:25%");
-        tableIndlev.addColumn("formula").setStyleAttributes("width:20%");
-        this.setRatiosColumnsWidthDinamically(tableIndlev);
-        tableIndlev.addColumn("benchmark").setStyleAttributes("width:15%");
+        tableIndlev.addColumn("formula").setStyleAttributes("width:15%");
+        if (this.dialogparam.formulascolumn) {
+            tableIndlev.addColumn("benchmark").setStyleAttributes("width:10%");
+        }
         // header
         var tableHeader = tableIndlev.getHeader();
         var tableRow = tableHeader.addRow();
@@ -138,8 +143,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         if (this.dialogparam.formulascolumn) {
             tableRow.addCell(texts.formula, "styleTablesHeaderText");
         }
-        this.generateHeaderColumns(tableRow);
         tableRow.addCell(texts.benchmark, "styleTablesHeaderText");
+        this.generateHeaderColumns(tableRow);
         return tableIndlev;
     }
     printReportAdd_TableIndprof(report) {
@@ -148,9 +153,10 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         tableIndprof.setStyleAttributes("width:100%");
         tableIndprof.getCaption().addText(texts.upperprofitabilityratios, "styleTitles");
         tableIndprof.addColumn("Description").setStyleAttributes("width:25%");
-        tableIndprof.addColumn("formula").setStyleAttributes("width:20%");
-        this.setRatiosColumnsWidthDinamically(tableIndprof);
-        tableIndprof.addColumn("benchmark").setStyleAttributes("width:15%");
+        tableIndprof.addColumn("formula").setStyleAttributes("width:15%");
+        if (this.dialogparam.formulascolumn) {
+            tableIndprof.addColumn("benchmark").setStyleAttributes("width:10%");
+        }
         // header
         var tableHeader = tableIndprof.getHeader();
         var tableRow = tableHeader.addRow();
@@ -158,8 +164,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         if (this.dialogparam.formulascolumn) {
             tableRow.addCell(texts.formula, "styleTablesHeaderText");
         }
-        this.generateHeaderColumns(tableRow);
         tableRow.addCell(texts.benchmark, "styleTablesHeaderText");
+        this.generateHeaderColumns(tableRow);
         return tableIndprof;
     }
 
@@ -169,9 +175,10 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         tableIndeff.setStyleAttributes("width:100%");
         tableIndeff.getCaption().addText(texts.upperefficiancyratios, "styleTitles");
         tableIndeff.addColumn("Description").setStyleAttributes("width:25%");
-        tableIndeff.addColumn("formula").setStyleAttributes("width:20%");
-        this.setRatiosColumnsWidthDinamically(tableIndeff);
-        tableIndeff.addColumn("benchmark").setStyleAttributes("width:15%");
+        tableIndeff.addColumn("formula").setStyleAttributes("width:15%");
+        if (this.dialogparam.formulascolumn) {
+            tableIndeff.addColumn("benchmark").setStyleAttributes("width:10%");
+        }
         // header
         var tableHeader = tableIndeff.getHeader();
         var tableRow = tableHeader.addRow();
@@ -179,8 +186,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         if (this.dialogparam.formulascolumn) {
             tableRow.addCell(texts.formula, "styleTablesHeaderText");
         }
-        this.generateHeaderColumns(tableRow);
         tableRow.addCell(texts.benchmark, "styleTablesHeaderText");
+        this.generateHeaderColumns(tableRow);
         return tableIndeff;
     }
 
@@ -685,6 +692,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             if (this.dialogparam.formulascolumn) {
                 tableRow.addCell(this.data[0].index.liqu[key].formula, "styleCentralText");
             }
+            tableRow.addCell(this.data[0].index.liqu[key].benchmark, "styleCentralText");
             for (var i = this.data.length - 1; i >= 0; i--) {
                 ratios = this.data[i].index.liqu[key].amount;
                 if (this.data[0].index.liqu[key].type != "dec") {
@@ -701,7 +709,6 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
 
             }
-            tableRow.addCell(this.data[0].index.liqu[key].benchmark, "styleCentralText");
         }
 
         /******************************************************************************************
@@ -715,6 +722,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             if (this.dialogparam.formulascolumn) {
                 tableRow.addCell(this.data[0].index.lev[key].formula, "styleCentralText");
             }
+            tableRow.addCell(this.data[0].index.lev[key].benchmark, "styleCentralText");
             for (var i = this.data.length - 1; i >= 0; i--) {
                 ratios = this.data[i].index.lev[key].amount;
                 cell = tableRow.addCell(ratios + perc + ' ', "styleNormalAmount");
@@ -724,7 +732,6 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                     this.setIndexEvolution(indexT1, indexT2, cell);
                 }
             }
-            tableRow.addCell(this.data[0].index.lev[key].benchmark, "styleCentralText");
         }
 
         /******************************************************************************************
@@ -738,6 +745,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             if (this.dialogparam.formulascolumn) {
                 tableRow.addCell(this.data[0].index.red[key].formula, "styleCentralText");
             }
+            tableRow.addCell(this.data[0].index.red[key].benchmark, "styleCentralText");
             for (var i = this.data.length - 1; i >= 0; i--) {
                 ratios = this.data[i].index.red[key].amount;
                 cell = tableRow.addCell(ratios + perc + ' ', "styleNormalAmount");
@@ -747,7 +755,6 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                     this.setIndexEvolution(indexT1, indexT2, cell);
                 }
             }
-            tableRow.addCell(this.data[0].index.red[key].benchmark, "styleCentralText");
         }
 
         /******************************************************************************************
@@ -761,11 +768,11 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             if (this.dialogparam.formulascolumn) {
                 tableRow.addCell(this.data[0].index.eff[key].formula, "styleCentralText");
             }
+            tableRow.addCell(this.data[0].index.eff[key].benchmark, "styleCentralText");
             for (var i = this.data.length - 1; i >= 0; i--) {
                 ratios = this.data[i].index.eff[key].amount;
                 tableRow.addCell(this.toLocaleAmountFormat(ratios), "styleNormalAmount");
             }
-            tableRow.addCell(this.data[0].index.eff[key].benchmark, "styleCentralText");
         }
 
 
@@ -3418,74 +3425,182 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
     }
 
     /**
-     * In case of a new version of the parameters, retrieve the parameters that the user defined in the Dialog
+     * In case of a new version of the parameters, retrieve the parameters that the user defined in the Dialog (if exists) otherwise
+     * the parameter is set with the default value
      * from version 1.0 to version 1.1 (26.01.2020)
-     * @param {*} oldparams 
-     * @param {*} newparams 
+     * @param {*} defaultParam 
+     * @param {*} userParam 
      */
     UpdateParamsData(defaultParam, userParam) {
 
-        //make a control if the parameters exists
 
         /**********************************************************
          * Set user Preferences Params
          *************************************************************/
-        defaultParam.maxpreviousyears = userParam.maxpreviousyears;
-        defaultParam.numberofdecimals = userParam.numberofdecimals;
-        defaultParam.numberofemployees = userParam.numberofemployees;
-        defaultParam.acronymcolumn = userParam.acronymcolumn;
-        defaultParam.formulascolumn = userParam.formulascolumn;
-        defaultParam.includebudgettable = userParam.includebudgettable;
-        defaultParam.includedupontanalysis = "true";
+        if (userParam.maxpreviousyears) {
+            defaultParam.maxpreviousyears = userParam.maxpreviousyears;
+        }
+        if (userParam.numberofdecimals) {
+            defaultParam.numberofdecimals = userParam.numberofdecimals;
+        }
+        if (userParam.numberofemployees) {
+            defaultParam.numberofemployees = userParam.numberofemployees;
+        }
+        if (userParam.acronymcolumn) {
+            defaultParam.acronymcolumn = userParam.acronymcolumn;
+        }
+        if (userParam.formulascolumn) {
+            defaultParam.formulascolumn = userParam.formulascolumn;
+        }
+        if (userParam.includebudgettable) {
+            defaultParam.includebudgettable = userParam.includebudgettable;
+        }
 
         /**********************************************************
          * Set user Balance Params
          *************************************************************/
-        defaultParam.balance.ca.liquidity.gr = userParam.bilancio.ac.liqu.gr;
-        defaultParam.balance.ca.credits.gr = userParam.bilancio.ac.cred.gr;
-        defaultParam.balance.ca.stocks.gr = userParam.bilancio.ac.stoc.gr;
-        defaultParam.balance.fa.fixedassets.gr = userParam.bilancio.af.fixa.gr;
-        defaultParam.balance.dc.shorttermdebtcapital.gr = userParam.bilancio.ct.stdc.gr;
-        defaultParam.balance.dc.longtermdebtcapital.gr = userParam.bilancio.ct.ltdc.gr;
-        defaultParam.balance.oc.ownbasecapital.gr = userParam.bilancio.cp.obca.gr;
-        defaultParam.balance.oc.reservesandprofits.gr = userParam.bilancio.cp.reut.gr;
+        if (userParam.bilancio) {
+            Banana.console.debug(JSON.stringify(userParam.bilancio));
+            if (userParam.bilancio.ac) {
+                if (userParam.bilancio.ac.liqu) {
+                    defaultParam.balance.ca.liquidity.gr = userParam.bilancio.ac.liqu.gr;
+                }
+                if (userParam.bilancio.ac.cred.gr) {
+                    defaultParam.balance.ca.credits.gr = userParam.bilancio.ac.cred.gr;
+                }
+                if (userParam.bilancio.ac.stoc) {
+                    defaultParam.balance.ca.stocks.gr = userParam.bilancio.ac.stoc.gr;
+                }
+            }
+            if (userParam.bilancio.af) {
+                if (userParam.bilancio.af.fixa) {
+                    defaultParam.balance.fa.fixedassets.gr = userParam.bilancio.af.fixa.gr;
+                }
+            }
+            if (userParam.bilancio.ct) {
+                if (userParam.bilancio.ct.stdc) {
+                    defaultParam.balance.dc.shorttermdebtcapital.gr = userParam.bilancio.ct.stdc.gr;
+                }
+                if (userParam.bilancio.ct.ltdc) {
+                    defaultParam.balance.dc.longtermdebtcapital.gr = userParam.bilancio.ct.ltdc.gr;
+                }
+            }
+            if (userParam.bilancio.cp) {
+                if (userParam.bilancio.cp.obca) {
+                    defaultParam.balance.oc.ownbasecapital.gr = userParam.bilancio.cp.obca.gr;
+                }
+                if (userParam.bilancio.cp.reut) {
+                    defaultParam.balance.oc.reservesandprofits.gr = userParam.bilancio.cp.reut.gr;
+                }
+            }
+        }
 
         /**********************************************************
          * Set user Profit and Loss Params
          *************************************************************/
-        defaultParam.profitandloss.salesturnover.gr = userParam.contoeconomico.satu.gr;
-        defaultParam.profitandloss.costofmerchandservices.gr = userParam.contoeconomico.cofm.gr;
-        defaultParam.profitandloss.personnelcosts.gr = userParam.contoeconomico.cope.gr;
-        defaultParam.profitandloss.differentcosts.gr = userParam.contoeconomico.codi.gr;
-        defaultParam.profitandloss.depreandadjust.gr = userParam.contoeconomico.amre.gr;
-        defaultParam.profitandloss.interests.gr = userParam.contoeconomico.inte.gr;
+        if (userParam.contoeconomico) {
+            if (userParam.contoeconomico.satu) {
+                defaultParam.profitandloss.salesturnover.gr = userParam.contoeconomico.satu.gr;
+            }
+            if (userParam.contoeconomico.cofm) {
+                defaultParam.profitandloss.costofmerchandservices.gr = userParam.contoeconomico.cofm.gr;
+            }
+            if (userParam.contoeconomico.cope) {
+                defaultParam.profitandloss.personnelcosts.gr = userParam.contoeconomico.cope.gr;
+            }
+            if (userParam.contoeconomico.codi) {
+                defaultParam.profitandloss.differentcosts.gr = userParam.contoeconomico.codi.gr;
+            }
+            if (userParam.contoeconomico.amre) {
+                defaultParam.profitandloss.depreandadjust.gr = userParam.contoeconomico.amre.gr;
+            }
+            if (userParam.contoeconomico.inte) {
+                defaultParam.profitandloss.interests.gr = userParam.contoeconomico.inte.gr;
+            }
+        }
 
         /**********************************************************
          * Set user Final Result Param
          *************************************************************/
 
-        defaultParam.finalresult.finalresult.gr = userParam.finalresult.fire.gr;
+        if (userParam.finalresult.fire.gr) {
+            defaultParam.finalresult.finalresult.gr = userParam.finalresult.fire.gr;
+        }
 
         /**********************************************************
          * Set user Benchmarks Params
          *************************************************************/
-        defaultParam.ratios.liquidityratios.cashratio.value = userParam.ratios.liquidityratios.liqu1.value;
-        defaultParam.ratios.liquidityratios.quickratio.value = userParam.ratios.liquidityratios.liqu2.value;
-        defaultParam.ratios.liquidityratios.currentratio.value = userParam.ratios.liquidityratios.liqu3.value;
-        defaultParam.ratios.liquidityratios.netcurrentasset.value = userParam.ratios.liquidityratios.netcurrass.value;
-        defaultParam.ratios.leverageratios.degreecirculatingasset.value = userParam.ratios.financingratios.cirract.value;
-        defaultParam.ratios.leverageratios.percentagefixedasset.value = userParam.ratios.financingratios.fixass.value;
-        defaultParam.ratios.leverageratios.debtratio.value = userParam.ratios.financingratios.lvldeb.value;
-        defaultParam.ratios.leverageratios.equityratio.value = userParam.ratios.financingratios.lvlequ.value;
-        defaultParam.ratios.leverageratios.selfinancingratio.value = userParam.ratios.financingratios.lvlsel.value;
-        defaultParam.ratios.leverageratios.fixedassetcoverage.value = userParam.ratios.financingratios.covfix.value;
-        defaultParam.ratios.profitabilityratios.profroi.value = userParam.ratios.profitabilityratios.profroi.value;
-        defaultParam.ratios.profitabilityratios.profroe.value = userParam.ratios.profitabilityratios.profroe.value;
-        defaultParam.ratios.profitabilityratios.profros.value = userParam.ratios.profitabilityratios.profros.value;
-        defaultParam.ratios.profitabilityratios.profmol.value = userParam.ratios.profitabilityratios.profmol.value;
-        defaultParam.ratios.profitabilityratios.profebm.value = userParam.ratios.profitabilityratios.profebm.value;
-        defaultParam.ratios.profitabilityratios.profmon.value = userParam.ratios.profitabilityratios.profmon.value;
-
+        if (userParam.ratios) {
+            //liquidity ratios
+            if (userParam.ratios.liquidityratios.liqu1) {
+                if (userParam.ratios.liquidityratios.liqu1) {
+                    defaultParam.ratios.liquidityratios.cashratio.value = userParam.ratios.liquidityratios.liqu1.value;
+                }
+                if (userParam.ratios.liquidityratios.liqu2) {
+                    defaultParam.ratios.liquidityratios.quickratio.value = userParam.ratios.liquidityratios.liqu2.value;
+                }
+                if (userParam.ratios.liquidityratios.liqu3) {
+                    defaultParam.ratios.liquidityratios.currentratio.value = userParam.ratios.liquidityratios.liqu3.value;
+                }
+                if (userParam.ratios.liquidityratios.liqu3) {
+                    defaultParam.ratios.liquidityratios.netcurrentasset.value = userParam.ratios.liquidityratios.netcurrass.value;
+                }
+            }
+            //leverage ratios
+            if (userParam.ratios.financingratios) {
+                if (userParam.ratios.financingratios.cirract) {
+                    defaultParam.ratios.leverageratios.degreecirculatingasset.value = userParam.ratios.financingratios.cirract.value;
+                }
+                if (userParam.ratios.financingratios.fixass) {
+                    defaultParam.ratios.leverageratios.percentagefixedasset.value = userParam.ratios.financingratios.fixass.value;
+                }
+                if (userParam.ratios.financingratios.lvldeb) {
+                    defaultParam.ratios.leverageratios.debtratio.value = userParam.ratios.financingratios.lvldeb.value;
+                }
+                if (userParam.ratios.financingratios.lvlequ) {
+                    defaultParam.ratios.leverageratios.equityratio.value = userParam.ratios.financingratios.lvlequ.value;
+                }
+                if (userParam.ratios.financingratios.lvlsel) {
+                    defaultParam.ratios.leverageratios.selfinancingratio.value = userParam.ratios.financingratios.lvlsel.value;
+                }
+                if (userParam.ratios.financingratios.covfix) {
+                    defaultParam.ratios.leverageratios.fixedassetcoverage.value = userParam.ratios.financingratios.covfix.value;
+                }
+            }
+            //profitability ratios
+            if (userParam.ratios.profitabilityratios) {
+                if (userParam.ratios.profitabilityratios.profroi) {
+                    defaultParam.ratios.profitabilityratios.profroi.value = userParam.ratios.profitabilityratios.profroi.value;
+                }
+                if (userParam.ratios.profitabilityratios.profroe) {
+                    defaultParam.ratios.profitabilityratios.profroe.value = userParam.ratios.profitabilityratios.profroe.value;
+                }
+                if (userParam.ratios.profitabilityratios.profros) {
+                    defaultParam.ratios.profitabilityratios.profros.value = userParam.ratios.profitabilityratios.profros.value;
+                }
+                if (userParam.ratios.profitabilityratios.profmol) {
+                    defaultParam.ratios.profitabilityratios.profmol.value = userParam.ratios.profitabilityratios.profmol.value;
+                }
+                if (userParam.ratios.profitabilityratios.profebm) {
+                    defaultParam.ratios.profitabilityratios.profebm.value = userParam.ratios.profitabilityratios.profebm.value;
+                }
+                if (userParam.ratios.profitabilityratios.profmon) {
+                    defaultParam.ratios.profitabilityratios.profmon.value = userParam.ratios.profitabilityratios.profmon.value;
+                }
+            }
+            //efficiency ratios
+            if (userParam.ratios.efficiencyratios) {
+                if (userParam.ratios.efficiencyratios.addedvalueperemployee) {
+                    defaultParam.ratios.efficiencyratios.addedvalueperemployee.value = userParam.ratios.efficiencyratios.addedvalueperemployee.value;
+                }
+                if (userParam.ratios.efficiencyratios.revenueperemployee) {
+                    defaultParam.ratios.efficiencyratios.revenueperemployee.value = userParam.ratios.efficiencyratios.revenueperemployee.value;
+                }
+                if (userParam.ratios.efficiencyratios.personnelcostperemployee) {
+                    defaultParam.ratios.efficiencyratios.personnelcostperemployee.value = userParam.ratios.efficiencyratios.personnelcostperemployee.value;
+                }
+            }
+        }
 
         return defaultParam;
 
@@ -3494,30 +3609,182 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
     }
 
-
     /**
-     * @description this function check that the parameters are objects, if they are not they are set with the default value calling the initDialogParam() method.
+     * @description Verify the User Params
      * @Param {object} dialogparam: an object containing the parameters recovered from the dialog setting
      */
     verifyParam() {
-        // I check if the parameter is not the one I expect empty then I empty it.
+
         var defaultParam = this.initDialogParam();
+        var userParam = this.dialogparam;
 
+        //Verify if the User param 'number of previous years entered' is valid, otherwise I reset it to the maximum number or zero if is NAN or >0
+        if (userParam.maxpreviousyears > 3)
+            userParam.maxpreviousyears = 3;
+        if (isNaN(userParam.maxpreviousyears) || userParam.maxpreviousyears < 0) {
+            userParam.maxpreviousyears = 0;
+        }
+        //Verify if the User param 'number of decimals' is valid, otherwise I reset it to the maximum number
+        if (userParam.numberofdecimals > 2)
+            userParam.numberofdecimals = 2;
 
-        //I check if the number of previous years entered is valid, otherwise I reset it to the maximum number or zero if is NAN or >0
-        this.dialogparam.maxpreviousyears
-        if (this.dialogparam.maxpreviousyears > 3)
-            this.dialogparam.maxpreviousyears = 3;
-        if (isNaN(this.dialogparam.maxpreviousyears) || this.dialogparam.maxpreviousyears < 0) {
-            this.dialogparam.maxpreviousyears = 0;
+        /******************************************************************************************************************
+         * Verify the user parameters of the settings dialog, if a parameter does not exist, is set with the default value.
+         *******************************************************************************************************************/
+        if (userParam.version === defaultParam.version) {
+            //Balance
+            //first level
+            if (!userParam.balance) {
+                userParam.balance = defaultParam.balance;
+            }
+            //second level
+            if (!userParam.balance.ca) {
+                userParam.balance.ca = defaultParam.balance.ca;
+            }
+            if (!userParam.balance.fa) {
+                userParam.balance.fa = defaultParam.balance.ca;
+            }
+            if (!userParam.balance.dc) {
+                userParam.balance.dc = defaultParam.balance.ca;
+            }
+            if (!userParam.balance.oc) {
+                userParam.balance.oc = defaultParam.balance.oc;
+            }
+            //third level
+            if (!userParam.balance.ca.liquidity) {
+                userParam.balance.ca.liquidity = defaultParam.balance.ca.liquidity;
+            }
+            if (!userParam.balance.ca.credits) {
+                userParam.balance.ca.credits = defaultParam.balance.ca.credits;
+            }
+            if (!userParam.balance.ca.stocks) {
+                userParam.balance.ca.stocks = defaultParam.balance.ca.stocks;
+            }
+            if (!userParam.balance.fa.fixedassets) {
+                userParam.balance.fa.fixedassets = defaultParam.balance.fa.fixedassets;
+            }
+            if (!userParam.balance.dc.shorttermdebtcapital) {
+                userParam.balance.dc.shorttermdebtcapital = defaultParam.balance.dc.shorttermdebtcapital;
+            }
+            if (!userParam.balance.dc.longtermdebtcapital) {
+                userParam.balance.dc.longtermdebtcapital = defaultParam.balance.dc.longtermdebtcapital;
+            }
+            if (!userParam.balance.oc.ownbasecapital) {
+                userParam.balance.oc.ownbasecapital = userParam.balance.oc.ownbasecapital;
+            }
+            if (!userParam.balance.oc.reservesandprofits) {
+                userParam.balance.oc.reservesandprofits = defaultParam.balance.oc.reservesandprofits;
+            }
+
+            //Profit and loss
+            if (!userParam.profitandloss) {
+                userParam.profitandloss = defaultParam.profitandloss;
+            }
+            if (!userParam.profitandloss.salesturnover) {
+                userParam.profitandloss.salesturnovers = defaultParam.profitandloss.salesturnovers;
+            }
+            if (!userParam.profitandloss.costofmerchandservices) {
+                userParam.profitandloss.costofmerchandservices = defaultParam.profitandloss.costofmerchandservices;
+            }
+            if (!userParam.profitandloss.personnelcosts) {
+                userParam.profitandloss.personnelcosts = userParam.profitandloss.personnelcosts;
+            }
+            if (!userParam.profitandloss.differentcosts) {
+                userParam.profitandloss.differentcosts = userParam.profitandloss.differentcosts;
+            }
+            if (!userParam.profitandloss.depreandadjust) {
+                userParam.profitandloss.depreandadjust = defaultParam.profitandloss.depreandadjust;
+            }
+
+            //final result
+            if (!userParam.finalresult) {
+                userParam.finalresult = defaultParam.finalresult;
+            }
+            //ratios benchmark
+            if (!userParam.ratios) {
+                userParam.ratios = defaultParam.ratios;
+            }
+            //liquidity
+            if (!userParam.ratios.liquidityratios) {
+                userParam.ratios.liquidityratios = defaultParam.ratios.liquidityratios;
+            }
+            //leverage
+            if (!userParam.ratios.leverageratios) {
+                userParam.ratios.leverageratios = defaultParam.ratios.leverageratios;
+            }
+            //profitability
+            if (!userParam.ratios.profitabilityratios) {
+                userParam.ratios.profitabilityratios = defaultParam.ratios.profitabilityratios;
+            }
+            //efficiency
+            if (!userParam.ratios.efficiencyratios) {
+                userParam.ratios.efficiencyratios = defaultParam.ratios.efficiencyratios;
+            }
+            //liquidity
+            if (!userParam.ratios.liquidityratios.cashratio) {
+                userParam.ratios.liquidityratios.cashratio = defaultParam.ratios.liquidityratios.cashratio;
+            }
+            if (!userParam.ratios.liquidityratios.quickratio) {
+                userParam.ratios.liquidityratios.quickratio = defaultParam.ratios.liquidityratios.quickratio;
+            }
+            if (!userParam.ratios.liquidityratios.currentratio) {
+                userParam.ratios.liquidityratios.currentratio = defaultParam.ratios.liquidityratios.currentratio;
+            }
+            if (!userParam.ratios.liquidityratios.netcurrentasset) {
+                userParam.ratios.liquidityratios.netcurrentasset = defaultParam.ratios.liquidityratios.netcurrentasset;
+            }
+            //leverage
+            if (!userParam.ratios.leverageratios.degreecirculatingasset) {
+                userParam.ratios.leverageratios.degreecirculatingasset = defaultParam.ratios.leverageratios.degreecirculatingasset;
+            }
+            if (!userParam.ratios.leverageratios.percentagefixedasset) {
+                userParam.ratios.leverageratios.percentagefixedasset = defaultParam.ratios.leverageratios.percentagefixedasset;
+            }
+            if (!userParam.ratios.leverageratios.debtratio) {
+                userParam.ratios.leverageratios.debtratio = defaultParam.ratios.leverageratios.debtratio;
+            }
+            if (!userParam.ratios.leverageratios.equityratio) {
+                userParam.ratios.leverageratios.equityratio = defaultParam.ratios.leverageratios.equityratio;
+            }
+            if (!userParam.ratios.leverageratios.selfinancingratio) {
+                userParam.ratios.leverageratios.selfinancingratio = defaultParam.ratios.leverageratios.selfinancingratio;
+            }
+            if (!userParam.ratios.leverageratios.fixedassetcoverage) {
+                userParam.ratios.leverageratios.fixedassetcoverage = defaultParam.ratios.leverageratios.fixedassetcoverage;
+            }
+
+            //profitability
+            if (!userParam.ratios.profitabilityratios.profroe) {
+                userParam.ratios.profitabilityratios.profroe = defaultParam.ratios.profitabilityratios.profroe;
+            }
+            if (!userParam.ratios.profitabilityratios.profroi) {
+                userParam.ratios.profitabilityratios.profroi = defaultParam.ratios.profitabilityratios.profroi;
+            }
+            if (!userParam.ratios.profitabilityratios.profros) {
+                userParam.ratios.profitabilityratios.profros = defaultParam.ratios.profitabilityratios.profros;
+            }
+            if (!userParam.ratios.profitabilityratios.profmol) {
+                userParam.ratios.profitabilityratios.profmol = defaultParam.ratios.profitabilityratios.profmol;
+            }
+            if (!userParam.ratios.profitabilityratios.profebm) {
+                userParam.ratios.profitabilityratios.profebm = defaultParam.ratios.profitabilityratios.profebm;
+            }
+            if (!userParam.ratios.profitabilityratios.profmon) {
+                userParam.ratios.profitabilityratios.profmon = defaultParam.ratios.profitabilityratios.profmon;
+            }
+            //Efficiency
+            if (!userParam.ratios.efficiencyratios.addedvalueperemployee) {
+                userParam.ratios.efficiencyratios.addedvalueperemployee = defaultParam.ratios.efficiencyratios.addedvalueperemployee;
+            }
+            if (!userParam.ratios.efficiencyratios.revenueperemployee) {
+                userParam.ratios.efficiencyratios.revenueperemployee = defaultParam.ratios.efficiencyratios.revenueperemployee;
+            }
+            if (!userParam.ratios.efficiencyratios.personnelcostperemployee) {
+                userParam.ratios.efficiencyratios.personnelcostperemployee = defaultParam.ratios.efficiencyratios.personnelcostperemployee
+            }
         }
 
-
-        //I check if the number of decimals entered is valid, otherwise I reset it to the maximum number
-        if (this.dialogparam.numberofdecimals > 4)
-            this.dialogparam.numberofdecimals = 4;
-
-        if (!this.dialogparam || this.dialogparam.version < defaultParam.version) {
+        if (userParam.version < defaultParam.version) {
 
             //Banana.console.debug(JSON.stringify(this.dialogparam));
 
@@ -3526,20 +3793,15 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
              **************************************************************************************/
 
             //change the values with those defined ba the user, so the user dont lose the saved params
-            var userParam = this.dialogparam;
             this.dialogparam = this.UpdateParamsData(defaultParam, userParam);
 
-            //Banana.console.debug("*************************************");
+            //Banana.console.debug("******************1.0-->1.1*******************");
 
             //Banana.console.debug(JSON.stringify(this.dialogparam));
 
 
-            return false;
+            return true;
         }
-        /**
-         * update the Test Cases.
-         */
-
         return true;
     }
 
@@ -3612,7 +3874,6 @@ function exec(inData, options) {
     /*Per svuotare la tabella dei settings, la setto con vuoto.
     Banana.document.setScriptSettings("financialStatementAnalysis", "");
     return;*/
-
     if (!Banana.document)
         return "@Cancel";
 
