@@ -3390,7 +3390,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
     }
 
     /**
-     * @description checks the software version, only works with the latest version: 10.0, if the version is not the latest
+     * @description checks the software version, only works with the latest version: 10.0.7, if the version is not the latest
      * shows an error message
      */
 
@@ -3405,9 +3405,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var CURR_VERSION = this.bananaRequiredVersion(BAN_VERSION_MIN, BAN_DEV_VERSION_MIN);
         var CURR_LICENSE = this.isBananaAdvanced();
 
-        if (CURR_VERSION === "false") {
+        if (!CURR_VERSION) {
             var msg = this.getErrorMessage(this.ID_ERR_VERSION_NOTSUPPORTED, lang);
-            msg = msg.replace("%1", requiredVersion);
+            msg = msg.replace("%1", BAN_VERSION_MIN);
             this.banDocument.addMessage(msg, this.ID_ERR_VERSION_NOTSUPPORTED);
             return false;
         }
@@ -3416,7 +3416,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             this.banDocument.addMessage(msg, this.ID_ERR_EXPERIMENTAL_REQUIRED);
             return false;
         }*/
-        if (CURR_LICENSE === 'false') {
+        if (!CURR_LICENSE) {
             var msg = this.getErrorMessage(this.ID_ERR_LICENSE_NOTVALID, lang);
             this.banDocument.addMessage(msg, this.ID_ERR_LICENSE_NOTVALID);
             return false;
