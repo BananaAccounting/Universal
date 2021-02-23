@@ -23,6 +23,10 @@
 // @includejs = financialStatementAnalysis.js
 
 function exec(inData, options) {
+    var financialStatementAnalysis = new FinancialStatementAnalysis(Banana.document);
+    if (!financialStatementAnalysis.verifyBananaVersion()) {
+        return "@Cancel";
+    }
     var financing_charts = qsTr("Financing Charts");
     var dialog = Banana.Ui.createQml(financing_charts, "charts.qml");
     Banana.application.progressBar.pause();

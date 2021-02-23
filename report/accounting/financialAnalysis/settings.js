@@ -23,5 +23,9 @@
 // @includejs = financialStatementAnalysis.js
 
 function exec(inData, options) {
+    var financialStatementAnalysis = new FinancialStatementAnalysis(Banana.document);
+    if (!financialStatementAnalysis.verifyBananaVersion()) {
+        return "@Cancel";
+    }
     settingsDialog();
 }
