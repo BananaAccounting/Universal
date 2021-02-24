@@ -119,6 +119,22 @@ table.myIndeffTable td {
     padding-bottom: 1px;
 }
 
+table.myTableCashflow td {
+    border-style: solid;
+    border-color: rgb(0, 0, 0);
+    width: auto;
+    padding-top: 1px;
+    padding-bottom: 1px;
+}
+
+table.myIndCashflowTable td {
+    border-style: solid;
+    border-color: rgb(0, 0, 0);
+    width: auto;
+    padding-top: 1px;
+    padding-bottom: 1px;
+}
+
 table.myDupontTable td {
     border-style: solid;
     border-color: rgb(0, 0, 0);

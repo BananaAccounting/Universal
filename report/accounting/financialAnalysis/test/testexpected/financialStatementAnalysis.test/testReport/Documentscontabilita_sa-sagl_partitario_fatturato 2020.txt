@@ -64,35 +64,35 @@ CONTROL SUMS Year  & Accounting Total  & Calculated Total  & Difference \\
 \\
 \end{longtable}
 \begin{longtable}[l]{ l  l  l  l  l }
-LIQUIDITY RATIOS Description  & formula  & 2020  & Budget  & Benchmark \\
-Cash ratio  & liqu / stdc  & 20.63\%   & 113.37\%  ↑  & 10\%-35\% \\
-Quick ratio  & (liqu + cred) / stdc  & 15.00\%   & 135.00\%  ↑  & 100\% \\
-Current ratio  & cuas / stdc  & 8.41\%   & 135.15\%  ↑  & 150\% \\
-Net Current Assets  & cuas-stdc  & -25'170.00   & 355.00  ↑  & >0 \\
+LIQUIDITY RATIOS Description  & formula  & Benchmark  & 2020  & Budget \\
+Cash ratio  & liqu / stdc  & 10\%-35\%  & 20.63\%   & 113.37\%  ↑ \\
+Quick ratio  & (liqu + cred) / stdc  & 100\%  & 15.00\%   & 135.00\%  ↑ \\
+Current ratio  & cuas / stdc  & 150\%  & 8.41\%   & 135.15\%  ↑ \\
+Net Current Assets  & cuas-stdc  & >0  & -25'170.00   & 355.00  ↑ \\
 \end{longtable}
 \begin{longtable}[l]{ l  l  l  l  l }
-LEVERAGE RATIOS Description  & formula  & 2020  & Budget  & Benchmark \\
-Degree of Circulating Assets  & cuas / tota  & 14.61\%   & 63.05\%  ↑  & 60\% \\
-Percentage Fixed Assets  & fixa / tota  & 85.39\%   & 36.95\%  ↓  & 40\% \\
-Debt ratio  & (stdc+ltdc) / totp  & 230.74\%   & 46.65\%  ↓  & 40\%-70\% \\
-Equity ratio  & owca / totp  & -130.74\%   & 53.35\%  ↑  & 30\%-60\% \\
-Self financing ratio  & reut / owca  & 78.23\%   & 100.00\%  ↑  & 33,3\% \\
-Fixed Assets Coverage  & (owca + ltdc) / tota  & -73.81\%   & 53.35\%  ↑  & >100\% \\
+LEVERAGE RATIOS Description  & formula  & Benchmark  & 2020  & Budget \\
+Degree of Circulating Assets  & cuas / tota  & 60\%  & 14.61\%   & 63.05\%  ↑ \\
+Percentage Fixed Assets  & fixa / tota  & 40\%  & 85.39\%   & 36.95\%  ↓ \\
+Debt ratio  & (stdc+ltdc) / totp  & 40\%-70\%  & 230.74\%   & 46.65\%  ↓ \\
+Equity ratio  & owca / totp  & 30\%-60\%  & -130.74\%   & 53.35\%  ↑ \\
+Self financing ratio  & reut / owca  & 33,3\%  & 78.23\%   & 100.00\%  ↑ \\
+Fixed Assets Coverage  & (owca + ltdc) / tota  & >100\%  & -73.81\%   & 53.35\%  ↑ \\
 \end{longtable}
 \begin{longtable}[l]{ l  l  l  l  l }
-PROFITABILITY RATIOS Description  & formula  & 2020  & Budget  & Benchmark \\
-ROE  & profit / owca  & 78.28\%   & 99.13\%  ↑  & 8\%-14\% \\
-ROI  & EBIT / tota    & -98.55\%   & 52.89\%  ↑  & 10\% \\
-ROS  & EBIT / satu  & -135.48\%   & 95.42\%  ↑  & >0 \\
-MOL  & gross profit / satu  & -122.43\%   & 95.42\%  ↑  & 40\% \\
-EBIT margin  & EBIT / satu  & -135.48\%   & 95.42\%  ↑  & 2.4\% \\
-Profit margin  & net profit / satu  & -140.70\%   & 95.42\%  ↑  & 1.4\% \\
+PROFITABILITY RATIOS Description  & formula  & Benchmark  & 2020  & Budget \\
+ROE  & profit / owca  & 8\%-14\%  & 78.28\%   & 99.13\%  ↑ \\
+ROI  & EBIT / tota    & 10\%  & -98.55\%   & 52.89\%  ↑ \\
+ROS  & EBIT / satu  & >0  & -135.48\%   & 95.42\%  ↑ \\
+MOL  & gross profit / satu  & 40\%  & -122.43\%   & 95.42\%  ↑ \\
+EBIT margin  & EBIT / satu  & 2.4\%  & -135.48\%   & 95.42\%  ↑ \\
+Profit margin  & net profit / satu  & 1.4\%  & -140.70\%   & 95.42\%  ↑ \\
 \end{longtable}
 \begin{longtable}[l]{ l  l  l  l  l }
-EFFICIENCY RATIOS Description  & formula  & 2020  & Budget  & Benchmark \\
-Revenue per Employee  & satu/employees  & 11'500.00  & 1'200.00  & >0 \\
-Added Value per Employee  & adva/employees  & -11'580.00  & 1'145.00  & >0 \\
-Personnel Cost per Employee  & cope/employees  & 500.00  & 0.00  & >0 \\
+EFFICIENCY RATIOS Description  & formula  & Benchmark  & 2020  & Budget \\
+Revenue per Employee  & satu/employees  & >0  & 11'500.00  & 1'200.00 \\
+Added Value per Employee  & adva/employees  & >0  & -11'580.00  & 1'145.00 \\
+Personnel Cost per Employee  & cope/employees  & >0  & 500.00  & 0.00 \\
 \end{longtable}
 \begin{longtable}[l]{ l  l  l }
 DUPONT ANALYSIS  Description  & 2020  & Budget \\
@@ -117,6 +117,6 @@ ALTMAN INDEX Z-SCORE 2020  & Budget \\
 for values > than 3 correspond a low probability of a financial crisis \\
 for values >= than 1.8 but <= than 3 there are possibilities of a financial crisis, should be kept under control \\
 for values < than 1.8 there is a strong probability of a financial crisis \\
-08-02-2021 \\
+19-02-2021 \\
 \end{reportvalue}
 \end{document}
