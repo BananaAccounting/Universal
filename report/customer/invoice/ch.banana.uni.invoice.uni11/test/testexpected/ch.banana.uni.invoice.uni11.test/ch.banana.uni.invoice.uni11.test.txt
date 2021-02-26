@@ -165,8 +165,8 @@ Invoice 361 \newline \\
 \end{longtable}
 \begin{longtable}[l]{ l  l  l  l  l  l  l  l  l  l  l  l  l  l  l }
 Description  & Quantity  & Unit  & Unit Price  & Amount \\
-Senza indirizzo cliente, senza importo \newline \newline  &  &  &  & 0.00 \\
-Senza indirizzo cliente, senza importo \newline \newline  &  &  &  & 0.00 \\
+Senza indirizzo cliente, senza importo \newline \newline  &  &  &  & \\
+Senza indirizzo cliente, senza importo \newline \newline  &  &  &  & \\
 \multicolumn{15}{l}{}\\
 \multicolumn{15}{l}{}\\
 \multicolumn{14}{l}{TOTAL CHF } & 0.00 \\

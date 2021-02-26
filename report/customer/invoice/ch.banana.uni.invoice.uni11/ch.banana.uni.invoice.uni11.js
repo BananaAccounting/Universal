@@ -1,4 +1,4 @@
-// Copyright [2020] [Banana.ch SA - Lugano Switzerland]
+// Copyright [2021] [Banana.ch SA - Lugano Switzerland]
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.uni.invoice.uni11
 // @api = 1.0
-// @pubdate = 2020-12-18
+// @pubdate = 2021-02-26
 // @publisher = Banana.ch SA
 // @description = [UNI11] Programmable Invoice layout
 // @description.it = [UNI11] Layout Fattura Programmabile
@@ -2049,15 +2049,15 @@ function print_details_net_amounts(banDoc, repDocObj, invoiceObj, texts, userPar
   for (var i = 0; i < invoiceObj.items.length; i++) {
 
     var item = invoiceObj.items[i];
-    var className = "item_cell";
+    var className = "item_cell"; // row with amount
     if (item.item_type && item.item_type.indexOf("total") === 0) {
-      className = "subtotal_cell";
+      className = "subtotal_cell"; // row with DocType 10:tot
     }
     if (item.item_type && item.item_type.indexOf("note") === 0) {
-      className = "note_cell";
+      className = "note_cell"; // row without amount
     }
     if (item.item_type && item.item_type.indexOf("header") === 0) {
-      className = "header_cell";
+      className = "header_cell"; // row with DocType 10:hdr
     }
 
     var classNameEvenRow = "";
@@ -2149,7 +2149,11 @@ function print_details_net_amounts(banDoc, repDocObj, invoiceObj, texts, userPar
   //on normal invoices discounts are entered as items in transactions
   if (invoiceObj.billing_info.total_discount_vat_exclusive) {
     tableRow = repTableObj.addRow();
-    tableRow.addCell(texts.discount, "padding-left padding-right", columnsNumber-1);
+    let discountText = invoiceObj.billing_info.discount.description ?
+      invoiceObj.billing_info.discount.description : texts.discount;
+    if (invoiceObj.billing_info.discount.percent)
+      discountText += " " + invoiceObj.billing_info.discount.percent + "%";
+    tableRow.addCell(discountText, "padding-left padding-right", columnsNumber-1);
     tableRow.addCell(Banana.Converter.toLocaleNumberFormat(invoiceObj.billing_info.total_discount_vat_exclusive, variables.decimals_amounts, true), "right padding-left padding-right", 1);
   }
 
@@ -2171,6 +2175,18 @@ function print_details_net_amounts(banDoc, repDocObj, invoiceObj, texts, userPar
     tableRow = repTableObj.addRow();
     tableRow.addCell(texts.rounding, "padding-left padding-right", columnsNumber-1);
     tableRow.addCell(Banana.Converter.toLocaleNumberFormat(invoiceObj.billing_info.total_rounding_difference, variables.decimals_amounts, true), "right padding-left padding-right", 1);
+  }
+
+  //DEPOSIT
+  //Only used for the Application Invoice
+  if (invoiceObj.billing_info.total_advance_payment) {
+    tableRow = repTableObj.addRow();
+    if (invoiceObj.billing_info.total_advance_payment_description) {
+      tableRow.addCell(invoiceObj.billing_info.total_advance_payment_description, "padding-left padding-right", columnsNumber-1);
+    } else {
+      tableRow.addCell(texts.deposit, "padding-left padding-right", columnsNumber-1);
+    }
+    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(Banana.SDecimal.abs(invoiceObj.billing_info.total_advance_payment), variables.decimals_amounts, true), "right padding-left padding-right", 1);
   }
 
   tableRow = repTableObj.addRow();
@@ -2243,15 +2259,15 @@ function print_details_gross_amounts(banDoc, repDocObj, invoiceObj, texts, userP
   for (var i = 0; i < invoiceObj.items.length; i++) {
 
     var item = invoiceObj.items[i];
-    var className = "item_cell";
+    var className = "item_cell"; // row with amount
     if (item.item_type && item.item_type.indexOf("total") === 0) {
-      className = "subtotal_cell";
+      className = "subtotal_cell"; // row with DocType 10:tot
     }
     if (item.item_type && item.item_type.indexOf("note") === 0) {
-      className = "note_cell";
+      className = "note_cell"; // row without amount
     }
     if (item.item_type && item.item_type.indexOf("header") === 0) {
-      className = "header_cell";
+      className = "header_cell"; // row with DocType 10:hdr
     }
 
     var classNameEvenRow = "";
@@ -2343,7 +2359,11 @@ function print_details_gross_amounts(banDoc, repDocObj, invoiceObj, texts, userP
   //on normal invoices discounts are entered as items in transactions
   if (invoiceObj.billing_info.total_discount_vat_inclusive) {
     tableRow = repTableObj.addRow();
-    tableRow.addCell(texts.discount, "padding-left padding-right", columnsNumber-1);
+    let discountText = invoiceObj.billing_info.discount.description ?
+      invoiceObj.billing_info.discount.description : texts.discount;
+    if (invoiceObj.billing_info.discount.percent)
+      discountText += " " + invoiceObj.billing_info.discount.percent + "%";
+    tableRow.addCell(discountText, "padding-left padding-right", columnsNumber-1);
     tableRow.addCell(Banana.Converter.toLocaleNumberFormat(invoiceObj.billing_info.total_discount_vat_inclusive, variables.decimals_amounts, true), "right padding-left padding-right", 1);
   }
 
@@ -2352,6 +2372,18 @@ function print_details_gross_amounts(banDoc, repDocObj, invoiceObj, texts, userP
     tableRow = repTableObj.addRow();
     tableRow.addCell(texts.rounding, "padding-left padding-right", columnsNumber-1);
     tableRow.addCell(Banana.Converter.toLocaleNumberFormat(invoiceObj.billing_info.total_rounding_difference, variables.decimals_amounts, true), "right padding-left padding-right", 1);
+  }
+
+  //DEPOSIT
+  //Only used for the Application Invoice
+  if (invoiceObj.billing_info.total_advance_payment) {
+    tableRow = repTableObj.addRow();
+    if (invoiceObj.billing_info.total_advance_payment_description) {
+      tableRow.addCell(invoiceObj.billing_info.total_advance_payment_description, "padding-left padding-right", columnsNumber-1);
+    } else {
+      tableRow.addCell(texts.deposit, "padding-left padding-right", columnsNumber-1);
+    }
+    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(Banana.SDecimal.abs(invoiceObj.billing_info.total_advance_payment), variables.decimals_amounts, true), "right padding-left padding-right", 1);
   }
 
   tableRow = repTableObj.addRow();
@@ -2638,18 +2670,20 @@ function formatItemsValue(value, variables, columnName, className, item) {
     itemFormatted.value = value;
     itemFormatted.className = className;
   }
-  else if (columnName === "amount" || columnName === "total_amount_vat_exclusive") {
-    if (className === "header_cell") { //do not print 0.00 amount for header rows
+  else if (columnName === "amount" || columnName === "total_amount_vat_exclusive" || columnName === "total_amount_vat_inclusive") {
+    if (className === "header_cell" || className === "note_cell") { //do not print 0.00 amount for header rows and notes (rows without amounts)
       itemFormatted.value = "";
-      itemFormatted.className = className;
-    }
-    else{
+    } else {
       itemFormatted.value = Banana.Converter.toLocaleNumberFormat(value, variables.decimals_amounts, true);
-      itemFormatted.className = className;
     }
+    itemFormatted.className = className;
   }
   else if (columnName.startsWith("date")) {
     itemFormatted.value = Banana.Converter.toLocaleDateFormat(value);
+    itemFormatted.className = className;
+  }
+  else if (columnName.startsWith("time")) {
+    itemFormatted.value = Banana.Converter.toLocaleTimeFormat(value);
     itemFormatted.className = className;
   }
   else if (columnName === "vatrate" || columnName === "vat_rate") {
@@ -3324,6 +3358,7 @@ function setInvoiceTexts(language) {
     texts.unit_price = "Prezzo Unità";
     texts.amount = "Importo";
     texts.discount = "Sconto";
+    texts.deposit = "Acconto";
     texts.totalnet = "Totale netto";
     texts.vat = "IVA";
     texts.rounding = "Arrotondamento";
@@ -3483,6 +3518,7 @@ function setInvoiceTexts(language) {
     texts.unit_price = "Preiseinheit";
     texts.amount = "Betrag";
     texts.discount = "Rabatt";
+    texts.deposit = "Anzahlung";
     texts.totalnet = "Netto-Betrag";
     texts.vat = "MwSt";
     texts.rounding = "Rundung";
@@ -3642,6 +3678,7 @@ function setInvoiceTexts(language) {
     texts.unit_price = "Prix Unitaire";
     texts.amount = "Montant";
     texts.discount = "Rabais";
+    texts.deposit = "Acompte";
     texts.totalnet = "Total net";
     texts.vat = "TVA";
     texts.rounding = "Arrondi";
@@ -3801,6 +3838,7 @@ function setInvoiceTexts(language) {
     texts.unit_price = "Unit Price";
     texts.amount = "Amount";
     texts.discount = "Discount";
+    texts.deposit = "Deposit";
     texts.totalnet = "Total net";
     texts.vat = "VAT";
     texts.rounding = "Rounding";
