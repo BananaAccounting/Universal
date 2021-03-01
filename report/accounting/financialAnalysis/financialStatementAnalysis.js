@@ -832,130 +832,131 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
         report.addPageBreak();
 
+
         /****************************************************************************
          * Add the Cashflow table (Practic  Method)
+         * the method can be called only if we have at least two years to compare.
          ****************************************************************************/
-        var tableCashflow = this.printReportAdd_TableCashflow(report);
-        //add the annual result
-        var tableRow = tableCashflow.addRow("styleTablRows");
-        tableRow.addCell(texts.annualresult, "styleTablRows");
-        for (var i = this.data.length - 2; i >= 0; i--) {
-            tableRow.addCell(this.toLocaleAmountFormat(this.data[i].CalculatedData.annualresult), "styleNormalAmount");
-        }
-        //add the depreciations and adjustments
-        var tableRow = tableCashflow.addRow("styleTablRows");
-        tableRow.addCell("+ " + texts.depreandadjust, "styleTablRows");
-        for (var i = this.data.length - 2; i >= 0; i--) {
-            tableRow.addCell(this.toLocaleAmountFormat(this.data[i].profitandloss.depreandadjust.balance), "styleNormalAmount");
-        }
-        //add the accrusal and  provisions (Delta)
-        var tableRow = tableCashflow.addRow("styleTablRows");
-        tableRow.addCell("+/- Δ " + texts.accrualsanddeferredincome, "styleTablRows");
-        for (var i = this.data.cashflow.accrualsanddeferredincome.length - 1; i >= 0; i--) {
-            tableRow.addCell(this.toLocaleAmountFormat(this.data.cashflow.accrualsanddeferredincome[i]), "styleNormalAmount");
-        }
-        //add the gross CASHFLOW
-        var tableRow = tableCashflow.addRow("styleTablRows");
-        tableRow.addCell(texts.grosscashflow, "styleTitlesTotalAmount");
-        var grosscashflow = this.calculateGrossCashflow();
-        for (var i = grosscashflow.length - 1; i >= 0; i--) {
-            cell = tableRow.addCell(this.toLocaleAmountFormat(grosscashflow[i]) + ' ', "styleTotalAmount");
-            Banana.console.debug("i: " + i);
-            Banana.console.debug("analysis years: " + analsysisYears);
-            if (i < analsysisYears - 1) {
-                var valueT1 = grosscashflow[i];
-                var valueT2 = grosscashflow[i + 1];
-                this.setIndexEvolution(valueT1, valueT2, cell);
-            }
-        }
-        //add the Interests
-        var tableRow = tableCashflow.addRow("styleTablRows");
-        tableRow.addCell("-" + texts.interests, "styleTablRows");
-        for (var i = this.data.length - 2; i >= 0; i--) {
-            tableRow.addCell(this.toLocaleAmountFormat(this.data[i].profitandloss.interests.balance), "styleNormalAmount");
-        }
-        //add the Withdrawal of own capital
-        var tableRow = tableCashflow.addRow("styleTablRows");
-        tableRow.addCell("-" + texts.withdrawalowncapital, "styleTablRows");
-        for (var i = this.data.length - 2; i >= 0; i--) {
-            Banana.console.debug(this.data[i].cashflowgroups.withdrawalowncapital.balance);
-            tableRow.addCell(this.toLocaleAmountFormat(this.data[i].cashflowgroups.withdrawalowncapital.balance), "styleNormalAmount");
-        }
-        //add the Provisions and similar (Delta)
-        var tableRow = tableCashflow.addRow("styleTablRows");
-        tableRow.addCell("+/- Δ " + texts.provisionsandsimilar, "styleTablRows");
-        for (var i = this.data.cashflow.provisionsandsimilar.length - 1; i >= 0; i--) {
-            tableRow.addCell(this.toLocaleAmountFormat(this.data.cashflow.provisionsandsimilar[i]), "styleNormalAmount");
-        }
-        //add the net CASHFLOW
-        var tableRow = tableCashflow.addRow("styleTablRows");
-        tableRow.addCell(texts.netcashflow, "styleTitlesTotalAmount");
-        var netcashflow = this.calculateNetCashflow(grosscashflow);
-        for (var i = netcashflow.length - 1; i >= 0; i--) {
-            cell = tableRow.addCell(this.toLocaleAmountFormat(netcashflow[i]) + ' ', "styleTotalAmount");
-            if (i < analsysisYears - 1) {
-                var valueT1 = netcashflow[i];
-                var valueT2 = netcashflow[i + 1];
-                this.setIndexEvolution(valueT1, valueT2, cell);
-            }
-        }
-        //add the Disinvestments
-        var tableRow = tableCashflow.addRow("styleTablRows");
-        tableRow.addCell("+" + texts.disinvestments, "styleTablRows");
-        for (var i = this.data.length - 2; i >= 0; i--) {
-            tableRow.addCell(this.toLocaleAmountFormat(this.data[i].cashflowgroups.disinvestments.balance), "styleNormalAmount");
-        }
-        //add the Investments
-        var tableRow = tableCashflow.addRow("styleTablRows");
-        tableRow.addCell("-" + texts.investments, "styleTablRows");
-        var investments = this.calculateCashflowInvestments();
-        for (var i = investments.length - 1; i >= 0; i--) {
-            tableRow.addCell(this.toLocaleAmountFormat(investments[i]), "styleNormalAmount");
-        }
-        //add the free CASHFLOW
-        var tableRow = tableCashflow.addRow("styleTablRows");
-        tableRow.addCell(texts.freecashflow, "styleTitlesTotalAmount");
-        var freecashflow = this.calculateFreeCashflow(investments, netcashflow);
-        for (var i = freecashflow.length - 1; i >= 0; i--) {
-            cell = tableRow.addCell(this.toLocaleAmountFormat(freecashflow[i]) + ' ', "styleTotalAmount");
-            if (i < analsysisYears - 1) {
-                var valueT1 = freecashflow[i];
-                var valueT2 = freecashflow[i + 1];
-                this.setIndexEvolution(valueT1, valueT2, cell);
-            }
-        }
-
-
-
-
-        /****************************************************************************
-         * Add the Cashflow ratios table 
-         ****************************************************************************/
-        var tableCashflow = this.printReportAdd_TableIndCashflow(report);
-        let cashflow_index = this.calculateCashflowIndex(freecashflow, investments);
-
-        for (var key in cashflow_index) {
+        if (this.dialogparam.maxpreviousyears > 0 || this.dialogparam.includebudgettable) {
+            var tableCashflow = this.printReportAdd_TableCashflow(report);
+            //add the annual result
             var tableRow = tableCashflow.addRow("styleTablRows");
-            tableRow.addCell(cashflow_index[key].description, "styleTablRows");
-            if (this.dialogparam.formulascolumn) {
-                tableRow.addCell(cashflow_index[key].formula, "styleCentralText");
+            tableRow.addCell(texts.annualresult, "styleTablRows");
+            for (var i = this.data.length - 2; i >= 0; i--) {
+                tableRow.addCell(this.toLocaleAmountFormat(this.data[i].CalculatedData.annualresult), "styleNormalAmount");
             }
-            tableRow.addCell(cashflow_index[key].benchmark, "styleCentralText");
-            for (var i = cashflow_index[key].amount.length - 1; i >= 0; i--) {
-                ratios = cashflow_index[key].amount[i];
-                cell = tableRow.addCell(ratios + perc + ' ', "styleNormalAmount");
-                //if there are at least a year back to compare
+            //add the depreciations and adjustments
+            var tableRow = tableCashflow.addRow("styleTablRows");
+            tableRow.addCell("+ " + texts.depreandadjust, "styleTablRows");
+            for (var i = this.data.length - 2; i >= 0; i--) {
+                tableRow.addCell(this.toLocaleAmountFormat(this.data[i].profitandloss.depreandadjust.balance), "styleNormalAmount");
+            }
+            //add the accrusal and  provisions (Delta)
+            var tableRow = tableCashflow.addRow("styleTablRows");
+            tableRow.addCell("+/- Δ " + texts.accrualsanddeferredincome, "styleTablRows");
+            for (var i = this.data.cashflow.accrualsanddeferredincome.length - 1; i >= 0; i--) {
+                tableRow.addCell(this.toLocaleAmountFormat(this.data.cashflow.accrualsanddeferredincome[i]), "styleNormalAmount");
+            }
+            //add the gross CASHFLOW
+            var tableRow = tableCashflow.addRow("styleTablRows");
+            tableRow.addCell(texts.grosscashflow, "styleTitlesTotalAmount");
+            var grosscashflow = this.calculateGrossCashflow();
+            for (var i = grosscashflow.length - 1; i >= 0; i--) {
+                cell = tableRow.addCell(this.toLocaleAmountFormat(grosscashflow[i]) + ' ', "styleTotalAmount");
                 if (i < analsysisYears - 1) {
-                    var indexT1 = cashflow_index[key].amount[i];
-                    var indexT2 = cashflow_index[key].amount[i + 1];
-                    this.setIndexEvolution(indexT1, indexT2, cell);
+                    var valueT1 = grosscashflow[i];
+                    var valueT2 = grosscashflow[i + 1];
+                    this.setIndexEvolution(valueT1, valueT2, cell);
                 }
             }
+            //add the Interests
+            var tableRow = tableCashflow.addRow("styleTablRows");
+            tableRow.addCell("-" + texts.interests, "styleTablRows");
+            for (var i = this.data.length - 2; i >= 0; i--) {
+                tableRow.addCell(this.toLocaleAmountFormat(this.data[i].profitandloss.interests.balance), "styleNormalAmount");
+            }
+            //add the Withdrawal of own capital
+            var tableRow = tableCashflow.addRow("styleTablRows");
+            tableRow.addCell("-" + texts.withdrawalowncapital, "styleTablRows");
+            for (var i = this.data.length - 2; i >= 0; i--) {
+                tableRow.addCell(this.toLocaleAmountFormat(this.data[i].cashflowgroups.withdrawalowncapital.balance), "styleNormalAmount");
+            }
+            //add the Provisions and similar (Delta)
+            var tableRow = tableCashflow.addRow("styleTablRows");
+            tableRow.addCell("+/- Δ " + texts.provisionsandsimilar, "styleTablRows");
+            for (var i = this.data.cashflow.provisionsandsimilar.length - 1; i >= 0; i--) {
+                tableRow.addCell(this.toLocaleAmountFormat(this.data.cashflow.provisionsandsimilar[i]), "styleNormalAmount");
+            }
+            //add the net CASHFLOW
+            var tableRow = tableCashflow.addRow("styleTablRows");
+            tableRow.addCell(texts.netcashflow, "styleTitlesTotalAmount");
+            var netcashflow = this.calculateNetCashflow(grosscashflow);
+            for (var i = netcashflow.length - 1; i >= 0; i--) {
+                cell = tableRow.addCell(this.toLocaleAmountFormat(netcashflow[i]) + ' ', "styleTotalAmount");
+                if (i < analsysisYears - 1) {
+                    var valueT1 = netcashflow[i];
+                    var valueT2 = netcashflow[i + 1];
+                    this.setIndexEvolution(valueT1, valueT2, cell);
+                }
+            }
+            //add the Disinvestments
+            var tableRow = tableCashflow.addRow("styleTablRows");
+            tableRow.addCell("+" + texts.disinvestments, "styleTablRows");
+            for (var i = this.data.length - 2; i >= 0; i--) {
+                tableRow.addCell(this.toLocaleAmountFormat(this.data[i].cashflowgroups.disinvestments.balance), "styleNormalAmount");
+            }
+            //add the Investments
+            var tableRow = tableCashflow.addRow("styleTablRows");
+            tableRow.addCell("-" + texts.investments, "styleTablRows");
+            var investments = this.calculateCashflowInvestments();
+            for (var i = investments.length - 1; i >= 0; i--) {
+                tableRow.addCell(this.toLocaleAmountFormat(investments[i]), "styleNormalAmount");
+            }
+            //add the free CASHFLOW
+            var tableRow = tableCashflow.addRow("styleTablRows");
+            tableRow.addCell(texts.freecashflow, "styleTitlesTotalAmount");
+            var freecashflow = this.calculateFreeCashflow(investments, netcashflow);
+            for (var i = freecashflow.length - 1; i >= 0; i--) {
+                cell = tableRow.addCell(this.toLocaleAmountFormat(freecashflow[i]) + ' ', "styleTotalAmount");
+                if (i < analsysisYears - 1) {
+                    var valueT1 = freecashflow[i];
+                    var valueT2 = freecashflow[i + 1];
+                    this.setIndexEvolution(valueT1, valueT2, cell);
+                }
+            }
+
+
+
+
+            /****************************************************************************
+             * Add the Cashflow ratios table 
+             ****************************************************************************/
+            var tableCashflow = this.printReportAdd_TableIndCashflow(report);
+            let cashflow_index = this.calculateCashflowIndex(freecashflow, investments);
+
+            for (var key in cashflow_index) {
+                var tableRow = tableCashflow.addRow("styleTablRows");
+                tableRow.addCell(cashflow_index[key].description, "styleTablRows");
+                if (this.dialogparam.formulascolumn) {
+                    tableRow.addCell(cashflow_index[key].formula, "styleCentralText");
+                }
+                tableRow.addCell(cashflow_index[key].benchmark, "styleCentralText");
+                for (var i = cashflow_index[key].amount.length - 1; i >= 0; i--) {
+                    ratios = cashflow_index[key].amount[i];
+                    cell = tableRow.addCell(ratios + perc + ' ', "styleNormalAmount");
+                    //if there are at least a year back to compare
+                    if (i < analsysisYears - 1) {
+                        var indexT1 = cashflow_index[key].amount[i];
+                        var indexT2 = cashflow_index[key].amount[i + 1];
+                        this.setIndexEvolution(indexT1, indexT2, cell);
+                    }
+                }
+            }
+
+
+
+            report.addPageBreak();
         }
-
-
-
-        report.addPageBreak();
 
         /******************************************************************************************
          * Add the Dupont Analysis table, if the user selected it
@@ -1312,6 +1313,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
          * texts for tooltips
          ******************************************************************************************/
         texts.groups_tooltip = qsTr("Enter the groups, separated by a semicolon ';'");
+        texts.amounts_tooltip = qsTr("Enter the amount");
         texts.logo_tooltip = qsTr("Check to include Logo");
         texts.logoname_tooltip = qsTr("Enter the Logo name");
         texts.numberofpreviousyear_tooltip = qsTr("Enter the number of previous accounting years you wish to include in the analysis");
@@ -1346,9 +1348,11 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         texts.interests = qsTr("Interests");
         texts.finalresult = qsTr("Final Result");
         texts.accrualsanddeferredincome = qsTr("Accruals and Deferred income");
-        texts.withdrawalowncapital = qsTr("Withdrawal of Own Capital");
         texts.provisionsandsimilar = qsTr("Provisions and similar");
+        texts.withdrawalowncapital = qsTr("Withdrawal of Own Capital");
         texts.disinvestments = qsTr("Disinvestments");
+        texts.withdrawalowncapital_amount = qsTr("Withdrawal of Own Capital (amount)");
+        texts.disinvestments_amount = qsTr("Disinvestments (amount)");
 
         /******************************************************************************************
          * texts for titles,headers,..
@@ -1652,15 +1656,15 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         dialogparam.accrualsanddeferredincome.acronym = texts.accrualsanddeferredincome_acronym;
         dialogparam.withdrawalowncapital = {};
         dialogparam.withdrawalowncapital.gr = "281";
-        dialogparam.withdrawalowncapital.description = texts.withdrawalowncapital;
+        dialogparam.withdrawalowncapital.description = texts.withdrawalowncapital_amount;
         dialogparam.withdrawalowncapital.acronym = texts.withdrawalowncapital_acronym;
         dialogparam.provisionsandsimilar = {};
         dialogparam.provisionsandsimilar.gr = "260";
         dialogparam.provisionsandsimilar.description = texts.provisionsandsimilar;
         dialogparam.provisionsandsimilar.acronym = texts.provisionsandsimilar_acronym;
         dialogparam.disinvestments = {};
-        dialogparam.disinvestments.gr = "prova";
-        dialogparam.disinvestments.description = texts.disinvestments;
+        dialogparam.disinvestments.gr = "100";
+        dialogparam.disinvestments.description = texts.disinvestments_amount;
         dialogparam.disinvestments.acronym = texts.disinvestments_acronym;
         return dialogparam;
     }
@@ -2402,42 +2406,64 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
     }
 
+    /**
+     * defines the starting point of the cycle passing this.data, depends on the presence of the budget and the number of years of analysis set.
+     *  It is necessary to ensure that the current year of analysis is always present
+     */
+    defineCycleStartPoint() {
+        let cycle_start_point = 2;
+        if (this.dialogparam.includebudgettable && this.dialogparam.maxpreviousyears == 0) {
+            cycle_start_point = 1;
+        }
+
+        return cycle_start_point;
+
+    }
+
 
     calculateCashflowDelta() {
         this.data.cashflow = {};
         this.data.cashflow.accrualsanddeferredincome = [];
         this.data.cashflow.fixedassets = [];
-        var amounts_accruals_and_provisions = [];
-        var amounts_provisions_and_similar = [];
-        var amounts_fixedassets = [];
-        var delta_accruals_and_provisions = [];
-        var delta_provisions_and_similar = [];
-        var delta_fixedassets = [];
+        let amounts_accruals_and_provisions = [];
+        let amounts_provisions_and_similar = [];
+        let amounts_fixedassets = [];
+        let delta_accruals_and_provisions = [];
+        let delta_provisions_and_similar = [];
+        let delta_fixedassets = [];
+        /*represents the oldest year of analysis, which is not taken for analysis as there is no period prior to it on which to calculate a delta
+         It is important to handle the fact that if the user chooses to show only the current year, the number of cycles in this.data will be dynamically adjusted
+        */
+        let older_year = 1;
+        let temp = this.defineCycleStartPoint();
+        if (temp === 1) {
+            older_year = 0;
+        }
 
         /****************************************************
          * calculate the CashFlow deltas (accruals and provisions; fixed assets)
          ***************************************************/
-        for (var i = this.data.length - 1; i >= 0; i--) {
+        for (let i = this.data.length - 1; i >= 0; i--) {
             amounts_accruals_and_provisions.push(this.data[i].cashflowgroups.accrualsanddeferredincome.balance);
             amounts_fixedassets.push(this.data[i].balance.fa.fixedassets.balance);
             amounts_provisions_and_similar.push(this.data[i].cashflowgroups.provisionsandsimilar.balance);
         }
 
         //calculate the accruals and provisions deltas
-        for (var i = 0; i < amounts_accruals_and_provisions.length; i++) {
+        for (let i = 0; i < amounts_accruals_and_provisions.length; i++) {
             if (i >= 1) {
                 delta_accruals_and_provisions.unshift(Banana.SDecimal.subtract(amounts_accruals_and_provisions[i], amounts_accruals_and_provisions[i - 1]));
             }
         }
         //calculate the provisions and similar deltas
-        for (var i = 0; i < amounts_provisions_and_similar.length; i++) {
+        for (let i = 0; i < amounts_provisions_and_similar.length; i++) {
             if (i >= 1) {
                 delta_provisions_and_similar.unshift(Banana.SDecimal.subtract(amounts_provisions_and_similar[i], amounts_provisions_and_similar[i - 1]));
             }
 
         }
         //calculate the fixed assets deltas
-        for (var i = 0; i < amounts_fixedassets.length; i++) {
+        for (let i = 0; i < amounts_fixedassets.length; i++) {
             if (i >= 1) {
                 delta_fixedassets.unshift(Banana.SDecimal.subtract(amounts_fixedassets[i], amounts_fixedassets[i - 1]));
             }
@@ -2452,11 +2478,11 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
     calculateCashflowInvestments() {
 
-        var Investments = [];
+        let Investments = [];
 
         //find the amounts we need in this.data and calculate them.
-        for (var i = this.data.length - 2; i >= 0; i--) {
-            var element = "";
+        for (let i = this.data.length - 2; i >= 0; i--) {
+            let element = "";
             element = Banana.SDecimal.add(this.data[i].profitandloss.depreandadjust.balance, element);
             element = Banana.SDecimal.add(this.data[i].cashflowgroups.disinvestments.balance, element);
             element = Banana.SDecimal.add(this.data.cashflow.fixedassets[i], element);
@@ -2468,11 +2494,12 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
     }
     calculateGrossCashflow() {
 
-        var grosscashflow = [];
+        let grosscashflow = [];
+
         //find the amounts we need in this.data and calculate them.
-        for (var i = this.data.length - 2; i >= 0; i--) {
+        for (let i = this.data.length - 2; i >= 0; i--) {
             //start from the annual result (controllare da qualche parte se è positivo)
-            var element = this.data[i].CalculatedData.annualresult;
+            let element = this.data[i].CalculatedData.annualresult;
             element = Banana.SDecimal.add(this.data[i].profitandloss.depreandadjust.balance, element);
             element = Banana.SDecimal.add(this.data.cashflow.accrualsanddeferredincome[i], element);
 
@@ -2488,11 +2515,11 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
     }
     calculateNetCashflow(grosscashflow) {
 
-        var netcashflow = [];
+        let netcashflow = [];
 
         //find the amounts we need in this.data and calculate them.
-        for (var i = this.data.length - 2; i >= 0; i--) {
-            var element = grosscashflow[i];
+        for (let i = this.data.length - 2; i >= 0; i--) {
+            let element = grosscashflow[i];
             element = Banana.SDecimal.subtract(element, this.data[i].profitandloss.interests.balance);
             element = Banana.SDecimal.subtract(element, this.data[i].cashflowgroups.withdrawalowncapital.balance);
             element = Banana.SDecimal.add(element, this.data.cashflow.provisionsandsimilar[i]);
@@ -2505,10 +2532,10 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
     calculateFreeCashflow(investments, netcashflow) {
 
-        var freecashflow = [];
+        let freecashflow = [];
         //find the amounts we need in this.data and calculate them.
-        for (var i = this.data.length - 2; i >= 0; i--) {
-            var element = netcashflow[i];
+        for (let i = this.data.length - 2; i >= 0; i--) {
+            let element = netcashflow[i];
             element = Banana.SDecimal.add(this.data[i].cashflowgroups.disinvestments.balance, element);
             element = Banana.SDecimal.subtract(element, investments[i]);
             freecashflow.unshift(element);
@@ -2535,11 +2562,11 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         index.cashflow_margin.type = "perc";
         index.cashflow_margin.formula = "cashflow/satu";
         index.cashflow_margin.amount = [];
-        for (var i = this.data.length - 2; i >= 0; i--) {
+        for (let i = this.data.length - 2; i >= 0; i--) {
             calc = Banana.SDecimal.multiply(freecashflow[i], 100);
             index.cashflow_margin.amount.unshift(Banana.SDecimal.divide(calc, this.data[i].profitandloss.salesturnover.balance, { 'decimals': this.dialogparam.numberofdecimals }));
         }
-        index.cashflow_margin.benchmark = "4%";
+        index.cashflow_margin.benchmark = "3%-5%";
 
         /*******************************************************
          * Cashflow-to-debt ratio
@@ -2550,15 +2577,15 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         index.cashflow_to_debt = {};
         index.cashflow_to_debt.description = texts.cashflow_to_debt;
         index.cashflow_to_debt.type = "perc";
-        index.cashflow_to_debt.formula = texts.cashflow_to_debt_formula;
+        index.cashflow_to_debt.formula = "deca/cashflow";
         index.cashflow_to_debt.amount = [];
-        for (var i = this.data.length - 2; i >= 0; i--) {
+        for (let i = this.data.length - 2; i >= 0; i--) {
             let netdebt = Banana.SDecimal.add(this.data[i].balance.dc.shorttermdebtcapital.balance, this.data[i].balance.dc.longtermdebtcapital.balance);
             netdebt = Banana.SDecimal.subtract(netdebt, this.data[i].balance.ca.liquidity.balance);
-            netdebt = Banana.SDecimal.subtract(netdebt, this.data[i].balance.ca.liquidity.credits);
+            netdebt = Banana.SDecimal.subtract(netdebt, this.data[i].balance.ca.credits.balance);
             index.cashflow_to_debt.amount.unshift(Banana.SDecimal.divide(netdebt, freecashflow[i], { 'decimals': this.dialogparam.numberofdecimals }));
         }
-        index.cashflow_to_debt.benchmark = "to define";
+        index.cashflow_to_debt.benchmark = ">66%";
 
         /*******************************************************
          * Cashflow-to-Investments
@@ -2570,10 +2597,11 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         index.cashflow_to_investments.type = "perc";
         index.cashflow_to_investments.formula = "cashflow/inve";
         index.cashflow_to_investments.amount = [];
-        for (var i = this.data.length - 2; i >= 0; i--) {
-            index.cashflow_to_investments.amount.unshift(Banana.SDecimal.divide(investments[i], freecashflow[i], { 'decimals': this.dialogparam.numberofdecimals }));
+        for (let i = this.data.length - 2; i >= 0; i--) {
+            let calc = Banana.SDecimal.multiply(freecashflow[i], 100);
+            index.cashflow_to_investments.amount.unshift(Banana.SDecimal.divide(calc, investments[i], { 'decimals': this.dialogparam.numberofdecimals }));
         }
-        index.cashflow_to_investments.benchmark = "to define";
+        index.cashflow_to_investments.benchmark = "4%";
 
 
         return index;
@@ -2980,21 +3008,6 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         }
         convertedParam.data.push(currentParam);
 
-        //Withdrawal of own capital
-        var currentParam = {};
-        currentParam.name = 'wown';
-        currentParam.group = 'withdrawalowncapital';
-        currentParam.title = defaultParam.cashflowgroups.withdrawalowncapital.description;
-        currentParam.type = 'string';
-        currentParam.value = userParam.cashflowgroups.withdrawalowncapital.gr ? userParam.cashflowgroups.withdrawalowncapital.gr : '';
-        currentParam.defaultvalue = defaultParam.cashflowgroups.withdrawalowncapital.gr;
-        currentParam.tooltip = texts.groups_tooltip;
-        currentParam.parentObject = 'Cashflow';
-        currentParam.readValue = function() {
-            userParam.cashflowgroups.withdrawalowncapital.gr = this.value;
-        }
-        convertedParam.data.push(currentParam);
-
         //Provisions and Similar
         var currentParam = {};
         currentParam.name = 'prov';
@@ -3010,6 +3023,23 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         }
         convertedParam.data.push(currentParam);
 
+
+        //Withdrawal of own capital
+        var currentParam = {};
+        currentParam.name = 'wown';
+        currentParam.group = 'withdrawalowncapital';
+        currentParam.title = defaultParam.cashflowgroups.withdrawalowncapital.description;
+        currentParam.type = 'string';
+        currentParam.value = userParam.cashflowgroups.withdrawalowncapital.gr ? userParam.cashflowgroups.withdrawalowncapital.gr : '';
+        currentParam.defaultvalue = defaultParam.cashflowgroups.withdrawalowncapital.gr;
+        currentParam.tooltip = texts.amounts_tooltip;
+        currentParam.parentObject = 'Cashflow';
+        currentParam.readValue = function() {
+            userParam.cashflowgroups.withdrawalowncapital.gr = this.value;
+        }
+        convertedParam.data.push(currentParam);
+
+
         //Disinvestments
         var currentParam = {};
         currentParam.name = 'disinv';
@@ -3018,7 +3048,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.type = 'string';
         currentParam.value = userParam.cashflowgroups.disinvestments.gr ? userParam.cashflowgroups.disinvestments.gr : '';
         currentParam.defaultvalue = defaultParam.cashflowgroups.disinvestments.gr;
-        currentParam.tooltip = texts.groups_tooltip;
+        currentParam.tooltip = texts.amounts_tooltip;
         currentParam.parentObject = 'Cashflow';
         currentParam.readValue = function() {
             userParam.cashflowgroups.disinvestments.gr = this.value;
