@@ -899,11 +899,11 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                     this.setIndexEvolution(valueT1, valueT2, cell);
                 }
             }
-            //add the Disinvestments
+            //add the Disinvestments (Delta)
             var tableRow = tableCashflow.addRow("styleTablRows");
-            tableRow.addCell("+" + texts.disinvestments, "styleTablRows");
-            for (var i = this.data.length - 2; i >= 0; i--) {
-                tableRow.addCell(this.toLocaleAmountFormat(this.data[i].cashflowgroups.disinvestments.balance), "styleNormalAmount");
+            tableRow.addCell("+ Δ " + texts.disinvestments, "styleTablRows");
+            for (var i = this.data.cashflow.disinvestments.length - 1; i >= 0; i--) {
+                tableRow.addCell(this.toLocaleAmountFormat(this.data.cashflow.disinvestments[i]), "styleNormalAmount");
             }
             //add the Investments
             var tableRow = tableCashflow.addRow("styleTablRows");
@@ -1654,18 +1654,22 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         dialogparam.accrualsanddeferredincome.gr = "230;260";
         dialogparam.accrualsanddeferredincome.description = texts.accrualsanddeferredincome;
         dialogparam.accrualsanddeferredincome.acronym = texts.accrualsanddeferredincome_acronym;
+        dialogparam.accrualsanddeferredincome.bclass = "2";
         dialogparam.withdrawalowncapital = {};
         dialogparam.withdrawalowncapital.gr = "281";
-        dialogparam.withdrawalowncapital.description = texts.withdrawalowncapital_amount;
+        dialogparam.withdrawalowncapital.description = texts.withdrawalowncapital;
         dialogparam.withdrawalowncapital.acronym = texts.withdrawalowncapital_acronym;
+        dialogparam.withdrawalowncapital.bclass = "2";
         dialogparam.provisionsandsimilar = {};
         dialogparam.provisionsandsimilar.gr = "260";
         dialogparam.provisionsandsimilar.description = texts.provisionsandsimilar;
         dialogparam.provisionsandsimilar.acronym = texts.provisionsandsimilar_acronym;
+        dialogparam.provisionsandsimilar.bclass = "2";
         dialogparam.disinvestments = {};
-        dialogparam.disinvestments.gr = "100";
-        dialogparam.disinvestments.description = texts.disinvestments_amount;
+        dialogparam.disinvestments.gr = "140;150;160;170";
+        dialogparam.disinvestments.description = texts.disinvestments;
         dialogparam.disinvestments.acronym = texts.disinvestments_acronym;
+        dialogparam.disinvestments.bclass = "1";
         return dialogparam;
     }
 
@@ -2407,20 +2411,10 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
     }
 
     /**
-     * defines the starting point of the cycle passing this.data, depends on the presence of the budget and the number of years of analysis set.
-     *  It is necessary to ensure that the current year of analysis is always present
+     * @description this method calculate the delta's amounts for some cashflow elements.
+     * Save amounts into an array and calculate the difference between the amount in the year t and t-1.
+     * the amounts saved (for every year of the analysis) is entered into this.data.cashflow object.
      */
-    defineCycleStartPoint() {
-        let cycle_start_point = 2;
-        if (this.dialogparam.includebudgettable && this.dialogparam.maxpreviousyears == 0) {
-            cycle_start_point = 1;
-        }
-
-        return cycle_start_point;
-
-    }
-
-
     calculateCashflowDelta() {
         this.data.cashflow = {};
         this.data.cashflow.accrualsanddeferredincome = [];
@@ -2428,17 +2422,11 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         let amounts_accruals_and_provisions = [];
         let amounts_provisions_and_similar = [];
         let amounts_fixedassets = [];
+        let amounts_disinvestments = [];
         let delta_accruals_and_provisions = [];
         let delta_provisions_and_similar = [];
         let delta_fixedassets = [];
-        /*represents the oldest year of analysis, which is not taken for analysis as there is no period prior to it on which to calculate a delta
-         It is important to handle the fact that if the user chooses to show only the current year, the number of cycles in this.data will be dynamically adjusted
-        */
-        let older_year = 1;
-        let temp = this.defineCycleStartPoint();
-        if (temp === 1) {
-            older_year = 0;
-        }
+        let delta_disinvestments = [];
 
         /****************************************************
          * calculate the CashFlow deltas (accruals and provisions; fixed assets)
@@ -2447,25 +2435,40 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             amounts_accruals_and_provisions.push(this.data[i].cashflowgroups.accrualsanddeferredincome.balance);
             amounts_fixedassets.push(this.data[i].balance.fa.fixedassets.balance);
             amounts_provisions_and_similar.push(this.data[i].cashflowgroups.provisionsandsimilar.balance);
+            amounts_disinvestments.push(this.data[i].cashflowgroups.disinvestments.balance);
+        }
+
+        for (let i = this.data.length - 1; i >= 0; i--) {
+            Banana.console.debug(this.data[i].cashflowgroups.disinvestments.balance);
+        }
+
+        for (let i = 1; i < amounts_disinvestments.length; i++) {
+            Banana.console.debug(amounts_disinvestments[i]);
         }
 
         //calculate the accruals and provisions deltas
-        for (let i = 0; i < amounts_accruals_and_provisions.length; i++) {
-            if (i >= 1) {
-                delta_accruals_and_provisions.unshift(Banana.SDecimal.subtract(amounts_accruals_and_provisions[i], amounts_accruals_and_provisions[i - 1]));
-            }
+        for (let i = 1; i < amounts_accruals_and_provisions.length; i++) {
+            delta_accruals_and_provisions.unshift(Banana.SDecimal.subtract(amounts_accruals_and_provisions[i], amounts_accruals_and_provisions[i - 1]));
         }
         //calculate the provisions and similar deltas
-        for (let i = 0; i < amounts_provisions_and_similar.length; i++) {
-            if (i >= 1) {
-                delta_provisions_and_similar.unshift(Banana.SDecimal.subtract(amounts_provisions_and_similar[i], amounts_provisions_and_similar[i - 1]));
-            }
-
+        for (let i = 1; i < amounts_provisions_and_similar.length; i++) {
+            delta_provisions_and_similar.unshift(Banana.SDecimal.subtract(amounts_provisions_and_similar[i], amounts_provisions_and_similar[i - 1]));
         }
         //calculate the fixed assets deltas
-        for (let i = 0; i < amounts_fixedassets.length; i++) {
-            if (i >= 1) {
-                delta_fixedassets.unshift(Banana.SDecimal.subtract(amounts_fixedassets[i], amounts_fixedassets[i - 1]));
+        for (let i = 1; i < amounts_fixedassets.length; i++) {
+            delta_fixedassets.unshift(Banana.SDecimal.subtract(amounts_fixedassets[i], amounts_fixedassets[i - 1]));
+        }
+
+        /**
+         * calculate the Disinvestments deltas
+         * check if the amount has decreased, if so, it is a disinvestment 
+         */
+        for (let i = 1; i < amounts_disinvestments.length; i++) {
+            let is_disinvestment = Banana.SDecimal.compare(amounts_disinvestments[i], amounts_disinvestments[i - 1]);
+            if (is_disinvestment === 1) {;
+                delta_disinvestments.unshift(Banana.SDecimal.subtract(amounts_disinvestments[i], amounts_disinvestments[i - 1]));
+            } else {
+                delta_disinvestments.unshift("0.00")
             }
         }
 
@@ -2473,75 +2476,95 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         this.data.cashflow.accrualsanddeferredincome = delta_accruals_and_provisions;
         this.data.cashflow.provisionsandsimilar = delta_provisions_and_similar;
         this.data.cashflow.fixedassets = delta_fixedassets;
+        this.data.cashflow.disinvestments = delta_disinvestments;
 
     }
 
+    /**
+     * @description this method calculate the investments as cashflow element, the formula is the following one:
+     *  fixed assets pening balance 
+     * + depreciations and adjustments
+     * + disinvestments
+     * - fixed assets closing balance
+     * =Investments
+     * (instaed of using the opening and the closing balance of the fixed assets, we use directly the calculated delta)
+     */
     calculateCashflowInvestments() {
 
-        let Investments = [];
+            //find the amounts we need in this.data and calculate them.
+            if (this.data) {
+                let Investments = [];
+                for (let i = this.data.length - 2; i >= 0; i--) {
+                    let element = "";
+                    element = Banana.SDecimal.add(this.data[i].profitandloss.depreandadjust.balance, element);
+                    element = Banana.SDecimal.add(this.data.cashflow.disinvestments[i], element);
+                    element = Banana.SDecimal.add(this.data.cashflow.fixedassets[i], element);
+                    Investments.unshift(element);
+                }
 
-        //find the amounts we need in this.data and calculate them.
-        for (let i = this.data.length - 2; i >= 0; i--) {
-            let element = "";
-            element = Banana.SDecimal.add(this.data[i].profitandloss.depreandadjust.balance, element);
-            element = Banana.SDecimal.add(this.data[i].cashflowgroups.disinvestments.balance, element);
-            element = Banana.SDecimal.add(this.data.cashflow.fixedassets[i], element);
-            Investments.unshift(element);
+                return Investments;
+            }
+
+            return false;
+
         }
-
-        return Investments;
-
-    }
+        /**
+         * 
+         */
     calculateGrossCashflow() {
 
-        let grosscashflow = [];
+        if (this.data) {
+            let grosscashflow = [];
+            //find the amounts we need in this.data and calculate them.
+            for (let i = this.data.length - 2; i >= 0; i--) {
+                //start from the annual result (controllare da qualche parte se è positivo)
+                let element = this.data[i].CalculatedData.annualresult;
+                element = Banana.SDecimal.add(this.data[i].profitandloss.depreandadjust.balance, element);
+                element = Banana.SDecimal.add(this.data.cashflow.accrualsanddeferredincome[i], element);
 
-        //find the amounts we need in this.data and calculate them.
-        for (let i = this.data.length - 2; i >= 0; i--) {
-            //start from the annual result (controllare da qualche parte se è positivo)
-            let element = this.data[i].CalculatedData.annualresult;
-            element = Banana.SDecimal.add(this.data[i].profitandloss.depreandadjust.balance, element);
-            element = Banana.SDecimal.add(this.data.cashflow.accrualsanddeferredincome[i], element);
+                grosscashflow.unshift(element);
 
-            grosscashflow.unshift(element);
-
+            }
+            return grosscashflow;
         }
-        return grosscashflow;
 
-
-
-
+        return false;
 
     }
     calculateNetCashflow(grosscashflow) {
 
-        let netcashflow = [];
+        if (this.data) {
+            let netcashflow = [];
+            //find the amounts we need in this.data and calculate them.
+            for (let i = this.data.length - 2; i >= 0; i--) {
+                let element = grosscashflow[i];
+                element = Banana.SDecimal.subtract(element, this.data[i].profitandloss.interests.balance);
+                element = Banana.SDecimal.subtract(element, this.data[i].cashflowgroups.withdrawalowncapital.balance);
+                element = Banana.SDecimal.add(element, this.data.cashflow.provisionsandsimilar[i]);
 
-        //find the amounts we need in this.data and calculate them.
-        for (let i = this.data.length - 2; i >= 0; i--) {
-            let element = grosscashflow[i];
-            element = Banana.SDecimal.subtract(element, this.data[i].profitandloss.interests.balance);
-            element = Banana.SDecimal.subtract(element, this.data[i].cashflowgroups.withdrawalowncapital.balance);
-            element = Banana.SDecimal.add(element, this.data.cashflow.provisionsandsimilar[i]);
+                netcashflow.unshift(element);
 
-            netcashflow.unshift(element);
-
+            }
+            return netcashflow;
         }
-        return netcashflow;
+        return false;
     }
 
     calculateFreeCashflow(investments, netcashflow) {
 
-        let freecashflow = [];
-        //find the amounts we need in this.data and calculate them.
-        for (let i = this.data.length - 2; i >= 0; i--) {
-            let element = netcashflow[i];
-            element = Banana.SDecimal.add(this.data[i].cashflowgroups.disinvestments.balance, element);
-            element = Banana.SDecimal.subtract(element, investments[i]);
-            freecashflow.unshift(element);
+        if (this.data) {
+            let freecashflow = [];
+            //find the amounts we need in this.data and calculate them.
+            for (let i = this.data.length - 2; i >= 0; i--) {
+                let element = netcashflow[i];
+                element = Banana.SDecimal.add(this.data.cashflow.disinvestments[i], element);
+                element = Banana.SDecimal.subtract(element, investments[i]);
+                freecashflow.unshift(element);
 
+            }
+            return freecashflow;
         }
-        return freecashflow;
+        return false;
     }
 
     calculateCashflowIndex(freecashflow, investments) {
@@ -2577,7 +2600,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         index.cashflow_to_debt = {};
         index.cashflow_to_debt.description = texts.cashflow_to_debt;
         index.cashflow_to_debt.type = "perc";
-        index.cashflow_to_debt.formula = "deca/cashflow";
+        index.cashflow_to_debt.formula = "netdebt/cashflow";
         index.cashflow_to_debt.amount = [];
         for (let i = this.data.length - 2; i >= 0; i--) {
             let netdebt = Banana.SDecimal.add(this.data[i].balance.dc.shorttermdebtcapital.balance, this.data[i].balance.dc.longtermdebtcapital.balance);
@@ -4033,9 +4056,10 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         /**********************************************************
          * Set user Final Result Param
          *************************************************************/
-
-        if (userParam.finalresult.fire.gr) {
-            defaultParam.finalresult.finalresult.gr = userParam.finalresult.fire.gr;
+        if (userParam.finalresult) {
+            if (userParam.finalresult.fire.gr) {
+                defaultParam.finalresult.finalresult.gr = userParam.finalresult.fire.gr;
+            }
         }
 
         /**********************************************************
