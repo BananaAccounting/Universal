@@ -31,7 +31,7 @@
 
 
 /* 
-	Print a summary of all the timesheetelement by month
+    Print a summary of all the timesheetelement by month
 */
 
 
@@ -66,6 +66,32 @@ function exec() {
     var report = printTimeSheetJournal(Banana.document, userParam, columns, totals, year);
     var stylesheet = createStyleSheet();
     Banana.Report.preview(report, stylesheet);
+}
+
+// is in the formata -h:mm
+// or format hh:mm:ss.mmm
+function convertTimeToSeconds(t) {
+
+    let s = 0;
+    let m = 0;
+    let h = 0;
+    const st = String(t);
+    if (st.indexOf(':') < 0) {
+        // solo secondi old format
+        return Number(t);
+    }
+    const parts = st.split(':');
+    if (parts.length === 2) {
+        h = Number(parts[0]);
+        m = Number(parts[1]);
+    }
+    if (parts.length === 3) {
+        h = Number(parts[0]);
+        m = Number(parts[1]);
+        s = Number(parts[2]);
+    }
+    s += m * 60 + h * 60 * 60;
+    return s;
 }
 
 function getColumns(userParam) {
@@ -134,7 +160,7 @@ function totalizeHours(banDoc, columns, year) {
             totals[ml][columnName] = {};
             totals[ml]['Festive'] = {};
             for (d = 1; d <= 31; d++) {
-                totals[ml][columnName][d] = 0;
+                totals[ml][columnName][d] = Number(0);
                 totals[ml]["Festive"][d] = "";
             }
             totals[ml][columnName]['TotalMonth'] = 0;
@@ -152,12 +178,13 @@ function totalizeHours(banDoc, columns, year) {
                 //cmonth = "0" + cmonth;
             }
             var cyear = date.getFullYear();
-            //Banana.console.log(day + "; " + month + "; " + monthText + "; " + year + "; " + quarter);
             if (cyear === year) {
                 for (c = 0; c < columns.length; c++) {
                     columnName = columns[c];
-                    totals[cmonth][columnName][cday] += Number(tRow.value(columnName));
-                    totals['TotalYear'][columnName][cday] += Number(tRow.value(columnName));
+                    let value = tRow.value(columnName);
+                    value = convertTimeToSeconds(value);
+                    totals[cmonth][columnName][cday] += value;
+                    totals['TotalYear'][columnName][cday] += value;
                 }
                 totals[cmonth]["Festive"][cday] = tRow.value('TimeDayType');
             }
@@ -172,10 +199,8 @@ function totalizeHours(banDoc, columns, year) {
             for (d = 1; d <= 31; d++) {
                 totMonth += Number(totals[ml][columnName][d]);
             }
-
             //Banana.application.addMessage( m + "; " + columnName + "; " + totMonth);
-
-            //Banana.console.log( month + "; " + columnName + "; " + totMonth);
+            //Banana.console.debug( m + "; " + columnName + "; " + totMonth);
 
             totals[ml][columnName]['TotalMonth'] = totMonth;
         }
@@ -193,9 +218,9 @@ function printTimeSheetJournal(banDoc, userParam, columns, totals, year) {
         lang = lang.substr(0, 2);
     }
     var texts = setTexts(lang);
-    
-    var monthStartDate = Banana.Converter.toDate(userParam.selectionStartDate).getMonth()+1; //getMonth() returns 0 to 11
-    var monthEndDate = Banana.Converter.toDate(userParam.selectionEndDate).getMonth()+1;
+
+    var monthStartDate = Banana.Converter.toDate(userParam.selectionStartDate).getMonth() + 1; //getMonth() returns 0 to 11
+    var monthEndDate = Banana.Converter.toDate(userParam.selectionEndDate).getMonth() + 1;
 
     var report = Banana.Report.newReport('Timesheet Journal Table');
     printHeader(banDoc, report, userParam, texts);
@@ -209,9 +234,9 @@ function printTimeSheetJournal(banDoc, userParam, columns, totals, year) {
 }
 
 function printHeader(banDoc, report, userParam, texts) {
-    var headerleft = banDoc.info("Base","HeaderLeft");
+    var headerleft = banDoc.info("Base", "HeaderLeft");
     var pageHeader = report.getHeader();
-    var paragraph = pageHeader.addParagraph("","center");
+    var paragraph = pageHeader.addParagraph("", "center");
     // paragraph.addText(headerleft, "bold");
     // paragraph.addText(" (", "");
     // if (userParam.id_employee) {
@@ -221,8 +246,8 @@ function printHeader(banDoc, report, userParam, texts) {
     pageHeader.addParagraph(headerleft, "heading bold");
     pageHeader.addParagraph(userParam.id_employee, "heading");
     pageHeader.addParagraph(texts.period + ": " + Banana.Converter.toLocaleDateFormat(userParam.selectionStartDate) + " - " + Banana.Converter.toLocaleDateFormat(userParam.selectionEndDate), "heading");
-    pageHeader.addParagraph(" ","");
-    pageHeader.addParagraph(" ","");
+    pageHeader.addParagraph(" ", "");
+    pageHeader.addParagraph(" ", "");
 }
 
 function printFooter(report) {
@@ -233,7 +258,7 @@ function printFooter(report) {
 }
 
 function printTableMonth(texts, userParam, columns, totals, report, month, year) {
-    report.addParagraph(texts.decimalValues,'');
+    report.addParagraph(texts.decimalValues, '');
     report.addParagraph(texts.month + ": " + month + ", " + texts.year + ": " + year);
 
     var table = report.addTable("table01");
@@ -345,9 +370,9 @@ function printTableMonth(texts, userParam, columns, totals, report, month, year)
 }
 
 function printTableTotal(texts, userParam, columns, totals, report, month, year) {
-    report.addParagraph(texts.decimalValues,'');
+    report.addParagraph(texts.decimalValues, '');
     report.addParagraph(texts.totalYear + ": " + year);
-    
+
     var table = report.addTable("table02");
     var col1 = table.addColumn("coltot1");
     var col2 = table.addColumn("coltot2");
@@ -414,6 +439,7 @@ function daysInMonth(month, year) {
 * UTILITIES 
 ***********************/
 function convertToHourDecimals(seconds) {
+    // attention 0:02 results in 0.03.
     if (seconds) {
         return Banana.SDecimal.divide(String(seconds), 3600, { 'decimals': 2 });
     }
@@ -518,7 +544,7 @@ function convertParam(userParam) {
     currentParam.readValue = function () {
         userParam.id_employee = this.value;
     }
-    convertedParam.data.push(currentParam);    
+    convertedParam.data.push(currentParam);
 
     var currentParam = {};
     currentParam.name = 'print_timeWorkedTotal';
@@ -636,7 +662,7 @@ function convertParam(userParam) {
 
 function initUserParam() {
     var userParam = {};
-    
+
     var lang = 'en';
     if (Banana.document.locale) {
         lang = Banana.document.locale;
@@ -657,7 +683,7 @@ function initUserParam() {
     userParam.print_timeDayTotal = true;
     userParam.print_timeDueDay = true;
     userParam.print_timeDifference = true;
-    
+
     return userParam;
 }
 
@@ -696,17 +722,17 @@ function settingsDialog() {
     //We take the accounting "starting date" and "ending date" from the document. These will be used as default dates
     var docStartDate = "2021-01-01";//Banana.document.startPeriod();
     var docEndDate = "2021-12-31"; //Banana.document.endPeriod();   
-    
+
     //A dialog window is opened asking the user to insert the desired period. By default is the accounting period
-    var selectedDates = Banana.Ui.getPeriod("", docStartDate, docEndDate, 
+    var selectedDates = Banana.Ui.getPeriod("", docStartDate, docEndDate,
         scriptform.selectionStartDate, scriptform.selectionEndDate, scriptform.selectionChecked);
-        
+
     //We take the values entered by the user and save them as "new default" values.
     //This because the next time the script will be executed, the dialog window will contains the new values.
     if (selectedDates) {
         scriptform["selectionStartDate"] = selectedDates.startDate;
         scriptform["selectionEndDate"] = selectedDates.endDate;
-        scriptform["selectionChecked"] = selectedDates.hasSelection;    
+        scriptform["selectionChecked"] = selectedDates.hasSelection;
     } else {
         //User clicked cancel
         return null;
@@ -806,7 +832,7 @@ function setTexts(language) {
         texts.param_timeAdjustment = "Aanpassing";
         texts.param_timeDayTotal = "Totaal tijd dag";
         texts.param_timeDueDay = "Verschuldigd voor de dag";
-        texts.param_timeDifference = "Tijd dag verschil";        
+        texts.param_timeDifference = "Tijd dag verschil";
     }
     else {
         texts.period = "Period";
@@ -850,7 +876,7 @@ function createStyleSheet(userParam) {
     stylesheet.addStyle(".header", "background-color:#F0F8FF");
     stylesheet.addStyle(".red", "color:red");
     stylesheet.addStyle(".blue", "color:blue");
-    stylesheet.addStyle(".heading", "font-size:9pt");   
+    stylesheet.addStyle(".heading", "font-size:9pt");
     stylesheet.addStyle(".footer", "text-align:center;");
 
 
