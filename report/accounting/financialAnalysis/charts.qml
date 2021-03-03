@@ -12,19 +12,34 @@ BasePage {
    height: 600
 
    function loadCharts() {
+
+      var financialStatementAnalysis = new FinancialStatementAnalysis(Banana.document);
+      //Recovery of current settings.
+      var savedParam =Banana.document.getScriptSettings("financialStatementAnalysis");
+      if (savedParam.length > 0) {
+         var param = JSON.parse(savedParam);
+         financialStatementAnalysis.setParam(param);
+      }
+      financialStatementAnalysis.loadData();
+
       var LeverageChart=qsTr(" Leverage index variation");
       var LiquidityChart=qsTr(" Liquidity index variation");
       var ProfitabilityChart=qsTr(" Profitability index variation");
       var EfficiencyChart=qsTr(" Efficiency index variation");
+      var CashflowratiosChart=qsTr(" Cashflow index variation");
       var ReclassifiedAssetsVariationChart=qsTr(" Reclassified Assets variation");
       var ReclassifiedLiabilitiesAndEquityVariationChart=qsTr(" Reclassified liabilities and equity variation");
       var ReclassifiedProfitAndLossVariation=qsTr(" Reclassified Profit and Loss variation");
 
       pageModel.clear();
+
       pageModel.append({'title': LeverageChart,'page': 'chartLev.qml'});
       pageModel.append({'title': LiquidityChart,'page': 'chartLiqu.qml'});
       pageModel.append({'title': ProfitabilityChart,'page': 'chartProf.qml'});
-      pageModel.append({'title': EfficiencyChart,'page': 'chartEff.qml'});
+      if(financialStatementAnalysis.data[0].numberofemployees > 0)
+         pageModel.append({'title': EfficiencyChart,'page': 'chartEff.qml'});
+      if(financialStatementAnalysis.data[0].maxpreviousyears > 0 || financialStatementAnalysis.data[0].includebudgettable)
+         pageModel.append({'title': CashflowratiosChart,'page': 'chartCashRatios.qml'});
       pageModel.append({'title': ReclassifiedAssetsVariationChart,'page': 'chartRAtt.qml'});
       pageModel.append({'title': ReclassifiedLiabilitiesAndEquityVariationChart,'page': 'chartRPass.qml'});
       pageModel.append({'title': ReclassifiedProfitAndLossVariation,'page': 'chartRProLos.qml'});

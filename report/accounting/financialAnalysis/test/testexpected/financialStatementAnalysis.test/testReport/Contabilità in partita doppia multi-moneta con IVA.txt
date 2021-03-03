@@ -93,6 +93,26 @@ Revenue per Employee  & satu/employees  & >0  & 22'500.00  & 0.00 \\
 Added Value per Employee  & adva/employees  & >0  & 12'220.00  & 0.00 \\
 Personnel Cost per Employee  & cope/employees  & >0  & 0.00  & 0.00 \\
 \end{longtable}
+\begin{longtable}[l]{ l  l }
+CASH FLOW ANALYSIS (PRACTICAL METHOD) Description  & Budget \\
+Annual result  & 0.00 \\
++ Depreciations and adjustments  & 0.00 \\
++/- Δ Accruals and Deferred income  & 0.00 \\
+Gross-Cashflow  & 0.00  \\
+-Interests  & 0.00 \\
+-Withdrawal of Own Capital  & 0.00 \\
++/- Δ Provisions and similar  & 0.00 \\
+Net-Cashflow  & 0.00  \\
++ Δ Disinvestments  & 1'000.00 \\
+-Investments  & 2'000.00 \\
+Free-Cashflow  & -1'000.00  \\
+\end{longtable}
+\begin{longtable}[l]{ l  l  l  l }
+CASH FLOW RATIOS Description  & formula  & Benchmark  & Budget \\
+Cashflow Margin  & cashflow/satu  & 3\%-5\%  & \%  \\
+Cashflow to Debt  & netdebt/cashflow  & >66\%  & 0.11\%  \\
+Cashflow to Investments  & cashflow/inve  & 4\%  & -50.00\%  \\
+\end{longtable}
 \begin{longtable}[l]{ l  l  l }
 DUPONT ANALYSIS  Description  & 2020  & Budget \\
 EBIT  & 12'220.00   & 0.00  ↓ \\
@@ -116,6 +136,6 @@ ALTMAN INDEX Z-SCORE 2020  & Budget \\
 for values > than 3 correspond a low probability of a financial crisis \\
 for values >= than 1.8 but <= than 3 there are possibilities of a financial crisis, should be kept under control \\
 for values < than 1.8 there is a strong probability of a financial crisis \\
-19-02-2021 \\
+\excltest{03.03.2021} \\
 \end{reportvalue}
 \end{document}

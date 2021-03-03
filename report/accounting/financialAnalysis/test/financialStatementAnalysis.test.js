@@ -86,8 +86,9 @@ FSAnalysisTest.prototype.init = function() {
 // This method will be called after every test method is executed
 FSAnalysisTest.prototype.cleanup = function() {
 
-    }
-    // stampa il report e lo butta nel log del test
+}
+
+//confronta i dati caricati da loadData()
 FSAnalysisTest.prototype.testReport = function() {
     this.testLogger = Test.logger.newGroupLogger("testReport");
     this.testLogger.addKeyValue("FSAnalysisTest", "testReport");
@@ -120,3 +121,28 @@ FSAnalysisTest.prototype.testReport = function() {
     this.testLogger.close();
     this.testLogger = Test.logger;
 }
+
+//verifica che  i metodi del cashflow diano i risultati definiti.
+/*
+FSAnalysisTest.prototype.testVerifFinancialAnalysisMethods = function() {
+
+
+    var fileAC2 = "file:script/../test/testcases/Documentscontabilita_sa-sagl_partitario_fatturato 2020.ac2";
+    var banDoc = Banana.application.openDocument(fileAC2);
+    if (!banDoc) {
+        return;
+    }
+    var financialStatementAnalysis = new FinancialStatementAnalysis(banDoc);
+    var freecashflow = financialStatementAnalysis.cashflowIndex(freecashflow, investments);
+
+
+
+    /*
+    var cashflowdeltas = financialStatementAnalysis.calculateCashflowDelta();
+    var cashflowinvestments = financialStatementAnalysis.calculateCashflowInvestments();
+    var grosscashflow = financialStatementAnalysis.calculateGrossCashflow();
+    var netcashflow = financialStatementAnalysis.calculateNetCashflow(grosscashflow);
+    var freecashflow = financialStatementAnalysis.calculateFreeCashflow(freecashflow, cashflowinvestments);
+    
+}
+*/

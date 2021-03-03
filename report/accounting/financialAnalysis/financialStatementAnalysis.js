@@ -384,14 +384,10 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
      * @Param {object} report: the report created
      */
     addFooter(report) {
-        var today = new Date();
-        var day = today.getDate();
-        var month = today.getMonth() + 1 //As January is 0;
-        var year = today.getFullYear();
-        if (day < 10) day = '0' + day;
-        if (month < 10) month = '0' + month;
-        var headerParagraph = report.getFooter().addSection();
-        headerParagraph.addText(day + '-' + month + '-' + year, "header_text");
+        var date = new Date();
+        var footer = report.getFooter();
+        var testoData = footer.addParagraph(Banana.Converter.toLocaleDateFormat(date), "header_text");
+        testoData.excludeFromTest();
 
     }
 
@@ -403,7 +399,6 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
      * @returns a report object.
      */
     printReport() {
-
 
         /******************************************************************************************
          * initialize the variables i will use frequently in this method
@@ -460,8 +455,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                 tableRow.addCell(acronym);
             }
             for (var i = this.data.length - 1; i >= 0; i--) {
-                amount = this.data[i].balance.ca[key].balance;
-                tableRow.addCell(this.toLocaleAmountFormat(amount), "styleNormalAmount");
+                amount = this.toLocaleAmountFormat(this.data[i].balance.ca[key].balance);
+                tableRow.addCell(amount, "styleNormalAmount");
             }
         }
         tableRow = tableBalance.addRow("styleTablRows");
@@ -489,8 +484,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                 tableRow.addCell(acronym);
             }
             for (var i = this.data.length - 1; i >= 0; i--) {
-                amount = this.data[i].balance.fa[key].balance;
-                tableRow.addCell(this.toLocaleAmountFormat(amount), "styleNormalAmount");
+                amount = this.toLocaleAmountFormat(this.data[i].balance.fa[key].balance);
+                tableRow.addCell(amount, "styleNormalAmount");
             }
         }
         //add the total of fixed assets
@@ -531,8 +526,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                 tableRow.addCell(acronym);
             }
             for (var i = this.data.length - 1; i >= 0; i--) {
-                amount = this.data[i].balance.dc[key].balance;
-                tableRow.addCell(this.toLocaleAmountFormat(amount), 'styleNormalAmount');
+                amount = this.toLocaleAmountFormat(this.data[i].balance.dc[key].balance);
+                tableRow.addCell(amount, 'styleNormalAmount');
             }
         }
         //add the sum of the third capital (debt capital)
@@ -561,8 +556,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                 tableRow.addCell(acronym);
             }
             for (var i = this.data.length - 1; i >= 0; i--) {
-                amount = this.data[i].balance.oc[key].balance;
-                tableRow.addCell(this.toLocaleAmountFormat(amount), "styleNormalAmount");
+                amount = this.toLocaleAmountFormat(this.data[i].balance.oc[key].balance);
+                tableRow.addCell(amount, "styleNormalAmount");
             }
         }
         //add the sum of the owned capital
@@ -879,7 +874,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             var tableRow = tableCashflow.addRow("styleTablRows");
             tableRow.addCell("-" + texts.withdrawalowncapital, "styleTablRows");
             for (var i = this.data.length - 2; i >= 0; i--) {
-                tableRow.addCell(this.toLocaleAmountFormat(this.data[i].cashflowgroups.withdrawalowncapital.balance), "styleNormalAmount");
+                tableRow.addCell(this.toLocaleAmountFormat(this.data.cashflow.withdrawalowncapital[i]), "styleNormalAmount");
             }
             //add the Provisions and similar (Delta)
             var tableRow = tableCashflow.addRow("styleTablRows");
@@ -1656,7 +1651,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         dialogparam.accrualsanddeferredincome.acronym = texts.accrualsanddeferredincome_acronym;
         dialogparam.accrualsanddeferredincome.bclass = "2";
         dialogparam.withdrawalowncapital = {};
-        dialogparam.withdrawalowncapital.gr = "281";
+        dialogparam.withdrawalowncapital.gr = "28";
         dialogparam.withdrawalowncapital.description = texts.withdrawalowncapital;
         dialogparam.withdrawalowncapital.acronym = texts.withdrawalowncapital_acronym;
         dialogparam.withdrawalowncapital.bclass = "2";
@@ -1926,11 +1921,11 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                     } else {
                         dialogparam[key].balance = bal.balance;
                     }
+                    if (dialogparam[key].balance === "" || dialogparam[key].balance === " " || dialogparam[key].balance === null) {
+                        dialogparam[key].balance += "0.00";
+                    }
                     //Banana.console.debug(JSON.stringify(dialogparam[key]));
                     //Banana.console.debug(JSON.stringify("********************************"));
-                    if (dialogparam[key].balance === "") {
-                        dialogparam[key].balance = "0.00";
-                    }
                 }
             } else {
                 if (typeof(dialogparam[key]) === "object")
@@ -2149,8 +2144,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         index.liqu.doflone.formula = "liqu / stdc";
         var liquidity = data.balance.ca.liquidity.balance;
         var shorttermdebtcapital = data.balance.dc.shorttermdebtcapital.balance;
-        var lcalc1 = Banana.SDecimal.multiply(liquidity, 100);
-        var lcalc2 = Banana.SDecimal.divide(lcalc1, shorttermdebtcapital, { 'decimals': this.dialogparam.numberofdecimals })
+        var lcalc1 = Banana.SDecimal.divide(liquidity, shorttermdebtcapital);
+        var lcalc2 = Banana.SDecimal.multiply(lcalc1, 100, { 'decimals': this.dialogparam.numberofdecimals });
         var lris = lcalc2.toString();
         index.liqu.doflone.amount = lris;
         index.liqu.doflone.benchmark = data.ratios.liquidityratios.cashratio.value;
@@ -2162,8 +2157,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         index.liqu.dofltwo.formula = "(liqu + cred) / stdc";
         var credits = data.balance.ca.credits.balance;
         var lcalc3 = Banana.SDecimal.add(liquidity, credits);
-        var lcalc4 = Banana.SDecimal.divide(lcalc3, shorttermdebtcapital, { 'decimals': this.dialogparam.numberofdecimals });
-        var lcalc4m = Banana.SDecimal.multiply(lcalc4, 100);
+        var lcalc4 = Banana.SDecimal.divide(lcalc3, shorttermdebtcapital);
+        var lcalc4m = Banana.SDecimal.multiply(lcalc4, 100, { 'decimals': this.dialogparam.numberofdecimals });
         var lris2 = lcalc4m.toString();
         index.liqu.dofltwo.amount = lris2;
         index.liqu.dofltwo.benchmark = data.ratios.liquidityratios.quickratio.value;
@@ -2175,8 +2170,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         index.liqu.doflthree.formula = "cuas / stdc";
         var cuasone = Banana.SDecimal.add((data.balance.ca.liquidity.balance), (data.balance.ca.credits.balance));
         var cuastwo = Banana.SDecimal.add(cuasone, (data.balance.ca.stocks.balance));
-        var lcalc5 = Banana.SDecimal.multiply(cuastwo, 100);
-        var lcalc6 = Banana.SDecimal.divide(lcalc5, shorttermdebtcapital, { 'decimals': this.dialogparam.numberofdecimals });
+        var lcalc5 = Banana.SDecimal.divide(cuastwo, shorttermdebtcapital);
+        var lcalc6 = Banana.SDecimal.multiply(lcalc5, 100, { 'decimals': this.dialogparam.numberofdecimals });
         var lris3 = lcalc6.toString();
         index.liqu.doflthree.amount = lris3;
         index.liqu.doflthree.benchmark = data.ratios.liquidityratios.currentratio.value;
@@ -2234,8 +2229,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var tocaone = Banana.SDecimal.add(data.balance.oc.ownbasecapital.balance, data.balance.oc.reservesandprofits.balance);
         var tocatwo = Banana.SDecimal.add(data.balance.dc.longtermdebtcapital.balance, data.balance.dc.shorttermdebtcapital.balance);
         var toca = Banana.SDecimal.add(tocaone, tocatwo)
-        var fcalc2 = Banana.SDecimal.multiply(deca, 100);
-        var fcalc3 = Banana.SDecimal.divide(fcalc2, toca, { 'decimals': this.dialogparam.numberofdecimals });
+        var fcalc2 = Banana.SDecimal.divide(deca, toca);
+        var fcalc3 = Banana.SDecimal.multiply(fcalc2, 100, { 'decimals': this.dialogparam.numberofdecimals });
         var fris2 = fcalc3.toString();
         index.lev.gdin.amount = fris2;
         index.lev.gdin.benchmark = data.ratios.leverageratios.debtratio.value;
@@ -2247,8 +2242,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         index.lev.gfcp.type = "perc";
         index.lev.gfcp.formula = "owca / totp";
         var owca = Banana.SDecimal.add((data.balance.oc.ownbasecapital.balance), (data.balance.oc.reservesandprofits.balance));
-        var fcalc4 = Banana.SDecimal.multiply(owca, 100);
-        var fcalc5 = Banana.SDecimal.divide(fcalc4, toca, { 'decimals': this.dialogparam.numberofdecimals });
+        var fcalc4 = Banana.SDecimal.divide(owca, toca);
+        var fcalc5 = Banana.SDecimal.multiply(fcalc4, 100, { 'decimals': this.dialogparam.numberofdecimals });
         var fris3 = fcalc5.toString();
         index.lev.gfcp.amount = fris3;
         index.lev.gfcp.benchmark = data.ratios.leverageratios.equityratio.value;
@@ -2259,8 +2254,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         index.lev.gdau.type = "perc";
         index.lev.gdau.formula = "reut / owca";
         var reservesandprofits = data.balance.oc.reservesandprofits.balance;
-        var fcalc6 = Banana.SDecimal.multiply(reservesandprofits, 100);
-        var fcalc7 = Banana.SDecimal.divide(fcalc6, owca, { 'decimals': this.dialogparam.numberofdecimals });
+        var fcalc6 = Banana.SDecimal.divide(reservesandprofits, owca);
+        var fcalc7 = Banana.SDecimal.multiply(fcalc6, 100, { 'decimals': this.dialogparam.numberofdecimals });
         var fris4 = fcalc7.toString();
         index.lev.gdau.amount = fris4;
         index.lev.gdau.benchmark = data.ratios.leverageratios.selfinancingratio.value;
@@ -2296,8 +2291,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         index.red.roe.description = "ROE";
         index.red.roe.type = "perc";
         index.red.roe.formula = "profit / owca";
-        var rcalc1 = Banana.SDecimal.multiply(CalculatedData.annualresult, 100);
-        var rcalc2 = Banana.SDecimal.divide(rcalc1, owca, { 'decimals': this.dialogparam.numberofdecimals });
+        var rcalc1 = Banana.SDecimal.divide(CalculatedData.annualresult, owca);
+        var rcalc2 = Banana.SDecimal.multiply(rcalc1.annualresult, 100, { 'decimals': this.dialogparam.numberofdecimals });
         var rris = rcalc2.toString();
         index.red.roe.amount = rris;
         index.red.roe.benchmark = data.ratios.profitabilityratios.profroe.value;
@@ -2320,8 +2315,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         index.red.ros.type = "perc";
         index.red.ros.formula = "EBIT / satu";
         var salesturnover = data.profitandloss.salesturnover.balance;
-        var rcalc5 = Banana.SDecimal.multiply(CalculatedData.ebit, 100);
-        var rcalc6 = Banana.SDecimal.divide(rcalc5, salesturnover, { 'decimals': this.dialogparam.numberofdecimals });
+        var rcalc5 = Banana.SDecimal.divide(CalculatedData.ebit, salesturnover);
+        var rcalc6 = Banana.SDecimal.multiply(rcalc5, 100, { 'decimals': this.dialogparam.numberofdecimals });
         var rris3 = rcalc6.toString();
         index.red.ros.amount = rris3;
         index.red.ros.benchmark = data.ratios.profitabilityratios.profros.value;
@@ -2332,8 +2327,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         index.red.mol.type = "perc";
         index.red.mol.formula = "gross profit / satu";
         var ebitda = CalculatedData.ebitda;
-        var rcalc7 = Banana.SDecimal.multiply(ebitda, 100);
-        var rcalc8 = Banana.SDecimal.divide(rcalc7, salesturnover, { 'decimals': this.dialogparam.numberofdecimals });
+        var rcalc7 = Banana.SDecimal.divide(ebitda, salesturnover);
+        var rcalc8 = Banana.SDecimal.multiply(rcalc7, 100, { 'decimals': this.dialogparam.numberofdecimals });
         var rris4 = rcalc8.toString();
         index.red.mol.amount = rris4;
         index.red.mol.benchmark = data.ratios.profitabilityratios.profmol.value;
@@ -2343,8 +2338,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         index.red.ebm.description = texts.ebitmargin;
         index.red.ebm.type = "perc";
         index.red.ebm.formula = "EBIT / satu";
-        var rcalc9 = Banana.SDecimal.multiply(CalculatedData.ebit, 100);
-        var rcalc10 = Banana.SDecimal.divide(rcalc9, salesturnover, { 'decimals': this.dialogparam.numberofdecimals });
+        var rcalc9 = Banana.SDecimal.divide(CalculatedData.ebit, salesturnover);
+        var rcalc10 = Banana.SDecimal.multiply(rcalc9, 100, { 'decimals': this.dialogparam.numberofdecimals });
         var rris5 = rcalc10.toString();
         index.red.ebm.amount = rris5;
         index.red.ebm.benchmark = data.ratios.profitabilityratios.profebm.value;
@@ -2354,8 +2349,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         index.red.mon.description = texts.profitmargin;
         index.red.mon.type = "perc";
         index.red.mon.formula = "net profit / satu";
-        var rcalc11 = Banana.SDecimal.multiply(CalculatedData.annualresult, 100);
-        var rcalc12 = Banana.SDecimal.divide(rcalc11, salesturnover, { 'decimals': this.dialogparam.numberofdecimals });
+        var rcalc11 = Banana.SDecimal.divide(CalculatedData.annualresult, salesturnover);
+        var rcalc12 = Banana.SDecimal.multiply(rcalc11, 100, { 'decimals': this.dialogparam.numberofdecimals });
         var rris6 = rcalc12.toString();
         index.red.mon.amount = rris6;
         index.red.mon.benchmark = data.ratios.profitabilityratios.profmon.value;
@@ -2419,31 +2414,27 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         this.data.cashflow = {};
         this.data.cashflow.accrualsanddeferredincome = [];
         this.data.cashflow.fixedassets = [];
+        this.data.cashflow.withdrawalowncapital = [];
         let amounts_accruals_and_provisions = [];
         let amounts_provisions_and_similar = [];
         let amounts_fixedassets = [];
+        let amounts_owncapital = [];
         let amounts_disinvestments = [];
         let delta_accruals_and_provisions = [];
         let delta_provisions_and_similar = [];
         let delta_fixedassets = [];
+        let delta_ownncapital = [];
         let delta_disinvestments = [];
 
         /****************************************************
-         * calculate the CashFlow deltas (accruals and provisions; fixed assets)
+         * calculate the CashFlow deltas (accruals and provisions; fixed assets;Disinvestments;Own Capital)
          ***************************************************/
         for (let i = this.data.length - 1; i >= 0; i--) {
             amounts_accruals_and_provisions.push(this.data[i].cashflowgroups.accrualsanddeferredincome.balance);
             amounts_fixedassets.push(this.data[i].balance.fa.fixedassets.balance);
             amounts_provisions_and_similar.push(this.data[i].cashflowgroups.provisionsandsimilar.balance);
             amounts_disinvestments.push(this.data[i].cashflowgroups.disinvestments.balance);
-        }
-
-        for (let i = this.data.length - 1; i >= 0; i--) {
-            Banana.console.debug(this.data[i].cashflowgroups.disinvestments.balance);
-        }
-
-        for (let i = 1; i < amounts_disinvestments.length; i++) {
-            Banana.console.debug(amounts_disinvestments[i]);
+            amounts_owncapital.push(this.data[i].cashflowgroups.withdrawalowncapital.balance);
         }
 
         //calculate the accruals and provisions deltas
@@ -2457,6 +2448,10 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         //calculate the fixed assets deltas
         for (let i = 1; i < amounts_fixedassets.length; i++) {
             delta_fixedassets.unshift(Banana.SDecimal.subtract(amounts_fixedassets[i], amounts_fixedassets[i - 1]));
+        }
+        //calculate the own capital deltas
+        for (let i = 1; i < amounts_owncapital.length; i++) {
+            delta_ownncapital.unshift(Banana.SDecimal.subtract(amounts_owncapital[i], amounts_owncapital[i - 1]));
         }
 
         /**
@@ -2477,6 +2472,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         this.data.cashflow.provisionsandsimilar = delta_provisions_and_similar;
         this.data.cashflow.fixedassets = delta_fixedassets;
         this.data.cashflow.disinvestments = delta_disinvestments;
+        this.data.cashflow.withdrawalowncapital = delta_ownncapital;
 
     }
 
@@ -2539,7 +2535,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             for (let i = this.data.length - 2; i >= 0; i--) {
                 let element = grosscashflow[i];
                 element = Banana.SDecimal.subtract(element, this.data[i].profitandloss.interests.balance);
-                element = Banana.SDecimal.subtract(element, this.data[i].cashflowgroups.withdrawalowncapital.balance);
+                element = Banana.SDecimal.subtract(element, this.data.cashflow.withdrawalowncapital[i]);
                 element = Banana.SDecimal.add(element, this.data.cashflow.provisionsandsimilar[i]);
 
                 netcashflow.unshift(element);
@@ -2586,8 +2582,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         index.cashflow_margin.formula = "cashflow/satu";
         index.cashflow_margin.amount = [];
         for (let i = this.data.length - 2; i >= 0; i--) {
-            calc = Banana.SDecimal.multiply(freecashflow[i], 100);
-            index.cashflow_margin.amount.unshift(Banana.SDecimal.divide(calc, this.data[i].profitandloss.salesturnover.balance, { 'decimals': this.dialogparam.numberofdecimals }));
+            calc = Banana.SDecimal.divide(freecashflow[i], this.data[i].profitandloss.salesturnover.balance);
+            index.cashflow_margin.amount.unshift(Banana.SDecimal.multiply(calc, 100, { 'decimals': this.dialogparam.numberofdecimals }));
         }
         index.cashflow_margin.benchmark = "3%-5%";
 
@@ -2621,8 +2617,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         index.cashflow_to_investments.formula = "cashflow/inve";
         index.cashflow_to_investments.amount = [];
         for (let i = this.data.length - 2; i >= 0; i--) {
-            let calc = Banana.SDecimal.multiply(freecashflow[i], 100);
-            index.cashflow_to_investments.amount.unshift(Banana.SDecimal.divide(calc, investments[i], { 'decimals': this.dialogparam.numberofdecimals }));
+            let calc = Banana.SDecimal.divide(freecashflow[i], investments[i]);
+            index.cashflow_to_investments.amount.unshift(Banana.SDecimal.multiply(calc, 100, { 'decimals': this.dialogparam.numberofdecimals }));
         }
         index.cashflow_to_investments.benchmark = "4%";
 
@@ -3607,7 +3603,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
         var Dupont = {};
 
-        var sales = CalculatedData.salesturnover;
+        var sales = data.profitandloss.salesturnover.balance;
         var currentasset = CalculatedData.currentassets;
         var totfixedasset = CalculatedData.totfixedassets;
         var ebit = CalculatedData.ebit;
