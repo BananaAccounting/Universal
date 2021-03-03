@@ -75,10 +75,18 @@ function convertTimeToSeconds(t) {
     let s = 0;
     let m = 0;
     let h = 0;
-    const st = String(t);
+    if (!t) {
+        return 0;
+    }
+    let st = String(t);
     if (st.indexOf(':') < 0) {
         // solo secondi old format
         return Number(t);
+    }
+    let negative = 1;
+    if (st.startsWith('-')) {
+        st = st.substring(1);
+        negative = -1;
     }
     const parts = st.split(':');
     if (parts.length === 2) {
@@ -90,7 +98,7 @@ function convertTimeToSeconds(t) {
         m = Number(parts[1]);
         s = Number(parts[2]);
     }
-    s += m * 60 + h * 60 * 60;
+    s += (m * 60 + h * 60 * 60) * negative;
     return s;
 }
 
