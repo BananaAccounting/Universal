@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.uni.invoice.uni11
 // @api = 1.0
-// @pubdate = 2021-02-26
+// @pubdate = 2021-03-03
 // @publisher = Banana.ch SA
 // @description = [UNI11] Programmable Invoice layout
 // @description.it = [UNI11] Layout Fattura Programmabile
@@ -593,7 +593,7 @@ function convertParam(userParam) {
   currentParam.title = texts.param_languages;
   currentParam.type = 'string';
   currentParam.value = userParam.languages ? userParam.languages : '';
-  currentParam.defaultvalue = 'de;en;fr;it';
+  currentParam.defaultvalue = 'de;en;fr;it;nl';
   currentParam.tooltip = texts.param_tooltip_languages;
   currentParam.readValue = function() {
 
@@ -628,7 +628,7 @@ function convertParam(userParam) {
 
   for (var i = 0; i < langCodes.length; i++) {
     var langCode = langCodes[i];
-    if (langCode === "it" || langCode === "fr" || langCode === "de" || langCode === "en") {
+    if (langCode === "it" || langCode === "fr" || langCode === "de" || langCode === "nl") {
       var langCodeTitle = langCode;
       var langTexts = setInvoiceTexts(langCode);
     }
@@ -1203,14 +1203,14 @@ function initParam() {
 
 
   //Texts
-  userParam.languages = 'de;en;fr;it';
+  userParam.languages = 'de;en;fr;it;nl';
   var langCodes = userParam.languages.toString().split(";");
 
   // Initialize the parameter for each language
   for (var i = 0; i < langCodes.length; i++) {
 
     // Use texts translations
-    if (langCodes[i] === "it" || langCodes[i] === "fr" || langCodes[i] === "de" || langCodes[i] === "en") {
+    if (langCodes[i] === "it" || langCodes[i] === "fr" || langCodes[i] === "de" || langCodes[i] === "nl") {
       var langTexts = setInvoiceTexts(langCodes[i]);
     }
     else {
@@ -1362,7 +1362,7 @@ function verifyParam(userParam) {
 
   //Texts
   if (!userParam.languages) {
-    userParam.languages = 'de;en;fr;it';
+    userParam.languages = 'de;en;fr;it;nl';
   }
 
   // Verify the parameter for each language
@@ -3813,6 +3813,166 @@ function setInvoiceTexts(language) {
     texts.param_tooltip_text_begin_offer = "Insérez un texte pour remplacer le texte par défaut";
     texts.fr_param_text_final_offer = "Texte final offre";
     texts.param_tooltip_text_final_offer = "Insérez un texte pour remplacer le texte par défaut"; 
+  }
+  else if (language === 'nl') {
+    //NL
+    texts.phone = "Tel";
+    texts.shipping_address = "Verzendadres";
+    texts.invoice = "Factuur";
+    texts.date = "Datum";
+    texts.customer = "Klantennummer";
+    texts.vat_number = "BTW-nummer";
+    texts.fiscal_number = "RSIN";
+    texts.payment_due_date_label = "Vervaldatum";
+    texts.payment_terms_label = "Betaling";
+    texts.page = "Pagina";
+    texts.credit_note = "Credit nota";
+    texts.column_description = "Beschrijving";
+    texts.column_quantity = "Hoeveelheid";
+    texts.column_reference_unit = "Eenheidsreferentie";
+    texts.column_unit_price = "Eenheidsprijs";
+    texts.column_amount = "Bedrag";
+    texts.description = "Beschrijving";
+    texts.quantity = "Hoeveelheid";
+    texts.reference_unit = "Eenheid";
+    texts.unit_price = "Eenheidsprijs";
+    texts.amount = "Bedrag";
+    texts.discount = "Korting";
+    texts.deposit = "Reeds betaald";
+    texts.totalnet = "Totaal netto";
+    texts.vat = "BTW";
+    texts.rounding = "Afronding";
+    texts.total = "TOTAAL";
+    texts.param_include = "Afdrukken";
+    texts.param_header_include = "Koptekst";
+    texts.param_header_print = "Koptekst pagina";
+    texts.param_header_row_1 = "Tekst rij 1";
+    texts.param_header_row_2 = "Tekst rij 2";
+    texts.param_header_row_3 = "Tekst rij 3";
+    texts.param_header_row_4 = "Tekst rij 4";
+    texts.param_header_row_5 = "Tekst rij 5";
+    texts.param_logo_print = "Logo";
+    texts.param_logo_name = "Logo naam (samenstelling van logo formaten)";
+    texts.param_address_include = "Adres klant";
+    texts.param_address_small_line = "Adres afzender";
+    texts.param_address_left = "Adres links plaatsen";
+    texts.param_address_composition = "Adres compositie";
+    texts.param_address_position_dX = 'Horizontaal verplaatsen +/- (in cm, standaard 0)';
+    texts.param_address_position_dY = 'Verticaal verplaatsen +/- (in cm, standaard 0)';
+    texts.param_shipping_address = "Verzendadres";
+    texts.param_info_include = "Informatie";
+    texts.param_info_invoice_number = "Factuurnummer";
+    texts.param_info_date = "Factuurdatum";
+    texts.param_info_customer = "Klantennummer";
+    texts.param_info_customer_vat_number = "BTW-nummer klant";
+    texts.param_info_customer_fiscal_number = "RSIN klant";
+    texts.param_info_due_date = "Vervaldatum factuur";
+    texts.param_info_page = "Paginanummer";
+    texts.param_details_include = "Details factuur";
+    texts.param_details_columns = "Namen kolommen";
+    texts.param_details_columns_widths = "Kolombreedte";
+    texts.param_details_columns_titles_alignment = "Uitlijning titels";
+    texts.param_details_columns_alignment = "Kolomuitlijning";
+    texts.param_details_gross_amounts = "Brutobedragen (inclusief BTW)";
+    texts.param_footer_include = "Voettekst";
+    texts.param_footer_add = "Voettekst afdrukken";
+    texts.param_footer_horizontal_line = "Afdrukken scheidingsrand";
+    texts.param_texts = "Teksten (leeg = standaardwaarden)";
+    texts.param_languages = "Talen";
+    texts.languages_remove = "Wilt u '<removedLanguages>' uit de lijst met talen verwijderen?";
+    texts.nl_param_text_info_invoice_number = "Factuurnummer";
+    texts.nl_param_text_info_date = "Factuurdatum";
+    texts.nl_param_text_info_customer = "Klantennummer";
+    texts.nl_param_text_info_customer_vat_number = "BTW-nummer klant";
+    texts.nl_param_text_info_customer_fiscal_number = "RSIN klant";
+    texts.nl_param_text_info_due_date = "Vervaldatum factuur";
+    texts.nl_param_text_info_page = "Paginanummer";
+    texts.nl_param_text_shipping_address = "Verzendadres";
+    texts.nl_param_text_title_doctype_10 = "Factuurtitel";
+    texts.nl_param_text_title_doctype_12 = "Titel credit nota";
+    texts.nl_param_text_details_columns = "Kolomnamen factuur details";
+    texts.nl_param_text_totalnet = "Factuur totaal netto";
+    texts.nl_param_text_vat = "Factuur BTW";
+    texts.nl_param_text_total = "Totaal factuur";
+    texts.nl_param_text_final = "Definitieve tekst";
+    texts.nl_param_footer_left = "Voettekst links";
+    texts.nl_param_footer_center = "Voettekst midden";
+    texts.nl_param_footer_right = "Voettekst rechts";
+    texts.param_styles = "Stijlen";
+    texts.param_text_color = "Tekstkleur";
+    texts.param_background_color_details_header = "Achtergrondkleur koptekst details";
+    texts.param_text_color_details_header = "Tekstkleur koptekst details";
+    texts.param_background_color_alternate_lines = "Achtergrondkleur voor alternatieve rijen";
+    texts.param_font_family = "Lettertype";
+    texts.param_font_size = "Karaktergrootte";
+    texts.embedded_javascript_file_not_found = "JavaScript-bestand niet gevonden of ongeldig";
+    texts.param_embedded_javascript = "JavaScript-bestand ";
+    texts.param_embedded_javascript_filename = "JS bestandsnaam ('ID' kolom van Documenten tabel)";
+    texts.param_embedded_css_filename = "CSS bestandsnaam ('ID' kolom van Documenten tabel)";
+    texts.param_tooltip_header_print = "Aanvinken om de paginakoptekst op te nemen";
+    texts.param_tooltip_logo_print = "Aanvinken om het logo op te nemen";
+    texts.param_tooltip_logo_name = "Voer de naam van het logo in";
+    texts.param_tooltip_info_invoice_number = "Aanvinken om het factuurnummer op te nemen";
+    texts.param_tooltip_info_date = "Aanvinken om de factuurdatum op te nemen";
+    texts.param_tooltip_info_customer = "Aanvinken om het klantennummer op te nemen";
+    texts.param_tooltip_info_customer_vat_number = "Aanvinken om het BTW-nummer van de klant op te nemen";
+    texts.param_tooltip_info_customer_fiscal_number = "Aanvinken om het RSIN van de klant op te nemen";
+    texts.param_tooltip_info_due_date = "Aanvinken om de vervaldatum van de factuur op te nemen";
+    texts.param_tooltip_info_page = "Aanvinken om het paginanummer op te nemen";
+    texts.param_tooltip_languages = "Een of meer talen toevoegen of verwijderen";
+    texts.param_tooltip_text_info_invoice_number = "Voer een tekst in ter vervanging van de standaardtekst";
+    texts.param_tooltip_text_info_date = "Voer een tekst in ter vervanging van de standaardtekst";
+    texts.param_tooltip_text_info_customer = "Voer een tekst in ter vervanging van de standaardtekst";
+    texts.param_tooltip_text_info_customer_vat_number = "Voer een tekst in ter vervanging van de standaardtekst";
+    texts.param_tooltip_text_info_customer_fiscal_number = "Voer een tekst in ter vervanging van de standaardtekst";
+    texts.param_tooltip_text_payment_terms_label = "Voer een tekst in ter vervanging van de standaardtekst";
+    texts.param_tooltip_text_info_page = "Voer een tekst in ter vervanging van de standaardtekst";
+    texts.param_tooltip_text_shipping_address = "Voer een tekst in ter vervanging van de standaardtekst";
+    texts.param_tooltip_title_doctype_10 = "Voer een tekst in ter vervanging van de standaardtekst";
+    texts.param_tooltip_title_doctype_12 = "Voer een tekst in ter vervanging van de standaardtekst";
+    texts.param_tooltip_text_total = "Voer een tekst in ter vervanging van de standaardtekst";
+    texts.param_tooltip_text_details_columns = "Vul de namen van de kolommen met factuurgegevens in";
+    texts.param_tooltip_details_columns = "Voer de XML-namen van de kolommen in de door u gewenste volgorde in";
+    texts.param_tooltip_details_columns_widths = "Voer de breedtes van de kolommen in % in (de som moet 100% zijn).";
+    texts.param_tooltip_details_columns_titles_alignment = "Uitlijning titels";
+    texts.param_tooltip_details_columns_alignment = "Kolomuitlijning";
+    texts.param_tooltip_header_row_1 = "Voer een tekst in ter vervanging van de standaardtekst";
+    texts.param_tooltip_header_row_2 = "Voer een tekst in ter vervanging van de standaardtekst";
+    texts.param_tooltip_header_row_3 = "Voer een tekst in ter vervanging van de standaardtekst";
+    texts.param_tooltip_header_row_4 = "Voer een tekst in ter vervanging van de standaardtekst";
+    texts.param_tooltip_header_row_5 = "Voer een tekst in ter vervanging van de standaardtekst";
+    texts.param_tooltip_address_small_line = "Voer het adres van de afzender nèt boven het adres van de klant in";
+    texts.param_tooltip_address_composition = "Voer de XML-namen van de kolommen in de door u gewenste volgorde in";
+    texts.param_tooltip_shipping_address = "Aanvinken om het verzendadres af te drukken";
+    texts.param_tooltip_address_left = "Aanvinken om het adres van de klant links te plaatsen";
+    texts.param_tooltip_details_gross_amounts = "Aanvinken om factuurgegevens af te drukken met brutobedragen en BTW inbegrepen";
+    texts.param_tooltip_text_final = "Voer een tekst in ter vervanging van de standaardtekst";
+    texts.param_tooltip_footer_add = "Aanvinken om de voettekst af te drukken";
+    texts.param_tooltip_footer = "Voer de voettekst in";
+    texts.param_tooltip_footer_horizontal_line = "Afdrukken scheidingsrand";
+    texts.param_tooltip_font_family = "Voer het lettertype in (bijv. Arial, Helvetica, Times New Roman, ...)";
+    texts.param_tooltip_font_size = "Voer de karaktergrootte in (bijv. 10, 11, 12, ...)";
+    texts.param_tooltip_text_color = "Voer de tekstkleur in (bijv. '#000000' of 'Black')";
+    texts.param_tooltip_background_color_details_header = "Voer de achtergrondkleur voor de koptekst van de factuurgegevens in (bijv. '#337ab7' of 'Blue')";
+    texts.param_tooltip_text_color_details_header = "Voer de tekstkleur voor de koptekst van de factuurgegevens in (bijv. '#ffffff' of 'White')";
+    texts.param_tooltip_background_color_alternate_lines = "Voer de achtergrondkleur van de alternatieve rijen in (bijv. '#F0F8FF' of 'LightSkyBlue')";
+    texts.param_tooltip_javascript_filename = "Voer de naam van het JavaScript bestand (.js) in van de 'ID' kolom van de Documenten tabel (bijv. File.js)";
+    texts.error1 = "Kolomnamen komen niet overeen met de af te drukken tekst. Controleer de factuurinstellingen.";
+    texts.nl_error1_msg = "Tekstnamen en kolommen komen niet overeen";
+    texts.offer = "Offerte";
+    texts.nl_param_text_info_offer_number = "Nummer Offerte";
+    texts.param_tooltip_text_info_offer_number = "Voer een tekst in ter vervanging van de standaardtekst";
+    texts.nl_param_text_info_date_offer = "Datum offerte";
+    texts.param_tooltip_text_info_date_offer = "Voer een tekst in ter vervanging van de standaardtekst";
+    texts.nl_param_text_info_validity_date_offer = "Geldigheidsduur van de offerte";
+    texts.validity_terms_label = "Geldigheid";
+    texts.param_tooltip_text_info_validity_date_offer = "Voer een tekst in ter vervanging van de standaardtekst";
+    texts.nl_param_text_title_doctype_17 = "Titel offerte";
+    texts.param_tooltip_title_doctype_17 = "Voer een tekst in ter vervanging van de standaardtekst";
+    texts.nl_param_text_begin_offer = "Begintekst offerte";
+    texts.param_tooltip_text_begin_offer = "Voer een tekst in ter vervanging van de standaardtekst";
+    texts.nl_param_text_final_offer = "Eindtekst offerte";
+    texts.param_tooltip_text_final_offer = "Voer een tekst in ter vervanging van de standaardtekst";
   }
   else {
     //EN
