@@ -400,8 +400,6 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
      */
     printReport() {
 
-        var investments_amounts = this.findAmountsInTransactions(this.data[0].cashflowgroups.disinvestments.gr, "#disinvest");
-        this.calculateDisinvestments(investments_amounts);
 
         /******************************************************************************************
          * initialize the variables i will use frequently in this method
@@ -409,8 +407,6 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
         var texts = this.initFinancialAnalysisTexts();
         var report = Banana.Report.newReport('Financial Statement Analysis Report');
-
-        this.calculateDisinvestments(null, null);
 
         var analsysisYears = this.data.length;
         analsysisYears -= 1;
@@ -848,6 +844,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
          * the method can be called only if we have at least two years to compare.
          ****************************************************************************/
         if (this.dialogparam.maxpreviousyears > 0 || this.dialogparam.includebudgettable) {
+
+            let amounts_transactions = this.loadAmountsFromTransactions();
+
             var tableCashflow = this.printReportAdd_TableCashflow(report);
             //add the annual result
             var tableRow = tableCashflow.addRow("styleTablRows");
@@ -882,8 +881,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             //add the Withdrawal of own capital
             var tableRow = tableCashflow.addRow("styleTablRows");
             tableRow.addCell("-" + texts.withdrawalowncapital, "styleTablRows");
-            for (var i = this.data.length - 2; i >= 0; i--) {
-                tableRow.addCell(this.toLocaleAmountFormat(0), "styleNormalAmount");
+            for (var i = amounts_transactions.withdrawalowncapital.length - 2; i >= 0; i--) {
+                tableRow.addCell(amounts_transactions.withdrawalowncapital[i], "styleNormalAmount");
             }
             //add the accrusal and  incomes (Delta)
             var tableRow = tableCashflow.addRow("styleTablRows");
@@ -894,7 +893,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             //add the net CASHFLOW
             var tableRow = tableCashflow.addRow("styleTablRows");
             tableRow.addCell(texts.netcashflow, "styleTitlesTotalAmount");
-            var netcashflow = this.calculateNetCashflow(grosscashflow);
+            var netcashflow = this.calculateNetCashflow(grosscashflow, amounts_transactions);
             for (var i = netcashflow.length - 1; i >= 0; i--) {
                 cell = tableRow.addCell(this.toLocaleAmountFormat(netcashflow[i]) + ' ', "styleTotalAmount");
                 if (i < analsysisYears - 1) {
@@ -903,23 +902,23 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                     this.setIndexEvolution(valueT1, valueT2, cell);
                 }
             }
-            //add the Disinvestments (Delta)
+            //add the Disinvestments 
             var tableRow = tableCashflow.addRow("styleTablRows");
-            tableRow.addCell("+ Δ " + texts.disinvestments, "styleTablRows");
-            for (var i = this.data.length - 2; i >= 0; i--) {
-                tableRow.addCell(this.toLocaleAmountFormat(0), "styleNormalAmount");
+            tableRow.addCell("+" + texts.disinvestments, "styleTablRows");
+            for (var i = amounts_transactions.disinvestments.length - 2; i >= 0; i--) {
+                tableRow.addCell(amounts_transactions.disinvestments[i], "styleNormalAmount");
             }
             //add the Investments
             var tableRow = tableCashflow.addRow("styleTablRows");
             tableRow.addCell("-" + texts.investments, "styleTablRows");
-            var investments = this.calculateCashflowInvestments();
+            var investments = this.calculateCashflowInvestments(amounts_transactions);
             for (var i = investments.length - 1; i >= 0; i--) {
                 tableRow.addCell(this.toLocaleAmountFormat(investments[i]), "styleNormalAmount");
             }
             //add the free CASHFLOW
             var tableRow = tableCashflow.addRow("styleTablRows");
             tableRow.addCell(texts.freecashflow, "styleTitlesTotalAmount");
-            var freecashflow = this.calculateFreeCashflow(investments, netcashflow);
+            var freecashflow = this.calculateFreeCashflow(investments, netcashflow, amounts_transactions);
             for (var i = freecashflow.length - 1; i >= 0; i--) {
                 cell = tableRow.addCell(this.toLocaleAmountFormat(freecashflow[i]) + ' ', "styleTotalAmount");
                 if (i < analsysisYears - 1) {
@@ -2428,65 +2427,94 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
     }
 
+    loadAmountsFromTransactions() {
+        var yeardocument = this.banDocument;
+        let amounts_in_transactions = {};
+        amounts_in_transactions.disinvestments = [];
+        amounts_in_transactions.withdrawalowncapital = [];
+        let i = 0;
+        let disinvestments_group = this.data[0].cashflowgroups.disinvestments.gr;
+        let disinvest_description = "#disinvest";
+        let withdrawalowncapital_group = this.data[0].cashflowgroups.withdrawalowncapital.gr;
+        let withdrawalowncapital_description = "#capital_minus";
+
+        var isIncluded = this.dialogparam.includebudgettable;
+        var withBudget = yeardocument.info("Budget", "TableNameXml");
+
+        if (withBudget && isIncluded) {
+            let budgetBalances = true;
+            amounts_in_transactions.disinvestments.push(this.loadAmountsFromTransactions_years(disinvestments_group, disinvest_description, yeardocument, budgetBalances));
+            amounts_in_transactions.withdrawalowncapital.push(this.loadAmountsFromTransactions_years(withdrawalowncapital_group, withdrawalowncapital_description, yeardocument, budgetBalances));
+        }
+
+        while (yeardocument && i <= this.dialogparam.maxpreviousyears) {
+            amounts_in_transactions.disinvestments.push(this.loadAmountsFromTransactions_years(disinvestments_group, disinvest_description, yeardocument));
+            amounts_in_transactions.withdrawalowncapital.push(this.loadAmountsFromTransactions_years(withdrawalowncapital_group, withdrawalowncapital_description, yeardocument));
+            yeardocument = yeardocument.previousYear();
+
+        }
+        for (var j = 0; j < amounts_in_transactions.disinvestments.length; j++) {
+            //Banana.console.debug(amounts_in_transactions.withdrawalowncapital[j]);
+        }
+
+        for (let i = this.data.length - 2; i >= 0; i--) {
+            Banana.console.debug(amounts_in_transactions.disinvestments[i]);
+        }
+        return amounts_in_transactions;
+
+    }
+
     /**
-     * This method finds the amounts for the given groups, where the description prefix is '#disinvest'.
-     * This prefix indicates that the entry relates to a disinvestment transaction.
+     * This method finds the amounts in the transactions table for the given groups. The amounts are filtered also for the description.
+     * returns an array with the amounts of all records matching the search criteria.
      * @param {*} groups 
      * @param {*} description 
      */
-    findAmountsInTransactions(group, descr) {
+    loadAmountsFromTransactions_years(group, descr, _banDocument, budgetBalances) {
 
         let transactions_amounts = [];
+        let grouplist = this.loadGroups();
 
-        if (group === "" || descr === "") {
-            return false;
+        if (group === null || descr === null || !_banDocument) {
+            return;
         }
 
-        let transactions = Banana.document.currentCard(group, '', '', '');
+        let value = group.toString();
+        let valuelist = value.split(";");
+        value = "";
+        var isAccount = true;
+        for (var token in valuelist) {
+            var token = valuelist[token];
+            if (value.length > 0) {
+                value += "|";
+            }
+            if (grouplist.indexOf(token) >= 0) {
+                token = token;
+                isAccount = false;
+            }
+            value += token;
+        }
+        if (!isAccount) {
+            value = "Gr=" + value;
+        }
+        //take the amounts for every year of analysis and budget
+        let transactions
+        if (budgetBalances) {
+            transactions = _banDocument.budgetCard(value, '', '', null);
+        } else {
+            transactions = _banDocument.currentCard(value, '', '', null);
+        }
         for (var i = 0; i < transactions.rowCount; i++) {
             let tRow = transactions.row(i);
             let description = tRow.value('JDescription');
-            Banana.console.debug(description);
 
             if (description.indexOf(descr) >= 0) {
                 var jAmount = tRow.value('JAmount');
-                transactions_amounts.push(jAmount);
+                jAmount = Banana.SDecimal.abs(jAmount);
+                transactions_amounts = Banana.SDecimal.add(transactions_amounts, jAmount);
             }
         }
         return transactions_amounts;
-    }
-
-    /**
-     * 
-     * @param {*} amounts 
-     */
-    calculateDisinvestments(amounts) {
-
-        if (amounts == "") {
-            return false;
-        }
-
-        for (var i = 0; i < amounts.length - 1; i++) {
-            Banana.console.debug(amounts[i]);
-        }
-
-        let disinvestments = {};
-
-        return disinvestments;
-
-    }
-
-
-    /**
-     * 
-     * @param {*} amounts 
-     */
-    calculateOwnCapitalWithdrawal(amounts) {
-
-        let withdrawalowncapital = {};
-
-        return withdrawalowncapital = {};
-
     }
 
     /**
@@ -2543,8 +2571,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
      * - fixed assets closing balance
      * =Investments
      * (instaed of using the opening and the closing balance of the fixed assets, we use directly the calculated delta)
+     * @param {*} disinvestments the calculated disinvestments
      */
-    calculateCashflowInvestments() {
+    calculateCashflowInvestments(amounts_in_transactions) {
 
             //find the amounts we need in this.data and calculate them.
             if (this.data) {
@@ -2552,7 +2581,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                 for (let i = this.data.length - 2; i >= 0; i--) {
                     let element = "";
                     element = Banana.SDecimal.add(this.data[i].profitandloss.depreandadjust.balance, element);
-                    element = Banana.SDecimal.add(0, element);
+                    element = Banana.SDecimal.add(amounts_in_transactions.disinvestments[i], element);
                     element = Banana.SDecimal.add(this.data.cashflow.fixedassets[i], element);
                     Investments.unshift(element);
                 }
@@ -2590,15 +2619,16 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
     /**
      * Calculate the Net cashflow starting from the calculated Gross cashflow
      * @param {*} grosscashflow : the gross cashflow
+     * @param {*} grosscashflow : the calculated withdrawalowncapital
      */
-    calculateNetCashflow(grosscashflow) {
+    calculateNetCashflow(grosscashflow, amounts_in_transactions) {
 
         if (this.data) {
             let netcashflow = [];
             //find the amounts we need in this.data and calculate them.
             for (let i = this.data.length - 2; i >= 0; i--) {
                 let element = grosscashflow[i];
-                element = Banana.SDecimal.subtract(element, 0);
+                element = Banana.SDecimal.subtract(element, amounts_in_transactions.withdrawalowncapital[i]);
                 element = Banana.SDecimal.add(element, this.data.cashflow.accrualsanddeferredincome[i]);
 
                 netcashflow.unshift(element);
@@ -2614,14 +2644,14 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
      * @param {*} investments the investments
      * @param {*} netcashflow the net Cashflow
      */
-    calculateFreeCashflow(investments, netcashflow) {
+    calculateFreeCashflow(investments, netcashflow, amounts_in_transactions) {
 
         if (this.data) {
             let freecashflow = [];
             //find the amounts we need in this.data and calculate them.
             for (let i = this.data.length - 2; i >= 0; i--) {
                 let element = netcashflow[i];
-                element = Banana.SDecimal.add(0, element);
+                element = Banana.SDecimal.add(amounts_in_transactions.disinvestments[i], element);
                 element = Banana.SDecimal.subtract(element, investments[i]);
                 freecashflow.unshift(element);
 

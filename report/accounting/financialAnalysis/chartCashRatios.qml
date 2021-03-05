@@ -50,10 +50,11 @@ BasePage {
                   }
                   financialStatementAnalysis.loadData();
                   financialStatementAnalysis.calculateCashflowDelta();
-                  var cashflow_investments=financialStatementAnalysis.calculateCashflowInvestments();
+                  var transactions_amounts=financialStatementAnalysis.loadAmountsFromTransactions();
+                  var cashflow_investments=financialStatementAnalysis.calculateCashflowInvestments(transactions_amounts);
                   var gross_casshflow=financialStatementAnalysis.calculateGrossCashflow();
-                  var net_casshflow=financialStatementAnalysis.calculateNetCashflow(gross_casshflow);
-                  var free_casshflow=financialStatementAnalysis.calculateFreeCashflow(cashflow_investments, net_casshflow);
+                  var net_casshflow=financialStatementAnalysis.calculateNetCashflow(gross_casshflow,transactions_amounts);
+                  var free_casshflow=financialStatementAnalysis.calculateFreeCashflow(cashflow_investments, net_casshflow,transactions_amounts);
                   var cashflow_index=financialStatementAnalysis.calculateCashflowIndex(free_casshflow,cashflow_investments);
                   var yearList = [];
                   var data = {};
