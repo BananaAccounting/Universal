@@ -122,9 +122,25 @@ FSAnalysisTest.prototype.testReport = function() {
     this.testLogger = Test.logger;
 }
 
-//verifica che  i metodi del cashflow diano i risultati definiti.
-/*
-FSAnalysisTest.prototype.testVerifFinancialAnalysisMethods = function() {
+//Test calculation methods (indices and various elements of the financial statement analysis)
+FSAnalysisTest.prototype.testCalcMethods = function() {
+
+    var fileAC2 = "file:script/../test/testcases/Documentscontabilita_sa-sagl_partitario_fatturato 2020.ac2";
+    var banDoc = Banana.application.openDocument(fileAC2);
+    if (!banDoc) {
+        return;
+    }
+
+    Test.logger.addSection("Test: Financial Statement Analysis Calculation Methods : " + fileAC2);
+
+    Test.logger.addSubSection("Method: calculateCashflowIndex");
+    this.add_test_calculateCashflowIndex_1(banDoc);
+
+}
+
+//check methods that load values from the BanDocument.
+
+FSAnalysisTest.prototype.testLoadingMethods = function() {
 
 
     var fileAC2 = "file:script/../test/testcases/Documentscontabilita_sa-sagl_partitario_fatturato 2020.ac2";
@@ -132,17 +148,113 @@ FSAnalysisTest.prototype.testVerifFinancialAnalysisMethods = function() {
     if (!banDoc) {
         return;
     }
-    var financialStatementAnalysis = new FinancialStatementAnalysis(banDoc);
-    var freecashflow = financialStatementAnalysis.cashflowIndex(freecashflow, investments);
+
+    Test.logger.addSection("Test: Financial Statement Analysis loading Methods : " + fileAC2);
+
+    Test.logger.addSubSection("Method: loadAmountsFromTransactions_years");
+
+    //the prefix used to recognise own capita withdrawals is '#disinvest'.
+    Test.logger.addSubSubSection("Test1: disinvestments");
+    this.add_test_loadAmountsFromTransactions_years_1(banDoc, "disinvestments"); //all correct, budget=false
+    this.add_test_loadAmountsFromTransactions_years_2(banDoc, "disinvestments(descr reference non-existent)"); //Non-existent descr reference, budget=false.
+    this.add_test_loadAmountsFromTransactions_years_3(banDoc, "disinvestments(Budget=true,but no Budget table)"); //All correct, Budget=true, but no Budget Table.
+    this.add_test_loadAmountsFromTransactions_years_4(banDoc, "disinvestments(without any occurrence of the description)"); //Groups without any occurrence of the description in the  transactions 
+
+    //the prefix used to recognise own capital withdrawals is '#capital_minus'.
+    Test.logger.addSubSubSection("Test2: withdrawal of own capital");
+    this.add_test_loadAmountsFromTransactions_years_5(banDoc, "withdrawal of own capital"); //all correct, budget=false
+    this.add_test_loadAmountsFromTransactions_years_6(banDoc, "withdrawal of own capital(descr reference non-existent)"); //Non-existent descr reference, budget=false.
+    this.add_test_loadAmountsFromTransactions_years_7(banDoc, "withdrawal of own capital(Budget=true,but no Budget table)"); //All correct, Budget=true, but no Budget Table.
+    this.add_test_loadAmountsFromTransactions_years_8(banDoc, "withdrawal of own capital(without any occurrence of the description)"); //Groups without any occurrence of the description in the  transactions 
 
 
-
-    /*
-    var cashflowdeltas = financialStatementAnalysis.calculateCashflowDelta();
-    var cashflowinvestments = financialStatementAnalysis.calculateCashflowInvestments();
-    var grosscashflow = financialStatementAnalysis.calculateGrossCashflow();
-    var netcashflow = financialStatementAnalysis.calculateNetCashflow(grosscashflow);
-    var freecashflow = financialStatementAnalysis.calculateFreeCashflow(freecashflow, cashflowinvestments);
-    
 }
-*/
+
+//disinvestments
+FSAnalysisTest.prototype.add_test_loadAmountsFromTransactions_years_1 = function(banDoc, reportName) {
+    var financialStatementAnalysis = new FinancialStatementAnalysis(banDoc);
+    var group = "140;150;160;170";
+    var descr = "#disinvest";
+    var budgetBalances = false;
+    //Loaded Elements
+    var loaded_amount = financialStatementAnalysis.loadAmountsFromTransactions_years(group, descr, banDoc, budgetBalances);
+    Test.logger.addKeyValue(reportName, loaded_amount);
+}
+FSAnalysisTest.prototype.add_test_loadAmountsFromTransactions_years_2 = function(banDoc, reportName) {
+    var financialStatementAnalysis = new FinancialStatementAnalysis(banDoc);
+    var group = "140;150;160;170";
+    var descr = "#disinvesttt";
+    var budgetBalances = false;
+    //Loaded Elements
+    var loaded_amount = financialStatementAnalysis.loadAmountsFromTransactions_years(group, descr, banDoc, budgetBalances);
+    Test.logger.addKeyValue(reportName, loaded_amount);
+}
+FSAnalysisTest.prototype.add_test_loadAmountsFromTransactions_years_3 = function(banDoc, reportName) {
+    var financialStatementAnalysis = new FinancialStatementAnalysis(banDoc);
+    var group = "140;150;160;170";
+    var descr = "#disinvest";
+    var budgetBalances = true;
+    //Loaded Elements
+    var loaded_amount = financialStatementAnalysis.loadAmountsFromTransactions_years(group, descr, banDoc, budgetBalances);
+    Test.logger.addKeyValue(reportName, loaded_amount);
+}
+FSAnalysisTest.prototype.add_test_loadAmountsFromTransactions_years_4 = function(banDoc, reportName) {
+    var financialStatementAnalysis = new FinancialStatementAnalysis(banDoc);
+    var group = "100;110";
+    var descr = "#disinvest";
+    var budgetBalances = true;
+    //Loaded Elements
+    var loaded_amount = financialStatementAnalysis.loadAmountsFromTransactions_years(group, descr, banDoc, budgetBalances);
+    Test.logger.addKeyValue(reportName, loaded_amount);
+}
+
+//withdrawal of own capital
+
+FSAnalysisTest.prototype.add_test_loadAmountsFromTransactions_years_5 = function(banDoc, reportName) {
+    var financialStatementAnalysis = new FinancialStatementAnalysis(banDoc);
+    var group = "28";
+    var descr = "#capital_minus";
+    var budgetBalances = false;
+    //Loaded Elements
+    var loaded_amount = financialStatementAnalysis.loadAmountsFromTransactions_years(group, descr, banDoc, budgetBalances);
+    Test.logger.addKeyValue(reportName, loaded_amount);
+}
+FSAnalysisTest.prototype.add_test_loadAmountsFromTransactions_years_6 = function(banDoc, reportName) {
+    var financialStatementAnalysis = new FinancialStatementAnalysis(banDoc);
+    var group = "28";
+    var descr = "#capital_minusss";
+    var budgetBalances = false;
+    //Loaded Elements
+    var loaded_amount = financialStatementAnalysis.loadAmountsFromTransactions_years(group, descr, banDoc, budgetBalances);
+    Test.logger.addKeyValue(reportName, loaded_amount);
+}
+FSAnalysisTest.prototype.add_test_loadAmountsFromTransactions_years_7 = function(banDoc, reportName) {
+    var financialStatementAnalysis = new FinancialStatementAnalysis(banDoc);
+    var group = "28";
+    var descr = "#capital_minus";
+    var budgetBalances = true;
+    //Loaded Elements
+    var loaded_amount = financialStatementAnalysis.loadAmountsFromTransactions_years(group, descr, banDoc, budgetBalances);
+    Test.logger.addKeyValue(reportName, loaded_amount);
+}
+FSAnalysisTest.prototype.add_test_loadAmountsFromTransactions_years_8 = function(banDoc, reportName) {
+    var financialStatementAnalysis = new FinancialStatementAnalysis(banDoc);
+    var group = "100;110";
+    var descr = "#capital_minus";
+    var budgetBalances = true;
+    //Loaded Elements
+    var loaded_amount = financialStatementAnalysis.loadAmountsFromTransactions_years(group, descr, banDoc, budgetBalances);
+    Test.logger.addKeyValue(reportName, loaded_amount);
+}
+
+//calculation methods
+
+FSAnalysisTest.prototype.add_test_calculateCashflowIndex_1 = function(banDoc) {
+    var free_cashflow = "15000";
+    var investments = "2000";
+
+    Test.assert(false, "This test failed");
+
+
+
+}

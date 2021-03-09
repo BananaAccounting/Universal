@@ -1662,7 +1662,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var dialogparam = {};
         //accruals and deferred + Provisions and similar.
         dialogparam.accrualsanddeferredincome = {};
-        dialogparam.accrualsanddeferredincome.gr = "230;260";
+        dialogparam.accrualsanddeferredincome.gr = "230";
         dialogparam.accrualsanddeferredincome.description = texts.accrualsanddeferredincome;
         dialogparam.accrualsanddeferredincome.acronym = texts.accrualsanddeferredincome_acronym;
         dialogparam.accrualsanddeferredincome.bclass = "2";
@@ -2472,7 +2472,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
      */
     loadAmountsFromTransactions_years(group, descr, _banDocument, budgetBalances) {
 
-        let transactions_amounts = [];
+        let transactions_amounts = "";
         let grouplist = this.loadGroups();
 
         if (group === null || descr === null || !_banDocument) {
@@ -2618,8 +2618,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
     /**
      * Calculate the Net cashflow starting from the calculated Gross cashflow
-     * @param {*} grosscashflow : the gross cashflow
-     * @param {*} grosscashflow : the calculated withdrawalowncapital
+     * @param {*} grosscashflow : the gross cashflow (array)
+     * @param {*} amounts_in_transactions : the calculated withdrawalowncapital (array)
      */
     calculateNetCashflow(grosscashflow, amounts_in_transactions) {
 
@@ -2641,8 +2641,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
     /**
      * Calculate the Free Cashflow starting from the Netcashflow and taking as parameter also the investments.
-     * @param {*} investments the investments
-     * @param {*} netcashflow the net Cashflow
+     * @param {*} investments the investments (array)
+     * @param {*} netcashflow the net Cashflow (array)
      */
     calculateFreeCashflow(investments, netcashflow, amounts_in_transactions) {
 
@@ -2663,8 +2663,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
     /**
      * Calculate the Cashflow ratios.
-     * @param {*} freecashflow the free Cashflow
-     * @param {*} investments the investments
+     * @param {*} freecashflow the free Cashflow (array)
+     * @param {*} investments the investments (array)
      */
     calculateCashflowIndex(freecashflow, investments) {
 
@@ -3127,21 +3127,6 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         }
         convertedParam.data.push(currentParam);
 
-        //accruals and deferred + Provisions and similar
-        var currentParam = {};
-        currentParam.name = 'accr';
-        currentParam.group = 'accrualsanddeferredincome';
-        currentParam.title = defaultParam.cashflowgroups.accrualsanddeferredincome.description;
-        currentParam.type = 'string';
-        currentParam.value = userParam.cashflowgroups.accrualsanddeferredincome.gr ? userParam.cashflowgroups.accrualsanddeferredincome.gr : '';
-        currentParam.defaultvalue = defaultParam.cashflowgroups.accrualsanddeferredincome.gr;
-        currentParam.tooltip = texts.groups_tooltip;
-        currentParam.parentObject = 'Cashflow';
-        currentParam.readValue = function() {
-            userParam.cashflowgroups.accrualsanddeferredincome.gr = this.value;
-        }
-        convertedParam.data.push(currentParam);
-
         //Provisions and Similar
         var currentParam = {};
         currentParam.name = 'prov';
@@ -3154,6 +3139,21 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.parentObject = 'Cashflow';
         currentParam.readValue = function() {
             userParam.cashflowgroups.provisionsandsimilar.gr = this.value;
+        }
+        convertedParam.data.push(currentParam);
+
+        //accruals and deferred + Provisions and similar
+        var currentParam = {};
+        currentParam.name = 'accr';
+        currentParam.group = 'accrualsanddeferredincome';
+        currentParam.title = defaultParam.cashflowgroups.accrualsanddeferredincome.description;
+        currentParam.type = 'string';
+        currentParam.value = userParam.cashflowgroups.accrualsanddeferredincome.gr ? userParam.cashflowgroups.accrualsanddeferredincome.gr : '';
+        currentParam.defaultvalue = defaultParam.cashflowgroups.accrualsanddeferredincome.gr;
+        currentParam.tooltip = texts.groups_tooltip;
+        currentParam.parentObject = 'Cashflow';
+        currentParam.readValue = function() {
+            userParam.cashflowgroups.accrualsanddeferredincome.gr = this.value;
         }
         convertedParam.data.push(currentParam);
 
