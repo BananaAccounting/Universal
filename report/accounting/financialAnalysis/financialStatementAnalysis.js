@@ -327,6 +327,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             //same
             cell.addText(equal, "styleEqualArrow");
         }
+        return;
     }
 
     /**
@@ -886,9 +887,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             }
             //add the accrusal and  incomes (Delta)
             var tableRow = tableCashflow.addRow("styleTablRows");
-            tableRow.addCell("+/- Δ " + texts.accrualsanddeferredincome, "styleTablRows");
-            for (var i = this.data.cashflow.accrualsanddeferredincome.length - 1; i >= 0; i--) {
-                tableRow.addCell(this.toLocaleAmountFormat(this.data.cashflow.accrualsanddeferredincome[i]), "styleNormalAmount");
+            tableRow.addCell("+/- Δ " + texts.reserves, "styleTablRows");
+            for (var i = this.data.cashflow.reserves.length - 1; i >= 0; i--) {
+                tableRow.addCell(this.toLocaleAmountFormat(this.data.cashflow.reserves[i]), "styleNormalAmount");
             }
             //add the net CASHFLOW
             var tableRow = tableCashflow.addRow("styleTablRows");
@@ -1309,7 +1310,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         texts.ebitda_acronym = "EBIT-DA";
         texts.ebit_acronym = "EBIT";
         texts.ebt_acronym = "EBT";
-        texts.accrualsanddeferredincome_acronym = "accr";
+        texts.reserves_acronym = "accr";
         texts.withdrawalowncapital_acronym = "wown";
         texts.provisionsandsimilar_acronym = "prov";
         texts.disinvestments_acronym = "disi";
@@ -1353,7 +1354,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         texts.interests = qsTr("Interests");
         texts.directtaxes = qsTr("Direct taxes");
         texts.finalresult = qsTr("Final Result");
-        texts.accrualsanddeferredincome = qsTr("Accruals and Deferred income");
+        texts.reserves = qsTr("Reserves");
         texts.provisionsandsimilar = qsTr("Provisions and similar");
         texts.withdrawalowncapital = qsTr("Withdrawal of Own Capital");
         texts.disinvestments = qsTr("Disinvestments");
@@ -1377,7 +1378,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         texts.accountingtotal = qsTr("Accounting Total");
         texts.calculatedtotal = qsTr("Calculated Total");
         texts.difference = qsTr("Difference");
-        texts.uppercashflow = qsTr("CASH FLOW ANALYSIS (PRACTICAL METHOD)");
+        texts.uppercashflow = qsTr("CASH FLOW ANALYSIS (INDIRECT METHOD)");
         texts.upperliquidityratios = qsTr("LIQUIDITY RATIOS");
         texts.upperleverageratios = qsTr("LEVERAGE RATIOS");
         texts.upperprofitabilityratios = qsTr("PROFITABILITY RATIOS");
@@ -1661,11 +1662,11 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
     initDialogParam_Cashflow_groups(texts) {
         var dialogparam = {};
         //accruals and deferred + Provisions and similar.
-        dialogparam.accrualsanddeferredincome = {};
-        dialogparam.accrualsanddeferredincome.gr = "230";
-        dialogparam.accrualsanddeferredincome.description = texts.accrualsanddeferredincome;
-        dialogparam.accrualsanddeferredincome.acronym = texts.accrualsanddeferredincome_acronym;
-        dialogparam.accrualsanddeferredincome.bclass = "2";
+        dialogparam.reserves = {};
+        dialogparam.reserves.gr = "290;295;296";
+        dialogparam.reserves.description = texts.reserves;
+        dialogparam.reserves.acronym = texts.reserves;
+        dialogparam.reserves.bclass = "2";
         dialogparam.withdrawalowncapital = {};
         dialogparam.withdrawalowncapital.gr = "28";
         dialogparam.withdrawalowncapital.description = texts.withdrawalowncapital;
@@ -2086,11 +2087,11 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         /*******************************************************************************************************
          * Calculation of the EBIT
          *******************************************************************************************************/
-        calcdata.ebt = totce4;
+        calcdata.ebit = totce4;
         /*******************************************************************************************************
          * Calculation of the EBT
          *******************************************************************************************************/
-        calcdata.ebit = totce5;
+        calcdata.ebt = totce5;
 
         return calcdata;
     }
@@ -2457,9 +2458,6 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             //Banana.console.debug(amounts_in_transactions.withdrawalowncapital[j]);
         }
 
-        for (let i = this.data.length - 2; i >= 0; i--) {
-            Banana.console.debug(amounts_in_transactions.disinvestments[i]);
-        }
         return amounts_in_transactions;
 
     }
@@ -2524,7 +2522,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
      */
     calculateCashflowDelta() {
         this.data.cashflow = {};
-        this.data.cashflow.accrualsanddeferredincome = [];
+        this.data.cashflow.reserves = [];
         this.data.cashflow.fixedassets = [];
         let amounts_accruals_and_provisions = [];
         let amounts_provisions_and_similar = [];
@@ -2537,7 +2535,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
          * calculate the CashFlow deltas (accruals and provisions; fixed assets;Disinvestments;Own Capital)
          ***************************************************/
         for (let i = this.data.length - 1; i >= 0; i--) {
-            amounts_accruals_and_provisions.push(this.data[i].cashflowgroups.accrualsanddeferredincome.balance);
+            amounts_accruals_and_provisions.push(this.data[i].cashflowgroups.reserves.balance);
             amounts_fixedassets.push(this.data[i].balance.fa.fixedassets.balance);
             amounts_provisions_and_similar.push(this.data[i].cashflowgroups.provisionsandsimilar.balance);
         }
@@ -2556,7 +2554,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         }
 
         //insert the deltas in the object
-        this.data.cashflow.accrualsanddeferredincome = delta_accruals_and_provisions;
+        this.data.cashflow.reserves = delta_accruals_and_provisions;
         this.data.cashflow.provisionsandsimilar = delta_provisions_and_similar;
         this.data.cashflow.fixedassets = delta_fixedassets;
 
@@ -2629,7 +2627,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             for (let i = this.data.length - 2; i >= 0; i--) {
                 let element = grosscashflow[i];
                 element = Banana.SDecimal.subtract(element, amounts_in_transactions.withdrawalowncapital[i]);
-                element = Banana.SDecimal.add(element, this.data.cashflow.accrualsanddeferredincome[i]);
+                element = Banana.SDecimal.add(element, this.data.cashflow.reserves[i]);
 
                 netcashflow.unshift(element);
 
@@ -2705,7 +2703,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             netdebt = Banana.SDecimal.subtract(netdebt, this.data[i].balance.ca.credits.balance);
             index.cashflow_to_debt.amount.unshift(Banana.SDecimal.divide(netdebt, freecashflow[i], { 'decimals': this.dialogparam.numberofdecimals }));
         }
-        index.cashflow_to_debt.benchmark = ">66%";
+        index.cashflow_to_debt.benchmark = "<6%";
 
         /*******************************************************
          * Cashflow-to-Investments
@@ -2721,7 +2719,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             let calc = Banana.SDecimal.divide(freecashflow[i], investments[i]);
             index.cashflow_to_investments.amount.unshift(Banana.SDecimal.multiply(calc, 100, { 'decimals': this.dialogparam.numberofdecimals }));
         }
-        index.cashflow_to_investments.benchmark = "4%";
+        index.cashflow_to_investments.benchmark = "-";
 
 
         return index;
@@ -3145,15 +3143,15 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         //accruals and deferred + Provisions and similar
         var currentParam = {};
         currentParam.name = 'accr';
-        currentParam.group = 'accrualsanddeferredincome';
-        currentParam.title = defaultParam.cashflowgroups.accrualsanddeferredincome.description;
+        currentParam.group = 'reserves';
+        currentParam.title = defaultParam.cashflowgroups.reserves.description;
         currentParam.type = 'string';
-        currentParam.value = userParam.cashflowgroups.accrualsanddeferredincome.gr ? userParam.cashflowgroups.accrualsanddeferredincome.gr : '';
-        currentParam.defaultvalue = defaultParam.cashflowgroups.accrualsanddeferredincome.gr;
+        currentParam.value = userParam.cashflowgroups.reserves.gr ? userParam.cashflowgroups.reserves.gr : '';
+        currentParam.defaultvalue = defaultParam.cashflowgroups.reserves.gr;
         currentParam.tooltip = texts.groups_tooltip;
         currentParam.parentObject = 'Cashflow';
         currentParam.readValue = function() {
-            userParam.cashflowgroups.accrualsanddeferredincome.gr = this.value;
+            userParam.cashflowgroups.reserves.gr = this.value;
         }
         convertedParam.data.push(currentParam);
 
@@ -4352,8 +4350,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             if (!userParam.cashflowgroups) {
                 userParam.cashflowgroups = defaultParam.cashflowgroups;
             }
-            if (!userParam.cashflowgroups.accrualsanddeferredincome) {
-                userParam.cashflowgroups.accrualsanddeferredincome = defaultParam.cashflowgroups.accrualsanddeferredincome;
+            if (!userParam.cashflowgroups.reserves) {
+                userParam.cashflowgroups.reserves = defaultParam.cashflowgroups.reserves;
             }
             if (!userParam.cashflowgroups.withdrawalowncapital) {
                 userParam.cashflowgroups.withdrawalowncapital = userParam.cashflowgroups.withdrawalowncapital;

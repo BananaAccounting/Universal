@@ -88,7 +88,9 @@ FSAnalysisTest.prototype.cleanup = function() {
 
 }
 
-//confronta i dati caricati da loadData()
+/************************************************
+ * PRINT METHODS
+ ************************************************/
 FSAnalysisTest.prototype.testReport = function() {
     this.testLogger = Test.logger.newGroupLogger("testReport");
     this.testLogger.addKeyValue("FSAnalysisTest", "testReport");
@@ -122,8 +124,10 @@ FSAnalysisTest.prototype.testReport = function() {
     this.testLogger = Test.logger;
 }
 
-//Test calculation methods (indices and various elements of the financial statement analysis)
-FSAnalysisTest.prototype.testCalcMethods = function() {
+/************************************************
+ * CALCULATION TESTS METHODS
+ ************************************************/
+/*FSAnalysisTest.prototype.testCalcMethods = function() {
 
     var fileAC2 = "file:script/../test/testcases/Documentscontabilita_sa-sagl_partitario_fatturato 2020.ac2";
     var banDoc = Banana.application.openDocument(fileAC2);
@@ -133,12 +137,14 @@ FSAnalysisTest.prototype.testCalcMethods = function() {
 
     Test.logger.addSection("Test: Financial Statement Analysis Calculation Methods : " + fileAC2);
 
-    Test.logger.addSubSection("Method: calculateCashflowIndex");
-    this.add_test_calculateCashflowIndex_1(banDoc);
+    Test.logger.addSubSection("Method: calculateGrossCashFlow");
+    this.add_test_calculateGrossCashFlow1(banDoc);
 
-}
+}*/
 
-//check methods that load values from the BanDocument.
+/************************************************
+ * LOAD VALUES TESTS METHODS
+ ************************************************/
 
 FSAnalysisTest.prototype.testLoadingMethods = function() {
 
@@ -169,6 +175,30 @@ FSAnalysisTest.prototype.testLoadingMethods = function() {
 
 
 }
+
+/************************************************
+ * OTHER TEST METHODS
+ ************************************************/
+//Tests some other methods
+FSAnalysisTest.prototype.testOtherMethods = function() {
+
+    var fileAC2 = "file:script/../test/testcases/Documentscontabilita_sa-sagl_partitario_fatturato 2020.ac2";
+    var banDoc = Banana.application.openDocument(fileAC2);
+    if (!banDoc) {
+        return;
+    }
+
+    Test.logger.addSection("Test: Financial Statement Analysis various Methods : " + fileAC2);
+
+    Test.logger.addSubSection("Method: setIndexEvolution");
+    this.add_test_setIndexEvolution_1(banDoc);
+
+}
+
+
+/************************************************
+ * LOAD VALUES (SUB) METHODS
+ ************************************************/
 
 //disinvestments
 FSAnalysisTest.prototype.add_test_loadAmountsFromTransactions_years_1 = function(banDoc, reportName) {
@@ -247,14 +277,25 @@ FSAnalysisTest.prototype.add_test_loadAmountsFromTransactions_years_8 = function
     Test.logger.addKeyValue(reportName, loaded_amount);
 }
 
-//calculation methods
-
-FSAnalysisTest.prototype.add_test_calculateCashflowIndex_1 = function(banDoc) {
-    var free_cashflow = "15000";
-    var investments = "2000";
-
-    Test.assert(false, "This test failed");
+/************************************************
+ * CALCULATION (SUB)METHODS
+ ************************************************/
 
 
 
+/************************************************
+ * OTHER (SUB)METHODS
+ ************************************************/
+
+//Ratios evolution
+FSAnalysisTest.prototype.add_test_setIndexEvolution_1 = function(banDoc) {
+    let financialStatementAnalysis = new FinancialStatementAnalysis(banDoc);
+    let indexT1 = "89.10";
+    let indexT2 = "89.20";
+    let report = Banana.Report.newReport('Test Ratios Evo');
+    let table = report.addTable('myTableTestRatiosEvo')
+    let row = table.addRow();
+    let cell = row.addCell();
+    financialStatementAnalysis.setIndexEvolution(indexT1, indexT2, cell);
+    Test.logger.addReport("symbol", report);
 }
