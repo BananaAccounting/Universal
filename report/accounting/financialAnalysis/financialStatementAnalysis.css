@@ -1,268 +1,271 @@
-/***************************************************
+    /***************************************************
 style for the Report sections/principal objects
 ***************************************************/
-
-@page {
-    margin-top: 10mm;
-    margin-bottom: 10mm;
-    margin-left: 10mm;
-    margin-right: 10mm;
-}
-
-body {
-    font-size: 9pt;
-}
-
-table {
-    font-size: 9pt;
-    margin-bottom: 10px;
-    width: 100%;
-}
-
-.header_text {
-    font-size: 9pt;
-    padding: 0;
-    margin: 0;
-}
-
-.header_row_company_name {
-    font-weight: bold;
-    font-size: 12pt;
-}
-
-.header_row_address {
-    font-size: 10pt;
-}
-
-
-/***************************************************
+    
+    @page {
+        margin-top: 10mm;
+        margin-bottom: 10mm;
+        margin-left: 10mm;
+        margin-right: 10mm;
+    }
+    
+    body {
+        font-size: 9pt;
+    }
+    
+    table {
+        font-size: 9pt;
+        margin-bottom: 10px;
+        width: 100%;
+    }
+    
+    .header_text {
+        font-size: 9pt;
+        padding: 0;
+        margin: 0;
+    }
+    
+    .header_row_company_name {
+        font-weight: bold;
+        font-size: 12pt;
+    }
+    
+    .header_row_address {
+        font-size: 10pt;
+    }
+    /***************************************************
 style for the tables
 ****************************************************/
-
-table.myTableCompanyInfo td {
-    border-style: solid;
-    border-color: rgb(0, 0, 0);
-    width: auto;
-    padding-top: 1px;
-    padding-bottom: 1px;
-}
-
-table.myTableUsedSetting td {
-    border-style: solid;
-    border-color: rgb(0, 0, 0);
-    width: auto;
-    padding-top: 1px;
-    padding-bottom: 1px;
-}
-
-table.myTableBalance td {
-    border-style: solid;
-    border-color: rgb(0, 0, 0);
-    width: auto;
-    padding-top: 1px;
-    padding-bottom: 1px;
-}
-
-table.myTableBalanceSumsControl td {
-    border-style: solid;
-    border-color: rgb(0, 0, 0);
-    width: auto;
-    padding-top: 1px;
-    padding-bottom: 1px;
-}
-
-table.myConTableCe td {
-    border-style: solid;
-    border-color: rgb(0, 0, 0);
-    width: auto;
-    padding-top: 1px;
-    padding-bottom: 1px;
-}
-
-table.mytableConCeSumsControl td {
-    border-style: solid;
-    border-color: rgb(0, 0, 0);
-    width: auto;
-    padding-top: 1px;
-    padding-bottom: 1px;
-}
-
-table.myIndliqTable td {
-    border-style: solid;
-    width: auto;
-    border-color: rgb(0, 0, 0);
-    padding-top: 1px;
-    padding-bottom: 1px;
-}
-
-table.myIndlevTable td {
-    border-style: solid;
-    border-color: rgb(0, 0, 0);
-    width: auto;
-    padding-top: 1px;
-    padding-bottom: 1px;
-}
-
-table.myIndprofTable td {
-    border-style: solid;
-    border-color: rgb(0, 0, 0);
-    width: auto;
-    padding-top: 1px;
-    padding-bottom: 1px;
-}
-
-table.myIndeffTable td {
-    border-style: solid;
-    border-color: rgb(0, 0, 0);
-    width: auto;
-    padding-top: 1px;
-    padding-bottom: 1px;
-}
-
-table.myTableCashflow td {
-    border-style: solid;
-    border-color: rgb(0, 0, 0);
-    width: auto;
-    padding-top: 1px;
-    padding-bottom: 1px;
-}
-
-table.myIndCashflowTable td {
-    border-style: solid;
-    border-color: rgb(0, 0, 0);
-    width: auto;
-    padding-top: 1px;
-    padding-bottom: 1px;
-}
-
-table.myDupontTable td {
-    border-style: solid;
-    border-color: rgb(0, 0, 0);
-    width: auto;
-    padding-top: 1px;
-    padding-bottom: 1px;
-}
-
-table.myTableAltmanIndex td {
-    border-style: solid;
-    border-color: rgb(0, 0, 0);
-    width: auto;
-    padding-top: 1px;
-    padding-bottom: 1px;
-}
-
-
-/**********************************************************
+    
+    table.myTableCompanyInfo td {
+        border-style: solid;
+        border-color: rgb(0, 0, 0);
+        width: auto;
+        padding-top: 1px;
+        padding-bottom: 1px;
+    }
+    
+    table.myTableUsedSetting td {
+        border-style: solid;
+        border-color: rgb(0, 0, 0);
+        width: auto;
+        padding-top: 1px;
+        padding-bottom: 1px;
+    }
+    
+    table.myTableBalance td {
+        border-style: solid;
+        border-color: rgb(0, 0, 0);
+        width: auto;
+        padding-top: 1px;
+        padding-bottom: 1px;
+    }
+    
+    table.myTableBalanceSumsControl td {
+        border-style: solid;
+        border-color: rgb(0, 0, 0);
+        width: auto;
+        padding-top: 1px;
+        padding-bottom: 1px;
+    }
+    
+    table.myConTableCe td {
+        border-style: solid;
+        border-color: rgb(0, 0, 0);
+        width: auto;
+        padding-top: 1px;
+        padding-bottom: 1px;
+    }
+    
+    table.mytableConCeSumsControl td {
+        border-style: solid;
+        border-color: rgb(0, 0, 0);
+        width: auto;
+        padding-top: 1px;
+        padding-bottom: 1px;
+    }
+    
+    table.myIndliqTable td {
+        border-style: solid;
+        width: auto;
+        border-color: rgb(0, 0, 0);
+        padding-top: 1px;
+        padding-bottom: 1px;
+    }
+    
+    table.myIndlevTable td {
+        border-style: solid;
+        border-color: rgb(0, 0, 0);
+        width: auto;
+        padding-top: 1px;
+        padding-bottom: 1px;
+    }
+    
+    table.myIndprofTable td {
+        border-style: solid;
+        border-color: rgb(0, 0, 0);
+        width: auto;
+        padding-top: 1px;
+        padding-bottom: 1px;
+    }
+    
+    table.myIndeffTable td {
+        border-style: solid;
+        border-color: rgb(0, 0, 0);
+        width: auto;
+        padding-top: 1px;
+        padding-bottom: 1px;
+    }
+    
+    table.myTableCashflow td {
+        border-style: solid;
+        border-color: rgb(0, 0, 0);
+        width: auto;
+        padding-top: 1px;
+        padding-bottom: 1px;
+    }
+    
+    table.myIndCashflowTable td {
+        border-style: solid;
+        border-color: rgb(0, 0, 0);
+        width: auto;
+        padding-top: 1px;
+        padding-bottom: 1px;
+    }
+    
+    table.myDupontTable td {
+        border-style: solid;
+        border-color: rgb(0, 0, 0);
+        width: auto;
+        padding-top: 1px;
+        padding-bottom: 1px;
+    }
+    
+    table.myTableAltmanIndex td {
+        border-style: solid;
+        border-color: rgb(0, 0, 0);
+        width: auto;
+        padding-top: 1px;
+        padding-bottom: 1px;
+    }
+    /**********************************************************
 style's for the amounts
 **********************************************************/
-
-.styleNormalAmount {
-    text-align: right;
-}
-
-
-/*style for the middle totals*/
-
-.styleMidTotalAmount {
-    text-align: right;
-    font-weight: bold;
-}
-
-.styleTotalAmount {
-    background-color: #e5f2ff;
-    font-weight: bold;
-    text-align: right;
-}
-
-
-/*those 3 style's are for the Altman z Score Index values*/
-
-.styleZIndexLow {
-    background-color: #71FA4C;
-    text-align: center;
-}
-
-.styleZIndexMid {
-    background-color: #FFFD54;
-    text-align: center;
-}
-
-.styleZIndexProb {
-    background-color: #EC3323;
-    text-align: center;
-}
-
-
-/*style for the amount when the difference between calculated total and the accounting total is>than 0*/
-
-.styleDifferenceFoundAmount {
-    color: #EC3323;
-    text-align: right;
-}
-
-
-/*******************************************************
+    
+    .styleNormalAmount {
+        text-align: right;
+    }
+    /*style for the middle totals*/
+    
+    .styleMidTotalAmount {
+        text-align: right;
+        font-weight: bold;
+    }
+    
+    .styleTotalAmount {
+        background-color: #e5f2ff;
+        font-weight: bold;
+        text-align: right;
+    }
+    
+    .styleFinalCashFlow {
+        background-color: #99b0ee;
+        font-weight: bold;
+        text-align: right;
+    }
+    /*those 3 style's are for the Altman z Score Index values*/
+    
+    .styleZIndexLow {
+        background-color: #71FA4C;
+        text-align: center;
+    }
+    
+    .styleZIndexMid {
+        background-color: #FFFD54;
+        text-align: center;
+    }
+    
+    .styleZIndexProb {
+        background-color: #EC3323;
+        text-align: center;
+    }
+    /*style for the amount when the difference between calculated total and the accounting total is>than 0*/
+    
+    .styleDifferenceFoundAmount {
+        color: #EC3323;
+        text-align: right;
+    }
+    /*******************************************************
 style's for the texts
 ********************************************************/
-
-.styleTitles {
-    font-weight: bold;
-    color: #354793;
-    font-size: 11pt;
-    padding-top: 5px;
-    padding-bottom: 5px;
-}
-
-.styleTablesHeaderText {
-    color: $headers_texts_color;
-    background-color: $headers_background_color;
-    font-weight: bold;
-    text-align: center;
-}
-
-.styleCentralText {
-    text-align: center;
-}
-
-
-/*style for the titles of total amounts*/
-
-.styleTitlesTotalAmount {
-    font-weight: bold;
-}
-
-.styleParagraphs {
-    text-align: left;
-    font-style: italic;
-}
-
-
-/*style for the 'difference founds' warning*/
-
-.styleWarningParagraph {
-    color: #EC3323;
-    text-align: left;
-    font-size: 9pt;
-    padding-top: 5px;
-}
-
-.styleUpArrow {
-    text-align: right;
-    color: green;
-    font-size: 12px;
-    margin: 0px;
-}
-
-.styleDownArrow {
-    text-align: right;
-    color: #EC3323;
-    font-size: 12px;
-    margin: 0px;
-}
-
-.styleEqualArrow {
-    text-align: right;
-    color: orange;
-    font-size: 12px;
-    margin: 0px;
-}
+    
+    .styleTitles {
+        font-weight: bold;
+        color: #354793;
+        font-size: 11pt;
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
+    
+    .styleTablesHeaderText {
+        color: $headers_texts_color;
+        background-color: $headers_background_color;
+        font-weight: bold;
+        text-align: center;
+    }
+    
+    .styleCentralText {
+        text-align: center;
+    }
+    /*style for the titles of total amounts*/
+    
+    .styleTitlesTotalAmount {
+        font-weight: bold;
+    }
+    
+    .styleParagraphs {
+        text-align: left;
+        font-style: italic;
+    }
+    /*style for the Cashflow sections*/
+    
+    .styleAssetsAdjustments {
+        text-align: left;
+        font-style: italic;
+        background-color: #9cee99;
+    }
+    
+    .styleLiabilitiesAdjustments {
+        text-align: left;
+        font-style: italic;
+        background-color: #eec699;
+    }
+    /*style for the 'difference founds' warning*/
+    
+    .styleWarningParagraph {
+        color: #EC3323;
+        text-align: left;
+        font-size: 9pt;
+        padding-top: 5px;
+    }
+    
+    .styleUpArrow {
+        text-align: right;
+        color: green;
+        font-size: 12px;
+        margin: 0px;
+    }
+    
+    .styleDownArrow {
+        text-align: right;
+        color: #EC3323;
+        font-size: 12px;
+        margin: 0px;
+    }
+    
+    .styleEqualArrow {
+        text-align: right;
+        color: orange;
+        font-size: 12px;
+        margin: 0px;
+    }
