@@ -231,14 +231,14 @@ style's for the texts
     
     .styleAssetsAdjustments {
         text-align: left;
-        font-style: italic;
-        background-color: #9cee99;
+        font-weight: bold;
+        background-color: #c4f0c3;
     }
     
     .styleLiabilitiesAdjustments {
         text-align: left;
-        font-style: italic;
-        background-color: #eec699;
+        font-weight: bold;
+        background-color: #eeccbc;
     }
     /*style for the 'difference founds' warning*/
     
