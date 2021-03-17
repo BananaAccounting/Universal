@@ -22,14 +22,14 @@ BasePage {
       }
       financialStatementAnalysis.loadData();
 
-      var LeverageChart=qsTr(" Leverage index variation");
-      var LiquidityChart=qsTr(" Liquidity index variation");
-      var ProfitabilityChart=qsTr(" Profitability index variation");
-      var EfficiencyChart=qsTr(" Efficiency index variation");
-      var CashflowratiosChart=qsTr(" Cashflow index variation");
-      var ReclassifiedAssetsVariationChart=qsTr(" Reclassified Assets variation");
-      var ReclassifiedLiabilitiesAndEquityVariationChart=qsTr(" Reclassified liabilities and equity variation");
-      var ReclassifiedProfitAndLossVariation=qsTr(" Reclassified Profit and Loss variation");
+      var LeverageChart=qsTr(" Leverage ratios");
+      var LiquidityChart=qsTr(" Liquidity ratios");
+      var ProfitabilityChart=qsTr(" Profitability ratios");
+      var EfficiencyChart=qsTr(" Efficiency ratios");
+      var CashflowratiosChart=qsTr(" Cashflow ratios");
+      var ReclassifiedAssetsVariationChart=qsTr(" Reclassified assets ");
+      var ReclassifiedLiabilitiesAndEquityVariationChart=qsTr(" Reclassified liabilities and equity");
+      var ReclassifiedProfitAndLossVariation=qsTr(" Reclassified profit and loss");
 
       pageModel.clear();
 
@@ -38,8 +38,7 @@ BasePage {
       pageModel.append({'title': ProfitabilityChart,'page': 'chartProf.qml'});
       if(financialStatementAnalysis.data[0].numberofemployees > 0)
          pageModel.append({'title': EfficiencyChart,'page': 'chartEff.qml'});
-      if(financialStatementAnalysis.data[0].maxpreviousyears > 0 || financialStatementAnalysis.data[0].includebudgettable)
-         pageModel.append({'title': CashflowratiosChart,'page': 'chartCashRatios.qml'});
+      pageModel.append({'title': CashflowratiosChart,'page': 'chartCashRatios.qml'});
       pageModel.append({'title': ReclassifiedAssetsVariationChart,'page': 'chartRAtt.qml'});
       pageModel.append({'title': ReclassifiedLiabilitiesAndEquityVariationChart,'page': 'chartRPass.qml'});
       pageModel.append({'title': ReclassifiedProfitAndLossVariation,'page': 'chartRProLos.qml'});

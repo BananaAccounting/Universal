@@ -41,7 +41,7 @@ ChartView {
 
    chartData: {
       'labels' : [
-           qsTr("Cashlow Margin"),qsTr("Cashflow to debt ratio"),qsTr("Cashflow to investments")
+           qsTr("Cashlow margin"),qsTr("Cashflow to debt"),qsTr("Cashflow to investments")
       ],
        'datasets' : [
        ]
@@ -67,7 +67,7 @@ ChartView {
                }
             },
             'label' : function(item, data){
-               return Banana.Converter.toLocaleNumberFormat(item.yLabel);
+                return Banana.Converter.toLocaleNumberFormat(item.yLabel) + '%';
             }
          }
       },
@@ -75,11 +75,11 @@ ChartView {
          'yAxes': [{
                'ticks': {
                callback: function (value) {
-               return value;
+               return value+"%";
                },
-                  'beginAtZero' : true
+                  'beginAtZero' : true,
                }
-         }]
+            }]
       },
       'barValueSpacing': 20,
    }

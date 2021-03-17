@@ -67,7 +67,7 @@ ChartView {
                }
             },
             'label' : function(item, data){
-               return Banana.Converter.toLocaleNumberFormat(item.yLabel) + '%';;
+               return Banana.Converter.toLocaleNumberFormat(item.yLabel) + '%';
             }
          }
       },

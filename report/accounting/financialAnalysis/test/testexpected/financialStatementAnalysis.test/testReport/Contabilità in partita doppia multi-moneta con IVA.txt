@@ -47,6 +47,8 @@ PROFIT AND LOSS Description  & Acronym  & 2020  & Budget \\
 - Depreciations and adjustments  & amre  & 0.00  & 0.00 \\
 = EBIT  & EBIT  & 12'220.00  & 0.00 \\
 +/- Interests  & inte  & 0.00  & 0.00 \\
+= EBT  & EBT  & 12'220.00  & 0.00 \\
+- Direct taxes  & dita  & 0.00  & 0.00 \\
 Annual result  & fire  & 12'220.00  & 0.00 \\
 \end{longtable}
 \begin{longtable}[l]{ l  l  l  l }
@@ -64,28 +66,28 @@ CONTROL SUMS Year  & Accounting Total  & Calculated Total  & Difference \\
 Warning: The difference between the 'Accounting total' and the 'Calculated total' columns should be 0.\P  Check that the groups used are correct. \\
 \begin{longtable}[l]{ l  l  l  l  l }
 LIQUIDITY RATIOS Description  & formula  & Benchmark  & 2020  & Budget \\
-Cash ratio  & liqu / stdc  & 10\%-35\%  & -313.80\%   & \%  ↑ \\
-Quick ratio  & (liqu + cred) / stdc  & 100\%  & 848.00\%   & 0\%  ↓ \\
-Current ratio  & cuas / stdc  & 150\%  & 851.85\%   & \%  ↓ \\
+Cash ratio  & liqu / stdc  & 10\%-35\%  & -313.80\%   & 0.00\%  ↑ \\
+Quick ratio  & (liqu + cred) / stdc  & 100\%  & 847.81\%   & 0.00\%  ↓ \\
+Current ratio  & cuas / stdc  & 150\%  & 851.85\%   & 0.00\%  ↓ \\
 Net Current Assets  & cuas-stdc  & >0  & 22'330.00   & 110.00  ↓ \\
 \end{longtable}
 \begin{longtable}[l]{ l  l  l  l  l }
 LEVERAGE RATIOS Description  & formula  & Benchmark  & 2020  & Budget \\
 Degree of Circulating Assets  & cuas / tota  & 60\%  & 104.12\%   & 100.00\%  ↓ \\
 Percentage Fixed Assets  & fixa / tota  & 40\%  & -4.12\%   & 0.00\%  ↑ \\
-Debt ratio  & (stdc+ltdc) / totp  & 40\%-70\%  & 49.48\%   & \%  ↓ \\
-Equity ratio  & owca / totp  & 30\%-60\%  & 50.52\%   & \%  ↓ \\
-Self financing ratio  & reut / owca  & 33,3\%  & 100.00\%   & \%  ↓ \\
+Debt ratio  & (stdc+ltdc) / totp  & 40\%-70\%  & 49.48\%   & 0.00\%  ↓ \\
+Equity ratio  & owca / totp  & 30\%-60\%  & 50.52\%   & 0.00\%  ↓ \\
+Self financing ratio  & reut / owca  & 33,3\%  & 100.00\%   & 0.00\%  ↓ \\
 Fixed Assets Coverage  & (owca + ltdc) / tota  & >100\%  & 87.33\%   & 0.00\%  ↓ \\
 \end{longtable}
 \begin{longtable}[l]{ l  l  l  l  l }
 PROFITABILITY RATIOS Description  & formula  & Benchmark  & 2020  & Budget \\
-ROE  & profit / owca  & 8\%-14\%  & 100.00\%   & \%  ↓ \\
+ROE  & profit / owca  & 8\%-14\%  & 100.00\%   & 0.00\%  ↓ \\
 ROI  & EBIT / tota    & 10\%  & 50.29\%   & 0.00\%  ↓ \\
-ROS  & EBIT / satu  & >0  & 54.31\%   & \%  ↓ \\
-MOL  & gross profit / satu  & 40\%  & 54.31\%   & \%  ↓ \\
-EBIT margin  & EBIT / satu  & 2.4\%  & 54.31\%   & \%  ↓ \\
-Profit margin  & net profit / satu  & 1.4\%  & 54.31\%   & \%  ↓ \\
+ROS  & EBIT / satu  & >0  & 54.31\%   & 0.00\%  ↓ \\
+MOL  & gross profit / satu  & 40\%  & 54.31\%   & 0.00\%  ↓ \\
+EBIT margin  & EBIT / satu  & 2.4\%  & 54.31\%   & 0.00\%  ↓ \\
+Profit margin  & net profit / satu  & 1.4\%  & 54.31\%   & 0.00\%  ↓ \\
 \end{longtable}
 \begin{longtable}[l]{ l  l  l  l  l }
 EFFICIENCY RATIOS Description  & formula  & Benchmark  & 2020  & Budget \\
@@ -93,25 +95,36 @@ Revenue per Employee  & satu/employees  & >0  & 22'500.00  & 0.00 \\
 Added Value per Employee  & adva/employees  & >0  & 12'220.00  & 0.00 \\
 Personnel Cost per Employee  & cope/employees  & >0  & 0.00  & 0.00 \\
 \end{longtable}
-\begin{longtable}[l]{ l  l }
-CASH FLOW ANALYSIS (PRACTICAL METHOD) Description  & Budget \\
-Annual result  & 0.00 \\
-+ Depreciations and adjustments  & 0.00 \\
-+/- Δ Accruals and Deferred income  & 0.00 \\
-Gross-Cashflow  & 0.00  \\
--Interests  & 0.00 \\
--Withdrawal of Own Capital  & 0.00 \\
-+/- Δ Provisions and similar  & 0.00 \\
-Net-Cashflow  & 0.00  \\
-+ Δ Disinvestments  & 1'000.00 \\
--Investments  & 2'000.00 \\
-Free-Cashflow  & -1'000.00  \\
+\begin{longtable}[l]{ l  l  l }
+CASH FLOW ANALYSIS (INDIRECT METHOD) Description  & 2020  & Budget \\
+Final Result  & 8'220.00  & 0.00 \\
++ Depreciations and adjustments  & 0.00  & 0.00 \\
++/- (+)Creation and (-)release of provisions  & 0.00  & 0.00 \\
+\multicolumn{3}{l}{Adjustment with assets accounts  }\\
++/- (+)Decrease or (-)increase of credits  & -34'500.00  & 0.00 \\
++/- (+)Decrease or (-)increase of stocks  & -120.00  & 0.00 \\
++/- (+)Decrease or (-)increase of prepaid expenses  & -120.00  & 0.00 \\
+\multicolumn{3}{l}{Adjustment with liabilities accounts  }\\
++/- (+)Increase or (-)decrease of liabilities  & 2'970.00  & 0.00 \\
++/- (+)Increase or (-)decrease of accruals and deferred income  & 0.00  & 0.00 \\
+= Cashflow from operations (A)  & -23'430.00  & 0.00 \\
+- Investments  & 1'000.00  & 0.00 \\
++ Disinvestments  &  & \\
+= Cashflow from investing (B)  & -1'000.00  & 0.00 \\
+Third parties capital (+)increases or (-)repayments  & 9'000.00  & 0.00 \\
+Own capital (+)increases or (-)reductions   & 0.00  & 0.00 \\
+=Cashflow from financing (C)  & 9'000.00  & 0.00 \\
+Increase/decrease in liquidity (A+B+C)  & -15'430.00  & 0.00 \\
+Cash at the beginning of the period  & 110.00  & 110.00 \\
+Cash at the end of the period  & -9'320.00  & 110.00 \\
+Difference  & -9'430.00  & 0.00 \\
 \end{longtable}
-\begin{longtable}[l]{ l  l  l  l }
-CASH FLOW RATIOS Description  & formula  & Benchmark  & Budget \\
-Cashflow Margin  & cashflow/satu  & 3\%-5\%  & \%  \\
-Cashflow to Debt  & netdebt/cashflow  & >66\%  & 0.11\%  \\
-Cashflow to Investments  & cashflow/inve  & 4\%  & -50.00\%  \\
+Warning: The difference between the 'Increase/decrease in Liquidity' and the 'Cash difference' amounts should be 0.\P  Check that the groups used are correct. \\
+\begin{longtable}[l]{ l  l  l  l  l }
+CASH FLOW RATIOS Description  & formula  & Benchmark  & 2020  & Budget \\
+Cashflow Margin  & cashflow/satu  & 3\%-5\%  & -68.58\%   & 0.00\%  ↑ \\
+Cashflow to Debt  & netdebt/cashflow  & <6\%  & 0.86\%   & \%  ↓ \\
+Cashflow to Investments  & cashflow/inve  & -  & -1543.00\%   & 0.00\%  ↑ \\
 \end{longtable}
 \begin{longtable}[l]{ l  l  l }
 DUPONT ANALYSIS  Description  & 2020  & Budget \\
@@ -136,6 +149,6 @@ ALTMAN INDEX Z-SCORE 2020  & Budget \\
 for values > than 3 correspond a low probability of a financial crisis \\
 for values >= than 1.8 but <= than 3 there are possibilities of a financial crisis, should be kept under control \\
 for values < than 1.8 there is a strong probability of a financial crisis \\
-\excltest{03.03.2021} \\
+\excltest{17.03.2021} \\
 \end{reportvalue}
 \end{document}

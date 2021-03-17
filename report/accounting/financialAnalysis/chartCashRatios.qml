@@ -23,9 +23,10 @@ BasePage {
             Layout.fillHeight: true
 
             Text {
-               text: qsTr("Cashflow index variation")
+               text: qsTr("Evolution of Cashflow ratios")
                font.pixelSize: Stylesheet.titleFontSize
                Layout.bottomMargin: Stylesheet.defaultMargin
+               Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
             }
 
             StyledChartCashRatio {
@@ -49,20 +50,12 @@ BasePage {
                      financialStatementAnalysis.setParam(param);
                   }
                   financialStatementAnalysis.loadData();
-                  financialStatementAnalysis.calculateCashflowDelta();
-                  var transactions_amounts=financialStatementAnalysis.loadAmountsFromTransactions();
-                  var cashflow_investments=financialStatementAnalysis.calculateCashflowInvestments(transactions_amounts);
-                  var gross_casshflow=financialStatementAnalysis.calculateGrossCashflow();
-                  var net_casshflow=financialStatementAnalysis.calculateNetCashflow(gross_casshflow,transactions_amounts);
-                  var free_casshflow=financialStatementAnalysis.calculateFreeCashflow(cashflow_investments, net_casshflow,transactions_amounts);
-                  var cashflow_index=financialStatementAnalysis.calculateCashflowIndex(free_casshflow,cashflow_investments);
                   var yearList = [];
                   var data = {};
                   data.cashflow_margin = {};
                   data.cashflow_to_debt = {};
                   data.cashflow_to_investments = {};
-
-                  for (var i = financialStatementAnalysis.data.length - 2; i >= 0; i--) {
+                  for (var i = financialStatementAnalysis.data.length - 1; i >= 0; i--) {
                      var periodo = financialStatementAnalysis.data[i].period.StartDate;
                      //for dont cut the Budget string in Budg.
                      var elementType = financialStatementAnalysis.data[i].period.Type;
@@ -72,9 +65,9 @@ BasePage {
                      var year= periodo;
                      if (year.length>0 && yearList.indexOf(year)<0)
                         yearList.push(year);
-                        data.cashflow_margin[year] = cashflow_index.cashflow_margin.amount[i];
-                        data.cashflow_to_debt[year] = cashflow_index.cashflow_to_debt.amount[i];
-                        data.cashflow_to_investments[year] = cashflow_index.cashflow_to_investments.amount[i];
+                     data.cashflow_margin[year] = financialStatementAnalysis.data[i].cashflow_index.cashflow_margin.amount;
+                     data.cashflow_to_debt[year] = financialStatementAnalysis.data[i].cashflow_index.cashflow_to_debt.amount;
+                     data.cashflow_to_investments[year] = financialStatementAnalysis.data[i].cashflow_index.cashflow_to_investments.amount;
                   }
                   for (var i = 0; i < yearList.length; i++) {
                      var year = yearList[i];
