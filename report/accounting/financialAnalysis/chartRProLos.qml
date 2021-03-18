@@ -26,6 +26,7 @@ BasePage {
                text: qsTr("Reclassified Profit and Loss")
                font.pixelSize: Stylesheet.titleFontSize
                Layout.bottomMargin: Stylesheet.defaultMargin
+               Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
             }
 
             StyledChartRProLos {
@@ -65,10 +66,10 @@ BasePage {
                      var year= periodo;
                      if (year.length>0 && yearList.indexOf(year)<0)
                         yearList.push(year);
-                     data.adva[year] = financialStatementAnalysis.data[i].CalculatedData.addedvalue;
-                     data.ebitda[year] = financialStatementAnalysis.data[i].CalculatedData.ebitda;
-                     data.ebit[year] = financialStatementAnalysis.data[i].CalculatedData.ebit;
-                     data.tota[year] = financialStatementAnalysis.data[i].CalculatedData.annualresult;
+                     data.adva[year] = financialStatementAnalysis.data[i].calculated_data.addedvalue;
+                     data.ebitda[year] = financialStatementAnalysis.data[i].calculated_data.ebitda;
+                     data.ebit[year] = financialStatementAnalysis.data[i].calculated_data.ebit;
+                     data.tota[year] = financialStatementAnalysis.data[i].calculated_data.annualresult;
                   }
                   for (var i = 0; i < yearList.length; i++) {
                      var year = yearList[i];

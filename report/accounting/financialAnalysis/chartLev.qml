@@ -23,9 +23,10 @@ BasePage {
             Layout.fillHeight: true
 
             Text {
-               text: qsTr("Leverage index variation")
+               text: qsTr("Evolution of leverage ratios")
                font.pixelSize: Stylesheet.titleFontSize
                Layout.bottomMargin: Stylesheet.defaultMargin
+               Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
             }
 
             StyledChartLev {
