@@ -53,7 +53,9 @@ BasePage {
                   var yearList = [];
                   var data = {};
                   data.cashflow_margin = {};
-                  data.cashflow_to_debt = {};
+                  data.cashflow_asset_efficiency = {};
+                  data.cashflow_current_liabilities = {};
+                  data.cashflow_liabilities = {};
                   data.cashflow_to_investments = {};
                   for (var i = financialStatementAnalysis.data.length - 1; i >= 0; i--) {
                      var periodo = financialStatementAnalysis.data[i].period.StartDate;
@@ -66,7 +68,9 @@ BasePage {
                      if (year.length>0 && yearList.indexOf(year)<0)
                         yearList.push(year);
                      data.cashflow_margin[year] = financialStatementAnalysis.data[i].cashflow_index.cashflow_margin.amount;
-                     data.cashflow_to_debt[year] = financialStatementAnalysis.data[i].cashflow_index.cashflow_to_debt.amount;
+                     data.cashflow_asset_efficiency [year] = financialStatementAnalysis.data[i].cashflow_index.cashflow_asset_efficiency.amount;
+                     data.cashflow_current_liabilities[year] = financialStatementAnalysis.data[i].cashflow_index.cashflow_current_liabilities.amount;
+                     data.cashflow_liabilities[year] = financialStatementAnalysis.data[i].cashflow_index.cashflow_liabilities.amount;
                      data.cashflow_to_investments[year] = financialStatementAnalysis.data[i].cashflow_index.cashflow_to_investments.amount;
                   }
                   for (var i = 0; i < yearList.length; i++) {
@@ -79,7 +83,9 @@ BasePage {
                      chartData.datasets[i].backgroundColor = defaultColor;
                      chartData.datasets[i].data = [];
                      chartData.datasets[i].data.push(data.cashflow_margin[year]);
-                     chartData.datasets[i].data.push(data.cashflow_to_debt[year]);
+                     chartData.datasets[i].data.push(data.cashflow_asset_efficiency [year]);
+                     chartData.datasets[i].data.push(data.cashflow_current_liabilities[year]);
+                     chartData.datasets[i].data.push(data.cashflow_liabilities[year]);
                      chartData.datasets[i].data.push(data.cashflow_to_investments[year]);
                   }  
                   

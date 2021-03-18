@@ -102,18 +102,18 @@ Final Result  & -16'180.00  & 1'145.00 \\
 + Depreciations and adjustments  & 1'500.00  & 0.00 \\
 +/- (+)Creation and (-)release of provisions  & 0.00  & 0.00 \\
 \multicolumn{3}{l}{Adjustment with assets accounts  }\\
-+/- (+)Decrease or (-)increase of credits  & 6'200.00  & -200.00 \\
-+/- (+)Decrease or (-)increase of stocks  & 1'880.00  & 0.00 \\
-+/- (+)Decrease or (-)increase of prepaid expenses  & -120.00  & 0.00 \\
++/- (+) Decrease or (-) increase of credits  & 6'200.00  & -200.00 \\
++/- (+) Decrease or (-) increase of stocks  & 1'880.00  & 0.00 \\
++/- (+) Decrease or (-) increase of prepaid expenses  & -120.00  & 0.00 \\
 \multicolumn{3}{l}{Adjustment with liabilities accounts  }\\
-+/- (+)Increase or (-)decrease of liabilities  & 22'970.00  & 1'000.00 \\
-+/- (+)Increase or (-)decrease of accruals and deferred income  & 4'500.00  & 0.00 \\
++/- (+)Increase or (-) decrease of liabilities  & 22'970.00  & 1'000.00 \\
++/- (+) Increase or (-) decrease of accruals and deferred income  & 4'500.00  & 0.00 \\
 = Cashflow from operations (A)  & 20'870.00  & 1'945.00 \\
 - Investments  & 15'000.00  & 800.00 \\
 + Disinvestments  & 2'500.00  & \\
 = Cashflow from investing (B)  & -12'500.00  & -800.00 \\
-Third parties capital (+)increases or (-)repayments  & 9'000.00  & 0.00 \\
-Own capital (+)increases or (-)reductions   & -9'200.00  & 0.00 \\
+Third parties capital (+) increases or (-) repayments  & 9'000.00  & 0.00 \\
+Own capital (+) increases or (-) reductions   & -9'200.00  & 0.00 \\
 =Cashflow from financing (C)  & -200.00  & 0.00 \\
 Increase/decrease in liquidity (A+B+C)  & 8'170.00  & 1'145.00 \\
 Cash at the beginning of the period  &  & \\
@@ -122,9 +122,11 @@ Difference  & 8'170.00  & 1'145.00 \\
 \end{longtable}
 \begin{longtable}[l]{ l  l  l  l  l }
 CASH FLOW RATIOS Description  & formula  & Benchmark  & 2020  & Budget \\
-Cashflow Margin  & cashflow/satu  & 3\%-5\%  & 71.04\%   & 95.42\%  ↑ \\
-Cashflow to Debt  & netdebt/cashflow  & <6\%  & 4.22\%   & -0.31\%  ↓ \\
-Cashflow to Investments  & cashflow/inve  & -  & 54.47\%   & 143.13\%  ↑ \\
+Operating Cashflow Margin  & cashflow(A)/satu  & -  & 181.48\%   & 162.08\%  ↓ \\
+Asset Efficiency  & cashflow(A)/tota  & -  & 187.85\%   & 89.84\%  ↓ \\
+Cashflow to current Liabilities  & cashflow(A)/stdc  & -  & 75.95\%   & 192.57\%  ↑ \\
+Cashflow to Liabilities  & cashflow(A)/deca  & -  & 57.21\%   & 192.57\%  ↑ \\
+Cashflow to Investments  & cashflow(A)/inve  & -  & 139.13\%   & 243.13\%  ↑ \\
 \end{longtable}
 \begin{longtable}[l]{ l  l  l }
 DUPONT ANALYSIS  Description  & 2020  & Budget \\
@@ -149,6 +151,6 @@ ALTMAN INDEX Z-SCORE 2020  & Budget \\
 for values > than 3 correspond a low probability of a financial crisis \\
 for values >= than 1.8 but <= than 3 there are possibilities of a financial crisis, should be kept under control \\
 for values < than 1.8 there is a strong probability of a financial crisis \\
-\excltest{17.03.2021} \\
+\excltest{18.03.2021} \\
 \end{reportvalue}
 \end{document}

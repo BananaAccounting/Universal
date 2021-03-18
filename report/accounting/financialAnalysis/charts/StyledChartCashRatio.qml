@@ -41,7 +41,7 @@ ChartView {
 
    chartData: {
       'labels' : [
-           qsTr("Cashlow margin"),qsTr("Cashflow to debt"),qsTr("Cashflow to investments")
+           qsTr("Cashflow margin"),qsTr("Asset efficiency"),qsTr("Cashflow to current liabilties"),qsTr("Cashflow to liabilties"),qsTr("Cashflow to investments")
       ],
        'datasets' : [
        ]

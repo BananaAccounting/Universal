@@ -63,6 +63,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         if (this.dialogparam.acronymcolumn) {
             tableBalance.addColumn("formula").setStyleAttributes("width:10%");
         }
+        this.setRatiosColumnsWidthDinamically(tableBalance);
         // header
         var tableHeader = tableBalance.getHeader();
         var tableRow = tableHeader.addRow();
@@ -83,6 +84,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         if (this.dialogparam.acronymcolumn) {
             tableConCe.addColumn("formula").setStyleAttributes("width:10%");
         }
+        this.setRatiosColumnsWidthDinamically(tableConCe);
         //header
         var tableHeader = tableConCe.getHeader();
         var tableRow = tableHeader.addRow();
@@ -117,6 +119,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         if (this.dialogparam.formulascolumn) {
             tableIndliq.addColumn("benchmark").setStyleAttributes("width:10%");
         }
+        this.setRatiosColumnsWidthDinamically(tableIndliq);
         // header
         var tableHeader = tableIndliq.getHeader();
         var tableRow = tableHeader.addRow();
@@ -138,6 +141,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         if (this.dialogparam.formulascolumn) {
             tableIndlev.addColumn("benchmark").setStyleAttributes("width:10%");
         }
+        this.setRatiosColumnsWidthDinamically(tableIndlev);
         // header
         var tableHeader = tableIndlev.getHeader();
         var tableRow = tableHeader.addRow();
@@ -159,6 +163,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         if (this.dialogparam.formulascolumn) {
             tableIndprof.addColumn("benchmark").setStyleAttributes("width:10%");
         }
+        this.setRatiosColumnsWidthDinamically(tableIndprof);
         // header
         var tableHeader = tableIndprof.getHeader();
         var tableRow = tableHeader.addRow();
@@ -181,6 +186,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         if (this.dialogparam.formulascolumn) {
             tableIndeff.addColumn("benchmark").setStyleAttributes("width:10%");
         }
+        this.setRatiosColumnsWidthDinamically(tableIndeff);
         // header
         var tableHeader = tableIndeff.getHeader();
         var tableRow = tableHeader.addRow();
@@ -199,6 +205,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         tableCashflow.getCaption().addText(texts.uppercashflow, "styleTitles");
         //columns
         tableCashflow.addColumn("Description").setStyleAttributes("width:50%");
+        this.setRatiosColumnsWidthDinamically(tableCashflow);
         // header
         var tableHeader = tableCashflow.getHeader();
         var tableRow = tableHeader.addRow();
@@ -217,6 +224,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         if (this.dialogparam.formulascolumn) {
             tableIndCashflow.addColumn("benchmark").setStyleAttributes("width:10%");
         }
+        this.setRatiosColumnsWidthDinamically(tableIndCashflow);
         // header
         var tableHeader = tableIndCashflow.getHeader();
         var tableRow = tableHeader.addRow();
@@ -234,6 +242,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var tableDupont = report.addTable('myDupontTable');
         tableDupont.getCaption().addText(texts.upperdupontscheme, "styleTitles");
         tableDupont.addColumn("Description").setStyleAttributes("width:25%");
+        this.setRatiosColumnsWidthDinamically(tableDupont);
         //header
         var tableHeader = tableDupont.getHeader();
         var tableRow = tableHeader.addRow();
@@ -246,6 +255,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var texts = this.initFinancialAnalysisTexts();
         var tableAltmanIndex = report.addTable('myTableAltmanIndex');
         tableAltmanIndex.getCaption().addText(texts.upperaltmanindex, "styleTitles");
+        this.setRatiosColumnsWidthDinamically(tableAltmanIndex);
         // header
         var tableHeader = tableAltmanIndex.getHeader();
         var tableRow = tableHeader.addRow();
@@ -266,11 +276,11 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         }
     }
     setRatiosColumnsWidthDinamically(table) {
-        var width = 50;
+        var width = 60;
         if (this.data.length > 0)
             width = width / parseInt(this.data.length);
         for (var i = 0; i < this.data.length; i++) {
-            table.addColumn("ratio").setStyleAttributes("width:" + width.toString() + "%");
+            table.addColumn("year").setStyleAttributes("width:" + width.toString() + "%");
         }
 
     }
@@ -1384,15 +1394,15 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
          * ***************************************************************************************/
 
         texts.provisionsandsimilar_cashflow = qsTr("+/- (+)Creation and (-)release of provisions")
-        texts.credits_cashflow = qsTr("+/- (+)Decrease or (-)increase of credits");
-        texts.stocks_cashflow = qsTr("+/- (+)Decrease or (-)increase of stocks");
-        texts.prepaid_expenses_cashflow = qsTr("+/- (+)Decrease or (-)increase of prepaid expenses");
-        texts.liabilities_cashflow = qsTr("+/- (+)Increase or (-)decrease of liabilities");
-        texts.accruals_and_deferred_income_cashflow = qsTr("+/- (+)Increase or (-)decrease of accruals and deferred income");
+        texts.credits_cashflow = qsTr("+/- (+) Decrease or (-) increase of credits");
+        texts.stocks_cashflow = qsTr("+/- (+) Decrease or (-) increase of stocks");
+        texts.prepaid_expenses_cashflow = qsTr("+/- (+) Decrease or (-) increase of prepaid expenses");
+        texts.liabilities_cashflow = qsTr("+/- (+)Increase or (-) decrease of liabilities");
+        texts.accruals_and_deferred_income_cashflow = qsTr("+/- (+) Increase or (-) decrease of accruals and deferred income");
         texts.investments_cashflow = qsTr("- Investments");
         texts.disinvestments_cashflow = qsTr("+ Disinvestments");
-        texts.longtermdebtcapital_cashflow = qsTr("Third parties capital (+)increases or (-)repayments");
-        texts.ownbasecapital_cashflow = qsTr("Own capital (+)increases or (-)reductions ");
+        texts.longtermdebtcapital_cashflow = qsTr("Third parties capital (+) increases or (-) repayments");
+        texts.ownbasecapital_cashflow = qsTr("Own capital (+) increases or (-) reductions ");
         texts.adjusted_assets_cashflow = qsTr("Adjustment with assets accounts ");
         texts.adjusted_liabilities_cashflow = qsTr("Adjustment with liabilities accounts ");
         texts.cashflow_from_operations = qsTr("= Cashflow from operations");
@@ -1489,7 +1499,6 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         texts.efficiencyAVE = qsTr("adva/employees");
         texts.efficiencyPCE = qsTr("cope/employees");
         texts.efficiencyPCE = qsTr("cope/employees");
-        texts.cashflow_to_debt_formula = qsTr("net debt/cashflow");
         /******************************************************************************************
          * texts for Dupont Formulas
          * ***************************************************************************************/
@@ -1524,10 +1533,11 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         texts.addedvalueperemployee = qsTr("Added Value per Employee");
         texts.personnelcostperemployee = qsTr("Personnel Cost per Employee");
         texts.assetturnover = qsTr("Total Assets Turnover");
-        texts.netdebt = qsTr("Net Debt");
         //Cashflow ratios
-        texts.cashflow_margin = qsTr("Cashflow Margin");
-        texts.cashflow_to_debt = qsTr("Cashflow to Debt");
+        texts.cashflow_margin = qsTr("Operating Cashflow Margin");
+        texts.cashflow_asset_efficiency = qsTr("Asset Efficiency");
+        texts.cashflow_current_liabilities = qsTr("Cashflow to current Liabilities");
+        texts.cashflow_liabilities = qsTr("Cashflow to Liabilities");
         texts.cashflow_to_investments = qsTr("Cashflow to Investments");
 
 
@@ -1725,6 +1735,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         dialogparam.leverageratios = this.initDialogParam_leverageBenchmarks(texts);
         dialogparam.profitabilityratios = this.initDialogParam_ProfitabilityBenchmarks(texts);
         dialogparam.efficiencyratios = this.initDialogParam_EfficiencyBenchmarks(texts);
+        dialogparam.cashflowratios = this.initDialogParam_CashflowBenchmarks(texts);
         return dialogparam;
 
     }
@@ -1806,6 +1817,27 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         return dialogparam;
     }
 
+    initDialogParam_CashflowBenchmarks(texts) {
+        var dialogparam = {};
+        dialogparam.cashflow_margin = {};
+        dialogparam.cashflow_margin.description = texts.cashflow_margin;
+        dialogparam.cashflow_margin.value = "-";
+        dialogparam.cashflow_asset_efficiency = {};
+        dialogparam.cashflow_asset_efficiency.description = texts.cashflow_asset_efficiency;
+        dialogparam.cashflow_asset_efficiency.value = "-";
+        dialogparam.cashflow_current_liabilities = {};
+        dialogparam.cashflow_current_liabilities.description = texts.cashflow_current_liabilities;
+        dialogparam.cashflow_current_liabilities.value = "-";
+        dialogparam.cashflow_liabilities = {};
+        dialogparam.cashflow_liabilities.description = texts.cashflow_liabilities;
+        dialogparam.cashflow_liabilities.value = "-";
+        dialogparam.cashflow_to_investments = {};
+        dialogparam.cashflow_to_investments.description = texts.cashflow_to_investments;
+        dialogparam.cashflow_to_investments.value = "-";
+
+        return dialogparam;
+    }
+
 
     /**
      * @description - assigns the maximum number of previous years to a varaible, if it is less than 5, is reset to 5
@@ -1828,7 +1860,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             var dupont_data = this.createdupont_data(data_budget, calculated_data, index);
             var altman_index = this.calculateAltmanIndex(data_budget, calculated_data, index)
             var cashflow = this.calculateCashflowTotals(data_budget);
-            var cashflow_index = this.calculateCashflowIndex(data_budget, cashflow);
+            var cashflow_index = this.calculateCashflowIndex(data_budget, calculated_data, cashflow);
             data_budget.calculated_data = calculated_data;
             data_budget.index = index;
             data_budget.dupont_data = dupont_data;
@@ -1845,7 +1877,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             var dupont_data = this.createdupont_data(data_year, calculated_data, index);
             var altman_index = this.calculateAltmanIndex(data_year, calculated_data, index);
             var cashflow = this.calculateCashflowTotals(data_year);
-            var cashflow_index = this.calculateCashflowIndex(data_year, cashflow);
+            var cashflow_index = this.calculateCashflowIndex(data_year, calculated_data, cashflow);
             data_year.calculated_data = calculated_data;
             data_year.index = index;
             data_year.dupont_data = dupont_data;
@@ -2557,39 +2589,59 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
      * @param {*} freecashflow the free Cashflow (array)
      * @param {*} investments the investments (array)
      */
-    calculateCashflowIndex(data, cashflow) {
+    calculateCashflowIndex(data, calculated_data, cashflow) {
 
         let texts = this.initFinancialAnalysisTexts();
 
         let index = {};
 
         /*******************************************************
-         * Cash Flow Margin
+         * Cash Flow Margin (performed over the Cashflow from Operations)
          *****************************************************/
 
         index.cashflow_margin = {};
         index.cashflow_margin.description = texts.cashflow_margin;
         index.cashflow_margin.type = "perc";
-        index.cashflow_margin.formula = "cashflow/satu";
-        index.cashflow_margin.amount = Banana.SDecimal.divide(cashflow.cashflow, data.profitandloss.salesturnover.balance);
+        index.cashflow_margin.formula = "cashflow(A)/satu";
+        index.cashflow_margin.amount = Banana.SDecimal.divide(cashflow.from_operations, data.profitandloss.salesturnover.balance);
         index.cashflow_margin.amount = Banana.SDecimal.multiply(index.cashflow_margin.amount, 100, { 'decimals': this.dialogparam.numberofdecimals });
-        index.cashflow_margin.benchmark = "3%-5%";
+        index.cashflow_margin.benchmark = data.ratios.cashflowratios.cashflow_margin.value;
 
         /*******************************************************
-         * Cashflow-to-debt ratio
-         * 
-         * net debt= short term debt capital+long term debt capital-liquidity-cashflow
+         * Asset efficiency
          *****************************************************/
 
-        index.cashflow_to_debt = {};
-        index.cashflow_to_debt.description = texts.cashflow_to_debt;
-        index.cashflow_to_debt.type = "perc";
-        index.cashflow_to_debt.formula = "netdebt/cashflow";
-        let netdebt = Banana.SDecimal.add(data.balance.dc.shorttermdebtcapital.balance, data.balance.dc.longtermdebtcapital.balance);
-        netdebt = Banana.SDecimal.subtract(netdebt, data.balance.ca.liquidity.balance);
-        netdebt = Banana.SDecimal.subtract(netdebt, data.balance.ca.credits.balance);
-        index.cashflow_to_debt.amount = Banana.SDecimal.divide(netdebt, cashflow.cashflow, { 'decimals': this.dialogparam.numberofdecimals });
-        index.cashflow_to_debt.benchmark = "<6%";
+        index.cashflow_asset_efficiency = {};
+        index.cashflow_asset_efficiency.description = texts.cashflow_asset_efficiency;
+        index.cashflow_asset_efficiency.type = "perc";
+        index.cashflow_asset_efficiency.formula = "cashflow(A)/tota";
+        index.cashflow_asset_efficiency.amount = Banana.SDecimal.divide(cashflow.from_operations, calculated_data.totalassets);
+        index.cashflow_asset_efficiency.amount = Banana.SDecimal.multiply(index.cashflow_asset_efficiency.amount, 100, { 'decimals': this.dialogparam.numberofdecimals });
+        index.cashflow_asset_efficiency.benchmark = data.ratios.cashflowratios.cashflow_asset_efficiency.value;
+
+        /*******************************************************
+         * Cashflow to current Liabilities
+         *****************************************************/
+
+        index.cashflow_current_liabilities = {};
+        index.cashflow_current_liabilities.description = texts.cashflow_current_liabilities;
+        index.cashflow_current_liabilities.type = "perc";
+        index.cashflow_current_liabilities.formula = "cashflow(A)/stdc";
+        index.cashflow_current_liabilities.amount = Banana.SDecimal.divide(cashflow.from_operations, data.balance.dc.shorttermdebtcapital.balance);
+        index.cashflow_current_liabilities.amount = Banana.SDecimal.multiply(index.cashflow_current_liabilities.amount, 100, { 'decimals': this.dialogparam.numberofdecimals });
+        index.cashflow_current_liabilities.benchmark = data.ratios.cashflowratios.cashflow_current_liabilities.value;
+
+        /*******************************************************
+         * Cashflow to Liabilities
+         *****************************************************/
+
+        index.cashflow_liabilities = {};
+        index.cashflow_liabilities.description = texts.cashflow_liabilities;
+        index.cashflow_liabilities.type = "perc";
+        index.cashflow_liabilities.formula = "cashflow(A)/deca";
+        index.cashflow_liabilities.amount = Banana.SDecimal.divide(cashflow.from_operations, calculated_data.debtcapital);
+        index.cashflow_liabilities.amount = Banana.SDecimal.multiply(index.cashflow_liabilities.amount, 100, { 'decimals': this.dialogparam.numberofdecimals });
+        index.cashflow_liabilities.benchmark = data.ratios.cashflowratios.cashflow_liabilities.value;
 
         /*******************************************************
          * Cashflow-to-Investments
@@ -2599,10 +2651,10 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         index.cashflow_to_investments = {};
         index.cashflow_to_investments.description = texts.cashflow_to_investments;
         index.cashflow_to_investments.type = "perc";
-        index.cashflow_to_investments.formula = "cashflow/inve";
-        index.cashflow_to_investments.amount = Banana.SDecimal.divide(cashflow.cashflow, cashflow.investments);
+        index.cashflow_to_investments.formula = "cashflow(A)/inve";
+        index.cashflow_to_investments.amount = Banana.SDecimal.divide(cashflow.from_operations, cashflow.investments);
         index.cashflow_to_investments.amount = Banana.SDecimal.multiply(index.cashflow_to_investments.amount, 100, { 'decimals': this.dialogparam.numberofdecimals });
-        index.cashflow_to_investments.benchmark = "-";
+        index.cashflow_to_investments.benchmark = data.ratios.cashflowratios.cashflow_to_investments.value;
 
 
         return index;
@@ -2792,6 +2844,14 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var currentParam = {};
         currentParam.name = 'Efficiency';
         currentParam.title = texts.efficiency;
+        currentParam.editable = false;
+        currentParam.parentObject = 'Benchmarks';
+        convertedParam.data.push(currentParam);
+
+        // Cashflow ratios
+        var currentParam = {};
+        currentParam.name = 'CashflowRatios';
+        currentParam.title = texts.cashflow;
         currentParam.editable = false;
         currentParam.parentObject = 'Benchmarks';
         convertedParam.data.push(currentParam);
@@ -3564,6 +3624,81 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         }
         convertedParam.data.push(currentParam)
 
+        // Cashflow margin
+        var currentParam = {};
+        currentParam.name = 'cashflowmargin';
+        currentParam.group = 'benchmarks';
+        currentParam.title = defaultParam.ratios.cashflowratios.cashflow_margin.description;
+        currentParam.type = 'string';
+        currentParam.value = userParam.ratios.cashflowratios.cashflow_margin.value ? userParam.ratios.cashflowratios.cashflow_margin.value : '';
+        currentParam.defaultvalue = defaultParam.ratios.cashflowratios.cashflow_margin.value;
+        currentParam.tooltip = texts.benchmarks_tooltip;
+        currentParam.parentObject = 'CashflowRatios';
+        currentParam.readValue = function() {
+            userParam.ratios.cashflowratios.cashflow_margin.value = this.value;
+        }
+        convertedParam.data.push(currentParam)
+
+        // Cashflow asset Efficiency
+        var currentParam = {};
+        currentParam.name = 'cashflowassetefficiency';
+        currentParam.group = 'benchmarks';
+        currentParam.title = defaultParam.ratios.cashflowratios.cashflow_asset_efficiency.description;
+        currentParam.type = 'string';
+        currentParam.value = userParam.ratios.cashflowratios.cashflow_asset_efficiency.value ? userParam.ratios.cashflowratios.cashflow_asset_efficiency.value : '';
+        currentParam.defaultvalue = defaultParam.ratios.cashflowratios.cashflow_asset_efficiency.value;
+        currentParam.tooltip = texts.benchmarks_tooltip;
+        currentParam.parentObject = 'CashflowRatios';
+        currentParam.readValue = function() {
+            userParam.ratios.cashflowratios.cashflow_asset_efficiency.value = this.value;
+        }
+        convertedParam.data.push(currentParam)
+
+        // Cashflow current Liabilities
+        var currentParam = {};
+        currentParam.name = 'cashflowcurrentliabilities';
+        currentParam.group = 'benchmarks';
+        currentParam.title = defaultParam.ratios.cashflowratios.cashflow_current_liabilities.description;
+        currentParam.type = 'string';
+        currentParam.value = userParam.ratios.cashflowratios.cashflow_current_liabilities.value ? userParam.ratios.cashflowratios.cashflow_current_liabilities.value : '';
+        currentParam.defaultvalue = defaultParam.ratios.cashflowratios.cashflow_current_liabilities.value;
+        currentParam.tooltip = texts.benchmarks_tooltip;
+        currentParam.parentObject = 'CashflowRatios';
+        currentParam.readValue = function() {
+            userParam.ratios.cashflowratios.cashflow_current_liabilities.value = this.value;
+        }
+        convertedParam.data.push(currentParam)
+
+        // Cashflow Liabilities
+        var currentParam = {};
+        currentParam.name = 'cashflowliabilities';
+        currentParam.group = 'benchmarks';
+        currentParam.title = defaultParam.ratios.cashflowratios.cashflow_liabilities.description;
+        currentParam.type = 'string';
+        currentParam.value = userParam.ratios.cashflowratios.cashflow_liabilities.value ? userParam.ratios.cashflowratios.cashflow_liabilities.value : '';
+        currentParam.defaultvalue = defaultParam.ratios.cashflowratios.cashflow_liabilities.value;
+        currentParam.tooltip = texts.benchmarks_tooltip;
+        currentParam.parentObject = 'CashflowRatios';
+        currentParam.readValue = function() {
+            userParam.ratios.cashflowratios.cashflow_liabilities.value = this.value;
+        }
+        convertedParam.data.push(currentParam)
+
+        // Cashflow to Investments
+        var currentParam = {};
+        currentParam.name = 'cashflowtoinvestments';
+        currentParam.group = 'benchmarks';
+        currentParam.title = defaultParam.ratios.cashflowratios.cashflow_to_investments.description;
+        currentParam.type = 'string';
+        currentParam.value = userParam.ratios.cashflowratios.cashflow_to_investments.value ? userParam.ratios.cashflowratios.cashflow_to_investments.value : '';
+        currentParam.defaultvalue = defaultParam.ratios.cashflowratios.cashflow_to_investments.value;
+        currentParam.tooltip = texts.benchmarks_tooltip;
+        currentParam.parentObject = 'CashflowRatios';
+        currentParam.readValue = function() {
+            userParam.ratios.cashflowratios.cashflow_to_investments.value = this.value;
+        }
+        convertedParam.data.push(currentParam)
+
         return convertedParam;
     }
 
@@ -4256,6 +4391,10 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             if (!userParam.ratios.efficiencyratios) {
                 userParam.ratios.efficiencyratios = defaultParam.ratios.efficiencyratios;
             }
+            //efficiency
+            if (!userParam.ratios.cashflowratios) {
+                userParam.ratios.cashflowratios = defaultParam.ratios.cashflowratios;
+            }
             //liquidity
             if (!userParam.ratios.liquidityratios.cashratio) {
                 userParam.ratios.liquidityratios.cashratio = defaultParam.ratios.liquidityratios.cashratio;
@@ -4316,7 +4455,23 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                 userParam.ratios.efficiencyratios.revenueperemployee = defaultParam.ratios.efficiencyratios.revenueperemployee;
             }
             if (!userParam.ratios.efficiencyratios.personnelcostperemployee) {
-                userParam.ratios.efficiencyratios.personnelcostperemployee = defaultParam.ratios.efficiencyratios.personnelcostperemployee
+                userParam.ratios.efficiencyratios.personnelcostperemployee = defaultParam.ratios.efficiencyratios.personnelcostperemployee;
+            }
+            //Cashflow
+            if (!userParam.ratios.cashflowratios.cashflow_margin) {
+                userParam.ratios.cashflowratios.cashflow_margin = defaultParam.ratios.efficiencyratios.cashflow_margin;
+            }
+            if (!userParam.ratios.cashflowratios.cashflow_asset_efficiency) {
+                userParam.ratios.cashflowratios.cashflow_asset_efficiency = defaultParam.ratios.efficiencyratios.cashflow_asset_efficiency;
+            }
+            if (!userParam.ratios.cashflowratios.cashflow_current_liabilities) {
+                userParam.ratios.cashflowratios.cashflow_current_liabilities = defaultParam.ratios.efficiencyratios.cashflow_current_liabilities;
+            }
+            if (!userParam.ratios.cashflowratios.cashflow_liabilities) {
+                userParam.ratios.cashflowratios.cashflow_liabilities = defaultParam.ratios.efficiencyratios.cashflow_liabilities;
+            }
+            if (!userParam.ratios.cashflowratios.cashflow_to_investments) {
+                userParam.ratios.cashflowratios.cashflow_to_investments = defaultParam.ratios.efficiencyratios.cashflow_to_investments;
             }
         }
 
