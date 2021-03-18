@@ -24,5 +24,11 @@
 \begin{test}{testReport}
 \keyvalue{Result}{Passed}
 \end{test}
+\begin{test}{testLoadingMethods}
+\keyvalue{Result}{Passed}
+\end{test}
+\begin{test}{testOtherMethods}
+\keyvalue{Result}{Passed}
+\end{test}
 \end{testcase}
 \end{document}

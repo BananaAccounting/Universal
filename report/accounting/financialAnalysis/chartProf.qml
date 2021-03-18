@@ -23,7 +23,7 @@ BasePage {
             Layout.fillHeight: true
 
             Text {
-               text: qsTr("Profitability index variation")
+               text: qsTr("Evolution of profitability ratios")
                font.pixelSize: Stylesheet.titleFontSize
                Layout.bottomMargin: Stylesheet.defaultMargin
                Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter

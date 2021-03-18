@@ -41,8 +41,8 @@ ChartView {
 
    chartData: {
       'labels' : [
-            qsTr("Cash ratio"),qsTr("Quick ratio"),qsTr("Current ratio")
-            ],
+           qsTr("Cashflow margin"),qsTr("Asset efficiency"),qsTr("Cashflow to current liabilties"),qsTr("Cashflow to liabilties"),qsTr("Cashflow to investments")
+      ],
        'datasets' : [
        ]
    }
@@ -54,8 +54,8 @@ ChartView {
       },
       'tooltips': {
          'mode': 'index',
-         'intersect': false,
-         'titleFontSize': 16,
+         'intersect': true,
+         'titleFontSize': 18,
          'bodyFontSize': 14,
          'callbacks': {
             'labelColor' : function(tooltipItem, chart) {
@@ -67,7 +67,7 @@ ChartView {
                }
             },
             'label' : function(item, data){
-               return Banana.Converter.toLocaleNumberFormat(item.yLabel) + '%';
+                return Banana.Converter.toLocaleNumberFormat(item.yLabel) + '%';
             }
          }
       },
@@ -80,7 +80,8 @@ ChartView {
                   'beginAtZero' : true,
                }
             }]
-      }
+      },
+      'barValueSpacing': 20,
    }
 
    BusyIndicator {

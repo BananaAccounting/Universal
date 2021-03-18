@@ -86,8 +86,11 @@ FSAnalysisTest.prototype.init = function() {
 // This method will be called after every test method is executed
 FSAnalysisTest.prototype.cleanup = function() {
 
-    }
-    // stampa il report e lo butta nel log del test
+}
+
+/************************************************
+ * PRINT METHODS
+ ************************************************/
 FSAnalysisTest.prototype.testReport = function() {
     this.testLogger = Test.logger.newGroupLogger("testReport");
     this.testLogger.addKeyValue("FSAnalysisTest", "testReport");
@@ -120,3 +123,64 @@ FSAnalysisTest.prototype.testReport = function() {
     this.testLogger.close();
     this.testLogger = Test.logger;
 }
+
+/************************************************
+ * CALCULATION TESTS METHODS
+ ************************************************/
+/*FSAnalysisTest.prototype.testCalcMethods = function() {
+
+    var fileAC2 = "file:script/../test/testcases/Documentscontabilita_sa-sagl_partitario_fatturato 2020.ac2";
+    var banDoc = Banana.application.openDocument(fileAC2);
+    if (!banDoc) {
+        return;
+    }
+
+    Test.logger.addSection("Test: Financial Statement Analysis Calculation Methods : " + fileAC2);
+
+    Test.logger.addSubSection("Method: calculateGrossCashFlow");
+    this.add_test_calculateGrossCashFlow1(banDoc);
+
+}*/
+
+/************************************************
+ * LOAD VALUES TESTS METHODS
+ ************************************************/
+
+FSAnalysisTest.prototype.testLoadingMethods = function() {
+
+
+    var fileAC2 = "file:script/../test/testcases/Documentscontabilita_sa-sagl_partitario_fatturato 2020.ac2";
+    var banDoc = Banana.application.openDocument(fileAC2);
+    if (!banDoc) {
+        return;
+    }
+
+}
+
+/************************************************
+ * OTHER TEST METHODS
+ ************************************************/
+//Tests some other methods
+FSAnalysisTest.prototype.testOtherMethods = function() {
+
+    var fileAC2 = "file:script/../test/testcases/Documentscontabilita_sa-sagl_partitario_fatturato 2020.ac2";
+    var banDoc = Banana.application.openDocument(fileAC2);
+    if (!banDoc) {
+        return;
+    }
+
+}
+
+/************************************************
+ * LOAD VALUES (SUB) METHODS
+ ************************************************/
+
+/************************************************
+ * CALCULATION (SUB)METHODS
+ ************************************************/
+
+
+
+/************************************************
+ * OTHER (SUB)METHODS
+ ************************************************/
