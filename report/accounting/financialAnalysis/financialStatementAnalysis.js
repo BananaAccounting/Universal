@@ -867,7 +867,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var tableRow = tableCashflow.addRow("styleTablRows");
         tableRow.addCell(texts.stocks_cashflow, "styleTablRows");
         for (var i = this.data.length - 1; i >= 0; i--) {
-            tableRow.addCell(this.toLocaleAmountFormat(this.data[i].balance.ca.stocks.delta), "styleNormalAmount");
+            tableRow.addCell(this.toLocaleAmountFormat(this.data[i].cashflow.net_stocks), "styleNormalAmount");
         }
         //Prepaid and expenses
         var tableRow = tableCashflow.addRow("styleTablRows");
@@ -1479,6 +1479,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         texts.profitability = qsTr('Profitability');
         texts.efficiency = qsTr('Efficiency');
         texts.cashflow = qsTr("Cashflow");
+        texts.errorMsg = qsTr("Non-existent groups/accounts: ");
+        texts.errorMsg_cashflow_elements = qsTr("This field should not be empty");
 
         /******************************************************************************************
          * texts for company info's
@@ -2017,7 +2019,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                     //delta
                     dialogparam[key].delta = Banana.SDecimal.subtract(dialogparam[key].balance, dialogparam[key].opening);
                     //the sign is set to minus for elements of the Assets (to calculate the cashflow);
-                    if (dialogparam[key].bclass === "1" && dialogparam[key].description !== "Liquidity") {
+                    if (dialogparam[key].bclass === "1" && dialogparam[key].acronym !== "liqu") {
                         dialogparam[key].delta = Banana.SDecimal.multiply(dialogparam[key].delta, mult);
                     }
                     //Banana.console.debug(JSON.stringify(dialogparam[key]));
@@ -2529,7 +2531,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         cashflow.from_operations = Banana.SDecimal.add(cashflow.from_operations, data.profitandloss.depreandadjust.balance);
         cashflow.from_operations = Banana.SDecimal.add(cashflow.from_operations, data.cashflowgroups.provisionsandsimilar.delta);
         cashflow.from_operations = Banana.SDecimal.add(cashflow.from_operations, data.balance.ca.credits.delta);
-        cashflow.net_stocks = Banana.SDecimal.subtract(data.balance.ca.stocks.delta, data.cashflowgroups.prepaid_expenses.delta)
+        cashflow.net_stocks = Banana.SDecimal.subtract(data.balance.ca.stocks.delta, data.cashflowgroups.prepaid_expenses.delta);
         cashflow.from_operations = Banana.SDecimal.add(cashflow.from_operations, cashflow.net_stocks);
         cashflow.from_operations = Banana.SDecimal.add(cashflow.from_operations, data.cashflowgroups.prepaid_expenses.delta);
         cashflow.net_liabilities = Banana.SDecimal.subtract(data.balance.dc.shorttermdebtcapital.delta, data.cashflowgroups.accruals_and_deferred_income.delta)
@@ -2544,8 +2546,10 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         cashflow.investments = Banana.SDecimal.add(cashflow.investments, data.profitandloss.depreandadjust.balance);
         cashflow.investments = Banana.SDecimal.add(cashflow.investments, data.balance.fa.fixedassets.disinvestments);
         //Banana.console.debug(data.balance.fa.fixedassets.disinvestments);
-        let fixedassets_delta = Banana.SDecimal.abs(data.balance.fa.fixedassets.delta);
-        cashflow.investments = Banana.SDecimal.add(cashflow.investments, fixedassets_delta);
+        let fixedassets_opening = Banana.SDecimal.abs(data.balance.fa.fixedassets.opening);
+        let fixedassets_balance = Banana.SDecimal.abs(data.balance.fa.fixedassets.balance);
+        cashflow.investments = Banana.SDecimal.add(cashflow.investments, fixedassets_balance);
+        cashflow.investments = Banana.SDecimal.subtract(cashflow.investments, fixedassets_opening);
 
         //then calculate the cashflow from Investing
         cashflow.from_investing = Banana.SDecimal.subtract(cashflow.from_investing, cashflow.investments);
@@ -3071,7 +3075,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         //Prepaid expenses
         var currentParam = {};
         currentParam.name = 'accr';
-        currentParam.group = 'prepaidexpenses';
+        currentParam.group = 'cashflow';
         currentParam.title = defaultParam.cashflowgroups.prepaid_expenses.description;
         currentParam.type = 'string';
         currentParam.value = userParam.cashflowgroups.prepaid_expenses.gr ? userParam.cashflowgroups.prepaid_expenses.gr : '';
@@ -3081,13 +3085,17 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.readValue = function() {
             userParam.cashflowgroups.prepaid_expenses.gr = this.value;
         }
+        var value = currentParam.value;
+        var errorMsg = texts.errorMsg_cashflow_elements;
+        if (value === '')
+            currentParam.errorMsg = errorMsg;
         convertedParam.data.push(currentParam);
 
 
         //accrualsanddeferredincome
         var currentParam = {};
         currentParam.name = 'wown';
-        currentParam.group = 'accrualsanddeferredincome';
+        currentParam.group = 'cashflow';
         currentParam.title = defaultParam.cashflowgroups.accruals_and_deferred_income.description;
         currentParam.type = 'string';
         currentParam.value = userParam.cashflowgroups.accruals_and_deferred_income.gr ? userParam.cashflowgroups.accruals_and_deferred_income.gr : '';
@@ -3097,13 +3105,17 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.readValue = function() {
             userParam.cashflowgroups.accruals_and_deferred_income.gr = this.value;
         }
+        var value = currentParam.value;
+        var errorMsg = texts.errorMsg_cashflow_elements;
+        if (value === '')
+            currentParam.errorMsg = errorMsg;
         convertedParam.data.push(currentParam);
 
 
         //Provisions and Similar
         var currentParam = {};
         currentParam.name = 'prov';
-        currentParam.group = 'provisionsandsimilar';
+        currentParam.group = 'cashflow';
         currentParam.title = defaultParam.cashflowgroups.provisionsandsimilar.description;
         currentParam.type = 'string';
         currentParam.value = userParam.cashflowgroups.provisionsandsimilar.gr ? userParam.cashflowgroups.provisionsandsimilar.gr : '';
@@ -3113,6 +3125,10 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.readValue = function() {
             userParam.cashflowgroups.provisionsandsimilar.gr = this.value;
         }
+        var value = currentParam.value;
+        var errorMsg = texts.errorMsg_cashflow_elements;
+        if (value === '')
+            currentParam.errorMsg = errorMsg;
         convertedParam.data.push(currentParam);
 
 
@@ -4507,12 +4523,11 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
      */
     checkNonExistentGroupsOrAccounts(convertedParam) {
         var Docgroups = this.loadGroups();
+        let texts = this.initFinancialAnalysisTexts()
         var Docaccounts = this.loadAccounts();
         var nonExistentElements = "";
+        var cashflow_missing_element = "";
         var everyGroupExist = true;
-        var warningMsg = qsTr("Non-existent groups/accounts: ");
-        var elementsList = {};
-        var len = "";
         var somethingIsMissingCounter = 0;
         for (var i = 0; i < convertedParam.data.length; i++) {
             if (convertedParam.data[i].value) {
@@ -4529,10 +4544,11 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                         }
                     }
                     if (nonExistentElements.length > 0) {
-                        convertedParam.data[i].errorMsg = warningMsg + nonExistentElements;
+                        convertedParam.data[i].errorMsg = texts.errorMsg + nonExistentElements;
                     }
                     nonExistentElements = "";
                 }
+
             }
         }
 
@@ -4543,7 +4559,6 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         }
         return everyGroupExist;
     }
-
 }
 
 /**
