@@ -25,14 +25,20 @@ Via Delle Scuole, 6900 Lugano \\
 BALANCE Description  & Acronym  & 2020  & Budget \\
 Liquidity  & liqu  & 8'170.00  & 1'145.00 \\
 Credits  & cred  & -6'180.00  & 220.00 \\
-Stocks  & stoc  & -1'880.00  & 0.00 \\
+Stocks  & stoc  & -2'000.00  & 0.00 \\
+Prepaid Expenses  & accr  & 120.00  & 0.00 \\
 Total Current Assets  & cuas  & 110.00  & 1'365.00 \\
-Fixed Assets  & fixa  & 11'000.00  & 800.00 \\
-Total Fixed Assets  & tfix  & 11'000.00  & 800.00 \\
+Financial Fixed Assets  & finfix  & 0.00  & 0.00 \\
+Tangible Fixed Assets  & tanfix  & 11'000.00  & 800.00 \\
+Intangible Fixed Assets  & intfix  & 0.00  & 0.00 \\
+Total Fixed Assets  & fixa  & 11'000.00  & 800.00 \\
 Total Assets  & tota  & 11'110.00  & 2'165.00 \\
-Short term debt capital  & stdc  & 27'480.00  & 1'010.00 \\
-Long term debt capital  & ltdc  & 9'000.00  & 0.00 \\
-Debt Capital  & deca  & 36'480.00  & 1'010.00 \\
+Debts  & dbts  & 22'980.00  & 1'010.00 \\
+Accruals and Deferred Income  & accr  & 4'500.00  & 0.00 \\
+Short term Debt Capital  & stdc  & 27'480.00  & 1'010.00 \\
+Long term Debts  & ltde  & 9'000.00  & 0.00 \\
+Provisions and similar  & prov  & 0.00  & 0.00 \\
+Long term debt Capital  & ltdc  & 9'000.00  & 0.00 \\
 Own base capital  & obca  & -9'200.00  & 0.00 \\
 Reserves and profits  & reut  & -16'170.00  & 1'155.00 \\
 Owned Capital  & owca  & -25'370.00  & 1'155.00 \\
@@ -103,14 +109,14 @@ Final Result  & -16'180.00  & 1'145.00 \\
 +/- (+)Creation and (-)release of provisions  & 0.00  & 0.00 \\
 \multicolumn{3}{l}{Adjustment with assets accounts  }\\
 +/- (+) Decrease or (-) increase of credits  & 6'200.00  & -200.00 \\
-+/- (+) Decrease or (-) increase of stocks  & 1'880.00  & 0.00 \\
++/- (+) Decrease or (-) increase of stocks  & 2'000.00  & 0.00 \\
 +/- (+) Decrease or (-) increase of prepaid expenses  & -120.00  & 0.00 \\
 \multicolumn{3}{l}{Adjustment with liabilities accounts  }\\
 +/- (+)Increase or (-) decrease of liabilities  & 22'970.00  & 1'000.00 \\
 +/- (+) Increase or (-) decrease of accruals and deferred income  & 4'500.00  & 0.00 \\
 = Cashflow from operations (A)  & 20'870.00  & 1'945.00 \\
 - Investments  & 15'000.00  & 800.00 \\
-+ Disinvestments  & 2'500.00  & \\
++ Disinvestments  & 2'500.00  & 0.00 \\
 = Cashflow from investing (B)  & -12'500.00  & -800.00 \\
 Third parties capital (+) increases or (-) repayments  & 9'000.00  & 0.00 \\
 Own capital (+) increases or (-) reductions   & -9'200.00  & 0.00 \\
@@ -151,6 +157,6 @@ ALTMAN INDEX Z-SCORE 2020  & Budget \\
 for values > than 3 correspond a low probability of a financial crisis \\
 for values >= than 1.8 but <= than 3 there are possibilities of a financial crisis, should be kept under control \\
 for values < than 1.8 there is a strong probability of a financial crisis \\
-\excltest{18.03.2021} \\
+\excltest{24.03.2021} \\
 \end{reportvalue}
 \end{document}

@@ -40,6 +40,12 @@ ChartView {
          'stroke': "#A0AE6E",
          'point': "#A0AE6E",
          'pointStroke': "#FFFFFF"
+      },
+      {
+         'fill': 'rgba(255, 102, 255, 0.4)',
+         'stroke': "#A0AE6E",
+         'point': "#A0AE6E",
+         'pointStroke': "#FFFFFF"
       }
    ]
 
@@ -80,7 +86,7 @@ ChartView {
          'xAxes': [{stacked:true}],
          'yAxes': [{
                      stacked:true,
-         		      interval: 1110, 
+         		      interval: 10, 
                      ticks: {
                     callback: function(value, index, values) {
                         return value + '%';

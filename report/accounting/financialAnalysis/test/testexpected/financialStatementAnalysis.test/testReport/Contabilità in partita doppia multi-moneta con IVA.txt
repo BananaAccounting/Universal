@@ -23,14 +23,20 @@
 BALANCE Description  & Acronym  & 2020  & Budget \\
 Liquidity  & liqu  & -9'320.00  & 110.00 \\
 Credits  & cred  & 34'500.00  & 0.00 \\
-Stocks  & stoc  & 120.00  & 0.00 \\
+Stocks  & stoc  & 0.00  & 0.00 \\
+Prepaid Expenses  & accr  & 120.00  & 0.00 \\
 Total Current Assets  & cuas  & 25'300.00  & 110.00 \\
-Fixed Assets  & fixa  & -1'000.00  & 0.00 \\
-Total Fixed Assets  & tfix  & -1'000.00  & 0.00 \\
+Financial Fixed Assets  & finfix  & 0.00  & 0.00 \\
+Tangible Fixed Assets  & tanfix  & -1'000.00  & 0.00 \\
+Intangible Fixed Assets  & intfix  & 0.00  & 0.00 \\
+Total Fixed Assets  & fixa  & -1'000.00  & 0.00 \\
 Total Assets  & tota  & 24'300.00  & 110.00 \\
-Short term debt capital  & stdc  & 2'970.00  & 0.00 \\
-Long term debt capital  & ltdc  & 9'000.00  & 0.00 \\
-Debt Capital  & deca  & 11'970.00  & 0.00 \\
+Debts  & dbts  & 2'970.00  & 0.00 \\
+Accruals and Deferred Income  & accr  & 0.00  & 0.00 \\
+Short term Debt Capital  & stdc  & 2'970.00  & 0.00 \\
+Long term Debts  & ltde  & 9'000.00  & 0.00 \\
+Provisions and similar  & prov  & 0.00  & 0.00 \\
+Long term debt Capital  & ltdc  & 9'000.00  & 0.00 \\
 Own base capital  & obca  & 0.00  & 0.00 \\
 Reserves and profits  & reut  & 12'220.00  & 0.00 \\
 Owned Capital  & owca  & 12'220.00  & 0.00 \\
@@ -102,14 +108,14 @@ Final Result  & 8'220.00  & 0.00 \\
 +/- (+)Creation and (-)release of provisions  & 0.00  & 0.00 \\
 \multicolumn{3}{l}{Adjustment with assets accounts  }\\
 +/- (+) Decrease or (-) increase of credits  & -34'500.00  & 0.00 \\
-+/- (+) Decrease or (-) increase of stocks  & -120.00  & 0.00 \\
++/- (+) Decrease or (-) increase of stocks  & 0.00  & 0.00 \\
 +/- (+) Decrease or (-) increase of prepaid expenses  & -120.00  & 0.00 \\
 \multicolumn{3}{l}{Adjustment with liabilities accounts  }\\
 +/- (+)Increase or (-) decrease of liabilities  & 2'970.00  & 0.00 \\
 +/- (+) Increase or (-) decrease of accruals and deferred income  & 0.00  & 0.00 \\
 = Cashflow from operations (A)  & -23'430.00  & 0.00 \\
 - Investments  & 1'000.00  & 0.00 \\
-+ Disinvestments  &  & \\
++ Disinvestments  & 0.00  & 0.00 \\
 = Cashflow from investing (B)  & -1'000.00  & 0.00 \\
 Third parties capital (+) increases or (-) repayments  & 9'000.00  & 0.00 \\
 Own capital (+) increases or (-) reductions   & 0.00  & 0.00 \\
@@ -151,6 +157,6 @@ ALTMAN INDEX Z-SCORE 2020  & Budget \\
 for values > than 3 correspond a low probability of a financial crisis \\
 for values >= than 1.8 but <= than 3 there are possibilities of a financial crisis, should be kept under control \\
 for values < than 1.8 there is a strong probability of a financial crisis \\
-\excltest{18.03.2021} \\
+\excltest{24.03.2021} \\
 \end{reportvalue}
 \end{document}
