@@ -1637,6 +1637,7 @@ function ReadTransactions_TranslateHeader_French(headers) {
 	textMap['Devise'] = 'Currency';
 	textMap['Avant commission'] = 'Gross';
 	textMap['Frais'] = 'Fee';
+	textMap['Commission'] = 'Fee';
 	textMap['Net'] = 'Net';
 	textMap['Remarque'] = 'Note';
 	textMap["De l'adresse email"] = 'FromEmailAddress';
@@ -1663,6 +1664,7 @@ function ReadTransactions_TranslateHeader_French(headers) {
 	textMap["URL de l'objet"] = 'ItemUrl';
 	textMap['Date de clôture'] = 'ClosingDate';
 	textMap['Nº de transaction de référence'] = 'ReferenceTxnId';
+	textMap['Numéro de la transaction de référence'] = 'ReferenceTxnId';
 	textMap['Nº de facture'] = 'InvoiceNumber';
 	textMap["Nº d'abonnement"] = 'SubscriptionNumber';
 	textMap['Nº de client'] = 'CustomNumber';
