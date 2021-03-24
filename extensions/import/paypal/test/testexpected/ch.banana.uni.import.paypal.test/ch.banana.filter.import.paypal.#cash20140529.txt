@@ -1,0 +1,67 @@
+%%info_test_name{ch.banana.filter.import.paypal.#cash20140529}
+\documentclass{report}
+\usepackage{longtable}
+\usepackage{color}
+\usepackage{listings}
+\usepackage[margin=1cm]{geometry}
+\begin{document}
+\newenvironment{tablevalue}[2]{\textbf{Table: #1}\begin{longtable}[l]{#2}}{\end{longtable}}
+\newenvironment{reportvalue}[1]{\textbf{Report: #1}\\}{}
+\lstnewenvironment{jsonvalue}[1]{\textbf{Json: #1}\lstset{language=Java}}{}
+\lstnewenvironment{xmlvalue}[1]{\textbf{Xml: #1}\lstset{language=Xml}}{}
+\newcommand{\info}[2]{\textit{#1: #2}\\}
+\newcommand{\fatalerror}[1]{\textbf{\textcolor[rgb]{1,0,0}{Fatal error: #1}}\\}
+\newcommand{\keyvalue}[2]{\textbf{Keyvalue: #1} #2\\}
+\newcommand{\textvalue}[1]{#1\\}
+\newcommand{\excltest}[1]{\\Excluded from compare: #1}
+\newcommand{\lognewpage}{\newpage}
+\newenvironment{testcase}[1]{\section*{Test: #1}}{\newpage}
+\newenvironment{test}[1]{\section*{Test case: #1}}{}
+%Begin test data
+\begin{tablevalue}{}{ l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l }
+Date & ExternalReference & Description & Income & Expenses & Category & PaypalType & PaypalStatus & TransactionGroupId & NetBasicCurrency & FeeBasicCurrency & GrossBasicCurrency & PaypalBalance & CurrencyTo & CurrencyToAmount & ReferenceId & AccountImpact & AmountTransactionCurrency & Gross & Fee & Net & OriginalSequence & CurrencyConversionType\\
+2012-09-06 & 7GL62745MV529680S & TestCashBook CHF 250.31 & 250.31 &  & PaypalIn & Débit sur carte bancaire & Terminé & 63P67572LJ121054N & 250.31 & 0 & 250.31 & 250.31 &  & 0 & 63P67572LJ121054N & Credit & 250.31 & 250.31 & 0 & 250.31 & 33 & 1\\
+2012-09-06 & 0E078758WY0656608 & à Euro EUR 200.00 K Desktop Environment e.V. & 0 & 0 &  & Currency Conversion & Terminé & 63P67572LJ121054N & -250.31 & 0 & -250.31 &  & EUR & 200 & 63P67572LJ121054N & Debit & -250.31 & -250.31 & 0 & -250.31 & 32 & 1\\
+2012-09-06 & 32Y088286G1222116 & de la devise Franc suisse CHF 250.31 K Desktop Environment e.V. & 0 & 0 &  & Currency Conversion & Terminé & 63P67572LJ121054N & 250.31 & 0 & 250.31 & 200 & CHF & -250.31 & 63P67572LJ121054N & Credit & 200.00 & 200 & 0 & 200 & 31 & 2\\
+2012-09-06 & 63P67572LJ121054N & K Desktop Environment e.V. EUR 200.00 &  & 250.31 & PaypalOut & Don envoyé & Terminé & 63P67572LJ121054N & -250.31 & 0 & -250.31 &  &  & 0 & 63P67572LJ121054N & Debit & -200 & -200 & 0 & -200 & 30 & 3\\
+2013-03-09 & 9LB42592F60565903 & Carte bancaire CHF 14.76 & 14.76 &  & PaypalIn & Débit sur carte bancaire & Terminé & 0W728419UX548534M & 14.76 & 0 & 14.76 & 14.76 &  & 0 & 0W728419UX548534M & Credit & 14.76 & 14.76 & 0 & 14.76 & 29 & 1\\
+2013-03-09 & 1N220884GC681712G & à Dollar USD 15.00 Envato Pty Ltd & 0 & 0 &  & Currency Conversion & Terminé & 0W728419UX548534M & -14.76 & 0 & -14.76 &  & USD & 15 & 0W728419UX548534M & Debit & -14.76 & -14.76 & 0 & -14.76 & 28 & 1\\
+2013-03-09 & 9A729584BV173372Y & de la devise Franc suisse CHF 14.76 Envato Pty Ltd & 0 & 0 &  & Currency Conversion & Terminé & 0W728419UX548534M & 14.76 & 0 & 14.76 & 15 & CHF & -14.76 & 0W728419UX548534M & Credit & 15.00 & 15 & 0 & 15 & 27 & 2\\
+2013-03-09 & 0W728419UX548534M & Envato Pty Ltd USD 15.00 &  & 14.76 & PaypalOut & Paiement panier envoyé & Terminé & 0W728419UX548534M & -14.76 & 0 & -14.76 &  &  & 0 & 0W728419UX548534M & Debit & -15 & -15 & 0 & -15 & 26 & 3\\
+2013-04-08 & 8NS681177N682982Y & Carte bancaire CHF 178.09 & 178.09 &  & PaypalIn & Débit sur carte bancaire & Terminé & 8EG4679050078910L & 178.09 & 0 & 178.09 & 178.09 &  & 0 & 8EG4679050078910L & Credit & 178.09 & 178.09 & 0 & 178.09 & 25 & 1\\
+2013-04-08 & 60E57385JL567915X & à Dollar USD 185.00 Ogt Angel Mtre Gop & 0 & 0 &  & Currency Conversion & Terminé & 8EG4679050078910L & -178.09 & 0 & -178.09 &  & USD & 185 & 8EG4679050078910L & Debit & -178.09 & -178.09 & 0 & -178.09 & 24 & 1\\
+2013-04-08 & 3YU503391A1929527 & de la devise Franc suisse CHF 178.09 Ogt Angel Mtre Gop & 0 & 0 &  & Currency Conversion & Terminé & 8EG4679050078910L & 178.09 & 0 & 178.09 & 185 & CHF & -178.09 & 8EG4679050078910L & Credit & 185.00 & 185 & 0 & 185 & 23 & 2\\
+2013-04-08 & 8EG4679050078910L & Ogt Angel Mtre Gop Translations for Banana.ch. February 2013. USD 185.00 &  & 178.09 & PaypalOut & Paiement envoyé & Terminé & 8EG4679050078910L & -178.09 & 0 & -178.09 &  &  & 0 & 8EG4679050078910L & Debit & -185 & -185 & 0 & -185 & 22 & 3\\
+2013-11-13 & 33X645520C4937003 & Carte bancaire CHF 330.26 & 330.26 &  & PaypalIn & Débit sur carte bancaire & Terminé & 0N8010097N3947058 & 330.26 & 0 & 330.26 & 330.26 &  & 0 & 0N8010097N3947058 & Credit & 330.26 & 330.26 & 0 & 330.26 & 21 & 1\\
+2013-11-13 & 5W84939108778040E & à Dollar USD 349.00 PRLog & 0 & 0 &  & Currency Conversion & Terminé & 0N8010097N3947058 & -330.26 & 0 & -330.26 &  & USD & 349 & 0N8010097N3947058 & Debit & -330.26 & -330.26 & 0 & -330.26 & 20 & 1\\
+2013-11-13 & 5RR35055VM506015J & de la devise Franc suisse CHF 330.26 PRLog & 0 & 0 &  & Currency Conversion & Terminé & 0N8010097N3947058 & 330.26 & 0 & 330.26 & 349 & CHF & -330.26 & 0N8010097N3947058 & Credit & 349.00 & 349 & 0 & 349 & 19 & 2\\
+2013-11-13 & 0N8010097N3947058 & PRLog USD 349.00 &  & 330.26 & PaypalOut & Paiement sur site marchand envoyé & Terminé & 0N8010097N3947058 & -330.26 & 0 & -330.26 &  &  & 0 & 0N8010097N3947058 & Debit & -349 & -349 & 0 & -349 & 18 & 3\\
+2014-04-22 & 1Y55005284942442D & Carte bancaire CHF 253.27 & 253.27 &  & PaypalIn & Débit sur carte bancaire & Terminé & 7L913876W42900139 & 253.27 & 0 & 253.27 & 253.27 &  & 0 & 7L913876W42900139 & Credit & 253.27 & 253.27 & 0 & 253.27 & 17 & 1\\
+2014-04-22 & 53E02069C2887582W & à Euro EUR 200.00 StefXX ABuenG & 0 & 0 &  & Currency Conversion & Terminé & 7L913876W42900139 & -253.27 & 0 & -253.27 &  & EUR & 200 & 7L913876W42900139 & Debit & -253.27 & -253.27 & 0 & -253.27 & 16 & 1\\
+2014-04-22 & 98911707UM445472U & de la devise Franc suisse CHF 253.27 StefXX ABuenG & 0 & 0 &  & Currency Conversion & Terminé & 7L913876W42900139 & 253.27 & 0 & 253.27 & 200 & CHF & -253.27 & 7L913876W42900139 & Credit & 200.00 & 200 & 0 & 200 & 15 & 2\\
+2014-04-22 & 7L913876W42900139 & StefXX ABuenG EUR 200.00 &  & 253.27 & PaypalOut & Paiement sur site marchand envoyé & Terminé & 7L913876W42900139 & -253.27 & 0 & -253.27 &  &  & 0 & 7L913876W42900139 & Debit & -200 & -200 & 0 & -200 & 14 & 3\\
+2014-05-23 & 0KC943318E176223W & Carte bancaire CHF 9.24 & 9.24 &  & PaypalIn & Débit sur carte bancaire & Terminé & 9D205060F6831332B & 9.24 & 0 & 9.24 & 9.24 &  & 0 & 9D205060F6831332B & Credit & 9.24 & 9.24 & 0 & 9.24 & 13 & 1\\
+2014-05-23 & 7F511885V8761392C & à Dollar USD 10.00 ClaudXa YlbüseCti & 0 & 0 &  & Currency Conversion & Terminé & 9D205060F6831332B & -9.24 & 0 & -9.24 &  & USD & 10 & 9D205060F6831332B & Debit & -9.24 & -9.24 & 0 & -9.24 & 12 & 1\\
+2014-05-23 & 0NC48882RA090463C & de la devise Franc suisse CHF 9.24 ClaudXa YlbüseCti & 0 & 0 &  & Currency Conversion & Terminé & 9D205060F6831332B & 9.24 & 0 & 9.24 & 10 & CHF & -9.24 & 9D205060F6831332B & Credit & 10.00 & 10 & 0 & 10 & 11 & 2\\
+2014-05-23 & 9D205060F6831332B & ClaudXa YlbüseCti USD 10.00 &  & 9.24 & PaypalOut & Paiement envoyé & Terminé & 9D205060F6831332B & -9.24 & 0 & -9.24 &  &  & 0 & 9D205060F6831332B & Debit & -10 & -10 & 0 & -10 & 10 & 3\\
+2014-05-23 & 4PB55678WW9576948 & Carte bancaire CHF 1.23 & 1.23 &  & PaypalIn & Débit sur carte bancaire & Terminé & 94K22958YY5849638 & 1.23 & 0 & 1.23 & 1.23 &  & 0 & 94K22958YY5849638 & Credit & 1.23 & 1.23 & 0 & 1.23 & 9 & 1\\
+2014-05-23 & 02X39948R51627303 & à Dollar USD 1.33 ClaudXa YlbüseCti & 0 & 0 &  & Currency Conversion & Terminé & 94K22958YY5849638 & -1.23 & 0 & -1.23 &  & USD & 1.33 & 94K22958YY5849638 & Debit & -1.23 & -1.23 & 0 & -1.23 & 8 & 1\\
+2014-05-23 & 8XX118895D976591M & de la devise Franc suisse CHF 1.23 ClaudXa YlbüseCti & 0 & 0 &  & Currency Conversion & Terminé & 94K22958YY5849638 & 1.23 & 0 & 1.23 & 1.33 & CHF & -1.23 & 94K22958YY5849638 & Credit & 1.33 & 1.33 & 0 & 1.33 & 7 & 2\\
+2014-05-23 & 94K22958YY5849638 & ClaudXa YlbüseCti USD 1.33 & 0 & 0 &  & Payment Net & Terminé & 94K22958YY5849638 & -1.23 & 0.31 & -0.92 &  &  & 0 & 94K22958YY5849638 & Debit & -1.33 & -1 & -0.33 & -1.33 & 6 & 3\\
+2014-05-23 & 94K22958YY5849638 & ClaudXa YlbüseCti USD 1.00 &  & 0.92 & PaypalOut & Paiement envoyé & Terminé & 94K22958YY5849638 & -1.23 & 0.31 & -0.92 &  &  & 0 & 94K22958YY5849638 & Debit & -1 & -1 & -0.33 & -1.33 & 6 & 3\\
+2014-05-23 & 94K22958YY5849638 & ClaudXa YlbüseCti USD 0.33 &  & 0.31 & PaypalFee & Paypal Fee & Terminé & 94K22958YY5849638 & -1.23 & 0.31 & -0.92 &  &  & 0 & 94K22958YY5849638 & Debit & -0.33 & -1 & -0.33 & -1.33 & 6 & 3\\
+2014-05-23 & 2YN79011U9500702B & ClaudXa YlbüseCti USD 1.00 & 0.92 &  & PaypalIn & Paiement reçu & Terminé & 2YN79011U9500702B & 0.92 & 0 & 0.92 & 1 &  & 0 & 2YN79011U9500702B & Credit & 1.00 & 1 & 0 & 1 & 5 & 5\\
+2014-05-23 & 67X97723YG5049919 & ClaudXa YlbüseCti USD 0.67 & 0 & 0 &  & Payment Net & Terminé & 67X97723YG5049919 & 0.62 & 0.31 & 0.93 & 1.67 &  & 0 & 67X97723YG5049919 & Credit & 0.67 & 1 & -0.33 & 0.67 & 4 & 5\\
+2014-05-23 & 67X97723YG5049919 & ClaudXa YlbüseCti USD 1.00 & 0.93 &  & PaypalIn & Paiement reçu & Terminé & 67X97723YG5049919 & 0.62 & 0.31 & 0.93 & 1.67 &  & 0 & 67X97723YG5049919 & Credit & 1.00 & 1 & -0.33 & 0.67 & 4 & 5\\
+2014-05-23 & 67X97723YG5049919 & ClaudXa YlbüseCti USD 0.33 &  & 0.31 & PaypalFee & Paypal Fee & Terminé & 67X97723YG5049919 & 0.62 & 0.31 & 0.93 & 1.67 &  & 0 & 67X97723YG5049919 & Debit & -0.33 & 1 & -0.33 & 0.67 & 4 & 5\\
+2014-05-23 & 8PL96504P46072215 & ClaudXa YlbüseCti USD 10.00 & 9.25 &  & PaypalIn & Paiement reçu & Terminé & 8PL96504P46072215 & 9.25 & 0 & 9.25 & 11.67 &  & 0 & 8PL96504P46072215 & Credit & 10.00 & 10 & 0 & 10 & 3 & 5\\
+2014-05-26 & 23T501393H871732G & à Livre sterling GBP 2.00 ClaudXa YlbüseCti & 0 & 0 &  & Currency Conversion & Terminé & 8GM74196CK917543A & -3.24 & 0 & -3.24 & 8.17 & GBP & 2 & 8GM74196CK917543A & Debit & -3.5 & -3.5 & 0 & -3.5 & 2 & 7\\
+2014-05-26 & 1DY30872WB766651X & de la devise Dollar USD 3.50 ClaudXa YlbüseCti & 0 & 0 &  & Currency Conversion & Terminé & 8GM74196CK917543A & 3.24 & 0 & 3.24 & 2 & USD & -3.5 & 8GM74196CK917543A & Credit & 2.00 & 2 & 0 & 2 & 1 & 7\\
+2014-05-26 & 8GM74196CK917543A & ClaudXa YlbüseCti GBP 2.00 &  & 3.24 & PaypalOut & Paiement envoyé & Terminé & 8GM74196CK917543A & -3.24 & 0 & -3.24 &  &  & 0 & 8GM74196CK917543A & Debit & -2 & -2 & 0 & -2 & 0 & 7\\
+2014-05-26 &  & Last Balance: GBP 0.00 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+2014-05-26 &  & Last Balance: USD 8.17 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+2014-05-23 &  & Last Balance: CHF 0.00 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+2014-04-22 &  & Last Balance: EUR 0.00 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+\\
+\end{tablevalue}
+\end{document}
