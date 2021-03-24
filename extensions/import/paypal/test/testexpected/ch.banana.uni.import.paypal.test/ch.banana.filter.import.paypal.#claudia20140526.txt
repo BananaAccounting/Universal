@@ -1,0 +1,90 @@
+%%info_test_name{ch.banana.filter.import.paypal.#claudia20140526}
+\documentclass{report}
+\usepackage{longtable}
+\usepackage{color}
+\usepackage{listings}
+\usepackage[margin=1cm]{geometry}
+\begin{document}
+\newenvironment{tablevalue}[2]{\textbf{Table: #1}\begin{longtable}[l]{#2}}{\end{longtable}}
+\newenvironment{reportvalue}[1]{\textbf{Report: #1}\\}{}
+\lstnewenvironment{jsonvalue}[1]{\textbf{Json: #1}\lstset{language=Java}}{}
+\lstnewenvironment{xmlvalue}[1]{\textbf{Xml: #1}\lstset{language=Xml}}{}
+\newcommand{\info}[2]{\textit{#1: #2}\\}
+\newcommand{\fatalerror}[1]{\textbf{\textcolor[rgb]{1,0,0}{Fatal error: #1}}\\}
+\newcommand{\keyvalue}[2]{\textbf{Keyvalue: #1} #2\\}
+\newcommand{\textvalue}[1]{#1\\}
+\newcommand{\excltest}[1]{\\Excluded from compare: #1}
+\newcommand{\lognewpage}{\newpage}
+\newenvironment{testcase}[1]{\section*{Test: #1}}{\newpage}
+\newenvironment{test}[1]{\section*{Test case: #1}}{}
+%Begin test data
+\begin{tablevalue}{}{ l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l }
+Date & ExternalReference & Description & AccountDebit & AccountCredit & Amount & ExchangeCurrency & AmountCurrency & PaypalType & PaypalStatus & TransactionGroupId & NetBasicCurrency & FeeBasicCurrency & GrossBasicCurrency & PaypalBalance & CurrencyTo & CurrencyToAmount & ReferenceId & AccountImpact & AmountTransactionCurrency & Gross & Fee & Net & OriginalSequence & CurrencyConversionType\\
+2013-10-20 & INV2-M7ZL-G6QQ-MD39-EEHN & abc MEMO &  &  & 0.00 & USD & 34.95 & Invoice Received & Paid & INV2-M7ZL-G6QQ-MD39-EEHN & 0 & 0 & 0 &  &  & 0 & INV2-M7ZL-G6QQ-MD39-EEHN &  & 34.95 & 34.95 & 0 & 34.95 & 56 & 0\\
+2013-10-22 & 112801701W845023R & Bank Account & AcctCHF & PaypalIn & 100.00 & CHF & 100.00 & Funds Added From a Bank Account & Completed & 112801701W845023R & 100 & 0 & 100 & 100 &  & 0 & 112801701W845023R & Credit & 100.00 & 100 & 0 & 100 & 55 & 1\\
+2013-10-22 & 0DA79987PH414230L & To U.S. Dollar USD 34.95 abc &  & AcctCHF & 32.52 & CHF & 32.52 & Currency Conversion & Completed & 9EP337044V2090710 & -32.52 & 0 & -32.52 & 67.48 & USD & 34.95 & 9EP337044V2090710 & Debit & -32.52 & -32.52 & 0 & -32.52 & 54 & 1\\
+2013-10-22 & 8SJ75246R4985345X & From Swiss Franc CHF 32.52 abc & AcctUSD &  & 32.52 & USD & 34.95 & Currency Conversion & Completed & 9EP337044V2090710 & 32.52 & 0 & 32.52 & 34.95 & CHF & -32.52 & 9EP337044V2090710 & Credit & 34.95 & 34.95 & 0 & 34.95 & 53 & 2\\
+2013-10-22 & 9EP337044V2090710 & abc USD 34.95 & PaypalOut & AcctUSD & 32.52 & USD & 34.95 & Payment Sent & Completed & 9EP337044V2090710 & -32.52 & 0 & -32.52 &  &  & 0 & 9EP337044V2090710 & Debit & -34.95 & -34.95 & 0 & -34.95 & 52 & 3\\
+2013-10-25 & 2JD09171KB722062Y & Bank Account & AcctCHF & PaypalIn & 300.00 & CHF & 300.00 & Funds Added From a Bank Account & Completed & 2JD09171KB722062Y & 300 & 0 & 300 & 367.48 &  & 0 & 2JD09171KB722062Y & Credit & 300.00 & 300 & 0 & 300 & 51 & 1\\
+2013-10-25 & 5K897642Y90980936 & To Euro EUR 153.90 TRE, Snowboard GmbH &  & AcctCHF & 196.56 & CHF & 196.56 & Currency Conversion & Completed & 62B02440NK9653021 & -196.56 & 0 & -196.56 & 170.92 & EUR & 153.9 & 62B02440NK9653021 & Debit & -196.56 & -196.56 & 0 & -196.56 & 50 & 1\\
+2013-10-25 & 84V92001S55733410 & From Swiss Franc CHF 196.56 TRE, Snowboard GmbH & AcctEUR &  & 196.56 & EUR & 153.90 & Currency Conversion & Completed & 62B02440NK9653021 & 196.56 & 0 & 196.56 & 153.9 & CHF & -196.56 & 62B02440NK9653021 & Credit & 153.90 & 153.9 & 0 & 153.9 & 49 & 2\\
+2013-10-25 & 62B02440NK9653021 & TRE, Snowboard GmbH EUR 153.90 & PaypalOut & AcctEUR & 196.56 & EUR & 153.90 & Mobile Express Checkout Payment Sent & Partially Refunded & 62B02440NK9653021 & -196.56 & 0 & -196.56 &  &  & 0 & 62B02440NK9653021 & Debit & -153.9 & -153.9 & 0 & -153.9 & 48 & 3\\
+2013-11-15 & 874929164N4493835 & TRE, Snowboard GmbH EUR 129.95 & AcctEUR & PaypalIn & 165.98 & EUR & 129.95 & Refund & Completed & 8HF13891G5210120T & 165.98 & 0 & 165.98 & 129.95 &  & 0 & 62B02440NK9653021 & Credit & 129.95 & 129.95 & 0 & 129.95 & 47 & 3\\
+2013-11-15 & 3D272994M3975762L & To Swiss Franc CHF 165.98 TRE, Snowboard GmbH &  & AcctEUR & 165.98 & EUR & 129.95 & Currency Conversion & Completed & 8HF13891G5210120T & -165.98 & 0 & -165.98 &  & CHF & 165.98 & 62B02440NK9653021 & Debit & -129.95 & -129.95 & 0 & -129.95 & 46 & 2\\
+2013-11-15 & 8HF13891G5210120T & From Euro EUR 129.95 TRE, Snowboard GmbH & AcctCHF &  & 165.98 & CHF & 165.98 & Currency Conversion & Completed & 8HF13891G5210120T & 165.98 & 0 & 165.98 & 336.9 & EUR & -129.95 & 62B02440NK9653021 & Credit & 165.98 & 165.98 & 0 & 165.98 & 45 & 1\\
+2013-12-07 & O-89P025684G486612M & web \& tzu MEMO &  &  & 0.00 & EUR & 0.00 & Order & Completed & O-89P025684G486612M & 0 & 0 & 0 &  &  & 0 & O-89P025684G486612M &  & 0.00 & -88 & 0 & 0 & 44 & 0\\
+2013-12-07 & 2XA02666497814244 & PayPal & PaypalOut & AcctCHF & 111.80 & CHF & 111.80 & Pending Balance Payment & Placed & 2XA02666497814244 & -111.8 & 0 & -111.8 & 225.1 &  & 0 & 2KW33887SB602302H & Debit & -111.8 & -111.8 & 0 & -111.8 & 43 & 1\\
+2013-12-10 & 71M307208W3047200 & PayPal & AcctCHF & PaypalIn & 111.80 & CHF & 111.80 & Pending Balance Payment & Removed & 71M307208W3047200 & 111.8 & 0 & 111.8 & 336.9 &  & 0 & 2XA02666497814244 & Credit & 111.80 & 111.8 & 0 & 111.8 & 42 & 1\\
+2013-12-10 & 81M91357YE050874X & To Euro EUR 88.00 web \& tzu &  & AcctCHF & 111.54 & CHF & 111.54 & Currency Conversion & Completed & 3M356855B62456316 & -111.54 & 0 & -111.54 & 225.36 & EUR & 88 & 702746843U7373147 & Debit & -111.54 & -111.54 & 0 & -111.54 & 41 & 1\\
+2013-12-10 & 3M356855B62456316 & From Swiss Franc CHF 111.54 web \& tzu & AcctEUR &  & 111.54 & EUR & 88.00 & Currency Conversion & Completed & 3M356855B62456316 & 111.54 & 0 & 111.54 & 88 & CHF & -111.54 & 702746843U7373147 & Credit & 88.00 & 88 & 0 & 88 & 40 & 2\\
+2013-12-10 & 702746843U7373147 & web \& tzu EUR 88.00 & PaypalOut & AcctEUR & 111.54 & EUR & 88.00 & Mobile Express Checkout Payment Sent & Partially Refunded & 702746843U7373147 & -111.54 & 0 & -111.54 &  &  & 0 & 2KW33887SB602302H & Debit & -88 & -88 & 0 & -88 & 39 & 5\\
+2013-12-27 & 9KJ52601EL5356702 & web \& tzu EUR 79.00 & AcctEUR & PaypalIn & 100.13 & EUR & 79.00 & Refund & Completed & 8WK29098SA9111713 & 100.13 & 0 & 100.13 & 79 &  & 0 & 702746843U7373147 & Credit & 79.00 & 79 & 0 & 79 & 38 & 3\\
+2013-12-27 & 227789634L069314R & To Swiss Franc CHF 100.13 web \& tzu &  & AcctEUR & 100.13 & EUR & 79.00 & Currency Conversion & Completed & 8WK29098SA9111713 & -100.13 & 0 & -100.13 &  & CHF & 100.13 & 702746843U7373147 & Debit & -79 & -79 & 0 & -79 & 37 & 2\\
+2013-12-27 & 8WK29098SA9111713 & From Euro EUR 79.00 web \& tzu & AcctCHF &  & 100.13 & CHF & 100.13 & Currency Conversion & Completed & 8WK29098SA9111713 & 100.13 & 0 & 100.13 & 325.49 & EUR & -79 & 702746843U7373147 & Credit & 100.13 & 100.13 & 0 & 100.13 & 36 & 1\\
+2014-01-04 & 3ER4152504135214J & To British Pound GBP 76.48 ere Performance Centre Ltd &  & AcctCHF & 117.95 & CHF & 117.95 & Currency Conversion & Completed & 8YF703968J409572V & -117.95 & 0 & -117.95 & 207.54 & GBP & 76.48 & 8YF703968J409572V & Debit & -117.95 & -117.95 & 0 & -117.95 & 35 & 1\\
+2014-01-04 & 61F45238Y0901943K & From Swiss Franc CHF 117.95 ere Performance Centre Ltd & AcctGBP &  & 117.95 & GBP & 76.48 & Currency Conversion & Completed & 8YF703968J409572V & 117.95 & 0 & 117.95 & 76.48 & CHF & -117.95 & 8YF703968J409572V & Credit & 76.48 & 76.48 & 0 & 76.48 & 34 & 2\\
+2014-01-04 & 8YF703968J409572V & ere Performance Centre Ltd GBP 76.48 & PaypalOut & AcctGBP & 117.95 & GBP & 76.48 & Mobile Express Checkout Payment Sent & Completed & 8YF703968J409572V & -117.95 & 0 & -117.95 &  &  & 0 & 8YF703968J409572V & Debit & -76.48 & -76.48 & 0 & -76.48 & 33 & 3\\
+2014-01-16 & 8DX36493UU2824035 & To Euro EUR 131.80 TRE, Snowboard GmbH &  & AcctCHF & 168.51 & CHF & 168.51 & Currency Conversion & Completed & 6A324527KF426083J & -168.51 & 0 & -168.51 & 39.03 & EUR & 131.8 & 6A324527KF426083J & Debit & -168.51 & -168.51 & 0 & -168.51 & 32 & 1\\
+2014-01-16 & 448554324Y694162E & From Swiss Franc CHF 168.51 TRE, Snowboard GmbH & AcctEUR &  & 168.51 & EUR & 131.80 & Currency Conversion & Completed & 6A324527KF426083J & 168.51 & 0 & 168.51 & 131.8 & CHF & -168.51 & 6A324527KF426083J & Credit & 131.80 & 131.8 & 0 & 131.8 & 31 & 2\\
+2014-01-16 & 6A324527KF426083J & TRE, Snowboard GmbH EUR 131.80 & PaypalOut & AcctEUR & 168.51 & EUR & 131.80 & Express Checkout Payment Sent & Completed & 6A324527KF426083J & -168.51 & 0 & -168.51 &  &  & 0 & 6A324527KF426083J & Debit & -131.8 & -131.8 & 0 & -131.8 & 30 & 3\\
+2014-01-23 & 9UK9138814714351W & Bank Account & AcctCHF & PaypalIn & 600.00 & CHF & 600.00 & Funds Added From a Bank Account & Completed & 9UK9138814714351W & 600 & 0 & 600 & 639.03 &  & 0 & 9UK9138814714351W & Credit & 600.00 & 600 & 0 & 600 & 29 & 1\\
+2014-01-23 & 28D3373574683045T & To British Pound GBP 270.22 ere Performance Centre Ltd &  & AcctCHF & 419.03 & CHF & 419.03 & Currency Conversion & Completed & 94260070WL9614734 & -419.03 & 0 & -419.03 & 220 & GBP & 270.22 & 94260070WL9614734 & Debit & -419.03 & -419.03 & 0 & -419.03 & 28 & 1\\
+2014-01-23 & 0E77582135689511H & From Swiss Franc CHF 419.03 ere Performance Centre Ltd & AcctGBP &  & 419.03 & GBP & 270.22 & Currency Conversion & Completed & 94260070WL9614734 & 419.03 & 0 & 419.03 & 270.22 & CHF & -419.03 & 94260070WL9614734 & Credit & 270.22 & 270.22 & 0 & 270.22 & 27 & 2\\
+2014-01-23 & 94260070WL9614734 & ere Performance Centre Ltd GBP 270.22 & PaypalOut & AcctGBP & 419.03 & GBP & 270.22 & Express Checkout Payment Sent & Completed & 94260070WL9614734 & -419.03 & 0 & -419.03 &  &  & 0 & 94260070WL9614734 & Debit & -270.22 & -270.22 & 0 & -270.22 & 26 & 3\\
+2014-01-25 & 0SM17074AJ3863846 & Bank Account & AcctCHF & PaypalIn & 300.00 & CHF & 300.00 & Funds Added From a Bank Account & Completed & 0SM17074AJ3863846 & 300 & 0 & 300 & 520 &  & 0 & 0SM17074AJ3863846 & Credit & 300.00 & 300 & 0 & 300 & 25 & 1\\
+2014-02-01 & 86B142545S020682X & iop Verlag GmbH MEMO &  &  & 11.00 & CHF & 11.00 & Authorization & Completed & 6MT96926NG6668231 & -11 & 0 & -11 & 520 &  & 0 & 86B142545S020682X &  & 11.00 & -11 & 0 & -11 & 24 & 1\\
+2014-02-01 & 6MT96926NG6668231 & PayPal & PaypalOut & AcctCHF & 11.00 & CHF & 11.00 & Temporary Hold & Placed & 6MT96926NG6668231 & -11 & 0 & -11 & 509 &  & 0 & 86B142545S020682X & Debit & -11 & -11 & 0 & -11 & 23 & 1\\
+2014-02-05 & 6G620672TL2887717 & PayPal & AcctCHF & PaypalIn & 11.00 & CHF & 11.00 & Temporary Hold & Removed & 6G620672TL2887717 & 11 & 0 & 11 & 520 &  & 0 & 6MT96926NG6668231 & Credit & 11.00 & 11 & 0 & 11 & 22 & 1\\
+2014-02-05 & 4N913662T0903441P & ABC GmbH & PaypalOut & AcctCHF & 11.00 & CHF & 11.00 & Mobile Express Checkout Payment Sent & Completed & 4N913662T0903441P & -11 & 0 & -11 & 509 &  & 0 & 86B142545S020682X & Debit & -11 & -11 & 0 & -11 & 21 & 1\\
+2014-03-31 & 1PL606786F193062X & To British Pound GBP 71.94 Future Publishing Limited &  & AcctCHF & 110.02 & CHF & 110.02 & Currency Conversion & Completed & 1YD24602Y8150243D & -110.02 & 0 & -110.02 & 398.98 & GBP & 71.94 & 1YD24602Y8150243D & Debit & -110.02 & -110.02 & 0 & -110.02 & 20 & 1\\
+2014-03-31 & 9TJ55096MU709331G & From Swiss Franc CHF 110.02 Future Publishing Limited & AcctGBP &  & 110.02 & GBP & 71.94 & Currency Conversion & Completed & 1YD24602Y8150243D & 110.02 & 0 & 110.02 & 71.94 & CHF & -110.02 & 1YD24602Y8150243D & Credit & 71.94 & 71.94 & 0 & 71.94 & 19 & 2\\
+2014-03-31 & 1YD24602Y8150243D & Future Publishing Limited GBP 71.94 & PaypalOut & AcctGBP & 110.02 & GBP & 71.94 & Express Checkout Payment Sent & Completed & 1YD24602Y8150243D & -110.02 & 0 & -110.02 &  &  & 0 & 1YD24602Y8150243D & Debit & -71.94 & -71.94 & 0 & -71.94 & 18 & 3\\
+2014-04-30 & 8AU23286RY9708407 & To Euro EUR 56.85 ABC &  & AcctCHF & 71.99 & CHF & 71.99 & Currency Conversion & Completed & 5X650475E39247533 & -71.99 & 0 & -71.99 & 326.99 & EUR & 56.85 & 5X650475E39247533 & Debit & -71.99 & -71.99 & 0 & -71.99 & 17 & 1\\
+2014-04-30 & 9V685154M63283203 & From Swiss Franc CHF 71.99 ABC & AcctEUR &  & 71.99 & EUR & 56.85 & Currency Conversion & Completed & 5X650475E39247533 & 71.99 & 0 & 71.99 & 56.85 & CHF & -71.99 & 5X650475E39247533 & Credit & 56.85 & 56.85 & 0 & 56.85 & 16 & 2\\
+2014-04-30 & 5X650475E39247533 & ABC EUR 56.85 & PaypalOut & AcctEUR & 71.99 & EUR & 56.85 & Shopping Cart Payment Sent & Completed & 5X650475E39247533 & -71.99 & 0 & -71.99 &  &  & 0 & 5X650475E39247533 & Debit & -56.85 & -56.85 & 0 & -56.85 & 15 & 3\\
+2014-05-02 & 1PK776478F880913J & To Euro EUR 11.48 ABC &  & AcctCHF & 14.53 & CHF & 14.53 & Currency Conversion & Completed & 22G025354K4810830 & -14.53 & 0 & -14.53 & 312.46 & EUR & 11.48 & 22G025354K4810830 & Debit & -14.53 & -14.53 & 0 & -14.53 & 14 & 1\\
+2014-05-02 & 9LF81776AE7174810 & From Swiss Franc CHF 14.53 ABC & AcctEUR &  & 14.53 & EUR & 11.48 & Currency Conversion & Completed & 22G025354K4810830 & 14.53 & 0 & 14.53 & 11.48 & CHF & -14.53 & 22G025354K4810830 & Credit & 11.48 & 11.48 & 0 & 11.48 & 13 & 2\\
+2014-05-02 & 22G025354K4810830 & ABC EUR 11.48 & PaypalOut & AcctEUR & 14.53 & EUR & 11.48 & Shopping Cart Payment Sent & Completed & 22G025354K4810830 & -14.53 & 0 & -14.53 &  &  & 0 & 22G025354K4810830 & Debit & -11.48 & -11.48 & 0 & -11.48 & 12 & 3\\
+2014-05-20 & 6S9130603T811004U & To Euro EUR 76.77 O. und M. Schmidt GbR &  & AcctCHF & 97.41 & CHF & 97.41 & Currency Conversion & Completed & 0NM61983NV368872B & -97.41 & 0 & -97.41 & 215.05 & EUR & 76.77 & 0NM61983NV368872B & Debit & -97.41 & -97.41 & 0 & -97.41 & 11 & 1\\
+2014-05-20 & 21V5548679964411E & From Swiss Franc CHF 97.41 O. und M. Schmidt GbR & AcctEUR &  & 97.41 & EUR & 76.77 & Currency Conversion & Completed & 0NM61983NV368872B & 97.41 & 0 & 97.41 & 76.77 & CHF & -97.41 & 0NM61983NV368872B & Credit & 76.77 & 76.77 & 0 & 76.77 & 10 & 2\\
+2014-05-20 & 0NM61983NV368872B & O. und M. Schmidt GbR EUR 76.77 & PaypalOut & AcctEUR & 97.41 & EUR & 76.77 & Web Accept Payment Sent & Completed & 0NM61983NV368872B & -97.41 & 0 & -97.41 &  &  & 0 & 0NM61983NV368872B & Debit & -76.77 & -76.77 & 0 & -76.77 & 9 & 3\\
+2014-05-20 & 1BR193533T036190M & Barbara abc & PaypalOut & AcctCHF & 23.25 & CHF & 23.25 & Web Accept Payment Sent & Completed & 1BR193533T036190M & -23.25 & 0 & -23.25 & 191.8 &  & 0 & 1BR193533T036190M & Debit & -23.25 & -23.25 & 0 & -23.25 & 8 & 1\\
+2014-05-23 & 1JR14763D0818403S & abc USD 9.36 & AcctUSD &  & 8.68 & USD & 9.36 & Payment Net & Completed & 1JR14763D0818403S & 8.68 & 0.59 & 9.27 & 9.36 &  & 0 & 1JR14763D0818403S & Credit & 9.36 & 10 & -0.64 & 9.36 & 7 & 5\\
+2014-05-23 & 1JR14763D0818403S & abc USD 10.00 &  & PaypalIn & 9.27 & USD & 10.00 & Payment Received & Completed & 1JR14763D0818403S & 8.68 & 0.59 & 9.27 & 9.36 &  & 0 & 1JR14763D0818403S & Credit & 10.00 & 10 & -0.64 & 9.36 & 7 & 5\\
+2014-05-23 & 1JR14763D0818403S & abc USD 0.64 & PaypalFee &  & 0.59 & USD & 0.64 & Paypal Fee & Completed & 1JR14763D0818403S & 8.68 & 0.59 & 9.27 & 9.36 &  & 0 & 1JR14763D0818403S & Debit & -0.64 & 10 & -0.64 & 9.36 & 7 & 5\\
+2014-05-23 & 3TV45039UA5869927 & abc USD 1.00 & AcctUSD & PaypalIn & 0.93 & USD & 1.00 & Payment Received & Completed & 3TV45039UA5869927 & 0.93 & 0 & 0.93 & 10.36 &  & 0 & 3TV45039UA5869927 & Credit & 1.00 & 1 & 0 & 1 & 6 & 5\\
+2014-05-23 & 71N32306BD425380A & abc USD 1.00 & PaypalOut & AcctUSD & 0.93 & USD & 1.00 & Payment Sent & Completed & 71N32306BD425380A & -0.93 & 0 & -0.93 & 9.36 &  & 0 & 71N32306BD425380A & Debit & -1 & -1 & 0 & -1 & 5 & 5\\
+2014-05-23 & 1A6163875J082744Y & abc USD 1.00 & PaypalOut & AcctUSD & 0.93 & USD & 1.00 & Payment Sent & Completed & 1A6163875J082744Y & -0.93 & 0 & -0.93 & 8.36 &  & 0 & 1A6163875J082744Y & Debit & -1 & -1 & 0 & -1 & 4 & 5\\
+2014-05-23 & 6SA3002729015384S & To U.S. Dollar USD 1.64 abc &  & AcctCHF & 1.52 & CHF & 1.52 & Currency Conversion & Completed & 1P328225W1244883W & -1.52 & 0 & -1.52 & 190.28 & USD & 1.64 & 1P328225W1244883W & Debit & -1.52 & -1.52 & 0 & -1.52 & 3 & 1\\
+2014-05-23 & 9NM82989X80134007 & From Swiss Franc CHF 1.52 abc & AcctUSD &  & 1.52 & USD & 1.64 & Currency Conversion & Completed & 1P328225W1244883W & 1.52 & 0 & 1.52 & 10 & CHF & -1.52 & 1P328225W1244883W & Credit & 1.64 & 1.64 & 0 & 1.64 & 2 & 2\\
+2014-05-23 & 1P328225W1244883W & abc USD 10.00 & PaypalOut & AcctUSD & 9.27 & USD & 10.00 & Payment Sent & Completed & 1P328225W1244883W & -9.27 & 0 & -9.27 &  &  & 0 & 1P328225W1244883W & Debit & -10 & -10 & 0 & -10 & 1 & 4\\
+2014-05-26 & 0E0505777U1661916 & abc GBP 1.73 & AcctGBP &  & 2.65 & GBP & 1.73 & Payment Net & Completed & 0E0505777U1661916 & 2.65 & 0.41 & 3.06 & 1.73 &  & 0 & 0E0505777U1661916 & Credit & 1.73 & 2 & -0.27 & 1.73 & 0 & 7\\
+2014-05-26 & 0E0505777U1661916 & abc GBP 2.00 &  & PaypalIn & 3.06 & GBP & 2.00 & Payment Received & Completed & 0E0505777U1661916 & 2.65 & 0.41 & 3.06 & 1.73 &  & 0 & 0E0505777U1661916 & Credit & 2.00 & 2 & -0.27 & 1.73 & 0 & 7\\
+2014-05-26 & 0E0505777U1661916 & abc GBP 0.27 & PaypalFee &  & 0.41 & GBP & 0.27 & Paypal Fee & Completed & 0E0505777U1661916 & 2.65 & 0.41 & 3.06 & 1.73 &  & 0 & 0E0505777U1661916 & Debit & -0.27 & 2 & -0.27 & 1.73 & 0 & 7\\
+2014-05-26 &  & Last Balance: GBP 1.73 & AcctGBP &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+2014-05-23 &  & Last Balance: USD 0.00 & AcctUSD &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+2014-05-23 &  & Last Balance: CHF 190.28 & AcctCHF &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+2014-05-20 &  & Last Balance: EUR 0.00 & AcctEUR &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+\\
+\end{tablevalue}
+\end{document}
