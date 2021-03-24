@@ -23,7 +23,7 @@ BasePage {
             Layout.fillHeight: true
 
             Text {
-               text: qsTr("Reclassified Assets variation")
+               text: qsTr("Reclassified assets evolution")
                font.pixelSize: Stylesheet.titleFontSize
                Layout.bottomMargin: Stylesheet.defaultMargin
                Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
