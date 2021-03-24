@@ -15,7 +15,7 @@
 //
 // @id = ch.banana.uni.import.paypal
 // @api = 1.0
-// @pubdate = 2021-01-07
+// @pubdate = 2021-03-24
 // @publisher = Banana.ch SA
 // @description = PayPal Import (*.csv)
 // @doctype = *
@@ -61,6 +61,11 @@ function exec(string) {
 			if (!userParam)
 				return String();
 		}
+
+		// Verify params
+		if (!Param_Verify(userParam, fileData)) {
+			return String();
+		}
 	}
 	else {
 		// assume we are in test mode or script has been started
@@ -68,8 +73,8 @@ function exec(string) {
 		Banana_GetValuesForTest(userParam, fileData);
 	}
 
-	// Complete param with input
-	if (!Param_Verify(userParam, fileData)) {
+	// Verify paypal account
+	if (!Param_Verify_PaypalAccount(userParam, fileData)) {
 		return String();
 	}
 
@@ -214,6 +219,12 @@ function Param_Verify(param, fileData) {
 		AddMessage('PaypalFee not defined using PaypalFee');
 		param.AccountList['PaypalFee'] = 'PaypalFee';
 	}
+	return true;
+}
+
+function Param_Verify_PaypalAccount(param, fileData) {
+	if (!param.BasicCurrency || !param.AccountList || !param.AccountType)
+		return false;
 
 	// check if PaypalAccount has been defined
 	var paypalAccountDefined = Boolean(param.AccountList[param.BasicCurrency]);
@@ -233,7 +244,6 @@ function Param_Verify(param, fileData) {
 		AddMessage('PaypalAccount not defined using PaypalAccount');
 		param.AccountList[param.BasicCurrency] = 'PaypalAccount';
 	}
-
 	
 	return true;
 }
@@ -554,23 +564,26 @@ function readCurrencies(param, fileData) {
 		;
 	}
 	CreateAmountsInBasicCurrency_CreateListUnconvertedExchangeRates(param, fileData);
+
+	var savedParam = {};
+	if (Banana.document
+		&& Banana.document.getScriptSettings()) {
+		savedParam = JSON.parse(Banana.document.getScriptSettings());
+	}
+
 	var unconvertedCurrencies = Object.keys(fileData.listUnconvertedCurrencies).length;
 	if (unconvertedCurrencies) {
-		var savedParam = {};
-		if (Banana.document
-			&& Banana.document.getScriptSettings()) {
-			savedParam = JSON.parse(Banana.document.getScriptSettings());
-		}
 		for (var currency in fileData.listUnconvertedCurrencies) {
 			var exchangeRate = 0;
 			if (savedParam.ExchangeRateList && savedParam.ExchangeRateList[currency])
 				exchangeRate = savedParam.ExchangeRateList[currency];
 			param.ExchangeRateList[currency] = Banana.Converter.toInternalNumberFormat(exchangeRate);
 		}
-		if (Banana.document) {
-			savedParam.ExchangeRateList = param.ExchangeRateList;
-			Banana.document.setScriptSettings(JSON.stringify(savedParam));
-		}
+	}
+
+	if (Banana.document) {
+		savedParam.ExchangeRateList = param.ExchangeRateList;
+		Banana.document.setScriptSettings(JSON.stringify(savedParam));
 	}
 }
 
@@ -1714,9 +1727,9 @@ function Banana_GetValuesForTest(param, fileData) {
 		param.AccountType = 100;
 		param.IsMultiCurrency = true;
 		param.AccountList['CHF'] = 'AcctCHF'
-			param.AccountList['EUR'] = 'AcctEUR'
-			param.AccountList['USD'] = 'AcctUSD'
-			param.AccountList['GBP'] = 'AcctGBP'
+		param.AccountList['EUR'] = 'AcctEUR'
+		param.AccountList['USD'] = 'AcctUSD'
+		param.AccountList['GBP'] = 'AcctGBP'
 	}
 	param.AccountList['PaypalIn'] = 'PaypalIn';
 	param.AccountList['PaypalOut'] = 'PaypalOut';
