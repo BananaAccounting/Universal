@@ -31,6 +31,11 @@
  * Parse the paypal file and and return a string in with data in tab separated
  */
 function exec(string) {
+
+	if (!verifyBananaVersion()) {
+        return "@Cancel";
+    }
+
 	var userParam = initUserParam();
 	// include all data read and other
 	
@@ -89,6 +94,38 @@ function exec(string) {
 	// OwnFunction(param, exportArray);
     // export the data
 	return ExportTransactions(userParam, fileData, exportArray);
+}
+
+function verifyBananaVersion() {
+	var BAN_VERSION_MIN = "10.0.5";
+
+	var supportedVersion = false;
+	if (Banana.compareVersion && Banana.compareVersion(Banana.application.version, BAN_VERSION_MIN) >= 0) {
+		supportedVersion = true;
+	}
+
+	if (!supportedVersion) {
+		var lang = 'en';
+		if (Banana.document) {
+			if (Banana.document.locale)
+				lang = Banana.document.locale;
+			if (lang.length > 2)
+				lang = lang.substr(0, 2);
+		}
+		var msg = "This script does not run with your current version of Banana Accounting.\nMinimum version required: %1.\nTo update or for more information click on Help";
+		if (lang == 'it')
+			msg = "Lo script non funziona con la vostra attuale versione di Banana Contabilità.\nVersione minimina richiesta: %1.\nPer aggiornare o per maggiori informazioni cliccare su Aiuto";
+		else if (lang == 'fr')
+			msg = "Ce script ne s'exécute pas avec votre version actuelle de Banana Comptabilité.\nVersion minimale requise: %1.\nPour mettre à jour ou pour plus d'informations, cliquez sur Aide";
+		else if (lang == 'de')
+			msg = "Das Skript wird mit Ihrer aktuellen Version von Banana Buchhaltung nicht ausgeführt.\nMindestversion erforderlich: %1.\nKlicken Sie auf Hilfe, um zu aktualisieren oder weitere Informationen zu bekommen";
+
+		msg = msg.replace("%1", BAN_VERSION_MIN);
+		if (Banana.document)
+			Banana.document.addMessage(msg, this.ID_ERR_VERSION_NOTSUPPORTED);
+		return false;
+	}
+	return true;
 }
 
 function Param_DialogDateFormat(param) {
