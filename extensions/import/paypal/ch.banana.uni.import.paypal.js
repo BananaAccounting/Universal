@@ -33,7 +33,7 @@
 function exec(string) {
 
 	if (!verifyBananaVersion()) {
-        return "@Cancel";
+        return String();
     }
 
 	var userParam = initUserParam();
