@@ -23,6 +23,7 @@ My Company \\
 Via Delle Scuole, 6900 Lugano \\
 \begin{longtable}[l]{ l  l  l  l }
 BALANCE Description  & Acronym  & 2020  & Budget \\
+\multicolumn{4}{l}{Assets }\\
 Liquidity  & liqu  & 8'170.00  & 1'145.00 \\
 Credits  & cred  & -6'180.00  & 220.00 \\
 Stocks  & stoc  & -2'000.00  & 0.00 \\
@@ -33,6 +34,7 @@ Tangible Fixed Assets  & tanfix  & 11'000.00  & 800.00 \\
 Intangible Fixed Assets  & intfix  & 0.00  & 0.00 \\
 Total Fixed Assets  & fixa  & 11'000.00  & 800.00 \\
 Total Assets  & tota  & 11'110.00  & 2'165.00 \\
+\multicolumn{4}{l}{Liabilities and Equity }\\
 Debts  & dbts  & 22'980.00  & 1'010.00 \\
 Accruals and Deferred Income  & accr  & 4'500.00  & 0.00 \\
 Short term Debt Capital  & stdc  & 27'480.00  & 1'010.00 \\
@@ -104,7 +106,9 @@ Personnel Cost per Employee  & cope/employees  & >0  & 500.00  & 0.00 \\
 \end{longtable}
 \begin{longtable}[l]{ l  l  l }
 CASH FLOW ANALYSIS (INDIRECT METHOD) Description  & 2020  & Budget \\
-Final Result  & -16'180.00  & 1'145.00 \\
+Annual result  & -16'180.00  & 1'145.00 \\
+- Gain on sales of Fixed Assets  & 0.00  & 0.00 \\
++ Loss on sales Fixed Assets  & 0.00  & 0.00 \\
 + Depreciations and adjustments  & 1'500.00  & 0.00 \\
 +/- (+)Creation and (-)release of provisions  & 0.00  & 0.00 \\
 \multicolumn{3}{l}{Adjustment with assets accounts  }\\
@@ -157,6 +161,6 @@ ALTMAN INDEX Z-SCORE 2020  & Budget \\
 for values > than 3 correspond a low probability of a financial crisis \\
 for values >= than 1.8 but <= than 3 there are possibilities of a financial crisis, should be kept under control \\
 for values < than 1.8 there is a strong probability of a financial crisis \\
-\excltest{24.03.2021} \\
+\excltest{25.03.2021} \\
 \end{reportvalue}
 \end{document}

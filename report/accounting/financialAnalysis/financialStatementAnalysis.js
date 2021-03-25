@@ -891,6 +891,19 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         for (var i = this.data.length - 1; i >= 0; i--) {
             tableRow.addCell(this.toLocaleAmountFormat(this.data[i].finalresult.finalresult.balance), "styleNormalAmount");
         }
+
+        //Gain on Sales
+        var tableRow = tableCashflow.addRow("styleTablRows");
+        tableRow.addCell(texts.gain_on_sales, "styleTablRows");
+        for (var i = this.data.length - 1; i >= 0; i--) {
+            tableRow.addCell(this.toLocaleAmountFormat(this.data[i].calculated_data.fixedassets_gain), "styleNormalAmount");
+        }
+        //Loss on Sales
+        var tableRow = tableCashflow.addRow("styleTablRows");
+        tableRow.addCell(texts.gain_on_loss, "styleTablRows");
+        for (var i = this.data.length - 1; i >= 0; i--) {
+            tableRow.addCell(this.toLocaleAmountFormat(this.data[i].calculated_data.fixedassets_loss), "styleNormalAmount");
+        }
         //Depreciations and Adjustments
         var tableRow = tableCashflow.addRow("styleTablRows");
         tableRow.addCell("+ " + this.data[0].profitandloss.depreandadjust.description, "styleTablRows");
@@ -1474,6 +1487,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         texts.opening_liquidity = qsTr("Cash at the beginning of the period");
         texts.closing_liquidity = qsTr("Cash at the end of the period")
         texts.delta_liquidity = qsTr("Difference");
+        texts.gain_on_sales = qsTr("- Gain on sales of Fixed Assets");
+        texts.gain_on_loss = qsTr("+ Loss on sales Fixed Assets");
 
         /******************************************************************************************
          * texts for titles,headers,..
@@ -2072,9 +2087,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                     //Banana.console.debug(bal.amount);
                 }
                 //Banana.console.debug(JSON.stringify(bal.balance));
+                var mult = -1;
                 if (bal) {
                     //save the balance
-                    var mult = -1;
                     if (dialogparam[key].bclass === "1") {
                         dialogparam[key].balance = bal.balance;
                         dialogparam[key].opening = bal.opening;
@@ -2101,16 +2116,30 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                     //Banana.console.debug(JSON.stringify("********************************"));
                 }
                 if (transactions) {
-                    //find the disinvestments in the transactions
                     for (var i = 0; i < transactions.rowCount; i++) {
                         let tRow = transactions.row(i);
                         let description = tRow.value('JDescription');
 
+                        //find the Disinvestmenst
                         if (description.indexOf("#disinvest") >= 0) {
                             var jAmount = tRow.value('JAmount');
                             jAmount = Banana.SDecimal.abs(jAmount);
 
                             dialogparam[key].disinvestments = Banana.SDecimal.add(dialogparam[key].disinvestments, jAmount);
+                        }
+                        //find the gain on the sales
+                        if (description.indexOf("#gain") >= 0) {
+                            var jAmount = tRow.value('JAmount');
+                            jAmount = Banana.SDecimal.abs(jAmount);
+
+                            dialogparam[key].gain = Banana.SDecimal.add(dialogparam[key].gain, jAmount);
+                        }
+                        //find the loss on the sales
+                        if (description.indexOf("#loss") >= 0) {
+                            var jAmount = tRow.value('JAmount');
+                            jAmount = Banana.SDecimal.abs(jAmount);
+
+                            dialogparam[key].loss = Banana.SDecimal.add(dialogparam[key].loss, jAmount);
                         }
                     }
 
@@ -2151,6 +2180,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentassets = Banana.SDecimal.add(currentassets, prepaid_expenses);
         calcdata.currentassets = currentassets;
 
+
+        //ottimizzare con ciclo for
         //Fixed Assets (final balance)
         var fixedassets = Banana.SDecimal.add(data.balance.fa.financial_fixedassets.balance, data.balance.fa.tangible_fixedassets.balance);
         fixedassets = Banana.SDecimal.add(fixedassets, data.balance.fa.intangible_fixedassets.balance);
@@ -2163,6 +2194,15 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var totalassets = Banana.SDecimal.add(currentassets, fixedassets);
         calcdata.totalassets = totalassets;
 
+        //Fixed Assets gain
+        var fixedassets_gain = Banana.SDecimal.add(data.balance.fa.financial_fixedassets.gain, data.balance.fa.tangible_fixedassets.gain);
+        fixedassets = Banana.SDecimal.add(fixedassets, data.balance.fa.intangible_fixedassets.gain);
+        calcdata.fixedassets_gain = fixedassets_gain;
+
+        //Fixed Assets losses
+        var fixedassets_loss = Banana.SDecimal.add(data.balance.fa.financial_fixedassets.loss, data.balance.fa.tangible_fixedassets.loss);
+        fixedassets = Banana.SDecimal.add(fixedassets, data.balance.fa.intangible_fixedassets.loss);
+        calcdata.fixedassets_loss = fixedassets_loss;
 
 
         /************************************************************************************************
@@ -2619,7 +2659,10 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
          * calculate the Cashflow from operations
          ***************************************************/
         cashflow.from_operations = data.finalresult.finalresult.delta;
+        cashflow.from_operations = Banana.SDecimal.subtract(cashflow.from_operations, calculated_data.fixedassets_gain);
+        cashflow.from_operations = Banana.SDecimal.add(cashflow.from_operations, calculated_data.fixedassets_loss);
         cashflow.from_operations = Banana.SDecimal.add(cashflow.from_operations, data.profitandloss.depreandadjust.balance);
+        cashflow.from_operations = Banana.SDecimal.add(cashflow.from_operations, calculated_data.fixedassets_gain_loss_delta);
         cashflow.from_operations = Banana.SDecimal.add(cashflow.from_operations, data.balance.ltdc.provisionsandsimilar.delta);
         cashflow.from_operations = Banana.SDecimal.add(cashflow.from_operations, data.balance.ca.credits.delta);
         cashflow.from_operations = Banana.SDecimal.add(cashflow.from_operations, data.balance.ca.stocks.delta);
@@ -2645,7 +2688,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         let fixedassets_balance = Banana.SDecimal.abs(calculated_data.fixedassets);
         cashflow.investments = Banana.SDecimal.add(cashflow.investments, fixedassets_balance);
         cashflow.investments = Banana.SDecimal.subtract(cashflow.investments, fixedassets_opening);
-
+        //Adjusting the calculation with capital gain and loss
+        cashflow.investments = Banana.SDecimal.subtract(cashflow.investments, calculated_data.fixedassets_gain);
+        cashflow.investments = Banana.SDecimal.add(cashflow.investments, calculated_data.fixedassets_loss);
         //then calculate the cashflow from Investing
         cashflow.from_investing = Banana.SDecimal.subtract(cashflow.from_investing, cashflow.investments);
         cashflow.from_investing = Banana.SDecimal.add(cashflow.from_investing, disinvestments);
