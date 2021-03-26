@@ -326,8 +326,12 @@
     </message>
     <message>
         <location filename="../chartCashRatios.qml" line="26"/>
+        <source>Evolution of Cash Flow ratios</source>
+        <translation>Evoluzione degli indici del Cash Flow</translation>
+    </message>
+    <message>
         <source>Evolution of Cashflow ratios</source>
-        <translation>Evoluzione degli indici del Cashflow</translation>
+        <translation type="vanished">Evoluzione degli indici del Cashflow</translation>
     </message>
     <message>
         <source>Change in Cashflow ratios</source>
@@ -673,8 +677,12 @@
     </message>
     <message>
         <location filename="../charts.qml" line="29"/>
+        <source> Cash Flow ratios</source>
+        <translation> Indici del Cash Flow</translation>
+    </message>
+    <message>
         <source> Cashflow ratios</source>
-        <translation> Indici del Cashflow</translation>
+        <translation type="vanished"> Indici del Cashflow</translation>
     </message>
     <message>
         <location filename="../charts.qml" line="30"/>
@@ -850,6 +858,11 @@
         <location filename="../financialStatementAnalysis.js" line="1546"/>
         <source>Include DuPont Analysis</source>
         <translation>Includi Analisi DuPont</translation>
+    </message>
+    <message>
+        <location filename="../financialStatementAnalysis.js" line="1558"/>
+        <source>Cash Flow</source>
+        <translation>Cash Flow</translation>
     </message>
     <message>
         <location filename="../financialStatementAnalysis.js" line="1565"/>
@@ -1131,6 +1144,30 @@
         <translation>Ratei e risconti passivi</translation>
     </message>
     <message>
+        <source>- Revaluations on sales of Fixed Assets</source>
+        <translation type="obsolete">- Rivalutazioni sulla vendita di Attivo fisso</translation>
+    </message>
+    <message>
+        <location filename="../financialStatementAnalysis.js" line="1616"/>
+        <source>Operating Cash Flow Margin</source>
+        <translation>Margine del Cash Flow</translation>
+    </message>
+    <message>
+        <location filename="../financialStatementAnalysis.js" line="1618"/>
+        <source>Cash Flow to current Liabilities</source>
+        <translation>Rapporto Cash Flow/Debiti correnti</translation>
+    </message>
+    <message>
+        <location filename="../financialStatementAnalysis.js" line="1619"/>
+        <source>Cash Flow to Liabilities</source>
+        <translation>Rapporto Cash Flow/Debiti totali</translation>
+    </message>
+    <message>
+        <location filename="../financialStatementAnalysis.js" line="1620"/>
+        <source>Cash Flow to Investments</source>
+        <translation>Rapporto Cash Flow/Investimenti netti</translation>
+    </message>
+    <message>
         <source>+/- (+)Creation and (-)release of Provisions</source>
         <translation type="vanished">+/- (+)Creazione e (-)scioglimento di Accantonamenti</translation>
     </message>
@@ -1208,14 +1245,27 @@
         <translation>Capitale proprio (+) aumento o (-) diminuzione </translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="1490"/>
-        <source>- Gain on sales of Fixed Assets</source>
-        <translation>- Profitto sulla vendita di Attivo fisso</translation>
+        <location filename="../financialStatementAnalysis.js" line="1483"/>
+        <source>= Cash Flow from operations</source>
+        <translation>= Cash Flow dall&apos;attività operativa</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="1491"/>
+        <location filename="../financialStatementAnalysis.js" line="1484"/>
+        <source>= Cash Flow from investing</source>
+        <translation>= Cash Flow dall&apos;attività di investimento</translation>
+    </message>
+    <message>
+        <location filename="../financialStatementAnalysis.js" line="1485"/>
+        <source>=Cash Flow from financing</source>
+        <translation>= Cash Flow dall&apos;attività di finanziamento</translation>
+    </message>
+    <message>
+        <source>- Gain on sales of Fixed Assets</source>
+        <translation type="vanished">- Profitto sulla vendita di Attivo fisso</translation>
+    </message>
+    <message>
         <source>+ Loss on sales Fixed Assets</source>
-        <translation>+ Perdita sulla vendita di Attivo fisso</translation>
+        <translation type="vanished">+ Perdita sulla vendita di Attivo fisso</translation>
     </message>
     <message>
         <location filename="../financialStatementAnalysis.js" line="1499"/>
@@ -1228,9 +1278,8 @@
         <translation>SOMME DI CONTROLLO</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="1510"/>
         <source>CASH FLOW ANALYSIS (INDIRECT METHOD)</source>
-        <translation>ANALISI DEL CASHFLOW (METODO INDIRETTO)</translation>
+        <translation type="vanished">ANALISI DEL CASHFLOW (METODO INDIRETTO)</translation>
     </message>
     <message>
         <location filename="../financialStatementAnalysis.js" line="1515"/>
@@ -1323,9 +1372,8 @@
         <translation>Efficienza</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="1558"/>
         <source>Cashflow</source>
-        <translation>Cashflow</translation>
+        <translation type="vanished">Cashflow</translation>
     </message>
     <message>
         <location filename="../financialStatementAnalysis.js" line="1574"/>
@@ -1342,9 +1390,8 @@
         <translation type="vanished">Debiti netti</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="1616"/>
         <source>Operating Cashflow Margin</source>
-        <translation>Margine del Cashflow</translation>
+        <translation type="vanished">Margine del Cashflow</translation>
     </message>
     <message>
         <location filename="../financialStatementAnalysis.js" line="1617"/>
@@ -1352,14 +1399,12 @@
         <translation>Efficienza del Capitale</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="1618"/>
         <source>Cashflow to current Liabilities</source>
-        <translation>Rapporto Cashflow/Debiti correnti</translation>
+        <translation type="vanished">Rapporto Cashflow/Debiti correnti</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="1619"/>
         <source>Cashflow to Liabilities</source>
-        <translation>Rapporto Cashflow/Debiti totali</translation>
+        <translation type="vanished">Rapporto Cashflow/Debiti totali</translation>
     </message>
     <message>
         <source>Cashflow Margin</source>
@@ -1370,9 +1415,8 @@
         <translation type="vanished">Fattore di indebitamento</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="1620"/>
         <source>Cashflow to Investments</source>
-        <translation>Rapporto Cashflow/Investimenti</translation>
+        <translation type="vanished">Rapporto Cashflow/Investimenti</translation>
     </message>
     <message>
         <source>total asset:sales</source>
@@ -1503,19 +1547,16 @@
         <translation>Aggiustamento con i conti del passivo </translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="1483"/>
         <source>= Cashflow from operations</source>
-        <translation>= Cashflow dall&apos;attività operativa</translation>
+        <translation type="vanished">= Cashflow dall&apos;attività operativa</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="1484"/>
         <source>= Cashflow from investing</source>
-        <translation>= Cashflow dall&apos;attività di investimento</translation>
+        <translation type="vanished">= Cashflow dall&apos;attività di investimento</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="1485"/>
         <source>=Cashflow from financing</source>
-        <translation>= Cashflow dall&apos;attività di finanziamento</translation>
+        <translation type="vanished">= Cashflow dall&apos;attività di finanziamento</translation>
     </message>
     <message>
         <location filename="../financialStatementAnalysis.js" line="1486"/>
@@ -1531,6 +1572,21 @@
         <location filename="../financialStatementAnalysis.js" line="1488"/>
         <source>Cash at the end of the period</source>
         <translation>Liquidità alla fine del periodo</translation>
+    </message>
+    <message>
+        <location filename="../financialStatementAnalysis.js" line="1490"/>
+        <source>- Revaluations on Fixed Assets</source>
+        <translation>- Rivalutazioni sull&apos; Attivo fisso</translation>
+    </message>
+    <message>
+        <location filename="../financialStatementAnalysis.js" line="1491"/>
+        <source>+ Devaluations on Fixed Assets</source>
+        <translation>+ Svalutazioni sull&apos; Attivo fisso</translation>
+    </message>
+    <message>
+        <location filename="../financialStatementAnalysis.js" line="1510"/>
+        <source>CASH FLOW STATEMENT (INDIRECT METHOD)</source>
+        <translation>ANALISI DEL CASHFLOW (METODO INDIRETTO)</translation>
     </message>
     <message>
         <location filename="../financialStatementAnalysis.js" line="1526"/>

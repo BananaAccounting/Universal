@@ -210,8 +210,12 @@
     </message>
     <message>
         <location filename="../chartCashRatios.qml" line="26"/>
-        <source>Evolution of Cashflow ratios</source>
+        <source>Evolution of Cash Flow ratios</source>
         <translation>Variation indice de Flux de trésorerie</translation>
+    </message>
+    <message>
+        <source>Evolution of Cashflow ratios</source>
+        <translation type="vanished">Variation indice de Flux de trésorerie</translation>
     </message>
 </context>
 <context>
@@ -488,8 +492,12 @@
     </message>
     <message>
         <location filename="../charts.qml" line="29"/>
-        <source> Cashflow ratios</source>
+        <source> Cash Flow ratios</source>
         <translation> Ratios de flux de tresorerie</translation>
+    </message>
+    <message>
+        <source> Cashflow ratios</source>
+        <translation type="vanished"> Ratios de flux de tresorerie</translation>
     </message>
     <message>
         <location filename="../charts.qml" line="30"/>
@@ -666,6 +674,31 @@
         <location filename="../financialStatementAnalysis.js" line="1480"/>
         <source>Own capital (+) increases or (-) reductions </source>
         <translation>(+) Augmentations ou (-) réductions de capital propre </translation>
+    </message>
+    <message>
+        <location filename="../financialStatementAnalysis.js" line="1483"/>
+        <source>= Cash Flow from operations</source>
+        <translation>= Flux de trésorerie générés par les opérations</translation>
+    </message>
+    <message>
+        <location filename="../financialStatementAnalysis.js" line="1484"/>
+        <source>= Cash Flow from investing</source>
+        <translation>= Flux de trésorerie générés par les Investissements</translation>
+    </message>
+    <message>
+        <location filename="../financialStatementAnalysis.js" line="1485"/>
+        <source>=Cash Flow from financing</source>
+        <translation>= Flux de trésorerie générés par le Financement</translation>
+    </message>
+    <message>
+        <location filename="../financialStatementAnalysis.js" line="1490"/>
+        <source>- Revaluations on Fixed Assets</source>
+        <translation>- Réévaluations des actifs fixes</translation>
+    </message>
+    <message>
+        <location filename="../financialStatementAnalysis.js" line="1491"/>
+        <source>+ Devaluations on Fixed Assets</source>
+        <translation>+ Dévaluations des actifs fixes</translation>
     </message>
     <message>
         <location filename="../financialStatementAnalysis.js" line="1524"/>
@@ -916,19 +949,16 @@ Vérifier que le groups utilisés sont corrects.</translation>
         <translation>Ajustement avec les comptes de passiv </translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="1483"/>
         <source>= Cashflow from operations</source>
-        <translation>= Flux de trésorerie générés par les opérations</translation>
+        <translation type="vanished">= Flux de trésorerie générés par les opérations</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="1484"/>
         <source>= Cashflow from investing</source>
-        <translation>= Flux de trésorerie générés par les Investissements</translation>
+        <translation type="vanished">= Flux de trésorerie générés par les Investissements</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="1485"/>
         <source>=Cashflow from financing</source>
-        <translation>= Flux de trésorerie générés par le Financement</translation>
+        <translation type="vanished">= Flux de trésorerie générés par le Financement</translation>
     </message>
     <message>
         <location filename="../financialStatementAnalysis.js" line="1486"/>
@@ -946,14 +976,17 @@ Vérifier que le groups utilisés sont corrects.</translation>
         <translation>Trésorerie à la fin de la période</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="1490"/>
         <source>- Gain on sales of Fixed Assets</source>
-        <translation>- Gain sur les ventes d&apos;actifs fixes</translation>
+        <translation type="vanished">- Gain sur les ventes d&apos;actifs fixes</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="1491"/>
         <source>+ Loss on sales Fixed Assets</source>
-        <translation>+ Perte sur les ventes d&apos;actifs fixes</translation>
+        <translation type="vanished">+ Perte sur les ventes d&apos;actifs fixes</translation>
+    </message>
+    <message>
+        <location filename="../financialStatementAnalysis.js" line="1510"/>
+        <source>CASH FLOW STATEMENT (INDIRECT METHOD)</source>
+        <translation>ANALYSE DES FLUX DE TRÉSORERIE (MÉTHODE INDIRECTE)</translation>
     </message>
     <message>
         <location filename="../financialStatementAnalysis.js" line="1520"/>
@@ -1031,9 +1064,8 @@ Vérifier que le groups utilisés sont corrects.</translation>
         <translation>Efficacité</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="1558"/>
         <source>Cashflow</source>
-        <translation>Flux de trésorerie</translation>
+        <translation type="vanished">Flux de trésorerie</translation>
     </message>
     <message>
         <source>net debt/cashflow</source>
@@ -1082,9 +1114,8 @@ Vérifier que le groups utilisés sont corrects.</translation>
         <translation type="vanished">Flux de trésorerie vers la Dette</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="1620"/>
         <source>Cashflow to Investments</source>
-        <translation>Flux de trésorerie vers les Investissments</translation>
+        <translation type="vanished">Flux de trésorerie vers les Investissments</translation>
     </message>
     <message>
         <location filename="../financialStatementAnalysis.js" line="1559"/>
@@ -1341,8 +1372,27 @@ Vérifier que le groups utilisés sont corrects. </translation>
     </message>
     <message>
         <location filename="../financialStatementAnalysis.js" line="1616"/>
-        <source>Operating Cashflow Margin</source>
+        <source>Operating Cash Flow Margin</source>
         <translation>Flux de trésorerie générés par les opérations</translation>
+    </message>
+    <message>
+        <location filename="../financialStatementAnalysis.js" line="1618"/>
+        <source>Cash Flow to current Liabilities</source>
+        <translation>Flux de trésorerie vers le Passif à court terme</translation>
+    </message>
+    <message>
+        <location filename="../financialStatementAnalysis.js" line="1619"/>
+        <source>Cash Flow to Liabilities</source>
+        <translation>Flux de trésorerie par rapport au Passif</translation>
+    </message>
+    <message>
+        <location filename="../financialStatementAnalysis.js" line="1620"/>
+        <source>Cash Flow to Investments</source>
+        <translation>Flux de trésorerie vers les Investissments</translation>
+    </message>
+    <message>
+        <source>Operating Cashflow Margin</source>
+        <translation type="vanished">Flux de trésorerie générés par les opérations</translation>
     </message>
     <message>
         <location filename="../financialStatementAnalysis.js" line="1617"/>
@@ -1350,14 +1400,12 @@ Vérifier que le groups utilisés sont corrects. </translation>
         <translation>Efficacité des Actifs</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="1618"/>
         <source>Cashflow to current Liabilities</source>
-        <translation>Flux de trésorerie vers le Passif à court terme</translation>
+        <translation type="vanished">Flux de trésorerie vers le Passif à court terme</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="1619"/>
         <source>Cashflow to Liabilities</source>
-        <translation>Flux de trésorerie par rapport au Passif</translation>
+        <translation type="vanished">Flux de trésorerie par rapport au Passif</translation>
     </message>
     <message>
         <source>Third parties capital (+)increases or (-)repayments</source>
@@ -1378,9 +1426,8 @@ Vérifier que le groups utilisés sont corrects. </translation>
         <translation>SOMMES DE CONTRÔLE</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="1510"/>
         <source>CASH FLOW ANALYSIS (INDIRECT METHOD)</source>
-        <translation>ANALYSE DES FLUX DE TRÉSORERIE (MÉTHODE INDIRECTE)</translation>
+        <translation type="vanished">ANALYSE DES FLUX DE TRÉSORERIE (MÉTHODE INDIRECTE)</translation>
     </message>
     <message>
         <location filename="../financialStatementAnalysis.js" line="1512"/>
@@ -1433,6 +1480,11 @@ Vérifier que le groups utilisés sont corrects. </translation>
         <location filename="../financialStatementAnalysis.js" line="1555"/>
         <source>Leverage</source>
         <translation>Financement</translation>
+    </message>
+    <message>
+        <location filename="../financialStatementAnalysis.js" line="1558"/>
+        <source>Cash Flow</source>
+        <translation>Flux de trésorerie</translation>
     </message>
     <message>
         <location filename="../financialStatementAnalysis.js" line="1574"/>

@@ -210,8 +210,12 @@
     </message>
     <message>
         <location filename="../chartCashRatios.qml" line="26"/>
+        <source>Evolution of Cash Flow ratios</source>
+        <translation>Entwicklung der Cash flow-Kennzahlen</translation>
+    </message>
+    <message>
         <source>Evolution of Cashflow ratios</source>
-        <translation>Entwicklung der Cashflow-Kennzahlen</translation>
+        <translation type="vanished">Entwicklung der Cashflow-Kennzahlen</translation>
     </message>
 </context>
 <context>
@@ -488,8 +492,12 @@
     </message>
     <message>
         <location filename="../charts.qml" line="29"/>
+        <source> Cash Flow ratios</source>
+        <translation> Cash Flow kennzahlen</translation>
+    </message>
+    <message>
         <source> Cashflow ratios</source>
-        <translation> Cashflow kennzahlen</translation>
+        <translation type="vanished"> Cashflow kennzahlen</translation>
     </message>
     <message>
         <location filename="../charts.qml" line="30"/>
@@ -668,6 +676,31 @@
         <translation>(+) Erhöhung oder (-) Herabsetzung des Eigenkapitals </translation>
     </message>
     <message>
+        <location filename="../financialStatementAnalysis.js" line="1483"/>
+        <source>= Cash Flow from operations</source>
+        <translation>= Cash Flow aus betrieblicher Tätigkeit</translation>
+    </message>
+    <message>
+        <location filename="../financialStatementAnalysis.js" line="1484"/>
+        <source>= Cash Flow from investing</source>
+        <translation>= Cash Flow aus Investitionen</translation>
+    </message>
+    <message>
+        <location filename="../financialStatementAnalysis.js" line="1485"/>
+        <source>=Cash Flow from financing</source>
+        <translation>=Cash Flow aus Finanzierung</translation>
+    </message>
+    <message>
+        <location filename="../financialStatementAnalysis.js" line="1490"/>
+        <source>- Revaluations on Fixed Assets</source>
+        <translation>- Neubewertungenvon von Anlagevermögen</translation>
+    </message>
+    <message>
+        <location filename="../financialStatementAnalysis.js" line="1491"/>
+        <source>+ Devaluations on Fixed Assets</source>
+        <translation>+ Abwertungen von Anlagevermögen</translation>
+    </message>
+    <message>
         <location filename="../financialStatementAnalysis.js" line="1524"/>
         <source>Liabilities and Equity</source>
         <translation>Passiven und Eigenkapital</translation>
@@ -788,6 +821,11 @@
         <location filename="../financialStatementAnalysis.js" line="1546"/>
         <source>Include DuPont Analysis</source>
         <translation>DuPont Analysis umfassen</translation>
+    </message>
+    <message>
+        <location filename="../financialStatementAnalysis.js" line="1558"/>
+        <source>Cash Flow</source>
+        <translation>Cash Flow</translation>
     </message>
     <message>
         <location filename="../financialStatementAnalysis.js" line="1574"/>
@@ -943,19 +981,16 @@ Prüfen Sie, ob die verwendeten Gruppen korrekt sind.</translation>
         <translation>Anpassung mit Passiva-Konten </translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="1483"/>
         <source>= Cashflow from operations</source>
-        <translation>= Cashflow aus betrieblicher Tätigkeit</translation>
+        <translation type="vanished">= Cashflow aus betrieblicher Tätigkeit</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="1484"/>
         <source>= Cashflow from investing</source>
-        <translation>= Cashflow aus Investitionen</translation>
+        <translation type="vanished">= Cashflow aus Investitionen</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="1485"/>
         <source>=Cashflow from financing</source>
-        <translation>=Cashflow aus Finanzierung</translation>
+        <translation type="vanished">=Cashflow aus Finanzierung</translation>
     </message>
     <message>
         <location filename="../financialStatementAnalysis.js" line="1486"/>
@@ -973,14 +1008,17 @@ Prüfen Sie, ob die verwendeten Gruppen korrekt sind.</translation>
         <translation>Kassenbestand am Ende der Periode</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="1490"/>
         <source>- Gain on sales of Fixed Assets</source>
-        <translation>- Gewinn aus dem Verkauf von Anlagevermögen</translation>
+        <translation type="vanished">- Gewinn aus dem Verkauf von Anlagevermögen</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="1491"/>
         <source>+ Loss on sales Fixed Assets</source>
-        <translation>+ Verlust aus dem Verkauf von Anlagevermögen</translation>
+        <translation type="vanished">+ Verlust aus dem Verkauf von Anlagevermögen</translation>
+    </message>
+    <message>
+        <location filename="../financialStatementAnalysis.js" line="1510"/>
+        <source>CASH FLOW STATEMENT (INDIRECT METHOD)</source>
+        <translation>CASH FLOW-ANALYSE (INDIREKTE METHODE)</translation>
     </message>
     <message>
         <location filename="../financialStatementAnalysis.js" line="1520"/>
@@ -1058,9 +1096,8 @@ Prüfen Sie, ob die verwendeten Gruppen korrekt sind.</translation>
         <translation>EFFIZIENZ</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="1558"/>
         <source>Cashflow</source>
-        <translation>Cashflow</translation>
+        <translation type="vanished">Cashflow</translation>
     </message>
     <message>
         <location filename="../financialStatementAnalysis.js" line="1602"/>
@@ -1088,9 +1125,8 @@ Prüfen Sie, ob die verwendeten Gruppen korrekt sind.</translation>
         <translation>Kapitalumschlagshäufigkeit</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="1620"/>
         <source>Cashflow to Investments</source>
-        <translation>Cashflow Investitions-Verhältn</translation>
+        <translation type="vanished">Cashflow Investitions-Verhältn</translation>
     </message>
     <message>
         <location filename="../financialStatementAnalysis.js" line="1559"/>
@@ -1356,6 +1392,26 @@ Prüfen Sie, ob die verwendeten Gruppen korrekt sind. </translation>
         <translation>+ Desinvestitionen</translation>
     </message>
     <message>
+        <location filename="../financialStatementAnalysis.js" line="1616"/>
+        <source>Operating Cash Flow Margin</source>
+        <translation>Umsatz-Cash Flow-Rate</translation>
+    </message>
+    <message>
+        <location filename="../financialStatementAnalysis.js" line="1618"/>
+        <source>Cash Flow to current Liabilities</source>
+        <translation>Cash Flow zu kurzfristigen Fremdkapital</translation>
+    </message>
+    <message>
+        <location filename="../financialStatementAnalysis.js" line="1619"/>
+        <source>Cash Flow to Liabilities</source>
+        <translation>Cash Flow zu Fremdkapital</translation>
+    </message>
+    <message>
+        <location filename="../financialStatementAnalysis.js" line="1620"/>
+        <source>Cash Flow to Investments</source>
+        <translation>Cash Flow Investitions-Verhältn</translation>
+    </message>
+    <message>
         <source>Third parties capital (+)increases or (-)repayments</source>
         <translation type="vanished">(+)Kapitalerhöhung oder(-) Rückzahlung von Dritten</translation>
     </message>
@@ -1374,9 +1430,8 @@ Prüfen Sie, ob die verwendeten Gruppen korrekt sind. </translation>
         <translation>KONTROLLSUMMEN</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="1510"/>
         <source>CASH FLOW ANALYSIS (INDIRECT METHOD)</source>
-        <translation>CASH FLOW-ANALYSE (INDIREKTE METHODE)</translation>
+        <translation type="vanished">CASH FLOW-ANALYSE (INDIREKTE METHODE)</translation>
     </message>
     <message>
         <location filename="../financialStatementAnalysis.js" line="1515"/>
@@ -1399,9 +1454,8 @@ Prüfen Sie, ob die verwendeten Gruppen korrekt sind. </translation>
         <translation>DU-PONT-SCHEMA </translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="1616"/>
         <source>Operating Cashflow Margin</source>
-        <translation>Umsatz-Cashflow-Rate</translation>
+        <translation type="vanished">Umsatz-Cashflow-Rate</translation>
     </message>
     <message>
         <location filename="../financialStatementAnalysis.js" line="1617"/>
@@ -1409,14 +1463,12 @@ Prüfen Sie, ob die verwendeten Gruppen korrekt sind. </translation>
         <translation>Anlageneffizienz</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="1618"/>
         <source>Cashflow to current Liabilities</source>
-        <translation>Cashflow zu kurzfristigen Fremdkapital</translation>
+        <translation type="vanished">Cashflow zu kurzfristigen Fremdkapital</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="1619"/>
         <source>Cashflow to Liabilities</source>
-        <translation>Cashflow zu Fremdkapital</translation>
+        <translation type="vanished">Cashflow zu Fremdkapital</translation>
     </message>
     <message>
         <source>Asset</source>

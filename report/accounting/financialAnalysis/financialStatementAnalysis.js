@@ -18,7 +18,7 @@
 // @task = app.command
 // @doctype = 100.*
 // @publisher = Banana.ch SA
-// @pubdate = 2021-03-24
+// @pubdate = 2021-03-26
 // @inputdatasource = none
 // @timeout = -1
 
@@ -906,7 +906,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         }
         //Depreciations and Adjustments
         var tableRow = tableCashflow.addRow("styleTablRows");
-        tableRow.addCell("+ " + this.data[0].profitandloss.depreandadjust.description, "styleTablRows");
+        tableRow.addCell("+ " + texts.depreandadjust, "styleTablRows");
         for (var i = this.data.length - 1; i >= 0; i--) {
             tableRow.addCell(this.toLocaleAmountFormat(this.data[i].profitandloss.depreandadjust.balance), "styleNormalAmount");
         }
@@ -1465,7 +1465,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         texts.accruals_and_deferred_income = qsTr("Accruals and Deferred Income");
 
         /******************************************************************************************
-         * texts for Cashflow elements
+         * texts for Cash flow elements
          * ***************************************************************************************/
 
         texts.provisionsandsimilar_cashflow = qsTr("+/- (+)Creation and (-)release of provisions")
@@ -1480,15 +1480,15 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         texts.ownbasecapital_cashflow = qsTr("Own capital (+) increases or (-) reductions ");
         texts.adjusted_assets_cashflow = qsTr("Adjustment with assets accounts ");
         texts.adjusted_liabilities_cashflow = qsTr("Adjustment with liabilities accounts ");
-        texts.cashflow_from_operations = qsTr("= Cashflow from operations");
-        texts.cashflow_from_investing = qsTr("= Cashflow from investing");
-        texts.cashflow_from_financing = qsTr("=Cashflow from financing")
+        texts.cashflow_from_operations = qsTr("= Cash Flow from operations");
+        texts.cashflow_from_investing = qsTr("= Cash Flow from investing");
+        texts.cashflow_from_financing = qsTr("=Cash Flow from financing")
         texts.final_cashflow = qsTr("Increase/decrease in liquidity");
         texts.opening_liquidity = qsTr("Cash at the beginning of the period");
         texts.closing_liquidity = qsTr("Cash at the end of the period")
         texts.delta_liquidity = qsTr("Difference");
-        texts.gain_on_sales = qsTr("- Gain on sales of Fixed Assets");
-        texts.gain_on_loss = qsTr("+ Loss on sales Fixed Assets");
+        texts.gain_on_sales = qsTr("- Revaluations on Fixed Assets");
+        texts.gain_on_loss = qsTr("+ Devaluations on Fixed Assets");
 
         /******************************************************************************************
          * texts for titles,headers,..
@@ -1507,7 +1507,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         texts.accountingtotal = qsTr("Accounting Total");
         texts.calculatedtotal = qsTr("Calculated Total");
         texts.difference = qsTr("Difference");
-        texts.uppercashflow = qsTr("CASH FLOW ANALYSIS (INDIRECT METHOD)");
+        texts.uppercashflow = qsTr("CASH FLOW STATEMENT (INDIRECT METHOD)");
         texts.upperliquidityratios = qsTr("LIQUIDITY RATIOS");
         texts.upperleverageratios = qsTr("LEVERAGE RATIOS");
         texts.upperprofitabilityratios = qsTr("PROFITABILITY RATIOS");
@@ -1555,7 +1555,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         texts.leverage = qsTr('Leverage');
         texts.profitability = qsTr('Profitability');
         texts.efficiency = qsTr('Efficiency');
-        texts.cashflow = qsTr("Cashflow");
+        texts.cashflow = qsTr("Cash Flow");
         texts.errorMsg = qsTr("Non-existent groups/accounts: ");
 
 
@@ -1613,11 +1613,11 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         texts.personnelcostperemployee = qsTr("Personnel Cost per Employee");
         texts.assetturnover = qsTr("Total Assets Turnover");
         //Cashflow ratios
-        texts.cashflow_margin = qsTr("Operating Cashflow Margin");
+        texts.cashflow_margin = qsTr("Operating Cash Flow Margin");
         texts.cashflow_asset_efficiency = qsTr("Asset Efficiency");
-        texts.cashflow_current_liabilities = qsTr("Cashflow to current Liabilities");
-        texts.cashflow_liabilities = qsTr("Cashflow to Liabilities");
-        texts.cashflow_to_investments = qsTr("Cashflow to Investments");
+        texts.cashflow_current_liabilities = qsTr("Cash Flow to current Liabilities");
+        texts.cashflow_liabilities = qsTr("Cash Flow to Liabilities");
+        texts.cashflow_to_investments = qsTr("Cash Flow to Investments");
 
 
 
@@ -2119,6 +2119,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                     for (var i = 0; i < transactions.rowCount; i++) {
                         let tRow = transactions.row(i);
                         let description = tRow.value('JDescription');
+                        description = description.toLowerCase();
 
                         //find the Disinvestmenst
                         if (description.indexOf("#disinvest") >= 0) {
@@ -2128,14 +2129,14 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                             dialogparam[key].disinvestments = Banana.SDecimal.add(dialogparam[key].disinvestments, jAmount);
                         }
                         //find the gain on the sales
-                        if (description.indexOf("#gain") >= 0) {
+                        if (description.indexOf("#revaluation") >= 0) {
                             var jAmount = tRow.value('JAmount');
                             jAmount = Banana.SDecimal.abs(jAmount);
 
                             dialogparam[key].gain = Banana.SDecimal.add(dialogparam[key].gain, jAmount);
                         }
                         //find the loss on the sales
-                        if (description.indexOf("#loss") >= 0) {
+                        if (description.indexOf("#devaluation") >= 0) {
                             var jAmount = tRow.value('JAmount');
                             jAmount = Banana.SDecimal.abs(jAmount);
 
@@ -2648,15 +2649,16 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
     }
 
     /**
-     * Calculate the Free Cashflow starting from the Netcashflow and taking as parameter also the investments.
-     * @param {*} investments the investments (array)
-     * @param {*} netcashflow the net Cashflow (array)
+     * Calculate the Cash Flow.
+     * @param {*} data 
+     * @param {*} calculated_data 
+     * @returns 
      */
     calculateCashflowTotals(data, calculated_data) {
         let cashflow = {};
 
         /****************************************************
-         * calculate the Cashflow from operations
+         * calculate the Cash flow from operations
          ***************************************************/
         cashflow.from_operations = data.finalresult.finalresult.delta;
         cashflow.from_operations = Banana.SDecimal.subtract(cashflow.from_operations, calculated_data.fixedassets_gain);

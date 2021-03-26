@@ -104,10 +104,10 @@ Added Value per Employee  & adva/employees  & >0  & 12'220.00  & 0.00 \\
 Personnel Cost per Employee  & cope/employees  & >0  & 0.00  & 0.00 \\
 \end{longtable}
 \begin{longtable}[l]{ l  l  l }
-CASH FLOW ANALYSIS (INDIRECT METHOD) Description  & 2020  & Budget \\
+CASH FLOW STATEMENT (INDIRECT METHOD) Description  & 2020  & Budget \\
 Annual result  & 8'220.00  & 0.00 \\
-- Gain on sales of Fixed Assets  & 0.00  & 0.00 \\
-+ Loss on sales Fixed Assets  & 0.00  & 0.00 \\
+- Revaluations on Fixed Assets  & 0.00  & 0.00 \\
++ Devaluations on Fixed Assets  & 0.00  & 0.00 \\
 + Depreciations and adjustments  & 0.00  & 0.00 \\
 +/- (+)Creation and (-)release of provisions  & 0.00  & 0.00 \\
 \multicolumn{3}{l}{Adjustment with assets accounts  }\\
@@ -117,13 +117,13 @@ Annual result  & 8'220.00  & 0.00 \\
 \multicolumn{3}{l}{Adjustment with liabilities accounts  }\\
 +/- (+)Increase or (-) decrease of liabilities  & 2'970.00  & 0.00 \\
 +/- (+) Increase or (-) decrease of accruals and deferred income  & 0.00  & 0.00 \\
-= Cashflow from operations (A)  & -23'430.00  & 0.00 \\
+= Cash Flow from operations (A)  & -23'430.00  & 0.00 \\
 - Investments  & 1'000.00  & 0.00 \\
 + Disinvestments  & 0.00  & 0.00 \\
-= Cashflow from investing (B)  & -1'000.00  & 0.00 \\
+= Cash Flow from investing (B)  & -1'000.00  & 0.00 \\
 Third parties capital (+) increases or (-) repayments  & 9'000.00  & 0.00 \\
 Own capital (+) increases or (-) reductions   & 0.00  & 0.00 \\
-=Cashflow from financing (C)  & 9'000.00  & 0.00 \\
+=Cash Flow from financing (C)  & 9'000.00  & 0.00 \\
 Increase/decrease in liquidity (A+B+C)  & -15'430.00  & 0.00 \\
 Cash at the beginning of the period  & 110.00  & 110.00 \\
 Cash at the end of the period  & -9'320.00  & 110.00 \\
@@ -132,11 +132,11 @@ Difference  & -9'430.00  & 0.00 \\
 Warning: The difference between the 'Increase/decrease in Liquidity' and the 'Cash difference' amounts should be 0.\P  Check that the groups used are correct. \\
 \begin{longtable}[l]{ l  l  l  l  l }
 CASH FLOW RATIOS Description  & formula  & Benchmark  & 2020  & Budget \\
-Operating Cashflow Margin  & cashflow(A)/satu  & -  & -104.13\%   & 0.00\%  ↑ \\
+Operating Cash Flow Margin  & cashflow(A)/satu  & -  & -104.13\%   & 0.00\%  ↑ \\
 Asset Efficiency  & cashflow(A)/tota  & -  & -96.42\%   & 0.00\%  ↑ \\
-Cashflow to current Liabilities  & cashflow(A)/stdc  & -  & -788.89\%   & 0.00\%  ↑ \\
-Cashflow to Liabilities  & cashflow(A)/deca  & -  & -195.74\%   & 0.00\%  ↑ \\
-Cashflow to Investments  & cashflow(A)/inve  & -  & -2343.00\%   & 0.00\%  ↑ \\
+Cash Flow to current Liabilities  & cashflow(A)/stdc  & -  & -788.89\%   & 0.00\%  ↑ \\
+Cash Flow to Liabilities  & cashflow(A)/deca  & -  & -195.74\%   & 0.00\%  ↑ \\
+Cash Flow to Investments  & cashflow(A)/inve  & -  & -2343.00\%   & 0.00\%  ↑ \\
 \end{longtable}
 \begin{longtable}[l]{ l  l  l }
 DUPONT ANALYSIS  Description  & 2020  & Budget \\
@@ -161,6 +161,6 @@ ALTMAN INDEX Z-SCORE 2020  & Budget \\
 for values > than 3 correspond a low probability of a financial crisis \\
 for values >= than 1.8 but <= than 3 there are possibilities of a financial crisis, should be kept under control \\
 for values < than 1.8 there is a strong probability of a financial crisis \\
-\excltest{25.03.2021} \\
+\excltest{26.03.2021} \\
 \end{reportvalue}
 \end{document}
