@@ -26,7 +26,7 @@ BasePage {
       var LiquidityChart=qsTr(" Liquidity ratios");
       var ProfitabilityChart=qsTr(" Profitability ratios");
       var EfficiencyChart=qsTr(" Efficiency ratios");
-      var CashflowratiosChart=qsTr(" Cashflow ratios");
+      var CashflowratiosChart=qsTr(" Cash Flow ratios");
       var ReclassifiedAssetsVariationChart=qsTr(" Reclassified assets ");
       var ReclassifiedLiabilitiesAndEquityVariationChart=qsTr(" Reclassified liabilities and equity");
       var ReclassifiedProfitAndLossVariation=qsTr(" Reclassified profit and loss");

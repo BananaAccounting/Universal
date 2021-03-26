@@ -69,6 +69,9 @@ BasePage {
                   var dataSerie2 = [];
                   var dataSerie3 = [];
                   var dataSerie4 = [];
+                  var dataSerie5 = [];
+                  var dataSerie6 = [];
+                  var dataSerie7 = [];
                   var dataSum = [];
 
                   for (var i = financialStatementAnalysis.data.length - 1; i >= 0; i--) {
@@ -89,19 +92,31 @@ BasePage {
                      dataSerie2.push(sumCred);
                      var sumStoc=Banana.SDecimal.abs(financialStatementAnalysis.data[i].balance.ca.stocks.balance);
                      dataSerie3.push(sumStoc);
-                     var sumFixa=Banana.SDecimal.abs(financialStatementAnalysis.data[i].balance.fa.fixedassets.balance);
-                     dataSerie4.push(sumFixa); 
+                     var sumPrep=Banana.SDecimal.abs(financialStatementAnalysis.data[i].balance.ca.prepaid_expenses.balance);
+                     dataSerie4.push(sumPrep);
+                     var sumFinFix=Banana.SDecimal.abs(financialStatementAnalysis.data[i].balance.fa.financial_fixedassets.balance);
+                     dataSerie5.push(sumFinFix); 
+                     var sumTanFix=Banana.SDecimal.abs(financialStatementAnalysis.data[i].balance.fa.tangible_fixedassets.balance);
+                     dataSerie6.push(sumTanFix);
+                     var sumIntFix=Banana.SDecimal.abs(financialStatementAnalysis.data[i].balance.fa.intangible_fixedassets.balance);
+                     dataSerie7.push(sumIntFix); 
                      
                      var sum = sumLiq;
                      sum = Banana.SDecimal.add(sumCred, sum);
                      sum = Banana.SDecimal.add(sumStoc, sum);
-                     sum = Banana.SDecimal.add(sumFixa, sum);
+                     sum = Banana.SDecimal.add(sumPrep, sum);
+                     sum = Banana.SDecimal.add(sumFinFix, sum);
+                     sum = Banana.SDecimal.add(sumTanFix, sum);
+                     sum = Banana.SDecimal.add(sumIntFix, sum);
                      dataSum.push(sum);
                   }
                   dataSerie1 = convertToPerc(dataSerie1, dataSum);
                   dataSerie2 = convertToPerc(dataSerie2, dataSum);
                   dataSerie3 = convertToPerc(dataSerie3, dataSum);
                   dataSerie4 = convertToPerc(dataSerie4, dataSum);
+                  dataSerie5 = convertToPerc(dataSerie5, dataSum);
+                  dataSerie6 = convertToPerc(dataSerie6, dataSum);
+                  dataSerie7 = convertToPerc(dataSerie7, dataSum);
 
                   chartData.labels = []
                   for (var i = 0; i < yearList.length; i++) {
@@ -112,7 +127,10 @@ BasePage {
                   {label: qsTr('Liquidity'), data: dataSerie1, backgroundColor:defaultColors[0].fill},
                   {label: qsTr('Credits'), data: dataSerie2, backgroundColor:defaultColors[1].fill},
                   {label: qsTr('Stocks'), data: dataSerie3, backgroundColor:defaultColors[2].fill},
-                  {label: qsTr('Fixed Assets'), data: dataSerie4, backgroundColor:defaultColors[3].fill}
+                  {label: qsTr('Prepaid Expenses'), data: dataSerie4, backgroundColor:defaultColors[3].fill},
+                  {label: qsTr('Financial Fixed Assets'), data: dataSerie5, backgroundColor:defaultColors[4].fill},
+                  {label: qsTr('Tangible Fixed Assets'), data: dataSerie6, backgroundColor:defaultColors[5].fill},
+                  {label: qsTr('Intangible Fixed Assets'), data: dataSerie7, backgroundColor:defaultColors[6].fill}
                   ]
 
 

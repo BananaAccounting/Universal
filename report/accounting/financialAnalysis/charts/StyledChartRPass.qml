@@ -80,7 +80,7 @@ ChartView {
          'xAxes': [{stacked:true}],
          'yAxes': [{
                      stacked:true,
-         		      interval: 1110, 
+         		      interval: 10, 
                      ticks: {
                     // Include a dollar sign in the ticks
                     callback: function(value, index, values) {
