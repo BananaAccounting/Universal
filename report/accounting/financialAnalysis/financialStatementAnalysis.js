@@ -18,7 +18,7 @@
 // @task = app.command
 // @doctype = 100.*
 // @publisher = Banana.ch SA
-// @pubdate = 2021-03-18
+// @pubdate = 2021-03-26
 // @inputdatasource = none
 // @timeout = -1
 
@@ -265,7 +265,6 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
     }
 
     generateHeaderColumns(tableRow) {
-        var starting_year = 1;
         for (var i = this.data.length - 1; i >= 0; i--) {
             var year = this.data[i].period.StartDate;
             var elementType = this.data[i].period.Type;
@@ -343,6 +342,21 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
     }
 
     /**
+     * Return a value for the span used in the Balance titles (Assets, Liabilities and Equity).
+     * @returns 
+     */
+    generateSpanForBalanceTitles() {
+        let span = 0;
+        for (var i = this.data.length; i >= 0; i--) {
+            span++
+        }
+        if (this.dialogparam.acronymcolumn) {
+            span += 1;
+        }
+        return span;
+    }
+
+    /**
      * @description set the header of the report.
      * @Param {object} report: the report created
      */
@@ -415,10 +429,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var description = "";
         var acronym = "";
         var ratios = "";
-        var cashflow_amount = "";
-        var amountstyle = "";
         var textstyle = "";
         var warning_msg = this.showDifferencesWarning();
+        var span = this.generateSpanForBalanceTitles();
 
         if (!this.data || this.data.length <= 0) {
             return report;
@@ -438,6 +451,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
          * Add the balance table
          * ***************************************************************************************/
         var tableBalance = this.printReportAdd_TableBalance(report);
+        //Assets title
+        var tableRow = tableBalance.addRow("styleTablRows");
+        tableRow.addCell(texts.assets, "styleAssetsAdjustments", span);
 
         /******************************************************************************************
          * Add the current asset to the  balance table
@@ -493,10 +509,10 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         tableRow = tableBalance.addRow("styleTablRows");
         tableRow.addCell(texts.totalfixedasset, 'styleUnderGroupTitles');
         if (this.dialogparam.acronymcolumn) {
-            tableRow.addCell(texts.totfixedassets_acronym);
+            tableRow.addCell(texts.fixedassets_acronym);
         }
         for (var i = this.data.length - 1; i >= 0; i--) {
-            tableRow.addCell(this.toLocaleAmountFormat(this.data[i].calculated_data.totfixedassets), "styleMidTotalAmount");
+            tableRow.addCell(this.toLocaleAmountFormat(this.data[i].calculated_data.fixedassets), "styleMidTotalAmount");
         }
 
         /******************************************************************************************
@@ -511,34 +527,68 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             tableRow.addCell(this.toLocaleAmountFormat(this.data[i].calculated_data.totalassets), "styleTotalAmount");
         }
 
+        //Liabilities and Equity title
+        var tableRow = tableBalance.addRow("styleTablRows");
+        tableRow.addCell(texts.liabilitiesandequity, "styleLiabilitiesAdjustments", span);
+
         /******************************************************************************************
-         * Add the third capital to the balance table
+         * Add the Short term third capital to the balance table
          * ***************************************************************************************/
-        for (var key in this.data[0].balance.dc) {
+        for (var key in this.data[0].balance.stdc) {
             var tableRow = tableBalance.addRow("styleTablRows");
 
-            description = this.data[0].balance.dc[key].description;
+            description = this.data[0].balance.stdc[key].description;
             if (texts[key])
                 description = texts[key];
-            acronym = this.data[0].balance.dc[key].acronym;
+            acronym = this.data[0].balance.stdc[key].acronym;
 
             tableRow.addCell(description);
             if (this.dialogparam.acronymcolumn) {
                 tableRow.addCell(acronym);
             }
             for (var i = this.data.length - 1; i >= 0; i--) {
-                amount = this.toLocaleAmountFormat(this.data[i].balance.dc[key].balance);
+                amount = this.toLocaleAmountFormat(this.data[i].balance.stdc[key].balance);
                 tableRow.addCell(amount, 'styleNormalAmount');
             }
         }
         //add the sum of the third capital (debt capital)
         tableRow = tableBalance.addRow("styleTablRows");
-        tableRow.addCell(texts.debtcapital, 'styleUnderGroupTitles');
+        tableRow.addCell(texts.shorttermdebtcapital, 'styleUnderGroupTitles');
         if (this.dialogparam.acronymcolumn) {
-            tableRow.addCell(texts.debtcapital_acronym);
+            tableRow.addCell(texts.shorttermdebtcapital_acronym);
         }
         for (var i = this.data.length - 1; i >= 0; i--) {
-            tableRow.addCell(this.toLocaleAmountFormat(this.data[i].calculated_data.debtcapital), "styleMidTotalAmount");
+            tableRow.addCell(this.toLocaleAmountFormat(this.data[i].calculated_data.shorttermdebtcapital), "styleMidTotalAmount");
+        }
+
+        /******************************************************************************************
+         * Add the Long term third capital to the balance table
+         * ***************************************************************************************/
+        for (var key in this.data[0].balance.ltdc) {
+            var tableRow = tableBalance.addRow("styleTablRows");
+
+            description = this.data[0].balance.ltdc[key].description;
+            if (texts[key])
+                description = texts[key];
+            acronym = this.data[0].balance.ltdc[key].acronym;
+
+            tableRow.addCell(description);
+            if (this.dialogparam.acronymcolumn) {
+                tableRow.addCell(acronym);
+            }
+            for (var i = this.data.length - 1; i >= 0; i--) {
+                amount = this.toLocaleAmountFormat(this.data[i].balance.ltdc[key].balance);
+                tableRow.addCell(amount, 'styleNormalAmount');
+            }
+        }
+        //add the sum of the third capital (debt capital)
+        tableRow = tableBalance.addRow("styleTablRows");
+        tableRow.addCell(texts.longtermdebtcapital, 'styleUnderGroupTitles');
+        if (this.dialogparam.acronymcolumn) {
+            tableRow.addCell(texts.longtermdebtcapital_acronym);
+        }
+        for (var i = this.data.length - 1; i >= 0; i--) {
+            tableRow.addCell(this.toLocaleAmountFormat(this.data[i].calculated_data.longtermdebtcapital), "styleMidTotalAmount");
         }
 
         /******************************************************************************************
@@ -568,7 +618,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             tableRow.addCell(texts.ownedcapital_acronym);
         }
         for (var i = this.data.length - 1; i >= 0; i--) {
-            tableRow.addCell(this.toLocaleAmountFormat(this.data[i].calculated_data.totowncapital), "styleMidTotalAmount");
+            tableRow.addCell(this.toLocaleAmountFormat(this.data[i].calculated_data.owncapital), "styleMidTotalAmount");
         }
 
         /******************************************************************************************
@@ -673,7 +723,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         if (this.dialogparam.includecontrolsums) {
             var tableControlSums = this.printReportAdd_TableControlSums(report);
             var tableRow = tableControlSums.addRow("styleTablRows");
-            tableRow.addCell(texts.asset, "styleUnderGroupTitles", 4);
+            tableRow.addCell(texts.assets, "styleUnderGroupTitles", 4);
             for (var i = this.data.length - 1; i >= 0; i--) {
                 var tableRow = tableControlSums.addRow("styleTablRows");
                 var period = this.data[i].period.StartDate;
@@ -837,13 +887,26 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
         //Annual result
         var tableRow = tableCashflow.addRow("styleTablRows");
-        tableRow.addCell(this.data[0].finalresult.finalresult.description, "styleTablRows");
+        tableRow.addCell(texts.annualresult, "styleTablRows");
         for (var i = this.data.length - 1; i >= 0; i--) {
             tableRow.addCell(this.toLocaleAmountFormat(this.data[i].finalresult.finalresult.balance), "styleNormalAmount");
         }
+
+        //Gain on Sales
+        var tableRow = tableCashflow.addRow("styleTablRows");
+        tableRow.addCell(texts.gain_on_sales, "styleTablRows");
+        for (var i = this.data.length - 1; i >= 0; i--) {
+            tableRow.addCell(this.toLocaleAmountFormat(this.data[i].calculated_data.fixedassets_gain), "styleNormalAmount");
+        }
+        //Loss on Sales
+        var tableRow = tableCashflow.addRow("styleTablRows");
+        tableRow.addCell(texts.gain_on_loss, "styleTablRows");
+        for (var i = this.data.length - 1; i >= 0; i--) {
+            tableRow.addCell(this.toLocaleAmountFormat(this.data[i].calculated_data.fixedassets_loss), "styleNormalAmount");
+        }
         //Depreciations and Adjustments
         var tableRow = tableCashflow.addRow("styleTablRows");
-        tableRow.addCell("+ " + this.data[0].profitandloss.depreandadjust.description, "styleTablRows");
+        tableRow.addCell("+ " + texts.depreandadjust, "styleTablRows");
         for (var i = this.data.length - 1; i >= 0; i--) {
             tableRow.addCell(this.toLocaleAmountFormat(this.data[i].profitandloss.depreandadjust.balance), "styleNormalAmount");
         }
@@ -851,7 +914,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var tableRow = tableCashflow.addRow("styleTablRows");
         tableRow.addCell(texts.provisionsandsimilar_cashflow, "styleTablRows");
         for (var i = this.data.length - 1; i >= 0; i--) {
-            tableRow.addCell(this.toLocaleAmountFormat(this.data[i].cashflowgroups.provisionsandsimilar.delta), "styleNormalAmount");
+            tableRow.addCell(this.toLocaleAmountFormat(this.data[i].balance.ltdc.provisionsandsimilar.delta), "styleNormalAmount");
         }
         //asset adjustments title
         var tableRow = tableCashflow.addRow("styleTablRows");
@@ -873,7 +936,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var tableRow = tableCashflow.addRow("styleTablRows");
         tableRow.addCell(texts.prepaid_expenses_cashflow, "styleTablRows");
         for (var i = this.data.length - 1; i >= 0; i--) {
-            tableRow.addCell(this.toLocaleAmountFormat(this.data[i].cashflowgroups.prepaid_expenses.delta), "styleNormalAmount");
+            tableRow.addCell(this.toLocaleAmountFormat(this.data[i].balance.ca.prepaid_expenses.delta), "styleNormalAmount");
         }
 
         //liability adjustments title
@@ -884,14 +947,14 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var tableRow = tableCashflow.addRow("styleTablRows");
         tableRow.addCell(texts.liabilities_cashflow, "styleTablRows");
         for (var i = this.data.length - 1; i >= 0; i--) {
-            tableRow.addCell(this.toLocaleAmountFormat(this.data[i].cashflow.net_liabilities), "styleNormalAmount");
+            tableRow.addCell(this.toLocaleAmountFormat(this.data[i].balance.stdc.debts.delta), "styleNormalAmount");
         }
 
         //Accruals and Deferrend Income
         var tableRow = tableCashflow.addRow("styleTablRows");
         tableRow.addCell(texts.accruals_and_deferred_income_cashflow, "styleTablRows");
         for (var i = this.data.length - 1; i >= 0; i--) {
-            tableRow.addCell(this.toLocaleAmountFormat(this.data[i].cashflowgroups.accruals_and_deferred_income.delta), "styleNormalAmount");
+            tableRow.addCell(this.toLocaleAmountFormat(this.data[i].balance.stdc.accruals_and_deferred_income.delta), "styleNormalAmount");
         }
         //Total Operating cashflow
         var tableRow = tableCashflow.addRow("styleTablRows");
@@ -910,7 +973,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var tableRow = tableCashflow.addRow("styleTablRows");
         tableRow.addCell(texts.disinvestments_cashflow, "styleTablRows");
         for (var i = this.data.length - 1; i >= 0; i--) {
-            tableRow.addCell(this.toLocaleAmountFormat(this.data[i].balance.fa.fixedassets.disinvestments), "styleNormalAmount");
+            tableRow.addCell(this.toLocaleAmountFormat(this.data[i].cashflow.disinvestments), "styleNormalAmount");
         }
 
         //Cashflow from Investing
@@ -924,7 +987,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var tableRow = tableCashflow.addRow("styleTablRows");
         tableRow.addCell(texts.longtermdebtcapital_cashflow, "styleTablRows");
         for (var i = this.data.length - 1; i >= 0; i--) {
-            tableRow.addCell(this.toLocaleAmountFormat(this.data[i].cashflow.net_longtermdebtcapital), "styleNormalAmount");
+            tableRow.addCell(this.toLocaleAmountFormat(this.data[i].balance.ltdc.longter_debts.delta), "styleNormalAmount");
         }
         //Own Capital
         var tableRow = tableCashflow.addRow("styleTablRows");
@@ -1320,8 +1383,14 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         texts.credits_acronym = "cred";
         texts.stocks_acronym = "stoc";
         texts.fixedassets_acronym = "fixa";
+        texts.financial_fixedassets_acronym = "finfix";
+        texts.tangible_fixedassets_acronym = "tanfix";
+        texts.intangible_fixedassets_acronym = "intfix";
         texts.shorttermdebtcapital_acronym = "stdc";
         texts.longtermdebtcapital_acronym = "ltdc";
+        texts.longter_debts_acronym = "ltde";
+        texts.debts_acronym = "dbts";
+        texts.accruals_and_deferred_income_acronym = "accr";
         texts.ownbasecapital_acronym = "obca";
         texts.reservesandprofits_acronym = "reut";
         texts.salesturnover_acronym = "satu";
@@ -1333,7 +1402,6 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         texts.directtaxes_acronym = "dita";
         texts.finalresult_acronym = "fire";
         texts.currentassets_acronym = "cuas";
-        texts.totfixedassets_acronym = "tfix";
         texts.totassets_acronym = "tota";
         texts.debtcapital_acronym = "deca";
         texts.ownedcapital_acronym = "owca";
@@ -1373,9 +1441,16 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         texts.credits = qsTr("Credits");
         texts.stocks = qsTr("Stocks");
         texts.fixedassets = qsTr("Fixed Assets");
-        texts.shorttermdebtcapital = qsTr("Short term debt capital");
-        texts.longtermdebtcapital = qsTr("Long term debt capital");
+        texts.currentassets = qsTr("Current Assets");
+        texts.financial_fixedassets = qsTr("Financial Fixed Assets");
+        texts.tangible_fixedassets = qsTr("Tangible Fixed Assets");
+        texts.intangible_fixedassets = qsTr("Intangible Fixed Assets");
+        texts.shorttermdebtcapital = qsTr("Short term Debt Capital");
+        texts.debts = qsTr("Debts");
+        texts.longtermdebtcapital = qsTr("Long term debt Capital");
+        texts.longter_debts = qsTr("Long term Debts");
         texts.ownbasecapital = qsTr("Own base capital");
+        texts.owncapital = qsTr("Own Capital");
         texts.reservesandprofits = qsTr("Reserves and profits");
         texts.salesturnover = qsTr("Sales turnover");
         texts.costofmerchandservices = qsTr("Cost of merchandise and services");
@@ -1390,7 +1465,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         texts.accruals_and_deferred_income = qsTr("Accruals and Deferred Income");
 
         /******************************************************************************************
-         * texts for Cashflow elements
+         * texts for Cash flow elements
          * ***************************************************************************************/
 
         texts.provisionsandsimilar_cashflow = qsTr("+/- (+)Creation and (-)release of provisions")
@@ -1405,13 +1480,15 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         texts.ownbasecapital_cashflow = qsTr("Own capital (+) increases or (-) reductions ");
         texts.adjusted_assets_cashflow = qsTr("Adjustment with assets accounts ");
         texts.adjusted_liabilities_cashflow = qsTr("Adjustment with liabilities accounts ");
-        texts.cashflow_from_operations = qsTr("= Cashflow from operations");
-        texts.cashflow_from_investing = qsTr("= Cashflow from investing");
-        texts.cashflow_from_financing = qsTr("=Cashflow from financing")
+        texts.cashflow_from_operations = qsTr("= Cash Flow from operations");
+        texts.cashflow_from_investing = qsTr("= Cash Flow from investing");
+        texts.cashflow_from_financing = qsTr("=Cash Flow from financing")
         texts.final_cashflow = qsTr("Increase/decrease in liquidity");
         texts.opening_liquidity = qsTr("Cash at the beginning of the period");
         texts.closing_liquidity = qsTr("Cash at the end of the period")
         texts.delta_liquidity = qsTr("Difference");
+        texts.gain_on_sales = qsTr("- Revaluations on Fixed Assets");
+        texts.gain_on_loss = qsTr("+ Devaluations on Fixed Assets");
 
         /******************************************************************************************
          * texts for titles,headers,..
@@ -1430,7 +1507,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         texts.accountingtotal = qsTr("Accounting Total");
         texts.calculatedtotal = qsTr("Calculated Total");
         texts.difference = qsTr("Difference");
-        texts.uppercashflow = qsTr("CASH FLOW ANALYSIS (INDIRECT METHOD)");
+        texts.uppercashflow = qsTr("CASH FLOW STATEMENT (INDIRECT METHOD)");
         texts.upperliquidityratios = qsTr("LIQUIDITY RATIOS");
         texts.upperleverageratios = qsTr("LEVERAGE RATIOS");
         texts.upperprofitabilityratios = qsTr("PROFITABILITY RATIOS");
@@ -1442,7 +1519,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         texts.upperdupontscheme = qsTr("DUPONT ANALYSIS ");
         texts.financialstatementanalysis = qsTr("Financial Statements Analysis and Ratios");
         texts.totalasset = qsTr('Total Assets');
-        texts.asset = qsTr("Assets");
+        texts.assets = qsTr("Assets");
         texts.debtcapital = qsTr("Debt Capital");
         texts.liabilitiesandequity = qsTr("Liabilities and Equity");
         texts.totalliabilitiesandequity = qsTr("Total Liabilities and Equity");
@@ -1478,7 +1555,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         texts.leverage = qsTr('Leverage');
         texts.profitability = qsTr('Profitability');
         texts.efficiency = qsTr('Efficiency');
-        texts.cashflow = qsTr("Cashflow");
+        texts.cashflow = qsTr("Cash Flow");
+        texts.errorMsg = qsTr("Non-existent groups/accounts: ");
+
 
         /******************************************************************************************
          * texts for company info's
@@ -1534,11 +1613,11 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         texts.personnelcostperemployee = qsTr("Personnel Cost per Employee");
         texts.assetturnover = qsTr("Total Assets Turnover");
         //Cashflow ratios
-        texts.cashflow_margin = qsTr("Operating Cashflow Margin");
+        texts.cashflow_margin = qsTr("Operating Cash Flow Margin");
         texts.cashflow_asset_efficiency = qsTr("Asset Efficiency");
-        texts.cashflow_current_liabilities = qsTr("Cashflow to current Liabilities");
-        texts.cashflow_liabilities = qsTr("Cashflow to Liabilities");
-        texts.cashflow_to_investments = qsTr("Cashflow to Investments");
+        texts.cashflow_current_liabilities = qsTr("Cash Flow to current Liabilities");
+        texts.cashflow_liabilities = qsTr("Cash Flow to Liabilities");
+        texts.cashflow_to_investments = qsTr("Cash Flow to Investments");
 
 
 
@@ -1556,12 +1635,11 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
         var texts = this.initFinancialAnalysisTexts();
         var dialogparam = {};
-        dialogparam.version = "v1.1";
+        dialogparam.version = "v1.2";
         dialogparam.balance = this.initDialogParam_Balance();
         dialogparam.profitandloss = this.initDialogParam_ProfitLoss(texts);
         dialogparam.ratios = this.initDialogParam_RatiosBenchmarks();
         dialogparam.finalresult = this.initDialogParam_FinalResult(texts);
-        dialogparam.cashflowgroups = this.initDialogParam_Cashflow_groups(texts);
         dialogparam.maxpreviousyears = 2;
         dialogparam.numberofdecimals = 2;
         dialogparam.numberofemployees = 1;
@@ -1584,7 +1662,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var dialogparam = {};
         dialogparam.ca = this.initDialogParam_CurrentAsset(texts);
         dialogparam.fa = this.initDialogParam_FixedAsset(texts);
-        dialogparam.dc = this.initDialogParam_DebtCapital(texts);
+        dialogparam.stdc = this.initDialogParam_ShortTermDebtCapital(texts);
+        dialogparam.ltdc = this.initDialogParam_LongTermDebtCapital(texts);
         dialogparam.oc = this.initDialogParam_OwnCapital(texts);
 
         return dialogparam;
@@ -1604,43 +1683,77 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         dialogparam.credits.acronym = texts.credits_acronym;
         dialogparam.credits.bclass = "1";
         dialogparam.stocks = {};
-        dialogparam.stocks.gr = "120;130";
+        dialogparam.stocks.gr = "120";
         dialogparam.stocks.description = texts.stocks;
         dialogparam.stocks.acronym = texts.stocks_acronym;
         dialogparam.stocks.bclass = "1";
+        dialogparam.prepaid_expenses = {};
+        dialogparam.prepaid_expenses.gr = "130";
+        dialogparam.prepaid_expenses.description = texts.prepaid_expenses;
+        dialogparam.prepaid_expenses.acronym = texts.prepaid_expenses_acronym;
+        dialogparam.prepaid_expenses.bclass = "1";
 
         return dialogparam;
     }
 
     initDialogParam_FixedAsset(texts) {
         var dialogparam = {};
-        dialogparam.fixedassets = {};
-        dialogparam.fixedassets.gr = "14";
-        dialogparam.fixedassets.description = texts.fixedassets;
-        dialogparam.fixedassets.acronym = texts.fixedassets_acronym;
-        dialogparam.fixedassets.bclass = "1";
+        dialogparam.financial_fixedassets = {};
+        dialogparam.financial_fixedassets.gr = "140;148";
+        dialogparam.financial_fixedassets.description = texts.financial_fixedassets;
+        dialogparam.financial_fixedassets.acronym = texts.financial_fixedassets_acronym;
+        dialogparam.financial_fixedassets.bclass = "1";
+        dialogparam.tangible_fixedassets = {};
+        dialogparam.tangible_fixedassets.gr = "150;160";
+        dialogparam.tangible_fixedassets.description = texts.tangible_fixedassets;
+        dialogparam.tangible_fixedassets.acronym = texts.tangible_fixedassets_acronym;
+        dialogparam.tangible_fixedassets.bclass = "1";
+        dialogparam.intangible_fixedassets = {};
+        dialogparam.intangible_fixedassets.gr = "170;180";
+        dialogparam.intangible_fixedassets.description = texts.intangible_fixedassets;
+        dialogparam.intangible_fixedassets.acronym = texts.intangible_fixedassets_acronym;
+        dialogparam.intangible_fixedassets.bclass = "1";
 
 
         return dialogparam;
     }
 
-    initDialogParam_DebtCapital(texts) {
+    initDialogParam_ShortTermDebtCapital(texts) {
         var dialogparam = {};
-        dialogparam.shorttermdebtcapital = {};
-        dialogparam.shorttermdebtcapital.gr = "20";
-        dialogparam.shorttermdebtcapital.description = texts.shorttermdebtcapital;
-        dialogparam.shorttermdebtcapital.acronym = texts.shorttermdebtcapital_acronym;
-        dialogparam.shorttermdebtcapital.bclass = "2";
-        dialogparam.longtermdebtcapital = {};
-        dialogparam.longtermdebtcapital.gr = "24";
-        dialogparam.longtermdebtcapital.description = texts.longtermdebtcapital;
-        dialogparam.longtermdebtcapital.acronym = texts.longtermdebtcapital_acronym;
-        dialogparam.longtermdebtcapital.bclass = "2";
+
+        dialogparam.debts = {};
+        dialogparam.debts.gr = "200;210;220";
+        dialogparam.debts.description = texts.debts;
+        dialogparam.debts.acronym = texts.debts_acronym;
+        dialogparam.debts.bclass = "2";
+        dialogparam.accruals_and_deferred_income = {};
+        dialogparam.accruals_and_deferred_income.gr = "230";
+        dialogparam.accruals_and_deferred_income.description = texts.accruals_and_deferred_income;
+        dialogparam.accruals_and_deferred_income.acronym = texts.accruals_and_deferred_income_acronym;
+        dialogparam.accruals_and_deferred_income.bclass = "2";
+
+        return dialogparam;
+    }
+    initDialogParam_LongTermDebtCapital(texts) {
+        var dialogparam = {};
+
+        dialogparam.longter_debts = {};
+        dialogparam.longter_debts.gr = "240;250";
+        dialogparam.longter_debts.description = texts.longter_debts;
+        dialogparam.longter_debts.acronym = texts.longter_debts_acronym;
+        dialogparam.longter_debts.bclass = "2";
+        dialogparam.provisionsandsimilar = {};
+        dialogparam.provisionsandsimilar.gr = "260";
+        dialogparam.provisionsandsimilar.description = texts.provisionsandsimilar;
+        dialogparam.provisionsandsimilar.acronym = texts.provisionsandsimilar_acronym;
+        dialogparam.provisionsandsimilar.bclass = "2";
+
         return dialogparam;
     }
 
     initDialogParam_OwnCapital(texts) {
         var dialogparam = {};
+
         dialogparam.ownbasecapital = {};
         dialogparam.ownbasecapital.gr = "280";
         dialogparam.ownbasecapital.description = texts.ownbasecapital;
@@ -1701,27 +1814,6 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         dialogparam.finalresult.gr = "E7";
         dialogparam.finalresult.description = texts.finalresult;
         dialogparam.finalresult.acronym = texts.finalresult_acronym;
-        return dialogparam;
-    }
-
-
-    initDialogParam_Cashflow_groups(texts) {
-        var dialogparam = {};
-        dialogparam.prepaid_expenses = {};
-        dialogparam.prepaid_expenses.gr = "130";
-        dialogparam.prepaid_expenses.description = texts.prepaid_expenses;
-        dialogparam.prepaid_expenses.acronym = texts.prepaid_expenses_acronym;
-        dialogparam.prepaid_expenses.bclass = "1";
-        dialogparam.accruals_and_deferred_income = {};
-        dialogparam.accruals_and_deferred_income.gr = "230";
-        dialogparam.accruals_and_deferred_income.description = texts.accruals_and_deferred_income;
-        dialogparam.accruals_and_deferred_income.acronym = texts.accruals_and_deferred_income_acronym;
-        dialogparam.accruals_and_deferred_income.bclass = "2";
-        dialogparam.provisionsandsimilar = {};
-        dialogparam.provisionsandsimilar.gr = "260";
-        dialogparam.provisionsandsimilar.description = texts.provisionsandsimilar;
-        dialogparam.provisionsandsimilar.acronym = texts.provisionsandsimilar_acronym;
-        dialogparam.provisionsandsimilar.bclass = "2";
         return dialogparam;
     }
 
@@ -1859,7 +1951,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             var index = this.calculateIndex(data_budget, calculated_data);
             var dupont_data = this.createdupont_data(data_budget, calculated_data, index);
             var altman_index = this.calculateAltmanIndex(data_budget, calculated_data, index)
-            var cashflow = this.calculateCashflowTotals(data_budget);
+            var cashflow = this.calculateCashflowTotals(data_budget, calculated_data);
             var cashflow_index = this.calculateCashflowIndex(data_budget, calculated_data, cashflow);
             data_budget.calculated_data = calculated_data;
             data_budget.index = index;
@@ -1876,7 +1968,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             var index = this.calculateIndex(data_year, calculated_data);
             var dupont_data = this.createdupont_data(data_year, calculated_data, index);
             var altman_index = this.calculateAltmanIndex(data_year, calculated_data, index);
-            var cashflow = this.calculateCashflowTotals(data_year);
+            var cashflow = this.calculateCashflowTotals(data_year, calculated_data);
             var cashflow_index = this.calculateCashflowIndex(data_year, calculated_data, cashflow);
             data_year.calculated_data = calculated_data;
             data_year.index = index;
@@ -1995,9 +2087,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                     //Banana.console.debug(bal.amount);
                 }
                 //Banana.console.debug(JSON.stringify(bal.balance));
+                var mult = -1;
                 if (bal) {
                     //save the balance
-                    var mult = -1;
                     if (dialogparam[key].bclass === "1") {
                         dialogparam[key].balance = bal.balance;
                         dialogparam[key].opening = bal.opening;
@@ -2017,23 +2109,38 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                     //delta
                     dialogparam[key].delta = Banana.SDecimal.subtract(dialogparam[key].balance, dialogparam[key].opening);
                     //the sign is set to minus for elements of the Assets (to calculate the cashflow);
-                    if (dialogparam[key].bclass === "1" && dialogparam[key].description !== "Liquidity") {
+                    if (dialogparam[key].bclass === "1" && dialogparam[key].acronym !== "liqu") {
                         dialogparam[key].delta = Banana.SDecimal.multiply(dialogparam[key].delta, mult);
                     }
                     //Banana.console.debug(JSON.stringify(dialogparam[key]));
                     //Banana.console.debug(JSON.stringify("********************************"));
                 }
                 if (transactions) {
-                    //find the disinvestments in the transactions
                     for (var i = 0; i < transactions.rowCount; i++) {
                         let tRow = transactions.row(i);
                         let description = tRow.value('JDescription');
+                        description = description.toLowerCase();
 
+                        //find the Disinvestmenst
                         if (description.indexOf("#disinvest") >= 0) {
                             var jAmount = tRow.value('JAmount');
                             jAmount = Banana.SDecimal.abs(jAmount);
 
                             dialogparam[key].disinvestments = Banana.SDecimal.add(dialogparam[key].disinvestments, jAmount);
+                        }
+                        //find the gain on the sales
+                        if (description.indexOf("#revaluation") >= 0) {
+                            var jAmount = tRow.value('JAmount');
+                            jAmount = Banana.SDecimal.abs(jAmount);
+
+                            dialogparam[key].gain = Banana.SDecimal.add(dialogparam[key].gain, jAmount);
+                        }
+                        //find the loss on the sales
+                        if (description.indexOf("#devaluation") >= 0) {
+                            var jAmount = tRow.value('JAmount');
+                            jAmount = Banana.SDecimal.abs(jAmount);
+
+                            dialogparam[key].loss = Banana.SDecimal.add(dialogparam[key].loss, jAmount);
                         }
                     }
 
@@ -2066,13 +2173,38 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var liquidtiy = data.balance.ca.liquidity.balance;
         var credits = data.balance.ca.credits.balance;
         var stocks = data.balance.ca.stocks.balance;
-        var fixedassets = data.balance.fa.fixedassets.balance;
-        var tota1 = Banana.SDecimal.add(liquidtiy, credits);
-        var tota2 = Banana.SDecimal.add(tota1, stocks);
-        calcdata.currentassets = tota2;
-        calcdata.totfixedassets = fixedassets;
-        var totalassets = Banana.SDecimal.add(tota2, fixedassets);
+        var prepaid_expenses = data.balance.ca.prepaid_expenses.balance;
+
+        //Current Assets
+        var currentassets = Banana.SDecimal.add(liquidtiy, credits);
+        currentassets = Banana.SDecimal.add(currentassets, stocks);
+        currentassets = Banana.SDecimal.add(currentassets, prepaid_expenses);
+        calcdata.currentassets = currentassets;
+
+
+        //ottimizzare con ciclo for
+        //Fixed Assets (final balance)
+        var fixedassets = Banana.SDecimal.add(data.balance.fa.financial_fixedassets.balance, data.balance.fa.tangible_fixedassets.balance);
+        fixedassets = Banana.SDecimal.add(fixedassets, data.balance.fa.intangible_fixedassets.balance);
+        calcdata.fixedassets = fixedassets;
+        //Fixed Asssets (opening)
+        var fixedassets_opening = Banana.SDecimal.add(data.balance.fa.financial_fixedassets.opening, data.balance.fa.tangible_fixedassets.opening);
+        fixedassets = Banana.SDecimal.add(fixedassets, data.balance.fa.intangible_fixedassets.opening);
+        calcdata.fixedassets_opening = fixedassets_opening;
+
+        var totalassets = Banana.SDecimal.add(currentassets, fixedassets);
         calcdata.totalassets = totalassets;
+
+        //Fixed Assets gain
+        var fixedassets_gain = Banana.SDecimal.add(data.balance.fa.financial_fixedassets.gain, data.balance.fa.tangible_fixedassets.gain);
+        fixedassets = Banana.SDecimal.add(fixedassets, data.balance.fa.intangible_fixedassets.gain);
+        calcdata.fixedassets_gain = fixedassets_gain;
+
+        //Fixed Assets losses
+        var fixedassets_loss = Banana.SDecimal.add(data.balance.fa.financial_fixedassets.loss, data.balance.fa.tangible_fixedassets.loss);
+        fixedassets = Banana.SDecimal.add(fixedassets, data.balance.fa.intangible_fixedassets.loss);
+        calcdata.fixedassets_loss = fixedassets_loss;
+
 
         /************************************************************************************************
          * Calculate the total assets resulting from the accounting sheet and then use it for controls
@@ -2100,15 +2232,20 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
          ******************************************************************************************************/
         calcdata.totalliabilitiesandequity = {};
 
-        var shorttermdebtcapital = data.balance.dc.shorttermdebtcapital.balance;
-        var longtermdebtcapital = data.balance.dc.longtermdebtcapital.balance;
-        var ownbasecapital = data.balance.oc.ownbasecapital.balance;
-        var reservesandprofits = data.balance.oc.reservesandprofits.balance;
-        var totp1 = Banana.SDecimal.add(longtermdebtcapital, shorttermdebtcapital);
-        calcdata.debtcapital = totp1;
-        var totp2 = Banana.SDecimal.add(totp1, ownbasecapital);
-        calcdata.totowncapital = Banana.SDecimal.add(ownbasecapital, reservesandprofits);
-        var totalliabilitiesandequity = Banana.SDecimal.add(totp2, reservesandprofits);
+        //short term debt capital
+        var shorttermdebtcapital = Banana.SDecimal.add(data.balance.stdc.debts.balance, data.balance.stdc.accruals_and_deferred_income.balance);
+        calcdata.shorttermdebtcapital = shorttermdebtcapital;
+        //long term debt capital
+        var longtermdebtcapital = Banana.SDecimal.add(data.balance.ltdc.longter_debts.balance, data.balance.ltdc.provisionsandsimilar.balance);
+        calcdata.longtermdebtcapital = longtermdebtcapital;
+        //Total debt capital
+        var debtcapital = Banana.SDecimal.add(shorttermdebtcapital, longtermdebtcapital);
+        calcdata.debtcapital = debtcapital;
+        //Own capital
+        var owncapital = Banana.SDecimal.add(data.balance.oc.ownbasecapital.balance, data.balance.oc.reservesandprofits.balance);
+        calcdata.owncapital = owncapital;
+
+        var totalliabilitiesandequity = Banana.SDecimal.add(debtcapital, owncapital);
         calcdata.totalliabilitiesandequity = totalliabilitiesandequity;
 
         /*********************************************************************************************
@@ -2252,7 +2389,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         index.liqu.doflone.type = "perc";
         index.liqu.doflone.formula = "liqu / stdc";
         var liquidity = data.balance.ca.liquidity.balance;
-        var shorttermdebtcapital = data.balance.dc.shorttermdebtcapital.balance;
+        var shorttermdebtcapital = calculated_data.shorttermdebtcapital;
         var lcalc1 = Banana.SDecimal.divide(liquidity, shorttermdebtcapital);
         var lcalc2 = Banana.SDecimal.multiply(lcalc1, 100, { 'decimals': this.dialogparam.numberofdecimals });
         var lris = lcalc2.toString();
@@ -2277,9 +2414,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         index.liqu.doflthree.description = texts.currentratio;
         index.liqu.doflthree.type = "perc";
         index.liqu.doflthree.formula = "cuas / stdc";
-        var cuasone = Banana.SDecimal.add((data.balance.ca.liquidity.balance), (data.balance.ca.credits.balance));
-        var cuastwo = Banana.SDecimal.add(cuasone, (data.balance.ca.stocks.balance));
-        var lcalc5 = Banana.SDecimal.divide(cuastwo, shorttermdebtcapital);
+        var currentassets = calculated_data.currentassets;
+        var lcalc5 = Banana.SDecimal.divide(currentassets, shorttermdebtcapital);
         var lcalc6 = Banana.SDecimal.multiply(lcalc5, 100, { 'decimals': this.dialogparam.numberofdecimals });
         var lris3 = lcalc6.toString();
         index.liqu.doflthree.amount = lris3;
@@ -2290,7 +2426,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         index.liqu.netcuas.description = texts.netcurrentasset;
         index.liqu.netcuas.type = "dec";
         index.liqu.netcuas.formula = "cuas-stdc";
-        var lcalc7 = Banana.SDecimal.subtract(cuastwo, shorttermdebtcapital, { 'decimals': this.dialogparam.numberofdecimals });
+        var lcalc7 = Banana.SDecimal.subtract(currentassets, shorttermdebtcapital, { 'decimals': this.dialogparam.numberofdecimals });
         var lris4 = lcalc7.toString();
         lris4 = this.setIndexToZero(lris4);
         index.liqu.netcuas.amount = lris4;
@@ -2308,8 +2444,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         index.lev.grcuas.description = texts.degreecirculatingasset;
         index.lev.grcuas.type = "perc";
         index.lev.grcuas.formula = "cuas / tota";
-        var totatt = calculated_data.totalassets;
-        var fcalc = Banana.SDecimal.divide(cuastwo, totatt);
+        var totalassets = calculated_data.totalassets;
+        var fcalc = Banana.SDecimal.divide(currentassets, totalassets);
         var fcalc = Banana.SDecimal.multiply(fcalc, 100, { 'decimals': this.dialogparam.numberofdecimals });
         var fris = fcalc.toString();
         index.lev.grcuas.amount = fris;
@@ -2320,8 +2456,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         index.lev.grfixa.description = texts.percentagefixedasset;
         index.lev.grfixa.type = "perc";
         index.lev.grfixa.formula = "fixa / tota";
-        var fixedassets = data.balance.fa.fixedassets.balance;
-        var fcalc1 = Banana.SDecimal.divide(fixedassets, totatt);
+        var fixedassets = calculated_data.fixedassets;
+        var fcalc1 = Banana.SDecimal.divide(fixedassets, totalassets);
         var fcalc1 = Banana.SDecimal.multiply(fcalc1, 100, { 'decimals': this.dialogparam.numberofdecimals });
         var fris1 = fcalc1.toString();
         index.lev.grfixa.amount = fris1;
@@ -2334,11 +2470,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         index.lev.gdin.description = texts.debtratio;
         index.lev.gdin.type = "perc";
         index.lev.gdin.formula = "(stdc+ltdc) / totp";
-        var deca = Banana.SDecimal.add((data.balance.dc.longtermdebtcapital.balance), (data.balance.dc.shorttermdebtcapital.balance));
-        var tocaone = Banana.SDecimal.add(data.balance.oc.ownbasecapital.balance, data.balance.oc.reservesandprofits.balance);
-        var tocatwo = Banana.SDecimal.add(data.balance.dc.longtermdebtcapital.balance, data.balance.dc.shorttermdebtcapital.balance);
-        var toca = Banana.SDecimal.add(tocaone, tocatwo)
-        var fcalc2 = Banana.SDecimal.divide(deca, toca);
+        var debtcapital = calculated_data.debtcapital;
+        var liabilitiesandequity = calculated_data.totalliabilitiesandequity;
+        var fcalc2 = Banana.SDecimal.divide(debtcapital, liabilitiesandequity);
         var fcalc3 = Banana.SDecimal.multiply(fcalc2, 100, { 'decimals': this.dialogparam.numberofdecimals });
         var fris2 = fcalc3.toString();
         index.lev.gdin.amount = fris2;
@@ -2350,8 +2484,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         index.lev.gfcp.description = texts.equityratio;
         index.lev.gfcp.type = "perc";
         index.lev.gfcp.formula = "owca / totp";
-        var owca = Banana.SDecimal.add((data.balance.oc.ownbasecapital.balance), (data.balance.oc.reservesandprofits.balance));
-        var fcalc4 = Banana.SDecimal.divide(owca, toca);
+        var owncapital = calculated_data.owncapital;
+        var fcalc4 = Banana.SDecimal.divide(owncapital, liabilitiesandequity);
         var fcalc5 = Banana.SDecimal.multiply(fcalc4, 100, { 'decimals': this.dialogparam.numberofdecimals });
         var fris3 = fcalc5.toString();
         index.lev.gfcp.amount = fris3;
@@ -2363,7 +2497,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         index.lev.gdau.type = "perc";
         index.lev.gdau.formula = "reut / owca";
         var reservesandprofits = data.balance.oc.reservesandprofits.balance;
-        var fcalc6 = Banana.SDecimal.divide(reservesandprofits, owca);
+        var fcalc6 = Banana.SDecimal.divide(reservesandprofits, owncapital);
         var fcalc7 = Banana.SDecimal.multiply(fcalc6, 100, { 'decimals': this.dialogparam.numberofdecimals });
         var fris4 = fcalc7.toString();
         index.lev.gdau.amount = fris4;
@@ -2374,9 +2508,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         index.lev.fixaco.description = texts.fixedassetcoverage;
         index.lev.fixaco.type = "perc";
         index.lev.fixaco.formula = "(owca + ltdc) / tota";
-        var longtermdebtcapital = data.balance.dc.longtermdebtcapital.balance;
-        var fcalc8 = Banana.SDecimal.add(owca, longtermdebtcapital);
-        var fcalc9 = Banana.SDecimal.divide(fcalc8, totatt);
+        var longtermdebtcapital = calculated_data.longtermdebtcapital;
+        var fcalc8 = Banana.SDecimal.add(owncapital, longtermdebtcapital);
+        var fcalc9 = Banana.SDecimal.divide(fcalc8, totalassets);
         var fcalc9 = Banana.SDecimal.multiply(fcalc9, 100, { 'decimals': this.dialogparam.numberofdecimals });
         var fris5 = fcalc9.toString();
         index.lev.fixaco.amount = fris5;
@@ -2400,7 +2534,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         index.red.roe.description = "ROE";
         index.red.roe.type = "perc";
         index.red.roe.formula = "profit / owca";
-        var rcalc1 = Banana.SDecimal.divide(calculated_data.annualresult, owca);
+        var rcalc1 = Banana.SDecimal.divide(calculated_data.annualresult, owncapital);
         var rcalc2 = Banana.SDecimal.multiply(rcalc1, 100, { 'decimals': this.dialogparam.numberofdecimals });
         var rris = rcalc2.toString();
         index.red.roe.amount = rris;
@@ -2412,7 +2546,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         index.red.roi.description = "ROI";
         index.red.roi.type = "perc";
         index.red.roi.formula = "EBIT / tota  ";
-        var rcalc3 = Banana.SDecimal.divide(calculated_data.ebit, totatt);
+        var rcalc3 = Banana.SDecimal.divide(calculated_data.ebit, totalassets);
         var rcalc4 = Banana.SDecimal.multiply(rcalc3, 100, { 'decimals': this.dialogparam.numberofdecimals });
         var rris2 = rcalc4.toString();
         index.red.roi.amount = rris2;
@@ -2515,48 +2649,59 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
     }
 
     /**
-     * Calculate the Free Cashflow starting from the Netcashflow and taking as parameter also the investments.
-     * @param {*} investments the investments (array)
-     * @param {*} netcashflow the net Cashflow (array)
+     * Calculate the Cash Flow.
+     * @param {*} data 
+     * @param {*} calculated_data 
+     * @returns 
      */
-    calculateCashflowTotals(data) {
+    calculateCashflowTotals(data, calculated_data) {
         let cashflow = {};
 
         /****************************************************
-         * calculate the Cashflow from operations
+         * calculate the Cash flow from operations
          ***************************************************/
         cashflow.from_operations = data.finalresult.finalresult.delta;
+        cashflow.from_operations = Banana.SDecimal.subtract(cashflow.from_operations, calculated_data.fixedassets_gain);
+        cashflow.from_operations = Banana.SDecimal.add(cashflow.from_operations, calculated_data.fixedassets_loss);
         cashflow.from_operations = Banana.SDecimal.add(cashflow.from_operations, data.profitandloss.depreandadjust.balance);
-        cashflow.from_operations = Banana.SDecimal.add(cashflow.from_operations, data.cashflowgroups.provisionsandsimilar.delta);
+        cashflow.from_operations = Banana.SDecimal.add(cashflow.from_operations, calculated_data.fixedassets_gain_loss_delta);
+        cashflow.from_operations = Banana.SDecimal.add(cashflow.from_operations, data.balance.ltdc.provisionsandsimilar.delta);
         cashflow.from_operations = Banana.SDecimal.add(cashflow.from_operations, data.balance.ca.credits.delta);
-        cashflow.net_stocks = Banana.SDecimal.subtract(data.balance.ca.stocks.delta, data.cashflowgroups.prepaid_expenses.delta)
-        cashflow.from_operations = Banana.SDecimal.add(cashflow.from_operations, cashflow.net_stocks);
-        cashflow.from_operations = Banana.SDecimal.add(cashflow.from_operations, data.cashflowgroups.prepaid_expenses.delta);
-        cashflow.net_liabilities = Banana.SDecimal.subtract(data.balance.dc.shorttermdebtcapital.delta, data.cashflowgroups.accruals_and_deferred_income.delta)
-        cashflow.from_operations = Banana.SDecimal.add(cashflow.from_operations, cashflow.net_liabilities);
-        cashflow.from_operations = Banana.SDecimal.add(cashflow.from_operations, data.cashflowgroups.accruals_and_deferred_income.delta);
+        cashflow.from_operations = Banana.SDecimal.add(cashflow.from_operations, data.balance.ca.stocks.delta);
+        cashflow.from_operations = Banana.SDecimal.add(cashflow.from_operations, data.balance.ca.prepaid_expenses.delta);
+        cashflow.from_operations = Banana.SDecimal.add(cashflow.from_operations, data.balance.stdc.debts.delta);
+        cashflow.from_operations = Banana.SDecimal.add(cashflow.from_operations, data.balance.stdc.accruals_and_deferred_income.delta);
 
         /******************************************************
          * Calculate the Cashflow from Investing
          ******************************************************/
-        //first find the investments with the following formula: Investments=Depreciations and Adjustments + Disinvestments + *Fixed Assets (Delta).
+        //Find the investments with the following formula: Investments=Depreciations and Adjustments + Disinvestments + *Fixed Assets (Delta).
         //*Or use the opening and closing amounts.
-        cashflow.investments = Banana.SDecimal.add(cashflow.investments, data.profitandloss.depreandadjust.balance);
-        cashflow.investments = Banana.SDecimal.add(cashflow.investments, data.balance.fa.fixedassets.disinvestments);
-        //Banana.console.debug(data.balance.fa.fixedassets.disinvestments);
-        let fixedassets_delta = Banana.SDecimal.abs(data.balance.fa.fixedassets.delta);
-        cashflow.investments = Banana.SDecimal.add(cashflow.investments, fixedassets_delta);
 
+        //First find the disinvestments
+        var disinvestments = Banana.SDecimal.add(data.balance.fa.financial_fixedassets.disinvestments, data.balance.fa.tangible_fixedassets.disinvestments);
+        disinvestments = Banana.SDecimal.add(disinvestments, data.balance.fa.intangible_fixedassets.disinvestments);
+        cashflow.disinvestments = disinvestments;
+
+        cashflow.investments = Banana.SDecimal.add(cashflow.investments, data.profitandloss.depreandadjust.balance);
+        cashflow.investments = Banana.SDecimal.add(cashflow.investments, disinvestments);
+        //Fixed assets opening amount
+        let fixedassets_opening = Banana.SDecimal.abs(calculated_data.fixedassets_opening);
+        let fixedassets_balance = Banana.SDecimal.abs(calculated_data.fixedassets);
+        cashflow.investments = Banana.SDecimal.add(cashflow.investments, fixedassets_balance);
+        cashflow.investments = Banana.SDecimal.subtract(cashflow.investments, fixedassets_opening);
+        //Adjusting the calculation with capital gain and loss
+        cashflow.investments = Banana.SDecimal.subtract(cashflow.investments, calculated_data.fixedassets_gain);
+        cashflow.investments = Banana.SDecimal.add(cashflow.investments, calculated_data.fixedassets_loss);
         //then calculate the cashflow from Investing
         cashflow.from_investing = Banana.SDecimal.subtract(cashflow.from_investing, cashflow.investments);
-        cashflow.from_investing = Banana.SDecimal.add(cashflow.from_investing, data.balance.fa.fixedassets.disinvestments);
+        cashflow.from_investing = Banana.SDecimal.add(cashflow.from_investing, disinvestments);
 
         /***************************************************
          * Calculate the Cashflow from Financing  
          ***************************************************/
         //first find the long therm third capital without the provisions and similar
-        cashflow.net_longtermdebtcapital = Banana.SDecimal.subtract(data.balance.dc.longtermdebtcapital.delta, data.cashflowgroups.provisionsandsimilar.delta)
-        cashflow.from_financing = Banana.SDecimal.add(cashflow.from_financing, cashflow.net_longtermdebtcapital);
+        cashflow.from_financing = Banana.SDecimal.add(cashflow.from_financing, data.balance.ltdc.longter_debts.delta);
         cashflow.from_financing = Banana.SDecimal.add(cashflow.from_financing, data.balance.oc.ownbasecapital.delta);
 
 
@@ -2627,7 +2772,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         index.cashflow_current_liabilities.description = texts.cashflow_current_liabilities;
         index.cashflow_current_liabilities.type = "perc";
         index.cashflow_current_liabilities.formula = "cashflow(A)/stdc";
-        index.cashflow_current_liabilities.amount = Banana.SDecimal.divide(cashflow.from_operations, data.balance.dc.shorttermdebtcapital.balance);
+        index.cashflow_current_liabilities.amount = Banana.SDecimal.divide(cashflow.from_operations, calculated_data.shorttermdebtcapital);
         index.cashflow_current_liabilities.amount = Banana.SDecimal.multiply(index.cashflow_current_liabilities.amount, 100, { 'decimals': this.dialogparam.numberofdecimals });
         index.cashflow_current_liabilities.benchmark = data.ratios.cashflowratios.cashflow_current_liabilities.value;
 
@@ -2711,12 +2856,30 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
         convertedParam.data.push(currentParam);
 
-        //Active subgroup
+        //Assets subgroup
         var currentParam = {};
         currentParam.name = 'Assets';
-        currentParam.title = texts.asset;
+        currentParam.title = texts.assets;
         currentParam.editable = false;
         currentParam.parentObject = 'Balance';
+
+        convertedParam.data.push(currentParam);
+
+        //Current Assets
+        var currentParam = {};
+        currentParam.name = 'Current Assets';
+        currentParam.title = texts.currentassets;
+        currentParam.editable = false;
+        currentParam.parentObject = 'Assets';
+
+        convertedParam.data.push(currentParam);
+
+        //Fixed Assets
+        var currentParam = {};
+        currentParam.name = 'Fixed Assets';
+        currentParam.title = texts.fixedassets;
+        currentParam.editable = false;
+        currentParam.parentObject = 'Assets';
 
         convertedParam.data.push(currentParam);
 
@@ -2729,20 +2892,36 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
         convertedParam.data.push(currentParam);
 
+        var currentParam = {};
+        currentParam.name = 'Short term Debt Capital';
+        currentParam.title = texts.shorttermdebtcapital;
+        currentParam.editable = false;
+        currentParam.parentObject = 'Liabilities and Equity';
+
+        convertedParam.data.push(currentParam);
+
+        var currentParam = {};
+        currentParam.name = 'Long term Debt Capital';
+        currentParam.title = texts.longtermdebtcapital;
+        currentParam.editable = false;
+        currentParam.parentObject = 'Liabilities and Equity';
+
+        convertedParam.data.push(currentParam);
+
+
+        var currentParam = {};
+        currentParam.name = 'Own Capital';
+        currentParam.title = texts.owncapital;
+        currentParam.editable = false;
+        currentParam.parentObject = 'Liabilities and Equity';
+
+        convertedParam.data.push(currentParam);
+
 
         // Profit and Loss grouping
         var currentParam = {};
         currentParam.name = 'Profit and Loss';
         currentParam.title = texts.profitandloss;
-        currentParam.editable = false;
-        currentParam.parentObject = 'Grouping';
-
-        convertedParam.data.push(currentParam);
-
-        // Cashflow elements
-        var currentParam = {};
-        currentParam.name = 'Cashflow';
-        currentParam.title = texts.cashflow;
         currentParam.editable = false;
         currentParam.parentObject = 'Grouping';
 
@@ -2865,7 +3044,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.value = userParam.balance.ca.liquidity.gr ? userParam.balance.ca.liquidity.gr : '';
         currentParam.defaultvalue = defaultParam.balance.ca.liquidity.gr;
         currentParam.tooltip = texts.groups_tooltip;
-        currentParam.parentObject = 'Assets';
+        currentParam.parentObject = 'Current Assets';
         currentParam.readValue = function() {
             userParam.balance.ca.liquidity.gr = this.value;
         }
@@ -2880,7 +3059,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.value = userParam.balance.ca.credits.gr ? userParam.balance.ca.credits.gr : '';
         currentParam.defaultvalue = defaultParam.balance.ca.credits.gr;
         currentParam.tooltip = texts.groups_tooltip;
-        currentParam.parentObject = 'Assets';
+        currentParam.parentObject = 'Current Assets';
         currentParam.readValue = function() {
             userParam.balance.ca.credits.gr = this.value;
         }
@@ -2894,51 +3073,124 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.value = userParam.balance.ca.stocks.gr ? userParam.balance.ca.stocks.gr : '';
         currentParam.defaultvalue = defaultParam.balance.ca.stocks.gr;
         currentParam.tooltip = texts.groups_tooltip;
-        currentParam.parentObject = 'Assets';
+        currentParam.parentObject = 'Current Assets';
         currentParam.readValue = function() {
             userParam.balance.ca.stocks.gr = this.value;
         }
         convertedParam.data.push(currentParam);
 
+        //Prepaid expenses
         var currentParam = {};
-        currentParam.name = 'fixa';
+        currentParam.name = 'pree';
         currentParam.group = 'balance';
-        currentParam.title = defaultParam.balance.fa.fixedassets.description;
+        currentParam.title = defaultParam.balance.ca.prepaid_expenses.description;
         currentParam.type = 'string';
-        currentParam.value = userParam.balance.fa.fixedassets.gr ? userParam.balance.fa.fixedassets.gr : '';
-        currentParam.defaultvalue = defaultParam.balance.fa.fixedassets.gr;
+        currentParam.value = userParam.balance.ca.prepaid_expenses.gr ? userParam.balance.ca.prepaid_expenses.gr : '';
+        currentParam.defaultvalue = defaultParam.balance.ca.prepaid_expenses.gr;
         currentParam.tooltip = texts.groups_tooltip;
-        currentParam.parentObject = 'Assets';
+        currentParam.parentObject = 'Current Assets';
         currentParam.readValue = function() {
-            userParam.balance.fa.fixedassets.gr = this.value;
+            userParam.balance.ca.prepaid_expenses.gr = this.value;
         }
         convertedParam.data.push(currentParam);
 
         var currentParam = {};
-        currentParam.name = 'stdc';
+        currentParam.name = 'fin_fixa';
         currentParam.group = 'balance';
-        currentParam.title = defaultParam.balance.dc.shorttermdebtcapital.description;
+        currentParam.title = defaultParam.balance.fa.financial_fixedassets.description;
         currentParam.type = 'string';
-        currentParam.value = userParam.balance.dc.shorttermdebtcapital.gr ? userParam.balance.dc.shorttermdebtcapital.gr : '';
-        currentParam.defaultvalue = defaultParam.balance.dc.shorttermdebtcapital.gr;
+        currentParam.value = userParam.balance.fa.financial_fixedassets.gr ? userParam.balance.fa.financial_fixedassets.gr : '';
+        currentParam.defaultvalue = defaultParam.balance.fa.financial_fixedassets.gr;
         currentParam.tooltip = texts.groups_tooltip;
-        currentParam.parentObject = 'Liabilities and Equity';
+        currentParam.parentObject = 'Fixed Assets';
         currentParam.readValue = function() {
-            userParam.balance.dc.shorttermdebtcapital.gr = this.value;
+            userParam.balance.fa.financial_fixedassets.gr = this.value;
         }
         convertedParam.data.push(currentParam);
 
         var currentParam = {};
-        currentParam.name = 'ltdc';
+        currentParam.name = 'tan_fixa';
         currentParam.group = 'balance';
-        currentParam.title = defaultParam.balance.dc.longtermdebtcapital.description;
+        currentParam.title = defaultParam.balance.fa.tangible_fixedassets.description;
         currentParam.type = 'string';
-        currentParam.value = userParam.balance.dc.longtermdebtcapital.gr ? userParam.balance.dc.longtermdebtcapital.gr : '';
-        currentParam.defaultvalue = defaultParam.balance.dc.longtermdebtcapital.gr;
+        currentParam.value = userParam.balance.fa.tangible_fixedassets.gr ? userParam.balance.fa.tangible_fixedassets.gr : '';
+        currentParam.defaultvalue = defaultParam.balance.fa.tangible_fixedassets.gr;
         currentParam.tooltip = texts.groups_tooltip;
-        currentParam.parentObject = 'Liabilities and Equity';
+        currentParam.parentObject = 'Fixed Assets';
         currentParam.readValue = function() {
-            userParam.balance.dc.longtermdebtcapital.gr = this.value;
+            userParam.balance.fa.tangible_fixedassets.gr = this.value;
+        }
+        convertedParam.data.push(currentParam);
+
+        var currentParam = {};
+        currentParam.name = 'intan_fixa';
+        currentParam.group = 'balance';
+        currentParam.title = defaultParam.balance.fa.intangible_fixedassets.description;
+        currentParam.type = 'string';
+        currentParam.value = userParam.balance.fa.intangible_fixedassets.gr ? userParam.balance.fa.intangible_fixedassets.gr : '';
+        currentParam.defaultvalue = defaultParam.balance.fa.intangible_fixedassets.gr;
+        currentParam.tooltip = texts.groups_tooltip;
+        currentParam.parentObject = 'Fixed Assets';
+        currentParam.readValue = function() {
+            userParam.balance.fa.intangible_fixedassets.gr = this.value;
+        }
+        convertedParam.data.push(currentParam);
+
+        var currentParam = {};
+        currentParam.name = 'debts';
+        currentParam.group = 'balance';
+        currentParam.title = defaultParam.balance.stdc.debts.description;
+        currentParam.type = 'string';
+        currentParam.value = userParam.balance.stdc.debts.gr ? userParam.balance.stdc.debts.gr : '';
+        currentParam.defaultvalue = defaultParam.balance.stdc.debts.gr;
+        currentParam.tooltip = texts.groups_tooltip;
+        currentParam.parentObject = 'Short term Debt Capital';
+        currentParam.readValue = function() {
+            userParam.balance.stdc.debts.gr = this.value;
+        }
+        convertedParam.data.push(currentParam);
+
+        //accrualsanddeferredincome
+        var currentParam = {};
+        currentParam.name = 'accruals';
+        currentParam.group = 'balance';
+        currentParam.title = defaultParam.balance.stdc.accruals_and_deferred_income.description;
+        currentParam.type = 'string';
+        currentParam.value = userParam.balance.stdc.accruals_and_deferred_income.gr ? userParam.balance.stdc.accruals_and_deferred_income.gr : '';
+        currentParam.defaultvalue = defaultParam.balance.stdc.accruals_and_deferred_income.gr;
+        currentParam.tooltip = texts.amounts_tooltip;
+        currentParam.parentObject = 'Short term Debt Capital';
+        currentParam.readValue = function() {
+            userParam.balance.stdc.accruals_and_deferred_income.gr = this.value;
+        }
+        convertedParam.data.push(currentParam);
+
+        var currentParam = {};
+        currentParam.name = 'longter_debts';
+        currentParam.group = 'balance';
+        currentParam.title = defaultParam.balance.ltdc.longter_debts.description;
+        currentParam.type = 'string';
+        currentParam.value = userParam.balance.ltdc.longter_debts.gr ? userParam.balance.ltdc.longter_debts.gr : '';
+        currentParam.defaultvalue = defaultParam.balance.ltdc.longter_debts.gr;
+        currentParam.tooltip = texts.groups_tooltip;
+        currentParam.parentObject = 'Long term Debt Capital';
+        currentParam.readValue = function() {
+            userParam.balance.ltdc.longter_debts.gr = this.value;
+        }
+        convertedParam.data.push(currentParam);
+
+        //Provisions and Similar
+        var currentParam = {};
+        currentParam.name = 'prov';
+        currentParam.group = 'balance';
+        currentParam.title = defaultParam.balance.ltdc.provisionsandsimilar.description;
+        currentParam.type = 'string';
+        currentParam.value = userParam.balance.ltdc.provisionsandsimilar.gr ? userParam.balance.ltdc.provisionsandsimilar.gr : '';
+        currentParam.defaultvalue = defaultParam.balance.ltdc.provisionsandsimilar.gr;
+        currentParam.tooltip = texts.groups_tooltip;
+        currentParam.parentObject = 'Long term Debt Capital';
+        currentParam.readValue = function() {
+            userParam.balance.ltdc.provisionsandsimilar.gr = this.value;
         }
         convertedParam.data.push(currentParam);
 
@@ -2950,7 +3202,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.value = userParam.balance.oc.ownbasecapital.gr ? userParam.balance.oc.ownbasecapital.gr : '';
         currentParam.defaultvalue = defaultParam.balance.oc.ownbasecapital.gr;
         currentParam.tooltip = texts.groups_tooltip;
-        currentParam.parentObject = 'Liabilities and Equity';
+        currentParam.parentObject = 'Own Capital';
         currentParam.readValue = function() {
             userParam.balance.oc.ownbasecapital.gr = this.value;
         }
@@ -2964,7 +3216,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.value = userParam.balance.oc.reservesandprofits.gr ? userParam.balance.oc.reservesandprofits.gr : '';
         currentParam.defaultvalue = defaultParam.balance.oc.reservesandprofits.gr;
         currentParam.tooltip = texts.groups_tooltip;
-        currentParam.parentObject = 'Liabilities and Equity';
+        currentParam.parentObject = 'Own Capital';
         currentParam.readValue = function() {
             userParam.balance.oc.reservesandprofits.gr = this.value;
         }
@@ -3065,53 +3317,6 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.parentObject = 'Costs';
         currentParam.readValue = function() {
             userParam.profitandloss.directtaxes.gr = this.value;
-        }
-        convertedParam.data.push(currentParam);
-
-        //Prepaid expenses
-        var currentParam = {};
-        currentParam.name = 'accr';
-        currentParam.group = 'prepaidexpenses';
-        currentParam.title = defaultParam.cashflowgroups.prepaid_expenses.description;
-        currentParam.type = 'string';
-        currentParam.value = userParam.cashflowgroups.prepaid_expenses.gr ? userParam.cashflowgroups.prepaid_expenses.gr : '';
-        currentParam.defaultvalue = defaultParam.cashflowgroups.prepaid_expenses.gr;
-        currentParam.tooltip = texts.groups_tooltip;
-        currentParam.parentObject = 'Cashflow';
-        currentParam.readValue = function() {
-            userParam.cashflowgroups.prepaid_expenses.gr = this.value;
-        }
-        convertedParam.data.push(currentParam);
-
-
-        //accrualsanddeferredincome
-        var currentParam = {};
-        currentParam.name = 'wown';
-        currentParam.group = 'accrualsanddeferredincome';
-        currentParam.title = defaultParam.cashflowgroups.accruals_and_deferred_income.description;
-        currentParam.type = 'string';
-        currentParam.value = userParam.cashflowgroups.accruals_and_deferred_income.gr ? userParam.cashflowgroups.accruals_and_deferred_income.gr : '';
-        currentParam.defaultvalue = defaultParam.cashflowgroups.accruals_and_deferred_income.gr;
-        currentParam.tooltip = texts.amounts_tooltip;
-        currentParam.parentObject = 'Cashflow';
-        currentParam.readValue = function() {
-            userParam.cashflowgroups.accruals_and_deferred_income.gr = this.value;
-        }
-        convertedParam.data.push(currentParam);
-
-
-        //Provisions and Similar
-        var currentParam = {};
-        currentParam.name = 'prov';
-        currentParam.group = 'provisionsandsimilar';
-        currentParam.title = defaultParam.cashflowgroups.provisionsandsimilar.description;
-        currentParam.type = 'string';
-        currentParam.value = userParam.cashflowgroups.provisionsandsimilar.gr ? userParam.cashflowgroups.provisionsandsimilar.gr : '';
-        currentParam.defaultvalue = defaultParam.cashflowgroups.provisionsandsimilar.gr;
-        currentParam.tooltip = texts.groups_tooltip;
-        currentParam.parentObject = 'Cashflow';
-        currentParam.readValue = function() {
-            userParam.cashflowgroups.provisionsandsimilar.gr = this.value;
         }
         convertedParam.data.push(currentParam);
 
@@ -3718,10 +3923,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var texts = this.initFinancialAnalysisTexts();
 
         var Dupont = {};
-
+        var totalassets = calculated_data.totalassets;
         var sales = data.profitandloss.salesturnover.balance;
-        var currentasset = calculated_data.currentassets;
-        var totfixedasset = calculated_data.totfixedassets;
         var ebit = calculated_data.ebit;
         var roi = index.red.roi.amount;
 
@@ -3754,13 +3957,13 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         Dupont.totalasset = {};
         Dupont.totalasset.description = texts.totalasset;
         Dupont.totalasset.type = "nrm";
-        Dupont.totalasset.amount = Banana.SDecimal.add(currentasset, totfixedasset);
+        Dupont.totalasset.amount = totalassets;
 
         //Asset turnover
         Dupont.assetturnover = {};
         Dupont.assetturnover.description = texts.assetturnover;
         Dupont.assetturnover.type = "titl";
-        Dupont.assetturnover.amount = Banana.SDecimal.divide(Dupont.assetturnoversales.amount, Dupont.totalasset.amount, { 'decimals': this.dialogparam.numberofdecimals });
+        Dupont.assetturnover.amount = Banana.SDecimal.divide(Dupont.assetturnoversales.amount, totalassets, { 'decimals': this.dialogparam.numberofdecimals });
 
         //  ROI
         Dupont.roi = {};
@@ -3807,15 +4010,14 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var AltmanIndex = {};
 
         //X1
-        var cuasone = Banana.SDecimal.add((data.balance.ca.liquidity.balance), (data.balance.ca.credits.balance));
-        var cuastwo = Banana.SDecimal.add(cuasone, (data.balance.ca.stocks.balance));
-        var totatt = calculated_data.totalassets;
-        var x1 = Banana.SDecimal.divide(cuastwo, totatt);
+        var currentassets = calculated_data.currentassets;
+        var totalassets = calculated_data.totalassets;
+        var x1 = Banana.SDecimal.divide(currentassets, totalassets);
         AltmanIndex.x1 = Banana.SDecimal.multiply(x1, 0.717);
 
         //X2
         var reservesandprofits = data.balance.oc.reservesandprofits.balance;
-        var x2 = Banana.SDecimal.divide(reservesandprofits, totatt);
+        var x2 = Banana.SDecimal.divide(reservesandprofits, totalassets);
         AltmanIndex.x2 = Banana.SDecimal.multiply(x2, 0.847);
 
         //X3
@@ -3823,12 +4025,12 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         AltmanIndex.x3 = Banana.SDecimal.multiply(x3, 3.107);
 
         //X4
-        var pant = Banana.SDecimal.subtract(calculated_data.totalassets_sheet, calculated_data.totalliabilitiesandequity_sheet);
+        var pant = Banana.SDecimal.subtract(calculated_data.totalassets, calculated_data.totalliabilitiesandequity);
         var x4 = Banana.SDecimal.divide(pant, calculated_data.totalliabilitiesandequity);
         AltmanIndex.x4 = Banana.SDecimal.multiply(x4, 0.420);
 
         //X5
-        var x5 = Banana.SDecimal.divide(data.profitandloss.salesturnover.balance, totatt);
+        var x5 = Banana.SDecimal.divide(data.profitandloss.salesturnover.balance, totalassets);
         AltmanIndex.x5 = Banana.SDecimal.multiply(x5, 0.998);
 
 
@@ -4293,10 +4495,13 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                 userParam.balance.ca = defaultParam.balance.ca;
             }
             if (!userParam.balance.fa) {
-                userParam.balance.fa = defaultParam.balance.ca;
+                userParam.balance.fa = defaultParam.balance.fa;
             }
-            if (!userParam.balance.dc) {
-                userParam.balance.dc = defaultParam.balance.ca;
+            if (!userParam.balance.stdc) {
+                userParam.balance.stdc = defaultParam.balance.stdc;
+            }
+            if (!userParam.balance.ltdc) {
+                userParam.balance.ltdc = defaultParam.balance.ltdc;
             }
             if (!userParam.balance.oc) {
                 userParam.balance.oc = defaultParam.balance.oc;
@@ -4311,14 +4516,29 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             if (!userParam.balance.ca.stocks) {
                 userParam.balance.ca.stocks = defaultParam.balance.ca.stocks;
             }
-            if (!userParam.balance.fa.fixedassets) {
-                userParam.balance.fa.fixedassets = defaultParam.balance.fa.fixedassets;
+            if (!userParam.balance.ca.prepaid_expenses) {
+                userParam.balance.ca.prepaid_expenses = defaultParam.balance.ca.prepaid_expenses;
             }
-            if (!userParam.balance.dc.shorttermdebtcapital) {
-                userParam.balance.dc.shorttermdebtcapital = defaultParam.balance.dc.shorttermdebtcapital;
+            if (!userParam.balance.fa.financial_fixedassets) {
+                userParam.balance.fa.financial_fixedassets = defaultParam.balance.fa.financial_fixedassets;
             }
-            if (!userParam.balance.dc.longtermdebtcapital) {
-                userParam.balance.dc.longtermdebtcapital = defaultParam.balance.dc.longtermdebtcapital;
+            if (!userParam.balance.fa.tangible_fixedassets) {
+                userParam.balance.fa.tangible_fixedassets = defaultParam.balance.fa.tangible_fixedassets;
+            }
+            if (!userParam.balance.fa.intangible_fixedassets) {
+                userParam.balance.fa.intangible_fixedassets = defaultParam.balance.fa.intangible_fixedassets;
+            }
+            if (!userParam.balance.stdc.debts) {
+                userParam.balance.stdc.debts = defaultParam.balance.stdc.debts;
+            }
+            if (!userParam.balance.stdc.accruals_and_deferred_income) {
+                userParam.balance.stdc.accruals_and_deferred_income = defaultParam.balance.stdc.accruals_and_deferred_income;
+            }
+            if (!userParam.balance.ltdc.longter_debts) {
+                userParam.balance.ltdc.longter_debts = defaultParam.balance.ltdc.longter_debts;
+            }
+            if (!userParam.balance.ltdc.provisionsandsimilar) {
+                userParam.balance.ltdc.provisionsandsimilar = defaultParam.balance.ltdc.provisionsandsimilar;
             }
             if (!userParam.balance.oc.ownbasecapital) {
                 userParam.balance.oc.ownbasecapital = userParam.balance.oc.ownbasecapital;
@@ -4353,19 +4573,6 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                 userParam.profitandloss.directtaxes = defaultParam.profitandloss.directtaxes;
             }
 
-            //Cashflow
-            if (!userParam.cashflowgroups) {
-                userParam.cashflowgroups = defaultParam.cashflowgroups;
-            }
-            if (!userParam.cashflowgroups.prepaid_expenses) {
-                userParam.cashflowgroups.prepaid_expenses = defaultParam.cashflowgroups.prepaid_expenses;
-            }
-            if (!userParam.cashflowgroups.accruals_and_deferred_income) {
-                userParam.cashflowgroups.accruals_and_deferred_income = defaultParam.cashflowgroups.accruals_and_deferred_income;
-            }
-            if (!userParam.cashflowgroups.provisionsandsimilar) {
-                userParam.cashflowgroups.provisionsandsimilar = defaultParam.cashflowgroups.provisionsandsimilar;
-            }
 
             //final result
             if (!userParam.finalresult) {
@@ -4484,11 +4691,13 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
              **************************************************************************************/
 
             //change the values with those defined ba the user, so the user dont lose the saved params
-            this.dialogparam = this.UpdateParamsData(defaultParam, userParam);
+            //this.dialogparam = this.UpdateParamsData(defaultParam, userParam);
 
-            //Banana.console.debug("******************1.0-->1.1*******************");
-
-            //Banana.console.debug(JSON.stringify(this.dialogparam));
+            /*************************************************************************************
+             * Change the parameters with those defined in the new version(24.03.2021: 1.1-->1.2)
+             **************************************************************************************/
+            this.dialogparam = defaultParam;
+            Banana.console.debug("******************1.1-->1.2*******************");
 
 
             return true;
@@ -4507,12 +4716,10 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
      */
     checkNonExistentGroupsOrAccounts(convertedParam) {
         var Docgroups = this.loadGroups();
+        let texts = this.initFinancialAnalysisTexts()
         var Docaccounts = this.loadAccounts();
         var nonExistentElements = "";
         var everyGroupExist = true;
-        var warningMsg = qsTr("Non-existent groups/accounts: ");
-        var elementsList = {};
-        var len = "";
         var somethingIsMissingCounter = 0;
         for (var i = 0; i < convertedParam.data.length; i++) {
             if (convertedParam.data[i].value) {
@@ -4529,10 +4736,11 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                         }
                     }
                     if (nonExistentElements.length > 0) {
-                        convertedParam.data[i].errorMsg = warningMsg + nonExistentElements;
+                        convertedParam.data[i].errorMsg = texts.errorMsg + nonExistentElements;
                     }
                     nonExistentElements = "";
                 }
+
             }
         }
 
@@ -4543,7 +4751,6 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         }
         return everyGroupExist;
     }
-
 }
 
 /**

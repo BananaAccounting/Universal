@@ -70,6 +70,8 @@ BasePage {
                   var dataSerie2 = [];
                   var dataSerie3 = [];
                   var dataSerie4 = [];
+                  var dataSerie5 = [];
+                  var dataSerie6 = [];
                   var dataSum = [];
                   for (var i = financialStatementAnalysis.data.length - 1; i >= 0; i--) {
                      var periodo = financialStatementAnalysis.data[i].period.StartDate;
@@ -82,25 +84,34 @@ BasePage {
                      if (yearList.indexOf(year)<0){
                         yearList.push(year);
                      }
-                     var sumStdc= Banana.SDecimal.abs(financialStatementAnalysis.data[i].balance.dc.shorttermdebtcapital.balance);
-                     dataSerie1.push(sumStdc);
-                     var sumLtdc=Banana.SDecimal.abs(financialStatementAnalysis.data[i].balance.dc.longtermdebtcapital.balance);
-                     dataSerie2.push(sumLtdc);
-                     var sumObca=Banana.SDecimal.abs(financialStatementAnalysis.data[i].balance.oc.ownbasecapital.balance);
-                     dataSerie3.push(sumObca);
-                     var sumReut=Banana.SDecimal.abs(financialStatementAnalysis.data[i].balance.oc.reservesandprofits.balance);
-                     dataSerie4.push(sumReut); 
+                     var sumDebts= Banana.SDecimal.abs(financialStatementAnalysis.data[i].balance.stdc.debts.balance);
+                     dataSerie1.push(sumDebts);
+                     var sumAccr=Banana.SDecimal.abs(financialStatementAnalysis.data[i].balance.stdc.accruals_and_deferred_income.balance);
+                     dataSerie2.push(sumAccr);
+                     var sumLtDebts=Banana.SDecimal.abs(financialStatementAnalysis.data[i].balance.ltdc.longter_debts.balance);
+                     dataSerie3.push(sumLtDebts);
+                     var sumProv=Banana.SDecimal.abs(financialStatementAnalysis.data[i].balance.ltdc.provisionsandsimilar.balance);
+                     dataSerie4.push(sumProv); 
+                     var sumOwnc=Banana.SDecimal.abs(financialStatementAnalysis.data[i].balance.oc.ownbasecapital.balance);
+                     dataSerie5.push(sumOwnc); 
+                     var sumRese=Banana.SDecimal.abs(financialStatementAnalysis.data[i].balance.oc.reservesandprofits.balance);
+                     dataSerie6.push(sumRese); 
                      
-                     var sum = sumStdc;
-                     sum = Banana.SDecimal.add(sumLtdc, sum);
-                     sum = Banana.SDecimal.add(sumObca, sum);
-                     sum = Banana.SDecimal.add(sumReut, sum);
+                     var sum = sumDebts;
+                     sum = Banana.SDecimal.add(sumDebts, sum);
+                     sum = Banana.SDecimal.add(sumAccr, sum);
+                     sum = Banana.SDecimal.add(sumLtDebts, sum);
+                     sum = Banana.SDecimal.add(sumProv, sum);
+                     sum = Banana.SDecimal.add(sumOwnc, sum);
+                     sum = Banana.SDecimal.add(sumRese, sum);
                      dataSum.push(sum);
                   }
                   dataSerie1 = convertToPerc(dataSerie1, dataSum);
                   dataSerie2 = convertToPerc(dataSerie2, dataSum);
                   dataSerie3 = convertToPerc(dataSerie3, dataSum);
                   dataSerie4 = convertToPerc(dataSerie4, dataSum);
+                  dataSerie5 = convertToPerc(dataSerie5, dataSum);
+                  dataSerie6 = convertToPerc(dataSerie6, dataSum);
 
                   chartData.labels = []
                   for (var i = 0; i < yearList.length; i++) {
@@ -108,10 +119,12 @@ BasePage {
                      chartData.labels.push(year);
                   }
                   chartData.datasets = [
-                  {label: qsTr('Short term debt capital'), data: dataSerie1, backgroundColor:defaultColors[0].fill},
-                  {label: qsTr('Long term debt capital'), data: dataSerie2, backgroundColor:defaultColors[1].fill},
-                  {label: qsTr('Own capital'), data: dataSerie3, backgroundColor:defaultColors[2].fill},
-                  {label: qsTr('Reserves and Profits'), data: dataSerie4, backgroundColor:defaultColors[3].fill}
+                  {label: qsTr('Debts'), data: dataSerie1, backgroundColor:defaultColors[0].fill},
+                  {label: qsTr('Accruals and Deferred Income'), data: dataSerie2, backgroundColor:defaultColors[1].fill},
+                  {label: qsTr('Long term Debts'), data: dataSerie3, backgroundColor:defaultColors[2].fill},
+                  {label: qsTr('Provisions and Similar'), data: dataSerie4, backgroundColor:defaultColors[3].fill},
+                  {label: qsTr('Own base capital'), data: dataSerie5, backgroundColor:defaultColors[4].fill},
+                  {label: qsTr('Reserves and Profits'), data: dataSerie6, backgroundColor:defaultColors[5].fill}
                   ]
 
 
