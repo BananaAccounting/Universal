@@ -122,6 +122,7 @@ Annual result  & 8'220.00  & 0.00 \\
 + Disinvestments  & 0.00  & 0.00 \\
 = Cash Flow from investing (B)  & -1'000.00  & 0.00 \\
 Third parties capital (+) increases or (-) repayments  & 9'000.00  & 0.00 \\
+- Dividends  &  & \\
 Own capital (+) increases or (-) reductions   & 0.00  & 0.00 \\
 =Cash Flow from financing (C)  & 9'000.00  & 0.00 \\
 Increase/decrease in liquidity (A+B+C)  & -15'430.00  & 0.00 \\
@@ -161,6 +162,6 @@ ALTMAN INDEX Z-SCORE 2020  & Budget \\
 for values > than 3 correspond a low probability of a financial crisis \\
 for values >= than 1.8 but <= than 3 there are possibilities of a financial crisis, should be kept under control \\
 for values < than 1.8 there is a strong probability of a financial crisis \\
-\excltest{26.03.2021} \\
+\excltest{30.03.2021} \\
 \end{reportvalue}
 \end{document}

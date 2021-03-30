@@ -18,7 +18,7 @@
 // @task = app.command
 // @doctype = 100.*
 // @publisher = Banana.ch SA
-// @pubdate = 2021-03-26
+// @pubdate = 2021-03-30
 // @inputdatasource = none
 // @timeout = -1
 
@@ -989,6 +989,12 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         for (var i = this.data.length - 1; i >= 0; i--) {
             tableRow.addCell(this.toLocaleAmountFormat(this.data[i].balance.ltdc.longter_debts.delta), "styleNormalAmount");
         }
+        //Dividends
+        var tableRow = tableCashflow.addRow("styleTablRows");
+        tableRow.addCell(texts.dvidends, "styleTablRows");
+        for (var i = this.data.length - 1; i >= 0; i--) {
+            tableRow.addCell(this.toLocaleAmountFormat(this.data[i].balance.oc.reservesandprofits.dividends), "styleNormalAmount");
+        }
         //Own Capital
         var tableRow = tableCashflow.addRow("styleTablRows");
         tableRow.addCell(texts.ownbasecapital_cashflow, "styleTablRows");
@@ -1489,7 +1495,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         texts.delta_liquidity = qsTr("Difference");
         texts.gain_on_sales = qsTr("- Revaluations on Fixed Assets");
         texts.gain_on_loss = qsTr("+ Devaluations on Fixed Assets");
-
+        texts.dvidends = qsTr("- Dividends");
         /******************************************************************************************
          * texts for titles,headers,..
          * ***************************************************************************************/
@@ -2142,6 +2148,13 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
                             dialogparam[key].loss = Banana.SDecimal.add(dialogparam[key].loss, jAmount);
                         }
+                        //find the Dividends
+                        if (description.indexOf("#dividends") >= 0) {
+                            var jAmount = tRow.value('JAmount');
+                            jAmount = Banana.SDecimal.abs(jAmount);
+
+                            dialogparam[key].dividends = Banana.SDecimal.add(dialogparam[key].dividends, jAmount);
+                        }
                     }
 
                 }
@@ -2702,6 +2715,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
          ***************************************************/
         //first find the long therm third capital without the provisions and similar
         cashflow.from_financing = Banana.SDecimal.add(cashflow.from_financing, data.balance.ltdc.longter_debts.delta);
+        cashflow.from_financing = Banana.SDecimal.subtract(cashflow.from_financing, data.balance.oc.reservesandprofits.dividends);
         cashflow.from_financing = Banana.SDecimal.add(cashflow.from_financing, data.balance.oc.ownbasecapital.delta);
 
 
@@ -4697,7 +4711,6 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
              * Change the parameters with those defined in the new version(24.03.2021: 1.1-->1.2)
              **************************************************************************************/
             this.dialogparam = defaultParam;
-            Banana.console.debug("******************1.1-->1.2*******************");
 
 
             return true;
