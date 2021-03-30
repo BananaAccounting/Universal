@@ -41,7 +41,7 @@ function exec(string) {
 	
 	var fileData = {};
 
-	if (Banana.document) {
+	if (Banana.document && Banana.document.getScriptSettings()) {
 		var savedParam = Banana.document.getScriptSettings();
 		if (savedParam && savedParam.length > 0) {
 			userParam = JSON.parse(savedParam);
@@ -54,12 +54,6 @@ function exec(string) {
 	}
 	
 	if (Banana.document) {
-		if (!Banana_GetAccountData(userParam, fileData)) {
-			return String();
-		}
-
-		// Load currencies
-		readCurrencies(userParam, fileData);
 
 		// If needed show the settings dialog to the user
 		if (!options || !options.useLastSettings) {
@@ -131,11 +125,9 @@ function verifyBananaVersion() {
 
 function Param_DialogDateFormat(param) {
 	var savedParam = {};
-	// retrieve the data saved in banana
-	if (Banana.document && Banana.document.getScriptSettings().length > 0) {
+	if (Banana.document && Banana.document.getScriptSettings())
 		savedParam = JSON.parse(Banana.document.getScriptSettings());
-		savedParam = verifyUserParam(savedParam);
-	}
+	savedParam = verifyUserParam(savedParam);
 
 	var values = ['Computer default', 'dd.mm.yyyy', 'mm.dd.yyyy', 'yyyy.mm.dd'];
 	var index = values.indexOf(savedParam.dateFormat);
@@ -156,20 +148,20 @@ function Param_DialogDateFormat(param) {
 		param.dateFormat = dateFormat;
 	}
 	savedParam.dateFormat = param.dateFormat;
+
 	var paramToString = JSON.stringify(savedParam);
-	Banana.document.setScriptSettings(paramToString);
+	if (Banana.document)
+		Banana.document.setScriptSettings(paramToString);
 
 	return true;
 }
 
 function Param_Dialog(param, fileData) {
-
 	var savedParam = {};
-	// retrieve the data saved in banana
-	if (Banana.document && Banana.document.getScriptSettings().length > 0) {
+	if (Banana.document && Banana.document.getScriptSettings())
 		savedParam = JSON.parse(Banana.document.getScriptSettings());
-		savedParam = verifyUserParam(savedParam);
-	}
+	savedParam = verifyUserParam(savedParam);
+
 	var inputText;
 	// see if paypal account has been defined
 	var paypalAccountDefined = Boolean(param.AccountList[param.BasicCurrency]);
@@ -219,7 +211,8 @@ function Param_Dialog(param, fileData) {
 	// Dialog  could also ask if to import account balance, currencyConversion
 
 	var paramToString = JSON.stringify(savedParam);
-	Banana.document.setScriptSettings(paramToString);
+	if (Banana.document)
+		Banana.document.setScriptSettings(paramToString);
 
 	return true;
 }
@@ -521,13 +514,19 @@ function paramatersDialog (userParam, fileData) {
 function settingsDialog(userParam, fileData) {
 
 	// Retrieve saved param
-	if (Banana.document) {
+	if (Banana.document && Banana.document.getScriptSettings()) {
 		var savedParam = Banana.document.getScriptSettings();
 		if (savedParam && savedParam.length > 0) {
 			userParam = JSON.parse(savedParam);
 			userParam = verifyUserParam(userParam);
 		}
 	}
+
+	// Retrieve data from file
+	if (!Banana_GetAccountData(userParam, fileData)) {
+		return String();
+	}
+	readCurrencies(userParam, fileData);
 
 	// see if paypal account has been defined
 	var paypalAccountDefined = Boolean(userParam.AccountList[userParam.BasicCurrency]);
@@ -560,7 +559,7 @@ function settingsDialog(userParam, fileData) {
 
 	userParam = paramatersDialog(userParam, fileData);
 
-	if (userParam) {
+	if (userParam && Banana.document) {
 		var paramToString = JSON.stringify(userParam);
 		Banana.document.setScriptSettings(paramToString);
 	}
@@ -639,6 +638,7 @@ function AddMessage(messageText, helpTag) {
 }
 
 function readCurrencies(param, fileData) {
+	
 	param.ExchangeRateList = {};
 	CreateAmountsInBasicCurrency_BasicCurrency(param, fileData);
 	CreateAmountsInBasicCurrency_CurrencyConversion(param, fileData);
@@ -649,17 +649,15 @@ function readCurrencies(param, fileData) {
 	CreateAmountsInBasicCurrency_CreateListUnconvertedExchangeRates(param, fileData);
 
 	var savedParam = {};
-	if (Banana.document
-		&& Banana.document.getScriptSettings()) {
+	if (Banana.document && Banana.document.getScriptSettings())
 		savedParam = JSON.parse(Banana.document.getScriptSettings());
-		savedParam = verifyUserParam(savedParam);
-	}
+	savedParam = verifyUserParam(savedParam);
 
 	var unconvertedCurrencies = Object.keys(fileData.listUnconvertedCurrencies).length;
 	if (unconvertedCurrencies) {
 		for (var currency in fileData.listUnconvertedCurrencies) {
 			var exchangeRate = 0;
-			if (savedParam.ExchangeRateList && savedParam.ExchangeRateList[currency])
+			if (savedParam.ExchangeRateList[currency])
 				exchangeRate = savedParam.ExchangeRateList[currency];
 			param.ExchangeRateList[currency] = Banana.Converter.toInternalNumberFormat(exchangeRate);
 		}
@@ -694,11 +692,10 @@ function CreateAmountsInBasicCurrency(param, fileData) {
 		}
 	} else if (unconvertedCurrencies) {
 		var savedParam = {};
-		if (Banana.document
-			&& Banana.document.getScriptSettings()) {
+		if (Banana.document && Banana.document.getScriptSettings())
 			savedParam = JSON.parse(Banana.document.getScriptSettings());
-			savedParam = verifyUserParam(savedParam);
-		}
+		savedParam = verifyUserParam(savedParam);
+
 		for (var currency in fileData.listUnconvertedCurrencies) {
 			// message = 'Insert Exchange rate for : ' + currency + ' to ' + param.BasicCurrency;
 			// message += ' (' + param.BasicCurrency + ' = ' + currency + ' * Exchange Rate)';
@@ -708,14 +705,16 @@ function CreateAmountsInBasicCurrency(param, fileData) {
 			// if (!inputText)
 			//  	return false;
 			var exchangeRate = 0;
-			if (savedParam.ExchangeRateList && savedParam.ExchangeRateList[currency])
+			if (savedParam.ExchangeRateList[currency])
 				exchangeRate = savedParam.ExchangeRateList[currency];
 			param.ExchangeRateList[currency] = Banana.Converter.toInternalNumberFormat(exchangeRate);
 		}
+
 		if (Banana.document) {
 			savedParam.ExchangeRateList = param.ExchangeRateList;
 			Banana.document.setScriptSettings(JSON.stringify(savedParam));
 		}
+
 		// repeat while there is no more conversion in BasicCurrency
 		while (CreateAmountsInBasicCurrency_ConvertAmounts(param, fileData)) { ;
 		}
