@@ -45,6 +45,7 @@ function exec(string) {
 		var savedParam = Banana.document.getScriptSettings();
 		if (savedParam && savedParam.length > 0) {
 			userParam = JSON.parse(savedParam);
+			userParam = verifyUserParam(userParam);
 		}
 	}
 	
@@ -130,12 +131,10 @@ function verifyBananaVersion() {
 
 function Param_DialogDateFormat(param) {
 	var savedParam = {};
-	// retrive the data saved in banana
-	if (Banana.document.getScriptSettings().length > 0) {
+	// retrieve the data saved in banana
+	if (Banana.document && Banana.document.getScriptSettings().length > 0) {
 		savedParam = JSON.parse(Banana.document.getScriptSettings());
-		if (typeof savedParam !== 'object') {
-			savedParam = {};
-		}
+		savedParam = verifyUserParam(savedParam);
 	}
 
 	var values = ['Computer default', 'dd.mm.yyyy', 'mm.dd.yyyy', 'yyyy.mm.dd'];
@@ -166,12 +165,10 @@ function Param_DialogDateFormat(param) {
 function Param_Dialog(param, fileData) {
 
 	var savedParam = {};
-	// retrive the data saved in banana
-	if (Banana.document.getScriptSettings().length > 0) {
+	// retrieve the data saved in banana
+	if (Banana.document && Banana.document.getScriptSettings().length > 0) {
 		savedParam = JSON.parse(Banana.document.getScriptSettings());
-		if (typeof savedParam !== 'object') {
-			savedParam = {};
-		}
+		savedParam = verifyUserParam(savedParam);
 	}
 	var inputText;
 	// see if paypal account has been defined
@@ -451,6 +448,52 @@ function initUserParam () {
 	return userParam;	
 }
 
+function verifyUserParam(userParam) {
+	if (!userParam)
+		userParam = {};
+	if (!userParam.PaypalAccount)
+		userParam.PaypalAccount = '';
+	if (!userParam.PaypalIn)
+		userParam.PaypalIn = "";
+	if (!userParam.PaypalOut)
+		userParam.PaypalOut = "";
+	if (!userParam.PaypalFee)
+		userParam.PaypalFee = "";
+	if (!userParam.Exchange)
+		userParam.Exchange = [];
+	if (!userParam.dateFormat)
+		userParam.dateFormat = "dd.mm.yyyy";
+	if (!userParam.IncludeExistingTransactions)
+		userParam.IncludeExistingTransactions = false;
+	if (!userParam.IncomeExpensesSingleColumn)
+		userParam.IncomeExpensesSingleColumn = false;
+	if (!userParam.IncludeCurrencyConversions)
+		userParam.IncludeCurrencyConversions = false;
+	if (!userParam.SetCurrencyInDesctriptionAlways)
+		userParam.SetCurrencyInDesctriptionAlways = false;
+	if (!userParam.SetCurrencyInDesctriptionNotBasicCurrency)
+		userParam.SetCurrencyInDesctriptionNotBasicCurrency = true;
+	if (!userParam.BasicCurrency)
+		userParam.BasicCurrency = ''
+	if (!userParam.AccountType)
+		userParam.AccountType = 100;
+	if (!userParam.IsMultiCurrency)
+		userParam.IsMultiCurrency = false;
+	if (!userParam.AccountList)
+		userParam.AccountList = {};
+	if (!userParam.AccountList.PaypalIn)
+		userParam.AccountList.PaypalIn = '';
+	if (!userParam.ccountList.PaypalOut)
+		userParam.AccountList.PaypalOut = '';
+	if (!userParam.AccountList.PaypalFee)
+		userParam.AccountList.PaypalFee = '';
+	if (!userParam.ExchangeRateList)
+		userParam.ExchangeRateList = {};
+	if (!userParam.SupplementaryColumns)
+		userParam.SupplementaryColumns = {};
+	return userParam;
+}
+
 function paramatersDialog (userParam, fileData) {
 
 	if (typeof(Banana.Ui.openPropertyEditor) !== 'undefined') {
@@ -478,10 +521,13 @@ function paramatersDialog (userParam, fileData) {
 function settingsDialog(userParam, fileData) {
 
 	// Retrieve saved param
-	var savedParam = Banana.document.getScriptSettings();
-	if (savedParam && savedParam.length > 0) {
-		userParam = JSON.parse(savedParam);
-	}	
+	if (Banana.document) {
+		var savedParam = Banana.document.getScriptSettings();
+		if (savedParam && savedParam.length > 0) {
+			userParam = JSON.parse(savedParam);
+			userParam = verifyUserParam(userParam);
+		}
+	}
 
 	// see if paypal account has been defined
 	var paypalAccountDefined = Boolean(userParam.AccountList[userParam.BasicCurrency]);
@@ -606,6 +652,7 @@ function readCurrencies(param, fileData) {
 	if (Banana.document
 		&& Banana.document.getScriptSettings()) {
 		savedParam = JSON.parse(Banana.document.getScriptSettings());
+		savedParam = verifyUserParam(savedParam);
 	}
 
 	var unconvertedCurrencies = Object.keys(fileData.listUnconvertedCurrencies).length;
@@ -648,8 +695,9 @@ function CreateAmountsInBasicCurrency(param, fileData) {
 	} else if (unconvertedCurrencies) {
 		var savedParam = {};
 		if (Banana.document
-			 && Banana.document.getScriptSettings()) {
-                savedParam = JSON.parse(Banana.document.getScriptSettings());
+			&& Banana.document.getScriptSettings()) {
+			savedParam = JSON.parse(Banana.document.getScriptSettings());
+			savedParam = verifyUserParam(savedParam);
 		}
 		for (var currency in fileData.listUnconvertedCurrencies) {
 			// message = 'Insert Exchange rate for : ' + currency + ' to ' + param.BasicCurrency;
