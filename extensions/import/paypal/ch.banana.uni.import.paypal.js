@@ -518,19 +518,21 @@ function settingsDialog(userParam, fileData) {
 		var savedParam = Banana.document.getScriptSettings();
 		if (savedParam && savedParam.length > 0) {
 			userParam = JSON.parse(savedParam);
-			userParam = verifyUserParam(userParam);
 		}
 	}
+	userParam = verifyUserParam(userParam);
 
 	// Retrieve data from file
-	if (!Banana_GetAccountData(userParam, fileData)) {
-		return String();
+	if (fileData) {
+		if (!Banana_GetAccountData(userParam, fileData)) {
+			return String();
+		}
+		readCurrencies(userParam, fileData);
 	}
-	readCurrencies(userParam, fileData);
 
 	// see if paypal account has been defined
 	var paypalAccountDefined = Boolean(userParam.AccountList[userParam.BasicCurrency]);
-	if (!paypalAccountDefined) {
+	if (!paypalAccountDefined && fileData) {
 		//maybe a currency account has been defined
 		for (var prop in fileData.BalanceList) {
 			if (userParam.AccountList[prop] !== undefined) {
@@ -542,8 +544,6 @@ function settingsDialog(userParam, fileData) {
 	
 	if (!paypalAccountDefined
 		&& Number(userParam.AccountType) != 130) {
-			
-		savedParam.PaypalAccount = userParam.PaypalAccount;
 		userParam.AccountList[userParam.BasicCurrency] = userParam.PaypalAccount;
 	}
 
