@@ -483,7 +483,7 @@ function verifyUserParam(userParam) {
 		userParam.AccountList = {};
 	if (!userParam.AccountList.PaypalIn)
 		userParam.AccountList.PaypalIn = '';
-	if (!userParam.ccountList.PaypalOut)
+	if (!userParam.AccountList.PaypalOut)
 		userParam.AccountList.PaypalOut = '';
 	if (!userParam.AccountList.PaypalFee)
 		userParam.AccountList.PaypalFee = '';
