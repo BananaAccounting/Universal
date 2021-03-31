@@ -60,6 +60,8 @@ TestImportPaypal.prototype.testImport = function() {
 
    fileNameList.push("file:script/../test/testcases/ch.banana.filter.import.paypal.#cash20140529.csv");
    fileNameList.push("file:script/../test/testcases/ch.banana.filter.import.paypal.#claudia20140526.csv");
+   fileNameList.push("file:script/../test/testcases/download.csv");
+   fileNameList.push("file:script/../test/testcases/download2.csv");
 
    var parentLogger = this.testLogger;
    this.progressBar.start(fileNameList.length);

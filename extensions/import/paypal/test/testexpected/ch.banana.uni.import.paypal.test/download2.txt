@@ -1,0 +1,30 @@
+%%info_test_name{download2}
+\documentclass{report}
+\usepackage{longtable}
+\usepackage{color}
+\usepackage{listings}
+\usepackage[margin=1cm]{geometry}
+\begin{document}
+\newenvironment{tablevalue}[2]{\textbf{Table: #1}\begin{longtable}[l]{#2}}{\end{longtable}}
+\newenvironment{reportvalue}[1]{\textbf{Report: #1}\\}{}
+\lstnewenvironment{jsonvalue}[1]{\textbf{Json: #1}\lstset{language=Java}}{}
+\lstnewenvironment{xmlvalue}[1]{\textbf{Xml: #1}\lstset{language=Xml}}{}
+\newcommand{\info}[2]{\textit{#1: #2}\\}
+\newcommand{\fatalerror}[1]{\textbf{\textcolor[rgb]{1,0,0}{Fatal error: #1}}\\}
+\newcommand{\keyvalue}[2]{\textbf{Keyvalue: #1} #2\\}
+\newcommand{\textvalue}[1]{#1\\}
+\newcommand{\excltest}[1]{\\Excluded from compare: #1}
+\newcommand{\lognewpage}{\newpage}
+\newenvironment{testcase}[1]{\section*{Test: #1}}{\newpage}
+\newenvironment{test}[1]{\section*{Test case: #1}}{}
+%Begin test data
+\begin{tablevalue}{}{ l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l }
+Date & ExternalReference & Description & AccountDebit & AccountCredit & Amount & ExchangeCurrency & AmountCurrency & PaypalType & PaypalStatus & TransactionGroupId & NetBasicCurrency & FeeBasicCurrency & GrossBasicCurrency & PaypalBalance & CurrencyTo & CurrencyToAmount & ReferenceId & AccountImpact & AmountTransactionCurrency & Gross & Fee & Net & OriginalSequence & CurrencyConversionType\\
+2021-03-17 & 8NX93807N2784153R & Conversion de devise standard EUR 287.05 & AcctEUR & PaypalIn & 0.00 & EUR & 287.05 & Conversion de devise standard & Terminé & 5VN99441VM079152B & 0 & 0 & 0 &  &  & 0 & 5VN99441VM079152B & Credit & 287.05 & 287.05 & 0 & 287.05 & 2 & 0\\
+2021-03-17 & 03Y57196GN713480L & Conversion de devise standard & PaypalOut & AcctCHF & 331.18 & CHF & 331.18 & Conversion de devise standard & Terminé & 5VN99441VM079152B & -331.18 & 0 & -331.18 & 47.56 &  & 0 & 5VN99441VM079152B & Debit & -331.18 & -331.18 & 0 & -331.18 & 1 & 1\\
+2021-03-17 & 5VN99441VM079152B & Clasicas Abc, S.L. N. I. F.  106641085 EUR 287.05 & PaypalOut & AcctEUR & 0.00 & EUR & 287.05 & Paiement standard & Terminé & 5VN99441VM079152B & 0 & 0 & 0 & -287.05 &  & 0 & 5VN99441VM079152B & Debit & -287.05 & -287.05 & 0 & -287.05 & 0 & 0\\
+2021-03-17 &  & Last Balance: EUR -287.05 & AcctEUR &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+2021-03-17 &  & Last Balance: CHF 47.56 & AcctCHF &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+\\
+\end{tablevalue}
+\end{document}
