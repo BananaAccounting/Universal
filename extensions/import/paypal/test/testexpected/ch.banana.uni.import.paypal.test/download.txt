@@ -1,0 +1,48 @@
+%%info_test_name{download}
+\documentclass{report}
+\usepackage{longtable}
+\usepackage{color}
+\usepackage{listings}
+\usepackage[margin=1cm]{geometry}
+\begin{document}
+\newenvironment{tablevalue}[2]{\textbf{Table: #1}\begin{longtable}[l]{#2}}{\end{longtable}}
+\newenvironment{reportvalue}[1]{\textbf{Report: #1}\\}{}
+\lstnewenvironment{jsonvalue}[1]{\textbf{Json: #1}\lstset{language=Java}}{}
+\lstnewenvironment{xmlvalue}[1]{\textbf{Xml: #1}\lstset{language=Xml}}{}
+\newcommand{\info}[2]{\textit{#1: #2}\\}
+\newcommand{\fatalerror}[1]{\textbf{\textcolor[rgb]{1,0,0}{Fatal error: #1}}\\}
+\newcommand{\keyvalue}[2]{\textbf{Keyvalue: #1} #2\\}
+\newcommand{\textvalue}[1]{#1\\}
+\newcommand{\excltest}[1]{\\Excluded from compare: #1}
+\newcommand{\lognewpage}{\newpage}
+\newenvironment{testcase}[1]{\section*{Test: #1}}{\newpage}
+\newenvironment{test}[1]{\section*{Test case: #1}}{}
+%Begin test data
+\begin{tablevalue}{}{ l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l }
+Date & ExternalReference & Description & AccountDebit & AccountCredit & Amount & ExchangeCurrency & AmountCurrency & PaypalType & PaypalStatus & TransactionGroupId & NetBasicCurrency & FeeBasicCurrency & GrossBasicCurrency & PaypalBalance & CurrencyTo & CurrencyToAmount & ReferenceId & AccountImpact & AmountTransactionCurrency & Gross & Fee & Net & OriginalSequence & CurrencyConversionType\\
+2020-06-04 & 48L7012093223062K & Conversion de devise standard EUR 125.00 & AcctEUR & PaypalIn & 0.00 & EUR & 125.00 & Conversion de devise standard & Terminé & 3690352920285794U & 0 & 0 & 0 &  &  & 0 & 3690352920285794U & Credit & 125.00 & 125 & 0 & 125 & 3 & 0\\
+2020-06-04 & 42X62964NS922645U & Conversion de devise standard & PaypalOut & AcctCHF & 141.38 & CHF & 141.38 & Conversion de devise standard & Terminé & 3690352920285794U & -141.38 & 0 & -141.38 & 103.18 &  & 0 & 3690352920285794U & Debit & -141.38 & -141.38 & 0 & -141.38 & 2 & 1\\
+2020-06-04 & 3690352920285794U & Rob / Music EUR 125.00 & PaypalOut & AcctEUR & 0.00 & EUR & 125.00 & Paiement sur site marchand & Terminé & 3690352920285794U & 0 & 0 & 0 & -125 &  & 0 & 3690352920285794U & Debit & -125 & -125 & 0 & -125 & 1 & 0\\
+2020-06-04 & 5S460931PG8678817 & Approvisionnement pour virement électronique & AcctCHF & PaypalIn & 200.00 & CHF & 200.00 & Approvisionnement pour virement électronique & Terminé & 5S460931PG8678817 & 200 & 0 & 200 & 244.56 &  & 0 & 5S460931PG8678817 & Credit & 200.00 & 200 & 0 & 200 & 0 & 1\\
+2020-11-22 & 2CD48338524877437 & Conversion de devise standard EUR 3.00 & AcctEUR & PaypalIn & 0.00 & EUR & 3.00 & Conversion de devise standard & Terminé & 9KX02903401101822 & 0 & 0 & 0 &  &  & 0 & 9KX02903401101822 & Credit & 3.00 & 3 & 0 & 3 & 6 & 0\\
+2020-11-22 & 6E7612589U244453N & Conversion de devise standard & PaypalOut & AcctCHF & 3.39 & CHF & 3.39 & Conversion de devise standard & Terminé & 9KX02903401101822 & -3.39 & 0 & -3.39 & 99.79 &  & 0 & 9KX02903401101822 & Debit & -3.39 & -3.39 & 0 & -3.39 & 5 & 1\\
+2020-11-22 & 9KX02903401101822 & Giuseppe Carlone EUR 3.00 & PaypalOut & AcctEUR & 0.00 & EUR & 3.00 & Paiement sur site marchand & Terminé & 9KX02903401101822 & 0 & 0 & 0 & -3 &  & 0 & 9KX02903401101822 & Debit & -3 & -3 & 0 & -3 & 4 & 0\\
+2020-11-24 & 4LY27352VW3563134 & Conversion de devise standard EUR 15.00 & AcctEUR & PaypalIn & 0.00 & EUR & 15.00 & Conversion de devise standard & Terminé & 9RW88872PN7137024 & 0 & 0 & 0 &  &  & 0 & 9RW88872PN7137024 & Credit & 15.00 & 15 & 0 & 15 & 9 & 0\\
+2020-11-24 & 15J503685X823232Y & Conversion de devise standard & PaypalOut & AcctCHF & 17.01 & CHF & 17.01 & Conversion de devise standard & Terminé & 9RW88872PN7137024 & -17.01 & 0 & -17.01 & 82.78 &  & 0 & 9RW88872PN7137024 & Debit & -17.01 & -17.01 & 0 & -17.01 & 8 & 1\\
+2020-11-24 & 9RW88872PN7137024 & Giuseppe Carlone EUR 15.00 & PaypalOut & AcctEUR & 0.00 & EUR & 15.00 & Paiement sur site marchand & Terminé & 9RW88872PN7137024 & 0 & 0 & 0 & -15 &  & 0 & 9RW88872PN7137024 & Debit & -15 & -15 & 0 & -15 & 7 & 0\\
+2020-12-01 & 5AA768826D979435X & Approvisionnement pour virement électronique & AcctCHF & PaypalIn & 200.00 & CHF & 200.00 & Approvisionnement pour virement électronique & Terminé & 5AA768826D979435X & 200 & 0 & 200 & 282.78 &  & 0 & 5AA768826D979435X & Credit & 200.00 & 200 & 0 & 200 & 10 & 1\\
+2020-12-22 & 59R49338AA598082W & Approvisionnement pour virement électronique & AcctCHF & PaypalIn & 200.00 & CHF & 200.00 & Approvisionnement pour virement électronique & Terminé & 59R49338AA598082W & 200 & 0 & 200 & 482.78 &  & 0 & 59R49338AA598082W & Credit & 200.00 & 200 & 0 & 200 & 11 & 1\\
+2020-12-24 & 0N379046UV292602X & Conversion de devise standard EUR 34.20 & AcctEUR & PaypalIn & 0.00 & EUR & 34.20 & Conversion de devise standard & Terminé & 9FX47698CD8597450 & 0 & 0 & 0 &  &  & 0 & 9FX47698CD8597450 & Credit & 34.20 & 34.2 & 0 & 34.2 & 14 & 0\\
+2020-12-24 & 4RU7178429302194G & Conversion de devise standard & PaypalOut & AcctCHF & 38.79 & CHF & 38.79 & Conversion de devise standard & Terminé & 9FX47698CD8597450 & -38.79 & 0 & -38.79 & 443.99 &  & 0 & 9FX47698CD8597450 & Debit & -38.79 & -38.79 & 0 & -38.79 & 13 & 1\\
+2020-12-24 & 9FX47698CD8597450 & hello editore spa EUR 34.20 & PaypalOut & AcctEUR & 0.00 & EUR & 34.20 & Paiement par PayPal Option+ & Terminé & 9FX47698CD8597450 & 0 & 0 & 0 & -34.2 &  & 0 & 9FX47698CD8597450 & Debit & -34.2 & -34.2 & 0 & -34.2 & 12 & 0\\
+2020-12-25 & 3P2366483C711212F & Conversion de devise standard EUR 17.70 & AcctEUR & PaypalIn & 0.00 & EUR & 17.70 & Conversion de devise standard & Terminé & 63E2098376857721N & 0 & 0 & 0 &  &  & 0 & 63E2098376857721N & Credit & 17.70 & 17.7 & 0 & 17.7 & 17 & 0\\
+2020-12-25 & 2V91614632158480C & Conversion de devise standard & PaypalOut & AcctCHF & 20.08 & CHF & 20.08 & Conversion de devise standard & Terminé & 63E2098376857721N & -20.08 & 0 & -20.08 & 423.91 &  & 0 & 63E2098376857721N & Debit & -20.08 & -20.08 & 0 & -20.08 & 16 & 1\\
+2020-12-25 & 63E2098376857721N & hello editore spa EUR 17.70 & PaypalOut & AcctEUR & 0.00 & EUR & 17.70 & Paiement par PayPal Option+ & Terminé & 63E2098376857721N & 0 & 0 & 0 & -17.7 &  & 0 & 63E2098376857721N & Debit & -17.7 & -17.7 & 0 & -17.7 & 15 & 0\\
+2021-01-17 & 2UV72299WY046004E & Conversion de devise standard EUR 40.00 & AcctEUR & PaypalIn & 0.00 & EUR & 40.00 & Conversion de devise standard & Terminé & 5L214361FD738594D & 0 & 0 & 0 &  &  & 0 & 5L214361FD738594D & Credit & 40.00 & 40 & 0 & 40 & 20 & 0\\
+2021-01-17 & 6LY17701C8298405H & Conversion de devise standard & PaypalOut & AcctCHF & 45.17 & CHF & 45.17 & Conversion de devise standard & Terminé & 5L214361FD738594D & -45.17 & 0 & -45.17 & 378.74 &  & 0 & 5L214361FD738594D & Debit & -45.17 & -45.17 & 0 & -45.17 & 19 & 1\\
+2021-01-17 & 5L214361FD738594D & Rob / Music EUR 40.00 & PaypalOut & AcctEUR & 0.00 & EUR & 40.00 & Paiement sur site marchand & Terminé & 5L214361FD738594D & 0 & 0 & 0 & -40 &  & 0 & 5L214361FD738594D & Debit & -40 & -40 & 0 & -40 & 18 & 0\\
+2020-06-04 &  & Last Balance: CHF 244.56 & AcctCHF &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+2020-06-04 &  & Last Balance: EUR -125.00 & AcctEUR &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+\\
+\end{tablevalue}
+\end{document}
