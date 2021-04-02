@@ -18,7 +18,7 @@
 // @task = app.command
 // @doctype = 100.*
 // @publisher = Banana.ch SA
-// @pubdate = 2021-03-30
+// @pubdate = 2021-04-02
 // @inputdatasource = none
 // @timeout = -1
 
@@ -553,7 +553,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         }
         //add the sum of the third capital (debt capital)
         tableRow = tableBalance.addRow("styleTablRows");
-        tableRow.addCell(texts.shorttermdebtcapital, 'styleUnderGroupTitles');
+        tableRow.addCell(texts.total_shorttermdebtcapital, 'styleUnderGroupTitles');
         if (this.dialogparam.acronymcolumn) {
             tableRow.addCell(texts.shorttermdebtcapital_acronym);
         }
@@ -583,7 +583,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         }
         //add the sum of the third capital (debt capital)
         tableRow = tableBalance.addRow("styleTablRows");
-        tableRow.addCell(texts.longtermdebtcapital, 'styleUnderGroupTitles');
+        tableRow.addCell(texts.total_longtermdebtcapital, 'styleUnderGroupTitles');
         if (this.dialogparam.acronymcolumn) {
             tableRow.addCell(texts.longtermdebtcapital_acronym);
         }
@@ -613,7 +613,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         }
         //add the sum of the owned capital
         tableRow = tableBalance.addRow("styleTablRows");
-        tableRow.addCell(texts.totowncapital, 'styleUnderGroupTitles');
+        tableRow.addCell(texts.total_owncapital, 'styleUnderGroupTitles');
         if (this.dialogparam.acronymcolumn) {
             tableRow.addCell(texts.ownedcapital_acronym);
         }
@@ -1416,7 +1416,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         texts.ebitda_acronym = "EBIT-DA";
         texts.ebit_acronym = "EBIT";
         texts.ebt_acronym = "EBT";
-        texts.prepaid_expenses_acronym = "accr";
+        texts.prepaid_expenses_acronym = "prep";
         texts.accruals_and_deferred_income = "wown";
         texts.provisionsandsimilar_acronym = "prov";
 
@@ -1452,11 +1452,14 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         texts.tangible_fixedassets = qsTr("Tangible Fixed Assets");
         texts.intangible_fixedassets = qsTr("Intangible Fixed Assets");
         texts.shorttermdebtcapital = qsTr("Short term Debt Capital");
+        texts.total_shorttermdebtcapital = qsTr("Total Short term Debt Capital");
         texts.debts = qsTr("Debts");
         texts.longtermdebtcapital = qsTr("Long term debt Capital");
+        texts.total_longtermdebtcapital = qsTr("Total Long term debt Capital");
         texts.longter_debts = qsTr("Long term Debts");
         texts.ownbasecapital = qsTr("Own base capital");
         texts.owncapital = qsTr("Own Capital");
+        texts.total_owncapital = qsTr("Total Own Capital");
         texts.reservesandprofits = qsTr("Reserves and profits");
         texts.salesturnover = qsTr("Sales turnover");
         texts.costofmerchandservices = qsTr("Cost of merchandise and services");
@@ -1490,8 +1493,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         texts.cashflow_from_investing = qsTr("= Cash Flow from investing");
         texts.cashflow_from_financing = qsTr("=Cash Flow from financing")
         texts.final_cashflow = qsTr("Increase/decrease in liquidity");
-        texts.opening_liquidity = qsTr("Cash at the beginning of the period");
-        texts.closing_liquidity = qsTr("Cash at the end of the period")
+        texts.opening_liquidity = qsTr("Liquidity at the beginning of the period");
+        texts.closing_liquidity = qsTr("Liquidity at the end of the period");
         texts.delta_liquidity = qsTr("Difference");
         texts.gain_on_sales = qsTr("- Revaluations on Fixed Assets");
         texts.gain_on_loss = qsTr("+ Devaluations on Fixed Assets");
