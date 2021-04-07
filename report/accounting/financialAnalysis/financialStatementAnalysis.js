@@ -18,7 +18,7 @@
 // @task = app.command
 // @doctype = 100.*
 // @publisher = Banana.ch SA
-// @pubdate = 2021-04-02
+// @pubdate = 2021-04-07
 // @inputdatasource = none
 // @timeout = -1
 
@@ -1071,7 +1071,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
             for (var key in this.data[0].dupont_data) {
                 var tableRow = tabledupont.addRow("styleTablRows");
-                if (this.data[0].dupont_data[key].type == "titl") {
+                if (this.data[0].dupont_data[key].style == "titl") {
                     textstyle = "styleTitlesTotalAmount";
                 } else {
                     textstyle = "styleTablRows";
@@ -1079,7 +1079,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                 tableRow.addCell(qsTr(this.data[0].dupont_data[key].description), textstyle);
                 for (var i = this.data.length - 1; i >= 0; i--) {
                     ratios = this.data[i].dupont_data[key].amount;
-                    if (this.data[i].dupont_data[key].description === "ROI") {
+                    if (this.data[i].dupont_data[key].type === "perc") {
                         cell = tableRow.addCell(ratios + perc + ' ', "styleNormalAmount");
                     } else {
                         cell = tableRow.addCell(this.toLocaleAmountFormat(ratios) + ' ', "styleNormalAmount");
@@ -3949,43 +3949,51 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
          */
         Dupont.ebit = {};
         Dupont.ebit.description = texts.ebit;
-        Dupont.ebit.type = "nrm";
+        Dupont.ebit.style = "nrm";
+        Dupont.ebit.type = "dec";
         Dupont.ebit.amount = ebit;
 
         //sales (for MOL)
         Dupont.ebitmarginsales = {};
         Dupont.ebitmarginsales.description = texts.salesturnover;
-        Dupont.ebitmarginsales.type = "nrm";
+        Dupont.ebitmarginsales.style = "nrm";
+        Dupont.ebitmarginsales.type = "dec";
         Dupont.ebitmarginsales.amount = sales;
 
         //EBIT MARGIN
         Dupont.ebitmargin = {};
         Dupont.ebitmargin.description = texts.ebitmargin;
-        Dupont.ebitmargin.type = "titl";
-        Dupont.ebitmargin.amount = Banana.SDecimal.divide(Dupont.ebit.amount, Dupont.ebitmarginsales.amount, { 'decimals': this.dialogparam.numberofdecimals });
+        Dupont.ebitmargin.style = "titl";
+        Dupont.ebitmargin.type = "perc";
+        Dupont.ebitmargin.amount = Banana.SDecimal.divide(Dupont.ebit.amount, Dupont.ebitmarginsales.amount);
+        Dupont.ebitmargin.amount = Banana.SDecimal.multiply(Dupont.ebitmargin.amount, 100, { 'decimals': this.dialogparam.numberofdecimals });
 
         //sales (for ROT)
         Dupont.assetturnoversales = {};
         Dupont.assetturnoversales.description = texts.salesturnover;
-        Dupont.assetturnoversales.type = "nrm";
+        Dupont.assetturnoversales.style = "nrm";
+        Dupont.assetturnoversales.type = "dec";
         Dupont.assetturnoversales.amount = sales;
 
         //Total Asset
         Dupont.totalasset = {};
         Dupont.totalasset.description = texts.totalasset;
-        Dupont.totalasset.type = "nrm";
+        Dupont.totalasset.style = "nrm";
+        Dupont.totalasset.type = "dec";
         Dupont.totalasset.amount = totalassets;
 
         //Asset turnover
         Dupont.assetturnover = {};
         Dupont.assetturnover.description = texts.assetturnover;
-        Dupont.assetturnover.type = "titl";
+        Dupont.assetturnover.style = "titl";
+        Dupont.assetturnover.type = "dec";
         Dupont.assetturnover.amount = Banana.SDecimal.divide(Dupont.assetturnoversales.amount, totalassets, { 'decimals': this.dialogparam.numberofdecimals });
 
         //  ROI
         Dupont.roi = {};
         Dupont.roi.description = texts.roi;
-        Dupont.roi.type = "titl";
+        Dupont.roi.style = "titl";
+        Dupont.roi.type = "perc";
         Dupont.roi.amount = roi;
 
         return Dupont;
