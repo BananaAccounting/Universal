@@ -18,7 +18,7 @@
 // @task = app.command
 // @doctype = 100.*
 // @publisher = Banana.ch SA
-// @pubdate = 2021-03-30
+// @pubdate = 2021-04-07
 // @inputdatasource = none
 // @timeout = -1
 
@@ -553,7 +553,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         }
         //add the sum of the third capital (debt capital)
         tableRow = tableBalance.addRow("styleTablRows");
-        tableRow.addCell(texts.shorttermdebtcapital, 'styleUnderGroupTitles');
+        tableRow.addCell(texts.total_shorttermdebtcapital, 'styleUnderGroupTitles');
         if (this.dialogparam.acronymcolumn) {
             tableRow.addCell(texts.shorttermdebtcapital_acronym);
         }
@@ -583,7 +583,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         }
         //add the sum of the third capital (debt capital)
         tableRow = tableBalance.addRow("styleTablRows");
-        tableRow.addCell(texts.longtermdebtcapital, 'styleUnderGroupTitles');
+        tableRow.addCell(texts.total_longtermdebtcapital, 'styleUnderGroupTitles');
         if (this.dialogparam.acronymcolumn) {
             tableRow.addCell(texts.longtermdebtcapital_acronym);
         }
@@ -613,7 +613,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         }
         //add the sum of the owned capital
         tableRow = tableBalance.addRow("styleTablRows");
-        tableRow.addCell(texts.totowncapital, 'styleUnderGroupTitles');
+        tableRow.addCell(texts.total_owncapital, 'styleUnderGroupTitles');
         if (this.dialogparam.acronymcolumn) {
             tableRow.addCell(texts.ownedcapital_acronym);
         }
@@ -1071,7 +1071,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
             for (var key in this.data[0].dupont_data) {
                 var tableRow = tabledupont.addRow("styleTablRows");
-                if (this.data[0].dupont_data[key].type == "titl") {
+                if (this.data[0].dupont_data[key].style == "titl") {
                     textstyle = "styleTitlesTotalAmount";
                 } else {
                     textstyle = "styleTablRows";
@@ -1079,7 +1079,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                 tableRow.addCell(qsTr(this.data[0].dupont_data[key].description), textstyle);
                 for (var i = this.data.length - 1; i >= 0; i--) {
                     ratios = this.data[i].dupont_data[key].amount;
-                    if (this.data[i].dupont_data[key].description === "ROI") {
+                    if (this.data[i].dupont_data[key].type === "perc") {
                         cell = tableRow.addCell(ratios + perc + ' ', "styleNormalAmount");
                     } else {
                         cell = tableRow.addCell(this.toLocaleAmountFormat(ratios) + ' ', "styleNormalAmount");
@@ -1416,7 +1416,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         texts.ebitda_acronym = "EBIT-DA";
         texts.ebit_acronym = "EBIT";
         texts.ebt_acronym = "EBT";
-        texts.prepaid_expenses_acronym = "accr";
+        texts.prepaid_expenses_acronym = "prep";
         texts.accruals_and_deferred_income = "wown";
         texts.provisionsandsimilar_acronym = "prov";
 
@@ -1452,11 +1452,14 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         texts.tangible_fixedassets = qsTr("Tangible Fixed Assets");
         texts.intangible_fixedassets = qsTr("Intangible Fixed Assets");
         texts.shorttermdebtcapital = qsTr("Short term Debt Capital");
+        texts.total_shorttermdebtcapital = qsTr("Total Short term Debt Capital");
         texts.debts = qsTr("Debts");
         texts.longtermdebtcapital = qsTr("Long term debt Capital");
+        texts.total_longtermdebtcapital = qsTr("Total Long term debt Capital");
         texts.longter_debts = qsTr("Long term Debts");
         texts.ownbasecapital = qsTr("Own base capital");
         texts.owncapital = qsTr("Own Capital");
+        texts.total_owncapital = qsTr("Total Own Capital");
         texts.reservesandprofits = qsTr("Reserves and profits");
         texts.salesturnover = qsTr("Sales turnover");
         texts.costofmerchandservices = qsTr("Cost of merchandise and services");
@@ -1490,8 +1493,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         texts.cashflow_from_investing = qsTr("= Cash Flow from investing");
         texts.cashflow_from_financing = qsTr("=Cash Flow from financing")
         texts.final_cashflow = qsTr("Increase/decrease in liquidity");
-        texts.opening_liquidity = qsTr("Cash at the beginning of the period");
-        texts.closing_liquidity = qsTr("Cash at the end of the period")
+        texts.opening_liquidity = qsTr("Liquidity at the beginning of the period");
+        texts.closing_liquidity = qsTr("Liquidity at the end of the period");
         texts.delta_liquidity = qsTr("Difference");
         texts.gain_on_sales = qsTr("- Revaluations on Fixed Assets");
         texts.gain_on_loss = qsTr("+ Devaluations on Fixed Assets");
@@ -3946,43 +3949,51 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
          */
         Dupont.ebit = {};
         Dupont.ebit.description = texts.ebit;
-        Dupont.ebit.type = "nrm";
+        Dupont.ebit.style = "nrm";
+        Dupont.ebit.type = "dec";
         Dupont.ebit.amount = ebit;
 
         //sales (for MOL)
         Dupont.ebitmarginsales = {};
         Dupont.ebitmarginsales.description = texts.salesturnover;
-        Dupont.ebitmarginsales.type = "nrm";
+        Dupont.ebitmarginsales.style = "nrm";
+        Dupont.ebitmarginsales.type = "dec";
         Dupont.ebitmarginsales.amount = sales;
 
         //EBIT MARGIN
         Dupont.ebitmargin = {};
         Dupont.ebitmargin.description = texts.ebitmargin;
-        Dupont.ebitmargin.type = "titl";
-        Dupont.ebitmargin.amount = Banana.SDecimal.divide(Dupont.ebit.amount, Dupont.ebitmarginsales.amount, { 'decimals': this.dialogparam.numberofdecimals });
+        Dupont.ebitmargin.style = "titl";
+        Dupont.ebitmargin.type = "perc";
+        Dupont.ebitmargin.amount = Banana.SDecimal.divide(Dupont.ebit.amount, Dupont.ebitmarginsales.amount);
+        Dupont.ebitmargin.amount = Banana.SDecimal.multiply(Dupont.ebitmargin.amount, 100, { 'decimals': this.dialogparam.numberofdecimals });
 
         //sales (for ROT)
         Dupont.assetturnoversales = {};
         Dupont.assetturnoversales.description = texts.salesturnover;
-        Dupont.assetturnoversales.type = "nrm";
+        Dupont.assetturnoversales.style = "nrm";
+        Dupont.assetturnoversales.type = "dec";
         Dupont.assetturnoversales.amount = sales;
 
         //Total Asset
         Dupont.totalasset = {};
         Dupont.totalasset.description = texts.totalasset;
-        Dupont.totalasset.type = "nrm";
+        Dupont.totalasset.style = "nrm";
+        Dupont.totalasset.type = "dec";
         Dupont.totalasset.amount = totalassets;
 
         //Asset turnover
         Dupont.assetturnover = {};
         Dupont.assetturnover.description = texts.assetturnover;
-        Dupont.assetturnover.type = "titl";
+        Dupont.assetturnover.style = "titl";
+        Dupont.assetturnover.type = "dec";
         Dupont.assetturnover.amount = Banana.SDecimal.divide(Dupont.assetturnoversales.amount, totalassets, { 'decimals': this.dialogparam.numberofdecimals });
 
         //  ROI
         Dupont.roi = {};
         Dupont.roi.description = texts.roi;
-        Dupont.roi.type = "titl";
+        Dupont.roi.style = "titl";
+        Dupont.roi.type = "perc";
         Dupont.roi.amount = roi;
 
         return Dupont;

@@ -25,7 +25,7 @@ BALANCE Description  & Acronym  & 2020  & Budget \\
 Liquidity  & liqu  & -9'320.00  & 110.00 \\
 Credits  & cred  & 34'500.00  & 0.00 \\
 Stocks  & stoc  & 0.00  & 0.00 \\
-Prepaid Expenses  & accr  & 120.00  & 0.00 \\
+Prepaid Expenses  & prep  & 120.00  & 0.00 \\
 Total Current Assets  & cuas  & 25'300.00  & 110.00 \\
 Financial Fixed Assets  & finfix  & 0.00  & 0.00 \\
 Tangible Fixed Assets  & tanfix  & -1'000.00  & 0.00 \\
@@ -35,13 +35,13 @@ Total Assets  & tota  & 24'300.00  & 110.00 \\
 \multicolumn{4}{l}{Liabilities and Equity }\\
 Debts  & dbts  & 2'970.00  & 0.00 \\
 Accruals and Deferred Income  & accr  & 0.00  & 0.00 \\
-Short term Debt Capital  & stdc  & 2'970.00  & 0.00 \\
+Total Short term Debt Capital  & stdc  & 2'970.00  & 0.00 \\
 Long term Debts  & ltde  & 9'000.00  & 0.00 \\
 Provisions and similar  & prov  & 0.00  & 0.00 \\
-Long term debt Capital  & ltdc  & 9'000.00  & 0.00 \\
+Total Long term debt Capital  & ltdc  & 9'000.00  & 0.00 \\
 Own base capital  & obca  & 0.00  & 0.00 \\
 Reserves and profits  & reut  & 12'220.00  & 0.00 \\
-Owned Capital  & owca  & 12'220.00  & 0.00 \\
+Total Own Capital  & owca  & 12'220.00  & 0.00 \\
 Total Liabilities and Equity  & totp  & 24'190.00  & 0.00 \\
 \end{longtable}
 \begin{longtable}[l]{ l  l  l  l }
@@ -126,8 +126,8 @@ Third parties capital (+) increases or (-) repayments  & 9'000.00  & 0.00 \\
 Own capital (+) increases or (-) reductions   & 0.00  & 0.00 \\
 =Cash Flow from financing (C)  & 9'000.00  & 0.00 \\
 Increase/decrease in liquidity (A+B+C)  & -15'430.00  & 0.00 \\
-Cash at the beginning of the period  & 110.00  & 110.00 \\
-Cash at the end of the period  & -9'320.00  & 110.00 \\
+Liquidity at the beginning of the period  & 110.00  & 110.00 \\
+Liquidity at the end of the period  & -9'320.00  & 110.00 \\
 Difference  & -9'430.00  & 0.00 \\
 \end{longtable}
 Warning: The difference between the 'Increase/decrease in Liquidity' and the 'Cash difference' amounts should be 0.\P  Check that the groups used are correct. \\
@@ -143,7 +143,7 @@ Cash Flow to Investments  & cashflow(A)/inve  & -  & -2343.00\%   & 0.00\%  ↑ 
 DUPONT ANALYSIS  Description  & 2020  & Budget \\
 EBIT  & 12'220.00   & 0.00  ↓ \\
 Sales turnover  & 22'500.00   & 0.00  ↓ \\
-EBIT margin  & 0.54   &   ↓ \\
+EBIT margin  & 54.31\%   & 0.00\%  ↓ \\
 Sales turnover  & 22'500.00   & 0.00  ↓ \\
 Total Assets  & 24'300.00   & 110.00  ↓ \\
 Total Assets Turnover  & 0.93   & 0.00  ↓ \\
@@ -162,6 +162,6 @@ ALTMAN INDEX Z-SCORE 2020  & Budget \\
 for values > than 3 correspond a low probability of a financial crisis \\
 for values >= than 1.8 but <= than 3 there are possibilities of a financial crisis, should be kept under control \\
 for values < than 1.8 there is a strong probability of a financial crisis \\
-\excltest{30.03.2021} \\
+\excltest{07.04.2021} \\
 \end{reportvalue}
 \end{document}
