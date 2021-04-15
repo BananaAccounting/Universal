@@ -716,6 +716,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             tableRow.addCell(this.toLocaleAmountFormat(this.data[i].calculated_data.annualresult), "styleTotalAmount");
         }
 
+        report.addPageBreak();
 
         /******************************************************************************************
          * Add the control sums table (could be done better with a method)
@@ -726,7 +727,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             tableRow.addCell(texts.assets, "styleUnderGroupTitles", 4);
             for (var i = this.data.length - 1; i >= 0; i--) {
                 var tableRow = tableControlSums.addRow("styleTablRows");
-                var period = this.data[i].period.StartDate;
+                var period = this.data[i].period.EndDate;
                 var element_type = this.data[i].period.Type;
                 var year = period.substr(0, 4);
                 if (element_type === "Y") {
@@ -744,7 +745,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             tableRow.addCell(texts.liabilitiesandequity, "styleUnderGroupTitles", 4);
             for (var i = this.data.length - 1; i >= 0; i--) {
                 var tableRow = tableControlSums.addRow("styleTablRows");
-                var period = this.data[i].period.StartDate;
+                var period = this.data[i].period.EndDate;
                 var element_type = this.data[i].period.Type;
                 var year = period.substr(0, 4);
                 if (element_type === "Y") {
@@ -761,7 +762,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             tableRow.addCell(texts.profitandloss, "styleUnderGroupTitles", 4);
             for (var i = this.data.length - 1; i >= 0; i--) {
                 var tableRow = tableControlSums.addRow("styleTablRows");
-                var period = this.data[i].period.StartDate;
+                var period = this.data[i].period.EndDate;
                 var element_type = this.data[i].period.Type;
                 var year = period.substr(0, 4);
                 if (element_type === "Y") {
