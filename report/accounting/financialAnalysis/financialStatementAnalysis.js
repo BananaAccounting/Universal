@@ -18,7 +18,7 @@
 // @task = app.command
 // @doctype = 100.*
 // @publisher = Banana.ch SA
-// @pubdate = 2021-04-07
+// @pubdate = 2021-04-15
 // @inputdatasource = none
 // @timeout = -1
 
@@ -266,7 +266,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
     generateHeaderColumns(tableRow) {
         for (var i = this.data.length - 1; i >= 0; i--) {
-            var year = this.data[i].period.StartDate;
+            var year = this.data[i].period.EndDate;
             var elementType = this.data[i].period.Type;
             if (elementType === "Y") {
                 year = year.substr(0, 4);
