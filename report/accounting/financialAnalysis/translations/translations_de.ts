@@ -571,7 +571,7 @@ Passive Rechnungsabgrenzungen</translation>
         <location filename="../financialStatementAnalysis.js" line="1498"/>
         <location filename="../financialStatementAnalysis.js" line="1518"/>
         <source>Difference</source>
-        <translation>Veränderung der Flüssigen Mittel</translation>
+        <translation>Differenz</translation>
     </message>
     <message>
         <source>PROFIT AND LOSS CONTROL SUMS</source>
