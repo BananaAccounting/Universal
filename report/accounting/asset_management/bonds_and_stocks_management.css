@@ -1,0 +1,49 @@
+@page {
+    margin-top: 10mm;
+    margin-bottom: 10mm;
+    margin-left: 10mm;
+    margin-right: 10mm;
+}
+
+body {
+    font-size: 9pt;
+}
+
+
+/*************************************
+Styles for the tables
+*************************************/
+
+table.table_bas_transactions {
+    border-style: solid;
+    border-color: rgb(0, 0, 0);
+    width: auto;
+    padding-top: 1px;
+    padding-bottom: 1px;
+}
+
+table.table_bas_details {
+    border-style: solid;
+    border-color: rgb(0, 0, 0);
+    width: auto;
+    padding-top: 1px;
+    padding-bottom: 1px;
+}
+
+.table_header {
+    font-weight: bold;
+    font-size: 12;
+}
+
+
+/*************************************
+Styles for the texts
+*************************************/
+
+.styleTitles {
+    font-weight: bold;
+    color: #354793;
+    font-size: 11pt;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
