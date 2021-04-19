@@ -49,9 +49,9 @@ function addTableBaSDetails(report) {
     table_bas_details.getCaption().addText(qsTr("BONDS AND STOCKS DETAILS"), "styleTitles");
     var tableHeader = table_bas_details.getHeader();
     var tableRow = tableHeader.addRow();
-    tableRow.addCell("Description", "styleTablesHeaderText");
-    tableRow.addCell("Currency", "styleTablesHeaderText");
-    tableRow.addCell("Quantity, da generare il numero a dipendenza dei movimenti", "styleTablesHeaderText");
+    tableRow.addCell("Quantity", "styleTablesHeaderText");
+    tableRow.addCell("Purchase Cost", "styleTablesHeaderText");
+    tableRow.addCell("Resale Cost, da generare il numero a dipendenza dei movimenti", "styleTablesHeaderText");
     //this.generateHeaderColumns(tableRow);
     return table_bas_details;
 }
@@ -65,11 +65,13 @@ function printReport() {
     addHeader(report);
     addFooter(report);
 
+    //save the transactions data
+    bas_transactions = loadBasTransactions()
+
     /**********************************************************
      * add the Bonds and Stocks transactions table
      **********************************************************/
     var table_bas_transactions = addTableBaSTransactions(report);
-    bas_transactions = loadBasTransactions()
     for (var i = 0; i <= bas_transactions.length - 1; i++) {
         for (var j = 0; j <= bas_transactions.length - 1; j++) {
             let action = bas_transactions[i][j].action;
@@ -78,7 +80,7 @@ function printReport() {
             let description = bas_transactions[i][j].description;
             let amount_currency = bas_transactions[i][j].amount_currency;
             let amount = bas_transactions[i][j].amount;
-            var tableRow = table_bas_transactions.addRow("styleTablRows");
+            let tableRow = table_bas_transactions.addRow("styleTablRows");
             tableRow.addCell(action);
             tableRow.addCell(notes);
             tableRow.addCell(description);
@@ -94,9 +96,18 @@ function printReport() {
      * add the Bonds and Stocks details table
      **********************************************************/
     var table_bas_details = addTableBaSDetails(report);
-    var tableRow = table_bas_details.addRow();
-    //aggiustare
-    tableRow.addCell("Nestle", 2);
+
+    var tableRow = table_bas_details.addRow("styleTablRows");
+    for (var i = 0; i <= bas_transactions.length - 1; i++) {
+        for (var j = 0; j <= bas_transactions.length - 1; j++) {
+            var tableRow = table_bas_details.addRow();
+            let qt = bas_transactions[i][j].qt;
+            let balance = bas_transactions[i][j].balance // bonds and stocks resale value
+            tableRow.addCell(Banana.SDecimal.round(qt, { 'decimals': 0 }));
+            tableRow.addCell(balance);
+        }
+    }
+
 
     return report;
 
@@ -191,8 +202,13 @@ function loadCurrentCard(account) {
             let description = tRow.value('Description');
             let amount_currency = tRow.value('AmountCurrency');
             let amount = tRow.value('Amount');
+            //balance is the value for the load Bas resale cost
+            let balance = tRow.value('JBalance');
+            let balance_currency = tRow.value("JBalanceAccountCurrency");
 
-            account_transactions.push({ action, qt, notes, description, amount_currency, amount });
+            Banana.console.debug(JSON.stringify(account_transactions));
+
+            account_transactions.push({ action, qt, notes, description, amount_currency, amount, balance, balance_currency });
 
 
 
