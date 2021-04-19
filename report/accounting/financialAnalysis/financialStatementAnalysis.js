@@ -396,10 +396,11 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
      * @Param {object} report: the report created
      */
     addFooter(report) {
-        var date = new Date();
-        var footer = report.getFooter();
-        var testoData = footer.addParagraph(Banana.Converter.toLocaleDateFormat(date), "header_text");
-        testoData.excludeFromTest();
+        let date = new Date();
+        let footer = report.getFooter();
+        footer.addParagraph(Banana.Converter.toLocaleDateFormat(date), "footer_left");
+        footer.addParagraph("", "footer_right").addFieldPageNr("footer right");
+        footer.excludeFromTest();
 
     }
 
@@ -718,6 +719,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
         report.addPageBreak();
 
+
+
         /******************************************************************************************
          * Add the control sums table (could be done better with a method)
          * ***************************************************************************************/
@@ -777,9 +780,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             if (this.controlsums_differences > 0) {
                 report.addParagraph(warning_msg.control_sums, "styleWarningParagraph");
             }
-        }
 
-        report.addPageBreak();
+            report.addPageBreak();
+        }
 
 
         /******************************************************************************************
@@ -1104,18 +1107,21 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             ratios = this.data[i].altman_index;
             tableRow.addCell(this.data[i].altman_index, this.altmanScoreType(this.data[i].altman_index));
         }
-        var tableRow = tableAltmanIndex.addRow("styleTablRows");
-        tableRow.addCell(texts.altmanformula, "styleCentralText", this.yearsColumnCount(yearcolumns));
-        var tableRow = tableAltmanIndex.addRow("styleTablRows");
-        tableRow.addCell("X1 = cuas / tota", "styleCentralText", this.yearsColumnCount(yearcolumns));
-        var tableRow = tableAltmanIndex.addRow("styleTablRows");
-        tableRow.addCell("X2 = reut / tota ", "styleCentralText", this.yearsColumnCount(yearcolumns));
-        var tableRow = tableAltmanIndex.addRow("styleTablRows");
-        tableRow.addCell("X3 = EBIT / tota ", "styleCentralText", this.yearsColumnCount(yearcolumns));
-        var tableRow = tableAltmanIndex.addRow("styleTablRows");
-        tableRow.addCell("X4 = pant / totp", "styleCentralText", this.yearsColumnCount(yearcolumns));
-        var tableRow = tableAltmanIndex.addRow("styleTablRows");
-        tableRow.addCell("X5 = sale / tota", "styleCentralText", this.yearsColumnCount(yearcolumns));
+        if (this.dialogparam.formulascolumn) {
+
+            var tableRow = tableAltmanIndex.addRow("styleTablRows");
+            tableRow.addCell(texts.altmanformula, "styleCentralText", this.yearsColumnCount(yearcolumns));
+            var tableRow = tableAltmanIndex.addRow("styleTablRows");
+            tableRow.addCell("X1 = cuas / tota", "styleCentralText", this.yearsColumnCount(yearcolumns));
+            var tableRow = tableAltmanIndex.addRow("styleTablRows");
+            tableRow.addCell("X2 = reut / tota ", "styleCentralText", this.yearsColumnCount(yearcolumns));
+            var tableRow = tableAltmanIndex.addRow("styleTablRows");
+            tableRow.addCell("X3 = EBIT / tota ", "styleCentralText", this.yearsColumnCount(yearcolumns));
+            var tableRow = tableAltmanIndex.addRow("styleTablRows");
+            tableRow.addCell("X4 = pant / totp", "styleCentralText", this.yearsColumnCount(yearcolumns));
+            var tableRow = tableAltmanIndex.addRow("styleTablRows");
+            tableRow.addCell("X5 = sale / tota", "styleCentralText", this.yearsColumnCount(yearcolumns));
+        }
 
         report.addParagraph(texts.altmanlowprob, "styleParagraphs");
         report.addParagraph(texts.altmanmediumprob, "styleParagraphs");

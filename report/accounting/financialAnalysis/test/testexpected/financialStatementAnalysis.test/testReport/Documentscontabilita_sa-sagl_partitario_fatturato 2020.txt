@@ -162,6 +162,6 @@ ALTMAN INDEX Z-SCORE 2020  & Budget \\
 for values > than 3 correspond a low probability of a financial crisis \\
 for values >= than 1.8 but <= than 3 there are possibilities of a financial crisis, should be kept under control \\
 for values < than 1.8 there is a strong probability of a financial crisis \\
-\excltest{07.04.2021} \\
-\end{reportvalue}
+\excltest{19.04.2021} \\
+\#page-nr \end{reportvalue}
 \end{document}
