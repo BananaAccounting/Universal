@@ -37,6 +37,15 @@ table.table_bas_details {
 
 
 /*************************************
+Styles for the amounts
+*************************************/
+
+.styleNormalAmount {
+    text-align: right;
+}
+
+
+/*************************************
 Styles for the texts
 *************************************/
 
@@ -46,4 +55,11 @@ Styles for the texts
     font-size: 11pt;
     padding-top: 5px;
     padding-bottom: 5px;
+}
+
+.styleTablesHeaderText {
+    color: #e4e7e5;
+    background-color: #18c552;
+    font-weight: bold;
+    text-align: center;
 }
