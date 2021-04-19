@@ -35,8 +35,8 @@ function addTableBaSTransactions(report) {
     var tableRow = tableHeader.addRow();
     tableRow.addCell("Action", "styleTablesHeaderText");
     tableRow.addCell("Notes", "styleTablesHeaderText");
-    tableRow.addCell("Quantity", "styleTablesHeaderText");
     tableRow.addCell("Description", "styleTablesHeaderText");
+    tableRow.addCell("Quantity", "styleTablesHeaderText");
     tableRow.addCell("AmountCurrency", "styleTablesHeaderText");
     tableRow.addCell("Amount", "styleTablesHeaderText");
     //this.generateHeaderColumns(tableRow);
@@ -49,20 +49,15 @@ function addTableBaSDetails(report) {
     table_bas_details.getCaption().addText(qsTr("BONDS AND STOCKS DETAILS"), "styleTitles");
     var tableHeader = table_bas_details.getHeader();
     var tableRow = tableHeader.addRow();
-    tableRow.addCell("Action", "styleTablesHeaderText");
-    tableRow.addCell("Notes", "styleTablesHeaderText");
-    tableRow.addCell("Quantity", "styleTablesHeaderText");
     tableRow.addCell("Description", "styleTablesHeaderText");
-    tableRow.addCell("AmountCurrency", "styleTablesHeaderText");
-    tableRow.addCell("Amount", "styleTablesHeaderText");
+    tableRow.addCell("Currency", "styleTablesHeaderText");
+    tableRow.addCell("Quantity, da generare il numero a dipendenza dei movimenti", "styleTablesHeaderText");
     //this.generateHeaderColumns(tableRow);
     return table_bas_details;
 }
 
 function printReport() {
 
-    let bas_transactions = [];
-    bas_transactions = loadBasTransactions();
     /**********************************************************
      * create the report and add header and footer
      **********************************************************/
@@ -74,14 +69,22 @@ function printReport() {
      * add the Bonds and Stocks transactions table
      **********************************************************/
     var table_bas_transactions = addTableBaSTransactions(report);
-    for (var i = 0; i <= bas_transactions.length; i++) {
-        Banana.console.debug(JSON.stringify(bas_transactions[i]));
-        for (var key in bas_transactions) {
-            var tableRow = table_bas_transactions.addRow();
-            /*tableRow.addCell(bas_transactions[i].Action[key]);
-            tableRow.addCell(bas_transactions[i].Qt[key]);
-            tableRow.addCell(bas_transactions[i].Notes[key]);
-            tableRow.addCell(bas_transactions[i].Description[key]);*/
+    bas_transactions = loadBasTransactions()
+    for (var i = 0; i <= bas_transactions.length - 1; i++) {
+        for (var j = 0; j <= bas_transactions.length - 1; j++) {
+            let action = bas_transactions[i][j].action;
+            let qt = bas_transactions[i][j].qt;
+            let notes = bas_transactions[i][j].notes;
+            let description = bas_transactions[i][j].description;
+            let amount_currency = bas_transactions[i][j].amount_currency;
+            let amount = bas_transactions[i][j].amount;
+            var tableRow = table_bas_transactions.addRow("styleTablRows");
+            tableRow.addCell(action);
+            tableRow.addCell(notes);
+            tableRow.addCell(description);
+            tableRow.addCell(Banana.SDecimal.round(qt, { 'decimals': 0 }));
+            tableRow.addCell(toLocaleAmountFormat(amount_currency), "styleNormalAmount");
+            tableRow.addCell(toLocaleAmountFormat(amount), "styleNormalAmount");
         }
     }
 
@@ -92,6 +95,9 @@ function printReport() {
      **********************************************************/
     var table_bas_details = addTableBaSDetails(report);
     var tableRow = table_bas_details.addRow();
+    //aggiustare
+    tableRow.addCell("Nestle", 2);
+
     return report;
 
 }
@@ -129,9 +135,7 @@ function getReportStyle() {
  * @param {*} report 
  */
 function addHeader(report) {
-    var currentDate = new Date();
     report.getHeader().addClass("header");
-    report.getHeader().addText(currentDate);
 
 }
 
@@ -140,8 +144,9 @@ function addHeader(report) {
  * @param {object} report: the report created
  */
 function addFooter(report) {
+    var currentDate = new Date();
     report.getFooter().addClass("footer");
-    report.getFooter().addText('Banana.ch');
+    report.getFooter().addText(Banana.Converter.toLocaleDateFormat(currentDate));
 
 }
 
@@ -149,7 +154,7 @@ function addFooter(report) {
  * 
  */
 function loadBasTransactions() {
-    let transactions = [];
+    var transactions = [];
     let userParam = initParam();
     let savedParam = Banana.document.getScriptSettings();
     if (savedParam.length > 0) {
@@ -164,15 +169,15 @@ function loadBasTransactions() {
         transactions.push(loadCurrentCard(account_list[i]));
     }
 
+
     return transactions;
 
 }
 
 /**
  * 
- * @param {*} account 
- * @param {*} account_data 
- * @returns 
+ * @param {*} account the account identifying the asset in the chart of accounts
+ * @returns an array of objects, one object for every transaction concerning  'account'
  */
 function loadCurrentCard(account) {
     if (account) {
@@ -180,18 +185,53 @@ function loadCurrentCard(account) {
         account_journal = Banana.document.currentCard(account, '', '', null);
         for (var i = 0; i < account_journal.rowCount; i++) {
             let tRow = account_journal.row(i);
-            let Action = "Action";
-            let Qt = tRow.value('Quantity');
-            let Notes = tRow.value('Notes');
-            let Description = tRow.value('Description');
-            let AmountCurrency = tRow.value('AmountCurrency');
-            let Amount = tRow.value('Amount');
+            let action = "Action";
+            let qt = tRow.value('Quantity');
+            let notes = tRow.value('Notes');
+            let description = tRow.value('Description');
+            let amount_currency = tRow.value('AmountCurrency');
+            let amount = tRow.value('Amount');
 
-            //put values in an another array
-            account_transactions.push({ "Action": Action, "Quantity": Qt, "Notes": Notes, "Description": Description, "Amount Currency": AmountCurrency, "Amount": Amount });
+            account_transactions.push({ action, qt, notes, description, amount_currency, amount });
+
+
+
         }
     }
     return account_transactions;
+}
+
+
+/**
+ * 
+ */
+function loadBaSPurchasingCosts() {
+
+}
+
+/**
+ * 
+ * @param account the account identifying the asset in the chart of accounts
+ * @returns 
+ */
+function loadBaSResaleCosts(account) {
+
+    var account_balances
+        //gli importi equivalgono alla colonna Balance
+        //carico i dati per ogni conto titoli che viene inserito
+
+    return account_balances
+
+
+}
+
+function toLocaleAmountFormat(value) {
+    if (!value || value.trim().length === 0)
+        return "";
+
+    //cambiare
+    var dec = 2
+    return Banana.Converter.toLocaleNumberFormat(value, dec, true);
 }
 
 function initParam() {
