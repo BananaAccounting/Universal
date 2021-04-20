@@ -18,7 +18,7 @@
 // @task = app.command
 // @doctype = 100.*
 // @publisher = Banana.ch SA
-// @pubdate = 2021-04-19
+// @pubdate = 2021-04-20
 // @inputdatasource = none
 // @timeout = -1
 
@@ -592,6 +592,18 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             tableRow.addCell(this.toLocaleAmountFormat(this.data[i].calculated_data.longtermdebtcapital), "styleMidTotalAmount");
         }
 
+        /******************************************************************************************
+         * Add the Long term third capital plus Short term debt capital (Debt Capital)
+         * ***************************************************************************************/
+
+        tableRow = tableBalance.addRow("styleTablRows");
+        tableRow.addCell(texts.debtcapital, 'styleUnderGroupTitles');
+        if (this.dialogparam.acronymcolumn) {
+            tableRow.addCell(texts.debtcapital_acronym);
+        }
+        for (var i = this.data.length - 1; i >= 0; i--) {
+            tableRow.addCell(this.toLocaleAmountFormat(this.data[i].calculated_data.debtcapital), "styleMidTotalAmount");
+        }
         /******************************************************************************************
          * Add the own capital to the balance table
          * ***************************************************************************************/
@@ -1536,7 +1548,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         texts.financialstatementanalysis = qsTr("Financial Statements Analysis and Ratios");
         texts.totalasset = qsTr('Total Assets');
         texts.assets = qsTr("Assets");
-        texts.debtcapital = qsTr("Debt Capital");
+        texts.debtcapital = qsTr("Total Debt Capital");
         texts.liabilitiesandequity = qsTr("Liabilities and Equity");
         texts.totalliabilitiesandequity = qsTr("Total Liabilities and Equity");
         texts.addedvalue = qsTr("= Added Value");

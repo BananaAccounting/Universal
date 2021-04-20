@@ -41,6 +41,7 @@ Total Short term Debt Capital  & stdc  & 27'480.00  & 1'010.00 \\
 Long term Debts  & ltde  & 9'000.00  & 0.00 \\
 Provisions and similar  & prov  & 0.00  & 0.00 \\
 Total Long term debt Capital  & ltdc  & 9'000.00  & 0.00 \\
+Total Debt Capital  & deca  & 36'480.00  & 1'010.00 \\
 Own base capital  & obca  & -9'200.00  & 0.00 \\
 Reserves and profits  & reut  & -16'170.00  & 1'155.00 \\
 Total Own Capital  & owca  & -25'370.00  & 1'155.00 \\
@@ -162,6 +163,6 @@ ALTMAN INDEX Z-SCORE 2020  & Budget \\
 for values > than 3 correspond a low probability of a financial crisis \\
 for values >= than 1.8 but <= than 3 there are possibilities of a financial crisis, should be kept under control \\
 for values < than 1.8 there is a strong probability of a financial crisis \\
-\excltest{19.04.2021} \\
+\excltest{20.04.2021} \\
 \#page-nr \end{reportvalue}
 \end{document}
