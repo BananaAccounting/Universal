@@ -18,7 +18,7 @@
 // @task = app.command
 // @doctype = 100.*
 // @publisher = Banana.ch SA
-// @pubdate = 2021-04-19
+// @pubdate = 2021-04-20
 // @inputdatasource = none
 // @timeout = -1
 
