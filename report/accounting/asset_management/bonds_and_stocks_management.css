@@ -63,3 +63,13 @@ Styles for the texts
     font-weight: bold;
     text-align: center;
 }
+
+.styleTablesBasNames {
+    background-color: #d2f7e2;
+    text-align: left;
+}
+
+.styleTablesBasResults {
+    background-color: #f3fdff;
+    text-align: left;
+}
