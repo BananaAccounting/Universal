@@ -1,0 +1,88 @@
+@page {
+    margin-top: 10mm;
+    margin-bottom: 10mm;
+    margin-left: 10mm;
+    margin-right: 10mm;
+}
+
+body {
+    font-size: 9pt;
+}
+
+table {
+    font-size: 9pt;
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+
+/*************************************
+Styles for the tables
+*************************************/
+
+table.myTableFundManagement {
+    border-style: solid;
+    border-color: rgb(0, 0, 0);
+    width: auto;
+    padding-top: 1px;
+    padding-bottom: 1px;
+}
+
+.table_header {
+    font-weight: bold;
+    font-size: 12;
+}
+
+
+/*************************************
+Styles for the amounts
+*************************************/
+
+.styleNormalAmount {
+    text-align: right;
+}
+
+
+/*************************************
+Styles for the texts
+*************************************/
+
+.styleTitles {
+    font-weight: bold;
+    color: #354793;
+    font-size: 11pt;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.styleTablesHeaderText {
+    color: #e4e7e5;
+    background-color: #4a85df;
+    font-weight: bold;
+    text-align: center;
+}
+
+.styleTablesBasNames {
+    background-color: #d2f7e2;
+    text-align: left;
+}
+
+.styleTablesBasResults {
+    background-color: #f3fdff;
+    text-align: left;
+}
+
+
+/******************************************
+Styles for the coloured cells
+******************************************/
+
+.cellOrange {
+    background-color: #ec9523;
+    text-align: right;
+}
+
+.cellGreen {
+    background-color: #71FA4C;
+    text-align: right;
+}
