@@ -33,6 +33,7 @@ function addTableBaSTransactions(report) {
 
     var tableHeader = table_bas_transactions.getHeader();
     var tableRow = tableHeader.addRow();
+    tableRow.addCell("Date", "styleTablesHeaderText");
     tableRow.addCell("Action", "styleTablesHeaderText");
     tableRow.addCell("Description", "styleTablesHeaderText");
     tableRow.addCell("Quantity", "styleTablesHeaderText");
@@ -52,16 +53,14 @@ function addTableBaSDetails(report) {
     table_bas_details.getCaption().addText(qsTr("BONDS AND STOCKS DETAILS"), "styleTitles");
     var tableHeader = table_bas_details.getHeader();
     var tableRow = tableHeader.addRow();
-    tableRow.addCell("Quantity", "styleTablesHeaderText");
+    tableRow.addCell("Accumulated Quantity ", "styleTablesHeaderText");
     tableRow.addCell("Purchase Cost", "styleTablesHeaderText");
-    tableRow.addCell("Resale Cost", "styleTablesHeaderText");
+    tableRow.addCell("Sale Cost", "styleTablesHeaderText");
     //this.generateHeaderColumns(tableRow);
     return table_bas_details;
 }
 
 function printReport() {
-
-    getBuyCoursesAverage();
 
     /**********************************************************
      * create the report and add header and footer
@@ -86,7 +85,7 @@ function printReport() {
 
         let rows = bas_data[key];
         for (var index in rows) {
-            Banana.console.debug(rows[index].qt_cum);
+            let date = rows[index].date;
             let action = rows[index].action;
             let description = rows[index].description;
             let qt = rows[index].qt;
@@ -95,8 +94,9 @@ function printReport() {
             let balance_currency = rows[index].balance_currency;
             let exchange_rate = rows[index].exchange_rate;
             let amount_chf = rows[index].amount_chf;
-            let balance_resale = rows[index].balance;
+            let balance = rows[index].balance;
             let tableRow = table_bas_transactions.addRow("styleTablRows");
+            tableRow.addCell(Banana.Converter.toLocaleDateFormat(date));
             tableRow.addCell(action);
             tableRow.addCell(description);
             tableRow.addCell(Banana.SDecimal.round(qt, { 'decimals': 0 }), 'styleNormalAmount');
@@ -105,7 +105,7 @@ function printReport() {
             tableRow.addCell(toLocaleAmountFormat(balance_currency), "styleNormalAmount");
             tableRow.addCell(Banana.SDecimal.round(exchange_rate, { 'decimals': 2 }), 'styleNormalAmount');
             tableRow.addCell(toLocaleAmountFormat(amount_chf), "styleNormalAmount");
-            tableRow.addCell(toLocaleAmountFormat(balance_resale), "styleNormalAmount");
+            tableRow.addCell(toLocaleAmountFormat(balance), "styleNormalAmount");
         }
 
     }
@@ -117,12 +117,22 @@ function printReport() {
      **********************************************************/
     var table_bas_details = addTableBaSDetails(report);
 
-    for (var i = 0; i < bas_data.length; i++) {
+    for (var key in bas_data) {
         let bas_names = getBasNames();
         let bas_closing_courses = getBasClosingCourses();
         //add the header from the bas names inserted ba the user
         let tableRow = table_bas_details.addRow("styleTablesBasNames");
-        tableRow.addCell(bas_names[i]);
+        tableRow.addCell(bas_names[key]);
+        let rows = bas_data[key];
+        for (var index in rows) {
+            let qt_cum = rows[index].qt_cum;
+            let balance = rows[index].balance;
+            let balance_purchase = rows[index].balance_purchase;
+            let tableRow = table_bas_details.addRow("styleTablRows");
+            tableRow.addCell(Banana.SDecimal.round(qt_cum, { 'decimals': 0 }), 'style');
+            tableRow.addCell(toLocaleAmountFormat(balance), "styleNormalAmount");
+            tableRow.addCell(toLocaleAmountFormat(balance_purchase), "styleNormalAmount");
+        }
 
         tableRow = table_bas_details.addRow("styleTablesBasResults");
         tableRow.addCell("Profit(Loss) on sale");
@@ -135,7 +145,7 @@ function printReport() {
         tableRow.addCell("Value");
         tableRow = table_bas_details.addRow("styleTablesBasResults");
         tableRow.addCell("Average course value");
-        tableRow.addCell(bas_closing_courses[i]);
+        tableRow.addCell(bas_closing_courses[key]);
     }
 
 
@@ -252,24 +262,38 @@ function getBasClosingCourses() {
  */
 function loadCurrentCard(account) {
     var account_data = [];
-    var qt_cum = [];
+    var qt_cum = ["0.0"];
+    //to calculate the profits on sales
+    var average_courses = [];
     //inizializzare con val di default
     if (account) {
         account_journal = Banana.document.currentCard(account, '', '', null);
         for (var i = 0; i < account_journal.rowCount - 1; i++) {
             let transaction = {};
             let tRow = account_journal.row(i);
+            transaction.date = tRow.value('Date');
             transaction.action = tRow.value('DocType');
             transaction.description = tRow.value('Description');
             transaction.qt = tRow.value('Quantity');
+            qt_cum.push(transaction.qt);
+            transaction.qt_cum = qt_cum.reduce(sumQt);
+            //aggiorno il corso medio
+            average_courses.push(getCourseAverage(transaction.balance, transaction.qt));
             transaction.course = tRow.value('UnitPrice');
+            average_courses.push(transaction.course);
             transaction.amount_currency = tRow.value('AmountCurrency');
             transaction.balance_currency = tRow.value("JBalanceAccountCurrency");
             transaction.exchange_rate = tRow.value('ExchangeRate');
             transaction.amount_chf = tRow.value('Amount');
             transaction.balance = tRow.value('JBalance');
+            transaction.average_course = average_courses[i];
+
+
+            transaction.balance_purchase = getPurchaseBalance(transaction.qt_cum, transaction.average_course);
 
             account_data.push(transaction);
+
+            Banana.console.debug(JSON.stringify(transaction));
 
 
         }
@@ -278,39 +302,22 @@ function loadCurrentCard(account) {
     return account_data;
 }
 
-/**
- * Calculate the Profit (or loss) on sale for every account
- */
-function getBuyCoursesAverage(account) {
-    let bas_data = loadBasData();
-    let buy_courses_sum = "";
-    let buy_courses_total = 0;
-    let buy_courses_average = "";
-
+function sumQt(cum_qt, qt) {
+    return Banana.SDecimal.add(qt, cum_qt);
 }
 
+function getCourseAverage(balance, qt) {
+    let course_average = Banana.SDecimal.add(balance, qt);
+    course_average = Banana.SDecimal.divide(course_average, 2);
+    course_average = toLocaleAmountFormat(course_average);
 
-function getPreviousQtCum(qt_cum, qt) {
-    let previous_qt_cum = qt_cum.slice(-1);
-    previous_qt_cum = Banana.SDecimal.abs(previous_qt_cum);
-    previous_qt_cum = Banana.SDecimal.add(previous_qt_cum, qt);
-
-    return previous_qt_cum;
-
+    return course_average;
 }
 
+function getPurchaseBalance(qt_cum, average_course) {
+    let balance_purchase = Banana.SDecimal.multiply(average_course, qt_cum);
 
-/**
- * Calculate the Purchasing cost of a stock.
- * The difference has to be calculated when the stock quantity decreases, so some stocks are selled.
- * With this difference it's possibile to see if selling the stock generated a profit
- */
-function setBaSPurchasingCosts(balance_previous, cumulated_qt, qt) {
-
-    let balance_purchasing = Banana.SDecimal.divide(balance_previous, cumulated_qt);
-    balance_purchasing = Banana.SDecimal.divide(balance_purchasing, qt);
-
-    return balance_purchasing;
+    return balance_purchase;
 
 }
 
