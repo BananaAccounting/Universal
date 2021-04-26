@@ -20,7 +20,7 @@ table {
 Styles for the tables
 *************************************/
 
-table.myTableFundManagement {
+table.myTableFundManagement td {
     border-style: solid;
     border-color: rgb(0, 0, 0);
     width: auto;
@@ -77,8 +77,8 @@ Styles for the texts
 Styles for the coloured cells
 ******************************************/
 
-.cellOrange {
-    background-color: #ec9523;
+.cellRed {
+    background-color: #ec4123;
     text-align: right;
 }
 

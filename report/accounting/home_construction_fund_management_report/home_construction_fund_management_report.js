@@ -38,8 +38,8 @@ function addTableFundManagement(report) {
     tableRow.addCell("Categoria", "styleTablesHeaderText");
     tableRow.addCell("Uscite", "styleTablesHeaderText");
     tableRow.addCell("Delibere", "styleTablesHeaderText");
-    tableRow.addCell("Uscite-Delibere", "styleTablesHeaderText");
-    tableRow.addCell("Preventivo di Massima ", "styleTablesHeaderText");
+    tableRow.addCell("Delibere-Uscite", "styleTablesHeaderText");
+    tableRow.addCell("Preventivo di Massima", "styleTablesHeaderText");
     tableRow.addCell("Delibere-Preventivo di massima", "styleTablesHeaderText");
     //altre colonne verranno aggiunte con il document Change
     return tableFundManagement;
@@ -47,14 +47,15 @@ function addTableFundManagement(report) {
 
 function printReport() {
 
-    let categories = loadCategotyTableData("Category");
-    let expenses = loadCategotyTableData("Expenses");
+    let categories = loadCategoryTableData("Category", false);
+    let expenses = loadCategoryTableData("Expenses", true);
     //con il nuovo formato questa colonna contiene i valori delle delibere
-    let deliberations = loadCategotyTableData("Budget");
+    let deliberations = loadCategoryTableData("Budget", true);
     let exp_delib_difference = getExpAndDelibDifference(expenses, deliberations);
-    let cell_style = "";
-    let budget = loadCategotyTableData("PreventivoGenerale");
-    let delib_and_budg_difference = getExpAndBudgDifference(deliberations, budget);
+    let exp_delib_difference_cell_style = setStyleToCell(exp_delib_difference);
+    let budget = loadCategoryTableData("PreventivoGenerale", true);
+    let delib_budg_difference = getExpAndBudgDifference(deliberations, budget);
+    let delib_budg_difference_cell_style = setStyleToCell(delib_budg_difference);
 
     /**********************************************************
      * create the report and add header and footer
@@ -70,11 +71,9 @@ function printReport() {
         tableRow.addCell(categories[i]);
         tableRow.addCell(toLocaleAmountFormat(expenses[i]), 'styleNormalAmount');
         tableRow.addCell(toLocaleAmountFormat(deliberations[i]), 'styleNormalAmount');
-        //cell_style = setStyleToCell(deliberations[i]);
-        tableRow.addCell(toLocaleAmountFormat(exp_delib_difference[i]), 'styleNormalAmount');
+        tableRow.addCell(toLocaleAmountFormat(exp_delib_difference[i]), exp_delib_difference_cell_style[i]);
         tableRow.addCell(toLocaleAmountFormat(budget[i]), 'styleNormalAmount');
-        //cell_style = setStyleToCell(deliberations[i]);
-        tableRow.addCell(toLocaleAmountFormat(delib_and_budg_difference[i]), 'styleNormalAmount');
+        tableRow.addCell(toLocaleAmountFormat(delib_budg_difference[i]), delib_budg_difference_cell_style[i]);
 
     }
 
@@ -140,7 +139,14 @@ function toLocaleAmountFormat(value) {
     return Banana.Converter.toLocaleNumberFormat(value, dec, true);
 }
 
-function loadCategotyTableData(column) {
+
+/**
+ * 
+ * @param {*} column the column of the categories table
+ * @param {*} importo 
+ * @returns 
+ */
+function loadCategoryTableData(column, importo) {
     var element_list = [];
     if (!Banana.document) {
         return element_list;
@@ -151,19 +157,23 @@ function loadCategotyTableData(column) {
         return element_list;
     }
 
-    for (var i = 0; i < table.rowCount; i++) {
+    //mettere nella doc che le prime due rige vanno lasciate libere come da modello
+    for (var i = 2; i < table.rowCount; i++) {
         var tRow = table.row(i);
         var category_id = tRow.value(column);
-
-        if (category_id.length > 0) {
-            element_list.push(category_id);
-
+        if (importo) {
+            if (category_id.length >= 0) {
+                element_list.push(category_id);
+            }
+        } else {
+            //se è una categoria, ed è presente uno spazio, allora posso inserirci il totale 
+            if (category_id.length > 0) {
+                element_list.push(category_id);
+            }
         }
 
     }
-
     return element_list;
-
 }
 
 /**
@@ -178,7 +188,7 @@ function getExpAndDelibDifference(expenses, deliberations) {
             deliberations[i] = Banana.SDecimal.abs(deliberations[i]);
         }
 
-        results[i] = (Banana.SDecimal.subtract(expenses[i], deliberations[i]));
+        results[i] = (Banana.SDecimal.subtract(deliberations[i], expenses[i]));
 
     }
 
@@ -199,7 +209,6 @@ function getExpAndBudgDifference(deliberations, budget) {
         if (deliberations[i].indexOf("-" >= 0)) {
             deliberations[i] = Banana.SDecimal.abs(deliberations[i]);
         }
-
         results[i] = (Banana.SDecimal.subtract(deliberations[i], budget[i]));
 
     }
@@ -213,32 +222,102 @@ function getExpAndBudgDifference(deliberations, budget) {
  * set the style of a cell depending of the results
  * explaination:
  * 
- * @param {*} exp_delib_difference 
+ * @param {*} imports array of imports
  */
-function setStyleToCell(exp_delib_difference) {
-    if (!exp_delib_difference) {
+function setStyleToCell(imports) {
+    let styles = [];
+    if (!imports) {
         return;
     }
+    for (var i = 0; i < imports.length - 1; i++) {
+        //if it's negative, so the deliberations are greater and expenses were within budget 
+        if (imports[i].indexOf("-") >= 0) {
+            style = "cellRed";
+        } else {
+            style = "cellGreen";
+        }
 
-    let style = "";
-    //if it's negative, so the deliberations are greater and expenses were within budget 
-    if (exp_delib_difference.indexOf("-") >= 0) {
-        style = "cellGreen";
-    } else {
-        style = "cellOrange";
+        styles.push(style);
+
     }
 
-    return style;
+    return styles;
 }
+
+/**
+ * initialises the document change structure
+ */
+function initDocument() {
+    var jsonDoc = {};
+    jsonDoc.document = {};
+    jsonDoc.document.dataUnits = [];
+
+    jsonDoc.creator = {};
+    jsonDoc.creator.name = Banana.script.getParamValue('id');
+    jsonDoc.creator.version = "1.0";
+
+    return jsonDoc;
+}
+
+/**
+ * Se l'utente lo ha scelto, aggiunge una nuova colonna per il preventivo al file
+ */
+function addBudgetColumn() {
+
+    //column operation
+    let column = {};
+    column.operation = {};
+    column.operation.name = "add";
+
+    //column name Xml
+    column.nameXml = "Preventivo01"
+
+    //column Header
+    column.header1 = "Preventivo01"
+
+    let columns = [];
+    columns.push(column);
+
+
+    //data Units
+    let dataUnitsCategories = {};
+    dataUnitsCategories.id = "Categories";
+    dataUnitsCategories.nameXml = "Categories";
+    dataUnitsCategories.nid = "100";
+
+    dataUnitsCategories.data = {};
+    dataUnitsCategories.data.viewLists = {};
+    dataUnitsCategories.data.viewLists.views = [];
+    dataUnitsCategories.data.viewLists.views.push({ "columns": columns, "Id": "Base", "nameXml": "Base", "nid": "1" });
+
+    //document
+    let jsonDoc = initDocument();
+    jsonDoc.document.dataUnits.push(dataUnitsCategories);
+
+    return jsonDoc;
+
+}
+
 
 function exec(inData, options) {
 
     //verificare la licenza
+
 
     if (!Banana.document)
         return "@Cancel";
     var report = printReport();
     var stylesheet = getReportStyle();
     Banana.Report.preview(report, stylesheet);
+
+    var documentChange = { "format": "documentChange", "error": "", "data": [] };
+
+    //Appends a budget column to the categories table
+    let jsonDoc = addBudgetColumn();
+    documentChange["data"].push(jsonDoc);
+
+    Banana.console.debug(JSON.stringify(documentChange));
+
+    return documentChange;
 
 }
