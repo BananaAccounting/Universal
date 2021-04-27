@@ -77,12 +77,20 @@ Styles for the texts
 Styles for the coloured cells
 ******************************************/
 
-.cellRed {
-    background-color: #ec4123;
+.symbolRed {
+    color: #ec4123;
     text-align: right;
+    font-size: 15px;
 }
 
-.cellGreen {
-    background-color: #71FA4C;
+.symbolGreen {
+    color: #71FA4C;
     text-align: right;
+    font-size: 15px;
+}
+
+.symbolOrange {
+    color: #fad14c;
+    text-align: right;
+    font-size: 15px;
 }

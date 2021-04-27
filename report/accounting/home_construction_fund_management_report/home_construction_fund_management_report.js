@@ -29,9 +29,23 @@
  */
 
 function addTableFundManagement(report) {
+
+    //altre colonne verranno aggiunte con il document Change
+    let new_budget_columns = addBudgetColumn_columns();
+
+
     var tableFundManagement = report.addTable('myTableFundManagement');
     tableFundManagement.setStyleAttributes("width:100%;");
     tableFundManagement.getCaption().addText(qsTr("GESTIONE FONDI COSTRUZIONE"), "styleTitles");
+    tableFundManagement.addColumn("Categoria").setStyleAttributes("width:20%");
+    tableFundManagement.addColumn("Uscite").setStyleAttributes("width:10%");
+    tableFundManagement.addColumn("Delibere").setStyleAttributes("width:10%");
+    tableFundManagement.addColumn("Delibere-Uscite").setStyleAttributes("width:15%");
+    tableFundManagement.addColumn("Preventivo di Massima").setStyleAttributes("width:15%");
+    tableFundManagement.addColumn("Delibere-Preventivo di massima").setStyleAttributes("width:15%");
+    for (var key in new_budget_columns) {
+        tableFundManagement.addColumn("New Budget Columns").setStyleAttributes("width:15%");
+    }
 
     var tableHeader = tableFundManagement.getHeader();
     var tableRow = tableHeader.addRow();
@@ -41,25 +55,57 @@ function addTableFundManagement(report) {
     tableRow.addCell("Delibere-Uscite", "styleTablesHeaderText");
     tableRow.addCell("Preventivo di Massima", "styleTablesHeaderText");
     tableRow.addCell("Delibere-Preventivo di massima", "styleTablesHeaderText");
-    //altre colonne verranno aggiunte con il document Change
+    for (var key in new_budget_columns) {
+        tableRow.addCell(new_budget_columns[key].nameXml, "styleTablesHeaderText");
+    }
+
     return tableFundManagement;
 }
 
 function printReport() {
 
-    let categories = loadCategoryTableData("Category", false);
+    var report = Banana.Report.newReport("Gestione delle");
+    addHeader(report);
+    addFooter(report);
+
+    var tableFundManagement = addTableFundManagement(report);
+
+    let group_list = loadGroups();
+    for (var i = 0; i < group_list.length - 1; i++) {
+        let rows = loadCategoryTableRows(group_list[i]);
+        for (var key in rows) {
+            let tableRow = tableFundManagement.addRow("styleTablRows");
+            tableRow.addCell(rows[key].category, 'styleTablRows');
+            tableRow.addCell(toLocaleAmountFormat(rows[key].expenses), 'styleNormalAmount');
+            tableRow.addCell(toLocaleAmountFormat(rows[key].deliberations), 'styleNormalAmount');
+            cell = tableRow.addCell(toLocaleAmountFormat(rows[key].deliberations_expenses) + ' ', 'styleNormalAmount');
+            addSymbol(rows[key].deliberations_expenses, cell);
+            tableRow.addCell(toLocaleAmountFormat(rows[key].budget), 'styleNormalAmount');
+            cell = tableRow.addCell(toLocaleAmountFormat(rows[key].deliberations_budget) + ' ', 'styleNormalAmount');
+            addSymbol(rows[key].deliberations_budget, cell);
+        }
+        let tableRow = tableFundManagement.addRow("styleTablRows");
+        tableRow.addCell("TOTALE", "styleTablRows");
+        tableRow.addCell("totale uscite", "styleTablRows");
+        tableRow.addCell("totale delibere", "styleTablRows");
+        tableRow.addCell("totale differenza", "styleTablRows");
+        tableRow.addCell("totale preventivo di massima", "styleTablRows");
+        tableRow.addCell("totale differenza", "styleTablRows");
+
+
+    }
+
+
+    /*  let categories = loadCategoryTableData("Category", false);
     let expenses = loadCategoryTableData("Expenses", true);
     //con il nuovo formato questa colonna contiene i valori delle delibere
     let deliberations = loadCategoryTableData("Budget", true);
     let exp_delib_difference = getExpAndDelibDifference(expenses, deliberations);
-    let exp_delib_difference_cell_style = setStyleToCell(exp_delib_difference);
     let budget = loadCategoryTableData("PreventivoGenerale", true);
     let delib_budg_difference = getExpAndBudgDifference(deliberations, budget);
-    let delib_budg_difference_cell_style = setStyleToCell(delib_budg_difference);
+    //altre colonne verranno aggiunte con il document Change
+    let new_budget_columns = addBudgetColumn_columns();
 
-    /**********************************************************
-     * create the report and add header and footer
-     **********************************************************/
     var report = Banana.Report.newReport("Gestione delle");
     addHeader(report);
     addFooter(report);
@@ -71,13 +117,15 @@ function printReport() {
         tableRow.addCell(categories[i]);
         tableRow.addCell(toLocaleAmountFormat(expenses[i]), 'styleNormalAmount');
         tableRow.addCell(toLocaleAmountFormat(deliberations[i]), 'styleNormalAmount');
-        tableRow.addCell(toLocaleAmountFormat(exp_delib_difference[i]), exp_delib_difference_cell_style[i]);
+        cell = tableRow.addCell(toLocaleAmountFormat(exp_delib_difference[i]) + ' ', 'styleNormalAmount');
+        addSymbol(exp_delib_difference[i], cell);
         tableRow.addCell(toLocaleAmountFormat(budget[i]), 'styleNormalAmount');
-        tableRow.addCell(toLocaleAmountFormat(delib_budg_difference[i]), delib_budg_difference_cell_style[i]);
-
+        cell = tableRow.addCell(toLocaleAmountFormat(delib_budg_difference[i]) + ' ', 'styleNormalAmount');
+        addSymbol(delib_budg_difference[i], cell);
     }
 
 
+*/
 
     return report;
 
@@ -139,6 +187,27 @@ function toLocaleAmountFormat(value) {
     return Banana.Converter.toLocaleNumberFormat(value, dec, true);
 }
 
+function loadGroups() {
+    var groupList = [];
+    if (!Banana.document) {
+        return groupList;
+    }
+    var table = Banana.document.table("Categories");
+    if (!table) {
+        return groupList;
+    }
+    for (var i = 0; i < table.rowCount; i++) {
+        var tRow = table.row(i);
+
+        var groupId = tRow.value('Group');
+
+        if (groupId.length > 0) {
+            groupList.push(groupId);
+
+        }
+    }
+    return groupList;
+}
 
 /**
  * 
@@ -146,7 +215,8 @@ function toLocaleAmountFormat(value) {
  * @param {*} importo 
  * @returns 
  */
-function loadCategoryTableData(column, importo) {
+function loadCategoryTableRows(group) {
+
     var element_list = [];
     if (!Banana.document) {
         return element_list;
@@ -159,20 +229,21 @@ function loadCategoryTableData(column, importo) {
 
     //mettere nella doc che le prime due rige vanno lasciate libere come da modello
     for (var i = 2; i < table.rowCount; i++) {
-        var tRow = table.row(i);
-        var category_id = tRow.value(column);
-        if (importo) {
-            if (category_id.length >= 0) {
-                element_list.push(category_id);
-            }
-        } else {
-            //se è una categoria, ed è presente uno spazio, allora posso inserirci il totale 
-            if (category_id.length > 0) {
-                element_list.push(category_id);
-            }
+        let tRow = table.row(i);
+        let gr = tRow.value("Gr");
+        if (gr === group) {
+            let categories = {};
+            categories.category = tRow.value("Category");
+            categories.expenses = tRow.value("Expenses");
+            categories.deliberations = tRow.value("Budget");
+            categories.deliberations_expenses = getExpAndDelibDifference(categories.expenses, categories.deliberations);
+            categories.budget = tRow.value("PreventivoGenerale");
+            categories.deliberations_budget = getExpAndBudgDifference(categories.expenses, categories.budget);
+            categories.gr = group;
+            element_list.push(categories);
         }
-
     }
+
     return element_list;
 }
 
@@ -180,19 +251,16 @@ function loadCategoryTableData(column, importo) {
  * Calculate the Difference between the Expenses and the Deliberations, the deliberations should be greater than the expenses,
  * otherwise the expense was to expensive.
  */
-function getExpAndDelibDifference(expenses, deliberations) {
-    let results = [];
-    for (var i = 0; i < deliberations.length - 1; i++) {
-        //for calculation I remove the sign from the deliberations, if it is present
-        if (deliberations[i].indexOf("-" >= 0)) {
-            deliberations[i] = Banana.SDecimal.abs(deliberations[i]);
-        }
-
-        results[i] = (Banana.SDecimal.subtract(deliberations[i], expenses[i]));
-
+function getExpAndDelibDifference(expense, deliberation) {
+    let result = "";
+    //for calculation I remove the sign from the deliberations, if it is present
+    if (deliberation.indexOf("-" >= 0)) {
+        deliberation = Banana.SDecimal.abs(deliberation);
     }
 
-    return results;
+    result = Banana.SDecimal.subtract(deliberation, expense);
+
+    return result;
 
 }
 
@@ -202,46 +270,37 @@ function getExpAndDelibDifference(expenses, deliberations) {
  * 
  * *(i)For ever Budget columns
  */
-function getExpAndBudgDifference(deliberations, budget) {
-    let results = [];
-    for (var i = 0; i < deliberations.length - 1; i++) {
-        //for calculation I remove the sign from the deliberations, if it is present
-        if (deliberations[i].indexOf("-" >= 0)) {
-            deliberations[i] = Banana.SDecimal.abs(deliberations[i]);
-        }
-        results[i] = (Banana.SDecimal.subtract(deliberations[i], budget[i]));
-
+function getExpAndBudgDifference(deliberation, budget) {
+    let result = "";
+    //for calculation I remove the sign from the deliberations, if it is present
+    if (deliberation.indexOf("-" >= 0)) {
+        deliberation = Banana.SDecimal.abs(deliberation);
     }
+    result = (Banana.SDecimal.subtract(deliberation, budget));
 
-    return results;
+
+
+    return result;
 
 }
-
 /**
- * METTERE A POSTO
- * set the style of a cell depending of the results
- * explaination:
- * 
- * @param {*} imports array of imports
+ * Adds the symbol to the cell, and the style changes from the result.
+ * If a value is positive, set the symbolGreen style, otherwise the symbolRed style.
+ * @param {*} cell the cell with the result
+ * @returns 
  */
-function setStyleToCell(imports) {
-    let styles = [];
-    if (!imports) {
-        return;
+function addSymbol(value, cell) {
+    //var rateOfGrowth = this.setRateOfGrowth(indexT1, indexT2);
+    var symbol = '●';
+
+    if (value > 0) {
+        cell.addText(symbol, "symbolGreen");
+    } else if (value < 0) {
+        cell.addText(symbol, "symbolRed");
+    } else {
+        cell.addText(symbol, "symbolOrange");
     }
-    for (var i = 0; i < imports.length - 1; i++) {
-        //if it's negative, so the deliberations are greater and expenses were within budget 
-        if (imports[i].indexOf("-") >= 0) {
-            style = "cellRed";
-        } else {
-            style = "cellGreen";
-        }
-
-        styles.push(style);
-
-    }
-
-    return styles;
+    return;
 }
 
 /**
@@ -262,22 +321,34 @@ function initDocument() {
 /**
  * Se l'utente lo ha scelto, aggiunge una nuova colonna per il preventivo al file
  */
-function addBudgetColumn() {
+function addBudgetColumn_columns() {
 
-    //column operation
-    let column = {};
-    column.operation = {};
-    column.operation.name = "add";
+    let userParam = initParam();
+    let savedParam = Banana.document.getScriptSettings();
+    if (savedParam.length > 0) {
+        userParam = JSON.parse(savedParam);
+        userParam = verifyParam(userParam);
+    }
+    var columns = [];
+    for (var i = 0; i <= userParam.new_budget_columns - 1; i++) {
+        //column operation
+        let column = {};
+        column.operation = {};
+        column.operation.name = "add";
 
-    //column name Xml
-    column.nameXml = "Preventivo01"
+        //column name Xml
+        column.nameXml = "Preventivo" + i;
 
-    //column Header
-    column.header1 = "Preventivo01"
+        //column Header
+        column.header1 = "Preventivo" + i;
 
-    let columns = [];
-    columns.push(column);
+        columns.push(column);
+    }
 
+    return columns
+}
+
+function addBudgetColumn_dataUnits(columns) {
 
     //data Units
     let dataUnitsCategories = {};
@@ -286,9 +357,9 @@ function addBudgetColumn() {
     dataUnitsCategories.nid = "100";
 
     dataUnitsCategories.data = {};
-    dataUnitsCategories.data.viewLists = {};
-    dataUnitsCategories.data.viewLists.views = [];
-    dataUnitsCategories.data.viewLists.views.push({ "columns": columns, "Id": "Base", "nameXml": "Base", "nid": "1" });
+    dataUnitsCategories.data.viewList = {};
+    dataUnitsCategories.data.viewList.views = [];
+    dataUnitsCategories.data.viewList.views.push({ "columns": columns, "id": "Base", "nameXml": "Base", "nid": "1" });
 
     //document
     let jsonDoc = initDocument();
@@ -298,11 +369,97 @@ function addBudgetColumn() {
 
 }
 
+function initParam() {
+
+    var userParam = {};
+
+    userParam.version = "v1.0";
+    userParam.new_budget_columns = '0';
+    userParam.copy_previous_data = 'true';
+
+    return userParam;
+
+}
+
+function verifyParam(userParam) {
+
+    if (!userParam.new_budget_columns) {
+        userParam.new_budget_columns = 0;
+    }
+
+    if (userParam.new_budget_columns > 3) {
+        userParam.new_budget_columns = 3;
+    }
+
+
+    if (!userParam.copy_previous_data) {
+        userParam.copy_previous_data = 'true';
+    }
+
+    return userParam;
+
+}
+
+function convertParam(userParam) {
+
+    var convertedParam = {};
+    convertedParam.version = '1.0';
+    /* array of script's parameters */
+    convertedParam.data = [];
+
+    var currentParam = {};
+    currentParam.name = 'new_budget_columns';
+    currentParam.title = 'Nuove colonne Preventivo';
+    currentParam.type = 'string';
+    currentParam.value = userParam.new_budget_columns ? userParam.new_budget_columns : '';
+    currentParam.editable = true;
+    currentParam.readValue = function() {
+        userParam.new_budget_columns = this.value;
+    }
+    convertedParam.data.push(currentParam);
+
+    var currentParam = {};
+    currentParam.name = 'copy_previous_data';
+    currentParam.title = 'Copia i valori dal preventivo precedente';
+    currentParam.type = 'string';
+    currentParam.value = userParam.copy_previous_data ? userParam.copy_previous_data : '';
+    currentParam.editable = true;
+    currentParam.readValue = function() {
+        userParam.copy_previous_data = this.value;
+    }
+    convertedParam.data.push(currentParam);
+
+    return convertedParam;
+}
+
+function settingsDialog() {
+    var userParam = initParam();
+    var savedParam = Banana.document.getScriptSettings();
+    if (savedParam.length > 0) {
+        userParam = JSON.parse(savedParam);
+    }
+    userParam = verifyParam(userParam);
+
+
+    var dialogTitle = 'Settings';
+    var pageAnchor = 'dlgSettings';
+    var convertedParam = convertParam(userParam);
+    if (!Banana.Ui.openPropertyEditor(dialogTitle, convertedParam, pageAnchor))
+        return false;
+    for (var i = 0; i < convertedParam.data.length; i++) {
+        // Read values to dialogparam (through the readValue function)
+        if (typeof(convertedParam.data[i].readValue) == "function")
+            convertedParam.data[i].readValue();
+    }
+
+    var paramToString = JSON.stringify(userParam);
+    Banana.document.setScriptSettings(paramToString);
+}
+
 
 function exec(inData, options) {
 
     //verificare la licenza
-
 
     if (!Banana.document)
         return "@Cancel";
@@ -310,14 +467,24 @@ function exec(inData, options) {
     var stylesheet = getReportStyle();
     Banana.Report.preview(report, stylesheet);
 
-    var documentChange = { "format": "documentChange", "error": "", "data": [] };
+    let userParam = initParam();
+    let savedParam = Banana.document.getScriptSettings();
+    if (savedParam.length > 0) {
+        userParam = JSON.parse(savedParam);
+        userParam = verifyParam(userParam);
+    }
+    if (userParam.new_budget_columns > 0) {
 
-    //Appends a budget column to the categories table
-    let jsonDoc = addBudgetColumn();
-    documentChange["data"].push(jsonDoc);
+        var documentChange = { "format": "documentChange", "error": "", "data": [] };
 
-    Banana.console.debug(JSON.stringify(documentChange));
+        //Appends a budget column to the categories table
+        let jsonDoc_columns = addBudgetColumn_columns();
+        let jsonDoc = addBudgetColumn_dataUnits(jsonDoc_columns);
+        documentChange["data"].push(jsonDoc);
 
-    return documentChange;
+        // Banana.console.debug(JSON.stringify(documentChange));
+
+        return documentChange;
+    }
 
 }
