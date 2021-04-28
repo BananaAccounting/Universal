@@ -42,6 +42,11 @@ Styles for the amounts
     text-align: right;
 }
 
+.styleTotalAmount {
+    text-align: right;
+    font-weight: bold;
+}
+
 
 /*************************************
 Styles for the texts
@@ -62,14 +67,9 @@ Styles for the texts
     text-align: center;
 }
 
-.styleTablesBasNames {
-    background-color: #d2f7e2;
+.styleTablesTotalsDescriptions {
     text-align: left;
-}
-
-.styleTablesBasResults {
-    background-color: #f3fdff;
-    text-align: left;
+    font-weight: bold;
 }
 
 
@@ -77,20 +77,23 @@ Styles for the texts
 Styles for the coloured cells
 ******************************************/
 
+
+/*Provare a sistemare con ereditarietà*/
+
 .symbolRed {
     color: #ec4123;
     text-align: right;
-    font-size: 15px;
+    font-size: 12px;
 }
 
 .symbolGreen {
     color: #71FA4C;
     text-align: right;
-    font-size: 15px;
+    font-size: 12px;
 }
 
 .symbolOrange {
     color: #fad14c;
     text-align: right;
-    font-size: 15px;
+    font-size: 12px;
 }
