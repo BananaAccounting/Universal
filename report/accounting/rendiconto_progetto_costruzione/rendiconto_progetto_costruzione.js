@@ -13,8 +13,8 @@
 // limitations under the License.
 //
 // @api = 1.1
-// @id = home_construction_fund_management_report.js
-// @description = Home construction fund management report
+// @id = rendiconto_progetto_costruzione.js
+// @description = Rendiconto progetto costruzione
 // @task = app.command
 // @doctype = 110.*
 // @publisher = Banana.ch SA
@@ -33,7 +33,7 @@ function addTableFundManagement(report) {
 
     var tableFundManagement = report.addTable('myTableFundManagement');
     tableFundManagement.setStyleAttributes("width:100%;");
-    tableFundManagement.getCaption().addText(qsTr("GESTIONE FONDI COSTRUZIONE"), "styleTitles");
+    tableFundManagement.getCaption().addText(qsTr("Rendiconto per Categoria"), "styleTitles");
     tableFundManagement.addColumn("Categoria").setStyleAttributes("width:20%");
     tableFundManagement.addColumn("Preventivo di Massima").setStyleAttributes("width:15%");
     tableFundManagement.addColumn("Delibere").setStyleAttributes("width:10%");
@@ -55,7 +55,7 @@ function addTableFundManagement(report) {
 
 function printReport() {
 
-    var report = Banana.Report.newReport("Gestione delle");
+    var report = Banana.Report.newReport("Rendiconto progetto costruzione");
     addHeader(report);
     addFooter(report);
 
@@ -102,7 +102,7 @@ function getReportStyle() {
     //CREATE THE STYLE FOR THE REPORT
     //create the style
     var textCSS = "";
-    var file = Banana.IO.getLocalFile("file:script/home_construction_fund_management_report.css");
+    var file = Banana.IO.getLocalFile("file:script/rendiconto_progetto_costruzione.css");
     var fileContent = file.read();
     if (!file.errorString) {
         Banana.IO.openPath(fileContent);
@@ -211,8 +211,9 @@ function loadCategoriesTableRows(group) {
             categories.category = tRow.value("Category");
             categories.expenses = tRow.value("Expenses");
             categories.deliberations = tRow.value("Budget");
+            categories.deliberations = Banana.SDecimal.abs(categories.deliberations);
             categories.deliberations_expenses = getExpAndDelibDifference(categories.expenses, categories.deliberations);
-            categories.budget = tRow.value("PreventivoGenerale");
+            categories.budget = tRow.value("PreventivoMassima");
             categories.deliberations_budget = getDelibAndBudgDifference(categories.deliberations, categories.budget);
             categories.gr = group;
             categories_table_rows.push(categories);
@@ -235,6 +236,7 @@ function loadCategoriesTableTotals(group) {
             categories_group_total.description = tRow.value("Description");
             categories_group_total.total_expenses = tRow.value("Expenses");
             categories_group_total.total_deliberations = tRow.value("Budget");
+            categories_group_total.total_deliberations = Banana.SDecimal.abs(categories_group_total.total_deliberations);
             categories_group_total.total_deliberations_expenses = getExpAndDelibDifference(categories_group_total.total_expenses, categories_group_total.total_deliberations);
             categories_group_total.total_budget = tRow.value("PreventivoGenerale");
             categories_group_total.total_deliberations_budget = getDelibAndBudgDifference(categories_group_total.total_deliberations, categories_group_total.total_budget);

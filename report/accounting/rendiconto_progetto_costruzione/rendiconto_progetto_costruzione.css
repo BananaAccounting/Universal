@@ -54,7 +54,7 @@ Styles for the texts
 
 .styleTitles {
     font-weight: bold;
-    color: #354793;
+    color: #0f0f0f;
     font-size: 11pt;
     padding-top: 5px;
     padding-bottom: 5px;
@@ -62,7 +62,7 @@ Styles for the texts
 
 .styleTablesHeaderText {
     color: #e4e7e5;
-    background-color: #4a85df;
+    background-color: #18c552;
     font-weight: bold;
     text-align: center;
 }

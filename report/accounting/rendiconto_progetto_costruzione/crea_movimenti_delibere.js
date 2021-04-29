@@ -106,7 +106,7 @@ function loadBudgetColumnValues() {
         let categories = {};
         var tRow = table.row(i);
 
-        categories.budget = tRow.value("PreventivoGenerale");
+        categories.budget = tRow.value("PreventivoMassima");
         categories.description = tRow.value("Description");
         categories.category = tRow.value("Category");
 
