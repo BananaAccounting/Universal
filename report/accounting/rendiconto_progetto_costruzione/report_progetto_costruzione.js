@@ -13,8 +13,8 @@
 // limitations under the License.
 //
 // @api = 1.1
-// @id = rendiconto_progetto_costruzione.js
-// @description = Rendiconto progetto costruzione
+// @id = report_progetto_costruzione.js
+// @description = Report progetto costruzione
 // @task = app.command
 // @doctype = 110.*
 // @publisher = Banana.ch SA
@@ -28,29 +28,54 @@
  * @param {*} options 
  */
 
-function addTableFundManagement(report) {
+function addTableCategoriesManagement(report) {
 
 
-    var tableFundManagement = report.addTable('myTableFundManagement');
-    tableFundManagement.setStyleAttributes("width:100%;");
-    tableFundManagement.getCaption().addText(qsTr("Rendiconto per Categoria"), "styleTitles");
-    tableFundManagement.addColumn("Categoria").setStyleAttributes("width:20%");
-    tableFundManagement.addColumn("Preventivo di Massima").setStyleAttributes("width:15%");
-    tableFundManagement.addColumn("Delibere").setStyleAttributes("width:10%");
-    tableFundManagement.addColumn("Uscite Effettive").setStyleAttributes("width:10%");
-    tableFundManagement.addColumn("Delibere-Uscite").setStyleAttributes("width:15%");
-    tableFundManagement.addColumn("Delibere-Preventivo di massima").setStyleAttributes("width:15%");
+    var tableCategoriesManagement = report.addTable('myTableCategoriesManagement');
+    tableCategoriesManagement.setStyleAttributes("width:100%;");
+    tableCategoriesManagement.getCaption().addText(qsTr("Rendiconto per Categoria"), "styleTablesTitles");
+    tableCategoriesManagement.addColumn("Categoria").setStyleAttributes("width:20%");
+    tableCategoriesManagement.addColumn("Completamento").setStyleAttributes("width:15%");
+    tableCategoriesManagement.addColumn("Preventivo di Massima").setStyleAttributes("width:15%");
+    tableCategoriesManagement.addColumn("Delibere").setStyleAttributes("width:10%");
+    tableCategoriesManagement.addColumn("Uscite Effettive").setStyleAttributes("width:10%");
+    tableCategoriesManagement.addColumn("Delibere-Uscite").setStyleAttributes("width:15%");
+    tableCategoriesManagement.addColumn("Delibere-Preventivo di massima").setStyleAttributes("width:15%");
 
-    var tableHeader = tableFundManagement.getHeader();
+    var tableHeader = tableCategoriesManagement.getHeader();
     var tableRow = tableHeader.addRow();
     tableRow.addCell("Categoria", "styleTablesHeaderText");
+    tableRow.addCell("Completamento", "styleTablesHeaderText");
     tableRow.addCell("Preventivo di Massima", "styleTablesHeaderText");
     tableRow.addCell("Delibere", "styleTablesHeaderText");
     tableRow.addCell("Uscite Effettive", "styleTablesHeaderText");
     tableRow.addCell("Delibere-Uscite", "styleTablesHeaderText");
     tableRow.addCell("Delibere-Preventivo di massima", "styleTablesHeaderText");
 
-    return tableFundManagement;
+    return tableCategoriesManagement;
+}
+
+function addTableCompaniesManagement(report) {
+
+
+    var tableCompaniesManagement = report.addTable('myTableCompaniesManagement');
+    tableCompaniesManagement.setStyleAttributes("width:100%;");
+    tableCompaniesManagement.getCaption().addText(qsTr("Rendiconto per Impresa"), "styleTablesTitles");
+    tableCompaniesManagement.addColumn("Impresa").setStyleAttributes("width:20%");
+    tableCompaniesManagement.addColumn("Completamento").setStyleAttributes("width:15%");
+    tableCompaniesManagement.addColumn("Importo deliberato").setStyleAttributes("width:20%");
+    tableCompaniesManagement.addColumn("Uscite Effettive").setStyleAttributes("width:20%");
+    tableCompaniesManagement.addColumn("Delibere-uscite").setStyleAttributes("width:20%");
+
+    var tableHeader = tableCompaniesManagement.getHeader();
+    var tableRow = tableHeader.addRow();
+    tableRow.addCell("Impresa", "styleTablesHeaderText");
+    tableRow.addCell("Completamento Attività", "styleTablesHeaderText");
+    tableRow.addCell("Delibere", "styleTablesHeaderText");
+    tableRow.addCell("Uscite Effettive", "styleTablesHeaderText");
+    tableRow.addCell("Delibere-Uscite", "styleTablesHeaderText");
+
+    return tableCompaniesManagement;
 }
 
 function printReport() {
@@ -59,27 +84,33 @@ function printReport() {
     addHeader(report);
     addFooter(report);
 
-    var tableFundManagement = addTableFundManagement(report);
+    //add title and date
+    var currentDate = new Date();
+    currentDate = Banana.Converter.toLocaleDateFormat(currentDate);
+    report.addParagraph("Rendiconto progetto costruzione " + currentDate, "styleTitle");
 
-    let group_list = loadGroups();
+    var tableCategoriesManagement = addTableCategoriesManagement(report);
+
+    let group_list = loadGroups("Categories");
     for (var i = 0; i < group_list.length - 1; i++) {
         //inserisco i valori normali
-        let rows = loadCategoriesTableRows(group_list[i]);
-        for (var key in rows) {
-            let tableRow = tableFundManagement.addRow("styleTablRows");
-            tableRow.addCell(rows[key].category, 'styleTablRows');
-            tableRow.addCell(toLocaleAmountFormat(rows[key].budget), 'styleNormalAmount');
-            tableRow.addCell(toLocaleAmountFormat(rows[key].deliberations), 'styleNormalAmount');
-            tableRow.addCell(toLocaleAmountFormat(rows[key].expenses), 'styleNormalAmount');
-            cell = tableRow.addCell(toLocaleAmountFormat(rows[key].deliberations_expenses) + ' ', 'styleNormalAmount');
-            addSymbol(rows[key].deliberations_expenses, cell, false);
-            cell = tableRow.addCell(toLocaleAmountFormat(rows[key].deliberations_budget) + ' ', 'styleNormalAmount');
-            addSymbol(rows[key].deliberations_budget, cell, false);
+        let categories_rows = loadCategoriesTableRows(group_list[i]);
+        for (var key in categories_rows) {
+            let tableRow = tableCategoriesManagement.addRow("styleTablRows");
+            tableRow.addCell(categories_rows[key].category, 'styleTablRows');
+            tableRow.addCell(categories_rows[key].percentage_completion, 'stylepercentages');
+            tableRow.addCell(toLocaleAmountFormat(categories_rows[key].budget), 'styleNormalAmount');
+            tableRow.addCell(toLocaleAmountFormat(categories_rows[key].deliberations), 'styleNormalAmount');
+            tableRow.addCell(toLocaleAmountFormat(categories_rows[key].expenses), 'styleNormalAmount');
+            cell = tableRow.addCell(toLocaleAmountFormat(categories_rows[key].deliberations_expenses) + ' ', 'styleNormalAmount');
+            addSymbol(categories_rows[key].deliberations_expenses, cell, false);
+            cell = tableRow.addCell(toLocaleAmountFormat(categories_rows[key].deliberations_budget) + ' ', 'styleNormalAmount');
+            addSymbol(categories_rows[key].deliberations_budget, cell, false);
         }
         //inserisco i totali alla fine di ogni gruppo
         let totals = loadCategoriesTableTotals(group_list[i]);
         for (var key in totals) {
-            let tableRow = tableFundManagement.addRow("styleTablRows");
+            let tableRow = tableCategoriesManagement.addRow("table_row_total");
             tableRow.addCell(totals[key].description, 'styleTablesTotalsDescriptions');
             tableRow.addCell(toLocaleAmountFormat(totals[key].total_budget), 'styleTotalAmount');
             tableRow.addCell(toLocaleAmountFormat(totals[key].total_deliberations), 'styleTotalAmount');
@@ -93,6 +124,29 @@ function printReport() {
 
     }
 
+    report.addPageBreak()
+
+    var tableCompaniesManagement = addTableCompaniesManagement(report);
+    let account_rows = loadAccountsTableRows();
+    for (var key in account_rows) {
+        let tableRow = tableCompaniesManagement.addRow("styleTablRows");
+        tableRow.addCell(account_rows[key].account, 'styleTablRows');
+        tableRow.addCell(account_rows[key].percentage_completion, 'stylepercentages');
+        tableRow.addCell(toLocaleAmountFormat(account_rows[key].deliberations), 'styleNormalAmount');
+        tableRow.addCell(toLocaleAmountFormat(account_rows[key].expenses), 'styleNormalAmount');
+        cell = tableRow.addCell(toLocaleAmountFormat(account_rows[key].deliberations_expenses) + ' ', 'styleNormalAmount');
+        addSymbol(account_rows[key].deliberations_expenses, cell, true);
+
+    }
+    //inserisco i totali per le aziende
+    let companies_total = getCompaniesTotal(account_rows);
+    let tableRow = tableCompaniesManagement.addRow("table_row_total");
+    tableRow.addCell(companies_total.description, 'styleTablesTotalsDescriptions');
+    tableRow.addCell(toLocaleAmountFormat(companies_total.total_deliberations), 'styleTotalAmount');
+    tableRow.addCell(toLocaleAmountFormat(companies_total.total_expenses), 'styleTotalAmount');
+    cell = tableRow.addCell(toLocaleAmountFormat(companies_total.total_deliberations_expenses) + ' ', 'styleTotalAmount');
+    addSymbol(companies_total.total_deliberations_expenses, cell, true);
+
     return report;
 
 }
@@ -102,7 +156,7 @@ function getReportStyle() {
     //CREATE THE STYLE FOR THE REPORT
     //create the style
     var textCSS = "";
-    var file = Banana.IO.getLocalFile("file:script/rendiconto_progetto_costruzione.css");
+    var file = Banana.IO.getLocalFile("file:script/report_progetto_costruzione.css");
     var fileContent = file.read();
     if (!file.errorString) {
         Banana.IO.openPath(fileContent);
@@ -120,7 +174,7 @@ function getReportStyle() {
 
 
     //Create a table style adding the border
-    style = stylesheet.addStyle("tableFundManagement");
+    style = stylesheet.addStyle("tableCategoriesManagement");
 
     return stylesheet;
 }
@@ -131,7 +185,6 @@ function getReportStyle() {
  */
 function addHeader(report) {
     report.getHeader().addClass("header");
-
 }
 
 /**
@@ -141,7 +194,6 @@ function addHeader(report) {
 function addFooter(report) {
     var currentDate = new Date();
     report.getFooter().addClass("footer");
-    report.getFooter().addText(Banana.Converter.toLocaleDateFormat(currentDate));
 
 }
 
@@ -153,12 +205,12 @@ function toLocaleAmountFormat(value) {
     return Banana.Converter.toLocaleNumberFormat(value, dec, true);
 }
 
-function loadGroups() {
+function loadGroups(table) {
     var groupList = [];
     if (!Banana.document) {
         return groupList;
     }
-    var table = Banana.document.table("Categories");
+    var table = Banana.document.table(table);
     if (!table) {
         return groupList;
     }
@@ -181,25 +233,116 @@ function loadGroups() {
  * @param {*} importo 
  * @returns 
  */
-function loadCategoriesTable() {
+function loadTableData(table_name) {
 
-    var element_list = [];
     if (!Banana.document) {
-        return element_list;
+        return;
     }
 
-    var table = Banana.document.table("Categories");
+    var table = Banana.document.table(table_name);
     if (!table) {
-        return element_list;
+        return;
     }
 
     return table;
 }
 
+function loadTransactionsTableRows() {
+    let table = loadTableData("Transactions");
+    let columns_position = table.columnNames;
+    let transactions_table_rows = [];
+
+    for (var i = 0; i < table.rowCount; i++) {
+        let tRow = table.row(i);
+        /*recupero in un oggetto la percentuale di completamento e la categoria o la compagnia associata(sulla stessa riga) e la posizione delle due colonne
+        con questo metodo recupero tutti i valori.
+        */
+        let transactions = {};
+        transactions.completion_of_activities = tRow.value("CompletamentoAttivita");
+        transactions.categories = tRow.value("Category");
+        transactions.categories_column_position = columns_position.indexOf("Category")
+        transactions.companies = tRow.value("Cc1");
+        transactions.companies_column_position = columns_position.indexOf("Cc1");
+        transactions_table_rows.push(transactions);
+
+    }
+    return transactions_table_rows;
+}
+
+/**
+ * given the row of the records table, find the last recorded percentage of completion of a category or company
+ * @param {*} type category or company
+ */
+function getlastPerc(column) {
+    let transactions_table_rows = loadTransactionsTableRows()
+    let percentage_completion = "0%";
+    //RIVEDERE METODO E SETTARE LA POSIZIONE DI DELLA PERCENTUALE DA PRENDERE IN MODO DINAMICO
+    for (var row in transactions_table_rows) {
+        var valuelist = transactions_table_rows[row].completion_of_activities.split(";");
+        if (transactions_table_rows[row].categories == column || transactions_table_rows[row].companies == column) {
+            percentage_completion = valuelist[0];
+            if (percentage_completion == "")
+                percentage_completion = "0%";
+        }
+    }
+
+    return percentage_completion;
+}
+
+function getPercIndex() {
+
+}
+/**
+ * load the data of the companies (CC1) from the accounts table
+ */
+function loadAccountsTableRows() {
+    let table = loadTableData("Accounts");
+    let accounts_table_rows = [];
+
+    for (var i = 2; i < table.rowCount; i++) {
+        let tRow = table.row(i);
+        let company = tRow.value("Account");
+        //if it is a cost center (controllare con più centri di costo cosa succede)
+        if (company.substr(0, 1) === '.' || company.substr(0, 1) === ',' || company.substr(0, 1) === ';') {
+            let companies = {};
+            companies.account = tRow.value("Account");
+            //tolgo il punto iniziale dalla descrizione del conto
+            companies.account = companies.account.slice(1);
+            companies.percentage_completion = getlastPerc(companies.account);
+            companies.deliberations = tRow.value("Budget");
+            companies.deliberations = Banana.SDecimal.abs(companies.deliberations);
+            companies.expenses = tRow.value("Expenses");
+            companies.expenses = Banana.SDecimal.abs(companies.expenses);
+            companies.deliberations_expenses = getExpAndDelibDifference(companies.expenses, companies.deliberations);
+            accounts_table_rows.push(companies);
+
+        }
+    }
+    return accounts_table_rows;
+}
+
+function getCompaniesTotal(accounts_table_rows) {
+    let companies_total = {};
+    companies_total.description = "Totale Imprese";
+    companies_total.total_deliberations = "";
+    companies_total.total_expenses = "";
+    companies_total.total_deliberations_expenses = "";
+    //calcolo il totale delle delibere, uscite e la differenza
+    for (var key in accounts_table_rows) {
+        companies_total.total_deliberations = Banana.SDecimal.add(companies_total.total_deliberations, accounts_table_rows[key].deliberations);
+        companies_total.total_expenses = Banana.SDecimal.add(companies_total.total_expenses, accounts_table_rows[key].expenses);
+        companies_total.total_deliberations_expenses = Banana.SDecimal.add(companies_total.total_deliberations_expenses, accounts_table_rows[key].deliberations_expenses);
+    }
+
+
+    return companies_total;
+
+}
+
 
 
 function loadCategoriesTableRows(group) {
-    let table = loadCategoriesTable();
+    let table = loadTableData("Categories");
     let categories_table_rows = [];
 
     //mettere nella doc che le prime due rige vanno lasciate libere come da modello
@@ -209,11 +352,14 @@ function loadCategoriesTableRows(group) {
         if (gr === group) {
             let categories = {};
             categories.category = tRow.value("Category");
+            categories.percentage_completion = getlastPerc(categories.category);
             categories.expenses = tRow.value("Expenses");
+            categories.expenses = Banana.SDecimal.abs(categories.expenses);
             categories.deliberations = tRow.value("Budget");
             categories.deliberations = Banana.SDecimal.abs(categories.deliberations);
             categories.deliberations_expenses = getExpAndDelibDifference(categories.expenses, categories.deliberations);
             categories.budget = tRow.value("PreventivoMassima");
+            categories.budget = Banana.SDecimal.abs(categories.budget);
             categories.deliberations_budget = getDelibAndBudgDifference(categories.deliberations, categories.budget);
             categories.gr = group;
             categories_table_rows.push(categories);
@@ -225,7 +371,7 @@ function loadCategoriesTableRows(group) {
 }
 
 function loadCategoriesTableTotals(group) {
-    let table = loadCategoriesTable();
+    let table = loadTableData("Categories");
     let categories_table_totals = [];
 
     for (var i = 0; i < table.rowCount; i++) {

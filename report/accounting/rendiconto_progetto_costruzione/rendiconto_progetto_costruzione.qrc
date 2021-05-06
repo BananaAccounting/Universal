@@ -1,0 +1,8 @@
+<!DOCTYPE RCC><RCC version="1.0">
+ <qresource>
+    <file>report_progetto_costruzione.js</file>
+    <file>report_progetto_costruzione.css</file>
+    <file>rendiconto_progetto_costruzione.manifest.json</file>
+    <file>crea_movimenti_delibere.js</file>
+ </qresource>
+ </RCC>

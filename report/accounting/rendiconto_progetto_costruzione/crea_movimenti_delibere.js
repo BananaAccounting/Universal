@@ -65,7 +65,7 @@ function deliberationRowAppend() {
         row.fields["Description"] = categories_list[key].description;
         row.fields["Expenses"] = categories_list[key].budget;
         row.fields["Category"] = categories_list[key].category;
-        row.fields["Cc1"] = "Lavori non ancora Assegnati";
+        row.fields["Cc1"] = "Non assegnati";
 
         rows.push(row);
     }

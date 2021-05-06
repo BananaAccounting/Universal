@@ -20,7 +20,15 @@ table {
 Styles for the tables
 *************************************/
 
-table.myTableFundManagement td {
+table.myTableCategoriesManagement td {
+    border-style: solid;
+    border-color: rgb(0, 0, 0);
+    width: auto;
+    padding-top: 1px;
+    padding-bottom: 1px;
+}
+
+table.myTableCompaniesManagement td {
     border-style: solid;
     border-color: rgb(0, 0, 0);
     width: auto;
@@ -31,6 +39,10 @@ table.myTableFundManagement td {
 .table_header {
     font-weight: bold;
     font-size: 12;
+}
+
+.table_row_total {
+    background-color: lavender;
 }
 
 
@@ -52,7 +64,7 @@ Styles for the amounts
 Styles for the texts
 *************************************/
 
-.styleTitles {
+.styleTitle {
     font-weight: bold;
     color: #0f0f0f;
     font-size: 11pt;
@@ -60,9 +72,16 @@ Styles for the texts
     padding-bottom: 5px;
 }
 
+.styleTablesTitles {
+    color: #0f0f0f;
+    font-size: 10pt;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
 .styleTablesHeaderText {
     color: #e4e7e5;
-    background-color: #18c552;
+    background-color: #1863c5;
     font-weight: bold;
     text-align: center;
 }
@@ -70,6 +89,10 @@ Styles for the texts
 .styleTablesTotalsDescriptions {
     text-align: left;
     font-weight: bold;
+}
+
+.stylepercentages {
+    text-align: center;
 }
 
 
