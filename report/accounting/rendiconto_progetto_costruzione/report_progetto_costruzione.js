@@ -39,7 +39,7 @@ function addTableCategoriesManagement(report) {
     tableCategoriesManagement.addColumn("Preventivo di Massima").setStyleAttributes("width:15%");
     tableCategoriesManagement.addColumn("Delibere").setStyleAttributes("width:10%");
     tableCategoriesManagement.addColumn("Uscite Effettive").setStyleAttributes("width:10%");
-    tableCategoriesManagement.addColumn("Delibere-Uscite").setStyleAttributes("width:15%");
+    tableCategoriesManagement.addColumn("Uscite-Delibere").setStyleAttributes("width:15%");
     tableCategoriesManagement.addColumn("Delibere-Preventivo di massima").setStyleAttributes("width:15%");
 
     var tableHeader = tableCategoriesManagement.getHeader();
@@ -49,7 +49,7 @@ function addTableCategoriesManagement(report) {
     tableRow.addCell("Preventivo di Massima", "styleTablesHeaderText");
     tableRow.addCell("Delibere", "styleTablesHeaderText");
     tableRow.addCell("Uscite Effettive", "styleTablesHeaderText");
-    tableRow.addCell("Delibere-Uscite", "styleTablesHeaderText");
+    tableRow.addCell("Uscite-Delibere", "styleTablesHeaderText");
     tableRow.addCell("Delibere-Preventivo di massima", "styleTablesHeaderText");
 
     return tableCategoriesManagement;
@@ -65,7 +65,7 @@ function addTableCompaniesManagement(report) {
     tableCompaniesManagement.addColumn("Completamento").setStyleAttributes("width:15%");
     tableCompaniesManagement.addColumn("Importo deliberato").setStyleAttributes("width:20%");
     tableCompaniesManagement.addColumn("Uscite Effettive").setStyleAttributes("width:20%");
-    tableCompaniesManagement.addColumn("Delibere-uscite").setStyleAttributes("width:20%");
+    tableCompaniesManagement.addColumn("Uscite-Delibere").setStyleAttributes("width:20%");
 
     var tableHeader = tableCompaniesManagement.getHeader();
     var tableRow = tableHeader.addRow();
@@ -73,7 +73,7 @@ function addTableCompaniesManagement(report) {
     tableRow.addCell("Completamento", "styleTablesHeaderText");
     tableRow.addCell("Delibere", "styleTablesHeaderText");
     tableRow.addCell("Uscite Effettive", "styleTablesHeaderText");
-    tableRow.addCell("Delibere-Uscite", "styleTablesHeaderText");
+    tableRow.addCell("Uscite-Delibere", "styleTablesHeaderText");
 
     return tableCompaniesManagement;
 }
@@ -369,7 +369,7 @@ function loadCategoriesData(group) {
             categories.deliberations = tRow.value("Budget");
             categories.deliberations = Banana.SDecimal.abs(categories.deliberations);
             categories.deliberations_expenses = getExpAndDelibDifference(categories.expenses, categories.deliberations);
-            categories.budget = tRow.value("PreventivoMassima");
+            categories.budget = tRow.value("EstimateBudget");
             categories.budget = Banana.SDecimal.abs(categories.budget);
             categories.deliberations_budget = getDelibAndBudgDifference(categories.deliberations, categories.budget);
             categories.gr = group;
@@ -395,7 +395,7 @@ function loadCategoriesDataTotals(group) {
             categories_group_total.total_deliberations = tRow.value("Budget");
             categories_group_total.total_deliberations = Banana.SDecimal.abs(categories_group_total.total_deliberations);
             categories_group_total.total_deliberations_expenses = getExpAndDelibDifference(categories_group_total.total_expenses, categories_group_total.total_deliberations);
-            categories_group_total.total_budget = tRow.value("PreventivoMassima");
+            categories_group_total.total_budget = tRow.value("EstimateBudget");
             categories_group_total.total_deliberations_budget = getDelibAndBudgDifference(categories_group_total.total_deliberations, categories_group_total.total_budget);
             categories_group_total.group_column = group;
             categories_table_totals.push(categories_group_total);
@@ -416,7 +416,7 @@ function getExpAndDelibDifference(expense, deliberation) {
         deliberation = Banana.SDecimal.abs(deliberation);
     }
 
-    result = Banana.SDecimal.subtract(deliberation, expense);
+    result = Banana.SDecimal.subtract(expense, deliberation);
 
     return result;
 
@@ -447,7 +447,7 @@ function getDelibAndBudgDifference(deliberation, budget) {
  * @param {*} cell the cell with the result
  * @returns 
  */
-function addSymbol(value, cell, total) {
+function addSymbol(value, cell) {
     //var rateOfGrowth = this.setRateOfGrowth(indexT1, indexT2);
     var symbol = '●';
     let symbolGreen = "symbolGreen";
@@ -456,9 +456,9 @@ function addSymbol(value, cell, total) {
 
 
     if (value > 0) {
-        cell.addText(symbol, symbolGreen);
-    } else if (value < 0) {
         cell.addText(symbol, symbolRed);
+    } else if (value < 0) {
+        cell.addText(symbol, symbolGreen);
     } else {
         cell.addText(symbol, symbolOrange);
     }

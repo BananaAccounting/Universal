@@ -106,14 +106,72 @@ function loadBudgetColumnValues() {
         let categories = {};
         var tRow = table.row(i);
 
-        categories.budget = tRow.value("PreventivoMassima");
-        categories.description = tRow.value("Description");
-        categories.category = tRow.value("Category");
+        if (tRow.value("Category")) {
+            categories.budget = tRow.value("EstimateBudget");
+            categories.description = tRow.value("Description");
+            categories.category = tRow.value("Category");
 
-        categories_list.push(categories);
+            let exists_in_budget = verifyIfDeliExists(categories);
+
+            if (!exists_in_budget) {
+                categories_list.push(categories);
+            }
+        }
 
     }
     return categories_list;
+}
+
+/**
+ * Verifica al momento della creazione delle righe delle delibere, che non ci sia già una riga di delibera uguale, (Aggiungere avviso per l'utente)
+ */
+function verifyIfDeliExists(new_row) {
+    let actual_rows = loadBudgetTableRows();
+    let exists_in_budget = false;
+
+    for (var row in actual_rows) {
+        /*Banana.console.debug("new row budget: " + new_row.budget);
+        Banana.console.debug("actual row bodget: " + actual_rows[row].budget);*/
+        if (new_row.budget === actual_rows[row].budget && new_row.category === actual_rows[row].category) {
+            exists_in_budget = true;
+        }
+    }
+
+
+    return exists_in_budget;
+
+}
+
+/**
+ * carica le righe presenti nella tabella Preventivo
+ */
+function loadBudgetTableRows() {
+    let budget_list = [];
+
+    if (!Banana.document) {
+        return budget_list;
+    }
+    var table = Banana.document.table("Budget");
+    if (!table) {
+        return budget_list;
+    }
+
+    for (var i = 0; i < table.rowCount; i++) {
+        let rows = {};
+        var tRow = table.row(i);
+
+        rows.budget = tRow.value("Expenses");
+        rows.description = tRow.value("Description");
+        rows.category = tRow.value("Category");
+
+        //Banana.console.debug(JSON.stringify(rows));
+
+        budget_list.push(rows);
+
+    }
+
+    return budget_list;
+
 }
 
 function exec(inData) {
