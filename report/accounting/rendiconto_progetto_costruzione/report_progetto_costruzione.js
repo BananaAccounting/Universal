@@ -45,7 +45,7 @@ function addTableCategoriesManagement(report) {
     var tableHeader = tableCategoriesManagement.getHeader();
     var tableRow = tableHeader.addRow();
     tableRow.addCell("Categoria", "styleTablesHeaderText");
-    tableRow.addCell("Completamento", "styleTablesHeaderText");
+    tableRow.addCell("Completamento %", "styleTablesHeaderText");
     tableRow.addCell("Preventivo di Massima", "styleTablesHeaderText");
     tableRow.addCell("Delibere", "styleTablesHeaderText");
     tableRow.addCell("Uscite Effettive", "styleTablesHeaderText");
@@ -62,7 +62,7 @@ function addTableCompaniesManagement(report) {
     tableCompaniesManagement.setStyleAttributes("width:100%;");
     tableCompaniesManagement.getCaption().addText(qsTr("Rendiconto per Impresa"), "styleTablesTitles");
     tableCompaniesManagement.addColumn("Impresa").setStyleAttributes("width:20%");
-    tableCompaniesManagement.addColumn("Completamento").setStyleAttributes("width:15%");
+    tableCompaniesManagement.addColumn("Completamento %").setStyleAttributes("width:15%");
     tableCompaniesManagement.addColumn("Importo deliberato").setStyleAttributes("width:20%");
     tableCompaniesManagement.addColumn("Uscite Effettive").setStyleAttributes("width:20%");
     tableCompaniesManagement.addColumn("Uscite-Delibere").setStyleAttributes("width:20%");
@@ -70,7 +70,7 @@ function addTableCompaniesManagement(report) {
     var tableHeader = tableCompaniesManagement.getHeader();
     var tableRow = tableHeader.addRow();
     tableRow.addCell("Impresa", "styleTablesHeaderText");
-    tableRow.addCell("Completamento", "styleTablesHeaderText");
+    tableRow.addCell("Completamento %", "styleTablesHeaderText");
     tableRow.addCell("Delibere", "styleTablesHeaderText");
     tableRow.addCell("Uscite Effettive", "styleTablesHeaderText");
     tableRow.addCell("Uscite-Delibere", "styleTablesHeaderText");
@@ -259,8 +259,7 @@ function loadTransactionsTableRows() {
         con questo metodo recupero tutti i valori.
         */
         let transactions = {};
-        transactions.completion_of_activities_category = tRow.value("CompletionActivityCategory");
-        transactions.completion_of_activities_company = tRow.value("CompletionActivityCompany");
+        transactions.completion_of_activities = tRow.value("CompletionActivity");
         transactions.categories = tRow.value("Category");
         transactions.companies = tRow.value("Cc1");
         transactions_table_rows.push(transactions);
@@ -275,13 +274,13 @@ function loadTransactionsTableRows() {
  */
 function getLastPerc_category(column) {
     let transactions_table_rows = loadTransactionsTableRows()
-    let percentage_completion = "0%";
+    let percentage_completion = "0.00";
 
     for (var row in transactions_table_rows) {
         if (transactions_table_rows[row].categories == column) {
-            percentage_completion = transactions_table_rows[row].completion_of_activities_category;
+            percentage_completion = transactions_table_rows[row].completion_of_activities;
             if (percentage_completion == "")
-                percentage_completion = "0%";
+                percentage_completion = "0.00";
         }
     }
 
@@ -290,13 +289,13 @@ function getLastPerc_category(column) {
 
 function getLastPerc_company(column) {
     let transactions_table_rows = loadTransactionsTableRows()
-    let percentage_completion = "0%";
+    let percentage_completion = "0.00";
 
     for (var row in transactions_table_rows) {
         if (transactions_table_rows[row].companies == column) {
-            percentage_completion = transactions_table_rows[row].completion_of_activities_company;
+            percentage_completion = transactions_table_rows[row].completion_of_activities;
             if (percentage_completion == "")
-                percentage_completion = "0%";
+                percentage_completion = "0.00";
         }
     }
 
