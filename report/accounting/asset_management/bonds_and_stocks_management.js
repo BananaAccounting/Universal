@@ -195,7 +195,7 @@ function addHeader(report) {
  * @param {object} report: the report created
  */
 function addFooter(report) {
-    var currentDate = new Date();
+    let currentDate = new Date();
     report.getFooter().addClass("footer");
     report.getFooter().addText(Banana.Converter.toLocaleDateFormat(currentDate));
 
@@ -206,7 +206,7 @@ function addFooter(report) {
  */
 
 function loadBasData() {
-    var bas_data = [];
+    let bas_data = [];
     let userParam = initParam();
     let savedParam = Banana.document.getScriptSettings();
     if (savedParam.length > 0) {
@@ -261,10 +261,10 @@ function getBasClosingCourses() {
  * the data is taken from the account card of each 'account' element
  */
 function loadCurrentCard(account) {
-    var account_data = [];
-    var qt_cum = ["0.0"];
+    let account_data = [];
+    let qt_cum = ["0.0"];
     //to calculate the profits on sales
-    var average_courses = [];
+    let average_courses = [];
     //inizializzare con val di default
     if (account) {
         account_journal = Banana.document.currentCard(account, '', '', null);
@@ -327,13 +327,13 @@ function toLocaleAmountFormat(value) {
         return "";
 
     //cambiare
-    var dec = 2
+    let dec = 2
     return Banana.Converter.toLocaleNumberFormat(value, dec, true);
 }
 
 function initParam() {
 
-    var userParam = {};
+    let userParam = {};
 
     userParam.version = "v1.0";
     userParam.bonds_and_stocks_accounts = '1400;1401';
