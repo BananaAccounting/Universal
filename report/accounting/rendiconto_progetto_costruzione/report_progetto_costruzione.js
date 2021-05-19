@@ -92,7 +92,7 @@ function printReport() {
     var tableCategoriesManagement = addTableCategoriesManagement(report);
 
     let group_list = loadGroups("Categories");
-    for (var i = 0; i < group_list.length - 1; i++) {
+    for (var i = 0; i < group_list.length; i++) {
         //inserisco i valori normali
         let categories_rows = loadCategoriesData(group_list[i]);
         for (var key in categories_rows) {
