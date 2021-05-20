@@ -33,6 +33,14 @@ style for the Report sections/principal objects
     .header_row_address {
         font-size: 10pt;
     }
+    
+    .footer_right {
+        text-align: right;
+    }
+    
+    .footer_left {
+        text-align: left;
+    }
     /***************************************************
 style for the tables
 ****************************************************/

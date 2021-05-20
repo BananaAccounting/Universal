@@ -18,7 +18,7 @@
 // @task = app.command
 // @doctype = 100.*
 // @publisher = Banana.ch SA
-// @pubdate = 2021-04-07
+// @pubdate = 2021-04-20
 // @inputdatasource = none
 // @timeout = -1
 
@@ -266,7 +266,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
     generateHeaderColumns(tableRow) {
         for (var i = this.data.length - 1; i >= 0; i--) {
-            var year = this.data[i].period.StartDate;
+            var year = this.data[i].period.EndDate;
             var elementType = this.data[i].period.Type;
             if (elementType === "Y") {
                 year = year.substr(0, 4);
@@ -396,10 +396,11 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
      * @Param {object} report: the report created
      */
     addFooter(report) {
-        var date = new Date();
-        var footer = report.getFooter();
-        var testoData = footer.addParagraph(Banana.Converter.toLocaleDateFormat(date), "header_text");
-        testoData.excludeFromTest();
+        let date = new Date();
+        let footer = report.getFooter();
+        footer.addParagraph(Banana.Converter.toLocaleDateFormat(date), "footer_left");
+        footer.addParagraph("", "footer_right").addFieldPageNr("footer right");
+        footer.excludeFromTest();
 
     }
 
@@ -592,6 +593,18 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         }
 
         /******************************************************************************************
+         * Add the Long term third capital plus Short term debt capital (Debt Capital)
+         * ***************************************************************************************/
+
+        tableRow = tableBalance.addRow("styleTablRows");
+        tableRow.addCell(texts.debtcapital, 'styleUnderGroupTitles');
+        if (this.dialogparam.acronymcolumn) {
+            tableRow.addCell(texts.debtcapital_acronym);
+        }
+        for (var i = this.data.length - 1; i >= 0; i--) {
+            tableRow.addCell(this.toLocaleAmountFormat(this.data[i].calculated_data.debtcapital), "styleMidTotalAmount");
+        }
+        /******************************************************************************************
          * Add the own capital to the balance table
          * ***************************************************************************************/
         for (var key in this.data[0].balance.oc) {
@@ -716,6 +729,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             tableRow.addCell(this.toLocaleAmountFormat(this.data[i].calculated_data.annualresult), "styleTotalAmount");
         }
 
+        report.addPageBreak();
+
+
 
         /******************************************************************************************
          * Add the control sums table (could be done better with a method)
@@ -726,7 +742,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             tableRow.addCell(texts.assets, "styleUnderGroupTitles", 4);
             for (var i = this.data.length - 1; i >= 0; i--) {
                 var tableRow = tableControlSums.addRow("styleTablRows");
-                var period = this.data[i].period.StartDate;
+                var period = this.data[i].period.EndDate;
                 var element_type = this.data[i].period.Type;
                 var year = period.substr(0, 4);
                 if (element_type === "Y") {
@@ -744,7 +760,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             tableRow.addCell(texts.liabilitiesandequity, "styleUnderGroupTitles", 4);
             for (var i = this.data.length - 1; i >= 0; i--) {
                 var tableRow = tableControlSums.addRow("styleTablRows");
-                var period = this.data[i].period.StartDate;
+                var period = this.data[i].period.EndDate;
                 var element_type = this.data[i].period.Type;
                 var year = period.substr(0, 4);
                 if (element_type === "Y") {
@@ -761,7 +777,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             tableRow.addCell(texts.profitandloss, "styleUnderGroupTitles", 4);
             for (var i = this.data.length - 1; i >= 0; i--) {
                 var tableRow = tableControlSums.addRow("styleTablRows");
-                var period = this.data[i].period.StartDate;
+                var period = this.data[i].period.EndDate;
                 var element_type = this.data[i].period.Type;
                 var year = period.substr(0, 4);
                 if (element_type === "Y") {
@@ -776,9 +792,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             if (this.controlsums_differences > 0) {
                 report.addParagraph(warning_msg.control_sums, "styleWarningParagraph");
             }
-        }
 
-        report.addPageBreak();
+            report.addPageBreak();
+        }
 
 
         /******************************************************************************************
@@ -1103,18 +1119,21 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             ratios = this.data[i].altman_index;
             tableRow.addCell(this.data[i].altman_index, this.altmanScoreType(this.data[i].altman_index));
         }
-        var tableRow = tableAltmanIndex.addRow("styleTablRows");
-        tableRow.addCell(texts.altmanformula, "styleCentralText", this.yearsColumnCount(yearcolumns));
-        var tableRow = tableAltmanIndex.addRow("styleTablRows");
-        tableRow.addCell("X1 = cuas / tota", "styleCentralText", this.yearsColumnCount(yearcolumns));
-        var tableRow = tableAltmanIndex.addRow("styleTablRows");
-        tableRow.addCell("X2 = reut / tota ", "styleCentralText", this.yearsColumnCount(yearcolumns));
-        var tableRow = tableAltmanIndex.addRow("styleTablRows");
-        tableRow.addCell("X3 = EBIT / tota ", "styleCentralText", this.yearsColumnCount(yearcolumns));
-        var tableRow = tableAltmanIndex.addRow("styleTablRows");
-        tableRow.addCell("X4 = pant / totp", "styleCentralText", this.yearsColumnCount(yearcolumns));
-        var tableRow = tableAltmanIndex.addRow("styleTablRows");
-        tableRow.addCell("X5 = sale / tota", "styleCentralText", this.yearsColumnCount(yearcolumns));
+        if (this.dialogparam.formulascolumn) {
+
+            var tableRow = tableAltmanIndex.addRow("styleTablRows");
+            tableRow.addCell(texts.altmanformula, "styleCentralText", this.yearsColumnCount(yearcolumns));
+            var tableRow = tableAltmanIndex.addRow("styleTablRows");
+            tableRow.addCell("X1 = cuas / tota", "styleCentralText", this.yearsColumnCount(yearcolumns));
+            var tableRow = tableAltmanIndex.addRow("styleTablRows");
+            tableRow.addCell("X2 = reut / tota ", "styleCentralText", this.yearsColumnCount(yearcolumns));
+            var tableRow = tableAltmanIndex.addRow("styleTablRows");
+            tableRow.addCell("X3 = EBIT / tota ", "styleCentralText", this.yearsColumnCount(yearcolumns));
+            var tableRow = tableAltmanIndex.addRow("styleTablRows");
+            tableRow.addCell("X4 = pant / totp", "styleCentralText", this.yearsColumnCount(yearcolumns));
+            var tableRow = tableAltmanIndex.addRow("styleTablRows");
+            tableRow.addCell("X5 = sale / tota", "styleCentralText", this.yearsColumnCount(yearcolumns));
+        }
 
         report.addParagraph(texts.altmanlowprob, "styleParagraphs");
         report.addParagraph(texts.altmanmediumprob, "styleParagraphs");
@@ -1529,7 +1548,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         texts.financialstatementanalysis = qsTr("Financial Statements Analysis and Ratios");
         texts.totalasset = qsTr('Total Assets');
         texts.assets = qsTr("Assets");
-        texts.debtcapital = qsTr("Debt Capital");
+        texts.debtcapital = qsTr("Total Debt Capital");
         texts.liabilitiesandequity = qsTr("Liabilities and Equity");
         texts.totalliabilitiesandequity = qsTr("Total Liabilities and Equity");
         texts.addedvalue = qsTr("= Added Value");
