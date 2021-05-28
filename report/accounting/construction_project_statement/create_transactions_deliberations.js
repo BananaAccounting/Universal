@@ -13,8 +13,8 @@
 // limitations under the License.
 //
 // @api = 1.1
-// @id = crea_movimenti_delibere.js
-// @description = Crea i movimenti delle delibere
+// @id = create_transactions_deliberations.js
+// @description = Create transactions deliberations 
 // @task = app.command
 // @doctype = 110.*
 // @publisher = Banana.ch SA
@@ -49,8 +49,6 @@ function deliberationRowAppend() {
     //rows
     let rows = [];
     let categories_list = loadBudgetColumnValues();
-    let sequence = 1.0;
-    let sequence_incr = 0.1;
 
     for (var key in categories_list) {
 
@@ -65,7 +63,7 @@ function deliberationRowAppend() {
         row.fields["Description"] = categories_list[key].description;
         row.fields["Expenses"] = categories_list[key].budget;
         row.fields["Category"] = categories_list[key].category;
-        row.fields["Cc1"] = "Non assegnati";
+        row.fields["Cc1"] = "Not allocated ";
 
         rows.push(row);
     }

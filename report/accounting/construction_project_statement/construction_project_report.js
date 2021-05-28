@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-// @api = 1.1
-// @id = report_progetto_costruzione.js
-// @description = Report progetto costruzione
+// @api = 1.0
+// @id = construction_project_report.js
+// @description = Construction Project Report
 // @task = app.command
 // @doctype = 110.*
 // @publisher = Banana.ch SA
-// @pubdate = 2021-04-23
+// @pubdate = 2021-05-28
 // @inputdatasource = none
 // @timeout = -1
 
@@ -31,6 +31,7 @@
 function addTableCategoriesManagement(report) {
 
     let userParam = initParam();
+    let texts = initTexts();
     let savedParam = Banana.document.getScriptSettings();
     if (savedParam.length > 0) {
         userParam = JSON.parse(savedParam);
@@ -39,33 +40,27 @@ function addTableCategoriesManagement(report) {
 
     var tableCategoriesManagement = report.addTable('myTableCategoriesManagement');
     tableCategoriesManagement.setStyleAttributes("width:100%;");
-    tableCategoriesManagement.getCaption().addText(qsTr("Rendiconto per Categoria"), "styleTablesTitles");
-    tableCategoriesManagement.addColumn("Categoria").setStyleAttributes("width:20%");
-    tableCategoriesManagement.addColumn("Completamento").setStyleAttributes("width:15%");
-    tableCategoriesManagement.addColumn("Preventivo di Massima").setStyleAttributes("width:15%");
-    tableCategoriesManagement.addColumn("Delibere").setStyleAttributes("width:10%");
-    tableCategoriesManagement.addColumn("Delibere-Preventivo di massima").setStyleAttributes("width:15%");
-    tableCategoriesManagement.addColumn("Uscite Effettive").setStyleAttributes("width:10%");
-    tableCategoriesManagement.addColumn("Uscite-Preventivo").setStyleAttributes("width:15%");
-    tableCategoriesManagement.addColumn("Uscite-Delibere").setStyleAttributes("width:15%");
+    tableCategoriesManagement.getCaption().addText(texts.statement_byCategory, "styleTablesTitles");
+    tableCategoriesManagement.addColumn("Category").setStyleAttributes("width:20%");
+    setColumnsWidthDinamically(tableCategoriesManagement, "category");
 
     var tableHeader = tableCategoriesManagement.getHeader();
     var tableRow = tableHeader.addRow();
-    tableRow.addCell("Categoria", "styleTablesHeaderText");
+    tableRow.addCell(texts.category, "styleTablesHeaderText");
     if (userParam.category.completion_column)
-        tableRow.addCell("Completamento %", "styleTablesHeaderText");
+        tableRow.addCell(texts.progress_perc, "styleTablesHeaderText");
     if (userParam.category.budget_column)
-        tableRow.addCell("Preventivo di Massima", "styleTablesHeaderText");
+        tableRow.addCell(texts.outline_budget, "styleTablesHeaderText");
     if (userParam.category.deliberations_column)
-        tableRow.addCell("Delibere", "styleTablesHeaderText");
+        tableRow.addCell(texts.deliberations, "styleTablesHeaderText");
     if (userParam.category.deliberations_budget_column)
-        tableRow.addCell("Delibere-Preventivo di massima", "styleTablesHeaderText");
+        tableRow.addCell(texts.delib_outBudget_difference, "styleTablesHeaderText");
     if (userParam.category.expenses_column)
-        tableRow.addCell("Uscite Effettive", "styleTablesHeaderText");
+        tableRow.addCell(texts.actual_expenses, "styleTablesHeaderText");
     if (userParam.category.expenses_budget_column)
-        tableRow.addCell("Uscite-Preventivo", "styleTablesHeaderText");
+        tableRow.addCell(texts.exp_outBudget_difference, "styleTablesHeaderText");
     if (userParam.category.expenses_deliberations_column)
-        tableRow.addCell("Uscite-Delibere", "styleTablesHeaderText");
+        tableRow.addCell(texts.exp_delib_difference, "styleTablesHeaderText");
 
     return tableCategoriesManagement;
 }
@@ -73,6 +68,7 @@ function addTableCategoriesManagement(report) {
 function addTableCompaniesManagement(report) {
 
     let userParam = initParam();
+    let texts = initTexts();
     let savedParam = Banana.document.getScriptSettings();
     if (savedParam.length > 0) {
         userParam = JSON.parse(savedParam);
@@ -80,31 +76,76 @@ function addTableCompaniesManagement(report) {
     }
     var tableCompaniesManagement = report.addTable('myTableCompaniesManagement');
     tableCompaniesManagement.setStyleAttributes("width:100%;");
-    tableCompaniesManagement.getCaption().addText(qsTr("Rendiconto per Impresa"), "styleTablesTitles");
-    tableCompaniesManagement.addColumn("Impresa").setStyleAttributes("width:20%");
-    tableCompaniesManagement.addColumn("Completamento %").setStyleAttributes("width:15%");
-    tableCompaniesManagement.addColumn("Importo deliberato").setStyleAttributes("width:20%");
-    tableCompaniesManagement.addColumn("Uscite Effettive").setStyleAttributes("width:20%");
-    tableCompaniesManagement.addColumn("Uscite-Delibere").setStyleAttributes("width:20%");
+    tableCompaniesManagement.getCaption().addText(texts.statement_byCompany, "styleTablesTitles");
+    tableCompaniesManagement.addColumn("Company").setStyleAttributes("width:20%");
+    setColumnsWidthDinamically(tableCompaniesManagement, "company");
 
     var tableHeader = tableCompaniesManagement.getHeader();
     var tableRow = tableHeader.addRow();
-    tableRow.addCell("Impresa", "styleTablesHeaderText");
+    tableRow.addCell(texts.company, "styleTablesHeaderText");
     if (userParam.company.completion_column)
-        tableRow.addCell("Completamento %", "styleTablesHeaderText");
+        tableRow.addCell(texts.progress_perc, "styleTablesHeaderText");
     if (userParam.company.deliberations_column)
-        tableRow.addCell("Delibere", "styleTablesHeaderText");
+        tableRow.addCell(texts.deliberations, "styleTablesHeaderText");
     if (userParam.company.expenses_column)
-        tableRow.addCell("Uscite Effettive", "styleTablesHeaderText");
+        tableRow.addCell(texts.actual_expenses, "styleTablesHeaderText");
     if (userParam.company.expenses_deliberations_column)
-        tableRow.addCell("Uscite-Delibere", "styleTablesHeaderText");
+        tableRow.addCell(texts.exp_delib_difference, "styleTablesHeaderText");
 
     return tableCompaniesManagement;
 }
 
+/**
+ * 
+ * @param {*} table 
+ * @param {*} table_type 
+ */
+function setColumnsWidthDinamically(table, table_type) {
+    let width = 80;
+    let nr_columns = getNumbersOfColumns(table_type);
+    if (nr_columns > 0) {
+        width = width / parseInt(nr_columns);
+    }
+    for (var i = 0; i < nr_columns; i++) {
+        table.addColumn("column").setStyleAttributes("width:" + width.toString() + "%");
+    }
+
+}
+/**
+ * 
+ * @returns the number of columns that the user has included
+ */
+function getNumbersOfColumns(table_type) {
+    let nr_columns = 0;
+    let userParam = initParam();
+    let savedParam = Banana.document.getScriptSettings();
+    if (savedParam.length > 0) {
+        userParam = JSON.parse(savedParam);
+        userParam = verifyParam(userParam);
+    }
+    let obj = {};
+    switch (table_type) {
+        case "category":
+            obj = userParam.category;
+            break;
+        case "company":
+            obj = userParam.company;
+            break;
+        default:
+            obj = {};
+    }
+    for (var key in obj) {
+        // Banana.console.debug(JSON.stringify(obj[key]));
+        if (obj[key] == true)
+            nr_columns++;
+    }
+
+    return nr_columns;
+}
+
 function printReport() {
 
-    var report = Banana.Report.newReport("Rendiconto progetto costruzione");
+    var report = Banana.Report.newReport("Construction Project Report");
     addHeader(report);
     addFooter(report);
 
@@ -114,11 +155,6 @@ function printReport() {
         userParam = JSON.parse(savedParam);
         userParam = verifyParam(userParam);
     }
-
-    //add title and date
-    var currentDate = new Date();
-    currentDate = Banana.Converter.toLocaleDateFormat(currentDate);
-    report.addParagraph("Rendiconto progetto costruzione " + currentDate, "styleTitle");
 
     var tableCategoriesManagement = addTableCategoriesManagement(report);
 
@@ -223,7 +259,7 @@ function getReportStyle() {
     //CREATE THE STYLE FOR THE REPORT
     //create the style
     var textCSS = "";
-    var file = Banana.IO.getLocalFile("file:script/report_progetto_costruzione.css");
+    var file = Banana.IO.getLocalFile("file:script/construction_project_report.css");
     var fileContent = file.read();
     if (!file.errorString) {
         Banana.IO.openPath(fileContent);
@@ -246,12 +282,71 @@ function getReportStyle() {
     return stylesheet;
 }
 
+function getDocumentInfo() {
+    let documentInfo = {};
+    documentInfo.header_left = "";
+    documentInfo.header_right = "";
+    documentInfo.opening_date = "";
+    documentInfo.closing_date = "";
+
+    if (Banana.document) {
+        documentInfo.header_left = Banana.document.info("Base", "HeaderLeft");
+        documentInfo.header_right = Banana.document.info("Base", "HeaderRight");
+        documentInfo.opening_date = Banana.document.info("AccountingDataBase", "OpeningDate");
+        documentInfo.closing_date = Banana.document.info("AccountingDataBase", "ClosureDate");
+    }
+
+    return documentInfo
+}
+
+function initTexts() {
+
+    var texts = {};
+
+    //report texts
+    texts.category = qsTr("Category");
+    texts.categories = qsTr("Categories");
+    texts.company = qsTr("Company");
+    texts.companies = qsTr("Companies");
+    texts.progress_perc = qsTr("Progress %");
+    texts.outline_budget = qsTr("Outiline Budget");
+    texts.deliberations = qsTr("Deliberations");
+    texts.delib_outBudget_difference = qsTr("Deliberations-Outiline Budget");
+    texts.actual_expenses = qsTr("Actual Expenses");
+    texts.exp_outBudget_difference = qsTr("Expenses-Outline Budget");
+    texts.exp_delib_difference = qsTr("Expenses-Deliberations");
+    texts.statement_byCategory = qsTr("Statement by Category");
+    texts.statement_byCompany = qsTr("Statement by Company");
+
+    //dialog texts
+    texts.completion_column = qsTr("Progress column");
+    texts.outline_budget_column = qsTr("Outline Budget column");
+    texts.deliberation_column = qsTr("Deliberations column");
+    texts.delib_outBudget_difference_column = qsTr("Deliberations and Outline Budget difference column");
+    texts.expenses_column = qsTr("Expenses column");
+    texts.exp_outBudget_difference_column = qsTr("Expenses and Outline Budget difference column");
+    texts.exp_delib_difference_column = qsTr("Expenses and Deliberations difference column");
+
+
+    return texts;
+
+}
+
 /**
  * 
  * @param {*} report 
  */
 function addHeader(report) {
-    report.getHeader().addClass("header");
+    let documentInfo = getDocumentInfo();
+    let header_paragraph = report.getHeader().addSection();
+    let header_left = documentInfo.header_left;
+    let header_right = documentInfo.header_right;
+    let opening_date = Banana.Converter.toLocaleDateFormat(documentInfo.opening_date);
+    let closing_date = Banana.Converter.toLocaleDateFormat(documentInfo.closing_date);
+    header_paragraph.addClass("header_text");
+    header_paragraph.addParagraph(header_left);
+    header_paragraph.addParagraph(header_right);
+    header_paragraph.addParagraph(opening_date + "-" + closing_date);
 }
 
 /**
@@ -259,8 +354,11 @@ function addHeader(report) {
  * @param {object} report: the report created
  */
 function addFooter(report) {
-    var currentDate = new Date();
-    report.getFooter().addClass("footer");
+    let currentDate = new Date();
+    let footer = report.getFooter();
+    footer.addClass("footer_text");
+    footer.addParagraph(Banana.Converter.toLocaleDateFormat(currentDate), "footer_left");
+    footer.excludeFromTest();
 
 }
 
@@ -576,7 +674,7 @@ function verifyParam(userParam) {
     }
 
     //verify company obj
-    if (!userParam.company.completion_column) {
+    if (!userParam.company) {
         userParam.company = defaultParam.company;
     }
 
@@ -589,13 +687,14 @@ function convertParam(userParam) {
     let convertedParam = {};
     convertedParam.version = '1.0';
     let defaultParam = initParam();
-    /* array of script's parameters */
+    let texts = initTexts()
+        /* array of script's parameters */
     convertedParam.data = [];
 
     //create the group of categories
     var currentParam = {};
     currentParam.name = 'Categories';
-    currentParam.title = 'Categories';
+    currentParam.title = texts.categories;
     currentParam.editable = false;
 
     convertedParam.data.push(currentParam);
@@ -603,7 +702,7 @@ function convertParam(userParam) {
     //create the group of companies
     var currentParam = {};
     currentParam.name = 'Companies';
-    currentParam.title = 'Companies';
+    currentParam.title = texts.companies;
     currentParam.editable = false;
 
     convertedParam.data.push(currentParam);
@@ -612,7 +711,7 @@ function convertParam(userParam) {
 
     var currentParam = {};
     currentParam.name = 'category_completion_column';
-    currentParam.title = 'Completion column';
+    currentParam.title = texts.completion_column;
     currentParam.type = 'bool';
     currentParam.value = userParam.category.completion_column ? userParam.category.completion_column : userParam.category.completion_column;
     currentParam.defaultvalue = defaultParam.category.completion_column;
@@ -626,7 +725,7 @@ function convertParam(userParam) {
 
     var currentParam = {};
     currentParam.name = 'category_budget_column';
-    currentParam.title = 'Budget column';
+    currentParam.title = texts.outline_budget_column;
     currentParam.type = 'bool';
     currentParam.value = userParam.category.budget_column ? userParam.category.budget_column : userParam.category.budget_column;
     currentParam.defaultvalue = defaultParam.category.budget_column;
@@ -641,7 +740,7 @@ function convertParam(userParam) {
 
     var currentParam = {};
     currentParam.name = 'category_deliberations_column';
-    currentParam.title = 'Deliberation column';
+    currentParam.title = texts.deliberation_column;
     currentParam.type = 'bool';
     currentParam.value = userParam.category.deliberations_column ? userParam.category.deliberations_column : userParam.category.deliberations_column;
     currentParam.defaultvalue = defaultParam.category.deliberations_column;
@@ -655,7 +754,7 @@ function convertParam(userParam) {
 
     var currentParam = {};
     currentParam.name = 'category_deliberations_budget_column';
-    currentParam.title = 'Deliberation and Budget difference column';
+    currentParam.title = texts.delib_outBudget_difference_column;
     currentParam.type = 'bool';
     currentParam.value = userParam.category.deliberations_budget_column ? userParam.category.deliberations_budget_column : userParam.category.deliberations_budget_column;
     currentParam.defaultvalue = defaultParam.category.deliberations_budget_column;
@@ -669,7 +768,7 @@ function convertParam(userParam) {
 
     var currentParam = {};
     currentParam.name = 'category_expenses_column';
-    currentParam.title = 'Expenses column';
+    currentParam.title = texts.expenses_column;
     currentParam.type = 'bool';
     currentParam.value = userParam.category.expenses_column ? userParam.category.expenses_column : userParam.category.expenses_column;
     currentParam.defaultvalue = defaultParam.category.expenses_column;
@@ -684,7 +783,7 @@ function convertParam(userParam) {
 
     var currentParam = {};
     currentParam.name = 'category_expenses_budget_column';
-    currentParam.title = 'Expenses and Budget difference column';
+    currentParam.title = texts.exp_outBudget_difference_column;
     currentParam.type = 'bool';
     currentParam.value = userParam.category.expenses_budget_column ? userParam.category.expenses_budget_column : userParam.category.expenses_budget_column;
     currentParam.defaultvalue = defaultParam.category.expenses_budget_column;
@@ -699,7 +798,7 @@ function convertParam(userParam) {
 
     var currentParam = {};
     currentParam.name = 'category_expenses_deliberations_column';
-    currentParam.title = 'Expenses and Deliberations difference column';
+    currentParam.title = texts.exp_delib_difference_column;
     currentParam.type = 'bool';
     currentParam.value = userParam.category.expenses_deliberations_column ? userParam.category.expenses_deliberations_column : userParam.category.expenses_deliberations_column;
     currentParam.defaultvalue = defaultParam.category.expenses_deliberations_column;
@@ -715,7 +814,7 @@ function convertParam(userParam) {
 
     var currentParam = {};
     currentParam.name = 'company_completion_column';
-    currentParam.title = 'Completion column';
+    currentParam.title = texts.completion_column;
     currentParam.type = 'bool';
     currentParam.value = userParam.company.completion_column ? userParam.company.completion_column : userParam.company.completion_column;
     currentParam.defaultvalue = defaultParam.company.completion_column;
@@ -729,7 +828,7 @@ function convertParam(userParam) {
 
     var currentParam = {};
     currentParam.name = 'company_deliberations_column';
-    currentParam.title = 'Deliberations column';
+    currentParam.title = texts.deliberation_column;
     currentParam.type = 'bool';
     currentParam.value = userParam.company.deliberations_column ? userParam.company.deliberations_column : userParam.company.deliberations_column;
     currentParam.defaultvalue = defaultParam.company.deliberations_column;
@@ -740,8 +839,10 @@ function convertParam(userParam) {
     }
     convertedParam.data.push(currentParam);
 
+
+    var currentParam = {};
     currentParam.name = 'company_expenses_column';
-    currentParam.title = 'Expenses column';
+    currentParam.title = texts.expenses_column;
     currentParam.type = 'bool';
     currentParam.value = userParam.company.expenses_column ? userParam.company.expenses_column : userParam.company.expenses_column;
     currentParam.defaultvalue = defaultParam.company.expenses_column;
@@ -756,7 +857,7 @@ function convertParam(userParam) {
 
     var currentParam = {};
     currentParam.name = 'company_expenses_deliberations_column';
-    currentParam.title = 'Expenses and Deliberations difference column';
+    currentParam.title = texts.exp_delib_difference_column;
     currentParam.type = 'bool';
     currentParam.value = userParam.company.expenses_deliberations_column ? userParam.company.expenses_deliberations_column : userParam.company.expenses_deliberations_column;
     currentParam.defaultvalue = defaultParam.company.expenses_deliberations_column;
@@ -771,7 +872,95 @@ function convertParam(userParam) {
     return convertedParam;
 }
 
+function getErrorMessage(errorId, lang) {
+    if (!lang)
+        lang = 'en';
+    switch (errorId) {
+        case this.ID_ERR_EXPERIMENTAL_REQUIRED:
+            return "The Experimental version is required";
+        case this.ID_ERR_LICENSE_NOTVALID:
+            return "This extension requires Banana Accounting+ Advanced";
+        case this.ID_ERR_VERSION_NOTSUPPORTED:
+            if (lang == 'it')
+                return "Lo script non funziona con la vostra attuale versione di Banana Contabilità.\nVersione minimina richiesta: %1.\nPer aggiornare o per maggiori informazioni cliccare su Aiuto";
+            else if (lang == 'fr')
+                return "Ce script ne s'exécute pas avec votre version actuelle de Banana Comptabilité.\nVersion minimale requise: %1.\nPour mettre à jour ou pour plus d'informations, cliquez sur Aide";
+            else if (lang == 'de')
+                return "Das Skript wird mit Ihrer aktuellen Version von Banana Buchhaltung nicht ausgeführt.\nMindestversion erforderlich: %1.\nKlicken Sie auf Hilfe, um zu aktualisieren oder weitere Informationen zu bekommen";
+            else
+                return "This script does not run with your current version of Banana Accounting.\nMinimum version required: %1.\nTo update or for more information click on Help";
+    }
+    return '';
+}
+
+function isBananaAdvanced() {
+    // Starting from version 10.0.7 it is possible to read the property Banana.application.license.isWithinMaxRowLimits 
+    // to check if all application functionalities are permitted
+    // the version Advanced returns isWithinMaxRowLimits always false
+    // other versions return isWithinMaxRowLimits true if the limit of transactions number has not been reached
+
+    if (Banana.compareVersion && Banana.compareVersion(Banana.application.version, "10.0.9") >= 0) {
+        var license = Banana.application.license;
+        if (license.licenseType === "advanced" || license.isWithinMaxFreeLines) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+function bananaRequiredVersion(requiredVersion, expmVersion) {
+    /**
+     * Check Banana version
+     */
+    if (expmVersion) {
+        requiredVersion = requiredVersion + "." + expmVersion;
+    }
+    if (Banana.compareVersion && Banana.compareVersion(Banana.application.version, requiredVersion) >= 0) {
+        return true;
+    }
+    return false;
+}
+
+function verifyBananaVersion() {
+    if (!Banana.document)
+        return false;
+
+    var lang = this.getLang();
+
+    var ban_version_min = "10.0.9";
+    var ban_dev_version_min = "";
+    var curr_version = bananaRequiredVersion(ban_version_min, ban_dev_version_min);
+    var curr_license = isBananaAdvanced();
+
+    if (!curr_version) {
+        var msg = this.getErrorMessage(this.ID_ERR_VERSION_NOTSUPPORTED, lang);
+        msg = msg.replace("%1", BAN_VERSION_MIN);
+        Banana.document.addMessage(msg, this.ID_ERR_VERSION_NOTSUPPORTED);
+        return false;
+    }
+    if (!curr_license) {
+        var msg = getErrorMessage(this.ID_ERR_LICENSE_NOTVALID, lang);
+        Banana.document.addMessage(msg, this.ID_ERR_LICENSE_NOTVALID);
+        return false;
+    }
+    return true;
+}
+
+function getLang() {
+    var lang = 'en';
+    if (this.banDocument)
+        lang = this.banDocument.locale;
+    else if (Banana.application.locale)
+        lang = Banana.application.locale;
+    if (lang.length > 2)
+        lang = lang.substr(0, 2);
+    return lang;
+}
+
+
 function settingsDialog() {
+    var userParam = initParam();
     var savedParam = Banana.document.getScriptSettings();
     if (savedParam.length > 0) {
         userParam = JSON.parse(savedParam);
@@ -798,7 +987,12 @@ function settingsDialog() {
 
 function exec(inData, options) {
 
-    //verificare la licenza
+    if (!Banana.document)
+        return "@Cancel";
+
+    if (!verifyBananaVersion()) {
+        return "@Cancel";
+    }
 
     var userParam = {};
     if (inData.length > 0) {
@@ -812,7 +1006,6 @@ function exec(inData, options) {
         }
     } else {
         if (!settingsDialog()) {
-            Banana.console.debug("prova");
             return "@Cancel";
         }
         var savedParam = Banana.document.getScriptSettings();
@@ -822,9 +1015,6 @@ function exec(inData, options) {
         }
     }
 
-
-    if (!Banana.document)
-        return "@Cancel";
     var report = printReport();
     var stylesheet = getReportStyle();
     Banana.Report.preview(report, stylesheet);
