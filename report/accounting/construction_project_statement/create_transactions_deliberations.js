@@ -39,12 +39,23 @@ function initDocument() {
     return jsonDoc;
 
 }
+1
+
+function initTexts() {
+    let texts = {};
+
+    texts.default_company = qsTr("Not allocated");
+
+    return texts;
+}
 
 /**
  * set the row operation, the row fields and the table
  * @returns 
  */
 function deliberationRowAppend() {
+
+    texts = initTexts();
 
     //rows
     let rows = [];
@@ -63,7 +74,7 @@ function deliberationRowAppend() {
         row.fields["Description"] = categories_list[key].description;
         row.fields["Expenses"] = categories_list[key].budget;
         row.fields["Category"] = categories_list[key].category;
-        row.fields["Cc1"] = "Not allocated ";
+        row.fields["Cc1"] = texts.default_company;
 
         rows.push(row);
     }

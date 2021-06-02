@@ -54,13 +54,13 @@ function addTableCategoriesManagement(report) {
     if (userParam.category.deliberations_column)
         tableRow.addCell(texts.deliberations, "styleTablesHeaderText");
     if (userParam.category.deliberations_budget_column)
-        tableRow.addCell(texts.delib_outBudget_difference, "styleTablesHeaderText");
+        tableRow.addCell("B-A", "styleTablesHeaderText");
     if (userParam.category.expenses_column)
         tableRow.addCell(texts.actual_expenses, "styleTablesHeaderText");
     if (userParam.category.expenses_budget_column)
-        tableRow.addCell(texts.exp_outBudget_difference, "styleTablesHeaderText");
+        tableRow.addCell("C-A", "styleTablesHeaderText");
     if (userParam.category.expenses_deliberations_column)
-        tableRow.addCell(texts.exp_delib_difference, "styleTablesHeaderText");
+        tableRow.addCell("C-B", "styleTablesHeaderText");
 
     return tableCategoriesManagement;
 }
@@ -90,7 +90,7 @@ function addTableCompaniesManagement(report) {
     if (userParam.company.expenses_column)
         tableRow.addCell(texts.actual_expenses, "styleTablesHeaderText");
     if (userParam.company.expenses_deliberations_column)
-        tableRow.addCell(texts.exp_delib_difference, "styleTablesHeaderText");
+        tableRow.addCell("C-B", "styleTablesHeaderText");
 
     return tableCompaniesManagement;
 }
@@ -309,12 +309,9 @@ function initTexts() {
     texts.company = qsTr("Company");
     texts.companies = qsTr("Companies");
     texts.progress_perc = qsTr("Progress %");
-    texts.outline_budget = qsTr("Outiline Budget");
-    texts.deliberations = qsTr("Deliberations");
-    texts.delib_outBudget_difference = qsTr("Deliberations-Outiline Budget");
-    texts.actual_expenses = qsTr("Actual Expenses");
-    texts.exp_outBudget_difference = qsTr("Expenses-Outline Budget");
-    texts.exp_delib_difference = qsTr("Expenses-Deliberations");
+    texts.outline_budget = qsTr("Outiline Budget (A)");
+    texts.deliberations = qsTr("Deliberations (B)");
+    texts.actual_expenses = qsTr("Actual Expenses (C)");
     texts.statement_byCategory = qsTr("Statement by Category");
     texts.statement_byCompany = qsTr("Statement by Company");
 
