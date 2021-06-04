@@ -18,7 +18,7 @@
 // @task = app.command
 // @doctype = 110.*
 // @publisher = Banana.ch SA
-// @pubdate = 2021-05-28
+// @pubdate = 2021-06-04
 // @inputdatasource = none
 // @timeout = -1
 
@@ -968,7 +968,7 @@ function settingsDialog() {
     }
 
     var dialogTitle = 'Settings';
-    var pageAnchor = 'dlgSettings';
+    var pageAnchor = 'construction_project_report';
     var convertedParam = convertParam(userParam);
     if (!Banana.Ui.openPropertyEditor(dialogTitle, convertedParam, pageAnchor))
         return false;
