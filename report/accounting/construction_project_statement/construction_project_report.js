@@ -54,13 +54,13 @@ function addTableCategoriesManagement(report) {
     if (userParam.category.deliberations_column)
         tableRow.addCell(texts.deliberations, "styleTablesHeaderText");
     if (userParam.category.deliberations_budget_column)
-        tableRow.addCell("B-A", "styleTablesHeaderText");
+        tableRow.addCell(texts.diff_del_budg, "styleTablesHeaderText");
     if (userParam.category.expenses_column)
         tableRow.addCell(texts.actual_expenses, "styleTablesHeaderText");
     if (userParam.category.expenses_budget_column)
-        tableRow.addCell("C-A", "styleTablesHeaderText");
+        tableRow.addCell(texts.diff_exp_budg, "styleTablesHeaderText");
     if (userParam.category.expenses_deliberations_column)
-        tableRow.addCell("C-B", "styleTablesHeaderText");
+        tableRow.addCell(texts.diff_exp_del, "styleTablesHeaderText");
 
     return tableCategoriesManagement;
 }
@@ -90,7 +90,7 @@ function addTableCompaniesManagement(report) {
     if (userParam.company.expenses_column)
         tableRow.addCell(texts.actual_expenses, "styleTablesHeaderText");
     if (userParam.company.expenses_deliberations_column)
-        tableRow.addCell("C-B", "styleTablesHeaderText");
+        tableRow.addCell(texts.diff_exp_del, "styleTablesHeaderText");
 
     return tableCompaniesManagement;
 }
@@ -309,9 +309,12 @@ function initTexts() {
     texts.company = qsTr("Company");
     texts.companies = qsTr("Companies");
     texts.progress_perc = qsTr("Progress %");
-    texts.outline_budget = qsTr("Outiline Budget (A)");
-    texts.deliberations = qsTr("Deliberations (B)");
-    texts.actual_expenses = qsTr("Actual Expenses (C)");
+    texts.outline_budget = qsTr("Outiline Budget");
+    texts.deliberations = qsTr("Deliberations");
+    texts.actual_expenses = qsTr("Expenses");
+    texts.diff_del_budg = qsTr("Diff.Del./Budg.");
+    texts.diff_exp_budg = qsTr("Diff.Exp./Budg.");
+    texts.diff_exp_del = qsTr("Diff.Exp./Del.");
     texts.statement_byCategory = qsTr("Statement by Category");
     texts.statement_byCompany = qsTr("Statement by Company");
 
