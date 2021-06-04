@@ -1,0 +1,130 @@
+@page {
+    margin-top: 10mm;
+    margin-bottom: 10mm;
+    margin-left: 10mm;
+    margin-right: 10mm;
+}
+
+body {
+    font-size: 9pt;
+}
+
+table {
+    font-size: 9pt;
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+.header_text {
+    font-size: 9pt;
+    padding: 0;
+    margin: 0;
+    font-weight: bold;
+    font-size: 12pt;
+}
+
+
+/*************************************
+Styles for the tables
+*************************************/
+
+table.myTableCategoriesManagement td {
+    border-style: solid;
+    border-color: rgb(0, 0, 0);
+    width: auto;
+    padding-top: 1px;
+    padding-bottom: 1px;
+}
+
+table.myTableCompaniesManagement td {
+    border-style: solid;
+    border-color: rgb(0, 0, 0);
+    width: auto;
+    padding-top: 1px;
+    padding-bottom: 1px;
+}
+
+.table_header {
+    font-weight: bold;
+    font-size: 12;
+}
+
+.table_row_total {
+    background-color: lavender;
+}
+
+
+/*************************************
+Styles for the amounts
+*************************************/
+
+.styleNormalAmount {
+    text-align: right;
+}
+
+.styleTotalAmount {
+    text-align: right;
+    font-weight: bold;
+}
+
+
+/*************************************
+Styles for the texts
+*************************************/
+
+.styleTitle {
+    font-weight: bold;
+    color: #0f0f0f;
+    font-size: 11pt;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.styleTablesTitles {
+    color: #0f0f0f;
+    font-size: 10pt;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.styleTablesHeaderText {
+    color: #e4e7e5;
+    background-color: #1863c5;
+    font-weight: bold;
+    text-align: center;
+}
+
+.styleTablesTotalsDescriptions {
+    text-align: left;
+    font-weight: bold;
+}
+
+.stylepercentages {
+    text-align: center;
+}
+
+
+/******************************************
+Styles for the coloured cells
+******************************************/
+
+
+/*Provare a sistemare con ereditarietà*/
+
+.symbolRed {
+    color: #ec4123;
+    text-align: right;
+    font-size: 12px;
+}
+
+.symbolGreen {
+    color: #71FA4C;
+    text-align: right;
+    font-size: 12px;
+}
+
+.symbolOrange {
+    color: #fad14c;
+    text-align: right;
+    font-size: 12px;
+}
