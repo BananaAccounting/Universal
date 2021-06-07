@@ -65,11 +65,9 @@ Styles for the texts
 }
 
 .styleTablesBasNames {
-    background-color: #d2f7e2;
-    text-align: left;
+    text-align: center;
 }
 
 .styleTablesBasResults {
-    background-color: #f3fdff;
-    text-align: left;
+    text-align: right;
 }
