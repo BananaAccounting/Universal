@@ -13,7 +13,7 @@
 // limitations under the License.
 //
 // @api = 1.0
-// @id = construction_project_report.js
+// @id = constructionprojectstatement.js
 // @description = Construction Project Report
 // @task = app.command
 // @doctype = 110.*
