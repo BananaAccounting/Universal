@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.uni.invoice.uni11
 // @api = 1.0
-// @pubdate = 2021-03-03
+// @pubdate = 2021-06-16
 // @publisher = Banana.ch SA
 // @description = [UNI11] Programmable Invoice layout
 // @description.it = [UNI11] Layout Fattura Programmabile
@@ -472,7 +472,7 @@ function convertParam(userParam) {
   currentParam.title = texts.param_details_columns;
   currentParam.type = 'string';
   currentParam.value = userParam.details_columns ? userParam.details_columns : '';
-  currentParam.defaultvalue = texts.column_description+";"+texts.column_quantity+";"+texts.column_reference_unit+";"+texts.column_unit_price+";"+texts.column_amount;
+  currentParam.defaultvalue = 'Description;Quantity;ReferenceUnit;UnitPrice;Amount';
   currentParam.tooltip = texts.param_tooltip_details_columns;
   //take the number of columns
   lengthDetailsColumns = userParam.details_columns.split(";").length;
@@ -593,7 +593,7 @@ function convertParam(userParam) {
   currentParam.title = texts.param_languages;
   currentParam.type = 'string';
   currentParam.value = userParam.languages ? userParam.languages : '';
-  currentParam.defaultvalue = 'de;en;fr;it;nl';
+  currentParam.defaultvalue = 'de;en;fr;it;nl;zh';
   currentParam.tooltip = texts.param_tooltip_languages;
   currentParam.readValue = function() {
 
@@ -628,7 +628,7 @@ function convertParam(userParam) {
 
   for (var i = 0; i < langCodes.length; i++) {
     var langCode = langCodes[i];
-    if (langCode === "it" || langCode === "fr" || langCode === "de" || langCode === "nl") {
+    if (langCode === "it" || langCode === "fr" || langCode === "de" || langCode === "nl" || langCode === "zh") {
       var langCodeTitle = langCode;
       var langTexts = setInvoiceTexts(langCode);
     }
@@ -1193,7 +1193,7 @@ function initParam() {
   userParam.info_customer_fiscal_number = false;
   userParam.info_due_date = true;
   userParam.info_page = true;
-  userParam.details_columns = texts.column_description+";"+texts.column_quantity+";"+texts.column_reference_unit+";"+texts.column_unit_price+";"+texts.column_amount;
+  userParam.details_columns = 'Description;Quantity;ReferenceUnit;UnitPrice;Amount';
   userParam.details_columns_widths = '45%;10%;10%;20%;15%';
   userParam.details_columns_titles_alignment = 'left;right;center;right;right';
   userParam.details_columns_alignment = 'left;right;center;right;right';
@@ -1203,14 +1203,14 @@ function initParam() {
 
 
   //Texts
-  userParam.languages = 'de;en;fr;it;nl';
+  userParam.languages = 'de;en;fr;it;nl;zh';
   var langCodes = userParam.languages.toString().split(";");
 
   // Initialize the parameter for each language
   for (var i = 0; i < langCodes.length; i++) {
 
     // Use texts translations
-    if (langCodes[i] === "it" || langCodes[i] === "fr" || langCodes[i] === "de" || langCodes[i] === "nl") {
+    if (langCodes[i] === "it" || langCodes[i] === "fr" || langCodes[i] === "de" || langCodes[i] === "nl" || langCodes[i] === "zh") {
       var langTexts = setInvoiceTexts(langCodes[i]);
     }
     else {
@@ -1339,7 +1339,7 @@ function verifyParam(userParam) {
     userParam.info_page = false;
   }
   if (!userParam.details_columns) {
-    userParam.details_columns = texts.column_description+";"+texts.column_quantity+";"+texts.column_reference_unit+";"+texts.column_unit_price+";"+texts.column_amount;
+    userParam.details_columns = 'Description;Quantity;ReferenceUnit;UnitPrice;Amount';
   }
   if (!userParam.details_columns_widths) {
     userParam.details_columns_widths = '45%;10%;10%;20%;15%';
@@ -1362,7 +1362,7 @@ function verifyParam(userParam) {
 
   //Texts
   if (!userParam.languages) {
-    userParam.languages = 'de;en;fr;it;nl';
+    userParam.languages = 'de;en;fr;it;nl;zh';
   }
 
   // Verify the parameter for each language
@@ -1708,6 +1708,9 @@ function print_info_first_page(repDocObj, invoiceObj, texts, userParam) {
   } else {
     infoTable = repDocObj.addTable("info_table_left");
   }
+
+  var infoFirstColumn = infoTable.addColumn("info_table_first_column"); 
+  var infoSecondColumn = infoTable.addColumn("info_table_second_column");
 
   if (userParam.info_invoice_number) {
     tableRow = infoTable.addRow();
@@ -3344,14 +3347,9 @@ function setInvoiceTexts(language) {
     texts.vat_number = "No IVA";
     texts.fiscal_number = "No fiscale";
     texts.payment_due_date_label = "Scadenza";
-    texts.payment_terms_label = "Pagamento";
+    texts.payment_terms_label = "Scadenza";
     texts.page = "Pagina";
     texts.credit_note = "Nota di credito";
-    texts.column_description = "Description";
-    texts.column_quantity = "Quantity";
-    texts.column_reference_unit = "ReferenceUnit";
-    texts.column_unit_price = "UnitPrice";
-    texts.column_amount = "Amount";
     texts.description = "Descrizione";
     texts.quantity = "Quantità";
     texts.reference_unit = "Unità";
@@ -3504,14 +3502,9 @@ function setInvoiceTexts(language) {
     texts.vat_number = "MwSt/USt-Nummer";
     texts.fiscal_number = "Steuernummer";
     texts.payment_due_date_label = "Fälligkeitsdatum";
-    texts.payment_terms_label = "Bezahlung";
+    texts.payment_terms_label = "Fälligkeitsdatum";
     texts.page = "Seite";
     texts.credit_note = "Gutschrift";
-    texts.column_description = "Description";
-    texts.column_quantity = "Quantity";
-    texts.column_reference_unit = "ReferenceUnit";
-    texts.column_unit_price = "UnitPrice";
-    texts.column_amount = "Amount";
     texts.description = "Beschreibung";
     texts.quantity = "Menge";
     texts.reference_unit = "Einheit";
@@ -3633,8 +3626,8 @@ function setInvoiceTexts(language) {
     texts.param_tooltip_font_family = "Schriftart eingeben (z.B. Arial, Helvetica, Times New Roman, usw.)";
     texts.param_tooltip_font_size = "Schriftgrösse eingeben (z.B. 10, 11, 12, usw.)";
     texts.param_tooltip_text_color = "Farbe eingeben (z.B. '#000000' oder 'Black')";
-    texts.param_tooltip_background_color_details_header = "Farbe eingeben (z.B. '#337ab7' oder 'Blau')";
-    texts.param_tooltip_text_color_details_header = "Textfarbe eingeben (z.B. '#ffffff' oder 'Weiss')";
+    texts.param_tooltip_background_color_details_header = "Farbe eingeben (z.B. '#337ab7' oder 'Blue')";
+    texts.param_tooltip_text_color_details_header = "Textfarbe eingeben (z.B. '#ffffff' oder 'White')";
     texts.param_tooltip_background_color_alternate_lines = "Farbe Zeilenhintergrund der Details eingeben (z.B. '#F0F8FF' oder 'LightSkyBlue')";
     texts.param_tooltip_javascript_filename = "Javaskript-Dateiname der 'ID'-Spalte Dokumente-Tabelle eingeben (z.B. Filejs)";
     texts.error1 = "Die Spaltennamen stimmen nicht mit den zu druckenden Texten überein. Prüfen Sie die Rechnungseinstellungen.";
@@ -3664,14 +3657,9 @@ function setInvoiceTexts(language) {
     texts.vat_number = "Numéro de TVA";
     texts.fiscal_number = "Numéro fiscal";
     texts.payment_due_date_label = "Échéance";
-    texts.payment_terms_label = "Paiement";
+    texts.payment_terms_label = "Échéance";
     texts.page = "Page";
     texts.credit_note = "Note de crédit";
-    texts.column_description = "Description";
-    texts.column_quantity = "Quantity";
-    texts.column_reference_unit = "ReferenceUnit";
-    texts.column_unit_price = "UnitPrice";
-    texts.column_amount = "Amount";
     texts.description = "Description";
     texts.quantity = "Quantité";
     texts.reference_unit = "Unité";
@@ -3827,11 +3815,6 @@ function setInvoiceTexts(language) {
     texts.payment_terms_label = "Betaling";
     texts.page = "Pagina";
     texts.credit_note = "Credit nota";
-    texts.column_description = "Beschrijving";
-    texts.column_quantity = "Hoeveelheid";
-    texts.column_reference_unit = "Eenheidsreferentie";
-    texts.column_unit_price = "Eenheidsprijs";
-    texts.column_amount = "Bedrag";
     texts.description = "Beschrijving";
     texts.quantity = "Hoeveelheid";
     texts.reference_unit = "Eenheid";
@@ -3974,6 +3957,161 @@ function setInvoiceTexts(language) {
     texts.nl_param_text_final_offer = "Eindtekst offerte";
     texts.param_tooltip_text_final_offer = "Voer een tekst in ter vervanging van de standaardtekst";
   }
+  else if (language === 'zh') {
+    //ZH
+    texts.phone = "电话";
+    texts.shipping_address = "送货地址";
+    texts.invoice = "发票";
+    texts.date = "日期";
+    texts.customer = "客户编号";
+    texts.vat_number = "增值税号码";
+    texts.fiscal_number = "税务登记号";
+    texts.payment_due_date_label = "到期日";
+    texts.payment_terms_label = "到期日";
+    texts.page = "页面";
+    texts.credit_note = "信用票据";
+    texts.description = "摘要";
+    texts.quantity = "数量";
+    texts.reference_unit = "单位";
+    texts.unit_price = "单价";
+    texts.amount = "金额";
+    texts.discount = "折扣";
+    texts.deposit = "订金";
+    texts.totalnet = "总净值 ";
+    texts.vat = "增值税";
+    texts.rounding = "四舍五入";
+    texts.total = "总计";
+    texts.param_include = "打印";
+    texts.param_header_include = "标题";
+    texts.param_header_print = "页标题";
+    texts.param_header_row_1 = "第 1 行的文字";
+    texts.param_header_row_2 = "第 2 行的文字";
+    texts.param_header_row_3 = "第 3 行的文字";
+    texts.param_header_row_4 = "第 4 行的文字";
+    texts.param_header_row_5 = "第 5 行的文字";
+    texts.param_logo_print = "商标(Logo)";
+    texts.param_logo_name = "商标和页眉对齐的合成";
+    texts.param_address_include = "客户地址";
+    texts.param_address_small_line = "发件人地址文字";
+    texts.param_address_left = "向左对齐";
+    texts.param_address_composition = "地址合成";
+    texts.param_address_position_dX = '水平移动+/-（单位：厘米，默认为0）';
+    texts.param_address_position_dY = '垂直移动+/-（单位：厘米，默认为0）';
+    texts.param_shipping_address = "送货地址";
+    texts.param_info_include = "信息";
+    texts.param_info_invoice_number = "发票号码";
+    texts.param_info_date = "发票日期";
+    texts.param_info_customer = "客户号码";
+    texts.param_info_customer_vat_number = "客户增值税号码";
+    texts.param_info_customer_fiscal_number = "客户税务登记号";
+    texts.param_info_due_date = "发票到期日";
+    texts.param_info_page = "页码";
+    texts.param_details_include = "发票细节";
+    texts.param_details_columns = "列的名称";
+    texts.param_details_columns_widths = "列的宽度";
+    texts.param_details_columns_titles_alignment = "标题对齐";
+    texts.param_details_columns_alignment = "文字对齐";
+    texts.param_details_gross_amounts = "总金额(包括增值税)";
+    texts.param_footer_include = "页脚";
+    texts.param_footer_add = "打印页脚";
+    texts.param_footer_horizontal_line = "打印分隔边框";
+    texts.param_texts = "文字（空=默认值）";
+    texts.param_languages = "语言";
+    texts.languages_remove = "您想从语言列表中删除'<removedLanguages>'吗？";
+    texts.zh_param_text_info_invoice_number = "发票号码";
+    texts.zh_param_text_info_date = "发票日期";
+    texts.zh_param_text_info_customer = "客户号码";
+    texts.zh_param_text_info_customer_vat_number = "客户增值税号码";
+    texts.zh_param_text_info_customer_fiscal_number = "客户税务登记号";
+    texts.zh_param_text_info_due_date = "发票到期日";
+    texts.zh_param_text_info_page = "页码";
+    texts.zh_param_text_shipping_address = "送货地址";
+    texts.zh_param_text_title_doctype_10 = "发票标题";
+    texts.zh_param_text_title_doctype_12 = "信贷票据标题";
+    texts.zh_param_text_details_columns = "列名称发票细节";
+    texts.zh_param_text_totalnet = "发票总净额 ";
+    texts.zh_param_text_vat = "发票增值税";
+    texts.zh_param_text_total = "发票总额";
+    texts.zh_param_text_final = "最终文本";
+    texts.zh_param_footer_left = "页脚左侧文字";
+    texts.zh_param_footer_center = "页脚中心文本";
+    texts.zh_param_footer_right = "页脚右侧文本";
+    texts.param_styles = "样式";
+    texts.param_text_color = "文字颜色";
+    texts.param_background_color_details_header = "标题细节的背景颜色";
+    texts.param_text_color_details_header = "标题细节的文字颜色";
+    texts.param_background_color_alternate_lines = "备选线的背景颜色";
+    texts.param_font_family = "字体系列";
+    texts.param_font_size = "字体大小";
+    texts.embedded_javascript_file_not_found = "JavaScript 文件未找到或无效";
+    texts.param_embedded_javascript = "JavaScript / CSS";
+    texts.param_embedded_javascript_filename = "JS文件名称(文件表格内的'标识'列)";
+    texts.param_embedded_css_filename = "CSS文件名(文件表格内的'标识'列)";
+    texts.param_tooltip_header_print = "检查以包括页眉";
+    texts.param_tooltip_logo_print = "检查以包括商标(logo)";
+    texts.param_tooltip_logo_name = "输入商标(logo)名称";
+    texts.param_tooltip_info_invoice_number = "检查以包括发票号码";
+    texts.param_tooltip_info_date = "检查以包括发票日期";
+    texts.param_tooltip_info_customer = "检查以包括客户号码";
+    texts.param_tooltip_info_customer_vat_number = "检查以包含客户的增值税号";
+    texts.param_tooltip_info_customer_fiscal_number = "检查以包含客户的税务登记号";
+    texts.param_tooltip_info_due_date = "检查以包括发票的到期日";
+    texts.param_tooltip_info_page = "检查以包括页码";
+    texts.param_tooltip_languages = "添加或删除一种或多种语言";
+    texts.param_tooltip_text_info_invoice_number = "输入文字以取代默认文字";
+    texts.param_tooltip_text_info_date = "输入文字以取代默认的";
+    texts.param_tooltip_text_info_customer = "输入文字以取代默认的";
+    texts.param_tooltip_text_info_customer_vat_number = "输入文字以取代默认的";
+    texts.param_tooltip_text_info_customer_fiscal_number = "输入文字以取代默认的";
+    texts.param_tooltip_text_payment_terms_label = "输入文字以取代默认的";
+    texts.param_tooltip_text_info_page = "输入文字以取代默认的";
+    texts.param_tooltip_text_shipping_address = "输入文字以取代默认的";
+    texts.param_tooltip_title_doctype_10 = "输入文字以取代默认的";
+    texts.param_tooltip_title_doctype_12 = "输入文字以取代默认的";
+    texts.param_tooltip_text_total = "输入文字以取代默认的";
+    texts.param_tooltip_text_details_columns = "插入发票详细信息的列名";
+    texts.param_tooltip_details_columns = "按照您所需的顺序输入列的XML名称";
+    texts.param_tooltip_details_columns_widths = "以%为单位输入列宽（总和必须为100%）";
+    texts.param_tooltip_details_columns_titles_alignment = "标题对齐";
+    texts.param_tooltip_details_columns_alignment = "标题对齐";
+    texts.param_tooltip_header_row_1 = "插入文字以取代默认的";
+    texts.param_tooltip_header_row_2 = "输入文字以取代默认的";
+    texts.param_tooltip_header_row_3 = "输入文字以取代默认的";
+    texts.param_tooltip_header_row_4 = "输入文字以取代默认的";
+    texts.param_tooltip_header_row_5 = "输入文字以取代默认的";
+    texts.param_tooltip_address_small_line = "在客户地址的上方输入发件人的地址";
+    texts.param_tooltip_address_composition = "按您所需的顺序输入列的XML名称";
+    texts.param_tooltip_shipping_address = "检查以打印发货地址";
+    texts.param_tooltip_address_left = "检查以对准左侧的客户地址";
+    texts.param_tooltip_details_gross_amounts = "检查以打印包含总金额和增值税的发票详细信息";
+    texts.param_tooltip_text_final = "输入文字以取代默认的";
+    texts.param_tooltip_footer_add = "检查以打印页脚";
+    texts.param_tooltip_footer = "输入页脚文字";
+    texts.param_tooltip_footer_horizontal_line = "打印分隔边框";
+    texts.param_tooltip_font_family = "输入字体类型（例如 Arial，Helvetica，Times New Roman等）";
+    texts.param_tooltip_font_size = "输入字体大小(例如 10, 11, 12，等)";
+    texts.param_tooltip_text_color = "输入文字的颜色(例如'#000000'或者'Black')";
+    texts.param_tooltip_background_color_details_header = "输入标题详细信息的背景颜色（例如'#337ab7'或'Blue'）";
+    texts.param_tooltip_text_color_details_header = "输入标题详细信息文本的颜色（例如'#ffffff'或'White'） ";
+    texts.param_tooltip_background_color_alternate_lines = "输入备用行的背景颜色（例如，'#F0F8FF'或'LightSkyBlue'）";
+    texts.param_tooltip_javascript_filename = "输入从'文件'表格'标识'列中提取的javascript文件的名称（即file.js）";  
+    texts.error1 = "列名称与要打印的文本不匹配。检查发票设置。";
+    texts.zh_error1_msg = "文字名和列不匹配";
+    texts.offer = "预估";
+    texts.zh_param_text_info_offer_number = "预估号码";
+    texts.param_tooltip_text_info_offer_number = "输入文字以取代默认的";
+    texts.zh_param_text_info_date_offer = "预估日期";
+    texts.param_tooltip_text_info_date_offer = "输入文字以取代默认的";
+    texts.zh_param_text_info_validity_date_offer = "预估有效性";
+    texts.validity_terms_label = "有效性";
+    texts.param_tooltip_text_info_validity_date_offer = "输入文字以取代默认的";
+    texts.zh_param_text_title_doctype_17 = "预测标题";
+    texts.param_tooltip_title_doctype_17 = "输入文字以取代默认的";
+    texts.zh_param_text_begin_offer = "开始文字预估";
+    texts.param_tooltip_text_begin_offer = "输入文字以取代默认的";
+    texts.zh_param_text_final_offer = "最终文本预估";
+    texts.param_tooltip_text_final_offer = "输入文字以取代默认的";
+  }
   else {
     //EN
     texts.phone = "Tel";
@@ -3984,14 +4122,9 @@ function setInvoiceTexts(language) {
     texts.vat_number = "VAT No";
     texts.fiscal_number = "Fiscal No";
     texts.payment_due_date_label = "Due date";
-    texts.payment_terms_label = "Payment";
+    texts.payment_terms_label = "Due date";
     texts.page = "Page";
     texts.credit_note = "Credit note";
-    texts.column_description = "Description";
-    texts.column_quantity = "Quantity";
-    texts.column_reference_unit = "ReferenceUnit";
-    texts.column_unit_price = "UnitPrice";
-    texts.column_amount = "Amount";
     texts.description = "Description";
     texts.quantity = "Quantity";
     texts.reference_unit = "Unit";
