@@ -18,7 +18,7 @@
 // @task = app.command
 // @doctype = 100.*
 // @publisher = Banana.ch SA
-// @pubdate = 2021-04-20
+// @pubdate = 2021-06-16
 // @inputdatasource = none
 // @timeout = -1
 
@@ -1011,12 +1011,21 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         for (var i = this.data.length - 1; i >= 0; i--) {
             tableRow.addCell(this.toLocaleAmountFormat(this.data[i].balance.oc.reservesandprofits.dividends), "styleNormalAmount");
         }
-        //Own Capital
+
+        //Share capital
         var tableRow = tableCashflow.addRow("styleTablRows");
         tableRow.addCell(texts.ownbasecapital_cashflow, "styleTablRows");
         for (var i = this.data.length - 1; i >= 0; i--) {
             tableRow.addCell(this.toLocaleAmountFormat(this.data[i].balance.oc.ownbasecapital.delta), "styleNormalAmount");
         }
+
+        //Reserves variation
+        var tableRow = tableCashflow.addRow("styleTablRows");
+        tableRow.addCell(texts.provisionsandsimilar_variation_cashflow, "styleTablRows");
+        for (var i = this.data.length - 1; i >= 0; i--) {
+            tableRow.addCell(this.toLocaleAmountFormat(this.data[i].calculated_data.reservesandprofits_variation), "styleNormalAmount");
+        }
+
         //Cashflow from Financing
         var tableRow = tableCashflow.addRow("styleTablRows");
         tableRow.addCell(texts.cashflow_from_financing + ' (C)', "styleTitlesTotalAmount");
@@ -1191,7 +1200,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
      * @returns an object containing the list of the groups found in the file
      */
     loadGroups() {
-        var groupList = {};
+        var groupList = "";
         if (!this.banDocument) {
             return groupList;
         }
@@ -1504,10 +1513,11 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         texts.accruals_and_deferred_income_cashflow = qsTr("+/- (+) Increase or (-) decrease of accruals and deferred income");
         texts.investments_cashflow = qsTr("- Investments");
         texts.disinvestments_cashflow = qsTr("+ Disinvestments");
-        texts.longtermdebtcapital_cashflow = qsTr("Third parties capital (+) increases or (-) repayments");
-        texts.ownbasecapital_cashflow = qsTr("Own capital (+) increases or (-) reductions ");
+        texts.longtermdebtcapital_cashflow = qsTr("+/- Long term (+) increases or (-) repayments of debt capital");
+        texts.ownbasecapital_cashflow = qsTr("Share capital (+) increases or (-) reductions ");
         texts.adjusted_assets_cashflow = qsTr("Adjustment with assets accounts ");
         texts.adjusted_liabilities_cashflow = qsTr("Adjustment with liabilities accounts ");
+        texts.provisionsandsimilar_variation_cashflow=qsTr("Increase (+) or decrease (-) in reserves");
         texts.cashflow_from_operations = qsTr("= Cash Flow from operations");
         texts.cashflow_from_investing = qsTr("= Cash Flow from investing");
         texts.cashflow_from_financing = qsTr("=Cash Flow from financing")
@@ -2094,9 +2104,11 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                 var isAccount = true;
                 for (var token in valuelist) {
                     var token = valuelist[token];
-                    if (value.length > 0)
+                    if (value.length > 0) {
                         value += "|";
+                    }
                     if (groupList.indexOf(token) >= 0) {
+                        //Banana.console.debug(token);
                         token = token;
                         isAccount = false;
                     }
@@ -2112,7 +2124,6 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                 } else {
                     bal = _banDocument.currentBalance(value, '', '', null);
                     transactions = _banDocument.currentCard(value, '', '', null);
-                    //Banana.console.debug(bal.amount);
                 }
                 //Banana.console.debug(JSON.stringify(bal.balance));
                 var mult = -1;
@@ -2134,7 +2145,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                     if (dialogparam[key].balance === "" || dialogparam[key].balance === " " || dialogparam[key].balance === null) {
                         dialogparam[key].balance += "0.00";
                     }
-                    //delta
+                    //finds delta for every element
                     dialogparam[key].delta = Banana.SDecimal.subtract(dialogparam[key].balance, dialogparam[key].opening);
                     //the sign is set to minus for elements of the Assets (to calculate the cashflow);
                     if (dialogparam[key].bclass === "1" && dialogparam[key].acronym !== "liqu") {
@@ -2143,6 +2154,13 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                     //Banana.console.debug(JSON.stringify(dialogparam[key]));
                     //Banana.console.debug(JSON.stringify("********************************"));
                 }
+
+                /**
+                 * In questa sezione, se un raggruppamento corrisponde ai criteri, all'oggetto gli aggiungo una proprietà contenente la somma delle registrazioni specifiche trovare
+                 * Es: per l'aumento delle Riserve, al gruppo reservesandprofit, se sono presenti registrazioni contenenti il prefisso #plusreserves, sommo gli importi e trovo il totale
+                 * Prima controllo però che la registrazione venga cercara solamente in questo raggruppamento, e successivamente che corrisponda ad altri criteri
+                 * Se l'utente registra un movimento delle riserveutilizzando un conto che non rientra in quel campo, va comunicato che potrebbe causare un errore nel report.
+                 */
                 if (transactions) {
                     for (var i = 0; i < transactions.rowCount; i++) {
                         let tRow = transactions.row(i);
@@ -2150,35 +2168,76 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                         description = description.toLowerCase();
 
                         //find the Disinvestmenst
-                        if (description.indexOf("#disinvest") >= 0) {
+                        /**
+                         * La registrazione di un disinvestimento comporta la diminuzione di un attivo fisso (tangibile, non tangibile o finanziario).
+                         */
+                        if (description.indexOf("#disinvest") >= 0 && dialogparam[key].acronym=='tanfix' || dialogparam[key].acronym=='finfix'|| dialogparam[key].acronym=='intfix') {
                             var jAmount = tRow.value('JAmount');
-                            jAmount = Banana.SDecimal.abs(jAmount);
-
-                            dialogparam[key].disinvestments = Banana.SDecimal.add(dialogparam[key].disinvestments, jAmount);
+                            if(Banana.SDecimal.sign(jAmount)<0){
+                                jAmount = Banana.SDecimal.abs(jAmount);
+                                dialogparam[key].disinvestments = Banana.SDecimal.add(dialogparam[key].disinvestments, jAmount);
+                            }
                         }
-                        //find the gain on the sales
-                        if (description.indexOf("#revaluation") >= 0) {
-                            var jAmount = tRow.value('JAmount');
-                            jAmount = Banana.SDecimal.abs(jAmount);
 
-                            dialogparam[key].gain = Banana.SDecimal.add(dialogparam[key].gain, jAmount);
+                        //find the gain on the sales
+                        /**
+                         * Le rivalutazioni sono fatte sull'attivo fisso tangibile, e vanno ad aumentare il suo valore inserendo il conto in dare.
+                         * -Deve essere registrato utilizzando un gruppo appartenente ai gruppi del campo: Tangible Fixed Assets.
+                         */
+
+                        if (description.indexOf("#revaluation") >= 0 && dialogparam[key].acronym=='tanfix' ||dialogparam[key].acronym=='finfix'||dialogparam[key].acronym=='intfix'){
+                            var jAmount = tRow.value('JAmount');
+                            if(Banana.SDecimal.sign(jAmount)>0){
+                                jAmount = Banana.SDecimal.abs(jAmount);
+                                dialogparam[key].gain = Banana.SDecimal.add(dialogparam[key].gain, jAmount);
+                            }
                         }
                         //find the loss on the sales
-                        if (description.indexOf("#devaluation") >= 0) {
+                        /**
+                         * Le svalutazioni sono fatte sull'attivo fisso tangibile, e va a diminuire il suo valore inserendo il conto in avere.
+                         * -Deve essere registrato utilizzando un gruppo appartenente ai gruppi del campo: Tangible Fixed Assets.
+                         */
+                         if (description.indexOf("#devaluation") >= 0 && dialogparam[key].acronym=='tanfix' ||dialogparam[key].acronym=='finfix'||dialogparam[key].acronym=='intfix'){
                             var jAmount = tRow.value('JAmount');
-                            jAmount = Banana.SDecimal.abs(jAmount);
-
-                            dialogparam[key].loss = Banana.SDecimal.add(dialogparam[key].loss, jAmount);
+                            if(Banana.SDecimal.sign(jAmount)<0){
+                                jAmount = Banana.SDecimal.abs(jAmount);
+                                dialogparam[key].loss = Banana.SDecimal.add(dialogparam[key].loss, jAmount);
+                            }
                         }
                         //find the Dividends
-                        if (description.indexOf("#dividends") >= 0) {
+                        /**
+                         * Il versamento dei dividendi viene registrato facendo diminuire il conto degli utile e perdite, quindi il conto è messo in dare.
+                         *-Deve essere registrato utilizzando un gruppo appartenente ai gruppi del campo: Reserves and profit.
+                         */
+                        if (description.indexOf("#dividends") >= 0 && dialogparam[key].acronym=='reut') {
                             var jAmount = tRow.value('JAmount');
                             jAmount = Banana.SDecimal.abs(jAmount);
-
                             dialogparam[key].dividends = Banana.SDecimal.add(dialogparam[key].dividends, jAmount);
                         }
-                    }
+                        
+                        //find the releases of Reserves
+                        /*il rilascio delle riserve è registrato con le riserve in dare mentre l'aumento con le riserve in avere.
+                            -Deve essere registrato utilizzando un gruppo appartenente ai gruppi del campo: Reserves and profit.
+                            -Prendo come riferimento l'acronimo del gruppo.
 
+                            se invece viene registrato in un altro modo, devo notificarlo all'utente
+                        */
+                        if (description.indexOf("#minusreserves") >= 0 && dialogparam[key].acronym=='reut') {
+                            var jAmount = tRow.value('JAmount');
+                            if(Banana.SDecimal.sign(jAmount)>0){
+                                jAmount = Banana.SDecimal.abs(jAmount);
+                                dialogparam[key].reserves_release = Banana.SDecimal.add(dialogparam[key].reserves_release, jAmount);
+                            }
+                        }
+
+                        if (description.indexOf("#plusreserves") >= 0 && dialogparam[key].acronym=='reut') {
+                            var jAmount = tRow.value('JAmount');
+                            if(Banana.SDecimal.sign(jAmount)<0){
+                                jAmount = Banana.SDecimal.abs(jAmount);
+                                dialogparam[key].reserves_increase = Banana.SDecimal.add(dialogparam[key].reserves_increase, jAmount);
+                            }
+                        }
+                    }
                 }
             } else {
                 if (typeof(dialogparam[key]) === "object")
@@ -2283,6 +2342,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var totalliabilitiesandequity = Banana.SDecimal.add(debtcapital, owncapital);
         calcdata.totalliabilitiesandequity = totalliabilitiesandequity;
 
+
         /*********************************************************************************************
          * Calculation of the total liabilities and equity resulting from the accounting sheet
          *********************************************************************************************/
@@ -2305,6 +2365,11 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         calcdata.liabilitiesandequity_difference = Banana.SDecimal.subtract(totalliabilitiesandequity, totalliabilitiesandequity_sheet);
         if (!Banana.SDecimal.isZero(calcdata.liabilitiesandequity_difference))
             this.controlsums_differences++;
+        /*****************************************************************
+         * calculate the reserves increase/release difference.
+         ****************************************************************/
+
+        calcdata.reservesandprofits_variation= Banana.SDecimal.subtract(data.balance.oc.reservesandprofits.reserves_increase,data.balance.oc.reservesandprofits.reserves_release);
 
         /*********************************************************
          * Calculation of the Annual Result (profit)
@@ -2738,6 +2803,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         //first find the long therm third capital without the provisions and similar
         cashflow.from_financing = Banana.SDecimal.add(cashflow.from_financing, data.balance.ltdc.longter_debts.delta);
         cashflow.from_financing = Banana.SDecimal.subtract(cashflow.from_financing, data.balance.oc.reservesandprofits.dividends);
+        cashflow.from_financing = Banana.SDecimal.subtract(cashflow.from_financing, data.balance.oc.reservesandprofits.reserves_release);
+        cashflow.from_financing = Banana.SDecimal.add(cashflow.from_financing, data.balance.oc.reservesandprofits.reserves_increase);
         cashflow.from_financing = Banana.SDecimal.add(cashflow.from_financing, data.balance.oc.ownbasecapital.delta);
 
 
