@@ -1,4 +1,4 @@
-// Copyright [2020] [Banana.ch SA - Lugano Switzerland]
+// Copyright [2021] [Banana.ch SA - Lugano Switzerland]
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 // @id = ch.banana.uni.invoice.uni11.test
 // @api = 1.0
-// @pubdate = 2020-12-18
+// @pubdate = 2021-06-16
 // @publisher = Banana.ch SA
 // @description = <TEST ch.banana.uni.invoice.uni11.js>
 // @task = app.command
@@ -122,7 +122,7 @@ function setUserParam(texts) {
   userParam.info_customer_fiscal_number = true;
   userParam.info_due_date = true;
   userParam.info_page = true;
-  userParam.details_columns = texts.column_description+";"+texts.column_quantity+";"+texts.column_reference_unit+";"+texts.column_unit_price+";"+texts.column_amount;
+  userParam.details_columns = 'Description;Quantity;ReferenceUnit;UnitPrice;Amount';
   userParam.details_columns_widths = '50%;10%;10%;15%;15%';
   userParam.details_columns_titles_alignment = 'center;center;center;center;center';
   userParam.details_columns_alignment = 'left;right;center;right;right';
@@ -134,7 +134,7 @@ function setUserParam(texts) {
   userParam.footer_horizontal_line = true;
 
   //Texts
-  userParam.languages = 'en;it;de;fr';
+  userParam.languages = 'en;it;de;fr;nl;zh';
   userParam.en_text_info_invoice_number = texts.invoice;
   userParam.en_text_info_date = texts.date;
   userParam.en_text_info_customer = texts.customer;

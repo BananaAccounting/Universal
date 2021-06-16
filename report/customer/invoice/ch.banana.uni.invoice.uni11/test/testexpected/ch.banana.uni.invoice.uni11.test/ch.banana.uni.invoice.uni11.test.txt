@@ -31,7 +31,7 @@ Date:  & 03.02.2022 \\
 Customer No:  & 100001 \\
 VAT No:  & \\
 Fiscal No:  & \\
-Payment:  & 05.03.2022 \\
+Due date:  & 05.03.2022 \\
 Page:  & \#page-nr \\
 \end{longtable}
 Banana.ch SA \\
@@ -44,7 +44,7 @@ Date:  & 03.02.2022 \\
 Customer No:  & 100001 \\
 VAT No:  & \\
 Fiscal No:  & \\
-Payment:  & 05.03.2022 \\
+Due date:  & 05.03.2022 \\
 Page:  & \#page-nr \\
 \end{longtable}
 \begin{longtable}[l]{ l }
@@ -81,7 +81,7 @@ Date:  & 29.01.2022 \\
 Customer No:  & 100002 \\
 VAT No:  & 123 456 789 \\
 Fiscal No:  & 001 002 003 \\
-Payment:  & 30 days \newline \\
+Due date:  & 30 days \newline \\
 Page:  & \#page-nr \\
 \end{longtable}
 Banana.ch SA \\
@@ -94,7 +94,7 @@ Date:  & 29.01.2022 \\
 Customer No:  & 100002 \\
 VAT No:  & 123 456 789 \\
 Fiscal No:  & 001 002 003 \\
-Payment:  & 30 days \newline \\
+Due date:  & 30 days \newline \\
 Page:  & \#page-nr \\
 \end{longtable}
 \begin{longtable}[l]{ l }
@@ -141,7 +141,7 @@ Date:  & 04.02.2022 \\
 Customer No:  & 100002 \\
 VAT No:  & 123 456 789 \\
 Fiscal No:  & 001 002 003 \\
-Payment:  & 06.03.2022 \\
+Due date:  & 06.03.2022 \\
 Page:  & \#page-nr \\
 \end{longtable}
 Banana.ch SA \\
@@ -154,7 +154,7 @@ Date:  & 04.02.2022 \\
 Customer No:  & 100002 \\
 VAT No:  & 123 456 789 \\
 Fiscal No:  & 001 002 003 \\
-Payment:  & 06.03.2022 \\
+Due date:  & 06.03.2022 \\
 Page:  & \#page-nr \\
 \end{longtable}
 \begin{longtable}[l]{ l }
@@ -183,7 +183,7 @@ Date:  & 03.02.2022 \\
 Customer No:  & 100002 \\
 VAT No:  & 123 456 789 \\
 Fiscal No:  & 001 002 003 \\
-Payment:  & 05.03.2022 \\
+Due date:  & 05.03.2022 \\
 Page:  & \#page-nr \\
 \end{longtable}
 Banana.ch SA \\
@@ -196,7 +196,7 @@ Date:  & 03.02.2022 \\
 Customer No:  & 100002 \\
 VAT No:  & 123 456 789 \\
 Fiscal No:  & 001 002 003 \\
-Payment:  & 05.03.2022 \\
+Due date:  & 05.03.2022 \\
 Page:  & \#page-nr \\
 \end{longtable}
 \begin{longtable}[l]{ l }
@@ -225,7 +225,7 @@ Date:  & 11.11.2022 \\
 Customer No:  & 100003 \\
 VAT No:  & \\
 Fiscal No:  & \\
-Payment:  & 11.12.2022 \\
+Due date:  & 11.12.2022 \\
 Page:  & \#page-nr \\
 \end{longtable}
 Banana.ch SA \\
@@ -238,7 +238,7 @@ Date:  & 11.11.2022 \\
 Customer No:  & 100003 \\
 VAT No:  & \\
 Fiscal No:  & \\
-Payment:  & 11.12.2022 \\
+Due date:  & 11.12.2022 \\
 Page:  & \#page-nr \\
 \end{longtable}
 \begin{longtable}[l]{ l }
@@ -330,7 +330,7 @@ Date:  & 05.06.2022 \\
 Customer No:  & 100003 \\
 VAT No:  & \\
 Fiscal No:  & \\
-Payment:  & 05.07.2022 \\
+Due date:  & 05.07.2022 \\
 Page:  & \#page-nr \\
 \end{longtable}
 Banana.ch SA \\
@@ -343,7 +343,7 @@ Date:  & 05.06.2022 \\
 Customer No:  & 100003 \\
 VAT No:  & \\
 Fiscal No:  & \\
-Payment:  & 05.07.2022 \\
+Due date:  & 05.07.2022 \\
 Page:  & \#page-nr \\
 \end{longtable}
 \begin{longtable}[l]{ l }
@@ -378,7 +378,7 @@ Date:  & 04.06.2022 \\
 Customer No:  & 100003 \\
 VAT No:  & \\
 Fiscal No:  & \\
-Payment:  & 04.07.2022 \\
+Due date:  & 04.07.2022 \\
 Page:  & \#page-nr \\
 \end{longtable}
 Banana.ch SA \\
@@ -391,7 +391,7 @@ Date:  & 04.06.2022 \\
 Customer No:  & 100003 \\
 VAT No:  & \\
 Fiscal No:  & \\
-Payment:  & 04.07.2022 \\
+Due date:  & 04.07.2022 \\
 Page:  & \#page-nr \\
 \end{longtable}
 \begin{longtable}[l]{ l }
@@ -457,7 +457,7 @@ Date:  & 01.02.2022 \\
 Customer No:  & 100004 \\
 VAT No:  & \\
 Fiscal No:  & \\
-Payment:  & 03.03.2022 \\
+Due date:  & 03.03.2022 \\
 Page:  & \#page-nr \\
 \end{longtable}
 Banana.ch SA \\
@@ -470,7 +470,7 @@ Date:  & 01.02.2022 \\
 Customer No:  & 100004 \\
 VAT No:  & \\
 Fiscal No:  & \\
-Payment:  & 03.03.2022 \\
+Due date:  & 03.03.2022 \\
 Page:  & \#page-nr \\
 \end{longtable}
 \begin{longtable}[l]{ l }
@@ -502,7 +502,7 @@ Date:  & 05.03.2022 \\
 Customer No:  & 100004 \\
 VAT No:  & \\
 Fiscal No:  & \\
-Payment:  & 04.04.2022 \\
+Due date:  & 04.04.2022 \\
 Page:  & \#page-nr \\
 \end{longtable}
 Banana.ch SA \\
@@ -515,7 +515,7 @@ Date:  & 05.03.2022 \\
 Customer No:  & 100004 \\
 VAT No:  & \\
 Fiscal No:  & \\
-Payment:  & 04.04.2022 \\
+Due date:  & 04.04.2022 \\
 Page:  & \#page-nr \\
 \end{longtable}
 \begin{longtable}[l]{ l }
@@ -546,7 +546,7 @@ Date:  & 01.02.2022 \\
 Customer No:  & 100004 \\
 VAT No:  & \\
 Fiscal No:  & \\
-Payment:  & 03.03.2022 \\
+Due date:  & 03.03.2022 \\
 Page:  & \#page-nr \\
 \end{longtable}
 Banana.ch SA \\
@@ -559,7 +559,7 @@ Date:  & 01.02.2022 \\
 Customer No:  & 100004 \\
 VAT No:  & \\
 Fiscal No:  & \\
-Payment:  & 03.03.2022 \\
+Due date:  & 03.03.2022 \\
 Page:  & \#page-nr \\
 \end{longtable}
 \begin{longtable}[l]{ l }
@@ -588,7 +588,7 @@ Date:  & 07.03.2022 \\
 Customer No:  & 100004 \\
 VAT No:  & \\
 Fiscal No:  & \\
-Payment:  & 06.04.2022 \\
+Due date:  & 06.04.2022 \\
 Page:  & \#page-nr \\
 \end{longtable}
 Banana.ch SA \\
@@ -601,7 +601,7 @@ Date:  & 07.03.2022 \\
 Customer No:  & 100004 \\
 VAT No:  & \\
 Fiscal No:  & \\
-Payment:  & 06.04.2022 \\
+Due date:  & 06.04.2022 \\
 Page:  & \#page-nr \\
 \end{longtable}
 \begin{longtable}[l]{ l }
@@ -632,7 +632,7 @@ Date:  & 06.03.2022 \\
 Customer No:  & 100004 \\
 VAT No:  & \\
 Fiscal No:  & \\
-Payment:  & 05.04.2022 \\
+Due date:  & 05.04.2022 \\
 Page:  & \#page-nr \\
 \end{longtable}
 Banana.ch SA \\
@@ -645,7 +645,7 @@ Date:  & 06.03.2022 \\
 Customer No:  & 100004 \\
 VAT No:  & \\
 Fiscal No:  & \\
-Payment:  & 05.04.2022 \\
+Due date:  & 05.04.2022 \\
 Page:  & \#page-nr \\
 \end{longtable}
 \begin{longtable}[l]{ l }
