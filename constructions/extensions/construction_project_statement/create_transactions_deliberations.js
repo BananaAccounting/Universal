@@ -44,7 +44,7 @@ function initDocument() {
 function initTexts() {
     let texts = {};
 
-    texts.default_company = qsTr("Not allocated");
+    texts.default_company = qsTr("Not assigned");
 
     return texts;
 }
