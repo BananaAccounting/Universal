@@ -124,12 +124,12 @@ Annual result  & -16'180.00  & 1'145.00 \\
 + Disinvestments  & 2'500.00  & 0.00 \\
 = Cash Flow from investing (B)  & -12'500.00  & -800.00 \\
 +/- Long term (+) increases or (-) repayments of debt capital  & 9'000.00  & 0.00 \\
-- Dividends  &  & \\
+- Dividends  & 0.00  & 0.00 \\
 Share capital (+) increases or (-) reductions   & -9'200.00  & 0.00 \\
 Increase (+) or decrease (-) in reserves  & 0.00  & 0.00 \\
 =Cash Flow from financing (C)  & -200.00  & 0.00 \\
 Increase/decrease in liquidity (A+B+C)  & 8'170.00  & 1'145.00 \\
-Liquidity at the beginning of the period  &  & \\
+Liquidity at the beginning of the period  & 0.00  & 0.00 \\
 Liquidity at the end of the period  & 8'170.00  & 1'145.00 \\
 Difference  & 8'170.00  & 1'145.00 \\
 \end{longtable}

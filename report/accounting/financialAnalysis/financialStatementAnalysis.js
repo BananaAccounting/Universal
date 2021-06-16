@@ -2142,9 +2142,6 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                     } else {
                         dialogparam[key].balance = bal.balance;
                     }
-                    if (dialogparam[key].balance === "" || dialogparam[key].balance === " " || dialogparam[key].balance === null) {
-                        dialogparam[key].balance += "0.00";
-                    }
                     //finds delta for every element
                     dialogparam[key].delta = Banana.SDecimal.subtract(dialogparam[key].balance, dialogparam[key].opening);
                     //the sign is set to minus for elements of the Assets (to calculate the cashflow);
@@ -2237,6 +2234,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                                 dialogparam[key].reserves_increase = Banana.SDecimal.add(dialogparam[key].reserves_increase, jAmount);
                             }
                         }
+                        
                     }
                 }
             } else {
@@ -4314,8 +4312,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
      */
     toLocaleAmountFormat(value) {
         if (!value || value.trim().length === 0)
-            return "";
-
+            value="0";
         var dec = this.dialogparam.numberofdecimals
         return Banana.Converter.toLocaleNumberFormat(value, dec, true);
     }
