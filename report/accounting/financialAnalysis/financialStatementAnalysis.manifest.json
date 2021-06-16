@@ -2,12 +2,12 @@
     "category": "productivity",
     "country": "universal",
     "countryCode": "un",
-    "description": "Financial Statements Analysis",
-    "description.en": "Financial Statements Analysis",
+    "description": "Cash Flow Statements and Financial Ratios",
+    "description.en": "Cash Flow Statements and Financial Ratios",
     "id": "financialStatementAnalysis",
     "language": "en",
     "publisher": "Banana.ch",
-    "title": "Financial Statements Analysis",
-    "title.en": "Financial Statements Analysis",
+    "title": "Cash Flow Statements and Financial Ratios",
+    "title.en": "Cash Flow Statements and Financial Ratios",
     "version": "1.0"
 }
