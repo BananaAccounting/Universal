@@ -33,9 +33,8 @@
         <translation>Progresso %</translation>
     </message>
     <message>
-        <location filename="../construction_project_report.js" line="312"/>
         <source>Outiline Budget</source>
-        <translation>Preventivo di massima</translation>
+        <translation type="vanished">Preventivo di massima</translation>
     </message>
     <message>
         <location filename="../construction_project_report.js" line="313"/>
@@ -85,6 +84,11 @@
         <translation type="vanished">Uscite effettive (C)</translation>
     </message>
     <message>
+        <location filename="../construction_project_report.js" line="312"/>
+        <source>Estimate Budget</source>
+        <translation>Preventivo di Massima</translation>
+    </message>
+    <message>
         <location filename="../construction_project_report.js" line="314"/>
         <source>Expenses</source>
         <translation>Uscite effettive</translation>
@@ -111,8 +115,22 @@
     </message>
     <message>
         <location filename="../construction_project_report.js" line="323"/>
+        <source>Estimate Budget column</source>
+        <translation>Colonna Preventivo di Massima</translation>
+    </message>
+    <message>
+        <location filename="../construction_project_report.js" line="325"/>
+        <source>Deliberations and Estimate Budget difference column</source>
+        <translation>Colonna differenza Deliberazioni e Preventivo di massima</translation>
+    </message>
+    <message>
+        <location filename="../construction_project_report.js" line="327"/>
+        <source>Expenses and Estimate Budget difference column</source>
+        <translation>Colonna differenza Spese e Preventivo di massima</translation>
+    </message>
+    <message>
         <source>Outline Budget column</source>
-        <translation>Colonna Preventivo di massima</translation>
+        <translation type="vanished">Colonna Preventivo di massima</translation>
     </message>
     <message>
         <location filename="../construction_project_report.js" line="324"/>
@@ -120,9 +138,8 @@
         <translation>Colonna Deliberazioni</translation>
     </message>
     <message>
-        <location filename="../construction_project_report.js" line="325"/>
         <source>Deliberations and Outline Budget difference column</source>
-        <translation>Colonna differenza Deliberazioni e Preventivo di massima</translation>
+        <translation type="vanished">Colonna differenza Deliberazioni e Preventivo di massima</translation>
     </message>
     <message>
         <location filename="../construction_project_report.js" line="326"/>
@@ -130,9 +147,8 @@
         <translation>Colonna Spese effetive</translation>
     </message>
     <message>
-        <location filename="../construction_project_report.js" line="327"/>
         <source>Expenses and Outline Budget difference column</source>
-        <translation>Colonna differenza Spese e Preventivo di massima</translation>
+        <translation type="vanished">Colonna differenza Spese e Preventivo di massima</translation>
     </message>
     <message>
         <location filename="../construction_project_report.js" line="328"/>
@@ -238,8 +254,12 @@
         <translation type="vanished">Non assengati</translation>
     </message>
     <message>
-        <location filename="../create_transactions_deliberations.js" line="47"/>
         <source>Not allocated</source>
+        <translation type="vanished">Non assegnati</translation>
+    </message>
+    <message>
+        <location filename="../create_transactions_deliberations.js" line="47"/>
+        <source>Not assigned</source>
         <translation>Non assegnati</translation>
     </message>
 </context>

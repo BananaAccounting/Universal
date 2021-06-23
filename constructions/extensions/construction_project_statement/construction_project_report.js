@@ -18,7 +18,7 @@
 // @task = app.command
 // @doctype = 110.*
 // @publisher = Banana.ch SA
-// @pubdate = 2021-05-28
+// @pubdate = 2021-06-23
 // @inputdatasource = none
 // @timeout = -1
 
@@ -309,7 +309,7 @@ function initTexts() {
     texts.company = qsTr("Company");
     texts.companies = qsTr("Companies");
     texts.progress_perc = qsTr("Progress %");
-    texts.outline_budget = qsTr("Outiline Budget");
+    texts.outline_budget = qsTr("Estimate Budget");
     texts.deliberations = qsTr("Deliberations");
     texts.actual_expenses = qsTr("Expenses");
     texts.diff_del_budg = qsTr("Diff.Del./Budg.");
@@ -320,11 +320,11 @@ function initTexts() {
 
     //dialog texts
     texts.completion_column = qsTr("Progress column");
-    texts.outline_budget_column = qsTr("Outline Budget column");
+    texts.outline_budget_column = qsTr("Estimate Budget column");
     texts.deliberation_column = qsTr("Deliberations column");
-    texts.delib_outBudget_difference_column = qsTr("Deliberations and Outline Budget difference column");
+    texts.delib_outBudget_difference_column = qsTr("Deliberations and Estimate Budget difference column");
     texts.expenses_column = qsTr("Expenses column");
-    texts.exp_outBudget_difference_column = qsTr("Expenses and Outline Budget difference column");
+    texts.exp_outBudget_difference_column = qsTr("Expenses and Estimate Budget difference column");
     texts.exp_delib_difference_column = qsTr("Expenses and Deliberations difference column");
 
 
