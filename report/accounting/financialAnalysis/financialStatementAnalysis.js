@@ -36,6 +36,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         this.controlsums_differences = 0;
         this.cashflow_differences = 0;
         this.with_budget = this.banDocument.info("Budget", "TableNameXml");
+        this.analysis_end_date='';
 
         //errors
         this.ID_ERR_EXPERIMENTAL_REQUIRED = "ID_ERR_EXPERIMENTAL_REQUIRED";
@@ -1455,6 +1456,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         texts.amounts_tooltip = qsTr("Enter the amount");
         texts.logo_tooltip = qsTr("Check to include Logo");
         texts.logoname_tooltip = qsTr("Enter the Logo name");
+        texts.analysis_end_date_tooltip=qsTr("Enter the end period of the analysis for current year and Budget");
+        texts.analysis_all_period_tooltip=qsTr("Check to choose full year");
         texts.numberofpreviousyear_tooltip = qsTr("Enter the number of previous accounting years you wish to include in the analysis");
         texts.numberofdecimals_tooltip = qsTr("Enter the number of decimals for the amounts");
         texts.includebudget_tooltip = qsTr("Check to include the Budget in the Analysis");
@@ -1575,6 +1578,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         texts.grouping = qsTr('Grouping');
         texts.printdetails = qsTr('Print Details');
         texts.analysisdetails = qsTr('Analysis Details');
+        texts.analysisperiod = qsTr('Analysis Period');
+        texts.analysis_end_date=qsTr('End date (inclusive)');
+        texts.analysis_all_period=qsTr('All (01.01-31.12)');
         texts.texts = qsTr('Texts');
         texts.benchmarktexts = qsTr('Benchmarks texts');
         texts.numberofpreviousyear = qsTr('Number of previous years');
@@ -1679,6 +1685,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         dialogparam.ratios = this.initDialogParam_RatiosBenchmarks();
         dialogparam.finalresult = this.initDialogParam_FinalResult(texts);
         dialogparam.maxpreviousyears = 2;
+        dialogparam.analysis_end_date= '';
+        dialogparam.analysis_all_period=false;
         dialogparam.numberofdecimals = 2;
         dialogparam.numberofemployees = 1;
         dialogparam.acronymcolumn = true;
@@ -1968,6 +1976,10 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         return dialogparam;
     }
 
+    getFormattedDate(date){
+         date=Banana.Converter.toInternalDateFormat(date,"dd-mm-yy");
+        return date;
+    }
 
     /**
      * @description - assigns the maximum number of previous years to a varaible, if it is less than 5, is reset to 5
@@ -1977,7 +1989,12 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
      * unlike the loadDataBudget the loadDataYear is called up for each prevous year of the document.
      */
     loadData() {
+
         this.data = [];
+        //set the end date, if the user checket the all period field, the end date is not set.
+
+        this.analysis_end_date=this.getFormattedDate(this.dialogparam.analysis_end_date);
+        Banana.console.debug(this.analysis_end_date);
         var yeardocument = this.banDocument;
         var i = 0;
 
@@ -2074,6 +2091,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
         var groupList = this.loadGroups();
         var budgetBalances = false;
+
         for (var key in dialogparam) {
             this.loadData_Param(dialogparam[key], groupList, budgetBalances, _banDocument);
         }
@@ -2095,7 +2113,6 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
      * @Param {Banana Document} _banDocument: the current document
      */
     loadData_Param(dialogparam, groupList, budgetBalances, _banDocument) {
-
         for (var key in dialogparam) {
             if (dialogparam[key] && dialogparam[key].gr) {
                 var value = dialogparam[key].gr.toString();
@@ -2119,11 +2136,11 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                 var bal;
                 var transactions;
                 if (budgetBalances) {
-                    bal = _banDocument.budgetBalance(value, '', '', null);
-                    transactions = _banDocument.budgetCard(value, '', '', null);
+                    bal = _banDocument.budgetBalance(value, '', this.analysis_end_date, null);
+                    transactions = _banDocument.budgetCard(value, '', this.analysis_end_date, null);
                 } else {
-                    bal = _banDocument.currentBalance(value, '', '', null);
-                    transactions = _banDocument.currentCard(value, '', '', null);
+                    bal = _banDocument.currentBalance(value, '', this.analysis_end_date, null);
+                    transactions = _banDocument.currentCard(value, '', this.analysis_end_date, null);
                 }
                 //Banana.console.debug(JSON.stringify(bal.balance));
                 var mult = -1;
@@ -3064,6 +3081,15 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
         convertedParam.data.push(currentParam);
 
+        //I create an undergroup for the preferences, the Analysis Period
+        var currentParam = {};
+        currentParam.name = 'Analysis Period';
+        currentParam.title = texts.analysisperiod;
+        currentParam.editable = false;
+        currentParam.parentObject = 'Preferences';
+
+        convertedParam.data.push(currentParam);
+
         //I create an undergroup for the preferences, the Analysis Details
         var currentParam = {};
         currentParam.name = 'Analysis Details';
@@ -3513,7 +3539,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         convertedParam.data.push(currentParam);
 
 
-        //Previous years
+        //Number of previous years
         var currentParam = {};
         currentParam.name = 'maxpreviousyears';
         currentParam.group = 'preferences';
@@ -3522,9 +3548,41 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.value = userParam.maxpreviousyears ? userParam.maxpreviousyears : '2';
         currentParam.defaultvalue = defaultParam.maxpreviousyears;
         currentParam.tooltip = texts.numberofpreviousyear_tooltip;
-        currentParam.parentObject = 'Analysis Details';
+        currentParam.parentObject = 'Analysis Period';
         currentParam.readValue = function() {
             userParam.maxpreviousyears = this.value;
+        }
+
+        convertedParam.data.push(currentParam);
+
+        //End Period (Current Year and Budget)
+        var currentParam = {};
+        currentParam.name = 'analysisendperiod';
+        currentParam.group = 'preferences';
+        currentParam.title = texts.analysis_end_date;
+        currentParam.type = 'date';
+        currentParam.value = userParam.analysis_end_date ? userParam.analysis_end_date : userParam.analysis_end_date;
+        currentParam.defaultvalue = defaultParam.analysis_end_date;
+        currentParam.tooltip = texts.analysis_end_date_tooltip;
+        currentParam.parentObject = 'Analysis Period';
+        currentParam.readValue = function() {
+            userParam.analysis_end_date = this.value;
+        }
+
+        convertedParam.data.push(currentParam);
+
+        //All Period (01.01.XXXX/31.12.XXXX) (Current Year and Budget)
+        var currentParam = {};
+        currentParam.name = 'analysisallperiod';
+        currentParam.group = 'preferences';
+        currentParam.title = texts.analysis_all_period;
+        currentParam.type = 'bool';
+        currentParam.value = userParam.analysis_all_period ? userParam.analysis_all_period : userParam.analysis_all_period;
+        currentParam.defaultvalue = defaultParam.analysis_all_period;
+        currentParam.tooltip = texts.analysis_all_period_tooltip;
+        currentParam.parentObject = 'Analysis Period';
+        currentParam.readValue = function() {
+            userParam.analysis_all_period = this.value;
         }
 
         convertedParam.data.push(currentParam);
@@ -4401,6 +4459,12 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         if (userParam.maxpreviousyears) {
             defaultParam.maxpreviousyears = userParam.maxpreviousyears;
         }
+        if (userParam.analysis_end_date) {
+            defaultParam.analysis_end_date = userParam.analysis_end_date;
+        }
+        if (userParam.analysis_all_period) {
+            defaultParam.analysis_all_period = userParam.analysis_all_period;
+        }
         if (userParam.numberofdecimals) {
             defaultParam.numberofdecimals = userParam.numberofdecimals;
         }
@@ -4584,6 +4648,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             userParam.maxpreviousyears = 3;
         if (isNaN(userParam.maxpreviousyears) || userParam.maxpreviousyears < 0) {
             userParam.maxpreviousyears = 0;
+        }
+        if (!userParam.analysis_end_date) {
+            userParam.analysis_end_date = defaultParam.analysis_end_date;
         }
         //Verify if the User param 'number of decimals' is valid, otherwise I reset it to the maximum number
         if (userParam.numberofdecimals > 2)
