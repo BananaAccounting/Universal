@@ -55,18 +55,32 @@ function printReport() {
     var table_bas_data = addTableBaSTransactions(report);
     addHeader(report);
     addFooter(report);
-    let report_rows = getReportRows();
+    var items = getReportRows();
+    var items_total = getReportRows_totals();
 
-    for (var row in report_rows) {
-        let tableRow = table_bas_data.addRow("styleTableRows");
-        tableRow.addCell(report_rows[row].name, 'styleTablesBasNames');
-        tableRow.addCell(toLocaleAmountFormat(report_rows[row].quantity), 'styleTablesBasResults');
-        tableRow.addCell(toLocaleAmountFormat(report_rows[row].unit_cost), 'styleTablesBasResults');
-        tableRow.addCell(toLocaleAmountFormat(report_rows[row].total_cost), 'styleTablesBasResults');
-        tableRow.addCell(toLocaleAmountFormat(report_rows[row].market_price), 'styleTablesBasResults');
-        tableRow.addCell(toLocaleAmountFormat(report_rows[row].market_value), 'styleTablesBasResults');
-        tableRow.addCell(toLocaleAmountFormat(report_rows[row].perc_of_port), 'styleTablesBasResults');
-        tableRow.addCell(toLocaleAmountFormat(report_rows[row].perc_g_l), 'styleTablesBasResults');
+    for (var row_total in items_total) {
+        var tableRow = table_bas_data.addRow("styleTableRows");
+        tableRow.addCell(items_total[row_total].name, 'styleTablesBasNames_totals',8);
+        for (var row in items) {
+            if (items[row].gr === items_total[row_total].name) {
+                let tableRow = table_bas_data.addRow("styleTableRows");
+                tableRow.addCell(items[row].name, 'styleTablesBasNames');
+                tableRow.addCell(toLocaleAmountFormat(items[row].quantity), 'styleTablesBasResults');
+                tableRow.addCell(toLocaleAmountFormat(items[row].unit_cost), 'styleTablesBasResults');
+                tableRow.addCell(toLocaleAmountFormat(items[row].total_cost), 'styleTablesBasResults');
+                tableRow.addCell(toLocaleAmountFormat(items[row].market_price), 'styleTablesBasResults');
+                tableRow.addCell(toLocaleAmountFormat(items[row].market_value), 'styleTablesBasResults');
+                tableRow.addCell(toLocaleAmountFormat(items[row].perc_of_port), 'styleTablesBasResults');
+                tableRow.addCell(toLocaleAmountFormat(items[row].perc_g_l), 'styleTablesBasResults');
+            }
+        }
+        var tableRow = table_bas_data.addRow("styleTableRows");
+        tableRow.addCell("", 'styleTablesBasResults', 3);
+        tableRow.addCell(toLocaleAmountFormat(items_total[row_total].total_cost), 'styleTablesBasResults_totals');
+        tableRow.addCell(toLocaleAmountFormat(items_total[row_total].market_value), 'styleTablesBasResults_totals', 2);
+        tableRow.addCell(items_total[row_total].perc_of_port, 'styleTablesBasResults_totals');
+        tableRow.addCell(items_total[row_total].perc_g_l, 'styleTablesBasResults_totals');
+
     }
 
     return report;
@@ -96,7 +110,6 @@ function getReportStyle() {
 
     //Create a table style adding the border
     style = stylesheet.addStyle("table_bas_transactions");
-    style = stylesheet.addStyle("table_bas_details");
 
     return stylesheet;
 }
@@ -144,7 +157,7 @@ function getTableValues(table, column) {
     return values;
 }
 
-function getItemColumnValue(item, column) {
+function getItemColumnValue(item, column, total) {
     let table = Banana.document.table("Items");
     let value = "";
     if (!table) {
@@ -152,10 +165,11 @@ function getItemColumnValue(item, column) {
     }
     for (var i = 0; i < table.rowCount; i++) {
         var tRow = table.row(i);
-        if (tRow.value("ItemsId") === item)
+        if (item === tRow.value("ItemsId") || item === tRow.value("Group")) {
             value = tRow.value(column);
-        if (value.length > 0) {
-            return value;
+            if (value.length > 0) {
+                return value;
+            }
         }
     }
 }
@@ -245,6 +259,9 @@ function getReportRows() {
         item_data.perc_of_port = getItemPercOfPort(item_data.market_value, "Total");
         item_data.perc_g_l = getItemGLPerc(item_data.market_value, item_data.total_cost);
 
+        //il gr lo uso solo come riferimento per quando ciclo i dati nel print report
+        item_data.gr = getItemColumnValue(items_list[i], "Gr");
+
         items.push(item_data);
 
         //Banana.console.debug(item_data.perc_of_port);
@@ -252,6 +269,39 @@ function getReportRows() {
     }
 
     return items
+}
+
+function sumElements(item,column_total_name){
+    let sum="";
+
+    for (var key in item){
+        if(item[key].gr===column_total_name){
+            sum=Banana.SDecimal.add(sum,item[key].total_cost);
+        }
+    }
+
+    return sum;
+}
+
+function getReportRows_totals() {
+    let items=getReportRows();
+
+    let items_total = [];
+    items_list_total = getTableValues("Items", "Group");
+    for (var i = 0; i <= items_list_total.length - 1; i++) {
+        let item_data_total = {};
+        item_data_total.name = getItemColumnValue(items_list_total[i], "Group", true);
+        let total_cost_sum=sumElements(items,item_data_total.name);
+        item_data_total.total_cost = total_cost_sum;
+        item_data_total.market_value = getItemColumnValue(items_list_total[i], "CurrencyCurrentValue", true);
+        item_data_total.perc_of_port = //getTotalPercOfPort();
+        item_data_total.perc_g_l = "percentuale g/l";
+
+        items_total.push(item_data_total);
+
+    }
+
+    return items_total;
 }
 
 

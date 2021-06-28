@@ -21,6 +21,9 @@ table.table_bas_transactions {
     padding-top: 1px;
     padding-bottom: 1px;
 }
+table.table_bas_transactions:nth-child(even) {
+    background-color: #40a562;
+    }
 
 table.table_bas_details {
     border-style: solid;
@@ -28,11 +31,6 @@ table.table_bas_details {
     width: auto;
     padding-top: 1px;
     padding-bottom: 1px;
-}
-
-.table_header {
-    font-weight: bold;
-    font-size: 12;
 }
 
 
@@ -68,6 +66,17 @@ Styles for the texts
     text-align: center;
 }
 
+.styleTablesBasNames_totals {
+    text-align: left;
+    text-decoration: underline; 
+}
+
 .styleTablesBasResults {
     text-align: right;
+}
+.styleTablesBasResults_totals {
+    text-align: right;
+    border-top: solid;
+    border-top-style:double;
+    border-color: rgb(0, 0, 0);
 }
