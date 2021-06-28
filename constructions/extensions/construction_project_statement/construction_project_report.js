@@ -364,10 +364,8 @@ function addFooter(report) {
 
 function toLocaleAmountFormat(value) {
     if (!value || value.trim().length === 0)
-        return "";
-
-    var dec = 2
-    return Banana.Converter.toLocaleNumberFormat(value, dec, true);
+        value="0";
+    return Banana.Converter.toLocaleNumberFormat(value, "2", true);
 }
 
 function loadGroups(table) {
