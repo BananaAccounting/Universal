@@ -36,7 +36,6 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         this.controlsums_differences = 0;
         this.cashflow_differences = 0;
         this.with_budget = this.banDocument.info("Budget", "TableNameXml");
-        this.analysis_end_date='';
 
         //errors
         this.ID_ERR_EXPERIMENTAL_REQUIRED = "ID_ERR_EXPERIMENTAL_REQUIRED";
@@ -1456,7 +1455,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         texts.amounts_tooltip = qsTr("Enter the amount");
         texts.logo_tooltip = qsTr("Check to include Logo");
         texts.logoname_tooltip = qsTr("Enter the Logo name");
-        texts.analysis_end_date_tooltip=qsTr("Enter the end period of the analysis for current year and Budget");
+        texts.analysis_start_period_tooltip=qsTr("Enter the start period of the analysis for current year and Budget");
+        texts.analysis_end_period_tooltip=qsTr("Enter the end period of the analysis for current year and Budget");
         texts.analysis_all_period_tooltip=qsTr("Check to choose full year");
         texts.numberofpreviousyear_tooltip = qsTr("Enter the number of previous accounting years you wish to include in the analysis");
         texts.numberofdecimals_tooltip = qsTr("Enter the number of decimals for the amounts");
@@ -1469,6 +1469,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         texts.averagenumberofemployee_tooltip = qsTr("Enter the number of employees in your company");
         texts.headers_background_color_tooltip = qsTr("Enter the color for the header's background");
         texts.headers_texts_color_tooltip = qsTr("Enter the color for the header's texts");
+        texts.analysis_specified_period_tooltip=qsTr("Choose the period");
 
 
         /******************************************************************************************
@@ -1579,7 +1580,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         texts.printdetails = qsTr('Print Details');
         texts.analysisdetails = qsTr('Analysis Details');
         texts.analysisperiod = qsTr('Analysis Period');
-        texts.analysis_end_date=qsTr('End date (inclusive)');
+        texts.analysis_start_period=qsTr('Start date (inclusive)');
+        texts.analysis_end_period=qsTr('End date (inclusive)');
+        texts.analysis_specified_period=qsTr("Specified period");
         texts.analysis_all_period=qsTr('All (01.01-31.12)');
         texts.texts = qsTr('Texts');
         texts.benchmarktexts = qsTr('Benchmarks texts');
@@ -1685,8 +1688,10 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         dialogparam.ratios = this.initDialogParam_RatiosBenchmarks();
         dialogparam.finalresult = this.initDialogParam_FinalResult(texts);
         dialogparam.maxpreviousyears = 2;
-        dialogparam.analysis_end_date= '';
-        dialogparam.analysis_all_period=false;
+        dialogparam.analysis_start_period='';
+        dialogparam.analysis_end_period='';//trovare data corrente
+        dialogparam.analysis_all_period='';
+        dialogparam.analysis_specified_period='Year';
         dialogparam.numberofdecimals = 2;
         dialogparam.numberofemployees = 1;
         dialogparam.acronymcolumn = true;
@@ -1976,10 +1981,6 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         return dialogparam;
     }
 
-    getFormattedDate(date){
-         date=Banana.Converter.toInternalDateFormat(date,"dd-mm-yy");
-        return date;
-    }
 
     /**
      * @description - assigns the maximum number of previous years to a varaible, if it is less than 5, is reset to 5
@@ -1989,12 +1990,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
      * unlike the loadDataBudget the loadDataYear is called up for each prevous year of the document.
      */
     loadData() {
-
         this.data = [];
-        //set the end date, if the user checket the all period field, the end date is not set.
-
-        this.analysis_end_date=this.getFormattedDate(this.dialogparam.analysis_end_date);
-        Banana.console.debug(this.analysis_end_date);
         var yeardocument = this.banDocument;
         var i = 0;
 
@@ -2018,7 +2014,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         }
 
         while (yeardocument && i <= this.dialogparam.maxpreviousyears) {
-            var data_year = this.loadData_Year(yeardocument);
+            var data_year = this.loadData_Year(yeardocument,i);
             var calculated_data = this.calculateData(data_year, yeardocument, false);
             var index = this.calculateIndex(data_year, calculated_data);
             var dupont_data = this.createdupont_data(data_year, calculated_data, index);
@@ -2060,8 +2056,10 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
         var groupList = this.loadGroups();
         var budgetBalances = true;
+        var start_period=Banana.Converter.toInternalDateFormat(dialogparam.analysis_start_period,'dd.mm.yyyy');
+        var end_period=Banana.Converter.toInternalDateFormat(dialogparam.analysis_end_period,'dd.mm.yyyy');
         for (var key in dialogparam) {
-            this.loadData_Param(dialogparam[key], groupList, budgetBalances, _banDocument);
+            this.loadData_Param(dialogparam[key], groupList, budgetBalances, _banDocument, start_period, end_period);
         }
         dialogparam.isBudget = true;
         dialogparam.period = {};
@@ -2082,7 +2080,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
      *- Returns the processed parameters
      * @Param {Banana Document} _banDocument: the current document.
      */
-    loadData_Year(_banDocument) {
+    loadData_Year(_banDocument,index) {
         if (!this.banDocument || !_banDocument) {
             return;
         }
@@ -2091,9 +2089,16 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
         var groupList = this.loadGroups();
         var budgetBalances = false;
+        var start_period='';
+        var end_period='';
 
+        if(index==0){
+            //CONVERTO LE DATE IN FORMATO 'YYYY-MM-DD';
+            start_period=Banana.Converter.toInternalDateFormat(dialogparam.analysis_start_period,'dd.mm.yyyy');
+            end_period=Banana.Converter.toInternalDateFormat(dialogparam.analysis_end_period,'dd.mm.yyyy');
+        }
         for (var key in dialogparam) {
-            this.loadData_Param(dialogparam[key], groupList, budgetBalances, _banDocument);
+            this.loadData_Param(dialogparam[key], groupList, budgetBalances, _banDocument, start_period, end_period);
         }
         dialogparam.isBudget = false;
         dialogparam.period = {};
@@ -2112,7 +2117,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
      * @Param {object} groupList: the list of groups founded in the current document
      * @Param {Banana Document} _banDocument: the current document
      */
-    loadData_Param(dialogparam, groupList, budgetBalances, _banDocument) {
+    loadData_Param(dialogparam, groupList, budgetBalances, _banDocument,start_period,end_period) {
         for (var key in dialogparam) {
             if (dialogparam[key] && dialogparam[key].gr) {
                 var value = dialogparam[key].gr.toString();
@@ -2136,11 +2141,14 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                 var bal;
                 var transactions;
                 if (budgetBalances) {
-                    bal = _banDocument.budgetBalance(value, '', this.analysis_end_date, null);
-                    transactions = _banDocument.budgetCard(value, '', this.analysis_end_date, null);
+                    /*Banana.console.debug(dialogparam[key].gr);
+                    Banana.console.debug(start_period);
+                    Banana.console.debug(end_period);*/
+                    bal = _banDocument.budgetBalance(value, start_period, end_period, null);
+                    transactions = _banDocument.budgetCard(value, start_period, end_period, null);
                 } else {
-                    bal = _banDocument.currentBalance(value, '', this.analysis_end_date, null);
-                    transactions = _banDocument.currentCard(value, '', this.analysis_end_date, null);
+                    bal = _banDocument.currentBalance(value, start_period, end_period, null);
+                    transactions = _banDocument.currentCard(value, start_period, end_period, null);
                 }
                 //Banana.console.debug(JSON.stringify(bal.balance));
                 var mult = -1;
@@ -2941,6 +2949,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var convertedParam = {};
         convertedParam.version = '1.0';
         var texts = this.initFinancialAnalysisTexts();
+        var isAllPeriod=false;
         /*array dei parametri dello script*/
         convertedParam.data = [];
 
@@ -3555,22 +3564,6 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
         convertedParam.data.push(currentParam);
 
-        //End Period (Current Year and Budget)
-        var currentParam = {};
-        currentParam.name = 'analysisendperiod';
-        currentParam.group = 'preferences';
-        currentParam.title = texts.analysis_end_date;
-        currentParam.type = 'date';
-        currentParam.value = userParam.analysis_end_date ? userParam.analysis_end_date : userParam.analysis_end_date;
-        currentParam.defaultvalue = defaultParam.analysis_end_date;
-        currentParam.tooltip = texts.analysis_end_date_tooltip;
-        currentParam.parentObject = 'Analysis Period';
-        currentParam.readValue = function() {
-            userParam.analysis_end_date = this.value;
-        }
-
-        convertedParam.data.push(currentParam);
-
         //All Period (01.01.XXXX/31.12.XXXX) (Current Year and Budget)
         var currentParam = {};
         currentParam.name = 'analysisallperiod';
@@ -3581,8 +3574,64 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.defaultvalue = defaultParam.analysis_all_period;
         currentParam.tooltip = texts.analysis_all_period_tooltip;
         currentParam.parentObject = 'Analysis Period';
+        isAllPeriod=userParam.analysis_all_period;
         currentParam.readValue = function() {
             userParam.analysis_all_period = this.value;
+        }
+
+        convertedParam.data.push(currentParam);
+
+        //Sart Period (Current Year and Budget)
+        var currentParam = {};
+        currentParam.name = 'analysisstartperiod';
+        currentParam.group = 'preferences';
+        currentParam.title = texts.analysis_start_period;
+        currentParam.type = 'date';
+        currentParam.value = userParam.analysis_start_period ? userParam.analysis_start_period : userParam.analysis_start_period;
+        currentParam.defaultvalue = defaultParam.analysis_start_period;
+        currentParam.tooltip = texts.analysis_start_period_tooltip;
+        currentParam.parentObject = 'Analysis Period';
+        if(isAllPeriod){
+            currentParam.enabled=false;
+        }
+        currentParam.readValue = function() {
+            userParam.analysis_start_period = this.value;
+        }
+
+        convertedParam.data.push(currentParam);
+
+        //End Period (Current Year and Budget)
+        var currentParam = {};
+        currentParam.name = 'analysisendperiod';
+        currentParam.group = 'preferences';
+        currentParam.title = texts.analysis_end_period;
+        currentParam.type = 'date';
+        currentParam.value = userParam.analysis_end_period ? userParam.analysis_end_period : userParam.analysis_end_period;
+        currentParam.defaultvalue = defaultParam.analysis_end_period;
+        currentParam.tooltip = texts.analysis_end_period_tooltip;
+        currentParam.parentObject = 'Analysis Period';
+        if(isAllPeriod){
+            currentParam.enabled=false;
+        }
+        currentParam.readValue = function() {
+            userParam.analysis_end_period = this.value;
+        }
+
+        convertedParam.data.push(currentParam);
+
+        //Combobox with periods
+        var currentParam = {};
+        currentParam.name = 'analysisperiodlist';
+        currentParam.group = 'preferences';
+        currentParam.title = texts.analysis_specified_period;
+        currentParam.type = 'combobox';
+        currentParam.value = userParam.analysis_specified_period ? userParam.analysis_specified_period : userParam.analysis_specified_period;
+        currentParam.defaultvalue = defaultParam.analysis_specified_period;
+        currentParam.tooltip = texts.analysis_specified_period_tooltip;
+        currentParam.parentObject = 'Analysis Period';
+        currentParam.items=["January","February","March","April","May","June","July","August","September","October","November","December","---","1 Quarter", "2 Quarter", "3 Quarter", "4 Quarter", "5 Quarter","---", "1 Semester", "2 Semester","Year"];
+        currentParam.readValue = function() {
+            userParam.analysis_specified_period = this.value;
         }
 
         convertedParam.data.push(currentParam);
@@ -4459,12 +4508,6 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         if (userParam.maxpreviousyears) {
             defaultParam.maxpreviousyears = userParam.maxpreviousyears;
         }
-        if (userParam.analysis_end_date) {
-            defaultParam.analysis_end_date = userParam.analysis_end_date;
-        }
-        if (userParam.analysis_all_period) {
-            defaultParam.analysis_all_period = userParam.analysis_all_period;
-        }
         if (userParam.numberofdecimals) {
             defaultParam.numberofdecimals = userParam.numberofdecimals;
         }
@@ -4648,9 +4691,6 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             userParam.maxpreviousyears = 3;
         if (isNaN(userParam.maxpreviousyears) || userParam.maxpreviousyears < 0) {
             userParam.maxpreviousyears = 0;
-        }
-        if (!userParam.analysis_end_date) {
-            userParam.analysis_end_date = defaultParam.analysis_end_date;
         }
         //Verify if the User param 'number of decimals' is valid, otherwise I reset it to the maximum number
         if (userParam.numberofdecimals > 2)
