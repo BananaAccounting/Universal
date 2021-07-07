@@ -41,6 +41,17 @@ Styles for the amounts
 .styleNormalAmount {
     text-align: right;
 }
+.styleNegativeAmount{
+    text-align: right;
+    color: red;
+}
+.styleTotalNegativeAmount{
+    text-align: right;
+    color: red;
+    border-top: solid;
+    border-top-style:solid;
+    border-color: rgb(0, 0, 0);
+}
 
 
 /*************************************
@@ -83,6 +94,13 @@ Styles for the texts
 .styleTablesBasResults_totals {
     text-align: right;
     border-top: solid;
-    border-top-style:double;
+    border-top-style:solid;
+    border-color: rgb(0, 0, 0);
+}
+.styleTablesBasResults_final_totals {
+    text-align: right;
+    font-weight: bold;
+    border-bottom: solid;
+    border-bottom-style:double;
     border-color: rgb(0, 0, 0);
 }
