@@ -148,6 +148,7 @@ function printReport() {
     var report = Banana.Report.newReport("Construction Project Report");
     addHeader(report);
     addFooter(report);
+    var banDoc=Banana.document;
 
     let userParam = initParam();
     let savedParam = Banana.document.getScriptSettings();
@@ -158,7 +159,7 @@ function printReport() {
 
     var tableCategoriesManagement = addTableCategoriesManagement(report);
 
-    let group_list = loadGroups("Categories");
+    let group_list = loadGroups("Categories",banDoc);
     for (var i = 0; i < group_list.length; i++) {
         //inserisco i valori normali
         let categories_rows = loadCategoriesData(group_list[i]);
@@ -368,12 +369,12 @@ function toLocaleAmountFormat(value) {
     return Banana.Converter.toLocaleNumberFormat(value, "2", true);
 }
 
-function loadGroups(table) {
+function loadGroups(table,banDoc) {
     var groupList = [];
-    if (!Banana.document) {
+    if (!banDoc) {
         return groupList;
     }
-    var table = Banana.document.table(table);
+    var table = banDoc.table(table);
     if (!table) {
         return groupList;
     }
@@ -494,7 +495,7 @@ function loadAccountsTableRows() {
 
 function getCompaniesTotal(accounts_table_rows) {
     let companies_total = {};
-    companies_total.description = "Totale Imprese";
+    companies_total.description = qsTr("Total Companies");
     companies_total.total_deliberations = "";
     companies_total.total_expenses = "";
     companies_total.total_deliberations_expenses = "";
@@ -513,8 +514,8 @@ function getCompaniesTotal(accounts_table_rows) {
 
 
 function loadCategoriesData(group) {
-    let table = loadTableData("Categories");
     let categories_table_rows = [];
+    let table = loadTableData("Categories");
 
     //mettere nella doc che le prime due rige vanno lasciate libere come da modello
     for (var i = 2; i < table.rowCount; i++) {
