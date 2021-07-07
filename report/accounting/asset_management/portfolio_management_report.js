@@ -13,8 +13,8 @@
 // limitations under the License.
 //
 // @api = 1.0
-// @id = bonds_and_stocks_management.js
-// @description = Bonds and Stocks Management
+// @id = portfolio_management_report.js
+// @description = Portfolio Management Report
 // @task = app.command
 // @doctype = 100.*
 // @publisher = Banana.ch SA
@@ -23,7 +23,7 @@
 // @timeout = -1
 
 /**
- * This extension generates a report that allows you to see the movements of securities held in the accounts and details of their purchase and sale.
+ * This extension generates a report that allows you to see the movements of bonds and stocks held in the accounts and details
  * acronym bas= bonds and stocks
  */
 function addTableBaSAppraisal(report) {
@@ -73,7 +73,7 @@ function printReport() {
     /**********************************************************
      * create the report
      **********************************************************/
-    var report = Banana.Report.newReport("Bonds and stocks management");
+    var report = Banana.Report.newReport("Portfolio management");
 
     /***********************************************************
      * Add the appraisal report table
@@ -85,6 +85,7 @@ function printReport() {
     var items = getReportRows();
     var sorted_items=items.sort(compare);
     var items_total = getReportRows_GroupTotals();
+    var final_total=getReportRows_FinalTotal();
 
     for (var row_total in items_total) {
         var tableRow = table_bas_appraisal.addRow("styleTableRows");
@@ -93,14 +94,16 @@ function printReport() {
             if (items[row].gr === items_total[row_total].name) {
                 let tableRow = table_bas_appraisal.addRow("styleTableRows");
                 tableRow.addCell(items[row].name, 'styleTablesBasNames');
-                tableRow.addCell(toLocaleAmountFormat(items[row].quantity), 'styleTablesBasResults');
+                tableRow.addCell(Banana.Converter.toLocaleNumberFormat(items[row].quantity,"0",true), 'styleTablesBasResults');
                 tableRow.addCell(toLocaleAmountFormat(items[row].unit_cost), 'styleTablesBasResults');
                 tableRow.addCell(toLocaleAmountFormat(items[row].total_cost), 'styleTablesBasResults');
                 tableRow.addCell(toLocaleAmountFormat(items[row].market_price), 'styleTablesBasResults');
                 tableRow.addCell(toLocaleAmountFormat(items[row].market_value), 'styleTablesBasResults');
                 tableRow.addCell(toLocaleAmountFormat(items[row].perc_of_port), 'styleTablesBasResults');
-                tableRow.addCell(toLocaleAmountFormat(items[row].unrealized_gain_loss), 'styleTablesBasResults');
-                tableRow.addCell(toLocaleAmountFormat(items[row].perc_g_l), 'styleTablesBasResults');
+                var style=setNegativeStyle(sorted_items[row].unrealized_gain_loss);
+                tableRow.addCell(toLocaleAmountFormat(sorted_items[row].unrealized_gain_loss),style);
+                var style=setNegativeStyle(sorted_items[row].perc_g_l);
+                tableRow.addCell(toLocaleAmountFormat(sorted_items[row].perc_g_l), style);
             }
         }
         var tableRow = table_bas_appraisal.addRow("styleTableRows");
@@ -108,10 +111,21 @@ function printReport() {
         tableRow.addCell(toLocaleAmountFormat(items_total[row_total].total_cost), 'styleTablesBasResults_totals');
         tableRow.addCell(toLocaleAmountFormat(items_total[row_total].market_value), 'styleTablesBasResults_totals',2);
         tableRow.addCell(toLocaleAmountFormat(items_total[row_total].perc_of_port), 'styleTablesBasResults_totals');
-        tableRow.addCell(toLocaleAmountFormat(items_total[row_total].unrealized_gain_loss), 'styleTablesBasResults_totals');
-        tableRow.addCell(toLocaleAmountFormat(items_total[row_total].perc_g_l), 'styleTablesBasResults_totals');
+        var style=setNegativeStyle(items_total[row_total].unrealized_gain_loss,true);
+        tableRow.addCell(toLocaleAmountFormat(items_total[row_total].unrealized_gain_loss),style);
+        var style=setNegativeStyle(items_total[row_total].perc_g_l,true);
+        tableRow.addCell(toLocaleAmountFormat(items_total[row_total].perc_g_l),style);
 
     }
+    var tableRow = table_bas_appraisal.addRow("styleTableRows");
+    tableRow.addCell(final_total.name, 'styleTablesBasNames_totals');
+    tableRow.addCell("", 'styleTablesBasResults', 2);
+    tableRow.addCell(toLocaleAmountFormat(final_total.total_cost), 'styleTablesBasResults_final_totals');
+    tableRow.addCell(toLocaleAmountFormat(final_total.market_value), 'styleTablesBasResults_final_totals',2);
+    tableRow.addCell(toLocaleAmountFormat(final_total.perc_of_port), 'styleTablesBasResults_final_totals');
+    tableRow.addCell(toLocaleAmountFormat(final_total.unrealized_gain_loss),"styleTablesBasResults_final_totals");
+    tableRow.addCell(toLocaleAmountFormat(final_total.perc_g_l),"styleTablesBasResults_final_totals");
+    
     
     /***********************************************************
      * Add the Portfolio Holdings table (sorted by Market value)
@@ -122,17 +136,28 @@ function printReport() {
 
      var table_bas_holdings = addTableBaSHoldings(report);
      for (var row in sorted_items) {
-            let tableRow = table_bas_holdings.addRow("styleTableRows");
-            tableRow.addCell(sorted_items[row].name, 'styleTablesBasNames');
-            tableRow.addCell(toLocaleAmountFormat(sorted_items[row].quantity),style_market_quantity)
-            tableRow.addCell(toLocaleAmountFormat(sorted_items[row].unit_cost), 'styleTablesBasResults');
-            tableRow.addCell(toLocaleAmountFormat(sorted_items[row].total_cost), 'styleTablesBasResults');
-            tableRow.addCell(toLocaleAmountFormat(sorted_items[row].market_price), 'styleTablesBasResults');
-            tableRow.addCell(toLocaleAmountFormat(sorted_items[row].market_value), style_market_value);
-            tableRow.addCell(toLocaleAmountFormat(sorted_items[row].perc_of_port), style_percentage_of_portfolio);
-            tableRow.addCell(toLocaleAmountFormat(sorted_items[row].unrealized_gain_loss),'styleTablesBasResults');
-            tableRow.addCell(toLocaleAmountFormat(sorted_items[row].perc_g_l), 'styleTablesBasResults');
+        let tableRow = table_bas_holdings.addRow("styleTableRows");
+        tableRow.addCell(sorted_items[row].name, 'styleTablesBasNames');
+        tableRow.addCell(Banana.Converter.toLocaleNumberFormat(sorted_items[row].quantity,"0",true),style_market_quantity)
+        tableRow.addCell(toLocaleAmountFormat(sorted_items[row].unit_cost), 'styleTablesBasResults');
+        tableRow.addCell(toLocaleAmountFormat(sorted_items[row].total_cost), 'styleTablesBasResults');
+        tableRow.addCell(toLocaleAmountFormat(sorted_items[row].market_price), 'styleTablesBasResults');
+        tableRow.addCell(toLocaleAmountFormat(sorted_items[row].market_value), style_market_value);
+        tableRow.addCell(toLocaleAmountFormat(sorted_items[row].perc_of_port), style_percentage_of_portfolio);
+        var style=setNegativeStyle(sorted_items[row].unrealized_gain_loss);
+        tableRow.addCell(toLocaleAmountFormat(sorted_items[row].unrealized_gain_loss),style);
+        var style=setNegativeStyle(sorted_items[row].perc_g_l);
+        tableRow.addCell(toLocaleAmountFormat(sorted_items[row].perc_g_l), style);
     }
+
+    var tableRow = table_bas_holdings.addRow("styleTableRows");
+    tableRow.addCell(final_total.name, 'styleTablesBasNames_totals');
+    tableRow.addCell("", 'styleTablesBasResults', 2);
+    tableRow.addCell(toLocaleAmountFormat(final_total.total_cost), 'styleTablesBasResults_final_totals');
+    tableRow.addCell(toLocaleAmountFormat(final_total.market_value), 'styleTablesBasResults_final_totals',2);
+    tableRow.addCell(toLocaleAmountFormat(final_total.perc_of_port), 'styleTablesBasResults_final_totals');
+    tableRow.addCell(toLocaleAmountFormat(final_total.unrealized_gain_loss),"styleTablesBasResults_final_totals");
+    tableRow.addCell(toLocaleAmountFormat(final_total.perc_g_l),"styleTablesBasResults_final_totals");
 
     return report;
 
@@ -155,11 +180,34 @@ function setSortedColumnStyle(value){
     }
 }
 
+function setNegativeStyle(value,isTotal){
+    var style="";
+    var sign=Banana.SDecimal.sign(value);
+    var normal_style="";
+    var negative_style="";
+
+    if(isTotal){
+        normal_style="styleTablesBasResults_totals";
+        negative_style="styleTotalNegativeAmount";
+    }else{
+        normal_style="styleTablesBasResults";
+        negative_style="styleNegativeAmount";
+    }
+
+    if(sign==-1){
+        style=negative_style;
+    }else{
+        style=normal_style;
+    }
+
+    return style;
+}
+
 function getReportStyle() {
     //CREATE THE STYLE FOR THE REPORT
     //create the style
     var textCSS = "";
-    var file = Banana.IO.getLocalFile("file:script/bonds_and_stocks_management.css");
+    var file = Banana.IO.getLocalFile("file:script/portfolio_management_report.css");
     var fileContent = file.read();
     if (!file.errorString) {
         Banana.IO.openPath(fileContent);
@@ -202,7 +250,12 @@ function addFooter(report) {
 
 }
 
-
+/**
+ * This function, given a certain table and column, looks for values and saves them in an array. 
+ * @param {*} table the table where to look for it 
+ * @param {*} column the column where to look for it 
+ * @returns  array of values
+ */
 function getTableValues(table, column) {
     var values = [];
     if (!Banana.document) {
@@ -214,18 +267,25 @@ function getTableValues(table, column) {
     }
     for (var i = 0; i < table.rowCount; i++) {
         var tRow = table.row(i);
+        //I do not take the last total
+        if(tRow.value("Gr")!==""){
+            var value = tRow.value(column);
 
-        var value = tRow.value(column);
-
-        if (value.length > 0) {
-            values.push(value);
-
+            if (value.length > 0) {
+                values.push(value);
+            }
         }
     }
     return values;
 }
 
-function getItemColumnValue(item, column, total) {
+/**
+ * this function searches for the item passed the value contained in the items table in the column 
+ * @param {*} item reference item 
+ * @param {*} column the column where to look for it 
+ * @returns the value at that specific position
+ */
+function getItemColumnValue(item, column) {
     let table = Banana.document.table("Items");
     let value = "";
     if (!table) {
@@ -242,6 +302,12 @@ function getItemColumnValue(item, column, total) {
     }
 }
 
+/**
+ * for a certain item, it searches in the journal the purchase records and saves in an array its cost. 
+ * it makes the average of all the items found and returns the average purchase price.
+ * @param {*} item 
+ * @returns the average purchase price.
+ */
 function getItemUnitCost(item) {
     let table = Banana.document.table("Transactions");
     let unit_price = "";
@@ -276,6 +342,12 @@ function getItemUnitCost(item) {
 
 }
 
+/**
+ * this function calculates what percentage the amount represents with respect to the total of the portfolio 
+ * @param {*} amount market value of the item
+ * @param {*} group_name grouping item where I find the total of the portfolio 
+ * @returns percentage of the portfolio represented by a given item
+ */
 function getItemPercOfPort(amount, group_name) {
     let table = Banana.document.table("Items");
     let result = "";
@@ -301,6 +373,12 @@ function getItemPercOfPort(amount, group_name) {
     }
 }
 
+/**
+ * this function for each item calculates and returns the percentage that represents the gain/loss ratio
+ * @param {*} market_value the item market value
+ * @param {*} total_cost the item cost
+ * @returns the percentage that represents the gain/loss ratio
+ */
 function getItemGLPerc(market_value, total_cost) {
     let perc_g_l = Banana.SDecimal.subtract(market_value, total_cost);
     perc_g_l = Banana.SDecimal.divide(perc_g_l, market_value);
@@ -309,7 +387,12 @@ function getItemGLPerc(market_value, total_cost) {
     return perc_g_l;
 
 }
-
+/**
+ * this function for each total returns the sum of the percentages of the portfolios. 
+ * @param {*} items array of items
+ * @param {*} column_total_name the reference column for searching values 
+ * @returns for each group returns the sum of the portfolio percentages of the various items
+ */
 function getPercOfPortfolioSum(items,column_total_name){
     let sum="";
 
@@ -322,6 +405,12 @@ function getPercOfPortfolioSum(items,column_total_name){
     return sum;
 }
 
+/**
+ * this function returns for every grouping the sum of the total cost
+ * @param {*} items array of items
+ * @param {*} column_total_name the reference column for searching values 
+ * @returns the total cost sum
+ */
 function getTotalCostSum(items,column_total_name){
     let sum="";
 
@@ -334,6 +423,12 @@ function getTotalCostSum(items,column_total_name){
     return sum;
 }
 
+/**
+ * this function returns for each grouping of unrealized profit/losses 
+ * @param {*} items array of items
+ * @param {*} column_total_name the reference column for searching values 
+ * @returns  the unr gain/loss sum
+ */
 function getUnrealizedGainOrLossSum(items,column_total_name){
     let sum="";
 
@@ -346,13 +441,19 @@ function getUnrealizedGainOrLossSum(items,column_total_name){
     return sum;
 }
 
+/**
+ * this function calculates for each item the average of the G/L field %
+ * @param {*} items array of items
+ * @param {*} column_total_name 
+ * @returns the g/l % average
+ */
 function getGLAverage(items,column_total_name){
     let average="";
     let number_of_elements=0;
 
     for (var key in items){
         if(items[key].gr===column_total_name){
-            average=Banana.SDecimal.add(average,Banana.SDecimal.abs(items[key].perc_g_l));
+            average=Banana.SDecimal.add(average,items[key].perc_g_l);
             number_of_elements++;
         }
     }
@@ -362,6 +463,12 @@ function getGLAverage(items,column_total_name){
     return average;
 }
 
+/**
+ * this function sorts the items according to what the user has chosen in the dialog 
+ * @param {*} a 
+ * @param {*} b 
+ * @returns items ordered 
+ */
 function compare(a,b){
     var userParam = initParam();
     var savedParam = Banana.document.getScriptSettings();
@@ -381,7 +488,10 @@ function compare(a,b){
             break;
     }
 }
-
+/**
+ * this function creates for each item an object and assigns values to each of its properties, each item is then inserted into an array.
+ * @returns returns an array of items.
+ */
 function getReportRows() {
     let items = [];
     //get the list of the items in the Item table
@@ -411,7 +521,10 @@ function getReportRows() {
     return items
 }
 
-
+/**
+ * this function creates for each grouping total of items an object and assigns values to each of its properties, each total is then inserted into an array.
+ * @returns 
+ */
 function getReportRows_GroupTotals() {
     let items=getReportRows();
 
@@ -420,8 +533,7 @@ function getReportRows_GroupTotals() {
     for (var i = 0; i <= items_list_total.length - 1; i++) {
         let item_data_group_total = {};
         item_data_group_total.name = getItemColumnValue(items_list_total[i], "Group", true);
-        let total_cost_sum=getTotalCostSum(items,item_data_group_total.name);
-        item_data_group_total.total_cost = total_cost_sum;
+        item_data_group_total.total_cost = getTotalCostSum(items,item_data_group_total.name);
         item_data_group_total.market_value = getItemColumnValue(items_list_total[i], "CurrencyCurrentValue", true);
         item_data_group_total.unrealized_gain_loss = getUnrealizedGainOrLossSum(items,item_data_group_total.name);
         item_data_group_total.perc_of_port = getPercOfPortfolioSum(items,item_data_group_total.name);
@@ -434,14 +546,21 @@ function getReportRows_GroupTotals() {
     return items_total;
 }
 
-function getReportRows_FinalTotals(){
-    let item_data_final_total={};
 
-    item_data_final_total.name="Totals";
-    item_data_final_total.total_cost="Totale ";
+function getReportRows_FinalTotal(){
+    let total={};
+    let items_total=getReportRows_GroupTotals();
 
+    for (var key in items_total) {
+        total.name=qsTr("Totals: ");
+        total.total_cost=Banana.SDecimal.add(total.total_cost,items_total[key].total_cost);
+        total.market_value=Banana.SDecimal.add(total.market_value,items_total[key].market_value);
+        total.perc_of_port=Banana.SDecimal.add(total.perc_of_port,items_total[key].perc_of_port);
+        total.unrealized_gain_loss=Banana.SDecimal.add(total.unrealized_gain_loss,items_total[key].unrealized_gain_loss);
+        total.perc_g_l=Banana.SDecimal.add(total.perc_g_l,items_total[key].perc_g_l);
+    }
 
-
+    return total;
 }
 
 
