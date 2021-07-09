@@ -36,6 +36,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         this.controlsums_differences = 0;
         this.cashflow_differences = 0;
         this.with_budget = this.banDocument.info("Budget", "TableNameXml");
+        this.analysis_period="";
 
         //errors
         this.ID_ERR_EXPERIMENTAL_REQUIRED = "ID_ERR_EXPERIMENTAL_REQUIRED";
@@ -265,15 +266,26 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
     }
 
     generateHeaderColumns(tableRow) {
+        var texts = this.initFinancialAnalysisTexts();
         for (var i = this.data.length - 1; i >= 0; i--) {
+            Banana.console.debug(this.data[i].period.EndDate+" "+i);
             var year = this.data[i].period.EndDate;
             var elementType = this.data[i].period.Type;
-            if (elementType === "Y") {
-                year = year.substr(0, 4);
+            switch(elementType) {
+                case "PY":
+                    year = year.substr(0, 4);
+                  break;
+                case "CY":
+                    year = Banana.Converter.toLocaleDateFormat(this.analysis_period.endDate);
+                  break;
+                case "B":
+                    year = texts.budget+"  "+Banana.Converter.toLocaleDateFormat(this.analysis_period.endDate);
+                  break;
             }
             tableRow.addCell(year, "styleTablesHeaderText");
         }
     }
+
     setRatiosColumnsWidthDinamically(table) {
         var width = 60;
         if (this.data.length > 0)
@@ -1538,6 +1550,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         texts.companyinfos = qsTr("COMPANY INFORMATION");
         texts.upperbalance = qsTr("BALANCE");
         texts.balance = qsTr('Balance');
+        texts.budget = qsTr('Budget');
         texts.totowncapital = qsTr("Owned Capital");
         texts.upperprofitandloss = qsTr("PROFIT AND LOSS");
         texts.description = qsTr("Description");
@@ -1579,7 +1592,6 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         texts.grouping = qsTr('Grouping');
         texts.printdetails = qsTr('Print Details');
         texts.analysisdetails = qsTr('Analysis Details');
-        texts.analysisperiod = qsTr('Analysis Period');
         texts.analysis_start_period=qsTr('Start date (inclusive)');
         texts.analysis_end_period=qsTr('End date (inclusive)');
         texts.analysis_specified_period=qsTr("Specified period");
@@ -2056,10 +2068,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
         var groupList = this.loadGroups();
         var budgetBalances = true;
-        var start_period=Banana.Converter.toInternalDateFormat(dialogparam.analysis_start_period,'dd.mm.yyyy');
-        var end_period=Banana.Converter.toInternalDateFormat(dialogparam.analysis_end_period,'dd.mm.yyyy');
         for (var key in dialogparam) {
-            this.loadData_Param(dialogparam[key], groupList, budgetBalances, _banDocument, start_period, end_period);
+            this.loadData_Param(dialogparam[key], groupList, budgetBalances, _banDocument,"");
         }
         dialogparam.isBudget = true;
         dialogparam.period = {};
@@ -2087,24 +2097,22 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var dialogparam = JSON.stringify(this.dialogparam);
         dialogparam = JSON.parse(dialogparam);
 
-        var groupList = this.loadGroups();
         var budgetBalances = false;
-        var start_period='';
-        var end_period='';
+        var groupList = this.loadGroups();
 
-        if(index==0){
-            //CONVERTO LE DATE IN FORMATO 'YYYY-MM-DD';
-            start_period=Banana.Converter.toInternalDateFormat(dialogparam.analysis_start_period,'dd.mm.yyyy');
-            end_period=Banana.Converter.toInternalDateFormat(dialogparam.analysis_end_period,'dd.mm.yyyy');
-        }
         for (var key in dialogparam) {
-            this.loadData_Param(dialogparam[key], groupList, budgetBalances, _banDocument, start_period, end_period);
+            this.loadData_Param(dialogparam[key], groupList, budgetBalances, _banDocument,index);
         }
         dialogparam.isBudget = false;
         dialogparam.period = {};
         dialogparam.period.StartDate = _banDocument.info("AccountingDataBase", "OpeningDate");
         dialogparam.period.EndDate = _banDocument.info("AccountingDataBase", "ClosureDate");
-        dialogparam.period.Type = "Y";
+        //CY=current year, PY=previous year, mi serve riconoscerlo per generare gli header giusti per l'anno corrente
+        if(index==0){
+            dialogparam.period.Type = "CY";
+        }else{
+            dialogparam.period.Type = "PY";
+        }
         return dialogparam;
     }
 
@@ -2117,7 +2125,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
      * @Param {object} groupList: the list of groups founded in the current document
      * @Param {Banana Document} _banDocument: the current document
      */
-    loadData_Param(dialogparam, groupList, budgetBalances, _banDocument,start_period,end_period) {
+    loadData_Param(dialogparam, groupList, budgetBalances, _banDocument,index) {
         for (var key in dialogparam) {
             if (dialogparam[key] && dialogparam[key].gr) {
                 var value = dialogparam[key].gr.toString();
@@ -2140,17 +2148,20 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                     value = "Gr=" + value;
                 var bal;
                 var transactions;
+                var start_date=this.analysis_period.startDate;
+                var end_date=this.analysis_period.endDate;
                 if (budgetBalances) {
-                    /*Banana.console.debug(dialogparam[key].gr);
-                    Banana.console.debug(start_period);
-                    Banana.console.debug(end_period);*/
-                    bal = _banDocument.budgetBalance(value, start_period, end_period, null);
-                    transactions = _banDocument.budgetCard(value, start_period, end_period, null);
+                    bal = _banDocument.budgetBalance(value, "", end_date ,null);
+                    transactions = _banDocument.budgetCard(value,"",end_date, null);
                 } else {
-                    bal = _banDocument.currentBalance(value, start_period, end_period, null);
-                    transactions = _banDocument.currentCard(value, start_period, end_period, null);
+                    //controllo che sia l'anno corrente, se si filtro per data, altrimenti prendo tutto l'anno
+                    if(index!=0){
+                        start_date="";
+                        end_date="";
+                    }
+                    bal = _banDocument.currentBalance(value, "", end_date, null);
+                    transactions = _banDocument.currentCard(value, "", end_date, null);
                 }
-                //Banana.console.debug(JSON.stringify(bal.balance));
                 var mult = -1;
                 if (bal) {
                     //save the balance
@@ -3092,8 +3103,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
         //I create an undergroup for the preferences, the Analysis Period
         var currentParam = {};
-        currentParam.name = 'Analysis Period';
-        currentParam.title = texts.analysisperiod;
+        currentParam.name = 'Analysis Details';
+        currentParam.title = texts.analysisdetails;
         currentParam.editable = false;
         currentParam.parentObject = 'Preferences';
 
@@ -3557,81 +3568,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.value = userParam.maxpreviousyears ? userParam.maxpreviousyears : '2';
         currentParam.defaultvalue = defaultParam.maxpreviousyears;
         currentParam.tooltip = texts.numberofpreviousyear_tooltip;
-        currentParam.parentObject = 'Analysis Period';
+        currentParam.parentObject = 'Analysis Details';
         currentParam.readValue = function() {
             userParam.maxpreviousyears = this.value;
-        }
-
-        convertedParam.data.push(currentParam);
-
-        //All Period (01.01.XXXX/31.12.XXXX) (Current Year and Budget)
-        var currentParam = {};
-        currentParam.name = 'analysisallperiod';
-        currentParam.group = 'preferences';
-        currentParam.title = texts.analysis_all_period;
-        currentParam.type = 'bool';
-        currentParam.value = userParam.analysis_all_period ? userParam.analysis_all_period : userParam.analysis_all_period;
-        currentParam.defaultvalue = defaultParam.analysis_all_period;
-        currentParam.tooltip = texts.analysis_all_period_tooltip;
-        currentParam.parentObject = 'Analysis Period';
-        isAllPeriod=userParam.analysis_all_period;
-        currentParam.readValue = function() {
-            userParam.analysis_all_period = this.value;
-        }
-
-        convertedParam.data.push(currentParam);
-
-        //Sart Period (Current Year and Budget)
-        var currentParam = {};
-        currentParam.name = 'analysisstartperiod';
-        currentParam.group = 'preferences';
-        currentParam.title = texts.analysis_start_period;
-        currentParam.type = 'date';
-        currentParam.value = userParam.analysis_start_period ? userParam.analysis_start_period : userParam.analysis_start_period;
-        currentParam.defaultvalue = defaultParam.analysis_start_period;
-        currentParam.tooltip = texts.analysis_start_period_tooltip;
-        currentParam.parentObject = 'Analysis Period';
-        if(isAllPeriod){
-            currentParam.enabled=false;
-        }
-        currentParam.readValue = function() {
-            userParam.analysis_start_period = this.value;
-        }
-
-        convertedParam.data.push(currentParam);
-
-        //End Period (Current Year and Budget)
-        var currentParam = {};
-        currentParam.name = 'analysisendperiod';
-        currentParam.group = 'preferences';
-        currentParam.title = texts.analysis_end_period;
-        currentParam.type = 'date';
-        currentParam.value = userParam.analysis_end_period ? userParam.analysis_end_period : userParam.analysis_end_period;
-        currentParam.defaultvalue = defaultParam.analysis_end_period;
-        currentParam.tooltip = texts.analysis_end_period_tooltip;
-        currentParam.parentObject = 'Analysis Period';
-        if(isAllPeriod){
-            currentParam.enabled=false;
-        }
-        currentParam.readValue = function() {
-            userParam.analysis_end_period = this.value;
-        }
-
-        convertedParam.data.push(currentParam);
-
-        //Combobox with periods
-        var currentParam = {};
-        currentParam.name = 'analysisperiodlist';
-        currentParam.group = 'preferences';
-        currentParam.title = texts.analysis_specified_period;
-        currentParam.type = 'combobox';
-        currentParam.value = userParam.analysis_specified_period ? userParam.analysis_specified_period : userParam.analysis_specified_period;
-        currentParam.defaultvalue = defaultParam.analysis_specified_period;
-        currentParam.tooltip = texts.analysis_specified_period_tooltip;
-        currentParam.parentObject = 'Analysis Period';
-        currentParam.items=["January","February","March","April","May","June","July","August","September","October","November","December","---","1 Quarter", "2 Quarter", "3 Quarter", "4 Quarter", "5 Quarter","---", "1 Semester", "2 Semester","Year"];
-        currentParam.readValue = function() {
-            userParam.analysis_specified_period = this.value;
         }
 
         convertedParam.data.push(currentParam);
@@ -4405,11 +4344,16 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
     /**
      * @description
-     * @Param {*} dialogparam 
+     * @Param {*} dialogparam
      */
     setParam(dialogparam) {
         this.dialogparam = dialogparam;
         return this.verifyParam();
+    }
+    setAnalysisPeriod(period){
+        //Banana.console.debug("prima: "+ this.analysis_period.startDate);
+        this.analysis_period=period;
+        //Banana.console.debug("dopo: "+ this.analysis_period.startDate);
     }
 
     /**
@@ -4422,10 +4366,6 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             value="0";
         var dec = this.dialogparam.numberofdecimals
         return Banana.Converter.toLocaleNumberFormat(value, dec, true);
-    }
-
-    formatAllAmounts(data) {
-
     }
 
     isBananaAdvanced() {
@@ -5013,11 +4953,29 @@ function exec(inData, options) {
             financialStatementAnalysis.setParam(dialogparam);
         }
     }
+    var analysis_period=getAnalysisPeriod();
+    financialStatementAnalysis.setAnalysisPeriod(analysis_period);
     financialStatementAnalysis.loadData();
     var report = financialStatementAnalysis.printReport();
     var stylesheet = financialStatementAnalysis.getReportStyle();
     Banana.Report.preview(report, stylesheet);
 
+}
+/**
+ * 
+ * @returns 
+ */
+    function getAnalysisPeriod(){
+    var financialStatementAnalysis = new FinancialStatementAnalysis(Banana.document);
+    if (!financialStatementAnalysis.verifyBananaVersion()) {
+        return "@Cancel";
+    }
+    var title=qsTr("Analysis Period (Current Year and Budget)")
+    var StartPeriod = financialStatementAnalysis.banDocument.info("AccountingDataBase", "OpeningDate");
+    var EndPeriod = financialStatementAnalysis.banDocument.info("AccountingDataBase", "ClosureDate");
+    var period=Banana.Ui.getPeriod(title, StartPeriod, EndPeriod);
+
+    return period;
 }
 
 /**
