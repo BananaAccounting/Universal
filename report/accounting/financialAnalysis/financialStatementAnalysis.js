@@ -37,7 +37,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         this.controlsums_differences = 0;
         this.cashflow_differences = 0;
         this.with_budget = this.banDocument.info("Budget", "TableNameXml");
-        this.analysis_period="";
+        this.analysis_period={};
+        this.projection_start_date="";
 
         //errors
         this.ID_ERR_EXPERIMENTAL_REQUIRED = "ID_ERR_EXPERIMENTAL_REQUIRED";
@@ -65,7 +66,12 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         if (this.dialogparam.acronymcolumn) {
             tableBalance.addColumn("formula").setStyleAttributes("width:10%");
         }
-        this.setRatiosColumnsWidthDinamically(tableBalance);
+
+        var width=this.setColumnsWidthDinamically(tableBalance);
+
+        if(this.dialogparam.includebudgettable)
+            tableBalance.addColumn("Budget+/-").setStyleAttributes("width:"+width+"%");
+
         // header
         var tableHeader = tableBalance.getHeader();
         var tableRow = tableHeader.addRow();
@@ -88,7 +94,12 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         if (this.dialogparam.acronymcolumn) {
             tableConCe.addColumn("formula").setStyleAttributes("width:10%");
         }
-        this.setRatiosColumnsWidthDinamically(tableConCe);
+
+        var width=this.setColumnsWidthDinamically(tableConCe);
+
+        if(this.dialogparam.includebudgettable)
+        tableConCe.addColumn("Budget+/-").setStyleAttributes("width:"+width+"%");
+
         //header
         var tableHeader = tableConCe.getHeader();
         var tableRow = tableHeader.addRow();
@@ -125,7 +136,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         if (this.dialogparam.formulascolumn) {
             tableIndliq.addColumn("benchmark").setStyleAttributes("width:10%");
         }
-        this.setRatiosColumnsWidthDinamically(tableIndliq);
+        this.setColumnsWidthDinamically(tableIndliq);
         // header
         var tableHeader = tableIndliq.getHeader();
         var tableRow = tableHeader.addRow();
@@ -147,7 +158,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         if (this.dialogparam.formulascolumn) {
             tableIndlev.addColumn("benchmark").setStyleAttributes("width:10%");
         }
-        this.setRatiosColumnsWidthDinamically(tableIndlev);
+        this.setColumnsWidthDinamically(tableIndlev);
         // header
         var tableHeader = tableIndlev.getHeader();
         var tableRow = tableHeader.addRow();
@@ -169,7 +180,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         if (this.dialogparam.formulascolumn) {
             tableIndprof.addColumn("benchmark").setStyleAttributes("width:10%");
         }
-        this.setRatiosColumnsWidthDinamically(tableIndprof);
+        this.setColumnsWidthDinamically(tableIndprof);
         // header
         var tableHeader = tableIndprof.getHeader();
         var tableRow = tableHeader.addRow();
@@ -192,7 +203,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         if (this.dialogparam.formulascolumn) {
             tableIndeff.addColumn("benchmark").setStyleAttributes("width:10%");
         }
-        this.setRatiosColumnsWidthDinamically(tableIndeff);
+        this.setColumnsWidthDinamically(tableIndeff);
         // header
         var tableHeader = tableIndeff.getHeader();
         var tableRow = tableHeader.addRow();
@@ -211,7 +222,11 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         tableCashflow.getCaption().addText(texts.uppercashflow, "styleTitles");
         //columns
         tableCashflow.addColumn("Description").setStyleAttributes("width:50%");
-        this.setRatiosColumnsWidthDinamically(tableCashflow);
+
+        var width=this.setColumnsWidthDinamically(tableCashflow);
+        if(this.dialogparam.includebudgettable)
+        tableCashflow.addColumn("Budget+/-").setStyleAttributes("width:"+width+"%");
+
         // header
         var tableHeader = tableCashflow.getHeader();
         var tableRow = tableHeader.addRow();
@@ -232,7 +247,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         if (this.dialogparam.formulascolumn) {
             tableIndCashflow.addColumn("benchmark").setStyleAttributes("width:10%");
         }
-        this.setRatiosColumnsWidthDinamically(tableIndCashflow);
+        this.setColumnsWidthDinamically(tableIndCashflow);
         // header
         var tableHeader = tableIndCashflow.getHeader();
         var tableRow = tableHeader.addRow();
@@ -250,7 +265,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var tableDupont = report.addTable('myDupontTable');
         tableDupont.getCaption().addText(texts.upperdupontscheme, "styleTitles");
         tableDupont.addColumn("Description").setStyleAttributes("width:25%");
-        this.setRatiosColumnsWidthDinamically(tableDupont);
+        this.setColumnsWidthDinamically(tableDupont);
         //header
         var tableHeader = tableDupont.getHeader();
         var tableRow = tableHeader.addRow();
@@ -263,7 +278,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var texts = this.initFinancialAnalysisTexts();
         var tableAltmanIndex = report.addTable('myTableAltmanIndex');
         tableAltmanIndex.getCaption().addText(texts.upperaltmanindex, "styleTitles");
-        this.setRatiosColumnsWidthDinamically(tableAltmanIndex);
+        this.setColumnsWidthDinamically(tableAltmanIndex);
         // header
         var tableHeader = tableAltmanIndex.getHeader();
         var tableRow = tableHeader.addRow();
@@ -292,7 +307,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         }
     }
 
-    setRatiosColumnsWidthDinamically(table) {
+    setColumnsWidthDinamically(table) {
         var width = 60;
         if (this.data.length > 0)
             width = width / parseInt(this.data.length);
@@ -300,6 +315,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             table.addColumn("year").setStyleAttributes("width:" + width.toString() + "%");
         }
 
+        return width;
     }
 
     /**
@@ -1584,6 +1600,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         texts.groups_tooltip = qsTr("Enter the groups, separated by a semicolon ';'");
         texts.amounts_tooltip = qsTr("Enter the amount");
         texts.logo_tooltip = qsTr("Check to include Logo");
+        texts.usebudgetdata_tooltip=qsTr('Check to use budget data as a projection for the current year ');
+        texts.usebudgetdatafrom_tooltip=qsTr('Enter the date from which to start using budget data');
         texts.logoname_tooltip = qsTr("Enter the Logo name");
         texts.analysis_start_period_tooltip=qsTr("Enter the start period of the analysis for current year and Budget");
         texts.analysis_end_period_tooltip=qsTr("Enter the end period of the analysis for current year and Budget");
@@ -1711,10 +1729,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         texts.grouping = qsTr('Grouping');
         texts.printdetails = qsTr('Print Details');
         texts.analysisdetails = qsTr('Analysis Details');
-        texts.analysis_start_period=qsTr('Start date (inclusive)');
-        texts.analysis_end_period=qsTr('End date (inclusive)');
-        texts.analysis_specified_period=qsTr("Specified period");
-        texts.analysis_all_period=qsTr('All (01.01-31.12)');
+        texts.usebudgetdata=qsTr('Use budget data');
+        texts.usebudgetdatafrom=qsTr('Use budget data from');
         texts.texts = qsTr('Texts');
         texts.benchmarktexts = qsTr('Benchmarks texts');
         texts.numberofpreviousyear = qsTr('Number of previous years');
@@ -1819,10 +1835,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         dialogparam.ratios = this.initDialogParam_RatiosBenchmarks();
         dialogparam.finalresult = this.initDialogParam_FinalResult(texts);
         dialogparam.maxpreviousyears = 2;
-        dialogparam.analysis_start_period='';
-        dialogparam.analysis_end_period='';//trovare data corrente
-        dialogparam.analysis_all_period='';
-        dialogparam.analysis_specified_period='Year';
+        dialogparam.usebudgetdata=false;
+        dialogparam.usebudgetdatafrom='';
         dialogparam.numberofdecimals = 2;
         dialogparam.numberofemployees = 1;
         dialogparam.acronymcolumn = true;
@@ -2125,6 +2139,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var yeardocument = this.banDocument;
         var i = 0;
         var data_current_year={};
+        //set the projection only if budget table is inclued and the user checked the field.
+        if(this.dialogparam.usebudgetdata && this.dialogparam.includebudgettable)
+        this.projection_start_date=Banana.Converter.toInternalDateFormat(this.dialogparam.usebudgetdatafrom);
 
         // only if the table budget exists and if the User choosed to use it.
         var isIncluded = this.dialogparam.includebudgettable;
@@ -2144,7 +2161,6 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             data_budget.cashflow_index = cashflow_index;
             this.data.push(data_budget);
         }
-
         while (yeardocument && i <= this.dialogparam.maxpreviousyears) {
             var data_year = this.loadData_Year(yeardocument,i);
             var calculated_data = this.calculateData(data_year, yeardocument, false,i);
@@ -2197,7 +2213,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var groupList = this.loadGroups();
         var budgetBalances = true;
         for (var key in dialogparam) {
-            this.loadData_Param(dialogparam[key], groupList, budgetBalances, _banDocument);
+            this.loadData_Param(dialogparam[key], groupList, budgetBalances, _banDocument,"");
         }
         dialogparam.isBudget = true;
         dialogparam.period = {};
@@ -2271,8 +2287,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                     bal = _banDocument.budgetBalance(value, "", this.analysis_period.endDate ,null);
                     transactions = _banDocument.budgetCard(value,"",this.analysis_period.endDate, null);
                 } else {
-                    bal = _banDocument.projectionBalance(value,"", "", this.analysis_period.endDate, null);
-                    transactions = _banDocument.projectionCard(value, "", "", this.analysis_period.endDate, null);
+                    bal = _banDocument.projectionBalance(value,this.projection_start_date, "", this.analysis_period.endDate, null);
+                    transactions = _banDocument.projectionCard(value, this.projection_start_date, "", this.analysis_period.endDate, null);
                 }
                 var mult = -1;
                 if (bal) {
@@ -3402,10 +3418,10 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
         //I create an undergroup for the preferences, the Analysis Details
         var currentParam = {};
-        currentParam.name = 'Analysis Details';
-        currentParam.title = texts.analysisdetails;
+        currentParam.name = 'Budget';
+        currentParam.title = texts.budget;
         currentParam.editable = false;
-        currentParam.parentObject = 'Preferences';
+        currentParam.parentObject = 'Analysis Details';
 
         convertedParam.data.push(currentParam);
 
@@ -3426,6 +3442,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.title = texts.benchmarks;
         currentParam.editable = false;
         currentParam.collapse = true;
+
         convertedParam.data.push(currentParam);
 
         /**
@@ -3890,9 +3907,41 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.value = userParam.includebudgettable ? userParam.includebudgettable : userParam.includebudgettable;
         currentParam.defaultvalue = defaultParam.includebudgettable;
         currentParam.tooltip = texts.includebudget_tooltip;
-        currentParam.parentObject = 'Analysis Details';
+        currentParam.parentObject = 'Budget';
         currentParam.readValue = function() {
             userParam.includebudgettable = this.value;
+        }
+
+        convertedParam.data.push(currentParam);
+
+        //Uuse budget data as a projection 
+        var currentParam = {};
+        currentParam.name = 'usebudgetdata';
+        currentParam.group = 'preferences';
+        currentParam.title = texts.usebudgetdata;
+        currentParam.type = 'bool';
+        currentParam.value = userParam.usebudgetdata ? userParam.usebudgetdata : userParam.usebudgetdata;
+        currentParam.defaultvalue = defaultParam.usebudgetdata;
+        currentParam.tooltip = texts.usebudgetdata_tooltip;
+        currentParam.parentObject = 'Budget';
+        currentParam.readValue = function() {
+            userParam.usebudgetdata = this.value;
+        }
+
+        convertedParam.data.push(currentParam);
+
+        //Enter the date from which to start using budget data
+        var currentParam = {};
+        currentParam.name = 'usebudgetdatafrom';
+        currentParam.group = 'preferences';
+        currentParam.title = texts.usebudgetdatafrom;
+        currentParam.type = 'date';
+        currentParam.value = userParam.usebudgetdatafrom ? userParam.usebudgetdatafrom : userParam.usebudgetdatafrom;
+        currentParam.defaultvalue = defaultParam.usebudgetdatafrom;
+        currentParam.tooltip = texts.usebudgetdatafrom_tooltip;
+        currentParam.parentObject = 'Budget';
+        currentParam.readValue = function() {
+            userParam.usebudgetdatafrom = this.value;
         }
 
         convertedParam.data.push(currentParam);
@@ -4641,9 +4690,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         return this.verifyParam();
     }
     setAnalysisPeriod(period){
-        //Banana.console.debug("prima: "+ this.analysis_period.startDate);
         this.analysis_period=period;
-        //Banana.console.debug("dopo: "+ this.analysis_period.startDate);
     }
 
     /**
