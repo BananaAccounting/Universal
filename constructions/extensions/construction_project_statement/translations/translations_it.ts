@@ -39,7 +39,7 @@
     <message>
         <location filename="../construction_project_report.js" line="314"/>
         <source>Deliberations</source>
-        <translation>Deliberazioni</translation>
+        <translation>Delibere</translation>
     </message>
     <message>
         <source>Deliberations-Outiline Budget</source>
@@ -121,7 +121,7 @@
     <message>
         <location filename="../construction_project_report.js" line="326"/>
         <source>Deliberations and Estimate Budget difference column</source>
-        <translation>Colonna differenza Deliberazioni e Preventivo di massima</translation>
+        <translation>Colonna differenza Delibere e Preventivo di massima</translation>
     </message>
     <message>
         <location filename="../construction_project_report.js" line="328"/>
@@ -140,7 +140,7 @@
     <message>
         <location filename="../construction_project_report.js" line="325"/>
         <source>Deliberations column</source>
-        <translation>Colonna Deliberazioni</translation>
+        <translation>Colonna Delibere</translation>
     </message>
     <message>
         <source>Deliberations and Outline Budget difference column</source>
@@ -158,7 +158,7 @@
     <message>
         <location filename="../construction_project_report.js" line="329"/>
         <source>Expenses and Deliberations difference column</source>
-        <translation>Colonna differenza Spese e Deliberazioni</translation>
+        <translation>Colonna differenza Spese e Delibere</translation>
     </message>
 </context>
 <context>
