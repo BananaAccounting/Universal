@@ -5462,7 +5462,7 @@ function exec(inData, options) {
         return "@Cancel";
     }
     //where i'm going to save the result of the getPeriod API
-    var scriptform = {
+    var dialogfields = {
 		"selectionStartDate": "",
 		"selectionEndDate": "",
 		"selectionChecked": "false"
@@ -5470,18 +5470,21 @@ function exec(inData, options) {
 
     var savedParam = Banana.document.getScriptSettings("financialStatementAnalysis");
     if (savedParam.length > 0) {
-        financialStatementAnalysis.setAnalysisPeriod(JSON.parse(savedParam));
+        var readSettings=JSON.parse(savedParam);
+        if(readSettings){
+            dialogfields=readSettings;
+        }
     }
 
     var title=qsTr("Analysis Period (Current Year and Budget)")
     var StartPeriod = financialStatementAnalysis.banDocument.info("AccountingDataBase", "OpeningDate");
     var EndPeriod = financialStatementAnalysis.banDocument.info("AccountingDataBase", "ClosureDate");
 
-    var period=Banana.Ui.getPeriod(title, StartPeriod, EndPeriod);
+    var period=Banana.Ui.getPeriod(title, StartPeriod, EndPeriod,dialogfields.selectionStartDate,dialogfields.selectionEndDate,dialogfields.selectionChecked);
     if(period){
-        scriptform["selectionStartDate"] = period.startDate;
-		scriptform["selectionEndDate"] = period.endDate;
-		scriptform["selectionChecked"] = period.hasSelection;
+        dialogfields["selectionStartDate"] = period.startDate;
+		dialogfields["selectionEndDate"] = period.endDate;
+		dialogfields["selectionChecked"] = period.hasSelection;
 
         Banana.document.setScriptSettings("financialStatementAnalysis", period);
 
