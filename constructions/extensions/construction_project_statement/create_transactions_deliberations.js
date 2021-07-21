@@ -139,13 +139,10 @@ function verifyIfDeliExists(new_row) {
     let exists_in_budget = false;
 
     for (var row in actual_rows) {
-        /*Banana.console.debug("new row budget: " + new_row.budget);
-        Banana.console.debug("actual row bodget: " + actual_rows[row].budget);*/
-        if (new_row.description === actual_rows[row].description && new_row.category === actual_rows[row].category) {
+        if (new_row.category === actual_rows[row].category) {
             exists_in_budget = true;
         }
     }
-
 
     return exists_in_budget;
 
