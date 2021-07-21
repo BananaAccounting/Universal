@@ -18,7 +18,7 @@
 // @task = app.command
 // @doctype = 110.*
 // @publisher = Banana.ch SA
-// @pubdate = 2021-06-23
+// @pubdate = 2021-07-21
 // @inputdatasource = none
 // @timeout = -1
 
@@ -42,6 +42,8 @@ function addTableCategoriesManagement(report) {
     tableCategoriesManagement.setStyleAttributes("width:100%;");
     tableCategoriesManagement.getCaption().addText(texts.statement_byCategory, "styleTablesTitles");
     tableCategoriesManagement.addColumn("Category").setStyleAttributes("width:20%");
+    if (userParam.category.completion_column)
+        tableCategoriesManagement.addColumn("Progress").setStyleAttributes("width:10%");
     setColumnsWidthDinamically(tableCategoriesManagement, "category");
 
     var tableHeader = tableCategoriesManagement.getHeader();
@@ -78,6 +80,8 @@ function addTableCompaniesManagement(report) {
     tableCompaniesManagement.setStyleAttributes("width:100%;");
     tableCompaniesManagement.getCaption().addText(texts.statement_byCompany, "styleTablesTitles");
     tableCompaniesManagement.addColumn("Company").setStyleAttributes("width:20%");
+    if (userParam.company.completion_column)
+        tableCompaniesManagement.addColumn("Progress").setStyleAttributes("width:10%");
     setColumnsWidthDinamically(tableCompaniesManagement, "company");
 
     var tableHeader = tableCompaniesManagement.getHeader();
@@ -127,15 +131,17 @@ function getNumbersOfColumns(table_type) {
     switch (table_type) {
         case "category":
             obj = userParam.category;
+            //setto a false siccome non voglio contarlo nel numero di colonne a cui settare dinamicamente la larghezza.
+            obj.completion_column=false;
             break;
         case "company":
             obj = userParam.company;
+            obj.completion_column=false;
             break;
         default:
             obj = {};
     }
     for (var key in obj) {
-        // Banana.console.debug(JSON.stringify(obj[key]));
         if (obj[key] == true)
             nr_columns++;
     }
