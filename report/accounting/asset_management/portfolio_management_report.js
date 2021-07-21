@@ -730,6 +730,44 @@ function settingsDialog() {
     return true;
 }
 
+function getComboBoxElement() {
+
+    var market_value=qsTr("Market Value");
+    var quantity=qsTr("Quantity");
+    var perc_of_port=qsTr("Percentage of Portfolio");
+
+	//The formeters of the period that we need
+
+	var combobox_value = "";
+	//Read script settings
+	var data = Banana.document.getScriptSettings();
+
+	//Check if there are previously saved settings and read them
+	if (data.length > 0) {
+        var readSettings = JSON.parse(data);
+        //We check if "readSettings" is not null, then we fill the formeters with the values just read
+        if (readSettings) {
+            combobox_value = readSettings;
+        }
+	}
+	//A dialog window is opened asking the user to insert the desired period. By default is the accounting period
+
+    var selected_value = Banana.Ui.getItem("Sort by", "Choose a value", [market_value,quantity,perc_of_port], combobox_value, false);
+
+	//We take the values entered by the user and save them as "new default" values.
+	//This because the next time the script will be executed, the dialog window will contains the new values.
+	if (selected_value) {
+        combobox_value=selected_value;
+		//Save script settings
+		var valueToString = JSON.stringify(combobox_value);
+		Banana.document.setScriptSettings(valueToString);
+	} else {
+		//User clicked cancel
+		return;
+	}
+	return scriptform;
+}
+
 function exec(inData, options) {
 
     if (!Banana.document)
