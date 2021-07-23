@@ -164,14 +164,12 @@ function printReport() {
 }
 
 function setSortedColumnStyle(value){
-    var userParam = initParam();
     var savedParam = Banana.document.getScriptSettings();
     if (savedParam.length > 0) {
         userParam = JSON.parse(savedParam);
-        userParam = verifyParam(userParam);
     }
     var style="";
-    if(userParam.sort_items_by===value){
+    if(userParam===value){
         style="styleSortedByColumn";
         return style;
     }else{
@@ -470,13 +468,11 @@ function getGLAverage(items,column_total_name){
  * @returns items ordered 
  */
 function compare(a,b){
-    var userParam = initParam();
     var savedParam = Banana.document.getScriptSettings();
     if (savedParam.length > 0) {
         userParam = JSON.parse(savedParam);
-        userParam = verifyParam(userParam);
     }
-    switch(userParam.sort_items_by){
+    switch(userParam){
         case "Market Value":
             return b.market_value-a.market_value;
             break;
@@ -570,26 +566,6 @@ function toLocaleAmountFormat(value) {
     //cambiare
     var dec = 2
     return Banana.Converter.toLocaleNumberFormat(value, dec, true);
-}
-
-function initParam() {
-
-    var userParam = {};
-
-    userParam.version = "v1.0";
-    userParam.sort_items_by = 'Market Value';
-
-    return userParam;
-
-}
-
-/**
- * Verifies the parameters entered by the user
- */
-function verifyParam(userParam) {
-
-    return userParam;
-
 }
 
 
@@ -705,31 +681,6 @@ function verifyBananaVersion() {
     return true;
 }
 
-function settingsDialog() {
-    var userParam = initParam();
-    var savedParam = Banana.document.getScriptSettings();
-    if (savedParam.length > 0) {
-        userParam = JSON.parse(savedParam);
-        userParam = verifyParam(userParam);
-    }
-
-    var dialogTitle = 'Settings';
-    var pageAnchor = 'dlgSettings';
-    var convertedParam = convertParam(userParam);
-    if (!Banana.Ui.openPropertyEditor(dialogTitle, convertedParam, pageAnchor))
-        return false;
-    for (var i = 0; i < convertedParam.data.length; i++) {
-        // Read values to dialogparam (through the readValue function)
-        if (typeof(convertedParam.data[i].readValue) == "function")
-            convertedParam.data[i].readValue();
-    }
-
-    var paramToString = JSON.stringify(userParam);
-    Banana.document.setScriptSettings(paramToString);
-
-    return true;
-}
-
 function getComboBoxElement() {
 
     var market_value=qsTr("Market Value");
@@ -765,7 +716,7 @@ function getComboBoxElement() {
 		//User clicked cancel
 		return;
 	}
-	return scriptform;
+	return combobox_value;
 }
 
 function exec(inData, options) {
@@ -777,25 +728,10 @@ function exec(inData, options) {
         return "@Cancel";
     }
 
-    var userParam = {};
-    if (inData.length > 0) {
-        userParam = JSON.parse(inData);
-        userParam = verifyParam(userParam);
-    } else if (options && options.useLastSettings) {
-        var savedParam = Banana.document.getScriptSettings();
-        if (savedParam.length > 0) {
-            userParam = JSON.parse(savedParam);
-            userParam = verifyParam(userParam);
-        }
-    } else {
-        if (!settingsDialog()) {
-            return "@Cancel";
-        }
-        var savedParam = Banana.document.getScriptSettings();
-        if (savedParam.length > 0) {
-            userParam = JSON.parse(savedParam);
-            userParam = verifyParam(userParam);
-        }
+    var comboboxForm = getComboBoxElement();
+
+    if (!comboboxForm) {
+       return;
     }
 
     var report = printReport();
