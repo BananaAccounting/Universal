@@ -5,6 +5,9 @@ TEMPLATE = aux
 
 TRANSLATIONS += \
     translations/translations_it.ts \
+    translations/translations_fr.ts \
+    translations/translations_de.ts \
+    translations/translations_cn.ts \
 
 
 RESOURCES += \

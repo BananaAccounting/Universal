@@ -4,7 +4,7 @@
 <context>
     <name>construction_project_report</name>
     <message>
-        <location filename="../construction_project_report.js" line="308"/>
+        <location filename="../construction_project_report.js" line="314"/>
         <source>Category</source>
         <translation>Categoria</translation>
     </message>
@@ -13,22 +13,22 @@
         <translation type="vanished">xxxx</translation>
     </message>
     <message>
-        <location filename="../construction_project_report.js" line="309"/>
+        <location filename="../construction_project_report.js" line="315"/>
         <source>Categories</source>
         <translation>Categorie</translation>
     </message>
     <message>
-        <location filename="../construction_project_report.js" line="310"/>
+        <location filename="../construction_project_report.js" line="316"/>
         <source>Company</source>
         <translation>Impresa</translation>
     </message>
     <message>
-        <location filename="../construction_project_report.js" line="311"/>
+        <location filename="../construction_project_report.js" line="317"/>
         <source>Companies</source>
         <translation>Imprese</translation>
     </message>
     <message>
-        <location filename="../construction_project_report.js" line="312"/>
+        <location filename="../construction_project_report.js" line="318"/>
         <source>Progress %</source>
         <translation>Progresso %</translation>
     </message>
@@ -37,7 +37,7 @@
         <translation type="vanished">Preventivo di massima</translation>
     </message>
     <message>
-        <location filename="../construction_project_report.js" line="314"/>
+        <location filename="../construction_project_report.js" line="320"/>
         <source>Deliberations</source>
         <translation>Delibere</translation>
     </message>
@@ -58,12 +58,12 @@
         <translation type="vanished">Uscite-Deliberazioni</translation>
     </message>
     <message>
-        <location filename="../construction_project_report.js" line="319"/>
+        <location filename="../construction_project_report.js" line="325"/>
         <source>Statement by Category</source>
         <translation>Rapporto per Categoria</translation>
     </message>
     <message>
-        <location filename="../construction_project_report.js" line="320"/>
+        <location filename="../construction_project_report.js" line="326"/>
         <source>Statement by Company</source>
         <translation>Rapporto per Impresa</translation>
     </message>
@@ -84,52 +84,52 @@
         <translation type="vanished">Uscite effettive (C)</translation>
     </message>
     <message>
-        <location filename="../construction_project_report.js" line="313"/>
+        <location filename="../construction_project_report.js" line="319"/>
         <source>Estimate Budget</source>
         <translation>Preventivo di Massima</translation>
     </message>
     <message>
-        <location filename="../construction_project_report.js" line="315"/>
+        <location filename="../construction_project_report.js" line="321"/>
         <source>Expenses</source>
         <translation>Uscite effettive</translation>
     </message>
     <message>
-        <location filename="../construction_project_report.js" line="316"/>
+        <location filename="../construction_project_report.js" line="322"/>
         <source>Diff.Del./Budg.</source>
         <translation>Diff. Del./Prev.</translation>
     </message>
     <message>
-        <location filename="../construction_project_report.js" line="317"/>
+        <location filename="../construction_project_report.js" line="323"/>
         <source>Diff.Exp./Budg.</source>
         <translation>Diff. Eff./Prev.</translation>
     </message>
     <message>
-        <location filename="../construction_project_report.js" line="318"/>
+        <location filename="../construction_project_report.js" line="324"/>
         <source>Diff.Exp./Del.</source>
         <translation>Diff. Eff./Del.</translation>
     </message>
     <message>
-        <location filename="../construction_project_report.js" line="323"/>
+        <location filename="../construction_project_report.js" line="329"/>
         <source>Progress column</source>
         <translation>Colonna Progresso</translation>
     </message>
     <message>
-        <location filename="../construction_project_report.js" line="324"/>
+        <location filename="../construction_project_report.js" line="330"/>
         <source>Estimate Budget column</source>
         <translation>Colonna Preventivo di Massima</translation>
     </message>
     <message>
-        <location filename="../construction_project_report.js" line="326"/>
+        <location filename="../construction_project_report.js" line="332"/>
         <source>Deliberations and Estimate Budget difference column</source>
         <translation>Colonna differenza Delibere e Preventivo di massima</translation>
     </message>
     <message>
-        <location filename="../construction_project_report.js" line="328"/>
+        <location filename="../construction_project_report.js" line="334"/>
         <source>Expenses and Estimate Budget difference column</source>
         <translation>Colonna differenza Spese e Preventivo di massima</translation>
     </message>
     <message>
-        <location filename="../construction_project_report.js" line="498"/>
+        <location filename="../construction_project_report.js" line="504"/>
         <source>Total Companies</source>
         <translation>Totale Imprese</translation>
     </message>
@@ -138,7 +138,7 @@
         <translation type="vanished">Colonna Preventivo di massima</translation>
     </message>
     <message>
-        <location filename="../construction_project_report.js" line="325"/>
+        <location filename="../construction_project_report.js" line="331"/>
         <source>Deliberations column</source>
         <translation>Colonna Delibere</translation>
     </message>
@@ -147,7 +147,7 @@
         <translation type="vanished">Colonna differenza Deliberazioni e Preventivo di massima</translation>
     </message>
     <message>
-        <location filename="../construction_project_report.js" line="327"/>
+        <location filename="../construction_project_report.js" line="333"/>
         <source>Expenses column</source>
         <translation>Colonna Spese effetive</translation>
     </message>
@@ -156,7 +156,7 @@
         <translation type="vanished">Colonna differenza Spese e Preventivo di massima</translation>
     </message>
     <message>
-        <location filename="../construction_project_report.js" line="329"/>
+        <location filename="../construction_project_report.js" line="335"/>
         <source>Expenses and Deliberations difference column</source>
         <translation>Colonna differenza Spese e Delibere</translation>
     </message>
