@@ -327,10 +327,10 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                     year = year.substr(0, 4);
                   break;
                 case "CY":
-                    year = Banana.Converter.toLocaleDateFormat(this.dialogparam.endDate);
+                    year = Banana.Converter.toLocaleDateFormat(this.dialogparam.selectionEndDate);
                   break;
                 case "B":
-                    year = texts.budget+"  "+Banana.Converter.toLocaleDateFormat(this.dialogparam.endDate);
+                    year = texts.budget+"  "+Banana.Converter.toLocaleDateFormat(this.dialogparam.selectionEndDate);
                   break;
             }
             tableRow.addCell(year, "styleTablesHeaderText");
@@ -938,10 +938,16 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                     this.setIndexEvolution(indexT1, indexT2, cell);
                 }
 
-
             }
-            if(this.dialogparam.includebudgettable)
-            tableRow.addCell(this.toLocaleAmountFormat(this.differences.ratios.liqu[key])+'%', "styleNormalAmount");
+            if(this.dialogparam.includebudgettable){
+                Banana.console.debug(JSON.stringify(this.differences.ratios.liqu[key]));
+                if(this.differences.ratios.liqu[key].type=="dec"){
+                    tableRow.addCell(this.toLocaleAmountFormat(this.differences.ratios.liqu[key].value), "styleNormalAmount");
+                }
+                else{
+                    tableRow.addCell(this.toLocaleAmountFormat(this.differences.ratios.liqu[key].value)+perc, "styleNormalAmount");
+                }
+            }
         }
 
         /******************************************************************************************
@@ -1874,17 +1880,16 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var dialogparam = {};
         dialogparam.version = "v1.2";
         dialogparam.period={};
-        dialogparam.startDate=this.banDocument.info("AccountingDataBase", "OpeningDate");
-        dialogparam.endDate=this.banDocument.info("AccountingDataBase", "ClosureDate");
-        dialogparam.hasSelection=true;
-        dialogparam.selectionChecked="";
+        dialogparam.selectionStartDate=this.banDocument.startPeriod();
+        dialogparam.selectionEndDate=this.banDocument.endPeriod();
+        dialogparam.selectionChecked=false;
         dialogparam.balance = this.initDialogParam_Balance();
         dialogparam.profitandloss = this.initDialogParam_ProfitLoss(texts);
         dialogparam.ratios = this.initDialogParam_RatiosBenchmarks();
         dialogparam.finalresult = this.initDialogParam_FinalResult(texts);
         dialogparam.maxpreviousyears = 2;
         dialogparam.usebudgetdata=false;
-        dialogparam.usebudgetdatafrom='';
+        dialogparam.usebudgetdatafrom=this.banDocument.info("AccountingDataBase", "ClosureDate");
         dialogparam.numberofdecimals = 2;
         dialogparam.numberofemployees = 1;
         dialogparam.acronymcolumn = true;
@@ -2332,11 +2337,11 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                 var bal;
                 var transactions;
                 if (budgetBalances) {
-                    bal = _banDocument.budgetBalance(value, "", this.dialogparam.endDate ,null);
-                    transactions = _banDocument.budgetCard(value,"",this.dialogparam.endDate, null);
+                    bal = _banDocument.budgetBalance(value, "", this.dialogparam.selectionEndDate ,null);
+                    transactions = _banDocument.budgetCard(value,"",this.dialogparam.selectionEndDate, null);
                 } else {
-                    bal = _banDocument.projectionBalance(value,this.projection_start_date, "", this.dialogparam.endDate, null);
-                    transactions = _banDocument.projectionCard(value, this.projection_start_date, "", this.dialogparam.endDate, null);
+                    bal = _banDocument.projectionBalance(value,this.projection_start_date, "", this.dialogparam.selectionEndDate, null);
+                    transactions = _banDocument.projectionCard(value, this.projection_start_date, "", this.dialogparam.selectionEndDate, null);
                 }
                 var mult = -1;
                 if (bal) {
@@ -2538,10 +2543,23 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
         var liqu={};
 
-        liqu.doflone=Banana.SDecimal.subtract(ratios_current_liqu_data.doflone.amount,ratios_budget_liqu_data.doflone.amount);
-        liqu.dofltwo=Banana.SDecimal.subtract(ratios_current_liqu_data.dofltwo.amount,ratios_budget_liqu_data.dofltwo.amount);
-        liqu.doflthree=Banana.SDecimal.subtract(ratios_current_liqu_data.doflthree.amount,ratios_budget_liqu_data.doflthree.amount);
-        liqu.netcuas=Banana.SDecimal.subtract(ratios_current_liqu_data.netcuas.amount,ratios_budget_liqu_data.netcuas.amount);
+        //i need to kwnow for this ratios if it's a decimal type or percentage
+
+        liqu.doflone={};
+        liqu.doflone.type="perc";
+        liqu.doflone.value=Banana.SDecimal.subtract(ratios_current_liqu_data.doflone.amount,ratios_budget_liqu_data.doflone.amount);
+
+        liqu.dofltwo={};
+        liqu.dofltwo.type="perc";
+        liqu.dofltwo.value=Banana.SDecimal.subtract(ratios_current_liqu_data.dofltwo.amount,ratios_budget_liqu_data.dofltwo.amount);
+
+        liqu.doflthree={};
+        liqu.doflthree.type="perc"
+        liqu.doflthree.value=Banana.SDecimal.subtract(ratios_current_liqu_data.doflthree.amount,ratios_budget_liqu_data.doflthree.amount);
+
+        liqu.netcuas={};
+        liqu.netcuas.type="dec";
+        liqu.netcuas.value=Banana.SDecimal.subtract(ratios_current_liqu_data.netcuas.amount,ratios_budget_liqu_data.netcuas.amount);
 
         return liqu;
     }
@@ -2806,9 +2824,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         calcdata.totalassets_sheet = {}
         var totalassets_sheet;
         if (budget_Isincluded) {
-            totalassets_sheet = _banDocument.budgetBalance('Gr=1', "", this.dialogparam.endDate, null);
+            totalassets_sheet = _banDocument.budgetBalance('Gr=1', "", this.dialogparam.selectionEndDate, null);
         } else {
-            totalassets_sheet = _banDocument.projectionBalance('Gr=1',this.projection_start_date, "", this.dialogparam.endDate, null);
+            totalassets_sheet = _banDocument.projectionBalance('Gr=1',this.projection_start_date, "", this.dialogparam.selectionEndDate, null);
         }
         totalassets_sheet = totalassets_sheet.balance;
         calcdata.totalassets_sheet = totalassets_sheet;
@@ -2851,9 +2869,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var mult = -1;
         var totalliabilitiesandequity_sheet
         if (budget_Isincluded) {
-            totalliabilitiesandequity_sheet = _banDocument.budgetBalance('Gr=2', "", this.dialogparam.endDate, null);
+            totalliabilitiesandequity_sheet = _banDocument.budgetBalance('Gr=2', "", this.dialogparam.selectionEndDate, null);
         } else {
-            totalliabilitiesandequity_sheet = _banDocument.projectionBalance('Gr=2',this.projection_start_date, "", this.dialogparam.endDate, null);
+            totalliabilitiesandequity_sheet = _banDocument.projectionBalance('Gr=2',this.projection_start_date, "", this.dialogparam.selectionEndDate, null);
 
         }
         totalliabilitiesandequity_sheet = Banana.SDecimal.multiply(totalliabilitiesandequity_sheet.balance, mult);
@@ -5119,16 +5137,6 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var defaultParam = this.initDialogParam();
         var userParam = this.dialogparam;
 
-
-    //verfify the getPeriod dialog date params
-        if(!userParam.startDate){
-            userParam.startDate=defaultParam.startDate;
-        }
-
-        if(!userParam.endDate){
-            userParam.endDate=defaultParam.endDate;
-        }
-
         //Verify if the User param 'number of previous years entered' is valid, otherwise I reset it to the maximum number or zero if is NAN or >0
         if (userParam.maxpreviousyears > 3)
             userParam.maxpreviousyears = 3;
@@ -5471,20 +5479,12 @@ function exec(inData, options) {
  */
 function settingsDialog() {
     var financialStatementAnalysis = new FinancialStatementAnalysis(Banana.document);
-    //where i save getperiod dialog selections
-    var period_dialogfields = {
-		"selectionStartDate": "",
-		"selectionEndDate": "",
-		"selectionChecked": "false"
-	};
     var savedParam = Banana.document.getScriptSettings("financialStatementAnalysis");
     if (savedParam.length > 0) {
         var parsed_data=JSON.parse(savedParam);
-        financialStatementAnalysis.setParam(parsed_data);
-        //RIPRENDERE DA QUIIIII
-        period_dialogfields["selectionStartDate"] = parsed_data.startDate;
-		period_dialogfields["selectionEndDate"] = parsed_data.endDate;
-		period_dialogfields["selectionChecked"] = parsed_data.hasSelection;
+        if(parsed_data){
+            financialStatementAnalysis.setParam(parsed_data);
+        }
     }
     //settings dialog
     var dialogTitle = 'Settings';
@@ -5500,19 +5500,23 @@ function settingsDialog() {
     //Period Dialog
 
     var title=qsTr("Analysis Period (Current Year and Budget)");
-    var StartPeriod = financialStatementAnalysis.dialogparam.startDate;
-    var EndPeriod = financialStatementAnalysis.dialogparam.endDate;
 
-    var period=Banana.Ui.getPeriod(title, StartPeriod, EndPeriod,period_dialogfields.selectionStartDate,period_dialogfields.selectionEndDate,period_dialogfields.selectionChecked);
+   // in the all field of the dialogue, I show the opening and closing dates of the accounts
+    var docStartDate = Banana.document.startPeriod();
+    var docEndDate = Banana.document.endPeriod();
 
+    /**
+     * I Call the dialogue, as a default for the date choice fields:selectionStartDate,selectionEndDate,selectionChecked, i show the opening and closing date of the accounting, defined in the initParam
+     */
+    var period=Banana.Ui.getPeriod(title, docStartDate, docEndDate,financialStatementAnalysis.dialogparam.selectionStartDate,financialStatementAnalysis.dialogparam.selectionEndDate,financialStatementAnalysis.dialogparam.selectionChecked);
+
+    /**
+     * save the user's choice in the class variables, so that the next time the dialogue is called, the previous choice will be saved.
+     */
     if(period){
-        financialStatementAnalysis.dialogparam.startDate=period.startDate;
-        financialStatementAnalysis.dialogparam.endDate=period.endDate;
-        financialStatementAnalysis.dialogparam.hasSelection=period.hasSelection;
-
-        period_dialogfields["selectionStartDate"] = period.startDate;
-		period_dialogfields["selectionEndDate"] = period.endDate;
-		period_dialogfields["selectionChecked"] = period.hasSelection;
+        financialStatementAnalysis.dialogparam.selectionStartDate=period.startDate;
+        financialStatementAnalysis.dialogparam.selectionEndDate=period.endDate;
+        financialStatementAnalysis.dialogparam.selectionChecked=period.hasSelection;
     }
 
     //set the parameters (both dialogs)

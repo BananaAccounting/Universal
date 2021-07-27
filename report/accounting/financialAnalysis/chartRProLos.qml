@@ -44,7 +44,7 @@ BasePage {
 
                   var financialStatementAnalysis = new FinancialStatementAnalysis(Banana.document);
                   //Recovery of current settings.
-                  var savedParam =Banana.document.getScriptSettings("financialStatementAnalysis");
+                  var savedParam=Banana.document.getScriptSettings("financialStatementAnalysis");
                   if (savedParam.length > 0) {
                      var param = JSON.parse(savedParam);
                      financialStatementAnalysis.setParam(param);
@@ -60,10 +60,15 @@ BasePage {
                      var periodo = financialStatementAnalysis.data[i].period.StartDate;
                      //for dont cut the Budget string in Budg.
                      var elementType = financialStatementAnalysis.data[i].period.Type;
-                     if (elementType === "Y") {
-                        periodo = periodo.substr(0, 4);
+                     switch(elementType) {
+                        case "PY":
+                           periodo = periodo.substr(0, 4);
+                           break;
+                        case "CY":
+                           periodo = Banana.Converter.toLocaleDateFormat(financialStatementAnalysis.dialogparam.selectionEndDate);
+                           break;
                      }
-                     var year= periodo;
+                     var year=periodo;
                      if (year.length>0 && yearList.indexOf(year)<0)
                         yearList.push(year);
                      data.adva[year] = financialStatementAnalysis.data[i].calculated_data.addedvalue;
