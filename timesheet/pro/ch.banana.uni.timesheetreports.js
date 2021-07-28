@@ -42,7 +42,7 @@ function exec() {
 
     var isCurrentBananaVersionSupported = bananaRequiredVersion("10.0");
     if (!isCurrentBananaVersionSupported) {
-        Banana.document.addMessage("This extension requires Banana Accounting+ Professional", "ID_ERR_VERSION_NOTSUPPORTED");
+        Banana.document.addMessage("This extension requires Banana Accounting Plus Advanced", "ID_ERR_VERSION_NOTSUPPORTED");
         return;
     }    
 
@@ -521,7 +521,7 @@ function formatDate(date) {
  function bananaRequiredVersion(requiredVersion) {
     if (Banana.compareVersion && Banana.compareVersion(Banana.application.version, requiredVersion) >= 0) {
         if (Banana.application.license) {
-            if (Banana.application.license.licenseType === "professional" || Banana.application.license.licenseType === "advanced") {
+            if (Banana.application.license.licenseType === "advanced") {
                 return true;
             }
         }
