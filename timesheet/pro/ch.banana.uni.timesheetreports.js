@@ -766,8 +766,8 @@ function settingsDialog() {
     }
 
     //We take the accounting "starting date" and "ending date" from the document. These will be used as default dates
-    var docStartDate = "2020-01-01";//Banana.document.startPeriod();
-    var docEndDate = "2020-12-31"; //Banana.document.endPeriod();
+    var docStartDate = Banana.document.info("TimesheetDataBase","DateStart");
+    var docEndDate = Banana.document.info("TimesheetDataBase","DateEnd");
     
     //A dialog window is opened asking the user to insert the desired period. By default is the accounting period
     var selectedDates = Banana.Ui.getPeriod("", docStartDate, docEndDate, 
