@@ -327,10 +327,13 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                     year = year.substr(0, 4);
                   break;
                 case "CY":
-                    year = Banana.Converter.toLocaleDateFormat(this.dialogparam.selectionEndDate);
+                    year = texts.year_to_date;
                   break;
                 case "B":
-                    year = texts.budget+"  "+Banana.Converter.toLocaleDateFormat(this.dialogparam.selectionEndDate);
+                    year = texts.budget;
+                  break;
+                case "BTD":
+                    year = texts.budget_to_date;
                   break;
             }
             tableRow.addCell(year, "styleTablesHeaderText");
@@ -940,7 +943,6 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
             }
             if(this.dialogparam.includebudgettable){
-                Banana.console.debug(JSON.stringify(this.differences.ratios.liqu[key]));
                 if(this.differences.ratios.liqu[key].type=="dec"){
                     tableRow.addCell(this.toLocaleAmountFormat(this.differences.ratios.liqu[key].value), "styleNormalAmount");
                 }
@@ -1649,8 +1651,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         texts.groups_tooltip = qsTr("Enter the groups, separated by a semicolon ';'");
         texts.amounts_tooltip = qsTr("Enter the amount");
         texts.logo_tooltip = qsTr("Check to include Logo");
-        texts.usebudgetdata_tooltip=qsTr('Check to use budget data as a projection for the current year ');
-        texts.usebudgetdatafrom_tooltip=qsTr('Enter the date from which to start using budget data');
+        texts.includebudget_todate_tooltip=qsTr('Check to use include the budget to date column');
+        texts.includecurrentyear_projection_tooltip=qsTr('Check to include the current year projection column');
+        texts.currentdate_tooltip=qsTr('Enter the current date');
         texts.logoname_tooltip = qsTr("Enter the Logo name");
         texts.analysis_start_period_tooltip=qsTr("Enter the start period of the analysis for current year and Budget");
         texts.analysis_end_period_tooltip=qsTr("Enter the end period of the analysis for current year and Budget");
@@ -1736,6 +1739,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         texts.upperbalance = qsTr("BALANCE");
         texts.balance = qsTr('Balance');
         texts.budget = qsTr('Budget');
+        texts.budget_to_date=qsTr('Budget to Date')
         texts.budget_difference=qsTr("Budget +/-");
         texts.totowncapital = qsTr("Owned Capital");
         texts.upperprofitandloss = qsTr("PROFIT AND LOSS");
@@ -1779,7 +1783,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         texts.printdetails = qsTr('Print Details');
         texts.analysisdetails = qsTr('Analysis Details');
         texts.usebudgetdata=qsTr('Use budget data');
-        texts.usebudgetdatafrom=qsTr('Use budget data from');
+        texts.includebudget_todate=qsTr('Include budget to date column');
+        texts.includecurrentyear_projection=qsTr('Include current year projection column');
+        texts.currentdate=qsTr('Current date');
         texts.texts = qsTr('Texts');
         texts.benchmarktexts = qsTr('Benchmarks texts');
         texts.numberofpreviousyear = qsTr('Number of previous years');
@@ -1800,6 +1806,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         texts.efficiency = qsTr('Efficiency');
         texts.cashflow = qsTr("Cash Flow");
         texts.errorMsg = qsTr("Non-existent groups/accounts: ");
+        texts.year_to_date=qsTr("Year to Date")
 
 
         /******************************************************************************************
@@ -1880,16 +1887,18 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var dialogparam = {};
         dialogparam.version = "v1.2";
         dialogparam.period={};
-        dialogparam.selectionStartDate=this.banDocument.startPeriod();
-        dialogparam.selectionEndDate=this.banDocument.endPeriod();
+        var d = new Date();
+        var datestring = d.getFullYear() + ("0" + (d.getMonth() + 1)).slice(-2) + ("0" + d.getDate()).slice(-2);
+        datestring=Banana.Converter.toInternalDateFormat(datestring, "yyyymmdd");
+        dialogparam.currentdate=datestring;
+        dialogparam.includebudget_todate=true;
+        dialogparam.includecurrentyear_projection=true;
         dialogparam.selectionChecked=false;
         dialogparam.balance = this.initDialogParam_Balance();
         dialogparam.profitandloss = this.initDialogParam_ProfitLoss(texts);
         dialogparam.ratios = this.initDialogParam_RatiosBenchmarks();
         dialogparam.finalresult = this.initDialogParam_FinalResult(texts);
         dialogparam.maxpreviousyears = 2;
-        dialogparam.usebudgetdata=false;
-        dialogparam.usebudgetdatafrom=this.banDocument.info("AccountingDataBase", "ClosureDate");
         dialogparam.numberofdecimals = 2;
         dialogparam.numberofemployees = 1;
         dialogparam.acronymcolumn = true;
@@ -2179,6 +2188,17 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         return dialogparam;
     }
 
+    setCounter(type){
+        var counter;
+        if(this.dialogparam.includebudget_todate){
+            counter=1;
+        }else{
+            counter=0;
+        }
+
+        return counter;
+    }
+
 
     /**
      * @description - assigns the maximum number of previous years to a varaible, if it is less than 5, is reset to 5
@@ -2199,6 +2219,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         // only if the table budget exists and if the User choosed to use it.
         var isIncluded = this.dialogparam.includebudgettable;
         if (this.with_budget && isIncluded) {
+            //Normal Budget data (complete)
             var data_budget = this.loadData_Budget(yeardocument);
             var calculated_data = this.calculateData(data_budget, yeardocument, isIncluded,"");
             var index = this.calculateIndex(data_budget, calculated_data);
@@ -2213,7 +2234,30 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             data_budget.cashflow = cashflow;
             data_budget.cashflow_index = cashflow_index;
             this.data.push(data_budget);
+
+            //Budget to Date (until the current date)
+            //if user selected it
+            if(this.dialogparam.includebudget_todate){
+                var data_budget = this.loadData_Budget_ToDate(yeardocument);
+                var calculated_data = this.calculateData(data_budget, yeardocument, isIncluded,"");
+                var index = this.calculateIndex(data_budget, calculated_data);
+                var dupont_data = this.createdupont_data(data_budget, calculated_data, index);
+                var altman_index = this.calculateAltmanIndex(data_budget, calculated_data, index)
+                var cashflow = this.calculateCashflowTotals(data_budget, calculated_data);
+                var cashflow_index = this.calculateCashflowIndex(data_budget, calculated_data, cashflow);
+                data_budget.calculated_data = calculated_data;
+                data_budget.index = index;
+                data_budget.dupont_data = dupont_data;
+                data_budget.altman_index = altman_index;
+                data_budget.cashflow = cashflow;
+                data_budget.cashflow_index = cashflow_index;
+                this.data.push(data_budget);
+                var data_budget_todate=data_budget;
+
+            }
+
         }
+
         while (yeardocument && i <= this.dialogparam.maxpreviousyears) {
             var data_year = this.loadData_Year(yeardocument,i);
             var calculated_data = this.calculateData(data_year, yeardocument, false,i);
@@ -2236,9 +2280,26 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             i++;
         }
 
+        if(this.dialogparam.includecurrentyear_projection){
+            var data_year = this.loadData_Year_Projection(yeardocument);
+            var calculated_data = this.calculateData(data_year, yeardocument, false,i);
+            var index = this.calculateIndex(data_year, calculated_data);
+            var dupont_data = this.createdupont_data(data_year, calculated_data, index);
+            var altman_index = this.calculateAltmanIndex(data_year, calculated_data, index);
+            var cashflow = this.calculateCashflowTotals(data_year, calculated_data);
+            var cashflow_index = this.calculateCashflowIndex(data_year, calculated_data, cashflow);
+            data_year.calculated_data = calculated_data;
+            data_year.index = index;
+            data_year.dupont_data = dupont_data;
+            data_year.altman_index = altman_index;
+            data_year.cashflow = cashflow;
+            data_year.cashflow_index = cashflow_index;
+            this.data.push(data_year);
+        }
+
         //calculate the differences between current and budget
-        if(isIncluded){
-            this.differences=this.getCurrAndBudgDiff(data_current_year,data_budget);
+        if(isIncluded && this.dialogparam.includebudget_todate){
+            this.differences=this.getCurrAndBudgDiff(data_current_year,data_budget_todate);
         }
 
     }
@@ -2265,14 +2326,42 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
         var groupList = this.loadGroups();
         var budgetBalances = true;
+        var budgetToDate=false;
+        var currentProjection = false;
+
         for (var key in dialogparam) {
-            this.loadData_Param(dialogparam[key], groupList, budgetBalances, _banDocument,"");
+            this.loadData_Param(dialogparam[key], groupList,currentProjection, budgetBalances,budgetToDate,_banDocument);
         }
         dialogparam.isBudget = true;
         dialogparam.period = {};
         dialogparam.period.StartDate = "Budget";
         dialogparam.period.EndDate = "Budget";
         dialogparam.period.Type = "B";
+        return dialogparam;
+    }
+
+    loadData_Budget_ToDate(_banDocument) {
+        if (!this.banDocument || !_banDocument) {
+            return;
+        }
+
+        var dialogparam = JSON.stringify(this.dialogparam);
+        dialogparam = JSON.parse(dialogparam);
+
+        var groupList = this.loadGroups();
+
+        var budgetBalances = true;
+        var budgetToDate=true;
+        var currentProjection = false;
+
+        for (var key in dialogparam) {
+            this.loadData_Param(dialogparam[key], groupList,currentProjection,budgetBalances,budgetToDate,_banDocument);
+        }
+        dialogparam.isBudget = true;
+        dialogparam.period = {};
+        dialogparam.period.StartDate = "Budget";
+        dialogparam.period.EndDate = "Budget";
+        dialogparam.period.Type = "BTD";
         return dialogparam;
     }
 
@@ -2295,10 +2384,13 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         dialogparam = JSON.parse(dialogparam);
 
         var budgetBalances = false;
+        var budgetToDate=false;
+        var currentProjection = false;
+
         var groupList = this.loadGroups();
 
         for (var key in dialogparam) {
-            this.loadData_Param(dialogparam[key], groupList, budgetBalances, _banDocument);
+            this.loadData_Param(dialogparam[key], groupList,currentProjection, budgetBalances,budgetToDate, _banDocument);
         }
         dialogparam.isBudget = false;
         dialogparam.period = {};
@@ -2313,7 +2405,36 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         return dialogparam;
     }
 
-    loadData_Param(dialogparam, groupList, budgetBalances, _banDocument) {
+    loadData_Year_Projection(_banDocument) {
+        if (!this.banDocument || !_banDocument) {
+            return;
+        }
+        var dialogparam = JSON.stringify(this.dialogparam);
+        dialogparam = JSON.parse(dialogparam);
+
+        var budgetBalances = false;
+        var budgetToDate=false;
+        var currentProjection = true;
+
+        var groupList = this.loadGroups();
+
+        for (var key in dialogparam) {
+            this.loadData_Param(dialogparam[key], groupList,currentProjection, budgetBalances,budgetToDate, _banDocument);
+        }
+        dialogparam.isBudget = false;
+        dialogparam.period = {};
+        dialogparam.period.StartDate = _banDocument.info("AccountingDataBase", "OpeningDate");
+        dialogparam.period.EndDate = _banDocument.info("AccountingDataBase", "ClosureDate");
+        //CY=current year, PY=previous year, mi serve riconoscerlo per generare gli header giusti per l'anno corrente
+        if(index==0){
+            dialogparam.period.Type = "CY";
+        }else{
+            dialogparam.period.Type = "PY";
+        }
+        return dialogparam;
+    }
+
+    loadData_Param(dialogparam, groupList,currentProjection,budgetBalances,budgetToDate,_banDocument) {
         for (var key in dialogparam) {
             if (dialogparam[key] && dialogparam[key].gr) {
                 var value = dialogparam[key].gr.toString();
@@ -2337,11 +2458,15 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                 var bal;
                 var transactions;
                 if (budgetBalances) {
-                    bal = _banDocument.budgetBalance(value, "", this.dialogparam.selectionEndDate ,null);
-                    transactions = _banDocument.budgetCard(value,"",this.dialogparam.selectionEndDate, null);
+                    var current_date="";
+                    if(budgetToDate){
+                        current_date=this.dialogparam.currentdate;
+                    }
+                    bal = _banDocument.budgetBalance(value, "", current_date ,null);
+                    transactions = Banana.document.budgetCard(value,"",current_date, null);
                 } else {
-                    bal = _banDocument.projectionBalance(value,this.projection_start_date, "", this.dialogparam.selectionEndDate, null);
-                    transactions = _banDocument.projectionCard(value, this.projection_start_date, "", this.dialogparam.selectionEndDate, null);
+                    bal = _banDocument.projectionBalance(value,this.projection_start_date, "", this.dialogparam.currentdate, null);
+                    transactions = Banana.document.projectionCard(value, this.projection_start_date, "", this.dialogparam.currentdate, null);
                 }
                 var mult = -1;
                 if (bal) {
@@ -2456,12 +2581,13 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                 }
             } else {
                 if (typeof(dialogparam[key]) === "object")
-                    this.loadData_Param(dialogparam[key], groupList, budgetBalances, _banDocument);
+                    this.loadData_Param(dialogparam[key], groupList,currentProjection, budgetBalances,budgetToDate,_banDocument);
             }
         }
     }
 
     getCurrAndBudgDiff(data_current_year,data_budget){
+
         var difference={};
         //balance
         var balance_current_data=data_current_year.balance;
@@ -2607,6 +2733,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
     
     getCurrAndBudgDiff_balance(current_balance_data,budget_balance_data){
+
         var balance={};
 
         balance.ca = this.getCurrAndBudgDiff_balance_ca(current_balance_data.ca,budget_balance_data.ca);
@@ -2824,9 +2951,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         calcdata.totalassets_sheet = {}
         var totalassets_sheet;
         if (budget_Isincluded) {
-            totalassets_sheet = _banDocument.budgetBalance('Gr=1', "", this.dialogparam.selectionEndDate, null);
+            totalassets_sheet = _banDocument.budgetBalance('Gr=1', "", this.dialogparam.currentdate, null);
         } else {
-            totalassets_sheet = _banDocument.projectionBalance('Gr=1',this.projection_start_date, "", this.dialogparam.selectionEndDate, null);
+            totalassets_sheet = _banDocument.projectionBalance('Gr=1',this.projection_start_date, "", this.dialogparam.currentdate, null);
         }
         totalassets_sheet = totalassets_sheet.balance;
         calcdata.totalassets_sheet = totalassets_sheet;
@@ -2869,9 +2996,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var mult = -1;
         var totalliabilitiesandequity_sheet
         if (budget_Isincluded) {
-            totalliabilitiesandequity_sheet = _banDocument.budgetBalance('Gr=2', "", this.dialogparam.selectionEndDate, null);
+            totalliabilitiesandequity_sheet = _banDocument.budgetBalance('Gr=2', "", this.dialogparam.currentdate, null);
         } else {
-            totalliabilitiesandequity_sheet = _banDocument.projectionBalance('Gr=2',this.projection_start_date, "", this.dialogparam.selectionEndDate, null);
+            totalliabilitiesandequity_sheet = _banDocument.projectionBalance('Gr=2',this.projection_start_date, "", this.dialogparam.currentdate, null);
 
         }
         totalliabilitiesandequity_sheet = Banana.SDecimal.multiply(totalliabilitiesandequity_sheet.balance, mult);
@@ -3593,15 +3720,6 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
         convertedParam.data.push(currentParam);
 
-        //I create an undergroup for the preferences, the Analysis Details
-        var currentParam = {};
-        currentParam.name = 'Budget';
-        currentParam.title = texts.budget;
-        currentParam.editable = false;
-        currentParam.parentObject = 'Analysis Details';
-
-        convertedParam.data.push(currentParam);
-
         //I create an undergroup for the preferences, the Print Details
         var currentParam = {};
         currentParam.name = 'Print Details';
@@ -4084,41 +4202,57 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.value = userParam.includebudgettable ? userParam.includebudgettable : userParam.includebudgettable;
         currentParam.defaultvalue = defaultParam.includebudgettable;
         currentParam.tooltip = texts.includebudget_tooltip;
-        currentParam.parentObject = 'Budget';
+        currentParam.parentObject = 'Analysis Details';
         currentParam.readValue = function() {
             userParam.includebudgettable = this.value;
         }
 
         convertedParam.data.push(currentParam);
 
-        //Uuse budget data as a projection 
+        //Include the Budget to date
         var currentParam = {};
-        currentParam.name = 'usebudgetdata';
+        currentParam.name = 'includebudgetdodate';
         currentParam.group = 'preferences';
-        currentParam.title = texts.usebudgetdata;
+        currentParam.title = texts.includebudget_todate;
         currentParam.type = 'bool';
-        currentParam.value = userParam.usebudgetdata ? userParam.usebudgetdata : userParam.usebudgetdata;
-        currentParam.defaultvalue = defaultParam.usebudgetdata;
-        currentParam.tooltip = texts.usebudgetdata_tooltip;
-        currentParam.parentObject = 'Budget';
+        currentParam.value = userParam.includebudget_todate ? userParam.includebudget_todate : userParam.includebudget_todate;
+        currentParam.defaultvalue = defaultParam.includebudget_todate;
+        currentParam.tooltip = texts.includebudget_todate_tooltip;
+        currentParam.parentObject = 'Analysis Details';
         currentParam.readValue = function() {
-            userParam.usebudgetdata = this.value;
+            userParam.includebudget_todate = this.value;
         }
 
         convertedParam.data.push(currentParam);
 
-        //Enter the date from which to start using budget data
+        //Include  current year projection 
         var currentParam = {};
-        currentParam.name = 'usebudgetdatafrom';
+        currentParam.name = 'currentyearprojection';
         currentParam.group = 'preferences';
-        currentParam.title = texts.usebudgetdatafrom;
-        currentParam.type = 'date';
-        currentParam.value = userParam.usebudgetdatafrom ? userParam.usebudgetdatafrom : userParam.usebudgetdatafrom;
-        currentParam.defaultvalue = defaultParam.usebudgetdatafrom;
-        currentParam.tooltip = texts.usebudgetdatafrom_tooltip;
-        currentParam.parentObject = 'Budget';
+        currentParam.title = texts.includecurrentyear_projection;
+        currentParam.type = 'bool';
+        currentParam.value = userParam.includecurrentyear_projection ? userParam.includecurrentyear_projection : userParam.includecurrentyear_projection;
+        currentParam.defaultvalue = defaultParam.includecurrentyear_projection;
+        currentParam.tooltip = texts.includecurrentyear_projection_tooltip;
+        currentParam.parentObject = 'Analysis Details';
         currentParam.readValue = function() {
-            userParam.usebudgetdatafrom = this.value;
+            userParam.includecurrentyear_projection = this.value;
+        }
+
+        convertedParam.data.push(currentParam);
+
+        //Enter the current date
+        var currentParam = {};
+        currentParam.name = 'currentdate';
+        currentParam.group = 'preferences';
+        currentParam.title = texts.currentdate;
+        currentParam.type = 'date';
+        currentParam.value = userParam.currentdate ? userParam.currentdate : userParam.currentdate;
+        currentParam.defaultvalue = defaultParam.currentdate;
+        currentParam.tooltip = texts.currentdate_tooltip;
+        currentParam.parentObject = 'Analysis Details';
+        currentParam.readValue = function() {
+            userParam.currentdate = this.value;
         }
 
         convertedParam.data.push(currentParam);
@@ -5146,6 +5280,13 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         //Verify if the User param 'number of decimals' is valid, otherwise I reset it to the maximum number
         if (userParam.numberofdecimals > 2)
             userParam.numberofdecimals = 2;
+        
+        //format the date with the internal format
+        if(userParam.currentdate==""){
+            userParam.currentdate=defaultParam.currentdate;
+        }else{
+            userParam.currentdate=Banana.Converter.toInternalDateFormat(userParam.currentdate,"dd-mm-yy");
+        }
 
         /******************************************************************************************************************
          * Verify the user parameters of the settings dialog, if a parameter does not exist, is set with the default value.
