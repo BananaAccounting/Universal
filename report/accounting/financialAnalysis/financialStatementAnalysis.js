@@ -323,15 +323,23 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             var year = this.data[i].period.EndDate;
             var elementType = this.data[i].period.Type;
             switch(elementType) {
+                //previous year
                 case "PY":
                     year = year.substr(0, 4);
                   break;
+                //current year (to date)
                 case "CY":
                     year = texts.year_to_date;
                   break;
+                //current year projection
+                case "CYP":
+                    year = texts.year_projection;
+                  break;
+                //budget
                 case "B":
                     year = texts.budget;
                   break;
+                //budget to date
                 case "BTD":
                     year = texts.budget_to_date;
                   break;
@@ -341,7 +349,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
     }
 
     setColumnsWidthDinamically(table) {
-        var width = 60;
+        var width = 90;
         if (this.data.length > 0)
             width = width / parseInt(this.data.length);
         for (var i = 0; i < this.data.length; i++) {
@@ -1807,6 +1815,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         texts.cashflow = qsTr("Cash Flow");
         texts.errorMsg = qsTr("Non-existent groups/accounts: ");
         texts.year_to_date=qsTr("Year to Date")
+        texts.year_projection=qsTr("Year to Date + Budget");
 
 
         /******************************************************************************************
@@ -2212,9 +2221,6 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var yeardocument = this.banDocument;
         var i = 0;
         var data_current_year={};
-        //set the projection only if budget table is inclued and the user checked the field.
-        if(this.dialogparam.usebudgetdata && this.dialogparam.includebudgettable)
-        this.projection_start_date=Banana.Converter.toInternalDateFormat(this.dialogparam.usebudgetdatafrom);
 
         // only if the table budget exists and if the User choosed to use it.
         var isIncluded = this.dialogparam.includebudgettable;
@@ -2234,30 +2240,48 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             data_budget.cashflow = cashflow;
             data_budget.cashflow_index = cashflow_index;
             this.data.push(data_budget);
+            var data_budget_complete=data_budget;
+        }
 
-            //Budget to Date (until the current date)
-            //if user selected it
-            if(this.dialogparam.includebudget_todate){
-                var data_budget = this.loadData_Budget_ToDate(yeardocument);
-                var calculated_data = this.calculateData(data_budget, yeardocument, isIncluded,"");
-                var index = this.calculateIndex(data_budget, calculated_data);
-                var dupont_data = this.createdupont_data(data_budget, calculated_data, index);
-                var altman_index = this.calculateAltmanIndex(data_budget, calculated_data, index)
-                var cashflow = this.calculateCashflowTotals(data_budget, calculated_data);
-                var cashflow_index = this.calculateCashflowIndex(data_budget, calculated_data, cashflow);
-                data_budget.calculated_data = calculated_data;
-                data_budget.index = index;
-                data_budget.dupont_data = dupont_data;
-                data_budget.altman_index = altman_index;
-                data_budget.cashflow = cashflow;
-                data_budget.cashflow_index = cashflow_index;
-                this.data.push(data_budget);
-                var data_budget_todate=data_budget;
+        //current year with projection
+        if(this.dialogparam.includecurrentyear_projection){
+            var data_year = this.loadData_Year_Projection(yeardocument);
+            var calculated_data = this.calculateData(data_year, yeardocument, false,"");
+            var index = this.calculateIndex(data_year, calculated_data);
+            var dupont_data = this.createdupont_data(data_year, calculated_data, index);
+            var altman_index = this.calculateAltmanIndex(data_year, calculated_data, index);
+            var cashflow = this.calculateCashflowTotals(data_year, calculated_data);
+            var cashflow_index = this.calculateCashflowIndex(data_year, calculated_data, cashflow);
+            data_year.calculated_data = calculated_data;
+            data_year.index = index;
+            data_year.dupont_data = dupont_data;
+            data_year.altman_index = altman_index;
+            data_year.cashflow = cashflow;
+            data_year.cashflow_index = cashflow_index;
+            this.data.push(data_year);
+        }
 
-            }
+        //Budget to Date (until the current date)
+        //if user selected it
+        if(this.with_budget && isIncluded && this.dialogparam.includebudget_todate){
+            var data_budget = this.loadData_Budget_ToDate(yeardocument);
+            var calculated_data = this.calculateData(data_budget, yeardocument, isIncluded,"");
+            var index = this.calculateIndex(data_budget, calculated_data);
+            var dupont_data = this.createdupont_data(data_budget, calculated_data, index);
+            var altman_index = this.calculateAltmanIndex(data_budget, calculated_data, index)
+            var cashflow = this.calculateCashflowTotals(data_budget, calculated_data);
+            var cashflow_index = this.calculateCashflowIndex(data_budget, calculated_data, cashflow);
+            data_budget.calculated_data = calculated_data;
+            data_budget.index = index;
+            data_budget.dupont_data = dupont_data;
+            data_budget.altman_index = altman_index;
+            data_budget.cashflow = cashflow;
+            data_budget.cashflow_index = cashflow_index;
+            this.data.push(data_budget);
 
         }
 
+        //current year to date and previous years
         while (yeardocument && i <= this.dialogparam.maxpreviousyears) {
             var data_year = this.loadData_Year(yeardocument,i);
             var calculated_data = this.calculateData(data_year, yeardocument, false,i);
@@ -2280,26 +2304,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             i++;
         }
 
-        if(this.dialogparam.includecurrentyear_projection){
-            var data_year = this.loadData_Year_Projection(yeardocument);
-            var calculated_data = this.calculateData(data_year, yeardocument, false,i);
-            var index = this.calculateIndex(data_year, calculated_data);
-            var dupont_data = this.createdupont_data(data_year, calculated_data, index);
-            var altman_index = this.calculateAltmanIndex(data_year, calculated_data, index);
-            var cashflow = this.calculateCashflowTotals(data_year, calculated_data);
-            var cashflow_index = this.calculateCashflowIndex(data_year, calculated_data, cashflow);
-            data_year.calculated_data = calculated_data;
-            data_year.index = index;
-            data_year.dupont_data = dupont_data;
-            data_year.altman_index = altman_index;
-            data_year.cashflow = cashflow;
-            data_year.cashflow_index = cashflow_index;
-            this.data.push(data_year);
-        }
-
         //calculate the differences between current and budget
-        if(isIncluded && this.dialogparam.includebudget_todate){
-            this.differences=this.getCurrAndBudgDiff(data_current_year,data_budget_todate);
+        if(isIncluded){
+            this.differences=this.getCurrAndBudgDiff(data_current_year,data_budget_complete);
         }
 
     }
@@ -2409,6 +2416,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         if (!this.banDocument || !_banDocument) {
             return;
         }
+
         var dialogparam = JSON.stringify(this.dialogparam);
         dialogparam = JSON.parse(dialogparam);
 
@@ -2424,13 +2432,10 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         dialogparam.isBudget = false;
         dialogparam.period = {};
         dialogparam.period.StartDate = _banDocument.info("AccountingDataBase", "OpeningDate");
-        dialogparam.period.EndDate = _banDocument.info("AccountingDataBase", "ClosureDate");
-        //CY=current year, PY=previous year, mi serve riconoscerlo per generare gli header giusti per l'anno corrente
-        if(index==0){
-            dialogparam.period.Type = "CY";
-        }else{
-            dialogparam.period.Type = "PY";
-        }
+        dialogparam.period.EndDate = this.dialogparam.currentdate;
+        //CYP=CURRENT YEAR PROJECTION
+        dialogparam.period.Type = "CYP";
+
         return dialogparam;
     }
 
@@ -2465,8 +2470,14 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                     bal = _banDocument.budgetBalance(value, "", current_date ,null);
                     transactions = Banana.document.budgetCard(value,"",current_date, null);
                 } else {
-                    bal = _banDocument.projectionBalance(value,this.projection_start_date, "", this.dialogparam.currentdate, null);
-                    transactions = Banana.document.projectionCard(value, this.projection_start_date, "", this.dialogparam.currentdate, null);
+                    var projectionStartDate="";
+                    var endDate=this.dialogparam.currentdate;
+                    if(currentProjection){
+                        projectionStartDate=Banana.Converter.toInternalDateFormat(this.dialogparam.currentdate,'yyyy-mm-dd');
+                        endDate="";
+                    }
+                    bal = _banDocument.projectionBalance(value,projectionStartDate, "",endDate , null);
+                    transactions = Banana.document.projectionCard(value, projectionStartDate, "", endDate, null);
                 }
                 var mult = -1;
                 if (bal) {
@@ -2889,6 +2900,39 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         return totals;
 
     }
+    /**
+     * 
+     * @param {*} calculatedValue amount calculated
+     * @param {*} sheetValue amount in the accounting sheet
+     * @returns the difference between the two amounts
+     */
+    calculateDifference(periodType,calculatedValue,sheetValue){
+        if(periodType=="CY"||periodType=="PY"){
+            var difference = Banana.SDecimal.subtract(calculatedValue, sheetValue);
+            if (!Banana.SDecimal.isZero(difference)) {
+                this.controlsums_differences++;
+            }
+            Banana.console.debug(difference);
+            return difference;
+        }else{
+            return false;
+        }
+    }
+
+
+
+    getAccountingSheetValue(_banDocument,periodType,grType,multiplier){
+        var accountingValue="";
+        if(periodType=="CY"||periodType=="PY"){
+            var currentDate=Banana.Converter.toInternalDateFormat(this.dialogparam.currentdate,'yyyy-mm-dd');
+            accountingValue = _banDocument.projectionBalance(grType,"", "",currentDate, null);
+            accountingValue = accountingValue.balance;
+            Banana.SDecimal.multiply(accountingValue, multiplier);
+            return accountingValue;
+        }else{
+            return false;
+        }
+    }
 
 
     /**
@@ -2899,7 +2943,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
      * @Param {object} _banDocument: the startDate of the document, wich is located in the File Info.
      * @returns an object containing the calculated values
      */
-    calculateData(data, _banDocument, budget_Isincluded) {
+    calculateData(data, _banDocument) {
         if (!data || !_banDocument) {
             return null;
         }
@@ -2948,23 +2992,13 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         /************************************************************************************************
          * Calculate the total assets resulting from the accounting sheet and then use it for controls
          ************************************************************************************************/
-        calcdata.totalassets_sheet = {}
         var totalassets_sheet;
-        if (budget_Isincluded) {
-            totalassets_sheet = _banDocument.budgetBalance('Gr=1', "", this.dialogparam.currentdate, null);
-        } else {
-            totalassets_sheet = _banDocument.projectionBalance('Gr=1',this.projection_start_date, "", this.dialogparam.currentdate, null);
-        }
-        totalassets_sheet = totalassets_sheet.balance;
-        calcdata.totalassets_sheet = totalassets_sheet;
+        calcdata.totalassets_sheet = this.getAccountingSheetValue(_banDocument,data.period.Type,'Gr=1',1);
 
         /********************************************************************************************************
          * Calculate the difference between Calculated Asset and the Asset amount found in the accountin sheet
          ********************************************************************************************************/
-        calcdata.assets_difference = Banana.SDecimal.subtract(totalassets, totalassets_sheet);
-        if (!Banana.SDecimal.isZero(calcdata.assets_difference)) {
-            this.controlsums_differences++;
-        }
+         calcdata.assets_difference= this.calculateDifference(totalassets,totalassets_sheet)
 
         /******************************************************************************************************
          * Calculation of total liabilities and equity (with the total of debt capital and the own capital
@@ -2991,25 +3025,13 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         /*********************************************************************************************
          * Calculation of the total liabilities and equity resulting from the accounting sheet
          *********************************************************************************************/
-
-        calcdata.totalliabilitiesandequity_sheet = {}
-        var mult = -1;
-        var totalliabilitiesandequity_sheet
-        if (budget_Isincluded) {
-            totalliabilitiesandequity_sheet = _banDocument.budgetBalance('Gr=2', "", this.dialogparam.currentdate, null);
-        } else {
-            totalliabilitiesandequity_sheet = _banDocument.projectionBalance('Gr=2',this.projection_start_date, "", this.dialogparam.currentdate, null);
-
-        }
-        totalliabilitiesandequity_sheet = Banana.SDecimal.multiply(totalliabilitiesandequity_sheet.balance, mult);
-        calcdata.totalliabilitiesandequity_sheet = totalliabilitiesandequity_sheet;
+        calcdata.totalliabilitiesandequity_sheet = this.getAccountingSheetValue(_banDocument,data.period.Type,'Gr=2',-1);
 
         /**********************************************************************************************************************************
          * Calculate the difference between liabilities and equity and the liabilities and equit amount found in the accountin sheet
          **********************************************************************************************************************************/
-        calcdata.liabilitiesandequity_difference = Banana.SDecimal.subtract(totalliabilitiesandequity, totalliabilitiesandequity_sheet);
-        if (!Banana.SDecimal.isZero(calcdata.liabilitiesandequity_difference))
-            this.controlsums_differences++;
+        calcdata.liabilitiesandequity_difference = this.calculateDifference(totalliabilitiesandequity,calcdata.totalliabilitiesandequity_sheet);
+
         /*****************************************************************
          * calculate the reserves increase/release difference.
          ****************************************************************/
@@ -3057,9 +3079,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         /*******************************************************************************************************
          * Calculation of the difference between the calculated annual result and the accounting annual result
          *******************************************************************************************************/
-        calcdata.annualresult_difference = Banana.SDecimal.subtract(calcdata.annualresult_sheet, calcdata.annualresult);
-        if (!Banana.SDecimal.isZero(calcdata.annualresult_difference))
-            this.controlsums_differences++;
+        calcdata.annualresult_difference =this.calculateDifference(calcdata.annualresult,calcdata.annualresult_sheet);
 
         /*******************************************************************************************************
          * Calculation of the Added Value
@@ -5637,27 +5657,6 @@ function settingsDialog() {
         // Read values to dialogparam (through the readValue function)
         if (typeof(convertedParam.data[i].readValue) == "function")
             convertedParam.data[i].readValue();
-    }
-    //Period Dialog
-
-    var title=qsTr("Analysis Period (Current Year and Budget)");
-
-   // in the all field of the dialogue, I show the opening and closing dates of the accounts
-    var docStartDate = Banana.document.startPeriod();
-    var docEndDate = Banana.document.endPeriod();
-
-    /**
-     * I Call the dialogue, as a default for the date choice fields:selectionStartDate,selectionEndDate,selectionChecked, i show the opening and closing date of the accounting, defined in the initParam
-     */
-    var period=Banana.Ui.getPeriod(title, docStartDate, docEndDate,financialStatementAnalysis.dialogparam.selectionStartDate,financialStatementAnalysis.dialogparam.selectionEndDate,financialStatementAnalysis.dialogparam.selectionChecked);
-
-    /**
-     * save the user's choice in the class variables, so that the next time the dialogue is called, the previous choice will be saved.
-     */
-    if(period){
-        financialStatementAnalysis.dialogparam.selectionStartDate=period.startDate;
-        financialStatementAnalysis.dialogparam.selectionEndDate=period.endDate;
-        financialStatementAnalysis.dialogparam.selectionChecked=period.hasSelection;
     }
 
     //set the parameters (both dialogs)
