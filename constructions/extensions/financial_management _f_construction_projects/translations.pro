@@ -11,4 +11,4 @@ TRANSLATIONS += \
 
 
 RESOURCES += \
-    construction_project_statement.qrc
+    financial_management_of_construction_projects.qrc

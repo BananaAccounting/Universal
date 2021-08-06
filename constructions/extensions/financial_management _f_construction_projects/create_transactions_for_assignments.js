@@ -13,8 +13,8 @@
 // limitations under the License.
 //
 // @api = 1.1
-// @id = create_transactions_deliberations.js
-// @description = Create transactions deliberations 
+// @id = create_transactions_for_assignments.js
+// @description = Create transactions for assignments 
 // @task = app.command
 // @doctype = 110.*
 // @publisher = Banana.ch SA
@@ -53,7 +53,7 @@ function initTexts() {
  * set the row operation, the row fields and the table
  * @returns 
  */
-function deliberationRowAppend() {
+function assignmentRowAppend() {
 
     texts = initTexts();
 
@@ -188,7 +188,7 @@ function exec(inData) {
     var documentChange = { "format": "documentChange", "error": "", "data": [] };
 
     //1. Appends a row to the transaction table
-    var jsonDoc = deliberationRowAppend();
+    var jsonDoc = assignmentRowAppend();
     documentChange["data"].push(jsonDoc);
     // Banana.console.debug(JSON.stringify(documentChange));
 

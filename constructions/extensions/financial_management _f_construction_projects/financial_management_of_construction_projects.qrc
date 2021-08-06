@@ -1,0 +1,11 @@
+<RCC>
+    <qresource prefix="/">
+        <file>financial_management_of_construction_projects.js</file>
+        <file>financial_management_of_construction_projects.css</file>
+        <file>financial_management_of_construction_projects.manifest.json</file>
+        <file>create_transactions_for_assignments.js</file>
+        <file>translations/translations_it.qm</file>
+        <file>translations/translations_fr.qm</file>
+        <file>translations/translations_de.qm</file>
+    </qresource>
+</RCC>
