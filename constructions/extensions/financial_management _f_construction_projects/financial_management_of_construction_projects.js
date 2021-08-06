@@ -13,12 +13,12 @@
 // limitations under the License.
 //
 // @api = 1.0
-// @id = constructionprojectstatement.js
+// @id = construction_project_report.js
 // @description = Construction Project Report
 // @task = app.command
 // @doctype = 110.*
 // @publisher = Banana.ch SA
-// @pubdate = 2021-07-21
+// @pubdate = 2021-08-06
 // @inputdatasource = none
 // @timeout = -1
 
@@ -42,8 +42,6 @@ function addTableCategoriesManagement(report) {
     tableCategoriesManagement.setStyleAttributes("width:100%;");
     tableCategoriesManagement.getCaption().addText(texts.statement_byCategory, "styleTablesTitles");
     tableCategoriesManagement.addColumn("Category").setStyleAttributes("width:20%");
-    if (userParam.category.completion_column)
-        tableCategoriesManagement.addColumn("Progress").setStyleAttributes("width:10%");
     setColumnsWidthDinamically(tableCategoriesManagement, "category");
 
     var tableHeader = tableCategoriesManagement.getHeader();
@@ -53,16 +51,16 @@ function addTableCategoriesManagement(report) {
         tableRow.addCell(texts.progress_perc, "styleTablesHeaderText");
     if (userParam.category.budget_column)
         tableRow.addCell(texts.outline_budget, "styleTablesHeaderText");
-    if (userParam.category.deliberations_column)
-        tableRow.addCell(texts.deliberations, "styleTablesHeaderText");
-    if (userParam.category.deliberations_budget_column)
-        tableRow.addCell(texts.diff_del_budg, "styleTablesHeaderText");
+    if (userParam.category.assignments_column)
+        tableRow.addCell(texts.assignments, "styleTablesHeaderText");
+    if (userParam.category.assignments_budget_column)
+        tableRow.addCell(texts.diff_assign_budg, "styleTablesHeaderText");
     if (userParam.category.expenses_column)
         tableRow.addCell(texts.actual_expenses, "styleTablesHeaderText");
     if (userParam.category.expenses_budget_column)
         tableRow.addCell(texts.diff_exp_budg, "styleTablesHeaderText");
-    if (userParam.category.expenses_deliberations_column)
-        tableRow.addCell(texts.diff_exp_del, "styleTablesHeaderText");
+    if (userParam.category.expenses_assignments_column)
+        tableRow.addCell(texts.diff_exp_assign, "styleTablesHeaderText");
 
     return tableCategoriesManagement;
 }
@@ -80,8 +78,6 @@ function addTableCompaniesManagement(report) {
     tableCompaniesManagement.setStyleAttributes("width:100%;");
     tableCompaniesManagement.getCaption().addText(texts.statement_byCompany, "styleTablesTitles");
     tableCompaniesManagement.addColumn("Company").setStyleAttributes("width:20%");
-    if (userParam.company.completion_column)
-        tableCompaniesManagement.addColumn("Progress").setStyleAttributes("width:10%");
     setColumnsWidthDinamically(tableCompaniesManagement, "company");
 
     var tableHeader = tableCompaniesManagement.getHeader();
@@ -89,12 +85,12 @@ function addTableCompaniesManagement(report) {
     tableRow.addCell(texts.company, "styleTablesHeaderText");
     if (userParam.company.completion_column)
         tableRow.addCell(texts.progress_perc, "styleTablesHeaderText");
-    if (userParam.company.deliberations_column)
-        tableRow.addCell(texts.deliberations, "styleTablesHeaderText");
+    if (userParam.company.assignments_column)
+        tableRow.addCell(texts.assignments, "styleTablesHeaderText");
     if (userParam.company.expenses_column)
         tableRow.addCell(texts.actual_expenses, "styleTablesHeaderText");
-    if (userParam.company.expenses_deliberations_column)
-        tableRow.addCell(texts.diff_exp_del, "styleTablesHeaderText");
+    if (userParam.company.expenses_assignments_column)
+        tableRow.addCell(texts.diff_exp_assign, "styleTablesHeaderText");
 
     return tableCompaniesManagement;
 }
@@ -105,7 +101,7 @@ function addTableCompaniesManagement(report) {
  * @param {*} table_type 
  */
 function setColumnsWidthDinamically(table, table_type) {
-    let width = 80;
+    let width = 90;
     let nr_columns = getNumbersOfColumns(table_type);
     if (nr_columns > 0) {
         width = width / parseInt(nr_columns);
@@ -131,17 +127,15 @@ function getNumbersOfColumns(table_type) {
     switch (table_type) {
         case "category":
             obj = userParam.category;
-            //setto a false siccome non voglio contarlo nel numero di colonne a cui settare dinamicamente la larghezza.
-            obj.completion_column=false;
             break;
         case "company":
             obj = userParam.company;
-            obj.completion_column=false;
             break;
         default:
             obj = {};
     }
     for (var key in obj) {
+        // Banana.console.debug(JSON.stringify(obj[key]));
         if (obj[key] == true)
             nr_columns++;
     }
@@ -154,7 +148,6 @@ function printReport() {
     var report = Banana.Report.newReport("Construction Project Report");
     addHeader(report);
     addFooter(report);
-    var banDoc=Banana.document;
 
     let userParam = initParam();
     let savedParam = Banana.document.getScriptSettings();
@@ -165,7 +158,7 @@ function printReport() {
 
     var tableCategoriesManagement = addTableCategoriesManagement(report);
 
-    let group_list = loadGroups("Categories",banDoc);
+    let group_list = loadGroups("Categories");
     for (var i = 0; i < group_list.length; i++) {
         //inserisco i valori normali
         let categories_rows = loadCategoriesData(group_list[i]);
@@ -176,11 +169,11 @@ function printReport() {
                 tableRow.addCell(categories_rows[key].percentage_completion, 'stylepercentages');
             if (userParam.category.budget_column)
                 tableRow.addCell(toLocaleAmountFormat(categories_rows[key].budget), 'styleNormalAmount');
-            if (userParam.category.deliberations_column)
-                tableRow.addCell(toLocaleAmountFormat(categories_rows[key].deliberations), 'styleNormalAmount');
-            if (userParam.category.deliberations_budget_column) {
-                cell = tableRow.addCell(toLocaleAmountFormat(categories_rows[key].deliberations_budget) + ' ', 'styleNormalAmount');
-                addSymbol(categories_rows[key].deliberations_budget, cell, false);
+            if (userParam.category.assignments_column)
+                tableRow.addCell(toLocaleAmountFormat(categories_rows[key].assignments), 'styleNormalAmount');
+            if (userParam.category.assignments_budget_column) {
+                cell = tableRow.addCell(toLocaleAmountFormat(categories_rows[key].assignments_budget) + ' ', 'styleNormalAmount');
+                addSymbol(categories_rows[key].assignments_budget, cell, false);
             }
             if (userParam.category.expenses_column)
                 tableRow.addCell(toLocaleAmountFormat(categories_rows[key].expenses), 'styleNormalAmount');
@@ -188,9 +181,9 @@ function printReport() {
                 cell = tableRow.addCell(toLocaleAmountFormat(categories_rows[key].expenses_budget) + ' ', 'styleNormalAmount');
                 addSymbol(categories_rows[key].expenses_budget, cell, false);
             }
-            if (userParam.category.expenses_deliberations_column) {
-                cell = tableRow.addCell(toLocaleAmountFormat(categories_rows[key].deliberations_expenses) + ' ', 'styleNormalAmount');
-                addSymbol(categories_rows[key].deliberations_expenses, cell, false);
+            if (userParam.category.expenses_assignments_column) {
+                cell = tableRow.addCell(toLocaleAmountFormat(categories_rows[key].assignments_expenses) + ' ', 'styleNormalAmount');
+                addSymbol(categories_rows[key].assignments_expenses, cell, false);
             }
         }
         //inserisco i totali alla fine di ogni gruppo
@@ -202,11 +195,11 @@ function printReport() {
                 tableRow.addCell("-", 'stylepercentages');
             if (userParam.category.budget_column)
                 tableRow.addCell(toLocaleAmountFormat(totals[key].total_budget), 'styleTotalAmount');
-            if (userParam.category.deliberations_column)
-                tableRow.addCell(toLocaleAmountFormat(totals[key].total_deliberations), 'styleTotalAmount');
-            if (userParam.category.deliberations_budget_column) {
-                cell = tableRow.addCell(toLocaleAmountFormat(totals[key].total_deliberations_budget) + ' ', 'styleTotalAmount');
-                addSymbol(totals[key].total_deliberations_budget, cell, true);
+            if (userParam.category.assignments_column)
+                tableRow.addCell(toLocaleAmountFormat(totals[key].total_assignments), 'styleTotalAmount');
+            if (userParam.category.assignments_budget_column) {
+                cell = tableRow.addCell(toLocaleAmountFormat(totals[key].total_assignments_budget) + ' ', 'styleTotalAmount');
+                addSymbol(totals[key].total_assignments_budget, cell, true);
             }
             if (userParam.category.expenses_column)
                 tableRow.addCell(toLocaleAmountFormat(totals[key].total_expenses), 'styleTotalAmount');
@@ -214,9 +207,9 @@ function printReport() {
                 cell = tableRow.addCell(toLocaleAmountFormat(totals[key].total_expenses_budget) + ' ', 'styleTotalAmount');
                 addSymbol(totals[key].total_expenses_budget, cell, true);
             }
-            if (userParam.category.expenses_deliberations_column) {
-                cell = tableRow.addCell(toLocaleAmountFormat(totals[key].total_deliberations_expenses) + ' ', 'styleTotalAmount');
-                addSymbol(totals[key].total_deliberations_expenses, cell, true);
+            if (userParam.category.expenses_assignments_column) {
+                cell = tableRow.addCell(toLocaleAmountFormat(totals[key].total_assignments_expenses) + ' ', 'styleTotalAmount');
+                addSymbol(totals[key].total_assignments_expenses, cell, true);
             }
         }
 
@@ -232,13 +225,13 @@ function printReport() {
         tableRow.addCell(account_rows[key].account, 'styleTablRows');
         if (userParam.company.completion_column)
             tableRow.addCell(account_rows[key].percentage_completion, 'stylepercentages');
-        if (userParam.company.deliberations_column)
-            tableRow.addCell(toLocaleAmountFormat(account_rows[key].deliberations), 'styleNormalAmount');
+        if (userParam.company.assignments_column)
+            tableRow.addCell(toLocaleAmountFormat(account_rows[key].assignments), 'styleNormalAmount');
         if (userParam.company.expenses_column)
             tableRow.addCell(toLocaleAmountFormat(account_rows[key].expenses), 'styleNormalAmount');
-        if (userParam.company.expenses_deliberations_column) {
-            cell = tableRow.addCell(toLocaleAmountFormat(account_rows[key].deliberations_expenses) + ' ', 'styleNormalAmount');
-            addSymbol(account_rows[key].deliberations_expenses, cell, true);
+        if (userParam.company.expenses_assignments_column) {
+            cell = tableRow.addCell(toLocaleAmountFormat(account_rows[key].assignments_expenses) + ' ', 'styleNormalAmount');
+            addSymbol(account_rows[key].assignments_expenses, cell, true);
         }
 
     }
@@ -248,13 +241,13 @@ function printReport() {
     tableRow.addCell(companies_total.description, 'styleTablesTotalsDescriptions');
     if (userParam.company.completion_column)
         tableRow.addCell("-", 'stylepercentages');
-    if (userParam.company.deliberations_column)
-        tableRow.addCell(toLocaleAmountFormat(companies_total.total_deliberations), 'styleTotalAmount');
+    if (userParam.company.assignments_column)
+        tableRow.addCell(toLocaleAmountFormat(companies_total.total_assignments), 'styleTotalAmount');
     if (userParam.company.expenses_column)
         tableRow.addCell(toLocaleAmountFormat(companies_total.total_expenses), 'styleTotalAmount');
-    if (userParam.company.expenses_deliberations_column) {
-        cell = tableRow.addCell(toLocaleAmountFormat(companies_total.total_deliberations_expenses) + ' ', 'styleTotalAmount');
-        addSymbol(companies_total.total_deliberations_expenses, cell, true);
+    if (userParam.company.expenses_assignments_column) {
+        cell = tableRow.addCell(toLocaleAmountFormat(companies_total.total_assignments_expenses) + ' ', 'styleTotalAmount');
+        addSymbol(companies_total.total_assignments_expenses, cell, true);
     }
 
     return report;
@@ -266,7 +259,7 @@ function getReportStyle() {
     //CREATE THE STYLE FOR THE REPORT
     //create the style
     var textCSS = "";
-    var file = Banana.IO.getLocalFile("file:script/construction_project_report.css");
+    var file = Banana.IO.getLocalFile("file:script/financial_management_of_construction_projects.css");
     var fileContent = file.read();
     if (!file.errorString) {
         Banana.IO.openPath(fileContent);
@@ -316,23 +309,23 @@ function initTexts() {
     texts.company = qsTr("Company");
     texts.companies = qsTr("Companies");
     texts.progress_perc = qsTr("Progress %");
-    texts.outline_budget = qsTr("Estimate Budget");
-    texts.deliberations = qsTr("Deliberations");
+    texts.outline_budget = qsTr("Outiline Budget");
+    texts.assignments = qsTr("Assignments");
     texts.actual_expenses = qsTr("Expenses");
-    texts.diff_del_budg = qsTr("Diff.Del./Budg.");
+    texts.diff_assign_budg = qsTr("Diff.Assing./Budg.");
     texts.diff_exp_budg = qsTr("Diff.Exp./Budg.");
-    texts.diff_exp_del = qsTr("Diff.Exp./Del.");
+    texts.diff_exp_assign = qsTr("Diff.Exp./Assing.");
     texts.statement_byCategory = qsTr("Statement by Category");
     texts.statement_byCompany = qsTr("Statement by Company");
 
     //dialog texts
     texts.completion_column = qsTr("Progress column");
-    texts.outline_budget_column = qsTr("Estimate Budget column");
-    texts.deliberation_column = qsTr("Deliberations column");
-    texts.delib_outBudget_difference_column = qsTr("Deliberations and Estimate Budget difference column");
+    texts.outline_budget_column = qsTr("Outline Budget column");
+    texts.assignment_column = qsTr("Assignments column");
+    texts.assign_outBudget_difference_column = qsTr("Assignments and Outline Budget difference column");
     texts.expenses_column = qsTr("Expenses column");
-    texts.exp_outBudget_difference_column = qsTr("Expenses and Estimate Budget difference column");
-    texts.exp_delib_difference_column = qsTr("Expenses and Deliberations difference column");
+    texts.exp_outBudget_difference_column = qsTr("Expenses and Outline Budget difference column");
+    texts.exp_assign_difference_column = qsTr("Expenses and Assignments difference column");
 
 
     return texts;
@@ -371,16 +364,18 @@ function addFooter(report) {
 
 function toLocaleAmountFormat(value) {
     if (!value || value.trim().length === 0)
-        value="0";
-    return Banana.Converter.toLocaleNumberFormat(value, "2", true);
+        return "";
+
+    var dec = 2
+    return Banana.Converter.toLocaleNumberFormat(value, dec, true);
 }
 
-function loadGroups(table,banDoc) {
+function loadGroups(table) {
     var groupList = [];
-    if (!banDoc) {
+    if (!Banana.document) {
         return groupList;
     }
-    var table = banDoc.table(table);
+    var table = Banana.document.table(table);
     if (!table) {
         return groupList;
     }
@@ -487,11 +482,11 @@ function loadAccountsTableRows() {
             //tolgo il punto iniziale dalla descrizione del conto
             companies.account = companies.account.slice(1);
             companies.percentage_completion = getLastPerc_company(companies.account);
-            companies.deliberations = tRow.value("Budget");
-            companies.deliberations = Banana.SDecimal.abs(companies.deliberations);
+            companies.assignments = tRow.value("Budget");
+            companies.assignments = Banana.SDecimal.abs(companies.assignments);
             companies.expenses = tRow.value("Expenses");
             companies.expenses = Banana.SDecimal.abs(companies.expenses);
-            companies.deliberations_expenses = getExpAndDelibDifference(companies.expenses, companies.deliberations);
+            companies.assignments_expenses = getExpAndAssignDifference(companies.expenses, companies.assignments);
             accounts_table_rows.push(companies);
 
         }
@@ -501,15 +496,15 @@ function loadAccountsTableRows() {
 
 function getCompaniesTotal(accounts_table_rows) {
     let companies_total = {};
-    companies_total.description = qsTr("Total Companies");
-    companies_total.total_deliberations = "";
+    companies_total.description = "Totale Companies";
+    companies_total.total_assignments = "";
     companies_total.total_expenses = "";
-    companies_total.total_deliberations_expenses = "";
-    //calcolo il totale delle delibere, uscite e la differenza
+    companies_total.total_assignments_expenses = "";
+
     for (var key in accounts_table_rows) {
-        companies_total.total_deliberations = Banana.SDecimal.add(companies_total.total_deliberations, accounts_table_rows[key].deliberations);
+        companies_total.total_assignments = Banana.SDecimal.add(companies_total.total_assignments, accounts_table_rows[key].assignments);
         companies_total.total_expenses = Banana.SDecimal.add(companies_total.total_expenses, accounts_table_rows[key].expenses);
-        companies_total.total_deliberations_expenses = Banana.SDecimal.add(companies_total.total_deliberations_expenses, accounts_table_rows[key].deliberations_expenses);
+        companies_total.total_assignments_expenses = Banana.SDecimal.add(companies_total.total_assignments_expenses, accounts_table_rows[key].assignments_expenses);
     }
 
 
@@ -520,8 +515,8 @@ function getCompaniesTotal(accounts_table_rows) {
 
 
 function loadCategoriesData(group) {
-    let categories_table_rows = [];
     let table = loadTableData("Categories");
+    let categories_table_rows = [];
 
     //mettere nella doc che le prime due rige vanno lasciate libere come da modello
     for (var i = 2; i < table.rowCount; i++) {
@@ -533,12 +528,12 @@ function loadCategoriesData(group) {
             categories.percentage_completion = getLastPerc_category(categories.category);
             categories.expenses = tRow.value("Expenses");
             categories.expenses = Banana.SDecimal.abs(categories.expenses);
-            categories.deliberations = tRow.value("Budget");
-            categories.deliberations = Banana.SDecimal.abs(categories.deliberations);
-            categories.deliberations_expenses = getExpAndDelibDifference(categories.expenses, categories.deliberations);
+            categories.assignments = tRow.value("Budget");
+            categories.assignments = Banana.SDecimal.abs(categories.assignments);
+            categories.assignments_expenses = getExpAndAssignDifference(categories.expenses, categories.assignments);
             categories.budget = tRow.value("EstimateBudget");
             categories.budget = Banana.SDecimal.abs(categories.budget);
-            categories.deliberations_budget = getDelibAndBudgDifference(categories.deliberations, categories.budget);
+            categories.assignments_budget = getAssignAndBudgDifference(categories.assignments, categories.budget);
             categories.expenses_budget = getExpAndBudgDifference(categories.expenses, categories.budget);
             categories.gr = group;
             categories_table_rows.push(categories);
@@ -560,11 +555,11 @@ function loadCategoriesDataTotals(group) {
             let categories_group_total = {};
             categories_group_total.description = tRow.value("Description");
             categories_group_total.total_expenses = tRow.value("Expenses");
-            categories_group_total.total_deliberations = tRow.value("Budget");
-            categories_group_total.total_deliberations = Banana.SDecimal.abs(categories_group_total.total_deliberations);
-            categories_group_total.total_deliberations_expenses = getExpAndDelibDifference(categories_group_total.total_expenses, categories_group_total.total_deliberations);
+            categories_group_total.total_assignments = tRow.value("Budget");
+            categories_group_total.total_assignments = Banana.SDecimal.abs(categories_group_total.total_assignments);
+            categories_group_total.total_assignments_expenses = getExpAndAssignDifference(categories_group_total.total_expenses, categories_group_total.total_assignments);
             categories_group_total.total_budget = tRow.value("EstimateBudget");
-            categories_group_total.total_deliberations_budget = getDelibAndBudgDifference(categories_group_total.total_deliberations, categories_group_total.total_budget);
+            categories_group_total.total_assignments_budget = getAssignAndBudgDifference(categories_group_total.total_assignments, categories_group_total.total_budget);
             categories_group_total.total_expenses_budget = getExpAndBudgDifference(categories_group_total.total_expenses, categories_group_total.total_budget);
             categories_group_total.group_column = group;
             categories_table_totals.push(categories_group_total);
@@ -575,35 +570,35 @@ function loadCategoriesDataTotals(group) {
 }
 
 /**
- * Calculate the Difference between the Expenses and the Deliberations, the deliberations should be greater than the expenses,
+ * Calculate the Difference between the Expenses and the assignments, the assignments should be greater than the expenses,
  * otherwise the expense was to expensive.
  */
-function getExpAndDelibDifference(expense, deliberation) {
+function getExpAndAssignDifference(expense, assignment) {
     let result = "";
-    //for calculation I remove the sign from the deliberations, if it is present
-    if (deliberation.indexOf("-" >= 0)) {
-        deliberation = Banana.SDecimal.abs(deliberation);
+    //for calculation I remove the sign from the assignments, if it is present
+    if (assignment.indexOf("-" >= 0)) {
+        assignment = Banana.SDecimal.abs(assignment);
     }
 
-    result = Banana.SDecimal.subtract(expense, deliberation);
+    result = Banana.SDecimal.subtract(expense, assignment);
 
     return result;
 
 }
 
 /**
- * Calculate the Difference between the Deliberations and the Budget*(i), the deliberations should be greater than the expenses,
+ * Calculate the Difference between the assignments and the Budget*(i), the assignments should be greater than the expenses,
  * otherwise the expense was to expensive.
  * 
  * *(i)For ever Budget columns
  */
-function getDelibAndBudgDifference(deliberation, budget) {
+function getAssignAndBudgDifference(assignment, budget) {
     let result = "";
-    //for calculation I remove the sign from the deliberations, if it is present
-    if (deliberation.indexOf("-" >= 0)) {
-        deliberation = Banana.SDecimal.abs(deliberation);
+    //for calculation I remove the sign from the assignments, if it is present
+    if (assignment.indexOf("-" >= 0)) {
+        assignment = Banana.SDecimal.abs(assignment);
     }
-    result = (Banana.SDecimal.subtract(deliberation, budget));
+    result = (Banana.SDecimal.subtract(assignment, budget));
 
 
 
@@ -651,18 +646,18 @@ function initParam() {
 
     userParam.category.completion_column = 'true';
     userParam.category.budget_column = 'true';
-    userParam.category.deliberations_column = 'true';
-    userParam.category.deliberations_budget_column = 'true';
+    userParam.category.assignments_column = 'true';
+    userParam.category.assignments_budget_column = 'true';
     userParam.category.expenses_column = 'true';
     userParam.category.expenses_budget_column = 'true';
-    userParam.category.expenses_deliberations_column = 'true';
+    userParam.category.expenses_assignments_column = 'true';
 
     userParam.company = {};
 
     userParam.company.completion_column = 'true';
-    userParam.company.deliberations_column = 'true';
+    userParam.company.assignments_column = 'true';
     userParam.company.expenses_column = 'true';
-    userParam.company.expenses_deliberations_column = 'true';
+    userParam.company.expenses_assignments_column = 'true';
 
 
     return userParam;
@@ -744,30 +739,30 @@ function convertParam(userParam) {
 
 
     var currentParam = {};
-    currentParam.name = 'category_deliberations_column';
-    currentParam.title = texts.deliberation_column;
+    currentParam.name = 'category_assignments_column';
+    currentParam.title = texts.assignment_column;
     currentParam.type = 'bool';
-    currentParam.value = userParam.category.deliberations_column ? userParam.category.deliberations_column : userParam.category.deliberations_column;
-    currentParam.defaultvalue = defaultParam.category.deliberations_column;
+    currentParam.value = userParam.category.assignments_column ? userParam.category.assignments_column : userParam.category.assignments_column;
+    currentParam.defaultvalue = defaultParam.category.assignments_column;
     currentParam.parentObject = 'Categories';
     currentParam.editable = true;
     currentParam.tooltip = "stampa la colonna nel report";
     currentParam.readValue = function() {
-        userParam.category.deliberations_column = this.value;
+        userParam.category.assignments_column = this.value;
     }
     convertedParam.data.push(currentParam);
 
     var currentParam = {};
-    currentParam.name = 'category_deliberations_budget_column';
-    currentParam.title = texts.delib_outBudget_difference_column;
+    currentParam.name = 'category_assignments_budget_column';
+    currentParam.title = texts.assign_outBudget_difference_column;
     currentParam.type = 'bool';
-    currentParam.value = userParam.category.deliberations_budget_column ? userParam.category.deliberations_budget_column : userParam.category.deliberations_budget_column;
-    currentParam.defaultvalue = defaultParam.category.deliberations_budget_column;
+    currentParam.value = userParam.category.assignments_budget_column ? userParam.category.assignments_budget_column : userParam.category.assignments_budget_column;
+    currentParam.defaultvalue = defaultParam.category.assignments_budget_column;
     currentParam.parentObject = 'Categories';
     currentParam.editable = true;
     currentParam.tooltip = "stampa la colonna nel report";
     currentParam.readValue = function() {
-        userParam.category.deliberations_budget_column = this.value;
+        userParam.category.assignments_budget_column = this.value;
     }
     convertedParam.data.push(currentParam);
 
@@ -802,16 +797,16 @@ function convertParam(userParam) {
     convertedParam.data.push(currentParam);
 
     var currentParam = {};
-    currentParam.name = 'category_expenses_deliberations_column';
-    currentParam.title = texts.exp_delib_difference_column;
+    currentParam.name = 'category_expenses_assignments_column';
+    currentParam.title = texts.exp_assign_difference_column;
     currentParam.type = 'bool';
-    currentParam.value = userParam.category.expenses_deliberations_column ? userParam.category.expenses_deliberations_column : userParam.category.expenses_deliberations_column;
-    currentParam.defaultvalue = defaultParam.category.expenses_deliberations_column;
+    currentParam.value = userParam.category.expenses_assignments_column ? userParam.category.expenses_assignments_column : userParam.category.expenses_assignments_column;
+    currentParam.defaultvalue = defaultParam.category.expenses_assignments_column;
     currentParam.parentObject = 'Categories';
     currentParam.editable = true;
     currentParam.tooltip = "stampa la colonna nel report";
     currentParam.readValue = function() {
-        userParam.category.expenses_deliberations_column = this.value;
+        userParam.category.expenses_assignments_column = this.value;
     }
     convertedParam.data.push(currentParam);
 
@@ -832,15 +827,15 @@ function convertParam(userParam) {
     convertedParam.data.push(currentParam);
 
     var currentParam = {};
-    currentParam.name = 'company_deliberations_column';
-    currentParam.title = texts.deliberation_column;
+    currentParam.name = 'company_assignments_column';
+    currentParam.title = texts.assignment_column;
     currentParam.type = 'bool';
-    currentParam.value = userParam.company.deliberations_column ? userParam.company.deliberations_column : userParam.company.deliberations_column;
-    currentParam.defaultvalue = defaultParam.company.deliberations_column;
+    currentParam.value = userParam.company.assignments_column ? userParam.company.assignments_column : userParam.company.assignments_column;
+    currentParam.defaultvalue = defaultParam.company.assignments_column;
     currentParam.parentObject = 'Companies';
     currentParam.editable = true;
     currentParam.readValue = function() {
-        userParam.company.deliberations_column = this.value;
+        userParam.company.assignments_column = this.value;
     }
     convertedParam.data.push(currentParam);
 
@@ -861,16 +856,16 @@ function convertParam(userParam) {
     convertedParam.data.push(currentParam);
 
     var currentParam = {};
-    currentParam.name = 'company_expenses_deliberations_column';
-    currentParam.title = texts.exp_delib_difference_column;
+    currentParam.name = 'company_expenses_assignments_column';
+    currentParam.title = texts.exp_assign_difference_column;
     currentParam.type = 'bool';
-    currentParam.value = userParam.company.expenses_deliberations_column ? userParam.company.expenses_deliberations_column : userParam.company.expenses_deliberations_column;
-    currentParam.defaultvalue = defaultParam.company.expenses_deliberations_column;
+    currentParam.value = userParam.company.expenses_assignments_column ? userParam.company.expenses_assignments_column : userParam.company.expenses_assignments_column;
+    currentParam.defaultvalue = defaultParam.company.expenses_assignments_column;
     currentParam.parentObject = 'Companies';
     currentParam.editable = true;
     currentParam.tooltip = "stampa la colonna nel report";
     currentParam.readValue = function() {
-        userParam.company.expenses_deliberations_column = this.value;
+        userParam.company.expenses_assignments_column = this.value;
     }
     convertedParam.data.push(currentParam);
 
@@ -973,7 +968,7 @@ function settingsDialog() {
     }
 
     var dialogTitle = 'Settings';
-    var pageAnchor = 'dlgSettings';
+    var pageAnchor = 'construction_project_report';
     var convertedParam = convertParam(userParam);
     if (!Banana.Ui.openPropertyEditor(dialogTitle, convertedParam, pageAnchor))
         return false;
@@ -992,6 +987,10 @@ function settingsDialog() {
 
 function exec(inData, options) {
 
+    /*Banana.document.setScriptSettings("");
+    return;*/
+
+    
     if (!Banana.document)
         return "@Cancel";
 
