@@ -18,7 +18,7 @@
 // @task = app.command
 // @doctype = 100.*
 // @publisher = Banana.ch SA
-// @pubdate = 2021-06-16
+// @pubdate = 2021-08-10
 // @inputdatasource = none
 // @timeout = -1
 
@@ -2258,6 +2258,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             data_year.altman_index = altman_index;
             data_year.cashflow = cashflow;
             data_year.cashflow_index = cashflow_index;
+            var data_year_projection=data_year;
             this.data.push(data_year);
         }
 
@@ -2298,15 +2299,12 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             data_year.cashflow_index = cashflow_index;
             this.data.push(data_year);
             yeardocument = yeardocument.previousYear();
-            if(i==0){
-                data_current_year=data_year;
-            }
             i++;
         }
 
         //calculate the differences between current and budget
         if(isIncluded){
-            this.differences=this.getCurrAndBudgDiff(data_current_year,data_budget_complete);
+            this.differences=this.getCurrAndBudgDiff(data_year_projection,data_budget_complete);
         }
 
     }

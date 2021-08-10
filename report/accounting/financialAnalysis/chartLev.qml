@@ -50,6 +50,7 @@ BasePage {
                      financialStatementAnalysis.setParam(param);
                   }
                   financialStatementAnalysis.loadData();
+                  var texts=financialStatementAnalysis.initFinancialAnalysisTexts();
                   var yearList = [];
                   var data = {};
                   data.grcuas = {};
@@ -68,10 +69,19 @@ BasePage {
                            periodo = periodo.substr(0, 4);
                            break;
                         case "CY":
-                           periodo = Banana.Converter.toLocaleDateFormat(financialStatementAnalysis.dialogparam.selectionEndDate);
+                           periodo = texts.year_to_date;
+                           break;
+                        case "CYP":
+                           periodo = texts.year_projection;
+                           break;
+                        case "B":
+                           periodo = texts.budget;
+                           break;
+                        case "BTD":
+                           periodo = texts.budget_to_date;
                            break;
                      }
-                     var year= periodo;
+                     var year=periodo;
                      if (year.length>0 && yearList.indexOf(year)<0)
                         yearList.push(year);
                      data.grcuas[year] = financialStatementAnalysis.data[i].index.lev.grcuas.amount;
