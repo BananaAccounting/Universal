@@ -6,7 +6,7 @@
     <message>
         <location filename="../create_transactions_for_assignments.js" line="47"/>
         <source>Not assigned</source>
-        <translation type="unfinished">Non assegnati</translation>
+        <translation>Non assegnati</translation>
     </message>
 </context>
 <context>
@@ -37,8 +37,12 @@
         <translation>Progresso %</translation>
     </message>
     <message>
-        <location filename="../financial_management_of_construction_projects.js" line="312"/>
         <source>Outiline Budget</source>
+        <translation type="vanished">Preventivo di massima</translation>
+    </message>
+    <message>
+        <location filename="../financial_management_of_construction_projects.js" line="312"/>
+        <source>Estimate Budget</source>
         <translation>Preventivo di massima</translation>
     </message>
     <message>
@@ -83,8 +87,27 @@
     </message>
     <message>
         <location filename="../financial_management_of_construction_projects.js" line="323"/>
-        <source>Outline Budget column</source>
+        <source>Estimate Budget column</source>
         <translation>Colonna Preventivo di massima</translation>
+    </message>
+    <message>
+        <location filename="../financial_management_of_construction_projects.js" line="325"/>
+        <source>Assignments and Estimate Budget difference column</source>
+        <translation>Colonna differenza Preventivo di massima e Assegnazioni</translation>
+    </message>
+    <message>
+        <location filename="../financial_management_of_construction_projects.js" line="327"/>
+        <source>Expenses and Estimate Budget difference column</source>
+        <translation>Colonna differenza Preventivo di massima e Spese</translation>
+    </message>
+    <message>
+        <location filename="../financial_management_of_construction_projects.js" line="499"/>
+        <source>Total Companies</source>
+        <translation>Totale Impese</translation>
+    </message>
+    <message>
+        <source>Outline Budget column</source>
+        <translation type="vanished">Colonna Preventivo di massima</translation>
     </message>
     <message>
         <location filename="../financial_management_of_construction_projects.js" line="324"/>
@@ -92,9 +115,8 @@
         <translation>Colonna Assegnazioni</translation>
     </message>
     <message>
-        <location filename="../financial_management_of_construction_projects.js" line="325"/>
         <source>Assignments and Outline Budget difference column</source>
-        <translation>Colonna differenza Preventivo di massima e Assegnazioni</translation>
+        <translation type="vanished">Colonna differenza Preventivo di massima e Assegnazioni</translation>
     </message>
     <message>
         <location filename="../financial_management_of_construction_projects.js" line="326"/>
@@ -102,9 +124,8 @@
         <translation>Colonna Spese</translation>
     </message>
     <message>
-        <location filename="../financial_management_of_construction_projects.js" line="327"/>
         <source>Expenses and Outline Budget difference column</source>
-        <translation>Colonna differenza Preventivo di massima e Spese</translation>
+        <translation type="vanished">Colonna differenza Preventivo di massima e Spese</translation>
     </message>
     <message>
         <location filename="../financial_management_of_construction_projects.js" line="328"/>
