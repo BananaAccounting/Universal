@@ -68,7 +68,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
         var width=this.setColumnsWidthDinamically(tableBalance);
 
-        if(this.dialogparam.includebudgettable)
+        if (this.dialogparam.includebudgettable && this.with_budget)
             tableBalance.addColumn("Budget+/-").setStyleAttributes("width:"+width+"%");
 
         // header
@@ -79,7 +79,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             tableRow.addCell(texts.acronym, "styleTablesHeaderText");
         }
         this.generateHeaderColumns(tableRow);
-        if(this.dialogparam.includebudgettable)
+        if (this.dialogparam.includebudgettable && this.with_budget)
             tableRow.addCell(texts.budget_difference, "styleTablesHeaderText");
         return tableBalance;
     }
@@ -96,7 +96,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
         var width=this.setColumnsWidthDinamically(tableConCe);
 
-        if(this.dialogparam.includebudgettable)
+        if (this.dialogparam.includebudgettable && this.with_budget)
         tableConCe.addColumn("Budget+/-").setStyleAttributes("width:"+width+"%");
 
         //header
@@ -107,7 +107,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             tableRow.addCell(texts.acronym, "styleTablesHeaderText");
         }
         this.generateHeaderColumns(tableRow);
-        if(this.dialogparam.includebudgettable)
+        if (this.dialogparam.includebudgettable && this.with_budget)
             tableRow.addCell(texts.budget_difference, "styleTablesHeaderText");
         return tableConCe;
     }
@@ -137,7 +137,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         }
         var width=this.setColumnsWidthDinamically(tableIndliq);
 
-        if(this.dialogparam.includebudgettable)
+        if (this.dialogparam.includebudgettable && this.with_budget)
         tableIndliq.addColumn("Budget+/-").setStyleAttributes("width:"+width+"%");
         // header
         var tableHeader = tableIndliq.getHeader();
@@ -148,7 +148,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         }
         tableRow.addCell(texts.benchmark, "styleTablesHeaderText");
         this.generateHeaderColumns(tableRow);
-        if(this.dialogparam.includebudgettable)
+        if (this.dialogparam.includebudgettable && this.with_budget)
             tableRow.addCell(texts.budget_difference, "styleTablesHeaderText");
         return tableIndliq;
     }
@@ -164,7 +164,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         }
         var width=this.setColumnsWidthDinamically(tableIndlev);
 
-        if(this.dialogparam.includebudgettable)
+        if (this.dialogparam.includebudgettable && this.with_budget)
         tableIndlev.addColumn("Budget+/-").setStyleAttributes("width:"+width+"%");
         // header
         var tableHeader = tableIndlev.getHeader();
@@ -175,7 +175,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         }
         tableRow.addCell(texts.benchmark, "styleTablesHeaderText");
         this.generateHeaderColumns(tableRow);
-        if(this.dialogparam.includebudgettable)
+        if (this.dialogparam.includebudgettable && this.with_budget)
             tableRow.addCell(texts.budget_difference, "styleTablesHeaderText");
         return tableIndlev;
     }
@@ -191,7 +191,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         }
         var width=this.setColumnsWidthDinamically(tableIndprof);
 
-        if(this.dialogparam.includebudgettable)
+        if (this.dialogparam.includebudgettable && this.with_budget)
         tableIndprof.addColumn("Budget+/-").setStyleAttributes("width:"+width+"%");
         // header
         var tableHeader = tableIndprof.getHeader();
@@ -202,7 +202,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         }
         tableRow.addCell(texts.benchmark, "styleTablesHeaderText");
         this.generateHeaderColumns(tableRow);
-        if(this.dialogparam.includebudgettable)
+        if (this.dialogparam.includebudgettable && this.with_budget)
             tableRow.addCell(texts.budget_difference, "styleTablesHeaderText");
         return tableIndprof;
     }
@@ -219,7 +219,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         }
         var width=this.setColumnsWidthDinamically(tableIndeff);
 
-        if(this.dialogparam.includebudgettable)
+        if(this.dialogparam.includebudgettable && this.with_budget)
         tableIndeff.addColumn("Budget+/-").setStyleAttributes("width:"+width+"%");
         // header
         var tableHeader = tableIndeff.getHeader();
@@ -230,7 +230,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         }
         tableRow.addCell(texts.benchmark, "styleTablesHeaderText");
         this.generateHeaderColumns(tableRow);
-        if(this.dialogparam.includebudgettable)
+        if (this.dialogparam.includebudgettable && this.with_budget)
             tableRow.addCell(texts.budget_difference, "styleTablesHeaderText");
         return tableIndeff;
     }
@@ -243,7 +243,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         tableCashflow.addColumn("Description").setStyleAttributes("width:50%");
 
         var width=this.setColumnsWidthDinamically(tableCashflow);
-        if(this.dialogparam.includebudgettable)
+        if (this.dialogparam.includebudgettable && this.with_budget)
         tableCashflow.addColumn("Budget+/-").setStyleAttributes("width:"+width+"%");
 
         // header
@@ -251,7 +251,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var tableRow = tableHeader.addRow();
         tableRow.addCell(texts.description, "styleTablesHeaderText");
         this.generateHeaderColumns(tableRow);
-        if(this.dialogparam.includebudgettable)
+        if (this.dialogparam.includebudgettable && this.with_budget)
             tableRow.addCell(texts.budget_difference, "styleTablesHeaderText");
         return tableCashflow;
     }
@@ -268,7 +268,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         }
         var width=this.setColumnsWidthDinamically(tableIndCashflow);
 
-        if(this.dialogparam.includebudgettable)
+        if (this.dialogparam.includebudgettable && this.with_budget)
         tableIndCashflow.addColumn("Budget+/-").setStyleAttributes("width:"+width+"%");
         // header
         var tableHeader = tableIndCashflow.getHeader();
@@ -279,7 +279,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         }
         tableRow.addCell(texts.benchmark, "styleTablesHeaderText");
         this.generateHeaderColumns(tableRow);
-        if(this.dialogparam.includebudgettable)
+        if (this.dialogparam.includebudgettable && this.with_budget)
         tableRow.addCell(texts.budget_difference, "styleTablesHeaderText");
         return tableIndCashflow;
     }
@@ -290,7 +290,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         tableDupont.getCaption().addText(texts.upperdupontscheme, "styleTitles");
         tableDupont.addColumn("Description").setStyleAttributes("width:25%");
         var width=this.setColumnsWidthDinamically(tableDupont);
-        if(this.dialogparam.includebudgettable)
+        if (this.dialogparam.includebudgettable && this.with_budget)
         tableDupont.addColumn("Budget+/-").setStyleAttributes("width:"+width+"%");
 
         //header
@@ -298,7 +298,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var tableRow = tableHeader.addRow();
         tableRow.addCell(texts.description, "styleTablesHeaderText");
         this.generateHeaderColumns(tableRow);
-        if(this.dialogparam.includebudgettable)
+        if (this.dialogparam.includebudgettable && this.with_budget)
             tableRow.addCell(texts.budget_difference, "styleTablesHeaderText");
 
         return tableDupont;
@@ -422,7 +422,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
      */
     generateSpanForBalanceTitles() {
         let span = "";
-        if(this.dialogparam.includebudgettable)
+        if(this.dialogparam.includebudgettable && this.with_budget)
             span=1;
         else
         span=0;
@@ -555,7 +555,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                 amount = this.toLocaleAmountFormat(this.data[i].balance.ca[key].balance);
                 tableRow.addCell(amount, "styleNormalAmount");
             }
-            if(this.dialogparam.includebudgettable)
+            if(this.dialogparam.includebudgettable && this.with_budget)
                 //add the differences (current asset)
                 tableRow.addCell(this.toLocaleAmountFormat(this.differences.balance.ca[key]), "styleNormalAmount");
         }
@@ -567,7 +567,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         for (var i = this.data.length - 1; i >= 0; i--) {
             tableRow.addCell(this.toLocaleAmountFormat(this.data[i].calculated_data.currentassets), "styleMidTotalAmount");
         }
-        if(this.dialogparam.includebudgettable)
+        if(this.dialogparam.includebudgettable && this.with_budget)
             //add the difference current assets total
             tableRow.addCell(this.toLocaleAmountFormat(this.differences.totals.currentassets), "styleMidTotalAmount");
 
@@ -590,7 +590,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                 amount = this.toLocaleAmountFormat(this.data[i].balance.fa[key].balance);
                 tableRow.addCell(amount, "styleNormalAmount");
             }
-            if(this.dialogparam.includebudgettable)
+            if(this.dialogparam.includebudgettable && this.with_budget)
                 tableRow.addCell(this.toLocaleAmountFormat(this.differences.balance.fa[key]), "styleNormalAmount");
         }
         //add the total of fixed assets
@@ -602,7 +602,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         for (var i = this.data.length - 1; i >= 0; i--) {
             tableRow.addCell(this.toLocaleAmountFormat(this.data[i].calculated_data.fixedassets), "styleMidTotalAmount");
         }
-        if(this.dialogparam.includebudgettable)
+        if(this.dialogparam.includebudgettable && this.with_budget)
             tableRow.addCell(this.toLocaleAmountFormat(this.differences.totals.fixedassets), "styleMidTotalAmount");
 
         /******************************************************************************************
@@ -616,7 +616,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         for (var i = this.data.length - 1; i >= 0; i--) {
             tableRow.addCell(this.toLocaleAmountFormat(this.data[i].calculated_data.totalassets), "styleTotalAmount");
         }
-        if(this.dialogparam.includebudgettable)
+        if(this.dialogparam.includebudgettable && this.with_budget)
             tableRow.addCell(this.toLocaleAmountFormat(this.differences.totals.totalassets), "styleTotalAmount");
 
         //Liabilities and Equity title
@@ -642,7 +642,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                 amount = this.toLocaleAmountFormat(this.data[i].balance.stdc[key].balance);
                 tableRow.addCell(amount, 'styleNormalAmount');
             }
-            if(this.dialogparam.includebudgettable)
+            if (this.dialogparam.includebudgettable && this.with_budget)
                 //add the differences (short term debt capital)
                 tableRow.addCell(this.toLocaleAmountFormat(this.differences.balance.stdc[key]), "styleNormalAmount");
         }
@@ -655,7 +655,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         for (var i = this.data.length - 1; i >= 0; i--) {
             tableRow.addCell(this.toLocaleAmountFormat(this.data[i].calculated_data.shorttermdebtcapital), "styleMidTotalAmount");
         }
-        if(this.dialogparam.includebudgettable)
+        if (this.dialogparam.includebudgettable && this.with_budget)
             tableRow.addCell(this.toLocaleAmountFormat(this.differences.totals.shorttermdebtcapital), "styleMidTotalAmount");
 
         /******************************************************************************************
@@ -677,7 +677,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                 amount = this.toLocaleAmountFormat(this.data[i].balance.ltdc[key].balance);
                 tableRow.addCell(amount, 'styleNormalAmount');
             }
-            if(this.dialogparam.includebudgettable)
+            if (this.dialogparam.includebudgettable && this.with_budget)
                 //add the differences (long term debt capital)
                 tableRow.addCell(this.toLocaleAmountFormat(this.differences.balance.ltdc[key]), "styleNormalAmount");
         }
@@ -690,7 +690,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         for (var i = this.data.length - 1; i >= 0; i--) {
             tableRow.addCell(this.toLocaleAmountFormat(this.data[i].calculated_data.longtermdebtcapital), "styleMidTotalAmount");
         }
-        if(this.dialogparam.includebudgettable)
+        if (this.dialogparam.includebudgettable && this.with_budget)
             tableRow.addCell(this.toLocaleAmountFormat(this.differences.totals.longtermdebtcapital), "styleMidTotalAmount");
 
 
@@ -706,7 +706,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         for (var i = this.data.length - 1; i >= 0; i--) {
             tableRow.addCell(this.toLocaleAmountFormat(this.data[i].calculated_data.debtcapital), "styleMidTotalAmount");
         }
-        if(this.dialogparam.includebudgettable)
+        if(this.dialogparam.includebudgettable && this.with_budget)
             tableRow.addCell(this.toLocaleAmountFormat(this.differences.totals.debtcapital), "styleMidTotalAmount");
 
         /******************************************************************************************
@@ -728,7 +728,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                 amount = this.toLocaleAmountFormat(this.data[i].balance.oc[key].balance);
                 tableRow.addCell(amount, "styleNormalAmount");
             }
-            if(this.dialogparam.includebudgettable)
+            if (this.dialogparam.includebudgettable && this.with_budget)
                 //add the differences (own capital)
                 tableRow.addCell(this.toLocaleAmountFormat(this.differences.balance.oc[key]), "styleNormalAmount");
         }
@@ -741,7 +741,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         for (var i = this.data.length - 1; i >= 0; i--) {
             tableRow.addCell(this.toLocaleAmountFormat(this.data[i].calculated_data.owncapital), "styleMidTotalAmount");
         }
-        if(this.dialogparam.includebudgettable)
+        if (this.dialogparam.includebudgettable && this.with_budget)
             tableRow.addCell(this.toLocaleAmountFormat(this.differences.totals.owncapital), "styleMidTotalAmount");
 
         /******************************************************************************************
@@ -755,7 +755,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         for (var i = this.data.length - 1; i >= 0; i--) {
             tableRow.addCell(this.toLocaleAmountFormat(this.data[i].calculated_data.totalliabilitiesandequity), "styleTotalAmount");
         }
-        if(this.dialogparam.includebudgettable)
+        if (this.dialogparam.includebudgettable && this.with_budget)
             tableRow.addCell(this.toLocaleAmountFormat(this.differences.totals.totalliabilitiesandequity), "styleTotalAmount");
 
         /******************************************************************************************
@@ -791,7 +791,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                 tableRow.addCell(this.toLocaleAmountFormat(amount), "styleNormalAmount");
             }
             //add the differences (profit and loss)
-            if(this.dialogparam.includebudgettable)
+            if (this.dialogparam.includebudgettable && this.with_budget)
                 tableRow.addCell(this.toLocaleAmountFormat(this.differences.profitandloss[key]), "styleNormalAmount");
 
             if (key === "costofmerchandservices") {
@@ -803,7 +803,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                 for (var i = this.data.length - 1; i >= 0; i--) {
                     tableRow.addCell(this.toLocaleAmountFormat(this.data[i].calculated_data.addedvalue), "styleMidTotalAmount");
                 }
-                if(this.dialogparam.includebudgettable)
+                if (this.dialogparam.includebudgettable && this.with_budget)
                     tableRow.addCell(this.toLocaleAmountFormat(this.differences.totals.addedvalue), "styleMidTotalAmount");
             }
             if (key === "differentcosts") {
@@ -815,7 +815,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                 for (var i = this.data.length - 1; i >= 0; i--) {
                     tableRow.addCell(this.toLocaleAmountFormat(this.data[i].calculated_data.ebitda), "styleMidTotalAmount");
                 }
-                if(this.dialogparam.includebudgettable)
+                if (this.dialogparam.includebudgettable && this.with_budget)
                     tableRow.addCell(this.toLocaleAmountFormat(this.differences.totals.ebitda), "styleMidTotalAmount");
 
             }
@@ -828,7 +828,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                 for (var i = this.data.length - 1; i >= 0; i--) {
                     tableRow.addCell(this.toLocaleAmountFormat(this.data[i].calculated_data.ebit), "styleMidTotalAmount");
                 }
-                if(this.dialogparam.includebudgettable)
+                if (this.dialogparam.includebudgettable && this.with_budget)
                     tableRow.addCell(this.toLocaleAmountFormat(this.differences.totals.ebit), "styleMidTotalAmount");
             }
             if (key === "interests") {
@@ -840,7 +840,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                 for (var i = this.data.length - 1; i >= 0; i--) {
                     tableRow.addCell(this.toLocaleAmountFormat(this.data[i].calculated_data.ebt), "styleMidTotalAmount");
                 }
-                if(this.dialogparam.includebudgettable)
+                if (this.dialogparam.includebudgettable && this.with_budget)
                     tableRow.addCell(this.toLocaleAmountFormat(this.differences.totals.ebt), "styleMidTotalAmount");
             }
         }
@@ -852,7 +852,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         for (var i = this.data.length - 1; i >= 0; i--) {
             tableRow.addCell(this.toLocaleAmountFormat(this.data[i].calculated_data.annualresult), "styleTotalAmount");
         }
-        if(this.dialogparam.includebudgettable)
+        if (this.dialogparam.includebudgettable && this.with_budget)
             tableRow.addCell(this.toLocaleAmountFormat(this.differences.totals.annualresult), "styleMidTotalAmount");
 
         report.addPageBreak();
@@ -950,7 +950,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                 }
 
             }
-            if(this.dialogparam.includebudgettable){
+            if(this.dialogparam.includebudgettable && this.with_budget){
                 if(this.differences.ratios.liqu[key].type=="dec"){
                     tableRow.addCell(this.toLocaleAmountFormat(this.differences.ratios.liqu[key].value), "styleNormalAmount");
                 }
@@ -981,7 +981,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                     this.setIndexEvolution(indexT1, indexT2, cell);
                 }
             }
-            if(this.dialogparam.includebudgettable)
+            if (this.dialogparam.includebudgettable && this.with_budget)
             tableRow.addCell(this.toLocaleAmountFormat(this.differences.ratios.lev[key])+'%', "styleNormalAmount");
         }
 
@@ -1006,7 +1006,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                     this.setIndexEvolution(indexT1, indexT2, cell);
                 }
             }
-            if(this.dialogparam.includebudgettable)
+            if(this.dialogparam.includebudgettable && this.with_budget)
             tableRow.addCell(this.toLocaleAmountFormat(this.differences.ratios.red[key])+'%', "styleNormalAmount");
         }
 
@@ -1026,7 +1026,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                 ratios = this.data[i].index.eff[key].amount;
                 tableRow.addCell(this.toLocaleAmountFormat(ratios), "styleNormalAmount");
             }
-            if(this.dialogparam.includebudgettable)
+            if(this.dialogparam.includebudgettable && this.with_budget)
             tableRow.addCell(this.toLocaleAmountFormat(this.differences.ratios.eff[key]), "styleNormalAmount");
         }
 
@@ -1046,7 +1046,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         for (var i = this.data.length - 1; i >= 0; i--) {
             tableRow.addCell(this.toLocaleAmountFormat(this.data[i].finalresult.finalresult.balance), "styleNormalAmount");
         }
-        if(this.dialogparam.includebudgettable)
+        if(this.dialogparam.includebudgettable && this.with_budget)
             tableRow.addCell(this.toLocaleAmountFormat(this.differences.cashflow.finalresult), "styleNormalAmount");
 
         //Gain on Sales
@@ -1055,7 +1055,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         for (var i = this.data.length - 1; i >= 0; i--) {
             tableRow.addCell(this.toLocaleAmountFormat(this.data[i].calculated_data.fixedassets_gain), "styleNormalAmount");
         }
-        if(this.dialogparam.includebudgettable)
+        if(this.dialogparam.includebudgettable && this.with_budget)
             tableRow.addCell(this.toLocaleAmountFormat(this.differences.cashflow.fixedassets_gain), "styleNormalAmount");
 
         //Loss on Sales
@@ -1064,7 +1064,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         for (var i = this.data.length - 1; i >= 0; i--) {
             tableRow.addCell(this.toLocaleAmountFormat(this.data[i].calculated_data.fixedassets_loss), "styleNormalAmount");
         }
-        if(this.dialogparam.includebudgettable)
+        if(this.dialogparam.includebudgettable && this.with_budget)
             tableRow.addCell(this.toLocaleAmountFormat(this.differences.cashflow.fixedassets_loss), "styleNormalAmount");
 
         //Depreciations and Adjustments
@@ -1073,7 +1073,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         for (var i = this.data.length - 1; i >= 0; i--) {
             tableRow.addCell(this.toLocaleAmountFormat(this.data[i].profitandloss.depreandadjust.balance), "styleNormalAmount");
         }
-        if(this.dialogparam.includebudgettable)
+        if(this.dialogparam.includebudgettable && this.with_budget)
             tableRow.addCell(this.toLocaleAmountFormat(this.differences.cashflow.depreandadjust), "styleNormalAmount");
 
         //Provisions and Similar
@@ -1082,7 +1082,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         for (var i = this.data.length - 1; i >= 0; i--) {
             tableRow.addCell(this.toLocaleAmountFormat(this.data[i].balance.ltdc.provisionsandsimilar.delta), "styleNormalAmount");
         }
-        if(this.dialogparam.includebudgettable)
+        if(this.dialogparam.includebudgettable && this.with_budget)
             tableRow.addCell(this.toLocaleAmountFormat(this.differences.cashflow.provisionsandsimilar), "styleNormalAmount");
 
         //asset adjustments title
@@ -1095,7 +1095,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         for (var i = this.data.length - 1; i >= 0; i--) {
             tableRow.addCell(this.toLocaleAmountFormat(this.data[i].balance.ca.credits.delta), "styleNormalAmount");
         }
-        if(this.dialogparam.includebudgettable)
+        if(this.dialogparam.includebudgettable && this.with_budget)
             tableRow.addCell(this.toLocaleAmountFormat(this.differences.cashflow.credits), "styleNormalAmount");
 
         //Stocks adjustments
@@ -1104,7 +1104,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         for (var i = this.data.length - 1; i >= 0; i--) {
             tableRow.addCell(this.toLocaleAmountFormat(this.data[i].balance.ca.stocks.delta), "styleNormalAmount");
         }
-        if(this.dialogparam.includebudgettable)
+        if(this.dialogparam.includebudgettable && this.with_budget)
             tableRow.addCell(this.toLocaleAmountFormat(this.differences.cashflow.stocks), "styleNormalAmount");
 
         //Prepaid and expenses
@@ -1113,7 +1113,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         for (var i = this.data.length - 1; i >= 0; i--) {
             tableRow.addCell(this.toLocaleAmountFormat(this.data[i].balance.ca.prepaid_expenses.delta), "styleNormalAmount");
         }
-        if(this.dialogparam.includebudgettable)
+        if(this.dialogparam.includebudgettable && this.with_budget)
             tableRow.addCell(this.toLocaleAmountFormat(this.differences.cashflow.prepaid_expenses), "styleNormalAmount");
 
         //liability adjustments title
@@ -1126,7 +1126,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         for (var i = this.data.length - 1; i >= 0; i--) {
             tableRow.addCell(this.toLocaleAmountFormat(this.data[i].balance.stdc.debts.delta), "styleNormalAmount");
         }
-        if(this.dialogparam.includebudgettable)
+        if(this.dialogparam.includebudgettable && this.with_budget)
             tableRow.addCell(this.toLocaleAmountFormat(this.differences.cashflow.shorttermdebtcapital), "styleNormalAmount");
 
         //Accruals and Deferrend Income
@@ -1135,7 +1135,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         for (var i = this.data.length - 1; i >= 0; i--) {
             tableRow.addCell(this.toLocaleAmountFormat(this.data[i].balance.stdc.accruals_and_deferred_income.delta), "styleNormalAmount");
         }
-        if(this.dialogparam.includebudgettable)
+        if(this.dialogparam.includebudgettable && this.with_budget)
             tableRow.addCell(this.toLocaleAmountFormat(this.differences.cashflow.accruals_and_deferred_income), "styleNormalAmount");
 
         
@@ -1145,7 +1145,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         for (var i = this.data.length - 1; i >= 0; i--) {
             tableRow.addCell(this.toLocaleAmountFormat(this.data[i].cashflow.from_operations), "styleMidTotalAmount");
         }
-        if(this.dialogparam.includebudgettable)
+        if(this.dialogparam.includebudgettable && this.with_budget)
             tableRow.addCell(this.toLocaleAmountFormat(this.differences.totals_cashflow.from_operations), "styleMidTotalAmount");
 
         //Investments
@@ -1154,7 +1154,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         for (var i = this.data.length - 1; i >= 0; i--) {
             tableRow.addCell(this.toLocaleAmountFormat(this.data[i].cashflow.investments), "styleNormalAmount");
         }
-        if(this.dialogparam.includebudgettable)
+        if(this.dialogparam.includebudgettable && this.with_budget)
             tableRow.addCell(this.toLocaleAmountFormat(this.differences.cashflow.investments), "styleNormalAmount");
 
         //Disinvestments
@@ -1163,7 +1163,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         for (var i = this.data.length - 1; i >= 0; i--) {
             tableRow.addCell(this.toLocaleAmountFormat(this.data[i].cashflow.disinvestments), "styleNormalAmount");
         }
-        if(this.dialogparam.includebudgettable)
+        if(this.dialogparam.includebudgettable && this.with_budget)
             tableRow.addCell(this.toLocaleAmountFormat(this.differences.cashflow.disinvestments), "styleNormalAmount");
 
         //Cashflow from Investing
@@ -1172,7 +1172,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         for (var i = this.data.length - 1; i >= 0; i--) {
             tableRow.addCell(this.toLocaleAmountFormat(this.data[i].cashflow.from_investing), "styleMidTotalAmount");
         }
-        if(this.dialogparam.includebudgettable)
+        if(this.dialogparam.includebudgettable && this.with_budget)
             tableRow.addCell(this.toLocaleAmountFormat(this.differences.totals_cashflow.from_investing), "styleMidTotalAmount");
 
         //Long therm Debt Capital
@@ -1181,7 +1181,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         for (var i = this.data.length - 1; i >= 0; i--) {
             tableRow.addCell(this.toLocaleAmountFormat(this.data[i].balance.ltdc.longter_debts.delta), "styleNormalAmount");
         }
-        if(this.dialogparam.includebudgettable)
+        if(this.dialogparam.includebudgettable && this.with_budget)
             tableRow.addCell(this.toLocaleAmountFormat(this.differences.cashflow.longtermdebtcapital), "styleNormalAmount");
 
         //Dividends
@@ -1190,7 +1190,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         for (var i = this.data.length - 1; i >= 0; i--) {
             tableRow.addCell(this.toLocaleAmountFormat(this.data[i].balance.oc.reservesandprofits.dividends), "styleNormalAmount");
         }
-        if(this.dialogparam.includebudgettable)
+        if(this.dialogparam.includebudgettable && this.with_budget)
             tableRow.addCell(this.toLocaleAmountFormat(this.differences.cashflow.dividends), "styleNormalAmount");
 
         //Share capital
@@ -1199,7 +1199,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         for (var i = this.data.length - 1; i >= 0; i--) {
             tableRow.addCell(this.toLocaleAmountFormat(this.data[i].balance.oc.ownbasecapital.delta), "styleNormalAmount");
         }
-        if(this.dialogparam.includebudgettable)
+        if(this.dialogparam.includebudgettable && this.with_budget)
             tableRow.addCell(this.toLocaleAmountFormat(this.differences.cashflow.ownbasecapital), "styleNormalAmount");
 
         //Reserves variation
@@ -1208,7 +1208,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         for (var i = this.data.length - 1; i >= 0; i--) {
             tableRow.addCell(this.toLocaleAmountFormat(this.data[i].calculated_data.reservesandprofits_variation), "styleNormalAmount");
         }
-        if(this.dialogparam.includebudgettable)
+        if(this.dialogparam.includebudgettable && this.with_budget)
             tableRow.addCell(this.toLocaleAmountFormat(this.differences.cashflow.reservesandprofits), "styleNormalAmount");
 
         //Cashflow from Financing
@@ -1217,7 +1217,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         for (var i = this.data.length - 1; i >= 0; i--) {
             tableRow.addCell(this.toLocaleAmountFormat(this.data[i].cashflow.from_financing), "styleMidTotalAmount");
         }
-        if(this.dialogparam.includebudgettable)
+        if(this.dialogparam.includebudgettable && this.with_budget)
             tableRow.addCell(this.toLocaleAmountFormat(this.differences.totals_cashflow.from_investing), "styleMidTotalAmount");
 
         //Final Cashflow
@@ -1226,7 +1226,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         for (var i = this.data.length - 1; i >= 0; i--) {
             tableRow.addCell(this.toLocaleAmountFormat(this.data[i].cashflow.cashflow), "styleTotalAmount");
         }
-        if(this.dialogparam.includebudgettable)
+        if(this.dialogparam.includebudgettable && this.with_budget)
          tableRow.addCell(this.toLocaleAmountFormat(this.differences.totals_cashflow.final_cashflow), "styleTotalAmount");
 
         //Opening Liquidity
@@ -1235,7 +1235,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         for (var i = this.data.length - 1; i >= 0; i--) {
             tableRow.addCell(this.toLocaleAmountFormat(this.data[i].cashflow.opening_liquidity), "styleNormalAmount");
         }
-        if(this.dialogparam.includebudgettable)
+        if(this.dialogparam.includebudgettable && this.with_budget)
             tableRow.addCell(this.toLocaleAmountFormat(this.differences.cashflow.opening_liquidity), "styleNormalAmount");
 
         //Closing Liquidity
@@ -1244,7 +1244,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         for (var i = this.data.length - 1; i >= 0; i--) {
             tableRow.addCell(this.toLocaleAmountFormat(this.data[i].cashflow.closing_liquidity), "styleNormalAmount");
         }
-        if(this.dialogparam.includebudgettable)
+        if(this.dialogparam.includebudgettable && this.with_budget)
             tableRow.addCell(this.toLocaleAmountFormat(this.differences.cashflow.closing_liquidity), "styleNormalAmount");
 
         //Liquidity Delta
@@ -1253,7 +1253,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         for (var i = this.data.length - 1; i >= 0; i--) {
             tableRow.addCell(this.toLocaleAmountFormat(this.data[i].cashflow.delta_liquidity), "styleTotalAmount");
         }
-        if(this.dialogparam.includebudgettable)
+        if(this.dialogparam.includebudgettable && this.with_budget)
             tableRow.addCell(this.toLocaleAmountFormat(this.differences.totals_cashflow.delta_liquidity), "styleTotalAmount");
 
         if (this.cashflow_differences > 0)
@@ -1281,7 +1281,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                     this.setIndexEvolution(indexT1, indexT2, cell);
                 }
             }
-            if(this.dialogparam.includebudgettable)
+            if (this.dialogparam.includebudgettable && this.with_budget)
             tableRow.addCell(this.toLocaleAmountFormat(this.differences.cashflow_ratios[key])+'%', "styleNormalAmount");
         }
 
@@ -1317,7 +1317,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                         this.setIndexEvolution(indexT1, indexT2, cell);
                     }
                 }
-                if(this.dialogparam.includebudgettable)
+                if (this.dialogparam.includebudgettable && this.with_budget)
                 //add the differences
                 tableRow.addCell(this.toLocaleAmountFormat(this.differences.dupont_data[key]), "styleNormalAmount");
             }
@@ -2220,7 +2220,12 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         this.data = [];
         var yeardocument = this.banDocument;
         var i = 0;
-        var data_current_year={};
+        var data_year_todate={};
+        var data_budget_todate={};
+
+        var data_year_projection={};
+        var data_budget_complete={};
+
 
         // only if the table budget exists and if the User choosed to use it.
         var isIncluded = this.dialogparam.includebudgettable;
@@ -2240,7 +2245,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             data_budget.cashflow = cashflow;
             data_budget.cashflow_index = cashflow_index;
             this.data.push(data_budget);
-            var data_budget_complete=data_budget;
+            data_budget_complete=data_budget;
         }
 
         //current year with projection
@@ -2258,7 +2263,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             data_year.altman_index = altman_index;
             data_year.cashflow = cashflow;
             data_year.cashflow_index = cashflow_index;
-            var data_year_projection=data_year;
+            data_year_projection=data_year;
             this.data.push(data_year);
         }
 
@@ -2278,6 +2283,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             data_budget.altman_index = altman_index;
             data_budget.cashflow = cashflow;
             data_budget.cashflow_index = cashflow_index;
+            data_budget_todate=data_budget;
             this.data.push(data_budget);
 
         }
@@ -2297,14 +2303,18 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             data_year.altman_index = altman_index;
             data_year.cashflow = cashflow;
             data_year.cashflow_index = cashflow_index;
+            if(i==0){
+                data_year_todate=data_year;
+            }
             this.data.push(data_year);
             yeardocument = yeardocument.previousYear();
             i++;
         }
 
         //calculate the differences between current and budget
-        if(isIncluded){
+        if(this.with_budget && isIncluded){
             this.differences=this.getCurrAndBudgDiff(data_year_projection,data_budget_complete);
+            this.differences_todate=this.getCurrAndBudgDiff(data_year_todate,data_budget_todate);
         }
 
     }
