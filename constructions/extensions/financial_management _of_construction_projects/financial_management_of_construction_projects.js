@@ -309,7 +309,7 @@ function initTexts() {
     texts.company = qsTr("Company");
     texts.companies = qsTr("Companies");
     texts.progress_perc = qsTr("Progress %");
-    texts.outline_budget = qsTr("Outiline Budget");
+    texts.outline_budget = qsTr("Estimate Budget");
     texts.assignments = qsTr("Assignments");
     texts.actual_expenses = qsTr("Expenses");
     texts.diff_assign_budg = qsTr("Diff.Assing./Budg.");
@@ -320,11 +320,11 @@ function initTexts() {
 
     //dialog texts
     texts.completion_column = qsTr("Progress column");
-    texts.outline_budget_column = qsTr("Outline Budget column");
+    texts.outline_budget_column = qsTr("Estimate Budget column");
     texts.assignment_column = qsTr("Assignments column");
-    texts.assign_outBudget_difference_column = qsTr("Assignments and Outline Budget difference column");
+    texts.assign_outBudget_difference_column = qsTr("Assignments and Estimate Budget difference column");
     texts.expenses_column = qsTr("Expenses column");
-    texts.exp_outBudget_difference_column = qsTr("Expenses and Outline Budget difference column");
+    texts.exp_outBudget_difference_column = qsTr("Expenses and Estimate Budget difference column");
     texts.exp_assign_difference_column = qsTr("Expenses and Assignments difference column");
 
 
@@ -496,7 +496,7 @@ function loadAccountsTableRows() {
 
 function getCompaniesTotal(accounts_table_rows) {
     let companies_total = {};
-    companies_total.description = "Totale Companies";
+    companies_total.description = qsTr("Total Companies");
     companies_total.total_assignments = "";
     companies_total.total_expenses = "";
     companies_total.total_assignments_expenses = "";
