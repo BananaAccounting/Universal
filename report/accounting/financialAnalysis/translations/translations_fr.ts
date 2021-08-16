@@ -1024,6 +1024,16 @@ Vérifier que le groups utilisés sont corrects.</translation>
         <translation>Détails de l&apos;Analyse</translation>
     </message>
     <message>
+        <location filename="../financialStatementAnalysis.js" line="1649"/>
+        <source>Include Budget to date column</source>
+        <translation>Inclure la colonne du budget année à ce jour</translation>
+    </message>
+    <message>
+        <location filename="../financialStatementAnalysis.js" line="1650"/>
+        <source>Include Current year projection column</source>
+        <translation>Inclure la colonne de projection de l&apos;année en cours</translation>
+    </message>
+    <message>
         <location filename="../financialStatementAnalysis.js" line="1657"/>
         <source>Include Control Sums</source>
         <translation>Inclure Sommes de Contrôle</translation>
@@ -1440,14 +1450,12 @@ Vérifier que le groups utilisés sont corrects. </translation>
         <translation>Total des Capitaux d&apos;Emprunt</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="1649"/>
         <source>Include budget to date column</source>
-        <translation>Inclure la colonne du budget année à ce jour</translation>
+        <translation type="vanished">Inclure la colonne du budget année à ce jour</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="1650"/>
         <source>Include current year projection column</source>
-        <translation>Inclure la colonne de projection de l&apos;année en cours</translation>
+        <translation type="vanished">Inclure la colonne de projection de l&apos;année en cours</translation>
     </message>
     <message>
         <location filename="../financialStatementAnalysis.js" line="1651"/>

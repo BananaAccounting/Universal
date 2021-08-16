@@ -872,7 +872,7 @@
     <message>
         <location filename="../financialStatementAnalysis.js" line="1673"/>
         <source>Year to Date + Budget</source>
-        <translation>Year to Date + Preventivo</translation>
+        <translation>Da inizio anno + Preventivo</translation>
     </message>
     <message>
         <location filename="../financialStatementAnalysis.js" line="1679"/>
@@ -1410,14 +1410,12 @@
         <translation>Dettagli Analisi</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="1649"/>
         <source>Include budget to date column</source>
-        <translation>Includi la colonna Preventivo da inizio anno</translation>
+        <translation type="vanished">Includi la colonna Preventivo da inizio anno</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="1650"/>
         <source>Include current year projection column</source>
-        <translation>Includi la colonna Proiezione anno corrente</translation>
+        <translation type="vanished">Includi la colonna Proiezione anno corrente</translation>
     </message>
     <message>
         <location filename="../financialStatementAnalysis.js" line="1651"/>
@@ -1922,6 +1920,16 @@
         <location filename="../financialStatementAnalysis.js" line="1645"/>
         <source>Preferences</source>
         <translation>Preferenze</translation>
+    </message>
+    <message>
+        <location filename="../financialStatementAnalysis.js" line="1649"/>
+        <source>Include Budget to date column</source>
+        <translation>Includi la colonna Preventivo da inizio anno</translation>
+    </message>
+    <message>
+        <location filename="../financialStatementAnalysis.js" line="1650"/>
+        <source>Include Current year projection column</source>
+        <translation>Includi la colonna Proiezione anno corrente</translation>
     </message>
     <message>
         <location filename="../financialStatementAnalysis.js" line="1652"/>

@@ -1082,14 +1082,12 @@ Prüfen Sie, ob die verwendeten Gruppen korrekt sind.</translation>
         <translation>Details der Analyse</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="1649"/>
         <source>Include budget to date column</source>
-        <translation>Spalte Budget to Date einbeziehen</translation>
+        <translation type="vanished">Spalte Budget to Date einbeziehen</translation>
     </message>
     <message>
-        <location filename="../financialStatementAnalysis.js" line="1650"/>
         <source>Include current year projection column</source>
-        <translation>Spalte für die Projektion des laufenden Jahres einbeziehen</translation>
+        <translation type="vanished">Spalte für die Projektion des laufenden Jahres einbeziehen</translation>
     </message>
     <message>
         <location filename="../financialStatementAnalysis.js" line="1651"/>
@@ -1495,6 +1493,16 @@ Aktiven Rechnungsabgrenzungen</translation>
         <location filename="../financialStatementAnalysis.js" line="1632"/>
         <source>Total Debt Capital</source>
         <translation>Summe Fremdkapital</translation>
+    </message>
+    <message>
+        <location filename="../financialStatementAnalysis.js" line="1649"/>
+        <source>Include Budget to date column</source>
+        <translation>Spalte Budget to Date einbeziehen</translation>
+    </message>
+    <message>
+        <location filename="../financialStatementAnalysis.js" line="1650"/>
+        <source>Include Current year projection column</source>
+        <translation>Spalte für die Projektion des laufenden Jahres einbeziehen</translation>
     </message>
     <message>
         <location filename="../financialStatementAnalysis.js" line="1730"/>

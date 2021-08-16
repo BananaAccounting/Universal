@@ -18,7 +18,7 @@
 // @task = app.command
 // @doctype = 100.*
 // @publisher = Banana.ch SA
-// @pubdate = 2021-08-10
+// @pubdate = 2021-08-16
 // @inputdatasource = none
 // @timeout = -1
 
@@ -319,7 +319,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
     }
 
     setColumnsWidthDinamically(table) {
-        var width = 100;
+        var width = 110;
         if (this.data.length > 0)
             width = width / parseInt(this.data.length);
         for (var i = 0; i < this.data.length; i++) {
@@ -1190,7 +1190,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var tableRow = tableAltmanIndex.addRow("styleTablRows");
         for (var i = this.data.length - 1; i >= 0; i--) {
             ratios = this.data[i].altman_index;
-            tableRow.addCell(this.data[i].altman_index, this.altmanScoreType(this.data[i].altman_index));
+            tableRow.addCell(this.data[i].altman_index.value, this.altmanScoreType(this.data[i].altman_index.value));
         }
         if (this.dialogparam.formulascolumn) {
 
@@ -1646,8 +1646,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         texts.grouping = qsTr('Grouping');
         texts.printdetails = qsTr('Print Details');
         texts.analysisdetails = qsTr('Analysis Details');
-        texts.includebudget_todate=qsTr('Include budget to date column');
-        texts.includecurrentyear_projection=qsTr('Include current year projection column');
+        texts.includebudget_todate=qsTr('Include Budget to date column');
+        texts.includecurrentyear_projection=qsTr('Include Current year projection column');
         texts.currentdate=qsTr('Current date');
         texts.texts = qsTr('Texts');
         texts.benchmarktexts = qsTr('Benchmarks texts');
@@ -2378,6 +2378,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                         current_date=this.dialogparam.currentdate;
                     }
                     bal = _banDocument.budgetBalance(value, "", current_date ,null);
+                    Banana.console.debug(value);
                     transactions = Banana.document.budgetCard(value,"",current_date, null);
                 } else {
                     var projectionStartDate="";
@@ -2536,6 +2537,10 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         //Cashflow Ratios
         var cashflow_ratios_current_data=data_current_year.cashflow_index;
         var cashflow_ratios_budget_data=data_budget.cashflow_index;
+        //Altman index
+        var altman_index_current_data=data_current_year.altman_index;
+        var altman_index_budget_data=data_budget.altman_index;
+
 
 
         //calculate differences for: balance,profit and loss and their totals
@@ -2557,10 +2562,31 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         //calculate the differences for cashflow ratios
         difference.cashflow_index=this.getCurrAndBudgDiff_cashflow_ratios(cashflow_ratios_current_data,cashflow_ratios_budget_data,ratios_param,texts);
 
+        //calculate the difference for the altman index
+        difference.altman_index=this.getCurrAndBudgDiff_altmanIndex(altman_index_current_data,altman_index_budget_data)
+
 
 
         return difference;
 
+
+    }
+
+    getCurrAndBudgDiff_altmanIndex(altman_index_current_data,altman_index_budget_data){
+        var AltmanIndex={};
+
+        AltmanIndex.x1=Banana.SDecimal.subtract(altman_index_current_data.x1,altman_index_budget_data.x1);
+        AltmanIndex.x2=Banana.SDecimal.subtract(altman_index_current_data.x2,altman_index_budget_data.x2);
+        AltmanIndex.x3=Banana.SDecimal.subtract(altman_index_current_data.x3,altman_index_budget_data.x3);
+        AltmanIndex.x4=Banana.SDecimal.subtract(altman_index_current_data.x4,altman_index_budget_data.x4);
+        AltmanIndex.x5=Banana.SDecimal.subtract(altman_index_current_data.x4,altman_index_budget_data.x5);
+
+        AltmanIndex.value = Banana.SDecimal.add(AltmanIndex.x1, AltmanIndex.x2);
+        AltmanIndex.value = Banana.SDecimal.add(AltmanIndex.value, AltmanIndex.x3);
+        AltmanIndex.value = Banana.SDecimal.add(AltmanIndex.value, AltmanIndex.x4);
+        AltmanIndex.value = Banana.SDecimal.add(AltmanIndex.value, AltmanIndex.x5, { 'decimals': 2 });
+
+        return AltmanIndex;
 
     }
 
@@ -4984,10 +5010,10 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         AltmanIndex.x5 = Banana.SDecimal.multiply(x5, 0.998);
 
 
-        var placeholder = Banana.SDecimal.add(AltmanIndex.x1, AltmanIndex.x2);
-        var placeholder1 = Banana.SDecimal.add(placeholder, AltmanIndex.x3);
-        var placeholder2 = Banana.SDecimal.add(placeholder1, AltmanIndex.x4);
-        AltmanIndex = Banana.SDecimal.add(placeholder2, AltmanIndex.x5, { 'decimals': 2 });
+        AltmanIndex.value = Banana.SDecimal.add(AltmanIndex.x1, AltmanIndex.x2);
+        AltmanIndex.value = Banana.SDecimal.add(AltmanIndex.value, AltmanIndex.x3);
+        AltmanIndex.value = Banana.SDecimal.add(AltmanIndex.value, AltmanIndex.x4);
+        AltmanIndex.value = Banana.SDecimal.add(AltmanIndex.value, AltmanIndex.x5, { 'decimals': 2 });
 
         return AltmanIndex;
 
