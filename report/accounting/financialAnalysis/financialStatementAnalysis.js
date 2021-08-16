@@ -1518,13 +1518,10 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         texts.groups_tooltip = qsTr("Enter the groups, separated by a semicolon ';'");
         texts.amounts_tooltip = qsTr("Enter the amount");
         texts.logo_tooltip = qsTr("Check to include Logo");
-        texts.includebudget_todate_tooltip=qsTr('Check to use include the budget to date column');
+        texts.includebudget_todate_tooltip=qsTr('Check to include the budget to date column');
         texts.includecurrentyear_projection_tooltip=qsTr('Check to include the current year projection column');
         texts.currentdate_tooltip=qsTr('Enter the current date');
         texts.logoname_tooltip = qsTr("Enter the Logo name");
-        texts.analysis_start_period_tooltip=qsTr("Enter the start period of the analysis for current year and Budget");
-        texts.analysis_end_period_tooltip=qsTr("Enter the end period of the analysis for current year and Budget");
-        texts.analysis_all_period_tooltip=qsTr("Check to choose full year");
         texts.numberofpreviousyear_tooltip = qsTr("Enter the number of previous accounting years you wish to include in the analysis");
         texts.numberofdecimals_tooltip = qsTr("Enter the number of decimals for the amounts");
         texts.includebudget_tooltip = qsTr("Check to include the Budget in the Analysis");
@@ -1536,7 +1533,6 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         texts.averagenumberofemployee_tooltip = qsTr("Enter the number of employees in your company");
         texts.headers_background_color_tooltip = qsTr("Enter the color for the header's background");
         texts.headers_texts_color_tooltip = qsTr("Enter the color for the header's texts");
-        texts.analysis_specified_period_tooltip=qsTr("Choose the period");
 
 
         /******************************************************************************************
@@ -1650,7 +1646,6 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         texts.grouping = qsTr('Grouping');
         texts.printdetails = qsTr('Print Details');
         texts.analysisdetails = qsTr('Analysis Details');
-        texts.usebudgetdata=qsTr('Use budget data');
         texts.includebudget_todate=qsTr('Include budget to date column');
         texts.includecurrentyear_projection=qsTr('Include current year projection column');
         texts.currentdate=qsTr('Current date');
