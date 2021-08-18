@@ -50,6 +50,7 @@ BasePage {
                      financialStatementAnalysis.setParam(param);
                   }
                   financialStatementAnalysis.loadData();
+                  var texts=financialStatementAnalysis.initFinancialAnalysisTexts();
                   var yearList = [];
                   var data = {};
                   data.roe = {};
@@ -62,8 +63,22 @@ BasePage {
                      var periodo = financialStatementAnalysis.data[i].period.StartDate;
                       //for dont cut the Budget string in Budg.
                      var elementType = financialStatementAnalysis.data[i].period.Type;
-                     if (elementType === "Y") {
-                      periodo = periodo.substr(0, 4);
+                     switch(elementType) {
+                        case "PY":
+                           periodo = periodo.substr(0, 4);
+                           break;
+                        case "CY":
+                           periodo = texts.year_to_date;
+                           break;
+                        case "CYP":
+                           periodo = texts.year_projection;
+                           break;
+                        case "B":
+                           periodo = texts.budget;
+                           break;
+                        case "BTD":
+                           periodo = texts.budget_to_date;
+                           break;
                      }
                      var year= periodo;
                      if (year.length>0 && yearList.indexOf(year)<0)

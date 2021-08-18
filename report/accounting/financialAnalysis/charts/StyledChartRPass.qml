@@ -6,37 +6,43 @@ ChartView {
 
    property var defaultColors: [
       {
-         'fill': 'rgba(0, 0, 204, 0.4)', 
+         'fill': 'rgba(128, 168, 255, 0.8)', //75%
          'stroke': "#3333cc",
          'point': "#FF008D",
          'pointStroke': "#FF008D"
       },
       {
-         'fill': 'rgba(102, 255, 102, 0.4)',
+         'fill': 'rgba(77, 133, 255, 0.8)',//65%
          'stroke': "#000066",
          'point': "#000066",
          'pointStroke': "#000066"
       },
       {
-         'fill': 'rgba(255, 0, 0, 0.4)',
+         'fill': 'rgba(26, 98, 255, 0.8)',//55%
          'stroke': "#A0AE6E",
          'point': "#A0AE6E",
          'pointStroke': "#FFFFFF"
       },
       {
-         'fill': 'rgba(255, 153, 51, 0.4)', 
+         'fill': 'rgba(0, 73, 230, 0.8)',//45% 
          'stroke': "#3333cc",
          'point': "#FF008D",
          'pointStroke': "#FFFFFF"
       },
       {
-         'fill': 'rgba(0, 204, 255, 0.4)',
-         'stroke': "#000066",
-         'point': "#000066",
-         'pointStroke': "#000066"
+         'fill': 'rgba(0, 57, 179, 0.8)', //35%
+         'stroke': "#3333cc",
+         'point': "#FF008D",
+         'pointStroke': "#FFFFFF"
       },
       {
-         'fill': 'rgba(255, 204, 0, 0.4)',
+         'fill': 'rgba(0, 40, 128, 0.8)', //25%
+         'stroke': "#3333cc",
+         'point': "#FF008D",
+         'pointStroke': "#FFFFFF"
+      },
+      {
+         'fill': 'rgba(0, 24, 77, 0.8)', //15%
          'stroke': "#A0AE6E",
          'point': "#A0AE6E",
          'pointStroke': "#FFFFFF"
