@@ -2379,7 +2379,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                     }
                     bal = _banDocument.budgetBalance(value, "", current_date ,null);
                     Banana.console.debug(value);
-                    transactions = Banana.document.budgetCard(value,"",current_date, null);
+                    transactions = _banDocument.budgetCard(value,"",current_date, null);
                 } else {
                     var projectionStartDate="";
                     var endDate=this.dialogparam.currentdate;
@@ -2388,7 +2388,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                         endDate="";
                     }
                     bal = _banDocument.projectionBalance(value,projectionStartDate, "",endDate , null);
-                    transactions = Banana.document.projectionCard(value, projectionStartDate, "", endDate, null);
+                    transactions = _banDocument.projectionCard(value, projectionStartDate, "", endDate, null);
                 }
                 var mult = -1;
                 if (bal) {

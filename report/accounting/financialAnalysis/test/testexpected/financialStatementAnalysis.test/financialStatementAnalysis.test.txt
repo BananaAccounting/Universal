@@ -22,9 +22,7 @@
 %
 \begin{testcase}{FSAnalysisTest}
 \begin{test}{testReport}
-\keyvalue{Result}{Failed}
-\fatalerror{TypeError: Cannot call method 'budgetCard' of null}
-\info{Location}{file - ///C:/P/Universal/report/accounting/financialAnalysis/test/../financialStatementAnalysis.js:2381}
+\keyvalue{Result}{Passed}
 \end{test}
 \begin{test}{testLoadingMethods}
 \keyvalue{Result}{Passed}
@@ -32,6 +30,5 @@
 \begin{test}{testOtherMethods}
 \keyvalue{Result}{Passed}
 \end{test}
-\fatalerror{Error: One or more tests failed}
 \end{testcase}
 \end{document}
