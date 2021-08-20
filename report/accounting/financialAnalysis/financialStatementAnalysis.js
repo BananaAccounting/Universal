@@ -18,7 +18,7 @@
 // @task = app.command
 // @doctype = 100.*
 // @publisher = Banana.ch SA
-// @pubdate = 2021-08-18
+// @pubdate = 2021-08-20
 // @inputdatasource = none
 // @timeout = -1
 
@@ -351,24 +351,25 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
      * @Param {*} indexT2 the index at the time 't-1' 
      * @Param {*} cell the cell containing the index
      */
-    setIndexEvolution(indexT1, indexT2, cell) {
+    setIndexEvolution(indexT1, indexT2, cell,periodType) {
         //var rateOfGrowth = this.setRateOfGrowth(indexT1, indexT2);
         var evolution = Banana.SDecimal.compare(indexT1, indexT2)
         var up = '↑';
         var down = '↓';
         var equal = '↔';
-
-        if (evolution === 1) {
-            //increased
-            cell.addText(up, "styleUpArrow");
-        } else if (evolution === -1) {
-            //decreased
-            cell.addText(down, "styleDownArrow");
-        } else if (evolution === 0) {
-            //same
-            cell.addText(equal, "styleEqualArrow");
+        if(periodType !=="BDT" && periodType !=="BDC" && periodType !=="CYP"){
+            if (evolution === 1) {
+                //increased
+                cell.addText(up, "styleUpArrow");
+            } else if (evolution === -1) {
+                //decreased
+                cell.addText(down, "styleDownArrow");
+            } else if (evolution === 0) {
+                //same
+                cell.addText(equal, "styleEqualArrow");
+            }
         }
-        return;
+        return true;
     }
 
     /**
@@ -869,14 +870,14 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                 }
                 //add the index evolution icons, the space ' ' is a placeholder for the icon
                 if (i < analsysisYears) {
+                    //for set ratios arrows
                     var indexT1 = this.data[i].index.liqu[key].amount;
                     var indexT2 = this.data[i + 1].index.liqu[key].amount;
-                    this.setIndexEvolution(indexT1, indexT2, cell);
+                    this.setIndexEvolution(indexT1, indexT2, cell, this.data[i].period.Type);
                 }
 
             }
         }
-
         /******************************************************************************************
          * Add the Leverage ratios table
          * ***************************************************************************************/
@@ -895,7 +896,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                 if (i < analsysisYears) {
                     var indexT1 = this.data[i].index.lev[key].amount;
                     var indexT2 = this.data[i + 1].index.lev[key].amount;
-                    this.setIndexEvolution(indexT1, indexT2, cell);
+                    this.setIndexEvolution(indexT1, indexT2, cell, this.data[i].period.Type);
                 }
             }
         }
@@ -918,7 +919,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                 if (i < analsysisYears) {
                     var indexT1 = this.data[i].index.red[key].amount;
                     var indexT2 = this.data[i + 1].index.red[key].amount;
-                    this.setIndexEvolution(indexT1, indexT2, cell);
+                    this.setIndexEvolution(indexT1, indexT2, cell, this.data[i].period.Type);
                 }
             }
         }
@@ -1142,7 +1143,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                 if (i < analsysisYears) {
                     var indexT1 = this.data[i].cashflow_index[key].amount;
                     var indexT2 = this.data[i + 1].cashflow_index[key].amount;
-                    this.setIndexEvolution(indexT1, indexT2, cell);
+                    this.setIndexEvolution(indexT1, indexT2, cell, this.data[i].period.Type);
                 }
             }
         }
@@ -1176,7 +1177,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                     if (i < analsysisYears) {
                         var indexT1 = this.data[i].dupont_data[key].amount;
                         var indexT2 = this.data[i + 1].dupont_data[key].amount;
-                        this.setIndexEvolution(indexT1, indexT2, cell);
+                        this.setIndexEvolution(indexT1, indexT2, cell, this.data[i].period.Type);
                     }
                 }
             }
@@ -2838,14 +2839,17 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentAssets.credits={};
         currentAssets.credits.acronym=texts.credits_acronym;
         currentAssets.credits.balance=Banana.SDecimal.subtract(current_balance_ca_data.credits.balance,budget_balance_ca_data.credits.balance);
+        currentAssets.credits.delta=Banana.SDecimal.subtract(current_balance_ca_data.credits.delta,budget_balance_ca_data.credits.delta);
 
         currentAssets.stocks={};
         currentAssets.stocks.acronym=texts.stocks_acronym;
         currentAssets.stocks.balance=Banana.SDecimal.subtract(current_balance_ca_data.stocks.balance,budget_balance_ca_data.stocks.balance);
+        currentAssets.stocks.delta=Banana.SDecimal.subtract(current_balance_ca_data.stocks.delta,budget_balance_ca_data.stocks.delta);
 
         currentAssets.prepaid_expenses={};
         currentAssets.prepaid_expenses.acronym=texts.prepaid_expenses_acronym;
         currentAssets.prepaid_expenses.balance=Banana.SDecimal.subtract(current_balance_ca_data.prepaid_expenses.balance,budget_balance_ca_data.prepaid_expenses.balance);
+        currentAssets.prepaid_expenses.delta=Banana.SDecimal.subtract(current_balance_ca_data.prepaid_expenses.delta,budget_balance_ca_data.prepaid_expenses.delta);
 
         return currentAssets;
 
@@ -2875,10 +2879,12 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         shortTermDebtCapital.debts={};
         shortTermDebtCapital.debts.acronym=texts.debts_acronym;
         shortTermDebtCapital.debts.balance=Banana.SDecimal.subtract(current_balance_stdc_data.debts.balance,budget_balance_stdc_data.debts.balance);
+        shortTermDebtCapital.debts.delta=Banana.SDecimal.subtract(current_balance_stdc_data.debts.delta,budget_balance_stdc_data.debts.delta);
 
         shortTermDebtCapital.accruals_and_deferred_income={};
         shortTermDebtCapital.accruals_and_deferred_income.acronym=texts.accruals_and_deferred_income_acronym;
-        shortTermDebtCapital.accruals_and_deferred_income.balance=Banana.SDecimal.subtract(current_balance_stdc_data.accruals_and_deferred_income.balance,budget_balance_stdc_data.tangible_fixedassets);
+        shortTermDebtCapital.accruals_and_deferred_income.balance=Banana.SDecimal.subtract(current_balance_stdc_data.accruals_and_deferred_income.balance,budget_balance_stdc_data.accruals_and_deferred_income.balance);
+        shortTermDebtCapital.accruals_and_deferred_income.delta=Banana.SDecimal.subtract(current_balance_stdc_data.accruals_and_deferred_income.delta,budget_balance_stdc_data.accruals_and_deferred_income.delta);
         
         return shortTermDebtCapital;
 
@@ -2889,6 +2895,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         longTermDebtCapital.longter_debts={};
         longTermDebtCapital.longter_debts.acronym=texts.longter_debts_acronym;
         longTermDebtCapital.longter_debts.balance=Banana.SDecimal.subtract(current_balance_ltdc_data.longter_debts.balance,budget_balance_ltdc_data.longter_debts.balance);
+        longTermDebtCapital.longter_debts.delta=Banana.SDecimal.subtract(current_balance_ltdc_data.longter_debts.delta,budget_balance_ltdc_data.longter_debts.delta);
 
         longTermDebtCapital.provisionsandsimilar={};
         longTermDebtCapital.provisionsandsimilar.acronym=texts.provisionsandsimilar_acronym;
@@ -2904,7 +2911,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         ownCapital.ownbasecapital={};
         ownCapital.ownbasecapital.acronym=texts.ownbasecapital_acronym;
         ownCapital.ownbasecapital.balance=Banana.SDecimal.subtract(current_balance_oc_data.ownbasecapital.balance,budget_balance_oc_data.ownbasecapital.balance);
-
+        ownCapital.ownbasecapital.delta=Banana.SDecimal.subtract(current_balance_oc_data.ownbasecapital.delta,budget_balance_oc_data.ownbasecapital.delta);
+       
         ownCapital.reservesandprofits={};
         ownCapital.reservesandprofits.acronym=texts.reservesandprofits_acronym;
         ownCapital.reservesandprofits.balance=Banana.SDecimal.subtract(current_balance_oc_data.reservesandprofits.balance,budget_balance_oc_data.reservesandprofits.balance);
@@ -3009,6 +3017,22 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
         calcdata.fixedassets_gain=Banana.SDecimal.subtract(current_calculatedData.fixedassets_gain,budget_calculatedData.fixedassets_gain);
         calcdata.fixedassets_loss=Banana.SDecimal.subtract(current_calculatedData.fixedassets_loss,budget_calculatedData.fixedassets_loss);
+        calcdata.currentassets=Banana.SDecimal.subtract(current_calculatedData.currentassets,budget_calculatedData.currentassets);
+        calcdata.fixedassets=Banana.SDecimal.subtract(current_calculatedData.fixedassets,budget_calculatedData.fixedassets);
+        calcdata.totalassets=Banana.SDecimal.subtract(current_calculatedData.totalassets,budget_calculatedData.totalassets);
+        calcdata.shorttermdebtcapital=Banana.SDecimal.subtract(current_calculatedData.shorttermdebtcapital,budget_calculatedData.shorttermdebtcapital);
+        calcdata.longtermdebtcapital=Banana.SDecimal.subtract(current_calculatedData.longtermdebtcapital,budget_calculatedData.longtermdebtcapital);
+        calcdata.debtcapital=Banana.SDecimal.subtract(current_calculatedData.debtcapital,budget_calculatedData.debtcapital);
+        calcdata.owncapital=Banana.SDecimal.subtract(current_calculatedData.owncapital,budget_calculatedData.owncapital);
+        calcdata.totalliabilitiesandequity=Banana.SDecimal.subtract(current_calculatedData.totalliabilitiesandequity,budget_calculatedData.totalliabilitiesandequity);
+        calcdata.addedvalue=Banana.SDecimal.subtract(current_calculatedData.addedvalue,budget_calculatedData.addedvalue);
+        calcdata.ebitda=Banana.SDecimal.subtract(current_calculatedData.ebitda,budget_calculatedData.ebitda);
+        calcdata.ebit=Banana.SDecimal.subtract(current_calculatedData.ebit,budget_calculatedData.ebit);
+        calcdata.ebt=Banana.SDecimal.subtract(current_calculatedData.ebit,budget_calculatedData.ebt);
+        calcdata.annualresult=Banana.SDecimal.subtract(current_calculatedData.annualresult,budget_calculatedData.annualresult);
+        calcdata.annualresult=Banana.SDecimal.subtract(current_calculatedData.annualresult,budget_calculatedData.annualresult);
+        calcdata.reservesandprofits_variation=Banana.SDecimal.subtract(current_calculatedData.reservesandprofits_variation,budget_calculatedData.reservesandprofits_variation);
+
 
         return calcdata;
 
@@ -3045,7 +3069,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         totals.from_operations=Banana.SDecimal.subtract(totals_cashflow_current_data.from_operations,totals_cashflow_budget_data.from_operations);
         totals.from_investing=Banana.SDecimal.subtract(totals_cashflow_current_data.from_investing,totals_cashflow_budget_data.from_investing );
         totals.from_financing=Banana.SDecimal.subtract(totals_cashflow_current_data.from_financing,totals_cashflow_budget_data.from_financing);
-        totals.final_cashflow=Banana.SDecimal.subtract(totals_cashflow_current_data.cashflow,totals_cashflow_budget_data.cashflow);
+        totals.cashflow=Banana.SDecimal.subtract(totals_cashflow_current_data.disinvestments,totals_cashflow_budget_data.disinvestments);
+        totals.cashflow=Banana.SDecimal.subtract(totals_cashflow_current_data.cashflow,totals_cashflow_budget_data.cashflow);
         totals.delta_liquidity=Banana.SDecimal.subtract(totals_cashflow_current_data.delta_liquidity,totals_cashflow_budget_data.delta_liquidity);
 
         return totals;
@@ -4417,7 +4442,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.group = 'preferences';
         currentParam.title = texts.currentdate;
         currentParam.type = 'date';
-        currentParam.value = userParam.currentdate ? userParam.currentdate : userParam.currentdate;
+        currentParam.value = userParam.currentdate ? userParam.currentdate : '';
         currentParam.defaultvalue = defaultParam.currentdate;
         currentParam.tooltip = texts.currentdate_tooltip;
         currentParam.parentObject = 'Analysis Details';

@@ -26,39 +26,39 @@ Liquidity  & liqu  & -9'320.00  & 110.00  & -9'430.00  & -9'320.00  & 110.00  & 
 Credits  & cred  & 34'500.00  & 0.00  & 34'500.00  & 34'500.00  & 0.00  & 34'500.00 \\
 Stocks  & stoc  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00 \\
 Prepaid Expenses  & prep  & 120.00  & 0.00  & 120.00  & 120.00  & 0.00  & 120.00 \\
-Total Current Assets  & cuas  & 25'300.00  & 110.00  & 0.00  & 25'300.00  & 110.00  & 0.00 \\
+Total Current Assets  & cuas  & 25'300.00  & 110.00  & 25'190.00  & 25'300.00  & 110.00  & 25'190.00 \\
 Financial Fixed Assets  & finfix  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00 \\
 Tangible Fixed Assets  & tanfix  & -1'000.00  & 0.00  & -1'000.00  & -1'000.00  & 0.00  & -1'000.00 \\
 Intangible Fixed Assets  & intfix  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00 \\
-Total Fixed Assets  & fixa  & -1'000.00  & 0.00  & 0.00  & -1'000.00  & 0.00  & 0.00 \\
-Total Assets  & tota  & 24'300.00  & 110.00  & 0.00  & 24'300.00  & 110.00  & 0.00 \\
+Total Fixed Assets  & fixa  & -1'000.00  & 0.00  & -1'000.00  & -1'000.00  & 0.00  & -1'000.00 \\
+Total Assets  & tota  & 24'300.00  & 110.00  & 24'190.00  & 24'300.00  & 110.00  & 24'190.00 \\
 \multicolumn{9}{l}{Liabilities and Equity }\\
 Debts  & dbts  & 2'970.00  & 0.00  & 2'970.00  & 2'970.00  & 0.00  & 2'970.00 \\
 Accruals and Deferred Income  & accr  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00 \\
-Total Short term Debt Capital  & stdc  & 2'970.00  & 0.00  & 0.00  & 2'970.00  & 0.00  & 0.00 \\
+Total Short term Debt Capital  & stdc  & 2'970.00  & 0.00  & 2'970.00  & 2'970.00  & 0.00  & 2'970.00 \\
 Long term Debts  & ltde  & 9'000.00  & 0.00  & 9'000.00  & 9'000.00  & 0.00  & 9'000.00 \\
 Provisions and similar  & prov  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00 \\
-Total Long term debt Capital  & ltdc  & 9'000.00  & 0.00  & 0.00  & 9'000.00  & 0.00  & 0.00 \\
-Total Debt Capital  & deca  & 11'970.00  & 0.00  & 0.00  & 11'970.00  & 0.00  & 0.00 \\
+Total Long term debt Capital  & ltdc  & 9'000.00  & 0.00  & 9'000.00  & 9'000.00  & 0.00  & 9'000.00 \\
+Total Debt Capital  & deca  & 11'970.00  & 0.00  & 11'970.00  & 11'970.00  & 0.00  & 11'970.00 \\
 Own base capital  & obca  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00 \\
 Reserves and profits  & reut  & 12'220.00  & 0.00  & 12'220.00  & 12'220.00  & 0.00  & 12'220.00 \\
-Total Own Capital  & owca  & 12'220.00  & 0.00  & 0.00  & 12'220.00  & 0.00  & 0.00 \\
-Total Liabilities and Equity  & totp  & 24'190.00  & 0.00  & 0.00  & 24'190.00  & 0.00  & 0.00 \\
+Total Own Capital  & owca  & 12'220.00  & 0.00  & 12'220.00  & 12'220.00  & 0.00  & 12'220.00 \\
+Total Liabilities and Equity  & totp  & 24'190.00  & 0.00  & 24'190.00  & 24'190.00  & 0.00  & 24'190.00 \\
 \end{longtable}
 \begin{longtable}[l]{ l  l  l  l  l  l  l  l }
 PROFIT AND LOSS Description  & Acronym  & Year to Date  & Budget to Date  & Budget to Date +/-  & Year to Date + Budget  & Budget  & Budget +/- \\
 + Sales turnover  & satu  & 22'500.00  & 0.00  & 22'500.00  & 22'500.00  & 0.00  & 22'500.00 \\
 - Cost of merchandise and services  & cofm  & -10'280.00  & 0.00  & -10'280.00  & -10'280.00  & 0.00  & -10'280.00 \\
-= Added Value  & adva  & 12'220.00  & 0.00  & 0.00  & 12'220.00  & 0.00  & 0.00 \\
+= Added Value  & adva  & 12'220.00  & 0.00  & 12'220.00  & 12'220.00  & 0.00  & 12'220.00 \\
 - Personnel costs  & cope  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00 \\
 - Different costs  & cofi  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00 \\
-= EBITDA  & EBIT-DA  & 12'220.00  & 0.00  & 0.00  & 12'220.00  & 0.00  & 0.00 \\
+= EBITDA  & EBIT-DA  & 12'220.00  & 0.00  & 12'220.00  & 12'220.00  & 0.00  & 12'220.00 \\
 - Depreciations and adjustments  & amre  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00 \\
-= EBIT  & EBIT  & 12'220.00  & 0.00  & 0.00  & 12'220.00  & 0.00  & 0.00 \\
+= EBIT  & EBIT  & 12'220.00  & 0.00  & 12'220.00  & 12'220.00  & 0.00  & 12'220.00 \\
 +/- Interests  & inte  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00 \\
-= EBT  & EBT  & 12'220.00  & 0.00  & 0.00  & 12'220.00  & 0.00  & 0.00 \\
+= EBT  & EBT  & 12'220.00  & 0.00  & 12'220.00  & 12'220.00  & 0.00  & 12'220.00 \\
 - Direct taxes  & dita  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00 \\
-Annual result  & fire  & 12'220.00  & 0.00  & 0.00  & 12'220.00  & 0.00  & 0.00 \\
+Annual result  & fire  & 12'220.00  & 0.00  & 12'220.00  & 12'220.00  & 0.00  & 12'220.00 \\
 \end{longtable}
 \begin{longtable}[l]{ l  l  l  l }
 CONTROL SUMS Year  & Accounting Total  & Calculated Total  & Difference \\
@@ -86,28 +86,28 @@ CONTROL SUMS Year  & Accounting Total  & Calculated Total  & Difference \\
 \end{longtable}
 \begin{longtable}[l]{ l  l  l  l  l  l  l  l  l }
 LIQUIDITY RATIOS Description  & formula  & Benchmark  & Year to Date  & Budget to Date  & Budget to Date +/-  & Year to Date + Budget  & Budget  & Budget +/- \\
-Cash ratio  & liqu / stdc  & 10\%-35\%  & -313.80\%   & 0.00\%  ↑  & -313.80\%  ↓  & -313.80\%  ↔  & 0.00\%  ↑  & -313.80\%  ↓ \\
-Quick ratio  & (liqu + cred) / stdc  & 100\%  & 847.81\%   & 0.00\%  ↓  & 847.81\%  ↑  & 847.81\%  ↔  & 0.00\%  ↓  & 847.81\%  ↑ \\
-Current ratio  & cuas / stdc  & 150\%  & 851.85\%   & 0.00\%  ↓  & 851.85\%  ↑  & 851.85\%  ↔  & 0.00\%  ↓  & 851.85\%  ↑ \\
-Net Current Assets  & cuas-stdc  & >0  & 22'330.00   & 110.00  ↓  & 22'220.00  ↑  & 22'330.00  ↑  & 110.00  ↓  & 22'220.00  ↑ \\
+Cash ratio  & liqu / stdc  & 10\%-35\%  & -313.80\%   & 0.00\%  ↑  & -313.80\%   & -313.80\%   & 0.00\%  ↑  & -313.80\%  \\
+Quick ratio  & (liqu + cred) / stdc  & 100\%  & 847.81\%   & 0.00\%  ↓  & 847.81\%   & 847.81\%   & 0.00\%  ↓  & 847.81\%  \\
+Current ratio  & cuas / stdc  & 150\%  & 851.85\%   & 0.00\%  ↓  & 851.85\%   & 851.85\%   & 0.00\%  ↓  & 851.85\%  \\
+Net Current Assets  & cuas-stdc  & >0  & 22'330.00   & 110.00  ↓  & 22'220.00   & 22'330.00   & 110.00  ↓  & 22'220.00  \\
 \end{longtable}
 \begin{longtable}[l]{ l  l  l  l  l  l  l  l  l }
 LEVERAGE RATIOS Description  & formula  & Benchmark  & Year to Date  & Budget to Date  & Budget to Date +/-  & Year to Date + Budget  & Budget  & Budget +/- \\
-Degree of Circulating Assets  & cuas / tota  & 60\%  & 104.12\%   & 100.00\%  ↓  & 4.12\%  ↓  & 104.12\%  ↑  & 100.00\%  ↓  & 4.12\%  ↓ \\
-Percentage Fixed Assets  & fixa / tota  & 40\%  & -4.12\%   & 0.00\%  ↑  & -4.12\%  ↓  & -4.12\%  ↔  & 0.00\%  ↑  & -4.12\%  ↓ \\
-Debt ratio  & (stdc+ltdc) / totp  & 40\%-70\%  & 49.48\%   & 0.00\%  ↓  & 49.48\%  ↑  & 49.48\%  ↔  & 0.00\%  ↓  & 49.48\%  ↑ \\
-Equity ratio  & owca / totp  & 30\%-60\%  & 50.52\%   & 0.00\%  ↓  & 50.52\%  ↑  & 50.52\%  ↔  & 0.00\%  ↓  & 50.52\%  ↑ \\
-Self financing ratio  & reut / owca  & 33,3\%  & 100.00\%   & 0.00\%  ↓  & 100.00\%  ↑  & 100.00\%  ↔  & 0.00\%  ↓  & 100.00\%  ↑ \\
-Fixed Assets Coverage  & (owca + ltdc) / tota  & >100\%  & 87.33\%   & 0.00\%  ↓  & 87.33\%  ↑  & 87.33\%  ↔  & 0.00\%  ↓  & 87.33\%  ↑ \\
+Degree of Circulating Assets  & cuas / tota  & 60\%  & 104.12\%   & 100.00\%  ↓  & 4.12\%   & 104.12\%   & 100.00\%  ↓  & 4.12\%  \\
+Percentage Fixed Assets  & fixa / tota  & 40\%  & -4.12\%   & 0.00\%  ↑  & -4.12\%   & -4.12\%   & 0.00\%  ↑  & -4.12\%  \\
+Debt ratio  & (stdc+ltdc) / totp  & 40\%-70\%  & 49.48\%   & 0.00\%  ↓  & 49.48\%   & 49.48\%   & 0.00\%  ↓  & 49.48\%  \\
+Equity ratio  & owca / totp  & 30\%-60\%  & 50.52\%   & 0.00\%  ↓  & 50.52\%   & 50.52\%   & 0.00\%  ↓  & 50.52\%  \\
+Self financing ratio  & reut / owca  & 33,3\%  & 100.00\%   & 0.00\%  ↓  & 100.00\%   & 100.00\%   & 0.00\%  ↓  & 100.00\%  \\
+Fixed Assets Coverage  & (owca + ltdc) / tota  & >100\%  & 87.33\%   & 0.00\%  ↓  & 87.33\%   & 87.33\%   & 0.00\%  ↓  & 87.33\%  \\
 \end{longtable}
 \begin{longtable}[l]{ l  l  l  l  l  l  l  l  l }
 PROFITABILITY RATIOS Description  & formula  & Benchmark  & Year to Date  & Budget to Date  & Budget to Date +/-  & Year to Date + Budget  & Budget  & Budget +/- \\
-ROE  & profit / owca  & 8\%-14\%  & 100.00\%   & 0.00\%  ↓  & 100.00\%  ↑  & 100.00\%  ↔  & 0.00\%  ↓  & 100.00\%  ↑ \\
-ROI  & EBIT / tota    & 10\%  & 50.29\%   & 0.00\%  ↓  & 50.29\%  ↑  & 50.29\%  ↔  & 0.00\%  ↓  & 50.29\%  ↑ \\
-ROS  & EBIT / satu  & >0  & 54.31\%   & 0.00\%  ↓  & 54.31\%  ↑  & 54.31\%  ↔  & 0.00\%  ↓  & 54.31\%  ↑ \\
-MOL  & gross profit / satu  & 40\%  & 54.31\%   & 0.00\%  ↓  & 54.31\%  ↑  & 54.31\%  ↔  & 0.00\%  ↓  & 54.31\%  ↑ \\
-EBIT margin  & EBIT / satu  & 2.4\%  & 54.31\%   & 0.00\%  ↓  & 54.31\%  ↑  & 54.31\%  ↔  & 0.00\%  ↓  & 54.31\%  ↑ \\
-Profit margin  & net profit / satu  & 1.4\%  & 54.31\%   & 0.00\%  ↓  & 54.31\%  ↑  & 54.31\%  ↔  & 0.00\%  ↓  & 54.31\%  ↑ \\
+ROE  & profit / owca  & 8\%-14\%  & 100.00\%   & 0.00\%  ↓  & 100.00\%   & 100.00\%   & 0.00\%  ↓  & 100.00\%  \\
+ROI  & EBIT / tota    & 10\%  & 50.29\%   & 0.00\%  ↓  & 50.29\%   & 50.29\%   & 0.00\%  ↓  & 50.29\%  \\
+ROS  & EBIT / satu  & >0  & 54.31\%   & 0.00\%  ↓  & 54.31\%   & 54.31\%   & 0.00\%  ↓  & 54.31\%  \\
+MOL  & gross profit / satu  & 40\%  & 54.31\%   & 0.00\%  ↓  & 54.31\%   & 54.31\%   & 0.00\%  ↓  & 54.31\%  \\
+EBIT margin  & EBIT / satu  & 2.4\%  & 54.31\%   & 0.00\%  ↓  & 54.31\%   & 54.31\%   & 0.00\%  ↓  & 54.31\%  \\
+Profit margin  & net profit / satu  & 1.4\%  & 54.31\%   & 0.00\%  ↓  & 54.31\%   & 54.31\%   & 0.00\%  ↓  & 54.31\%  \\
 \end{longtable}
 \begin{longtable}[l]{ l  l  l  l  l  l  l  l  l }
 EFFICIENCY RATIOS Description  & formula  & Benchmark  & Year to Date  & Budget to Date  & Budget to Date +/-  & Year to Date + Budget  & Budget  & Budget +/- \\
@@ -123,22 +123,22 @@ Annual result  & 8'220.00  & 0.00  & 8'220.00  & 8'220.00  & 0.00  & 8'220.00 \\
 + Depreciations and adjustments  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00 \\
 +/- (+)Creation and (-)release of provisions  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00 \\
 \multicolumn{9}{l}{Adjustment with assets accounts  }\\
-+/- (+) Decrease or (-) increase of credits  & -34'500.00  & 0.00  & 0.00  & -34'500.00  & 0.00  & 0.00 \\
++/- (+) Decrease or (-) increase of credits  & -34'500.00  & 0.00  & -34'500.00  & -34'500.00  & 0.00  & -34'500.00 \\
 +/- (+) Decrease or (-) increase of stocks  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00 \\
-+/- (+) Decrease or (-) increase of prepaid expenses  & -120.00  & 0.00  & 0.00  & -120.00  & 0.00  & 0.00 \\
++/- (+) Decrease or (-) increase of prepaid expenses  & -120.00  & 0.00  & -120.00  & -120.00  & 0.00  & -120.00 \\
 \multicolumn{9}{l}{Adjustment with liabilities accounts  }\\
-+/- (+)Increase or (-) decrease of liabilities  & 2'970.00  & 0.00  & 0.00  & 2'970.00  & 0.00  & 0.00 \\
++/- (+)Increase or (-) decrease of liabilities  & 2'970.00  & 0.00  & 2'970.00  & 2'970.00  & 0.00  & 2'970.00 \\
 +/- (+) Increase or (-) decrease of accruals and deferred income  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00 \\
 = Cash Flow from operations (A)  & -23'430.00  & 0.00  & -23'430.00  & -23'430.00  & 0.00  & -23'430.00 \\
 - Investments  & 1'000.00  & 0.00  & 0.00  & 1'000.00  & 0.00  & 0.00 \\
 + Disinvestments  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00 \\
 = Cash Flow from investing (B)  & -1'000.00  & 0.00  & -1'000.00  & -1'000.00  & 0.00  & -1'000.00 \\
-+/- Long term (+) increases or (-) repayments of debt capital  & 9'000.00  & 0.00  & 0.00  & 9'000.00  & 0.00  & 0.00 \\
++/- Long term (+) increases or (-) repayments of debt capital  & 9'000.00  & 0.00  & 9'000.00  & 9'000.00  & 0.00  & 9'000.00 \\
 - Dividends  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00 \\
 Share capital (+) increases or (-) reductions   & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00 \\
 Increase (+) or decrease (-) in reserves  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00 \\
 =Cash Flow from financing (C)  & 9'000.00  & 0.00  & 9'000.00  & 9'000.00  & 0.00  & 9'000.00 \\
-Increase/decrease in liquidity (A+B+C)  & -15'430.00  & 0.00  & 0.00  & -15'430.00  & 0.00  & 0.00 \\
+Increase/decrease in liquidity (A+B+C)  & -15'430.00  & 0.00  & -15'430.00  & -15'430.00  & 0.00  & -15'430.00 \\
 Liquidity at the beginning of the period  & 110.00  & 110.00  & 0.00  & 110.00  & 110.00  & 0.00 \\
 Liquidity at the end of the period  & -9'320.00  & 110.00  & 0.00  & -9'320.00  & 110.00  & 0.00 \\
 Difference  & -9'430.00  & 0.00  & -9'430.00  & -9'430.00  & 0.00  & -9'430.00 \\
@@ -146,21 +146,21 @@ Difference  & -9'430.00  & 0.00  & -9'430.00  & -9'430.00  & 0.00  & -9'430.00 \
 Warning: The difference between the 'Increase/decrease in Liquidity' and the 'Cash difference' amounts should be 0.\P  Check that the groups used are correct. \\
 \begin{longtable}[l]{ l  l  l  l  l  l  l  l  l }
 CASH FLOW RATIOS Description  & formula  & Benchmark  & Year to Date  & Budget to Date  & Budget to Date +/-  & Year to Date + Budget  & Budget  & Budget +/- \\
-Operating Cash Flow Margin  & cashflow(A)/satu  & -  & -104.13\%   & 0.00\%  ↑  & -104.13\%  ↓  & -104.13\%  ↔  & 0.00\%  ↑  & -104.13\%  ↓ \\
-Asset Efficiency  & cashflow(A)/tota  & -  & -96.42\%   & 0.00\%  ↑  & -96.42\%  ↓  & -96.42\%  ↔  & 0.00\%  ↑  & -96.42\%  ↓ \\
-Cash Flow to current Liabilities  & cashflow(A)/stdc  & -  & -788.89\%   & 0.00\%  ↑  & -788.89\%  ↓  & -788.89\%  ↔  & 0.00\%  ↑  & -788.89\%  ↓ \\
-Cash Flow to Liabilities  & cashflow(A)/deca  & -  & -195.74\%   & 0.00\%  ↑  & -195.74\%  ↓  & -195.74\%  ↔  & 0.00\%  ↑  & -195.74\%  ↓ \\
-Cash Flow to Investments  & cashflow(A)/inve  & -  & -2343.00\%   & 0.00\%  ↑  & -2343.00\%  ↓  & -2343.00\%  ↔  & 0.00\%  ↑  & -2343.00\%  ↓ \\
+Operating Cash Flow Margin  & cashflow(A)/satu  & -  & -104.13\%   & 0.00\%  ↑  & -104.13\%   & -104.13\%   & 0.00\%  ↑  & -104.13\%  \\
+Asset Efficiency  & cashflow(A)/tota  & -  & -96.42\%   & 0.00\%  ↑  & -96.42\%   & -96.42\%   & 0.00\%  ↑  & -96.42\%  \\
+Cash Flow to current Liabilities  & cashflow(A)/stdc  & -  & -788.89\%   & 0.00\%  ↑  & -788.89\%   & -788.89\%   & 0.00\%  ↑  & -788.89\%  \\
+Cash Flow to Liabilities  & cashflow(A)/deca  & -  & -195.74\%   & 0.00\%  ↑  & -195.74\%   & -195.74\%   & 0.00\%  ↑  & -195.74\%  \\
+Cash Flow to Investments  & cashflow(A)/inve  & -  & -2343.00\%   & 0.00\%  ↑  & -2343.00\%   & -2343.00\%   & 0.00\%  ↑  & -2343.00\%  \\
 \end{longtable}
 \begin{longtable}[l]{ l  l  l  l  l  l  l }
 DUPONT ANALYSIS  Description  & Year to Date  & Budget to Date  & Budget to Date +/-  & Year to Date + Budget  & Budget  & Budget +/- \\
-EBIT  & 12'220.00   & 0.00  ↓  & 12'220.00  ↑  & 12'220.00  ↔  & 0.00  ↓  & 12'220.00  ↑ \\
-Sales turnover  & 22'500.00   & 0.00  ↓  & 22'500.00  ↑  & 22'500.00  ↔  & 0.00  ↓  & 22'500.00  ↑ \\
-EBIT margin  & 54.31\%   & 0.00\%  ↓  & 54.31\%  ↑  & 54.31\%  ↔  & 0.00\%  ↓  & 54.31\%  ↑ \\
-Sales turnover  & 22'500.00   & 0.00  ↓  & 22'500.00  ↑  & 22'500.00  ↔  & 0.00  ↓  & 22'500.00  ↑ \\
-Total Assets  & 24'300.00   & 110.00  ↓  & 24'190.00  ↑  & 24'300.00  ↑  & 110.00  ↓  & 24'190.00  ↑ \\
-Total Assets Turnover  & 0.93   & 0.00  ↓  & 0.93  ↑  & 0.93  ↔  & 0.00  ↓  & 0.93  ↑ \\
-ROI  & 50.29\%   & 0.00\%  ↓  & 50.29\%  ↑  & 50.29\%  ↔  & 0.00\%  ↓  & 50.29\%  ↑ \\
+EBIT  & 12'220.00   & 0.00  ↓  & 12'220.00   & 12'220.00   & 0.00  ↓  & 12'220.00  \\
+Sales turnover  & 22'500.00   & 0.00  ↓  & 22'500.00   & 22'500.00   & 0.00  ↓  & 22'500.00  \\
+EBIT margin  & 54.31\%   & 0.00\%  ↓  & 54.31\%   & 54.31\%   & 0.00\%  ↓  & 54.31\%  \\
+Sales turnover  & 22'500.00   & 0.00  ↓  & 22'500.00   & 22'500.00   & 0.00  ↓  & 22'500.00  \\
+Total Assets  & 24'300.00   & 110.00  ↓  & 24'190.00   & 24'300.00   & 110.00  ↓  & 24'190.00  \\
+Total Assets Turnover  & 0.93   & 0.00  ↓  & 0.93   & 0.93   & 0.00  ↓  & 0.93  \\
+ROI  & 50.29\%   & 0.00\%  ↓  & 50.29\%   & 50.29\%   & 0.00\%  ↓  & 50.29\%  \\
 \end{longtable}
 \begin{longtable}[l]{ l  l  l  l  l  l  l  l }
 ALTMAN INDEX Z-SCORE Year to Date  & Budget to Date  & Budget to Date +/-  & Year to Date + Budget  & Budget  & Budget +/- \\
@@ -175,6 +175,6 @@ ALTMAN INDEX Z-SCORE Year to Date  & Budget to Date  & Budget to Date +/-  & Yea
 for values > than 3 correspond a low probability of a financial crisis \\
 for values >= than 1.8 but <= than 3 there are possibilities of a financial crisis, should be kept under control \\
 for values < than 1.8 there is a strong probability of a financial crisis \\
-\excltest{18.08.2021} \\
+\excltest{20.08.2021} \\
 \#page-nr \end{reportvalue}
 \end{document}
