@@ -18,7 +18,7 @@
 // @task = app.command
 // @doctype = 100.*
 // @publisher = Banana.ch SA
-// @pubdate = 2021-08-20
+// @pubdate = 2021-09-01
 // @inputdatasource = none
 // @timeout = -1
 
@@ -411,6 +411,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
      * @Param {object} report: the report created
      */
     addHeader(report) {
+        var texts=this.initFinancialAnalysisTexts();
         var stylesheet = this.getReportStyle();
         var headerParagraph = report.getHeader().addSection();
         if (this.dialogparam.printlogo) {
@@ -439,6 +440,12 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             headerParagraph.addParagraph(address1, "header_row_address");
             headerParagraph.addParagraph(city, "header_row_address");
         }
+        //add the reference date choose as current date
+        var budgetToDate="";
+        if(this.dialogparam.includebudget_todate)
+            budgetToDate="/"+texts.budget_to_date;
+
+        headerParagraph.addParagraph(texts.year_to_date+budgetToDate+" ref: "+Banana.Converter.toLocaleDateFormat(this.dialogparam.currentdate, ""),"header_text");
     }
 
     /**
@@ -2381,10 +2388,14 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                     bal = _banDocument.budgetBalance(value, "", current_date ,null);
                     transactions = _banDocument.budgetCard(value,"",current_date, null);
                 } else {
-                    var projectionStartDate="";
+                    var projectionStartDate= "";
                     var endDate=this.dialogparam.currentdate;
                     if(currentProjection){
-                        projectionStartDate=Banana.Converter.toInternalDateFormat(this.dialogparam.currentdate,'yyyy-mm-dd');
+                        projectionStartDate =new Date(this.dialogparam.currentdate);
+                        //la proiezione la faccio partire dal giorno dopo la data corrente
+                        projectionStartDate.setDate(projectionStartDate.getDate()+1);
+                        projectionStartDate=Banana.Converter.toInternalDateFormat(projectionStartDate,'yyyy-mm-dd');
+                        Banana.console.debug(projectionStartDate);
                         endDate="";
                     }
                     bal = _banDocument.projectionBalance(value,projectionStartDate, "",endDate , null);

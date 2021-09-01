@@ -21,6 +21,7 @@
 \begin{reportvalue}{FILENAME: file:script/../test/testcases/Documentscontabilita\_sa-sagl\_partitario\_fatturato 2020.ac2}
 My Company \\
 Via Delle Scuole, 6900 Lugano \\
+Year to Date/Budget to Date ref: 01.09.2021 \\
 \begin{longtable}[l]{ l  l  l  l  l  l  l  l  l }
 BALANCE Description  & Acronym  & Year to Date  & Budget to Date  & Budget to Date +/-  & Year to Date + Budget  & Budget  & Budget +/- \\
 \multicolumn{9}{l}{Assets }\\
@@ -176,6 +177,6 @@ ALTMAN INDEX Z-SCORE Year to Date  & Budget to Date  & Budget to Date +/-  & Yea
 for values > than 3 correspond a low probability of a financial crisis \\
 for values >= than 1.8 but <= than 3 there are possibilities of a financial crisis, should be kept under control \\
 for values < than 1.8 there is a strong probability of a financial crisis \\
-\excltest{20.08.2021} \\
+\excltest{01.09.2021} \\
 \#page-nr \end{reportvalue}
 \end{document}
