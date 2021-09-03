@@ -19,9 +19,9 @@
 \newenvironment{test}[1]{\section*{Test case: #1}}{}
 %Begin test data
 \begin{reportvalue}{FILENAME: file:script/../test/testcases/Documentscontabilita\_sa-sagl\_partitario\_fatturato 2020.ac2}
-My Company \\
-Via Delle Scuole, 6900 Lugano \\
-Year to Date/Budget to Date ref: 01.09.2021 \\
+\excltest{My Company} \\
+\excltest{Via Delle Scuole, 6900 Lugano} \\
+\excltest{Year to Date/Budget to Date ref: 03.09.2021} \\
 \begin{longtable}[l]{ l  l  l  l  l  l  l  l  l }
 BALANCE Description  & Acronym  & Year to Date  & Budget to Date  & Budget to Date +/-  & Year to Date + Budget  & Budget  & Budget +/- \\
 \multicolumn{9}{l}{Assets }\\
@@ -59,7 +59,7 @@ PROFIT AND LOSS Description  & Acronym  & Year to Date  & Budget to Date  & Budg
 - Depreciations and adjustments  & amre  & -1'500.00  & 0.00  & -1'500.00  & -1'500.00  & 0.00  & -1'500.00 \\
 = EBIT  & EBIT  & -15'580.00  & 0.00  & -15'580.00  & -14'435.00  & 1'145.00  & -15'580.00 \\
 +/- Interests  & inte  & -600.00  & 0.00  & -600.00  & -600.00  & 0.00  & -600.00 \\
-= EBT  & EBT  & -16'180.00  & 0.00  & -15'580.00  & -15'035.00  & 1'145.00  & -15'580.00 \\
+= EBT  & EBT  & -16'180.00  & 0.00  & -16'180.00  & -15'035.00  & 1'145.00  & -16'180.00 \\
 - Direct taxes  & dita  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00 \\
 Annual result  & fire  & -16'180.00  & 0.00  & -16'180.00  & -15'035.00  & 1'145.00  & -16'180.00 \\
 \end{longtable}
@@ -101,7 +101,7 @@ Percentage Fixed Assets  & fixa / tota  & 40\%  & 99.01\%   & 0.00\%  ↓  & 99.
 Debt ratio  & (stdc+ltdc) / totp  & 40\%-70\%  & 328.35\%   & 50.00\%  ↓  & 278.35\%   & 282.76\%   & 46.65\%  ↓  & 236.11\%  \\
 Equity ratio  & owca / totp  & 30\%-60\%  & -228.35\%   & 50.00\%  ↑  & -278.35\%   & -182.76\%   & 53.35\%  ↑  & -236.11\%  \\
 Self financing ratio  & reut / owca  & 33,3\%  & 63.74\%   & 100.00\%  ↑  & -36.26\%   & 62.02\%   & 100.00\%  ↑  & -37.98\%  \\
-Fixed Assets Coverage  & (owca + ltdc) / tota  & >100\%  & -147.34\%   & 50.00\%  ↑  & -197.34\%   & -114.86\%   & 53.35\%  ↑  & -168.21\%  \\
+Fixed Assets Coverage  & (owca + ltdc) / fixa  & >100\%  & -148.82\%   & 0.00\%  ↑  & -148.82\%   & -129.03\%   & 144.38\%  ↑  & -273.41\%  \\
 \end{longtable}
 \begin{longtable}[l]{ l  l  l  l  l  l  l  l  l }
 PROFITABILITY RATIOS Description  & formula  & Benchmark  & Year to Date  & Budget to Date  & Budget to Date +/-  & Year to Date + Budget  & Budget  & Budget +/- \\
@@ -109,7 +109,7 @@ ROE  & profit / owca  & 8\%-14\%  & 63.78\%   & 0.00\%  ↓  & 63.78\%   & 62.06
 ROI  & EBIT / tota    & 10\%  & -140.23\%   & 0.00\%  ↑  & -140.23\%   & -108.90\%   & 52.89\%  ↑  & -161.79\%  \\
 ROS  & EBIT / satu  & >0  & -135.48\%   & 0.00\%  ↑  & -135.48\%   & -113.66\%   & 95.42\%  ↑  & -209.08\%  \\
 MOL  & gross profit / satu  & 40\%  & -122.43\%   & 0.00\%  ↑  & -122.43\%   & -101.85\%   & 95.42\%  ↑  & -197.27\%  \\
-EBIT margin  & EBIT / satu  & 2.4\%  & -135.48\%   & 0.00\%  ↑  & -135.48\%   & -113.66\%   & 95.42\%  ↑  & -209.08\%  \\
+EBT margin  & EBT / satu  & 2.4\%  & -140.70\%   & 0.00\%  ↑  & -140.70\%   & -118.39\%   & 95.42\%  ↑  & -213.81\%  \\
 Profit margin  & net profit / satu  & 1.4\%  & -140.70\%   & 0.00\%  ↑  & -140.70\%   & -118.39\%   & 95.42\%  ↑  & -213.81\%  \\
 \end{longtable}
 \begin{longtable}[l]{ l  l  l  l  l  l  l  l  l }
@@ -149,16 +149,16 @@ Difference  & 8'170.00  & 0.00  & 8'170.00  & 9'315.00  & 1'145.00  & 8'170.00 \
 \begin{longtable}[l]{ l  l  l  l  l  l  l  l  l }
 CASH FLOW RATIOS Description  & formula  & Benchmark  & Year to Date  & Budget to Date  & Budget to Date +/-  & Year to Date + Budget  & Budget  & Budget +/- \\
 Operating Cash Flow Margin  & cashflow(A)/satu  & -  & 181.48\%   & 0.00\%  ↓  & 181.48\%   & 179.65\%   & 162.08\%  ↓  & 17.57\%  \\
-Asset Efficiency  & cashflow(A)/tota  & -  & 187.85\%   & 0.00\%  ↓  & 187.85\%   & 172.12\%   & 89.84\%  ↓  & 82.28\%  \\
+Asset Efficiency  & cashflow(A)/fixa  & -  & 189.73\%   & 0.00\%  ↓  & 189.73\%   & 193.35\%   & 243.13\%  ↑  & -49.78\%  \\
 Cash Flow to current Liabilities  & cashflow(A)/stdc  & -  & 75.95\%   & 0.00\%  ↓  & 75.95\%   & 80.11\%   & 192.57\%  ↑  & -112.46\%  \\
 Cash Flow to Liabilities  & cashflow(A)/deca  & -  & 57.21\%   & 0.00\%  ↓  & 57.21\%   & 60.87\%   & 192.57\%  ↑  & -131.70\%  \\
 Cash Flow to Investments  & cashflow(A)/inve  & -  & 139.13\%   & 0.00\%  ↓  & 139.13\%   & 144.40\%   & 243.13\%  ↑  & -98.73\%  \\
 \end{longtable}
 \begin{longtable}[l]{ l  l  l  l  l  l  l }
 DUPONT ANALYSIS  Description  & Year to Date  & Budget to Date  & Budget to Date +/-  & Year to Date + Budget  & Budget  & Budget +/- \\
-EBIT  & -15'580.00   & 0.00  ↑  & -15'580.00   & -14'435.00   & 1'145.00  ↑  & -15'580.00  \\
+EBT  & -16'180.00   & 0.00  ↑  & -16'180.00   & -15'035.00   & 1'145.00  ↑  & -16'180.00  \\
 Sales turnover  & 11'500.00   & 0.00  ↓  & 11'500.00   & 12'700.00   & 1'200.00  ↓  & 11'500.00  \\
-EBIT margin  & -135.48\%   & 0.00\%  ↑  & -135.48\%   & -113.66\%   & 95.42\%  ↑  & -209.08\%  \\
+EBT margin  & -140.70\%   & 0.00\%  ↑  & -140.70\%   & -118.39\%   & 95.42\%  ↑  & -213.81\%  \\
 Sales turnover  & 11'500.00   & 0.00  ↓  & 11'500.00   & 12'700.00   & 1'200.00  ↓  & 11'500.00  \\
 Total Assets  & 11'110.00   & 20.00  ↓  & 11'090.00   & 13'255.00   & 2'165.00  ↓  & 11'090.00  \\
 Total Assets Turnover  & 1.04   & 0.00  ↓  & 1.04   & 0.96   & 0.55  ↓  & 0.41  \\
@@ -177,6 +177,6 @@ ALTMAN INDEX Z-SCORE Year to Date  & Budget to Date  & Budget to Date +/-  & Yea
 for values > than 3 correspond a low probability of a financial crisis \\
 for values >= than 1.8 but <= than 3 there are possibilities of a financial crisis, should be kept under control \\
 for values < than 1.8 there is a strong probability of a financial crisis \\
-\excltest{01.09.2021} \\
+\excltest{03.09.2021} \\
 \#page-nr \end{reportvalue}
 \end{document}
