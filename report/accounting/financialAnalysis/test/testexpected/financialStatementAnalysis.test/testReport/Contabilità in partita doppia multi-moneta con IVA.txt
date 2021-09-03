@@ -19,7 +19,7 @@
 \newenvironment{test}[1]{\section*{Test case: #1}}{}
 %Begin test data
 \begin{reportvalue}{FILENAME: file:script/../test/testcases/Contabilità in partita doppia multi-moneta con IVA.ac2}
-Year to Date/Budget to Date ref: 01.09.2021 \\
+\excltest{Year to Date/Budget to Date ref: 03.09.2021} \\
 \begin{longtable}[l]{ l  l  l  l  l  l  l  l  l }
 BALANCE Description  & Acronym  & Year to Date  & Budget to Date  & Budget to Date +/-  & Year to Date + Budget  & Budget  & Budget +/- \\
 \multicolumn{9}{l}{Assets }\\
@@ -99,7 +99,7 @@ Percentage Fixed Assets  & fixa / tota  & 40\%  & -4.12\%   & 0.00\%  ↑  & -4.
 Debt ratio  & (stdc+ltdc) / totp  & 40\%-70\%  & 49.48\%   & 0.00\%  ↓  & 49.48\%   & 49.48\%   & 0.00\%  ↓  & 49.48\%  \\
 Equity ratio  & owca / totp  & 30\%-60\%  & 50.52\%   & 0.00\%  ↓  & 50.52\%   & 50.52\%   & 0.00\%  ↓  & 50.52\%  \\
 Self financing ratio  & reut / owca  & 33,3\%  & 100.00\%   & 0.00\%  ↓  & 100.00\%   & 100.00\%   & 0.00\%  ↓  & 100.00\%  \\
-Fixed Assets Coverage  & (owca + ltdc) / tota  & >100\%  & 87.33\%   & 0.00\%  ↓  & 87.33\%   & 87.33\%   & 0.00\%  ↓  & 87.33\%  \\
+Fixed Assets Coverage  & (owca + ltdc) / fixa  & >100\%  & -2122.00\%   & 0.00\%  ↑  & -2122.00\%   & -2122.00\%   & 0.00\%  ↑  & -2122.00\%  \\
 \end{longtable}
 \begin{longtable}[l]{ l  l  l  l  l  l  l  l  l }
 PROFITABILITY RATIOS Description  & formula  & Benchmark  & Year to Date  & Budget to Date  & Budget to Date +/-  & Year to Date + Budget  & Budget  & Budget +/- \\
@@ -107,7 +107,7 @@ ROE  & profit / owca  & 8\%-14\%  & 100.00\%   & 0.00\%  ↓  & 100.00\%   & 100
 ROI  & EBIT / tota    & 10\%  & 50.29\%   & 0.00\%  ↓  & 50.29\%   & 50.29\%   & 0.00\%  ↓  & 50.29\%  \\
 ROS  & EBIT / satu  & >0  & 54.31\%   & 0.00\%  ↓  & 54.31\%   & 54.31\%   & 0.00\%  ↓  & 54.31\%  \\
 MOL  & gross profit / satu  & 40\%  & 54.31\%   & 0.00\%  ↓  & 54.31\%   & 54.31\%   & 0.00\%  ↓  & 54.31\%  \\
-EBIT margin  & EBIT / satu  & 2.4\%  & 54.31\%   & 0.00\%  ↓  & 54.31\%   & 54.31\%   & 0.00\%  ↓  & 54.31\%  \\
+EBT margin  & EBT / satu  & 2.4\%  & 54.31\%   & 0.00\%  ↓  & 54.31\%   & 54.31\%   & 0.00\%  ↓  & 54.31\%  \\
 Profit margin  & net profit / satu  & 1.4\%  & 54.31\%   & 0.00\%  ↓  & 54.31\%   & 54.31\%   & 0.00\%  ↓  & 54.31\%  \\
 \end{longtable}
 \begin{longtable}[l]{ l  l  l  l  l  l  l  l  l }
@@ -148,16 +148,16 @@ Warning: The difference between the 'Increase/decrease in Liquidity' and the 'Ca
 \begin{longtable}[l]{ l  l  l  l  l  l  l  l  l }
 CASH FLOW RATIOS Description  & formula  & Benchmark  & Year to Date  & Budget to Date  & Budget to Date +/-  & Year to Date + Budget  & Budget  & Budget +/- \\
 Operating Cash Flow Margin  & cashflow(A)/satu  & -  & -104.13\%   & 0.00\%  ↑  & -104.13\%   & -104.13\%   & 0.00\%  ↑  & -104.13\%  \\
-Asset Efficiency  & cashflow(A)/tota  & -  & -96.42\%   & 0.00\%  ↑  & -96.42\%   & -96.42\%   & 0.00\%  ↑  & -96.42\%  \\
+Asset Efficiency  & cashflow(A)/fixa  & -  & 2343.00\%   & 0.00\%  ↓  & 2343.00\%   & 2343.00\%   & 0.00\%  ↓  & 2343.00\%  \\
 Cash Flow to current Liabilities  & cashflow(A)/stdc  & -  & -788.89\%   & 0.00\%  ↑  & -788.89\%   & -788.89\%   & 0.00\%  ↑  & -788.89\%  \\
 Cash Flow to Liabilities  & cashflow(A)/deca  & -  & -195.74\%   & 0.00\%  ↑  & -195.74\%   & -195.74\%   & 0.00\%  ↑  & -195.74\%  \\
 Cash Flow to Investments  & cashflow(A)/inve  & -  & -2343.00\%   & 0.00\%  ↑  & -2343.00\%   & -2343.00\%   & 0.00\%  ↑  & -2343.00\%  \\
 \end{longtable}
 \begin{longtable}[l]{ l  l  l  l  l  l  l }
 DUPONT ANALYSIS  Description  & Year to Date  & Budget to Date  & Budget to Date +/-  & Year to Date + Budget  & Budget  & Budget +/- \\
-EBIT  & 12'220.00   & 0.00  ↓  & 12'220.00   & 12'220.00   & 0.00  ↓  & 12'220.00  \\
+EBT  & 12'220.00   & 0.00  ↓  & 12'220.00   & 12'220.00   & 0.00  ↓  & 12'220.00  \\
 Sales turnover  & 22'500.00   & 0.00  ↓  & 22'500.00   & 22'500.00   & 0.00  ↓  & 22'500.00  \\
-EBIT margin  & 54.31\%   & 0.00\%  ↓  & 54.31\%   & 54.31\%   & 0.00\%  ↓  & 54.31\%  \\
+EBT margin  & 54.31\%   & 0.00\%  ↓  & 54.31\%   & 54.31\%   & 0.00\%  ↓  & 54.31\%  \\
 Sales turnover  & 22'500.00   & 0.00  ↓  & 22'500.00   & 22'500.00   & 0.00  ↓  & 22'500.00  \\
 Total Assets  & 24'300.00   & 110.00  ↓  & 24'190.00   & 24'300.00   & 110.00  ↓  & 24'190.00  \\
 Total Assets Turnover  & 0.93   & 0.00  ↓  & 0.93   & 0.93   & 0.00  ↓  & 0.93  \\
@@ -176,6 +176,6 @@ ALTMAN INDEX Z-SCORE Year to Date  & Budget to Date  & Budget to Date +/-  & Yea
 for values > than 3 correspond a low probability of a financial crisis \\
 for values >= than 1.8 but <= than 3 there are possibilities of a financial crisis, should be kept under control \\
 for values < than 1.8 there is a strong probability of a financial crisis \\
-\excltest{01.09.2021} \\
+\excltest{03.09.2021} \\
 \#page-nr \end{reportvalue}
 \end{document}

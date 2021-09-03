@@ -18,7 +18,7 @@
 // @task = app.command
 // @doctype = 100.*
 // @publisher = Banana.ch SA
-// @pubdate = 2021-09-01
+// @pubdate = 2021-09-03
 // @inputdatasource = none
 // @timeout = -1
 
@@ -446,6 +446,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             budgetToDate="/"+texts.budget_to_date;
 
         headerParagraph.addParagraph(texts.year_to_date+budgetToDate+" ref: "+Banana.Converter.toLocaleDateFormat(this.dialogparam.currentdate, ""),"header_text");
+        headerParagraph.excludeFromTest();
     }
 
     /**
@@ -1717,6 +1718,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         texts.rot = "ROT";
         texts.mol = "MOL";
         texts.ebit = "EBIT";
+        texts.ebt="EBT";
         texts.ebitDA = "EBIT-DA";
         texts.cashratio = qsTr("Cash ratio");
         texts.quickratio = qsTr("Quick ratio");
@@ -1728,7 +1730,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         texts.equityratio = qsTr("Equity ratio");
         texts.selfinancingratio = qsTr("Self financing ratio");
         texts.fixedassetcoverage = qsTr("Fixed Assets Coverage");
-        texts.ebitmargin = qsTr("EBIT margin");
+        texts.ebtmargin = qsTr("EBT margin");
         texts.profitmargin = qsTr("Profit margin");
         texts.revenueperemployee = qsTr("Revenue per Employee");
         texts.addedvalueperemployee = qsTr("Added Value per Employee");
@@ -2016,7 +2018,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         dialogparam.profmol.description = "MOL";
         dialogparam.profmol.value = "40%";
         dialogparam.profebm = {};
-        dialogparam.profebm.description = texts.ebitmargin;
+        dialogparam.profebm.description = texts.ebtmargin;
         dialogparam.profebm.value = "2.4%";
         dialogparam.profmon = {};
         dialogparam.profmon.description = texts.profitmargin;
@@ -2613,7 +2615,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
         cashflow_ratios.cashflow_asset_efficiency={};
         cashflow_ratios.cashflow_asset_efficiency.description=texts.cashflow_asset_efficiency;
-        cashflow_ratios.cashflow_asset_efficiency.formula="cashflow(A)/tota";
+        cashflow_ratios.cashflow_asset_efficiency.formula="cashflow(A)/fixa";
         cashflow_ratios.cashflow_asset_efficiency.amount=Banana.SDecimal.subtract(cashflow_ratios_current_data.cashflow_asset_efficiency.amount,cashflow_ratios_budget_data.cashflow_asset_efficiency.amount);
         cashflow_ratios.cashflow_asset_efficiency.benchmark=ratios_param.cashflowratios.cashflow_asset_efficiency.value;
         cashflow_ratios.cashflow_asset_efficiency.type="prec";
@@ -2738,7 +2740,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         lev.fixaco={};
         lev.fixaco.description=texts.fixedassetcoverage;
         lev.fixaco.amount= Banana.SDecimal.subtract(ratios_current_lev_data.fixaco.amount,ratios_budget_lev_data.fixaco.amount);
-        lev.fixaco.formula = "(owca + ltdc) / tota";
+        lev.fixaco.formula = "(owca + ltdc) / fixa";
         lev.fixaco.benchmark=ratios_data.leverageratios.fixedassetcoverage.value;
         lev.fixaco.type="perc";
 
@@ -2779,8 +2781,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         red.mol.type="perc";
 
         red.ebm={};
-        red.ebm.description=texts.ebitmargin;
-        red.ebm.formula = "EBIT / satu";
+        red.ebm.description=texts.ebtmargin;
+        red.ebm.formula = "EBT / satu";
         red.ebm.amount=Banana.SDecimal.subtract(ratios_current_red_data.ebm.amount,ratios_budget_red_data.ebm.amount);
         red.ebm.benchmark=ratios_data.profitabilityratios.profebm.value;
         red.ebm.type="perc";
@@ -2974,20 +2976,20 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var dupont_data={};
         var texts=this.initFinancialAnalysisTexts();
 
-        dupont_data.ebit={};
-        dupont_data.ebit.description=texts.ebit;
-        dupont_data.ebit.amount=Banana.SDecimal.subtract(current_dupont_data.ebit.amount,budget_dupont_data.ebit.amount);
-        dupont_data.ebit.type="dec";
+        dupont_data.ebt={};
+        dupont_data.ebt.description=texts.ebt;
+        dupont_data.ebt.amount=Banana.SDecimal.subtract(current_dupont_data.ebt.amount,budget_dupont_data.ebt.amount);
+        dupont_data.ebt.type="dec";
 
-        dupont_data.ebitmarginsales={};
-        dupont_data.ebitmarginsales.description=texts.salesturnover;
-        dupont_data.ebitmarginsales.amount=Banana.SDecimal.subtract(current_dupont_data.ebitmarginsales.amount,budget_dupont_data.ebitmarginsales.amount);
-        dupont_data.ebitmarginsales.type="dec";
+        dupont_data.ebtmarginsales={};
+        dupont_data.ebtmarginsales.description=texts.salesturnover;
+        dupont_data.ebtmarginsales.amount=Banana.SDecimal.subtract(current_dupont_data.ebtmarginsales.amount,budget_dupont_data.ebtmarginsales.amount);
+        dupont_data.ebtmarginsales.type="dec";
 
-        dupont_data.ebitmargin={};
-        dupont_data.ebitmargin.description=texts.ebitmargin;
-        dupont_data.ebitmargin.amount=Banana.SDecimal.subtract(current_dupont_data.ebitmargin.amount,budget_dupont_data.ebitmargin.amount);
-        dupont_data.ebitmargin.type="perc";
+        dupont_data.ebtmargin={};
+        dupont_data.ebtmargin.description=texts.ebtmargin;
+        dupont_data.ebtmargin.amount=Banana.SDecimal.subtract(current_dupont_data.ebtmargin.amount,budget_dupont_data.ebtmargin.amount);
+        dupont_data.ebtmargin.type="perc";
 
         dupont_data.assetturnoversales={};
         dupont_data.assetturnoversales.description=texts.salesturnover;
@@ -3039,7 +3041,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         calcdata.addedvalue=Banana.SDecimal.subtract(current_calculatedData.addedvalue,budget_calculatedData.addedvalue);
         calcdata.ebitda=Banana.SDecimal.subtract(current_calculatedData.ebitda,budget_calculatedData.ebitda);
         calcdata.ebit=Banana.SDecimal.subtract(current_calculatedData.ebit,budget_calculatedData.ebit);
-        calcdata.ebt=Banana.SDecimal.subtract(current_calculatedData.ebit,budget_calculatedData.ebt);
+        calcdata.ebt=Banana.SDecimal.subtract(current_calculatedData.ebt,budget_calculatedData.ebt);
         calcdata.annualresult=Banana.SDecimal.subtract(current_calculatedData.annualresult,budget_calculatedData.annualresult);
         calcdata.annualresult=Banana.SDecimal.subtract(current_calculatedData.annualresult,budget_calculatedData.annualresult);
         calcdata.reservesandprofits_variation=Banana.SDecimal.subtract(current_calculatedData.reservesandprofits_variation,budget_calculatedData.reservesandprofits_variation);
@@ -3458,10 +3460,10 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         index.lev.fixaco = {};
         index.lev.fixaco.description = texts.fixedassetcoverage;
         index.lev.fixaco.type = "perc";
-        index.lev.fixaco.formula = "(owca + ltdc) / tota";
+        index.lev.fixaco.formula = "(owca + ltdc) / fixa";
         var longtermdebtcapital = calculated_data.longtermdebtcapital;
         var fcalc8 = Banana.SDecimal.add(owncapital, longtermdebtcapital);
-        var fcalc9 = Banana.SDecimal.divide(fcalc8, totalassets);
+        var fcalc9 = Banana.SDecimal.divide(fcalc8, fixedassets);
         var fcalc9 = Banana.SDecimal.multiply(fcalc9, 100, { 'decimals': this.dialogparam.numberofdecimals });
         var fris5 = fcalc9.toString();
         index.lev.fixaco.amount = fris5;
@@ -3527,12 +3529,12 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         index.red.mol.amount = rris4;
         index.red.mol.benchmark = data.ratios.profitabilityratios.profmol.value;
 
-        //Ebit Margin
+        //Ebt Margin
         index.red.ebm = {};
-        index.red.ebm.description = texts.ebitmargin;
+        index.red.ebm.description = texts.ebtmargin;
         index.red.ebm.type = "perc";
-        index.red.ebm.formula = "EBIT / satu";
-        var rcalc9 = Banana.SDecimal.divide(calculated_data.ebit, salesturnover);
+        index.red.ebm.formula = "EBT / satu";
+        var rcalc9 = Banana.SDecimal.divide(calculated_data.ebt, salesturnover);
         var rcalc10 = Banana.SDecimal.multiply(rcalc9, 100, { 'decimals': this.dialogparam.numberofdecimals });
         var rris5 = rcalc10.toString();
         index.red.ebm.amount = rris5;
@@ -3713,8 +3715,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         index.cashflow_asset_efficiency = {};
         index.cashflow_asset_efficiency.description = texts.cashflow_asset_efficiency;
         index.cashflow_asset_efficiency.type = "perc";
-        index.cashflow_asset_efficiency.formula = "cashflow(A)/tota";
-        index.cashflow_asset_efficiency.amount = Banana.SDecimal.divide(cashflow.from_operations, calculated_data.totalassets);
+        index.cashflow_asset_efficiency.formula = "cashflow(A)/fixa";
+        index.cashflow_asset_efficiency.amount = Banana.SDecimal.divide(cashflow.from_operations, calculated_data.fixedassets);
         index.cashflow_asset_efficiency.amount = Banana.SDecimal.multiply(index.cashflow_asset_efficiency.amount, 100, { 'decimals': this.dialogparam.numberofdecimals });
         index.cashflow_asset_efficiency.benchmark = data.ratios.cashflowratios.cashflow_asset_efficiency.value;
 
@@ -4928,31 +4930,31 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var Dupont = {};
         var totalassets = calculated_data.totalassets;
         var sales = data.profitandloss.salesturnover.balance;
-        var ebit = calculated_data.ebit;
+        var ebt = calculated_data.ebt;
         var roi = index.red.roi.amount;
 
-        /*profit or ebit (ebit is used for economic analysis)
+        /*EBT
          */
-        Dupont.ebit = {};
-        Dupont.ebit.description = texts.ebit;
-        Dupont.ebit.style = "nrm";
-        Dupont.ebit.type = "dec";
-        Dupont.ebit.amount = ebit;
+        Dupont.ebt = {};
+        Dupont.ebt.description = texts.ebt;
+        Dupont.ebt.style = "nrm";
+        Dupont.ebt.type = "dec";
+        Dupont.ebt.amount = ebt;
 
         //sales (for MOL)
-        Dupont.ebitmarginsales = {};
-        Dupont.ebitmarginsales.description = texts.salesturnover;
-        Dupont.ebitmarginsales.style = "nrm";
-        Dupont.ebitmarginsales.type = "dec";
-        Dupont.ebitmarginsales.amount = sales;
+        Dupont.ebtmarginsales = {};
+        Dupont.ebtmarginsales.description = texts.salesturnover;
+        Dupont.ebtmarginsales.style = "nrm";
+        Dupont.ebtmarginsales.type = "dec";
+        Dupont.ebtmarginsales.amount = sales;
 
-        //EBIT MARGIN
-        Dupont.ebitmargin = {};
-        Dupont.ebitmargin.description = texts.ebitmargin;
-        Dupont.ebitmargin.style = "titl";
-        Dupont.ebitmargin.type = "perc";
-        Dupont.ebitmargin.amount = Banana.SDecimal.divide(Dupont.ebit.amount, Dupont.ebitmarginsales.amount);
-        Dupont.ebitmargin.amount = Banana.SDecimal.multiply(Dupont.ebitmargin.amount, 100, { 'decimals': this.dialogparam.numberofdecimals });
+        //EBT MARGIN
+        Dupont.ebtmargin = {};
+        Dupont.ebtmargin.description = texts.ebtmargin;
+        Dupont.ebtmargin.style = "titl";
+        Dupont.ebtmargin.type = "perc";
+        Dupont.ebtmargin.amount = Banana.SDecimal.divide(Dupont.ebt.amount, Dupont.ebtmarginsales.amount);
+        Dupont.ebtmargin.amount = Banana.SDecimal.multiply(Dupont.ebtmargin.amount, 100, { 'decimals': this.dialogparam.numberofdecimals });
 
         //sales (for ROT)
         Dupont.assetturnoversales = {};
