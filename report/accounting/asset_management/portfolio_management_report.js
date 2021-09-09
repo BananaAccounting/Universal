@@ -83,27 +83,32 @@ function printReport() {
     addHeader(report);
     addFooter(report);
     var items = getReportRows();
-    var sorted_items=items.sort(compare);
+    items.sort(compare);
     var items_total = getReportRows_GroupTotals();
     var final_total=getReportRows_FinalTotal();
+
+    var style_market_value=setSortedColumnStyle('Market Value');
+    var style_percentage_of_portfolio=setSortedColumnStyle('Percentage of Portfolio');
+    var style_market_quantity=setSortedColumnStyle('Quantity');
 
     for (var row_total in items_total) {
         var tableRow = table_bas_appraisal.addRow("styleTableRows");
         tableRow.addCell(items_total[row_total].name, 'styleTablesBasNames_totals',9);
         for (var row in items) {
+            Banana.console.debug(JSON.stringify(items[row]));
             if (items[row].gr === items_total[row_total].name) {
                 let tableRow = table_bas_appraisal.addRow("styleTableRows");
                 tableRow.addCell(items[row].name, 'styleTablesBasNames');
-                tableRow.addCell(Banana.Converter.toLocaleNumberFormat(items[row].quantity,"0",true), 'styleTablesBasResults');
+                tableRow.addCell(Banana.Converter.toLocaleNumberFormat(items[row].quantity,"0",true), style_market_quantity);
                 tableRow.addCell(toLocaleAmountFormat(items[row].unit_cost), 'styleTablesBasResults');
                 tableRow.addCell(toLocaleAmountFormat(items[row].total_cost), 'styleTablesBasResults');
                 tableRow.addCell(toLocaleAmountFormat(items[row].market_price), 'styleTablesBasResults');
-                tableRow.addCell(toLocaleAmountFormat(items[row].market_value), 'styleTablesBasResults');
-                tableRow.addCell(toLocaleAmountFormat(items[row].perc_of_port), 'styleTablesBasResults');
-                var style=setNegativeStyle(sorted_items[row].unrealized_gain_loss);
-                tableRow.addCell(toLocaleAmountFormat(sorted_items[row].unrealized_gain_loss),style);
-                var style=setNegativeStyle(sorted_items[row].perc_g_l);
-                tableRow.addCell(toLocaleAmountFormat(sorted_items[row].perc_g_l), style);
+                tableRow.addCell(toLocaleAmountFormat(items[row].market_value), style_market_value);
+                tableRow.addCell(toLocaleAmountFormat(items[row].perc_of_port), style_percentage_of_portfolio);
+                var style=setNegativeStyle(items[row].unrealized_gain_loss);
+                tableRow.addCell(toLocaleAmountFormat(items[row].unrealized_gain_loss),style);
+                var style=setNegativeStyle(items[row].perc_g_l);
+                tableRow.addCell(toLocaleAmountFormat(items[row].perc_g_l), style);
             }
         }
         var tableRow = table_bas_appraisal.addRow("styleTableRows");
@@ -128,8 +133,8 @@ function printReport() {
     
     
     /***********************************************************
-     * Add the Portfolio Holdings table (sorted by Market value)
-     **********************************************************/
+     * Add the Portfolio Holdings table (tabella attualmente disattivata)
+     *********************************************************
     var style_market_value=setSortedColumnStyle('Market Value');
     var style_percentage_of_portfolio=setSortedColumnStyle('Percentage of Portfolio');
     var style_market_quantity=setSortedColumnStyle('Quantity');
@@ -158,6 +163,7 @@ function printReport() {
     tableRow.addCell(toLocaleAmountFormat(final_total.perc_of_port), 'styleTablesBasResults_final_totals');
     tableRow.addCell(toLocaleAmountFormat(final_total.unrealized_gain_loss),"styleTablesBasResults_final_totals");
     tableRow.addCell(toLocaleAmountFormat(final_total.perc_g_l),"styleTablesBasResults_final_totals");
+    */
 
     return report;
 
