@@ -68,7 +68,7 @@ Styles for the texts
 
 .styleTablesHeaderText {
     color: #e4e7e5;
-    background-color: #40a3ff;
+    background-color: #354793;
     font-weight: bold;
     text-align: center;
 }
@@ -79,7 +79,7 @@ Styles for the texts
 
 .styleTablesBasNames_totals {
     text-align: left;
-    text-decoration: underline; 
+    background-color: #F8F8FF;
 }
 
 .styleSortedByColumn{
