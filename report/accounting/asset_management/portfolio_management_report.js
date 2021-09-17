@@ -167,7 +167,6 @@ var PortfolioManagement=class  PortfolioManagement{
                     var qtStyle=this.getQtStyle(transactionsDetails[row].qt);
                     tableRow.addCell(Banana.Converter.toLocaleNumberFormat(transactionsDetails[row].qt,"0",false),qtStyle);
                     var beginQuantity=this.getBeginQt(ItemList[i]);
-                    Banana.console.debug(beginQuantity);
                     var quantityCurrent=this.getQtCurrent(beginQuantity,transactionsDetails[row].qt);
                     tableRow.addCell(Banana.Converter.toLocaleNumberFormat(quantityCurrent,"0",false),'styleTablesBasResults');
                     tableRow.addCell(this.toLocaleAmountFormat(transactionsDetails[row].price), 'styleTablesBasResults');
@@ -222,17 +221,21 @@ var PortfolioManagement=class  PortfolioManagement{
 
     setSortedColumnStyle(value){
         var savedParam = Banana.document.getScriptSettings();
+        var userParam="";
         if (savedParam.length > 0) {
             userParam = JSON.parse(savedParam);
         }
-        var style="";
-        if(userParam===value){
-            style="styleSortedByColumn";
-            return style;
-        }else{
-            style="styleTablesBasResults";
-            return style;
-        }
+        if(userParam){
+            var style="";
+            if(userParam===value){
+                style="styleSortedByColumn";
+                return style;
+            }else{
+                style="styleTablesBasResults";
+                return style;
+            }
+        }else
+            return 'styleTablesBasResults';
     }
 
     setNegativeStyle(value,isTotal){
@@ -495,7 +498,7 @@ var PortfolioManagement=class  PortfolioManagement{
             var tRow = table.row(i);
             if (item === tRow.value("ItemsId") || item === tRow.value("Group")) {
                 value = tRow.value(column);
-                if (value.length > 0) {
+                if (value) {
                     return value;
                 }
             }
@@ -558,8 +561,8 @@ var PortfolioManagement=class  PortfolioManagement{
         for (var i = 0; i < table.rowCount; i++) {
             var tRow = table.row(i);
             if (tRow.value("Group") === group_name) {
-                group_total = tRow.value("CurrencyCurrentValue");
-                if (group_total.length > 0) {
+                group_total = tRow.value("ValueCurrent");
+                if (group_total) {
                     /************************************************************************************
                      *calcolo che percentuale l'importo rappresenta rispetto al totale del portafoglio
                     formula: (ammontare (amount) currency current value /totale colonna currency current value)*100
@@ -676,7 +679,7 @@ var PortfolioManagement=class  PortfolioManagement{
             item_data.unit_cost = this.getItemUnitCost(items_list[i]);
             item_data.total_cost = Banana.SDecimal.multiply(item_data.quantity, item_data.unit_cost);
             item_data.market_price = this.getItemColumnValue(items_list[i], "UnitPriceCurrent");
-            item_data.market_value = this.getItemColumnValue(items_list[i], "CurrencyCurrentValue");
+            item_data.market_value = this.getItemColumnValue(items_list[i], "ValueCurrent");
             item_data.unrealized_gain_loss = Banana.SDecimal.subtract(item_data.market_value,item_data.total_cost);
             //è possibile fare in modo che l'utente inserisca il gruppo del totale, se personalizzato
             item_data.perc_of_port = this.getItemPercOfPort(item_data.market_value, "Total");
@@ -707,7 +710,7 @@ var PortfolioManagement=class  PortfolioManagement{
             let item_data_group_total = {};
             item_data_group_total.name = this.getItemColumnValue(items_list_total[i], "Group", true);
             item_data_group_total.total_cost = this.getTotalCostSum(items,item_data_group_total.name);
-            item_data_group_total.market_value = this.getItemColumnValue(items_list_total[i], "CurrencyCurrentValue", true);
+            item_data_group_total.market_value = this.getItemColumnValue(items_list_total[i], "ValueCurrent", true);
             item_data_group_total.unrealized_gain_loss = this.getUnrealizedGainOrLossSum(items,item_data_group_total.name);
             item_data_group_total.perc_of_port = this.getPercOfPortfolioSum(items,item_data_group_total.name);
             item_data_group_total.perc_g_l = this.getGLAverage(items,item_data_group_total.name);
@@ -738,11 +741,7 @@ var PortfolioManagement=class  PortfolioManagement{
 
 
     toLocaleAmountFormat(value) {
-        if (!value || value.trim().length === 0)
-            return "";
-        //cambiare
-        var dec = 2
-        return Banana.Converter.toLocaleNumberFormat(value, dec, true);
+        return Banana.Converter.toLocaleNumberFormat(value, 2, true);
     }
 
 
@@ -857,44 +856,6 @@ var PortfolioManagement=class  PortfolioManagement{
         }
         return true;
     }
-
-    getComboBoxElement() {
-
-        var market_value=qsTr("Market Value");
-        var quantity=qsTr("Quantity");
-        var perc_of_port=qsTr("Percentage of Portfolio");
-
-        //The formeters of the period that we need
-
-        var combobox_value = "";
-        //Read script settings
-        var data = Banana.document.getScriptSettings();
-
-        //Check if there are previously saved settings and read them
-        if (data.length > 0) {
-            var readSettings = JSON.parse(data);
-            //We check if "readSettings" is not null, then we fill the formeters with the values just read
-            if (readSettings) {
-                combobox_value = readSettings;
-            }
-        }
-        //A dialog window is opened asking the user to insert the desired period. By default is the accounting period
-
-        var selected_value = Banana.Ui.getItem("Sort by", "Choose a value", [market_value,quantity,perc_of_port], combobox_value, false);
-
-        //We take the values entered by the user and save them as "new default" values.
-        //This because the next time the script will be executed, the dialog window will contains the new values.
-        if (selected_value) {
-            combobox_value=selected_value;
-            //Save script settings
-            var valueToString = JSON.stringify(combobox_value);
-            Banana.document.setScriptSettings(valueToString);
-        } else {
-            //User clicked cancel
-            return;
-        }
-        return combobox_value;
-    }
 }
 /**
  * this function sorts the items according to what the user has chosen in the dialog 
@@ -904,21 +865,64 @@ var PortfolioManagement=class  PortfolioManagement{
  */
     function compare(a,b){
     var savedParam = Banana.document.getScriptSettings();
+    var userParam="";
     if (savedParam.length > 0) {
         userParam = JSON.parse(savedParam);
     }
-    switch(userParam){
-        case "Market Value":
-            return b.market_value-a.market_value;
-            break;
-        case "Percentage of Portfolio":
-            return b.perc_of_port-a.perc_of_port;
-            break;
-        case "Quantity":
-            return b.quantity-a.quantity;
-            break;
+    if(userParam){
+        switch(userParam){
+            case "Market Value":
+                return b.market_value-a.market_value;
+                break;
+            case "Percentage of Portfolio":
+                return b.perc_of_port-a.perc_of_port;
+                break;
+            case "Quantity":
+                return b.quantity-a.quantity;
+                break;
+        }
     }
+    else 
+        return false;
 }
+function getComboBoxElement() {
+
+    var market_value=qsTr("Market Value");
+    var quantity=qsTr("Quantity");
+    var perc_of_port=qsTr("Percentage of Portfolio");
+
+    //The formeters of the period that we need
+
+    var combobox_value = "";
+    //Read script settings
+    var data = Banana.document.getScriptSettings();
+
+    //Check if there are previously saved settings and read them
+    if (data.length > 0) {
+        var readSettings = JSON.parse(data);
+        //We check if "readSettings" is not null, then we fill the formeters with the values just read
+        if (readSettings) {
+            combobox_value = readSettings;
+        }
+    }
+    //A dialog window is opened asking the user to insert the desired period. By default is the accounting period
+
+    var selected_value = Banana.Ui.getItem("Sort by", "Choose a value", [market_value,quantity,perc_of_port], combobox_value, false);
+
+    //We take the values entered by the user and save them as "new default" values.
+    //This because the next time the script will be executed, the dialog window will contains the new values.
+    if (selected_value) {
+        combobox_value=selected_value;
+        //Save script settings
+        var valueToString = JSON.stringify(combobox_value);
+        Banana.document.setScriptSettings(valueToString);
+    } else {
+        //User clicked cancel
+        return;
+    }
+    return combobox_value;
+}
+
 function sumQt(cumulatedQuantity, quantity) {
     return Banana.SDecimal.add(quantity, cumulatedQuantity);
 }
@@ -927,6 +931,10 @@ function exec(inData, options) {
 
     if (!Banana.document)
         return "@Cancel";
+
+    var comboboxForm = getComboBoxElement();
+    if (!comboboxForm)
+        return;
 
     var portfolioManagement=new PortfolioManagement();
 
