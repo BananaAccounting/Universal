@@ -31,6 +31,7 @@ var PortfolioManagement=class  PortfolioManagement{
 
     constructor(){
         this.QtCurrent="";
+        this.NewItem=false;
     }
 
     addTableBaSAppraisal(report) {
@@ -153,6 +154,8 @@ var PortfolioManagement=class  PortfolioManagement{
         for (var i = 0; i < ItemList.length; i++) {
             let tableRow = table_bas_trans_details.addRow("styleTableRows");
             tableRow.addCell(ItemList[i], 'styleTablesBasNames_totals',10);
+            //nuovo item, quindi andrò a prendere la qt iniziale (se ce)
+            this.NewItem=true;
             for (var row in transactionsDetails) {
                 if(ItemList[i]==transactionsDetails[row].items){
                     let tableRow = table_bas_trans_details.addRow("styleTableRows");
@@ -161,8 +164,11 @@ var PortfolioManagement=class  PortfolioManagement{
                     tableRow.addCell(transactionsDetails[row].descr, '');
                     tableRow.addCell(transactionsDetails[row].debit, 'styleTablesBasResults');
                     tableRow.addCell(transactionsDetails[row].credit, 'styleTablesBasResults');
-                    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(transactionsDetails[row].qt,"0",false),'styleTablesBasResults');
-                    var quantityCurrent=this.getQtCurrent(transactionsDetails[row].qt);
+                    var qtStyle=this.getQtStyle(transactionsDetails[row].qt);
+                    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(transactionsDetails[row].qt,"0",false),qtStyle);
+                    var beginQuantity=this.getBeginQt(ItemList[i]);
+                    Banana.console.debug(beginQuantity);
+                    var quantityCurrent=this.getQtCurrent(beginQuantity,transactionsDetails[row].qt);
                     tableRow.addCell(Banana.Converter.toLocaleNumberFormat(quantityCurrent,"0",false),'styleTablesBasResults');
                     tableRow.addCell(this.toLocaleAmountFormat(transactionsDetails[row].price), 'styleTablesBasResults');
                     tableRow.addCell(this.toLocaleAmountFormat(transactionsDetails[row].amount), 'styleTablesBasResults');
@@ -174,30 +180,44 @@ var PortfolioManagement=class  PortfolioManagement{
         return report;
 
     }
-    getQtCurrent(qt){
+    getQtStyle(qt){
+        var style="";
+        var sign=Banana.SDecimal.sign(qt);
+
+        if(sign==-1)
+            style='styleNegativeAmount';
+        else
+            style='styleTablesBasResults';
+
+        return style;
+    }
+    getQtCurrent(beginqt,qt){
         //sommo la quantità che prendo come parametro a quella corrente(this.QtCurrent)
+        this.QtCurrent=Banana.SDecimal.add(this.QtCurrent,beginqt);
         this.QtCurrent=Banana.SDecimal.add(this.QtCurrent,qt);
         return this.QtCurrent
     }
 
-    getQuantityBegin(item){
+    getBeginQt(item){
         var qtBegin = "";
-        if (!Banana.document) {
-            return qtBegin;
-        }
-        var table = Banana.document.table("Items");
-        if (!table) {
-            return values;
-        }
-        for (var i = 0; i < table.rowCount; i++) {
-            var tRow = table.row(i);
-
-            if(tRow.value("ItemsId")==item){
-                qtBegin = tRow.value("QuantityBegin");
+        if(this.NewItem==true){
+            if (!Banana.document) {
                 return qtBegin;
-            }else
-                return false;
+            }
+            var table = Banana.document.table("Items");
+            if (!table) {
+                return values;
+            }
+            for (var i = 0; i < table.rowCount; i++) {
+                var tRow = table.row(i);
+
+                if(tRow.value("ItemsId")==item){
+                    qtBegin = tRow.value("QuantityBegin");
+                }
+            }
         }
+        this.NewItem=false;
+        return qtBegin;
     }
 
     setSortedColumnStyle(value){
@@ -270,9 +290,82 @@ var PortfolioManagement=class  PortfolioManagement{
      * @param {*} report 
      */
     addHeader(report) {
-        report.getHeader().addClass("header");
+        var docInfo = this.getDocumentInfo();
+        var company = docInfo.company;
+        var firstname = docInfo.Firstname;
+        var lastname = docInfo.Lastname;
+        var address1 = docInfo.address1;
+        var zip = docInfo.Zip;
+        var city = docInfo.City;
+        var email = docInfo.Email;
 
+        var headerParagraph = report.getHeader().addSection();
+        headerParagraph.addParagraph(company, "header_row_company");
+        headerParagraph.addParagraph(firstname+" "+lastname, "header_row_normal");
+        headerParagraph.addParagraph(address1+", "+zip+" "+city, "header_row_normal");
+        headerParagraph.addParagraph(email, "header_row_normal");
+        headerParagraph.excludeFromTest();
     }
+
+    getDocumentInfo() {
+        var documentInfo = {};
+        documentInfo.isDoubleEntry = false;
+        documentInfo.isIncomeExpenses = false;
+        documentInfo.isCashBook = false;
+        documentInfo.decimalsAmounts = 2;
+        documentInfo.multiCurrency = false;
+        documentInfo.withVat = false;
+        documentInfo.vatAccount = "";
+        documentInfo.customersGroup = "";
+        documentInfo.suppliersGroup = "";
+        documentInfo.basicCurrency = "";
+        documentInfo.company = "";
+        documentInfo.name = "";
+        documentInfo.familyName = "";
+        documentInfo.StartPeriod = "";
+        documentInfo.EndPeriod = "";
+        documentInfo.Company = "";
+        documentInfo.address1 = "";
+        documentInfo.City = "";
+        documentInfo.Firstname="";
+        documentInfo.Lastname="";
+        documentInfo.Zip="";
+        documentInfo.Email="";
+
+
+        if (Banana.document) {
+            if (Banana.document.info("AccountingDataBase", "Company"))
+                documentInfo.company =
+                Banana.document.info("AccountingDataBase", "Company");
+
+            if (Banana.document.info("AccountingDataBase", "Name"))
+                documentInfo.Firstname =
+                Banana.document.info("AccountingDataBase", "Name");
+
+            if (Banana.document.info("AccountingDataBase", "FamilyName"))
+                documentInfo.Lastname =
+                Banana.document.info("AccountingDataBase", "FamilyName");
+
+            if (Banana.document.info("AccountingDataBase", "Zip"))
+                documentInfo.Zip =
+                Banana.document.info("AccountingDataBase", "Zip");
+
+            if (Banana.document.info("AccountingDataBase", "Address1"))
+                documentInfo.address1 =
+                Banana.document.info("AccountingDataBase", "Address1");
+
+            if (Banana.document.info("AccountingDataBase", "City"))
+                documentInfo.City =
+                Banana.document.info("AccountingDataBase", "City");
+
+                
+            if (Banana.document.info("AccountingDataBase", "Email"))
+                documentInfo.Email =
+                Banana.document.info("AccountingDataBase", "Email");
+        }
+        return documentInfo;
+    }
+
 
     /**
      * @description set the footer of the report.
