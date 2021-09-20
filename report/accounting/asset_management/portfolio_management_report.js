@@ -45,6 +45,7 @@ var PortfolioManagement=class  PortfolioManagement{
         tableRow.addCell("Type/Security", "styleTablesHeaderText");
         tableRow.addCell("Quantity", "styleTablesHeaderText");
         tableRow.addCell("Unit Cost", "styleTablesHeaderText");
+        tableRow.addCell("Currency", "styleTablesHeaderText");
         tableRow.addCell("Total Cost", "styleTablesHeaderText");
         tableRow.addCell("Market Price ", "styleTablesHeaderText");
         tableRow.addCell("Market Value", "styleTablesHeaderText");
@@ -108,6 +109,7 @@ var PortfolioManagement=class  PortfolioManagement{
                     tableRow.addCell(items[row].name, 'styleTablesBasNames');
                     tableRow.addCell(Banana.Converter.toLocaleNumberFormat(items[row].quantity,"0",true), style_market_quantity);
                     tableRow.addCell(this.toLocaleAmountFormat(items[row].unit_cost), 'styleTablesBasResults');
+                    tableRow.addCell(items[row].currency, 'styleTablesBasNames');
                     tableRow.addCell(this.toLocaleAmountFormat(items[row].total_cost), 'styleTablesBasResults');
                     tableRow.addCell(this.toLocaleAmountFormat(items[row].market_price), 'styleTablesBasResults');
                     tableRow.addCell(this.toLocaleAmountFormat(items[row].market_value), style_market_value);
@@ -119,7 +121,7 @@ var PortfolioManagement=class  PortfolioManagement{
                 }
             }
             var tableRow = table_bas_appraisal.addRow("styleTableRows");
-            tableRow.addCell("", 'styleTablesBasResults', 3);
+            tableRow.addCell("", 'styleTablesBasResults', 4);
             tableRow.addCell(this.toLocaleAmountFormat(items_total[row_total].total_cost), 'styleTablesBasResults_totals');
             tableRow.addCell(this.toLocaleAmountFormat(items_total[row_total].market_value), 'styleTablesBasResults_totals',2);
             tableRow.addCell(this.toLocaleAmountFormat(items_total[row_total].perc_of_port), 'styleTablesBasResults_totals');
@@ -130,8 +132,8 @@ var PortfolioManagement=class  PortfolioManagement{
 
         }
         var tableRow = table_bas_appraisal.addRow("styleTableRows");
-        tableRow.addCell(final_total.name, 'styleTablesBasNames_totals',1);
-        tableRow.addCell("", 'styleTablesBasResults', 2);
+        tableRow.addCell(final_total.name, 'styleTablesBasNames_totals');
+        tableRow.addCell("", 'styleTablesBasResults', 3);
         tableRow.addCell(this.toLocaleAmountFormat(final_total.total_cost), 'styleTablesBasResults_final_totals');
         tableRow.addCell(this.toLocaleAmountFormat(final_total.market_value), 'styleTablesBasResults_final_totals',2);
         tableRow.addCell(this.toLocaleAmountFormat(final_total.perc_of_port), 'styleTablesBasResults_final_totals');
@@ -436,7 +438,7 @@ var PortfolioManagement=class  PortfolioManagement{
             transactionRow.rowCredit = tRow.value('AccountCredit');
             transactionRow.rowQt = tRow.value('Quantity');
             transactionRow.rowUnitPrice = tRow.value('UnitPrice');
-            transactionRow.rowAmount = tRow.value('Amount');
+            transactionRow.rowAmount = tRow.value('AmountCurrency');
 
             if(transactionRow.rowItem!=="")
                 transactionsRows.push(transactionRow);
@@ -561,7 +563,7 @@ var PortfolioManagement=class  PortfolioManagement{
         for (var i = 0; i < table.rowCount; i++) {
             var tRow = table.row(i);
             if (tRow.value("Group") === group_name) {
-                group_total = tRow.value("ValueCurrent");
+                group_total = tRow.value("CurrencyCurrentValue");
                 if (group_total) {
                     /************************************************************************************
                      *calcolo che percentuale l'importo rappresenta rispetto al totale del portafoglio
@@ -677,9 +679,10 @@ var PortfolioManagement=class  PortfolioManagement{
             item_data.name = items_list[i];
             item_data.quantity = this.getItemColumnValue(items_list[i], "QuantityCurrent");
             item_data.unit_cost = this.getItemUnitCost(items_list[i]);
+            item_data.currency=this.getItemColumnValue(items_list[i],"Currency");
             item_data.total_cost = Banana.SDecimal.multiply(item_data.quantity, item_data.unit_cost);
             item_data.market_price = this.getItemColumnValue(items_list[i], "UnitPriceCurrent");
-            item_data.market_value = this.getItemColumnValue(items_list[i], "ValueCurrent");
+            item_data.market_value = this.getItemColumnValue(items_list[i], "CurrencyCurrentValue");
             item_data.unrealized_gain_loss = Banana.SDecimal.subtract(item_data.market_value,item_data.total_cost);
             //è possibile fare in modo che l'utente inserisca il gruppo del totale, se personalizzato
             item_data.perc_of_port = this.getItemPercOfPort(item_data.market_value, "Total");
@@ -710,7 +713,7 @@ var PortfolioManagement=class  PortfolioManagement{
             let item_data_group_total = {};
             item_data_group_total.name = this.getItemColumnValue(items_list_total[i], "Group", true);
             item_data_group_total.total_cost = this.getTotalCostSum(items,item_data_group_total.name);
-            item_data_group_total.market_value = this.getItemColumnValue(items_list_total[i], "ValueCurrent", true);
+            item_data_group_total.market_value = this.getItemColumnValue(items_list_total[i], "CurrencyCurrentValue", true);
             item_data_group_total.unrealized_gain_loss = this.getUnrealizedGainOrLossSum(items,item_data_group_total.name);
             item_data_group_total.perc_of_port = this.getPercOfPortfolioSum(items,item_data_group_total.name);
             item_data_group_total.perc_g_l = this.getGLAverage(items,item_data_group_total.name);
