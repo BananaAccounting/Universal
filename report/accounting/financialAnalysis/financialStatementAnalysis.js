@@ -18,7 +18,7 @@
 // @task = app.command
 // @doctype = 100.*
 // @publisher = Banana.ch SA
-// @pubdate = 2021-09-03
+// @pubdate = 2021-09-21
 // @inputdatasource = none
 // @timeout = -1
 
@@ -60,7 +60,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var tableBalance = report.addTable('myTableBalance');
         tableBalance.getCaption().addText(texts.upperbalance, "styleTitles");
         //columns
-        tableBalance.addColumn("Description").setStyleAttributes("width:30%");
+        tableBalance.addColumn("Description").setStyleAttributes("width:40%");
         if (this.dialogparam.acronymcolumn) {
             tableBalance.addColumn("formula").setStyleAttributes("width:10%");
         }
@@ -83,7 +83,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var tableConCe = report.addTable('myConTableCe');
         tableConCe.getCaption().addText(texts.upperprofitandloss, "styleTitles");
         //columns
-        tableConCe.addColumn("Description").setStyleAttributes("width:30%");
+        tableConCe.addColumn("Description").setStyleAttributes("width:40%");
         if (this.dialogparam.acronymcolumn) {
             tableConCe.addColumn("formula").setStyleAttributes("width:10%");
         }
@@ -254,7 +254,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var texts = this.initFinancialAnalysisTexts();
         var tableDupont = report.addTable('myDupontTable');
         tableDupont.getCaption().addText(texts.upperdupontscheme, "styleTitles");
-        tableDupont.addColumn("Description").setStyleAttributes("width:25%");
+        tableDupont.addColumn("Description").setStyleAttributes("width:30%");
         this.setColumnsWidthDinamically(tableDupont);
 
         //header
@@ -283,8 +283,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var texts = this.initFinancialAnalysisTexts();
         for (var i = this.data.length - 1; i >= 0; i--) {
             var year = this.data[i].period.EndDate;
-            var elementType = this.data[i].period.Type;
-            switch(elementType) {
+            var periodType = this.data[i].period.Type;
+            switch(periodType) {
                 //previous year
                 case "PY":
                     year = year.substr(0, 4);
@@ -750,7 +750,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             }
             if (key === "differentcosts") {
                 var tableRow = tableCe.addRow("styleTablRows");
-                tableRow.addCell("= EBITDA", "styleUnderGroupTitles");
+                tableRow.addCell(texts.ebitda, "styleUnderGroupTitles");
                 if (this.dialogparam.acronymcolumn) {
                     tableRow.addCell(texts.ebitda_acronym);
                 }
@@ -761,7 +761,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             }
             if (key === "depreandadjust") {
                 var tableRow = tableCe.addRow("styleTablRows");
-                tableRow.addCell("= EBIT", "styleUnderGroupTitles");
+                tableRow.addCell(texts.ebit, "styleUnderGroupTitles");
                 if (this.dialogparam.acronymcolumn) {
                     tableRow.addCell(texts.ebit_acronym);
                 }
@@ -771,7 +771,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             }
             if (key === "interests") {
                 var tableRow = tableCe.addRow("styleTablRows");
-                tableRow.addCell("= EBT", "styleUnderGroupTitles");
+                tableRow.addCell(texts.ebt, "styleUnderGroupTitles");
                 if (this.dialogparam.acronymcolumn) {
                     tableRow.addCell(texts.ebt_acronym);
                 }
@@ -1680,6 +1680,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         texts.errorMsg = qsTr("Non-existent groups/accounts: ");
         texts.year_to_date=qsTr("Year to Date")
         texts.year_projection=qsTr("Year to Date + Budget");
+        texts.ebitda=qsTr("= Operating result before depreciation and value adjustments, financial results and taxes (EBITDA)");
+        texts.ebit=qsTr("= Operating result before financial results and taxes (EBIT)");
+        texts.ebt=qsTr("Operating result before taxes (EBT)");
 
 
         /******************************************************************************************
@@ -1714,11 +1717,10 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         /******************************************************************************************
          * texts for ratios
          * ***************************************************************************************/
-        texts.roi = "ROI";
-        texts.rot = "ROT";
-        texts.mol = "MOL";
-        texts.ebit = "EBIT";
-        texts.ebt="EBT";
+        texts.roi = qsTr("Return on investment (ROI)");
+        texts.roe = qsTr("Return on equity (ROE)");
+        texts.ros = qsTr("Return on sales (ROS)");
+        texts.mol = qsTr("Gross profit margin (MOL)");
         texts.ebitDA = "EBIT-DA";
         texts.cashratio = qsTr("Cash ratio");
         texts.quickratio = qsTr("Quick ratio");
@@ -1761,10 +1763,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var dialogparam = {};
         dialogparam.version = "v1.2";
         dialogparam.period={};
-        var d = new Date();
-        var datestring = d.getFullYear() + ("0" + (d.getMonth() + 1)).slice(-2) + ("0" + d.getDate()).slice(-2);
-        datestring=Banana.Converter.toInternalDateFormat(datestring, "yyyymmdd");
-        dialogparam.currentdate=datestring;
+
+        dialogparam.currentdate='';
         dialogparam.includebudget_todate=true;
         dialogparam.includecurrentyear_projection=true;
         dialogparam.selectionChecked=false;
@@ -2006,16 +2006,16 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
     initDialogParam_ProfitabilityBenchmarks(texts) {
         var dialogparam = {};
         dialogparam.profroe = {};
-        dialogparam.profroe.description = "ROE";
+        dialogparam.profroe.description = texts.roe;
         dialogparam.profroe.value = "8%-14%";
         dialogparam.profroi = {};
-        dialogparam.profroi.description = "ROI";
+        dialogparam.profroi.description = texts.roi;
         dialogparam.profroi.value = "10%";
         dialogparam.profros = {};
-        dialogparam.profros.description = "ROS";
+        dialogparam.profros.description = texts.ros;
         dialogparam.profros.value = ">0";
         dialogparam.profmol = {};
-        dialogparam.profmol.description = "MOL";
+        dialogparam.profmol.description = texts.mol;
         dialogparam.profmol.value = "40%";
         dialogparam.profebm = {};
         dialogparam.profebm.description = texts.ebtmargin;
@@ -2397,7 +2397,6 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                         //la proiezione la faccio partire dal giorno dopo la data corrente
                         projectionStartDate.setDate(projectionStartDate.getDate()+1);
                         projectionStartDate=Banana.Converter.toInternalDateFormat(projectionStartDate,'yyyy-mm-dd');
-                        Banana.console.debug(projectionStartDate);
                         endDate="";
                     }
                     bal = _banDocument.projectionBalance(value,projectionStartDate, "",endDate , null);
@@ -2753,29 +2752,29 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var red={};
 
         red.roe={};
-        red.roe.description="ROE";
+        red.roe.description=texts.roe;
         red.roe.formula = "profit / owca";
         red.roe.amount=Banana.SDecimal.subtract(ratios_current_red_data.roe.amount,ratios_budget_red_data.roe.amount);
         red.roe.benchmark=ratios_data.profitabilityratios.profroe.value;
         red.roe.type="perc";
 
         red.roi={};
-        red.roi.description="ROI";
+        red.roi.description=texts.roi;
         red.roi.formula = "EBIT / tota  ";
         red.roi.amount=Banana.SDecimal.subtract(ratios_current_red_data.roi.amount,ratios_budget_red_data.roi.amount);
         red.roi.benchmark=ratios_data.profitabilityratios.profroi.value;
         red.roi.type="perc";
 
         red.ros={};
-        red.ros.description="ROS";
+        red.ros.description=texts.ros;
         red.ros.formula = "EBIT / satu";
         red.ros.amount=Banana.SDecimal.subtract(ratios_current_red_data.ros.amount,ratios_budget_red_data.ros.amount);
         red.ros.benchmark=ratios_data.profitabilityratios.profros.value;
         red.ros.type="perc";
 
         red.mol={};
-        red.mol.description="MOL";
-        red.mol.formula = "gross profit / satu";
+        red.mol.description=texts.mol;
+        red.mol.formula = "EBITDA / satu";
         red.mol.amount=Banana.SDecimal.subtract(ratios_current_red_data.mol.amount,ratios_budget_red_data.mol.amount);
         red.mol.benchmark=ratios_data.profitabilityratios.profmol.value;
         red.mol.type="perc";
@@ -3484,7 +3483,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
         //ROE 
         index.red.roe = {};
-        index.red.roe.description = "ROE";
+        index.red.roe.description = texts.roe;
         index.red.roe.type = "perc";
         index.red.roe.formula = "profit / owca";
         var rcalc1 = Banana.SDecimal.divide(calculated_data.annualresult, owncapital);
@@ -3494,9 +3493,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         index.red.roe.benchmark = data.ratios.profitabilityratios.profroe.value;
 
 
-        //ROI
+        //return on investment(ROI)
         index.red.roi = {};
-        index.red.roi.description = "ROI";
+        index.red.roi.description = texts.roi;
         index.red.roi.type = "perc";
         index.red.roi.formula = "EBIT / tota  ";
         var rcalc3 = Banana.SDecimal.divide(calculated_data.ebit, totalassets);
@@ -3505,9 +3504,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         index.red.roi.amount = rris2;
         index.red.roi.benchmark = data.ratios.profitabilityratios.profroi.value;
 
-        //ROS
+        //Return on sales (ROS)
         index.red.ros = {};
-        index.red.ros.description = "ROS";
+        index.red.ros.description = texts.ros;
         index.red.ros.type = "perc";
         index.red.ros.formula = "EBIT / satu";
         var salesturnover = data.profitandloss.salesturnover.balance;
@@ -3519,9 +3518,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
         // MOL (Gross profit Margin)
         index.red.mol = {};
-        index.red.mol.description = "MOL";
+        index.red.mol.description = texts.mol;
         index.red.mol.type = "perc";
-        index.red.mol.formula = "gross profit / satu";
+        index.red.mol.formula = "ebitda / satu";
         var ebitda = calculated_data.ebitda;
         var rcalc7 = Banana.SDecimal.divide(ebitda, salesturnover);
         var rcalc8 = Banana.SDecimal.multiply(rcalc7, 100, { 'decimals': this.dialogparam.numberofdecimals });
@@ -4450,19 +4449,19 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         convertedParam.data.push(currentParam);
 
         //Enter the current date
-        var currentParam = {};
+        currentParam = {};
         currentParam.name = 'currentdate';
         currentParam.group = 'preferences';
         currentParam.title = texts.currentdate;
         currentParam.type = 'date';
-        currentParam.value = userParam.currentdate ? userParam.currentdate : '';
-        currentParam.defaultvalue = defaultParam.currentdate;
-        currentParam.tooltip = texts.currentdate_tooltip;
         currentParam.parentObject = 'Analysis Details';
-        currentParam.readValue = function() {
-            userParam.currentdate = this.value;
+        currentParam.value = userParam.currentdate ? userParam.currentdate : '';
+        currentParam.defaultvalue = '';
+        currentParam.readValue = function () {
+           var startDate = Banana.Converter.toInternalDateFormat(this.value, "dd.mm.yyyy");
+           startDate = startDate.replace(new RegExp("-", 'g'), "");
+           userParam.currentdate = startDate;
         }
-
         convertedParam.data.push(currentParam);
 
         //Include the Dupont analysis table in the analysis
@@ -4941,7 +4940,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         Dupont.ebt.type = "dec";
         Dupont.ebt.amount = ebt;
 
-        //sales (for MOL)
+        //sales (ebt)
         Dupont.ebtmarginsales = {};
         Dupont.ebtmarginsales.description = texts.salesturnover;
         Dupont.ebtmarginsales.style = "nrm";
@@ -4956,7 +4955,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         Dupont.ebtmargin.amount = Banana.SDecimal.divide(Dupont.ebt.amount, Dupont.ebtmarginsales.amount);
         Dupont.ebtmargin.amount = Banana.SDecimal.multiply(Dupont.ebtmargin.amount, 100, { 'decimals': this.dialogparam.numberofdecimals });
 
-        //sales (for ROT)
+        //sales
         Dupont.assetturnoversales = {};
         Dupont.assetturnoversales.description = texts.salesturnover;
         Dupont.assetturnoversales.style = "nrm";
@@ -5488,13 +5487,6 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         //Verify if the User param 'number of decimals' is valid, otherwise I reset it to the maximum number
         if (userParam.numberofdecimals > 2)
             userParam.numberofdecimals = 2;
-        
-        //format the date with the internal format
-        if(userParam.currentdate==""){
-            userParam.currentdate=defaultParam.currentdate;
-        }else{
-            userParam.currentdate=Banana.Converter.toInternalDateFormat(userParam.currentdate,"dd-mm-yy");
-        }
 
         /******************************************************************************************************************
          * Verify the user parameters of the settings dialog, if a parameter does not exist, is set with the default value.

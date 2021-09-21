@@ -56,35 +56,39 @@ BasePage {
                   data.adva = {};
                   data.ebitda = {};
                   data.ebit = {};
+                  data.ebt = {};
                   data.tota = {};
                   for (var i = financialStatementAnalysis.data.length - 1; i >= 0; i--) {
                      var periodo = financialStatementAnalysis.data[i].period.StartDate;
                      //for dont cut the Budget string in Budg.
-                     var elementType = financialStatementAnalysis.data[i].period.Type;
-                     switch(elementType) {
-                        case "PY":
-                           periodo = periodo.substr(0, 4);
-                           break;
-                        case "CY":
-                           periodo = texts.year_to_date;
-                           break;
-                        case "CYP":
-                           periodo = texts.year_projection;
-                           break;
-                        case "B":
-                           periodo = texts.budget;
-                           break;
-                        case "BTD":
-                           periodo = texts.budget_to_date;
-                           break;
+                     var periodType = financialStatementAnalysis.data[i].period.Type;
+                     if(periodType !=="BDT" && periodType !=="BDC"){
+                        switch(periodType) {
+                           case "PY":
+                              periodo = periodo.substr(0, 4);
+                              break;
+                           case "CY":
+                              periodo = texts.year_to_date;
+                              break;
+                           case "CYP":
+                              periodo = texts.year_projection;
+                              break;
+                           case "B":
+                              periodo = texts.budget;
+                              break;
+                           case "BTD":
+                              periodo = texts.budget_to_date;
+                              break;
+                        }
+                        var year=periodo;
+                        if (year.length>0 && yearList.indexOf(year)<0)
+                           yearList.push(year);
+                        data.adva[year] = financialStatementAnalysis.data[i].calculated_data.addedvalue;
+                        data.ebitda[year] = financialStatementAnalysis.data[i].calculated_data.ebitda;
+                        data.ebit[year] = financialStatementAnalysis.data[i].calculated_data.ebit;
+                        data.ebt[year] = financialStatementAnalysis.data[i].calculated_data.ebt;
+                        data.tota[year] = financialStatementAnalysis.data[i].calculated_data.annualresult;
                      }
-                     var year=periodo;
-                     if (year.length>0 && yearList.indexOf(year)<0)
-                        yearList.push(year);
-                     data.adva[year] = financialStatementAnalysis.data[i].calculated_data.addedvalue;
-                     data.ebitda[year] = financialStatementAnalysis.data[i].calculated_data.ebitda;
-                     data.ebit[year] = financialStatementAnalysis.data[i].calculated_data.ebit;
-                     data.tota[year] = financialStatementAnalysis.data[i].calculated_data.annualresult;
                   }
                   for (var i = 0; i < yearList.length; i++) {
                      var year = yearList[i];
@@ -98,6 +102,7 @@ BasePage {
                      chartData.datasets[i].data.push(data.adva[year]);
                      chartData.datasets[i].data.push(data.ebitda[year]);
                      chartData.datasets[i].data.push(data.ebit[year]);
+                     chartData.datasets[i].data.push(data.ebt[year]);
                      chartData.datasets[i].data.push(data.tota[year]);
                   } 
                   repaintChart();
