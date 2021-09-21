@@ -78,52 +78,53 @@ BasePage {
                   for (var i = financialStatementAnalysis.data.length - 1; i >= 0; i--) {
                      var periodo = financialStatementAnalysis.data[i].period.StartDate;
                      //for dont cut the Budget string in Budg.
-                     var elementType = financialStatementAnalysis.data[i].period.Type;
-                     switch(elementType) {
-                        case "PY":
-                           periodo = periodo.substr(0, 4);
-                           break;
-                        case "CY":
-                           periodo = texts.year_to_date;
-                           break;
-                        case "CYP":
-                           periodo = texts.year_projection;
-                           break;
-                        case "B":
-                           periodo = texts.budget;
-                           break;
-                        case "BTD":
-                           periodo = texts.budget_to_date;
-                           break;
-                     }
-                     var year= periodo;
-                     if (yearList.indexOf(year)<0){
-                        yearList.push(year);
-                     }
-                     
-                     var sumLiq= Banana.SDecimal.abs(financialStatementAnalysis.data[i].balance.ca.liquidity.balance);
-                     dataSerie1.push(sumLiq);
-                     var sumCred=Banana.SDecimal.abs(financialStatementAnalysis.data[i].balance.ca.credits.balance);
-                     dataSerie2.push(sumCred);
-                     var sumStoc=Banana.SDecimal.abs(financialStatementAnalysis.data[i].balance.ca.stocks.balance);
-                     dataSerie3.push(sumStoc);
-                     var sumPrep=Banana.SDecimal.abs(financialStatementAnalysis.data[i].balance.ca.prepaid_expenses.balance);
-                     dataSerie4.push(sumPrep);
-                     var sumFinFix=Banana.SDecimal.abs(financialStatementAnalysis.data[i].balance.fa.financial_fixedassets.balance);
-                     dataSerie5.push(sumFinFix); 
-                     var sumTanFix=Banana.SDecimal.abs(financialStatementAnalysis.data[i].balance.fa.tangible_fixedassets.balance);
-                     dataSerie6.push(sumTanFix);
-                     var sumIntFix=Banana.SDecimal.abs(financialStatementAnalysis.data[i].balance.fa.intangible_fixedassets.balance);
-                     dataSerie7.push(sumIntFix); 
-                     
-                     var sum = sumLiq;
-                     sum = Banana.SDecimal.add(sumCred, sum);
-                     sum = Banana.SDecimal.add(sumStoc, sum);
-                     sum = Banana.SDecimal.add(sumPrep, sum);
-                     sum = Banana.SDecimal.add(sumFinFix, sum);
-                     sum = Banana.SDecimal.add(sumTanFix, sum);
-                     sum = Banana.SDecimal.add(sumIntFix, sum);
-                     dataSum.push(sum);
+                    var periodType = financialStatementAnalysis.data[i].period.Type;
+                     if(periodType !=="BDT" && periodType !=="BDC"){
+                        switch(periodType) {
+                           case "PY":
+                              periodo = periodo.substr(0, 4);
+                              break;
+                           case "CY":
+                              periodo = texts.year_to_date;
+                              break;
+                           case "CYP":
+                              periodo = texts.year_projection;
+                              break;
+                           case "B":
+                              periodo = texts.budget;
+                              break;
+                           case "BTD":
+                              periodo = texts.budget_to_date;
+                              break;
+                        }
+                        var year= periodo;
+                        if (yearList.indexOf(year)<0){
+                           yearList.push(year);
+                        }
+                        
+                        var sumLiq= Banana.SDecimal.abs(financialStatementAnalysis.data[i].balance.ca.liquidity.balance);
+                        dataSerie1.push(sumLiq);
+                        var sumCred=Banana.SDecimal.abs(financialStatementAnalysis.data[i].balance.ca.credits.balance);
+                        dataSerie2.push(sumCred);
+                        var sumStoc=Banana.SDecimal.abs(financialStatementAnalysis.data[i].balance.ca.stocks.balance);
+                        dataSerie3.push(sumStoc);
+                        var sumPrep=Banana.SDecimal.abs(financialStatementAnalysis.data[i].balance.ca.prepaid_expenses.balance);
+                        dataSerie4.push(sumPrep);
+                        var sumFinFix=Banana.SDecimal.abs(financialStatementAnalysis.data[i].balance.fa.financial_fixedassets.balance);
+                        dataSerie5.push(sumFinFix); 
+                        var sumTanFix=Banana.SDecimal.abs(financialStatementAnalysis.data[i].balance.fa.tangible_fixedassets.balance);
+                        dataSerie6.push(sumTanFix);
+                        var sumIntFix=Banana.SDecimal.abs(financialStatementAnalysis.data[i].balance.fa.intangible_fixedassets.balance);
+                        dataSerie7.push(sumIntFix); 
+                        
+                        var sum = sumLiq;
+                        sum = Banana.SDecimal.add(sumCred, sum);
+                        sum = Banana.SDecimal.add(sumStoc, sum);
+                        sum = Banana.SDecimal.add(sumPrep, sum);
+                        sum = Banana.SDecimal.add(sumFinFix, sum);
+                        sum = Banana.SDecimal.add(sumTanFix, sum);
+                        sum = Banana.SDecimal.add(sumIntFix, sum);
+                        dataSum.push(sum);
                   }
                   dataSerie1 = convertToPerc(dataSerie1, dataSum);
                   dataSerie2 = convertToPerc(dataSerie2, dataSum);

@@ -60,30 +60,32 @@ BasePage {
                   for (var i = financialStatementAnalysis.data.length - 1; i >= 0; i--) {
                      var periodo = financialStatementAnalysis.data[i].period.StartDate;
                      //for dont cut the Budget string in Budg.
-                     var elementType = financialStatementAnalysis.data[i].period.Type;
-                     switch(elementType) {
-                        case "PY":
-                           periodo = periodo.substr(0, 4);
-                           break;
-                        case "CY":
-                           periodo = texts.year_to_date;
-                           break;
-                        case "CYP":
-                           periodo = texts.year_projection;
-                           break;
-                        case "B":
-                           periodo = texts.budget;
-                           break;
-                        case "BTD":
-                           periodo = texts.budget_to_date;
-                           break;
+                     var periodType = financialStatementAnalysis.data[i].period.Type;
+                     if(periodType !=="BDT" && periodType !=="BDC"){
+                        switch(periodType) {
+                           case "PY":
+                              periodo = periodo.substr(0, 4);
+                              break;
+                           case "CY":
+                              periodo = texts.year_to_date;
+                              break;
+                           case "CYP":
+                              periodo = texts.year_projection;
+                              break;
+                           case "B":
+                              periodo = texts.budget;
+                              break;
+                           case "BTD":
+                              periodo = texts.budget_to_date;
+                              break;
+                        }
+                        var year= periodo;
+                        if (year.length>0 && yearList.indexOf(year)<0)
+                           yearList.push(year);
+                        data.doflone[year] = financialStatementAnalysis.data[i].index.liqu.doflone.amount;
+                        data.dofltwo[year] = financialStatementAnalysis.data[i].index.liqu.dofltwo.amount;
+                        data.doflthree[year] = financialStatementAnalysis.data[i].index.liqu.doflthree.amount;
                      }
-                     var year= periodo;
-                     if (year.length>0 && yearList.indexOf(year)<0)
-                        yearList.push(year);
-                     data.doflone[year] = financialStatementAnalysis.data[i].index.liqu.doflone.amount;
-                     data.dofltwo[year] = financialStatementAnalysis.data[i].index.liqu.dofltwo.amount;
-                     data.doflthree[year] = financialStatementAnalysis.data[i].index.liqu.doflthree.amount;
                   }
                   for (var i = 0; i < yearList.length; i++) {
                      var year = yearList[i];

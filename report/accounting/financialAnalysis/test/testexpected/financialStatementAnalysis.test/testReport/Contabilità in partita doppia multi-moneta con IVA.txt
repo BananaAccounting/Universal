@@ -19,7 +19,7 @@
 \newenvironment{test}[1]{\section*{Test case: #1}}{}
 %Begin test data
 \begin{reportvalue}{FILENAME: file:script/../test/testcases/Contabilità in partita doppia multi-moneta con IVA.ac2}
-\excltest{Year to Date/Budget to Date ref: 03.09.2021} \\
+\excltest{Year to Date/Budget to Date ref: 21.09.2021} \\
 \begin{longtable}[l]{ l  l  l  l  l  l  l  l  l }
 BALANCE Description  & Acronym  & Year to Date  & Budget to Date  & Budget to Date +/-  & Year to Date + Budget  & Budget  & Budget +/- \\
 \multicolumn{9}{l}{Assets }\\
@@ -53,11 +53,11 @@ PROFIT AND LOSS Description  & Acronym  & Year to Date  & Budget to Date  & Budg
 = Added Value  & adva  & 12'220.00  & 0.00  & 12'220.00  & 12'220.00  & 0.00  & 12'220.00 \\
 - Personnel costs  & cope  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00 \\
 - Different costs  & cofi  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00 \\
-= EBITDA  & EBIT-DA  & 12'220.00  & 0.00  & 12'220.00  & 12'220.00  & 0.00  & 12'220.00 \\
+= Operating result before depreciation and value adjustments, financial results and taxes (EBITDA)  & EBIT-DA  & 12'220.00  & 0.00  & 12'220.00  & 12'220.00  & 0.00  & 12'220.00 \\
 - Depreciations and adjustments  & amre  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00 \\
-= EBIT  & EBIT  & 12'220.00  & 0.00  & 12'220.00  & 12'220.00  & 0.00  & 12'220.00 \\
+= Operating result before financial results and taxes (EBIT)  & EBIT  & 12'220.00  & 0.00  & 12'220.00  & 12'220.00  & 0.00  & 12'220.00 \\
 +/- Interests  & inte  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00 \\
-= EBT  & EBT  & 12'220.00  & 0.00  & 12'220.00  & 12'220.00  & 0.00  & 12'220.00 \\
+Operating result before taxes (EBT)  & EBT  & 12'220.00  & 0.00  & 12'220.00  & 12'220.00  & 0.00  & 12'220.00 \\
 - Direct taxes  & dita  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00 \\
 Annual result  & fire  & 12'220.00  & 0.00  & 12'220.00  & 12'220.00  & 0.00  & 12'220.00 \\
 \end{longtable}
@@ -103,10 +103,10 @@ Fixed Assets Coverage  & (owca + ltdc) / fixa  & >100\%  & -2122.00\%   & 0.00\%
 \end{longtable}
 \begin{longtable}[l]{ l  l  l  l  l  l  l  l  l }
 PROFITABILITY RATIOS Description  & formula  & Benchmark  & Year to Date  & Budget to Date  & Budget to Date +/-  & Year to Date + Budget  & Budget  & Budget +/- \\
-ROE  & profit / owca  & 8\%-14\%  & 100.00\%   & 0.00\%  ↓  & 100.00\%   & 100.00\%   & 0.00\%  ↓  & 100.00\%  \\
-ROI  & EBIT / tota    & 10\%  & 50.29\%   & 0.00\%  ↓  & 50.29\%   & 50.29\%   & 0.00\%  ↓  & 50.29\%  \\
-ROS  & EBIT / satu  & >0  & 54.31\%   & 0.00\%  ↓  & 54.31\%   & 54.31\%   & 0.00\%  ↓  & 54.31\%  \\
-MOL  & gross profit / satu  & 40\%  & 54.31\%   & 0.00\%  ↓  & 54.31\%   & 54.31\%   & 0.00\%  ↓  & 54.31\%  \\
+Return on equity (ROE)  & profit / owca  & 8\%-14\%  & 100.00\%   & 0.00\%  ↓  & 100.00\%   & 100.00\%   & 0.00\%  ↓  & 100.00\%  \\
+Return on investment (ROI)  & EBIT / tota    & 10\%  & 50.29\%   & 0.00\%  ↓  & 50.29\%   & 50.29\%   & 0.00\%  ↓  & 50.29\%  \\
+Return on sales (ROS)  & EBIT / satu  & >0  & 54.31\%   & 0.00\%  ↓  & 54.31\%   & 54.31\%   & 0.00\%  ↓  & 54.31\%  \\
+Gross profit margin (MOL)  & EBITDA / satu  & 40\%  & 54.31\%   & 0.00\%  ↓  & 54.31\%   & 54.31\%   & 0.00\%  ↓  & 54.31\%  \\
 EBT margin  & EBT / satu  & 2.4\%  & 54.31\%   & 0.00\%  ↓  & 54.31\%   & 54.31\%   & 0.00\%  ↓  & 54.31\%  \\
 Profit margin  & net profit / satu  & 1.4\%  & 54.31\%   & 0.00\%  ↓  & 54.31\%   & 54.31\%   & 0.00\%  ↓  & 54.31\%  \\
 \end{longtable}
@@ -155,13 +155,13 @@ Cash Flow to Investments  & cashflow(A)/inve  & -  & -2343.00\%   & 0.00\%  ↑ 
 \end{longtable}
 \begin{longtable}[l]{ l  l  l  l  l  l  l }
 DUPONT ANALYSIS  Description  & Year to Date  & Budget to Date  & Budget to Date +/-  & Year to Date + Budget  & Budget  & Budget +/- \\
-EBT  & 12'220.00   & 0.00  ↓  & 12'220.00   & 12'220.00   & 0.00  ↓  & 12'220.00  \\
+Operating result before taxes (EBT)  & 12'220.00   & 0.00  ↓  & 12'220.00   & 12'220.00   & 0.00  ↓  & 12'220.00  \\
 Sales turnover  & 22'500.00   & 0.00  ↓  & 22'500.00   & 22'500.00   & 0.00  ↓  & 22'500.00  \\
 EBT margin  & 54.31\%   & 0.00\%  ↓  & 54.31\%   & 54.31\%   & 0.00\%  ↓  & 54.31\%  \\
 Sales turnover  & 22'500.00   & 0.00  ↓  & 22'500.00   & 22'500.00   & 0.00  ↓  & 22'500.00  \\
 Total Assets  & 24'300.00   & 110.00  ↓  & 24'190.00   & 24'300.00   & 110.00  ↓  & 24'190.00  \\
 Total Assets Turnover  & 0.93   & 0.00  ↓  & 0.93   & 0.93   & 0.00  ↓  & 0.93  \\
-ROI  & 50.29\%   & 0.00\%  ↓  & 50.29\%   & 50.29\%   & 0.00\%  ↓  & 50.29\%  \\
+Return on investment (ROI)  & 50.29\%   & 0.00\%  ↓  & 50.29\%   & 50.29\%   & 0.00\%  ↓  & 50.29\%  \\
 \end{longtable}
 \begin{longtable}[l]{ l  l  l  l  l  l  l  l }
 ALTMAN INDEX Z-SCORE Year to Date  & Budget to Date  & Budget to Date +/-  & Year to Date + Budget  & Budget  & Budget +/- \\
@@ -176,6 +176,6 @@ ALTMAN INDEX Z-SCORE Year to Date  & Budget to Date  & Budget to Date +/-  & Yea
 for values > than 3 correspond a low probability of a financial crisis \\
 for values >= than 1.8 but <= than 3 there are possibilities of a financial crisis, should be kept under control \\
 for values < than 1.8 there is a strong probability of a financial crisis \\
-\excltest{03.09.2021} \\
+\excltest{21.09.2021} \\
 \#page-nr \end{reportvalue}
 \end{document}

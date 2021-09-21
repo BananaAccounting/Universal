@@ -53,7 +53,7 @@ ChartView {
 
    chartData: {
       'labels' : [
-            "ROE","ROI","ROS","MOL",qsTr("EBIT margin"),qsTr("Profit margin")
+            "Return on equity (ROE)","Return on investment (ROI)","Return on sales (ROS)","Gross profit margin (MOL)",qsTr("EBIT margin"),qsTr("Profit margin")
             ],
       'datasets' : []
    }
