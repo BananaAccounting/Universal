@@ -18,7 +18,7 @@
 // @task = app.command
 // @doctype = 100.*
 // @publisher = Banana.ch SA
-// @pubdate = 2021-09-21
+// @pubdate = 2021-09-22
 // @inputdatasource = none
 // @timeout = -1
 
@@ -428,9 +428,6 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             headerParagraph.addClass("header_text");
         }
         if (this.dialogparam.pageheader) {
-            //var texts = this.initFinancialAnalysisTexts();
-            var analsysisYears = this.data.length;
-            analsysisYears -= 1;
             var docInfo = this.getDocumentInfo();
             var company = docInfo.company;
             var address1 = docInfo.address1;
@@ -445,7 +442,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         if(this.dialogparam.includebudget_todate)
             budgetToDate="/"+texts.budget_to_date;
 
-        headerParagraph.addParagraph(texts.year_to_date+budgetToDate+" ref: "+Banana.Converter.toLocaleDateFormat(this.dialogparam.currentdate, ""),"header_text");
+        headerParagraph.addParagraph(texts.year_to_date+budgetToDate+" ref: "+Banana.Converter.toLocaleDateFormat(this.dialogparam.currentdate),"header_text");
         headerParagraph.excludeFromTest();
     }
 
@@ -2073,6 +2070,14 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         return counter;
     }
 
+    toCorrectDateFormat(){
+        var currentDate;
+        currentDate=Banana.Converter.toDate(this.dialogparam.currentdate);
+        currentDate=Banana.Converter.toInternalDateFormat(currentDate,'YYYY-MM-DD');
+
+        this.dialogparam.currentdate=currentDate;
+    }
+
 
     /**
      * @description - assigns the maximum number of previous years to a varaible, if it is less than 5, is reset to 5
@@ -2090,6 +2095,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
         var data_year_projection={};
         var data_budget_complete={};
+        //converto l'attributo di classe this.dialogparam.current_date nel formato corretto
+        this.toCorrectDateFormat();
 
 
         // only if the table budget exists and if the User choosed to use it.
@@ -3111,8 +3118,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
     getAccountingSheetValue(_banDocument,periodType,grType,multiplier){
         var accountingValue="";
         if(periodType=="CY"||periodType=="PY"){
-            var currentDate=Banana.Converter.toInternalDateFormat(this.dialogparam.currentdate,'yyyy-mm-dd');
-            accountingValue = _banDocument.projectionBalance(grType,"", "",currentDate, null);
+            accountingValue = _banDocument.projectionBalance(grType,"", "",this.dialogparam.currentdate, null);
             accountingValue = accountingValue.balance;
             Banana.SDecimal.multiply(accountingValue, multiplier);
             return accountingValue;
@@ -4458,7 +4464,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.value = userParam.currentdate ? userParam.currentdate : '';
         currentParam.defaultvalue = '';
         currentParam.readValue = function () {
-           var startDate = Banana.Converter.toInternalDateFormat(this.value, "dd.mm.yyyy");
+            var startDate = Banana.Converter.toInternalDateFormat(this.value, "dd.mm.yyyy");
            startDate = startDate.replace(new RegExp("-", 'g'), "");
            userParam.currentdate = startDate;
         }
