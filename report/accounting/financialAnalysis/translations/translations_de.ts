@@ -1160,7 +1160,7 @@ Prüfen Sie, ob die verwendeten Gruppen korrekt sind.</translation>
     <message>
         <location filename="../financialStatementAnalysis.js" line="1729"/>
         <source>Degree of Circulating Assets</source>
-        <translation>Umlaufvermögens</translation>
+        <translation>Umlaufvermögen</translation>
     </message>
     <message>
         <location filename="../financialStatementAnalysis.js" line="1730"/>
