@@ -371,7 +371,7 @@ var PortfolioManagement=class  PortfolioManagement{
 
             if (Banana.document.info("Base", "FileTypeNumber"))
                 var docType = Banana.document.info("Base", "FileTypeNumber");
-            if(docType=="120"){
+            if(docType=="120" ||docType=="130" ){
                 documentInfo.multiCurrency=true;
             }
                 
