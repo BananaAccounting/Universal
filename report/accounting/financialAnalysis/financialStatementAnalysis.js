@@ -18,7 +18,7 @@
 // @task = app.command
 // @doctype = 100.*
 // @publisher = Banana.ch SA
-// @pubdate = 2021-09-22
+// @pubdate = 2021-09-23
 // @inputdatasource = none
 // @timeout = -1
 
@@ -3090,6 +3090,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         totals.from_financing=Banana.SDecimal.subtract(totals_cashflow_current_data.from_financing,totals_cashflow_budget_data.from_financing);
         totals.cashflow=Banana.SDecimal.subtract(totals_cashflow_current_data.disinvestments,totals_cashflow_budget_data.disinvestments);
         totals.cashflow=Banana.SDecimal.subtract(totals_cashflow_current_data.cashflow,totals_cashflow_budget_data.cashflow);
+        totals.opening_liquidity=Banana.SDecimal.subtract(totals_cashflow_current_data.opening_liquidity,totals_cashflow_budget_data.opening_liquidity);
+        totals.closing_liquidity=Banana.SDecimal.subtract(totals_cashflow_current_data.closing_liquidity,totals_cashflow_budget_data.closing_liquidity);
         totals.delta_liquidity=Banana.SDecimal.subtract(totals_cashflow_current_data.delta_liquidity,totals_cashflow_budget_data.delta_liquidity);
 
         return totals;
