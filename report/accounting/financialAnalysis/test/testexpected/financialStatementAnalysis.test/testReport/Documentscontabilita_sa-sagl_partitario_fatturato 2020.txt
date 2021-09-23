@@ -143,7 +143,7 @@ Increase (+) or decrease (-) in reserves  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00
 =Cash Flow from financing (C)  & -200.00  & 0.00  & -200.00  & -200.00  & 0.00  & -200.00 \\
 Increase/decrease in liquidity (A+B+C)  & 8'170.00  & 0.00  & 8'170.00  & 9'315.00  & 1'145.00  & 8'170.00 \\
 Liquidity at the beginning of the period  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00 \\
-Liquidity at the end of the period  & 8'170.00  & 0.00  & 0.00  & 9'315.00  & 1'145.00  & 0.00 \\
+Liquidity at the end of the period  & 8'170.00  & 0.00  & 8'170.00  & 9'315.00  & 1'145.00  & 8'170.00 \\
 Difference  & 8'170.00  & 0.00  & 8'170.00  & 9'315.00  & 1'145.00  & 8'170.00 \\
 \end{longtable}
 \begin{longtable}[l]{ l  l  l  l  l  l  l  l  l }
@@ -177,6 +177,6 @@ ALTMAN INDEX Z-SCORE Year to Date  & Budget to Date  & Budget to Date +/-  & Yea
 for values > than 3 correspond a low probability of a financial crisis \\
 for values >= than 1.8 but <= than 3 there are possibilities of a financial crisis, should be kept under control \\
 for values < than 1.8 there is a strong probability of a financial crisis \\
-\excltest{21.09.2021} \\
+\excltest{23.09.2021} \\
 \#page-nr \end{reportvalue}
 \end{document}
