@@ -165,7 +165,7 @@ Return on investment (ROI)  & 50.29\%   & 0.00\%  ↓  & 50.29\%   & 50.29\%   &
 \end{longtable}
 \begin{longtable}[l]{ l  l  l  l  l  l  l  l }
 ALTMAN INDEX Z-SCORE Year to Date  & Budget to Date  & Budget to Date +/-  & Year to Date + Budget  & Budget  & Budget +/- \\
-3.66  & 0.72  & 2.02  & 3.66  & 0.72  & 2.02 \\
+3.66  & 0.72  & 2.94  & 3.66  & 0.72  & 2.94 \\
 \multicolumn{8}{l}{formula used for the calculation  = 0.717 X1 + 0.847 X2 +3.107 X3 +0.420 X4 + 0.998 X5 }\\
 \multicolumn{8}{l}{X1 = cuas / tota }\\
 \multicolumn{8}{l}{X2 = reut / tota  }\\
@@ -176,6 +176,6 @@ ALTMAN INDEX Z-SCORE Year to Date  & Budget to Date  & Budget to Date +/-  & Yea
 for values > than 3 correspond a low probability of a financial crisis \\
 for values >= than 1.8 but <= than 3 there are possibilities of a financial crisis, should be kept under control \\
 for values < than 1.8 there is a strong probability of a financial crisis \\
-\excltest{23.09.2021} \\
+\excltest{24.09.2021} \\
 \#page-nr \end{reportvalue}
 \end{document}

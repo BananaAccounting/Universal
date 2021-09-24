@@ -18,7 +18,7 @@
 // @task = app.command
 // @doctype = 100.*
 // @publisher = Banana.ch SA
-// @pubdate = 2021-09-23
+// @pubdate = 2021-09-24
 // @inputdatasource = none
 // @timeout = -1
 
@@ -1195,7 +1195,6 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var yearcolumns = 0;
         var tableRow = tableAltmanIndex.addRow("styleTablRows");
         for (var i = this.data.length - 1; i >= 0; i--) {
-            ratios = this.data[i].altman_index;
             tableRow.addCell(this.data[i].altman_index.value, this.altmanScoreType(this.data[i].altman_index.value));
         }
         if (this.dialogparam.formulascolumn) {
@@ -2592,20 +2591,10 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
     }
 
     getCurrAndBudgDiff_altmanIndex(altman_index_current_data,altman_index_budget_data){
-        var AltmanIndex={};
+        var altmanIndex={};
+        altmanIndex.value= Banana.SDecimal.subtract(altman_index_current_data.value, altman_index_budget_data.value);
 
-        AltmanIndex.x1=Banana.SDecimal.subtract(altman_index_current_data.x1,altman_index_budget_data.x1);
-        AltmanIndex.x2=Banana.SDecimal.subtract(altman_index_current_data.x2,altman_index_budget_data.x2);
-        AltmanIndex.x3=Banana.SDecimal.subtract(altman_index_current_data.x3,altman_index_budget_data.x3);
-        AltmanIndex.x4=Banana.SDecimal.subtract(altman_index_current_data.x4,altman_index_budget_data.x4);
-        AltmanIndex.x5=Banana.SDecimal.subtract(altman_index_current_data.x4,altman_index_budget_data.x5);
-
-        AltmanIndex.value = Banana.SDecimal.add(AltmanIndex.x1, AltmanIndex.x2);
-        AltmanIndex.value = Banana.SDecimal.add(AltmanIndex.value, AltmanIndex.x3);
-        AltmanIndex.value = Banana.SDecimal.add(AltmanIndex.value, AltmanIndex.x4);
-        AltmanIndex.value = Banana.SDecimal.add(AltmanIndex.value, AltmanIndex.x5, { 'decimals': 2 });
-
-        return AltmanIndex;
+        return altmanIndex;
 
     }
 
