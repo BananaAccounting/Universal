@@ -18,7 +18,7 @@
 // @task = app.command
 // @doctype = 110.*
 // @publisher = Banana.ch SA
-// @pubdate = 2021-07-21
+// @pubdate = 2021-10-08
 // @inputdatasource = none
 // @timeout = -1
 
@@ -180,10 +180,83 @@ function loadBudgetTableRows() {
 
 }
 
+function getErrorMessage(errorId, lang) {
+    if (!lang)
+        lang = 'en';
+    switch (errorId) {
+        case this.ID_ERR_LICENSE_NOTVALID:
+            return "This extension requires Banana Accounting+ Advanced";
+        case this.ID_ERR_VERSION_NOTSUPPORTED:
+            if (lang == 'it')
+                return "Lo script non funziona con la vostra attuale versione di Banana Contabilità.\nVersione minimina richiesta: %1.\nPer aggiornare o per maggiori informazioni cliccare su Aiuto";
+            else if (lang == 'fr')
+                return "Ce script ne s'exécute pas avec votre version actuelle de Banana Comptabilité.\nVersion minimale requise: %1.\nPour mettre à jour ou pour plus d'informations, cliquez sur Aide";
+            else if (lang == 'de')
+                return "Das Skript wird mit Ihrer aktuellen Version von Banana Buchhaltung nicht ausgeführt.\nMindestversion erforderlich: %1.\nKlicken Sie auf Hilfe, um zu aktualisieren oder weitere Informationen zu bekommen";
+            else
+                return "This script does not run with your current version of Banana Accounting.\nMinimum version required: %1.\nTo update or for more information click on Help";
+    }
+    return '';
+}
+
+function isBananaAdvanced() {
+    // Starting from version 10.0.7 it is possible to read the property Banana.application.license.isWithinMaxRowLimits 
+    // to check if all application functionalities are permitted
+    // the version Advanced returns isWithinMaxRowLimits always false
+    // other versions return isWithinMaxRowLimits true if the limit of transactions number has not been reached
+
+    if (Banana.compareVersion && Banana.compareVersion(Banana.application.version, "10.0.9") >= 0) {
+        var license = Banana.application.license;
+        if (license.licenseType === "advanced"||license.isWithinMaxFreeLines) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+function verifyBananaVersion() {
+    if (!Banana.document)
+        return false;
+
+    var lang = this.getLang();
+    var curr_license = isBananaAdvanced();
+
+    //Banana+ is required
+    var requiredVersion = "10.0.9";
+    if (Banana.compareVersion && Banana.compareVersion(Banana.application.version, requiredVersion) < 0) {
+        var msg = this.getErrorMessage(this.ID_ERR_VERSION_NOTSUPPORTED,lang);
+        msg = msg.replace("%1", requiredVersion);
+        this.banDocument.addMessage(msg, this.ID_ERR_VERSION_NOTSUPPORTED);
+        return false;
+    }
+    if (!curr_license) {
+        var msg = getErrorMessage(this.ID_ERR_LICENSE_NOTVALID, lang);
+        Banana.document.addMessage(msg, this.ID_ERR_LICENSE_NOTVALID);
+        return false;
+    }
+    return true;
+}
+
+function getLang() {
+    var lang = 'en';
+    if (this.banDocument)
+        lang = this.banDocument.locale;
+    else if (Banana.application.locale)
+        lang = Banana.application.locale;
+    if (lang.length > 2)
+        lang = lang.substr(0, 2);
+    return lang;
+}
+
 function exec(inData) {
 
     if (!Banana.document)
         return "@Cancel"
+    
+    if (!verifyBananaVersion()) {
+        return "@Cancel";
+    }
 
     var documentChange = { "format": "documentChange", "error": "", "data": [] };
 

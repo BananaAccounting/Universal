@@ -18,7 +18,7 @@
 // @task = app.command
 // @doctype = 110.*
 // @publisher = Banana.ch SA
-// @pubdate = 2021-08-06
+// @pubdate = 2021-10-08
 // @inputdatasource = none
 // @timeout = -1
 
@@ -876,8 +876,6 @@ function getErrorMessage(errorId, lang) {
     if (!lang)
         lang = 'en';
     switch (errorId) {
-        case this.ID_ERR_EXPERIMENTAL_REQUIRED:
-            return "The Experimental version is required";
         case this.ID_ERR_LICENSE_NOTVALID:
             return "This extension requires Banana Accounting+ Advanced";
         case this.ID_ERR_VERSION_NOTSUPPORTED:
@@ -901,24 +899,11 @@ function isBananaAdvanced() {
 
     if (Banana.compareVersion && Banana.compareVersion(Banana.application.version, "10.0.9") >= 0) {
         var license = Banana.application.license;
-        if (license.licenseType === "advanced" || license.isWithinMaxFreeLines) {
+        if (license.licenseType === "advanced" ||license.isWithinMaxFreeLines) {
             return true;
         }
     }
 
-    return false;
-}
-
-function bananaRequiredVersion(requiredVersion, expmVersion) {
-    /**
-     * Check Banana version
-     */
-    if (expmVersion) {
-        requiredVersion = requiredVersion + "." + expmVersion;
-    }
-    if (Banana.compareVersion && Banana.compareVersion(Banana.application.version, requiredVersion) >= 0) {
-        return true;
-    }
     return false;
 }
 
@@ -927,16 +912,14 @@ function verifyBananaVersion() {
         return false;
 
     var lang = this.getLang();
-
-    var ban_version_min = "10.0.9";
-    var ban_dev_version_min = "";
-    var curr_version = bananaRequiredVersion(ban_version_min, ban_dev_version_min);
     var curr_license = isBananaAdvanced();
 
-    if (!curr_version) {
-        var msg = this.getErrorMessage(this.ID_ERR_VERSION_NOTSUPPORTED, lang);
-        msg = msg.replace("%1", BAN_VERSION_MIN);
-        Banana.document.addMessage(msg, this.ID_ERR_VERSION_NOTSUPPORTED);
+    //Banana+ is required
+    var requiredVersion = "10.0.9";
+    if (Banana.compareVersion && Banana.compareVersion(Banana.application.version, requiredVersion) < 0) {
+        var msg = this.getErrorMessage(this.ID_ERR_VERSION_NOTSUPPORTED,lang);
+        msg = msg.replace("%1", requiredVersion);
+        this.banDocument.addMessage(msg, this.ID_ERR_VERSION_NOTSUPPORTED);
         return false;
     }
     if (!curr_license) {
