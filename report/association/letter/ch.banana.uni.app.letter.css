@@ -1,0 +1,74 @@
+
+/* Update 2021-10-11 */
+
+@page {
+   margin-top: 10mm;
+   margin-bottom: 10mm;
+   margin-left: 20mm;
+   margin-right: 10mm;
+}
+
+body {
+   font-family: $font_family;
+   font-size: $font_size;
+}
+
+.address {
+   font-family: $font_family;
+   font-size: $font_size;
+}
+
+.bold {
+   font-weight: bold;
+}
+
+.right {
+   text-align: right;
+}
+
+.center {
+   text-align: center;
+}
+
+.imgSignature {
+   height: 10mm;
+}
+
+/*.tableAddress {
+   margin-top: 2cm;
+   margin-left: 10.5cm;
+}*/
+
+.tableAddress_right {
+  font-size: $font_size;
+  margin-top: 4.5cm;
+  margin-left: 10.3cm;
+  margin-right: 1.2cm;
+  position: absolute;
+}
+
+.tableAddress_left {
+  margin-top: 4.5cm;
+  margin-left: 2.2cm;
+  margin-right: 1.2cm;
+  position: absolute;
+}
+
+.custom_tableAddress_right {
+  font-size: $font_size;
+  margin-top: $right_address_margin_top;
+  margin-left: $right_address_margin_left;
+  margin-right: 1.2cm;
+  position: absolute;
+}
+
+.custom_tableAddress_left {
+  margin-top: $left_address_margin_top;
+  margin-left: $left_address_margin_left;
+  margin-right: 1.2cm;
+  position: absolute;
+}
+
+.textLetter {
+   margin-top: 7cm;
+}

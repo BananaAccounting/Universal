@@ -1,0 +1,29 @@
+# Heading level 1
+## Heading level 2
+### Heading level 3
+First line with two spaces after.  
+And the next line.
+
+Second paragraph with a **bold text** in the sentence and also an *italic* word.  
+You can combine them: this is really***very***important text.  
+
+To create an ordered list, add line items with numbers followed by periods:
+1. First item
+2. Second item
+3. Third item
+4. Fourth item  
+
+To create an unordered list, add dashes (-), asterisks (*), or plus signs (+) in front of line items:  
+* First item
+* Second item
+* Third item
+* Fourth item 
+
+Let's add a table...
+| Column1 | Column2 | Column3 |
+| :--- | :---: | ---: |
+| {{Account}} | {{FirstName}} {{FamilyName}} | {{Address}} |
+
+This is the end.  
+
+Thank you!
