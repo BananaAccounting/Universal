@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.uni.invoice.uni11
 // @api = 1.0
-// @pubdate = 2021-06-16
+// @pubdate = 2021-10-13
 // @publisher = Banana.ch SA
 // @description = [UNI11] Programmable Invoice layout
 // @description.it = [UNI11] Layout Fattura Programmabile
@@ -58,6 +58,7 @@
 var BAN_VERSION = "10.0.1";
 var BAN_EXPM_VERSION = "";
 var BAN_ADVANCED;
+var IS_INTEGRATED_INVOICE;
 
 // Counter for the columns of the Details table
 var columnsNumber = 0;
@@ -80,6 +81,8 @@ function settingsDialog() {
   // Verify the banana version when user clicks on settings buttons
   var isCurrentBananaVersionSupported = bananaRequiredVersion(BAN_VERSION, BAN_EXPM_VERSION);
   if (isCurrentBananaVersionSupported) {
+
+    isIntegratedInvoice();
 
     var userParam = initParam();
     var savedParam = Banana.document.getScriptSettings();
@@ -389,6 +392,32 @@ function convertParam(userParam) {
   convertedParam.data.push(currentParam);
 
   currentParam = {};
+  currentParam.name = 'info_order_number';
+  currentParam.parentObject = 'info_include';
+  currentParam.title = texts.param_info_order_number;
+  currentParam.type = 'bool';
+  currentParam.value = userParam.info_order_number ? true : false;
+  currentParam.defaultvalue = false;
+  currentParam.tooltip = texts.param_tooltip_info_order_number;
+  currentParam.readValue = function() {
+    userParam.info_order_number = this.value;
+  }
+  convertedParam.data.push(currentParam);
+
+  currentParam = {};
+  currentParam.name = 'info_order_date';
+  currentParam.parentObject = 'info_include';
+  currentParam.title = texts.param_info_order_date;
+  currentParam.type = 'bool';
+  currentParam.value = userParam.info_order_date ? true : false;
+  currentParam.defaultvalue = false;
+  currentParam.tooltip = texts.param_tooltip_info_order_date;
+  currentParam.readValue = function() {
+    userParam.info_order_date = this.value;
+  }
+  convertedParam.data.push(currentParam);
+
+  currentParam = {};
   currentParam.name = 'info_customer';
   currentParam.parentObject = 'info_include';
   currentParam.title = texts.param_info_customer;
@@ -532,6 +561,23 @@ function convertParam(userParam) {
    userParam.details_gross_amounts = this.value;
   }
   convertedParam.data.push(currentParam);
+
+  if (IS_INTEGRATED_INVOICE) {
+    currentParam = {};
+    currentParam.name = 'details_additional_descriptions';
+    currentParam.parentObject = 'details_include';
+    currentParam.title = texts.param_details_additional_descriptions;
+    currentParam.type = 'bool';
+    currentParam.value = userParam.details_additional_descriptions ? true : false;
+    currentParam.defaultvalue = false;
+    currentParam.tooltip = texts.param_tooltip_details_additional_descriptions;
+    currentParam.readValue = function() {
+     userParam.details_additional_descriptions = this.value;
+    }
+    convertedParam.data.push(currentParam);
+  } else {
+    userParam.details_additional_descriptions = false;
+  }
 
   currentParam = {};
   currentParam.name = 'footer_include';
@@ -682,6 +728,34 @@ function convertParam(userParam) {
       userParam[langCode+'_text_info_date'] = this.value;
     }
     convertedParam.data.push(currentParam);
+
+    currentParam = {};
+    currentParam.name = langCode+'_text_info_order_number';
+    currentParam.parentObject = langCode;
+    currentParam.title = langTexts[langCodeTitle+'_param_text_info_order_number'];
+    currentParam.type = 'string';
+    currentParam.value = userParam[langCode+'_text_info_order_number'] ? userParam[langCode+'_text_info_order_number'] : '';
+    currentParam.defaultvalue = langTexts.order_number;
+    currentParam.tooltip = langTexts['param_tooltip_text_info_order_number'];
+    currentParam.language = langCode;
+    currentParam.readValueLang = function(langCode) {
+      userParam[langCode+'_text_info_order_number'] = this.value;
+    }
+    convertedParam.data.push(currentParam);
+
+    currentParam = {};
+    currentParam.name = langCode+'_text_info_order_date';
+    currentParam.parentObject = langCode;
+    currentParam.title = langTexts[langCodeTitle+'_param_text_info_order_date'];
+    currentParam.type = 'string';
+    currentParam.value = userParam[langCode+'_text_info_order_date'] ? userParam[langCode+'_text_info_order_date'] : '';
+    currentParam.defaultvalue = langTexts.order_date;
+    currentParam.tooltip = langTexts['param_tooltip_text_info_order_date'];
+    currentParam.language = langCode;
+    currentParam.readValueLang = function(langCode) {
+      userParam[langCode+'_text_info_order_date'] = this.value;
+    }
+    convertedParam.data.push(currentParam);
     
     currentParam = {};
     currentParam.name = langCode+'_text_info_customer';
@@ -792,6 +866,20 @@ function convertParam(userParam) {
     currentParam.language = langCode;
     currentParam.readValueLang = function(langCode) {
       userParam[langCode+'_title_doctype_12'] = this.value;
+    }
+    convertedParam.data.push(currentParam);
+
+    currentParam = {};
+    currentParam.name = langCode+'_text_begin';
+    currentParam.parentObject = langCode;
+    currentParam.title = langTexts[langCodeTitle+'_param_text_begin'];
+    currentParam.type = 'multilinestring';
+    currentParam.value = userParam[langCode+'_text_begin'] ? userParam[langCode+'_text_begin'] : '';
+    currentParam.defaultvalue = '';
+    currentParam.tooltip = langTexts['param_tooltip_text_begin'];
+    currentParam.language = langCode;
+    currentParam.readValueLang = function(langCode) {
+      userParam[langCode+'_text_begin'] = this.value;
     }
     convertedParam.data.push(currentParam);
 
@@ -990,7 +1078,7 @@ function convertParam(userParam) {
     currentParam.name = langCode+'_text_begin_offer';
     currentParam.parentObject = langCode+'_offer';
     currentParam.title = langTexts[langCodeTitle+'_param_text_begin_offer'];
-    currentParam.type = 'string';
+    currentParam.type = 'multilinestring';
     currentParam.value = userParam[langCode+'_text_begin_offer'] ? userParam[langCode+'_text_begin_offer'] : '';
     currentParam.defaultvalue = '';
     currentParam.tooltip = langTexts['param_tooltip_text_begin_offer'];
@@ -1188,6 +1276,8 @@ function initParam() {
   userParam.shipping_address = false;
   userParam.info_invoice_number = true;
   userParam.info_date = true;
+  userParam.info_order_number = false;
+  userParam.info_order_date = false;
   userParam.info_customer = true;
   userParam.info_customer_vat_number = false;
   userParam.info_customer_fiscal_number = false;
@@ -1198,6 +1288,7 @@ function initParam() {
   userParam.details_columns_titles_alignment = 'left;right;center;right;right';
   userParam.details_columns_alignment = 'left;right;center;right;right';
   userParam.details_gross_amounts = false;
+  userParam.details_additional_descriptions = false;
   userParam.footer_add = false;
   userParam.footer_horizontal_line = true;
 
@@ -1218,6 +1309,8 @@ function initParam() {
     }
     userParam[langCodes[i]+'_text_info_invoice_number'] = langTexts.invoice;
     userParam[langCodes[i]+'_text_info_date'] = langTexts.date;
+    userParam[langCodes[i]+'_text_info_order_number'] = langTexts.order_number;
+    userParam[langCodes[i]+'_text_info_order_date'] = langTexts.order_date;
     userParam[langCodes[i]+'_text_info_customer'] = langTexts.customer;
     userParam[langCodes[i]+'_text_info_customer_vat_number'] = langTexts.vat_number;
     userParam[langCodes[i]+'_text_info_customer_fiscal_number'] = langTexts.fiscal_number;
@@ -1226,6 +1319,7 @@ function initParam() {
     userParam[langCodes[i]+'_text_shipping_address'] = langTexts.shipping_address;
     userParam[langCodes[i]+'_title_doctype_10'] = langTexts.invoice + " <DocInvoice>";
     userParam[langCodes[i]+'_title_doctype_12'] = langTexts.credit_note + " <DocInvoice>";
+    userParam[langCodes[i]+'_text_begin'] = '';
     userParam[langCodes[i]+'_text_details_columns'] = langTexts.description+";"+langTexts.quantity+";"+langTexts.reference_unit+";"+langTexts.unit_price+";"+langTexts.amount;
     userParam[langCodes[i]+'_text_totalnet'] = langTexts.totalnet;
     userParam[langCodes[i]+'_text_vat'] = langTexts.vat;
@@ -1323,6 +1417,12 @@ function verifyParam(userParam) {
   if (!userParam.info_date) {
     userParam.info_date = false;
   }
+  if (!userParam.info_order_number) {
+    userParam.info_order_number = false;
+  }
+  if (!userParam.info_order_date) {
+    userParam.info_order_date = false;
+  }
   if (!userParam.info_customer) {
     userParam.info_customer = false;
   }
@@ -1353,6 +1453,9 @@ function verifyParam(userParam) {
   if (!userParam.details_gross_amounts) {
     userParam.details_gross_amounts = false;
   }
+  if (!userParam.details_additional_descriptions) {
+    userParam.details_additional_descriptions = false;
+  }
   if (!userParam.footer_add) {
     userParam.footer_add = false;
   }
@@ -1375,6 +1478,12 @@ function verifyParam(userParam) {
     }
     if (!userParam[langCodes[i]+'_text_info_date']) {
       userParam[langCodes[i]+'_text_info_date'] = langTexts.date;
+    }
+    if (!userParam[langCodes[i]+'_text_info_order_number']) {
+      userParam[langCodes[i]+'_text_info_order_number'] = langTexts.order_number;
+    }
+    if (!userParam[langCodes[i]+'_text_info_order_date']) {
+      userParam[langCodes[i]+'_text_info_order_date'] = langTexts.order_date;
     }
     if (!userParam[langCodes[i]+'_text_info_customer']) {
       userParam[langCodes[i]+'_text_info_customer'] = langTexts.customer;
@@ -1399,6 +1508,9 @@ function verifyParam(userParam) {
     }
     if (!userParam[langCodes[i]+'_title_doctype_12']) {
       userParam[langCodes[i]+'_title_doctype_12'] = langTexts.credit_note + " <DocInvoice>";
+    }
+    if (!userParam[langCodes[i]+'_text_begin']) {
+      userParam[langCodes[i]+'_text_begin'] = "";
     }
     if (!userParam[langCodes[i]+'_text_details_columns']) {
       userParam[langCodes[i]+'_text_details_columns'] = langTexts.description+";"+langTexts.quantity+";"+langTexts.reference_unit+";"+langTexts.unit_price+";"+langTexts.amount;
@@ -1488,6 +1600,8 @@ function printDocument(jsonInvoice, repDocObj, repStyleObj) {
   // Verify the banana version when user clicks ok to print the invoice
   var isCurrentBananaVersionSupported = bananaRequiredVersion(BAN_VERSION, BAN_EXPM_VERSION);
   if (isCurrentBananaVersionSupported) {
+
+    isIntegratedInvoice();
 
     var userParam = initParam();
     var savedParam = Banana.document.getScriptSettings();
@@ -1709,7 +1823,7 @@ function print_info_first_page(repDocObj, invoiceObj, texts, userParam) {
     infoTable = repDocObj.addTable("info_table_left");
   }
 
-  var infoFirstColumn = infoTable.addColumn("info_table_first_column"); 
+  var infoFirstColumn = infoTable.addColumn("info_table_first_column");
   var infoSecondColumn = infoTable.addColumn("info_table_second_column");
 
   if (userParam.info_invoice_number) {
@@ -1733,6 +1847,20 @@ function print_info_first_page(repDocObj, invoiceObj, texts, userParam) {
     tableRow.addCell(Banana.Converter.toLocaleDateFormat(invoiceObj.document_info.date),"",1);    
   } else {
     rows++;
+  }
+  if (userParam.info_order_number) {
+    tableRow = infoTable.addRow();
+    tableRow.addCell(userParam[lang+'_text_info_order_number'] + ":","",1);
+    tableRow.addCell(invoiceObj.document_info.order_number,"",1);
+  }
+  if (userParam.info_order_date) {
+    tableRow = infoTable.addRow();
+    tableRow.addCell(userParam[lang+'_text_info_order_date'] + ":","",1);
+    if (invoiceObj.document_info.order_date && invoiceObj.document_info.order_date.match(/^\d{4}-\d{2}-\d{2}$/)) {
+      tableRow.addCell(Banana.Converter.toLocaleDateFormat(invoiceObj.document_info.order_date),"",1);
+    } else {
+      tableRow.addCell(invoiceObj.document_info.order_date,"",1);
+    }
   }
   if (userParam.info_customer) {
     tableRow = infoTable.addRow();
@@ -1825,6 +1953,20 @@ function print_info_other_pages(repDocObj, invoiceObj, texts, userParam) {
       tableRow.addCell(userParam[lang+'_text_info_date_offer'] + ":","",1);
     }
     tableRow.addCell(Banana.Converter.toLocaleDateFormat(invoiceObj.document_info.date),"",1);    
+  }
+  if (userParam.info_order_number) {
+    tableRow = infoTable.addRow();
+    tableRow.addCell(userParam[lang+'_text_info_order_number'] + ":","",1);
+    tableRow.addCell(invoiceObj.document_info.order_number,"",1);
+  }
+  if (userParam.info_order_date) {
+    tableRow = infoTable.addRow();
+    tableRow.addCell(userParam[lang+'_text_info_order_date'] + ":","",1);
+    if (invoiceObj.document_info.order_date && invoiceObj.document_info.order_date.match(/^\d{4}-\d{2}-\d{2}$/)) {
+      tableRow.addCell(Banana.Converter.toLocaleDateFormat(invoiceObj.document_info.order_date),"",1);
+    } else {
+      tableRow.addCell(invoiceObj.document_info.order_date,"",1);
+    }
   }
   if (userParam.info_customer) {
     tableRow = infoTable.addRow();
@@ -1972,6 +2114,7 @@ function print_text_begin(repDocObj, invoiceObj, texts, userParam) {
   */
   var textTitle = getTitle(invoiceObj, texts, userParam);
   var textBegin = invoiceObj.document_info.text_begin;
+  var textBeginSettings = userParam[lang+'_text_begin'];
   var textBeginOffer = userParam[lang+'_text_begin_offer'];
   var table = repDocObj.addTable("begin_text_table");
   var tableRow;
@@ -1985,16 +2128,46 @@ function print_text_begin(repDocObj, invoiceObj, texts, userParam) {
   }
 
   if (textBegin) {
-    textBegin = columnNamesToValues(invoiceObj, textBegin);
     tableRow = table.addRow();
     var textCell = tableRow.addCell("","begin_text",1);
-    addMdBoldText(textCell, textBegin);  
+    var textBeginLines = textBegin.split('\n');
+    for (var i = 0; i < textBeginLines.length; i++) {
+      if (textBeginLines[i]) {
+        textBeginLines[i] = columnNamesToValues(invoiceObj, textBeginLines[i]);
+        addMdBoldText(textCell, textBeginLines[i]);
+      }
+      else {
+        addMdBoldText(textCell, " "); //empty lines
+      }
+    }
   }
   else if (!textBegin && textBeginOffer && invoiceObj.document_info.doc_type === "17") {
-    textBeginOffer = columnNamesToValues(invoiceObj, textBeginOffer);
     tableRow = table.addRow();
     var textCell = tableRow.addCell("","begin_text",1);
-    addMdBoldText(textCell, textBeginOffer);
+    var textBeginLines = textBeginOffer.split('\n');
+    for (var i = 0; i < textBeginLines.length; i++) {
+      if (textBeginLines[i]) {
+        textBeginLines[i] = columnNamesToValues(invoiceObj, textBeginLines[i]);
+        addMdBoldText(textCell, textBeginLines[i]);
+      }
+      else {
+        addMdBoldText(textCell, " "); //empty lines
+      }
+    }
+  }
+  if (textBeginSettings) {
+    tableRow = table.addRow();
+    var textCell = tableRow.addCell("","begin_text",1);
+    var textBeginLines = textBeginSettings.split('\n');
+    for (var i = 0; i < textBeginLines.length; i++) {
+      if (textBeginLines[i]) {
+        textBeginLines[i] = columnNamesToValues(invoiceObj, textBeginLines[i]);
+        addMdBoldText(textCell, textBeginLines[i]);
+      }
+      else {
+        addMdBoldText(textCell, " "); //empty lines
+      }
+    }
   }
 }
 
@@ -2082,11 +2255,14 @@ function print_details_net_amounts(banDoc, repDocObj, invoiceObj, texts, userPar
           tableRow.addCell(" ", classNameEvenRow, 1);
         }
         else {
+          // Note: currently itemValue2 does not exist, this will add an empty line
+          // We don't remove this code because it will change how the invoice is printed and what the customer expect
           var itemValue = formatItemsValue(item.description, variables, columnsNames[j], className, item);
           var itemValue2 = formatItemsValue(item.description2, variables, columnsNames[j], className, item);
           var descriptionCell = tableRow.addCell("", classNameEvenRow + " " + alignment + " padding-left padding-right " + itemValue.className, 1);
-          descriptionCell.addParagraph(itemValue.value, "");
+          addMdBoldText(descriptionCell, itemValue.value);
           descriptionCell.addParagraph(itemValue2.value, "");
+          addMultipleLinesDescriptions(banDoc, descriptionCell, item.origin_row, userParam);
         }
       }
       else if (columnsNames[j].trim().toLowerCase() === "quantity") {
@@ -2118,28 +2294,44 @@ function print_details_net_amounts(banDoc, repDocObj, invoiceObj, texts, userPar
         var itemValue = formatItemsValue(item.unit_price.vat_rate, variables, columnsNames[j], className, item);
         tableRow.addCell(itemValue.value, classNameEvenRow + " " + alignment + " padding-left padding-right " + itemValue.className, 1);
       }
+      else if (columnsNames[j].trim().toLowerCase() === "discount") {
+        var itemValue = "";
+        if (item.discount && item.discount.percent) {
+          itemValue = formatItemsValue(item.discount.percent, variables, columnsNames[j], className, item);
+          itemValue.value += "%";
+        }
+        else if (item.discount && item.discount.amount) {
+          itemValue = formatItemsValue(item.discount.amount, variables, columnsNames[j], className, item);
+        }
+        tableRow.addCell(itemValue.value, classNameEvenRow + " " + alignment + " padding-left padding-right " + itemValue.className, 1);
+      }
       else {
         var userColumnValue = "";
         var columnsName = columnsNames[j];
         var itemValue = "";
-        //User defined columns, in settings dialog, must start with "T."
-        //ex. column transaction table = "DateWork"; column in settings dialog = "T.DateWork"
+        //User defined columns only available with advanced version
+        //In settings dialog, must start with "T." for integrated ivoices or "I." for estimates invoices
         //This prevent conflicts with JSON fields.
-        if (columnsName.startsWith("T.")) {
-          if (BAN_ADVANCED) {
-            columnsName = columnsName.substring(2);
-            userColumnValue = getUserColumnValue(banDoc, item.origin_row, columnsName);
-            itemValue = formatItemsValue(userColumnValue, variables, columnsName, className, item);         
+        if (BAN_ADVANCED) {
+          //JSON contains a property with the name of the column (Item, Date)
+          //In JSON all names are lower case
+          if (columnsName.trim().toLowerCase() in item) {
+            itemValue = formatItemsValue(item[columnsName.trim().toLowerCase()], variables, columnsName, className, item);
           }
           else {
-            customColumnMsg = "The customization with custom columns requires Banana Accounting+ Advanced";
+            userColumnValue = getUserColumnValue(banDoc, item.origin_row, item.number, columnsName);
+            columnsName = columnsName.substring(2);
+            itemValue = formatItemsValue(userColumnValue, variables, columnsName, className, item);            
           }
+        }
+        else {
+          customColumnMsg = "The customization with custom columns requires Banana Accounting+ Advanced";
         }
         tableRow.addCell(itemValue.value, classNameEvenRow + " " + alignment + " padding-left padding-right " + itemValue.className, 1);
       }
     }
   }
-  // Show message when using "T.Column" with a non advanced version of Banana+
+  // Show message when using custom column with a non advanced version of Banana+
   if (customColumnMsg.length > 0) {
     banDoc.addMessage(customColumnMsg);
   }
@@ -2292,11 +2484,14 @@ function print_details_gross_amounts(banDoc, repDocObj, invoiceObj, texts, userP
           tableRow.addCell(" ", classNameEvenRow, 1);
         }
         else {
+          // Note: currently itemValue2 does not exist, this will add an empty line
+          // We don't remove this code because it will change how the invoice is printed and what the customer expect
           var itemValue = formatItemsValue(item.description, variables, columnsNames[j], className, item);
           var itemValue2 = formatItemsValue(item.description2, variables, columnsNames[j], className, item);
           var descriptionCell = tableRow.addCell("", classNameEvenRow + " " + alignment + " padding-left padding-right " + itemValue.className, 1);
-          descriptionCell.addParagraph(itemValue.value, "");
+          addMdBoldText(descriptionCell, itemValue.value);
           descriptionCell.addParagraph(itemValue2.value, "");
+          addMultipleLinesDescriptions(banDoc, descriptionCell, item.origin_row, userParam);
         }
       }
       else if (columnsNames[j].trim().toLowerCase() === "quantity") {
@@ -2328,34 +2523,64 @@ function print_details_gross_amounts(banDoc, repDocObj, invoiceObj, texts, userP
         var itemValue = formatItemsValue(item.unit_price.vat_rate, variables, columnsNames[j], className, item);
         tableRow.addCell(itemValue.value, classNameEvenRow + " " + alignment + " padding-left padding-right " + itemValue.className, 1);
       }
+      else if (columnsNames[j].trim().toLowerCase() === "discount") {
+        var itemValue = "";
+        if (item.discount && item.discount.percent) {
+          itemValue = formatItemsValue(item.discount.percent, variables, columnsNames[j], className, item);
+          itemValue.value += "%";
+        }
+        else if (item.discount && item.discount.amount) {
+          itemValue = formatItemsValue(item.discount.amount, variables, columnsNames[j], className, item);
+        }
+        tableRow.addCell(itemValue.value, classNameEvenRow + " " + alignment + " padding-left padding-right " + itemValue.className, 1);
+      }
       else {
         var userColumnValue = "";
         var columnsName = columnsNames[j];
         var itemValue = "";
-        //User defined columns, in settings dialog, must start with "T."
-        //ex. column transaction table = "DateWork"; column in settings dialog = "T.DateWork"
+        //User defined columns only available with advanced version
+        //In settings dialog, must start with "T." for integrated ivoices or "I." for estimates invoices
         //This prevent conflicts with JSON fields.
-        if (columnsName.startsWith("T.")) {
-          if (BAN_ADVANCED) {
-            columnsName = columnsName.substring(2);
-            userColumnValue = getUserColumnValue(banDoc, item.origin_row, columnsName);
-            itemValue = formatItemsValue(userColumnValue, variables, columnsName, className, item);
+        if (BAN_ADVANCED) {
+          //JSON contains a property with the name of the column (Item, Date)
+          //In JSON all names are lower case
+          if (columnsName.trim().toLowerCase() in item) {
+            itemValue = formatItemsValue(item[columnsName.trim().toLowerCase()], variables, columnsName, className, item);
           }
           else {
-            customColumnMsg = "The customization with custom columns requires Banana Accounting+ Advanced";
+            userColumnValue = getUserColumnValue(banDoc, item.origin_row, item.number, columnsName);
+            columnsName = columnsName.substring(2);
+            itemValue = formatItemsValue(userColumnValue, variables, columnsName, className, item);            
           }
+        }
+        else {
+          customColumnMsg = "The customization with custom columns requires Banana Accounting+ Advanced";
         }
         tableRow.addCell(itemValue.value, classNameEvenRow + " " + alignment + " padding-left padding-right " + itemValue.className, 1);
       }
     }
   }
-  // Show message when using "T.Column" with a non advanced version of Banana+
+  // Show message when using custom column with a non advanced version of Banana+
   if (customColumnMsg.length > 0) {
     banDoc.addMessage(customColumnMsg);
   }
 
   tableRow = repTableObj.addRow();
   tableRow.addCell("", "border-top", columnsNumber);
+
+  //SUBTOTAL
+  //used only for the "Application Invoice"
+  //Print subtotal if there is discount or rounding or deposit
+  if (invoiceObj.billing_info.total_amount_vat_inclusive_before_discount
+    && (invoiceObj.billing_info.total_discount_vat_inclusive 
+    || invoiceObj.billing_info.total_rounding_difference 
+    || invoiceObj.billing_info.total_advance_payment)
+  ) {
+    
+    tableRow = repTableObj.addRow();
+    tableRow.addCell(texts.subtotal, "padding-left padding-right", columnsNumber-1);
+    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(invoiceObj.billing_info.total_amount_vat_inclusive_before_discount, variables.decimals_amounts, true), "right padding-left padding-right", 1);
+  }
 
   //DISCOUNT
   //used only for the "Application Invoice"
@@ -2371,7 +2596,7 @@ function print_details_gross_amounts(banDoc, repDocObj, invoiceObj, texts, userP
   }
 
   //TOTAL ROUNDING DIFFERENCE
-  if (invoiceObj.billing_info.total_rounding_difference.length) {
+  if (invoiceObj.billing_info.total_rounding_difference) {
     tableRow = repTableObj.addRow();
     tableRow.addCell(texts.rounding, "padding-left padding-right", columnsNumber-1);
     tableRow.addCell(Banana.Converter.toLocaleNumberFormat(invoiceObj.billing_info.total_rounding_difference, variables.decimals_amounts, true), "right padding-left padding-right", 1);
@@ -2390,7 +2615,11 @@ function print_details_gross_amounts(banDoc, repDocObj, invoiceObj, texts, userP
   }
 
   tableRow = repTableObj.addRow();
-  if (invoiceObj.billing_info.total_rounding_difference.length) {
+  if (invoiceObj.billing_info.total_amount_vat_inclusive_before_discount
+    && (invoiceObj.billing_info.total_discount_vat_inclusive 
+    || invoiceObj.billing_info.total_rounding_difference 
+    || invoiceObj.billing_info.total_advance_payment)
+  ) {
     tableRow.addCell("", "border-top", columnsNumber);
   } else {
     tableRow.addCell("", "", columnsNumber);
@@ -2662,11 +2891,19 @@ function formatItemsValue(value, variables, columnName, className, item) {
     itemFormatted.className = className;
   }
   else if (columnName === "quantity") {
-    itemFormatted.value = Banana.Converter.toLocaleNumberFormat(value,variables);
+    var decimal = variables;
+    if (!IS_INTEGRATED_INVOICE) {
+      decimal = getDecimalsCount(value);
+    }
+    itemFormatted.value = Banana.Converter.toLocaleNumberFormat(value,decimal);
     itemFormatted.className = className;
   }
   else if (columnName === "unitprice" || columnName === "unit_price") {
-    itemFormatted.value = Banana.Converter.toLocaleNumberFormat(value, variables.decimals_unit_price, true);
+    var decimal = variables.decimals_unit_price;
+    if (!IS_INTEGRATED_INVOICE) {
+      decimal = Math.max(2,getDecimalsCount(value));
+    }
+    itemFormatted.value = Banana.Converter.toLocaleNumberFormat(value, decimal, true);
     itemFormatted.className = className;
   }
   else if (columnName === "referenceunit" || columnName === "mesure_unit") {
@@ -2705,6 +2942,51 @@ function formatItemsValue(value, variables, columnName, className, item) {
 //====================================================================//
 // OTHER UTILITIES FUNCTIONS
 //====================================================================//
+function addMultipleLinesDescriptions(banDoc, descriptionCell, originRow, userParam) {
+  /**
+   * Check for "Description2", "Description3", "DescriptionX",..(where X is a number) columns in table Transactions. 
+   * The content of the columns can be printed on multiple lines (each column in a new line) after the main
+   * description (column "Description").
+   * Works only for integrated invoices.
+   */
+
+  if (userParam.details_additional_descriptions) {
+
+    if (IS_INTEGRATED_INVOICE) {
+
+      //Return all xml column names
+      let table = banDoc.table('Transactions');
+      let tColumnNames = table.columnNames;
+      let descriptionsColumns = [];
+
+      //Get only "DescriptionXX" columns
+      for (let i = 0; i < tColumnNames.length; i++) {
+        if (tColumnNames[i].match(/^Description\d+$/)) {
+          descriptionsColumns.push(tColumnNames[i]);
+        }
+      }
+
+      //Sort the array
+      descriptionsColumns.sort();
+
+      //Add each additional description as new paragraph in the description cell of the invoice details table
+      if (descriptionsColumns.length > 0) {
+        for (let i = 0; i < table.rowCount; i++) {
+          let tRow = table.row(i);
+          if (tRow.rowNr.toString() === originRow.toString()) {
+            for (let j = 0; j < descriptionsColumns.length; j++) {
+              let desc = tRow.value(descriptionsColumns[j]);
+              if (desc) {
+                addMdBoldText(descriptionCell, desc);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
 function columnNamesToValues(invoiceObj, text) {
   /*
     Function that replaces the xml column names of the customer address
@@ -2834,6 +3116,16 @@ function getQuantityDecimals(invoiceObj) {
   return arr[0]; //first element is the bigger
 }
 
+function getDecimalsCount(value) {
+  if (value) {
+    var separatorPos = value.indexOf('.')
+    if (separatorPos > -1) {
+      return value.length - separatorPos - 1;
+    }
+  }
+  return 0
+}
+
 function includeEmbeddedJavascriptFile(banDoc, texts, userParam) {
 
   /*
@@ -2884,23 +3176,32 @@ function includeEmbeddedJavascriptFile(banDoc, texts, userParam) {
   }
 }
 
-function getUserColumnValue(banDoc, originRow, column) {
+function getUserColumnValue(banDoc, originRow, itemNumber, column) {
 
   /*
-    Take the value from a custom user column of the table Transactions.
-    User can add new custom columns on the Transactions table and include
+    Take the value from a custom column of the table Transactions/Items.
+    User can add new custom columns on the Transactions/Items tables and include
     them into the invoice details table.
   */
 
-  var fileTypeGroup = banDoc.info("Base", "FileTypeGroup");
-  var fileTypeNumber = banDoc.info("Base", "FileTypeNumber");
-
-  if (fileTypeGroup !== "400" && fileTypeNumber !== "400") { // 400.400 = Estimates and invoices
+  // Integrated invoice, table Transactions, column name in settings dialog must start with "T."
+  if (column.startsWith("T.") && IS_INTEGRATED_INVOICE) {
     var table = banDoc.table('Transactions');
     for (var i = 0; i < table.rowCount; i++) {
       var tRow = table.row(i);
       if (tRow.rowNr.toString() === originRow.toString()) {      
-        return tRow.value(column);
+        return tRow.value(column.substring(2)); //without "T."
+      }
+    }
+  }
+  // Estimates & Invoices application, table Items, column name in settings dialog must start with "I."
+  else if (column.startsWith("I.") && !IS_INTEGRATED_INVOICE) {
+    var table = banDoc.table('Items');
+    for (var i = 0; i < table.rowCount; i++) {
+      var tRow = table.row(i);
+      var id = tRow.value("RowId");
+      if (id === itemNumber) {      
+        return tRow.value(column.substring(2)); //without "I."
       }
     }
   }
@@ -3358,6 +3659,7 @@ function setInvoiceTexts(language) {
     texts.discount = "Sconto";
     texts.deposit = "Acconto";
     texts.totalnet = "Totale netto";
+    texts.subtotal = "Sottototale";
     texts.vat = "IVA";
     texts.rounding = "Arrotondamento";
     texts.total = "TOTALE";
@@ -3491,6 +3793,20 @@ function setInvoiceTexts(language) {
     texts.param_tooltip_text_begin_offer = "Inserisci un testo per sostituire quello predefinito";
     texts.it_param_text_final_offer = "Testo finale offerta";
     texts.param_tooltip_text_final_offer = "Inserisci un testo per sostituire quello predefinito";
+    texts.order_number = "No ordine";
+    texts.order_date = "Data ordine";
+    texts.param_info_order_number = "Numero ordine";
+    texts.param_info_order_date = "Data ordine";
+    texts.param_details_additional_descriptions = "Stampa descrizioni supplementari";
+    texts.it_param_text_info_order_number = "Numero ordine";
+    texts.it_param_text_info_order_date = "Data ordine";
+    texts.it_param_text_begin = "Testo iniziale";
+    texts.param_tooltip_info_order_number = "Vista per includere il numero d'ordine";
+    texts.param_tooltip_info_order_date = "Vista per includere la data dell'ordine";
+    texts.param_tooltip_text_info_order_number = "Inserisci un testo per sostituire quello predefinito";
+    texts.param_tooltip_text_info_order_date = "Inserisci un testo per sostituire quello predefinito";
+    texts.param_tooltip_text_begin = "Inserisci un testo per sostituire quello predefinito";
+    texts.param_tooltip_details_additional_descriptions = "Vista per stampare descrizioni supplementari";
   }
   else if (language === 'de') {
     // DE
@@ -3513,6 +3829,7 @@ function setInvoiceTexts(language) {
     texts.discount = "Rabatt";
     texts.deposit = "Anzahlung";
     texts.totalnet = "Netto-Betrag";
+    texts.subtotal = "Zwischentotal";
     texts.vat = "MwSt";
     texts.rounding = "Rundung";
     texts.total = "Gesamtbetrag";
@@ -3646,6 +3963,20 @@ function setInvoiceTexts(language) {
     texts.param_tooltip_text_begin_offer = "Text eingeben, um Standardtext zu ersetzen";
     texts.de_param_text_final_offer = "Schlusstext Offerte";
     texts.param_tooltip_text_final_offer = "Text eingeben, um Standardtext zu ersetzen";
+    texts.order_number = "Bestellnummer";
+    texts.order_date = "Bestelldatum";
+    texts.param_info_order_number = "Bestellnummer";
+    texts.param_info_order_date = "Bestelldatum";
+    texts.param_details_additional_descriptions = "Zusätzliche Beschreibungen drucken";
+    texts.de_param_text_info_order_number = "Bestellnummer";
+    texts.de_param_text_info_order_date = "Bestelldatum";
+    texts.de_param_text_begin = "Anfangstext";
+    texts.param_tooltip_info_order_number = "Aktivieren, um Bestellnummer einzuschliessen";
+    texts.param_tooltip_info_order_date = "Aktivieren, um Bestelldatum einzuschliessen";
+    texts.param_tooltip_text_info_order_number = "Text eingeben, um Standardtext zu ersetzen";
+    texts.param_tooltip_text_info_order_date = "Text eingeben, um Standardtext zu ersetzen";
+    texts.param_tooltip_text_begin = "Text eingeben, um Standardtext zu ersetzen";
+    texts.param_tooltip_details_additional_descriptions = "Aktivieren, um Zusätzliche Beschreibungen zu drucken";
   }
   else if (language === 'fr') {
     //FR
@@ -3668,6 +3999,7 @@ function setInvoiceTexts(language) {
     texts.discount = "Rabais";
     texts.deposit = "Acompte";
     texts.totalnet = "Total net";
+    texts.subtotal = "Sous-total";
     texts.vat = "TVA";
     texts.rounding = "Arrondi";
     texts.total = "TOTAL";
@@ -3800,7 +4132,21 @@ function setInvoiceTexts(language) {
     texts.fr_param_text_begin_offer = "Texte de début offre";
     texts.param_tooltip_text_begin_offer = "Insérez un texte pour remplacer le texte par défaut";
     texts.fr_param_text_final_offer = "Texte final offre";
-    texts.param_tooltip_text_final_offer = "Insérez un texte pour remplacer le texte par défaut"; 
+    texts.param_tooltip_text_final_offer = "Insérez un texte pour remplacer le texte par défaut";
+    texts.order_number = "Numéro de commande";
+    texts.order_date = "Date de commande";
+    texts.param_info_order_number = "Numéro de commande";
+    texts.param_info_order_date = "Date de commande";
+    texts.param_details_additional_descriptions = "Imprimer des descriptions supplémentaires";
+    texts.fr_param_text_info_order_number = "Numéro de commande";
+    texts.fr_param_text_info_order_date = "Date de commande";
+    texts.fr_param_text_begin = "Texte de début";
+    texts.param_tooltip_info_order_number = "Activer pour inclure le numéro de commande";
+    texts.param_tooltip_info_order_date = "Activer pour inclure la date de commande";
+    texts.param_tooltip_text_info_order_number = "Insérez un texte pour remplacer le texte par défaut";
+    texts.param_tooltip_text_info_order_date = "Insérez un texte pour remplacer le texte par défaut";
+    texts.param_tooltip_text_begin = "Insérez un texte pour remplacer le texte par défaut";
+    texts.param_tooltip_details_additional_descriptions = "Activer pour imprimer des descriptions supplémentaires";
   }
   else if (language === 'nl') {
     //NL
@@ -3823,6 +4169,7 @@ function setInvoiceTexts(language) {
     texts.discount = "Korting";
     texts.deposit = "Reeds betaald";
     texts.totalnet = "Totaal netto";
+    texts.subtotal = "Subtotaal";
     texts.vat = "BTW";
     texts.rounding = "Afronding";
     texts.total = "TOTAAL";
@@ -3956,6 +4303,20 @@ function setInvoiceTexts(language) {
     texts.param_tooltip_text_begin_offer = "Voer een tekst in ter vervanging van de standaardtekst";
     texts.nl_param_text_final_offer = "Eindtekst offerte";
     texts.param_tooltip_text_final_offer = "Voer een tekst in ter vervanging van de standaardtekst";
+    texts.order_number = "Bestelnummer";
+    texts.order_date = "Datum bestelling";
+    texts.param_info_order_number = "Bestelnummer";
+    texts.param_info_order_date = "Datum bestelling";
+    texts.param_details_additional_descriptions = "Extra beschrijvingen afdrukken";
+    texts.nl_param_text_info_order_number = "Bestelnummer";
+    texts.nl_param_text_info_order_date = "Datum bestelling";
+    texts.nl_param_text_begin = "Begintekst";
+    texts.param_tooltip_info_order_number = "Vink aan om bestelnummer op te nemen";
+    texts.param_tooltip_info_order_date = "Vink aan om besteldatum op te nemen";
+    texts.param_tooltip_text_info_order_number = "Voer een tekst in ter vervanging van de standaardtekst";
+    texts.param_tooltip_text_info_order_date = "Voer een tekst in ter vervanging van de standaardtekst";
+    texts.param_tooltip_text_begin = "Voer een tekst in ter vervanging van de standaardtekst";
+    texts.param_tooltip_details_additional_descriptions = "Vink aan om extra beschrijvingen af te drukken";
   }
   else if (language === 'zh') {
     //ZH
@@ -3978,6 +4339,7 @@ function setInvoiceTexts(language) {
     texts.discount = "折扣";
     texts.deposit = "订金";
     texts.totalnet = "总净值 ";
+    texts.subtotal = "小计";
     texts.vat = "增值税";
     texts.rounding = "四舍五入";
     texts.total = "总计";
@@ -4111,6 +4473,20 @@ function setInvoiceTexts(language) {
     texts.param_tooltip_text_begin_offer = "输入文字以取代默认的";
     texts.zh_param_text_final_offer = "最终文本预估";
     texts.param_tooltip_text_final_offer = "输入文字以取代默认的";
+    texts.order_number = "订单号";
+    texts.order_date = "订单日期";
+    texts.param_info_order_number = "订单号";
+    texts.param_info_order_date = "订单日期";
+    texts.param_details_additional_descriptions = "打印额外的摘要";
+    texts.zh_param_text_info_order_number = "订单号";
+    texts.zh_param_text_info_order_date = "订单日期";
+    texts.zh_param_text_begin = "起始文字";
+    texts.param_tooltip_info_order_number = "勾选包括订单号";
+    texts.param_tooltip_info_order_date = "勾选包括订单日期";
+    texts.param_tooltip_text_info_order_number = "输入用来取代默认的文字";
+    texts.param_tooltip_text_info_order_date = "输入用来取代默认的文字";
+    texts.param_tooltip_text_begin = "输入用来取代默认的文字";
+    texts.param_tooltip_details_additional_descriptions = "勾选打印额外的摘要";
   }
   else {
     //EN
@@ -4133,6 +4509,7 @@ function setInvoiceTexts(language) {
     texts.discount = "Discount";
     texts.deposit = "Deposit";
     texts.totalnet = "Total net";
+    texts.subtotal = "Subtotal";
     texts.vat = "VAT";
     texts.rounding = "Rounding";
     texts.total = "TOTAL";
@@ -4266,6 +4643,20 @@ function setInvoiceTexts(language) {
     texts.param_tooltip_text_begin_offer = "Enter text to replace the default";
     texts.en_param_text_final_offer = "Final text estimate";
     texts.param_tooltip_text_final_offer = "Enter text to replace the default";
+    texts.order_number = "Order No";
+    texts.order_date = "Order date";
+    texts.param_info_order_number = "Order number";
+    texts.param_info_order_date = "Order date";
+    texts.param_details_additional_descriptions = "Print additional descriptions";
+    texts.en_param_text_info_order_number = "Order number";
+    texts.en_param_text_info_order_date = "Order date";
+    texts.en_param_text_begin = "Begin text";
+    texts.param_tooltip_info_order_number = "Check to include order number";
+    texts.param_tooltip_info_order_date = "Check to include order date";
+    texts.param_tooltip_text_info_order_number = "Enter text to replace the default";
+    texts.param_tooltip_text_info_order_date = "Enter text to replace the default";
+    texts.param_tooltip_text_begin = "Enter text to replace the default";
+    texts.param_tooltip_details_additional_descriptions = "Check to print additional descriptions";
   }
 
   return texts;
@@ -4429,6 +4820,21 @@ function isBananaAdvanced(requiredVersion, expmVersion) {
   }
   else { //Case 6
     return false;
+  }
+}
+
+function isIntegratedInvoice() {
+  if (Banana.document) {
+    let fileTypeGroup = Banana.document.info("Base", "FileTypeGroup");
+    let fileTypeNumber = Banana.document.info("Base", "FileTypeNumber");
+    if (fileTypeGroup !== "400" && fileTypeNumber !== "400") {
+      // Integrate invoice
+      IS_INTEGRATED_INVOICE = true;
+    }
+    else {
+      // App. Estimates and Invoices
+      IS_INTEGRATED_INVOICE = false;
+    }
   }
 }
 
