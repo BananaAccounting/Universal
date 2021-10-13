@@ -38,6 +38,12 @@
 
 
 
+// https://www.bigomega.dev/markdown-parser
+
+
+
+
+
 function exec(inData, options) {
     
     if (!Banana.document) {
