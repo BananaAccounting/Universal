@@ -48,7 +48,7 @@ TestCustomerStatementReport.prototype.cleanup = function() {}
 TestCustomerStatementReport.prototype.testBananaExtensions = function() {
     Test.logger.addText("This test will tests the Banana Extension ch.banana.report.customer.statement.style02.js");
 
-    var banDoc = Banana.application.openDocument("file:script/../test/testcases/example.invoice.with.cc.it[1351].ac2");
+    var banDoc = Banana.application.openDocument("file:script/../test/testcases/example.invoice.with.cc.it.ac2");
     Test.assert(banDoc, "File ac2 not found");
 
     var userParam = {};
@@ -89,13 +89,13 @@ TestCustomerStatementReport.prototype.testBananaExtensions = function() {
     // userParam.print_timeSplit2 = true;
     // userParam.print_km = true;
 
-    var columns = getColumns(userParam);
+    // var columns = getColumns(userParam);
     // var dateMin = getJounralDateMin(banDoc);
     // var year = dateMin.getFullYear();
-    var year = Banana.Converter.toDate(userParam.selectionStartDate).getFullYear();
-    var totals = totalizeHours(banDoc, columns, year);
-    var report = printInvoiceStatement(jsonStatement, repDocObj, repStyleObj, param);
+    // var year = Banana.Converter.toDate(userParam.selectionStartDate).getFullYear();
+    // var totals = totalizeHours(banDoc, columns, year);
+    // var report = printInvoiceStatement(jsonStatement, repDocObj, repStyleObj, param);
 
-    Test.logger.addReport("TEST - Timesheet Daystable Report", report);
+    // Test.logger.addReport("TEST - Timesheet Daystable Report", report);
 
 }
