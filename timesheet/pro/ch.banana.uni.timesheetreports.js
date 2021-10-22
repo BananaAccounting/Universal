@@ -147,7 +147,9 @@ function printHeader(report, userParam) {
    var today = new Date();
    tableRow = table.addRow();
    tableRow.addCell("Date", "", 4).setStyleAttributes("border-left: 1.5px solid grey;color: grey; border-bottom: thin solid grey");
-   tableRow.addCell(formatDate(today), "", 4).setStyleAttributes("background-color: #e6ecf5; border: thin solid grey");
+   var tableCell = tableRow.addCell(formatDate(today), "", 4);
+   tableCell.excludeFromTest();
+   tableCell.setStyleAttributes("background-color: #e6ecf5; border: thin solid grey");
    tableRow.addCell("", "", 8);
    tableRow.addCell("", "", 4).setStyleAttributes("background-color: #e6ecf5; border: 1px solid grey");
 
