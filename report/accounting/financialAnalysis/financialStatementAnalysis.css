@@ -175,16 +175,20 @@ style's for the amounts
         font-weight: bold;
         text-align: right;
     }
-    
-    .styleFinalCashFlow {
-        background-color: #99b0ee;
+
+    .styleTotalAmount_withoutColor {
         font-weight: bold;
         text-align: right;
     }
+    
     /*those 3 style's are for the Altman z Score Index values*/
     
     .styleZIndexLow {
         background-color: #71FA4C;
+        text-align: center;
+    }
+
+    .styleZIndexLow_withoutColor {
         text-align: center;
     }
     
@@ -192,9 +196,17 @@ style's for the amounts
         background-color: #FFFD54;
         text-align: center;
     }
+
+    .styleZIndexMid_withoutColor {
+        text-align: center;
+    }
     
     .styleZIndexProb {
         background-color: #EC3323;
+        text-align: center;
+    }
+
+    .styleZIndexProb_withoutColor {
         text-align: center;
     }
     /*style for the amount when the difference between calculated total and the accounting total is>than 0*/
@@ -221,6 +233,11 @@ style's for the texts
         font-weight: bold;
         text-align: center;
     }
+
+    .styleTablesHeaderText_withoutColor{
+        font-weight: bold;
+        text-align: center;
+    }
     
     .styleCentralText {
         text-align: center;
@@ -242,11 +259,21 @@ style's for the texts
         font-weight: bold;
         background-color: #c4f0c3;
     }
+
+    .styleAssetsAdjustments_withoutColor {
+        text-align: left;
+        font-weight: bold;
+    }
     
     .styleLiabilitiesAdjustments {
         text-align: left;
         font-weight: bold;
         background-color: #eeccbc;
+    }
+
+    .styleLiabilitiesAdjustments_withoutColor {
+        text-align: left;
+        font-weight: bold;
     }
     /*style for the 'difference founds' warning*/
     
