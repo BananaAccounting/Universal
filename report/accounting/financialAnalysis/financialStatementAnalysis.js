@@ -18,7 +18,7 @@
 // @task = app.command
 // @doctype = 100.*
 // @publisher = Banana.ch SA
-// @pubdate = 2021-09-24
+// @pubdate = 2021-11-03
 // @inputdatasource = none
 // @timeout = -1
 
@@ -56,6 +56,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
      */
 
     printReportAdd_TableBalance(report) {
+        var headerStyle=this.setColorStyle("styleTablesHeaderText");
         var texts = this.initFinancialAnalysisTexts();
         var tableBalance = report.addTable('myTableBalance');
         tableBalance.getCaption().addText(texts.upperbalance, "styleTitles");
@@ -69,16 +70,60 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         // header
         var tableHeader = tableBalance.getHeader();
         var tableRow = tableHeader.addRow();
-        tableRow.addCell(texts.description, "styleTablesHeaderText");
+        tableRow.addCell(texts.description, headerStyle);
         if (this.dialogparam.acronymcolumn) {
-            tableRow.addCell(texts.acronym, "styleTablesHeaderText");
+            tableRow.addCell(texts.acronym, headerStyle);
         }
         this.generateHeaderColumns(tableRow);
 
         return tableBalance;
     }
 
+    /**
+     * Takes as parameter the default style in the css (or anchor) of any element to which a colour is applied in the report, 
+     * if the without_colors parameter is false, 
+     * it simply returns the same style, otherwise it returns a similar style but without the color, 
+     * so the report elements concerned will be applied a default style without any colour
+     * @param {*} normalStyle 
+     */
+    setColorStyle(normalStyle){
+        let styleWithoutColor="";
+
+        if(this.dialogparam.without_colors){
+            switch(normalStyle){
+                //headers
+                case "styleTablesHeaderText":
+                styleWithoutColor="styleTablesHeaderText_withoutColor";
+                return styleWithoutColor;
+                //Altman index performance indicators colors
+                case "styleZIndexLow":
+                    styleWithoutColor="styleZIndexLow_withoutColor";
+                    return styleWithoutColor;
+                case "styleZIndexMid":
+                    styleWithoutColor="styleZIndexMid_withoutColor";
+                    return styleWithoutColor;
+                case "styleZIndexProb":
+                    styleWithoutColor="styleZIndexProb_withoutColor";
+                    return styleWithoutColor;
+                //assets and liabilities 
+                case "styleAssetsAdjustments":
+                    styleWithoutColor="styleAssetsAdjustments_withoutColor";
+                    return styleWithoutColor;
+                case "styleLiabilitiesAdjustments":
+                    styleWithoutColor="styleLiabilitiesAdjustments_withoutColor";
+                    return styleWithoutColor;
+                //totals
+                case "styleTotalAmount":
+                    styleWithoutColor="styleTotalAmount_withoutColor";
+                    return styleWithoutColor;
+            }
+        }else{
+            return normalStyle;
+        }
+    }
+
     printReportAdd_TableConCe(report) {
+        var headerStyle=this.setColorStyle("styleTablesHeaderText");
         var texts = this.initFinancialAnalysisTexts();
         var tableConCe = report.addTable('myConTableCe');
         tableConCe.getCaption().addText(texts.upperprofitandloss, "styleTitles");
@@ -93,29 +138,31 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         //header
         var tableHeader = tableConCe.getHeader();
         var tableRow = tableHeader.addRow();
-        tableRow.addCell(texts.description, "styleTablesHeaderText");
+        tableRow.addCell(texts.description, headerStyle);
         if (this.dialogparam.acronymcolumn) {
-            tableRow.addCell(texts.acronym, "styleTablesHeaderText");
+            tableRow.addCell(texts.acronym, headerStyle);
         }
         this.generateHeaderColumns(tableRow);
         return tableConCe;
     }
 
     printReportAdd_TableControlSums(report) {
+        var headerStyle=this.setColorStyle("styleTablesHeaderText");
         var texts = this.initFinancialAnalysisTexts();
         var tableBalanceSumsControl = report.addTable('myTableBalanceSumsControl');
         tableBalanceSumsControl.getCaption().addText(texts.controlsums, "styleTitles");
         // header
         var tableHeader = tableBalanceSumsControl.getHeader();
         var tableRow = tableHeader.addRow();
-        tableRow.addCell(texts.year, "styleTablesHeaderText");
-        tableRow.addCell(texts.accountingtotal, "styleTablesHeaderText");
-        tableRow.addCell(texts.calculatedtotal, "styleTablesHeaderText");
-        tableRow.addCell(texts.difference, "styleTablesHeaderText");
+        tableRow.addCell(texts.year, headerStyle);
+        tableRow.addCell(texts.accountingtotal, headerStyle);
+        tableRow.addCell(texts.calculatedtotal, headerStyle);
+        tableRow.addCell(texts.difference, headerStyle);
         return tableBalanceSumsControl;
     }
 
     printReportAdd_TableIndliq(report) {
+        var headerStyle=this.setColorStyle("styleTablesHeaderText");
         var texts = this.initFinancialAnalysisTexts();
         var tableIndliq = report.addTable('myIndliqTable');
         tableIndliq.getCaption().addText(texts.upperliquidityratios, "styleTitles");
@@ -128,15 +175,16 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         // header
         var tableHeader = tableIndliq.getHeader();
         var tableRow = tableHeader.addRow();
-        tableRow.addCell(texts.description, "styleTablesHeaderText");
+        tableRow.addCell(texts.description, headerStyle);
         if (this.dialogparam.formulascolumn) {
-            tableRow.addCell(texts.formula, "styleTablesHeaderText");
+            tableRow.addCell(texts.formula, headerStyle);
         }
-        tableRow.addCell(texts.benchmark, "styleTablesHeaderText");
+        tableRow.addCell(texts.benchmark, headerStyle);
         this.generateHeaderColumns(tableRow);
         return tableIndliq;
     }
     printReportAdd_TableIndlev(report) {
+        var headerStyle=this.setColorStyle("styleTablesHeaderText");
         var texts = this.initFinancialAnalysisTexts();
         var tableIndlev = report.addTable('myIndlevTable');
         tableIndlev.setStyleAttributes("width:100%");
@@ -151,15 +199,16 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         // header
         var tableHeader = tableIndlev.getHeader();
         var tableRow = tableHeader.addRow();
-        tableRow.addCell(texts.description, "styleTablesHeaderText");
+        tableRow.addCell(texts.description, headerStyle);
         if (this.dialogparam.formulascolumn) {
-            tableRow.addCell(texts.formula, "styleTablesHeaderText");
+            tableRow.addCell(texts.formula, headerStyle);
         }
-        tableRow.addCell(texts.benchmark, "styleTablesHeaderText");
+        tableRow.addCell(texts.benchmark, headerStyle);
         this.generateHeaderColumns(tableRow);
         return tableIndlev;
     }
     printReportAdd_TableIndprof(report) {
+        var headerStyle=this.setColorStyle("styleTablesHeaderText");
         var texts = this.initFinancialAnalysisTexts();
         var tableIndprof = report.addTable('myIndprofTable');
         tableIndprof.setStyleAttributes("width:100%");
@@ -174,16 +223,17 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         // header
         var tableHeader = tableIndprof.getHeader();
         var tableRow = tableHeader.addRow();
-        tableRow.addCell(texts.description, "styleTablesHeaderText");
+        tableRow.addCell(texts.description, headerStyle);
         if (this.dialogparam.formulascolumn) {
-            tableRow.addCell(texts.formula, "styleTablesHeaderText");
+            tableRow.addCell(texts.formula, headerStyle);
         }
-        tableRow.addCell(texts.benchmark, "styleTablesHeaderText");
+        tableRow.addCell(texts.benchmark, headerStyle);
         this.generateHeaderColumns(tableRow);
         return tableIndprof;
     }
 
     printReportAdd_TableIndeff(report) {
+        var headerStyle=this.setColorStyle("styleTablesHeaderText");
         var texts = this.initFinancialAnalysisTexts();
         var tableIndeff = report.addTable('myIndeffTable');
         tableIndeff.setStyleAttributes("width:100%");
@@ -198,17 +248,18 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         // header
         var tableHeader = tableIndeff.getHeader();
         var tableRow = tableHeader.addRow();
-        tableRow.addCell(texts.description, "styleTablesHeaderText");
+        tableRow.addCell(texts.description, headerStyle);
         if (this.dialogparam.formulascolumn) {
-            tableRow.addCell(texts.formula, "styleTablesHeaderText");
+            tableRow.addCell(texts.formula, headerStyle);
         }
-        tableRow.addCell(texts.benchmark, "styleTablesHeaderText");
+        tableRow.addCell(texts.benchmark, headerStyle);
         this.generateHeaderColumns(tableRow);
 
         return tableIndeff;
     }
 
     printReportAdd_TableCashflow(report) {
+        var headerStyle=this.setColorStyle("styleTablesHeaderText");
         var texts = this.initFinancialAnalysisTexts();
         var tableCashflow = report.addTable('myTableCashflow');
         tableCashflow.getCaption().addText(texts.uppercashflow, "styleTitles");
@@ -220,12 +271,13 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         // header
         var tableHeader = tableCashflow.getHeader();
         var tableRow = tableHeader.addRow();
-        tableRow.addCell(texts.description, "styleTablesHeaderText");
+        tableRow.addCell(texts.description, headerStyle);
         this.generateHeaderColumns(tableRow);
         return tableCashflow;
     }
 
     printReportAdd_TableIndCashflow(report) {
+        var headerStyle=this.setColorStyle("styleTablesHeaderText");
         var texts = this.initFinancialAnalysisTexts();
         var tableIndCashflow = report.addTable('myIndCashflowTable');
         tableIndCashflow.setStyleAttributes("width:100%");
@@ -241,16 +293,17 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         // header
         var tableHeader = tableIndCashflow.getHeader();
         var tableRow = tableHeader.addRow();
-        tableRow.addCell(texts.description, "styleTablesHeaderText");
+        tableRow.addCell(texts.description, headerStyle);
         if (this.dialogparam.formulascolumn) {
-            tableRow.addCell(texts.formula, "styleTablesHeaderText");
+            tableRow.addCell(texts.formula, headerStyle);
         }
-        tableRow.addCell(texts.benchmark, "styleTablesHeaderText");
+        tableRow.addCell(texts.benchmark, headerStyle);
         this.generateHeaderColumns(tableRow);
         return tableIndCashflow;
     }
 
     printReportAdd_TableDupont(report) {
+        var headerStyle=this.setColorStyle("styleTablesHeaderText");
         var texts = this.initFinancialAnalysisTexts();
         var tableDupont = report.addTable('myDupontTable');
         tableDupont.getCaption().addText(texts.upperdupontscheme, "styleTitles");
@@ -260,7 +313,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         //header
         var tableHeader = tableDupont.getHeader();
         var tableRow = tableHeader.addRow();
-        tableRow.addCell(texts.description, "styleTablesHeaderText");
+        tableRow.addCell(texts.description, headerStyle);
         this.generateHeaderColumns(tableRow);
 
         return tableDupont;
@@ -280,6 +333,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
     }
 
     generateHeaderColumns(tableRow) {
+        var headerStyle=this.setColorStyle("styleTablesHeaderText");
         var texts = this.initFinancialAnalysisTexts();
         for (var i = this.data.length - 1; i >= 0; i--) {
             var year = this.data[i].period.EndDate;
@@ -314,7 +368,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                     year = texts.budget_differences_todate;
                     break;
             }
-            tableRow.addCell(year, "styleTablesHeaderText");
+            tableRow.addCell(year, headerStyle);
         }
     }
 
@@ -488,6 +542,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var textstyle = "";
         var warning_msg = this.showDifferencesWarning();
         var span = this.generateSpanForBalanceTitles();
+        var styleAssetsAdjustments=this.setColorStyle("styleAssetsAdjustments");
+        var styleLiabilitiesAdjustments=this.setColorStyle("styleLiabilitiesAdjustments");
+        var styleTotalAmount=this.setColorStyle("styleTotalAmount");
 
         if (!this.data || this.data.length <= 0) {
             return report;
@@ -509,7 +566,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var tableBalance = this.printReportAdd_TableBalance(report);
         //Assets title
         var tableRow = tableBalance.addRow("styleTablRows");
-        tableRow.addCell(texts.assets, "styleAssetsAdjustments", span);
+        tableRow.addCell(texts.assets, styleAssetsAdjustments, span);
 
         /******************************************************************************************
          * Add the current asset to the  balance table
@@ -579,12 +636,12 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             tableRow.addCell(texts.totassets_acronym);
         }
         for (var i = this.data.length - 1; i >= 0; i--) {
-            tableRow.addCell(this.toLocaleAmountFormat(this.data[i].calculated_data.totalassets), "styleTotalAmount");
+            tableRow.addCell(this.toLocaleAmountFormat(this.data[i].calculated_data.totalassets), styleTotalAmount);
         }
 
         //Liabilities and Equity title
         var tableRow = tableBalance.addRow("styleTablRows");
-        tableRow.addCell(texts.liabilitiesandequity, "styleLiabilitiesAdjustments", span);
+        tableRow.addCell(texts.liabilitiesandequity, styleLiabilitiesAdjustments, span);
 
         /******************************************************************************************
          * Add the Short term third capital to the balance table
@@ -699,7 +756,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             tableRow.addCell(texts.liabilitiesandequity_acronym);
         }
         for (var i = this.data.length - 1; i >= 0; i--) {
-            tableRow.addCell(this.toLocaleAmountFormat(this.data[i].calculated_data.totalliabilitiesandequity), "styleTotalAmount");
+            tableRow.addCell(this.toLocaleAmountFormat(this.data[i].calculated_data.totalliabilitiesandequity), styleTotalAmount);
         }
 
         /******************************************************************************************
@@ -783,7 +840,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             tableRow.addCell(texts.finalresult_acronym);
         }
         for (var i = this.data.length - 1; i >= 0; i--) {
-            tableRow.addCell(this.toLocaleAmountFormat(this.data[i].calculated_data.annualresult), "styleTotalAmount");
+            tableRow.addCell(this.toLocaleAmountFormat(this.data[i].calculated_data.annualresult), styleTotalAmount);
         }
 
         report.addPageBreak();
@@ -994,7 +1051,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
         //asset adjustments title
         var tableRow = tableCashflow.addRow("styleTablRows");
-        tableRow.addCell(texts.adjusted_assets_cashflow, "styleAssetsAdjustments", span);
+        tableRow.addCell(texts.adjusted_assets_cashflow, styleAssetsAdjustments, span);
 
         //Credits adjustments
         var tableRow = tableCashflow.addRow("styleTablRows");
@@ -1019,7 +1076,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
         //liability adjustments title
         var tableRow = tableCashflow.addRow("styleTablRows");
-        tableRow.addCell(texts.adjusted_liabilities_cashflow, "styleLiabilitiesAdjustments", span);
+        tableRow.addCell(texts.adjusted_liabilities_cashflow, styleLiabilitiesAdjustments, span);
 
         //Liabilities
         var tableRow = tableCashflow.addRow("styleTablRows");
@@ -1102,7 +1159,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var tableRow = tableCashflow.addRow("styleTablRows");
         tableRow.addCell(texts.final_cashflow + ' (A+B+C)', "styleTitlesTotalAmount");
         for (var i = this.data.length - 1; i >= 0; i--) {
-            tableRow.addCell(this.toLocaleAmountFormat(this.data[i].cashflow.cashflow), "styleTotalAmount");
+            tableRow.addCell(this.toLocaleAmountFormat(this.data[i].cashflow.cashflow), styleTotalAmount);
         }
 
         //Opening Liquidity
@@ -1123,7 +1180,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var tableRow = tableCashflow.addRow("styleTablRows");
         tableRow.addCell(texts.delta_liquidity, "styleTitlesTotalAmount");
         for (var i = this.data.length - 1; i >= 0; i--) {
-            tableRow.addCell(this.toLocaleAmountFormat(this.data[i].cashflow.delta_liquidity), "styleTotalAmount");
+            tableRow.addCell(this.toLocaleAmountFormat(this.data[i].cashflow.delta_liquidity), styleTotalAmount);
         }
 
         if (this.cashflow_differences > 0)
@@ -1261,7 +1318,10 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         } else {
             type = 'styleZIndexProb';
         }
-        return type;
+
+        let style=this.setColorStyle(type);
+
+        return style;
     }
 
     /**
@@ -1406,69 +1466,6 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         // Parse the CSS text
         stylesheet.parse(textCSS);
 
-        var style = stylesheet;
-
-
-        //Create a table style adding the border
-        style = stylesheet.addStyle("tableCompanyInfo");
-        style = stylesheet.addStyle("tableUsedSetting");
-        style = stylesheet.addStyle("tableBalance");
-        style = stylesheet.addStyle("TableBalanceSumsControl");
-        style = stylesheet.addStyle("tableConCe");
-        style = stylesheet.addStyle("tableConCeSumsControl");
-        style = stylesheet.addStyle("tableIndliq");
-        style = stylesheet.addStyle("tableIndlev");
-        style = stylesheet.addStyle("tableIndprof");
-        style = stylesheet.addStyle("tableCashflow");
-        style = stylesheet.addStyle("tableIndCashflow");
-        style = stylesheet.addStyle("tableDupont");
-        style = stylesheet.addStyle("tableAltmanIndex");
-
-
-        //Style for the tables header
-        style = stylesheet.addStyle(".styleTablesHeaderText");
-
-        //style for the group titles
-        style = stylesheet.addStyle(".styleTitles");
-
-        //style for the under-group titles
-        style = stylesheet.addStyle(".styleUnderGroupTitles");
-
-        //Style for the normal elements
-        style = stylesheet.addStyle(".styleNormal");
-
-        //Style for amounts
-        style = stylesheet.addStyle(".styleNormalAmount");
-
-        //style for the accounting mid totals
-        style = stylesheet.addStyle(".styleMidTotalAmount");
-
-        //style for the accounting totals Amount
-        style = stylesheet.addStyle(".styleTotalAmount");
-
-        //style for the titles of the totals
-        style = stylesheet.addStyle(".styleTitlesTotalAmount");
-
-        //style for the  header
-        style = stylesheet.addStyle(".header");
-
-        //style for the  footer
-        style = stylesheet.addStyle(".footer");
-
-        //style for the pharagraphs
-        style = stylesheet.addStyle(".styleParagraphs");
-
-        //style for the Z-score,low prob. of a financial crysis
-        style = stylesheet.addStyle(".styleZIndexLow");
-
-        //style for the Z-score,mid prob. of a financial crysis
-        style = stylesheet.addStyle(".styleZIndexMid");
-
-        //style for the Z-score,prob. of a financial crysis
-        style = stylesheet.addStyle(".styleZIndexProb");
-
-
-
         return stylesheet;
     }
 
@@ -1538,6 +1535,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         texts.averagenumberofemployee_tooltip = qsTr("Enter the number of employees in your company");
         texts.headers_background_color_tooltip = qsTr("Enter the color for the header's background");
         texts.headers_texts_color_tooltip = qsTr("Enter the color for the header's texts");
+        texts.without_colors_tooltip=qsTr("Check if you want the entire report without colors, for example for black and white prints");
 
 
         /******************************************************************************************
@@ -1666,6 +1664,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         texts.printlogo = 'Logo';
         texts.headers_background_color = qsTr("Background color of headers");
         texts.headers_texts_color = qsTr("Text color of headers");
+        texts.without_colors=qsTr("Report without Colors");
         texts.pageheader = qsTr("Page header");
         texts.logoname = qsTr("Composition for logo and header alignment");
         texts.averageemployees = qsTr('Average number of employees');
@@ -1777,6 +1776,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         dialogparam.includedupontanalysis = true;
         dialogparam.includecontrolsums = true;
         dialogparam.printlogo = true;
+        dialogparam.without_colors=false;
         dialogparam.pageheader = true;
         dialogparam.logoname = "Logo";
         dialogparam.headers_background_color = "#337AB7";
@@ -3802,7 +3802,6 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.name = 'Balance';
         currentParam.title = texts.balance;
         currentParam.editable = false;
-        currentParam.editable = false;
         currentParam.parentObject = 'Grouping';
 
 
@@ -4361,6 +4360,21 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.parentObject = 'Print Details';
         currentParam.readValue = function() {
             userParam.headers_texts_color = this.value;
+        }
+        convertedParam.data.push(currentParam);
+
+        //Without colors
+        var currentParam = {};
+        currentParam.name = 'withoutcolors';
+        currentParam.group = 'preferences';
+        currentParam.title = texts.without_colors;
+        currentParam.type = 'bool';
+        currentParam.value = userParam.without_colors ? userParam.without_colors : userParam.without_colors;
+        currentParam.defaultvalue = defaultParam.without_colors;
+        currentParam.tooltip = texts.without_colors_tooltip;
+        currentParam.parentObject = 'Print Details';
+        currentParam.readValue = function() {
+            userParam.without_colors = this.value;
         }
         convertedParam.data.push(currentParam);
 
