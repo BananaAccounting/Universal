@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.uni.invoice.uni11
 // @api = 1.0
-// @pubdate = 2021-10-22
+// @pubdate = 2021-11-23
 // @publisher = Banana.ch SA
 // @description = [UNI11] Programmable Invoice layout
 // @description.it = [UNI11] Layout Fattura Programmabile
@@ -482,6 +482,22 @@ function convertParam(userParam) {
   }
   convertedParam.data.push(currentParam);
 
+  if (!IS_INTEGRATED_INVOICE) {
+    currentParam = {};
+    currentParam.name = 'info_custom_fields';
+    currentParam.parentObject = 'info_include';
+    currentParam.title = texts.param_info_custom_fields;
+    currentParam.type = 'bool';
+    currentParam.value = userParam.info_custom_fields ? true : false;
+    currentParam.defaultvalue = false;
+    currentParam.tooltip = texts.param_tooltip_info_custom_fields;
+    currentParam.readValue = function() {
+      userParam.info_custom_fields = this.value;
+    }
+    convertedParam.data.push(currentParam);
+  } else {
+    userParam.info_custom_fields = false;
+  }
 
   currentParam = {};
   currentParam.name = 'details_include';
@@ -1283,6 +1299,7 @@ function initParam() {
   userParam.info_customer_fiscal_number = false;
   userParam.info_due_date = true;
   userParam.info_page = true;
+  userParam.info_custom_fields = false;
   userParam.details_columns = 'Description;Quantity;ReferenceUnit;UnitPrice;Amount';
   userParam.details_columns_widths = '45%;10%;10%;20%;15%';
   userParam.details_columns_titles_alignment = 'left;right;center;right;right';
@@ -1437,6 +1454,9 @@ function verifyParam(userParam) {
   }
   if (!userParam.info_page) {
     userParam.info_page = false;
+  }
+  if (!userParam.info_custom_fields) {
+    userParam.info_custom_fields = false;
   }
   if (!userParam.details_columns) {
     userParam.details_columns = 'Description;Quantity;ReferenceUnit;UnitPrice;Amount';
@@ -1918,6 +1938,19 @@ function print_info_first_page(repDocObj, invoiceObj, texts, userParam) {
     rows++;
   }
 
+  //Adds custom fields
+  //Works only with the estimates and invoices application
+  if (userParam.info_custom_fields && !IS_INTEGRATED_INVOICE) {
+    if (invoiceObj.document_info.custom_fields && invoiceObj.document_info.custom_fields.length > 0) {
+      for (var i = 0; i < invoiceObj.document_info.custom_fields.length; i++) {
+        var customField = invoiceObj.document_info.custom_fields[i];
+        tableRow = infoTable.addRow();
+        tableRow.addCell(customField.title + ":","",1);
+        tableRow.addCell(customField.value,"",1);
+      }
+    }
+  }
+
   //Empty rows for each non-used info
   for (var i = 0; i < rows; i++) {
     tableRow = infoTable.addRow();
@@ -2012,6 +2045,18 @@ function print_info_other_pages(repDocObj, invoiceObj, texts, userParam) {
     tableRow = infoTable.addRow();
     tableRow.addCell(userParam[lang+'_text_info_page'] + ":","",1);
     tableRow.addCell("","",1).addFieldPageNr();    
+  }
+  //Adds custom fields
+  //Works only with the estimates and invoices application
+  if (userParam.info_custom_fields && !IS_INTEGRATED_INVOICE) {
+    if (invoiceObj.document_info.custom_fields && invoiceObj.document_info.custom_fields.length > 0) {
+      for (var i = 0; i < invoiceObj.document_info.custom_fields.length; i++) {
+        var customField = invoiceObj.document_info.custom_fields[i];
+        tableRow = infoTable.addRow();
+        tableRow.addCell(customField.title + ":","",1);
+        tableRow.addCell(customField.value,"",1);
+      }
+    }
   }
 }
 
@@ -3705,6 +3750,7 @@ function setInvoiceTexts(language) {
     texts.param_info_customer_fiscal_number = "Numero fiscale cliente";
     texts.param_info_due_date = "Scadenza fattura";
     texts.param_info_page = "Numero pagina";
+    texts.param_info_custom_fields = "Campi personalizzati";
     texts.param_details_include = "Dettagli fattura";
     texts.param_details_columns = "Nomi colonne";
     texts.param_details_columns_widths = "Larghezza colonne";
@@ -3756,6 +3802,7 @@ function setInvoiceTexts(language) {
     texts.param_tooltip_info_customer_fiscal_number = "Vista per includere il numero fiscale del cliente";
     texts.param_tooltip_info_due_date = "Vista per includere la data di scadenza della fattura";
     texts.param_tooltip_info_page = "Vista per includere il numero di pagina";
+    texts.param_tooltip_info_custom_fields = "Vista per includere i campi personalizzati";
     texts.param_tooltip_languages = "Aggiungi o rimuovi una o più lingue";
     texts.param_tooltip_text_info_invoice_number = "Inserisci un testo per sostituire quello predefinito";
     texts.param_tooltip_text_info_date = "Inserisci un testo per sostituire quello predefinito";
@@ -3875,6 +3922,7 @@ function setInvoiceTexts(language) {
     texts.param_info_customer_fiscal_number = "Kunden-Steuernummer";
     texts.param_info_due_date = "Fälligkeitsdatum";
     texts.param_info_page = "Seitenzahlen";
+    texts.param_info_custom_fields = "Benutzerdefinierte Felder";
     texts.param_details_include = "Rechnungsdetails einschliessen";
     texts.param_details_columns = "Spaltennamen";
     texts.param_details_columns_widths = "Spaltenbreite";
@@ -3926,6 +3974,7 @@ function setInvoiceTexts(language) {
     texts.param_tooltip_info_customer_fiscal_number = "Aktivieren, um Kunden-Steuernummer einzuschliessen";
     texts.param_tooltip_info_due_date = "Aktivieren, um Fälligkeitsdatum der Rechnung einzuschliessen";
     texts.param_tooltip_info_page = "Aktivieren, um Seitennummer einzuschliessen";
+    texts.param_tooltip_info_custom_fields = "Aktivieren, um benutzerdefinierte Felder einzuschliessen";
     texts.param_tooltip_languages = "Sprachen hinzufügen oder entfernen";
     texts.param_tooltip_text_info_invoice_number = "Text eingeben, um Standardtext zu ersetzen";
     texts.param_tooltip_text_info_date = "Text eingeben, um Standardtext zu ersetzen";
@@ -4045,6 +4094,7 @@ function setInvoiceTexts(language) {
     texts.param_info_customer_fiscal_number = "Numéro fiscal client";
     texts.param_info_due_date = "Échéance facture";
     texts.param_info_page = "Numéro de page";
+    texts.param_info_custom_fields = "Champs personnalisés";
     texts.param_details_include = "Détails de la facture";
     texts.param_details_columns = "Noms des colonnes";
     texts.param_details_columns_widths = "Largeur des colonnes";
@@ -4096,6 +4146,7 @@ function setInvoiceTexts(language) {
     texts.param_tooltip_info_customer_fiscal_number = "Activer pour inclure le numéro fiscal du client";
     texts.param_tooltip_info_due_date = "Activer pour inclure la date d'échéance de la facture";
     texts.param_tooltip_info_page = "Activer pour inclure le numéro de page";
+    texts.param_tooltip_info_custom_fields = "Activer pour inclure les champs personnalisés";
     texts.param_tooltip_languages = "Ajouter ou supprimer une ou plusieurs langues";
     texts.param_tooltip_text_info_invoice_number = "Insérez un texte pour remplacer le texte par défaut";
     texts.param_tooltip_text_info_date = "Insérez un texte pour remplacer le texte par défaut";
@@ -4215,6 +4266,7 @@ function setInvoiceTexts(language) {
     texts.param_info_customer_fiscal_number = "RSIN klant";
     texts.param_info_due_date = "Vervaldatum factuur";
     texts.param_info_page = "Paginanummer";
+    texts.param_info_custom_fields = "Gepersonaliseerde velden";
     texts.param_details_include = "Details factuur";
     texts.param_details_columns = "Namen kolommen";
     texts.param_details_columns_widths = "Kolombreedte";
@@ -4266,6 +4318,7 @@ function setInvoiceTexts(language) {
     texts.param_tooltip_info_customer_fiscal_number = "Aanvinken om het RSIN van de klant op te nemen";
     texts.param_tooltip_info_due_date = "Aanvinken om de vervaldatum van de factuur op te nemen";
     texts.param_tooltip_info_page = "Aanvinken om het paginanummer op te nemen";
+    texts.param_tooltip_info_custom_fields = "Aankruisen om gepersonaliseerde velden op te nemen";
     texts.param_tooltip_languages = "Een of meer talen toevoegen of verwijderen";
     texts.param_tooltip_text_info_invoice_number = "Voer een tekst in ter vervanging van de standaardtekst";
     texts.param_tooltip_text_info_date = "Voer een tekst in ter vervanging van de standaardtekst";
@@ -4385,6 +4438,7 @@ function setInvoiceTexts(language) {
     texts.param_info_customer_fiscal_number = "客户税务登记号";
     texts.param_info_due_date = "发票到期日";
     texts.param_info_page = "页码";
+    texts.param_info_custom_fields = "自定义字段";
     texts.param_details_include = "发票细节";
     texts.param_details_columns = "列的名称";
     texts.param_details_columns_widths = "列的宽度";
@@ -4437,6 +4491,7 @@ function setInvoiceTexts(language) {
     texts.param_tooltip_info_due_date = "检查以包括发票的到期日";
     texts.param_tooltip_info_page = "检查以包括页码";
     texts.param_tooltip_languages = "添加或删除一种或多种语言";
+    texts.param_tooltip_info_custom_fields = "勾选以包括自定义字段";
     texts.param_tooltip_text_info_invoice_number = "输入文字以取代默认文字";
     texts.param_tooltip_text_info_date = "输入文字以取代默认的";
     texts.param_tooltip_text_info_customer = "输入文字以取代默认的";
@@ -4555,6 +4610,7 @@ function setInvoiceTexts(language) {
     texts.param_info_customer_fiscal_number = "Customer fiscal number";
     texts.param_info_due_date = "Invoice due date";
     texts.param_info_page = "Page number";
+    texts.param_info_custom_fields = "Custom fields";
     texts.param_details_include = "Invoice details";
     texts.param_details_columns = "Column names";
     texts.param_details_columns_widths = "Column width";
@@ -4606,6 +4662,7 @@ function setInvoiceTexts(language) {
     texts.param_tooltip_info_customer_fiscal_number = "Check to include customer's fiscal number";
     texts.param_tooltip_info_due_date = "Check to include the due date of the invoice";
     texts.param_tooltip_info_page = "Check to include the page number";
+    texts.param_tooltip_info_custom_fields = "Check to include the custom fields";
     texts.param_tooltip_languages = "Add or remove one or more languages";
     texts.param_tooltip_text_info_invoice_number = "Enter text to replace the default one";
     texts.param_tooltip_text_info_date = "Enter text to replace the default";
