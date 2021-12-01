@@ -1,4 +1,4 @@
-// Copyright [2020] [Banana.ch SA - Lugano Switzerland]
+// Copyright [2021] [Banana.ch SA - Lugano Switzerland]
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.uni.timesheet-daystable-report.js
 // @api = 1.0
-// @pubdate = 2020-04-08
+// @pubdate = 2021-12-01
 // @publisher = Banana.ch SA
 // @description = Time Sheet - monthly summary
 // @description.it = Foglio Ore - Riepilogo Mensile
@@ -728,8 +728,15 @@ function settingsDialog() {
     }
 
     //We take the accounting "starting date" and "ending date" from the document. These will be used as default dates
-    var docStartDate = "2021-01-01";//Banana.document.startPeriod();
-    var docEndDate = "2021-12-31"; //Banana.document.endPeriod();   
+    var docStartDate = "";
+    var docEndDate = "";
+    if (Banana.compareVersion && Banana.compareVersion(Banana.application.version, "10.0.10") >= 0) {
+        docStartDate = Banana.document.info("TimesheetDataBase", "DateStart");
+        docEndDate = Banana.document.info("TimesheetDataBase", "DateEnd");
+    } else {
+        docStartDate = "";"2021-01-01";
+        docEndDate = "";"2021-12-31";
+    }
 
     //A dialog window is opened asking the user to insert the desired period. By default is the accounting period
     var selectedDates = Banana.Ui.getPeriod("", docStartDate, docEndDate,
