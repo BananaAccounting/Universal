@@ -1,0 +1,59 @@
+@page {
+    margin-top: 5mm;
+    margin-bottom: 5mm;
+    margin-left: 5mm;
+    margin-right: 5mm;
+}
+
+body {
+    font-size: 9pt;
+}
+
+table {
+    font-size: 9pt;
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+.heading1 {
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.tableHeaders {
+    border-bottom: solid;
+    border-color: rgb(0, 0, 0);
+    font-weight: bold;
+    text-align: center;
+}
+
+.amountStyle {
+    text-align: right;
+}
+
+.textStyle {
+    text-align: left;
+}
+
+.centredStyle {
+    text-align: center;
+}
+
+.sumStyle {
+    font-weight: bold;
+    font-size: 12px;
+    text-align: right;
+}
+
+.operationTotalsStyle {
+    border-top: solid;
+    border-color: rgb(0, 0, 0);
+    font-weight: bold;
+    text-align: right;
+}
+
+.footerStyle {
+    text-align: center;
+    font-size: 8px;
+    font-family: 'Courier New', Courier, monospace;
+}
