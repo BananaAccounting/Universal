@@ -1,0 +1,429 @@
+// Copyright [2021] [Banana.ch SA - Lugano Switzerland]
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+// @id = ch.banana.audit.report.journal
+// @api = 1.0
+// @pubdate = 2021-12-03
+// @publisher = Banana.ch SA
+// @description = Journal
+// @task = app.command
+// @doctype = *;*
+// @docproperties =
+// @outputformat = none
+// @inputdatasource = none
+// @timeout = -1
+// @includejs= audit.settings.js
+
+/**
+ * mandatory columns:Date,Description,Doc,Account,debit,credit,amount
+ * columns that the user can choose:Transaction type, Account BClass, AccountGr
+ */
+//errors
+var DEBIT_CREDIT_DIFFERENTS = "DEBIT_CREDIT_DIFFERENTS";
+
+//Main function
+function exec(string) {
+
+    //Check if we are on an opened document
+    if (!Banana.document) {
+        return;
+    }
+
+    var dateform = getPeriodSettings();
+    if (dateform) {
+        printReport(dateform.selectionStartDate, dateform.selectionEndDate);
+    }
+}
+
+function getJournalTable(report, endDate) {
+    var journalTable = report.addTable('journalTable');
+    //title table
+    journalTable.getCaption().addText("Journal at " + Banana.Converter.toLocaleDateFormat(endDate), "dateIndicator");
+    //columns
+    journalTable.addColumn("Date").setStyleAttributes("width:10%", "tableHeaders");
+    journalTable.addColumn("Transaction Type").setStyleAttributes("width:20%", "tableHeaders");
+    journalTable.addColumn("Doc").setStyleAttributes("width:10%", "tableHeaders");
+    journalTable.addColumn("Description").setStyleAttributes("width:50%", "tableHeaders");
+    journalTable.addColumn("Account").setStyleAttributes("width:20%", "tableHeaders");
+    journalTable.addColumn("Debit").setStyleAttributes("width:15%", "tableHeaders");
+    journalTable.addColumn("Credit").setStyleAttributes("width:15%", "tableHeaders");
+    journalTable.addColumn("Amount").setStyleAttributes("width:15%", "tableHeaders");
+
+    //header
+    var tableHeader = journalTable.getHeader();
+    var tableRow = tableHeader.addRow();
+    tableRow.addCell("Date", "tableHeaders");
+    tableRow.addCell("Transaction Type", "tableHeaders");
+    tableRow.addCell("Doc", "tableHeaders");
+    tableRow.addCell("Description", "tableHeaders");
+    tableRow.addCell("Account", "tableHeaders");
+    tableRow.addCell("Debit", "tableHeaders");
+    tableRow.addCell("Credit", "tableHeaders");
+    tableRow.addCell("Amount", "tableHeaders");
+
+
+    return journalTable;
+}
+
+
+//Function that creates and prints the report
+function printReport(startDate, endDate) {
+
+    //Add a name to the report
+    var report = Banana.Report.newReport("Journal Balance");
+
+    //Add a title
+    report.addParagraph("Journal", "heading1");
+    report.addParagraph(" ", "");
+
+    //Create a table for the report
+    var table = getJournalTable(report, endDate);
+
+    /* 1. Print the Jorunal with the totals */
+    printJournal(table, startDate, endDate);
+
+    //Add a footer to the report
+    addFooter(report);
+
+    //Print the report
+    var stylesheet = getReportStyle();
+    Banana.Report.preview(report, stylesheet);
+}
+
+function printJournal(table, startDate, endDate) {
+
+    var journalOp = getJournalOperations(startDate, endDate);
+    var sumDebit = "";
+    var sumCredit = "";
+
+    for (var op in journalOp) {
+        var operation = journalOp[op];
+        var opDebit = "";
+
+        var opCredit = "";
+        tableRow = table.addRow();
+        tableRow.addCell(Banana.Converter.toLocaleDateFormat(operation.date), "centredStyle");
+        tableRow.addCell(operation.type, "centredStyle");
+        tableRow.addCell(operation.doc, "centredStyle");
+        tableRow.addCell("", "", 5);
+        for (var row in operation.rows) {
+            var opRow = operation.rows[row];
+            tableRow = table.addRow();
+            tableRow.addCell("", "", 3);
+            tableRow.addCell(opRow.description, "textStyle");
+            tableRow.addCell(opRow.account, "centredStyle");
+            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(opRow.debitAmount, "2", false), "amountStyle");
+            opDebit = Banana.SDecimal.add(opDebit, opRow.debitAmount);
+            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(opRow.creditAmount, "2", false), "amountStyle");
+            opCredit = Banana.SDecimal.add(opCredit, opRow.creditAmount);
+            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(opRow.amount, "2", false), "amountStyle");
+        }
+        //add the total debit and credit
+        tableRow = table.addRow();
+        tableRow.addCell("", "", 5);
+        tableRow.addCell(Banana.Converter.toLocaleNumberFormat(opDebit, "2", false), "operationTotalsStyle");
+        sumDebit = Banana.SDecimal.add(sumDebit, opDebit);
+        tableRow.addCell(Banana.Converter.toLocaleNumberFormat(opCredit, "2", false), "operationTotalsStyle");
+        sumCredit = Banana.SDecimal.add(sumCredit, opCredit);
+
+    }
+
+    //check if sum of debit and sum of credit are equals
+    //if are not equals a message is displayed
+    checkDebitCredit(sumDebit, sumCredit);
+    //add totals
+    tableRow = table.addRow();
+    tableRow.addCell("Total", "sumStyle");
+    tableRow.addCell("", "", 4);
+    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(sumDebit, "2", false), "sumStyle");
+    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(sumCredit, "2", false), "sumStyle");
+
+
+}
+
+//Function that load the jorunal rows
+function getJournalRows(startDate, endDate) {
+
+    //array with the journal transactions
+    var journalRows = [];
+    //Get the Journal
+    var journal = Banana.document.journal(Banana.document.ORIGINTYPE_CURRENT, Banana.document.ACCOUNTTYPE_NORMAL);
+    // Read the table row by row and save some values
+    for (var i = 0; i < journal.rowCount; i++) {
+        var tRow = journal.row(i);
+        // From the journal table we take only the transactions rows
+        if (tRow.value('JOperationType') == Banana.document.OPERATIONTYPE_TRANSACTION && dateWithinTheRange(tRow.value('JDate'), startDate, endDate)) {
+            var trRow = {};
+            trRow.id = tRow.value('JContraAccountGroup');
+            trRow.jDate = tRow.value('JDate');
+            trRow.jOperationType = tRow.value('JOperationType'); //0=OPERATIONTYPE_NONE,1=OPERATIONTYPE_OPENING,2=OPERATIONTYPE_CARRYFORWARD,3=OPERATIONTYPE_TRANSACTION, 21=OPERATIONTYPE_INVOICESETTLEMENT
+            trRow.trDoc = tRow.value('Doc');
+            trRow.trDescription = tRow.value('Description');
+            trRow.jAccount = tRow.value('JAccount');
+            trRow.jDebitAmount = tRow.value('JDebitAmount');
+            trRow.jCreditAmount = tRow.value('JCreditAmount');
+            trRow.JAmount = tRow.value('JAmount');
+
+            if (trRow)
+                journalRows.push(trRow);
+        }
+    }
+
+    return journalRows;
+
+}
+
+/**
+ * Check if the transaction date is within the range defined by the user
+ */
+function dateWithinTheRange(trDate, pStartDate, pEndDate) {
+    isWithinTheRange = false;
+
+    //compare the dates
+    var date = new Date(trDate);
+    var startDate = new Date(pStartDate);
+    var endDate = new Date(pEndDate);
+
+    if (date >= startDate && date <= endDate)
+        isWithinTheRange = true;
+
+
+    return isWithinTheRange;
+
+}
+
+function getJournalOperations(startDate, endDate) {
+    //if (tRow.value('JContraAccountGroup') !== previous_contraAccountGroup) {
+    var jRows = getJournalRows(startDate, endDate);
+    var jOperations = [];
+
+    /**
+     * identifico ogni operazione grazie all'attributo: JContraAccountGroup.
+     * per ogni operazione del giornale creo un oggeto jOp, che conterrà la data, ed il tipo di operazione
+     * ogni operazione contiene più righe, ogni riga dell'operazione contiene le seguenti info: descrizione, numero di conto, dare e avere.
+     * tutte le operazioni verranno inserite nell'array jOperations[];
+     * la struttura di un operazione assomiglia alla seguente:
+     * {
+     * 	"id"=0 //JContraAccountGroup
+     * 	"date"=01.01.2022 //JDate
+     * 	"type"=3
+     * 	"rows"[
+     * 		{
+     * 			description="Sell" //Description
+     * 			account="1000"
+     * 			debit=2000.00
+     * 			credit=""
+     * 		}
+     * 	]
+     * }
+     */
+
+    var opIdList = getIdList(jRows);
+
+    //for each
+    for (var i = 0; i < opIdList.length; i++) {
+        var jOp = {};
+        jOp = getOperationData(opIdList[i], jRows);
+        //Banana.console.debug(JSON.stringify(jOp));
+        var opRows = getOperationData_rows(opIdList[i], jRows);
+        jOp.rows = opRows;
+
+        jOperations.push(jOp);
+
+    }
+
+    return jOperations;
+
+}
+
+function getIdList(jRows) {
+    var opIdList = [];
+    var id = "";
+
+    for (var row in jRows) {
+        if (jRows[row].id !== id) {
+            opIdList.push(jRows[row].id);
+            id = jRows[row].id;
+        }
+    }
+    return opIdList;
+}
+
+function getOperationData(id, jRows) {
+    var jOp = {};
+    for (var row in jRows) {
+        if (jRows[row].id == id) {
+            jOp.id = jRows[row].id;
+            jOp.date = jRows[row].jDate;
+            jOp.type = jRows[row].jOperationType;
+            jOp.doc = jRows[row].trDoc;
+            return jOp;
+        }
+    }
+
+}
+
+function getOperationData_rows(id, jRows) {
+    var rows = [];
+    var prDescription = "";
+
+    for (var row in jRows) {
+        if (jRows[row].id == id) {
+            var trRow = {};
+            if (jRows[row].trDescription !== prDescription)
+                trRow.description = jRows[row].trDescription;
+            trRow.account = jRows[row].jAccount;
+            trRow.debitAmount = jRows[row].jDebitAmount;
+            trRow.creditAmount = jRows[row].jCreditAmount;
+            trRow.amount = jRows[row].JAmount;
+            rows.push(trRow);
+
+            prDescription = jRows[row].trDescription;
+        }
+    }
+
+    return rows;
+}
+
+function checkIfSameDescription(newDescr, oldDescr) {
+    var sameDescr = false;
+
+    if (newDescr == oldDescr)
+        sameDescr = true;
+
+    return sameDescr;
+}
+
+
+//Function that adds a Footer to the report
+function addFooter(report) {
+    var date = new Date();
+    var d = Banana.Converter.toLocaleDateFormat(date);
+    report.getFooter().addClass("footerStyle");
+    var versionLine = report.getFooter().addText(d + " - Journal - Page ", "description");
+    report.getFooter().addFieldPageNr();
+}
+
+
+/**
+ * Defines the style for the report
+ * @returns 
+ */
+function getReportStyle() {
+    var textCSS = "";
+    var file = Banana.IO.getLocalFile("file:script/audit.report.css");
+    var fileContent = file.read();
+    if (!file.errorString) {
+        Banana.IO.openPath(fileContent);
+        //Banana.console.log(fileContent);
+        textCSS = fileContent;
+    } else {
+        Banana.console.log(file.errorString);
+    }
+
+    var stylesheet = Banana.Report.newStyleSheet();
+    // Parse the CSS text
+    stylesheet.parse(textCSS);
+
+    return stylesheet;
+}
+
+
+
+//The main purpose of this function is to allow the user to enter the accounting period desired and saving it for the next time the script is run.
+//Every time the user runs of the script he has the possibility to change the date of the accounting period.
+function getPeriodSettings() {
+
+    //The formeters of the period that we need
+    var scriptform = {
+        "selectionStartDate": "",
+        "selectionEndDate": "",
+        "selectionChecked": "false"
+    };
+
+    //Read script settings
+    var data = Banana.document.scriptReadSettings();
+
+    //Check if there are previously saved settings and read them
+    if (data.length > 0) {
+        try {
+            var readSettings = JSON.parse(data);
+
+            //We check if "readSettings" is not null, then we fill the formeters with the values just read
+            if (readSettings) {
+                scriptform = readSettings;
+            }
+        } catch (e) {}
+    }
+
+    //We take the accounting "starting date" and "ending date" from the document. These will be used as default dates
+    var docStartDate = Banana.document.startPeriod();
+    var docEndDate = Banana.document.endPeriod();
+
+    //A dialog window is opened asking the user to insert the desired period. By default is the accounting period
+    var selectedDates = Banana.Ui.getPeriod("Period", docStartDate, docEndDate,
+        scriptform.selectionStartDate, scriptform.selectionEndDate, scriptform.selectionChecked);
+
+    //We take the values entered by the user and save them as "new default" values.
+    //This because the next time the script will be executed, the dialog window will contains the new values.
+    if (selectedDates) {
+        scriptform["selectionStartDate"] = selectedDates.startDate;
+        scriptform["selectionEndDate"] = selectedDates.endDate;
+        scriptform["selectionChecked"] = selectedDates.hasSelection;
+
+        //Save script settings
+        var formToString = JSON.stringify(scriptform);
+        var value = Banana.document.scriptSaveSettings(formToString);
+    } else {
+        //User clicked cancel
+        return;
+    }
+    return scriptform;
+}
+
+function getErrorMessage(errorId, lang) {
+    if (!lang)
+        lang = 'en';
+    switch (errorId) {
+        case "DEBIT_CREDIT_DIFFERENTS":
+            if (lang == 'it')
+                return "Il totale in Dare e quello in Avere sono differenti";
+            else if (lang == 'fr')
+                return "Le débit total et le crédit total sont différents";
+            else if (lang == 'de')
+                return "Gesamtsoll und Gesamtguthaben sind unterschiedlich";
+            else
+                return "Total debit and total credit are different";
+    }
+    return '';
+}
+
+function checkDebitCredit(sumDebit, sumCredit) {
+    var lan = getLang();
+    var msg = getErrorMessage(DEBIT_CREDIT_DIFFERENTS, "");
+    if (sumDebit, sumCredit) {
+        Banana.document.addMessage(msg, DEBIT_CREDIT_DIFFERENTS);
+    }
+}
+
+function getLang() {
+    var lang = 'en';
+    if (Banana.document)
+        lang = Banana.document.locale;
+    else if (Banana.application.locale)
+        lang = Banana.application.locale;
+    if (lang.length > 2)
+        lang = lang.substring(0, 2);
+    return lang;
+}
