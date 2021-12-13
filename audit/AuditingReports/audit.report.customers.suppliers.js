@@ -36,36 +36,32 @@ function exec(string) {
     printReport();
 }
 
-function getJournalTable(report, endDate) {
-    var journalTable = report.addTable('journalTable');
+function getCutAndSupTable(report, type) {
+    var cutAndSupTable = report.addTable('cutAndSupTable');
     //title table
-    journalTable.getCaption().addText("Journal at " + Banana.Converter.toLocaleDateFormat(endDate), "dateIndicator");
+    cutAndSupTable.getCaption().addText(type, "dateIndicator");
     //columns
-    journalTable.addColumn("Date").setStyleAttributes("width:10%", "tableHeaders");
-    journalTable.addColumn("Transaction Type").setStyleAttributes("width:15%", "tableHeaders");
-    journalTable.addColumn("Doc").setStyleAttributes("width:10%", "tableHeaders");
-    journalTable.addColumn("Description").setStyleAttributes("width:50%", "tableHeaders");
-    journalTable.addColumn("Vat Code").setStyleAttributes("width:15%", "tableHeaders");
-    journalTable.addColumn("Debit").setStyleAttributes("width:15%", "tableHeaders");
-    journalTable.addColumn("Credit").setStyleAttributes("width:15%", "tableHeaders");
-    journalTable.addColumn("Vat Taxable").setStyleAttributes("width:15%", "tableHeaders");
-    journalTable.addColumn("Vat Amount").setStyleAttributes("width:15%", "tableHeaders");
+    cutAndSupTable.addColumn("Account").setStyleAttributes("width:10%", "tableHeaders");
+    cutAndSupTable.addColumn("Customer").setStyleAttributes("width:20%", "tableHeaders");
+    cutAndSupTable.addColumn("Organisation").setStyleAttributes("width:20%", "tableHeaders");
+    cutAndSupTable.addColumn("Phone Numbers").setStyleAttributes("width:25%", "tableHeaders");
+    cutAndSupTable.addColumn("Email").setStyleAttributes("width:20%", "tableHeaders");
+    cutAndSupTable.addColumn("Address").setStyleAttributes("width:50%", "tableHeaders");
+    cutAndSupTable.addColumn("Country").setStyleAttributes("width:20%", "tableHeaders");
 
     //header
-    var tableHeader = journalTable.getHeader();
+    var tableHeader = cutAndSupTable.getHeader();
     var tableRow = tableHeader.addRow();
-    tableRow.addCell("Date", "tableHeaders");
-    tableRow.addCell("Transaction Type", "tableHeaders");
-    tableRow.addCell("Doc", "tableHeaders");
-    tableRow.addCell("Description", "tableHeaders"); //description of the vat code 
-    tableRow.addCell("Vat Code", "tableHeaders");
-    tableRow.addCell("Debit", "tableHeaders");
-    tableRow.addCell("Credit", "tableHeaders");
-    tableRow.addCell("Vat Taxable", "tableHeaders");
-    tableRow.addCell("Vat Amount", "tableHeaders");
+    tableRow.addCell("Account", "tableHeaders");
+    tableRow.addCell("Customer", "tableHeaders");
+    tableRow.addCell("Organisation", "tableHeaders");
+    tableRow.addCell("Phone Numbers", "tableHeaders");
+    tableRow.addCell("Email", "tableHeaders");
+    tableRow.addCell("Address", "tableHeaders");
+    tableRow.addCell("Country", "tableHeaders");
 
 
-    return journalTable;
+    return cutAndSupTable;
 }
 
 
@@ -80,10 +76,12 @@ function printReport() {
     report.addParagraph(" ", "");
 
     //Create a table for the report
-    var table = getJournalTable();
+    var customersTable = getCutAndSupTable(report, "Customers");
+    report.addPageBreak();
+    var suppliersTable = getCutAndSupTable(report, "Suppliers");
 
     /* 1. Print the Jorunal with the totals */
-    printJournal(table);
+    printTables(report, customersTable, suppliersTable);
 
     //Add a footer to the report
     addFooter(report);
@@ -93,38 +91,38 @@ function printReport() {
     Banana.Report.preview(report, stylesheet);
 }
 
-function printJournal(table) {
+function printTables(report, customersTable, suppliersTable) {
 
     var cutAndSup = getCustAndSup();
 
 
-    for (var op in journalOp) {
-        var operation = journalOp[op];
+    //add Customers
+    for (var c in cutAndSup.customers) {
+        var customer = cutAndSup.customers[c];
 
-        tableRow = table.addRow();
-        tableRow.addCell(Banana.Converter.toLocaleDateFormat(operation.date), "centredStyle");
-        tableRow.addCell(operation.type, "centredStyle");
-        tableRow.addCell(operation.doc, "centredStyle");
-        tableRow.addCell("", "", 6);
-        for (var row in operation.rows) {
-            var opRow = operation.rows[row];
-            tableRow = table.addRow();
-            tableRow.addCell("", "", 3);
-            tableRow.addCell(opRow.description, "textStyle");
-            tableRow.addCell(opRow.vatCode, "centredStyle");
-            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(opRow.debitAmount, "2", false), "amountStyle");
-            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(opRow.creditAmount, "2", false), "amountStyle");
-            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(opRow.vatTaxable, "2", false), "amountStyle");
-            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(opRow.vatAmount, "2", false), "amountStyle");
-            sumVatAmount = Banana.SDecimal.add(sumVatAmount, opRow.vatAmount);
-        }
+        tableRow = customersTable.addRow();
+        tableRow.addCell(customer.account, "centredStyle");
+        tableRow.addCell(customer.description, "centredStyle");
+        tableRow.addCell(customer.organization, "centredStyle");
+        tableRow.addCell("Phone: " + customer.phoneMain + "\n " + "Mobile: " + customer.phoneMobile, "centredStyle");
+        tableRow.addCell(customer.email, "centredStyle");
+        tableRow.addCell(customer.address, "centredStyle");
+        tableRow.addCell(customer.country, "centredStyle");
     }
 
-    //add totals
-    tableRow = table.addRow();
-    tableRow.addCell("Total", "sumStyle");
-    tableRow.addCell("", "", 7);
-    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(sumVatAmount, "2", false), "sumStyle");
+    //add suppliers
+    for (var c in cutAndSup.suppliers) {
+        var customer = cutAndSup.suppliers[c];
+
+        tableRow = suppliersTable.addRow();
+        tableRow.addCell(customer.account, "centredStyle");
+        tableRow.addCell(customer.description, "centredStyle");
+        tableRow.addCell(customer.organization, "centredStyle");
+        tableRow.addCell("Phone: " + customer.phoneMain + "\n " + "Mobile: " + customer.phoneMobile, "centredStyle");
+        tableRow.addCell(customer.email, "centredStyle");
+        tableRow.addCell(customer.address, "centredStyle");
+        tableRow.addCell(customer.country, "centredStyle");
+    }
 
 
 }
@@ -147,15 +145,15 @@ function getCustAndSup() {
 
         if (tRow.value("Account") && tRow.value("BClass") == "1" && section == "01") {
             var customer = {};
-            tableRow = table.addRow();
             customer.account = tRow.value("Account");
             customer.description = tRow.value("Description");
             customer.name = tRow.value("FirstName");
             customer.familyName = tRow.value("FamilyName");
-            customer.organization = tRow.value("OrganizationName");
-            customer.address = tRow.value("Street") + ", " + tRow.value("PostalCode") + " " + tRow.value("Locality");;
-            customer.country = tRow.value("Country") + ", " + tRow.value("CountryCode");
-            customer.phone = tRow.value("PhoneMain");
+            customer.organization = tRow.value("OrganisationName");
+            customer.address = tRow.value("Street") + " " + tRow.value("PostalCode") + " " + tRow.value("Locality");;
+            customer.country = tRow.value("Country") + " " + tRow.value("CountryCode");
+            customer.phoneMain = tRow.value("PhoneMain");
+            customer.phoneMobile = tRow.value("PhoneMobile");
             customer.email = tRow.value("EmailWork");
 
             elementsList.push(customer);
@@ -173,15 +171,15 @@ function getCustAndSup() {
 
         if (tRow.value("Account") && tRow.value("BClass") == "2" && section == "02") {
             var supplier = {};
-            tableRow = table.addRow();
             supplier.account = tRow.value("Account");
             supplier.description = tRow.value("Description");
             supplier.name = tRow.value("FirstName");
             supplier.familyName = tRow.value("FamilyName");
-            supplier.organization = tRow.value("OrganizationName");
-            supplier.address = tRow.value("Street") + ", " + tRow.value("PostalCode") + " " + tRow.value("Locality");;
-            supplier.country = tRow.value("Country") + ", " + tRow.value("CountryCode");
-            supplier.phone = tRow.value("PhoneMain");
+            supplier.organization = tRow.value("OrganisationName");
+            supplier.address = tRow.value("Street") + " " + tRow.value("PostalCode") + " " + tRow.value("Locality");;
+            supplier.country = tRow.value("Country") + " " + tRow.value("CountryCode");
+            supplier.phoneMain = tRow.value("PhoneMain");
+            supplier.phoneMobile = tRow.value("PhoneMobile");
             supplier.email = tRow.value("EmailWork");
 
             elementsList.push(supplier);
@@ -189,8 +187,6 @@ function getCustAndSup() {
     }
 
     CustAndSup.suppliers = elementsList;
-
-    Banana.Ui.showText(JSON.stringify(CustAndSup));
 
     return CustAndSup;
 
@@ -202,7 +198,7 @@ function addFooter(report) {
     var date = new Date();
     var d = Banana.Converter.toLocaleDateFormat(date);
     report.getFooter().addClass("footerStyle");
-    var versionLine = report.getFooter().addText(d + " - Journal - Page ", "description");
+    var versionLine = report.getFooter().addText(d + " - Customers and Suppliers - Page ", "description");
     report.getFooter().addFieldPageNr();
 }
 
