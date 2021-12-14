@@ -29,8 +29,11 @@
 //errors
 var DEBIT_CREDIT_DIFFERENTS = "DEBIT_CREDIT_DIFFERENTS";
 
+//user params defined in the settings dialog
+var additionalColumns=new AdditionalColumns();
+
 //Main function
-function exec(string) {
+function exec(inData, options) {
 
     //Check if we are on an opened document
     if (!Banana.document) {
@@ -56,6 +59,7 @@ function getGeneralLedgerTable(report, endDate) {
     journalTable.addColumn("Debit").setStyleAttributes("width:15%", "tableHeaders");
     journalTable.addColumn("Credit").setStyleAttributes("width:15%", "tableHeaders");
     journalTable.addColumn("Balance").setStyleAttributes("width:15%", "tableHeaders");
+
 
     //header
     var tableHeader = journalTable.getHeader();
@@ -107,7 +111,7 @@ function printGeneralLedger(table, startDate, endDate) {
 
     for (var a in accountData) {
         for (var t in accountData[a].transactions) {
-            var transaction = accountData.transactions[t]; //RIPRENDERE DALL ERRORE CHE DA QUIIIIIIII
+            var transaction = accountData[a].transactions[t];
             if (transaction.type == "6") //if total transaction
                 amountStyle = "operationTotalsStyle";
             else
@@ -118,7 +122,7 @@ function printGeneralLedger(table, startDate, endDate) {
             tableRow.addCell(transaction.type, "centredStyle");
             tableRow.addCell(transaction.doc, "centredStyle");
             tableRow.addCell(transaction.description, "textStyle");
-            tableRow.addCell(account.accountNr, "centredStyle");
+            tableRow.addCell(accountData[a].accountNr, "centredStyle");
             tableRow.addCell(Banana.Converter.toLocaleNumberFormat(transaction.debitAmount, "2", false), amountStyle);
             sumDebit = Banana.SDecimal.add(sumDebit, transaction.debitAmount);
             tableRow.addCell(Banana.Converter.toLocaleNumberFormat(transaction.creditAmount, "2", false), amountStyle);
@@ -174,7 +178,7 @@ function hasTransactions(transactions) {
 
     for (var t in transactions) {
         if (transactions[t].type !== "6")
-            return true; //to the first element we find that does not equal 6, we can already deduce that there is at least one registration
+            return true; //to the first element we find that does not equal 6, we can already deduce that there is at least one registration or the opening balance
         else
             return false;
     }
@@ -184,7 +188,7 @@ function hasTransactions(transactions) {
  * @param {*} account account id
  * @param {*} startDate 
  * @param {*} endDate 
- * @returns the transaction list for the given account
+ * @returns the transactions list for the given account
  */
 function getAccountTransactions(account, startDate, endDate) {
     var accountCardTable = Banana.document.currentCard(account, startDate, endDate);
@@ -192,40 +196,21 @@ function getAccountTransactions(account, startDate, endDate) {
     for (var i = 0; i < accountCardTable.rowCount; i++) {
         var tRow = accountCardTable.row(i);
         var trans = {};
-        trans = getTransactionFieldsByType(tRow);
+        trans.date = tRow.value('JDate');
+        trans.type = tRow.value('JOperationType');
+        trans.account = tRow.value('JAccount');
+        trans.doc = tRow.value('Doc');
+        trans.description = tRow.value('JDescription');
+        trans.debitAmount = tRow.value('JDebitAmount');
+        trans.creditAmount = tRow.value('JCreditAmount');
+        trans.balance = tRow.value('JBalance');
+
         accountTransactions.push(trans);
 
     }
 
     return accountTransactions;
 
-}
-
-/**
- * @param {*} tRow 
- * @returns the transactions fields for the given row
- */
-function getTransactionFieldsByType(tRow) {
-    var trans = {};
-    //operation type = total
-    if (tRow.value('JOperationType') == "6") {
-        trans.date = tRow.value('JDate');
-        trans.type = tRow.value('JOperationType');
-        trans.account = tRow.value('JAccount');
-        trans.debitAmount = tRow.value('JDebitAmount');
-        trans.creditAmount = tRow.value('JCreditAmount');
-    } else {
-        trans.date = tRow.value('JDate');
-        trans.type = tRow.value('JOperationType'); //0=OPERATIONTYPE_NONE,1=OPERATIONTYPE_OPENING,2=OPERATIONTYPE_CARRYFORWARD,3=OPERATIONTYPE_TRANSACTION, 21=OPERATIONTYPE_INVOICESETTLEMENT
-        trans.doc = tRow.value('Doc');
-        trans.description = tRow.value('Description');
-        trans.account = tRow.value('JAccount');
-        trans.debitAmount = tRow.value('JDebitAmount');
-        trans.creditAmount = tRow.value('JCreditAmount');
-        trans.balance = tRow.value('JBalance');
-    }
-
-    return trans;
 }
 
 function getAccountsList() {
@@ -292,7 +277,7 @@ function getPeriodSettings() {
     };
 
     //Read script settings
-    var data = Banana.document.scriptReadSettings();
+    var data = Banana.document.getScriptSettings();
 
     //Check if there are previously saved settings and read them
     if (data.length > 0) {
@@ -323,7 +308,7 @@ function getPeriodSettings() {
 
         //Save script settings
         var formToString = JSON.stringify(scriptform);
-        var value = Banana.document.scriptSaveSettings(formToString);
+        var value = Banana.document.setScriptSettings(formToString);
     } else {
         //User clicked cancel
         return;
