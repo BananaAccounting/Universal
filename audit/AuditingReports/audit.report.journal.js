@@ -110,17 +110,20 @@ function printJournal(table, startDate, endDate) {
     for (var op in journalOp) {
         var operation = journalOp[op];
         var opDebit = "";
+        var firstRow=true;//to fix with a better method
 
         var opCredit = "";
         tableRow = table.addRow();
         tableRow.addCell(Banana.Converter.toLocaleDateFormat(operation.date), "centredStyle");
         tableRow.addCell(operation.type, "centredStyle");
         tableRow.addCell(operation.doc, "centredStyle");
-        tableRow.addCell("", "", 5);
         for (var row in operation.rows) {
             var opRow = operation.rows[row];
-            tableRow = table.addRow();
-            tableRow.addCell("", "", 3);
+            //we want the first row on the same line
+            if(!firstRow){
+                tableRow = table.addRow();
+                tableRow.addCell("", "", 3);
+            }
             tableRow.addCell(opRow.description, "textStyle");
             tableRow.addCell(opRow.account, "centredStyle");
             tableRow.addCell(Banana.Converter.toLocaleNumberFormat(opRow.debitAmount, "2", false), "amountStyle");
@@ -128,6 +131,7 @@ function printJournal(table, startDate, endDate) {
             tableRow.addCell(Banana.Converter.toLocaleNumberFormat(opRow.creditAmount, "2", false), "amountStyle");
             opCredit = Banana.SDecimal.add(opCredit, opRow.creditAmount);
             tableRow.addCell(Banana.Converter.toLocaleNumberFormat(opRow.amount, "2", false), "amountStyle");
+            firstRow=false;
         }
         //add the total debit and credit
         tableRow = table.addRow();
@@ -412,7 +416,7 @@ function getErrorMessage(errorId, lang) {
 function checkDebitCredit(sumDebit, sumCredit) {
     var lan = getLang();
     var msg = getErrorMessage(DEBIT_CREDIT_DIFFERENTS, "");
-    if (sumDebit, sumCredit) {
+    if (sumDebit !=sumCredit) {
         Banana.document.addMessage(msg, DEBIT_CREDIT_DIFFERENTS);
     }
 }

@@ -103,16 +103,19 @@ function printJournal(table, startDate, endDate) {
 
     for (var op in journalOp) {
         var operation = journalOp[op];
+        var firstRow=true;//to fix with a better method
 
         tableRow = table.addRow();
         tableRow.addCell(Banana.Converter.toLocaleDateFormat(operation.date), "centredStyle");
         tableRow.addCell(operation.type, "centredStyle");
         tableRow.addCell(operation.doc, "centredStyle");
-        tableRow.addCell("", "", 6);
         for (var row in operation.rows) {
             var opRow = operation.rows[row];
-            tableRow = table.addRow();
-            tableRow.addCell("", "", 3);
+            //we want the first row on the same line
+            if(!firstRow){
+                tableRow = table.addRow();
+                tableRow.addCell("", "", 3);
+            }
             tableRow.addCell(opRow.description, "textStyle");
             tableRow.addCell(opRow.vatCode, "centredStyle");
             tableRow.addCell(Banana.Converter.toLocaleNumberFormat(opRow.debitAmount, "2", false), "amountStyle");
@@ -120,6 +123,8 @@ function printJournal(table, startDate, endDate) {
             tableRow.addCell(Banana.Converter.toLocaleNumberFormat(opRow.vatTaxable, "2", false), "amountStyle");
             tableRow.addCell(Banana.Converter.toLocaleNumberFormat(opRow.vatAmount, "2", false), "amountStyle");
             sumVatAmount = Banana.SDecimal.add(sumVatAmount, opRow.vatAmount);
+
+            firstRow=false;
         }
     }
 
