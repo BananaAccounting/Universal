@@ -43,11 +43,16 @@ if(savedScriptSettings)
  */
 function getAdditionalColumns(savedScriptSettings) {
     var strColumns = "";
+    var columnsList=[];
     savedScriptSettings = JSON.parse(savedScriptSettings);
 
     //take the columns defined for the general ledger
     strColumns = savedScriptSettings.generalLedger_xmlColumnsName;
-    var columnsList = strColumns.split(";");
+
+    //Only call the split method if the string is not empty.
+    if(strColumns)
+        columnsList = strColumns.split(";");
+
     return columnsList
 }
 
