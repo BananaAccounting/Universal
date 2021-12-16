@@ -25,6 +25,30 @@
 // @timeout = -1
 
 
+//additional columns
+var savedScriptSettings = Banana.document.getScriptSettings("ch.banana.audit.settings"); //Format example: Notes;DebitAccount;CreditAccount...
+var ADDITIONAL_COLUMNS_LIST = [];
+if (savedScriptSettings)
+    ADDITIONAL_COLUMNS_LIST = getAdditionalColumns(savedScriptSettings);
+
+
+function getAdditionalColumns(savedScriptSettings) {
+    var strColumns = "";
+    var columnsList = [];
+    savedScriptSettings = JSON.parse(savedScriptSettings);
+
+    //take the columns defined for the general ledger
+    strColumns = savedScriptSettings.vatJournal_xmlColumnsName;
+
+    //Only call the split method if the string is not empty.
+    if (strColumns)
+        columnsList = strColumns.split(";");
+
+    return columnsList
+}
+
+
+
 //Main function
 function exec(string) {
 
@@ -39,10 +63,10 @@ function exec(string) {
     }
 }
 
-function getJournalTable(report, endDate) {
+function getJournalTable(report, startDate, endDate) {
     var journalTable = report.addTable('journalTable');
     //title table
-    journalTable.getCaption().addText("Journal at " + Banana.Converter.toLocaleDateFormat(endDate), "dateIndicator");
+    journalTable.getCaption().addText("VAT Journal for the period " + Banana.Converter.toLocaleDateFormat(startDate) + " - " + Banana.Converter.toLocaleDateFormat(endDate), "dateIndicator");
     //columns
     journalTable.addColumn("Date").setStyleAttributes("width:10%", "tableHeaders");
     journalTable.addColumn("Transaction Type").setStyleAttributes("width:15%", "tableHeaders");
@@ -53,6 +77,10 @@ function getJournalTable(report, endDate) {
     journalTable.addColumn("Credit").setStyleAttributes("width:15%", "tableHeaders");
     journalTable.addColumn("Vat Taxable").setStyleAttributes("width:15%", "tableHeaders");
     journalTable.addColumn("Vat Amount").setStyleAttributes("width:15%", "tableHeaders");
+    //add the additional columns inserted by the user in the settings dialog
+    for (var i = 0; i < ADDITIONAL_COLUMNS_LIST.length; i++) {
+        journalTable.addColumn(ADDITIONAL_COLUMNS_LIST[i]).setStyleAttributes("width:15%", "tableHeaders");
+    }
 
     //header
     var tableHeader = journalTable.getHeader();
@@ -66,6 +94,10 @@ function getJournalTable(report, endDate) {
     tableRow.addCell("Credit", "tableHeaders");
     tableRow.addCell("Vat Taxable", "tableHeaders");
     tableRow.addCell("Vat Amount", "tableHeaders");
+    //add the additional columns inserted by the user in the settings dialog
+    for (var i = 0; i < ADDITIONAL_COLUMNS_LIST.length; i++) {
+        tableRow.addCell(ADDITIONAL_COLUMNS_LIST[i], "tableHeaders");
+    }
 
 
     return journalTable;
@@ -79,11 +111,10 @@ function printReport(startDate, endDate) {
     var report = Banana.Report.newReport("Vat Journal");
 
     //Add a title
-    report.addParagraph("Vat Journal", "heading1");
-    report.addParagraph(" ", "");
+    addHeader(report);
 
     //Create a table for the report
-    var table = getJournalTable(report, endDate);
+    var table = getJournalTable(report, startDate, endDate);
 
     /* 1. Print the Jorunal with the totals */
     printJournal(table, startDate, endDate);
@@ -103,7 +134,7 @@ function printJournal(table, startDate, endDate) {
 
     for (var op in journalOp) {
         var operation = journalOp[op];
-        var firstRow=true;//to fix with a better method
+        var firstRow = true; //to fix with a better method
 
         tableRow = table.addRow();
         tableRow.addCell(Banana.Converter.toLocaleDateFormat(operation.date), "centredStyle");
@@ -112,7 +143,7 @@ function printJournal(table, startDate, endDate) {
         for (var row in operation.rows) {
             var opRow = operation.rows[row];
             //we want the first row on the same line
-            if(!firstRow){
+            if (!firstRow) {
                 tableRow = table.addRow();
                 tableRow.addCell("", "", 3);
             }
@@ -123,8 +154,11 @@ function printJournal(table, startDate, endDate) {
             tableRow.addCell(Banana.Converter.toLocaleNumberFormat(opRow.vatTaxable, "2", false), "amountStyle");
             tableRow.addCell(Banana.Converter.toLocaleNumberFormat(opRow.vatAmount, "2", false), "amountStyle");
             sumVatAmount = Banana.SDecimal.add(sumVatAmount, opRow.vatAmount);
+            for (var i = 0; i < ADDITIONAL_COLUMNS_LIST.length; i++) {
+                tableRow.addCell(opRow[ADDITIONAL_COLUMNS_LIST[i]], "centredStyle");
+            }
 
-            firstRow=false;
+            firstRow = false;
         }
     }
 
@@ -162,6 +196,11 @@ function getJournalRows(startDate, endDate) {
             trRow.jCreditAmount = tRow.value('JCreditAmount');
             trRow.jVatTaxable = tRow.value('JVatTaxable');
             trRow.jVatAmount = tRow.value('JAmount');
+            //we save also the values of additional columns
+            for (var j = 0; j < ADDITIONAL_COLUMNS_LIST.length; j++) {
+                var index = ADDITIONAL_COLUMNS_LIST[j];
+                trRow[index] = tRow.value(ADDITIONAL_COLUMNS_LIST[j]);
+            }
 
             if (trRow)
                 journalRows.push(trRow);
@@ -274,6 +313,10 @@ function getOperationData_rows(id, jRows) {
             trRow.creditAmount = jRows[row].jCreditAmount;
             trRow.vatTaxable = jRows[row].jVatTaxable;
             trRow.vatAmount = jRows[row].jVatAmount;
+            for (var j = 0; j < ADDITIONAL_COLUMNS_LIST.length; j++) {
+                var index = ADDITIONAL_COLUMNS_LIST[j];
+                trRow[index] = jRows[row][ADDITIONAL_COLUMNS_LIST[j]];
+            }
             rows.push(trRow);
 
         }
@@ -299,6 +342,50 @@ function addFooter(report) {
     report.getFooter().addClass("footerStyle");
     var versionLine = report.getFooter().addText(d + " - Journal - Page ", "description");
     report.getFooter().addFieldPageNr();
+}
+
+function addHeader(report) {
+    docInfo = getDocumentInfo();
+    var headerParagraph = report.getHeader().addSection();
+    headerParagraph.addParagraph("VAT Journal", "heading1");
+    headerParagraph.addParagraph("", "");
+    headerParagraph.addParagraph(docInfo.company, "");
+    headerParagraph.addParagraph(docInfo.address, "");
+    headerParagraph.addParagraph(docInfo.zip + " " + docInfo.city, "");
+    headerParagraph.addParagraph(docInfo.vatNumber, "");
+    headerParagraph.addParagraph("", "");
+    headerParagraph.addParagraph("", "");
+    headerParagraph.addParagraph("", "");
+}
+
+/**
+ * return the document info
+ * @returns 
+ */
+function getDocumentInfo() {
+
+    var documentInfo = {};
+    documentInfo.company = "";
+    documentInfo.address = "";
+    documentInfo.zip = "";
+    documentInfo.city = "";
+    documentInfo.vatNumber = "";
+
+
+    if (Banana.document) {
+        if (Banana.document.info("AccountingDataBase", "Company"));
+        documentInfo.company = Banana.document.info("AccountingDataBase", "Company");
+        if (Banana.document.info("AccountingDataBase", "Address1"))
+            documentInfo.address = Banana.document.info("AccountingDataBase", "Address1");
+        if (Banana.document.info("AccountingDataBase", "Zip"))
+            documentInfo.zip = Banana.document.info("AccountingDataBase", "Zip");
+        if (Banana.document.info("AccountingDataBase", "City"))
+            documentInfo.city = Banana.document.info("AccountingDataBase", "City");
+        if (Banana.document.info("AccountingDataBase", "VatNumber"))
+            documentInfo.vatNumber = Banana.document.info("AccountingDataBase", "VatNumber");
+    }
+
+    return documentInfo;
 }
 
 

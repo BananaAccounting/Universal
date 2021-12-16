@@ -62,12 +62,6 @@ function convertParam(userParam) {
     currentParam.title = "VAT Journal";
     currentParam.editable = false;
 
-    //create the Trial Balance section
-    var currentParam = {};
-    currentParam.name = 'trialbalance';
-    currentParam.title = "Trial Balance";
-    currentParam.editable = false;
-
     //customers and suppliers
     var currentParam = {};
     currentParam.name = 'customersandsuppliers';
@@ -116,31 +110,17 @@ function convertParam(userParam) {
     }
     convertedParam.data.push(currentParam);
 
-    //Trial Balance additional columns
-    var currentParam = {};
-    currentParam.name = 'trialbalance';
-    currentParam.title = "Trial Balance";
-    currentParam.type = 'string';
-    currentParam.value = userParam.trialBalance_xmlColumnsName ? userParam.trialBalance_xmlColumnsName : '';
-    currentParam.defaultvalue = defaultParam.trialBalance_xmlColumnsName;
-    currentParam.tooltip = "indicates the xml name of the columns you want to add to this report"
-    currentParam.parentObject = 'trialbalance';
-    currentParam.readValue = function() {
-        userParam.trialBalance_xmlColumnsName = this.value;
-    }
-    convertedParam.data.push(currentParam);
-
     //Customers and Suppliers additional columns
     var currentParam = {};
     currentParam.name = 'customersandSuppliers';
     currentParam.title = "Customers and Suppliers";
     currentParam.type = 'string';
-    currentParam.value = userParam.trialBalance_xmlColumnsName ? userParam.trialBalance_xmlColumnsName : '';
-    currentParam.defaultvalue = defaultParam.trialBalance_xmlColumnsName;
+    currentParam.value = userParam.customersAndSuppliers_xmlColumnsName ? userParam.customersAndSuppliers_xmlColumnsName : '';
+    currentParam.defaultvalue = defaultParam.customersAndSuppliers_xmlColumnsName;
     currentParam.tooltip = "indicates the xml name of the columns you want to add to this report"
     currentParam.parentObject = 'customersandsuppliers';
     currentParam.readValue = function() {
-        userParam.trialBalance_xmlColumnsName = this.value;
+        userParam.customersAndSuppliers_xmlColumnsName = this.value;
     }
     convertedParam.data.push(currentParam);
 
