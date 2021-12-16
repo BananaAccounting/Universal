@@ -32,6 +32,27 @@
 //errors
 var DEBIT_CREDIT_DIFFERENTS = "DEBIT_CREDIT_DIFFERENTS";
 
+//additional columns
+var savedScriptSettings = Banana.document.getScriptSettings("ch.banana.audit.settings"); //Format example: Notes;DebitAccount;CreditAccount...
+var ADDITIONAL_COLUMNS_LIST = [];
+if(savedScriptSettings)
+    ADDITIONAL_COLUMNS_LIST=getAdditionalColumns(savedScriptSettings);
+
+/**
+ * Takes the string with the name of the columns and transforms it into an array
+ * @param {*} getAdditionalColumns_formatted 
+ * @returns an array with the additionalcolumns
+ */
+function getAdditionalColumns(savedScriptSettings) {
+    var strColumns = "";
+    savedScriptSettings = JSON.parse(savedScriptSettings);
+
+    //take the columns defined for the general ledger
+    strColumns = savedScriptSettings.journal_xmlColumnsName;
+    var columnsList = strColumns.split(";");
+    return columnsList
+}
+
 //Main function
 function exec(string) {
 
@@ -59,6 +80,10 @@ function getJournalTable(report, endDate) {
     journalTable.addColumn("Debit").setStyleAttributes("width:15%", "tableHeaders");
     journalTable.addColumn("Credit").setStyleAttributes("width:15%", "tableHeaders");
     journalTable.addColumn("Amount").setStyleAttributes("width:15%", "tableHeaders");
+    //add the additional columns inserted by the user in the settings dialog
+    for (var i = 0; i < ADDITIONAL_COLUMNS_LIST.length; i++) {
+        journalTable.addColumn(ADDITIONAL_COLUMNS_LIST[i]).setStyleAttributes("width:15%", "tableHeaders");
+    }
 
     //header
     var tableHeader = journalTable.getHeader();
@@ -71,6 +96,10 @@ function getJournalTable(report, endDate) {
     tableRow.addCell("Debit", "tableHeaders");
     tableRow.addCell("Credit", "tableHeaders");
     tableRow.addCell("Amount", "tableHeaders");
+    //add the additional columns inserted by the user in the settings dialog
+    for (var i = 0; i < ADDITIONAL_COLUMNS_LIST.length; i++) {
+        tableRow.addCell(ADDITIONAL_COLUMNS_LIST[i], "tableHeaders");
+    }
 
 
     return journalTable;
@@ -131,6 +160,10 @@ function printJournal(table, startDate, endDate) {
             tableRow.addCell(Banana.Converter.toLocaleNumberFormat(opRow.creditAmount, "2", false), "amountStyle");
             opCredit = Banana.SDecimal.add(opCredit, opRow.creditAmount);
             tableRow.addCell(Banana.Converter.toLocaleNumberFormat(opRow.amount, "2", false), "amountStyle");
+            //add the additional columns inserted by the user in the settings dialog
+            for (var i = 0; i < ADDITIONAL_COLUMNS_LIST.length; i++) {
+                tableRow.addCell(opRow[ADDITIONAL_COLUMNS_LIST[i]], "centredStyle");
+            }
             firstRow=false;
         }
         //add the total debit and credit
@@ -178,6 +211,13 @@ function getJournalRows(startDate, endDate) {
             trRow.jDebitAmount = tRow.value('JDebitAmount');
             trRow.jCreditAmount = tRow.value('JCreditAmount');
             trRow.JAmount = tRow.value('JAmount');
+
+            //we save also the values of additional columns
+            for (var j = 0; j < ADDITIONAL_COLUMNS_LIST.length; j++) {
+                var index=ADDITIONAL_COLUMNS_LIST[j];
+                Banana.console.debug(ADDITIONAL_COLUMNS_LIST[j]);
+                trRow[index]=tRow.value(ADDITIONAL_COLUMNS_LIST[j]);
+            }
 
             if (trRow)
                 journalRows.push(trRow);
@@ -357,7 +397,7 @@ function getPeriodSettings() {
     };
 
     //Read script settings
-    var data = Banana.document.scriptReadSettings();
+    var data = Banana.document.getScriptSettings();
 
     //Check if there are previously saved settings and read them
     if (data.length > 0) {
@@ -388,7 +428,7 @@ function getPeriodSettings() {
 
         //Save script settings
         var formToString = JSON.stringify(scriptform);
-        var value = Banana.document.scriptSaveSettings(formToString);
+        var value = Banana.document.setScriptSettings(formToString);
     } else {
         //User clicked cancel
         return;
