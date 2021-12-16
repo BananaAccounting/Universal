@@ -35,24 +35,24 @@ var DEBIT_CREDIT_DIFFERENTS = "DEBIT_CREDIT_DIFFERENTS";
 //additional columns
 var savedScriptSettings = Banana.document.getScriptSettings("ch.banana.audit.settings"); //Format example: Notes;DebitAccount;CreditAccount...
 var ADDITIONAL_COLUMNS_LIST = [];
-if(savedScriptSettings)
-    ADDITIONAL_COLUMNS_LIST=getAdditionalColumns(savedScriptSettings);
+if (savedScriptSettings)
+    ADDITIONAL_COLUMNS_LIST = getAdditionalColumns(savedScriptSettings);
 
 /**
  * Takes the string with the name of the columns and transforms it into an array
  * @param {*} getAdditionalColumns_formatted 
  * @returns an array with the additionalcolumns
  */
- function getAdditionalColumns(savedScriptSettings) {
+function getAdditionalColumns(savedScriptSettings) {
     var strColumns = "";
-    var columnsList=[];
+    var columnsList = [];
     savedScriptSettings = JSON.parse(savedScriptSettings);
 
     //take the columns defined for the general ledger
     strColumns = savedScriptSettings.journal_xmlColumnsName;
 
     //Only call the split method if the string is not empty.
-    if(strColumns)
+    if (strColumns)
         columnsList = strColumns.split(";");
 
     return columnsList
@@ -72,10 +72,10 @@ function exec(string) {
     }
 }
 
-function getJournalTable(report, endDate) {
+function getJournalTable(report, startDate, endDate) {
     var journalTable = report.addTable('journalTable');
     //title table
-    journalTable.getCaption().addText("Journal at " + Banana.Converter.toLocaleDateFormat(endDate), "dateIndicator");
+    journalTable.getCaption().addText("Journal for the period " + Banana.Converter.toLocaleDateFormat(startDate) + " - " + Banana.Converter.toLocaleDateFormat(endDate), "dateIndicator");
     //columns
     journalTable.addColumn("Date").setStyleAttributes("width:10%", "tableHeaders");
     journalTable.addColumn("Transaction Type").setStyleAttributes("width:20%", "tableHeaders");
@@ -118,11 +118,10 @@ function printReport(startDate, endDate) {
     var report = Banana.Report.newReport("Journal Balance");
 
     //Add a title
-    report.addParagraph("Journal", "heading1");
-    report.addParagraph(" ", "");
+    addHeader(report);
 
     //Create a table for the report
-    var table = getJournalTable(report, endDate);
+    var table = getJournalTable(report, startDate, endDate);
 
     /* 1. Print the Jorunal with the totals */
     printJournal(table, startDate, endDate);
@@ -144,7 +143,7 @@ function printJournal(table, startDate, endDate) {
     for (var op in journalOp) {
         var operation = journalOp[op];
         var opDebit = "";
-        var firstRow=true;//to fix with a better method
+        var firstRow = true; //to fix with a better method
 
         var opCredit = "";
         tableRow = table.addRow();
@@ -154,7 +153,7 @@ function printJournal(table, startDate, endDate) {
         for (var row in operation.rows) {
             var opRow = operation.rows[row];
             //we want the first row on the same line
-            if(!firstRow){
+            if (!firstRow) {
                 tableRow = table.addRow();
                 tableRow.addCell("", "", 3);
             }
@@ -169,7 +168,7 @@ function printJournal(table, startDate, endDate) {
             for (var i = 0; i < ADDITIONAL_COLUMNS_LIST.length; i++) {
                 tableRow.addCell(opRow[ADDITIONAL_COLUMNS_LIST[i]], "centredStyle");
             }
-            firstRow=false;
+            firstRow = false;
         }
         //add the total debit and credit
         tableRow = table.addRow();
@@ -219,9 +218,8 @@ function getJournalRows(startDate, endDate) {
 
             //we save also the values of additional columns
             for (var j = 0; j < ADDITIONAL_COLUMNS_LIST.length; j++) {
-                var index=ADDITIONAL_COLUMNS_LIST[j];
-                Banana.console.debug(ADDITIONAL_COLUMNS_LIST[j]);
-                trRow[index]=tRow.value(ADDITIONAL_COLUMNS_LIST[j]);
+                var index = ADDITIONAL_COLUMNS_LIST[j];
+                trRow[index] = tRow.value(ADDITIONAL_COLUMNS_LIST[j]);
             }
 
             if (trRow)
@@ -336,6 +334,10 @@ function getOperationData_rows(id, jRows) {
             trRow.debitAmount = jRows[row].jDebitAmount;
             trRow.creditAmount = jRows[row].jCreditAmount;
             trRow.amount = jRows[row].JAmount;
+            for (var j = 0; j < ADDITIONAL_COLUMNS_LIST.length; j++) {
+                var index = ADDITIONAL_COLUMNS_LIST[j];
+                trRow[index] = jRows[row][ADDITIONAL_COLUMNS_LIST[j]];
+            }
             rows.push(trRow);
 
             prDescription = jRows[row].trDescription;
@@ -364,6 +366,20 @@ function addFooter(report) {
     report.getFooter().addFieldPageNr();
 }
 
+function addHeader(report) {
+    docInfo = getDocumentInfo();
+    var headerParagraph = report.getHeader().addSection();
+    headerParagraph.addParagraph("Journal", "heading1");
+    headerParagraph.addParagraph("", "");
+    headerParagraph.addParagraph(docInfo.company, "");
+    headerParagraph.addParagraph(docInfo.address, "");
+    headerParagraph.addParagraph(docInfo.zip + " " + docInfo.city, "");
+    headerParagraph.addParagraph(docInfo.vatNumber, "");
+    headerParagraph.addParagraph("", "");
+    headerParagraph.addParagraph("", "");
+    headerParagraph.addParagraph("", "");
+}
+
 
 /**
  * Defines the style for the report
@@ -386,6 +402,37 @@ function getReportStyle() {
     stylesheet.parse(textCSS);
 
     return stylesheet;
+}
+
+
+/**
+ * return the document info
+ * @returns 
+ */
+function getDocumentInfo() {
+
+    var documentInfo = {};
+    documentInfo.company = "";
+    documentInfo.address = "";
+    documentInfo.zip = "";
+    documentInfo.city = "";
+    documentInfo.vatNumber = "";
+
+
+    if (Banana.document) {
+        if (Banana.document.info("AccountingDataBase", "Company"));
+        documentInfo.company = Banana.document.info("AccountingDataBase", "Company");
+        if (Banana.document.info("AccountingDataBase", "Address1"))
+            documentInfo.address = Banana.document.info("AccountingDataBase", "Address1");
+        if (Banana.document.info("AccountingDataBase", "Zip"))
+            documentInfo.zip = Banana.document.info("AccountingDataBase", "Zip");
+        if (Banana.document.info("AccountingDataBase", "City"))
+            documentInfo.city = Banana.document.info("AccountingDataBase", "City");
+        if (Banana.document.info("AccountingDataBase", "VatNumber"))
+            documentInfo.vatNumber = Banana.document.info("AccountingDataBase", "VatNumber");
+    }
+
+    return documentInfo;
 }
 
 
@@ -461,7 +508,7 @@ function getErrorMessage(errorId, lang) {
 function checkDebitCredit(sumDebit, sumCredit) {
     var lan = getLang();
     var msg = getErrorMessage(DEBIT_CREDIT_DIFFERENTS, "");
-    if (sumDebit !=sumCredit) {
+    if (sumDebit != sumCredit) {
         Banana.document.addMessage(msg, DEBIT_CREDIT_DIFFERENTS);
     }
 }

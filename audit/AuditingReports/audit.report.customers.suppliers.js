@@ -25,6 +25,28 @@
 // @timeout = -1
 
 
+//additional columns
+var savedScriptSettings = Banana.document.getScriptSettings("ch.banana.audit.settings"); //Format example: Notes;DebitAccount;CreditAccount...
+var ADDITIONAL_COLUMNS_LIST = [];
+if (savedScriptSettings)
+    ADDITIONAL_COLUMNS_LIST = getAdditionalColumns(savedScriptSettings);
+
+
+function getAdditionalColumns(savedScriptSettings) {
+    var strColumns = "";
+    var columnsList = [];
+    savedScriptSettings = JSON.parse(savedScriptSettings);
+
+    //take the columns defined for the general ledger
+    strColumns = savedScriptSettings.customersAndSuppliers_xmlColumnsName;
+
+    //Only call the split method if the string is not empty.
+    if (strColumns)
+        columnsList = strColumns.split(";");
+
+    return columnsList
+}
+
 //Main function
 function exec(string) {
 
@@ -39,7 +61,7 @@ function exec(string) {
 function getCutAndSupTable(report, type) {
     var cutAndSupTable = report.addTable('cutAndSupTable');
     //title table
-    cutAndSupTable.getCaption().addText(type, "dateIndicator");
+    cutAndSupTable.getCaption().addText(type);
     //columns
     cutAndSupTable.addColumn("Account").setStyleAttributes("width:10%", "tableHeaders");
     cutAndSupTable.addColumn("Customer").setStyleAttributes("width:20%", "tableHeaders");
@@ -48,6 +70,9 @@ function getCutAndSupTable(report, type) {
     cutAndSupTable.addColumn("Email").setStyleAttributes("width:20%", "tableHeaders");
     cutAndSupTable.addColumn("Address").setStyleAttributes("width:50%", "tableHeaders");
     cutAndSupTable.addColumn("Country").setStyleAttributes("width:20%", "tableHeaders");
+    for (var i = 0; i < ADDITIONAL_COLUMNS_LIST.length; i++) {
+        cutAndSupTable.addColumn(ADDITIONAL_COLUMNS_LIST[i]).setStyleAttributes("width:15%", "tableHeaders");
+    }
 
     //header
     var tableHeader = cutAndSupTable.getHeader();
@@ -59,6 +84,10 @@ function getCutAndSupTable(report, type) {
     tableRow.addCell("Email", "tableHeaders");
     tableRow.addCell("Address", "tableHeaders");
     tableRow.addCell("Country", "tableHeaders");
+    //add the additional columns inserted by the user in the settings dialog
+    for (var i = 0; i < ADDITIONAL_COLUMNS_LIST.length; i++) {
+        tableRow.addCell(ADDITIONAL_COLUMNS_LIST[i], "tableHeaders");
+    }
 
 
     return cutAndSupTable;
@@ -72,8 +101,7 @@ function printReport() {
     var report = Banana.Report.newReport("Customers and Suppliers");
 
     //Add a title
-    report.addParagraph("Customers and Suppliers", "heading1");
-    report.addParagraph(" ", "");
+    addHeader(report)
 
     //Create a table for the report
     var customersTable = getCutAndSupTable(report, "Customers");
@@ -109,6 +137,11 @@ function printTables(report, customersTable, suppliersTable) {
         tableRow.addCell(customer.email, "centredStyle");
         tableRow.addCell(customer.address, "centredStyle");
         tableRow.addCell(customer.countryInfo, "centredStyle");
+        //add the additional columns inserted by the user in the settings dialog
+        for (var i = 0; i < ADDITIONAL_COLUMNS_LIST.length; i++) {
+            tableRow.addCell(customer[ADDITIONAL_COLUMNS_LIST[i]], "centredStyle");
+        }
+
     }
 
     //add suppliers
@@ -123,6 +156,10 @@ function printTables(report, customersTable, suppliersTable) {
         tableRow.addCell(supplier.email, "centredStyle");
         tableRow.addCell(supplier.address, "centredStyle");
         tableRow.addCell(supplier.countryInfo, "centredStyle");
+        //add the additional columns inserted by the user in the settings dialog
+        for (var i = 0; i < ADDITIONAL_COLUMNS_LIST.length; i++) {
+            tableRow.addCell(supplier[ADDITIONAL_COLUMNS_LIST[i]], "centredStyle");
+        }
     }
 
 
@@ -198,6 +235,12 @@ function getCustAndSup(bClass, section) {
                 phone += "\n" + "Mobile: " + phoneMobile;
             cutsup.phone = phone;
 
+            //we save also the values of additional columns
+            for (var j = 0; j < ADDITIONAL_COLUMNS_LIST.length; j++) {
+                var index = ADDITIONAL_COLUMNS_LIST[j];
+                cutsup[index] = tRow.value(ADDITIONAL_COLUMNS_LIST[j]);
+            }
+
             elementsList.push(cutsup);
         }
 
@@ -213,6 +256,50 @@ function addFooter(report) {
     report.getFooter().addClass("footerStyle");
     var versionLine = report.getFooter().addText(d + " - Customers and Suppliers - Page ", "description");
     report.getFooter().addFieldPageNr();
+}
+
+function addHeader(report) {
+    docInfo = getDocumentInfo();
+    var headerParagraph = report.getHeader().addSection();
+    headerParagraph.addParagraph("Customers and Suppliers", "heading1");
+    headerParagraph.addParagraph("", "");
+    headerParagraph.addParagraph(docInfo.company, "");
+    headerParagraph.addParagraph(docInfo.address, "");
+    headerParagraph.addParagraph(docInfo.zip + " " + docInfo.city, "");
+    headerParagraph.addParagraph(docInfo.vatNumber, "");
+    headerParagraph.addParagraph("", "");
+    headerParagraph.addParagraph("", "");
+    headerParagraph.addParagraph("", "");
+}
+
+/**
+ * return the document info
+ * @returns 
+ */
+function getDocumentInfo() {
+
+    var documentInfo = {};
+    documentInfo.company = "";
+    documentInfo.address = "";
+    documentInfo.zip = "";
+    documentInfo.city = "";
+    documentInfo.vatNumber = "";
+
+
+    if (Banana.document) {
+        if (Banana.document.info("AccountingDataBase", "Company"));
+        documentInfo.company = Banana.document.info("AccountingDataBase", "Company");
+        if (Banana.document.info("AccountingDataBase", "Address1"))
+            documentInfo.address = Banana.document.info("AccountingDataBase", "Address1");
+        if (Banana.document.info("AccountingDataBase", "Zip"))
+            documentInfo.zip = Banana.document.info("AccountingDataBase", "Zip");
+        if (Banana.document.info("AccountingDataBase", "City"))
+            documentInfo.city = Banana.document.info("AccountingDataBase", "City");
+        if (Banana.document.info("AccountingDataBase", "VatNumber"))
+            documentInfo.vatNumber = Banana.document.info("AccountingDataBase", "VatNumber");
+    }
+
+    return documentInfo;
 }
 
 
