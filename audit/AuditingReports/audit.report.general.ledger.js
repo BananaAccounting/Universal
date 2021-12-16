@@ -29,8 +29,27 @@
 //errors
 var DEBIT_CREDIT_DIFFERENTS = "DEBIT_CREDIT_DIFFERENTS";
 
-//user params defined in the settings dialog
-var additionalColumns=new AdditionalColumns();
+//additional columns
+var savedScriptSettings = Banana.document.getScriptSettings("ch.banana.audit.settings"); //Format example: Notes;DebitAccount;CreditAccount...
+var ADDITIONAL_COLUMNS_LIST = [];
+if(savedScriptSettings)
+    ADDITIONAL_COLUMNS_LIST=getAdditionalColumns(savedScriptSettings);
+
+
+/**
+ * Takes the string with the name of the columns and transforms it into an array
+ * @param {*} getAdditionalColumns_formatted 
+ * @returns an array with the additionalcolumns
+ */
+function getAdditionalColumns(savedScriptSettings) {
+    var strColumns = "";
+    savedScriptSettings = JSON.parse(savedScriptSettings);
+
+    //take the columns defined for the general ledger
+    strColumns = savedScriptSettings.generalLedger_xmlColumnsName;
+    var columnsList = strColumns.split(";");
+    return columnsList
+}
 
 //Main function
 function exec(inData, options) {
@@ -59,7 +78,10 @@ function getGeneralLedgerTable(report, endDate) {
     journalTable.addColumn("Debit").setStyleAttributes("width:15%", "tableHeaders");
     journalTable.addColumn("Credit").setStyleAttributes("width:15%", "tableHeaders");
     journalTable.addColumn("Balance").setStyleAttributes("width:15%", "tableHeaders");
-
+    //add the additional columns inserted by the user in the settings dialog
+    for (var i = 0; i < ADDITIONAL_COLUMNS_LIST.length; i++) {
+        journalTable.addColumn(ADDITIONAL_COLUMNS_LIST[i]).setStyleAttributes("width:15%", "tableHeaders");
+    }
 
     //header
     var tableHeader = journalTable.getHeader();
@@ -72,6 +94,10 @@ function getGeneralLedgerTable(report, endDate) {
     tableRow.addCell("Debit", "tableHeaders");
     tableRow.addCell("Credit", "tableHeaders");
     tableRow.addCell("Balance", "tableHeaders");
+    //add the additional columns inserted by the user in the settings dialog
+    for (var i = 0; i < ADDITIONAL_COLUMNS_LIST.length; i++) {
+        tableRow.addCell(ADDITIONAL_COLUMNS_LIST[i], "tableHeaders");
+    }
 
 
     return journalTable;
@@ -112,7 +138,7 @@ function printGeneralLedger(table, startDate, endDate) {
     for (var a in accountData) {
         for (var t in accountData[a].transactions) {
             var transaction = accountData[a].transactions[t];
-            if (transaction.type == "6") //if total transaction
+            if (transaction.type == "6" && transaction.debitAmount && transaction.creditAmount) //if it is a total row and if debit and credit amounts are present
                 amountStyle = "operationTotalsStyle";
             else
                 amountStyle = "amountStyle";
@@ -128,6 +154,10 @@ function printGeneralLedger(table, startDate, endDate) {
             tableRow.addCell(Banana.Converter.toLocaleNumberFormat(transaction.creditAmount, "2", false), amountStyle);
             sumCredit = Banana.SDecimal.add(sumCredit, transaction.creditAmount);
             tableRow.addCell(Banana.Converter.toLocaleNumberFormat(transaction.balance, "2", false), "amountStyle");
+            //add the additional columns inserted by the user in the settings dialog
+            for (var i = 0; i < ADDITIONAL_COLUMNS_LIST.length; i++) {
+                tableRow.addCell(transaction[ADDITIONAL_COLUMNS_LIST[i]], "centredStyle");
+            }
         }
 
         //put some space for a better visibility 
@@ -191,6 +221,7 @@ function hasTransactions(transactions) {
  * @returns the transactions list for the given account
  */
 function getAccountTransactions(account, startDate, endDate) {
+
     var accountCardTable = Banana.document.currentCard(account, startDate, endDate);
     var accountTransactions = [];
     for (var i = 0; i < accountCardTable.rowCount; i++) {
@@ -204,6 +235,12 @@ function getAccountTransactions(account, startDate, endDate) {
         trans.debitAmount = tRow.value('JDebitAmount');
         trans.creditAmount = tRow.value('JCreditAmount');
         trans.balance = tRow.value('JBalance');
+
+        //we save also the values of additional columns
+        for (var j = 0; j < ADDITIONAL_COLUMNS_LIST.length; j++) {
+            var index=ADDITIONAL_COLUMNS_LIST[j];
+            trans[index]=tRow.value(ADDITIONAL_COLUMNS_LIST[j]);
+        }
 
         accountTransactions.push(trans);
 
@@ -264,7 +301,6 @@ function getReportStyle() {
 }
 
 
-
 //The main purpose of this function is to allow the user to enter the accounting period desired and saving it for the next time the script is run.
 //Every time the user runs of the script he has the possibility to change the date of the accounting period.
 function getPeriodSettings() {
@@ -277,7 +313,7 @@ function getPeriodSettings() {
     };
 
     //Read script settings
-    var data = Banana.document.getScriptSettings();
+    var data = Banana.document.getScriptSettings("ch.banana.audit.report.general.ledger");
 
     //Check if there are previously saved settings and read them
     if (data.length > 0) {
@@ -308,7 +344,7 @@ function getPeriodSettings() {
 
         //Save script settings
         var formToString = JSON.stringify(scriptform);
-        var value = Banana.document.setScriptSettings(formToString);
+        Banana.document.setScriptSettings("ch.banana.audit.report.general.ledger", formToString);
     } else {
         //User clicked cancel
         return;

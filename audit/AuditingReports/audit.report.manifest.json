@@ -1,0 +1,13 @@
+{
+    "category": "productivity",
+    "country": "universal",
+    "countryCode": "un",
+    "description": "Audit Reports",
+    "description.en": "Audit Reports",
+    "id": "audit.report",
+    "language": "en",
+    "publisher": "Banana.ch",
+    "title": "Audit Reports",
+    "title.en": "Audit Reports",
+    "version": "1.0"
+}

@@ -1,0 +1,13 @@
+<!DOCTYPE RCC><RCC version="1.0">
+ <qresource>
+    <file>audit.report.general.ledger.js</file>
+    <file>audit.report.journal.js</file>
+    <file>audit.report.vat.journal.js</file>
+    <file>audit.report.trialbalance.js</file>
+    <file>audit.report.customers.suppliers.js</file>
+    <file>audit.report.css</file>
+    <file>audit.report.manifest.json</file>
+    <file>audit.settings.js</file>
+    <file>audit.report.qrc</file>
+ </qresource>
+</RCC>

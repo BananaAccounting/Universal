@@ -93,103 +93,116 @@ function printReport() {
 
 function printTables(report, customersTable, suppliersTable) {
 
-    var cutAndSup = getCustAndSup();
+    var customersData = getCustAndSup("1", "01");
+    var suppliersData = getCustAndSup("2", "02");
 
 
     //add Customers
-    for (var c in cutAndSup.customers) {
-        var customer = cutAndSup.customers[c];
+    for (var c in customersData) {
+        var customer = customersData[c];
 
         tableRow = customersTable.addRow();
         tableRow.addCell(customer.account, "centredStyle");
         tableRow.addCell(customer.description, "centredStyle");
         tableRow.addCell(customer.organization, "centredStyle");
-        tableRow.addCell("Phone: " + customer.phoneMain + "\n " + "Mobile: " + customer.phoneMobile, "centredStyle");
+        tableRow.addCell(customer.phone, "centredStyle");
         tableRow.addCell(customer.email, "centredStyle");
         tableRow.addCell(customer.address, "centredStyle");
-        tableRow.addCell(customer.country, "centredStyle");
+        tableRow.addCell(customer.countryInfo, "centredStyle");
     }
 
     //add suppliers
-    for (var c in cutAndSup.suppliers) {
-        var customer = cutAndSup.suppliers[c];
+    for (var s in suppliersData) {
+        var supplier = suppliersData[s];
 
         tableRow = suppliersTable.addRow();
-        tableRow.addCell(customer.account, "centredStyle");
-        tableRow.addCell(customer.description, "centredStyle");
-        tableRow.addCell(customer.organization, "centredStyle");
-        tableRow.addCell("Phone: " + customer.phoneMain + "\n " + "Mobile: " + customer.phoneMobile, "centredStyle");
-        tableRow.addCell(customer.email, "centredStyle");
-        tableRow.addCell(customer.address, "centredStyle");
-        tableRow.addCell(customer.country, "centredStyle");
+        tableRow.addCell(supplier.account, "centredStyle");
+        tableRow.addCell(supplier.description, "centredStyle");
+        tableRow.addCell(supplier.organization, "centredStyle");
+        tableRow.addCell(supplier.phone, "centredStyle");
+        tableRow.addCell(supplier.email, "centredStyle");
+        tableRow.addCell(supplier.address, "centredStyle");
+        tableRow.addCell(supplier.countryInfo, "centredStyle");
     }
 
 
 }
 
 //Function that load the jorunal rows
-function getCustAndSup() {
+function getCustAndSup(bClass, section) {
 
-    var CustAndSup = {};
     var elementsList = [];
+
+    //customers and suppliers fields
+    var account = "";
+    var description = "";
+    var name = "";
+    var familyName = "";
+    var organisation = "";
+    var street = "";
+    var postalCode = "";
+    var locality = "";
+    var country = "";
+    var countryCode = "";
+    var phoneMain = "";
+    var phoneMobile = "";
+    var email = "";
 
     //Get the Accounts table
     var accountsTab = Banana.document.table("Accounts");
 
-    //Customers - Section = 01, Bclass=1
     for (var i = 0; i < accountsTab.rowCount; i++) {
         var tRow = accountsTab.row(i);
 
         if (tRow.value("Section"))
-            var section = tRow.value("Section");
+            var currSection = tRow.value("Section");
 
-        if (tRow.value("Account") && tRow.value("BClass") == "1" && section == "01") {
-            var customer = {};
-            customer.account = tRow.value("Account");
-            customer.description = tRow.value("Description");
-            customer.name = tRow.value("FirstName");
-            customer.familyName = tRow.value("FamilyName");
-            customer.organization = tRow.value("OrganisationName");
-            customer.address = tRow.value("Street") + " " + tRow.value("PostalCode") + " " + tRow.value("Locality");;
-            customer.country = tRow.value("Country") + " " + tRow.value("CountryCode");
-            customer.phoneMain = tRow.value("PhoneMain");
-            customer.phoneMobile = tRow.value("PhoneMobile");
-            customer.email = tRow.value("EmailWork");
+        if (tRow.value("Account") && tRow.value("BClass") == bClass && currSection == section) {
 
-            elementsList.push(customer);
+
+            account = tRow.value("Account");
+            description = tRow.value("Description");
+            name = tRow.value("FirstName");
+            familyName = tRow.value("FamilyName");
+            organisation = tRow.value("OrganisationName");
+            email = tRow.value("EmailWork");
+
+            if (tRow.value("Street"))
+                street = tRow.value("Street");
+            if (tRow.value("PostalCode"))
+                postalCode = tRow.value("PostalCode");
+            if (tRow.value("Locality"))
+                locality = tRow.value("Locality");
+            if (tRow.value("Country"))
+                country = tRow.value("Country")
+            if (tRow.value("CountryCode"))
+                countryCode = tRow.value("CountryCode");
+            if (tRow.value("PhoneMain"))
+                phoneMain = tRow.value("PhoneMain");
+            if (tRow.value("PhoneMobile"))
+                phoneMobile = tRow.value("PhoneMobile");
+
+            var cutsup = {};
+            cutsup.account = account;
+            cutsup.description = description;
+            cutsup.name = name;
+            cutsup.familyName = familyName;
+            cutsup.organisation = organisation;
+            cutsup.address = street + " " + postalCode + " " + locality;
+            cutsup.countryInfo = country + " " + countryCode;
+
+            var phone = "";
+            if (phoneMain)
+                phone += "Phone: " + phoneMain;
+            if (phoneMobile)
+                phone += "\n" + "Mobile: " + phoneMobile;
+            cutsup.phone = phone;
+
+            elementsList.push(cutsup);
         }
+
     }
-    CustAndSup.customers = elementsList;
-
-    //Suppliers - Section = 02, Bclass=2
-    elementsList = [];
-    for (var i = 0; i < accountsTab.rowCount; i++) {
-        var tRow = accountsTab.row(i);
-
-        if (tRow.value("Section"))
-            var section = tRow.value("Section");
-
-        if (tRow.value("Account") && tRow.value("BClass") == "2" && section == "02") {
-            var supplier = {};
-            supplier.account = tRow.value("Account");
-            supplier.description = tRow.value("Description");
-            supplier.name = tRow.value("FirstName");
-            supplier.familyName = tRow.value("FamilyName");
-            supplier.organization = tRow.value("OrganisationName");
-            supplier.address = tRow.value("Street") + " " + tRow.value("PostalCode") + " " + tRow.value("Locality");;
-            supplier.country = tRow.value("Country") + " " + tRow.value("CountryCode");
-            supplier.phoneMain = tRow.value("PhoneMain");
-            supplier.phoneMobile = tRow.value("PhoneMobile");
-            supplier.email = tRow.value("EmailWork");
-
-            elementsList.push(supplier);
-        }
-    }
-
-    CustAndSup.suppliers = elementsList;
-
-    return CustAndSup;
-
+    return elementsList;
 }
 
 
