@@ -109,7 +109,7 @@ function printReport() {
     var suppliersTable = getCutAndSupTable(report, "Suppliers");
 
     /* 1. Print the Jorunal with the totals */
-    printTables(report, customersTable, suppliersTable);
+    printTables(customersTable, suppliersTable);
 
     //Add a footer to the report
     addFooter(report);
@@ -119,7 +119,7 @@ function printReport() {
     Banana.Report.preview(report, stylesheet);
 }
 
-function printTables(report, customersTable, suppliersTable) {
+function printTables(customersTable, suppliersTable) {
 
     var customersData = getCustAndSup("1", "01");
     var suppliersData = getCustAndSup("2", "02");
@@ -227,6 +227,7 @@ function getCustAndSup(bClass, section) {
             cutsup.organisation = organisation;
             cutsup.address = street + " " + postalCode + " " + locality;
             cutsup.countryInfo = country + " " + countryCode;
+            cutsup.email = email;
 
             var phone = "";
             if (phoneMain)

@@ -1,0 +1,13 @@
+<!DOCTYPE RCC><RCC version="1.0">
+ <qresource>
+    <file>ch.banana.audit.report.general.ledger.js</file>
+    <file>ch.banana.audit.report.journal.js</file>
+    <file>ch.banana.audit.report.vat.journal.js</file>
+    <file>ch.banana.audit.report.trialbalance.js</file>
+    <file>ch.banana.audit.report.customers.suppliers.js</file>
+    <file>ch.banana.audit.report.css</file>
+    <file>ch.banana.audit.report.manifest.json</file>
+    <file>ch.banana.audit.settings.js</file>
+    <file>ch.banana.audit.report.qrc</file>
+ </qresource>
+</RCC>

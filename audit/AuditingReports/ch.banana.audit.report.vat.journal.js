@@ -26,12 +26,16 @@
 
 
 //additional columns
-var savedScriptSettings = Banana.document.getScriptSettings("ch.banana.audit.settings"); //Format example: Notes;DebitAccount;CreditAccount...
+var savedScriptSettings = Banana.document.getScriptSettings("ch.banana.audit.settings"); 
 var ADDITIONAL_COLUMNS_LIST = [];
 if (savedScriptSettings)
     ADDITIONAL_COLUMNS_LIST = getAdditionalColumns(savedScriptSettings);
 
-
+/**
+ * Takes the list with the name of the columns and transforms it into an array
+ * @param {*} savedScriptSettings //Format example: Notes;DebitAccount;CreditAccount...
+ * @returns an array with the additionalcolumns
+ */
 function getAdditionalColumns(savedScriptSettings) {
     var strColumns = "";
     var columnsList = [];
@@ -52,7 +56,6 @@ function getAdditionalColumns(savedScriptSettings) {
 //Main function
 function exec(string) {
 
-    //Check if we are on an opened document
     if (!Banana.document) {
         return;
     }
@@ -63,27 +66,27 @@ function exec(string) {
     }
 }
 
-function getJournalTable(report, startDate, endDate) {
-    var journalTable = report.addTable('journalTable');
+function getVatJournalTable(report, startDate, endDate) {
+    var vatJournalTable = report.addTable('journalTable');
     //title table
-    journalTable.getCaption().addText("VAT Journal for the period " + Banana.Converter.toLocaleDateFormat(startDate) + " - " + Banana.Converter.toLocaleDateFormat(endDate), "dateIndicator");
+    vatJournalTable.getCaption().addText("VAT Journal for the period " + Banana.Converter.toLocaleDateFormat(startDate) + " - " + Banana.Converter.toLocaleDateFormat(endDate), "dateIndicator");
     //columns
-    journalTable.addColumn("Date").setStyleAttributes("width:10%", "tableHeaders");
-    journalTable.addColumn("Transaction Type").setStyleAttributes("width:15%", "tableHeaders");
-    journalTable.addColumn("Doc").setStyleAttributes("width:10%", "tableHeaders");
-    journalTable.addColumn("Description").setStyleAttributes("width:50%", "tableHeaders");
-    journalTable.addColumn("Vat Code").setStyleAttributes("width:15%", "tableHeaders");
-    journalTable.addColumn("Debit").setStyleAttributes("width:15%", "tableHeaders");
-    journalTable.addColumn("Credit").setStyleAttributes("width:15%", "tableHeaders");
-    journalTable.addColumn("Vat Taxable").setStyleAttributes("width:15%", "tableHeaders");
-    journalTable.addColumn("Vat Amount").setStyleAttributes("width:15%", "tableHeaders");
+    vatJournalTable.addColumn("Date").setStyleAttributes("width:10%", "tableHeaders");
+    vatJournalTable.addColumn("Transaction Type").setStyleAttributes("width:15%", "tableHeaders");
+    vatJournalTable.addColumn("Doc").setStyleAttributes("width:10%", "tableHeaders");
+    vatJournalTable.addColumn("Description").setStyleAttributes("width:50%", "tableHeaders");
+    vatJournalTable.addColumn("Vat Code").setStyleAttributes("width:15%", "tableHeaders");
+    vatJournalTable.addColumn("Debit").setStyleAttributes("width:15%", "tableHeaders");
+    vatJournalTable.addColumn("Credit").setStyleAttributes("width:15%", "tableHeaders");
+    vatJournalTable.addColumn("Vat Taxable").setStyleAttributes("width:15%", "tableHeaders");
+    vatJournalTable.addColumn("Vat Amount").setStyleAttributes("width:15%", "tableHeaders");
     //add the additional columns inserted by the user in the settings dialog
     for (var i = 0; i < ADDITIONAL_COLUMNS_LIST.length; i++) {
-        journalTable.addColumn(ADDITIONAL_COLUMNS_LIST[i]).setStyleAttributes("width:15%", "tableHeaders");
+        vatJournalTable.addColumn(ADDITIONAL_COLUMNS_LIST[i]).setStyleAttributes("width:15%", "tableHeaders");
     }
 
     //header
-    var tableHeader = journalTable.getHeader();
+    var tableHeader = vatJournalTable.getHeader();
     var tableRow = tableHeader.addRow();
     tableRow.addCell("Date", "tableHeaders");
     tableRow.addCell("Transaction Type", "tableHeaders");
@@ -99,8 +102,7 @@ function getJournalTable(report, startDate, endDate) {
         tableRow.addCell(ADDITIONAL_COLUMNS_LIST[i], "tableHeaders");
     }
 
-
-    return journalTable;
+    return vatJournalTable;
 }
 
 
@@ -114,9 +116,9 @@ function printReport(startDate, endDate) {
     addHeader(report);
 
     //Create a table for the report
-    var table = getJournalTable(report, startDate, endDate);
+    var table = getVatJournalTable(report, startDate, endDate);
 
-    /* 1. Print the Jorunal with the totals */
+    // Print the Journal
     printJournal(table, startDate, endDate);
 
     //Add a footer to the report
@@ -236,11 +238,7 @@ function getJournalOperations(startDate, endDate) {
     var jOperations = [];
 
     /**
-     * identifico ogni operazione grazie all'attributo: JContraAccountGroup.
-     * per ogni operazione del giornale creo un oggeto jOp, che conterrà la data, ed il tipo di operazione
-     * ogni operazione contiene più righe, ogni riga dell'operazione contiene le seguenti info: descrizione, numero di conto, dare e avere.
-     * tutte le operazioni verranno inserite nell'array jOperations[];
-     * la struttura di un operazione assomiglia alla seguente:
+     * Structure example:
      * {
      * 	"id"=0 //JContraAccountGroup
      * 	"date"=01.01.2022 //JDate
@@ -261,9 +259,9 @@ function getJournalOperations(startDate, endDate) {
     //for each
     for (var i = 0; i < opIdList.length; i++) {
         var jOp = {};
-        jOp = getOperationData(opIdList[i], jRows);
+        jOp = setOperationData(opIdList[i], jRows);
         //Banana.console.debug(JSON.stringify(jOp));
-        var opRows = getOperationData_rows(opIdList[i], jRows);
+        var opRows = setOperationData_rows(opIdList[i], jRows);
         jOp.rows = opRows;
 
         jOperations.push(jOp);
@@ -274,6 +272,11 @@ function getJournalOperations(startDate, endDate) {
 
 }
 
+/**
+ * Get the list of every transactions' id
+ * @param {*} jRows the journal rows
+ * @returns 
+ */
 function getIdList(jRows) {
     var opIdList = [];
     var id = "";
@@ -287,7 +290,14 @@ function getIdList(jRows) {
     return opIdList;
 }
 
-function getOperationData(id, jRows) {
+/**
+ * Creates an object containing the v of the operation, this values shared by each record line:
+ * For example the Date, the transactions type or the operation number.
+ * @param {*} id the operation id
+ * @param {*} jRows journal rows
+ * @returns 
+ */
+function setOperationData(id, jRows) {
     var jOp = {};
     for (var row in jRows) {
         if (jRows[row].id == id) {
@@ -301,7 +311,14 @@ function getOperationData(id, jRows) {
 
 }
 
-function getOperationData_rows(id, jRows) {
+/**
+ * Creates an object containing the information of the operation, these values are different for each line of the operation.
+ * For Example the account or the debit and credit that changes for each record line in the operation
+ * @param {*} id the operation id
+ * @param {*} jRows journal rows
+ * @returns 
+ */
+function setOperationData_rows(id, jRows) {
     var rows = [];
 
     for (var row in jRows) {
@@ -325,6 +342,12 @@ function getOperationData_rows(id, jRows) {
     return rows;
 }
 
+/**
+ * Check if the description is the same
+ * @param {*} newDescr 
+ * @param {*} oldDescr 
+ * @returns 
+ */
 function checkIfSameDescription(newDescr, oldDescr) {
     var sameDescr = false;
 

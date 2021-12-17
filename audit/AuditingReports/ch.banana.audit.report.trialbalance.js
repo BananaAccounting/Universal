@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-// @id = ch.banana.app.trialbalance
+// @id = ch.banana.audit.report.trialbalance
 // @api = 1.0
 // @pubdate = 2017-03-22
 // @publisher = Banana.ch SA

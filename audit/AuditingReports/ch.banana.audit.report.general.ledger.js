@@ -23,25 +23,41 @@
 // @outputformat = none
 // @inputdatasource = none
 // @timeout = -1
-// @includejs= audit.settings.js
+// @includejs= ch.banana.audit.settings.js
 
 
 //errors
 var DEBIT_CREDIT_DIFFERENTS = "DEBIT_CREDIT_DIFFERENTS";
 
-//additional columns
-var savedScriptSettings = Banana.document.getScriptSettings("ch.banana.audit.settings"); //Format example: Notes;DebitAccount;CreditAccount...
-var ADDITIONAL_COLUMNS_LIST = [];
-if (savedScriptSettings)
-    ADDITIONAL_COLUMNS_LIST = getAdditionalColumns(savedScriptSettings);
 
+//Main function
+function exec() {
+
+    var banDoc=Banana.document;
+
+    //Check if we are on an opened document
+    if (!banDoc) {
+        return;
+    }
+
+    //get the additional columns
+    var savedScriptSettings = banDoc.getScriptSettings("ch.banana.audit.settings");
+    var additionalColumnsList = [];
+    if (savedScriptSettings)
+    additionalColumnsList = getAdditionalColumns(savedScriptSettings);
+
+    var dateform = getPeriodSettings(banDoc);
+    if (dateform) {
+        printReport(dateform.selectionStartDate, dateform.selectionEndDate,additionalColumnsList,banDoc);
+    }
+}
 
 /**
  * Takes the string with the name of the columns and transforms it into an array
  * @param {*} getAdditionalColumns_formatted 
  * @returns an array with the additionalcolumns
  */
-function getAdditionalColumns(savedScriptSettings) {
+ function getAdditionalColumns(savedScriptSettings) {
     var strColumns = "";
     var columnsList = [];
     savedScriptSettings = JSON.parse(savedScriptSettings);
@@ -56,40 +72,26 @@ function getAdditionalColumns(savedScriptSettings) {
     return columnsList
 }
 
-//Main function
-function exec(inData, options) {
-
-    //Check if we are on an opened document
-    if (!Banana.document) {
-        return;
-    }
-
-    var dateform = getPeriodSettings();
-    if (dateform) {
-        printReport(dateform.selectionStartDate, dateform.selectionEndDate);
-    }
-}
-
-function getGeneralLedgerTable(report, startDate, endDate) {
-    var journalTable = report.addTable('generalLedger');
+function getGeneralLedgerTable(report, startDate, endDate,additionalColumnsList) {
+    var generalLedgerTable = report.addTable('generalLedger');
     //title table
-    journalTable.getCaption().addText("General Ledger for the period " + Banana.Converter.toLocaleDateFormat(startDate) + " - " + Banana.Converter.toLocaleDateFormat(endDate), "dateIndicator");
+    generalLedgerTable.getCaption().addText("General Ledger for the period " + Banana.Converter.toLocaleDateFormat(startDate) + " - " + Banana.Converter.toLocaleDateFormat(endDate), "dateIndicator");
     //columns
-    journalTable.addColumn("Date").setStyleAttributes("width:10%", "tableHeaders");
-    journalTable.addColumn("Transaction Type").setStyleAttributes("width:15%", "tableHeaders");
-    journalTable.addColumn("Doc").setStyleAttributes("width:10%", "tableHeaders");
-    journalTable.addColumn("Description").setStyleAttributes("width:50%", "tableHeaders");
-    journalTable.addColumn("Account").setStyleAttributes("width:20%", "tableHeaders");
-    journalTable.addColumn("Debit").setStyleAttributes("width:15%", "tableHeaders");
-    journalTable.addColumn("Credit").setStyleAttributes("width:15%", "tableHeaders");
-    journalTable.addColumn("Balance").setStyleAttributes("width:15%", "tableHeaders");
+    generalLedgerTable.addColumn("Date").setStyleAttributes("width:10%", "tableHeaders");
+    generalLedgerTable.addColumn("Transaction Type").setStyleAttributes("width:15%", "tableHeaders");
+    generalLedgerTable.addColumn("Doc").setStyleAttributes("width:10%", "tableHeaders");
+    generalLedgerTable.addColumn("Description").setStyleAttributes("width:50%", "tableHeaders");
+    generalLedgerTable.addColumn("Account").setStyleAttributes("width:20%", "tableHeaders");
+    generalLedgerTable.addColumn("Debit").setStyleAttributes("width:15%", "tableHeaders");
+    generalLedgerTable.addColumn("Credit").setStyleAttributes("width:15%", "tableHeaders");
+    generalLedgerTable.addColumn("Balance").setStyleAttributes("width:15%", "tableHeaders");
     //add the additional columns inserted by the user in the settings dialog
-    for (var i = 0; i < ADDITIONAL_COLUMNS_LIST.length; i++) {
-        journalTable.addColumn(ADDITIONAL_COLUMNS_LIST[i]).setStyleAttributes("width:15%", "tableHeaders");
+    for (var i = 0; i < additionalColumnsList.length; i++) {
+        generalLedgerTable.addColumn(additionalColumnsList[i]).setStyleAttributes("width:15%", "tableHeaders");
     }
 
     //header
-    var tableHeader = journalTable.getHeader();
+    var tableHeader = generalLedgerTable.getHeader();
     var tableRow = tableHeader.addRow();
     tableRow.addCell("Date", "tableHeaders");
     tableRow.addCell("Transaction Type", "tableHeaders");
@@ -100,29 +102,29 @@ function getGeneralLedgerTable(report, startDate, endDate) {
     tableRow.addCell("Credit", "tableHeaders");
     tableRow.addCell("Balance", "tableHeaders");
     //add the additional columns inserted by the user in the settings dialog
-    for (var i = 0; i < ADDITIONAL_COLUMNS_LIST.length; i++) {
-        tableRow.addCell(ADDITIONAL_COLUMNS_LIST[i], "tableHeaders");
+    for (var i = 0; i < additionalColumnsList.length; i++) {
+        tableRow.addCell(additionalColumnsList[i], "tableHeaders");
     }
 
 
-    return journalTable;
+    return generalLedgerTable;
 }
 
 
 //Function that creates and prints the report
-function printReport(startDate, endDate) {
+function printReport(startDate, endDate,additionalColumnsList,banDoc) {
 
     //Add a name to the report
     var report = Banana.Report.newReport("General Ledger");
 
     //Add a header to the report
-    addHeader(report);
+    addHeader(report,banDoc);
 
     //Create a table for the report
-    var table = getGeneralLedgerTable(report, startDate, endDate);
+    var table = getGeneralLedgerTable(report, startDate, endDate,additionalColumnsList);
 
     /* 1. Print the Journal with the totals */
-    printGeneralLedger(table, startDate, endDate);
+    printGeneralLedger(table, startDate, endDate,additionalColumnsList,banDoc);
 
     //Add a footer to the report
     addFooter(report);
@@ -132,9 +134,9 @@ function printReport(startDate, endDate) {
     Banana.Report.preview(report, stylesheet);
 }
 
-function printGeneralLedger(table, startDate, endDate) {
+function printGeneralLedger(table, startDate, endDate,additionalColumnsList,banDoc) {
 
-    var accountData = getAccountData(startDate, endDate);
+    var accountData = setAccountData(startDate, endDate,additionalColumnsList,banDoc);
     var sumDebit = "";
     var sumCredit = "";
     var amountStyle = "";
@@ -159,8 +161,8 @@ function printGeneralLedger(table, startDate, endDate) {
             sumCredit = Banana.SDecimal.add(sumCredit, transaction.creditAmount);
             tableRow.addCell(Banana.Converter.toLocaleNumberFormat(transaction.balance, "2", false), "amountStyle");
             //add the additional columns inserted by the user in the settings dialog
-            for (var i = 0; i < ADDITIONAL_COLUMNS_LIST.length; i++) {
-                tableRow.addCell(transaction[ADDITIONAL_COLUMNS_LIST[i]], "centredStyle");
+            for (var i = 0; i < additionalColumnsList.length; i++) {
+                tableRow.addCell(transaction[additionalColumnsList[i]], "centredStyle");
             }
         }
 
@@ -172,12 +174,12 @@ function printGeneralLedger(table, startDate, endDate) {
 
 }
 /**
- * 
+ * Create an object with the account cards data
  * @param {*} startDate 
  * @param {*} endDate 
- * @returns a list of objects containing an array with all transactions for those accounts
+ * @returns 
  */
-function getAccountData(startDate, endDate) {
+function setAccountData(startDate, endDate,additionalColumnsList,banDoc) {
     /**
      * Ex structure:
      * {
@@ -191,12 +193,12 @@ function getAccountData(startDate, endDate) {
      * 
      */
     var accountCardList = [];
-    var accountsList = getAccountsList();
+    var accountsList = getAccountsList(banDoc);
     for (var i = 0; i < accountsList.length; i++) {
         var accountData = {};
         accountData.accountNr = accountsList[i];
-        accountData.transactions = getAccountTransactions(accountsList[i], startDate, endDate);
-        //check that the transactions array contains transactions other than the total, i.e. other than operationType 6
+        accountData.transactions = getAccountTransactions(accountsList[i], startDate, endDate,additionalColumnsList,banDoc);
+        //If the account has been used during the year, or at least has an opening balance, I will add it to the list.
         if (hasTransactions(accountData.transactions))
             accountCardList.push(accountData);
     }
@@ -206,7 +208,7 @@ function getAccountData(startDate, endDate) {
 }
 
 /**
- * 
+ *Check that there have been movements on that account, if there is only a closing total then it returns false.
  */
 function hasTransactions(transactions) {
 
@@ -224,9 +226,9 @@ function hasTransactions(transactions) {
  * @param {*} endDate 
  * @returns the transactions list for the given account
  */
-function getAccountTransactions(account, startDate, endDate) {
+function getAccountTransactions(account, startDate, endDate,additionalColumnsList,banDoc) {
 
-    var accountCardTable = Banana.document.currentCard(account, startDate, endDate);
+    var accountCardTable = banDoc.currentCard(account, startDate, endDate);
     var accountTransactions = [];
     for (var i = 0; i < accountCardTable.rowCount; i++) {
         var tRow = accountCardTable.row(i);
@@ -241,9 +243,9 @@ function getAccountTransactions(account, startDate, endDate) {
         trans.balance = tRow.value('JBalance');
 
         //we save also the values of additional columns
-        for (var j = 0; j < ADDITIONAL_COLUMNS_LIST.length; j++) {
-            var index = ADDITIONAL_COLUMNS_LIST[j];
-            trans[index] = tRow.value(ADDITIONAL_COLUMNS_LIST[j]);
+        for (var j = 0; j < additionalColumnsList.length; j++) {
+            var index = additionalColumnsList[j];
+            trans[index] = tRow.value(additionalColumnsList[j]);
         }
 
         accountTransactions.push(trans);
@@ -254,19 +256,26 @@ function getAccountTransactions(account, startDate, endDate) {
 
 }
 
-function getAccountsList() {
+/**
+ * Get the list of the accounts form the Accounts table
+ * @returns the list of the accounts found
+ */
+function getAccountsList(banDoc) {
     var accountsList = [];
-    var accountsTable = Banana.document.table("Accounts")
+    var accountsTable = banDoc.table("Accounts");
 
-    for (var i = 0; i < accountsTable.rowCount; i++) {
-        var tRow = accountsTable.row(i);
-        var bClass = tRow.value("BClass");
-        var accountNr = tRow.value("Account");
+    if(accountsTable){
+        for (var i = 0; i < accountsTable.rowCount; i++) {
+            var tRow = accountsTable.row(i);
+            var bClass = tRow.value("BClass");
+            var accountNr = tRow.value("Account");
 
-        if (bClass == "1" || bClass == "2" || bClass == "3" || bClass == "4") {
-            accountsList.push(accountNr);
+            if (bClass == "1" || bClass == "2" || bClass == "3" || bClass == "4") {
+                accountsList.push(accountNr);
+            }
         }
-    }
+    }else(Banana.console.debug("no accounts table"))
+    
     return accountsList;
 }
 
@@ -280,8 +289,8 @@ function addFooter(report) {
     report.getFooter().addFieldPageNr();
 }
 
-function addHeader(report) {
-    docInfo = getDocumentInfo();
+function addHeader(report,banDoc) {
+    docInfo = getDocumentInfo(banDoc);
     var headerParagraph = report.getHeader().addSection();
     headerParagraph.addParagraph("General Ledger", "heading1");
     headerParagraph.addParagraph("", "");
@@ -301,7 +310,7 @@ function addHeader(report) {
  */
 function getReportStyle() {
     var textCSS = "";
-    var file = Banana.IO.getLocalFile("file:script/audit.report.css");
+    var file = Banana.IO.getLocalFile("file:script/ch.banana.audit.report.css");
     var fileContent = file.read();
     if (!file.errorString) {
         Banana.IO.openPath(fileContent);
@@ -322,7 +331,7 @@ function getReportStyle() {
  * return the document info
  * @returns 
  */
-function getDocumentInfo() {
+function getDocumentInfo(banDoc) {
 
     var documentInfo = {};
     documentInfo.company = "";
@@ -351,7 +360,7 @@ function getDocumentInfo() {
 
 //The main purpose of this function is to allow the user to enter the accounting period desired and saving it for the next time the script is run.
 //Every time the user runs of the script he has the possibility to change the date of the accounting period.
-function getPeriodSettings() {
+function getPeriodSettings(banDoc) {
 
     //The formeters of the period that we need
     var scriptform = {
@@ -361,7 +370,7 @@ function getPeriodSettings() {
     };
 
     //Read script settings
-    var data = Banana.document.getScriptSettings("ch.banana.audit.report.general.ledger");
+    var data = banDoc.getScriptSettings("ch.banana.audit.report.general.ledger");
 
     //Check if there are previously saved settings and read them
     if (data.length > 0) {
@@ -376,8 +385,8 @@ function getPeriodSettings() {
     }
 
     //We take the accounting "starting date" and "ending date" from the document. These will be used as default dates
-    var docStartDate = Banana.document.startPeriod();
-    var docEndDate = Banana.document.endPeriod();
+    var docStartDate = banDoc.startPeriod();
+    var docEndDate = banDoc.endPeriod();
 
     //A dialog window is opened asking the user to insert the desired period. By default is the accounting period
     var selectedDates = Banana.Ui.getPeriod("Period", docStartDate, docEndDate,
@@ -392,46 +401,10 @@ function getPeriodSettings() {
 
         //Save script settings
         var formToString = JSON.stringify(scriptform);
-        Banana.document.setScriptSettings("ch.banana.audit.report.general.ledger", formToString);
+        banDoc.setScriptSettings("ch.banana.audit.report.general.ledger", formToString);
     } else {
         //User clicked cancel
         return;
     }
     return scriptform;
-}
-
-function getErrorMessage(errorId, lang) {
-    if (!lang)
-        lang = 'en';
-    switch (errorId) {
-        case "DEBIT_CREDIT_DIFFERENTS":
-            if (lang == 'it')
-                return "Il totale in Dare e quello in Avere sono differenti";
-            else if (lang == 'fr')
-                return "Le débit total et le crédit total sont différents";
-            else if (lang == 'de')
-                return "Gesamtsoll und Gesamtguthaben sind unterschiedlich";
-            else
-                return "Total debit and total credit are different";
-    }
-    return '';
-}
-
-function checkDebitCredit(sumDebit, sumCredit) {
-    var lan = getLang();
-    var msg = getErrorMessage(DEBIT_CREDIT_DIFFERENTS, "");
-    if (sumDebit, sumCredit) {
-        Banana.document.addMessage(msg, DEBIT_CREDIT_DIFFERENTS);
-    }
-}
-
-function getLang() {
-    var lang = 'en';
-    if (Banana.document)
-        lang = Banana.document.locale;
-    else if (Banana.application.locale)
-        lang = Banana.application.locale;
-    if (lang.length > 2)
-        lang = lang.substring(0, 2);
-    return lang;
 }
