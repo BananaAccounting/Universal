@@ -25,22 +25,19 @@
 // @timeout = -1
 // @includejs= audit.settings.js
 
-/**
- * mandatory columns:Date,Description,Doc,Account,debit,credit,amount
- * columns that the user can choose:Transaction type, Account BClass, AccountGr
- */
+
 //errors
 var DEBIT_CREDIT_DIFFERENTS = "DEBIT_CREDIT_DIFFERENTS";
 
 //additional columns
-var savedScriptSettings = Banana.document.getScriptSettings("ch.banana.audit.settings"); //Format example: Notes;DebitAccount;CreditAccount...
+var savedScriptSettings = Banana.document.getScriptSettings("ch.banana.audit.settings"); 
 var ADDITIONAL_COLUMNS_LIST = [];
 if (savedScriptSettings)
     ADDITIONAL_COLUMNS_LIST = getAdditionalColumns(savedScriptSettings);
 
 /**
- * Takes the string with the name of the columns and transforms it into an array
- * @param {*} getAdditionalColumns_formatted 
+ * Takes the list with the name of the columns and transforms it into an array
+ * @param {*} savedScriptSettings //Format example: Notes;DebitAccount;CreditAccount...
  * @returns an array with the additionalcolumns
  */
 function getAdditionalColumns(savedScriptSettings) {
@@ -59,9 +56,8 @@ function getAdditionalColumns(savedScriptSettings) {
 }
 
 //Main function
-function exec(string) {
+function exec() {
 
-    //Check if we are on an opened document
     if (!Banana.document) {
         return;
     }
@@ -250,17 +246,19 @@ function dateWithinTheRange(trDate, pStartDate, pEndDate) {
 
 }
 
+/**
+ * creates a structure with the journnal operations
+ * @param {*} startDate 
+ * @param {*} endDate 
+ * @returns an object eith the journal operations
+ */
 function getJournalOperations(startDate, endDate) {
     //if (tRow.value('JContraAccountGroup') !== previous_contraAccountGroup) {
     var jRows = getJournalRows(startDate, endDate);
     var jOperations = [];
 
     /**
-     * identifico ogni operazione grazie all'attributo: JContraAccountGroup.
-     * per ogni operazione del giornale creo un oggeto jOp, che conterrà la data, ed il tipo di operazione
-     * ogni operazione contiene più righe, ogni riga dell'operazione contiene le seguenti info: descrizione, numero di conto, dare e avere.
-     * tutte le operazioni verranno inserite nell'array jOperations[];
-     * la struttura di un operazione assomiglia alla seguente:
+     * example obj structure
      * {
      * 	"id"=0 //JContraAccountGroup
      * 	"date"=01.01.2022 //JDate
@@ -281,9 +279,9 @@ function getJournalOperations(startDate, endDate) {
     //for each
     for (var i = 0; i < opIdList.length; i++) {
         var jOp = {};
-        jOp = getOperationData(opIdList[i], jRows);
+        jOp = setOperationData(opIdList[i], jRows);
         //Banana.console.debug(JSON.stringify(jOp));
-        var opRows = getOperationData_rows(opIdList[i], jRows);
+        var opRows = setOperationData_rows(opIdList[i], jRows);
         jOp.rows = opRows;
 
         jOperations.push(jOp);
@@ -294,6 +292,11 @@ function getJournalOperations(startDate, endDate) {
 
 }
 
+/**
+ * Get the list of every transactions' id
+ * @param {*} jRows the journal rows
+ * @returns 
+ */
 function getIdList(jRows) {
     var opIdList = [];
     var id = "";
@@ -307,7 +310,14 @@ function getIdList(jRows) {
     return opIdList;
 }
 
-function getOperationData(id, jRows) {
+/**
+ * Creates an object containing the v of the operation, this values shared by each record line:
+ * For example the Date, the transactions type or the operation number.
+ * @param {*} id the operation id
+ * @param {*} jRows journal rows
+ * @returns 
+ */
+function setOperationData(id, jRows) {
     var jOp = {};
     for (var row in jRows) {
         if (jRows[row].id == id) {
@@ -321,13 +331,21 @@ function getOperationData(id, jRows) {
 
 }
 
-function getOperationData_rows(id, jRows) {
+/**
+ * Creates an object containing the information of the operation, these values are different for each line of the operation.
+ * For Example the account or the debit and credit that changes for each record line in the operation
+ * @param {*} id the operation id
+ * @param {*} jRows journal rows
+ * @returns 
+ */
+function setOperationData_rows(id, jRows) {
     var rows = [];
     var prDescription = "";
 
     for (var row in jRows) {
         if (jRows[row].id == id) {
             var trRow = {};
+            //we do not repeat the description if is the same, as in the journal for each line of the same operation, the same description is repeated
             if (jRows[row].trDescription !== prDescription)
                 trRow.description = jRows[row].trDescription;
             trRow.account = jRows[row].jAccount;
@@ -347,6 +365,12 @@ function getOperationData_rows(id, jRows) {
     return rows;
 }
 
+/**
+ * Check if the description is the same
+ * @param {*} newDescr 
+ * @param {*} oldDescr 
+ * @returns 
+ */
 function checkIfSameDescription(newDescr, oldDescr) {
     var sameDescr = false;
 
@@ -505,6 +529,11 @@ function getErrorMessage(errorId, lang) {
     return '';
 }
 
+/**
+ * Check if the total debit and credit are equals, otherwise rise an an error message
+ * @param {*} sumDebit 
+ * @param {*} sumCredit 
+ */
 function checkDebitCredit(sumDebit, sumCredit) {
     var lan = getLang();
     var msg = getErrorMessage(DEBIT_CREDIT_DIFFERENTS, "");

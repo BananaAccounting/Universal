@@ -16,7 +16,7 @@
 // @api = 1.0
 // @pubdate = 2021-12-10
 // @publisher = Banana.ch SA
-// @description = Settings
+// @description = Columns Settings
 // @task = app.command
 // @doctype = *;*
 // @docproperties =
