@@ -123,6 +123,10 @@ function printReport(startDate, endDate,additionalColumnsList,banDoc) {
     //Create a table for the report
     var table = getGeneralLedgerTable(report, startDate, endDate,additionalColumnsList);
 
+    if(!table){
+        Banana.console.debug("no obj table");
+    }
+
     /* 1. Print the Journal with the totals */
     printGeneralLedger(table, startDate, endDate,additionalColumnsList,banDoc);
 
@@ -274,7 +278,7 @@ function getAccountsList(banDoc) {
                 accountsList.push(accountNr);
             }
         }
-    }else(Banana.console.debug("no accounts table"))
+    }else(Banana.console.debug("no accounts table"));
     
     return accountsList;
 }
