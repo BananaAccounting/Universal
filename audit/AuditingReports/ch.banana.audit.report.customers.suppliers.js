@@ -25,13 +25,6 @@
 // @timeout = -1
 
 
-//additional columns
-var savedScriptSettings = Banana.document.getScriptSettings("ch.banana.audit.settings"); //Format example: Notes;DebitAccount;CreditAccount...
-var ADDITIONAL_COLUMNS_LIST = [];
-if (savedScriptSettings)
-    ADDITIONAL_COLUMNS_LIST = getAdditionalColumns(savedScriptSettings);
-
-
 function getAdditionalColumns(savedScriptSettings) {
     var strColumns = "";
     var columnsList = [];
@@ -50,15 +43,23 @@ function getAdditionalColumns(savedScriptSettings) {
 //Main function
 function exec(string) {
 
+    var banDoc=Banana.document;
+
     //Check if we are on an opened document
-    if (!Banana.document) {
+    if (!banDoc) {
         return;
     }
 
-    printReport();
+    //get the additional columns
+    var savedScriptSettings = banDoc.getScriptSettings("ch.banana.audit.settings");
+    var additionalColumnsList = [];
+    if (savedScriptSettings)
+    additionalColumnsList = getAdditionalColumns(savedScriptSettings);
+
+    printReport(banDoc,additionalColumnsList);
 }
 
-function getCutAndSupTable(report, type) {
+function getCutAndSupTable(report, type,additionalColumnsList) {
     var cutAndSupTable = report.addTable('cutAndSupTable');
     //title table
     cutAndSupTable.getCaption().addText(type);
@@ -70,8 +71,8 @@ function getCutAndSupTable(report, type) {
     cutAndSupTable.addColumn("Email").setStyleAttributes("width:20%", "tableHeaders");
     cutAndSupTable.addColumn("Address").setStyleAttributes("width:50%", "tableHeaders");
     cutAndSupTable.addColumn("Country").setStyleAttributes("width:20%", "tableHeaders");
-    for (var i = 0; i < ADDITIONAL_COLUMNS_LIST.length; i++) {
-        cutAndSupTable.addColumn(ADDITIONAL_COLUMNS_LIST[i]).setStyleAttributes("width:15%", "tableHeaders");
+    for (var i = 0; i < additionalColumnsList.length; i++) {
+        cutAndSupTable.addColumn(additionalColumnsList[i]).setStyleAttributes("width:15%", "tableHeaders");
     }
 
     //header
@@ -85,8 +86,8 @@ function getCutAndSupTable(report, type) {
     tableRow.addCell("Address", "tableHeaders");
     tableRow.addCell("Country", "tableHeaders");
     //add the additional columns inserted by the user in the settings dialog
-    for (var i = 0; i < ADDITIONAL_COLUMNS_LIST.length; i++) {
-        tableRow.addCell(ADDITIONAL_COLUMNS_LIST[i], "tableHeaders");
+    for (var i = 0; i < additionalColumnsList.length; i++) {
+        tableRow.addCell(additionalColumnsList[i], "tableHeaders");
     }
 
 
@@ -95,7 +96,7 @@ function getCutAndSupTable(report, type) {
 
 
 //Function that creates and prints the report
-function printReport() {
+function printReport(banDoc,additionalColumnsList) {
 
     //Add a name to the report
     var report = Banana.Report.newReport("Customers and Suppliers");
@@ -104,12 +105,12 @@ function printReport() {
     addHeader(report)
 
     //Create a table for the report
-    var customersTable = getCutAndSupTable(report, "Customers");
+    var customersTable = getCutAndSupTable(report, "Customers",additionalColumnsList);
     report.addPageBreak();
-    var suppliersTable = getCutAndSupTable(report, "Suppliers");
+    var suppliersTable = getCutAndSupTable(report, "Suppliers",additionalColumnsList);
 
     /* 1. Print the Jorunal with the totals */
-    printTables(customersTable, suppliersTable);
+    printTables(customersTable, suppliersTable,banDoc,additionalColumnsList);
 
     //Add a footer to the report
     addFooter(report);
@@ -119,10 +120,10 @@ function printReport() {
     Banana.Report.preview(report, stylesheet);
 }
 
-function printTables(customersTable, suppliersTable) {
+function printTables(customersTable, suppliersTable,banDoc,additionalColumnsList) {
 
-    var customersData = getCustAndSup("1", "01");
-    var suppliersData = getCustAndSup("2", "02");
+    var customersData = getCustAndSup("1", "01",banDoc,additionalColumnsList);
+    var suppliersData = getCustAndSup("2", "02",banDoc,additionalColumnsList);
 
 
     //add Customers
@@ -138,8 +139,8 @@ function printTables(customersTable, suppliersTable) {
         tableRow.addCell(customer.address, "centredStyle");
         tableRow.addCell(customer.countryInfo, "centredStyle");
         //add the additional columns inserted by the user in the settings dialog
-        for (var i = 0; i < ADDITIONAL_COLUMNS_LIST.length; i++) {
-            tableRow.addCell(customer[ADDITIONAL_COLUMNS_LIST[i]], "centredStyle");
+        for (var i = 0; i < additionalColumnsList.length; i++) {
+            tableRow.addCell(customer[additionalColumnsList[i]], "centredStyle");
         }
 
     }
@@ -157,8 +158,8 @@ function printTables(customersTable, suppliersTable) {
         tableRow.addCell(supplier.address, "centredStyle");
         tableRow.addCell(supplier.countryInfo, "centredStyle");
         //add the additional columns inserted by the user in the settings dialog
-        for (var i = 0; i < ADDITIONAL_COLUMNS_LIST.length; i++) {
-            tableRow.addCell(supplier[ADDITIONAL_COLUMNS_LIST[i]], "centredStyle");
+        for (var i = 0; i < additionalColumnsList.length; i++) {
+            tableRow.addCell(supplier[additionalColumnsList[i]], "centredStyle");
         }
     }
 
@@ -166,7 +167,7 @@ function printTables(customersTable, suppliersTable) {
 }
 
 //Function that load the jorunal rows
-function getCustAndSup(bClass, section) {
+function getCustAndSup(bClass, section,banDoc,additionalColumnsList) {
 
     var elementsList = [];
 
@@ -186,7 +187,7 @@ function getCustAndSup(bClass, section) {
     var email = "";
 
     //Get the Accounts table
-    var accountsTab = Banana.document.table("Accounts");
+    var accountsTab = banDoc.table("Accounts");
 
     for (var i = 0; i < accountsTab.rowCount; i++) {
         var tRow = accountsTab.row(i);
@@ -237,9 +238,9 @@ function getCustAndSup(bClass, section) {
             cutsup.phone = phone;
 
             //we save also the values of additional columns
-            for (var j = 0; j < ADDITIONAL_COLUMNS_LIST.length; j++) {
-                var index = ADDITIONAL_COLUMNS_LIST[j];
-                cutsup[index] = tRow.value(ADDITIONAL_COLUMNS_LIST[j]);
+            for (var j = 0; j < additionalColumnsList.length; j++) {
+                var index = additionalColumnsList[j];
+                cutsup[index] = tRow.value(additionalColumnsList[j]);
             }
 
             elementsList.push(cutsup);
@@ -310,7 +311,7 @@ function getDocumentInfo() {
  */
 function getReportStyle() {
     var textCSS = "";
-    var file = Banana.IO.getLocalFile("file:script/audit.report.css");
+    var file = Banana.IO.getLocalFile("file:script/ch.banana.audit.report.css");
     var fileContent = file.read();
     if (!file.errorString) {
         Banana.IO.openPath(fileContent);

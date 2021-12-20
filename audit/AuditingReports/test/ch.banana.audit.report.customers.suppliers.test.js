@@ -12,67 +12,65 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-// @id = ch.banana.audit.report.general.ledger.test
+// @id = ch.banana.audit.report.customers.suppliers.test
 // @api = 1.0
-// @pubdate = 2021-11-26
+// @pubdate = 2021-12-20
 // @publisher = Banana.ch SA
-// @description = <TEST ch.banana.audit.report.general.ledger.js>
+// @description = <TEST ch.banana.audit.report.customers.suppliers.js>
 // @task = app.command
 // @doctype = *.*
 // @outputformat = none
 // @inputdataform = none
-// @includejs = ../ch.banana.audit.report.general.ledger.js
+// @includejs = ../ch.banana.audit.report.customers.suppliers.js
 // @timeout = -1
 
 
 // Register test case to be executed
-Test.registerTestCase(new AuditReports_GeneralLedger());
+Test.registerTestCase(new AuditReports_CustomersAndSuppliers());
 
 // Here we define the class, the name of the class is not important
-function AuditReports_GeneralLedger() {
+function AuditReports_CustomersAndSuppliers() {
 
 }
 
 // This method will be called at the beginning of the test case
-AuditReports_GeneralLedger.prototype.initTestCase = function() {
+AuditReports_CustomersAndSuppliers.prototype.initTestCase = function() {
 
-    this.fileAC2_withVAT="file:script/../test/testcases/accounting_with_vat.ac2";
-    this.fileAC2_withoutVAT="file:script/../test/testcases/accounting_with_vat.ac2";
+    this.fileAC2_withoutVAT="file:script/../test/testcases/accounting_without_vat.ac2";
 
 }
 
 // This method will be called at the end of the test case
-AuditReports_GeneralLedger.prototype.cleanupTestCase = function() {
+AuditReports_CustomersAndSuppliers.prototype.cleanupTestCase = function() {
 
 }
 
 // This method will be called before every test method is executed
-AuditReports_GeneralLedger.prototype.init = function() {
+AuditReports_CustomersAndSuppliers.prototype.init = function() {
 
 }
 
 // This method will be called after every test method is executed
-AuditReports_GeneralLedger.prototype.cleanup = function() {
+AuditReports_CustomersAndSuppliers.prototype.cleanup = function() {
 
 }
 
 //test for general ledger report
-AuditReports_GeneralLedger.prototype.testGeneralLedgerReport = function() {
+AuditReports_CustomersAndSuppliers.prototype.testGeneralLedgerReport = function() {
 
-    Test.logger.addComment("Test General Ledger Report");
+    Test.logger.addComment("Test Customers and Suppliers Report");
 
     /**************************************************
-     * TEST CASES FILE WITH VAT
+     * TEST CASES FILE WITHOUT VAT
      *************************************************/
+
     //Only base columns¨
-    var banDoc=Banana.application.openDocument(this.fileAC2_withVAT);
+    var banDoc=Banana.application.openDocument(this.fileAC2_withoutVAT);
     if (!banDoc) {
         Test.logger.addFatalError("Document not found");
     }
-    var startDate="2021.01.01";
-    var endDate="2022.12.31";
     var addColumns=[];
-    var report=printReport(startDate,endDate,addColumns,banDoc);
+    var report=printReport(banDoc,addColumns);
 
     Test.logger.addReport("General Ledger Report",report);
 
@@ -81,13 +79,6 @@ AuditReports_GeneralLedger.prototype.testGeneralLedgerReport = function() {
 
     //with addition columns (vat) VatRate, VatRateEffective, VatTaxable  and VatAmount
 
-    /**************************************************
-     * TEST CASES FILE WITH VAT
-     *************************************************/
-    //Only base columns
-
-
-    //with additional columns: ContraAccount;AccountDebitDes,AccountCreditDes
 
     Test.logger.close();
 
