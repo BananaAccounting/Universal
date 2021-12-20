@@ -12,29 +12,29 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-// @id = ch.banana.audit.report.general.ledger.test
+// @id = ch.banana.audit.report.journal.test
 // @api = 1.0
-// @pubdate = 2021-11-26
+// @pubdate = 2021-12-20
 // @publisher = Banana.ch SA
-// @description = <TEST ch.banana.audit.report.general.ledger.js>
+// @description = <TEST ch.banana.audit.report.journal.js>
 // @task = app.command
 // @doctype = *.*
 // @outputformat = none
 // @inputdataform = none
-// @includejs = ../ch.banana.audit.report.general.ledger.js
+// @includejs = ../ch.banana.audit.report.journal.js
 // @timeout = -1
 
 
 // Register test case to be executed
-Test.registerTestCase(new AuditReports_GeneralLedger());
+Test.registerTestCase(new AuditReports_Journal());
 
 // Here we define the class, the name of the class is not important
-function AuditReports_GeneralLedger() {
+function AuditReports_Journal() {
 
 }
 
 // This method will be called at the beginning of the test case
-AuditReports_GeneralLedger.prototype.initTestCase = function() {
+AuditReports_Journal.prototype.initTestCase = function() {
 
     this.fileAC2_withVAT = "file:script/../test/testcases/accounting_with_vat.ac2";
     this.fileAC2_withoutVAT = "file:script/../test/testcases/accounting_without_vat.ac2";
@@ -42,22 +42,22 @@ AuditReports_GeneralLedger.prototype.initTestCase = function() {
 }
 
 // This method will be called at the end of the test case
-AuditReports_GeneralLedger.prototype.cleanupTestCase = function() {
+AuditReports_Journal.prototype.cleanupTestCase = function() {
 
 }
 
 // This method will be called before every test method is executed
-AuditReports_GeneralLedger.prototype.init = function() {
+AuditReports_Journal.prototype.init = function() {
 
 }
 
 // This method will be called after every test method is executed
-AuditReports_GeneralLedger.prototype.cleanup = function() {
+AuditReports_Journal.prototype.cleanup = function() {
 
 }
 
 //test for general ledger report
-AuditReports_GeneralLedger.prototype.testGeneralLedgerReport = function() {
+AuditReports_Journal.prototype.testGeneralLedgerReport = function() {
 
     Test.logger.addComment("Test General Ledger Report");
 

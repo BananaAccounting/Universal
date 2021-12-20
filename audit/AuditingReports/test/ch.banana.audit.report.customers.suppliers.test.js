@@ -60,24 +60,31 @@ AuditReports_CustomersAndSuppliers.prototype.testGeneralLedgerReport = function(
 
     Test.logger.addComment("Test Customers and Suppliers Report");
 
-    /**************************************************
-     * TEST CASES FILE WITHOUT VAT
-     *************************************************/
-
-    //Only base columns¨
     var banDoc=Banana.application.openDocument(this.fileAC2_withoutVAT);
     if (!banDoc) {
         Test.logger.addFatalError("Document not found");
     }
+
+    /**************************************************
+     * TEST CASES FILE WITHOUT VAT
+     *************************************************/
+
+    Test.logger.addSection("Test base columns")
+
+    //Only base columns
     var addColumns=[];
     var report=printReport(banDoc,addColumns);
 
-    Test.logger.addReport("General Ledger Report",report);
+    Test.logger.addReport("Customers and Suppliers Report, Base Columns",report);
 
     //with additional columns: Notes, AccountDebit,AccountCredit
 
+    Test.logger.addSection("Test With additional columns: Notes, AccountDebit,AccountCredit");
 
-    //with addition columns (vat) VatRate, VatRateEffective, VatTaxable  and VatAmount
+    var addColumns=["Notes","AccountDebit","AccountCredit"];
+    var report=printReport(banDoc,addColumns);
+
+    Test.logger.addReport("Customers and Suppliers Report, Additional Columns",report);
 
 
     Test.logger.close();

@@ -47,9 +47,14 @@ function exec() {
     additionalColumnsList = getAdditionalColumns(savedScriptSettings);
 
     var dateform = getPeriodSettings(banDoc);
+    var report="";
     if (dateform) {
-        printReport(dateform.selectionStartDate, dateform.selectionEndDate,additionalColumnsList,banDoc);
+        report=printReport(dateform.selectionStartDate, dateform.selectionEndDate,additionalColumnsList,banDoc);
     }
+
+    //Print the report
+    var stylesheet = getReportStyle();
+    Banana.Report.preview(report, stylesheet);
 }
 
 /**
@@ -133,9 +138,7 @@ function printReport(startDate, endDate,additionalColumnsList,banDoc) {
     //Add a footer to the report
     addFooter(report);
 
-    //Print the report
-    var stylesheet = getReportStyle();
-    Banana.Report.preview(report, stylesheet);
+    return report;
 }
 
 function printGeneralLedger(table, startDate, endDate,additionalColumnsList,banDoc) {
