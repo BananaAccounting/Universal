@@ -1,0 +1,1118 @@
+%%info_test_name{ch.banana.audit.report.trialbalance.test}
+\documentclass{report}
+\usepackage{longtable}
+\usepackage{color}
+\usepackage{listings}
+\usepackage[margin=1cm]{geometry}
+\begin{document}
+\newenvironment{tablevalue}[2]{\textbf{Table: #1}\begin{longtable}[l]{#2}}{\end{longtable}}
+\newenvironment{reportvalue}[1]{\textbf{Report: #1}\\}{}
+\lstnewenvironment{jsonvalue}[1]{\textbf{Json: #1}\lstset{language=Java}}{}
+\lstnewenvironment{xmlvalue}[1]{\textbf{Xml: #1}\lstset{language=Xml}}{}
+\newcommand{\info}[2]{\textit{#1: #2}\\}
+\newcommand{\fatalerror}[1]{\textbf{\textcolor[rgb]{1,0,0}{Fatal error: #1}}\\}
+\newcommand{\keyvalue}[2]{\textbf{Keyvalue: #1} #2\\}
+\newcommand{\textvalue}[1]{#1\\}
+\newcommand{\excltest}[1]{\\Excluded from compare: #1}
+\newcommand{\lognewpage}{\newpage}
+\newenvironment{testcase}[1]{\section*{Test: #1}}{\newpage}
+\newenvironment{test}[1]{\section*{Test case: #1}}{}
+%Begin test data
+%%SCRIPT{C:/Users/confo/Documents/GitHub/Universal/audit/AuditingReports/./test/ch.banana.audit.report.trialbalance.test.js}
+%
+\begin{testcase}{AuditReports\_TrialBalance}
+\begin{test}{testGeneralLedgerReport}
+%Test Trial Balance Report
+\section{All Year}
+\begin{reportvalue}{Test all year}
+Trial Balance \\
+  \\
+\begin{longtable}[l]{ l  l  l  l }
+ & \multicolumn{3}{l}{Trial Balance at 31.12.2021 }\\
+ &  & Debit  & Credit \\
+1000  & Cassa  & 49'950.00  & \\
+1010  & Posta  & -2'900.00  & \\
+1020  & Banca  & -1'160.00  & \\
+1060  & Titoli  & 0.00  & \\
+1090  & Conto di trasferimento  & 0.00  & \\
+1091  & Conto di giro salari  & 0.00  & \\
+1099  & Importi da chiarire  & 0.00  & \\
+1100  & Crediti da forniture e prestazioni (debitori)  & 22'800.00  & \\
+1109  & Delcredere  & 0.00  & \\
+1140  & Anticipi e prestiti  & 4'000.00  & \\
+1176  & Imposta preventiva  & 0.00  & \\
+1180  & Crediti da assicurazioni sociali e istituti di previdenza  & 0.00  & \\
+1188  & Imposte alla fonte  & 0.00  & \\
+1190  & Crediti diversi a breve termine  & 0.00  & \\
+1191  & Cauzioni   & 0.00  & \\
+1200  & Merce di rivendita  & -8'000.00  & \\
+1210  & Materia prima  & 5'000.00  & \\
+1220  & Materia ausiliaria  & 0.00  & \\
+1230  & Materiale di consumo  & 0.00  & \\
+1260  & Prodotti finiti  & 0.00  & \\
+1270  & Prodotti in corso di fabbricazione  & 0.00  & \\
+1280  & Prestazioni di servizi non fatturate  & 0.00  & \\
+1300  & Costi anticipati  & 1'000.00  & \\
+1301  & Ricavi da incassare  & 0.00  & \\
+1400  & Titoli  & 0.00  & \\
+1440  & Prestiti  & 0.00  & \\
+1460  & Prestito a correntista   & 0.00  & \\
+1480  & Partecipazioni  & 0.00  & \\
+1500  & Macchine e attrezzature  & 14'700.00  & \\
+1510  & Mobilio e installazioni  & 0.00  & \\
+1520  & Macchine ufficio, informatica e tecnologia della comunicazione  & -1'500.00  & \\
+1530  & Veicoli  & 21'524.00  & \\
+1540  & Utensili e apparecchiature  & 0.00  & \\
+1600  & Immobili aziendali  & 0.00  & \\
+1700  & Brevetti, know-how, licenze, diritti e sviluppo  & 0.00  & \\
+1710  & Marchi  & 0.00  & \\
+1712  & Modelli  & 0.00  & \\
+1770  & Goodwill  & 0.00  & \\
+1850  & Capitale azionario, capitale sociale, diritti di partecipazione non versati o capitale della fondazione non versati  & 0.00  & \\
+110001  & Rossi Carlo  & 0.00  & \\
+110002  & Luisoni Giorgio  & 0.00  & \\
+110003  & Barbieri Sergio  & 0.00  & \\
+110004  & Cinnato Alessandra  & 0.00  & \\
+110005  &  Baratta Rosaria  & 0.00  & \\
+2000  & Debiti per forniture e prestazioni (creditori)   &  & 34'240.00 \\
+2030  & Acconti ricevuti  &  & 0.00 \\
+2100  & Banca passiva  &  & 0.00 \\
+2120  & Impegni leasing finanziari  &  & 0.00 \\
+2140  & Altri debiti onerosi  &  & 0.00 \\
+2200  & IVA dovuta  &  & 0.00 \\
+2201  & IVA, rendiconto  &  & 0.00 \\
+2206  & Imposta preventiva  &  & 0.00 \\
+2208  & Imposte dirette  &  & 0.00 \\
+2210  & Altri debiti a breve termine  &  & 0.00 \\
+2260  & Debiti verso correntista  &  & 0.00 \\
+2261  & Dividendi  &  & 1'000.00 \\
+2270  & Assicurazioni sociali e istituti di previdenza  &  & 0.00 \\
+2279  & Imposte alla fonte  &  & 0.00 \\
+2300  & Costi da pagare  &  & 0.00 \\
+2301  & Ricavi incassati dell'anno seguente  &  & -1'000.00 \\
+2330  & Accantonamenti a breve termine  &  & 0.00 \\
+2400  & Debiti bancari  &  & 0.00 \\
+2420  & Impegni leasing finanziari  &  & 11'000.00 \\
+2430  & Prestiti obbligazionari  &  & 0.00 \\
+2450  & Prestiti  &  & 15'000.00 \\
+2451  & Mutui ipotecari  &  & 0.00 \\
+2500  & Altri debiti a lungo termine (non onerosi)  &  & 0.00 \\
+2600  & Accantonamenti  &  & 5'000.00 \\
+2800  & Capitale azionario, capitale sociale, diritti di partecipazione o capitale della fondazione  &  & 0.00 \\
+2900  & Riserva legale da capitale  &  & -5'000.00 \\
+2940  & Riserve da rivalutazioni  &  & 0.00 \\
+2950  & Riserva legale da utili  &  & 0.00 \\
+2960  & Riserve facoltative da utili  &  & 0.00 \\
+2970  & Utile/perdita riportata   &  & 18'450.00 \\
+2980  & Azioni proprie, parti sociali, diritti di partecipazione (posta negativa)  &  & 0.00 \\
+200001  & De Giorgi Mattia  &  & 0.00 \\
+200002  & Ambrogi Paola  &  & 0.00 \\
+200003  & Rossi Franco  &  & 0.00 \\
+200004  & Torre Massimo  &  & 0.00 \\
+200005  & Brambilla Federica  &  & 0.00 \\
+3000  & Ricavi prodotti fabbricati  &  & 48'000.00 \\
+3200  & Ricavi merci di rivendita  &  & 0.00 \\
+3400  & Ricavi prestazioni di servizi  &  & 1'000.00 \\
+3600  & Altri ricavi e prestazioni di servizi  &  & 0.00 \\
+3710  & Consumo proprio  &  & 0.00 \\
+3800  & Diminuzione di ricavi  &  & 0.00 \\
+3805  & Perdite su debitori, variazione delcredere  &  & 0.00 \\
+3900  & Variazione delle scorte di prodotti in corso di fabbricazione  &  & 0.00 \\
+3901  & Variazione delle scorte di prodotti finiti  &  & 0.00 \\
+3940  & Variazione prestazioni di servizi non fatturate  &  & 0.00 \\
+6950  & Ricavi finanziari   &  & -600.00 \\
+7000  & Ricavi attività accessoria  &  & 0.00 \\
+7500  & Ricavi immobili aziendali  &  & 0.00 \\
+8100  & Ricavi estranei  &  & 0.00 \\
+8510  & Ricavi straordinari, unici o relativi ad altri periodi contabili  &  & 10'124.00 \\
+9200  & utile/perdita  &  & 0.00 \\
+4000  &  & 3'200.00  & \\
+4200  & Costi delle merci di rivendita  & 20'000.00  & \\
+4400  & Lavori di terzi / prestazioni di subappaltanti  & 0.00  & \\
+4500  & Consumi energia per la produzione  & 0.00  & \\
+4900  & Diminuzione di costi  & 0.00  & \\
+5000  & Salari  & 500.00  & \\
+5700  & Contributi AVS/AI/IPG  & 0.00  & \\
+5710  & Contributi cassa assegni  & 0.00  & \\
+5720  & Contributi previdenza professionale obbligatoria  & 0.00  & \\
+5730  & Premi per l'assicurazione infortuni professionali  & 0.00  & \\
+5740  & Premi assicurazione malattia  & 0.00  & \\
+5790  & Imposta alla fonte  & 0.00  & \\
+5800  & Altri costi del personale  & 0.00  & \\
+5810  & Formazione del personale   & 0.00  & \\
+5820  & Spese di viaggio  & 0.00  & \\
+5830  & Rimborsi spese forfettarie  & 0.00  & \\
+5900  & Prestazioni di terzi  & 0.00  & \\
+6000  & Costi dei locali  & 0.00  & \\
+6040  & Pulizia locali  & 0.00  & \\
+6100  & Manutenzioni, riparazioni e sostituzione immobilizzazioni mobiliari  & 0.00  & \\
+6105  & Costi leasing immobilizzazioni mobiliari  & 0.00  & \\
+6200  & Riparazioni  & 0.00  & \\
+6210  & Benzina  & 0.00  & \\
+6220  & Assicurazioni auto  & 0.00  & \\
+6260  & Leasing e noleggio auto  & 0.00  & \\
+6270  & Quota privata dei costi auto  & 0.00  & \\
+6282  & Costi di trasporto  & 0.00  & \\
+6300  & Assicurazioni cose, contributi, tasse e autorizzazioni  & 0.00  & \\
+6402  & Elettricità  & 0.00  & \\
+6410  & Riscaldamento  & 0.00  & \\
+6430  & Acqua  & 0.00  & \\
+6460  & Spazzatura  & 0.00  & \\
+6500  & Materiale d'ufficio  & 0.00  & \\
+6503  & Riviste specialistiche, giornali, periodici  & 0.00  & \\
+6510  & Telefono  / internet  & 0.00  & \\
+6511  & Hosting presso terzi  & 0.00  & \\
+6513  & Porti (spese postali)  & 0.00  & \\
+6570  & Costi informatici incluso leasing  & 0.00  & \\
+6580  & Abbonamenti licenze, aggiornamenti  & 0.00  & \\
+6583  & Materiale di consumo  & 0.00  & \\
+6600  & Costi pubblicitari  &  & 1'000.00 \\
+6642  & Regali a clienti  & 0.00  & \\
+6700  & Altri costi d'esercizio  & 5'000.00  & \\
+6800  & Ammortamenti e rettifiche di valore dell'attivo fisso  & 3'000.00  & \\
+6900  & Costi finanziari  & 0.00  & \\
+7010  & Costi attività accessoria  & 0.00  & \\
+7510  & Costi immobili aziendali  & 0.00  & \\
+8000  & Costi estranei  & 0.00  & \\
+8500  & Costi straordinari, unici o relativi ad altri periodi contabili  & 100.00  & \\
+8900  & Imposte dirette  & 1'000.00  & \\
+\multicolumn{2}{l}{} & 138'214.00  & 138'214.00 \\
+\end{longtable}
+20.12.2021 - Trial balance - Page  \#page-nr \end{reportvalue}
+\section{First Semester}
+\begin{reportvalue}{Test first semester}
+Trial Balance \\
+  \\
+\begin{longtable}[l]{ l  l  l  l }
+ & \multicolumn{3}{l}{Trial Balance at 30.06.2021 }\\
+ &  & Debit  & Credit \\
+1000  & Cassa  & 25'650.00  & \\
+1010  & Posta  & -6'900.00  & \\
+1020  & Banca  & 740.00  & \\
+1060  & Titoli  & 0.00  & \\
+1090  & Conto di trasferimento  & 0.00  & \\
+1091  & Conto di giro salari  & 0.00  & \\
+1099  & Importi da chiarire  & 0.00  & \\
+1100  & Crediti da forniture e prestazioni (debitori)  & 52'800.00  & \\
+1109  & Delcredere  & 0.00  & \\
+1140  & Anticipi e prestiti  & 4'000.00  & \\
+1176  & Imposta preventiva  & 0.00  & \\
+1180  & Crediti da assicurazioni sociali e istituti di previdenza  & 0.00  & \\
+1188  & Imposte alla fonte  & 0.00  & \\
+1190  & Crediti diversi a breve termine  & 0.00  & \\
+1191  & Cauzioni   & 0.00  & \\
+1200  & Merce di rivendita  & 0.00  & \\
+1210  & Materia prima  & 0.00  & \\
+1220  & Materia ausiliaria  & 0.00  & \\
+1230  & Materiale di consumo  & 0.00  & \\
+1260  & Prodotti finiti  & 0.00  & \\
+1270  & Prodotti in corso di fabbricazione  & 0.00  & \\
+1280  & Prestazioni di servizi non fatturate  & 0.00  & \\
+1300  & Costi anticipati  & 0.00  & \\
+1301  & Ricavi da incassare  & 0.00  & \\
+1400  & Titoli  & 0.00  & \\
+1440  & Prestiti  & 0.00  & \\
+1460  & Prestito a correntista   & 0.00  & \\
+1480  & Partecipazioni  & 0.00  & \\
+1500  & Macchine e attrezzature  & 10'200.00  & \\
+1510  & Mobilio e installazioni  & 0.00  & \\
+1520  & Macchine ufficio, informatica e tecnologia della comunicazione  & -1'500.00  & \\
+1530  & Veicoli  & 11'500.00  & \\
+1540  & Utensili e apparecchiature  & 0.00  & \\
+1600  & Immobili aziendali  & 0.00  & \\
+1700  & Brevetti, know-how, licenze, diritti e sviluppo  & 0.00  & \\
+1710  & Marchi  & 0.00  & \\
+1712  & Modelli  & 0.00  & \\
+1770  & Goodwill  & 0.00  & \\
+1850  & Capitale azionario, capitale sociale, diritti di partecipazione non versati o capitale della fondazione non versati  & 0.00  & \\
+110001  & Rossi Carlo  & 0.00  & \\
+110002  & Luisoni Giorgio  & 0.00  & \\
+110003  & Barbieri Sergio  & 0.00  & \\
+110004  & Cinnato Alessandra  & 0.00  & \\
+110005  &  Baratta Rosaria  & 0.00  & \\
+2000  & Debiti per forniture e prestazioni (creditori)   &  & 14'240.00 \\
+2030  & Acconti ricevuti  &  & 0.00 \\
+2100  & Banca passiva  &  & 0.00 \\
+2120  & Impegni leasing finanziari  &  & 0.00 \\
+2140  & Altri debiti onerosi  &  & 0.00 \\
+2200  & IVA dovuta  &  & 0.00 \\
+2201  & IVA, rendiconto  &  & 0.00 \\
+2206  & Imposta preventiva  &  & 0.00 \\
+2208  & Imposte dirette  &  & 0.00 \\
+2210  & Altri debiti a breve termine  &  & 0.00 \\
+2260  & Debiti verso correntista  &  & 0.00 \\
+2261  & Dividendi  &  & 0.00 \\
+2270  & Assicurazioni sociali e istituti di previdenza  &  & 0.00 \\
+2279  & Imposte alla fonte  &  & 0.00 \\
+2300  & Costi da pagare  &  & 0.00 \\
+2301  & Ricavi incassati dell'anno seguente  &  & 0.00 \\
+2330  & Accantonamenti a breve termine  &  & 0.00 \\
+2400  & Debiti bancari  &  & 0.00 \\
+2420  & Impegni leasing finanziari  &  & 11'000.00 \\
+2430  & Prestiti obbligazionari  &  & 0.00 \\
+2450  & Prestiti  &  & 5'000.00 \\
+2451  & Mutui ipotecari  &  & 0.00 \\
+2500  & Altri debiti a lungo termine (non onerosi)  &  & 0.00 \\
+2600  & Accantonamenti  &  & 2'000.00 \\
+2800  & Capitale azionario, capitale sociale, diritti di partecipazione o capitale della fondazione  &  & 0.00 \\
+2900  & Riserva legale da capitale  &  & 0.00 \\
+2940  & Riserve da rivalutazioni  &  & 0.00 \\
+2950  & Riserva legale da utili  &  & 0.00 \\
+2960  & Riserve facoltative da utili  &  & 0.00 \\
+2970  & Utile/perdita riportata   &  & 19'450.00 \\
+2980  & Azioni proprie, parti sociali, diritti di partecipazione (posta negativa)  &  & 0.00 \\
+200001  & De Giorgi Mattia  &  & 0.00 \\
+200002  & Ambrogi Paola  &  & 0.00 \\
+200003  & Rossi Franco  &  & 0.00 \\
+200004  & Torre Massimo  &  & 0.00 \\
+200005  & Brambilla Federica  &  & 0.00 \\
+3000  & Ricavi prodotti fabbricati  &  & 48'000.00 \\
+3200  & Ricavi merci di rivendita  &  & 0.00 \\
+3400  & Ricavi prestazioni di servizi  &  & 0.00 \\
+3600  & Altri ricavi e prestazioni di servizi  &  & 0.00 \\
+3710  & Consumo proprio  &  & 0.00 \\
+3800  & Diminuzione di ricavi  &  & 0.00 \\
+3805  & Perdite su debitori, variazione delcredere  &  & 0.00 \\
+3900  & Variazione delle scorte di prodotti in corso di fabbricazione  &  & 0.00 \\
+3901  & Variazione delle scorte di prodotti finiti  &  & 0.00 \\
+3940  & Variazione prestazioni di servizi non fatturate  &  & 0.00 \\
+6950  & Ricavi finanziari   &  & 0.00 \\
+7000  & Ricavi attività accessoria  &  & 0.00 \\
+7500  & Ricavi immobili aziendali  &  & 0.00 \\
+8100  & Ricavi estranei  &  & 0.00 \\
+8510  & Ricavi straordinari, unici o relativi ad altri periodi contabili  &  & 0.00 \\
+9200  & utile/perdita  &  & 0.00 \\
+4000  &  & 3'200.00  & \\
+4200  & Costi delle merci di rivendita  & 0.00  & \\
+4400  & Lavori di terzi / prestazioni di subappaltanti  & 0.00  & \\
+4500  & Consumi energia per la produzione  & 0.00  & \\
+4900  & Diminuzione di costi  & 0.00  & \\
+5000  & Salari  & 0.00  & \\
+5700  & Contributi AVS/AI/IPG  & 0.00  & \\
+5710  & Contributi cassa assegni  & 0.00  & \\
+5720  & Contributi previdenza professionale obbligatoria  & 0.00  & \\
+5730  & Premi per l'assicurazione infortuni professionali  & 0.00  & \\
+5740  & Premi assicurazione malattia  & 0.00  & \\
+5790  & Imposta alla fonte  & 0.00  & \\
+5800  & Altri costi del personale  & 0.00  & \\
+5810  & Formazione del personale   & 0.00  & \\
+5820  & Spese di viaggio  & 0.00  & \\
+5830  & Rimborsi spese forfettarie  & 0.00  & \\
+5900  & Prestazioni di terzi  & 0.00  & \\
+6000  & Costi dei locali  & 0.00  & \\
+6040  & Pulizia locali  & 0.00  & \\
+6100  & Manutenzioni, riparazioni e sostituzione immobilizzazioni mobiliari  & 0.00  & \\
+6105  & Costi leasing immobilizzazioni mobiliari  & 0.00  & \\
+6200  & Riparazioni  & 0.00  & \\
+6210  & Benzina  & 0.00  & \\
+6220  & Assicurazioni auto  & 0.00  & \\
+6260  & Leasing e noleggio auto  & 0.00  & \\
+6270  & Quota privata dei costi auto  & 0.00  & \\
+6282  & Costi di trasporto  & 0.00  & \\
+6300  & Assicurazioni cose, contributi, tasse e autorizzazioni  & 0.00  & \\
+6402  & Elettricità  & 0.00  & \\
+6410  & Riscaldamento  & 0.00  & \\
+6430  & Acqua  & 0.00  & \\
+6460  & Spazzatura  & 0.00  & \\
+6500  & Materiale d'ufficio  & 0.00  & \\
+6503  & Riviste specialistiche, giornali, periodici  & 0.00  & \\
+6510  & Telefono  / internet  & 0.00  & \\
+6511  & Hosting presso terzi  & 0.00  & \\
+6513  & Porti (spese postali)  & 0.00  & \\
+6570  & Costi informatici incluso leasing  & 0.00  & \\
+6580  & Abbonamenti licenze, aggiornamenti  & 0.00  & \\
+6583  & Materiale di consumo  & 0.00  & \\
+6600  & Costi pubblicitari  & 0.00  & \\
+6642  & Regali a clienti  & 0.00  & \\
+6700  & Altri costi d'esercizio  & 0.00  & \\
+6800  & Ammortamenti e rettifiche di valore dell'attivo fisso  & 0.00  & \\
+6900  & Costi finanziari  & 0.00  & \\
+7010  & Costi attività accessoria  & 0.00  & \\
+7510  & Costi immobili aziendali  & 0.00  & \\
+8000  & Costi estranei  & 0.00  & \\
+8500  & Costi straordinari, unici o relativi ad altri periodi contabili  & 0.00  & \\
+8900  & Imposte dirette  & 0.00  & \\
+\multicolumn{2}{l}{} & 237'904.00  & 237'904.00 \\
+\end{longtable}
+20.12.2021 - Trial balance - Page  \#page-nr \end{reportvalue}
+\section{Second Semester}
+\begin{reportvalue}{Test second semester}
+Trial Balance \\
+  \\
+\begin{longtable}[l]{ l  l  l  l }
+ & \multicolumn{3}{l}{Trial Balance at 30.06.2021 }\\
+ &  & Debit  & Credit \\
+1000  & Cassa  & 25'650.00  & \\
+1010  & Posta  & -6'900.00  & \\
+1020  & Banca  & 740.00  & \\
+1060  & Titoli  & 0.00  & \\
+1090  & Conto di trasferimento  & 0.00  & \\
+1091  & Conto di giro salari  & 0.00  & \\
+1099  & Importi da chiarire  & 0.00  & \\
+1100  & Crediti da forniture e prestazioni (debitori)  & 52'800.00  & \\
+1109  & Delcredere  & 0.00  & \\
+1140  & Anticipi e prestiti  & 4'000.00  & \\
+1176  & Imposta preventiva  & 0.00  & \\
+1180  & Crediti da assicurazioni sociali e istituti di previdenza  & 0.00  & \\
+1188  & Imposte alla fonte  & 0.00  & \\
+1190  & Crediti diversi a breve termine  & 0.00  & \\
+1191  & Cauzioni   & 0.00  & \\
+1200  & Merce di rivendita  & 0.00  & \\
+1210  & Materia prima  & 0.00  & \\
+1220  & Materia ausiliaria  & 0.00  & \\
+1230  & Materiale di consumo  & 0.00  & \\
+1260  & Prodotti finiti  & 0.00  & \\
+1270  & Prodotti in corso di fabbricazione  & 0.00  & \\
+1280  & Prestazioni di servizi non fatturate  & 0.00  & \\
+1300  & Costi anticipati  & 0.00  & \\
+1301  & Ricavi da incassare  & 0.00  & \\
+1400  & Titoli  & 0.00  & \\
+1440  & Prestiti  & 0.00  & \\
+1460  & Prestito a correntista   & 0.00  & \\
+1480  & Partecipazioni  & 0.00  & \\
+1500  & Macchine e attrezzature  & 10'200.00  & \\
+1510  & Mobilio e installazioni  & 0.00  & \\
+1520  & Macchine ufficio, informatica e tecnologia della comunicazione  & -1'500.00  & \\
+1530  & Veicoli  & 11'500.00  & \\
+1540  & Utensili e apparecchiature  & 0.00  & \\
+1600  & Immobili aziendali  & 0.00  & \\
+1700  & Brevetti, know-how, licenze, diritti e sviluppo  & 0.00  & \\
+1710  & Marchi  & 0.00  & \\
+1712  & Modelli  & 0.00  & \\
+1770  & Goodwill  & 0.00  & \\
+1850  & Capitale azionario, capitale sociale, diritti di partecipazione non versati o capitale della fondazione non versati  & 0.00  & \\
+110001  & Rossi Carlo  & 0.00  & \\
+110002  & Luisoni Giorgio  & 0.00  & \\
+110003  & Barbieri Sergio  & 0.00  & \\
+110004  & Cinnato Alessandra  & 0.00  & \\
+110005  &  Baratta Rosaria  & 0.00  & \\
+2000  & Debiti per forniture e prestazioni (creditori)   &  & 14'240.00 \\
+2030  & Acconti ricevuti  &  & 0.00 \\
+2100  & Banca passiva  &  & 0.00 \\
+2120  & Impegni leasing finanziari  &  & 0.00 \\
+2140  & Altri debiti onerosi  &  & 0.00 \\
+2200  & IVA dovuta  &  & 0.00 \\
+2201  & IVA, rendiconto  &  & 0.00 \\
+2206  & Imposta preventiva  &  & 0.00 \\
+2208  & Imposte dirette  &  & 0.00 \\
+2210  & Altri debiti a breve termine  &  & 0.00 \\
+2260  & Debiti verso correntista  &  & 0.00 \\
+2261  & Dividendi  &  & 0.00 \\
+2270  & Assicurazioni sociali e istituti di previdenza  &  & 0.00 \\
+2279  & Imposte alla fonte  &  & 0.00 \\
+2300  & Costi da pagare  &  & 0.00 \\
+2301  & Ricavi incassati dell'anno seguente  &  & 0.00 \\
+2330  & Accantonamenti a breve termine  &  & 0.00 \\
+2400  & Debiti bancari  &  & 0.00 \\
+2420  & Impegni leasing finanziari  &  & 11'000.00 \\
+2430  & Prestiti obbligazionari  &  & 0.00 \\
+2450  & Prestiti  &  & 5'000.00 \\
+2451  & Mutui ipotecari  &  & 0.00 \\
+2500  & Altri debiti a lungo termine (non onerosi)  &  & 0.00 \\
+2600  & Accantonamenti  &  & 2'000.00 \\
+2800  & Capitale azionario, capitale sociale, diritti di partecipazione o capitale della fondazione  &  & 0.00 \\
+2900  & Riserva legale da capitale  &  & 0.00 \\
+2940  & Riserve da rivalutazioni  &  & 0.00 \\
+2950  & Riserva legale da utili  &  & 0.00 \\
+2960  & Riserve facoltative da utili  &  & 0.00 \\
+2970  & Utile/perdita riportata   &  & 19'450.00 \\
+2980  & Azioni proprie, parti sociali, diritti di partecipazione (posta negativa)  &  & 0.00 \\
+200001  & De Giorgi Mattia  &  & 0.00 \\
+200002  & Ambrogi Paola  &  & 0.00 \\
+200003  & Rossi Franco  &  & 0.00 \\
+200004  & Torre Massimo  &  & 0.00 \\
+200005  & Brambilla Federica  &  & 0.00 \\
+3000  & Ricavi prodotti fabbricati  &  & 0.00 \\
+3200  & Ricavi merci di rivendita  &  & 0.00 \\
+3400  & Ricavi prestazioni di servizi  &  & 0.00 \\
+3600  & Altri ricavi e prestazioni di servizi  &  & 0.00 \\
+3710  & Consumo proprio  &  & 0.00 \\
+3800  & Diminuzione di ricavi  &  & 0.00 \\
+3805  & Perdite su debitori, variazione delcredere  &  & 0.00 \\
+3900  & Variazione delle scorte di prodotti in corso di fabbricazione  &  & 0.00 \\
+3901  & Variazione delle scorte di prodotti finiti  &  & 0.00 \\
+3940  & Variazione prestazioni di servizi non fatturate  &  & 0.00 \\
+6950  & Ricavi finanziari   &  & 0.00 \\
+7000  & Ricavi attività accessoria  &  & 0.00 \\
+7500  & Ricavi immobili aziendali  &  & 0.00 \\
+8100  & Ricavi estranei  &  & 0.00 \\
+8510  & Ricavi straordinari, unici o relativi ad altri periodi contabili  &  & 0.00 \\
+9200  & utile/perdita  &  & 0.00 \\
+4000  &  & 0.00  & \\
+4200  & Costi delle merci di rivendita  & 0.00  & \\
+4400  & Lavori di terzi / prestazioni di subappaltanti  & 0.00  & \\
+4500  & Consumi energia per la produzione  & 0.00  & \\
+4900  & Diminuzione di costi  & 0.00  & \\
+5000  & Salari  & 0.00  & \\
+5700  & Contributi AVS/AI/IPG  & 0.00  & \\
+5710  & Contributi cassa assegni  & 0.00  & \\
+5720  & Contributi previdenza professionale obbligatoria  & 0.00  & \\
+5730  & Premi per l'assicurazione infortuni professionali  & 0.00  & \\
+5740  & Premi assicurazione malattia  & 0.00  & \\
+5790  & Imposta alla fonte  & 0.00  & \\
+5800  & Altri costi del personale  & 0.00  & \\
+5810  & Formazione del personale   & 0.00  & \\
+5820  & Spese di viaggio  & 0.00  & \\
+5830  & Rimborsi spese forfettarie  & 0.00  & \\
+5900  & Prestazioni di terzi  & 0.00  & \\
+6000  & Costi dei locali  & 0.00  & \\
+6040  & Pulizia locali  & 0.00  & \\
+6100  & Manutenzioni, riparazioni e sostituzione immobilizzazioni mobiliari  & 0.00  & \\
+6105  & Costi leasing immobilizzazioni mobiliari  & 0.00  & \\
+6200  & Riparazioni  & 0.00  & \\
+6210  & Benzina  & 0.00  & \\
+6220  & Assicurazioni auto  & 0.00  & \\
+6260  & Leasing e noleggio auto  & 0.00  & \\
+6270  & Quota privata dei costi auto  & 0.00  & \\
+6282  & Costi di trasporto  & 0.00  & \\
+6300  & Assicurazioni cose, contributi, tasse e autorizzazioni  & 0.00  & \\
+6402  & Elettricità  & 0.00  & \\
+6410  & Riscaldamento  & 0.00  & \\
+6430  & Acqua  & 0.00  & \\
+6460  & Spazzatura  & 0.00  & \\
+6500  & Materiale d'ufficio  & 0.00  & \\
+6503  & Riviste specialistiche, giornali, periodici  & 0.00  & \\
+6510  & Telefono  / internet  & 0.00  & \\
+6511  & Hosting presso terzi  & 0.00  & \\
+6513  & Porti (spese postali)  & 0.00  & \\
+6570  & Costi informatici incluso leasing  & 0.00  & \\
+6580  & Abbonamenti licenze, aggiornamenti  & 0.00  & \\
+6583  & Materiale di consumo  & 0.00  & \\
+6600  & Costi pubblicitari  & 0.00  & \\
+6642  & Regali a clienti  & 0.00  & \\
+6700  & Altri costi d'esercizio  & 0.00  & \\
+6800  & Ammortamenti e rettifiche di valore dell'attivo fisso  & 0.00  & \\
+6900  & Costi finanziari  & 0.00  & \\
+7010  & Costi attività accessoria  & 0.00  & \\
+7510  & Costi immobili aziendali  & 0.00  & \\
+8000  & Costi estranei  & 0.00  & \\
+8500  & Costi straordinari, unici o relativi ad altri periodi contabili  & 0.00  & \\
+8900  & Imposte dirette  & 0.00  & \\
+\multicolumn{2}{l}{} & 334'394.00  & 289'594.00 \\
+\end{longtable}
+20.12.2021 - Trial balance - Page  \#page-nr \end{reportvalue}
+\section{First Quarter}
+\begin{reportvalue}{Test first Quarter}
+Trial Balance \\
+  \\
+\begin{longtable}[l]{ l  l  l  l }
+ & \multicolumn{3}{l}{Trial Balance at 30.06.2021 }\\
+ &  & Debit  & Credit \\
+1000  & Cassa  & 25'650.00  & \\
+1010  & Posta  & -6'900.00  & \\
+1020  & Banca  & 740.00  & \\
+1060  & Titoli  & 0.00  & \\
+1090  & Conto di trasferimento  & 0.00  & \\
+1091  & Conto di giro salari  & 0.00  & \\
+1099  & Importi da chiarire  & 0.00  & \\
+1100  & Crediti da forniture e prestazioni (debitori)  & 52'800.00  & \\
+1109  & Delcredere  & 0.00  & \\
+1140  & Anticipi e prestiti  & 4'000.00  & \\
+1176  & Imposta preventiva  & 0.00  & \\
+1180  & Crediti da assicurazioni sociali e istituti di previdenza  & 0.00  & \\
+1188  & Imposte alla fonte  & 0.00  & \\
+1190  & Crediti diversi a breve termine  & 0.00  & \\
+1191  & Cauzioni   & 0.00  & \\
+1200  & Merce di rivendita  & 0.00  & \\
+1210  & Materia prima  & 0.00  & \\
+1220  & Materia ausiliaria  & 0.00  & \\
+1230  & Materiale di consumo  & 0.00  & \\
+1260  & Prodotti finiti  & 0.00  & \\
+1270  & Prodotti in corso di fabbricazione  & 0.00  & \\
+1280  & Prestazioni di servizi non fatturate  & 0.00  & \\
+1300  & Costi anticipati  & 0.00  & \\
+1301  & Ricavi da incassare  & 0.00  & \\
+1400  & Titoli  & 0.00  & \\
+1440  & Prestiti  & 0.00  & \\
+1460  & Prestito a correntista   & 0.00  & \\
+1480  & Partecipazioni  & 0.00  & \\
+1500  & Macchine e attrezzature  & 10'200.00  & \\
+1510  & Mobilio e installazioni  & 0.00  & \\
+1520  & Macchine ufficio, informatica e tecnologia della comunicazione  & -1'500.00  & \\
+1530  & Veicoli  & 11'500.00  & \\
+1540  & Utensili e apparecchiature  & 0.00  & \\
+1600  & Immobili aziendali  & 0.00  & \\
+1700  & Brevetti, know-how, licenze, diritti e sviluppo  & 0.00  & \\
+1710  & Marchi  & 0.00  & \\
+1712  & Modelli  & 0.00  & \\
+1770  & Goodwill  & 0.00  & \\
+1850  & Capitale azionario, capitale sociale, diritti di partecipazione non versati o capitale della fondazione non versati  & 0.00  & \\
+110001  & Rossi Carlo  & 0.00  & \\
+110002  & Luisoni Giorgio  & 0.00  & \\
+110003  & Barbieri Sergio  & 0.00  & \\
+110004  & Cinnato Alessandra  & 0.00  & \\
+110005  &  Baratta Rosaria  & 0.00  & \\
+2000  & Debiti per forniture e prestazioni (creditori)   &  & 14'240.00 \\
+2030  & Acconti ricevuti  &  & 0.00 \\
+2100  & Banca passiva  &  & 0.00 \\
+2120  & Impegni leasing finanziari  &  & 0.00 \\
+2140  & Altri debiti onerosi  &  & 0.00 \\
+2200  & IVA dovuta  &  & 0.00 \\
+2201  & IVA, rendiconto  &  & 0.00 \\
+2206  & Imposta preventiva  &  & 0.00 \\
+2208  & Imposte dirette  &  & 0.00 \\
+2210  & Altri debiti a breve termine  &  & 0.00 \\
+2260  & Debiti verso correntista  &  & 0.00 \\
+2261  & Dividendi  &  & 0.00 \\
+2270  & Assicurazioni sociali e istituti di previdenza  &  & 0.00 \\
+2279  & Imposte alla fonte  &  & 0.00 \\
+2300  & Costi da pagare  &  & 0.00 \\
+2301  & Ricavi incassati dell'anno seguente  &  & 0.00 \\
+2330  & Accantonamenti a breve termine  &  & 0.00 \\
+2400  & Debiti bancari  &  & 0.00 \\
+2420  & Impegni leasing finanziari  &  & 11'000.00 \\
+2430  & Prestiti obbligazionari  &  & 0.00 \\
+2450  & Prestiti  &  & 5'000.00 \\
+2451  & Mutui ipotecari  &  & 0.00 \\
+2500  & Altri debiti a lungo termine (non onerosi)  &  & 0.00 \\
+2600  & Accantonamenti  &  & 2'000.00 \\
+2800  & Capitale azionario, capitale sociale, diritti di partecipazione o capitale della fondazione  &  & 0.00 \\
+2900  & Riserva legale da capitale  &  & 0.00 \\
+2940  & Riserve da rivalutazioni  &  & 0.00 \\
+2950  & Riserva legale da utili  &  & 0.00 \\
+2960  & Riserve facoltative da utili  &  & 0.00 \\
+2970  & Utile/perdita riportata   &  & 19'450.00 \\
+2980  & Azioni proprie, parti sociali, diritti di partecipazione (posta negativa)  &  & 0.00 \\
+200001  & De Giorgi Mattia  &  & 0.00 \\
+200002  & Ambrogi Paola  &  & 0.00 \\
+200003  & Rossi Franco  &  & 0.00 \\
+200004  & Torre Massimo  &  & 0.00 \\
+200005  & Brambilla Federica  &  & 0.00 \\
+3000  & Ricavi prodotti fabbricati  &  & 48'000.00 \\
+3200  & Ricavi merci di rivendita  &  & 0.00 \\
+3400  & Ricavi prestazioni di servizi  &  & 0.00 \\
+3600  & Altri ricavi e prestazioni di servizi  &  & 0.00 \\
+3710  & Consumo proprio  &  & 0.00 \\
+3800  & Diminuzione di ricavi  &  & 0.00 \\
+3805  & Perdite su debitori, variazione delcredere  &  & 0.00 \\
+3900  & Variazione delle scorte di prodotti in corso di fabbricazione  &  & 0.00 \\
+3901  & Variazione delle scorte di prodotti finiti  &  & 0.00 \\
+3940  & Variazione prestazioni di servizi non fatturate  &  & 0.00 \\
+6950  & Ricavi finanziari   &  & 0.00 \\
+7000  & Ricavi attività accessoria  &  & 0.00 \\
+7500  & Ricavi immobili aziendali  &  & 0.00 \\
+8100  & Ricavi estranei  &  & 0.00 \\
+8510  & Ricavi straordinari, unici o relativi ad altri periodi contabili  &  & 0.00 \\
+9200  & utile/perdita  &  & 0.00 \\
+4000  &  & 3'200.00  & \\
+4200  & Costi delle merci di rivendita  & 0.00  & \\
+4400  & Lavori di terzi / prestazioni di subappaltanti  & 0.00  & \\
+4500  & Consumi energia per la produzione  & 0.00  & \\
+4900  & Diminuzione di costi  & 0.00  & \\
+5000  & Salari  & 0.00  & \\
+5700  & Contributi AVS/AI/IPG  & 0.00  & \\
+5710  & Contributi cassa assegni  & 0.00  & \\
+5720  & Contributi previdenza professionale obbligatoria  & 0.00  & \\
+5730  & Premi per l'assicurazione infortuni professionali  & 0.00  & \\
+5740  & Premi assicurazione malattia  & 0.00  & \\
+5790  & Imposta alla fonte  & 0.00  & \\
+5800  & Altri costi del personale  & 0.00  & \\
+5810  & Formazione del personale   & 0.00  & \\
+5820  & Spese di viaggio  & 0.00  & \\
+5830  & Rimborsi spese forfettarie  & 0.00  & \\
+5900  & Prestazioni di terzi  & 0.00  & \\
+6000  & Costi dei locali  & 0.00  & \\
+6040  & Pulizia locali  & 0.00  & \\
+6100  & Manutenzioni, riparazioni e sostituzione immobilizzazioni mobiliari  & 0.00  & \\
+6105  & Costi leasing immobilizzazioni mobiliari  & 0.00  & \\
+6200  & Riparazioni  & 0.00  & \\
+6210  & Benzina  & 0.00  & \\
+6220  & Assicurazioni auto  & 0.00  & \\
+6260  & Leasing e noleggio auto  & 0.00  & \\
+6270  & Quota privata dei costi auto  & 0.00  & \\
+6282  & Costi di trasporto  & 0.00  & \\
+6300  & Assicurazioni cose, contributi, tasse e autorizzazioni  & 0.00  & \\
+6402  & Elettricità  & 0.00  & \\
+6410  & Riscaldamento  & 0.00  & \\
+6430  & Acqua  & 0.00  & \\
+6460  & Spazzatura  & 0.00  & \\
+6500  & Materiale d'ufficio  & 0.00  & \\
+6503  & Riviste specialistiche, giornali, periodici  & 0.00  & \\
+6510  & Telefono  / internet  & 0.00  & \\
+6511  & Hosting presso terzi  & 0.00  & \\
+6513  & Porti (spese postali)  & 0.00  & \\
+6570  & Costi informatici incluso leasing  & 0.00  & \\
+6580  & Abbonamenti licenze, aggiornamenti  & 0.00  & \\
+6583  & Materiale di consumo  & 0.00  & \\
+6600  & Costi pubblicitari  & 0.00  & \\
+6642  & Regali a clienti  & 0.00  & \\
+6700  & Altri costi d'esercizio  & 0.00  & \\
+6800  & Ammortamenti e rettifiche di valore dell'attivo fisso  & 0.00  & \\
+6900  & Costi finanziari  & 0.00  & \\
+7010  & Costi attività accessoria  & 0.00  & \\
+7510  & Costi immobili aziendali  & 0.00  & \\
+8000  & Costi estranei  & 0.00  & \\
+8500  & Costi straordinari, unici o relativi ad altri periodi contabili  & 0.00  & \\
+8900  & Imposte dirette  & 0.00  & \\
+\multicolumn{2}{l}{} & 434'084.00  & 389'284.00 \\
+\end{longtable}
+20.12.2021 - Trial balance - Page  \#page-nr \end{reportvalue}
+\section{Second Quarter}
+\begin{reportvalue}{Test Second Quarter}
+Trial Balance \\
+  \\
+\begin{longtable}[l]{ l  l  l  l }
+ & \multicolumn{3}{l}{Trial Balance at 30.06.2021 }\\
+ &  & Debit  & Credit \\
+1000  & Cassa  & 25'650.00  & \\
+1010  & Posta  & -6'900.00  & \\
+1020  & Banca  & 740.00  & \\
+1060  & Titoli  & 0.00  & \\
+1090  & Conto di trasferimento  & 0.00  & \\
+1091  & Conto di giro salari  & 0.00  & \\
+1099  & Importi da chiarire  & 0.00  & \\
+1100  & Crediti da forniture e prestazioni (debitori)  & 52'800.00  & \\
+1109  & Delcredere  & 0.00  & \\
+1140  & Anticipi e prestiti  & 4'000.00  & \\
+1176  & Imposta preventiva  & 0.00  & \\
+1180  & Crediti da assicurazioni sociali e istituti di previdenza  & 0.00  & \\
+1188  & Imposte alla fonte  & 0.00  & \\
+1190  & Crediti diversi a breve termine  & 0.00  & \\
+1191  & Cauzioni   & 0.00  & \\
+1200  & Merce di rivendita  & 0.00  & \\
+1210  & Materia prima  & 0.00  & \\
+1220  & Materia ausiliaria  & 0.00  & \\
+1230  & Materiale di consumo  & 0.00  & \\
+1260  & Prodotti finiti  & 0.00  & \\
+1270  & Prodotti in corso di fabbricazione  & 0.00  & \\
+1280  & Prestazioni di servizi non fatturate  & 0.00  & \\
+1300  & Costi anticipati  & 0.00  & \\
+1301  & Ricavi da incassare  & 0.00  & \\
+1400  & Titoli  & 0.00  & \\
+1440  & Prestiti  & 0.00  & \\
+1460  & Prestito a correntista   & 0.00  & \\
+1480  & Partecipazioni  & 0.00  & \\
+1500  & Macchine e attrezzature  & 10'200.00  & \\
+1510  & Mobilio e installazioni  & 0.00  & \\
+1520  & Macchine ufficio, informatica e tecnologia della comunicazione  & -1'500.00  & \\
+1530  & Veicoli  & 11'500.00  & \\
+1540  & Utensili e apparecchiature  & 0.00  & \\
+1600  & Immobili aziendali  & 0.00  & \\
+1700  & Brevetti, know-how, licenze, diritti e sviluppo  & 0.00  & \\
+1710  & Marchi  & 0.00  & \\
+1712  & Modelli  & 0.00  & \\
+1770  & Goodwill  & 0.00  & \\
+1850  & Capitale azionario, capitale sociale, diritti di partecipazione non versati o capitale della fondazione non versati  & 0.00  & \\
+110001  & Rossi Carlo  & 0.00  & \\
+110002  & Luisoni Giorgio  & 0.00  & \\
+110003  & Barbieri Sergio  & 0.00  & \\
+110004  & Cinnato Alessandra  & 0.00  & \\
+110005  &  Baratta Rosaria  & 0.00  & \\
+2000  & Debiti per forniture e prestazioni (creditori)   &  & 14'240.00 \\
+2030  & Acconti ricevuti  &  & 0.00 \\
+2100  & Banca passiva  &  & 0.00 \\
+2120  & Impegni leasing finanziari  &  & 0.00 \\
+2140  & Altri debiti onerosi  &  & 0.00 \\
+2200  & IVA dovuta  &  & 0.00 \\
+2201  & IVA, rendiconto  &  & 0.00 \\
+2206  & Imposta preventiva  &  & 0.00 \\
+2208  & Imposte dirette  &  & 0.00 \\
+2210  & Altri debiti a breve termine  &  & 0.00 \\
+2260  & Debiti verso correntista  &  & 0.00 \\
+2261  & Dividendi  &  & 0.00 \\
+2270  & Assicurazioni sociali e istituti di previdenza  &  & 0.00 \\
+2279  & Imposte alla fonte  &  & 0.00 \\
+2300  & Costi da pagare  &  & 0.00 \\
+2301  & Ricavi incassati dell'anno seguente  &  & 0.00 \\
+2330  & Accantonamenti a breve termine  &  & 0.00 \\
+2400  & Debiti bancari  &  & 0.00 \\
+2420  & Impegni leasing finanziari  &  & 11'000.00 \\
+2430  & Prestiti obbligazionari  &  & 0.00 \\
+2450  & Prestiti  &  & 5'000.00 \\
+2451  & Mutui ipotecari  &  & 0.00 \\
+2500  & Altri debiti a lungo termine (non onerosi)  &  & 0.00 \\
+2600  & Accantonamenti  &  & 2'000.00 \\
+2800  & Capitale azionario, capitale sociale, diritti di partecipazione o capitale della fondazione  &  & 0.00 \\
+2900  & Riserva legale da capitale  &  & 0.00 \\
+2940  & Riserve da rivalutazioni  &  & 0.00 \\
+2950  & Riserva legale da utili  &  & 0.00 \\
+2960  & Riserve facoltative da utili  &  & 0.00 \\
+2970  & Utile/perdita riportata   &  & 19'450.00 \\
+2980  & Azioni proprie, parti sociali, diritti di partecipazione (posta negativa)  &  & 0.00 \\
+200001  & De Giorgi Mattia  &  & 0.00 \\
+200002  & Ambrogi Paola  &  & 0.00 \\
+200003  & Rossi Franco  &  & 0.00 \\
+200004  & Torre Massimo  &  & 0.00 \\
+200005  & Brambilla Federica  &  & 0.00 \\
+3000  & Ricavi prodotti fabbricati  &  & 33'000.00 \\
+3200  & Ricavi merci di rivendita  &  & 0.00 \\
+3400  & Ricavi prestazioni di servizi  &  & 0.00 \\
+3600  & Altri ricavi e prestazioni di servizi  &  & 0.00 \\
+3710  & Consumo proprio  &  & 0.00 \\
+3800  & Diminuzione di ricavi  &  & 0.00 \\
+3805  & Perdite su debitori, variazione delcredere  &  & 0.00 \\
+3900  & Variazione delle scorte di prodotti in corso di fabbricazione  &  & 0.00 \\
+3901  & Variazione delle scorte di prodotti finiti  &  & 0.00 \\
+3940  & Variazione prestazioni di servizi non fatturate  &  & 0.00 \\
+6950  & Ricavi finanziari   &  & 0.00 \\
+7000  & Ricavi attività accessoria  &  & 0.00 \\
+7500  & Ricavi immobili aziendali  &  & 0.00 \\
+8100  & Ricavi estranei  &  & 0.00 \\
+8510  & Ricavi straordinari, unici o relativi ad altri periodi contabili  &  & 0.00 \\
+9200  & utile/perdita  &  & 0.00 \\
+4000  &  & 0.00  & \\
+4200  & Costi delle merci di rivendita  & 0.00  & \\
+4400  & Lavori di terzi / prestazioni di subappaltanti  & 0.00  & \\
+4500  & Consumi energia per la produzione  & 0.00  & \\
+4900  & Diminuzione di costi  & 0.00  & \\
+5000  & Salari  & 0.00  & \\
+5700  & Contributi AVS/AI/IPG  & 0.00  & \\
+5710  & Contributi cassa assegni  & 0.00  & \\
+5720  & Contributi previdenza professionale obbligatoria  & 0.00  & \\
+5730  & Premi per l'assicurazione infortuni professionali  & 0.00  & \\
+5740  & Premi assicurazione malattia  & 0.00  & \\
+5790  & Imposta alla fonte  & 0.00  & \\
+5800  & Altri costi del personale  & 0.00  & \\
+5810  & Formazione del personale   & 0.00  & \\
+5820  & Spese di viaggio  & 0.00  & \\
+5830  & Rimborsi spese forfettarie  & 0.00  & \\
+5900  & Prestazioni di terzi  & 0.00  & \\
+6000  & Costi dei locali  & 0.00  & \\
+6040  & Pulizia locali  & 0.00  & \\
+6100  & Manutenzioni, riparazioni e sostituzione immobilizzazioni mobiliari  & 0.00  & \\
+6105  & Costi leasing immobilizzazioni mobiliari  & 0.00  & \\
+6200  & Riparazioni  & 0.00  & \\
+6210  & Benzina  & 0.00  & \\
+6220  & Assicurazioni auto  & 0.00  & \\
+6260  & Leasing e noleggio auto  & 0.00  & \\
+6270  & Quota privata dei costi auto  & 0.00  & \\
+6282  & Costi di trasporto  & 0.00  & \\
+6300  & Assicurazioni cose, contributi, tasse e autorizzazioni  & 0.00  & \\
+6402  & Elettricità  & 0.00  & \\
+6410  & Riscaldamento  & 0.00  & \\
+6430  & Acqua  & 0.00  & \\
+6460  & Spazzatura  & 0.00  & \\
+6500  & Materiale d'ufficio  & 0.00  & \\
+6503  & Riviste specialistiche, giornali, periodici  & 0.00  & \\
+6510  & Telefono  / internet  & 0.00  & \\
+6511  & Hosting presso terzi  & 0.00  & \\
+6513  & Porti (spese postali)  & 0.00  & \\
+6570  & Costi informatici incluso leasing  & 0.00  & \\
+6580  & Abbonamenti licenze, aggiornamenti  & 0.00  & \\
+6583  & Materiale di consumo  & 0.00  & \\
+6600  & Costi pubblicitari  & 0.00  & \\
+6642  & Regali a clienti  & 0.00  & \\
+6700  & Altri costi d'esercizio  & 0.00  & \\
+6800  & Ammortamenti e rettifiche di valore dell'attivo fisso  & 0.00  & \\
+6900  & Costi finanziari  & 0.00  & \\
+7010  & Costi attività accessoria  & 0.00  & \\
+7510  & Costi immobili aziendali  & 0.00  & \\
+8000  & Costi estranei  & 0.00  & \\
+8500  & Costi straordinari, unici o relativi ad altri periodi contabili  & 0.00  & \\
+8900  & Imposte dirette  & 0.00  & \\
+\multicolumn{2}{l}{} & 530'574.00  & 473'974.00 \\
+\end{longtable}
+20.12.2021 - Trial balance - Page  \#page-nr \end{reportvalue}
+\section{Third Quarter}
+\begin{reportvalue}{Test Third Quarter}
+Trial Balance \\
+  \\
+\begin{longtable}[l]{ l  l  l  l }
+ & \multicolumn{3}{l}{Trial Balance at  }\\
+ &  & Debit  & Credit \\
+1000  & Cassa  & 49'950.00  & \\
+1010  & Posta  & -2'900.00  & \\
+1020  & Banca  & -1'160.00  & \\
+1060  & Titoli  & 0.00  & \\
+1090  & Conto di trasferimento  & 0.00  & \\
+1091  & Conto di giro salari  & 0.00  & \\
+1099  & Importi da chiarire  & 0.00  & \\
+1100  & Crediti da forniture e prestazioni (debitori)  & 22'800.00  & \\
+1109  & Delcredere  & 0.00  & \\
+1140  & Anticipi e prestiti  & 4'000.00  & \\
+1176  & Imposta preventiva  & 0.00  & \\
+1180  & Crediti da assicurazioni sociali e istituti di previdenza  & 0.00  & \\
+1188  & Imposte alla fonte  & 0.00  & \\
+1190  & Crediti diversi a breve termine  & 0.00  & \\
+1191  & Cauzioni   & 0.00  & \\
+1200  & Merce di rivendita  & -8'000.00  & \\
+1210  & Materia prima  & 5'000.00  & \\
+1220  & Materia ausiliaria  & 0.00  & \\
+1230  & Materiale di consumo  & 0.00  & \\
+1260  & Prodotti finiti  & 0.00  & \\
+1270  & Prodotti in corso di fabbricazione  & 0.00  & \\
+1280  & Prestazioni di servizi non fatturate  & 0.00  & \\
+1300  & Costi anticipati  & 1'000.00  & \\
+1301  & Ricavi da incassare  & 0.00  & \\
+1400  & Titoli  & 0.00  & \\
+1440  & Prestiti  & 0.00  & \\
+1460  & Prestito a correntista   & 0.00  & \\
+1480  & Partecipazioni  & 0.00  & \\
+1500  & Macchine e attrezzature  & 14'700.00  & \\
+1510  & Mobilio e installazioni  & 0.00  & \\
+1520  & Macchine ufficio, informatica e tecnologia della comunicazione  & -1'500.00  & \\
+1530  & Veicoli  & 21'524.00  & \\
+1540  & Utensili e apparecchiature  & 0.00  & \\
+1600  & Immobili aziendali  & 0.00  & \\
+1700  & Brevetti, know-how, licenze, diritti e sviluppo  & 0.00  & \\
+1710  & Marchi  & 0.00  & \\
+1712  & Modelli  & 0.00  & \\
+1770  & Goodwill  & 0.00  & \\
+1850  & Capitale azionario, capitale sociale, diritti di partecipazione non versati o capitale della fondazione non versati  & 0.00  & \\
+110001  & Rossi Carlo  & 0.00  & \\
+110002  & Luisoni Giorgio  & 0.00  & \\
+110003  & Barbieri Sergio  & 0.00  & \\
+110004  & Cinnato Alessandra  & 0.00  & \\
+110005  &  Baratta Rosaria  & 0.00  & \\
+2000  & Debiti per forniture e prestazioni (creditori)   &  & 34'240.00 \\
+2030  & Acconti ricevuti  &  & 0.00 \\
+2100  & Banca passiva  &  & 0.00 \\
+2120  & Impegni leasing finanziari  &  & 0.00 \\
+2140  & Altri debiti onerosi  &  & 0.00 \\
+2200  & IVA dovuta  &  & 0.00 \\
+2201  & IVA, rendiconto  &  & 0.00 \\
+2206  & Imposta preventiva  &  & 0.00 \\
+2208  & Imposte dirette  &  & 0.00 \\
+2210  & Altri debiti a breve termine  &  & 0.00 \\
+2260  & Debiti verso correntista  &  & 0.00 \\
+2261  & Dividendi  &  & 1'000.00 \\
+2270  & Assicurazioni sociali e istituti di previdenza  &  & 0.00 \\
+2279  & Imposte alla fonte  &  & 0.00 \\
+2300  & Costi da pagare  &  & 0.00 \\
+2301  & Ricavi incassati dell'anno seguente  &  & -1'000.00 \\
+2330  & Accantonamenti a breve termine  &  & 0.00 \\
+2400  & Debiti bancari  &  & 0.00 \\
+2420  & Impegni leasing finanziari  &  & 11'000.00 \\
+2430  & Prestiti obbligazionari  &  & 0.00 \\
+2450  & Prestiti  &  & 15'000.00 \\
+2451  & Mutui ipotecari  &  & 0.00 \\
+2500  & Altri debiti a lungo termine (non onerosi)  &  & 0.00 \\
+2600  & Accantonamenti  &  & 5'000.00 \\
+2800  & Capitale azionario, capitale sociale, diritti di partecipazione o capitale della fondazione  &  & 0.00 \\
+2900  & Riserva legale da capitale  &  & -5'000.00 \\
+2940  & Riserve da rivalutazioni  &  & 0.00 \\
+2950  & Riserva legale da utili  &  & 0.00 \\
+2960  & Riserve facoltative da utili  &  & 0.00 \\
+2970  & Utile/perdita riportata   &  & 18'450.00 \\
+2980  & Azioni proprie, parti sociali, diritti di partecipazione (posta negativa)  &  & 0.00 \\
+200001  & De Giorgi Mattia  &  & 0.00 \\
+200002  & Ambrogi Paola  &  & 0.00 \\
+200003  & Rossi Franco  &  & 0.00 \\
+200004  & Torre Massimo  &  & 0.00 \\
+200005  & Brambilla Federica  &  & 0.00 \\
+3000  & Ricavi prodotti fabbricati  &  & 0.00 \\
+3200  & Ricavi merci di rivendita  &  & 0.00 \\
+3400  & Ricavi prestazioni di servizi  &  & 1'000.00 \\
+3600  & Altri ricavi e prestazioni di servizi  &  & 0.00 \\
+3710  & Consumo proprio  &  & 0.00 \\
+3800  & Diminuzione di ricavi  &  & 0.00 \\
+3805  & Perdite su debitori, variazione delcredere  &  & 0.00 \\
+3900  & Variazione delle scorte di prodotti in corso di fabbricazione  &  & 0.00 \\
+3901  & Variazione delle scorte di prodotti finiti  &  & 0.00 \\
+3940  & Variazione prestazioni di servizi non fatturate  &  & 0.00 \\
+6950  & Ricavi finanziari   &  & -600.00 \\
+7000  & Ricavi attività accessoria  &  & 0.00 \\
+7500  & Ricavi immobili aziendali  &  & 0.00 \\
+8100  & Ricavi estranei  &  & 0.00 \\
+8510  & Ricavi straordinari, unici o relativi ad altri periodi contabili  &  & 10'124.00 \\
+9200  & utile/perdita  &  & 0.00 \\
+4000  &  & 0.00  & \\
+4200  & Costi delle merci di rivendita  & 20'000.00  & \\
+4400  & Lavori di terzi / prestazioni di subappaltanti  & 0.00  & \\
+4500  & Consumi energia per la produzione  & 0.00  & \\
+4900  & Diminuzione di costi  & 0.00  & \\
+5000  & Salari  & 500.00  & \\
+5700  & Contributi AVS/AI/IPG  & 0.00  & \\
+5710  & Contributi cassa assegni  & 0.00  & \\
+5720  & Contributi previdenza professionale obbligatoria  & 0.00  & \\
+5730  & Premi per l'assicurazione infortuni professionali  & 0.00  & \\
+5740  & Premi assicurazione malattia  & 0.00  & \\
+5790  & Imposta alla fonte  & 0.00  & \\
+5800  & Altri costi del personale  & 0.00  & \\
+5810  & Formazione del personale   & 0.00  & \\
+5820  & Spese di viaggio  & 0.00  & \\
+5830  & Rimborsi spese forfettarie  & 0.00  & \\
+5900  & Prestazioni di terzi  & 0.00  & \\
+6000  & Costi dei locali  & 0.00  & \\
+6040  & Pulizia locali  & 0.00  & \\
+6100  & Manutenzioni, riparazioni e sostituzione immobilizzazioni mobiliari  & 0.00  & \\
+6105  & Costi leasing immobilizzazioni mobiliari  & 0.00  & \\
+6200  & Riparazioni  & 0.00  & \\
+6210  & Benzina  & 0.00  & \\
+6220  & Assicurazioni auto  & 0.00  & \\
+6260  & Leasing e noleggio auto  & 0.00  & \\
+6270  & Quota privata dei costi auto  & 0.00  & \\
+6282  & Costi di trasporto  & 0.00  & \\
+6300  & Assicurazioni cose, contributi, tasse e autorizzazioni  & 0.00  & \\
+6402  & Elettricità  & 0.00  & \\
+6410  & Riscaldamento  & 0.00  & \\
+6430  & Acqua  & 0.00  & \\
+6460  & Spazzatura  & 0.00  & \\
+6500  & Materiale d'ufficio  & 0.00  & \\
+6503  & Riviste specialistiche, giornali, periodici  & 0.00  & \\
+6510  & Telefono  / internet  & 0.00  & \\
+6511  & Hosting presso terzi  & 0.00  & \\
+6513  & Porti (spese postali)  & 0.00  & \\
+6570  & Costi informatici incluso leasing  & 0.00  & \\
+6580  & Abbonamenti licenze, aggiornamenti  & 0.00  & \\
+6583  & Materiale di consumo  & 0.00  & \\
+6600  & Costi pubblicitari  &  & 1'000.00 \\
+6642  & Regali a clienti  & 0.00  & \\
+6700  & Altri costi d'esercizio  & 5'000.00  & \\
+6800  & Ammortamenti e rettifiche di valore dell'attivo fisso  & 3'000.00  & \\
+6900  & Costi finanziari  & 0.00  & \\
+7010  & Costi attività accessoria  & 0.00  & \\
+7510  & Costi immobili aziendali  & 0.00  & \\
+8000  & Costi estranei  & 0.00  & \\
+8500  & Costi straordinari, unici o relativi ad altri periodi contabili  & 100.00  & \\
+8900  & Imposte dirette  & 1'000.00  & \\
+\multicolumn{2}{l}{} & 665'588.00  & 564'188.00 \\
+\end{longtable}
+20.12.2021 - Trial balance - Page  \#page-nr \end{reportvalue}
+\section{Fourth Quarter}
+\begin{reportvalue}{Test Fourth Quarter}
+Trial Balance \\
+  \\
+\begin{longtable}[l]{ l  l  l  l }
+ & \multicolumn{3}{l}{Trial Balance at 31.12.2021 }\\
+ &  & Debit  & Credit \\
+1000  & Cassa  & 49'950.00  & \\
+1010  & Posta  & -2'900.00  & \\
+1020  & Banca  & -1'160.00  & \\
+1060  & Titoli  & 0.00  & \\
+1090  & Conto di trasferimento  & 0.00  & \\
+1091  & Conto di giro salari  & 0.00  & \\
+1099  & Importi da chiarire  & 0.00  & \\
+1100  & Crediti da forniture e prestazioni (debitori)  & 22'800.00  & \\
+1109  & Delcredere  & 0.00  & \\
+1140  & Anticipi e prestiti  & 4'000.00  & \\
+1176  & Imposta preventiva  & 0.00  & \\
+1180  & Crediti da assicurazioni sociali e istituti di previdenza  & 0.00  & \\
+1188  & Imposte alla fonte  & 0.00  & \\
+1190  & Crediti diversi a breve termine  & 0.00  & \\
+1191  & Cauzioni   & 0.00  & \\
+1200  & Merce di rivendita  & -8'000.00  & \\
+1210  & Materia prima  & 5'000.00  & \\
+1220  & Materia ausiliaria  & 0.00  & \\
+1230  & Materiale di consumo  & 0.00  & \\
+1260  & Prodotti finiti  & 0.00  & \\
+1270  & Prodotti in corso di fabbricazione  & 0.00  & \\
+1280  & Prestazioni di servizi non fatturate  & 0.00  & \\
+1300  & Costi anticipati  & 1'000.00  & \\
+1301  & Ricavi da incassare  & 0.00  & \\
+1400  & Titoli  & 0.00  & \\
+1440  & Prestiti  & 0.00  & \\
+1460  & Prestito a correntista   & 0.00  & \\
+1480  & Partecipazioni  & 0.00  & \\
+1500  & Macchine e attrezzature  & 14'700.00  & \\
+1510  & Mobilio e installazioni  & 0.00  & \\
+1520  & Macchine ufficio, informatica e tecnologia della comunicazione  & -1'500.00  & \\
+1530  & Veicoli  & 21'524.00  & \\
+1540  & Utensili e apparecchiature  & 0.00  & \\
+1600  & Immobili aziendali  & 0.00  & \\
+1700  & Brevetti, know-how, licenze, diritti e sviluppo  & 0.00  & \\
+1710  & Marchi  & 0.00  & \\
+1712  & Modelli  & 0.00  & \\
+1770  & Goodwill  & 0.00  & \\
+1850  & Capitale azionario, capitale sociale, diritti di partecipazione non versati o capitale della fondazione non versati  & 0.00  & \\
+110001  & Rossi Carlo  & 0.00  & \\
+110002  & Luisoni Giorgio  & 0.00  & \\
+110003  & Barbieri Sergio  & 0.00  & \\
+110004  & Cinnato Alessandra  & 0.00  & \\
+110005  &  Baratta Rosaria  & 0.00  & \\
+2000  & Debiti per forniture e prestazioni (creditori)   &  & 34'240.00 \\
+2030  & Acconti ricevuti  &  & 0.00 \\
+2100  & Banca passiva  &  & 0.00 \\
+2120  & Impegni leasing finanziari  &  & 0.00 \\
+2140  & Altri debiti onerosi  &  & 0.00 \\
+2200  & IVA dovuta  &  & 0.00 \\
+2201  & IVA, rendiconto  &  & 0.00 \\
+2206  & Imposta preventiva  &  & 0.00 \\
+2208  & Imposte dirette  &  & 0.00 \\
+2210  & Altri debiti a breve termine  &  & 0.00 \\
+2260  & Debiti verso correntista  &  & 0.00 \\
+2261  & Dividendi  &  & 1'000.00 \\
+2270  & Assicurazioni sociali e istituti di previdenza  &  & 0.00 \\
+2279  & Imposte alla fonte  &  & 0.00 \\
+2300  & Costi da pagare  &  & 0.00 \\
+2301  & Ricavi incassati dell'anno seguente  &  & -1'000.00 \\
+2330  & Accantonamenti a breve termine  &  & 0.00 \\
+2400  & Debiti bancari  &  & 0.00 \\
+2420  & Impegni leasing finanziari  &  & 11'000.00 \\
+2430  & Prestiti obbligazionari  &  & 0.00 \\
+2450  & Prestiti  &  & 15'000.00 \\
+2451  & Mutui ipotecari  &  & 0.00 \\
+2500  & Altri debiti a lungo termine (non onerosi)  &  & 0.00 \\
+2600  & Accantonamenti  &  & 5'000.00 \\
+2800  & Capitale azionario, capitale sociale, diritti di partecipazione o capitale della fondazione  &  & 0.00 \\
+2900  & Riserva legale da capitale  &  & -5'000.00 \\
+2940  & Riserve da rivalutazioni  &  & 0.00 \\
+2950  & Riserva legale da utili  &  & 0.00 \\
+2960  & Riserve facoltative da utili  &  & 0.00 \\
+2970  & Utile/perdita riportata   &  & 18'450.00 \\
+2980  & Azioni proprie, parti sociali, diritti di partecipazione (posta negativa)  &  & 0.00 \\
+200001  & De Giorgi Mattia  &  & 0.00 \\
+200002  & Ambrogi Paola  &  & 0.00 \\
+200003  & Rossi Franco  &  & 0.00 \\
+200004  & Torre Massimo  &  & 0.00 \\
+200005  & Brambilla Federica  &  & 0.00 \\
+3000  & Ricavi prodotti fabbricati  &  & 0.00 \\
+3200  & Ricavi merci di rivendita  &  & 0.00 \\
+3400  & Ricavi prestazioni di servizi  &  & 0.00 \\
+3600  & Altri ricavi e prestazioni di servizi  &  & 0.00 \\
+3710  & Consumo proprio  &  & 0.00 \\
+3800  & Diminuzione di ricavi  &  & 0.00 \\
+3805  & Perdite su debitori, variazione delcredere  &  & 0.00 \\
+3900  & Variazione delle scorte di prodotti in corso di fabbricazione  &  & 0.00 \\
+3901  & Variazione delle scorte di prodotti finiti  &  & 0.00 \\
+3940  & Variazione prestazioni di servizi non fatturate  &  & 0.00 \\
+6950  & Ricavi finanziari   &  & 0.00 \\
+7000  & Ricavi attività accessoria  &  & 0.00 \\
+7500  & Ricavi immobili aziendali  &  & 0.00 \\
+8100  & Ricavi estranei  &  & 0.00 \\
+8510  & Ricavi straordinari, unici o relativi ad altri periodi contabili  &  & 0.00 \\
+9200  & utile/perdita  &  & 0.00 \\
+4000  &  & 0.00  & \\
+4200  & Costi delle merci di rivendita  & 0.00  & \\
+4400  & Lavori di terzi / prestazioni di subappaltanti  & 0.00  & \\
+4500  & Consumi energia per la produzione  & 0.00  & \\
+4900  & Diminuzione di costi  & 0.00  & \\
+5000  & Salari  & 0.00  & \\
+5700  & Contributi AVS/AI/IPG  & 0.00  & \\
+5710  & Contributi cassa assegni  & 0.00  & \\
+5720  & Contributi previdenza professionale obbligatoria  & 0.00  & \\
+5730  & Premi per l'assicurazione infortuni professionali  & 0.00  & \\
+5740  & Premi assicurazione malattia  & 0.00  & \\
+5790  & Imposta alla fonte  & 0.00  & \\
+5800  & Altri costi del personale  & 0.00  & \\
+5810  & Formazione del personale   & 0.00  & \\
+5820  & Spese di viaggio  & 0.00  & \\
+5830  & Rimborsi spese forfettarie  & 0.00  & \\
+5900  & Prestazioni di terzi  & 0.00  & \\
+6000  & Costi dei locali  & 0.00  & \\
+6040  & Pulizia locali  & 0.00  & \\
+6100  & Manutenzioni, riparazioni e sostituzione immobilizzazioni mobiliari  & 0.00  & \\
+6105  & Costi leasing immobilizzazioni mobiliari  & 0.00  & \\
+6200  & Riparazioni  & 0.00  & \\
+6210  & Benzina  & 0.00  & \\
+6220  & Assicurazioni auto  & 0.00  & \\
+6260  & Leasing e noleggio auto  & 0.00  & \\
+6270  & Quota privata dei costi auto  & 0.00  & \\
+6282  & Costi di trasporto  & 0.00  & \\
+6300  & Assicurazioni cose, contributi, tasse e autorizzazioni  & 0.00  & \\
+6402  & Elettricità  & 0.00  & \\
+6410  & Riscaldamento  & 0.00  & \\
+6430  & Acqua  & 0.00  & \\
+6460  & Spazzatura  & 0.00  & \\
+6500  & Materiale d'ufficio  & 0.00  & \\
+6503  & Riviste specialistiche, giornali, periodici  & 0.00  & \\
+6510  & Telefono  / internet  & 0.00  & \\
+6511  & Hosting presso terzi  & 0.00  & \\
+6513  & Porti (spese postali)  & 0.00  & \\
+6570  & Costi informatici incluso leasing  & 0.00  & \\
+6580  & Abbonamenti licenze, aggiornamenti  & 0.00  & \\
+6583  & Materiale di consumo  & 0.00  & \\
+6600  & Costi pubblicitari  & 0.00  & \\
+6642  & Regali a clienti  & 0.00  & \\
+6700  & Altri costi d'esercizio  & 0.00  & \\
+6800  & Ammortamenti e rettifiche di valore dell'attivo fisso  & 0.00  & \\
+6900  & Costi finanziari  & 0.00  & \\
+7010  & Costi attività accessoria  & 0.00  & \\
+7510  & Costi immobili aziendali  & 0.00  & \\
+8000  & Costi estranei  & 0.00  & \\
+8500  & Costi straordinari, unici o relativi ad altri periodi contabili  & 0.00  & \\
+8900  & Imposte dirette  & 0.00  & \\
+\multicolumn{2}{l}{} & 771'002.00  & 642'878.00 \\
+\end{longtable}
+20.12.2021 - Trial balance - Page  \#page-nr \end{reportvalue}
+\end{document}

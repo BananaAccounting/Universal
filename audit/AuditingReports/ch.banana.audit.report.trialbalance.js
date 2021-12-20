@@ -34,20 +34,26 @@ var sumCredit = 0;
 //Main function
 function exec(string) {
 
+    var banDoc = Banana.document;
     //Check if we are on an opened document
-    if (!Banana.document) {
+    if (!banDoc) {
         return;
     }
 
     var dateform = getPeriodSettings();
+    var report = "";
     if (dateform) {
-        printReport(dateform.selectionStartDate, dateform.selectionEndDate);
+        report = printReport(dateform.selectionStartDate, dateform.selectionEndDate, banDoc);
     }
+
+    //Print the report
+    var stylesheet = createStyleSheet();
+    Banana.Report.preview(report, stylesheet);
 }
 
 
 //Function that creates and prints the report
-function printReport(startDate, endDate) {
+function printReport(startDate, endDate, banDoc) {
 
     //Add a name to the report
     var report = Banana.Report.newReport("Trial Balance");
@@ -71,10 +77,10 @@ function printReport(startDate, endDate) {
     tableRow.addCell("Credit", "alignCenter bold borderBottom");
 
     /* 1. Print the balance sheet */
-    printBalanceSheet(startDate, endDate, report, table);
+    printBalanceSheet(startDate, endDate, table, banDoc);
 
     /* 2. Print the profit & loss statement */
-    printProfitLossStatement(startDate, endDate, report, table);
+    printProfitLossStatement(startDate, endDate, table, banDoc);
 
     /* 3. Print totals */
     printTotals(report, table);
@@ -82,19 +88,17 @@ function printReport(startDate, endDate) {
     //Add a footer to the report
     addFooter(report);
 
-    //Print the report
-    var stylesheet = createStyleSheet();
-    Banana.Report.preview(report, stylesheet);
+    return report;
 }
 
 
 
 
 //Function that prints the balance sheet
-function printBalanceSheet(startDate, endDate, report, table) {
+function printBalanceSheet(startDate, endDate, table, banDoc) {
 
     //Get the Accounts table
-    var accountsTab = Banana.document.table("Accounts");
+    var accountsTab = banDoc.table("Accounts");
 
     //Assets - BClass 1
     for (var i = 0; i < accountsTab.rowCount; i++) {
@@ -104,7 +108,7 @@ function printBalanceSheet(startDate, endDate, report, table) {
             tableRow = table.addRow();
             tableRow.addCell(tRow.value("Account"), "alignRight", 1);
             tableRow.addCell(tRow.value("Description"), "", 1);
-            var bal = calcBalance(tRow.value("Account"), tRow.value("BClass"), startDate, endDate);
+            var bal = calcBalance(tRow.value("Account"), tRow.value("BClass"), startDate, endDate, banDoc);
             tableRow.addCell(Banana.Converter.toLocaleNumberFormat(bal), "alignRight", 1);
             tableRow.addCell("", "", 1);
             sumDebit = Banana.SDecimal.add(sumDebit, bal);
@@ -120,7 +124,7 @@ function printBalanceSheet(startDate, endDate, report, table) {
             tableRow.addCell(tRow.value("Account"), "alignRight", 1);
             tableRow.addCell(tRow.value("Description"), "", 1);
             tableRow.addCell("", "", 1);
-            var bal = calcBalance(tRow.value("Account"), tRow.value("BClass"), startDate, endDate);
+            var bal = calcBalance(tRow.value("Account"), tRow.value("BClass"), startDate, endDate, banDoc);
             tableRow.addCell(Banana.Converter.toLocaleNumberFormat(bal), "alignRight", 1);
             sumCredit = Banana.SDecimal.add(sumCredit, bal);
         }
@@ -131,10 +135,10 @@ function printBalanceSheet(startDate, endDate, report, table) {
 
 
 //Function that prints the balance sheet
-function printProfitLossStatement(startDate, endDate, report, table) {
+function printProfitLossStatement(startDate, endDate, table, banDoc) {
 
     //Get the Accounts table
-    var accountsTab = Banana.document.table("Accounts");
+    var accountsTab = banDoc.table("Accounts");
 
     //Income - BClass 4
     for (var i = 0; i < accountsTab.rowCount; i++) {
@@ -145,7 +149,7 @@ function printProfitLossStatement(startDate, endDate, report, table) {
             tableRow.addCell(tRow.value("Account"), "alignRight", 1);
             tableRow.addCell(tRow.value("Description"), "", 1);
             tableRow.addCell("", "", 1);
-            var bal = calcBalance(tRow.value("Account"), tRow.value("BClass"), startDate, endDate);
+            var bal = calcBalance(tRow.value("Account"), tRow.value("BClass"), startDate, endDate, banDoc);
             tableRow.addCell(Banana.Converter.toLocaleNumberFormat(bal), "alignRight", 1);
             sumCredit = Banana.SDecimal.add(sumCredit, bal);
         }
@@ -159,7 +163,7 @@ function printProfitLossStatement(startDate, endDate, report, table) {
             tableRow = table.addRow();
             tableRow.addCell(tRow.value("Account"), "alignRight", 1);
             tableRow.addCell(tRow.value("Description"), "", 1);
-            var bal = calcBalance(tRow.value("Account"), tRow.value("BClass"), startDate, endDate);
+            var bal = calcBalance(tRow.value("Account"), tRow.value("BClass"), startDate, endDate, banDoc);
             if (Banana.SDecimal.sign(bal) > 0 || Banana.SDecimal.sign(bal) == 0) {
                 tableRow.addCell(Banana.Converter.toLocaleNumberFormat(bal), "alignRight", 1);
                 tableRow.addCell("", "", 1);
@@ -189,8 +193,8 @@ function printTotals(report, table) {
 
 
 //Function that calculates the balance for the given account, bclass and period
-function calcBalance(account, bClass, startDate, endDate) {
-    var currentBal = Banana.document.currentBalance(account, startDate, endDate);
+function calcBalance(account, bClass, startDate, endDate, banDoc) {
+    var currentBal = banDoc.currentBalance(account, startDate, endDate);
     if (bClass === "1") {
         return currentBal.balance;
     } else if (bClass === "2") {

@@ -56,7 +56,11 @@ function exec(string) {
     if (savedScriptSettings)
     additionalColumnsList = getAdditionalColumns(savedScriptSettings);
 
-    printReport(banDoc,additionalColumnsList);
+    var report= printReport(banDoc,additionalColumnsList);
+
+    //preview of the report
+    var stylesheet = getReportStyle();
+    Banana.Report.preview(report, stylesheet);
 }
 
 function getCutAndSupTable(report, type,additionalColumnsList) {
@@ -115,9 +119,7 @@ function printReport(banDoc,additionalColumnsList) {
     //Add a footer to the report
     addFooter(report);
 
-    //Print the report
-    var stylesheet = getReportStyle();
-    Banana.Report.preview(report, stylesheet);
+    return report;
 }
 
 function printTables(customersTable, suppliersTable,banDoc,additionalColumnsList) {

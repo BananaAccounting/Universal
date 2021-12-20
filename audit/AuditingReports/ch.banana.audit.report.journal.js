@@ -23,17 +23,37 @@
 // @outputformat = none
 // @inputdatasource = none
 // @timeout = -1
-// @includejs= audit.settings.js
+// @includejs= ch.banana.audit.settings.js
 
 
 //errors
 var DEBIT_CREDIT_DIFFERENTS = "DEBIT_CREDIT_DIFFERENTS";
 
-//additional columns
-var savedScriptSettings = Banana.document.getScriptSettings("ch.banana.audit.settings"); 
-var ADDITIONAL_COLUMNS_LIST = [];
-if (savedScriptSettings)
-    ADDITIONAL_COLUMNS_LIST = getAdditionalColumns(savedScriptSettings);
+//Main function
+function exec() {
+
+    var banDoc = Banana.document;
+
+    if (!banDoc) {
+        return;
+    }
+
+    //get the additional columns
+    var savedScriptSettings = banDoc.getScriptSettings("ch.banana.audit.settings");
+    var additionalColumnsList = [];
+    if (savedScriptSettings)
+        additionalColumnsList = getAdditionalColumns(savedScriptSettings);
+
+    var dateform = getPeriodSettings();
+    var report = "";
+    if (dateform) {
+        report = printReport(dateform.selectionStartDate, dateform.selectionEndDate, additionalColumnsList, banDoc);
+    }
+
+    //print the report
+    var stylesheet = getReportStyle();
+    Banana.Report.preview(report, stylesheet);
+}
 
 /**
  * Takes the list with the name of the columns and transforms it into an array
@@ -55,20 +75,7 @@ function getAdditionalColumns(savedScriptSettings) {
     return columnsList
 }
 
-//Main function
-function exec() {
-
-    if (!Banana.document) {
-        return;
-    }
-
-    var dateform = getPeriodSettings();
-    if (dateform) {
-        printReport(dateform.selectionStartDate, dateform.selectionEndDate);
-    }
-}
-
-function getJournalTable(report, startDate, endDate) {
+function getJournalTable(report, startDate, endDate, additionalColumnsList) {
     var journalTable = report.addTable('journalTable');
     //title table
     journalTable.getCaption().addText("Journal for the period " + Banana.Converter.toLocaleDateFormat(startDate) + " - " + Banana.Converter.toLocaleDateFormat(endDate), "dateIndicator");
@@ -82,8 +89,8 @@ function getJournalTable(report, startDate, endDate) {
     journalTable.addColumn("Credit").setStyleAttributes("width:15%", "tableHeaders");
     journalTable.addColumn("Amount").setStyleAttributes("width:15%", "tableHeaders");
     //add the additional columns inserted by the user in the settings dialog
-    for (var i = 0; i < ADDITIONAL_COLUMNS_LIST.length; i++) {
-        journalTable.addColumn(ADDITIONAL_COLUMNS_LIST[i]).setStyleAttributes("width:15%", "tableHeaders");
+    for (var i = 0; i < additionalColumnsList.length; i++) {
+        journalTable.addColumn(additionalColumnsList[i]).setStyleAttributes("width:15%", "tableHeaders");
     }
 
     //header
@@ -98,8 +105,8 @@ function getJournalTable(report, startDate, endDate) {
     tableRow.addCell("Credit", "tableHeaders");
     tableRow.addCell("Amount", "tableHeaders");
     //add the additional columns inserted by the user in the settings dialog
-    for (var i = 0; i < ADDITIONAL_COLUMNS_LIST.length; i++) {
-        tableRow.addCell(ADDITIONAL_COLUMNS_LIST[i], "tableHeaders");
+    for (var i = 0; i < additionalColumnsList.length; i++) {
+        tableRow.addCell(additionalColumnsList[i], "tableHeaders");
     }
 
 
@@ -108,7 +115,7 @@ function getJournalTable(report, startDate, endDate) {
 
 
 //Function that creates and prints the report
-function printReport(startDate, endDate) {
+function printReport(startDate, endDate, additionalColumnsList, banDoc) {
 
     //Add a name to the report
     var report = Banana.Report.newReport("Journal Balance");
@@ -117,22 +124,22 @@ function printReport(startDate, endDate) {
     addHeader(report);
 
     //Create a table for the report
-    var table = getJournalTable(report, startDate, endDate);
+    var table = getJournalTable(report, startDate, endDate, additionalColumnsList);
 
     /* 1. Print the Jorunal with the totals */
-    printJournal(table, startDate, endDate);
+    printJournal(table, startDate, endDate, additionalColumnsList, banDoc);
 
     //Add a footer to the report
     addFooter(report);
 
     //Print the report
-    var stylesheet = getReportStyle();
-    Banana.Report.preview(report, stylesheet);
+    return report;
+
 }
 
-function printJournal(table, startDate, endDate) {
+function printJournal(table, startDate, endDate, additionalColumnsList, banDoc) {
 
-    var journalOp = getJournalOperations(startDate, endDate);
+    var journalOp = getJournalOperations(startDate, endDate, additionalColumnsList, banDoc);
     var sumDebit = "";
     var sumCredit = "";
 
@@ -161,8 +168,8 @@ function printJournal(table, startDate, endDate) {
             opCredit = Banana.SDecimal.add(opCredit, opRow.creditAmount);
             tableRow.addCell(Banana.Converter.toLocaleNumberFormat(opRow.amount, "2", false), "amountStyle");
             //add the additional columns inserted by the user in the settings dialog
-            for (var i = 0; i < ADDITIONAL_COLUMNS_LIST.length; i++) {
-                tableRow.addCell(opRow[ADDITIONAL_COLUMNS_LIST[i]], "centredStyle");
+            for (var i = 0; i < additionalColumnsList.length; i++) {
+                tableRow.addCell(opRow[additionalColumnsList[i]], "centredStyle");
             }
             firstRow = false;
         }
@@ -178,7 +185,7 @@ function printJournal(table, startDate, endDate) {
 
     //check if sum of debit and sum of credit are equals
     //if are not equals a message is displayed
-    checkDebitCredit(sumDebit, sumCredit);
+    checkDebitCredit(sumDebit, sumCredit, banDoc);
     //add totals
     tableRow = table.addRow();
     tableRow.addCell("Total", "sumStyle");
@@ -190,17 +197,17 @@ function printJournal(table, startDate, endDate) {
 }
 
 //Function that load the jorunal rows
-function getJournalRows(startDate, endDate) {
+function getJournalRows(startDate, endDate, additionalColumnsList, banDoc) {
 
     //array with the journal transactions
     var journalRows = [];
     //Get the Journal
-    var journal = Banana.document.journal(Banana.document.ORIGINTYPE_CURRENT, Banana.document.ACCOUNTTYPE_NORMAL);
+    var journal = banDoc.journal(banDoc.ORIGINTYPE_CURRENT, banDoc.ACCOUNTTYPE_NORMAL);
     // Read the table row by row and save some values
     for (var i = 0; i < journal.rowCount; i++) {
         var tRow = journal.row(i);
         // From the journal table we take only the transactions rows
-        if (tRow.value('JOperationType') == Banana.document.OPERATIONTYPE_TRANSACTION && dateWithinTheRange(tRow.value('JDate'), startDate, endDate)) {
+        if (tRow.value('JOperationType') == banDoc.OPERATIONTYPE_TRANSACTION && dateWithinTheRange(tRow.value('JDate'), startDate, endDate)) {
             var trRow = {};
             trRow.id = tRow.value('JContraAccountGroup');
             trRow.jDate = tRow.value('JDate');
@@ -213,9 +220,9 @@ function getJournalRows(startDate, endDate) {
             trRow.JAmount = tRow.value('JAmount');
 
             //we save also the values of additional columns
-            for (var j = 0; j < ADDITIONAL_COLUMNS_LIST.length; j++) {
-                var index = ADDITIONAL_COLUMNS_LIST[j];
-                trRow[index] = tRow.value(ADDITIONAL_COLUMNS_LIST[j]);
+            for (var j = 0; j < additionalColumnsList.length; j++) {
+                var index = additionalColumnsList[j];
+                trRow[index] = tRow.value(additionalColumnsList[j]);
             }
 
             if (trRow)
@@ -252,9 +259,9 @@ function dateWithinTheRange(trDate, pStartDate, pEndDate) {
  * @param {*} endDate 
  * @returns an object eith the journal operations
  */
-function getJournalOperations(startDate, endDate) {
+function getJournalOperations(startDate, endDate, additionalColumnsList, banDoc) {
     //if (tRow.value('JContraAccountGroup') !== previous_contraAccountGroup) {
-    var jRows = getJournalRows(startDate, endDate);
+    var jRows = getJournalRows(startDate, endDate, additionalColumnsList, banDoc);
     var jOperations = [];
 
     /**
@@ -281,7 +288,7 @@ function getJournalOperations(startDate, endDate) {
         var jOp = {};
         jOp = setOperationData(opIdList[i], jRows);
         //Banana.console.debug(JSON.stringify(jOp));
-        var opRows = setOperationData_rows(opIdList[i], jRows);
+        var opRows = setOperationData_rows(opIdList[i], jRows, additionalColumnsList);
         jOp.rows = opRows;
 
         jOperations.push(jOp);
@@ -338,7 +345,7 @@ function setOperationData(id, jRows) {
  * @param {*} jRows journal rows
  * @returns 
  */
-function setOperationData_rows(id, jRows) {
+function setOperationData_rows(id, jRows, additionalColumnsList) {
     var rows = [];
     var prDescription = "";
 
@@ -352,9 +359,9 @@ function setOperationData_rows(id, jRows) {
             trRow.debitAmount = jRows[row].jDebitAmount;
             trRow.creditAmount = jRows[row].jCreditAmount;
             trRow.amount = jRows[row].JAmount;
-            for (var j = 0; j < ADDITIONAL_COLUMNS_LIST.length; j++) {
-                var index = ADDITIONAL_COLUMNS_LIST[j];
-                trRow[index] = jRows[row][ADDITIONAL_COLUMNS_LIST[j]];
+            for (var j = 0; j < additionalColumnsList.length; j++) {
+                var index = additionalColumnsList[j];
+                trRow[index] = jRows[row][additionalColumnsList[j]];
             }
             rows.push(trRow);
 
@@ -411,7 +418,7 @@ function addHeader(report) {
  */
 function getReportStyle() {
     var textCSS = "";
-    var file = Banana.IO.getLocalFile("file:script/audit.report.css");
+    var file = Banana.IO.getLocalFile("file:script/ch.banana.audit.report.css");
     var fileContent = file.read();
     if (!file.errorString) {
         Banana.IO.openPath(fileContent);
@@ -534,18 +541,18 @@ function getErrorMessage(errorId, lang) {
  * @param {*} sumDebit 
  * @param {*} sumCredit 
  */
-function checkDebitCredit(sumDebit, sumCredit) {
-    var lan = getLang();
+function checkDebitCredit(sumDebit, sumCredit, banDoc) {
+    var lan = getLang(banDoc);
     var msg = getErrorMessage(DEBIT_CREDIT_DIFFERENTS, "");
     if (sumDebit != sumCredit) {
-        Banana.document.addMessage(msg, DEBIT_CREDIT_DIFFERENTS);
+        banDoc.addMessage(msg, DEBIT_CREDIT_DIFFERENTS);
     }
 }
 
-function getLang() {
+function getLang(banDoc) {
     var lang = 'en';
-    if (Banana.document)
-        lang = Banana.document.locale;
+    if (banDoc)
+        lang = banDoc.locale;
     else if (Banana.application.locale)
         lang = Banana.application.locale;
     if (lang.length > 2)
