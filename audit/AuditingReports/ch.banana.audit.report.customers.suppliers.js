@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-// @id = ch.banana.audit.report.customers.suppliers
+// @id = ch.banana.audit.report
 // @api = 1.0
 // @pubdate = 2021-12-10
 // @publisher = Banana.ch SA
@@ -43,7 +43,7 @@ function getAdditionalColumns(savedScriptSettings) {
 //Main function
 function exec(string) {
 
-    var banDoc=Banana.document;
+    var banDoc = Banana.document;
 
     //Check if we are on an opened document
     if (!banDoc) {
@@ -54,21 +54,21 @@ function exec(string) {
     var savedScriptSettings = banDoc.getScriptSettings("ch.banana.audit.settings");
     var additionalColumnsList = [];
     if (savedScriptSettings)
-    additionalColumnsList = getAdditionalColumns(savedScriptSettings);
+        additionalColumnsList = getAdditionalColumns(savedScriptSettings);
 
-    var report= printReport(banDoc,additionalColumnsList);
+    var report = printReport(banDoc, additionalColumnsList);
 
     //preview of the report
     var stylesheet = getReportStyle();
     Banana.Report.preview(report, stylesheet);
 }
 
-function getCutAndSupTable(report, type,additionalColumnsList) {
+function getCutAndSupTable(report, type, additionalColumnsList) {
     var cutAndSupTable = report.addTable('cutAndSupTable');
     //title table
     cutAndSupTable.getCaption().addText(type);
     //columns
-    cutAndSupTable.addColumn("Account").setStyleAttributes("width:10%", "tableHeaders");
+    cutAndSupTable.addColumn("Account").setStyleAttributes("width%", "tableHeaders");
     cutAndSupTable.addColumn("Customer").setStyleAttributes("width:20%", "tableHeaders");
     cutAndSupTable.addColumn("Organisation").setStyleAttributes("width:20%", "tableHeaders");
     cutAndSupTable.addColumn("Phone Numbers").setStyleAttributes("width:25%", "tableHeaders");
@@ -100,7 +100,7 @@ function getCutAndSupTable(report, type,additionalColumnsList) {
 
 
 //Function that creates and prints the report
-function printReport(banDoc,additionalColumnsList) {
+function printReport(banDoc, additionalColumnsList) {
 
     //Add a name to the report
     var report = Banana.Report.newReport("Customers and Suppliers");
@@ -109,12 +109,12 @@ function printReport(banDoc,additionalColumnsList) {
     addHeader(report)
 
     //Create a table for the report
-    var customersTable = getCutAndSupTable(report, "Customers",additionalColumnsList);
+    var customersTable = getCutAndSupTable(report, "Customers", additionalColumnsList);
     report.addPageBreak();
-    var suppliersTable = getCutAndSupTable(report, "Suppliers",additionalColumnsList);
+    var suppliersTable = getCutAndSupTable(report, "Suppliers", additionalColumnsList);
 
     /* 1. Print the Jorunal with the totals */
-    printTables(customersTable, suppliersTable,banDoc,additionalColumnsList);
+    printTables(customersTable, suppliersTable, banDoc, additionalColumnsList);
 
     //Add a footer to the report
     addFooter(report);
@@ -122,10 +122,10 @@ function printReport(banDoc,additionalColumnsList) {
     return report;
 }
 
-function printTables(customersTable, suppliersTable,banDoc,additionalColumnsList) {
+function printTables(customersTable, suppliersTable, banDoc, additionalColumnsList) {
 
-    var customersData = getCustAndSup("1", "01",banDoc,additionalColumnsList);
-    var suppliersData = getCustAndSup("2", "02",banDoc,additionalColumnsList);
+    var customersData = getCustAndSup("1", "01", banDoc, additionalColumnsList);
+    var suppliersData = getCustAndSup("2", "02", banDoc, additionalColumnsList);
 
 
     //add Customers
@@ -169,7 +169,7 @@ function printTables(customersTable, suppliersTable,banDoc,additionalColumnsList
 }
 
 //Function that load the jorunal rows
-function getCustAndSup(bClass, section,banDoc,additionalColumnsList) {
+function getCustAndSup(bClass, section, banDoc, additionalColumnsList) {
 
     var elementsList = [];
 

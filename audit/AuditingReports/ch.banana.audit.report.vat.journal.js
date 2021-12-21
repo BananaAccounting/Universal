@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-// @id = ch.banana.audit.report.vat.journal
+// @id = ch.banana.audit.report
 // @api = 1.0
 // @pubdate = 2021-12-03
 // @publisher = Banana.ch SA
@@ -366,7 +366,7 @@ function addFooter(report) {
     var date = new Date();
     var d = Banana.Converter.toLocaleDateFormat(date);
     report.getFooter().addClass("footerStyle");
-    var versionLine = report.getFooter().addText(d + " - Journal - Page ", "description");
+    var versionLine = report.getFooter().addText(d + " - Journal - Page ", "description").excludeFromTest();
     report.getFooter().addFieldPageNr();
 }
 
@@ -452,7 +452,7 @@ function getPeriodSettings() {
     };
 
     //Read script settings
-    var data = Banana.document.scriptReadSettings();
+    var data = Banana.document.getScriptSettings();
 
     //Check if there are previously saved settings and read them
     if (data.length > 0) {
@@ -483,7 +483,7 @@ function getPeriodSettings() {
 
         //Save script settings
         var formToString = JSON.stringify(scriptform);
-        var value = Banana.document.scriptSaveSettings(formToString);
+        var value = Banana.document.setScriptSettings(formToString);
     } else {
         //User clicked cancel
         return;

@@ -43,26 +43,26 @@ Suppliers Account  & Customer  & Organisation  & Phone Numbers  & Email  & Addre
 200004  & Torre Massimo  &  & Phone: 076 123 456\P Mobile: 079 876 543  & prova8@gmail.com  & Via dei Gelsi 6963 Cureggia  & Svizzera CH \\
 200005  & Brambilla Federica  &  & Phone: 076 123 456\P Mobile: 079 876 543  &  & Via Torino 6962 Viganello  & Svizzera CH \\
 \end{longtable}
-20.12.2021 - Customers and Suppliers - Page  \#page-nr \end{reportvalue}
-\section{Test With additional columns: Notes, AccountDebit,AccountCredit}
+21.12.2021 - Customers and Suppliers - Page  \#page-nr \end{reportvalue}
+\section{Test With additional columns: Language, Fax, Website}
 \begin{reportvalue}{Customers and Suppliers Report, Additional Columns}
 Customers and Suppliers \\
   \\
 \begin{longtable}[l]{ l  l  l  l  l  l  l  l  l  l }
-Customers Account  & Customer  & Organisation  & Phone Numbers  & Email  & Address  & Country  & Notes  & AccountDebit  & AccountCredit \\
-110001  & Rossi Carlo  &  &  &  & Via Trevano    &    & Note Customer 1  &  & \\
-110002  & Luisoni Giorgio  &  & Phone: 076 123 456\P Mobile: 079 876 543  & prova1@gmail.com  & Via del Sole  6963 Viganello  & Svizzera CH  &  &  & \\
-110003  & Barbieri Sergio  &  & Phone: 076 123 456\P Mobile: 079 876 543  & prova2@gmail.com  & Via Torretta 6963 Pregassona  & Svizzera CH  & Note Customer 3  &  & \\
-110004  & Cinnato Alessandra  &  & Phone: 076 123 456\P Mobile: 079 876 543  & prova3@gmail.com  & Via della Stazione 6900 Lugano  & Svizzera CH  &  &  & \\
-110005  &  Baratta Rosaria  &  & Phone: 076 123 456\P Mobile: 079 876 543  & prova4@gmail.com  & Viale del Tiglio 6900 Lugano  & Svizzera CH  & Note Customer 5  &  & \\
+Customers Account  & Customer  & Organisation  & Phone Numbers  & Email  & Address  & Country  & Language  & Fax  & Website \\
+110001  & Rossi Carlo  &  &  &  & Via Trevano    &    &  &  & \\
+110002  & Luisoni Giorgio  &  & Phone: 076 123 456\P Mobile: 079 876 543  & prova1@gmail.com  & Via del Sole  6963 Viganello  & Svizzera CH  &  & 111 222 333 444  & www.prova1.ch \\
+110003  & Barbieri Sergio  &  & Phone: 076 123 456\P Mobile: 079 876 543  & prova2@gmail.com  & Via Torretta 6963 Pregassona  & Svizzera CH  &  & 555 666 777 888  & www.prova2.ch \\
+110004  & Cinnato Alessandra  &  & Phone: 076 123 456\P Mobile: 079 876 543  & prova3@gmail.com  & Via della Stazione 6900 Lugano  & Svizzera CH  &  & 999 111 222 333  & www.prova3.ch \\
+110005  &  Baratta Rosaria  &  & Phone: 076 123 456\P Mobile: 079 876 543  & prova4@gmail.com  & Viale del Tiglio 6900 Lugano  & Svizzera CH  &  & 444 555 666 777  & www.prova4.ch \\
 \end{longtable}
 \begin{longtable}[l]{ l  l  l  l  l  l  l  l  l  l }
-Suppliers Account  & Customer  & Organisation  & Phone Numbers  & Email  & Address  & Country  & Notes  & AccountDebit  & AccountCredit \\
-200001  & De Giorgi Mattia  &  & Phone: 076 123 456\P Mobile: 079 876 543  & prova5@gmail.com  & Via del Tiglio 6900 Lugano  & Svizzera CH  &  &  & \\
-200002  & Ambrogi Paola  &  & Phone: 076 123 456\P Mobile: 079 876 543  & prova6@gmail.com  & Via del Sole  6900 Lugano  & Svizzera CH  & Note supplier 2  &  & \\
-200003  & Rossi Franco  &  & Phone: 076 123 456\P Mobile: 079 876 543  & prova7@gmail.com  & Via Coremmo 6900 Lugano  & Svizzera CH  &  &  & \\
-200004  & Torre Massimo  &  & Phone: 076 123 456\P Mobile: 079 876 543  & prova8@gmail.com  & Via dei Gelsi 6963 Cureggia  & Svizzera CH  & Note supplier 4  &  & \\
-200005  & Brambilla Federica  &  & Phone: 076 123 456\P Mobile: 079 876 543  &  & Via Torino 6962 Viganello  & Svizzera CH  &  &  & \\
+Suppliers Account  & Customer  & Organisation  & Phone Numbers  & Email  & Address  & Country  & Language  & Fax  & Website \\
+200001  & De Giorgi Mattia  &  & Phone: 076 123 456\P Mobile: 079 876 543  & prova5@gmail.com  & Via del Tiglio 6900 Lugano  & Svizzera CH  &  & 444 555 666 777  & www.prova5.ch \\
+200002  & Ambrogi Paola  &  & Phone: 076 123 456\P Mobile: 079 876 543  & prova6@gmail.com  & Via del Sole  6900 Lugano  & Svizzera CH  &  & 999 111 222 333  & www.prova6.ch \\
+200003  & Rossi Franco  &  & Phone: 076 123 456\P Mobile: 079 876 543  & prova7@gmail.com  & Via Coremmo 6900 Lugano  & Svizzera CH  &  & 555 666 777 888  & www.prova7.ch \\
+200004  & Torre Massimo  &  & Phone: 076 123 456\P Mobile: 079 876 543  & prova8@gmail.com  & Via dei Gelsi 6963 Cureggia  & Svizzera CH  &  & 111 222 333 444  & www.prova8.ch \\
+200005  & Brambilla Federica  &  & Phone: 076 123 456\P Mobile: 079 876 543  &  & Via Torino 6962 Viganello  & Svizzera CH  &  & 555 666 777 888  & www.prova9.ch \\
 \end{longtable}
-20.12.2021 - Customers and Suppliers - Page  \#page-nr \end{reportvalue}
+21.12.2021 - Customers and Suppliers - Page  \#page-nr \end{reportvalue}
 \end{document}

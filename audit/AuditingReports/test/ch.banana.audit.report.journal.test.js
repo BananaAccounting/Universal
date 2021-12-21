@@ -56,10 +56,10 @@ AuditReports_Journal.prototype.cleanup = function() {
 
 }
 
-//test for general ledger report
+//test for Journal report
 AuditReports_Journal.prototype.testGeneralLedgerReport = function() {
 
-    Test.logger.addComment("Test General Ledger Report");
+    Test.logger.addComment("Test Journal Report");
 
     var banDoc_withVAT = Banana.application.openDocument(this.fileAC2_withVAT);
     var banDoc_withoutVAT = Banana.application.openDocument(this.fileAC2_withoutVAT);
@@ -79,7 +79,7 @@ AuditReports_Journal.prototype.testGeneralLedgerReport = function() {
     var addColumns = [];
     var report = printReport(startDate, endDate, addColumns, banDoc_withVAT);
 
-    Test.logger.addReport("General Ledger Report", report);
+    Test.logger.addReport("Journal Report", report);
 
     //with additional columns: Notes, AccountDebit,AccountCredit
     Test.logger.addSubSection("Test With additional columns");
@@ -88,7 +88,7 @@ AuditReports_Journal.prototype.testGeneralLedgerReport = function() {
     var addColumns = ["Notes", "AccountDebit", "AccountCredit"];
     var report = printReport(startDate, endDate, addColumns, banDoc_withVAT);
 
-    Test.logger.addReport("General Ledger Report", report);
+    Test.logger.addReport("Journal Report", report);
 
     //with addition columns (vat) VatRate, VatRateEffective, VatTaxable  and VatAmount
 
@@ -98,7 +98,7 @@ AuditReports_Journal.prototype.testGeneralLedgerReport = function() {
     var addColumns = ["VatRate", "VatRateEffective", "VatTaxable", "VatAmount"];
     var report = printReport(startDate, endDate, addColumns, banDoc_withVAT);
 
-    Test.logger.addReport("General Ledger Report", report);
+    Test.logger.addReport("Journal Report", report);
 
     /**************************************************
      * TEST CASES FILE WITHOUT VAT
@@ -111,7 +111,7 @@ AuditReports_Journal.prototype.testGeneralLedgerReport = function() {
     var addColumns = [];
     var report = printReport(startDate, endDate, addColumns, banDoc_withoutVAT);
 
-    Test.logger.addReport("General Ledger Report", report);
+    Test.logger.addReport("Journal Report", report);
 
     //with additional columns: ContraAccount;AccountDebitDes,AccountCreditDes
     Test.logger.addSubSection("Test With additional columns");
@@ -120,7 +120,7 @@ AuditReports_Journal.prototype.testGeneralLedgerReport = function() {
     var addColumns = ["ContraAccount", "AccountDebitDes", "AccountCreditDes"];
     var report = printReport(startDate, endDate, addColumns, banDoc_withoutVAT);
 
-    Test.logger.addReport("General Ledger Report", report);
+    Test.logger.addReport("Journal Report", report);
 
     Test.logger.close();
 

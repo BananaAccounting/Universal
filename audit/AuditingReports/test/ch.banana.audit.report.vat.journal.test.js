@@ -56,8 +56,8 @@ AuditReports_VatJournal.prototype.cleanup = function() {
 
 }
 
-//test for general ledger report
-AuditReports_VatJournal.prototype.testGeneralLedgerReport = function() {
+//test for Vat Journal report
+AuditReports_VatJournal.prototype.testVatJournalReport = function() {
 
     Test.logger.addComment("Test Vat Journal Report");
 
@@ -79,7 +79,7 @@ AuditReports_VatJournal.prototype.testGeneralLedgerReport = function() {
     var addColumns = [];
     var report = printReport(startDate, endDate, addColumns, banDoc_withVAT);
 
-    Test.logger.addReport("General Ledger Report", report);
+    Test.logger.addReport("VAT journal Report", report);
 
     //with additional columns: Notes, AccountDebit,AccountCredit
     Test.logger.addSubSection("Test With additional columns");
@@ -88,17 +88,17 @@ AuditReports_VatJournal.prototype.testGeneralLedgerReport = function() {
     var addColumns = ["Notes", "AccountDebit", "AccountCredit"];
     var report = printReport(startDate, endDate, addColumns, banDoc_withVAT);
 
-    Test.logger.addReport("General Ledger Report", report);
+    Test.logger.addReport("Vat journal Report", report);
 
-    //with addition columns (vat) VatRate, VatRateEffective, VatTaxable  and VatAmount
+    //with addition columns (vat) VatAccount,VatRateEffective,VatAmount
 
     Test.logger.addSubSection("Test With additional columns (vat related)");
     var startDate = "2021.01.01";
     var endDate = "2022.12.31";
-    var addColumns = ["VatRate", "VatRateEffective", "VatTaxable", "VatAmount"];
+    var addColumns = ["VatAccount", "VatRateEffective", "VatAmount"];
     var report = printReport(startDate, endDate, addColumns, banDoc_withVAT);
 
-    Test.logger.addReport("General Ledger Report", report);
+    Test.logger.addReport("Vat Journal Report", report);
 
     /**************************************************
      * TEST CASES FILE WITHOUT VAT
@@ -111,7 +111,7 @@ AuditReports_VatJournal.prototype.testGeneralLedgerReport = function() {
     var addColumns = [];
     var report = printReport(startDate, endDate, addColumns, banDoc_withoutVAT);
 
-    Test.logger.addReport("General Ledger Report", report);
+    Test.logger.addReport("Vat Journal Report", report);
 
     //with additional columns: ContraAccount;AccountDebitDes,AccountCreditDes
     Test.logger.addSubSection("Test With additional columns");
@@ -120,7 +120,7 @@ AuditReports_VatJournal.prototype.testGeneralLedgerReport = function() {
     var addColumns = ["ContraAccount", "AccountDebitDes", "AccountCreditDes"];
     var report = printReport(startDate, endDate, addColumns, banDoc_withoutVAT);
 
-    Test.logger.addReport("General Ledger Report", report);
+    Test.logger.addReport("Vat Journal Report", report);
 
     Test.logger.close();
 
