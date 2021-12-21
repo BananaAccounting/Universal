@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-// @id = ch.banana.audit.report.trialbalance
+// @id = ch.banana.audit.report
 // @api = 1.0
 // @pubdate = 2017-03-22
 // @publisher = Banana.ch SA
@@ -23,8 +23,6 @@
 // @outputformat = none
 // @inputdatasource = none
 // @timeout = -1
-
-
 
 
 var sumDebit = 0;
@@ -90,8 +88,6 @@ function printReport(startDate, endDate, banDoc) {
 
     return report;
 }
-
-
 
 
 //Function that prints the balance sheet
@@ -216,7 +212,7 @@ function addFooter(report) {
     var date = new Date();
     var d = Banana.Converter.toLocaleDateFormat(date);
     report.getFooter().addClass("footer");
-    var versionLine = report.getFooter().addText(d + " - Trial balance - Page ", "description");
+    var versionLine = report.getFooter().addText(d + " - Trial balance - Page ", "description").excludeFromTest();
     report.getFooter().addFieldPageNr();
 }
 
@@ -234,7 +230,7 @@ function getPeriodSettings() {
     };
 
     //Read script settings
-    var data = Banana.document.scriptReadSettings();
+    var data = Banana.document.getScriptSettings();
 
     //Check if there are previously saved settings and read them
     if (data.length > 0) {
@@ -265,7 +261,7 @@ function getPeriodSettings() {
 
         //Save script settings
         var formToString = JSON.stringify(scriptform);
-        var value = Banana.document.scriptSaveSettings(formToString);
+        var value = Banana.document.setScriptSettings(formToString);
     } else {
         //User clicked cancel
         return;

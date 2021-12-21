@@ -75,7 +75,7 @@ function convertParam(userParam) {
     currentParam.type = 'string';
     currentParam.value = userParam.generalLedger_xmlColumnsName ? userParam.generalLedger_xmlColumnsName : '';
     currentParam.defaultvalue = defaultParam.generalLedger_xmlColumnsName;
-    currentParam.tooltip = "indicates the xml name of the columns you want to add to this report"
+    currentParam.tooltip = "indicates the xml name of the columns you want to add"
     currentParam.parentObject = 'generalLedger';
     currentParam.readValue = function() {
         userParam.generalLedger_xmlColumnsName = this.value;
@@ -89,7 +89,7 @@ function convertParam(userParam) {
     currentParam.type = 'string';
     currentParam.value = userParam.journal_xmlColumnsName ? userParam.journal_xmlColumnsName : '';
     currentParam.defaultvalue = defaultParam.journal_xmlColumnsName;
-    currentParam.tooltip = "indicates the xml name of the columns you want to add to this report"
+    currentParam.tooltip = "indicates the xml name of the columns you want to add"
     currentParam.parentObject = 'journal';
     currentParam.readValue = function() {
         userParam.journal_xmlColumnsName = this.value;
@@ -103,7 +103,7 @@ function convertParam(userParam) {
     currentParam.type = 'string';
     currentParam.value = userParam.vatJournal_xmlColumnsName ? userParam.vatJournal_xmlColumnsName : '';
     currentParam.defaultvalue = defaultParam.vatJournal_xmlColumnsName;
-    currentParam.tooltip = "indicates the xml name of the columns you want to add to this report"
+    currentParam.tooltip = "indicates the xml name of the columns you want to add"
     currentParam.parentObject = 'vatjournal';
     currentParam.readValue = function() {
         userParam.vatJournal_xmlColumnsName = this.value;
@@ -117,7 +117,7 @@ function convertParam(userParam) {
     currentParam.type = 'string';
     currentParam.value = userParam.customersAndSuppliers_xmlColumnsName ? userParam.customersAndSuppliers_xmlColumnsName : '';
     currentParam.defaultvalue = defaultParam.customersAndSuppliers_xmlColumnsName;
-    currentParam.tooltip = "indicates the xml name of the columns you want to add to this report"
+    currentParam.tooltip = "indicates the xml name of the columns you want to add"
     currentParam.parentObject = 'customersandsuppliers';
     currentParam.readValue = function() {
         userParam.customersAndSuppliers_xmlColumnsName = this.value;

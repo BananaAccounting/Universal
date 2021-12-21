@@ -21,7 +21,7 @@
 %%SCRIPT{C:/Users/confo/Documents/GitHub/Universal/audit/AuditingReports/./test/ch.banana.audit.report.trialbalance.test.js}
 %
 \begin{testcase}{AuditReports\_TrialBalance}
-\begin{test}{testGeneralLedgerReport}
+\begin{test}{testTrialBalanceReport}
 %Test Trial Balance Report
 \section{All Year}
 \begin{reportvalue}{Test all year}
@@ -178,7 +178,7 @@ Trial Balance \\
 8900  & Imposte dirette  & 1'000.00  & \\
 \multicolumn{2}{l}{} & 138'214.00  & 138'214.00 \\
 \end{longtable}
-20.12.2021 - Trial balance - Page  \#page-nr \end{reportvalue}
+\excltest{21.12.2021 - Trial balance - Page } \#page-nr \end{reportvalue}
 \section{First Semester}
 \begin{reportvalue}{Test first semester}
 Trial Balance \\
@@ -334,7 +334,7 @@ Trial Balance \\
 8900  & Imposte dirette  & 0.00  & \\
 \multicolumn{2}{l}{} & 237'904.00  & 237'904.00 \\
 \end{longtable}
-20.12.2021 - Trial balance - Page  \#page-nr \end{reportvalue}
+\excltest{21.12.2021 - Trial balance - Page } \#page-nr \end{reportvalue}
 \section{Second Semester}
 \begin{reportvalue}{Test second semester}
 Trial Balance \\
@@ -490,7 +490,7 @@ Trial Balance \\
 8900  & Imposte dirette  & 0.00  & \\
 \multicolumn{2}{l}{} & 334'394.00  & 289'594.00 \\
 \end{longtable}
-20.12.2021 - Trial balance - Page  \#page-nr \end{reportvalue}
+\excltest{21.12.2021 - Trial balance - Page } \#page-nr \end{reportvalue}
 \section{First Quarter}
 \begin{reportvalue}{Test first Quarter}
 Trial Balance \\
@@ -646,7 +646,7 @@ Trial Balance \\
 8900  & Imposte dirette  & 0.00  & \\
 \multicolumn{2}{l}{} & 434'084.00  & 389'284.00 \\
 \end{longtable}
-20.12.2021 - Trial balance - Page  \#page-nr \end{reportvalue}
+\excltest{21.12.2021 - Trial balance - Page } \#page-nr \end{reportvalue}
 \section{Second Quarter}
 \begin{reportvalue}{Test Second Quarter}
 Trial Balance \\
@@ -802,7 +802,7 @@ Trial Balance \\
 8900  & Imposte dirette  & 0.00  & \\
 \multicolumn{2}{l}{} & 530'574.00  & 473'974.00 \\
 \end{longtable}
-20.12.2021 - Trial balance - Page  \#page-nr \end{reportvalue}
+\excltest{21.12.2021 - Trial balance - Page } \#page-nr \end{reportvalue}
 \section{Third Quarter}
 \begin{reportvalue}{Test Third Quarter}
 Trial Balance \\
@@ -958,7 +958,7 @@ Trial Balance \\
 8900  & Imposte dirette  & 1'000.00  & \\
 \multicolumn{2}{l}{} & 665'588.00  & 564'188.00 \\
 \end{longtable}
-20.12.2021 - Trial balance - Page  \#page-nr \end{reportvalue}
+\excltest{21.12.2021 - Trial balance - Page } \#page-nr \end{reportvalue}
 \section{Fourth Quarter}
 \begin{reportvalue}{Test Fourth Quarter}
 Trial Balance \\
@@ -1114,5 +1114,5 @@ Trial Balance \\
 8900  & Imposte dirette  & 0.00  & \\
 \multicolumn{2}{l}{} & 771'002.00  & 642'878.00 \\
 \end{longtable}
-20.12.2021 - Trial balance - Page  \#page-nr \end{reportvalue}
+\excltest{21.12.2021 - Trial balance - Page } \#page-nr \end{reportvalue}
 \end{document}

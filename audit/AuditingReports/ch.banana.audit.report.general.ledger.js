@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-// @id = ch.banana.audit.report.general.ledger
+// @id = ch.banana.audit.report
 // @api = 1.0
 // @pubdate = 2021-12-13
 // @publisher = Banana.ch SA
@@ -26,14 +26,10 @@
 // @includejs= ch.banana.audit.settings.js
 
 
-//errors
-var DEBIT_CREDIT_DIFFERENTS = "DEBIT_CREDIT_DIFFERENTS";
-
-
 //Main function
 function exec() {
 
-    var banDoc=Banana.document;
+    var banDoc = Banana.document;
 
     //Check if we are on an opened document
     if (!banDoc) {
@@ -44,12 +40,12 @@ function exec() {
     var savedScriptSettings = banDoc.getScriptSettings("ch.banana.audit.settings");
     var additionalColumnsList = [];
     if (savedScriptSettings)
-    additionalColumnsList = getAdditionalColumns(savedScriptSettings);
+        additionalColumnsList = getAdditionalColumns(savedScriptSettings);
 
     var dateform = getPeriodSettings(banDoc);
-    var report="";
+    var report = "";
     if (dateform) {
-        report=printReport(dateform.selectionStartDate, dateform.selectionEndDate,additionalColumnsList,banDoc);
+        report = printReport(dateform.selectionStartDate, dateform.selectionEndDate, additionalColumnsList, banDoc);
     }
 
     //Print the report
@@ -62,7 +58,7 @@ function exec() {
  * @param {*} getAdditionalColumns_formatted 
  * @returns an array with the additionalcolumns
  */
- function getAdditionalColumns(savedScriptSettings) {
+function getAdditionalColumns(savedScriptSettings) {
     var strColumns = "";
     var columnsList = [];
     savedScriptSettings = JSON.parse(savedScriptSettings);
@@ -77,7 +73,7 @@ function exec() {
     return columnsList
 }
 
-function getGeneralLedgerTable(report, startDate, endDate,additionalColumnsList) {
+function getGeneralLedgerTable(report, startDate, endDate, additionalColumnsList) {
     var generalLedgerTable = report.addTable('generalLedger');
     //title table
     generalLedgerTable.getCaption().addText("General Ledger for the period " + Banana.Converter.toLocaleDateFormat(startDate) + " - " + Banana.Converter.toLocaleDateFormat(endDate), "dateIndicator");
@@ -117,23 +113,23 @@ function getGeneralLedgerTable(report, startDate, endDate,additionalColumnsList)
 
 
 //Function that creates and prints the report
-function printReport(startDate, endDate,additionalColumnsList,banDoc) {
+function printReport(startDate, endDate, additionalColumnsList, banDoc) {
 
     //Add a name to the report
     var report = Banana.Report.newReport("General Ledger");
 
     //Add a header to the report
-    addHeader(report,banDoc);
+    addHeader(report, banDoc);
 
     //Create a table for the report
-    var table = getGeneralLedgerTable(report, startDate, endDate,additionalColumnsList);
+    var table = getGeneralLedgerTable(report, startDate, endDate, additionalColumnsList);
 
-    if(!table){
+    if (!table) {
         Banana.console.debug("no obj table");
     }
 
     /* 1. Print the Journal with the totals */
-    printGeneralLedger(table, startDate, endDate,additionalColumnsList,banDoc);
+    printGeneralLedger(table, startDate, endDate, additionalColumnsList, banDoc);
 
     //Add a footer to the report
     addFooter(report);
@@ -141,9 +137,9 @@ function printReport(startDate, endDate,additionalColumnsList,banDoc) {
     return report;
 }
 
-function printGeneralLedger(table, startDate, endDate,additionalColumnsList,banDoc) {
+function printGeneralLedger(table, startDate, endDate, additionalColumnsList, banDoc) {
 
-    var accountData = setAccountData(startDate, endDate,additionalColumnsList,banDoc);
+    var accountData = setAccountData(startDate, endDate, additionalColumnsList, banDoc);
     var sumDebit = "";
     var sumCredit = "";
     var amountStyle = "";
@@ -186,7 +182,7 @@ function printGeneralLedger(table, startDate, endDate,additionalColumnsList,banD
  * @param {*} endDate 
  * @returns 
  */
-function setAccountData(startDate, endDate,additionalColumnsList,banDoc) {
+function setAccountData(startDate, endDate, additionalColumnsList, banDoc) {
     /**
      * Ex structure:
      * {
@@ -204,7 +200,7 @@ function setAccountData(startDate, endDate,additionalColumnsList,banDoc) {
     for (var i = 0; i < accountsList.length; i++) {
         var accountData = {};
         accountData.accountNr = accountsList[i];
-        accountData.transactions = getAccountTransactions(accountsList[i], startDate, endDate,additionalColumnsList,banDoc);
+        accountData.transactions = getAccountTransactions(accountsList[i], startDate, endDate, additionalColumnsList, banDoc);
         //If the account has been used during the year, or at least has an opening balance, I will add it to the list.
         if (hasTransactions(accountData.transactions))
             accountCardList.push(accountData);
@@ -233,7 +229,7 @@ function hasTransactions(transactions) {
  * @param {*} endDate 
  * @returns the transactions list for the given account
  */
-function getAccountTransactions(account, startDate, endDate,additionalColumnsList,banDoc) {
+function getAccountTransactions(account, startDate, endDate, additionalColumnsList, banDoc) {
 
     var accountCardTable = banDoc.currentCard(account, startDate, endDate);
     var accountTransactions = [];
@@ -271,7 +267,7 @@ function getAccountsList(banDoc) {
     var accountsList = [];
     var accountsTable = banDoc.table("Accounts");
 
-    if(accountsTable){
+    if (accountsTable) {
         for (var i = 0; i < accountsTable.rowCount; i++) {
             var tRow = accountsTable.row(i);
             var bClass = tRow.value("BClass");
@@ -281,8 +277,8 @@ function getAccountsList(banDoc) {
                 accountsList.push(accountNr);
             }
         }
-    }else(Banana.console.debug("no accounts table"));
-    
+    } else(Banana.console.debug("no accounts table"));
+
     return accountsList;
 }
 
@@ -292,11 +288,12 @@ function addFooter(report) {
     var date = new Date();
     var d = Banana.Converter.toLocaleDateFormat(date);
     report.getFooter().addClass("footerStyle");
-    var versionLine = report.getFooter().addText(d + " - General Ledger - Page ", "description");
+    var versionLine = report.getFooter().addText(d + " - General Ledger - Page ", "description").excludeFromTest();
     report.getFooter().addFieldPageNr();
+
 }
 
-function addHeader(report,banDoc) {
+function addHeader(report, banDoc) {
     docInfo = getDocumentInfo(banDoc);
     var headerParagraph = report.getHeader().addSection();
     headerParagraph.addParagraph("General Ledger", "heading1");

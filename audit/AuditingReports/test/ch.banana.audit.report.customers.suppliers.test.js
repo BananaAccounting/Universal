@@ -36,7 +36,7 @@ function AuditReports_CustomersAndSuppliers() {
 // This method will be called at the beginning of the test case
 AuditReports_CustomersAndSuppliers.prototype.initTestCase = function() {
 
-    this.fileAC2_withoutVAT="file:script/../test/testcases/accounting_without_vat.ac2";
+    this.fileAC2_withoutVAT = "file:script/../test/testcases/accounting_without_vat.ac2";
 
 }
 
@@ -60,7 +60,7 @@ AuditReports_CustomersAndSuppliers.prototype.testGeneralLedgerReport = function(
 
     Test.logger.addComment("Test Customers and Suppliers Report");
 
-    var banDoc=Banana.application.openDocument(this.fileAC2_withoutVAT);
+    var banDoc = Banana.application.openDocument(this.fileAC2_withoutVAT);
     if (!banDoc) {
         Test.logger.addFatalError("Document not found");
     }
@@ -72,19 +72,19 @@ AuditReports_CustomersAndSuppliers.prototype.testGeneralLedgerReport = function(
     Test.logger.addSection("Test base columns")
 
     //Only base columns
-    var addColumns=[];
-    var report=printReport(banDoc,addColumns);
+    var addColumns = [];
+    var report = printReport(banDoc, addColumns);
 
-    Test.logger.addReport("Customers and Suppliers Report, Base Columns",report);
+    Test.logger.addReport("Customers and Suppliers Report, Base Columns", report);
 
-    //with additional columns: Notes, AccountDebit,AccountCredit
+    //with additional columns: Language, Fax, Website
 
-    Test.logger.addSection("Test With additional columns: Notes, AccountDebit,AccountCredit");
+    Test.logger.addSection("Test With additional columns: Language, Fax, Website");
 
-    var addColumns=["Notes","AccountDebit","AccountCredit"];
-    var report=printReport(banDoc,addColumns);
+    var addColumns = ["Language", "Fax", "Website"];
+    var report = printReport(banDoc, addColumns);
 
-    Test.logger.addReport("Customers and Suppliers Report, Additional Columns",report);
+    Test.logger.addReport("Customers and Suppliers Report, Additional Columns", report);
 
 
     Test.logger.close();

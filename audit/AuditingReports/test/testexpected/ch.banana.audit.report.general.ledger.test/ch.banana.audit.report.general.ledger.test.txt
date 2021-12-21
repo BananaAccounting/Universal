@@ -267,7 +267,7 @@ General Ledger for the period 01.01.2021 - 31.12.2022 Date  & Transaction Type  
 2022-12-31  & 6  &  & Total transactions [01.01.2021\textbackslash{}31.12.2022]  & 4300  & 4'733.00  & 4'100.00  & 633.00 \\
 \\
 \end{longtable}
-20.12.2021 - General Ledger - Page  \#page-nr \end{reportvalue}
+\excltest{21.12.2021 - General Ledger - Page } \#page-nr \end{reportvalue}
 \subsection{Test With additional columns}
 \begin{reportvalue}{General Ledger Report}
 General Ledger \\
@@ -511,7 +511,7 @@ General Ledger for the period 01.01.2021 - 31.12.2022 Date  & Transaction Type  
 2022-12-31  & 6  &  & Total transactions [01.01.2021\textbackslash{}31.12.2022]  & 4300  & 4'733.00  & 4'100.00  & 633.00  &  &  & \\
 \\
 \end{longtable}
-20.12.2021 - General Ledger - Page  \#page-nr \end{reportvalue}
+\excltest{21.12.2021 - General Ledger - Page } \#page-nr \end{reportvalue}
 \subsection{Test With additional columns (vat related)}
 \begin{reportvalue}{General Ledger Report}
 General Ledger \\
@@ -755,7 +755,7 @@ General Ledger for the period 01.01.2021 - 31.12.2022 Date  & Transaction Type  
 2022-12-31  & 6  &  & Total transactions [01.01.2021\textbackslash{}31.12.2022]  & 4300  & 4'733.00  & 4'100.00  & 633.00  &  &  &  & \\
 \\
 \end{longtable}
-20.12.2021 - General Ledger - Page  \#page-nr \end{reportvalue}
+\excltest{21.12.2021 - General Ledger - Page } \#page-nr \end{reportvalue}
 \section{Test File Without VAT}
 \subsection{Only Base Columns}
 \begin{reportvalue}{General Ledger Report}
@@ -901,7 +901,7 @@ General Ledger for the period 01.01.2021 - 31.12.2022 Date  & Transaction Type  
 2022-12-31  & 6  &  & Total transactions [01.01.2021\textbackslash{}31.12.2022]  & 8900  & 1'000.00  &  & 1'000.00 \\
 \\
 \end{longtable}
-20.12.2021 - General Ledger - Page  \#page-nr \end{reportvalue}
+\excltest{21.12.2021 - General Ledger - Page } \#page-nr \end{reportvalue}
 \subsection{Test With additional columns}
 \begin{reportvalue}{General Ledger Report}
 General Ledger \\
@@ -1046,5 +1046,5 @@ General Ledger for the period 01.01.2021 - 31.12.2022 Date  & Transaction Type  
 2022-12-31  & 6  &  & Total transactions [01.01.2021\textbackslash{}31.12.2022]  & 8900  & 1'000.00  &  & 1'000.00  &  &  & \\
 \\
 \end{longtable}
-20.12.2021 - General Ledger - Page  \#page-nr \end{reportvalue}
+\excltest{21.12.2021 - General Ledger - Page } \#page-nr \end{reportvalue}
 \end{document}

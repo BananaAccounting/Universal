@@ -56,8 +56,8 @@ AuditReports_TrialBalance.prototype.cleanup = function() {
 
 }
 
-//test for general ledger report
-AuditReports_TrialBalance.prototype.testGeneralLedgerReport = function() {
+//test for Trial Balance report
+AuditReports_TrialBalance.prototype.testTrialBalanceReport = function() {
 
     Test.logger.addComment("Test Trial Balance Report");
 
