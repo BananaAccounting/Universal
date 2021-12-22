@@ -27,1021 +27,1296 @@
 \subsection{Only Base Columns}
 \begin{reportvalue}{Journal Report}
 Journal \\
-  \\
+My Company \\
+3136PB City \\
+N123456789B57 \\
+Period 01.01.2021 - 31.12.2022 \\
 \begin{longtable}[l]{ l  l  l  l  l  l  l  l }
-Journal for the period 01.01.2021 - 31.12.2022 Date  & Transaction Type  & Doc  & Description  & Account  & Debit  & Credit  & Amount \\
+Date  & Transaction Type  & Doc  & Description  & Account  & Debit  & Credit  & Amount \\
 01.01.2022  & 3  & 1  & Contante verkoop van goederen hoog tarief  & 1000  & 600.00  &  & 600.00 \\
 \multicolumn{3}{l}{} &  & 11001  &  & 495.87  & -495.87 \\
 \multicolumn{3}{l}{} &  & 2050  &  & 104.13  & -104.13 \\
 \multicolumn{5}{l}{} & 600.00  & 600.00 \\
+\multicolumn{8}{l}{  }\\
 01.01.2022  & 3  & 1  & Contante verkoop van goederen laag tarief  & 1000  & 300.00  &  & 300.00 \\
 \multicolumn{3}{l}{} &  & 11001  &  & 275.23  & -275.23 \\
 \multicolumn{3}{l}{} &  & 2050  &  & 24.77  & -24.77 \\
 \multicolumn{5}{l}{} & 300.00  & 300.00 \\
+\multicolumn{8}{l}{  }\\
 01.01.2022  & 3  & 1  & Dienstverlening aan 2\%  & 11001  & 250.00  &  & 250.00 \\
 \multicolumn{3}{l}{} &  & 4000  &  & 245.10  & -245.10 \\
 \multicolumn{3}{l}{} &  & 2050  &  & 4.90  & -4.90 \\
 \multicolumn{5}{l}{} & 250.00  & 250.00 \\
+\multicolumn{8}{l}{  }\\
 01.01.2022  & 3  & 1  & Dienstverlening vrijgesteld van omzetbelasting  & 11001  & 200.00  &  & 200.00 \\
 \multicolumn{3}{l}{} &  & 4000  &  & 200.00  & -200.00 \\
 \multicolumn{3}{l}{} &  & 2050  &  &  & \\
 \multicolumn{5}{l}{} & 200.00  & 200.00 \\
+\multicolumn{8}{l}{  }\\
 19.01.2022  & 3  & 2  & Aankoop verpakkingsmateriaal, factuur 15  & 3280  & 495.87  &  & 495.87 \\
 \multicolumn{3}{l}{} &  & 20003  &  & 600.00  & -600.00 \\
 \multicolumn{3}{l}{} &  & 2050  & 104.13  &  & 104.13 \\
 \multicolumn{5}{l}{} & 600.00  & 600.00 \\
+\multicolumn{8}{l}{  }\\
 19.01.2022  & 3  & 3  & Betaling faktuur 15 aan leverancier A  & 20003  & 600.00  &  & 600.00 \\
 \multicolumn{3}{l}{} &  & 1020  &  & 600.00  & -600.00 \\
 \multicolumn{5}{l}{} & 600.00  & 600.00 \\
+\multicolumn{8}{l}{  }\\
 23.01.2022  & 3  & 4  & Verkoop van goederen, factuur 203  & 11003  & 11'000.00  &  & 11'000.00 \\
 \multicolumn{3}{l}{} &  & 4100  &  & 9'090.91  & -9'090.91 \\
 \multicolumn{3}{l}{} &  & 2050  &  & 1'909.09  & -1'909.09 \\
 \multicolumn{5}{l}{} & 11'000.00  & 11'000.00 \\
+\multicolumn{8}{l}{  }\\
 27.01.2022  & 3  & 5  & Credit nota op factuur 203  & 4100  & 206.61  &  & 206.61 \\
 \multicolumn{3}{l}{} &  & 11003  &  & 250.00  & -250.00 \\
 \multicolumn{3}{l}{} &  & 2050  & 43.39  &  & 43.39 \\
 \multicolumn{5}{l}{} & 250.00  & 250.00 \\
+\multicolumn{8}{l}{  }\\
 27.01.2022  & 3  & 6  & Omboeking "BTW volgens BTW overzicht" - 1ste kwartaal  & 2050  & 2'015.00  &  & 2'015.00 \\
 \multicolumn{3}{l}{} &  & 2070  &  & 2'015.00  & -2'015.00 \\
 \multicolumn{5}{l}{} & 2'015.00  & 2'015.00 \\
+\multicolumn{8}{l}{  }\\
 27.01.2022  & 3  & 6  & afronding BTW 1ste kwartaal  & 2050  & 0.29  &  & 0.29 \\
 \multicolumn{3}{l}{} &  & 3350  &  & 0.29  & -0.29 \\
 \multicolumn{5}{l}{} & 0.29  & 0.29 \\
+\multicolumn{8}{l}{  }\\
 10.02.2022  & 3  & 7  & Betaling BTW 1ste kwartaal  & 2070  & 2'015.00  &  & 2'015.00 \\
 \multicolumn{3}{l}{} &  & 1010  &  & 2'015.00  & -2'015.00 \\
 \multicolumn{5}{l}{} & 2'015.00  & 2'015.00 \\
+\multicolumn{8}{l}{  }\\
 15.02.2022  & 3  & 8  & Factuur van leverancier De Bruijn  & 20003  &  & 1'600.00  & -1'600.00 \\
 \multicolumn{3}{l}{} & Inkoop goederen 21\%  & 3000  & 661.16  &  & 661.16 \\
 \multicolumn{3}{l}{} &  & 2050  & 138.84  &  & 138.84 \\
 \multicolumn{3}{l}{} & Inkoop goederen 9\%  & 3000  & 733.94  &  & 733.94 \\
 \multicolumn{3}{l}{} &  & 2050  & 66.06  &  & 66.06 \\
 \multicolumn{5}{l}{} & 1'600.00  & 1'600.00 \\
+\multicolumn{8}{l}{  }\\
 16.02.2022  & 3  & 9  & BTW contant betaald aan douane  & 1000  &  & 109.00  & -109.00 \\
 \multicolumn{3}{l}{} &  & 2050  & 109.00  &  & 109.00 \\
 \multicolumn{5}{l}{} & 109.00  & 109.00 \\
+\multicolumn{8}{l}{  }\\
 16.02.2022  & 3  & 10  & Rekening betaald aan vervoersdienst  & 1010  &  & 453.00  & -453.00 \\
 \multicolumn{3}{l}{} & Vervoerskosten  & 3240  & 200.00  &  & 200.00 \\
 \multicolumn{3}{l}{} & BTW contant betaald aan douane door vervoersdienst (hoog tarief)  & 2050  & 200.00  &  & 200.00 \\
 \multicolumn{3}{l}{} & BTW contant betaald aan douane door vervoersdienst (laag tarief)  & 2050  & 53.00  &  & 53.00 \\
 \multicolumn{5}{l}{} & 453.00  & 453.00 \\
+\multicolumn{8}{l}{  }\\
 17.02.2022  & 3  & 11  & Faktuur leverancier B (Duitsland)  & 20003  & 1'452.00  &  & 1'452.00 \\
 \multicolumn{3}{l}{} &  & 1020  &  & 1'200.00  & -1'200.00 \\
 \multicolumn{3}{l}{} &  & 2050  &  & 252.00  & -252.00 \\
 \multicolumn{5}{l}{} & 1'452.00  & 1'452.00 \\
+\multicolumn{8}{l}{  }\\
 17.02.2022  & 3  & 11  & BTW op intercommunautaire verwerving  & 4300  & 1'452.00  &  & 1'452.00 \\
 \multicolumn{3}{l}{} &  & 4300  &  & 1'200.00  & -1'200.00 \\
 \multicolumn{3}{l}{} &  & 2050  &  & 252.00  & -252.00 \\
 \multicolumn{5}{l}{} & 1'452.00  & 1'452.00 \\
+\multicolumn{8}{l}{  }\\
 19.02.2022  & 3  & 12  & Faktuur leverancier B (Duitsland)  & 20003  & 981.00  &  & 981.00 \\
 \multicolumn{3}{l}{} &  & 1020  &  & 900.00  & -900.00 \\
 \multicolumn{3}{l}{} &  & 2050  &  & 81.00  & -81.00 \\
 \multicolumn{5}{l}{} & 981.00  & 981.00 \\
+\multicolumn{8}{l}{  }\\
 19.02.2022  & 3  & 12  & BTW op intercommunautaire verwerving  & 4300  & 981.00  &  & 981.00 \\
 \multicolumn{3}{l}{} &  & 4300  &  & 900.00  & -900.00 \\
 \multicolumn{3}{l}{} &  & 2050  &  & 81.00  & -81.00 \\
 \multicolumn{5}{l}{} & 981.00  & 981.00 \\
+\multicolumn{8}{l}{  }\\
 02.03.2022  & 3  & 13  & Inkoopfactuur met btw naar u verlegd  & 3000  & 2'750.00  &  & 2'750.00 \\
 \multicolumn{3}{l}{} &  & 20003  &  & 2'750.00  & -2'750.00 \\
 \multicolumn{5}{l}{} & 2'750.00  & 2'750.00 \\
+\multicolumn{8}{l}{  }\\
 02.03.2022  & 3  & 13  & Inkoopfactuur met btw naar u verlegd [tussenrekening btw]  & 2070  & 4'026.28  &  & 4'026.28 \\
 \multicolumn{3}{l}{} &  & 2070  &  & 3'327.50  & -3'327.50 \\
 \multicolumn{3}{l}{} &  & 2050  &  & 698.78  & -698.78 \\
 \multicolumn{5}{l}{} & 4'026.28  & 4'026.28 \\
+\multicolumn{8}{l}{  }\\
 02.03.2022  & 3  & 13  & Inkoopfactuur met btw naar u verlegd [tussenrekening btw]  & 1170  & 2'750.00  &  & 2'750.00 \\
 \multicolumn{3}{l}{} &  & 1170  &  & 3'327.50  & -3'327.50 \\
 \multicolumn{3}{l}{} &  & 2050  & 577.50  &  & 577.50 \\
 \multicolumn{5}{l}{} & 3'327.50  & 3'327.50 \\
+\multicolumn{8}{l}{  }\\
 02.03.2022  & 3  & 13  & Inkoopfactuur  & 20003  & 2'750.00  &  & 2'750.00 \\
 \multicolumn{3}{l}{} &  & 1010  &  & 2'750.00  & -2'750.00 \\
 \multicolumn{5}{l}{} & 2'750.00  & 2'750.00 \\
+\multicolumn{8}{l}{  }\\
 19.03.2022  & 3  & 14  & Aankoop met laag tarief  & 3240  & 275.23  &  & 275.23 \\
 \multicolumn{3}{l}{} &  & 20003  &  & 300.00  & -300.00 \\
 \multicolumn{3}{l}{} &  & 2050  & 24.77  &  & 24.77 \\
 \multicolumn{5}{l}{} & 300.00  & 300.00 \\
+\multicolumn{8}{l}{  }\\
 19.03.2022  & 3  & 14  & Aankoop tarief 0\%  & 3240  & 150.00  &  & 150.00 \\
 \multicolumn{3}{l}{} &  & 20003  &  & 150.00  & -150.00 \\
 \multicolumn{3}{l}{} &  & 2050  &  &  & \\
 \multicolumn{5}{l}{} & 150.00  & 150.00 \\
+\multicolumn{8}{l}{  }\\
 19.03.2022  & 3  & 14  & Aankoop vrijgesteld   & 3240  & 150.00  &  & 150.00 \\
 \multicolumn{3}{l}{} &  & 20003  &  & 150.00  & -150.00 \\
 \multicolumn{3}{l}{} &  & 2050  &  &  & \\
 \multicolumn{5}{l}{} & 150.00  & 150.00 \\
+\multicolumn{8}{l}{  }\\
 30.03.2022  & 3  & 15  & Privégebruik auto van de zaak  & 1010  & 308.10  &  & 308.10 \\
 \multicolumn{3}{l}{} &  & 3220  &  & 300.00  & -300.00 \\
 \multicolumn{3}{l}{} &  & 2050  &  & 8.10  & -8.10 \\
 \multicolumn{5}{l}{} & 308.10  & 308.10 \\
+\multicolumn{8}{l}{  }\\
 30.03.2022  & 3  & 15  & Privégebruik auto van de zaak  & 1010  & 203.00  &  & 203.00 \\
 \multicolumn{3}{l}{} &  & 3220  &  & 200.00  & -200.00 \\
 \multicolumn{3}{l}{} &  & 2050  &  & 3.00  & -3.00 \\
 \multicolumn{5}{l}{} & 203.00  & 203.00 \\
+\multicolumn{8}{l}{  }\\
 30.03.2022  & 3  & 15  & Privégebruik ander hoog tarief  & 1010  & 242.00  &  & 242.00 \\
 \multicolumn{3}{l}{} &  & 3270  &  & 200.00  & -200.00 \\
 \multicolumn{3}{l}{} &  & 2050  &  & 42.00  & -42.00 \\
 \multicolumn{5}{l}{} & 242.00  & 242.00 \\
+\multicolumn{8}{l}{  }\\
 30.03.2022  & 3  & 15  & Privégebruik ander laag tarief  & 1010  & 109.00  &  & 109.00 \\
 \multicolumn{3}{l}{} &  & 3240  &  & 100.00  & -100.00 \\
 \multicolumn{3}{l}{} &  & 2050  &  & 9.00  & -9.00 \\
 \multicolumn{5}{l}{} & 109.00  & 109.00 \\
+\multicolumn{8}{l}{  }\\
 31.03.2022  & 3  & 16  & Leveringen naar landen buiten de EU (uitvoer)  & 11003  & 5'000.00  &  & 5'000.00 \\
 \multicolumn{3}{l}{} &  & 4100  &  & 5'000.00  & -5'000.00 \\
 \multicolumn{3}{l}{} &  & 2050  &  &  & \\
 \multicolumn{5}{l}{} & 5'000.00  & 5'000.00 \\
+\multicolumn{8}{l}{  }\\
 31.03.2022  & 3  & 16  & Leveringen naar of diensten in landen binnen de EU  & 11002  & 2'000.00  &  & 2'000.00 \\
 \multicolumn{3}{l}{} &  & 4000  &  & 2'000.00  & -2'000.00 \\
 \multicolumn{3}{l}{} &  & 2050  &  &  & \\
 \multicolumn{5}{l}{} & 2'000.00  & 2'000.00 \\
+\multicolumn{8}{l}{  }\\
 31.03.2022  & 3  & 16  & Installatie/afstandsverkopen binnen de EU  & 11002  & 1'000.00  &  & 1'000.00 \\
 \multicolumn{3}{l}{} &  & 4200  &  & 1'000.00  & -1'000.00 \\
 \multicolumn{3}{l}{} &  & 2050  &  &  & \\
 \multicolumn{5}{l}{} & 1'000.00  & 1'000.00 \\
+\multicolumn{8}{l}{  }\\
 31.03.2022  & 3  & 17  & Leveringen/diensten uit landen buiten de EU - hoog tarief (21\%)  & 11003  & 2'420.00  &  & 2'420.00 \\
 \multicolumn{3}{l}{} &  & 4100  &  & 2'000.00  & -2'000.00 \\
 \multicolumn{3}{l}{} &  & 2050  &  & 420.00  & -420.00 \\
 \multicolumn{5}{l}{} & 2'420.00  & 2'420.00 \\
+\multicolumn{8}{l}{  }\\
 31.03.2022  & 3  & 17  & Leveringen/diensten uit landen buiten de EU - laag tarief (9\%)  & 11003  & 2'180.00  &  & 2'180.00 \\
 \multicolumn{3}{l}{} &  & 4000  &  & 2'000.00  & -2'000.00 \\
 \multicolumn{3}{l}{} &  & 2050  &  & 180.00  & -180.00 \\
 \multicolumn{5}{l}{} & 2'180.00  & 2'180.00 \\
+\multicolumn{8}{l}{  }\\
 01.01.2022  & 3  & 1  & Contante verkoop van goederen hoog tarief  & 1000  & 500.00  &  & 500.00 \\
 \multicolumn{3}{l}{} &  & 11001  &  & 413.22  & -413.22 \\
 \multicolumn{3}{l}{} &  & 2050  &  & 86.78  & -86.78 \\
 \multicolumn{5}{l}{} & 500.00  & 500.00 \\
+\multicolumn{8}{l}{  }\\
 01.01.2022  & 3  & 1  & Contante verkoop van goederen laag tarief  & 1000  & 200.00  &  & 200.00 \\
 \multicolumn{3}{l}{} &  & 11001  &  & 183.49  & -183.49 \\
 \multicolumn{3}{l}{} &  & 2050  &  & 16.51  & -16.51 \\
 \multicolumn{5}{l}{} & 200.00  & 200.00 \\
+\multicolumn{8}{l}{  }\\
 01.01.2022  & 3  & 1  & Dienstverlening aan 2\%  & 11001  & 150.00  &  & 150.00 \\
 \multicolumn{3}{l}{} &  & 4000  &  & 147.06  & -147.06 \\
 \multicolumn{3}{l}{} &  & 2050  &  & 2.94  & -2.94 \\
 \multicolumn{5}{l}{} & 150.00  & 150.00 \\
+\multicolumn{8}{l}{  }\\
 01.01.2022  & 3  & 1  & Dienstverlening vrijgesteld van omzetbelasting  & 11001  & 200.00  &  & 200.00 \\
 \multicolumn{3}{l}{} &  & 4000  &  & 200.00  & -200.00 \\
 \multicolumn{3}{l}{} &  & 2050  &  &  & \\
 \multicolumn{5}{l}{} & 200.00  & 200.00 \\
+\multicolumn{8}{l}{  }\\
 19.01.2022  & 3  & 2  & Aankoop verpakkingsmateriaal, factuur 15  & 3280  & 330.58  &  & 330.58 \\
 \multicolumn{3}{l}{} &  & 20003  &  & 400.00  & -400.00 \\
 \multicolumn{3}{l}{} &  & 2050  & 69.42  &  & 69.42 \\
 \multicolumn{5}{l}{} & 400.00  & 400.00 \\
+\multicolumn{8}{l}{  }\\
 19.02.2022  & 3  & 3  & Betaling faktuur 15 aan leverancier A  & 20003  & 400.00  &  & 400.00 \\
 \multicolumn{3}{l}{} &  & 1020  &  & 400.00  & -400.00 \\
 \multicolumn{5}{l}{} & 400.00  & 400.00 \\
+\multicolumn{8}{l}{  }\\
 23.02.2022  & 3  & 4  & Verkoop van goederen, factuur 203  & 11003  & 12'000.00  &  & 12'000.00 \\
 \multicolumn{3}{l}{} &  & 4100  &  & 9'917.36  & -9'917.36 \\
 \multicolumn{3}{l}{} &  & 2050  &  & 2'082.64  & -2'082.64 \\
 \multicolumn{5}{l}{} & 12'000.00  & 12'000.00 \\
+\multicolumn{8}{l}{  }\\
 27.02.2022  & 3  & 5  & Credit nota op factuur 203  & 4100  & 165.29  &  & 165.29 \\
 \multicolumn{3}{l}{} &  & 11003  &  & 200.00  & -200.00 \\
 \multicolumn{3}{l}{} &  & 2050  & 34.71  &  & 34.71 \\
 \multicolumn{5}{l}{} & 200.00  & 200.00 \\
+\multicolumn{8}{l}{  }\\
 31.03.2022  & 3  & 6  & Omboeking "BTW volgens BTW overzicht" - 1ste kwartaal  & 2050  & 2'065.00  &  & 2'065.00 \\
 \multicolumn{3}{l}{} &  & 2070  &  & 2'065.00  & -2'065.00 \\
 \multicolumn{5}{l}{} & 2'065.00  & 2'065.00 \\
+\multicolumn{8}{l}{  }\\
 31.03.2022  & 3  & 6  & afronding BTW 1ste kwartaal  & 2050  & 0.29  &  & 0.29 \\
 \multicolumn{3}{l}{} &  & 3350  &  & 0.29  & -0.29 \\
 \multicolumn{5}{l}{} & 0.29  & 0.29 \\
+\multicolumn{8}{l}{  }\\
 10.04.2022  & 3  & 7  & Betaling BTW 1ste kwartaal  & 2070  & 2'065.00  &  & 2'065.00 \\
 \multicolumn{3}{l}{} &  & 1010  &  & 2'065.00  & -2'065.00 \\
 \multicolumn{5}{l}{} & 2'065.00  & 2'065.00 \\
+\multicolumn{8}{l}{  }\\
 15.04.2022  & 3  & 8  & Factuur van leverancier De Bruijn  & 20003  &  & 1'300.00  & -1'300.00 \\
 \multicolumn{3}{l}{} & Inkoop goederen 21\%  & 3000  & 661.16  &  & 661.16 \\
 \multicolumn{3}{l}{} &  & 2050  & 138.84  &  & 138.84 \\
 \multicolumn{3}{l}{} & Inkoop goederen 9\%  & 3000  & 458.72  &  & 458.72 \\
 \multicolumn{3}{l}{} &  & 2050  & 41.28  &  & 41.28 \\
 \multicolumn{5}{l}{} & 1'300.00  & 1'300.00 \\
+\multicolumn{8}{l}{  }\\
 01.05.2022  & 3  & 9  & BTW contant betaald aan douane  & 1000  &  & 209.00  & -209.00 \\
 \multicolumn{3}{l}{} &  & 2050  & 209.00  &  & 209.00 \\
 \multicolumn{5}{l}{} & 209.00  & 209.00 \\
+\multicolumn{8}{l}{  }\\
 15.05.2022  & 3  & 10  & Rekening betaald aan vervoersdienst  & 1010  &  & 359.00  & -359.00 \\
 \multicolumn{3}{l}{} & Vervoerskosten  & 3240  & 150.00  &  & 150.00 \\
 \multicolumn{3}{l}{} & BTW contant betaald aan douane door vervoersdienst (hoog tarief)  & 2050  & 150.00  &  & 150.00 \\
 \multicolumn{3}{l}{} & BTW contant betaald aan douane door vervoersdienst (laag tarief)  & 2050  & 59.00  &  & 59.00 \\
 \multicolumn{5}{l}{} & 359.00  & 359.00 \\
+\multicolumn{8}{l}{  }\\
 12.06.2022  & 3  & 11  & Faktuur leverancier B (Duitsland)  & 20003  & 1'210.00  &  & 1'210.00 \\
 \multicolumn{3}{l}{} &  & 1020  &  & 1'000.00  & -1'000.00 \\
 \multicolumn{3}{l}{} &  & 2050  &  & 210.00  & -210.00 \\
 \multicolumn{5}{l}{} & 1'210.00  & 1'210.00 \\
+\multicolumn{8}{l}{  }\\
 12.06.2022  & 3  & 11  & BTW op intercommunautaire verwerving  & 4300  & 1'210.00  &  & 1'210.00 \\
 \multicolumn{3}{l}{} &  & 4300  &  & 1'000.00  & -1'000.00 \\
 \multicolumn{3}{l}{} &  & 2050  &  & 210.00  & -210.00 \\
 \multicolumn{5}{l}{} & 1'210.00  & 1'210.00 \\
+\multicolumn{8}{l}{  }\\
 19.06.2022  & 3  & 12  & Faktuur leverancier B (Duitsland)  & 20003  & 1'090.00  &  & 1'090.00 \\
 \multicolumn{3}{l}{} &  & 1020  &  & 1'000.00  & -1'000.00 \\
 \multicolumn{3}{l}{} &  & 2050  &  & 90.00  & -90.00 \\
 \multicolumn{5}{l}{} & 1'090.00  & 1'090.00 \\
+\multicolumn{8}{l}{  }\\
 12.06.2022  & 3  & 12  & BTW op intercommunautaire verwerving  & 4300  & 1'090.00  &  & 1'090.00 \\
 \multicolumn{3}{l}{} &  & 4300  &  & 1'000.00  & -1'000.00 \\
 \multicolumn{3}{l}{} &  & 2050  &  & 90.00  & -90.00 \\
 \multicolumn{5}{l}{} & 1'090.00  & 1'090.00 \\
+\multicolumn{8}{l}{  }\\
 02.07.2022  & 3  & 13  & Inkoopfactuur met btw naar u verlegd  & 3000  & 2'750.00  &  & 2'750.00 \\
 \multicolumn{3}{l}{} &  & 20003  &  & 2'750.00  & -2'750.00 \\
 \multicolumn{5}{l}{} & 2'750.00  & 2'750.00 \\
+\multicolumn{8}{l}{  }\\
 02.07.2022  & 3  & 13  & Inkoopfactuur met btw naar u verlegd [tussenrekening btw]  & 2070  & 3'327.50  &  & 3'327.50 \\
 \multicolumn{3}{l}{} &  & 2070  &  & 2'750.00  & -2'750.00 \\
 \multicolumn{3}{l}{} &  & 2050  &  & 577.50  & -577.50 \\
 \multicolumn{5}{l}{} & 3'327.50  & 3'327.50 \\
+\multicolumn{8}{l}{  }\\
 02.07.2022  & 3  & 13  & Inkoopfactuur met btw naar u verlegd [tussenrekening btw]  & 1170  & 2'750.00  &  & 2'750.00 \\
 \multicolumn{3}{l}{} &  & 1170  &  & 3'327.50  & -3'327.50 \\
 \multicolumn{3}{l}{} &  & 2050  & 577.50  &  & 577.50 \\
 \multicolumn{5}{l}{} & 3'327.50  & 3'327.50 \\
+\multicolumn{8}{l}{  }\\
 02.07.2022  & 3  & 13  & Inkoopfactuur  & 20003  & 2'750.00  &  & 2'750.00 \\
 \multicolumn{3}{l}{} &  & 1010  &  & 2'750.00  & -2'750.00 \\
 \multicolumn{5}{l}{} & 2'750.00  & 2'750.00 \\
+\multicolumn{8}{l}{  }\\
 19.07.2022  & 3  & 14  & Aankoop met laag tarief  & 3240  & 366.97  &  & 366.97 \\
 \multicolumn{3}{l}{} &  & 20003  &  & 400.00  & -400.00 \\
 \multicolumn{3}{l}{} &  & 2050  & 33.03  &  & 33.03 \\
 \multicolumn{5}{l}{} & 400.00  & 400.00 \\
+\multicolumn{8}{l}{  }\\
 19.07.2022  & 3  & 14  & Aankoop tarief 0\%  & 3240  & 200.00  &  & 200.00 \\
 \multicolumn{3}{l}{} &  & 20003  &  & 200.00  & -200.00 \\
 \multicolumn{3}{l}{} &  & 2050  &  &  & \\
 \multicolumn{5}{l}{} & 200.00  & 200.00 \\
+\multicolumn{8}{l}{  }\\
 19.07.2022  & 3  & 14  & Aankoop vrijgesteld   & 3240  & 200.00  &  & 200.00 \\
 \multicolumn{3}{l}{} &  & 20003  &  & 200.00  & -200.00 \\
 \multicolumn{3}{l}{} &  & 2050  &  &  & \\
 \multicolumn{5}{l}{} & 200.00  & 200.00 \\
+\multicolumn{8}{l}{  }\\
 31.07.2022  & 3  & 15  & Privégebruik auto van de zaak  & 1010  & 308.10  &  & 308.10 \\
 \multicolumn{3}{l}{} &  & 3220  &  & 300.00  & -300.00 \\
 \multicolumn{3}{l}{} &  & 2050  &  & 8.10  & -8.10 \\
 \multicolumn{5}{l}{} & 308.10  & 308.10 \\
+\multicolumn{8}{l}{  }\\
 31.07.2022  & 3  & 15  & Privégebruik auto van de zaak  & 1010  & 203.00  &  & 203.00 \\
 \multicolumn{3}{l}{} &  & 3220  &  & 200.00  & -200.00 \\
 \multicolumn{3}{l}{} &  & 2050  &  & 3.00  & -3.00 \\
 \multicolumn{5}{l}{} & 203.00  & 203.00 \\
+\multicolumn{8}{l}{  }\\
 31.07.2022  & 3  & 15  & Privégebruik ander hoog tarief  & 1010  & 242.00  &  & 242.00 \\
 \multicolumn{3}{l}{} &  & 3270  &  & 200.00  & -200.00 \\
 \multicolumn{3}{l}{} &  & 2050  &  & 42.00  & -42.00 \\
 \multicolumn{5}{l}{} & 242.00  & 242.00 \\
+\multicolumn{8}{l}{  }\\
 31.07.2022  & 3  & 15  & Privégebruik ander laag tarief  & 1010  & 109.00  &  & 109.00 \\
 \multicolumn{3}{l}{} &  & 3240  &  & 100.00  & -100.00 \\
 \multicolumn{3}{l}{} &  & 2050  &  & 9.00  & -9.00 \\
 \multicolumn{5}{l}{} & 109.00  & 109.00 \\
+\multicolumn{8}{l}{  }\\
 01.08.2022  & 3  & 16  & Leveringen naar landen buiten de EU (uitvoer)  & 11003  & 5'000.00  &  & 5'000.00 \\
 \multicolumn{3}{l}{} &  & 4100  &  & 5'000.00  & -5'000.00 \\
 \multicolumn{3}{l}{} &  & 2050  &  &  & \\
 \multicolumn{5}{l}{} & 5'000.00  & 5'000.00 \\
+\multicolumn{8}{l}{  }\\
 01.08.2022  & 3  & 16  & Leveringen naar of diensten in landen binnen de EU  & 11002  & 2'000.00  &  & 2'000.00 \\
 \multicolumn{3}{l}{} &  & 4000  &  & 2'000.00  & -2'000.00 \\
 \multicolumn{3}{l}{} &  & 2050  &  &  & \\
 \multicolumn{5}{l}{} & 2'000.00  & 2'000.00 \\
+\multicolumn{8}{l}{  }\\
 01.08.2022  & 3  & 16  & Installatie/afstandsverkopen binnen de EU  & 11002  & 1'000.00  &  & 1'000.00 \\
 \multicolumn{3}{l}{} &  & 4200  &  & 1'000.00  & -1'000.00 \\
 \multicolumn{3}{l}{} &  & 2050  &  &  & \\
 \multicolumn{5}{l}{} & 1'000.00  & 1'000.00 \\
+\multicolumn{8}{l}{  }\\
 01.09.2022  & 3  & 17  & Leveringen/diensten uit landen buiten de EU - hoog tarief (21\%)  & 11003  & 2'420.00  &  & 2'420.00 \\
 \multicolumn{3}{l}{} &  & 4100  &  & 2'000.00  & -2'000.00 \\
 \multicolumn{3}{l}{} &  & 2050  &  & 420.00  & -420.00 \\
 \multicolumn{5}{l}{} & 2'420.00  & 2'420.00 \\
+\multicolumn{8}{l}{  }\\
 01.09.2022  & 3  & 17  & Leveringen/diensten uit landen buiten de EU - laag tarief (9\%)  & 11003  & 2'180.00  &  & 2'180.00 \\
 \multicolumn{3}{l}{} &  & 4000  &  & 2'000.00  & -2'000.00 \\
 \multicolumn{3}{l}{} &  & 2050  &  & 180.00  & -180.00 \\
 \multicolumn{5}{l}{} & 2'180.00  & 2'180.00 \\
+\multicolumn{8}{l}{  }\\
 Total  & \multicolumn{4}{l}{} & 102'839.56  & 102'839.56 \\
 \end{longtable}
-\excltest{21.12.2021 - Journal - Page } \#page-nr \end{reportvalue}
+\excltest{22.12.2021 - Journal - Page } \#page-nr \end{reportvalue}
 \subsection{Test With additional columns}
 \begin{reportvalue}{Journal Report}
 Journal \\
-  \\
+My Company \\
+3136PB City \\
+N123456789B57 \\
+Period 01.01.2021 - 31.12.2022 \\
 \begin{longtable}[l]{ l  l  l  l  l  l  l  l  l  l  l }
-Journal for the period 01.01.2021 - 31.12.2022 Date  & Transaction Type  & Doc  & Description  & Account  & Debit  & Credit  & Amount  & Notes  & AccountDebit  & AccountCredit \\
+Date  & Transaction Type  & Doc  & Description  & Account  & Debit  & Credit  & Amount  & Notes  & AccountDebit  & AccountCredit \\
 01.01.2022  & 3  & 1  & Contante verkoop van goederen hoog tarief  & 1000  & 600.00  &  & 600.00  &  & 1000  & 11001 \\
 \multicolumn{3}{l}{} &  & 11001  &  & 495.87  & -495.87  &  & 1000  & 11001 \\
 \multicolumn{3}{l}{} &  & 2050  &  & 104.13  & -104.13  &  & 1000  & 11001 \\
 \multicolumn{5}{l}{} & 600.00  & 600.00 \\
+\multicolumn{11}{l}{  }\\
 01.01.2022  & 3  & 1  & Contante verkoop van goederen laag tarief  & 1000  & 300.00  &  & 300.00  &  & 1000  & 11001 \\
 \multicolumn{3}{l}{} &  & 11001  &  & 275.23  & -275.23  &  & 1000  & 11001 \\
 \multicolumn{3}{l}{} &  & 2050  &  & 24.77  & -24.77  &  & 1000  & 11001 \\
 \multicolumn{5}{l}{} & 300.00  & 300.00 \\
+\multicolumn{11}{l}{  }\\
 01.01.2022  & 3  & 1  & Dienstverlening aan 2\%  & 11001  & 250.00  &  & 250.00  &  & 11001  & 4000 \\
 \multicolumn{3}{l}{} &  & 4000  &  & 245.10  & -245.10  &  & 11001  & 4000 \\
 \multicolumn{3}{l}{} &  & 2050  &  & 4.90  & -4.90  &  & 11001  & 4000 \\
 \multicolumn{5}{l}{} & 250.00  & 250.00 \\
+\multicolumn{11}{l}{  }\\
 01.01.2022  & 3  & 1  & Dienstverlening vrijgesteld van omzetbelasting  & 11001  & 200.00  &  & 200.00  &  & 11001  & 4000 \\
 \multicolumn{3}{l}{} &  & 4000  &  & 200.00  & -200.00  &  & 11001  & 4000 \\
 \multicolumn{3}{l}{} &  & 2050  &  &  &  &  & 11001  & 4000 \\
 \multicolumn{5}{l}{} & 200.00  & 200.00 \\
+\multicolumn{11}{l}{  }\\
 19.01.2022  & 3  & 2  & Aankoop verpakkingsmateriaal, factuur 15  & 3280  & 495.87  &  & 495.87  &  & 3280  & 20003 \\
 \multicolumn{3}{l}{} &  & 20003  &  & 600.00  & -600.00  &  & 3280  & 20003 \\
 \multicolumn{3}{l}{} &  & 2050  & 104.13  &  & 104.13  &  & 3280  & 20003 \\
 \multicolumn{5}{l}{} & 600.00  & 600.00 \\
+\multicolumn{11}{l}{  }\\
 19.01.2022  & 3  & 3  & Betaling faktuur 15 aan leverancier A  & 20003  & 600.00  &  & 600.00  &  & 20003  & 1020 \\
 \multicolumn{3}{l}{} &  & 1020  &  & 600.00  & -600.00  &  & 20003  & 1020 \\
 \multicolumn{5}{l}{} & 600.00  & 600.00 \\
+\multicolumn{11}{l}{  }\\
 23.01.2022  & 3  & 4  & Verkoop van goederen, factuur 203  & 11003  & 11'000.00  &  & 11'000.00  &  & 11003  & 4100 \\
 \multicolumn{3}{l}{} &  & 4100  &  & 9'090.91  & -9'090.91  &  & 11003  & 4100 \\
 \multicolumn{3}{l}{} &  & 2050  &  & 1'909.09  & -1'909.09  &  & 11003  & 4100 \\
 \multicolumn{5}{l}{} & 11'000.00  & 11'000.00 \\
+\multicolumn{11}{l}{  }\\
 27.01.2022  & 3  & 5  & Credit nota op factuur 203  & 4100  & 206.61  &  & 206.61  &  & 4100  & 11003 \\
 \multicolumn{3}{l}{} &  & 11003  &  & 250.00  & -250.00  &  & 4100  & 11003 \\
 \multicolumn{3}{l}{} &  & 2050  & 43.39  &  & 43.39  &  & 4100  & 11003 \\
 \multicolumn{5}{l}{} & 250.00  & 250.00 \\
+\multicolumn{11}{l}{  }\\
 27.01.2022  & 3  & 6  & Omboeking "BTW volgens BTW overzicht" - 1ste kwartaal  & 2050  & 2'015.00  &  & 2'015.00  &  & 2050  & 2070 \\
 \multicolumn{3}{l}{} &  & 2070  &  & 2'015.00  & -2'015.00  &  & 2050  & 2070 \\
 \multicolumn{5}{l}{} & 2'015.00  & 2'015.00 \\
+\multicolumn{11}{l}{  }\\
 27.01.2022  & 3  & 6  & afronding BTW 1ste kwartaal  & 2050  & 0.29  &  & 0.29  &  & 2050  & 3350 \\
 \multicolumn{3}{l}{} &  & 3350  &  & 0.29  & -0.29  &  & 2050  & 3350 \\
 \multicolumn{5}{l}{} & 0.29  & 0.29 \\
+\multicolumn{11}{l}{  }\\
 10.02.2022  & 3  & 7  & Betaling BTW 1ste kwartaal  & 2070  & 2'015.00  &  & 2'015.00  &  & 2070  & 1010 \\
 \multicolumn{3}{l}{} &  & 1010  &  & 2'015.00  & -2'015.00  &  & 2070  & 1010 \\
 \multicolumn{5}{l}{} & 2'015.00  & 2'015.00 \\
+\multicolumn{11}{l}{  }\\
 15.02.2022  & 3  & 8  & Factuur van leverancier De Bruijn  & 20003  &  & 1'600.00  & -1'600.00  &  &  & 20003 \\
 \multicolumn{3}{l}{} & Inkoop goederen 21\%  & 3000  & 661.16  &  & 661.16  &  & 3000  & \\
 \multicolumn{3}{l}{} &  & 2050  & 138.84  &  & 138.84  &  & 3000  & \\
 \multicolumn{3}{l}{} & Inkoop goederen 9\%  & 3000  & 733.94  &  & 733.94  &  & 3000  & \\
 \multicolumn{3}{l}{} &  & 2050  & 66.06  &  & 66.06  &  & 3000  & \\
 \multicolumn{5}{l}{} & 1'600.00  & 1'600.00 \\
+\multicolumn{11}{l}{  }\\
 16.02.2022  & 3  & 9  & BTW contant betaald aan douane  & 1000  &  & 109.00  & -109.00  &  &  & 1000 \\
 \multicolumn{3}{l}{} &  & 2050  & 109.00  &  & 109.00  &  &  & 1000 \\
 \multicolumn{5}{l}{} & 109.00  & 109.00 \\
+\multicolumn{11}{l}{  }\\
 16.02.2022  & 3  & 10  & Rekening betaald aan vervoersdienst  & 1010  &  & 453.00  & -453.00  &  &  & 1010 \\
 \multicolumn{3}{l}{} & Vervoerskosten  & 3240  & 200.00  &  & 200.00  &  & 3240  & \\
 \multicolumn{3}{l}{} & BTW contant betaald aan douane door vervoersdienst (hoog tarief)  & 2050  & 200.00  &  & 200.00  &  &  & \\
 \multicolumn{3}{l}{} & BTW contant betaald aan douane door vervoersdienst (laag tarief)  & 2050  & 53.00  &  & 53.00  &  &  & \\
 \multicolumn{5}{l}{} & 453.00  & 453.00 \\
+\multicolumn{11}{l}{  }\\
 17.02.2022  & 3  & 11  & Faktuur leverancier B (Duitsland)  & 20003  & 1'452.00  &  & 1'452.00  &  & 20003  & 1020 \\
 \multicolumn{3}{l}{} &  & 1020  &  & 1'200.00  & -1'200.00  &  & 20003  & 1020 \\
 \multicolumn{3}{l}{} &  & 2050  &  & 252.00  & -252.00  &  & 20003  & 1020 \\
 \multicolumn{5}{l}{} & 1'452.00  & 1'452.00 \\
+\multicolumn{11}{l}{  }\\
 17.02.2022  & 3  & 11  & BTW op intercommunautaire verwerving  & 4300  & 1'452.00  &  & 1'452.00  &  & 4300  & 4300 \\
 \multicolumn{3}{l}{} &  & 4300  &  & 1'200.00  & -1'200.00  &  & 4300  & 4300 \\
 \multicolumn{3}{l}{} &  & 2050  &  & 252.00  & -252.00  &  & 4300  & 4300 \\
 \multicolumn{5}{l}{} & 1'452.00  & 1'452.00 \\
+\multicolumn{11}{l}{  }\\
 19.02.2022  & 3  & 12  & Faktuur leverancier B (Duitsland)  & 20003  & 981.00  &  & 981.00  &  & 20003  & 1020 \\
 \multicolumn{3}{l}{} &  & 1020  &  & 900.00  & -900.00  &  & 20003  & 1020 \\
 \multicolumn{3}{l}{} &  & 2050  &  & 81.00  & -81.00  &  & 20003  & 1020 \\
 \multicolumn{5}{l}{} & 981.00  & 981.00 \\
+\multicolumn{11}{l}{  }\\
 19.02.2022  & 3  & 12  & BTW op intercommunautaire verwerving  & 4300  & 981.00  &  & 981.00  &  & 4300  & 4300 \\
 \multicolumn{3}{l}{} &  & 4300  &  & 900.00  & -900.00  &  & 4300  & 4300 \\
 \multicolumn{3}{l}{} &  & 2050  &  & 81.00  & -81.00  &  & 4300  & 4300 \\
 \multicolumn{5}{l}{} & 981.00  & 981.00 \\
+\multicolumn{11}{l}{  }\\
 02.03.2022  & 3  & 13  & Inkoopfactuur met btw naar u verlegd  & 3000  & 2'750.00  &  & 2'750.00  &  & 3000  & 20003 \\
 \multicolumn{3}{l}{} &  & 20003  &  & 2'750.00  & -2'750.00  &  & 3000  & 20003 \\
 \multicolumn{5}{l}{} & 2'750.00  & 2'750.00 \\
+\multicolumn{11}{l}{  }\\
 02.03.2022  & 3  & 13  & Inkoopfactuur met btw naar u verlegd [tussenrekening btw]  & 2070  & 4'026.28  &  & 4'026.28  &  & 2070  & 2070 \\
 \multicolumn{3}{l}{} &  & 2070  &  & 3'327.50  & -3'327.50  &  & 2070  & 2070 \\
 \multicolumn{3}{l}{} &  & 2050  &  & 698.78  & -698.78  &  & 2070  & 2070 \\
 \multicolumn{5}{l}{} & 4'026.28  & 4'026.28 \\
+\multicolumn{11}{l}{  }\\
 02.03.2022  & 3  & 13  & Inkoopfactuur met btw naar u verlegd [tussenrekening btw]  & 1170  & 2'750.00  &  & 2'750.00  &  & 1170  & 1170 \\
 \multicolumn{3}{l}{} &  & 1170  &  & 3'327.50  & -3'327.50  &  & 1170  & 1170 \\
 \multicolumn{3}{l}{} &  & 2050  & 577.50  &  & 577.50  &  & 1170  & 1170 \\
 \multicolumn{5}{l}{} & 3'327.50  & 3'327.50 \\
+\multicolumn{11}{l}{  }\\
 02.03.2022  & 3  & 13  & Inkoopfactuur  & 20003  & 2'750.00  &  & 2'750.00  &  & 20003  & 1010 \\
 \multicolumn{3}{l}{} &  & 1010  &  & 2'750.00  & -2'750.00  &  & 20003  & 1010 \\
 \multicolumn{5}{l}{} & 2'750.00  & 2'750.00 \\
+\multicolumn{11}{l}{  }\\
 19.03.2022  & 3  & 14  & Aankoop met laag tarief  & 3240  & 275.23  &  & 275.23  &  & 3240  & 20003 \\
 \multicolumn{3}{l}{} &  & 20003  &  & 300.00  & -300.00  &  & 3240  & 20003 \\
 \multicolumn{3}{l}{} &  & 2050  & 24.77  &  & 24.77  &  & 3240  & 20003 \\
 \multicolumn{5}{l}{} & 300.00  & 300.00 \\
+\multicolumn{11}{l}{  }\\
 19.03.2022  & 3  & 14  & Aankoop tarief 0\%  & 3240  & 150.00  &  & 150.00  &  & 3240  & 20003 \\
 \multicolumn{3}{l}{} &  & 20003  &  & 150.00  & -150.00  &  & 3240  & 20003 \\
 \multicolumn{3}{l}{} &  & 2050  &  &  &  &  & 3240  & 20003 \\
 \multicolumn{5}{l}{} & 150.00  & 150.00 \\
+\multicolumn{11}{l}{  }\\
 19.03.2022  & 3  & 14  & Aankoop vrijgesteld   & 3240  & 150.00  &  & 150.00  &  & 3240  & 20003 \\
 \multicolumn{3}{l}{} &  & 20003  &  & 150.00  & -150.00  &  & 3240  & 20003 \\
 \multicolumn{3}{l}{} &  & 2050  &  &  &  &  & 3240  & 20003 \\
 \multicolumn{5}{l}{} & 150.00  & 150.00 \\
+\multicolumn{11}{l}{  }\\
 30.03.2022  & 3  & 15  & Privégebruik auto van de zaak  & 1010  & 308.10  &  & 308.10  &  & 1010  & 3220 \\
 \multicolumn{3}{l}{} &  & 3220  &  & 300.00  & -300.00  &  & 1010  & 3220 \\
 \multicolumn{3}{l}{} &  & 2050  &  & 8.10  & -8.10  &  & 1010  & 3220 \\
 \multicolumn{5}{l}{} & 308.10  & 308.10 \\
+\multicolumn{11}{l}{  }\\
 30.03.2022  & 3  & 15  & Privégebruik auto van de zaak  & 1010  & 203.00  &  & 203.00  &  & 1010  & 3220 \\
 \multicolumn{3}{l}{} &  & 3220  &  & 200.00  & -200.00  &  & 1010  & 3220 \\
 \multicolumn{3}{l}{} &  & 2050  &  & 3.00  & -3.00  &  & 1010  & 3220 \\
 \multicolumn{5}{l}{} & 203.00  & 203.00 \\
+\multicolumn{11}{l}{  }\\
 30.03.2022  & 3  & 15  & Privégebruik ander hoog tarief  & 1010  & 242.00  &  & 242.00  &  & 1010  & 3270 \\
 \multicolumn{3}{l}{} &  & 3270  &  & 200.00  & -200.00  &  & 1010  & 3270 \\
 \multicolumn{3}{l}{} &  & 2050  &  & 42.00  & -42.00  &  & 1010  & 3270 \\
 \multicolumn{5}{l}{} & 242.00  & 242.00 \\
+\multicolumn{11}{l}{  }\\
 30.03.2022  & 3  & 15  & Privégebruik ander laag tarief  & 1010  & 109.00  &  & 109.00  &  & 1010  & 3240 \\
 \multicolumn{3}{l}{} &  & 3240  &  & 100.00  & -100.00  &  & 1010  & 3240 \\
 \multicolumn{3}{l}{} &  & 2050  &  & 9.00  & -9.00  &  & 1010  & 3240 \\
 \multicolumn{5}{l}{} & 109.00  & 109.00 \\
+\multicolumn{11}{l}{  }\\
 31.03.2022  & 3  & 16  & Leveringen naar landen buiten de EU (uitvoer)  & 11003  & 5'000.00  &  & 5'000.00  &  & 11003  & 4100 \\
 \multicolumn{3}{l}{} &  & 4100  &  & 5'000.00  & -5'000.00  &  & 11003  & 4100 \\
 \multicolumn{3}{l}{} &  & 2050  &  &  &  &  & 11003  & 4100 \\
 \multicolumn{5}{l}{} & 5'000.00  & 5'000.00 \\
+\multicolumn{11}{l}{  }\\
 31.03.2022  & 3  & 16  & Leveringen naar of diensten in landen binnen de EU  & 11002  & 2'000.00  &  & 2'000.00  &  & 11002  & 4000 \\
 \multicolumn{3}{l}{} &  & 4000  &  & 2'000.00  & -2'000.00  &  & 11002  & 4000 \\
 \multicolumn{3}{l}{} &  & 2050  &  &  &  &  & 11002  & 4000 \\
 \multicolumn{5}{l}{} & 2'000.00  & 2'000.00 \\
+\multicolumn{11}{l}{  }\\
 31.03.2022  & 3  & 16  & Installatie/afstandsverkopen binnen de EU  & 11002  & 1'000.00  &  & 1'000.00  &  & 11002  & 4200 \\
 \multicolumn{3}{l}{} &  & 4200  &  & 1'000.00  & -1'000.00  &  & 11002  & 4200 \\
 \multicolumn{3}{l}{} &  & 2050  &  &  &  &  & 11002  & 4200 \\
 \multicolumn{5}{l}{} & 1'000.00  & 1'000.00 \\
+\multicolumn{11}{l}{  }\\
 31.03.2022  & 3  & 17  & Leveringen/diensten uit landen buiten de EU - hoog tarief (21\%)  & 11003  & 2'420.00  &  & 2'420.00  &  & 11003  & 4100 \\
 \multicolumn{3}{l}{} &  & 4100  &  & 2'000.00  & -2'000.00  &  & 11003  & 4100 \\
 \multicolumn{3}{l}{} &  & 2050  &  & 420.00  & -420.00  &  & 11003  & 4100 \\
 \multicolumn{5}{l}{} & 2'420.00  & 2'420.00 \\
+\multicolumn{11}{l}{  }\\
 31.03.2022  & 3  & 17  & Leveringen/diensten uit landen buiten de EU - laag tarief (9\%)  & 11003  & 2'180.00  &  & 2'180.00  &  & 11003  & 4000 \\
 \multicolumn{3}{l}{} &  & 4000  &  & 2'000.00  & -2'000.00  &  & 11003  & 4000 \\
 \multicolumn{3}{l}{} &  & 2050  &  & 180.00  & -180.00  &  & 11003  & 4000 \\
 \multicolumn{5}{l}{} & 2'180.00  & 2'180.00 \\
+\multicolumn{11}{l}{  }\\
 01.01.2022  & 3  & 1  & Contante verkoop van goederen hoog tarief  & 1000  & 500.00  &  & 500.00  &  & 1000  & 11001 \\
 \multicolumn{3}{l}{} &  & 11001  &  & 413.22  & -413.22  &  & 1000  & 11001 \\
 \multicolumn{3}{l}{} &  & 2050  &  & 86.78  & -86.78  &  & 1000  & 11001 \\
 \multicolumn{5}{l}{} & 500.00  & 500.00 \\
+\multicolumn{11}{l}{  }\\
 01.01.2022  & 3  & 1  & Contante verkoop van goederen laag tarief  & 1000  & 200.00  &  & 200.00  &  & 1000  & 11001 \\
 \multicolumn{3}{l}{} &  & 11001  &  & 183.49  & -183.49  &  & 1000  & 11001 \\
 \multicolumn{3}{l}{} &  & 2050  &  & 16.51  & -16.51  &  & 1000  & 11001 \\
 \multicolumn{5}{l}{} & 200.00  & 200.00 \\
+\multicolumn{11}{l}{  }\\
 01.01.2022  & 3  & 1  & Dienstverlening aan 2\%  & 11001  & 150.00  &  & 150.00  &  & 11001  & 4000 \\
 \multicolumn{3}{l}{} &  & 4000  &  & 147.06  & -147.06  &  & 11001  & 4000 \\
 \multicolumn{3}{l}{} &  & 2050  &  & 2.94  & -2.94  &  & 11001  & 4000 \\
 \multicolumn{5}{l}{} & 150.00  & 150.00 \\
+\multicolumn{11}{l}{  }\\
 01.01.2022  & 3  & 1  & Dienstverlening vrijgesteld van omzetbelasting  & 11001  & 200.00  &  & 200.00  &  & 11001  & 4000 \\
 \multicolumn{3}{l}{} &  & 4000  &  & 200.00  & -200.00  &  & 11001  & 4000 \\
 \multicolumn{3}{l}{} &  & 2050  &  &  &  &  & 11001  & 4000 \\
 \multicolumn{5}{l}{} & 200.00  & 200.00 \\
+\multicolumn{11}{l}{  }\\
 19.01.2022  & 3  & 2  & Aankoop verpakkingsmateriaal, factuur 15  & 3280  & 330.58  &  & 330.58  &  & 3280  & 20003 \\
 \multicolumn{3}{l}{} &  & 20003  &  & 400.00  & -400.00  &  & 3280  & 20003 \\
 \multicolumn{3}{l}{} &  & 2050  & 69.42  &  & 69.42  &  & 3280  & 20003 \\
 \multicolumn{5}{l}{} & 400.00  & 400.00 \\
+\multicolumn{11}{l}{  }\\
 19.02.2022  & 3  & 3  & Betaling faktuur 15 aan leverancier A  & 20003  & 400.00  &  & 400.00  &  & 20003  & 1020 \\
 \multicolumn{3}{l}{} &  & 1020  &  & 400.00  & -400.00  &  & 20003  & 1020 \\
 \multicolumn{5}{l}{} & 400.00  & 400.00 \\
+\multicolumn{11}{l}{  }\\
 23.02.2022  & 3  & 4  & Verkoop van goederen, factuur 203  & 11003  & 12'000.00  &  & 12'000.00  &  & 11003  & 4100 \\
 \multicolumn{3}{l}{} &  & 4100  &  & 9'917.36  & -9'917.36  &  & 11003  & 4100 \\
 \multicolumn{3}{l}{} &  & 2050  &  & 2'082.64  & -2'082.64  &  & 11003  & 4100 \\
 \multicolumn{5}{l}{} & 12'000.00  & 12'000.00 \\
+\multicolumn{11}{l}{  }\\
 27.02.2022  & 3  & 5  & Credit nota op factuur 203  & 4100  & 165.29  &  & 165.29  &  & 4100  & 11003 \\
 \multicolumn{3}{l}{} &  & 11003  &  & 200.00  & -200.00  &  & 4100  & 11003 \\
 \multicolumn{3}{l}{} &  & 2050  & 34.71  &  & 34.71  &  & 4100  & 11003 \\
 \multicolumn{5}{l}{} & 200.00  & 200.00 \\
+\multicolumn{11}{l}{  }\\
 31.03.2022  & 3  & 6  & Omboeking "BTW volgens BTW overzicht" - 1ste kwartaal  & 2050  & 2'065.00  &  & 2'065.00  &  & 2050  & 2070 \\
 \multicolumn{3}{l}{} &  & 2070  &  & 2'065.00  & -2'065.00  &  & 2050  & 2070 \\
 \multicolumn{5}{l}{} & 2'065.00  & 2'065.00 \\
+\multicolumn{11}{l}{  }\\
 31.03.2022  & 3  & 6  & afronding BTW 1ste kwartaal  & 2050  & 0.29  &  & 0.29  &  & 2050  & 3350 \\
 \multicolumn{3}{l}{} &  & 3350  &  & 0.29  & -0.29  &  & 2050  & 3350 \\
 \multicolumn{5}{l}{} & 0.29  & 0.29 \\
+\multicolumn{11}{l}{  }\\
 10.04.2022  & 3  & 7  & Betaling BTW 1ste kwartaal  & 2070  & 2'065.00  &  & 2'065.00  &  & 2070  & 1010 \\
 \multicolumn{3}{l}{} &  & 1010  &  & 2'065.00  & -2'065.00  &  & 2070  & 1010 \\
 \multicolumn{5}{l}{} & 2'065.00  & 2'065.00 \\
+\multicolumn{11}{l}{  }\\
 15.04.2022  & 3  & 8  & Factuur van leverancier De Bruijn  & 20003  &  & 1'300.00  & -1'300.00  &  &  & 20003 \\
 \multicolumn{3}{l}{} & Inkoop goederen 21\%  & 3000  & 661.16  &  & 661.16  &  & 3000  & \\
 \multicolumn{3}{l}{} &  & 2050  & 138.84  &  & 138.84  &  & 3000  & \\
 \multicolumn{3}{l}{} & Inkoop goederen 9\%  & 3000  & 458.72  &  & 458.72  &  & 3000  & \\
 \multicolumn{3}{l}{} &  & 2050  & 41.28  &  & 41.28  &  & 3000  & \\
 \multicolumn{5}{l}{} & 1'300.00  & 1'300.00 \\
+\multicolumn{11}{l}{  }\\
 01.05.2022  & 3  & 9  & BTW contant betaald aan douane  & 1000  &  & 209.00  & -209.00  &  &  & 1000 \\
 \multicolumn{3}{l}{} &  & 2050  & 209.00  &  & 209.00  &  &  & 1000 \\
 \multicolumn{5}{l}{} & 209.00  & 209.00 \\
+\multicolumn{11}{l}{  }\\
 15.05.2022  & 3  & 10  & Rekening betaald aan vervoersdienst  & 1010  &  & 359.00  & -359.00  &  &  & 1010 \\
 \multicolumn{3}{l}{} & Vervoerskosten  & 3240  & 150.00  &  & 150.00  &  & 3240  & \\
 \multicolumn{3}{l}{} & BTW contant betaald aan douane door vervoersdienst (hoog tarief)  & 2050  & 150.00  &  & 150.00  &  &  & \\
 \multicolumn{3}{l}{} & BTW contant betaald aan douane door vervoersdienst (laag tarief)  & 2050  & 59.00  &  & 59.00  &  &  & \\
 \multicolumn{5}{l}{} & 359.00  & 359.00 \\
+\multicolumn{11}{l}{  }\\
 12.06.2022  & 3  & 11  & Faktuur leverancier B (Duitsland)  & 20003  & 1'210.00  &  & 1'210.00  &  & 20003  & 1020 \\
 \multicolumn{3}{l}{} &  & 1020  &  & 1'000.00  & -1'000.00  &  & 20003  & 1020 \\
 \multicolumn{3}{l}{} &  & 2050  &  & 210.00  & -210.00  &  & 20003  & 1020 \\
 \multicolumn{5}{l}{} & 1'210.00  & 1'210.00 \\
+\multicolumn{11}{l}{  }\\
 12.06.2022  & 3  & 11  & BTW op intercommunautaire verwerving  & 4300  & 1'210.00  &  & 1'210.00  &  & 4300  & 4300 \\
 \multicolumn{3}{l}{} &  & 4300  &  & 1'000.00  & -1'000.00  &  & 4300  & 4300 \\
 \multicolumn{3}{l}{} &  & 2050  &  & 210.00  & -210.00  &  & 4300  & 4300 \\
 \multicolumn{5}{l}{} & 1'210.00  & 1'210.00 \\
+\multicolumn{11}{l}{  }\\
 19.06.2022  & 3  & 12  & Faktuur leverancier B (Duitsland)  & 20003  & 1'090.00  &  & 1'090.00  &  & 20003  & 1020 \\
 \multicolumn{3}{l}{} &  & 1020  &  & 1'000.00  & -1'000.00  &  & 20003  & 1020 \\
 \multicolumn{3}{l}{} &  & 2050  &  & 90.00  & -90.00  &  & 20003  & 1020 \\
 \multicolumn{5}{l}{} & 1'090.00  & 1'090.00 \\
+\multicolumn{11}{l}{  }\\
 12.06.2022  & 3  & 12  & BTW op intercommunautaire verwerving  & 4300  & 1'090.00  &  & 1'090.00  &  & 4300  & 4300 \\
 \multicolumn{3}{l}{} &  & 4300  &  & 1'000.00  & -1'000.00  &  & 4300  & 4300 \\
 \multicolumn{3}{l}{} &  & 2050  &  & 90.00  & -90.00  &  & 4300  & 4300 \\
 \multicolumn{5}{l}{} & 1'090.00  & 1'090.00 \\
+\multicolumn{11}{l}{  }\\
 02.07.2022  & 3  & 13  & Inkoopfactuur met btw naar u verlegd  & 3000  & 2'750.00  &  & 2'750.00  &  & 3000  & 20003 \\
 \multicolumn{3}{l}{} &  & 20003  &  & 2'750.00  & -2'750.00  &  & 3000  & 20003 \\
 \multicolumn{5}{l}{} & 2'750.00  & 2'750.00 \\
+\multicolumn{11}{l}{  }\\
 02.07.2022  & 3  & 13  & Inkoopfactuur met btw naar u verlegd [tussenrekening btw]  & 2070  & 3'327.50  &  & 3'327.50  &  & 2070  & 2070 \\
 \multicolumn{3}{l}{} &  & 2070  &  & 2'750.00  & -2'750.00  &  & 2070  & 2070 \\
 \multicolumn{3}{l}{} &  & 2050  &  & 577.50  & -577.50  &  & 2070  & 2070 \\
 \multicolumn{5}{l}{} & 3'327.50  & 3'327.50 \\
+\multicolumn{11}{l}{  }\\
 02.07.2022  & 3  & 13  & Inkoopfactuur met btw naar u verlegd [tussenrekening btw]  & 1170  & 2'750.00  &  & 2'750.00  &  & 1170  & 1170 \\
 \multicolumn{3}{l}{} &  & 1170  &  & 3'327.50  & -3'327.50  &  & 1170  & 1170 \\
 \multicolumn{3}{l}{} &  & 2050  & 577.50  &  & 577.50  &  & 1170  & 1170 \\
 \multicolumn{5}{l}{} & 3'327.50  & 3'327.50 \\
+\multicolumn{11}{l}{  }\\
 02.07.2022  & 3  & 13  & Inkoopfactuur  & 20003  & 2'750.00  &  & 2'750.00  &  & 20003  & 1010 \\
 \multicolumn{3}{l}{} &  & 1010  &  & 2'750.00  & -2'750.00  &  & 20003  & 1010 \\
 \multicolumn{5}{l}{} & 2'750.00  & 2'750.00 \\
+\multicolumn{11}{l}{  }\\
 19.07.2022  & 3  & 14  & Aankoop met laag tarief  & 3240  & 366.97  &  & 366.97  &  & 3240  & 20003 \\
 \multicolumn{3}{l}{} &  & 20003  &  & 400.00  & -400.00  &  & 3240  & 20003 \\
 \multicolumn{3}{l}{} &  & 2050  & 33.03  &  & 33.03  &  & 3240  & 20003 \\
 \multicolumn{5}{l}{} & 400.00  & 400.00 \\
+\multicolumn{11}{l}{  }\\
 19.07.2022  & 3  & 14  & Aankoop tarief 0\%  & 3240  & 200.00  &  & 200.00  &  & 3240  & 20003 \\
 \multicolumn{3}{l}{} &  & 20003  &  & 200.00  & -200.00  &  & 3240  & 20003 \\
 \multicolumn{3}{l}{} &  & 2050  &  &  &  &  & 3240  & 20003 \\
 \multicolumn{5}{l}{} & 200.00  & 200.00 \\
+\multicolumn{11}{l}{  }\\
 19.07.2022  & 3  & 14  & Aankoop vrijgesteld   & 3240  & 200.00  &  & 200.00  &  & 3240  & 20003 \\
 \multicolumn{3}{l}{} &  & 20003  &  & 200.00  & -200.00  &  & 3240  & 20003 \\
 \multicolumn{3}{l}{} &  & 2050  &  &  &  &  & 3240  & 20003 \\
 \multicolumn{5}{l}{} & 200.00  & 200.00 \\
+\multicolumn{11}{l}{  }\\
 31.07.2022  & 3  & 15  & Privégebruik auto van de zaak  & 1010  & 308.10  &  & 308.10  &  & 1010  & 3220 \\
 \multicolumn{3}{l}{} &  & 3220  &  & 300.00  & -300.00  &  & 1010  & 3220 \\
 \multicolumn{3}{l}{} &  & 2050  &  & 8.10  & -8.10  &  & 1010  & 3220 \\
 \multicolumn{5}{l}{} & 308.10  & 308.10 \\
+\multicolumn{11}{l}{  }\\
 31.07.2022  & 3  & 15  & Privégebruik auto van de zaak  & 1010  & 203.00  &  & 203.00  &  & 1010  & 3220 \\
 \multicolumn{3}{l}{} &  & 3220  &  & 200.00  & -200.00  &  & 1010  & 3220 \\
 \multicolumn{3}{l}{} &  & 2050  &  & 3.00  & -3.00  &  & 1010  & 3220 \\
 \multicolumn{5}{l}{} & 203.00  & 203.00 \\
+\multicolumn{11}{l}{  }\\
 31.07.2022  & 3  & 15  & Privégebruik ander hoog tarief  & 1010  & 242.00  &  & 242.00  &  & 1010  & 3270 \\
 \multicolumn{3}{l}{} &  & 3270  &  & 200.00  & -200.00  &  & 1010  & 3270 \\
 \multicolumn{3}{l}{} &  & 2050  &  & 42.00  & -42.00  &  & 1010  & 3270 \\
 \multicolumn{5}{l}{} & 242.00  & 242.00 \\
+\multicolumn{11}{l}{  }\\
 31.07.2022  & 3  & 15  & Privégebruik ander laag tarief  & 1010  & 109.00  &  & 109.00  &  & 1010  & 3240 \\
 \multicolumn{3}{l}{} &  & 3240  &  & 100.00  & -100.00  &  & 1010  & 3240 \\
 \multicolumn{3}{l}{} &  & 2050  &  & 9.00  & -9.00  &  & 1010  & 3240 \\
 \multicolumn{5}{l}{} & 109.00  & 109.00 \\
+\multicolumn{11}{l}{  }\\
 01.08.2022  & 3  & 16  & Leveringen naar landen buiten de EU (uitvoer)  & 11003  & 5'000.00  &  & 5'000.00  &  & 11003  & 4100 \\
 \multicolumn{3}{l}{} &  & 4100  &  & 5'000.00  & -5'000.00  &  & 11003  & 4100 \\
 \multicolumn{3}{l}{} &  & 2050  &  &  &  &  & 11003  & 4100 \\
 \multicolumn{5}{l}{} & 5'000.00  & 5'000.00 \\
+\multicolumn{11}{l}{  }\\
 01.08.2022  & 3  & 16  & Leveringen naar of diensten in landen binnen de EU  & 11002  & 2'000.00  &  & 2'000.00  &  & 11002  & 4000 \\
 \multicolumn{3}{l}{} &  & 4000  &  & 2'000.00  & -2'000.00  &  & 11002  & 4000 \\
 \multicolumn{3}{l}{} &  & 2050  &  &  &  &  & 11002  & 4000 \\
 \multicolumn{5}{l}{} & 2'000.00  & 2'000.00 \\
+\multicolumn{11}{l}{  }\\
 01.08.2022  & 3  & 16  & Installatie/afstandsverkopen binnen de EU  & 11002  & 1'000.00  &  & 1'000.00  &  & 11002  & 4200 \\
 \multicolumn{3}{l}{} &  & 4200  &  & 1'000.00  & -1'000.00  &  & 11002  & 4200 \\
 \multicolumn{3}{l}{} &  & 2050  &  &  &  &  & 11002  & 4200 \\
 \multicolumn{5}{l}{} & 1'000.00  & 1'000.00 \\
+\multicolumn{11}{l}{  }\\
 01.09.2022  & 3  & 17  & Leveringen/diensten uit landen buiten de EU - hoog tarief (21\%)  & 11003  & 2'420.00  &  & 2'420.00  &  & 11003  & 4100 \\
 \multicolumn{3}{l}{} &  & 4100  &  & 2'000.00  & -2'000.00  &  & 11003  & 4100 \\
 \multicolumn{3}{l}{} &  & 2050  &  & 420.00  & -420.00  &  & 11003  & 4100 \\
 \multicolumn{5}{l}{} & 2'420.00  & 2'420.00 \\
+\multicolumn{11}{l}{  }\\
 01.09.2022  & 3  & 17  & Leveringen/diensten uit landen buiten de EU - laag tarief (9\%)  & 11003  & 2'180.00  &  & 2'180.00  &  & 11003  & 4000 \\
 \multicolumn{3}{l}{} &  & 4000  &  & 2'000.00  & -2'000.00  &  & 11003  & 4000 \\
 \multicolumn{3}{l}{} &  & 2050  &  & 180.00  & -180.00  &  & 11003  & 4000 \\
 \multicolumn{5}{l}{} & 2'180.00  & 2'180.00 \\
+\multicolumn{11}{l}{  }\\
 Total  & \multicolumn{4}{l}{} & 102'839.56  & 102'839.56 \\
 \end{longtable}
-\excltest{21.12.2021 - Journal - Page } \#page-nr \end{reportvalue}
+\excltest{22.12.2021 - Journal - Page } \#page-nr \end{reportvalue}
 \subsection{Test With additional columns (vat related)}
 \begin{reportvalue}{Journal Report}
 Journal \\
-  \\
+My Company \\
+3136PB City \\
+N123456789B57 \\
+Period 01.01.2021 - 31.12.2022 \\
 \begin{longtable}[l]{ l  l  l  l  l  l  l  l  l  l  l  l }
-Journal for the period 01.01.2021 - 31.12.2022 Date  & Transaction Type  & Doc  & Description  & Account  & Debit  & Credit  & Amount  & VatRate  & VatRateEffective  & VatTaxable  & VatAmount \\
+Date  & Transaction Type  & Doc  & Description  & Account  & Debit  & Credit  & Amount  & VatRate  & VatRateEffective  & VatTaxable  & VatAmount \\
 01.01.2022  & 3  & 1  & Contante verkoop van goederen hoog tarief  & 1000  & 600.00  &  & 600.00  & -21.00  & -21.00  & 495.87  & -104.13 \\
 \multicolumn{3}{l}{} &  & 11001  &  & 495.87  & -495.87  & -21.00  & -21.00  & 495.87  & -104.13 \\
 \multicolumn{3}{l}{} &  & 2050  &  & 104.13  & -104.13  & -21.00  & -21.00  & 495.87  & -104.13 \\
 \multicolumn{5}{l}{} & 600.00  & 600.00 \\
+\multicolumn{12}{l}{  }\\
 01.01.2022  & 3  & 1  & Contante verkoop van goederen laag tarief  & 1000  & 300.00  &  & 300.00  & -9.00  & -9.00  & 275.23  & -24.77 \\
 \multicolumn{3}{l}{} &  & 11001  &  & 275.23  & -275.23  & -9.00  & -9.00  & 275.23  & -24.77 \\
 \multicolumn{3}{l}{} &  & 2050  &  & 24.77  & -24.77  & -9.00  & -9.00  & 275.23  & -24.77 \\
 \multicolumn{5}{l}{} & 300.00  & 300.00 \\
+\multicolumn{12}{l}{  }\\
 01.01.2022  & 3  & 1  & Dienstverlening aan 2\%  & 11001  & 250.00  &  & 250.00  & -2.00  & -2.00  & 245.10  & -4.90 \\
 \multicolumn{3}{l}{} &  & 4000  &  & 245.10  & -245.10  & -2.00  & -2.00  & 245.10  & -4.90 \\
 \multicolumn{3}{l}{} &  & 2050  &  & 4.90  & -4.90  & -2.00  & -2.00  & 245.10  & -4.90 \\
 \multicolumn{5}{l}{} & 250.00  & 250.00 \\
+\multicolumn{12}{l}{  }\\
 01.01.2022  & 3  & 1  & Dienstverlening vrijgesteld van omzetbelasting  & 11001  & 200.00  &  & 200.00  &  &  & 200.00  & \\
 \multicolumn{3}{l}{} &  & 4000  &  & 200.00  & -200.00  &  &  & 200.00  & \\
 \multicolumn{3}{l}{} &  & 2050  &  &  &  &  &  & 200.00  & \\
 \multicolumn{5}{l}{} & 200.00  & 200.00 \\
+\multicolumn{12}{l}{  }\\
 19.01.2022  & 3  & 2  & Aankoop verpakkingsmateriaal, factuur 15  & 3280  & 495.87  &  & 495.87  & 21.00  & 21.00  & 495.87  & 104.13 \\
 \multicolumn{3}{l}{} &  & 20003  &  & 600.00  & -600.00  & 21.00  & 21.00  & 495.87  & 104.13 \\
 \multicolumn{3}{l}{} &  & 2050  & 104.13  &  & 104.13  & 21.00  & 21.00  & 495.87  & 104.13 \\
 \multicolumn{5}{l}{} & 600.00  & 600.00 \\
+\multicolumn{12}{l}{  }\\
 19.01.2022  & 3  & 3  & Betaling faktuur 15 aan leverancier A  & 20003  & 600.00  &  & 600.00  &  &  &  & \\
 \multicolumn{3}{l}{} &  & 1020  &  & 600.00  & -600.00  &  &  &  & \\
 \multicolumn{5}{l}{} & 600.00  & 600.00 \\
+\multicolumn{12}{l}{  }\\
 23.01.2022  & 3  & 4  & Verkoop van goederen, factuur 203  & 11003  & 11'000.00  &  & 11'000.00  & -21.00  & -21.00  & 9090.91  & -1909.09 \\
 \multicolumn{3}{l}{} &  & 4100  &  & 9'090.91  & -9'090.91  & -21.00  & -21.00  & 9090.91  & -1909.09 \\
 \multicolumn{3}{l}{} &  & 2050  &  & 1'909.09  & -1'909.09  & -21.00  & -21.00  & 9090.91  & -1909.09 \\
 \multicolumn{5}{l}{} & 11'000.00  & 11'000.00 \\
+\multicolumn{12}{l}{  }\\
 27.01.2022  & 3  & 5  & Credit nota op factuur 203  & 4100  & 206.61  &  & 206.61  & 21.00  & 21.00  & -206.61  & 43.39 \\
 \multicolumn{3}{l}{} &  & 11003  &  & 250.00  & -250.00  & 21.00  & 21.00  & -206.61  & 43.39 \\
 \multicolumn{3}{l}{} &  & 2050  & 43.39  &  & 43.39  & 21.00  & 21.00  & -206.61  & 43.39 \\
 \multicolumn{5}{l}{} & 250.00  & 250.00 \\
+\multicolumn{12}{l}{  }\\
 27.01.2022  & 3  & 6  & Omboeking "BTW volgens BTW overzicht" - 1ste kwartaal  & 2050  & 2'015.00  &  & 2'015.00  &  &  &  & \\
 \multicolumn{3}{l}{} &  & 2070  &  & 2'015.00  & -2'015.00  &  &  &  & \\
 \multicolumn{5}{l}{} & 2'015.00  & 2'015.00 \\
+\multicolumn{12}{l}{  }\\
 27.01.2022  & 3  & 6  & afronding BTW 1ste kwartaal  & 2050  & 0.29  &  & 0.29  &  &  &  & \\
 \multicolumn{3}{l}{} &  & 3350  &  & 0.29  & -0.29  &  &  &  & \\
 \multicolumn{5}{l}{} & 0.29  & 0.29 \\
+\multicolumn{12}{l}{  }\\
 10.02.2022  & 3  & 7  & Betaling BTW 1ste kwartaal  & 2070  & 2'015.00  &  & 2'015.00  &  &  &  & \\
 \multicolumn{3}{l}{} &  & 1010  &  & 2'015.00  & -2'015.00  &  &  &  & \\
 \multicolumn{5}{l}{} & 2'015.00  & 2'015.00 \\
+\multicolumn{12}{l}{  }\\
 15.02.2022  & 3  & 8  & Factuur van leverancier De Bruijn  & 20003  &  & 1'600.00  & -1'600.00  &  &  &  & \\
 \multicolumn{3}{l}{} & Inkoop goederen 21\%  & 3000  & 661.16  &  & 661.16  & 21.00  & 21.00  & 661.16  & 138.84 \\
 \multicolumn{3}{l}{} &  & 2050  & 138.84  &  & 138.84  & 21.00  & 21.00  & 661.16  & 138.84 \\
 \multicolumn{3}{l}{} & Inkoop goederen 9\%  & 3000  & 733.94  &  & 733.94  & 9.00  & 9.00  & 733.94  & 66.06 \\
 \multicolumn{3}{l}{} &  & 2050  & 66.06  &  & 66.06  & 9.00  & 9.00  & 733.94  & 66.06 \\
 \multicolumn{5}{l}{} & 1'600.00  & 1'600.00 \\
+\multicolumn{12}{l}{  }\\
 16.02.2022  & 3  & 9  & BTW contant betaald aan douane  & 1000  &  & 109.00  & -109.00  & 21.00  & 21.00  & 519.05  & 109.00 \\
 \multicolumn{3}{l}{} &  & 2050  & 109.00  &  & 109.00  & 21.00  & 21.00  & 519.05  & 109.00 \\
 \multicolumn{5}{l}{} & 109.00  & 109.00 \\
+\multicolumn{12}{l}{  }\\
 16.02.2022  & 3  & 10  & Rekening betaald aan vervoersdienst  & 1010  &  & 453.00  & -453.00  &  &  &  & \\
 \multicolumn{3}{l}{} & Vervoerskosten  & 3240  & 200.00  &  & 200.00  &  &  &  & \\
 \multicolumn{3}{l}{} & BTW contant betaald aan douane door vervoersdienst (hoog tarief)  & 2050  & 200.00  &  & 200.00  & 21.00  & 21.00  & 952.38  & 200.00 \\
 \multicolumn{3}{l}{} & BTW contant betaald aan douane door vervoersdienst (laag tarief)  & 2050  & 53.00  &  & 53.00  & 9.00  & 9.00  & 588.89  & 53.00 \\
 \multicolumn{5}{l}{} & 453.00  & 453.00 \\
+\multicolumn{12}{l}{  }\\
 17.02.2022  & 3  & 11  & Faktuur leverancier B (Duitsland)  & 20003  & 1'452.00  &  & 1'452.00  & -21.00  & -21.00  & 1200.00  & -252.00 \\
 \multicolumn{3}{l}{} &  & 1020  &  & 1'200.00  & -1'200.00  & -21.00  & -21.00  & 1200.00  & -252.00 \\
 \multicolumn{3}{l}{} &  & 2050  &  & 252.00  & -252.00  & -21.00  & -21.00  & 1200.00  & -252.00 \\
 \multicolumn{5}{l}{} & 1'452.00  & 1'452.00 \\
+\multicolumn{12}{l}{  }\\
 17.02.2022  & 3  & 11  & BTW op intercommunautaire verwerving  & 4300  & 1'452.00  &  & 1'452.00  & -21.00  & -21.00  & 1200.00  & -252.00 \\
 \multicolumn{3}{l}{} &  & 4300  &  & 1'200.00  & -1'200.00  & -21.00  & -21.00  & 1200.00  & -252.00 \\
 \multicolumn{3}{l}{} &  & 2050  &  & 252.00  & -252.00  & -21.00  & -21.00  & 1200.00  & -252.00 \\
 \multicolumn{5}{l}{} & 1'452.00  & 1'452.00 \\
+\multicolumn{12}{l}{  }\\
 19.02.2022  & 3  & 12  & Faktuur leverancier B (Duitsland)  & 20003  & 981.00  &  & 981.00  & -9.00  & -9.00  & 900.00  & -81.00 \\
 \multicolumn{3}{l}{} &  & 1020  &  & 900.00  & -900.00  & -9.00  & -9.00  & 900.00  & -81.00 \\
 \multicolumn{3}{l}{} &  & 2050  &  & 81.00  & -81.00  & -9.00  & -9.00  & 900.00  & -81.00 \\
 \multicolumn{5}{l}{} & 981.00  & 981.00 \\
+\multicolumn{12}{l}{  }\\
 19.02.2022  & 3  & 12  & BTW op intercommunautaire verwerving  & 4300  & 981.00  &  & 981.00  & -9.00  & -9.00  & 900.00  & -81.00 \\
 \multicolumn{3}{l}{} &  & 4300  &  & 900.00  & -900.00  & -9.00  & -9.00  & 900.00  & -81.00 \\
 \multicolumn{3}{l}{} &  & 2050  &  & 81.00  & -81.00  & -9.00  & -9.00  & 900.00  & -81.00 \\
 \multicolumn{5}{l}{} & 981.00  & 981.00 \\
+\multicolumn{12}{l}{  }\\
 02.03.2022  & 3  & 13  & Inkoopfactuur met btw naar u verlegd  & 3000  & 2'750.00  &  & 2'750.00  &  &  &  & \\
 \multicolumn{3}{l}{} &  & 20003  &  & 2'750.00  & -2'750.00  &  &  &  & \\
 \multicolumn{5}{l}{} & 2'750.00  & 2'750.00 \\
+\multicolumn{12}{l}{  }\\
 02.03.2022  & 3  & 13  & Inkoopfactuur met btw naar u verlegd [tussenrekening btw]  & 2070  & 4'026.28  &  & 4'026.28  & -21.00  & -21.00  & 3327.50  & -698.78 \\
 \multicolumn{3}{l}{} &  & 2070  &  & 3'327.50  & -3'327.50  & -21.00  & -21.00  & 3327.50  & -698.78 \\
 \multicolumn{3}{l}{} &  & 2050  &  & 698.78  & -698.78  & -21.00  & -21.00  & 3327.50  & -698.78 \\
 \multicolumn{5}{l}{} & 4'026.28  & 4'026.28 \\
+\multicolumn{12}{l}{  }\\
 02.03.2022  & 3  & 13  & Inkoopfactuur met btw naar u verlegd [tussenrekening btw]  & 1170  & 2'750.00  &  & 2'750.00  & 21.00  & 21.00  & 2750.00  & 577.50 \\
 \multicolumn{3}{l}{} &  & 1170  &  & 3'327.50  & -3'327.50  & 21.00  & 21.00  & 2750.00  & 577.50 \\
 \multicolumn{3}{l}{} &  & 2050  & 577.50  &  & 577.50  & 21.00  & 21.00  & 2750.00  & 577.50 \\
 \multicolumn{5}{l}{} & 3'327.50  & 3'327.50 \\
+\multicolumn{12}{l}{  }\\
 02.03.2022  & 3  & 13  & Inkoopfactuur  & 20003  & 2'750.00  &  & 2'750.00  &  &  &  & \\
 \multicolumn{3}{l}{} &  & 1010  &  & 2'750.00  & -2'750.00  &  &  &  & \\
 \multicolumn{5}{l}{} & 2'750.00  & 2'750.00 \\
+\multicolumn{12}{l}{  }\\
 19.03.2022  & 3  & 14  & Aankoop met laag tarief  & 3240  & 275.23  &  & 275.23  & 9.00  & 9.00  & 275.23  & 24.77 \\
 \multicolumn{3}{l}{} &  & 20003  &  & 300.00  & -300.00  & 9.00  & 9.00  & 275.23  & 24.77 \\
 \multicolumn{3}{l}{} &  & 2050  & 24.77  &  & 24.77  & 9.00  & 9.00  & 275.23  & 24.77 \\
 \multicolumn{5}{l}{} & 300.00  & 300.00 \\
+\multicolumn{12}{l}{  }\\
 19.03.2022  & 3  & 14  & Aankoop tarief 0\%  & 3240  & 150.00  &  & 150.00  &  &  & 150.00  & \\
 \multicolumn{3}{l}{} &  & 20003  &  & 150.00  & -150.00  &  &  & 150.00  & \\
 \multicolumn{3}{l}{} &  & 2050  &  &  &  &  &  & 150.00  & \\
 \multicolumn{5}{l}{} & 150.00  & 150.00 \\
+\multicolumn{12}{l}{  }\\
 19.03.2022  & 3  & 14  & Aankoop vrijgesteld   & 3240  & 150.00  &  & 150.00  &  &  & 150.00  & \\
 \multicolumn{3}{l}{} &  & 20003  &  & 150.00  & -150.00  &  &  & 150.00  & \\
 \multicolumn{3}{l}{} &  & 2050  &  &  &  &  &  & 150.00  & \\
 \multicolumn{5}{l}{} & 150.00  & 150.00 \\
+\multicolumn{12}{l}{  }\\
 30.03.2022  & 3  & 15  & Privégebruik auto van de zaak  & 1010  & 308.10  &  & 308.10  & -2.70  & -2.70  & 300.00  & -8.10 \\
 \multicolumn{3}{l}{} &  & 3220  &  & 300.00  & -300.00  & -2.70  & -2.70  & 300.00  & -8.10 \\
 \multicolumn{3}{l}{} &  & 2050  &  & 8.10  & -8.10  & -2.70  & -2.70  & 300.00  & -8.10 \\
 \multicolumn{5}{l}{} & 308.10  & 308.10 \\
+\multicolumn{12}{l}{  }\\
 30.03.2022  & 3  & 15  & Privégebruik auto van de zaak  & 1010  & 203.00  &  & 203.00  & -1.50  & -1.50  & 200.00  & -3.00 \\
 \multicolumn{3}{l}{} &  & 3220  &  & 200.00  & -200.00  & -1.50  & -1.50  & 200.00  & -3.00 \\
 \multicolumn{3}{l}{} &  & 2050  &  & 3.00  & -3.00  & -1.50  & -1.50  & 200.00  & -3.00 \\
 \multicolumn{5}{l}{} & 203.00  & 203.00 \\
+\multicolumn{12}{l}{  }\\
 30.03.2022  & 3  & 15  & Privégebruik ander hoog tarief  & 1010  & 242.00  &  & 242.00  & -21.00  & -21.00  & 200.00  & -42.00 \\
 \multicolumn{3}{l}{} &  & 3270  &  & 200.00  & -200.00  & -21.00  & -21.00  & 200.00  & -42.00 \\
 \multicolumn{3}{l}{} &  & 2050  &  & 42.00  & -42.00  & -21.00  & -21.00  & 200.00  & -42.00 \\
 \multicolumn{5}{l}{} & 242.00  & 242.00 \\
+\multicolumn{12}{l}{  }\\
 30.03.2022  & 3  & 15  & Privégebruik ander laag tarief  & 1010  & 109.00  &  & 109.00  & -9.00  & -9.00  & 100.00  & -9.00 \\
 \multicolumn{3}{l}{} &  & 3240  &  & 100.00  & -100.00  & -9.00  & -9.00  & 100.00  & -9.00 \\
 \multicolumn{3}{l}{} &  & 2050  &  & 9.00  & -9.00  & -9.00  & -9.00  & 100.00  & -9.00 \\
 \multicolumn{5}{l}{} & 109.00  & 109.00 \\
+\multicolumn{12}{l}{  }\\
 31.03.2022  & 3  & 16  & Leveringen naar landen buiten de EU (uitvoer)  & 11003  & 5'000.00  &  & 5'000.00  &  &  & 5000.00  & \\
 \multicolumn{3}{l}{} &  & 4100  &  & 5'000.00  & -5'000.00  &  &  & 5000.00  & \\
 \multicolumn{3}{l}{} &  & 2050  &  &  &  &  &  & 5000.00  & \\
 \multicolumn{5}{l}{} & 5'000.00  & 5'000.00 \\
+\multicolumn{12}{l}{  }\\
 31.03.2022  & 3  & 16  & Leveringen naar of diensten in landen binnen de EU  & 11002  & 2'000.00  &  & 2'000.00  &  &  & 2000.00  & \\
 \multicolumn{3}{l}{} &  & 4000  &  & 2'000.00  & -2'000.00  &  &  & 2000.00  & \\
 \multicolumn{3}{l}{} &  & 2050  &  &  &  &  &  & 2000.00  & \\
 \multicolumn{5}{l}{} & 2'000.00  & 2'000.00 \\
+\multicolumn{12}{l}{  }\\
 31.03.2022  & 3  & 16  & Installatie/afstandsverkopen binnen de EU  & 11002  & 1'000.00  &  & 1'000.00  &  &  & 1000.00  & \\
 \multicolumn{3}{l}{} &  & 4200  &  & 1'000.00  & -1'000.00  &  &  & 1000.00  & \\
 \multicolumn{3}{l}{} &  & 2050  &  &  &  &  &  & 1000.00  & \\
 \multicolumn{5}{l}{} & 1'000.00  & 1'000.00 \\
+\multicolumn{12}{l}{  }\\
 31.03.2022  & 3  & 17  & Leveringen/diensten uit landen buiten de EU - hoog tarief (21\%)  & 11003  & 2'420.00  &  & 2'420.00  & -21.00  & -21.00  & 2000.00  & -420.00 \\
 \multicolumn{3}{l}{} &  & 4100  &  & 2'000.00  & -2'000.00  & -21.00  & -21.00  & 2000.00  & -420.00 \\
 \multicolumn{3}{l}{} &  & 2050  &  & 420.00  & -420.00  & -21.00  & -21.00  & 2000.00  & -420.00 \\
 \multicolumn{5}{l}{} & 2'420.00  & 2'420.00 \\
+\multicolumn{12}{l}{  }\\
 31.03.2022  & 3  & 17  & Leveringen/diensten uit landen buiten de EU - laag tarief (9\%)  & 11003  & 2'180.00  &  & 2'180.00  & -9.00  & -9.00  & 2000.00  & -180.00 \\
 \multicolumn{3}{l}{} &  & 4000  &  & 2'000.00  & -2'000.00  & -9.00  & -9.00  & 2000.00  & -180.00 \\
 \multicolumn{3}{l}{} &  & 2050  &  & 180.00  & -180.00  & -9.00  & -9.00  & 2000.00  & -180.00 \\
 \multicolumn{5}{l}{} & 2'180.00  & 2'180.00 \\
+\multicolumn{12}{l}{  }\\
 01.01.2022  & 3  & 1  & Contante verkoop van goederen hoog tarief  & 1000  & 500.00  &  & 500.00  & -21.00  & -21.00  & 413.22  & -86.78 \\
 \multicolumn{3}{l}{} &  & 11001  &  & 413.22  & -413.22  & -21.00  & -21.00  & 413.22  & -86.78 \\
 \multicolumn{3}{l}{} &  & 2050  &  & 86.78  & -86.78  & -21.00  & -21.00  & 413.22  & -86.78 \\
 \multicolumn{5}{l}{} & 500.00  & 500.00 \\
+\multicolumn{12}{l}{  }\\
 01.01.2022  & 3  & 1  & Contante verkoop van goederen laag tarief  & 1000  & 200.00  &  & 200.00  & -9.00  & -9.00  & 183.49  & -16.51 \\
 \multicolumn{3}{l}{} &  & 11001  &  & 183.49  & -183.49  & -9.00  & -9.00  & 183.49  & -16.51 \\
 \multicolumn{3}{l}{} &  & 2050  &  & 16.51  & -16.51  & -9.00  & -9.00  & 183.49  & -16.51 \\
 \multicolumn{5}{l}{} & 200.00  & 200.00 \\
+\multicolumn{12}{l}{  }\\
 01.01.2022  & 3  & 1  & Dienstverlening aan 2\%  & 11001  & 150.00  &  & 150.00  & -2.00  & -2.00  & 147.06  & -2.94 \\
 \multicolumn{3}{l}{} &  & 4000  &  & 147.06  & -147.06  & -2.00  & -2.00  & 147.06  & -2.94 \\
 \multicolumn{3}{l}{} &  & 2050  &  & 2.94  & -2.94  & -2.00  & -2.00  & 147.06  & -2.94 \\
 \multicolumn{5}{l}{} & 150.00  & 150.00 \\
+\multicolumn{12}{l}{  }\\
 01.01.2022  & 3  & 1  & Dienstverlening vrijgesteld van omzetbelasting  & 11001  & 200.00  &  & 200.00  &  &  & 200.00  & \\
 \multicolumn{3}{l}{} &  & 4000  &  & 200.00  & -200.00  &  &  & 200.00  & \\
 \multicolumn{3}{l}{} &  & 2050  &  &  &  &  &  & 200.00  & \\
 \multicolumn{5}{l}{} & 200.00  & 200.00 \\
+\multicolumn{12}{l}{  }\\
 19.01.2022  & 3  & 2  & Aankoop verpakkingsmateriaal, factuur 15  & 3280  & 330.58  &  & 330.58  & 21.00  & 21.00  & 330.58  & 69.42 \\
 \multicolumn{3}{l}{} &  & 20003  &  & 400.00  & -400.00  & 21.00  & 21.00  & 330.58  & 69.42 \\
 \multicolumn{3}{l}{} &  & 2050  & 69.42  &  & 69.42  & 21.00  & 21.00  & 330.58  & 69.42 \\
 \multicolumn{5}{l}{} & 400.00  & 400.00 \\
+\multicolumn{12}{l}{  }\\
 19.02.2022  & 3  & 3  & Betaling faktuur 15 aan leverancier A  & 20003  & 400.00  &  & 400.00  &  &  &  & \\
 \multicolumn{3}{l}{} &  & 1020  &  & 400.00  & -400.00  &  &  &  & \\
 \multicolumn{5}{l}{} & 400.00  & 400.00 \\
+\multicolumn{12}{l}{  }\\
 23.02.2022  & 3  & 4  & Verkoop van goederen, factuur 203  & 11003  & 12'000.00  &  & 12'000.00  & -21.00  & -21.00  & 9917.36  & -2082.64 \\
 \multicolumn{3}{l}{} &  & 4100  &  & 9'917.36  & -9'917.36  & -21.00  & -21.00  & 9917.36  & -2082.64 \\
 \multicolumn{3}{l}{} &  & 2050  &  & 2'082.64  & -2'082.64  & -21.00  & -21.00  & 9917.36  & -2082.64 \\
 \multicolumn{5}{l}{} & 12'000.00  & 12'000.00 \\
+\multicolumn{12}{l}{  }\\
 27.02.2022  & 3  & 5  & Credit nota op factuur 203  & 4100  & 165.29  &  & 165.29  & 21.00  & 21.00  & -165.29  & 34.71 \\
 \multicolumn{3}{l}{} &  & 11003  &  & 200.00  & -200.00  & 21.00  & 21.00  & -165.29  & 34.71 \\
 \multicolumn{3}{l}{} &  & 2050  & 34.71  &  & 34.71  & 21.00  & 21.00  & -165.29  & 34.71 \\
 \multicolumn{5}{l}{} & 200.00  & 200.00 \\
+\multicolumn{12}{l}{  }\\
 31.03.2022  & 3  & 6  & Omboeking "BTW volgens BTW overzicht" - 1ste kwartaal  & 2050  & 2'065.00  &  & 2'065.00  &  &  &  & \\
 \multicolumn{3}{l}{} &  & 2070  &  & 2'065.00  & -2'065.00  &  &  &  & \\
 \multicolumn{5}{l}{} & 2'065.00  & 2'065.00 \\
+\multicolumn{12}{l}{  }\\
 31.03.2022  & 3  & 6  & afronding BTW 1ste kwartaal  & 2050  & 0.29  &  & 0.29  &  &  &  & \\
 \multicolumn{3}{l}{} &  & 3350  &  & 0.29  & -0.29  &  &  &  & \\
 \multicolumn{5}{l}{} & 0.29  & 0.29 \\
+\multicolumn{12}{l}{  }\\
 10.04.2022  & 3  & 7  & Betaling BTW 1ste kwartaal  & 2070  & 2'065.00  &  & 2'065.00  &  &  &  & \\
 \multicolumn{3}{l}{} &  & 1010  &  & 2'065.00  & -2'065.00  &  &  &  & \\
 \multicolumn{5}{l}{} & 2'065.00  & 2'065.00 \\
+\multicolumn{12}{l}{  }\\
 15.04.2022  & 3  & 8  & Factuur van leverancier De Bruijn  & 20003  &  & 1'300.00  & -1'300.00  &  &  &  & \\
 \multicolumn{3}{l}{} & Inkoop goederen 21\%  & 3000  & 661.16  &  & 661.16  & 21.00  & 21.00  & 661.16  & 138.84 \\
 \multicolumn{3}{l}{} &  & 2050  & 138.84  &  & 138.84  & 21.00  & 21.00  & 661.16  & 138.84 \\
 \multicolumn{3}{l}{} & Inkoop goederen 9\%  & 3000  & 458.72  &  & 458.72  & 9.00  & 9.00  & 458.72  & 41.28 \\
 \multicolumn{3}{l}{} &  & 2050  & 41.28  &  & 41.28  & 9.00  & 9.00  & 458.72  & 41.28 \\
 \multicolumn{5}{l}{} & 1'300.00  & 1'300.00 \\
+\multicolumn{12}{l}{  }\\
 01.05.2022  & 3  & 9  & BTW contant betaald aan douane  & 1000  &  & 209.00  & -209.00  & 21.00  & 21.00  & 995.24  & 209.00 \\
 \multicolumn{3}{l}{} &  & 2050  & 209.00  &  & 209.00  & 21.00  & 21.00  & 995.24  & 209.00 \\
 \multicolumn{5}{l}{} & 209.00  & 209.00 \\
+\multicolumn{12}{l}{  }\\
 15.05.2022  & 3  & 10  & Rekening betaald aan vervoersdienst  & 1010  &  & 359.00  & -359.00  &  &  &  & \\
 \multicolumn{3}{l}{} & Vervoerskosten  & 3240  & 150.00  &  & 150.00  &  &  &  & \\
 \multicolumn{3}{l}{} & BTW contant betaald aan douane door vervoersdienst (hoog tarief)  & 2050  & 150.00  &  & 150.00  & 21.00  & 21.00  & 714.29  & 150.00 \\
 \multicolumn{3}{l}{} & BTW contant betaald aan douane door vervoersdienst (laag tarief)  & 2050  & 59.00  &  & 59.00  & 9.00  & 9.00  & 655.56  & 59.00 \\
 \multicolumn{5}{l}{} & 359.00  & 359.00 \\
+\multicolumn{12}{l}{  }\\
 12.06.2022  & 3  & 11  & Faktuur leverancier B (Duitsland)  & 20003  & 1'210.00  &  & 1'210.00  & -21.00  & -21.00  & 1000.00  & -210.00 \\
 \multicolumn{3}{l}{} &  & 1020  &  & 1'000.00  & -1'000.00  & -21.00  & -21.00  & 1000.00  & -210.00 \\
 \multicolumn{3}{l}{} &  & 2050  &  & 210.00  & -210.00  & -21.00  & -21.00  & 1000.00  & -210.00 \\
 \multicolumn{5}{l}{} & 1'210.00  & 1'210.00 \\
+\multicolumn{12}{l}{  }\\
 12.06.2022  & 3  & 11  & BTW op intercommunautaire verwerving  & 4300  & 1'210.00  &  & 1'210.00  & -21.00  & -21.00  & 1000.00  & -210.00 \\
 \multicolumn{3}{l}{} &  & 4300  &  & 1'000.00  & -1'000.00  & -21.00  & -21.00  & 1000.00  & -210.00 \\
 \multicolumn{3}{l}{} &  & 2050  &  & 210.00  & -210.00  & -21.00  & -21.00  & 1000.00  & -210.00 \\
 \multicolumn{5}{l}{} & 1'210.00  & 1'210.00 \\
+\multicolumn{12}{l}{  }\\
 19.06.2022  & 3  & 12  & Faktuur leverancier B (Duitsland)  & 20003  & 1'090.00  &  & 1'090.00  & -9.00  & -9.00  & 1000.00  & -90.00 \\
 \multicolumn{3}{l}{} &  & 1020  &  & 1'000.00  & -1'000.00  & -9.00  & -9.00  & 1000.00  & -90.00 \\
 \multicolumn{3}{l}{} &  & 2050  &  & 90.00  & -90.00  & -9.00  & -9.00  & 1000.00  & -90.00 \\
 \multicolumn{5}{l}{} & 1'090.00  & 1'090.00 \\
+\multicolumn{12}{l}{  }\\
 12.06.2022  & 3  & 12  & BTW op intercommunautaire verwerving  & 4300  & 1'090.00  &  & 1'090.00  & -9.00  & -9.00  & 1000.00  & -90.00 \\
 \multicolumn{3}{l}{} &  & 4300  &  & 1'000.00  & -1'000.00  & -9.00  & -9.00  & 1000.00  & -90.00 \\
 \multicolumn{3}{l}{} &  & 2050  &  & 90.00  & -90.00  & -9.00  & -9.00  & 1000.00  & -90.00 \\
 \multicolumn{5}{l}{} & 1'090.00  & 1'090.00 \\
+\multicolumn{12}{l}{  }\\
 02.07.2022  & 3  & 13  & Inkoopfactuur met btw naar u verlegd  & 3000  & 2'750.00  &  & 2'750.00  &  &  &  & \\
 \multicolumn{3}{l}{} &  & 20003  &  & 2'750.00  & -2'750.00  &  &  &  & \\
 \multicolumn{5}{l}{} & 2'750.00  & 2'750.00 \\
+\multicolumn{12}{l}{  }\\
 02.07.2022  & 3  & 13  & Inkoopfactuur met btw naar u verlegd [tussenrekening btw]  & 2070  & 3'327.50  &  & 3'327.50  & -21.00  & -21.00  & 2750.00  & -577.50 \\
 \multicolumn{3}{l}{} &  & 2070  &  & 2'750.00  & -2'750.00  & -21.00  & -21.00  & 2750.00  & -577.50 \\
 \multicolumn{3}{l}{} &  & 2050  &  & 577.50  & -577.50  & -21.00  & -21.00  & 2750.00  & -577.50 \\
 \multicolumn{5}{l}{} & 3'327.50  & 3'327.50 \\
+\multicolumn{12}{l}{  }\\
 02.07.2022  & 3  & 13  & Inkoopfactuur met btw naar u verlegd [tussenrekening btw]  & 1170  & 2'750.00  &  & 2'750.00  & 21.00  & 21.00  & 2750.00  & 577.50 \\
 \multicolumn{3}{l}{} &  & 1170  &  & 3'327.50  & -3'327.50  & 21.00  & 21.00  & 2750.00  & 577.50 \\
 \multicolumn{3}{l}{} &  & 2050  & 577.50  &  & 577.50  & 21.00  & 21.00  & 2750.00  & 577.50 \\
 \multicolumn{5}{l}{} & 3'327.50  & 3'327.50 \\
+\multicolumn{12}{l}{  }\\
 02.07.2022  & 3  & 13  & Inkoopfactuur  & 20003  & 2'750.00  &  & 2'750.00  &  &  &  & \\
 \multicolumn{3}{l}{} &  & 1010  &  & 2'750.00  & -2'750.00  &  &  &  & \\
 \multicolumn{5}{l}{} & 2'750.00  & 2'750.00 \\
+\multicolumn{12}{l}{  }\\
 19.07.2022  & 3  & 14  & Aankoop met laag tarief  & 3240  & 366.97  &  & 366.97  & 9.00  & 9.00  & 366.97  & 33.03 \\
 \multicolumn{3}{l}{} &  & 20003  &  & 400.00  & -400.00  & 9.00  & 9.00  & 366.97  & 33.03 \\
 \multicolumn{3}{l}{} &  & 2050  & 33.03  &  & 33.03  & 9.00  & 9.00  & 366.97  & 33.03 \\
 \multicolumn{5}{l}{} & 400.00  & 400.00 \\
+\multicolumn{12}{l}{  }\\
 19.07.2022  & 3  & 14  & Aankoop tarief 0\%  & 3240  & 200.00  &  & 200.00  &  &  & 200.00  & \\
 \multicolumn{3}{l}{} &  & 20003  &  & 200.00  & -200.00  &  &  & 200.00  & \\
 \multicolumn{3}{l}{} &  & 2050  &  &  &  &  &  & 200.00  & \\
 \multicolumn{5}{l}{} & 200.00  & 200.00 \\
+\multicolumn{12}{l}{  }\\
 19.07.2022  & 3  & 14  & Aankoop vrijgesteld   & 3240  & 200.00  &  & 200.00  &  &  & 200.00  & \\
 \multicolumn{3}{l}{} &  & 20003  &  & 200.00  & -200.00  &  &  & 200.00  & \\
 \multicolumn{3}{l}{} &  & 2050  &  &  &  &  &  & 200.00  & \\
 \multicolumn{5}{l}{} & 200.00  & 200.00 \\
+\multicolumn{12}{l}{  }\\
 31.07.2022  & 3  & 15  & Privégebruik auto van de zaak  & 1010  & 308.10  &  & 308.10  & -2.70  & -2.70  & 300.00  & -8.10 \\
 \multicolumn{3}{l}{} &  & 3220  &  & 300.00  & -300.00  & -2.70  & -2.70  & 300.00  & -8.10 \\
 \multicolumn{3}{l}{} &  & 2050  &  & 8.10  & -8.10  & -2.70  & -2.70  & 300.00  & -8.10 \\
 \multicolumn{5}{l}{} & 308.10  & 308.10 \\
+\multicolumn{12}{l}{  }\\
 31.07.2022  & 3  & 15  & Privégebruik auto van de zaak  & 1010  & 203.00  &  & 203.00  & -1.50  & -1.50  & 200.00  & -3.00 \\
 \multicolumn{3}{l}{} &  & 3220  &  & 200.00  & -200.00  & -1.50  & -1.50  & 200.00  & -3.00 \\
 \multicolumn{3}{l}{} &  & 2050  &  & 3.00  & -3.00  & -1.50  & -1.50  & 200.00  & -3.00 \\
 \multicolumn{5}{l}{} & 203.00  & 203.00 \\
+\multicolumn{12}{l}{  }\\
 31.07.2022  & 3  & 15  & Privégebruik ander hoog tarief  & 1010  & 242.00  &  & 242.00  & -21.00  & -21.00  & 200.00  & -42.00 \\
 \multicolumn{3}{l}{} &  & 3270  &  & 200.00  & -200.00  & -21.00  & -21.00  & 200.00  & -42.00 \\
 \multicolumn{3}{l}{} &  & 2050  &  & 42.00  & -42.00  & -21.00  & -21.00  & 200.00  & -42.00 \\
 \multicolumn{5}{l}{} & 242.00  & 242.00 \\
+\multicolumn{12}{l}{  }\\
 31.07.2022  & 3  & 15  & Privégebruik ander laag tarief  & 1010  & 109.00  &  & 109.00  & -9.00  & -9.00  & 100.00  & -9.00 \\
 \multicolumn{3}{l}{} &  & 3240  &  & 100.00  & -100.00  & -9.00  & -9.00  & 100.00  & -9.00 \\
 \multicolumn{3}{l}{} &  & 2050  &  & 9.00  & -9.00  & -9.00  & -9.00  & 100.00  & -9.00 \\
 \multicolumn{5}{l}{} & 109.00  & 109.00 \\
+\multicolumn{12}{l}{  }\\
 01.08.2022  & 3  & 16  & Leveringen naar landen buiten de EU (uitvoer)  & 11003  & 5'000.00  &  & 5'000.00  &  &  & 5000.00  & \\
 \multicolumn{3}{l}{} &  & 4100  &  & 5'000.00  & -5'000.00  &  &  & 5000.00  & \\
 \multicolumn{3}{l}{} &  & 2050  &  &  &  &  &  & 5000.00  & \\
 \multicolumn{5}{l}{} & 5'000.00  & 5'000.00 \\
+\multicolumn{12}{l}{  }\\
 01.08.2022  & 3  & 16  & Leveringen naar of diensten in landen binnen de EU  & 11002  & 2'000.00  &  & 2'000.00  &  &  & 2000.00  & \\
 \multicolumn{3}{l}{} &  & 4000  &  & 2'000.00  & -2'000.00  &  &  & 2000.00  & \\
 \multicolumn{3}{l}{} &  & 2050  &  &  &  &  &  & 2000.00  & \\
 \multicolumn{5}{l}{} & 2'000.00  & 2'000.00 \\
+\multicolumn{12}{l}{  }\\
 01.08.2022  & 3  & 16  & Installatie/afstandsverkopen binnen de EU  & 11002  & 1'000.00  &  & 1'000.00  &  &  & 1000.00  & \\
 \multicolumn{3}{l}{} &  & 4200  &  & 1'000.00  & -1'000.00  &  &  & 1000.00  & \\
 \multicolumn{3}{l}{} &  & 2050  &  &  &  &  &  & 1000.00  & \\
 \multicolumn{5}{l}{} & 1'000.00  & 1'000.00 \\
+\multicolumn{12}{l}{  }\\
 01.09.2022  & 3  & 17  & Leveringen/diensten uit landen buiten de EU - hoog tarief (21\%)  & 11003  & 2'420.00  &  & 2'420.00  & -21.00  & -21.00  & 2000.00  & -420.00 \\
 \multicolumn{3}{l}{} &  & 4100  &  & 2'000.00  & -2'000.00  & -21.00  & -21.00  & 2000.00  & -420.00 \\
 \multicolumn{3}{l}{} &  & 2050  &  & 420.00  & -420.00  & -21.00  & -21.00  & 2000.00  & -420.00 \\
 \multicolumn{5}{l}{} & 2'420.00  & 2'420.00 \\
+\multicolumn{12}{l}{  }\\
 01.09.2022  & 3  & 17  & Leveringen/diensten uit landen buiten de EU - laag tarief (9\%)  & 11003  & 2'180.00  &  & 2'180.00  & -9.00  & -9.00  & 2000.00  & -180.00 \\
 \multicolumn{3}{l}{} &  & 4000  &  & 2'000.00  & -2'000.00  & -9.00  & -9.00  & 2000.00  & -180.00 \\
 \multicolumn{3}{l}{} &  & 2050  &  & 180.00  & -180.00  & -9.00  & -9.00  & 2000.00  & -180.00 \\
 \multicolumn{5}{l}{} & 2'180.00  & 2'180.00 \\
+\multicolumn{12}{l}{  }\\
 Total  & \multicolumn{4}{l}{} & 102'839.56  & 102'839.56 \\
 \end{longtable}
-\excltest{21.12.2021 - Journal - Page } \#page-nr \end{reportvalue}
+\excltest{22.12.2021 - Journal - Page } \#page-nr \end{reportvalue}
 \section{Test File Without VAT}
 \subsection{Only Base Columns}
 \begin{reportvalue}{Journal Report}
 Journal \\
   \\
+Period 01.01.2021 - 31.12.2022 \\
 \begin{longtable}[l]{ l  l  l  l  l  l  l  l }
-Journal for the period 01.01.2021 - 31.12.2022 Date  & Transaction Type  & Doc  & Description  & Account  & Debit  & Credit  & Amount \\
+Date  & Transaction Type  & Doc  & Description  & Account  & Debit  & Credit  & Amount \\
 02.01.2021  & 3  & 2  & vendita merce  & 1100  & 15'000.00  &  & 15'000.00 \\
 \multicolumn{3}{l}{} &  & 3000  &  & 15'000.00  & -15'000.00 \\
 \multicolumn{5}{l}{} & 15'000.00  & 15'000.00 \\
+\multicolumn{8}{l}{  }\\
 04.01.2021  & 3  & 4  & acquisto merci  & 4000  & 3'200.00  &  & 3'200.00 \\
 \multicolumn{3}{l}{} &  & 2000  &  & 3'200.00  & -3'200.00 \\
 \multicolumn{5}{l}{} & 3'200.00  & 3'200.00 \\
+\multicolumn{8}{l}{  }\\
 02.01.2021  & 3  & 5  & acquisto merci  & 1200  & 6'000.00  &  & 6'000.00 \\
 \multicolumn{3}{l}{} &  & 1020  &  & 6'000.00  & -6'000.00 \\
 \multicolumn{5}{l}{} & 6'000.00  & 6'000.00 \\
+\multicolumn{8}{l}{  }\\
 15.06.2021  & 3  & 6  & vendita a credito  attrezzature  & 1100  & 30'000.00  &  & 30'000.00 \\
 \multicolumn{3}{l}{} &  & 3000  &  & 30'000.00  & -30'000.00 \\
 \multicolumn{5}{l}{} & 30'000.00  & 30'000.00 \\
+\multicolumn{8}{l}{  }\\
 20.06.2021  & 3  & 7  & pagamento fatture tramite banca  & 2000  & 230.00  &  & 230.00 \\
 \multicolumn{3}{l}{} &  & 1020  &  & 230.00  & -230.00 \\
 \multicolumn{5}{l}{} & 230.00  & 230.00 \\
+\multicolumn{8}{l}{  }\\
 23.07.2021  & 3  & 9  & acquisto di un veicolo tramite banca  & 1530  & 9'000.00  &  & 9'000.00 \\
 \multicolumn{3}{l}{} &  & 1020  &  & 9'000.00  & -9'000.00 \\
 \multicolumn{5}{l}{} & 9'000.00  & 9'000.00 \\
+\multicolumn{8}{l}{  }\\
 25.06.2021  & 3  & 11  & concediamo un prestito  & 1140  & 2'000.00  &  & 2'000.00 \\
 \multicolumn{3}{l}{} &  & 1000  &  & 2'000.00  & -2'000.00 \\
 \multicolumn{5}{l}{} & 2'000.00  & 2'000.00 \\
+\multicolumn{8}{l}{  }\\
 30.06.2021  & 3  & 12  & ricavi  & 1100  & 3'000.00  &  & 3'000.00 \\
 \multicolumn{3}{l}{} &  & 3000  &  & 3'000.00  & -3'000.00 \\
 \multicolumn{5}{l}{} & 3'000.00  & 3'000.00 \\
+\multicolumn{8}{l}{  }\\
 31.07.2021  & 3  & 13  & versamento degli stipendi tramite banca  & 5000  & 500.00  &  & 500.00 \\
 \multicolumn{3}{l}{} &  & 1020  &  & 500.00  & -500.00 \\
 \multicolumn{5}{l}{} & 500.00  & 500.00 \\
+\multicolumn{8}{l}{  }\\
 31.07.2021  & 3  & 14  & acquisto di una macchinetta del caffe  & 6700  & 2'000.00  &  & 2'000.00 \\
 \multicolumn{3}{l}{} &  & 1020  &  & 2'000.00  & -2'000.00 \\
 \multicolumn{5}{l}{} & 2'000.00  & 2'000.00 \\
+\multicolumn{8}{l}{  }\\
 31.07.2021  & 3  & 15  & interessi sulle vendite  & 6950  & 600.00  &  & 600.00 \\
 \multicolumn{3}{l}{} &  & 1020  &  & 600.00  & -600.00 \\
 \multicolumn{5}{l}{} & 600.00  & 600.00 \\
+\multicolumn{8}{l}{  }\\
 03.08.2021  & 3  & 17  & acquisto di macchinari  & 1500  & 6'000.00  &  & 6'000.00 \\
 \multicolumn{3}{l}{} &  & 1010  &  & 6'000.00  & -6'000.00 \\
 \multicolumn{5}{l}{} & 6'000.00  & 6'000.00 \\
+\multicolumn{8}{l}{  }\\
 08.08.2021  & 3  & 25  & vendiamo un macchinario della ditta (banca)  & 1020  & 200.00  &  & 200.00 \\
 \multicolumn{3}{l}{} & vendiamo un macchinario della ditta (posta)  & 1000  & 300.00  &  & 300.00 \\
 \multicolumn{3}{l}{} & \#disinvest vendiamo un macchinario della ditta  & 1530  &  & 500.00  & -500.00 \\
 \multicolumn{5}{l}{} & 500.00  & 500.00 \\
+\multicolumn{8}{l}{  }\\
 08.08.2021  & 3  & 25  & \#Devaluation Perdita sulla vendita di un macchinario  & 8500  & 100.00  &  & 100.00 \\
 \multicolumn{3}{l}{} &  & 1530  &  & 100.00  & -100.00 \\
 \multicolumn{5}{l}{} & 100.00  & 100.00 \\
+\multicolumn{8}{l}{  }\\
 03.08.2021  & 3  & 18  & vendita di merce tramite banca  & 1020  & 8'000.00  &  & 8'000.00 \\
 \multicolumn{3}{l}{} &  & 1200  &  & 8'000.00  & -8'000.00 \\
 \multicolumn{5}{l}{} & 8'000.00  & 8'000.00 \\
+\multicolumn{8}{l}{  }\\
 03.08.2021  & 3  & 19  & acquisto di merce a credito   & 4200  & 20'000.00  &  & 20'000.00 \\
 \multicolumn{3}{l}{} &  & 2000  &  & 20'000.00  & -20'000.00 \\
 \multicolumn{5}{l}{} & 20'000.00  & 20'000.00 \\
+\multicolumn{8}{l}{  }\\
 08.08.2021  & 3  & 20  & ci pagano fatture in contanti  & 1000  & 15'000.00  &  & 15'000.00 \\
 \multicolumn{3}{l}{} &  & 1100  &  & 15'000.00  & -15'000.00 \\
 \multicolumn{5}{l}{} & 15'000.00  & 15'000.00 \\
+\multicolumn{8}{l}{  }\\
 08.08.2021  & 3  & 22  & Formazione Di un accantonamento per spese legali  & 6700  & 3'000.00  &  & 3'000.00 \\
 \multicolumn{3}{l}{} &  & 2600  &  & 3'000.00  & -3'000.00 \\
 \multicolumn{5}{l}{} & 3'000.00  & 3'000.00 \\
+\multicolumn{8}{l}{  }\\
 08.08.2021  & 3  & 23  & Acquisto di scorte tramite cassa   & 1210  & 5'000.00  &  & 5'000.00 \\
 \multicolumn{3}{l}{} &  & 1000  &  & 5'000.00  & -5'000.00 \\
 \multicolumn{5}{l}{} & 5'000.00  & 5'000.00 \\
+\multicolumn{8}{l}{  }\\
 08.08.2021  & 3  & 24  & costi imposte 2020  & 8900  & 1'000.00  &  & 1'000.00 \\
 \multicolumn{3}{l}{} &  & 1000  &  & 1'000.00  & -1'000.00 \\
 \multicolumn{5}{l}{} & 1'000.00  & 1'000.00 \\
+\multicolumn{8}{l}{  }\\
 08.08.2021  & 3  & 25  & \#Disinvest vendiamo un furgone della ditta  & 1020  & 2'000.00  &  & 2'000.00 \\
 \multicolumn{3}{l}{} &  & 1530  &  & 2'000.00  & -2'000.00 \\
 \multicolumn{5}{l}{} & 2'000.00  & 2'000.00 \\
+\multicolumn{8}{l}{  }\\
 08.08.2021  & 3  & 25  & \#Revaluation Utile sulla vendita del furgone  & 1530  & 5'124.00  &  & 5'124.00 \\
 \multicolumn{3}{l}{} &  & 8510  &  & 5'124.00  & -5'124.00 \\
 \multicolumn{5}{l}{} & 5'124.00  & 5'124.00 \\
+\multicolumn{8}{l}{  }\\
 03.08.2021  & 3  & 16  & ammortamentii sulle immobilizzazioni materiali (mob/immob)  & 6800  & 1'500.00  &  & 1'500.00 \\
 \multicolumn{3}{l}{} &  & 1530  &  & 1'500.00  & -1'500.00 \\
 \multicolumn{5}{l}{} & 1'500.00  & 1'500.00 \\
+\multicolumn{8}{l}{  }\\
 03.08.2021  & 3  & 16  & ammortamentii sulle immobilizzazioni materiali (mob/immob)2  & 6800  & 1'500.00  &  & 1'500.00 \\
 \multicolumn{3}{l}{} &  & 1500  &  & 1'500.00  & -1'500.00 \\
 \multicolumn{5}{l}{} & 1'500.00  & 1'500.00 \\
+\multicolumn{8}{l}{  }\\
 03.08.2021  & 3  & 188  & incassiamo la vendita del punto 1  & 1000  & 15'000.00  &  & 15'000.00 \\
 \multicolumn{3}{l}{} &  & 1100  &  & 15'000.00  & -15'000.00 \\
 \multicolumn{5}{l}{} & 15'000.00  & 15'000.00 \\
+\multicolumn{8}{l}{  }\\
 03.08.2021  & 3  & 189  & ci viene concessa un ipoteca dalla banca  & 1010  & 10'000.00  &  & 10'000.00 \\
 \multicolumn{3}{l}{} &  & 2450  &  & 10'000.00  & -10'000.00 \\
 \multicolumn{5}{l}{} & 10'000.00  & 10'000.00 \\
+\multicolumn{8}{l}{  }\\
 03.08.2021  & 3  & 190  & paghiamo in anticipo dei costi concernenti il prossimo anno  & 1300  & 1'000.00  &  & 1'000.00 \\
 \multicolumn{3}{l}{} &  & 6600  &  & 1'000.00  & -1'000.00 \\
 \multicolumn{5}{l}{} & 1'000.00  & 1'000.00 \\
+\multicolumn{8}{l}{  }\\
 03.08.2021  & 3  & 191  & riceviamo in anticipo l'affitto di gennaio 2021  & 2301  & 1'000.00  &  & 1'000.00 \\
 \multicolumn{3}{l}{} &  & 3400  &  & 1'000.00  & -1'000.00 \\
 \multicolumn{5}{l}{} & 1'000.00  & 1'000.00 \\
+\multicolumn{8}{l}{  }\\
 03.08.2021  & 3  & 192  & \#dividends Dividendi 2020  & 2970  & 1'000.00  &  & 1'000.00 \\
 \multicolumn{3}{l}{} &  & 2261  &  & 1'000.00  & -1'000.00 \\
 \multicolumn{5}{l}{} & 1'000.00  & 1'000.00 \\
+\multicolumn{8}{l}{  }\\
 03.08.2021  & 3  & 193  &  \#minusreserves Rilascio delle Riserve  & 2900  & 5'000.00  &  & 5'000.00 \\
 \multicolumn{3}{l}{} &  & 8510  &  & 5'000.00  & -5'000.00 \\
 \multicolumn{5}{l}{} & 5'000.00  & 5'000.00 \\
+\multicolumn{8}{l}{  }\\
 Total  & \multicolumn{4}{l}{} & 173'254.00  & 173'254.00 \\
 \end{longtable}
-\excltest{21.12.2021 - Journal - Page } \#page-nr \end{reportvalue}
+\excltest{22.12.2021 - Journal - Page } \#page-nr \end{reportvalue}
 \subsection{Test With additional columns}
 \begin{reportvalue}{Journal Report}
 Journal \\
   \\
+Period 01.01.2021 - 31.12.2022 \\
 \begin{longtable}[l]{ l  l  l  l  l  l  l  l  l  l  l }
-Journal for the period 01.01.2021 - 31.12.2022 Date  & Transaction Type  & Doc  & Description  & Account  & Debit  & Credit  & Amount  & ContraAccount  & AccountDebitDes  & AccountCreditDes \\
+Date  & Transaction Type  & Doc  & Description  & Account  & Debit  & Credit  & Amount  & ContraAccount  & AccountDebitDes  & AccountCreditDes \\
 02.01.2021  & 3  & 2  & vendita merce  & 1100  & 15'000.00  &  & 15'000.00  &  & Crediti da forniture e prestazioni (debitori)  & Ricavi prodotti fabbricati \\
 \multicolumn{3}{l}{} &  & 3000  &  & 15'000.00  & -15'000.00  &  & Crediti da forniture e prestazioni (debitori)  & Ricavi prodotti fabbricati \\
 \multicolumn{5}{l}{} & 15'000.00  & 15'000.00 \\
+\multicolumn{11}{l}{  }\\
 04.01.2021  & 3  & 4  & acquisto merci  & 4000  & 3'200.00  &  & 3'200.00  &  &  & Debiti per forniture e prestazioni (creditori)  \\
 \multicolumn{3}{l}{} &  & 2000  &  & 3'200.00  & -3'200.00  &  &  & Debiti per forniture e prestazioni (creditori)  \\
 \multicolumn{5}{l}{} & 3'200.00  & 3'200.00 \\
+\multicolumn{11}{l}{  }\\
 02.01.2021  & 3  & 5  & acquisto merci  & 1200  & 6'000.00  &  & 6'000.00  &  & Merce di rivendita  & Banca \\
 \multicolumn{3}{l}{} &  & 1020  &  & 6'000.00  & -6'000.00  &  & Merce di rivendita  & Banca \\
 \multicolumn{5}{l}{} & 6'000.00  & 6'000.00 \\
+\multicolumn{11}{l}{  }\\
 15.06.2021  & 3  & 6  & vendita a credito  attrezzature  & 1100  & 30'000.00  &  & 30'000.00  &  & Crediti da forniture e prestazioni (debitori)  & Ricavi prodotti fabbricati \\
 \multicolumn{3}{l}{} &  & 3000  &  & 30'000.00  & -30'000.00  &  & Crediti da forniture e prestazioni (debitori)  & Ricavi prodotti fabbricati \\
 \multicolumn{5}{l}{} & 30'000.00  & 30'000.00 \\
+\multicolumn{11}{l}{  }\\
 20.06.2021  & 3  & 7  & pagamento fatture tramite banca  & 2000  & 230.00  &  & 230.00  &  & Debiti per forniture e prestazioni (creditori)   & Banca \\
 \multicolumn{3}{l}{} &  & 1020  &  & 230.00  & -230.00  &  & Debiti per forniture e prestazioni (creditori)   & Banca \\
 \multicolumn{5}{l}{} & 230.00  & 230.00 \\
+\multicolumn{11}{l}{  }\\
 23.07.2021  & 3  & 9  & acquisto di un veicolo tramite banca  & 1530  & 9'000.00  &  & 9'000.00  &  & Veicoli  & Banca \\
 \multicolumn{3}{l}{} &  & 1020  &  & 9'000.00  & -9'000.00  &  & Veicoli  & Banca \\
 \multicolumn{5}{l}{} & 9'000.00  & 9'000.00 \\
+\multicolumn{11}{l}{  }\\
 25.06.2021  & 3  & 11  & concediamo un prestito  & 1140  & 2'000.00  &  & 2'000.00  &  & Anticipi e prestiti  & Cassa \\
 \multicolumn{3}{l}{} &  & 1000  &  & 2'000.00  & -2'000.00  &  & Anticipi e prestiti  & Cassa \\
 \multicolumn{5}{l}{} & 2'000.00  & 2'000.00 \\
+\multicolumn{11}{l}{  }\\
 30.06.2021  & 3  & 12  & ricavi  & 1100  & 3'000.00  &  & 3'000.00  &  & Crediti da forniture e prestazioni (debitori)  & Ricavi prodotti fabbricati \\
 \multicolumn{3}{l}{} &  & 3000  &  & 3'000.00  & -3'000.00  &  & Crediti da forniture e prestazioni (debitori)  & Ricavi prodotti fabbricati \\
 \multicolumn{5}{l}{} & 3'000.00  & 3'000.00 \\
+\multicolumn{11}{l}{  }\\
 31.07.2021  & 3  & 13  & versamento degli stipendi tramite banca  & 5000  & 500.00  &  & 500.00  &  & Salari  & Banca \\
 \multicolumn{3}{l}{} &  & 1020  &  & 500.00  & -500.00  &  & Salari  & Banca \\
 \multicolumn{5}{l}{} & 500.00  & 500.00 \\
+\multicolumn{11}{l}{  }\\
 31.07.2021  & 3  & 14  & acquisto di una macchinetta del caffe  & 6700  & 2'000.00  &  & 2'000.00  &  & Altri costi d'esercizio  & Banca \\
 \multicolumn{3}{l}{} &  & 1020  &  & 2'000.00  & -2'000.00  &  & Altri costi d'esercizio  & Banca \\
 \multicolumn{5}{l}{} & 2'000.00  & 2'000.00 \\
+\multicolumn{11}{l}{  }\\
 31.07.2021  & 3  & 15  & interessi sulle vendite  & 6950  & 600.00  &  & 600.00  &  & Ricavi finanziari   & Banca \\
 \multicolumn{3}{l}{} &  & 1020  &  & 600.00  & -600.00  &  & Ricavi finanziari   & Banca \\
 \multicolumn{5}{l}{} & 600.00  & 600.00 \\
+\multicolumn{11}{l}{  }\\
 03.08.2021  & 3  & 17  & acquisto di macchinari  & 1500  & 6'000.00  &  & 6'000.00  &  & Macchine e attrezzature  & Posta \\
 \multicolumn{3}{l}{} &  & 1010  &  & 6'000.00  & -6'000.00  &  & Macchine e attrezzature  & Posta \\
 \multicolumn{5}{l}{} & 6'000.00  & 6'000.00 \\
+\multicolumn{11}{l}{  }\\
 08.08.2021  & 3  & 25  & vendiamo un macchinario della ditta (banca)  & 1020  & 200.00  &  & 200.00  &  & Banca  & \\
 \multicolumn{3}{l}{} & vendiamo un macchinario della ditta (posta)  & 1000  & 300.00  &  & 300.00  &  & Cassa  & \\
 \multicolumn{3}{l}{} & \#disinvest vendiamo un macchinario della ditta  & 1530  &  & 500.00  & -500.00  &  &  & Veicoli \\
 \multicolumn{5}{l}{} & 500.00  & 500.00 \\
+\multicolumn{11}{l}{  }\\
 08.08.2021  & 3  & 25  & \#Devaluation Perdita sulla vendita di un macchinario  & 8500  & 100.00  &  & 100.00  &  & Costi straordinari, unici o relativi ad altri periodi contabili  & Veicoli \\
 \multicolumn{3}{l}{} &  & 1530  &  & 100.00  & -100.00  &  & Costi straordinari, unici o relativi ad altri periodi contabili  & Veicoli \\
 \multicolumn{5}{l}{} & 100.00  & 100.00 \\
+\multicolumn{11}{l}{  }\\
 03.08.2021  & 3  & 18  & vendita di merce tramite banca  & 1020  & 8'000.00  &  & 8'000.00  &  & Banca  & Merce di rivendita \\
 \multicolumn{3}{l}{} &  & 1200  &  & 8'000.00  & -8'000.00  &  & Banca  & Merce di rivendita \\
 \multicolumn{5}{l}{} & 8'000.00  & 8'000.00 \\
+\multicolumn{11}{l}{  }\\
 03.08.2021  & 3  & 19  & acquisto di merce a credito   & 4200  & 20'000.00  &  & 20'000.00  &  & Costi delle merci di rivendita  & Debiti per forniture e prestazioni (creditori)  \\
 \multicolumn{3}{l}{} &  & 2000  &  & 20'000.00  & -20'000.00  &  & Costi delle merci di rivendita  & Debiti per forniture e prestazioni (creditori)  \\
 \multicolumn{5}{l}{} & 20'000.00  & 20'000.00 \\
+\multicolumn{11}{l}{  }\\
 08.08.2021  & 3  & 20  & ci pagano fatture in contanti  & 1000  & 15'000.00  &  & 15'000.00  &  & Cassa  & Crediti da forniture e prestazioni (debitori) \\
 \multicolumn{3}{l}{} &  & 1100  &  & 15'000.00  & -15'000.00  &  & Cassa  & Crediti da forniture e prestazioni (debitori) \\
 \multicolumn{5}{l}{} & 15'000.00  & 15'000.00 \\
+\multicolumn{11}{l}{  }\\
 08.08.2021  & 3  & 22  & Formazione Di un accantonamento per spese legali  & 6700  & 3'000.00  &  & 3'000.00  &  & Altri costi d'esercizio  & Accantonamenti \\
 \multicolumn{3}{l}{} &  & 2600  &  & 3'000.00  & -3'000.00  &  & Altri costi d'esercizio  & Accantonamenti \\
 \multicolumn{5}{l}{} & 3'000.00  & 3'000.00 \\
+\multicolumn{11}{l}{  }\\
 08.08.2021  & 3  & 23  & Acquisto di scorte tramite cassa   & 1210  & 5'000.00  &  & 5'000.00  &  & Materia prima  & Cassa \\
 \multicolumn{3}{l}{} &  & 1000  &  & 5'000.00  & -5'000.00  &  & Materia prima  & Cassa \\
 \multicolumn{5}{l}{} & 5'000.00  & 5'000.00 \\
+\multicolumn{11}{l}{  }\\
 08.08.2021  & 3  & 24  & costi imposte 2020  & 8900  & 1'000.00  &  & 1'000.00  &  & Imposte dirette  & Cassa \\
 \multicolumn{3}{l}{} &  & 1000  &  & 1'000.00  & -1'000.00  &  & Imposte dirette  & Cassa \\
 \multicolumn{5}{l}{} & 1'000.00  & 1'000.00 \\
+\multicolumn{11}{l}{  }\\
 08.08.2021  & 3  & 25  & \#Disinvest vendiamo un furgone della ditta  & 1020  & 2'000.00  &  & 2'000.00  &  & Banca  & Veicoli \\
 \multicolumn{3}{l}{} &  & 1530  &  & 2'000.00  & -2'000.00  &  & Banca  & Veicoli \\
 \multicolumn{5}{l}{} & 2'000.00  & 2'000.00 \\
+\multicolumn{11}{l}{  }\\
 08.08.2021  & 3  & 25  & \#Revaluation Utile sulla vendita del furgone  & 1530  & 5'124.00  &  & 5'124.00  &  & Veicoli  & Ricavi straordinari, unici o relativi ad altri periodi contabili \\
 \multicolumn{3}{l}{} &  & 8510  &  & 5'124.00  & -5'124.00  &  & Veicoli  & Ricavi straordinari, unici o relativi ad altri periodi contabili \\
 \multicolumn{5}{l}{} & 5'124.00  & 5'124.00 \\
+\multicolumn{11}{l}{  }\\
 03.08.2021  & 3  & 16  & ammortamentii sulle immobilizzazioni materiali (mob/immob)  & 6800  & 1'500.00  &  & 1'500.00  &  & Ammortamenti e rettifiche di valore dell'attivo fisso  & Veicoli \\
 \multicolumn{3}{l}{} &  & 1530  &  & 1'500.00  & -1'500.00  &  & Ammortamenti e rettifiche di valore dell'attivo fisso  & Veicoli \\
 \multicolumn{5}{l}{} & 1'500.00  & 1'500.00 \\
+\multicolumn{11}{l}{  }\\
 03.08.2021  & 3  & 16  & ammortamentii sulle immobilizzazioni materiali (mob/immob)2  & 6800  & 1'500.00  &  & 1'500.00  &  & Ammortamenti e rettifiche di valore dell'attivo fisso  & Macchine e attrezzature \\
 \multicolumn{3}{l}{} &  & 1500  &  & 1'500.00  & -1'500.00  &  & Ammortamenti e rettifiche di valore dell'attivo fisso  & Macchine e attrezzature \\
 \multicolumn{5}{l}{} & 1'500.00  & 1'500.00 \\
+\multicolumn{11}{l}{  }\\
 03.08.2021  & 3  & 188  & incassiamo la vendita del punto 1  & 1000  & 15'000.00  &  & 15'000.00  &  & Cassa  & Crediti da forniture e prestazioni (debitori) \\
 \multicolumn{3}{l}{} &  & 1100  &  & 15'000.00  & -15'000.00  &  & Cassa  & Crediti da forniture e prestazioni (debitori) \\
 \multicolumn{5}{l}{} & 15'000.00  & 15'000.00 \\
+\multicolumn{11}{l}{  }\\
 03.08.2021  & 3  & 189  & ci viene concessa un ipoteca dalla banca  & 1010  & 10'000.00  &  & 10'000.00  &  & Posta  & Prestiti \\
 \multicolumn{3}{l}{} &  & 2450  &  & 10'000.00  & -10'000.00  &  & Posta  & Prestiti \\
 \multicolumn{5}{l}{} & 10'000.00  & 10'000.00 \\
+\multicolumn{11}{l}{  }\\
 03.08.2021  & 3  & 190  & paghiamo in anticipo dei costi concernenti il prossimo anno  & 1300  & 1'000.00  &  & 1'000.00  &  & Costi anticipati  & Costi pubblicitari \\
 \multicolumn{3}{l}{} &  & 6600  &  & 1'000.00  & -1'000.00  &  & Costi anticipati  & Costi pubblicitari \\
 \multicolumn{5}{l}{} & 1'000.00  & 1'000.00 \\
+\multicolumn{11}{l}{  }\\
 03.08.2021  & 3  & 191  & riceviamo in anticipo l'affitto di gennaio 2021  & 2301  & 1'000.00  &  & 1'000.00  &  & Ricavi incassati dell'anno seguente  & Ricavi prestazioni di servizi \\
 \multicolumn{3}{l}{} &  & 3400  &  & 1'000.00  & -1'000.00  &  & Ricavi incassati dell'anno seguente  & Ricavi prestazioni di servizi \\
 \multicolumn{5}{l}{} & 1'000.00  & 1'000.00 \\
+\multicolumn{11}{l}{  }\\
 03.08.2021  & 3  & 192  & \#dividends Dividendi 2020  & 2970  & 1'000.00  &  & 1'000.00  &  & Utile/perdita riportata   & Dividendi \\
 \multicolumn{3}{l}{} &  & 2261  &  & 1'000.00  & -1'000.00  &  & Utile/perdita riportata   & Dividendi \\
 \multicolumn{5}{l}{} & 1'000.00  & 1'000.00 \\
+\multicolumn{11}{l}{  }\\
 03.08.2021  & 3  & 193  &  \#minusreserves Rilascio delle Riserve  & 2900  & 5'000.00  &  & 5'000.00  &  & Riserva legale da capitale  & Ricavi straordinari, unici o relativi ad altri periodi contabili \\
 \multicolumn{3}{l}{} &  & 8510  &  & 5'000.00  & -5'000.00  &  & Riserva legale da capitale  & Ricavi straordinari, unici o relativi ad altri periodi contabili \\
 \multicolumn{5}{l}{} & 5'000.00  & 5'000.00 \\
+\multicolumn{11}{l}{  }\\
 Total  & \multicolumn{4}{l}{} & 173'254.00  & 173'254.00 \\
 \end{longtable}
-\excltest{21.12.2021 - Journal - Page } \#page-nr \end{reportvalue}
+\excltest{22.12.2021 - Journal - Page } \#page-nr \end{reportvalue}
 \end{document}

@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-// @id = ch.banana.audit.settings
+// @id = ch.banana.audit.report
 // @api = 1.0
 // @pubdate = 2021-12-10
 // @publisher = Banana.ch SA
 // @description = Columns Settings
 // @task = app.command
-// @doctype = *;*
+// @doctype = 100.*
 // @docproperties =
 // @outputformat = none
 // @inputdatasource = none
@@ -38,9 +38,32 @@ function initDialogParam() {
 
 }
 
+function verifyParam(userParam){
+    if (!userParam.generalLedger_xmlColumnsName) {
+        userParam.generalLedger_xmlColumnsName = "";
+    }
+
+    if (!userParam.journal_xmlColumnsName) {
+        userParam.journal_xmlColumnsName = "";
+    }
+
+    if (!userParam.vatJournal_xmlColumnsName) {
+        userParam.vatJournal_xmlColumnsName = "";
+    }
+
+    if (!userParam.trialBalance_xmlColumnsName) {
+        userParam.trialBalance_xmlColumnsName = "";
+    }
+
+    if (!userParam.customersAndSuppliers_xmlColumnsName) {
+        userParam.customersAndSuppliers_xmlColumnsName = "";
+    }
+
+    return userParam;
+}
+
 function convertParam(userParam) {
     var convertedParam = {};
-    var defaultParam = this.initDialogParam();
     convertedParam.version = '1.0';
     convertedParam.data = [];
 
@@ -74,7 +97,6 @@ function convertParam(userParam) {
     currentParam.title = 'General Ledger';
     currentParam.type = 'string';
     currentParam.value = userParam.generalLedger_xmlColumnsName ? userParam.generalLedger_xmlColumnsName : '';
-    currentParam.defaultvalue = defaultParam.generalLedger_xmlColumnsName;
     currentParam.tooltip = "indicates the xml name of the columns you want to add"
     currentParam.parentObject = 'generalLedger';
     currentParam.readValue = function() {
@@ -88,7 +110,6 @@ function convertParam(userParam) {
     currentParam.title = 'Journal';
     currentParam.type = 'string';
     currentParam.value = userParam.journal_xmlColumnsName ? userParam.journal_xmlColumnsName : '';
-    currentParam.defaultvalue = defaultParam.journal_xmlColumnsName;
     currentParam.tooltip = "indicates the xml name of the columns you want to add"
     currentParam.parentObject = 'journal';
     currentParam.readValue = function() {
@@ -96,13 +117,12 @@ function convertParam(userParam) {
     }
     convertedParam.data.push(currentParam);
 
-    //VAT Journal additional columns
+    //VAT Journal additional
     var currentParam = {};
     currentParam.name = 'vatjournal';
     currentParam.title = "VAT Journal";
     currentParam.type = 'string';
     currentParam.value = userParam.vatJournal_xmlColumnsName ? userParam.vatJournal_xmlColumnsName : '';
-    currentParam.defaultvalue = defaultParam.vatJournal_xmlColumnsName;
     currentParam.tooltip = "indicates the xml name of the columns you want to add"
     currentParam.parentObject = 'vatjournal';
     currentParam.readValue = function() {
@@ -116,7 +136,6 @@ function convertParam(userParam) {
     currentParam.title = "Customers and Suppliers";
     currentParam.type = 'string';
     currentParam.value = userParam.customersAndSuppliers_xmlColumnsName ? userParam.customersAndSuppliers_xmlColumnsName : '';
-    currentParam.defaultvalue = defaultParam.customersAndSuppliers_xmlColumnsName;
     currentParam.tooltip = "indicates the xml name of the columns you want to add"
     currentParam.parentObject = 'customersandsuppliers';
     currentParam.readValue = function() {
@@ -135,6 +154,7 @@ function settingsDialog() {
         userParam = JSON.parse(savedParam);
     }
 
+    userParam=verifyParam(userParam);
     var dialogTitle = 'Additional Columns';
     var convertedParam = convertParam(userParam);
     if (!Banana.Ui.openPropertyEditor(dialogTitle, convertedParam))
