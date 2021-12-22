@@ -18,11 +18,12 @@
 // @publisher = Banana.ch SA
 // @description = VAT Journal
 // @task = app.command
-// @doctype = *;*
+// @doctype = 100.*
 // @docproperties =
 // @outputformat = none
 // @inputdatasource = none
 // @timeout = -1
+// @includejs= ch.banana.audit.settings.js
 
 
 //Main function
@@ -35,10 +36,11 @@ function exec(string) {
     }
 
     //get the additional columns
-    var savedScriptSettings = banDoc.getScriptSettings("ch.banana.audit.settings");
+    var userParam=initDialogParam();
+    var savedParam = banDoc.getScriptSettings("ch.banana.audit.settings");
     var additionalColumnsList = [];
-    if (savedScriptSettings)
-        additionalColumnsList = getAdditionalColumns(savedScriptSettings);
+    if (savedParam.length>0)
+        additionalColumnsList = getAdditionalColumns(userParam,savedParam);
 
     var dateform = getPeriodSettings();
     var report = "";
@@ -56,13 +58,15 @@ function exec(string) {
  * @param {*} savedScriptSettings //Format example: Notes;DebitAccount;CreditAccount...
  * @returns an array with the additionalcolumns
  */
-function getAdditionalColumns(savedScriptSettings) {
+
+ function getAdditionalColumns(userParam,savedParam) {
     var strColumns = "";
     var columnsList = [];
-    savedScriptSettings = JSON.parse(savedScriptSettings);
+    userParam = JSON.parse(savedParam);
+    userParam=verifyParam(userParam);
 
     //take the columns defined for the general ledger
-    strColumns = savedScriptSettings.vatJournal_xmlColumnsName;
+    strColumns = userParam.vatJournal_xmlColumnsName;
 
     //Only call the split method if the string is not empty.
     if (strColumns)
@@ -71,10 +75,8 @@ function getAdditionalColumns(savedScriptSettings) {
     return columnsList
 }
 
-function getVatJournalTable(report, startDate, endDate, additionalColumnsList) {
+function getVatJournalTable(report, additionalColumnsList) {
     var vatJournalTable = report.addTable('journalTable');
-    //title table
-    vatJournalTable.getCaption().addText("VAT Journal for the period " + Banana.Converter.toLocaleDateFormat(startDate) + " - " + Banana.Converter.toLocaleDateFormat(endDate), "dateIndicator");
     //columns
     vatJournalTable.addColumn("Date").setStyleAttributes("width:10%", "tableHeaders");
     vatJournalTable.addColumn("Transaction Type").setStyleAttributes("width:15%", "tableHeaders");
@@ -118,10 +120,10 @@ function printReport(startDate, endDate, additionalColumnsList, banDoc) {
     var report = Banana.Report.newReport("Vat Journal");
 
     //Add a title
-    addHeader(report);
+    addHeader(report,banDoc,startDate, endDate);
 
     //Create a table for the report
-    var table = getVatJournalTable(report, startDate, endDate, additionalColumnsList);
+    var table = getVatJournalTable(report, additionalColumnsList);
 
     // Print the Journal
     printJournal(table, startDate, endDate, additionalColumnsList, banDoc);
@@ -200,7 +202,7 @@ function getJournalRows(startDate, endDate, additionalColumnsList, banDoc) {
             trRow.jDebitAmount = tRow.value('JDebitAmount');
             trRow.jCreditAmount = tRow.value('JCreditAmount');
             trRow.jVatTaxable = tRow.value('JVatTaxable');
-            trRow.jVatAmount = tRow.value('JAmount');
+            trRow.jVatAmount = tRow.value('JAmount');//correspond to vatAmount
             //we save also the values of additional columns
             for (var j = 0; j < additionalColumnsList.length; j++) {
                 var index = additionalColumnsList[j];
@@ -370,15 +372,36 @@ function addFooter(report) {
     report.getFooter().addFieldPageNr();
 }
 
-function addHeader(report) {
-    docInfo = getDocumentInfo();
-    var headerParagraph = report.getHeader().addSection();
+function addHeader(report, banDoc,startDate,endDate) {
+    docInfo = getDocumentInfo(banDoc);
+
+    //initialize values
+    company="";
+    address="";
+    zip="";
+    city="";
+    vatNumber="";
+
+    //give them a value, if it is present
+    if(docInfo.company)
+        company=docInfo.company;
+    if(docInfo.address)
+        address=docInfo.address;
+    if(docInfo.zip)
+        zip=docInfo.zip;
+    if(docInfo.city)
+        city=docInfo.city;
+    if(docInfo.vatNumber)
+        vatNumber=docInfo.vatNumber;
+
+    var headerParagraph = report.getHeader().addSection("headerStyle");
     headerParagraph.addParagraph("VAT Journal", "heading1");
     headerParagraph.addParagraph("", "");
-    headerParagraph.addParagraph(docInfo.company, "");
-    headerParagraph.addParagraph(docInfo.address, "");
-    headerParagraph.addParagraph(docInfo.zip + " " + docInfo.city, "");
-    headerParagraph.addParagraph(docInfo.vatNumber, "");
+    headerParagraph.addParagraph(company, "");
+    headerParagraph.addParagraph(address, "");
+    headerParagraph.addParagraph(zip + " " + city, "");
+    headerParagraph.addParagraph(vatNumber, "");
+    headerParagraph.addParagraph("Period " + Banana.Converter.toLocaleDateFormat(startDate) + " - " + Banana.Converter.toLocaleDateFormat(endDate));
     headerParagraph.addParagraph("", "");
     headerParagraph.addParagraph("", "");
     headerParagraph.addParagraph("", "");
@@ -388,7 +411,7 @@ function addHeader(report) {
  * return the document info
  * @returns 
  */
-function getDocumentInfo() {
+function getDocumentInfo(banDoc) {
 
     var documentInfo = {};
     documentInfo.company = "";
@@ -398,17 +421,17 @@ function getDocumentInfo() {
     documentInfo.vatNumber = "";
 
 
-    if (Banana.document) {
-        if (Banana.document.info("AccountingDataBase", "Company"));
-        documentInfo.company = Banana.document.info("AccountingDataBase", "Company");
-        if (Banana.document.info("AccountingDataBase", "Address1"))
-            documentInfo.address = Banana.document.info("AccountingDataBase", "Address1");
-        if (Banana.document.info("AccountingDataBase", "Zip"))
-            documentInfo.zip = Banana.document.info("AccountingDataBase", "Zip");
-        if (Banana.document.info("AccountingDataBase", "City"))
-            documentInfo.city = Banana.document.info("AccountingDataBase", "City");
-        if (Banana.document.info("AccountingDataBase", "VatNumber"))
-            documentInfo.vatNumber = Banana.document.info("AccountingDataBase", "VatNumber");
+    if (banDoc) {
+        if (banDoc.info("AccountingDataBase", "Company"));
+        documentInfo.company = banDoc.info("AccountingDataBase", "Company");
+        if (banDoc.info("AccountingDataBase", "Address1"))
+            documentInfo.address = banDoc.info("AccountingDataBase", "Address1");
+        if (banDoc.info("AccountingDataBase", "Zip"))
+            documentInfo.zip = banDoc.info("AccountingDataBase", "Zip");
+        if (banDoc.info("AccountingDataBase", "City"))
+            documentInfo.city = banDoc.info("AccountingDataBase", "City");
+        if (banDoc.info("AccountingDataBase", "VatNumber"))
+            documentInfo.vatNumber = banDoc.info("AccountingDataBase", "VatNumber");
     }
 
     return documentInfo;

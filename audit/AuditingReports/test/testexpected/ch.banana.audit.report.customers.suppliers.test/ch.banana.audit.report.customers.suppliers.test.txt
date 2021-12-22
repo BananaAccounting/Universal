@@ -43,7 +43,7 @@ Suppliers Account  & Customer  & Organisation  & Phone Numbers  & Email  & Addre
 200004  & Torre Massimo  &  & Phone: 076 123 456\P Mobile: 079 876 543  & prova8@gmail.com  & Via dei Gelsi 6963 Cureggia  & Svizzera CH \\
 200005  & Brambilla Federica  &  & Phone: 076 123 456\P Mobile: 079 876 543  &  & Via Torino 6962 Viganello  & Svizzera CH \\
 \end{longtable}
-21.12.2021 - Customers and Suppliers - Page  \#page-nr \end{reportvalue}
+\excltest{22.12.2021 - Customers and Suppliers - Page } \#page-nr \end{reportvalue}
 \section{Test With additional columns: Language, Fax, Website}
 \begin{reportvalue}{Customers and Suppliers Report, Additional Columns}
 Customers and Suppliers \\
@@ -64,5 +64,5 @@ Suppliers Account  & Customer  & Organisation  & Phone Numbers  & Email  & Addre
 200004  & Torre Massimo  &  & Phone: 076 123 456\P Mobile: 079 876 543  & prova8@gmail.com  & Via dei Gelsi 6963 Cureggia  & Svizzera CH  &  & 111 222 333 444  & www.prova8.ch \\
 200005  & Brambilla Federica  &  & Phone: 076 123 456\P Mobile: 079 876 543  &  & Via Torino 6962 Viganello  & Svizzera CH  &  & 555 666 777 888  & www.prova9.ch \\
 \end{longtable}
-21.12.2021 - Customers and Suppliers - Page  \#page-nr \end{reportvalue}
+\excltest{22.12.2021 - Customers and Suppliers - Page } \#page-nr \end{reportvalue}
 \end{document}

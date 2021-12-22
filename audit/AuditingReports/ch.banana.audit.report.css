@@ -52,6 +52,11 @@ table {
     text-align: right;
 }
 
+.headerStyle{
+    text-align: left;
+    font-size: 8px;
+}
+
 .footerStyle {
     text-align: center;
     font-size: 8px;

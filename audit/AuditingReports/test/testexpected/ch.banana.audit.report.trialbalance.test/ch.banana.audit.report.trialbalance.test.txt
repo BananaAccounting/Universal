@@ -27,8 +27,8 @@
 \begin{reportvalue}{Test all year}
 Trial Balance \\
   \\
+Period 01.01.2021 - 31.12.2021 \\
 \begin{longtable}[l]{ l  l  l  l }
- & \multicolumn{3}{l}{Trial Balance at 31.12.2021 }\\
  &  & Debit  & Credit \\
 1000  & Cassa  & 49'950.00  & \\
 1010  & Posta  & -2'900.00  & \\
@@ -178,13 +178,13 @@ Trial Balance \\
 8900  & Imposte dirette  & 1'000.00  & \\
 \multicolumn{2}{l}{} & 138'214.00  & 138'214.00 \\
 \end{longtable}
-\excltest{21.12.2021 - Trial balance - Page } \#page-nr \end{reportvalue}
+\excltest{22.12.2021 - Trial balance - Page } \#page-nr \end{reportvalue}
 \section{First Semester}
 \begin{reportvalue}{Test first semester}
 Trial Balance \\
   \\
+Period 01.01.2021 - 30.06.2021 \\
 \begin{longtable}[l]{ l  l  l  l }
- & \multicolumn{3}{l}{Trial Balance at 30.06.2021 }\\
  &  & Debit  & Credit \\
 1000  & Cassa  & 25'650.00  & \\
 1010  & Posta  & -6'900.00  & \\
@@ -334,13 +334,13 @@ Trial Balance \\
 8900  & Imposte dirette  & 0.00  & \\
 \multicolumn{2}{l}{} & 237'904.00  & 237'904.00 \\
 \end{longtable}
-\excltest{21.12.2021 - Trial balance - Page } \#page-nr \end{reportvalue}
+\excltest{22.12.2021 - Trial balance - Page } \#page-nr \end{reportvalue}
 \section{Second Semester}
 \begin{reportvalue}{Test second semester}
 Trial Balance \\
   \\
+Period 01.07.2021 - 30.06.2021 \\
 \begin{longtable}[l]{ l  l  l  l }
- & \multicolumn{3}{l}{Trial Balance at 30.06.2021 }\\
  &  & Debit  & Credit \\
 1000  & Cassa  & 25'650.00  & \\
 1010  & Posta  & -6'900.00  & \\
@@ -490,13 +490,13 @@ Trial Balance \\
 8900  & Imposte dirette  & 0.00  & \\
 \multicolumn{2}{l}{} & 334'394.00  & 289'594.00 \\
 \end{longtable}
-\excltest{21.12.2021 - Trial balance - Page } \#page-nr \end{reportvalue}
+\excltest{22.12.2021 - Trial balance - Page } \#page-nr \end{reportvalue}
 \section{First Quarter}
 \begin{reportvalue}{Test first Quarter}
 Trial Balance \\
   \\
+Period 01.01.2021 - 30.06.2021 \\
 \begin{longtable}[l]{ l  l  l  l }
- & \multicolumn{3}{l}{Trial Balance at 30.06.2021 }\\
  &  & Debit  & Credit \\
 1000  & Cassa  & 25'650.00  & \\
 1010  & Posta  & -6'900.00  & \\
@@ -646,13 +646,13 @@ Trial Balance \\
 8900  & Imposte dirette  & 0.00  & \\
 \multicolumn{2}{l}{} & 434'084.00  & 389'284.00 \\
 \end{longtable}
-\excltest{21.12.2021 - Trial balance - Page } \#page-nr \end{reportvalue}
+\excltest{22.12.2021 - Trial balance - Page } \#page-nr \end{reportvalue}
 \section{Second Quarter}
 \begin{reportvalue}{Test Second Quarter}
 Trial Balance \\
   \\
+Period 01.04.2021 - 30.06.2021 \\
 \begin{longtable}[l]{ l  l  l  l }
- & \multicolumn{3}{l}{Trial Balance at 30.06.2021 }\\
  &  & Debit  & Credit \\
 1000  & Cassa  & 25'650.00  & \\
 1010  & Posta  & -6'900.00  & \\
@@ -802,13 +802,13 @@ Trial Balance \\
 8900  & Imposte dirette  & 0.00  & \\
 \multicolumn{2}{l}{} & 530'574.00  & 473'974.00 \\
 \end{longtable}
-\excltest{21.12.2021 - Trial balance - Page } \#page-nr \end{reportvalue}
+\excltest{22.12.2021 - Trial balance - Page } \#page-nr \end{reportvalue}
 \section{Third Quarter}
 \begin{reportvalue}{Test Third Quarter}
 Trial Balance \\
   \\
+Period 01.07.2021 -  \\
 \begin{longtable}[l]{ l  l  l  l }
- & \multicolumn{3}{l}{Trial Balance at  }\\
  &  & Debit  & Credit \\
 1000  & Cassa  & 49'950.00  & \\
 1010  & Posta  & -2'900.00  & \\
@@ -958,13 +958,13 @@ Trial Balance \\
 8900  & Imposte dirette  & 1'000.00  & \\
 \multicolumn{2}{l}{} & 665'588.00  & 564'188.00 \\
 \end{longtable}
-\excltest{21.12.2021 - Trial balance - Page } \#page-nr \end{reportvalue}
+\excltest{22.12.2021 - Trial balance - Page } \#page-nr \end{reportvalue}
 \section{Fourth Quarter}
 \begin{reportvalue}{Test Fourth Quarter}
 Trial Balance \\
   \\
+Period 01.10.2021 - 31.12.2021 \\
 \begin{longtable}[l]{ l  l  l  l }
- & \multicolumn{3}{l}{Trial Balance at 31.12.2021 }\\
  &  & Debit  & Credit \\
 1000  & Cassa  & 49'950.00  & \\
 1010  & Posta  & -2'900.00  & \\
@@ -1114,5 +1114,5 @@ Trial Balance \\
 8900  & Imposte dirette  & 0.00  & \\
 \multicolumn{2}{l}{} & 771'002.00  & 642'878.00 \\
 \end{longtable}
-\excltest{21.12.2021 - Trial balance - Page } \#page-nr \end{reportvalue}
+\excltest{22.12.2021 - Trial balance - Page } \#page-nr \end{reportvalue}
 \end{document}

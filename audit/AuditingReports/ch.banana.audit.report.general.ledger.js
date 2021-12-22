@@ -18,7 +18,7 @@
 // @publisher = Banana.ch SA
 // @description = General Ledger
 // @task = app.command
-// @doctype = *;*
+// @doctype = 100.*
 // @docproperties =
 // @outputformat = none
 // @inputdatasource = none
@@ -37,10 +37,11 @@ function exec() {
     }
 
     //get the additional columns
-    var savedScriptSettings = banDoc.getScriptSettings("ch.banana.audit.settings");
+    var userParam=initDialogParam();
+    var savedParam = banDoc.getScriptSettings("ch.banana.audit.settings");
     var additionalColumnsList = [];
-    if (savedScriptSettings)
-        additionalColumnsList = getAdditionalColumns(savedScriptSettings);
+    if (savedParam.length>0)
+        additionalColumnsList = getAdditionalColumns(userParam,savedParam);
 
     var dateform = getPeriodSettings(banDoc);
     var report = "";
@@ -58,13 +59,14 @@ function exec() {
  * @param {*} getAdditionalColumns_formatted 
  * @returns an array with the additionalcolumns
  */
-function getAdditionalColumns(savedScriptSettings) {
+function getAdditionalColumns(userParam,savedParam) {
     var strColumns = "";
     var columnsList = [];
-    savedScriptSettings = JSON.parse(savedScriptSettings);
+    userParam = JSON.parse(savedParam);
+    userParam=verifyParam(userParam);
 
     //take the columns defined for the general ledger
-    strColumns = savedScriptSettings.generalLedger_xmlColumnsName;
+    strColumns = userParam.generalLedger_xmlColumnsName;
 
     //Only call the split method if the string is not empty.
     if (strColumns)
@@ -73,10 +75,9 @@ function getAdditionalColumns(savedScriptSettings) {
     return columnsList
 }
 
-function getGeneralLedgerTable(report, startDate, endDate, additionalColumnsList) {
+function getGeneralLedgerTable(report, additionalColumnsList) {
     var generalLedgerTable = report.addTable('generalLedger');
-    //title table
-    generalLedgerTable.getCaption().addText("General Ledger for the period " + Banana.Converter.toLocaleDateFormat(startDate) + " - " + Banana.Converter.toLocaleDateFormat(endDate), "dateIndicator");
+
     //columns
     generalLedgerTable.addColumn("Date").setStyleAttributes("width:10%", "tableHeaders");
     generalLedgerTable.addColumn("Transaction Type").setStyleAttributes("width:15%", "tableHeaders");
@@ -119,10 +120,10 @@ function printReport(startDate, endDate, additionalColumnsList, banDoc) {
     var report = Banana.Report.newReport("General Ledger");
 
     //Add a header to the report
-    addHeader(report, banDoc);
+    addHeader(report, banDoc,startDate, endDate);
 
     //Create a table for the report
-    var table = getGeneralLedgerTable(report, startDate, endDate, additionalColumnsList);
+    var table = getGeneralLedgerTable(report, additionalColumnsList);
 
     if (!table) {
         Banana.console.debug("no obj table");
@@ -142,15 +143,26 @@ function printGeneralLedger(table, startDate, endDate, additionalColumnsList, ba
     var accountData = setAccountData(startDate, endDate, additionalColumnsList, banDoc);
     var sumDebit = "";
     var sumCredit = "";
-    var amountStyle = "";
+    var amountStyle="";
+
+    //get the span for the empty rows.
+    var span=8;
+    span=span+additionalColumnsList.length;
 
     for (var a in accountData) {
         for (var t in accountData[a].transactions) {
             var transaction = accountData[a].transactions[t];
-            if (transaction.type == "6" && transaction.debitAmount && transaction.creditAmount) //if it is a total row and if debit and credit amounts are present
-                amountStyle = "operationTotalsStyle";
-            else
-                amountStyle = "amountStyle";
+            var hasZero=false;
+
+            if(transaction.type == "6"){
+            //put a zero "0" if the total is null
+                hasZero=true;
+            //set the styles for the total
+                amountStyle="operationTotalsStyle";
+            }
+            else{
+                amountStyle="amountStyle"
+            }
 
             tableRow = table.addRow();
             tableRow.addCell(transaction.date, "centredStyle");
@@ -158,9 +170,9 @@ function printGeneralLedger(table, startDate, endDate, additionalColumnsList, ba
             tableRow.addCell(transaction.doc, "centredStyle");
             tableRow.addCell(transaction.description, "textStyle");
             tableRow.addCell(accountData[a].accountNr, "centredStyle");
-            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(transaction.debitAmount, "2", false), amountStyle);
+            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(transaction.debitAmount, "2", hasZero), amountStyle);
             sumDebit = Banana.SDecimal.add(sumDebit, transaction.debitAmount);
-            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(transaction.creditAmount, "2", false), amountStyle);
+            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(transaction.creditAmount, "2", hasZero), amountStyle);
             sumCredit = Banana.SDecimal.add(sumCredit, transaction.creditAmount);
             tableRow.addCell(Banana.Converter.toLocaleNumberFormat(transaction.balance, "2", false), "amountStyle");
             //add the additional columns inserted by the user in the settings dialog
@@ -171,7 +183,7 @@ function printGeneralLedger(table, startDate, endDate, additionalColumnsList, ba
 
         //put some space for a better visibility 
         tableRow = table.addRow();
-        tableRow.addCell("", "centredStyle");
+        tableRow.addCell(" ", "centredStyle",span);
 
     }
 
@@ -201,9 +213,9 @@ function setAccountData(startDate, endDate, additionalColumnsList, banDoc) {
         var accountData = {};
         accountData.accountNr = accountsList[i];
         accountData.transactions = getAccountTransactions(accountsList[i], startDate, endDate, additionalColumnsList, banDoc);
-        //If the account has been used during the year, or at least has an opening balance, I will add it to the list.
-        if (hasTransactions(accountData.transactions))
-            accountCardList.push(accountData);
+        //For the moment we show also the account not used
+        //if (hasTransactions(accountData.transactions))
+        accountCardList.push(accountData);
     }
 
     return accountCardList;
@@ -293,15 +305,36 @@ function addFooter(report) {
 
 }
 
-function addHeader(report, banDoc) {
+function addHeader(report, banDoc,startDate,endDate) {
     docInfo = getDocumentInfo(banDoc);
-    var headerParagraph = report.getHeader().addSection();
+
+    //initialize values
+    company="";
+    address="";
+    zip="";
+    city="";
+    vatNumber="";
+
+    //give them a value, if it is present
+    if(docInfo.company)
+        company=docInfo.company;
+    if(docInfo.address)
+        address=docInfo.address;
+    if(docInfo.zip)
+        zip=docInfo.zip;
+    if(docInfo.city)
+        city=docInfo.city;
+    if(docInfo.vatNumber)
+        vatNumber=docInfo.vatNumber;
+
+    var headerParagraph = report.getHeader().addSection("headerStyle");
     headerParagraph.addParagraph("General Ledger", "heading1");
     headerParagraph.addParagraph("", "");
-    headerParagraph.addParagraph(docInfo.company, "");
-    headerParagraph.addParagraph(docInfo.address, "");
-    headerParagraph.addParagraph(docInfo.zip + " " + docInfo.city, "");
-    headerParagraph.addParagraph(docInfo.vatNumber, "");
+    headerParagraph.addParagraph(company, "");
+    headerParagraph.addParagraph(address, "");
+    headerParagraph.addParagraph(zip + " " + city, "");
+    headerParagraph.addParagraph(vatNumber, "");
+    headerParagraph.addParagraph("Period " + Banana.Converter.toLocaleDateFormat(startDate) + " - " + Banana.Converter.toLocaleDateFormat(endDate));
     headerParagraph.addParagraph("", "");
     headerParagraph.addParagraph("", "");
     headerParagraph.addParagraph("", "");
@@ -345,17 +378,17 @@ function getDocumentInfo(banDoc) {
     documentInfo.vatNumber = "";
 
 
-    if (Banana.document) {
-        if (Banana.document.info("AccountingDataBase", "Company"));
-        documentInfo.company = Banana.document.info("AccountingDataBase", "Company");
-        if (Banana.document.info("AccountingDataBase", "Address1"))
-            documentInfo.address = Banana.document.info("AccountingDataBase", "Address1");
-        if (Banana.document.info("AccountingDataBase", "Zip"))
-            documentInfo.zip = Banana.document.info("AccountingDataBase", "Zip");
-        if (Banana.document.info("AccountingDataBase", "City"))
-            documentInfo.city = Banana.document.info("AccountingDataBase", "City");
-        if (Banana.document.info("AccountingDataBase", "VatNumber"))
-            documentInfo.vatNumber = Banana.document.info("AccountingDataBase", "VatNumber");
+    if (banDoc) {
+        if (banDoc.info("AccountingDataBase", "Company"));
+        documentInfo.company = banDoc.info("AccountingDataBase", "Company");
+        if (banDoc.info("AccountingDataBase", "Address1"))
+            documentInfo.address = banDoc.info("AccountingDataBase", "Address1");
+        if (banDoc.info("AccountingDataBase", "Zip"))
+            documentInfo.zip = banDoc.info("AccountingDataBase", "Zip");
+        if (banDoc.info("AccountingDataBase", "City"))
+            documentInfo.city = banDoc.info("AccountingDataBase", "City");
+        if (banDoc.info("AccountingDataBase", "VatNumber"))
+            documentInfo.vatNumber = banDoc.info("AccountingDataBase", "VatNumber");
     }
 
     return documentInfo;

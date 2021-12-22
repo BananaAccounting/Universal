@@ -18,7 +18,7 @@
 // @publisher = Banana.ch SA
 // @description = Trial Balance
 // @task = app.command
-// @doctype = *;*
+// @doctype = 100.*
 // @docproperties =
 // @outputformat = none
 // @inputdatasource = none
@@ -56,17 +56,11 @@ function printReport(startDate, endDate, banDoc) {
     //Add a name to the report
     var report = Banana.Report.newReport("Trial Balance");
 
-    //Add a title
-    report.addParagraph("Trial Balance", "heading1");
-    report.addParagraph(" ", "");
+    //add the header
+    addHeader(report, banDoc,startDate, endDate);
 
     //Create a table for the report
     var table = report.addTable("table");
-
-    //Add column titles to the table
-    tableRow = table.addRow();
-    tableRow.addCell("", "", 1);
-    tableRow.addCell("Trial Balance at " + Banana.Converter.toLocaleDateFormat(endDate), "alignRight bold", 3);
 
     tableRow = table.addRow();
     tableRow.addCell("", " bold borderBottom");
@@ -205,7 +199,31 @@ function calcBalance(account, bClass, startDate, endDate, banDoc) {
 }
 
 
+function getDocumentInfo(banDoc) {
 
+    var documentInfo = {};
+    documentInfo.company = "";
+    documentInfo.address = "";
+    documentInfo.zip = "";
+    documentInfo.city = "";
+    documentInfo.vatNumber = "";
+
+
+    if (banDoc) {
+        if (banDoc.info("AccountingDataBase", "Company"));
+        documentInfo.company = banDoc.info("AccountingDataBase", "Company");
+        if (banDoc.info("AccountingDataBase", "Address1"))
+            documentInfo.address = banDoc.info("AccountingDataBase", "Address1");
+        if (banDoc.info("AccountingDataBase", "Zip"))
+            documentInfo.zip = banDoc.info("AccountingDataBase", "Zip");
+        if (banDoc.info("AccountingDataBase", "City"))
+            documentInfo.city = banDoc.info("AccountingDataBase", "City");
+        if (banDoc.info("AccountingDataBase", "VatNumber"))
+            documentInfo.vatNumber = banDoc.info("AccountingDataBase", "VatNumber");
+    }
+
+    return documentInfo;
+}
 
 //Function that adds a Footer to the report
 function addFooter(report) {
@@ -216,6 +234,40 @@ function addFooter(report) {
     report.getFooter().addFieldPageNr();
 }
 
+function addHeader(report, banDoc,startDate,endDate) {
+    docInfo = getDocumentInfo(banDoc);
+
+    //initialize values
+    company="";
+    address="";
+    zip="";
+    city="";
+    vatNumber="";
+
+    //give them a value, if it is present
+    if(docInfo.company)
+        company=docInfo.company;
+    if(docInfo.address)
+        address=docInfo.address;
+    if(docInfo.zip)
+        zip=docInfo.zip;
+    if(docInfo.city)
+        city=docInfo.city;
+    if(docInfo.vatNumber)
+        vatNumber=docInfo.vatNumber;
+
+    var headerParagraph = report.getHeader().addSection("headerStyle");
+    headerParagraph.addParagraph("Trial Balance", "heading1");
+    headerParagraph.addParagraph("", "");
+    headerParagraph.addParagraph(company, "");
+    headerParagraph.addParagraph(address, "");
+    headerParagraph.addParagraph(zip + " " + city, "");
+    headerParagraph.addParagraph(vatNumber, "");
+    headerParagraph.addParagraph("Period " + Banana.Converter.toLocaleDateFormat(startDate) + " - " + Banana.Converter.toLocaleDateFormat(endDate));
+    headerParagraph.addParagraph("", "");
+    headerParagraph.addParagraph("", "");
+    headerParagraph.addParagraph("", "");
+}
 
 
 //The main purpose of this function is to allow the user to enter the accounting period desired and saving it for the next time the script is run.
@@ -280,6 +332,10 @@ function createStyleSheet() {
 
     stylesheet.addStyle("body", "font-family : Arial");
 
+    style = stylesheet.addStyle(".header");
+    style.setAttribute("text-align", "left");
+    style.setAttribute("font-size", "8px");
+
     style = stylesheet.addStyle(".footer");
     style.setAttribute("text-align", "center");
     style.setAttribute("font-size", "8px");
@@ -301,6 +357,9 @@ function createStyleSheet() {
 
     style = stylesheet.addStyle(".bold");
     style.setAttribute("font-weight", "bold");
+
+    style = stylesheet.addStyle(".periodIndicator");
+    style.setAttribute("font-size", "8px");
 
     style = stylesheet.addStyle(".alignRight");
     style.setAttribute("text-align", "right");
