@@ -1,5 +1,7 @@
 # Changelog
 
+2021-12-23; [Bug] Fix locale under contact table changed from Locale to LocaleCode;
+
 2021-08-24; [Bug] Fix under macOs' dark mode item's texts are not visible;
 
 2021-03-16; [Bug] Print amounts for items without price (0.00) but with quantity
