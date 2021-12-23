@@ -39,14 +39,13 @@ function exec() {
     //get the additional columns
     var userParam=initDialogParam();
     var savedParam = banDoc.getScriptSettings("ch.banana.audit.settings");
-    var additionalColumnsList = [];
     if (savedParam.length>0)
-        additionalColumnsList = getAdditionalColumns(userParam,savedParam);
+    userParam = getParamObj(userParam,savedParam);
 
     var dateform = getPeriodSettings(banDoc);
     var report = "";
     if (dateform) {
-        report = printReport(dateform.selectionStartDate, dateform.selectionEndDate, additionalColumnsList, banDoc);
+        report = printReport(dateform.selectionStartDate, dateform.selectionEndDate, userParam, banDoc);
     }
 
     //Print the report
@@ -59,23 +58,19 @@ function exec() {
  * @param {*} getAdditionalColumns_formatted 
  * @returns an array with the additionalcolumns
  */
-function getAdditionalColumns(userParam,savedParam) {
-    var strColumns = "";
-    var columnsList = [];
+function getParamObj(userParam,savedParam) {
+    //DA AGGIUNGERE ANCHE AGLI ALTRIIIII REPORT
     userParam = JSON.parse(savedParam);
     userParam=verifyParam(userParam);
 
-    //take the columns defined for the general ledger
-    strColumns = userParam.generalLedger_xmlColumnsName;
-
     //Only call the split method if the string is not empty.
-    if (strColumns)
-        columnsList = strColumns.split(";");
+    if (userParam.generalLedger.xmlColumnsName)
+        userParam.generalLedger.xmlColumnsName = userParam.generalLedger.xmlColumnsName.split(";");
 
-    return columnsList
+    return userParam;
 }
 
-function getGeneralLedgerTable(report, additionalColumnsList) {
+function getGeneralLedgerTable(report, userParam) {
     var generalLedgerTable = report.addTable('generalLedger');
 
     //columns
@@ -88,8 +83,8 @@ function getGeneralLedgerTable(report, additionalColumnsList) {
     generalLedgerTable.addColumn("Credit").setStyleAttributes("width:15%", "tableHeaders");
     generalLedgerTable.addColumn("Balance").setStyleAttributes("width:15%", "tableHeaders");
     //add the additional columns inserted by the user in the settings dialog
-    for (var i = 0; i < additionalColumnsList.length; i++) {
-        generalLedgerTable.addColumn(additionalColumnsList[i]).setStyleAttributes("width:15%", "tableHeaders");
+    for (var i = 0; i < userParam.generalLedger.xmlColumnsName.length; i++) {
+        generalLedgerTable.addColumn(userParam.generalLedger.xmlColumnsName[i]).setStyleAttributes("width:15%", "tableHeaders");
     }
 
     //header
@@ -104,8 +99,8 @@ function getGeneralLedgerTable(report, additionalColumnsList) {
     tableRow.addCell("Credit", "tableHeaders");
     tableRow.addCell("Balance", "tableHeaders");
     //add the additional columns inserted by the user in the settings dialog
-    for (var i = 0; i < additionalColumnsList.length; i++) {
-        tableRow.addCell(additionalColumnsList[i], "tableHeaders");
+    for (var i = 0; i < userParam.generalLedger.xmlColumnsName.length; i++) {
+        tableRow.addCell(userParam.generalLedger.xmlColumnsName[i], "tableHeaders");
     }
 
 
@@ -114,7 +109,7 @@ function getGeneralLedgerTable(report, additionalColumnsList) {
 
 
 //Function that creates and prints the report
-function printReport(startDate, endDate, additionalColumnsList, banDoc) {
+function printReport(startDate, endDate, userParam, banDoc) {
 
     //Add a name to the report
     var report = Banana.Report.newReport("General Ledger");
@@ -123,14 +118,14 @@ function printReport(startDate, endDate, additionalColumnsList, banDoc) {
     addHeader(report, banDoc,startDate, endDate);
 
     //Create a table for the report
-    var table = getGeneralLedgerTable(report, additionalColumnsList);
+    var table = getGeneralLedgerTable(report, userParam);
 
     if (!table) {
         Banana.console.debug("no obj table");
     }
 
     /* 1. Print the Journal with the totals */
-    printGeneralLedger(table, startDate, endDate, additionalColumnsList, banDoc);
+    printGeneralLedger(table, startDate, endDate, userParam, banDoc);
 
     //Add a footer to the report
     addFooter(report);
@@ -138,16 +133,16 @@ function printReport(startDate, endDate, additionalColumnsList, banDoc) {
     return report;
 }
 
-function printGeneralLedger(table, startDate, endDate, additionalColumnsList, banDoc) {
+function printGeneralLedger(table, startDate, endDate, userParam, banDoc) {
 
-    var accountData = setAccountData(startDate, endDate, additionalColumnsList, banDoc);
+    var accountData = setAccountData(startDate, endDate, userParam, banDoc);
     var sumDebit = "";
     var sumCredit = "";
     var amountStyle="";
 
     //get the span for the empty rows.
     var span=8;
-    span=span+additionalColumnsList.length;
+    span=span+userParam.generalLedger.xmlColumnsName.length;
 
     for (var a in accountData) {
         for (var t in accountData[a].transactions) {
@@ -176,8 +171,8 @@ function printGeneralLedger(table, startDate, endDate, additionalColumnsList, ba
             sumCredit = Banana.SDecimal.add(sumCredit, transaction.creditAmount);
             tableRow.addCell(Banana.Converter.toLocaleNumberFormat(transaction.balance, "2", false), "amountStyle");
             //add the additional columns inserted by the user in the settings dialog
-            for (var i = 0; i < additionalColumnsList.length; i++) {
-                tableRow.addCell(transaction[additionalColumnsList[i]], "centredStyle");
+            for (var i = 0; i < userParam.generalLedger.xmlColumnsName.length; i++) {
+                tableRow.addCell(transaction[userParam.generalLedger.xmlColumnsName[i]], "centredStyle");
             }
         }
 
@@ -194,7 +189,7 @@ function printGeneralLedger(table, startDate, endDate, additionalColumnsList, ba
  * @param {*} endDate 
  * @returns 
  */
-function setAccountData(startDate, endDate, additionalColumnsList, banDoc) {
+function setAccountData(startDate, endDate, userParam, banDoc) {
     /**
      * Ex structure:
      * {
@@ -212,7 +207,7 @@ function setAccountData(startDate, endDate, additionalColumnsList, banDoc) {
     for (var i = 0; i < accountsList.length; i++) {
         var accountData = {};
         accountData.accountNr = accountsList[i];
-        accountData.transactions = getAccountTransactions(accountsList[i], startDate, endDate, additionalColumnsList, banDoc);
+        accountData.transactions = getAccountTransactions(accountsList[i], startDate, endDate, userParam, banDoc);
         //For the moment we show also the account not used
         //if (hasTransactions(accountData.transactions))
         accountCardList.push(accountData);
@@ -241,7 +236,7 @@ function hasTransactions(transactions) {
  * @param {*} endDate 
  * @returns the transactions list for the given account
  */
-function getAccountTransactions(account, startDate, endDate, additionalColumnsList, banDoc) {
+function getAccountTransactions(account, startDate, endDate, userParam, banDoc) {
 
     var accountCardTable = banDoc.currentCard(account, startDate, endDate);
     var accountTransactions = [];
@@ -258,9 +253,9 @@ function getAccountTransactions(account, startDate, endDate, additionalColumnsLi
         trans.balance = tRow.value('JBalance');
 
         //we save also the values of additional columns
-        for (var j = 0; j < additionalColumnsList.length; j++) {
-            var index = additionalColumnsList[j];
-            trans[index] = tRow.value(additionalColumnsList[j]);
+        for (var j = 0; j < userParam.generalLedger.xmlColumnsName.length; j++) {
+            var index = userParam.generalLedger.xmlColumnsName[j];
+            trans[index] = tRow.value(userParam.generalLedger.xmlColumnsName[j]);
         }
 
         accountTransactions.push(trans);
