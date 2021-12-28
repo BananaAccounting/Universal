@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.uni.app.donationstatement.js
 // @api = 1.0
-// @pubdate = 2021-01-08
+// @pubdate = 2021-12-28
 // @publisher = Banana.ch SA
 // @description = Statement of donation for Associations
 // @description.de = Spendenbescheinigung für Vereine
@@ -181,6 +181,16 @@ function createReport(banDoc, startDate, endDate, userParam, accounts, lang, sty
         if (address.street) {
             var row = tableAddress.addRow();
             row.addCell(address.street, "address", 1);
+        }
+
+        if (address.addressextra) {
+            var row = tableAddress.addRow();
+            row.addCell(address.addressextra, "address", 1);
+        }
+
+        if (address.pobox) {
+            var row = tableAddress.addRow();
+            row.addCell(address.pobox, "address", 1);
         }
 
         if (address.postalcode && address.locality) {
