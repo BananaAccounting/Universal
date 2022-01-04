@@ -36,7 +36,7 @@ function exec() {
         return;
     }
 
-    //get the additional columns
+    //get user parameters
     var userParam=initDialogParam();
     var savedParam = banDoc.getScriptSettings("ch.banana.audit.settings");
     if (savedParam.length>0)
@@ -54,12 +54,12 @@ function exec() {
 }
 
 /**
- * Takes the string with the name of the columns and transforms it into an array
- * @param {*} getAdditionalColumns_formatted 
- * @returns an array with the additionalcolumns
+ * Format the parameters defined by the user.
+ * @param {*} userParam 
+ * @param {*} savedParam 
+ * @returns 
  */
 function getParamObj(userParam,savedParam) {
-    //DA AGGIUNGERE ANCHE AGLI ALTRIIIII REPORT
     userParam = JSON.parse(savedParam);
     userParam=verifyParam(userParam);
 
@@ -75,7 +75,6 @@ function getGeneralLedgerTable(report, userParam) {
 
     //columns
     generalLedgerTable.addColumn("Date").setStyleAttributes("width:10%", "tableHeaders");
-    generalLedgerTable.addColumn("Transaction Type").setStyleAttributes("width:15%", "tableHeaders");
     generalLedgerTable.addColumn("Doc").setStyleAttributes("width:10%", "tableHeaders");
     generalLedgerTable.addColumn("Description").setStyleAttributes("width:50%", "tableHeaders");
     generalLedgerTable.addColumn("Account").setStyleAttributes("width:20%", "tableHeaders");
@@ -91,7 +90,6 @@ function getGeneralLedgerTable(report, userParam) {
     var tableHeader = generalLedgerTable.getHeader();
     var tableRow = tableHeader.addRow();
     tableRow.addCell("Date", "tableHeaders");
-    tableRow.addCell("Transaction Type", "tableHeaders");
     tableRow.addCell("Doc", "tableHeaders");
     tableRow.addCell("Description", "tableHeaders");
     tableRow.addCell("Account", "tableHeaders");
@@ -138,51 +136,39 @@ function printGeneralLedger(table, startDate, endDate, userParam, banDoc) {
     var accountData = setAccountData(startDate, endDate, userParam, banDoc);
     var sumDebit = "";
     var sumCredit = "";
-    var amountStyle="";
 
     //get the span for the empty rows.
-    var span=8;
+    var span=7;
     span=span+userParam.generalLedger.xmlColumnsName.length;
 
     for (var a in accountData) {
         for (var t in accountData[a].transactions) {
             var transaction = accountData[a].transactions[t];
-            var hasZero=false;
-
-            if(transaction.type == "6"){
-            //put a zero "0" if the total is null
-                hasZero=true;
-            //set the styles for the total
-                amountStyle="operationTotalsStyle";
-            }
-            else{
-                amountStyle="amountStyle"
-            }
 
             tableRow = table.addRow();
-            tableRow.addCell(transaction.date, "centredStyle");
-            tableRow.addCell(transaction.type, "centredStyle");
-            tableRow.addCell(transaction.doc, "centredStyle");
-            tableRow.addCell(transaction.description, "textStyle");
-            tableRow.addCell(accountData[a].accountNr, "centredStyle");
-            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(transaction.debitAmount, "2", hasZero), amountStyle);
+            tableRow.addCell(transaction.date, transaction.centredStyle);
+            tableRow.addCell(transaction.doc, transaction.centredStyle);
+            tableRow.addCell(transaction.description, transaction.descrStyle);
+            tableRow.addCell(accountData[a].accountNr, transaction.centredStyle);
+            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(transaction.debitAmount, "2", transaction.hasZero), transaction.amountStyle);
             sumDebit = Banana.SDecimal.add(sumDebit, transaction.debitAmount);
-            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(transaction.creditAmount, "2", hasZero), amountStyle);
+            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(transaction.creditAmount, "2", transaction.hasZero), transaction.amountStyle);
             sumCredit = Banana.SDecimal.add(sumCredit, transaction.creditAmount);
             tableRow.addCell(Banana.Converter.toLocaleNumberFormat(transaction.balance, "2", false), "amountStyle");
             //add the additional columns inserted by the user in the settings dialog
             for (var i = 0; i < userParam.generalLedger.xmlColumnsName.length; i++) {
-                tableRow.addCell(transaction[userParam.generalLedger.xmlColumnsName[i]], "centredStyle");
+                tableRow.addCell(transaction[userParam.generalLedger.xmlColumnsName[i]], transaction.centredStyle);
             }
         }
 
         //put some space for a better visibility 
         tableRow = table.addRow();
-        tableRow.addCell(" ", "centredStyle",span);
+        tableRow.addCell(" ","",span);
 
     }
 
 }
+
 /**
  * Create an object with the account cards data
  * @param {*} startDate 
@@ -208,13 +194,44 @@ function setAccountData(startDate, endDate, userParam, banDoc) {
         var accountData = {};
         accountData.accountNr = accountsList[i];
         accountData.transactions = getAccountTransactions(accountsList[i], startDate, endDate, userParam, banDoc);
-        //For the moment we show also the account not used
-        //if (hasTransactions(accountData.transactions))
-        accountCardList.push(accountData);
+        if(!userParam.generalLedger.includeAccountsWithoutTr){
+            if (hasTransactions(accountData.transactions)){
+                //put in the list only the accounts that have transactions
+                accountCardList.push(accountData);
+            }
+        }else{
+            accountCardList.push(accountData);
+        }
+        //set each transaction styles
+        setTransactionsStyles(accountData.transactions);
+
+
     }
 
     return accountCardList;
 
+}
+
+function setTransactionsStyles(transactions){
+    for (var t in transactions) {
+        //set the styles for the total  and opening rows
+        if (transactions[t].type == "6" || transactions[t].type == "1"){
+            transactions[t].descrStyle="OpeningAndTotalDescStyle";
+            transactions[t].amountStyle="totalTransactionsStyle";
+            if( transactions[t].type !== "1")
+                transactions[t].hasZero=true;
+            else
+                transactions[t].hasZero=false;
+
+        }else{
+            transactions[t].descrStyle="textStyle";
+            transactions[t].amountStyle="amountStyle";
+            transactions[t].hasZero=false;
+        }
+        //set the style for the other properties
+        transactions[t].centredStyle="centredStyle";
+
+    }
 }
 
 /**
@@ -223,11 +240,11 @@ function setAccountData(startDate, endDate, userParam, banDoc) {
 function hasTransactions(transactions) {
 
     for (var t in transactions) {
-        if (transactions[t].type !== "6")
-            return true; //to the first element we find that does not equal 6, we can already deduce that there is at least one registration or the opening balance
-        else
-            return false;
+        if (transactions[t].type !== "6" && transactions[t].type !=="1"){
+            return true; //to the first element we find that does not equal 6 or 1, we can already deduce that there is at least one transaction
+        }
     }
+    return false; //if no transaction row type is found, return false
 }
 
 /**

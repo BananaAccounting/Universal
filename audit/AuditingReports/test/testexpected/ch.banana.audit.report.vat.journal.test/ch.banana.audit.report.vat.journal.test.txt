@@ -18,7 +18,7 @@
 \newenvironment{testcase}[1]{\section*{Test: #1}}{\newpage}
 \newenvironment{test}[1]{\section*{Test case: #1}}{}
 %Begin test data
-%%SCRIPT{C:/Users/confo/Documents/GitHub/Universal/audit/AuditingReports/./test/ch.banana.audit.report.vat.journal.test.js}
+%%SCRIPT{C:/Users/ronpl/Documents/GitHub/Universal/audit/AuditingReports/./test/ch.banana.audit.report.vat.journal.test.js}
 %
 \begin{testcase}{AuditReports\_VatJournal}
 \begin{test}{testVatJournalReport}
@@ -31,71 +31,71 @@ My Company \\
 3136PB City \\
 N123456789B57 \\
 Period 01.01.2021 - 31.12.2022 \\
-\begin{longtable}[l]{ l  l  l  l  l  l  l  l  l }
-Date  & Transaction Type  & Doc  & Description  & Vat Code  & Debit  & Credit  & Vat Taxable  & Vat Amount \\
-01.01.2022  & 3  & 1  & Leveringen/diensten belast met hoog tarief (21\%)  & V21  &  & 104.13  & -495.87  & -104.13 \\
-01.01.2022  & 3  & 1  & Leveringen/diensten belast met laag tarief (9\%)  & V9  &  & 24.77  & -275.23  & -24.77 \\
-01.01.2022  & 3  & 1  & Leveringen/diensten overige tarieven, behalve 0\%   & VOT  &  & 4.90  & -245.10  & -4.90 \\
-01.01.2022  & 3  & 1  & Leveringen/diensten belast met 0\% of niet bij u belast  & V0  &  &  & -200.00  & \\
-19.01.2022  & 3  & 2  & Voorbelasting - hoog tarief (21\%)  & IG21  & 104.13  &  & 495.87  & 104.13 \\
-23.01.2022  & 3  & 4  & Leveringen/diensten belast met hoog tarief (21\%)  & V21  &  & 1'909.09  & -9'090.91  & -1'909.09 \\
-27.01.2022  & 3  & 5  & Leveringen/diensten belast met hoog tarief (21\%)  & V21  & 43.39  &  & 206.61  & 43.39 \\
-15.02.2022  & 3  & 8  & Voorbelasting - hoog tarief (21\%)  & IG21  & 138.84  &  & 661.16  & 138.84 \\
-\multicolumn{3}{l}{} & Voorbelasting - laag tarief (9\%)  & IG9  & 66.06  &  & 733.94  & 66.06 \\
-16.02.2022  & 3  & 9  & BTW bij invoer betaald aan douane - hoog tarief (21\%)  & D21-2  & 109.00  &  & 519.05  & 109.00 \\
-16.02.2022  & 3  & 10  & BTW bij invoer betaald aan douane - hoog tarief (21\%)  & D21-2  & 200.00  &  & 952.38  & 200.00 \\
-\multicolumn{3}{l}{} & BTW bij invoer betaald aan douane - laag tarief (9\%)  & D9-2  & 53.00  &  & 588.89  & 53.00 \\
-17.02.2022  & 3  & 11  & Leveringen/diensten uit landen binnen de EU - hoog tarief (21\%)  & ICP21  &  & 252.00  & -1'200.00  & -252.00 \\
-17.02.2022  & 3  & 11  & Leveringen/diensten waarbij de omzetbelasting naar u is verlegd -  hoog tarief (21\%)  & VR21  &  & 252.00  & -1'200.00  & -252.00 \\
-19.02.2022  & 3  & 12  & Leveringen/diensten uit landen binnen de EU - laag tarief (9\%)  & ICP9  &  & 81.00  & -900.00  & -81.00 \\
-19.02.2022  & 3  & 12  & Leveringen/diensten waarbij de omzetbelasting naar u is verlegd -  laag tarief (9\%)  & VR9  &  & 81.00  & -900.00  & -81.00 \\
-02.03.2022  & 3  & 13  & Leveringen/diensten waarbij de omzetbelasting naar u is verlegd -  hoog tarief (21\%)  & VR21  &  & 698.78  & -3'327.50  & -698.78 \\
-02.03.2022  & 3  & 13  & Voorbelasting - hoog tarief (21\%)  & IG21  & 577.50  &  & 2'750.00  & 577.50 \\
-19.03.2022  & 3  & 14  & Voorbelasting - laag tarief (9\%)  & IG9  & 24.77  &  & 275.23  & 24.77 \\
-19.03.2022  & 3  & 14  & Voorbelasting - laag tarief (0\%)  & IG0  &  &  & 150.00  & \\
-19.03.2022  & 3  & 14  & Voorbelasting vrijgesteld  & IGV  &  &  & 150.00  & \\
-30.03.2022  & 3  & 15  & Privégebruik auto van de zaak 2,7 \%  & PG27  &  & 8.10  & -300.00  & -8.10 \\
-30.03.2022  & 3  & 15  & Privégebruik auto van de zaak 1,5\%  & PG15  &  & 3.00  & -200.00  & -3.00 \\
-30.03.2022  & 3  & 15  & Privégebruik goederen \& diensten hoog tarief (21\%)  & PG21  &  & 42.00  & -200.00  & -42.00 \\
-30.03.2022  & 3  & 15  & Privégebruik goederen \& diensten  laag tarief (9\%)  & PG9  &  & 9.00  & -100.00  & -9.00 \\
-31.03.2022  & 3  & 16  & Leveringen naar landen buiten de EU (uitvoer)  & VX  &  &  & -5'000.00  & \\
-31.03.2022  & 3  & 16  & Leveringen naar of diensten in landen binnen de EU  & VEU  &  &  & -2'000.00  & \\
-31.03.2022  & 3  & 16  & Installatie/afstandsverkopen binnen de EU  & VEUI  &  &  & -1'000.00  & \\
-31.03.2022  & 3  & 17  & Leveringen/diensten uit landen buiten de EU - hoog tarief (21\%)  & VIX21  &  & 420.00  & -2'000.00  & -420.00 \\
-31.03.2022  & 3  & 17  & Leveringen/diensten uit landen buiten de EU - laag tarief (9\%)  & VIX9  &  & 180.00  & -2'000.00  & -180.00 \\
-01.01.2022  & 3  & 1  & Leveringen/diensten belast met hoog tarief (21\%)  & V21  &  & 86.78  & -413.22  & -86.78 \\
-01.01.2022  & 3  & 1  & Leveringen/diensten belast met laag tarief (9\%)  & V9  &  & 16.51  & -183.49  & -16.51 \\
-01.01.2022  & 3  & 1  & Leveringen/diensten overige tarieven, behalve 0\%   & VOT  &  & 2.94  & -147.06  & -2.94 \\
-01.01.2022  & 3  & 1  & Leveringen/diensten belast met 0\% of niet bij u belast  & V0  &  &  & -200.00  & \\
-19.01.2022  & 3  & 2  & Voorbelasting - hoog tarief (21\%)  & IG21  & 69.42  &  & 330.58  & 69.42 \\
-23.02.2022  & 3  & 4  & Leveringen/diensten belast met hoog tarief (21\%)  & V21  &  & 2'082.64  & -9'917.36  & -2'082.64 \\
-27.02.2022  & 3  & 5  & Leveringen/diensten belast met hoog tarief (21\%)  & V21  & 34.71  &  & 165.29  & 34.71 \\
-15.04.2022  & 3  & 8  & Voorbelasting - hoog tarief (21\%)  & IG21  & 138.84  &  & 661.16  & 138.84 \\
-\multicolumn{3}{l}{} & Voorbelasting - laag tarief (9\%)  & IG9  & 41.28  &  & 458.72  & 41.28 \\
-01.05.2022  & 3  & 9  & BTW bij invoer betaald aan douane - hoog tarief (21\%)  & D21-2  & 209.00  &  & 995.24  & 209.00 \\
-15.05.2022  & 3  & 10  & BTW bij invoer betaald aan douane - hoog tarief (21\%)  & D21-2  & 150.00  &  & 714.29  & 150.00 \\
-\multicolumn{3}{l}{} & BTW bij invoer betaald aan douane - laag tarief (9\%)  & D9-2  & 59.00  &  & 655.56  & 59.00 \\
-12.06.2022  & 3  & 11  & Leveringen/diensten uit landen binnen de EU - hoog tarief (21\%)  & ICP21  &  & 210.00  & -1'000.00  & -210.00 \\
-12.06.2022  & 3  & 11  & Leveringen/diensten waarbij de omzetbelasting naar u is verlegd -  hoog tarief (21\%)  & VR21  &  & 210.00  & -1'000.00  & -210.00 \\
-19.06.2022  & 3  & 12  & Leveringen/diensten uit landen binnen de EU - laag tarief (9\%)  & ICP9  &  & 90.00  & -1'000.00  & -90.00 \\
-12.06.2022  & 3  & 12  & Leveringen/diensten waarbij de omzetbelasting naar u is verlegd -  laag tarief (9\%)  & VR9  &  & 90.00  & -1'000.00  & -90.00 \\
-02.07.2022  & 3  & 13  & Leveringen/diensten waarbij de omzetbelasting naar u is verlegd -  hoog tarief (21\%)  & VR21  &  & 577.50  & -2'750.00  & -577.50 \\
-02.07.2022  & 3  & 13  & Voorbelasting - hoog tarief (21\%)  & IG21  & 577.50  &  & 2'750.00  & 577.50 \\
-19.07.2022  & 3  & 14  & Voorbelasting - laag tarief (9\%)  & IG9  & 33.03  &  & 366.97  & 33.03 \\
-19.07.2022  & 3  & 14  & Voorbelasting - laag tarief (0\%)  & IG0  &  &  & 200.00  & \\
-19.07.2022  & 3  & 14  & Voorbelasting vrijgesteld  & IGV  &  &  & 200.00  & \\
-31.07.2022  & 3  & 15  & Privégebruik auto van de zaak 2,7 \%  & PG27  &  & 8.10  & -300.00  & -8.10 \\
-31.07.2022  & 3  & 15  & Privégebruik auto van de zaak 1,5\%  & PG15  &  & 3.00  & -200.00  & -3.00 \\
-31.07.2022  & 3  & 15  & Privégebruik goederen \& diensten hoog tarief (21\%)  & PG21  &  & 42.00  & -200.00  & -42.00 \\
-31.07.2022  & 3  & 15  & Privégebruik goederen \& diensten  laag tarief (9\%)  & PG9  &  & 9.00  & -100.00  & -9.00 \\
-01.08.2022  & 3  & 16  & Leveringen naar landen buiten de EU (uitvoer)  & VX  &  &  & -5'000.00  & \\
-01.08.2022  & 3  & 16  & Leveringen naar of diensten in landen binnen de EU  & VEU  &  &  & -2'000.00  & \\
-01.08.2022  & 3  & 16  & Installatie/afstandsverkopen binnen de EU  & VEUI  &  &  & -1'000.00  & \\
-01.09.2022  & 3  & 17  & Leveringen/diensten uit landen buiten de EU - hoog tarief (21\%)  & VIX21  &  & 420.00  & -2'000.00  & -420.00 \\
-01.09.2022  & 3  & 17  & Leveringen/diensten uit landen buiten de EU - laag tarief (9\%)  & VIX9  &  & 180.00  & -2'000.00  & -180.00 \\
-Total  & \multicolumn{7}{l}{} & -5'468.77 \\
+\begin{longtable}[l]{ l  l  l  l  l  l  l  l }
+Date  & Doc  & Description  & Vat Code  & Debit  & Credit  & Vat Taxable  & Vat Amount \\
+01.01.2022  & 1  & Leveringen/diensten belast met hoog tarief (21\%)  & V21  &  & 104.13  & -495.87  & -104.13 \\
+01.01.2022  & 1  & Leveringen/diensten belast met laag tarief (9\%)  & V9  &  & 24.77  & -275.23  & -24.77 \\
+01.01.2022  & 1  & Leveringen/diensten overige tarieven, behalve 0\%   & VOT  &  & 4.90  & -245.10  & -4.90 \\
+01.01.2022  & 1  & Leveringen/diensten belast met 0\% of niet bij u belast  & V0  &  &  & -200.00  & \\
+19.01.2022  & 2  & Voorbelasting - hoog tarief (21\%)  & IG21  & 104.13  &  & 495.87  & 104.13 \\
+23.01.2022  & 4  & Leveringen/diensten belast met hoog tarief (21\%)  & V21  &  & 1'909.09  & -9'090.91  & -1'909.09 \\
+27.01.2022  & 5  & Leveringen/diensten belast met hoog tarief (21\%)  & V21  & 43.39  &  & 206.61  & 43.39 \\
+15.02.2022  & 8  & Voorbelasting - hoog tarief (21\%)  & IG21  & 138.84  &  & 661.16  & 138.84 \\
+\multicolumn{2}{l}{} & Voorbelasting - laag tarief (9\%)  & IG9  & 66.06  &  & 733.94  & 66.06 \\
+16.02.2022  & 9  & BTW bij invoer betaald aan douane - hoog tarief (21\%)  & D21-2  & 109.00  &  & 519.05  & 109.00 \\
+16.02.2022  & 10  & BTW bij invoer betaald aan douane - hoog tarief (21\%)  & D21-2  & 200.00  &  & 952.38  & 200.00 \\
+\multicolumn{2}{l}{} & BTW bij invoer betaald aan douane - laag tarief (9\%)  & D9-2  & 53.00  &  & 588.89  & 53.00 \\
+17.02.2022  & 11  & Leveringen/diensten uit landen binnen de EU - hoog tarief (21\%)  & ICP21  &  & 252.00  & -1'200.00  & -252.00 \\
+17.02.2022  & 11  & Leveringen/diensten waarbij de omzetbelasting naar u is verlegd -  hoog tarief (21\%)  & VR21  &  & 252.00  & -1'200.00  & -252.00 \\
+19.02.2022  & 12  & Leveringen/diensten uit landen binnen de EU - laag tarief (9\%)  & ICP9  &  & 81.00  & -900.00  & -81.00 \\
+19.02.2022  & 12  & Leveringen/diensten waarbij de omzetbelasting naar u is verlegd -  laag tarief (9\%)  & VR9  &  & 81.00  & -900.00  & -81.00 \\
+02.03.2022  & 13  & Leveringen/diensten waarbij de omzetbelasting naar u is verlegd -  hoog tarief (21\%)  & VR21  &  & 698.78  & -3'327.50  & -698.78 \\
+02.03.2022  & 13  & Voorbelasting - hoog tarief (21\%)  & IG21  & 577.50  &  & 2'750.00  & 577.50 \\
+19.03.2022  & 14  & Voorbelasting - laag tarief (9\%)  & IG9  & 24.77  &  & 275.23  & 24.77 \\
+19.03.2022  & 14  & Voorbelasting - laag tarief (0\%)  & IG0  &  &  & 150.00  & \\
+19.03.2022  & 14  & Voorbelasting vrijgesteld  & IGV  &  &  & 150.00  & \\
+30.03.2022  & 15  & Privégebruik auto van de zaak 2,7 \%  & PG27  &  & 8.10  & -300.00  & -8.10 \\
+30.03.2022  & 15  & Privégebruik auto van de zaak 1,5\%  & PG15  &  & 3.00  & -200.00  & -3.00 \\
+30.03.2022  & 15  & Privégebruik goederen \& diensten hoog tarief (21\%)  & PG21  &  & 42.00  & -200.00  & -42.00 \\
+30.03.2022  & 15  & Privégebruik goederen \& diensten  laag tarief (9\%)  & PG9  &  & 9.00  & -100.00  & -9.00 \\
+31.03.2022  & 16  & Leveringen naar landen buiten de EU (uitvoer)  & VX  &  &  & -5'000.00  & \\
+31.03.2022  & 16  & Leveringen naar of diensten in landen binnen de EU  & VEU  &  &  & -2'000.00  & \\
+31.03.2022  & 16  & Installatie/afstandsverkopen binnen de EU  & VEUI  &  &  & -1'000.00  & \\
+31.03.2022  & 17  & Leveringen/diensten uit landen buiten de EU - hoog tarief (21\%)  & VIX21  &  & 420.00  & -2'000.00  & -420.00 \\
+31.03.2022  & 17  & Leveringen/diensten uit landen buiten de EU - laag tarief (9\%)  & VIX9  &  & 180.00  & -2'000.00  & -180.00 \\
+01.01.2022  & 1  & Leveringen/diensten belast met hoog tarief (21\%)  & V21  &  & 86.78  & -413.22  & -86.78 \\
+01.01.2022  & 1  & Leveringen/diensten belast met laag tarief (9\%)  & V9  &  & 16.51  & -183.49  & -16.51 \\
+01.01.2022  & 1  & Leveringen/diensten overige tarieven, behalve 0\%   & VOT  &  & 2.94  & -147.06  & -2.94 \\
+01.01.2022  & 1  & Leveringen/diensten belast met 0\% of niet bij u belast  & V0  &  &  & -200.00  & \\
+19.01.2022  & 2  & Voorbelasting - hoog tarief (21\%)  & IG21  & 69.42  &  & 330.58  & 69.42 \\
+23.02.2022  & 4  & Leveringen/diensten belast met hoog tarief (21\%)  & V21  &  & 2'082.64  & -9'917.36  & -2'082.64 \\
+27.02.2022  & 5  & Leveringen/diensten belast met hoog tarief (21\%)  & V21  & 34.71  &  & 165.29  & 34.71 \\
+15.04.2022  & 8  & Voorbelasting - hoog tarief (21\%)  & IG21  & 138.84  &  & 661.16  & 138.84 \\
+\multicolumn{2}{l}{} & Voorbelasting - laag tarief (9\%)  & IG9  & 41.28  &  & 458.72  & 41.28 \\
+01.05.2022  & 9  & BTW bij invoer betaald aan douane - hoog tarief (21\%)  & D21-2  & 209.00  &  & 995.24  & 209.00 \\
+15.05.2022  & 10  & BTW bij invoer betaald aan douane - hoog tarief (21\%)  & D21-2  & 150.00  &  & 714.29  & 150.00 \\
+\multicolumn{2}{l}{} & BTW bij invoer betaald aan douane - laag tarief (9\%)  & D9-2  & 59.00  &  & 655.56  & 59.00 \\
+12.06.2022  & 11  & Leveringen/diensten uit landen binnen de EU - hoog tarief (21\%)  & ICP21  &  & 210.00  & -1'000.00  & -210.00 \\
+12.06.2022  & 11  & Leveringen/diensten waarbij de omzetbelasting naar u is verlegd -  hoog tarief (21\%)  & VR21  &  & 210.00  & -1'000.00  & -210.00 \\
+19.06.2022  & 12  & Leveringen/diensten uit landen binnen de EU - laag tarief (9\%)  & ICP9  &  & 90.00  & -1'000.00  & -90.00 \\
+12.06.2022  & 12  & Leveringen/diensten waarbij de omzetbelasting naar u is verlegd -  laag tarief (9\%)  & VR9  &  & 90.00  & -1'000.00  & -90.00 \\
+02.07.2022  & 13  & Leveringen/diensten waarbij de omzetbelasting naar u is verlegd -  hoog tarief (21\%)  & VR21  &  & 577.50  & -2'750.00  & -577.50 \\
+02.07.2022  & 13  & Voorbelasting - hoog tarief (21\%)  & IG21  & 577.50  &  & 2'750.00  & 577.50 \\
+19.07.2022  & 14  & Voorbelasting - laag tarief (9\%)  & IG9  & 33.03  &  & 366.97  & 33.03 \\
+19.07.2022  & 14  & Voorbelasting - laag tarief (0\%)  & IG0  &  &  & 200.00  & \\
+19.07.2022  & 14  & Voorbelasting vrijgesteld  & IGV  &  &  & 200.00  & \\
+31.07.2022  & 15  & Privégebruik auto van de zaak 2,7 \%  & PG27  &  & 8.10  & -300.00  & -8.10 \\
+31.07.2022  & 15  & Privégebruik auto van de zaak 1,5\%  & PG15  &  & 3.00  & -200.00  & -3.00 \\
+31.07.2022  & 15  & Privégebruik goederen \& diensten hoog tarief (21\%)  & PG21  &  & 42.00  & -200.00  & -42.00 \\
+31.07.2022  & 15  & Privégebruik goederen \& diensten  laag tarief (9\%)  & PG9  &  & 9.00  & -100.00  & -9.00 \\
+01.08.2022  & 16  & Leveringen naar landen buiten de EU (uitvoer)  & VX  &  &  & -5'000.00  & \\
+01.08.2022  & 16  & Leveringen naar of diensten in landen binnen de EU  & VEU  &  &  & -2'000.00  & \\
+01.08.2022  & 16  & Installatie/afstandsverkopen binnen de EU  & VEUI  &  &  & -1'000.00  & \\
+01.09.2022  & 17  & Leveringen/diensten uit landen buiten de EU - hoog tarief (21\%)  & VIX21  &  & 420.00  & -2'000.00  & -420.00 \\
+01.09.2022  & 17  & Leveringen/diensten uit landen buiten de EU - laag tarief (9\%)  & VIX9  &  & 180.00  & -2'000.00  & -180.00 \\
+Total  & \multicolumn{6}{l}{} & -5'468.77 \\
 \end{longtable}
-\excltest{22.12.2021 - Journal - Page } \#page-nr \end{reportvalue}
+\excltest{04.01.2022 - Journal - Page } \#page-nr \end{reportvalue}
 \subsection{Test With additional columns}
 \begin{reportvalue}{Vat journal Report}
 VAT Journal \\
@@ -103,71 +103,71 @@ My Company \\
 3136PB City \\
 N123456789B57 \\
 Period 01.01.2021 - 31.12.2022 \\
-\begin{longtable}[l]{ l  l  l  l  l  l  l  l  l  l  l  l }
-Date  & Transaction Type  & Doc  & Description  & Vat Code  & Debit  & Credit  & Vat Taxable  & Vat Amount  & Notes  & AccountDebit  & AccountCredit \\
-01.01.2022  & 3  & 1  & Leveringen/diensten belast met hoog tarief (21\%)  & V21  &  & 104.13  & -495.87  & -104.13  &  & 1000  & 11001 \\
-01.01.2022  & 3  & 1  & Leveringen/diensten belast met laag tarief (9\%)  & V9  &  & 24.77  & -275.23  & -24.77  &  & 1000  & 11001 \\
-01.01.2022  & 3  & 1  & Leveringen/diensten overige tarieven, behalve 0\%   & VOT  &  & 4.90  & -245.10  & -4.90  &  & 11001  & 4000 \\
-01.01.2022  & 3  & 1  & Leveringen/diensten belast met 0\% of niet bij u belast  & V0  &  &  & -200.00  &  &  & 11001  & 4000 \\
-19.01.2022  & 3  & 2  & Voorbelasting - hoog tarief (21\%)  & IG21  & 104.13  &  & 495.87  & 104.13  &  & 3280  & 20003 \\
-23.01.2022  & 3  & 4  & Leveringen/diensten belast met hoog tarief (21\%)  & V21  &  & 1'909.09  & -9'090.91  & -1'909.09  &  & 11003  & 4100 \\
-27.01.2022  & 3  & 5  & Leveringen/diensten belast met hoog tarief (21\%)  & V21  & 43.39  &  & 206.61  & 43.39  &  & 4100  & 11003 \\
-15.02.2022  & 3  & 8  & Voorbelasting - hoog tarief (21\%)  & IG21  & 138.84  &  & 661.16  & 138.84  &  & 3000  & \\
-\multicolumn{3}{l}{} & Voorbelasting - laag tarief (9\%)  & IG9  & 66.06  &  & 733.94  & 66.06  &  & 3000  & \\
-16.02.2022  & 3  & 9  & BTW bij invoer betaald aan douane - hoog tarief (21\%)  & D21-2  & 109.00  &  & 519.05  & 109.00  &  &  & 1000 \\
-16.02.2022  & 3  & 10  & BTW bij invoer betaald aan douane - hoog tarief (21\%)  & D21-2  & 200.00  &  & 952.38  & 200.00  &  &  & \\
-\multicolumn{3}{l}{} & BTW bij invoer betaald aan douane - laag tarief (9\%)  & D9-2  & 53.00  &  & 588.89  & 53.00  &  &  & \\
-17.02.2022  & 3  & 11  & Leveringen/diensten uit landen binnen de EU - hoog tarief (21\%)  & ICP21  &  & 252.00  & -1'200.00  & -252.00  &  & 20003  & 1020 \\
-17.02.2022  & 3  & 11  & Leveringen/diensten waarbij de omzetbelasting naar u is verlegd -  hoog tarief (21\%)  & VR21  &  & 252.00  & -1'200.00  & -252.00  &  & 4300  & 4300 \\
-19.02.2022  & 3  & 12  & Leveringen/diensten uit landen binnen de EU - laag tarief (9\%)  & ICP9  &  & 81.00  & -900.00  & -81.00  &  & 20003  & 1020 \\
-19.02.2022  & 3  & 12  & Leveringen/diensten waarbij de omzetbelasting naar u is verlegd -  laag tarief (9\%)  & VR9  &  & 81.00  & -900.00  & -81.00  &  & 4300  & 4300 \\
-02.03.2022  & 3  & 13  & Leveringen/diensten waarbij de omzetbelasting naar u is verlegd -  hoog tarief (21\%)  & VR21  &  & 698.78  & -3'327.50  & -698.78  &  & 2070  & 2070 \\
-02.03.2022  & 3  & 13  & Voorbelasting - hoog tarief (21\%)  & IG21  & 577.50  &  & 2'750.00  & 577.50  &  & 1170  & 1170 \\
-19.03.2022  & 3  & 14  & Voorbelasting - laag tarief (9\%)  & IG9  & 24.77  &  & 275.23  & 24.77  &  & 3240  & 20003 \\
-19.03.2022  & 3  & 14  & Voorbelasting - laag tarief (0\%)  & IG0  &  &  & 150.00  &  &  & 3240  & 20003 \\
-19.03.2022  & 3  & 14  & Voorbelasting vrijgesteld  & IGV  &  &  & 150.00  &  &  & 3240  & 20003 \\
-30.03.2022  & 3  & 15  & Privégebruik auto van de zaak 2,7 \%  & PG27  &  & 8.10  & -300.00  & -8.10  &  & 1010  & 3220 \\
-30.03.2022  & 3  & 15  & Privégebruik auto van de zaak 1,5\%  & PG15  &  & 3.00  & -200.00  & -3.00  &  & 1010  & 3220 \\
-30.03.2022  & 3  & 15  & Privégebruik goederen \& diensten hoog tarief (21\%)  & PG21  &  & 42.00  & -200.00  & -42.00  &  & 1010  & 3270 \\
-30.03.2022  & 3  & 15  & Privégebruik goederen \& diensten  laag tarief (9\%)  & PG9  &  & 9.00  & -100.00  & -9.00  &  & 1010  & 3240 \\
-31.03.2022  & 3  & 16  & Leveringen naar landen buiten de EU (uitvoer)  & VX  &  &  & -5'000.00  &  &  & 11003  & 4100 \\
-31.03.2022  & 3  & 16  & Leveringen naar of diensten in landen binnen de EU  & VEU  &  &  & -2'000.00  &  &  & 11002  & 4000 \\
-31.03.2022  & 3  & 16  & Installatie/afstandsverkopen binnen de EU  & VEUI  &  &  & -1'000.00  &  &  & 11002  & 4200 \\
-31.03.2022  & 3  & 17  & Leveringen/diensten uit landen buiten de EU - hoog tarief (21\%)  & VIX21  &  & 420.00  & -2'000.00  & -420.00  &  & 11003  & 4100 \\
-31.03.2022  & 3  & 17  & Leveringen/diensten uit landen buiten de EU - laag tarief (9\%)  & VIX9  &  & 180.00  & -2'000.00  & -180.00  &  & 11003  & 4000 \\
-01.01.2022  & 3  & 1  & Leveringen/diensten belast met hoog tarief (21\%)  & V21  &  & 86.78  & -413.22  & -86.78  &  & 1000  & 11001 \\
-01.01.2022  & 3  & 1  & Leveringen/diensten belast met laag tarief (9\%)  & V9  &  & 16.51  & -183.49  & -16.51  &  & 1000  & 11001 \\
-01.01.2022  & 3  & 1  & Leveringen/diensten overige tarieven, behalve 0\%   & VOT  &  & 2.94  & -147.06  & -2.94  &  & 11001  & 4000 \\
-01.01.2022  & 3  & 1  & Leveringen/diensten belast met 0\% of niet bij u belast  & V0  &  &  & -200.00  &  &  & 11001  & 4000 \\
-19.01.2022  & 3  & 2  & Voorbelasting - hoog tarief (21\%)  & IG21  & 69.42  &  & 330.58  & 69.42  &  & 3280  & 20003 \\
-23.02.2022  & 3  & 4  & Leveringen/diensten belast met hoog tarief (21\%)  & V21  &  & 2'082.64  & -9'917.36  & -2'082.64  &  & 11003  & 4100 \\
-27.02.2022  & 3  & 5  & Leveringen/diensten belast met hoog tarief (21\%)  & V21  & 34.71  &  & 165.29  & 34.71  &  & 4100  & 11003 \\
-15.04.2022  & 3  & 8  & Voorbelasting - hoog tarief (21\%)  & IG21  & 138.84  &  & 661.16  & 138.84  &  & 3000  & \\
-\multicolumn{3}{l}{} & Voorbelasting - laag tarief (9\%)  & IG9  & 41.28  &  & 458.72  & 41.28  &  & 3000  & \\
-01.05.2022  & 3  & 9  & BTW bij invoer betaald aan douane - hoog tarief (21\%)  & D21-2  & 209.00  &  & 995.24  & 209.00  &  &  & 1000 \\
-15.05.2022  & 3  & 10  & BTW bij invoer betaald aan douane - hoog tarief (21\%)  & D21-2  & 150.00  &  & 714.29  & 150.00  &  &  & \\
-\multicolumn{3}{l}{} & BTW bij invoer betaald aan douane - laag tarief (9\%)  & D9-2  & 59.00  &  & 655.56  & 59.00  &  &  & \\
-12.06.2022  & 3  & 11  & Leveringen/diensten uit landen binnen de EU - hoog tarief (21\%)  & ICP21  &  & 210.00  & -1'000.00  & -210.00  &  & 20003  & 1020 \\
-12.06.2022  & 3  & 11  & Leveringen/diensten waarbij de omzetbelasting naar u is verlegd -  hoog tarief (21\%)  & VR21  &  & 210.00  & -1'000.00  & -210.00  &  & 4300  & 4300 \\
-19.06.2022  & 3  & 12  & Leveringen/diensten uit landen binnen de EU - laag tarief (9\%)  & ICP9  &  & 90.00  & -1'000.00  & -90.00  &  & 20003  & 1020 \\
-12.06.2022  & 3  & 12  & Leveringen/diensten waarbij de omzetbelasting naar u is verlegd -  laag tarief (9\%)  & VR9  &  & 90.00  & -1'000.00  & -90.00  &  & 4300  & 4300 \\
-02.07.2022  & 3  & 13  & Leveringen/diensten waarbij de omzetbelasting naar u is verlegd -  hoog tarief (21\%)  & VR21  &  & 577.50  & -2'750.00  & -577.50  &  & 2070  & 2070 \\
-02.07.2022  & 3  & 13  & Voorbelasting - hoog tarief (21\%)  & IG21  & 577.50  &  & 2'750.00  & 577.50  &  & 1170  & 1170 \\
-19.07.2022  & 3  & 14  & Voorbelasting - laag tarief (9\%)  & IG9  & 33.03  &  & 366.97  & 33.03  &  & 3240  & 20003 \\
-19.07.2022  & 3  & 14  & Voorbelasting - laag tarief (0\%)  & IG0  &  &  & 200.00  &  &  & 3240  & 20003 \\
-19.07.2022  & 3  & 14  & Voorbelasting vrijgesteld  & IGV  &  &  & 200.00  &  &  & 3240  & 20003 \\
-31.07.2022  & 3  & 15  & Privégebruik auto van de zaak 2,7 \%  & PG27  &  & 8.10  & -300.00  & -8.10  &  & 1010  & 3220 \\
-31.07.2022  & 3  & 15  & Privégebruik auto van de zaak 1,5\%  & PG15  &  & 3.00  & -200.00  & -3.00  &  & 1010  & 3220 \\
-31.07.2022  & 3  & 15  & Privégebruik goederen \& diensten hoog tarief (21\%)  & PG21  &  & 42.00  & -200.00  & -42.00  &  & 1010  & 3270 \\
-31.07.2022  & 3  & 15  & Privégebruik goederen \& diensten  laag tarief (9\%)  & PG9  &  & 9.00  & -100.00  & -9.00  &  & 1010  & 3240 \\
-01.08.2022  & 3  & 16  & Leveringen naar landen buiten de EU (uitvoer)  & VX  &  &  & -5'000.00  &  &  & 11003  & 4100 \\
-01.08.2022  & 3  & 16  & Leveringen naar of diensten in landen binnen de EU  & VEU  &  &  & -2'000.00  &  &  & 11002  & 4000 \\
-01.08.2022  & 3  & 16  & Installatie/afstandsverkopen binnen de EU  & VEUI  &  &  & -1'000.00  &  &  & 11002  & 4200 \\
-01.09.2022  & 3  & 17  & Leveringen/diensten uit landen buiten de EU - hoog tarief (21\%)  & VIX21  &  & 420.00  & -2'000.00  & -420.00  &  & 11003  & 4100 \\
-01.09.2022  & 3  & 17  & Leveringen/diensten uit landen buiten de EU - laag tarief (9\%)  & VIX9  &  & 180.00  & -2'000.00  & -180.00  &  & 11003  & 4000 \\
-Total  & \multicolumn{7}{l}{} & -5'468.77 \\
+\begin{longtable}[l]{ l  l  l  l  l  l  l  l  l  l  l }
+Date  & Doc  & Description  & Vat Code  & Debit  & Credit  & Vat Taxable  & Vat Amount  & Notes  & AccountDebit  & AccountCredit \\
+01.01.2022  & 1  & Leveringen/diensten belast met hoog tarief (21\%)  & V21  &  & 104.13  & -495.87  & -104.13  &  & 1000  & 11001 \\
+01.01.2022  & 1  & Leveringen/diensten belast met laag tarief (9\%)  & V9  &  & 24.77  & -275.23  & -24.77  &  & 1000  & 11001 \\
+01.01.2022  & 1  & Leveringen/diensten overige tarieven, behalve 0\%   & VOT  &  & 4.90  & -245.10  & -4.90  &  & 11001  & 4000 \\
+01.01.2022  & 1  & Leveringen/diensten belast met 0\% of niet bij u belast  & V0  &  &  & -200.00  &  &  & 11001  & 4000 \\
+19.01.2022  & 2  & Voorbelasting - hoog tarief (21\%)  & IG21  & 104.13  &  & 495.87  & 104.13  &  & 3280  & 20003 \\
+23.01.2022  & 4  & Leveringen/diensten belast met hoog tarief (21\%)  & V21  &  & 1'909.09  & -9'090.91  & -1'909.09  &  & 11003  & 4100 \\
+27.01.2022  & 5  & Leveringen/diensten belast met hoog tarief (21\%)  & V21  & 43.39  &  & 206.61  & 43.39  &  & 4100  & 11003 \\
+15.02.2022  & 8  & Voorbelasting - hoog tarief (21\%)  & IG21  & 138.84  &  & 661.16  & 138.84  &  & 3000  & \\
+\multicolumn{2}{l}{} & Voorbelasting - laag tarief (9\%)  & IG9  & 66.06  &  & 733.94  & 66.06  &  & 3000  & \\
+16.02.2022  & 9  & BTW bij invoer betaald aan douane - hoog tarief (21\%)  & D21-2  & 109.00  &  & 519.05  & 109.00  &  &  & 1000 \\
+16.02.2022  & 10  & BTW bij invoer betaald aan douane - hoog tarief (21\%)  & D21-2  & 200.00  &  & 952.38  & 200.00  &  &  & \\
+\multicolumn{2}{l}{} & BTW bij invoer betaald aan douane - laag tarief (9\%)  & D9-2  & 53.00  &  & 588.89  & 53.00  &  &  & \\
+17.02.2022  & 11  & Leveringen/diensten uit landen binnen de EU - hoog tarief (21\%)  & ICP21  &  & 252.00  & -1'200.00  & -252.00  &  & 20003  & 1020 \\
+17.02.2022  & 11  & Leveringen/diensten waarbij de omzetbelasting naar u is verlegd -  hoog tarief (21\%)  & VR21  &  & 252.00  & -1'200.00  & -252.00  &  & 4300  & 4300 \\
+19.02.2022  & 12  & Leveringen/diensten uit landen binnen de EU - laag tarief (9\%)  & ICP9  &  & 81.00  & -900.00  & -81.00  &  & 20003  & 1020 \\
+19.02.2022  & 12  & Leveringen/diensten waarbij de omzetbelasting naar u is verlegd -  laag tarief (9\%)  & VR9  &  & 81.00  & -900.00  & -81.00  &  & 4300  & 4300 \\
+02.03.2022  & 13  & Leveringen/diensten waarbij de omzetbelasting naar u is verlegd -  hoog tarief (21\%)  & VR21  &  & 698.78  & -3'327.50  & -698.78  &  & 2070  & 2070 \\
+02.03.2022  & 13  & Voorbelasting - hoog tarief (21\%)  & IG21  & 577.50  &  & 2'750.00  & 577.50  &  & 1170  & 1170 \\
+19.03.2022  & 14  & Voorbelasting - laag tarief (9\%)  & IG9  & 24.77  &  & 275.23  & 24.77  &  & 3240  & 20003 \\
+19.03.2022  & 14  & Voorbelasting - laag tarief (0\%)  & IG0  &  &  & 150.00  &  &  & 3240  & 20003 \\
+19.03.2022  & 14  & Voorbelasting vrijgesteld  & IGV  &  &  & 150.00  &  &  & 3240  & 20003 \\
+30.03.2022  & 15  & Privégebruik auto van de zaak 2,7 \%  & PG27  &  & 8.10  & -300.00  & -8.10  &  & 1010  & 3220 \\
+30.03.2022  & 15  & Privégebruik auto van de zaak 1,5\%  & PG15  &  & 3.00  & -200.00  & -3.00  &  & 1010  & 3220 \\
+30.03.2022  & 15  & Privégebruik goederen \& diensten hoog tarief (21\%)  & PG21  &  & 42.00  & -200.00  & -42.00  &  & 1010  & 3270 \\
+30.03.2022  & 15  & Privégebruik goederen \& diensten  laag tarief (9\%)  & PG9  &  & 9.00  & -100.00  & -9.00  &  & 1010  & 3240 \\
+31.03.2022  & 16  & Leveringen naar landen buiten de EU (uitvoer)  & VX  &  &  & -5'000.00  &  &  & 11003  & 4100 \\
+31.03.2022  & 16  & Leveringen naar of diensten in landen binnen de EU  & VEU  &  &  & -2'000.00  &  &  & 11002  & 4000 \\
+31.03.2022  & 16  & Installatie/afstandsverkopen binnen de EU  & VEUI  &  &  & -1'000.00  &  &  & 11002  & 4200 \\
+31.03.2022  & 17  & Leveringen/diensten uit landen buiten de EU - hoog tarief (21\%)  & VIX21  &  & 420.00  & -2'000.00  & -420.00  &  & 11003  & 4100 \\
+31.03.2022  & 17  & Leveringen/diensten uit landen buiten de EU - laag tarief (9\%)  & VIX9  &  & 180.00  & -2'000.00  & -180.00  &  & 11003  & 4000 \\
+01.01.2022  & 1  & Leveringen/diensten belast met hoog tarief (21\%)  & V21  &  & 86.78  & -413.22  & -86.78  &  & 1000  & 11001 \\
+01.01.2022  & 1  & Leveringen/diensten belast met laag tarief (9\%)  & V9  &  & 16.51  & -183.49  & -16.51  &  & 1000  & 11001 \\
+01.01.2022  & 1  & Leveringen/diensten overige tarieven, behalve 0\%   & VOT  &  & 2.94  & -147.06  & -2.94  &  & 11001  & 4000 \\
+01.01.2022  & 1  & Leveringen/diensten belast met 0\% of niet bij u belast  & V0  &  &  & -200.00  &  &  & 11001  & 4000 \\
+19.01.2022  & 2  & Voorbelasting - hoog tarief (21\%)  & IG21  & 69.42  &  & 330.58  & 69.42  &  & 3280  & 20003 \\
+23.02.2022  & 4  & Leveringen/diensten belast met hoog tarief (21\%)  & V21  &  & 2'082.64  & -9'917.36  & -2'082.64  &  & 11003  & 4100 \\
+27.02.2022  & 5  & Leveringen/diensten belast met hoog tarief (21\%)  & V21  & 34.71  &  & 165.29  & 34.71  &  & 4100  & 11003 \\
+15.04.2022  & 8  & Voorbelasting - hoog tarief (21\%)  & IG21  & 138.84  &  & 661.16  & 138.84  &  & 3000  & \\
+\multicolumn{2}{l}{} & Voorbelasting - laag tarief (9\%)  & IG9  & 41.28  &  & 458.72  & 41.28  &  & 3000  & \\
+01.05.2022  & 9  & BTW bij invoer betaald aan douane - hoog tarief (21\%)  & D21-2  & 209.00  &  & 995.24  & 209.00  &  &  & 1000 \\
+15.05.2022  & 10  & BTW bij invoer betaald aan douane - hoog tarief (21\%)  & D21-2  & 150.00  &  & 714.29  & 150.00  &  &  & \\
+\multicolumn{2}{l}{} & BTW bij invoer betaald aan douane - laag tarief (9\%)  & D9-2  & 59.00  &  & 655.56  & 59.00  &  &  & \\
+12.06.2022  & 11  & Leveringen/diensten uit landen binnen de EU - hoog tarief (21\%)  & ICP21  &  & 210.00  & -1'000.00  & -210.00  &  & 20003  & 1020 \\
+12.06.2022  & 11  & Leveringen/diensten waarbij de omzetbelasting naar u is verlegd -  hoog tarief (21\%)  & VR21  &  & 210.00  & -1'000.00  & -210.00  &  & 4300  & 4300 \\
+19.06.2022  & 12  & Leveringen/diensten uit landen binnen de EU - laag tarief (9\%)  & ICP9  &  & 90.00  & -1'000.00  & -90.00  &  & 20003  & 1020 \\
+12.06.2022  & 12  & Leveringen/diensten waarbij de omzetbelasting naar u is verlegd -  laag tarief (9\%)  & VR9  &  & 90.00  & -1'000.00  & -90.00  &  & 4300  & 4300 \\
+02.07.2022  & 13  & Leveringen/diensten waarbij de omzetbelasting naar u is verlegd -  hoog tarief (21\%)  & VR21  &  & 577.50  & -2'750.00  & -577.50  &  & 2070  & 2070 \\
+02.07.2022  & 13  & Voorbelasting - hoog tarief (21\%)  & IG21  & 577.50  &  & 2'750.00  & 577.50  &  & 1170  & 1170 \\
+19.07.2022  & 14  & Voorbelasting - laag tarief (9\%)  & IG9  & 33.03  &  & 366.97  & 33.03  &  & 3240  & 20003 \\
+19.07.2022  & 14  & Voorbelasting - laag tarief (0\%)  & IG0  &  &  & 200.00  &  &  & 3240  & 20003 \\
+19.07.2022  & 14  & Voorbelasting vrijgesteld  & IGV  &  &  & 200.00  &  &  & 3240  & 20003 \\
+31.07.2022  & 15  & Privégebruik auto van de zaak 2,7 \%  & PG27  &  & 8.10  & -300.00  & -8.10  &  & 1010  & 3220 \\
+31.07.2022  & 15  & Privégebruik auto van de zaak 1,5\%  & PG15  &  & 3.00  & -200.00  & -3.00  &  & 1010  & 3220 \\
+31.07.2022  & 15  & Privégebruik goederen \& diensten hoog tarief (21\%)  & PG21  &  & 42.00  & -200.00  & -42.00  &  & 1010  & 3270 \\
+31.07.2022  & 15  & Privégebruik goederen \& diensten  laag tarief (9\%)  & PG9  &  & 9.00  & -100.00  & -9.00  &  & 1010  & 3240 \\
+01.08.2022  & 16  & Leveringen naar landen buiten de EU (uitvoer)  & VX  &  &  & -5'000.00  &  &  & 11003  & 4100 \\
+01.08.2022  & 16  & Leveringen naar of diensten in landen binnen de EU  & VEU  &  &  & -2'000.00  &  &  & 11002  & 4000 \\
+01.08.2022  & 16  & Installatie/afstandsverkopen binnen de EU  & VEUI  &  &  & -1'000.00  &  &  & 11002  & 4200 \\
+01.09.2022  & 17  & Leveringen/diensten uit landen buiten de EU - hoog tarief (21\%)  & VIX21  &  & 420.00  & -2'000.00  & -420.00  &  & 11003  & 4100 \\
+01.09.2022  & 17  & Leveringen/diensten uit landen buiten de EU - laag tarief (9\%)  & VIX9  &  & 180.00  & -2'000.00  & -180.00  &  & 11003  & 4000 \\
+Total  & \multicolumn{6}{l}{} & -5'468.77 \\
 \end{longtable}
-\excltest{22.12.2021 - Journal - Page } \#page-nr \end{reportvalue}
+\excltest{04.01.2022 - Journal - Page } \#page-nr \end{reportvalue}
 \subsection{Test With additional columns (vat related)}
 \begin{reportvalue}{Vat Journal Report}
 VAT Journal \\
@@ -175,90 +175,90 @@ My Company \\
 3136PB City \\
 N123456789B57 \\
 Period 01.01.2021 - 31.12.2022 \\
-\begin{longtable}[l]{ l  l  l  l  l  l  l  l  l  l  l  l }
-Date  & Transaction Type  & Doc  & Description  & Vat Code  & Debit  & Credit  & Vat Taxable  & Vat Amount  & VatAccount  & VatRateEffective  & VatAmount \\
-01.01.2022  & 3  & 1  & Leveringen/diensten belast met hoog tarief (21\%)  & V21  &  & 104.13  & -495.87  & -104.13  & 2050  & -21.00  & -104.13 \\
-01.01.2022  & 3  & 1  & Leveringen/diensten belast met laag tarief (9\%)  & V9  &  & 24.77  & -275.23  & -24.77  & 2050  & -9.00  & -24.77 \\
-01.01.2022  & 3  & 1  & Leveringen/diensten overige tarieven, behalve 0\%   & VOT  &  & 4.90  & -245.10  & -4.90  & 2050  & -2.00  & -4.90 \\
-01.01.2022  & 3  & 1  & Leveringen/diensten belast met 0\% of niet bij u belast  & V0  &  &  & -200.00  &  & 2050  &  & \\
-19.01.2022  & 3  & 2  & Voorbelasting - hoog tarief (21\%)  & IG21  & 104.13  &  & 495.87  & 104.13  & 2050  & 21.00  & 104.13 \\
-23.01.2022  & 3  & 4  & Leveringen/diensten belast met hoog tarief (21\%)  & V21  &  & 1'909.09  & -9'090.91  & -1'909.09  & 2050  & -21.00  & -1909.09 \\
-27.01.2022  & 3  & 5  & Leveringen/diensten belast met hoog tarief (21\%)  & V21  & 43.39  &  & 206.61  & 43.39  & 2050  & 21.00  & 43.39 \\
-15.02.2022  & 3  & 8  & Voorbelasting - hoog tarief (21\%)  & IG21  & 138.84  &  & 661.16  & 138.84  & 2050  & 21.00  & 138.84 \\
-\multicolumn{3}{l}{} & Voorbelasting - laag tarief (9\%)  & IG9  & 66.06  &  & 733.94  & 66.06  & 2050  & 9.00  & 66.06 \\
-16.02.2022  & 3  & 9  & BTW bij invoer betaald aan douane - hoog tarief (21\%)  & D21-2  & 109.00  &  & 519.05  & 109.00  & 2050  & 21.00  & 109.00 \\
-16.02.2022  & 3  & 10  & BTW bij invoer betaald aan douane - hoog tarief (21\%)  & D21-2  & 200.00  &  & 952.38  & 200.00  & 2050  & 21.00  & 200.00 \\
-\multicolumn{3}{l}{} & BTW bij invoer betaald aan douane - laag tarief (9\%)  & D9-2  & 53.00  &  & 588.89  & 53.00  & 2050  & 9.00  & 53.00 \\
-17.02.2022  & 3  & 11  & Leveringen/diensten uit landen binnen de EU - hoog tarief (21\%)  & ICP21  &  & 252.00  & -1'200.00  & -252.00  & 2050  & -21.00  & -252.00 \\
-17.02.2022  & 3  & 11  & Leveringen/diensten waarbij de omzetbelasting naar u is verlegd -  hoog tarief (21\%)  & VR21  &  & 252.00  & -1'200.00  & -252.00  & 2050  & -21.00  & -252.00 \\
-19.02.2022  & 3  & 12  & Leveringen/diensten uit landen binnen de EU - laag tarief (9\%)  & ICP9  &  & 81.00  & -900.00  & -81.00  & 2050  & -9.00  & -81.00 \\
-19.02.2022  & 3  & 12  & Leveringen/diensten waarbij de omzetbelasting naar u is verlegd -  laag tarief (9\%)  & VR9  &  & 81.00  & -900.00  & -81.00  & 2050  & -9.00  & -81.00 \\
-02.03.2022  & 3  & 13  & Leveringen/diensten waarbij de omzetbelasting naar u is verlegd -  hoog tarief (21\%)  & VR21  &  & 698.78  & -3'327.50  & -698.78  & 2050  & -21.00  & -698.78 \\
-02.03.2022  & 3  & 13  & Voorbelasting - hoog tarief (21\%)  & IG21  & 577.50  &  & 2'750.00  & 577.50  & 2050  & 21.00  & 577.50 \\
-19.03.2022  & 3  & 14  & Voorbelasting - laag tarief (9\%)  & IG9  & 24.77  &  & 275.23  & 24.77  & 2050  & 9.00  & 24.77 \\
-19.03.2022  & 3  & 14  & Voorbelasting - laag tarief (0\%)  & IG0  &  &  & 150.00  &  & 2050  &  & \\
-19.03.2022  & 3  & 14  & Voorbelasting vrijgesteld  & IGV  &  &  & 150.00  &  & 2050  &  & \\
-30.03.2022  & 3  & 15  & Privégebruik auto van de zaak 2,7 \%  & PG27  &  & 8.10  & -300.00  & -8.10  & 2050  & -2.70  & -8.10 \\
-30.03.2022  & 3  & 15  & Privégebruik auto van de zaak 1,5\%  & PG15  &  & 3.00  & -200.00  & -3.00  & 2050  & -1.50  & -3.00 \\
-30.03.2022  & 3  & 15  & Privégebruik goederen \& diensten hoog tarief (21\%)  & PG21  &  & 42.00  & -200.00  & -42.00  & 2050  & -21.00  & -42.00 \\
-30.03.2022  & 3  & 15  & Privégebruik goederen \& diensten  laag tarief (9\%)  & PG9  &  & 9.00  & -100.00  & -9.00  & 2050  & -9.00  & -9.00 \\
-31.03.2022  & 3  & 16  & Leveringen naar landen buiten de EU (uitvoer)  & VX  &  &  & -5'000.00  &  & 2050  &  & \\
-31.03.2022  & 3  & 16  & Leveringen naar of diensten in landen binnen de EU  & VEU  &  &  & -2'000.00  &  & 2050  &  & \\
-31.03.2022  & 3  & 16  & Installatie/afstandsverkopen binnen de EU  & VEUI  &  &  & -1'000.00  &  & 2050  &  & \\
-31.03.2022  & 3  & 17  & Leveringen/diensten uit landen buiten de EU - hoog tarief (21\%)  & VIX21  &  & 420.00  & -2'000.00  & -420.00  & 2050  & -21.00  & -420.00 \\
-31.03.2022  & 3  & 17  & Leveringen/diensten uit landen buiten de EU - laag tarief (9\%)  & VIX9  &  & 180.00  & -2'000.00  & -180.00  & 2050  & -9.00  & -180.00 \\
-01.01.2022  & 3  & 1  & Leveringen/diensten belast met hoog tarief (21\%)  & V21  &  & 86.78  & -413.22  & -86.78  & 2050  & -21.00  & -86.78 \\
-01.01.2022  & 3  & 1  & Leveringen/diensten belast met laag tarief (9\%)  & V9  &  & 16.51  & -183.49  & -16.51  & 2050  & -9.00  & -16.51 \\
-01.01.2022  & 3  & 1  & Leveringen/diensten overige tarieven, behalve 0\%   & VOT  &  & 2.94  & -147.06  & -2.94  & 2050  & -2.00  & -2.94 \\
-01.01.2022  & 3  & 1  & Leveringen/diensten belast met 0\% of niet bij u belast  & V0  &  &  & -200.00  &  & 2050  &  & \\
-19.01.2022  & 3  & 2  & Voorbelasting - hoog tarief (21\%)  & IG21  & 69.42  &  & 330.58  & 69.42  & 2050  & 21.00  & 69.42 \\
-23.02.2022  & 3  & 4  & Leveringen/diensten belast met hoog tarief (21\%)  & V21  &  & 2'082.64  & -9'917.36  & -2'082.64  & 2050  & -21.00  & -2082.64 \\
-27.02.2022  & 3  & 5  & Leveringen/diensten belast met hoog tarief (21\%)  & V21  & 34.71  &  & 165.29  & 34.71  & 2050  & 21.00  & 34.71 \\
-15.04.2022  & 3  & 8  & Voorbelasting - hoog tarief (21\%)  & IG21  & 138.84  &  & 661.16  & 138.84  & 2050  & 21.00  & 138.84 \\
-\multicolumn{3}{l}{} & Voorbelasting - laag tarief (9\%)  & IG9  & 41.28  &  & 458.72  & 41.28  & 2050  & 9.00  & 41.28 \\
-01.05.2022  & 3  & 9  & BTW bij invoer betaald aan douane - hoog tarief (21\%)  & D21-2  & 209.00  &  & 995.24  & 209.00  & 2050  & 21.00  & 209.00 \\
-15.05.2022  & 3  & 10  & BTW bij invoer betaald aan douane - hoog tarief (21\%)  & D21-2  & 150.00  &  & 714.29  & 150.00  & 2050  & 21.00  & 150.00 \\
-\multicolumn{3}{l}{} & BTW bij invoer betaald aan douane - laag tarief (9\%)  & D9-2  & 59.00  &  & 655.56  & 59.00  & 2050  & 9.00  & 59.00 \\
-12.06.2022  & 3  & 11  & Leveringen/diensten uit landen binnen de EU - hoog tarief (21\%)  & ICP21  &  & 210.00  & -1'000.00  & -210.00  & 2050  & -21.00  & -210.00 \\
-12.06.2022  & 3  & 11  & Leveringen/diensten waarbij de omzetbelasting naar u is verlegd -  hoog tarief (21\%)  & VR21  &  & 210.00  & -1'000.00  & -210.00  & 2050  & -21.00  & -210.00 \\
-19.06.2022  & 3  & 12  & Leveringen/diensten uit landen binnen de EU - laag tarief (9\%)  & ICP9  &  & 90.00  & -1'000.00  & -90.00  & 2050  & -9.00  & -90.00 \\
-12.06.2022  & 3  & 12  & Leveringen/diensten waarbij de omzetbelasting naar u is verlegd -  laag tarief (9\%)  & VR9  &  & 90.00  & -1'000.00  & -90.00  & 2050  & -9.00  & -90.00 \\
-02.07.2022  & 3  & 13  & Leveringen/diensten waarbij de omzetbelasting naar u is verlegd -  hoog tarief (21\%)  & VR21  &  & 577.50  & -2'750.00  & -577.50  & 2050  & -21.00  & -577.50 \\
-02.07.2022  & 3  & 13  & Voorbelasting - hoog tarief (21\%)  & IG21  & 577.50  &  & 2'750.00  & 577.50  & 2050  & 21.00  & 577.50 \\
-19.07.2022  & 3  & 14  & Voorbelasting - laag tarief (9\%)  & IG9  & 33.03  &  & 366.97  & 33.03  & 2050  & 9.00  & 33.03 \\
-19.07.2022  & 3  & 14  & Voorbelasting - laag tarief (0\%)  & IG0  &  &  & 200.00  &  & 2050  &  & \\
-19.07.2022  & 3  & 14  & Voorbelasting vrijgesteld  & IGV  &  &  & 200.00  &  & 2050  &  & \\
-31.07.2022  & 3  & 15  & Privégebruik auto van de zaak 2,7 \%  & PG27  &  & 8.10  & -300.00  & -8.10  & 2050  & -2.70  & -8.10 \\
-31.07.2022  & 3  & 15  & Privégebruik auto van de zaak 1,5\%  & PG15  &  & 3.00  & -200.00  & -3.00  & 2050  & -1.50  & -3.00 \\
-31.07.2022  & 3  & 15  & Privégebruik goederen \& diensten hoog tarief (21\%)  & PG21  &  & 42.00  & -200.00  & -42.00  & 2050  & -21.00  & -42.00 \\
-31.07.2022  & 3  & 15  & Privégebruik goederen \& diensten  laag tarief (9\%)  & PG9  &  & 9.00  & -100.00  & -9.00  & 2050  & -9.00  & -9.00 \\
-01.08.2022  & 3  & 16  & Leveringen naar landen buiten de EU (uitvoer)  & VX  &  &  & -5'000.00  &  & 2050  &  & \\
-01.08.2022  & 3  & 16  & Leveringen naar of diensten in landen binnen de EU  & VEU  &  &  & -2'000.00  &  & 2050  &  & \\
-01.08.2022  & 3  & 16  & Installatie/afstandsverkopen binnen de EU  & VEUI  &  &  & -1'000.00  &  & 2050  &  & \\
-01.09.2022  & 3  & 17  & Leveringen/diensten uit landen buiten de EU - hoog tarief (21\%)  & VIX21  &  & 420.00  & -2'000.00  & -420.00  & 2050  & -21.00  & -420.00 \\
-01.09.2022  & 3  & 17  & Leveringen/diensten uit landen buiten de EU - laag tarief (9\%)  & VIX9  &  & 180.00  & -2'000.00  & -180.00  & 2050  & -9.00  & -180.00 \\
-Total  & \multicolumn{7}{l}{} & -5'468.77 \\
+\begin{longtable}[l]{ l  l  l  l  l  l  l  l  l  l  l }
+Date  & Doc  & Description  & Vat Code  & Debit  & Credit  & Vat Taxable  & Vat Amount  & VatAccount  & VatRateEffective  & VatAmount \\
+01.01.2022  & 1  & Leveringen/diensten belast met hoog tarief (21\%)  & V21  &  & 104.13  & -495.87  & -104.13  & 2050  & -21.00  & -104.13 \\
+01.01.2022  & 1  & Leveringen/diensten belast met laag tarief (9\%)  & V9  &  & 24.77  & -275.23  & -24.77  & 2050  & -9.00  & -24.77 \\
+01.01.2022  & 1  & Leveringen/diensten overige tarieven, behalve 0\%   & VOT  &  & 4.90  & -245.10  & -4.90  & 2050  & -2.00  & -4.90 \\
+01.01.2022  & 1  & Leveringen/diensten belast met 0\% of niet bij u belast  & V0  &  &  & -200.00  &  & 2050  &  & \\
+19.01.2022  & 2  & Voorbelasting - hoog tarief (21\%)  & IG21  & 104.13  &  & 495.87  & 104.13  & 2050  & 21.00  & 104.13 \\
+23.01.2022  & 4  & Leveringen/diensten belast met hoog tarief (21\%)  & V21  &  & 1'909.09  & -9'090.91  & -1'909.09  & 2050  & -21.00  & -1909.09 \\
+27.01.2022  & 5  & Leveringen/diensten belast met hoog tarief (21\%)  & V21  & 43.39  &  & 206.61  & 43.39  & 2050  & 21.00  & 43.39 \\
+15.02.2022  & 8  & Voorbelasting - hoog tarief (21\%)  & IG21  & 138.84  &  & 661.16  & 138.84  & 2050  & 21.00  & 138.84 \\
+\multicolumn{2}{l}{} & Voorbelasting - laag tarief (9\%)  & IG9  & 66.06  &  & 733.94  & 66.06  & 2050  & 9.00  & 66.06 \\
+16.02.2022  & 9  & BTW bij invoer betaald aan douane - hoog tarief (21\%)  & D21-2  & 109.00  &  & 519.05  & 109.00  & 2050  & 21.00  & 109.00 \\
+16.02.2022  & 10  & BTW bij invoer betaald aan douane - hoog tarief (21\%)  & D21-2  & 200.00  &  & 952.38  & 200.00  & 2050  & 21.00  & 200.00 \\
+\multicolumn{2}{l}{} & BTW bij invoer betaald aan douane - laag tarief (9\%)  & D9-2  & 53.00  &  & 588.89  & 53.00  & 2050  & 9.00  & 53.00 \\
+17.02.2022  & 11  & Leveringen/diensten uit landen binnen de EU - hoog tarief (21\%)  & ICP21  &  & 252.00  & -1'200.00  & -252.00  & 2050  & -21.00  & -252.00 \\
+17.02.2022  & 11  & Leveringen/diensten waarbij de omzetbelasting naar u is verlegd -  hoog tarief (21\%)  & VR21  &  & 252.00  & -1'200.00  & -252.00  & 2050  & -21.00  & -252.00 \\
+19.02.2022  & 12  & Leveringen/diensten uit landen binnen de EU - laag tarief (9\%)  & ICP9  &  & 81.00  & -900.00  & -81.00  & 2050  & -9.00  & -81.00 \\
+19.02.2022  & 12  & Leveringen/diensten waarbij de omzetbelasting naar u is verlegd -  laag tarief (9\%)  & VR9  &  & 81.00  & -900.00  & -81.00  & 2050  & -9.00  & -81.00 \\
+02.03.2022  & 13  & Leveringen/diensten waarbij de omzetbelasting naar u is verlegd -  hoog tarief (21\%)  & VR21  &  & 698.78  & -3'327.50  & -698.78  & 2050  & -21.00  & -698.78 \\
+02.03.2022  & 13  & Voorbelasting - hoog tarief (21\%)  & IG21  & 577.50  &  & 2'750.00  & 577.50  & 2050  & 21.00  & 577.50 \\
+19.03.2022  & 14  & Voorbelasting - laag tarief (9\%)  & IG9  & 24.77  &  & 275.23  & 24.77  & 2050  & 9.00  & 24.77 \\
+19.03.2022  & 14  & Voorbelasting - laag tarief (0\%)  & IG0  &  &  & 150.00  &  & 2050  &  & \\
+19.03.2022  & 14  & Voorbelasting vrijgesteld  & IGV  &  &  & 150.00  &  & 2050  &  & \\
+30.03.2022  & 15  & Privégebruik auto van de zaak 2,7 \%  & PG27  &  & 8.10  & -300.00  & -8.10  & 2050  & -2.70  & -8.10 \\
+30.03.2022  & 15  & Privégebruik auto van de zaak 1,5\%  & PG15  &  & 3.00  & -200.00  & -3.00  & 2050  & -1.50  & -3.00 \\
+30.03.2022  & 15  & Privégebruik goederen \& diensten hoog tarief (21\%)  & PG21  &  & 42.00  & -200.00  & -42.00  & 2050  & -21.00  & -42.00 \\
+30.03.2022  & 15  & Privégebruik goederen \& diensten  laag tarief (9\%)  & PG9  &  & 9.00  & -100.00  & -9.00  & 2050  & -9.00  & -9.00 \\
+31.03.2022  & 16  & Leveringen naar landen buiten de EU (uitvoer)  & VX  &  &  & -5'000.00  &  & 2050  &  & \\
+31.03.2022  & 16  & Leveringen naar of diensten in landen binnen de EU  & VEU  &  &  & -2'000.00  &  & 2050  &  & \\
+31.03.2022  & 16  & Installatie/afstandsverkopen binnen de EU  & VEUI  &  &  & -1'000.00  &  & 2050  &  & \\
+31.03.2022  & 17  & Leveringen/diensten uit landen buiten de EU - hoog tarief (21\%)  & VIX21  &  & 420.00  & -2'000.00  & -420.00  & 2050  & -21.00  & -420.00 \\
+31.03.2022  & 17  & Leveringen/diensten uit landen buiten de EU - laag tarief (9\%)  & VIX9  &  & 180.00  & -2'000.00  & -180.00  & 2050  & -9.00  & -180.00 \\
+01.01.2022  & 1  & Leveringen/diensten belast met hoog tarief (21\%)  & V21  &  & 86.78  & -413.22  & -86.78  & 2050  & -21.00  & -86.78 \\
+01.01.2022  & 1  & Leveringen/diensten belast met laag tarief (9\%)  & V9  &  & 16.51  & -183.49  & -16.51  & 2050  & -9.00  & -16.51 \\
+01.01.2022  & 1  & Leveringen/diensten overige tarieven, behalve 0\%   & VOT  &  & 2.94  & -147.06  & -2.94  & 2050  & -2.00  & -2.94 \\
+01.01.2022  & 1  & Leveringen/diensten belast met 0\% of niet bij u belast  & V0  &  &  & -200.00  &  & 2050  &  & \\
+19.01.2022  & 2  & Voorbelasting - hoog tarief (21\%)  & IG21  & 69.42  &  & 330.58  & 69.42  & 2050  & 21.00  & 69.42 \\
+23.02.2022  & 4  & Leveringen/diensten belast met hoog tarief (21\%)  & V21  &  & 2'082.64  & -9'917.36  & -2'082.64  & 2050  & -21.00  & -2082.64 \\
+27.02.2022  & 5  & Leveringen/diensten belast met hoog tarief (21\%)  & V21  & 34.71  &  & 165.29  & 34.71  & 2050  & 21.00  & 34.71 \\
+15.04.2022  & 8  & Voorbelasting - hoog tarief (21\%)  & IG21  & 138.84  &  & 661.16  & 138.84  & 2050  & 21.00  & 138.84 \\
+\multicolumn{2}{l}{} & Voorbelasting - laag tarief (9\%)  & IG9  & 41.28  &  & 458.72  & 41.28  & 2050  & 9.00  & 41.28 \\
+01.05.2022  & 9  & BTW bij invoer betaald aan douane - hoog tarief (21\%)  & D21-2  & 209.00  &  & 995.24  & 209.00  & 2050  & 21.00  & 209.00 \\
+15.05.2022  & 10  & BTW bij invoer betaald aan douane - hoog tarief (21\%)  & D21-2  & 150.00  &  & 714.29  & 150.00  & 2050  & 21.00  & 150.00 \\
+\multicolumn{2}{l}{} & BTW bij invoer betaald aan douane - laag tarief (9\%)  & D9-2  & 59.00  &  & 655.56  & 59.00  & 2050  & 9.00  & 59.00 \\
+12.06.2022  & 11  & Leveringen/diensten uit landen binnen de EU - hoog tarief (21\%)  & ICP21  &  & 210.00  & -1'000.00  & -210.00  & 2050  & -21.00  & -210.00 \\
+12.06.2022  & 11  & Leveringen/diensten waarbij de omzetbelasting naar u is verlegd -  hoog tarief (21\%)  & VR21  &  & 210.00  & -1'000.00  & -210.00  & 2050  & -21.00  & -210.00 \\
+19.06.2022  & 12  & Leveringen/diensten uit landen binnen de EU - laag tarief (9\%)  & ICP9  &  & 90.00  & -1'000.00  & -90.00  & 2050  & -9.00  & -90.00 \\
+12.06.2022  & 12  & Leveringen/diensten waarbij de omzetbelasting naar u is verlegd -  laag tarief (9\%)  & VR9  &  & 90.00  & -1'000.00  & -90.00  & 2050  & -9.00  & -90.00 \\
+02.07.2022  & 13  & Leveringen/diensten waarbij de omzetbelasting naar u is verlegd -  hoog tarief (21\%)  & VR21  &  & 577.50  & -2'750.00  & -577.50  & 2050  & -21.00  & -577.50 \\
+02.07.2022  & 13  & Voorbelasting - hoog tarief (21\%)  & IG21  & 577.50  &  & 2'750.00  & 577.50  & 2050  & 21.00  & 577.50 \\
+19.07.2022  & 14  & Voorbelasting - laag tarief (9\%)  & IG9  & 33.03  &  & 366.97  & 33.03  & 2050  & 9.00  & 33.03 \\
+19.07.2022  & 14  & Voorbelasting - laag tarief (0\%)  & IG0  &  &  & 200.00  &  & 2050  &  & \\
+19.07.2022  & 14  & Voorbelasting vrijgesteld  & IGV  &  &  & 200.00  &  & 2050  &  & \\
+31.07.2022  & 15  & Privégebruik auto van de zaak 2,7 \%  & PG27  &  & 8.10  & -300.00  & -8.10  & 2050  & -2.70  & -8.10 \\
+31.07.2022  & 15  & Privégebruik auto van de zaak 1,5\%  & PG15  &  & 3.00  & -200.00  & -3.00  & 2050  & -1.50  & -3.00 \\
+31.07.2022  & 15  & Privégebruik goederen \& diensten hoog tarief (21\%)  & PG21  &  & 42.00  & -200.00  & -42.00  & 2050  & -21.00  & -42.00 \\
+31.07.2022  & 15  & Privégebruik goederen \& diensten  laag tarief (9\%)  & PG9  &  & 9.00  & -100.00  & -9.00  & 2050  & -9.00  & -9.00 \\
+01.08.2022  & 16  & Leveringen naar landen buiten de EU (uitvoer)  & VX  &  &  & -5'000.00  &  & 2050  &  & \\
+01.08.2022  & 16  & Leveringen naar of diensten in landen binnen de EU  & VEU  &  &  & -2'000.00  &  & 2050  &  & \\
+01.08.2022  & 16  & Installatie/afstandsverkopen binnen de EU  & VEUI  &  &  & -1'000.00  &  & 2050  &  & \\
+01.09.2022  & 17  & Leveringen/diensten uit landen buiten de EU - hoog tarief (21\%)  & VIX21  &  & 420.00  & -2'000.00  & -420.00  & 2050  & -21.00  & -420.00 \\
+01.09.2022  & 17  & Leveringen/diensten uit landen buiten de EU - laag tarief (9\%)  & VIX9  &  & 180.00  & -2'000.00  & -180.00  & 2050  & -9.00  & -180.00 \\
+Total  & \multicolumn{6}{l}{} & -5'468.77 \\
 \end{longtable}
-\excltest{22.12.2021 - Journal - Page } \#page-nr \end{reportvalue}
+\excltest{04.01.2022 - Journal - Page } \#page-nr \end{reportvalue}
 \section{Test File Without VAT}
 \subsection{Only Base Columns}
 \begin{reportvalue}{Vat Journal Report}
 VAT Journal \\
   \\
 Period 01.01.2021 - 31.12.2022 \\
-\begin{longtable}[l]{ l  l  l  l  l  l  l  l  l }
-Date  & Transaction Type  & Doc  & Description  & Vat Code  & Debit  & Credit  & Vat Taxable  & Vat Amount \\
-Total  & \multicolumn{7}{l}{} & \\
+\begin{longtable}[l]{ l  l  l  l  l  l  l  l }
+Date  & Doc  & Description  & Vat Code  & Debit  & Credit  & Vat Taxable  & Vat Amount \\
+Total  & \multicolumn{6}{l}{} & \\
 \end{longtable}
-\excltest{22.12.2021 - Journal - Page } \#page-nr \end{reportvalue}
+\excltest{04.01.2022 - Journal - Page } \#page-nr \end{reportvalue}
 \subsection{Test With additional columns}
 \begin{reportvalue}{Vat Journal Report}
 VAT Journal \\
   \\
 Period 01.01.2021 - 31.12.2022 \\
-\begin{longtable}[l]{ l  l  l  l  l  l  l  l  l  l  l  l }
-Date  & Transaction Type  & Doc  & Description  & Vat Code  & Debit  & Credit  & Vat Taxable  & Vat Amount  & ContraAccount  & AccountDebitDes  & AccountCreditDes \\
-Total  & \multicolumn{7}{l}{} & \\
+\begin{longtable}[l]{ l  l  l  l  l  l  l  l  l  l  l }
+Date  & Doc  & Description  & Vat Code  & Debit  & Credit  & Vat Taxable  & Vat Amount  & ContraAccount  & AccountDebitDes  & AccountCreditDes \\
+Total  & \multicolumn{6}{l}{} & \\
 \end{longtable}
-\excltest{22.12.2021 - Journal - Page } \#page-nr \end{reportvalue}
+\excltest{04.01.2022 - Journal - Page } \#page-nr \end{reportvalue}
 \end{document}

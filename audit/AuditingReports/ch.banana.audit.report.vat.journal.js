@@ -35,17 +35,16 @@ function exec(string) {
         return;
     }
 
-    //get the additional columns
+    //get user parameters
     var userParam=initDialogParam();
     var savedParam = banDoc.getScriptSettings("ch.banana.audit.settings");
-    var additionalColumnsList = [];
     if (savedParam.length>0)
-        additionalColumnsList = getAdditionalColumns(userParam,savedParam);
+    userParam = getParamObj(userParam,savedParam);
 
-    var dateform = getPeriodSettings();
+    var dateform = getPeriodSettings(banDoc);
     var report = "";
     if (dateform) {
-        report = printReport(dateform.selectionStartDate, dateform.selectionEndDate, additionalColumnsList, banDoc);
+        report = printReport(dateform.selectionStartDate, dateform.selectionEndDate, userParam, banDoc);
     }
 
     //Print the report
@@ -54,32 +53,26 @@ function exec(string) {
 }
 
 /**
- * Takes the list with the name of the columns and transforms it into an array
- * @param {*} savedScriptSettings //Format example: Notes;DebitAccount;CreditAccount...
- * @returns an array with the additionalcolumns
+ * Format the parameters defined by the user.
+ * @param {*} userParam 
+ * @param {*} savedParam 
+ * @returns 
  */
-
- function getAdditionalColumns(userParam,savedParam) {
-    var strColumns = "";
-    var columnsList = [];
+ function getParamObj(userParam,savedParam) {
     userParam = JSON.parse(savedParam);
     userParam=verifyParam(userParam);
 
-    //take the columns defined for the general ledger
-    strColumns = userParam.vatJournal_xmlColumnsName;
-
     //Only call the split method if the string is not empty.
-    if (strColumns)
-        columnsList = strColumns.split(";");
+    if (userParam.vatJournal.xmlColumnsName)
+        userParam.vatJournal.xmlColumnsName = userParam.vatJournal.xmlColumnsName.split(";");
 
-    return columnsList
+    return userParam;
 }
 
-function getVatJournalTable(report, additionalColumnsList) {
+function getVatJournalTable(report, userParam) {
     var vatJournalTable = report.addTable('journalTable');
     //columns
     vatJournalTable.addColumn("Date").setStyleAttributes("width:10%", "tableHeaders");
-    vatJournalTable.addColumn("Transaction Type").setStyleAttributes("width:15%", "tableHeaders");
     vatJournalTable.addColumn("Doc").setStyleAttributes("width:10%", "tableHeaders");
     vatJournalTable.addColumn("Description").setStyleAttributes("width:50%", "tableHeaders");
     vatJournalTable.addColumn("Vat Code").setStyleAttributes("width:15%", "tableHeaders");
@@ -88,15 +81,14 @@ function getVatJournalTable(report, additionalColumnsList) {
     vatJournalTable.addColumn("Vat Taxable").setStyleAttributes("width:15%", "tableHeaders");
     vatJournalTable.addColumn("Vat Amount").setStyleAttributes("width:15%", "tableHeaders");
     //add the additional columns inserted by the user in the settings dialog
-    for (var i = 0; i < additionalColumnsList.length; i++) {
-        vatJournalTable.addColumn(additionalColumnsList[i]).setStyleAttributes("width:15%", "tableHeaders");
+    for (var i = 0; i < userParam.vatJournal.xmlColumnsName.length; i++) {
+        vatJournalTable.addColumn(userParam.vatJournal.xmlColumnsName[i]).setStyleAttributes("width:15%", "tableHeaders");
     }
 
     //header
     var tableHeader = vatJournalTable.getHeader();
     var tableRow = tableHeader.addRow();
     tableRow.addCell("Date", "tableHeaders");
-    tableRow.addCell("Transaction Type", "tableHeaders");
     tableRow.addCell("Doc", "tableHeaders");
     tableRow.addCell("Description", "tableHeaders"); //description of the vat code 
     tableRow.addCell("Vat Code", "tableHeaders");
@@ -105,8 +97,8 @@ function getVatJournalTable(report, additionalColumnsList) {
     tableRow.addCell("Vat Taxable", "tableHeaders");
     tableRow.addCell("Vat Amount", "tableHeaders");
     //add the additional columns inserted by the user in the settings dialog
-    for (var i = 0; i < additionalColumnsList.length; i++) {
-        tableRow.addCell(additionalColumnsList[i], "tableHeaders");
+    for (var i = 0; i < userParam.vatJournal.xmlColumnsName.length; i++) {
+        tableRow.addCell(userParam.vatJournal.xmlColumnsName[i], "tableHeaders");
     }
 
     return vatJournalTable;
@@ -114,7 +106,7 @@ function getVatJournalTable(report, additionalColumnsList) {
 
 
 //Function that creates and prints the report
-function printReport(startDate, endDate, additionalColumnsList, banDoc) {
+function printReport(startDate, endDate, userParam, banDoc) {
 
     //Add a name to the report
     var report = Banana.Report.newReport("Vat Journal");
@@ -123,10 +115,10 @@ function printReport(startDate, endDate, additionalColumnsList, banDoc) {
     addHeader(report,banDoc,startDate, endDate);
 
     //Create a table for the report
-    var table = getVatJournalTable(report, additionalColumnsList);
+    var table = getVatJournalTable(report, userParam);
 
     // Print the Journal
-    printJournal(table, startDate, endDate, additionalColumnsList, banDoc);
+    printJournal(table, startDate, endDate, userParam, banDoc);
 
     //Add a footer to the report
     addFooter(report);
@@ -134,10 +126,13 @@ function printReport(startDate, endDate, additionalColumnsList, banDoc) {
     return report;
 }
 
-function printJournal(table, startDate, endDate, additionalColumnsList, banDoc) {
+function printJournal(table, startDate, endDate, userParam, banDoc) {
 
-    var journalOp = getJournalOperations(startDate, endDate, additionalColumnsList, banDoc);
+    var journalOp = getJournalOperations(startDate, endDate, userParam, banDoc);
     var sumVatAmount = "";
+        //get the span for the empty rows.
+        var span=6;
+        span=span+userParam.vatJournal.xmlColumnsName.length;
 
     for (var op in journalOp) {
         var operation = journalOp[op];
@@ -145,14 +140,13 @@ function printJournal(table, startDate, endDate, additionalColumnsList, banDoc) 
 
         tableRow = table.addRow();
         tableRow.addCell(Banana.Converter.toLocaleDateFormat(operation.date), "centredStyle");
-        tableRow.addCell(operation.type, "centredStyle");
         tableRow.addCell(operation.doc, "centredStyle");
         for (var row in operation.rows) {
             var opRow = operation.rows[row];
             //we want the first row on the same line
             if (!firstRow) {
                 tableRow = table.addRow();
-                tableRow.addCell("", "", 3);
+                tableRow.addCell("", "", 2);
             }
             tableRow.addCell(opRow.description, "textStyle");
             tableRow.addCell(opRow.vatCode, "centredStyle");
@@ -161,8 +155,8 @@ function printJournal(table, startDate, endDate, additionalColumnsList, banDoc) 
             tableRow.addCell(Banana.Converter.toLocaleNumberFormat(opRow.vatTaxable, "2", false), "amountStyle");
             tableRow.addCell(Banana.Converter.toLocaleNumberFormat(opRow.vatAmount, "2", false), "amountStyle");
             sumVatAmount = Banana.SDecimal.add(sumVatAmount, opRow.vatAmount);
-            for (var i = 0; i < additionalColumnsList.length; i++) {
-                tableRow.addCell(opRow[additionalColumnsList[i]], "centredStyle");
+            for (var i = 0; i < userParam.vatJournal.xmlColumnsName.length; i++) {
+                tableRow.addCell(opRow[userParam.vatJournal.xmlColumnsName[i]], "centredStyle");
             }
 
             firstRow = false;
@@ -172,14 +166,14 @@ function printJournal(table, startDate, endDate, additionalColumnsList, banDoc) 
     //add totals
     tableRow = table.addRow();
     tableRow.addCell("Total", "sumStyle");
-    tableRow.addCell("", "", 7);
+    tableRow.addCell("", "", 6);
     tableRow.addCell(Banana.Converter.toLocaleNumberFormat(sumVatAmount, "2", false), "sumStyle");
 
 
 }
 
 //Function that load the jorunal rows
-function getJournalRows(startDate, endDate, additionalColumnsList, banDoc) {
+function getJournalRows(startDate, endDate, userParam, banDoc) {
 
     //array with the journal transactions
     var journalRows = [];
@@ -204,9 +198,9 @@ function getJournalRows(startDate, endDate, additionalColumnsList, banDoc) {
             trRow.jVatTaxable = tRow.value('JVatTaxable');
             trRow.jVatAmount = tRow.value('JAmount');//correspond to vatAmount
             //we save also the values of additional columns
-            for (var j = 0; j < additionalColumnsList.length; j++) {
-                var index = additionalColumnsList[j];
-                trRow[index] = tRow.value(additionalColumnsList[j]);
+            for (var j = 0; j < userParam.vatJournal.xmlColumnsName.length; j++) {
+                var index = userParam.vatJournal.xmlColumnsName[j];
+                trRow[index] = tRow.value(userParam.vatJournal.xmlColumnsName[j]);
             }
 
             if (trRow)
@@ -237,9 +231,9 @@ function dateWithinTheRange(trDate, pStartDate, pEndDate) {
 
 }
 
-function getJournalOperations(startDate, endDate, additionalColumnsList, banDoc) {
+function getJournalOperations(startDate, endDate, userParam, banDoc) {
     //if (tRow.value('JContraAccountGroup') !== previous_contraAccountGroup) {
-    var jRows = getJournalRows(startDate, endDate, additionalColumnsList, banDoc);
+    var jRows = getJournalRows(startDate, endDate, userParam, banDoc);
     var jOperations = [];
 
     /**
@@ -265,8 +259,7 @@ function getJournalOperations(startDate, endDate, additionalColumnsList, banDoc)
     for (var i = 0; i < opIdList.length; i++) {
         var jOp = {};
         jOp = setOperationData(opIdList[i], jRows);
-        //Banana.console.debug(JSON.stringify(jOp));
-        var opRows = setOperationData_rows(opIdList[i], jRows, additionalColumnsList);
+        var opRows = setOperationData_rows(opIdList[i], jRows, userParam);
         jOp.rows = opRows;
 
         jOperations.push(jOp);
@@ -323,7 +316,7 @@ function setOperationData(id, jRows) {
  * @param {*} jRows journal rows
  * @returns 
  */
-function setOperationData_rows(id, jRows, additionalColumnsList) {
+function setOperationData_rows(id, jRows, userParam) {
     var rows = [];
 
     for (var row in jRows) {
@@ -335,9 +328,9 @@ function setOperationData_rows(id, jRows, additionalColumnsList) {
             trRow.creditAmount = jRows[row].jCreditAmount;
             trRow.vatTaxable = jRows[row].jVatTaxable;
             trRow.vatAmount = jRows[row].jVatAmount;
-            for (var j = 0; j < additionalColumnsList.length; j++) {
-                var index = additionalColumnsList[j];
-                trRow[index] = jRows[row][additionalColumnsList[j]];
+            for (var j = 0; j < userParam.vatJournal.xmlColumnsName.length; j++) {
+                var index = userParam.vatJournal.xmlColumnsName[j];
+                trRow[index] = jRows[row][userParam.vatJournal.xmlColumnsName[j]];
             }
             rows.push(trRow);
 

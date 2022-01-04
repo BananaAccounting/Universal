@@ -45,11 +45,16 @@ table {
     text-align: right;
 }
 
-.operationTotalsStyle {
-    border-top: solid;
+.totalTransactionsStyle {
     border-color: rgb(0, 0, 0);
     font-weight: bold;
     text-align: right;
+}
+
+.OpeningAndTotalDescStyle{
+    border-color: rgb(0, 0, 0);
+    font-weight: bold;
+    text-align: left;
 }
 
 .headerStyle{
