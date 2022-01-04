@@ -70,10 +70,10 @@ AuditReports_CustomersAndSuppliers.prototype.testGeneralLedgerReport = function(
      *************************************************/
 
     Test.logger.addSection("Test base columns")
+    var userParam=initUserParam();
 
     //Only base columns
-    var addColumns = [];
-    var report = printReport(banDoc, addColumns);
+    var report = printReport(banDoc, userParam);
 
     Test.logger.addReport("Customers and Suppliers Report, Base Columns", report);
 
@@ -81,8 +81,8 @@ AuditReports_CustomersAndSuppliers.prototype.testGeneralLedgerReport = function(
 
     Test.logger.addSection("Test With additional columns: Language, Fax, Website");
 
-    var addColumns = ["Language", "Fax", "Website"];
-    var report = printReport(banDoc, addColumns);
+    userParam.customersAndSuppliers.xmlColumnsName = ["Language", "Fax", "Website"];
+    var report = printReport(banDoc, userParam);
 
     Test.logger.addReport("Customers and Suppliers Report, Additional Columns", report);
 
@@ -90,4 +90,12 @@ AuditReports_CustomersAndSuppliers.prototype.testGeneralLedgerReport = function(
     Test.logger.close();
 
 
+}
+
+function initUserParam(){
+    var userParam={};
+    userParam.customersAndSuppliers={};
+    userParam.customersAndSuppliers.xmlColumnsName=[];//test all the accounts, also those without transactions
+
+    return userParam;
 }

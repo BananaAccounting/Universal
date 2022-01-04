@@ -60,6 +60,7 @@ AuditReports_VatJournal.prototype.cleanup = function() {
 AuditReports_VatJournal.prototype.testVatJournalReport = function() {
 
     Test.logger.addComment("Test Vat Journal Report");
+    var userParam=initUserParam();
 
     var banDoc_withVAT = Banana.application.openDocument(this.fileAC2_withVAT);
     var banDoc_withoutVAT = Banana.application.openDocument(this.fileAC2_withoutVAT);
@@ -76,8 +77,7 @@ AuditReports_VatJournal.prototype.testVatJournalReport = function() {
     Test.logger.addSubSection("Only Base Columns");
     var startDate = "2021.01.01";
     var endDate = "2022.12.31";
-    var addColumns = [];
-    var report = printReport(startDate, endDate, addColumns, banDoc_withVAT);
+    var report = printReport(startDate, endDate, userParam, banDoc_withVAT);
 
     Test.logger.addReport("VAT journal Report", report);
 
@@ -85,8 +85,8 @@ AuditReports_VatJournal.prototype.testVatJournalReport = function() {
     Test.logger.addSubSection("Test With additional columns");
     var startDate = "2021.01.01";
     var endDate = "2022.12.31";
-    var addColumns = ["Notes", "AccountDebit", "AccountCredit"];
-    var report = printReport(startDate, endDate, addColumns, banDoc_withVAT);
+    userParam.vatJournal.xmlColumnsName = ["Notes", "AccountDebit", "AccountCredit"];
+    var report = printReport(startDate, endDate, userParam, banDoc_withVAT);
 
     Test.logger.addReport("Vat journal Report", report);
 
@@ -95,8 +95,8 @@ AuditReports_VatJournal.prototype.testVatJournalReport = function() {
     Test.logger.addSubSection("Test With additional columns (vat related)");
     var startDate = "2021.01.01";
     var endDate = "2022.12.31";
-    var addColumns = ["VatAccount", "VatRateEffective", "VatAmount"];
-    var report = printReport(startDate, endDate, addColumns, banDoc_withVAT);
+    userParam.vatJournal.xmlColumnsName = ["VatAccount", "VatRateEffective", "VatAmount"];
+    var report = printReport(startDate, endDate, userParam, banDoc_withVAT);
 
     Test.logger.addReport("Vat Journal Report", report);
 
@@ -108,8 +108,8 @@ AuditReports_VatJournal.prototype.testVatJournalReport = function() {
     Test.logger.addSubSection("Only Base Columns");
     var startDate = "2021.01.01";
     var endDate = "2022.12.31";
-    var addColumns = [];
-    var report = printReport(startDate, endDate, addColumns, banDoc_withoutVAT);
+    userParam.vatJournal.xmlColumnsName=[];
+    var report = printReport(startDate, endDate, userParam, banDoc_withoutVAT);
 
     Test.logger.addReport("Vat Journal Report", report);
 
@@ -117,12 +117,19 @@ AuditReports_VatJournal.prototype.testVatJournalReport = function() {
     Test.logger.addSubSection("Test With additional columns");
     var startDate = "2021.01.01";
     var endDate = "2022.12.31";
-    var addColumns = ["ContraAccount", "AccountDebitDes", "AccountCreditDes"];
-    var report = printReport(startDate, endDate, addColumns, banDoc_withoutVAT);
+    userParam.vatJournal.xmlColumnsName = ["ContraAccount", "AccountDebitDes", "AccountCreditDes"];
+    var report = printReport(startDate, endDate, userParam, banDoc_withoutVAT);
 
     Test.logger.addReport("Vat Journal Report", report);
 
     Test.logger.close();
 
 
+}
+function initUserParam(){
+    var userParam={};
+    userParam.vatJournal={};
+    userParam.vatJournal.xmlColumnsName=[];//test all the accounts, also those without transactions
+
+    return userParam;
 }

@@ -38,17 +38,16 @@ function exec() {
         return;
     }
 
-    //get the additional columns
+    //get user parameters
     var userParam=initDialogParam();
     var savedParam = banDoc.getScriptSettings("ch.banana.audit.settings");
-    var additionalColumnsList = [];
     if (savedParam.length>0)
-        additionalColumnsList = getAdditionalColumns(userParam,savedParam);
+    userParam = getParamObj(userParam,savedParam);
 
-    var dateform = getPeriodSettings();
+    var dateform = getPeriodSettings(banDoc);
     var report = "";
     if (dateform) {
-        report = printReport(dateform.selectionStartDate, dateform.selectionEndDate, additionalColumnsList, banDoc);
+        report = printReport(dateform.selectionStartDate, dateform.selectionEndDate, userParam, banDoc);
     }
 
     //print the report
@@ -57,31 +56,26 @@ function exec() {
 }
 
 /**
- * Takes the list with the name of the columns and transforms it into an array
- * @param {*} savedScriptSettings //Format example: Notes;DebitAccount;CreditAccount...
- * @returns an array with the additionalcolumns
+ * Format the parameters defined by the user.
+ * @param {*} userParam 
+ * @param {*} savedParam 
+ * @returns 
  */
-function getAdditionalColumns(userParam,savedParam) {
-    var strColumns = "";
-    var columnsList = [];
+function getParamObj(userParam,savedParam) {
     userParam = JSON.parse(savedParam);
     userParam=verifyParam(userParam);
 
-    //take the columns defined for the general ledger
-    strColumns = userParam.journal_xmlColumnsName;
-
     //Only call the split method if the string is not empty.
-    if (strColumns)
-        columnsList = strColumns.split(";");
+    if (userParam.journal.xmlColumnsName)
+        userParam.journal.xmlColumnsName = userParam.journal.xmlColumnsName.split(";");
 
-    return columnsList
+    return userParam;
 }
 
-function getJournalTable(report,additionalColumnsList) {
+function getJournalTable(report,userParam) {
     var journalTable = report.addTable('journalTable');
     //columns
     journalTable.addColumn("Date").setStyleAttributes("width:10%", "tableHeaders");
-    journalTable.addColumn("Transaction Type").setStyleAttributes("width:20%", "tableHeaders");
     journalTable.addColumn("Doc").setStyleAttributes("width:10%", "tableHeaders");
     journalTable.addColumn("Description").setStyleAttributes("width:50%", "tableHeaders");
     journalTable.addColumn("Account").setStyleAttributes("width:20%", "tableHeaders");
@@ -89,15 +83,14 @@ function getJournalTable(report,additionalColumnsList) {
     journalTable.addColumn("Credit").setStyleAttributes("width:15%", "tableHeaders");
     journalTable.addColumn("Amount").setStyleAttributes("width:15%", "tableHeaders");
     //add the additional columns inserted by the user in the settings dialog
-    for (var i = 0; i < additionalColumnsList.length; i++) {
-        journalTable.addColumn(additionalColumnsList[i]).setStyleAttributes("width:15%", "tableHeaders");
+    for (var i = 0; i < userParam.journal.xmlColumnsName.length; i++) {
+        journalTable.addColumn(userParam.journal.xmlColumnsName[i]).setStyleAttributes("width:15%", "tableHeaders");
     }
 
     //header
     var tableHeader = journalTable.getHeader();
     var tableRow = tableHeader.addRow();
     tableRow.addCell("Date", "tableHeaders");
-    tableRow.addCell("Transaction Type", "tableHeaders");
     tableRow.addCell("Doc", "tableHeaders");
     tableRow.addCell("Description", "tableHeaders");
     tableRow.addCell("Account", "tableHeaders");
@@ -105,8 +98,8 @@ function getJournalTable(report,additionalColumnsList) {
     tableRow.addCell("Credit", "tableHeaders");
     tableRow.addCell("Amount", "tableHeaders");
     //add the additional columns inserted by the user in the settings dialog
-    for (var i = 0; i < additionalColumnsList.length; i++) {
-        tableRow.addCell(additionalColumnsList[i], "tableHeaders");
+    for (var i = 0; i < userParam.journal.xmlColumnsName.length; i++) {
+        tableRow.addCell(userParam.journal.xmlColumnsName[i], "tableHeaders");
     }
 
 
@@ -115,7 +108,7 @@ function getJournalTable(report,additionalColumnsList) {
 
 
 //Function that creates and prints the report
-function printReport(startDate, endDate, additionalColumnsList, banDoc) {
+function printReport(startDate, endDate, userParam, banDoc) {
 
     //Add a name to the report
     var report = Banana.Report.newReport("Journal Balance");
@@ -124,10 +117,10 @@ function printReport(startDate, endDate, additionalColumnsList, banDoc) {
     addHeader(report,banDoc,startDate, endDate);
 
     //Create a table for the report
-    var table = getJournalTable(report, additionalColumnsList);
+    var table = getJournalTable(report, userParam);
 
     /* 1. Print the Jorunal with the totals */
-    printJournal(table, startDate, endDate, additionalColumnsList, banDoc);
+    printJournal(table, startDate, endDate, userParam, banDoc);
 
     //Add a footer to the report
     addFooter(report);
@@ -137,14 +130,14 @@ function printReport(startDate, endDate, additionalColumnsList, banDoc) {
 
 }
 
-function printJournal(table, startDate, endDate, additionalColumnsList, banDoc) {
+function printJournal(table, startDate, endDate, userParam, banDoc) {
 
-    var journalOp = getJournalOperations(startDate, endDate, additionalColumnsList, banDoc);
+    var journalOp = getJournalOperations(startDate, endDate, userParam, banDoc);
     var sumDebit = "";
     var sumCredit = "";
     //get the span for the empty rows.
-    var span=8;
-    span=span+additionalColumnsList.length;
+    var span=7;
+    span=span+userParam.journal.xmlColumnsName.length;
 
     for (var op in journalOp) {
         var operation = journalOp[op];
@@ -154,14 +147,13 @@ function printJournal(table, startDate, endDate, additionalColumnsList, banDoc) 
         var opCredit = "";
         tableRow = table.addRow();
         tableRow.addCell(Banana.Converter.toLocaleDateFormat(operation.date), "centredStyle");
-        tableRow.addCell(operation.type, "centredStyle");
         tableRow.addCell(operation.doc, "centredStyle");
         for (var row in operation.rows) {
             var opRow = operation.rows[row];
             //we want the first row on the same line
             if (!firstRow) {
                 tableRow = table.addRow();
-                tableRow.addCell("", "", 3);
+                tableRow.addCell("", "", 2);
             }
             tableRow.addCell(opRow.description, "textStyle");
             tableRow.addCell(opRow.account, "centredStyle");
@@ -171,18 +163,19 @@ function printJournal(table, startDate, endDate, additionalColumnsList, banDoc) 
             opCredit = Banana.SDecimal.add(opCredit, opRow.creditAmount);
             tableRow.addCell(Banana.Converter.toLocaleNumberFormat(opRow.amount, "2", false), "amountStyle");
             //add the additional columns inserted by the user in the settings dialog
-            for (var i = 0; i < additionalColumnsList.length; i++) {
-                tableRow.addCell(opRow[additionalColumnsList[i]], "centredStyle");
+            for (var i = 0; i < userParam.journal.xmlColumnsName.length; i++) {
+                tableRow.addCell(opRow[userParam.journal.xmlColumnsName[i]], "centredStyle");
             }
             firstRow = false;
         }
         //add the total debit and credit
         tableRow = table.addRow();
-        tableRow.addCell("", "", 5);
-        tableRow.addCell(Banana.Converter.toLocaleNumberFormat(opDebit, "2", false), "operationTotalsStyle");
+        tableRow.addCell("", "centredStyle", 4);
+        tableRow.addCell(Banana.Converter.toLocaleNumberFormat(opDebit, "2", false), "totalTransactionsStyle");
         sumDebit = Banana.SDecimal.add(sumDebit, opDebit);
-        tableRow.addCell(Banana.Converter.toLocaleNumberFormat(opCredit, "2", false), "operationTotalsStyle");
+        tableRow.addCell(Banana.Converter.toLocaleNumberFormat(opCredit, "2", false), "totalTransactionsStyle");
         sumCredit = Banana.SDecimal.add(sumCredit, opCredit);
+        tableRow.addCell(" ", "centredStyle");
 
         //put some space for a better visibility 
         tableRow = table.addRow();
@@ -198,7 +191,7 @@ function printJournal(table, startDate, endDate, additionalColumnsList, banDoc) 
     //add totals
     tableRow = table.addRow();
     tableRow.addCell("Total", "sumStyle");
-    tableRow.addCell("", "", 4);
+    tableRow.addCell("", "", 3);
     tableRow.addCell(Banana.Converter.toLocaleNumberFormat(sumDebit, "2", false), "sumStyle");
     tableRow.addCell(Banana.Converter.toLocaleNumberFormat(sumCredit, "2", false), "sumStyle");
 
@@ -206,7 +199,7 @@ function printJournal(table, startDate, endDate, additionalColumnsList, banDoc) 
 }
 
 //Function that load the jorunal rows
-function getJournalRows(startDate, endDate, additionalColumnsList, banDoc) {
+function getJournalRows(startDate, endDate, userParam, banDoc) {
 
     //array with the journal transactions
     var journalRows = [];
@@ -229,9 +222,9 @@ function getJournalRows(startDate, endDate, additionalColumnsList, banDoc) {
             trRow.JAmount = tRow.value('JAmount');
 
             //we save also the values of additional columns
-            for (var j = 0; j < additionalColumnsList.length; j++) {
-                var index = additionalColumnsList[j];
-                trRow[index] = tRow.value(additionalColumnsList[j]);
+            for (var j = 0; j < userParam.journal.xmlColumnsName.length; j++) {
+                var index = userParam.journal.xmlColumnsName[j];
+                trRow[index] = tRow.value(userParam.journal.xmlColumnsName[j]);
             }
 
             if (trRow)
@@ -268,9 +261,9 @@ function dateWithinTheRange(trDate, pStartDate, pEndDate) {
  * @param {*} endDate 
  * @returns an object eith the journal operations
  */
-function getJournalOperations(startDate, endDate, additionalColumnsList, banDoc) {
+function getJournalOperations(startDate, endDate, userParam, banDoc) {
     //if (tRow.value('JContraAccountGroup') !== previous_contraAccountGroup) {
-    var jRows = getJournalRows(startDate, endDate, additionalColumnsList, banDoc);
+    var jRows = getJournalRows(startDate, endDate, userParam, banDoc);
     var jOperations = [];
 
     /**
@@ -296,8 +289,7 @@ function getJournalOperations(startDate, endDate, additionalColumnsList, banDoc)
     for (var i = 0; i < opIdList.length; i++) {
         var jOp = {};
         jOp = setOperationData(opIdList[i], jRows);
-        //Banana.console.debug(JSON.stringify(jOp));
-        var opRows = setOperationData_rows(opIdList[i], jRows, additionalColumnsList);
+        var opRows = setOperationData_rows(opIdList[i], jRows, userParam);
         jOp.rows = opRows;
 
         jOperations.push(jOp);
@@ -354,7 +346,7 @@ function setOperationData(id, jRows) {
  * @param {*} jRows journal rows
  * @returns 
  */
-function setOperationData_rows(id, jRows, additionalColumnsList) {
+function setOperationData_rows(id, jRows, userParam) {
     var rows = [];
     var prDescription = "";
 
@@ -368,9 +360,9 @@ function setOperationData_rows(id, jRows, additionalColumnsList) {
             trRow.debitAmount = jRows[row].jDebitAmount;
             trRow.creditAmount = jRows[row].jCreditAmount;
             trRow.amount = jRows[row].JAmount;
-            for (var j = 0; j < additionalColumnsList.length; j++) {
-                var index = additionalColumnsList[j];
-                trRow[index] = jRows[row][additionalColumnsList[j]];
+            for (var j = 0; j < userParam.journal.xmlColumnsName.length; j++) {
+                var index = userParam.journal.xmlColumnsName[j];
+                trRow[index] = jRows[row][userParam.journal.xmlColumnsName[j]];
             }
             rows.push(trRow);
 
@@ -500,7 +492,7 @@ function getDocumentInfo(banDoc) {
 
 //The main purpose of this function is to allow the user to enter the accounting period desired and saving it for the next time the script is run.
 //Every time the user runs of the script he has the possibility to change the date of the accounting period.
-function getPeriodSettings() {
+function getPeriodSettings(banDoc) {
 
     //The formeters of the period that we need
     var scriptform = {
@@ -510,7 +502,7 @@ function getPeriodSettings() {
     };
 
     //Read script settings
-    var data = Banana.document.getScriptSettings();
+    var data = banDoc.getScriptSettings();
 
     //Check if there are previously saved settings and read them
     if (data.length > 0) {
@@ -525,8 +517,8 @@ function getPeriodSettings() {
     }
 
     //We take the accounting "starting date" and "ending date" from the document. These will be used as default dates
-    var docStartDate = Banana.document.startPeriod();
-    var docEndDate = Banana.document.endPeriod();
+    var docStartDate = banDoc.startPeriod();
+    var docEndDate = banDoc.endPeriod();
 
     //A dialog window is opened asking the user to insert the desired period. By default is the accounting period
     var selectedDates = Banana.Ui.getPeriod("Period", docStartDate, docEndDate,
@@ -541,7 +533,7 @@ function getPeriodSettings() {
 
         //Save script settings
         var formToString = JSON.stringify(scriptform);
-        var value = Banana.document.setScriptSettings(formToString);
+        var value = banDoc.setScriptSettings(formToString);
     } else {
         //User clicked cancel
         return;

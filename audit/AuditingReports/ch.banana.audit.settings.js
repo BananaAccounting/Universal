@@ -42,10 +42,6 @@ function initDialogParam() {
     dialogparam.vatJournal={};
     dialogparam.vatJournal.xmlColumnsName = "";
 
-    //Trial Balance
-    dialogparam.trialBalance={};
-    dialogparam.trialBalance.xmlColumnsName = "";
-
     //Customers and Suppliers
     dialogparam.customersAndSuppliers={};
     dialogparam.customersAndSuppliers.xmlColumnsName = "";
@@ -57,27 +53,23 @@ function initDialogParam() {
 function verifyParam(userParam){
 
     //general ledger
-    if (!userParam.generalLedger.xmlColumnsName) {
+    if (!userParam.generalLedger) {
+        userParam.generalLedger={};
         userParam.generalLedger.xmlColumnsName = "";
     }
 
-    if (!userParam.generalLedger.includeAccountsWithoutTr) {
-        userParam.generalLedger.includeAccountsWithoutTr = "";
-    }
-
-    if (!userParam.journal.xmlColumnsName) {
+    if (!userParam.journal) {
+        userParam.journal={};
         userParam.journal.xmlColumnsName = "";
     }
 
-    if (!userParam.vatJournal.xmlColumnsName) {
+    if(!userParam.vatJournal){
+        userParam.vatJournal={};
         userParam.vatJournal.xmlColumnsName = "";
     }
 
-    if (!userParam.trialBalance.xmlColumnsName) {
-        userParam.trialBalance.xmlColumnsName = "";
-    }
-
-    if (!userParam.customersAndSuppliers.xmlColumnsName) {
+    if (!userParam.customersAndSuppliers) {
+        userParam.customersAndSuppliers={};
         userParam.customersAndSuppliers.xmlColumnsName = "";
     }
 
@@ -154,7 +146,7 @@ function convertParam(userParam) {
     //Journal additional columns
     var currentParam = {};
     currentParam.name = 'journal';
-    currentParam.title = 'Journal';
+    currentParam.title = 'Additional Columns';
     currentParam.type = 'string';
     currentParam.value = userParam.journal.xmlColumnsName ? userParam.journal.xmlColumnsName : '';
     currentParam.tooltip = "indicates the xml name of the columns you want to add"
@@ -169,13 +161,13 @@ function convertParam(userParam) {
     //VAT Journal additional
     var currentParam = {};
     currentParam.name = 'vatjournal';
-    currentParam.title = "VAT Journal";
+    currentParam.title = "Additional Columns";
     currentParam.type = 'string';
     currentParam.value = userParam.vatJournal.xmlColumnsName ? userParam.vatJournal.xmlColumnsName : '';
     currentParam.tooltip = "indicates the xml name of the columns you want to add"
     currentParam.parentObject = 'vatjournal';
     currentParam.readValue = function() {
-        userParam.vatJournal_xmlColumnsName = this.value;
+        userParam.vatJournal.xmlColumnsName = this.value;
     }
     convertedParam.data.push(currentParam);
 
@@ -184,7 +176,7 @@ function convertParam(userParam) {
     //Customers and Suppliers additional columns
     var currentParam = {};
     currentParam.name = 'customersandSuppliers';
-    currentParam.title = "Customers and Suppliers";
+    currentParam.title = "Additional Columns";
     currentParam.type = 'string';
     currentParam.value = userParam.customersAndSuppliers.xmlColumnsName ? userParam.customersAndSuppliers.xmlColumnsName : '';
     currentParam.tooltip = "indicates the xml name of the columns you want to add"
@@ -206,7 +198,7 @@ function settingsDialog() {
     }
 
     userParam=verifyParam(userParam);
-    var dialogTitle = 'Additional Columns';
+    var dialogTitle = 'Settings';
     var convertedParam = convertParam(userParam);
     if (!Banana.Ui.openPropertyEditor(dialogTitle, convertedParam))
         return false;

@@ -36,37 +36,37 @@ function exec(string) {
         return;
     }
 
-    //get the additional columns
+    //get user parameters
     var userParam=initDialogParam();
     var savedParam = banDoc.getScriptSettings("ch.banana.audit.settings");
-    var additionalColumnsList = [];
     if (savedParam.length>0)
-        additionalColumnsList = getAdditionalColumns(userParam,savedParam);
+        userParam = getParamObj(userParam,savedParam);
 
-    var report = printReport(banDoc, additionalColumnsList);
+    var report = printReport(banDoc, userParam);
 
     //preview of the report
     var stylesheet = getReportStyle();
     Banana.Report.preview(report, stylesheet);
 }
 
-function getAdditionalColumns(userParam,savedParam) {
-    var strColumns = "";
-    var columnsList = [];
+/**
+ * Format the parameters defined by the user.
+ * @param {*} userParam 
+ * @param {*} savedParam 
+ * @returns 
+ */
+ function getParamObj(userParam,savedParam) {
     userParam = JSON.parse(savedParam);
     userParam=verifyParam(userParam);
 
-    //take the columns defined for the general ledger
-    strColumns = userParam.customersAndSuppliers_xmlColumnsName;
-
     //Only call the split method if the string is not empty.
-    if (strColumns)
-        columnsList = strColumns.split(";");
+    if (userParam.customersAndSuppliers.xmlColumnsName)
+        userParam.customersAndSuppliers.xmlColumnsName = userParam.customersAndSuppliers.xmlColumnsName.split(";");
 
-    return columnsList
+    return userParam;
 }
 
-function getCutAndSupTable(report, type, additionalColumnsList) {
+function getCutAndSupTable(report, type, userParam) {
     var cutAndSupTable = report.addTable('cutAndSupTable');
     //title table
     cutAndSupTable.getCaption().addText(type);
@@ -78,8 +78,8 @@ function getCutAndSupTable(report, type, additionalColumnsList) {
     cutAndSupTable.addColumn("Email").setStyleAttributes("width:20%", "tableHeaders");
     cutAndSupTable.addColumn("Address").setStyleAttributes("width:50%", "tableHeaders");
     cutAndSupTable.addColumn("Country").setStyleAttributes("width:20%", "tableHeaders");
-    for (var i = 0; i < additionalColumnsList.length; i++) {
-        cutAndSupTable.addColumn(additionalColumnsList[i]).setStyleAttributes("width:15%", "tableHeaders");
+    for (var i = 0; i < userParam.customersAndSuppliers.xmlColumnsName.length; i++) {
+        cutAndSupTable.addColumn(userParam.customersAndSuppliers.xmlColumnsName[i]).setStyleAttributes("width:15%", "tableHeaders");
     }
 
     //header
@@ -93,8 +93,8 @@ function getCutAndSupTable(report, type, additionalColumnsList) {
     tableRow.addCell("Address", "tableHeaders");
     tableRow.addCell("Country", "tableHeaders");
     //add the additional columns inserted by the user in the settings dialog
-    for (var i = 0; i < additionalColumnsList.length; i++) {
-        tableRow.addCell(additionalColumnsList[i], "tableHeaders");
+    for (var i = 0; i < userParam.customersAndSuppliers.xmlColumnsName.length; i++) {
+        tableRow.addCell(userParam.customersAndSuppliers.xmlColumnsName[i], "tableHeaders");
     }
 
 
@@ -103,7 +103,7 @@ function getCutAndSupTable(report, type, additionalColumnsList) {
 
 
 //Function that creates and prints the report
-function printReport(banDoc, additionalColumnsList) {
+function printReport(banDoc, userParam) {
 
     //Add a name to the report
     var report = Banana.Report.newReport("Customers and Suppliers");
@@ -112,12 +112,12 @@ function printReport(banDoc, additionalColumnsList) {
     addHeader(report,banDoc);
 
     //Create a table for the report
-    var customersTable = getCutAndSupTable(report, "Customers", additionalColumnsList);
+    var customersTable = getCutAndSupTable(report, "Customers", userParam);
     report.addPageBreak();
-    var suppliersTable = getCutAndSupTable(report, "Suppliers", additionalColumnsList);
+    var suppliersTable = getCutAndSupTable(report, "Suppliers", userParam);
 
     /* 1. Print the Jorunal with the totals */
-    printTables(customersTable, suppliersTable, banDoc, additionalColumnsList);
+    printTables(customersTable, suppliersTable, banDoc, userParam);
 
     //Add a footer to the report
     addFooter(report);
@@ -125,10 +125,10 @@ function printReport(banDoc, additionalColumnsList) {
     return report;
 }
 
-function printTables(customersTable, suppliersTable, banDoc, additionalColumnsList) {
+function printTables(customersTable, suppliersTable, banDoc, userParam) {
 
-    var customersData = getCustAndSup("1", "01", banDoc, additionalColumnsList);
-    var suppliersData = getCustAndSup("2", "02", banDoc, additionalColumnsList);
+    var customersData = getCustAndSup("1", "01", banDoc, userParam);
+    var suppliersData = getCustAndSup("2", "02", banDoc, userParam);
 
 
     //add Customers
@@ -144,8 +144,8 @@ function printTables(customersTable, suppliersTable, banDoc, additionalColumnsLi
         tableRow.addCell(customer.address, "centredStyle");
         tableRow.addCell(customer.countryInfo, "centredStyle");
         //add the additional columns inserted by the user in the settings dialog
-        for (var i = 0; i < additionalColumnsList.length; i++) {
-            tableRow.addCell(customer[additionalColumnsList[i]], "centredStyle");
+        for (var i = 0; i < userParam.customersAndSuppliers.xmlColumnsName.length; i++) {
+            tableRow.addCell(customer[userParam.customersAndSuppliers.xmlColumnsName[i]], "centredStyle");
         }
 
     }
@@ -163,8 +163,8 @@ function printTables(customersTable, suppliersTable, banDoc, additionalColumnsLi
         tableRow.addCell(supplier.address, "centredStyle");
         tableRow.addCell(supplier.countryInfo, "centredStyle");
         //add the additional columns inserted by the user in the settings dialog
-        for (var i = 0; i < additionalColumnsList.length; i++) {
-            tableRow.addCell(supplier[additionalColumnsList[i]], "centredStyle");
+        for (var i = 0; i < userParam.customersAndSuppliers.xmlColumnsName.length; i++) {
+            tableRow.addCell(supplier[userParam.customersAndSuppliers.xmlColumnsName[i]], "centredStyle");
         }
     }
 
@@ -172,7 +172,7 @@ function printTables(customersTable, suppliersTable, banDoc, additionalColumnsLi
 }
 
 //Function that load the jorunal rows
-function getCustAndSup(bClass, section, banDoc, additionalColumnsList) {
+function getCustAndSup(bClass, section, banDoc, userParam) {
 
     var elementsList = [];
 
@@ -243,9 +243,9 @@ function getCustAndSup(bClass, section, banDoc, additionalColumnsList) {
             cutsup.phone = phone;
 
             //we save also the values of additional columns
-            for (var j = 0; j < additionalColumnsList.length; j++) {
-                var index = additionalColumnsList[j];
-                cutsup[index] = tRow.value(additionalColumnsList[j]);
+            for (var j = 0; j < userParam.customersAndSuppliers.xmlColumnsName.length; j++) {
+                var index = userParam.customersAndSuppliers.xmlColumnsName[j];
+                cutsup[index] = tRow.value(userParam.customersAndSuppliers.xmlColumnsName[j]);
             }
 
             elementsList.push(cutsup);
