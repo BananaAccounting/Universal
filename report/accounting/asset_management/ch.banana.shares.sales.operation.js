@@ -12,31 +12,31 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-// @id = ch.banana.stocks.sales.operation
+// @id = ch.banana.shares.sales.operation
 // @api = 1.0
 // @pubdate = 2022-01-13
 // @publisher = Banana.ch SA
-// @description = Stock sale operation
+// @description = Shares sales operation
 // @task = app.command
 // @doctype = 100.*
 // @docproperties =
 // @outputformat = none
 // @inputdatasource = none
 // @timeout = -1
+// @includejs = ch.banana.securities.accounts.settings.js
 
 /**
- * This extension takes care of performing calculations and creating the record for the sale of securities with the document change.
+ * This extension takes care of performing calculations and creating the record for the sale of shares with the document change.
  * Sale operation example:
  * 
- * Vend. 10000 stocks UBS                       |	1020    |           |   130'000.00 -----> to Bank, the specific account must be defined in a dialog
- * Vend. 10000 stocks UBS spese banca           |	6900    |	    	|   2'000.00 -------> no idea
- * Vend. 10000 stocks UBS perdita su vendita    |	4200    |	    	|   6'000.00 -----> Quantity multiplied for the difference between avg cost and market price
- * Vend. 10000 stocks UBS                       |		    |   1400	|   138'000.00-----> the stock account (to define how to get it, maybe all the purchase of the year, semester, ...)
+ * Vend. 10000 shares UBS                       |	1020    |           |   130'000.00 
+ * Vend. 10000 shares UBS spese banca           |	6900    |	    	|   2'000.00 
+ * Vend. 10000 shares UBS perdita su vendita    |	4200    |	    	|   6'000.00 
+ * Vend. 10000 shares UBS                       |		    |   1400	|   138'000.00
  * 
  * L'utente dovra definire in un dialogo dei settings:il conto della banca, delle spese bancarie, delle vendite e del titolo
  * 
  */
-
 
 /*******************************************
  * 
@@ -49,6 +49,7 @@ dialog=Banana.Ui.createUi("ch.banana.stocks.sales.ui");
 
 var itemsCombobox = dialog.findChild('item_comboBox');
 var quantityLineEdit = dialog.findChild('quantity_lineEdit');
+var marketPrice_lineEdit=dialog.findChild('marketPrice_lineEdit');
 var closeButton = dialog.findChild('closeButton');
 var percCheckBox = dialog.findChild('perc_checkBox');
 var decCheckBox = dialog.findChild('dec_checkBox');
@@ -60,22 +61,76 @@ dialog.closeDialog = function () {
     dialog.close();
 };
 
-/** Dialog's events declaration */
-closeButton.clicked.connect(dialog, dialog.closeDialog);
+
+function insertComboBoxElements(){
+    listString=[]; //list of the items in the combobox
+    var itemsData=getItemsTableData();
+
+    //fill the listString with the existing items
+    for(var e in itemsData){
+        if(itemsData[e].item)
+            listString.push(itemsData[e].item);
+    }
+    
+    itemsCombobox.insertItems(1, listString);
+}
+
+function getItemsTableData(){
+    //get the items list from the items table
+    var itemsData=[];
+    let table = Banana.document.table("Items");
+    let value = "";
+    if (!table) {
+        return value;
+    }
+    for (var i = 0; i < table.rowCount; i++) {
+        var tRow = table.row(i);
+        var itemData={};
+        itemData.item = tRow.value("ItemsId");
+        itemData.bankAccount=tRow.value("Account");
+        if (itemsData) {
+            itemsData.push(itemData);
+        }
+    }
+    return itemsData;
+}
+
 
 function dialogExec(){
+
+    saleParam={};
+
+    //fill the combobox
+    insertComboBoxElements();
+
     Banana.application.progressBar.pause();
     var dlgResult = dialog.exec();
     Banana.application.progressBar.resume();
 
+    saleParam.selectedItem=itemsCombobox.currentText;
+    saleParam.quantity=quantityLineEdit.text;
+    saleParam.marketPrice=marketPrice_lineEdit.text;
+    saleParam.perc=percCheckBox.checked; //checked property from QAbstractButton
+    saleParam.dec=decCheckBox.checked; //checked property from QAbstractButton
+    saleParam.bankCharges=bankChargesAmountLineEdit.text;
+
     if (dlgResult !== 1)
         return false;
+    else
+        return saleParam;
+
+
 }
+
 
 //Main function
 function exec() {
 
-    dialogExec();
+    //show the dialog to the user abd retrieve the parameters for the sale.
+    var saleParam=dialogExec();
+    //retrieve accounts parameters
+    var accParam = Banana.document.getScriptSettings("ch.banana.securities.accounts.settings");
+    accParam=JSON.parse(accParam);
 
     var banDoc=Banana.document;
     var transactionsList=[];
@@ -90,11 +145,11 @@ function exec() {
     
     transactionsList=getTransactionsTableData(banDoc);
     avgCost=getAverageCost(transactionsList,currentSelectionTop);
-    stocksActualData=getStocksActualData(avgCost)
+    sharesActualData=calculateSharesActualData(avgCost,saleParam)
 
 
     //Creates the document change for the sale of shares
-    salesOpArray = createStocksSalesOpDocChange(currentSelectionBottom,avgCost,stocksActualData);
+    salesOpArray = createSharesSalesOpDocChange(currentSelectionBottom,avgCost,sharesActualData,saleParam,accParam);
 
     jsonDoc = { "format": "documentChange", "error": "" };
     jsonDoc["data"] = salesOpArray;
@@ -106,31 +161,29 @@ function exec() {
 
 }
 
-function getStocksActualData(avgCost){
-    var stocksActualData={};
-    var MARKETCOST="14.6";
-    var TEMPQT="10000";
+function calculateSharesActualData(avgCost,saleParam){
+    var sharesActualData={};
 
-    stocksActualData.avgCost=avgCost;
-    stocksActualData.currentValue=Banana.SDecimal.multiply(stocksActualData.avgCost,TEMPQT);
-    stocksActualData.marketValue=Banana.SDecimal.multiply(MARKETCOST,TEMPQT);
-    stocksActualData.result=Banana.SDecimal.subtract(stocksActualData.currentValue,stocksActualData.marketValue);
-    stocksActualData.profitOnSale=false;
-    if(Banana.SDecimal.sign(stocksActualData.result)=="1")
-        stocksActualData.profitOnSale=true;
+    sharesActualData.avgCost=avgCost;
+    sharesActualData.currentValue=Banana.SDecimal.multiply(sharesActualData.avgCost,saleParam.quantity);
+    sharesActualData.marketValue=Banana.SDecimal.multiply(saleParam.marketPrice,saleParam.quantity);
+    sharesActualData.result=Banana.SDecimal.subtract(sharesActualData.currentValue,sharesActualData.marketValue);
+    sharesActualData.profitOnSale=false;
+    if(Banana.SDecimal.sign(sharesActualData.result)=="1")
+    sharesActualData.profitOnSale=true;
 
-    return stocksActualData;
+    return sharesActualData;
 
 }
 
-function createStocksSalesOpDocChange(currentSelectionBottom,avgCost){
+function createSharesSalesOpDocChange(currentSelectionBottom,avgCost,sharesActualData,saleParam,accParam){
     var jsonDoc = initJsonDoc();
     var rows=[];
 
-    rows.push(ccreateStocksSalesOpDocChange_receivedFromSale(jsonDoc,avgCost,currentSelectionBottom));
-    rows.push(ccreateStocksSalesOpDocChange_bankCharges(jsonDoc,avgCost,currentSelectionBottom));
-    rows.push(createStocksSalesOpDocChange_profitOrLoss(jsonDoc,stocksActualData,currentSelectionBottom));
-    rows.push(createStocksSalesOpDocChange_stockSale(jsonDoc,avgCost,currentSelectionBottom));
+    rows.push(createSharesSalesOpDocChange_receivedFromSale(jsonDoc,currentSelectionBottom,saleParam,accParam));
+    rows.push(createSharesSalesOpDocChange_bankCharges(jsonDoc,currentSelectionBottom,saleParam,accParam));
+    rows.push(createSharesSalesOpDocChange_profitOrLoss(jsonDoc,sharesActualData,currentSelectionBottom,saleParam,accParam));
+    rows.push(createSharesSalesOpDocChange_sharesSale(jsonDoc,avgCost,currentSelectionBottom,saleParam,accParam));
 
     
     var dataUnitFilePorperties = {};
@@ -144,20 +197,19 @@ function createStocksSalesOpDocChange(currentSelectionBottom,avgCost){
     return jsonDoc;
 }
 
-function createStocksSalesOpDocChange_receivedFromSale(jsonDoc,avgCost,currentSelectionBottom){
-    var TEMPTYPE="UBS";
-    var BANKINTERESTSACCOUNT="1020";
-    var RECEIVED="";
+function createSharesSalesOpDocChange_receivedFromSale(jsonDoc,currentSelectionBottom,saleParam,accParam){
 
-    var opDescription="Sale stocks "+TEMPTYPE;
+    //calculate the effective amount entering the bank (x10.01.2022)
+
+    var opDescription="Sale shares "+saleParam.selectedItem;
     currentSelectionBottom=currentSelectionBottom+".3"; //set with the correct format to indicate the sequence
 
     var row={
         "fields":{
             "Date":jsonDoc.creator.executionDate,
             "Description":opDescription,
-            "AccountDebit":BANKINTERESTSACCOUNT,
-            "AmountCurrency":RECEIVED
+            "AccountDebit":accParam.bankAccount,
+            "AmountCurrency":"RECEIVED"
 
         },
         "operation":{
@@ -169,20 +221,17 @@ function createStocksSalesOpDocChange_receivedFromSale(jsonDoc,avgCost,currentSe
     return row;
 }
 
-function createStocksSalesOpDocChange_bankCharges(jsonDoc,avgCost,currentSelectionBottom){
-    var TEMPTYPE="UBS";
-    var BANKINTERESTSACCOUNT="6900";
-    var BANKCHARGES="";
+function createSharesSalesOpDocChange_bankCharges(jsonDoc,currentSelectionBottom,saleParam,accParam){
 
-    var opDescription="Sale stocks "+TEMPTYPE+" bank charges";
+    var opDescription="Sale shares "+saleParam.selectedItem+" bank charges";
     currentSelectionBottom=currentSelectionBottom+".3"; //set with the correct format to indicate the sequence
 
     var row={
         "fields":{
             "Date":jsonDoc.creator.executionDate,
             "Description":opDescription,
-            "AccountDebit":BANKINTERESTSACCOUNT,
-            "AmountCurrency":BANKCHARGES
+            "AccountDebit":accParam.bankCharges,
+            "AmountCurrency":saleParam.bankCharges
 
         },
         "operation":{
@@ -194,21 +243,22 @@ function createStocksSalesOpDocChange_bankCharges(jsonDoc,avgCost,currentSelecti
     return row;
 }
 
-function createStocksSalesOpDocChange_profitOrLoss(jsonDoc,stocksActualData,currentSelectionBottom){
+function createSharesSalesOpDocChange_profitOrLoss(jsonDoc,sharesActualData,currentSelectionBottom,saleParam,accParam){
 
-    var TEMPTYPE="UBS";
-    var SALESACCOUNT="4200";
-    var resultDescription=setResultDecription(stocksActualData.profitOnSale);
+    // set the description based on the result
+    var resultDescription=setResultDecription(sharesActualData.profitOnSale);
+    //get the account based on the result
+    var resultAccount=getResultAccount(sharesActualData.profitOnSale,accParam);
 
-    var opDescription="Sale stocks "+TEMPTYPE+" "+resultDescription;
+    var opDescription="Sale shares "+saleParam.selectedItem+" "+resultDescription;
     currentSelectionBottom=currentSelectionBottom+".3"; //set with the correct format to indicate the sequence
 
     var row={
         "fields":{
             "Date":jsonDoc.creator.executionDate,
             "Description":opDescription,
-            "AccountDebit":SALESACCOUNT,
-            "AmountCurrency":stocksActualData.result //ricordarsi di controllare se si tratta di una contabilita multimoneta o meno
+            "AccountDebit":resultAccount,
+            "AmountCurrency":sharesActualData.result //ricordarsi di controllare se si tratta di una contabilita multimoneta o meno
 
         },
         "operation":{
@@ -221,25 +271,39 @@ function createStocksSalesOpDocChange_profitOrLoss(jsonDoc,stocksActualData,curr
 
 }
 
-function createStocksSalesOpDocChange_stockSale(jsonDoc,avgCost,currentSelectionBottom){
+function getItemAccount(item){
+    itemsData=getItemsTableData();
+    //fill the listString with the existing items
+    if(itemsData){
+        for(var e in itemsData){
+            if(itemsData[e].item==item)
+                return itemsData[e].bankAccount;
+        }
+    }else 
+        return false;
+
+}
+
+function createSharesSalesOpDocChange_sharesSale(jsonDoc,avgCost,currentSelectionBottom,saleParam){
         //temporary UPPERCASE variables, the user will define those values through a dialog
-
-        var TEMPQT="10000";
-        TEMPQT="-"+TEMPQT;
-        var TEMPTYPE="UBS";
-        var STOCKACCOUNT="1400";
+        account=getItemAccount(saleParam.selectedItem);
+        Banana.console.debug(JSON.stringify(saleParam.selectedItem));
+        var quantity="1";
+        if(saleParam.quantity){
+            quantity=saleParam.quantity;
+        }
     
-        var opDescription="Sale stocks "+TEMPTYPE;
+        var opDescription="Sale shares "+saleParam.selectedItem;
         currentSelectionBottom=currentSelectionBottom+".4"; //set with the correct format to indicate the sequence
     
         var row={
             "fields":{
                 "Date":jsonDoc.creator.executionDate,
                 "DocType":"s",
-                "ItemsId":TEMPTYPE,
+                "ItemsId":saleParam.selectedItem,
                 "Description":opDescription,
-                "AccountCredit":STOCKACCOUNT,
-                "Quantity":TEMPQT,
+                "AccountCredit":account,
+                "Quantity":"-"+quantity,
                 "UnitPrice":avgCost
             },
             "operation":{
@@ -249,6 +313,18 @@ function createStocksSalesOpDocChange_stockSale(jsonDoc,avgCost,currentSelection
         }
 
         return row;
+}
+
+function getResultAccount(profitOnSale,accParam){
+    var account="";
+
+    if(profitOnSale){
+        account=accParam.profitOnSecurieties;
+    }else{
+        account=accParam.lossOnSecurieties;
+    }
+
+    return account;
 }
 
 function setResultDecription(profitOnSale){
