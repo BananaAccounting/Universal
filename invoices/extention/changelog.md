@@ -1,5 +1,7 @@
 # Changelog
 
+2022-01-11; [Bug] Fix item unit prices are printed with four decimals;
+
 2021-12-23; [Bug] Fix locale under contact table changed from Locale to LocaleCode;
 
 2021-08-24; [Bug] Fix under macOs' dark mode item's texts are not visible;
