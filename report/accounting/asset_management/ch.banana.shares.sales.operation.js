@@ -47,19 +47,71 @@
 /** Dialog's functions declaration */
 dialog=Banana.Ui.createUi("ch.banana.stocks.sales.ui");
 
+//sales data section objects
 var itemsCombobox = dialog.findChild('item_comboBox');
-var quantityLineEdit = dialog.findChild('quantity_lineEdit');
-var marketPrice_lineEdit=dialog.findChild('marketPrice_lineEdit');
-var closeButton = dialog.findChild('closeButton');
-var percCheckBox = dialog.findChild('perc_checkBox');
-var decCheckBox = dialog.findChild('dec_checkBox');
-var bankChargesAmountLineEdit = dialog.findChild('bank_charges_amount_lineEdit');
+var quantity = dialog.findChild('quantity_lineEdit');
+var marketPrice=dialog.findChild('marketPrice_lineEdit');
+var bankChargesAmount = dialog.findChild('bank_charges_amount_lineEdit');
+
+//registration accounts data section objects
+var bankAccount = dialog.findChild('bankAccount_lineEdit');
+var bankInterest = dialog.findChild('BankInterest_lineEdit');
+var ProfitOnSecurities=dialog.findChild('ProfitOnSecurities_lineEdit');
+var LossOnSecurities = dialog.findChild('LossOnSecurities_lineEdit');
+var interestOnBond = dialog.findChild('interestOnBond_lineEdit');
+
+//preview result label
+var resultPreviewLabel = dialog.findChild('resultPreview_label');
+
+//buttons
 var okButton = dialog.findChild('okButton');
 var closeButton = dialog.findChild('closeButton');
+var calcResultButton = dialog.findChild('calcResult_button');
 
-dialog.closeDialog = function () {
-    dialog.close();
-};
+dialog.calculatResultPreview=function(){
+    
+}
+
+/**
+ * I initialise the parameters, everything is empty at first
+ * @returns 
+ */
+function initParam(){
+    var param={};
+
+    param.salesParam={};
+
+    param.salesParam.quantity="";
+    param.salesParam.marketPrice="";
+    param.salesParam.bankChargesAmount="";
+
+    param.accountsParam={};
+
+    param.accountsParam.bankAccount="";
+    param.accountsParam.bankInterest="";
+    param.accountsParam.ProfitOnSecurities="";
+    param.accountsParam.LossOnSecurities="";
+    param.accountsParam.interestOnBond="";
+
+    return param;
+
+}
+
+/**
+ * 
+ * @param {*} userParam 
+ */
+ function setDialogAccountsParams(userParam){
+    /*setto il testo al dialogo con i parametri esistente (gli ultimi usati)
+    questo lo faccio solo per i conti, le altre informazioni devono essere vuote ogni volta che si avvia
+    il dialogo, siccome cambiano per ogni operazione di vendita, avere i dati precedenti rischierebbe di essere fuorviante
+    */
+    bankAccount.setText(userParam.bankAccount);
+    bankInterest.setText(userParam.bankInterest);
+    ProfitOnSecurities.setText(userParam.ProfitOnSecurities);
+    LossOnSecurities.setText(userParam.LossOnSecurities);
+    interestOnBond.setText(userParam.interestOnBond);
+}
 
 
 function insertComboBoxElements(){
@@ -95,29 +147,61 @@ function getItemsTableData(){
     return itemsData;
 }
 
+/**
+ * Read the params from the dialog
+ */
+function readDialogParams(){
+    var userParam={};
+
+    userParam.selectedItem=itemsCombobox.currentText;
+    userParam.quantity=quantity.text;
+    userParam.marketPrice=marketPrice.text;
+    userParam.bankChargesAmount=bankChargesAmount.text;
+
+    userParam.bankAccount=bankAccount.text;
+    userParam.bankInterest=bankInterest.text;
+    userParam.ProfitOnSecurities=ProfitOnSecurities.text;
+    userParam.LossOnSecurities=LossOnSecurities.text;
+    userParam.interestOnBond=interestOnBond.text;
+
+    return userParam;
+
+
+}
+
 
 function dialogExec(){
 
-    saleParam={};
+    //di default i parametri sono vuoti, poi vengono ripresi quelli inseriti dall utente
 
-    //fill the combobox
+    var savedParam={};
+    var userParam=initParam();
+
+    //If there are resumes the last saved accounts, otherwise it is empty
+    var savedParam = Banana.document.getScriptSettings("ch.banana.shares.sales.operation");
+    if (savedParam.length > 0) {
+        userParam = JSON.parse(savedParam);
+        if(userParam){
+            //set the user params
+            setDialogAccountsParams(userParam);
+        }
+    }
+
+    //fill the combobox with the existent items
     insertComboBoxElements();
-
     Banana.application.progressBar.pause();
     var dlgResult = dialog.exec();
     Banana.application.progressBar.resume();
 
-    saleParam.selectedItem=itemsCombobox.currentText;
-    saleParam.quantity=quantityLineEdit.text;
-    saleParam.marketPrice=marketPrice_lineEdit.text;
-    saleParam.perc=percCheckBox.checked; //checked property from QAbstractButton
-    saleParam.dec=decCheckBox.checked; //checked property from QAbstractButton
-    saleParam.bankCharges=bankChargesAmountLineEdit.text;
+    //Read the params (all of them)
+    userParam=readDialogParams();
+    var paramToString = JSON.stringify(userParam);
+    Banana.document.setScriptSettings("ch.banana.shares.sales.operation", paramToString);
 
     if (dlgResult !== 1)
         return false;
     else
-        return saleParam;
+        return userParam;
 
 
 }
@@ -126,30 +210,32 @@ function dialogExec(){
 //Main function
 function exec() {
 
-    //show the dialog to the user abd retrieve the parameters for the sale.
-    var saleParam=dialogExec();
-    //retrieve accounts parameters
-    var accParam = Banana.document.getScriptSettings("ch.banana.securities.accounts.settings");
-    accParam=JSON.parse(accParam);
-
     var banDoc=Banana.document;
     var transactionsList=[];
     var avgCost="";
     var salesOpArray=[];
+    var multiCurrencyAccounting=false;
     //current selected row
     var currentSelectionTop = banDoc.cursor.selectionTop;
     var currentSelectionBottom = banDoc.cursor.selectionBottom;
 
     if(!banDoc)
         return false;
+
+    //show the dialog
+    var userParam=dialogExec();
+
+    resultPreviewLabel.setText("ciao");
+
     
+    multiCurrencyAccounting=checkIfMultiCurrencyAccounting(banDoc);
     transactionsList=getTransactionsTableData(banDoc);
     avgCost=getAverageCost(transactionsList,currentSelectionTop);
     sharesActualData=calculateSharesActualData(avgCost,saleParam)
 
 
     //Creates the document change for the sale of shares
-    salesOpArray = createSharesSalesOpDocChange(currentSelectionBottom,avgCost,sharesActualData,saleParam,accParam);
+    salesOpArray = createSharesSalesOpDocChange(currentSelectionBottom,avgCost,sharesActualData,saleParam,accParam,multiCurrencyAccounting);
 
     jsonDoc = { "format": "documentChange", "error": "" };
     jsonDoc["data"] = salesOpArray;
@@ -157,6 +243,24 @@ function exec() {
     return jsonDoc;
 
 
+
+
+}
+
+function checkIfMultiCurrencyAccounting(banDoc){
+    //file type numbers
+    var multiCurrency="120";
+    var isMultiCurrency=false;
+
+    //get the document info and check the type of the accounting file
+    var fileNumber=banDoc.info("Base","FileTypeNumber");
+
+    if(fileNumber==multiCurrency){
+        isMultiCurrency=true;
+    }
+
+
+    return isMultiCurrency;
 
 
 }
@@ -176,11 +280,13 @@ function calculateSharesActualData(avgCost,saleParam){
 
 }
 
-function createSharesSalesOpDocChange(currentSelectionBottom,avgCost,sharesActualData,saleParam,accParam){
+function createSharesSalesOpDocChange(currentSelectionBottom,avgCost,sharesActualData,saleParam,accParam,multiCurrencyAccounting){
     var jsonDoc = initJsonDoc();
     var rows=[];
 
-    rows.push(createSharesSalesOpDocChange_receivedFromSale(jsonDoc,currentSelectionBottom,saleParam,accParam));
+    var amountColumn=getAmountColumn(multiCurrencyAccounting);
+
+    rows.push(createSharesSalesOpDocChange_receivedFromSale(jsonDoc,sharesActualData,currentSelectionBottom,saleParam,accParam,amountColumn));
     rows.push(createSharesSalesOpDocChange_bankCharges(jsonDoc,currentSelectionBottom,saleParam,accParam));
     rows.push(createSharesSalesOpDocChange_profitOrLoss(jsonDoc,sharesActualData,currentSelectionBottom,saleParam,accParam));
     rows.push(createSharesSalesOpDocChange_sharesSale(jsonDoc,avgCost,currentSelectionBottom,saleParam,accParam));
@@ -197,9 +303,27 @@ function createSharesSalesOpDocChange(currentSelectionBottom,avgCost,sharesActua
     return jsonDoc;
 }
 
-function createSharesSalesOpDocChange_receivedFromSale(jsonDoc,currentSelectionBottom,saleParam,accParam){
+/**
+ * defines the xml name of the column where the amount is entered 
+ * according to whether it is a multi-currency account or not
+ * @param {*} multiCurrencyAccounting 
+ */
+function getAmountColumn(multiCurrencyAccounting){
+    var columnName="Amount";
 
-    //calculate the effective amount entering the bank (x10.01.2022)
+    if(multiCurrencyAccounting){
+        columnName="AmountCurrency";
+    }
+
+    return columnName;
+}
+
+function createSharesSalesOpDocChange_receivedFromSale(jsonDoc,sharesActualData,currentSelectionBottom,saleParam,accParam,amountColumn){
+
+    //calculate the effective amount entering the bank.
+    var recAmount=Banana.SDecimal.subtract(sharesActualData.currentValue,saleParam.bankCharges); //current shares values minus the bank charges
+    recAmount=Banana.SDecimal.add(recAmount,sharesActualData.result); //plus the profit (+value) / loss (- value)
+
 
     var opDescription="Sale shares "+saleParam.selectedItem;
     currentSelectionBottom=currentSelectionBottom+".3"; //set with the correct format to indicate the sequence
@@ -209,7 +333,6 @@ function createSharesSalesOpDocChange_receivedFromSale(jsonDoc,currentSelectionB
             "Date":jsonDoc.creator.executionDate,
             "Description":opDescription,
             "AccountDebit":accParam.bankAccount,
-            "AmountCurrency":"RECEIVED"
 
         },
         "operation":{
@@ -217,6 +340,10 @@ function createSharesSalesOpDocChange_receivedFromSale(jsonDoc,currentSelectionB
             "sequence":currentSelectionBottom
         }
     }
+
+    //set the amount column
+    row.fields[amountColumn]=recAmount;
+
 
     return row;
 }
@@ -287,7 +414,6 @@ function getItemAccount(item){
 function createSharesSalesOpDocChange_sharesSale(jsonDoc,avgCost,currentSelectionBottom,saleParam){
         //temporary UPPERCASE variables, the user will define those values through a dialog
         account=getItemAccount(saleParam.selectedItem);
-        Banana.console.debug(JSON.stringify(saleParam.selectedItem));
         var quantity="1";
         if(saleParam.quantity){
             quantity=saleParam.quantity;
