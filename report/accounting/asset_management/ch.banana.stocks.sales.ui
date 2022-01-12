@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>474</width>
-    <height>553</height>
+    <height>607</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,7 +17,7 @@
    <property name="geometry">
     <rect>
      <x>90</x>
-     <y>500</y>
+     <y>540</y>
      <width>341</width>
      <height>31</height>
     </rect>
@@ -178,24 +178,24 @@
     </layout>
    </widget>
   </widget>
-  <widget class="QPushButton" name="calcResult_button">
+  <widget class="QPushButton" name="showResultsPreview_button">
    <property name="geometry">
     <rect>
-     <x>40</x>
-     <y>500</y>
-     <width>121</width>
-     <height>31</height>
+     <x>20</x>
+     <y>540</y>
+     <width>181</width>
+     <height>41</height>
     </rect>
    </property>
    <property name="text">
-    <string>Calculate result</string>
+    <string>Show results preview</string>
    </property>
   </widget>
   <widget class="QLabel" name="resultPreviewTitle_label">
    <property name="geometry">
     <rect>
      <x>40</x>
-     <y>420</y>
+     <y>460</y>
      <width>121</width>
      <height>51</height>
     </rect>
@@ -207,9 +207,35 @@
   <widget class="QLabel" name="resultPreview_label">
    <property name="geometry">
     <rect>
-     <x>200</x>
+     <x>180</x>
+     <y>460</y>
+     <width>221</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>0</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="averageCostTitle_label">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
      <y>420</y>
-     <width>81</width>
+     <width>121</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Average Cost</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="averageCost_label">
+   <property name="geometry">
+    <rect>
+     <x>180</x>
+     <y>420</y>
+     <width>231</width>
      <height>51</height>
     </rect>
    </property>
