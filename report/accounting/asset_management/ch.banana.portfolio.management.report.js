@@ -13,7 +13,7 @@
 // limitations under the License.
 //
 // @api = 1.0
-// @id = portfolio_management_report.js
+// @id = ch.banana.portfolio.management.report.js
 // @description = Portfolio Management Report
 // @task = app.command
 // @doctype = 100.*
@@ -21,6 +21,7 @@
 // @pubdate = 2021-04-14
 // @inputdatasource = none
 // @timeout = -1
+// @includejs = ch.banana.portfolio.management.calculation.methods.js
 
 /**
  * This extension generates a report that allows you to see the movements of bonds and stocks held in the accounts and details
@@ -29,8 +30,9 @@
 
 var PortfolioManagement=class  PortfolioManagement{
 
-    constructor(){
+    constructor(banDoc){
         this.QtCurrent="";
+        this.banDoc=banDoc;
         this.info=this.getDocumentInfo();
         this.NewItem=false;
     }
@@ -67,7 +69,6 @@ var PortfolioManagement=class  PortfolioManagement{
         var tableHeader = table_bas_transactions_details.getHeader();
         var tableRow = tableHeader.addRow();
         tableRow.addCell("Date", "styleTablesHeaderText");
-        tableRow.addCell("Type", "styleTablesHeaderText");
         tableRow.addCell("Description", "styleTablesHeaderText");
         tableRow.addCell("Debit", "styleTablesHeaderText");
         tableRow.addCell("Credit", "styleTablesHeaderText");
@@ -110,7 +111,7 @@ var PortfolioManagement=class  PortfolioManagement{
                     let tableRow = table_bas_appraisal.addRow("styleTableRows");
                     tableRow.addCell(items[row].name, 'styleTablesBasNames');
                     tableRow.addCell(Banana.Converter.toLocaleNumberFormat(items[row].quantity,"0",true), style_market_quantity);
-                    tableRow.addCell(this.toLocaleAmountFormat(items[row].unit_cost), 'styleTablesBasResults');
+                    tableRow.addCell(this.toLocaleAmountFormat(items[row].avgCost), 'styleTablesBasResults');
                     if(this.info.multiCurrency)
                         tableRow.addCell(items[row].currency, 'styleTablesBasNames');
                     tableRow.addCell(this.toLocaleAmountFormat(items[row].total_cost), 'styleTablesBasResults');
@@ -171,7 +172,6 @@ var PortfolioManagement=class  PortfolioManagement{
                 if(ItemList[i]==transactionsDetails[row].items){
                     let tableRow = table_bas_trans_details.addRow("styleTableRows");
                     tableRow.addCell(transactionsDetails[row].date, 'styleTablesBasResults');
-                    tableRow.addCell(transactionsDetails[row].type,'styleTablesBasNames');
                     tableRow.addCell(transactionsDetails[row].descr, '');
                     tableRow.addCell(transactionsDetails[row].debit, 'styleTablesBasResults');
                     tableRow.addCell(transactionsDetails[row].credit, 'styleTablesBasResults');
@@ -276,7 +276,7 @@ var PortfolioManagement=class  PortfolioManagement{
         //CREATE THE STYLE FOR THE REPORT
         //create the style
         var textCSS = "";
-        var file = Banana.IO.getLocalFile("file:script/portfolio_management_report.css");
+        var file = Banana.IO.getLocalFile("file:script/ch.banana.portfolio.management.report.css");
         var fileContent = file.read();
         if (!file.errorString) {
             Banana.IO.openPath(fileContent);
@@ -441,7 +441,6 @@ var PortfolioManagement=class  PortfolioManagement{
             var transactionRow={};
 
             transactionRow.rowDate = tRow.value('Date');
-            transactionRow.rowType = tRow.value('DocType');
             transactionRow.rowItem = tRow.value('ItemsId');
             transactionRow.rowDescr = tRow.value('Description');
             transactionRow.rowDebit = tRow.value('AccountDebit');
@@ -468,7 +467,6 @@ var PortfolioManagement=class  PortfolioManagement{
             var transactionDetails={};
 
             transactionDetails.date=transactionsRows[row].rowDate;
-            transactionDetails.type=transactionsRows[row].rowType;
             transactionDetails.items=transactionsRows[row].rowItem;
             transactionDetails.descr=transactionsRows[row].rowDescr;
             transactionDetails.debit=transactionsRows[row].rowDebit;
@@ -518,74 +516,37 @@ var PortfolioManagement=class  PortfolioManagement{
     }
 
     /**
-     * for a certain item, it searches in the journal the purchase records and saves in an array its cost. 
-     * it makes the average of all the items found and returns the average purchase price.
-     * @param {*} item 
-     * @returns the average purchase price.
+     * Find the sum of the current value of each item 
+     * @param {*} totalGr reference group (shares, bonds...defined in the item table)
+     * @returns 
      */
-    getItemUnitCost(item) {
-        let table = Banana.document.table("Transactions");
-        let unit_price = "";
-        // il costo unitario è rappresentato dal costo medio di acquisto
-        let unit_cost = "";
-        let n_elements = [];
-
-        for (var i = 0; i < table.rowCount; i++) {
-            var tRow = table.row(i);
-            if (tRow.value("ItemsId") === item && tRow.value("DocType") === "buy") {
-                unit_price = tRow.value("UnitPrice");
-                if (unit_price.length > 0) {
-                    n_elements.push(unit_price);
-                }
+     getSumOfSecuritiesValue(totalGr){
+        let itemsData=getItemsTableData();
+        let groupSum="";
+        for(var e in itemsData){
+            if(itemsData[e].group==totalGr){
+                groupSum=itemsData[e].valueCurrent   //!!!!WARNING IF THE COLUMN EXCHANGE IS EMPTY, THE CURRENT VALUE IN THE BASE BURRENCY IS NOT DISPLAYED!!!!
+                break;
             }
         }
 
-        /************************************
-         * calcolo costo medio di acquisto 
-         ***********************************/
-
-        //trovo la somma di tutti i tassi
-        for (var i = 0; i < n_elements.length; i++) {
-            unit_cost = Banana.SDecimal.add(unit_cost, n_elements[i]);
-        }
-        //divido la somma per il numero di elementi.
-
-        unit_cost = Banana.SDecimal.divide(unit_cost, n_elements.length);
-
-
-        return unit_cost;
-
+        return groupSum;
     }
-
     /**
      * this function calculates what percentage the amount represents with respect to the total of the portfolio 
      * @param {*} amount market value of the item
-     * @param {*} group_name grouping item where I find the total of the portfolio 
+     * @param {*} totalGr grouping item where I find the total of the portfolio 
      * @returns percentage of the portfolio represented by a given item
      */
-    getItemPercOfPort(amount, group_name,market_value_ref_column) {
-        let table = Banana.document.table("Items");
-        let result = "";
-        let group_total = "";
-        if (!table) {
-            return result;
-        }
-        for (var i = 0; i < table.rowCount; i++) {
-            var tRow = table.row(i);
-            if (tRow.value("Group") === group_name) {
-                group_total = tRow.value(market_value_ref_column);
-                if (group_total) {
-                    /************************************************************************************
-                     *calcolo che percentuale l'importo rappresenta rispetto al totale del portafoglio
-                    formula: (ammontare (amount) currency current value /totale colonna currency current value)*100
-                    ************************************************************************************/
-                    result = Banana.SDecimal.divide(amount, group_total);
-                    result = Banana.SDecimal.multiply(result, 100);
+    getItemPercOfPort(amount, totalGr) {
+        var groupSum=this.getSumOfSecuritiesValue(totalGr);
+        var result="";
 
-                    return result;
-                }
-            }
-        }
+        result=Banana.SDecimal.divide(amount,groupSum);
+        result=Banana.SDecimal.multiply(result,100);
+
+        return result;
+
     }
 
     getmarketVReferenceColumn(){
@@ -699,15 +660,15 @@ var PortfolioManagement=class  PortfolioManagement{
             let item_data = {};
             item_data.name = items_list[i];
             item_data.quantity = this.getItemColumnValue(items_list[i], "QuantityCurrent");
-            item_data.unit_cost = this.getItemUnitCost(items_list[i]);
+            item_data.avgCost = getAverageCost(items_list[i],this.banDoc,this.info.multiCurrency,"10000000000");
             if(this.info.multiCurrency)
                 item_data.currency=this.getItemColumnValue(items_list[i],"Currency");
-            item_data.total_cost = Banana.SDecimal.multiply(item_data.quantity, item_data.unit_cost);
+            item_data.total_cost = Banana.SDecimal.multiply(item_data.quantity, item_data.avgCost);
             item_data.market_price = this.getItemColumnValue(items_list[i], "UnitPriceCurrent");
             item_data.market_value = this.getItemColumnValue(items_list[i], marketVReferenceColumn);
             item_data.unrealized_gain_loss = Banana.SDecimal.subtract(item_data.market_value,item_data.total_cost);
             //è possibile fare in modo che l'utente inserisca il gruppo del totale, se personalizzato
-            item_data.perc_of_port = this.getItemPercOfPort(item_data.market_value, "Total",marketVReferenceColumn);
+            item_data.perc_of_port = this.getItemPercOfPort(item_data.market_value, "Total");
             item_data.perc_g_l = this.getItemGLPerc(item_data.market_value, item_data.total_cost);
 
             //il gr lo uso solo come riferimento per quando ciclo i dati nel print report
@@ -954,14 +915,16 @@ function sumQt(cumulatedQuantity, quantity) {
 
 function exec(inData, options) {
 
-    if (!Banana.document)
+    var banDoc=Banana.document;
+
+    if (!banDoc)
         return "@Cancel";
 
     var comboboxForm = getComboBoxElement();
     if (!comboboxForm)
         return;
 
-    var portfolioManagement=new PortfolioManagement();
+    var portfolioManagement=new PortfolioManagement(banDoc);
 
     if (!portfolioManagement.verifyBananaVersion()) {
         return "@Cancel";
