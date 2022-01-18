@@ -37,35 +37,64 @@ var PortfolioManagement=class  PortfolioManagement{
         this.NewItem=false;
     }
 
-    addTableBaSAppraisal(report) {
-        let current_date=new Date()
-        current_date=Banana.Converter.toInternalDateFormat(current_date);
+    addTableBaSAppraisal(report,percOfPortDescr,currentDate) {
+        currentDate=Banana.Converter.toInternalDateFormat(currentDate);
         var table_bas_appraisal = report.addTable('table_bas_appraisal');
         table_bas_appraisal.setStyleAttributes("width:100%;");
-        table_bas_appraisal.getCaption().addText(qsTr("Appraisal Report \n Holdings as of: "+current_date), "styleTitles");
+        table_bas_appraisal.getCaption().addText(qsTr("Appraisal Report \n Holdings as of: "+currentDate), "styleTitles");
+
+        //columns definition 
+        table_bas_appraisal.addColumn("Type/Item").setStyleAttributes("width:15%");
+        table_bas_appraisal.addColumn("Quantity").setStyleAttributes("width:15%");
+        table_bas_appraisal.addColumn("Unit Cost").setStyleAttributes("width:15%");
+        if(this.info.multiCurrency)
+            table_bas_appraisal.addColumn("Currency").setStyleAttributes("width:15%");
+        table_bas_appraisal.addColumn("Total Cost").setStyleAttributes("width:15%");
+        table_bas_appraisal.addColumn("Market Price").setStyleAttributes("width:15%");
+        table_bas_appraisal.addColumn("Market Value").setStyleAttributes("width:15%");
+        if(this.info.multiCurrency)
+            table_bas_appraisal.addColumn("Market Value (base currency)").setStyleAttributes("width:15%");
+        table_bas_appraisal.addColumn("Perc of port").setStyleAttributes("width:15%");
+        table_bas_appraisal.addColumn("Un. Gain or Loss").setStyleAttributes("width:15%");
+        table_bas_appraisal.addColumn("% G/L").setStyleAttributes("width:15%");
+        
+        //headers
         var tableHeader = table_bas_appraisal.getHeader();
         var tableRow = tableHeader.addRow();
-        tableRow.addCell("Type/Security", "styleTablesHeaderText");
+        tableRow.addCell("Type/Item", "styleTablesHeaderText");
         tableRow.addCell("Quantity", "styleTablesHeaderText");
         tableRow.addCell("Unit Cost", "styleTablesHeaderText");
         if(this.info.multiCurrency)
             tableRow.addCell("Currency", "styleTablesHeaderText");
         tableRow.addCell("Total Cost", "styleTablesHeaderText");
-        tableRow.addCell("Market Price ", "styleTablesHeaderText");
+        tableRow.addCell("Market Price", "styleTablesHeaderText");
         tableRow.addCell("Market Value", "styleTablesHeaderText");
-        tableRow.addCell("% of Port", "styleTablesHeaderText");
+        if(this.info.multiCurrency)
+            tableRow.addCell("Market Value (base currency)", "styleTablesHeaderText");
+        tableRow.addCell(percOfPortDescr, "styleTablesHeaderText");
         tableRow.addCell("Un. Gain or Loss", "styleTablesHeaderText");
         tableRow.addCell("% G/L", "styleTablesHeaderText");
-        //this.generateHeaderColumns(tableRow);
+
         return table_bas_appraisal;
     }
 
-    addTableBaSTransactionsDetails(report) {
-        let current_date=new Date()
-        current_date=Banana.Converter.toInternalDateFormat(current_date);
+    addTableBaSTransactionsDetails(report,currentDate) {
+        currentDate=Banana.Converter.toInternalDateFormat(currentDate);
         var table_bas_transactions_details = report.addTable('table_bas_transactions_details');
         table_bas_transactions_details.setStyleAttributes("width:100%;");
-        table_bas_transactions_details.getCaption().addText(qsTr("Portfolio Transactions \n Transactions as of: "+current_date), "styleTitles");
+        table_bas_transactions_details.getCaption().addText(qsTr("Portfolio Transactions \n Transactions as of: "+currentDate), "styleTitles");
+
+        //columns definition
+        table_bas_transactions_details.addColumn("Date").setStyleAttributes("width:15%");
+        table_bas_transactions_details.addColumn("Description").setStyleAttributes("width:25%");
+        table_bas_transactions_details.addColumn("Debit").setStyleAttributes("width:15%");
+        table_bas_transactions_details.addColumn("Credit").setStyleAttributes("width:15%");
+        table_bas_transactions_details.addColumn("Quantity").setStyleAttributes("width:15%");
+        table_bas_transactions_details.addColumn("Qt.Balance").setStyleAttributes("width:15%");
+        table_bas_transactions_details.addColumn("Unit/Price").setStyleAttributes("width:15%");
+        table_bas_transactions_details.addColumn("Amount").setStyleAttributes("width:15%");
+
+
         var tableHeader = table_bas_transactions_details.getHeader();
         var tableRow = tableHeader.addRow();
         tableRow.addCell("Date", "styleTablesHeaderText");
@@ -76,7 +105,7 @@ var PortfolioManagement=class  PortfolioManagement{
         tableRow.addCell("Qt.Balance", "styleTablesHeaderText");
         tableRow.addCell("Unit/Price", "styleTablesHeaderText");
         tableRow.addCell("Amount", "styleTablesHeaderText");
-        //this.generateHeaderColumns(tableRow);
+
         return table_bas_transactions_details;
     }
 
@@ -86,12 +115,14 @@ var PortfolioManagement=class  PortfolioManagement{
          * create the report
          **********************************************************/
         var report = Banana.Report.newReport("Portfolio management");
+        var percOfPortDescr=this.getPercofPortDescription();
+        var currentDate=new Date();
 
         /***********************************************************
          * Add the appraisal report table
          **********************************************************/
 
-        var table_bas_appraisal = this.addTableBaSAppraisal(report);
+        var table_bas_appraisal = this.addTableBaSAppraisal(report,percOfPortDescr,currentDate);
         this.addHeader(report);
         this.addFooter(report);
         var items = this.getReportRows();
@@ -117,6 +148,8 @@ var PortfolioManagement=class  PortfolioManagement{
                     tableRow.addCell(this.toLocaleAmountFormat(items[row].total_cost), 'styleTablesBasResults');
                     tableRow.addCell(this.toLocaleAmountFormat(items[row].market_price), 'styleTablesBasResults');
                     tableRow.addCell(this.toLocaleAmountFormat(items[row].market_value), style_market_value);
+                    if(this.info.multiCurrency)
+                    tableRow.addCell(this.toLocaleAmountFormat(items[row].market_value_base_currency), style_market_value);
                     tableRow.addCell(this.toLocaleAmountFormat(items[row].perc_of_port), style_percentage_of_portfolio);
                     var style=this.setNegativeStyle(items[row].unrealized_gain_loss);
                     tableRow.addCell(this.toLocaleAmountFormat(items[row].unrealized_gain_loss),style);
@@ -124,31 +157,37 @@ var PortfolioManagement=class  PortfolioManagement{
                     tableRow.addCell(this.toLocaleAmountFormat(items[row].perc_g_l), style);
                 }
             }
-            var tableRow = table_bas_appraisal.addRow("styleTableRows");
-            var spanTotals=3
-            if(this.info.multiCurrency)
-                spanTotals=4
-            tableRow.addCell("", 'styleTablesBasResults', spanTotals);
-            tableRow.addCell(this.toLocaleAmountFormat(items_total[row_total].total_cost), 'styleTablesBasResults_totals');
-            tableRow.addCell(this.toLocaleAmountFormat(items_total[row_total].market_value), 'styleTablesBasResults_totals',2);
-            tableRow.addCell(this.toLocaleAmountFormat(items_total[row_total].perc_of_port), 'styleTablesBasResults_totals');
-            var style=this.setNegativeStyle(items_total[row_total].unrealized_gain_loss,true);
-            tableRow.addCell(this.toLocaleAmountFormat(items_total[row_total].unrealized_gain_loss),style);
-            var style=this.setNegativeStyle(items_total[row_total].perc_g_l,true);
-            tableRow.addCell(this.toLocaleAmountFormat(items_total[row_total].perc_g_l),style);
+            //Print totals only if it's not a multicurrency accounting
+            if(!this.info.multiCurrency){
+                var tableRow = table_bas_appraisal.addRow("styleTableRows");
+                var spanTotals=3
+                tableRow.addCell("", 'styleTablesBasResults', spanTotals);
+                tableRow.addCell(this.toLocaleAmountFormat(items_total[row_total].total_cost), 'styleTablesBasResults_totals');
+                tableRow.addCell(this.toLocaleAmountFormat(items_total[row_total].market_value), 'styleTablesBasResults_totals',2);
+                tableRow.addCell(this.toLocaleAmountFormat(items_total[row_total].perc_of_port), 'styleTablesBasResults_totals');
+                var style=this.setNegativeStyle(items_total[row_total].unrealized_gain_loss,true);
+                tableRow.addCell(this.toLocaleAmountFormat(items_total[row_total].unrealized_gain_loss),style);
+                var style=this.setNegativeStyle(items_total[row_total].perc_g_l,true);
+                tableRow.addCell(this.toLocaleAmountFormat(items_total[row_total].perc_g_l),style);
+            }
 
         }
-        var spanFinalTotal=2
-        if(this.info.multiCurrency)
-        spanFinalTotal=3
-        var tableRow = table_bas_appraisal.addRow("styleTableRows");
-        tableRow.addCell(final_total.name, 'styleTablesBasNames_totals');
-        tableRow.addCell("", 'styleTablesBasResults', spanFinalTotal);
-        tableRow.addCell(this.toLocaleAmountFormat(final_total.total_cost), 'styleTablesBasResults_final_totals');
-        tableRow.addCell(this.toLocaleAmountFormat(final_total.market_value), 'styleTablesBasResults_final_totals',2);
-        tableRow.addCell(this.toLocaleAmountFormat(final_total.perc_of_port), 'styleTablesBasResults_final_totals');
-        tableRow.addCell(this.toLocaleAmountFormat(final_total.unrealized_gain_loss),"styleTablesBasResults_final_totals");
-        tableRow.addCell(this.toLocaleAmountFormat(final_total.perc_g_l),"styleTablesBasResults_final_totals");
+            var spanFinalTotal=7;
+            var tableRow = table_bas_appraisal.addRow("styleTableRows");
+            tableRow.addCell(final_total.name, 'styleTablesBasNames_totals');
+            if(!this.info.multiCurrency){
+                spanFinalTotal=2
+                tableRow.addCell("", 'styleTablesBasResults', spanFinalTotal);
+                tableRow.addCell(this.toLocaleAmountFormat(final_total.total_cost), 'styleTablesBasResults_final_totals');
+                tableRow.addCell(this.toLocaleAmountFormat(final_total.market_value), 'styleTablesBasResults_final_totals',2);
+                tableRow.addCell(this.toLocaleAmountFormat(final_total.perc_of_port), 'styleTablesBasResults_final_totals');
+                tableRow.addCell(this.toLocaleAmountFormat(final_total.unrealized_gain_loss),"styleTablesBasResults_final_totals");
+                tableRow.addCell(this.toLocaleAmountFormat(final_total.perc_g_l),"styleTablesBasResults_final_totals");
+        }else{
+            //print only the portfolio percentage total
+                tableRow.addCell("", "", spanFinalTotal);
+                tableRow.addCell(this.toLocaleAmountFormat(final_total.perc_of_port), 'styleTablesBasResults_final_totals');
+        }
 
         report.addPageBreak();
         
@@ -160,7 +199,7 @@ var PortfolioManagement=class  PortfolioManagement{
         var style_percentage_of_portfolio=setSortedColumnStyle('Percentage of Portfolio');
         var style_market_quantity=setSortedColumnStyle('Quantity');*/
 
-        var table_bas_trans_details = this.addTableBaSTransactionsDetails(report);
+        var table_bas_trans_details = this.addTableBaSTransactionsDetails(report,currentDate);
         var transactionsDetails=this.setTransactionsDetails();
         var ItemList = this.getTableValues("Items", "ItemsId");
         for (var i = 0; i < ItemList.length; i++) {
@@ -189,6 +228,18 @@ var PortfolioManagement=class  PortfolioManagement{
 
         return report;
 
+    }
+
+    /**
+     * Defines the description for the header of the percentage of portfolio, wich is displayed on the base currency
+     */
+    getPercofPortDescription(){
+        let description="% of Port";
+
+        if(this.info.multiCurrency)
+            description="% of Port (base currency)"
+
+        return description;
     }
     getQtStyle(qt){
         var style="";
@@ -447,7 +498,10 @@ var PortfolioManagement=class  PortfolioManagement{
             transactionRow.rowCredit = tRow.value('AccountCredit');
             transactionRow.rowQt = tRow.value('Quantity');
             transactionRow.rowUnitPrice = tRow.value('UnitPrice');
-            transactionRow.rowAmount = tRow.value('AmountCurrency');
+            if(this.info.multiCurrency)
+                transactionRow.rowAmount = tRow.value('AmountCurrency');
+            else    
+                transactionRow.rowAmount = tRow.value('Amount');
 
             if(transactionRow.rowItem!=="")
                 transactionsRows.push(transactionRow);
@@ -510,27 +564,28 @@ var PortfolioManagement=class  PortfolioManagement{
                 value = tRow.value(column);
                 if (value) {
                     return value;
-                }
+                }else
+                    //se un item non ha una quantità o un prezzo di mercato definito, setto i valori stampati
+                    if(column=="QuantityCurrent" || column=="CurrencyCurrentValue"||column=="ValueCurrent");
+                        return value="0";
             }
         }
     }
 
     /**
-     * Find the sum of the current value of each item 
-     * @param {*} totalGr reference group (shares, bonds...defined in the item table)
+     * Calculates the total value of the securities portfolio in the base currency (values taken from valueCurrent column)
+     * @param {*} totalGr 
      * @returns 
      */
-     getSumOfSecuritiesValue(totalGr){
+     getPortfolioTotal(){
         let itemsData=getItemsTableData();
-        let groupSum="";
+        let portTot="";
         for(var e in itemsData){
-            if(itemsData[e].group==totalGr){
-                groupSum=itemsData[e].valueCurrent   //!!!!WARNING IF THE COLUMN EXCHANGE IS EMPTY, THE CURRENT VALUE IN THE BASE BURRENCY IS NOT DISPLAYED!!!!
-                break;
-            }
+            if(!itemsData[e].group)
+                portTot=Banana.SDecimal.add(portTot,itemsData[e].valueCurrent);
         }
 
-        return groupSum;
+        return portTot;
     }
     /**
      * this function calculates what percentage the amount represents with respect to the total of the portfolio 
@@ -538,11 +593,11 @@ var PortfolioManagement=class  PortfolioManagement{
      * @param {*} totalGr grouping item where I find the total of the portfolio 
      * @returns percentage of the portfolio represented by a given item
      */
-    getItemPercOfPort(amount, totalGr) {
-        var groupSum=this.getSumOfSecuritiesValue(totalGr);
+    getItemPercOfPort(amount) {
+        var portTot=this.getPortfolioTotal();
         var result="";
 
-        result=Banana.SDecimal.divide(amount,groupSum);
+        result=Banana.SDecimal.divide(amount,portTot);
         result=Banana.SDecimal.multiply(result,100);
 
         return result;
@@ -656,19 +711,30 @@ var PortfolioManagement=class  PortfolioManagement{
         //get the list of the items in the Item table
         var marketVReferenceColumn=this.getmarketVReferenceColumn();
         var items_list = this.getTableValues("Items", "ItemsId");
+        /**
+         * Nella variabile "marketPriceRefAmount" andrò a salvare il valore che prenderò come riferimento per il cacolo della percentuale di portafoglio,
+         * Nel caso di una contabilità multimomenta faccio il calcolo sul valore di mercato trasformato nella moneta base, 
+         * altrimenti sul valore di mercato normale.
+         */
+        var marketPriceRefAmount="";
         for (var i = 0; i < items_list.length; i++) {
             let item_data = {};
             item_data.name = items_list[i];
             item_data.quantity = this.getItemColumnValue(items_list[i], "QuantityCurrent");
-            item_data.avgCost = getAverageCost(items_list[i],this.banDoc,this.info.multiCurrency,"10000000000");
+            item_data.avgCost = getAverageCost(items_list[i],this.banDoc,this.info.multiCurrency,"10000000000");//da rivedere
             if(this.info.multiCurrency)
                 item_data.currency=this.getItemColumnValue(items_list[i],"Currency");
             item_data.total_cost = Banana.SDecimal.multiply(item_data.quantity, item_data.avgCost);
             item_data.market_price = this.getItemColumnValue(items_list[i], "UnitPriceCurrent");
             item_data.market_value = this.getItemColumnValue(items_list[i], marketVReferenceColumn);
+            if(this.info.multiCurrency){
+                item_data.market_value_base_currency = this.getItemColumnValue(items_list[i], "ValueCurrent");
+                marketPriceRefAmount=item_data.market_value_base_currency;
+            }else{
+                marketPriceRefAmount=item_data.market_value;
+            }
             item_data.unrealized_gain_loss = Banana.SDecimal.subtract(item_data.market_value,item_data.total_cost);
-            //è possibile fare in modo che l'utente inserisca il gruppo del totale, se personalizzato
-            item_data.perc_of_port = this.getItemPercOfPort(item_data.market_value, "Total");
+            item_data.perc_of_port = this.getItemPercOfPort(marketPriceRefAmount);
             item_data.perc_g_l = this.getItemGLPerc(item_data.market_value, item_data.total_cost);
 
             //il gr lo uso solo come riferimento per quando ciclo i dati nel print report
