@@ -220,7 +220,7 @@ function getItemsTableData(){
         itemData.item = tRow.value("ItemsId");
         itemData.bankAccount=tRow.value("Account");
         itemData.currentQt=tRow.value("QuantityCurrent");
-        itemData.valueCurrent=currentQt=tRow.value("ValueCurrent"); //i take always the value in the base currency
+        itemData.valueCurrent=tRow.value("ValueCurrent");
         itemData.group=tRow.value("Group");
         if (itemsData) {
             itemsData.push(itemData);
