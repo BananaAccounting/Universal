@@ -74,8 +74,8 @@ dialog.showPreviews=function(){
 
     //calculate values
     multiCurrencyAcc=checkIfMultiCurrencyAccounting(Banana.document);
-    transList=getTransactionsTableData(Banana.document);
-    avgCost=getAverageCost(currentParam.selectedItem,banDoc,multiCurrencyAcc,currentSelectionTop);
+    transList=getTransactionsTableData(Banana.document,multiCurrencyAcc);
+    avgCost=getAverageCost(currentParam.selectedItem,currentSelectionTop,transList);
     sharesData=calculateSharesData(avgCost,currentParam);
 
     //format values
