@@ -27,6 +27,20 @@
  * 
  *********************************************************/
 
+function getCurrentRowDate(banDoc,transList){
+    var currRowNr=banDoc.cursor.rowNr;
+    var currentRowDate="";
+
+    if(transList){
+        for (var i = 0; i < transList.length; i++) {
+            if(transList[i].row==currRowNr){
+                currentRowDate=transList[i].date;
+                return currentRowDate;
+            }
+        }
+    }
+}
+
 
 function checkIfMultiCurrencyAccounting(banDoc){
     //file type numbers
@@ -84,16 +98,15 @@ function checkIfMultiCurrencyAccounting(banDoc){
     return transactionsList;
 }
 
-function getSumOfPurchasedShares(item,banDoc,multiCurrencyAcc,currentSelectionTop){
+function getSumOfPurchasedShares(item,currentSelectionTop,transList){
     //look for all purchases done before for this item, and sum the amounts
     var purchasesSum="";
     var rowPurchase="";
-    var trData=getTransactionsTableData(banDoc,multiCurrencyAcc);
 
-    if(trData){
-        for (var i = 0; i < trData.length; i++) {
-            if(trData[i].item==item && Banana.SDecimal.sign(trData[i].qt)!==-1 && trData[i].row<=currentSelectionTop ){
-                rowPurchase=trData[i].amount;
+    if(transList){
+        for (var i = 0; i < transList.length; i++) {
+            if(transList[i].item==item && Banana.SDecimal.sign(transList[i].qt)!==-1 && transList[i].row<=currentSelectionTop ){
+                rowPurchase=transList[i].amount;
                 purchasesSum=Banana.SDecimal.add(purchasesSum,rowPurchase);
             }
         }
@@ -103,16 +116,15 @@ function getSumOfPurchasedShares(item,banDoc,multiCurrencyAcc,currentSelectionTo
 
 }
 
-function getQtOfSharesPurchased(item,banDoc,multiCurrencyAcc,currentSelectionTop){
+function getQtOfSharesPurchased(item,currentSelectionTop,transList){
     //look for all purchases done before for this item, and sum the quantities
     var purchaseQt="";
     var rowQt="";
-    var trData=getTransactionsTableData(banDoc,multiCurrencyAcc);
 
-    if(trData){
-        for (var i = 0; i < trData.length; i++) {
-            if(trData[i].item==item && Banana.SDecimal.sign(trData[i].qt)!==-1 && trData[i].row<=currentSelectionTop){
-                rowQt=trData[i].qt;
+    if(transList){
+        for (var i = 0; i < transList.length; i++) {
+            if(transList[i].item==item && Banana.SDecimal.sign(transList[i].qt)!==-1 && transList[i].row<=currentSelectionTop){
+                rowQt=transList[i].qt;
                 purchaseQt=Banana.SDecimal.add(purchaseQt,rowQt);
             }
         }
@@ -123,10 +135,10 @@ function getQtOfSharesPurchased(item,banDoc,multiCurrencyAcc,currentSelectionTop
 /**
  * To calculate the average cost, divide the total purchase amount by the number of shares purchased to figure the average cost per share. 
  */
- function getAverageCost(item,banDoc,multiCurrencyAcc,currentSelectionTop){
+ function getAverageCost(item,currentSelectionTop,transList){
 
-    var purchaseSum=getSumOfPurchasedShares(item,banDoc,multiCurrencyAcc,currentSelectionTop);
-    var purchaseQt=getQtOfSharesPurchased(item,banDoc,multiCurrencyAcc,currentSelectionTop);
+    var purchaseSum=getSumOfPurchasedShares(item,currentSelectionTop,transList);
+    var purchaseQt=getQtOfSharesPurchased(item,currentSelectionTop,transList);
     var avgCost="";
 
     //calculate the average cost and return it
@@ -144,7 +156,7 @@ function calculateSharesData(avgCost,userParam){
     sharesData.avgCost=avgCost;
     sharesData.currentValue=Banana.SDecimal.multiply(sharesData.avgCost,userParam.quantity);
     sharesData.marketValue=Banana.SDecimal.multiply(userParam.marketPrice,userParam.quantity);
-    sharesData.result=Banana.SDecimal.subtract(sharesData.currentValue,sharesData.marketValue);
+    sharesData.result=Banana.SDecimal.subtract(sharesData.marketValue,sharesData.currentValue);
     sharesData.profitOnSale=false;
     if(Banana.SDecimal.sign(sharesData.result)=="1")
     sharesData.profitOnSale=true;
@@ -217,11 +229,13 @@ function getItemsTableData(){
     for (var i = 0; i < table.rowCount; i++) {
         var tRow = table.row(i);
         var itemData={};
+        itemData.rowNr=tRow.rowNr;
         itemData.item = tRow.value("ItemsId");
         itemData.bankAccount=tRow.value("Account");
         itemData.currentQt=tRow.value("QuantityCurrent");
         itemData.valueCurrent=tRow.value("ValueCurrent");
         itemData.group=tRow.value("Group");
+        itemData.interestRate=tRow.value("Notes");
         if (itemsData) {
             itemsData.push(itemData);
         }

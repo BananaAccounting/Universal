@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-// @id = ch.banana.shares.sales.operation
+// @id = ch.banana.bonds.sales.operation
 // @api = 1.0
-// @pubdate = 2022-01-13
+// @pubdate = 2022-01-19
 // @publisher = Banana.ch SA
-// @description = Shares sales operation
+// @description = Bonds sales operation
 // @task = app.command
 // @doctype = 100.*
 // @docproperties =
@@ -30,30 +30,31 @@
  * This extension creates the registration for the sale of shares using the document change, 
  * Sale operation example:
  * 
- * Vend. 10000 shares UBS                       |	1020    |           |   130'000.00 
- * Vend. 10000 shares UBS spese banca           |	6900    |	    	|   2'000.00 
- * Vend. 10000 shares UBS perdita su vendita    |	4200    |	    	|   6'000.00 
- * Vend. 10000 shares UBS                       |		    |   1400	|   138'000.00
+ * Vend. 500'000 obbligazioni Holcim                                   |	1020    |           |   512'000.00 
+ * Vend. 500'000 obbligazioni Holcim int. maturati su vendita          |	3600    |	    	|     3'000.00 
+ * Vend. 500'000 obbligazioni Holcim spese banca                       |	6900    |	    	|     1'000.00 
+ * Vend. 500'000 obbligazioni Holcim utile su vendita                  |		    |   3200	|    15'500.00
+ * Vend. 500'000 obbligazioni Holcim utile su vendita                  |		    |   1450	|   505'000.00
  * 
  */
 
-
 //Main function
 function exec() {
+
+    var banDoc=Banana.document;
     //show the dialog
     var userParam=dialogExec();
-    var banDoc=Banana.document;
 
     if(userParam && banDoc){
 
         var salesOpArray=[];
+        var itemsData=getItemsTableData();
         var currentSelectionBottom = banDoc.cursor.selectionBottom;
         var transList=[];
         var avgCost="";
         var multiCurrencyAcc=false;
         var currentSelectionTop = banDoc.cursor.selectionTop;
         var sharesData="";
-        var itemsData=getItemsTableData();
         var currentRowDate="";
         var userParam=readDialogParams();
 
@@ -78,7 +79,6 @@ function exec() {
 /**
  * To create the transactions, I assume that the net entry has been made (received from the bank).
  * @param {*} currentSelectionBottom line on which the cursor currently rests
- * @param {*} avgCost calculated average cost
  * @param {*} sharesData calculated share data 
  * @param {*} multiCurrencyAccounting true if the document is a multicurrency accounting (number 120)
  * @param {*} userParam parameters defined by the user
@@ -87,12 +87,14 @@ function exec() {
 function createSharesSalesOpDocChange(currentSelectionBottom,currentRowDate,sharesData,multiCurrencyAccounting,userParam,itemsData){
     var jsonDoc = initJsonDoc();
     var rows=[];
+
     
     var amountColumn=getAmountColumn(multiCurrencyAccounting);
 
     rows.push(createSharesSalesOpDocChange_bankCharges(jsonDoc,currentRowDate,currentSelectionBottom,userParam,amountColumn));
     rows.push(createSharesSalesOpDocChange_profitOrLoss(jsonDoc,currentRowDate,sharesData,currentSelectionBottom,userParam,amountColumn));
-    rows.push(createSharesSalesOpDocChange_sharesSale(jsonDoc,currentRowDate,currentSelectionBottom,userParam,itemsData));
+    rows.push(createSharesSalesOpDocChange_accruedInterest(jsonDoc,currentRowDate,currentSelectionBottom,userParam,amountColumn,itemsData));
+    rows.push(createSharesSalesOpDocChange_bondSale(jsonDoc,currentRowDate,currentSelectionBottom,userParam,itemsData));
 
     
     var dataUnitFilePorperties = {};
@@ -106,52 +108,15 @@ function createSharesSalesOpDocChange(currentSelectionBottom,currentRowDate,shar
     return jsonDoc;
 }
 
-/**
- * creates a record of net income in the bank (currently disabled)
- * @param {*} jsonDoc 
- * @param {*} currentSelectionBottom 
- * @param {*} saleParam 
- * @param {*} accParam 
- * @returns 
- */
-/*function createSharesSalesOpDocChange_receivedFromSale(jsonDoc,sharesData,currentSelectionBottom,saleParam,accParam,amountColumn){
-
-    var recAmount=Banana.SDecimal.subtract(sharesData.currentValue,saleParam.bankCharges); //current shares values minus the bank charges
-    recAmount=Banana.SDecimal.add(recAmount,sharesData.result); //plus the profit (+value) / loss (- value)
-
-
-    var opDescription="Sale shares "+saleParam.selectedItem;
-    currentSelectionBottom=currentSelectionBottom+".3"; //set with the correct format to indicate the sequence
-
-    var row={
-        "fields":{
-            "Date":jsonDoc.creator.executionDate,
-            "Description":opDescription,
-            "AccountDebit":accParam.bankAccount,
-
-        },
-        "operation":{
-            "name":"add",
-            "sequence":currentSelectionBottom
-        }
-    }
-
-    //set the amount column
-    row.fields[amountColumn]=recAmount;
-
-
-    return row;
-}*/
-
 function createSharesSalesOpDocChange_bankCharges(jsonDoc,currentRowDate,currentSelectionBottom,userParam,amountColumn){
 
-    var opDescription="Sale shares "+userParam.selectedItem+" bank charges";
+    var opDescription="Sale bonds "+userParam.selectedItem+" bank charges";
     var opCurrentSelectionBottom=currentSelectionBottom+".1"; //set with the correct format to indicate the sequence
     var opDate="";
     if(currentRowDate)
         opDate=currentRowDate;
     else
-        opDate=jsonDoc.creator.executionDate;  
+        opDate=jsonDoc.creator.executionDate;   
     var opAccount=userParam.bankInterest;
     var opAmount=userParam.bankChargesAmount;
 
@@ -176,14 +141,14 @@ function createSharesSalesOpDocChange_profitOrLoss(jsonDoc,currentRowDate,shares
     // set the description based on the result
     var opProfitOnSale=sharesData.profitOnSale;
     var resultDescription=setResultDecription(opProfitOnSale);
-    var opDescription="Sale shares "+userParam.selectedItem+" "+resultDescription;
+    var opDescription="Sale bonds "+userParam.selectedItem+" "+resultDescription;
     //get the account based on the result
     var opAccount=getAccountForResult(opProfitOnSale,userParam);
     var opDate="";
     if(currentRowDate)
         opDate=currentRowDate;
     else
-        opDate=jsonDoc.creator.executionDate;    
+        opDate=jsonDoc.creator.executionDate;   
     var opCurrentSelectionBottom=currentSelectionBottom+".2"; //set with the correct format to indicate the sequence
     var opAmount=sharesData.result;
 
@@ -207,6 +172,70 @@ function createSharesSalesOpDocChange_profitOrLoss(jsonDoc,currentRowDate,shares
 
 }
 
+/**
+ * Creates the record of the accrued interest
+ * @param {*} jsonDoc 
+ * @param {*} currentSelectionBottom 
+ * @param {*} saleParam 
+ * @param {*} accParam 
+ * @returns 
+ */
+ function createSharesSalesOpDocChange_accruedInterest(jsonDoc,currentRowDate,currentSelectionBottom,userParam,amountColumn,itemsData){
+
+    var opDate="";
+    if(currentRowDate)
+        opDate=currentRowDate;
+    else
+        opDate=jsonDoc.creator.executionDate;   
+    var opCurrentSelectionBottom=currentSelectionBottom+".3";
+    var opDescription="Sale bonds "+userParam.selectedItem+" accrued interest on sale";
+    var opAccount=userParam.interestOnBond;
+    var opAmount=getAccruedInterest(userParam.selectedItem,userParam.quantity,itemsData);
+
+    var row={};
+
+    row.fields={};
+    row.fields.Date=opDate;
+    row.fields.Description=opDescription;
+    row.fields.AccountCredit=opAccount;
+    row.fields[amountColumn]=opAmount;
+
+    row.operation={};
+    row.operation.name="add";
+    row.operation.sequence=opCurrentSelectionBottom;
+
+
+    return row;
+}
+
+/**
+ * Calculate the accrued interest by taken the percentage from the items table (row corresponding to the item).
+ * @param {*} item 
+ * @param {*} nominalValue the nominal value is taken as the value being sold.
+ * @returns 
+ */
+function getAccruedInterest(item, nominalValue,itemsData){
+    //the interest percentage of the bonds is currently indicated in the "Notes" Column
+    var intRate="";
+    var nomValue="";
+    var accInterest="";
+
+        if(itemsData){
+            for(var e in itemsData){
+                if(itemsData[e].item==item){
+                    intRate=itemsData[e].interestRate;
+                    nomValue=nominalValue;
+                    accInterest=Banana.SDecimal.divide(nomValue,100);
+                    accInterest=Banana.SDecimal.multiply(accInterest,intRate);
+                    //ADD THE CALCULATION OF EFFECTIVE PERIOD
+                    return accInterest;
+                }
+            }
+        }else 
+            return "";
+
+}
+
 function getItemAccount(item,itemsData){
     //fill the listString with the existing items
     if(itemsData){
@@ -215,27 +244,27 @@ function getItemAccount(item,itemsData){
                 return itemsData[e].bankAccount;
         }
     }else 
-        return false;
+        return "";
 
 }
 
-function createSharesSalesOpDocChange_sharesSale(jsonDoc,currentRowDate,currentSelectionBottom,userParam,itemsData){
+function createSharesSalesOpDocChange_bondSale(jsonDoc,currentRowDate,currentSelectionBottom,userParam,itemsData){
         //temporary UPPERCASE variables, the user will define those values through a dialog
         var opAccount=getItemAccount(userParam.selectedItem,itemsData);
         var opDate="";
         if(currentRowDate)
             opDate=currentRowDate;
         else
-            opDate=jsonDoc.creator.executionDate;  
+            opDate=jsonDoc.creator.executionDate;   
         var opItem=userParam.selectedItem;
-        var opQuantity="1";
+        var opNpminalValue="1"; //for the bonds the qt reperesent the nominal value of a bond
         var opMarketPrice=userParam.marketPrice;
         if(userParam.quantity){
-            opQuantity=userParam.quantity;
+            opNpminalValue=userParam.quantity;
         }
     
-        var opDescription="Sale shares "+userParam.selectedItem;
-        var opCurrentSelectionBottom=currentSelectionBottom+".3"; //set with the correct format to indicate the sequence
+        var opDescription="Sale bonds "+userParam.selectedItem;
+        var opCurrentSelectionBottom=currentSelectionBottom+".4"; //set with the correct format to indicate the sequence
 
         var row={};
 
@@ -244,7 +273,7 @@ function createSharesSalesOpDocChange_sharesSale(jsonDoc,currentRowDate,currentS
         row.fields.ItemsId=opItem;
         row.fields.Description=opDescription;
         row.fields.AccountCredit=opAccount;
-        row.fields.Quantity=opQuantity;
+        row.fields.Quantity=opNpminalValue;
         row.fields.UnitPrice=opMarketPrice;
     
         row.operation={};
