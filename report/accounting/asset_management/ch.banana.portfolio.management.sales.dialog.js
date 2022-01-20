@@ -12,16 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-// @id = ch.banana.securities.dialog
 // @api = 1.0
 // @pubdate = 2021-12-10
 // @publisher = Banana.ch SA
 // @description = ch.banana.securities.dialog
-// @task = app.command
-// @doctype = 100.*
-// @docproperties =
-// @outputformat = none
-// @inputdatasource = none
 // @timeout = -1
 // @includejs = ch.banana.portfolio.management.calculation.methods.js
 
@@ -69,18 +63,18 @@ dialog.showPreviews=function(){
     var avgCost="";
     var multiCurrencyAcc=false;
     var currRow = banDoc.cursor.selectionTop;
-    var sharesData="";
+    var secData="";
     var currentParam=readDialogParams();
 
     //calculate values
     multiCurrencyAcc=checkIfMultiCurrencyAccounting(Banana.document);
     transList=getTransactionsTableData(Banana.document,multiCurrencyAcc);
     avgCost=getAverageCost(currentParam.selectedItem,currentSelectionTop,transList);
-    sharesData=calculateSharesData(avgCost,currentParam);
+    secData=calculateSecuritySaleData(avgCost,currentParam);
 
     //format values
     avgCost=Banana.Converter.toLocaleNumberFormat(avgCost,decimals = 2, convZero = true);
-    var result=Banana.Converter.toLocaleNumberFormat(sharesData.result,decimals = 2, convZero = true);
+    var result=Banana.Converter.toLocaleNumberFormat(secData.result,decimals = 2, convZero = true);
 
     //set the values in the label
     avgCostPreview.setText(avgCost);

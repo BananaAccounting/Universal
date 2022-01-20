@@ -109,7 +109,7 @@ var PortfolioManagement=class  PortfolioManagement{
         return table_bas_transactions_details;
     }
 
-    printReport() {
+    printReport(transactionsRows) {
 
         /**********************************************************
          * create the report
@@ -125,7 +125,7 @@ var PortfolioManagement=class  PortfolioManagement{
         var table_bas_appraisal = this.addTableBaSAppraisal(report,percOfPortDescr,currentDate);
         this.addHeader(report);
         this.addFooter(report);
-        var items = this.getReportRows();
+        var items = this.getReportRows(transactionsRows);
         items.sort(compare);
         var items_total = this.getReportRows_GroupTotals();
         var final_total=this.getReportRows_FinalTotal();
@@ -200,27 +200,26 @@ var PortfolioManagement=class  PortfolioManagement{
         var style_market_quantity=setSortedColumnStyle('Quantity');*/
 
         var table_bas_trans_details = this.addTableBaSTransactionsDetails(report,currentDate);
-        var transactionsDetails=this.setTransactionsDetails();
         var ItemList = this.getTableValues("Items", "ItemsId");
         for (var i = 0; i < ItemList.length; i++) {
             let tableRow = table_bas_trans_details.addRow("styleTableRows");
             tableRow.addCell(ItemList[i], 'styleTablesBasNames_totals',10);
             //nuovo item, quindi andrò a prendere la qt iniziale (se ce)
             this.NewItem=true;
-            for (var row in transactionsDetails) {
-                if(ItemList[i]==transactionsDetails[row].items){
+            for (var row in transactionsRows) {
+                if(ItemList[i]==transactionsRows[row].item){
                     let tableRow = table_bas_trans_details.addRow("styleTableRows");
-                    tableRow.addCell(transactionsDetails[row].date, 'styleTablesBasResults');
-                    tableRow.addCell(transactionsDetails[row].descr, '');
-                    tableRow.addCell(transactionsDetails[row].debit, 'styleTablesBasResults');
-                    tableRow.addCell(transactionsDetails[row].credit, 'styleTablesBasResults');
-                    var qtStyle=this.getQtStyle(transactionsDetails[row].qt);
-                    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(transactionsDetails[row].qt,"0",false),qtStyle);
+                    tableRow.addCell(transactionsRows[row].date, 'styleTablesBasResults');
+                    tableRow.addCell(transactionsRows[row].description, '');
+                    tableRow.addCell(transactionsRows[row].debit, 'styleTablesBasResults');
+                    tableRow.addCell(transactionsRows[row].credit, 'styleTablesBasResults');
+                    var qtStyle=this.getQtStyle(transactionsRows[row].qt);
+                    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(transactionsRows[row].qt,"0",false),qtStyle);
                     var beginQuantity=this.getBeginQt(ItemList[i]);
-                    var quantityCurrent=this.getQtCurrent(beginQuantity,transactionsDetails[row].qt);
+                    var quantityCurrent=this.getQtCurrent(beginQuantity,transactionsRows[row].qt);
                     tableRow.addCell(Banana.Converter.toLocaleNumberFormat(quantityCurrent,"0",false),'styleTablesBasResults');
-                    tableRow.addCell(this.toLocaleAmountFormat(transactionsDetails[row].price), 'styleTablesBasResults');
-                    tableRow.addCell(this.toLocaleAmountFormat(transactionsDetails[row].amount), 'styleTablesBasResults');
+                    tableRow.addCell(this.toLocaleAmountFormat(transactionsRows[row].unitPrice), 'styleTablesBasResults');
+                    tableRow.addCell(this.toLocaleAmountFormat(transactionsRows[row].amount), 'styleTablesBasResults');
                 }
             }
             this.QtCurrent="";
@@ -473,70 +472,6 @@ var PortfolioManagement=class  PortfolioManagement{
         return values;
     }
 
-    /**
-     * get the list of transactions from the transactions table
-     * @returns a list of transactions
-     */
-    getTransactionsRows(){
-        var transactionsRows = [];
-        if (!Banana.document) {
-            return transactionsRows;
-        }
-
-        var table = Banana.document.table("Transactions");
-        if (!table) {
-            return transactionsRows;
-        }
-        for (var i = 0; i < table.rowCount; i++) {
-            var tRow = table.row(i);
-            var transactionRow={};
-
-            transactionRow.rowDate = tRow.value('Date');
-            transactionRow.rowItem = tRow.value('ItemsId');
-            transactionRow.rowDescr = tRow.value('Description');
-            transactionRow.rowDebit = tRow.value('AccountDebit');
-            transactionRow.rowCredit = tRow.value('AccountCredit');
-            transactionRow.rowQt = tRow.value('Quantity');
-            transactionRow.rowUnitPrice = tRow.value('UnitPrice');
-            if(this.info.multiCurrency)
-                transactionRow.rowAmount = tRow.value('AmountCurrency');
-            else    
-                transactionRow.rowAmount = tRow.value('Amount');
-
-            if(transactionRow.rowItem!=="")
-                transactionsRows.push(transactionRow);
-
-        }
-
-        return transactionsRows;
-    }
-
-    setTransactionsDetails(){
-
-        var transDetails=[];
-        var transactionsRows=this.getTransactionsRows();
-
-        for (var row in transactionsRows){
-
-            var transactionDetails={};
-
-            transactionDetails.date=transactionsRows[row].rowDate;
-            transactionDetails.items=transactionsRows[row].rowItem;
-            transactionDetails.descr=transactionsRows[row].rowDescr;
-            transactionDetails.debit=transactionsRows[row].rowDebit;
-            transactionDetails.credit=transactionsRows[row].rowCredit;
-            transactionDetails.qt=transactionsRows[row].rowQt;
-            transactionDetails.price=transactionsRows[row].rowUnitPrice;
-            transactionDetails.amount=transactionsRows[row].rowAmount;
-
-            transDetails.push(transactionDetails);
-        }
-
-        return transDetails;
-
-
-    }
-
     sumArrayEelements(array){
         var sum="";
         for(var i=0;i<array.length;i++){
@@ -706,7 +641,7 @@ var PortfolioManagement=class  PortfolioManagement{
      * this function creates for each item an object and assigns values to each of its properties, each item is then inserted into an array.
      * @returns returns an array of items.
      */
-    getReportRows() {
+    getReportRows(transactionsRows) {
         let items = [];
         //get the list of the items in the Item table
         var marketVReferenceColumn=this.getmarketVReferenceColumn();
@@ -721,7 +656,7 @@ var PortfolioManagement=class  PortfolioManagement{
             let item_data = {};
             item_data.name = items_list[i];
             item_data.quantity = this.getItemColumnValue(items_list[i], "QuantityCurrent");
-            item_data.avgCost = getAverageCost(items_list[i],this.banDoc,this.info.multiCurrency,"10000000000");//da rivedere
+            item_data.avgCost = getAverageCost(items_list[i],"10000000000",transactionsRows);//da rivedere
             if(this.info.multiCurrency)
                 item_data.currency=this.getItemColumnValue(items_list[i],"Currency");
             item_data.total_cost = Banana.SDecimal.multiply(item_data.quantity, item_data.avgCost);
@@ -996,7 +931,8 @@ function exec(inData, options) {
         return "@Cancel";
     }
 
-    var report = portfolioManagement.printReport();
+    var transactionsRows=getTransactionsTableData(banDoc,portfolioManagement.info.multiCurrency);
+    var report = portfolioManagement.printReport(transactionsRows);
     var stylesheet = portfolioManagement.getReportStyle();
     Banana.Report.preview(report, stylesheet);
 

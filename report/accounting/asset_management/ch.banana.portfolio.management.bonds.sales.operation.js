@@ -27,7 +27,7 @@
 // @includejs = ch.banana.portfolio.management.sales.dialog.js
 
 /**
- * This extension creates the registration for the sale of shares using the document change, 
+ * This extension creates the registration for the sale of bonds using the document change, 
  * Sale operation example:
  * 
  * Vend. 500'000 obbligazioni Holcim                                   |	1020    |           |   512'000.00 
@@ -54,7 +54,7 @@ function exec() {
         var avgCost="";
         var multiCurrencyAcc=false;
         var currentSelectionTop = banDoc.cursor.selectionTop;
-        var sharesData="";
+        var bondsData="";
         var currentRowDate="";
         var userParam=readDialogParams();
 
@@ -62,9 +62,9 @@ function exec() {
         transList=getTransactionsTableData(banDoc,multiCurrencyAcc);
         currentRowDate=getCurrentRowDate(banDoc,transList);
         avgCost=getAverageCost(userParam.selectedItem,currentSelectionTop,transList);
-        sharesData=calculateSharesData(avgCost,userParam);
-        //Creates the document change for the sale of shares
-        salesOpArray = createSharesSalesOpDocChange(currentSelectionBottom,currentRowDate,sharesData,multiCurrencyAcc,userParam,itemsData);
+        bondsData=calculateSecuritySaleData(avgCost,userParam);
+        //Creates the document change for the sale of bonds transactions
+        salesOpArray = createBondsSalesOpDocChange(currentSelectionBottom,currentRowDate,bondsData,multiCurrencyAcc,userParam,itemsData);
     
         jsonDoc = { "format": "documentChange", "error": "" };
         jsonDoc["data"] = salesOpArray;
@@ -79,22 +79,22 @@ function exec() {
 /**
  * To create the transactions, I assume that the net entry has been made (received from the bank).
  * @param {*} currentSelectionBottom line on which the cursor currently rests
- * @param {*} sharesData calculated share data 
+ * @param {*} bondsData calculated share data 
  * @param {*} multiCurrencyAccounting true if the document is a multicurrency accounting (number 120)
  * @param {*} userParam parameters defined by the user
  * @returns returns the Json document
  */
-function createSharesSalesOpDocChange(currentSelectionBottom,currentRowDate,sharesData,multiCurrencyAccounting,userParam,itemsData){
+function createBondsSalesOpDocChange(currentSelectionBottom,currentRowDate,bondsData,multiCurrencyAccounting,userParam,itemsData){
     var jsonDoc = initJsonDoc();
     var rows=[];
 
     
     var amountColumn=getAmountColumn(multiCurrencyAccounting);
 
-    rows.push(createSharesSalesOpDocChange_bankCharges(jsonDoc,currentRowDate,currentSelectionBottom,userParam,amountColumn));
-    rows.push(createSharesSalesOpDocChange_profitOrLoss(jsonDoc,currentRowDate,sharesData,currentSelectionBottom,userParam,amountColumn));
-    rows.push(createSharesSalesOpDocChange_accruedInterest(jsonDoc,currentRowDate,currentSelectionBottom,userParam,amountColumn,itemsData));
-    rows.push(createSharesSalesOpDocChange_bondSale(jsonDoc,currentRowDate,currentSelectionBottom,userParam,itemsData));
+    rows.push(createBondsSalesOpDocChange_bankCharges(jsonDoc,currentRowDate,currentSelectionBottom,userParam,amountColumn));
+    rows.push(createBondsSalesOpDocChange_profitOrLoss(jsonDoc,currentRowDate,bondsData,currentSelectionBottom,userParam,amountColumn));
+    rows.push(createBondsSalesOpDocChange_accruedInterest(jsonDoc,currentRowDate,currentSelectionBottom,userParam,amountColumn,itemsData));
+    rows.push(createBondsSalesOpDocChange_bondSale(jsonDoc,currentRowDate,currentSelectionBottom,userParam,itemsData));
 
     
     var dataUnitFilePorperties = {};
@@ -108,7 +108,7 @@ function createSharesSalesOpDocChange(currentSelectionBottom,currentRowDate,shar
     return jsonDoc;
 }
 
-function createSharesSalesOpDocChange_bankCharges(jsonDoc,currentRowDate,currentSelectionBottom,userParam,amountColumn){
+function createBondsSalesOpDocChange_bankCharges(jsonDoc,currentRowDate,currentSelectionBottom,userParam,amountColumn){
 
     var opDescription="Sale bonds "+userParam.selectedItem+" bank charges";
     var opCurrentSelectionBottom=currentSelectionBottom+".1"; //set with the correct format to indicate the sequence
@@ -136,10 +136,10 @@ function createSharesSalesOpDocChange_bankCharges(jsonDoc,currentRowDate,current
     return row;
 }
 
-function createSharesSalesOpDocChange_profitOrLoss(jsonDoc,currentRowDate,sharesData,currentSelectionBottom,userParam,amountColumn){
+function createBondsSalesOpDocChange_profitOrLoss(jsonDoc,currentRowDate,bondsData,currentSelectionBottom,userParam,amountColumn){
 
     // set the description based on the result
-    var opProfitOnSale=sharesData.profitOnSale;
+    var opProfitOnSale=bondsData.profitOnSale;
     var resultDescription=setResultDecription(opProfitOnSale);
     var opDescription="Sale bonds "+userParam.selectedItem+" "+resultDescription;
     //get the account based on the result
@@ -150,7 +150,7 @@ function createSharesSalesOpDocChange_profitOrLoss(jsonDoc,currentRowDate,shares
     else
         opDate=jsonDoc.creator.executionDate;   
     var opCurrentSelectionBottom=currentSelectionBottom+".2"; //set with the correct format to indicate the sequence
-    var opAmount=sharesData.result;
+    var opAmount=bondsData.result;
 
     var row={};
 
@@ -180,7 +180,7 @@ function createSharesSalesOpDocChange_profitOrLoss(jsonDoc,currentRowDate,shares
  * @param {*} accParam 
  * @returns 
  */
- function createSharesSalesOpDocChange_accruedInterest(jsonDoc,currentRowDate,currentSelectionBottom,userParam,amountColumn,itemsData){
+ function createBondsSalesOpDocChange_accruedInterest(jsonDoc,currentRowDate,currentSelectionBottom,userParam,amountColumn,itemsData){
 
     var opDate="";
     if(currentRowDate)
@@ -236,19 +236,7 @@ function getAccruedInterest(item, nominalValue,itemsData){
 
 }
 
-function getItemAccount(item,itemsData){
-    //fill the listString with the existing items
-    if(itemsData){
-        for(var e in itemsData){
-            if(itemsData[e].item==item)
-                return itemsData[e].bankAccount;
-        }
-    }else 
-        return "";
-
-}
-
-function createSharesSalesOpDocChange_bondSale(jsonDoc,currentRowDate,currentSelectionBottom,userParam,itemsData){
+function createBondsSalesOpDocChange_bondSale(jsonDoc,currentRowDate,currentSelectionBottom,userParam,itemsData){
         //temporary UPPERCASE variables, the user will define those values through a dialog
         var opAccount=getItemAccount(userParam.selectedItem,itemsData);
         var opDate="";
@@ -273,7 +261,7 @@ function createSharesSalesOpDocChange_bondSale(jsonDoc,currentRowDate,currentSel
         row.fields.ItemsId=opItem;
         row.fields.Description=opDescription;
         row.fields.AccountCredit=opAccount;
-        row.fields.Quantity=opNpminalValue;
+        row.fields.Quantity="-"+opNpminalValue;
         row.fields.UnitPrice=opMarketPrice;
     
         row.operation={};

@@ -61,7 +61,7 @@ function exec() {
         transList=getTransactionsTableData(banDoc,multiCurrencyAcc);
         currentRowDate=getCurrentRowDate(banDoc,transList);
         avgCost=getAverageCost(userParam.selectedItem,currentSelectionTop,transList);
-        sharesData=calculateSharesData(avgCost,userParam);
+        sharesData=calculateSecuritySaleData(avgCost,userParam);
         //Creates the document change for the sale of shares
         salesOpArray = createSharesSalesOpDocChange(currentSelectionBottom,currentRowDate,sharesData,multiCurrencyAcc,userParam,itemsData);
     
@@ -207,18 +207,6 @@ function createSharesSalesOpDocChange_profitOrLoss(jsonDoc,currentRowDate,shares
 
 }
 
-function getItemAccount(item,itemsData){
-    //fill the listString with the existing items
-    if(itemsData){
-        for(var e in itemsData){
-            if(itemsData[e].item==item)
-                return itemsData[e].bankAccount;
-        }
-    }else 
-        return false;
-
-}
-
 function createSharesSalesOpDocChange_sharesSale(jsonDoc,currentRowDate,currentSelectionBottom,userParam,itemsData){
         //temporary UPPERCASE variables, the user will define those values through a dialog
         var opAccount=getItemAccount(userParam.selectedItem,itemsData);
@@ -244,7 +232,7 @@ function createSharesSalesOpDocChange_sharesSale(jsonDoc,currentRowDate,currentS
         row.fields.ItemsId=opItem;
         row.fields.Description=opDescription;
         row.fields.AccountCredit=opAccount;
-        row.fields.Quantity=opQuantity;
+        row.fields.Quantity="-"+opQuantity;
         row.fields.UnitPrice=opMarketPrice;
     
         row.operation={};
