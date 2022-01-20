@@ -7,17 +7,17 @@
     <x>0</x>
     <y>0</y>
     <width>637</width>
-    <height>671</height>
+    <height>644</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Sales Details</string>
+   <string>Transaction Details</string>
   </property>
   <widget class="QDialogButtonBox" name="cancel_button">
    <property name="geometry">
     <rect>
-     <x>240</x>
-     <y>600</y>
+     <x>230</x>
+     <y>560</y>
      <width>341</width>
      <height>31</height>
     </rect>
@@ -39,7 +39,7 @@
     </rect>
    </property>
    <property name="title">
-    <string>Share data</string>
+    <string>Transaction data</string>
    </property>
    <widget class="QWidget" name="formLayoutWidget">
     <property name="geometry">
@@ -77,7 +77,7 @@
      <item row="2" column="0">
       <widget class="QLabel" name="marketPrice_label">
        <property name="text">
-        <string>Market Price</string>
+        <string>Market price</string>
        </property>
       </widget>
      </item>
@@ -107,7 +107,7 @@
     </rect>
    </property>
    <property name="title">
-    <string>Registration accounts</string>
+    <string>Transaction accounts</string>
    </property>
    <widget class="QWidget" name="formLayoutWidget_2">
     <property name="geometry">
@@ -128,7 +128,7 @@
      <item row="0" column="0">
       <widget class="QLabel" name="bankAccount_label">
        <property name="text">
-        <string>Bank Account</string>
+        <string>Bank account</string>
        </property>
       </widget>
      </item>
@@ -138,7 +138,7 @@
      <item row="1" column="0">
       <widget class="QLabel" name="BankInterest_label">
        <property name="text">
-        <string>Bank Interest account</string>
+        <string>Bank interest account</string>
        </property>
       </widget>
      </item>
@@ -148,7 +148,7 @@
      <item row="2" column="0">
       <widget class="QLabel" name="ProfitOnSecurities_label">
        <property name="text">
-        <string>Profit on Securities</string>
+        <string>Profit on securities</string>
        </property>
       </widget>
      </item>
@@ -182,7 +182,7 @@
    <property name="geometry">
     <rect>
      <x>20</x>
-     <y>600</y>
+     <y>560</y>
      <width>141</width>
      <height>31</height>
     </rect>
@@ -197,7 +197,7 @@
      <x>40</x>
      <y>460</y>
      <width>211</width>
-     <height>51</height>
+     <height>61</height>
     </rect>
    </property>
    <property name="text">
@@ -210,7 +210,7 @@
      <x>260</x>
      <y>460</y>
      <width>221</width>
-     <height>51</height>
+     <height>61</height>
     </rect>
    </property>
    <property name="text">
@@ -235,32 +235,6 @@
     <rect>
      <x>260</x>
      <y>420</y>
-     <width>231</width>
-     <height>51</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>0</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="currentValueOfSharesTitle_label">
-   <property name="geometry">
-    <rect>
-     <x>40</x>
-     <y>500</y>
-     <width>201</width>
-     <height>51</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Current Value of Shares </string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="currentValueOfShares_label">
-   <property name="geometry">
-    <rect>
-     <x>260</x>
-     <y>500</y>
      <width>231</width>
      <height>51</height>
     </rect>

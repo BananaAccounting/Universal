@@ -149,19 +149,62 @@ function getQtOfSharesPurchased(item,currentSelectionTop,transList){
 
 }
 
-function calculateSharesData(avgCost,userParam){
+/**
+ * 
+ * @param {*} avgCost the average cost
+ * @param {*} userParam the parameters that the user defined in the dialog
+ * @returns an object with the calculation data.
+ */
+function calculateSecuritySaleData(avgCost,userParam){
     
-    var sharesData={};
+    var securityData={};
 
-    sharesData.avgCost=avgCost;
-    sharesData.currentValue=Banana.SDecimal.multiply(sharesData.avgCost,userParam.quantity);
-    sharesData.marketValue=Banana.SDecimal.multiply(userParam.marketPrice,userParam.quantity);
-    sharesData.result=Banana.SDecimal.subtract(sharesData.marketValue,sharesData.currentValue);
-    sharesData.profitOnSale=false;
-    if(Banana.SDecimal.sign(sharesData.result)=="1")
-    sharesData.profitOnSale=true;
+    securityData.avgCost=avgCost;
+    securityData.currentValue=Banana.SDecimal.multiply(securityData.avgCost,userParam.quantity);
+    securityData.marketValue=Banana.SDecimal.multiply(userParam.marketPrice,userParam.quantity);
+    securityData.result=Banana.SDecimal.subtract(securityData.marketValue,securityData.currentValue);
+    securityData.profitOnSale=false;
+    if(Banana.SDecimal.sign(securityData.result)=="1")
+    securityData.profitOnSale=true;
 
-    return sharesData;
+    return securityData;
+
+}
+
+function calculateSecurityClosingData(banDoc,userParam,itemsData){
+    var closingData={};
+    var accBalance=getItemBalance(banDoc,userParam.selectedItem,itemsData);
+
+    closingData.account=accBalance.account;
+    closingData.balance=accBalance.currentBalance;
+    Banana.console.debug(accBalance.currentBalance);
+    closingData.marketValue=Banana.SDecimal.multiply(userParam.marketPrice,userParam.quantity);
+    closingData.adjustment=Banana.SDecimal.subtract(closingData.marketValue,closingData.balance);
+    closingData.profit=false;
+    if(Banana.SDecimal.sign(closingData.adjustment)=="1")
+        closingData.profit=true;
+
+    return closingData;
+
+}
+
+function getItemBalance(banDoc,item,itemsData){
+    var accBalance={};
+
+    accBalance.account=getItemAccount(item,itemsData);
+    accBalance.currbalance=banDoc.currentBalance(accBalance.account);
+
+    return accBalance;
+}
+
+function getItemAccount(item,itemsData){
+    if(itemsData){
+        for(var e in itemsData){
+            if(itemsData[e].item==item)
+                return itemsData[e].bankAccount;
+        }
+    }else 
+        return false;
 
 }
 
@@ -189,9 +232,9 @@ function setResultDecription(profitOnSale){
     var description="";
 
     if(profitOnSale)
-        description="profit on sale";
+        description="Profit";
     else
-        description="loss on sale";
+        description="Loss";
 
     return description;
 }

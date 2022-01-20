@@ -1,7 +1,12 @@
 <!DOCTYPE RCC><RCC version="1.0">
  <qresource>
-     <file>portfolio_management_report.js</file>
-     <file>portfolio_management_report.css</file>
-     <file>portfolio_management_report.manifest.json</file>
+     <file>ch.banana.portfolio.management.bonds.sales.operation.js</file>
+     <file>ch.banana.portfolio.management.calculation.methods.js</file>
+     <file>ch.banana.portfolio.management.manifest.json</file>
+     <file>ch.banana.portfolio.management.report.css</file>
+     <file>ch.banana.portfolio.management.report.js</file>
+     <file>ch.banana.portfolio.management.sales.dialog.js</file>
+     <file>ch.banana.portfolio.management.shares.sales.operation.js</file>
+     <file>ch.banana.portfolio.management.sales.dialog.ui</file>
  </qresource>
  </RCC>

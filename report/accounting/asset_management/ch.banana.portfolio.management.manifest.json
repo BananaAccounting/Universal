@@ -2,12 +2,12 @@
     "category": "productivity",
     "country": "universal",
     "countryCode": "un",
-    "description": "Portfolio Management Report",
-    "description.en": "Portfolio Management Report",
-    "id": "portfoliomanagementreport",
+    "description": "Portfolio Management",
+    "description.en": "Portfolio Management",
+    "id": "portfoliomanagement",
     "language": "en",
     "publisher": "Banana.ch",
-    "title": "Portfolio Management Report",
-    "title.en": "Portfolio Management Report",
+    "title": "Portfolio Management",
+    "title.en": "Portfolio Management",
     "version": "1.0"
 }
