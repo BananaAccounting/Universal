@@ -62,7 +62,6 @@ dialog.showPreviews=function(){
     var transList=[];
     var avgCost="";
     var multiCurrencyAcc=false;
-    var currRow = banDoc.cursor.selectionTop;
     var secData="";
     var currentParam=readDialogParams();
 

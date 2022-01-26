@@ -136,7 +136,7 @@ var PortfolioManagement=class  PortfolioManagement{
 
         for (var row_total in items_total) {
             var tableRow = table_bas_appraisal.addRow("styleTableRows");
-            tableRow.addCell(items_total[row_total].name, 'styleTablesBasNames_totals',9);
+            tableRow.addCell(items_total[row_total].name, 'styleTablesBasNames_totals',11);
             for (var row in items) {
                 if (items[row].gr === items_total[row_total].name) {
                     let tableRow = table_bas_appraisal.addRow("styleTableRows");

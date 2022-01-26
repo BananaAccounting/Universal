@@ -56,13 +56,14 @@ function exec() {
         var currentSelectionTop = banDoc.cursor.selectionTop;
         var bondsData="";
         var currentRowDate="";
+        var bondTotalCourse="";
         var userParam=readDialogParams();
 
         multiCurrencyAcc=checkIfMultiCurrencyAccounting(banDoc);
         transList=getTransactionsTableData(banDoc,multiCurrencyAcc);
+        bondTotalCourse=getBondTotalCourse(transList,userParam);
         currentRowDate=getCurrentRowDate(banDoc,transList);
-        avgCost=getAverageCost(userParam.selectedItem,currentSelectionTop,transList);
-        bondsData=calculateSecuritySaleData(avgCost,userParam);
+        bondsData=calculateBondSaleData(bondTotalCourse,userParam);
         //Creates the document change for the sale of bonds transactions
         salesOpArray = createBondsSalesOpDocChange(currentSelectionBottom,currentRowDate,bondsData,multiCurrencyAcc,userParam,itemsData);
     
@@ -91,10 +92,10 @@ function createBondsSalesOpDocChange(currentSelectionBottom,currentRowDate,bonds
     
     var amountColumn=getAmountColumn(multiCurrencyAccounting);
 
-    rows.push(createBondsSalesOpDocChange_bankCharges(jsonDoc,currentRowDate,currentSelectionBottom,userParam,amountColumn));
-    rows.push(createBondsSalesOpDocChange_profitOrLoss(jsonDoc,currentRowDate,bondsData,currentSelectionBottom,userParam,amountColumn));
-    rows.push(createBondsSalesOpDocChange_accruedInterest(jsonDoc,currentRowDate,currentSelectionBottom,userParam,amountColumn,itemsData));
-    rows.push(createBondsSalesOpDocChange_bondSale(jsonDoc,currentRowDate,currentSelectionBottom,userParam,itemsData));
+    rows.push(createBondsSalesOpDocChange_bankCharges(jsonDoc,currentRowDate,currentSelectionBottom,userParam,amountColumn));//indicati nel dialogo
+    rows.push(createBondsSalesOpDocChange_profitOrLoss(jsonDoc,currentRowDate,bondsData,currentSelectionBottom,userParam,amountColumn));//(valore nominale cedole*corso attuale)-valore di acquisto.
+    rows.push(createBondsSalesOpDocChange_accruedInterest(jsonDoc,currentRowDate,bondsData,currentSelectionBottom,userParam,amountColumn,itemsData));//((valore nominale*tasso%)/360)* giorni maturazione interesse dalla scadenza.
+    rows.push(createBondsSalesOpDocChange_bondSale(jsonDoc,currentRowDate,currentSelectionBottom,userParam,itemsData,bondsData,amountColumn));//valore di acquisto (avere)-->lo posso cercare nelle registrazioni, recupero la riga di registrazione che contiene il conto dell'obbligazione
 
     
     var dataUnitFilePorperties = {};
@@ -180,7 +181,7 @@ function createBondsSalesOpDocChange_profitOrLoss(jsonDoc,currentRowDate,bondsDa
  * @param {*} accParam 
  * @returns 
  */
- function createBondsSalesOpDocChange_accruedInterest(jsonDoc,currentRowDate,currentSelectionBottom,userParam,amountColumn,itemsData){
+ function createBondsSalesOpDocChange_accruedInterest(jsonDoc,currentRowDate,bondsData,currentSelectionBottom,userParam,amountColumn,itemsData){
 
     var opDate="";
     if(currentRowDate)
@@ -190,7 +191,7 @@ function createBondsSalesOpDocChange_profitOrLoss(jsonDoc,currentRowDate,bondsDa
     var opCurrentSelectionBottom=currentSelectionBottom+".3";
     var opDescription="Sale bonds "+userParam.selectedItem+" accrued interest on sale";
     var opAccount=userParam.interestOnBond;
-    var opAmount=getAccruedInterest(userParam.selectedItem,userParam.quantity,itemsData);
+    var opAmount=getAccruedInterest(bondsData,itemsData);
 
     var row={};
 
@@ -214,10 +215,10 @@ function createBondsSalesOpDocChange_profitOrLoss(jsonDoc,currentRowDate,bondsDa
  * @param {*} nominalValue the nominal value is taken as the value being sold.
  * @returns 
  */
-function getAccruedInterest(item, nominalValue,itemsData){
+function getAccruedInterest(bondsData,itemsData){
     //the interest percentage of the bonds is currently indicated in the "Notes" Column
     var intRate="";
-    var nomValue="";
+    var nomValue=bondsData-nominalValue;
     var accInterest="";
 
         if(itemsData){
@@ -227,7 +228,7 @@ function getAccruedInterest(item, nominalValue,itemsData){
                     nomValue=nominalValue;
                     accInterest=Banana.SDecimal.divide(nomValue,100);
                     accInterest=Banana.SDecimal.multiply(accInterest,intRate);
-                    //ADD THE CALCULATION OF EFFECTIVE PERIOD
+                    //!!!! ADD THE CALCULATION OF EFFECTIVE PERIOD !!!!!
                     return accInterest;
                 }
             }
@@ -236,7 +237,17 @@ function getAccruedInterest(item, nominalValue,itemsData){
 
 }
 
-function createBondsSalesOpDocChange_bondSale(jsonDoc,currentRowDate,currentSelectionBottom,userParam,itemsData){
+/**
+ * Crea la registrazione di vendita dell'obbligazione. L'importo registrato è il corso totale d'acquisto, se ho più registrazioni per la stessa obbligazione, 
+ * devo fare una media tra gli importi
+ * @param {*} jsonDoc 
+ * @param {*} currentRowDate 
+ * @param {*} currentSelectionBottom 
+ * @param {*} userParam 
+ * @param {*} itemsData 
+ * @returns 
+ */
+function createBondsSalesOpDocChange_bondSale(jsonDoc,currentRowDate,currentSelectionBottom,userParam,itemsData,bondsData,amountColumn){
         //temporary UPPERCASE variables, the user will define those values through a dialog
         var opAccount=getItemAccount(userParam.selectedItem,itemsData);
         var opDate="";
@@ -253,6 +264,7 @@ function createBondsSalesOpDocChange_bondSale(jsonDoc,currentRowDate,currentSele
     
         var opDescription="Sale bonds "+userParam.selectedItem;
         var opCurrentSelectionBottom=currentSelectionBottom+".4"; //set with the correct format to indicate the sequence
+        var opAmount=bondsData.currentValue;
 
         var row={};
 
@@ -263,6 +275,7 @@ function createBondsSalesOpDocChange_bondSale(jsonDoc,currentRowDate,currentSele
         row.fields.AccountCredit=opAccount;
         row.fields.Quantity="-"+opNpminalValue;
         row.fields.UnitPrice=opMarketPrice;
+        row.fields[amountColumn]=opAmount;
     
         row.operation={};
         row.operation.name="add";
