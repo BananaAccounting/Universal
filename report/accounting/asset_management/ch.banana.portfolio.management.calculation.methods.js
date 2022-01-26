@@ -105,7 +105,7 @@ function getSumOfPurchasedShares(item,currentSelectionTop,transList){
 
     if(transList){
         for (var i = 0; i < transList.length; i++) {
-            if(transList[i].item==item && Banana.SDecimal.sign(transList[i].qt)!==-1 && transList[i].row<=currentSelectionTop ){
+            if(transList[i].item==item && transList[i].qt && Banana.SDecimal.sign(transList[i].qt)!=-1 && transList[i].row<=currentSelectionTop ){
                 rowPurchase=transList[i].amount;
                 purchasesSum=Banana.SDecimal.add(purchasesSum,rowPurchase);
             }
@@ -123,7 +123,7 @@ function getQtOfSharesPurchased(item,currentSelectionTop,transList){
 
     if(transList){
         for (var i = 0; i < transList.length; i++) {
-            if(transList[i].item==item && Banana.SDecimal.sign(transList[i].qt)!==-1 && transList[i].row<=currentSelectionTop){
+            if(transList[i].item==item && transList[i].qt && Banana.SDecimal.sign(transList[i].qt)!=-1 && transList[i].row<=currentSelectionTop){
                 rowQt=transList[i].qt;
                 purchaseQt=Banana.SDecimal.add(purchaseQt,rowQt);
             }
@@ -150,6 +150,32 @@ function getQtOfSharesPurchased(item,currentSelectionTop,transList){
 }
 
 /**
+ * Trova il corso totale di un obbligazione.
+ * il corso totale è il prezzo con qui l'abbiamo aquistata, e lo cerchiamo nella tabella registrazioni
+ * Se della stessa obbligazione vengono trovati due acquisti, viene fatta la media tra gli importi.
+ * @param {*} transList 
+ */
+ function getBondTotalCourse(transList,userParam){
+
+    let total="";
+    let result="";
+    let elementsNr=0;
+
+    for(var t in transList){
+        if(transList[t].item==userParam.selectedItem && transList[t].qt && Banana.SDecimal.sign(transList[t].qt)!=-1){ //cerco la riga di registrazione di acquisto dell'obbligazione, controllando che la quantità sia positiva.
+            total = Banana.SDecimal.add(total,transList[t].amount);
+            elementsNr++;
+        }
+    }
+    result = total / elementsNr;
+
+    Banana.console.debug(result);
+
+    return result;
+
+}
+
+/**
  * 
  * @param {*} avgCost the average cost
  * @param {*} userParam the parameters that the user defined in the dialog
@@ -168,6 +194,16 @@ function calculateSecuritySaleData(avgCost,userParam){
     securityData.profitOnSale=true;
 
     return securityData;
+
+}
+
+function calculateBondSaleData(bondTotalCourse,userParam){
+    bondData={};
+    
+    bondData.currentValue=bondTotalCourse;
+    bondData.nominalValue=userParam.quantity;
+    bondData.marketValue=Banana.SDecimal.multiply(userParam.marketPrice,bondData.nominalValue);
+    securityData.result=Banana.SDecimal.subtract(securityData.marketValue,securityData.currentValue);
 
 }
 
