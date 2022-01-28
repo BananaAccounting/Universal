@@ -169,10 +169,31 @@ function getQtOfSharesPurchased(item,currentSelectionTop,transList){
     }
     result = total / elementsNr;
 
-    Banana.console.debug(result);
-
     return result;
 
+}
+
+/**
+ * Trova il corso di acquisto, indicato nella colonna unitPrice al momento dell'acquisto del titolo.
+ * Se sono stati effetuati più acquisti dello stesso titolo viene fatta la media tra i prezzi di acquisto
+ * L'importo che ne risulterà viene inserito nella registra
+ */
+function getPurchaseCourse(transList,item,currentSelectionTop){
+    var purCourse="";
+    var elements=0;
+
+    if(transList){
+        for (var i = 0; i < transList.length; i++) {
+            if(transList[i].item==item && transList[i].qt && Banana.SDecimal.sign(transList[i].qt)!=-1 && transList[i].row<=currentSelectionTop){
+                rowPurchase=transList[i].unitPrice;
+                purCourse=Banana.SDecimal.add(purCourse,rowPurchase);
+                elements++;
+            }
+        }
+        purCourse=Banana.SDecimal.divide(purCourse,elements);
+
+        return purCourse;
+    }
 }
 
 /**
@@ -181,29 +202,34 @@ function getQtOfSharesPurchased(item,currentSelectionTop,transList){
  * @param {*} userParam the parameters that the user defined in the dialog
  * @returns an object with the calculation data.
  */
-function calculateSecuritySaleData(avgCost,userParam){
+function calculateShareSaleData(avgCost,userParam){
     
-    var securityData={};
+    var shareData={};
 
-    securityData.avgCost=avgCost;
-    securityData.currentValue=Banana.SDecimal.multiply(securityData.avgCost,userParam.quantity);
-    securityData.marketValue=Banana.SDecimal.multiply(userParam.marketPrice,userParam.quantity);
-    securityData.result=Banana.SDecimal.subtract(securityData.marketValue,securityData.currentValue);
-    securityData.profitOnSale=false;
-    if(Banana.SDecimal.sign(securityData.result)=="1")
-    securityData.profitOnSale=true;
+    shareData.avgCost=avgCost;
+    shareData.currentValue=Banana.SDecimal.multiply(shareData.avgCost,userParam.quantity);
+    shareData.marketValue=Banana.SDecimal.multiply(userParam.marketPrice,userParam.quantity);
+    shareData.result=Banana.SDecimal.subtract(shareData.marketValue,shareData.currentValue);
+    shareData.profitOnSale=false;
+    if(Banana.SDecimal.sign(shareData.result)=="1")
+    shareData.profitOnSale=true;
 
-    return securityData;
+    return shareData;
 
 }
 
 function calculateBondSaleData(bondTotalCourse,userParam){
-    bondData={};
+    var bondData={};
     
     bondData.currentValue=bondTotalCourse;
     bondData.nominalValue=userParam.quantity;
     bondData.marketValue=Banana.SDecimal.multiply(userParam.marketPrice,bondData.nominalValue);
-    securityData.result=Banana.SDecimal.subtract(securityData.marketValue,securityData.currentValue);
+    bondData.result=Banana.SDecimal.subtract(bondData.marketValue,bondData.currentValue);
+    bondData.profitOnSale=false;
+    if(Banana.SDecimal.sign(bondData.result)=="1")
+    bondData.profitOnSale=true;
+
+    return bondData;
 
 }
 
@@ -213,7 +239,6 @@ function calculateSecurityClosingData(banDoc,userParam,itemsData){
 
     closingData.account=accBalance.account;
     closingData.balance=accBalance.currentBalance;
-    Banana.console.debug(accBalance.currentBalance);
     closingData.marketValue=Banana.SDecimal.multiply(userParam.marketPrice,userParam.quantity);
     closingData.adjustment=Banana.SDecimal.subtract(closingData.marketValue,closingData.balance);
     closingData.profit=false;
@@ -314,6 +339,7 @@ function getItemsTableData(){
         itemData.currentQt=tRow.value("QuantityCurrent");
         itemData.valueCurrent=tRow.value("ValueCurrent");
         itemData.group=tRow.value("Group");
+        itemData.expiryDate=tRow.value("ExpiryDate");
         itemData.interestRate=tRow.value("Notes");
         if (itemsData) {
             itemsData.push(itemData);
