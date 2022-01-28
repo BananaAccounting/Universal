@@ -41,7 +41,7 @@
 //Main function
 function exec() {
     //show the dialog
-    var userParam=dialogExec();
+    var userParam=dialogExec("shares");
     var banDoc=Banana.document;
 
     if(userParam && banDoc){
@@ -61,7 +61,7 @@ function exec() {
         transList=getTransactionsTableData(banDoc,multiCurrencyAcc);
         currentRowDate=getCurrentRowDate(banDoc,transList);
         avgCost=getAverageCost(userParam.selectedItem,currentSelectionTop,transList);
-        sharesData=calculateSecuritySaleData(avgCost,userParam);
+        sharesData=calculateShareSaleData(avgCost,userParam);
         //Creates the document change for the sale of shares
         salesOpArray = createSharesSalesOpDocChange(currentSelectionBottom,currentRowDate,sharesData,multiCurrencyAcc,userParam,itemsData);
     

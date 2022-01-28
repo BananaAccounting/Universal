@@ -19,6 +19,9 @@
 // @timeout = -1
 // @includejs = ch.banana.portfolio.management.calculation.methods.js
 
+//global variables
+
+var SECTYPE=""; //The type of security
 
 /**
  * This script defines the dialog   
@@ -63,17 +66,22 @@ dialog.showPreviews=function(){
     var avgCost="";
     var multiCurrencyAcc=false;
     var secData="";
-    var currentParam=readDialogParams();
+    var userParam=readDialogParams();
 
     //calculate values
-    multiCurrencyAcc=checkIfMultiCurrencyAccounting(Banana.document);
-    transList=getTransactionsTableData(Banana.document,multiCurrencyAcc);
-    avgCost=getAverageCost(currentParam.selectedItem,currentSelectionTop,transList);
-    secData=calculateSecuritySaleData(avgCost,currentParam);
+    multiCurrencyAcc=checkIfMultiCurrencyAccounting(banDoc);
+    transList=getTransactionsTableData(banDoc,multiCurrencyAcc);
+    if(SECTYPE=="bonds"){
+        bondTotalCourse=getBondTotalCourse(transList,userParam);
+        secData=calculateBondSaleData(bondTotalCourse,userParam);
+    }
+    else if(SECTYPE=="shares"){
+        avgCost=getAverageCost(userParam.selectedItem,currentSelectionTop,transList);
+        secData=calculateShareSaleData(avgCost,userParam);
+    }
 
-    //format values
-    avgCost=Banana.Converter.toLocaleNumberFormat(avgCost,decimals = 2, convZero = true);
-    var result=Banana.Converter.toLocaleNumberFormat(secData.result,decimals = 2, convZero = true);
+        avgCost=Banana.Converter.toLocaleNumberFormat(avgCost,decimals = 2, convZero = true);
+        var result=Banana.Converter.toLocaleNumberFormat(secData.result,decimals = 2, convZero = true);
 
     //set the values in the label
     avgCostPreview.setText(avgCost);
@@ -194,8 +202,9 @@ function insertComboBoxElements(itemsCombobox){
 }
 
 
-function dialogExec(){
+function dialogExec(secType){
 
+    SECTYPE=secType;
     var savedParam={};
     var userParam=initParam();
 
