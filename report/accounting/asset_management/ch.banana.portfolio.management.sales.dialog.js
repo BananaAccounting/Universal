@@ -38,7 +38,6 @@ dialog=Banana.Ui.createUi("ch.banana.portfolio.management.sales.dialog.ui");
 //sales data section objects
 var itemsCombobox = dialog.findChild('item_comboBox');
 var quantity = dialog.findChild('quantity_lineEdit');
-var marketPrice=dialog.findChild('marketPrice_lineEdit');
 var bankChargesAmount = dialog.findChild('bank_charges_amount_lineEdit');
 
 //registration accounts data section objects
@@ -71,13 +70,15 @@ dialog.showPreviews=function(){
     //calculate values
     multiCurrencyAcc=checkIfMultiCurrencyAccounting(banDoc);
     transList=getTransactionsTableData(banDoc,multiCurrencyAcc);
+    currentRowData=getCurrentRowData(banDoc,transList);
+
     if(SECTYPE=="bonds"){
         bondTotalCourse=getBondTotalCourse(transList,userParam);
         secData=calculateBondSaleData(bondTotalCourse,userParam);
     }
     else if(SECTYPE=="shares"){
         avgCost=getAverageCost(userParam.selectedItem,currentSelectionTop,transList);
-        secData=calculateShareSaleData(avgCost,userParam);
+        secData=calculateShareSaleData(avgCost,userParam,currentRowData);
     }
 
         avgCost=Banana.Converter.toLocaleNumberFormat(avgCost,decimals = 2, convZero = true);
@@ -97,13 +98,6 @@ dialog.formatQt=function(){
     frmQt=Banana.Converter.toLocaleNumberFormat(frmQt,decimals = 0, convZero = true);
     quantity.setText(frmQt);
 }
-dialog.formatMarketPrice=function(){
-
-    //market price
-    var frmMarketPrice=marketPrice.text;
-    frmMarketPrice=Banana.Converter.toLocaleNumberFormat(frmMarketPrice,decimals = 0, convZero = true);
-    marketPrice.setText(frmMarketPrice);
-}
 
 dialog.formatBankCharges=function(){
     //bank charges
@@ -115,7 +109,6 @@ dialog.formatBankCharges=function(){
 
 /** Dialog's events declaration */
 //quantity.editingFinished.connect(dialog,dialog.formatQt);
-//marketPrice.editingFinished.connect(dialog,dialog.formatMarketPrice);
 //bankChargesAmount.editingFinished.connect(dialog,dialog.formatBankCharges);
 showResultsPreviewButton.clicked.connect(dialog,dialog.showPreviews);
 
@@ -130,7 +123,6 @@ function initParam(){
 
     param.salesParam.selectedItem="";
     param.salesParam.quantity="";
-    param.salesParam.marketPrice="";
     param.salesParam.bankChargesAmount="";
 
     param.accountsParam={};
@@ -169,7 +161,6 @@ function readDialogParams(){
 
     userParam.selectedItem=itemsCombobox.currentText;
     userParam.quantity=quantity.text;
-    userParam.marketPrice=marketPrice.text;
     userParam.bankChargesAmount=bankChargesAmount.text;
 
     userParam.bankAccount=bankAccount.text;
@@ -189,7 +180,7 @@ function readDialogParams(){
  */
 function insertComboBoxElements(itemsCombobox){
     listString=[]; //list of the items in the combobox
-    var itemsData=getItemsTableData();
+    var itemsData=getItemsTableData("false"); //I give as parameter "false" as I only need the list of items
 
     //fill the listString with the existing items
     for(var e in itemsData){
