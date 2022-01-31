@@ -27,15 +27,20 @@
  * 
  *********************************************************/
 
-function getCurrentRowDate(banDoc,transList){
+function getCurrentRowData(banDoc,transList){
     var currRowNr=banDoc.cursor.rowNr;
-    var currentRowDate="";
 
     if(transList){
         for (var i = 0; i < transList.length; i++) {
             if(transList[i].row==currRowNr){
-                currentRowDate=transList[i].date;
-                return currentRowDate;
+                currentRowData={};
+                currentRowData.date=transList[i].date;
+                currentRowData.description=transList[i].description;
+                currentRowData.debit=transList[i].debit;
+                currentRowData.credit=transList[i].credit;
+                currentRowData.amount=transList[i].amount;
+
+                return currentRowData;
             }
         }
     }
@@ -200,19 +205,32 @@ function getPurchaseCourse(transList,item,currentSelectionTop){
  * 
  * @param {*} avgCost the average cost
  * @param {*} userParam the parameters that the user defined in the dialog
+ * @param {*} currentRowData the current line transaction data
  * @returns an object with the calculation data.
  */
-function calculateShareSaleData(avgCost,userParam){
+function calculateShareSaleData(avgCost,userParam,currentRowData){
+
+    /**
+     * In the event that the asset is in a foreign currency, 
+     * for those values that require it, 
+     * an object is created that contains the values in both the base currency and the currency of the asset
+     * so that the exchange difference can be calculated.
+     */
     
     var shareData={};
 
+    shareData.netTransaction=currentRowData.amount; //importo della riga corrente
+    shareData.charges=userParam.bankChargesAmount;
+    shareData.totSaleShare=Banana.SDecimal.add(shareData.charges,shareData.netTransaction);
+    shareData.quantity=userParam.quantity;
+    shareData.PricePerShare=Banana.SDecimal.divide(shareData.totSaleShare,shareData.quantity);
     shareData.avgCost=avgCost;
-    shareData.currentValue=Banana.SDecimal.multiply(shareData.avgCost,userParam.quantity);
-    shareData.marketValue=Banana.SDecimal.multiply(userParam.marketPrice,userParam.quantity);
-    shareData.result=Banana.SDecimal.subtract(shareData.marketValue,shareData.currentValue);
+    shareData.avgShareValue=Banana.SDecimal.multiply(shareData.quantity,shareData.avgCost);
+    shareData.result=Banana.SDecimal.subtract(shareData.totSaleShare,shareData.avgShareValue);
     shareData.profitOnSale=false;
     if(Banana.SDecimal.sign(shareData.result)=="1")
     shareData.profitOnSale=true;
+
 
     return shareData;
 
@@ -318,11 +336,23 @@ function getAccountForResult(profitOnSale,userParam){
     return account;
 }
 
+function getItemCurrency(itemData,item){
+    let itemcCurr="";
+
+    for(var e in itemData){
+        if(itemData[e].item==item && itemData[e].currency){
+            itemcCurr=itemData[e].currency;
+            return itemcCurr;
+        }
+    }
+
+}
+
 /**
  * Retrieves item information from the items table
  * @returns 
  */
-function getItemsTableData(){
+function getItemsTableData(multiCurrency){
     //get the items list from the items table
     var itemsData=[];
     let table = Banana.document.table("Items");
@@ -341,6 +371,8 @@ function getItemsTableData(){
         itemData.group=tRow.value("Group");
         itemData.expiryDate=tRow.value("ExpiryDate");
         itemData.interestRate=tRow.value("Notes");
+        if(multiCurrency)
+            itemData.currency=tRow.value("Currency");
         if (itemsData) {
             itemsData.push(itemData);
         }
