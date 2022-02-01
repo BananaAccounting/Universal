@@ -39,6 +39,7 @@ function getCurrentRowData(banDoc,transList){
                 currentRowData.debit=transList[i].debit;
                 currentRowData.credit=transList[i].credit;
                 currentRowData.amount=transList[i].amount;
+                currentRowData.rate=transList[i].rate;
 
                 return currentRowData;
             }
@@ -88,7 +89,8 @@ function checkIfMultiCurrencyAccounting(banDoc){
             //check if it is a multichange file or not
             if(multiCurrencyAcc){
                 trData.amount=tRow.value("AmountCurrency");
-                trData.currency="ExchangeCurrency";
+                trData.currency=tRow.value("ExchangeCurrency");
+                trData.rate=tRow.value("ExchangeRate");
             }
             else{
                 trData.amount=tRow.value("Amount");
@@ -179,6 +181,7 @@ function getQtOfSharesPurchased(item,currentSelectionTop,transList){
 }
 
 /**
+ * Bonds:
  * Trova il corso di acquisto, indicato nella colonna unitPrice al momento dell'acquisto del titolo.
  * Se sono stati effetuati più acquisti dello stesso titolo viene fatta la media tra i prezzi di acquisto
  * L'importo che ne risulterà viene inserito nella registra
@@ -201,6 +204,25 @@ function getPurchaseCourse(transList,item,currentSelectionTop){
     }
 }
 
+function getCourseFromBalance(item,itemsData,banDoc){
+
+    var accData=getItemBalance(banDoc,item,itemsData);
+    var course="";
+
+   baseCurrBalance =accData.currbalance.balance;
+   assetCurrBalance=accData.currbalance.balanceCurrency;
+
+    //divido il saldo in moneta base per quello del asset
+    course=Banana.SDecimal.divide(baseCurrBalance,assetCurrBalance);
+
+    Banana.console.debug(course);
+
+    return course;
+
+}
+
+
+
 /**
  * 
  * @param {*} avgCost the average cost
@@ -208,29 +230,44 @@ function getPurchaseCourse(transList,item,currentSelectionTop){
  * @param {*} currentRowData the current line transaction data
  * @returns an object with the calculation data.
  */
-function calculateShareSaleData(avgCost,userParam,currentRowData){
-
-    /**
-     * In the event that the asset is in a foreign currency, 
-     * for those values that require it, 
-     * an object is created that contains the values in both the base currency and the currency of the asset
-     * so that the exchange difference can be calculated.
-     */
+function calculateShareSaleData(avgCost,userParam,currentRowData,courseFromBalance){
     
     var shareData={};
+    var exCurrentCourse=currentRowData.rate; //il corso corrente, indicato nella registrazione
 
     shareData.netTransaction=currentRowData.amount; //importo della riga corrente
     shareData.charges=userParam.bankChargesAmount;
-    shareData.totSaleShare=Banana.SDecimal.add(shareData.charges,shareData.netTransaction);
+
+    //importo totale vendita azioni (importo trasmesso dalla banca più le spese trattenute)
+    shareData.totSaleShare={};
+    shareData.totSaleShare.assetCurr=Banana.SDecimal.add(shareData.charges,shareData.netTransaction);//valore di vendita effettivo (con spese incluse)
+    //base currencies values
+    shareData.totSaleShare.baseCurr=Banana.SDecimal.multiply(exCurrentCourse,shareData.totSaleShare.assetCurr);//valore effettivo (da mostrare nel dialogo)
+    shareData.totSaleShare.accounting=Banana.SDecimal.multiply(courseFromBalance,shareData.totSaleShare.assetCurr);//valore contabile (in chf)
+
+    //Result on exchange rate variation 
+    shareData.changeResult=Banana.SDecimal.subtract(shareData.totSaleShare.assetCurr,shareData.totSaleShare.baseCurr);
+    
+    //other data
     shareData.quantity=userParam.quantity;
-    shareData.PricePerShare=Banana.SDecimal.divide(shareData.totSaleShare,shareData.quantity);
+    shareData.PricePerShare=Banana.SDecimal.divide(shareData.totSaleShare.assetCurr,shareData.quantity);
     shareData.avgCost=avgCost;
     shareData.avgShareValue=Banana.SDecimal.multiply(shareData.quantity,shareData.avgCost);
-    shareData.result=Banana.SDecimal.subtract(shareData.totSaleShare,shareData.avgShareValue);
-    shareData.profitOnSale=false;
-    if(Banana.SDecimal.sign(shareData.result)=="1")
-    shareData.profitOnSale=true;
 
+    //Results
+    //sales
+    shareData.saleResult=Banana.SDecimal.subtract(shareData.totSaleShare.assetCurr,shareData.avgShareValue);
+    shareData.profitOnSale=false;
+    if(Banana.SDecimal.sign(shareData.saleResult)=="1")
+    shareData.profitOnSale=true;
+    //exchange
+    shareData.exchangeResult=Banana.SDecimal.subtract(shareData.totSaleShare.baseCurr,shareData.totSaleShare.accounting);
+    shareData.profitOnExchange=false;
+    if(Banana.SDecimal.sign(shareData.exchangeResult)=="1")
+    shareData.profitOnExchange=true;
+
+
+    Banana.console.debug(JSON.stringify(shareData));
 
     return shareData;
 

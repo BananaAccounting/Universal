@@ -65,6 +65,7 @@ dialog.showPreviews=function(){
     var avgCost="";
     var multiCurrencyAcc=false;
     var secData="";
+    var itemsData=getItemsTableData("false");
     var userParam=readDialogParams();
 
     //calculate values
@@ -77,8 +78,9 @@ dialog.showPreviews=function(){
         secData=calculateBondSaleData(bondTotalCourse,userParam);
     }
     else if(SECTYPE=="shares"){
+        courseFromBalance=getCourseFromBalance(userParam.selectedItem,itemsData,banDoc);
         avgCost=getAverageCost(userParam.selectedItem,currentSelectionTop,transList);
-        secData=calculateShareSaleData(avgCost,userParam,currentRowData);
+        secData=calculateShareSaleData(avgCost,userParam,currentRowData,courseFromBalance);
     }
 
         avgCost=Banana.Converter.toLocaleNumberFormat(avgCost,decimals = 2, convZero = true);
