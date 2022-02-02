@@ -48,27 +48,29 @@ function getCurrentRowData(banDoc,transList){
 }
 
 
-function checkIfMultiCurrencyAccounting(banDoc){
-    //file type numbers
+function getDocumentInfo(banDoc){
+
+    var docInfo={};
+
+    //define if its a multicurrency accounting
     var multiCurrency="120";
-    var isMultiCurrency=false;
-
-    //get the document info and check the type of the accounting file
+    docInfo.isMultiCurrency=false;
     var fileNumber=banDoc.info("Base","FileTypeNumber");
+    if(fileNumber==multiCurrency)
+        docInfo.isMultiCurrency=true;
 
-    if(fileNumber==multiCurrency){
-        isMultiCurrency=true;
-    }
+    //get the base currency
+    docInfo.baseCurrency=banDoc.info("AccountingDataBase","BasicCurrency");
 
 
-    return isMultiCurrency;
+    return docInfo;
 
 }
 
 /**
  * Get the data from the transactions table only once
  */
- function getTransactionsTableData(banDoc,multiCurrencyAcc){
+ function getTransactionsTableData(banDoc,docInfo){
     var transactionsList = [];
     var trnsactionsTable = banDoc.table("Transactions");
 
@@ -87,7 +89,7 @@ function checkIfMultiCurrencyAccounting(banDoc){
             trData.qt=tRow.value("Quantity");;
             trData.unitPrice=tRow.value("UnitPrice");
             //check if it is a multichange file or not
-            if(multiCurrencyAcc){
+            if(docInfo.isMultiCurrency){
                 trData.amount=tRow.value("AmountCurrency");
                 trData.currency=tRow.value("ExchangeCurrency");
                 trData.rate=tRow.value("ExchangeRate");
@@ -204,7 +206,7 @@ function getPurchaseCourse(transList,item,currentSelectionTop){
     }
 }
 
-function getCourseFromBalance(item,itemsData,banDoc){
+function getAccountingCourse(item,itemsData,banDoc){
 
     var accData=getItemBalance(banDoc,item,itemsData);
     var course="";
@@ -214,8 +216,6 @@ function getCourseFromBalance(item,itemsData,banDoc){
 
     //divido il saldo in moneta base per quello del asset
     course=Banana.SDecimal.divide(baseCurrBalance,assetCurrBalance);
-
-    Banana.console.debug(course);
 
     return course;
 
@@ -230,7 +230,7 @@ function getCourseFromBalance(item,itemsData,banDoc){
  * @param {*} currentRowData the current line transaction data
  * @returns an object with the calculation data.
  */
-function calculateShareSaleData(avgCost,userParam,currentRowData,courseFromBalance){
+function calculateShareSaleData(avgCost,userParam,currentRowData,accountingCourse){
     
     var shareData={};
     var exCurrentCourse=currentRowData.rate; //il corso corrente, indicato nella registrazione
@@ -243,10 +243,10 @@ function calculateShareSaleData(avgCost,userParam,currentRowData,courseFromBalan
     shareData.totSaleShare.assetCurr=Banana.SDecimal.add(shareData.charges,shareData.netTransaction);//valore di vendita effettivo (con spese incluse)
     //base currencies values
     shareData.totSaleShare.baseCurr=Banana.SDecimal.multiply(exCurrentCourse,shareData.totSaleShare.assetCurr);//valore effettivo (da mostrare nel dialogo)
-    shareData.totSaleShare.accounting=Banana.SDecimal.multiply(courseFromBalance,shareData.totSaleShare.assetCurr);//valore contabile (in chf)
+    shareData.totSaleShare.accounting=Banana.SDecimal.multiply(accountingCourse,shareData.totSaleShare.assetCurr);//valore contabile (in chf)
 
     //Result on exchange rate variation 
-    shareData.changeResult=Banana.SDecimal.subtract(shareData.totSaleShare.assetCurr,shareData.totSaleShare.baseCurr);
+    shareData.changeResult=Banana.SDecimal.subtract(shareData.totSaleShare.baseCurr,shareData.totSaleShare.accounting);
     
     //other data
     shareData.quantity=userParam.quantity;
@@ -265,9 +265,6 @@ function calculateShareSaleData(avgCost,userParam,currentRowData,courseFromBalan
     shareData.profitOnExchange=false;
     if(Banana.SDecimal.sign(shareData.exchangeResult)=="1")
     shareData.profitOnExchange=true;
-
-
-    Banana.console.debug(JSON.stringify(shareData));
 
     return shareData;
 
@@ -329,10 +326,10 @@ function getItemAccount(item,itemsData){
  * according to whether it is a multi-currency account or not
  * @param {*} multiCurrencyAccounting 
  */
- function getAmountColumn(multiCurrencyAccounting){
+ function getAmountColumn(docInfo){
     var columnName="Amount";
 
-    if(multiCurrencyAccounting){
+    if(docInfo.isMultiCurrency){
         columnName="AmountCurrency";
     }
 
@@ -340,19 +337,32 @@ function getItemAccount(item,itemsData){
 }
 
 /**
- * simply defines the description for the line on which the profit or loss is recorded.
- * @param {*} profitOnSale if true there is a profit on sale
+ * Simply defines the description for the line on which the profit or loss is recorded.
+ * Profit/loss on sale and Profit/loss on exchange have a difference description.
+ * @param {*} profit bool that identifies a profit or loss
+ * @param {*} type profit/loss on sale or exchange
  * @returns 
  */
-function setResultDecription(profitOnSale){
+function setOperationResultDecription(profit,type){
     var description="";
 
-    if(profitOnSale)
-        description="Profit";
-    else
-        description="Loss";
+    switch(type){
+        case "sale":
+            if(profit)
+            description="Profit on Sale";
+            else
+            description="Loss on Sale";
+            return description;
 
-    return description;
+        case "exchange":
+            if(profit)
+            description="Exchange rate profit";
+            else
+            description="Exchange rate loss";
+            return description;
+        default:
+            return description;
+    }
 }
 
 /**
@@ -376,8 +386,8 @@ function getAccountForResult(profitOnSale,userParam){
 function getItemCurrency(itemData,item){
     let itemcCurr="";
 
-    for(var e in itemData){
-        if(itemData[e].item==item && itemData[e].currency){
+    for(var e in itemData){  
+        if(itemData[e].item==item && itemData[e].currency!=""){
             itemcCurr=itemData[e].currency;
             return itemcCurr;
         }
@@ -389,7 +399,7 @@ function getItemCurrency(itemData,item){
  * Retrieves item information from the items table
  * @returns 
  */
-function getItemsTableData(multiCurrency){
+function getItemsTableData(docInfo){
     //get the items list from the items table
     var itemsData=[];
     let table = Banana.document.table("Items");
@@ -408,11 +418,11 @@ function getItemsTableData(multiCurrency){
         itemData.group=tRow.value("Group");
         itemData.expiryDate=tRow.value("ExpiryDate");
         itemData.interestRate=tRow.value("Notes");
-        if(multiCurrency)
+        itemData.currency="";
+        if(docInfo.isMultiCurrency)
             itemData.currency=tRow.value("Currency");
-        if (itemsData) {
+        if (itemsData)
             itemsData.push(itemData);
-        }
     }
     return itemsData;
 }

@@ -48,8 +48,9 @@ var lossOnSecurities = dialog.findChild('LossOnSecurities_lineEdit');
 var interestOnBond = dialog.findChild('interestOnBond_lineEdit');
 
 //preview result label
-var resultPreview = dialog.findChild('resultPreview_label');
+var saleResultPreview = dialog.findChild('saleResultPreview_label');
 var avgCostPreview = dialog.findChild('averageCost_label');
+var exchangeResultPreview=dialog.findChild('exchangeResultPreview_label');
 
 //buttons
 var okButton = dialog.findChild('okButton');
@@ -63,32 +64,45 @@ dialog.showPreviews=function(){
     var currentSelectionTop = banDoc.cursor.selectionTop;
     var transList=[];
     var avgCost="";
-    var multiCurrencyAcc=false;
+    var docInfo="";
     var secData="";
-    var itemsData=getItemsTableData("false");
+    var baseCurr="";
+    var assetCurr="";
+    var itemsData="";
     var userParam=readDialogParams();
 
-    //calculate values
-    multiCurrencyAcc=checkIfMultiCurrencyAccounting(banDoc);
-    transList=getTransactionsTableData(banDoc,multiCurrencyAcc);
+    docInfo=getDocumentInfo(banDoc);
+    itemsData=getItemsTableData(docInfo);
+    transList=getTransactionsTableData(banDoc,docInfo);
     currentRowData=getCurrentRowData(banDoc,transList);
+    baseCurr=docInfo.baseCurrency;
+    assetCurr=getItemCurrency(itemsData,userParam.selectedItem);;
 
     if(SECTYPE=="bonds"){
         bondTotalCourse=getBondTotalCourse(transList,userParam);
         secData=calculateBondSaleData(bondTotalCourse,userParam);
     }
     else if(SECTYPE=="shares"){
-        courseFromBalance=getCourseFromBalance(userParam.selectedItem,itemsData,banDoc);
+        accountingCourse=getAccountingCourse(userParam.selectedItem,itemsData,banDoc);
         avgCost=getAverageCost(userParam.selectedItem,currentSelectionTop,transList);
-        secData=calculateShareSaleData(avgCost,userParam,currentRowData,courseFromBalance);
+        secData=calculateShareSaleData(avgCost,userParam,currentRowData,accountingCourse);
     }
 
         avgCost=Banana.Converter.toLocaleNumberFormat(avgCost,decimals = 2, convZero = true);
-        var result=Banana.Converter.toLocaleNumberFormat(secData.result,decimals = 2, convZero = true);
+        var saleResult=Banana.Converter.toLocaleNumberFormat(secData.saleResult,decimals = 2, convZero = true);
+        var exchangeResult=Banana.Converter.toLocaleNumberFormat(secData.exchangeResult,decimals = 2, convZero = true);
 
     //set the values in the label
-    avgCostPreview.setText(avgCost);
-    resultPreview.setText(result);
+    //if its a multi currency accounting we display the currency for each result preview.
+    if(docInfo.isMultiCurrency){
+        avgCostPreview.setText(avgCost+" ("+assetCurr+")");
+        saleResultPreview.setText(saleResult+" ("+assetCurr+")");
+        exchangeResultPreview.setText(exchangeResult+" ("+baseCurr+")");
+    }else{
+        avgCostPreview.setText(avgCost);
+        saleResultPreview.setText(saleResult);
+        exchangeResultPreview.setText(exchangeResult);
+    }
 
     return true;
 }

@@ -51,23 +51,23 @@ function exec() {
         var currentSelectionBottom = banDoc.cursor.selectionBottom;
         var transList=[];
         var avgCost="";
-        var multiCurrencyAcc=false;
+        var docInfo="";
         var currentSelectionTop = banDoc.cursor.selectionTop;
         var sharesData="";
         var itemsData="";
-        var courseFromBalance="";
+        var accountingCourse="";
         var currentRowData="";
         var userParam=readDialogParams();
 
-        multiCurrencyAcc=checkIfMultiCurrencyAccounting(banDoc);
-        itemsData=getItemsTableData(multiCurrencyAcc);
-        transList=getTransactionsTableData(banDoc,multiCurrencyAcc);
-        courseFromBalance=getCourseFromBalance(userParam.selectedItem,itemsData,banDoc);
+        docInfo=getDocumentInfo(banDoc);
+        itemsData=getItemsTableData(docInfo);
+        transList=getTransactionsTableData(banDoc,docInfo);
+        accountingCourse=getAccountingCourse(userParam.selectedItem,itemsData,banDoc);
         currentRowData=getCurrentRowData(banDoc,transList);
         avgCost=getAverageCost(userParam.selectedItem,currentSelectionTop,transList);
-        sharesData=calculateShareSaleData(avgCost,userParam,currentRowData,courseFromBalance);
+        sharesData=calculateShareSaleData(avgCost,userParam,currentRowData,accountingCourse);
         //Creates the document change for the sale of shares
-        salesOpArray = createSharesSalesOpDocChange(currentSelectionBottom,currentRowData,sharesData,multiCurrencyAcc,userParam,itemsData);
+        salesOpArray = createSharesSalesOpDocChange(currentSelectionBottom,currentRowData,sharesData,docInfo,userParam,itemsData);
     
         jsonDoc = { "format": "documentChange", "error": "" };
         jsonDoc["data"] = salesOpArray;
@@ -84,22 +84,23 @@ function exec() {
  * @param {*} currentSelectionBottom line on which the cursor currently rests
  * @param {*} avgCost calculated average cost
  * @param {*} sharesData calculated share data 
- * @param {*} multiCurrencyAccounting true if the document is a multicurrency accounting (number 120)
+ * @param {*} docInfo the info of the document
  * @param {*} userParam parameters defined by the user
  * @returns returns the Json document
  */
-function createSharesSalesOpDocChange(currentSelectionBottom,currentRowData,sharesData,multiCurrencyAccounting,userParam,itemsData){
+function createSharesSalesOpDocChange(currentSelectionBottom,currentRowData,sharesData,docInfo,userParam,itemsData){
     var jsonDoc = initJsonDoc();
     var rows=[];
     
-    var amountColumn=getAmountColumn(multiCurrencyAccounting);
+    var amountColumn=getAmountColumn(docInfo);
     var opCurrency=getItemCurrency(itemsData,userParam.selectedItem);
 
-    rows.push(createSharesSalesOpDocChange_shares(jsonDoc,sharesData,currentSelectionBottom,userParam,opCurrency));
-    rows.push(createSharesSalesOpDocChange_bankCharges(jsonDoc,currentRowData,currentSelectionBottom,userParam,amountColumn,opCurrency));
-    rows.push(createSharesSalesOpDocChange_profitOrLoss_sale(jsonDoc,currentRowData,sharesData,currentSelectionBottom,userParam,amountColumn,opCurrency));
-    rows.push(createSharesSalesOpDocChange_sharesSale(jsonDoc,currentRowData,sharesData,currentSelectionBottom,userParam,itemsData,amountColumn,opCurrency));
-    rows.push(createSharesSalesOpDocChange_profitOrLoss_exchange(jsonDoc,currentRowData,sharesData,currentSelectionBottom,userParam,amountColumn,opCurrency));
+    rows.push(createSharesSalesOpDocChange_shares(jsonDoc,currentRowData,sharesData,currentSelectionBottom,userParam,opCurrency,docInfo));
+    rows.push(createSharesSalesOpDocChange_bankCharges(jsonDoc,currentRowData,currentSelectionBottom,userParam,amountColumn,opCurrency,docInfo));
+    rows.push(createSharesSalesOpDocChange_profitOrLoss_sale(jsonDoc,currentRowData,sharesData,currentSelectionBottom,userParam,amountColumn,opCurrency,docInfo));
+    rows.push(createSharesSalesOpDocChange_sharesSale(jsonDoc,currentRowData,sharesData,currentSelectionBottom,userParam,itemsData,amountColumn,opCurrency,docInfo));
+    if(opCurrency!=docInfo.baseCurrency)
+        rows.push(createSharesSalesOpDocChange_profitOrLoss_exchange(jsonDoc,currentRowData,sharesData,currentSelectionBottom,userParam,amountColumn,docInfo));
 
     
     var dataUnitFilePorperties = {};
@@ -121,7 +122,7 @@ function createSharesSalesOpDocChange(currentSelectionBottom,currentRowData,shar
  * @param {*} accParam 
  * @returns 
  */
-function createSharesSalesOpDocChange_shares(jsonDoc,sharesData,currentSelectionBottom,userParam,opCurrency){
+function createSharesSalesOpDocChange_shares(jsonDoc,currentRowData,sharesData,currentSelectionBottom,userParam,opCurrency,docInfo){
 
     var opDate="";
     if(currentRowData)
@@ -134,9 +135,9 @@ function createSharesSalesOpDocChange_shares(jsonDoc,sharesData,currentSelection
     if(userParam.quantity){
         opQuantity=userParam.quantity;
     }
-
     var opDescription="Shares "+userParam.selectedItem;
-    var opCurrentSelectionBottom=currentSelectionBottom+".1"; //set with the correct format to indicate the sequence
+    var opCurrentSelectionBottom=currentSelectionBottom+".1"; //set with the correct format to indicate the sequence.
+    var opRate=currentRowData.rate;
 
     var row={};
 
@@ -146,8 +147,13 @@ function createSharesSalesOpDocChange_shares(jsonDoc,sharesData,currentSelection
     row.fields.Description=opDescription;
     row.fields.Quantity="-"+opQuantity;
     row.fields.UnitPrice=opPrice;
-    if(opCurrency!="")
-        row.fields.ExchangeCurrency=opCurrency;
+    //columns to add only if its a multicurrency accounting
+    if(docInfo.isMultiCurrency){ 
+        if(opCurrency!="")
+            row.fields.ExchangeCurrency=opCurrency;
+        row.fields.ExchangeRate=opRate;
+
+    }
 
 
     row.operation={};
@@ -157,11 +163,12 @@ function createSharesSalesOpDocChange_shares(jsonDoc,sharesData,currentSelection
     return row;;
 }
 
-function createSharesSalesOpDocChange_bankCharges(jsonDoc,currentRowData,currentSelectionBottom,userParam,amountColumn,opCurrency){
+function createSharesSalesOpDocChange_bankCharges(jsonDoc,currentRowData,currentSelectionBottom,userParam,amountColumn,opCurrency,docInfo){
 
     var opDescription="Sale shares "+userParam.selectedItem+" bank charges";
     var opCurrentSelectionBottom=currentSelectionBottom+".2"; //set with the correct format to indicate the sequence
     var opDate="";
+    var opRate=currentRowData.rate;
     if(currentRowData)
         opDate=currentRowData.date;
     else
@@ -176,8 +183,11 @@ function createSharesSalesOpDocChange_bankCharges(jsonDoc,currentRowData,current
     row.fields.Description=opDescription;
     row.fields.AccountDebit=opAccount;
     row.fields[amountColumn]=opAmount;
-    if(opCurrency!="")
-        row.fields.ExchangeCurrency=opCurrency;
+    if(docInfo.isMultiCurrency){ 
+        if(opCurrency!="")
+            row.fields.ExchangeCurrency=opCurrency;
+        row.fields.ExchangeRate=opRate;
+    }
 
     row.operation={};
     row.operation.name="add";
@@ -187,14 +197,15 @@ function createSharesSalesOpDocChange_bankCharges(jsonDoc,currentRowData,current
     return row;
 }
 
-function createSharesSalesOpDocChange_profitOrLoss_sale(jsonDoc,currentRowData,sharesData,currentSelectionBottom,userParam,amountColumn,opCurrency){
+function createSharesSalesOpDocChange_profitOrLoss_sale(jsonDoc,currentRowData,sharesData,currentSelectionBottom,userParam,amountColumn,opCurrency,docInfo){
 
     // set the description based on the result
     var opProfitOnSale=sharesData.profitOnSale;
-    var resultDescription=setResultDecription(opProfitOnSale);
+    var resultDescription=setOperationResultDecription(opProfitOnSale,"sale");
     var opDescription="Sale shares "+userParam.selectedItem+" "+resultDescription;
     //get the account based on the result
     var opAccount=getAccountForResult(opProfitOnSale,userParam);
+    var opRate=currentRowData.rate;
     var opDate="";
     if(currentRowData)
         opDate=currentRowData.date;
@@ -214,8 +225,12 @@ function createSharesSalesOpDocChange_profitOrLoss_sale(jsonDoc,currentRowData,s
         row.fields.AccountDebit=opAccount;
 
     row.fields[amountColumn]=opAmount;
-    if(opCurrency!="")
-        row.fields.ExchangeCurrency=opCurrency;
+
+    if(docInfo.isMultiCurrency){ 
+        if(opCurrency!="")
+            row.fields.ExchangeCurrency=opCurrency;
+        row.fields.ExchangeRate=opRate;
+    }
 
     row.operation={};
     row.operation.name="add";
@@ -225,7 +240,7 @@ function createSharesSalesOpDocChange_profitOrLoss_sale(jsonDoc,currentRowData,s
 
 }
 
-function createSharesSalesOpDocChange_sharesSale(jsonDoc,currentRowData,sharesData,currentSelectionBottom,userParam,itemsData,amountColumn,opCurrency){
+function createSharesSalesOpDocChange_sharesSale(jsonDoc,currentRowData,sharesData,currentSelectionBottom,userParam,itemsData,amountColumn,opCurrency,docInfo){
 
     var opAccount=getItemAccount(userParam.selectedItem,itemsData);
     var opDate="";
@@ -234,7 +249,7 @@ function createSharesSalesOpDocChange_sharesSale(jsonDoc,currentRowData,sharesDa
     else
         opDate=jsonDoc.creator.executionDate;  
     var opAmount=sharesData.avgShareValue;
-
+    var opRate=currentRowData.rate;
     var opDescription="Sale shares "+userParam.selectedItem;
     var opCurrentSelectionBottom=currentSelectionBottom+".4"; //set with the correct format to indicate the sequence
 
@@ -246,9 +261,12 @@ function createSharesSalesOpDocChange_sharesSale(jsonDoc,currentRowData,sharesDa
     row.fields.AccountCredit=opAccount;
 
     row.fields[amountColumn]=opAmount;
-    if(opCurrency!="")
-        row.fields.ExchangeCurrency=opCurrency;
 
+    if(docInfo.isMultiCurrency){ 
+        if(opCurrency!="")
+            row.fields.ExchangeCurrency=opCurrency;
+        row.fields.ExchangeRate=opRate;
+    }
     row.operation={};
     row.operation.name="add";
     row.operation.sequence=opCurrentSelectionBottom;
@@ -256,35 +274,38 @@ function createSharesSalesOpDocChange_sharesSale(jsonDoc,currentRowData,sharesDa
     return row;
 }
 
-function createSharesSalesOpDocChange_profitOrLoss_exchange(jsonDoc,currentRowData,sharesData,currentSelectionBottom,userParam,amountColumn,opCurrency){
+function createSharesSalesOpDocChange_profitOrLoss_exchange(jsonDoc,currentRowData,sharesData,currentSelectionBottom,userParam,amountColumn,docInfo){
         // set the description based on the result
-        var opProfitOnExchange=sharesData.profitOnSale;
-        var resultDescription=setResultDecription(opProfitOnSale);
+        var opProfitOnExchange=sharesData.profitOnExchange;
+        var resultDescription=setOperationResultDecription(opProfitOnExchange,"exchange");
         var opDescription="Sale shares "+userParam.selectedItem+" "+resultDescription;
-        //get the account based on the result
-        var opAccount=getAccountForResult(opProfitOnSale,userParam);
-        var opDate="";
+        //get the accounts based on the result
+        var opDebitAccount=sharesData.profitOnExchange? "1020":"6949";
+        var opCreditAccount=sharesData.profitOnExchange? "6999":"1020";
+        var opCurrency=docInfo.baseCurrency;//this entry is always made in base currency
         if(currentRowData)
             opDate=currentRowData.date;
         else
             opDate=jsonDoc.creator.executionDate;    
-        var opCurrentSelectionBottom=currentSelectionBottom+".3"; //set with the correct format to indicate the sequence
-        var opAmount=sharesData.saleResult;
+        var opCurrentSelectionBottom=currentSelectionBottom+".5"; //set with the correct format to indicate the sequence
+        var opAmount=sharesData.exchangeResult;
     
         var row={};
     
         row.fields={};
         row.fields.Date=opDate;
         row.fields.Description=opDescription;
-        if(opProfitOnSale)
-            row.fields.AccountCredit=opAccount;
-        else
-            row.fields.AccountDebit=opAccount;
-    
+        row.fields.AccountDebit=opDebitAccount;
+        row.fields.AccountCredit=opCreditAccount;
         row.fields[amountColumn]=opAmount;
-        if(opCurrency!="")
+
+        //columns to add only if its a multicurrency accounting
+        if(docInfo.isMultiCurrency){ 
+            if(opCurrency!="")
             row.fields.ExchangeCurrency=opCurrency;
-    
+
+        }
+
         row.operation={};
         row.operation.name="add";
         row.operation.sequence=opCurrentSelectionBottom;
