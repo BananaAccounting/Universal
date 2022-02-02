@@ -6,36 +6,20 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>604</width>
-    <height>670</height>
+    <width>765</width>
+    <height>639</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Transaction Details</string>
   </property>
-  <widget class="QDialogButtonBox" name="cancel_button">
-   <property name="geometry">
-    <rect>
-     <x>230</x>
-     <y>560</y>
-     <width>341</width>
-     <height>31</height>
-    </rect>
-   </property>
-   <property name="orientation">
-    <enum>Qt::Horizontal</enum>
-   </property>
-   <property name="standardButtons">
-    <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
-   </property>
-  </widget>
   <widget class="QGroupBox" name="groupBox">
    <property name="geometry">
     <rect>
-     <x>40</x>
+     <x>10</x>
      <y>20</y>
-     <width>441</width>
-     <height>131</height>
+     <width>691</width>
+     <height>361</height>
     </rect>
    </property>
    <property name="title">
@@ -47,7 +31,7 @@
       <x>20</x>
       <y>30</y>
       <width>371</width>
-      <height>101</height>
+      <height>121</height>
      </rect>
     </property>
     <layout class="QFormLayout" name="formLayout">
@@ -57,7 +41,7 @@
      <item row="0" column="0">
       <widget class="QLabel" name="item_label">
        <property name="text">
-        <string>Security</string>
+        <string>Asset</string>
        </property>
       </widget>
      </item>
@@ -86,13 +70,80 @@
      </item>
     </layout>
    </widget>
+   <widget class="QPushButton" name="showResultsPreview_button">
+    <property name="geometry">
+     <rect>
+      <x>540</x>
+      <y>320</y>
+      <width>141</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Preview Results</string>
+    </property>
+   </widget>
+   <widget class="QWidget" name="formLayoutWidget_3">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>210</y>
+      <width>371</width>
+      <height>101</height>
+     </rect>
+    </property>
+    <layout class="QFormLayout" name="formLayout_3">
+     <item row="0" column="0">
+      <widget class="QLabel" name="averageCostTitle_label">
+       <property name="text">
+        <string>Average Cost: </string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="saleResultPreviewTitle_label">
+       <property name="text">
+        <string>Sale Result Preview: </string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QLabel" name="saleResultPreview_label">
+       <property name="text">
+        <string>0</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="exchangeResultPreviewTitle_label">
+       <property name="text">
+        <string>Exchange rate result: </string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QLabel" name="exchangeResultPreview_label">
+       <property name="text">
+        <string>0</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QLabel" name="averageCost_label">
+       <property name="text">
+        <string>0</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
   </widget>
   <widget class="QGroupBox" name="groupBox_2">
    <property name="geometry">
     <rect>
-     <x>40</x>
-     <y>180</y>
-     <width>441</width>
+     <x>10</x>
+     <y>390</y>
+     <width>691</width>
      <height>191</height>
     </rect>
    </property>
@@ -168,69 +219,20 @@
     </layout>
    </widget>
   </widget>
-  <widget class="QPushButton" name="showResultsPreview_button">
+  <widget class="QDialogButtonBox" name="cancel_button">
    <property name="geometry">
     <rect>
-     <x>20</x>
-     <y>560</y>
-     <width>141</width>
+     <x>350</x>
+     <y>590</y>
+     <width>341</width>
      <height>31</height>
     </rect>
    </property>
-   <property name="text">
-    <string>Show results</string>
+   <property name="orientation">
+    <enum>Qt::Horizontal</enum>
    </property>
-  </widget>
-  <widget class="QLabel" name="resultPreviewTitle_label">
-   <property name="geometry">
-    <rect>
-     <x>40</x>
-     <y>440</y>
-     <width>211</width>
-     <height>61</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Sale Result Preview</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="resultPreview_label">
-   <property name="geometry">
-    <rect>
-     <x>260</x>
-     <y>440</y>
-     <width>221</width>
-     <height>61</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>0</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="averageCostTitle_label">
-   <property name="geometry">
-    <rect>
-     <x>40</x>
-     <y>400</y>
-     <width>201</width>
-     <height>51</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Average Cost</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="averageCost_label">
-   <property name="geometry">
-    <rect>
-     <x>260</x>
-     <y>400</y>
-     <width>231</width>
-     <height>51</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>0</string>
+   <property name="standardButtons">
+    <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
    </property>
   </widget>
  </widget>
