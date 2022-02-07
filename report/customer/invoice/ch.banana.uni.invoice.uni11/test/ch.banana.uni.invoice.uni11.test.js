@@ -1,4 +1,4 @@
-// Copyright [2021] [Banana.ch SA - Lugano Switzerland]
+// Copyright [2022] [Banana.ch SA - Lugano Switzerland]
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 // @id = ch.banana.uni.invoice.uni11.test
 // @api = 1.0
-// @pubdate = 2021-06-16
+// @pubdate = 2022-02-07
 // @publisher = Banana.ch SA
 // @description = <TEST ch.banana.uni.invoice.uni11.js>
 // @task = app.command
@@ -88,6 +88,7 @@ ReportInvoiceTemplate11.prototype.testReport = function() {
 }
 
 ReportInvoiceTemplate11.prototype.addReport = function(banDoc, jsonInvoice) {
+  IS_INTEGRATED_INVOICE = true;
   var variables = setVariables(variables);
   var invoiceObj = jsonInvoice;
   var texts = setInvoiceTexts('en');
