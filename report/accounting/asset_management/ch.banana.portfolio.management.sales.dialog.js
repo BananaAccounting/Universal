@@ -76,7 +76,7 @@ dialog.showPreviews=function(){
     transList=getTransactionsTableData(banDoc,docInfo);
     currentRowData=getCurrentRowData(banDoc,transList);
     baseCurr=docInfo.baseCurrency;
-    assetCurr=getItemCurrency(itemsData,userParam.selectedItem);;
+    assetCurr=getItemValue(itemsData,userParam.selectedItem,"currency");
 
     if(SECTYPE=="bonds"){
         bondTotalCourse=getBondTotalCourse(transList,userParam);
@@ -195,6 +195,9 @@ function readDialogParams(){
  * @param {*} itemsCombobox 
  */
 function insertComboBoxElements(itemsCombobox){
+    //First set the editable attribute to true,in this way the user can also enter the text.
+    itemsCombobox.editable=true;
+
     listString=[]; //list of the items in the combobox
     var itemsData=getItemsTableData("false"); //I give as parameter "false" as I only need the list of items
 
