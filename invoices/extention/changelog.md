@@ -1,5 +1,11 @@
 # Changelog
  
+## 2022-02-08
+
+* [RELEASE STABLE] Released as Stable
+* [FIX] Fix button create invoice does not create any invoice
+* [FIX] Fix button duplicate invoice does not create any invoice
+
 ## 2022-02-07
 
 * [RELEASE STABLE] Released as Stable
