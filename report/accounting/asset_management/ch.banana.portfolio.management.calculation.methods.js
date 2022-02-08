@@ -62,6 +62,10 @@ function getDocumentInfo(banDoc){
     //get the base currency
     docInfo.baseCurrency=banDoc.info("AccountingDataBase","BasicCurrency");
 
+    //get the accounts for the recording of exchange rate differences.
+    docInfo.accountExchangeRateProfit=banDoc.info("AccountingDataBase","AccountExchangeRateProfit");
+    docInfo.accountExchangeRateLoss=banDoc.info("AccountingDataBase","AccountExchangeRateLoss");
+
 
     return docInfo;
 
@@ -304,21 +308,21 @@ function calculateSecurityClosingData(banDoc,userParam,itemsData){
 function getItemBalance(banDoc,item,itemsData){
     var accBalance={};
 
-    accBalance.account=getItemAccount(item,itemsData);
+    accBalance.account=getItemValue(itemsData,item,"account");
     accBalance.currbalance=banDoc.currentBalance(accBalance.account);
 
     return accBalance;
 }
 
-function getItemAccount(item,itemsData){
+function getItemValue(itemsData,item,value){
     if(itemsData){
         for(var e in itemsData){
-            if(itemsData[e].item==item)
-                return itemsData[e].bankAccount;
+            if(itemsData[e].item==item && itemsData[e][value]!=""){
+                return itemsData[e][value];
+            }
         }
     }else 
         return false;
-
 }
 
 /**
@@ -383,15 +387,71 @@ function getAccountForResult(profitOnSale,userParam){
     return account;
 }
 
-function getItemCurrency(itemData,item){
-    let itemcCurr="";
+/**
+ * ritorna i dati presenti nella tabella conti.
+ */
+function getAccountsTableData(banDoc,docInfo){
+    let accountsData=[];
+    let accTable=banDoc.table("Accounts");
 
-    for(var e in itemData){  
-        if(itemData[e].item==item && itemData[e].currency!=""){
-            itemcCurr=itemData[e].currency;
-            return itemcCurr;
+    if(!accTable){
+        accountsData;
+    }
+
+    for (var i = 0; i < accTable.rowCount; i++) {
+        var tRow = accTable.row(i);
+        var accRow={};
+        accRow.rowNr=tRow.rowNr;
+        accRow.group = tRow.value("Group");
+        accRow.account = tRow.value("Account");
+        accRow.description = tRow.value("Description");
+        accRow.bClass = tRow.value("BClass");
+        accRow.sumIn = tRow.value("Gr");
+        accRow.exchangeRateDiffAcc=tRow.value("AccountExchangeDifference");
+        if(docInfo.isMultiCurrency)
+            accRow.currency=tRow.value("Currency");       
+        //...
+
+        if(accRow.account || accRow.group)
+            accountsData.push(accRow);
+    }
+
+    return accountsData;
+
+
+}
+
+/**
+ * Cerco i risultati prima nella tabella conti, colonna "Exch. rate Diff. Acct."
+ * Se non dovessi trovare niente guardo nelle proprietà del file.
+ * Se non ce nessun riferimento a dei conti avverto l'utente, e ne imposto io di default.
+ */
+function getAccountsForExchangeResult(banDoc,docInfo){
+    var accExchRes={};
+    var accData=getAccountsTableData(banDoc,docInfo);
+
+    //cerco nella tabella conti
+    for(var r in accData ){
+        element=accData[r];
+        if(element.exchangeRateDiffAcc){
+            //l'utile e la perdita vengono registrati sullo stesso conto
+            accExchRes.loss=element.exchangeRateDiffAcc;
+            accExchRes.profit=element.exchangeRateDiffAcc;
+            return accExchRes;
         }
     }
+
+    //se non viene trovato niente nel piano dei conti, cerco nelle proprietà del file
+    if(docInfo && docInfo.accountExchangeRateProfit && docInfo.accountExchangeRateLoss){
+        accExchRes.loss=docInfo.accountExchangeRateLoss;
+        accExchRes.profit=docInfo.accountExchangeRateProfit;
+        return accExchRes;
+    }
+
+    //se non viene trovato nessun riferimento viene assegnato un conto de default (standard piano dei conti per PMI svizzero)
+    accExchRes.loss="6949";
+    accExchRes.profit="6999";
+    return accExchRes;
 
 }
 
@@ -405,14 +465,15 @@ function getItemsTableData(docInfo){
     let table = Banana.document.table("Items");
     let value = "";
     if (!table) {
-        return value;
+        return itemsData;
     }
     for (var i = 0; i < table.rowCount; i++) {
         var tRow = table.row(i);
         var itemData={};
         itemData.rowNr=tRow.rowNr;
         itemData.item = tRow.value("ItemsId");
-        itemData.bankAccount=tRow.value("Account");
+        itemData.description=tRow.value("Description");
+        itemData.account=tRow.value("Account");
         itemData.currentQt=tRow.value("QuantityCurrent");
         itemData.valueCurrent=tRow.value("ValueCurrent");
         itemData.group=tRow.value("Group");
