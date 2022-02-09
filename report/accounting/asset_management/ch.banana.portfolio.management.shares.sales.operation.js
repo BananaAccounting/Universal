@@ -102,7 +102,7 @@ function createSharesSalesOpDocChange(banDoc,currentSelectionBottom,currentRowDa
     rows.push(createSharesSalesOpDocChange_shares(jsonDoc,currentRowData,sharesData,currentSelectionBottom,userParam,opCurrency,docInfo,itemDescr));
     rows.push(createSharesSalesOpDocChange_bankCharges(jsonDoc,currentRowData,currentSelectionBottom,userParam,amountColumn,opCurrency,docInfo,itemDescr));
     rows.push(createSharesSalesOpDocChange_profitOrLoss_sale(jsonDoc,currentRowData,sharesData,currentSelectionBottom,userParam,amountColumn,opCurrency,docInfo,itemDescr));
-    rows.push(createSharesSalesOpDocChange_sharesSale(jsonDoc,currentRowData,sharesData,currentSelectionBottom,userParam,itemAccount,amountColumn,opCurrency,docInfo,itemDescr));
+    rows.push(createSharesSalesOpDocChange_sharesSale(jsonDoc,currentRowData,sharesData,currentSelectionBottom,itemAccount,amountColumn,opCurrency,docInfo,itemDescr));
     if(opCurrency!=docInfo.baseCurrency)
         rows.push(createSharesSalesOpDocChange_profitOrLoss_exchange(jsonDoc,currentRowData,sharesData,itemAccount,currentSelectionBottom,docInfo,accExchRes));
 
@@ -244,7 +244,7 @@ function createSharesSalesOpDocChange_profitOrLoss_sale(jsonDoc,currentRowData,s
 
 }
 
-function createSharesSalesOpDocChange_sharesSale(jsonDoc,currentRowData,sharesData,currentSelectionBottom,userParam,itemAccount,amountColumn,opCurrency,docInfo,itemDescr){
+function createSharesSalesOpDocChange_sharesSale(jsonDoc,currentRowData,sharesData,currentSelectionBottom,itemAccount,amountColumn,opCurrency,docInfo,itemDescr){
 
     var opAccount=itemAccount;
     var opDate="";
