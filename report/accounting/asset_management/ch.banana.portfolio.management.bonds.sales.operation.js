@@ -43,30 +43,29 @@ function exec() {
 
     var banDoc=Banana.document;
     //show the dialog
-    var userParam=dialogExec("bonds");
+    var userParam=dialogExec("bonds"); //use this if the data are taken from the dialog
 
     if(userParam && banDoc){
 
         var salesOpArray=[];
         var itemsData=getItemsTableData();
         var currentSelectionBottom = banDoc.cursor.selectionBottom;
-        var currentSelectionTop = banDoc.cursor.selectionTop;
+        var docInfo="";
         var transList=[];
         var multiCurrencyAcc=false;
-        var purchaseCourse=""
         var bondsData="";
-        var currentRowDate="";
+        var currentRowData="";
         var bondTotalCourse="";
         var userParam=readDialogParams();
 
         multiCurrencyAcc=checkIfMultiCurrencyAccounting(banDoc);
+        docInfo=getDocumentInfo(banDoc);
         transList=getTransactionsTableData(banDoc,multiCurrencyAcc);
         bondTotalCourse=getBondTotalCourse(transList,userParam);
-        currentRowDate=getCurrentRowDate(banDoc,transList);
-        purchaseCourse=getPurchaseCourse(transList,userParam.selectedItem,currentSelectionTop);
-        bondsData=calculateBondSaleData(bondTotalCourse,userParam);
+        currentRowData=getCurrentRowData(banDoc,transList);
+        bondsData=calculateBondSaleData(currentRowData,userParam,bondTotalCourse);
         //Creates the document change for the sale of bonds transactions
-        salesOpArray = createBondsSalesOpDocChange(currentSelectionBottom,currentRowDate,bondsData,multiCurrencyAcc,userParam,itemsData,purchaseCourse);
+        salesOpArray = createBondsSalesOpDocChange(docInfo,currentSelectionBottom,currentRowData,bondsData,multiCurrencyAcc,userParam,itemsData);
     
         jsonDoc = { "format": "documentChange", "error": "" };
         jsonDoc["data"] = salesOpArray;
@@ -86,17 +85,24 @@ function exec() {
  * @param {*} userParam parameters defined by the user
  * @returns returns the Json document
  */
-function createBondsSalesOpDocChange(currentSelectionBottom,currentRowDate,bondsData,multiCurrencyAccounting,userParam,itemsData,purchaseCourse){
+function createBondsSalesOpDocChange(docInfo,currentSelectionBottom,currentRowData,bondsData,multiCurrencyAccounting,userParam,itemsData){
     var jsonDoc = initJsonDoc();
     var rows=[];
 
     
     var amountColumn=getAmountColumn(multiCurrencyAccounting);
+    var opCurrency=getItemValue(itemsData,userParam.selectedItem,"currency");
+    var itemDescr=getItemValue(itemsData,userParam.selectedItem,"description");
+    var itemAccount=getItemValue(itemsData,userParam.selectedItem,"account");
+    var accExchRes=getAccountsForExchangeResult(banDoc,docInfo);
 
-    rows.push(createBondsSalesOpDocChange_bankCharges(jsonDoc,currentRowDate,currentSelectionBottom,userParam,amountColumn));//indicati nel dialogo
-    rows.push(createBondsSalesOpDocChange_accruedInterest(jsonDoc,currentRowDate,bondsData,currentSelectionBottom,userParam,amountColumn,itemsData));//((valore nominale*tasso%)/360)* giorni maturazione interesse dalla scadenza.
-    rows.push(createBondsSalesOpDocChange_profitOrLoss(jsonDoc,currentRowDate,bondsData,currentSelectionBottom,userParam,amountColumn));//(valore nominale cedole*corso attuale)-valore di acquisto.
-    rows.push(createBondsSalesOpDocChange_bondSale(jsonDoc,currentRowDate,currentSelectionBottom,userParam,itemsData,bondsData,amountColumn,purchaseCourse));//valore di acquisto (avere)-->lo posso cercare nelle registrazioni, recupero la riga di registrazione che contiene il conto dell'obbligazione
+    rows.push(createBondsSalesOpDocChange_bonds(jsonDoc,currentRowData,currentSelectionBottom,bondsData,opCurrency,itemDescr));
+    rows.push(createBondsSalesOpDocChange_bankCharges(jsonDoc,currentRowData,currentSelectionBottom,userParam,amountColumn,opCurrency,docInfo,itemDescr));
+    rows.push(createBondsSalesOpDocChange_accruedInterest(jsonDoc,currentRowData,bondsData,currentSelectionBottom,userParam,amountColumn));
+    rows.push(createBondsSalesOpDocChange_profitOrLoss_sale(jsonDoc,currentRowData,bondsData,currentSelectionBottom,userParam,amountColumn));
+    rows.push(createBondsSalesOpDocChange_bondSale(jsonDoc,currentRowData,currentSelectionBottom,userParam,bondsData,amountColumn,itemAccount));
+    if(opCurrency!=docInfo.baseCurrency)
+        rows.push(createBondsSalesOpDocChange_profitOrLoss_exchange(jsonDoc,currentRowData,bondsData,itemAccount,currentSelectionBottom,docInfo,accExchRes));
 
     
     var dataUnitFilePorperties = {};
@@ -110,15 +116,53 @@ function createBondsSalesOpDocChange(currentSelectionBottom,currentRowDate,bonds
     return jsonDoc;
 }
 
-function createBondsSalesOpDocChange_bankCharges(jsonDoc,currentRowDate,currentSelectionBottom,userParam,amountColumn){
+function createBondsSalesOpDocChange_bonds(jsonDoc,currentRowData,currentSelectionBottom,bondsData,opCurrency,itemDescr){
 
-    var opDescription="Sale bonds "+userParam.selectedItem+" bank charges";
+    var opDescription=itemDescr;
     var opCurrentSelectionBottom=currentSelectionBottom+".1"; //set with the correct format to indicate the sequence
     var opDate="";
-    if(currentRowDate)
-        opDate=currentRowDate;
+    if(currentRowData)
+        opDate=currentRowData.date;
     else
         opDate=jsonDoc.creator.executionDate;   
+    var opQuantity="1";
+    var opPrice=bondsData.PricePerShare;
+    var opRate=currentRowData.rate;
+
+    var row={};
+
+    row.fields={};
+    row.fields.Date=opDate;
+    row.fields.ItemsId=opItem;
+    row.fields.Description=opDescription;
+    row.fields.Quantity="-"+opQuantity;
+    row.fields.UnitPrice=opPrice;
+    //columns to add only if its a multicurrency accounting
+    if(docInfo.isMultiCurrency){ 
+        if(opCurrency!="")
+            row.fields.ExchangeCurrency=opCurrency;
+        row.fields.ExchangeRate=opRate;
+
+    }
+
+    row.operation={};
+    row.operation.name="add";
+    row.operation.sequence=opCurrentSelectionBottom;
+
+
+    return row;
+}
+
+function createBondsSalesOpDocChange_bankCharges(jsonDoc,currentRowData,currentSelectionBottom,userParam,amountColumn,opCurrency,docInfo,itemDescr){
+
+    var opDescription="Sale "+itemDescr+" bank charges";
+    var opCurrentSelectionBottom=currentSelectionBottom+".2"; //set with the correct format to indicate the sequence
+    var opDate="";
+    var opRate=currentRowData.rate;
+    if(currentRowData)
+        opDate=currentRowData.date;
+    else
+        opDate=jsonDoc.creator.executionDate;  
     var opAccount=userParam.bankInterest;
     var opAmount=userParam.bankChargesAmount;
 
@@ -129,6 +173,11 @@ function createBondsSalesOpDocChange_bankCharges(jsonDoc,currentRowDate,currentS
     row.fields.Description=opDescription;
     row.fields.AccountDebit=opAccount;
     row.fields[amountColumn]=opAmount;
+    if(docInfo.isMultiCurrency){ 
+        if(opCurrency!="")
+            row.fields.ExchangeCurrency=opCurrency;
+        row.fields.ExchangeRate=opRate;
+    }
 
     row.operation={};
     row.operation.name="add";
@@ -147,17 +196,17 @@ function createBondsSalesOpDocChange_bankCharges(jsonDoc,currentRowDate,currentS
  * @param {*} accParam 
  * @returns 
  */
- function createBondsSalesOpDocChange_accruedInterest(jsonDoc,currentRowDate,bondsData,currentSelectionBottom,userParam,amountColumn,itemsData){
+ function createBondsSalesOpDocChange_accruedInterest(jsonDoc,currentRowData,currentSelectionBottom,userParam,amountColumn){
 
     var opDate="";
-    if(currentRowDate)
-        opDate=currentRowDate;
+    if(currentRowData)
+        opDate=currentRowData.date;
     else
         opDate=jsonDoc.creator.executionDate;   
     var opCurrentSelectionBottom=currentSelectionBottom+".2";
     var opDescription="Sale bonds "+userParam.selectedItem+" accrued interest on sale";
-    var opAccount=userParam.interestOnBond;
-    var opAmount=getAccruedInterest(bondsData,itemsData,userParam.selectedItem,opDate);
+    var opAccount="3601";
+    var opAmount=userParam.accruedInterest;
 
     var row={};
 
@@ -175,47 +224,7 @@ function createBondsSalesOpDocChange_bankCharges(jsonDoc,currentRowDate,currentS
     return row;
 }
 
-/**
- * Calculate the accrued interest by taken the percentage from the items table (row corresponding to the item).
- * @param {*} item 
- * @param {*} nominalValue the nominal value is taken as the value being sold.
- * @returns 
- */
- function getAccruedInterest(bondsData,itemsData,item,opDate){
-    //the interest percentage of the bonds is currently indicated in the "Notes" Column
-    var intRate="";
-    var nomValue=bondsData.nominalValue;
-    var accInterest="";
-    var currDate=new Date(opDate);
-    var expiryDate="";
-    var actualDays="";
-
-        if(itemsData){
-            for(var e in itemsData){
-                if(itemsData[e].item==item){
-                    intRate=itemsData[e].interestRate;
-                    accInterest=Banana.SDecimal.divide(nomValue,100);
-                    accInterest=Banana.SDecimal.multiply(accInterest,intRate);
-
-                    /*
-                    expiryDate=itemsData[e].expiryDate; //what gets it is only the day and the months of the expiry date, indicated in the expiry date in the items table
-                    //set the current
-                    expiryDate+=currDate.getFullYear();
-                    expiryDate=new Date(expiryDate);
-
-
-                    accInterest=Banana.SDecimal.divide(accInterest,360);
-                    actualDays=Banana.SDecimal.subtract(currDate,expiryDate);*/
-
-                    return accInterest;
-                }
-            }
-        }else 
-            return "";
-
-}
-
-function createBondsSalesOpDocChange_profitOrLoss(jsonDoc,currentRowDate,bondsData,currentSelectionBottom,userParam,amountColumn){
+function createBondsSalesOpDocChange_profitOrLoss_sale(jsonDoc,currentRowData,bondsData,currentSelectionBottom,userParam,amountColumn){
 
     // set the description based on the result
     var opProfitOnSale=bondsData.profitOnSale;
@@ -224,8 +233,8 @@ function createBondsSalesOpDocChange_profitOrLoss(jsonDoc,currentRowDate,bondsDa
     //get the account based on the result
     var opAccount=getAccountForResult(opProfitOnSale,userParam);
     var opDate="";
-    if(currentRowDate)
-        opDate=currentRowDate;
+    if(currentRowData)
+        opDate=currentRowData.date;
     else
         opDate=jsonDoc.creator.executionDate;   
     var opCurrentSelectionBottom=currentSelectionBottom+".3"; //set with the correct format to indicate the sequence
@@ -255,26 +264,20 @@ function createBondsSalesOpDocChange_profitOrLoss(jsonDoc,currentRowDate,bondsDa
  * Crea la registrazione di vendita dell'obbligazione. L'importo registrato è il corso totale d'acquisto, se ho più registrazioni per la stessa obbligazione, 
  * devo fare una media tra gli importi
  * @param {*} jsonDoc 
- * @param {*} currentRowDate 
+ * @param {*} currentRowData 
  * @param {*} currentSelectionBottom 
  * @param {*} userParam 
  * @param {*} itemsData 
  * @returns 
  */
-function createBondsSalesOpDocChange_bondSale(jsonDoc,currentRowDate,currentSelectionBottom,userParam,itemsData,bondsData,amountColumn,purchaseCourse){
+function createBondsSalesOpDocChange_bondSale(jsonDoc,currentRowData,currentSelectionBottom,userParam,bondsData,amountColumn,itemAccount){
         //temporary UPPERCASE variables, the user will define those values through a dialog
-        var opAccount=getItemAccount(userParam.selectedItem,itemsData);
+        var opAccount=itemAccount;
         var opDate="";
-        if(currentRowDate)
-            opDate=currentRowDate;
+        if(currentRowData)
+            opDate=currentRowData.date;
         else
             opDate=jsonDoc.creator.executionDate;   
-        var opItem=userParam.selectedItem;
-        var opNpminalValue="1"; //for the bonds the qt reperesent the nominal value of a bond
-        var opMarketPrice=purchaseCourse;
-        if(userParam.quantity){
-            opNpminalValue=userParam.quantity;
-        }
     
         var opDescription="Sale bonds "+userParam.selectedItem;
         var opCurrentSelectionBottom=currentSelectionBottom+".4"; //set with the correct format to indicate the sequence
@@ -284,11 +287,8 @@ function createBondsSalesOpDocChange_bondSale(jsonDoc,currentRowDate,currentSele
 
         row.fields={};
         row.fields.Date=opDate;
-        row.fields.ItemsId=opItem;
         row.fields.Description=opDescription;
         row.fields.AccountCredit=opAccount;
-        row.fields.Quantity="-"+opNpminalValue;
-        row.fields.UnitPrice=opMarketPrice;
         row.fields[amountColumn]=opAmount;
     
         row.operation={};
@@ -296,6 +296,45 @@ function createBondsSalesOpDocChange_bondSale(jsonDoc,currentRowDate,currentSele
         row.operation.sequence=opCurrentSelectionBottom;
 
         return row;
+}
+
+function createBondsSalesOpDocChange_profitOrLoss_exchange(jsonDoc,currentRowData,bondsData,itemAccount,currentSelectionBottom,docInfo,accExchRes,itemDescr){
+    // set the description based on the result
+    var opProfitOnExchange=bondsData.profitOnExchange;
+    var resultDescription=setOperationResultDecription(opProfitOnExchange,"exchange");
+    var opDescription="Sale "+itemDescr+" "+resultDescription;
+    //get the accounts based on the result
+    var opDebitAccount=bondsData.profitOnExchange? itemAccount:accExchRes.loss;
+    var opCreditAccount=bondsData.profitOnExchange? accExchRes.profit:itemAccount;
+    var opCurrency=docInfo.baseCurrency;//this entry is always made in base currency
+    if(currentRowData)
+        opDate=currentRowData.date;
+    else
+        opDate=jsonDoc.creator.executionDate;    
+    var opCurrentSelectionBottom=currentSelectionBottom+".5"; //set with the correct format to indicate the sequence
+    var opAmount=sharesData.exchangeResult;
+
+    var row={};
+
+    row.fields={};
+    row.fields.Date=opDate;
+    row.fields.Description=opDescription;
+    row.fields.AccountDebit=opDebitAccount;
+    row.fields.AccountCredit=opCreditAccount;
+    row.fields.Amount=opAmount; //set the value only in the base currency
+
+    //columns to add only if its a multicurrency accounting
+    if(docInfo.isMultiCurrency){ 
+        if(opCurrency!="")
+        row.fields.ExchangeCurrency=opCurrency;
+
+    }
+
+    row.operation={};
+    row.operation.name="add";
+    row.operation.sequence=opCurrentSelectionBottom;
+
+    return row;
 }
 
 /**

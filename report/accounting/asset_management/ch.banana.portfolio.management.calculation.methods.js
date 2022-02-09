@@ -239,12 +239,12 @@ function calculateShareSaleData(avgCost,userParam,currentRowData,accountingCours
     var shareData={};
     var exCurrentCourse=currentRowData.rate; //il corso corrente, indicato nella registrazione
 
-    shareData.netTransaction=currentRowData.amount; //importo della riga corrente
+    shareData.netTransaction=currentRowData.amount; //credited by the bank
     shareData.charges=userParam.bankChargesAmount;
 
     //importo totale vendita azioni (importo trasmesso dalla banca più le spese trattenute)
     shareData.totSaleShare={};
-    shareData.totSaleShare.assetCurr=Banana.SDecimal.add(shareData.charges,shareData.netTransaction);//valore di vendita effettivo (con spese incluse)
+    shareData.totSaleShare.assetCurr=Banana.SDecimal.add(shareData.charges,shareData.netTransaction);//valore di vendita effettivo (con spese)
     //base currencies values
     shareData.totSaleShare.baseCurr=Banana.SDecimal.multiply(exCurrentCourse,shareData.totSaleShare.assetCurr);//valore effettivo (da mostrare nel dialogo)
     shareData.totSaleShare.accounting=Banana.SDecimal.multiply(accountingCourse,shareData.totSaleShare.assetCurr);//valore contabile (in chf)
@@ -274,34 +274,30 @@ function calculateShareSaleData(avgCost,userParam,currentRowData,accountingCours
 
 }
 
-function calculateBondSaleData(bondTotalCourse,userParam){
+function calculateBondSaleData(currentRowData,userParam,bondTotalCourse){
     var bondData={};
-    
-    bondData.currentValue=bondTotalCourse;
+
+    bondData.netTransaction=currentRowData.amount //credited by the bank
+    bondData.charges=userParam.bankChargesAmount;
+
+    //importo totale vendita obbligazioni (importo trasmesso dalla banca più le spese trattenute)
+    bondData.totalSaleBonds={};
+    bondData.totalSaleBonds.assetCurr=Banana.SDecimal.add(bondData.charges,bondData.netTransaction);//valore di vendita effettivo (con spese)
+    //base currencies values
+    bondData.totalSaleBonds.baseCurr=Banana.SDecimal.multiply(exCurrentCourse,bondData.totalSaleBonds.assetCurr);
+    bondData.totalSaleBonds.accounting=Banana.SDecimal.multiply(accountingCourse,bondData.totalSaleBonds.assetCurr);//DEFINIRE SE CALCOLARE IL CAMBIO PRIMA O DOPO AVER SOMMATO GLI INTERESSI
+
+    //Result on exchange rate variation 
+    bondData.changeResult=Banana.SDecimal.subtract(bondData.totSaleShare.baseCurr,bondData.totSaleShare.accounting);
+
+    //other data
+    bondData.accruedInterest=userParam.accruedInterest;
+    bondData.marketValue=Banana.SDecimal.add(bondData.totalSaleBonds.assetCurr,bondData.accruedInterest);
     bondData.nominalValue=userParam.quantity;
-    bondData.marketValue=Banana.SDecimal.multiply(userParam.marketPrice,bondData.nominalValue);
-    bondData.result=Banana.SDecimal.subtract(bondData.marketValue,bondData.currentValue);
-    bondData.profitOnSale=false;
-    if(Banana.SDecimal.sign(bondData.result)=="1")
-    bondData.profitOnSale=true;
+    bondData.purchaseValue=bondTotalCourse;
 
-    return bondData;
 
-}
 
-function calculateSecurityClosingData(banDoc,userParam,itemsData){
-    var closingData={};
-    var accBalance=getItemBalance(banDoc,userParam.selectedItem,itemsData);
-
-    closingData.account=accBalance.account;
-    closingData.balance=accBalance.currentBalance;
-    closingData.marketValue=Banana.SDecimal.multiply(userParam.marketPrice,userParam.quantity);
-    closingData.adjustment=Banana.SDecimal.subtract(closingData.marketValue,closingData.balance);
-    closingData.profit=false;
-    if(Banana.SDecimal.sign(closingData.adjustment)=="1")
-        closingData.profit=true;
-
-    return closingData;
 
 }
 

@@ -39,6 +39,7 @@ dialog=Banana.Ui.createUi("ch.banana.portfolio.management.sales.dialog.ui");
 var itemsCombobox = dialog.findChild('item_comboBox');
 var quantity = dialog.findChild('quantity_lineEdit');
 var bankChargesAmount = dialog.findChild('bank_charges_amount_lineEdit');
+var accruedInterest = dialog.findChild('accrued_interest_lineEdit');
 
 //registration accounts data section objects
 var bankAccount = dialog.findChild('bankAccount_lineEdit');
@@ -140,6 +141,7 @@ function initParam(){
     param.salesParam.selectedItem="";
     param.salesParam.quantity="";
     param.salesParam.bankChargesAmount="";
+    param.salesParam.accruedInterest="";
 
     param.accountsParam={};
 
@@ -178,6 +180,7 @@ function readDialogParams(){
     userParam.selectedItem=itemsCombobox.currentText;
     userParam.quantity=quantity.text;
     userParam.bankChargesAmount=bankChargesAmount.text;
+    userParam.accruedInterest=accruedInterest.text;
 
     userParam.bankAccount=bankAccount.text;
     userParam.bankInterest=bankInterest.text;
