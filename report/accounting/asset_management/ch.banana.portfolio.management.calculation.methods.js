@@ -459,7 +459,6 @@ function getItemsTableData(docInfo){
     //get the items list from the items table
     var itemsData=[];
     let table = Banana.document.table("Items");
-    let value = "";
     if (!table) {
         return itemsData;
     }
@@ -482,4 +481,18 @@ function getItemsTableData(docInfo){
             itemsData.push(itemData);
     }
     return itemsData;
+}
+
+function getPurchaseOperationList(tabMovementsData){
+    let purchMovList=[];
+
+    if(tabMovementsData){
+        for(var o in tabMovementsData ){
+            var type=tabMovementsData[o].type;
+            if(type.includes("Acquisto"))
+                purchMovList.push(tabMovementsData[o]);
+        }
+    }
+    
+    return purchMovList;
 }
