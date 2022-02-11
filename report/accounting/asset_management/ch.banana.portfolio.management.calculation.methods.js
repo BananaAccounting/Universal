@@ -111,14 +111,14 @@ function getDocumentInfo(banDoc){
     return transactionsList;
 }
 
-function getSumOfPurchasedShares(item,currentSelectionTop,transList){
+function getSumOfPurchasedShares(item,transList){
     //look for all purchases done before for this item, and sum the amounts
     var purchasesSum="";
     var rowPurchase="";
 
     if(transList){
         for (var i = 0; i < transList.length; i++) {
-            if(transList[i].item==item && transList[i].qt && Banana.SDecimal.sign(transList[i].qt)!=-1 && transList[i].row<=currentSelectionTop ){
+            if(transList[i].item==item && transList[i].qt && Banana.SDecimal.sign(transList[i].qt)!=-1){
                 rowPurchase=transList[i].amount;
                 purchasesSum=Banana.SDecimal.add(purchasesSum,rowPurchase);
             }
@@ -129,14 +129,14 @@ function getSumOfPurchasedShares(item,currentSelectionTop,transList){
 
 }
 
-function getQtOfSharesPurchased(item,currentSelectionTop,transList){
+function getQtOfSharesPurchased(item,transList){
     //look for all purchases done before for this item, and sum the quantities
     var purchaseQt="";
     var rowQt="";
 
     if(transList){
         for (var i = 0; i < transList.length; i++) {
-            if(transList[i].item==item && transList[i].qt && Banana.SDecimal.sign(transList[i].qt)!=-1 && transList[i].row<=currentSelectionTop){
+            if(transList[i].item==item && transList[i].qt && Banana.SDecimal.sign(transList[i].qt)!=-1){
                 rowQt=transList[i].qt;
                 purchaseQt=Banana.SDecimal.add(purchaseQt,rowQt);
             }
@@ -148,10 +148,10 @@ function getQtOfSharesPurchased(item,currentSelectionTop,transList){
 /**
  * To calculate the average cost, divide the total purchase amount by the number of shares purchased to figure the average cost per share. 
  */
- function getAverageCost(item,currentSelectionTop,transList){
+ function getAverageCost(item,transList){
 
-    var purchaseSum=getSumOfPurchasedShares(item,currentSelectionTop,transList);
-    var purchaseQt=getQtOfSharesPurchased(item,currentSelectionTop,transList);
+    var purchaseSum=getSumOfPurchasedShares(item,transList);
+    var purchaseQt=getQtOfSharesPurchased(item,transList);
     var avgCost="";
 
     //calculate the average cost and return it
@@ -210,6 +210,9 @@ function getPurchaseCourse(transList,item,currentSelectionTop){
     }
 }
 
+/**
+ * Ritorna il cambio contabile calcolato sulla base della differenza tra i saldi nelle due valute ad una certa data.
+ */
 function getAccountingCourse(item,itemsData,banDoc){
 
     var accData=getItemBalance(banDoc,item,itemsData);
@@ -234,26 +237,26 @@ function getAccountingCourse(item,itemsData,banDoc){
  * @param {*} currentRowData the current line transaction data
  * @returns an object with the calculation data.
  */
-function calculateShareSaleData(avgCost,userParam,currentRowData,accountingCourse){
+function calculateShareSaleData(avgCost,movRow,accountingCourse){
     
     var shareData={};
-    var exCurrentCourse=currentRowData.rate; //il corso corrente, indicato nella registrazione
+    var exchangeRateOnSale=movRow.exchangeRate; //il corso corrente, indicato nella registrazione
 
-    shareData.netTransaction=currentRowData.amount; //credited by the bank
-    shareData.charges=userParam.bankChargesAmount;
+    shareData.netAmount=movRow.netAmount; //credited by the bank
+    shareData.bankCharges=movRow.bankCharges;
 
     //importo totale vendita azioni (importo trasmesso dalla banca più le spese trattenute)
     shareData.totSaleShare={};
-    shareData.totSaleShare.assetCurr=Banana.SDecimal.add(shareData.charges,shareData.netTransaction);//valore di vendita effettivo (con spese)
+    shareData.totSaleShare.assetCurr=Banana.SDecimal.add(shareData.bankCharges,shareData.netAmount);//valore di vendita effettivo (con spese)
     //base currencies values
-    shareData.totSaleShare.baseCurr=Banana.SDecimal.multiply(exCurrentCourse,shareData.totSaleShare.assetCurr);//valore effettivo (da mostrare nel dialogo)
+    shareData.totSaleShare.baseCurr=Banana.SDecimal.multiply(exchangeRateOnSale,shareData.totSaleShare.assetCurr);//valore effettivo (da mostrare nel dialogo)
     shareData.totSaleShare.accounting=Banana.SDecimal.multiply(accountingCourse,shareData.totSaleShare.assetCurr);//valore contabile (in chf)
 
     //Result on exchange rate variation 
     shareData.changeResult=Banana.SDecimal.subtract(shareData.totSaleShare.baseCurr,shareData.totSaleShare.accounting);
     
     //other data
-    shareData.quantity=userParam.quantity;
+    shareData.quantity=movRow.quantity;
     shareData.PricePerShare=Banana.SDecimal.divide(shareData.totSaleShare.assetCurr,shareData.quantity);
     shareData.avgCost=avgCost;
     shareData.avgShareValue=Banana.SDecimal.multiply(shareData.quantity,shareData.avgCost);
@@ -284,7 +287,7 @@ function calculateBondSaleData(currentRowData,userParam,bondTotalCourse){
     bondData.totalSaleBonds={};
     bondData.totalSaleBonds.assetCurr=Banana.SDecimal.add(bondData.charges,bondData.netTransaction);//valore di vendita effettivo (con spese)
     //base currencies values
-    bondData.totalSaleBonds.baseCurr=Banana.SDecimal.multiply(exCurrentCourse,bondData.totalSaleBonds.assetCurr);
+    bondData.totalSaleBonds.baseCurr=Banana.SDecimal.multiply(exchangeRateOnSale,bondData.totalSaleBonds.assetCurr);
     bondData.totalSaleBonds.accounting=Banana.SDecimal.multiply(accountingCourse,bondData.totalSaleBonds.assetCurr);//DEFINIRE SE CALCOLARE IL CAMBIO PRIMA O DOPO AVER SOMMATO GLI INTERESSI
 
     //Result on exchange rate variation 
@@ -371,13 +374,13 @@ function setOperationResultDecription(profit,type){
  * @param {*} userParam 
  * @returns 
  */
-function getAccountForResult(profitOnSale,userParam){
+function getAccountForResult(profitOnSale){
     var account="";
 
     if(profitOnSale){
-        account=userParam.profitOnSecurities;
+        account="3200";
     }else{
-        account=userParam.lossOnSecurities;
+        account="4200";
     }
 
     return account;
@@ -483,13 +486,13 @@ function getItemsTableData(docInfo){
     return itemsData;
 }
 
-function getPurchaseOperationList(tabMovementsData){
+function getValuesFromMovData(tabMovementsData,refColumn){
     let purchMovList=[];
 
     if(tabMovementsData){
         for(var o in tabMovementsData ){
             var type=tabMovementsData[o].type;
-            if(type.includes("Acquisto"))
+            if(type.includes(refColumn))
                 purchMovList.push(tabMovementsData[o]);
         }
     }

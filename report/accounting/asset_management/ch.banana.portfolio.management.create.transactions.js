@@ -24,6 +24,8 @@
 // @inputdatasource = none
 // @timeout = -1
 // @includejs = ch.banana.portfolio.management.shares.purchase.operation.js
+// @includejs = ch.banana.portfolio.management.shares.sales.operation.js
+// @includejs = ch.banana.portfolio.management.new.items.dialog.js
 
 /**
  * Questa è l'estensione che si occupa di chiamare gli script per la registrazione degli acquisti e vendite di titoli.
@@ -45,11 +47,15 @@ function exec() {
     docChange=addMissingItems(docInfo,tabMovementsData,tabItemsData);
     jsonDoc["data"].push(docChange);
 
-
     //Create the transactions-->first Purchases, then Sales.
-    var assetPurchaseOperation= new AssetPurchaseOperation(banDoc,tabMovementsData,tabItemsData,docInfo); //create purchase transactions (shares).
-    docChange=assetPurchaseOperation.exec();
 
+    var sharesPurchaseOperation= new SharesPurchaseOperation(banDoc,tabMovementsData,tabItemsData,docInfo); //create purchase transactions (shares).
+    docChange=sharesPurchaseOperation.getDocumentChange();
+    jsonDoc["data"].push(docChange);
+
+
+    var sharesSaleOperation= new SharesSaleOperation(banDoc,tabMovementsData,tabItemsData,docInfo);
+    docChange=sharesSaleOperation.getDocumentChange();
     jsonDoc["data"].push(docChange);
 
 
@@ -68,6 +74,8 @@ function addMissingItems(docInfo,tabMovementsData,tabItemsData){
 
     var jsonDoc=initJsonDoc();
     var rows=[];
+    var userParam="";
+    var rowNr=""; //row after which to insert the new item.
 
     for(var mrow in tabMovementsData){
         let currItem=tabMovementsData[mrow].itemId;
@@ -81,7 +89,10 @@ function addMissingItems(docInfo,tabMovementsData,tabItemsData){
             //FARE INSERIRE ALL UTENTE DEI VALORI A MANO (gruppo ecc) 
             //recuperare la riga dell ultimo elemento con quel gruppo ed inserire il nuovo item
             //alla riga dopo
-            rows.push(addMissingItem_createDocChange(docInfo,tabMovementsData[mrow]));
+            dialogExec();
+            userParam=readDialogParams();
+            rowNr=getItemRowNr(userParam.itemGroupComboBox,tabItemsData);
+            rows.push(addMissingItem_createDocChange(docInfo,userParam,tabMovementsData[mrow],rowNr));
         } 
     }
 
@@ -100,13 +111,15 @@ function addMissingItems(docInfo,tabMovementsData,tabItemsData){
  * Creates a new row for the items table
  * @param {*} movRow 
  */
-function addMissingItem_createDocChange(docInfo,movRow){
+function addMissingItem_createDocChange(docInfo,userParam,movRow,rowNr){
 
     var row={};
 
     row.fields={};
     row.fields.ItemsId=movRow.itemId;
     row.fields.Description=movRow.description;
+    row.fields.Gr=userParam.itemGroupComboBox;
+    row.fields.Account=userParam.itemAccount;
     //columns to add only if its a multicurrency accounting
     if(docInfo.isMultiCurrency){ 
         row.fields.Currency=movRow.currency;
@@ -114,9 +127,31 @@ function addMissingItem_createDocChange(docInfo,movRow){
 
     row.operation={};
     row.operation.name="add";
+    row.operation.sequence=rowNr;
 
     return row;
 
+}
+
+/**
+ * returns the line number following the last item found whose group is the same as that of the new item
+ * @param {*} refGroup reference group.
+ * @param {*} tabItemsData 
+ */
+function getItemRowNr(refGroup,tabItemsData){
+    var refNr="";
+    for(var r in tabItemsData){
+        tRow=tabItemsData[r];
+        if(refGroup==tRow.group){
+            refNr=tRow.rowNr;
+        }
+    }
+    // format the number so that it is added after the line I have taken as a reference.--> if row = 6 became 6.6
+    if(refNr){
+        refNr=Banana.SDecimal.subtract(refNr,"1");
+        refNr=refNr+"."+refNr;
+    }
+    return refNr;
 }
 
 /**

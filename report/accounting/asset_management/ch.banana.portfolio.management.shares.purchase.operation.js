@@ -35,7 +35,7 @@
  * 
  */
 
-var AssetPurchaseOperation=class AssetPurchaseOperation{
+var SharesPurchaseOperation=class SharesPurchaseOperation{
 
 
     constructor(banDoc,tabMovementsData,tabItemsData,docInfo){
@@ -46,14 +46,14 @@ var AssetPurchaseOperation=class AssetPurchaseOperation{
 
     }
     //Main function
-    exec() {
+    getDocumentChange() {
 
         var banDoc=this.banDoc;
         var docInfo=this.docInfo;
         var jsonDoc={};
         var tabItemsData=this.tabItemsData;
         var tabMovementsData=this.tabMovementsData;
-        var purchMovList=getPurchaseOperationList(tabMovementsData); //filtro la lista estrapolando solamente le operazioni di acquisto 
+        var purchMovList=getValuesFromMovData(tabMovementsData,"Acquisto"); //filtro la lista estrapolando solamente le operazioni di acquisto 
 
         if(purchMovList && banDoc)
             jsonDoc=this.createSharesPurchaseOperations(purchMovList,tabItemsData,docInfo);
@@ -123,7 +123,7 @@ var AssetPurchaseOperation=class AssetPurchaseOperation{
     createBondsSalesOpDocChange_bankCharges(docInfo,movRow,amountColumn){
 
         var opDate=movRow.date;
-        var opDescription=movRow.description+" Bank charges";;
+        var opDescription=movRow.description+" Bank charges";
         var opAccountDebit="6900"; //DA CAMBIARE
         var opAmount=movRow.bankCharges;
         var opCurrency=movRow.currency;
@@ -192,6 +192,7 @@ var AssetPurchaseOperation=class AssetPurchaseOperation{
         var jsonDoc = {};
         jsonDoc.document = {};
         jsonDoc.document.dataUnitsfileVersion = "1.0.0";
+        jsonDoc.document.id="Purchases";
         jsonDoc.document.dataUnits = [];
 
         jsonDoc.creator = {};
