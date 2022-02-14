@@ -31,6 +31,9 @@
 dialog=Banana.Ui.createUi("ch.banana.portfolio.management.new.items.dialog.ui");
 
 //sales data section objects
+var itemId = dialog.findChild('item_label_value');
+var itemCurrency = dialog.findChild('item_currency_label_value');
+var itemBankAccount = dialog.findChild('bank_account_label_value');
 var itemGroupComboBox = dialog.findChild('groups_comboBox');
 var itemAccount = dialog.findChild('account_lineEdit');
 
@@ -44,6 +47,20 @@ function readDialogParams(){
     userParam.itemAccount=itemAccount.text;
 
     return userParam;
+}
+
+/**
+ * This function sets the known values of the item in the dialogue, 
+ * these values serve as a reference for the user to understand which 
+ * item it is when he adds the missing information.
+ */
+function setDialogParams(importsTableRow){
+    //fill the combobox.
+    insertComboBoxElements();
+    //set the labels
+    itemId.setText(importsTableRow.itemId+", "+importsTableRow.description);
+    itemCurrency.setText(importsTableRow.currency);
+    itemBankAccount.setText(importsTableRow.bankAccount);
 }
 
 /**
@@ -71,10 +88,10 @@ function insertComboBoxElements(){
 }
 
 
-function dialogExec(){
+function dialogExec(importsTableRow){
 
-    //fill the combobox with the existent items
-    insertComboBoxElements();
+    //fill the combobox with the existent groups and fill the labelw with the known data
+    setDialogParams(importsTableRow);
     Banana.application.progressBar.pause();
     var dlgResult = dialog.exec();
     Banana.application.progressBar.resume();

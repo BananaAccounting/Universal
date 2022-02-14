@@ -16,6 +16,7 @@
 // @api = 1.0
 // @pubdate = 2022-01-13
 // @publisher = Banana.ch SA
+// @includejs = ch.banana.portfolio.management.new.items.dialog.js
 
 /**
  * This script contains the methods used for calculating securities transactions.
@@ -26,6 +27,27 @@
  * PORTFOLIO MANAGEMENT METHODS
  * 
  *********************************************************/
+
+/**
+ * Initialise the Json document
+ * @returns 
+ */
+    function initJsonDoc() {
+    var jsonDoc = {};
+    jsonDoc.document = {};
+    jsonDoc.document.dataUnitsfileVersion = "1.0.0";
+    jsonDoc.document.dataUnits = [];
+
+    jsonDoc.creator = {};
+    var d = new Date();
+    var datestring = d.getFullYear() + ("0" + (d.getMonth() + 1)).slice(-2) + ("0" + d.getDate()).slice(-2);
+    var timestring = ("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2);
+    jsonDoc.creator.executionDate = Banana.Converter.toInternalDateFormat(datestring, "yyyymmdd");
+    jsonDoc.creator.name = Banana.script.getParamValue('id');
+    jsonDoc.creator.version = "1.0";
+
+    return jsonDoc;
+}
 
 function getCurrentRowData(banDoc,transList){
     var currRowNr=banDoc.cursor.rowNr;
@@ -406,6 +428,7 @@ function getAccountsTableData(banDoc,docInfo){
         accRow.description = tRow.value("Description");
         accRow.bClass = tRow.value("BClass");
         accRow.sumIn = tRow.value("Gr");
+        accRow.bankAccount = tRow.value("BankAccount");
         accRow.exchangeRateDiffAcc=tRow.value("AccountExchangeDifference");
         if(docInfo.isMultiCurrency)
             accRow.currency=tRow.value("Currency");       
@@ -498,4 +521,153 @@ function getValuesFromMovData(tabMovementsData,refColumn){
     }
     
     return purchMovList;
+}
+
+/**
+ * Check if the items exists in the item table. All the item we want to record in the transactions table must be present in the items table
+ *  If the item doesn't exists, we add the item and its data in the items table. the user should complete the info manually
+ * @param {*} tabMovementsData 
+ * @param {*} tabItemsData
+ */
+ function addMissingItems(docInfo,tabMovementsData,tabItemsData){
+
+    var jsonDoc=initJsonDoc();
+    var rows=[];
+    var userParam="";
+    var rowNr=""; //row after which to insert the new item.
+
+    for(var mrow in tabMovementsData){
+        let currItem=tabMovementsData[mrow].itemId;
+        let isPresent=false;
+        for(var irow in tabItemsData){
+            let exItem=tabItemsData[irow].item;
+            if(currItem==exItem)
+                isPresent=true;
+        }
+        if(!isPresent){
+            //FARE INSERIRE ALL UTENTE DEI VALORI A MANO (gruppo ecc) 
+            //recuperare la riga dell ultimo elemento con quel gruppo ed inserire il nuovo item
+            //alla riga dopo
+            dialogExec(tabMovementsData[mrow]);
+            userParam=readDialogParams();
+            rowNr=getItemRowNr(userParam.itemGroupComboBox,tabItemsData);
+            rows.push(addMissingItem_createDocChange(docInfo,userParam,tabMovementsData[mrow],rowNr));
+        } 
+    }
+
+    var dataUnitFilePorperties = {};
+    dataUnitFilePorperties.nameXml = "Items";
+    dataUnitFilePorperties.data = {};
+    dataUnitFilePorperties.data.rowLists = [];
+    dataUnitFilePorperties.data.rowLists.push({ "rows": rows });
+
+    jsonDoc.document.dataUnits.push(dataUnitFilePorperties);
+
+    return jsonDoc;
+}
+
+/**
+ * Creates a new row for the items table
+ * @param {*} movRow 
+ */
+function addMissingItem_createDocChange(docInfo,userParam,movRow,rowNr){
+
+    var row={};
+
+    row.fields={};
+    row.fields.ItemsId=movRow.itemId;
+    row.fields.Description=movRow.description;
+    row.fields.Gr=userParam.itemGroupComboBox;
+    row.fields.Account=userParam.itemAccount;
+    //columns to add only if its a multicurrency accounting
+    if(docInfo.isMultiCurrency){ 
+        row.fields.Currency=movRow.currency;
+    }
+
+    row.operation={};
+    row.operation.name="add";
+    row.operation.sequence=rowNr;
+
+    return row;
+
+}
+
+/**
+ * returns the line number following the last item found whose group is the same as that of the new item
+ * @param {*} refGroup reference group.
+ * @param {*} tabItemsData 
+ */
+function getItemRowNr(refGroup,tabItemsData){
+    var refNr="";
+    for(var r in tabItemsData){
+        tRow=tabItemsData[r];
+        if(refGroup==tRow.group){
+            refNr=tRow.rowNr;
+        }
+    }
+    // format the number so that it is added after the line I have taken as a reference.--> if row = 6 became 6.6
+    if(refNr){
+        refNr=Banana.SDecimal.subtract(refNr,"1");
+        refNr=refNr+"."+refNr;
+    }
+    return refNr;
+}
+
+/**
+ * Questa funzione recupera le righe dalla tabella movimenti e li inserisce in un oggetto.
+ */
+function getTabImportsData(banDoc){
+    var tabMovementsData=[];
+    let table = banDoc.table("Imports");
+    if (!table) {
+        return tabMovementsData;
+    }
+    for (var i = 0; i < table.rowCount; i++) {
+        var tRow = table.row(i);
+        var row={};
+        row.rowNr=tRow.rowNr;
+        row.rowId=tRow.value("RowId");
+        row.date = tRow.value("Date");
+        row.itemId=tRow.value("ItemId");
+        row.netAmount=tRow.value("NetAmount");
+        row.quantity=tRow.value("Quantity");
+        row.price=tRow.value("Price");
+        row.bankCharges=tRow.value("BankCharges");
+        row.interest=tRow.value("Interest");
+        row.bankAccount=tRow.value("BankAccount");
+        row.description=tRow.value("Description");
+        row.currency=tRow.value("Currency");
+        row.exchangeRate=tRow.value("ExchangeRate");
+        row.type=tRow.value("Type");
+        row.processed=tRow.value("Processed");
+
+        //...
+
+        if (row && row.itemId)
+            tabMovementsData.push(row);
+    }
+
+    return tabMovementsData;
+
+}
+
+/**
+ * Takes the account number assigned by the bank  as a parameter and finds.
+ * the corresponding accounting account in the chart of accounts
+ */
+function getAccountingAccount(banDoc,docInfo,accountNr){
+    var accData=getAccountsTableData(banDoc,docInfo);
+
+    for(var r in accData){
+        var accRow=accData[r];
+        if(accRow.bankAccount==accountNr){
+            return accRow.account;
+        }
+    }
+}
+/**
+ * Setta il conto bancario passato come parametro, al conto del piano dei conti passato come parametro.
+ */
+function setBankAccountNr(){
+
 }
