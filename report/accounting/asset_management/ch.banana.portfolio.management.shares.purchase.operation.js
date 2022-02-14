@@ -35,175 +35,157 @@
  * 
  */
 
-var SharesPurchaseOperation=class SharesPurchaseOperation{
+//Main function
+function exec() {
 
+    var banDoc=Banana.document;
+    var tabMovementsData=getTabImportsData(banDoc);
+    var docInfo=getDocumentInfo(banDoc);
+    var tabItemsData=getItemsTableData(docInfo);
+    var jsonDoc = { "format": "documentChange", "error": "","data":[] };
+    var purchMovList=getValuesFromMovData(tabMovementsData,"Acquisto"); //filtro la lista estrapolando solamente le operazioni di acquisto.
 
-    constructor(banDoc,tabMovementsData,tabItemsData,docInfo){
-        this.banDoc=banDoc;
-        this.tabMovementsData=tabMovementsData;
-        this.tabItemsData=tabItemsData;
-        this.docInfo=docInfo;
+    if(purchMovList && banDoc)
 
-    }
-    //Main function
-    getDocumentChange() {
+        /*check that each item referred to in the table with the imported movements exists in the items table, 
+        if not I will add it.
+        */
+        jsonDoc["data"].push(addMissingItems(docInfo,tabMovementsData,tabItemsData));
+        //add the transactions
+        jsonDoc["data"].push(createSharesPurchaseOperations(purchMovList,tabItemsData,docInfo,banDoc));
 
-        var banDoc=this.banDoc;
-        var docInfo=this.docInfo;
-        var jsonDoc={};
-        var tabItemsData=this.tabItemsData;
-        var tabMovementsData=this.tabMovementsData;
-        var purchMovList=getValuesFromMovData(tabMovementsData,"Acquisto"); //filtro la lista estrapolando solamente le operazioni di acquisto 
+    return jsonDoc;
 
-        if(purchMovList && banDoc)
-            jsonDoc=this.createSharesPurchaseOperations(purchMovList,tabItemsData,docInfo);
+}
 
-        return jsonDoc;
+function createSharesPurchaseOperations(movList,tabItemsData,docInfo,banDoc){
+    var jsonDoc = initJsonDoc();
+    var amountColumn=getAmountColumn(docInfo);
+    var rows=[];
+    var movRow="";
 
-    }
+    for(var e in movList){
+        movRow=movList[e];
 
-     createSharesPurchaseOperations(movList,tabItemsData,docInfo){
-        var jsonDoc = this.initJsonDoc();
-        var amountColumn=getAmountColumn(docInfo);
-        var rows=[];
+        if(!movRow.processed){//RIPRENDERE DA QUIIII
+            var itemBankAcc=getAccountingAccount(banDoc,docInfo,movRow.bankAccount);
 
-        for(var e in movList){
-
-            rows.push(this.createBondsSalesOpDocChange_sharePurchase_share(docInfo,tabItemsData,movList[e]));
-            rows.push(this.createBondsSalesOpDocChange_bankCharges(docInfo,movList[e],amountColumn));
-            rows.push(this.createBondsSalesOpDocChange_sharePurchase_bank(docInfo,movList[e],amountColumn));
-
-            
-            var dataUnitFilePorperties = {};
-            dataUnitFilePorperties.nameXml = "Transactions";
-            dataUnitFilePorperties.data = {};
-            dataUnitFilePorperties.data.rowLists = [];
-            dataUnitFilePorperties.data.rowLists.push({ "rows": rows });
-
+            rows.push(createBondsSalesOpDocChange_sharePurchase_share(docInfo,tabItemsData,movRow));
+            rows.push(createBondsSalesOpDocChange_bankCharges(docInfo,movRow,amountColumn));
+            rows.push(createBondsSalesOpDocChange_sharePurchase_bank(docInfo,movRow,amountColumn,itemBankAcc));
         }
 
-        jsonDoc.document.dataUnits.push(dataUnitFilePorperties);
-
-        return jsonDoc;
     }
 
-    createBondsSalesOpDocChange_sharePurchase_share(docInfo,tabItemsData,movRow){
+    var dataUnitFilePorperties = {};
+    dataUnitFilePorperties.nameXml = "Transactions";
+    dataUnitFilePorperties.data = {};
+    dataUnitFilePorperties.data.rowLists = [];
+    dataUnitFilePorperties.data.rowLists.push({ "rows": rows });
 
-        var opDate=movRow.date;
-        var opItem=movRow.itemId;
-        var opDescription="Shares "+movRow.description;
-        var opAccountDebit=getItemValue(tabItemsData,opItem,"account");
-        var opQuantity=movRow.quantity;
-        var opPrice=movRow.price;
-        var opCurrency=movRow.currency;
-        var opRate=movRow.exchangeRate;
+    jsonDoc.document.dataUnits.push(dataUnitFilePorperties);
 
-        var row={};
-
-        row.fields={};
-        row.fields.Date=opDate;
-        row.fields.ItemsId=opItem;
-        row.fields.Description=opDescription;
-        row.fields.AccountDebit=opAccountDebit;
-        row.fields.Quantity=opQuantity;
-        row.fields.UnitPrice=opPrice;
-        //columns to add only if its a multicurrency accounting
-        if(docInfo.isMultiCurrency){ 
-            row.fields.ExchangeCurrency=opCurrency;
-            row.fields.ExchangeRate=opRate;
-        }
-
-        row.operation={};
-        row.operation.name="add";
+    Banana.Ui.showText(JSON.stringify(jsonDoc));
 
 
-        return row;
+
+    return jsonDoc;
+}
+
+function createBondsSalesOpDocChange_sharePurchase_share(docInfo,tabItemsData,movRow){
+
+    var opDate=movRow.date;
+    var opItem=movRow.itemId;
+    var opDescription="Shares "+movRow.description;
+    var opAccountDebit=getItemValue(tabItemsData,opItem,"account");
+    var opQuantity=movRow.quantity;
+    var opPrice=movRow.price;
+    var opCurrency=movRow.currency;
+    var opRate=movRow.exchangeRate;
+
+    var row={};
+
+    row.fields={};
+    row.fields.Date=opDate;
+    row.fields.ItemsId=opItem;
+    row.fields.Description=opDescription;
+    row.fields.AccountDebit=opAccountDebit;
+    row.fields.Quantity=opQuantity;
+    row.fields.UnitPrice=opPrice;
+    //columns to add only if its a multicurrency accounting
+    if(docInfo.isMultiCurrency){ 
+        row.fields.ExchangeCurrency=opCurrency;
+        row.fields.ExchangeRate=opRate;
     }
 
-    createBondsSalesOpDocChange_bankCharges(docInfo,movRow,amountColumn){
+    row.operation={};
+    row.operation.name="add";
 
-        var opDate=movRow.date;
-        var opDescription=movRow.description+" Bank charges";
-        var opAccountDebit="6900"; //DA CAMBIARE
-        var opAmount=movRow.bankCharges;
-        var opCurrency=movRow.currency;
-        var opRate=movRow.exchangeRate;
 
-        var row={};
+    return row;
+}
 
-        row.fields={};
-        row.fields.Date=opDate;
-        row.fields.Description=opDescription;
-        row.fields.AccountDebit=opAccountDebit;
-        //columns to add only if its a multicurrency accounting
-        if(docInfo.isMultiCurrency){ 
-            row.fields.ExchangeCurrency=opCurrency;
-            row.fields.ExchangeRate=opRate;
-        }
-        row.fields[amountColumn]=opAmount;
-        row.operation={};
-        row.operation.name="add";
+function createBondsSalesOpDocChange_bankCharges(docInfo,movRow,amountColumn){
 
-        return row;
+    var opDate=movRow.date;
+    var opDescription=movRow.description+" Bank charges";
+    var opAccountDebit="6900"; //DA CAMBIARE
+    var opAmount=movRow.bankCharges;
+    var opCurrency=movRow.currency;
+    var opRate=movRow.exchangeRate;
+
+    var row={};
+
+    row.fields={};
+    row.fields.Date=opDate;
+    row.fields.Description=opDescription;
+    row.fields.AccountDebit=opAccountDebit;
+    //columns to add only if its a multicurrency accounting
+    if(docInfo.isMultiCurrency){ 
+        row.fields.ExchangeCurrency=opCurrency;
+        row.fields.ExchangeRate=opRate;
     }
+    row.fields[amountColumn]=opAmount;
+    row.operation={};
+    row.operation.name="add";
+
+    return row;
+}
 
 
-    /**
-     * Creates the record of the accrued interest
-     * @param {*} jsonDoc 
-     * @param {*} currentSelectionBottom 
-     * @param {*} saleParam 
-     * @param {*} accParam 
-     * @returns 
-     */
-     createBondsSalesOpDocChange_sharePurchase_bank(docInfo,movRow,amountColumn){
+/**
+ * Creates the record of the accrued interest
+ * @param {*} jsonDoc 
+ * @param {*} currentSelectionBottom 
+ * @param {*} saleParam 
+ * @param {*} accParam 
+ * @returns 
+ */
+function createBondsSalesOpDocChange_sharePurchase_bank(docInfo,movRow,amountColumn,itemBankAcc){
 
-        var opDate=movRow.date;
-        var opDescription="Purchase Shares "+movRow.description;
-        var opAccountCredit=movRow.bankAccount;
-        var opAmount=Banana.SDecimal.add(movRow.netAmount,movRow.bankCharges);//Net amount+bank charges.
-        var opCurrency=movRow.currency;
-        var opRate=movRow.exchangeRate;
+    var opDate=movRow.date;
+    var opDescription="Purchase Shares "+movRow.description;
+    var opAccountCredit=itemBankAcc;
+    var opAmount=Banana.SDecimal.add(movRow.netAmount,movRow.bankCharges);//Net amount+bank charges.
+    var opCurrency=movRow.currency;
+    var opRate=movRow.exchangeRate;
 
-        var row={};
+    var row={};
 
-        row.fields={};
-        row.fields.Date=opDate;
-        row.fields.Description=opDescription;
-        row.fields.AccountCredit=opAccountCredit;
-        //columns to add only if its a multicurrency accounting
-        if(docInfo.isMultiCurrency){ 
-            row.fields.ExchangeCurrency=opCurrency;
-            row.fields.ExchangeRate=opRate;
-        }
-        row.fields[amountColumn]=opAmount;
-        row.operation={};
-        row.operation.name="add";
-
-
-        return row;
+    row.fields={};
+    row.fields.Date=opDate;
+    row.fields.Description=opDescription;
+    row.fields.AccountCredit=opAccountCredit;
+    //columns to add only if its a multicurrency accounting
+    if(docInfo.isMultiCurrency){ 
+        row.fields.ExchangeCurrency=opCurrency;
+        row.fields.ExchangeRate=opRate;
     }
+    row.fields[amountColumn]=opAmount;
+    row.operation={};
+    row.operation.name="add";
 
-    /**
-     * Initialise the Json document
-     * @returns 
-     */
-    initJsonDoc() {
-        var jsonDoc = {};
-        jsonDoc.document = {};
-        jsonDoc.document.dataUnitsfileVersion = "1.0.0";
-        jsonDoc.document.id="Purchases";
-        jsonDoc.document.dataUnits = [];
 
-        jsonDoc.creator = {};
-        var d = new Date();
-        var datestring = d.getFullYear() + ("0" + (d.getMonth() + 1)).slice(-2) + ("0" + d.getDate()).slice(-2);
-        var timestring = ("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2);
-        jsonDoc.creator.executionDate = Banana.Converter.toInternalDateFormat(datestring, "yyyymmdd");
-        jsonDoc.creator.name = Banana.script.getParamValue('id');
-        jsonDoc.creator.version = "1.0";
-
-        return jsonDoc;
-    }
+    return row;
 }
         

@@ -37,27 +37,23 @@
  * 
  */
 
- var SharesSaleOperation=class SharesSalesOperation{
+    function exec() {
 
-    constructor(banDoc,tabMovementsData,tabItemsData,docInfo){
-        this.banDoc=banDoc;
-        this.tabMovementsData=tabMovementsData;
-        this.tabItemsData=tabItemsData;
-        this.docInfo=docInfo;
-    }
-
-    getDocumentChange() {
-
-        var banDoc=this.banDoc;
-        var docInfo=this.docInfo;
-        var jsonDoc={};
-        var tabItemsData=this.tabItemsData;
-        var tabMovementsData=this.tabMovementsData;
+        var banDoc=Banana.document;
+        var tabMovementsData=getTabImportsData(banDoc);
+        var docInfo=getDocumentInfo(banDoc);
+        var tabItemsData=getItemsTableData(docInfo);
+        var jsonDoc = { "format": "documentChange", "error": "","data":[] };
         var saleMovList=getValuesFromMovData(tabMovementsData,"Vendita"); //filtro la lista estrapolando solamente le operazioni di vendita 
 
         if(saleMovList && banDoc){
-            //Creates the document change for the sale of shares
-            jsonDoc = this.createSharesSaleOperations(saleMovList,tabItemsData,docInfo,banDoc);
+
+            /*check that each item referred to in the table with the imported movements exists in the items table, 
+            if not I will add it.*/
+            jsonDoc["data"].push(addMissingItems(docInfo,tabMovementsData,tabItemsData));
+
+            //Add the transactions
+            jsonDoc["data"].push(createSharesSaleOperations(saleMovList,tabItemsData,docInfo,banDoc));
         
             return jsonDoc;
 
@@ -75,36 +71,38 @@
      * @param {*} userParam parameters defined by the user
      * @returns returns the Json document
      */
-     createSharesSaleOperations(movList,tabItemsData,docInfo,banDoc){
+     function createSharesSaleOperations(movList,tabItemsData,docInfo,banDoc){
 
-        var jsonDoc = this.initJsonDoc();
+        var jsonDoc = initJsonDoc();
         var amountColumn=getAmountColumn(docInfo);
         var transList=getTransactionsTableData(banDoc,docInfo);
         var rows=[];
 
-        //creates the operation for each (sale) movement in the import movements table
+        //creates the operation for each (sale) movement in the import movements table.
         for(var e in movList){
 
+            movRow=movList[e];
             var sharesData="";
             var avgCost="";
             var accountingCourse="";
 
-            accountingCourse=getAccountingCourse(movList[e].itemId,tabItemsData,banDoc);// da vedere se filtrare con la data
-            avgCost=getAverageCost(movList[e].itemId,transList);//ok
-            sharesData=calculateShareSaleData(avgCost,movList[e],accountingCourse);//ok
+            accountingCourse=getAccountingCourse(movRow.itemId,tabItemsData,banDoc);// da vedere se filtrare con la data
+            avgCost=getAverageCost(movRow.itemId,transList);//ok
+            sharesData=calculateShareSaleData(avgCost,movRow,accountingCourse);//ok
             
             var amountColumn=getAmountColumn(docInfo);
-            var itemAccount=getItemValue(tabItemsData,movList[e].itemId,"account");
+            var itemAccount=getItemValue(tabItemsData,movRow.itemId,"account");
             var accExchRes=getAccountsForExchangeResult(banDoc,docInfo);
+            var itemBankAcc=getAccountingAccount(banDoc,docInfo,movRow.bankAccount);
             //Banana.console.debug(itemDescr);
 
-            rows.push(this.createSharesSalesOpDocChange_sharesSale_bank(movList[e],amountColumn,docInfo));
-            rows.push(this.createSharesSalesOpDocChange_shares(movList[e],sharesData,docInfo));
-            rows.push(this.createSharesSalesOpDocChange_bankCharges(movList[e],amountColumn,docInfo));
-            rows.push(this.createSharesSalesOpDocChange_profitOrLoss_sale(movList[e],sharesData,amountColumn,docInfo));
-            rows.push(this.createSharesSalesOpDocChange_sharesSale_share(movList[e],sharesData,itemAccount,amountColumn,docInfo));
-            if(movList[e].currency!=docInfo.baseCurrency)
-                rows.push(this.createSharesSalesOpDocChange_profitOrLoss_exchange(movList[e],sharesData,itemAccount,docInfo,accExchRes));
+            rows.push(createSharesSalesOpDocChange_sharesSale_bank(movRow,amountColumn,docInfo,itemBankAcc));
+            rows.push(createSharesSalesOpDocChange_shares(movRow,sharesData,docInfo));
+            rows.push(createSharesSalesOpDocChange_bankCharges(movRow,amountColumn,docInfo));
+            rows.push(createSharesSalesOpDocChange_profitOrLoss_sale(movRow,sharesData,amountColumn,docInfo));
+            rows.push(createSharesSalesOpDocChange_sharesSale_share(movRow,sharesData,itemAccount,amountColumn,docInfo));
+            if(movRow.currency!=docInfo.baseCurrency)
+                rows.push(createSharesSalesOpDocChange_profitOrLoss_exchange(movRow,sharesData,itemAccount,docInfo,accExchRes));
         }
 
         
@@ -119,11 +117,11 @@
         return jsonDoc;
     }
 
-    createSharesSalesOpDocChange_sharesSale_bank(movRow,amountColumn,docInfo){
+    function createSharesSalesOpDocChange_sharesSale_bank(movRow,amountColumn,docInfo,itemBankAcc){
 
-        var opAccount=movRow.account;
+        var opAccount=itemBankAcc;
         var opDate=movRow.date;
-        var opAmount=movRow.netAmount
+        var opAmount=movRow.netAmount;
         var opRate=movRow.exchangeRate;
         var opCurrency=movRow.currency;
         var opDescription="Shares "+movRow.description;
@@ -147,7 +145,7 @@
         return row;
     }
 
-    createSharesSalesOpDocChange_shares(movRow,sharesData,docInfo){
+    function createSharesSalesOpDocChange_shares(movRow,sharesData,docInfo){
 
         var opDate=movRow.date; 
         var opItem=movRow.itemId;
@@ -179,7 +177,7 @@
         return row;;
     }
 
-    createSharesSalesOpDocChange_bankCharges(movRow,amountColumn,docInfo){
+    function createSharesSalesOpDocChange_bankCharges(movRow,amountColumn,docInfo){
 
         var opDescription=movRow.description+" Bank charges";
         var opDate=movRow.date;
@@ -207,7 +205,7 @@
         return row;
     }
 
-    createSharesSalesOpDocChange_profitOrLoss_sale(movRow,sharesData,amountColumn,docInfo){
+    function createSharesSalesOpDocChange_profitOrLoss_sale(movRow,sharesData,amountColumn,docInfo){
 
         // set the description based on the result
         var opProfitOnSale=sharesData.profitOnSale;
@@ -244,7 +242,7 @@
 
     }
 
-    createSharesSalesOpDocChange_sharesSale_share(movRow,sharesData,itemAccount,amountColumn,docInfo){
+    function createSharesSalesOpDocChange_sharesSale_share(movRow,sharesData,itemAccount,amountColumn,docInfo){
 
         var opAccount=itemAccount;
         var opDate=movRow.date;
@@ -272,8 +270,8 @@
         return row;
     }
 
-    createSharesSalesOpDocChange_profitOrLoss_exchange(movRow,sharesData,itemAccount,docInfo,accExchRes){
-            // set the description based on the result
+    function createSharesSalesOpDocChange_profitOrLoss_exchange(movRow,sharesData,itemAccount,docInfo,accExchRes){
+            // set the description based on the result.
             var opProfitOnExchange=sharesData.profitOnExchange;
             var resultDescription=setOperationResultDecription(opProfitOnExchange,"exchange");
             var opDescription="Sale "+movRow.description+" "+resultDescription;
@@ -303,26 +301,4 @@
         
             return row;
     }
-
-    /**
-     * Initialise the Json document
-     * @returns 
-     */
-    initJsonDoc() {
-        var jsonDoc = {};
-        jsonDoc.document = {};
-        jsonDoc.document.dataUnitsfileVersion = "1.0.0";
-        jsonDoc.document.dataUnits = [];
-
-        jsonDoc.creator = {};
-        var d = new Date();
-        var datestring = d.getFullYear() + ("0" + (d.getMonth() + 1)).slice(-2) + ("0" + d.getDate()).slice(-2);
-        var timestring = ("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2);
-        jsonDoc.creator.executionDate = Banana.Converter.toInternalDateFormat(datestring, "yyyymmdd");
-        jsonDoc.creator.name = Banana.script.getParamValue('id');
-        jsonDoc.creator.version = "1.0";
-
-        return jsonDoc;
-    }
- }
     
