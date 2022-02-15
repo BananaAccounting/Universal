@@ -121,6 +121,7 @@
 
         var opAccount=itemBankAcc;
         var opDate=movRow.date;
+        var opExtRef=movRow.rowId;
         var opAmount=movRow.netAmount;
         var opRate=movRow.exchangeRate;
         var opCurrency=movRow.currency;
@@ -130,6 +131,7 @@
 
         row.fields={};
         row.fields.Date=opDate;
+        row.fields.ExternalReference=opExtRef;
         row.fields.Description=opDescription;
         row.fields.AccountDebit=opAccount;
 
@@ -148,6 +150,7 @@
     function createSharesSalesOpDocChange_shares(movRow,sharesData,docInfo){
 
         var opDate=movRow.date; 
+        var opExtRef=movRow.rowId;
         var opItem=movRow.itemId;
         var opQuantity=movRow.quantity;
         var opPrice=sharesData.PricePerShare;
@@ -159,6 +162,7 @@
 
         row.fields={};
         row.fields.Date=opDate;
+        row.fields.ExternalReference=opExtRef;
         row.fields.ItemsId=opItem;
         row.fields.Description=opDescription;
         row.fields.Quantity="-"+opQuantity;
@@ -181,6 +185,7 @@
 
         var opDescription=movRow.description+" Bank charges";
         var opDate=movRow.date;
+        var opExtRef=movRow.rowId;
         var opRate=movRow.exchangeRate;
         var opAccount="6900";
         var opCurrency=movRow.currency;
@@ -190,6 +195,7 @@
 
         row.fields={};
         row.fields.Date=opDate;
+        row.fields.ExternalReference=opExtRef;
         row.fields.Description=opDescription;
         row.fields.AccountDebit=opAccount;
         row.fields[amountColumn]=opAmount;
@@ -215,6 +221,7 @@
         var opAccount=getAccountForResult(opProfitOnSale);
         var opRate=movRow.exchangeRate;
         var opDate=movRow.date;
+        var opExtRef=movRow.rowId;
         var opCurrency=movRow.currency;
         var opAmount=sharesData.saleResult;
 
@@ -222,6 +229,7 @@
 
         row.fields={};
         row.fields.Date=opDate;
+        row.fields.ExternalReference=opExtRef;
         row.fields.Description=opDescription;
         if(opProfitOnSale)
             row.fields.AccountCredit=opAccount;
@@ -246,6 +254,7 @@
 
         var opAccount=itemAccount;
         var opDate=movRow.date;
+        var opExtRef=movRow.rowId;
         var opAmount=sharesData.avgShareValue;
         var opRate=movRow.exchangeRate;
         var opCurrency=movRow.currency;
@@ -255,6 +264,7 @@
 
         row.fields={};
         row.fields.Date=opDate;
+        row.fields.ExternalReference=opExtRef;
         row.fields.Description=opDescription;
         row.fields.AccountCredit=opAccount;
 
@@ -280,12 +290,14 @@
             var opCreditAccount=sharesData.profitOnExchange? accExchRes.profit:itemAccount;
             var opCurrency=docInfo.baseCurrency;//this entry is always made in base currency
             var opDate=movRow.date;
+            var opExtRef=movRow.rowId;
             var opAmount=sharesData.exchangeResult;
         
             var row={};
         
             row.fields={};
             row.fields.Date=opDate;
+            row.fields.ExternalReference=opExtRef;
             row.fields.Description=opDescription;
             row.fields.AccountDebit=opDebitAccount;
             row.fields.AccountCredit=opCreditAccount;
