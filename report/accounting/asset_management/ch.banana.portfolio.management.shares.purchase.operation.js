@@ -42,19 +42,48 @@ function exec() {
     var tabMovementsData=getTabImportsData(banDoc);
     var docInfo=getDocumentInfo(banDoc);
     var tabItemsData=getItemsTableData(docInfo);
+    var docChange_newItems={};
+    var docChange_newTransactions={};
+    var docChange_procMovements={};
     var jsonDoc = { "format": "documentChange", "error": "","data":[] };
     var purchMovList=getValuesFromMovData(tabMovementsData,"Acquisto"); //filtro la lista estrapolando solamente le operazioni di acquisto.
 
-    if(purchMovList && banDoc)
-
+    if(purchMovList && banDoc){
         /*check that each item referred to in the table with the imported movements exists in the items table, 
-        if not I will add it.
-        */
-        jsonDoc["data"].push(addMissingItems(docInfo,tabMovementsData,tabItemsData));
+        if not I will add it. Actually checks always all the rows, not oly the not processed ones*/
+        docChange_newItems=addMissingItems(docInfo,tabMovementsData,tabItemsData);
         //add the transactions
-        jsonDoc["data"].push(createSharesPurchaseOperations(purchMovList,tabItemsData,docInfo,banDoc));
+        docChange_newTransactions=createSharesPurchaseOperations(purchMovList,tabItemsData,docInfo,banDoc);
+        //Update the imports table movements status
+        docChange_procMovements=updateImportRowStatus(docChange_newTransactions);
+
+        //push the three documents
+        jsonDoc["data"].push(docChange_newItems);
+        jsonDoc["data"].push(docChange_newTransactions);
+        jsonDoc["data"].push(docChange_procMovements);
+    }
 
     return jsonDoc;
+
+}
+
+function updateImportRowStatus(docChange_newTransactions){
+    // salvo in un set di dati tutti gli id dei movimenti processati, passando le registrazioni create.
+    if(docChange_newTransactions){
+        const idProcMovList= new Set(); //salverà la lista degli id dei movimenti processati.
+        var rows=docChange_newTransactions.document.dataUnits[0].data.rowLists[0];
+
+        for (var r in rows){
+            Banana.Ui.showText(JSON.stringify(rows[r].ExternalReference));
+            var fields=rows[r].fields;
+            idProcMovList.add(fields.ExternalReference);
+        }
+    }
+
+    var jsonDoc = initJsonDoc();
+    var amountColumn=getAmountColumn(docInfo);
+    var rows=[];
+
 
 }
 
@@ -67,9 +96,8 @@ function createSharesPurchaseOperations(movList,tabItemsData,docInfo,banDoc){
     for(var e in movList){
         movRow=movList[e];
 
-        if(!movRow.processed){//RIPRENDERE DA QUIIII
+        if(!movRow.processed){
             var itemBankAcc=getAccountingAccount(banDoc,docInfo,movRow.bankAccount);
-
             rows.push(createBondsSalesOpDocChange_sharePurchase_share(docInfo,tabItemsData,movRow));
             rows.push(createBondsSalesOpDocChange_bankCharges(docInfo,movRow,amountColumn));
             rows.push(createBondsSalesOpDocChange_sharePurchase_bank(docInfo,movRow,amountColumn,itemBankAcc));
@@ -85,8 +113,6 @@ function createSharesPurchaseOperations(movList,tabItemsData,docInfo,banDoc){
 
     jsonDoc.document.dataUnits.push(dataUnitFilePorperties);
 
-    Banana.Ui.showText(JSON.stringify(jsonDoc));
-
 
 
     return jsonDoc;
@@ -95,6 +121,7 @@ function createSharesPurchaseOperations(movList,tabItemsData,docInfo,banDoc){
 function createBondsSalesOpDocChange_sharePurchase_share(docInfo,tabItemsData,movRow){
 
     var opDate=movRow.date;
+    var opExtRef=movRow.rowId;
     var opItem=movRow.itemId;
     var opDescription="Shares "+movRow.description;
     var opAccountDebit=getItemValue(tabItemsData,opItem,"account");
@@ -106,6 +133,7 @@ function createBondsSalesOpDocChange_sharePurchase_share(docInfo,tabItemsData,mo
     var row={};
 
     row.fields={};
+    row.fields.ExternalReference=opExtRef;
     row.fields.Date=opDate;
     row.fields.ItemsId=opItem;
     row.fields.Description=opDescription;
@@ -128,6 +156,7 @@ function createBondsSalesOpDocChange_sharePurchase_share(docInfo,tabItemsData,mo
 function createBondsSalesOpDocChange_bankCharges(docInfo,movRow,amountColumn){
 
     var opDate=movRow.date;
+    var opExtRef=movRow.rowId;
     var opDescription=movRow.description+" Bank charges";
     var opAccountDebit="6900"; //DA CAMBIARE
     var opAmount=movRow.bankCharges;
@@ -138,6 +167,7 @@ function createBondsSalesOpDocChange_bankCharges(docInfo,movRow,amountColumn){
 
     row.fields={};
     row.fields.Date=opDate;
+    row.fields.ExternalReference=opExtRef;
     row.fields.Description=opDescription;
     row.fields.AccountDebit=opAccountDebit;
     //columns to add only if its a multicurrency accounting
@@ -164,6 +194,7 @@ function createBondsSalesOpDocChange_bankCharges(docInfo,movRow,amountColumn){
 function createBondsSalesOpDocChange_sharePurchase_bank(docInfo,movRow,amountColumn,itemBankAcc){
 
     var opDate=movRow.date;
+    var opExtRef=movRow.rowId;
     var opDescription="Purchase Shares "+movRow.description;
     var opAccountCredit=itemBankAcc;
     var opAmount=Banana.SDecimal.add(movRow.netAmount,movRow.bankCharges);//Net amount+bank charges.
@@ -174,6 +205,7 @@ function createBondsSalesOpDocChange_sharePurchase_bank(docInfo,movRow,amountCol
 
     row.fields={};
     row.fields.Date=opDate;
+    row.fields.ExternalReference=opExtRef;
     row.fields.Description=opDescription;
     row.fields.AccountCredit=opAccountCredit;
     //columns to add only if its a multicurrency accounting
