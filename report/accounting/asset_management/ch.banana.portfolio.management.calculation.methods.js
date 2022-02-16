@@ -509,49 +509,28 @@ function getItemsTableData(docInfo){
     return itemsData;
 }
 
-function getValuesFromMovData(tabMovementsData,refColumn){
-    let purchMovList=[];
-
-    if(tabMovementsData){
-        for(var o in tabMovementsData ){
-            var type=tabMovementsData[o].type;
-            if(type.includes(refColumn))
-                purchMovList.push(tabMovementsData[o]);
-        }
-    }
-    
-    return purchMovList;
-}
-
 /**
  * Check if the items exists in the item table. All the item we want to record in the transactions table must be present in the items table
  *  If the item doesn't exists, we add the item and its data in the items table. the user should complete the info manually
- * @param {*} tabMovementsData 
+ * @param {*} tabImportsData 
  * @param {*} tabItemsData
  */
- function addMissingItems(docInfo,tabMovementsData,tabItemsData){
+ function addMissingItems(docInfo,tabImportsData,tabItemsData){
 
     var jsonDoc=initJsonDoc();
     var rows=[];
     var userParam="";
     var rowNr=""; //row after which to insert the new item.
+    var itemExist="";
 
-    for(var mrow in tabMovementsData){
-        let currItem=tabMovementsData[mrow].itemId;
-        let isPresent=false;
-        for(var irow in tabItemsData){
-            let exItem=tabItemsData[irow].item;
-            if(currItem==exItem)
-                isPresent=true;
-        }
-        if(!isPresent){
-            //FARE INSERIRE ALL UTENTE DEI VALORI A MANO (gruppo ecc) 
-            //recuperare la riga dell ultimo elemento con quel gruppo ed inserire il nuovo item
-            //alla riga dopo
-            dialogExec(tabMovementsData[mrow]);
+    for(var mrow in tabImportsData){
+        let currItem=tabImportsData[mrow].itemId;
+        itemExist=checkIfItemExists(currItem,tabItemsData);
+        if(!itemExist){
+            dialogExec(tabImportsData[mrow]);
             userParam=readDialogParams();
             rowNr=getItemRowNr(userParam.itemGroupComboBox,tabItemsData);
-            rows.push(addMissingItem_createDocChange(docInfo,userParam,tabMovementsData[mrow],rowNr));
+            rows.push(addMissingItem_createDocChange(docInfo,userParam,tabImportsData[mrow],rowNr));
         } 
     }
 
@@ -564,6 +543,21 @@ function getValuesFromMovData(tabMovementsData,refColumn){
     jsonDoc.document.dataUnits.push(dataUnitFilePorperties);
 
     return jsonDoc;
+}
+
+/**
+ * Check if the item exists in the items table.
+ * @param {*} currItem 
+ * @param {*} tabItemsData 
+ * @returns 
+ */
+function checkIfItemExists(currItem,tabItemsData){
+    for(var irow in tabItemsData){
+        let exItem=tabItemsData[irow].item;
+        if(currItem==exItem)
+            return true;
+    }
+    return false;
 }
 
 /**
@@ -617,10 +611,10 @@ function getItemRowNr(refGroup,tabItemsData){
  * Questa funzione recupera le righe dalla tabella movimenti e li inserisce in un oggetto.
  */
 function getTabImportsData(banDoc){
-    var tabMovementsData=[];
+    var tabImportsData=[];
     let table = banDoc.table("Imports");
     if (!table) {
-        return tabMovementsData;
+        return tabImportsData;
     }
     for (var i = 0; i < table.rowCount; i++) {
         var tRow = table.row(i);
@@ -644,10 +638,10 @@ function getTabImportsData(banDoc){
         //...
 
         if (row && row.itemId)
-            tabMovementsData.push(row);
+        tabImportsData.push(row);
     }
 
-    return tabMovementsData;
+    return tabImportsData;
 
 }
 
@@ -665,9 +659,89 @@ function getAccountingAccount(banDoc,docInfo,accountNr){
         }
     }
 }
-/**
- * Setta il conto bancario passato come parametro, al conto del piano dei conti passato come parametro.
- */
-function setBankAccountNr(){
 
+/*****************************************
+ * UPDATE ACCOUNT TABLE METHODS
+ ****************************************/
+function updateAccountNumbers(){
+ var jsonDoc=initJsonDoc();
+ var rows=[];
+ var userParam="";
+ var rowNr=""; //row after which to insert the new item.
+ var itemExist="";
+
+ var dataUnitFilePorperties = {};
+ dataUnitFilePorperties.nameXml = "Accounts";
+ dataUnitFilePorperties.data = {};
+ dataUnitFilePorperties.data.rowLists = [];
+ dataUnitFilePorperties.data.rowLists.push({ "rows": rows });
+
+ jsonDoc.document.dataUnits.push(dataUnitFilePorperties);
+
+ return jsonDoc;
 }
+
+
+/****************************************
+ * UPDATE ITEMS TABLE METHODS
+ ***************************************/
+
+/**
+ * @param {*} tabImportsData rows from imports table
+ * @param {*} refColumn purchase/sale
+ * @returns The list with the movements not yet processed for the specified type of operation
+ */
+ function getNPValuesFromMovData(tabImportsData,refColumn){
+    let purchMovList=[];
+
+    if(tabImportsData){
+        for(var o in tabImportsData ){
+            var type=tabImportsData[o].type;
+            var processed=tabImportsData[o].processed;
+            if(type.includes(refColumn) && processed==="")
+                purchMovList.push(tabImportsData[o]);
+        }
+    }
+    
+    return purchMovList;
+}
+
+ function updateImportRowStatus(movList){
+    var jsonDoc = initJsonDoc();
+    var currentDate=new Date();
+    var rows=[];
+ 
+     for(var e in movList){
+         movRow=movList[e];
+         //Updates all lines that have not yet been processed
+         rows.push(updateImportRowStatusDocChange(movRow.rowNr,currentDate));
+     } 
+ 
+    var dataUnitFilePorperties = {};
+    dataUnitFilePorperties.nameXml = "Imports";
+    dataUnitFilePorperties.data = {};
+    dataUnitFilePorperties.data.rowLists = [];
+    dataUnitFilePorperties.data.rowLists.push({ "rows": rows });
+ 
+    jsonDoc.document.dataUnits.push(dataUnitFilePorperties);
+ 
+    return jsonDoc;
+ 
+ }
+ 
+ function updateImportRowStatusDocChange(rowNr,currentDate){
+ 
+     var opDate=currentDate;
+     var opRowNr=rowNr.toString();
+ 
+     var row={};
+ 
+     row.fields={};
+     row.fields.Processed=opDate;
+     row.operation={};
+ 
+     row.operation.name="modify";
+     row.operation.sequence=opRowNr;
+ 
+     return row;
+ }

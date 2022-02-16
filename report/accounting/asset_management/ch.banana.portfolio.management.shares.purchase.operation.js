@@ -39,55 +39,40 @@
 function exec() {
 
     var banDoc=Banana.document;
-    var tabMovementsData=getTabImportsData(banDoc);
+    var tabImportsData=getTabImportsData(banDoc);
     var docInfo=getDocumentInfo(banDoc);
     var tabItemsData=getItemsTableData(docInfo);
     var docChange_newItems={};
+    var docChange_updateAccounts={};
     var docChange_newTransactions={};
-    var docChange_procMovements={};
+    var docChange_updateMovements={};
     var jsonDoc = { "format": "documentChange", "error": "","data":[] };
-    var purchMovList=getValuesFromMovData(tabMovementsData,"Acquisto"); //filtro la lista estrapolando solamente le operazioni di acquisto.
+    var purchMovList=getNPValuesFromMovData(tabImportsData,"Acquisto");
 
     if(purchMovList && banDoc){
         /*check that each item referred to in the table with the imported movements exists in the items table, 
-        if not I will add it. Actually checks always all the rows, not oly the not processed ones*/
-        docChange_newItems=addMissingItems(docInfo,tabMovementsData,tabItemsData);
+        if not I will add it*/
+        docChange_newItems=addMissingItems(docInfo,tabImportsData,tabItemsData);
+        //update the accounts table, actually only by mapping the bank number with the corrispondent bank account (in the chart of accounts).
+        //docChange_updateAccounts=updateAccountNumbers();
         //add the transactions
         docChange_newTransactions=createSharesPurchaseOperations(purchMovList,tabItemsData,docInfo,banDoc);
-        //Update the imports table movements status
-        docChange_procMovements=updateImportRowStatus(docChange_newTransactions);
+        //Update the imports table movements status, if the addition of lines was successful.
+        if(docChange_newTransactions)
+            docChange_updateMovements=updateImportRowStatus(purchMovList);
 
         //push the three documents
         jsonDoc["data"].push(docChange_newItems);
         jsonDoc["data"].push(docChange_newTransactions);
-        jsonDoc["data"].push(docChange_procMovements);
+        jsonDoc["data"].push(docChange_updateMovements);
     }
 
     return jsonDoc;
 
 }
 
-function updateImportRowStatus(docChange_newTransactions){
-    // salvo in un set di dati tutti gli id dei movimenti processati, passando le registrazioni create.
-    if(docChange_newTransactions){
-        const idProcMovList= new Set(); //salverà la lista degli id dei movimenti processati.
-        var rows=docChange_newTransactions.document.dataUnits[0].data.rowLists[0];
-
-        for (var r in rows){
-            Banana.Ui.showText(JSON.stringify(rows[r].ExternalReference));
-            var fields=rows[r].fields;
-            idProcMovList.add(fields.ExternalReference);
-        }
-    }
-
-    var jsonDoc = initJsonDoc();
-    var amountColumn=getAmountColumn(docInfo);
-    var rows=[];
-
-
-}
-
 function createSharesPurchaseOperations(movList,tabItemsData,docInfo,banDoc){
+
     var jsonDoc = initJsonDoc();
     var amountColumn=getAmountColumn(docInfo);
     var rows=[];
@@ -95,14 +80,10 @@ function createSharesPurchaseOperations(movList,tabItemsData,docInfo,banDoc){
 
     for(var e in movList){
         movRow=movList[e];
-
-        if(!movRow.processed){
-            var itemBankAcc=getAccountingAccount(banDoc,docInfo,movRow.bankAccount);
-            rows.push(createBondsSalesOpDocChange_sharePurchase_share(docInfo,tabItemsData,movRow));
-            rows.push(createBondsSalesOpDocChange_bankCharges(docInfo,movRow,amountColumn));
-            rows.push(createBondsSalesOpDocChange_sharePurchase_bank(docInfo,movRow,amountColumn,itemBankAcc));
-        }
-
+        var itemBankAcc=getAccountingAccount(banDoc,docInfo,movRow.bankAccount);
+        rows.push(createSharesPurchaseOpDocChange_sharePurchase_share(docInfo,tabItemsData,movRow));
+        rows.push(createSharesPurchaseOpDocChange_bankCharges(docInfo,movRow,amountColumn));
+        rows.push(createSharesPurchaseOpDocChange_sharePurchase_bank(docInfo,movRow,amountColumn,itemBankAcc));
     }
 
     var dataUnitFilePorperties = {};
@@ -118,7 +99,7 @@ function createSharesPurchaseOperations(movList,tabItemsData,docInfo,banDoc){
     return jsonDoc;
 }
 
-function createBondsSalesOpDocChange_sharePurchase_share(docInfo,tabItemsData,movRow){
+function createSharesPurchaseOpDocChange_sharePurchase_share(docInfo,tabItemsData,movRow){
 
     var opDate=movRow.date;
     var opExtRef=movRow.rowId;
@@ -153,7 +134,7 @@ function createBondsSalesOpDocChange_sharePurchase_share(docInfo,tabItemsData,mo
     return row;
 }
 
-function createBondsSalesOpDocChange_bankCharges(docInfo,movRow,amountColumn){
+function createSharesPurchaseOpDocChange_bankCharges(docInfo,movRow,amountColumn){
 
     var opDate=movRow.date;
     var opExtRef=movRow.rowId;
@@ -191,7 +172,7 @@ function createBondsSalesOpDocChange_bankCharges(docInfo,movRow,amountColumn){
  * @param {*} accParam 
  * @returns 
  */
-function createBondsSalesOpDocChange_sharePurchase_bank(docInfo,movRow,amountColumn,itemBankAcc){
+function createSharesPurchaseOpDocChange_sharePurchase_bank(docInfo,movRow,amountColumn,itemBankAcc){
 
     var opDate=movRow.date;
     var opExtRef=movRow.rowId;

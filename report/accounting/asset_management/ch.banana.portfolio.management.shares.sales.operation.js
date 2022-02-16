@@ -43,23 +43,25 @@
         var tabMovementsData=getTabImportsData(banDoc);
         var docInfo=getDocumentInfo(banDoc);
         var tabItemsData=getItemsTableData(docInfo);
+        var docChange_newTransactions={};
+        var docChange_procMovements={};
         var jsonDoc = { "format": "documentChange", "error": "","data":[] };
-        var saleMovList=getValuesFromMovData(tabMovementsData,"Vendita"); //filtro la lista estrapolando solamente le operazioni di vendita 
-
-        if(saleMovList && banDoc){
-
-            /*check that each item referred to in the table with the imported movements exists in the items table, 
-            if not I will add it.*/
-            jsonDoc["data"].push(addMissingItems(docInfo,tabMovementsData,tabItemsData));
-
-            //Add the transactions
-            jsonDoc["data"].push(createSharesSaleOperations(saleMovList,tabItemsData,docInfo,banDoc));
+        var saleMovList=getNPValuesFromMovData(tabMovementsData,"Vendita"); //filter the list by extracting only those purchase transactions that have not yet been processed.
         
-            return jsonDoc;
+        if(saleMovList && banDoc){
+            //add the transactions
+            docChange_newTransactions=createSharesSaleOperations(saleMovList,tabItemsData,docInfo,banDoc);
+            //Update the imports table movements status, if the addition of lines was successful.
+            if(docChange_newTransactions)
+                docChange_procMovements=updateImportRowStatus(saleMovList);
+    
+            //push the three documents
+            jsonDoc["data"].push(docChange_newTransactions);
+            jsonDoc["data"].push(docChange_procMovements);
 
-        }else{
-            return false;
         }
+
+        return jsonDoc
     }
 
     /**
@@ -86,15 +88,14 @@
             var avgCost="";
             var accountingCourse="";
 
-            accountingCourse=getAccountingCourse(movRow.itemId,tabItemsData,banDoc);// da vedere se filtrare con la data
-            avgCost=getAverageCost(movRow.itemId,transList);//ok
-            sharesData=calculateShareSaleData(avgCost,movRow,accountingCourse);//ok
+            accountingCourse=getAccountingCourse(movRow.itemId,tabItemsData,banDoc);
+            avgCost=getAverageCost(movRow.itemId,transList);
+            sharesData=calculateShareSaleData(avgCost,movRow,accountingCourse);
             
             var amountColumn=getAmountColumn(docInfo);
             var itemAccount=getItemValue(tabItemsData,movRow.itemId,"account");
             var accExchRes=getAccountsForExchangeResult(banDoc,docInfo);
             var itemBankAcc=getAccountingAccount(banDoc,docInfo,movRow.bankAccount);
-            //Banana.console.debug(itemDescr);
 
             rows.push(createSharesSalesOpDocChange_sharesSale_bank(movRow,amountColumn,docInfo,itemBankAcc));
             rows.push(createSharesSalesOpDocChange_shares(movRow,sharesData,docInfo));
