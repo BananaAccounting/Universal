@@ -663,23 +663,6 @@ function getAccountingAccount(banDoc,docInfo,accountNr){
 /*****************************************
  * UPDATE ACCOUNT TABLE METHODS
  ****************************************/
-function updateAccountNumbers(){
- var jsonDoc=initJsonDoc();
- var rows=[];
- var userParam="";
- var rowNr=""; //row after which to insert the new item.
- var itemExist="";
-
- var dataUnitFilePorperties = {};
- dataUnitFilePorperties.nameXml = "Accounts";
- dataUnitFilePorperties.data = {};
- dataUnitFilePorperties.data.rowLists = [];
- dataUnitFilePorperties.data.rowLists.push({ "rows": rows });
-
- jsonDoc.document.dataUnits.push(dataUnitFilePorperties);
-
- return jsonDoc;
-}
 
 
 /****************************************

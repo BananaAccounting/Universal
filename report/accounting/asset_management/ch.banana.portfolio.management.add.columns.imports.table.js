@@ -25,47 +25,118 @@
 // @timeout = -1
 // @includejs = ch.banana.portfolio.management.calculation.methods.js
 
+/**
+ * This extension creates the document change to add specific columns to the imports table. first the user has to create the table (tools-->Add/remove functionalities--> add simple table), then
+ * run the command.
+ * The columns that will be created are as follows: (XML names)
+ * -Date
+ * -ItemId
+ * -NetAmount
+ * -Price
+ * -Quantity
+ * -BankCharges
+ * -Interest
+ * -BankAccount
+ * -Exchange Rate
+ * -Currency
+ * -Type
+ * -Processed
+ */
 
+/**
+ * Create a list with the new columns XML names and its type
+ */
+function setNewColumnList(){
+    var columnsList={};
+
+    columnsList.Date="Date";
+    columnsList.ItemId="Text";
+    columnsList.NetAmount="Amount";
+    columnsList.Price="Amount";
+    columnsList.Quantity="Number";
+    columnsList.BankCharges="Amount";
+    columnsList.Interest="Amount";
+    columnsList.BankAccount="Text";
+    columnsList.ExchangeRate="Number";
+    columnsList.Currency="Text";
+    columnsList.Type="Text";
+    columnsList.Processed="Date/Time";
+
+    return columnsList;
+
+}
+
+function columsAlreadyExist(column,existingColumns){
+    for(var i=0;i<existingColumns.length;i++){
+        if(column==existingColumns[i])
+            return true;
+    }
+    return false;
+}
 function exec(){
 
     //I first check that the user has created the imports table, otherwise I will inform the user.
-    var banDoc=Banana.document.table("Imports");
-    if(!banDoc){
+    var banDoc=Banana.document;
+    if(banDoc){
+        var table=banDoc.table("Imports");
+    }
+    if(!table){
         showMessage();
         return false;
     }
 
     //Add columns
-    jsonDoc = { "format": "documentChange", "error": "" };
-    jsonDoc["data"].push(createColumnsDocChange);
+    var jsonDoc = { "format": "documentChange", "error": "","data":[] };
+    jsonDoc["data"].push(createColumns_DocChange(banDoc));
 
     return jsonDoc
 
-
 }
 
-function createColumnsDocChange(){
+function getColumnsList_DocChange(columnsList,banDoc){
+    let columns=[];
+    var table=banDoc.table("Imports");
+    var existingColumns=table.columnNames;
 
-    var jsonDoc=addColumns();
+    for(var key in columnsList){
+        let column={};
+        column.nameXml=key;
+        column.header1=key;
+        column.operation={};
+        column.operation.name="add";
+        column.definition={};
+        column.definition.type=columnsList[key];
+        if(!columsAlreadyExist(key,existingColumns)){
+            columns.push(column);
+        }
+    }
 
-    //columns
-    var columns=[];
+    return columns;
+}
 
-    //Column Processed
-    var column={};
-    column.operataion={};
-    column.operataion.name="add"
-    column.nameXml={};
-    column.header1={};
-    column={};
-    columns.push(column);
+function createColumns_DocChange(banDoc){
 
+    var jsonDoc=initJsonDoc();
+    var columnsList=setNewColumnList();
+
+    //get the columns
+    var columns=getColumnsList_DocChange(columnsList,banDoc);
 
     var dataUnits = {};
     dataUnits.nameXml = "Imports";
+    dataUnits.id = "Imports";
     dataUnits.data = {};
-    dataUnits.data.viewList = [];
-    dataUnits.data.viewList.push({ "columns": columns });
+    dataUnits.data.viewList = {};
+    dataUnits.data.viewList.views = [];
+    dataUnits.data.viewList.views.push({ "columns": columns });
+    dataUnits.data.viewList.views.push({ "id": "Base" });
+    dataUnits.data.viewList.views.push({ "NameXml": "Base"});
+    dataUnits.data.viewList.views.push({ "nid": "1"});
+
+
+    jsonDoc.document.dataUnits.push(dataUnits);
+
+    return jsonDoc
 
 }
 

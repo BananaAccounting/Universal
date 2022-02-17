@@ -53,8 +53,6 @@ function exec() {
         /*check that each item referred to in the table with the imported movements exists in the items table, 
         if not I will add it*/
         docChange_newItems=addMissingItems(docInfo,tabImportsData,tabItemsData);
-        //update the accounts table, actually only by mapping the bank number with the corrispondent bank account (in the chart of accounts).
-        //docChange_updateAccounts=updateAccountNumbers();
         //add the transactions
         docChange_newTransactions=createSharesPurchaseOperations(purchMovList,tabItemsData,docInfo,banDoc);
         //Update the imports table movements status, if the addition of lines was successful.
