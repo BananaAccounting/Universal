@@ -16,7 +16,6 @@
 // @api = 1.0
 // @pubdate = 2022-01-13
 // @publisher = Banana.ch SA
-// @includejs = ch.banana.portfolio.management.new.items.dialog.js
 
 /**
  * This script contains the methods used for calculating securities transactions.
@@ -32,7 +31,7 @@
  * Initialise the Json document
  * @returns 
  */
-    function initJsonDoc() {
+ function initJsonDoc() {
     var jsonDoc = {};
     jsonDoc.document = {};
     jsonDoc.document.dataUnitsfileVersion = "1.0.0";
@@ -47,6 +46,18 @@
     jsonDoc.creator.version = "1.0";
 
     return jsonDoc;
+}
+
+function getItemCurrency(itemData,item){
+    let itemcCurr="";
+
+    for(var e in itemData){  
+        if(itemData[e].item==item && itemData[e].currency!=""){
+            itemcCurr=itemData[e].currency;
+            return itemcCurr;
+        }
+    }
+
 }
 
 function getCurrentRowData(banDoc,transList){
@@ -185,54 +196,6 @@ function getQtOfSharesPurchased(item,transList){
 }
 
 /**
- * Trova il corso totale di un obbligazione.
- * il corso totale è il prezzo con qui l'abbiamo aquistata, e lo cerchiamo nella tabella registrazioni
- * Se della stessa obbligazione vengono trovati due acquisti, viene fatta la media tra gli importi.
- * @param {*} transList 
- */
- function getBondTotalCourse(transList,userParam){
-
-    let total="";
-    let result="";
-    let elementsNr=0;
-
-    for(var t in transList){
-        if(transList[t].item==userParam.selectedItem && transList[t].qt && Banana.SDecimal.sign(transList[t].qt)!=-1){ //cerco la riga di registrazione di acquisto dell'obbligazione, controllando che la quantità sia positiva.
-            total = Banana.SDecimal.add(total,transList[t].amount);
-            elementsNr++;
-        }
-    }
-    result = total / elementsNr;
-
-    return result;
-
-}
-
-/**
- * Bonds:
- * Trova il corso di acquisto, indicato nella colonna unitPrice al momento dell'acquisto del titolo.
- * Se sono stati effetuati più acquisti dello stesso titolo viene fatta la media tra i prezzi di acquisto
- * L'importo che ne risulterà viene inserito nella registra
- */
-function getPurchaseCourse(transList,item,currentSelectionTop){
-    var purCourse="";
-    var elements=0;
-
-    if(transList){
-        for (var i = 0; i < transList.length; i++) {
-            if(transList[i].item==item && transList[i].qt && Banana.SDecimal.sign(transList[i].qt)!=-1 && transList[i].row<=currentSelectionTop){
-                rowPurchase=transList[i].unitPrice;
-                purCourse=Banana.SDecimal.add(purCourse,rowPurchase);
-                elements++;
-            }
-        }
-        purCourse=Banana.SDecimal.divide(purCourse,elements);
-
-        return purCourse;
-    }
-}
-
-/**
  * Ritorna il cambio contabile calcolato sulla base della differenza tra i saldi nelle due valute ad una certa data.
  */
 function getAccountingCourse(item,itemsData,banDoc){
@@ -250,7 +213,54 @@ function getAccountingCourse(item,itemsData,banDoc){
 
 }
 
+/**
+ * 
+ * Ritorna il valore medio di un azione.
+ */
+function getSharesAvgValue(quantity,avgCost){
+    var avgValue="";
 
+    avgValue=Banana.SDecimal.multiply(quantity,avgCost);
+
+    return avgValue;
+}
+
+/**
+ * 
+ * Ritorna il valore totale di un azione.
+ */
+ function getSharesTotalValue(quantity,marketPrice){
+    var totalValue="";
+
+    totalValue=Banana.SDecimal.multiply(quantity,marketPrice);
+
+    return totalValue;
+}
+
+/**
+ * Calcola il risultato di vendita.
+ */
+function getSaleResult(avgSharesValue,totalSharesvalue){
+    var saleResult="";
+
+    saleResult=Banana.SDecimal.subtract(totalSharesvalue,avgSharesValue);
+
+
+    return saleResult;
+
+}
+
+function getExchangeResult(marketPrice,quantity,currExRate,accExRate){
+    var exResult="";
+    var accAmount="";
+    var currAmount="";
+
+    accAmount=Banana.SDecimal.multiply(accExRate,Banana.SDecimal.multiply(marketPrice,quantity));//valore al cambio contabile
+    currAmount=Banana.SDecimal.multiply(currExRate,Banana.SDecimal.multiply(marketPrice,quantity));//valore al cambiol corrente
+    exResult=Banana.SDecimal.subtract(currAmount,accAmount);
+
+    return exResult;
+}
 
 /**
  * 
@@ -259,70 +269,43 @@ function getAccountingCourse(item,itemsData,banDoc){
  * @param {*} currentRowData the current line transaction data
  * @returns an object with the calculation data.
  */
-function calculateShareSaleData(avgCost,movRow,accountingCourse){
+function calculateShareSaleData(banDoc,docInfo,userParam,itemsData){
     
-    var shareData={};
-    var exchangeRateOnSale=movRow.exchangeRate; //il corso corrente, indicato nella registrazione
-
-    shareData.netAmount=movRow.netAmount; //credited by the bank
-    shareData.bankCharges=movRow.bankCharges;
-
-    //importo totale vendita azioni (importo trasmesso dalla banca più le spese trattenute)
-    shareData.totSaleShare={};
-    shareData.totSaleShare.assetCurr=Banana.SDecimal.add(shareData.bankCharges,shareData.netAmount);//valore di vendita effettivo (con spese)
-    //base currencies values
-    shareData.totSaleShare.baseCurr=Banana.SDecimal.multiply(exchangeRateOnSale,shareData.totSaleShare.assetCurr);//valore effettivo (da mostrare nel dialogo)
-    shareData.totSaleShare.accounting=Banana.SDecimal.multiply(accountingCourse,shareData.totSaleShare.assetCurr);//valore contabile (in chf)
-
-    //Result on exchange rate variation 
-    shareData.changeResult=Banana.SDecimal.subtract(shareData.totSaleShare.baseCurr,shareData.totSaleShare.accounting);
+    var saleData={};
+    var item="";
+    var quantity="";
+    var marketPrice="";
+    var currExRate=""; //current exchange rate
+    var accExRate=""; //accounting exchange rate
+    var avgCost="";
+    var avgSharesValue="";
+    var totalSharesvalue="";
+    var saleResult="";
+    var exRateResult="";
+    var transList=getTransactionsTableData(banDoc,docInfo);
     
-    //other data
-    shareData.quantity=movRow.quantity;
-    shareData.PricePerShare=Banana.SDecimal.divide(shareData.totSaleShare.assetCurr,shareData.quantity);
-    shareData.avgCost=avgCost;
-    shareData.avgShareValue=Banana.SDecimal.multiply(shareData.quantity,shareData.avgCost);
+    item=userParam.selectedItem;
+    quantity=userParam.quantity;
+    marketPrice=userParam.marketPrice;
+    currExRate=userParam.currExRate;
+    accExRate=getAccountingCourse(item,itemsData,banDoc);
 
-    //Results
-    //sales
-    shareData.saleResult=Banana.SDecimal.subtract(shareData.totSaleShare.assetCurr,shareData.avgShareValue);
-    shareData.profitOnSale=false;
-    if(Banana.SDecimal.sign(shareData.saleResult)=="1")
-    shareData.profitOnSale=true;
-    //exchange
-    shareData.exchangeResult=Banana.SDecimal.subtract(shareData.totSaleShare.baseCurr,shareData.totSaleShare.accounting);
-    shareData.profitOnExchange=false;
-    if(Banana.SDecimal.sign(shareData.exchangeResult)=="1")
-    shareData.profitOnExchange=true;
+    avgCost=getAverageCost(item,transList);
+    avgSharesValue=getSharesAvgValue(quantity,avgCost);
+    totalSharesvalue=getSharesTotalValue(quantity,marketPrice);
+    saleResult=getSaleResult(avgSharesValue,totalSharesvalue);
+    exRateResult=getExchangeResult(marketPrice,quantity,currExRate,accExRate);
 
-    return shareData;
+    Banana.console.debug(avgSharesValue);
+    Banana.console.debug(totalSharesvalue);
 
-}
+    saleData.avgCost=avgCost;
+    saleData.avgSharesValue=avgSharesValue;
+    saleData.totalSharesvalue=totalSharesvalue;
+    saleData.saleResult=saleResult;
+    saleData.exRateResult=exRateResult;
 
-function calculateBondSaleData(currentRowData,userParam,bondTotalCourse){
-    var bondData={};
-
-    bondData.netTransaction=currentRowData.amount //credited by the bank
-    bondData.charges=userParam.bankChargesAmount;
-
-    //importo totale vendita obbligazioni (importo trasmesso dalla banca più le spese trattenute)
-    bondData.totalSaleBonds={};
-    bondData.totalSaleBonds.assetCurr=Banana.SDecimal.add(bondData.charges,bondData.netTransaction);//valore di vendita effettivo (con spese)
-    //base currencies values
-    bondData.totalSaleBonds.baseCurr=Banana.SDecimal.multiply(exchangeRateOnSale,bondData.totalSaleBonds.assetCurr);
-    bondData.totalSaleBonds.accounting=Banana.SDecimal.multiply(accountingCourse,bondData.totalSaleBonds.assetCurr);//DEFINIRE SE CALCOLARE IL CAMBIO PRIMA O DOPO AVER SOMMATO GLI INTERESSI
-
-    //Result on exchange rate variation 
-    bondData.changeResult=Banana.SDecimal.subtract(bondData.totSaleShare.baseCurr,bondData.totSaleShare.accounting);
-
-    //other data
-    bondData.accruedInterest=userParam.accruedInterest;
-    bondData.marketValue=Banana.SDecimal.add(bondData.totalSaleBonds.assetCurr,bondData.accruedInterest);
-    bondData.nominalValue=userParam.quantity;
-    bondData.purchaseValue=bondTotalCourse;
-
-
-
+    return saleData;
 
 }
 
@@ -347,69 +330,7 @@ function getItemValue(itemsData,item,value){
 }
 
 /**
- * defines the xml name of the column where the amount is entered 
- * according to whether it is a multi-currency account or not
- * @param {*} multiCurrencyAccounting 
- */
- function getAmountColumn(docInfo){
-    var columnName="Amount";
-
-    if(docInfo.isMultiCurrency){
-        columnName="AmountCurrency";
-    }
-
-    return columnName;
-}
-
-/**
- * Simply defines the description for the line on which the profit or loss is recorded.
- * Profit/loss on sale and Profit/loss on exchange have a difference description.
- * @param {*} profit bool that identifies a profit or loss
- * @param {*} type profit/loss on sale or exchange
- * @returns 
- */
-function setOperationResultDecription(profit,type){
-    var description="";
-
-    switch(type){
-        case "sale":
-            if(profit)
-            description="Profit on Sale";
-            else
-            description="Loss on Sale";
-            return description;
-
-        case "exchange":
-            if(profit)
-            description="Exchange rate profit";
-            else
-            description="Exchange rate loss";
-            return description;
-        default:
-            return description;
-    }
-}
-
-/**
- * returns the correct account depending on the result of the sale (profit or loss), accounts are defined by the user in the dialog 
- * @param {*} profitOnSale 
- * @param {*} userParam 
- * @returns 
- */
-function getAccountForResult(profitOnSale){
-    var account="";
-
-    if(profitOnSale){
-        account="3200";
-    }else{
-        account="4200";
-    }
-
-    return account;
-}
-
-/**
- * ritorna i dati presenti nella tabella conti.
+ * Ritorna i dati presenti nella tabella conti.
  */
 function getAccountsTableData(banDoc,docInfo){
     let accountsData=[];
@@ -444,40 +365,6 @@ function getAccountsTableData(banDoc,docInfo){
 }
 
 /**
- * Cerco i risultati prima nella tabella conti, colonna "Exch. rate Diff. Acct."
- * Se non dovessi trovare niente guardo nelle proprietà del file.
- * Se non ce nessun riferimento a dei conti avverto l'utente, e ne imposto io di default.
- */
-function getAccountsForExchangeResult(banDoc,docInfo){
-    var accExchRes={};
-    var accData=getAccountsTableData(banDoc,docInfo);
-
-    //cerco nella tabella conti
-    for(var r in accData ){
-        element=accData[r];
-        if(element.exchangeRateDiffAcc){
-            //l'utile e la perdita vengono registrati sullo stesso conto
-            accExchRes.loss=element.exchangeRateDiffAcc;
-            accExchRes.profit=element.exchangeRateDiffAcc;
-            return accExchRes;
-        }
-    }
-
-    //se non viene trovato niente nel piano dei conti, cerco nelle proprietà del file
-    if(docInfo && docInfo.accountExchangeRateProfit && docInfo.accountExchangeRateLoss){
-        accExchRes.loss=docInfo.accountExchangeRateLoss;
-        accExchRes.profit=docInfo.accountExchangeRateProfit;
-        return accExchRes;
-    }
-
-    //se non viene trovato nessun riferimento viene assegnato un conto de default (standard piano dei conti per PMI svizzero)
-    accExchRes.loss="6949";
-    accExchRes.profit="6999";
-    return accExchRes;
-
-}
-
-/**
  * Retrieves item information from the items table
  * @returns 
  */
@@ -508,84 +395,6 @@ function getItemsTableData(docInfo){
     }
     return itemsData;
 }
-
-/**
- * Check if the items exists in the item table. All the item we want to record in the transactions table must be present in the items table
- *  If the item doesn't exists, we add the item and its data in the items table. the user should complete the info manually
- * @param {*} tabImportsData 
- * @param {*} tabItemsData
- */
- function addMissingItems(docInfo,tabImportsData,tabItemsData){
-
-    var jsonDoc=initJsonDoc();
-    var rows=[];
-    var userParam="";
-    var rowNr=""; //row after which to insert the new item.
-    var itemExist="";
-
-    for(var mrow in tabImportsData){
-        let currItem=tabImportsData[mrow].itemId;
-        itemExist=checkIfItemExists(currItem,tabItemsData);
-        if(!itemExist){
-            dialogExec(tabImportsData[mrow]);
-            userParam=readDialogParams();
-            rowNr=getItemRowNr(userParam.itemGroupComboBox,tabItemsData);
-            rows.push(addMissingItem_createDocChange(docInfo,userParam,tabImportsData[mrow],rowNr));
-        } 
-    }
-
-    var dataUnitFilePorperties = {};
-    dataUnitFilePorperties.nameXml = "Items";
-    dataUnitFilePorperties.data = {};
-    dataUnitFilePorperties.data.rowLists = [];
-    dataUnitFilePorperties.data.rowLists.push({ "rows": rows });
-
-    jsonDoc.document.dataUnits.push(dataUnitFilePorperties);
-
-    return jsonDoc;
-}
-
-/**
- * Check if the item exists in the items table.
- * @param {*} currItem 
- * @param {*} tabItemsData 
- * @returns 
- */
-function checkIfItemExists(currItem,tabItemsData){
-    for(var irow in tabItemsData){
-        let exItem=tabItemsData[irow].item;
-        if(currItem==exItem)
-            return true;
-    }
-    return false;
-}
-
-/**
- * Creates a new row for the items table
- * @param {*} movRow 
- */
-function addMissingItem_createDocChange(docInfo,userParam,movRow,rowNr){
-
-    var row={};
-
-    row.fields={};
-    row.fields.ItemsId=movRow.itemId;
-    row.fields.Description=movRow.description;
-    row.fields.Gr=userParam.itemGroupComboBox;
-    row.fields.Account=userParam.itemAccount;
-    //columns to add only if its a multicurrency accounting
-    if(docInfo.isMultiCurrency){ 
-        row.fields.Currency=movRow.currency;
-    }
-
-    row.operation={};
-    row.operation.name="add";
-    row.operation.sequence=rowNr;
-
-    return row;
-
-}
-
 /**
  * returns the line number following the last item found whose group is the same as that of the new item
  * @param {*} refGroup reference group.
@@ -606,125 +415,3 @@ function getItemRowNr(refGroup,tabItemsData){
     }
     return refNr;
 }
-
-/**
- * Questa funzione recupera le righe dalla tabella movimenti e li inserisce in un oggetto.
- */
-function getTabImportsData(banDoc){
-    var tabImportsData=[];
-    let table = banDoc.table("Imports");
-    if (!table) {
-        return tabImportsData;
-    }
-    for (var i = 0; i < table.rowCount; i++) {
-        var tRow = table.row(i);
-        var row={};
-        row.rowNr=tRow.rowNr;
-        row.rowId=tRow.value("RowId");
-        row.date = tRow.value("Date");
-        row.itemId=tRow.value("ItemId");
-        row.netAmount=tRow.value("NetAmount");
-        row.quantity=tRow.value("Quantity");
-        row.price=tRow.value("Price");
-        row.bankCharges=tRow.value("BankCharges");
-        row.interest=tRow.value("Interest");
-        row.bankAccount=tRow.value("BankAccount");
-        row.description=tRow.value("Description");
-        row.currency=tRow.value("Currency");
-        row.exchangeRate=tRow.value("ExchangeRate");
-        row.type=tRow.value("Type");
-        row.processed=tRow.value("Processed");
-
-        //...
-
-        if (row && row.itemId)
-        tabImportsData.push(row);
-    }
-
-    return tabImportsData;
-
-}
-
-/**
- * Takes the account number assigned by the bank  as a parameter and finds.
- * the corresponding accounting account in the chart of accounts
- */
-function getAccountingAccount(banDoc,docInfo,accountNr){
-    var accData=getAccountsTableData(banDoc,docInfo);
-
-    for(var r in accData){
-        var accRow=accData[r];
-        if(accRow.bankAccount==accountNr){
-            return accRow.account;
-        }
-    }
-}
-
-/*****************************************
- * UPDATE ACCOUNT TABLE METHODS
- ****************************************/
-
-
-/****************************************
- * UPDATE ITEMS TABLE METHODS
- ***************************************/
-
-/**
- * @param {*} tabImportsData rows from imports table
- * @param {*} refColumn purchase/sale
- * @returns The list with the movements not yet processed for the specified type of operation
- */
- function getNPValuesFromMovData(tabImportsData,refColumn){
-    let purchMovList=[];
-
-    if(tabImportsData){
-        for(var o in tabImportsData ){
-            var type=tabImportsData[o].type;
-            var processed=tabImportsData[o].processed;
-            if(type.includes(refColumn) && processed==="")
-                purchMovList.push(tabImportsData[o]);
-        }
-    }
-    
-    return purchMovList;
-}
-
- function updateImportRowStatus(movList){
-    var jsonDoc = initJsonDoc();
-    var currentDate=new Date();
-    var rows=[];
- 
-     for(var e in movList){
-         movRow=movList[e];
-         //Updates all lines that have not yet been processed
-         rows.push(updateImportRowStatusDocChange(movRow.rowNr,currentDate));
-     } 
- 
-    var dataUnitFilePorperties = {};
-    dataUnitFilePorperties.nameXml = "Imports";
-    dataUnitFilePorperties.data = {};
-    dataUnitFilePorperties.data.rowLists = [];
-    dataUnitFilePorperties.data.rowLists.push({ "rows": rows });
- 
-    jsonDoc.document.dataUnits.push(dataUnitFilePorperties);
- 
-    return jsonDoc;
- 
- }
- 
- function updateImportRowStatusDocChange(rowNr,currentDate){
- 
-     var opDate=currentDate;
-     var opRowNr=rowNr.toString();
- 
-     var row={};
- 
-     row.fields={};
-     row.fields.Processed=opDate;
-     row.operation={};
- 
-     row.operation.name="modify";
-     row.operation.sequence=opRowNr;
- 
-     return row;
- }
