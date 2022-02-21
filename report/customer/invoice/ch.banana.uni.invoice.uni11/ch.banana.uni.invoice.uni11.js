@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.uni.invoice.uni11
 // @api = 1.0
-// @pubdate = 2022-02-07
+// @pubdate = 2022-02-21
 // @publisher = Banana.ch SA
 // @description = [UNI11] Programmable Invoice layout
 // @description.it = [UNI11] Layout Fattura Programmabile
@@ -2784,6 +2784,9 @@ function print_details_net_amounts(banDoc, repDocObj, invoiceObj, texts, userPar
         else if (item.discount && item.discount.amount) {
           itemValue = formatItemsValue(item.discount.amount, variables, columnsNames[j], className, item);
         }
+        else {
+          itemValue = formatItemsValue("", variables, columnsNames[j], className, item);
+        }
         tableRow.addCell(itemValue.value, classNameEvenRow + " " + alignment + " padding-left padding-right " + itemValue.className, 1);
       }
       else {
@@ -3034,6 +3037,9 @@ function print_details_gross_amounts(banDoc, repDocObj, invoiceObj, texts, userP
         }
         else if (item.discount && item.discount.amount) {
           itemValue = formatItemsValue(item.discount.amount, variables, columnsNames[j], className, item);
+        }
+        else {
+          itemValue = formatItemsValue("", variables, columnsNames[j], className, item);
         }
         tableRow.addCell(itemValue.value, classNameEvenRow + " " + alignment + " padding-left padding-right " + itemValue.className, 1);
       }
