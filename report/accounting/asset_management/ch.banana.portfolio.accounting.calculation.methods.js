@@ -12,18 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-// @id = ch.banana.portfolio.management.calculation.methods.js
+// @id = ch.banana.portfolio.accounting.calculation.methods.js
 // @api = 1.0
 // @pubdate = 2022-01-13
 // @publisher = Banana.ch SA
 
-/**
- * This script contains the methods used for calculating securities transactions.
- */
-
 /**********************************************************
  * 
- * PORTFOLIO MANAGEMENT METHODS
+ * PORTFOLIO ACCOUNTING METHODS
  * 
  *********************************************************/
 
@@ -123,7 +119,7 @@ function getDocumentInfo(banDoc){
             trData.description=tRow.value("Description");
             trData.debit=tRow.value("AccountDebit");
             trData.credit=tRow.value("AccountCredit");
-            trData.qt=tRow.value("Quantity");;
+            trData.qt=tRow.value("Quantity");
             trData.unitPrice=tRow.value("UnitPrice");
             //check if it is a multichange file or not
             if(docInfo.isMultiCurrency){
@@ -296,9 +292,6 @@ function calculateShareSaleData(banDoc,docInfo,userParam,itemsData){
     saleResult=getSaleResult(avgSharesValue,totalSharesvalue);
     exRateResult=getExchangeResult(marketPrice,quantity,currExRate,accExRate);
 
-    Banana.console.debug(avgSharesValue);
-    Banana.console.debug(totalSharesvalue);
-
     saleData.avgCost=avgCost;
     saleData.avgSharesValue=avgSharesValue;
     saleData.totalSharesvalue=totalSharesvalue;
@@ -390,7 +383,7 @@ function getItemsTableData(docInfo){
         itemData.currency="";
         if(docInfo.isMultiCurrency)
             itemData.currency=tRow.value("Currency");
-        if (itemsData)
+        if (itemsData && itemData.item)//only if the item has an id (isin)
             itemsData.push(itemData);
     }
     return itemsData;
@@ -414,4 +407,73 @@ function getItemRowNr(refGroup,tabItemsData){
         refNr=refNr+"."+refNr;
     }
     return refNr;
+}
+
+
+/**
+ * Recupero il bilancio iniziale e finale per i conti passati come parametro.
+ * @param {*} secAccountsList lista di conti
+ */
+function getSecurityAccountsData(banDoc,secAccountsList){
+    var secAccountsData=[];
+
+    for (var i=0;i<secAccountsList.length;i++){
+        var accData={};
+        var accBalance=""; //temp variable
+        var account=secAccountsList[i];
+
+        accBalance=banDoc.currentBalance(account);
+
+        accData.account=account;
+        accData.accountCurrBal=accBalance.balance;//current balance of the account
+        accData.accountInitBal=accBalance.opening;//initial balance of the account
+
+        secAccountsData.push(accData);
+
+    }
+
+    return secAccountsData;
+
+}
+
+/**
+ * For each items creates an object containing the transactions wich includes the item id (isin) in the item column.
+ * @param {*} itemsData 
+ */
+    function getItemsDataList(itemsData,transactionsData){
+
+    var itemsDataList=[];
+
+    for(var key in itemsData){
+        var itemData={};
+        itemData.item="";
+        itemData.transactions=[];
+
+        itemData.item=itemsData[key].item;
+        itemData.transactions=getItemRelatedTransactions(itemsData[key].item,transactionsData);
+
+        itemsDataList.push(itemData);
+    }
+    return itemsDataList;
+}
+
+/**
+ * Get the transactions related to the item passed as parameter
+ * @param {*} item 
+ * @param {*} transactionsData 
+ * @returns 
+ */
+function getItemRelatedTransactions(item,transactionsData){
+    var transactions=[];
+    for(var key in transactionsData){
+        if(transactionsData[key].item.contains(item)){
+            var trData={};
+            trData.description=transactionsData[key].description;
+            trData.qt=transactionsData[key].qt;
+            trData.unitPrice=transactionsData[key].unitPrice;
+            trData.amount=transactionsData[key].amount;
+            transactions.push(trData);
+        }
+    }
+    return transactions;
 }

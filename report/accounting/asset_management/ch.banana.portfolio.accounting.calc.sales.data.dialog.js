@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-// @id = ch.banana.portfolio.management.calc.sales.data.dialog.js
+// @id = ch.banana.portfolio.accounting.calc.sales.data.dialog.js
 // @api = 1.0
 // @pubdate = 2022-02-16
 // @publisher = Banana.ch SA
@@ -23,7 +23,7 @@
 // @outputformat = none
 // @inputdatasource = none
 // @timeout = -1
-// @includejs = ch.banana.portfolio.management.calculation.methods.js
+// @includejs = ch.banana.portfolio.accounting.calculation.methods.js
 
 /*******************************************
  * 
@@ -32,7 +32,7 @@
  *******************************************/
 
 /** Dialog's functions declaration */
-dialog=Banana.Ui.createUi("ch.banana.portfolio.management.calc.sales.data.dialog.ui");
+dialog=Banana.Ui.createUi("ch.banana.portfolio.accounting.calc.sales.data.dialog.ui");
 
 //sales data section objects
 var itemsCombobox = dialog.findChild('item_comboBox');
