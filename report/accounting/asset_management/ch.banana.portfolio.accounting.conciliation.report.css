@@ -9,23 +9,7 @@ body {
     font-size: 9pt;
 }
 
-
-/*************************************
-Styles for the tables
-*************************************/
-
-table.table_bas_transactions {
-    border-style: solid;
-    border-color: rgb(0, 0, 0);
-    width: auto;
-    padding-top: 1px;
-    padding-bottom: 1px;
-}
-table.table_bas_transactions:nth-child(even) {
-    background-color: #40a562;
-    }
-
-table.table_bas_details {
+table.myTableConc {
     border-style: solid;
     border-color: rgb(0, 0, 0);
     width: auto;
@@ -77,9 +61,16 @@ Styles for the texts
     text-align: center;
 }
 
-.styleTablesBasNames_totals {
+.descrAccBalancesLevel {
     text-align: left;
-    background-color: #F8F8FF;
+    font-weight: bold;
+    background-color: beige;
+}
+
+.amountAccBalancesLevel {
+    text-align: right;
+    font-weight: bold;
+    background-color: beige;
 }
 
 .styleSortedByColumn{

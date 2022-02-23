@@ -102,8 +102,9 @@ function getDocumentInfo(banDoc){
 
 /**
  * Get the data from the transactions table only once
+ * The isreport parameter identifies the script from which i call the method. for the report i need to take the amount in base currency in any case (method to be reviewed)
  */
- function getTransactionsTableData(banDoc,docInfo){
+ function getTransactionsTableData(banDoc,docInfo,isReport){
     var transactionsList = [];
     var trnsactionsTable = banDoc.table("Transactions");
 
@@ -122,7 +123,7 @@ function getDocumentInfo(banDoc){
             trData.qt=tRow.value("Quantity");
             trData.unitPrice=tRow.value("UnitPrice");
             //check if it is a multichange file or not
-            if(docInfo.isMultiCurrency){
+            if(docInfo.isMultiCurrency && !isReport){
                 trData.amount=tRow.value("AmountCurrency");
                 trData.currency=tRow.value("ExchangeCurrency");
                 trData.rate=tRow.value("ExchangeRate");
@@ -278,7 +279,7 @@ function calculateShareSaleData(banDoc,docInfo,userParam,itemsData){
     var totalSharesvalue="";
     var saleResult="";
     var exRateResult="";
-    var transList=getTransactionsTableData(banDoc,docInfo);
+    var transList=getTransactionsTableData(banDoc,docInfo,false);
     
     item=userParam.selectedItem;
     quantity=userParam.quantity;
@@ -409,50 +410,29 @@ function getItemRowNr(refGroup,tabItemsData){
     return refNr;
 }
 
-
 /**
- * Recupero il bilancio iniziale e finale per i conti passati come parametro.
- * @param {*} secAccountsList lista di conti
+ * Creates an array with all the data of all the items that are registered under this account 
+ * @param {*} itemsData list of items
+ * @param {*} transactionsData list of transactions
+ * @param {*} account ref. account.
  */
-function getSecurityAccountsData(banDoc,secAccountsList){
-    var secAccountsData=[];
-
-    for (var i=0;i<secAccountsList.length;i++){
-        var accData={};
-        var accBalance=""; //temp variable
-        var account=secAccountsList[i];
-
-        accBalance=banDoc.currentBalance(account);
-
-        accData.account=account;
-        accData.accountCurrBal=accBalance.balance;//current balance of the account
-        accData.accountInitBal=accBalance.opening;//initial balance of the account
-
-        secAccountsData.push(accData);
-
-    }
-
-    return secAccountsData;
-
-}
-
-/**
- * For each items creates an object containing the transactions wich includes the item id (isin) in the item column.
- * @param {*} itemsData 
- */
-    function getItemsDataList(itemsData,transactionsData){
+    
+function getItemsDataList(itemsData,transactionsData,account){
 
     var itemsDataList=[];
 
     for(var key in itemsData){
-        var itemData={};
-        itemData.item="";
-        itemData.transactions=[];
+        if(account==itemsData[key].account){ //i want to take the transactions related only to the account gave as parameter.
+            var itemData={};
+            itemData.item="";
+            itemData.transactions=[];
 
-        itemData.item=itemsData[key].item;
-        itemData.transactions=getItemRelatedTransactions(itemsData[key].item,transactionsData);
+            itemData.item=itemsData[key].item;
+            itemData.transactions=getItemRelatedTransactions(itemsData[key].item,transactionsData);
+            itemData.balance=sumArrayElements(itemData.transactions,"amount");
 
-        itemsDataList.push(itemData);
+            itemsDataList.push(itemData);
+        }
     }
     return itemsDataList;
 }
@@ -465,15 +445,95 @@ function getSecurityAccountsData(banDoc,secAccountsList){
  */
 function getItemRelatedTransactions(item,transactionsData){
     var transactions=[];
+    var  qtBalance="";
+    var amountBalance="";
+
     for(var key in transactionsData){
-        if(transactionsData[key].item.contains(item)){
+        if(transactionsData[key].item.includes(item)){
             var trData={};
             trData.description=transactionsData[key].description;
             trData.qt=transactionsData[key].qt;
+            qtBalance=Banana.SDecimal.add(qtBalance,trData.qt);
+            trData.qtBalance=qtBalance //cumulative quantity
             trData.unitPrice=transactionsData[key].unitPrice;
-            trData.amount=transactionsData[key].amount;
+            trData.amount=setSign(transactionsData[key].amount,trData.qt,transactionsData[key].debit);
+            amountBalance=Banana.SDecimal.add(amountBalance,trData.amount);
+            trData.amountBalance=amountBalance; //Amount Balance
             transactions.push(trData);
         }
     }
     return transactions;
+}
+/**
+ * Sets the negative sign to those amounts that represent a decrease in the value of the securities account.
+ * Decreases are recognised in the thank you entries:
+ * -The negative quantity in the quantity column, i.e. a sale of securities.
+ * -To losses on the sale, in this case I have recorded the loss in a debit account.
+ * 
+ * @param {*} amount
+ * @param {*} qt 
+ * @param {*} debitAmount 
+ */
+function setSign(amount,qt,debitAmount){
+    var newAmount="";
+
+    if((qt.includes("-"))|| debitAmount!=="" && qt==""){
+        newAmount="-"+amount;
+        return newAmount;
+    }
+
+    return amount;
+}
+
+/**
+ * sums the elements in the array, taking into account the values in the property passed as parameter  
+ * @param {*} transactions 
+ * @returns 
+ */
+function sumArrayElements(objArray,property){
+    var sum="";
+
+    for(var key in objArray){
+        sum=Banana.SDecimal.add(sum,objArray[key][property]);
+    }
+
+
+    return sum;
+}
+
+/**
+ * For each account creates an object containing the open balance, the current balance and the account nr of the account
+ * @param {*} banDoc 
+ * @param {*} accountList the list of the accounts defined by the user.
+ */
+function getAccountsDataList(banDoc,accountList,itemsData,transactionsData){
+    var accDataList=[];
+
+    for(var i=0;i<accountList.length;i++){
+        var account=accountList[i];
+        var itemsDataList=[];
+        var accData={};
+        var accBalance={};
+
+        accBalance=banDoc.currentBalance(account);
+
+        accData.account=accountList[i];
+        accData.openBalance=accBalance.opening;
+        accData.currentBalance=accBalance.balance;
+
+        //get the items data.
+        itemsDataList=getItemsDataList(itemsData,transactionsData,account); //ritorna l'array di items con questo account.
+        accData.items=itemsDataList;
+
+        //get total amount of transactions for securities registered in this account
+        accData.securityTrAmount=sumArrayElements(itemsDataList,"balance"); 
+
+        //difference between the securities transactions and the account balance (should be 0).
+        accData.difference=Banana.SDecimal.subtract(accData.securityTrAmount,accData.currentBalance);
+
+        accDataList.push(accData);
+
+    }
+
+    return accDataList;
 }
