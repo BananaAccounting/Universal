@@ -44,10 +44,9 @@ function exec(inData, options) {
     var userParamList=["1400","1401","1450"];
     var accountsDataList=[];
 
-    banDoc=Banana.document;
     docInfo=getDocumentInfo(banDoc);
     transactionsData=getTransactionsTableData(banDoc,docInfo,true);
-    itemsData=getItemsTableData(itemsData);
+    itemsData=getItemsTableData(docInfo);
 
     //Get Secrurity account data.
     accountsDataList=getAccountsDataList(banDoc,userParamList,itemsData,transactionsData); //ritorna l'array con tutti i conti.
@@ -169,7 +168,7 @@ function getReportStyle() {
     //CREATE THE STYLE FOR THE REPORT
     //create the style
     var textCSS = "";
-    var file = Banana.IO.getLocalFile("file:script/ch.banana.portfolio.accounting.conciliation.report.css");
+    var file = Banana.IO.getLocalFile("file:script/ch.banana.portfolio.accounting.reports.css");
     var fileContent = file.read();
     if (!file.errorString) {
         Banana.IO.openPath(fileContent);
