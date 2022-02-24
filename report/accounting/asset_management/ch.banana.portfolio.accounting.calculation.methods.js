@@ -410,6 +410,12 @@ function getItemRowNr(refGroup,tabItemsData){
     return refNr;
 }
 
+/******************************************************
+ * 
+ * Specifics methods for riconciliation report (forse da spostare)
+ * 
+ *****************************************************/
+
 /**
  * Creates an array with all the data of all the items that are registered under this account 
  * @param {*} itemsData list of items
