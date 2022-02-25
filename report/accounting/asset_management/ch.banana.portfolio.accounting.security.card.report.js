@@ -31,13 +31,16 @@
 function exec(inData, options) {
 
     var banDoc=Banana.document;
-    var secCardData=[];
     var selectedItem=""; //Selected by the user
     var docInfo="";
     var itemsData="";
     var itemAccount="";
-    var itemTransactions=[];
-    var accountCard="";
+    var journal=""; //hold the journal table
+    var journalData=[];
+    var trIdList="";// transactions id List
+    var accountCard=""; //hold the account card table
+    var accountCardData=""; 
+    var itemCardData={};
 
     if (!banDoc)
     return "@Cancel";
@@ -50,15 +53,22 @@ function exec(inData, options) {
     docInfo=getDocumentInfo(banDoc);
     transactionsData=getTransactionsTableData(banDoc,docInfo,true);
     itemsData=getItemsTableData(itemsData);
-    itemAccount=getItemValue(itemsData,item,"account");
+    itemAccount=getItemValue(itemsData,selectedItem,"account");
+
+    //get the journal data and creates an array of objects containing the transactions data
+    journal = banDoc.journal(banDoc.ORIGINTYPE_CURRENT, banDoc.ACCOUNTTYPE_NONE);
+    journalData=getJournalData(docInfo,journal,selectedItem);
+    trIdList=getTransactionsIdList(journalData);
+
+    //get the account card, filter the result by item and return an array of objects containing the transactions data
     accountCard=banDoc.currentCard(itemAccount);
-    itemTransactions=filterTransactions(selectedItem,accountCard);
+    accountCardData=getAccountCardData(docInfo,selectedItem,accountCard,trIdList);
+
+    //Returns the title account card as an object
+    itemCardData.data=getItemCardData(docInfo,selectedItem,accountCardData,journalData);
 
 
-
-    //Banana.Ui.showText(JSON.stringify(conciliationData));
-
-    var report = printReport(secCardData);
+    var report = printReport(itemCardData);
     var stylesheet = getReportStyle();
     Banana.Report.preview(report, stylesheet);
 
@@ -104,9 +114,9 @@ function getConciliationTable(report,currentDate,basCurr,itemCurr){
 
 /**
  * Print the report.
- * @param {*} secCardData the data.
+ * @param {*} itemCardData the data.
  */
-function printReport(secCardData){
+function printReport(itemCardData){
 
     //create the report
     var report = Banana.Report.newReport("Security Card Report");
@@ -173,10 +183,89 @@ function getComboBoxElement() {
 }
 
 /**
- * Retrieves the entries from the account card of the item selected by the user
- * @param {*} selectedItem item selected by the user
+ * saves the list of ids of all registrations in an array. each id is saved only once
+ * @param {*} journalData 
  */
-function filterTransactions(selectedItem,accountCard){
+function getTransactionsIdList(journalData){
+    var trIdElements=new Set();
+    var trIdList=[];
+
+    for(var key in journalData){
+        trIdElements.add(journalData[key].trId);
+    }
+
+    trIdList=Array.from(trIdElements);
+
+    return trIdList;
+
+}
+
+function getItemCardData(docInfo,selectedItem,accountCardData,journalData){
+    var itemCardData=[...accountCardData,...journalData]; //merge the arrays
+    itemCardData.sort(compare); //sort the array be trId
+    Banana.Ui.showText(JSON.stringify(itemCardData));
+    getCurrentAccExchangeRate();
+    getCurrentAccAvgCost();
+
+    return itemCardData;
+}
+
+function compare( a, b ) {
+    if ( a.trId < b.trId ){
+      return -1;
+    }
+    if ( a.trId > b.trId ){
+      return 1;
+    }
+    return 0;
+  }
+
+/**
+ * Reads the journal data and returns an array of objects with the information we need
+ * @param {*} journal journal table
+ */
+function getJournalData(docInfo,journal,selectedItem){
+    var journalData=[];
+
+    for (var i = 0; i < journal.rowCount; i++) {
+        var tRow = journal.row(i);
+        var jrRow={};
+        jrRow.date=tRow.value("JDate");
+        jrRow.trId=tRow.value("JContraAccountGroup");
+        jrRow.item = tRow.value("ItemsId");
+        jrRow.description = tRow.value("Description");
+        jrRow.debitBase = tRow.value("JDebitAmount"); //debit value in base currency
+        jrRow.creditBase = tRow.value("JCreditAmount"); //credit value base currency
+        jrRow.balanceBase = tRow.value("JBalance"); //credit value base currency
+        jrRow.qt = tRow.value("Quantity"); //credit value base currency
+        jrRow.unitPrice = tRow.value("UnitPrice"); //credit value base currency
+        if(docInfo.isMultiCurrency){
+            jrRow.debitCurr = tRow.value("JDebitAmountCurrency"); //debit value in base currency
+            jrRow.creditCurr = tRow.value("JCreditAmountCurrency"); //credit value base currency
+            jrRow.balanceCurr = tRow.value("JBalanceAccountCurrency"); //credit value base currency
+        }
+
+        if(selectedItem===jrRow.item)//We only keep records that relate to the chosen item. 
+            journalData.push(jrRow);
+    }
+
+    return journalData;
+
+}
+
+/**
+ * Retrieves the transactions from the account card of the item selected by the user and
+ * returns the transactions as objects.
+ * In order to save the data from the account card, I use two checks: the first one checks that the isin in the item column matches,
+ *  the second one checks that the transaction number matches one of those in the list. 
+ * This check is due to the fact that not all of the entries regarding the item have a direct reference to the isin in the column, 
+ * for example the sale entry did not indicate the item.
+ * @param {*} selectedItem item selected by the user
+ * @param {*} docInfo item selected by the user
+ * @param {*} accountCard account card (table obj)
+ * @param {*} trIdList list of transaction ids concerning the item. the list was retrieved by doing the journal
+ */
+function getAccountCardData(docInfo,selectedItem,accountCard,trIdList){
     var transactions=[];
 
     if (!accountCard) {
@@ -185,19 +274,82 @@ function filterTransactions(selectedItem,accountCard){
     for (var i = 0; i < accountCard.rowCount; i++) {
         var tRow = accountCard.row(i);
         var trData={};
-        itemData.rowNr=tRow.rowNr;
-        itemData.item = tRow.value("ItemsId");
-        if(docInfo.isMultiCurrency)
-            itemData.currency=tRow.value("Currency");
-        if (itemsData && itemData.item)//only if the item has an id (isin)
-            itemsData.push(itemData);
+        trData.rowNr=tRow.rowNr;
+        trData.date=tRow.value("Date");
+        trData.trId=tRow.value("JContraAccountGroup");
+        trData.item = tRow.value("ItemsId");
+        trData.description = tRow.value("Description");
+        trData.debitBase = tRow.value("JDebitAmount"); //debit value in base currency
+        trData.creditBase = tRow.value("JCreditAmount"); //credit value base currency
+        trData.balanceBase = tRow.value("JBalance"); //credit value base currency
+        if(docInfo.isMultiCurrency){
+            trData.debitCurr = tRow.value("JDebitAmountCurrency"); //debit value in base currency
+            trData.creditCurr = tRow.value("JCreditAmountCurrency"); //credit value base currency
+            trData.balanceCurr = tRow.value("JBalanceAccountCurrency"); //credit value base currency
+        }
+
+        /**
+         * 
+         */
+        if (trData.item===selectedItem || transactionRefToTheItem(trIdList,trData.trId));
+            transactions.push(trData);
+    }
+    return transactions;
+}
+
+/**
+ * Check that the registration id is in the list of registration ids on the item.
+ * @param {*} trIdList list of id
+ * @param {*} trId the transaction id
+ */
+function transactionRefToTheItem(trIdList,trId){
+    for(var i=0;i<trIdList.length;i++){
+        if(trId===trIdList[i])
+            return true;
+    }
+    return false;
+}
+
+/**
+ * Calculates how the quantity of securities is updated after each movement 
+ * @param {*} transactions the movements of the item.
+ */
+function getQuantityBalance(transactions){
+    for (var key in transactions){
+        transactions[key].exchangeRate=Banana.SDecimal.divide(transactions[key].balanceCurr,transactions[key].quantityBalance);
     }
 
     return transactions;
 }
+/**
+ * Calculates how the average accounting cost of the security is updated after each movement.
+ * The accounting average cost is calculated by doing: Balance (in the item currency)/Quantity balance.
+ * @param {*} transactions the movements of the item
+ */
+function getCurrentAccAvgCost(transactions){
+    for (var key in transactions){
+        transactions[key].exchangeRate=Banana.SDecimal.divide(transactions[key].balanceCurr,transactions[key].quantityBalance);
+    }
+    return transactions;
+}
+
+/**
+ * Calculates how the accounting exchange rate is updated after each movement
+ * @param {*} transactions the movements of the item
+ * @returns 
+ */
+function getCurrentAccExchangeRate(transactions){
+
+    for (var key in transactions){
+        transactions[key].exchangeRate=Banana.SDecimal.divide(transactions[key].balanceBase,transactions[key].balanceCurr);
+    }
+
+    return transactions;
+
+}
 
 //esempio struttura dati.
-var secCardData={
+var itemCardData={
     "date":"date",
     "data":[
         {
@@ -214,8 +366,8 @@ var secCardData={
                         "debit (itemCurr)":"",
                         "credit (itemCurr)":"",
                         "balance (itemCurr)":"",
-                        "Current Average Cost":"",
                         "Quantity Balance":"",
+                        "Current Average Cost":"",
                         },
                         {
                         "date":"",
@@ -227,8 +379,8 @@ var secCardData={
                         "debit (itemCurr)":"",
                         "credit (itemCurr)":"",
                         "balance (itemCurr)":"",
-                        "Current Average Cost":"",
                         "Quantity Balance":"",
+                        "Current Average Cost":"",
                         },
                     ]
         }
