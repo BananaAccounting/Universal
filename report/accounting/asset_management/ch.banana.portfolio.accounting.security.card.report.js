@@ -39,7 +39,7 @@ function exec(inData, options) {
     var journalData=[];
     var trIdList="";// transactions id List
     var accountCard=""; //hold the account card table
-    var accountCardData=""; 
+    var accountCardData="";
     var itemCardData={};
 
     if (!banDoc)
@@ -201,30 +201,77 @@ function getTransactionsIdList(journalData){
 }
 
 function getItemCardData(docInfo,selectedItem,accountCardData,journalData){
-    var itemCardData=[...accountCardData,...journalData]; //merge the arrays
-    itemCardData.sort(compare); //sort the array be trId
-    Banana.Ui.showText(JSON.stringify(itemCardData));
-    getCurrentAccExchangeRate();
-    getCurrentAccAvgCost();
+    SetSoldData(accountCardData,journalData);
+    getQuantityBalance(accountCardData);
+    getCurrentAccAvgCost(accountCardData); //riprendere da qui, assegnare il valore ritornato ad un oggetto.
 
     return itemCardData;
 }
 
-function compare( a, b ) {
-    if ( a.trId < b.trId ){
-      return -1;
+/**
+ *  * Calculates how the average accounting cost of the security is updated after each movement.
+ * The accounting average cost is calculated by doing: Balance (in the item currency)/Quantity balance.
+ * Calculates for each line of the card the average accounting purchase price.
+ * @param {*} accountCardData 
+ * @param {*} balanceCol 
+ */
+function getCurrentAccAvgCost(accountCardData,balanceCol){
+    for(var key in accountCardData){
+        return Banana.SDecimal.divide(accountCardData[key].balanceCurr,accountCardData[key].qtBalance);
     }
-    if ( a.trId > b.trId ){
-      return 1;
+}
+
+/**
+ * Calculates for each line of the card the cumulative quantity
+ * @param {*} accountCardData 
+ * @returns 
+ */
+function getQuantityBalance(accountCardData){
+    let amountBalance="";
+    for(var key in accountCardData){
+        amountBalance=Banana.SDecimal.add(amountBalance,accountCardData[key].qt);
+        accountCardData[key].qtBalance=amountBalance;
     }
-    return 0;
-  }
+    return accountCardData;
+}
+
+/**
+ * Sets the quantity and the price to the sales records in the accountCard by taking the data from the journal lines
+ * If the accountCard line does not have the item, it means that the  
+ * represents the sales amount. To this amount I add the quantity that I retrieve from the journal, 
+ * I retrieve it by going to the only line that contains a reference to the quantity of the record with the same id.
+ * @param {*} accountCardData 
+ * @param {*} journalData 
+ */
+function SetSoldData(accountCardData,journalData){
+
+    for(var key in accountCardData){
+        if(!accountCardData[key].item){
+            let trId=accountCardData[key].trId;
+            accountCardData[key].qt=getJournalValueFiltered(journalData,trId,"qt");
+            accountCardData[key].unitPrice=getJournalValueFiltered(journalData,trId,"unitPrice");
+        }
+    }
+    return accountCardData
+}
+
+function getJournalValueFiltered(journalData,trId,objProp){
+
+    let value="";
+    for(var key in journalData){
+        if(journalData[key].trId==trId && journalData[key][objProp]){
+            value=journalData[key][objProp];
+            return value;
+        }
+    }
+    return value;
+}
 
 /**
  * Reads the journal data and returns an array of objects with the information we need
  * @param {*} journal journal table
  */
-function getJournalData(docInfo,journal,selectedItem){
+function getJournalData(docInfo,journal,selectedItem,){
     var journalData=[];
 
     for (var i = 0; i < journal.rowCount; i++) {
@@ -282,6 +329,8 @@ function getAccountCardData(docInfo,selectedItem,accountCard,trIdList){
         trData.debitBase = tRow.value("JDebitAmount"); //debit value in base currency
         trData.creditBase = tRow.value("JCreditAmount"); //credit value base currency
         trData.balanceBase = tRow.value("JBalance"); //credit value base currency
+        trData.qt=tRow.value("Quantity");
+        trData.unitPrice=tRow.value("UnitPrice");
         if(docInfo.isMultiCurrency){
             trData.debitCurr = tRow.value("JDebitAmountCurrency"); //debit value in base currency
             trData.creditCurr = tRow.value("JCreditAmountCurrency"); //credit value base currency
@@ -308,44 +357,6 @@ function transactionRefToTheItem(trIdList,trId){
             return true;
     }
     return false;
-}
-
-/**
- * Calculates how the quantity of securities is updated after each movement 
- * @param {*} transactions the movements of the item.
- */
-function getQuantityBalance(transactions){
-    for (var key in transactions){
-        transactions[key].exchangeRate=Banana.SDecimal.divide(transactions[key].balanceCurr,transactions[key].quantityBalance);
-    }
-
-    return transactions;
-}
-/**
- * Calculates how the average accounting cost of the security is updated after each movement.
- * The accounting average cost is calculated by doing: Balance (in the item currency)/Quantity balance.
- * @param {*} transactions the movements of the item
- */
-function getCurrentAccAvgCost(transactions){
-    for (var key in transactions){
-        transactions[key].exchangeRate=Banana.SDecimal.divide(transactions[key].balanceCurr,transactions[key].quantityBalance);
-    }
-    return transactions;
-}
-
-/**
- * Calculates how the accounting exchange rate is updated after each movement
- * @param {*} transactions the movements of the item
- * @returns 
- */
-function getCurrentAccExchangeRate(transactions){
-
-    for (var key in transactions){
-        transactions[key].exchangeRate=Banana.SDecimal.divide(transactions[key].balanceBase,transactions[key].balanceCurr);
-    }
-
-    return transactions;
-
 }
 
 //esempio struttura dati.
