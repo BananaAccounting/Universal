@@ -460,7 +460,7 @@ function getItemRelatedTransactions(item,transactionsData){
             trData.description=transactionsData[key].description;
             trData.qt=transactionsData[key].qt;
             qtBalance=Banana.SDecimal.add(qtBalance,trData.qt);
-            trData.qtBalance=qtBalance //cumulative quantity
+            trData.qtBalance=qtBalance;
             trData.unitPrice=transactionsData[key].unitPrice;
             trData.amount=setSign(transactionsData[key].amount,trData.qt,transactionsData[key].debit);
             amountBalance=Banana.SDecimal.add(amountBalance,trData.amount);
@@ -470,6 +470,7 @@ function getItemRelatedTransactions(item,transactionsData){
     }
     return transactions;
 }
+
 /**
  * Sets the negative sign to those amounts that represent a decrease in the value of the securities account.
  * Decreases are recognised in the thank you entries:
