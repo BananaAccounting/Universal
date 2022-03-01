@@ -47,8 +47,8 @@
 function getItemCurrency(itemData,item){
     let itemcCurr="";
 
-    for(var e in itemData){  
-        if(itemData[e].item==item && itemData[e].currency!=""){
+    for(var e in itemData){
+        if(itemData[e].item==item && itemData[e].currency!==""){
             itemcCurr=itemData[e].currency;
             return itemcCurr;
         }
@@ -94,6 +94,10 @@ function getDocumentInfo(banDoc){
     //get the accounts for the recording of exchange rate differences.
     docInfo.accountExchangeRateProfit=banDoc.info("AccountingDataBase","AccountExchangeRateProfit");
     docInfo.accountExchangeRateLoss=banDoc.info("AccountingDataBase","AccountExchangeRateLoss");
+    docInfo.company=banDoc.info("AccountingDataBase","Company");
+    docInfo.address=banDoc.info("AccountingDataBase","Address1");
+    docInfo.zip=banDoc.info("AccountingDataBase","Zip");
+    docInfo.city=banDoc.info("AccountingDataBase","City");
 
 
     return docInfo;

@@ -25,22 +25,20 @@ Styles for the amounts
 .styleNormalAmount {
     text-align: right;
 }
-.styleNegativeAmount{
+.styleTotalAmount{
     text-align: right;
-    color: red;
-}
-.styleTotalNegativeAmount{
-    text-align: right;
-    color: red;
-    border-top: solid;
-    border-top-style:solid;
-    border-color: rgb(0, 0, 0);
+    font-weight: bold;
 }
 
 
 /*************************************
 Styles for the texts
 *************************************/
+
+.styleDescrTotals{
+    text-align: left;
+    font-weight: bold;
+}
 
 .styleTitles {
     font-weight: bold;
