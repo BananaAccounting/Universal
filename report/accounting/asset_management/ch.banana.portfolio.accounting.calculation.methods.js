@@ -56,26 +56,6 @@ function getItemCurrency(itemData,item){
 
 }
 
-function getCurrentRowData(banDoc,transList){
-    var currRowNr=banDoc.cursor.rowNr;
-
-    if(transList){
-        for (var i = 0; i < transList.length; i++) {
-            if(transList[i].row==currRowNr){
-                currentRowData={};
-                currentRowData.date=transList[i].date;
-                currentRowData.description=transList[i].description;
-                currentRowData.debit=transList[i].debit;
-                currentRowData.credit=transList[i].credit;
-                currentRowData.amount=transList[i].amount;
-                currentRowData.rate=transList[i].rate;
-
-                return currentRowData;
-            }
-        }
-    }
-}
-
 
 function getDocumentInfo(banDoc){
 
@@ -108,7 +88,7 @@ function getDocumentInfo(banDoc){
  * Get the data from the transactions table only once
  * The isreport parameter identifies the script from which i call the method. for the report i need to take the amount in base currency in any case (method to be reviewed)
  */
- function getTransactionsTableData(banDoc,docInfo,isReport){
+ function getTransactionsTableData(banDoc,docInfo){
     var transactionsList = [];
     var trnsactionsTable = banDoc.table("Transactions");
 
@@ -127,14 +107,12 @@ function getDocumentInfo(banDoc){
             trData.qt=tRow.value("Quantity");
             trData.unitPrice=tRow.value("UnitPrice");
             //check if it is a multichange file or not
-            if(docInfo.isMultiCurrency && !isReport){
-                trData.amount=tRow.value("AmountCurrency");
+            if(docInfo.isMultiCurrency){
+                trData.amountCurr=tRow.value("AmountCurrency");
                 trData.currency=tRow.value("ExchangeCurrency");
                 trData.rate=tRow.value("ExchangeRate");
             }
-            else{
-                trData.amount=tRow.value("Amount");
-            }
+            trData.amountBase=tRow.value("Amount");
 
 
             transactionsList.push(trData);
@@ -153,7 +131,10 @@ function getSumOfPurchasedShares(item,transList){
     if(transList){
         for (var i = 0; i < transList.length; i++) {
             if(transList[i].item==item && transList[i].qt && Banana.SDecimal.sign(transList[i].qt)!=-1){
-                rowPurchase=transList[i].amount;
+                if(transList[i].amountCurr)
+                    rowPurchase=transList[i].amountCurr;
+                else
+                    rowPurchase=transList[i].amountBase;
                 purchasesSum=Banana.SDecimal.add(purchasesSum,rowPurchase);
             }
         }
@@ -183,6 +164,8 @@ function getQtOfSharesPurchased(item,transList){
  * To calculate the average cost, divide the total purchase amount by the number of shares purchased to figure the average cost per share. 
  */
  function getAverageCost(item,transList){
+
+    //cambiare metodo di calcolo del prezzo medio ?
 
     var purchaseSum=getSumOfPurchasedShares(item,transList);
     var purchaseQt=getQtOfSharesPurchased(item,transList);
@@ -283,13 +266,15 @@ function calculateShareSaleData(banDoc,docInfo,userParam,itemsData){
     var totalSharesvalue="";
     var saleResult="";
     var exRateResult="";
-    var transList=getTransactionsTableData(banDoc,docInfo,false);
+    var transList=getTransactionsTableData(banDoc,docInfo);
     
     item=userParam.selectedItem;
     quantity=userParam.quantity;
     marketPrice=userParam.marketPrice;
     currExRate=userParam.currExRate;
     accExRate=getAccountingCourse(item,itemsData,banDoc);
+
+    Banana.console.debug(accExRate);
 
     avgCost=getAverageCost(item,transList);
     avgSharesValue=getSharesAvgValue(quantity,avgCost);
@@ -439,7 +424,11 @@ function getItemsDataList(itemsData,transactionsData,account){
 
             itemData.item=itemsData[key].item;
             itemData.transactions=getItemRelatedTransactions(itemsData[key].item,transactionsData);
-            itemData.balance=sumArrayElements(itemData.transactions,"amount");
+            //i take the resulting balance from the transactions for displaiing it as result balance for the item.
+            if(itemData.transactions){
+                itemData.balanceBase=itemData.transactions.slice(-1)[0].balanceBase;
+                itemData.balanceCurr=itemData.transactions.slice(-1)[0].balanceCurr;
+            }
 
             itemsDataList.push(itemData);
         }
@@ -456,7 +445,8 @@ function getItemsDataList(itemsData,transactionsData,account){
 function getItemRelatedTransactions(item,transactionsData){
     var transactions=[];
     var  qtBalance="";
-    var amountBalance="";
+    var amountBalanceBase="";
+    var amountBalanceCurr="";
 
     for(var key in transactionsData){
         if(transactionsData[key].item.includes(item)){
@@ -466,9 +456,12 @@ function getItemRelatedTransactions(item,transactionsData){
             qtBalance=Banana.SDecimal.add(qtBalance,trData.qt);
             trData.qtBalance=qtBalance;
             trData.unitPrice=transactionsData[key].unitPrice;
-            trData.amount=setSign(transactionsData[key].amount,trData.qt,transactionsData[key].debit);
-            amountBalance=Banana.SDecimal.add(amountBalance,trData.amount);
-            trData.amountBalance=amountBalance; //Amount Balance
+            trData.amountBase=setSign(transactionsData[key].amountBase,trData.qt,transactionsData[key].debit);
+            trData.amountCurr=setSign(transactionsData[key].amountCurr,trData.qt,transactionsData[key].debit);
+            amountBalanceBase=Banana.SDecimal.add(amountBalanceBase,trData.amountBase);
+            amountBalanceCurr=Banana.SDecimal.add(amountBalanceCurr,trData.amountCurr);
+            trData.balanceBase=amountBalanceBase;
+            trData.balanceCurr=amountBalanceCurr;
             transactions.push(trData);
         }
     }
@@ -487,6 +480,10 @@ function getItemRelatedTransactions(item,transactionsData){
  */
 function setSign(amount,qt,debitAmount){
     var newAmount="";
+
+    if(!amount){
+        return newAmount;
+    }
 
     if((qt.includes("-"))|| debitAmount!=="" && qt==""){
         newAmount="-"+amount;
@@ -529,18 +526,23 @@ function getAccountsDataList(banDoc,accountList,itemsData,transactionsData){
         accBalance=banDoc.currentBalance(account);
 
         accData.account=accountList[i];
-        accData.openBalance=accBalance.opening;
-        accData.currentBalance=accBalance.balance;
+        accData.openBalanceBase=accBalance.opening;
+        accData.openBalanceCurr=accBalance.openingCurrency;
+        accData.currentBalanceBase=accBalance.balance;
+        accData.currentBalanceCurr=accBalance.balanceCurrency;
+        accData.currency="";
 
         //get the items data.
         itemsDataList=getItemsDataList(itemsData,transactionsData,account); //ritorna l'array di items con questo account.
         accData.items=itemsDataList;
 
         //get total amount of transactions for securities registered in this account
-        accData.securityTrAmount=sumArrayElements(itemsDataList,"balance"); 
+        accData.securityTrAmountBase=sumArrayElements(itemsDataList,"balanceBase"); 
+        accData.securityTrAmountCurrency=sumArrayElements(itemsDataList,"balanceCurr");
 
         //difference between the securities transactions and the account balance (should be 0).
-        accData.difference=Banana.SDecimal.subtract(accData.securityTrAmount,accData.currentBalance);
+        accData.differenceBase=Banana.SDecimal.subtract(accData.securityTrAmountBase,accData.currentBalanceBase);
+        accData.differenceCurr=Banana.SDecimal.subtract(accData.securityTrAmountCurr,accData.currentBalanceBase);
 
         accDataList.push(accData);
 

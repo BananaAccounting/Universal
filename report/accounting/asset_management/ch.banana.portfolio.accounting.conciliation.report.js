@@ -45,7 +45,7 @@ function exec(inData, options) {
     var accountsDataList=[];
 
     docInfo=getDocumentInfo(banDoc);
-    transactionsData=getTransactionsTableData(banDoc,docInfo,true);
+    transactionsData=getTransactionsTableData(banDoc,docInfo);
     itemsData=getItemsTableData(docInfo);
 
     //Get Secrurity account data.
@@ -55,40 +55,46 @@ function exec(inData, options) {
 
     //Banana.Ui.showText(JSON.stringify(conciliationData));
 
-    var report = printReport(conciliationData);
+    var report = printReport(conciliationData,docInfo);
     var stylesheet = getReportStyle();
     Banana.Report.preview(report, stylesheet);
 
 
 }
 
-function getConciliationTable(report,currentDate){
+function getConciliationTable(report,docInfo,currentDate,concData){
     currentDate=Banana.Converter.toInternalDateFormat(currentDate);
     var tableConc = report.addTable('myTableConc');
+    var baseCurr=docInfo.currency;
+    //var accCurr=concData.data.currency;
     tableConc.setStyleAttributes("width:100%;");
     tableConc.getCaption().addText(qsTr("Securities Conciliation Report \n Data as of: "+currentDate), "styleTitles");
 
     //columns definition 
     tableConc.addColumn("Account").setStyleAttributes("width:15%");
     tableConc.addColumn("Asset").setStyleAttributes("width:15%");
-    tableConc.addColumn("Description").setStyleAttributes("width:20%");
+    tableConc.addColumn("Description").setStyleAttributes("width:30%");
     tableConc.addColumn("Quantity").setStyleAttributes("width:15%");
-    tableConc.addColumn("Price").setStyleAttributes("width:15%");
-    tableConc.addColumn("Amount").setStyleAttributes("width:15%");
-    tableConc.addColumn("Amount Balance").setStyleAttributes("width:15%");
+    tableConc.addColumn("Price (base/account Currency)").setStyleAttributes("width:15%");
+    tableConc.addColumn("Amount (base Currency)").setStyleAttributes("width:20%");
+    tableConc.addColumn("Balance (base Currency)").setStyleAttributes("width:20%");
+    tableConc.addColumn("Amount (account Currency)").setStyleAttributes("width:20%");
+    tableConc.addColumn("Balance (account Currency)").setStyleAttributes("width:20%");
     tableConc.addColumn("Quantity Balance").setStyleAttributes("width:15%");
     
     //headers
     var tableHeader = tableConc.getHeader();
     var tableRow = tableHeader.addRow();
-    tableRow.addCell("Account", "");
-    tableRow.addCell("Asset", "");
-    tableRow.addCell("Description", "");
-    tableRow.addCell("Quantity", "");
-    tableRow.addCell("Price", "");
-    tableRow.addCell("Amount", "");
-    tableRow.addCell("Amount Balance", "");
-    tableRow.addCell("Quantity Balance", "");
+    tableRow.addCell("Account", "styleTablesHeaderText");
+    tableRow.addCell("Asset", "styleTablesHeaderText");
+    tableRow.addCell("Description", "styleTablesHeaderText");
+    tableRow.addCell("Quantity", "styleTablesHeaderText");
+    tableRow.addCell("Price", "styleTablesHeaderText");
+    tableRow.addCell("Amount (base curr.)", "styleTablesHeaderText");
+    tableRow.addCell("Balance (base curr.)", "styleTablesHeaderText");
+    tableRow.addCell("Amount (account curr.)", "styleTablesHeaderText");
+    tableRow.addCell("Balance (account curr.)", "styleTablesHeaderText");
+    tableRow.addCell("Quantity Balance", "styleTablesHeaderText");
 
     return tableConc;
 }
@@ -97,26 +103,26 @@ function getConciliationTable(report,currentDate){
  * Print the report.
  * @param {*} conciliationData the data.
  */
-function printReport(conciliationData){
+function printReport(conciliationData,docInfo){
 
     //create the report
     var report = Banana.Report.newReport("Conciliation Report");
     var currentDate=new Date();
     //add Conciliation table
-    var tabConc = getConciliationTable(report,currentDate);
     var concData=conciliationData.data;
+    var tabConc = getConciliationTable(report,docInfo,currentDate,concData);
 
     //Print the data.
     for(var a in concData){
         var tableRow = tabConc.addRow("styleTableRows");
-        tableRow.addCell(concData[a].account, '',8);
+        tableRow.addCell(concData[a].account, '',10);
         var items=concData[a].items;
         for(var i in items){
             var item=items[i];
             var itemTr=item.transactions
             var tableRow = tabConc.addRow("styleTableRows");
             tableRow.addCell("", "");
-            tableRow.addCell(item.item, '',7);
+            tableRow.addCell(item.item, '',9);
             for(var t in itemTr){//loop trough all the transactions for this item
                 var tableRow = tabConc.addRow("styleTableRows");
                 tableRow.addCell("", "");
@@ -124,40 +130,56 @@ function printReport(conciliationData){
                 tableRow.addCell(itemTr[t].description, '');
                 tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemTr[t].qt,0,false), "styleNormalAmount");
                 tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemTr[t].unitPrice,2,false), "styleNormalAmount");
-                tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemTr[t].amount,2,false), "styleNormalAmount");
-                tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemTr[t].amountBalance,2,false), "styleNormalAmount");
+                tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemTr[t].amountBase,2,false), "styleNormalAmount");
+                tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemTr[t].balanceBase,2,false), "styleNormalAmount");
+                tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemTr[t].amountCurr,2,false), "styleNormalAmount");
+                tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemTr[t].balanceCurr,2,false), "styleNormalAmount");
                 tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemTr[t].qtBalance,2,false), "styleNormalAmount");
             }
             //add the item balance.
             var tableRow = tabConc.addRow("styleTableRows");
+            tableRow.addCell("", "",2);
+            tableRow.addCell("Security Balance","styleDescrTotals",4);
+            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(item.balanceBase,2,true),"styleTotalAmount");
             tableRow.addCell("", "",1);
-            tableRow.addCell("Security Balance","descrAccBalancesLevel",4);
-            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(item.balance,2,true),"amountAccBalancesLevel");
-            tableRow.addCell("", "",3);
+            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(item.balanceCurr,2,true),"styleTotalAmount");
+            tableRow.addCell("", "");
             var tableRow = tabConc.addRow("styleTableRows");
-            tableRow.addCell("", "",8);
+            tableRow.addCell("", "",10);
         }
         //add the account balance and the total transactions for the item
         var tableRow = tabConc.addRow("styleTableRows");
-        tableRow.addCell("","",1);
-        tableRow.addCell("Opening Balance","descrAccBalancesLevel",4);
-        tableRow.addCell(Banana.Converter.toLocaleNumberFormat(concData[a].openBalance,2,true), 'amountAccBalancesLevel');
-        tableRow.addCell("", "",3);
+        tableRow.addCell("","",2);
+        //opening balance
+        tableRow.addCell("Opening Balance","styleDescrTotals",4);
+        tableRow.addCell(Banana.Converter.toLocaleNumberFormat(concData[a].openBalanceBase,2,true), 'styleTotalAmount');
+        tableRow.addCell("", "",1);
+        tableRow.addCell(Banana.Converter.toLocaleNumberFormat(concData[a].openBalanceCurr,2,true), 'styleTotalAmount');
+        tableRow.addCell("", "");
+        //current balance
         var tableRow = tabConc.addRow("styleTableRows");
-        tableRow.addCell("","",1);
-        tableRow.addCell("Current Balance","descrAccBalancesLevel",4);
-        tableRow.addCell(Banana.Converter.toLocaleNumberFormat(concData[a].currentBalance,2,true), 'amountAccBalancesLevel');
-        tableRow.addCell("", "",3);
+        tableRow.addCell("","",2);
+        tableRow.addCell("Current Balance","styleDescrTotals",4);
+        tableRow.addCell(Banana.Converter.toLocaleNumberFormat(concData[a].currentBalanceBase,2,true), 'styleTotalAmount');
+        tableRow.addCell("", "",1);
+        tableRow.addCell(Banana.Converter.toLocaleNumberFormat(concData[a].currentBalanceCurr,2,true), 'styleTotalAmount');
+        tableRow.addCell("", "");
+        //transactions total
         var tableRow = tabConc.addRow("styleTableRows");
-        tableRow.addCell("","",1);
-        tableRow.addCell("Total securities movements","descrAccBalancesLevel",4);
-        tableRow.addCell(Banana.Converter.toLocaleNumberFormat(concData[a].securityTrAmount,2,true), 'amountAccBalancesLevel');
-        tableRow.addCell("", "",3);
+        tableRow.addCell("","",2);
+        tableRow.addCell("Total securities movements","styleDescrTotals",4);
+        tableRow.addCell(Banana.Converter.toLocaleNumberFormat(concData[a].securityTrAmountBase,2,true), 'styleTotalAmount');
+        tableRow.addCell("", "",1);
+        tableRow.addCell(Banana.Converter.toLocaleNumberFormat(concData[a].securityTrAmountCurr,2,true), 'styleTotalAmount');
+        tableRow.addCell("", "");
+        //difference
         var tableRow = tabConc.addRow("styleTableRows");
-        tableRow.addCell("","",1);
-        tableRow.addCell("Differences","descrAccBalancesLevel",4);
-        tableRow.addCell(Banana.Converter.toLocaleNumberFormat(concData[a].difference,2,true),"amountAccBalancesLevel");
-        tableRow.addCell("", "",3);
+        tableRow.addCell("","",2);
+        tableRow.addCell("Differences","styleDescrTotals",4);
+        tableRow.addCell(Banana.Converter.toLocaleNumberFormat(concData[a].differenceBase,2,true),"styleTotalAmount");
+        tableRow.addCell("", "",1);
+        tableRow.addCell(Banana.Converter.toLocaleNumberFormat(concData[a].differenceCurr,2,true),"styleTotalAmount");
+        tableRow.addCell("", "");
     }
 
     return report;
@@ -197,8 +219,11 @@ var conciliationData={
     "data":[
         {
             "account":"1400",
-            "accountOpening":"0.00",
-            "accountBalance":"500.00",
+            "accountOpeningBase":"500.00",
+            "accountBalanceBase":"500.00",
+            "accountOpeningCurr":"500.00",
+            "accountBalanceCurr":"500.00",
+            "currency":"CHF",
             "items":[
                 {
                     "item":"CH003886335",
@@ -207,25 +232,30 @@ var conciliationData={
                         {
                         "description":"",
                         "qt":"",
+                        "price":"",//in the account currency
+                        "amountBase":"",
+                        "balanceBase":"",
+                        "amountCurr":"",
+                        "balanceCurr":"",
                         "qtBalance":"",
-                        "price":"",
-                        "amount":"",
-                        "amountBalance":""
                         },
                         {
                         "description":"",
                         "qt":"",
+                        "price":"",//in the account currency
+                        "amountBase":"",
+                        "balanceBase":"",
+                        "amountCurr":"",
+                        "balanceCurr":"",
                         "qtBalance":"",
-                        "price":"",
-                        "amount":"",
-                        "amountBalance":""
                         },
                         {
 
                             "...":"..."
                         }
                     ],
-                    "balance":"1187.55"
+                    "balanceBase":"1187.55",
+                    "balanceCurr":"1187.55",
 
                 },
                 {
@@ -235,17 +265,20 @@ var conciliationData={
                         {
                         "description":"",
                         "qt":"",
+                        "price":"",//in the account currency
+                        "amountBase":"",
+                        "balanceBase":"",
+                        "amountCurr":"",
+                        "balanceCurr":"",
                         "qtBalance":"",
-                        "price":"",
-                        "amount":"",
-                        "amountBalance":""
                         },
                         {
 
                             "...":"..."
                         }
                     ],
-                    "balance":"500"
+                    "balanceBase":"500",
+                    "balanceCurr":"500"
 
                 }
             ],
@@ -256,6 +289,7 @@ var conciliationData={
             "account":"1401",
             "opening":"0.00",
             "accountBalance":"200.00",
+            "currency":"EUR",
             "items":[
                 {
                     "item":"IT0005239360",
@@ -263,10 +297,12 @@ var conciliationData={
                         {
                         "description":"",
                         "qt":"",
+                        "price":"",//in the account currency
+                        "amountBase":"",
+                        "balanceBase":"",
+                        "amountCurr":"",
+                        "balanceCurr":"",
                         "qtBalance":"",
-                        "price":"",
-                        "amount":"",
-                        "amountBalance":""
                         }
                     ]
 
