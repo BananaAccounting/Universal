@@ -53,7 +53,6 @@ function exec(inData, options) {
 
 
     docInfo=getDocumentInfo(banDoc);
-    transactionsData=getTransactionsTableData(banDoc,docInfo,true);
     itemsData=getItemsTableData(docInfo);
     itemAccount=getItemValue(itemsData,selectedItem,"account");
     itemCurrency=getItemCurrency(itemsData,selectedItem);
@@ -79,6 +78,9 @@ function exec(inData, options) {
         itemCardData.totalCreditCurr=getSum(accountCardData,"creditCurr");
         itemCardData.totalBalanceCurr=getBalance(accountCardData,"debitCurr","creditCurr");
     }
+    //In the total I also show the last known cumulative quantity and the last known average accounting cost.
+    itemCardData.totalQtBalance=itemCardData.data.slice(-1)[0].qtBalance; 
+    itemCardData.totalCurrAvgCost=itemCardData.data.slice(-1)[0].accAvgCost;
 
 
     var report = printReport(docInfo,itemCardData);
@@ -113,8 +115,8 @@ function getItemCardTable(report,docInfo,currentDate,basCurr,itemCardData){
     tableConc.addColumn("Description").setStyleAttributes("width:35%");
     tableConc.addColumn("Debit (Base Currency)").setStyleAttributes("width:15%");
     tableConc.addColumn("Credit (Base Currency)").setStyleAttributes("width:15%");
+    tableConc.addColumn("Balance (Base Currency)").setStyleAttributes("width:15%");
     if(docInfo.isMultiCurrency){
-        tableConc.addColumn("Balance (Item Currency)").setStyleAttributes("width:15%");
         tableConc.addColumn("Debit (Item Currency)").setStyleAttributes("width:15%");
         tableConc.addColumn("Credit (Item Currency)").setStyleAttributes("width:15%");
         tableConc.addColumn("Balance (Item Currency)").setStyleAttributes("width:15%");
@@ -131,16 +133,23 @@ function getItemCardTable(report,docInfo,currentDate,basCurr,itemCardData){
     tableRow.addCell("Description", "styleTablesHeaderText");
     tableRow.addCell("Debit "+basCurr, "styleTablesHeaderText");
     tableRow.addCell("Credit "+basCurr, "styleTablesHeaderText");
-    tableRow.addCell("Balance"+basCurr, "styleTablesHeaderText");
+    tableRow.addCell("Balance "+basCurr, "styleTablesHeaderText");
     if(docInfo.isMultiCurrency){
         tableRow.addCell("Debit "+itemCurr, "styleTablesHeaderText");
         tableRow.addCell("Credit "+itemCurr, "styleTablesHeaderText");
         tableRow.addCell("Balance "+itemCurr, "styleTablesHeaderText");
     }
     tableRow.addCell("Quantity ", "styleTablesHeaderText");
-    tableRow.addCell("Unit Price "+itemCurr, "styleTablesHeaderText");
+    if(itemCurr)
+        tableRow.addCell("Unit Price "+itemCurr, "styleTablesHeaderText");
+    else
+        tableRow.addCell("Unit Price "+basCurr, "styleTablesHeaderText");
+
     tableRow.addCell("Quantity balance", "styleTablesHeaderText");
-    tableRow.addCell("Curr. average cost "+itemCurr, "styleTablesHeaderText");
+    if(itemCurr)
+        tableRow.addCell("Curr. average cost "+itemCurr, "styleTablesHeaderText");
+    else
+        tableRow.addCell("Curr. average cost "+basCurr, "styleTablesHeaderText");
 
     return tableConc;
 }
@@ -189,7 +198,9 @@ function printReport(docInfo,itemCardData){
         tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemCardData.totalCreditCurr,2,false),"styleTotalAmount");
         tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemCardData.totalBalanceCurr,2,false),"styleTotalAmount");
     }
-    tableRow.addCell("","",4);
+    tableRow.addCell("","",2);
+    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemCardData.totalQtBalance,2,false),"styleTotalAmount");
+    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemCardData.totalCurrAvgCost,3,false),"styleTotalAmount");
 
     return report;
 
@@ -306,9 +317,12 @@ function getBalance(itemCardData,debRef,credRef){
 
 function getItemCardData(accountCardData,journalData){
     var itemCardData={};
+    var balRefCol=""; //ref column for balance
+
     SetSoldData(accountCardData,journalData);
     getQuantityBalance(accountCardData);
-    itemCardData=getCurrentAccAvgCost(accountCardData);
+
+    itemCardData=getCurrentAccAvgCost(accountCardData,balRefCol);
 
     return itemCardData;
 }
@@ -320,10 +334,18 @@ function getItemCardData(accountCardData,journalData){
  * @param {*} accountCardData 
  * @param {*} balanceCol 
  */
-function getCurrentAccAvgCost(accountCardData,balCol){
+function getCurrentAccAvgCost(accountCardData){
     var context = {'decimals' : 2, 'mode' : Banana.SDecimal.HALF_EVEN};
     for(var key in accountCardData){
-        accountCardData[key].accAvgCost=Banana.SDecimal.divide(accountCardData[key].balanceCurr,accountCardData[key].qtBalance,context);
+        /**
+         * if the balance sheet column in foreign currency exists, I am sure that it is a multi-currency account, 
+         * so I take the value of the balance sheet in the currency of the asset, wich in case of an asset in the same currency as the base currency, 
+         * the value is the same.
+         */
+        if(accountCardData[key].balanceCurr)
+            accountCardData[key].accAvgCost=Banana.SDecimal.divide(accountCardData[key].balanceCurr,accountCardData[key].qtBalance,context);
+        else
+            accountCardData[key].accAvgCost=Banana.SDecimal.divide(accountCardData[key].balanceBase,accountCardData[key].qtBalance,context);
     }
 
     return accountCardData;
@@ -506,5 +528,8 @@ var itemCardData={
     "TotalBalance (baseCurr)":"",
     "TotalDebit (itemCurr)":"",
     "TotalCredit (itemCurr)":"",
-    "TotalBalance (itemCurr)":""
+    "TotalBalance (itemCurr)":"",
+    "TotalQtBalance (itemCurr)":"",//the last value calculated in the column: Quantity Balance
+    "TotalCurrAvgCost (itemCurr)":"",//the last value calculated in the column: Current Average Cost
+
 }
