@@ -29,6 +29,11 @@ Styles for the amounts
     text-align: right;
     font-weight: bold;
 }
+.styleTotalAmountNegative{
+    text-align: right;
+    font-weight: bold;
+    color: red;
+}
 
 
 /*************************************
@@ -59,16 +64,11 @@ Styles for the texts
     text-align: center;
 }
 
-.descrAccBalancesLevel {
+.styleSummaryRows {
     text-align: left;
     font-weight: bold;
-    background-color: beige;
-}
+    background-color:  #cad2ff
 
-.amountAccBalancesLevel {
-    text-align: right;
-    font-weight: bold;
-    background-color: beige;
 }
 
 .styleSortedByColumn{

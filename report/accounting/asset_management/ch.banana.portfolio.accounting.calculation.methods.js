@@ -44,6 +44,48 @@
     return jsonDoc;
 }
 
+function getReportHeader(report,docInfo){
+    var headerParagraph = report.getHeader().addSection();
+    headerParagraph.addParagraph(docInfo.company, "styleNormalHeader styleCompanyName");
+    headerParagraph.addParagraph(docInfo.address, "styleNormalHeader");
+    headerParagraph.addParagraph(docInfo.zip+" "+docInfo.city, "styleNormalHeader");
+    headerParagraph.addParagraph("", "");
+    headerParagraph.addParagraph("", "");
+    headerParagraph.addParagraph("", "");
+
+}
+
+function getComboBoxElement(scriptId,title,label) {
+
+    var item = "";
+    //Read script settings
+    var data = Banana.document.getScriptSettings(scriptId);
+
+    //Check if there are previously saved settings and read them
+    if (data.length > 0) {
+        var readSettings = JSON.parse(data);
+        //We check if "readSettings" is not null, then we fill the formeters with the values just read
+        if (readSettings) {
+            item = readSettings;
+        }
+    }
+    //A dialog window is opened asking the user to insert the desired period. By default is the accounting period
+    var selectedItem = Banana.Ui.getText(title,label,item);
+
+    //We take the values entered by the user and save them as "new default" values.
+    //This because the next time the script will be executed, the dialog window will contains the new values.
+    if (selectedItem) {
+        item=selectedItem;
+        //Save script settings
+        var valueToString = JSON.stringify(item);
+        Banana.document.setScriptSettings(scriptId,valueToString);
+    } else {
+        //User clicked cancel
+        return false;
+    }
+    return item;
+}
+
 function getItemCurrency(itemData,item){
     let itemcCurr="";
 
@@ -274,7 +316,7 @@ function calculateShareSaleData(banDoc,docInfo,userParam,itemsData){
     currExRate=userParam.currExRate;
     accExRate=getAccountingCourse(item,itemsData,banDoc);
 
-    Banana.console.debug(accExRate);
+    //Banana.console.debug(accExRate);
 
     avgCost=getAverageCost(item,transList);
     avgSharesValue=getSharesAvgValue(quantity,avgCost);
@@ -399,154 +441,3 @@ function getItemRowNr(refGroup,tabItemsData){
     return refNr;
 }
 
-/******************************************************
- * 
- * Specifics methods for riconciliation report (forse da spostare)
- * 
- *****************************************************/
-
-/**
- * Creates an array with all the data of all the items that are registered under this account 
- * @param {*} itemsData list of items
- * @param {*} transactionsData list of transactions
- * @param {*} account ref. account.
- */
-    
-function getItemsDataList(itemsData,transactionsData,account){
-
-    var itemsDataList=[];
-
-    for(var key in itemsData){
-        if(account==itemsData[key].account){ //i want to take the transactions related only to the account gave as parameter.
-            var itemData={};
-            itemData.item="";
-            itemData.transactions=[];
-
-            itemData.item=itemsData[key].item;
-            itemData.transactions=getItemRelatedTransactions(itemsData[key].item,transactionsData);
-            //i take the resulting balance from the transactions for displaiing it as result balance for the item.
-            if(itemData.transactions){
-                itemData.balanceBase=itemData.transactions.slice(-1)[0].balanceBase;
-                itemData.balanceCurr=itemData.transactions.slice(-1)[0].balanceCurr;
-            }
-
-            itemsDataList.push(itemData);
-        }
-    }
-    return itemsDataList;
-}
-
-/**
- * Get the transactions related to the item passed as parameter
- * @param {*} item 
- * @param {*} transactionsData 
- * @returns 
- */
-function getItemRelatedTransactions(item,transactionsData){
-    var transactions=[];
-    var  qtBalance="";
-    var amountBalanceBase="";
-    var amountBalanceCurr="";
-
-    for(var key in transactionsData){
-        if(transactionsData[key].item.includes(item)){
-            var trData={};
-            trData.description=transactionsData[key].description;
-            trData.qt=transactionsData[key].qt;
-            qtBalance=Banana.SDecimal.add(qtBalance,trData.qt);
-            trData.qtBalance=qtBalance;
-            trData.unitPrice=transactionsData[key].unitPrice;
-            trData.amountBase=setSign(transactionsData[key].amountBase,trData.qt,transactionsData[key].debit);
-            trData.amountCurr=setSign(transactionsData[key].amountCurr,trData.qt,transactionsData[key].debit);
-            amountBalanceBase=Banana.SDecimal.add(amountBalanceBase,trData.amountBase);
-            amountBalanceCurr=Banana.SDecimal.add(amountBalanceCurr,trData.amountCurr);
-            trData.balanceBase=amountBalanceBase;
-            trData.balanceCurr=amountBalanceCurr;
-            transactions.push(trData);
-        }
-    }
-    return transactions;
-}
-
-/**
- * Sets the negative sign to those amounts that represent a decrease in the value of the securities account.
- * Decreases are recognised in the thank you entries:
- * -The negative quantity in the quantity column, i.e. a sale of securities.
- * -To losses on the sale, in this case I have recorded the loss in a debit account.
- * 
- * @param {*} amount
- * @param {*} qt 
- * @param {*} debitAmount 
- */
-function setSign(amount,qt,debitAmount){
-    var newAmount="";
-
-    if(!amount){
-        return newAmount;
-    }
-
-    if((qt.includes("-"))|| debitAmount!=="" && qt==""){
-        newAmount="-"+amount;
-        return newAmount;
-    }
-
-    return amount;
-}
-
-/**
- * sums the elements in the array, taking into account the values in the property passed as parameter  
- * @param {*} transactions 
- * @returns 
- */
-function sumArrayElements(objArray,property){
-    var sum="";
-
-    for(var key in objArray){
-        sum=Banana.SDecimal.add(sum,objArray[key][property]);
-    }
-
-
-    return sum;
-}
-
-/**
- * For each account creates an object containing the open balance, the current balance and the account nr of the account
- * @param {*} banDoc 
- * @param {*} accountList the list of the accounts defined by the user.
- */
-function getAccountsDataList(banDoc,accountList,itemsData,transactionsData){
-    var accDataList=[];
-
-    for(var i=0;i<accountList.length;i++){
-        var account=accountList[i];
-        var itemsDataList=[];
-        var accData={};
-        var accBalance={};
-
-        accBalance=banDoc.currentBalance(account);
-
-        accData.account=accountList[i];
-        accData.openBalanceBase=accBalance.opening;
-        accData.openBalanceCurr=accBalance.openingCurrency;
-        accData.currentBalanceBase=accBalance.balance;
-        accData.currentBalanceCurr=accBalance.balanceCurrency;
-        accData.currency="";
-
-        //get the items data.
-        itemsDataList=getItemsDataList(itemsData,transactionsData,account); //ritorna l'array di items con questo account.
-        accData.items=itemsDataList;
-
-        //get total amount of transactions for securities registered in this account
-        accData.securityTrAmountBase=sumArrayElements(itemsDataList,"balanceBase"); 
-        accData.securityTrAmountCurrency=sumArrayElements(itemsDataList,"balanceCurr");
-
-        //difference between the securities transactions and the account balance (should be 0).
-        accData.differenceBase=Banana.SDecimal.subtract(accData.securityTrAmountBase,accData.currentBalanceBase);
-        accData.differenceCurr=Banana.SDecimal.subtract(accData.securityTrAmountCurr,accData.currentBalanceBase);
-
-        accDataList.push(accData);
-
-    }
-
-    return accDataList;
-}
