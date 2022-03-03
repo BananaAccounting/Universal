@@ -32,6 +32,9 @@ function exec(inData, options) {
 
     var banDoc=Banana.document;
     var selectedItem=""; //Selected by the user
+    var dlgTitle="Security Isin";
+    var dlgLabel="Enter the Isin number of the security";
+    var scriptId="ch.banana.portfolio.accounting.security.card.report.js";
     var docInfo="";
     var itemsData="";
     var itemAccount="";
@@ -47,7 +50,7 @@ function exec(inData, options) {
     if (!banDoc)
     return "@Cancel";
 
-    selectedItem = getComboBoxElement();
+    selectedItem = getComboBoxElement(scriptId,dlgTitle,dlgLabel);
     if (!selectedItem)
         return false;
 
@@ -91,24 +94,13 @@ function exec(inData, options) {
 
 }
 
-function getReportHeader(report,docInfo){
-    var headerParagraph = report.getHeader().addSection();
-    headerParagraph.addParagraph(docInfo.company, "styleNormalHeader styleCompanyName");
-    headerParagraph.addParagraph(docInfo.address, "styleNormalHeader");
-    headerParagraph.addParagraph(docInfo.zip+", "+docInfo.city, "styleNormalHeader");
-    headerParagraph.addParagraph("", "");
-    headerParagraph.addParagraph("", "");
-    headerParagraph.addParagraph("", "");
-
-}
-
 function getItemCardTable(report,docInfo,currentDate,basCurr,itemCardData){
     currentDate=Banana.Converter.toInternalDateFormat(currentDate);
     var tableConc = report.addTable('myTableConc');
     var item=itemCardData.item;
     var itemCurr=itemCardData.currency;
     tableConc.setStyleAttributes("width:100%;");
-    tableConc.getCaption().addText(qsTr("Security Card: "+item+", Data as of: "+currentDate), "styleTitles");
+    tableConc.getCaption().addText(qsTr("Security Card: "+item+", Data as of: "+Banana.Converter.toLocaleDateFormat(currentDate)), "styleTitles");
 
     //columns definition 
     tableConc.addColumn("Date").setStyleAttributes("width:15%");
@@ -189,7 +181,7 @@ function printReport(docInfo,itemCardData){
     //Print the totals
     var tableRow = tabItemCard.addRow("styleTableRows");
     tableRow.addCell(Banana.Converter.toLocaleDateFormat(currentDate), '');
-    tableRow.addCell("Total transactions", 'styleDescrTotals');
+    tableRow.addCell("Total transactions:  "+itemCardData.item, 'styleDescrTotals');
     tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemCardData.totalDebitBase,2,false),"styleTotalAmount");
     tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemCardData.totalCreditBase,2,false),"styleTotalAmount");
     tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemCardData.totalBalanceBase,2,false),"styleTotalAmount");
@@ -231,37 +223,6 @@ function getReportStyle() {
     style = stylesheet.addStyle("table_bas_transactions");
 
     return stylesheet;
-}
-
-function getComboBoxElement() {
-
-    var item = "";
-    //Read script settings
-    var data = Banana.document.getScriptSettings();
-
-    //Check if there are previously saved settings and read them
-    if (data.length > 0) {
-        var readSettings = JSON.parse(data);
-        //We check if "readSettings" is not null, then we fill the formeters with the values just read
-        if (readSettings) {
-            item = readSettings;
-        }
-    }
-    //A dialog window is opened asking the user to insert the desired period. By default is the accounting period
-    var selectedItem = Banana.Ui.getText("Security", "enter the Isin number of the security ");
-
-    //We take the values entered by the user and save them as "new default" values.
-    //This because the next time the script will be executed, the dialog window will contains the new values.
-    if (selectedItem) {
-        item=selectedItem;
-        //Save script settings
-        var valueToString = JSON.stringify(item);
-        Banana.document.setScriptSettings(valueToString);
-    } else {
-        //User clicked cancel
-        return false;
-    }
-    return item;
 }
 
 /**
