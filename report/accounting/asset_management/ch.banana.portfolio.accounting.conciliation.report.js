@@ -55,7 +55,7 @@ function exec(inData, options) {
         return false;
 
     docInfo=getDocumentInfo(banDoc);
-    transactionsData=getTransactionsTableData(banDoc,docInfo);
+    transactionsData=getTransactionsTableData(banDoc);
     itemsData=getItemsTableData(docInfo);
 
     //Get Secrurity account data.
