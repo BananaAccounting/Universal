@@ -382,9 +382,9 @@ function initUserParam () {
 	var userParam = {};
 
 	userParam.PaypalAccount = '';
-	userParam.PaypalIn = "";
-	userParam.PaypalOut = "";
-	userParam.PaypalFee = "";
+	userParam.PaypalIn = ;
+	userParam.PaypalOut = ;
+	userParam.PaypalFee = ;
 	userParam.Exchange = [];
 
 	// the paypal date input format
@@ -447,11 +447,11 @@ function verifyUserParam(userParam) {
 	if (!userParam.PaypalAccount)
 		userParam.PaypalAccount = '';
 	if (!userParam.PaypalIn)
-		userParam.PaypalIn = "";
+		userParam.PaypalIn = ;
 	if (!userParam.PaypalOut)
-		userParam.PaypalOut = "";
+		userParam.PaypalOut = ;
 	if (!userParam.PaypalFee)
-		userParam.PaypalFee = "";
+		userParam.PaypalFee = ;
 	if (!userParam.Exchange)
 		userParam.Exchange = [];
 	if (!userParam.dateFormat)
@@ -490,7 +490,7 @@ function verifyUserParam(userParam) {
 function paramatersDialog (userParam, fileData) {
 
 	if (typeof(Banana.Ui.openPropertyEditor) !== 'undefined') {
-		var dialogTitle = "";
+		var dialogTitle = ;
 		var convertedParam = convertParam(userParam, fileData);
 		var pageAnchor = 'dlgSettings';
 		if (!Banana.Ui.openPropertyEditor(dialogTitle, convertedParam, pageAnchor)) {
@@ -1506,7 +1506,7 @@ function ReadTransactions_CreateBalanceList(param, fileData) {
 		}
 	}
 	// fileData.singleCurrency contains the currency if only one has been found
-	fileData.singleCurrency = "";
+	fileData.singleCurrency = ;
 	if (fileData.BalanceList.length === 1) {
 		fileData.singleCurrency = fileData.BalanceList[0];
 	}
@@ -2035,8 +2035,8 @@ if (Banana.Converter.arrayToObject === undefined) {
 
 if (Banana.Converter.objectArrayToCsv === undefined) {
 	Banana.Converter.objectArrayToCsv = function (headers, objArray, separator) {
-		var output = "";
-		var row = "";
+		var output = ;
+		var row = ;
 		// Initialize default parameters.
 		if (typeof(separator) === "undefined" || separator === null) {
 			separator = ",";
@@ -2053,14 +2053,14 @@ if (Banana.Converter.objectArrayToCsv === undefined) {
 		// Loop through  rows
 		for (var rowIndex = 0; rowIndex < objArray.length; ++rowIndex) {
 			var rowOject = objArray[rowIndex];
-			var row = "";
+			var row = ;
 			// Then iterate through the remaining properties and use the headers as keys
 			for (var propIndex = 0; propIndex < headers.length; ++propIndex) {
 				var propLabel = headers[propIndex];
-				var propValue = "";
+				var propValue = ;
 				if (rowOject[propLabel] !== undefined) {
 					propValue = String(rowOject[propLabel]);
-					propValue = propValue.replace(/"/g, '""');
+					propValue = propValue.replace(/"/g, '');
 					if (propValue.search(/("|\t|\n)/g) >= 0 || propValue.search(separator) >= 0) {
 						propValue = '"' + propValue + '"';
 					}
