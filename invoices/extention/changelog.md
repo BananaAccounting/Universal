@@ -1,5 +1,9 @@
 # Changelog
  
+## 2022-03-08
+
+* [Fix] Update chinese translations
+
 ## 2022-02-10
 
 * [RELEASE STABLE] Released as Stable
