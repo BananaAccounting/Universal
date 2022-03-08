@@ -34,7 +34,6 @@ var ImportUtilities = class ImportUtilities {
                 columnTitles.push(name);
             }
         }
-
         //Function call Banana.Converter.objectArrayToCsv() to create a CSV with new data just converted
         var convertedCsv = Banana.Converter.objectArrayToCsv(columnTitles, intermediaryData, "\t");
 
@@ -43,6 +42,7 @@ var ImportUtilities = class ImportUtilities {
 
     // Convert to an array of objects where each object property is the banana columnNameXml
     convertCsvToIntermediaryData(inData, convertionParam) {
+        Banana.Ui.showText(JSON.stringify(convertionParam));
         var form = [];
         var intermediaryData = [];
         //Add the header if present 
