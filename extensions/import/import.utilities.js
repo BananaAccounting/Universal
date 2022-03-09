@@ -42,7 +42,6 @@ var ImportUtilities = class ImportUtilities {
 
     // Convert to an array of objects where each object property is the banana columnNameXml
     convertCsvToIntermediaryData(inData, convertionParam) {
-        Banana.Ui.showText(JSON.stringify(convertionParam));
         var form = [];
         var intermediaryData = [];
         //Add the header if present 

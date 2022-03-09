@@ -1,0 +1,13 @@
+{
+    "category": "Import",
+    "country": "universal",
+    "countryCode": "un",
+    "description": "Import yokoy expenses",
+    "description.en": "Import yokoy expenses",
+    "id": "ch.banana.uni.import.yokoy",
+    "language": "en",
+    "publisher": "Banana.ch",
+    "title": "Import yokoy expenses",
+    "title.en": "Import yokoy expenses",
+    "version": "1.0"
+}
