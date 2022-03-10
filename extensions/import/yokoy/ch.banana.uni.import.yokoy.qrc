@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/">
+		<file alias="manifest.json">ch.banana.uni.import.yokoy.manifest.json</file>
+		<file alias="import.utilities.js">../import.utilities.js</file>
+		<file>ch.banana.uni.import.yokoy.js</file>
+    </qresource>
+</RCC>
