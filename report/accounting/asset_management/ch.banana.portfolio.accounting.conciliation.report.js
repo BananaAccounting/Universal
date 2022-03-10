@@ -37,7 +37,6 @@ function exec(inData, options) {
 
 
     var docInfo="";
-    var transactionsData="";
     var itemsData="";
     var dlgLabel="Accounts Name (separated by semicolon ';')";
     var dlgTitle="Enter accounts for reconciliation";
@@ -55,11 +54,11 @@ function exec(inData, options) {
         return false;
 
     docInfo=getDocumentInfo(banDoc);
-    transactionsData=getTransactionsTableData(banDoc);
+    //let transactionsData=getTransactionsTableData(banDoc,docInfo);
     itemsData=getItemsTableData(docInfo);
 
     //Get Secrurity account data.
-    accountsDataList=getAccountsDataList(banDoc,accountsList,itemsData,transactionsData); //ritorna l'array con tutti i conti.
+    accountsDataList=getAccountsDataList(banDoc,docInfo,accountsList,itemsData); //ritorna l'array con tutti i conti.
     //Insert the data into the reconciliation obj.
     reconciliationData.data=accountsDataList;
 
@@ -73,39 +72,46 @@ function exec(inData, options) {
 
 }
 
-function getConciliationTable(report,currentDate){
+function getConciliationTable(report,currentDate,basCurr){
     currentDate=Banana.Converter.toInternalDateFormat(currentDate);
     var tableConc = report.addTable('myTableConc');
+
     tableConc.setStyleAttributes("width:100%;");
     tableConc.getCaption().addText(qsTr("Securities Reconciliation Report \n Data as of: "+Banana.Converter.toLocaleDateFormat(currentDate)), "styleTitles");
 
     //columns definition 
     tableConc.addColumn("Account").setStyleAttributes("width:15%");
-    tableConc.addColumn("Asset").setStyleAttributes("width:15%");
+    tableConc.addColumn("Item").setStyleAttributes("width:15%");
     tableConc.addColumn("Date").setStyleAttributes("width:15%");
     tableConc.addColumn("Description").setStyleAttributes("width:30%");
+    tableConc.addColumn("Debit (Base Currency)").setStyleAttributes("width:15%");
+    tableConc.addColumn("Credit (Base Currency)").setStyleAttributes("width:15%");
+    tableConc.addColumn("Balance (Base Currency)").setStyleAttributes("width:15%");
+    tableConc.addColumn("Debit (Item Currency)").setStyleAttributes("width:15%");
+    tableConc.addColumn("Credit (Item Currency)").setStyleAttributes("width:15%");
+    tableConc.addColumn("Balance (Item Currency)").setStyleAttributes("width:15%");
     tableConc.addColumn("Quantity").setStyleAttributes("width:15%");
-    tableConc.addColumn("Price (base/account Currency)").setStyleAttributes("width:15%");
-    tableConc.addColumn("Amount (base Currency)").setStyleAttributes("width:20%");
-    tableConc.addColumn("Balance (base Currency)").setStyleAttributes("width:20%");
-    tableConc.addColumn("Amount (account Currency)").setStyleAttributes("width:20%");
-    tableConc.addColumn("Balance (account Currency)").setStyleAttributes("width:20%");
+    tableConc.addColumn("Unit Price").setStyleAttributes("width:15%");
     tableConc.addColumn("Quantity Balance").setStyleAttributes("width:15%");
+    tableConc.addColumn("Current Average Cost").setStyleAttributes("width:25%");
     
     //headers
     var tableHeader = tableConc.getHeader();
     var tableRow = tableHeader.addRow();
     tableRow.addCell("Account", "styleTablesHeaderText");
-    tableRow.addCell("Asset", "styleTablesHeaderText");
+    tableRow.addCell("Item", "styleTablesHeaderText");
     tableRow.addCell("Date", "styleTablesHeaderText");
     tableRow.addCell("Description", "styleTablesHeaderText");
-    tableRow.addCell("Quantity", "styleTablesHeaderText");
-    tableRow.addCell("Price", "styleTablesHeaderText");
-    tableRow.addCell("Amount (base curr.)", "styleTablesHeaderText");
-    tableRow.addCell("Balance (base curr.)", "styleTablesHeaderText");
-    tableRow.addCell("Amount (acc. curr.)", "styleTablesHeaderText");
-    tableRow.addCell("Balance (acc. curr.)", "styleTablesHeaderText");
-    tableRow.addCell("Quantity Balance", "styleTablesHeaderText");
+    tableRow.addCell("Debit "+basCurr, "styleTablesHeaderText");
+    tableRow.addCell("Credit "+basCurr, "styleTablesHeaderText");
+    tableRow.addCell("Balance "+basCurr, "styleTablesHeaderText");
+    tableRow.addCell("Debit "+"Item Curr.", "styleTablesHeaderText");
+    tableRow.addCell("Credit "+"Item Curr.", "styleTablesHeaderText");
+    tableRow.addCell("Balance "+"Item Curr.", "styleTablesHeaderText");
+    tableRow.addCell("Quantity ", "styleTablesHeaderText");
+    tableRow.addCell("Unit Price ", "styleTablesHeaderText");
+    tableRow.addCell("Quantity balance", "styleTablesHeaderText");
+    tableRow.addCell("Curr. average cost ", "styleTablesHeaderText");
 
     return tableConc;
 }
@@ -121,7 +127,7 @@ function printReport(reconciliationData,docInfo){
     var currentDate=new Date();
     //add Reconciliation table
     var concData=reconciliationData.data;
-    var tabConc = getConciliationTable(report,currentDate);
+    var tabConc = getConciliationTable(report,currentDate,docInfo.baseCurrency);
 
     //Print the data.
     for(var a in concData){
@@ -247,24 +253,17 @@ function getReportStyle() {
  * @param {*} account ref. account.
  */
     
- function getItemsDataList(itemsData,transactionsData,account){
+ function getItemsDataList(docInfo,itemsData,accountCard,trIdList,journalData){
 
-    var itemsDataList=[];
+    var itemsDataList=[];//list of item cards
+    let accountCardData="";
+    let itemCardData="";
 
     for(var key in itemsData){
-        if(account==itemsData[key].account){ //i want to take the transactions related only to the account gave as parameter.
-            var itemData={};
-            itemData.item="";
-            itemData.transactions=[];
-
-            itemData.item=itemsData[key].item;
-            itemData.transactions=getItemRelatedTransactions(itemsData[key].item,transactionsData,account);
-            if(itemData.transactions){
-                itemData.balanceBase=sumArrayElements(itemData.transactions,"amountBase");
-                itemData.balanceCurr=sumArrayElements(itemData.transactions,"amountCurr");
-            }
-
-            itemsDataList.push(itemData);
+        accountCardData=getAccountCardData(docInfo,itemsData[key].item,accountCard,trIdList);
+        itemCardData=getItemCardData(accountCardData,journalData);
+        if(itemCardData){
+            itemsDataList.push(itemCardData);
         }
     }
     return itemsDataList;
@@ -349,14 +348,23 @@ function sumArrayElements(objArray,property){
  * @param {*} banDoc 
  * @param {*} accountsList the list of the accounts defined by the user.
  */
-function getAccountsDataList(banDoc,accountsList,itemsData,transactionsData){
+function getAccountsDataList(banDoc,docInfo,accountsList,itemsData){
     var accDataList=[];
+    let journal = "";
+    let journalData="";
+    let trIdList="";
+
+    journal=banDoc.journal(banDoc.ORIGINTYPE_CURRENT, banDoc.ACCOUNTTYPE_NONE);
+    journalData=getJournalData(docInfo,journal);
+    trIdList=getTransactionsIdList(journalData);
+
 
     for(var i=0;i<accountsList.length;i++){
         var account=accountsList[i];
         var itemsDataList=[];
         var accData={};
         var accBalance={};
+        let accountCard=banDoc.currentCard(accountsList[i]);//get the account card
 
         accBalance=banDoc.currentBalance(account);
 
@@ -368,7 +376,7 @@ function getAccountsDataList(banDoc,accountsList,itemsData,transactionsData){
         accData.currency="";
 
         //get the items data.
-        itemsDataList=getItemsDataList(itemsData,transactionsData,account); //ritorna l'array di items con questo account.
+        itemsDataList=getItemsDataList(docInfo,itemsData,accountCard,trIdList,journalData); //ritorna l'array di items con questo account.
         accData.items=itemsDataList;
 
         //get total amount of transactions for securities registered in this account
@@ -398,61 +406,92 @@ var reconciliationData={
             "accountOpeningCurr":"500.00",
             "accountBalanceCurr":"500.00",
             "currency":"CHF",
-            "items":[
+            "items":[// list of the item cards
                 {
-                    "item":"CH003886335",
-                    "account":"1400",
-                    "transactions":[
-                        {
-                        "description":"",
-                        "qt":"",
-                        "price":"",//in the account currency
-                        "amountBase":"",
-                        "balanceBase":"",
-                        "amountCurr":"",
-                        "balanceCurr":"",
-                        "qtBalance":"",
-                        },
-                        {
-                        "description":"",
-                        "qt":"",
-                        "price":"",//in the account currency
-                        "amountBase":"",
-                        "balanceBase":"",
-                        "amountCurr":"",
-                        "balanceCurr":"",
-                        "qtBalance":"",
-                        },
-                        {
-
-                            "...":"..."
-                        }
-                    ],
-                    "balanceBase":"1187.55",
-                    "balanceCurr":"1187.55",
-
+                "date":"date",
+                "currency":"EUR",
+                "item":"IT0005239360",
+                "data":[
+                    {
+                    "TransactionType":"Purchase",
+                    "date":"",
+                    "Description":"",
+                    "debit (baseCurr)":"",
+                    "credit (baseCurr)":"",
+                    "balance (baseCurr)":"",
+                    "Curr. acc. exchange rate":"",
+                    "debit (itemCurr)":"",
+                    "credit (itemCurr)":"",
+                    "balance (itemCurr)":"",
+                    "Quantity Balance":"",
+                    "Current Average Cost":"",
+                    },
+                    {
+                    "TransactionType":"Purchase",
+                    "date":"",
+                    "Description":"",
+                    "debit (baseCurr)":"",
+                    "credit (baseCurr)":"",
+                    "balance (baseCurr)":"",
+                    "Curr. acc. exchange rate":"",
+                    "debit (itemCurr)":"",
+                    "credit (itemCurr)":"",
+                    "balance (itemCurr)":"",
+                    "Quantity Balance":"",
+                    "Current Average Cost":"",
+                    },
+                ],
+                "TotalDebit (baseCurr)":"",
+                "TotalCredit (baseCurr)":"",
+                "TotalBalance (baseCurr)":"",
+                "TotalDebit (itemCurr)":"",
+                "TotalCredit (itemCurr)":"",
+                "TotalBalance (itemCurr)":"",
+                "TotalQtBalance (itemCurr)":"",//the last value calculated in the column: Quantity Balance
+                "TotalCurrAvgCost (itemCurr)":"",//the last value calculated in the column: Current Average Cost
                 },
                 {
-                    "item":"CH012775214",
-                    "account":"1400",
-                    "transactions":[
-                        {
-                        "description":"",
-                        "qt":"",
-                        "price":"",//in the account currency
-                        "amountBase":"",
-                        "balanceBase":"",
-                        "amountCurr":"",
-                        "balanceCurr":"",
-                        "qtBalance":"",
-                        },
-                        {
-
-                            "...":"..."
-                        }
-                    ],
-                    "balanceBase":"500",
-                    "balanceCurr":"500"
+                "date":"date",
+                "currency":"EUR",
+                "item":"IT0005239360",
+                "data":[
+                    {
+                    "TransactionType":"Purchase",
+                    "date":"",
+                    "Description":"",
+                    "debit (baseCurr)":"",
+                    "credit (baseCurr)":"",
+                    "balance (baseCurr)":"",
+                    "Curr. acc. exchange rate":"",
+                    "debit (itemCurr)":"",
+                    "credit (itemCurr)":"",
+                    "balance (itemCurr)":"",
+                    "Quantity Balance":"",
+                    "Current Average Cost":"",
+                    },
+                    {
+                    "TransactionType":"Purchase",
+                    "date":"",
+                    "Description":"",
+                    "debit (baseCurr)":"",
+                    "credit (baseCurr)":"",
+                    "balance (baseCurr)":"",
+                    "Curr. acc. exchange rate":"",
+                    "debit (itemCurr)":"",
+                    "credit (itemCurr)":"",
+                    "balance (itemCurr)":"",
+                    "Quantity Balance":"",
+                    "Current Average Cost":"",
+                    },
+                ],
+                "TotalDebit (baseCurr)":"",
+                "TotalCredit (baseCurr)":"",
+                "TotalBalance (baseCurr)":"",
+                "TotalDebit (itemCurr)":"",
+                "TotalCredit (itemCurr)":"",
+                "TotalBalance (itemCurr)":"",
+                "TotalQtBalance (itemCurr)":"",//the last value calculated in the column: Quantity Balance
+                "TotalCurrAvgCost (itemCurr)":"",//the last value calculated in the column: Current Average Cost
 
                 }
             ],
