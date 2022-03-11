@@ -49,7 +49,6 @@ function getReportHeader(report, docInfo) {
     headerParagraph.addParagraph(docInfo.company, "styleNormalHeader styleCompanyName");
     headerParagraph.addParagraph(docInfo.address, "styleNormalHeader");
     headerParagraph.addParagraph(docInfo.zip+" "+docInfo.city, "styleNormalHeader");
-    headerParagraph.addParagraph(docInfo.zip + " " + docInfo.city, "styleNormalHeader");
     headerParagraph.addParagraph("", "");
     headerParagraph.addParagraph("", "");
     headerParagraph.addParagraph("", "");
@@ -151,7 +150,7 @@ function getDocumentInfo(banDoc){
  * Reads the journal data and returns an array of objects with the information we need
  * @param {*} journal journal table
  */
- function getJournalData(docInfo,journal,selectedItem){
+ function getJournalData(docInfo,journal){
     var journalData=[];
 
     for (var i = 0; i < journal.rowCount; i++) {
@@ -172,8 +171,7 @@ function getDocumentInfo(banDoc){
             jrRow.balanceCurr = tRow.value("JBalanceAccountCurrency"); //credit value base currency
         }
 
-        if(selectedItem===jrRow.item)//We only keep records that relate to the chosen item. 
-            journalData.push(jrRow);
+        journalData.push(jrRow);
     }
 
     return journalData;
@@ -238,20 +236,20 @@ function getDocumentInfo(banDoc){
         /**
          * 
          */
-        if (trData.item===selectedItem || transactionRefToTheItem(trIdList,trData.trId))
+        if (trData.item===selectedItem){//each item transaction has the item id (isin)
             transactions.push(trData);
+        }
     }
     return transactions;
 }
 
 function getItemCardData(accountCardData,journalData){
     var itemCardData={};
-    var balRefCol=""; //ref column for balance
 
     SetSoldData(accountCardData,journalData);
     getQuantityBalance(accountCardData);
 
-    itemCardData=getCurrentAccAvgCost(accountCardData,balRefCol);
+    itemCardData=getCurrentAccAvgCost(accountCardData);
 
     return itemCardData;
 }
@@ -278,6 +276,39 @@ function getItemCardData(accountCardData,journalData){
     }
 
     return accountCardData;
+}
+
+/**
+ * Sum up the amounts.
+ * @param {*} itemCardData 
+ * @param {*} ref Indicates the name of the property in the object (column) from which the values to be summed are to be taken
+ */
+ function getSum(itemCardData,ref){
+    var sum="";
+    if(ref){
+        for(var key in itemCardData){
+            sum=Banana.SDecimal.add(sum,itemCardData[key][ref]);
+        }
+    }
+    return sum;
+}
+/**
+ * Calculates the balance.
+ * @param {*} itemCardData 
+ * @param {*} debRef debit data
+ * @param {*} credRef credita data
+ * @returns 
+ */
+function getBalance(itemCardData,debRef,credRef){
+    var balance="";
+    if(debRef || credRef){
+        for(var key in itemCardData){
+            //At each iteration, I add the value found in dates to the value on the balance sheet and subtract the value found in credits.
+            balance=Banana.SDecimal.add(balance,itemCardData[key][debRef]);
+            balance=Banana.SDecimal.subtract(balance,itemCardData[key][credRef]);
+        }
+    }
+    return balance;
 }
 
 /**
@@ -510,26 +541,32 @@ function getExchangeResult(marketPrice,quantity,currExRate,accExRate){
  */
 function calculateShareSaleData(banDoc,docInfo,userParam,itemsData){
     
-    var saleData={};
-    var item="";
-    var quantity="";
-    var marketPrice="";
-    var currExRate=""; //current exchange rate
-    var accExRate=""; //accounting exchange rate
-    var avgCost="";
-    var avgSharesValue="";
-    var totalSharesvalue="";
-    var saleResult="";
-    var exRateResult="";
-    var transList=getTransactionsTableData(banDoc,docInfo);
+    let saleData={};
+    let item="";
+    let quantity="";
+    let marketPrice="";
+    let currExRate=""; //current exchange rate
+    let accExRate=""; //accounting exchange rate
+    let avgCost="";
+    let avgSharesValue="";
+    let totalSharesvalue="";
+    let saleResult="";
+    let exRateResult="";
+    let accountCard="";
+    let accountCardData="";
+    let itemAccount="";
+    let transList=getTransactionsTableData(banDoc,docInfo);
     
     item=userParam.selectedItem;
+    itemAccount=getItemValue(itemsData,selectedItem,"account");
+    accountCardData=getAccountCardData(docInfo,item,accountCard,trIdList);
     quantity=userParam.quantity;
     marketPrice=userParam.marketPrice;
     currExRate=userParam.currExRate;
     accExRate=getAccountingCourse(item,itemsData,banDoc);
+    accountCard=banDoc.currentCard()
 
-    Banana.console.debug(accExRate);
+    //Banana.console.debug(accExRate);
 
     avgCost=getAverageCost(item,transList);
     avgSharesValue=getSharesAvgValue(quantity,avgCost);
@@ -654,75 +691,6 @@ function getItemRowNr(refGroup,tabItemsData){
     return refNr;
 }
 
-/******************************************************
- * 
- * Specifics methods for riconciliation report (forse da spostare)
- * 
- *****************************************************/
-
-/**
- * Creates an array with all the data of all the items that are registered under this account 
- * @param {*} itemsData list of items
- * @param {*} transactionsData list of transactions
- * @param {*} account ref. account.
- */
-    
-function getItemsDataList(itemsData,transactionsData,account){
-
-    var itemsDataList=[];
-
-    for(var key in itemsData){
-        if(account==itemsData[key].account){ //i want to take the transactions related only to the account gave as parameter.
-            var itemData={};
-            itemData.item="";
-            itemData.transactions=[];
-
-            itemData.item=itemsData[key].item;
-            itemData.transactions=getItemRelatedTransactions(itemsData[key].item,transactionsData);
-            //i take the resulting balance from the transactions for displaiing it as result balance for the item.
-            if(itemData.transactions){
-                itemData.balanceBase=itemData.transactions.slice(-1)[0].balanceBase;
-                itemData.balanceCurr=itemData.transactions.slice(-1)[0].balanceCurr;
-            }
-
-            itemsDataList.push(itemData);
-        }
-    }
-    return itemsDataList;
-}
-
-/**
- * Get the transactions related to the item passed as parameter
- * @param {*} item 
- * @param {*} transactionsData 
- * @returns 
- */
-function getItemRelatedTransactions(item,transactionsData){
-    var transactions=[];
-    var  qtBalance="";
-    var amountBalanceBase="";
-    var amountBalanceCurr="";
-
-    for(var key in transactionsData){
-        if(transactionsData[key].item.includes(item)){
-            var trData={};
-            trData.description=transactionsData[key].description;
-            trData.qt=transactionsData[key].qt;
-            qtBalance=Banana.SDecimal.add(qtBalance,trData.qt);
-            trData.qtBalance=qtBalance;
-            trData.unitPrice=transactionsData[key].unitPrice;
-            trData.amountBase=setSign(transactionsData[key].amountBase,trData.qt,transactionsData[key].debit);
-            trData.amountCurr=setSign(transactionsData[key].amountCurr,trData.qt,transactionsData[key].debit);
-            amountBalanceBase=Banana.SDecimal.add(amountBalanceBase,trData.amountBase);
-            amountBalanceCurr=Banana.SDecimal.add(amountBalanceCurr,trData.amountCurr);
-            trData.balanceBase=amountBalanceBase;
-            trData.balanceCurr=amountBalanceCurr;
-            transactions.push(trData);
-        }
-    }
-    return transactions;
-}
-
 /**
  * Sets the negative sign to those amounts that represent a decrease in the value of the securities account.
  * Decreases are recognised in the thank you entries:
@@ -762,46 +730,4 @@ function sumArrayElements(objArray,property){
 
 
     return sum;
-}
-
-/**
- * For each account creates an object containing the open balance, the current balance and the account nr of the account
- * @param {*} banDoc 
- * @param {*} accountList the list of the accounts defined by the user.
- */
-function getAccountsDataList(banDoc,accountList,itemsData,transactionsData){
-    var accDataList=[];
-
-    for(var i=0;i<accountList.length;i++){
-        var account=accountList[i];
-        var itemsDataList=[];
-        var accData={};
-        var accBalance={};
-
-        accBalance=banDoc.currentBalance(account);
-
-        accData.account=accountList[i];
-        accData.openBalanceBase=accBalance.opening;
-        accData.openBalanceCurr=accBalance.openingCurrency;
-        accData.currentBalanceBase=accBalance.balance;
-        accData.currentBalanceCurr=accBalance.balanceCurrency;
-        accData.currency="";
-
-        //get the items data.
-        itemsDataList=getItemsDataList(itemsData,transactionsData,account); //ritorna l'array di items con questo account.
-        accData.items=itemsDataList;
-
-        //get total amount of transactions for securities registered in this account
-        accData.securityTrAmountBase=sumArrayElements(itemsDataList,"balanceBase"); 
-        accData.securityTrAmountCurrency=sumArrayElements(itemsDataList,"balanceCurr");
-
-        //difference between the securities transactions and the account balance (should be 0).
-        accData.differenceBase=Banana.SDecimal.subtract(accData.securityTrAmountBase,accData.currentBalanceBase);
-        accData.differenceCurr=Banana.SDecimal.subtract(accData.securityTrAmountCurr,accData.currentBalanceBase);
-
-        accDataList.push(accData);
-
-    }
-
-    return accDataList;
 }

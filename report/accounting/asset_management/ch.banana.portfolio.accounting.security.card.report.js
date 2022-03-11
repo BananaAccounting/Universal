@@ -63,7 +63,7 @@ function exec(inData, options) {
 
     //get the journal data and creates an array of objects containing the transactions data
     journal = banDoc.journal(banDoc.ORIGINTYPE_CURRENT, banDoc.ACCOUNTTYPE_NONE);
-    journalData=getJournalData(docInfo,journal,selectedItem);
+    journalData=getJournalData(docInfo,journal);
     trIdList=getTransactionsIdList(journalData);
 
     //get the account card, filter the result by item and return an array of objects containing the transactions data
@@ -75,7 +75,7 @@ function exec(inData, options) {
     itemCardData.currency=itemCurrency;
     itemCardData.item=selectedItem;
     itemCardData.totalDebitBase=getSum(accountCardData,"debitBase");
-    itemCardData.totalCreditBase=getSum(accountCardData,"creditBase");;
+    itemCardData.totalCreditBase=getSum(accountCardData,"creditBase");
     itemCardData.totalBalanceBase=getBalance(accountCardData,"debitBase","creditBase");
     if(docInfo.isMultiCurrency){
         itemCardData.totalDebitCurr=getSum(accountCardData,"debitCurr");
@@ -83,8 +83,10 @@ function exec(inData, options) {
         itemCardData.totalBalanceCurr=getBalance(accountCardData,"debitCurr","creditCurr");
     }
     //In the total I also show the last known cumulative quantity and the last known average accounting cost.
-    itemCardData.totalQtBalance=itemCardData.data.slice(-1)[0].qtBalance; 
-    itemCardData.totalCurrAvgCost=itemCardData.data.slice(-1)[0].accAvgCost;
+    if(itemCardData.data){
+        itemCardData.totalQtBalance=itemCardData.data.slice(-1)[0].qtBalance; 
+        itemCardData.totalCurrAvgCost=itemCardData.data.slice(-1)[0].accAvgCost;
+    }
 
 
     var report = printReport(docInfo,itemCardData);
@@ -235,39 +237,6 @@ function getReportStyle() {
     style = stylesheet.addStyle("table_bas_transactions");
 
     return stylesheet;
-}
-
-/**
- * Sum up the amounts.
- * @param {*} itemCardData 
- * @param {*} ref Indicates the name of the property in the object (column) from which the values to be summed are to be taken
- */
-function getSum(itemCardData,ref){
-    var sum="";
-    if(ref){
-        for(var key in itemCardData){
-            sum=Banana.SDecimal.add(sum,itemCardData[key][ref]);
-        }
-    }
-    return sum;
-}
-/**
- * Calculates the balance.
- * @param {*} itemCardData 
- * @param {*} debRef debit data
- * @param {*} credRef credita data
- * @returns 
- */
-function getBalance(itemCardData,debRef,credRef){
-    var balance="";
-    if(debRef || credRef){
-        for(var key in itemCardData){
-            //At each iteration, I add the value found in dates to the value on the balance sheet and subtract the value found in credits.
-            balance=Banana.SDecimal.add(balance,itemCardData[key][debRef]);
-            balance=Banana.SDecimal.subtract(balance,itemCardData[key][credRef]);
-        }
-    }
-    return balance;
 }
 
 //esempio struttura dati.

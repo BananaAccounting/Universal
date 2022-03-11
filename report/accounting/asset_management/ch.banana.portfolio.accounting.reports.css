@@ -35,6 +35,10 @@ Styles for the amounts
     color: red;
 }
 
+.styleAlignCenter{
+    text-align: center;
+}
+
 
 /*************************************
 Styles for the texts
