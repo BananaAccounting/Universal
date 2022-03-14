@@ -88,8 +88,8 @@ function exec(inData, options) {
         itemCardData.totalCurrAvgCost=itemCardData.data.slice(-1)[0].accAvgCost;
     }
 
-
-    var report = printReport(docInfo,itemCardData);
+    let itemDescription=getItemValue(itemsData,selectedItem,"description");
+    var report = printReport(docInfo,itemCardData,itemDescription);
     getReportHeader(report,docInfo);
     var stylesheet = getReportStyle();
     Banana.Report.preview(report, stylesheet);
@@ -99,63 +99,64 @@ function exec(inData, options) {
 
 function getReportHeader(report,docInfo){
     var headerParagraph = report.getHeader().addSection();
-    headerParagraph.addParagraph(docInfo.company, "styleNormalHeader styleCompanyName");
-    headerParagraph.addParagraph(docInfo.address, "styleNormalHeader");
-    headerParagraph.addParagraph(docInfo.zip+", "+docInfo.city, "styleNormalHeader");
+    headerParagraph.addParagraph(docInfo.company, "header_row_normal");
     headerParagraph.addParagraph("", "");
     headerParagraph.addParagraph("", "");
     headerParagraph.addParagraph("", "");
 
 }
 
-function getItemCardTable(report,docInfo,currentDate,basCurr,itemCardData){
+function getItemCardTable(report,docInfo,currentDate,basCurr,itemCardData,itemDescription){
     currentDate=Banana.Converter.toInternalDateFormat(currentDate);
-    var tableConc = report.addTable('myTableConc');
-    var item=itemCardData.item;
-    var itemCurr=itemCardData.currency;
+    var tableConc = report.addTable('myTable');
+    let itemId=itemCardData.item;
+    let itemCurr=itemCardData.currency;
     tableConc.setStyleAttributes("width:100%;");
-    tableConc.getCaption().addText(qsTr("Security Card: "+item+", Data as of: "+currentDate), "styleTitles");
+    tableConc.getCaption().addText(qsTr("Security Card: "+itemId+" "+itemDescription+" "+itemCurr+", Data as of: "+currentDate), "styleTitles");
 
     //columns definition 
-    tableConc.addColumn("Date").setStyleAttributes("width:15%");
+    tableConc.addColumn("Date").setStyleAttributes("width:10%");
+    tableConc.addColumn("Doc").setStyleAttributes("width:5%");
     tableConc.addColumn("Description").setStyleAttributes("width:35%");
-    tableConc.addColumn("Debit (Base Currency)").setStyleAttributes("width:15%");
-    tableConc.addColumn("Credit (Base Currency)").setStyleAttributes("width:15%");
-    tableConc.addColumn("Balance (Base Currency)").setStyleAttributes("width:15%");
+    tableConc.addColumn("Debit (Item Currency)").setStyleAttributes("width:15%");
+    tableConc.addColumn("Credit (Item Currency)").setStyleAttributes("width:15%");
+    tableConc.addColumn("Balance (Item Currency)").setStyleAttributes("width:15%");
     if(docInfo.isMultiCurrency){
-        tableConc.addColumn("Debit (Item Currency)").setStyleAttributes("width:15%");
-        tableConc.addColumn("Credit (Item Currency)").setStyleAttributes("width:15%");
-        tableConc.addColumn("Balance (Item Currency)").setStyleAttributes("width:15%");
+        tableConc.addColumn("Debit (Base Currency)").setStyleAttributes("width:15%");
+        tableConc.addColumn("Credit (Base Currency)").setStyleAttributes("width:15%");
+        tableConc.addColumn("Balance (Base Currency)").setStyleAttributes("width:15%");
     }
     tableConc.addColumn("Quantity").setStyleAttributes("width:15%");
     tableConc.addColumn("Unit Price").setStyleAttributes("width:15%");
     tableConc.addColumn("Quantity Balance").setStyleAttributes("width:15%");
-    tableConc.addColumn("Current Average Cost").setStyleAttributes("width:25%");
+    tableConc.addColumn("Current Average Cost").setStyleAttributes("width:15%");
     
     //headers
     var tableHeader = tableConc.getHeader();
     var tableRow = tableHeader.addRow();
     tableRow.addCell("Date", "styleTablesHeaderText");
+    tableRow.addCell("Doc", "styleTablesHeaderText");
     tableRow.addCell("Description", "styleTablesHeaderText");
-    tableRow.addCell("Debit "+basCurr, "styleTablesHeaderText");
-    tableRow.addCell("Credit "+basCurr, "styleTablesHeaderText");
-    tableRow.addCell("Balance "+basCurr, "styleTablesHeaderText");
+    tableRow.addCell("Debit "+itemCurr, "styleTablesHeaderText");
+    tableRow.addCell("Credit "+itemCurr, "styleTablesHeaderText");
+    tableRow.addCell("Balance "+itemCurr, "styleTablesHeaderText");
     if(docInfo.isMultiCurrency){
-        tableRow.addCell("Debit "+itemCurr, "styleTablesHeaderText");
-        tableRow.addCell("Credit "+itemCurr, "styleTablesHeaderText");
-        tableRow.addCell("Balance "+itemCurr, "styleTablesHeaderText");
+        tableRow.addCell("Debit "+basCurr, "styleTablesHeaderText");
+        tableRow.addCell("Credit "+basCurr, "styleTablesHeaderText");
+        tableRow.addCell("Balance "+basCurr, "styleTablesHeaderText");
     }
+
     tableRow.addCell("Quantity ", "styleTablesHeaderText");
     if(itemCurr)
-        tableRow.addCell("Unit Price "+itemCurr, "styleTablesHeaderText");
+        tableRow.addCell("Unit Price\n"+itemCurr, "styleTablesHeaderText");
     else
-        tableRow.addCell("Unit Price "+basCurr, "styleTablesHeaderText");
+        tableRow.addCell("Unit Price\n"+basCurr, "styleTablesHeaderText");
 
-    tableRow.addCell("Quantity balance", "styleTablesHeaderText");
+    tableRow.addCell("Quantity\nBalance", "styleTablesHeaderText");
     if(itemCurr)
-        tableRow.addCell("Curr. average cost "+itemCurr, "styleTablesHeaderText");
+        tableRow.addCell("Current.\nAverage cost "+itemCurr, "styleTablesHeaderText");
     else
-        tableRow.addCell("Curr. average cost "+basCurr, "styleTablesHeaderText");
+        tableRow.addCell("Current.\naverage cost "+basCurr, "styleTablesHeaderText");
 
     return tableConc;
 }
@@ -164,45 +165,64 @@ function getItemCardTable(report,docInfo,currentDate,basCurr,itemCardData){
  * Print the report.
  * @param {*} itemCardData the data.
  */
-function printReport(docInfo,itemCardData){
+function printReport(docInfo,itemCardData,itemDescription){
 
     //create the report
     var report = Banana.Report.newReport("Security Card Report");
     var currentDate=new Date();
+    let hexColorBase = "#354793";//in the future we can let the user choose it.
+    let colorsObj=getColors(hexColorBase);
+    let rowColorIndex=0;//to know whether a line is odd or even.
+    let isEven=false;
+    let tableRowColor="";
+
     //add item card table
-    var tabItemCard = getItemCardTable(report,docInfo,currentDate,docInfo.baseCurrency,itemCardData);
+    var tabItemCard = getItemCardTable(report,docInfo,currentDate,docInfo.baseCurrency,itemCardData,itemDescription);
 
     //Print the data.
     for(var key in itemCardData.data){
+        isEven=checkIfNumberisEven(rowColorIndex);
+        if(isEven)
+            tableRowColor=colorsObj.hslColorEvenTableRow;
+        else
+            tableRowColor=colorsObj.hslColorOddTableRow;
+
         itCardRow=itemCardData.data[key];
-        var tableRow = tabItemCard.addRow("styleTableRows");
+
+        Banana.console.debug(tableRowColor);//ok
+
+        var tableRow = tabItemCard.addRow('background-color: '+tableRowColor+';');
         tableRow.addCell(Banana.Converter.toLocaleDateFormat(itCardRow.date), '');
+        tableRow.addCell(itCardRow.doc, 'styleAlignCenter');
         tableRow.addCell(itCardRow.description, '');
-        tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.debitBase,2,false),"styleNormalAmount");
-        tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.creditBase,2,false),"styleNormalAmount");
-        tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.balanceBase,2,false),"styleNormalAmount");
+        tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.debitCurr,2,false),"styleNormalAmount");
+        tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.creditCurr,2,false),"styleNormalAmount");
+        tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.balanceCurr,2,false),"styleNormalAmount");
         if(docInfo.isMultiCurrency){
-            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.debitCurr,2,false),"styleNormalAmount");
-            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.creditCurr,2,false),"styleNormalAmount");
-            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.balanceCurr,2,false),"styleNormalAmount");
+            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.debitBase,2,false),"styleNormalAmount");
+            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.creditBase,2,false),"styleNormalAmount");
+            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.balanceBase,2,false),"styleNormalAmount");
         }
         tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.qt,2,false),"styleNormalAmount");
         tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.unitPrice,2,false),"styleNormalAmount");
         tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.qtBalance,2,false),"styleNormalAmount");
         tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.accAvgCost,3,false),"styleNormalAmount");
+
+        rowColorIndex++;
     }
 
     //Print the totals
     var tableRow = tabItemCard.addRow("styleTableRows");
     tableRow.addCell(Banana.Converter.toLocaleDateFormat(currentDate), '');
+    tableRow.addCell("","",1);
     tableRow.addCell("Total transactions", 'styleDescrTotals');
-    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemCardData.totalDebitBase,2,false),"styleTotalAmount");
-    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemCardData.totalCreditBase,2,false),"styleTotalAmount");
-    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemCardData.totalBalanceBase,2,false),"styleTotalAmount");
+    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemCardData.totalDebitCurr,2,false),"styleTotalAmount");
+    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemCardData.totalCreditCurr,2,false),"styleTotalAmount");
+    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemCardData.totalBalanceCurr,2,false),"styleTotalAmount");
     if(docInfo.isMultiCurrency){
-        tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemCardData.totalDebitCurr,2,false),"styleTotalAmount");
-        tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemCardData.totalCreditCurr,2,false),"styleTotalAmount");
-        tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemCardData.totalBalanceCurr,2,false),"styleTotalAmount");
+        tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemCardData.totalDebitBase,2,false),"styleTotalAmount");
+        tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemCardData.totalCreditBase,2,false),"styleTotalAmount");
+        tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemCardData.totalBalanceBase,2,false),"styleTotalAmount");
     }
     tableRow.addCell("","",2);
     tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemCardData.totalQtBalance,2,false),"styleTotalAmount");
@@ -248,6 +268,7 @@ var itemCardData={
         {
         "TransactionType":"Purchase",
         "date":"",
+        "doc":"",
         "Description":"",
         "debit (baseCurr)":"",
         "credit (baseCurr)":"",
@@ -262,6 +283,7 @@ var itemCardData={
         {
         "TransactionType":"Purchase",
         "date":"",
+        "doc":"",
         "Description":"",
         "debit (baseCurr)":"",
         "credit (baseCurr)":"",

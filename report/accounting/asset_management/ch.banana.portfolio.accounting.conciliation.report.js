@@ -72,7 +72,7 @@ function exec(inData, options) {
 
 function getConciliationTable(report,currentDate,docInfo){
     currentDate=Banana.Converter.toInternalDateFormat(currentDate);
-    var tableConc = report.addTable('myTableConc');
+    var tableConc = report.addTable('myTable');
 
     tableConc.setStyleAttributes("width:100%;");
     tableConc.getCaption().addText(qsTr("Securities Reconciliation Report \n Data as of: "+Banana.Converter.toLocaleDateFormat(currentDate)), "styleTitles");
