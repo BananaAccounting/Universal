@@ -9,7 +9,7 @@ body {
     font-size: 9pt;
 }
 
-table.myTableConc {
+table.myTable {
     border-style: solid;
     border-color: rgb(0, 0, 0);
     width: auto;
@@ -21,6 +21,10 @@ table.myTableConc {
 /*************************************
 Styles for the amounts
 *************************************/
+
+.styleprova{
+    background-color: #b6b9e2;
+}
 
 .styleNormalAmount {
     text-align: right;
@@ -106,6 +110,6 @@ styles for the headers
     font-size: 12pt;
 }
 .header_row_normal {
-    font-size: 10pt;
-    text-align: right;
+    font-size: 8pt;
+    text-align: left;
 }
