@@ -47,10 +47,6 @@
 function getReportHeader(report, docInfo) {
     var headerParagraph = report.getHeader().addSection();
     headerParagraph.addParagraph(docInfo.company, "styleNormalHeader styleCompanyName");
-    headerParagraph.addParagraph(docInfo.address, "styleNormalHeader");
-    headerParagraph.addParagraph(docInfo.zip+" "+docInfo.city, "styleNormalHeader");
-    headerParagraph.addParagraph("", "");
-    headerParagraph.addParagraph("", "");
     headerParagraph.addParagraph("", "");
 
 }
@@ -124,10 +120,11 @@ function getDocumentInfo(banDoc){
     var docInfo={};
 
     //define if its a multicurrency accounting
-    var multiCurrency="120";
+    let multiCurrency="120";
+    let multiCurrency_withVat="130";
     docInfo.isMultiCurrency=false;
     var fileNumber=banDoc.info("Base","FileTypeNumber");
-    if(fileNumber==multiCurrency)
+    if(fileNumber===multiCurrency || fileNumber===multiCurrency_withVat)
         docInfo.isMultiCurrency=true;
 
     //get the base currency
@@ -207,17 +204,13 @@ function getDocumentInfo(banDoc){
  * @param {*} selectedItem item selected by the user
  * @param {*} docInfo item selected by the user
  * @param {*} accountCard account card (table obj)
- * @param {*} trIdList list of transaction ids concerning the item. the list was retrieved by doing the journal
  */
- function getAccountCardData(docInfo,selectedItem,accountCard,trIdList){
-    var transactions=[];
+ function getAccountCardData(docInfo,selectedItem,accountCard){
+    let transactions=[];
 
-    if (!accountCard) {
-        return transactions;
-    }
     for (var i = 0; i < accountCard.rowCount; i++) {
-        var tRow = accountCard.row(i);
-        var trData={};
+        let tRow = accountCard.row(i);
+        let trData={};
         trData.rowNr=tRow.rowNr;
         trData.doc=tRow.value("Doc");
         trData.date=tRow.value("Date");
@@ -242,18 +235,24 @@ function getDocumentInfo(banDoc){
             transactions.push(trData);
         }
     }
-    return transactions;
+    if(transactions.length>0)
+        return transactions;
+    else 
+        return false;
 }
 
 function getItemCardData(accountCardData,journalData){
-    var itemCardData={};
 
     SetSoldData(accountCardData,journalData);
     getQuantityBalance(accountCardData);
+    getCurrentAccAvgCost(accountCardData);
 
-    itemCardData=getCurrentAccAvgCost(accountCardData);
-
-    return itemCardData;
+    if(accountCardData){
+        return accountCardData;
+    }
+    else{
+        return false;
+    }
 }
 
 /**
@@ -410,63 +409,6 @@ function getJournalValueFiltered(journalData,trId,objProp){
     return transactionsList;
 }
 
-function getSumOfPurchasedShares(item,transList){
-    //look for all purchases done before for this item, and sum the amounts
-    var purchasesSum="";
-    var rowPurchase="";
-
-    if(transList){
-        for (var i = 0; i < transList.length; i++) {
-            if(transList[i].item==item && transList[i].qt && Banana.SDecimal.sign(transList[i].qt)!=-1){
-                rowPurchase=transList[i].amount;
-                if(transList[i].amountCurr)
-                    rowPurchase=transList[i].amountCurr;
-                else
-                    rowPurchase=transList[i].amountBase;
-                purchasesSum=Banana.SDecimal.add(purchasesSum,rowPurchase);
-            }
-        }
-    }
-    return purchasesSum;
-
-
-}
-
-function getQtOfSharesPurchased(item,transList){
-    //look for all purchases done before for this item, and sum the quantities
-    var purchaseQt="";
-    var rowQt="";
-
-    if(transList){
-        for (var i = 0; i < transList.length; i++) {
-            if(transList[i].item==item && transList[i].qt && Banana.SDecimal.sign(transList[i].qt)!=-1){
-                rowQt=transList[i].qt;
-                purchaseQt=Banana.SDecimal.add(purchaseQt,rowQt);
-            }
-        }
-    }
-    return purchaseQt;
-}
-
-/**
- * To calculate the average cost, divide the total purchase amount by the number of shares purchased to figure the average cost per share. 
- */
- function getAverageCost(item,transList){
-
-    //cambiare metodo di calcolo del prezzo medio ?
-
-    var purchaseSum=getSumOfPurchasedShares(item,transList);
-    var purchaseQt=getQtOfSharesPurchased(item,transList);
-    var avgCost="";
-
-    //calculate the average cost and return it
-    var context = {'decimals' : 2, 'mode' : Banana.SDecimal.HALF_UP};
-    avgCost=Banana.SDecimal.divide(purchaseSum,purchaseQt,context);
-
-    return avgCost;
-
-}
-
 /**
  * Ritorna il cambio contabile calcolato sulla base della differenza tra i saldi nelle due valute ad una certa data.
  */
@@ -532,58 +474,6 @@ function getExchangeResult(marketPrice,quantity,currExRate,accExRate){
     exResult=Banana.SDecimal.subtract(currAmount,accAmount);
 
     return exResult;
-}
-
-/**
- * 
- * @param {*} avgCost the average cost
- * @param {*} userParam the parameters that the user defined in the dialog
- * @param {*} currentRowData the current line transaction data
- * @returns an object with the calculation data.
- */
-function calculateShareSaleData(banDoc,docInfo,userParam,itemsData){
-    
-    let saleData={};
-    let item="";
-    let quantity="";
-    let marketPrice="";
-    let currExRate=""; //current exchange rate
-    let accExRate=""; //accounting exchange rate
-    let avgCost="";
-    let avgSharesValue="";
-    let totalSharesvalue="";
-    let saleResult="";
-    let exRateResult="";
-    let accountCard="";
-    let accountCardData="";
-    let itemAccount="";
-    let transList=getTransactionsTableData(banDoc,docInfo);
-    
-    item=userParam.selectedItem;
-    itemAccount=getItemValue(itemsData,selectedItem,"account");
-    accountCardData=getAccountCardData(docInfo,item,accountCard,trIdList);
-    quantity=userParam.quantity;
-    marketPrice=userParam.marketPrice;
-    currExRate=userParam.currExRate;
-    accExRate=getAccountingCourse(item,itemsData,banDoc);
-    accountCard=banDoc.currentCard()
-
-    //Banana.console.debug(accExRate);
-
-    avgCost=getAverageCost(item,transList);
-    avgSharesValue=getSharesAvgValue(quantity,avgCost);
-    totalSharesvalue=getSharesTotalValue(quantity,marketPrice);
-    saleResult=getSaleResult(avgSharesValue,totalSharesvalue);
-    exRateResult=getExchangeResult(marketPrice,quantity,currExRate,accExRate);
-
-    saleData.avgCost=avgCost;
-    saleData.avgSharesValue=avgSharesValue;
-    saleData.totalSharesvalue=totalSharesvalue;
-    saleData.saleResult=saleResult;
-    saleData.exRateResult=exRateResult;
-
-    return saleData;
-
 }
 
 function getItemBalance(banDoc,item,itemsData){
@@ -876,4 +766,168 @@ function hexToHSL(H, hue, saturation, lightness) {
     
         return isEven;
   }
+
   
+function setVariables(variables, baseColor) {
+    /* Variables that set the colors */
+    variables.$baseColor = baseColor;
+
+}
+
+/**
+ *Function that replaces all the css variables inside of the given cssText with their values.
+ *All the css variables start with "$" (i.e. $font_size, $margin_top)
+ * @param {*} cssText 
+ * @param {*} variables 
+ */
+function replaceVariables(cssText, variables) {
+
+    var result = "";
+    var varName = "";
+    var insideVariable = false;
+    var variablesNotFound = [];
+
+    for (var i = 0; i < cssText.length; i++) {
+        var currentChar = cssText[i];
+        if (currentChar === "$") {
+            insideVariable = true;
+            varName = currentChar;
+        } else if (insideVariable) {
+            if (currentChar.match(/^[0-9a-z]+$/) || currentChar === "_" || currentChar === "-") {
+                // still a variable name
+                varName += currentChar;
+            } else {
+                // end variable, any other charcter
+                if (!(varName in variables)) {
+                    variablesNotFound.push(varName);
+                    result += varName;
+                } else {
+                    result += variables[varName];
+                }
+                result += currentChar;
+                insideVariable = false;
+                varName = "";
+            }
+        } else {
+            result += currentChar;
+        }
+    }
+
+    if (insideVariable) {
+        // end of text, end of variable
+        if (!(varName in variables)) {
+            variablesNotFound.push(varName);
+            result += varName;
+        } else {
+            result += variables[varName];
+        }
+        insideVariable = false;
+    }
+
+    if (variablesNotFound.length > 0) {
+        //Banana.console.log(">>Variables not found: " + variablesNotFound);
+    }
+    return result;
+}
+
+/**
+ * The purpose of this function is to find the account number or user-defined item 
+ * within the data extracted from the tables (accounts and item) 
+ * in order to avoid errors such as spaces in the input dialogue.
+ * @param {*} accountParam the account defined by the user
+ * @param {*} listData the list of data within which to search for values (list of elements from accounts table or from items table)
+ * @param {*} refProp the property to be searched in the data list
+ * @param {*} refTableName the name of the table where the param is searched.
+ */
+ function findElement(banDoc,userParam, listData,refProp,refTableName){
+     //define error messages
+     let ELEMENT_NOT_FOUND_IN_ACCOUNTING="ELEMENT_NOT_FOUND_IN_ACCOUNTING";
+     let lang='en';
+     let msg=getErrorMessage(ELEMENT_NOT_FOUND_IN_ACCOUNTING,lang,userParam,refTableName);
+
+    for(var key in listData){
+        //set to lower case the strings
+        let ref_lower=listData[key][refProp].toLowerCase();
+        let userParam_lower=userParam.toLowerCase();
+        if((userParam_lower && ref_lower) && userParam_lower.includes(ref_lower)){//check the strings after the lower case.
+            return listData[key][refProp];//return the original (not formatted value)
+        }
+    }
+    //element not found in the listData, display a message
+    banDoc.addMessage(msg,ELEMENT_NOT_FOUND_IN_ACCOUNTING);
+
+    return userParam;
+
+}
+
+function getErrorMessage(errorId, lang,userParam,refTableName){
+    if (!lang)
+    lang = 'en';
+    switch (errorId) {
+        case "ELEMENT_NOT_FOUND_IN_ACCOUNTING":
+            if (lang == "en")
+                return "Element: "+userParam+" not found in "+refTableName;
+            else
+                return "Element: "+userParam+" not found in "+refTableName;
+        case "ID_ERR_VERSION_NOTSUPPORTED":
+            return "This script does not run with your current version of Banana Accounting.\nMinimum version required: %1.\nTo update or for more information click on Help";
+        case "ID_ERR_LICENSE_NOTVALID":
+            return "This extension requires Banana Accounting+ Advanced";
+    }
+    return '';
+}
+
+//VERSION CONTROL FUNCTIONS
+function verifyBananaVersion(banDoc) {
+    if (banDoc)
+        return false;
+
+    let lang = "en";
+
+    let BAN_VERSION_MIN = "10.0.10";
+    let BAN_DEV_VERSION_MIN = "";
+    let ID_ERR_VERSION_NOTSUPPORTED="ID_ERR_VERSION_NOTSUPPORTED";
+    let ID_ERR_LICENSE_NOTVALID="ID_ERR_LICENSE_NOTVALID";
+    let CURR_VERSION = bananaRequiredVersion(BAN_VERSION_MIN, BAN_DEV_VERSION_MIN);
+    let CURR_LICENSE = isBananaAdvanced();
+
+    if (!CURR_VERSION) {
+        let msg = getErrorMessage(ID_ERR_VERSION_NOTSUPPORTED, lang);
+        msg = msg.replace("%1", BAN_VERSION_MIN);
+        banDoc.addMessage(msg, ID_ERR_VERSION_NOTSUPPORTED);
+        return false;
+    }
+    if (!CURR_LICENSE) {
+        let msg = getErrorMessage(ID_ERR_LICENSE_NOTVALID, lang);
+        banDoc.addMessage(msg, ID_ERR_LICENSE_NOTVALID);
+        return false;
+    }
+    return true;
+}
+
+function bananaRequiredVersion(requiredVersion, expmVersion) {
+     //Check Banana version
+    if (expmVersion) {
+        requiredVersion = requiredVersion + "." + expmVersion;
+    }
+    if (Banana.compareVersion && Banana.compareVersion(Banana.application.version, requiredVersion) >= 0) {
+        return true;
+    }
+    return false;
+}
+
+function isBananaAdvanced() {
+    // Starting from version 10.0.7 it is possible to read the property Banana.application.license.isWithinMaxRowLimits 
+    // to check if all application functionalities are permitted
+    // the version Advanced returns isWithinMaxRowLimits always false
+    // other versions return isWithinMaxRowLimits true if the limit of transactions number has not been reached
+
+    if (Banana.compareVersion && Banana.compareVersion(Banana.application.version, "10.0.10") >= 0) {
+        var license = Banana.application.license;
+        if (license.licenseType === "advanced" || license.isWithinMaxFreeLines) {
+            return true;
+        }
+    }
+
+    return false;
+}

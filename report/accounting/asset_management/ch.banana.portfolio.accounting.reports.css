@@ -22,10 +22,6 @@ table.myTable {
 Styles for the amounts
 *************************************/
 
-.styleprova{
-    background-color: #b6b9e2;
-}
-
 .styleNormalAmount {
     text-align: right;
 }
@@ -112,4 +108,15 @@ styles for the headers
 .header_row_normal {
     font-size: 8pt;
     text-align: left;
+}
+
+/********************
+style for the rows
+*********************/
+/*base color: "#354793"*/
+.styleEvenRows{
+    background-color: #edeef8;
+}
+.styleOddRows{
+    background-color: #b4bde4;
 }
