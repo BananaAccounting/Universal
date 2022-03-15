@@ -48,18 +48,20 @@ function exec(inData, options) {
     var itemCurrency="";
     itemCardData.date=new Date();
 
-    if (!banDoc)
-    return "@Cancel";
+    if (!verifyBananaVersion())
+        return "@Cancel";
 
     selectedItem = getComboBoxElement(scriptId,dlgTitle,dlgLabel);
     if (!selectedItem)
         return false;
 
-
     docInfo=getDocumentInfo(banDoc);
     itemsData=getItemsTableData(docInfo);
     itemAccount=getItemValue(itemsData,selectedItem,"account");
     itemCurrency=getItemCurrency(itemsData,selectedItem);
+
+    //check if item exist
+    findElement(banDoc,selectedItem, itemsData,"item","Items table");
 
     //get the journal data and creates an array of objects containing the transactions data
     journal = banDoc.journal(banDoc.ORIGINTYPE_CURRENT, banDoc.ACCOUNTTYPE_NONE);
@@ -68,7 +70,7 @@ function exec(inData, options) {
 
     //get the account card, filter the result by item and return an array of objects containing the transactions data
     accountCard=banDoc.currentCard(itemAccount);
-    accountCardData=getAccountCardData(docInfo,selectedItem,accountCard,trIdList);
+    accountCardData=getAccountCardData(docInfo,selectedItem,accountCard);
 
     //get the calculated data and the totals
     itemCardData.data=getItemCardData(accountCardData,journalData);
@@ -97,22 +99,14 @@ function exec(inData, options) {
 
 }
 
-function getReportHeader(report,docInfo){
-    var headerParagraph = report.getHeader().addSection();
-    headerParagraph.addParagraph(docInfo.company, "header_row_normal");
-    headerParagraph.addParagraph("", "");
-    headerParagraph.addParagraph("", "");
-    headerParagraph.addParagraph("", "");
-
-}
-
-function getItemCardTable(report,docInfo,currentDate,basCurr,itemCardData,itemDescription){
+function getItemCardTable(report,docInfo,currentDate,baseCurr,itemCardData,itemDescription){
     currentDate=Banana.Converter.toInternalDateFormat(currentDate);
     var tableConc = report.addTable('myTable');
     let itemId=itemCardData.item;
     let itemCurr=itemCardData.currency;
+    let refCurr=itemCurr? itemCurr:baseCurr; //currency dispayed on the header.
     tableConc.setStyleAttributes("width:100%;");
-    tableConc.getCaption().addText(qsTr("Security Card: "+itemId+" "+itemDescription+" "+itemCurr+", Data as of: "+currentDate), "styleTitles");
+    tableConc.getCaption().addText(qsTr("Security Card: "+itemId+" "+itemDescription+" "+refCurr+", Data as of: "+currentDate), "styleTitles");
 
     //columns definition 
     tableConc.addColumn("Date").setStyleAttributes("width:10%");
@@ -137,26 +131,26 @@ function getItemCardTable(report,docInfo,currentDate,basCurr,itemCardData,itemDe
     tableRow.addCell("Date", "styleTablesHeaderText");
     tableRow.addCell("Doc", "styleTablesHeaderText");
     tableRow.addCell("Description", "styleTablesHeaderText");
-    tableRow.addCell("Debit "+itemCurr, "styleTablesHeaderText");
-    tableRow.addCell("Credit "+itemCurr, "styleTablesHeaderText");
-    tableRow.addCell("Balance "+itemCurr, "styleTablesHeaderText");
     if(docInfo.isMultiCurrency){
-        tableRow.addCell("Debit "+basCurr, "styleTablesHeaderText");
-        tableRow.addCell("Credit "+basCurr, "styleTablesHeaderText");
-        tableRow.addCell("Balance "+basCurr, "styleTablesHeaderText");
+        tableRow.addCell("Debit "+itemCurr, "styleTablesHeaderText");
+        tableRow.addCell("Credit "+itemCurr, "styleTablesHeaderText");
+        tableRow.addCell("Balance "+itemCurr, "styleTablesHeaderText");
     }
+    tableRow.addCell("Debit "+baseCurr, "styleTablesHeaderText");
+    tableRow.addCell("Credit "+baseCurr, "styleTablesHeaderText");
+    tableRow.addCell("Balance "+baseCurr, "styleTablesHeaderText");
 
     tableRow.addCell("Quantity ", "styleTablesHeaderText");
     if(itemCurr)
         tableRow.addCell("Unit Price\n"+itemCurr, "styleTablesHeaderText");
     else
-        tableRow.addCell("Unit Price\n"+basCurr, "styleTablesHeaderText");
+        tableRow.addCell("Unit Price\n"+baseCurr, "styleTablesHeaderText");
 
     tableRow.addCell("Quantity\nBalance", "styleTablesHeaderText");
     if(itemCurr)
-        tableRow.addCell("Current.\nAverage cost "+itemCurr, "styleTablesHeaderText");
+        tableRow.addCell("Current.\nAverage cost\n"+itemCurr, "styleTablesHeaderText");
     else
-        tableRow.addCell("Current.\naverage cost "+basCurr, "styleTablesHeaderText");
+        tableRow.addCell("Current.\nAverage cost\n"+baseCurr, "styleTablesHeaderText");
 
     return tableConc;
 }
@@ -170,11 +164,11 @@ function printReport(docInfo,itemCardData,itemDescription){
     //create the report
     var report = Banana.Report.newReport("Security Card Report");
     var currentDate=new Date();
-    let hexColorBase = "#354793";//in the future we can let the user choose it.
-    let colorsObj=getColors(hexColorBase);
+    //let hexColorBase = "#354793";//in the future we can let the user choose it.
+    //let colorsObj=getColors(hexColorBase);
     let rowColorIndex=0;//to know whether a line is odd or even.
     let isEven=false;
-    let tableRowColor="";
+    let rowStyle="";
 
     //add item card table
     var tabItemCard = getItemCardTable(report,docInfo,currentDate,docInfo.baseCurrency,itemCardData,itemDescription);
@@ -183,26 +177,24 @@ function printReport(docInfo,itemCardData,itemDescription){
     for(var key in itemCardData.data){
         isEven=checkIfNumberisEven(rowColorIndex);
         if(isEven)
-            tableRowColor=colorsObj.hslColorEvenTableRow;
+            rowStyle="styleEvenRows";
         else
-            tableRowColor=colorsObj.hslColorOddTableRow;
+        rowStyle="styleOddRows";
 
         itCardRow=itemCardData.data[key];
 
-        Banana.console.debug(tableRowColor);//ok
-
-        var tableRow = tabItemCard.addRow('background-color: '+tableRowColor+';');
+        var tableRow = tabItemCard.addRow(rowStyle);
         tableRow.addCell(Banana.Converter.toLocaleDateFormat(itCardRow.date), '');
         tableRow.addCell(itCardRow.doc, 'styleAlignCenter');
         tableRow.addCell(itCardRow.description, '');
-        tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.debitCurr,2,false),"styleNormalAmount");
-        tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.creditCurr,2,false),"styleNormalAmount");
-        tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.balanceCurr,2,false),"styleNormalAmount");
         if(docInfo.isMultiCurrency){
-            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.debitBase,2,false),"styleNormalAmount");
-            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.creditBase,2,false),"styleNormalAmount");
-            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.balanceBase,2,false),"styleNormalAmount");
+            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.debitCurr,2,false),"styleNormalAmount");
+            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.creditCurr,2,false),"styleNormalAmount");
+            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.balanceCurr,2,false),"styleNormalAmount");
         }
+        tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.debitBase,2,false),"styleNormalAmount");
+        tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.creditBase,2,false),"styleNormalAmount");
+        tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.balanceBase,2,false),"styleNormalAmount");
         tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.qt,2,false),"styleNormalAmount");
         tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.unitPrice,2,false),"styleNormalAmount");
         tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.qtBalance,2,false),"styleNormalAmount");
@@ -216,14 +208,14 @@ function printReport(docInfo,itemCardData,itemDescription){
     tableRow.addCell(Banana.Converter.toLocaleDateFormat(currentDate), '');
     tableRow.addCell("","",1);
     tableRow.addCell("Total transactions", 'styleDescrTotals');
-    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemCardData.totalDebitCurr,2,false),"styleTotalAmount");
-    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemCardData.totalCreditCurr,2,false),"styleTotalAmount");
-    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemCardData.totalBalanceCurr,2,false),"styleTotalAmount");
     if(docInfo.isMultiCurrency){
-        tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemCardData.totalDebitBase,2,false),"styleTotalAmount");
-        tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemCardData.totalCreditBase,2,false),"styleTotalAmount");
-        tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemCardData.totalBalanceBase,2,false),"styleTotalAmount");
+        tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemCardData.totalDebitCurr,2,false),"styleTotalAmount");
+        tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemCardData.totalCreditCurr,2,false),"styleTotalAmount");
+        tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemCardData.totalBalanceCurr,2,false),"styleTotalAmount");
     }
+    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemCardData.totalDebitBase,2,false),"styleTotalAmount");
+    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemCardData.totalCreditBase,2,false),"styleTotalAmount");
+    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemCardData.totalBalanceBase,2,false),"styleTotalAmount");
     tableRow.addCell("","",2);
     tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemCardData.totalQtBalance,2,false),"styleTotalAmount");
     tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemCardData.totalCurrAvgCost,3,false),"styleTotalAmount");
@@ -232,7 +224,7 @@ function printReport(docInfo,itemCardData,itemDescription){
 
 }
 
-function getReportStyle() {
+function getReportStyle(baseColor) {
     //CREATE THE STYLE FOR THE REPORT
     //create the style
     var textCSS = "";
@@ -245,6 +237,11 @@ function getReportStyle() {
     } else {
         Banana.console.log(file.errorString);
     }
+
+    var variables = {};
+    setVariables(variables, baseColor);
+    // Replace all the "$xxx" variables with the real value
+    textCSS = replaceVariables(textCSS, variables);
 
     var stylesheet = Banana.Report.newStyleSheet();
     // Parse the CSS text
