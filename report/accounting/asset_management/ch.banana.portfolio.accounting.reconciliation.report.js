@@ -55,7 +55,7 @@ function exec(inData, options) {
 
     docInfo=getDocumentInfo(banDoc);
     //let transactionsData=getTransactionsTableData(banDoc,docInfo);
-    itemsData=getItemsTableData(docInfo);
+    itemsData=getItemsTableData(banDoc,docInfo);
 
     //Get Secrurity account data.
     accountsDataList=getAccountsDataList(banDoc,docInfo,accountsList,itemsData); //ritorna l'array con tutti i conti.
@@ -329,7 +329,7 @@ function getReportStyle() {
             itemData.item=itemsData[key].item;
             itemData.itemCardData=[];
             accountCardData=getAccountCardData(docInfo,itemsData[key].item,accountCard);
-            itemCardData=getItemCardData(accountCardData,journalData);//returns an array of objects with the movements of the item card.
+            itemCardData=getItemCardDataList(accountCardData,journalData);//returns an array of objects with the movements of the item card.
             if(itemCardData){
                 itemData.itemCardData=itemCardData;
             }
@@ -342,7 +342,7 @@ function getReportStyle() {
                 itemData.totalCreditCurr=getSum(accountCardData,"creditCurr");
                 itemData.totalBalanceCurr=getBalance(accountCardData,"debitCurr","creditCurr");
             }
-            if(itemData.itemCardData){
+            if(itemData.itemCardData.length>=1){
                 itemData.totalQtBalance=itemData.itemCardData.slice(-1)[0].qtBalance;//I take the last calculated value
                 itemData.totalCurrAvgCost=itemData.itemCardData.slice(-1)[0].accAvgCost;//I take the last calculated value
             }

@@ -41,7 +41,6 @@ function exec(inData, options) {
     var scriptId="ch.banana.portfolio.accounting.security.card.report.js";
     var journal=""; //hold the journal table
     var journalData=[];
-    var trIdList="";// transactions id List
     var accountCard=""; //hold the account card table
     var accountCardData="";
     var itemCardData={};
@@ -56,7 +55,7 @@ function exec(inData, options) {
         return false;
 
     docInfo=getDocumentInfo(banDoc);
-    itemsData=getItemsTableData(docInfo);
+    itemsData=getItemsTableData(banDoc,docInfo);
     itemAccount=getItemValue(itemsData,selectedItem,"account");
     itemCurrency=getItemCurrency(itemsData,selectedItem);
 
@@ -66,14 +65,26 @@ function exec(inData, options) {
     //get the journal data and creates an array of objects containing the transactions data
     journal = banDoc.journal(banDoc.ORIGINTYPE_CURRENT, banDoc.ACCOUNTTYPE_NONE);
     journalData=getJournalData(docInfo,journal);
-    trIdList=getTransactionsIdList(journalData);
 
     //get the account card, filter the result by item and return an array of objects containing the transactions data
     accountCard=banDoc.currentCard(itemAccount);
     accountCardData=getAccountCardData(docInfo,selectedItem,accountCard);
 
     //get the calculated data and the totals
-    itemCardData.data=getItemCardData(accountCardData,journalData);
+    itemCardData=getItemCardData(docInfo,accountCardData,journalData,itemCurrency,selectedItem);
+
+    let itemDescription=getItemValue(itemsData,selectedItem,"description");
+    var report = printReport(docInfo,itemCardData,itemDescription);
+    getReportHeader(report,docInfo);
+    var stylesheet = getReportStyle();
+    Banana.Report.preview(report, stylesheet);
+
+
+}
+
+function getItemCardData(docInfo,accountCardData,journalData,itemCurrency,selectedItem){
+    let itemCardData={};
+    itemCardData.data=getItemCardDataList(accountCardData,journalData);
     itemCardData.currency=itemCurrency;
     itemCardData.item=selectedItem;
     itemCardData.totalDebitBase=getSum(accountCardData,"debitBase");
@@ -89,14 +100,7 @@ function exec(inData, options) {
         itemCardData.totalQtBalance=itemCardData.data.slice(-1)[0].qtBalance; 
         itemCardData.totalCurrAvgCost=itemCardData.data.slice(-1)[0].accAvgCost;
     }
-
-    let itemDescription=getItemValue(itemsData,selectedItem,"description");
-    var report = printReport(docInfo,itemCardData,itemDescription);
-    getReportHeader(report,docInfo);
-    var stylesheet = getReportStyle();
-    Banana.Report.preview(report, stylesheet);
-
-
+    return itemCardData;
 }
 
 function getItemCardTable(report,docInfo,currentDate,baseCurr,itemCardData,itemDescription){
