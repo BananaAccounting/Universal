@@ -195,13 +195,72 @@ function getDocumentInfo(banDoc){
 }
 
 /**
+ * 
+ * @param {*} avgCost the average cost
+ * @param {*} userParam the parameters that the user defined in the dialog
+ * @param {*} currentRowData the current line transaction data
+ * @returns an object with the calculation data.
+ */
+ function calculateShareSaleData(banDoc,docInfo,userParam,itemsData){
+    
+    let saleData={};
+    let item="";
+    let journal="";
+    let quantity="";
+    let marketPrice="";
+    let currExRate=""; //current exchange rate
+    let accExRate=""; //accounting exchange rate
+    let avgCost="";
+    let avgSharesValue="";
+    let totalSharesvalue="";
+    let saleResult="";
+    let exRateResult="";
+    let accountCard="";
+    let accountCardData="";
+    let itemAccount="";
+    let itemCardData=[];
+    
+    item=userParam.selectedItem;//get the item
+    itemAccount=getItemValue(itemsData,item,"account");//get the account of the item
+    //check if element exist
+    findElement(banDoc,item, itemsData,"item","Items table");
+    //get item card data to find the current average cost
+    journal = banDoc.journal(banDoc.ORIGINTYPE_CURRENT, banDoc.ACCOUNTTYPE_NONE);
+    journalData=getJournalData(docInfo,journal);
+    accountCard=banDoc.currentCard(itemAccount);
+    accountCardData=getAccountCardData(docInfo,item,accountCard);
+    itemCardData=getItemCardDataList(accountCardData,journalData);
+    //extract from the array the current avg cost value (accounting value)
+    if(itemCardData.length>=1){
+        avgCost=itemCardData.slice(-1)[0].accAvgCost;
+    }
+
+    quantity=userParam.quantity;
+    marketPrice=userParam.marketPrice;
+    currExRate=userParam.currExRate;
+    accExRate=getAccountingCourse(item,itemsData,banDoc);
+
+    //avgCost=getAverageCost(item,transList);
+    avgSharesValue=getSharesAvgValue(quantity,avgCost);
+    totalSharesvalue=getSharesTotalValue(quantity,marketPrice);
+    saleResult=getSaleResult(avgSharesValue,totalSharesvalue);
+    exRateResult=getExchangeResult(marketPrice,quantity,currExRate,accExRate);
+
+    saleData.avgCost=avgCost;
+    saleData.avgSharesValue=avgSharesValue;
+    saleData.totalSharesvalue=totalSharesvalue;
+    saleData.saleResult=saleResult;
+    saleData.exRateResult=exRateResult;
+
+    return saleData;
+
+}
+
+/**
  * Retrieves the transactions from the account card of the item selected by the user and
  * returns the transactions as objects.
- * In order to save the data from the account card, I use two checks: the first one checks that the isin in the item column matches,
- *  the second one checks that the transaction number matches one of those in the list. 
- * This check is due to the fact that not all of the entries regarding the item have a direct reference to the isin in the column, 
- * for example the sale entry did not indicate the item.
- * @param {*} selectedItem item selected by the user
+ * In order to save the data from the account card, i checks that the isin in the item column matches. 
+ * @param {*} selectedItem item selected by the user.
  * @param {*} docInfo item selected by the user
  * @param {*} accountCard account card (table obj)
  */
@@ -241,7 +300,7 @@ function getDocumentInfo(banDoc){
         return false;
 }
 
-function getItemCardData(accountCardData,journalData){
+function getItemCardDataList(accountCardData,journalData){
 
     SetSoldData(accountCardData,journalData);
     getQuantityBalance(accountCardData);
@@ -535,10 +594,10 @@ function getAccountsTableData(banDoc,docInfo){
  * Retrieves item information from the items table
  * @returns 
  */
-function getItemsTableData(docInfo){
+function getItemsTableData(banDoc,docInfo){
     //get the items list from the items table
     var itemsData=[];
-    let table = Banana.document.table("Items");
+    let table = banDoc.table("Items");
     if (!table) {
         return itemsData;
     }
