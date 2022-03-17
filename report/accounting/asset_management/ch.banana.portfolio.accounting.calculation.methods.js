@@ -11,11 +11,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-//
-// @id = ch.banana.portfolio.accounting.calculation.methods.js
-// @api = 1.0
-// @pubdate = 2022-01-13
-// @publisher = Banana.ch SA
 
 /**********************************************************
  * 
@@ -23,10 +18,6 @@
  * 
  *********************************************************/
 
-/**
- * Initialise the Json document
- * @returns 
- */
  function initJsonDoc() {
     var jsonDoc = {};
     jsonDoc.document = {};

@@ -13,7 +13,7 @@
 // limitations under the License.
 //
 // @api = 1.0
-// @id = ch.banana.portfolio.accounting.reconciliation.report.js
+// @id = ch.banana.portfolio.accounting.riconciliation.report.js
 // @description = Reconciliation
 // @task = app.command
 // @doctype = 100.*
@@ -439,7 +439,7 @@ function sumBalances(itemsDataList,property){
 }
 
 
-//esempio struttura dati.
+/*example data structure
 var reconciliationData={
     "date":"date",
     "data":[
@@ -565,4 +565,4 @@ var reconciliationData={
         }
     ]
 
-}
+}*/
