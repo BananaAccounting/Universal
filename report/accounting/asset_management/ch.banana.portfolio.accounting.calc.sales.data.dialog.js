@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-// @id = ch.banana.portfolio.accounting.calc.sales.data.dialog.js
+// @id = ch.banana.portfolio.accounting.js
 // @api = 1.0
 // @pubdate = 2022-02-16
 // @publisher = Banana.ch SA
@@ -84,8 +84,8 @@ dialog.showPreviews=function(){
         avgCostPreview.setText(avgCost+" ("+assetCurr+")");
         saleResultPreview.setText(saleResult+" ("+assetCurr+")");
         exchangeResultPreview.setText(exRateResult+" ("+baseCurr+")");
-        avgValueOfSharesPreview.setText(avgSharesValue+" ("+baseCurr+")");
-        totalValueOfSharesPreview.setText(totalSharesvalue+" ("+baseCurr+")");
+        avgValueOfSharesPreview.setText(avgSharesValue+" ("+assetCurr+")");
+        totalValueOfSharesPreview.setText(totalSharesvalue+" ("+assetCurr+")");
     }else{
         avgCostPreview.setText(avgCost);
         saleResultPreview.setText(saleResult);

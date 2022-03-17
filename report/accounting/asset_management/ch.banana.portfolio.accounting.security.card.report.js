@@ -14,7 +14,7 @@
 // limitations under the License.
 //
 // @api = 1.0
-// @id = ch.banana.portfolio.accounting.conciliation.report.js
+// @id = ch.banana.portfolio.accounting.security.card.report.js
 // @description = Security Card
 // @task = app.command
 // @doctype = 100.*
@@ -260,7 +260,7 @@ function getReportStyle(baseColor) {
     return stylesheet;
 }
 
-//esempio struttura dati.
+/*example data structure
 var itemCardData={
     "date":"date",
     "currency":"EUR",
@@ -306,4 +306,4 @@ var itemCardData={
     "TotalQtBalance (itemCurr)":"",//the last value calculated in the column: Quantity Balance
     "TotalCurrAvgCost (itemCurr)":"",//the last value calculated in the column: Current Average Cost
 
-}
+}*/
