@@ -282,33 +282,6 @@ function getDifferenceAmountStyle(diffAmount){
 
     return style;
 }
-
-function getReportStyle() {
-    //CREATE THE STYLE FOR THE REPORT
-    //create the style
-    var textCSS = "";
-    var file = Banana.IO.getLocalFile("file:script/ch.banana.portfolio.accounting.reports.css");
-    var fileContent = file.read();
-    if (!file.errorString) {
-        Banana.IO.openPath(fileContent);
-        //Banana.console.log(fileContent);
-        textCSS = fileContent;
-    } else {
-        Banana.console.log(file.errorString);
-    }
-
-    var stylesheet = Banana.Report.newStyleSheet();
-    // Parse the CSS text
-    stylesheet.parse(textCSS);
-
-    var style = stylesheet;
-
-
-    //Create a table style adding the border
-    style = stylesheet.addStyle("table_bas_transactions");
-
-    return stylesheet;
-}
 /**
  * Creates an array with all the data of all the items that are registered under this account 
  * @param {*} itemsData list of items
