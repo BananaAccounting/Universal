@@ -36,8 +36,8 @@ function exec(inData, options) {
     var docInfo="";
     var itemsData="";
     var itemAccount="";
-    var dlgTitle="Security Isin";
-    var dlgLabel="Enter the Isin number of the security";
+    var dlgTitle="Security ISIN";
+    var dlgLabel="Enter the ISIN number of the security";
     var scriptId="ch.banana.portfolio.accounting.security.card.report.js";
     var journal=""; //hold the journal table
     var journalData=[];
