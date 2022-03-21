@@ -32,16 +32,29 @@
 function addTableBaSAppraisal(report) {
     let current_date=new Date()
     current_date=Banana.Converter.toInternalDateFormat(current_date);
-    var table_bas_appraisal = report.addTable('table_bas_appraisal');
+    var table_bas_appraisal = report.addTable('myAppraisalTable');
     table_bas_appraisal.setStyleAttributes("width:100%;");
+    //columns definition
+    table_bas_appraisal.addColumn("Type/Security").setStyleAttributes("width:15%");
+    table_bas_appraisal.addColumn("ISIN").setStyleAttributes("width:15%");
+    table_bas_appraisal.addColumn("Quantity").setStyleAttributes("width:15%");
+    table_bas_appraisal.addColumn("Unit Cost").setStyleAttributes("width:15%");
+    table_bas_appraisal.addColumn("Total Cost").setStyleAttributes("width:15%");
+    table_bas_appraisal.addColumn("Market Price").setStyleAttributes("width:10%");
+    table_bas_appraisal.addColumn("Market Value").setStyleAttributes("width:15%");
+    table_bas_appraisal.addColumn("% of Port").setStyleAttributes("width:15%");
+    table_bas_appraisal.addColumn("Un. Gain or Loss").setStyleAttributes("width:15%");
+    table_bas_appraisal.addColumn("% G/L").setStyleAttributes("width:15%");
+    //headers definition
     table_bas_appraisal.getCaption().addText(qsTr("Appraisal Report \n Holdings as of: "+current_date), "styleTitles");
     var tableHeader = table_bas_appraisal.getHeader();
     var tableRow = tableHeader.addRow();
     tableRow.addCell("Type/Security", "styleTablesHeaderText");
+    tableRow.addCell("ISIN", "styleTablesHeaderText");
     tableRow.addCell("Quantity", "styleTablesHeaderText");
     tableRow.addCell("Unit Cost", "styleTablesHeaderText");
     tableRow.addCell("Total Cost", "styleTablesHeaderText");
-    tableRow.addCell("Market Price ", "styleTablesHeaderText");
+    tableRow.addCell("Market Price", "styleTablesHeaderText");
     tableRow.addCell("Market Value", "styleTablesHeaderText");
     tableRow.addCell("% of Port", "styleTablesHeaderText");
     tableRow.addCell("Un. Gain or Loss", "styleTablesHeaderText");
@@ -49,44 +62,129 @@ function addTableBaSAppraisal(report) {
     return table_bas_appraisal;
 }
 
-function addTableBaSTransactionsDetails(report) {
+function addTableBaSTransactions(report) {
     let current_date=new Date()
     current_date=Banana.Converter.toInternalDateFormat(current_date);
-    var table_bas_transactions_details = report.addTable('table_bas_transactions_details');
+    var table_bas_transactions_details = report.addTable('myTransactionsTable');
     table_bas_transactions_details.setStyleAttributes("width:100%;");
     table_bas_transactions_details.getCaption().addText(qsTr("Portfolio Transactions \n Transactions as of: "+current_date), "styleTitles");
     var tableHeader = table_bas_transactions_details.getHeader();
     var tableRow = tableHeader.addRow();
+    //columns definition
+    table_bas_transactions_details.addColumn("Date").setStyleAttributes("width:15%");
+    table_bas_transactions_details.addColumn("Doc").setStyleAttributes("width:10%");
+    table_bas_transactions_details.addColumn("Item").setStyleAttributes("width:15%");
+    table_bas_transactions_details.addColumn("Description").setStyleAttributes("width:30%");
+    table_bas_transactions_details.addColumn("Debit").setStyleAttributes("width:20%");
+    table_bas_transactions_details.addColumn("Credit").setStyleAttributes("width:20%");
+    table_bas_transactions_details.addColumn("Quantity").setStyleAttributes("width:10%");
+    table_bas_transactions_details.addColumn("Unit Price").setStyleAttributes("width:15%");
+    table_bas_transactions_details.addColumn("Amount").setStyleAttributes("width:15%");
+    //headers definition
     tableRow.addCell("Date", "styleTablesHeaderText");
-    tableRow.addCell("Type", "styleTablesHeaderText");
+    tableRow.addCell("Doc", "styleTablesHeaderText");
+    tableRow.addCell("Item", "styleTablesHeaderText");
     tableRow.addCell("Description", "styleTablesHeaderText");
     tableRow.addCell("Debit", "styleTablesHeaderText");
     tableRow.addCell("Credit", "styleTablesHeaderText");
     tableRow.addCell("Quantity", "styleTablesHeaderText");
-    tableRow.addCell("Qt.Balance", "styleTablesHeaderText");
     tableRow.addCell("Unit/Price", "styleTablesHeaderText");
     tableRow.addCell("Amount", "styleTablesHeaderText");
     return table_bas_transactions_details;
 }
 
-function printReport(banDoc,docInfo){
+function printReport(appraisalDataList,portfolioTrData,comboboxParam){
 
     //creates a new report
-    var report = Banana.Report.newReport("Portfolio Evaluation Report");
-    let appraisalData={};
-    //get the data list
-    let appraisalDataList=getAppraisalData(banDoc,docInfo);
-    Banana.Ui.showText(JSON.stringify(appraisalDataList));
+    let report = Banana.Report.newReport("Portfolio Evaluation Report");
+    //add appraisal table
+    let appraisalTable = addTableBaSAppraisal(report);
+    let rowColorIndex=0;//to know whether a line is odd or even.
+    let isEven=false;
+    let rowStyle="";
 
-    //add item card table
-    var appraisalTable = addTableBaSAppraisal(report);
-
-    //Print the data.
+    //APPRAISAL REPORT
     for(var key in appraisalDataList.secType){
         let secType=appraisalDataList.secType[key];
-        var tableRow = appraisalTable.addRow(rowStyle);
-        tableRow.addCell(secType.type, '');//TESTARE SE DA QUA FUNZIONAA IL REPORT
-    
+        var tableRow = appraisalTable.addRow("");
+        tableRow.addCell(secType.type, 'styleDescrTotals');
+        tableRow.addCell('', '',9);
+        //sort the results before printing them
+        if(secType.data && secType.data.length>=1)
+            secType.data.setSortParam(comboboxParam);
+        //Define the style for the values taken as reference for the data sorting
+        let styleMarketValue=setSortedColumnStyle(comboboxParam,'Market Value');
+        let stylePerPorfolio=setSortedColumnStyle(comboboxParam,'Percentage of Portfolio');
+        let styleCurrentQt=setSortedColumnStyle(comboboxParam,'Quantity');
+        //define cell styles for the value
+        //print data
+        for(var e in secType.data){
+            isEven=checkIfNumberisEven(rowColorIndex);
+            if(isEven)
+                rowStyle="styleEvenRows";
+            else
+            rowStyle="styleOddRows";
+
+            var tableRow = appraisalTable.addRow(rowStyle);
+            let sec=secType.data[e];
+            tableRow.addCell(sec.description, '');
+            tableRow.addCell(sec.item, 'styleNormalAmount');
+            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(sec.currentQt,0,false), styleCurrentQt);
+            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(sec.avgCost,2,false), 'styleNormalAmount');
+            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(sec.totalCost,2,false), 'styleNormalAmount');
+            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(sec.marketPrice,2,false), 'styleNormalAmount');
+            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(sec.marketValue,2,false), styleMarketValue);
+            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(sec.percOfPort,2,false),stylePerPorfolio);
+            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(sec.unGainLoss,2,false), 'styleNormalAmount');
+            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(sec.percGL,2,false), 'styleNormalAmount');
+
+            rowColorIndex++;
+        }
+        //print totals
+        var tableRow = appraisalTable.addRow("rowStyle");
+        tableRow.addCell("Totals", 'styleDescrTotals');
+        tableRow.addCell("", '',3);
+        tableRow.addCell(Banana.Converter.toLocaleNumberFormat(secType.totalCostSum,2,false), 'styleTotalAmount');
+        tableRow.addCell("", '',1);
+        tableRow.addCell(Banana.Converter.toLocaleNumberFormat(secType.marketValueSum,2,false), 'styleTotalAmount');
+        tableRow.addCell(Banana.Converter.toLocaleNumberFormat(secType.percOfPortSum,2,false), 'styleTotalAmount');
+        tableRow.addCell(Banana.Converter.toLocaleNumberFormat(secType.unGainLossSum,2,false), 'styleTotalAmount');
+        tableRow.addCell(Banana.Converter.toLocaleNumberFormat(secType.percGLSum,2,false), 'styleTotalAmount');
+    }
+
+    report.addPageBreak();
+
+    //add portfolio transactions table
+    let transactionsTable = addTableBaSTransactions(report);
+    //reset row color index to zero
+    rowColorIndex=0;
+
+    //PORTFOLIO TRANSACTIONS REPORT
+    for(var key in portfolioTrData.data){
+        let trElement=portfolioTrData.data[key];
+        var tableRow = transactionsTable.addRow("");
+        tableRow.addCell(trElement.item, 'styleDescrTotals');
+        tableRow.addCell('', '',8);
+        for(var e in trElement.transactions){
+            isEven=checkIfNumberisEven(rowColorIndex);
+            if(isEven)
+                rowStyle="styleEvenRows";
+            else
+            rowStyle="styleOddRows";
+            let transaction =trElement.transactions[e];
+            var tableRow = transactionsTable.addRow(rowStyle);
+            tableRow.addCell(Banana.Converter.toLocaleDateFormat(transaction.date, ''));
+            tableRow.addCell(transaction.doc, 'styleAlignCenter');
+            tableRow.addCell(transaction.item, '');
+            tableRow.addCell(transaction.description, '');
+            tableRow.addCell(transaction.debit,'');
+            tableRow.addCell(transaction.credit,'');
+            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(transaction.qt,0,false),'styleNormalAmount');
+            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(transaction.unitPrice,0,false),'styleNormalAmount');
+            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(transaction.amount,2,false),'styleNormalAmount');
+
+            rowColorIndex++;
+        }
     }
 
     return report;
@@ -105,53 +203,22 @@ function getQtStyle(qt){
     return style;
 }
 
-function setSortedColumnStyle(value){
-    var savedParam = Banana.document.getScriptSettings();
-    var userParam="";
-    if (savedParam.length > 0) {
-        userParam = JSON.parse(savedParam);
-    }
-    if(userParam){
+function setSortedColumnStyle(comboboxParam,value){
+    if(comboboxParam){
         var style="";
-        if(userParam===value){
+        if(comboboxParam===value){
             style="styleSortedByColumn";
             return style;
         }else{
-            style="styleTablesBasResults";
+            style="styleNormalAmount";
             return style;
         }
     }else
-        return 'styleTablesBasResults';
+        return 'styleNormalAmount';
 }
 
-function setNegativeStyle(value,isTotal){
-    var style="";
-    var sign=Banana.SDecimal.sign(value);
-    var normal_style="";
-    var negative_style="";
-
-    if(isTotal){
-        normal_style="styleTablesBasResults_totals";
-        negative_style="styleTotalNegativeAmount";
-    }else{
-        normal_style="styleTablesBasResults";
-        negative_style="styleNegativeAmount";
-    }
-
-    if(sign==-1){
-        style=negative_style;
-    }else{
-        style=normal_style;
-    }
-
-    return style;
-}
-
-
-function getAppraisalData(banDoc,docInfo) {
+function getAppraisalData(banDoc,docInfo,itemsData) {
     let appraisalData={};
-
-    let itemsData=getItemsTableData(banDoc,docInfo);
     let secTypesList=getSecurityTypesList(itemsData);//list of groups into which the titles in the items table are grouped
     
     let d=new Date();//save the current date
@@ -174,8 +241,8 @@ function getAppraisalDataList(banDoc,docInfo,secTypesList,itemsData){
         secType.type=secTypesList[i];
         secType.data=getAppraisalDataList_transactions(banDoc,docInfo,itemsData,journalData,secTypesList[i]);
         //calculate portfolio percentage for each transactions and then totals for each type
-        calculatePortfolioPercentage(secType.data);
-        calculateTotals(secType.data);  //RIPRENDERE DA QUIIII, NON VENGONO INSERITE LE PROPRIETÀ.
+        getAppraisalDataList_portfolioPercentage(secType.data);
+        getAppraisalDataList_calculateTotals(secType,secType.data);
         if(secType){
             appraisalDataList.push(secType);
         }
@@ -193,6 +260,7 @@ function getAppraisalDataList_transactions(banDoc,docInfo,itemsData,journalData,
             let accountCardData=getAccountCardData(docInfo,itemsData[key].item,accountCard);
             let appraisalData={};
             appraisalData.item=itemsData[key].item;
+            appraisalData.description=itemsData[key].description;
             appraisalData.currentQt=itemsData[key].currentQt;
             //get the average cost
             appraisalData.avgCost="";
@@ -235,7 +303,7 @@ function getGLPerc(marketValue,totalCost){
     return percGL;
 }
 
-function calculatePortfolioPercentage(appraisalDataList){
+function getAppraisalDataList_portfolioPercentage(appraisalDataList){
     let portfolioTotalAmount=getPortfolioSum(appraisalDataList);
 
     for(var key in appraisalDataList){
@@ -262,7 +330,13 @@ function getPortfolioSum(appraisalDataList){
 
 }
 
-function calculateTotals(appraisalDataList){
+/**
+ * 
+ * @param {*} appraisalDataList the appraisalDataList object
+ * @param {*} arrayData the array with the data to sum.
+ * @returns 
+ */
+function getAppraisalDataList_calculateTotals(appraisalDataList,arrayData){
     appraisalDataList.totalCostSum="";
     appraisalDataList.marketValueSum="";
     appraisalDataList.percOfPortSum="";
@@ -270,11 +344,11 @@ function calculateTotals(appraisalDataList){
     appraisalDataList.percGLSum="";
 
     //get the sums
-    let totalCostSum=appraisalDataList.map(item=>parseFloat(item.totalCost)).reduce((prev,curr)=>prev+curr,0);
-    let marketValueSum=appraisalDataList.map(item=>parseFloat(item.marketValue)).reduce((prev,curr)=>prev+curr,0);
-    let percOfPortSum=appraisalDataList.map(item=>parseFloat(item.percOfPort)).reduce((prev,curr)=>prev+curr,0);
-    let unGainLossSum=appraisalDataList.map(item=>parseFloat(item.unGainLoss)).reduce((prev,curr)=>prev+curr,0);
-    let percGLSum=appraisalDataList.map(item=>parseFloat(item.percGL)).reduce((prev,curr)=>prev+curr,0);
+    let totalCostSum=arrayData.map(item=>parseFloat(item.totalCost)).reduce((prev,curr)=>prev+curr,0);
+    let marketValueSum=arrayData.map(item=>parseFloat(item.marketValue)).reduce((prev,curr)=>prev+curr,0);
+    let percOfPortSum=arrayData.map(item=>parseFloat(item.percOfPort)).reduce((prev,curr)=>prev+curr,0);
+    let unGainLossSum=arrayData.map(item=>parseFloat(item.unGainLoss)).reduce((prev,curr)=>prev+curr,0);
+    let percGLSum=arrayData.map(item=>parseFloat(item.percGL)).reduce((prev,curr)=>prev+curr,0);
 
     //reset values to string and save values as ohbect properties.
     appraisalDataList.totalCostSum=totalCostSum.toString();
@@ -287,7 +361,51 @@ function calculateTotals(appraisalDataList){
     return appraisalDataList;
 }
 
+function getportfolioTrData(banDoc,docInfo,itemsData){
+   let portfolioTrData={};
+   portfolioTrData.date="";
+   portfolioTrData.data=[];
+   let trTableData={};
 
+   trTableData=getTransactionsTableData(banDoc,docInfo);
+
+   for(var key in itemsData){
+       let item={};
+       item.item=itemsData[key].item;
+       item.transactions=getportfolioTrData_transactions(item.item,trTableData);
+       if(item)
+        portfolioTrData.data.push(item);
+
+   }
+    return portfolioTrData;
+}
+
+/**
+ * Saves in an array of obj all the records that have the item equal to ItemsId
+ * @param {*} itemId ref item
+ * @param {*} trTableData transactions tabel data
+ */
+function getportfolioTrData_transactions(itemId,trTableData){
+    let transactions=[];
+
+    for(var key in trTableData){
+        if(trTableData[key].item!="" && itemId==trTableData[key].item){
+            let transaction={};
+            transaction.date=trTableData[key].date;
+            transaction.doc=trTableData[key].doc;
+            transaction.item=trTableData[key].item;
+            transaction.description=trTableData[key].description;
+            transaction.debit=trTableData[key].debit;
+            transaction.credit=trTableData[key].credit;
+            transaction.qt=trTableData[key].qt;
+            transaction.unitPrice=trTableData[key].unitPrice;
+            transaction.amount=trTableData[key].amountBase;
+            if(transaction)
+                transactions.push(transaction);
+        }
+    }
+    return transactions;
+}
 
 /**
  *  Create the parameters of the settings dialog
@@ -315,32 +433,27 @@ function convertParam(userParam) {
 
 }
 /**
- * this function sorts the items according to what the user has chosen in the dialog 
+ * This function sorts the items according to what the user has chosen in the dialog 
  * @param {*} a 
  * @param {*} b 
  * @returns items ordered 
  */
-function compare(a,b){
-    var savedParam = Banana.document.getScriptSettings();
-    var userParam="";
-    if (savedParam.length > 0) {
-        userParam = JSON.parse(savedParam);
-    }
-    if(userParam){
+ Array.prototype.setSortParam=function (userParam){
+    function compare(a,b){
+
         switch(userParam){
             case "Market Value":
-                return b.market_value-a.market_value;
+                return b.marketValue-a.marketValue;
                 break;
             case "Percentage of Portfolio":
-                return b.perc_of_port-a.perc_of_port;
+                return b.percOfPort-a.percOfPort;
                 break;
             case "Quantity":
-                return b.quantity-a.quantity;
+                return b.currentQt-a.currentQt;
                 break;
         }
     }
-    else 
-        return false;
+    this.sort(compare);
 }
 
 function getComboBoxElement() {
@@ -381,10 +494,6 @@ function getComboBoxElement() {
     return combobox_value;
 }
 
-function sumQt(cumulatedQuantity, quantity) {
-    return Banana.SDecimal.add(quantity, cumulatedQuantity);
-}
-
 function exec(inData, options) {
 
     let banDoc=Banana.document;
@@ -393,18 +502,25 @@ function exec(inData, options) {
     if (!Banana.document || docInfo.isMultiCurrency || !verifyBananaVersion())
         return "@Cancel";
 
-    var comboboxForm = getComboBoxElement();
-    if (!comboboxForm)
+    var comboboxParam = getComboBoxElement();
+    if (!comboboxParam)
         return;
 
-    var report = printReport(banDoc,docInfo);
+    //get the items table data
+    let itemsData=getItemsTableData(banDoc,docInfo);
+    //get the appraisal data list
+    let appraisalDataList=getAppraisalData(banDoc,docInfo,itemsData);
+    //get the transactionsList
+    let portfolioTrData=getportfolioTrData(banDoc,docInfo,itemsData);
+    var report = printReport(appraisalDataList,portfolioTrData,comboboxParam);
+    getReportHeader(report,docInfo);
     var stylesheet = getReportStyle();
     Banana.Report.preview(report, stylesheet);
 
 
 }
 
-/*example data structure
+/*example  Appraisal data structure
 var appraisalData={
     "date":"date",
     "securityTypes":[
@@ -477,5 +593,64 @@ var appraisalData={
             "totalUnGainOrLoss":"",
             "totalGl":""
         }
+    ]
+}*/
+
+/*example portfolio transactions data structure
+var appraisalData={
+    "date":"currentDate",
+    "data":[
+        {
+            item:"CH003886335",
+            transactions:[
+                {
+                    "date":"",
+                    "Doc":"",
+                    "Item":"",
+                    "Description":"",
+                    "Debit":"",
+                    "Credit":"",
+                    "Qt":"",
+                    "UnitPrice":""
+
+                },
+                {
+                    "date":"",
+                    "Doc":"",
+                    "Item":"",
+                    "Description":"",
+                    "Debit":"",
+                    "Credit":"",
+                    "Qt":"",
+                    "UnitPrice":""
+
+                }
+            ]
+        },
+            item:"CH012775214",
+            transactions:[
+                {
+                    "date":"",
+                    "Doc":"",
+                    "Item":"",
+                    "Description":"",
+                    "Debit":"",
+                    "Credit":"",
+                    "Qt":"",
+                    "UnitPrice":""
+
+                },
+                {
+                    "date":"",
+                    "Doc":"",
+                    "Item":"",
+                    "Description":"",
+                    "Debit":"",
+                    "Credit":"",
+                    "Qt":"",
+                    "UnitPrice":""
+
+                }
+            ]
     ]
 }*/
