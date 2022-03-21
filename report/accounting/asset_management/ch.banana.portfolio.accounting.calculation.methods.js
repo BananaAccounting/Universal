@@ -435,6 +435,7 @@ function getJournalValueFiltered(journalData,trId,objProp){
             var tRow = trnsactionsTable.row(i);
             trData.row=tRow.rowNr;
             trData.date=tRow.value("Date");
+            trData.doc=tRow.value("Doc");
             trData.type=tRow.value("DocType");
             trData.item=tRow.value("ItemsId");
             trData.description=tRow.value("Description");

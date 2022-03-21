@@ -9,7 +9,28 @@ body {
     font-size: 9pt;
 }
 
-table.myTable {
+table.mySecCardTable {
+    border-style: solid;
+    border-color: rgb(0, 0, 0);
+    width: auto;
+    padding-top: 1px;
+    padding-bottom: 1px;
+}
+table.myConcTable {
+    border-style: solid;
+    border-color: rgb(0, 0, 0);
+    width: auto;
+    padding-top: 1px;
+    padding-bottom: 1px;
+}
+table.myAppraisalTable {
+    border-style: solid;
+    border-color: rgb(0, 0, 0);
+    width: auto;
+    padding-top: 1px;
+    padding-bottom: 1px;
+}
+table.myTransactionsTable {
     border-style: solid;
     border-color: rgb(0, 0, 0);
     width: auto;

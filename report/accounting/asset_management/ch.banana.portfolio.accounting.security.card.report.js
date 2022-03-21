@@ -105,7 +105,7 @@ function getItemCardData(docInfo,accountCardData,journalData,itemCurrency,select
 
 function getItemCardTable(report,docInfo,currentDate,baseCurr,itemCardData,itemDescription){
     currentDate=Banana.Converter.toInternalDateFormat(currentDate);
-    var tableConc = report.addTable('myTable');
+    var tableConc = report.addTable('mySecCardTable');
     let itemId=itemCardData.item;
     let itemCurr=itemCardData.currency;
     let refCurr=itemCurr? itemCurr:baseCurr; //currency dispayed on the header.
@@ -188,7 +188,7 @@ function printReport(docInfo,itemCardData,itemDescription){
         itCardRow=itemCardData.data[key];
 
         var tableRow = tabItemCard.addRow(rowStyle);
-        tableRow.addCell(Banana.Converter.toLocaleDateFormat(itCardRow.date), '');
+        tableRow.addCell(Banana.Converter.toLocaleDateFormat(itCardRow.date), '');//exlcude from test
         tableRow.addCell(itCardRow.doc, 'styleAlignCenter');
         tableRow.addCell(itCardRow.description, '');
         if(docInfo.isMultiCurrency){
