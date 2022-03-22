@@ -20,7 +20,7 @@
 %Begin test data
 \begin{reportvalue}{FILENAME: file:script/../test/testcases/portfolio\_accounting\_double\_entry\_tutorial.ac2}
 \begin{longtable}[l]{ l  l  l  l  l  l  l  l  l  l  l  l }
-Securities Reconciliation Report, Data as of: 16.03.2022 Account  & Item  & Date  & Doc  & Description  & Debit CHF  & Credit CHF  & Balance CHF  & Quantity   & Unit Price   & Quantity balance  & Current.\P Average cost\P  \\
+\excltest{Securities Reconciliation Report, Data as of: 22.03.2022} Account  & Item  & Date  & Doc  & Description  & Debit CHF  & Credit CHF  & Balance CHF  & Quantity   & Unit Price   & Quantity balance  & Current.\P Average cost\P  \\
 \multicolumn{12}{l}{Swiss Shares }\\
  & \multicolumn{11}{l}{CH003886335 }\\
  &  & 20.02.2022  & 1  & Shares UBS Purchase  & 1'100.00  &  & 1'100.00  & 100.00  & 11.00  & 100.00  & 11.00 \\
@@ -31,18 +31,18 @@ Securities Reconciliation Report, Data as of: 16.03.2022 Account  & Item  & Date
  &  & 20.04.2022  & 4  & Shares UBS Purchase  & 525.00  &  & 1'850.00  & 50.00  & 10.50  & 125.00  & 14.80 \\
  &  & 20.05.2022  & 5  & Shares UBS Total Sale  &  & 168.00  & 1'682.00  & -15.00  & 11.20  & 110.00  & 15.29 \\
  &  & 20.05.2022  & 5  & Shares UBS Profit on Sale  & 5.55  &  & 1'687.55  &  &  & 110.00  & 15.34 \\
-\multicolumn{2}{l}{} & 16.03.2022  &  & Balance CH003886335  & 1'638.05  & 450.50  & 1'187.55  & \multicolumn{2}{l}{} & 110.00  & 15.34 \\
+\multicolumn{2}{l}{} & \excltest{22.03.2022}  &  & Balance CH003886335  & 1'638.05  & 450.50  & 1'187.55  & \multicolumn{2}{l}{} & 110.00  & 15.34 \\
 \multicolumn{12}{l}{}\\
  & \multicolumn{11}{l}{CH012775214 }\\
  &  & 20.02.2022  & 6  & Shares Nestlè Purchase  & 1'000.00  &  & 2'100.00  & 100.00  & 10.00  & 100.00  & 21.00 \\
  &  & 20.03.2022  & 7  & Shares Nestle Total Sale  &  & 475.00  & 1'460.00  & -50.00  & 9.50  & 50.00  & 29.20 \\
  &  & 20.03.2022  & 7  & Shares Nestle Loss on Sale  &  & 25.00  & 1'435.00  &  &  & 50.00  & 28.70 \\
-\multicolumn{2}{l}{} & 16.03.2022  &  & Balance CH012775214  & 1'000.00  & 500.00  & 500.00  & \multicolumn{2}{l}{} & 50.00  & 28.70 \\
+\multicolumn{2}{l}{} & \excltest{22.03.2022}  &  & Balance CH012775214  & 1'000.00  & 500.00  & 500.00  & \multicolumn{2}{l}{} & 50.00  & 28.70 \\
 \multicolumn{12}{l}{}\\
-\multicolumn{2}{l}{} & 16.03.2022  &  & \multicolumn{3}{l}{Opening Balance Swiss Shares } & 0.00  & \multicolumn{4}{l}{}\\
-\multicolumn{2}{l}{} & 16.03.2022  &  & \multicolumn{3}{l}{Current Balance Swiss Shares } & 1'687.55  & \multicolumn{4}{l}{}\\
-\multicolumn{2}{l}{} & 16.03.2022  &  & \multicolumn{3}{l}{Total securities movements } & 1'687.55  & \multicolumn{4}{l}{}\\
-\multicolumn{2}{l}{} & 16.03.2022  &  & \multicolumn{3}{l}{Differences } & 0.00  & \multicolumn{4}{l}{}\\
+\multicolumn{2}{l}{} & \excltest{22.03.2022}  &  & \multicolumn{3}{l}{Opening Balance Swiss Shares } & 0.00  & \multicolumn{4}{l}{}\\
+\multicolumn{2}{l}{} & \excltest{22.03.2022}  &  & \multicolumn{3}{l}{Current Balance Swiss Shares } & 1'687.55  & \multicolumn{4}{l}{}\\
+\multicolumn{2}{l}{} & \excltest{22.03.2022}  &  & \multicolumn{3}{l}{Total securities movements } & 1'687.55  & \multicolumn{4}{l}{}\\
+\multicolumn{2}{l}{} & \excltest{22.03.2022}  &  & \multicolumn{3}{l}{Differences } & 0.00  & \multicolumn{4}{l}{}\\
 \end{longtable}
 \end{reportvalue}
 \end{document}

@@ -1,0 +1,73 @@
+%%info_test_name{portfolio_accounting_double_entry_tutorial}
+\documentclass{report}
+\usepackage{longtable}
+\usepackage{color}
+\usepackage{listings}
+\usepackage[margin=1cm]{geometry}
+\begin{document}
+\newenvironment{tablevalue}[2]{\textbf{Table: #1}\begin{longtable}[l]{#2}}{\end{longtable}}
+\newenvironment{reportvalue}[1]{\textbf{Report: #1}\\}{}
+\lstnewenvironment{jsonvalue}[1]{\textbf{Json: #1}\lstset{language=Java}}{}
+\lstnewenvironment{xmlvalue}[1]{\textbf{Xml: #1}\lstset{language=Xml}}{}
+\newcommand{\info}[2]{\textit{#1: #2}\\}
+\newcommand{\fatalerror}[1]{\textbf{\textcolor[rgb]{1,0,0}{Fatal error: #1}}\\}
+\newcommand{\keyvalue}[2]{\textbf{Keyvalue: #1} #2\\}
+\newcommand{\textvalue}[1]{#1\\}
+\newcommand{\excltest}[1]{\\Excluded from compare: #1}
+\newcommand{\lognewpage}{\newpage}
+\newenvironment{testcase}[1]{\section*{Test: #1}}{\newpage}
+\newenvironment{test}[1]{\section*{Test case: #1}}{}
+%Begin test data
+\begin{reportvalue}{FILENAME: file:script/../test/testcases/portfolio\_accounting\_double\_entry\_tutorial.ac2}
+\begin{longtable}[l]{ l  l  l  l  l  l  l  l  l  l }
+Appraisal Report \P  Holdings as of: 2022-03-22 Type/Security  & ISIN  & Quantity  & Unit Cost  & Total Cost  & Market Price  & Market Value  & \% of Port  & Un. Gain or Loss  & \% G/L \\
+Share  & \multicolumn{9}{l}{}\\
+Shares UBS  & CH003886335  & 110  & 15.34  & 1'687.40  & 16.00  & 1'760.00  & 50.29  & 72.60  & 4.13 \\
+Shares Nestlè  & CH012775214  & 60  & 28.70  & 1'722.00  & 29.00  & 1'740.00  & 49.71  & 18.00  & 1.03 \\
+ &  &  &  &  &  &  &  &  & \\
+Totals  & \multicolumn{3}{l}{} & 3'409.40  &  & 3'500.00  & 100.00  & 90.60  & 5.16 \\
+Bonds  & \multicolumn{9}{l}{}\\
+Bonds  Holcim   & CH135792468  &  &  &  &  &  &  &  & \\
+ &  &  &  &  &  &  &  &  & \\
+Totals  & \multicolumn{3}{l}{} &  &  &  &  &  & \\
+ & \multicolumn{9}{l}{}\\
+\end{longtable}
+\begin{longtable}[l]{ l  l  l  l  l  l  l  l  l }
+Portfolio Transactions \P  Transactions as of: 2022-03-22 Date  & Doc  & Item  & Description  & Debit  & Credit  & Quantity  & Unit/Price  & Amount \\
+CH003886335  & \multicolumn{8}{l}{}\\
+20.02.2022  & 1  & CH003886335  & Shares UBS Purchase  & Swiss Shares  &  & 100  & 11  & 1'100.00 \\
+20.02.2022  & 1  & CH003886335  & Shares UBS Bank Charges  & Bank charges  &  &  &  & 20.00 \\
+20.02.2022  & 1  & CH003886335  & Shares UBS Payment  &  & Bank CHF  &  &  & 1'120.00 \\
+20.03.2022  & 2  & CH003886335  & Shares UBS Total Sale  &  & Swiss Shares  & -15  & 12  & 172.50 \\
+20.03.2022  & 2  & CH003886335  & Shares UBS Bank charges  & Bank charges  &  &  &  & 10.00 \\
+20.03.2022  & 2  & CH003886335  & Shares UBS Cashed Net  & Bank CHF  &  &  &  & 162.50 \\
+20.03.2022  & 2  & CH003886335  & Shares UBS Profit on Sale  & Swiss Shares  & Earnings from Securities  &  &  & 7.50 \\
+22.03.2022  & 3  & CH003886335  & Shares UBS Total Sale  &  & Swiss Shares  & -10  & 10  & 95.00 \\
+22.03.2022  & 3  & CH003886335  & Shares UBS Bank charges  & Bank charges  &  &  &  & 10.00 \\
+22.03.2022  & 3  & CH003886335  & Shares UBS Cashed Net  & Bank CHF  &  &  &  & 85.00 \\
+22.03.2022  & 3  & CH003886335  & Shares UBS Loss on Sale  & Loss from Securities  & Swiss Shares  &  &  & 15.00 \\
+20.04.2022  & 4  & CH003886335  & Shares UBS Purchase  & Swiss Shares  &  & 50  & 11  & 525.00 \\
+20.04.2022  & 4  & CH003886335  & Shares UBS Bank Charges  & Bank charges  &  &  &  & 20.00 \\
+20.04.2022  & 4  & CH003886335  & Shares UBS Payment  &  & Bank CHF  &  &  & 545.00 \\
+20.05.2022  & 5  & CH003886335  & Shares UBS Total Sale  &  & Swiss Shares  & -15  & 11  & 168.00 \\
+20.05.2022  & 5  & CH003886335  & Shares UBS Bank charges  & Bank charges  &  &  &  & 10.00 \\
+20.05.2022  & 5  & CH003886335  & Shares UBS Cashed Net  & Bank CHF  &  &  &  & 158.00 \\
+20.05.2022  & 5  & CH003886335  & Shares UBS Profit on Sale  & Swiss Shares  & Earnings from Securities  &  &  & 5.55 \\
+ &  &  &  &  &  &  &  & \\
+CH012775214  & \multicolumn{8}{l}{}\\
+20.02.2022  & 6  & CH012775214  & Shares Nestlè Purchase  & Swiss Shares  &  & 100  & 10  & 1'000.00 \\
+20.02.2022  & 6  & CH012775214  & Shares Nestlè Bank Charges  & Bank charges  &  &  &  & 20.00 \\
+20.02.2022  & 6  & CH012775214  & Shares Nestlè Payment  &  & Bank CHF  &  &  & 1'020.00 \\
+20.03.2022  & 7  & CH012775214  & Shares Nestle Total Sale  &  & Swiss Shares  & -50  & 10  & 475.00 \\
+20.03.2022  & 7  & CH012775214  & Shares Nestle Bank charges  & Bank charges  &  &  &  & 25.00 \\
+20.03.2022  & 7  & CH012775214  & Shares Nestle Cashed Net  & Bank CHF  &  &  &  & 450.00 \\
+20.03.2022  & 7  & CH012775214  & Shares Nestle Loss on Sale  & Loss from Securities  & Swiss Shares  &  &  & 25.00 \\
+ &  &  &  &  &  &  &  & \\
+CH135792468  & \multicolumn{8}{l}{}\\
+ & \multicolumn{8}{l}{}\\
+ &  &  &  &  &  &  &  & \\
+ &  &  &  &  &  &  &  & \\
+ & \multicolumn{8}{l}{}\\
+\end{longtable}
+\end{reportvalue}
+\end{document}
