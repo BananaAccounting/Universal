@@ -75,7 +75,8 @@ function getConciliationTable(report,currentDate,docInfo){
     var tableConc = report.addTable('myConcTable');
 
     tableConc.setStyleAttributes("width:100%;");
-    tableConc.getCaption().addText(qsTr("Securities Reconciliation Report, Data as of: "+Banana.Converter.toLocaleDateFormat(currentDate)), "styleTitles");
+    let caption=tableConc.getCaption().addText(qsTr("Securities Reconciliation Report, Data as of: "+Banana.Converter.toLocaleDateFormat(currentDate)), "styleTitles");
+    caption.excludeFromTest();
 
     //columns definition 
     tableConc.addColumn("Account").setStyleAttributes("width:15%");
@@ -200,7 +201,8 @@ function printReport(reconciliationData,docInfo){
             //add the item balance.
             var tableRow = tabConc.addRow("styleTableRows");
             tableRow.addCell("", "",2);
-            tableRow.addCell(Banana.Converter.toLocaleDateFormat(currentDate), 'styleAlignCenter');
+            let cellDateItemBal=tableRow.addCell(Banana.Converter.toLocaleDateFormat(currentDate), 'styleAlignCenter');
+            cellDateItemBal.excludeFromTest();
             tableRow.addCell("", "",1);
             tableRow.addCell("Balance "+item.item,"styleDescrTotals");
             if(docInfo.isMultiCurrency){
@@ -221,7 +223,8 @@ function printReport(reconciliationData,docInfo){
         var tableRow = tabConc.addRow("styleTableRows");
         tableRow.addCell("","",2);
         //opening balance
-        tableRow.addCell(Banana.Converter.toLocaleDateFormat(currentDate), 'styleAlignCenter');
+        let cellDateOpBal=tableRow.addCell(Banana.Converter.toLocaleDateFormat(currentDate), 'styleAlignCenter');
+        cellDateOpBal.excludeFromTest();
         tableRow.addCell("", "",1);
         tableRow.addCell("Opening Balance "+ concData[a].account,"styleDescrTotals",3);
         if(docInfo.isMultiCurrency){
@@ -233,7 +236,8 @@ function printReport(reconciliationData,docInfo){
         //current balance
         var tableRow = tabConc.addRow("styleTableRows");
         tableRow.addCell("","",2);
-        tableRow.addCell(Banana.Converter.toLocaleDateFormat(currentDate), 'styleAlignCenter');
+        let cellDateAccBal=tableRow.addCell(Banana.Converter.toLocaleDateFormat(currentDate), 'styleAlignCenter');
+        cellDateAccBal.excludeFromTest();
         tableRow.addCell("", "",1);
         tableRow.addCell("Current Balance "+ concData[a].account,"styleDescrTotals",3);
         if(docInfo.isMultiCurrency){
@@ -245,7 +249,8 @@ function printReport(reconciliationData,docInfo){
         //transactions total
         var tableRow = tabConc.addRow("styleTableRows");
         tableRow.addCell("","",2);
-        tableRow.addCell(Banana.Converter.toLocaleDateFormat(currentDate), 'styleAlignCenter');
+        let cellDateTr=tableRow.addCell(Banana.Converter.toLocaleDateFormat(currentDate), 'styleAlignCenter');
+        cellDateTr.excludeFromTest();
         tableRow.addCell("", "",1);
         tableRow.addCell("Total securities movements","styleDescrTotals",3);
         if(docInfo.isMultiCurrency){
@@ -259,7 +264,8 @@ function printReport(reconciliationData,docInfo){
         var diffStyleCurr=getDifferenceAmountStyle(concData[a].differenceCurr);
         var tableRow = tabConc.addRow("styleTableRows");
         tableRow.addCell("","",2);
-        tableRow.addCell(Banana.Converter.toLocaleDateFormat(currentDate), 'styleAlignCenter');
+        let cellDateDiff=tableRow.addCell(Banana.Converter.toLocaleDateFormat(currentDate), 'styleAlignCenter');
+        cellDateDiff.excludeFromTest();
         tableRow.addCell("", "",1);
         tableRow.addCell("Differences","styleDescrTotals",3);
         if(docInfo.isMultiCurrency){

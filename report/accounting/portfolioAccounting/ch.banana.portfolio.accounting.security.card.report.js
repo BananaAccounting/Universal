@@ -110,7 +110,8 @@ function getItemCardTable(report,docInfo,currentDate,baseCurr,itemCardData,itemD
     let itemCurr=itemCardData.currency;
     let refCurr=itemCurr? itemCurr:baseCurr; //currency dispayed on the header.
     tableConc.setStyleAttributes("width:100%;");
-    tableConc.getCaption().addText(qsTr("Security Card: "+itemId+" "+itemDescription+" "+refCurr+", Data as of: "+currentDate), "styleTitles");
+    let caption=tableConc.getCaption().addText(qsTr("Security Card: "+itemId+" "+itemDescription+" "+refCurr+", Data as of: "+currentDate), "styleTitles");
+    caption.excludeFromTest();
 
     //columns definition 
     tableConc.addColumn("Date").setStyleAttributes("width:10%");
@@ -188,7 +189,7 @@ function printReport(docInfo,itemCardData,itemDescription){
         itCardRow=itemCardData.data[key];
 
         var tableRow = tabItemCard.addRow(rowStyle);
-        tableRow.addCell(Banana.Converter.toLocaleDateFormat(itCardRow.date), '');//exlcude from test
+        tableRow.addCell(Banana.Converter.toLocaleDateFormat(itCardRow.date), '');
         tableRow.addCell(itCardRow.doc, 'styleAlignCenter');
         tableRow.addCell(itCardRow.description, '');
         if(docInfo.isMultiCurrency){
@@ -209,7 +210,8 @@ function printReport(docInfo,itemCardData,itemDescription){
 
     //Print the totals
     var tableRow = tabItemCard.addRow("styleTableRows");
-    tableRow.addCell(Banana.Converter.toLocaleDateFormat(currentDate), '');
+    let dateCell=tableRow.addCell(Banana.Converter.toLocaleDateFormat(currentDate), '');
+    dateCell.excludeFromTest();
     tableRow.addCell("","",1);
     tableRow.addCell("Total transactions", 'styleDescrTotals');
     if(docInfo.isMultiCurrency){

@@ -141,15 +141,17 @@ function printReport(appraisalDataList,portfolioTrData,comboboxParam){
             rowColorIndex++;
         }
         //print totals
-        var tableRow = appraisalTable.addRow("rowStyle");
-        tableRow.addCell("Totals", 'styleDescrTotals');
-        tableRow.addCell("", '',3);
-        tableRow.addCell(Banana.Converter.toLocaleNumberFormat(secType.totalCostSum,2,false), 'styleTotalAmount');
-        tableRow.addCell("", '',1);
-        tableRow.addCell(Banana.Converter.toLocaleNumberFormat(secType.marketValueSum,2,false), 'styleTotalAmount');
-        tableRow.addCell(Banana.Converter.toLocaleNumberFormat(secType.percOfPortSum,2,false), 'styleTotalAmount');
-        tableRow.addCell(Banana.Converter.toLocaleNumberFormat(secType.unGainLossSum,2,false), 'styleTotalAmount');
-        tableRow.addCell(Banana.Converter.toLocaleNumberFormat(secType.percGLSum,2,false), 'styleTotalAmount');
+        if(secType.type){
+            var tableRow = appraisalTable.addRow("rowStyle");
+            tableRow.addCell("Totals", 'styleDescrTotals');
+            tableRow.addCell("", '',3);
+            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(secType.totalCostSum,2,false), 'styleTotalAmount');
+            tableRow.addCell("", '',1);
+            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(secType.marketValueSum,2,false), 'styleTotalAmount');
+            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(secType.percOfPortSum,2,false), 'styleTotalAmount');
+            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(secType.unGainLossSum,2,false), 'styleTotalAmount');
+            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(secType.percGLSum,2,false), 'styleTotalAmount');
+        }
     }
 
     report.addPageBreak();
@@ -165,26 +167,29 @@ function printReport(appraisalDataList,portfolioTrData,comboboxParam){
         var tableRow = transactionsTable.addRow("");
         tableRow.addCell(trElement.item, 'styleDescrTotals');
         tableRow.addCell('', '',8);
-        for(var e in trElement.transactions){
-            isEven=checkIfNumberisEven(rowColorIndex);
-            if(isEven)
-                rowStyle="styleEvenRows";
-            else
-            rowStyle="styleOddRows";
-            let transaction =trElement.transactions[e];
-            var tableRow = transactionsTable.addRow(rowStyle);
-            tableRow.addCell(Banana.Converter.toLocaleDateFormat(transaction.date, ''));
-            tableRow.addCell(transaction.doc, 'styleAlignCenter');
-            tableRow.addCell(transaction.item, '');
-            tableRow.addCell(transaction.description, '');
-            tableRow.addCell(transaction.debit,'');
-            tableRow.addCell(transaction.credit,'');
-            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(transaction.qt,0,false),'styleNormalAmount');
-            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(transaction.unitPrice,0,false),'styleNormalAmount');
-            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(transaction.amount,2,false),'styleNormalAmount');
+        if(trElement.transactions && trElement.transactions.length>=1){
+            for(var e in trElement.transactions){
+                isEven=checkIfNumberisEven(rowColorIndex);
+                if(isEven)
+                    rowStyle="styleEvenRows";
+                else
+                rowStyle="styleOddRows";
+                let transaction =trElement.transactions[e];
+                var tableRow = transactionsTable.addRow(rowStyle);
+                tableRow.addCell(Banana.Converter.toLocaleDateFormat(transaction.date, ''));
+                tableRow.addCell(transaction.doc, 'styleAlignCenter');
+                tableRow.addCell(transaction.item, '');
+                tableRow.addCell(transaction.description, '');
+                tableRow.addCell(transaction.debit,'');
+                tableRow.addCell(transaction.credit,'');
+                tableRow.addCell(Banana.Converter.toLocaleNumberFormat(transaction.qt,0,false),'styleNormalAmount');
+                tableRow.addCell(Banana.Converter.toLocaleNumberFormat(transaction.unitPrice,0,false),'styleNormalAmount');
+                tableRow.addCell(Banana.Converter.toLocaleNumberFormat(transaction.amount,2,false),'styleNormalAmount');
 
-            rowColorIndex++;
+                rowColorIndex++;
+            }
         }
+            
     }
 
     return report;
@@ -499,7 +504,7 @@ function exec(inData, options) {
     let banDoc=Banana.document;
     let docInfo=getDocumentInfo(banDoc);
 
-    if (!Banana.document || docInfo.isMultiCurrency || !verifyBananaVersion())
+    if (docInfo.isMultiCurrency || !verifyBananaVersion())
         return "@Cancel";
 
     var comboboxParam = getComboBoxElement();
