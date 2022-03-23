@@ -9,23 +9,28 @@ body {
     font-size: 9pt;
 }
 
-
-/*************************************
-Styles for the tables
-*************************************/
-
-table.table_bas_transactions {
+table.mySecCardTable {
     border-style: solid;
     border-color: rgb(0, 0, 0);
     width: auto;
     padding-top: 1px;
     padding-bottom: 1px;
 }
-table.table_bas_transactions:nth-child(even) {
-    background-color: #40a562;
-    }
-
-table.table_bas_details {
+table.myConcTable {
+    border-style: solid;
+    border-color: rgb(0, 0, 0);
+    width: auto;
+    padding-top: 1px;
+    padding-bottom: 1px;
+}
+table.myAppraisalTable {
+    border-style: solid;
+    border-color: rgb(0, 0, 0);
+    width: auto;
+    padding-top: 1px;
+    padding-bottom: 1px;
+}
+table.myTransactionsTable {
     border-style: solid;
     border-color: rgb(0, 0, 0);
     width: auto;
@@ -41,22 +46,29 @@ Styles for the amounts
 .styleNormalAmount {
     text-align: right;
 }
-.styleNegativeAmount{
+.styleTotalAmount{
     text-align: right;
+    font-weight: bold;
+}
+.styleTotalAmountNegative{
+    text-align: right;
+    font-weight: bold;
     color: red;
 }
-.styleTotalNegativeAmount{
-    text-align: right;
-    color: red;
-    border-top: solid;
-    border-top-style:solid;
-    border-color: rgb(0, 0, 0);
+
+.styleAlignCenter{
+    text-align: center;
 }
 
 
 /*************************************
 Styles for the texts
 *************************************/
+
+.styleDescrTotals{
+    text-align: left;
+    font-weight: bold;
+}
 
 .styleTitles {
     font-weight: bold;
@@ -77,9 +89,11 @@ Styles for the texts
     text-align: center;
 }
 
-.styleTablesBasNames_totals {
+.styleSummaryRows {
     text-align: left;
-    background-color: #F8F8FF;
+    font-weight: bold;
+    background-color:  #cad2ff
+
 }
 
 .styleSortedByColumn{
@@ -113,6 +127,17 @@ styles for the headers
     font-size: 12pt;
 }
 .header_row_normal {
-    font-size: 10pt;
-    text-align: right;
+    font-size: 8pt;
+    text-align: left;
+}
+
+/********************
+style for the rows
+*********************/
+/*base color: "#354793"*/
+.styleEvenRows{
+    background-color: #edeef8;
+}
+.styleOddRows{
+    background-color: #b4bde4;
 }
