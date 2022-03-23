@@ -1,7 +1,0 @@
-<!DOCTYPE RCC><RCC version="1.0">
- <qresource>
-     <file>portfolio_management_report.js</file>
-     <file>portfolio_management_report.css</file>
-     <file>portfolio_management_report.manifest.json</file>
- </qresource>
- </RCC>
