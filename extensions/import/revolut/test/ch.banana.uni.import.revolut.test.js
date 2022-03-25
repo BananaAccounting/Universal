@@ -14,53 +14,52 @@
 //
 
 
-// @id = import.csv.yokoy.test
+// @id = import.csv.revolut.test
 // @api = 1.0
 // @pubdate = 2021-03-08
 // @publisher = Banana.ch SA
-// @description = <TEST import.csv.yokoy.test>
+// @description = <TEST import.csv.revolut.test>
 // @task = app.command
 // @doctype = *.*
 // @docproperties = 
 // @outputformat = none
 // @inputdataform = none
 // @includejs = ../import.utilities.js
-// @includejs = ../ch.banana.uni.import.yokoy.js
+// @includejs = ../ch.banana.uni.import.revolut.js
 // @timeout = -1
 
 // Register test case to be executed
-Test.registerTestCase(new TestImportYokoyTrans());
+Test.registerTestCase(new TestImportRevolutTrans());
 
 // Here we define the class, the name of the class is not important
-function TestImportYokoyTrans() {
+function TestImportRevolutTrans() {
 }
 
 // This method will be called at the beginning of the test case
-TestImportYokoyTrans.prototype.initTestCase = function() {
+TestImportRevolutTrans.prototype.initTestCase = function() {
    this.testLogger = Test.logger;
    this.progressBar = Banana.application.progressBar;
 }
 
 // This method will be called at the end of the test case
-TestImportYokoyTrans.prototype.cleanupTestCase = function() {
+TestImportRevolutTrans.prototype.cleanupTestCase = function() {
 
 }
 
 // This method will be called before every test method is executed
-TestImportYokoyTrans.prototype.init = function() {
+TestImportRevolutTrans.prototype.init = function() {
 
 }
 
 // This method will be called after every test method is executed
-TestImportYokoyTrans.prototype.cleanup = function() {
+TestImportRevolutTrans.prototype.cleanup = function() {
 
 }
 
-TestImportYokoyTrans.prototype.testImport = function() {
+TestImportRevolutTrans.prototype.testImport = function() {
    var fileNameList = [];
 
-   fileNameList.push("file:script/../test/testcases/ch.banana.filter.import.yokoy.example_01.csv");
-   fileNameList.push("file:script/../test/testcases/ch.banana.filter.import.yokoy.example_02.csv");
+   fileNameList.push("file:script/../test/testcases/revolut_transactions_example.csv");
    
    var parentLogger = this.testLogger;
    this.progressBar.start(fileNameList.length);
@@ -69,7 +68,7 @@ TestImportYokoyTrans.prototype.testImport = function() {
       var fileName = fileNameList[i];
       this.testLogger = parentLogger.newLogger(Banana.IO.fileCompleteBaseName(fileName));
 
-      var file = Banana.IO.getLocalFile(fileName)
+      var file = Banana.IO.getLocalFile(fileName);
       Test.assert(file);
       var fileContent = file.read();
       Test.assert(fileContent);

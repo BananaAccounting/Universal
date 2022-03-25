@@ -17,8 +17,8 @@
 // @api = 1.0
 // @pubdate = 2022-03-07
 // @publisher = Banana.ch SA
-// @description = Yokoy Import (*.csv)
-// @doctype = *
+// @description = Yokoy import transactions (*.csv)
+// @doctype = 100.*
 // @docproperties =
 // @task = import.transactions
 // @outputformat = tablewithheaders
@@ -29,16 +29,27 @@
 
 /**
  * Parse the yokoy file and return a string in with data in tab separated
+ * Actually works only for double entry accounting because the file already has debit and credit account:
+ * 
+ * Datum;Beleg;Beschreibung;KtSoll;KtHaben;BetragCHF;MwSt/USt- Code
+ * 03.03.21;uReKDacEo;IT Hardware, Y. Support, Personalentwicklung 2021/03, Migros;;1213;14;
+ * 02.03.21;uReKDacEo;IT Hardware, Y. Support, Personalentwicklung 2021/03, Migros;6583;;13.78;33
+ * 01.03.21;uReKDacEo;IT Hardware, Y. Support, Personalentwicklung 2021/03, Migros;6583;;0.22;35
+ * 
  */
-function exec(inData) {
-
-    if (!inData || !verifyBananaVersion())
-        return "@Cancel";
+function exec(inData,isTest) {
 
     var convertionParam = "";
     var intermediaryData = "";
 
+    if (!inData)
+        return "";
+
     var importYokoyTrans = new ImportYokoyTrans(Banana.document);
+
+//Check the input and the version
+    if (isTest!==true && !importYokoyTrans.verifyBananaAdvancedVersion())
+        return "";
 
     //1. Function call to define the conversion parameters
     convertionParam = importYokoyTrans.defineConversionParam(inData);
@@ -176,10 +187,11 @@ function translateHeaderDe(inputRow, convertedRow) {
     //get the Banana Columns Name from german csv file columns name
     convertedRow['Date'] = Banana.Converter.toInternalDateFormat(inputRow["Datum"], "dd.mm.yyyy");
     convertedRow["Description"] = inputRow["Beschreibung"];
-    convertedRow["Notes"] = inputRow["Beleg"];
+    convertedRow["ExternalReference"] = inputRow["Beleg"];
     /* use the Banana.Converter.toInternalNumberFormat to convert to the appropriate number format */
     convertedRow["AccountDebit"] = Banana.Converter.toInternalNumberFormat(inputRow["KtSoll"]);
     convertedRow["AccountCredit"] = Banana.Converter.toInternalNumberFormat(inputRow["KtHaben"]);
+    convertedRow["Amount"] = Banana.Converter.toInternalNumberFormat(inputRow["BetragCHF"]);
     convertedRow["VatCode"] = Banana.Converter.toInternalNumberFormat(inputRow["MwSt/USt- Code"]);
     return convertedRow;
 }

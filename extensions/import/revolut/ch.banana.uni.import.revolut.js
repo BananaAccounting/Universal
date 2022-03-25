@@ -17,49 +17,56 @@
 // @api = 1.0
 // @pubdate = 2022-03-23
 // @publisher = Banana.ch SA
-// @description = Revolut Import (*.csv)
-// @doctype = *
+// @description = Revolut import transactions (*.csv)
+// @doctype = 100.*; 110.*; 130.*
 // @docproperties =
 // @task = import.transactions
-// @outputformat = tablewithheaders
+// @outputformat = transactions.simple
 // @inputdatasource = openfiledialog
 // @inputfilefilter = Text files (*.txt *.csv);;All files (*.*)
 // @timeout = -1
 // @includejs = import.utilities.js
 
 /**
- * Parse the yokoy file and return a string in with data in tab separated
- */
-function exec(inData) {
+ * Parse the revolut file and return a string in with data in tab separated
+ * 
+ * CSV structure
+ * Date started (UTC),Date completed (UTC),Date started (Europe/Zurich),Date completed (Europe/Zurich),ID,Type,Description,Reference,Payer,Card number,Orig currency,Orig amount,Payment currency,Amount,Fee,Balance,Account,Beneficiary account number,Beneficiary sort code or routing number,Beneficiary IBAN,Beneficiary BIC
+ * 2022-07-03,2022-07-04,2022-07-03,2022-07-04,1234abc-def456,CARD_PAYMENT,Payment with card,,Bruno Frey,1234567890,USD,59.00,CHF,-54.26,-0.22,2621.00,Bank CHF,,,,
+ * 2022-07-03,2022-07-03,2022-07-03,2022-07-03,1234abc-def456,CARD_PAYMENT,Payment with card,,Bruno Frey,1234567890,CHF,0.00,CHF,0.00,0.00,2675.48,Bank CHF,,,,2
+*/
 
-    if (!inData || !verifyBananaVersion())
-        return "@Cancel";
+/**
+ * Main function
+ */
+function exec(inData,isTest) {
+
 
     var convertionParam = "";
     var intermediaryData = "";
 
+    if (!inData)
+        return "";
+
     var importRevolutTrans = new ImportRevolutTrans(Banana.document);
+
+    if (isTest!==true && !importRevolutTrans.verifyBananaAdvancedVersion())
+        return "";
 
     //1. Function call to define the conversion parameters
     convertionParam = importRevolutTrans.defineConversionParam(inData);
-
     //2. intermediaryData is an array of objects where the property is the banana column name
     var intermediaryData = importRevolutTrans.convertCsvToIntermediaryData(inData, convertionParam);
-
     //3. sort data
     intermediaryData = importRevolutTrans.sortData(intermediaryData, convertionParam);
+    //4. translate categories and Description 
+	// can define as much postProcessIntermediaryData function as needed
+	importRevolutTrans.postProcessIntermediaryData(intermediaryData);
 
-    Banana.Ui.showText(JSON.stringify(intermediaryData));
+    //Banana.Ui.showText(JSON.stringify(intermediaryData));
 
     return importRevolutTrans.convertToBananaFormat(intermediaryData);
 }
-
-/*
-Date started (UTC),Date completed (UTC),Date started (Europe/Zurich),Date completed (Europe/Zurich),ID,Type,Description,Reference,Payer,Card number,Orig currency,Orig amount,Payment currency,Amount,Fee,Balance,Account,Beneficiary account number,Beneficiary sort code or routing number,Beneficiary IBAN,Beneficiary BIC
-2022-07-03,2022-07-04,2022-07-03,2022-07-04,1234abc-def456,CARD_PAYMENT,Payment with card,,Bruno Frey,1234567890,USD,59.00,CHF,-54.26,-0.22,2621.00,Bank CHF,,,,
-2022-07-03,2022-07-03,2022-07-03,2022-07-03,1234abc-def456,CARD_PAYMENT,Payment with card,,Bruno Frey,1234567890,CHF,0.00,CHF,0.00,0.00,2675.48,Bank CHF,,,,
-2
-*/
 
 var ImportRevolutTrans = class ImportRevolutTrans extends ImportUtilities {
     constructor(banDocument) {
@@ -89,15 +96,13 @@ var ImportRevolutTrans = class ImportRevolutTrans extends ImportUtilities {
 
         /** SPECIFY THE COLUMN TO USE FOR SORTING
 		If sortColums is empty the data are not sorted */
-        convertionParam.sortColums = ["Date completed (UTC)", "Description"];
+        convertionParam.sortColums = ["Date", "Description"];
         convertionParam.sortDescending = false;
-
-        //Create the new CSV file with converted data
-        var convertedRow;
 
         /* rowConvert is a function that convert the inputRow (passed as parameter)
          *  to a convertedRow object */
         convertionParam.rowConverter = function(inputRow) {
+            let convertedRow={};
             return translateHeader(inputRow, convertedRow);
         }
 
@@ -127,6 +132,8 @@ var ImportRevolutTrans = class ImportRevolutTrans extends ImportUtilities {
         //Load the form with data taken from the array. Create objects
         this.loadForm(form, columns, rows);
 
+        let convertedRow;
+
         //For each row of the form, we call the rowConverter() function and we save the converted data
         for (var i = 0; i < form.length; i++) {
             convertedRow = convertionParam.rowConverter(form[i]);
@@ -135,6 +142,50 @@ var ImportRevolutTrans = class ImportRevolutTrans extends ImportUtilities {
 
         return intermediaryData;
     }
+    //The purpose of this function is to let the user specify how to convert the categories
+	postProcessIntermediaryData(intermediaryData) {
+		/** INSERT HERE THE LIST OF ACCOUNTS NAME AND THE CONVERSION NUMBER 
+		*   If the content of "Account" is the same of the text 
+		*   it will be replaced by the account number given */
+		//Accounts conversion
+		var accounts = {
+			//...
+		}
+
+		/** INSERT HERE THE LIST OF CATEGORIES NAME AND THE CONVERSION NUMBER 
+		*   If the content of "ContraAccount" is the same of the text 
+		*   it will be replaced by the account number given */
+
+		//Categories conversion
+		var categories = {
+			//...
+		}
+
+		//Apply the conversions
+		for (var i = 0; i < intermediaryData.length; i++) {
+			var convertedData = intermediaryData[i];
+
+			//Invert values
+			if (convertedData["Expenses"]) {
+				convertedData["Expenses"] = Banana.SDecimal.invert(convertedData["Expenses"]);
+			}
+		}
+	}
+
+    //Check if the version of Banana Accounting is compatible with this class
+    verifyBananaAdvancedVersion() {
+        if (!this.banDocument)
+            return false;
+
+        if (!Banana.application.license || Banana.application.license.licenseType !== "advanced") {
+            var lang = this.getLang();
+            var msg = "This extension requires Banana Accounting+ Advanced";
+            this.banDocument.addMessage(msg, "ID_ERR_LICENSE_NOTVALID");
+            return false;
+        }
+
+        return true;
+    }
 }
 
 function formatColumnsNames(columnsTemps){
@@ -142,7 +193,7 @@ function formatColumnsNames(columnsTemps){
     for (var i=0;i<=columnsTemps.length;i++) {
         var colName = columnsTemps[i];
         switch(colName){
-            case "Date completed":
+            case "Date completed (UTC)":
                 colName = "Date";
                 break;
             case "Card number":
@@ -166,49 +217,51 @@ function formatColumnsNames(columnsTemps){
 
 function translateHeader(inputRow, convertedRow) {
     //get the Banana Columns Name from csv file columns name
-    convertedRow['Date'] = Banana.Converter.toInternalDateFormat(inputRow["Date"], "dd.mm.yyyy");
-    //get the description test
-    let descText=inputRow["Description"]+", "+inputRow["Reference"]+", "+inputRow["ID"]+",Original Amount "+inputRow["OrigAmount"]+", Amount "+inputRow["Amount"]+", Fee "+inputRow["Fee"];
+    let descText="";
+    let totAmount="";
+    let amountValue="";
+
+    convertedRow['Date'] = Banana.Converter.toInternalDateFormat(inputRow["Date"], "yyyy.mm.dd");
+    descText=inputRow["Description"]+" "+inputRow["Reference"]+" "+" Original Amount "+inputRow["OrigCurr"]+" "+inputRow["OrigAmount"]+" Amount "+inputRow["PaymentCurr"]+" "+getAmountWithoutSign(inputRow["Amount"])+" Fee "+inputRow["PaymentCurr"]+" "+getAmountWithoutSign(inputRow["Fee"]);
     convertedRow["Description"] = descText;
-    //calculate the amount
-    convertedRow["Amount"] = calculateAmount(inputRow["Amount"],inputRow["Fee"]);
+    convertedRow["ExternalReference"] = inputRow["ID"];
+
+    //get the total amount
+    amountValue=inputRow["Amount"];
+    feeValue=inputRow["Fee"];
+    totAmount = calculateAmount(amountValue,feeValue);
+    //define if the amount is an income or an expenses.
+    convertedRow["Expenses"]="";
+    convertedRow["Income"]="";
+
+    if(inputRow["Amount"].indexOf("-")==-1){
+        convertedRow["Income"]=totAmount;
+    }else{
+        convertedRow["Expenses"]=totAmount;
+    }
+
+
     return convertedRow;
+}
+/**
+ * Returns the amount without sign.
+ * in the csv file you normally have two fields that could have a negative amounts:
+ * -amount
+ * -fee
+ * @param {*} amount 
+ */
+function getAmountWithoutSign(amount){
+    let cleanAmt="";
+    if(amount.indexOf("-")!=-1){
+        cleanAmt=amount.replace("-","");
+        return cleanAmt;
+    }else{
+        return amount;
+    }
 }
 
 function calculateAmount(netAmount,fee){
     let amount="";
     amount=Banana.SDecimal.add(netAmount,fee);
     return amount;
-}
-
-function verifyBananaVersion() {
-    var BAN_VERSION_MIN = "10.0.5";
-
-    var supportedVersion = false;
-    if (Banana.compareVersion && Banana.compareVersion(Banana.application.version, BAN_VERSION_MIN) >= 0) {
-        supportedVersion = true;
-    }
-
-    if (!supportedVersion) {
-        var lang = 'en';
-        if (Banana.document) {
-            if (Banana.document.locale)
-                lang = Banana.document.locale;
-            if (lang.length > 2)
-                lang = lang.substr(0, 2);
-        }
-        var msg = "This script does not run with your current version of Banana Accounting.\nMinimum version required: %1.\nTo update or for more information click on Help";
-        if (lang == 'it')
-            msg = "Lo script non funziona con la vostra attuale versione di Banana Contabilità.\nVersione minimina richiesta: %1.\nPer aggiornare o per maggiori informazioni cliccare su Aiuto";
-        else if (lang == 'fr')
-            msg = "Ce script ne s'exécute pas avec votre version actuelle de Banana Comptabilité.\nVersion minimale requise: %1.\nPour mettre à jour ou pour plus d'informations, cliquez sur Aide";
-        else if (lang == 'de')
-            msg = "Das Skript wird mit Ihrer aktuellen Version von Banana Buchhaltung nicht ausgeführt.\nMindestversion erforderlich: %1.\nKlicken Sie auf Hilfe, um zu aktualisieren oder weitere Informationen zu bekommen";
-
-        msg = msg.replace("%1", BAN_VERSION_MIN);
-        if (Banana.document)
-            Banana.document.addMessage(msg, this.ID_ERR_VERSION_NOTSUPPORTED);
-        return false;
-    }
-    return true;
 }
