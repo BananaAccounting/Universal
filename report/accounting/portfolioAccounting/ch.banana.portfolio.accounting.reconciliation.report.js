@@ -186,14 +186,14 @@ function printReport(reconciliationData,docInfo){
                 if(docInfo.isMultiCurrency){
                     tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemTr[t].debitCurr,2,false), "styleNormalAmount");
                     tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemTr[t].creditCurr,2,false), "styleNormalAmount");
-                    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemTr[t].balanceCurr,2,false), "styleNormalAmount");
+                    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemTr[t].balanceCurr,2,true), "styleNormalAmount");
                 }
                 tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemTr[t].debitBase,2,false), "styleNormalAmount");
                 tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemTr[t].creditBase,2,false), "styleNormalAmount");
-                tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemTr[t].balanceBase,2,false), "styleNormalAmount");
+                tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemTr[t].balanceBase,2,true), "styleNormalAmount");
                 tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemTr[t].qt,2,false), "styleNormalAmount");
                 tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemTr[t].unitPrice,2,false), "styleNormalAmount");
-                tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemTr[t].qtBalance,2,false), "styleNormalAmount");
+                tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemTr[t].qtBalance,2,true), "styleNormalAmount");
                 tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemTr[t].accAvgCost,2,false), "styleNormalAmount");
 
                 rowColorIndex++;
