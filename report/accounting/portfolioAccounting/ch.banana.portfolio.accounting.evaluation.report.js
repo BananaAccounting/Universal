@@ -46,7 +46,8 @@ function addTableBaSAppraisal(report) {
     table_bas_appraisal.addColumn("Un. Gain or Loss").setStyleAttributes("width:15%");
     table_bas_appraisal.addColumn("% G/L").setStyleAttributes("width:15%");
     //headers definition
-    table_bas_appraisal.getCaption().addText(qsTr("Appraisal Report \n Holdings as of: "+current_date), "styleTitles");
+    let caption=table_bas_appraisal.getCaption().addText(qsTr("Appraisal Report \n Holdings as of: "+current_date), "styleTitles");
+    caption.excludeFromTest();
     var tableHeader = table_bas_appraisal.getHeader();
     var tableRow = tableHeader.addRow();
     tableRow.addCell("Type/Security", "styleTablesHeaderText");
@@ -67,7 +68,8 @@ function addTableBaSTransactions(report) {
     current_date=Banana.Converter.toInternalDateFormat(current_date);
     var table_bas_transactions_details = report.addTable('myTransactionsTable');
     table_bas_transactions_details.setStyleAttributes("width:100%;");
-    table_bas_transactions_details.getCaption().addText(qsTr("Portfolio Transactions \n Transactions as of: "+current_date), "styleTitles");
+    let caption=table_bas_transactions_details.getCaption().addText(qsTr("Portfolio Transactions \n Transactions as of: "+current_date), "styleTitles");
+    caption.excludeFromTest();
     var tableHeader = table_bas_transactions_details.getHeader();
     var tableRow = tableHeader.addRow();
     //columns definition
@@ -129,14 +131,14 @@ function printReport(appraisalDataList,portfolioTrData,comboboxParam){
             let sec=secType.data[e];
             tableRow.addCell(sec.description, '');
             tableRow.addCell(sec.item, 'styleNormalAmount');
-            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(sec.currentQt,0,false), styleCurrentQt);
-            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(sec.avgCost,2,false), 'styleNormalAmount');
-            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(sec.totalCost,2,false), 'styleNormalAmount');
-            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(sec.marketPrice,2,false), 'styleNormalAmount');
-            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(sec.marketValue,2,false), styleMarketValue);
-            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(sec.percOfPort,2,false),stylePerPorfolio);
-            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(sec.unGainLoss,2,false), 'styleNormalAmount');
-            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(sec.percGL,2,false), 'styleNormalAmount');
+            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(sec.currentQt,0,true), styleCurrentQt);
+            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(sec.avgCost,2,true), 'styleNormalAmount');
+            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(sec.totalCost,2,true), 'styleNormalAmount');
+            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(sec.marketPrice,2,true), 'styleNormalAmount');
+            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(sec.marketValue,2,true), styleMarketValue);
+            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(sec.percOfPort,2,true),stylePerPorfolio);
+            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(sec.unGainLoss,2,true), 'styleNormalAmount');
+            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(sec.percGL,2,true), 'styleNormalAmount');
 
             rowColorIndex++;
         }

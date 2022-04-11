@@ -520,6 +520,9 @@ function getExchangeResult(marketPrice,quantity,currExRate,accExRate){
     var accAmount="";
     var currAmount="";
 
+    if(!currExRate)
+        currExRate=accExRate;//if thr user leaves empty this field we consider the current exchange rate the same as the accounting change rate.
+
     accAmount=Banana.SDecimal.multiply(accExRate,Banana.SDecimal.multiply(marketPrice,quantity));//valore al cambio contabile
     currAmount=Banana.SDecimal.multiply(currExRate,Banana.SDecimal.multiply(marketPrice,quantity));//valore al cambiol corrente
     exResult=Banana.SDecimal.subtract(currAmount,accAmount);

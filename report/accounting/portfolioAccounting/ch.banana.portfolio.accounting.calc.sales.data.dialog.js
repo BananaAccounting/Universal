@@ -90,6 +90,8 @@ dialog.showPreviews=function(){
         avgCostPreview.setText(avgCost);
         saleResultPreview.setText(saleResult);
         exchangeResultPreview.setText(exRateResult);
+        avgValueOfSharesPreview.setText(avgSharesValue);
+        totalValueOfSharesPreview.setText(totalSharesvalue);
     }
 
     return true;
