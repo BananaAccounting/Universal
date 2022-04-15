@@ -97,7 +97,7 @@ function getParams(index){
         params.selectedItem="CH003886335";
         params.quantity="20";
         params.marketPrice="12";
-        params.currExRate="0";
+        params.currExRate="";
     }
     else if(index==1){
         params.selectedItem="IT0005239360";

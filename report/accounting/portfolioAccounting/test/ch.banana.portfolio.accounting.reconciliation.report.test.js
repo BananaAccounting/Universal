@@ -87,9 +87,8 @@ TestReconciliationReport.prototype.testDataStructure = function() {
 function getAccountList(index){
     accountList=[];
     if(index==0)
-    accountList=['Swiss Shares'];
+    accountList=['Swiss Shares','Bonds Holcim'];
     else if(index==1)
-    accountList=['Shares Unicredit','Shares UBS'];
-
+    accountList=['Shares Unicredit','Shares UBS','Bonds Bnp Paribas'];
     return accountList;
 }

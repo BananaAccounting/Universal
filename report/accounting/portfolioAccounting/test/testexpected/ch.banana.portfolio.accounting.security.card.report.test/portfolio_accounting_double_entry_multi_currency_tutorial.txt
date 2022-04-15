@@ -20,7 +20,7 @@
 %Begin test data
 \begin{reportvalue}{FILENAME: file:script/../test/testcases/portfolio\_accounting\_double\_entry\_multi\_currency\_tutorial.ac2}
 \begin{longtable}[l]{ l  l  l  l  l  l  l  l  l  l  l  l  l }
-\excltest{Security Card: IT0005239360 Shares Unicredit EUR, Data as of: 2022-03-22} Date  & Doc  & Description  & Debit EUR  & Credit EUR  & Balance EUR  & Debit CHF  & Credit CHF  & Balance CHF  & Quantity   & Unit Price\P EUR  & Quantity\P Balance  & Current.\P Average cost\P EUR \\
+\excltest{Security Card: IT0005239360 Shares Unicredit EUR, Data as of: 2022-04-15} Date  & Doc  & Description  & Debit EUR  & Credit EUR  & Balance EUR  & Debit CHF  & Credit CHF  & Balance CHF  & Quantity   & Unit Price\P EUR  & Quantity\P Balance  & Current.\P Average cost\P EUR \\
 01.01.2022  & 1  & Shares Unicredit Purchase  & 1'000.00  &  & 1'000.00  & 1'100.00  &  & 1'100.00  & 100.00  & 10.00  & 100.00  & 10.000 \\
 20.01.2022  & 3  & Shares Unicredit Total Sale  &  & 475.00  & 525.00  &  & 546.25  & 553.75  & -50.00  & 9.50  & 50.00  & 10.500 \\
 20.01.2022  & 3  & Shares Unicredit Loss  &  & 25.00  & 500.00  &  & 28.75  & 525.00  &  &  & 50.00  & 10.000 \\
@@ -29,13 +29,13 @@
 20.02.2022  & 6  & Shares Unicredit Total Sale  &  & 90.00  & 310.00  &  & 97.20  & 339.55  & -10.00  & 9.00  & 40.00  & 7.750 \\
 20.02.2022  & 6  & Shares Unicredit Profit  & 10.00  &  & 320.00  & 10.80  &  & 350.35  &  &  & 40.00  & 8.000 \\
 20.02.2022  & 6  & Sale Unicredit Exchange rate profit  &  &  & 320.00  & 1.44  &  & 351.79  &  &  & 40.00  & 8.000 \\
-25.02.2022  & 6  & Unicredit, adjustment to the price of 10.00  & 80.00  &  & 400.00  & 88.80  &  & 440.59  &  &  & 40.00  & 10.000 \\
-27.02.2022  & 7  & Purchase Shares Unicredit  & 550.00  &  & 950.00  & 605.00  &  & 1'045.59  & 50.00  & 11.00  & 90.00  & 10.560 \\
-28.02.2022  & 8  & Shares Unicredit Total Sale  &  & 120.00  & 830.00  &  & 138.00  & 907.59  & -10.00  & 12.00  & 80.00  & 10.380 \\
-28.02.2022  & 8  & Shares Unicredit Profit  & 1.25  &  & 831.25  & 1.44  &  & 909.03  &  &  & 80.00  & 10.390 \\
-28.02.2022  & 8  & Sale Unicredit Exchange rate profit  &  &  & 831.25  & 6.36  &  & 915.39  &  &  & 80.00  & 10.390 \\
-01.03.2022  & 9  & Unicredit, adjustment to the price of 11.00  & 48.75  &  & 880.00  & 53.63  &  & 969.02  &  &  & 80.00  & 11.000 \\
-\excltest{22.03.2022}  &  & Total transactions  & 1'690.00  & 810.00  & 880.00  & 1'891.22  & 922.20  & 969.02  & \multicolumn{2}{l}{} & 80.00  & 11.000 \\
+25.02.2022  & 7  & Unicredit, adjustment to the price of 10.00  & 80.00  &  & 400.00  & 88.80  &  & 440.59  &  &  & 40.00  & 10.000 \\
+27.02.2022  & 8  & Purchase Shares Unicredit  & 550.00  &  & 950.00  & 605.00  &  & 1'045.59  & 50.00  & 11.00  & 90.00  & 10.560 \\
+28.02.2022  & 9  & Shares Unicredit Total Sale  &  & 120.00  & 830.00  &  & 138.00  & 907.59  & -10.00  & 12.00  & 80.00  & 10.380 \\
+28.02.2022  & 9  & Shares Unicredit Profit  & 1.25  &  & 831.25  & 1.44  &  & 909.03  &  &  & 80.00  & 10.390 \\
+28.02.2022  & 9  & Sale Unicredit Exchange rate profit  &  &  & 831.25  & 6.36  &  & 915.39  &  &  & 80.00  & 10.390 \\
+01.03.2022  & 10  & Unicredit, adjustment to the price of 11.00  & 48.75  &  & 880.00  & 53.63  &  & 969.02  &  &  & 80.00  & 11.000 \\
+\excltest{15.04.2022}  &  & Total transactions  & 1'690.00  & 810.00  & 880.00  & 1'891.22  & 922.20  & 969.02  & \multicolumn{2}{l}{} & 80.00  & 11.000 \\
 \end{longtable}
 \end{reportvalue}
 \end{document}
