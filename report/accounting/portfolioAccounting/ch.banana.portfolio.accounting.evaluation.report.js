@@ -147,12 +147,12 @@ function printReport(appraisalDataList,portfolioTrData,comboboxParam){
             var tableRow = appraisalTable.addRow("rowStyle");
             tableRow.addCell("Totals", 'styleDescrTotals');
             tableRow.addCell("", '',3);
-            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(secType.totalCostSum,2,false), 'styleTotalAmount');
+            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(secType.totalCostSum,2,true), 'styleTotalAmount');
             tableRow.addCell("", '',1);
-            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(secType.marketValueSum,2,false), 'styleTotalAmount');
-            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(secType.percOfPortSum,2,false), 'styleTotalAmount');
-            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(secType.unGainLossSum,2,false), 'styleTotalAmount');
-            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(secType.percGLSum,2,false), 'styleTotalAmount');
+            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(secType.marketValueSum,2,true), 'styleTotalAmount');
+            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(secType.percOfPortSum,2,true), 'styleTotalAmount');
+            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(secType.unGainLossSum,2,true), 'styleTotalAmount');
+            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(secType.percGLSum,2,true), 'styleTotalAmount');
         }
     }
 
@@ -276,7 +276,11 @@ function getAppraisalDataList_transactions(banDoc,docInfo,itemsData,journalData,
                 appraisalData.avgCost=itemCardData.slice(-1)[0].accAvgCost;
             }
             appraisalData.totalCost=Banana.SDecimal.multiply(appraisalData.currentQt,appraisalData.avgCost);
-            appraisalData.marketPrice=itemsData[key].unitPriceCurrent;
+            /**
+             * If market price is not present, we put the average also as market price.
+             * In this way  the gain or loss will be zero
+             */
+            itemsData[key].unitPriceCurrent ? appraisalData.marketPrice=itemsData[key].unitPriceCurrent: appraisalData.marketPrice=appraisalData.avgCost;
             appraisalData.marketValue=Banana.SDecimal.multiply(appraisalData.currentQt,appraisalData.marketPrice);
             appraisalData.unGainLoss=Banana.SDecimal.subtract(appraisalData.marketValue,appraisalData.totalCost);
             appraisalData.percGL=getGLPerc(appraisalData.marketValue,appraisalData.totalCost);
@@ -380,7 +384,7 @@ function getportfolioTrData(banDoc,docInfo,itemsData){
        let item={};
        item.item=itemsData[key].item;
        item.transactions=getportfolioTrData_transactions(item.item,trTableData);
-       if(item)
+       if(item.item)
         portfolioTrData.data.push(item);
 
    }
