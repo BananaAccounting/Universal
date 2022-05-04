@@ -73,7 +73,9 @@ BasePage {
                   var dataSerie4 = [];
                   var dataSerie5 = [];
                   var dataSerie6 = [];
+                  var dataSerie7 = [];
                   var dataSum = [];
+
                   for (var i = financialStatementAnalysis.data.length - 1; i >= 0; i--) {
                      var periodo = financialStatementAnalysis.data[i].period.StartDate;
                      //for dont cut the Budget string in Budg.
@@ -110,16 +112,18 @@ BasePage {
                         dataSerie4.push(sumProv); 
                         var sumOwnc=Banana.SDecimal.abs(financialStatementAnalysis.data[i].balance.oc.ownbasecapital.balance);
                         dataSerie5.push(sumOwnc); 
-                        var sumRese=Banana.SDecimal.abs(financialStatementAnalysis.data[i].balance.oc.reservesandprofits.balance);
+                        var sumRese=Banana.SDecimal.abs(financialStatementAnalysis.data[i].balance.oc.reserves.balance);
                         dataSerie6.push(sumRese); 
+                        var sumBalp=Banana.SDecimal.abs(financialStatementAnalysis.data[i].balance.oc.balanceProfits.balance);
+                        dataSerie7.push(sumBalp); 
                         
                         var sum = sumDebts;
-                        sum = Banana.SDecimal.add(sumDebts, sum);
                         sum = Banana.SDecimal.add(sumAccr, sum);
                         sum = Banana.SDecimal.add(sumLtDebts, sum);
                         sum = Banana.SDecimal.add(sumProv, sum);
                         sum = Banana.SDecimal.add(sumOwnc, sum);
                         sum = Banana.SDecimal.add(sumRese, sum);
+                        sum= Banana.SDecimal.add(sumBalp, sum);
                         dataSum.push(sum);
                      }
                   }
@@ -129,6 +133,7 @@ BasePage {
                   dataSerie4 = convertToPerc(dataSerie4, dataSum);
                   dataSerie5 = convertToPerc(dataSerie5, dataSum);
                   dataSerie6 = convertToPerc(dataSerie6, dataSum);
+                  dataSerie7 = convertToPerc(dataSerie7, dataSum);
 
                   chartData.labels = []
                   for (var i = 0; i < yearList.length; i++) {
@@ -141,7 +146,8 @@ BasePage {
                   {label: qsTr('Long term Debts'), data: dataSerie3, backgroundColor:defaultColors[2].fill},
                   {label: qsTr('Provisions and Similar'), data: dataSerie4, backgroundColor:defaultColors[3].fill},
                   {label: qsTr('Own base capital'), data: dataSerie5, backgroundColor:defaultColors[4].fill},
-                  {label: qsTr('Reserves and Profits'), data: dataSerie6, backgroundColor:defaultColors[5].fill}
+                  {label: qsTr('Reserves'), data: dataSerie6, backgroundColor:defaultColors[5].fill},
+                  {label: qsTr('Profit / Loss carried forward'), data: dataSerie7, backgroundColor:defaultColors[6].fill}
                   ]
 
 

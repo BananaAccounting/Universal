@@ -132,8 +132,28 @@ style for the tables
         padding-top: 1px;
         padding-bottom: 1px;
     }
-    
+
+    table.myTableCashflowVerif{
+        margin-top: 10px;
+    }
+
+    table.myTableCashflowVerif td {
+        border-style: solid;
+        border-color: rgb(0, 0, 0);
+        width: auto;
+        padding-top: 1px;
+        padding-bottom: 1px;
+    }
+
     table.myIndCashflowTable td {
+        border-style: solid;
+        border-color: rgb(0, 0, 0);
+        width: auto;
+        padding-top: 1px;
+        padding-bottom: 1px;
+    }
+    
+    table.myRetainedEarningsTable td {
         border-style: solid;
         border-color: rgb(0, 0, 0);
         width: auto;
@@ -277,9 +297,16 @@ style's for the texts
     }
     /*style for the 'difference founds' warning*/
     
-    .styleWarningParagraph {
+    .styleWarningText {
         color: #EC3323;
         text-align: left;
+        font-size: 9pt;
+        padding-top: 5px;
+    }
+
+    .styleWarningAmount {
+        color: #EC3323;
+        text-align: right;
         font-size: 9pt;
         padding-top: 5px;
     }

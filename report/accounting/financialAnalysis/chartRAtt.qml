@@ -125,6 +125,7 @@ BasePage {
                         sum = Banana.SDecimal.add(sumTanFix, sum);
                         sum = Banana.SDecimal.add(sumIntFix, sum);
                         dataSum.push(sum);
+                     }
                   }
                   dataSerie1 = convertToPerc(dataSerie1, dataSum);
                   dataSerie2 = convertToPerc(dataSerie2, dataSum);

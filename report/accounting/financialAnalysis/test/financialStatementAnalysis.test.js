@@ -71,6 +71,7 @@ FSAnalysisTest.prototype.initTestCase = function() {
     this.fileNameList = [];
     this.fileNameList.push("file:script/../test/testcases/Contabilita in partita doppia multi-moneta con IVA.ac2");
     this.fileNameList.push("file:script/../test/testcases/Documentscontabilita_sa-sagl_partitario_fatturato 2020.ac2");
+    this.fileNameList.push("file:script/../test/testcases/cashflow_2021_test.ac2");
 }
 
 // This method will be called at the end of the test case
