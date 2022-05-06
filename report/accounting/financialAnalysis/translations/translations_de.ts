@@ -1601,12 +1601,12 @@ Aktiven Rechnungsabgrenzungen</translation>
     <message>
         <location filename="../financialStatementAnalysis.js" line="1678"/>
         <source>Total retained earning</source>
-        <translation>Gesamter Gewinnvortrag</translation>
+        <translation>Total Gewinnvortrag/Verlustvortrag</translation>
     </message>
     <message>
         <location filename="../financialStatementAnalysis.js" line="1679"/>
         <source>Current year retained earning</source>
-        <translation>Gewinnrücklagen des laufenden Jahres</translation>
+        <translation>Veränderung Gewinnvortrag/Verlustvortrag</translation>
     </message>
     <message>
         <location filename="../financialStatementAnalysis.js" line="1714"/>

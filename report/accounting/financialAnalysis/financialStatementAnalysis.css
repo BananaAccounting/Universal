@@ -13,12 +13,6 @@ style for the Report sections/principal objects
         font-size: 9pt;
     }
     
-    table {
-        font-size: 9pt;
-        margin-bottom: 10px;
-        width: 100%;
-    }
-    
     .header_text {
         font-size: 8pt;
         padding: 0;
@@ -44,138 +38,20 @@ style for the Report sections/principal objects
     /***************************************************
 style for the tables
 ****************************************************/
-    
-    table.myTableCompanyInfo td {
-        border-style: solid;
-        border-color: rgb(0, 0, 0);
-        width: auto;
-        padding-top: 1px;
-        padding-bottom: 1px;
-    }
-    
-    table.myTableUsedSetting td {
-        border-style: solid;
-        border-color: rgb(0, 0, 0);
-        width: auto;
-        padding-top: 1px;
-        padding-bottom: 1px;
-    }
-    
-    table.myTableBalance td {
-        border-style: solid;
-        border-color: rgb(0, 0, 0);
-        width: auto;
-        padding-top: 1px;
-        padding-bottom: 1px;
-    }
-    
-    table.myTableBalanceSumsControl td {
-        border-style: solid;
-        border-color: rgb(0, 0, 0);
-        width: auto;
-        padding-top: 1px;
-        padding-bottom: 1px;
-    }
-    
-    table.myConTableCe td {
-        border-style: solid;
-        border-color: rgb(0, 0, 0);
-        width: auto;
-        padding-top: 1px;
-        padding-bottom: 1px;
-    }
-    
-    table.mytableConCeSumsControl td {
-        border-style: solid;
-        border-color: rgb(0, 0, 0);
-        width: auto;
-        padding-top: 1px;
-        padding-bottom: 1px;
-    }
-    
-    table.myIndliqTable td {
-        border-style: solid;
-        width: auto;
-        border-color: rgb(0, 0, 0);
-        padding-top: 1px;
-        padding-bottom: 1px;
-    }
-    
-    table.myIndlevTable td {
-        border-style: solid;
-        border-color: rgb(0, 0, 0);
-        width: auto;
-        padding-top: 1px;
-        padding-bottom: 1px;
-    }
-    
-    table.myIndprofTable td {
-        border-style: solid;
-        border-color: rgb(0, 0, 0);
-        width: auto;
-        padding-top: 1px;
-        padding-bottom: 1px;
-    }
-    
-    table.myIndeffTable td {
-        border-style: solid;
-        border-color: rgb(0, 0, 0);
-        width: auto;
-        padding-top: 1px;
-        padding-bottom: 1px;
-    }
-    
-    table.myTableCashflow td {
-        border-style: solid;
-        border-color: rgb(0, 0, 0);
-        width: auto;
-        padding-top: 1px;
-        padding-bottom: 1px;
-    }
+table {
+    font-size: 9pt;
+    margin-bottom: 20px;
+    width: 100%;
+}
 
-    table.myTableCashflowVerif{
-        margin-top: 10px;
-    }
+table td {
+    border-style: solid;
+    border-color: rgb(0, 0, 0);
+    width: auto;
+    padding-top: 1px;
+    padding-bottom: 1px;
+}
 
-    table.myTableCashflowVerif td {
-        border-style: solid;
-        border-color: rgb(0, 0, 0);
-        width: auto;
-        padding-top: 1px;
-        padding-bottom: 1px;
-    }
-
-    table.myIndCashflowTable td {
-        border-style: solid;
-        border-color: rgb(0, 0, 0);
-        width: auto;
-        padding-top: 1px;
-        padding-bottom: 1px;
-    }
-    
-    table.myRetainedEarningsTable td {
-        border-style: solid;
-        border-color: rgb(0, 0, 0);
-        width: auto;
-        padding-top: 1px;
-        padding-bottom: 1px;
-    }
-    
-    table.myDupontTable td {
-        border-style: solid;
-        border-color: rgb(0, 0, 0);
-        width: auto;
-        padding-top: 1px;
-        padding-bottom: 1px;
-    }
-    
-    table.myTableAltmanIndex td {
-        border-style: solid;
-        border-color: rgb(0, 0, 0);
-        width: auto;
-        padding-top: 1px;
-        padding-bottom: 1px;
-    }
     /**********************************************************
 style's for the amounts
 **********************************************************/

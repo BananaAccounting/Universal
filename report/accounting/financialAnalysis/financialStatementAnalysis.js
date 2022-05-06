@@ -2396,7 +2396,6 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                         value += "|";
                     }
                     if (groupList.indexOf(token) >= 0) {
-                        //Banana.console.debug(token);
                         token = token;
                         isAccount = false;
                     }
