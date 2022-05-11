@@ -1,0 +1,12 @@
+<!DOCTYPE RCC><RCC version="1.0">
+ <qresource>
+     <file>ch.banana.portfolio.accounting.calc.sales.data.dialog.js</file>
+     <file>ch.banana.portfolio.accounting.calc.sales.data.dialog.ui</file>
+     <file>ch.banana.portfolio.accounting.calculation.methods.js</file>
+     <file>ch.banana.portfolio.accounting.reconciliation.report.js</file>
+     <file>ch.banana.portfolio.accounting.reports.css</file>
+     <file>ch.banana.portfolio.accounting.security.card.report.js</file>
+     <file>ch.banana.portfolio.accounting.evaluation.report.js</file>
+     <file>ch.banana.portfolio.accountingmanifest.json</file>
+ </qresource>
+ </RCC>
