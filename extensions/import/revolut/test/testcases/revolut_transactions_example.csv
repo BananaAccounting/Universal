@@ -1,0 +1,9 @@
+Date started (UTC),Date completed (UTC),Date started (Europe/Zurich),Date completed (Europe/Zurich),ID,Type,Description,Reference,Payer,Card number,Orig currency,Orig amount,Payment currency,Amount,Fee,Balance,Account,Beneficiary account number,Beneficiary sort code or routing number,Beneficiary IBAN,Beneficiary BIC
+2022-07-03,2022-07-04,2022-07-03,2022-07-04,1234abc-def456,CARD_PAYMENT,Payment with card,,Bruno Frey,1234567890,USD,59.00,CHF,-54.26,-0.22,2621.00,Bank CHF,,,,
+2022-07-03,2022-07-03,2022-07-03,2022-07-03,1234abc-def456,CARD_PAYMENT,Payment with card,,Bruno Frey,1234567890,CHF,0.00,CHF,0.00,0.00,2675.48,Bank CHF,,,,
+2022-06-28,2022-06-28,2022-06-28,2022-06-28,1234abc-def456,TOPUP,Payment from Nexum AG.,123abc,,,CHF,2475.00,CHF,2475.00,0.00,2675.48,Bank CHF,,,,
+2022-06-24,2022-06-25,2022-06-24,2022-06-25,1234abc-def456,CARD_PAYMENT,Payment with card,,Bruno Frey,1234567890,USD,900.00,CHF,-832.99,-3.33,200.48,Bank CHF,,,,
+2022-06-22,2022-06-23,2022-06-22,2022-06-23,1234abc-def456,CARD_PAYMENT,Payment with card,,Bruno Frey,1234567890,EUR,224.64,CHF,-232.92,-0.93,1036.80,Bank CHF,,,,
+2022-06-02,2022-06-02,2022-06-02,2022-06-02,1234abc-def456,CARD_PAYMENT,Payment with card,,Bruno Frey,1234567890,USD,9.00,CHF,-8.30,-0.03,1270.65,Bank CHF,,,,
+2022-05-28,2022-06-02,2022-05-28,2022-06-02,1234abc-def456,CARD_PAYMENT,Payment with card,,Bruno Frey,1234567890,USD,5.42,CHF,-5.05,-0.02,1278.98,Bank CHF,,,,
+2022-05-30,2022-06-01,2022-05-30,2022-06-01,1234abc-def456,CARD_PAYMENT,Payment with card,,Bruno Frey,1234567890,CHF,20.00,CHF,-20.00,0.00,1284.05,Bank CHF,,,,

@@ -1,0 +1,13 @@
+{
+    "category": "Import",
+    "country": "universal",
+    "countryCode": "un",
+    "description": "Import yokoy transactions",
+    "description.en": "Import yokoy transactions",
+    "id": "ch.banana.uni.import.yokoy",
+    "language": "en",
+    "publisher": "Banana.ch",
+    "title": "Import yokoy transactions",
+    "title.en": "Import yokoy transactions",
+    "version": "1.0"
+}

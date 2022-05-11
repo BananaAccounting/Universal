@@ -1,0 +1,181 @@
+%%info_test_name{cashflow_2021_test}
+\documentclass{report}
+\usepackage{longtable}
+\usepackage{color}
+\usepackage{listings}
+\usepackage[margin=1cm]{geometry}
+\begin{document}
+\newenvironment{tablevalue}[2]{\textbf{Table: #1}\begin{longtable}[l]{#2}}{\end{longtable}}
+\newenvironment{reportvalue}[1]{\textbf{Report: #1}\\}{}
+\lstnewenvironment{jsonvalue}[1]{\textbf{Json: #1}\lstset{language=Java}}{}
+\lstnewenvironment{xmlvalue}[1]{\textbf{Xml: #1}\lstset{language=Xml}}{}
+\newcommand{\info}[2]{\textit{#1: #2}\\}
+\newcommand{\fatalerror}[1]{\textbf{\textcolor[rgb]{1,0,0}{Fatal error: #1}}\\}
+\newcommand{\keyvalue}[2]{\textbf{Keyvalue: #1} #2\\}
+\newcommand{\textvalue}[1]{#1\\}
+\newcommand{\excltest}[1]{\\Excluded from compare: #1}
+\newcommand{\lognewpage}{\newpage}
+\newenvironment{testcase}[1]{\section*{Test: #1}}{\newpage}
+\newenvironment{test}[1]{\section*{Test case: #1}}{}
+%Begin test data
+\begin{reportvalue}{FILENAME: file:script/../test/testcases/cashflow\_2021\_test.ac2}
+\excltest{Year to Date ref: } \\
+\begin{longtable}[l]{ l  l  l }
+BALANCE Acronym  & Description  & Year to Date \\
+\multicolumn{3}{l}{Assets }\\
+liqu  & Liquidity  & 41'890.00 \\
+cred  & Credits  & 26'800.00 \\
+stoc  & Stocks  & -3'000.00 \\
+accr  & Prepaid Expenses  & 0.00 \\
+cuas  & Total Current Assets  & 65'690.00 \\
+finfix  & Financial Fixed Assets  & 0.00 \\
+tanfix  & Tangible Fixed Assets  & 28'724.00 \\
+intfix  & Intangible Fixed Assets  & 0.00 \\
+fixa  & Total Fixed Assets  & 28'724.00 \\
+tota  & Total Assets  & 94'414.00 \\
+\multicolumn{3}{l}{Liabilities and Equity }\\
+dbts  & Debts  & 70'740.00 \\
+accr  & Accruals and Deferred Income  & 0.00 \\
+stdc  & Total Short term Debt Capital  & 70'740.00 \\
+ltde  & Long term Debts  & 16'000.00 \\
+prov  & Provisions and similar  & 5'000.00 \\
+ltdc  & Total Long term debt Capital  & 21'000.00 \\
+deca  & Total Debt Capital  & 91'740.00 \\
+obca  & Own base capital  & 0.00 \\
+rese  & Reserves  & 1'500.00 \\
+balp  & Profit / Loss carried forward  & 1'174.00 \\
+owca  & Total Own Capital  & 2'674.00 \\
+totp  & Total Liabilities and Equity  & 94'414.00 \\
+\end{longtable}
+\begin{longtable}[l]{ l  l  l }
+PROFIT AND LOSS Acronym  & Description  & Year to Date \\
+satu  & + Sales turnover  & 48'000.00 \\
+cofm  & - Cost of merchandise and services  & -23'200.00 \\
+adva  & = Added Value  & 24'800.00 \\
+cope  & - Personnel costs  & -500.00 \\
+cofi  & - Different costs  & 24.00 \\
+EBIT-DA  & = Operating result before depreciation and value adjustments, financial results and taxes (EBITDA)  & 24'324.00 \\
+amre  & - Depreciations and adjustments  & -3'000.00 \\
+EBIT  & = Operating result before financial results and taxes (EBIT)  & 21'324.00 \\
+inte  & +/- Interests  & -600.00 \\
+EBT  & Operating result before taxes (EBT)  & 20'724.00 \\
+dita  & - Direct taxes  & -1'000.00 \\
+fire  & Annual result  & 19'724.00 \\
+\end{longtable}
+\begin{longtable}[l]{ l  l  l  l }
+CONTROL SUMS Year  & Accounting Total  & Calculated Total  & Difference \\
+\multicolumn{4}{l}{Assets }\\
+2021  & 94'414.00  & 94'414.00  & 0.00 \\
+\multicolumn{4}{l}{Liabilities and Equity }\\
+2021  & 94'414.00  & 94'414.00  & 0.00 \\
+\multicolumn{4}{l}{Profit and Loss }\\
+2021  & 19'724.00  & 19'724.00  & 0.00 \\
+\end{longtable}
+\begin{longtable}[l]{ l  l  l  l }
+LIQUIDITY RATIOS Description  & formula  & Benchmark  & Year to Date \\
+Cash ratio  & liqu / stdc  & 10\%-35\%  & 59.22\%  \\
+Quick ratio  & (liqu + cred) / stdc  & 100\%  & 97.10\%  \\
+Current ratio  & cuas / stdc  & 150\%  & 92.86\%  \\
+Net Current Assets  & cuas-stdc  & >0  & -5'050.00  \\
+\end{longtable}
+\begin{longtable}[l]{ l  l  l  l }
+LEVERAGE RATIOS Description  & formula  & Benchmark  & Year to Date \\
+Degree of Circulating Assets  & cuas / tota  & 60\%  & 69.58\%  \\
+Percentage Fixed Assets  & fixa / tota  & 40\%  & 30.42\%  \\
+Debt ratio  & (stdc+ltdc) / totp  & 40\%-70\%  & 97.17\%  \\
+Equity ratio  & owca / totp  & 30\%-60\%  & 2.83\%  \\
+Self financing ratio  & rese / owca  & 33,3\%  & 56.10\%  \\
+Fixed Assets Coverage  & (owca + ltdc) / fixa  & >100\%  & 82.42\%  \\
+\end{longtable}
+\begin{longtable}[l]{ l  l  l  l }
+PROFITABILITY RATIOS Description  & formula  & Benchmark  & Year to Date \\
+Return on equity (ROE)  & profit / owca  & 8\%-14\%  & 737.62\%  \\
+Return on investment (ROI)  & EBIT / tota    & 10\%  & 22.59\%  \\
+Return on sales (ROS)  & EBIT / satu  & >0  & 44.43\%  \\
+Gross profit margin (MOL)  & ebitda / satu  & 40\%  & 50.68\%  \\
+EBT margin  & EBT / satu  & 2.4\%  & 43.18\%  \\
+Profit margin  & net profit / satu  & 1.4\%  & 41.09\%  \\
+\end{longtable}
+\begin{longtable}[l]{ l  l  l  l }
+EFFICIENCY RATIOS Description  & formula  & Benchmark  & Year to Date \\
+Revenue per Employee  & satu/employees  & >0  & 48'000.00 \\
+Added Value per Employee  & adva/employees  & >0  & 24'800.00 \\
+Personnel Cost per Employee  & cope/employees  & >0  & 500.00 \\
+\end{longtable}
+\begin{longtable}[l]{ l  l  l }
+CASH FLOW STATEMENT (INDIRECT METHOD) Acronym  & Description  & Year to Date \\
+fire  & Annual result  & 19'724.00 \\
+\#revaluation  & - Revaluations on Fixed Assets  & 5'124.00 \\
+\#devaluation  & + Devaluations on Fixed Assets  & 100.00 \\
+amre  & Depreciations and adjustments  & 3'000.00 \\
+prov  & +/- (+)Creation and (-)release of provisions  & 3'000.00 \\
+\multicolumn{3}{l}{Adjustment with assets accounts  }\\
+cred  & +/- (+) Decrease or (-) increase of credits  & -20'000.00 \\
+stoc  & +/- (+) Decrease or (-) increase of stocks  & -3'000.00 \\
+prep  & +/- (+) Decrease or (-) increase of prepaid expenses  & 0.00 \\
+\multicolumn{3}{l}{Adjustment with liabilities accounts  }\\
+stdc  & +/- (+)Increase or (-) decrease of liabilities  & 41'970.00 \\
+accr  & +/- (+) Increase or (-) decrease of accruals and deferred income  & 0.00 \\
+\\
+A  & = Cash Flow from operations  & 39'670.00 \\
+\#disinvest  & + Disinvestments  & 2'500.00 \\
+inve  & - Investments  & 9'000.00 \\
+\\
+B  & = Cash Flow from investing  & -6'500.00 \\
+ltdc  & +/- Long term (+) increases or (-) repayments of debt capital  & 0.00 \\
+\#dividends  & - Dividends  & 19'000.00 \\
+obca  & Share capital (+) increases or (-) reductions   & 0.00 \\
+\\
+C  & =Cash Flow from financing  & -19'000.00 \\
+A+B+C  & Increase/decrease in liquidity  & 14'170.00 \\
+\end{longtable}
+\begin{longtable}[l]{ l  l  l }
+\multicolumn{3}{l}{Cash Flow verification }\\
+liqu  & Liquidity at the beginning of the period  & 27'720.00 \\
+A+B+C  & Change in liquidity  & 14'170.00 \\
+liqu  & Liquidity at the end of the period  & 41'890.00 \\
+\end{longtable}
+\begin{longtable}[l]{ l  l }
+RETAINED EARNINGS STATEMENT Description  & Year to Date \\
+Profit/Loss carried forward at the beginning of the Period  & 950.00 \\
++ Annual Result  & 19'724.00 \\
+- Dividends  & 19'000.00 \\
++/- Reserves  & 500.00 \\
+\\
+Total retained earning  & 1'174.00 \\
+Current year retained earning  & 224.00 \\
+\end{longtable}
+\begin{longtable}[l]{ l  l  l  l }
+CASH FLOW RATIOS Description  & formula  & Benchmark  & Year to Date \\
+Operating Cash Flow Margin  & cashflow(A)/satu  & -  & 82.65\%  \\
+Asset Efficiency  & cashflow(A)/fixa  & -  & 138.11\%  \\
+Cash Flow to current Liabilities  & cashflow(A)/stdc  & -  & 56.08\%  \\
+Cash Flow to Liabilities  & cashflow(A)/deca  & -  & 43.24\%  \\
+Cash Flow to Investments  & cashflow(A)/inve  & -  & 440.78\%  \\
+\end{longtable}
+\begin{longtable}[l]{ l  l }
+DUPONT ANALYSIS  Description  & Year to Date \\
+Operating result before taxes (EBT)  & 20'724.00  \\
+Sales turnover  & 48'000.00  \\
+EBT margin  & 43.18\%  \\
+Sales turnover  & 48'000.00  \\
+Total Assets  & 94'414.00  \\
+Total Assets Turnover  & 0.51  \\
+Return on investment (ROI)  & 22.59\%  \\
+\end{longtable}
+\begin{longtable}[l]{ l  l  l }
+ALTMAN INDEX Z-SCORE Year to Date \\
+1.72 \\
+\multicolumn{3}{l}{formula used for the calculation  = 0.717 X1 + 0.847 X2 +3.107 X3 +0.420 X4 + 0.998 X5 }\\
+\multicolumn{3}{l}{X1 = cuas / tota }\\
+\multicolumn{3}{l}{X2 = rese / tota  }\\
+\multicolumn{3}{l}{X3 = EBIT / tota  }\\
+\multicolumn{3}{l}{X4 = pant / totp }\\
+\multicolumn{3}{l}{X5 = sale / tota }\\
+\end{longtable}
+for values > than 3 correspond a low probability of a financial crisis \\
+for values >= than 1.8 but <= than 3 there are possibilities of a financial crisis, should be kept under control \\
+for values < than 1.8 there is a strong probability of a financial crisis \\
+\excltest{03.05.2022} \\
+\#page-nr \end{reportvalue}
+\end{document}
