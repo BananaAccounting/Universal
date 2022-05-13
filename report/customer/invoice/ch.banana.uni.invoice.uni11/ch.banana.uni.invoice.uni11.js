@@ -4376,7 +4376,7 @@ function setInvoiceTexts(language) {
     texts.deposit = "Anzahlung";
     texts.totalnet = "Netto-Betrag";
     texts.subtotal = "Zwischentotal";
-    texts.vat = "MwSt";
+    texts.vat = "MwSt/USt";
     texts.rounding = "Rundung";
     texts.total = "Gesamtbetrag";
     texts.param_include = "Drucken";
@@ -4435,7 +4435,7 @@ function setInvoiceTexts(language) {
     texts.de_param_text_begin = "Anfangstext";
     texts.de_param_text_details_columns = "Spaltennamen Rechnungsdetails";
     texts.de_param_text_totalnet = "Netto-Betrag";
-    texts.de_param_text_vat = "MwSt";
+    texts.de_param_text_vat = "MwSt/USt";
     texts.de_param_text_total = "Rechnungsbetrag";
     texts.de_param_text_final = "Text am Ende";
     texts.de_param_footer_left = "Fusszeilentext links";
