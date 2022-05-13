@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.uni.invoice.uni11
 // @api = 1.0
-// @pubdate = 2022-02-21
+// @pubdate = 2022-05-13
 // @publisher = Banana.ch SA
 // @description = [UNI11] Programmable Invoice layout
 // @description.it = [UNI11] Layout Fattura Programmabile
@@ -3146,7 +3146,9 @@ function print_details_gross_amounts(banDoc, repDocObj, invoiceObj, texts, userP
   tableRow = repTableObj.addRow();
   var cellVatInfo = tableRow.addCell("", "padding-right right vat_info", columnsNumber);
   for (var i = 0; i < invoiceObj.billing_info.total_vat_rates.length; i++) {
-    var vatInfo = userParam[lang+'_text_vat'] + " " + invoiceObj.billing_info.total_vat_rates[i].vat_rate + "%";
+    var vatInfo = "";
+    vatInfo += Banana.Converter.toLocaleNumberFormat(invoiceObj.billing_info.total_vat_rates[i].total_amount_vat_exclusive, variables.decimals_amounts, true) + " " + invoiceObj.document_info.currency;
+    vatInfo += " " + userParam[lang+'_text_vat'] + " " + invoiceObj.billing_info.total_vat_rates[i].vat_rate + "%";
     vatInfo += " = " + Banana.Converter.toLocaleNumberFormat(invoiceObj.billing_info.total_vat_rates[i].total_vat_amount, variables.decimals_amounts, true) + " " + invoiceObj.document_info.currency;
     cellVatInfo.addParagraph(vatInfo);
   }
