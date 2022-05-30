@@ -14,3 +14,6 @@ All notable changes to the [[UNI11] Layout 11 Programmable Invoice](https://www.
 	* Specific changes for Estimates and Invoices application:
 		* print columns “Item”, “Date” and “Discount”. Columns can be added in layout parameters, section Print->Invoice Details->Column names
 		* print custom columns of Items table. The syntax is “I.ColumnName”, where ColumnName is the XML name of a column (Advanced plan required).  
+* 2022-05-30
+	* Fix print column Item  
+	* Removed 'shipping address' from invoice parameters when using Estimates-Invoices application  
