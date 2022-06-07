@@ -105,6 +105,7 @@ function convertParam(userParam) {
   colors.push(texts.themecolor18);
   colors.push(texts.themecolor19);
   colors.push(texts.themecolor20);
+  colors.push(texts.themecolor21);
   colors.push(texts.themecolorcustom);
   currentParam.items = colors;
   currentParam.value = userParam.color_theme ? userParam.color_theme : '';
