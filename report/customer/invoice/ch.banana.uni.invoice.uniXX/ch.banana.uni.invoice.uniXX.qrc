@@ -1,7 +1,7 @@
 <!DOCTYPE RCC><RCC version="1.0">
  <qresource>
- 	<file>ch.banana.uni.invoice.uni11.manifest.json</file>
-    <file>ch.banana.uni.invoice.uni11.js</file>
-    <file>invoice.css</file>
+ 	<file>ch.banana.uni.invoice.uniXX.manifest.json</file>
+    <file>ch.banana.uni.invoice.uniXX.js</file>
+    <file>invoiceXX.css</file>
  </qresource>
  </RCC>

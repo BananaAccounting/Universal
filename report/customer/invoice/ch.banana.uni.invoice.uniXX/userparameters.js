@@ -2226,104 +2226,110 @@ function onCurrentIndexChanged_color_theme(index, value, userParam) {
     color = '#000000';
   }
 
-  // Red
+  // Banana
   else if (parseInt(index) == 1) {
+    color = '#354894';
+    // #FFE01B
+  }
+
+  // Red
+  else if (parseInt(index) == 2) {
     color = '#F44336';
   }
 
   // Pink
-  else if (parseInt(index) == 2) {
+  else if (parseInt(index) == 3) {
     color = '#E91E63';
   }
 
   // Purple
-  else if (parseInt(index) == 3) {
+  else if (parseInt(index) == 4) {
     color = '#9C27B0';
   }
 
   // Deep purple
-  else if (parseInt(index) == 4) {
+  else if (parseInt(index) == 5) {
     color = '#673AB7';
   }
 
   // Deep blue
-  else if (parseInt(index) == 5) {
+  else if (parseInt(index) == 6) {
     color = '#3F51B5';
   }
 
   // Blue
-  else if (parseInt(index) == 6) {
+  else if (parseInt(index) == 7) {
     color = '#2196F3';
   }
 
   // Light blue
-  else if (parseInt(index) == 7) {
+  else if (parseInt(index) == 8) {
     color = '#03A9F4';
   }
 
   // Cyan
-  else if (parseInt(index) == 8) {
+  else if (parseInt(index) == 9) {
     color = '#00BCD4';
   }
 
   // Teal
-  else if (parseInt(index) == 9) {
+  else if (parseInt(index) == 10) {
     color = '#009688';
   }
 
   // Green
-  else if (parseInt(index) == 10) {
+  else if (parseInt(index) == 11) {
     color = '#4CAF50';
   }
 
   // Light green
-  else if (parseInt(index) == 11) {
+  else if (parseInt(index) == 12) {
     color = '#8BC34A';
   }
 
   // Lime
-  else if (parseInt(index) == 12) {
+  else if (parseInt(index) == 13) {
     color = '#CDDC39';
   }
 
   // Yellow
-  else if (parseInt(index) == 13) {
+  else if (parseInt(index) == 14) {
     color = '#FFEB3B';
   }
 
   // Amber
-  else if (parseInt(index) == 14) {
+  else if (parseInt(index) == 15) {
     color = '#FFC107';
   }
 
   // Orange
-  else if (parseInt(index) == 15) {
+  else if (parseInt(index) == 16) {
     color = '#FF9800';
   }
 
   // Deep orange
-  else if (parseInt(index) == 16) {
+  else if (parseInt(index) == 17) {
     color = '#FF5722';
   }
 
   // Brown
-  else if (parseInt(index) == 17) {
+  else if (parseInt(index) == 18) {
     color = '#795548';
   }
 
   // Grey
-  else if (parseInt(index) == 18) {
+  else if (parseInt(index) == 19) {
     color = '#9E9E9E';
   }
 
   // Blue grey
-  else if (parseInt(index) == 19) {
+  else if (parseInt(index) == 20) {
     color = '#607D8B';
   }
 
   // Custom color
   // Always last choice in combobox
-  else if (parseInt(index) == 20) {
+  else if (parseInt(index) == 21) {
 
     for (var i = 0; i < userParam.data.length; i++) {
       if (userParam.data[i].name === 'color_theme_custom') {
@@ -2335,7 +2341,10 @@ function onCurrentIndexChanged_color_theme(index, value, userParam) {
   // Set the color
   for (var i = 0; i < userParam.data.length; i++) {
 
-    if (userParam.data[i].name === 'color_header_text') {
+    if (userParam.data[i].name === 'color_theme_custom') {
+      userParam.data[i].value = color;
+    }
+    else if (userParam.data[i].name === 'color_header_text') {
       userParam.data[i].value = '#000000';
     }
     else if (userParam.data[i].name === 'color_label_text') {
@@ -2394,11 +2403,14 @@ function onCurrentIndexChanged_color_theme_custom(index, value, userParam) {
     }
   }
 
-  if (colorTheme === texts.themecolorcustom) { //colorTheme.indexOf(".") < 0) { //"Custom" option selected
+  if (colorTheme === texts.themecolorcustom) {
 
     for (var i = 0; i < userParam.data.length; i++) {
 
-      if (userParam.data[i].name === 'color_label_text') {
+      if (userParam.data[i].name === 'color_header_text') {
+        userParam.data[i].value = '#000000';
+      }
+      else if (userParam.data[i].name === 'color_label_text') {
         userParam.data[i].value = color;
       }
       else if(userParam.data[i].name === 'color_title_text') {
