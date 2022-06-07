@@ -180,25 +180,26 @@ function setTexts_IT(texts) {
 
 
   texts.themecolor1 = "1. Nero";
-  texts.themecolor2 = "2. Rosso";
-  texts.themecolor3 = "3. Rosa";
-  texts.themecolor4 = "4. Viola";
-  texts.themecolor5 = "5. Viola scuro";
-  texts.themecolor6 = "6. Blu scuro";
-  texts.themecolor7 = "7. Blu";
-  texts.themecolor8 = "8. Azzurro";
-  texts.themecolor9 = "9. Ciano";
-  texts.themecolor10 = "10. Verde acqua";
-  texts.themecolor11 = "11. Verde";
-  texts.themecolor12 = "12. Verde chiaro";
-  texts.themecolor13 = "13. Lime";
-  texts.themecolor14 = "14. Giallo";
-  texts.themecolor15 = "15. Ambra";
-  texts.themecolor16 = "16. Arancione";
-  texts.themecolor17 = "17. Arancione scuro";
-  texts.themecolor18 = "18. Marrone";
-  texts.themecolor19 = "19. Grigio";
-  texts.themecolor20 = "20. Grigio blu";
+  texts.themecolor2 = "2. Banana";
+  texts.themecolor3 = "3. Rosso";
+  texts.themecolor4 = "4. Rosa";
+  texts.themecolor5 = "5. Viola";
+  texts.themecolor6 = "6. Viola scuro";
+  texts.themecolor7 = "7. Blu scuro";
+  texts.themecolor8 = "8. Blu";
+  texts.themecolor9 = "9. Azzurro";
+  texts.themecolor10 = "10. Ciano";
+  texts.themecolor11 = "11. Verde acqua";
+  texts.themecolor12 = "12. Verde";
+  texts.themecolor13 = "13. Verde chiaro";
+  texts.themecolor14 = "14. Lime";
+  texts.themecolor15 = "15. Giallo";
+  texts.themecolor16 = "16. Ambra";
+  texts.themecolor17 = "17. Arancione";
+  texts.themecolor18 = "18. Arancione scuro";
+  texts.themecolor19 = "19. Marrone";
+  texts.themecolor20 = "20. Grigio";
+  texts.themecolor21 = "21. Grigio blu";
   texts.themecolorcustom = "Personale";
 
 
