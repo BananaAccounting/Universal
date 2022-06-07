@@ -1,0 +1,675 @@
+%%info_test_name{ch.banana.uni.invoice.uniXX.test}
+\documentclass{report}
+\usepackage{longtable}
+\usepackage{color}
+\usepackage{listings}
+\usepackage[margin=1cm]{geometry}
+\begin{document}
+\newenvironment{tablevalue}[2]{\textbf{Table: #1}\begin{longtable}[l]{#2}}{\end{longtable}}
+\newenvironment{reportvalue}[1]{\textbf{Report: #1}\\}{}
+\lstnewenvironment{jsonvalue}[1]{\textbf{Json: #1}\lstset{language=Java}}{}
+\lstnewenvironment{xmlvalue}[1]{\textbf{Xml: #1}\lstset{language=Xml}}{}
+\newcommand{\info}[2]{\textit{#1: #2}\\}
+\newcommand{\fatalerror}[1]{\textbf{\textcolor[rgb]{1,0,0}{Fatal error: #1}}\\}
+\newcommand{\keyvalue}[2]{\textbf{Keyvalue: #1} #2\\}
+\newcommand{\textvalue}[1]{#1\\}
+\newcommand{\excltest}[1]{\\Excluded from compare: #1}
+\newcommand{\lognewpage}{\newpage}
+\newenvironment{testcase}[1]{\section*{Test: #1}}{\newpage}
+\newenvironment{test}[1]{\section*{Test case: #1}}{}
+%Begin test data
+%%SCRIPT{/Users/ivan/Desktop/new_invoice/test/ch.banana.uni.invoice.uniXX.test.js}
+%
+\begin{testcase}{ReportInvoiceUniXX}
+\begin{test}{testReport}
+%Test ch.banana.uni.invoice.uniXX.js
+\subsection{Test layout uniXX}
+\begin{reportvalue}{ReportTest}
+\begin{longtable}[l]{ l  l }
+Invoice:  & 37 \\
+Date:  & 03.02.2022 \\
+Customer No:  & 100001 \\
+VAT No:  & \\
+Fiscal No:  & \\
+Due date:  & 05.03.2022 \\
+Page:  & \#page-nr \\
+\end{longtable}
+Banana.ch SA \\
+Via alla Santa 7 - 6962 Viganello \\
+www.banana.ch - info@banana.ch \\
+IVA 123 456 789 \\
+\begin{longtable}[l]{ l  l }
+Invoice:  & 37 \\
+Date:  & 03.02.2022 \\
+Customer No:  & 100001 \\
+VAT No:  & \\
+Fiscal No:  & \\
+Due date:  & 05.03.2022 \\
+Page:  & \#page-nr \\
+\end{longtable}
+\begin{longtable}[l]{ l }
+Banana.ch SA - Via alla Santa 7 - 6962 Viganello Rossi SA \newline Carlo Rossi \newline Via Trevano \newline 6963 Pregassona \newline \\
+\end{longtable}
+\begin{longtable}[l]{ l }
+Invoice 37 \newline \\
+\end{longtable}
+\begin{longtable}[l]{ l  l  l  l  l }
+Description  & Quantity  & Unit  & Unit Price  & Amount \\
+Sales merchandise, invoice \#37, customer A \newline  &  &  & 7'407.41  & 7'407.41 \\
+Consultancy \newline  &  &  & 92.59  & 92.59 \\
+Consultancy \newline  &  &  & 92.59  & 92.59 \\
+Consultancy \newline  &  &  & 92.59  & 92.59 \\
+Consultancy \newline  &  &  & 92.59  & 92.59 \\
+Consultancy \newline  &  &  & 92.59  & 92.59 \\
+Consultancy \newline  &  &  & 92.59  & 92.59 \\
+\multicolumn{5}{l}{}\\
+\multicolumn{4}{l}{Total net } & 7'962.95 \\
+\multicolumn{4}{l}{VAT 8.00\% (7'962.95) } & 637.05 \\
+\multicolumn{5}{l}{}\\
+\multicolumn{4}{l}{TOTAL CHF } & 8'600.00 \\
+\end{longtable}
+Paragraph 1, final text taken from the 'Print invoices' ,'Template options' settings. \\
+Paragraph 2,  final text  taken from the 'Print invoices' ,'Template options' settings.  Final text taken from the 'Print invoices' ,'Template options' settings. \\
+\begin{longtable}[l]{ l  l }
+Invoice \newline  & Page  \#page-nr \newline \\
+\end{longtable}
+\end{reportvalue}
+\begin{reportvalue}{ReportTest}
+\begin{longtable}[l]{ l  l }
+Invoice:  & 35 \\
+Date:  & 29.01.2022 \\
+Customer No:  & 100002 \\
+VAT No:  & 123 456 789 \\
+Fiscal No:  & 001 002 003 \\
+Due date:  & 30 days \newline \\
+Page:  & \#page-nr \\
+\end{longtable}
+Banana.ch SA \\
+Via alla Santa 7 - 6962 Viganello \\
+www.banana.ch - info@banana.ch \\
+IVA 123 456 789 \\
+\begin{longtable}[l]{ l  l }
+Invoice:  & 35 \\
+Date:  & 29.01.2022 \\
+Customer No:  & 100002 \\
+VAT No:  & 123 456 789 \\
+Fiscal No:  & 001 002 003 \\
+Due date:  & 30 days \newline \\
+Page:  & \#page-nr \\
+\end{longtable}
+\begin{longtable}[l]{ l }
+Banana.ch SA - Via alla Santa 7 - 6962 Viganello Sig. \newline Mario Bianchi \newline Via Trevano \newline 6963 Pregassona \newline \\
+\end{longtable}
+\begin{longtable}[l]{ l }
+Shipping address: \newline Sig. \newline Robert Schwartz \newline Via Regina \newline 6982 Agno \newline \\
+\end{longtable}
+\begin{longtable}[l]{ l }
+Invoice 35 \newline \\
+Testo iniziale  definito con il comando '10:beg' nella colonna DocType. \newline \\
+\end{longtable}
+\begin{longtable}[l]{ l  l  l  l  l  l  l  l  l  l }
+Description  & Quantity  & Unit  & Unit Price  & Amount \\
+Vendita merce prodotto A, fattura \#35, cliente B \newline  & 15.0000  & pz.  & 18.52  & 277.78 \\
+Vendita merce prodotto B, fattura \#35, cliente B \newline  & 5.0000  & pz.  & 96.43  & 482.16 \\
+Vendita merce prodotto C, fattura \#35, cliente B \newline  & 22.0000  & pz.  & 14.63  & 321.95 \\
+\multicolumn{10}{l}{}\\
+\multicolumn{9}{l}{Total net } & 1'081.89 \\
+\multicolumn{9}{l}{VAT 8.00\% (277.78) } & 22.22 \\
+\multicolumn{9}{l}{VAT 3.70\% (482.16) } & 17.84 \\
+\multicolumn{9}{l}{VAT 2.50\% (321.95) } & 8.05 \\
+\multicolumn{10}{l}{}\\
+\multicolumn{9}{l}{TOTAL CHF } & 1'130.00 \\
+\end{longtable}
+  \\
+Prima nota definita con il comando '10:not' nella colonna DocType. \\
+Seconda nota definita con il comando '10:not' nella colonna DocType . \\
+  \\
+  \\
+  \\
+Testo saluti finali  utilizzando il comando  '10:gre'  nella colonna  DocType . \\
+  \\
+Paragraph 1, final text taken from the 'Print invoices' ,'Template options' settings. \\
+Paragraph 2,  final text  taken from the 'Print invoices' ,'Template options' settings.  Final text taken from the 'Print invoices' ,'Template options' settings. \\
+\begin{longtable}[l]{ l  l }
+Invoice \newline  & Page  \#page-nr \newline \\
+\end{longtable}
+\end{reportvalue}
+\begin{reportvalue}{ReportTest}
+\begin{longtable}[l]{ l  l }
+Invoice:  & 361 \\
+Date:  & 04.02.2022 \\
+Customer No:  & 100002 \\
+VAT No:  & 123 456 789 \\
+Fiscal No:  & 001 002 003 \\
+Due date:  & 06.03.2022 \\
+Page:  & \#page-nr \\
+\end{longtable}
+Banana.ch SA \\
+Via alla Santa 7 - 6962 Viganello \\
+www.banana.ch - info@banana.ch \\
+IVA 123 456 789 \\
+\begin{longtable}[l]{ l  l }
+Invoice:  & 361 \\
+Date:  & 04.02.2022 \\
+Customer No:  & 100002 \\
+VAT No:  & 123 456 789 \\
+Fiscal No:  & 001 002 003 \\
+Due date:  & 06.03.2022 \\
+Page:  & \#page-nr \\
+\end{longtable}
+\begin{longtable}[l]{ l }
+Banana.ch SA - Via alla Santa 7 - 6962 Viganello \newline \\
+\end{longtable}
+\begin{longtable}[l]{ l }
+Invoice 361 \newline \\
+\end{longtable}
+\begin{longtable}[l]{ l  l  l  l  l  l  l  l  l  l  l  l  l  l  l }
+Description  & Quantity  & Unit  & Unit Price  & Amount \\
+Senza indirizzo cliente, senza importo \newline  &  &  &  & \\
+\multicolumn{15}{l}{}\\
+\multicolumn{15}{l}{}\\
+\multicolumn{14}{l}{TOTAL CHF } & 0.00 \\
+\end{longtable}
+Paragraph 1, final text taken from the 'Print invoices' ,'Template options' settings. \\
+Paragraph 2,  final text  taken from the 'Print invoices' ,'Template options' settings.  Final text taken from the 'Print invoices' ,'Template options' settings. \\
+\begin{longtable}[l]{ l  l }
+Invoice \newline  & Page  \#page-nr \newline \\
+\end{longtable}
+\end{reportvalue}
+\begin{reportvalue}{ReportTest}
+\begin{longtable}[l]{ l  l }
+Invoice:  & 363 \\
+Date:  & 03.02.2022 \\
+Customer No:  & 100002 \\
+VAT No:  & 123 456 789 \\
+Fiscal No:  & 001 002 003 \\
+Due date:  & 05.03.2022 \\
+Page:  & \#page-nr \\
+\end{longtable}
+Banana.ch SA \\
+Via alla Santa 7 - 6962 Viganello \\
+www.banana.ch - info@banana.ch \\
+IVA 123 456 789 \\
+\begin{longtable}[l]{ l  l }
+Invoice:  & 363 \\
+Date:  & 03.02.2022 \\
+Customer No:  & 100002 \\
+VAT No:  & 123 456 789 \\
+Fiscal No:  & 001 002 003 \\
+Due date:  & 05.03.2022 \\
+Page:  & \#page-nr \\
+\end{longtable}
+\begin{longtable}[l]{ l }
+Banana.ch SA - Via alla Santa 7 - 6962 Viganello \newline \\
+\end{longtable}
+\begin{longtable}[l]{ l }
+Invoice 363 \newline \\
+\end{longtable}
+\begin{longtable}[l]{ l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l }
+Description  & Quantity  & Unit  & Unit Price  & Amount \\
+Senza indirizzo cilente, con importo \newline  & 2.0000  & pz.  & 45.00  & 90.00 \\
+\multicolumn{20}{l}{}\\
+\multicolumn{20}{l}{}\\
+\multicolumn{19}{l}{TOTAL CHF } & 90.00 \\
+\end{longtable}
+Paragraph 1, final text taken from the 'Print invoices' ,'Template options' settings. \\
+Paragraph 2,  final text  taken from the 'Print invoices' ,'Template options' settings.  Final text taken from the 'Print invoices' ,'Template options' settings. \\
+\begin{longtable}[l]{ l  l }
+Invoice \newline  & Page  \#page-nr \newline \\
+\end{longtable}
+\end{reportvalue}
+\begin{reportvalue}{ReportTest}
+\begin{longtable}[l]{ l  l }
+Invoice:  & 47 \\
+Date:  & 11.11.2022 \\
+Customer No:  & 100003 \\
+VAT No:  & \\
+Fiscal No:  & \\
+Due date:  & 11.12.2022 \\
+Page:  & \#page-nr \\
+\end{longtable}
+Banana.ch SA \\
+Via alla Santa 7 - 6962 Viganello \\
+www.banana.ch - info@banana.ch \\
+IVA 123 456 789 \\
+\begin{longtable}[l]{ l  l }
+Invoice:  & 47 \\
+Date:  & 11.11.2022 \\
+Customer No:  & 100003 \\
+VAT No:  & \\
+Fiscal No:  & \\
+Due date:  & 11.12.2022 \\
+Page:  & \#page-nr \\
+\end{longtable}
+\begin{longtable}[l]{ l }
+Banana.ch SA - Via alla Santa 7 - 6962 Viganello Marco Alberti \newline V. Campuréta 40 \newline 6883 Novazzano \newline \\
+\end{longtable}
+\begin{longtable}[l]{ l }
+Invoice 47 \newline \\
+Fattura con tabella dettagli su tre pagine. \newline \\
+\end{longtable}
+\begin{longtable}[l]{ l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l }
+Description  & Quantity  & Unit  & Unit Price  & Amount \\
+Product A \newline  & 1.0000  & pz.  & 0.93  & 0.93 \\
+Product B \newline  & 1.0000  & pz.  & 1.85  & 1.85 \\
+Product C \newline  & 1.0000  & pz.  & 3.70  & 3.70 \\
+Product D \newline  & 1.0000  & pz.  & 4.63  & 4.63 \\
+Product E \newline  & 1.0000  & pz.  & 5.56  & 5.56 \\
+Product F \newline  & 1.0000  & pz.  & 6.48  & 6.48 \\
+Product G \newline  & 1.0000  & pz.  & 7.41  & 7.41 \\
+Product H \newline  & 1.0000  & pz.  & 8.33  & 8.33 \\
+Product I \newline  & 1.0000  & pz.  & 9.26  & 9.26 \\
+Product J \newline  & 1.0000  & pz.  & 10.19  & 10.19 \\
+Product K \newline  & 1.0000  & pz.  & 11.11  & 11.11 \\
+Product L \newline  & 1.0000  & pz.  & 12.04  & 12.04 \\
+Product M \newline  & 1.0000  & pz.  & 12.96  & 12.96 \\
+Product N \newline  & 1.0000  & pz.  & 13.89  & 13.89 \\
+Product O \newline  & 1.0000  & pz.  & 14.81  & 14.81 \\
+Product P \newline  & 1.0000  & pz.  & 15.74  & 15.74 \\
+Product Q \newline  & 1.0000  & pz.  & 16.67  & 16.67 \\
+Product R \newline  & 1.0000  & pz.  & 17.59  & 17.59 \\
+Product S \newline  & 1.0000  & pz.  & 18.52  & 18.52 \\
+Product T \newline  & 1.0000  & pz.  & 19.44  & 19.44 \\
+Product U \newline  & 1.0000  & pz.  & 20.37  & 20.37 \\
+Product V \newline  & 1.0000  & pz.  & 21.30  & 21.30 \\
+Product W \newline  & 1.0000  & pz.  & 22.22  & 22.22 \\
+Product X \newline  & 1.0000  & pz.  & 23.15  & 23.15 \\
+Product Y \newline  & 1.0000  & pz.  & 24.07  & 24.07 \\
+Product Z \newline  & 1.0000  & pz.  & 25.00  & 25.00 \\
+Product AA \newline  & 1.0000  & pz.  & 25.93  & 25.93 \\
+Product BB \newline  & 1.0000  & pz.  & 26.85  & 26.85 \\
+Product CC \newline  & 1.0000  & pz.  & 27.78  & 27.78 \\
+Product DD \newline  & 1.0000  & pz.  & 28.70  & 28.70 \\
+Product EE \newline  & 1.0000  & pz.  & 29.63  & 29.63 \\
+Product FF \newline  & 1.0000  & pz.  & 30.56  & 30.56 \\
+Product GG \newline  & 1.0000  & pz.  & 31.48  & 31.48 \\
+Product HH \newline  & 1.0000  & pz.  & 32.41  & 32.41 \\
+Product II \newline  & 1.0000  & pz.  & 33.33  & 33.33 \\
+Product JJ \newline  & 1.0000  & pz.  & 34.26  & 34.26 \\
+Product KK \newline  & 1.0000  & pz.  & 35.19  & 35.19 \\
+Product LL \newline  & 1.0000  & pz.  & 36.11  & 36.11 \\
+Product MM \newline  & 1.0000  & pz.  & 37.04  & 37.04 \\
+Product NN \newline  & 1.0000  & pz.  & 37.96  & 37.96 \\
+Product OO \newline  & 1.0000  & pz.  & 38.89  & 38.89 \\
+Product PP \newline  & 1.0000  & pz.  & 39.81  & 39.81 \\
+Product QQ \newline  & 1.0000  & pz.  & 40.74  & 40.74 \\
+Product RR \newline  & 1.0000  & pz.  & 41.67  & 41.67 \\
+Product SS \newline  & 1.0000  & pz.  & 42.59  & 42.59 \\
+Product TT \newline  & 1.0000  & pz.  & 43.52  & 43.52 \\
+Product UU \newline  & 1.0000  & pz.  & 44.44  & 44.44 \\
+Product VV \newline  & 1.0000  & pz.  & 45.37  & 45.37 \\
+Product WW \newline  & 1.0000  & pz.  & 46.30  & 46.30 \\
+Product XX \newline  & 1.0000  & pz.  & 47.22  & 47.22 \\
+Product YY \newline  & 1.0000  & pz.  & 48.15  & 48.15 \\
+Product ZZ \newline  & 1.0000  & pz.  & 49.07  & 49.07 \\
+Product AAA \newline  & 1.0000  & pz.  & 50.00  & 50.00 \\
+Product BBB \newline  & 1.0000  & pz.  & 50.93  & 50.93 \\
+Product CCC \newline  & 1.0000  & pz.  & 51.85  & 51.85 \\
+\multicolumn{25}{l}{}\\
+\multicolumn{24}{l}{Total net } & 1'475.00 \\
+\multicolumn{24}{l}{VAT 8.00\% (1'475.00) } & 118.00 \\
+\multicolumn{25}{l}{}\\
+\multicolumn{24}{l}{TOTAL CHF } & 1'593.00 \\
+\end{longtable}
+Prima nota finale stampata con il comando '10:not' nella colonna DocType \\
+Seconda  Nota finale  stampata con il comando  '10:not'  nella  colonna DocType \\
+Terza Nota finale stampata con il comando '10:not' nella colonna DocType \\
+  \\
+Saluti finali stampati con il comando '10:gre' nella colonna DocType \\
+  \\
+Paragraph 1, final text taken from the 'Print invoices' ,'Template options' settings. \\
+Paragraph 2,  final text  taken from the 'Print invoices' ,'Template options' settings.  Final text taken from the 'Print invoices' ,'Template options' settings. \\
+\begin{longtable}[l]{ l  l }
+Invoice \newline  & Page  \#page-nr \newline \\
+\end{longtable}
+\end{reportvalue}
+\begin{reportvalue}{ReportTest}
+\begin{longtable}[l]{ l  l }
+Invoice:  & 60 \\
+Date:  & 05.06.2022 \\
+Customer No:  & 100003 \\
+VAT No:  & \\
+Fiscal No:  & \\
+Due date:  & 05.07.2022 \\
+Page:  & \#page-nr \\
+\end{longtable}
+Banana.ch SA \\
+Via alla Santa 7 - 6962 Viganello \\
+www.banana.ch - info@banana.ch \\
+IVA 123 456 789 \\
+\begin{longtable}[l]{ l  l }
+Invoice:  & 60 \\
+Date:  & 05.06.2022 \\
+Customer No:  & 100003 \\
+VAT No:  & \\
+Fiscal No:  & \\
+Due date:  & 05.07.2022 \\
+Page:  & \#page-nr \\
+\end{longtable}
+\begin{longtable}[l]{ l }
+Banana.ch SA - Via alla Santa 7 - 6962 Viganello Marco Alberti \newline V. Campuréta 40 \newline 6883 Novazzano \newline \\
+\end{longtable}
+\begin{longtable}[l]{ l }
+Invoice 60 \newline \\
+\end{longtable}
+\begin{longtable}[l]{ l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l }
+Description  & Quantity  & Unit  & Unit Price  & Amount \\
+Consulting services \newline  & 8.0000  & hrs  & 11.14  & 89.14 \\
+Consulting services \newline  & 6.5000  & hrs  & 11.14  & 72.42 \\
+Consulting services \newline  & 5.2500  & hrs  & 11.14  & 58.50 \\
+Consulting services \newline  & 9.7500  & hrs  & 18.57  & 181.06 \\
+Consulting services \newline  & 5.0000  & hrs  & 11.61  & 58.03 \\
+\multicolumn{30}{l}{}\\
+\multicolumn{29}{l}{Total net } & 459.15 \\
+\multicolumn{29}{l}{VAT 7.70\% (459.15) } & 35.35 \\
+\multicolumn{30}{l}{}\\
+\multicolumn{29}{l}{TOTAL CHF } & 494.50 \\
+\end{longtable}
+Paragraph 1, final text taken from the 'Print invoices' ,'Template options' settings. \\
+Paragraph 2,  final text  taken from the 'Print invoices' ,'Template options' settings.  Final text taken from the 'Print invoices' ,'Template options' settings. \\
+\begin{longtable}[l]{ l  l }
+Invoice \newline  & Page  \#page-nr \newline \\
+\end{longtable}
+\end{reportvalue}
+\begin{reportvalue}{ReportTest}
+\begin{longtable}[l]{ l  l }
+Invoice:  & 64 \\
+Date:  & 04.06.2022 \\
+Customer No:  & 100003 \\
+VAT No:  & \\
+Fiscal No:  & \\
+Due date:  & 04.07.2022 \\
+Page:  & \#page-nr \\
+\end{longtable}
+Banana.ch SA \\
+Via alla Santa 7 - 6962 Viganello \\
+www.banana.ch - info@banana.ch \\
+IVA 123 456 789 \\
+\begin{longtable}[l]{ l  l }
+Invoice:  & 64 \\
+Date:  & 04.06.2022 \\
+Customer No:  & 100003 \\
+VAT No:  & \\
+Fiscal No:  & \\
+Due date:  & 04.07.2022 \\
+Page:  & \#page-nr \\
+\end{longtable}
+\begin{longtable}[l]{ l }
+Banana.ch SA - Via alla Santa 7 - 6962 Viganello Marco Alberti \newline V. Campuréta 40 \newline 6883 Novazzano \newline \\
+\end{longtable}
+\begin{longtable}[l]{ l }
+Invoice 64 \newline \\
+Begin text  defined with the command '10:beg' using the DocType column. \newline \\
+\end{longtable}
+\begin{longtable}[l]{ l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l }
+Description  & Quantity  & Unit  & Unit Price  & Amount \\
+   &  &  &  & \\
+PC hardware components \newline  &  &  &  & \\
+Case \newline  & 1.0000  & pcs  & 92.85  & 92.85 \\
+Motherboard \newline  & 1.0000  & pcs  & 242.34  & 242.34 \\
+CPU processor \newline  & 1.0000  & pcs  & 394.61  & 394.61 \\
+Graphic card \newline  & 1.0000  & pcs  & 609.10  & 609.10 \\
+RAM Memory, 16GB \newline  & 2.0000  & pcs  & 81.71  & 163.42 \\
+SSD data storage 500 GB \newline  & 1.0000  & pcs  & 129.99  & 129.99 \\
+HDD data storage 2000 GB \newline  & 1.0000  & pcs  & 167.13  & 167.13 \\
+Power supply 650W \newline  & 1.0000  & pcs  & 50.97  & 50.97 \\
+Total PC hardware components \newline  &  &  &  & 1'850.41 \\
+   &  &  &  & \\
+PC software components \newline  &  &  &  & \\
+Windows 10 Pro \newline  & 1.0000  & pcs  & 138.35  & 138.35 \\
+Office 365 Home \newline  & 1.0000  & pcs  & 91.92  & 91.92 \\
+Antivirus \newline  & 1.0000  & pcs  & 54.78  & 54.78 \\
+Adobe Photoshop \newline  & 1.0000  & pcs  & 185.70  & 185.70 \\
+Total PC software components \newline  &  &  &  & 470.75 \\
+   &  &  &  & \\
+External devices \newline  &  &  &  & \\
+Monitor 27" \newline  & 2.0000  & pcs  & 166.20  & 332.40 \\
+Keyboard \newline  & 1.0000  & pcs  & 65.00  & 65.00 \\
+Mouse \newline  & 1.0000  & pcs  & 60.17  & 60.17 \\
+Speakers \newline  & 1.0000  & pcs  & 114.21  & 114.21 \\
+Headset \newline  & 1.0000  & pcs  & 101.21  & 101.21 \\
+Printer \newline  & 1.0000  & pcs  & 138.35  & 138.35 \\
+USB Memory stick \newline  & 1.0000  & pcs  & 30.55  & 30.55 \\
+Total external devices \newline  &  &  &  & 841.89 \\
+   &  &  &  & \\
+Extra services \newline  &  &  &  & \\
+Warranty extension \newline  & 1.0000  & pcs  & 74.28  & 74.28 \\
+Delivery to the place \newline  & 1.0000  & pcs  & 36.21  & 36.21 \\
+Installation \newline  & 1.0000  & pcs  & 82.64  & 82.64 \\
+Total extra services \newline  &  &  &  & 193.13 \\
+   &  &  &  & \\
+\multicolumn{35}{l}{}\\
+\multicolumn{34}{l}{Total net } & 3'356.18 \\
+\multicolumn{34}{l}{VAT 7.70\% (3'356.18) } & 258.42 \\
+\multicolumn{35}{l}{}\\
+\multicolumn{34}{l}{TOTAL CHF } & 3'614.60 \\
+\end{longtable}
+Paragraph 1, final text taken from the 'Print invoices' ,'Template options' settings. \\
+Paragraph 2,  final text  taken from the 'Print invoices' ,'Template options' settings.  Final text taken from the 'Print invoices' ,'Template options' settings. \\
+\begin{longtable}[l]{ l  l }
+Invoice \newline  & Page  \#page-nr \newline \\
+\end{longtable}
+\end{reportvalue}
+\begin{reportvalue}{ReportTest}
+\begin{longtable}[l]{ l  l }
+Invoice:  & 36 \\
+Date:  & 01.02.2022 \\
+Customer No:  & 100004 \\
+VAT No:  & \\
+Fiscal No:  & \\
+Due date:  & 03.03.2022 \\
+Page:  & \#page-nr \\
+\end{longtable}
+Banana.ch SA \\
+Via alla Santa 7 - 6962 Viganello \\
+www.banana.ch - info@banana.ch \\
+IVA 123 456 789 \\
+\begin{longtable}[l]{ l  l }
+Invoice:  & 36 \\
+Date:  & 01.02.2022 \\
+Customer No:  & 100004 \\
+VAT No:  & \\
+Fiscal No:  & \\
+Due date:  & 03.03.2022 \\
+Page:  & \#page-nr \\
+\end{longtable}
+\begin{longtable}[l]{ l }
+Banana.ch SA - Via alla Santa 7 - 6962 Viganello ABC SA \newline Signora \newline Susanna Lanfranchi \newline V.Meggiagra 3 \newline 6599 Robasacco \newline \\
+\end{longtable}
+\begin{longtable}[l]{ l }
+Invoice 36 \newline \\
+Begin text here... \newline \\
+\end{longtable}
+\begin{longtable}[l]{ l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l }
+Description  & Quantity  & Unit  & Unit Price  & Amount \\
+Sales merchandise, invoice \#36, customer D \newline  & 1.0000  & pz.  & 1'143'118.43  & 1'143'118.43 \\
+\multicolumn{40}{l}{}\\
+\multicolumn{39}{l}{Total net } & 1'143'118.43 \\
+\multicolumn{39}{l}{VAT 8.00\% (1'143'118.43) } & 91'449.47 \\
+\multicolumn{40}{l}{}\\
+\multicolumn{39}{l}{TOTAL CHF } & 1'234'567.90 \\
+\end{longtable}
+Paragraph 1, final text taken from the 'Print invoices' ,'Template options' settings. \\
+Paragraph 2,  final text  taken from the 'Print invoices' ,'Template options' settings.  Final text taken from the 'Print invoices' ,'Template options' settings. \\
+\begin{longtable}[l]{ l  l }
+Invoice \newline  & Page  \#page-nr \newline \\
+\end{longtable}
+\end{reportvalue}
+\begin{reportvalue}{ReportTest}
+\begin{longtable}[l]{ l  l }
+Invoice:  & 36-2020 \\
+Date:  & 05.03.2022 \\
+Customer No:  & 100004 \\
+VAT No:  & \\
+Fiscal No:  & \\
+Due date:  & 04.04.2022 \\
+Page:  & \#page-nr \\
+\end{longtable}
+Banana.ch SA \\
+Via alla Santa 7 - 6962 Viganello \\
+www.banana.ch - info@banana.ch \\
+IVA 123 456 789 \\
+\begin{longtable}[l]{ l  l }
+Invoice:  & 36-2020 \\
+Date:  & 05.03.2022 \\
+Customer No:  & 100004 \\
+VAT No:  & \\
+Fiscal No:  & \\
+Due date:  & 04.04.2022 \\
+Page:  & \#page-nr \\
+\end{longtable}
+\begin{longtable}[l]{ l }
+Banana.ch SA - Via alla Santa 7 - 6962 Viganello ABC SA \newline Signora \newline Susanna Lanfranchi \newline V.Meggiagra 3 \newline 6599 Robasacco \newline \\
+\end{longtable}
+\begin{longtable}[l]{ l }
+Invoice 36-2020 \newline \\
+\end{longtable}
+\begin{longtable}[l]{ l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l }
+Description  & Quantity  & Unit  & Unit Price  & Amount \\
+Con indirizzo cliente, con importo \newline  & 1.0000  & pz.  & 1'143'118.43  & 1'143'118.43 \\
+\multicolumn{45}{l}{}\\
+\multicolumn{44}{l}{Total net } & 1'143'118.43 \\
+\multicolumn{44}{l}{VAT 8.00\% (1'143'118.43) } & 91'449.47 \\
+\multicolumn{45}{l}{}\\
+\multicolumn{44}{l}{TOTAL CHF } & 1'234'567.90 \\
+\end{longtable}
+Paragraph 1, final text taken from the 'Print invoices' ,'Template options' settings. \\
+Paragraph 2,  final text  taken from the 'Print invoices' ,'Template options' settings.  Final text taken from the 'Print invoices' ,'Template options' settings. \\
+\begin{longtable}[l]{ l  l }
+Invoice \newline  & Page  \#page-nr \newline \\
+\end{longtable}
+\end{reportvalue}
+\begin{reportvalue}{ReportTest}
+\begin{longtable}[l]{ l  l }
+Invoice:  & 362 \\
+Date:  & 01.02.2022 \\
+Customer No:  & 100004 \\
+VAT No:  & \\
+Fiscal No:  & \\
+Due date:  & 03.03.2022 \\
+Page:  & \#page-nr \\
+\end{longtable}
+Banana.ch SA \\
+Via alla Santa 7 - 6962 Viganello \\
+www.banana.ch - info@banana.ch \\
+IVA 123 456 789 \\
+\begin{longtable}[l]{ l  l }
+Invoice:  & 362 \\
+Date:  & 01.02.2022 \\
+Customer No:  & 100004 \\
+VAT No:  & \\
+Fiscal No:  & \\
+Due date:  & 03.03.2022 \\
+Page:  & \#page-nr \\
+\end{longtable}
+\begin{longtable}[l]{ l }
+Banana.ch SA - Via alla Santa 7 - 6962 Viganello ABC SA \newline Signora \newline Susanna Lanfranchi \newline V.Meggiagra 3 \newline 6599 Robasacco \newline \\
+\end{longtable}
+\begin{longtable}[l]{ l }
+Invoice 362 \newline \\
+\end{longtable}
+\begin{longtable}[l]{ l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l }
+Description  & Quantity  & Unit  & Unit Price  & Amount \\
+Con indirizzo cliente, senza importo \newline  & 1.0000  & pz.  &  & 0.00 \\
+\multicolumn{50}{l}{}\\
+\multicolumn{50}{l}{}\\
+\multicolumn{49}{l}{TOTAL CHF } & 0.00 \\
+\end{longtable}
+Paragraph 1, final text taken from the 'Print invoices' ,'Template options' settings. \\
+Paragraph 2,  final text  taken from the 'Print invoices' ,'Template options' settings.  Final text taken from the 'Print invoices' ,'Template options' settings. \\
+\begin{longtable}[l]{ l  l }
+Invoice \newline  & Page  \#page-nr \newline \\
+\end{longtable}
+\end{reportvalue}
+\begin{reportvalue}{ReportTest}
+\begin{longtable}[l]{ l  l }
+Invoice:  & 364 \\
+Date:  & 07.03.2022 \\
+Customer No:  & 100004 \\
+VAT No:  & \\
+Fiscal No:  & \\
+Due date:  & 06.04.2022 \\
+Page:  & \#page-nr \\
+\end{longtable}
+Banana.ch SA \\
+Via alla Santa 7 - 6962 Viganello \\
+www.banana.ch - info@banana.ch \\
+IVA 123 456 789 \\
+\begin{longtable}[l]{ l  l }
+Invoice:  & 364 \\
+Date:  & 07.03.2022 \\
+Customer No:  & 100004 \\
+VAT No:  & \\
+Fiscal No:  & \\
+Due date:  & 06.04.2022 \\
+Page:  & \#page-nr \\
+\end{longtable}
+\begin{longtable}[l]{ l }
+Banana.ch SA - Via alla Santa 7 - 6962 Viganello ABC SA \newline Signora \newline Susanna Lanfranchi \newline V.Meggiagra 3 \newline 6599 Robasacco \newline \\
+\end{longtable}
+\begin{longtable}[l]{ l }
+Invoice 364 \newline \\
+\end{longtable}
+\begin{longtable}[l]{ l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l }
+Description  & Quantity  & Unit  & Unit Price  & Amount \\
+Con messaggio non strtutturato lungo 140 caratteri \newline  & 3.0000  & pz.  & 1'388.89  & 4'166.67 \\
+\multicolumn{55}{l}{}\\
+\multicolumn{54}{l}{Total net } & 4'166.67 \\
+\multicolumn{54}{l}{VAT 8.00\% (4'166.67) } & 333.33 \\
+\multicolumn{55}{l}{}\\
+\multicolumn{54}{l}{TOTAL CHF } & 4'500.00 \\
+\end{longtable}
+Paragraph 1, final text taken from the 'Print invoices' ,'Template options' settings. \\
+Paragraph 2,  final text  taken from the 'Print invoices' ,'Template options' settings.  Final text taken from the 'Print invoices' ,'Template options' settings. \\
+\begin{longtable}[l]{ l  l }
+Invoice \newline  & Page  \#page-nr \newline \\
+\end{longtable}
+\end{reportvalue}
+\begin{reportvalue}{ReportTest}
+\begin{longtable}[l]{ l  l }
+Invoice:  & F001-20 \\
+Date:  & 06.03.2022 \\
+Customer No:  & 100004 \\
+VAT No:  & \\
+Fiscal No:  & \\
+Due date:  & 05.04.2022 \\
+Page:  & \#page-nr \\
+\end{longtable}
+Banana.ch SA \\
+Via alla Santa 7 - 6962 Viganello \\
+www.banana.ch - info@banana.ch \\
+IVA 123 456 789 \\
+\begin{longtable}[l]{ l  l }
+Invoice:  & F001-20 \\
+Date:  & 06.03.2022 \\
+Customer No:  & 100004 \\
+VAT No:  & \\
+Fiscal No:  & \\
+Due date:  & 05.04.2022 \\
+Page:  & \#page-nr \\
+\end{longtable}
+\begin{longtable}[l]{ l }
+Banana.ch SA - Via alla Santa 7 - 6962 Viganello ABC SA \newline Signora \newline Susanna Lanfranchi \newline V.Meggiagra 3 \newline 6599 Robasacco \newline \\
+\end{longtable}
+\begin{longtable}[l]{ l }
+Invoice F001-20 \newline \\
+\end{longtable}
+\begin{longtable}[l]{ l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l }
+Description  & Quantity  & Unit  & Unit Price  & Amount \\
+Sales merchandise, invoice \#36, customer D \newline  &  &  & 139.21  & 139.21 \\
+\multicolumn{60}{l}{}\\
+\multicolumn{59}{l}{Total net } & 139.21 \\
+\multicolumn{59}{l}{VAT 8.00\% (139.21) } & 11.14 \\
+\multicolumn{60}{l}{}\\
+\multicolumn{59}{l}{TOTAL CHF } & 150.35 \\
+\end{longtable}
+Paragraph 1, final text taken from the 'Print invoices' ,'Template options' settings. \\
+Paragraph 2,  final text  taken from the 'Print invoices' ,'Template options' settings.  Final text taken from the 'Print invoices' ,'Template options' settings. \\
+\begin{longtable}[l]{ l  l }
+Invoice \newline  & Page  \#page-nr \newline \\
+\end{longtable}
+\end{reportvalue}
+\keyvalue{Result}{Passed}
+\end{test}
+\end{testcase}
+\end{document}
