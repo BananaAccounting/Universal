@@ -168,38 +168,57 @@ function setTexts_IT(texts) {
   texts.color_theme_custom = "Colore base";
 
 
-  // texts.themecolor1 = "Nero";
-  // texts.themecolor2 = "Grigio";
-  // texts.themecolor3 = "Blu";
-  // texts.themecolor4 = "Rosso";
-  // texts.themecolor5 = "Verde";
-  // texts.themecolor6 = "Indigo";
-  // texts.themecolor7 = "Arancione";
-  // texts.themecolor8 = "Oro";
-  
+  // texts.themecolor1 = "1. Nero";
+  // texts.themecolor2 = "2. Banana";
+  // texts.themecolor3 = "3. Rosso";
+  // texts.themecolor4 = "4. Rosa";
+  // texts.themecolor5 = "5. Viola";
+  // texts.themecolor6 = "6. Indaco
+  // texts.themecolor7 = "7. Blu";
+  // texts.themecolor8 = "8. Azzurro";
+  // texts.themecolor9 = "9. Verde acqua";
+  // texts.themecolor10 = "10. Verde";
+  // texts.themecolor11 = "11. Arancione";
+  // texts.themecolor12 = "12. Marrone";
+  // texts.themecolor13 = "13. Grigio blu";
+  // texts.themecolor14 = "14. Verde turchese";
+  // texts.themecolor15 = "15. Verde mare";
+  // texts.themecolorcustom = "Personale";
 
 
-  texts.themecolor1 = "1. Nero";
-  texts.themecolor2 = "2. Banana";
-  texts.themecolor3 = "3. Rosso";
-  texts.themecolor4 = "4. Rosa";
-  texts.themecolor5 = "5. Viola";
-  texts.themecolor6 = "6. Viola scuro";
-  texts.themecolor7 = "7. Blu scuro";
-  texts.themecolor8 = "8. Blu";
-  texts.themecolor9 = "9. Azzurro";
-  texts.themecolor10 = "10. Ciano";
-  texts.themecolor11 = "11. Verde acqua";
-  texts.themecolor12 = "12. Verde";
-  texts.themecolor13 = "13. Verde chiaro";
-  texts.themecolor14 = "14. Lime";
-  texts.themecolor15 = "15. Giallo";
-  texts.themecolor16 = "16. Ambra";
-  texts.themecolor17 = "17. Arancione";
-  texts.themecolor18 = "18. Arancione scuro";
-  texts.themecolor19 = "19. Marrone";
-  texts.themecolor20 = "20. Grigio";
-  texts.themecolor21 = "21. Grigio blu";
+  /*
+    nero
+    banana
+    blu
+    verde
+    arancione
+    rosso
+    verde acqua
+    viola
+    azzurro
+    indaco
+    rosa
+    marrone
+    verde turchese
+    blu-grigio
+    verde mare
+  */
+
+  texts.themecolor1 = "Nero";
+  texts.themecolor2 = "Banana";
+  texts.themecolor3 = "Blu";
+  texts.themecolor4 = "Verde";
+  texts.themecolor5 = "Arancione";
+  texts.themecolor6 = "Rosso";
+  texts.themecolor7 = "Verde acqua";
+  texts.themecolor8 = "Viola";
+  texts.themecolor9 = "Azzurro";
+  texts.themecolor10 = "Indaco";
+  texts.themecolor11 = "Rosa";
+  texts.themecolor12 = "Marrone";
+  texts.themecolor13 = "Verde turchese";
+  texts.themecolor14 = "Grigio blu";
+  texts.themecolor15 = "Verde mare";
   texts.themecolorcustom = "Personale";
 
 

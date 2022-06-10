@@ -100,12 +100,6 @@ function convertParam(userParam) {
   colors.push(texts.themecolor13);
   colors.push(texts.themecolor14);
   colors.push(texts.themecolor15);
-  colors.push(texts.themecolor16);
-  colors.push(texts.themecolor17);
-  colors.push(texts.themecolor18);
-  colors.push(texts.themecolor19);
-  colors.push(texts.themecolor20);
-  colors.push(texts.themecolor21);
   colors.push(texts.themecolorcustom);
   currentParam.items = colors;
   currentParam.value = userParam.color_theme ? userParam.color_theme : '';
@@ -1861,19 +1855,19 @@ function onCurrentIndexChanged_details_columns_predefined(index, value, userPara
   // 7. Description;Quantity;ReferenceUnit;UnitPrice;Discount;Amount (ADVANCED)
   // 8. Number;Date;Description;Quantity;ReferenceUnit;UnitPrice;Discount;Amount (ADVANCED)
 
-  var texts = setTexts(lang);
+  let texts = setTexts(lang);
 
   if (parseInt(index) == 1) {
-    var answer = Banana.Ui.showQuestion(texts.style_change_confirm_title, texts.style_change_confirm_msg.replace("%1",texts.predefined_columns_1));
+    let answer = Banana.Ui.showQuestion(texts.style_change_confirm_title, texts.style_change_confirm_msg.replace("%1",texts.predefined_columns_1));
     if (!answer) {
-      for (var i = 0; i < userParam.data.length; i++) {
+      for (let i = 0; i < userParam.data.length; i++) {
         if (userParam.data[i].name === 'details_columns_predefined') {
           userParam.data[i].value = userParam.data[i].items[0];
         }
       }
       return userParam;
     }
-    for (var i = 0; i < userParam.data.length; i++) {
+    for (let i = 0; i < userParam.data.length; i++) {
       if (userParam.data[i].name === 'details_columns') {
         userParam.data[i].value = 'Description;Amount';
       }
@@ -1907,16 +1901,16 @@ function onCurrentIndexChanged_details_columns_predefined(index, value, userPara
     }
   }
   else if (parseInt(index) == 2) {
-    var answer = Banana.Ui.showQuestion(texts.style_change_confirm_title, texts.style_change_confirm_msg.replace("%1",texts.predefined_columns_2));
+    let answer = Banana.Ui.showQuestion(texts.style_change_confirm_title, texts.style_change_confirm_msg.replace("%1",texts.predefined_columns_2));
     if (!answer) {
-      for (var i = 0; i < userParam.data.length; i++) {
+      for (let i = 0; i < userParam.data.length; i++) {
         if (userParam.data[i].name === 'details_columns_predefined') {
           userParam.data[i].value = userParam.data[i].items[0];
         }
       }
       return userParam;
     }
-    for (var i = 0; i < userParam.data.length; i++) {
+    for (let i = 0; i < userParam.data.length; i++) {
       if (userParam.data[i].name === 'details_columns') {
         userParam.data[i].value = 'Description;Quantity;ReferenceUnit;UnitPrice;Amount';
       }
@@ -1950,16 +1944,16 @@ function onCurrentIndexChanged_details_columns_predefined(index, value, userPara
     }
   }
   else if (parseInt(index) == 3) {
-    var answer = Banana.Ui.showQuestion(texts.style_change_confirm_title, texts.style_change_confirm_msg.replace("%1",texts.predefined_columns_3));
+    let answer = Banana.Ui.showQuestion(texts.style_change_confirm_title, texts.style_change_confirm_msg.replace("%1",texts.predefined_columns_3));
     if (!answer) {
-      for (var i = 0; i < userParam.data.length; i++) {
+      for (let i = 0; i < userParam.data.length; i++) {
         if (userParam.data[i].name === 'details_columns_predefined') {
           userParam.data[i].value = userParam.data[i].items[0];
         }
       }
       return userParam;
     }
-    for (var i = 0; i < userParam.data.length; i++) {
+    for (let i = 0; i < userParam.data.length; i++) {
       if (userParam.data[i].name === 'details_columns') {
         userParam.data[i].value = 'Number;Description;Amount';
       }
@@ -1993,16 +1987,16 @@ function onCurrentIndexChanged_details_columns_predefined(index, value, userPara
     }
   }
   else if (parseInt(index) == 4) {
-    var answer = Banana.Ui.showQuestion(texts.style_change_confirm_title, texts.style_change_confirm_msg.replace("%1",texts.predefined_columns_4));
+    let answer = Banana.Ui.showQuestion(texts.style_change_confirm_title, texts.style_change_confirm_msg.replace("%1",texts.predefined_columns_4));
     if (!answer) {
-      for (var i = 0; i < userParam.data.length; i++) {
+      for (let i = 0; i < userParam.data.length; i++) {
         if (userParam.data[i].name === 'details_columns_predefined') {
           userParam.data[i].value = userParam.data[i].items[0];
         }
       }
       return userParam;
     }
-    for (var i = 0; i < userParam.data.length; i++) {
+    for (let i = 0; i < userParam.data.length; i++) {
       if (userParam.data[i].name === 'details_columns') {
         userParam.data[i].value = 'Number;Description;Quantity;ReferenceUnit;UnitPrice;Amount';
       }
@@ -2036,16 +2030,16 @@ function onCurrentIndexChanged_details_columns_predefined(index, value, userPara
     }
   }
   else if (parseInt(index) == 5) {
-    var answer = Banana.Ui.showQuestion(texts.style_change_confirm_title, texts.style_change_confirm_msg.replace("%1",texts.predefined_columns_5).replace(" (ADVANCED)",""));
+    let answer = Banana.Ui.showQuestion(texts.style_change_confirm_title, texts.style_change_confirm_msg.replace("%1",texts.predefined_columns_5).replace(" (ADVANCED)",""));
     if (!answer) {
-      for (var i = 0; i < userParam.data.length; i++) {
+      for (let i = 0; i < userParam.data.length; i++) {
         if (userParam.data[i].name === 'details_columns_predefined') {
           userParam.data[i].value = userParam.data[i].items[0];
         }
       }
       return userParam;
     }
-    for (var i = 0; i < userParam.data.length; i++) {
+    for (let i = 0; i < userParam.data.length; i++) {
       if (userParam.data[i].name === 'details_columns') {
         userParam.data[i].value = 'I.Links;Number;Description;Quantity;ReferenceUnit;UnitPrice;Amount';
       }
@@ -2079,16 +2073,16 @@ function onCurrentIndexChanged_details_columns_predefined(index, value, userPara
     }
   }
   else if (parseInt(index) == 6 && !IS_INTEGRATED_INVOICE) {
-    var answer = Banana.Ui.showQuestion(texts.style_change_confirm_title, texts.style_change_confirm_msg.replace("%1",texts.predefined_columns_6).replace(" (ADVANCED)",""));
+    let answer = Banana.Ui.showQuestion(texts.style_change_confirm_title, texts.style_change_confirm_msg.replace("%1",texts.predefined_columns_6).replace(" (ADVANCED)",""));
     if (!answer) {
-      for (var i = 0; i < userParam.data.length; i++) {
+      for (let i = 0; i < userParam.data.length; i++) {
         if (userParam.data[i].name === 'details_columns_predefined') {
           userParam.data[i].value = userParam.data[i].items[0];
         }
       }
       return userParam;
     }
-    for (var i = 0; i < userParam.data.length; i++) {
+    for (let i = 0; i < userParam.data.length; i++) {
       if (userParam.data[i].name === 'details_columns') {
         userParam.data[i].value = 'Description;Discount;Amount';
       }
@@ -2122,16 +2116,16 @@ function onCurrentIndexChanged_details_columns_predefined(index, value, userPara
     }
   }
   else if (parseInt(index) == 7 && !IS_INTEGRATED_INVOICE) {
-    var answer = Banana.Ui.showQuestion(texts.style_change_confirm_title, texts.style_change_confirm_msg.replace("%1",texts.predefined_columns_7).replace(" (ADVANCED)",""));
+    let answer = Banana.Ui.showQuestion(texts.style_change_confirm_title, texts.style_change_confirm_msg.replace("%1",texts.predefined_columns_7).replace(" (ADVANCED)",""));
     if (!answer) {
-      for (var i = 0; i < userParam.data.length; i++) {
+      for (let i = 0; i < userParam.data.length; i++) {
         if (userParam.data[i].name === 'details_columns_predefined') {
           userParam.data[i].value = userParam.data[i].items[0];
         }
       }
       return userParam;
     }
-    for (var i = 0; i < userParam.data.length; i++) {
+    for (let i = 0; i < userParam.data.length; i++) {
       if (userParam.data[i].name === 'details_columns') {
         userParam.data[i].value = 'Description;Quantity;ReferenceUnit;UnitPrice;Discount;Amount';
       }
@@ -2165,16 +2159,16 @@ function onCurrentIndexChanged_details_columns_predefined(index, value, userPara
     }
   }
   else if (parseInt(index) == 8 && !IS_INTEGRATED_INVOICE) {
-    var answer = Banana.Ui.showQuestion(texts.style_change_confirm_title, texts.style_change_confirm_msg.replace("%1",texts.predefined_columns_8).replace(" (ADVANCED)",""));
+    let answer = Banana.Ui.showQuestion(texts.style_change_confirm_title, texts.style_change_confirm_msg.replace("%1",texts.predefined_columns_8).replace(" (ADVANCED)",""));
     if (!answer) {
-      for (var i = 0; i < userParam.data.length; i++) {
+      for (let i = 0; i < userParam.data.length; i++) {
         if (userParam.data[i].name === 'details_columns_predefined') {
           userParam.data[i].value = userParam.data[i].items[0];
         }
       }
       return userParam;
     }
-    for (var i = 0; i < userParam.data.length; i++) {
+    for (let i = 0; i < userParam.data.length; i++) {
       if (userParam.data[i].name === 'details_columns') {
         userParam.data[i].value = 'Number;Date;Description;Quantity;ReferenceUnit;UnitPrice;Discount;Amount';
       }
@@ -2214,125 +2208,115 @@ function onCurrentIndexChanged_details_columns_predefined(index, value, userPara
 function onCurrentIndexChanged_color_theme(index, value, userParam) {
 
   /**
+   * 
    * When a theme color is selected, we change all the colors in the parameters
    * 
-   * Example colors: https://www.materialpalette.com/
-   * 
    */
+
+  let blue = '#3081b6';
+  let green = '#2fae63';
+  let orange = '#fa6f56';
+  let red = '#bd3a31';
+  let teal = '#0e685c';
+  let purple = '#795a9d';
+  let lightblue = '#3c8fea';
+  let indigo = '#124a9e';
+  let pink = '#cd3c5a';
+  let brown = '#895a48';
+  let turquoisegreen = '#406066'; //new
+  let bluegray = '#4d5972';
+  let greensea = '#23a084'; //new
+
+
+
+  let black = '#000000';
+  let banana = '#354894'; // #FFE01B
+
+
+
 
   let color = "";
 
   // Black
   if (parseInt(index) == 0) {
-    color = '#000000';
+    color = black;
   }
 
   // Banana
   else if (parseInt(index) == 1) {
-    color = '#354894';
-    // #FFE01B
-  }
-
-  // Red
-  else if (parseInt(index) == 2) {
-    color = '#F44336';
-  }
-
-  // Pink
-  else if (parseInt(index) == 3) {
-    color = '#E91E63';
-  }
-
-  // Purple
-  else if (parseInt(index) == 4) {
-    color = '#9C27B0';
-  }
-
-  // Deep purple
-  else if (parseInt(index) == 5) {
-    color = '#673AB7';
-  }
-
-  // Deep blue
-  else if (parseInt(index) == 6) {
-    color = '#3F51B5';
+    color = banana;
   }
 
   // Blue
+  else if (parseInt(index) == 2) {
+    color = blue;
+  }
+
+  // Green
+  else if (parseInt(index) == 3) {
+    color = green;
+  }
+
+  // Orange
+  else if (parseInt(index) == 4) {
+    color = orange;
+  }
+
+  // Red
+  else if (parseInt(index) == 5) {
+    color = red;
+  }
+
+  // Teal
+  else if (parseInt(index) == 6) {
+    color = teal;
+  }
+
+  // Purple
   else if (parseInt(index) == 7) {
-    color = '#2196F3';
+    color = purple;
   }
 
   // Light blue
   else if (parseInt(index) == 8) {
-    color = '#03A9F4';
+    color = lightblue;
   }
 
-  // Cyan
+  // Indigo
   else if (parseInt(index) == 9) {
-    color = '#00BCD4';
+    color = indigo;
   }
 
-  // Teal
+  // Pink
   else if (parseInt(index) == 10) {
-    color = '#009688';
-  }
-
-  // Green
-  else if (parseInt(index) == 11) {
-    color = '#4CAF50';
-  }
-
-  // Light green
-  else if (parseInt(index) == 12) {
-    color = '#8BC34A';
-  }
-
-  // Lime
-  else if (parseInt(index) == 13) {
-    color = '#CDDC39';
-  }
-
-  // Yellow
-  else if (parseInt(index) == 14) {
-    color = '#FFEB3B';
-  }
-
-  // Amber
-  else if (parseInt(index) == 15) {
-    color = '#FFC107';
-  }
-
-  // Orange
-  else if (parseInt(index) == 16) {
-    color = '#FF9800';
-  }
-
-  // Deep orange
-  else if (parseInt(index) == 17) {
-    color = '#FF5722';
+    color = pink;
   }
 
   // Brown
-  else if (parseInt(index) == 18) {
-    color = '#795548';
+  else if (parseInt(index) == 11) {
+    color = brown;
   }
 
-  // Grey
-  else if (parseInt(index) == 19) {
-    color = '#9E9E9E';
+  // Turquoise green
+  else if (parseInt(index) == 12) {
+    color = turquoisegreen;
   }
 
-  // Blue grey
-  else if (parseInt(index) == 20) {
-    color = '#607D8B';
+  // Blue gray
+  else if (parseInt(index) == 13) {
+    color = bluegray;
+  }
+
+  // Green sea
+  else if (parseInt(index) == 14) {
+    color = greensea;
   }
 
   // Custom color
   // Always last choice in combobox
-  else if (parseInt(index) == 21) {
+  else if (parseInt(index) == 15) {
 
-    for (var i = 0; i < userParam.data.length; i++) {
+    for (let i = 0; i < userParam.data.length; i++) {
       if (userParam.data[i].name === 'color_theme_custom') {
         color = userParam.data[i].value;
       }
@@ -2340,7 +2324,7 @@ function onCurrentIndexChanged_color_theme(index, value, userParam) {
   }
 
   // Set the color
-  for (var i = 0; i < userParam.data.length; i++) {
+  for (let i = 0; i < userParam.data.length; i++) {
 
     if (userParam.data[i].name === 'color_theme_custom') {
       userParam.data[i].value = color;
@@ -2392,13 +2376,13 @@ function onCurrentIndexChanged_color_theme_custom(index, value, userParam) {
   let colorTheme = "";
   let color = "";
 
-  for (var i = 0; i < userParam.data.length; i++) {
+  for (let i = 0; i < userParam.data.length; i++) {
     if (userParam.data[i].name === 'color_theme') {
       colorTheme = userParam.data[i].value;
     }
   }
 
-  for (var i = 0; i < userParam.data.length; i++) {
+  for (let i = 0; i < userParam.data.length; i++) {
     if (userParam.data[i].name === 'color_theme_custom') {
       color = userParam.data[i].value;
     }
@@ -2406,7 +2390,7 @@ function onCurrentIndexChanged_color_theme_custom(index, value, userParam) {
 
   if (colorTheme === texts.themecolorcustom) {
 
-    for (var i = 0; i < userParam.data.length; i++) {
+    for (let i = 0; i < userParam.data.length; i++) {
 
       if (userParam.data[i].name === 'color_header_text') {
         userParam.data[i].value = '#000000';
@@ -2449,9 +2433,9 @@ function onCurrentIndexChanged_color_header_text(index, value, userParam) {
    * When the predefined color is changed, change the combobox item to "Custom"
    */
 
-  var texts = setTexts(lang);
+  let texts = setTexts(lang);
 
-  for (var i = 0; i < userParam.data.length; i++) {
+  for (let i = 0; i < userParam.data.length; i++) {
 
     if (userParam.data[i].name === 'color_theme') {
       userParam.data[i].value = texts.themecolorcustom;
@@ -2467,9 +2451,9 @@ function onCurrentIndexChanged_color_label_text(index, value, userParam) {
    * When the predefined color is changed, change the combobox item to "Custom"
    */
 
-  var texts = setTexts(lang);
+  let texts = setTexts(lang);
 
-  for (var i = 0; i < userParam.data.length; i++) {
+  for (let i = 0; i < userParam.data.length; i++) {
 
     if (userParam.data[i].name === 'color_theme') {
       userParam.data[i].value = texts.themecolorcustom;
@@ -2485,9 +2469,9 @@ function onCurrentIndexChanged_color_title_text(index, value, userParam) {
    * When the predefined color is changed, change the combobox item to "Custom"
    */
 
-  var texts = setTexts(lang);
+  let texts = setTexts(lang);
 
-  for (var i = 0; i < userParam.data.length; i++) {
+  for (let i = 0; i < userParam.data.length; i++) {
 
     if (userParam.data[i].name === 'color_theme') {
       userParam.data[i].value = texts.themecolorcustom;
@@ -2503,9 +2487,9 @@ function onCurrentIndexChanged_color_background_details_header(index, value, use
    * When the predefined color is changed, change the combobox item to "Custom"
    */
 
-  var texts = setTexts(lang);
+  let texts = setTexts(lang);
 
-  for (var i = 0; i < userParam.data.length; i++) {
+  for (let i = 0; i < userParam.data.length; i++) {
 
     if (userParam.data[i].name === 'color_theme') {
       userParam.data[i].value = texts.themecolorcustom;
@@ -2521,9 +2505,9 @@ function onCurrentIndexChanged_color_details_header_text(index, value, userParam
    * When the predefined color is changed, change the combobox item to "Custom"
    */
 
-  var texts = setTexts(lang);
+  let texts = setTexts(lang);
 
-  for (var i = 0; i < userParam.data.length; i++) {
+  for (let i = 0; i < userParam.data.length; i++) {
 
     if (userParam.data[i].name === 'color_theme') {
       userParam.data[i].value = texts.themecolorcustom;
@@ -2539,9 +2523,9 @@ function onCurrentIndexChanged_color_background_alternate_lines(index, value, us
    * When the predefined color is changed, change the combobox item to "Custom"
    */
 
-  var texts = setTexts(lang);
+  let texts = setTexts(lang);
 
-  for (var i = 0; i < userParam.data.length; i++) {
+  for (let i = 0; i < userParam.data.length; i++) {
 
     if (userParam.data[i].name === 'color_theme') {
       userParam.data[i].value = texts.themecolorcustom;
@@ -2557,9 +2541,9 @@ function onCurrentIndexChanged_color_lines(index, value, userParam) {
    * When the predefined color is changed, change the combobox item to "Custom"
    */
 
-  var texts = setTexts(lang);
+  let texts = setTexts(lang);
 
-  for (var i = 0; i < userParam.data.length; i++) {
+  for (let i = 0; i < userParam.data.length; i++) {
 
     if (userParam.data[i].name === 'color_theme') {
       userParam.data[i].value = texts.themecolorcustom;
@@ -2575,9 +2559,9 @@ function onCurrentIndexChanged_color_total_text(index, value, userParam) {
    * When the predefined color is changed, change the combobox item to "Custom"
    */
 
-  var texts = setTexts(lang);
+  let texts = setTexts(lang);
 
-  for (var i = 0; i < userParam.data.length; i++) {
+  for (let i = 0; i < userParam.data.length; i++) {
 
     if (userParam.data[i].name === 'color_theme') {
       userParam.data[i].value = texts.themecolorcustom;
@@ -2593,9 +2577,9 @@ function onCurrentIndexChanged_color_text(index, value, userParam) {
    * When the predefined color is changed, change the combobox item to "Custom"
    */
 
-  var texts = setTexts(lang);
+  let texts = setTexts(lang);
 
-  for (var i = 0; i < userParam.data.length; i++) {
+  for (let i = 0; i < userParam.data.length; i++) {
 
     if (userParam.data[i].name === 'color_theme') {
       userParam.data[i].value = texts.themecolorcustom;
