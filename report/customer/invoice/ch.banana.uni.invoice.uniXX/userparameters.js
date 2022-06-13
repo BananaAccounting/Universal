@@ -99,7 +99,6 @@ function convertParam(userParam) {
   colors.push(texts.themecolor12);
   colors.push(texts.themecolor13);
   colors.push(texts.themecolor14);
-  colors.push(texts.themecolor15);
   colors.push(texts.themecolorcustom);
   currentParam.items = colors;
   currentParam.value = userParam.color_theme ? userParam.color_theme : '';
@@ -2213,6 +2212,7 @@ function onCurrentIndexChanged_color_theme(index, value, userParam) {
    * 
    */
 
+  let black = '#000000';
   let blue = '#3081b6';
   let green = '#2fae63';
   let orange = '#fa6f56';
@@ -2223,14 +2223,10 @@ function onCurrentIndexChanged_color_theme(index, value, userParam) {
   let indigo = '#124a9e';
   let pink = '#cd3c5a';
   let brown = '#895a48';
-  let turquoisegreen = '#406066'; //new
+  let turquoisegreen = '#406066';
   let bluegray = '#4d5972';
-  let greensea = '#23a084'; //new
-
-
-
-  let black = '#000000';
-  let banana = '#354894'; // #FFE01B
+  let greensea = '#23a084';
+  // let banana = '#354894'; // #FFE01B
 
 
 
@@ -2242,79 +2238,74 @@ function onCurrentIndexChanged_color_theme(index, value, userParam) {
     color = black;
   }
 
-  // Banana
-  else if (parseInt(index) == 1) {
-    color = banana;
-  }
-
   // Blue
-  else if (parseInt(index) == 2) {
+  else if (parseInt(index) == 1) {
     color = blue;
   }
 
   // Green
-  else if (parseInt(index) == 3) {
+  else if (parseInt(index) == 2) {
     color = green;
   }
 
   // Orange
-  else if (parseInt(index) == 4) {
+  else if (parseInt(index) == 3) {
     color = orange;
   }
 
   // Red
-  else if (parseInt(index) == 5) {
+  else if (parseInt(index) == 4) {
     color = red;
   }
 
   // Teal
-  else if (parseInt(index) == 6) {
+  else if (parseInt(index) == 5) {
     color = teal;
   }
 
   // Purple
-  else if (parseInt(index) == 7) {
+  else if (parseInt(index) == 6) {
     color = purple;
   }
 
   // Light blue
-  else if (parseInt(index) == 8) {
+  else if (parseInt(index) == 7) {
     color = lightblue;
   }
 
   // Indigo
-  else if (parseInt(index) == 9) {
+  else if (parseInt(index) == 8) {
     color = indigo;
   }
 
   // Pink
-  else if (parseInt(index) == 10) {
+  else if (parseInt(index) == 9) {
     color = pink;
   }
 
   // Brown
-  else if (parseInt(index) == 11) {
+  else if (parseInt(index) == 10) {
     color = brown;
   }
 
   // Turquoise green
-  else if (parseInt(index) == 12) {
+  else if (parseInt(index) == 11) {
     color = turquoisegreen;
   }
 
   // Blue gray
-  else if (parseInt(index) == 13) {
+  else if (parseInt(index) == 12) {
     color = bluegray;
   }
 
   // Green sea
-  else if (parseInt(index) == 14) {
+  else if (parseInt(index) == 13) {
     color = greensea;
   }
 
   // Custom color
   // Always last choice in combobox
-  else if (parseInt(index) == 15) {
+  else if (parseInt(index) == 14) {
 
     for (let i = 0; i < userParam.data.length; i++) {
       if (userParam.data[i].name === 'color_theme_custom') {

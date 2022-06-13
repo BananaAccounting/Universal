@@ -205,20 +205,19 @@ function setTexts_IT(texts) {
   */
 
   texts.themecolor1 = "Nero";
-  texts.themecolor2 = "Banana";
-  texts.themecolor3 = "Blu";
-  texts.themecolor4 = "Verde";
-  texts.themecolor5 = "Arancione";
-  texts.themecolor6 = "Rosso";
-  texts.themecolor7 = "Verde acqua";
-  texts.themecolor8 = "Viola";
-  texts.themecolor9 = "Azzurro";
-  texts.themecolor10 = "Indaco";
-  texts.themecolor11 = "Rosa";
-  texts.themecolor12 = "Marrone";
-  texts.themecolor13 = "Verde turchese";
-  texts.themecolor14 = "Grigio blu";
-  texts.themecolor15 = "Verde mare";
+  texts.themecolor2 = "Blu";
+  texts.themecolor3 = "Verde";
+  texts.themecolor4 = "Arancione";
+  texts.themecolor5 = "Rosso";
+  texts.themecolor6 = "Verde acqua";
+  texts.themecolor7 = "Viola";
+  texts.themecolor8 = "Azzurro";
+  texts.themecolor9 = "Indaco";
+  texts.themecolor10 = "Rosa";
+  texts.themecolor11 = "Marrone";
+  texts.themecolor12 = "Verde turchese";
+  texts.themecolor13 = "Grigio blu";
+  texts.themecolor14 = "Verde mare";
   texts.themecolorcustom = "Personale";
 
 
