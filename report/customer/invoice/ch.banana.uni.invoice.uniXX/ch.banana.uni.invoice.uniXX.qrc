@@ -3,5 +3,7 @@
  	<file>ch.banana.uni.invoice.uniXX.manifest.json</file>
     <file>ch.banana.uni.invoice.uniXX.js</file>
     <file>invoiceXX.css</file>
+    <file>parameters.js</file>
+    <file>translations.js</file>
  </qresource>
  </RCC>

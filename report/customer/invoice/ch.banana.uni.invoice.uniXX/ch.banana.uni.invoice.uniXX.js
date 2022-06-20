@@ -24,7 +24,7 @@
 // @doctype = *
 // @task = report.customer.invoice
 // @includejs = translations.js
-// @includejs = userparameters.js
+// @includejs = parameters.js
 
 
 
