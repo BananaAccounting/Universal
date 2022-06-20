@@ -65,176 +65,6 @@ function convertParam(userParam) {
 
 
   /*******************************************************************************************
-  * COLORS
-  *******************************************************************************************/
-  currentParam = {};
-  currentParam.name = 'colors';
-  currentParam.title = texts.colors;
-  currentParam.parentObject = '';
-  currentParam.type = 'string';
-  currentParam.value = '';
-  currentParam.editable = false;
-  currentParam.readValue = function() {
-    userParam.colors = this.value;
-  }
-  convertedParam.data.push(currentParam);
-
-  currentParam = {};
-  currentParam.name = 'color_theme';
-  currentParam.parentObject = 'colors';
-  currentParam.title = texts.color_theme;
-  currentParam.type = 'combobox';
-  let colors = [];
-  colors.push(texts.themecolor1);
-  colors.push(texts.themecolor2);
-  colors.push(texts.themecolor3);
-  colors.push(texts.themecolor4);
-  colors.push(texts.themecolor5);
-  colors.push(texts.themecolor6);
-  colors.push(texts.themecolor7);
-  colors.push(texts.themecolor8);
-  colors.push(texts.themecolor9);
-  colors.push(texts.themecolor10);
-  colors.push(texts.themecolor11);
-  colors.push(texts.themecolor12);
-  colors.push(texts.themecolor13);
-  colors.push(texts.themecolor14);
-  colors.push(texts.themecolorcustom);
-  currentParam.items = colors;
-  currentParam.value = userParam.color_theme ? userParam.color_theme : '';
-  currentParam.defaultvalue = texts.themecolor1;
-  currentParam.readValue = function() {
-   userParam.color_theme = this.value;
-  }
-  convertedParam.data.push(currentParam);
-
-  currentParam = {};
-  currentParam.name = 'color_theme_custom';
-  currentParam.parentObject = 'colors';
-  currentParam.title = texts.color_theme_custom;
-  currentParam.type = 'color';
-  currentParam.value = userParam.color_theme_custom ? userParam.color_theme_custom : '#000000';
-  //currentParam.defaultvalue = '#000000';
-  currentParam.readValue = function() {
-   userParam.color_theme_custom = this.value;
-  }
-  convertedParam.data.push(currentParam);
-
-  currentParam = {};
-  currentParam.name = 'color_header_text';
-  currentParam.parentObject = 'colors';
-  currentParam.title = texts.color_header_text;
-  currentParam.type = 'color';
-  currentParam.value = userParam.color_header_text ? userParam.color_header_text : '#000000';
-  currentParam.defaultvalue = '#000000';
-  currentParam.readValue = function() {
-   userParam.color_header_text = this.value;
-  }
-  convertedParam.data.push(currentParam);
-
-  currentParam = {};
-  currentParam.name = 'color_label_text';
-  currentParam.parentObject = 'colors';
-  currentParam.title = texts.color_label_text;
-  currentParam.type = 'color';
-  currentParam.value = userParam.color_label_text ? userParam.color_label_text : '#000000';
-  currentParam.defaultvalue = '#000000';
-  currentParam.readValue = function() {
-   userParam.color_label_text = this.value;
-  }
-  convertedParam.data.push(currentParam);
-
-  currentParam = {};
-  currentParam.name = 'color_title_text';
-  currentParam.parentObject = 'colors';
-  currentParam.title = texts.color_title_text;
-  currentParam.type = 'color';
-  currentParam.value = userParam.color_title_text ? userParam.color_title_text : '#000000';
-  currentParam.defaultvalue = '#000000';
-  currentParam.readValue = function() {
-   userParam.color_title_text = this.value;
-  }
-  convertedParam.data.push(currentParam);
-
-  currentParam = {};
-  currentParam.name = 'color_background_details_header';
-  currentParam.parentObject = 'colors';
-  currentParam.title = texts.color_background_details_header;
-  currentParam.type = 'color';
-  currentParam.value = userParam.color_background_details_header ? userParam.color_background_details_header : '#FFFFFF';
-  currentParam.defaultvalue = '#FFFFFF';
-  currentParam.readValue = function() {
-   userParam.color_background_details_header = this.value;
-  }
-  convertedParam.data.push(currentParam);
-
-  currentParam = {};
-  currentParam.name = 'color_details_header_text';
-  currentParam.parentObject = 'colors';
-  currentParam.title = texts.color_details_header_text;
-  currentParam.type = 'color';
-  currentParam.value = userParam.color_details_header_text ? userParam.color_details_header_text : '#000000';
-  currentParam.defaultvalue = '#000000';
-  currentParam.readValue = function() {
-   userParam.color_details_header_text = this.value;
-  }
-  convertedParam.data.push(currentParam);
-
-  currentParam = {};
-  currentParam.name = 'color_background_alternate_lines';
-  currentParam.parentObject = 'colors';
-  currentParam.title = texts.color_background_alternate_lines;
-  currentParam.type = 'color';
-  currentParam.value = userParam.color_background_alternate_lines ? userParam.color_background_alternate_lines : '#FFFFFF';
-  let hslColor = hexToHSL('#000000','','','95');
-  let hexColor = HSLToHex(hslColor);
-  currentParam.defaultvalue = hexColor
-  currentParam.readValue = function() {
-   userParam.color_background_alternate_lines = this.value;
-  }
-  convertedParam.data.push(currentParam);
-
-  currentParam = {};
-  currentParam.name = 'color_total_text';
-  currentParam.parentObject = 'colors';
-  currentParam.title = texts.color_total_text;
-  currentParam.type = 'color';
-  currentParam.value = userParam.color_total_text ? userParam.color_total_text : '#000000';
-  currentParam.defaultvalue = '#000000';
-  currentParam.readValue = function() {
-   userParam.color_total_text = this.value;
-  }
-  convertedParam.data.push(currentParam);
-
-  currentParam = {};
-  currentParam.name = 'color_lines';
-  currentParam.parentObject = 'colors';
-  currentParam.title = texts.color_lines;
-  currentParam.type = 'color';
-  currentParam.value = userParam.color_lines ? userParam.color_lines : '#000000';
-  currentParam.defaultvalue = '#000000';
-  currentParam.readValue = function() {
-   userParam.color_lines = this.value;
-  }
-  convertedParam.data.push(currentParam);
-
-  currentParam = {};
-  currentParam.name = 'color_text';
-  currentParam.parentObject = 'colors';
-  currentParam.title = texts.color_text;
-  currentParam.type = 'color';
-  currentParam.value = userParam.color_text ? userParam.color_text : '#000000';
-  currentParam.defaultvalue = '#000000';
-  currentParam.readValue = function() {
-   userParam.color_text = this.value;
-  }
-  convertedParam.data.push(currentParam);
-
-
-
-
-
-  /*******************************************************************************************
   * INCLUDE
   *******************************************************************************************/
   var currentParam = {};
@@ -1150,20 +980,6 @@ function convertParam(userParam) {
     convertedParam.data.push(currentParam);
 
     currentParam = {};
-    currentParam.name = langCode+'_text_final';
-    currentParam.parentObject = langCode;
-    currentParam.title = langTexts[langCodeTitle+'_param_text_final'];
-    currentParam.type = 'multilinestring';
-    currentParam.value = userParam[langCode+'_text_final'] ? userParam[langCode+'_text_final'] : '';
-    currentParam.defaultvalue = '';
-    // currentParam.tooltip = langTexts['param_tooltip_text_final'];
-    currentParam.language = langCode;
-    currentParam.readValueLang = function(langCode) {
-      userParam[langCode+'_text_final'] = this.value;
-    }
-    convertedParam.data.push(currentParam);
-
-    currentParam = {};
     currentParam.name = langCode+'_text_payment';
     currentParam.parentObject = langCode;
     currentParam.title = langTexts[langCodeTitle+'_param_text_payment'];
@@ -1174,6 +990,20 @@ function convertParam(userParam) {
     currentParam.language = langCode;
     currentParam.readValueLang = function(langCode) {
       userParam[langCode+'_text_payment'] = this.value;
+    }
+    convertedParam.data.push(currentParam);
+
+    currentParam = {};
+    currentParam.name = langCode+'_text_final';
+    currentParam.parentObject = langCode;
+    currentParam.title = langTexts[langCodeTitle+'_param_text_final'];
+    currentParam.type = 'multilinestring';
+    currentParam.value = userParam[langCode+'_text_final'] ? userParam[langCode+'_text_final'] : '';
+    currentParam.defaultvalue = '';
+    // currentParam.tooltip = langTexts['param_tooltip_text_final'];
+    currentParam.language = langCode;
+    currentParam.readValueLang = function(langCode) {
+      userParam[langCode+'_text_final'] = this.value;
     }
     convertedParam.data.push(currentParam);
 
@@ -1366,19 +1196,171 @@ function convertParam(userParam) {
 
 
 
-  //Colors here...
+  /*******************************************************************************************
+  * COLORS
+  *******************************************************************************************/
+  currentParam = {};
+  currentParam.name = 'colors';
+  currentParam.title = texts.colors;
+  currentParam.parentObject = '';
+  currentParam.type = 'string';
+  currentParam.value = '';
+  currentParam.editable = false;
+  currentParam.readValue = function() {
+    userParam.colors = this.value;
+  }
+  convertedParam.data.push(currentParam);
 
+  currentParam = {};
+  currentParam.name = 'color_theme';
+  currentParam.parentObject = 'colors';
+  currentParam.title = texts.color_theme;
+  currentParam.type = 'combobox';
+  let colors = [];
+  colors.push(texts.themecolor1);
+  colors.push(texts.themecolor2);
+  colors.push(texts.themecolor3);
+  colors.push(texts.themecolor4);
+  colors.push(texts.themecolor5);
+  colors.push(texts.themecolor6);
+  colors.push(texts.themecolor7);
+  colors.push(texts.themecolor8);
+  colors.push(texts.themecolor9);
+  colors.push(texts.themecolor10);
+  colors.push(texts.themecolor11);
+  colors.push(texts.themecolor12);
+  colors.push(texts.themecolor13);
+  colors.push(texts.themecolor14);
+  colors.push(texts.themecolorcustom);
+  currentParam.items = colors;
+  currentParam.value = userParam.color_theme ? userParam.color_theme : '';
+  currentParam.defaultvalue = texts.themecolor1;
+  currentParam.readValue = function() {
+   userParam.color_theme = this.value;
+  }
+  convertedParam.data.push(currentParam);
 
+  currentParam = {};
+  currentParam.name = 'color_theme_custom';
+  currentParam.parentObject = 'colors';
+  currentParam.title = texts.color_theme_custom;
+  currentParam.type = 'color';
+  currentParam.value = userParam.color_theme_custom ? userParam.color_theme_custom : '#000000';
+  //currentParam.defaultvalue = '#000000';
+  currentParam.readValue = function() {
+   userParam.color_theme_custom = this.value;
+  }
+  convertedParam.data.push(currentParam);
 
+  currentParam = {};
+  currentParam.name = 'color_header_text';
+  currentParam.parentObject = 'colors';
+  currentParam.title = texts.color_header_text;
+  currentParam.type = 'color';
+  currentParam.value = userParam.color_header_text ? userParam.color_header_text : '#000000';
+  currentParam.defaultvalue = '#000000';
+  currentParam.readValue = function() {
+   userParam.color_header_text = this.value;
+  }
+  convertedParam.data.push(currentParam);
 
+  currentParam = {};
+  currentParam.name = 'color_label_text';
+  currentParam.parentObject = 'colors';
+  currentParam.title = texts.color_label_text;
+  currentParam.type = 'color';
+  currentParam.value = userParam.color_label_text ? userParam.color_label_text : '#000000';
+  currentParam.defaultvalue = '#000000';
+  currentParam.readValue = function() {
+   userParam.color_label_text = this.value;
+  }
+  convertedParam.data.push(currentParam);
 
+  currentParam = {};
+  currentParam.name = 'color_title_text';
+  currentParam.parentObject = 'colors';
+  currentParam.title = texts.color_title_text;
+  currentParam.type = 'color';
+  currentParam.value = userParam.color_title_text ? userParam.color_title_text : '#000000';
+  currentParam.defaultvalue = '#000000';
+  currentParam.readValue = function() {
+   userParam.color_title_text = this.value;
+  }
+  convertedParam.data.push(currentParam);
 
+  currentParam = {};
+  currentParam.name = 'color_background_details_header';
+  currentParam.parentObject = 'colors';
+  currentParam.title = texts.color_background_details_header;
+  currentParam.type = 'color';
+  currentParam.value = userParam.color_background_details_header ? userParam.color_background_details_header : '#FFFFFF';
+  currentParam.defaultvalue = '#FFFFFF';
+  currentParam.readValue = function() {
+   userParam.color_background_details_header = this.value;
+  }
+  convertedParam.data.push(currentParam);
 
+  currentParam = {};
+  currentParam.name = 'color_details_header_text';
+  currentParam.parentObject = 'colors';
+  currentParam.title = texts.color_details_header_text;
+  currentParam.type = 'color';
+  currentParam.value = userParam.color_details_header_text ? userParam.color_details_header_text : '#000000';
+  currentParam.defaultvalue = '#000000';
+  currentParam.readValue = function() {
+   userParam.color_details_header_text = this.value;
+  }
+  convertedParam.data.push(currentParam);
 
+  currentParam = {};
+  currentParam.name = 'color_background_alternate_lines';
+  currentParam.parentObject = 'colors';
+  currentParam.title = texts.color_background_alternate_lines;
+  currentParam.type = 'color';
+  currentParam.value = userParam.color_background_alternate_lines ? userParam.color_background_alternate_lines : '#FFFFFF';
+  let hslColor = hexToHSL('#000000','','','95');
+  let hexColor = HSLToHex(hslColor);
+  currentParam.defaultvalue = hexColor
+  currentParam.readValue = function() {
+   userParam.color_background_alternate_lines = this.value;
+  }
+  convertedParam.data.push(currentParam);
 
+  currentParam = {};
+  currentParam.name = 'color_total_text';
+  currentParam.parentObject = 'colors';
+  currentParam.title = texts.color_total_text;
+  currentParam.type = 'color';
+  currentParam.value = userParam.color_total_text ? userParam.color_total_text : '#000000';
+  currentParam.defaultvalue = '#000000';
+  currentParam.readValue = function() {
+   userParam.color_total_text = this.value;
+  }
+  convertedParam.data.push(currentParam);
 
+  currentParam = {};
+  currentParam.name = 'color_lines';
+  currentParam.parentObject = 'colors';
+  currentParam.title = texts.color_lines;
+  currentParam.type = 'color';
+  currentParam.value = userParam.color_lines ? userParam.color_lines : '#000000';
+  currentParam.defaultvalue = '#000000';
+  currentParam.readValue = function() {
+   userParam.color_lines = this.value;
+  }
+  convertedParam.data.push(currentParam);
 
-
+  currentParam = {};
+  currentParam.name = 'color_text';
+  currentParam.parentObject = 'colors';
+  currentParam.title = texts.color_text;
+  currentParam.type = 'color';
+  currentParam.value = userParam.color_text ? userParam.color_text : '#000000';
+  currentParam.defaultvalue = '#000000';
+  currentParam.readValue = function() {
+   userParam.color_text = this.value;
+  }
+  convertedParam.data.push(currentParam);
 
 
 

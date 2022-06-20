@@ -224,7 +224,7 @@ function setTexts_IT(texts) {
 
   // texts.themecolorcustommodified = "Personale - modificato";
   texts.color_header_text = "Intestazione";
-  texts.color_label_text = "Label informazioni";
+  texts.color_label_text = "Labels";
   texts.color_title_text = "Titolo";
   texts.color_background_details_header = "Sfondo intestazione tabella";
   texts.color_details_header_text = "Testo intestazione tabella";
