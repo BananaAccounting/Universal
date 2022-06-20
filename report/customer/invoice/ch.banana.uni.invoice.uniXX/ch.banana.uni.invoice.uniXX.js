@@ -523,37 +523,33 @@ function print_customer_address(repDocObj, invoiceObj, userParam) {
   /*
     Print the customer address
   */
-  var customerAddressTable = "";
+  let sectionAddress;
   if (userParam.address_position_dX != 0 || userParam.address_position_dY != 0) {
     if (userParam.address_left) {
-      customerAddressTable = repDocObj.addTable("custom_address_table_left");
+      sectionAddress = repDocObj.addSection("custom_address_left");
     } else {
-      customerAddressTable = repDocObj.addTable("custom_address_table_right");
+      sectionAddress = repDocObj.addSection("custom_address_right");
     }
   }
   else {
     if (userParam.address_left) {
-      customerAddressTable = repDocObj.addTable("address_table_left");
+      sectionAddress = repDocObj.addSection("address_left");
     } else {
-      customerAddressTable = repDocObj.addTable("address_table_right");
+      sectionAddress = repDocObj.addSection("address_right");
     }
   }
-
-  tableRow = customerAddressTable.addRow();
-  var cell = tableRow.addCell("", "", 1);
+  let paragraph = sectionAddress.addParagraph();
 
   //Small line of the supplier address
   if (userParam.address_small_line) {
-    if (userParam.address_small_line === "<none>") {
-      cell.addText("","");
-    } else {
-      cell.addText(userParam.address_small_line, "small_address");
+    if (userParam.address_small_line !== "<none>") {
+      paragraph.addText(userParam.address_small_line, "small_address");
     }
   }
   else {
-    var name = "";
-    var address = "";
-    var locality = "";
+    let name = "";
+    let address = "";
+    let locality = "";
     if (invoiceObj.supplier_info.business_name) {
       name += invoiceObj.supplier_info.business_name;
     } 
@@ -580,13 +576,33 @@ function print_customer_address(repDocObj, invoiceObj, userParam) {
       }
       locality += invoiceObj.supplier_info.city;
     }
-    cell.addText(name + " - " + address + " - " + locality, "small_address");
+    
+    let supplierAddressLine = "";
+    if (name) {
+      supplierAddressLine += name;
+    }
+    if (address) {
+      if (name) {
+        supplierAddressLine += " - ";
+      }
+      supplierAddressLine += address;
+    }
+    if (locality) {
+      if (address || name) {
+        supplierAddressLine += " - ";
+      }
+      supplierAddressLine += locality;
+    }
+    if (supplierAddressLine) {
+      paragraph.addText(supplierAddressLine, "small_address");
+    }
   }
   
   // Customer address
-  var customerAddress = getInvoiceAddress(invoiceObj.customer_info,userParam).split('\n');
-  for (var i = 0; i < customerAddress.length; i++) {
-    cell.addParagraph(customerAddress[i]);
+  paragraph.addText("\n","");
+  let customerAddress = getInvoiceAddress(invoiceObj.customer_info,userParam).split('\n');
+  for (let i = 0; i < customerAddress.length; i++) {
+    paragraph.addText(customerAddress[i] + "\n");
   }
 }
 
@@ -596,18 +612,18 @@ function print_shipping_address(repDocObj, invoiceObj, texts, userParam) {
   */
   if (invoiceObj.shipping_info.different_shipping_address) {
 
-    var billingAndShippingAddress = repDocObj.addTable("shipping_address");
-    var tableRow = billingAndShippingAddress.addRow();
-    var shippingCell = tableRow.addCell("","",1);
+    let sectionShippingAddress = repDocObj.addSection("shipping_address");
+    let paragraph = sectionShippingAddress.addParagraph();
 
     if (userParam[lang+'_text_shipping_address']) {
-      shippingCell.addParagraph(userParam[lang+'_text_shipping_address'] + ":","title_shipping_address");
+      paragraph.addText(userParam[lang+'_text_shipping_address'] + ":","title_shipping_address");
     } else {
-      shippingCell.addParagraph(texts.shipping_address + ":", "title_shipping_address");
+      paragraph.addText(texts.shipping_address + ":", "title_shipping_address");
     }
-    var shippingAddress = getInvoiceAddress(invoiceObj.shipping_info,userParam).split('\n');
-    for (var i = 0; i < shippingAddress.length; i++) {
-      shippingCell.addParagraph(shippingAddress[i]);
+    paragraph.addText("\n","");
+    let shippingAddress = getInvoiceAddress(invoiceObj.shipping_info,userParam).split('\n');
+    for (let i = 0; i < shippingAddress.length; i++) {
+      paragraph.addText(shippingAddress[i] + "\n");
     }
   }
 }
@@ -623,57 +639,32 @@ function print_text_begin(repDocObj, invoiceObj, texts, userParam) {
   var textBegin = invoiceObj.document_info.text_begin;
   var textBeginSettings = userParam[lang+'_text_begin'];
   var textBeginOffer = userParam[lang+'_text_begin_offer'];
-  var table = sectionClassBegin.addTable("begin_text_table");
-  var tableRow;
+  var text = "";
   
   if (textTitle) {
     textTitle = textTitle.replace(/<DocInvoice>/g, invoiceObj.document_info.number.trim());
     textTitle = columnNamesToValues(invoiceObj, textTitle);
-    tableRow = table.addRow();
-    var titleCell = tableRow.addCell("","",1);
-    titleCell.addParagraph(textTitle, "title_text");
+    sectionClassBegin.addParagraph(textTitle,"title_text");
   }
-
+  
   if (textBegin) {
-    tableRow = table.addRow();
-    var textCell = tableRow.addCell("","begin_text",1);
-    var textBeginLines = textBegin.split('\n');
-    for (var i = 0; i < textBeginLines.length; i++) {
-      if (textBeginLines[i]) {
-        textBeginLines[i] = columnNamesToValues(invoiceObj, textBeginLines[i]);
-        addMdBoldText(textCell, textBeginLines[i]);
-      }
-      else {
-        addMdBoldText(textCell, " "); //empty lines
-      }
-    }
+    text = textBegin;
   }
   else if (!textBegin && textBeginOffer && invoiceObj.document_info.doc_type === "17") {
-    tableRow = table.addRow();
-    var textCell = tableRow.addCell("","begin_text",1);
-    var textBeginLines = textBeginOffer.split('\n');
-    for (var i = 0; i < textBeginLines.length; i++) {
-      if (textBeginLines[i]) {
-        textBeginLines[i] = columnNamesToValues(invoiceObj, textBeginLines[i]);
-        addMdBoldText(textCell, textBeginLines[i]);
-      }
-      else {
-        addMdBoldText(textCell, " "); //empty lines
-      }
-    }
+    text = textBeginOffer;
   }
   else if (!textBegin && textBeginSettings) {
-    tableRow = table.addRow();
-    var textCell = tableRow.addCell("","begin_text",1);
-    var textBeginLines = textBeginSettings.split('\n');
-    for (var i = 0; i < textBeginLines.length; i++) {
-      if (textBeginLines[i]) {
-        textBeginLines[i] = columnNamesToValues(invoiceObj, textBeginLines[i]);
-        addMdBoldText(textCell, textBeginLines[i]);
-      }
-      else {
-        addMdBoldText(textCell, " "); //empty lines
-      }
+    text = textBeginSettings;
+  }
+  var paragraph = sectionClassBegin.addParagraph("","begin_text");
+  var textBeginLines = text.split('\n');
+  for (var i = 0; i < textBeginLines.length; i++) {
+    if (textBeginLines[i]) {
+      textBeginLines[i] = columnNamesToValues(invoiceObj, textBeginLines[i]);
+      addMdBoldText(paragraph, textBeginLines[i]);
+    }
+    else {
+      addMdBoldText(paragraph, " "); //empty lines
     }
   }
 }

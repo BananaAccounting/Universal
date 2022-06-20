@@ -149,9 +149,9 @@ table.info_table_row0 td {
 /* Address positioning when printed on the right.
    Sets margins and position relative to the document.
    Sets also the font size. */
-.address_table_right {
+.address_right {
   font-size: $font_size;
-  margin-top: 4.5cm;
+  margin-top: 4.6cm;
   margin-left: 12.3cm;
   margin-right: 1.2cm;
   position: absolute;
@@ -159,17 +159,17 @@ table.info_table_row0 td {
 /* Address positioning when printed on the left.
    Sets margins and position relative to the document.
    Sets also the font size. */
-.address_table_left {
-  margin-top: 5.5cm;
+.address_left {
+  margin-top: 5.6cm;
   margin-left: 2.2cm;
-  margin-right: 1.2cm;
+  margin-right: 9cm;
   position: absolute;
 }
 /* Address positioning when printed on the right,
    and moved horizontally/vertically through Invoice settings.
    Sets margins and position relative to the document.
    Sets also the font size. */
-.custom_address_table_right {
+.custom_address_right {
   font-size: $font_size;
   margin-top: $right_address_margin_top;
   margin-left: $right_address_margin_left;
@@ -180,10 +180,10 @@ table.info_table_row0 td {
    and moved horizontally/vertically through Invoice settings.
    Sets margins and position relative to the document.
    Sets also the font size. */
-.custom_address_table_left {
+.custom_address_left {
   margin-top: $left_address_margin_top;
   margin-left: $left_address_margin_left;
-  margin-right: 1.2cm;
+  margin-right: 9cm;
   position: absolute;
 }
 /* Small address line of the sender, above the customer's address.
@@ -195,14 +195,14 @@ table.info_table_row0 td {
   border-bottom-style: solid;
   border-bottom-color: $text_color;
   border-bottom-width: 1px;
-  margin-bottom: 0.3cm;
+  margin-bottom: 0.45cm;
 }
 /* Shipping address positioning.
    Sets font size and margins relative to the information table. */
 .shipping_address {
   font-size: $font_size;
   margin-top: 0.4cm;
-  margin-left: 1.2cm;
+  margin-left: 1.24cm;
   margin-right: 1.2cm;
 }
 /* Shipping address title.
@@ -223,15 +223,18 @@ table.info_table_row0 td {
    It is used all the available width of the document to insert the text. */
 .section_class_begin {
   margin-top: 1.0cm;
-  margin-left: 1.2cm;
+  margin-left: 1.24cm;
   margin-right: 1.2cm;
-  width: 100%;
 }
+
+
 /* Table for the begin text.
-   Use all the available width of the document. */
+   Use all the available width of the document. 
 .begin_text_table {
   width: 100%;
-}
+}*/
+
+
 /* Begin text style.
    Sets the font size of the text. */
 .begin_text {
