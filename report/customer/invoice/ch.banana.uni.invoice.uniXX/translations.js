@@ -215,9 +215,8 @@ function setTexts_IT(texts) {
   texts.themecolor9 = "Indaco";
   texts.themecolor10 = "Rosa";
   texts.themecolor11 = "Marrone";
-  texts.themecolor12 = "Verde turchese";
-  texts.themecolor13 = "Grigio blu";
-  texts.themecolor14 = "Verde mare";
+  texts.themecolor12 = "Grigio blu";
+  texts.themecolor13 = "Verde mare";
   texts.themecolorcustom = "Personale";
 
 
