@@ -1350,6 +1350,18 @@ function convertParam(userParam) {
   convertedParam.data.push(currentParam);
 
   currentParam = {};
+  currentParam.name = 'color_total_line';
+  currentParam.parentObject = 'colors';
+  currentParam.title = texts.color_total_line;
+  currentParam.type = 'color';
+  currentParam.value = userParam.color_total_line ? userParam.color_total_line : '#000000';
+  currentParam.defaultvalue = '#000000';
+  currentParam.readValue = function() {
+   userParam.color_total_line = this.value;
+  }
+  convertedParam.data.push(currentParam);
+
+  currentParam = {};
   currentParam.name = 'color_text';
   currentParam.parentObject = 'colors';
   currentParam.title = texts.color_text;
@@ -1521,6 +1533,7 @@ function initParam() {
   
   userParam.color_total_text = '#000000';
   userParam.color_lines = '#000000';
+  userParam.color_total_line = '#000000';
   userParam.color_text = '#000000';
 
 
@@ -1792,6 +1805,9 @@ function verifyParam(userParam) {
   }
   if (!userParam.color_lines) { 
     userParam.color_lines = '#000000';
+  }
+  if (!userParam.color_total_line) { 
+    userParam.color_total_line = '#000000';
   }
   if (!userParam.color_text) {
     userParam.color_text = '#000000';
@@ -2299,7 +2315,7 @@ function onCurrentIndexChanged_color_theme(index, value, userParam) {
       userParam.data[i].value = '#000000';
     }
     else if (userParam.data[i].name === 'color_label_text') {
-      userParam.data[i].value = color;
+      userParam.data[i].value = '#000000';
     }
     else if(userParam.data[i].name === 'color_title_text') {
       userParam.data[i].value = color;
@@ -2318,10 +2334,13 @@ function onCurrentIndexChanged_color_theme(index, value, userParam) {
       userParam.data[i].value = hexColor;
     }
     else if(userParam.data[i].name === 'color_total_text') {
-      userParam.data[i].value = color;
+      userParam.data[i].value = '#000000';
     }
     else if(userParam.data[i].name === 'color_lines') {
       userParam.data[i].value = color;
+    }
+    else if(userParam.data[i].name === 'color_total_line') {
+      userParam.data[i].value = '#000000';
     }
     else if(userParam.data[i].name === 'color_text') {
       userParam.data[i].value = '#000000';
@@ -2383,6 +2402,9 @@ function onCurrentIndexChanged_color_theme_custom(index, value, userParam) {
       }
       else if(userParam.data[i].name === 'color_lines') {
         userParam.data[i].value = color;
+      }
+      else if(userParam.data[i].name === 'color_total_line') {
+        userParam.data[i].value = '#000000';
       }
       else if(userParam.data[i].name === 'color_text') {
         userParam.data[i].value = '#000000';
@@ -2502,6 +2524,24 @@ function onCurrentIndexChanged_color_background_alternate_lines(index, value, us
 }
 
 function onCurrentIndexChanged_color_lines(index, value, userParam) {
+
+  /**
+   * When the predefined color is changed, change the combobox item to "Custom"
+   */
+
+  let texts = setTexts(lang);
+
+  for (let i = 0; i < userParam.data.length; i++) {
+
+    if (userParam.data[i].name === 'color_theme') {
+      userParam.data[i].value = texts.themecolorcustom;
+    }
+  }
+
+  return userParam;
+}
+
+function onCurrentIndexChanged_color_total_line(index, value, userParam) {
 
   /**
    * When the predefined color is changed, change the combobox item to "Custom"

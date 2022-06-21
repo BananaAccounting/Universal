@@ -230,6 +230,7 @@ function setTexts_IT(texts) {
   texts.color_background_alternate_lines = "Righe alternate tabella";
   texts.color_lines = "Linee";
   texts.color_total_text = "Totale";
+  texts.color_total_line = "Linea totale";
   texts.color_text = "Testo";
 
 

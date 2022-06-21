@@ -67,7 +67,7 @@ td {
    Sets bold and size 16 of the font. */
 .header_row_1 {
   font-weight: normal;
-  font-size:16pt;
+  font-size:10pt;
   color: $color_header_text;
 }
 /* Text of the row 2, row 3, row 4 and row 5 of the header (if defined through Invoice settings).
@@ -211,6 +211,13 @@ table.info_table_row0 td {
   font-weight: normal;
   color: $color_label_text;
 }
+/* Title text positioning.
+   Sets margins relative to the prior element. */
+.section_class_title {
+  margin-top: 1.0cm;
+  margin-left: 1.24cm;
+  margin-right: 1.2cm;
+}
 /* Invoice title.
    Sets font size, font weight and color of the text. */
 .title_text {
@@ -222,7 +229,7 @@ table.info_table_row0 td {
    Sets margins relative to the prior element (invoice title).
    It is used all the available width of the document to insert the text. */
 .section_class_begin {
-  margin-top: 1.0cm;
+  margin-top: 0.1cm;
   margin-left: 1.24cm;
   margin-right: 1.2cm;
 }
@@ -297,7 +304,7 @@ table.info_table_row0 td {
   font-weight: bold;
   color: $color_total_text;
   border-bottom-style: double;
-  border-bottom-color: $color_lines;
+  border-bottom-color: $color_total_line;
   border-bottom-width: 1px;
 }
 /* Subtotal row of the invoice details.
