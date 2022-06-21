@@ -119,9 +119,11 @@ function printInvoice(banDoc, repDocObj, texts, userParam, repStyleObj, invoiceO
     - info
     - address
     - shipping address
+    - title
     - begin text
     - details
-    - final texts
+    - payment text
+    - final text
     - footer
 
     By default are used standard functions, but if 'hook' functions are defined by the user, these functions are used instead.
@@ -169,6 +171,13 @@ function printInvoice(banDoc, repDocObj, texts, userParam, repStyleObj, invoiceO
     } else {
       print_shipping_address(repDocObj, invoiceObj, texts, userParam);
     }
+  }
+
+  /* PRINT TITLE */
+  if (BAN_ADVANCED && typeof(hook_print_title) === typeof(Function)) {
+    hook_print_title(repDocObj, invoiceObj, texts, userParam);
+  } else {
+    print_title(repDocObj, invoiceObj, texts, userParam);
   }
 
   /* PRINT BEGIN TEXT (BEFORE INVOICE DETAILS) */
@@ -544,6 +553,7 @@ function print_customer_address(repDocObj, invoiceObj, userParam) {
   if (userParam.address_small_line) {
     if (userParam.address_small_line !== "<none>") {
       paragraph.addText(userParam.address_small_line, "small_address");
+      paragraph.addText("\n","");
     }
   }
   else {
@@ -595,11 +605,11 @@ function print_customer_address(repDocObj, invoiceObj, userParam) {
     }
     if (supplierAddressLine) {
       paragraph.addText(supplierAddressLine, "small_address");
+      paragraph.addText("\n","");
     }
   }
   
   // Customer address
-  paragraph.addText("\n","");
   let customerAddress = getInvoiceAddress(invoiceObj.customer_info,userParam).split('\n');
   for (let i = 0; i < customerAddress.length; i++) {
     paragraph.addText(customerAddress[i] + "\n");
@@ -628,6 +638,20 @@ function print_shipping_address(repDocObj, invoiceObj, texts, userParam) {
   }
 }
 
+function print_title(repDocObj, invoiceObj, texts, userParam) {
+  /*
+    Print the title/object of the invoice
+  */
+  let sectionClassTitle = repDocObj.addSection("section_class_title");
+
+  let textTitle = getTitle(invoiceObj, texts, userParam);
+  if (textTitle) {
+    textTitle = textTitle.replace(/<DocInvoice>/g, invoiceObj.document_info.number.trim());
+    textTitle = columnNamesToValues(invoiceObj, textTitle);
+    sectionClassTitle.addParagraph(textTitle,"title_text");
+  }
+}
+
 function print_text_begin(repDocObj, invoiceObj, texts, userParam) {
   /*
     Prints the text before the invoice details
@@ -635,17 +659,10 @@ function print_text_begin(repDocObj, invoiceObj, texts, userParam) {
 
   var sectionClassBegin = repDocObj.addSection("section_class_begin");
 
-  var textTitle = getTitle(invoiceObj, texts, userParam);
   var textBegin = invoiceObj.document_info.text_begin;
   var textBeginSettings = userParam[lang+'_text_begin'];
   var textBeginOffer = userParam[lang+'_text_begin_offer'];
   var text = "";
-  
-  if (textTitle) {
-    textTitle = textTitle.replace(/<DocInvoice>/g, invoiceObj.document_info.number.trim());
-    textTitle = columnNamesToValues(invoiceObj, textTitle);
-    sectionClassBegin.addParagraph(textTitle,"title_text");
-  }
   
   if (textBegin) {
     text = textBegin;
@@ -677,22 +694,63 @@ function print_details_net_amounts(banDoc, repDocObj, invoiceObj, texts, userPar
   var sectionClassDetails = repDocObj.addSection("section_class_details");
   var repTableObj = sectionClassDetails.addTable("doc_table");
 
-  print_details_header(repTableObj, userParam);
-  print_details_items(banDoc, repDocObj, repTableObj, invoiceObj, texts, userParam, variables);
-  print_details_discount(banDoc, repDocObj, repTableObj, invoiceObj, texts, userParam, variables);
-  print_details_total_net(banDoc, repDocObj, repTableObj, invoiceObj, texts, userParam, variables);
-  print_details_vat(banDoc, repDocObj, repTableObj, invoiceObj, texts, userParam, variables)
-  print_details_rounding(banDoc, repDocObj, repTableObj, invoiceObj, texts, userParam, variables);
-  print_details_deposit(banDoc, repDocObj, repTableObj, invoiceObj, texts, userParam, variables);
-  //print_details_total(banDoc, repDocObj, repTableObj, invoiceObj, texts, userParam, variables);
+  // print_details_header(repTableObj, userParam);
+  // print_details_items(banDoc, repDocObj, repTableObj, invoiceObj, texts, userParam, variables);
+  // print_details_discount(banDoc, repDocObj, repTableObj, invoiceObj, texts, userParam, variables);
+  // print_details_total_net(banDoc, repDocObj, repTableObj, invoiceObj, texts, userParam, variables);
+  // print_details_vat(banDoc, repDocObj, repTableObj, invoiceObj, texts, userParam, variables);
+  // print_details_rounding(banDoc, repDocObj, repTableObj, invoiceObj, texts, userParam, variables);
+  // print_details_deposit(banDoc, repDocObj, repTableObj, invoiceObj, texts, userParam, variables);
+  // print_details_total(banDoc, repDocObj, repTableObj, invoiceObj, texts, userParam, variables);
   
+
+  if (BAN_ADVANCED && typeof(hook_print_details_header) === typeof(Function)) {
+    hook_print_details_header(repTableObj, userParam);
+  } else {
+    print_details_header(repTableObj, userParam);
+  }
+
+  if (BAN_ADVANCED && typeof(hook_print_details_items) === typeof(Function)) {
+    hook_print_details_items(banDoc, repDocObj, repTableObj, invoiceObj, texts, userParam, variables);
+  } else {
+    print_details_items(banDoc, repDocObj, repTableObj, invoiceObj, texts, userParam, variables);
+  }
+
+  if (BAN_ADVANCED && typeof(hook_print_details_discount) === typeof(Function)) {
+    hook_print_details_discount(banDoc, repDocObj, repTableObj, invoiceObj, texts, userParam, variables);
+  } else {
+    print_details_discount(banDoc, repDocObj, repTableObj, invoiceObj, texts, userParam, variables);
+  }
+
+  if (BAN_ADVANCED && typeof(hook_print_details_total_net) === typeof(Function)) {
+    hook_print_details_total_net(banDoc, repDocObj, repTableObj, invoiceObj, texts, userParam, variables);
+  } else {
+    print_details_total_net(banDoc, repDocObj, repTableObj, invoiceObj, texts, userParam, variables);
+  }
+
+  if (BAN_ADVANCED && typeof(hook_print_details_vat) === typeof(Function)) {
+    hook_print_details_vat(banDoc, repDocObj, repTableObj, invoiceObj, texts, userParam, variables);
+  } else {
+    print_details_vat(banDoc, repDocObj, repTableObj, invoiceObj, texts, userParam, variables);
+  }
+
+  if (BAN_ADVANCED && typeof(hook_print_details_rounding) === typeof(Function)) {
+    hook_print_details_rounding(banDoc, repDocObj, repTableObj, invoiceObj, texts, userParam, variables);
+  } else {
+    print_details_rounding(banDoc, repDocObj, repTableObj, invoiceObj, texts, userParam, variables);
+  }
+
+  if (BAN_ADVANCED && typeof(hook_print_details_deposit) === typeof(Function)) {
+    hook_print_details_deposit(banDoc, repDocObj, repTableObj, invoiceObj, texts, userParam, variables);
+  } else {
+    print_details_deposit(banDoc, repDocObj, repTableObj, invoiceObj, texts, userParam, variables);
+  }
 
   if (BAN_ADVANCED && typeof(hook_print_details_total) === typeof(Function)) {
     hook_print_details_total(banDoc, repDocObj, repTableObj, invoiceObj, texts, userParam, variables);
   } else {
     print_details_total(banDoc, repDocObj, repTableObj, invoiceObj, texts, userParam, variables);
   }
-
 }
 
 function print_details_gross_amounts(banDoc, repDocObj, invoiceObj, texts, userParam, variables) {
@@ -703,29 +761,53 @@ function print_details_gross_amounts(banDoc, repDocObj, invoiceObj, texts, userP
   var sectionClassDetails = repDocObj.addSection("section_class_details");
   var repTableObj = sectionClassDetails.addTable("doc_table");
 
-  print_details_header(repTableObj, userParam);
-  print_details_items(banDoc, repDocObj, repTableObj, invoiceObj, texts, userParam, variables);
-  print_details_subtotal(banDoc, repDocObj, repTableObj, invoiceObj, texts, userParam, variables);
-  print_details_discount(banDoc, repDocObj, repTableObj, invoiceObj, texts, userParam, variables);
-  print_details_rounding(banDoc, repDocObj, repTableObj, invoiceObj, texts, userParam, variables);
-  print_details_deposit(banDoc, repDocObj, repTableObj, invoiceObj, texts, userParam, variables);
+  if (BAN_ADVANCED && typeof(hook_print_details_header) === typeof(Function)) {
+    hook_print_details_header(repTableObj, userParam);
+  } else {
+    print_details_header(repTableObj, userParam);
+  }
+
+  if (BAN_ADVANCED && typeof(hook_print_details_items) === typeof(Function)) {
+    hook_print_details_items(banDoc, repDocObj, repTableObj, invoiceObj, texts, userParam, variables);
+  } else {
+    print_details_items(banDoc, repDocObj, repTableObj, invoiceObj, texts, userParam, variables);
+  }
+
+  if (BAN_ADVANCED && typeof(hook_print_details_subtotal) === typeof(Function)) {
+    hook_print_details_subtotal(banDoc, repDocObj, repTableObj, invoiceObj, texts, userParam, variables);
+  } else {
+    print_details_subtotal(banDoc, repDocObj, repTableObj, invoiceObj, texts, userParam, variables);
+  }
   
-  //print_details_total(banDoc, repDocObj, repTableObj, invoiceObj, texts, userParam, variables);
+  if (BAN_ADVANCED && typeof(hook_print_details_discount) === typeof(Function)) {
+    hook_print_details_discount(banDoc, repDocObj, repTableObj, invoiceObj, texts, userParam, variables);
+  } else {
+    print_details_discount(banDoc, repDocObj, repTableObj, invoiceObj, texts, userParam, variables);
+  }
+  
+  if (BAN_ADVANCED && typeof(hook_print_details_rounding) === typeof(Function)) {
+    hook_print_details_rounding(banDoc, repDocObj, repTableObj, invoiceObj, texts, userParam, variables);
+  } else {
+    print_details_rounding(banDoc, repDocObj, repTableObj, invoiceObj, texts, userParam, variables);
+  }
+  
+  if (BAN_ADVANCED && typeof(hook_print_details_deposit) === typeof(Function)) {
+    hook_print_details_deposit(banDoc, repDocObj, repTableObj, invoiceObj, texts, userParam, variables);
+  } else {
+    print_details_deposit(banDoc, repDocObj, repTableObj, invoiceObj, texts, userParam, variables);
+  }
+  
   if (BAN_ADVANCED && typeof(hook_print_details_total) === typeof(Function)) {
     hook_print_details_total(banDoc, repDocObj, repTableObj, invoiceObj, texts, userParam, variables);
   } else {
     print_details_total(banDoc, repDocObj, repTableObj, invoiceObj, texts, userParam, variables);
   }
 
-  //print_details_vat(banDoc, repDocObj, repTableObj, invoiceObj, texts, userParam, variables);
   if (BAN_ADVANCED && typeof(hook_print_details_vat) === typeof(Function)) {
     hook_print_details_vat(banDoc, repDocObj, repTableObj, invoiceObj, texts, userParam, variables);
   } else {
     print_details_vat(banDoc, repDocObj, repTableObj, invoiceObj, texts, userParam, variables);
   }
-
-
-
 }
 
 function print_final_texts(repDocObj, invoiceObj, userParam) {
@@ -2263,6 +2345,7 @@ function set_variables(variables, userParam) {
   variables.$color_background_alternate_lines = userParam.color_background_alternate_lines;
   variables.$color_total_text = userParam.color_total_text;
   variables.$color_lines = userParam.color_lines;
+  variables.$color_total_line = userParam.color_total_line;
   variables.$color_text = userParam.color_text;
   
   /* Variables that set the font */
