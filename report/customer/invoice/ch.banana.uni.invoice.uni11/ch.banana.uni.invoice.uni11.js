@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.uni.invoice.uni11
 // @api = 1.0
-// @pubdate = 2022-05-30
+// @pubdate = 2022-06-28
 // @publisher = Banana.ch SA
 // @description = [UNI11] Programmable Invoice layout
 // @description.it = [UNI11] Layout Fattura Programmabile
@@ -3537,6 +3537,10 @@ function columnNamesToValues(invoiceObj, text) {
   var docInvoice = invoiceObj.document_info.number;
   var courtesy = invoiceObj.customer_info.courtesy;
   var businessName = invoiceObj.customer_info.business_name;
+  var businessUnit = invoiceObj.customer_info.business_unit;
+  var businessUnit2 = invoiceObj.customer_info.business_unit2;
+  var businessUnit3 = invoiceObj.customer_info.business_unit3;
+  var businessUnit4 = invoiceObj.customer_info.business_unit4;
   var firstName = invoiceObj.customer_info.first_name;
   var lastName = invoiceObj.customer_info.last_name;
   var address1 = invoiceObj.customer_info.address1;
@@ -3564,6 +3568,26 @@ function columnNamesToValues(invoiceObj, text) {
       text = text.replace(/<OrganisationName>/g, businessName.trim());
     } else {
       text = text.replace(/<OrganisationName>/g, "<>");
+    }
+    if (businessUnit && text.indexOf("<OrganisationUnit>") > -1) {
+      text = text.replace(/<OrganisationUnit>/g, businessUnit.trim());
+    } else {
+      text = text.replace(/<OrganisationUnit>/g, "<>");
+    }
+    if (businessUnit2 && text.indexOf("<OrganisationUnit2>") > -1) {
+      text = text.replace(/<OrganisationUnit2>/g, businessUnit2.trim());
+    } else {
+      text = text.replace(/<OrganisationUnit2>/g, "<>");
+    }
+    if (businessUnit3 && text.indexOf("<OrganisationUnit3>") > -1) {
+      text = text.replace(/<OrganisationUnit3>/g, businessUnit3.trim());
+    } else {
+      text = text.replace(/<OrganisationUnit3>/g, "<>");
+    }
+    if (businessUnit4 && text.indexOf("<OrganisationUnit4>") > -1) {
+      text = text.replace(/<OrganisationUnit4>/g, businessUnit4.trim());
+    } else {
+      text = text.replace(/<OrganisationUnit4>/g, "<>");
     }
     if (firstName && text.indexOf("<FirstName>") > -1) {
       text = text.replace(/<FirstName>/g, firstName.trim());
@@ -3770,6 +3794,10 @@ function getInvoiceAddress(invoiceAddress, userParam) {
   // Invoice object values
   var courtesy = invoiceAddress.courtesy;
   var businessName = invoiceAddress.business_name;
+  var businessUnit = invoiceAddress.business_unit;
+  var businessUnit2 = invoiceAddress.business_unit2;
+  var businessUnit3 = invoiceAddress.business_unit3;
+  var businessUnit4 = invoiceAddress.business_unit4;
   var firstName = invoiceAddress.first_name;
   var lastName = invoiceAddress.last_name;
   var address1 = invoiceAddress.address1;
@@ -3798,6 +3826,30 @@ function getInvoiceAddress(invoiceAddress, userParam) {
     address = address.replace(/<OrganisationName>/g,"<>");
   }
   
+  if (address.indexOf("<OrganisationUnit>") > -1 && businessUnit) {
+    address = address.replace(/<OrganisationUnit>/g, businessUnit.trim());
+  } else {
+    address = address.replace(/<OrganisationUnit>/g, "<>");
+  }
+
+  if (address.indexOf("<OrganisationUnit2>") > -1 && businessUnit2) {
+    address = address.replace(/<OrganisationUnit2>/g, businessUnit2.trim());
+  } else {
+    address = address.replace(/<OrganisationUnit2>/g, "<>");
+  }
+
+  if (address.indexOf("<OrganisationUnit3>") > -1 && businessUnit3) {
+    address = address.replace(/<OrganisationUnit3>/g, businessUnit3.trim());
+  } else {
+    address = address.replace(/<OrganisationUnit3>/g, "<>");
+  }
+
+  if (address.indexOf("<OrganisationUnit4>") > -1 && businessUnit4) {
+    address = address.replace(/<OrganisationUnit4>/g, businessUnit4.trim());
+  } else {
+    address = address.replace(/<OrganisationUnit4>/g, "<>");
+  }
+
   if (address.indexOf("<FirstName>") > -1 && firstName) {
     address = address.replace(/<FirstName>/g, firstName.trim());
   } else {
