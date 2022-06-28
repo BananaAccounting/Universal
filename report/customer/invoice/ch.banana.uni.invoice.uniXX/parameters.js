@@ -1342,8 +1342,8 @@ function convertParam(userParam) {
   currentParam.parentObject = 'colors';
   currentParam.title = texts.color_lines;
   currentParam.type = 'color';
-  currentParam.value = userParam.color_lines ? userParam.color_lines : '#000000';
-  currentParam.defaultvalue = '#000000';
+  currentParam.value = userParam.color_lines ? userParam.color_lines : '#333333';
+  currentParam.defaultvalue = '#333333';
   currentParam.readValue = function() {
    userParam.color_lines = this.value;
   }
@@ -1532,7 +1532,7 @@ function initParam() {
   userParam.color_background_alternate_lines = hexColor;
   
   userParam.color_total_text = '#000000';
-  userParam.color_lines = '#000000';
+  userParam.color_lines = '#333333';
   userParam.color_total_line = '#000000';
   userParam.color_text = '#000000';
 
@@ -1804,7 +1804,7 @@ function verifyParam(userParam) {
     userParam.color_total_text = '#000000';
   }
   if (!userParam.color_lines) { 
-    userParam.color_lines = '#000000';
+    userParam.color_lines = '#333333';
   }
   if (!userParam.color_total_line) { 
     userParam.color_total_line = '#000000';
@@ -2337,7 +2337,7 @@ function onCurrentIndexChanged_color_theme(index, value, userParam) {
       userParam.data[i].value = '#000000';
     }
     else if(userParam.data[i].name === 'color_lines') {
-      userParam.data[i].value = color;
+      userParam.data[i].value = '#333333';
     }
     else if(userParam.data[i].name === 'color_total_line') {
       userParam.data[i].value = '#000000';
@@ -2381,7 +2381,7 @@ function onCurrentIndexChanged_color_theme_custom(index, value, userParam) {
         userParam.data[i].value = '#000000';
       }
       else if (userParam.data[i].name === 'color_label_text') {
-        userParam.data[i].value = color;
+        userParam.data[i].value = '#000000';
       }
       else if(userParam.data[i].name === 'color_title_text') {
         userParam.data[i].value = color;
@@ -2401,7 +2401,7 @@ function onCurrentIndexChanged_color_theme_custom(index, value, userParam) {
         userParam.data[i].value = color;
       }
       else if(userParam.data[i].name === 'color_lines') {
-        userParam.data[i].value = color;
+        userParam.data[i].value = '#333333';
       }
       else if(userParam.data[i].name === 'color_total_line') {
         userParam.data[i].value = '#000000';
