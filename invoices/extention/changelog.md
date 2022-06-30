@@ -1,5 +1,10 @@
 # Changelog
  
+## 2022-06-30
+
+* [RELEASE DEV] Released as Dev
+* [Fix] Fix number input in locale format does not validate
+
 ## 2022-05-11
 
 * [RELEASE DEV] Released as Dev
