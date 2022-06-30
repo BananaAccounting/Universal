@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.uni.invoice.uni11
 // @api = 1.0
-// @pubdate = 2022-02-21
+// @pubdate = 2022-06-28
 // @publisher = Banana.ch SA
 // @description = [UNI11] Programmable Invoice layout
 // @description.it = [UNI11] Layout Fattura Programmabile
@@ -705,18 +705,20 @@ function convertParam(userParam) {
   }
   convertedParam.data.push(currentParam);
 
-  currentParam = {};
-  currentParam.name = 'shipping_address';
-  currentParam.parentObject = 'address_include';
-  currentParam.title = texts.param_shipping_address;
-  currentParam.type = 'bool';
-  currentParam.value = userParam.shipping_address ? true : false;
-  currentParam.defaultvalue = false;
-  currentParam.tooltip = texts.param_tooltip_shipping_address;
-  currentParam.readValue = function() {
-    userParam.shipping_address = this.value;
+  if (IS_INTEGRATED_INVOICE) {
+    currentParam = {};
+    currentParam.name = 'shipping_address';
+    currentParam.parentObject = 'address_include';
+    currentParam.title = texts.param_shipping_address;
+    currentParam.type = 'bool';
+    currentParam.value = userParam.shipping_address ? true : false;
+    currentParam.defaultvalue = false;
+    currentParam.tooltip = texts.param_tooltip_shipping_address;
+    currentParam.readValue = function() {
+      userParam.shipping_address = this.value;
+    }
+    convertedParam.data.push(currentParam);
   }
-  convertedParam.data.push(currentParam);
 
   currentParam = {};
   currentParam.name = 'info_include';
@@ -1257,19 +1259,21 @@ function convertParam(userParam) {
     }
     convertedParam.data.push(currentParam);
 
-    currentParam = {};
-    currentParam.name = langCode+'_text_shipping_address';
-    currentParam.parentObject = langCode;
-    currentParam.title = langTexts[langCodeTitle+'_param_text_shipping_address'];
-    currentParam.type = 'string';
-    currentParam.value = userParam[langCode+'_text_shipping_address'] ? userParam[langCode+'_text_shipping_address'] : '';
-    currentParam.defaultvalue = langTexts.shipping_address;
-    currentParam.tooltip = langTexts['param_tooltip_text_shipping_address'];
-    currentParam.language = langCode;
-    currentParam.readValueLang = function(langCode) {
-      userParam[langCode+'_text_shipping_address'] = this.value;
+    if (IS_INTEGRATED_INVOICE) {
+      currentParam = {};
+      currentParam.name = langCode+'_text_shipping_address';
+      currentParam.parentObject = langCode;
+      currentParam.title = langTexts[langCodeTitle+'_param_text_shipping_address'];
+      currentParam.type = 'string';
+      currentParam.value = userParam[langCode+'_text_shipping_address'] ? userParam[langCode+'_text_shipping_address'] : '';
+      currentParam.defaultvalue = langTexts.shipping_address;
+      currentParam.tooltip = langTexts['param_tooltip_text_shipping_address'];
+      currentParam.language = langCode;
+      currentParam.readValueLang = function(langCode) {
+        userParam[langCode+'_text_shipping_address'] = this.value;
+      }
+      convertedParam.data.push(currentParam);
     }
-    convertedParam.data.push(currentParam);
 
     currentParam = {};
     currentParam.name = langCode+'_title_doctype_10';
@@ -2136,7 +2140,7 @@ function printInvoice(banDoc, repDocObj, texts, userParam, repStyleObj, invoiceO
   }
 
   /* PRINT SHIPPING ADDRESS */
-  if (userParam.shipping_address) {
+  if (IS_INTEGRATED_INVOICE && userParam.shipping_address) {
     if (BAN_ADVANCED && typeof(hook_print_shipping_address) === typeof(Function)) {
       hook_print_shipping_address(repDocObj, invoiceObj, texts, userParam);
     } else {
@@ -2543,7 +2547,26 @@ function print_customer_address(repDocObj, invoiceObj, userParam) {
       }
       locality += invoiceObj.supplier_info.city;
     }
-    cell.addText(name + " - " + address + " - " + locality, "small_address");
+    
+    var supplierAddressLine = "";
+    if (name) {
+      supplierAddressLine += name;
+    }
+    if (address) {
+      if (name) {
+        supplierAddressLine += " - ";
+      }
+      supplierAddressLine += address;
+    }
+    if (locality) {
+      if (address || name) {
+        supplierAddressLine += " - ";
+      }
+      supplierAddressLine += locality;
+    }
+    if (supplierAddressLine) {
+      cell.addText(supplierAddressLine, "small_address");
+    }
   }
   
   // Customer address
@@ -2787,6 +2810,10 @@ function print_details_net_amounts(banDoc, repDocObj, invoiceObj, texts, userPar
         else {
           itemValue = formatItemsValue("", variables, columnsNames[j], className, item);
         }
+        tableRow.addCell(itemValue.value, classNameEvenRow + " " + alignment + " padding-left padding-right " + itemValue.className, 1);
+      }
+      else if (columnsNames[j].trim().toLowerCase() === "number") {
+        var itemValue = formatItemsValue(item.number, variables, columnsNames[j], className, item);
         tableRow.addCell(itemValue.value, classNameEvenRow + " " + alignment + " padding-left padding-right " + itemValue.className, 1);
       }
       else {
@@ -3043,6 +3070,10 @@ function print_details_gross_amounts(banDoc, repDocObj, invoiceObj, texts, userP
         }
         tableRow.addCell(itemValue.value, classNameEvenRow + " " + alignment + " padding-left padding-right " + itemValue.className, 1);
       }
+      else if (columnsNames[j].trim().toLowerCase() === "number") {
+        var itemValue = formatItemsValue(item.number, variables, columnsNames[j], className, item);
+        tableRow.addCell(itemValue.value, classNameEvenRow + " " + alignment + " padding-left padding-right " + itemValue.className, 1);
+      }
       else {
         var userColumnValue = "";
         var columnsName = columnsNames[j];
@@ -3146,7 +3177,9 @@ function print_details_gross_amounts(banDoc, repDocObj, invoiceObj, texts, userP
   tableRow = repTableObj.addRow();
   var cellVatInfo = tableRow.addCell("", "padding-right right vat_info", columnsNumber);
   for (var i = 0; i < invoiceObj.billing_info.total_vat_rates.length; i++) {
-    var vatInfo = userParam[lang+'_text_vat'] + " " + invoiceObj.billing_info.total_vat_rates[i].vat_rate + "%";
+    var vatInfo = "";
+    vatInfo += Banana.Converter.toLocaleNumberFormat(invoiceObj.billing_info.total_vat_rates[i].total_amount_vat_exclusive, variables.decimals_amounts, true) + " " + invoiceObj.document_info.currency;
+    vatInfo += " " + userParam[lang+'_text_vat'] + " " + invoiceObj.billing_info.total_vat_rates[i].vat_rate + "%";
     vatInfo += " = " + Banana.Converter.toLocaleNumberFormat(invoiceObj.billing_info.total_vat_rates[i].total_vat_amount, variables.decimals_amounts, true) + " " + invoiceObj.document_info.currency;
     cellVatInfo.addParagraph(vatInfo);
   }
@@ -3504,6 +3537,10 @@ function columnNamesToValues(invoiceObj, text) {
   var docInvoice = invoiceObj.document_info.number;
   var courtesy = invoiceObj.customer_info.courtesy;
   var businessName = invoiceObj.customer_info.business_name;
+  var businessUnit = invoiceObj.customer_info.business_unit;
+  var businessUnit2 = invoiceObj.customer_info.business_unit2;
+  var businessUnit3 = invoiceObj.customer_info.business_unit3;
+  var businessUnit4 = invoiceObj.customer_info.business_unit4;
   var firstName = invoiceObj.customer_info.first_name;
   var lastName = invoiceObj.customer_info.last_name;
   var address1 = invoiceObj.customer_info.address1;
@@ -3531,6 +3568,26 @@ function columnNamesToValues(invoiceObj, text) {
       text = text.replace(/<OrganisationName>/g, businessName.trim());
     } else {
       text = text.replace(/<OrganisationName>/g, "<>");
+    }
+    if (businessUnit && text.indexOf("<OrganisationUnit>") > -1) {
+      text = text.replace(/<OrganisationUnit>/g, businessUnit.trim());
+    } else {
+      text = text.replace(/<OrganisationUnit>/g, "<>");
+    }
+    if (businessUnit2 && text.indexOf("<OrganisationUnit2>") > -1) {
+      text = text.replace(/<OrganisationUnit2>/g, businessUnit2.trim());
+    } else {
+      text = text.replace(/<OrganisationUnit2>/g, "<>");
+    }
+    if (businessUnit3 && text.indexOf("<OrganisationUnit3>") > -1) {
+      text = text.replace(/<OrganisationUnit3>/g, businessUnit3.trim());
+    } else {
+      text = text.replace(/<OrganisationUnit3>/g, "<>");
+    }
+    if (businessUnit4 && text.indexOf("<OrganisationUnit4>") > -1) {
+      text = text.replace(/<OrganisationUnit4>/g, businessUnit4.trim());
+    } else {
+      text = text.replace(/<OrganisationUnit4>/g, "<>");
     }
     if (firstName && text.indexOf("<FirstName>") > -1) {
       text = text.replace(/<FirstName>/g, firstName.trim());
@@ -3737,6 +3794,10 @@ function getInvoiceAddress(invoiceAddress, userParam) {
   // Invoice object values
   var courtesy = invoiceAddress.courtesy;
   var businessName = invoiceAddress.business_name;
+  var businessUnit = invoiceAddress.business_unit;
+  var businessUnit2 = invoiceAddress.business_unit2;
+  var businessUnit3 = invoiceAddress.business_unit3;
+  var businessUnit4 = invoiceAddress.business_unit4;
   var firstName = invoiceAddress.first_name;
   var lastName = invoiceAddress.last_name;
   var address1 = invoiceAddress.address1;
@@ -3765,6 +3826,30 @@ function getInvoiceAddress(invoiceAddress, userParam) {
     address = address.replace(/<OrganisationName>/g,"<>");
   }
   
+  if (address.indexOf("<OrganisationUnit>") > -1 && businessUnit) {
+    address = address.replace(/<OrganisationUnit>/g, businessUnit.trim());
+  } else {
+    address = address.replace(/<OrganisationUnit>/g, "<>");
+  }
+
+  if (address.indexOf("<OrganisationUnit2>") > -1 && businessUnit2) {
+    address = address.replace(/<OrganisationUnit2>/g, businessUnit2.trim());
+  } else {
+    address = address.replace(/<OrganisationUnit2>/g, "<>");
+  }
+
+  if (address.indexOf("<OrganisationUnit3>") > -1 && businessUnit3) {
+    address = address.replace(/<OrganisationUnit3>/g, businessUnit3.trim());
+  } else {
+    address = address.replace(/<OrganisationUnit3>/g, "<>");
+  }
+
+  if (address.indexOf("<OrganisationUnit4>") > -1 && businessUnit4) {
+    address = address.replace(/<OrganisationUnit4>/g, businessUnit4.trim());
+  } else {
+    address = address.replace(/<OrganisationUnit4>/g, "<>");
+  }
+
   if (address.indexOf("<FirstName>") > -1 && firstName) {
     address = address.replace(/<FirstName>/g, firstName.trim());
   } else {
@@ -4374,7 +4459,7 @@ function setInvoiceTexts(language) {
     texts.deposit = "Anzahlung";
     texts.totalnet = "Netto-Betrag";
     texts.subtotal = "Zwischentotal";
-    texts.vat = "MwSt";
+    texts.vat = "MwSt/USt";
     texts.rounding = "Rundung";
     texts.total = "Gesamtbetrag";
     texts.param_include = "Drucken";
@@ -4433,7 +4518,7 @@ function setInvoiceTexts(language) {
     texts.de_param_text_begin = "Anfangstext";
     texts.de_param_text_details_columns = "Spaltennamen Rechnungsdetails";
     texts.de_param_text_totalnet = "Netto-Betrag";
-    texts.de_param_text_vat = "MwSt";
+    texts.de_param_text_vat = "MwSt/USt";
     texts.de_param_text_total = "Rechnungsbetrag";
     texts.de_param_text_final = "Text am Ende";
     texts.de_param_footer_left = "Fusszeilentext links";
