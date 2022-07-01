@@ -16,7 +16,7 @@
 
 // @id = ch.banana.uni.invoice.uniXX.test
 // @api = 1.2
-// @pubdate = 2022-06-08
+// @pubdate = 2022-07-01
 // @publisher = Banana.ch SA
 // @description = <TEST ch.banana.uni.invoice.uniXX.js>
 // @task = app.command
@@ -69,9 +69,9 @@ ReportInvoiceUniXX.prototype.cleanup = function() {
 
 }
 
-//
+// ##############################################################################
 // Tests for INTEGRATED INVOICES
-//
+// ##############################################################################
 ReportInvoiceUniXX.prototype.test_IntegratedInvoice_1 = function() {
   var fileAC2 = "file:script/../test/testcases/invoice_development_file.ac2";
   var banDoc = Banana.application.openDocument(fileAC2);
@@ -614,9 +614,9 @@ ReportInvoiceUniXX.prototype.test_IntegratedInvoice_19 = function() {
 
 
 
-//
+// ##############################################################################
 // Tests for APPLICATION ESTIMATES AND INVOICES
-//
+// ##############################################################################
 ReportInvoiceUniXX.prototype.test_AppEstimatesInvoices_1 = function() {
   var fileAC2 = "file:script/../test/testcases/invoice_deposit_test.ac2";
   var banDoc = Banana.application.openDocument(fileAC2);
@@ -787,6 +787,45 @@ ReportInvoiceUniXX.prototype.test_AppEstimatesInvoices_5 = function() {
   }
 }
 
+ReportInvoiceUniXX.prototype.test_AppEstimatesInvoices_6 = function() {
+  var fileAC2 = "file:script/../test/testcases/invoice_estimates_organisationunit_test.ac2";
+  var banDoc = Banana.application.openDocument(fileAC2);
+  if (!banDoc) {
+    return;
+  }
+  //
+  IS_INTEGRATED_INVOICE = true;
+  var texts = setTexts('en');
+  var userParam = setUserParam(texts);
+  userParam.address_small_line = '<none>';
+  userParam.address_composition = '<OrganisationName>\n<OrganisationUnit>\n<OrganisationUnit2>\n<OrganisationUnit3>\n<OrganisationUnit4>\n<NamePrefix>\n<FirstName> <FamilyName>\n<Street>\n<AddressExtra>\n<POBox>\n<PostalCode> <Locality>';
+  userParam.shipping_address = false;
+  userParam.info_order_number = true;
+  userParam.info_order_date = true;
+  userParam.info_customer_vat_number = false;
+  userParam.info_customer_fiscal_number = false;
+  userParam.details_columns = 'Number;Date;Description;Quantity;ReferenceUnit;UnitPrice;Discount;Amount';
+  userParam.details_columns_widths = '10%;10%;25%;10%;10%;10%;10%;15%';
+  userParam.details_columns_titles_alignment = 'left;left;left;right;center;right;right;right';
+  userParam.details_columns_alignment = 'left;left;left;right;center;right;right;right';
+  userParam.details_gross_amounts = false;
+  userParam.en_text_details_columns = 'Item;Date;Description;Quantity;Unit;Unit Price;Discount;Amount';
+  // userParam.qr_code_add = true;
+  // userParam.qr_code_qriban = '';
+  // userParam.qr_code_iban = 'CH58 0079 1123 0008 8901 2';
+  // userParam.qr_code_iban_eur = '';
+  // userParam.qr_code_isr_id = '';
+  // userParam.qr_code_reference_type = 'SCOR'
+  // userParam.qr_code_additional_information = '';
+  // userParam.qr_code_billing_information = false;
+  var variables = setVariables();
+  //
+  var invoices = ['4'];
+  for (var i = 0; i < invoices.length; i++) {
+    var jsonInvoice = JSON.parse(getJsonInvoice(invoices[i]));
+    this.addReport(banDoc, texts, userParam, jsonInvoice, variables);
+  }
+}
 
 
 
@@ -836,6 +875,8 @@ function setUserParam(texts) {
   userParam.languages = 'en;it;de;fr;nl;zh';
   userParam.en_text_info_invoice_number = texts.invoice;
   userParam.en_text_info_date = texts.date;
+  userParam.en_text_info_order_number = texts.order_number;
+  userParam.en_text_info_order_date = texts.order_date;
   userParam.en_text_info_customer = texts.customer;
   userParam.en_text_info_customer_vat_number = texts.vat_number;
   userParam.en_text_info_customer_fiscal_number = texts.fiscal_number;
@@ -852,14 +893,6 @@ function setUserParam(texts) {
   userParam.en_footer_left = texts.invoice;
   userParam.en_footer_center = '';
   userParam.en_footer_right = texts.page+' <'+texts.page+'>';
-
-  //Styles
-  userParam.text_color = '#000000';
-  userParam.background_color_details_header = '#337AB7';
-  userParam.text_color_details_header = '#FFFFFF';
-  userParam.background_color_alternate_lines = '#F0F8FF';
-  userParam.font_family = 'Helvetica';
-  userParam.font_size = '10';
 
   //Embedded JavaScript file
   userParam.embedded_javascript_filename = '';
@@ -896,7 +929,11 @@ function getJsonInvoices(banDoc) {
 
 function getJsonInvoice(invoiceNumber) {
 
-  /* Used for Application Estimates and Invoices */
+  /* Used for Application Estimates and Invoices
+    
+     The 'Banana.document.invoicesCustomers()' does not work with estimates invoices.
+     We have to manually create JSON files.
+  */
 
   var file;
   var parsedfile;
@@ -904,6 +941,12 @@ function getJsonInvoice(invoiceNumber) {
 
   if (invoiceNumber === "3") {
     file = Banana.IO.getLocalFile("file:script/../test/testcases/json_invoice_3.json");
+    parsedfile = JSON.stringify(file.read(), "", "");
+    jsonInvoice = JSON.parse(parsedfile);
+    //Banana.console.log(jsonInvoice);
+  }
+  else if (invoiceNumber === "4") {
+    file = Banana.IO.getLocalFile("file:script/../test/testcases/json_invoice_4.json");
     parsedfile = JSON.stringify(file.read(), "", "");
     jsonInvoice = JSON.parse(parsedfile);
     //Banana.console.log(jsonInvoice);

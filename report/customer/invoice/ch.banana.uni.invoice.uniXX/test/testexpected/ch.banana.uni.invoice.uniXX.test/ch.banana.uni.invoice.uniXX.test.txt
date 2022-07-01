@@ -10266,8 +10266,8 @@ Invoice \newline  & Page  \#page-nr \newline \\
 \begin{longtable}[l]{ l  l }
 Invoice:  & 2 \\
 Date:  & 01.01.2021 \\
-undefined:  & 1234 \\
-undefined:  & 20.12.2020 \\
+Order No:  & 1234 \\
+Order date:  & 20.12.2020 \\
 Customer No:  & 1100 \\
 Due date:  & 31.01.2021 \\
 Page:  & \#page-nr \\
@@ -10279,8 +10279,8 @@ IVA 123 456 789 \\
 \begin{longtable}[l]{ l  l }
 Invoice:  & 2 \\
 Date:  & 01.01.2021 \\
-undefined:  & 1234 \\
-undefined:  & 20.12.2020 \\
+Order No:  & 1234 \\
+Order date:  & 20.12.2020 \\
 Customer No:  & 1100 \\
 Due date:  & 31.01.2021 \\
 Page:  & \#page-nr \\
@@ -10992,8 +10992,8 @@ Invoice \newline  & Page  \#page-nr \newline \\
 \begin{longtable}[l]{ l  l }
 Invoice:  & 3 \\
 Date:  & 17.06.2020 \\
-undefined:  & 1234 \\
-undefined:  & 01.06.2020 \\
+Order No:  & 1234 \\
+Order date:  & 01.06.2020 \\
 Customer No:  & 1 \\
 Due date:  & 17.07.2020 \\
 Page:  & \#page-nr \\
@@ -11005,8 +11005,8 @@ IVA 123 456 789 \\
 \begin{longtable}[l]{ l  l }
 Invoice:  & 3 \\
 Date:  & 17.06.2020 \\
-undefined:  & 1234 \\
-undefined:  & 01.06.2020 \\
+Order No:  & 1234 \\
+Order date:  & 01.06.2020 \\
 Customer No:  & 1 \\
 Due date:  & 17.07.2020 \\
 Page:  & \#page-nr \\
@@ -11169,6 +11169,51 @@ Product E \newline  &  & pc  & 50.00  & 50.00 \\
 \multicolumn{1134}{l}{TOTAL CHF } & 370.00 \\
 \end{longtable}
 Please make your payment to the following bank account\P IBAN: CHXX XXXX XXXX XXXX 0203 X\P \P Thank you very much. \\
+\begin{longtable}[l]{ l  l }
+Invoice \newline  & Page  \#page-nr \newline \\
+\end{longtable}
+\end{reportvalue}
+\keyvalue{Result}{Passed}
+\end{test}
+\begin{test}{test\_AppEstimatesInvoices\_6}
+\begin{reportvalue}{ReportTest}
+\begin{longtable}[l]{ l  l }
+Invoice:  & 4 \\
+Date:  & 17.06.2020 \\
+Order No:  & \\
+Order date:  & \\
+Customer No:  & 14 \\
+Due date:  & 17.07.2020 \\
+Page:  & \#page-nr \\
+\end{longtable}
+Banana.ch SA \\
+Via alla Santa 7 - 6962 Viganello \\
+www.banana.ch - info@banana.ch \\
+IVA 123 456 789 \\
+\begin{longtable}[l]{ l  l }
+Invoice:  & 4 \\
+Date:  & 17.06.2020 \\
+Order No:  & \\
+Order date:  & \\
+Customer No:  & 14 \\
+Due date:  & 17.07.2020 \\
+Page:  & \#page-nr \\
+\multicolumn{2}{l}{  }\\
+\multicolumn{2}{l}{  }\\
+\end{longtable}
+MyCompany\P  Unit1\P  Unit2\P  Unit3\P  Unit4\P  Paolo Rossi\P  Via ai Salici 12\P  CP 69\P  6900 Lugano\P  \\
+Invoice 4 \\
+aFASD \\
+F AS \\
+\begin{longtable}[l]{ l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l }
+Item  & Date  & Description  & Quantity  & Unit  & Unit Price  & Discount  & Amount \\
+1000  &  & Te \newline  & 100.0000  & pz  & 2.50  &  & 250.00 \\
+6000  &  & Spese di spedizione \newline  &  & pz  & 7.50  &  & 7.50 \\
+\multicolumn{1143}{l}{}\\
+\multicolumn{1143}{l}{}\\
+\multicolumn{1142}{l}{TOTAL CHF } & 257.50 \\
+\end{longtable}
+aFASD\P F AS\P DF\P  AS\P DF ASDF \\
 \begin{longtable}[l]{ l  l }
 Invoice \newline  & Page  \#page-nr \newline \\
 \end{longtable}
