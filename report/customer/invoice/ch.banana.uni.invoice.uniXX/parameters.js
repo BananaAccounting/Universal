@@ -60,13 +60,22 @@ function convertParam(userParam) {
   convertedParam.version = '1.0';
   convertedParam.data = [];
 
-  var lengthDetailsColumns = "";
-  var lengthDetailsTexts = "";
+  convertParam_Header(convertedParam, userParam, texts);
+  convertParam_Address(convertedParam, userParam, texts);
+  convertParam_Info(convertedParam, userParam, texts);
+  convertParam_Details(convertedParam, userParam, texts);
+  convertParam_Footer(convertedParam, userParam, texts);
+  convertParam_Texts(convertedParam, userParam, texts);
+  convertParam_Styles(convertedParam, userParam, texts);
+  convertParam_Js_Css(convertedParam, userParam, texts);
+
+  return convertedParam;
+}
 
 
-  /*******************************************************************************************
-  * INCLUDE
-  *******************************************************************************************/
+//Header
+function convertParam_Header(convertedParam, userParam, texts) {
+
   var currentParam = {};
   currentParam.name = 'include';
   currentParam.title = texts.include;
@@ -78,11 +87,6 @@ function convertParam(userParam) {
   }
   convertedParam.data.push(currentParam);
 
-
-
-  /*******************************************************************************************
-  * HEADER OF THE PAGE (LOGO + ADDRESS)
-  *******************************************************************************************/
   currentParam = {};
   currentParam.name = 'header_include';
   currentParam.parentObject = 'include';
@@ -202,15 +206,11 @@ function convertParam(userParam) {
     userParam.logo_name = this.value;
   }
   convertedParam.data.push(currentParam);
+}
 
+//Customer address
+function convertParam_Address(convertedParam, userParam, texts) {
 
-
-
-
-
-  /*******************************************************************************************
-  * CUSTOMER ADDRESS
-  *******************************************************************************************/
   currentParam = {};
   currentParam.name = 'address_include';
   currentParam.parentObject = 'include';
@@ -300,15 +300,11 @@ function convertParam(userParam) {
     }
     convertedParam.data.push(currentParam);
   }
+}
 
+//Information
+function convertParam_Info(convertedParam, userParam, texts) {
 
-
-
-
-
-  /*******************************************************************************************
-  * INFORMATION
-  *******************************************************************************************/
   currentParam = {};
   currentParam.name = 'info_include';
   currentParam.parentObject = 'include';
@@ -454,13 +450,11 @@ function convertParam(userParam) {
   } else {
     userParam.info_custom_fields = false;
   }
+}
 
+//Details
+function convertParam_Details(convertedParam, userParam, texts) {
 
-
-
-  /*******************************************************************************************
-  * DETAILS
-  *******************************************************************************************/
   currentParam = {};
   currentParam.name = 'details_include';
   currentParam.parentObject = 'include';
@@ -530,8 +524,6 @@ function convertParam(userParam) {
   currentParam.value = userParam.details_columns ? userParam.details_columns : '';
   currentParam.defaultvalue = 'Description;Quantity;ReferenceUnit;UnitPrice;Amount';
   // currentParam.tooltip = // texts.tooltip_details_columns;
-  //take the number of columns
-  lengthDetailsColumns = userParam.details_columns.split(";").length;
   currentParam.readValue = function() {
     userParam.details_columns = this.value;
   }
@@ -605,12 +597,11 @@ function convertParam(userParam) {
   } else {
     userParam.details_additional_descriptions = false;
   }
+}
 
+//Footer
+function convertParam_Footer(convertedParam, userParam, texts) {
 
-
-  /*******************************************************************************************
-  * FOOTER
-  ********************************************************************************************/
   currentParam = {};
   currentParam.name = 'footer';
   currentParam.parentObject = 'include';
@@ -646,10 +637,10 @@ function convertParam(userParam) {
    userParam.footer_horizontal_line = this.value;
   }
   convertedParam.data.push(currentParam);
-  
+}
 
-
-
+//Texts
+function convertParam_Texts(convertedParam, userParam, texts) {
 
   /*******************************************************************************************
   * TEXTS
@@ -926,8 +917,11 @@ function convertParam(userParam) {
     currentParam.defaultvalue = langTexts.description+";"+langTexts.quantity+";"+langTexts.reference_unit+";"+langTexts.unit_price+";"+langTexts.amount;
     // currentParam.tooltip = langTexts['param_tooltip_text_details_columns'];
     currentParam.language = langCode;    
+    
+    //take the number of columns
+    let lengthDetailsColumns = userParam.details_columns.split(";").length;
     // take the number of titles
-    lengthDetailsTexts = userParam[langCode+'_text_details_columns'].split(";").length;
+    let lengthDetailsTexts = userParam[langCode+'_text_details_columns'].split(";").length;
     if (lengthDetailsColumns != lengthDetailsTexts) {
       currentParam.errorMsg = "@error "+langTexts[langCodeTitle+'_error1_msg'];
     }
@@ -1152,9 +1146,11 @@ function convertParam(userParam) {
       }
       convertedParam.data.push(currentParam);
     }
-
   }
+}
 
+//Styles and Colors
+function convertParam_Styles(convertedParam, userParam, texts) {
 
   /*******************************************************************************************
   * STYLES
@@ -1193,7 +1189,6 @@ function convertParam(userParam) {
    userParam.font_size = this.value;
   }
   convertedParam.data.push(currentParam);
-
 
 
   /*******************************************************************************************
@@ -1372,12 +1367,11 @@ function convertParam(userParam) {
    userParam.color_text = this.value;
   }
   convertedParam.data.push(currentParam);
+}
 
+//JS and CSS
+function convertParam_Js_Css(convertedParam, userParam, texts) {
 
-
-  /*******************************************************************************************
-  * EMBEDDED JAVASCRIPT FILEE
-  *******************************************************************************************/
   currentParam = {};
   currentParam.name = 'embedded_javascript';
   currentParam.title = texts.embedded_javascript;
@@ -1396,7 +1390,6 @@ function convertParam(userParam) {
   currentParam.type = 'string';
   currentParam.value = userParam.embedded_javascript_filename ? userParam.embedded_javascript_filename : '';
   currentParam.defaultvalue = '';
-  // currentParam.tooltip = // texts.tooltip_javascript_filename;
   currentParam.readValue = function() {
    userParam.embedded_javascript_filename = this.value;
   }
@@ -1409,15 +1402,28 @@ function convertParam(userParam) {
   currentParam.type = 'multilinestring';
   currentParam.value = userParam.css_code ? userParam.css_code : '';
   currentParam.defaultvalue = '';
-  // currentParam.tooltip = // texts.tooltip_javascript_filename;
   currentParam.readValue = function() {
    userParam.css_code = this.value;
   }
   convertedParam.data.push(currentParam);
-
-
-  return convertedParam;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 function initParam() {
 
