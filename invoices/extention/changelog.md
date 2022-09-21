@@ -1,5 +1,15 @@
 # Changelog
  
+## 2022-09-21
+
+* [RELEASE DEV] Released as Dev
+* [RELEASE DEV] Released as Stable
+* [Fix] Fix invoice number is not udpated when changed in the invoice / estimates table
+
+## 2022-09-19
+
+* [Fix] Fix error opening invoice editor when new invoice title is empty
+
 ## 2022-06-30
 
 * [RELEASE DEV] Released as Dev
