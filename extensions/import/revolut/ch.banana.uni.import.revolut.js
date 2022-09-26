@@ -30,218 +30,400 @@
 /**
  * Parse the revolut file and return a string in with data in tab separated
  * 
- * CSV structure
- * Date started (UTC),Date completed (UTC),Date started (Europe/Zurich),Date completed (Europe/Zurich),ID,Type,Description,Reference,Payer,Card number,Orig currency,Orig amount,Payment currency,Amount,Fee,Balance,Account,Beneficiary account number,Beneficiary sort code or routing number,Beneficiary IBAN,Beneficiary BIC
- * 2022-07-03,2022-07-04,2022-07-03,2022-07-04,1234abc-def456,CARD_PAYMENT,Payment with card,,Bruno Frey,1234567890,USD,59.00,CHF,-54.26,-0.22,2621.00,Bank CHF,,,,
- * 2022-07-03,2022-07-03,2022-07-03,2022-07-03,1234abc-def456,CARD_PAYMENT,Payment with card,,Bruno Frey,1234567890,CHF,0.00,CHF,0.00,0.00,2675.48,Bank CHF,,,,2
-*/
-
+ * REVOLUT has two mains platforms: PRIVATE and BUSINESS, each one export csv files
+ * with different format.
+ * 
+ * Private platform does not allow to change or customise csv format, Business one could (to verify)
+ * 
+ * 
+ */
 /**
  * Main function
  */
-function exec(inData,isTest) {
+function exec(inData, isTest) {
 
 
     var convertionParam = "";
     var intermediaryData = "";
+    var transactions = "";
+    var importUtilities = new ImportUtilities(Banana.document);
 
     if (!inData)
         return "";
 
-    var importRevolutTrans = new ImportRevolutTrans(Banana.document);
-
-    if (isTest!==true && !importRevolutTrans.verifyBananaAdvancedVersion())
+    if (isTest !== true && !importUtilities.verifyBananaAdvancedVersion())
         return "";
 
-    //1. Function call to define the conversion parameters
-    convertionParam = importRevolutTrans.defineConversionParam(inData);
-    //2. intermediaryData is an array of objects where the property is the banana column name
-    var intermediaryData = importRevolutTrans.convertCsvToIntermediaryData(inData, convertionParam);
-    //3. sort data
-    intermediaryData = importRevolutTrans.sortData(intermediaryData, convertionParam);
-    //4. translate categories and Description 
-	// can define as much postProcessIntermediaryData function as needed
-	importRevolutTrans.postProcessIntermediaryData(intermediaryData);
+    convertionParam = defineConversionParam(inData);
+    //Add the header if present 
+    if (convertionParam.header) {
+        inData = convertionParam.header + inData;
+    }
+    transactions = Banana.Converter.csvToArray(inData, convertionParam.separator, convertionParam.textDelim);
 
-    //Banana.Ui.showText(JSON.stringify(intermediaryData));
-
-    return importRevolutTrans.convertToBananaFormat(intermediaryData);
-}
-
-var ImportRevolutTrans = class ImportRevolutTrans extends ImportUtilities {
-    constructor(banDocument) {
-        super(banDocument);
+    var importRevolutPrivateFormat1 = new ImportRevolutPrivateFormat1(Banana.document);
+    if (importRevolutPrivateFormat1.match(transactions)) {
+        var intermediaryData = importRevolutPrivateFormat1.convertCsvToIntermediaryData(transactions, convertionParam);
+        intermediaryData = importRevolutPrivateFormat1.sortData(intermediaryData, convertionParam);
+        //importRevolutPrivateFormat1.postProcessIntermediaryData(intermediaryData);
+        return importRevolutPrivateFormat1.convertToBananaFormat(intermediaryData);
     }
 
-    defineConversionParam(inData) {
+    var importRevolutBusinessFormat1 = new ImportRevolutBusinessFormat1(Banana.document);
+    if (importRevolutBusinessFormat1.match(transactions)) {
+        var intermediaryData = importRevolutBusinessFormat1.convertCsvToIntermediaryData(transactions, convertionParam);
+        intermediaryData = importRevolutBusinessFormat1.sortData(intermediaryData, convertionParam);
+        //importRevolutBusinessFormat1.postProcessIntermediaryData(intermediaryData);
+        return importRevolutBusinessFormat1.convertToBananaFormat(intermediaryData);
+    }
 
-        var csvData = Banana.Converter.csvToArray(inData);
-        var header = String(csvData[0]);
-        var convertionParam = {};
-        /** SPECIFY THE SEPARATOR AND THE TEXT DELIMITER USED IN THE CSV FILE */
-        convertionParam.format = "csv"; // available formats are "csv", "html"
-        //get text delimiter
-        convertionParam.textDelim = '\"';
-        // get separator
-        if (header.indexOf(';') >= 0) {
-            convertionParam.separator = ';';
-        } else {
-            convertionParam.separator = ',';
+    // Format is unknow, return an error
+    return "@Error: Unknow format";
+}
+
+/**
+ * CSV  structure
+ * Type,Product,Started Date,Completed Date,Description,Amount,Fee,Currency,State,Balance
+ * CARD_PAYMENT,Current,2022-08-30 14:37:38,2022-09-01 00:41:15,Mafe Neman,-4.99,0.00,CHF,COMPLETED,2804.22
+ * CARD_PAYMENT,Current,2022-08-30 14:13:52,2022-09-01 19:15:38,Rav Kav Online,-14.64,0.00,CHF,COMPLETED,2789.58
+ * 
+ * @param {*} banDocument 
+ */
+var ImportRevolutPrivateFormat1 = class ImportRevolutPrivateFormat1 extends ImportUtilities {
+    constructor(banDocument) {
+        super(banDocument);
+
+        this.colBalance = 9;
+        this.colStartedDate = 2;
+
+        this.dateFormat = "";
+    }
+
+    match(transactions) {
+
+        if (transactions.length === 0)
+            return false;
+        for (var i = 0; i < transactions.length; i++) {
+            var transaction = transactions[i];
+
+            var formatMatched = false;
+
+            /* array should have all columns */
+            if (transaction.length === (this.colBalance + 1))
+                formatMatched = true;
+            else
+                formatMatched = false;
+
+            //18 as the format is YYYY-MM-DD HH:MM:SS -> 2022-01-01 00:00:00
+            if (formatMatched && transaction[this.colStartedDate].length > 18 &&
+                transaction[this.colStartedDate].match(/^[0-9]+(\-|\.)[0-9]+(\-|\.)[0-9]+\s[0-9]+\:[0-9]+(\:[0-9]+)?$/))
+                formatMatched = true;
+            else
+                formatMatched = false;
+
+            if (formatMatched)
+                return true;
+        }
+        return false;
+    }
+
+    formatColumnsNames(columnsTemps) {
+        let columns = [];
+        for (var i = 0; i <= columnsTemps.length; i++) {
+            var colName = columnsTemps[i];
+            /**
+             * Actually we use Started Date as the Completed Date is not Always present
+             * Could be possible to check the state of the transaction using the field "State" to 
+             * define wich date to use, as far we know a transaction can have two main states: COMPLETED 
+             * and PENDING.
+             */
+            switch (colName) {
+                case "Started Date":
+                    colName = "Date";
+                    break;
+            }
+            columns.push(colName);
         }
 
-        /** SPECIFY AT WHICH ROW OF THE CSV FILE IS THE HEADER (COLUMN TITLES)
-		We suppose the data will always begin right away after the header line */
-        convertionParam.headerLineStart = 0;
-        convertionParam.dataLineStart = 1;
-
-        /** SPECIFY THE COLUMN TO USE FOR SORTING
-		If sortColums is empty the data are not sorted */
-        convertionParam.sortColums = ["Date", "Description"];
-        convertionParam.sortDescending = false;
-
-        /* rowConvert is a function that convert the inputRow (passed as parameter)
-         *  to a convertedRow object */
-        convertionParam.rowConverter = function(inputRow) {
-            let convertedRow={};
-            return translateHeader(inputRow, convertedRow);
-        }
-
-        return convertionParam;
+        return columns;
     }
 
     //Override the utilities method by adding language control
-    convertCsvToIntermediaryData(inData, convertionParam) {
+    convertCsvToIntermediaryData(transactions, convertionParam) {
         var form = [];
         var intermediaryData = [];
-        //Add the header if present 
-        if (convertionParam.header) {
-            inData = convertionParam.header + inData;
-        }
-
-        //Read the CSV file and create an array with the data
-        var csvFile = Banana.Converter.csvToArray(inData, convertionParam.separator, convertionParam.textDelim);
 
         //Variables used to save the columns titles and the rows values
-        var columnsTemps = this.getHeaderData(csvFile, convertionParam.headerLineStart); //array
-        var rows = this.getRowData(csvFile, convertionParam.dataLineStart); //array of array
-        let columns=[];
+        var columnsTemps = this.getHeaderData(transactions, convertionParam.headerLineStart); //array
+        var rows = this.getRowData(transactions, convertionParam.dataLineStart); //array of array
+        let columns = [];
 
         //format the columns
-        columns=formatColumnsNames(columnsTemps);
+        columns = this.formatColumnsNames(columnsTemps);
 
         //Load the form with data taken from the array. Create objects
         this.loadForm(form, columns, rows);
 
-        let convertedRow;
-
         //For each row of the form, we call the rowConverter() function and we save the converted data
         for (var i = 0; i < form.length; i++) {
-            convertedRow = convertionParam.rowConverter(form[i]);
+            let convertedRow = {};
+            convertedRow = this.translateHeader(form[i], convertedRow);
             intermediaryData.push(convertedRow);
         }
 
         return intermediaryData;
     }
-    //The purpose of this function is to let the user specify how to convert the categories
-	postProcessIntermediaryData(intermediaryData) {
-		/** INSERT HERE THE LIST OF ACCOUNTS NAME AND THE CONVERSION NUMBER 
-		*   If the content of "Account" is the same of the text 
-		*   it will be replaced by the account number given */
-		//Accounts conversion
-		var accounts = {
-			//...
-		}
 
-		/** INSERT HERE THE LIST OF CATEGORIES NAME AND THE CONVERSION NUMBER 
-		*   If the content of "ContraAccount" is the same of the text 
-		*   it will be replaced by the account number given */
+    translateHeader(inputRow, convertedRow) {
+        //get the Banana Columns Name from csv file columns name
+        let descText = "";
+        let amountValue = "";
+        let feeValue = "";
+        let totAmount = "";
 
-		//Categories conversion
-		var categories = {
-			//...
-		}
+        let dateText = inputRow["Date"].substring(0, 10);
 
-		//Apply the conversions
-		for (var i = 0; i < intermediaryData.length; i++) {
-			var convertedData = intermediaryData[i];
+        convertedRow['Date'] = Banana.Converter.toInternalDateFormat(dateText, "yyyy-mm-dd");
+        descText = inputRow["Description"] + ", " + inputRow["Product"] + " " + inputRow["Type"];
+        convertedRow["Description"] = descText;
 
-			//Invert values
-			if (convertedData["Expenses"]) {
-				convertedData["Expenses"] = Banana.SDecimal.invert(convertedData["Expenses"]);
-			}
-		}
-	}
+        //get the total amount
+        amountValue = inputRow["Amount"];
+        feeValue = inputRow["Fee"];
+        totAmount = calculateAmount(amountValue, feeValue);
+        //define if the amount is an income or an expenses.
+        convertedRow["Expenses"] = "";
+        convertedRow["Income"] = "";
 
-    //Check if the version of Banana Accounting is compatible with this class
-    verifyBananaAdvancedVersion() {
-        if (!this.banDocument)
-            return false;
-
-        if (!Banana.application.license || Banana.application.license.licenseType !== "advanced") {
-            var lang = this.getLang();
-            var msg = "This extension requires Banana Accounting+ Advanced";
-            this.banDocument.addMessage(msg, "ID_ERR_LICENSE_NOTVALID");
-            return false;
+        if (inputRow["Amount"].indexOf("-") == -1) {
+            convertedRow["Income"] = totAmount;
+        } else {
+            convertedRow["Expenses"] = totAmount;
         }
 
-        return true;
+        return convertedRow;
     }
-}
 
-function formatColumnsNames(columnsTemps){
-    let columns=[];
-    for (var i=0;i<=columnsTemps.length;i++) {
-        var colName = columnsTemps[i];
-        switch(colName){
-            case "Date completed (UTC)":
-                colName = "Date";
-                break;
-            case "Card number":
-                colName = "CardNr";
-                break;
-            case "Orig currency":
-                colName = "OrigCurr";
-                break;
-            case "Orig amount":
-                colName = "OrigAmount";
-                break;
-            case "Payment currency":
-                colName = "PaymentCurr";
-                break;
+    //The purpose of this function is to let the user specify how to convert the categories
+    postProcessIntermediaryData(intermediaryData) {
+        /** INSERT HERE THE LIST OF ACCOUNTS NAME AND THE CONVERSION NUMBER 
+         *   If the content of "Account" is the same of the text 
+         *   it will be replaced by the account number given */
+        //Accounts conversion
+        var accounts = {
+            //...
+        }
+
+        /** INSERT HERE THE LIST OF CATEGORIES NAME AND THE CONVERSION NUMBER 
+         *   If the content of "ContraAccount" is the same of the text 
+         *   it will be replaced by the account number given */
+
+        //Categories conversion
+        var categories = {
+            //...
+        }
+
+        //Apply the conversions
+        for (var i = 0; i < intermediaryData.length; i++) {
+            var convertedData = intermediaryData[i];
+
+            //Invert values
+            if (convertedData["Expenses"]) {
+                convertedData["Expenses"] = Banana.SDecimal.invert(convertedData["Expenses"]);
             }
-        columns.push(colName);
+        }
     }
-
-    return columns;
 }
 
-function translateHeader(inputRow, convertedRow) {
-    //get the Banana Columns Name from csv file columns name
-    let descText="";
-    let totAmount="";
-    let amountValue="";
+/**
+ * CSV  structure
+ * Date started (UTC),Date completed (UTC),Date started (Europe/Zurich),Date completed (Europe/Zurich),ID,Type,Description,Reference,Payer,Card number,Orig currency,Orig amount,Payment currency,Amount,Fee,Balance,Account,Beneficiary account number,Beneficiary sort code or routing number,Beneficiary IBAN,Beneficiary BIC
+ * 2022-07-03,2022-07-04,2022-07-03,2022-07-04,1234abc-def456,CARD_PAYMENT,Payment with card,,Bruno Frey,1234567890,USD,59.00,CHF,-54.26,-0.22,2621.00,Bank CHF,,,,
+ * 2022-07-03,2022-07-03,2022-07-03,2022-07-03,1234abc-def456,CARD_PAYMENT,Payment with card,,Bruno Frey,1234567890,CHF,0.00,CHF,0.00,0.00,2675.48,Bank CHF,,,,2
+ * @param {*} banDocument 
+ */
+var ImportRevolutBusinessFormat1 = class ImportRevolutBusinessFormat1 extends ImportUtilities {
+    constructor(banDocument) {
+        super(banDocument);
 
-    convertedRow['Date'] = Banana.Converter.toInternalDateFormat(inputRow["Date"], "yyyy.mm.dd");
-    descText=inputRow["Description"]+" "+inputRow["Reference"]+" "+" Original Amount "+inputRow["OrigCurr"]+" "+inputRow["OrigAmount"]+" Amount "+inputRow["PaymentCurr"]+" "+getAmountWithoutSign(inputRow["Amount"])+" Fee "+inputRow["PaymentCurr"]+" "+getAmountWithoutSign(inputRow["Fee"]);
-    convertedRow["Description"] = descText;
-    convertedRow["ExternalReference"] = inputRow["ID"];
-
-    //get the total amount
-    amountValue=inputRow["Amount"];
-    feeValue=inputRow["Fee"];
-    totAmount = calculateAmount(amountValue,feeValue);
-    //define if the amount is an income or an expenses.
-    convertedRow["Expenses"]="";
-    convertedRow["Income"]="";
-
-    if(inputRow["Amount"].indexOf("-")==-1){
-        convertedRow["Income"]=totAmount;
-    }else{
-        convertedRow["Expenses"]=totAmount;
+        this.colBeneficiaryBic = 20; //Last column
+        this.colDateCompletedUTC = 1;
+        this.colId = 4; //Present only in business version
     }
 
+    match(inData) {
 
-    return convertedRow;
+        if (inData.length === 0)
+            return false;
+        for (var i = 0; i < inData.length; i++) {
+            var transaction = inData[i];
+
+            var formatMatched = false;
+
+            /* array should have all columns */
+            if (transaction.length === (this.colBeneficiaryBic + 1))
+                formatMatched = true;
+            else
+                formatMatched = false;
+
+            //9 as the format is YYYY-MM-DD
+            if (formatMatched && transaction[this.colDateCompletedUTC].length > 9 &&
+                transaction[this.colDateCompletedUTC].match(/^[0-9]+(\-|\.)[0-9]+(\-|\.)[0-9]/))
+                formatMatched = true;
+            else
+                formatMatched = false;
+            // id column is present only in the Business
+            if (formatMatched && transaction[this.colId].length >= 0)
+                formatMatched = true;
+            else
+                formatMatched = false;
+
+            if (formatMatched)
+                return true;
+        }
+
+    }
+
+    formatColumnsNames(columnsTemps) {
+        let columns = [];
+        for (var i = 0; i <= columnsTemps.length; i++) {
+            var colName = columnsTemps[i];
+            switch (colName) {
+                case "Date started (UTC)":
+                    colName = "Date";
+                    break;
+                case "Card number":
+                    colName = "CardNr";
+                    break;
+                case "Orig currency":
+                    colName = "OrigCurr";
+                    break;
+                case "Orig amount":
+                    colName = "OrigAmount";
+                    break;
+                case "Payment currency":
+                    colName = "PaymentCurr";
+                    break;
+            }
+            columns.push(colName);
+        }
+
+        return columns;
+    }
+
+    //Override the utilities method by adding language control
+    convertCsvToIntermediaryData(transactions, convertionParam) {
+        var form = [];
+        var intermediaryData = [];
+
+        //Variables used to save the columns titles and the rows values
+        var columnsTemps = this.getHeaderData(transactions, convertionParam.headerLineStart); //array
+        var rows = this.getRowData(transactions, convertionParam.dataLineStart); //array of array
+        let columns = [];
+
+        //format the columns
+        columns = this.formatColumnsNames(columnsTemps);
+
+        //Load the form with data taken from the array. Create objects
+        this.loadForm(form, columns, rows);
+
+        //For each row of the form, we call the rowConverter() function and we save the converted data
+        for (var i = 0; i < form.length; i++) {
+            let convertedRow = {};
+            convertedRow = this.translateHeader(form[i], convertedRow);
+            intermediaryData.push(convertedRow);
+        }
+
+        return intermediaryData;
+    }
+
+    translateHeader(inputRow, convertedRow) {
+        //Get the Banana Columns Name from csv file columns name
+        let descText = "";
+        let amountValue = "";
+        let feeValue = "";
+        let totAmount = "";
+
+        convertedRow['Date'] = Banana.Converter.toInternalDateFormat(inputRow["Date"], "yyyy-mm-dd");
+        descText = inputRow["Description"] + ", " + inputRow["Reference"] + " " + inputRow["Type"];
+        convertedRow["Description"] = descText;
+        convertedRow["ExternalReference"] = inputRow["ID"];
+
+        //Get the total amount
+        amountValue = inputRow["Amount"];
+        feeValue = inputRow["Fee"];
+        totAmount = calculateAmount(amountValue, feeValue);
+        //Define if the amount is an income or an expenses.
+        convertedRow["Expenses"] = "";
+        convertedRow["Income"] = "";
+
+        if (inputRow["Amount"].indexOf("-") == -1) {
+            convertedRow["Income"] = totAmount;
+        } else {
+            convertedRow["Expenses"] = totAmount;
+        }
+
+        return convertedRow;
+    }
+
+    //The purpose of this function is to let the user specify how to convert the categories
+    postProcessIntermediaryData(intermediaryData) {
+        /** INSERT HERE THE LIST OF ACCOUNTS NAME AND THE CONVERSION NUMBER 
+         *   If the content of "Account" is the same of the text 
+         *   it will be replaced by the account number given */
+        //Accounts conversion
+        var accounts = {
+            //...
+        }
+
+        /** INSERT HERE THE LIST OF CATEGORIES NAME AND THE CONVERSION NUMBER 
+         *   If the content of "ContraAccount" is the same of the text 
+         *   it will be replaced by the account number given */
+
+        //Categories conversion
+        var categories = {
+            //...
+        }
+
+        //Apply the conversions
+        for (var i = 0; i < intermediaryData.length; i++) {
+            var convertedData = intermediaryData[i];
+
+            //Invert values
+            if (convertedData["Expenses"]) {
+                convertedData["Expenses"] = Banana.SDecimal.invert(convertedData["Expenses"]);
+            }
+        }
+    }
+}
+
+function defineConversionParam(inData) {
+
+    var csvData = Banana.Converter.csvToArray(inData);
+    var header = String(csvData[0]);
+    var convertionParam = {};
+    /** SPECIFY THE SEPARATOR AND THE TEXT DELIMITER USED IN THE CSV FILE */
+    convertionParam.format = "csv"; // available formats are "csv", "html"
+    //get text delimiter
+    convertionParam.textDelim = '\"';
+    // get separator
+    if (header.indexOf(';') >= 0) {
+        convertionParam.separator = ';';
+    } else {
+        convertionParam.separator = ',';
+    }
+
+    /** SPECIFY AT WHICH ROW OF THE CSV FILE IS THE HEADER (COLUMN TITLES)
+    We suppose the data will always begin right away after the header line */
+    convertionParam.headerLineStart = 0;
+    convertionParam.dataLineStart = 1;
+
+    /** SPECIFY THE COLUMN TO USE FOR SORTING
+    If sortColums is empty the data are not sorted */
+    convertionParam.sortColums = ["Date", "Description"];
+    convertionParam.sortDescending = false;
+
+    return convertionParam;
 }
 /**
  * Returns the amount without sign.
@@ -250,18 +432,18 @@ function translateHeader(inputRow, convertedRow) {
  * -fee
  * @param {*} amount 
  */
-function getAmountWithoutSign(amount){
-    let cleanAmt="";
-    if(amount.indexOf("-")!=-1){
-        cleanAmt=amount.replace("-","");
+function getAmountWithoutSign(amount) {
+    let cleanAmt = "";
+    if (amount.indexOf("-") != -1) {
+        cleanAmt = amount.replace("-", "");
         return cleanAmt;
-    }else{
+    } else {
         return amount;
     }
 }
 
-function calculateAmount(netAmount,fee){
-    let amount="";
-    amount=Banana.SDecimal.add(netAmount,fee);
+function calculateAmount(netAmount, fee) {
+    let amount = "";
+    amount = Banana.SDecimal.add(Banana.SDecimal.abs(netAmount), Banana.SDecimal.abs(fee));
     return amount;
 }

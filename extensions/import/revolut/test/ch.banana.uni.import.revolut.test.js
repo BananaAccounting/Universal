@@ -59,7 +59,8 @@ TestImportRevolutTrans.prototype.cleanup = function() {
 TestImportRevolutTrans.prototype.testImport = function() {
    var fileNameList = [];
 
-   fileNameList.push("file:script/../test/testcases/revolut_transactions_example.csv");
+   fileNameList.push("file:script/../test/testcases/ch.banana.revolut.transactions.business1_20222609.csv");
+   fileNameList.push("file:script/../test/testcases/ch.banana.revolut.transactions.private1_20222609.csv");
    
    var parentLogger = this.testLogger;
    this.progressBar.start(fileNameList.length);
