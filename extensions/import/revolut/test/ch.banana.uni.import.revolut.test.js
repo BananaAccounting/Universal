@@ -14,18 +14,18 @@
 //
 
 
-// @id = import.csv.revolut.test
+// @id = ch.banana.uni.import.revolut.test
 // @api = 1.0
 // @pubdate = 2021-03-08
 // @publisher = Banana.ch SA
-// @description = <TEST import.csv.revolut.test>
+// @description = <TEST ch.banana.uni.import.revolut.test>
 // @task = app.command
 // @doctype = *.*
 // @docproperties = 
 // @outputformat = none
 // @inputdataform = none
-// @includejs = ../import.utilities.js
-// @includejs = ../ch.banana.uni.import.revolut.js
+// @includejs = ../ch.banana.uni.import.revolut.sbaa/import.utilities.js
+// @includejs = ../ch.banana.uni.import.revolut.sbaa/ch.banana.uni.import.revolut.js
 // @timeout = -1
 
 // Register test case to be executed
