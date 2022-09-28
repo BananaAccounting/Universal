@@ -24,8 +24,8 @@
 // @docproperties = 
 // @outputformat = none
 // @inputdataform = none
-// @includejs = ../import.utilities.js
-// @includejs = ../ch.banana.uni.import.yokoy.js
+// @includejs = ../ch.banana.uni.import.yokoy.sbaa/import.utilities.js
+// @includejs = ../ch.banana.uni.import.yokoy.sbaa/ch.banana.uni.import.yokoy.js
 // @timeout = -1
 
 // Register test case to be executed
