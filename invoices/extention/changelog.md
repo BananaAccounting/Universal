@@ -1,5 +1,16 @@
 # Changelog
  
+## 2022-09-29
+
+* [RELEASE DEV] Released as Dev
+* [RELEASE DEV] Released as Stable
+* [Fix] Fix changing from incl vat to excl vat or vice versa should not change the unit price.
+ This could be correct from a develop point of view to update the unit price, 
+ but from a user point of view this is not logical and a cause of errors.
+* [Fix] Fix entering the customer does't visualize the corresponding customer entry
+* [Fix] Apply changes to new documents settings to the current document
+ User expect that changes in the settins tab also update the settings of the currente invoice.
+
 ## 2022-09-21
 
 * [RELEASE DEV] Released as Dev
