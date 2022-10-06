@@ -1,5 +1,32 @@
 # Changelog
+
+## 2022-09-21
+
+The following changes are only available with the latest BananaPlus version (10.0.13.201 or newer).
+
+* [Enhancement] Adapt to Qt6
+* [Enhancement] Simplify and reorganize views for new files
+  * Only the views Base and Full are visible per default
+  * The available views are called Base, Custom 1, Custom 2 and Full
+  * The field Begin text is visible per default
+  * The address fields Prefix, Extra and PO and visible per default
+  * The items columns Quantitiy and Unit price are visible per default
+  * The field deposit is visible per default
+  * For existing files those settings remain unchanged
+* [Enhancement] Remove field Customer reference (custom fields are used instead)
+* [Enhancement] Separate fields Phone/Email and Vat-/Fiscal-Number
+* [Enhancement] Let open protected invoices and estimates in read only mode
+* [Enhancement] Add command print delivery note (it works only with xxx layout)
+* [Enhancement] Add command print reminder (it works only with xxx layout)
  
+## 2022-09-21
+
+* [Fix] Fix invoice number is not udpated when changed in the invoice / estimates table
+
+## 2022-09-19
+
+* [Fix] Fix error opening invoice editor when new invoice title is empty
+
 ## 2022-06-30
 
 * [RELEASE DEV] Released as Dev
