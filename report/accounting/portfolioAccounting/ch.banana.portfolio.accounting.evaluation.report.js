@@ -510,7 +510,7 @@ function exec(inData, options) {
     let banDoc=Banana.document;
     let docInfo=getDocumentInfo(banDoc);
 
-    if (docInfo.isMultiCurrency || !verifyBananaVersion())
+    if (isMultiCurrency(banDoc) || !verifyBananaVersion())
         return "@Cancel";
 
     var comboboxParam = getComboBoxElement();
