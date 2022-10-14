@@ -20,7 +20,7 @@
 %Begin test data
 \begin{reportvalue}{FILENAME: file:script/../test/testcases/portfolio\_accounting\_double\_entry\_multi\_currency\_tutorial.ac2}
 \begin{longtable}[l]{ l  l  l  l  l  l  l  l  l  l  l  l  l  l  l }
-\excltest{Securities Reconciliation Report, Data as of: 15.04.2022} Account  & Item  & Date  & Doc  & Description  & Debit\P Item Currency  & Credit\P Item Currency  & Balance\P Item Currency  & Debit CHF  & Credit CHF  & Balance CHF  & Quantity   & Unit Price   & Quantity balance  & Current.\P Average cost\P  \\
+\excltest{Securities Reconciliation Report, Data as of: 14.10.2022} Account  & Security  & Date  & Doc  & Description  & Debit\P Security Currency  & Credit\P Security Currency  & Balance\P Security Currency  & Debit CHF  & Credit CHF  & Balance CHF  & Quantity   & Unit Price   & Quantity balance  & Book value \P  per unit\P  \\
 \multicolumn{15}{l}{Shares Unicredit }\\
  & \multicolumn{14}{l}{IT0005239360 }\\
  &  & 01.01.2022  & 1  & Shares Unicredit Purchase  & 1'000.00  &  & 1'000.00  & 1'100.00  &  & 1'100.00  & 100.00  & 10.00  & 100.00  & 10.00 \\
@@ -37,35 +37,35 @@
  &  & 28.02.2022  & 9  & Shares Unicredit Profit  & 1.25  &  & 831.25  & 1.44  &  & 909.03  &  &  & 80.00  & 10.39 \\
  &  & 28.02.2022  & 9  & Sale Unicredit Exchange rate profit  &  &  & 831.25  & 6.36  &  & 915.39  &  &  & 80.00  & 10.39 \\
  &  & 01.03.2022  & 10  & Unicredit, adjustment to the price of 11.00  & 48.75  &  & 880.00  & 53.63  &  & 969.02  &  &  & 80.00  & 11.00 \\
-\multicolumn{2}{l}{} & \excltest{15.04.2022}  &  & Balance IT0005239360  & 1'690.00  & 810.00  & 880.00  & 1'891.22  & 922.20  & 969.02  & \multicolumn{2}{l}{} & 80.00  & 11.00 \\
+\multicolumn{2}{l}{} & \excltest{14.10.2022}  &  & Balance IT0005239360  & 1'690.00  & 810.00  & 880.00  & 1'891.22  & 922.20  & 969.02  & \multicolumn{2}{l}{} & 80.00  & 11.00 \\
 \multicolumn{15}{l}{}\\
-\multicolumn{2}{l}{} & \excltest{15.04.2022}  &  & \multicolumn{3}{l}{Opening Balance Shares Unicredit } &  & 0.00  & 0.00  & \multicolumn{5}{l}{}\\
-\multicolumn{2}{l}{} & \excltest{15.04.2022}  &  & \multicolumn{3}{l}{Current Balance Shares Unicredit } &  & 880.00  & 969.02  & \multicolumn{5}{l}{}\\
-\multicolumn{2}{l}{} & \excltest{15.04.2022}  &  & \multicolumn{3}{l}{Total securities movements } &  & 880.00  & 969.02  & \multicolumn{5}{l}{}\\
-\multicolumn{2}{l}{} & \excltest{15.04.2022}  &  & \multicolumn{3}{l}{Differences } &  & 0.00  & 0.00  & \multicolumn{5}{l}{}\\
+\multicolumn{2}{l}{} & \excltest{14.10.2022}  &  & \multicolumn{3}{l}{Opening Balance Shares Unicredit } &  & 0.00  & 0.00  & \multicolumn{5}{l}{}\\
+\multicolumn{2}{l}{} & \excltest{14.10.2022}  &  & \multicolumn{3}{l}{Current Balance Shares Unicredit } &  & 880.00  & 969.02  & \multicolumn{5}{l}{}\\
+\multicolumn{2}{l}{} & \excltest{14.10.2022}  &  & \multicolumn{3}{l}{Total securities movements } &  & 880.00  & 969.02  & \multicolumn{5}{l}{}\\
+\multicolumn{2}{l}{} & \excltest{14.10.2022}  &  & \multicolumn{3}{l}{Differences } &  & 0.00  & 0.00  & \multicolumn{5}{l}{}\\
 \multicolumn{15}{l}{Shares UBS }\\
  & \multicolumn{14}{l}{CH003886335 }\\
  &  & 20.01.2022  & 2  & Shares UBS Purchase  & 110.00  &  & 110.00  & 110.00  &  & 110.00  & 10.00  & 11.00  & 10.00  & 11.00 \\
  &  & 20.03.2022  & 5  & Shares UBS Total Sale  &  & 57.50  & 52.50  &  & 57.50  & 52.50  &  &  & 10.00  & 5.25 \\
  &  & 20.03.2022  & 5  & Shares UBS Profit on sale  & 2.50  &  & 55.00  & 2.50  &  & 55.00  &  &  & 10.00  & 5.50 \\
-\multicolumn{2}{l}{} & \excltest{15.04.2022}  &  & Balance CH003886335  & 112.50  & 57.50  & 55.00  & 112.50  & 57.50  & 55.00  & \multicolumn{2}{l}{} & 10.00  & 5.50 \\
+\multicolumn{2}{l}{} & \excltest{14.10.2022}  &  & Balance CH003886335  & 112.50  & 57.50  & 55.00  & 112.50  & 57.50  & 55.00  & \multicolumn{2}{l}{} & 10.00  & 5.50 \\
 \multicolumn{15}{l}{}\\
-\multicolumn{2}{l}{} & \excltest{15.04.2022}  &  & \multicolumn{3}{l}{Opening Balance Shares UBS } &  & 0.00  & 0.00  & \multicolumn{5}{l}{}\\
-\multicolumn{2}{l}{} & \excltest{15.04.2022}  &  & \multicolumn{3}{l}{Current Balance Shares UBS } &  & 55.00  & 55.00  & \multicolumn{5}{l}{}\\
-\multicolumn{2}{l}{} & \excltest{15.04.2022}  &  & \multicolumn{3}{l}{Total securities movements } &  & 55.00  & 55.00  & \multicolumn{5}{l}{}\\
-\multicolumn{2}{l}{} & \excltest{15.04.2022}  &  & \multicolumn{3}{l}{Differences } &  & 0.00  & 0.00  & \multicolumn{5}{l}{}\\
+\multicolumn{2}{l}{} & \excltest{14.10.2022}  &  & \multicolumn{3}{l}{Opening Balance Shares UBS } &  & 0.00  & 0.00  & \multicolumn{5}{l}{}\\
+\multicolumn{2}{l}{} & \excltest{14.10.2022}  &  & \multicolumn{3}{l}{Current Balance Shares UBS } &  & 55.00  & 55.00  & \multicolumn{5}{l}{}\\
+\multicolumn{2}{l}{} & \excltest{14.10.2022}  &  & \multicolumn{3}{l}{Total securities movements } &  & 55.00  & 55.00  & \multicolumn{5}{l}{}\\
+\multicolumn{2}{l}{} & \excltest{14.10.2022}  &  & \multicolumn{3}{l}{Differences } &  & 0.00  & 0.00  & \multicolumn{5}{l}{}\\
 \multicolumn{15}{l}{Bonds Bnp Paribas }\\
  & \multicolumn{14}{l}{IT000792468 }\\
  &  & 25.03.2022  & 11  & Bonds Bnp Paribas Purchase  & 4'900.00  &  & 4'900.00  & 5'390.00  &  & 5'390.00  & 5'000.00  & 0.98  & 5'000.00  & 0.98 \\
  &  & 31.10.2022  & 13  & Bonds Bnp Paribas Total Sale  &  & 5'125.00  & -225.00  &  & 5'791.25  & -401.25  & -5'000.00  & 1.03  & 0.00  & \\
  &  & 31.10.2022  & 13  & Bonds Bnp Paribas Profit on sale  & 225.00  &  & 0.00  & 254.25  &  & -147.00  &  &  & 0.00  & \\
  &  & 31.10.2022  & 13  & Bonds Bnp Paribas Exchange rate Profit  &  &  & 0.00  & 153.75  &  & 6.75  &  &  & 0.00  & \\
-\multicolumn{2}{l}{} & \excltest{15.04.2022}  &  & Balance IT000792468  & 5'125.00  & 5'125.00  & 0.00  & 5'798.00  & 5'791.25  & 6.75  & \multicolumn{2}{l}{} & 0.00  & 0.00 \\
+\multicolumn{2}{l}{} & \excltest{14.10.2022}  &  & Balance IT000792468  & 5'125.00  & 5'125.00  & 0.00  & 5'798.00  & 5'791.25  & 6.75  & \multicolumn{2}{l}{} & 0.00  & 0.00 \\
 \multicolumn{15}{l}{}\\
-\multicolumn{2}{l}{} & \excltest{15.04.2022}  &  & \multicolumn{3}{l}{Opening Balance Bonds Bnp Paribas } &  & 0.00  & 0.00  & \multicolumn{5}{l}{}\\
-\multicolumn{2}{l}{} & \excltest{15.04.2022}  &  & \multicolumn{3}{l}{Current Balance Bonds Bnp Paribas } &  & 0.00  & 6.75  & \multicolumn{5}{l}{}\\
-\multicolumn{2}{l}{} & \excltest{15.04.2022}  &  & \multicolumn{3}{l}{Total securities movements } &  & 0.00  & 6.75  & \multicolumn{5}{l}{}\\
-\multicolumn{2}{l}{} & \excltest{15.04.2022}  &  & \multicolumn{3}{l}{Differences } &  & 0.00  & 0.00  & \multicolumn{5}{l}{}\\
+\multicolumn{2}{l}{} & \excltest{14.10.2022}  &  & \multicolumn{3}{l}{Opening Balance Bonds Bnp Paribas } &  & 0.00  & 0.00  & \multicolumn{5}{l}{}\\
+\multicolumn{2}{l}{} & \excltest{14.10.2022}  &  & \multicolumn{3}{l}{Current Balance Bonds Bnp Paribas } &  & 0.00  & 6.75  & \multicolumn{5}{l}{}\\
+\multicolumn{2}{l}{} & \excltest{14.10.2022}  &  & \multicolumn{3}{l}{Total securities movements } &  & 0.00  & 6.75  & \multicolumn{5}{l}{}\\
+\multicolumn{2}{l}{} & \excltest{14.10.2022}  &  & \multicolumn{3}{l}{Differences } &  & 0.00  & 0.00  & \multicolumn{5}{l}{}\\
 \end{longtable}
 \end{reportvalue}
 \end{document}

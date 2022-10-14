@@ -30,7 +30,7 @@
 
 
 function addTableBaSAppraisal(report) {
-    let current_date=new Date()
+    let current_date=new Date();
     current_date=Banana.Converter.toInternalDateFormat(current_date);
     var table_bas_appraisal = report.addTable('myAppraisalTable');
     table_bas_appraisal.setStyleAttributes("width:100%;");
@@ -40,7 +40,7 @@ function addTableBaSAppraisal(report) {
     table_bas_appraisal.addColumn("Quantity").setStyleAttributes("width:15%");
     table_bas_appraisal.addColumn("Unit Cost").setStyleAttributes("width:15%");
     table_bas_appraisal.addColumn("Total Cost").setStyleAttributes("width:15%");
-    table_bas_appraisal.addColumn("Market Price").setStyleAttributes("width:10%");
+    table_bas_appraisal.addColumn("Market Price").setStyleAttributes("width:15%");
     table_bas_appraisal.addColumn("Market Value").setStyleAttributes("width:15%");
     table_bas_appraisal.addColumn("% of Port").setStyleAttributes("width:15%");
     table_bas_appraisal.addColumn("Un. Gain or Loss").setStyleAttributes("width:15%");
@@ -52,11 +52,11 @@ function addTableBaSAppraisal(report) {
     var tableRow = tableHeader.addRow();
     tableRow.addCell("Type/Security", "styleTablesHeaderText");
     tableRow.addCell("ISIN", "styleTablesHeaderText");
-    tableRow.addCell("Quantity", "styleTablesHeaderText");
-    tableRow.addCell("Unit Cost", "styleTablesHeaderText");
-    tableRow.addCell("Total Cost", "styleTablesHeaderText");
-    tableRow.addCell("Market Price", "styleTablesHeaderText");
-    tableRow.addCell("Market Value", "styleTablesHeaderText");
+    tableRow.addCell("Current quantity", "styleTablesHeaderText");
+    tableRow.addCell("Book value\nper unit", "styleTablesHeaderText");
+    tableRow.addCell("Book value", "styleTablesHeaderText");
+    tableRow.addCell("Market value\nper unit", "styleTablesHeaderText");
+    tableRow.addCell("Market value", "styleTablesHeaderText");
     tableRow.addCell("% of Port", "styleTablesHeaderText");
     tableRow.addCell("Un. Gain or Loss", "styleTablesHeaderText");
     tableRow.addCell("% G/L", "styleTablesHeaderText");
@@ -75,7 +75,7 @@ function addTableBaSTransactions(report) {
     //columns definition
     table_bas_transactions_details.addColumn("Date").setStyleAttributes("width:15%");
     table_bas_transactions_details.addColumn("Doc").setStyleAttributes("width:10%");
-    table_bas_transactions_details.addColumn("Item").setStyleAttributes("width:15%");
+    table_bas_transactions_details.addColumn("Security").setStyleAttributes("width:15%");
     table_bas_transactions_details.addColumn("Description").setStyleAttributes("width:30%");
     table_bas_transactions_details.addColumn("Debit").setStyleAttributes("width:20%");
     table_bas_transactions_details.addColumn("Credit").setStyleAttributes("width:20%");
@@ -85,7 +85,7 @@ function addTableBaSTransactions(report) {
     //headers definition
     tableRow.addCell("Date", "styleTablesHeaderText");
     tableRow.addCell("Doc", "styleTablesHeaderText");
-    tableRow.addCell("Item", "styleTablesHeaderText");
+    tableRow.addCell("Security", "styleTablesHeaderText");
     tableRow.addCell("Description", "styleTablesHeaderText");
     tableRow.addCell("Debit", "styleTablesHeaderText");
     tableRow.addCell("Credit", "styleTablesHeaderText");
