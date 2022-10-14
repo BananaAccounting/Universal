@@ -66,7 +66,7 @@
      <item>
       <widget class="QPushButton" name="showResultsPreview_button">
        <property name="text">
-        <string>Calculate resultss</string>
+        <string>Calculate results</string>
        </property>
       </widget>
      </item>
