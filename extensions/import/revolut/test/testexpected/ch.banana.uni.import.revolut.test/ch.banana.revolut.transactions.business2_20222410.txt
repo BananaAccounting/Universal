@@ -1,4 +1,4 @@
-%%info_test_name{ch.banana.revolut.transactions.business1_20222609}
+%%info_test_name{ch.banana.revolut.transactions.business2_20222410}
 \documentclass{report}
 \usepackage{longtable}
 \usepackage{color}
@@ -20,14 +20,13 @@
 %Begin test data
 \begin{tablevalue}{}{ l  l  l  l  l }
 Date & Description & ExternalReference & Expenses & Income\\
-2022-05-28 & CARD\_PAYMENT, Payment with card  & 1234abc-def456 & 5.07 & \\
-2022-05-30 & CARD\_PAYMENT, Payment with card  & 1234abc-def456 & 20.00 & \\
-2022-06-02 & CARD\_PAYMENT, Payment with card  & 1234abc-def456 & 8.33 & \\
-2022-06-22 & CARD\_PAYMENT, Payment with card  & 1234abc-def456 & 233.85 & \\
-2022-06-24 & CARD\_PAYMENT, Payment with card  & 1234abc-def456 & 836.32 & \\
-2022-06-28 & TOPUP, Payment from Nexum AG 123abc & 1234abc-def456 &  & 2475.00\\
-2022-07-03 & CARD\_PAYMENT, Payment with card  & 1234abc-def456 &  & 0\\
-2022-07-03 & CARD\_PAYMENT, Payment with card  & 1234abc-def456 & 54.48 & \\
+2022-08-15 & PARTUDAM, At Lintuunt Potioniusa Aura. Possico by LUVA-7868/7 et 14/54/7002 & 55qe20p3-2nr0-a77p-jpn8-6810h5726d7m & 10024.18 & \\
+2022-08-15 & PEREQUIS, Nunt · NAE → Nunt · PRA  & 62oi1g65-bky1-b100-7f6v-188su7f420ep &  & 10000.00\\
+2022-08-25 & CALLE, Vadis frego nost MAGRERUM BREGENTE PARAPIA /PAM/4313084H87207867 IDE BY 762 38 444618 & 54358um3-b7sv-kr2e-uu46-65xq530s841d &  & 30000.00\\
+2022-08-26 & PEREQUIS, Nunt · PRA → Nunt · PER  & 3104lst2-n4s5-dv77-o3aj-6srfsh18550o & 17817.82 & \\
+2022-08-30 & PEREQUIS, Nunt · PRA → Nunt · PER  & 354di661-6284-l8o7-724m-35300x4240na & 12200.00 & \\
+2022-09-06 & CALLE, Vadis frego nost MAGRERUM BREGENTE PARAPIA IDE 67. 76787333 & 5330y6mb-847s-q800-fris-3i110315h574 &  & 11450.00\\
+2022-09-06 & PEREQUIS, Nunt · PRA → Nunt · PER  & 806615bk-34ak-omur-hvp2-4b7321v347v5 & 11425.32 & \\
 \\
 \end{tablevalue}
 \end{document}

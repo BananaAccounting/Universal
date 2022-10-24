@@ -1,0 +1,8 @@
+Date started (UTC),Date completed (UTC),ID,Type,Description,Reference,Payer,Card number,Orig currency,Orig amount,Payment currency,Amount,Fee,Balance,Account,Beneficiary account number,Beneficiary sort code or routing number,Beneficiary IBAN,Beneficiary BIC
+2022-09-06,2022-09-06,806615bk-34ak-omur-hvp2-4b7321v347v5,PEREQUIS,Nunt · PRA → Nunt · PER,,Ocuba Laneriptus,,PER,9840.00,PRA,-11379.80,-45.52,2378.91,PRA Nunt,,,,
+2022-09-06,2022-09-06,5330y6mb-847s-q800-fris-3i110315h574,CALLE,Vadis frego nost MAGRERUM BREGENTE PARAPIA,IDE 67. 76787333,,,PRA,11450.00,PRA,11450.00,0.00,13804.23,PRA Nunt,,,,
+2022-08-30,2022-08-30,354di661-6284-l8o7-724m-35300x4240na,PEREQUIS,Nunt · PRA → Nunt · PER,,Ocuba Laneriptus,,PER,10395.30,PRA,-12200.00,0.00,2354.23,PRA Nunt,,,,
+2022-08-26,2022-08-26,3104lst2-n4s5-dv77-o3aj-6srfsh18550o,PEREQUIS,Nunt · PRA → Nunt · PER,,Ocuba Laneriptus,,PER,15000.00,PRA,-17746.83,-70.99,14554.23,PRA Nunt,,,,
+2022-08-25,2022-08-25,54358um3-b7sv-kr2e-uu46-65xq530s841d,CALLE,Vadis frego nost MAGRERUM BREGENTE PARAPIA,/PAM/4313084H87207867 IDE BY 762 38 444618,,,PRA,30000.00,PRA,30000.00,0.00,32372.05,PRA Nunt,,,,
+2022-08-15,2022-08-15,55qe20p3-2nr0-a77p-jpn8-6810h5726d7m,PARTUDAM,At Lintuunt Potioniusa Aura.,Possico by LUVA-7868/7 et 14/54/7002,Ocuba Laneriptus,,PRA,10000.00,PRA,-10000.00,-24.18,2372.05,PRA Nunt,,,IX223477548211552255555,EXCITUBSTOM
+2022-08-15,2022-08-15,62oi1g65-bky1-b100-7f6v-188su7f420ep,PEREQUIS,Nunt · NAE → Nunt · PRA,,Ocuba Laneriptus,,NAE,-9804.45,PRA,10000.00,0.00,12396.23,PRA Nunt,,,,
