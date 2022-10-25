@@ -1,4 +1,4 @@
-# Estimates and Invocies Tools
+# Estimates and Invoices Tools
 
 The extension Estimates and Invoices tools implements different functionalies used with the [Estimates and incoices application](https://www.banana.ch/doc/en/node/9752).
 
@@ -10,6 +10,10 @@ The following functionalities are currently implemented:
 - Export invoices
 - Export contacts
 - Export items
+
+The menu will look at the following:
+
+![Menu Esttimates and invoices Tools](doc/menu.png)
 
 ## Folder structure
 
