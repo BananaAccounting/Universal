@@ -116,6 +116,58 @@ function createDocChangeRows(invoicesRows, servicesRows) {
 
 }
 
+function getServicesRowsToBill(fromDate, toDate) {
+    let error = false;
+    let servicesToBill = {};
+    let table = Banana.document.table("Services");
+    for (let r = 0; r < table.rowCount; ++r) {
+        let invoiceNo = table.data(r, "DocInvoice");
+        if (invoiceNo) {
+            // If there is an invoice nr the service was already billed
+            continue;
+        }
+
+        let date = table.data(r, "Date");
+        if (fromDate && (date < fromDate)) {
+            // Date before spcified period
+            continue;
+        } else if (toDate && (date > toDate)) {
+            // Date after specified period
+            continue;
+        }
+
+        let customerId = table.data(r, "ContactsId");
+        if (findCustomerRow(customerId) < 0) {
+            // error
+            error = true;
+        }
+
+        let userId = table.data(r, "ProjectsId");
+        if (findUserRow(userId) < 0) {
+            error = true;
+        }
+
+        if (error) {
+            continue;
+        }
+
+        // This is service is to be billed
+    }
+
+    if (error) {
+        return null;
+    }
+    return servicesToBill;
+}
+
+function findCustomerRow(customerId) {
+    return 1;
+}
+
+function findUserRow(userId) {
+    return 1;
+}
+
 function createInvoiceObj() {
     return {
         "billing_info": {
