@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/">
+        <file>changelog.md</file>
+        <file>ch.banana.universal.servicesbilling.manifest.json</file>
+        <file>ch.banana.universal.servicesbilling.createinvoices.js</file>
+    </qresource>
+</RCC>
