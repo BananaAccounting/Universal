@@ -3,5 +3,6 @@
         <file>changelog.md</file>
         <file>ch.banana.universal.servicesbilling.manifest.json</file>
         <file>ch.banana.universal.servicesbilling.createinvoices.js</file>
+        <file>servicesbillingclass.js</file>
     </qresource>
 </RCC>
