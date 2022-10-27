@@ -8,7 +8,7 @@ var ServicesBilling = class ServicesBilling {
     }
 
     createInvoices(fromDate, toDate, forCustomerId, forProjectId) {
-        let servicesRowToBill = this.getServicesRowsToBill();
+        let servicesRowToBill = this.getServicesRowsToBill(fromDate, toDate, forCustomerId, forProjectId);
         if (!servicesRowToBill) {
             console.log("no rows to bill");
             return null;
@@ -90,7 +90,10 @@ var ServicesBilling = class ServicesBilling {
 
         let invoiceNo = serviceGroup.invoiceNo;
         let invoiceObj = this.createBaseInvoiceObj(invoiceNo);
+        let invoiceDescr = this.getInvoiceDescription(serviceGroup.group.ProjectsId);
         invoiceObj.customer_info = this.getInvoiceCustomerInfo(serviceGroup.group.ContactsId);
+        invoiceObj.document_info.description = invoiceDescr
+        invoiceObj.document_info.text_begin = this.getInvoiceBeginText(serviceGroup.group.ProjectsId);
 
         // Add items
         for (let i = 0; i < serviceGroup.rows.length; i++) {
@@ -105,7 +108,7 @@ var ServicesBilling = class ServicesBilling {
             {
                 fields: {
                     RowId: invoiceNo,
-                    Description: "Invoice " + invoiceNo,
+                    Description: invoiceDescr,
                     InvoiceTotalAmount: invoiceObj.billing_info.total_to_pay,
                     InvoiceData: {"invoice_json": JSON.stringify(invoiceObj)}
                 },
@@ -217,8 +220,8 @@ var ServicesBilling = class ServicesBilling {
             let destGroup = null;
             for (let gr = 0; gr < groups.length; gr++) {
                 let match = true;
-                for (let g = 0; g < groupping.length && match; g++) {
-                    let columnName = groupping[g].column;
+                for (let gs = 0; gs < groupping.length && match; gs++) {
+                    let columnName = groupping[gs].column;
                     if (groups[gr].group[columnName] !== rowGroup.group[columnName]) {
                         match = false;
                     }
@@ -285,16 +288,20 @@ var ServicesBilling = class ServicesBilling {
     }
 
     createInvoiceItem(row) {
+        let amount = this.tableServices.value(row, "Amount");
+        let description = this.tableServices.value(row, "Description");
+        let stop = this.tableServices.value(row, "Stop");
+        if (stop) description = stop.substring(0,5) + " - " + description;
+        let start = this.tableServices.value(row, "Start");
+        if (start) description = start.substring(0,5) + " - " + description;
+
         let item = {
             'date': this.tableServices.value(row, "Date"),
-            'start': this.tableServices.value(row, "Start"),
-            'stop': this.tableServices.value(row, "Stop"),
-            'duration': this.tableServices.value(row, "Duration"),
-            'description': this.tableServices.value(row, "Description"),
+            'description': description,
             'distance': this.tableServices.value(row, "Distance"),
-            'item_type': "item",
+            'item_type': amount ? "item" : "note",
             'number': "",
-            'quantity': "1",
+            'quantity': amount ? "1" : "0",
             'unit_price': {
                 'amount_vat_exclusive': this.tableServices.value(row, "Amount"),
                 'vat_code': 'V77',
@@ -304,26 +311,40 @@ var ServicesBilling = class ServicesBilling {
         return item;
     }
 
+    getInvoiceDescription(projectId) {
+        let rowNr = this.findRow(this.tableProjects, "RowId", projectId);
+        let name = this.tableProjects.value(rowNr, "Description");
+        let birthDate = this.tableProjects.value(rowNr, "BirthDate");
+        return "Servizio trasporti " + name + " " + Banana.Converter.toLocaleDateFormat(birthDate);
+    }
+
+    getInvoiceBeginText(projectId) {
+        let rowNr = this.findRow(this.tableProjects, "RowId", projectId);
+        let ahvNumber = this.tableProjects.value(rowNr, "AhvNumber");
+        let reference = this.tableProjects.value(rowNr, "Reference");
+        return "Rif.: " + reference + "  -  " + "N° AVS: " + ahvNumber;
+    }
+
     getInvoiceCustomerInfo(id) {
         let row = this.findRow(this.tableContacts, "RowId", id);
-        if (row > 0) {
+        if (row >= 0) {
             var customer_info = {
                 'number': id,
-                'business_name': this.tableContacts.value(row, 'OrganisationName'),
-                'courtesy': this.tableContacts.value(row, 'NamePrefix'),
-                'first_name': this.tableContacts.value(row, 'FirstName'),
-                'last_name': this.tableContacts.value(row, 'FamilyName'),
-                'address1': this.tableContacts.value(row, 'Street'),
-                'address2': this.tableContacts.value(row, 'PostalCode'),
-                'address3': this.tableContacts.value(row, 'POBox'),
-                'postal_code': this.tableContacts.value(row, 'PostalCode'),
-                'city': this.tableContacts.value(row, 'Locality'),
-                'country_code': this.tableContacts.value(row, 'CountryCode'),
-                'country': this.tableContacts.value(row, 'Country'),
-                'phone': this.tableContacts.value(row, 'PhoneWork'),
-                'mobile': this.tableContacts.value(row, 'PhoneMobile'),
-                'email': this.tableContacts.value(row, 'EmailWork'),
-                'web': this.tableContacts.value(row, 'Website'),
+                'business_name': this.defaultValue(this.tableContacts.value(row, 'OrganisationName'), ""),
+                'courtesy': this.defaultValue(this.tableContacts.value(row, 'NamePrefix'), ""),
+                'first_name': this.defaultValue(this.tableContacts.value(row, 'FirstName'), ""),
+                'last_name': this.defaultValue(this.tableContacts.value(row, 'FamilyName'), ""),
+                'address1': this.defaultValue(this.tableContacts.value(row, 'Street'), ""),
+                'address2': this.defaultValue(this.tableContacts.value(row, 'PostalCode'), ""),
+                'address3': this.defaultValue(this.tableContacts.value(row, 'POBox'), ""),
+                'postal_code': this.defaultValue(this.tableContacts.value(row, 'PostalCode'), ""),
+                'city': this.defaultValue(this.tableContacts.value(row, 'Locality'), ""),
+                'country_code': this.defaultValue(this.tableContacts.value(row, 'CountryCode'), ""),
+                'country': this.defaultValue(this.tableContacts.value(row, 'Country'), ""),
+                'phone': this.defaultValue(this.tableContacts.value(row, 'PhoneWork'), ""),
+                'mobile': this.defaultValue(this.tableContacts.value(row, 'PhoneMobile'), ""),
+                'email': this.defaultValue(this.tableContacts.value(row, 'EmailWork'), ""),
+                'web': this.defaultValue(this.tableContacts.value(row, 'Website'), "")
             };
             return customer_info;
         }
@@ -332,20 +353,20 @@ var ServicesBilling = class ServicesBilling {
 
     getInvoiceSupplierInfo() {
         var supplierInfo = {
-            'address1': this.banDoc.info("AccountingDataBase","Address1"),
-            'address2': this.banDoc.info("AccountingDataBase","Address2"),
-            'business_name': this.banDoc.info("AccountingDataBase","Company"),
-            'city': this.banDoc.info("AccountingDataBase","City"),
-            'courtesy': this.banDoc.info("AccountingDataBase","Courtesy"),
-            'email': this.banDoc.info("AccountingDataBase","Email"),
-            'first_name': this.banDoc.info("AccountingDataBase","Name"),
-            'fiscal_number': this.banDoc.info("AccountingDataBase","FiscalNumber"),
-            'last_name': this.banDoc.info("AccountingDataBase","LastName"),
-            'phone': this.banDoc.info("AccountingDataBase","Phone"),
-            'postal_code': this.banDoc.info("AccountingDataBase","Zip"),
-            'state': this.banDoc.info("AccountingDataBase","State"),
-            'vat_number': this.banDoc.info("AccountingDataBase","VatNumber"),
-            'web': this.banDoc.info("AccountingDataBase","Web")
+            'address1': this.banDoc.info("AccountingDataBase", "Address1"),
+            'address2': this.banDoc.info("AccountingDataBase", "Address2"),
+            'business_name': this.banDoc.info("AccountingDataBase", "Company"),
+            'city': this.banDoc.info("AccountingDataBase", "City"),
+            'courtesy': this.banDoc.info("AccountingDataBase", "Courtesy"),
+            'email': this.banDoc.info("AccountingDataBase", "Email"),
+            'first_name': this.banDoc.info("AccountingDataBase", "Name"),
+            'fiscal_number': this.banDoc.info("AccountingDataBase", "FiscalNumber"),
+            'last_name': this.banDoc.info("AccountingDataBase", "LastName"),
+            'phone': this.banDoc.info("AccountingDataBase", "Phone"),
+            'postal_code': this.banDoc.info("AccountingDataBase", "Zip"),
+            'state': this.banDoc.info("AccountingDataBase", "State"),
+            'vat_number': this.banDoc.info("AccountingDataBase", "VatNumber"),
+            'web': this.banDoc.info("AccountingDataBase", "Web")
         }
         return supplierInfo;
     }
@@ -359,6 +380,12 @@ var ServicesBilling = class ServicesBilling {
             }
         }
         return -1;
+    }
+
+    defaultValue(curValue, defaultValue) {
+        if (curValue)
+            return curValue;
+        return defaultValue;
     }
 
     getErrorMessage(errorId) {
