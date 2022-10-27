@@ -84,34 +84,50 @@ var ServicesBilling = class ServicesBilling {
     }
 
     createDocChangeRow(serviceGroup, invoicesRows, servicesRows) {
-        if (!serviceGroup)
-        return;
+        if (!serviceGroup) {
+            return;
+        }
 
-        let invoiceObj = this.createBaseInvoiceObj(serviceGroup.invoiceNo);
-        invoiceObj.customer_info = this.getInvoiceCustomerInfo(serviceGroup.ContactsId);
+        let invoiceNo = serviceGroup.invoiceNo;
+        let invoiceObj = this.createBaseInvoiceObj(invoiceNo);
+        invoiceObj.customer_info = this.getInvoiceCustomerInfo(serviceGroup.group.ContactsId);
 
+        // Add items
+        for (let i = 0; i < serviceGroup.rows.length; i++) {
+            invoiceObj.items.push(this.createInvoiceItem(serviceGroup.rows[i]));
+        }
+
+        // Recalculate invoice
+        invoiceObj = JSON.parse(this.banDoc.calculateInvoice(JSON.stringify(invoiceObj)));
+
+        // Add invoice
         invoicesRows.push(
             {
                 fields: {
-                    Id: "1033",
-                    Description: "Invoice xyz",
-                    InvoiceData: {"invoice_json": invoiceObj}
+                    RowId: invoiceNo,
+                    Description: "Invoice " + invoiceNo,
+                    InvoiceTotalAmount: invoiceObj.billing_info.total_to_pay,
+                    InvoiceData: {"invoice_json": JSON.stringify(invoiceObj)}
                 },
                 operation: {
                     name: "add"
                 }
             });
 
-        servicesRows.push(
-            {
-                fields: {
-                    DocInvoice: "1033"
-                },
-                operation: {
-                    name: "modify",
-                    sequence: "1"
-                }
-            });
+        // Set invoice nr and invoice date to the service's row
+        for (let j = 0; j < serviceGroup.rows.length; j++) {
+            servicesRows.push(
+                {
+                    fields: {
+                        DocInvoice: invoiceNo,
+                        DateInvoice: invoiceObj.document_info.date
+                    },
+                    operation: {
+                        name: "modify",
+                        sequence: serviceGroup.rows[j].toString()
+                    }
+                });
+        }
 
     }
 
@@ -225,7 +241,7 @@ var ServicesBilling = class ServicesBilling {
     setGroupInvoiceNo(servicesGroups) {
         let invoiceNo = 1;
         for (let g = 0; g < servicesGroups.length; g++) {
-            servicesGroups[g].invoice = invoiceNo;
+            servicesGroups[g].invoiceNo = invoiceNo.toString();
             ++invoiceNo;
         }
     }
@@ -268,31 +284,51 @@ var ServicesBilling = class ServicesBilling {
         return invoiceObj;
     }
 
+    createInvoiceItem(row) {
+        let item = {
+            'date': this.tableServices.value(row, "Date"),
+            'start': this.tableServices.value(row, "Start"),
+            'stop': this.tableServices.value(row, "Stop"),
+            'duration': this.tableServices.value(row, "Duration"),
+            'description': this.tableServices.value(row, "Description"),
+            'distance': this.tableServices.value(row, "Distance"),
+            'item_type': "item",
+            'number': "",
+            'quantity': "1",
+            'unit_price': {
+                'amount_vat_exclusive': this.tableServices.value(row, "Amount"),
+                'vat_code': 'V77',
+                'vat_rate': '7.70'
+            }
+        };
+        return item;
+    }
+
     getInvoiceCustomerInfo(id) {
         let row = this.findRow(this.tableContacts, "RowId", id);
         if (row > 0) {
             var customer_info = {
                 'number': id,
-                'business_name': table.value(row, 'OrganisationName'),
-                'courtesy': table.value(row, 'NamePrefix'),
-                'first_name': table.value(row, 'FirstName'),
-                'last_name': table.value(row, 'FamilyName'),
-                'address1': table.value(row, 'Street'),
-                'address2': table.value(row, 'PostalCode'),
-                'address3': table.value(row, 'POBox'),
-                'postal_code': table.value(row, 'PostalCode'),
-                'city': table.value(row, 'Locality'),
-                'country_code': table.value(row, 'CountryCode'),
-                'country': table.value(row, 'Country'),
-                'phone': table.value(row, 'PhoneWork'),
-                'mobile': table.value(row, 'PhoneMobile'),
-                'email': table.value(row, 'EmailWork'),
-                'web': table.value(row, 'Website'),
+                'business_name': this.tableContacts.value(row, 'OrganisationName'),
+                'courtesy': this.tableContacts.value(row, 'NamePrefix'),
+                'first_name': this.tableContacts.value(row, 'FirstName'),
+                'last_name': this.tableContacts.value(row, 'FamilyName'),
+                'address1': this.tableContacts.value(row, 'Street'),
+                'address2': this.tableContacts.value(row, 'PostalCode'),
+                'address3': this.tableContacts.value(row, 'POBox'),
+                'postal_code': this.tableContacts.value(row, 'PostalCode'),
+                'city': this.tableContacts.value(row, 'Locality'),
+                'country_code': this.tableContacts.value(row, 'CountryCode'),
+                'country': this.tableContacts.value(row, 'Country'),
+                'phone': this.tableContacts.value(row, 'PhoneWork'),
+                'mobile': this.tableContacts.value(row, 'PhoneMobile'),
+                'email': this.tableContacts.value(row, 'EmailWork'),
+                'web': this.tableContacts.value(row, 'Website'),
             };
             return customer_info;
         }
         return {};
-     }
+    }
 
     getInvoiceSupplierInfo() {
         var supplierInfo = {
