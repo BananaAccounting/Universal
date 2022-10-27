@@ -14,6 +14,7 @@ add_custom_target(servicesbilling ALL
     SOURCES src/${EXTENSION_ID}.manifest.json
     SOURCES README.md
     SOURCES src/changelog.md
+    SOURCES src/servicesbillingclass.js
     SOURCES src/ch.banana.universal.servicesbilling.createinvoices.js
     SOURCES test/ch.banana.universal.servicesbilling.createinvoices.test.js
 )
