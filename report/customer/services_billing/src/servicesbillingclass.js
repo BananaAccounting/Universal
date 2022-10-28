@@ -301,6 +301,7 @@ var ServicesBilling = class ServicesBilling {
                 "vat_mode": "vat_excl"
             },
             "items": [],
+            "note": [],
             "payment_info": {
                 "due_date": dueDate.toISOString().substring(0,10)
             },
@@ -360,7 +361,7 @@ var ServicesBilling = class ServicesBilling {
                 'first_name': this.defaultValue(this.tableContacts.value(row, 'FirstName'), ""),
                 'last_name': this.defaultValue(this.tableContacts.value(row, 'FamilyName'), ""),
                 'address1': this.defaultValue(this.tableContacts.value(row, 'Street'), ""),
-                'address2': this.defaultValue(this.tableContacts.value(row, 'PostalCode'), ""),
+                'address2': this.defaultValue(this.tableContacts.value(row, 'AddressExtra'), ""),
                 'address3': this.defaultValue(this.tableContacts.value(row, 'POBox'), ""),
                 'postal_code': this.defaultValue(this.tableContacts.value(row, 'PostalCode'), ""),
                 'city': this.defaultValue(this.tableContacts.value(row, 'Locality'), ""),
