@@ -2,18 +2,22 @@ var ServicesBilling = class ServicesBilling {
 
     constructor(doc) {
         this.banDoc = doc;
+        this.tableInvoices = this.banDoc.table("Invoices");
         this.tableServices = this.banDoc.table("Services");
         this.tableContacts = this.banDoc.table("Contacts");
         this.tableProjects = this.banDoc.table("Projects");
     }
 
     createInvoices(fromDate, toDate, forCustomerId, forProjectId) {
+
+        // Extract services to bill
         let servicesRowToBill = this.getServicesRowsToBill(fromDate, toDate, forCustomerId, forProjectId);
         if (!servicesRowToBill) {
-            console.log("no rows to bill");
+            // no rows to bill
             return null;
         }
 
+        // Group services
         let servicesGrouping = [
             {
                 column: "ContactsId",
@@ -24,23 +28,23 @@ var ServicesBilling = class ServicesBilling {
                 table: "Projects"
             }
         ];
-
         let grouppedServicesRows = this.groupServicesRows(servicesRowToBill, servicesGrouping);
-        this.setGroupInvoiceNo(grouppedServicesRows);
 
-        console.log(JSON.stringify(grouppedServicesRows, null, "   "));
-
+        // Create invoices and set invoice no to the services
         let docChangeInvoicesRows = [];
         let docChangeServicesRows = [];
+        let invoiceNo = this.tableInvoices.progressiveNumber("RowId");
+        //this.createDocChangeHeaderRow(toDate, docChangeInvoicesRows);
         for (let g = 0; g < grouppedServicesRows.length; g++) {
-            this.createDocChangeRow(grouppedServicesRows[g], docChangeInvoicesRows, docChangeServicesRows);
+            this.createDocChangeRows(grouppedServicesRows[g], invoiceNo, docChangeInvoicesRows, docChangeServicesRows);
+            invoiceNo = (Number(invoiceNo) + 1).toString();
         }
-        let docChange = this.createDocChange(docChangeInvoicesRows, docChangeServicesRows);
+        let docChange = this.createDocChangeDocument(docChangeInvoicesRows, docChangeServicesRows);
 
         return docChange;
     }
 
-    createDocChange(invoicesRows, servicesRows) {
+    createDocChangeDocument(invoicesRows, servicesRows) {
         var docChange = {
             format: "documentChange",
             error: "",
@@ -71,6 +75,11 @@ var ServicesBilling = class ServicesBilling {
                                 }
                             }
                         ],
+                        cursorPosition: {
+                            operation: "move",
+                            tableName: "Invoices",
+                            rowNr: -1
+                        },
                         creator: {
                             executionDate: new Date().toISOString(),
                             name: Banana.script.getParamValue("id"),
@@ -83,12 +92,33 @@ var ServicesBilling = class ServicesBilling {
         return docChange;
     }
 
-    createDocChangeRow(serviceGroup, invoicesRows, servicesRows) {
+    createDocChangeHeaderRow(date, invoicesRows) {
+        // Add empty row
+        invoicesRows.push(
+            {
+                fields: {
+                },
+                operation: {
+                    name: "add"
+                }
+            });
+        // Add header row
+        invoicesRows.push(
+            {
+                fields: {
+                    Description: "** Prestazioni fino al " + date + " **",
+                },
+                operation: {
+                    name: "add"
+                }
+            });
+    }
+
+    createDocChangeRows(serviceGroup, invoiceNo, invoicesRows, servicesRows) {
         if (!serviceGroup) {
             return;
         }
 
-        let invoiceNo = serviceGroup.invoiceNo;
         let invoiceObj = this.createBaseInvoiceObj(invoiceNo);
         let invoiceDescr = this.getInvoiceDescription(serviceGroup.group.ProjectsId);
         invoiceObj.customer_info = this.getInvoiceCustomerInfo(serviceGroup.group.ContactsId);
@@ -144,13 +174,13 @@ var ServicesBilling = class ServicesBilling {
                 continue;
             }
 
-            let date = this.tableServices.value(r, "Date");
-            let customerId = this.tableServices.value(r, "ContactsId");
-            let projectId = this.tableServices.value(r, "ProjectsId");
-            let amount = this.tableServices.value(r, "Amount");
+            let date = this.tableServices.value(r, "Date").trim();
+            let customerId = this.tableServices.value(r, "ContactsId").trim();
+            let projectId = this.tableServices.value(r, "ProjectsId").trim();
+            let amount = this.tableServices.value(r, "Amount").trim();
 
             if (!date) {
-                if (customerId || amount) {
+                if (amount) {
                     this.tableServices.addMessage(qsTr("Date is missing"), r, "Date");
                     error = true;
                 } else {
@@ -195,6 +225,8 @@ var ServicesBilling = class ServicesBilling {
 
         if (error) {
             return null;
+        } else if (servicesRowsToBill.length === 0) {
+            return null;
         }
 
         return servicesRowsToBill;
@@ -202,15 +234,16 @@ var ServicesBilling = class ServicesBilling {
 
     groupServicesRows(rows, groupping) {
         let groups = [];
-        for (let r in rows) {
+        for (let i = 0; i < rows.length; ++i) {
+            let row = rows[i];
             let rowGroup = {rows:[],group:{}};
             for (let g = 0; g < groupping.length; g++) {
                 let columnName = groupping[g].column;
                 let tableName = groupping[g].table;
-                let value = this.tableServices.value(r, columnName);
+                let value = this.tableServices.value(row, columnName);
                 if (!value) {
                     // Should not happen at this point, but we still add a message
-                    this.tableServices.addMessage(qsTr("Value %1 is undefined").arg(column), r, column);
+                    this.tableServices.addMessage(qsTr("Value %1 is undefined").arg(columnName), row, columnName);
                     continue;
                 }
                 rowGroup.group[columnName] = value;
@@ -235,18 +268,10 @@ var ServicesBilling = class ServicesBilling {
                 destGroup = rowGroup;
                 groups.push(rowGroup);
             }
-            destGroup.rows.push(r);
+            destGroup.rows.push(row);
         }
 
         return groups;
-    }
-
-    setGroupInvoiceNo(servicesGroups) {
-        let invoiceNo = 1;
-        for (let g = 0; g < servicesGroups.length; g++) {
-            servicesGroups[g].invoiceNo = invoiceNo.toString();
-            ++invoiceNo;
-        }
     }
 
     createBaseInvoiceObj(invoiceNo) {
@@ -268,7 +293,7 @@ var ServicesBilling = class ServicesBilling {
                 "date": dueDate.toISOString().substring(0,10),
                 "decimals_amounts": 2,
                 "description": "Invoice " + invoiceNo,
-                "locale": "en",
+                "locale": "it",
                 "number": invoiceNo,
                 "rounding_totals": "0.05",
                 "text_begin": "",
@@ -384,7 +409,7 @@ var ServicesBilling = class ServicesBilling {
 
     defaultValue(curValue, defaultValue) {
         if (curValue)
-            return curValue;
+        return curValue;
         return defaultValue;
     }
 
