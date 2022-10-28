@@ -15,7 +15,7 @@
 //
 // @id = ch.banana.universal.servicesbilling.createinvoices.js
 // @api = 1.2.0
-// @pubdate = 2022-10-24
+// @pubdate = 2022-10-28
 // @publisher = Banana.ch SA
 // @description = Create invoices
 // @description.it = Crea fatture
@@ -46,9 +46,16 @@ function exec() {
         return null;
     }
 
-    // Create invoices
+    // Create document change with invoices
     let servicesBilling = new ServicesBilling(Banana.document);
     let docChange = servicesBilling.createInvoices(null, includeUntil);
+
+    if (!docChange) {
+        Banana.Ui.showInformation(
+                    "Nessuna prestazione da fatturare",
+                    "Per il periodo indicato tutte le prestazioni sono state fatturate.");
+        return null;
+    }
 
     // Return document change
     return docChange;
