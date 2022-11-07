@@ -1,23 +1,25 @@
 # Estimates and Invoices Tools
 
-The extension Estimates and Invoices tools implements different functionalies used with the [Estimates and incoices application](https://www.banana.ch/doc/en/node/9752).
+The extension Estimates and Invoices tools implements different functionalities used with the [Estimates and incoices application](https://www.banana.ch/doc/en/node/9752).
 
 The following functionalities are currently implemented:
 
-- Import invoices
-- Import contacts
-- Import items
-- Export invoices
-- Export contacts
-- Export items
+- Import 
+  - Invoices
+  - Contacts
+  - Items
+- Export
+  - Invoices
+  - Contacts
+  - Items
 
-The menu will look at the following:
+The extention's menu would look like:
 
 ![Menu Esttimates and invoices Tools](doc/menu.png)
 
 ## Folder structure
 
-The extension's consists of the following files:
+The extension consists of the following files:
 
 - CMakeLists.txt: project file to be opened in Qt Creator
 - ch.banana.application.invoice.tools.qrc: resource file to build the extension's package, building the project the extension's package .sbaa is created
