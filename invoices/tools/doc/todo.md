@@ -17,10 +17,10 @@
 // See https://github.com/BananaAccounting/InvoicesApp/blob/c31e1823191c1a992f88e2e19b87db5bac36ca33/src/base/invoice.js#L258
 function invoiceObjGet(rowNr) {
     let invoicesTable = Banana.document.table("Invoices");
-    var row = invoicesTable.row(rowNr);
+    let row = invoicesTable.row(rowNr);
     if (row) {
         try {
-            var invoiceFieldObj = JSON.parse(row.value("InvoiceData"));
+            let invoiceFieldObj = JSON.parse(row.value("InvoiceData"));
             return JSON.parse(invoiceFieldObj.invoice_json);
         }
         catch(e) {
