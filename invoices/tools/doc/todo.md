@@ -16,15 +16,18 @@
 // How to read invoice json data
 // See https://github.com/BananaAccounting/InvoicesApp/blob/c31e1823191c1a992f88e2e19b87db5bac36ca33/src/base/invoice.js#L258
 function invoiceObjGet(tabPos) {
-    var row = invoiceRowGet(tabPos);
-    if (row) {
-        try {
-            var invoiceFieldObj = JSON.parse(row.value("InvoiceData"));
-            return JSON.parse(invoiceFieldObj.invoice_json);
-        }
-        catch(e) {
-            return null;
-        }
+    let invoicesTable = Banana.document.table("Invoices");
+    for (let i = 0; i < invoicesTable.rowCount; +ii) {
+      var row = invoicesTable.row(i);
+      if (row) {
+          try {
+              var invoiceFieldObj = JSON.parse(row.value("InvoiceData"));
+              return JSON.parse(invoiceFieldObj.invoice_json);
+          }
+          catch(e) {
+              return null;
+          }
+      }
     }
     return null;
 }
