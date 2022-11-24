@@ -60,7 +60,6 @@ TestImportYokoyTrans.prototype.testImport = function() {
    var fileNameList = [];
 
    fileNameList.push("file:script/../test/testcases/ch.banana.filter.import.yokoy.example_01.csv");
-   fileNameList.push("file:script/../test/testcases/ch.banana.filter.import.yokoy.example_02.csv");
    
    var parentLogger = this.testLogger;
    this.progressBar.start(fileNameList.length);
