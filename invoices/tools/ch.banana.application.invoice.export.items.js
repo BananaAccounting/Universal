@@ -22,6 +22,28 @@
  * Parse the file and create a document change document to import the imvoices.
  */
 function exec() {
-    let csv = "exported items";
+    let itemsTable = Banana.document.table("Items");
+    let csv = "RowId,Description,Unit,UnitPrice\n";
+
+    if (!itemsTable) {
+        return
+    }
+
+    for (let i = 0; i < itemsTable.rowCount; i++) {
+        let row = itemsTable.row(i);
+        if (row) {
+            try {
+                let id = row.value("RowId");
+                let description = row.value("Description");
+                let unit = row.value("Unit");
+                let unit_price = row.value("UnitPrice");
+                csv += `${id},${description},${unit},${unit_price}\n`;
+            }
+            catch(e) {
+                return null;
+            }
+        }
+      }
+      
     return csv;
 }
