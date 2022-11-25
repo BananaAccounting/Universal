@@ -22,6 +22,27 @@
  * Parse the file and create a document change document to import the imvoices.
  */
 function exec() {
-    let csv = "exported invoices";
+    let invoicesTable = Banana.document.table("Invoices");
+
+    if (!invoicesTable) {
+        return
+    }
+
+    let csv = "InvoiceNumber,InvoiceDate,InvoiceDescription,CustomerNumber,ItemTotal\n";
+
+    for (let i = 0; i < invoicesTable.rowCount; i++) {
+        let row = invoicesTable.row(i);
+        if (row) {
+            try {
+                let invoiceFieldObj = JSON.parse(row.value("InvoiceData"));
+                let invoiceObj = JSON.parse(invoiceFieldObj.invoice_json);
+                csv += `${invoiceObj.document_info.number},${invoiceObj.document_info.date},${invoiceObj.document_info.description},${invoiceObj.customer_info.number},${invoiceObj.billing_info.total_to_pay}\n`;
+            }
+            catch(e) {
+                return null;
+            }
+        }
+      }
+      
     return csv;
 }
