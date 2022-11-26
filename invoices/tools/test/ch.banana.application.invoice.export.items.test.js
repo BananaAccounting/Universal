@@ -51,9 +51,9 @@ ExportItems.prototype.testBananaExtension = function() {
 	let banDoc = Banana.application.openDocument("file:script/../test/testcases/invoices_excl_vat.ac2");
 	Test.assert(banDoc);
 
-	let contactsTable = banDoc.table("Items");
+	let itemsTable = banDoc.table("Items");
 
-    if (!contactsTable) {
+    if (!itemsTable) {
         return
     }
 
