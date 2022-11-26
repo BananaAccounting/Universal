@@ -78,7 +78,7 @@ ExportContacts.prototype.testBananaExtension = function() {
         }
       }
     
-	Test.logger.addReport("Test 'Contacts'", csv);
+	Test.logger.addCsv("Test 'Contacts'", csv);
 
 
 }
