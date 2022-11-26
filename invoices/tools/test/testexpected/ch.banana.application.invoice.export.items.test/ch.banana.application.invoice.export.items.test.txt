@@ -22,10 +22,14 @@
 %
 \begin{testcase}{ExportItems}
 \begin{test}{testBananaExtension}
-\keyvalue{Result}{Failed}
-\fatalerror{ReferenceError: itemsTable is not defined}
-\info{Location}{file - ///Users/synapse/Universal/invoices/tools/./test/ch.banana.application.invoice.export.items.test.js:62}
+\begin{tablevalue}{Test 'Items'}{ l  l  l  l }
+RowId & Description & Unit & UnitPrice\\
+1000 & Thé & pc & 1000.0000\\
+1200 & Tisanne & pc & 2500.0000\\
+4000 & Filet d'oignon & pc & 27800.0000\\
+\\
+\end{tablevalue}
+\keyvalue{Result}{Passed}
 \end{test}
-\fatalerror{Error: One or more tests failed}
 \end{testcase}
 \end{document}

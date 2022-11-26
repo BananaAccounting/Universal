@@ -22,10 +22,13 @@
 %
 \begin{testcase}{ExportInvoices}
 \begin{test}{testBananaExtension}
-\keyvalue{Result}{Failed}
-\fatalerror{ReferenceError: invoicesTable is not defined}
-\info{Location}{file - ///Users/synapse/Universal/invoices/tools/./test/ch.banana.application.invoice.export.invoices.test.js:63}
+\begin{tablevalue}{Test 'Invoices'}{ l  l  l  l  l }
+InvoiceNumber & InvoiceDate & InvoiceDescription & CustomerNumber & ItemTotal\\
+1 & 2022-11-14 & Facture GK & 1 & 125000.00\\
+2 & 2022-11-14 & Facture Lezo & 2 & 125000.00\\
+\\
+\end{tablevalue}
+\keyvalue{Result}{Passed}
 \end{test}
-\fatalerror{Error: One or more tests failed}
 \end{testcase}
 \end{document}
