@@ -20,7 +20,7 @@
 %Begin test data
 \begin{reportvalue}{FILENAME: file:script/../test/testcases/portfolio\_accounting\_double\_entry\_tutorial.ac2}
 \begin{longtable}[l]{ l  l  l  l  l  l  l  l  l  l }
-\excltest{Appraisal Report \P  Holdings as of: 2022-04-15} Type/Security  & ISIN  & Quantity  & Unit Cost  & Total Cost  & Market Price  & Market Value  & \% of Port  & Un. Gain or Loss  & \% G/L \\
+\excltest{Appraisal Report \P  Holdings as of: 2022-10-14} Type/Security  & ISIN  & Current quantity  & Book value\P per unit  & Book value  & Market value\P per unit  & Market value  & \% of Port  & Un. Gain or Loss  & \% G/L \\
 Share  & \multicolumn{9}{l}{}\\
 Shares UBS  & CH003886335  & 110  & 15.34  & 1'687.40  & 16.00  & 1'760.00  & 50.29  & 72.60  & 4.13 \\
 Shares Nestlè  & CH012775214  & 60  & 28.70  & 1'722.00  & 29.00  & 1'740.00  & 49.71  & 18.00  & 1.03 \\
@@ -33,7 +33,7 @@ Totals  & \multicolumn{3}{l}{} & 0.00  &  & 0.00  & 0.00  & 0.00  & 0.00 \\
  & \multicolumn{9}{l}{}\\
 \end{longtable}
 \begin{longtable}[l]{ l  l  l  l  l  l  l  l  l }
-\excltest{Portfolio Transactions \P  Transactions as of: 2022-04-15} Date  & Doc  & Item  & Description  & Debit  & Credit  & Quantity  & Unit/Price  & Amount \\
+\excltest{Portfolio Transactions \P  Transactions as of: 2022-10-14} Date  & Doc  & Security  & Description  & Debit  & Credit  & Quantity  & Unit/Price  & Amount \\
 CH003886335  & \multicolumn{8}{l}{}\\
 20.02.2022  & 1  & CH003886335  & Shares UBS Purchase  & Swiss Shares  &  & 100  & 11  & 1'100.00 \\
 20.02.2022  & 1  & CH003886335  & Shares UBS Bank Charges  & Bank charges  &  &  &  & 20.00 \\

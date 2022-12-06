@@ -80,14 +80,14 @@ function getConciliationTable(report,currentDate,docInfo){
 
     //columns definition 
     tableConc.addColumn("Account").setStyleAttributes("width:15%");
-    tableConc.addColumn("Item").setStyleAttributes("width:15%");
+    tableConc.addColumn("Security").setStyleAttributes("width:15%");
     tableConc.addColumn("Date").setStyleAttributes("width:10%");
     tableConc.addColumn("Doc").setStyleAttributes("width:10%");
     tableConc.addColumn("Description").setStyleAttributes("width:35%");
     if(docInfo.isMultiCurrency){
-        tableConc.addColumn("Debit (Item Currency)").setStyleAttributes("width:15%");
-        tableConc.addColumn("Credit (Item Currency)").setStyleAttributes("width:15%");
-        tableConc.addColumn("Balance (Item Currency)").setStyleAttributes("width:15%");
+        tableConc.addColumn("Debit (Security Currency)").setStyleAttributes("width:15%");
+        tableConc.addColumn("Credit (Security Currency)").setStyleAttributes("width:15%");
+        tableConc.addColumn("Balance (Security Currency)").setStyleAttributes("width:15%");
     }
     tableConc.addColumn("Debit (Base Currency)").setStyleAttributes("width:15%");
     tableConc.addColumn("Credit (Base Currency)").setStyleAttributes("width:15%");
@@ -101,14 +101,14 @@ function getConciliationTable(report,currentDate,docInfo){
     var tableHeader = tableConc.getHeader();
     var tableRow = tableHeader.addRow();
     tableRow.addCell("Account", "styleTablesHeaderText");
-    tableRow.addCell("Item", "styleTablesHeaderText");
+    tableRow.addCell("Security", "styleTablesHeaderText");
     tableRow.addCell("Date", "styleTablesHeaderText");
     tableRow.addCell("Doc", "styleTablesHeaderText");
     tableRow.addCell("Description", "styleTablesHeaderText");
     if(docInfo.isMultiCurrency){
-        tableRow.addCell("Debit\nItem Currency", "styleTablesHeaderText");
-        tableRow.addCell("Credit\nItem Currency", "styleTablesHeaderText");
-        tableRow.addCell("Balance\nItem Currency", "styleTablesHeaderText");
+        tableRow.addCell("Debit\nSecurity Currency", "styleTablesHeaderText");
+        tableRow.addCell("Credit\nSecurity Currency", "styleTablesHeaderText");
+        tableRow.addCell("Balance\nSecurity Currency", "styleTablesHeaderText");
     }
     tableRow.addCell("Debit "+docInfo.baseCurrency, "styleTablesHeaderText");
     tableRow.addCell("Credit "+docInfo.baseCurrency, "styleTablesHeaderText");
@@ -116,7 +116,7 @@ function getConciliationTable(report,currentDate,docInfo){
     tableRow.addCell("Quantity ", "styleTablesHeaderText");
     tableRow.addCell("Unit Price ", "styleTablesHeaderText");
     tableRow.addCell("Quantity balance", "styleTablesHeaderText");
-    tableRow.addCell("Current.\nAverage cost\n", "styleTablesHeaderText");
+    tableRow.addCell("Book value \n per unit\n", "styleTablesHeaderText");
 
     return tableConc;
 }

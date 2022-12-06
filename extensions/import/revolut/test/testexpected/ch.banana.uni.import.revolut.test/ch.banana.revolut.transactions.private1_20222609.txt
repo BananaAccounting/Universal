@@ -1,4 +1,4 @@
-%%info_test_name{ch.banana.filter.import.yokoy.example_02}
+%%info_test_name{ch.banana.revolut.transactions.private1_20222609}
 \documentclass{report}
 \usepackage{longtable}
 \usepackage{color}
@@ -18,10 +18,17 @@
 \newenvironment{testcase}[1]{\section*{Test: #1}}{\newpage}
 \newenvironment{test}[1]{\section*{Test case: #1}}{}
 %Begin test data
-\begin{tablevalue}{}{ l }
-\\
-\\
-\\
+\begin{tablevalue}{}{ l  l  l  l }
+Date & Description & Expenses & Income\\
+2022-01-30 & Description, Product ABCD CARD\_PAYMENT & 1.22 & \\
+2022-01-31 & Description , Product ABCD CARD\_PAYMENT & 15.70 & \\
+2022-02-03 & Description, Product ABCD CARD\_PAYMENT & 14.91 & \\
+2022-02-04 & Description, Product ABCD CARD\_PAYMENT & 5.75 & \\
+2022-02-04 & Description, Product ABCD CARD\_PAYMENT & 23.00 & \\
+2022-03-16 & Description, Product ABCD CARD\_PAYMENT & 17.73 & \\
+2022-08-16 & Description, Product ABCD CARD\_PAYMENT &  & 10.00\\
+2022-10-09 & Description, Product ABCD CARD\_PAYMENT & 18.34 & \\
+2022-12-31 & Description, Product ABCD CARD\_PAYMENT & 0.99 & \\
 \\
 \end{tablevalue}
 \end{document}

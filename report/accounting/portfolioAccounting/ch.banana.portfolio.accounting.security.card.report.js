@@ -117,9 +117,9 @@ function getItemCardTable(report,docInfo,currentDate,baseCurr,itemCardData,itemD
     tableConc.addColumn("Date").setStyleAttributes("width:10%");
     tableConc.addColumn("Doc").setStyleAttributes("width:5%");
     tableConc.addColumn("Description").setStyleAttributes("width:35%");
-    tableConc.addColumn("Debit (Item Currency)").setStyleAttributes("width:15%");
-    tableConc.addColumn("Credit (Item Currency)").setStyleAttributes("width:15%");
-    tableConc.addColumn("Balance (Item Currency)").setStyleAttributes("width:15%");
+    tableConc.addColumn("Debit (Security Currency)").setStyleAttributes("width:15%");
+    tableConc.addColumn("Credit (Security Currency)").setStyleAttributes("width:15%");
+    tableConc.addColumn("Balance (Security Currency)").setStyleAttributes("width:15%");
     if(docInfo.isMultiCurrency){
         tableConc.addColumn("Debit (Base Currency)").setStyleAttributes("width:15%");
         tableConc.addColumn("Credit (Base Currency)").setStyleAttributes("width:15%");
@@ -153,9 +153,9 @@ function getItemCardTable(report,docInfo,currentDate,baseCurr,itemCardData,itemD
 
     tableRow.addCell("Quantity\nBalance", "styleTablesHeaderText");
     if(itemCurr)
-        tableRow.addCell("Current.\nAverage cost\n"+itemCurr, "styleTablesHeaderText");
+        tableRow.addCell("Book value \n per unit\n"+itemCurr, "styleTablesHeaderText");
     else
-        tableRow.addCell("Current.\nAverage cost\n"+baseCurr, "styleTablesHeaderText");
+        tableRow.addCell("Book value \n per unit\n"+baseCurr, "styleTablesHeaderText");
 
     return tableConc;
 }

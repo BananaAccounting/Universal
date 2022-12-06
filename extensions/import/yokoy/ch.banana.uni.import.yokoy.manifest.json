@@ -2,12 +2,12 @@
     "category": "Import",
     "country": "universal",
     "countryCode": "un",
-    "description": "Import yokoy transactions",
-    "description.en": "Import yokoy transactions",
+    "description": "Yokoy - Import transactions (*.csv)",
+    "description.en": "Yokoy - Import transactions (*.csv)",
     "id": "ch.banana.uni.import.yokoy",
     "language": "en",
     "publisher": "Banana.ch",
-    "title": "Import yokoy transactions",
-    "title.en": "Import yokoy transactions",
+    "title": "Yokoy - Import transactions (*.csv)",
+    "title.en": "Yokoy - Import transactions (*.csv)",
     "version": "1.0"
 }

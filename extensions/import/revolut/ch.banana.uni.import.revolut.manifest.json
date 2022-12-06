@@ -2,12 +2,12 @@
     "category": "Import",
     "country": "universal",
     "countryCode": "un",
-    "description": "Import revolut transactions",
-    "description.en": "Import revolut transactions",
+    "description": "Revolut - Import transactions (*.csv)",
+    "description.en": "Revolut - Import transactions (*.csv)",
     "id": "ch.banana.uni.import.revolut",
     "language": "en",
     "publisher": "Banana.ch",
-    "title": "Import revolut transactions",
-    "title.en": "Import revolut transactions",
+    "title": "Revolut - Import transactions (*.csv)",
+    "title.en": "Revolut - Import transactions (*.csv)",
     "version": "1.0"
 }
