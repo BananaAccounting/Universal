@@ -1,10 +1,25 @@
 # Changelog
 
-## 2022-09-21
+## 2022-12-06
 
-The following changes are only available with the latest BananaPlus version (10.0.13.201 or newer).
+* [RELEASE STABLE] Released as Stable
+* [RELEASE DEV] Released as Dev
 
+Common changes:
+
+* [Fix] Fix changing from incl vat to excl vat or vice versa should not change the unit price.
+ This could be correct from a develop point of view to update the unit price, 
+ but from a user point of view this is not logical and a cause of errors.
+* [Fix] Fix entering the customer does't visualize the corresponding customer entry
+* [Fix] Apply changes to new documents settings to the current document
+ User expect that changes in the settins tab also update the settings of the currente invoice.
+* [Fix] Other small fixes and enhancements.
+* [Enhancement] New setting default, the default vat code is set to per default to all new invoice items.
 * [Enhancement] Adapt to Qt6
+
+Changes availables only with the latest BananaPlus Insider version (10.0.13.340 or newer).
+
+* [Fix] Fix progressive estimates and invoices number with alpha-numeric formats like "INV034" or "2022-034"
 * [Enhancement] Simplify and reorganize views for new files
   * Only the views Base and Full are visible per default
   * The available views are called Base, Custom 1, Custom 2 and Full
@@ -16,8 +31,6 @@ The following changes are only available with the latest BananaPlus version (10.
 * [Enhancement] Remove field Customer reference (custom fields are used instead)
 * [Enhancement] Separate fields Phone/Email and Vat-/Fiscal-Number
 * [Enhancement] Let open protected invoices and estimates in read only mode
-* [Enhancement] Add command print delivery note (it works only with xxx layout)
-* [Enhancement] Add command print reminder (it works only with xxx layout)
  
 ## 2022-09-21
 

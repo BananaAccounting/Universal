@@ -916,6 +916,24 @@ function replaceVariables(cssText, variables) {
 
 }
 
+/**
+ * Returns true if it is a multi-currency accounting
+ */
+function isMultiCurrency(banDoc){
+
+    var FileTypeNr = banDoc.info("Base","FileTypeNumber");
+    if (FileTypeNr == "120" || FileTypeNr =="130"){
+        let NOT_AVAILABLE_WITH_MULTI_CURRENCY="NOT_AVAILABLE_WITH_MULTI_CURRENCY";
+        let lang='en';
+        let msg=getErrorMessage(NOT_AVAILABLE_WITH_MULTI_CURRENCY,lang,"","");
+        banDoc.addMessage(msg,NOT_AVAILABLE_WITH_MULTI_CURRENCY);
+        return true;
+    }
+
+    return false
+
+}
+
 function getErrorMessage(errorId, lang,userParam,refTableName){
     if (!lang)
     lang = 'en';
@@ -929,6 +947,8 @@ function getErrorMessage(errorId, lang,userParam,refTableName){
             return "This script does not run with your current version of Banana Accounting.\nMinimum version required: %1.\nTo update or for more information click on Help";
         case "ID_ERR_LICENSE_NOTVALID":
             return "This extension requires Banana Accounting+ Advanced";
+        case "NOT_AVAILABLE_WITH_MULTI_CURRENCY":
+            return "This report is only available for accounting files without multi-currency"
     }
     return '';
 }

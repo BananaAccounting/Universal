@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.uni.invoice.uni11
 // @api = 1.0
-// @pubdate = 2022-06-28
+// @pubdate = 2022-08-04
 // @publisher = Banana.ch SA
 // @description = [UNI11] Programmable Invoice layout
 // @description.it = [UNI11] Layout Fattura Programmabile
@@ -1583,7 +1583,7 @@ function convertParam(userParam) {
   currentParam.name = 'text_color';
   currentParam.parentObject = 'styles';
   currentParam.title = texts.param_text_color;
-  currentParam.type = 'string';
+  currentParam.type = 'color';
   currentParam.value = userParam.text_color ? userParam.text_color : '#000000';
   currentParam.defaultvalue = '#000000';
   currentParam.tooltip = texts.param_tooltip_text_color;
@@ -1596,7 +1596,7 @@ function convertParam(userParam) {
   currentParam.name = 'background_color_details_header';
   currentParam.parentObject = 'styles';
   currentParam.title = texts.param_background_color_details_header;
-  currentParam.type = 'string';
+  currentParam.type = 'color';
   currentParam.value = userParam.background_color_details_header ? userParam.background_color_details_header : '#337AB7';
   currentParam.defaultvalue = '#337ab7';
   currentParam.tooltip = texts.param_tooltip_background_color_details_header;
@@ -1609,7 +1609,7 @@ function convertParam(userParam) {
   currentParam.name = 'text_color_details_header';
   currentParam.parentObject = 'styles';
   currentParam.title = texts.param_text_color_details_header;
-  currentParam.type = 'string';
+  currentParam.type = 'color';
   currentParam.value = userParam.text_color_details_header ? userParam.text_color_details_header : '#FFFFFF';
   currentParam.defaultvalue = '#FFFFFF';
   currentParam.tooltip = texts.param_tooltip_text_color_details_header;
@@ -1617,13 +1617,12 @@ function convertParam(userParam) {
    userParam.text_color_details_header = this.value;
   }
   convertedParam.data.push(currentParam);
-
-  /// rimuovere 
+  
   currentParam = {};
   currentParam.name = 'background_color_alternate_lines';
   currentParam.parentObject = 'styles';
   currentParam.title = texts.param_background_color_alternate_lines;
-  currentParam.type = 'string';
+  currentParam.type = 'color';
   currentParam.value = userParam.background_color_alternate_lines ? userParam.background_color_alternate_lines : '#F0F8FF';
   currentParam.defaultvalue = '#F0F8FF';
   currentParam.tooltip = texts.param_tooltip_background_color_alternate_lines;
@@ -2826,8 +2825,8 @@ function print_details_net_amounts(banDoc, repDocObj, invoiceObj, texts, userPar
         if (BAN_ADVANCED) {
           //JSON contains a property with the name of the column (Item, Date)
           //In JSON all names are lower case
-          if (columnsName.trim().toLowerCase() in item) {
-            itemValue = formatItemsValue(item[columnsName.trim().toLowerCase()], variables, columnsName, className, item);
+          if (objectHasProperty(item, columnsName)) {
+            itemValue = formatItemsValue(objectGetProperty(item, columnsName), variables, columnsName, className, item);
           }
           else {
             userColumnValue = getUserColumnValue(banDoc, item.origin_row, item.number, columnsName);
@@ -3084,8 +3083,8 @@ function print_details_gross_amounts(banDoc, repDocObj, invoiceObj, texts, userP
         if (BAN_ADVANCED) {
           //JSON contains a property with the name of the column (Item, Date)
           //In JSON all names are lower case
-          if (columnsName.trim().toLowerCase() in item) {
-            itemValue = formatItemsValue(item[columnsName.trim().toLowerCase()], variables, columnsName, className, item);
+          if (objectHasProperty(item, columnsName)) {
+            itemValue = formatItemsValue(objectGetProperty(item, columnsName), variables, columnsName, className, item);
           }
           else {
             userColumnValue = getUserColumnValue(banDoc, item.origin_row, item.number, columnsName);
@@ -3452,7 +3451,7 @@ function formatItemsValue(value, variables, columnName, className, item) {
     itemFormatted.value = value;
     itemFormatted.className = className;
   }
-  else if (columnName === "amount" || columnName === "total_amount_vat_exclusive" || columnName === "total_amount_vat_inclusive") {
+  else if (columnName === "amount" || columnName.indexOf("amount") >= 0) {
     if (className === "header_cell" || className === "note_cell") { //do not print 0.00 amount for header rows and notes (rows without amounts)
       itemFormatted.value = "";
     } else {
@@ -4082,6 +4081,42 @@ function arrayDifferences(arr1, arr2) {
     }
   }
   return arr;
+}
+
+/**
+ * The method objectHasProperty verifiy if an object contains the requested property.
+ * Name can contains a dot '.', in this case the method verify that the given property tree exists.
+*/
+function objectHasProperty(obj, name) {
+    if (!obj || !name) {
+        return false;
+    } else if (name.startsWith("T.") || name.startsWith("I.")) {
+        return false;
+    }
+    return (objectGetProperty(obj, name) !== null);
+}
+
+/**
+ * The method objectHasPoperty verifiy if an object contains the requested property or tree.
+ * Name can contains a dot '.', in this case the method verify that the given property tree exists.
+*/
+function objectGetProperty(obj, name) {
+    if (!obj || !name) {
+        return null;
+    } else if (name.startsWith("T.") || name.startsWith("I.")) {
+        return null;
+    }
+    let curObj = obj;
+    let paths = name.trim().toLowerCase().split('.');
+    for (let i = 0; i < paths.length; i++) {
+        let path = paths[i];
+        if (path in curObj) {
+            curObj = curObj[path];
+        } else {
+            return null;
+        }
+    }
+    return curObj;
 }
 
 function replaceVariables(cssText, variables) {
