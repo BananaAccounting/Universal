@@ -1,0 +1,32 @@
+%%info_test_name{ch.banana.revolut.transactions.business2_20222410}
+\documentclass{report}
+\usepackage{longtable}
+\usepackage{color}
+\usepackage{listings}
+\usepackage[margin=1cm]{geometry}
+\begin{document}
+\newenvironment{tablevalue}[2]{\textbf{Table: #1}\begin{longtable}[l]{#2}}{\end{longtable}}
+\newenvironment{reportvalue}[1]{\textbf{Report: #1}\\}{}
+\lstnewenvironment{jsonvalue}[1]{\textbf{Json: #1}\lstset{language=Java}}{}
+\lstnewenvironment{xmlvalue}[1]{\textbf{Xml: #1}\lstset{language=Xml}}{}
+\newcommand{\info}[2]{\textit{#1: #2}\\}
+\newcommand{\fatalerror}[1]{\textbf{\textcolor[rgb]{1,0,0}{Fatal error: #1}}\\}
+\newcommand{\keyvalue}[2]{\textbf{Keyvalue: #1} #2\\}
+\newcommand{\textvalue}[1]{#1\\}
+\newcommand{\excltest}[1]{\\Excluded from compare: #1}
+\newcommand{\lognewpage}{\newpage}
+\newenvironment{testcase}[1]{\section*{Test: #1}}{\newpage}
+\newenvironment{test}[1]{\section*{Test case: #1}}{}
+%Begin test data
+\begin{tablevalue}{}{ l  l  l  l  l }
+Date & Description & ExternalReference & Expenses & Income\\
+2022-08-15 & PARTUDAM, At Lintuunt Potioniusa Aura. Possico by LUVA-7868/7 et 14/54/7002 & 55qe20p3-2nr0-a77p-jpn8-6810h5726d7m & 10024.18 & \\
+2022-08-15 & PEREQUIS, Nunt · NAE → Nunt · PRA  & 62oi1g65-bky1-b100-7f6v-188su7f420ep &  & 10000.00\\
+2022-08-25 & CALLE, Vadis frego nost MAGRERUM BREGENTE PARAPIA /PAM/4313084H87207867 IDE BY 762 38 444618 & 54358um3-b7sv-kr2e-uu46-65xq530s841d &  & 30000.00\\
+2022-08-26 & PEREQUIS, Nunt · PRA → Nunt · PER  & 3104lst2-n4s5-dv77-o3aj-6srfsh18550o & 17817.82 & \\
+2022-08-30 & PEREQUIS, Nunt · PRA → Nunt · PER  & 354di661-6284-l8o7-724m-35300x4240na & 12200.00 & \\
+2022-09-06 & CALLE, Vadis frego nost MAGRERUM BREGENTE PARAPIA IDE 67. 76787333 & 5330y6mb-847s-q800-fris-3i110315h574 &  & 11450.00\\
+2022-09-06 & PEREQUIS, Nunt · PRA → Nunt · PER  & 806615bk-34ak-omur-hvp2-4b7321v347v5 & 11425.32 & \\
+\\
+\end{tablevalue}
+\end{document}

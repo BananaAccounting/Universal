@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(invoiceapp)
+project(ch.banana.uni.invoice.uni11)
 set(EXTENSION_ID "ch.banana.uni.invoice.uni11")
 
 find_package(Qt6 COMPONENTS Core REQUIRED)

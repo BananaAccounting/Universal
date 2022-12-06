@@ -24,8 +24,8 @@
 // @docproperties = 
 // @outputformat = none
 // @inputdataform = none
-// @includejs = ../import.utilities.js
-// @includejs = ../ch.banana.uni.import.yokoy.js
+// @includejs = ../ch.banana.uni.import.yokoy.sbaa/import.utilities.js
+// @includejs = ../ch.banana.uni.import.yokoy.sbaa/ch.banana.uni.import.yokoy.js
 // @timeout = -1
 
 // Register test case to be executed
@@ -60,7 +60,6 @@ TestImportYokoyTrans.prototype.testImport = function() {
    var fileNameList = [];
 
    fileNameList.push("file:script/../test/testcases/ch.banana.filter.import.yokoy.example_01.csv");
-   fileNameList.push("file:script/../test/testcases/ch.banana.filter.import.yokoy.example_02.csv");
    
    var parentLogger = this.testLogger;
    this.progressBar.start(fileNameList.length);
