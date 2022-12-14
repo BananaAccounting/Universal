@@ -32,12 +32,26 @@ function exec() {
                InvoiceAmountType,CustomerNumber,CustomerName,ItemNumber,ItemDescription,ItemQuantity, \
                ItemUnitPrice,ItemUnit,ItemVatRate,ItemVatCode,ItemDiscount,ItemTotal,ItemVatTotal\n";
 
+    csv += generateCsv(invoicesTable);
+      
+    return csv;
+}
+
+function getValue(column) {
+    // Check if a column is empty 
+    return column ? column : ''
+}
+
+function generateCsv(invoicesTable) {
+    let csv = '';
     for (let i = 0; i < invoicesTable.rowCount; i++) {
         let row = invoicesTable.row(i);
         if (row) {
             try {
                 let invoiceFieldObj = JSON.parse(row.value("InvoiceData"));
                 let invoiceObj = JSON.parse(invoiceFieldObj.invoice_json);
+                let itemDiscountAmount = '';
+                let itemDiscountPercent = '';
 
                 // Check the required fields
                 if (!invoiceObj.document_info.date) {
@@ -52,6 +66,17 @@ function exec() {
                 } else if (!invoiceObj.items[i].unit_price.calculated_amount_vat_exclusive) {
                     Banana.document.addMessage("ItemTotal is a required field");
                     return;
+                } else if (invoiceObj.items[i].discount) {
+                    if (invoiceObj.items[i].discount.amount) {
+                        itemDiscountAmount = invoiceObj.items[i].discount.amount;
+                    } else {
+                        itemDiscountAmount = '';
+                    }
+                    if (invoiceObj.items[i].discount.percent) {
+                        itemDiscountPercent = invoiceObj.items[i].discount.percent;
+                    } else {
+                        itemDiscountPercent = '';
+                    } 
                 } else {
                     csv += `${getValue(invoiceObj.document_info.number)}, \
                             ${getValue(invoiceObj.document_info.date)}, \
@@ -69,7 +94,7 @@ function exec() {
                             ${getValue(invoiceObj.items[i].mesure_unit)}, \
                             ${getValue(invoiceObj.items[i].vat_rate)}, \
                             ${getValue(invoiceObj.items[i].vat_code)}, \
-                            ${getValue(invoiceObj.items[i].discount.amount)}, \
+                            ${getValue(itemDiscountPercent)}, \
                             ${getValue(invoiceObj.items[i].unit_price.calculated_amount_vat_exclusive)}, \
                             ${getValue(invoiceObj.items[i].unit_price.calculated_vat_amount)}\n`;
                 }    
@@ -78,12 +103,6 @@ function exec() {
                 Banana.document.addMessage(`An error occured while exporting the csv invoice! \nError Description: ${e}`);
             }
         }
-      }
-      
+    }
     return csv;
-}
-
-function getValue(column) {
-    // Check if a column is empty 
-    return column ? column : ''
 }
