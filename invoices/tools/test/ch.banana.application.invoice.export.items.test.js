@@ -17,6 +17,7 @@
 // @inputfilefilter.de = Text datei (*.csv);;All files (*.*)
 // @inputfilefilter.fr = Fichier text(*.csv);;All files (*.*)
 // @inputfilefilter.it = File testo (*.csv);;All files (*.*)
+// @includejs = ../ch.banana.application.invoice.export.items.js
 
 // Register test case to be executed
 Test.registerTestCase(new ExportItems());
@@ -57,23 +58,9 @@ ExportItems.prototype.testBananaExtension = function() {
         return
     }
 
-	let csv = "RowId,Description,Unit,UnitPrice\n";
+	let csv = "RowId,Description,UnitPrice,AmountType,Unit,VatCode,VatRate,Discount\n";
 
-    for (let i = 0; i < itemsTable.rowCount; i++) {
-        let row = itemsTable.row(i);
-        if (row) {
-            try {
-                let id = row.value("RowId");
-                let description = row.value("Description");
-                let unit = row.value("Unit");
-                let unit_price = row.value("UnitPrice");
-                csv += `${id},${description},${unit},${unit_price}\n`;
-            }
-            catch(e) {
-                return null;
-            }
-        }
-      }
+    csv += generateCsvItems(itemsTable);
     
 	Test.logger.addCsv("Test 'Items'", csv);
 
