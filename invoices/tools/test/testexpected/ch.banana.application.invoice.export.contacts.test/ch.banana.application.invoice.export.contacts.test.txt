@@ -22,12 +22,12 @@
 %
 \begin{testcase}{ExportContacts}
 \begin{test}{testBananaExtension}
-\begin{tablevalue}{Test 'Contacts'}{ l  l  l  l  l }
-Number & OrganisationName & FirstName & LastName & OrganisationTitle\\
-1 & Garage de Kinshasa & Eddy & Mbuyamba & Directeur Général\\
-2 & Lezo Sarl & Joel & Mbele & Directeur Général Adjoint\\
-3 & Aquasplash Water Park & Shiraj & Savani & Directeur Administratif\\
-4 & Panorama SARL & Léon & Somwe & Directeur Général\\
+\begin{tablevalue}{Test 'Contacts'}{ l  l  l  l  l  l  l  l  l  l  l  l  l  l  l }
+Number & OrganisationName & OrganisationUnit & NamePrefix & FirstName & LastName &                 Street & AddressExtra & POBox & PostalCode & Locality & CountryCode & LanguageCode &                 EmailWork & Discount \\
+1 &                          Garage de Kinshasa &                           &                           &                          Eddy &                          Mbuyamba &                          Route des Poids Lourds &                           &                           &                          01203 &                          Kinshasa &                          CD &                          fr &                           &                           \\
+2 &                          Lezo Sarl &                           &                           &                          Joel &                          Mbele &                          Avenue de la Justice &                           &                           &                          01202 &                          Kinshasa &                          CD &                          fr &                           &                           \\
+3 &                          Aquasplash Water Park &                           &                           &                          Shiraj &                          Savani &                          Route des Poids Lourds &                           &                           &                          01104 &                          Kinshasa &                          CD &                          fr &                           &                           \\
+4 &                          Panorama SARL &                           &                           &                          Léon &                          Somwe &                          Avenue Maboke &                           &                           &                          01204 &                          Kinshasa &                          CD &                          fr &                           &                           \\
 \\
 \end{tablevalue}
 \keyvalue{Result}{Passed}
