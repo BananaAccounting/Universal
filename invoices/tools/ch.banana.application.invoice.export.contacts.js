@@ -104,7 +104,7 @@ function generateCsvContacts(contactsTable) {
                         ${getValue(discount)} \n`;
             }
             catch(e) {
-                Banana.document.addMessage(`An error occured while exporting the csv invoice! \nError Description: ${e}`);;
+                Banana.document.addMessage(`An error occured while exporting the csv invoice! \nError Description: ${e}`);
             }
         }
     }
