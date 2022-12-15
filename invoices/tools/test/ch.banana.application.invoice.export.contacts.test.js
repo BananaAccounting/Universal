@@ -17,6 +17,7 @@
 // @inputfilefilter.de = Text datei (*.csv);;All files (*.*)
 // @inputfilefilter.fr = Fichier text(*.csv);;All files (*.*)
 // @inputfilefilter.it = File testo (*.csv);;All files (*.*)
+// @includejs = ../ch.banana.application.invoice.export.contacts.js
 
 
 
@@ -59,24 +60,11 @@ ExportContacts.prototype.testBananaExtension = function() {
         return
     }
 
-	let csv = "Number,OrganisationName,FirstName,LastName,OrganisationTitle\n";
+	let csv = "Number,OrganisationName,OrganisationUnit,NamePrefix,FirstName,LastName, \
+               Street,AddressExtra,POBox,PostalCode,Locality,CountryCode,LanguageCode, \
+               EmailWork,Discount \n";
 
-    for (let i = 0; i < contactsTable.rowCount; i++) {
-        let row = contactsTable.row(i);
-        if (row) {
-            try {
-                let id = row.value("RowId");
-                let organisation = row.value("OrganisationName");
-                let first_name = row.value("FirstName");
-                let last_name = row.value("FamilyName");
-                let title = row.value("OrganisationTitle");
-                csv += `${id},${organisation},${first_name},${last_name},${title}\n`;
-            }
-            catch(e) {
-                return null;
-            }
-        }
-      }
+    csv += generateCsvContacts(contactsTable);
     
 	Test.logger.addCsv("Test 'Contacts'", csv);
 
