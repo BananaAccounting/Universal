@@ -17,6 +17,7 @@
 // @inputfilefilter.de = Text datei (*.csv);;All files (*.*)
 // @inputfilefilter.fr = Fichier text(*.csv);;All files (*.*)
 // @inputfilefilter.it = File testo (*.csv);;All files (*.*)
+// @includejs = ../ch.banana.application.invoice.export.invoices.js
 
 
 // Register test case to be executed
@@ -62,19 +63,7 @@ ExportInvoices.prototype.testBananaExtension = function() {
                InvoiceAmountType,CustomerNumber,CustomerName,ItemNumber,ItemDescription,ItemQuantity, \
                ItemUnitPrice,ItemUnit,ItemVatRate,ItemVatCode,ItemDiscount,ItemTotal,ItemVatTotal\n";
 
-    for (let i = 0; i < invoicesTable.rowCount; i++) {
-        let row = invoicesTable.row(i);
-        if (row) {
-            try {
-                let invoiceFieldObj = JSON.parse(row.value("InvoiceData"));
-                let invoiceObj = JSON.parse(invoiceFieldObj.invoice_json);
-                csv += `${invoiceObj.document_info.number},${invoiceObj.document_info.date},${invoiceObj.document_info.description},${invoiceObj.customer_info.number},${invoiceObj.billing_info.total_to_pay}\n`;
-            }
-            catch(e) {
-                return null;
-            }
-        }
-      }
+    csv += generateCsvInvoices(invoicesTable)
     
 	Test.logger.addCsv("Test 'Invoices'", csv);
 

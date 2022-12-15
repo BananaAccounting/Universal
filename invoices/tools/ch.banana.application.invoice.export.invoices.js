@@ -32,7 +32,7 @@ function exec() {
                InvoiceAmountType,CustomerNumber,CustomerName,ItemNumber,ItemDescription,ItemQuantity, \
                ItemUnitPrice,ItemUnit,ItemVatRate,ItemVatCode,ItemDiscount,ItemTotal,ItemVatTotal\n";
 
-    csv += generateCsv(invoicesTable);
+    csv += generateCsvInvoices(invoicesTable);
       
     return csv;
 }
@@ -42,7 +42,7 @@ function getValue(column) {
     return column ? column : ''
 }
 
-function generateCsv(invoicesTable) {
+function generateCsvInvoices(invoicesTable) {
     let csv = '';
     for (let i = 0; i < invoicesTable.rowCount; i++) {
         let row = invoicesTable.row(i);

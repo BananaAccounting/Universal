@@ -22,10 +22,10 @@
 %
 \begin{testcase}{ExportInvoices}
 \begin{test}{testBananaExtension}
-\begin{tablevalue}{Test 'Invoices'}{ l  l  l  l  l }
-InvoiceNumber & InvoiceDate & InvoiceDescription & CustomerNumber & ItemTotal\\
-1 & 2022-11-14 & Facture GK & 1 & 125000.00\\
-2 & 2022-11-14 & Facture Lezo & 2 & 125000.00\\
+\begin{tablevalue}{Test 'Invoices'}{ l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l }
+InvoiceNumber & InvoiceDate & InvoiceDueDate & InvoiceDescription & InvoiceDiscount & InvoiceCurrency &                 InvoiceAmountType & CustomerNumber & CustomerName & ItemNumber & ItemDescription & ItemQuantity &                 ItemUnitPrice & ItemUnit & ItemVatRate & ItemVatCode & ItemDiscount & ItemTotal & ItemVatTotal\\
+1 &                              2022-11-14 &                               &                              Facture GK &                               &                              CHF &                              vat\_none &                              1 &                              Eddy Mbuyamba &                              1000 &                              Thé &                              50.00 &                              1000.00 &                              pc &                               &                               &                               &                              1000.00 &                              \\
+2 &                              2022-11-14 &                               &                              Facture Lezo &                               &                              CHF &                              vat\_none &                              2 &                              Joel Mbele &                              1200 &                              Tisanne &                              30.00 &                              2500.00 &                              pc &                               &                               &                               &                              2500.00 &                              \\
 \\
 \end{tablevalue}
 \keyvalue{Result}{Passed}
