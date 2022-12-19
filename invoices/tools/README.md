@@ -132,6 +132,7 @@ Import rules:
 Export rules:
 
 - All avalilabels columns are exported;
+- If 'OrganisationName' is present, the fields 'FirstName' and 'LastName' are not mandatory, if is not present 'FirstName' and 'LastName' are required.
 
 ## Items columns
 
