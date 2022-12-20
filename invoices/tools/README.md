@@ -75,11 +75,11 @@ Notes:
 Example:
 
 ```csv
-InvoiceDate;CustomerNumber;ItemDescription;ItemTotal;ItemVatRate;ItemVatTotal
-2022-10-24;120001;"Red roses";100.00;V77;7.70
-2022-10-24;120001;"White tulips";20.00;V77;1.54
-2022-10-25;120002;"Garofani";12.00;V77;V77;0.92
-2022-10-25;120002;"Rododendrus";20.00;V77;1.54
+InvoiceDate,CustomerNumber,ItemDescription,ItemTotal,ItemVatRate,ItemVatTotal
+2022-10-24,120001,"Red roses",100.00,V77,7.70
+2022-10-24,120001,"White tulips",20.00,V77,1.54
+2022-10-25,120002,"Garofani",12.00,V77,V77,0.92
+2022-10-25,120002,"Rododendrus",20.00,V77,1.54
 ```
 
 Import rules:
@@ -132,6 +132,7 @@ Import rules:
 Export rules:
 
 - All avalilabels columns are exported;
+- If 'OrganisationName' is present, the fields 'FirstName' and 'LastName' are not mandatory, if is not present 'FirstName' and 'LastName' are required.
 
 ## Items columns
 
