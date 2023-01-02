@@ -17,7 +17,7 @@
 
 
 
-/* User parameters update: 2022-12-30 */
+/* Texts update: 2022-12-30 */
 
 
 

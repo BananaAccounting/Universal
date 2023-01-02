@@ -15,7 +15,7 @@
 
 
 
-/* Texts update: 2022-12-30 */
+/* Print preferences update: 2022-12-30 */
 
 
 
