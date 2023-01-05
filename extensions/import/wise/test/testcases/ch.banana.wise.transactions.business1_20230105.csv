@@ -1,0 +1,4 @@
+"TransferWise ID",Date,Amount,Currency,Description,"Payment Reference","Running Balance","Exchange From","Exchange To","Exchange Rate","Payer Name","Payee Name","Payee Account Number",Merchant,"Card Last Four Digits","Card Holder Full Name",Attachment,Note,"Total fees"
+POST-766417851,01-01-2023,-1.00,ICA,"Post fectibratus an 4.33 ICA fugant me Inava.pra/frit LENDIS.PRA",,14761.73,,,,,,,"Inava.pra/frit LENDIS.PRA",6559,"Gral Matumen",,,0.00
+POST-426887720,01-01-2023,-61.20,ICA,"Post fectibratus an 74.50 CAR fugant me Idicum*Ponuit Matumen. VI IDICUM.PRA",,14762.73,ICA,CAR,1.01056,,,,"Idicum*Ponuit Matumen. VI IDICUM.PRA",6559,"Gral Matumen",,,0.24
+EVISPELL-680562537,01-01-2023,-280.00,ICA,"Plis angus si Peridum G.",,14823.93,ICA,PRA,39.54860,,"Peridum G.","************6445",,,,,,1.86

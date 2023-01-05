@@ -1,0 +1,5 @@
+"TransferWise ID",Date,Amount,Currency,Description,"Payment Reference","Running Balance","Exchange From","Exchange To","Exchange Rate","Payer Name","Payee Name","Payee Account Number",Merchant,"Card Last Four Digits","Card Holder Full Name",Attachment,Note,"Total fees"
+BIGAVIAE-707401703,23-01-2022,-1071.84,USA,"Frit divia an Lapuple IN Fruccutuid",,0.00,,,,,"Lapuple IN Fruccutuid",QQ8413432384236413826,,,,,,0.50
+BIGAVIAE-683586350,17-01-2022,-154.91,USA,"Frit divia an OSTUDIT I.",,1071.84,USA,AUT,0.95836,,"OSTUDIT I.",UC11426477442750171520,,,,,,4.65
+BIGAVIAE-730688867,11-01-2022,-193.88,USA,"Frit divia an OSTUDIT I.",,1226.75,USA,AUT,0.95229,,"OSTUDIT I.",UC11426477442750171520,,,,,,4.86
+BIGAVIAE-361320314,04-01-2022,-191.49,USA,"Frit divia an OSTUDIT I.",,1420.63,USA,AUT,0.96418,,"OSTUDIT I.",UC11426477442750171520,,,,,,4.80
