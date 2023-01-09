@@ -23,7 +23,7 @@
  */
 function exec() {
     let itemsTable = Banana.document.table("Items");
-    let csv = "RowId,Description,UnitPrice,AmountType,Unit,VatCode,VatRate,Discount\n";
+    let csv = "";
 
     if (!itemsTable) {
         return
@@ -45,6 +45,7 @@ function getValue(column) {
 }
 
 function generateCsvItems(itemsTable) {
+    let header = "RowId,Description,UnitPrice,AmountType,Unit,VatCode,VatRate,Discount\n";
     let csv = '';
     let rowMatched = true;
     for (let i = 0; i < itemsTable.rowCount; i++) {
@@ -69,14 +70,7 @@ function generateCsvItems(itemsTable) {
                     row.addMessage("UnitPrice is a required field", unitPrice);
                     rowMatched = false;
                 }
-                csv += `${getValue(id)}, \
-                        ${getValue(description)}, \
-                        ${getValue(unitPrice)}, \
-                        ${getValue(amountType)}, \
-                        ${getValue(unit)}, \
-                        ${getValue(vatCode)}, \
-                        ${getValue(vatRate)}, \
-                        ${getValue(discount)}\n`;
+                csv += `${getValue(id)},${getValue(description)},${getValue(unitPrice)},${getValue(amountType)},${getValue(unit)},${getValue(vatCode)},${getValue(vatRate)},${getValue(discount)}\n`;
             }
             catch(e) {
                 Banana.document.addMessage(`An error occured while exporting the csv invoice! \nError Description: ${e}`);
@@ -85,7 +79,7 @@ function generateCsvItems(itemsTable) {
     }
 
     if (rowMatched) {
-        return csv;
+        return header + csv;
     } else {
         return "";
     }
