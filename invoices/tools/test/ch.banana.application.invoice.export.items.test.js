@@ -58,7 +58,7 @@ ExportItems.prototype.testBananaExtension = function() {
         return
     }
 
-	let csv = "RowId,Description,UnitPrice,AmountType,Unit,VatCode,VatRate,Discount\n";
+	let csv = "";
 
     csv += generateCsvItems(itemsTable);
     
