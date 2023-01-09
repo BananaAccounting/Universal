@@ -46,7 +46,7 @@ function getValue(column) {
 
 function generateCsvContacts(contactsTable) {
     let csv = '';
-    let header = "Number,OrganisationName,OrganisationUnit,NamePrefix,FirstName,LastName,Street,AddressExtra,POBox,PostalCode,Locality,CountryCode,LanguageCode,EmailWork,Discount \n";
+    let header = "Number,OrganisationName,OrganisationUnit,NamePrefix,FirstName,LastName,Street,AddressExtra,POBox,PostalCode,Locality,CountryCode,LanguageCode,EmailWork,Discount\n";
     let rowMatched = true;
     for (let i = 0; i < contactsTable.rowCount; i++) {
         let row = contactsTable.row(i);
