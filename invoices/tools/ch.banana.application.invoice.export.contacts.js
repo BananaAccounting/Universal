@@ -31,7 +31,12 @@ function exec() {
                Street,AddressExtra,POBox,PostalCode,Locality,CountryCode,LanguageCode, \
                EmailWork,Discount \n";
 
-    csv += generateCsvContacts(contactsTable);
+    let contactsData = generateCsvContacts(contactsTable);
+
+    if (!contactsData) 
+        return "";
+    
+    csv += contactsData;
       
     return csv;
 }
@@ -43,9 +48,10 @@ function getValue(column) {
 
 function generateCsvContacts(contactsTable) {
     let csv = '';
+    let rowMatched = true;
     for (let i = 0; i < contactsTable.rowCount; i++) {
         let row = contactsTable.row(i);
-        if (row) {
+        if (!row.isEmpty) {
             try {
                 let id = row.value("RowId");
                 let organisation = row.value("OrganisationName");
@@ -63,29 +69,29 @@ function generateCsvContacts(contactsTable) {
                 let workEmail = row.value("EmailWork");
                 let discount = row.value("Discount");
                 if (!id) {
-                    Banana.document.addMessage("Number is a required field");
-                    return;
-                } else if (!organisation) {
-                    Banana.document.addMessage("Organisation name is a required field");
-                    return;
-                } else if (!first_name) {
-                    Banana.document.addMessage("FirstName is a required field");
-                    return;
-                } else if (!last_name) {
-                    Banana.document.addMessage("LastName is a required field");
-                    return;
-                } else if (!street) {
-                    Banana.document.addMessage("Street is a required field");
-                    return;
-                } else if (!postalCode) {
-                    Banana.document.addMessage("PostalCode is a required field");
-                    return;
-                } else if (!locality) {
-                    Banana.document.addMessage("Locality is a required field");
-                    return;
-                } else if (!countryCode) {
-                    Banana.document.addMessage("CountryCode is a required field");
-                    return;
+                    row.addMessage("Number is a required field", id);
+                    rowMatched = false;
+                } if (!organisation) {
+                    row.addMessage("Organisation name is a required field", organisation);
+                    rowMatched = false;
+                } if (!first_name) {
+                    row.addMessage("FirstName is a required field", first_name);
+                    rowMatched = false;
+                } if (!last_name) {
+                    row.addMessage("LastName is a required field", last_name);
+                    rowMatched = false;
+                } if (!street) {
+                    row.addMessage("Street is a required field", street);
+                    rowMatched = false;
+                } if (!postalCode) {
+                    row.addMessage("PostalCode is a required field", postalCode);
+                    rowMatched = false;
+                } if (!locality) {
+                    row.addMessage("Locality is a required field", locality);
+                    rowMatched = false;
+                } if (!countryCode) {
+                    row.addMessage("CountryCode is a required field", countryCode);
+                    rowMatched = false;
                 }
                 csv += `${getValue(id)}, \
                         ${getValue(organisation)}, \
@@ -109,5 +115,10 @@ function generateCsvContacts(contactsTable) {
         }
     }
     
-    return csv;
+    if (rowMatched) {
+        return csv;
+    } else {
+        Banana.document.addMessage("Complete the missing details first, as listed below in the message pane.");
+        return "";
+    }
 }
