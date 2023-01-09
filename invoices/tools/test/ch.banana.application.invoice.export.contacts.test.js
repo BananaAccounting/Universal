@@ -60,9 +60,7 @@ ExportContacts.prototype.testBananaExtension = function() {
         return
     }
 
-	let csv = "Number,OrganisationName,OrganisationUnit,NamePrefix,FirstName,LastName, \
-               Street,AddressExtra,POBox,PostalCode,Locality,CountryCode,LanguageCode, \
-               EmailWork,Discount \n";
+	let csv = "";
 
     csv += generateCsvContacts(contactsTable);
     
