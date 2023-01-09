@@ -114,7 +114,7 @@ var ImportWisePersonalFormat1 = class ImportWisePersonalFormat1 extends ImportUt
 
         if (transactions.length === 0)
             return false;
-        for (var i = 0; i <= transactions.length; i++) {
+        for (var i = 0; i < transactions.length; i++) {
             var transaction = transactions[i];
 
             var formatMatched = false;
@@ -221,7 +221,7 @@ var ImportWisePersonalFormat1 = class ImportWisePersonalFormat1 extends ImportUt
  * 
  * @param {*} banDocument 
  */
-var importWiseBusinessFormat1 = class importWiseBusinessFormat1 extends ImportUtilities {
+var ImportWiseBusinessFormat1 = class ImportWiseBusinessFormat1 extends ImportUtilities {
     constructor(banDocument) {
         super(banDocument);
 
@@ -245,7 +245,7 @@ var importWiseBusinessFormat1 = class importWiseBusinessFormat1 extends ImportUt
 
         if (transactions.length === 0)
             return false;
-        for (var i = 0; i <= transactions.length; i++) {
+        for (var i = 0; i < transactions.length; i++) {
             var transaction = transactions[i];
 
             var formatMatched = false;
