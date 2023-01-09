@@ -59,9 +59,7 @@ ExportInvoices.prototype.testBananaExtension = function() {
         return
     }
 
-	let csv = "InvoiceNumber,InvoiceDate,InvoiceDueDate,InvoiceDescription,InvoiceDiscount,InvoiceCurrency, \
-               InvoiceAmountType,CustomerNumber,CustomerName,ItemNumber,ItemDescription,ItemQuantity, \
-               ItemUnitPrice,ItemUnit,ItemVatRate,ItemVatCode,ItemDiscount,ItemTotal,ItemVatTotal\n";
+	let csv = "";
 
     csv += generateCsvInvoices(invoicesTable)
     
