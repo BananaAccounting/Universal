@@ -23,13 +23,11 @@
  */
 function exec() {
     let contactsTable = Banana.document.table("Contacts");
+    let csv = "";
 
     if (!contactsTable) {
         return
     }
-    let csv = "Number,OrganisationName,OrganisationUnit,NamePrefix,FirstName,LastName, \
-               Street,AddressExtra,POBox,PostalCode,Locality,CountryCode,LanguageCode, \
-               EmailWork,Discount \n";
 
     let contactsData = generateCsvContacts(contactsTable);
 
@@ -48,6 +46,7 @@ function getValue(column) {
 
 function generateCsvContacts(contactsTable) {
     let csv = '';
+    let header = "Number,OrganisationName,OrganisationUnit,NamePrefix,FirstName,LastName,Street,AddressExtra,POBox,PostalCode,Locality,CountryCode,LanguageCode,EmailWork,Discount \n";
     let rowMatched = true;
     for (let i = 0; i < contactsTable.rowCount; i++) {
         let row = contactsTable.row(i);
@@ -93,21 +92,7 @@ function generateCsvContacts(contactsTable) {
                     row.addMessage("CountryCode is a required field", countryCode);
                     rowMatched = false;
                 }
-                csv += `${getValue(id)}, \
-                        ${getValue(organisation)}, \
-                        ${getValue(organisationUnit)}, \
-                        ${getValue(namePrefix)}, \
-                        ${getValue(first_name)}, \
-                        ${getValue(last_name)}, \
-                        ${getValue(street)}, \
-                        ${getValue(extraAddress)}, \
-                        ${getValue(poBox)}, \
-                        ${getValue(postalCode)}, \
-                        ${getValue(locality)}, \
-                        ${getValue(countryCode)}, \
-                        ${getValue(languageCode)}, \
-                        ${getValue(workEmail)}, \
-                        ${getValue(discount)} \n`;
+                csv += `${getValue(id)},${getValue(organisation)},${getValue(organisationUnit)},${getValue(namePrefix)},${getValue(first_name)},${getValue(last_name)},${getValue(street)},${getValue(extraAddress)},${getValue(poBox)},${getValue(postalCode)},${getValue(locality)},${getValue(countryCode)},${getValue(languageCode)},${getValue(workEmail)},${getValue(discount)} \n`;
             }
             catch(e) {
                 Banana.document.addMessage(`An error occured while exporting the csv invoice! \nError Description: ${e}`);
@@ -116,9 +101,9 @@ function generateCsvContacts(contactsTable) {
     }
     
     if (rowMatched) {
-        return csv;
+        return header + csv;
     } else {
-        Banana.document.addMessage("Complete the missing details first, as listed below in the message pane.");
+        Banana.document.addMessage("Complete the missing details first, as listed in the message pane below.");
         return "";
     }
 }

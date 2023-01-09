@@ -100,6 +100,7 @@ function generateCsvInvoices(invoicesTable) {
     if (rowMatched) {
         return header + csv;
     } else {
+        Banana.document.addMessage("Complete the missing details first, as listed in the message pane below.");
         return "";
     }
     
