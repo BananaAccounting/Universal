@@ -29,7 +29,12 @@ function exec() {
         return
     }
 
-    csv += generateCsvItems(itemsTable);
+    let itemsData = generateCsvItems(itemsTable);
+
+    if (!itemsData) 
+        return "";
+    
+    csv += itemsData;
       
     return csv;
 }
@@ -41,9 +46,10 @@ function getValue(column) {
 
 function generateCsvItems(itemsTable) {
     let csv = '';
+    let rowMatched = true;
     for (let i = 0; i < itemsTable.rowCount; i++) {
         let row = itemsTable.row(i);
-        if (row) {
+        if (!row.isEmpty) {
             try {
                 let id = row.value("RowId");
                 let description = row.value("Description");
@@ -54,14 +60,14 @@ function generateCsvItems(itemsTable) {
                 let vatRate = row.value("VatRate");
                 let discount = row.value("Discount");
                 if (!id) {
-                    Banana.document.addMessage("Number is a required field");
-                    return;
-                } else if (!description) {
-                    Banana.document.addMessage("Description is a required field");
-                    return;
+                    row.addMessage("Number is a required field", id);
+                    rowMatched = false;
+                } if (!description) {
+                    row.addMessage("Description is a required field", description);
+                    rowMatched = false;
                 } else if (!unitPrice) {
-                    Banana.document.addMessage("UnitPrice is a required field");
-                    return;
+                    row.addMessage("UnitPrice is a required field", unitPrice);
+                    rowMatched = false;
                 }
                 csv += `${getValue(id)}, \
                         ${getValue(description)}, \
@@ -77,6 +83,10 @@ function generateCsvItems(itemsTable) {
             }
         }
     }
-    
-    return csv;
+
+    if (rowMatched) {
+        return csv;
+    } else {
+        return "";
+    }
 }
