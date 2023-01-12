@@ -1,4 +1,4 @@
-/* CSS update: 2021-06-16  */
+/* CSS update: 2022-12-30  */
 
 /* Page definition.
    Sets margins of the document.
@@ -50,7 +50,7 @@ td {
    Used for example as horizontal line between the items and the total net */
 .border-top {
   border-top-style: solid;
-  border-top-color: $background_color_details_header;
+  border-top-color: $color_title_total;
   border-top-width: thin;
 }
 /* Text of the header when printed on the right of the document.
@@ -79,7 +79,7 @@ td {
    Sets margins and position relative to the document. */
 .logo {
   margin-top: 1.2cm;
-  margin-left: 1.2cm;
+  margin-left: 1.34cm;
   margin-right: 1.2cm;
   position: absolute;
 }
@@ -132,31 +132,31 @@ table.info_table_row0 td {
 @page:first-view table.info_table_row0 {
   display: none;
 }
-/* Can be used to set the column width of the first column of info table  
-   width: 100px */  
-.info_table_first_column {  
-} 
-/* Can be used to set the column width of the second column of info table   
-   width: 100px */  
-.info_table_second_column { 
+/* Can be used to set the column width of the first column of info table 
+   width: 100px */
+.info_table_first_column {
+}
+/* Can be used to set the column width of the second column of info table 
+   width: 100px */
+.info_table_second_column {
 }
 /* Address positioning when printed on the right.
    Sets margins and position relative to the document.
    Sets also the font size. */
 .address_table_right {
   font-size: $font_size;
-  margin-top: 4.5cm;
-  margin-left: 12.3cm;
-  margin-right: 1.2cm;
+  top: 4.5cm;
+  left: 12.3cm;
+  width: 7.5cm;
   position: absolute;
 }
 /* Address positioning when printed on the left.
    Sets margins and position relative to the document.
    Sets also the font size. */
 .address_table_left {
-  margin-top: 5.5cm;
-  margin-left: 2.2cm;
-  margin-right: 1.2cm;
+  top: 5.5cm;
+  left: 2.2cm;
+  width: 7.5cm;
   position: absolute;
 }
 /* Address positioning when printed on the right,
@@ -165,9 +165,9 @@ table.info_table_row0 td {
    Sets also the font size. */
 .custom_address_table_right {
   font-size: $font_size;
-  margin-top: $right_address_margin_top;
-  margin-left: $right_address_margin_left;
-  margin-right: 1.2cm;
+  top: $right_address_margin_top;
+  left: $right_address_margin_left;
+  width: 7.5cm;
   position: absolute;
 }
 /* Address positioning when printed on the left,
@@ -175,9 +175,9 @@ table.info_table_row0 td {
    Sets margins and position relative to the document.
    Sets also the font size. */
 .custom_address_table_left {
-  margin-top: $left_address_margin_top;
-  margin-left: $left_address_margin_left;
-  margin-right: 1.2cm;
+  top: $left_address_margin_top;
+  left: $left_address_margin_left;
+  width: 7.5cm;
   position: absolute;
 }
 /* Small address line of the sender, above the customer's address.
@@ -187,8 +187,9 @@ table.info_table_row0 td {
   font-size: 7pt;
   text-align: center;
   border-bottom-style: solid;
-  border-bottom-color: black;
+  border-bottom-color: $text_color;
   border-bottom-width: 1px;
+  margin-bottom: 0.3cm;
 }
 /* Shipping address positioning.
    Sets font size and margins relative to the information table. */
@@ -202,14 +203,14 @@ table.info_table_row0 td {
    Sets font weight and color of the text. */
 .title_shipping_address {
   font-weight: bold;
-  color: $background_color_details_header;
+  color: $color_title_total;
 }
 /* Invoice title.
    Sets font size, font weight and color of the text. */
 .title_text {
   font-size: $font_size_title;
   font-weight: bold;
-  color: $background_color_details_header;
+  color: $color_title_total;
 }
 /* Begin text positioning.
    Sets margins relative to the prior element (invoice title).
@@ -256,22 +257,23 @@ table.info_table_row0 td {
   font-weight: bold;
   color: $text_color_details_header;
   background-color: $background_color_details_header;
+  border-bottom: thin solid $color_title_total;
 }
 /* Cells of the invoice details table.
    Sets the space between the text in the cell and the cell border (top, bottom, left and right). */
 .doc_table td {
   padding-top: 5px;
   padding-bottom: 1px;
-  padding-left: 4px;
-  padding-right: 4px;
+  padding-left: 0px;
+  padding-right: 0px;
 }
 /* Cells of header row of the invoice details table.
    Sets the space between the text in the cell and the cell border (top, bottom, left and right). */
 .doc_table_header td {
   padding-top: 4px;
   padding-bottom: 2px;
-  padding-left: 4px;
-  padding-right: 4px;
+  padding-left: 0px;
+  padding-right: 0px;
 }
 /* Item row of the invoice details.
    Sets font weight. */
@@ -284,9 +286,9 @@ table.info_table_row0 td {
 .total_cell {
   font-size: $font_size_total;
   font-weight: bold;
-  color: $background_color_details_header;
+  color: $color_title_total;
   border-bottom-style: double;
-  border-bottom-color: $background_color_details_header;
+  border-bottom-color: $color_title_total;
   border-bottom-width: 1px;
 }
 /* Subtotal row of the invoice details.
@@ -294,7 +296,7 @@ table.info_table_row0 td {
 .subtotal_cell {
   font-weight: bold;
   border-bottom-style: solid;
-  border-bottom-color: $background_color_details_header;
+  border-bottom-color: $color_title_total;
   border-bottom-width: thin;
 }
 /* Header cell of the invoice details.
@@ -319,7 +321,7 @@ table.info_table_row0 td {
 .section_class_final_texts {
   margin-top: 0cm;
   margin-bottom: 0.5cm;
-  margin-left: 1.2cm;
+  margin-left: 1.26cm;
   margin-right: 1.0cm;
 }
 /* Footer top border positioning. 
@@ -329,7 +331,7 @@ table.info_table_row0 td {
   margin-left: 1.2cm;
   margin-right: 1.0cm;
   border-top-style: solid;
-  border-top-color: $background_color_details_header;
+  border-top-color: $color_title_total;
   border-top-width: thin;
 }
 /* Footer positioning and style.
