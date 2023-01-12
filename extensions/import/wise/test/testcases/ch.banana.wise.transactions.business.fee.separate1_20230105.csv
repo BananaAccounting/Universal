@@ -1,0 +1,6 @@
+"TransferWise ID",Date,Amount,Currency,Description,"Payment Reference","Running Balance","Exchange From","Exchange To","Exchange Rate","Payer Name","Payee Name","Payee Account Number",Merchant,"Card Last Four Digits","Card Holder Full Name",Attachment,Note,"Total fees"
+GANT-208846541,01-01-2023,-1.00,COR,"Gant remptiffine in COR diffig an Sente.sed/fice ÆDIFIG.SED",,11761.73,,,,,,,"Sente.sed/fice ÆDIFIG.SED",6559,"Lego Pramnit",,,0.00
+GANT-116454107,01-01-2023,-60.96,COR,"Gant remptiffine in DEO diffig an Dectus*Ligune Pramnit. UT DECTUS.SED",,14762.73,COR,DEO,1.01056,,,,"Dectus*Ligune Pramnit. UT DECTUS.SED",6559,"Lego Pramnit",,,0.24
+GANT-116454107,01-01-2023,-0.24,COR,"Cent Dimurra off: GANT-116454107",,14823.69,,,,,,,"Dectus*Ligune Pramnit. UT DECTUS.SED",6559,"Lego Pramnit",,,8
+LIBERRUM-520757333,01-01-2023,-278.14,COR,"Sper quisu et Forperm O.",,11823.93,COR,XXX,39.54860,,"Forperm O.","************3304",,,,,,1.86
+LIBERRUM-520757333,01-01-2023,-1.86,COR,"Cent Dimurra off: LIBERRUM-520757333",,15102.07,,,,,Cent,,,,,,,8

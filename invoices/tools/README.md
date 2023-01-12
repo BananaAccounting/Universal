@@ -61,7 +61,7 @@ The import and export files are csv (coma separated values) files, where:
 - ItemVatRate
 - ItemVatCode
 - ItemDiscount
-- ItemTotal *
+- ItemTotal * 5)
 - ItemVatTotal 1)
 
 Notes:
@@ -71,6 +71,7 @@ Notes:
 - 2\) By import will be replaced  
 - 3\) vat_excl, vat_incl, vat_none (default is vat_excl)  
 - 4\) it contains the Organisation Name or the First and Last Name plus the Locality separated by a comma  
+- 5\) ItemTotal contains the total exclusive vat if InvoiceAmountType is vat_excl, otherwise it contains the total inclusive vat
 
 Example:
 
