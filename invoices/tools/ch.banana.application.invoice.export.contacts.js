@@ -22,7 +22,7 @@
  * Parse the file and create a document change document to import the imvoices.
  */
 function exec() {
-    let contactsTable = Banana.document.table("Contacts");
+    let contactsTable = Banana.document.table(qsTr("Contacts"));
     let csv = "";
 
     if (!contactsTable) {
@@ -68,28 +68,28 @@ function generateCsvContacts(contactsTable) {
                 let workEmail = row.value("EmailWork");
                 let discount = row.value("Discount");
                 if (!id) {
-                    row.addMessage("Number is a required field", id);
+                    row.addMessage(qsTr("Number is a required field"), id);
                     rowMatched = false;
                 } if (!organisation) {
-                    row.addMessage("Organisation name is a required field", organisation);
+                    row.addMessage(qsTr("Organisation name is a required field"), organisation);
                     rowMatched = false;
                 } if (!first_name) {
-                    row.addMessage("FirstName is a required field", first_name);
+                    row.addMessage(qsTr("FirstName is a required field"), first_name);
                     rowMatched = false;
                 } if (!last_name) {
-                    row.addMessage("LastName is a required field", last_name);
+                    row.addMessage(qsTr("LastName is a required field"), last_name);
                     rowMatched = false;
                 } if (!street) {
-                    row.addMessage("Street is a required field", street);
+                    row.addMessage(qsTr("Street is a required field"), street);
                     rowMatched = false;
                 } if (!postalCode) {
-                    row.addMessage("PostalCode is a required field", postalCode);
+                    row.addMessage(qsTr("PostalCode is a required field"), postalCode);
                     rowMatched = false;
                 } if (!locality) {
-                    row.addMessage("Locality is a required field", locality);
+                    row.addMessage(qsTr("Locality is a required field"), locality);
                     rowMatched = false;
                 } if (!countryCode) {
-                    row.addMessage("CountryCode is a required field", countryCode);
+                    row.addMessage(qsTr("CountryCode is a required field"), countryCode);
                     rowMatched = false;
                 }
                 csv += `${getValue(id)},${getValue(organisation)},${getValue(organisationUnit)},${getValue(namePrefix)},${getValue(first_name)},${getValue(last_name)},${getValue(street)},${getValue(extraAddress)},${getValue(poBox)},${getValue(postalCode)},${getValue(locality)},${getValue(countryCode)},${getValue(languageCode)},${getValue(workEmail)},${getValue(discount)} \n`;
@@ -103,7 +103,7 @@ function generateCsvContacts(contactsTable) {
     if (rowMatched) {
         return header + csv;
     } else {
-        Banana.document.addMessage("Complete the missing details first, as listed in the message pane below.");
+        Banana.document.addMessage(qsTr("Complete the missing details first, as listed in the message pane below."));
         return "";
     }
 }

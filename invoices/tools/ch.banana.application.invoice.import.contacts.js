@@ -21,6 +21,50 @@
  * Parse the file and create a document change document to import the imvoices.
  */
 function exec(string) {
+    let banDoc = Banana.document;
+
+    if (!banDoc || string.length <= 0) 
+        return "@Cancel";
+
+    if (!verifyBananaVersion()) 
+        return "@Cancel";
+
+    let jsonDocArray = {};
+    let initJsonDoc = initDocument();
+    let fieldSeparator = findSeparator(string);
+    let transactions = Banana.Converter.csvToArray(string, fieldSeparator, '"');
+    let transactionsHeader = transactions[0];
+    transactions.splice(0, 1);
+    let transactionsObjs = Banana.Converter.arrayToObject(transactionsHeader,transactions,true);
+
+    // Import Contacts
+    let formatCnt = new FormatCnt();
+    if (formatCnt.match(transactionsObjs)) {
+        let format = formatCnt.convertInDocChange(transactionsObjs, initJsonDoc);
+        jsonDocArray = format;
+    }
+
     var documentChange = { "format": "documentChange", "error": "","data":[]};
+    documentChange["data"].push(jsonDocArray);
+
     return documentChange; 
+}
+
+function initDocument() {
+    let jsonDoc = {};
+    jsonDoc.document = {};
+    jsonDoc.document.dataUnits = [];
+
+    jsonDoc.creator = {};
+    jsonDoc.creator.executionDate = getCurrentDate();
+    jsonDoc.creator.name = Banana.script.getParamValue('id');
+    jsonDoc.creator.version = "1.0";
+
+    return jsonDoc;
+}
+
+function getCurrentDate() {
+    let date = new Date();
+    let dateString = date.getFullYear() + ("0" + (date.getMonth() + 1)).slice(-2) + ("0" + date.getDate()).slice(-2);
+    return Banana.Converter.toInternalDateFormat(dateString, "yyyymmdd");
 }
