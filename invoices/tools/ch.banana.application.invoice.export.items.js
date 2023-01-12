@@ -22,7 +22,7 @@
  * Parse the file and create a document change document to import the imvoices.
  */
 function exec() {
-    let itemsTable = Banana.document.table("Items");
+    let itemsTable = Banana.document.table(qsTr("Items"));
     let csv = "";
 
     if (!itemsTable) {
@@ -61,13 +61,13 @@ function generateCsvItems(itemsTable) {
                 let vatRate = row.value("VatRate");
                 let discount = row.value("Discount");
                 if (!id) {
-                    row.addMessage("Number is a required field", id);
+                    row.addMessage(qsTr("Number is a required field"), id);
                     rowMatched = false;
                 } if (!description) {
-                    row.addMessage("Description is a required field", description);
+                    row.addMessage(qsTr("Description is a required field"), description);
                     rowMatched = false;
                 } else if (!unitPrice) {
-                    row.addMessage("UnitPrice is a required field", unitPrice);
+                    row.addMessage(qsTr("UnitPrice is a required field"), unitPrice);
                     rowMatched = false;
                 }
                 csv += `${getValue(id)},${getValue(description)},${getValue(unitPrice)},${getValue(amountType)},${getValue(unit)},${getValue(vatCode)},${getValue(vatRate)},${getValue(discount)}\n`;
@@ -81,7 +81,7 @@ function generateCsvItems(itemsTable) {
     if (rowMatched) {
         return header + csv;
     } else {
-        Banana.document.addMessage("Complete the missing details first, as listed in the message pane below.");
+        Banana.document.addMessage(qsTr("Complete the missing details first, as listed in the message pane below."));
         return "";
     }
 }
