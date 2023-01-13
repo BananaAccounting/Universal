@@ -95,7 +95,7 @@ function generateCsvContacts(contactsTable) {
                 csv += `${getValue(id)},${getValue(organisation)},${getValue(organisationUnit)},${getValue(namePrefix)},${getValue(first_name)},${getValue(last_name)},${getValue(street)},${getValue(extraAddress)},${getValue(poBox)},${getValue(postalCode)},${getValue(locality)},${getValue(countryCode)},${getValue(languageCode)},${getValue(workEmail)},${getValue(discount)} \n`;
             }
             catch(e) {
-                Banana.document.addMessage(`An error occured while exporting the csv invoice! \nError Description: ${e}`);
+                Banana.document.addMessage(qsTr("An error occured while exporting the csv invoice! ") + "\n" + qsTr("Error Description: ") + e);
             }
         }
     }

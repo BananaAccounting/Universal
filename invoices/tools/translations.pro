@@ -4,9 +4,8 @@
 TEMPLATE = aux
 
 TRANSLATIONS += \
-    translations_en.ts \
     translations_fr.ts \
 
 
 RESOURCES += \
-    ../ch.banana.application.invoice.tools.qrc
+    ch.banana.application.invoice.tools.qrc

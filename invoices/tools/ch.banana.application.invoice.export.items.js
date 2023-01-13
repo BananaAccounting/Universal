@@ -73,7 +73,7 @@ function generateCsvItems(itemsTable) {
                 csv += `${getValue(id)},${getValue(description)},${getValue(unitPrice)},${getValue(amountType)},${getValue(unit)},${getValue(vatCode)},${getValue(vatRate)},${getValue(discount)}\n`;
             }
             catch(e) {
-                Banana.document.addMessage(`An error occured while exporting the csv invoice! \nError Description: ${e}`);
+                Banana.document.addMessage(qsTr("An error occured while exporting the csv invoice! ") + "\n" + qsTr("Error Description: ") + e);
             }
         }
     }
