@@ -8,5 +8,6 @@
         <file>ch.banana.application.invoice.import.contacts.js</file>
         <file>ch.banana.application.invoice.import.items.js</file>
         <file>ch.banana.application.invoice.tools.manifest.json</file>
+        <file>translations_fr.qm</file>
     </qresource>
 </RCC>
