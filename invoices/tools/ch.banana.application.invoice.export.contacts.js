@@ -70,25 +70,41 @@ function generateCsvContacts(contactsTable) {
                 if (!id) {
                     row.addMessage(qsTr("Number is a required field"), id);
                     rowMatched = false;
-                } if (!organisation) {
+                } 
+                if (!organisation && !first_name && !last_name) {
                     row.addMessage(qsTr("Organisation name is a required field"), organisation);
-                    rowMatched = false;
-                } if (!first_name) {
+                    
                     row.addMessage(qsTr("FirstName is a required field"), first_name);
-                    rowMatched = false;
-                } if (!last_name) {
+                    
                     row.addMessage(qsTr("LastName is a required field"), last_name);
                     rowMatched = false;
-                } if (!street) {
+                } 
+                if ((!organisation && first_name && !last_name) || (!organisation && !first_name && last_name)) {
+                    if (!organisation)
+                        row.addMessage(qsTr("Organisation name is a required field"), organisation);
+                    
+                    if (!first_name)
+                        row.addMessage(qsTr("FirstName is a required field"), first_name);
+                    
+                    if (!last_name)
+                        row.addMessage(qsTr("LastName is a required field"), last_name);
+
+                    rowMatched = false;
+                }
+                 
+                if (!street) {
                     row.addMessage(qsTr("Street is a required field"), street);
                     rowMatched = false;
-                } if (!postalCode) {
+                } 
+                if (!postalCode) {
                     row.addMessage(qsTr("PostalCode is a required field"), postalCode);
                     rowMatched = false;
-                } if (!locality) {
+                } 
+                if (!locality) {
                     row.addMessage(qsTr("Locality is a required field"), locality);
                     rowMatched = false;
-                } if (!countryCode) {
+                } 
+                if (!countryCode) {
                     row.addMessage(qsTr("CountryCode is a required field"), countryCode);
                     rowMatched = false;
                 }
