@@ -1,0 +1,15 @@
+<RCC>
+    <qresource prefix="/">
+        <file>changelog.md</file>
+        <file>export_contacts.js</file>
+        <file>export_invoices.js</file>
+        <file>export_items.js</file>
+        <file>import_invoices.js</file>
+        <file>import_contacts.js</file>
+        <file>import_items.js</file>
+        <file>ch.banana.application.invoice.tools.manifest.json</file>
+        <file>translations/translations_de.qm</file>
+        <file>translations/translations_fr.qm</file>
+        <file>translations/translations_it.qm</file>
+    </qresource>
+</RCC>
