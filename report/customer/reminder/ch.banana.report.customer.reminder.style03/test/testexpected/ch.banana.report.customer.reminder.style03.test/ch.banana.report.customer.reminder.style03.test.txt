@@ -1,0 +1,291 @@
+%%info_test_name{ch.banana.report.customer.reminder.style03.test}
+\documentclass{report}
+\usepackage{longtable}
+\usepackage{color}
+\usepackage{listings}
+\usepackage[margin=1cm]{geometry}
+\begin{document}
+\newenvironment{tablevalue}[2]{\textbf{Table: #1}\begin{longtable}[l]{#2}}{\end{longtable}}
+\newenvironment{reportvalue}[1]{\textbf{Report: #1}\\}{}
+\lstnewenvironment{jsonvalue}[1]{\textbf{Json: #1}\lstset{language=Java}}{}
+\lstnewenvironment{xmlvalue}[1]{\textbf{Xml: #1}\lstset{language=Xml}}{}
+\newcommand{\info}[2]{\textit{#1: #2}\\}
+\newcommand{\fatalerror}[1]{\textbf{\textcolor[rgb]{1,0,0}{Fatal error: #1}}\\}
+\newcommand{\keyvalue}[2]{\textbf{Keyvalue: #1} #2\\}
+\newcommand{\textvalue}[1]{#1\\}
+\newcommand{\excltest}[1]{\\Excluded from compare: #1}
+\newcommand{\lognewpage}{\newpage}
+\newenvironment{testcase}[1]{\section*{Test: #1}}{\newpage}
+\newenvironment{test}[1]{\section*{Test case: #1}}{}
+%Begin test data
+%%SCRIPT{/Users/ivan/GitHub/BananaAccounting/Universal/report/customer/reminder/ch.banana.report.customer.reminder.style03/test/ch.banana.report.customer.reminder.style03.test.js}
+%
+\begin{testcase}{ReportReminderStyle03}
+\begin{test}{testReport}
+%Test Report Reminder Style03
+\begin{reportvalue}{Report Reminder Test}
+Nome Società \\
+Nome Cognome \\
+Indirizzo 1, Indirizzo 2, CAP Loc \\
+info@myweb, http://www.myweb \\
+CHE-111.222.333 \\
+\begin{longtable}[l]{ l  l }
+Data: 16.01.2023 \newline No Cliente: 1100 \newline Pagina: 1 \newline  & Rossi SA \newline Andrea Rossi \newline Viale Stazione 11 \newline CP 123 \newline 6500 Bellinzona \newline \newline \\
+\end{longtable}
+\begin{longtable}[l]{ l }
+Richiamo di pagamento \\
+\end{longtable}
+\begin{longtable}[l]{ l  l  l  l  l  l  l }
+\multicolumn{7}{l}{\multicolumn{7}{l}{Testo iniziale }}\\
+\multicolumn{7}{l}{  }\\
+No fattura  & Data  & Importo  & Pagamenti  & Saldo  & Divisa  & Situazione \\
+10  & 01.01.2022  & 50.00  & 0.00  & 50.00  & CHF  & 1. richiamo \\
+101  & 01.01.2022  & 50.00  & 0.00  & 50.00  & CHF  & 1. richiamo \\
+102  & 01.01.2022  & 50.00  & 0.00  & 50.00  & CHF  & 1. richiamo \\
+103  & 01.01.2022  & 50.00  & 0.00  & 50.00  & CHF  & 1. richiamo \\
+104  & 01.01.2022  & 50.00  & 0.00  & 50.00  & CHF  & 1. richiamo \\
+105  & 01.01.2022  & 50.00  & 0.00  & 50.00  & CHF  & 1. richiamo \\
+106  & 01.01.2022  & 50.00  & 0.00  & 50.00  & CHF  & 1. richiamo \\
+107  & 01.01.2022  & 50.00  & 0.00  & 50.00  & CHF  & 1. richiamo \\
+108  & 01.01.2022  & 50.00  & 0.00  & 50.00  & CHF  & 1. richiamo \\
+109  & 01.01.2022  & 50.00  & 0.00  & 50.00  & CHF  & 1. richiamo \\
+110  & 01.01.2022  & 50.00  & 0.00  & 50.00  & CHF  & 1. richiamo \\
+111  & 01.01.2022  & 50.00  & 0.00  & 50.00  & CHF  & 1. richiamo \\
+112  & 01.01.2022  & 50.00  & 0.00  & 50.00  & CHF  & 1. richiamo \\
+113  & 01.01.2022  & 50.00  & 0.00  & 50.00  & CHF  & 1. richiamo \\
+114  & 01.01.2022  & 50.00  & 0.00  & 50.00  & CHF  & 1. richiamo \\
+115  & 01.01.2022  & 50.00  & 0.00  & 50.00  & CHF  & 1. richiamo \\
+116  & 01.01.2022  & 50.00  & 0.00  & 50.00  & CHF  & 1. richiamo \\
+117  & 01.01.2022  & 50.00  & 0.00  & 50.00  & CHF  & 1. richiamo \\
+118  & 01.01.2022  & 50.00  & 0.00  & 50.00  & CHF  & 1. richiamo \\
+119  & 01.01.2022  & 50.00  & 0.00  & 50.00  & CHF  & 1. richiamo \\
+120  & 01.01.2022  & 50.00  & 0.00  & 50.00  & CHF  & 1. richiamo \\
+121  & 01.01.2022  & 50.00  & 0.00  & 50.00  & CHF  & 1. richiamo \\
+122  & 01.01.2022  & 50.00  & 0.00  & 50.00  & CHF  & 1. richiamo \\
+123  & 01.01.2022  & 50.00  & 0.00  & 50.00  & CHF  & 1. richiamo \\
+124  & 01.01.2022  & 50.00  & 0.00  & 50.00  & CHF  & 1. richiamo \\
+125  & 01.01.2022  & 50.00  & 0.00  & 50.00  & CHF  & 1. richiamo \\
+126  & 01.01.2022  & 50.00  & 0.00  & 50.00  & CHF  & 1. richiamo \\
+127  & 01.01.2022  & 50.00  & 0.00  & 50.00  & CHF  & 1. richiamo \\
+128  & 01.01.2022  & 50.00  & 0.00  & 50.00  & CHF  & 1. richiamo \\
+129  & 01.01.2022  & 50.00  & 0.00  & 50.00  & CHF  & 1. richiamo \\
+130  & 01.01.2022  & 50.00  & 0.00  & 50.00  & CHF  & 1. richiamo \\
+\end{longtable}
+\begin{longtable}[l]{ l }
+Data: 16.01.2023 \newline No Cliente: 1100 \newline Pagina: 2 \newline \\
+\end{longtable}
+\begin{longtable}[l]{ l  l  l  l  l  l  l }
+No fattura  & Data  & Importo  & Pagamenti  & Saldo  & Divisa  & Situazione \\
+131  & 01.01.2022  & 50.00  & 0.00  & 50.00  & CHF  & 1. richiamo \\
+132  & 01.01.2022  & 50.00  & 0.00  & 50.00  & CHF  & 1. richiamo \\
+133  & 01.01.2022  & 50.00  & 0.00  & 50.00  & CHF  & 1. richiamo \\
+134  & 01.01.2022  & 50.00  & 0.00  & 50.00  & CHF  & 1. richiamo \\
+135  & 01.01.2022  & 50.00  & 0.00  & 50.00  & CHF  & 1. richiamo \\
+136  & 01.01.2022  & 50.00  & 0.00  & 50.00  & CHF  & 1. richiamo \\
+137  & 01.01.2022  & 50.00  & 0.00  & 50.00  & CHF  & 1. richiamo \\
+138  & 01.01.2022  & 50.00  & 0.00  & 50.00  & CHF  & 1. richiamo \\
+139  & 01.01.2022  & 50.00  & 0.00  & 50.00  & CHF  & 1. richiamo \\
+140  & 01.01.2022  & 50.00  & 0.00  & 50.00  & CHF  & 1. richiamo \\
+141  & 01.01.2022  & 50.00  & 0.00  & 50.00  & CHF  & 1. richiamo \\
+142  & 01.01.2022  & 50.00  & 0.00  & 50.00  & CHF  & 1. richiamo \\
+143  & 01.01.2022  & 50.00  & 0.00  & 50.00  & CHF  & 1. richiamo \\
+144  & 01.01.2022  & 50.00  & 0.00  & 50.00  & CHF  & 1. richiamo \\
+145  & 01.01.2022  & 50.00  & 0.00  & 50.00  & CHF  & 1. richiamo \\
+146  & 01.01.2022  & 50.00  & 0.00  & 50.00  & CHF  & 1. richiamo \\
+147  & 01.01.2022  & 50.00  & 0.00  & 50.00  & CHF  & 1. richiamo \\
+148  & 01.01.2022  & 50.00  & 0.00  & 50.00  & CHF  & 1. richiamo \\
+149  & 01.01.2022  & 50.00  & 0.00  & 50.00  & CHF  & 1. richiamo \\
+150  & 01.01.2022  & 50.00  & 0.00  & 50.00  & CHF  & 1. richiamo \\
+151  & 01.01.2022  & 50.00  & 0.00  & 50.00  & CHF  & 1. richiamo \\
+152  & 01.01.2022  & 50.00  & 0.00  & 50.00  & CHF  & 1. richiamo \\
+153  & 01.01.2022  & 50.00  & 0.00  & 50.00  & CHF  & 1. richiamo \\
+154  & 01.01.2022  & 50.00  & 0.00  & 50.00  & CHF  & 1. richiamo \\
+155  & 01.01.2022  & 50.00  & 0.00  & 50.00  & CHF  & 1. richiamo \\
+156  & 01.01.2022  & 50.00  & 0.00  & 50.00  & CHF  & 1. richiamo \\
+157  & 01.01.2022  & 50.00  & 0.00  & 50.00  & CHF  & 1. richiamo \\
+158  & 01.01.2022  & 50.00  & 0.00  & 50.00  & CHF  & 1. richiamo \\
+159  & 01.01.2022  & 50.00  & 0.00  & 50.00  & CHF  & 1. richiamo \\
+160  & 01.01.2022  & 50.00  & 0.00  & 50.00  & CHF  & 1. richiamo \\
+161  & 01.01.2022  & 50.00  & 0.00  & 50.00  & CHF  & 1. richiamo \\
+162  & 01.01.2022  & 50.00  & 0.00  & 50.00  & CHF  & 1. richiamo \\
+163  & 01.01.2022  & 50.00  & 0.00  & 50.00  & CHF  & 1. richiamo \\
+164  & 01.01.2022  & 50.00  & 0.00  & 50.00  & CHF  & 1. richiamo \\
+165  & 01.01.2022  & 50.00  & 0.00  & 50.00  & CHF  & 1. richiamo \\
+166  & 01.01.2022  & 50.00  & 0.00  & 50.00  & CHF  & 1. richiamo \\
+167  & 01.01.2022  & 50.00  & 0.00  & 50.00  & CHF  & 1. richiamo \\
+168  & 01.01.2022  & 50.00  & 0.00  & 50.00  & CHF  & 1. richiamo \\
+169  & 01.01.2022  & 50.00  & 0.00  & 50.00  & CHF  & 1. richiamo \\
+\end{longtable}
+\begin{longtable}[l]{ l }
+Data: 16.01.2023 \newline No Cliente: 1100 \newline Pagina: 3 \newline \\
+\end{longtable}
+\begin{longtable}[l]{ l  l  l  l  l  l  l }
+No fattura  & Data  & Importo  & Pagamenti  & Saldo  & Divisa  & Situazione \\
+11  & 02.01.2022  & 240.00  & 0.00  & 240.00  & CHF  & 1. richiamo \\
+12  & 03.01.2022  & 523.50  & 523.50  & 0.00  & CHF  & pagato \\
+\multicolumn{7}{l}{}\\
+ &  & 4'263.50  & 523.50  & 3'740.00  &  & \\
+\multicolumn{7}{l}{}\\
+\multicolumn{7}{l}{  }\\
+\multicolumn{7}{l}{\multicolumn{7}{l}{Testo finale }}\\
+\end{longtable}
+\end{reportvalue}
+\begin{reportvalue}{Report Reminder Test}
+Nome Società \\
+Nome Cognome \\
+Indirizzo 1, Indirizzo 2, CAP Loc \\
+info@myweb, http://www.myweb \\
+CHE-111.222.333 \\
+\begin{longtable}[l]{ l  l }
+Datum: 16.01.2023 \newline Kunde-Nr: 1102 \newline Seite: 3 \newline  & Robert Schwartz \newline Via Regina \newline 6982 Agno \newline \newline \\
+\end{longtable}
+\begin{longtable}[l]{ l }
+Zahlungserinnerung \\
+\end{longtable}
+\begin{longtable}[l]{ l  l  l  l  l  l  l }
+\multicolumn{7}{l}{\multicolumn{7}{l}{Anfangstext }}\\
+\multicolumn{7}{l}{  }\\
+Rg.-Nr  & Datum  & Soll  & Haben  & Saldo  & Währung  & Status \\
+40  & 04.01.2022  & 1'000.00  & 0.00  & 1'000.00  & CHF  & 1. Zahlungser. \\
+13  & 05.01.2022  & 5'000.00  & 500.00  & 4'500.00  & CHF  & 1. Zahlungser. \\
+51  & 05.01.2022  & 5'000.00  & 0.00  & 5'000.00  & CHF  & 1. Zahlungser. \\
+\multicolumn{7}{l}{}\\
+ &  & 11'000.00  & 500.00  & 10'500.00  &  & \\
+\multicolumn{7}{l}{}\\
+\multicolumn{7}{l}{  }\\
+\multicolumn{7}{l}{\multicolumn{7}{l}{Text am Ende }}\\
+\end{longtable}
+\end{reportvalue}
+\begin{reportvalue}{Report Reminder Test}
+Nome Società \\
+Nome Cognome \\
+Indirizzo 1, Indirizzo 2, CAP Loc \\
+info@myweb, http://www.myweb \\
+CHE-111.222.333 \\
+\begin{longtable}[l]{ l  l }
+Date: 16.01.2023 \newline Customer No: 1103 \newline Page: 3 \newline  & John Smith \newline Via Al Sole 22 \newline 6963 Pregassona \newline \newline \\
+\end{longtable}
+\begin{longtable}[l]{ l }
+Payment reminder \\
+\end{longtable}
+\begin{longtable}[l]{ l  l  l  l  l  l  l }
+\multicolumn{7}{l}{\multicolumn{7}{l}{Begin text }}\\
+\multicolumn{7}{l}{  }\\
+Invoice Nr  & Date  & Debit  & Credit  & Balance  & Currency  & Status \\
+41  & 04.01.2022  & 200.00  & 0.00  & 200.00  & CHF  & 1. reminder \\
+70  & 07.01.2022  & 300.00  & 0.00  & 300.00  & CHF  & 1. reminder \\
+\multicolumn{7}{l}{}\\
+ &  & 500.00  & 0.00  & 500.00  &  & \\
+\multicolumn{7}{l}{}\\
+\multicolumn{7}{l}{  }\\
+\multicolumn{7}{l}{\multicolumn{7}{l}{Final text }}\\
+\end{longtable}
+\end{reportvalue}
+\begin{reportvalue}{Report Reminder Test}
+Nome Società \\
+Nome Cognome \\
+Indirizzo 1, Indirizzo 2, CAP Loc \\
+info@myweb, http://www.myweb \\
+CHE-111.222.333 \\
+\begin{longtable}[l]{ l  l }
+Date: 16.01.2023 \newline No Client: 1101 \newline Page: 3 \newline  & Pierre  Camus \newline Via Carlo Cattaneo \newline 6900 Lugano \newline \newline \\
+\end{longtable}
+\begin{longtable}[l]{ l }
+Rappel de paiement \\
+\end{longtable}
+\begin{longtable}[l]{ l  l  l  l  l  l  l }
+\multicolumn{7}{l}{\multicolumn{7}{l}{Texte de début }}\\
+\multicolumn{7}{l}{  }\\
+No facture  & Date  & Débit  & Crédit  & Solde  & Devise  & Situation \\
+30  & 04.01.2022  & 3'000.00  & 0.00  & 3'000.00  & CHF  & 1. rappel \\
+50  & 05.01.2022  & 5'000.00  & 0.00  & 5'000.00  & CHF  & 1. rappel \\
+60  & 05.01.2022  & 3'340.00  & 0.00  & 3'340.00  & CHF  & 1. rappel \\
+\multicolumn{7}{l}{}\\
+ &  & 11'340.00  & 0.00  & 11'340.00  &  & \\
+\multicolumn{7}{l}{}\\
+\multicolumn{7}{l}{  }\\
+\multicolumn{7}{l}{\multicolumn{7}{l}{Texte final }}\\
+\end{longtable}
+\end{reportvalue}
+\begin{reportvalue}{Report Reminder Test}
+Nome Società \\
+Nome Cognome \\
+Indirizzo 1, Indirizzo 2, CAP Loc \\
+info@myweb, http://www.myweb \\
+CHE-111.222.333 \\
+\begin{longtable}[l]{ l  l }
+Data: 10.01.2023 \newline No Cliente: 1100 \newline Pagina: 3 \newline  & Rossi SA \newline Andrea Rossi \newline Viale Stazione 11 \newline CP 123 \newline 6500 Bellinzona \newline \newline \\
+\end{longtable}
+\begin{longtable}[l]{ l }
+Richiamo di pagamento \\
+\end{longtable}
+\begin{longtable}[l]{ l  l  l  l  l  l  l }
+\multicolumn{7}{l}{\multicolumn{7}{l}{Testo iniziale }}\\
+\multicolumn{7}{l}{  }\\
+No fattura  & Data  & Importo  & Pagamenti  & Saldo  & Divisa  & Situazione \\
+10  & 01.01.2023  & 50.00  & 0.00  & 50.00  & CHF  & 1. richiamo \\
+\multicolumn{7}{l}{}\\
+ &  & 50.00  & 0.00  & 50.00  &  & \\
+\multicolumn{7}{l}{}\\
+\multicolumn{7}{l}{  }\\
+\multicolumn{7}{l}{\multicolumn{7}{l}{Testo finale }}\\
+\end{longtable}
+\end{reportvalue}
+\begin{reportvalue}{Report Reminder Test}
+Nome Società \\
+Nome Cognome \\
+Indirizzo 1, Indirizzo 2, CAP Loc \\
+info@myweb, http://www.myweb \\
+CHE-111.222.333 \\
+\begin{longtable}[l]{ l  l }
+Data: 14.01.2023 \newline No Cliente: 1100 \newline Pagina: 3 \newline  & Rossi SA \newline Andrea Rossi \newline Viale Stazione 11 \newline CP 123 \newline 6500 Bellinzona \newline \newline \\
+\end{longtable}
+\begin{longtable}[l]{ l }
+Richiamo di pagamento \\
+\end{longtable}
+\begin{longtable}[l]{ l  l  l  l  l  l  l }
+\multicolumn{7}{l}{\multicolumn{7}{l}{Testo iniziale }}\\
+\multicolumn{7}{l}{  }\\
+\end{longtable}
+\begin{longtable}[l]{ l }
+Data: 14.01.2023 \newline No Cliente: 1100 \newline Pagina: 4 \newline \\
+\end{longtable}
+\begin{longtable}[l]{ l  l  l  l  l  l  l }
+No fattura  & Data  & Importo  & Pagamenti  & Saldo  & Divisa  & Situazione \\
+No fattura  & Data  & Importo  & Pagamenti  & Saldo  & Divisa  & Situazione \\
+10  & 01.01.2023  & 50.00  & 0.00  & 50.00  & CHF  & 2. richiamo \\
+\multicolumn{7}{l}{}\\
+ &  & 50.00  & 0.00  & 50.00  &  & \\
+\multicolumn{7}{l}{}\\
+\multicolumn{7}{l}{  }\\
+\multicolumn{7}{l}{\multicolumn{7}{l}{Testo finale }}\\
+\end{longtable}
+\end{reportvalue}
+\begin{reportvalue}{Report Reminder Test}
+Nome Società \\
+Nome Cognome \\
+Indirizzo 1, Indirizzo 2, CAP Loc \\
+info@myweb, http://www.myweb \\
+CHE-111.222.333 \\
+\begin{longtable}[l]{ l  l }
+Data: 17.01.2023 \newline No Cliente: 1100 \newline Pagina: 4 \newline  & Rossi SA \newline Andrea Rossi \newline Viale Stazione 11 \newline CP 123 \newline 6500 Bellinzona \newline \newline \\
+\end{longtable}
+\begin{longtable}[l]{ l }
+Richiamo di pagamento \\
+\end{longtable}
+\begin{longtable}[l]{ l  l  l  l  l  l  l }
+\multicolumn{7}{l}{\multicolumn{7}{l}{Testo iniziale }}\\
+\multicolumn{7}{l}{  }\\
+No fattura  & Data  & Importo  & Pagamenti  & Saldo  & Divisa  & Situazione \\
+10  & 01.01.2023  & 50.00  & 0.00  & 50.00  & CHF  & 3. richiamo \\
+\multicolumn{7}{l}{}\\
+ &  & 50.00  & 0.00  & 50.00  &  & \\
+\multicolumn{7}{l}{}\\
+\multicolumn{7}{l}{  }\\
+\multicolumn{7}{l}{\multicolumn{7}{l}{Testo finale }}\\
+\end{longtable}
+\end{reportvalue}
+\keyvalue{Result}{Passed}
+\end{test}
+\end{testcase}
+\end{document}
