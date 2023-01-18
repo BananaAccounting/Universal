@@ -1,0 +1,286 @@
+/* Update 2023-01-18  */
+
+@page {
+    margin-top: 0cm;
+    margin-bottom: 0cm;
+    margin-left: 0cm;
+    margin-right: 0cm;
+}
+
+.pageReset {
+    counter-reset: page;
+}
+
+body {
+    font-size: 12pt;
+    font-family: $font_family;
+}
+
+.headerAddress {
+    font-size: 11pt;
+    text-align: right;
+}
+
+.amount {
+    text-align: right;
+}
+
+.center {
+    text-align: center;
+}
+
+.left {
+    text-align: left;
+}
+
+.right {
+    text-align: right;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.title {
+    font-size: 18pt;
+}
+
+.items_table_header {
+    font-weight: bold;
+    background-color: #ffffff;
+    color: $color_2;
+}
+
+.items_table_header td {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-bottom: thin solid black;
+}
+
+.total {
+    font-size: 14pt;
+}
+
+.border-bottom {
+    border-bottom: thin solid black;
+}
+
+.padding-right {
+    padding-right: 3px;
+}
+
+.padding-left {
+    padding-left: 3px;
+}
+
+.status {
+    font-size: 10pt;
+}
+
+.addressCol1 {
+    width: 50%;
+}
+
+.addressCol2 {
+    width: 50%;
+}
+
+.addressCol1R0 {
+    width: 100%;
+}
+
+.address-padding-left {
+    padding-left: 2.1cm;
+}
+
+.logo {
+    margin-top: 1.2cm;
+    margin-left: 1.34cm;
+    margin-right: 1.2cm;
+}
+
+.header_text {
+    margin-top: 1.2cm;
+    margin-left: 1.2cm;
+    margin-right: 1.2cm;
+    text-align: right;
+    position: absolute;
+}
+
+.repTableCol1 {
+    width: 10%;
+}
+
+.repTableCol2 {
+    width: 11%;
+}
+
+.repTableCol3 {
+    width: 12%;
+}
+
+.repTableCol4 {
+    width: 12%;
+}
+
+.repTableCol5 {
+    width: 12%;
+}
+
+.repTableCol6 {
+    width: 7%;
+}
+
+.repTableCol7 {
+    width: 10%;
+}
+
+.summary_filename {
+    padding-top: 1.0cm;
+    padding-left: 1.2cm;
+    font-size: 8pt;
+}
+
+.summary_title {
+    padding-top: 2.0cm;
+    padding-left: 1.2cm;
+    font-size: 16pt;
+}
+
+.summary_title2 {
+    padding-left: 1.2cm;
+    font-size: 11pt;
+}
+
+.summary_table_header{
+    font-weight: bold;
+    background-color: #ffffff;
+    color: $color_2;
+}
+
+.summary_table_header td {
+    padding-top: 0.2cm;
+    padding-bottom: 0.2cm;
+    font-size: 12pt;
+    border-bottom: thin solid black;
+}
+
+.summary_table_customer {
+    font-weight: bold;
+    font-size: 12pt;
+    padding-top: 0.2cm;
+    padding-bottom: 0.2cm;
+}
+
+.summary_table_details td.detail_row {
+
+}
+
+.summary_table_details td.date {
+    padding-left: 0.5cm;
+    padding-right: 1.0cm;
+}
+
+.summary_table_details td.number {
+    padding-right: 1.0cm;
+}
+
+.summary_table_details td.currency {
+    padding-right: 1.0cm;
+}
+
+.summary_table_details td {
+    font-size: 12pt;
+}
+
+.summary_table_details tr.total td.amount {
+    border-top: 1px solid black;
+    padding-bottom: 5px;
+    font-weight: bold;
+}
+
+.summary_table_grandtotal td {
+    font-weight: bold;
+}
+
+.summary_table_grandtotal td.amount {
+    border-top: 1px solid black;
+    border-bottom: 1px double black;
+}
+
+.summary_table td.status {
+    padding-left: 20px;
+}
+
+.title_table {
+    position: absolute;
+    margin-top: 9.2cm;
+    margin-left: 1.2cm;
+    margin-right: 1.2cm;
+    width: 100%;
+}
+
+/*table.info_table td {
+    border: thin solid black;
+}*/
+
+.address_table {
+    position: absolute;
+    margin-top: 5.0cm;
+    margin-left: 1.2cm;
+    margin-right: 1.2cm;
+    width: 100%;
+}
+
+/*table.address_table td {
+    border: thin solid black;
+}*/
+
+.address_table_row0 {
+    position: absolute;
+    margin-top: 4.5cm;
+    margin-left: 1.2cm;
+    margin-right: 1.2cm;
+    width: 100%;
+}
+
+/*table.address_table_row0 td {
+    border: thin solid black;
+}*/
+
+.doc_table {
+    margin-top: 6.5cm;
+    margin-left: 1.2cm;
+    margin-right: 1.2cm;
+    width: 100%;
+}
+
+/*table.doc_table td {
+    border: thin solid black;
+}*/
+
+.doc_table_row0 {
+    margin-top: 3.0cm;
+    margin-left: 1.2cm;
+    margin-right: 1.2cm;
+    width: 100%;
+}
+
+/*table.doc_table td {
+    border: thin solid black;
+    padding: 3px;
+}*/
+
+.summary_table {
+    position: relative;
+    margin-top: 1.0cm;
+    margin-left: 1.2cm;
+    margin-right: 1.2cm;
+    margin-bottom: 1.0cm;
+    width: 100%;
+}
+
+/*table.summary_table td {
+    border: thin solid black;
+}*/
+
