@@ -38,9 +38,9 @@ function exec(string) {
     let transactionsObjs = Banana.Converter.arrayToObject(transactionsHeader,transactions,true);
 
     // Import Contacts
-    let formatCnt = new FormatCnt();
-    if (formatCnt.match(transactionsObjs)) {
-        let format = formatCnt.convertInDocChange(transactionsObjs, initJsonDoc);
+    let format_cnt = new formatCnt();
+    if (format_cnt.match(transactionsObjs)) {
+        let format = format_cnt.convertInDocChange(transactionsObjs, initJsonDoc);
         jsonDocArray = format;
     }
     
@@ -69,7 +69,7 @@ function getCurrentDate() {
     return Banana.Converter.toInternalDateFormat(dateString, "yyyymmdd");
 }
 
-class FormatCnt {
+class formatCnt {
     match(transactions) {
         if (transactions.length === 0)
             return false;
@@ -122,7 +122,7 @@ class FormatCnt {
             //carefully check the fields to be added 
             
             //check that the row does not already exist
-            if(verifyIfExist(existingElements, row.fields["RowId"])) {
+            if(!verifyIfExist(existingElements, row.fields["RowId"])) {
                 rows.push(row);
             }  
         }
@@ -149,7 +149,7 @@ function getExistingItemsFromTable(tableName, rowId){
         return "";
     }
 
-    for (let i = 0; i < table.rowCount; i++) {
+    for (let i = 1; i < table.rowCount; i++) {
         let rowObj = {};
         let tRow = table.row(i);
 
@@ -251,3 +251,4 @@ function findSeparator(string) {
  
     return ',';
 }
+
