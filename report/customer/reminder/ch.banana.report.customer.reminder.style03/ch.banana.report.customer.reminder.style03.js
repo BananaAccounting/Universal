@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.report.customer.reminder.style03.js
 // @api = 1.0
-// @pubdate = 2023-01-18
+// @pubdate = 2023-01-20
 // @publisher = Banana.ch SA
 // @description = Payment reminder
 // @description.it = Richiamo di pagamento (banana+)
@@ -466,13 +466,15 @@ function printReminder(banDoc, reminderObj, repDocObj, repStyleObj, param, texts
    var reportObj = Banana.Report;
    if (!repDocObj) {
       repDocObj = reportObj.newReport(texts.invoice + ": " + reminderObj.document_info.number);
-   } else {
+   }
+   else {
       var pageBreak = repDocObj.addPageBreak();
       pageBreak.addClass("pageReset");
    }
 
    printReminder_HeaderPage(reminderObj, repDocObj, repStyleObj, param);
-   printReminder_Info_Address(reminderObj, repDocObj, texts);
+   printReminder_Info(reminderObj, repDocObj, texts);
+   printReminder_Address(reminderObj, repDocObj, texts);
    printReminder_Title(repDocObj, texts);
 
    repTableObj = repDocObj.addTable("doc_table");
@@ -489,6 +491,7 @@ function printReminder_HeaderPage(reminderObj, repDocObj, repStyleObj, param) {
 
    var headerLogoSection = repDocObj.getHeader().addSection();
    if (param.print_logo) {
+      headerLogoSection = repDocObj.addSection("");
       var logoFormat = Banana.Report.logoFormat(param.logo_name);
       if (logoFormat) {
          var logoElement = logoFormat.createDocNode(headerLogoSection, repStyleObj, "logo");
@@ -502,26 +505,30 @@ function printReminder_HeaderPage(reminderObj, repDocObj, repStyleObj, param) {
    if (param.print_header) {
       var supplierLines = getInvoiceSupplier(reminderObj.supplier_info).split('\n');
       for (var i = 0; i < supplierLines.length; i++) {
-         headerLogoSection.addParagraph(supplierLines[i], "");
+         headerLogoSection.addParagraph(supplierLines[i], "header_rows");
       }
    }
 }
 
-function printReminder_Info_Address(reminderObj, repDocObj, texts) {
+function printReminder_Info(reminderObj, repDocObj, texts) {
 
-   // Info and Address
+   // Info: date, customer No, page
 
-   var addressTable = repDocObj.addTable("address_table");
-   var addressCol1 = addressTable.addColumn("addressCol1");
-   var addressCol2 = addressTable.addColumn("addressCol2")
-   tableRow = addressTable.addRow();
-
+   var infoTable = repDocObj.addTable("info_table");
+   var tableRow = infoTable.addRow();
    var cellInfo = tableRow.addCell("", "", 1);
    cellInfo.addParagraph(texts.date + ": " + Banana.Converter.toLocaleDateFormat(reminderObj.document_info.date));
    cellInfo.addParagraph(texts.customer + ": " + reminderObj.customer_info.number);
    cellInfo.addParagraph(texts.page + ": " + pageNr);
+}
 
-   var cellAddress = tableRow.addCell("", "address-padding-left", 1);
+function printReminder_Address(reminderObj, repDocObj, texts) {
+
+   // Reminder address (customer address)
+
+   var addressTable = repDocObj.addTable("address_table_right");
+   var tableRow = addressTable.addRow();
+   var cellAddress = tableRow.addCell("", "", 1);
    var addressLines = getInvoiceAddress(reminderObj.customer_info).split('\n');
    for (var i = 0; i < addressLines.length; i++) {
       cellAddress.addParagraph(addressLines[i], "");
@@ -653,10 +660,11 @@ function printReminder_FinalText(reminderObj, param) {
 }
 
 function printReminder_InfoOtherPages(reminderObj, repDocObj, texts) {
-   var addressTable = repDocObj.addTable("address_table_row0");
-   var addressCol1 = addressTable.addColumn("addressCol1R0");
 
-   tableRow = addressTable.addRow();
+   // Info for pages 2+
+
+   var infoTable = repDocObj.addTable("info_table_row0");
+   var tableRow = infoTable.addRow();
    var cellInfo = tableRow.addCell("", "", 1);
    cellInfo.addParagraph(texts.date + ": " + Banana.Converter.toLocaleDateFormat(reminderObj.document_info.date), "");
    cellInfo.addParagraph(texts.customer + ": " + reminderObj.customer_info.number, "");
@@ -693,7 +701,7 @@ function printReminder_checkFileLength(reminderObj, repDocObj, texts, rowNumber)
       printReminder_ItemsHeaderOtherPages(repDocObj, texts);
       return 0;
    }
-   else if (rowNumber >= 38 && pageNr > 1) {
+   else if (rowNumber >= 39 && pageNr > 1) {
       //other pages of reminder (2+), max 38 rows (items + final text)
       repDocObj.addPageBreak();
       pageNr++;
