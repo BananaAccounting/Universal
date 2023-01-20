@@ -1,11 +1,11 @@
-// @id = ch.banana.application.invoice.import.contacts
+// @id = ch.banana.application.invoice.import.items
 // @api = 1.0
-// @pubdate = 2023-01-05
+// @pubdate = 2023-01-19
 // @publisher = Banana.ch SA
-// @description = Import contacts
-// @description.de = Kontakte importieren
-// @description.fr = Importer contacts
-// @description.it = Importa contatti
+// @description = Import items
+// @description.de = Artikeln importieren
+// @description.fr = Importer articles
+// @description.it = Importa articoli
 // @doctype = 400.400
 // @docproperties =
 // @task = import.rows
@@ -37,21 +37,21 @@ function exec(string) {
     transactions.splice(0, 1);
     let transactionsObjs = Banana.Converter.arrayToObject(transactionsHeader,transactions,true);
 
-    // Import Contacts
-    let format_cnt = createFormatCnt();
-    if (format_cnt.match(transactionsObjs)) {
-        let format = format_cnt.convertInDocChange(transactionsObjs, initJsonDoc);
+    // Import items
+    let format_itm = createFormatItm();
+    if (format_itm.match(transactionsObjs)) {
+        let format = format_itm.convertInDocChange(transactionsObjs, initJsonDoc);
         jsonDocArray = format;
     }
-    
-    var documentChange = { "format": "documentChange", "error": "","data":[]};
+
+    let documentChange = { "format": "documentChange", "error": "","data":[]};
     documentChange["data"].push(jsonDocArray);
 
     return documentChange; 
 }
 
-function createFormatCnt() {
-    return new formatCnt();
+function createFormatItm() {
+    return new formatItm();
 }
 
 function initDocument() {
@@ -73,19 +73,20 @@ function getCurrentDate() {
     return Banana.Converter.toInternalDateFormat(dateString, "yyyymmdd");
 }
 
-class formatCnt {
+class formatItm {
     match(transactions) {
-        if (transactions.length === 0)
+        if (transactions.length === 0) 
             return false;
 
         let formatMatched = false;
 
-        if ((transactions[0]["Number"] && transactions[0]["OrganisationName"]) || (transactions[0]["Number"] && transactions[0]["FirstName"] && transactions[0]["LastName"]))
+        if (transactions[0]["RowId"] && transactions[0]["Description"] && transactions[0]["UnitPrice"]) 
             formatMatched = true;
+            
         else
             formatMatched = false;
 
-        if (formatMatched && transactions[0]["Number"].match(/[0-9\.]+/g))
+        if (formatMatched && transactions[0]["RowId"].match(/[0-9\.]+/g))
             formatMatched = true;
         else
             formatMatched = false;
@@ -97,7 +98,7 @@ class formatCnt {
     }
 
     convertInDocChange(transactionsObjs, initJsonDoc) {
-        let existingElements = getExistingItemsFromTable("Contacts", "RowId");
+        let existingElements = getExistingItemsFromTable("Items", "RowId");
         let rows = [];
         
         for (let trRow in transactionsObjs){
@@ -108,20 +109,14 @@ class formatCnt {
             row.operation.name = "add";
             
             row.fields = {};
-            row.fields["RowId"] = transaction["Number"];
-            row.fields["OrganisationName"] = transaction["OrganisationName"];
-            row.fields["OrganisationUnit"] = transaction["OrganisationUnit"];
-            row.fields["NamePrefix"] = transaction["NamePrefix"]
-            row.fields["FirstName"] = transaction["FirstName"];
-            row.fields["FamilyName"] = transaction["LastName"];
-            row.fields["Street"] = transaction["Street"];
-            row.fields["AddressExtra"] = transaction["AddressExtra"];
-            row.fields["POBox"] = transaction["POBox"];
-            row.fields["PostalCode"] = transaction["PostalCode"];
-            row.fields["Locality"] = transaction["Locality"];
-            row.fields["CountryCode"] = transaction["CountryCode"];
-            row.fields["LanguageCode"] = transaction["LanguageCode"];
-            row.fields["EmailWork"] = transaction["EmailWork"];
+            row.fields["RowId"] = transaction["RowId"];
+            row.fields["Description"] = transaction["Description"];
+            row.fields["UnitPrice"] = transaction["UnitPrice"];
+            row.fields["AmountType"] = transaction["AmountType"]
+            row.fields["Unit"] = transaction["Unit"];
+            row.fields["VatCode"] = transaction["VatCode"];
+            row.fields["VatRate"] = transaction["VatRate"];
+            row.fields["Discount"] = transaction["Discount"];
             
             //carefully check the fields to be added 
             
@@ -131,7 +126,7 @@ class formatCnt {
             }  
         }
         let dataUnitTransactions = {};
-        dataUnitTransactions.nameXml = "Contacts";
+        dataUnitTransactions.nameXml = "Items";
         dataUnitTransactions.data = {};
         dataUnitTransactions.data.rowLists = [];
         dataUnitTransactions.data.rowLists.push({ "rows": rows });
@@ -223,7 +218,7 @@ function getLang() {
     if (lang.length > 2)
         lang = lang.substr(0, 2);
     return lang;
- }
+}
 
 /**
  * The function findSeparator is used to find the field separator.
@@ -255,4 +250,3 @@ function findSeparator(string) {
  
     return ',';
 }
-
