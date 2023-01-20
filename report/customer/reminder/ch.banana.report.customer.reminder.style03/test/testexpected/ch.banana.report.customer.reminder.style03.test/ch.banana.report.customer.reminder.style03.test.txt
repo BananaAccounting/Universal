@@ -29,8 +29,11 @@ Nome Cognome \\
 Indirizzo 1, Indirizzo 2, CAP Loc \\
 info@myweb, http://www.myweb \\
 CHE-111.222.333 \\
-\begin{longtable}[l]{ l  l }
-Data: 16.01.2023 \newline No Cliente: 1100 \newline Pagina: 1 \newline  & Rossi SA \newline Andrea Rossi \newline Viale Stazione 11 \newline CP 123 \newline 6500 Bellinzona \newline \newline \\
+\begin{longtable}[l]{ l }
+Data: 16.01.2023 \newline No Cliente: 1100 \newline Pagina: 1 \newline \\
+\end{longtable}
+\begin{longtable}[l]{ l }
+Rossi SA \newline Andrea Rossi \newline Viale Stazione 11 \newline CP 123 \newline 6500 Bellinzona \newline \newline \\
 \end{longtable}
 \begin{longtable}[l]{ l }
 Richiamo di pagamento \\
@@ -115,13 +118,13 @@ No fattura  & Data  & Importo  & Pagamenti  & Saldo  & Divisa  & Situazione \\
 167  & 01.01.2022  & 50.00  & 0.00  & 50.00  & CHF  & 1. richiamo \\
 168  & 01.01.2022  & 50.00  & 0.00  & 50.00  & CHF  & 1. richiamo \\
 169  & 01.01.2022  & 50.00  & 0.00  & 50.00  & CHF  & 1. richiamo \\
+11  & 02.01.2022  & 240.00  & 0.00  & 240.00  & CHF  & 1. richiamo \\
 \end{longtable}
 \begin{longtable}[l]{ l }
 Data: 16.01.2023 \newline No Cliente: 1100 \newline Pagina: 3 \newline \\
 \end{longtable}
 \begin{longtable}[l]{ l  l  l  l  l  l  l }
 No fattura  & Data  & Importo  & Pagamenti  & Saldo  & Divisa  & Situazione \\
-11  & 02.01.2022  & 240.00  & 0.00  & 240.00  & CHF  & 1. richiamo \\
 12  & 03.01.2022  & 523.50  & 523.50  & 0.00  & CHF  & pagato \\
 \multicolumn{7}{l}{}\\
  &  & 4'263.50  & 523.50  & 3'740.00  &  & \\
@@ -136,8 +139,11 @@ Nome Cognome \\
 Indirizzo 1, Indirizzo 2, CAP Loc \\
 info@myweb, http://www.myweb \\
 CHE-111.222.333 \\
-\begin{longtable}[l]{ l  l }
-Datum: 16.01.2023 \newline Kunde-Nr: 1102 \newline Seite: 3 \newline  & Robert Schwartz \newline Via Regina \newline 6982 Agno \newline \newline \\
+\begin{longtable}[l]{ l }
+Datum: 16.01.2023 \newline Kunde-Nr: 1102 \newline Seite: 3 \newline \\
+\end{longtable}
+\begin{longtable}[l]{ l }
+Robert Schwartz \newline Via Regina \newline 6982 Agno \newline \newline \\
 \end{longtable}
 \begin{longtable}[l]{ l }
 Zahlungserinnerung \\
@@ -162,8 +168,11 @@ Nome Cognome \\
 Indirizzo 1, Indirizzo 2, CAP Loc \\
 info@myweb, http://www.myweb \\
 CHE-111.222.333 \\
-\begin{longtable}[l]{ l  l }
-Date: 16.01.2023 \newline Customer No: 1103 \newline Page: 3 \newline  & John Smith \newline Via Al Sole 22 \newline 6963 Pregassona \newline \newline \\
+\begin{longtable}[l]{ l }
+Date: 16.01.2023 \newline Customer No: 1103 \newline Page: 3 \newline \\
+\end{longtable}
+\begin{longtable}[l]{ l }
+John Smith \newline Via Al Sole 22 \newline 6963 Pregassona \newline \newline \\
 \end{longtable}
 \begin{longtable}[l]{ l }
 Payment reminder \\
@@ -187,8 +196,11 @@ Nome Cognome \\
 Indirizzo 1, Indirizzo 2, CAP Loc \\
 info@myweb, http://www.myweb \\
 CHE-111.222.333 \\
-\begin{longtable}[l]{ l  l }
-Date: 16.01.2023 \newline No Client: 1101 \newline Page: 3 \newline  & Pierre  Camus \newline Via Carlo Cattaneo \newline 6900 Lugano \newline \newline \\
+\begin{longtable}[l]{ l }
+Date: 16.01.2023 \newline No Client: 1101 \newline Page: 3 \newline \\
+\end{longtable}
+\begin{longtable}[l]{ l }
+Pierre  Camus \newline Via Carlo Cattaneo \newline 6900 Lugano \newline \newline \\
 \end{longtable}
 \begin{longtable}[l]{ l }
 Rappel de paiement \\
@@ -213,8 +225,11 @@ Nome Cognome \\
 Indirizzo 1, Indirizzo 2, CAP Loc \\
 info@myweb, http://www.myweb \\
 CHE-111.222.333 \\
-\begin{longtable}[l]{ l  l }
-Data: 10.01.2023 \newline No Cliente: 1100 \newline Pagina: 3 \newline  & Rossi SA \newline Andrea Rossi \newline Viale Stazione 11 \newline CP 123 \newline 6500 Bellinzona \newline \newline \\
+\begin{longtable}[l]{ l }
+Data: 10.01.2023 \newline No Cliente: 1100 \newline Pagina: 3 \newline \\
+\end{longtable}
+\begin{longtable}[l]{ l }
+Rossi SA \newline Andrea Rossi \newline Viale Stazione 11 \newline CP 123 \newline 6500 Bellinzona \newline \newline \\
 \end{longtable}
 \begin{longtable}[l]{ l }
 Richiamo di pagamento \\
@@ -237,8 +252,11 @@ Nome Cognome \\
 Indirizzo 1, Indirizzo 2, CAP Loc \\
 info@myweb, http://www.myweb \\
 CHE-111.222.333 \\
-\begin{longtable}[l]{ l  l }
-Data: 14.01.2023 \newline No Cliente: 1100 \newline Pagina: 3 \newline  & Rossi SA \newline Andrea Rossi \newline Viale Stazione 11 \newline CP 123 \newline 6500 Bellinzona \newline \newline \\
+\begin{longtable}[l]{ l }
+Data: 14.01.2023 \newline No Cliente: 1100 \newline Pagina: 3 \newline \\
+\end{longtable}
+\begin{longtable}[l]{ l }
+Rossi SA \newline Andrea Rossi \newline Viale Stazione 11 \newline CP 123 \newline 6500 Bellinzona \newline \newline \\
 \end{longtable}
 \begin{longtable}[l]{ l }
 Richiamo di pagamento \\
@@ -246,12 +264,12 @@ Richiamo di pagamento \\
 \begin{longtable}[l]{ l  l  l  l  l  l  l }
 \multicolumn{7}{l}{\multicolumn{7}{l}{Testo iniziale }}\\
 \multicolumn{7}{l}{  }\\
+No fattura  & Data  & Importo  & Pagamenti  & Saldo  & Divisa  & Situazione \\
 \end{longtable}
 \begin{longtable}[l]{ l }
 Data: 14.01.2023 \newline No Cliente: 1100 \newline Pagina: 4 \newline \\
 \end{longtable}
 \begin{longtable}[l]{ l  l  l  l  l  l  l }
-No fattura  & Data  & Importo  & Pagamenti  & Saldo  & Divisa  & Situazione \\
 No fattura  & Data  & Importo  & Pagamenti  & Saldo  & Divisa  & Situazione \\
 10  & 01.01.2023  & 50.00  & 0.00  & 50.00  & CHF  & 2. richiamo \\
 \multicolumn{7}{l}{}\\
@@ -267,8 +285,11 @@ Nome Cognome \\
 Indirizzo 1, Indirizzo 2, CAP Loc \\
 info@myweb, http://www.myweb \\
 CHE-111.222.333 \\
-\begin{longtable}[l]{ l  l }
-Data: 17.01.2023 \newline No Cliente: 1100 \newline Pagina: 4 \newline  & Rossi SA \newline Andrea Rossi \newline Viale Stazione 11 \newline CP 123 \newline 6500 Bellinzona \newline \newline \\
+\begin{longtable}[l]{ l }
+Data: 17.01.2023 \newline No Cliente: 1100 \newline Pagina: 4 \newline \\
+\end{longtable}
+\begin{longtable}[l]{ l }
+Rossi SA \newline Andrea Rossi \newline Viale Stazione 11 \newline CP 123 \newline 6500 Bellinzona \newline \newline \\
 \end{longtable}
 \begin{longtable}[l]{ l }
 Richiamo di pagamento \\
