@@ -61,7 +61,7 @@ function generateCsvItems(itemsTable) {
                 let vatRate = row.value("VatRate");
                 let discount = row.value("Discount");
                 if (!id) {
-                    row.addMessage(qsTr("Number is a required field"), id);
+                    row.addMessage(qsTr("RowId is a required field"), id);
                     rowMatched = false;
                 } if (!description) {
                     row.addMessage(qsTr("Description is a required field"), description);
@@ -73,7 +73,7 @@ function generateCsvItems(itemsTable) {
                 csv += `${getValue(id)},${getValue(description)},${getValue(unitPrice)},${getValue(amountType)},${getValue(unit)},${getValue(vatCode)},${getValue(vatRate)},${getValue(discount)}\n`;
             }
             catch(e) {
-                Banana.document.addMessage(qsTr("An error occured while exporting the csv invoice! ") + "\n" + qsTr("Error Description: ") + e);
+                Banana.document.addMessage(qsTr("An error occured while exporting the csv items! ") + "\n" + qsTr("Error Description: ") + e);
             }
         }
     }
@@ -83,5 +83,6 @@ function generateCsvItems(itemsTable) {
     } else {
         Banana.document.addMessage(qsTr("Complete the missing details first, as listed in the message pane below."));
         return "";
+        
     }
 }

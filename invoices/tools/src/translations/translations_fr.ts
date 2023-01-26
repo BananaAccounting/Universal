@@ -4,14 +4,21 @@
 <context>
     <name>export_contacts</name>
     <message>
-        <location filename="../export_contacts.js" line="25"/>
         <source>Contacts</source>
-        <translation>Contacts</translation>
+        <translation type="vanished">Contacts</translation>
+    </message>
+    <message>
+        <source>Number is a required field</source>
+        <translation type="vanished">Le champ Id est obligatoire</translation>
+    </message>
+    <message>
+        <source>Id is a required field</source>
+        <translation type="vanished">Le champ Id est obligatoire</translation>
     </message>
     <message>
         <location filename="../export_contacts.js" line="71"/>
-        <source>Number is a required field</source>
-        <translation>Le champ Id est obligatoire</translation>
+        <source>RowId is a required field</source>
+        <translation>Le champ IdLigne est obligatoire</translation>
     </message>
     <message>
         <location filename="../export_contacts.js" line="75"/>
@@ -52,14 +59,18 @@
         <translation>Le champ Code Pays est obligatoire</translation>
     </message>
     <message>
-        <location filename="../export_contacts.js" line="114"/>
         <source>An error occured while exporting the csv invoice! </source>
-        <translation>Une erreur est survenue lors de l&apos;exportation du fichier csv! </translation>
+        <translation type="vanished">Une erreur est survenue lors de l&apos;exportation du fichier csv! </translation>
     </message>
     <message>
         <location filename="../export_contacts.js" line="114"/>
         <source>Error Description: </source>
         <translation>Description de l&apos;erreur: </translation>
+    </message>
+    <message>
+        <location filename="../export_contacts.js" line="114"/>
+        <source>An error occured while exporting the csv contacts! </source>
+        <translation>Une erreur est survenue lors de l&apos;exportation du contacts csv! </translation>
     </message>
     <message>
         <location filename="../export_contacts.js" line="122"/>
@@ -70,43 +81,50 @@
 <context>
     <name>export_invoices</name>
     <message>
-        <location filename="../export_invoices.js" line="25"/>
         <source>Invoices</source>
-        <translation>Factures</translation>
+        <translation type="vanished">Factures</translation>
     </message>
     <message>
-        <location filename="../export_invoices.js" line="78"/>
+        <location filename="../export_invoices.js" line="80"/>
         <source>InvoiceDate is a required field</source>
         <translation>Le champ Date est obligatoire</translation>
     </message>
     <message>
-        <location filename="../export_invoices.js" line="82"/>
         <source>CustomerNumber is a required field</source>
-        <translation>Le champ Id Contact est obligatoire</translation>
+        <translation type="vanished">Le champ Id Contact est obligatoire</translation>
     </message>
     <message>
-        <location filename="../export_invoices.js" line="90"/>
+        <source>Contact Id is a required field</source>
+        <translation type="vanished">Le champ Id Contact est obligatoire</translation>
+    </message>
+    <message>
+        <location filename="../export_invoices.js" line="84"/>
+        <source>ContactsId is a required field</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../export_invoices.js" line="92"/>
         <source>ItemDescription is a required field</source>
         <translation>Le champ Libellé, dans la facture, est obligatoire</translation>
     </message>
     <message>
-        <location filename="../export_invoices.js" line="96"/>
-        <location filename="../export_invoices.js" line="105"/>
+        <location filename="../export_invoices.js" line="98"/>
+        <location filename="../export_invoices.js" line="107"/>
         <source>ItemTotal is a required field</source>
         <translation>Le champ Total, dans la facture, est obligatoire</translation>
     </message>
     <message>
-        <location filename="../export_invoices.js" line="123"/>
+        <location filename="../export_invoices.js" line="125"/>
         <source>An error occured while exporting the csv invoice! </source>
         <translation>Une erreur est survenue lors de l&apos;exportation du fichier csv! </translation>
     </message>
     <message>
-        <location filename="../export_invoices.js" line="123"/>
+        <location filename="../export_invoices.js" line="125"/>
         <source>Error Description: </source>
         <translation>Description de l&apos;erreur: </translation>
     </message>
     <message>
-        <location filename="../export_invoices.js" line="130"/>
+        <location filename="../export_invoices.js" line="132"/>
         <source>Complete the missing details first, as listed in the message pane below.</source>
         <translation>Veuillez compléter les détails manquants tels que listés dans l&apos;onglet Messages, ci-dessous.</translation>
     </message>
@@ -114,14 +132,16 @@
 <context>
     <name>export_items</name>
     <message>
-        <location filename="../export_items.js" line="25"/>
         <source>Items</source>
-        <translation>Articles</translation>
+        <translation type="vanished">Articles</translation>
     </message>
     <message>
-        <location filename="../export_items.js" line="64"/>
         <source>Number is a required field</source>
-        <translation>Le champ Id est obligatoire</translation>
+        <translation type="vanished">Le champ Id est obligatoire</translation>
+    </message>
+    <message>
+        <source>Id is a required field</source>
+        <translation type="vanished">Le champ Id est obligatoire</translation>
     </message>
     <message>
         <location filename="../export_items.js" line="67"/>
@@ -134,14 +154,23 @@
         <translation>Le champ Prix Unitaire est obligatoire</translation>
     </message>
     <message>
-        <location filename="../export_items.js" line="76"/>
         <source>An error occured while exporting the csv invoice! </source>
-        <translation>Une erreur est survenue lors de l&apos;exportation du fichier csv! </translation>
+        <translation type="vanished">Une erreur est survenue lors de l&apos;exportation du fichier csv! </translation>
+    </message>
+    <message>
+        <location filename="../export_items.js" line="64"/>
+        <source>RowId is a required field</source>
+        <translation>Le champ IdLigne est obligatoire</translation>
     </message>
     <message>
         <location filename="../export_items.js" line="76"/>
         <source>Error Description: </source>
         <translation>Description de l&apos;erreur: </translation>
+    </message>
+    <message>
+        <location filename="../export_items.js" line="76"/>
+        <source>An error occured while exporting the csv items! </source>
+        <translation>Une erreur s&apos;est produite lors de l&apos;exportation des articles csv! </translation>
     </message>
     <message>
         <location filename="../export_items.js" line="84"/>

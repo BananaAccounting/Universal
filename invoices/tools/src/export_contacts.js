@@ -68,7 +68,7 @@ function generateCsvContacts(contactsTable) {
                 let workEmail = row.value("EmailWork");
                 let discount = row.value("Discount");
                 if (!id) {
-                    row.addMessage(qsTr("Number is a required field"), id);
+                    row.addMessage(qsTr("RowId is a required field"), id);
                     rowMatched = false;
                 } 
                 if (!organisation && !first_name && !last_name) {
@@ -111,7 +111,7 @@ function generateCsvContacts(contactsTable) {
                 csv += `${getValue(id)},${getValue(organisation)},${getValue(organisationUnit)},${getValue(namePrefix)},${getValue(first_name)},${getValue(last_name)},${getValue(street)},${getValue(extraAddress)},${getValue(poBox)},${getValue(postalCode)},${getValue(locality)},${getValue(countryCode)},${getValue(languageCode)},${getValue(workEmail)},${getValue(discount)} \n`;
             }
             catch(e) {
-                Banana.document.addMessage(qsTr("An error occured while exporting the csv invoice! ") + "\n" + qsTr("Error Description: ") + e);
+                Banana.document.addMessage(qsTr("An error occured while exporting the csv contacts! ") + "\n" + qsTr("Error Description: ") + e);
             }
         }
     }

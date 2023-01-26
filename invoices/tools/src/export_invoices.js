@@ -81,7 +81,7 @@ function generateCsvInvoices(invoicesTable) {
                     rowMatched = false;
                 } 
                 if (!invoiceObj.customer_info.number) {
-                    row.addMessage(qsTr("CustomerNumber is a required field"));
+                    row.addMessage(qsTr("ContactsId is a required field"));
                     rowMatched = false;
                 } 
                 
