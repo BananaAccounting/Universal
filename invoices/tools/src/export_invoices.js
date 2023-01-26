@@ -22,7 +22,9 @@
  * Parse the file and create a document change document to import the imvoices.
  */
 function exec() {
-    let invoicesTable = Banana.document.table(qsTr("Invoices"));
+    Banana.console.log("aaaa");
+
+    let invoicesTable = Banana.document.table("Invoices");
 
     if (!invoicesTable) {
         return "";
