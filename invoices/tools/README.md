@@ -48,10 +48,11 @@ The import and export files are csv (coma separated values) files, where:
 - InvoiceDate *
 - InvoiceDueDate
 - InvoiceDescription
-- InvoiceDiscount
 - InvoiceCurrency
 - InvoiceAmountType 3)
-- InvoiceTotalToPay
+- InvoiceDiscount
+- InvoiceTotalToPay 1) 6)
+- InvoiceVatTotal 1) 6)
 - CustomerNumber *
 - CustomerName 1) 4)
 - ItemNumber
@@ -73,6 +74,7 @@ Notes:
 - 3\) vat_excl, vat_incl, vat_none (default is vat_excl)  
 - 4\) it contains the Organisation Name or the First and Last Name plus the Locality separated by a comma  
 - 5\) ItemTotal contains the total exclusive vat if InvoiceAmountType is vat_excl, otherwise it contains the total inclusive vat
+- 6\) This value is used to check if after the importation the amounts corresponds
 
 Example:
 
