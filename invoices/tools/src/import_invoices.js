@@ -129,6 +129,19 @@ class formatInvs {
             return false;
     }
 
+    isVatExcl(vat_mode) {
+        if (!vat_mode) {
+            return true;
+        } else if (vat_mode === "vat_excl") {
+            return true;
+        } else if (vat_mode === "vat_none") {
+            return false;
+        } else if (vat_mode === "vat_incl") {
+            return false;
+        }
+        return true; // default is vat excl
+    }
+
     convertInDocChange(transactionsObjs, initJsonDoc) {
         let jsonDoc = [];
         let docInfo = getDocumentInfo();
@@ -145,15 +158,15 @@ class formatInvs {
                 invoiceObj.items = this.setInvoiceStructure_items(transactionsObjs, invoiceTransaction["InvoiceNumber"]);
                 // Banana.Ui.showText(JSON.stringify(invoiceObj));
 
-                // Recalculate invoice
-                if(!invoiceObj.billing_info)
-                    invoiceObj.billing_info = {};
-
-                invoiceObj.billing_info.discount = {};
-                if(this.discountTotal == "0"){
-                    this.discountTotal = null;
+                if (invoiceTransaction["InvoiceDiscount"]) {
+                    invoiceObj.billing_info.discount = {
+                        amount_vat_exclusive: this.isVatExcl(invoiceTransaction["InvoiceAmountType"]) ? invoiceTransaction["InvoiceDiscount"] : null,
+                        amount_vat_inclusive: this.isVatExcl(invoiceTransaction["InvoiceAmountType"]) ? null : invoiceTransaction["InvoiceDiscount"],
+                    };
                 }
-                invoiceObj.billing_info.discount.amount_vat_exclusive=this.discountTotal;
+                invoiceObj.billing_info.total_to_pay = invoiceTransaction["InvoiceTotalToPay"];
+
+                // Recalculate invoice
                 invoiceObj = JSON.parse(this.banDoc.calculateInvoice(JSON.stringify(invoiceObj)));
 
                 // check that the information in the billing info property coincides with the totals taken from the invoice lines
@@ -248,6 +261,7 @@ class formatInvs {
         
         invoiceObj.creator_info = this.setInvoiceStructure_creatorInfo();
         invoiceObj.author_info = {};
+        invoiceObj.billing_info = {};
         invoiceObj.customer_info = this.setInvoiceStructure_customerInfo(invoiceTransaction);
         invoiceObj.document_info = this.setInvoiceStructure_documentInfo(invoiceTransaction, transWord);
         invoiceObj.note = {};
@@ -359,9 +373,9 @@ class formatInvs {
         let invoiceObj_documentInfo = {};
   
         invoiceObj_documentInfo.currency = invoiceTransaction["InvoiceCurrency"];
-        invoiceObj_documentInfo.date = Banana.Converter.toInternalDateFormat(invoiceTransaction["InvoiceDate"]);
+        invoiceObj_documentInfo.date = invoiceTransaction["InvoiceDate"];
         invoiceObj_documentInfo.decimals_amounts = 2;
-        invoiceObj_documentInfo.description = transWord.invoice;
+        invoiceObj_documentInfo.description = invoiceTransaction["InvoiceDescription"] ? invoiceTransaction["InvoiceDescription"] : transWord;
         invoiceObj_documentInfo.doc_type = "";
         invoiceObj_documentInfo.locale = "";
         invoiceObj_documentInfo.number = invoiceTransaction["InvoiceNumber"];
@@ -370,12 +384,9 @@ class formatInvs {
         invoiceObj_documentInfo.printed = "";
         invoiceObj_documentInfo.rounding_total = "";
         invoiceObj_documentInfo.type = "";
-        // invoiceObj_documentInfo.text_begin = transWord.reference + invoiceTransaction["esr_number"];
-        invoiceObj_documentInfo.vat_mode = "vat_excl";
-  
+        invoiceObj_documentInfo.vat_mode = invoiceTransaction["InvoiceAmountType"] ? invoiceTransaction["InvoiceAmountType"] : "vat_excl";
   
         return invoiceObj_documentInfo;
-  
     }
 
     setInvoiceStructure_items(invoiceTransactions, ref_number){
@@ -391,10 +402,18 @@ class formatInvs {
                 invoiceObj_items.mesure_unit = invTransaction["ItemUnit"];
                 invoiceObj_items.number = invTransaction["ItemNumber"];
                 invoiceObj_items.quantity = invTransaction["ItemQuantity"];
-                invoiceObj_items.total = "";
-                invoiceObj_items.total_amount_vat_exclusive = invTransaction["ItemTotal"];
-                invoiceObj_items.total_amount_vat_inclusive = invTransaction["ItemTotal"];
-                // invoiceObj_items.unit_price = this.setInvoiceStructure_items_unitPrice(invTransaction);   
+                invoiceObj_items.unit_price = {
+                    amount_vat_exclusive: this.isVatExcl(invTransaction["InvoiceAmountType"]) ? invTransaction["ItemUnitPrice"] : null,
+                    amount_vat_inclusive: this.isVatExcl(invTransaction["InvoiceAmountType"]) ? null : invTransaction["ItemUnitPrice"],
+                    discount: {
+                        amount: invTransaction["ItemDiscount"] ? invTransaction["ItemDiscount"] : null
+                    },
+                    vat_code: invTransaction["ItemVatCode"] ? invTransaction["ItemVatCode"] : null,
+                    vat_rate: invTransaction["ItemVatRate"] ? invTransaction["ItemVatRate"] : null
+                }
+                // The next fields are recalculated
+                //invoiceObj_items.total_amount_vat_exclusive = invTransaction["ItemTotal"];
+                //invoiceObj_items.total_amount_vat_inclusive = invTransaction["ItemTotal"];
                 
                 invoiceArr_items.push(invoiceObj_items);
             }
