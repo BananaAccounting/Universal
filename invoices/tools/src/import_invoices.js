@@ -134,7 +134,6 @@ class formatInvs {
         let docInfo = getDocumentInfo();
         let rows = [];
         let invoiceObj = {};
-        let invoiceNumber = "";
 
         /* Iterate over the rows and create object */
         for (let trRow in transactionsObjs) {
