@@ -51,6 +51,7 @@ The import and export files are csv (coma separated values) files, where:
 - InvoiceDiscount
 - InvoiceCurrency
 - InvoiceAmountType 3)
+- InvoiceTotalToPay
 - CustomerNumber *
 - CustomerName 1) 4)
 - ItemNumber
