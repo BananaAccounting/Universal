@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.report.customer.reminder.style03.js
 // @api = 1.0
-// @pubdate = 2023-01-20
+// @pubdate = 2023-01-27
 // @publisher = Banana.ch SA
 // @description = Payment reminder
 // @description.it = Richiamo di pagamento (banana+)
@@ -105,7 +105,7 @@ function convertParam(param) {
    currentParam.title = texts.param_print_logo;
    currentParam.type = 'bool';
    currentParam.value = param.print_logo ? true : false;
-   currentParam.defaultvalue = false;
+   currentParam.defaultvalue = true;
    currentParam.readValue = function() {
       param.print_logo = this.value;
    }
@@ -153,6 +153,17 @@ function convertParam(param) {
    convertedParam.data.push(currentParam);
 
    currentParam = {};
+   currentParam.name = 'text_title_it';
+   currentParam.parentObject = 'it';
+   currentParam.title = texts.param_text_title_it;
+   currentParam.type = 'string';
+   currentParam.value = param.text_title_it ? param.text_title_it : '';
+   currentParam.readValue = function() {
+      param.text_title_it = this.value;
+   }
+   convertedParam.data.push(currentParam);
+
+   currentParam = {};
    currentParam.name = 'text_begin_it';
    currentParam.parentObject = 'it';
    currentParam.title = texts.param_text_begin_it;
@@ -186,6 +197,17 @@ function convertParam(param) {
    }
    currentParam.readValue = function() {
       param.fr = this.value;
+   }
+   convertedParam.data.push(currentParam);
+
+   currentParam = {};
+   currentParam.name = 'text_title_fr';
+   currentParam.parentObject = 'fr';
+   currentParam.title = texts.param_text_title_fr;
+   currentParam.type = 'string';
+   currentParam.value = param.text_title_fr ? param.text_title_fr : '';
+   currentParam.readValue = function() {
+      param.text_title_fr = this.value;
    }
    convertedParam.data.push(currentParam);
 
@@ -227,6 +249,17 @@ function convertParam(param) {
    convertedParam.data.push(currentParam);
 
    currentParam = {};
+   currentParam.name = 'text_title_de';
+   currentParam.parentObject = 'de';
+   currentParam.title = texts.param_text_title_de;
+   currentParam.type = 'string';
+   currentParam.value = param.text_title_de ? param.text_title_de : '';
+   currentParam.readValue = function() {
+      param.text_title_de = this.value;
+   }
+   convertedParam.data.push(currentParam);
+
+   currentParam = {};
    currentParam.name = 'text_begin_de';
    currentParam.parentObject = 'de';
    currentParam.title = texts.param_text_begin_de;
@@ -264,6 +297,17 @@ function convertParam(param) {
    convertedParam.data.push(currentParam);
 
    currentParam = {};
+   currentParam.name = 'text_title_en';
+   currentParam.parentObject = 'en';
+   currentParam.title = texts.param_text_title_en;
+   currentParam.type = 'string';
+   currentParam.value = param.text_title_en ? param.text_title_en : '';
+   currentParam.readValue = function() {
+      param.text_title_en = this.value;
+   }
+   convertedParam.data.push(currentParam);
+
+   currentParam = {};
    currentParam.name = 'text_begin_en';
    currentParam.parentObject = 'en';
    currentParam.title = texts.param_text_begin_en;
@@ -297,6 +341,17 @@ function convertParam(param) {
    }
    currentParam.readValue = function() {
       param.nl = this.value;
+   }
+   convertedParam.data.push(currentParam);
+
+   currentParam = {};
+   currentParam.name = 'text_title_nl';
+   currentParam.parentObject = 'nl';
+   currentParam.title = texts.param_text_title_nl;
+   currentParam.type = 'string';
+   currentParam.value = param.text_title_nl ? param.text_title_nl : '';
+   currentParam.readValue = function() {
+      param.text_title_nl = this.value;
    }
    convertedParam.data.push(currentParam);
 
@@ -358,14 +413,19 @@ function initParam() {
    param.print_logo = true;
    param.logo_name = 'Logo';
    param.texts = '';
+   param.text_title_it = '';
    param.text_begin_it = '';
    param.text_final_it = '';
+   param.text_title_fr = '';
    param.text_begin_fr = '';
    param.text_final_fr = '';
+   param.text_title_de = '';
    param.text_begin_de = '';
    param.text_final_de = '';
+   param.text_title_en = '';
    param.text_begin_en = '';
    param.text_final_en = '';
+   param.text_title_nl = '';
    param.text_begin_nl = '';
    param.text_final_nl = '';
    param.font_family = 'Helvetica';
@@ -386,11 +446,17 @@ function verifyParam(param) {
    if (!param.texts) {
       param.texts = '';
    }
+   if (!param.text_title_it) {
+      param.text_title_it = '';
+   }
    if (!param.text_begin_it) {
       param.text_begin_it = '';
    }
    if (!param.text_final_it) {
       param.text_final_it = '';
+   }
+   if (!param.text_title_fr) {
+      param.text_title_fr = '';
    }
    if (!param.text_begin_fr) {
       param.text_begin_fr = '';
@@ -398,17 +464,26 @@ function verifyParam(param) {
    if (!param.text_final_fr) {
       param.text_final_fr = '';
    }
+   if (!param.text_title_de) {
+      param.text_title_de = '';
+   }
    if (!param.text_begin_de) {
       param.text_begin_de = '';
    }
    if (!param.text_final_de) {
       param.text_final_de = '';
    }
+   if (!param.text_title_en) {
+      param.text_title_en = '';
+   }
    if (!param.text_final_en) {
       param.text_final_en = '';
    }
    if (!param.text_begin_en) {
       param.text_begin_en = '';
+   }
+   if (!param.text_title_nl) {
+      param.text_title_nl = '';
    }
    if (!param.text_begin_nl) {
       param.text_begin_nl = '';
@@ -475,7 +550,7 @@ function printReminder(banDoc, reminderObj, repDocObj, repStyleObj, param, texts
    printReminder_HeaderPage(reminderObj, repDocObj, repStyleObj, param);
    printReminder_Info(reminderObj, repDocObj, texts);
    printReminder_Address(reminderObj, repDocObj, texts);
-   printReminder_Title(repDocObj, texts);
+   printReminder_Title(reminderObj, repDocObj, texts, param);
 
    repTableObj = repDocObj.addTable("doc_table");
    printReminder_BeginText(reminderObj, param);
@@ -535,13 +610,22 @@ function printReminder_Address(reminderObj, repDocObj, texts) {
    }
 }
 
-function printReminder_Title(repDocObj, texts) {
+function printReminder_Title(reminderObj, repDocObj, texts, param) {
 
    // Title
 
+   var langDoc = getLangDoc(reminderObj);
+   
+   var titleText = texts.reminder;
+   var titleParam = param['text_title_'+langDoc];
+
+   if (titleParam && titleParam.trim()) {
+      titleText = titleParam.trim();
+   }
+
    var titleTable = repDocObj.addTable("title_table");
    tableRow = titleTable.addRow();
-   tableRow.addCell(texts.reminder, "bold title", 1);
+   tableRow.addCell(titleText, "bold title", 1);
 }
 
 function printReminder_BeginText(reminderObj, param) {
@@ -820,7 +904,9 @@ function getInvoiceAddress(invoiceAddress) {
       }
       address += invoiceAddress.last_name;
    }
-   address += "\n";
+   if (invoiceAddress.first_name || invoiceAddress.last_name) {
+      address += "\n";
+   }
 
    if (invoiceAddress.address1) {
       address += invoiceAddress.address1 + "\n";
@@ -956,7 +1042,7 @@ function replaceVariables(cssText, variables) {
 // LANGUAGE AND TEXTS
 //====================================================================//
 function getLangDoc(reminderObj) {
-   var langDoc = 'en';
+   var langDoc = '';
    if (reminderObj.customer_info.lang) {
       langDoc = reminderObj.customer_info.lang;
    }
@@ -971,14 +1057,19 @@ function setTexts(language) {
    var texts = {};
 
    // Text for parameteres always displayed
+   texts.param_text_title_it = 'Titolo';
    texts.param_text_begin_it = 'Testo iniziale';
    texts.param_text_final_it = 'Testo finale';
+   texts.param_text_title_fr = 'Titre';
    texts.param_text_begin_fr = 'Texte de début';
    texts.param_text_final_fr = 'Texte final';
+   texts.param_text_title_de = 'Titel';
    texts.param_text_begin_de = 'Anfangstext';
    texts.param_text_final_de = 'Text am Ende';
+   texts.param_text_title_en = 'Title';
    texts.param_text_begin_en = 'Begin text';
    texts.param_text_final_en = 'Final text';
+   texts.param_text_title_nl = 'Titel';
    texts.param_text_begin_nl = 'Begintekst';
    texts.param_text_final_nl = 'Eindtekst';
 
