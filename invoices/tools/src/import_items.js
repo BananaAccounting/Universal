@@ -112,11 +112,15 @@ class formatItm {
             row.fields["RowId"] = transaction["RowId"];
             row.fields["Description"] = transaction["Description"];
             row.fields["UnitPrice"] = transaction["UnitPrice"];
-            row.fields["AmountType"] = transaction["AmountType"]
             row.fields["Unit"] = transaction["Unit"];
-            row.fields["VatCode"] = transaction["VatCode"];
-            row.fields["VatRate"] = transaction["VatRate"];
-            row.fields["Discount"] = transaction["Discount"];
+            if (tableHasField("Items", "AmountType"))
+                row.fields["AmountType"] = transaction["AmountType"]
+            if (tableHasField("Items", "VatCode"))
+                row.fields["VatCode"] = transaction["VatCode"];
+            if (tableHasField("Items", "VatRate"))
+                row.fields["VatRate"] = transaction["VatRate"];
+            if (tableHasField("Items", "Discount"))
+                row.fields["Discount"] = transaction["Discount"];
             
             //carefully check the fields to be added 
             
@@ -158,6 +162,14 @@ function getExistingItemsFromTable(tableName, rowId){
     }
 
     return existingElements;
+}
+
+function tableHasField(tableName, fieldName) {
+    let table = Banana.document.table(tableName);
+    if (table && table.columnNames.indexOf(fieldName) >= 0) {
+        return true;
+    }
+    return false;
 }
 
 function verifyIfExist(existingElements, newElements_id){
