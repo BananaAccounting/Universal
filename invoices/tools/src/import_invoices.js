@@ -134,6 +134,7 @@ class formatInvs {
         let docInfo = getDocumentInfo();
         let rows = [];
         let invoiceObj = {};
+        let invoiceNumber = "";
 
         /* Iterate over the rows and create object */
         for (let trRow in transactionsObjs) {
@@ -172,7 +173,7 @@ class formatInvs {
                 this.invoiceVatTotal = "";
                 this.discountTotal = "";
             }
-            this.placeHolder = invoiceTransaction["InvoiceNumber"];
+            this.placeholder = invoiceTransaction["InvoiceNumber"];
         }
         let dataUnitTransactions = {};
         dataUnitTransactions.nameXml = "Invoices";
