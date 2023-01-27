@@ -85,8 +85,7 @@ class formatInvs {
 
     constructor(banDocument) {
         this.placeholder = "";
-        this.invoiceNetTotal = "";
-        this.invoiceNetTotalAfterDisc = "";
+        this.invoiceTotalToPay = "";
         this.invoiceVatTotal = "";
         this.NetTotalIsOk = false;
         this.VatTotalIsOk = false;
@@ -181,7 +180,7 @@ class formatInvs {
 
                 rows.push(row);
 
-                this.invoiceNetTotal = "";
+                this.invoiceTotalToPay = "";
                 this.invoiceVatTotal = "";
                 this.discountTotal = "";
             }
@@ -204,19 +203,27 @@ class formatInvs {
 
         let msg = this.getInvoiceErrorMessage(this.ID_ERR_AMOUNTS_WITH_DIFFERENCES,this.lang,invoiceObj.document_info.number);
   
-        if(invoiceObj.billing_info.total_amount_vat_exclusive_before_discount==this.invoiceNetTotal){
-           this.NetTotalIsOk=true;
-        }else{
-           Banana.application.addMessage(msg,this.ID_ERR_AMOUNTS_WITH_DIFFERENCES);
-           /*Banana.console.debug("excl vat file"+this.invoiceNetTotal);
-           Banana.console.debug("excl vat calculated"+invoiceObj.billing_info.total_amount_vat_exclusive_before_discount);*/
+        // Verifiy calculated total amount is the same as in the imported file
+        if (this.invoiceTotalToPay) {
+            if (Banana.SDecimal.compare(invoiceObj.billing_info.total_to_pay, this.invoiceTotalToPay) === 0) {
+               this.NetTotalIsOk=true;
+            }else{
+               Banana.application.addMessage(
+                    qsTr("The calculated amount for invoice %1 is different from the amount in the imported file. Calculated amount %2, amount imported file: %3")
+                        .arg(invoiceObj.document_info.number).arg(invoiceObj.billing_info.total_to_pay).arg(this.invoiceTotalToPay),
+                    this.ID_ERR_AMOUNTS_WITH_DIFFERENCES);
+            }
         }
-        if(invoiceObj.billing_info.total_amount_vat_inclusive==this.invoiceVatTotal){
-           this.VatTotalIsOk=true;
-        }else{
-           Banana.application.addMessage(msg,this.ID_ERR_AMOUNTS_WITH_DIFFERENCES);
-          /* Banana.console.debug("incl vat file"+this.invoiceVatTotal);
-           Banana.console.debug("incl vat calculated"+invoiceObj.billing_info.total_amount_vat_inclusive);*/
+
+        if (this.invoiceVatTotal) {
+            if (Banana.SDecimal.compare(invoiceObj.billing_info.total_vat_amount, this.invoiceVatTotal) === 0) {
+               this.VatTotalIsOk=true;
+            } else {
+                Banana.application.addMessage(
+                     qsTr("The calculated vat amount for invoice %1 is different from the amount in the imported file. Calculated vat amount %2, amount imported file: %3")
+                         .arg(invoiceObj.document_info.number).arg(invoiceObj.billing_info.total_vat_amount).arg(this.invoiceVatTotal),
+                     this.ID_ERR_AMOUNTS_WITH_DIFFERENCES);
+            }
         }
   
         return true;
@@ -272,6 +279,10 @@ class formatInvs {
         invoiceObj.type = "invoice";
         invoiceObj.version = "1.0";
 
+        // save invoice's totals to verify that the totals match after recalculate
+        this.invoiceTotalToPay = Banana.SDecimal.add(this.invoiceTotalToPay,invoiceTransaction["InvoiceTotalToPay"],{'decimals':2});
+        this.invoiceVatTotal = Banana.SDecimal.add(this.invoiceVatTotal,invoiceTransaction["InvoiceVatTotal"],{'decimals':2});
+        this.discountTotal = Banana.SDecimal.add(this.invoiceVatTotal,invoiceTransaction["InvoiceDiscount"],{'decimals':2});
 
         return invoiceObj;
     }
@@ -434,13 +445,6 @@ class formatInvs {
         unitPrice.discount.percent = null;
         unitPrice.vat_code = "";
         unitPrice.vat_rate = invoiceTransaction["position_vat"];
-  
-        //salvo i valori per confrontarli con quelli calcolati
-        this.invoiceNetTotal = Banana.SDecimal.add(this.invoiceNetTotal,invoiceTransaction["position_nettotal"],{'decimals':2});
-        this.invoiceVatTotal = Banana.SDecimal.add(this.invoiceVatTotal,invoiceTransaction["position_total"],{'decimals':2});
-  
-        this.discountTotal = Banana.SDecimal.add(this.discountTotal,Banana.SDecimal.subtract(invoiceTransaction["position_nettotal"],invoiceTransaction["position_nettotal_afterdiscount"]));
-
   
         return unitPrice;
   
