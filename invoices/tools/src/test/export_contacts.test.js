@@ -1,6 +1,6 @@
-// @id = ch.banana.application.invoice.export.invoices.test
+// @id = export_contacts.test
 // @api = 1.0
-// @pubdate = 2022-11-26
+// @pubdate = 2022-11-24
 // @publisher = Banana.ch SA
 // @description = Export invoices
 // @description.de = Rechnungen exportieren
@@ -17,53 +17,54 @@
 // @inputfilefilter.de = Text datei (*.csv);;All files (*.*)
 // @inputfilefilter.fr = Fichier text(*.csv);;All files (*.*)
 // @inputfilefilter.it = File testo (*.csv);;All files (*.*)
-// @includejs = ../ch.banana.application.invoice.export.invoices.js
+// @includejs = ../export_contacts.js
+
 
 
 // Register test case to be executed
-Test.registerTestCase(new ExportInvoices());
+Test.registerTestCase(new ExportContacts());
 
 // Here we define the class, the name of the class is not important
-function ExportInvoices() {
+function ExportContacts() {
 
 }
 
 // This method will be called at the beginning of the test case
-ExportInvoices.prototype.initTestCase = function() {
+ExportContacts.prototype.initTestCase = function() {
 
 }
 
 // This method will be called at the end of the test case
-ExportInvoices.prototype.cleanupTestCase = function() {
+ExportContacts.prototype.cleanupTestCase = function() {
 
 }
 
 // This method will be called before every test method is executed
-ExportInvoices.prototype.init = function() {
+ExportContacts.prototype.init = function() {
 
 }
 
 // This method will be called after every test method is executed
-ExportInvoices.prototype.cleanup = function() {
+ExportContacts.prototype.cleanup = function() {
 
 }
 
-ExportInvoices.prototype.testBananaExtension = function() {
+ExportContacts.prototype.testBananaExtension = function() {
 
 	let banDoc = Banana.application.openDocument("file:script/../test/testcases/invoices_excl_vat.ac2");
 	Test.assert(banDoc);
 
-	let invoicesTable = banDoc.table("Invoices");
+	let contactsTable = banDoc.table("Contacts");
 
-    if (!invoicesTable) {
+    if (!contactsTable) {
         return
     }
 
 	let csv = "";
 
-    csv += generateCsvInvoices(invoicesTable)
+    csv += generateCsvContacts(contactsTable);
     
-	Test.logger.addCsv("Test 'Invoices'", csv);
+	Test.logger.addCsv("Test 'Contacts'", csv);
 
 
 }

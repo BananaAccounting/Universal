@@ -32,8 +32,6 @@ function exec() {
 
     let invoicesData = generateCsvInvoices(invoicesTable);
 
-    // Banana.Ui.showText(invoicesData);
-
     if (!invoicesData) {
         return "";
     }
@@ -63,9 +61,7 @@ function convertToCsv(jsonArray) {
 function generateCsvInvoices(invoicesTable) {
     let header = "InvoiceNumber,InvoiceDate,InvoiceDueDate,InvoiceDescription,InvoiceDiscount,InvoiceVatTotal,InvoiceTotalToPay,InvoiceCurrency,InvoiceAmountType,CustomerNumber,CustomerName,ItemNumber,ItemDescription,ItemQuantity,ItemUnitPrice,ItemUnit,ItemVatRate,ItemVatCode,ItemDiscount,ItemTotal,ItemVatTotal\n";
     let csv = "";
-    let isHeader = true;
     let rowMatched = true;
-    let arrayItems = [];
 
     for (let i = 0; i < invoicesTable.rowCount; i++) {
         let row = invoicesTable.row(i);

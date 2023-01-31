@@ -18,45 +18,45 @@
     <message>
         <location filename="../export_contacts.js" line="71"/>
         <source>RowId is a required field</source>
-        <translation>Le champ IdLigne est obligatoire</translation>
+        <translation>Le champ RowId est obligatoire</translation>
     </message>
     <message>
         <location filename="../export_contacts.js" line="75"/>
         <location filename="../export_contacts.js" line="84"/>
         <source>Organisation name is a required field</source>
-        <translation>Le champ Organisation est obligatoire</translation>
+        <translation>Le champ OrganisationName est obligatoire</translation>
     </message>
     <message>
         <location filename="../export_contacts.js" line="77"/>
         <location filename="../export_contacts.js" line="87"/>
         <source>FirstName is a required field</source>
-        <translation>Le champ Prénom est obligatoire</translation>
+        <translation>Le champ FirstName est obligatoire</translation>
     </message>
     <message>
         <location filename="../export_contacts.js" line="79"/>
         <location filename="../export_contacts.js" line="90"/>
         <source>LastName is a required field</source>
-        <translation>Le champ Nom de famille est obligatoire</translation>
+        <translation>Le champ FamilyName est obligatoire</translation>
     </message>
     <message>
         <location filename="../export_contacts.js" line="96"/>
         <source>Street is a required field</source>
-        <translation>Le champ Rue est obligatoire</translation>
+        <translation>Le champ Street est obligatoire</translation>
     </message>
     <message>
         <location filename="../export_contacts.js" line="100"/>
         <source>PostalCode is a required field</source>
-        <translation>Le champ Code Postal est obligatoire</translation>
+        <translation>Le champ PostalCode est obligatoire</translation>
     </message>
     <message>
         <location filename="../export_contacts.js" line="104"/>
         <source>Locality is a required field</source>
-        <translation>Le champ Lieu est obligatoire</translation>
+        <translation>Le champ Locality est obligatoire</translation>
     </message>
     <message>
         <location filename="../export_contacts.js" line="108"/>
         <source>CountryCode is a required field</source>
-        <translation>Le champ Code Pays est obligatoire</translation>
+        <translation>Le champ CountryCode est obligatoire</translation>
     </message>
     <message>
         <source>An error occured while exporting the csv invoice! </source>
@@ -100,18 +100,18 @@
     <message>
         <location filename="../export_invoices.js" line="84"/>
         <source>ContactsId is a required field</source>
-        <translation type="unfinished"></translation>
+        <translation>Le champ ContactsId est obligatoire</translation>
     </message>
     <message>
         <location filename="../export_invoices.js" line="92"/>
         <source>ItemDescription is a required field</source>
-        <translation>Le champ Libellé, dans la facture, est obligatoire</translation>
+        <translation>Le champ ItemDescription, dans la facture, est obligatoire</translation>
     </message>
     <message>
         <location filename="../export_invoices.js" line="98"/>
         <location filename="../export_invoices.js" line="107"/>
         <source>ItemTotal is a required field</source>
-        <translation>Le champ Total, dans la facture, est obligatoire</translation>
+        <translation>Le champ ItemTotal, dans la facture, est obligatoire</translation>
     </message>
     <message>
         <location filename="../export_invoices.js" line="125"/>
@@ -146,12 +146,12 @@
     <message>
         <location filename="../export_items.js" line="67"/>
         <source>Description is a required field</source>
-        <translation>Le champ Libellé est obligatoire</translation>
+        <translation>Le champ Description est obligatoire</translation>
     </message>
     <message>
         <location filename="../export_items.js" line="70"/>
         <source>UnitPrice is a required field</source>
-        <translation>Le champ Prix Unitaire est obligatoire</translation>
+        <translation>Le champ UnitPrice est obligatoire</translation>
     </message>
     <message>
         <source>An error occured while exporting the csv invoice! </source>
@@ -160,7 +160,7 @@
     <message>
         <location filename="../export_items.js" line="64"/>
         <source>RowId is a required field</source>
-        <translation>Le champ IdLigne est obligatoire</translation>
+        <translation>Le champ RowId est obligatoire</translation>
     </message>
     <message>
         <location filename="../export_items.js" line="76"/>

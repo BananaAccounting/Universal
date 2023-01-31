@@ -1,70 +1,68 @@
-// @id = ch.banana.application.invoice.export.contacts.test
+// @id = export_items.test
 // @api = 1.0
-// @pubdate = 2022-11-24
+// @pubdate = 2022-11-27
 // @publisher = Banana.ch SA
-// @description = Export invoices
-// @description.de = Rechnungen exportieren
-// @description.fr = Exporter factures
-// @description.it = Esporta fatture
+// @description = Export items
+// @description.de = Artikeln exportieren
+// @description.fr = Exporter articles
+// @description.it = Esporta articoli
 // @doctype = 400.400
 // @docproperties =
 // @task = export.file
 // @exportfiletype = csv
-// @exportfilename = invoices
+// @exportfilename = items
 // @outputformat = tablewithheaders
 // @outputencoding = utf8
 // @inputfilefilter = Text file (*.csv);;All files (*.*)
 // @inputfilefilter.de = Text datei (*.csv);;All files (*.*)
 // @inputfilefilter.fr = Fichier text(*.csv);;All files (*.*)
 // @inputfilefilter.it = File testo (*.csv);;All files (*.*)
-// @includejs = ../ch.banana.application.invoice.export.contacts.js
-
-
+// @includejs = ../export_items.js
 
 // Register test case to be executed
-Test.registerTestCase(new ExportContacts());
+Test.registerTestCase(new ExportItems());
 
 // Here we define the class, the name of the class is not important
-function ExportContacts() {
+function ExportItems() {
 
 }
 
 // This method will be called at the beginning of the test case
-ExportContacts.prototype.initTestCase = function() {
+ExportItems.prototype.initTestCase = function() {
 
 }
 
 // This method will be called at the end of the test case
-ExportContacts.prototype.cleanupTestCase = function() {
+ExportItems.prototype.cleanupTestCase = function() {
 
 }
 
 // This method will be called before every test method is executed
-ExportContacts.prototype.init = function() {
+ExportItems.prototype.init = function() {
 
 }
 
 // This method will be called after every test method is executed
-ExportContacts.prototype.cleanup = function() {
+ExportItems.prototype.cleanup = function() {
 
 }
 
-ExportContacts.prototype.testBananaExtension = function() {
+ExportItems.prototype.testBananaExtension = function() {
 
 	let banDoc = Banana.application.openDocument("file:script/../test/testcases/invoices_excl_vat.ac2");
 	Test.assert(banDoc);
 
-	let contactsTable = banDoc.table("Contacts");
+	let itemsTable = banDoc.table("Items");
 
-    if (!contactsTable) {
+    if (!itemsTable) {
         return
     }
 
 	let csv = "";
 
-    csv += generateCsvContacts(contactsTable);
+    csv += generateCsvItems(itemsTable);
     
-	Test.logger.addCsv("Test 'Contacts'", csv);
+	Test.logger.addCsv("Test 'Items'", csv);
 
 
 }
