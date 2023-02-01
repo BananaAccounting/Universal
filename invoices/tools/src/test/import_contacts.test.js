@@ -1,4 +1,4 @@
-// @id = ch.banana.application.invoice.import.contacts.test
+// @id = import_contacts.test
 // @api = 1.0
 // @pubdate = 2023-01-19
 // @publisher = Banana.ch SA
@@ -16,7 +16,7 @@
 // @inputfilefilter.de = Text datei (*.csv);;All files (*.*)
 // @inputfilefilter.fr = Fichier text(*.csv);;All files (*.*)
 // @inputfilefilter.it = File testo (*.csv);;All files (*.*)
-// @includejs = ../ch.banana.application.invoice.import.contacts.js
+// @includejs = ../import_contacts.js
 
 // Register test case to be executed
 Test.registerTestCase(new ImportContacts());
