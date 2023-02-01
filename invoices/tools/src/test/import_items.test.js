@@ -1,4 +1,4 @@
-// @id = ch.banana.application.invoice.import.items.test
+// @id = import_items.test
 // @api = 1.0
 // @pubdate = 2023-01-20
 // @publisher = Banana.ch SA
@@ -16,7 +16,7 @@
 // @inputfilefilter.de = Text datei (*.csv);;All files (*.*)
 // @inputfilefilter.fr = Fichier text(*.csv);;All files (*.*)
 // @inputfilefilter.it = File testo (*.csv);;All files (*.*)
-// @includejs = ../ch.banana.application.invoice.import.items.js
+// @includejs = ../import_items.js
 
 // Register test case to be executed
 Test.registerTestCase(new ImportItems());
