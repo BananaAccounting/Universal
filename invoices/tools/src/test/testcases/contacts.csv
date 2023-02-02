@@ -1,6 +1,5 @@
 Number,OrganisationName,OrganisationUnit,NamePrefix,FirstName,LastName,Street,AddressExtra,POBox,PostalCode,Locality,CountryCode,LanguageCode,EmailWork,Discount
-1,Garage de Kinshasa,,,Eddy,Mbuyamba,Route des Poids Lourds,,,01203,Kinshasa,CD,fr,, 
-2,Lezo Sarl,,,Joel,Mbele,Avenue de la Justice,,,01202,Kinshasa,CD,fr,, 
-3,Aquasplash Water Park,,,Shiraj,Savani,Route des Poids Lourds,,,01104,Kinshasa,CD,fr,, 
-4,Panorama SARL,,,Léon,Somwe,Avenue Maboke,,,01204,Kinshasa,CD,fr,, 
-5,,,,Jimmy,Shapemba,Avenue Maboke,,,01204,Kinshasa,CD,fr,, 
+1,Redford SA,,,Andrew,Redford,14th Street Cooper Square,,,10011,New York,US,en,, 
+2,,,,James,Johnson,London Street,,,EC3R7AD,London,UK,en,, 
+3,,,,Jessica,White,New South Wales 1207,,,2000,Sydney,AU,en,, 
+4,Nexus SA,,,,,Zurigo Street,,,3400,Zurich,CH,de,, 
