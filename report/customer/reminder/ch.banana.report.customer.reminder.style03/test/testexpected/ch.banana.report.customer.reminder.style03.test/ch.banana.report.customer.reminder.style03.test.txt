@@ -36,7 +36,7 @@ Data: 16.01.2023 \newline No Cliente: 1100 \newline Pagina: 1 \newline \\
 Rossi SA \newline Andrea Rossi \newline Viale Stazione 11 \newline CP 123 \newline 6500 Bellinzona \newline \newline \\
 \end{longtable}
 \begin{longtable}[l]{ l }
-Richiamo di pagamento \\
+Titolo \\
 \end{longtable}
 \begin{longtable}[l]{ l  l  l  l  l  l  l }
 \multicolumn{7}{l}{\multicolumn{7}{l}{Testo iniziale }}\\
@@ -175,7 +175,7 @@ Date: 16.01.2023 \newline Customer No: 1103 \newline Page: 3 \newline \\
 John Smith \newline Via Al Sole 22 \newline 6963 Pregassona \newline \newline \\
 \end{longtable}
 \begin{longtable}[l]{ l }
-Payment reminder \\
+Title \\
 \end{longtable}
 \begin{longtable}[l]{ l  l  l  l  l  l  l }
 \multicolumn{7}{l}{\multicolumn{7}{l}{Begin text }}\\
@@ -232,7 +232,7 @@ Data: 10.01.2023 \newline No Cliente: 1100 \newline Pagina: 3 \newline \\
 Rossi SA \newline Andrea Rossi \newline Viale Stazione 11 \newline CP 123 \newline 6500 Bellinzona \newline \newline \\
 \end{longtable}
 \begin{longtable}[l]{ l }
-Richiamo di pagamento \\
+Titolo \\
 \end{longtable}
 \begin{longtable}[l]{ l  l  l  l  l  l  l }
 \multicolumn{7}{l}{\multicolumn{7}{l}{Testo iniziale }}\\
@@ -259,7 +259,7 @@ Data: 14.01.2023 \newline No Cliente: 1100 \newline Pagina: 3 \newline \\
 Rossi SA \newline Andrea Rossi \newline Viale Stazione 11 \newline CP 123 \newline 6500 Bellinzona \newline \newline \\
 \end{longtable}
 \begin{longtable}[l]{ l }
-Richiamo di pagamento \\
+Titolo \\
 \end{longtable}
 \begin{longtable}[l]{ l  l  l  l  l  l  l }
 \multicolumn{7}{l}{\multicolumn{7}{l}{Testo iniziale }}\\
@@ -292,7 +292,7 @@ Data: 17.01.2023 \newline No Cliente: 1100 \newline Pagina: 4 \newline \\
 Rossi SA \newline Andrea Rossi \newline Viale Stazione 11 \newline CP 123 \newline 6500 Bellinzona \newline \newline \\
 \end{longtable}
 \begin{longtable}[l]{ l }
-Richiamo di pagamento \\
+Titolo \\
 \end{longtable}
 \begin{longtable}[l]{ l  l  l  l  l  l  l }
 \multicolumn{7}{l}{\multicolumn{7}{l}{Testo iniziale }}\\
