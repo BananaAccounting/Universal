@@ -1,4 +1,4 @@
-// @id = ch.banana.application.invoice.export.invoices
+// @id = export_invoices
 // @api = 1.0
 // @pubdate = 2022-10-24
 // @publisher = Banana.ch SA
@@ -22,7 +22,6 @@
  * Parse the file and create a document change document to import the imvoices.
  */
 function exec() {
-    Banana.console.log("aaaa");
 
     let invoicesTable = Banana.document.table("Invoices");
 
