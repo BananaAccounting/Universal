@@ -69,6 +69,7 @@ function generateCsvInvoices(invoicesTable) {
             try {
                 let invoiceFieldObj = JSON.parse(row.value("InvoiceData"));
                 let invoiceObj = JSON.parse(invoiceFieldObj.invoice_json);
+                // Banana.Ui.showText(JSON.stringify(invoiceObj));
                 
                 if (!invoiceObj.document_info.date) {
                     row.addMessage(qsTr("InvoiceDate is a required field"));
@@ -109,13 +110,15 @@ function generateCsvInvoices(invoicesTable) {
                         }
                     }
                     if (invoiceObj.items[j].discount) {
-                        if (invoiceObj.items[j].discount.percent) {
-                            itemDiscount = invoiceObj.items[j].discount.percent;
+                        if (invoiceObj.items[j].discount.percent) { // Calculate amount based on percentage discount
+                            let itemDiscountPercent = Banana.SDecimal.multiply(invoiceObj.items[j].discount.percent, "0.01");
+                            let itemDiscountUnit = Banana.SDecimal.multiply(itemDiscountPercent, itemUnitPrice, {'decimals':2});
+                            itemDiscount = Banana.SDecimal.multiply(itemDiscountUnit, invoiceObj.items[j].quantity, {'decimals':2});
                         } else {
                             itemDiscount = invoiceObj.items[j].discount.amount;
                         }
                     }
-                    csv += `${getValue(invoiceObj.document_info.number)},${getValue(invoiceObj.document_info.date)},${getValue(invoiceObj.payment_info.due_date)},${getValue(invoiceObj.document_info.description)},${getValue(invoiceObj.billing_info.total_discount_vat_exclusive)},${getValue(invoiceObj.billing_info.total_vat_amount)},${getValue(invoiceObj.billing_info.total_to_pay)},${getValue(invoiceObj.document_info.currency)},${getValue(invoiceObj.document_info.vat_mode)},`+
+                    csv += `${getValue(invoiceObj.document_info.number)},${getValue(invoiceObj.document_info.date)},${getValue(invoiceObj.payment_info.due_date)},${getValue(invoiceObj.document_info.description)},${getValue(invoiceObj.billing_info.total_discount_vat_inclusive)},${getValue(invoiceObj.billing_info.total_vat_amount)},${getValue(invoiceObj.billing_info.total_to_pay)},${getValue(invoiceObj.document_info.currency)},${getValue(invoiceObj.document_info.vat_mode)},`+
                            `${getValue(invoiceObj.customer_info.number)},${getValue(invoiceObj.customer_info.first_name)} ${getValue(invoiceObj.customer_info.last_name)},${getValue(invoiceObj.items[j].number)},${getValue(invoiceObj.items[j].description)},${getValue(invoiceObj.items[j].quantity)},${itemUnitPrice},${getValue(invoiceObj.items[j].mesure_unit)},${getValue(invoiceObj.items[j].unit_price.vat_rate)},${getValue(invoiceObj.items[j].unit_price.vat_code)},${getValue(itemDiscount)},${getValue(itemTotal)},${getValue(invoiceObj.items[j].total_vat_amount)}\n`;
                 }
             }
