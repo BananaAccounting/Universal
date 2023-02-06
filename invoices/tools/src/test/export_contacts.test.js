@@ -23,7 +23,8 @@
 
 /**
  * Tips (to delete once the test are finished)
- * The test cases (*.ac2 files)
+ * The test cases (*.ac2 files) should have at least 5 - 10 rows of example
+ * The example data
  */
 
 
