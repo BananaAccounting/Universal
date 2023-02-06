@@ -85,7 +85,7 @@
         <translation type="vanished">Factures</translation>
     </message>
     <message>
-        <location filename="../export_invoices.js" line="80"/>
+        <location filename="../export_invoices.js" line="74"/>
         <source>InvoiceDate is a required field</source>
         <translation>Le champ Date est obligatoire</translation>
     </message>
@@ -98,33 +98,33 @@
         <translation type="vanished">Le champ Id Contact est obligatoire</translation>
     </message>
     <message>
-        <location filename="../export_invoices.js" line="84"/>
+        <location filename="../export_invoices.js" line="78"/>
         <source>ContactsId is a required field</source>
         <translation>Le champ ContactsId est obligatoire</translation>
     </message>
     <message>
-        <location filename="../export_invoices.js" line="92"/>
+        <location filename="../export_invoices.js" line="87"/>
         <source>ItemDescription is a required field</source>
         <translation>Le champ ItemDescription, dans la facture, est obligatoire</translation>
     </message>
     <message>
-        <location filename="../export_invoices.js" line="98"/>
-        <location filename="../export_invoices.js" line="107"/>
+        <location filename="../export_invoices.js" line="93"/>
+        <location filename="../export_invoices.js" line="103"/>
         <source>ItemTotal is a required field</source>
         <translation>Le champ ItemTotal, dans la facture, est obligatoire</translation>
     </message>
     <message>
-        <location filename="../export_invoices.js" line="125"/>
+        <location filename="../export_invoices.js" line="123"/>
         <source>An error occured while exporting the csv invoice! </source>
         <translation>Une erreur est survenue lors de l&apos;exportation du fichier csv! </translation>
     </message>
     <message>
-        <location filename="../export_invoices.js" line="125"/>
+        <location filename="../export_invoices.js" line="123"/>
         <source>Error Description: </source>
         <translation>Description de l&apos;erreur: </translation>
     </message>
     <message>
-        <location filename="../export_invoices.js" line="132"/>
+        <location filename="../export_invoices.js" line="130"/>
         <source>Complete the missing details first, as listed in the message pane below.</source>
         <translation>Veuillez compléter les détails manquants tels que listés dans l&apos;onglet Messages, ci-dessous.</translation>
     </message>
@@ -176,6 +176,49 @@
         <location filename="../export_items.js" line="84"/>
         <source>Complete the missing details first, as listed in the message pane below.</source>
         <translation>Veuillez compléter les détails manquants tels que listés dans l&apos;onglet Messages, ci-dessous.</translation>
+    </message>
+</context>
+<context>
+    <name>import_invoices</name>
+    <message>
+        <location filename="../import_invoices.js" line="208"/>
+        <source>The calculated amount for invoice %1 is different from the amount in the imported file. Calculated amount %2, amount imported file: %3</source>
+        <translation>Le montant calculé pour la facture %1 est différent du montant du fichier importé. Montant calculé %2, montant du fichier importé&#xa0;: %3</translation>
+    </message>
+    <message>
+        <location filename="../import_invoices.js" line="219"/>
+        <source>The calculated vat amount for invoice %1 is different from the amount in the imported file. Calculated vat amount %2, amount imported file: %3</source>
+        <translation>Le montant de TVA calculé pour la facture %1 est différent du montant du fichier importé. Montant de TVA calculé %2, montant du fichier importé&#xa0;: %3</translation>
+    </message>
+    <message>
+        <location filename="../import_invoices.js" line="231"/>
+        <source>Invoice</source>
+        <translation>Facture</translation>
+    </message>
+    <message>
+        <location filename="../import_invoices.js" line="232"/>
+        <source>Reference nr: </source>
+        <translation>N° de référence : </translation>
+    </message>
+    <message>
+        <location filename="../import_invoices.js" line="476"/>
+        <source>Contact id: </source>
+        <translation>Identifiant du contact : </translation>
+    </message>
+    <message>
+        <location filename="../import_invoices.js" line="476"/>
+        <source> not found in contact table. Did you import the contacts?</source>
+        <translation> Introuvable dans le tableau des contacts. Avez-vous importé les contacts ?</translation>
+    </message>
+    <message>
+        <location filename="../import_invoices.js" line="478"/>
+        <source>The calculated amount is different from the amount in your file, invoice nr: </source>
+        <translation>Le montant calculé est différent du montant de votre fichier, facture n° : </translation>
+    </message>
+    <message>
+        <location filename="../import_invoices.js" line="480"/>
+        <source>You are trying to import a &apos;Single line&apos; invoice, import a &apos;Detailed&apos; invoice instead.</source>
+        <translation>Vous essayez d&apos;importer une facture à &apos;Une ligne&apos;, importez plutôt une facture &apos;Détaillée&apos;.</translation>
     </message>
 </context>
 </TS>
