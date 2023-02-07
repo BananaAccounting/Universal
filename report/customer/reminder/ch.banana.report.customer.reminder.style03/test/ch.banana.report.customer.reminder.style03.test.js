@@ -16,7 +16,7 @@
 
 // @id = ch.banana.report.customer.reminder.style03.test
 // @api = 1.0
-// @pubdate = 2023-01-18
+// @pubdate = 2023-01-27
 // @publisher = Banana.ch SA
 // @description = <TEST ch.banana.report.customer.reminder.style03.js>
 // @task = app.command
@@ -107,7 +107,7 @@ ReportReminderStyle03.prototype.add_test_reminder_by_invoice = function(jsonName
 }
 
 function getLangDoc(reminderObj) {
-  var langDoc = 'en';
+  var langDoc = '';
   if (reminderObj.customer_info.lang) {
     langDoc = reminderObj.customer_info.lang;
   }
@@ -122,14 +122,19 @@ function setParam(texts) {
   param.print_header = true;
   param.print_logo = false;
   param.logo_name = 'Logo';
+  param.text_title_it = 'Titolo';
   param.text_begin_it = 'Testo iniziale';
   param.text_final_it = 'Testo finale';
+  param.text_title_fr = ''; //empty = use default text
   param.text_begin_fr = 'Texte de début';
   param.text_final_fr = 'Texte final';
+  param.text_title_de = ''; //empty = use default text
   param.text_begin_de = 'Anfangstext';
   param.text_final_de = 'Text am Ende';
+  param.text_title_en = 'Title';
   param.text_begin_en = 'Begin text';
   param.text_final_en = 'Final text';
+  param.text_title_nl = ''; //empty = use default text
   param.text_begin_nl = 'Begintekst';
   param.text_final_nl = 'Eindtekst';
   param.font_family = 'Helvetica';
