@@ -161,14 +161,14 @@ class formatInvs {
                     };
                 }
 
-                if (invoiceTransaction["ItemDiscount"]) {
-                    for(let i = 0; i < invoiceObj.items.length; i++) {
-                        invoiceObj.items[i].discount = {
-                            amount: invoiceTransaction["ItemDiscount"]
-                        };
-                    }
-                }
-                
+                // if (invoiceTransaction["ItemDiscount"]) {
+                //     for(let i = 0; i < invoiceObj.items.length; i++) {
+                //         invoiceObj.items[i].discount = {
+                //             amount: invoiceTransaction["ItemDiscount"] ? invoiceTransaction["ItemDiscount"] : null
+                //         };
+                //     }
+                // }
+                // Banana.Ui.showText(JSON.stringify(invoiceObj));
                 // Recalculate invoice
                 invoiceObj = JSON.parse(this.banDoc.calculateInvoice(JSON.stringify(invoiceObj)));
 
@@ -188,6 +188,7 @@ class formatInvs {
                 this.invoiceVatTotal = "";
                 this.discountTotal = "";
             }
+            
             this.placeholder = invoiceTransaction["InvoiceNumber"];
         }
         let dataUnitTransactions = {};
@@ -397,12 +398,12 @@ class formatInvs {
                 invoiceObj_items.mesure_unit = invTransaction["ItemUnit"];
                 invoiceObj_items.number = invTransaction["ItemNumber"];
                 invoiceObj_items.quantity = invTransaction["ItemQuantity"];
+                invoiceObj_items.discount = {
+                    amount: invTransaction["ItemDiscount"] ? invTransaction["ItemDiscount"] : null
+                };
                 invoiceObj_items.unit_price = {
                     amount_vat_exclusive: this.isVatExcl(invTransaction["InvoiceAmountType"]) ? invTransaction["ItemUnitPrice"] : null,
                     amount_vat_inclusive: this.isVatExcl(invTransaction["InvoiceAmountType"]) ? null : invTransaction["ItemUnitPrice"],
-                    discount: {
-                        amount: invTransaction["ItemDiscount"] ? invTransaction["ItemDiscount"] : null
-                    },
                     vat_code: invTransaction["ItemVatCode"] ? invTransaction["ItemVatCode"] : null,
                     vat_rate: invTransaction["ItemVatRate"] ? invTransaction["ItemVatRate"] : null
                 }
@@ -421,14 +422,13 @@ class formatInvs {
   
         unitPrice.amount_vat_exclusive = null;
         // round to 4 decimals
-        unitPrice.amount_vat_inclusive = Banana.SDecimal.divide(invoiceTransaction["position_nettotal"],invoiceTransaction["position_amount"],{'decimals':4});
+        // unitPrice.amount_vat_inclusive = Banana.SDecimal.divide(invoiceTransaction["position_nettotal"],invoiceTransaction["position_amount"],{'decimals':4});
+        unitPrice.amount_vat_inclusive = this.isVatExcl(invTransaction["InvoiceAmountType"]) ? null : invTransaction["ItemUnitPrice"];
         
         unitPrice.currency = invoiceTransaction["currency"];
-        unitPrice.discount = {};
-        unitPrice.discount.amount = null;
-        unitPrice.discount.percent = null;
+        
         unitPrice.vat_code = "";
-        unitPrice.vat_rate = invoiceTransaction["position_vat"];
+        unitPrice.vat_rate = invoiceTransaction["ItemVatRate"];
   
         return unitPrice;
   

@@ -69,7 +69,6 @@ function generateCsvInvoices(invoicesTable) {
             try {
                 let invoiceFieldObj = JSON.parse(row.value("InvoiceData"));
                 let invoiceObj = JSON.parse(invoiceFieldObj.invoice_json);
-                // Banana.Ui.showText(JSON.stringify(invoiceObj));
                 
                 if (!invoiceObj.document_info.date) {
                     row.addMessage(qsTr("InvoiceDate is a required field"));
@@ -110,7 +109,7 @@ function generateCsvInvoices(invoicesTable) {
                         }
                     }
                     if (invoiceObj.items[j].discount) {
-                        if (invoiceObj.items[j].discount.percent) { // Calculate amount based on percentage discount
+                        if (invoiceObj.items[j].discount.percent) {
                             let itemDiscountPercent = Banana.SDecimal.multiply(invoiceObj.items[j].discount.percent, "0.01");
                             let itemDiscountUnit = Banana.SDecimal.multiply(itemDiscountPercent, itemUnitPrice, {'decimals':2});
                             itemDiscount = Banana.SDecimal.multiply(itemDiscountUnit, invoiceObj.items[j].quantity, {'decimals':2});
