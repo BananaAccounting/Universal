@@ -23,10 +23,13 @@
 
 /**
  * Tips (to delete once the test are finished)
- * The test cases (*.ac2 files) should have at least 5 - 10 rows of example
- * The example data
- */
-
+ * 1. The test cases (*.ac2 files) should have at least 5 - 10 rows of example
+ * 2. The example data should contains various cases:
+ *     - Invoices with more items with different data, missing data and particular amounts.
+ *     - Items and Contacts complete and with required and normal data missing.
+ * 3. A test should also be created that exports the data and imports it again, checking that the totals are equal
+ * 4. For further implementation see API: Banana.Test.
+*/
 
 // Register test case to be executed
 Test.registerTestCase(new TestExportTools());
