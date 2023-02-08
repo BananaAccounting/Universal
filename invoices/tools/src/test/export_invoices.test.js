@@ -26,7 +26,7 @@
  *     - Invoices with missing data (mandatory or not)
  *     - Invoices with particular amounts
  * 3. A test should also be created that exports the data and imports it again, checking that the totals are equal
- * 4. For further implementation see API: Banana.Test
+ * 4. For further information see API: Banana.Test
 */
 
 // Register test case to be executed
@@ -81,7 +81,7 @@ TestExportInvoices.prototype.testInvoicesWithoutVat = function(){
 		this.testLogger.addFatalError("File not found: " + fileAC2);
 	}
 }
-/*
+
 //Export Invoices VAT included
 TestExportInvoices.prototype.testInvoicesVatIncluded = function(){
 	//get the *ac2 file
@@ -192,4 +192,3 @@ TestExportInvoices.prototype.testInvoiceWithThousandItems = function(){
 		this.testLogger.addFatalError("File not found: " + fileAC2);
 	}
 }
-*/

@@ -25,7 +25,7 @@
  * 2. The example data should contains various cases:
  *     - Items with missing data (mandatory or not)
  * 3. A test should also be created that exports the data and imports it again, checking that the totals are equal
- * 4. For further implementation see API: Banana.Test
+ * 4. For further information see API: Banana.Test
 */
 
 // Register test case to be executed
