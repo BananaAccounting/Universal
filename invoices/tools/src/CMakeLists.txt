@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.16)
 
 project(invoicetools)
-set(EXTENSION_ID "ch.banana.application.invoice.tools")
+set(EXTENSION_ID "invoice_tools")
 
 find_package(Qt6 COMPONENTS Core REQUIRED)
 find_package(Qt6 COMPONENTS LinguistTools REQUIRED)
@@ -12,7 +12,7 @@ add_custom_target(invoicetools ALL
     COMMAND ${QT_CMAKE_EXPORT_NAMESPACE}::rcc -o ${EXTENSION_ID}.sbaa --binary ${EXTENSION_ID}.qrc
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
     SOURCES ${EXTENSION_ID}.qrc
-    SOURCES ch.banana.application.invoice.tools.manifest.json
+    SOURCES invoice_tools.manifest.json
     SOURCES ../README.md
 )
 
