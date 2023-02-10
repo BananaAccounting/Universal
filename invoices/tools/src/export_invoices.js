@@ -108,13 +108,13 @@ function generateCsvInvoices(invoicesTable) {
                             itemUnitPrice = invoiceObj.items[j].unit_price.amount_vat_inclusive;
                         }
                     }
-                    if (invoiceObj.items[j].discount) {
-                        if (invoiceObj.items[j].discount.percent) {
-                            let itemDiscountPercent = Banana.SDecimal.multiply(invoiceObj.items[j].discount.percent, "0.01");
-                            let itemDiscountUnit = Banana.SDecimal.multiply(itemDiscountPercent, itemUnitPrice, {'decimals':2});
-                            itemDiscount = Banana.SDecimal.multiply(itemDiscountUnit, invoiceObj.items[j].quantity, {'decimals':2});
-                        } else {
-                            itemDiscount = invoiceObj.items[j].discount.amount;
+                    if (invoiceObj.items[j].discount && (invoiceObj.items[j].discount.amount || invoiceObj.items[j].discount.percent)) {
+                        if (invoiceObj.document_info.vat_mode === "vat_excl" && invoiceObj.items[j].unit_price.discounted_amount_vat_exclusive) {
+                            itemDiscount = Banana.SDecimal.subtract(invoiceObj.items[j].unit_price.calculated_amount_vat_exclusive,
+                                                                    invoiceObj.items[j].unit_price.discounted_amount_vat_exclusive);
+                        } else if (invoiceObj.items[j].unit_price.calculated_amount_vat_inclusive) {
+                            itemDiscount = Banana.SDecimal.subtract(invoiceObj.items[j].unit_price.calculated_amount_vat_inclusive,
+                                                                    invoiceObj.items[j].unit_price.discounted_amount_vat_inclusive);
                         }
                     }
                     csv += `${getValue(invoiceObj.document_info.number)},${getValue(invoiceObj.document_info.date)},${getValue(invoiceObj.payment_info.due_date)},${getValue(invoiceObj.document_info.description)},${getValue(invoiceObj.billing_info.total_discount_vat_inclusive)},${getValue(invoiceObj.billing_info.total_vat_amount)},${getValue(invoiceObj.billing_info.total_to_pay)},${getValue(invoiceObj.document_info.currency)},${getValue(invoiceObj.document_info.vat_mode)},`+
