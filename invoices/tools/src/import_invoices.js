@@ -171,6 +171,7 @@ class formatInvs {
                 // Banana.Ui.showText(JSON.stringify(invoiceObj));
                 // Recalculate invoice
                 invoiceObj = JSON.parse(this.banDoc.calculateInvoice(JSON.stringify(invoiceObj)));
+                // Banana.Ui.showText(JSON.stringify(invoiceObj));
 
                 // check that the information in the billing info property coincides with the totals taken from the invoice lines
                 this.checkCalculatedAmounts(invoiceObj);
