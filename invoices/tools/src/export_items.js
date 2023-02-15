@@ -29,7 +29,7 @@ function exec() {
         return
     }
 
-    let itemsData = generateCsvItems(itemsTable);
+    let itemsData = generateCsvItems(itemsTable, false);
 
     if (!itemsData) 
         return "";
@@ -44,7 +44,7 @@ function getValue(column) {
     return column ? column : ''
 }
 
-function generateCsvItems(itemsTable) {
+function generateCsvItems(itemsTable, isTest) {
     let header = "RowId,Description,UnitPrice,AmountType,Unit,VatCode,VatRate,Discount\n";
     let csv = '';
     let rowMatched = true;
@@ -61,13 +61,22 @@ function generateCsvItems(itemsTable) {
                 let vatRate = row.value("VatRate");
                 let discount = row.value("Discount");
                 if (!id) {
-                    row.addMessage(qsTr("RowId is a required field"), id);
+                    if (!isTest) 
+                        row.addMessage(qsTr("RowId is a required field"), id);
+                    else
+                        Test.logger.addText("RowId is a required field");
                     rowMatched = false;
                 } if (!description) {
-                    row.addMessage(qsTr("Description is a required field"), description);
+                    if (!isTest)
+                        row.addMessage(qsTr("Description is a required field"), description);
+                    else
+                        Test.logger.addText("Description is a required field");
                     rowMatched = false;
                 } else if (!unitPrice) {
-                    row.addMessage(qsTr("UnitPrice is a required field"), unitPrice);
+                    if (!isTest)
+                        row.addMessage(qsTr("UnitPrice is a required field"), unitPrice);
+                    else
+                        Test.logger.addText("UnitPrice is a required field");
                     rowMatched = false;
                 }
                 csv += `${getValue(id)},${getValue(description)},${getValue(unitPrice)},${getValue(amountType)},${getValue(unit)},${getValue(vatCode)},${getValue(vatRate)},${getValue(discount)}\n`;
@@ -81,7 +90,10 @@ function generateCsvItems(itemsTable) {
     if (rowMatched) {
         return header + csv;
     } else {
-        Banana.document.addMessage(qsTr("Complete the missing details first, as listed in the message pane below."));
+        if (!isTest)
+            Banana.document.addMessage(qsTr("Complete the missing details first, as listed in the message pane below."));
+        else
+            Test.logger.addText("Complete the missing details first, as listed above.");
         return "";
         
     }
