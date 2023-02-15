@@ -1,4 +1,4 @@
-%%info_test_name{export_items.test}
+%%info_test_name{items_missing_mandatory_data_test}
 \documentclass{report}
 \usepackage{longtable}
 \usepackage{color}
@@ -18,21 +18,7 @@
 \newenvironment{testcase}[1]{\section*{Test: #1}}{\newpage}
 \newenvironment{test}[1]{\section*{Test case: #1}}{}
 %Begin test data
-%%SCRIPT{/Users/synapse/Universal/invoices/tools/src/./test/export_items.test.js}
-%
-\begin{testcase}{TestExportItems}
-\begin{test}{testItemsWithCompleteData}
-\keyvalue{Result}{Passed}
-\end{test}
-\begin{test}{testItemsWithMissingData}
-\keyvalue{Result}{Passed}
-\end{test}
-\begin{test}{testItemsWithMissingMandatoryData}
-\textvalue{RowId is a required field}\\
-\textvalue{Description is a required field}\\
-\textvalue{UnitPrice is a required field}\\
-\textvalue{Complete the missing details first, as listed above.}\\
-\keyvalue{Result}{Passed}
-\end{test}
-\end{testcase}
+\begin{tablevalue}{Data}{ l }
+\\
+\end{tablevalue}
 \end{document}
