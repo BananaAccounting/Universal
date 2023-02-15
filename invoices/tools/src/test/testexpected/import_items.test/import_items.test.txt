@@ -20,7 +20,7 @@
 %Begin test data
 %%SCRIPT{/Users/synapse/Universal/invoices/tools/src/./test/import_items.test.js}
 %
-\begin{testcase}{ImportItems}
+\begin{testcase}{TestImportItems}
 \begin{test}{testImportItems}
 \keyvalue{ImportItems}{testReport}
 %Test Items import

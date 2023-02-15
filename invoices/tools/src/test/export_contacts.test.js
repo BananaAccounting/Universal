@@ -102,3 +102,28 @@ TestExportContacts.prototype.testContactsWithMissingData = function(){
 		this.testLogger.addFatalError("File not found: " + fileAC2);
 	}
 }
+
+// Export Contacts with missing mandatory data
+TestExportContacts.prototype.testContactsWithMissingMandatoryData = function(){
+	//get the *ac2 file
+	let fileAC2 = "file:script/../test/testcases/contacts_testfiles/contacts_missing_mandatory_data_test.ac2";
+	let banDoc = Banana.application.openDocument(fileAC2);
+	//create a new logger to split the result of this test on a different file.
+	let parentLogger = this.testLogger;
+	this.testLogger = parentLogger.newLogger(Banana.IO.fileCompleteBaseName(fileAC2));
+	if (banDoc) {
+		let contactsTable = banDoc.table("Contacts");
+		if (contactsTable){
+			let csvData = "";
+			csvData += generateCsvContacts(contactsTable, true);
+			this.testLogger.addCsv("Data",csvData);
+		} else {
+			this.testLogger.addFatalError("Contacts table not found !");
+		}
+	} else {
+		this.testLogger.addFatalError("File not found: " + fileAC2);
+	}
+}
+
+// Last test giving this error
+// TypeError: Cannot call method 'addMessage' of null
