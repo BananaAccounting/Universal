@@ -124,6 +124,3 @@ TestExportContacts.prototype.testContactsWithMissingMandatoryData = function(){
 		this.testLogger.addFatalError("File not found: " + fileAC2);
 	}
 }
-
-// Last test giving this error
-// TypeError: Cannot call method 'addMessage' of null
