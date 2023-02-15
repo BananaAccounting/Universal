@@ -2,56 +2,50 @@
 // @api = 1.0
 // @pubdate = 2023-01-19
 // @publisher = Banana.ch SA
-// @description = Import contacts
-// @description.de = Kontakte importieren
-// @description.fr = Importer contacts
-// @description.it = Importa contatti
-// @doctype = 400.400
-// @docproperties =
-// @task = import.rows
-// @outputformat = transactions.simple
-// @inputdatasource = openfiledialog
+// @description = <TEST import_contacts.test>
+// @doctype = *.*
+// @outputformat = none
+// @inputdatasource = none
 // @inputencoding = utf8
+// @task = app.command
+// @timeout = -1
 // @inputfilefilter = Text file (*.csv);;All files (*.*)
-// @inputfilefilter.de = Text datei (*.csv);;All files (*.*)
-// @inputfilefilter.fr = Fichier text(*.csv);;All files (*.*)
-// @inputfilefilter.it = File testo (*.csv);;All files (*.*)
 // @includejs = ../import_contacts.js
 
 // Register test case to be executed
-Test.registerTestCase(new ImportContacts());
+Test.registerTestCase(new TestImportContacts());
 
 // Here we define the class, the name of the class is not important
-function ImportContacts() {
+function TestImportContacts() {
 
 }
 
 // This method will be called at the beginning of the test case
-ImportContacts.prototype.initTestCase = function() {
+TestImportContacts.prototype.initTestCase = function() {
     this.testLogger = Test.logger;
     this.progressBar = Banana.application.progressBar;
 
-    this.fileAC2 = "file:script/../test/testcases/import_invoices_test.ac2";
+    this.fileAC2 = "file:script/../test/testcases/contacts_testfiles/contatcs_empty_import_test.ac2";
     this.csvContactsFile = "file:script/../test/testcases/contacts.csv";
     this.jsonDoc = this.initJson();
 }
 
 // This method will be called at the end of the test case
-ImportContacts.prototype.cleanupTestCase = function() {
+TestImportContacts.prototype.cleanupTestCase = function() {
 
 }
 
 // This method will be called before every test method is executed
-ImportContacts.prototype.init = function() {
+TestImportContacts.prototype.init = function() {
 
 }
 
 // This method will be called after every test method is executed
-ImportContacts.prototype.cleanup = function() {
+TestImportContacts.prototype.cleanup = function() {
 
 }
 
-ImportContacts.prototype.testImportContacts = function() {
+TestImportContacts.prototype.testImportContacts = function() {
     this.testLogger.addKeyValue("ImportContacts", "testReport");
     this.testLogger.addComment("Test Contacts import");
 
@@ -87,7 +81,7 @@ ImportContacts.prototype.testImportContacts = function() {
     }
 }
 
-ImportContacts.prototype.initJson = function() {
+TestImportContacts.prototype.initJson = function() {
     let jsonDoc = {};
     jsonDoc.document = {};
     jsonDoc.document.dataUnits = [];

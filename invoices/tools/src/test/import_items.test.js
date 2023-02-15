@@ -2,56 +2,50 @@
 // @api = 1.0
 // @pubdate = 2023-01-20
 // @publisher = Banana.ch SA
-// @description = Import items
-// @description.de = Artikeln importieren
-// @description.fr = Importer articles
-// @description.it = Importa articoli
-// @doctype = 400.400
-// @docproperties =
-// @task = import.rows
-// @outputformat = transactions.simple
-// @inputdatasource = openfiledialog
+// @description = <TEST import_items.test>
+// @doctype = *.*
+// @outputformat = none
+// @inputdatasource = none
 // @inputencoding = utf8
+// @task = app.command
+// @timeout = -1
 // @inputfilefilter = Text file (*.csv);;All files (*.*)
-// @inputfilefilter.de = Text datei (*.csv);;All files (*.*)
-// @inputfilefilter.fr = Fichier text(*.csv);;All files (*.*)
-// @inputfilefilter.it = File testo (*.csv);;All files (*.*)
 // @includejs = ../import_items.js
 
 // Register test case to be executed
-Test.registerTestCase(new ImportItems());
+Test.registerTestCase(new TestImportItems());
 
 // Here we define the class, the name of the class is not important
-function ImportItems() {
+function TestImportItems() {
 
 }
 
 // This method will be called at the beginning of the test case
-ImportItems.prototype.initTestCase = function() {
+TestImportItems.prototype.initTestCase = function() {
     this.testLogger = Test.logger;
     this.progressBar = Banana.application.progressBar;
 
-    this.fileAC2 = "file:script/../test/testcases/import_invoices_test.ac2";
+    this.fileAC2 = "file:script/../test/testcases/items_testfiles/items_empty_import_test.ac2";
     this.csvItemsFile = "file:script/../test/testcases/items.csv";
     this.jsonDoc = this.initJson();
 }
 
 // This method will be called at the end of the test case
-ImportItems.prototype.cleanupTestCase = function() {
+TestImportItems.prototype.cleanupTestCase = function() {
 
 }
 
 // This method will be called before every test method is executed
-ImportItems.prototype.init = function() {
+TestImportItems.prototype.init = function() {
 
 }
 
 // This method will be called after every test method is executed
-ImportItems.prototype.cleanup = function() {
+TestImportItems.prototype.cleanup = function() {
 
 }
 
-ImportItems.prototype.testImportItems = function() {
+TestImportItems.prototype.testImportItems = function() {
     this.testLogger.addKeyValue("ImportItems", "testReport");
     this.testLogger.addComment("Test Items import");
 
@@ -87,7 +81,7 @@ ImportItems.prototype.testImportItems = function() {
     }
 }
 
-ImportItems.prototype.initJson = function() {
+TestImportItems.prototype.initJson = function() {
     let jsonDoc = {};
     jsonDoc.document = {};
     jsonDoc.document.dataUnits = [];
