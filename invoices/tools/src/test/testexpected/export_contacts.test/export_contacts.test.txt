@@ -28,6 +28,14 @@
 \keyvalue{Result}{Passed}
 \end{test}
 \begin{test}{testContactsWithMissingMandatoryData}
+\textvalue{RowId is a required field}\\
+\textvalue{Street is a required field}\\
+\textvalue{Organisation name is a required field}\\
+\textvalue{LastName is a required field}\\
+\textvalue{PostalCode is a required field}\\
+\textvalue{Locality is a required field}\\
+\textvalue{CountryCode is a required field}\\
+\textvalue{Complete the missing details first, as listed in the message pane below.}\\
 \keyvalue{Result}{Passed}
 \end{test}
 \end{testcase}

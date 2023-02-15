@@ -18,11 +18,7 @@
 \newenvironment{testcase}[1]{\section*{Test: #1}}{\newpage}
 \newenvironment{test}[1]{\section*{Test case: #1}}{}
 %Begin test data
-\begin{tablevalue}{Data}{ l  l  l  l  l  l  l  l  l  l  l  l  l  l  l }
-Number & OrganisationName & OrganisationUnit & NamePrefix & FirstName & LastName & Street & AddressExtra & POBox & PostalCode & Locality & CountryCode & LanguageCode & EmailWork & Discount\\
-1 & The Tea corner &  &  &  &  & Rue des salines 44 &  &  & 1007 & Lausanne & CH & en &  &  \\
-2 &  &  &  & Peter & Ridge & Hauptstrasse 1 &  &  & 9400 & Rorschach & CH & en &  &  \\
-3 & Domos GmbH &  &  & Luis & Smith & Rifistrasse 76 &  &  & 8001 & Zürich & CH & en &  &  \\
+\begin{tablevalue}{Data}{ l }
 \\
 \end{tablevalue}
 \end{document}
