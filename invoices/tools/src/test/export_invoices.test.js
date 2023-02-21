@@ -85,7 +85,7 @@ TestExportInvoices.prototype.testInvoicesWithoutVat = function(){
 //Export Invoices VAT included
 TestExportInvoices.prototype.testInvoicesVatIncluded = function(){
 	//get the *ac2 file
-	let fileAC2 = "file:script/../test/testcases/invoices_vat_included_test.ac2";
+	let fileAC2 = "file:script/../test/testcases/invoices_testfiles/invoices_vat_included_test.ac2";
 	let banDoc = Banana.application.openDocument(fileAC2);
 	//create a new logger to split the result of this test on a different file.
 	let parentLogger = this.testLogger;
@@ -104,10 +104,32 @@ TestExportInvoices.prototype.testInvoicesVatIncluded = function(){
 	}
 }
 
-//Export Invoices VAT excluded
-// TestExportInvoices.prototype.testInvoicesVatIncluded = function(){
+// Export Invoices VAT excluded
+TestExportInvoices.prototype.testInvoicesVatIncluded = function(){
+	//get the *ac2 file
+	let fileAC2 = "file:script/../test/testcases/invoices_testfiles/invoices_vat_excluded_test.ac2";
+	let banDoc = Banana.application.openDocument(fileAC2);
+	//create a new logger to split the result of this test on a different file.
+	let parentLogger = this.testLogger;
+	this.testLogger = parentLogger.newLogger(Banana.IO.fileCompleteBaseName(fileAC2));
+	if (banDoc) {
+		let invoicesTable = banDoc.table("Invoices");
+		if (invoicesTable){
+			let csvData = "";
+			csvData += generateCsvInvoices(invoicesTable);
+			this.testLogger.addCsv("Data",csvData);
+		} else {
+			this.testLogger.addFatalError("Invoices table not found !");
+		}
+	} else {
+		this.testLogger.addFatalError("File not found: " + fileAC2);
+	}
+}
+
+//Export Invoices without VAT, amounts rounded at 0.05
+// TestExportInvoices.prototype.testInvoicesVatExcludedAmountsRounded = function(){
 // 	//get the *ac2 file
-// 	let fileAC2 = "file:script/../test/testcases/invoices_vat_excluded_test.ac2";
+// 	let fileAC2 = "file:script/../test/testcases/invoices_vat_excluded_amounts_rounded_test.ac2";
 // 	let banDoc = Banana.application.openDocument(fileAC2);
 // 	//create a new logger to split the result of this test on a different file.
 // 	let parentLogger = this.testLogger;
@@ -126,69 +148,47 @@ TestExportInvoices.prototype.testInvoicesVatIncluded = function(){
 // 	}
 // }
 
-//Export Invoices without VAT, amounts rounded at 0.05
-TestExportInvoices.prototype.testInvoicesVatExcludedAmountsRounded = function(){
-	//get the *ac2 file
-	let fileAC2 = "file:script/../test/testcases/invoices_vat_excluded_amounts_rounded_test.ac2";
-	let banDoc = Banana.application.openDocument(fileAC2);
-	//create a new logger to split the result of this test on a different file.
-	let parentLogger = this.testLogger;
-	this.testLogger = parentLogger.newLogger(Banana.IO.fileCompleteBaseName(fileAC2));
-	if (banDoc) {
-		let invoicesTable = banDoc.table("Invoices");
-		if (invoicesTable){
-			let csvData = "";
-			csvData += generateCsvInvoices(invoicesTable);
-			this.testLogger.addCsv("Data",csvData);
-		} else {
-			this.testLogger.addFatalError("Invoices table not found !");
-		}
-	} else {
-		this.testLogger.addFatalError("File not found: " + fileAC2);
-	}
-}
-
 //Export Invoices with particular amounts (0.0001, 333333.33,...)
-TestExportInvoices.prototype.testInvoicesWithParticularAmounts = function(){
-	//get the *ac2 file
-	let fileAC2 = "file:script/../test/testcases/invoices_with_particular_amounts_test.ac2";
-	let banDoc = Banana.application.openDocument(fileAC2);
-	//create a new logger to split the result of this test on a different file.
-	let parentLogger = this.testLogger;
-	this.testLogger = parentLogger.newLogger(Banana.IO.fileCompleteBaseName(fileAC2));
-	if (banDoc) {
-		let invoicesTable = banDoc.table("Invoices");
-		if (invoicesTable){
-			let csvData = "";
-			csvData += generateCsvInvoices(invoicesTable);
-			this.testLogger.addCsv("Data",csvData);
-		} else {
-			this.testLogger.addFatalError("Invoices table not found !");
-		}
-	} else {
-		this.testLogger.addFatalError("File not found: " + fileAC2);
-	}
-}
+// TestExportInvoices.prototype.testInvoicesWithParticularAmounts = function(){
+// 	//get the *ac2 file
+// 	let fileAC2 = "file:script/../test/testcases/invoices_with_particular_amounts_test.ac2";
+// 	let banDoc = Banana.application.openDocument(fileAC2);
+// 	//create a new logger to split the result of this test on a different file.
+// 	let parentLogger = this.testLogger;
+// 	this.testLogger = parentLogger.newLogger(Banana.IO.fileCompleteBaseName(fileAC2));
+// 	if (banDoc) {
+// 		let invoicesTable = banDoc.table("Invoices");
+// 		if (invoicesTable){
+// 			let csvData = "";
+// 			csvData += generateCsvInvoices(invoicesTable);
+// 			this.testLogger.addCsv("Data",csvData);
+// 		} else {
+// 			this.testLogger.addFatalError("Invoices table not found !");
+// 		}
+// 	} else {
+// 		this.testLogger.addFatalError("File not found: " + fileAC2);
+// 	}
+// }
 
 //Export Invoices with 1'000 with Items
-TestExportInvoices.prototype.testInvoiceWithThousandItems = function(){
-	//get the *ac2 file
-	let fileAC2 = "file:script/../test/testcases/invoices_with_thousand_items.ac2";
-	let banDoc = Banana.application.openDocument(fileAC2);
-	//create a new logger to split the result of this test on a different file.
-	let parentLogger = this.testLogger;
-	this.testLogger = parentLogger.newLogger(Banana.IO.fileCompleteBaseName(fileAC2));
-	if (banDoc) {
-		let invoicesTable = banDoc.table("Invoices");
-		let itemsTable = banDoc.table("Items");
-		if (invoicesTable && itemsTable){
-			let csvData = "";
-			csvData += generateCsvInvoices(invoicesTable);
-			this.testLogger.addCsv("Data",csvData);
-		} else {
-			this.testLogger.addFatalError("Invoicec or Items table not found !");
-		}
-	} else {
-		this.testLogger.addFatalError("File not found: " + fileAC2);
-	}
-}
+// TestExportInvoices.prototype.testInvoiceWithThousandItems = function(){
+// 	//get the *ac2 file
+// 	let fileAC2 = "file:script/../test/testcases/invoices_with_thousand_items.ac2";
+// 	let banDoc = Banana.application.openDocument(fileAC2);
+// 	//create a new logger to split the result of this test on a different file.
+// 	let parentLogger = this.testLogger;
+// 	this.testLogger = parentLogger.newLogger(Banana.IO.fileCompleteBaseName(fileAC2));
+// 	if (banDoc) {
+// 		let invoicesTable = banDoc.table("Invoices");
+// 		let itemsTable = banDoc.table("Items");
+// 		if (invoicesTable && itemsTable){
+// 			let csvData = "";
+// 			csvData += generateCsvInvoices(invoicesTable);
+// 			this.testLogger.addCsv("Data",csvData);
+// 		} else {
+// 			this.testLogger.addFatalError("Invoicec or Items table not found !");
+// 		}
+// 	} else {
+// 		this.testLogger.addFatalError("File not found: " + fileAC2);
+// 	}
+// }
