@@ -160,7 +160,7 @@ TestExportInvoices.prototype.testInvoicesWithParticularAmounts = function(){
 		let invoicesTable = banDoc.table("Invoices");
 		if (invoicesTable){
 			let csvData = "";
-			csvData += generateCsvInvoices(invoicesTable);
+			csvData += generateCsvInvoices(invoicesTable, true);
 			this.testLogger.addCsv("Data",csvData);
 		} else {
 			this.testLogger.addFatalError("Invoices table not found !");
@@ -183,7 +183,7 @@ TestExportInvoices.prototype.testInvoiceWithThousandItems = function(){
 		let itemsTable = banDoc.table("Items");
 		if (invoicesTable && itemsTable){
 			let csvData = "";
-			csvData += generateCsvInvoices(invoicesTable);
+			csvData += generateCsvInvoices(invoicesTable, true);
 			this.testLogger.addCsv("Data",csvData);
 		} else {
 			this.testLogger.addFatalError("Invoicec or Items table not found !");
