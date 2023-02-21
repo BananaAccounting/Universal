@@ -379,7 +379,7 @@ class formatInvs {
         invoiceObj_documentInfo.origin_row = "";
         invoiceObj_documentInfo.origin_table = "";
         invoiceObj_documentInfo.printed = "";
-        invoiceObj_documentInfo.rounding_total = "";
+        invoiceObj_documentInfo.rounding_total = invoiceTransaction["InvoiceRoundingTotal"];
         invoiceObj_documentInfo.type = "";
         invoiceObj_documentInfo.vat_mode = invoiceTransaction["InvoiceAmountType"] ? invoiceTransaction["InvoiceAmountType"] : "vat_excl";
   
