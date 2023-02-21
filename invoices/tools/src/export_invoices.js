@@ -30,7 +30,7 @@ function exec() {
 
     let csv = "";
 
-    let invoicesData = generateCsvInvoices(invoicesTable);
+    let invoicesData = generateCsvInvoices(invoicesTable, false);
 
     if (!invoicesData) {
         return "";
@@ -58,7 +58,7 @@ function convertToCsv(jsonArray) {
     return result;
 }
 
-function generateCsvInvoices(invoicesTable) {
+function generateCsvInvoices(invoicesTable, isTest) {
     let header = "InvoiceNumber,InvoiceDate,InvoiceDueDate,InvoiceDescription,InvoiceDiscount,InvoiceVatTotal,InvoiceTotalToPay,InvoiceCurrency,InvoiceAmountType,InvoiceRoundingTotal,CustomerNumber,CustomerName,ItemNumber,ItemDescription,ItemQuantity,ItemUnitPrice,ItemUnit,ItemVatRate,ItemVatCode,ItemDiscount,ItemTotal,ItemVatTotal\n";
     let csv = "";
     let rowMatched = true;
@@ -72,11 +72,17 @@ function generateCsvInvoices(invoicesTable) {
                 // Banana.Ui.showText(JSON.stringify(invoiceObj));
                 
                 if (!invoiceObj.document_info.date) {
-                    row.addMessage(qsTr("InvoiceDate is a required field"));
+                    if (!isTest)
+                        row.addMessage(qsTr("InvoiceDate is a required field", invoiceObj.document_info.date));
+                    else 
+                        Test.logger.addText("InvoiceDate is a required field");
                     rowMatched = false;
                 } 
                 if (!invoiceObj.customer_info.number) {
-                    row.addMessage(qsTr("ContactsId is a required field"));
+                    if (!isTest)
+                        row.addMessage(qsTr("ContactsId is a required field", invoiceObj.customer_info.number));
+                    else    
+                        Test.logger.addText("ContactsId is a required field");
                     rowMatched = false;
                 } 
                 
@@ -85,13 +91,19 @@ function generateCsvInvoices(invoicesTable) {
                     let itemUnitPrice = "";
                     let itemDiscount = "";
                     if (!invoiceObj.items[j].description) {
-                        row.addMessage(qsTr("ItemDescription is a required field"));
+                        if (!isTest)
+                            row.addMessage(qsTr("ItemDescription is a required field", invoiceObj.items[j].description));
+                        else
+                            Test.logger.addText("ItemDescription is a required field");
                         rowMatched = false;
                         return "";
                     }
                     if (invoiceObj.document_info.vat_mode === "vat_excl") {
                         if (!invoiceObj.items[j].total_amount_vat_exclusive) {
-                            row.addMessage(qsTr("ItemTotal is a required field"));
+                            if (!isTest)
+                                row.addMessage(qsTr("ItemTotal is a required field", invoiceObj.items[j].total_amount_vat_exclusive));
+                            else
+                                Test.logger.addText("ItemTotal is a required field");
                             rowMatched = false;
                             return "";
                         } else {
@@ -99,9 +111,12 @@ function generateCsvInvoices(invoicesTable) {
                             itemUnitPrice = invoiceObj.items[j].unit_price.amount_vat_exclusive;
                         }
                         
-                    } else {
+                    } else { 
                         if (!invoiceObj.items[j].total_amount_vat_inclusive) {
-                            row.addMessage(qsTr("ItemTotal is a required field"));
+                            if (!isTest)
+                                row.addMessage(qsTr("ItemTotal is a required field", invoiceObj.items[j].total_amount_vat_inclusive));
+                            else
+                                Test.logger.addText("ItemTotal is a required field");
                             rowMatched = false;
                             return "";
                         } else {
@@ -130,7 +145,10 @@ function generateCsvInvoices(invoicesTable) {
     if (rowMatched) {
         return header + csv;
     } else {
-        Banana.document.addMessage(qsTr("Complete the missing details first, as listed in the message pane below."));
+        if (!isTest)
+            Banana.document.addMessage(qsTr("Complete the missing details first, as listed in the message pane below."));
+        else
+            Test.logger.addText("Complete the missing details first, as listed in the message pane below.");
         return "";
     }
     
