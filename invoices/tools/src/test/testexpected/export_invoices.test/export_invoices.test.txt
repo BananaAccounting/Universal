@@ -20,16 +20,36 @@
 %Begin test data
 %%SCRIPT{/Users/synapse/Universal/invoices/tools/src/./test/export_invoices.test.js}
 %
-\begin{testcase}{ExportInvoices}
-\begin{test}{testBananaExtension}
-\begin{tablevalue}{Test 'Invoices'}{ l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l }
-InvoiceNumber & InvoiceDate & InvoiceDueDate & InvoiceDescription & InvoiceDiscount & InvoiceVatTotal & InvoiceTotalToPay & InvoiceCurrency & InvoiceAmountType & CustomerNumber & CustomerName & ItemNumber & ItemDescription & ItemQuantity & ItemUnitPrice & ItemUnit & ItemVatRate & ItemVatCode & ItemDiscount & ItemTotal & ItemVatTotal\\
-1 & 2022-11-14 & 2022-12-13 & Facture GK & 3750.00 &  & 121250.00 & CHF & vat\_none & 1 & Eddy Mbuyamba & 1000 & Thé & 50.00 & 1000.00 & pc &  &  &  & 50000.00 & \\
-1 & 2022-11-14 & 2022-12-13 & Facture GK & 3750.00 &  & 121250.00 & CHF & vat\_none & 1 & Eddy Mbuyamba & 1200 & Tisanne & 30.00 & 2500.00 & pc &  &  &  & 75000.00 & \\
-2 & 2022-11-14 & 2022-12-13 & Facture Lezo &  &  & 125000.00 & CHF & vat\_none & 2 & Joel Mbele & 1000 & Thé & 50.00 & 1000.00 & pc &  &  &  & 50000.00 & \\
-2 & 2022-11-14 & 2022-12-13 & Facture Lezo &  &  & 125000.00 & CHF & vat\_none & 2 & Joel Mbele & 1200 & Tisanne & 30.00 & 2500.00 & pc &  &  &  & 75000.00 & \\
-\\
-\end{tablevalue}
+\begin{testcase}{TestExportInvoices}
+\begin{test}{testInvoicesWithoutVat}
+\keyvalue{Result}{Passed}
+\end{test}
+\begin{test}{testInvoicesVatIncluded}
+\keyvalue{Result}{Passed}
+\end{test}
+\begin{test}{testInvoicesVatExcluded}
+\keyvalue{Result}{Passed}
+\end{test}
+\begin{test}{testInvoicesVatExcludedAmountsRounded}
+\keyvalue{Result}{Passed}
+\end{test}
+\begin{test}{testInvoicesWithParticularAmounts}
+\textvalue{ItemTotal is a required field}\\
+\keyvalue{Result}{Passed}
+\end{test}
+\begin{test}{testInvoiceWithThousandItems}
+\keyvalue{Result}{Passed}
+\end{test}
+\begin{test}{testInvoiceWithMissingData}
+\keyvalue{Result}{Passed}
+\end{test}
+\begin{test}{testInvoiceWithMissingMandatoryData}
+\textvalue{ContactsId is a required field}\\
+\textvalue{InvoiceDate is a required field}\\
+\textvalue{ContactsId is a required field}\\
+\textvalue{InvoiceDate is a required field}\\
+\textvalue{ContactsId is a required field}\\
+\textvalue{Complete the missing details first, as listed in the message pane below.}\\
 \keyvalue{Result}{Passed}
 \end{test}
 \end{testcase}

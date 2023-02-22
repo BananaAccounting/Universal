@@ -1,0 +1,39 @@
+%%info_test_name{invoices_vat_excluded_amounts_rounded_test}
+\documentclass{report}
+\usepackage{longtable}
+\usepackage{color}
+\usepackage{listings}
+\usepackage[margin=1cm]{geometry}
+\begin{document}
+\newenvironment{tablevalue}[2]{\textbf{Table: #1}\begin{longtable}[l]{#2}}{\end{longtable}}
+\newenvironment{reportvalue}[1]{\textbf{Report: #1}\\}{}
+\lstnewenvironment{jsonvalue}[1]{\textbf{Json: #1}\lstset{language=Java}}{}
+\lstnewenvironment{xmlvalue}[1]{\textbf{Xml: #1}\lstset{language=Xml}}{}
+\newcommand{\info}[2]{\textit{#1: #2}\\}
+\newcommand{\fatalerror}[1]{\textbf{\textcolor[rgb]{1,0,0}{Fatal error: #1}}\\}
+\newcommand{\keyvalue}[2]{\textbf{Keyvalue: #1} #2\\}
+\newcommand{\textvalue}[1]{#1\\}
+\newcommand{\excltest}[1]{\\Excluded from compare: #1}
+\newcommand{\lognewpage}{\newpage}
+\newenvironment{testcase}[1]{\section*{Test: #1}}{\newpage}
+\newenvironment{test}[1]{\section*{Test case: #1}}{}
+%Begin test data
+\begin{tablevalue}{Data}{ l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l }
+InvoiceNumber & InvoiceDate & InvoiceDueDate & InvoiceDescription & InvoiceDiscount & InvoiceVatTotal & InvoiceTotalToPay & InvoiceCurrency & InvoiceAmountType & InvoiceRoundingTotal & CustomerNumber & CustomerName & ItemNumber & ItemDescription & ItemQuantity & ItemUnitPrice & ItemUnit & ItemVatRate & ItemVatCode & ItemDiscount & ItemTotal & ItemVatTotal\\
+1 & 2023-06-17 & 2023-07-17 & Invoice 1 & 2.20 & 1.98 & 27.70 & CHF & vat\_excl & 0.05 & 1 &   & 1200 & Herbal teas & 4.00 & 5.05 & pc & 7.70 & V77 &  & 20.20 & 1.56\\
+1 & 2023-06-17 & 2023-07-17 & Invoice 1 & 2.20 & 1.98 & 27.70 & CHF & vat\_excl & 0.05 & 1 &   & 6000 & Shipping fees & 1.00 & 7.55 & pc & 7.70 & V77 &  & 7.55 & 0.58\\
+2 & 2023-06-17 & 2023-07-17 & Invoice 2 & 2.50 & 10.26 & 143.50 & CHF & vat\_excl & 0.05 & 2 & Peter Ridge & 1000 & Tea & 50.00 & 2.56 & pc & 7.70 & V77 &  & 128.00 & 9.86\\
+2 & 2023-06-17 & 2023-07-17 & Invoice 2 & 2.50 & 10.26 & 143.50 & CHF & vat\_excl & 0.05 & 2 & Peter Ridge & 6000 & Shipping fees & 1.00 & 7.57 & pc & 7.70 & V77 &  & 7.57 & 0.58\\
+3 & 2023-10-15 & 2023-11-15 & Invoice 3 & 2.54 & 2.08 & 29.00 & EUR & vat\_excl & 0.05 & 3 & Luis Smith & 1200 & Herbal teas & 4.00 & 5.44 & pc & 7.70 & V77 &  & 21.76 & 1.68\\
+3 & 2023-10-15 & 2023-11-15 & Invoice 3 & 2.54 & 2.08 & 29.00 & EUR & vat\_excl & 0.05 & 3 & Luis Smith & 6000 & Shipping fees & 1.00 & 7.52 & pc & 7.70 & V77 &  & 7.52 & 0.58\\
+4 & 2023-11-11 & 2023-12-11 & Invoice 4 &  & 10.51 & 147.05 & CHF & vat\_excl & 0.05 & 2 & Peter Ridge & 1000 & Tea & 50.00 & 2.58 & pc & 7.70 & V77 &  & 129.00 & 9.93\\
+4 & 2023-11-11 & 2023-12-11 & Invoice 4 &  & 10.51 & 147.05 & CHF & vat\_excl & 0.05 & 2 & Peter Ridge & 6000 & Shipping fees & 1.00 & 7.53 & pc & 7.70 & V77 &  & 7.53 & 0.58\\
+5 & 2023-11-29 & 2023-12-31 & Invoice 5 & 1.75 & 2.10 & 29.45 & EUR & vat\_excl & 0.05 & 3 & Luis Smith & 1200 & Herbal teas & 4.00 & 5.45 & pc & 7.70 & V77 &  & 21.80 & 1.68\\
+5 & 2023-11-29 & 2023-12-31 & Invoice 5 & 1.75 & 2.10 & 29.45 & EUR & vat\_excl & 0.05 & 3 & Luis Smith & 6000 & Shipping fees & 1.00 & 7.15 & pc & 7.70 & V77 &  & 7.15 & 0.55\\
+6 & 2023-12-01 & 2023-12-30 & Invoice 6 &  & 0.58 & 15.75 & CHF & vat\_excl & 0.05 & 1 &   & 1000 & Tea & 1 & 2.59 & pc & 7.70 & V77 &  & 2.59 & 0.20\\
+6 & 2023-12-01 & 2023-12-30 & Invoice 6 &  & 0.58 & 15.75 & CHF & vat\_excl & 0.05 & 1 &   & 1200 & Herbal teas & 1 & 5.03 & pc & 3.70 & V37 &  & 5.03 & 0.19\\
+6 & 2023-12-01 & 2023-12-30 & Invoice 6 &  & 0.58 & 15.75 & CHF & vat\_excl & 0.05 & 1 &   & 6000 & Shipping fees & 1 & 7.55 & pc & 2.50 & V25 &  & 7.55 & 0.19\\
+7 & 2023-12-15 & 2024-01-13 & Invoice 7 & 0.07 & 0.19 & 2.65 & CHF & vat\_excl & 0.05 & 2 & Peter Ridge & 1000 & Tea & 1 & 2.51 & pc & 7.70 & V77 &  & 2.51 & 0.19\\
+\\
+\end{tablevalue}
+\end{document}
