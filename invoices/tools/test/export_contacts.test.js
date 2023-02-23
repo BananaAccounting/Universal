@@ -8,7 +8,7 @@
 // @inputdataform = none
 // @task = app.command
 // @timeout = -1
-// @includejs = ../export_contacts.js
+// @includejs = ../src/export_contacts.js
 
 /*
   SUMMARY

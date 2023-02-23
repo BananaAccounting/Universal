@@ -8,7 +8,7 @@
 // @inputdataform = none
 // @task = app.command
 // @timeout = -1
-// @includejs = ../export_items.js
+// @includejs = ../src/export_items.js
 
 /*
   SUMMARY
