@@ -1,6 +1,6 @@
 // @id = export_invoices
 // @api = 1.0
-// @pubdate = 2022-10-24
+// @pubdate = 2023-02-21
 // @publisher = Banana.ch SA
 // @description = Export invoices
 // @description.de = Rechnungen exportieren
@@ -23,24 +23,21 @@
  */
 function exec() {
     let invoicesTable = Banana.document.table("Invoices");
-
     if (!invoicesTable) {
         return "";
     }
 
-    let csv = "";
-
-    let invoicesData = generateCsvInvoices(invoicesTable, false);
-
+    let invoicesData = generateCsvInvoices(invoicesTable);
     if (!invoicesData) {
+        Banana.application.showMessages(true); // Be sure the user is notified
+        Banana.document.addMessage(qsTr("Fix errors first, as listed in the pane Messages."), "internal_error");
         return "";
     }
-    csv += invoicesData;
-      
-    return csv;
+    return invoicesData;
 }
 
 function getValue(column) {
+    // Check if a column is empty 
     return column ? column : ''
 }
 
@@ -57,8 +54,8 @@ function convertToCsv(jsonArray) {
     return result;
 }
 
-function generateCsvInvoices(invoicesTable, isTest) {
-    let header = "InvoiceNumber,InvoiceDate,InvoiceDueDate,InvoiceDescription,InvoiceDiscount,InvoiceVatTotal,InvoiceTotalToPay,InvoiceCurrency,InvoiceAmountType,InvoiceRoundingTotal,CustomerNumber,CustomerName,ItemNumber,ItemDescription,ItemQuantity,ItemUnitPrice,ItemUnit,ItemVatRate,ItemVatCode,ItemDiscount,ItemTotal,ItemVatTotal\n";
+function generateCsvInvoices(invoicesTable) {
+    let header = "InvoiceNumber,InvoiceDate,InvoiceDueDate,InvoiceDescription,InvoiceDiscount,InvoiceVatTotal,InvoiceTotalToPay,InvoiceCurrency,InvoiceAmountType,CustomerNumber,CustomerName,ItemNumber,ItemDescription,ItemQuantity,ItemUnitPrice,ItemUnit,ItemVatRate,ItemVatCode,ItemDiscount,ItemTotal,ItemVatTotal\n";
     let csv = "";
     let rowMatched = true;
 
@@ -68,20 +65,13 @@ function generateCsvInvoices(invoicesTable, isTest) {
             try {
                 let invoiceFieldObj = JSON.parse(row.value("InvoiceData"));
                 let invoiceObj = JSON.parse(invoiceFieldObj.invoice_json);
-                // Banana.Ui.showText(JSON.stringify(invoiceObj));
                 
                 if (!invoiceObj.document_info.date) {
-                    if (!isTest)
-                        row.addMessage(qsTr("InvoiceDate is a required field", invoiceObj.document_info.date));
-                    else 
-                        Test.logger.addText("InvoiceDate is a required field");
+                    row.addMessage(qsTr("%1 is a required field").arg("InvoiceDate"), "InvoiceDate", "missing_field");
                     rowMatched = false;
                 } 
                 if (!invoiceObj.customer_info.number) {
-                    if (!isTest)
-                        row.addMessage(qsTr("ContactsId is a required field", invoiceObj.customer_info.number));
-                    else    
-                        Test.logger.addText("ContactsId is a required field");
+                    row.addMessage(qsTr("%1 is a required field").arg("CustomerId"), "CustomerId", "missing_field");
                     rowMatched = false;
                 } 
                 
@@ -90,19 +80,13 @@ function generateCsvInvoices(invoicesTable, isTest) {
                     let itemUnitPrice = "";
                     let itemDiscount = "";
                     if (!invoiceObj.items[j].description) {
-                        if (!isTest)
-                            row.addMessage(qsTr("ItemDescription is a required field", invoiceObj.items[j].description));
-                        else
-                            Test.logger.addText("ItemDescription is a required field");
+                        row.addMessage(qsTr("%1 is a required field").arg("ItemDescription"), "RowId", "missing_field");
                         rowMatched = false;
                         return "";
                     }
                     if (invoiceObj.document_info.vat_mode === "vat_excl") {
                         if (!invoiceObj.items[j].total_amount_vat_exclusive) {
-                            if (!isTest)
-                                row.addMessage(qsTr("ItemTotal is a required field", invoiceObj.items[j].total_amount_vat_exclusive));
-                            else
-                                Test.logger.addText("ItemTotal is a required field");
+                            row.addMessage(qsTr("%1 is a required field").arg("ItemTotal"), "RowId", "missing_field");
                             rowMatched = false;
                             return "";
                         } else {
@@ -110,12 +94,9 @@ function generateCsvInvoices(invoicesTable, isTest) {
                             itemUnitPrice = invoiceObj.items[j].unit_price.amount_vat_exclusive;
                         }
                         
-                    } else { 
+                    } else {
                         if (!invoiceObj.items[j].total_amount_vat_inclusive) {
-                            if (!isTest)
-                                row.addMessage(qsTr("ItemTotal is a required field", invoiceObj.items[j].total_amount_vat_inclusive));
-                            else
-                                Test.logger.addText("ItemTotal is a required field");
+                            row.addMessage(qsTr("%1 is a required field").arg("ItemTotal"), "RowId", "missing_field");
                             rowMatched = false;
                             return "";
                         } else {
@@ -132,24 +113,18 @@ function generateCsvInvoices(invoicesTable, isTest) {
                                                                     invoiceObj.items[j].unit_price.discounted_amount_vat_inclusive);
                         }
                     }
-                    // Banana.Ui.showText(JSON.stringify(invoiceObj.items[j].description));
-                    csv += `${getValue(invoiceObj.document_info.number)},${getValue(invoiceObj.document_info.date)},${getValue(invoiceObj.payment_info.due_date)},${getValue(invoiceObj.document_info.description)},${getValue(invoiceObj.billing_info.total_discount_vat_inclusive)},${getValue(invoiceObj.billing_info.total_vat_amount)},${getValue(invoiceObj.billing_info.total_to_pay)},${getValue(invoiceObj.document_info.currency)},${getValue(invoiceObj.document_info.vat_mode)},${getValue(invoiceObj.document_info.rounding_total)},`+
+                    csv += `${getValue(invoiceObj.document_info.number)},${getValue(invoiceObj.document_info.date)},${getValue(invoiceObj.payment_info.due_date)},${getValue(invoiceObj.document_info.description)},${getValue(invoiceObj.billing_info.total_discount_vat_inclusive)},${getValue(invoiceObj.billing_info.total_vat_amount)},${getValue(invoiceObj.billing_info.total_to_pay)},${getValue(invoiceObj.document_info.currency)},${getValue(invoiceObj.document_info.vat_mode)},`+
                            `${getValue(invoiceObj.customer_info.number)},${getValue(invoiceObj.customer_info.first_name)} ${getValue(invoiceObj.customer_info.last_name)},${getValue(invoiceObj.items[j].number)},${getValue(invoiceObj.items[j].description)},${getValue(invoiceObj.items[j].quantity)},${itemUnitPrice},${getValue(invoiceObj.items[j].mesure_unit)},${getValue(invoiceObj.items[j].unit_price.vat_rate)},${getValue(invoiceObj.items[j].unit_price.vat_code)},${getValue(itemDiscount)},${getValue(itemTotal)},${getValue(invoiceObj.items[j].total_vat_amount)}\n`;
                 }
             }
             catch(e) {
-                Banana.document.addMessage(qsTr("An error occured while exporting the csv invoice! ") + "\n" + qsTr("Error Description: ") + e);
+                row.addMessage(qsTr("Invoice not valid.\nError: %1").arg(e), "RowId", "internal_error");
+                rowMatched = false;
             }
         }
     }
     if (rowMatched) {
         return header + csv;
-    } else {
-        if (!isTest)
-            Banana.document.addMessage(qsTr("Complete the missing details first, as listed in the message pane below."));
-        else
-            Test.logger.addText("Complete the missing details first, as listed in the message pane below.");
-        return "";
     }
-    
+    return null;
 }
