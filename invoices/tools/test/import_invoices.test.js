@@ -2,55 +2,58 @@
 // @api = 1.0
 // @pubdate = 2023-01-20
 // @publisher = Banana.ch SA
-// @description = <TEST import_items.test>
-// @doctype = *.*
-// @outputformat = none
-// @inputdatasource = none
+// @description = Import items
+// @description.de = Artikeln importieren
+// @description.fr = Importer articles
+// @description.it = Importa articoli
+// @doctype = 400.400
+// @docproperties =
+// @task = import.rows
+// @outputformat = transactions.simple
+// @inputdatasource = openfiledialog
 // @inputencoding = utf8
-// @task = app.command
-// @timeout = -1
 // @inputfilefilter = Text file (*.csv);;All files (*.*)
-// @includejs = ../src/import_items.js
+// @inputfilefilter.de = Text datei (*.csv);;All files (*.*)
+// @inputfilefilter.fr = Fichier text(*.csv);;All files (*.*)
+// @inputfilefilter.it = File testo (*.csv);;All files (*.*)
+// @includejs = ../src/import_invoices.js
 
 // Register test case to be executed
-Test.registerTestCase(new TestImportItems());
+Test.registerTestCase(new ImportInvoices());
 
 // Here we define the class, the name of the class is not important
-function TestImportItems() {
+function ImportInvoices() {
 
 }
 
 // This method will be called at the beginning of the test case
-TestImportItems.prototype.initTestCase = function() {
+ImportInvoices.prototype.initTestCase = function() {
     this.testLogger = Test.logger;
     this.progressBar = Banana.application.progressBar;
 
-    this.fileAC2 = "file:script/../test/testcases/items_testfiles/items_empty_import_test.ac2";
+    this.fileAC2 = "file:script/../test/testcases/import_invoices_test.ac2";
     this.csvItemsFile = "file:script/../test/testcases/items.csv";
     this.jsonDoc = this.initJson();
 }
 
 // This method will be called at the end of the test case
-TestImportItems.prototype.cleanupTestCase = function() {
+ImportInvoices.prototype.cleanupTestCase = function() {
 
 }
 
 // This method will be called before every test method is executed
-TestImportItems.prototype.init = function() {
+ImportInvoices.prototype.init = function() {
 
 }
 
 // This method will be called after every test method is executed
-TestImportItems.prototype.cleanup = function() {
+ImportInvoices.prototype.cleanup = function() {
 
 }
 
-TestImportItems.prototype.testImportItems = function() {
-    this.testLogger.addKeyValue("ImportItems", "testReport");
-    this.testLogger.addComment("Test Items import");
-
-    let parentLogger = this.testLogger;
-    this.testLogger = parentLogger.newLogger(Banana.IO.fileCompleteBaseName(this.fileAC2));
+ImportInvoices.prototype.testImportItems = function() {
+    this.testLogger.addKeyValue("ImportInvoices", "testReport");
+    this.testLogger.addComment("Test Invoices import");
 
     let banDoc = Banana.application.openDocument(this.fileAC2);
     let file = Banana.IO.getLocalFile(this.csvItemsFile);
@@ -81,7 +84,7 @@ TestImportItems.prototype.testImportItems = function() {
     }
 }
 
-TestImportItems.prototype.initJson = function() {
+ImportInvoices.prototype.initJson = function() {
     let jsonDoc = {};
     jsonDoc.document = {};
     jsonDoc.document.dataUnits = [];

@@ -18,7 +18,7 @@
 \newenvironment{testcase}[1]{\section*{Test: #1}}{\newpage}
 \newenvironment{test}[1]{\section*{Test case: #1}}{}
 %Begin test data
-%%SCRIPT{/Users/synapse/Universal/invoices/tools/src/./test/export_invoices.test.js}
+%%SCRIPT{/Users/lorenzo/Programmazione/Repo/joel/Universal/invoices/tools/test/export_invoices.test.js}
 %
 \begin{testcase}{TestExportInvoices}
 \begin{test}{testInvoicesWithoutVat}
@@ -34,7 +34,6 @@
 \keyvalue{Result}{Passed}
 \end{test}
 \begin{test}{testInvoicesWithParticularAmounts}
-\textvalue{ItemTotal is a required field}\\
 \keyvalue{Result}{Passed}
 \end{test}
 \begin{test}{testInvoiceWithThousandItems}
@@ -44,12 +43,18 @@
 \keyvalue{Result}{Passed}
 \end{test}
 \begin{test}{testInvoiceWithMissingMandatoryData}
-\textvalue{ContactsId is a required field}\\
-\textvalue{InvoiceDate is a required field}\\
-\textvalue{ContactsId is a required field}\\
-\textvalue{InvoiceDate is a required field}\\
-\textvalue{ContactsId is a required field}\\
-\textvalue{Complete the missing details first, as listed in the message pane below.}\\
+\keyvalue{Result}{Passed}
+\end{test}
+\begin{test}{testInvoiceErrors}
+\begin{tablevalue}{Data}{ l }
+\\
+\end{tablevalue}
+\keyvalue{ERROR\_MSG\_ROW\_1}{InvoiceDate is a required field}
+\keyvalue{ERROR\_HELPID\_ROW\_1}{export\_invoices.test::missing\_field}
+\keyvalue{ERROR\_MSG\_ROW\_3}{CustomerId is a required field}
+\keyvalue{ERROR\_HELPID\_ROW\_3}{export\_invoices.test::missing\_field}
+\keyvalue{ERROR\_MSG\_ROW\_4}{ItemDescription is a required field}
+\keyvalue{ERROR\_HELPID\_ROW\_4}{export\_invoices.test::missing\_field}
 \keyvalue{Result}{Passed}
 \end{test}
 \end{testcase}

@@ -10,7 +10,7 @@
 // @task = app.command
 // @timeout = -1
 // @inputfilefilter = Text file (*.csv);;All files (*.*)
-// @includejs = ../import_contacts.js
+// @includejs = ../src/import_contacts.js
 
 // Register test case to be executed
 Test.registerTestCase(new TestImportContacts());
