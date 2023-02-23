@@ -482,9 +482,9 @@ class formatInvs {
         lang = 'en';
         switch (errorId) {
             case this.ID_ERR_COSTUMERID_NOT_FOUND:
-                return qsTr("Contact id: ") + refNr + qsTr(" not found in contact table. Did you import the contacts?");
+                return qsTr("Contact id '%1' not found in contact table. Did you import the contacts?").arg(refNr);
             case this.ID_ERR_AMOUNTS_WITH_DIFFERENCES:
-                return qsTr("The calculated amount is different from the amount in your file, invoice nr: ") + refNr;  
+                return qsTr("The calculated amount is different from the amount in your file, invoice nr: %1").arg(refNr);
             case this.ID_ERR_WRONG_INVOICE_TYPE:
                 return qsTr("You are trying to import a 'Single line' invoice, import a 'Detailed' invoice instead.");
         }
