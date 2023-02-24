@@ -1,4 +1,4 @@
-// Copyright [2021] [Banana.ch SA - Lugano Switzerland]
+// Copyright [2023] [Banana.ch SA - Lugano Switzerland]
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.uni.app.letter.js
 // @api = 1.0
-// @pubdate = 2021-10-11
+// @pubdate = 2023-02-22
 // @publisher = Banana.ch SA
 // @description = [DEV] Letter
 // @description.de = [DEV] Letter
@@ -35,10 +35,6 @@
 *   
 *   It works for simple and double accounting files.
 */
-
-
-
-// https://www.bigomega.dev/markdown-parser
 
 
 
@@ -87,7 +83,8 @@ function exec(inData, options) {
         var report = print_report(Banana.document, userParam, accounts, texts, stylesheet, variables);
 
         if (userParam.useMarkdown) {
-            // ???
+            // var mdText = ...
+            // report.addStructuredText(mdText, "md");
         }
         else {
             setCss(Banana.document, stylesheet, userParam, variables);
@@ -232,12 +229,28 @@ function print_address(report, banDoc, userParam, account) {
 
 function print_letter(report, banDoc, userParam, account) {
     var text = "";
+    var format = "text"; //md,html,text
+    var stylesheet = "textLetter";
+    if (userParam.useMarkdown) {
+        format = "md";
+        stylesheet = "";
+    }
     var address = getAddress(banDoc, account);
     if (userParam.letterText) {
         text = convertFields(banDoc, userParam.letterText, address, account);
-        report.addParagraph(text, "textLetter");
+        report.addStructuredText(text, format, stylesheet);
     }
+
+    // var text = "";
+    // var address = getAddress(banDoc, account);
+    // if (userParam.letterText) {
+    //     text = convertFields(banDoc, userParam.letterText, address, account);
+    //     report.addParagraph(text, "textLetter");
+    // }
+
 }
+
+
 
 function print_signature(report, banDoc, userParam) {
 
