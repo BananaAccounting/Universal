@@ -14,14 +14,14 @@
 //
 // @id = ch.banana.report.customer.reminder.style03.js
 // @api = 1.0
-// @pubdate = 2023-01-27
+// @pubdate = 2023-02-28
 // @publisher = Banana.ch SA
-// @description = Payment reminder
-// @description.it = Richiamo di pagamento (banana+)
-// @description.de = Zahlungserinnerung (banana+)
-// @description.fr = Rappel de paiement (banana+)
-// @description.nl = Betalingsherinnering (banana+)
-// @description.en = Payment reminder (banana+)
+// @description = Payment reminder (Banana+)
+// @description.it = Richiamo di pagamento (Banana+)
+// @description.de = Zahlungserinnerung (Banana+)
+// @description.fr = Rappel de paiement (Banana+)
+// @description.nl = Betalingsherinnering (Banana+)
+// @description.en = Payment reminder (Banana+)
 // @doctype = *
 // @task = report.customer.reminder
 
@@ -549,7 +549,7 @@ function printReminder(banDoc, reminderObj, repDocObj, repStyleObj, param, texts
 
    printReminder_HeaderPage(reminderObj, repDocObj, repStyleObj, param);
    printReminder_Info(reminderObj, repDocObj, texts);
-   printReminder_Address(reminderObj, repDocObj, texts);
+   printReminder_Address(banDoc, reminderObj, repDocObj, texts);
    printReminder_Title(reminderObj, repDocObj, texts, param);
 
    repTableObj = repDocObj.addTable("doc_table");
@@ -597,16 +597,20 @@ function printReminder_Info(reminderObj, repDocObj, texts) {
    cellInfo.addParagraph(texts.page + ": " + pageNr);
 }
 
-function printReminder_Address(reminderObj, repDocObj, texts) {
+function printReminder_Address(banDoc, reminderObj, repDocObj, texts) {
 
    // Reminder address (customer address)
 
    var addressTable = repDocObj.addTable("address_table_right");
    var tableRow = addressTable.addRow();
    var cellAddress = tableRow.addCell("", "", 1);
-   var addressLines = getInvoiceAddress(reminderObj.customer_info).split('\n');
+   var addressLines = getInvoiceAddress(banDoc, reminderObj, texts).split('\n');
    for (var i = 0; i < addressLines.length; i++) {
-      cellAddress.addParagraph(addressLines[i], "");
+      var style = "";
+      if (addressLines[i].indexOf("@error") > -1) {
+         style = "address_error";
+      }
+      cellAddress.addParagraph(addressLines[i], style);
    }
 }
 
@@ -876,7 +880,7 @@ function getInvoiceSupplier(invoiceSupplier) {
   return supplierAddress;
 }
 
-function getInvoiceAddress(invoiceAddress) {
+function getInvoiceAddress(banDoc, reminderObj, texts) {
 
    // <OrganisationName>
    // <NamePrefix>
@@ -885,8 +889,11 @@ function getInvoiceAddress(invoiceAddress) {
    // <POBox>
    // <PostalCode> <Locality>
 
+   var invoiceAddress = reminderObj.customer_info;
    var address = "";
 
+   Banana.application.showMessages(false); //disable dialog message notifications; only show in Messages panel
+   
    if (invoiceAddress.business_name) {
       address += invoiceAddress.business_name + "\n";
    }
@@ -908,6 +915,14 @@ function getInvoiceAddress(invoiceAddress) {
       address += "\n";
    }
 
+   if (!invoiceAddress.business_name && !invoiceAddress.first_name && !invoiceAddress.last_name) {
+      address += "@error"+" "+texts.error_address_name+"\n";
+      var row = banDoc.table("Accounts").row(reminderObj.customer_info.origin_row);
+      if (row) {
+         row.addMessage(texts.error_address_name);
+      }
+   }
+
    if (invoiceAddress.address1) {
       address += invoiceAddress.address1 + "\n";
    }
@@ -920,16 +935,34 @@ function getInvoiceAddress(invoiceAddress) {
       address += invoiceAddress.address3 + "\n";
    }
 
+   // if (!invoiceAddress.address1 && !invoiceAddress.address2 && !invoiceAddress.address3) {
+   //    address += "@error"+" "+texts.error_address+"\n";
+   // }
+
    if (invoiceAddress.postal_code) {
       address += invoiceAddress.postal_code;
    }
+   else {
+      address += "@error"+" "+texts.error_address_zip+"\n";
+      var row = banDoc.table("Accounts").row(reminderObj.customer_info.origin_row);
+      if (row) {
+         row.addMessage(texts.error_address_zip);
+      }
+   }
+
    if (invoiceAddress.city) {
       if (invoiceAddress.postal_code) {
          address += " ";
       }
-      address += invoiceAddress.city;
+      address += invoiceAddress.city + "\n";
    }
-   address += "\n";
+   else {
+      address += "\n@error"+" "+texts.error_address_locality;
+      var row = banDoc.table("Accounts").row(reminderObj.customer_info.origin_row);
+      if (row) {
+         row.addMessage(texts.error_address_locality);
+      }
+   }
 
    if (invoiceAddress.country) {
       address += invoiceAddress.country;
@@ -1095,6 +1128,10 @@ function setTexts(language) {
       texts.reminder = 'Richiamo di pagamento';
       texts.param_texts = 'Testi';
       texts.statusreminder = 'richiamo';
+      texts.error_address_name = "Indirizzo: nome/società mancante";
+      texts.error_address = "Indirizzo: indirizzo mancante";
+      texts.error_address_zip = "Indirizzo: CAP mancante";
+      texts.error_address_locality = "Indirizzo: località mancante";
    } 
    else if (language == 'de') {
       texts.customer = 'Kunde-Nr';
@@ -1118,6 +1155,10 @@ function setTexts(language) {
       texts.reminder = 'Zahlungserinnerung';
       texts.param_texts = 'Texte';
       texts.statusreminder = 'Zahlungserinnerung';
+      texts.error_address_name = "Adresse: Name/Firma fehlt";
+      texts.error_address = "Adresse: Adresse fehlt";
+      texts.error_address_zip = "Adresse: PLZ fehlt";
+      texts.error_address_locality = "Adresse: Ort fehlt";
    }
    else if (language == 'fr') {
       texts.customer = 'No Client';
@@ -1141,6 +1182,10 @@ function setTexts(language) {
       texts.reminder = 'Rappel de paiement';
       texts.param_texts = 'Textes';
       texts.statusreminder = 'rappel';
+      texts.error_address_name = "Adresse: nom/société manquant";
+      texts.error_address = "Adresse: adresse manquante";
+      texts.error_address_zip = "Adresse: code postal NPA manquant";
+      texts.error_address_locality = "Adresse: localité manquante";
    }
    else if (language == 'nl') {
       texts.customer = 'Klantennummer';
@@ -1164,6 +1209,10 @@ function setTexts(language) {
       texts.reminder = 'Betalingsherinnering';
       texts.param_texts = 'Teksten';
       texts.statusreminder = 'Betalingsherinnering';
+      texts.error_address_name = "Address: missing name/business";
+      texts.error_address = "Address: missing address";
+      texts.error_address_zip = "Address: missing ZIP code";
+      texts.error_address_locality = "Address: missing locality";
    } 
    else {
       texts.customer = 'Customer No';
@@ -1187,6 +1236,10 @@ function setTexts(language) {
       texts.reminder = 'Payment reminder';
       texts.param_texts = 'Texts';
       texts.statusreminder = 'reminder';
+      texts.error_address_name = "Address: missing name/business";
+      texts.error_address = "Address: missing address";
+      texts.error_address_zip = "Address: missing ZIP code";
+      texts.error_address_locality = "Address: missing locality";
    }
    return texts;
 }
