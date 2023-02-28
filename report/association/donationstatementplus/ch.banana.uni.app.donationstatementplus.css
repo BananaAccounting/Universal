@@ -1,11 +1,8 @@
-
-/* Update 2023-02-22 */
-
 @page {
-   margin-top: 0mm;
-   margin-bottom: 15mm;
-   margin-left: 0mm;
-   margin-right: 0mm;
+   margin-top: 0.0cm;
+   margin-bottom: 0.0cm;
+   margin-left: 0.0cm;
+   margin-right: 0.0cm;
 }
 
 body {
@@ -53,7 +50,7 @@ body {
 }
 
 .text {
-   margin-top: 8.0cm;
+   margin-top: 8.5cm;
    margin-left: 1.5cm;
    margin-right: 1.0cm;
 }
@@ -63,11 +60,13 @@ body {
    margin-left: 1.65cm;
 }
 
-.border_top {
-   border-top:thin solid black;
+.transactions_rows {
+   border-bottom:thin solid black;
 }
 
-.border_bottom {
+.transactions_total {
+   font-weight: bold;
+   border-top:thin solid black;
    border-bottom:thin solid black;
 }
 
@@ -85,4 +84,3 @@ body {
    height: 10mm;
    margin-left: 12.3cm;
 }
-
