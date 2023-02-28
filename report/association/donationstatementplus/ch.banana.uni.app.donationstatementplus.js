@@ -87,70 +87,93 @@ function convertParam(userParam) {
     }
     convertedParam.data.push(currentParam);
 
-    // Use Text 1
+    // // Use Text 1
+    // var currentParam = {};
+    // currentParam.name = 'useText1';
+    // currentParam.parentObject = 'texts';
+    // currentParam.title = texts.useText1;
+    // currentParam.type = 'bool';
+    // currentParam.value = userParam.useText1 ? true : false;
+    // currentParam.defaultvalue = true;
+    // currentParam.readValue = function() {
+    //     userParam.useText1 = this.value;
+    // }
+    // convertedParam.data.push(currentParam);
+
+    // // Use Text 2
+    // var currentParam = {};
+    // currentParam.name = 'useText2';
+    // currentParam.parentObject = 'texts';
+    // currentParam.title = texts.useText2;
+    // currentParam.type = 'bool';
+    // currentParam.value = userParam.useText2 ? true : false;
+    // currentParam.defaultvalue = false;
+    // currentParam.readValue = function() {
+    //     userParam.useText2 = this.value;
+    // }
+    // convertedParam.data.push(currentParam);
+
+    // // Use Text 3
+    // var currentParam = {};
+    // currentParam.name = 'useText3';
+    // currentParam.parentObject = 'texts';
+    // currentParam.title = texts.useText3;
+    // currentParam.type = 'bool';
+    // currentParam.value = userParam.useText3 ? true : false;
+    // currentParam.defaultvalue = false;
+    // currentParam.readValue = function() {
+    //     userParam.useText3 = this.value;
+    // }
+    // convertedParam.data.push(currentParam);
+
+    // // Use Text 4
+    // var currentParam = {};
+    // currentParam.name = 'useText4';
+    // currentParam.parentObject = 'texts';
+    // currentParam.title = texts.useText4;
+    // currentParam.type = 'bool';
+    // currentParam.value = userParam.useText4 ? true : false;
+    // currentParam.defaultvalue = false;
+    // currentParam.readValue = function() {
+    //     userParam.useText4 = this.value;
+    // }
+    // convertedParam.data.push(currentParam);
+
+    // // Use Text document
+    // var currentParam = {};
+    // currentParam.name = 'useTextDocuments';
+    // currentParam.parentObject = 'texts';
+    // currentParam.title = texts.useTextDocuments;
+    // currentParam.type = 'bool';
+    // currentParam.value = userParam.useTextDocuments ? true : false;
+    // currentParam.defaultvalue = false;
+    // currentParam.readValue = function() {
+    //     userParam.useTextDocuments = this.value;
+    // }
+    // convertedParam.data.push(currentParam);
+
+
+
+    var textChoices = [];
+    textChoices.push(texts.text1);
+    textChoices.push(texts.text2);
+    textChoices.push(texts.text3);
+    textChoices.push(texts.text4);
+    textChoices.push(texts.textEmbedded);
+
     var currentParam = {};
-    currentParam.name = 'useText1';
+    currentParam.name = 'textToUse';
     currentParam.parentObject = 'texts';
-    currentParam.title = texts.useText1;
-    currentParam.type = 'bool';
-    currentParam.value = userParam.useText1 ? true : false;
-    currentParam.defaultvalue = true;
-    currentParam.readValue = function() {
-        userParam.useText1 = this.value;
+    currentParam.title = texts.textToUse;
+    currentParam.type = 'combobox';
+    currentParam.items = textChoices;
+    currentParam.value = userParam.textToUse ? userParam.textToUse : texts.text1;
+    currentParam.defaultvalue = texts.text1;
+    currentParam.readValue = function () {
+        userParam.textToUse = this.value;
     }
     convertedParam.data.push(currentParam);
 
-    // Use Text 2
-    var currentParam = {};
-    currentParam.name = 'useText2';
-    currentParam.parentObject = 'texts';
-    currentParam.title = texts.useText2;
-    currentParam.type = 'bool';
-    currentParam.value = userParam.useText2 ? true : false;
-    currentParam.defaultvalue = false;
-    currentParam.readValue = function() {
-        userParam.useText2 = this.value;
-    }
-    convertedParam.data.push(currentParam);
-
-    // Use Text 3
-    var currentParam = {};
-    currentParam.name = 'useText3';
-    currentParam.parentObject = 'texts';
-    currentParam.title = texts.useText3;
-    currentParam.type = 'bool';
-    currentParam.value = userParam.useText3 ? true : false;
-    currentParam.defaultvalue = false;
-    currentParam.readValue = function() {
-        userParam.useText3 = this.value;
-    }
-    convertedParam.data.push(currentParam);
-
-    // Use Text 4
-    var currentParam = {};
-    currentParam.name = 'useText4';
-    currentParam.parentObject = 'texts';
-    currentParam.title = texts.useText4;
-    currentParam.type = 'bool';
-    currentParam.value = userParam.useText4 ? true : false;
-    currentParam.defaultvalue = false;
-    currentParam.readValue = function() {
-        userParam.useText4 = this.value;
-    }
-    convertedParam.data.push(currentParam);
-
-    // Use Text document
-    var currentParam = {};
-    currentParam.name = 'useTextDocuments';
-    currentParam.parentObject = 'texts';
-    currentParam.title = texts.useTextDocuments;
-    currentParam.type = 'bool';
-    currentParam.value = userParam.useTextDocuments ? true : false;
-    currentParam.defaultvalue = false;
-    currentParam.readValue = function() {
-        userParam.useTextDocuments = this.value;
-    }
-    convertedParam.data.push(currentParam);
 
     // Texts
     var currentParam = {};
@@ -169,7 +192,7 @@ function convertParam(userParam) {
     currentParam.name = 'titleText';
     currentParam.parentObject = 'texts';
     currentParam.title = texts.titleText;
-    currentParam.type = 'string';
+    currentParam.type = 'multilinestring';
     currentParam.value = userParam.titleText ? userParam.titleText : '';
     currentParam.defaultvalue = texts.title;
     currentParam.readValue = function() {
@@ -255,6 +278,19 @@ function convertParam(userParam) {
     }
     convertedParam.data.push(currentParam);
 
+    // donation details - description of transaction
+    var currentParam = {};
+    currentParam.name = 'description';
+    currentParam.parentObject = 'details';
+    currentParam.title = texts.description;
+    currentParam.type = 'bool';
+    currentParam.value = userParam.description ? true : false;
+    currentParam.defaultvalue = true;
+    currentParam.readValue = function() {
+     userParam.description = this.value;
+    }
+    convertedParam.data.push(currentParam);
+
     // signature
     var currentParam = {};
     currentParam.name = 'signature';
@@ -318,19 +354,6 @@ function convertParam(userParam) {
      userParam.signatureImage = this.value;
     }
     convertedParam.data.push(currentParam);
-
-    // // image height
-    // var currentParam = {};
-    // currentParam.name = 'imageHeight';
-    // currentParam.parentObject = 'signature';
-    // currentParam.title = texts.imageHeight;
-    // currentParam.type = 'number';
-    // currentParam.value = userParam.imageHeight ? userParam.imageHeight : '10';
-    // currentParam.defaultvalue = '10';
-    // currentParam.readValue = function() {
-    //  userParam.imageHeight = this.value;
-    // }
-    // convertedParam.data.push(currentParam);
 
     // Styles
     var currentParam = {};
@@ -417,11 +440,12 @@ function initUserParam() {
     userParam.costcenter = '';
     userParam.minimumAmount = '1.00';
     userParam.useExtractTable = false;
-    userParam.useText1 = true;
-    userParam.useText2 = false;
-    userParam.useText3 = false;
-    userParam.useText4 = false;
-    userParam.useTextDocuments = false;
+    // userParam.useText1 = true;
+    // userParam.useText2 = false;
+    // userParam.useText3 = false;
+    // userParam.useText4 = false;
+    // userParam.useTextDocuments = false;
+    userParam.textToUse = texts.text1;
     userParam.titleText = texts.title;
     userParam.text1 = texts.multiTransactionText;
     userParam.text2 = '';
@@ -433,7 +457,7 @@ function initUserParam() {
     userParam.localityAndDate = '';
     userParam.printLogo = false;
     userParam.signatureImage = '';
-    // userParam.imageHeight = '10';
+    userParam.description = true;
     userParam.printHeaderLogo = false;
     userParam.headerLogoName = 'Logo';
     userParam.fontFamily = 'Helvetica';
@@ -708,32 +732,56 @@ function printReportLetter(report, banDoc, userParam, account, texts) {
     sectionText.addParagraph(" ", "");
 
     // Text of the letter
-    if (userParam.useText1 && userParam.text1) {
-        text = convertFields(banDoc, userParam.text1, address, trDate, startDate, endDate, totalOfDonations, account);
-        addNewLine(sectionText, text);
-        sectionText.addParagraph(" ", "");
-    }   
-    if (userParam.useText2 && userParam.text2) {
-        text = convertFields(banDoc, userParam.text2, address, trDate, startDate, endDate, totalOfDonations, account);
-        addNewLine(sectionText, text);
-        sectionText.addParagraph(" ", "");
-    }
-    if (userParam.useText3 && userParam.text3) {
-        text = convertFields(banDoc, userParam.text3, address, trDate, startDate, endDate, totalOfDonations, account);
-        addNewLine(sectionText, text);
-        sectionText.addParagraph(" ", "");
-    }
-    if (userParam.useText4 && userParam.text4) {
-        text = convertFields(banDoc, userParam.text4, address, trDate, startDate, endDate, totalOfDonations, account);
-        addNewLine(sectionText, text);
-        sectionText.addParagraph(" ", "");
-    }
-    if (userParam.useTextDocuments && userParam.embeddedTextFile) {
+    var textselected = "";
+
+    if (userParam.textToUse === texts.text1) {
+        textselected = userParam.text1;
+    } 
+    else if (userParam.textToUse === texts.text2) {
+        textselected = userParam.text2;
+    } 
+    else if (userParam.textToUse === texts.text3) {
+        textselected = userParam.text3;
+    } 
+    else if (userParam.textToUse === texts.text4) {
+        textselected = userParam.text4;
+    } 
+    else if (userParam.textToUse === texts.textEmbedded) {
         var embeddedText = getEmbeddedTextFile(banDoc, userParam);
-        text = convertFields(banDoc, embeddedText, address, trDate, startDate, endDate, totalOfDonations, account);
-        addNewLine(sectionText, text);
-        sectionText.addParagraph(" ", "");
+        textselected = embeddedText;
     }
+
+    text = convertFields(banDoc, textselected, address, trDate, startDate, endDate, totalOfDonations, account);
+    addNewLine(sectionText, text);
+    sectionText.addParagraph(" ", "");
+
+
+    // if (userParam.useText1 && userParam.text1) {
+    //     text = convertFields(banDoc, userParam.text1, address, trDate, startDate, endDate, totalOfDonations, account);
+    //     addNewLine(sectionText, text);
+    //     sectionText.addParagraph(" ", "");
+    // }   
+    // if (userParam.useText2 && userParam.text2) {
+    //     text = convertFields(banDoc, userParam.text2, address, trDate, startDate, endDate, totalOfDonations, account);
+    //     addNewLine(sectionText, text);
+    //     sectionText.addParagraph(" ", "");
+    // }
+    // if (userParam.useText3 && userParam.text3) {
+    //     text = convertFields(banDoc, userParam.text3, address, trDate, startDate, endDate, totalOfDonations, account);
+    //     addNewLine(sectionText, text);
+    //     sectionText.addParagraph(" ", "");
+    // }
+    // if (userParam.useText4 && userParam.text4) {
+    //     text = convertFields(banDoc, userParam.text4, address, trDate, startDate, endDate, totalOfDonations, account);
+    //     addNewLine(sectionText, text);
+    //     sectionText.addParagraph(" ", "");
+    // }
+    // if (userParam.useTextDocuments && userParam.embeddedTextFile) {
+    //     var embeddedText = getEmbeddedTextFile(banDoc, userParam);
+    //     text = convertFields(banDoc, embeddedText, address, trDate, startDate, endDate, totalOfDonations, account);
+    //     addNewLine(sectionText, text);
+    //     sectionText.addParagraph(" ", "");
+    // }
 }
 
 function printReportDetailsTransaction(report, banDoc, userParam, account, texts) {
@@ -750,12 +798,6 @@ function printReportDetailsTransaction(report, banDoc, userParam, account, texts
         account = account.substring(1); //remove first character ";"
 
         var table = report.addTable("transactions_details");
-        if (banDoc.info("AccountingDataBase","Company")) {
-            table.setStyleAttributes("width:70%");
-        } else {
-            table.setStyleAttributes("width:50%");
-        }
-
         var rowCnt = 0;
         for (var i = 0; i < transTab.rowCount; i++) {
             var tRow = transTab.row(i);
@@ -763,6 +805,7 @@ function printReportDetailsTransaction(report, banDoc, userParam, account, texts
 
             var date = tRow.value("Date");
             var cc3 = tRow.value("Cc3");
+            var desc = tRow.value("Description");
 
             if (date >= startDate && date <= endDate) {
 
@@ -777,14 +820,16 @@ function printReportDetailsTransaction(report, banDoc, userParam, account, texts
                     }
 
                     rowCnt++;
-                    tableRow.addCell(rowCnt, "border_bottom", 1); //sequencial numbers
-                    tableRow.addCell(Banana.Converter.toLocaleDateFormat(tRow.value("Date")), "border_bottom", 1);
-                    tableRow.addCell(banDoc.info("AccountingDataBase", "BasicCurrency"), "border_bottom");
-                    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(amount), "right border_bottom", 1);
-                    if (banDoc.info("AccountingDataBase","Company")) {
-                        tableRow.addCell(banDoc.info("AccountingDataBase","Company"), "border_bottom right");
-                    } else {
-                        tableRow.addCell();
+                    tableRow.addCell(rowCnt, "transactions_rows", 1); //sequencial numbers
+                    tableRow.addCell(" ", "transactions_rows");
+                    tableRow.addCell(Banana.Converter.toLocaleDateFormat(tRow.value("Date")), "transactions_rows", 1);
+                    tableRow.addCell(" ", "transactions_rows");
+                    tableRow.addCell(banDoc.info("AccountingDataBase", "BasicCurrency"), "transactions_rows", 1);
+                    tableRow.addCell(" ", "transactions_rows");
+                    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(amount), "right transactions_rows", 1);
+                    tableRow.addCell(" ", "transactions_rows");
+                    if (userParam.description) {
+                        tableRow.addCell(desc, " right transactions_rows", 1);
                     }
                     total = Banana.SDecimal.add(total, amount);
                 }
@@ -793,11 +838,18 @@ function printReportDetailsTransaction(report, banDoc, userParam, account, texts
 
         if (total > 0) {
             tableRow = table.addRow();
-            tableRow.addCell("", "border_top border_bottom", 1);
-            tableRow.addCell("", "border_top border_bottom", 1);
-            tableRow.addCell(texts.total, "bold border_top border_bottom", 1);
-            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(total), "bold right border_top border_bottom", 1);
-            tableRow.addCell("", "border_top border_bottom", 1);
+            tableRow.addCell("", "transactions_total", 1);
+            tableRow.addCell(" ", "transactions_total", 1);
+            tableRow.addCell(texts.total, "transactions_total", 1);
+            tableRow.addCell(" ", "transactions_total", 1);
+            tableRow.addCell(banDoc.info("AccountingDataBase", "BasicCurrency"), "transactions_total", 1);
+            tableRow.addCell(" ", "transactions_total", 1);
+            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(total), "transactions_total", 1);
+            tableRow.addCell(" ", "transactions_total", 1);
+            if (userParam.description) {
+                tableRow.addCell("", "transactions_total", 1);
+            }
+            
         }
     }
 }
@@ -1010,6 +1062,36 @@ function getAccountsToPrint(banDoc, userParam, texts) {
     }
 
     return accounts;
+}
+
+/* Function that retrieves in a list all the CC3 accounts */
+function getCC3Accounts(banDoc, userParam, texts) {
+    
+    var membershipList = [];
+    var tableName = "Accounts";
+    
+    // When the Extract Rows is used, we take all the cc3 accounts from the extracted rows only => table Extract
+    if (userParam.useExtractTable) {
+        
+        tableName = "Extract";
+        
+        // If the Extract table doesnt exist, use the Accounts table
+        if (!banDoc.table("Extract")) {
+            Banana.document.addMessage(texts.warningMessageExtractTable);
+            tableName = "Accounts";
+        }
+    }
+
+    var bantable = banDoc.table(tableName);
+    for (var i = 0; i < bantable.rowCount; i++) {
+        var tRow = bantable.row(i);
+        var account = tRow.value("Account");
+        if (account.substring(0,1) === ";") {
+            membershipList.push(account);
+        }
+    }
+
+    return membershipList;
 }
 
 /* Function that converts a month to a readable string */
@@ -1545,36 +1627,6 @@ function calculateTotalTransactions(banDoc, costcenter, startDate, endDate) {
     return transactionsObj;
 }
 
-/* Function that retrieves in a list all the CC3 accounts */
-function getCC3Accounts(banDoc, userParam, texts) {
-    
-    var membershipList = [];
-    var tableName = "Accounts";
-    
-    // When the Extract Rows is used, we take all the cc3 accounts from the extracted rows only => table Extract
-    if (userParam.useExtractTable) {
-        
-        tableName = "Extract";
-        
-        // If the Extract table doesnt exist, use the Accounts table
-        if (!banDoc.table("Extract")) {
-            Banana.document.addMessage(texts.warningMessageExtractTable);
-            tableName = "Accounts";
-        }
-    }
-
-    var bantable = banDoc.table(tableName);
-    for (var i = 0; i < bantable.rowCount; i++) {
-        var tRow = bantable.row(i);
-        var account = tRow.value("Account");
-        if (account.substring(0,1) === ";") {
-            membershipList.push(account);
-        }
-    }
-
-    return membershipList;
-}
-
 /* Function that takes the locale language of Banana */
 function getLang(banDoc) {
     var lang = "";
@@ -1756,14 +1808,13 @@ function loadTexts(banDoc,lang) {
         texts.signature = "Unterschrift";
         texts.signature_image = "Unterschrift mit Bild";
         texts.signatureImage = "Bild";
-        // texts.imageHeight = "Bildhöhe (mm)";
         texts.memberAccount = "Mitgliedskonto";
         texts.donationDate = "Periode";
         texts.titleText = "Titel (optional)";
-        texts.text1 = "Text 1 (optional)";
-        texts.text2 = "Text 2 (optional)";
-        texts.text3 = "Text 3 (optional)";
-        texts.text4 = "Text 4 (optional)";
+        texts.text1 = "Text 1";
+        texts.text2 = "Text 2";
+        texts.text3 = "Text 3";
+        texts.text4 = "Text 4";
         texts.multiTransactionText = "Hiermit bestätigen wir, dass **<FirstName> <FamilyName>, <Address>** in der Zeit vom **<StartDate> - <EndDate>** **<Currency> <Amount>** unserem Verein gespendet hat.";
         texts.textsGroup = "Texte";
         texts.details = "Geben Sie die Spendendaten an";
@@ -1789,14 +1840,13 @@ function loadTexts(banDoc,lang) {
         texts.signature = "Signature";
         texts.signature_image = "Signature avec image";
         texts.signatureImage = "Image";
-        // texts.imageHeight = "Hauteur de l'image (mm)";
         texts.memberAccount = "Compte de membre";
         texts.donationDate = "Période";
         texts.titleText = "Titre (optionnel)";
-        texts.text1 = "Texte 1 (optionnel)";
-        texts.text2 = "Texte 2 (optionnel)";
-        texts.text3 = "Texte 3 (optionnel)";
-        texts.text4 = "Texte 4 (optionnel)";
+        texts.text1 = "Texte 1";
+        texts.text2 = "Texte 2";
+        texts.text3 = "Texte 3";
+        texts.text4 = "Texte 4";
         texts.multiTransactionText = "Nous déclarons par la présente que **<FirstName> <FamilyName>, <Address>** dans la période **<StartDate> - <EndDate>** a fait don de **<Currency> <Amount>** à notre Association.";
         texts.textsGroup = "Textes";
         texts.details = "Inclure les détails du don";
@@ -1822,14 +1872,13 @@ function loadTexts(banDoc,lang) {
         texts.signature = "Firma";
         texts.signature_image = "Firma con immagine";
         texts.signatureImage = "Immagine";
-        // texts.imageHeight = "Altezza immagine (mm)";
         texts.memberAccount = "Conto del membro";
         texts.donationDate = "Periodo";
         texts.titleText = "Titolo (opzionale)";
-        texts.text1 = "Testo 1 (opzionale)";
-        texts.text2 = "Testo 2 (opzionale)";
-        texts.text3 = "Testo 3 (opzionale)";
-        texts.text4 = "Testo 4 (opzionale)";
+        texts.text1 = "Testo 1";
+        texts.text2 = "Testo 2";
+        texts.text3 = "Testo 3";
+        texts.text4 = "Testo 4";
         texts.multiTransactionText = "Con la presente dichiariamo che **<FirstName> <FamilyName>, <Address>** nel periodo **<StartDate> - <EndDate>** ha donato **<Currency> <Amount>** alla nostra Associazione.";
         texts.textsGroup = "Testi";
         texts.details = "Includi dettagli donazioni";
@@ -1848,14 +1897,17 @@ function loadTexts(banDoc,lang) {
         //New...
         texts.useExtractTable = "Usa tabella Estrai";
         texts.warningMessageExtractTable = "La tabella 'Estrai' non esiste.\nSeleziona un gruppo nella tabella Conti, colonna SommaIn > Tasto destro > Estrai righe.";
-        texts.useText1 = "Usa testo 1";
-        texts.useText2 = "Usa testo 2";
-        texts.useText3 = "Usa testo 3";
-        texts.useText4 = "Usa testo 4";
-        texts.useTextDocuments = "Usa testo tabella Documenti";
-        texts.embeddedTextFile = "Testo tabella Documenti .doc (opzionale)";
+        // texts.useText1 = "Usa testo 1";
+        // texts.useText2 = "Usa testo 2";
+        // texts.useText3 = "Usa testo 3";
+        // texts.useText4 = "Usa testo 4";
+        // texts.useTextDocuments = "Usa testo tabella Documenti";
+        texts.embeddedTextFile = "Testo tabella Documenti (.doc)";
         texts.css = "CSS";
         texts.textSignature = "Testo firma";
+        texts.description = "Includi descrizione";
+        texts.textToUse = "Usa testo..."
+        texts.textEmbedded = "Testo tabella Documenti (.doc)";
     }
     else if (lang === "nl") {
         texts.reportTitle = "Kwitantie voor giften";
@@ -1867,14 +1919,13 @@ function loadTexts(banDoc,lang) {
         texts.signature = "Handtekening";
         texts.signature_image = "Handtekening met afbeelding";
         texts.signatureImage = "Afbeelding";
-        // texts.imageHeight = "Hoogte afbeelding (mm)";
         texts.memberAccount = "Rekening gever";
         texts.donationDate = "Periode";
         texts.titleText = "Titel (facultatief)";
-        texts.text1 = "Tekst 1 (facultatief)";
-        texts.text2 = "Tekst 2 (facultatief)";
-        texts.text3 = "Tekst 3 (facultatief)";
-        texts.text4 = "Tekst 4 (facultatief)";
+        texts.text1 = "Tekst 1";
+        texts.text2 = "Tekst 2";
+        texts.text3 = "Tekst 3";
+        texts.text4 = "Tekst 4";
         texts.multiTransactionText = "Wij verklaren hierbij dat **<FirstName> <FamilyName>, <Address>** tussen **<StartDate>** en **<EndDate>** het bedrag van **<Currency> <Amount>** geschonken heeft aan onze instelling.";
         texts.textsGroup = "Teksten";
         texts.details = "Giften detail opnemen";
@@ -1900,14 +1951,13 @@ function loadTexts(banDoc,lang) {
         texts.signature = "Assinatura";
         texts.signature_image = "Assinatura com imagem";
         texts.signatureImage = "Imagem";
-        // texts.imageHeight = "Altura da imagem (mm)";
         texts.memberAccount = "Conta de membro";
         texts.donationDate = "Período";
         texts.titleText = "Título (opcional)";
-        texts.text1 = "Texto 1 (opcional)";
-        texts.text2 = "Texto 2 (opcional)";
-        texts.text3 = "Texto 3 (opcional)";
-        texts.text4 = "Texto 4 (opcional)";
+        texts.text1 = "Texto 1";
+        texts.text2 = "Texto 2";
+        texts.text3 = "Texto 3";
+        texts.text4 = "Texto 4";
         texts.multiTransactionText = "Declaramos pela presente que **<FirstName> <FamilyName>, <Address>** entre **<StartDate>** e **<EndDate>**doou **<Currency> <Amount>** para nossa Associação.";
         texts.textsGroup = "Textos";
         texts.details = "Incluir detalhes da doação";
@@ -1933,14 +1983,13 @@ function loadTexts(banDoc,lang) {
         texts.signature = "Signature";
         texts.signature_image = "Signature with image";
         texts.signatureImage = "Image";
-        // texts.imageHeight = "Image height (mm)";
         texts.memberAccount = "Member account";
         texts.donationDate = "Period";
         texts.titleText = "Title (optional)";
-        texts.text1 = "Text 1 (optional)";
-        texts.text2 = "Text 2 (optional)";
-        texts.text3 = "Text 3 (optional)";
-        texts.text4 = "Text 4 (optional)";
+        texts.text1 = "Text 1";
+        texts.text2 = "Text 2";
+        texts.text3 = "Text 3";
+        texts.text4 = "Text 4";
         texts.multiTransactionText = "We hereby declare that **<FirstName> <FamilyName>, <Address>** between **<StartDate>** and **<EndDate>**donated **<Currency> <Amount>** to our Association.";
         texts.textsGroup = "Texts";
         texts.details = "Include donation details";
