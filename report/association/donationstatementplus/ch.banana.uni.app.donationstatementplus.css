@@ -49,6 +49,12 @@ body {
   position: absolute;
 }
 
+.date {
+   margin-top: 4.6cm;
+   margin-left: 1.5cm;
+   position: absolute;
+}
+
 .text {
    margin-top: 8.5cm;
    margin-left: 1.5cm;
@@ -70,13 +76,8 @@ body {
    border-bottom:thin solid black;
 }
 
-.date {
-   margin-top: 1.5cm;
-   margin-left: 1.5cm;
-}
-
 .signature {
-   margin-top: 0.5cm;
+   margin-top: 1.5cm;
    margin-left: 12.3cm;
 }
 
