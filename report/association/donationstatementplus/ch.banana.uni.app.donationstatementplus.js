@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.uni.app.donationstatementplus.js
 // @api = 1.0
-// @pubdate = 2023-02-24
+// @pubdate = 2023-03-03
 // @publisher = Banana.ch SA
 // @description = [DEV] Statement of donation for Associations (Banana+)
 // @description.de = [DEV] Spendenbescheinigung für Vereine (Banana+)
@@ -22,7 +22,6 @@
 // @description.fr = [DEV] Certificat de don pour Associations (Banana+)
 // @description.en = [DEV] Statement of donation for Associations (Banana+)
 // @description.nl = [DEV] Kwitantie voor giften (Banana+)
-// @description.pt = [DEV] Certificado de doação para Associações (Banana+)
 // @doctype = *
 // @task = app.command
 // @timeout = -1
@@ -179,6 +178,19 @@ function convertParam(userParam) {
     }
     convertedParam.data.push(currentParam);
 
+    // locality and date
+    var currentParam = {};
+    currentParam.name = 'localityAndDate';
+    currentParam.parentObject = 'texts';
+    currentParam.title = texts.localityAndDate;
+    currentParam.type = 'string';
+    currentParam.value = userParam.localityAndDate ? userParam.localityAndDate : '';
+    currentParam.defaultvalue = '';
+    currentParam.readValue = function() {
+        userParam.localityAndDate = this.value;
+    }
+    convertedParam.data.push(currentParam);
+
 
     // Print text
     var currentParam = {};
@@ -265,19 +277,6 @@ function convertParam(userParam) {
     }
     convertedParam.data.push(currentParam);
 
-    // locality and date
-    var currentParam = {};
-    currentParam.name = 'localityAndDate';
-    currentParam.parentObject = 'signature';
-    currentParam.title = texts.localityAndDate;
-    currentParam.type = 'string';
-    currentParam.value = userParam.localityAndDate ? userParam.localityAndDate : '';
-    currentParam.defaultvalue = '';
-    currentParam.readValue = function() {
-        userParam.localityAndDate = this.value;
-    }
-    convertedParam.data.push(currentParam);
-
     var currentParam = {};
     currentParam.name = 'textSignature';
     currentParam.parentObject = 'signature';
@@ -292,27 +291,27 @@ function convertParam(userParam) {
 
     // image for signature
     var currentParam = {};
-    currentParam.name = 'printLogo';
+    currentParam.name = 'printSignatureImage';
     currentParam.parentObject = 'signature';
-    currentParam.title = texts.signature_image;
+    currentParam.title = texts.printSignatureImage;
     currentParam.type = 'bool';
-    currentParam.value = userParam.printLogo ? true : false;
+    currentParam.value = userParam.printSignatureImage ? true : false;
     currentParam.defaultvalue = false;
     currentParam.readValue = function() {
-     userParam.printLogo = this.value;
+     userParam.printSignatureImage = this.value;
     }
     convertedParam.data.push(currentParam);
 
     // image for signature
     var currentParam = {};
-    currentParam.name = 'signatureImage';
+    currentParam.name = 'nameSignatureImage';
     currentParam.parentObject = 'signature';
-    currentParam.title = texts.signatureImage;
+    currentParam.title = texts.nameSignatureImage;
     currentParam.type = 'string';
-    currentParam.value = userParam.signatureImage ? userParam.signatureImage : 'documents:<image_id>';
+    currentParam.value = userParam.nameSignatureImage ? userParam.nameSignatureImage : 'documents:<image_id>';
     currentParam.defaultvalue = 'documents:<image_id>';
     currentParam.readValue = function() {
-     userParam.signatureImage = this.value;
+     userParam.nameSignatureImage = this.value;
     }
     convertedParam.data.push(currentParam);
 
@@ -411,8 +410,8 @@ function initUserParam() {
     userParam.details = true;
     userParam.textSignature = '';
     userParam.localityAndDate = '';
-    userParam.printLogo = false;
-    userParam.signatureImage = '';
+    userParam.printSignatureImage = false;
+    userParam.nameSignatureImage = '';
     userParam.description = true;
     userParam.printHeaderLogo = false;
     userParam.headerLogoName = 'Logo';
@@ -488,10 +487,15 @@ function settingsDialog() {
 //===========================================================================
 // PRINT REPORT
 //===========================================================================
-/* Main function that is executed when starting the app */
 function exec(inData, options) {
     
     if (!Banana.document) {
+        return "@Cancel";
+    }
+
+    //Checks Banana version and license
+    var isCurrentBananaVersionSupported = bananaRequiredVersion("10.1.0");
+    if (!isCurrentBananaVersionSupported) {
         return "@Cancel";
     }
 
@@ -525,7 +529,7 @@ function exec(inData, options) {
         set_variables(variables, userParam);
 
         var stylesheet = Banana.Report.newStyleSheet();
-        var report = printReport(Banana.document, userParam, accounts, texts, stylesheet);            
+        var report = printReport(Banana.document, userParam, accounts, texts, stylesheet);
         
         setCss(Banana.document, stylesheet, userParam, variables);
         Banana.Report.preview(report, stylesheet);
@@ -534,7 +538,7 @@ function exec(inData, options) {
     }
 }
 
-/* The report is created using the selected period and the data of the dialog */
+/* Function that prints the report */
 function printReport(banDoc, userParam, accounts, texts, stylesheet) {
 
     var report = Banana.Report.newReport(texts.reportTitle);
@@ -556,6 +560,7 @@ function printReport(banDoc, userParam, accounts, texts, stylesheet) {
     return report;
 }
 
+/* Function that prints the header of the report */
 function printReportHeader(report, banDoc, userParam, stylesheet) {
 
     // Logo
@@ -624,6 +629,7 @@ function printReportHeader(report, banDoc, userParam, stylesheet) {
     }
 }
 
+/* Function that prints the address of the report */
 function printReportAddress(report, banDoc, account) {
 
     /**
@@ -631,38 +637,39 @@ function printReportAddress(report, banDoc, account) {
      */
 
     var address = getAddress(banDoc, account);
-
     var tableAddress = report.addTable("address");
-    
+    var row;
+
     if (address.nameprefix) {
-        var row = tableAddress.addRow();
+        row = tableAddress.addRow();
         row.addCell(address.nameprefix, "", 1);
     }
     if (address.firstname && address.familyname) {
-        var row = tableAddress.addRow();
+        row = tableAddress.addRow();
         row.addCell(address.firstname + " " + address.familyname, "", 1);
     } else if (!address.firstname && address.familyname) {
-        var row = tableAddress.addRow();
+        row = tableAddress.addRow();
         row.addCell(address.familyname, "", 1);
     }
     if (address.street) {
-        var row = tableAddress.addRow();
+        row = tableAddress.addRow();
         row.addCell(address.street, "", 1);
     }
     if (address.addressextra) {
-        var row = tableAddress.addRow();
+        row = tableAddress.addRow();
         row.addCell(address.addressextra, "", 1);
     }
     if (address.pobox) {
-        var row = tableAddress.addRow();
+        row = tableAddress.addRow();
         row.addCell(address.pobox, "", 1);
     }
     if (address.postalcode && address.locality) {
-        var row = tableAddress.addRow();
+        row = tableAddress.addRow();
         row.addCell(address.postalcode + " " + address.locality, "", 1);
     }
 }
 
+/* Function that prints the letter of the report */
 function printReportLetter(report, banDoc, userParam, account, texts) {
 
     /**
@@ -719,6 +726,7 @@ function printReportLetter(report, banDoc, userParam, account, texts) {
     }
 }
 
+/* Function that prints the transactions details of the donations */
 function printReportDetailsTransaction(report, banDoc, userParam, account, texts) {
 
     /**
@@ -789,6 +797,7 @@ function printReportDetailsTransaction(report, banDoc, userParam, account, texts
     }
 }
 
+/* Function that prints the signature part of the report */
 function printReportSignature(report, banDoc, userParam) {
 
     /**
@@ -805,8 +814,8 @@ function printReportSignature(report, banDoc, userParam) {
         paragraph.addText("\n"+company);
     }
 
-    if (userParam.signatureImage) {
-        report.addImage(userParam.signatureImage, "image-signature");
+    if (userParam.printSignatureImage && userParam.nameSignatureImage) {
+        report.addImage(userParam.nameSignatureImage, "image-signature");
     }
 }
 
@@ -1090,7 +1099,7 @@ function getCC3Accounts(banDoc, userParam, texts) {
     for (var i = 0; i < bantable.rowCount; i++) {
         var tRow = bantable.row(i);
         var account = tRow.value("Account");
-        if (account.substring(0,1) === ";") {
+        if (account.substring(0,1) === ";" && account.substring(1,2)) {
             membershipList.push(account);
         }
     }
@@ -1643,6 +1652,7 @@ function getLang(banDoc) {
     return lang;
 }
 
+/* Function that takes the content of the embedded text file in table Documents*/
 function getEmbeddedTextFile(banDoc, userParam) {
 
     /**
@@ -1670,29 +1680,23 @@ function getEmbeddedTextFile(banDoc, userParam) {
 //===========================================================================
 // STYLESHEET
 //===========================================================================
+/* Sets all the variables values */
 function set_variables(variables, userParam) {
-  /** 
-    Sets all the variables values.
-  */
+    if (!userParam.fontFamily) {
+        userParam.fontFamily = "Helvetica";
+    }
 
-  if (!userParam.fontFamily) {
-    userParam.fontFamily = "Helvetica";
-  }
+    if (!userParam.fontSize) {
+        userParam.fontSize = "10";
+    }
 
-  if (!userParam.fontSize) {
-    userParam.fontSize = "10";
-  }
-
-  variables.$font_family = userParam.fontFamily;
-  variables.$font_size = userParam.fontSize+"pt";
+    variables.$font_family = userParam.fontFamily;
+    variables.$font_size = userParam.fontSize+"pt";
 }
 
+/* Function that replaces all the css variables inside of the given cssText with their values.
+   All the css variables start with "$" (i.e. $font_size, $margin_top) */
 function replaceVariables(cssText, variables) {
-
-  /* 
-    Function that replaces all the css variables inside of the given cssText with their values.
-    All the css variables start with "$" (i.e. $font_size, $margin_top)
-  */
 
   var result = "";
   var varName = "";
@@ -1747,6 +1751,7 @@ function replaceVariables(cssText, variables) {
   return result;
 }
 
+/* Function that set the CSS used to print the report */
 function setCss(banDoc, repStyleObj, userParam, variables) {
 
   var textCSS = "";
@@ -1792,29 +1797,36 @@ function loadTexts(banDoc,lang) {
         texts.accountNumber = "Mitgliedskonto eingeben (leer = alle ausdrucken)";
         texts.localityAndDate = "Ort und Datum";
         texts.signature = "Unterschrift";
-        texts.signature_image = "Unterschrift mit Bild";
-        texts.signatureImage = "Bild";
+        texts.printSignatureImage = "Unterschrift mit Bild";
+        texts.nameSignatureImage = "Bild";
         texts.memberAccount = "Mitgliedskonto";
         texts.donationDate = "Periode";
         texts.text1 = "Text 1";
         texts.text2 = "Text 2";
         texts.text3 = "Text 3";
         texts.text4 = "Text 4";
-        texts.predefinedText = "Spendenbescheinigung <Period>\n\nHiermit bestätigen wir, dass **<FirstName> <FamilyName>, <Address>** in der Zeit vom **<StartDate> - <EndDate>** **<Currency> <Amount>** unserem Verein gespendet hat.";
+        texts.predefinedText = "**Spendenbescheinigung <Period>**\n\nHiermit bestätigen wir, dass **<FirstName> <FamilyName>, <Address>** in der Zeit vom **<StartDate> - <EndDate>** **<Currency> <Amount>** unserem Verein gespendet hat.";
         texts.textsGroup = "Texte";
-        texts.details = "Geben Sie die Spendendaten an";
         texts.minimumAmount = "Mindestspendenbetrag";
         texts.styles = "Stilarten";
         texts.fontFamily = "Schriftarttyp";
         texts.fontSize = "Schriftgrad";
 		texts.printHeaderLogo = "Logo";
 		texts.headerLogoName = "Logo-Name";
-        texts.address = "Adresse";
-        texts.alignleft = "Adresse linksbündig";
-        texts.addressPositionDX = 'Horizontal verschieben +/- (in cm, Voreinstellung 0)';
-        texts.addressPositionDY = 'Vertikal verschieben +/- (in cm, Voreinstellung 0)';
         texts.total = 'Total';
         texts.useMarkdown = "Markdown verwenden";
+
+        texts.details = " Spendenbuchungen einbeziehen";
+        texts.useExtractTable = "Tabelle Extraktion verwenden";
+        texts.warningMessageExtractTable = "Tabelle 'Extraktion' nicht gefunden.\nWählen Sie eine Gruppe in der Tabelle Konten, Spalte SummIn > Zeilen extrahieren.";
+        texts.embeddedTextFile = "Text Tabelle Dokumente (.txt)";
+        texts.css = "CSS (optional)";
+        texts.textSignature = "Text Unterschrift";
+        texts.description = "Beschreibungen der Buchungen einbeziehen";
+        texts.textToUse = "Text auswählen";
+        texts.textEmbedded = "Text Tabelle Dokumente (.txt)";
+        texts.accountsToPrint = "Zu druckende Adressen auswählen";
+        texts.printText = "Text drucken";
     }
     else if (lang === "fr") {
         texts.reportTitle = "Certificat de don";
@@ -1823,29 +1835,36 @@ function loadTexts(banDoc,lang) {
         texts.accountNumber = "Entrer le compte du membre (vide = imprimer tout)";
         texts.localityAndDate = "Lieu et date";
         texts.signature = "Signature";
-        texts.signature_image = "Signature avec image";
-        texts.signatureImage = "Image";
+        texts.printSignatureImage = "Signature avec image";
+        texts.nameSignatureImage = "Image";
         texts.memberAccount = "Compte de membre";
         texts.donationDate = "Période";
         texts.text1 = "Texte 1";
         texts.text2 = "Texte 2";
         texts.text3 = "Texte 3";
         texts.text4 = "Texte 4";
-        texts.predefinedText = "Certificat de don <Period>\n\nNous déclarons par la présente que **<FirstName> <FamilyName>, <Address>** dans la période **<StartDate> - <EndDate>** a fait don de **<Currency> <Amount>** à notre Association.";
+        texts.predefinedText = "**Certificat de don <Period>**\n\nNous déclarons par la présente que **<FirstName> <FamilyName>, <Address>** dans la période **<StartDate> - <EndDate>** a fait don de **<Currency> <Amount>** à notre Association.";
         texts.textsGroup = "Textes";
-        texts.details = "Inclure les détails du don";
         texts.minimumAmount = "Montant minimum du don";
         texts.styles = "Styles";
         texts.fontFamily = "Type de police";
         texts.fontSize = "Taille de police";
 		texts.printHeaderLogo = "Logo";
 		texts.headerLogoName = "Logo nom";
-        texts.address = "Adresse";
-        texts.alignleft = "Aligner à gauche";
-        texts.addressPositionDX = 'Déplacer horizontalement +/- (en cm, défaut 0)';
-        texts.addressPositionDY = 'Déplacer verticalement +/- (en cm, défaut 0)';
         texts.total = 'Total';
         texts.useMarkdown = "Utiliser Markdown";
+
+        texts.details = "Inclure les écritures de dons";        
+        texts.useExtractTable = "Utiliser le tableau Extraire";
+        texts.warningMessageExtractTable = "Table 'Extraire' non trouvée.\nSélectionner un groupe dans le tableau Comptes, colonne AddDans > Extraire lignes.";
+        texts.embeddedTextFile = "Texte tableau Documents (.txt)";
+        texts.css = "CSS (facultatif)";
+        texts.textSignature = "Texte de signature";
+        texts.description = "Inclure les descriptions des écritures";
+        texts.textToUse = "Sélectionner le texte".
+        texts.textEmbedded = "Texte tableau Documents (.txt)";
+        texts.accountsToPrint = "Sélectionner les adresses à imprimer";
+        texts.printText = "Imprimer le texte";
     }
     else if (lang === "it") {
         texts.reportTitle = "Attestato di donazione";
@@ -1854,35 +1873,30 @@ function loadTexts(banDoc,lang) {
         texts.accountNumber = "Indicare il conto del membro (vuoto = stampa tutti)";
         texts.localityAndDate = "Località e data";
         texts.signature = "Firma";
-        texts.signature_image = "Firma con immagine";
-        texts.signatureImage = "Immagine";
+        texts.printSignatureImage = "Firma con immagine";
+        texts.nameSignatureImage = "Immagine";
         texts.memberAccount = "Conto del membro";
         texts.donationDate = "Periodo";
         texts.text1 = "Testo 1";
         texts.text2 = "Testo 2";
         texts.text3 = "Testo 3";
         texts.text4 = "Testo 4";
-        texts.predefinedText = "Attestato di donazione <Period>\n\nCon la presente dichiariamo che **<FirstName> <FamilyName>, <Address>** nel periodo **<StartDate> - <EndDate>** ha donato **<Currency> <Amount>** alla nostra Associazione.";
+        texts.predefinedText = "**Attestato di donazione <Period>**\n\nCon la presente dichiariamo che **<FirstName> <FamilyName>, <Address>** nel periodo **<StartDate> - <EndDate>** ha donato **<Currency> <Amount>** alla nostra Associazione.";
         texts.textsGroup = "Testi";
-        texts.details = "Includi dettagli donazioni";
         texts.minimumAmount = "Importo minimo della donazione";
         texts.styles = "Stili";
         texts.fontFamily = "Tipo di carattere";
         texts.fontSize = "Dimensione carattere";
 		texts.printHeaderLogo = "Logo";
 		texts.headerLogoName = "Nome logo";
-        texts.address = "Indirizzo";
-        texts.alignleft = "Allinea a sinistra";
-        texts.addressPositionDX = 'Sposta orizzontalmente +/- (in cm, default 0)';
-        texts.addressPositionDY = 'Sposta verticalmente +/- (in cm, default 0)';
         texts.total = 'Totale';
         texts.useMarkdown = "Usa Markdown";
 
-        //New...
+        texts.details = "Includi registrazioni donazioni";
         texts.useExtractTable = "Usa tabella Estrai";
-        texts.warningMessageExtractTable = "La tabella 'Estrai' non esiste.\nSeleziona un gruppo nella tabella Conti, colonna SommaIn > Tasto destro > Estrai righe.";
+        texts.warningMessageExtractTable = "Tabella 'Estrai' non trovata.\nSeleziona un gruppo nella tabella Conti, colonna SommaIn > Estrai righe.";
         texts.embeddedTextFile = "Testo tabella Documenti (.txt)";
-        texts.css = "CSS";
+        texts.css = "CSS (opzionale)";
         texts.textSignature = "Testo firma";
         texts.description = "Includi descrizioni registrazioni";
         texts.textToUse = "Seleziona testo"
@@ -1897,60 +1911,36 @@ function loadTexts(banDoc,lang) {
         texts.accountNumber = "Rekening gever invoeren (leeg = alles afdrukken)";
         texts.localityAndDate = "Plaats en datum";
         texts.signature = "Handtekening";
-        texts.signature_image = "Handtekening met afbeelding";
-        texts.signatureImage = "Afbeelding";
+        texts.printSignatureImage = "Handtekening met afbeelding";
+        texts.nameSignatureImage = "Afbeelding";
         texts.memberAccount = "Rekening gever";
         texts.donationDate = "Periode";
         texts.text1 = "Tekst 1";
         texts.text2 = "Tekst 2";
         texts.text3 = "Tekst 3";
         texts.text4 = "Tekst 4";
-        texts.predefinedText = "Kwitantie voor giften <Period>\n\nWij verklaren hierbij dat **<FirstName> <FamilyName>, <Address>** tussen **<StartDate>** en **<EndDate>** het bedrag van **<Currency> <Amount>** geschonken heeft aan onze instelling.";
+        texts.predefinedText = "**Kwitantie voor giften <Period>**\n\nWij verklaren hierbij dat **<FirstName> <FamilyName>, <Address>** tussen **<StartDate>** en **<EndDate>** het bedrag van **<Currency> <Amount>** geschonken heeft aan onze instelling.";
         texts.textsGroup = "Teksten";
-        texts.details = "Giften detail opnemen";
         texts.minimumAmount = "Minimumbedrag van de gift";
         texts.styles = "Stijl";
         texts.fontFamily = "Type lettertype";
         texts.fontSize = "Lettergrootte";
 		texts.printHeaderLogo = "Logo";
 		texts.headerLogoName = "Logo naam";
-        texts.address = "Adres";
-        texts.alignleft = "Links uitlijnen";
-        texts.addressPositionDX = 'Horizontaal verplaatsen +/- (in cm, standaard 0)';
-        texts.addressPositionDY = 'Verplaats verticaal +/- (in cm, standaard 0)';
         texts.total = 'Totaal';
         texts.useMarkdown = "Gebruik Markdown";
-    }
-    else if (lang === "pt") {
-        texts.reportTitle = "Certificado de doação";
-        texts.dialogTitle = "Configurações";
-        texts.warningMessage = "Conta de membro inválida";
-        texts.accountNumber = "Inserir conta de membro (vazio = imprimir todos)";
-        texts.localityAndDate = "Localidade e data";
-        texts.signature = "Assinatura";
-        texts.signature_image = "Assinatura com imagem";
-        texts.signatureImage = "Imagem";
-        texts.memberAccount = "Conta de membro";
-        texts.donationDate = "Período";
-        texts.text1 = "Texto 1";
-        texts.text2 = "Texto 2";
-        texts.text3 = "Texto 3";
-        texts.text4 = "Texto 4";
-        texts.predefinedText = "Certificado de doação <Period>\n\nDeclaramos pela presente que **<FirstName> <FamilyName>, <Address>** entre **<StartDate>** e **<EndDate>**doou **<Currency> <Amount>** para nossa Associação.";
-        texts.textsGroup = "Textos";
-        texts.details = "Incluir detalhes da doação";
-        texts.minimumAmount = "Valor mínimo da doação";
-        texts.styles = "Estilos";
-        texts.fontFamily = "Tipo de letra";
-        texts.fontSize = "Tamanho da letra";
-        texts.printHeaderLogo = "Logo";
-        texts.headerLogoName = "Nome logótipo";
-        texts.address = "Endereço";
-        texts.alignleft = "Alinhar à esquerda";
-        texts.addressPositionDX = 'Mover horizontalmente +/- (em cm, por defeito 0)';
-        texts.addressPositionDY = 'Mover verticalmente +/- (em cm, por defeito 0)';
-        texts.total = 'Total';
-        texts.useMarkdown = "Use Markdown";
+
+        texts.details = "Neem donatietransacties op";
+        texts.useExtractTable = "Gebruik tabel Extract";
+        texts.warningMessageExtractTable = "Tabel 'Extract' niet gevonden.\Selecteer een groep in de tabel Rekeningen, kolom SomIn > Extract rijen."
+        texts.embeddedTextFile = "Teksttabel Documenten (.txt)";
+        texts.css = "CSS (optioneel)";
+        texts.textSignature = "Tekst handtekening".
+        texts.description = "Transactiebeschrijvingen opnemen";
+        texts.textToUse = "Selecteer tekst".
+        texts.textEmbedded = "Teksttabel Documenten (.txt)"
+        texts.accountsToPrint = "Selecteer adressen om af te drukken"
+        texts.printText = "Tekst afdrukken"
     }
     else { //lang == en
         texts.reportTitle = "Statement of donation";
@@ -1959,31 +1949,95 @@ function loadTexts(banDoc,lang) {
         texts.accountNumber = "Insert account member (empty = print all)";
         texts.localityAndDate = "Locality and date";
         texts.signature = "Signature";
-        texts.signature_image = "Signature with image";
-        texts.signatureImage = "Image";
+        texts.printSignatureImage = "Signature with image";
+        texts.nameSignatureImage = "Image";
         texts.memberAccount = "Member account";
         texts.donationDate = "Period";
         texts.text1 = "Text 1";
         texts.text2 = "Text 2";
         texts.text3 = "Text 3";
         texts.text4 = "Text 4";
-        texts.predefinedText = "Statement of donation <Period>\n\nWe hereby declare that **<FirstName> <FamilyName>, <Address>** between **<StartDate>** and **<EndDate>**donated **<Currency> <Amount>** to our Association.";
+        texts.predefinedText = "**Statement of donation <Period>**\n\nWe hereby declare that **<FirstName> <FamilyName>, <Address>** between **<StartDate>** and **<EndDate>**donated **<Currency> <Amount>** to our Association.";
         texts.textsGroup = "Texts";
-        texts.details = "Include donation details";
         texts.minimumAmount = "Minimum amount of the donation";
         texts.styles = "Styles";
         texts.fontFamily = "Font type";
         texts.fontSize = "Font size";
 		texts.printHeaderLogo = "Logo";
 		texts.headerLogoName = "Logo name";
-        texts.address = "Address";
-        texts.alignleft = "Align left";
-        texts.addressPositionDX = 'Move horizontally +/- (in cm, default 0)';
-        texts.addressPositionDY = 'Move vertically +/- (in cm, default 0)';
         texts.total = 'Total';
         texts.useMarkdown = "Use Markdown";
+
+        texts.details = "Include donations transactions";
+        texts.useExtractTable = "Use table Extract";
+        texts.warningMessageExtractTable = "Table 'Extract' not found.\nSelect a group in the Accounts table, column SumIn > Extract rows."
+        texts.embeddedTextFile = "Text table Documents (.txt)";
+        texts.css = "CSS (optional)";
+        texts.textSignature = "Text signature"
+        texts.description = "Include transactions descriptions";
+        texts.textToUse = "Select text"
+        texts.textEmbedded = "Text table Documents (.txt)"
+        texts.accountsToPrint = "Select addresses to print"
+        texts.printText = "Print text"
     }
 
     return texts;
+}
+
+
+
+
+
+
+//===========================================================================
+// OTHER
+//===========================================================================
+/* Function that checks Banana version and license type */
+function bananaRequiredVersion(requiredVersion) {
+    
+    var language = "";
+    if (Banana.document.locale) {
+        language = Banana.document.locale;
+    }
+    if (language && language.length > 2) {
+        language = language.substr(0, 2);
+    }
+
+    var msg = "";
+    if (Banana.compareVersion && Banana.compareVersion(Banana.application.version, requiredVersion) < 0 || Banana.application.license.licenseType !== "advanced") {
+        switch(language) {
+            case "en":
+                msg = "The extension requires Banana Accounting Plus (version "+ requiredVersion + " or later) and the Advanced plan";
+                break;
+
+            case "it":
+                msg = "L'estensione richiede Banana Contabilità Plus (versione "+ requiredVersion + " o successiva) e il piano Advanced";
+                break;
+
+            case "fr":
+                msg = "L'extension nécessite de Banana Comptabilité Plus (version "+ requiredVersion + " ou plus récente) et le plan Advanced.";
+                break;
+
+            case "de":
+                msg = "Die Erweiterung erfordert Banana Buchhaltung Plus (Version "+ requiredVersion + " oder neuer) und den Advanced-Plan";
+                break;
+
+            case "nl":
+                msg = "De extensie vereist Banana Boekhouding Plus (versie "+ requiredVersion + " of meer recent) en het Advanced plan.";
+                break;
+
+            case "pt":
+                msg = "A extensão requer Banana Contabilidade Plus (versão "+ requiredVersion + " ou posterior) e o plano Advanced";
+                break;
+
+            default:
+                msg = "The extension requires Banana Accounting Plus (version "+ requiredVersion + " or later) and the Advanced plan";
+                break;
+        }
+        Banana.application.showMessages();
+        Banana.document.addMessage(msg);
+        return false;
+    }
+    return true;
 }
 
