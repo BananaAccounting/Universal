@@ -31,7 +31,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         this.version = '1.0';
         this.banDocument = banDocument;
         this.data = {};
-        this.info = this.getDocumentInfo();
+        this.docInfo = this.getDocumentInfo();
         this.dialogparam = this.initDialogParam();
         this.controlsums_differences = 0;
         this.with_budget = this.banDocument.info("Budget", "TableNameXml");
@@ -503,15 +503,17 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
      * @description set the header of the report.
      * @Param {object} report: the report created
      */
-    addHeader(report) {
-        var texts=this.initFinancialAnalysisTexts();
-        var stylesheet = this.getReportStyle();
+    addHeader(report,styleSheet) {
+        //var texts=this.initFinancialAnalysisTexts();
+        let company = "";
+        let address1 = "";
+        let city = "";
         var headerParagraph = report.getHeader().addSection();
         if (this.dialogparam.printlogo) {
-            var headerParagraph = report.addSection("");
+            headerParagraph = report.addSection("");
             var logoFormat = Banana.Report.logoFormat(this.dialogparam.logoname); //Logo
             if (logoFormat) {
-                var logoElement = logoFormat.createDocNode(headerParagraph, stylesheet, "logo");
+                var logoElement = logoFormat.createDocNode(headerParagraph, styleSheet, "logo");
                 report.getHeader().addChild(logoElement);
             } else {
                 headerParagraph.addClass("header_text");
@@ -520,22 +522,19 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         } else {
             headerParagraph.addClass("header_text");
         }
+            
         if (this.dialogparam.pageheader) {
-            var docInfo = this.getDocumentInfo();
-            var company = docInfo.company;
-            var address1 = docInfo.address1;
-            var city = docInfo.City;
+            if (this.docInfo){
+                company = this.docInfo.company;
+                address1 = this.docInfo.address1;
+                city = this.docInfo.City;
+            }
+
             //headerParagraph.addParagraph(texts.financialstatementanalysis, "header_rows");
             headerParagraph.addParagraph(company, "header_row_company_name");
             headerParagraph.addParagraph(address1, "header_row_address");
             headerParagraph.addParagraph(city, "header_row_address");
         }
-        //add the reference date choose as current date
-        var budgetToDate="";
-        if(this.dialogparam.includebudget_todate)
-            budgetToDate="/"+texts.budget_to_date;
-
-        headerParagraph.addParagraph(texts.year_to_date+budgetToDate+" ref: "+Banana.Converter.toLocaleDateFormat(this.dialogparam.currentdate),"header_text");
         headerParagraph.excludeFromTest();
     }
 
@@ -559,7 +558,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
      * -set the cells and the rows values
      * @returns a report object.
      */
-    printReport() {
+    printReport(styleSheet) {
 
         //Banana.console.debug(JSON.stringify(this.data));
 
@@ -589,7 +588,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         }
 
 
-        this.addHeader(report);
+        this.addHeader(report, styleSheet);
         this.addFooter(report);
 
         /******************************************************************************************
@@ -1651,7 +1650,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         texts.numberofpreviousyear = qsTr('Number of previous years');
         texts.numberofdecimals = qsTr('Number of decimals');
         texts.includebudget = qsTr('Include Budget');
-        texts.includecontrolsums = qsTr('Include Control Sums');
+        texts.includecontrolsums = qsTr('Include always Control Sums');
         texts.includedupontanalysis = qsTr('Include DuPont Analysis')
         texts.showacronymcolumn = qsTr('Show Acronym column');
         texts.showformulascolumn = qsTr('Show Formulas column');
@@ -1783,7 +1782,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         dialogparam.pageheader = true;
         dialogparam.logoname = "Logo";
         dialogparam.headers_background_color = "#337AB7";
-        dialogparam.headers_texts_color = "#fff";
+        dialogparam.headers_texts_color = "#000000";
 
         return dialogparam;
     }
@@ -3399,14 +3398,13 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentassets = Banana.SDecimal.add(currentassets, prepaid_expenses);
         calcdata.currentassets = currentassets;
 
-        //ottimizzare con ciclo for
         //Fixed Assets (final balance)
         var fixedassets = Banana.SDecimal.add(data.balance.fa.financial_fixedassets.balance, data.balance.fa.tangible_fixedassets.balance);
         fixedassets = Banana.SDecimal.add(fixedassets, data.balance.fa.intangible_fixedassets.balance);
         calcdata.fixedassets = fixedassets;
         //Fixed Asssets (opening)
         var fixedassets_opening = Banana.SDecimal.add(data.balance.fa.financial_fixedassets.opening, data.balance.fa.tangible_fixedassets.opening);
-        fixedassets = Banana.SDecimal.add(fixedassets, data.balance.fa.intangible_fixedassets.opening);
+        fixedassets_opening = Banana.SDecimal.add(fixedassets_opening, data.balance.fa.intangible_fixedassets.opening);
         calcdata.fixedassets_opening = fixedassets_opening;
 
         calcdata.totalassets = Banana.SDecimal.add(currentassets, fixedassets);
@@ -4978,7 +4976,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.name = 'headerbackgroundcolor';
         currentParam.group = 'preferences';
         currentParam.title = texts.headers_background_color;
-        currentParam.type = 'string';
+        currentParam.type = 'color';
         currentParam.value = userParam.headers_background_color ? userParam.headers_background_color : userParam.headers_background_color;
         currentParam.defaultvalue = defaultParam.headers_background_color;
         currentParam.tooltip = texts.headers_background_color_tooltip;
@@ -4993,7 +4991,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.name = 'headertextscolor';
         currentParam.group = 'preferences';
         currentParam.title = texts.headers_texts_color;
-        currentParam.type = 'string';
+        currentParam.type = 'color';
         currentParam.value = userParam.headers_texts_color ? userParam.headers_texts_color : userParam.headers_texts_color;
         currentParam.defaultvalue = defaultParam.headers_texts_color;
         currentParam.tooltip = texts.headers_texts_color_tooltip;
@@ -5100,14 +5098,15 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         convertedParam.data.push(currentParam);
 
         //Enter the current date
+        let today = this.getCurrentDate();
         currentParam = {};
         currentParam.name = 'currentdate';
         currentParam.group = 'preferences';
         currentParam.title = texts.currentdate;
         currentParam.type = 'date';
         currentParam.parentObject = 'Analysis Details';
-        currentParam.value = userParam.currentdate ? userParam.currentdate : '';
-        currentParam.defaultvalue = '';
+        currentParam.value = userParam.currentdate ? userParam.currentdate : Banana.Converter.toInternalDateFormat(today);;
+        currentParam.defaultvalue = Banana.Converter.toInternalDateFormat(today);
         currentParam.readValue = function () {
             var startDate = Banana.Converter.toInternalDateFormat(this.value, "dd.mm.yyyy");
            startDate = startDate.replace(new RegExp("-", 'g'), "");
@@ -5560,6 +5559,18 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         convertedParam.data.push(currentParam)
 
         return convertedParam;
+    }
+
+    /**
+     * @returns the date of the day in format: 'yyyymmdd'.
+     */
+    getCurrentDate(){
+        let today = new Date();
+        let dd = String(today.getDate()).padStart(2, '0');
+        let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+        let yyyy = today.getFullYear();
+        today = yyyy + mm + dd;
+        return today;
     }
 
     /**
@@ -6270,10 +6281,10 @@ function exec(inData, options) {
             financialStatementAnalysis.setParam(dialogparam);
         }
     }
+    var styleSheet = financialStatementAnalysis.getReportStyle();
     financialStatementAnalysis.loadData();
-    var report = financialStatementAnalysis.printReport();
-    var stylesheet = financialStatementAnalysis.getReportStyle();
-    Banana.Report.preview(report, stylesheet);
+    var report = financialStatementAnalysis.printReport(styleSheet);
+    Banana.Report.preview(report, styleSheet);
 
 }
 
@@ -6292,11 +6303,14 @@ function settingsDialog() {
             financialStatementAnalysis.setParam(parsed_data);
         }
     }
+
     //settings dialog
     var dialogTitle = 'Settings';
     var pageAnchor = 'financialStatementAnalysis';
     var convertedParam = financialStatementAnalysis.convertParam();
-    if (!Banana.Ui.openPropertyEditor(dialogTitle, convertedParam, pageAnchor))
+    let settingsDialog = Banana.Ui.createPropertyEditor(dialogTitle, convertedParam, pageAnchor);
+    settingsDialog.addImportCommand(); //non importa correttamente
+    if (!settingsDialog.exec())
         return false;
     for (var i = 0; i < convertedParam.data.length; i++) {
         // Read values to dialogparam (through the readValue function)
