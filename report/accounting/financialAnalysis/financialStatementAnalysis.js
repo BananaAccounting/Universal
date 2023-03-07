@@ -1103,7 +1103,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
        
          var tableCashflowVerif = this.printReportAdd_TableCashflowVerification(report);
          var tableRow = tableCashflowVerif.addRow("styleTablRows");
-         tableRow.addCell(texts.cashflow_verification, "styleTitlesTotalAmount",span);
+         tableRow.addCell(texts.cashflow_verification, "styleUnderGroupTitles",span);
          //add the investing cashflow elements
          for (var key in this.data[0].cashflowData.verifData) {
              var tableRow = tableCashflowVerif.addRow("styleTablRows");
@@ -1187,7 +1187,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                 //for the dupont data we dont display the "difference" columns as those are not useful for this analysis.
                 var tableRow = tabledupont.addRow("styleTablRows");
                 if (this.data[0].dupont_data[key].style == "titl") {
-                    textstyle = "styleTitlesTotalAmount";
+                    textstyle = "styleUnderGroupTitles";
                 } else {
                     textstyle = "styleTablRows";
                 }
@@ -1689,7 +1689,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         /******************************************************************************************
          * texts for the formulas
          * ***************************************************************************************/
-        texts.altmanformula = qsTr("formula used for the calculation  = 0.717 X1 + 0.847 X2 +3.107 X3 +0.420 X4 + 0.998 X5")
+        texts.altmanformula = qsTr("formula used for the calculation  = 1.2A + 1.4B + 3.3C + 0.6D + 1.0E");
         texts.altmanlowprob = qsTr("for values > than 3 correspond a low probability of a financial crisis");
         texts.altmanmediumprob = qsTr("for values >= than 1.8 but <= than 3 there are possibilities of a financial crisis, should be kept under control");
         texts.altmanstrongprob = qsTr("for values < than 1.8 there is a strong probability of a financial crisis");
@@ -1761,7 +1761,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         dialogparam.version = "v1.3";
         dialogparam.period={};
 
-        dialogparam.currentdate='';
+        dialogparam.currentdate = this.getCurrentDate();
         dialogparam.includebudget_todate=true;
         dialogparam.includecurrentyear_projection=true;
         dialogparam.selectionChecked=false;
@@ -2077,11 +2077,12 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
     }
 
     toCorrectDateFormat(){
-        var currentDate;
-        currentDate=Banana.Converter.toDate(this.dialogparam.currentdate);
-        currentDate=Banana.Converter.toInternalDateFormat(currentDate,'YYYY-MM-DD');
+        var currentDate = "";
+        Banana.console.debug("date for accounting param: " + this.dialogparam.currentdate);
+        currentDate = Banana.Converter.toInternalDateFormat(this.dialogparam.currentdate,'yyyymmdd');
+        Banana.console.debug("date for accounting: " + currentDate);
 
-        this.dialogparam.currentdate=currentDate;
+        this.dialogparam.currentdate = currentDate;
     }
 
 
@@ -2475,7 +2476,11 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                          * -Deve essere registrato utilizzando un gruppo appartenente ai gruppi del campo: Tangible Fixed Assets.
                          */
 
-                        if (description.indexOf("#revaluation") >= 0 && dialogparam[key].acronym=='tanfix' ||dialogparam[key].acronym=='finfix'||dialogparam[key].acronym=='intfix'){
+                        if (description.indexOf("#revaluation") >= 0 && dialogparam[key].acronym=='tanfix' || dialogparam[key].acronym=='finfix' || dialogparam[key].acronym=='intfix'){
+                            Banana.console.debug(" rev; " + description.indexOf("#revaluation") >= 0);
+                            Banana.console.debug(" finfix; " + dialogparam[key].acronym=='finfix');
+                            Banana.console.debug(" intfix; " + dialogparam[key].acronym=='intfix');
+                            Banana.console.debug("*******************************************");
                             var jAmount = tRow.value('JAmount');
                             if(Banana.SDecimal.sign(jAmount)>0){
                                 jAmount = Banana.SDecimal.abs(jAmount);
@@ -2623,13 +2628,13 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
         retEarningsData.totalRetainedEarning={};
         retEarningsData.totalRetainedEarning.amountStyle='styleMidTotalAmount';
-        retEarningsData.totalRetainedEarning.textStyle='styleTitlesTotalAmount';
+        retEarningsData.totalRetainedEarning.textStyle='styleUnderGroupTitles';
         retEarningsData.totalRetainedEarning.description=texts.totalRetainedEarning;
         retEarningsData.totalRetainedEarning.amount=Banana.SDecimal.subtract(retained_earnings_current_data.totalRetainedEarning.amount,retained_earnings_budget_data.totalRetainedEarning.amount);
 
         retEarningsData.currentYearRetainedEarning={};
         retEarningsData.currentYearRetainedEarning.amountStyle='styleMidTotalAmount';
-        retEarningsData.currentYearRetainedEarning.textStyle='styleTitlesTotalAmount';
+        retEarningsData.currentYearRetainedEarning.textStyle='styleUnderGroupTitles';
         retEarningsData.currentYearRetainedEarning.description=texts.currentYearRetainedEarning;
         retEarningsData.currentYearRetainedEarning.amount=Banana.SDecimal.subtract(retained_earnings_current_data.currentYearRetainedEarning.amount,retained_earnings_current_data.currentYearRetainedEarning.amount);
 
@@ -3218,7 +3223,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         cashflow.operatingCashflow.total={};
         cashflow.operatingCashflow.total.description={};
         cashflow.operatingCashflow.total.description.text=texts.cashflow_from_operations;
-        cashflow.operatingCashflow.total.description.style="styleTitlesTotalAmount";
+        cashflow.operatingCashflow.total.description.style="styleUnderGroupTitles";
         cashflow.operatingCashflow.total.acronym=texts.cashflowFromOperations_acronym;
         cashflow.operatingCashflow.total.amount={};
         cashflow.operatingCashflow.total.amount.value=Banana.SDecimal.subtract(current_calculated_data.operatingCashflow.total.amount.value,budget_calculated_data.operatingCashflow.total.amount.value);
@@ -3250,7 +3255,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         cashflow.cashflowFromInvesting.total={};
         cashflow.cashflowFromInvesting.total.description={};
         cashflow.cashflowFromInvesting.total.description.text=texts.cashflow_from_investing;
-        cashflow.cashflowFromInvesting.total.description.style="styleTitlesTotalAmount";
+        cashflow.cashflowFromInvesting.total.description.style="styleUnderGroupTitles";
         cashflow.cashflowFromInvesting.total.acronym=texts.cashflowFromInvesting_acronym;
         cashflow.cashflowFromInvesting.total.amount={};
         cashflow.cashflowFromInvesting.total.amount.value=Banana.SDecimal.subtract(current_calculated_data.cashflowFromInvesting.total.amount.value,budget_calculated_data.cashflowFromInvesting.total.amount.value);
@@ -3290,7 +3295,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         cashflow.cashflowFromFinancing.total={};
         cashflow.cashflowFromFinancing.total.description={};
         cashflow.cashflowFromFinancing.total.description.text=texts.cashflow_from_financing;
-        cashflow.cashflowFromFinancing.total.description.style="styleTitlesTotalAmount";
+        cashflow.cashflowFromFinancing.total.description.style="styleUnderGroupTitles";
         cashflow.cashflowFromFinancing.total.acronym=texts.cashflowFromFinancing_acronym;
         cashflow.cashflowFromFinancing.total.amount={};
         cashflow.cashflowFromFinancing.total.amount.value=Banana.SDecimal.subtract(current_calculated_data.cashflowFromFinancing.total.amount.value,budget_calculated_data.cashflowFromFinancing.total.amount.value);
@@ -3693,13 +3698,13 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
         retEarningsData.totalRetainedEarning={};
         retEarningsData.totalRetainedEarning.amountStyle='styleMidTotalAmount';
-        retEarningsData.totalRetainedEarning.textStyle='styleTitlesTotalAmount';
+        retEarningsData.totalRetainedEarning.textStyle='styleUnderGroupTitles';
         retEarningsData.totalRetainedEarning.description=texts.totalRetainedEarning;
         retEarningsData.totalRetainedEarning.amount=retEarningsData.calcTotal();
 
         retEarningsData.currentYearRetainedEarning={};
         retEarningsData.currentYearRetainedEarning.amountStyle='styleMidTotalAmount';
-        retEarningsData.currentYearRetainedEarning.textStyle='styleTitlesTotalAmount';
+        retEarningsData.currentYearRetainedEarning.textStyle='styleUnderGroupTitles';
         retEarningsData.currentYearRetainedEarning.description=texts.currentYearRetainedEarning;
         retEarningsData.currentYearRetainedEarning.amount=Banana.SDecimal.subtract(retEarningsData.totalRetainedEarning.amount,retEarningsData.balanceProfitCarriedForward.amount);
 
@@ -3825,7 +3830,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         cashflow.operatingCashflow.total={};
         cashflow.operatingCashflow.total.description={};
         cashflow.operatingCashflow.total.description.text=texts.cashflow_from_operations;
-        cashflow.operatingCashflow.total.description.style="styleTitlesTotalAmount";
+        cashflow.operatingCashflow.total.description.style="styleUnderGroupTitles";
         cashflow.operatingCashflow.total.acronym=texts.cashflowFromOperations_acronym;
         cashflow.operatingCashflow.total.amount={};
         cashflow.operatingCashflow.total.amount.value=cashflow.operatingCashflow.calcOperationsCashFlow();
@@ -3865,7 +3870,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         cashflow.cashflowFromInvesting.total={};
         cashflow.cashflowFromInvesting.total.description={};
         cashflow.cashflowFromInvesting.total.description.text=texts.cashflow_from_investing;
-        cashflow.cashflowFromInvesting.total.description.style="styleTitlesTotalAmount";
+        cashflow.cashflowFromInvesting.total.description.style="styleUnderGroupTitles";
         cashflow.cashflowFromInvesting.total.acronym=texts.cashflowFromInvesting_acronym;
         cashflow.cashflowFromInvesting.total.amount={};
         cashflow.cashflowFromInvesting.total.amount.value=cashflow.cashflowFromInvesting.calcCashFlowFromInvesting();
@@ -3916,7 +3921,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         cashflow.cashflowFromFinancing.total={};
         cashflow.cashflowFromFinancing.total.description={};
         cashflow.cashflowFromFinancing.total.description.text=texts.cashflow_from_financing;
-        cashflow.cashflowFromFinancing.total.description.style="styleTitlesTotalAmount";
+        cashflow.cashflowFromFinancing.total.description.style="styleUnderGroupTitles";
         cashflow.cashflowFromFinancing.total.acronym=texts.cashflowFromFinancing_acronym;
         cashflow.cashflowFromFinancing.total.amount={};
         cashflow.cashflowFromFinancing.total.amount.value=cashflow.cashflowFromFinancing.calcCashFlowFromFinancing();
@@ -5098,17 +5103,22 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         convertedParam.data.push(currentParam);
 
         //Enter the current date
-        let today = this.getCurrentDate();
+        //Calendar date is displayed in the local format. returns and accept format "yyyymmdd"
+        let yearToDate = this.getCurrentDate();
+        Banana.console.debug("default date: " + yearToDate);
         currentParam = {};
         currentParam.name = 'currentdate';
         currentParam.group = 'preferences';
         currentParam.title = texts.currentdate;
         currentParam.type = 'date';
         currentParam.parentObject = 'Analysis Details';
-        currentParam.value = userParam.currentdate ? userParam.currentdate : Banana.Converter.toInternalDateFormat(today);;
-        currentParam.defaultvalue = Banana.Converter.toInternalDateFormat(today);
+        currentParam.value = userParam.currentdate ? userParam.currentdate : yearToDate;
+        Banana.console.debug("user param: " + userParam.currentdate);
+        Banana.console.debug("current param: " + currentParam.value);
+        currentParam.defaultvalue = yearToDate;
         currentParam.readValue = function () {
-            var startDate = Banana.Converter.toInternalDateFormat(this.value, "dd.mm.yyyy");
+            Banana.console.debug("read value: " + this.value);
+            var startDate = Banana.Converter.toInternalDateFormat(this.value); //use local format
            startDate = startDate.replace(new RegExp("-", 'g'), "");
            userParam.currentdate = startDate;
         }
@@ -5562,15 +5572,30 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
     }
 
     /**
+     * This method returns the current date. If the current date is higher than the accounting closing date, the
+     * accounting closing date is returned
      * @returns the date of the day in format: 'yyyymmdd'.
      */
     getCurrentDate(){
+        let currentDate = "";
         let today = new Date();
-        let dd = String(today.getDate()).padStart(2, '0');
-        let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-        let yyyy = today.getFullYear();
-        today = yyyy + mm + dd;
-        return today;
+        let closingDate = new Date(this.docInfo.EndPeriod);
+        if(today && closingDate){
+            if (closingDate.getTime() < today.getTime()){
+                currentDate = this.getCurrentDate_Formatted(closingDate);
+            } else {
+                currentDate = this.getCurrentDate_Formatted(today);
+            }
+        }
+        return currentDate;
+    }
+
+    getCurrentDate_Formatted(formattedDate){
+        let dd = String(formattedDate.getDate()).padStart(2, '0');
+        let mm = String(formattedDate.getMonth() + 1).padStart(2, '0'); //January is 0!
+        let yyyy = formattedDate.getFullYear();
+        formattedDate = yyyy + mm + dd;
+        return formattedDate;
     }
 
     /**
@@ -5674,12 +5699,14 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
     calculateAltmanIndex(data, calculated_data, index) {
 
         /*Z-SCORE = 0.717 X1 + 0.847 X2 +3.107 X3 +0.420 X4 + 0.998 X5
-        X1 = Current Asset / Total Asset
+        X1 = (Current Asset - Current liabilities) / Total Asset
         X2 = Reserves/ Total Asset
         X3 = EBIT / Total Asset
         X4 = Net Assets / Total liabilities and Equitiy
         X5 = Sales / Total Asset
         */
+
+        /**New formula values: 1.2A + 1.4B + 3.3C + 0.6D + 1.0E */
 
         var AltmanIndex = {};
 
@@ -5687,25 +5714,25 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var currentassets = calculated_data.currentassets;
         var totalassets = calculated_data.totalassets;
         var x1 = Banana.SDecimal.divide(currentassets, totalassets);
-        AltmanIndex.x1 = Banana.SDecimal.multiply(x1, 0.717);
+        AltmanIndex.x1 = Banana.SDecimal.multiply(x1, 1.20);
 
         //X2
         var reserves = data.balance.oc.reserves.balance;
         var x2 = Banana.SDecimal.divide(reserves, totalassets);
-        AltmanIndex.x2 = Banana.SDecimal.multiply(x2, 0.847);
+        AltmanIndex.x2 = Banana.SDecimal.multiply(x2, 1.4);
 
         //X3
         var x3 = Banana.SDecimal.divide(index.red.roi.amount, 100);
-        AltmanIndex.x3 = Banana.SDecimal.multiply(x3, 3.107);
+        AltmanIndex.x3 = Banana.SDecimal.multiply(x3, 3.3);
 
         //X4
         var pant = Banana.SDecimal.subtract(calculated_data.totalassets, calculated_data.totalliabilitiesandequity);
         var x4 = Banana.SDecimal.divide(pant, calculated_data.totalliabilitiesandequity);
-        AltmanIndex.x4 = Banana.SDecimal.multiply(x4, 0.420);
+        AltmanIndex.x4 = Banana.SDecimal.multiply(x4, 0.6);
 
         //X5
         var x5 = Banana.SDecimal.divide(data.profitandloss.salesturnover.balance, totalassets);
-        AltmanIndex.x5 = Banana.SDecimal.multiply(x5, 0.998);
+        AltmanIndex.x5 = Banana.SDecimal.multiply(x5, 1.0);
 
 
         AltmanIndex.value = Banana.SDecimal.add(AltmanIndex.x1, AltmanIndex.x2);
@@ -5789,9 +5816,6 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         if (this.banDocument) {
             var fileGroup = this.banDocument.info("Base", "FileTypeGroup");
             var fileNumber = this.banDocument.info("Base", "FileTypeNumber");
-            var fileVersion = this.banDocument.info("Base", "FileTypeVersion");
-            var StartPeriod = this.banDocument.info("AccountingDataBase", "OpeningDate");
-            var EndPeriod = this.banDocument.info("AccountingDataBase", "ClosureDate");
 
             if (fileGroup == "100")
                 documentInfo.isDoubleEntry = true;
@@ -5810,6 +5834,10 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                 documentInfo.multiCurrency = true;
                 documentInfo.withVat = true;
             }
+
+            if(this.banDocument.info("AccountingDataBase", "ClosureDate"))
+                documentInfo.EndPeriod = 
+                this.banDocument.info("AccountingDataBase", "ClosureDate")
 
             if (this.banDocument.info("AccountingDataBase", "VatAccount"))
                 documentInfo.vatAccount =

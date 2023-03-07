@@ -152,8 +152,13 @@ style's for the texts
 
     /*style for the titles of total amounts*/
 
+    .styleUnderGroupTitles{
+        font-weight: bold;
+    }
+
     .styleTitlesTotalAmount {
         font-weight: bold;
+        background-color: #e5f2ff;
     }
 
     .styleParagraphs {
