@@ -627,7 +627,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         }
         tableRow = tableBalance.addRow("styleTablRows");
         if (this.dialogparam.acronymcolumn) {
-            tableRow.addCell(texts.currentassets_acronym);
+            tableRow.addCell(texts.currentassets_acronym, "styleUnderGroupTitles");
         }
         tableRow.addCell(texts.totalcurrentasset, 'styleUnderGroupTitles');
         for (var i = this.data.length - 1; i >= 0; i--) {
@@ -658,7 +658,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         //add the total of fixed assets
         tableRow = tableBalance.addRow("styleTablRows");
         if (this.dialogparam.acronymcolumn) {
-            tableRow.addCell(texts.fixedassets_acronym);
+            tableRow.addCell(texts.fixedassets_acronym, "styleUnderGroupTitles");
         }
         tableRow.addCell(texts.totalfixedasset, 'styleUnderGroupTitles');
         for (var i = this.data.length - 1; i >= 0; i--) {
@@ -670,7 +670,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
          * ***************************************************************************************/
         var tableRow = tableBalance.addRow("styleTablRows");
         if (this.dialogparam.acronymcolumn) {
-            tableRow.addCell(texts.totassets_acronym);
+            tableRow.addCell(texts.totassets_acronym, "styleUnderGroupTitles");
         }
         tableRow.addCell(texts.totalasset, 'styleTitlesTotalAmount');
         for (var i = this.data.length - 1; i >= 0; i--) {
@@ -702,10 +702,10 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                 tableRow.addCell(amount, 'styleNormalAmount');
             }
         }
-        //add the sum of the third capital (debt capital)
+        //add the sum of the short term debt capital
         tableRow = tableBalance.addRow("styleTablRows");
         if (this.dialogparam.acronymcolumn) {
-            tableRow.addCell(texts.shorttermdebtcapital_acronym);
+            tableRow.addCell(texts.shorttermdebtcapital_acronym, "styleUnderGroupTitles");
         }
         tableRow.addCell(texts.total_shorttermdebtcapital, 'styleUnderGroupTitles');
         for (var i = this.data.length - 1; i >= 0; i--) {
@@ -736,7 +736,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         //add the sum of the third capital (debt capital)
         tableRow = tableBalance.addRow("styleTablRows");
         if (this.dialogparam.acronymcolumn) {
-            tableRow.addCell(texts.longtermdebtcapital_acronym);
+            tableRow.addCell(texts.longtermdebtcapital_acronym, "styleUnderGroupTitles");
         }
         tableRow.addCell(texts.total_longtermdebtcapital, 'styleUnderGroupTitles');
         for (var i = this.data.length - 1; i >= 0; i--) {
@@ -750,7 +750,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
         tableRow = tableBalance.addRow("styleTablRows");
         if (this.dialogparam.acronymcolumn) {
-            tableRow.addCell(texts.debtcapital_acronym);
+            tableRow.addCell(texts.debtcapital_acronym, "styleUnderGroupTitles");
         }
         tableRow.addCell(texts.debtcapital, 'styleUnderGroupTitles');
         for (var i = this.data.length - 1; i >= 0; i--) {
@@ -781,7 +781,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         //add the sum of the owned capital
         tableRow = tableBalance.addRow("styleTablRows");
         if (this.dialogparam.acronymcolumn) {
-            tableRow.addCell(texts.ownedcapital_acronym);
+            tableRow.addCell(texts.ownedcapital_acronym, "styleUnderGroupTitles");
         }
         tableRow.addCell(texts.total_owncapital, 'styleUnderGroupTitles');
         for (var i = this.data.length - 1; i >= 0; i--) {
@@ -793,7 +793,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
          * ***************************************************************************************/
         var tableRow = tableBalance.addRow("styleTablRows");
         if (this.dialogparam.acronymcolumn) {
-            tableRow.addCell(texts.liabilitiesandequity_acronym);
+            tableRow.addCell(texts.liabilitiesandequity_acronym, "styleUnderGroupTitles");
         }
         tableRow.addCell(texts.totalliabilitiesandequity, 'styleTitlesTotalAmount');
         for (var i = this.data.length - 1; i >= 0; i--) {
@@ -840,7 +840,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             if (key === "costofmerchandservices") {
                 var tableRow = tableCe.addRow("styleTablRows");
                 if (this.dialogparam.acronymcolumn) {
-                    tableRow.addCell(texts.addedvalue_acronym);
+                    tableRow.addCell(texts.addedvalue_acronym, "styleUnderGroupTitles");
                 }
                 tableRow.addCell(texts.addedvalue, "styleUnderGroupTitles");
                 for (var i = this.data.length - 1; i >= 0; i--) {
@@ -850,7 +850,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             if (key === "differentcosts") {
                 var tableRow = tableCe.addRow("styleTablRows");
                 if (this.dialogparam.acronymcolumn) {
-                    tableRow.addCell(texts.ebitda_acronym);
+                    tableRow.addCell(texts.ebitda_acronym, "styleUnderGroupTitles");
                 }
                 tableRow.addCell(texts.ebitda, "styleUnderGroupTitles");
                 for (var i = this.data.length - 1; i >= 0; i--) {
@@ -861,7 +861,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             if (key === "depreandadjust") {
                 var tableRow = tableCe.addRow("styleTablRows");
                 if (this.dialogparam.acronymcolumn) {
-                    tableRow.addCell(texts.ebit_acronym);
+                    tableRow.addCell(texts.ebit_acronym, "styleUnderGroupTitles");
                 }
                 tableRow.addCell(texts.ebit, "styleUnderGroupTitles");
                 for (var i = this.data.length - 1; i >= 0; i--) {
@@ -871,7 +871,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             if (key === "interests") {
                 var tableRow = tableCe.addRow("styleTablRows");
                 if (this.dialogparam.acronymcolumn) {
-                    tableRow.addCell(texts.ebt_acronym);
+                    tableRow.addCell(texts.ebt_acronym, "styleUnderGroupTitles");
                 }
                 tableRow.addCell(texts.ebt, "styleUnderGroupTitles");
                 for (var i = this.data.length - 1; i >= 0; i--) {
@@ -881,7 +881,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         }
         var tableRow = tableCe.addRow("styleTablRows");
         if (this.dialogparam.acronymcolumn) {
-            tableRow.addCell(texts.finalresult_acronym);
+            tableRow.addCell(texts.finalresult_acronym, "styleUnderGroupTitles");
         }
         tableRow.addCell(texts.annualresult, "styleTitlesTotalAmount");
         for (var i = this.data.length - 1; i >= 0; i--) {
@@ -1039,18 +1039,18 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             if (typeof(this.data[0].cashflowData.operatingCashflow[key]) == 'object') {
                 if (this.dialogparam.acronymcolumn) {
                     //add acronym
-                    tableRow.addCell(this.data[0].cashflowData.operatingCashflow[key].acronym, "styleTablRows");
+                    tableRow.addCell(this.data[0].cashflowData.operatingCashflow[key].acronym.text, this.data[0].cashflowData.operatingCashflow[key].acronym.style);
                 }
                 tableRow.addCell(this.data[0].cashflowData.operatingCashflow[key].description.text, this.data[0].cashflowData.operatingCashflow[key].description.style);
                 for (var i = this.data.length - 1; i >= 0; i--) {
                     tableRow.addCell(this.toLocaleAmountFormat(this.data[i].cashflowData.operatingCashflow[key].amount.value), this.data[i].cashflowData.operatingCashflow[key].amount.style);
                 }
                 //add adjustment titles in the correct place by checking the acronyms
-                if (this.data[0].cashflowData.operatingCashflow[key].acronym == provisionsAcronym) {
+                if (this.data[0].cashflowData.operatingCashflow[key].acronym.text == provisionsAcronym) {
                     //add asset adjustment section title
                     var tableRow = tableCashflow.addRow("styleTablRows");
                     tableRow.addCell(texts.adjusted_assets_cashflow, styleAssetsAdjustments, span);
-                } else if (this.data[0].cashflowData.operatingCashflow[key].acronym == prepaidExpensesAcronym) {
+                } else if (this.data[0].cashflowData.operatingCashflow[key].acronym.text == prepaidExpensesAcronym) {
                     //add liabilities adjustment section title
                     var tableRow = tableCashflow.addRow("styleTablRows");
                     tableRow.addCell(texts.adjusted_liabilities_cashflow, styleLiabilitiesAdjustments, span);
@@ -1063,7 +1063,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             var tableRow = tableCashflow.addRow("styleTablRows");
             if (typeof(this.data[0].cashflowData.cashflowFromInvesting[key]) == 'object') {
                 if (this.dialogparam.acronymcolumn) {
-                    tableRow.addCell(this.data[0].cashflowData.cashflowFromInvesting[key].acronym, "styleTablRows");
+                    tableRow.addCell(this.data[0].cashflowData.cashflowFromInvesting[key].acronym.text, this.data[0].cashflowData.cashflowFromInvesting[key].acronym.style);
                 }
                 tableRow.addCell(this.data[0].cashflowData.cashflowFromInvesting[key].description.text, this.data[0].cashflowData.cashflowFromInvesting[key].description.style);
                 for (var i = this.data.length - 1; i >= 0; i--) {
@@ -1076,7 +1076,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             var tableRow = tableCashflow.addRow("styleTablRows");
             if (typeof(this.data[0].cashflowData.cashflowFromFinancing[key]) == 'object') {
                 if (this.dialogparam.acronymcolumn) {
-                    tableRow.addCell(this.data[0].cashflowData.cashflowFromFinancing[key].acronym, "styleTablRows");
+                    tableRow.addCell(this.data[0].cashflowData.cashflowFromFinancing[key].acronym.text, this.data[0].cashflowData.cashflowFromFinancing[key].acronym.style);
                 }
                 tableRow.addCell(this.data[0].cashflowData.cashflowFromFinancing[key].description.text, this.data[0].cashflowData.cashflowFromFinancing[key].description.style);
                 for (var i = this.data.length - 1; i >= 0; i--) {
@@ -1088,7 +1088,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         //add final cashflow section
         var tableRow = tableCashflow.addRow("styleTablRows");
         if (this.dialogparam.acronymcolumn) {
-            tableRow.addCell(this.data[0].cashflowData.finalCashflow.acronym, "styleTablRows");
+            tableRow.addCell(this.data[0].cashflowData.finalCashflow.acronym.text, this.data[0].cashflowData.finalCashflow.acronym.style);
         }
         tableRow.addCell(this.data[0].cashflowData.finalCashflow.description.text, this.data[0].cashflowData.finalCashflow.description.style);
         for (var i = this.data.length - 1; i >= 0; i--) {
@@ -1108,7 +1108,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             var tableRow = tableCashflowVerif.addRow("styleTablRows");
             if (typeof(this.data[0].cashflowData.verifData[key]) == 'object') {
                 if (this.dialogparam.acronymcolumn) {
-                    tableRow.addCell(this.data[0].cashflowData.verifData[key].acronym, "styleTablRows");
+                    tableRow.addCell(this.data[0].cashflowData.verifData[key].acronym.text, this.data[0].cashflowData.verifData[key].acronym.style);
                 }
                 tableRow.addCell(this.data[0].cashflowData.verifData[key].description.text, this.data[0].cashflowData.verifData[key].description.style);
                 for (var i = this.data.length - 1; i >= 0; i--) {
@@ -2077,10 +2077,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
     toCorrectDateFormat() {
         var currentDate = "";
-        //Banana.console.debug("date for accounting param: " + this.dialogparam.currentdate);
         currentDate = Banana.Converter.toInternalDateFormat(this.dialogparam.currentdate, 'yyyymmdd');
-        //Banana.console.debug("date for accounting: " + currentDate);
-
         this.dialogparam.currentdate = currentDate;
     }
 
@@ -3129,7 +3126,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         cashflow.operatingCashflow.finalResult.description = {};
         cashflow.operatingCashflow.finalResult.description.text = texts.annualresult;
         cashflow.operatingCashflow.finalResult.description.style = "styleTablRows";
-        cashflow.operatingCashflow.finalResult.acronym = texts.finalresult_acronym;
+        cashflow.operatingCashflow.finalResult.acronym = {};
+        cashflow.operatingCashflow.finalResult.acronym.text = texts.finalresult_acronym;
+        cashflow.operatingCashflow.finalResult.acronym.style = "styleTablRows";
         cashflow.operatingCashflow.finalResult.amount = {};
         cashflow.operatingCashflow.finalResult.amount.value = Banana.SDecimal.subtract(current_calculated_data.operatingCashflow.finalResult.amount.value, budget_calculated_data.operatingCashflow.finalResult.amount.value);
         cashflow.operatingCashflow.finalResult.amount.style = "styleNormalAmount";
@@ -3138,7 +3137,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         cashflow.operatingCashflow.fixedAssetsGain.description = {};
         cashflow.operatingCashflow.fixedAssetsGain.description.text = texts.gain_on_sales;
         cashflow.operatingCashflow.fixedAssetsGain.description.style = "styleTablRows";
-        cashflow.operatingCashflow.fixedAssetsGain.acronym = texts.revaluationPrefix_acronym;
+        cashflow.operatingCashflow.fixedAssetsGain.acronym = {};
+        cashflow.operatingCashflow.fixedAssetsGain.acronym.text = texts.revaluationPrefix_acronym;
+        cashflow.operatingCashflow.fixedAssetsGain.acronym.style = "styleTablRows";
         cashflow.operatingCashflow.fixedAssetsGain.amount = {};
         cashflow.operatingCashflow.fixedAssetsGain.amount.value = Banana.SDecimal.subtract(current_calculated_data.operatingCashflow.fixedAssetsGain.amount.value, budget_calculated_data.operatingCashflow.fixedAssetsGain.amount.value);
         cashflow.operatingCashflow.fixedAssetsGain.amount.style = "styleNormalAmount";
@@ -3147,7 +3148,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         cashflow.operatingCashflow.fixedAssetsLoss.description = {};
         cashflow.operatingCashflow.fixedAssetsLoss.description.text = texts.loss_on_sales;
         cashflow.operatingCashflow.fixedAssetsLoss.description.style = "styleTablRows";
-        cashflow.operatingCashflow.fixedAssetsLoss.acronym = texts.devaluationPrefix_acronym;
+        cashflow.operatingCashflow.fixedAssetsLoss.acronym = {};
+        cashflow.operatingCashflow.fixedAssetsLoss.acronym.text = texts.devaluationPrefix_acronym;
+        cashflow.operatingCashflow.fixedAssetsLoss.acronym.style = "styleTablRows";
         cashflow.operatingCashflow.fixedAssetsLoss.amount = {};
         cashflow.operatingCashflow.fixedAssetsLoss.amount.value = Banana.SDecimal.subtract(current_calculated_data.operatingCashflow.fixedAssetsLoss.amount.value, budget_calculated_data.operatingCashflow.fixedAssetsLoss.amount.value);
         cashflow.operatingCashflow.fixedAssetsLoss.amount.style = "styleNormalAmount";
@@ -3156,7 +3159,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         cashflow.operatingCashflow.depreAndAdjust.description = {};
         cashflow.operatingCashflow.depreAndAdjust.description.text = texts.depreandadjust;
         cashflow.operatingCashflow.depreAndAdjust.description.style = "styleTablRows";
-        cashflow.operatingCashflow.depreAndAdjust.acronym = texts.depreandadjust_acronym;
+        cashflow.operatingCashflow.depreAndAdjust.acronym = {};
+        cashflow.operatingCashflow.depreAndAdjust.acronym.text = texts.depreandadjust_acronym;
+        cashflow.operatingCashflow.depreAndAdjust.acronym.style = "styleTablRows";
         cashflow.operatingCashflow.depreAndAdjust.amount = {};
         cashflow.operatingCashflow.depreAndAdjust.amount.value = Banana.SDecimal.subtract(current_calculated_data.operatingCashflow.depreAndAdjust.amount.value, budget_calculated_data.operatingCashflow.depreAndAdjust.amount.value);
         cashflow.operatingCashflow.depreAndAdjust.amount.style = "styleNormalAmount";
@@ -3165,7 +3170,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         cashflow.operatingCashflow.provsionsAndSimilar.description = {};
         cashflow.operatingCashflow.provsionsAndSimilar.description.text = texts.provisionsandsimilar_cashflow;
         cashflow.operatingCashflow.provsionsAndSimilar.description.style = "styleTablRows";
-        cashflow.operatingCashflow.provsionsAndSimilar.acronym = texts.provisionsandsimilar_acronym;
+        cashflow.operatingCashflow.provsionsAndSimilar.acronym = {};
+        cashflow.operatingCashflow.provsionsAndSimilar.acronym.text = texts.provisionsandsimilar_acronym;
+        cashflow.operatingCashflow.provsionsAndSimilar.acronym.style = "styleTablRows";
         cashflow.operatingCashflow.provsionsAndSimilar.amount = {};
         cashflow.operatingCashflow.provsionsAndSimilar.amount.value = Banana.SDecimal.subtract(current_calculated_data.operatingCashflow.provsionsAndSimilar.amount.value, budget_calculated_data.operatingCashflow.provsionsAndSimilar.amount.value);
         cashflow.operatingCashflow.provsionsAndSimilar.amount.style = "styleNormalAmount";
@@ -3174,7 +3181,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         cashflow.operatingCashflow.credits.description = {};
         cashflow.operatingCashflow.credits.description.text = texts.credits_cashflow;
         cashflow.operatingCashflow.credits.description.style = "styleTablRows";
-        cashflow.operatingCashflow.credits.acronym = texts.credits_acronym;
+        cashflow.operatingCashflow.credits.acronym = {};
+        cashflow.operatingCashflow.credits.acronym.text = texts.credits_acronym;
+        cashflow.operatingCashflow.credits.acronym.style = "styleTablRows";
         cashflow.operatingCashflow.credits.amount = {};
         cashflow.operatingCashflow.credits.amount.value = Banana.SDecimal.subtract(current_calculated_data.operatingCashflow.credits.amount.value, budget_calculated_data.operatingCashflow.credits.amount.value);
         cashflow.operatingCashflow.credits.amount.style = "styleNormalAmount";
@@ -3183,7 +3192,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         cashflow.operatingCashflow.stocks.description = {};
         cashflow.operatingCashflow.stocks.description.text = texts.stocks_cashflow;
         cashflow.operatingCashflow.stocks.description.style = "styleTablRows";
-        cashflow.operatingCashflow.stocks.acronym = texts.stocks_acronym;
+        cashflow.operatingCashflow.stocks.acronym = {};
+        cashflow.operatingCashflow.stocks.acronym.text = texts.stocks_acronym;
+        cashflow.operatingCashflow.stocks.acronym.style = "styleTablRows";
         cashflow.operatingCashflow.stocks.amount = {};
         cashflow.operatingCashflow.stocks.amount.value = Banana.SDecimal.subtract(current_calculated_data.operatingCashflow.stocks.amount.value, budget_calculated_data.operatingCashflow.stocks.amount.value);
         cashflow.operatingCashflow.stocks.amount.style = "styleNormalAmount";
@@ -3192,7 +3203,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         cashflow.operatingCashflow.prepaidExpenses.description = {};
         cashflow.operatingCashflow.prepaidExpenses.description.text = texts.prepaid_expenses_cashflow;
         cashflow.operatingCashflow.prepaidExpenses.description.style = "styleTablRows";
-        cashflow.operatingCashflow.prepaidExpenses.acronym = texts.prepaid_expenses_acronym;
+        cashflow.operatingCashflow.prepaidExpenses.acronym = {};
+        cashflow.operatingCashflow.prepaidExpenses.acronym.text = texts.prepaid_expenses_acronym;
+        cashflow.operatingCashflow.prepaidExpenses.acronym.style = "styleTablRows";
         cashflow.operatingCashflow.prepaidExpenses.amount = {};
         cashflow.operatingCashflow.prepaidExpenses.amount.value = Banana.SDecimal.subtract(current_calculated_data.operatingCashflow.prepaidExpenses.amount.value, budget_calculated_data.operatingCashflow.prepaidExpenses.amount.value);
         cashflow.operatingCashflow.prepaidExpenses.amount.style = "styleNormalAmount";
@@ -3201,7 +3214,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         cashflow.operatingCashflow.debts.description = {};
         cashflow.operatingCashflow.debts.description.text = texts.liabilities_cashflow;
         cashflow.operatingCashflow.debts.description.style = "styleTablRows";
-        cashflow.operatingCashflow.debts.acronym = texts.shorttermdebtcapital_acronym;
+        cashflow.operatingCashflow.debts.acronym = {};
+        cashflow.operatingCashflow.debts.acronym.text = texts.shorttermdebtcapital_acronym;
+        cashflow.operatingCashflow.debts.acronym.style = "styleTablRows";
         cashflow.operatingCashflow.debts.amount = {}
         cashflow.operatingCashflow.debts.amount.value = Banana.SDecimal.subtract(current_calculated_data.operatingCashflow.debts.amount.value, budget_calculated_data.operatingCashflow.debts.amount.value);
         cashflow.operatingCashflow.debts.amount.style = "styleNormalAmount";
@@ -3210,7 +3225,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         cashflow.operatingCashflow.accrualsAndDefIncome.description = {};
         cashflow.operatingCashflow.accrualsAndDefIncome.description.text = texts.accruals_and_deferred_income_cashflow;
         cashflow.operatingCashflow.accrualsAndDefIncome.description.style = "styleTablRows";
-        cashflow.operatingCashflow.accrualsAndDefIncome.acronym = texts.accruals_and_deferred_income_acronym;
+        cashflow.operatingCashflow.accrualsAndDefIncome.acronym = {};
+        cashflow.operatingCashflow.accrualsAndDefIncome.acronym.text = texts.accruals_and_deferred_income_acronym;
+        cashflow.operatingCashflow.accrualsAndDefIncome.acronym.style = "styleTablRows";
         cashflow.operatingCashflow.accrualsAndDefIncome.amount = {};
         cashflow.operatingCashflow.accrualsAndDefIncome.amount.value = Banana.SDecimal.subtract(current_calculated_data.operatingCashflow.accrualsAndDefIncome.amount.value, budget_calculated_data.operatingCashflow.accrualsAndDefIncome.amount.value);
         cashflow.operatingCashflow.accrualsAndDefIncome.amount.style = "styleNormalAmount";
@@ -3219,7 +3236,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         cashflow.operatingCashflow.total.description = {};
         cashflow.operatingCashflow.total.description.text = texts.cashflow_from_operations;
         cashflow.operatingCashflow.total.description.style = "styleUnderGroupTitles";
-        cashflow.operatingCashflow.total.acronym = texts.cashflowFromOperations_acronym;
+        cashflow.operatingCashflow.total.acronym = {};
+        cashflow.operatingCashflow.total.acronym.text = texts.cashflowFromOperations_acronym;
+        cashflow.operatingCashflow.total.acronym.style = "styleUnderGroupTitles";
         cashflow.operatingCashflow.total.amount = {};
         cashflow.operatingCashflow.total.amount.value = Banana.SDecimal.subtract(current_calculated_data.operatingCashflow.total.amount.value, budget_calculated_data.operatingCashflow.total.amount.value);
         cashflow.operatingCashflow.total.amount.style = "styleMidTotalAmount";
@@ -3232,7 +3251,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         cashflow.cashflowFromInvesting.disinvestments.description = {};
         cashflow.cashflowFromInvesting.disinvestments.description.text = texts.disinvestments_cashflow;
         cashflow.cashflowFromInvesting.disinvestments.description.style = "styleTablRows";
-        cashflow.cashflowFromInvesting.disinvestments.acronym = texts.disinvestmentsPrefix_acronym;
+        cashflow.cashflowFromInvesting.disinvestments.acronym = {};
+        cashflow.cashflowFromInvesting.disinvestments.acronym.text = texts.disinvestmentsPrefix_acronym;
+        cashflow.cashflowFromInvesting.disinvestments.acronym.style = "styleTablRows";
         cashflow.cashflowFromInvesting.disinvestments.amount = {};
         cashflow.cashflowFromInvesting.disinvestments.amount.value = Banana.SDecimal.subtract(current_calculated_data.cashflowFromInvesting.disinvestments.amount.value, budget_calculated_data.cashflowFromInvesting.disinvestments.amount.value);
         cashflow.cashflowFromInvesting.disinvestments.amount.style = "styleNormalAmount";
@@ -3241,7 +3262,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         cashflow.cashflowFromInvesting.investments.description = {};
         cashflow.cashflowFromInvesting.investments.description.text = texts.investments_cashflow;
         cashflow.cashflowFromInvesting.investments.description.style = "styleTablRows";
-        cashflow.cashflowFromInvesting.investments.acronym = texts.investments_acronym;
+        cashflow.cashflowFromInvesting.investments.acronym = {};
+        cashflow.cashflowFromInvesting.investments.acronym.text = texts.investments_acronym;
+        cashflow.cashflowFromInvesting.investments.acronym.style = "styleTablRows";
         cashflow.cashflowFromInvesting.investments.amount = {};
         cashflow.cashflowFromInvesting.investments.amount.value = Banana.SDecimal.subtract(current_calculated_data.cashflowFromInvesting.investments.amount.value, budget_calculated_data.cashflowFromInvesting.investments.amount.value);
         cashflow.cashflowFromInvesting.investments.amount.style = "styleNormalAmount";
@@ -3251,7 +3274,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         cashflow.cashflowFromInvesting.total.description = {};
         cashflow.cashflowFromInvesting.total.description.text = texts.cashflow_from_investing;
         cashflow.cashflowFromInvesting.total.description.style = "styleUnderGroupTitles";
-        cashflow.cashflowFromInvesting.total.acronym = texts.cashflowFromInvesting_acronym;
+        cashflow.cashflowFromInvesting.total.acronym = {};
+        cashflow.cashflowFromInvesting.total.acronym.text = texts.cashflowFromInvesting_acronym;
+        cashflow.cashflowFromInvesting.total.acronym.style = "styleUnderGroupTitles";
         cashflow.cashflowFromInvesting.total.amount = {};
         cashflow.cashflowFromInvesting.total.amount.value = Banana.SDecimal.subtract(current_calculated_data.cashflowFromInvesting.total.amount.value, budget_calculated_data.cashflowFromInvesting.total.amount.value);
         cashflow.cashflowFromInvesting.total.amount.style = "styleMidTotalAmount";
@@ -3264,7 +3289,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         cashflow.cashflowFromFinancing.longTermDebts.description = {};
         cashflow.cashflowFromFinancing.longTermDebts.description.text = texts.longtermdebtcapital_cashflow;
         cashflow.cashflowFromFinancing.longTermDebts.description.style = "styleTablRows";
-        cashflow.cashflowFromFinancing.longTermDebts.acronym = texts.longtermdebtcapital_acronym;
+        cashflow.cashflowFromFinancing.longTermDebts.acronym = {};
+        cashflow.cashflowFromFinancing.longTermDebts.acronym.text = texts.longtermdebtcapital_acronym;
+        cashflow.cashflowFromFinancing.longTermDebts.acronym.style = "styleTablRows";
         cashflow.cashflowFromFinancing.longTermDebts.amount = {};
         cashflow.cashflowFromFinancing.longTermDebts.amount.value = Banana.SDecimal.subtract(current_calculated_data.cashflowFromFinancing.longTermDebts.amount.value, budget_calculated_data.cashflowFromFinancing.longTermDebts.amount.value);
         cashflow.cashflowFromFinancing.longTermDebts.amount.style = "styleNormalAmount";
@@ -3273,7 +3300,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         cashflow.cashflowFromFinancing.dividends.description = {};
         cashflow.cashflowFromFinancing.dividends.description.text = texts.dividends;
         cashflow.cashflowFromFinancing.dividends.description.style = "styleTablRows"
-        cashflow.cashflowFromFinancing.dividends.acronym = texts.dividends_acronym;
+        cashflow.cashflowFromFinancing.dividends.acronym = {};
+        cashflow.cashflowFromFinancing.dividends.acronym.text = texts.dividends_acronym;
+        cashflow.cashflowFromFinancing.dividends.acronym.style = "styleTablRows";
         cashflow.cashflowFromFinancing.dividends.amount = {};
         cashflow.cashflowFromFinancing.dividends.amount.value = Banana.SDecimal.subtract(current_calculated_data.cashflowFromFinancing.dividends.amount.value, budget_calculated_data.cashflowFromFinancing.dividends.amount.value);
         cashflow.cashflowFromFinancing.dividends.amount.style = "styleNormalAmount";
@@ -3282,7 +3311,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         cashflow.cashflowFromFinancing.ownBaseCapital.description = {};
         cashflow.cashflowFromFinancing.ownBaseCapital.description.text = texts.ownbasecapital_cashflow;
         cashflow.cashflowFromFinancing.ownBaseCapital.description.style = "styleTablRows";
-        cashflow.cashflowFromFinancing.ownBaseCapital.acronym = texts.ownbasecapital_acronym;
+        cashflow.cashflowFromFinancing.ownBaseCapital.acronym = {};
+        cashflow.cashflowFromFinancing.ownBaseCapital.acronym.text = texts.ownbasecapital_acronym;
+        cashflow.cashflowFromFinancing.ownBaseCapital.acronym.style = "styleTablRows";
         cashflow.cashflowFromFinancing.ownBaseCapital.amount = {};
         cashflow.cashflowFromFinancing.ownBaseCapital.amount.value = Banana.SDecimal.subtract(current_calculated_data.cashflowFromFinancing.ownBaseCapital.amount.value, budget_calculated_data.cashflowFromFinancing.ownBaseCapital.amount.value);
         cashflow.cashflowFromFinancing.ownBaseCapital.amount.style = "styleNormalAmount";
@@ -3291,7 +3322,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         cashflow.cashflowFromFinancing.total.description = {};
         cashflow.cashflowFromFinancing.total.description.text = texts.cashflow_from_financing;
         cashflow.cashflowFromFinancing.total.description.style = "styleUnderGroupTitles";
-        cashflow.cashflowFromFinancing.total.acronym = texts.cashflowFromFinancing_acronym;
+        cashflow.cashflowFromFinancing.total.acronym = {};
+        cashflow.cashflowFromFinancing.total.acronym.text = texts.cashflowFromFinancing_acronym;
+        cashflow.cashflowFromFinancing.total.acronym.style = "styleUnderGroupTitles";
         cashflow.cashflowFromFinancing.total.amount = {};
         cashflow.cashflowFromFinancing.total.amount.value = Banana.SDecimal.subtract(current_calculated_data.cashflowFromFinancing.total.amount.value, budget_calculated_data.cashflowFromFinancing.total.amount.value);
         cashflow.cashflowFromFinancing.total.amount.style = "styleMidTotalAmount";
@@ -3302,7 +3335,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         cashflow.finalCashflow.description = {};
         cashflow.finalCashflow.description.text = texts.final_cashflow;
         cashflow.finalCashflow.description.style = "styleTitlesTotalAmount";
-        cashflow.finalCashflow.acronym = texts.finalCashflow_acronym;
+        cashflow.finalCashflow.acronym = {};
+        cashflow.finalCashflow.acronym.text = texts.finalCashflow_acronym;
+        cashflow.finalCashflow.acronym.style = "styleUnderGroupTitles";
         cashflow.finalCashflow.amount = {};
         cashflow.finalCashflow.amount.value = Banana.SDecimal.subtract(current_calculated_data.finalCashflow.amount.value, budget_calculated_data.finalCashflow.amount.value);
         cashflow.finalCashflow.amount.style = "styleTotalAmount";
@@ -3314,7 +3349,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         cashflow.verifData.openingLiqu.description = {};
         cashflow.verifData.openingLiqu.description.text = texts.opening_liquidity;
         cashflow.verifData.openingLiqu.description.style = "styleTablRows";
-        cashflow.verifData.openingLiqu.acronym = texts.liquidity_acronym;
+        cashflow.verifData.openingLiqu.acronym = {};
+        cashflow.verifData.openingLiqu.acronym.text = texts.liquidity_acronym;
+        cashflow.verifData.openingLiqu.acronym.style = "styleTablRows";
         cashflow.verifData.openingLiqu.amount = {};
         cashflow.verifData.openingLiqu.amount.value = Banana.SDecimal.subtract(current_calculated_data.verifData.openingLiqu.amount.value, budget_calculated_data.verifData.openingLiqu.amount.value);
         cashflow.verifData.openingLiqu.amount.style = "styleNormalAmount";
@@ -3324,7 +3361,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         cashflow.verifData.changeInLiquidity.description = {};
         cashflow.verifData.changeInLiquidity.description.text = texts.cashflowFinal;
         cashflow.verifData.changeInLiquidity.description.style = "styleTablRows";
-        cashflow.verifData.changeInLiquidity.acronym = texts.finalCashflow_acronym;
+        cashflow.verifData.changeInLiquidity.acronym = {};
+        cashflow.verifData.changeInLiquidity.acronym.text = texts.finalCashflow_acronym;
+        cashflow.verifData.changeInLiquidity.acronym.style = "styleTablRows";
         cashflow.verifData.changeInLiquidity.amount = {};
         cashflow.verifData.changeInLiquidity.amount.value = Banana.SDecimal.subtract(current_calculated_data.verifData.changeInLiquidity.amount.value, budget_calculated_data.verifData.changeInLiquidity.amount.value);
         cashflow.verifData.changeInLiquidity.amount.style = "styleNormalAmount";
@@ -3333,7 +3372,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         cashflow.verifData.colosingLiqu_calc.description = {};
         cashflow.verifData.colosingLiqu_calc.description.text = texts.closing_liquidity;
         cashflow.verifData.colosingLiqu_calc.description.style = "styleTablRows";
-        cashflow.verifData.colosingLiqu_calc.acronym = texts.liquidity_acronym;
+        cashflow.verifData.colosingLiqu_calc.acronym = {};
+        cashflow.verifData.colosingLiqu_calc.acronym.text = texts.liquidity_acronym;
+        cashflow.verifData.colosingLiqu_calc.acronym.style = "styleTablRows";
         cashflow.verifData.colosingLiqu_calc.amount = {};
         cashflow.verifData.colosingLiqu_calc.amount.value = Banana.SDecimal.subtract(current_calculated_data.verifData.colosingLiqu_calc.amount.value, budget_calculated_data.verifData.colosingLiqu_calc.amount.value);
         cashflow.verifData.colosingLiqu_calc.amount.style = "styleNormalAmount";
@@ -3718,7 +3759,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         cashflow.operatingCashflow.finalResult.description = {};
         cashflow.operatingCashflow.finalResult.description.text = texts.annualresult;
         cashflow.operatingCashflow.finalResult.description.style = "styleTablRows";
-        cashflow.operatingCashflow.finalResult.acronym = texts.finalresult_acronym;
+        cashflow.operatingCashflow.finalResult.acronym = {};
+        cashflow.operatingCashflow.finalResult.acronym.text = texts.finalresult_acronym;
+        cashflow.operatingCashflow.finalResult.acronym.style = "styleTablRows";
         cashflow.operatingCashflow.finalResult.amount = {};
         cashflow.operatingCashflow.finalResult.amount.value = data.finalresult.finalresult.balance;
         cashflow.operatingCashflow.finalResult.amount.style = "styleNormalAmount";
@@ -3727,7 +3770,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         cashflow.operatingCashflow.fixedAssetsGain.description = {};
         cashflow.operatingCashflow.fixedAssetsGain.description.text = texts.gain_on_sales;
         cashflow.operatingCashflow.fixedAssetsGain.description.style = "styleTablRows";
-        cashflow.operatingCashflow.fixedAssetsGain.acronym = texts.revaluationPrefix_acronym;
+        cashflow.operatingCashflow.fixedAssetsGain.acronym = {};
+        cashflow.operatingCashflow.fixedAssetsGain.acronym.text = texts.revaluationPrefix_acronym;
+        cashflow.operatingCashflow.fixedAssetsGain.acronym.style = "styleTablRows";
         cashflow.operatingCashflow.fixedAssetsGain.amount = {};
         cashflow.operatingCashflow.fixedAssetsGain.amount.value = calcData.fixedassets_gain;
         cashflow.operatingCashflow.fixedAssetsGain.amount.style = "styleNormalAmount";
@@ -3736,7 +3781,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         cashflow.operatingCashflow.fixedAssetsLoss.description = {};
         cashflow.operatingCashflow.fixedAssetsLoss.description.text = texts.loss_on_sales;
         cashflow.operatingCashflow.fixedAssetsLoss.description.style = "styleTablRows";
-        cashflow.operatingCashflow.fixedAssetsLoss.acronym = texts.devaluationPrefix_acronym;
+        cashflow.operatingCashflow.fixedAssetsLoss.acronym = {};
+        cashflow.operatingCashflow.fixedAssetsLoss.acronym.text = texts.devaluationPrefix_acronym;
+        cashflow.operatingCashflow.fixedAssetsLoss.acronym.style = "styleTablRows";
         cashflow.operatingCashflow.fixedAssetsLoss.amount = {};
         cashflow.operatingCashflow.fixedAssetsLoss.amount.value = calcData.fixedassets_loss;
         cashflow.operatingCashflow.fixedAssetsLoss.amount.style = "styleNormalAmount";
@@ -3745,7 +3792,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         cashflow.operatingCashflow.depreAndAdjust.description = {};
         cashflow.operatingCashflow.depreAndAdjust.description.text = texts.depreandadjust;
         cashflow.operatingCashflow.depreAndAdjust.description.style = "styleTablRows";
-        cashflow.operatingCashflow.depreAndAdjust.acronym = texts.depreandadjust_acronym;
+        cashflow.operatingCashflow.depreAndAdjust.acronym = {};
+        cashflow.operatingCashflow.depreAndAdjust.acronym.text = texts.depreandadjust_acronym;
+        cashflow.operatingCashflow.depreAndAdjust.acronym.style = "styleTablRows";
         cashflow.operatingCashflow.depreAndAdjust.amount = {};
         cashflow.operatingCashflow.depreAndAdjust.amount.value = data.profitandloss.depreandadjust.balance;
         cashflow.operatingCashflow.depreAndAdjust.amount.style = "styleNormalAmount";
@@ -3754,7 +3803,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         cashflow.operatingCashflow.provsionsAndSimilar.description = {};
         cashflow.operatingCashflow.provsionsAndSimilar.description.text = texts.provisionsandsimilar_cashflow;
         cashflow.operatingCashflow.provsionsAndSimilar.description.style = "styleTablRows";
-        cashflow.operatingCashflow.provsionsAndSimilar.acronym = texts.provisionsandsimilar_acronym;
+        cashflow.operatingCashflow.provsionsAndSimilar.acronym = {};
+        cashflow.operatingCashflow.provsionsAndSimilar.acronym.text = texts.provisionsandsimilar_acronym;
+        cashflow.operatingCashflow.provsionsAndSimilar.acronym.style = "styleTablRows";
         cashflow.operatingCashflow.provsionsAndSimilar.amount = {};
         cashflow.operatingCashflow.provsionsAndSimilar.amount.value = data.balance.ltdc.provisionsandsimilar.delta;
         cashflow.operatingCashflow.provsionsAndSimilar.amount.style = "styleNormalAmount";
@@ -3763,7 +3814,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         cashflow.operatingCashflow.credits.description = {};
         cashflow.operatingCashflow.credits.description.text = texts.credits_cashflow;
         cashflow.operatingCashflow.credits.description.style = "styleTablRows";
-        cashflow.operatingCashflow.credits.acronym = texts.credits_acronym;
+        cashflow.operatingCashflow.credits.acronym = {};
+        cashflow.operatingCashflow.credits.acronym.text = texts.credits_acronym;
+        cashflow.operatingCashflow.credits.acronym.style = "styleTablRows";
         cashflow.operatingCashflow.credits.amount = {};
         cashflow.operatingCashflow.credits.amount.value = data.balance.ca.credits.delta;
         cashflow.operatingCashflow.credits.amount.style = "styleNormalAmount";
@@ -3772,7 +3825,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         cashflow.operatingCashflow.stocks.description = {};
         cashflow.operatingCashflow.stocks.description.text = texts.stocks_cashflow;
         cashflow.operatingCashflow.stocks.description.style = "styleTablRows";
-        cashflow.operatingCashflow.stocks.acronym = texts.stocks_acronym;
+        cashflow.operatingCashflow.stocks.acronym = {};
+        cashflow.operatingCashflow.stocks.acronym.text = texts.stocks_acronym;
+        cashflow.operatingCashflow.stocks.acronym.style = "styleTablRows";
         cashflow.operatingCashflow.stocks.amount = {};
         cashflow.operatingCashflow.stocks.amount.value = data.balance.ca.stocks.delta;
         cashflow.operatingCashflow.stocks.amount.style = "styleNormalAmount";
@@ -3781,7 +3836,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         cashflow.operatingCashflow.prepaidExpenses.description = {};
         cashflow.operatingCashflow.prepaidExpenses.description.text = texts.prepaid_expenses_cashflow;
         cashflow.operatingCashflow.prepaidExpenses.description.style = "styleTablRows";
-        cashflow.operatingCashflow.prepaidExpenses.acronym = texts.prepaid_expenses_acronym;
+        cashflow.operatingCashflow.prepaidExpenses.acronym = {};
+        cashflow.operatingCashflow.prepaidExpenses.acronym.text = texts.prepaid_expenses_acronym;
+        cashflow.operatingCashflow.prepaidExpenses.acronym.style = "styleTablRows";
         cashflow.operatingCashflow.prepaidExpenses.amount = {};
         cashflow.operatingCashflow.prepaidExpenses.amount.value = data.balance.ca.prepaid_expenses.delta;
         cashflow.operatingCashflow.prepaidExpenses.amount.style = "styleNormalAmount";
@@ -3790,7 +3847,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         cashflow.operatingCashflow.debts.description = {};
         cashflow.operatingCashflow.debts.description.text = texts.liabilities_cashflow;
         cashflow.operatingCashflow.debts.description.style = "styleTablRows";
-        cashflow.operatingCashflow.debts.acronym = texts.shorttermdebtcapital_acronym;
+        cashflow.operatingCashflow.debts.acronym = {};
+        cashflow.operatingCashflow.debts.acronym.text = texts.shorttermdebtcapital_acronym;
+        cashflow.operatingCashflow.debts.acronym.style = "styleTablRows";
         cashflow.operatingCashflow.debts.amount = {};
         cashflow.operatingCashflow.debts.amount.value = data.balance.stdc.debts.delta;
         cashflow.operatingCashflow.debts.amount.style = "styleNormalAmount";
@@ -3799,7 +3858,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         cashflow.operatingCashflow.accrualsAndDefIncome.description = {};
         cashflow.operatingCashflow.accrualsAndDefIncome.description.text = texts.accruals_and_deferred_income_cashflow;
         cashflow.operatingCashflow.accrualsAndDefIncome.description.style = "styleTablRows";
-        cashflow.operatingCashflow.accrualsAndDefIncome.acronym = texts.accruals_and_deferred_income_acronym;
+        cashflow.operatingCashflow.accrualsAndDefIncome.acronym = {};
+        cashflow.operatingCashflow.accrualsAndDefIncome.acronym.text = texts.accruals_and_deferred_income_acronym;
+        cashflow.operatingCashflow.accrualsAndDefIncome.acronym.style = "styleTablRows";
         cashflow.operatingCashflow.accrualsAndDefIncome.amount = {};
         cashflow.operatingCashflow.accrualsAndDefIncome.amount.value = data.balance.stdc.accruals_and_deferred_income.delta;
         cashflow.operatingCashflow.accrualsAndDefIncome.amount.style = "styleNormalAmount";
@@ -3826,7 +3887,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         cashflow.operatingCashflow.total.description = {};
         cashflow.operatingCashflow.total.description.text = texts.cashflow_from_operations;
         cashflow.operatingCashflow.total.description.style = "styleUnderGroupTitles";
-        cashflow.operatingCashflow.total.acronym = texts.cashflowFromOperations_acronym;
+        cashflow.operatingCashflow.total.acronym = {};
+        cashflow.operatingCashflow.total.acronym.text = texts.cashflowFromOperations_acronym;
+        cashflow.operatingCashflow.total.acronym.style = "styleUnderGroupTitles";
         cashflow.operatingCashflow.total.amount = {};
         cashflow.operatingCashflow.total.amount.value = cashflow.operatingCashflow.calcOperationsCashFlow();
         cashflow.operatingCashflow.total.amount.style = "styleMidTotalAmount";
@@ -3839,7 +3902,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         cashflow.cashflowFromInvesting.disinvestments.description = {};
         cashflow.cashflowFromInvesting.disinvestments.description.text = texts.disinvestments_cashflow;
         cashflow.cashflowFromInvesting.disinvestments.description.style = "styleTablRows";
-        cashflow.cashflowFromInvesting.disinvestments.acronym = texts.disinvestmentsPrefix_acronym;
+        cashflow.cashflowFromInvesting.disinvestments.acronym = {};
+        cashflow.cashflowFromInvesting.disinvestments.acronym.text = texts.disinvestmentsPrefix_acronym;
+        cashflow.cashflowFromInvesting.disinvestments.acronym.style = "styleTablRows";
         cashflow.cashflowFromInvesting.disinvestments.amount = {};
         cashflow.cashflowFromInvesting.disinvestments.amount.value = Banana.SDecimal.add(data.balance.fa.intangible_fixedassets.disinvestments, Banana.SDecimal.add(data.balance.fa.financial_fixedassets.disinvestments, data.balance.fa.tangible_fixedassets.disinvestments));
         cashflow.cashflowFromInvesting.disinvestments.amount.style = "styleNormalAmount";
@@ -3848,7 +3913,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         cashflow.cashflowFromInvesting.investments.description = {};
         cashflow.cashflowFromInvesting.investments.description.text = texts.investments_cashflow;
         cashflow.cashflowFromInvesting.investments.description.style = "styleTablRows";
-        cashflow.cashflowFromInvesting.investments.acronym = texts.investments_acronym;
+        cashflow.cashflowFromInvesting.disinvestments.acronym = {};
+        cashflow.cashflowFromInvesting.disinvestments.acronym.text = texts.investments_acronym;
+        cashflow.cashflowFromInvesting.disinvestments.acronym.style = "styleTablRows";
         cashflow.cashflowFromInvesting.investments.amount = {};
         cashflow.cashflowFromInvesting.investments.amount.value = this.getTotalInvestments(data, calcData, cashflow);
         cashflow.cashflowFromInvesting.investments.amount.style = "styleNormalAmount";
@@ -3866,7 +3933,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         cashflow.cashflowFromInvesting.total.description = {};
         cashflow.cashflowFromInvesting.total.description.text = texts.cashflow_from_investing;
         cashflow.cashflowFromInvesting.total.description.style = "styleUnderGroupTitles";
-        cashflow.cashflowFromInvesting.total.acronym = texts.cashflowFromInvesting_acronym;
+        cashflow.cashflowFromInvesting.total.acronym = {};
+        cashflow.cashflowFromInvesting.total.acronym.text = texts.cashflowFromInvesting_acronym;
+        cashflow.cashflowFromInvesting.total.acronym.style = "styleUnderGroupTitles";
         cashflow.cashflowFromInvesting.total.amount = {};
         cashflow.cashflowFromInvesting.total.amount.value = cashflow.cashflowFromInvesting.calcCashFlowFromInvesting();
         cashflow.cashflowFromInvesting.total.amount.style = "styleMidTotalAmount";
@@ -3879,7 +3948,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         cashflow.cashflowFromFinancing.longTermDebts.description = {};
         cashflow.cashflowFromFinancing.longTermDebts.description.text = texts.longtermdebtcapital_cashflow;
         cashflow.cashflowFromFinancing.longTermDebts.description.style = "styleTablRows";
-        cashflow.cashflowFromFinancing.longTermDebts.acronym = texts.longtermdebtcapital_acronym;
+        cashflow.cashflowFromFinancing.longTermDebts.acronym = {}
+        cashflow.cashflowFromFinancing.longTermDebts.acronym.text = texts.longtermdebtcapital_acronym;
+        cashflow.cashflowFromFinancing.longTermDebts.acronym.style = "styleTablRows";
         cashflow.cashflowFromFinancing.longTermDebts.amount = {};
         cashflow.cashflowFromFinancing.longTermDebts.amount.value = data.balance.ltdc.longter_debts.delta;
         cashflow.cashflowFromFinancing.longTermDebts.amount.style = "styleNormalAmount";
@@ -3888,7 +3959,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         cashflow.cashflowFromFinancing.dividends.description = {};
         cashflow.cashflowFromFinancing.dividends.description.text = texts.dividends;
         cashflow.cashflowFromFinancing.dividends.description.style = "styleTablRows"
-        cashflow.cashflowFromFinancing.dividends.acronym = texts.dividends_acronym;
+        cashflow.cashflowFromFinancing.dividends.acronym = {}
+        cashflow.cashflowFromFinancing.dividends.acronym.text = texts.dividends_acronym;
+        cashflow.cashflowFromFinancing.dividends.acronym.style = "styleTablRows";
         cashflow.cashflowFromFinancing.dividends.amount = {};
         cashflow.cashflowFromFinancing.dividends.amount.value = data.balance.oc.balanceProfits.dividends;
         cashflow.cashflowFromFinancing.dividends.amount.style = "styleNormalAmount";
@@ -3897,6 +3970,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         cashflow.cashflowFromFinancing.ownBaseCapital.description = {};
         cashflow.cashflowFromFinancing.ownBaseCapital.description.text = texts.ownbasecapital_cashflow;
         cashflow.cashflowFromFinancing.ownBaseCapital.description.style = "styleTablRows";
+        cashflow.cashflowFromFinancing.ownBaseCapital.acronym = {}
+        cashflow.cashflowFromFinancing.ownBaseCapital.acronym.text = texts.ownbasecapital_acronym;
+        cashflow.cashflowFromFinancing.ownBaseCapital.acronym.style = "styleTablRows";
         cashflow.cashflowFromFinancing.ownBaseCapital.acronym = texts.ownbasecapital_acronym;
         cashflow.cashflowFromFinancing.ownBaseCapital.amount = {};
         cashflow.cashflowFromFinancing.ownBaseCapital.amount.value = data.balance.oc.ownbasecapital.delta;
@@ -3917,7 +3993,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         cashflow.cashflowFromFinancing.total.description = {};
         cashflow.cashflowFromFinancing.total.description.text = texts.cashflow_from_financing;
         cashflow.cashflowFromFinancing.total.description.style = "styleUnderGroupTitles";
-        cashflow.cashflowFromFinancing.total.acronym = texts.cashflowFromFinancing_acronym;
+        cashflow.cashflowFromFinancing.total.acronym = {}
+        cashflow.cashflowFromFinancing.total.acronym.text = texts.cashflowFromFinancing_acronym;
+        cashflow.cashflowFromFinancing.total.acronym.style = "styleUnderGroupTitles";
         cashflow.cashflowFromFinancing.total.amount = {};
         cashflow.cashflowFromFinancing.total.amount.value = cashflow.cashflowFromFinancing.calcCashFlowFromFinancing();
         cashflow.cashflowFromFinancing.total.amount.style = "styleMidTotalAmount";
@@ -3937,7 +4015,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         cashflow.finalCashflow.description = {};
         cashflow.finalCashflow.description.text = texts.final_cashflow;
         cashflow.finalCashflow.description.style = "styleTitlesTotalAmount";
-        cashflow.finalCashflow.acronym = texts.finalCashflow_acronym;
+        cashflow.finalCashflow.acronym = {};
+        cashflow.finalCashflow.acronym.text = texts.finalCashflow_acronym;
+        cashflow.finalCashflow.acronym.style = "styleUnderGroupTitles";
         cashflow.finalCashflow.amount = {};
         cashflow.finalCashflow.amount.value = cashflow.calcFinalCashFlow();
         cashflow.finalCashflow.amount.style = "styleTotalAmount";
@@ -3949,7 +4029,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         cashflow.verifData.openingLiqu.description = {};
         cashflow.verifData.openingLiqu.description.text = texts.opening_liquidity;
         cashflow.verifData.openingLiqu.description.style = "styleTablRows";
-        cashflow.verifData.openingLiqu.acronym = texts.liquidity_acronym;
+        cashflow.verifData.openingLiqu.acronym = {};
+        cashflow.verifData.openingLiqu.acronym.text = texts.liquidity_acronym;
+        cashflow.verifData.openingLiqu.acronym.style = "styleTablRows";
         cashflow.verifData.openingLiqu.amount = {};
         cashflow.verifData.openingLiqu.amount.value = data.balance.ca.liquidity.opening;
         cashflow.verifData.openingLiqu.amount.style = "styleNormalAmount";
@@ -3959,7 +4041,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         cashflow.verifData.changeInLiquidity.description = {};
         cashflow.verifData.changeInLiquidity.description.text = texts.cashflowFinal;
         cashflow.verifData.changeInLiquidity.description.style = "styleTablRows";
-        cashflow.verifData.changeInLiquidity.acronym = texts.finalCashflow_acronym;
+        cashflow.verifData.changeInLiquidity.acronym = {};
+        cashflow.verifData.changeInLiquidity.acronym.text = texts.finalCashflow_acronym;
+        cashflow.verifData.changeInLiquidity.acronym.style = "styleTablRows"
         cashflow.verifData.changeInLiquidity.amount = {};
         cashflow.verifData.changeInLiquidity.amount.value = cashflow.finalCashflow.amount.value;
         cashflow.verifData.changeInLiquidity.amount.style = "styleNormalAmount";
@@ -3968,7 +4052,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         cashflow.verifData.colosingLiqu_calc.description = {};
         cashflow.verifData.colosingLiqu_calc.description.text = texts.closing_liquidity;
         cashflow.verifData.colosingLiqu_calc.description.style = "styleTablRows";
-        cashflow.verifData.colosingLiqu_calc.acronym = texts.liquidity_acronym;
+        cashflow.verifData.colosingLiqu_calc.acronym = {};
+        cashflow.verifData.colosingLiqu_calc.acronym.text = texts.liquidity_acronym;
+        cashflow.verifData.colosingLiqu_calc.acronym.style = "styleTablRows"
         cashflow.verifData.colosingLiqu_calc.amount = {};
         cashflow.verifData.colosingLiqu_calc.amount.value = Banana.SDecimal.add(cashflow.verifData.openingLiqu.amount.value, cashflow.verifData.changeInLiquidity.amount.value);
         cashflow.verifData.colosingLiqu_calc.amount.style = "styleNormalAmount";
@@ -5100,7 +5186,6 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         //Enter the current date
         //Calendar date is displayed in the local format. returns and accept format "yyyymmdd"
         let yearToDate = this.getCurrentDate();
-        //Banana.console.debug("default date: " + yearToDate);
         currentParam = {};
         currentParam.name = 'currentdate';
         currentParam.group = 'preferences';
@@ -5108,11 +5193,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.type = 'date';
         currentParam.parentObject = 'Analysis Details';
         currentParam.value = userParam.currentdate ? userParam.currentdate : yearToDate;
-        //Banana.console.debug("user param: " + userParam.currentdate);
-        //Banana.console.debug("current param: " + currentParam.value);
-        currentParam.defaultvalue = yearToDate;
+        //Default value is red differently so we have to use the local format.
+        currentParam.defaultvalue = Banana.Converter.toLocaleDateFormat(yearToDate);
         currentParam.readValue = function() {
-            //Banana.console.debug("read value: " + this.value);
             var startDate = Banana.Converter.toInternalDateFormat(this.value); //use local format
             startDate = startDate.replace(new RegExp("-", 'g'), "");
             userParam.currentdate = startDate;
@@ -5694,14 +5777,12 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
     calculateAltmanIndex(data, calculated_data, index) {
 
         /*Z-SCORE = 0.717 X1 + 0.847 X2 +3.107 X3 +0.420 X4 + 0.998 X5
-        X1 = (Current Asset - Current liabilities) / Total Asset
+        X1 = Current Asset / Total Asset
         X2 = Reserves/ Total Asset
         X3 = EBIT / Total Asset
         X4 = Net Assets / Total liabilities and Equitiy
         X5 = Sales / Total Asset
         */
-
-        /**New formula values: 1.2A + 1.4B + 3.3C + 0.6D + 1.0E */
 
         var AltmanIndex = {};
 
@@ -5709,25 +5790,25 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var currentassets = calculated_data.currentassets;
         var totalassets = calculated_data.totalassets;
         var x1 = Banana.SDecimal.divide(currentassets, totalassets);
-        AltmanIndex.x1 = Banana.SDecimal.multiply(x1, 1.20);
+        AltmanIndex.x1 = Banana.SDecimal.multiply(x1, 0.717);
 
         //X2
         var reserves = data.balance.oc.reserves.balance;
         var x2 = Banana.SDecimal.divide(reserves, totalassets);
-        AltmanIndex.x2 = Banana.SDecimal.multiply(x2, 1.4);
+        AltmanIndex.x2 = Banana.SDecimal.multiply(x2, 0.847);
 
         //X3
         var x3 = Banana.SDecimal.divide(index.red.roi.amount, 100);
-        AltmanIndex.x3 = Banana.SDecimal.multiply(x3, 3.3);
+        AltmanIndex.x3 = Banana.SDecimal.multiply(x3, 3.107);
 
         //X4
         var pant = Banana.SDecimal.subtract(calculated_data.totalassets, calculated_data.totalliabilitiesandequity);
         var x4 = Banana.SDecimal.divide(pant, calculated_data.totalliabilitiesandequity);
-        AltmanIndex.x4 = Banana.SDecimal.multiply(x4, 0.6);
+        AltmanIndex.x4 = Banana.SDecimal.multiply(x4, 0.420);
 
         //X5
         var x5 = Banana.SDecimal.divide(data.profitandloss.salesturnover.balance, totalassets);
-        AltmanIndex.x5 = Banana.SDecimal.multiply(x5, 1.0);
+        AltmanIndex.x5 = Banana.SDecimal.multiply(x5, 0.998);
 
 
         AltmanIndex.value = Banana.SDecimal.add(AltmanIndex.x1, AltmanIndex.x2);
