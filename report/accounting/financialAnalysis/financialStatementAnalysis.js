@@ -58,7 +58,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
     printReportAdd_TableBalance(report) {
         var headerStyle = this.setColorStyle("styleTablesHeaderText");
-        var texts = this.initFinancialAnalysisTexts();
+        var texts = this.getFinancialAnalysisTexts();
         var tableBalance = report.addTable('myTableBalance');
         tableBalance.getCaption().addText(texts.upperbalance, "styleTitles");
         //columns
@@ -125,7 +125,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
     printReportAdd_TableConCe(report) {
         var headerStyle = this.setColorStyle("styleTablesHeaderText");
-        var texts = this.initFinancialAnalysisTexts();
+        var texts = this.getFinancialAnalysisTexts();
         var tableConCe = report.addTable('myConTableCe');
         tableConCe.getCaption().addText(texts.upperprofitandloss, "styleTitles");
         //columns
@@ -149,7 +149,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
     printReportAdd_TableControlSums(report) {
         var headerStyle = this.setColorStyle("styleTablesHeaderText");
-        var texts = this.initFinancialAnalysisTexts();
+        var texts = this.getFinancialAnalysisTexts();
         var tableBalanceSumsControl = report.addTable('myTableBalanceSumsControl');
         tableBalanceSumsControl.getCaption().addText(texts.controlsums, "styleTitles");
         // header
@@ -164,7 +164,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
     printReportAdd_TableIndliq(report) {
         var headerStyle = this.setColorStyle("styleTablesHeaderText");
-        var texts = this.initFinancialAnalysisTexts();
+        var texts = this.getFinancialAnalysisTexts();
         var tableIndliq = report.addTable('myIndliqTable');
         tableIndliq.getCaption().addText(texts.upperliquidityratios, "styleTitles");
         tableIndliq.addColumn("Description").setStyleAttributes("width:25%");
@@ -186,7 +186,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
     }
     printReportAdd_TableIndlev(report) {
         var headerStyle = this.setColorStyle("styleTablesHeaderText");
-        var texts = this.initFinancialAnalysisTexts();
+        var texts = this.getFinancialAnalysisTexts();
         var tableIndlev = report.addTable('myIndlevTable');
         tableIndlev.setStyleAttributes("width:100%");
         tableIndlev.getCaption().addText(texts.upperleverageratios, "styleTitles");
@@ -210,7 +210,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
     }
     printReportAdd_TableIndprof(report) {
         var headerStyle = this.setColorStyle("styleTablesHeaderText");
-        var texts = this.initFinancialAnalysisTexts();
+        var texts = this.getFinancialAnalysisTexts();
         var tableIndprof = report.addTable('myIndprofTable');
         tableIndprof.setStyleAttributes("width:100%");
         tableIndprof.getCaption().addText(texts.upperprofitabilityratios, "styleTitles");
@@ -235,7 +235,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
     printReportAdd_TableIndeff(report) {
         var headerStyle = this.setColorStyle("styleTablesHeaderText");
-        var texts = this.initFinancialAnalysisTexts();
+        var texts = this.getFinancialAnalysisTexts();
         var tableIndeff = report.addTable('myIndeffTable');
         tableIndeff.setStyleAttributes("width:100%");
         tableIndeff.getCaption().addText(texts.upperefficiancyratios, "styleTitles");
@@ -261,7 +261,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
     printReportAdd_TableCashflow(report) {
         var headerStyle = this.setColorStyle("styleTablesHeaderText");
-        var texts = this.initFinancialAnalysisTexts();
+        var texts = this.getFinancialAnalysisTexts();
         var tableCashflow = report.addTable('myTableCashflow');
         tableCashflow.getCaption().addText(texts.uppercashflow, "styleTitles");
         //columns
@@ -299,7 +299,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
     printReportAdd_TableRetainedEarnings(report) {
         var headerStyle = this.setColorStyle("styleTablesHeaderText");
-        var texts = this.initFinancialAnalysisTexts();
+        var texts = this.getFinancialAnalysisTexts();
         var tableRetainedEarnings = report.addTable('myRetainedEarningsTable');
         tableRetainedEarnings.setStyleAttributes("width:100%");
         tableRetainedEarnings.getCaption().addText(texts.retainedEarnings, "styleTitles");
@@ -317,7 +317,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
     printReportAdd_TableIndCashflow(report) {
         var headerStyle = this.setColorStyle("styleTablesHeaderText");
-        var texts = this.initFinancialAnalysisTexts();
+        var texts = this.getFinancialAnalysisTexts();
         var tableIndCashflow = report.addTable('myIndCashflowTable');
         tableIndCashflow.setStyleAttributes("width:100%");
         tableIndCashflow.getCaption().addText(texts.uppercashflowratios, "styleTitles");
@@ -343,7 +343,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
     printReportAdd_TableDupont(report) {
         var headerStyle = this.setColorStyle("styleTablesHeaderText");
-        var texts = this.initFinancialAnalysisTexts();
+        var texts = this.getFinancialAnalysisTexts();
         var tableDupont = report.addTable('myDupontTable');
         tableDupont.getCaption().addText(texts.upperdupontscheme, "styleTitles");
         tableDupont.addColumn("Description").setStyleAttributes("width:30%");
@@ -358,14 +358,25 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         return tableDupont;
     }
 
-    printtableAltmanIndex(report) {
-        var texts = this.initFinancialAnalysisTexts();
+    printTableAltmanIndex(report) {
+        var headerStyle = this.setColorStyle("styleTablesHeaderText");
+        var texts = this.getFinancialAnalysisTexts();
         var tableAltmanIndex = report.addTable('myTableAltmanIndex');
         tableAltmanIndex.getCaption().addText(texts.upperaltmanindex, "styleTitles");
+        tableAltmanIndex.addColumn("Description").setStyleAttributes("width:45%");
+        if (this.dialogparam.formulascolumn) {
+            tableAltmanIndex.addColumn("Formula").setStyleAttributes("width:45%");
+        }
+        tableAltmanIndex.addColumn("Weighting").setStyleAttributes("width:10%");
         this.setColumnsWidthDinamically(tableAltmanIndex);
         // header
         var tableHeader = tableAltmanIndex.getHeader();
         var tableRow = tableHeader.addRow();
+        tableRow.addCell(texts.description, headerStyle);
+        if (this.dialogparam.formulascolumn) {
+            tableRow.addCell(texts.formula, headerStyle);
+        }
+        tableRow.addCell(texts.weighting, headerStyle);
         this.generateHeaderColumns(tableRow);
         return tableAltmanIndex;
 
@@ -373,7 +384,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
     generateHeaderColumns(tableRow) {
         var headerStyle = this.setColorStyle("styleTablesHeaderText");
-        var texts = this.initFinancialAnalysisTexts();
+        var texts = this.getFinancialAnalysisTexts();
         for (var i = this.data.length - 1; i >= 0; i--) {
             var year = this.data[i].period.EndDate;
             var periodType = this.data[i].period.Type;
@@ -504,7 +515,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
      * @Param {object} report: the report created
      */
     addHeader(report, styleSheet) {
-        //var texts=this.initFinancialAnalysisTexts();
+        //var texts=this.getFinancialAnalysisTexts();
         let company = "";
         let address1 = "";
         let city = "";
@@ -566,7 +577,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
          * initialize the variables i will use frequently in this method
          * ***************************************************************************************/
 
-        var texts = this.initFinancialAnalysisTexts();
+        var texts = this.getFinancialAnalysisTexts();
         var report = Banana.Report.newReport('Financial Statement Analysis Report');
 
         var analsysisYears = this.data.length;
@@ -578,7 +589,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var acronym = "";
         var ratios = "";
         var textstyle = "";
-        var span = this.generateSpanForBalanceTitles();
+        var spanBalanceTitle = this.generateSpanForBalanceTitles();
         var styleAssetsAdjustments = this.setColorStyle("styleAssetsAdjustments");
         var styleLiabilitiesAdjustments = this.setColorStyle("styleLiabilitiesAdjustments");
         var styleTotalAmount = this.setColorStyle("styleTotalAmount");
@@ -603,7 +614,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var tableBalance = this.printReportAdd_TableBalance(report);
         //Assets title
         var tableRow = tableBalance.addRow("styleTablRows");
-        tableRow.addCell(texts.assets, styleAssetsAdjustments, span);
+        tableRow.addCell(texts.assets, styleAssetsAdjustments, spanBalanceTitle);
 
         /******************************************************************************************
          * Add the current asset to the  balance table
@@ -679,7 +690,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
         //Liabilities and Equity title
         var tableRow = tableBalance.addRow("styleTablRows");
-        tableRow.addCell(texts.liabilitiesandequity, styleLiabilitiesAdjustments, span);
+        tableRow.addCell(texts.liabilitiesandequity, styleLiabilitiesAdjustments, spanBalanceTitle);
 
         /******************************************************************************************
          * Add the Short term third capital to the balance table
@@ -928,6 +939,158 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             report.addPageBreak();
         }
 
+        /******************************************************************
+         * Add the Cashflow table (only if we have at least 2yr of analysis)
+         *****************************************************************/
+
+        var tableCashflow = this.printReportAdd_TableCashflow(report);
+        //save the acronyms I need for reference
+        let provisionsAcronym = this.data[0].cashflowData.operatingCashflow.provsionsAndSimilar.acronym.text;
+        let prepaidExpensesAcronym = this.data[0].cashflowData.operatingCashflow.prepaidExpenses.acronym.text;
+
+        //add the operating cashflow elements
+        for (var key in this.data[0].cashflowData.operatingCashflow) {
+            var tableRow = tableCashflow.addRow("styleTablRows");
+            if (typeof(this.data[0].cashflowData.operatingCashflow[key]) == 'object') {
+                if (this.dialogparam.acronymcolumn) {
+                    //add acronym
+                    tableRow.addCell(this.data[0].cashflowData.operatingCashflow[key].acronym.text, this.data[0].cashflowData.operatingCashflow[key].acronym.style);
+                }
+                tableRow.addCell(this.data[0].cashflowData.operatingCashflow[key].description.text, this.data[0].cashflowData.operatingCashflow[key].description.style);
+                for (var i = this.data.length - 1; i >= 0; i--) {
+                    tableRow.addCell(this.toLocaleAmountFormat(this.data[i].cashflowData.operatingCashflow[key].amount.value), this.data[i].cashflowData.operatingCashflow[key].amount.style);
+                }
+                //add adjustment titles in the correct place by checking the acronyms
+                if (this.data[0].cashflowData.operatingCashflow[key].acronym.text == provisionsAcronym) {
+                    //add asset adjustment section title
+                    var tableRow = tableCashflow.addRow("styleTablRows");
+                    tableRow.addCell("", "styleTablRows");
+                    tableRow.addCell(texts.adjusted_assets_cashflow, "styleUnderGroupTitles", spanBalanceTitle - 1);
+                } else if (this.data[0].cashflowData.operatingCashflow[key].acronym.text == prepaidExpensesAcronym) {
+                    //add liabilities adjustment section title
+                    var tableRow = tableCashflow.addRow("styleTablRows");
+                    tableRow.addCell("", "styleTablRows");
+                    tableRow.addCell(texts.adjusted_liabilities_cashflow, "styleUnderGroupTitles", spanBalanceTitle -1);
+                }
+            }
+        }
+
+        //add the investing cashflow elements
+        for (var key in this.data[0].cashflowData.cashflowFromInvesting) {
+            var tableRow = tableCashflow.addRow("styleTablRows");
+            if (typeof(this.data[0].cashflowData.cashflowFromInvesting[key]) == 'object') {
+                if (this.dialogparam.acronymcolumn) {
+                    tableRow.addCell(this.data[0].cashflowData.cashflowFromInvesting[key].acronym.text, this.data[0].cashflowData.cashflowFromInvesting[key].acronym.style);
+                }
+                tableRow.addCell(this.data[0].cashflowData.cashflowFromInvesting[key].description.text, this.data[0].cashflowData.cashflowFromInvesting[key].description.style);
+                for (var i = this.data.length - 1; i >= 0; i--) {
+                    tableRow.addCell(this.toLocaleAmountFormat(this.data[i].cashflowData.cashflowFromInvesting[key].amount.value), this.data[i].cashflowData.cashflowFromInvesting[key].amount.style);
+                }
+            }
+        }
+        //add the financing cashflow elements
+        for (var key in this.data[0].cashflowData.cashflowFromFinancing) {
+            var tableRow = tableCashflow.addRow("styleTablRows");
+            if (typeof(this.data[0].cashflowData.cashflowFromFinancing[key]) == 'object') {
+                if (this.dialogparam.acronymcolumn) {
+                    tableRow.addCell(this.data[0].cashflowData.cashflowFromFinancing[key].acronym.text, this.data[0].cashflowData.cashflowFromFinancing[key].acronym.style);
+                }
+                tableRow.addCell(this.data[0].cashflowData.cashflowFromFinancing[key].description.text, this.data[0].cashflowData.cashflowFromFinancing[key].description.style);
+                for (var i = this.data.length - 1; i >= 0; i--) {
+                    tableRow.addCell(this.toLocaleAmountFormat(this.data[i].cashflowData.cashflowFromFinancing[key].amount.value), this.data[i].cashflowData.cashflowFromFinancing[key].amount.style);
+                }
+            }
+        }
+
+        //add final cashflow section
+        var tableRow = tableCashflow.addRow("styleTablRows");
+        if (this.dialogparam.acronymcolumn) {
+            tableRow.addCell(this.data[0].cashflowData.finalCashflow.acronym.text, this.data[0].cashflowData.finalCashflow.acronym.style);
+        }
+        tableRow.addCell(this.data[0].cashflowData.finalCashflow.description.text, this.data[0].cashflowData.finalCashflow.description.style);
+        for (var i = this.data.length - 1; i >= 0; i--) {
+            tableRow.addCell(this.toLocaleAmountFormat(this.data[i].cashflowData.finalCashflow.amount.value), this.data[i].cashflowData.finalCashflow.amount.style);
+        }
+
+        /**********************************************************
+         * Add the Cashflow verification section 
+         **********************************************************/
+        //first ad white row
+
+        var tableCashflowVerif = this.printReportAdd_TableCashflowVerification(report);
+        var tableRow = tableCashflowVerif.addRow("styleTablRows");
+        tableRow.addCell(texts.cashflow_verification, "styleUnderGroupTitles", spanBalanceTitle);
+        //add the investing cashflow elements
+        for (var key in this.data[0].cashflowData.verifData) {
+            var tableRow = tableCashflowVerif.addRow("styleTablRows");
+            if (typeof(this.data[0].cashflowData.verifData[key]) == 'object') {
+                if (this.dialogparam.acronymcolumn) {
+                    tableRow.addCell(this.data[0].cashflowData.verifData[key].acronym.text, this.data[0].cashflowData.verifData[key].acronym.style);
+                }
+                tableRow.addCell(this.data[0].cashflowData.verifData[key].description.text, this.data[0].cashflowData.verifData[key].description.style);
+                for (var i = this.data.length - 1; i >= 0; i--) {
+                    tableRow.addCell(this.toLocaleAmountFormat(this.data[i].cashflowData.verifData[key].amount.value), this.data[i].cashflowData.verifData[key].amount.style);
+                }
+            }
+        }
+        //add row with the differences (only if presents)
+        let differencesData = this.getCashflowDifferencesData(this.data);
+        if (differencesData.hasDifferences) {
+            var tableRow = tableCashflowVerif.addRow("styleTablRows");
+            if (this.dialogparam.acronymcolumn) {
+                tableRow.addCell("", "styleTablRows");
+            }
+            tableRow.addCell(differencesData.values[0].description.text, differencesData.values[0].description.style);
+            for (var key in differencesData.values) {
+                tableRow.addCell(this.toLocaleAmountFormat(differencesData.values[key].amount.value), differencesData.values[key].amount.getStyle());
+            }
+        }
+
+
+        /**********************************************************
+         * Add the Retained Earnings Statement table
+         **********************************************************/
+        //I show the table even if the annual result is not positive, but the values are all 0
+        var tableRetainedEarnings = this.printReportAdd_TableRetainedEarnings(report);
+        for (var key in this.data[0].retEarningsData) {
+            var tableRow = tableRetainedEarnings.addRow();
+            if (typeof this.data[0].retEarningsData[key] === 'object') {
+                let textStyle = this.data[0].retEarningsData[key].textStyle;
+                tableRow.addCell(this.data[0].retEarningsData[key].description, textStyle);
+                for (var i = this.data.length - 1; i >= 0; i--) {
+                    let amount = this.data[i].retEarningsData[key].amount;
+                    let amountStyle = this.data[i].retEarningsData[key].amountStyle;
+                    tableRow.addCell(this.toLocaleAmountFormat(amount), amountStyle);
+                }
+            }
+        }
+
+        /**************************************************
+         * Add the Cashflow ratios
+         *************************************************/
+        var tableIndCashflow = this.printReportAdd_TableIndCashflow(report);
+
+        for (var key in this.data[0].cashflow_index) {
+            var tableRow = tableIndCashflow.addRow("styleTablRows");
+            tableRow.addCell(this.data[0].cashflow_index[key].description, "styleTablRows");
+            if (this.dialogparam.formulascolumn) {
+                tableRow.addCell(this.data[0].cashflow_index[key].formula, "styleCentralText");
+            }
+            tableRow.addCell(this.data[0].cashflow_index[key].benchmark, "styleCentralText");
+            for (var i = this.data.length - 1; i >= 0; i--) {
+                ratios = this.data[i].cashflow_index[key].amount;
+                cell = tableRow.addCell(ratios + perc + ' ', "styleNormalAmount");
+                if (i < analsysisYears) {
+                    var indexT1 = this.data[i].cashflow_index[key].amount;
+                    var indexT2 = this.data[i + 1].cashflow_index[key].amount;
+                    this.setIndexEvolution(indexT1, indexT2, cell, this.data[i].period.Type);
+                }
+            }
+        }
+
+
+        report.addPageBreak();
+
 
         /******************************************************************************************
          * Add the Liquidity ratios table
@@ -1024,156 +1187,6 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
         report.addPageBreak();
 
-        /******************************************************************
-         * Add the Cashflow table (only if we have at least 2yr of analysis)
-         *****************************************************************/
-
-        var tableCashflow = this.printReportAdd_TableCashflow(report);
-        //save the acronyms I need for reference
-        let provisionsAcronym = this.data[0].cashflowData.operatingCashflow.provsionsAndSimilar.acronym;
-        let prepaidExpensesAcronym = this.data[0].cashflowData.operatingCashflow.prepaidExpenses.acronym;
-
-        //add the operating cashflow elements
-        for (var key in this.data[0].cashflowData.operatingCashflow) {
-            var tableRow = tableCashflow.addRow("styleTablRows");
-            if (typeof(this.data[0].cashflowData.operatingCashflow[key]) == 'object') {
-                if (this.dialogparam.acronymcolumn) {
-                    //add acronym
-                    tableRow.addCell(this.data[0].cashflowData.operatingCashflow[key].acronym.text, this.data[0].cashflowData.operatingCashflow[key].acronym.style);
-                }
-                tableRow.addCell(this.data[0].cashflowData.operatingCashflow[key].description.text, this.data[0].cashflowData.operatingCashflow[key].description.style);
-                for (var i = this.data.length - 1; i >= 0; i--) {
-                    tableRow.addCell(this.toLocaleAmountFormat(this.data[i].cashflowData.operatingCashflow[key].amount.value), this.data[i].cashflowData.operatingCashflow[key].amount.style);
-                }
-                //add adjustment titles in the correct place by checking the acronyms
-                if (this.data[0].cashflowData.operatingCashflow[key].acronym.text == provisionsAcronym) {
-                    //add asset adjustment section title
-                    var tableRow = tableCashflow.addRow("styleTablRows");
-                    tableRow.addCell(texts.adjusted_assets_cashflow, styleAssetsAdjustments, span);
-                } else if (this.data[0].cashflowData.operatingCashflow[key].acronym.text == prepaidExpensesAcronym) {
-                    //add liabilities adjustment section title
-                    var tableRow = tableCashflow.addRow("styleTablRows");
-                    tableRow.addCell(texts.adjusted_liabilities_cashflow, styleLiabilitiesAdjustments, span);
-                }
-            }
-        }
-
-        //add the investing cashflow elements
-        for (var key in this.data[0].cashflowData.cashflowFromInvesting) {
-            var tableRow = tableCashflow.addRow("styleTablRows");
-            if (typeof(this.data[0].cashflowData.cashflowFromInvesting[key]) == 'object') {
-                if (this.dialogparam.acronymcolumn) {
-                    tableRow.addCell(this.data[0].cashflowData.cashflowFromInvesting[key].acronym.text, this.data[0].cashflowData.cashflowFromInvesting[key].acronym.style);
-                }
-                tableRow.addCell(this.data[0].cashflowData.cashflowFromInvesting[key].description.text, this.data[0].cashflowData.cashflowFromInvesting[key].description.style);
-                for (var i = this.data.length - 1; i >= 0; i--) {
-                    tableRow.addCell(this.toLocaleAmountFormat(this.data[i].cashflowData.cashflowFromInvesting[key].amount.value), this.data[i].cashflowData.cashflowFromInvesting[key].amount.style);
-                }
-            }
-        }
-        //add the financing cashflow elements
-        for (var key in this.data[0].cashflowData.cashflowFromFinancing) {
-            var tableRow = tableCashflow.addRow("styleTablRows");
-            if (typeof(this.data[0].cashflowData.cashflowFromFinancing[key]) == 'object') {
-                if (this.dialogparam.acronymcolumn) {
-                    tableRow.addCell(this.data[0].cashflowData.cashflowFromFinancing[key].acronym.text, this.data[0].cashflowData.cashflowFromFinancing[key].acronym.style);
-                }
-                tableRow.addCell(this.data[0].cashflowData.cashflowFromFinancing[key].description.text, this.data[0].cashflowData.cashflowFromFinancing[key].description.style);
-                for (var i = this.data.length - 1; i >= 0; i--) {
-                    tableRow.addCell(this.toLocaleAmountFormat(this.data[i].cashflowData.cashflowFromFinancing[key].amount.value), this.data[i].cashflowData.cashflowFromFinancing[key].amount.style);
-                }
-            }
-        }
-
-        //add final cashflow section
-        var tableRow = tableCashflow.addRow("styleTablRows");
-        if (this.dialogparam.acronymcolumn) {
-            tableRow.addCell(this.data[0].cashflowData.finalCashflow.acronym.text, this.data[0].cashflowData.finalCashflow.acronym.style);
-        }
-        tableRow.addCell(this.data[0].cashflowData.finalCashflow.description.text, this.data[0].cashflowData.finalCashflow.description.style);
-        for (var i = this.data.length - 1; i >= 0; i--) {
-            tableRow.addCell(this.toLocaleAmountFormat(this.data[i].cashflowData.finalCashflow.amount.value), this.data[i].cashflowData.finalCashflow.amount.style);
-        }
-
-        /**********************************************************
-         * Add the Cashflow verification section 
-         **********************************************************/
-        //first ad white row
-
-        var tableCashflowVerif = this.printReportAdd_TableCashflowVerification(report);
-        var tableRow = tableCashflowVerif.addRow("styleTablRows");
-        tableRow.addCell(texts.cashflow_verification, "styleUnderGroupTitles", span);
-        //add the investing cashflow elements
-        for (var key in this.data[0].cashflowData.verifData) {
-            var tableRow = tableCashflowVerif.addRow("styleTablRows");
-            if (typeof(this.data[0].cashflowData.verifData[key]) == 'object') {
-                if (this.dialogparam.acronymcolumn) {
-                    tableRow.addCell(this.data[0].cashflowData.verifData[key].acronym.text, this.data[0].cashflowData.verifData[key].acronym.style);
-                }
-                tableRow.addCell(this.data[0].cashflowData.verifData[key].description.text, this.data[0].cashflowData.verifData[key].description.style);
-                for (var i = this.data.length - 1; i >= 0; i--) {
-                    tableRow.addCell(this.toLocaleAmountFormat(this.data[i].cashflowData.verifData[key].amount.value), this.data[i].cashflowData.verifData[key].amount.style);
-                }
-            }
-        }
-        //add row with the differences (only if presents)
-        let differencesData = this.getCashflowDifferencesData(this.data);
-        if (differencesData.hasDifferences) {
-            var tableRow = tableCashflowVerif.addRow("styleTablRows");
-            if (this.dialogparam.acronymcolumn) {
-                tableRow.addCell("", "styleTablRows");
-            }
-            tableRow.addCell(differencesData.values[0].description.text, differencesData.values[0].description.style);
-            for (var key in differencesData.values) {
-                tableRow.addCell(this.toLocaleAmountFormat(differencesData.values[key].amount.value), differencesData.values[key].amount.getStyle());
-            }
-        }
-
-
-        /**********************************************************
-         * Add the Retained Earnings Statement table
-         **********************************************************/
-        //I show the table even if the annual result is not positive, but the values are all 0
-        var tableRetainedEarnings = this.printReportAdd_TableRetainedEarnings(report);
-        for (var key in this.data[0].retEarningsData) {
-            var tableRow = tableRetainedEarnings.addRow();
-            if (typeof this.data[0].retEarningsData[key] === 'object') {
-                let textStyle = this.data[0].retEarningsData[key].textStyle;
-                tableRow.addCell(this.data[0].retEarningsData[key].description, textStyle);
-                for (var i = this.data.length - 1; i >= 0; i--) {
-                    let amount = this.data[i].retEarningsData[key].amount;
-                    let amountStyle = this.data[i].retEarningsData[key].amountStyle;
-                    tableRow.addCell(this.toLocaleAmountFormat(amount), amountStyle);
-                }
-            }
-        }
-
-        /**************************************************
-         * Add the Cashflow ratios
-         *************************************************/
-        var tableIndCashflow = this.printReportAdd_TableIndCashflow(report);
-
-        for (var key in this.data[0].cashflow_index) {
-            var tableRow = tableIndCashflow.addRow("styleTablRows");
-            tableRow.addCell(this.data[0].cashflow_index[key].description, "styleTablRows");
-            if (this.dialogparam.formulascolumn) {
-                tableRow.addCell(this.data[0].cashflow_index[key].formula, "styleCentralText");
-            }
-            tableRow.addCell(this.data[0].cashflow_index[key].benchmark, "styleCentralText");
-            for (var i = this.data.length - 1; i >= 0; i--) {
-                ratios = this.data[i].cashflow_index[key].amount;
-                cell = tableRow.addCell(ratios + perc + ' ', "styleNormalAmount");
-                if (i < analsysisYears) {
-                    var indexT1 = this.data[i].cashflow_index[key].amount;
-                    var indexT2 = this.data[i + 1].cashflow_index[key].amount;
-                    this.setIndexEvolution(indexT1, indexT2, cell, this.data[i].period.Type);
-                }
-            }
-        }
-
-
-        report.addPageBreak();
-
         /******************************************************************************************
          * Add the Dupont Analysis table, if the user included it
          * ***************************************************************************************/
@@ -1210,26 +1223,23 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         /******************************************************************************************
          * Add the Altman index Analysis
          * ***************************************************************************************/
-        var tableAltmanIndex = this.printtableAltmanIndex(report);
-        var yearcolumns = 0;
+        var tableAltmanIndex = this.printTableAltmanIndex(report);
         var tableRow = tableAltmanIndex.addRow("styleTablRows");
-        for (var i = this.data.length - 1; i >= 0; i--) {
-            tableRow.addCell(this.data[i].altman_index.value, this.altmanScoreType(this.data[i].altman_index.value));
-        }
-        if (this.dialogparam.formulascolumn) {
+        for (var key in this.data[0].altman_index) {
+            var tableRow = tableAltmanIndex.addRow("styleTablRows");
+            tableRow.addCell(this.data[0].altman_index[key].text.descr,
+                this.data[0].altman_index[key].text.style);
+            if (this.dialogparam.formulascolumn) {
+                tableRow.addCell(this.data[0].altman_index[key].formula.descr,
+                    this.data[0].altman_index[key].formula.style);
+            }
+            tableRow.addCell(this.data[0].altman_index[key].weighting.descr,
+                this.data[0].altman_index[key].weighting.style);
 
-            var tableRow = tableAltmanIndex.addRow("styleTablRows");
-            tableRow.addCell(texts.altmanformula, "styleCentralText", this.yearsColumnCount(yearcolumns));
-            var tableRow = tableAltmanIndex.addRow("styleTablRows");
-            tableRow.addCell("X1 = cuas / tota", "styleCentralText", this.yearsColumnCount(yearcolumns));
-            var tableRow = tableAltmanIndex.addRow("styleTablRows");
-            tableRow.addCell("X2 = rese / tota ", "styleCentralText", this.yearsColumnCount(yearcolumns));
-            var tableRow = tableAltmanIndex.addRow("styleTablRows");
-            tableRow.addCell("X3 = EBIT / tota ", "styleCentralText", this.yearsColumnCount(yearcolumns));
-            var tableRow = tableAltmanIndex.addRow("styleTablRows");
-            tableRow.addCell("X4 = pant / totp", "styleCentralText", this.yearsColumnCount(yearcolumns));
-            var tableRow = tableAltmanIndex.addRow("styleTablRows");
-            tableRow.addCell("X5 = sale / tota", "styleCentralText", this.yearsColumnCount(yearcolumns));
+            for (var i = this.data.length - 1; i >= 0; i--) {
+                tableRow.addCell(this.data[i].altman_index[key].amount.value, 
+                    this.data[i].altman_index[key].amount.style);
+            }
         }
 
         report.addParagraph(texts.altmanlowprob, "styleParagraphs");
@@ -1453,7 +1463,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
     /**
      * Define all the dialog texts
      */
-    initFinancialAnalysisTexts() {
+    getFinancialAnalysisTexts() {
 
         var texts = {};
 
@@ -1604,6 +1614,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         texts.description = qsTr("Description");
         texts.acronym = qsTr("Acronym");
         texts.formula = qsTr("formula");
+        texts.weighting = qsTr("Weighting"); //ponderazione, per indice Z Score di altman.
         texts.controlsums = qsTr("CONTROL SUMS");
         texts.profitandloss = qsTr("Profit and Loss");
         texts.year = qsTr("Year");
@@ -1675,6 +1686,13 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         texts.reservesVariation = qsTr('+/- Reserves');
         texts.totalRetainedEarning = qsTr('Total retained earning');
         texts.currentYearRetainedEarning = qsTr('Current year retained earning');
+        texts.altmanRatioADescription = qsTr('Working capital / total assets');
+        texts.altmanRatioBDescription = qsTr('Retained earnings / total assets');
+        texts.altmanRatioCDescription = qsTr('Earnings before interest and task payment /total assets');
+        texts.altmanRatioDDescription = qsTr('The equity’s market value / total assets');
+        texts.altmanRatioDDescription_privateFirms = qsTr('Book Value of Equity/Total Liabilities');
+        texts.altmanRatioEDescription = qsTr('Total sales / total assets');
+        texts.altmanFinalZScore = qsTr('Z-Score');
 
 
         /******************************************************************************************
@@ -1697,14 +1715,14 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         texts.efficiencyPCE = qsTr("cope/employees");
         texts.efficiencyPCE = qsTr("cope/employees");
         /******************************************************************************************
-         * texts for Dupont Formulas
+         * texts for Altman Z-Score index Formulas
          * ***************************************************************************************/
-        /*texts.dupontrot = qsTr("total asset:sales");
-        texts.dupontmol = qsTr("satu:EBIT");
-        texts.dupontcapital = qsTr("cuas+fixa");
-        texts.dupontebit = qsTr("satu-totc");
-        texts.dupontcurrentasset = qsTr("liqu+cred+stocks");
-        texts.duponttotalcosts = qsTr("cofm+cope+codi")*/
+        texts.altmanFormulaA = qsTr("cuas-stdc) / tota");
+        texts.altmanFormulaB = qsTr("Total retained earning / tota");
+        texts.altmanFormulaC = qsTr("EBIT / tota");
+        texts.altmanFormulaD = qsTr("owca / tota");
+        texts.altmanFormulaE = qsTr("satu / tota");
+        texts.altmanZScoreFormula = qsTr("(1.2 x A) + (1.4 x B) + (3.3 x C) + (0.6 x D) + (0.999 x E)");
 
         /******************************************************************************************
          * texts for ratios
@@ -1755,7 +1773,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
     initDialogParam() {
 
 
-        var texts = this.initFinancialAnalysisTexts();
+        var texts = this.getFinancialAnalysisTexts();
         var dialogparam = {};
         dialogparam.version = "v1.3";
         dialogparam.period = {};
@@ -1787,7 +1805,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
     }
 
     initDialogParam_Balance() {
-        var texts = this.initFinancialAnalysisTexts();
+        var texts = this.getFinancialAnalysisTexts();
         var dialogparam = {};
         dialogparam.ca = this.initDialogParam_CurrentAsset(texts);
         dialogparam.fa = this.initDialogParam_FixedAsset(texts);
@@ -1955,7 +1973,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
      * added the prefix prof because elements: .roe, .roi, .ros, .mol  already exists.
      ************************************************************************************/
     initDialogParam_RatiosBenchmarks() {
-        var texts = this.initFinancialAnalysisTexts();
+        var texts = this.getFinancialAnalysisTexts();
         var dialogparam = {};
         dialogparam.liquidityratios = this.initDialogParam_LiquidityBenchmarks(texts);
         dialogparam.leverageratios = this.initDialogParam_leverageBenchmarks(texts);
@@ -2106,14 +2124,14 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             var isIncluded = this.dialogparam.includebudgettable;
             if (this.with_budget && isIncluded) {
                 //Normal Budget data (complete)
-                var data_budget = this.loadData_Budget(yeardocument);
-                var calculated_data = this.calculateData(data_budget, yeardocument, isIncluded, "");
-                var index = this.calculateIndex(data_budget, calculated_data);
-                var dupont_data = this.createdupont_data(data_budget, calculated_data, index);
-                var altman_index = this.calculateAltmanIndex(data_budget, calculated_data, index)
+                let data_budget = this.loadData_Budget(yeardocument);
+                let calculated_data = this.calculateData(data_budget, yeardocument, isIncluded, "");
+                let index = this.calculateIndex(data_budget, calculated_data);
+                let dupont_data = this.createdupont_data(data_budget, calculated_data, index);
                 let cashflowData = this.calculateCashflowData(data_budget, calculated_data);
                 let retEarningsData = this.setRetainedEarningsData(data_budget, calculated_data);
-                var cashflow_index = this.calculateCashflowIndex(data_budget, calculated_data, cashflowData);
+                let cashflow_index = this.calculateCashflowIndex(data_budget, calculated_data, cashflowData);
+                let altman_index = this.calculateAltmanZScoreIndex(data_budget, calculated_data, retEarningsData);
                 data_budget.calculated_data = calculated_data;
                 data_budget.index = index;
                 data_budget.dupont_data = dupont_data;
@@ -2127,14 +2145,14 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
             //current year with projection
             if (this.dialogparam.includecurrentyear_projection && this.with_budget && isIncluded) {
-                var data_year = this.loadData_Year_Projection(yeardocument);
-                var calculated_data = this.calculateData(data_year, yeardocument, false, "");
-                var index = this.calculateIndex(data_year, calculated_data);
-                var dupont_data = this.createdupont_data(data_year, calculated_data, index);
-                var altman_index = this.calculateAltmanIndex(data_year, calculated_data, index);
-                var cashflowData = this.calculateCashflowData(data_year, calculated_data);
+                let data_year = this.loadData_Year_Projection(yeardocument);
+                let calculated_data = this.calculateData(data_year, yeardocument, false, "");
+                let index = this.calculateIndex(data_year, calculated_data);
+                let dupont_data = this.createdupont_data(data_year, calculated_data, index);
+                let cashflowData = this.calculateCashflowData(data_year, calculated_data);
                 let retEarningsData = this.setRetainedEarningsData(data_year, calculated_data);
-                var cashflow_index = this.calculateCashflowIndex(data_year, calculated_data, cashflowData);
+                let cashflow_index = this.calculateCashflowIndex(data_year, calculated_data, cashflowData);
+                let altman_index = this.calculateAltmanZScoreIndex(data_year, calculated_data, retEarningsData);
                 data_year.calculated_data = calculated_data;
                 data_year.index = index;
                 data_year.dupont_data = dupont_data;
@@ -2149,14 +2167,14 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             //Budget to Date (until the current date)
             //if user selected it
             if (this.with_budget && isIncluded && this.dialogparam.includebudget_todate) {
-                var data_budget = this.loadData_Budget_ToDate(yeardocument);
-                var calculated_data = this.calculateData(data_budget, yeardocument, isIncluded, "");
-                var index = this.calculateIndex(data_budget, calculated_data);
-                var dupont_data = this.createdupont_data(data_budget, calculated_data, index);
-                var altman_index = this.calculateAltmanIndex(data_budget, calculated_data, index)
-                var cashflowData = this.calculateCashflowData(data_budget, calculated_data);
+                let data_budget = this.loadData_Budget_ToDate(yeardocument);
+                let calculated_data = this.calculateData(data_budget, yeardocument, isIncluded, "");
+                let index = this.calculateIndex(data_budget, calculated_data);
+                let dupont_data = this.createdupont_data(data_budget, calculated_data, index);
+                let cashflowData = this.calculateCashflowData(data_budget, calculated_data);
                 let retEarningsData = this.setRetainedEarningsData(data_budget, calculated_data);
-                var cashflow_index = this.calculateCashflowIndex(data_budget, calculated_data, cashflowData);
+                let cashflow_index = this.calculateCashflowIndex(data_budget, calculated_data, cashflowData);
+                let altman_index = this.calculateAltmanZScoreIndex(data_budget, calculated_data, retEarningsData);
                 data_budget.calculated_data = calculated_data;
                 data_budget.index = index;
                 data_budget.dupont_data = dupont_data;
@@ -2171,15 +2189,15 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
             //current year to date and previous years
             while (yeardocument && i <= this.dialogparam.maxpreviousyears) {
-                var data_year = this.loadData_Year(yeardocument, i);
-                var calculated_data = this.calculateData(data_year, yeardocument, false, i);
+                let data_year = this.loadData_Year(yeardocument, i);
+                let calculated_data = this.calculateData(data_year, yeardocument, false, i);
                 let controlSumsData = this.getControlSumsData(calculated_data); //only for the current year and previous year
-                var index = this.calculateIndex(data_year, calculated_data);
-                var dupont_data = this.createdupont_data(data_year, calculated_data, index);
-                var altman_index = this.calculateAltmanIndex(data_year, calculated_data, index);
+                let index = this.calculateIndex(data_year, calculated_data);
+                let dupont_data = this.createdupont_data(data_year, calculated_data, index);
                 let cashflowData = this.calculateCashflowData(data_year, calculated_data);
                 let retEarningsData = this.setRetainedEarningsData(data_year, calculated_data);
-                var cashflow_index = this.calculateCashflowIndex(data_year, calculated_data, cashflowData);
+                let cashflow_index = this.calculateCashflowIndex(data_year, calculated_data, cashflowData);
+                let altman_index = this.calculateAltmanZScoreIndex(data_year, calculated_data, retEarningsData);
                 data_year.calculated_data = calculated_data;
                 data_year.controlSumsData = controlSumsData;
                 data_year.index = index;
@@ -2515,7 +2533,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
     getCurrAndBudgDiff(data_current_year, data_budget) {
 
         var difference = {};
-        var texts = this.initFinancialAnalysisTexts();
+        var texts = this.getFinancialAnalysisTexts();
         //balance
         var balance_current_data = data_current_year.balance;
         var balance_budget_data = data_budget.balance;
@@ -3014,7 +3032,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
         //amount e type
         var dupont_data = {};
-        var texts = this.initFinancialAnalysisTexts();
+        var texts = this.getFinancialAnalysisTexts();
 
         dupont_data.ebt = {};
         dupont_data.ebt.description = texts.ebt;
@@ -3561,7 +3579,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
      */
     getControlSumsData(calculated_data) {
         let controlSumsData = {};
-        let texts = this.initFinancialAnalysisTexts();
+        let texts = this.getFinancialAnalysisTexts();
 
         controlSumsData.totalAssets = {};
         controlSumsData.totalAssets.id = "assets";
@@ -3697,7 +3715,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         let retEarningsData = {};
 
 
-        let texts = this.initFinancialAnalysisTexts();
+        let texts = this.getFinancialAnalysisTexts();
 
         retEarningsData.balanceProfitCarriedForward = {};
         retEarningsData.balanceProfitCarriedForward.amountStyle = 'styleNormalAmount'; //define the amount style in the report.
@@ -3749,7 +3767,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
     calculateCashflowData(data, calcData) {
         let cashflow = {};
-        let texts = this.initFinancialAnalysisTexts();
+        let texts = this.getFinancialAnalysisTexts();
 
         //cashflow from operation section
 
@@ -3913,9 +3931,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         cashflow.cashflowFromInvesting.investments.description = {};
         cashflow.cashflowFromInvesting.investments.description.text = texts.investments_cashflow;
         cashflow.cashflowFromInvesting.investments.description.style = "styleTablRows";
-        cashflow.cashflowFromInvesting.disinvestments.acronym = {};
-        cashflow.cashflowFromInvesting.disinvestments.acronym.text = texts.investments_acronym;
-        cashflow.cashflowFromInvesting.disinvestments.acronym.style = "styleTablRows";
+        cashflow.cashflowFromInvesting.investments.acronym = {};
+        cashflow.cashflowFromInvesting.investments.acronym.text = texts.investments_acronym;
+        cashflow.cashflowFromInvesting.investments.acronym.style = "styleTablRows";
         cashflow.cashflowFromInvesting.investments.amount = {};
         cashflow.cashflowFromInvesting.investments.amount.value = this.getTotalInvestments(data, calcData, cashflow);
         cashflow.cashflowFromInvesting.investments.amount.style = "styleNormalAmount";
@@ -3973,7 +3991,6 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         cashflow.cashflowFromFinancing.ownBaseCapital.acronym = {}
         cashflow.cashflowFromFinancing.ownBaseCapital.acronym.text = texts.ownbasecapital_acronym;
         cashflow.cashflowFromFinancing.ownBaseCapital.acronym.style = "styleTablRows";
-        cashflow.cashflowFromFinancing.ownBaseCapital.acronym = texts.ownbasecapital_acronym;
         cashflow.cashflowFromFinancing.ownBaseCapital.amount = {};
         cashflow.cashflowFromFinancing.ownBaseCapital.amount.value = data.balance.oc.ownbasecapital.delta;
         cashflow.cashflowFromFinancing.ownBaseCapital.amount.style = "styleNormalAmount";
@@ -4104,7 +4121,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
      * @returns an object containing the calulated ratios.
      */
     calculateIndex(data, calculated_data) {
-        var texts = this.initFinancialAnalysisTexts();
+        var texts = this.getFinancialAnalysisTexts();
         var index = {};
 
         /***********************************************************************************************************************************************************************************
@@ -4397,7 +4414,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
      */
     calculateCashflowIndex(data, calculated_data, cashflow) {
 
-        let texts = this.initFinancialAnalysisTexts();
+        let texts = this.getFinancialAnalysisTexts();
 
         let index = {};
 
@@ -4483,7 +4500,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var userParam = this.dialogparam;
         var convertedParam = {};
         convertedParam.version = '1.0';
-        var texts = this.initFinancialAnalysisTexts();
+        var texts = this.getFinancialAnalysisTexts();
         /*array dei parametri dello script*/
         convertedParam.data = [];
 
@@ -5689,7 +5706,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
      * @returns an object containing the data for the dupont table
      */
     createdupont_data(data, calculated_data, index) {
-        var texts = this.initFinancialAnalysisTexts();
+        var texts = this.getFinancialAnalysisTexts();
 
         var Dupont = {};
         var totalassets = calculated_data.totalassets;
@@ -5774,49 +5791,132 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
      * @Param {object} index: the object returned by the CalculateIndex method containing the values of the calculated indexes.
      * @returns an object containing the Altman index elements
      */
-    calculateAltmanIndex(data, calculated_data, index) {
+    calculateAltmanZScoreIndex(data, calculatedData, retEarningsData) {
 
-        /*Z-SCORE = 0.717 X1 + 0.847 X2 +3.107 X3 +0.420 X4 + 0.998 X5
-        X1 = Current Asset / Total Asset
-        X2 = Reserves/ Total Asset
-        X3 = EBIT / Total Asset
-        X4 = Net Assets / Total liabilities and Equitiy
-        X5 = Sales / Total Asset
+        /*Z-SCORE Altman standard formula = 1.2 X A + 1.4 X B +3.3 X C +0.6 X D + 0.999 X E
+        * A	Working capital / total assets
+        * B	Retained earnings / total assets
+        * C	Earnings before interest and task payment /total assets
+        * D	Book Value of Equity / total liabilities
+        * E	Total sales / total assets
+        * Source: https://www.wallstreetmojo.com/altman-z-score/
         */
 
-        var AltmanIndex = {};
+        let altmanIndexObj = {};
+        let totalAssets = calculatedData.totalassets;
+        let shortTermDebtCapital = calculatedData.shorttermdebtcapital;
+        let totalLiabilities = calculatedData.debtcapital;
+        let currentAssets = calculatedData.currentassets;
+        let workingCapital = Banana.SDecimal.subtract(currentAssets, shortTermDebtCapital);
+        let totalRetEarnings = retEarningsData.totalRetainedEarning.amount;
+        let ebit = calculatedData.ebit;
+        let bookValueOfEquity = Banana.SDecimal.subtract(totalAssets, totalLiabilities);
+        let salesTurnover = data.profitandloss.salesturnover.balance;
+        let finalScore = "";
+        var texts = this.getFinancialAnalysisTexts();
 
-        //X1
-        var currentassets = calculated_data.currentassets;
-        var totalassets = calculated_data.totalassets;
-        var x1 = Banana.SDecimal.divide(currentassets, totalassets);
-        AltmanIndex.x1 = Banana.SDecimal.multiply(x1, 0.717);
+        //Ponderazioni.
+        let pondA = 1.2;
+        let pondB = 1.4;
+        let pondC = 3.3;
+        let pondD = 0.6;
+        let pondE = 0.999;
+        let pondZScore = 1; //da aggiungere con stile bold centrato.
 
-        //X2
-        var reserves = data.balance.oc.reserves.balance;
-        var x2 = Banana.SDecimal.divide(reserves, totalassets);
-        AltmanIndex.x2 = Banana.SDecimal.multiply(x2, 0.847);
+        //A
+        altmanIndexObj.ratioA = {};
+        altmanIndexObj.ratioA.text = {};
+        altmanIndexObj.ratioA.text.descr = texts.altmanRatioADescription;
+        altmanIndexObj.ratioA.text.style = "styleTablRows";
+        altmanIndexObj.ratioA.formula = {};
+        altmanIndexObj.ratioA.formula.descr = texts.altmanFormulaA;
+        altmanIndexObj.ratioA.formula.style = "styleTablRows";
+        altmanIndexObj.ratioA.weighting = {}; 
+        altmanIndexObj.ratioA.weighting.descr = pondA.toString();
+        altmanIndexObj.ratioA.weighting.style = "styleCentralText";
+        altmanIndexObj.ratioA.amount = {};
+        altmanIndexObj.ratioA.amount.value = Banana.SDecimal.multiply(Banana.SDecimal.divide(workingCapital,totalAssets),pondA, { 'decimals': this.dialogparam.numberofdecimals});
+        altmanIndexObj.ratioA.amount.style = "styleNormalAmount";
+        //B
+        altmanIndexObj.ratioB = {};
+        altmanIndexObj.ratioB.text = {};
+        altmanIndexObj.ratioB.text.descr = texts.altmanRatioBDescription;
+        altmanIndexObj.ratioB.text.style = "styleTablRows";
+        altmanIndexObj.ratioB.formula = {};
+        altmanIndexObj.ratioB.formula.descr = texts.altmanFormulaB;
+        altmanIndexObj.ratioB.formula.style = "styleTablRows";
+        altmanIndexObj.ratioB.weighting = {}; 
+        altmanIndexObj.ratioB.weighting.descr = pondB.toString();
+        altmanIndexObj.ratioB.weighting.style = "styleCentralText";
+        altmanIndexObj.ratioB.amount = {};
+        altmanIndexObj.ratioB.amount.value = Banana.SDecimal.multiply(Banana.SDecimal.divide(totalRetEarnings,totalAssets),pondB, { 'decimals': this.dialogparam.numberofdecimals});
+        altmanIndexObj.ratioB.amount.style = "styleNormalAmount";
+        //C
+        altmanIndexObj.ratioC = {};
+        altmanIndexObj.ratioC.text = {};
+        altmanIndexObj.ratioC.text.descr = texts.altmanRatioCDescription;
+        altmanIndexObj.ratioC.text.style = "styleTablRows";
+        altmanIndexObj.ratioC.formula = {};
+        altmanIndexObj.ratioC.formula.descr = texts.altmanFormulaC;
+        altmanIndexObj.ratioC.formula.style = "styleTablRows";
+        altmanIndexObj.ratioC.weighting = {}; 
+        altmanIndexObj.ratioC.weighting.descr = pondC.toString();
+        altmanIndexObj.ratioC.weighting.style = "styleCentralText";
+        altmanIndexObj.ratioC.amount = {};
+        altmanIndexObj.ratioC.amount.value = Banana.SDecimal.multiply(Banana.SDecimal.divide(ebit,totalAssets),pondC,{ 'decimals': this.dialogparam.numberofdecimals});
+        altmanIndexObj.ratioC.amount.style = "styleNormalAmount";
+        //D
+        altmanIndexObj.ratioD = {};
+        altmanIndexObj.ratioD.text = {};
+        altmanIndexObj.ratioD.text.descr = texts.altmanRatioDDescription;
+        altmanIndexObj.ratioD.text.style = "styleTablRows";
+        altmanIndexObj.ratioD.formula = {};
+        altmanIndexObj.ratioD.formula.descr = texts.altmanFormulaD;
+        altmanIndexObj.ratioD.formula.style = "styleTablRows";
+        altmanIndexObj.ratioD.weighting = {}; 
+        altmanIndexObj.ratioD.weighting.descr = pondD.toString();
+        altmanIndexObj.ratioD.weighting.style = "styleCentralText";
+        altmanIndexObj.ratioD.amount = {};
+        altmanIndexObj.ratioD.amount.value = Banana.SDecimal.multiply(Banana.SDecimal.divide(bookValueOfEquity,totalLiabilities),pondD, { 'decimals': this.dialogparam.numberofdecimals});
+        altmanIndexObj.ratioD.amount.style = "styleNormalAmount";
+       
+        //E
+        altmanIndexObj.ratioE = {};
+        altmanIndexObj.ratioE.text = {};
+        altmanIndexObj.ratioE.text.descr = texts.altmanRatioEDescription;
+        altmanIndexObj.ratioE.text.style = "styleTablRows";
+        altmanIndexObj.ratioE.formula = {};
+        altmanIndexObj.ratioE.formula.descr = texts.altmanFormulaE;
+        altmanIndexObj.ratioE.formula.style = "styleTablRows";
+        altmanIndexObj.ratioE.weighting = {}; 
+        altmanIndexObj.ratioE.weighting.descr = pondE.toString();
+        altmanIndexObj.ratioE.weighting.style = "styleCentralText";
+        altmanIndexObj.ratioE.amount = {};
+        altmanIndexObj.ratioE.amount.value =  Banana.SDecimal.multiply(Banana.SDecimal.divide(salesTurnover,totalAssets),pondE, { 'decimals': this.dialogparam.numberofdecimals});
+        altmanIndexObj.ratioE.amount.style = "styleNormalAmount";
 
-        //X3
-        var x3 = Banana.SDecimal.divide(index.red.roi.amount, 100);
-        AltmanIndex.x3 = Banana.SDecimal.multiply(x3, 3.107);
+        //Final Result
+        if(altmanIndexObj){
+            for(var key in altmanIndexObj ){
+                finalScore = Banana.SDecimal.add(altmanIndexObj[key].amount.value,finalScore, { 'decimals': this.dialogparam.numberofdecimals});
+            }
+        }
+        altmanIndexObj.finalScore = {};
+        altmanIndexObj.finalScore.text = {};
+        altmanIndexObj.finalScore.text.descr = texts.altmanFinalZScore;
+        altmanIndexObj.finalScore.text.style = "styleUnderGroupTitles";
+        altmanIndexObj.finalScore.formula = {};
+        altmanIndexObj.finalScore.formula.descr = texts.altmanZScoreFormula;
+        altmanIndexObj.finalScore.formula.style = "styleUnderGroupTitles";
+        altmanIndexObj.finalScore.weighting = {}; 
+        altmanIndexObj.finalScore.weighting.descr = ""
+        altmanIndexObj.finalScore.weighting.style = "";
+        altmanIndexObj.finalScore.amount = {};
+        altmanIndexObj.finalScore.amount.value = finalScore;
+        altmanIndexObj.finalScore.amount.style = "styleMidTotalAmount";
 
-        //X4
-        var pant = Banana.SDecimal.subtract(calculated_data.totalassets, calculated_data.totalliabilitiesandequity);
-        var x4 = Banana.SDecimal.divide(pant, calculated_data.totalliabilitiesandequity);
-        AltmanIndex.x4 = Banana.SDecimal.multiply(x4, 0.420);
 
-        //X5
-        var x5 = Banana.SDecimal.divide(data.profitandloss.salesturnover.balance, totalassets);
-        AltmanIndex.x5 = Banana.SDecimal.multiply(x5, 0.998);
-
-
-        AltmanIndex.value = Banana.SDecimal.add(AltmanIndex.x1, AltmanIndex.x2);
-        AltmanIndex.value = Banana.SDecimal.add(AltmanIndex.value, AltmanIndex.x3);
-        AltmanIndex.value = Banana.SDecimal.add(AltmanIndex.value, AltmanIndex.x4);
-        AltmanIndex.value = Banana.SDecimal.add(AltmanIndex.value, AltmanIndex.x5, { 'decimals': 2 });
-
-        return AltmanIndex;
+        return altmanIndexObj;
 
     }
 
@@ -6302,7 +6402,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
      */
     checkNonExistentGroupsOrAccounts(convertedParam) {
         var Docgroups = this.fileGroups;
-        let texts = this.initFinancialAnalysisTexts()
+        let texts = this.getFinancialAnalysisTexts()
         var Docaccounts = this.fileAccounts;
         var nonExistentElements = "";
         var everyGroupExist = true;
