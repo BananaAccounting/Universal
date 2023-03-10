@@ -1052,11 +1052,11 @@ function loadTexts(banDoc,lang) {
 
         texts.useExtractTable = "Tabelle Extraktion verwenden";
         texts.warningMessageExtractTable = "Tabelle 'Extraktion' nicht gefunden.\nWählen Sie eine Gruppe in der Tabelle Konten, Spalte SummIn > Zeilen extrahieren.";
-        texts.embeddedTextFile = "Text Tabelle Dokumente (.txt)";
+        texts.embeddedTextFile = "Text Tabelle Dokumente (.txt / .md)";
         texts.css = "CSS (optional)";
         texts.textSignature = "Text Unterschrift";
         texts.textToUse = "Text auswählen";
-        texts.textEmbedded = "Text Tabelle Dokumente (.txt)";
+        texts.textEmbedded = "Text Tabelle Dokumente (.txt / .md)";
         texts.accountsToPrint = "Zu druckende Adressen auswählen";
         texts.printText = "Text drucken";
     }
@@ -1081,11 +1081,11 @@ function loadTexts(banDoc,lang) {
     
         texts.useExtractTable = "Utiliser le tableau Extraire";
         texts.warningMessageExtractTable = "Table 'Extraire' non trouvée.\nSélectionner un groupe dans le tableau Comptes, colonne AddDans > Extraire lignes.";
-        texts.embeddedTextFile = "Texte tableau Documents (.txt)";
+        texts.embeddedTextFile = "Texte tableau Documents (.txt / .md)";
         texts.css = "CSS (facultatif)";
         texts.textSignature = "Texte de signature";
         texts.textToUse = "Sélectionner le texte".
-        texts.textEmbedded = "Texte tableau Documents (.txt)";
+        texts.textEmbedded = "Texte tableau Documents (.txt / .md)";
         texts.accountsToPrint = "Sélectionner les adresses à imprimer";
         texts.printText = "Imprimer le texte";
     }
@@ -1110,11 +1110,11 @@ function loadTexts(banDoc,lang) {
 
         texts.useExtractTable = "Usa tabella Estrai";
         texts.warningMessageExtractTable = "Tabella 'Estrai' non trovata.\nSeleziona un gruppo nella tabella Conti, colonna SommaIn > Estrai righe.";
-        texts.embeddedTextFile = "Testo tabella Documenti (.txt)";
+        texts.embeddedTextFile = "Testo tabella Documenti (.txt / .md)";
         texts.css = "CSS (opzionale)";
         texts.textSignature = "Testo firma";
         texts.textToUse = "Seleziona testo"
-        texts.textEmbedded = "Testo tabella Documenti (.txt)";
+        texts.textEmbedded = "Testo tabella Documenti (.txt / .md)";
         texts.accountsToPrint = "Seleziona gli indirizzi da stampare";
         texts.printText = "Stampa testo";
     }
@@ -1139,11 +1139,11 @@ function loadTexts(banDoc,lang) {
 
         texts.useExtractTable = "Gebruik tabel Extract";
         texts.warningMessageExtractTable = "Tabel 'Extract' niet gevonden.\Selecteer een groep in de tabel Rekeningen, kolom SomIn > Extract rijen."
-        texts.embeddedTextFile = "Teksttabel Documenten (.txt)";
+        texts.embeddedTextFile = "Teksttabel Documenten (.txt / .md)";
         texts.css = "CSS (optioneel)";
         texts.textSignature = "Tekst handtekening".
         texts.textToUse = "Selecteer tekst".
-        texts.textEmbedded = "Teksttabel Documenten (.txt)"
+        texts.textEmbedded = "Teksttabel Documenten (.txt / .md)"
         texts.accountsToPrint = "Selecteer adressen om af te drukken"
         texts.printText = "Tekst afdrukken"
     }
@@ -1168,11 +1168,11 @@ function loadTexts(banDoc,lang) {
 
         texts.useExtractTable = "Use table Extract";
         texts.warningMessageExtractTable = "Table 'Extract' not found.\nSelect a group in the Accounts table, column SumIn > Extract rows."
-        texts.embeddedTextFile = "Text table Documents (.txt)";
+        texts.embeddedTextFile = "Text table Documents (.txt / .md)";
         texts.css = "CSS (optional)";
         texts.textSignature = "Text signature"
         texts.textToUse = "Select text"
-        texts.textEmbedded = "Text table Documents (.txt)"
+        texts.textEmbedded = "Text table Documents (.txt / .md)"
         texts.accountsToPrint = "Select addresses to print"
         texts.printText = "Print text"
     }
