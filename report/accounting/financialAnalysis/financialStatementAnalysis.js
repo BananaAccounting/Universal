@@ -358,14 +358,16 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         return tableDupont;
     }
 
-    printTableAltmanIndex(report) {
+    printReportAdd_TableAltmanZScoreIndex(report) {
         var headerStyle = this.setColorStyle("styleTablesHeaderText");
         var texts = this.getFinancialAnalysisTexts();
-        var tableAltmanIndex = report.addTable('myTableAltmanIndex');
+        var tableAltmanIndex = report.addTable('myTableAltmanZScoreIndex');
+        tableAltmanIndex.setStyleAttributes("width:100%");
         tableAltmanIndex.getCaption().addText(texts.upperaltmanindex, "styleTitles");
+        //columns
         tableAltmanIndex.addColumn("Description").setStyleAttributes("width:45%");
         if (this.dialogparam.formulascolumn) {
-            tableAltmanIndex.addColumn("Formula").setStyleAttributes("width:45%");
+            tableAltmanIndex.addColumn("Formula").setStyleAttributes("width:55%");
         }
         tableAltmanIndex.addColumn("Weighting").setStyleAttributes("width:10%");
         this.setColumnsWidthDinamically(tableAltmanIndex);
@@ -379,6 +381,30 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         tableRow.addCell(texts.weighting, headerStyle);
         this.generateHeaderColumns(tableRow);
         return tableAltmanIndex;
+
+    }
+
+    printReportAdd_TableZScorePrivateCompanies(report) {
+        var headerStyle = this.setColorStyle("styleTablesHeaderText");
+        var texts = this.getFinancialAnalysisTexts();
+        var tableAltmanIndexPC = report.addTable('myTableZScorePrivateCompanies');
+        tableAltmanIndexPC.getCaption().addText(texts.upperzscoreprivatecompanies, "styleTitles");
+        tableAltmanIndexPC.addColumn("Description").setStyleAttributes("width:45%");
+        if (this.dialogparam.formulascolumn) {
+            tableAltmanIndexPC.addColumn("Formula").setStyleAttributes("width:55%");
+        }
+        tableAltmanIndexPC.addColumn("Weighting").setStyleAttributes("width:10%");
+        this.setColumnsWidthDinamically(tableAltmanIndexPC);
+        // header
+        var tableHeader = tableAltmanIndexPC.getHeader();
+        var tableRow = tableHeader.addRow();
+        tableRow.addCell(texts.description, headerStyle);
+        if (this.dialogparam.formulascolumn) {
+            tableRow.addCell(texts.formula, headerStyle);
+        }
+        tableRow.addCell(texts.weighting, headerStyle);
+        this.generateHeaderColumns(tableRow);
+        return tableAltmanIndexPC;
 
     }
 
@@ -1221,12 +1247,12 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         }
 
         /******************************************************************************************
-         * Add the Altman index Analysis
+         * Add the Z score Altman index Analysis
          * ***************************************************************************************/
-        var tableAltmanIndex = this.printTableAltmanIndex(report);
-        var tableRow = tableAltmanIndex.addRow("styleTablRows");
+        var tableAltmanZScoreIndex = this.printReportAdd_TableAltmanZScoreIndex(report);
+        var tableRow = tableAltmanZScoreIndex.addRow("styleTablRows");
         for (var key in this.data[0].altman_index) {
-            var tableRow = tableAltmanIndex.addRow("styleTablRows");
+            var tableRow = tableAltmanZScoreIndex.addRow("styleTablRows");
             tableRow.addCell(this.data[0].altman_index[key].text.descr,
                 this.data[0].altman_index[key].text.style);
             if (this.dialogparam.formulascolumn) {
@@ -1237,14 +1263,43 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                 this.data[0].altman_index[key].weighting.style);
 
             for (var i = this.data.length - 1; i >= 0; i--) {
-                tableRow.addCell(this.data[i].altman_index[key].amount.value, 
-                    this.data[i].altman_index[key].amount.style);
+                let style = "styleMidTotalAmount";
+                let ZScoreResultDescr = texts.altmanFinalZScore;
+                if(this.data[0].altman_index_pc[key].text.descr == ZScoreResultDescr)
+                    style = this.altmanScoreType(this.data[i].altman_index[key].amount.value);
+                tableRow.addCell(this.data[i].altman_index_pc[key].amount.value, style);
             }
         }
 
+        /****************************************************************************************
+         * Add the Z Score for Private Companies
+         ****************************************************************************************/
+        var tableAltmanZScoreIndexPC = this.printReportAdd_TableZScorePrivateCompanies(report);
+        var tableRow = tableAltmanZScoreIndexPC.addRow("styleTablRows");
+        for (var key in this.data[0].altman_index) {
+            var tableRow = tableAltmanZScoreIndexPC.addRow("styleTablRows");
+            tableRow.addCell(this.data[0].altman_index_pc[key].text.descr,
+                this.data[0].altman_index_pc[key].text.style);
+            if (this.dialogparam.formulascolumn) {
+                tableRow.addCell(this.data[0].altman_index_pc[key].formula.descr,
+                    this.data[0].altman_index_pc[key].formula.style);
+            }
+            tableRow.addCell(this.data[0].altman_index_pc[key].weighting.descr,
+                this.data[0].altman_index_pc[key].weighting.style);
+
+            for (var i = this.data.length - 1; i >= 0; i--) {
+                let style = "styleMidTotalAmount";
+                let ZScoreResultDescr = texts.altmanFinalZScore;
+                if(this.data[0].altman_index_pc[key].text.descr == ZScoreResultDescr)
+                    style = this.altmanScoreType(this.data[i].altman_index[key].amount.value);
+                tableRow.addCell(this.data[i].altman_index_pc[key].amount.value, style);
+            }
+        }
+
+        /*report.addParagraph("","");
         report.addParagraph(texts.altmanlowprob, "styleParagraphs");
         report.addParagraph(texts.altmanmediumprob, "styleParagraphs");
-        report.addParagraph(texts.altmanstrongprob, "styleParagraphs");
+        report.addParagraph(texts.altmanstrongprob, "styleParagraphs");*/
 
 
         return report;
@@ -1630,7 +1685,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         texts.uppercashflowratios = qsTr("CASH FLOW RATIOS");
         texts.benchmark = qsTr("Benchmark");
         texts.benchmarks = qsTr("Benchmarks");
-        texts.upperaltmanindex = qsTr("ALTMAN INDEX Z-SCORE");
+        texts.upperaltmanindex = qsTr("ALTMAN Z-SCORE");
+        texts.upperzscoreprivatecompanies = qsTr("ALTMAN Z-SCORE FOR PRIVATE COMPANIES");
         texts.upperdupontscheme = qsTr("DUPONT ANALYSIS ");
         texts.financialstatementanalysis = qsTr("Financial Statements Analysis and Ratios");
         texts.totalasset = qsTr('Total Assets');
@@ -1687,12 +1743,13 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         texts.totalRetainedEarning = qsTr('Total retained earning');
         texts.currentYearRetainedEarning = qsTr('Current year retained earning');
         texts.altmanRatioADescription = qsTr('Working capital / total assets');
+        texts.altmanRatioADescriptionPC = qsTr('(Current Assets - Current Liabilities) / total assets');
         texts.altmanRatioBDescription = qsTr('Retained earnings / total assets');
         texts.altmanRatioCDescription = qsTr('Earnings before interest and task payment /total assets');
         texts.altmanRatioDDescription = qsTr('The equity’s market value / total assets');
-        texts.altmanRatioDDescription_privateFirms = qsTr('Book Value of Equity/Total Liabilities');
+        texts.altmanRatioDDescriptionPC = qsTr('Book Value of Equity/Total Liabilities');
         texts.altmanRatioEDescription = qsTr('Total sales / total assets');
-        texts.altmanFinalZScore = qsTr('Z-Score');
+        texts.altmanFinalZScore = "Z-Score";
 
 
         /******************************************************************************************
@@ -1717,12 +1774,13 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         /******************************************************************************************
          * texts for Altman Z-Score index Formulas
          * ***************************************************************************************/
-        texts.altmanFormulaA = qsTr("cuas-stdc) / tota");
+        texts.altmanFormulaA = "(cuas-stdc) / tota";
         texts.altmanFormulaB = qsTr("Total retained earning / tota");
-        texts.altmanFormulaC = qsTr("EBIT / tota");
-        texts.altmanFormulaD = qsTr("owca / tota");
-        texts.altmanFormulaE = qsTr("satu / tota");
-        texts.altmanZScoreFormula = qsTr("(1.2 x A) + (1.4 x B) + (3.3 x C) + (0.6 x D) + (0.999 x E)");
+        texts.altmanFormulaC = "EBIT / tota";
+        texts.altmanFormulaD = "owca / tota";
+        texts.altmanFormulaE = "satu / tota";
+        texts.altmanZScoreFormula = "(1.2 x A) + (1.4 x B) + (3.3 x C) + (0.6 x D) + (0.999 x E)";
+        texts.altmanZScoreFormulaPC = "(0.717 x A) + (0.847 x B) + (3.107 x C) + (0.420 x D) + (0.998 x E)";
 
         /******************************************************************************************
          * texts for ratios
@@ -2132,10 +2190,12 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                 let retEarningsData = this.setRetainedEarningsData(data_budget, calculated_data);
                 let cashflow_index = this.calculateCashflowIndex(data_budget, calculated_data, cashflowData);
                 let altman_index = this.calculateAltmanZScoreIndex(data_budget, calculated_data, retEarningsData);
+                let altman_index_pc =  this.calculateAltmanZScoreIndexPC(data_budget, calculated_data, retEarningsData); // Z score for private companies
                 data_budget.calculated_data = calculated_data;
                 data_budget.index = index;
                 data_budget.dupont_data = dupont_data;
                 data_budget.altman_index = altman_index;
+                data_budget.altman_index_pc = altman_index_pc;
                 data_budget.cashflowData = cashflowData;
                 data_budget.retEarningsData = retEarningsData;
                 data_budget.cashflow_index = cashflow_index;
@@ -2153,10 +2213,12 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                 let retEarningsData = this.setRetainedEarningsData(data_year, calculated_data);
                 let cashflow_index = this.calculateCashflowIndex(data_year, calculated_data, cashflowData);
                 let altman_index = this.calculateAltmanZScoreIndex(data_year, calculated_data, retEarningsData);
+                let altman_index_pc =  this.calculateAltmanZScoreIndexPC(data_year, calculated_data, retEarningsData); // Z score for private companies
                 data_year.calculated_data = calculated_data;
                 data_year.index = index;
                 data_year.dupont_data = dupont_data;
                 data_year.altman_index = altman_index;
+                data_year.altman_index_pc = altman_index_pc;
                 data_year.cashflowData = cashflowData;
                 data_year.retEarningsData = retEarningsData;
                 data_year.cashflow_index = cashflow_index;
@@ -2175,10 +2237,12 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                 let retEarningsData = this.setRetainedEarningsData(data_budget, calculated_data);
                 let cashflow_index = this.calculateCashflowIndex(data_budget, calculated_data, cashflowData);
                 let altman_index = this.calculateAltmanZScoreIndex(data_budget, calculated_data, retEarningsData);
+                let altman_index_pc =  this.calculateAltmanZScoreIndexPC(data_budget, calculated_data, retEarningsData); // Z score for private companies
                 data_budget.calculated_data = calculated_data;
                 data_budget.index = index;
                 data_budget.dupont_data = dupont_data;
                 data_budget.altman_index = altman_index;
+                data_budget.altman_index_pc = altman_index_pc;
                 data_budget.cashflowData = cashflowData;
                 data_budget.retEarningsData = retEarningsData;
                 data_budget.cashflow_index = cashflow_index;
@@ -2198,11 +2262,13 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                 let retEarningsData = this.setRetainedEarningsData(data_year, calculated_data);
                 let cashflow_index = this.calculateCashflowIndex(data_year, calculated_data, cashflowData);
                 let altman_index = this.calculateAltmanZScoreIndex(data_year, calculated_data, retEarningsData);
+                let altman_index_pc =  this.calculateAltmanZScoreIndexPC(data_year, calculated_data, retEarningsData); // Z score for private companies
                 data_year.calculated_data = calculated_data;
                 data_year.controlSumsData = controlSumsData;
                 data_year.index = index;
                 data_year.dupont_data = dupont_data;
                 data_year.altman_index = altman_index;
+                data_year.altman_index_pc = altman_index_pc;
                 data_year.cashflowData = cashflowData;
                 data_year.retEarningsData = retEarningsData;
                 data_year.cashflow_index = cashflow_index;
@@ -2565,6 +2631,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         //Altman index
         var altman_index_current_data = data_current_year.altman_index;
         var altman_index_budget_data = data_budget.altman_index;
+        //Altman index private companies
+        var altman_index_pc_current_data = data_current_year.altman_index_pc;
+        var altman_index_pc_budget_data = data_budget.altman_index_pc;
 
 
 
@@ -2590,8 +2659,11 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         //calculate the differences for cashflow ratios
         difference.cashflow_index = this.getCurrAndBudgDiff_cashflow_ratios(cashflow_ratios_current_data, cashflow_ratios_budget_data, ratios_param, texts);
 
-        //calculate the difference for the altman index
-        difference.altman_index = this.getCurrAndBudgDiff_altmanIndex(altman_index_current_data, altman_index_budget_data);
+        //calculate the difference for the altman z score
+        difference.altman_index = this.getCurrAndBudgDiff_altmanIndex(altman_index_current_data, altman_index_budget_data, texts);
+                
+        //calculate the difference for the altman z score for companies
+        difference.altman_index_pc = this.getCurrAndBudgDiff_altmanIndexPC(altman_index_pc_current_data, altman_index_pc_budget_data, texts);
 
 
 
@@ -2652,11 +2724,230 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
     }
 
-    getCurrAndBudgDiff_altmanIndex(altman_index_current_data, altman_index_budget_data) {
-        var altmanIndex = {};
-        altmanIndex.value = Banana.SDecimal.subtract(altman_index_current_data.value, altman_index_budget_data.value);
+    getCurrAndBudgDiff_altmanIndex(altman_index_current_data, altman_index_budget_data,texts) {
 
-        return altmanIndex;
+        let altmanIndexObj = {};
+        let finalScore = "";
+
+        //Ponderazioni.
+        let pondA = 1.2;
+        let pondB = 1.4;
+        let pondC = 3.3;
+        let pondD = 0.6;
+        let pondE = 0.999;
+        let pondZScore = 1; //da aggiungere con stile bold centrato.
+
+        //A
+        altmanIndexObj.ratioA = {};
+        altmanIndexObj.ratioA.text = {};
+        altmanIndexObj.ratioA.text.descr = texts.altmanRatioADescription;
+        altmanIndexObj.ratioA.text.style = "";
+        altmanIndexObj.ratioA.formula = {};
+        altmanIndexObj.ratioA.formula.descr = texts.altmanFormulaA;
+        altmanIndexObj.ratioA.formula.style = "";
+        altmanIndexObj.ratioA.weighting = {}; 
+        altmanIndexObj.ratioA.weighting.descr = pondA.toString();
+        altmanIndexObj.ratioA.weighting.style = "styleCentralText";
+        altmanIndexObj.ratioA.amount = {};
+        altmanIndexObj.ratioA.amount.value = Banana.SDecimal.subtract(altman_index_current_data.ratioA.amount.value, altman_index_budget_data.ratioA.amount.value, 
+            { 'decimals': this.dialogparam.numberofdecimals});
+        altmanIndexObj.ratioA.amount.style = "styleNormalAmount";
+        //B
+        altmanIndexObj.ratioB = {};
+        altmanIndexObj.ratioB.text = {};
+        altmanIndexObj.ratioB.text.descr = texts.altmanRatioBDescription;
+        altmanIndexObj.ratioB.text.style = "";
+        altmanIndexObj.ratioB.formula = {};
+        altmanIndexObj.ratioB.formula.descr = texts.altmanFormulaB;
+        altmanIndexObj.ratioB.formula.style = "";
+        altmanIndexObj.ratioB.weighting = {}; 
+        altmanIndexObj.ratioB.weighting.descr = pondB.toString();
+        altmanIndexObj.ratioB.weighting.style = "styleCentralText";
+        altmanIndexObj.ratioB.amount = {};
+        altmanIndexObj.ratioB.amount.value = Banana.SDecimal.subtract(altman_index_current_data.ratioB.amount.value, altman_index_budget_data.ratioB.amount.value, 
+            { 'decimals': this.dialogparam.numberofdecimals});
+        altmanIndexObj.ratioB.amount.style = "styleNormalAmount";
+        //C
+        altmanIndexObj.ratioC = {};
+        altmanIndexObj.ratioC.text = {};
+        altmanIndexObj.ratioC.text.descr = texts.altmanRatioCDescription;
+        altmanIndexObj.ratioC.text.style = "";
+        altmanIndexObj.ratioC.formula = {};
+        altmanIndexObj.ratioC.formula.descr = texts.altmanFormulaC;
+        altmanIndexObj.ratioC.formula.style = "";
+        altmanIndexObj.ratioC.weighting = {}; 
+        altmanIndexObj.ratioC.weighting.descr = pondC.toString();
+        altmanIndexObj.ratioC.weighting.style = "styleCentralText";
+        altmanIndexObj.ratioC.amount = {};
+        altmanIndexObj.ratioC.amount.value = Banana.SDecimal.subtract(altman_index_current_data.ratioC.amount.value, altman_index_budget_data.ratioC.amount.value, 
+            { 'decimals': this.dialogparam.numberofdecimals});
+        altmanIndexObj.ratioC.amount.style = "styleNormalAmount";
+        //D
+        altmanIndexObj.ratioD = {};
+        altmanIndexObj.ratioD.text = {};
+        altmanIndexObj.ratioD.text.descr = texts.altmanRatioDDescription;
+        altmanIndexObj.ratioD.text.style = "";
+        altmanIndexObj.ratioD.formula = {};
+        altmanIndexObj.ratioD.formula.descr = texts.altmanFormulaD;
+        altmanIndexObj.ratioD.formula.style = "";
+        altmanIndexObj.ratioD.weighting = {}; 
+        altmanIndexObj.ratioD.weighting.descr = pondD.toString();
+        altmanIndexObj.ratioD.weighting.style = "styleCentralText";
+        altmanIndexObj.ratioD.amount = {};
+        altmanIndexObj.ratioD.amount.value = Banana.SDecimal.subtract(altman_index_current_data.ratioD.amount.value, altman_index_budget_data.ratioD.amount.value, 
+            { 'decimals': this.dialogparam.numberofdecimals});
+        altmanIndexObj.ratioD.amount.style = "styleNormalAmount";
+       
+        //E
+        altmanIndexObj.ratioE = {};
+        altmanIndexObj.ratioE.text = {};
+        altmanIndexObj.ratioE.text.descr = texts.altmanRatioEDescription;
+        altmanIndexObj.ratioE.text.style = "";
+        altmanIndexObj.ratioE.formula = {};
+        altmanIndexObj.ratioE.formula.descr = texts.altmanFormulaE;
+        altmanIndexObj.ratioE.formula.style = "";
+        altmanIndexObj.ratioE.weighting = {}; 
+        altmanIndexObj.ratioE.weighting.descr = pondE.toString();
+        altmanIndexObj.ratioE.weighting.style = "styleCentralText";
+        altmanIndexObj.ratioE.amount = {};
+        altmanIndexObj.ratioE.amount.value =  Banana.SDecimal.subtract(altman_index_current_data.ratioE.amount.value, altman_index_budget_data.ratioE.amount.value, 
+            { 'decimals': this.dialogparam.numberofdecimals});
+        altmanIndexObj.ratioE.amount.style = "styleNormalAmount";
+
+        //Final Result
+        if(altmanIndexObj){
+            for(var key in altmanIndexObj ){
+                finalScore = Banana.SDecimal.add(altmanIndexObj[key].amount.value,finalScore, { 'decimals': this.dialogparam.numberofdecimals});
+            }
+        }
+        altmanIndexObj.finalScore = {};
+        altmanIndexObj.finalScore.text = {};
+        altmanIndexObj.finalScore.text.descr = texts.altmanFinalZScore;
+        altmanIndexObj.finalScore.text.style = "styleUnderGroupTitles";
+        altmanIndexObj.finalScore.formula = {};
+        altmanIndexObj.finalScore.formula.descr = texts.altmanZScoreFormula;
+        altmanIndexObj.finalScore.formula.style = "styleUnderGroupTitles";
+        altmanIndexObj.finalScore.weighting = {}; 
+        altmanIndexObj.finalScore.weighting.descr = ""
+        altmanIndexObj.finalScore.weighting.style = "";
+        altmanIndexObj.finalScore.amount = {};
+        altmanIndexObj.finalScore.amount.value = finalScore;
+        altmanIndexObj.finalScore.amount.style = "styleMidTotalAmount";
+
+        return altmanIndexObj;
+
+    }
+
+    getCurrAndBudgDiff_altmanIndexPC(altman_index_current_data, altman_index_budget_data,texts) {
+
+        let altmanIndexObj = {};
+        let finalScore = "";
+        //Ponderazioni.
+        let pondA = 0.717;
+        let pondB = 0.847;
+        let pondC = 3.107;
+        let pondD = 0.420;
+        let pondE = 0.998;
+        let pondZScore = 1; //da aggiungere con stile bold centrato.
+        
+        //A
+        altmanIndexObj.ratioA = {};
+        altmanIndexObj.ratioA.text = {};
+        altmanIndexObj.ratioA.text.descr = texts.altmanRatioADescriptionPC;
+        altmanIndexObj.ratioA.text.style = "";
+        altmanIndexObj.ratioA.formula = {};
+        altmanIndexObj.ratioA.formula.descr = texts.altmanFormulaA;
+        altmanIndexObj.ratioA.formula.style = "";
+        altmanIndexObj.ratioA.weighting = {}; 
+        altmanIndexObj.ratioA.weighting.descr = pondA.toString();
+        altmanIndexObj.ratioA.weighting.style = "styleCentralText";
+        altmanIndexObj.ratioA.amount = {};
+        altmanIndexObj.ratioA.amount.value = Banana.SDecimal.subtract(altman_index_current_data.ratioA.amount.value, altman_index_budget_data.ratioA.amount.value, 
+            { 'decimals': this.dialogparam.numberofdecimals});
+        altmanIndexObj.ratioA.amount.style = "styleNormalAmount";
+        //B
+        altmanIndexObj.ratioB = {};
+        altmanIndexObj.ratioB.text = {};
+        altmanIndexObj.ratioB.text.descr = texts.altmanRatioBDescription;
+        altmanIndexObj.ratioB.text.style = "";
+        altmanIndexObj.ratioB.formula = {};
+        altmanIndexObj.ratioB.formula.descr = texts.altmanFormulaB;
+        altmanIndexObj.ratioB.formula.style = "";
+        altmanIndexObj.ratioB.weighting = {}; 
+        altmanIndexObj.ratioB.weighting.descr = pondB.toString();
+        altmanIndexObj.ratioB.weighting.style = "styleCentralText";
+        altmanIndexObj.ratioB.amount = {};
+        altmanIndexObj.ratioB.amount.value = Banana.SDecimal.subtract(altman_index_current_data.ratioB.amount.value, altman_index_budget_data.ratioB.amount.value, 
+            { 'decimals': this.dialogparam.numberofdecimals});
+        altmanIndexObj.ratioB.amount.style = "styleNormalAmount";
+        //C
+        altmanIndexObj.ratioC = {};
+        altmanIndexObj.ratioC.text = {};
+        altmanIndexObj.ratioC.text.descr = texts.altmanRatioCDescription;
+        altmanIndexObj.ratioC.text.style = "";
+        altmanIndexObj.ratioC.formula = {};
+        altmanIndexObj.ratioC.formula.descr = texts.altmanFormulaC;
+        altmanIndexObj.ratioC.formula.style = "";
+        altmanIndexObj.ratioC.weighting = {}; 
+        altmanIndexObj.ratioC.weighting.descr = pondC.toString();
+        altmanIndexObj.ratioC.weighting.style = "styleCentralText";
+        altmanIndexObj.ratioC.amount = {};
+        altmanIndexObj.ratioC.amount.value = Banana.SDecimal.subtract(altman_index_current_data.ratioC.amount.value, altman_index_budget_data.ratioC.amount.value, 
+            { 'decimals': this.dialogparam.numberofdecimals});
+        altmanIndexObj.ratioC.amount.style = "styleNormalAmount";
+        //D
+        altmanIndexObj.ratioD = {};
+        altmanIndexObj.ratioD.text = {};
+        altmanIndexObj.ratioD.text.descr = texts.altmanRatioDDescriptionPC;
+        altmanIndexObj.ratioD.text.style = "";
+        altmanIndexObj.ratioD.formula = {};
+        altmanIndexObj.ratioD.formula.descr = texts.altmanFormulaD;
+        altmanIndexObj.ratioD.formula.style = "";
+        altmanIndexObj.ratioD.weighting = {}; 
+        altmanIndexObj.ratioD.weighting.descr = pondD.toString();
+        altmanIndexObj.ratioD.weighting.style = "styleCentralText";
+        altmanIndexObj.ratioD.amount = {};
+        altmanIndexObj.ratioD.amount.value = Banana.SDecimal.subtract(altman_index_current_data.ratioD.amount.value, altman_index_budget_data.ratioD.amount.value, 
+            { 'decimals': this.dialogparam.numberofdecimals});
+        altmanIndexObj.ratioD.amount.style = "styleNormalAmount";
+       
+        //E
+        altmanIndexObj.ratioE = {};
+        altmanIndexObj.ratioE.text = {};
+        altmanIndexObj.ratioE.text.descr = texts.altmanRatioEDescription;
+        altmanIndexObj.ratioE.text.style = "";
+        altmanIndexObj.ratioE.formula = {};
+        altmanIndexObj.ratioE.formula.descr = texts.altmanFormulaE;
+        altmanIndexObj.ratioE.formula.style = "";
+        altmanIndexObj.ratioE.weighting = {}; 
+        altmanIndexObj.ratioE.weighting.descr = pondE.toString();
+        altmanIndexObj.ratioE.weighting.style = "styleCentralText";
+        altmanIndexObj.ratioE.amount = {};
+        altmanIndexObj.ratioE.amount.value =  Banana.SDecimal.subtract(altman_index_current_data.ratioE.amount.value, altman_index_budget_data.ratioE.amount.value, 
+            { 'decimals': this.dialogparam.numberofdecimals});
+        altmanIndexObj.ratioE.amount.style = "styleNormalAmount";
+
+        //Final Result
+        if(altmanIndexObj){
+            for(var key in altmanIndexObj ){
+                finalScore = Banana.SDecimal.add(altmanIndexObj[key].amount.value,finalScore, { 'decimals': this.dialogparam.numberofdecimals});
+            }
+        }
+        altmanIndexObj.finalScore = {};
+        altmanIndexObj.finalScore.text = {};
+        altmanIndexObj.finalScore.text.descr = texts.altmanFinalZScore;
+        altmanIndexObj.finalScore.text.style = "styleUnderGroupTitles";
+        altmanIndexObj.finalScore.formula = {};
+        altmanIndexObj.finalScore.formula.descr = texts.altmanZScoreFormulaPC;
+        altmanIndexObj.finalScore.formula.style = "styleUnderGroupTitles";
+        altmanIndexObj.finalScore.weighting = {}; 
+        altmanIndexObj.finalScore.weighting.descr = ""
+        altmanIndexObj.finalScore.weighting.style = "";
+        altmanIndexObj.finalScore.amount = {};
+        altmanIndexObj.finalScore.amount.value = finalScore;
+        altmanIndexObj.finalScore.amount.style = "styleMidTotalAmount";
+
+        return altmanIndexObj;
 
     }
 
@@ -5785,15 +6076,12 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
     }
 
     /**
-     * @description this method calculate the altman Index.
-     * @Param {object} data: the data object created thanks to loadData methods, containing the values and the sums of the paramters recovered from the dialog.
-     * @Param {object} calculated_data: the object returned by the CalculateData method containing the values of the calculated elements.
-     * @Param {object} index: the object returned by the CalculateIndex method containing the values of the calculated indexes.
+     * @description this method calculate the altman Z- Score index.
      * @returns an object containing the Altman index elements
      */
     calculateAltmanZScoreIndex(data, calculatedData, retEarningsData) {
 
-        /*Z-SCORE Altman standard formula = 1.2 X A + 1.4 X B +3.3 X C +0.6 X D + 0.999 X E
+        /*Z-SCORE Altman standard formula = (1.2 x A) + (1.4 x B) + (3.3 x C) + (0.6 x D) + (0.999 x E)
         * A	Working capital / total assets
         * B	Retained earnings / total assets
         * C	Earnings before interest and task payment /total assets
@@ -5827,10 +6115,10 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         altmanIndexObj.ratioA = {};
         altmanIndexObj.ratioA.text = {};
         altmanIndexObj.ratioA.text.descr = texts.altmanRatioADescription;
-        altmanIndexObj.ratioA.text.style = "styleTablRows";
+        altmanIndexObj.ratioA.text.style = "";
         altmanIndexObj.ratioA.formula = {};
         altmanIndexObj.ratioA.formula.descr = texts.altmanFormulaA;
-        altmanIndexObj.ratioA.formula.style = "styleTablRows";
+        altmanIndexObj.ratioA.formula.style = "";
         altmanIndexObj.ratioA.weighting = {}; 
         altmanIndexObj.ratioA.weighting.descr = pondA.toString();
         altmanIndexObj.ratioA.weighting.style = "styleCentralText";
@@ -5841,10 +6129,10 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         altmanIndexObj.ratioB = {};
         altmanIndexObj.ratioB.text = {};
         altmanIndexObj.ratioB.text.descr = texts.altmanRatioBDescription;
-        altmanIndexObj.ratioB.text.style = "styleTablRows";
+        altmanIndexObj.ratioB.text.style = "";
         altmanIndexObj.ratioB.formula = {};
         altmanIndexObj.ratioB.formula.descr = texts.altmanFormulaB;
-        altmanIndexObj.ratioB.formula.style = "styleTablRows";
+        altmanIndexObj.ratioB.formula.style = "";
         altmanIndexObj.ratioB.weighting = {}; 
         altmanIndexObj.ratioB.weighting.descr = pondB.toString();
         altmanIndexObj.ratioB.weighting.style = "styleCentralText";
@@ -5855,10 +6143,10 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         altmanIndexObj.ratioC = {};
         altmanIndexObj.ratioC.text = {};
         altmanIndexObj.ratioC.text.descr = texts.altmanRatioCDescription;
-        altmanIndexObj.ratioC.text.style = "styleTablRows";
+        altmanIndexObj.ratioC.text.style = "";
         altmanIndexObj.ratioC.formula = {};
         altmanIndexObj.ratioC.formula.descr = texts.altmanFormulaC;
-        altmanIndexObj.ratioC.formula.style = "styleTablRows";
+        altmanIndexObj.ratioC.formula.style = "";
         altmanIndexObj.ratioC.weighting = {}; 
         altmanIndexObj.ratioC.weighting.descr = pondC.toString();
         altmanIndexObj.ratioC.weighting.style = "styleCentralText";
@@ -5869,10 +6157,10 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         altmanIndexObj.ratioD = {};
         altmanIndexObj.ratioD.text = {};
         altmanIndexObj.ratioD.text.descr = texts.altmanRatioDDescription;
-        altmanIndexObj.ratioD.text.style = "styleTablRows";
+        altmanIndexObj.ratioD.text.style = "";
         altmanIndexObj.ratioD.formula = {};
         altmanIndexObj.ratioD.formula.descr = texts.altmanFormulaD;
-        altmanIndexObj.ratioD.formula.style = "styleTablRows";
+        altmanIndexObj.ratioD.formula.style = "";
         altmanIndexObj.ratioD.weighting = {}; 
         altmanIndexObj.ratioD.weighting.descr = pondD.toString();
         altmanIndexObj.ratioD.weighting.style = "styleCentralText";
@@ -5884,10 +6172,10 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         altmanIndexObj.ratioE = {};
         altmanIndexObj.ratioE.text = {};
         altmanIndexObj.ratioE.text.descr = texts.altmanRatioEDescription;
-        altmanIndexObj.ratioE.text.style = "styleTablRows";
+        altmanIndexObj.ratioE.text.style = "";
         altmanIndexObj.ratioE.formula = {};
         altmanIndexObj.ratioE.formula.descr = texts.altmanFormulaE;
-        altmanIndexObj.ratioE.formula.style = "styleTablRows";
+        altmanIndexObj.ratioE.formula.style = "";
         altmanIndexObj.ratioE.weighting = {}; 
         altmanIndexObj.ratioE.weighting.descr = pondE.toString();
         altmanIndexObj.ratioE.weighting.style = "styleCentralText";
@@ -5915,9 +6203,145 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         altmanIndexObj.finalScore.amount.value = finalScore;
         altmanIndexObj.finalScore.amount.style = "styleMidTotalAmount";
 
+        //Banana.Ui.showText(JSON.stringify(altmanIndexObj));
+
 
         return altmanIndexObj;
 
+    }
+
+    /**
+     * @description this method calculate the altman Z- Score index for private Companies
+     * @returns an object containing the Altman index elements
+     */
+    calculateAltmanZScoreIndexPC(data, calculatedData, retEarningsData){
+
+        /*Z-SCORE Altman standard formula = (0.717 x A) + (0.847 x B) + (3.107 x C) + (0.420 x D) + (0.998 x E)
+        * A	( Current Assets − Current Liabilities )/Total Assets
+        * B	Retained Earnings/Total Assets
+        * C	Earnings Before Interest and Taxes/Total Assets
+        * D	Book Value of Equity/Total Liabilities
+        * E	Sales/Total Assets
+        * Source: https://www.wallstreetmojo.com/altman-z-score/
+        */
+
+        let altmanIndexObj = {};
+        let totalAssets = calculatedData.totalassets;
+        let shortTermDebtCapital = calculatedData.shorttermdebtcapital;
+        let totalLiabilities = calculatedData.debtcapital;
+        let currentAssets = calculatedData.currentassets;
+        let workingCapital = Banana.SDecimal.subtract(currentAssets, shortTermDebtCapital);
+        let totalRetEarnings = retEarningsData.totalRetainedEarning.amount;
+        let ebit = calculatedData.ebit;
+        let bookValueOfEquity = Banana.SDecimal.subtract(totalAssets, totalLiabilities);
+        let salesTurnover = data.profitandloss.salesturnover.balance;
+        let finalScore = "";
+        var texts = this.getFinancialAnalysisTexts();
+
+        //Ponderazioni.
+        let pondA = 0.717;
+        let pondB = 0.847;
+        let pondC = 3.107;
+        let pondD = 0.420;
+        let pondE = 0.998;
+        let pondZScore = 1; //da aggiungere con stile bold centrato.
+
+        //A
+        altmanIndexObj.ratioA = {};
+        altmanIndexObj.ratioA.text = {};
+        altmanIndexObj.ratioA.text.descr = texts.altmanRatioADescriptionPC;
+        altmanIndexObj.ratioA.text.style = "";
+        altmanIndexObj.ratioA.formula = {};
+        altmanIndexObj.ratioA.formula.descr = texts.altmanFormulaA;
+        altmanIndexObj.ratioA.formula.style = "";
+        altmanIndexObj.ratioA.weighting = {}; 
+        altmanIndexObj.ratioA.weighting.descr = pondA.toString();
+        altmanIndexObj.ratioA.weighting.style = "styleCentralText";
+        altmanIndexObj.ratioA.amount = {};
+        altmanIndexObj.ratioA.amount.value = Banana.SDecimal.multiply(Banana.SDecimal.divide(workingCapital,totalAssets),pondA, { 'decimals': this.dialogparam.numberofdecimals});
+        altmanIndexObj.ratioA.amount.style = "styleNormalAmount";
+        //B
+        altmanIndexObj.ratioB = {};
+        altmanIndexObj.ratioB.text = {};
+        altmanIndexObj.ratioB.text.descr = texts.altmanRatioBDescription;
+        altmanIndexObj.ratioB.text.style = "";
+        altmanIndexObj.ratioB.formula = {};
+        altmanIndexObj.ratioB.formula.descr = texts.altmanFormulaB;
+        altmanIndexObj.ratioB.formula.style = "";
+        altmanIndexObj.ratioB.weighting = {}; 
+        altmanIndexObj.ratioB.weighting.descr = pondB.toString();
+        altmanIndexObj.ratioB.weighting.style = "styleCentralText";
+        altmanIndexObj.ratioB.amount = {};
+        altmanIndexObj.ratioB.amount.value = Banana.SDecimal.multiply(Banana.SDecimal.divide(totalRetEarnings,totalAssets),pondB, { 'decimals': this.dialogparam.numberofdecimals});
+        altmanIndexObj.ratioB.amount.style = "styleNormalAmount";
+        //C
+        altmanIndexObj.ratioC = {};
+        altmanIndexObj.ratioC.text = {};
+        altmanIndexObj.ratioC.text.descr = texts.altmanRatioCDescription;
+        altmanIndexObj.ratioC.text.style = "";
+        altmanIndexObj.ratioC.formula = {};
+        altmanIndexObj.ratioC.formula.descr = texts.altmanFormulaC;
+        altmanIndexObj.ratioC.formula.style = "";
+        altmanIndexObj.ratioC.weighting = {}; 
+        altmanIndexObj.ratioC.weighting.descr = pondC.toString();
+        altmanIndexObj.ratioC.weighting.style = "styleCentralText";
+        altmanIndexObj.ratioC.amount = {};
+        altmanIndexObj.ratioC.amount.value = Banana.SDecimal.multiply(Banana.SDecimal.divide(ebit,totalAssets),pondC,{ 'decimals': this.dialogparam.numberofdecimals});
+        altmanIndexObj.ratioC.amount.style = "styleNormalAmount";
+        //D
+        altmanIndexObj.ratioD = {};
+        altmanIndexObj.ratioD.text = {};
+        altmanIndexObj.ratioD.text.descr = texts.altmanRatioDDescriptionPC;
+        altmanIndexObj.ratioD.text.style = "";
+        altmanIndexObj.ratioD.formula = {};
+        altmanIndexObj.ratioD.formula.descr = texts.altmanFormulaD;
+        altmanIndexObj.ratioD.formula.style = "";
+        altmanIndexObj.ratioD.weighting = {}; 
+        altmanIndexObj.ratioD.weighting.descr = pondD.toString();
+        altmanIndexObj.ratioD.weighting.style = "styleCentralText";
+        altmanIndexObj.ratioD.amount = {};
+        altmanIndexObj.ratioD.amount.value = Banana.SDecimal.multiply(Banana.SDecimal.divide(bookValueOfEquity,totalLiabilities),pondD, { 'decimals': this.dialogparam.numberofdecimals});
+        altmanIndexObj.ratioD.amount.style = "styleNormalAmount";
+        
+        //E
+        altmanIndexObj.ratioE = {};
+        altmanIndexObj.ratioE.text = {};
+        altmanIndexObj.ratioE.text.descr = texts.altmanRatioEDescription;
+        altmanIndexObj.ratioE.text.style = "";
+        altmanIndexObj.ratioE.formula = {};
+        altmanIndexObj.ratioE.formula.descr = texts.altmanFormulaE;
+        altmanIndexObj.ratioE.formula.style = "";
+        altmanIndexObj.ratioE.weighting = {}; 
+        altmanIndexObj.ratioE.weighting.descr = pondE.toString();
+        altmanIndexObj.ratioE.weighting.style = "styleCentralText";
+        altmanIndexObj.ratioE.amount = {};
+        altmanIndexObj.ratioE.amount.value =  Banana.SDecimal.multiply(Banana.SDecimal.divide(salesTurnover,totalAssets),pondE, { 'decimals': this.dialogparam.numberofdecimals});
+        altmanIndexObj.ratioE.amount.style = "styleNormalAmount";
+
+        //Final Result
+        if(altmanIndexObj){
+            for(var key in altmanIndexObj ){
+                finalScore = Banana.SDecimal.add(altmanIndexObj[key].amount.value,finalScore, { 'decimals': this.dialogparam.numberofdecimals});
+            }
+        }
+        altmanIndexObj.finalScore = {};
+        altmanIndexObj.finalScore.text = {};
+        altmanIndexObj.finalScore.text.descr = texts.altmanFinalZScore;
+        altmanIndexObj.finalScore.text.style = "styleUnderGroupTitles";
+        altmanIndexObj.finalScore.formula = {};
+        altmanIndexObj.finalScore.formula.descr = texts.altmanZScoreFormulaPC;
+        altmanIndexObj.finalScore.formula.style = "styleUnderGroupTitles";
+        altmanIndexObj.finalScore.weighting = {}; 
+        altmanIndexObj.finalScore.weighting.descr = ""
+        altmanIndexObj.finalScore.weighting.style = "";
+        altmanIndexObj.finalScore.amount = {};
+        altmanIndexObj.finalScore.amount.value = finalScore;
+        altmanIndexObj.finalScore.amount.style = "styleMidTotalAmount";
+
+        //Banana.Ui.showText(JSON.stringify(altmanIndexObj));
+
+
+        return altmanIndexObj;
     }
 
     /**

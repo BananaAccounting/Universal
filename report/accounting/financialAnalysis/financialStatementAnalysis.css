@@ -89,30 +89,30 @@ style's for the amounts
     /*those 3 style's are for the Altman z Score Index values*/
 
     .styleZIndexLow {
-        background-color: #71FA4C;
-        text-align: center;
+        background-color: #a4ff8b;
+        text-align: right;
     }
 
     .styleZIndexLow_withoutColor {
-        text-align: center;
+        text-align: right;
     }
 
     .styleZIndexMid {
-        background-color: #FFFD54;
-        text-align: center;
+        background-color: #fdfb74;
+        text-align: right;
     }
 
     .styleZIndexMid_withoutColor {
-        text-align: center;
+        text-align: right;
     }
 
     .styleZIndexProb {
-        background-color: #EC3323;
-        text-align: center;
+        background-color: #ee7d73;
+        text-align: right;
     }
 
     .styleZIndexProb_withoutColor {
-        text-align: center;
+        text-align: right;
     }
 
     /*style for the amount when the difference between calculated total and the accounting total is>than 0*/
