@@ -15,7 +15,7 @@
 
 
 
-/* Print preferences update: 2023-01-04 */
+/* Print preferences update: 2023-03-10 */
 
 
 
@@ -104,6 +104,14 @@ function getPrintPreferences_en() {
           {
             "id":"reminder_3",
             "text": "3rd reminder"
+          },
+          {
+            "id":"estimate",
+            "text": "Estimate"
+          },
+          {
+            "id":"proforma_invoice",
+            "text": "Proforma Invoice"
           }
         ],
         "default": "automatic"
@@ -151,6 +159,14 @@ function getPrintPreferences_it() {
           {
             "id":"reminder_3",
             "text": "3. richiamo"
+          },
+          {
+            "id":"estimate",
+            "text": "Offerta"
+          },
+          {
+            "id":"proforma_invoice",
+            "text": "Fattura Proforma"
           }
         ],
         "default": "automatic"
@@ -198,6 +214,14 @@ function getPrintPreferences_fr() {
           {
             "id":"reminder_3",
             "text": "3e rappel"
+          },
+          {
+            "id":"estimate",
+            "text": "Offre"
+          },
+          {
+            "id":"proforma_invoice",
+            "text": "Facture Proforma"
           }
         ],
         "default": "automatic"
@@ -245,6 +269,14 @@ function getPrintPreferences_de() {
           {
             "id":"reminder_3",
             "text": "3. Mahnung"
+          },
+          {
+            "id":"estimate",
+            "text": "Offerte"
+          },
+          {
+            "id":"proforma_invoice",
+            "text": "Proforma-Rechnung"
           }
         ],
         "default": "automatic"
@@ -292,6 +324,14 @@ function getPrintPreferences_nl() {
           {
             "id":"reminder_3",
             "text": "3e herinnering"
+          },
+          {
+            "id":"estimate",
+            "text": "Offerte"
+          },
+          {
+            "id":"proforma_invoice",
+            "text": "Proforma factuur"
           }
         ],
         "default": "automatic"
@@ -339,6 +379,14 @@ function getPrintPreferences_zh() {
           {
             "id":"reminder_3",
             "text": "第3次催款"
+          },
+          {
+            "id":"estimate",
+            "text": "估算"
+          },
+          {
+            "id":"proforma_invoice",
+            "text": "形式发票"
           }
         ],
         "default": "automatic"
