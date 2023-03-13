@@ -23,20 +23,19 @@
  */
 function exec() {
     let itemsTable = Banana.document.table("Items");
-    let csv = "";
 
     if (!itemsTable) {
-        return
+        return "";
     }
 
-    let itemsData = generateCsvItems(itemsTable, false);
+    let itemsData = generateCsvItems(itemsTable);
 
-    if (!itemsData) 
+    if (!itemsData) {
+        Banana.application.showMessages(true); // Be sure the user is notified
+        Banana.document.addMessage(qsTr("Fix errors first, as listed in the pane Messages."), "internal_error");
         return "";
-    
-    csv += itemsData;
-      
-    return csv;
+    }
+    return itemsData;
 }
 
 function getValue(column) {
@@ -44,7 +43,7 @@ function getValue(column) {
     return column ? column : ''
 }
 
-function generateCsvItems(itemsTable, isTest) {
+function generateCsvItems(itemsTable) {
     let header = "RowId,Description,UnitPrice,AmountType,Unit,VatCode,VatRate,Discount\n";
     let csv = '';
     let rowMatched = true;
@@ -61,40 +60,26 @@ function generateCsvItems(itemsTable, isTest) {
                 let vatRate = row.value("VatRate");
                 let discount = row.value("Discount");
                 if (!id) {
-                    if (!isTest) 
-                        row.addMessage(qsTr("RowId is a required field"), id);
-                    else
-                        Test.logger.addText("RowId is a required field");
+                    row.addMessage(qsTr("%1 is a required field").arg("RowId"), "RowId", "missing_field");
                     rowMatched = false;
                 } if (!description) {
-                    if (!isTest)
-                        row.addMessage(qsTr("Description is a required field"), description);
-                    else
-                        Test.logger.addText("Description is a required field");
+                    row.addMessage(qsTr("%1 is a required field").arg("Description"), "Description", "missing_field");
                     rowMatched = false;
                 } else if (!unitPrice) {
-                    if (!isTest)
-                        row.addMessage(qsTr("UnitPrice is a required field"), unitPrice);
-                    else
-                        Test.logger.addText("UnitPrice is a required field");
+                    row.addMessage(qsTr("%1 is a required field").arg("UnitPrice"), "UnitPrice", "missing_field");
                     rowMatched = false;
                 }
                 csv += `${getValue(id)},${getValue(description)},${getValue(unitPrice)},${getValue(amountType)},${getValue(unit)},${getValue(vatCode)},${getValue(vatRate)},${getValue(discount)}\n`;
             }
             catch(e) {
-                Banana.document.addMessage(qsTr("An error occured while exporting the csv items! ") + "\n" + qsTr("Error Description: ") + e);
+                row.addMessage(qsTr("Item not valid.\nError: %1").arg(e), "RowId", "internal_error");
+                rowMatched = false;
             }
         }
     }
 
     if (rowMatched) {
         return header + csv;
-    } else {
-        if (!isTest)
-            Banana.document.addMessage(qsTr("Complete the missing details first, as listed in the message pane below."));
-        else
-            Test.logger.addText("Complete the missing details first, as listed above.");
-        return "";
-        
-    }
+    } 
+    return null;
 }
