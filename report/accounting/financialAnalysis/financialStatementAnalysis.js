@@ -1265,9 +1265,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             for (var i = this.data.length - 1; i >= 0; i--) {
                 let style = "styleMidTotalAmount";
                 let ZScoreResultDescr = texts.altmanFinalZScore;
-                if(this.data[0].altman_index_pc[key].text.descr == ZScoreResultDescr)
+                if(this.data[0].altman_index[key].text.descr == ZScoreResultDescr)
                     style = this.altmanScoreType(this.data[i].altman_index[key].amount.value);
-                tableRow.addCell(this.data[i].altman_index_pc[key].amount.value, style);
+                tableRow.addCell(this.data[i].altman_index[key].amount.value, style);
             }
         }
 
@@ -1276,7 +1276,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
          ****************************************************************************************/
         var tableAltmanZScoreIndexPC = this.printReportAdd_TableZScorePrivateCompanies(report);
         var tableRow = tableAltmanZScoreIndexPC.addRow("styleTablRows");
-        for (var key in this.data[0].altman_index) {
+        for (var key in this.data[0].altman_index_pc) {
             var tableRow = tableAltmanZScoreIndexPC.addRow("styleTablRows");
             tableRow.addCell(this.data[0].altman_index_pc[key].text.descr,
                 this.data[0].altman_index_pc[key].text.style);
@@ -1291,7 +1291,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                 let style = "styleMidTotalAmount";
                 let ZScoreResultDescr = texts.altmanFinalZScore;
                 if(this.data[0].altman_index_pc[key].text.descr == ZScoreResultDescr)
-                    style = this.altmanScoreType(this.data[i].altman_index[key].amount.value);
+                    style = this.altmanScoreType(this.data[i].altman_index_pc[key].amount.value);
                 tableRow.addCell(this.data[i].altman_index_pc[key].amount.value, style);
             }
         }
@@ -1686,7 +1686,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         texts.benchmark = qsTr("Benchmark");
         texts.benchmarks = qsTr("Benchmarks");
         texts.upperaltmanindex = qsTr("ALTMAN Z-SCORE");
-        texts.upperzscoreprivatecompanies = qsTr("ALTMAN Z-SCORE FOR PRIVATE COMPANIES");
+        texts.upperzscoreprivatecompanies = qsTr("Z-SCORE FOR PRIVATE COMPANIES");
         texts.upperdupontscheme = qsTr("DUPONT ANALYSIS ");
         texts.financialstatementanalysis = qsTr("Financial Statements Analysis and Ratios");
         texts.totalasset = qsTr('Total Assets');
@@ -1742,13 +1742,13 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         texts.reservesVariation = qsTr('+/- Reserves');
         texts.totalRetainedEarning = qsTr('Total retained earning');
         texts.currentYearRetainedEarning = qsTr('Current year retained earning');
-        texts.altmanRatioADescription = qsTr('Working capital / total assets');
-        texts.altmanRatioADescriptionPC = qsTr('(Current Assets - Current Liabilities) / total assets');
-        texts.altmanRatioBDescription = qsTr('Retained earnings / total assets');
-        texts.altmanRatioCDescription = qsTr('Earnings before interest and task payment /total assets');
-        texts.altmanRatioDDescription = qsTr('The equity’s market value / total assets');
+        texts.altmanRatioADescription = qsTr('Working capital / total Assets');
+        texts.altmanRatioADescriptionPC = qsTr('(Current Assets - Current Liabilities) / total Assets');
+        texts.altmanRatioBDescription = qsTr('Retained earnings / total Assets');
+        texts.altmanRatioCDescription = qsTr('Earnings before interest and task payment /total Assets');
+        texts.altmanRatioDDescription = qsTr('The equity’s market value / total Liabilities');
         texts.altmanRatioDDescriptionPC = qsTr('Book Value of Equity/Total Liabilities');
-        texts.altmanRatioEDescription = qsTr('Total sales / total assets');
+        texts.altmanRatioEDescription = qsTr('Total Sales / total Assets');
         texts.altmanFinalZScore = "Z-Score";
 
 
@@ -1777,7 +1777,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         texts.altmanFormulaA = "(cuas-stdc) / tota";
         texts.altmanFormulaB = qsTr("Total retained earning / tota");
         texts.altmanFormulaC = "EBIT / tota";
-        texts.altmanFormulaD = "owca / tota";
+        texts.altmanFormulaD = "owca / deca";
         texts.altmanFormulaE = "satu / tota";
         texts.altmanZScoreFormula = "(1.2 x A) + (1.4 x B) + (3.3 x C) + (0.6 x D) + (0.999 x E)";
         texts.altmanZScoreFormulaPC = "(0.717 x A) + (0.847 x B) + (3.107 x C) + (0.420 x D) + (0.998 x E)";
