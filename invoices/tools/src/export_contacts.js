@@ -23,20 +23,20 @@
  */
 function exec() {
     let contactsTable = Banana.document.table("Contacts");
-    let csv = "";
 
     if (!contactsTable) {
         return
     }
 
-    let contactsData = generateCsvContacts(contactsTable, false);
+    let contactsData = generateCsvContacts(contactsTable);
 
-    if (!contactsData) 
+    if (!contactsData) {
+        Banana.application.showMessages(true); // Be sure the user is notified
+        Banana.document.addMessage(qsTr("Fix errors first, as listed in the pane Messages."), "internal_error");
         return "";
-    
-    csv += contactsData;
+    }
       
-    return csv;
+    return contactsData;
 }
 
 function getValue(column) {
@@ -44,7 +44,7 @@ function getValue(column) {
     return column ? column : ''
 }
 
-function generateCsvContacts(contactsTable, isTest) {
+function generateCsvContacts(contactsTable) {
     let csv = '';
     let header = "Number,OrganisationName,OrganisationUnit,NamePrefix,FirstName,LastName,Street,AddressExtra,POBox,PostalCode,Locality,CountryCode,LanguageCode,EmailWork,Discount\n";
     let rowMatched = true;
@@ -68,100 +68,60 @@ function generateCsvContacts(contactsTable, isTest) {
                 let workEmail = row.value("EmailWork");
                 let discount = row.value("Discount");
                 if (!id) {
-                    if (!isTest)
-                        row.addMessage(qsTr("RowId is a required field"), id);
-                    else    
-                        Test.logger.addText("RowId is a required field");
+                    row.addMessage(qsTr("%1 is a required field").arg("RowId"), "RowId", "missing_field");
                     rowMatched = false;
                 } 
                 if (!organisation && !first_name && !last_name) {
-                    if (!isTest) {
-                        row.addMessage(qsTr("Organisation name is a required field"), organisation);
-                    
-                        row.addMessage(qsTr("FirstName is a required field"), first_name);
-                    
-                        row.addMessage(qsTr("LastName is a required field"), last_name);
-                    } else {
-                        Test.logger.addText("Organisation name is a required field");
-
-                        Test.logger.addText("FirstName is a required field");
-
-                        Test.logger.addText("LastName is a required field");
-                    }
-                    
+                    row.addMessage(qsTr("%1 is a required field").arg("OrganisationName"), "OrganisationName", "missing_field");
+                    row.addMessage(qsTr("%1 is a required field").arg("FirstName"), "FirstName", "missing_field");
+                    row.addMessage(qsTr("%1 is a required field").arg("LastName"), "LastName", "missing_field");
                     rowMatched = false;
                 } 
                 if ((!organisation && first_name && !last_name) || (!organisation && !first_name && last_name)) {
                     if (!organisation) {
-                        if (!isTest)
-                            row.addMessage(qsTr("Organisation name is a required field"), organisation);
-                        else 
-                        Test.logger.addText("Organisation name is a required field");
+                        row.addMessage(qsTr("%1 is a required field").arg("OrganisationName"), "OrganisationName", "missing_field");
                     }
                         
                     
                     if (!first_name) {
-                        if (!isTest)
-                            row.addMessage(qsTr("FirstName is a required field"), first_name);
-                        else
-                            Test.logger.addText("FirstName is a required field");
+                        row.addMessage(qsTr("%1 is a required field").arg("FirstName"), "FirstName", "missing_field");
                     }
                         
                     
                     if (!last_name) {
-                        if (!isTest)
-                            row.addMessage(qsTr("LastName is a required field"), last_name);
-                        else 
-                            Test.logger.addText("LastName is a required field");
+                        row.addMessage(qsTr("%1 is a required field").arg("LastName"), "LastName", "missing_field");
                     }
-                        
 
                     rowMatched = false;
                 }
                  
                 if (!street) {
-                    if (!isTest)
-                        row.addMessage(qsTr("Street is a required field"), street);
-                    else 
-                        Test.logger.addText("Street is a required field");
+                    row.addMessage(qsTr("%1 is a required field").arg("Street"), "Street", "missing_field");
                     rowMatched = false;
                 } 
                 if (!postalCode) {
-                    if (!isTest)
-                        row.addMessage(qsTr("PostalCode is a required field"), postalCode);
-                    else
-                        Test.logger.addText("PostalCode is a required field");
+                    row.addMessage(qsTr("%1 is a required field").arg("PostalCode"), "PostalCode", "missing_field");
                     rowMatched = false;
                 } 
                 if (!locality) {
-                    if (!isTest)
-                        row.addMessage(qsTr("Locality is a required field"), locality);
-                    else
-                        Test.logger.addText("Locality is a required field");
+                    row.addMessage(qsTr("%1 is a required field").arg("Locality"), "Locality", "missing_field");
                     rowMatched = false;
                 } 
                 if (!countryCode) {
-                    if (!isTest)
-                        row.addMessage(qsTr("CountryCode is a required field"), countryCode);
-                    else
-                        Test.logger.addText("CountryCode is a required field");
+                    row.addMessage(qsTr("%1 is a required field").arg("CountryCode"), "CountryCode", "missing_field");
                     rowMatched = false;
                 }
                 csv += `${getValue(id)},${getValue(organisation)},${getValue(organisationUnit)},${getValue(namePrefix)},${getValue(first_name)},${getValue(last_name)},${getValue(street)},${getValue(extraAddress)},${getValue(poBox)},${getValue(postalCode)},${getValue(locality)},${getValue(countryCode)},${getValue(languageCode)},${getValue(workEmail)},${getValue(discount)} \n`;
             }
             catch(e) {
-                Banana.document.addMessage(qsTr("An error occured while exporting the csv contacts! ") + "\n" + qsTr("Error Description: ") + e);
+                row.addMessage(qsTr("Invoice not valid.\nError: %1").arg(e), "RowId", "internal_error");
+                rowMatched = false;
             }
         }
     }
     
     if (rowMatched) {
         return header + csv;
-    } else {
-        if (!isTest)
-            Banana.document.addMessage(qsTr("Complete the missing details first, as listed in the message pane below."));
-        else
-            Test.logger.addText("Complete the missing details first, as listed in the message pane below.");
-        return "";
-    }
+    } 
+    return null;
 }
