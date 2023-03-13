@@ -114,7 +114,7 @@ function generateCsvContacts(contactsTable) {
                 csv += `${getValue(id)},${getValue(organisation)},${getValue(organisationUnit)},${getValue(namePrefix)},${getValue(first_name)},${getValue(last_name)},${getValue(street)},${getValue(extraAddress)},${getValue(poBox)},${getValue(postalCode)},${getValue(locality)},${getValue(countryCode)},${getValue(languageCode)},${getValue(workEmail)},${getValue(discount)} \n`;
             }
             catch(e) {
-                row.addMessage(qsTr("Invoice not valid.\nError: %1").arg(e), "RowId", "internal_error");
+                row.addMessage(qsTr("Contact not valid.\nError: %1").arg(e), "RowId", "internal_error");
                 rowMatched = false;
             }
         }
