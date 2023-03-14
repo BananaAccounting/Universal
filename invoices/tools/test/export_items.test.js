@@ -62,45 +62,45 @@ TestExportItems.prototype.cleanup = function() {
 TestExportItems.prototype.testItemsWithCompleteData = function(){
 	
 	//get the *ac2 file
-	let fileAC2 = "file:script/../test/testcases/items_testfiles/items_complete_data_test.ac2";
+	let fileAC2 = "file:script/test/testcases/items_testfiles/items_complete_data_test.ac2";
 	let banDoc = Banana.application.openDocument(fileAC2);
-	//create a new logger to split the result of this test on a different file.
-	let parentLogger = this.testLogger;
-	this.testLogger = parentLogger.newLogger(Banana.IO.fileCompleteBaseName(fileAC2));
-	if (banDoc) {
-		let itemsTable = banDoc.table("Items");
-		if (itemsTable){
-			let csvData = "";
-			csvData += generateCsvItems(itemsTable);
-			this.testLogger.addCsv("Data",csvData);
-		} else {
-			this.testLogger.addFatalError("Items table not found !");
-		}
-	} else {
-		this.testLogger.addFatalError("File not found: " + fileAC2);
-	}
+	Test.assert(banDoc, `file not found: "${fileAC2}"`);
+	
+	let itemsTable = banDoc.table("Items");
+	Test.assert(itemsTable);
+	
+	banDoc.clearMessages();
+	let csvData = generateCsvItems(itemsTable);
+	this.testLogger.addCsv("Data", csvData);
+		
+	let msgs = banDoc.getMessages();
+    for (let i = 0; i < msgs.length; ++i) {
+        let msg = msgs[i];
+        this.testLogger.addKeyValue("ERROR_MSG_ROW_" + msg.rowNr, msg.message);
+        this.testLogger.addKeyValue("ERROR_HELPID_ROW_" + msg.rowNr, msg.helpId);
+    }
 }
 
 //Export Items with missing Data
 TestExportItems.prototype.testItemsWithMissingData = function(){
 	//get the *ac2 file
-	let fileAC2 = "file:script/../test/testcases/items_testfiles/items_missing_data_test.ac2";
+	let fileAC2 = "file:script/test/testcases/items_testfiles/items_missing_data_test.ac2";
 	let banDoc = Banana.application.openDocument(fileAC2);
-	//create a new logger to split the result of this test on a different file.
-	let parentLogger = this.testLogger;
-	this.testLogger = parentLogger.newLogger(Banana.IO.fileCompleteBaseName(fileAC2));
-	if (banDoc) {
-		let itemsTable = banDoc.table("Items");
-		if (itemsTable){
-			let csvData = "";
-			csvData += generateCsvItems(itemsTable);
-			this.testLogger.addCsv("Data",csvData);
-		} else {
-			this.testLogger.addFatalError("Items table not found !");
-		}
-	} else {
-		this.testLogger.addFatalError("File not found: " + fileAC2);
-	}
+	Test.assert(banDoc, `file not found: "${fileAC2}"`);
+	
+	let itemsTable = banDoc.table("Items");
+	Test.assert(itemsTable);
+	
+	banDoc.clearMessages();
+	let csvData = generateCsvItems(itemsTable);
+	this.testLogger.addCsv("Data", csvData);
+		
+	let msgs = banDoc.getMessages();
+    for (let i = 0; i < msgs.length; ++i) {
+        let msg = msgs[i];
+        this.testLogger.addKeyValue("ERROR_MSG_ROW_" + msg.rowNr, msg.message);
+        this.testLogger.addKeyValue("ERROR_HELPID_ROW_" + msg.rowNr, msg.helpId);
+    } 
 }
 
 //Export Items with missing mandatory data
@@ -108,19 +108,19 @@ TestExportItems.prototype.testItemsWithMissingMandatoryData = function(){
 	//get the *ac2 file
 	let fileAC2 = "file:script/../test/testcases/items_testfiles/items_missing_mandatory_data_test.ac2";
 	let banDoc = Banana.application.openDocument(fileAC2);
-	//create a new logger to split the result of this test on a different file.
-	let parentLogger = this.testLogger;
-	this.testLogger = parentLogger.newLogger(Banana.IO.fileCompleteBaseName(fileAC2));
-	if (banDoc) {
-		let itemsTable = banDoc.table("Items");
-		if (itemsTable){
-			let csvData = "";
-			csvData += generateCsvItems(itemsTable, true);
-			this.testLogger.addCsv("Data",csvData);
-		} else {
-			this.testLogger.addFatalError("Items table not found !");
-		}
-	} else {
-		this.testLogger.addFatalError("File not found: " + fileAC2);
-	}
+	Test.assert(banDoc, `file not found: "${fileAC2}"`);
+	
+	let itemsTable = banDoc.table("Items");
+	Test.assert(itemsTable);
+	
+	banDoc.clearMessages();
+	let csvData = generateCsvItems(itemsTable);
+	this.testLogger.addCsv("Data", csvData);
+		
+	let msgs = banDoc.getMessages();
+    for (let i = 0; i < msgs.length; ++i) {
+        let msg = msgs[i];
+        this.testLogger.addKeyValue("ERROR_MSG_ROW_" + msg.rowNr, msg.message);
+        this.testLogger.addKeyValue("ERROR_HELPID_ROW_" + msg.rowNr, msg.helpId);
+    }
 }
