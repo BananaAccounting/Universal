@@ -14,20 +14,20 @@
 //
 // @id = ch.banana.uni.app.donationstatementplus.js
 // @api = 1.0
-// @pubdate = 2023-03-03
+// @pubdate = 2023-03-14
 // @publisher = Banana.ch SA
-// @description = [DEV] Statement of donation for Associations (Banana+)
-// @description.de = [DEV] Spendenbescheinigung für Vereine (Banana+)
-// @description.it = [DEV] Attestato di donazione per Associazioni (Banana+)
-// @description.fr = [DEV] Certificat de don pour Associations (Banana+)
-// @description.en = [DEV] Statement of donation for Associations (Banana+)
-// @description.nl = [DEV] Kwitantie voor giften (Banana+)
+// @description = Statement of donation for Associations (Banana+)
+// @description.de = Spendenbescheinigung für Vereine (Banana+)
+// @description.it = Attestato di donazione per Associazioni (Banana+)
+// @description.fr = Certificat de don pour Associations (Banana+)
+// @description.en = Statement of donation for Associations (Banana+)
+// @description.nl = Kwitantie voor giften (Banana+)
 // @doctype = *
 // @task = app.command
 // @timeout = -1
 
 /*
-*   This BananaApp prints a donation statement for all the selected donators and period.
+*   This extension prints a donation statement for all the selected donators and period.
 *   Donators can be:
 *   - a single donator (with or without ";") => (i.e. "10001" or  ";10011")
 *   - more donators (with or without ";") separated by "," => (i.e. "10001, ;10011,;10012")
@@ -49,7 +49,9 @@ function convertParam(userParam) {
     convertedParam.version = '1.0';
     convertedParam.data = []; /* array dei parametri dello script */
 
-    // Address to print
+    /**
+     * ADDRESS GROUP
+     */
     var currentParam = {};
     currentParam.name = 'accountsToPrint';
     currentParam.title = texts.accountsToPrint;
@@ -101,7 +103,188 @@ function convertParam(userParam) {
     convertedParam.data.push(currentParam);
 
 
-    // Texts
+    /**
+     * BEGIN GROUP
+     */
+    var currentParam = {};
+    currentParam.name = 'begin';
+    currentParam.title = texts.begin;
+    currentParam.type = 'string';
+    currentParam.value = '';
+    currentParam.editable = false;
+    currentParam.readValue = function() {
+        userParam.begin = this.value;
+    }
+    convertedParam.data.push(currentParam);
+
+    currentParam = {};
+    currentParam.name = 'printHeaderLogo';
+    currentParam.parentObject = 'begin';
+    currentParam.title = texts.printHeaderLogo;
+    currentParam.type = 'bool';
+    currentParam.value = userParam.printHeaderLogo ? true : false;
+    currentParam.defaultvalue = false;
+    currentParam.readValue = function() {
+    userParam.printHeaderLogo = this.value;
+    }
+    convertedParam.data.push(currentParam);
+
+    var currentParam = {};
+    currentParam.name = 'headerLogoName';
+    currentParam.parentObject = 'begin'
+    currentParam.title = texts.headerLogoName;
+    currentParam.type = 'string';
+    currentParam.value = userParam.headerLogoName ? userParam.headerLogoName : 'Logo';
+    currentParam.defaultvalue = 'Logo';
+    currentParam.readValue = function() {
+        userParam.headerLogoName = this.value;
+    }
+    convertedParam.data.push(currentParam);
+
+    // locality and date
+    var currentParam = {};
+    currentParam.name = 'localityAndDate';
+    currentParam.parentObject = 'begin';
+    currentParam.title = texts.localityAndDate;
+    currentParam.type = 'string';
+    currentParam.value = userParam.localityAndDate ? userParam.localityAndDate : '';
+    currentParam.defaultvalue = texts.localityAndDate;
+    currentParam.readValue = function() {
+        userParam.localityAndDate = this.value;
+    }
+    convertedParam.data.push(currentParam);
+
+
+    /**
+     * PRINT TEXT GROUP
+     */
+    var currentParam = {};
+    currentParam.name = 'printText';
+    currentParam.title = texts.printText;
+    currentParam.type = 'string';
+    currentParam.value = '';
+    currentParam.editable = false;
+    currentParam.readValue = function() {
+        userParam.printText = this.value;
+    }
+    convertedParam.data.push(currentParam);
+
+    var textChoices = [];
+    textChoices.push(texts.text1);
+    textChoices.push(texts.text2);
+    textChoices.push(texts.text3);
+    textChoices.push(texts.text4);
+    textChoices.push(texts.textEmbedded);
+    var currentParam = {};
+    currentParam.name = 'textToUse';
+    currentParam.parentObject = 'printText';
+    currentParam.title = texts.textToUse;
+    currentParam.type = 'combobox';
+    currentParam.items = textChoices;
+    currentParam.value = userParam.textToUse ? userParam.textToUse : texts.text1;
+    currentParam.defaultvalue = texts.text1;
+    currentParam.readValue = function () {
+        userParam.textToUse = this.value;
+    }
+    convertedParam.data.push(currentParam);
+
+    // Use Markdown
+    var currentParam = {};
+    currentParam.name = 'useMarkdown';
+    currentParam.parentObject = 'printText';
+    currentParam.title = texts.useMarkdown;
+    currentParam.type = 'bool';
+    currentParam.value = userParam.useMarkdown ? true : false;
+    currentParam.defaultvalue = false;
+    currentParam.readValue = function() {
+        userParam.useMarkdown = this.value;
+    }
+    convertedParam.data.push(currentParam);
+
+    // donation details
+    var currentParam = {};
+    currentParam.name = 'details';
+    currentParam.parentObject = 'printText';
+    currentParam.title = texts.details;
+    currentParam.type = 'bool';
+    currentParam.value = userParam.details ? true : false;
+    currentParam.defaultvalue = false;
+    currentParam.readValue = function() {
+     userParam.details = this.value;
+    }
+    convertedParam.data.push(currentParam);
+
+    // donation details - description of transaction
+    var currentParam = {};
+    currentParam.name = 'description';
+    currentParam.parentObject = 'printText';
+    currentParam.title = texts.description;
+    currentParam.type = 'bool';
+    currentParam.value = userParam.description ? true : false;
+    currentParam.defaultvalue = false;
+    currentParam.readValue = function() {
+     userParam.description = this.value;
+    }
+    convertedParam.data.push(currentParam);
+
+
+    /**
+     * SIGNATURE GROUP
+     */
+    var currentParam = {};
+    currentParam.name = 'signature';
+    currentParam.title = texts.signature;
+    currentParam.type = 'string';
+    currentParam.value = '';
+    currentParam.editable = false;
+    currentParam.defaultvalue = '';
+    currentParam.readValue = function() {
+        userParam.signature = this.value;
+    }
+    convertedParam.data.push(currentParam);
+
+    var currentParam = {};
+    currentParam.name = 'textSignature';
+    currentParam.parentObject = 'signature';
+    currentParam.title = texts.textSignature;
+    currentParam.type = 'string';
+    currentParam.value = userParam.textSignature ? userParam.textSignature : '';
+    currentParam.defaultvalue = '';
+    currentParam.readValue = function() {
+        userParam.textSignature = this.value;
+    }
+    convertedParam.data.push(currentParam);
+
+    // image for signature
+    var currentParam = {};
+    currentParam.name = 'printSignatureImage';
+    currentParam.parentObject = 'signature';
+    currentParam.title = texts.printSignatureImage;
+    currentParam.type = 'bool';
+    currentParam.value = userParam.printSignatureImage ? true : false;
+    currentParam.defaultvalue = false;
+    currentParam.readValue = function() {
+     userParam.printSignatureImage = this.value;
+    }
+    convertedParam.data.push(currentParam);
+
+    // image for signature
+    var currentParam = {};
+    currentParam.name = 'nameSignatureImage';
+    currentParam.parentObject = 'signature';
+    currentParam.title = texts.nameSignatureImage;
+    currentParam.type = 'string';
+    currentParam.value = userParam.nameSignatureImage ? userParam.nameSignatureImage : 'documents:<image_id>';
+    currentParam.defaultvalue = 'documents:<image_id>';
+    currentParam.readValue = function() {
+     userParam.nameSignatureImage = this.value;
+    }
+    convertedParam.data.push(currentParam);
+
+
+    /**
+     * TEXTS GROUP
+     */
     var currentParam = {};
     currentParam.name = 'texts';
     currentParam.title = texts.textsGroup;
@@ -178,144 +361,10 @@ function convertParam(userParam) {
     }
     convertedParam.data.push(currentParam);
 
-    // locality and date
-    var currentParam = {};
-    currentParam.name = 'localityAndDate';
-    currentParam.parentObject = 'texts';
-    currentParam.title = texts.localityAndDate;
-    currentParam.type = 'string';
-    currentParam.value = userParam.localityAndDate ? userParam.localityAndDate : '';
-    currentParam.defaultvalue = '';
-    currentParam.readValue = function() {
-        userParam.localityAndDate = this.value;
-    }
-    convertedParam.data.push(currentParam);
 
-
-    // Print text
-    var currentParam = {};
-    currentParam.name = 'printText';
-    currentParam.title = texts.printText;
-    currentParam.type = 'string';
-    currentParam.value = '';
-    currentParam.editable = false;
-    currentParam.readValue = function() {
-        userParam.printText = this.value;
-    }
-    convertedParam.data.push(currentParam);
-
-
-    var textChoices = [];
-    textChoices.push(texts.text1);
-    textChoices.push(texts.text2);
-    textChoices.push(texts.text3);
-    textChoices.push(texts.text4);
-    textChoices.push(texts.textEmbedded);
-
-    var currentParam = {};
-    currentParam.name = 'textToUse';
-    currentParam.parentObject = 'printText';
-    currentParam.title = texts.textToUse;
-    currentParam.type = 'combobox';
-    currentParam.items = textChoices;
-    currentParam.value = userParam.textToUse ? userParam.textToUse : texts.text1;
-    currentParam.defaultvalue = texts.text1;
-    currentParam.readValue = function () {
-        userParam.textToUse = this.value;
-    }
-    convertedParam.data.push(currentParam);
-
-    // Use Markdown
-    var currentParam = {};
-    currentParam.name = 'useMarkdown';
-    currentParam.parentObject = 'printText';
-    currentParam.title = texts.useMarkdown;
-    currentParam.type = 'bool';
-    currentParam.value = userParam.useMarkdown ? true : false;
-    currentParam.defaultvalue = false;
-    currentParam.readValue = function() {
-        userParam.useMarkdown = this.value;
-    }
-    convertedParam.data.push(currentParam);
-
-    // donation details
-    var currentParam = {};
-    currentParam.name = 'details';
-    currentParam.parentObject = 'printText';
-    currentParam.title = texts.details;
-    currentParam.type = 'bool';
-    currentParam.value = userParam.details ? true : false;
-    currentParam.defaultvalue = false;
-    currentParam.readValue = function() {
-     userParam.details = this.value;
-    }
-    convertedParam.data.push(currentParam);
-
-    // donation details - description of transaction
-    var currentParam = {};
-    currentParam.name = 'description';
-    currentParam.parentObject = 'printText';
-    currentParam.title = texts.description;
-    currentParam.type = 'bool';
-    currentParam.value = userParam.description ? true : false;
-    currentParam.defaultvalue = true;
-    currentParam.readValue = function() {
-     userParam.description = this.value;
-    }
-    convertedParam.data.push(currentParam);
-
-    // signature
-    var currentParam = {};
-    currentParam.name = 'signature';
-    currentParam.title = texts.signature;
-    currentParam.type = 'string';
-    currentParam.value = '';
-    currentParam.editable = false;
-    currentParam.defaultvalue = '';
-    currentParam.readValue = function() {
-        userParam.signature = this.value;
-    }
-    convertedParam.data.push(currentParam);
-
-    var currentParam = {};
-    currentParam.name = 'textSignature';
-    currentParam.parentObject = 'signature';
-    currentParam.title = texts.textSignature;
-    currentParam.type = 'string';
-    currentParam.value = userParam.textSignature ? userParam.textSignature : '';
-    currentParam.defaultvalue = '';
-    currentParam.readValue = function() {
-        userParam.textSignature = this.value;
-    }
-    convertedParam.data.push(currentParam);
-
-    // image for signature
-    var currentParam = {};
-    currentParam.name = 'printSignatureImage';
-    currentParam.parentObject = 'signature';
-    currentParam.title = texts.printSignatureImage;
-    currentParam.type = 'bool';
-    currentParam.value = userParam.printSignatureImage ? true : false;
-    currentParam.defaultvalue = false;
-    currentParam.readValue = function() {
-     userParam.printSignatureImage = this.value;
-    }
-    convertedParam.data.push(currentParam);
-
-    // image for signature
-    var currentParam = {};
-    currentParam.name = 'nameSignatureImage';
-    currentParam.parentObject = 'signature';
-    currentParam.title = texts.nameSignatureImage;
-    currentParam.type = 'string';
-    currentParam.value = userParam.nameSignatureImage ? userParam.nameSignatureImage : 'documents:<image_id>';
-    currentParam.defaultvalue = 'documents:<image_id>';
-    currentParam.readValue = function() {
-     userParam.nameSignatureImage = this.value;
-    }
-    convertedParam.data.push(currentParam);
-
-    // Styles
+    /**
+     * STYLES GROUP
+     */
     var currentParam = {};
     currentParam.name = 'styles';
     currentParam.title = texts.styles;
@@ -324,30 +373,6 @@ function convertParam(userParam) {
     currentParam.editable = false;
     currentParam.readValue = function() {
         userParam.styles = this.value;
-    }
-    convertedParam.data.push(currentParam);
-
-    currentParam = {};
-    currentParam.name = 'printHeaderLogo';
-    currentParam.parentObject = 'styles';
-    currentParam.title = texts.printHeaderLogo;
-    currentParam.type = 'bool';
-    currentParam.value = userParam.printHeaderLogo ? true : false;
-    currentParam.defaultvalue = false;
-    currentParam.readValue = function() {
-    userParam.printHeaderLogo = this.value;
-    }
-    convertedParam.data.push(currentParam);
-
-    var currentParam = {};
-    currentParam.name = 'headerLogoName';
-    currentParam.parentObject = 'styles'
-    currentParam.title = texts.headerLogoName;
-    currentParam.type = 'string';
-    currentParam.value = userParam.headerLogoName ? userParam.headerLogoName : 'Logo';
-    currentParam.defaultvalue = 'Logo';
-    currentParam.readValue = function() {
-        userParam.headerLogoName = this.value;
     }
     convertedParam.data.push(currentParam);
 
@@ -407,12 +432,12 @@ function initUserParam() {
     userParam.text4 = '';
     userParam.embeddedTextFile = '';
     userParam.useMarkdown = false;
-    userParam.details = true;
+    userParam.details = false;
     userParam.textSignature = '';
-    userParam.localityAndDate = '';
+    userParam.localityAndDate = texts.localityAndDate;
     userParam.printSignatureImage = false;
     userParam.nameSignatureImage = '';
-    userParam.description = true;
+    userParam.description = false;
     userParam.printHeaderLogo = false;
     userParam.headerLogoName = 'Logo';
     userParam.fontFamily = 'Helvetica';
@@ -494,7 +519,7 @@ function exec(inData, options) {
     }
 
     //Checks Banana version and license
-    var isCurrentBananaVersionSupported = bananaRequiredVersion("10.1.0");
+    var isCurrentBananaVersionSupported = bananaRequiredVersion("10.0.12.22054");
     if (!isCurrentBananaVersionSupported) {
         return "@Cancel";
     }
@@ -713,7 +738,7 @@ function printReportLetter(report, banDoc, userParam, account, texts) {
     }
 
     // Print
-    if (userParam.useMarkdown) {
+    if (userParam.useMarkdown || userParam.embeddedTextFile.indexOf(".md") > -1) {
         var format = "md"; //md,html,text
         text = convertFieldsMarkdown(banDoc, textselected, address, trDate, startDate, endDate, totalOfDonations, account);
         sectionText.addStructuredText(text, format, ""); // "" = stylesheet
@@ -1602,7 +1627,7 @@ function getTransactionDate(banDoc, costcenter, startDate, endDate) {
 }
 
 /* Function that calculates the total of the transactions for the given account and period */
-function calculateTotalTransactions(banDoc, costcenter, startDate, endDate) {
+function calculateTotalTransactions(banDoc, costcenter, startDate, endDate) {
     var transTab = banDoc.table("Transactions");
     var date = "";
     var total = "";
@@ -1669,6 +1694,7 @@ function getEmbeddedTextFile(banDoc, userParam) {
             if (id === userParam.embeddedTextFile) {
                 // The text file name entered by user exists on Documents table
                 text = banDoc.table("Documents").findRowByValue("RowId",userParam.embeddedTextFile).value("Attachments");
+                Banana.console.log(text);
             }
         }
     }
@@ -1818,15 +1844,16 @@ function loadTexts(banDoc,lang) {
 
         texts.details = " Spendenbuchungen einbeziehen";
         texts.useExtractTable = "Tabelle Extraktion verwenden";
-        texts.warningMessageExtractTable = "Tabelle 'Extraktion' nicht gefunden.\nWählen Sie eine Gruppe in der Tabelle Konten, Spalte SummIn > Zeilen extrahieren.";
+        texts.warningMessageExtractTable = "Verwenden Sie den Befehl Daten > Zeilen extrahieren und sortieren";
         texts.embeddedTextFile = "Text Tabelle Dokumente (.txt / .md)";
-        texts.css = "CSS (optional)";
+        texts.css = "CSS";
         texts.textSignature = "Text Unterschrift";
-        texts.description = "Beschreibungen der Buchungen einbeziehen";
+        texts.description = "Spalte Beschreibung einbeziehen";
         texts.textToUse = "Text auswählen";
         texts.textEmbedded = "Text Tabelle Dokumente (.txt / .md)";
         texts.accountsToPrint = "Zu druckende Adressen auswählen";
         texts.printText = "Text drucken";
+        texts.begin = "Beginn";
     }
     else if (lang === "fr") {
         texts.reportTitle = "Certificat de don";
@@ -1856,15 +1883,16 @@ function loadTexts(banDoc,lang) {
 
         texts.details = "Inclure les écritures de dons";        
         texts.useExtractTable = "Utiliser le tableau Extraire";
-        texts.warningMessageExtractTable = "Table 'Extraire' non trouvée.\nSélectionner un groupe dans le tableau Comptes, colonne AddDans > Extraire lignes.";
+        texts.warningMessageExtractTable = "Utilisez la commande Données > Extraire et trier lignes";
         texts.embeddedTextFile = "Texte tableau Documents (.txt / .md)";
-        texts.css = "CSS (facultatif)";
+        texts.css = "CSS";
         texts.textSignature = "Texte de signature";
-        texts.description = "Inclure les descriptions des écritures";
-        texts.textToUse = "Sélectionner le texte".
+        texts.description = "Inclure la colonne de description";
+        texts.textToUse = "Sélectionner le texte";
         texts.textEmbedded = "Texte tableau Documents (.txt / .md)";
         texts.accountsToPrint = "Sélectionner les adresses à imprimer";
         texts.printText = "Imprimer le texte";
+        texts.begin = "Début";
     }
     else if (lang === "it") {
         texts.reportTitle = "Attestato di donazione";
@@ -1894,15 +1922,16 @@ function loadTexts(banDoc,lang) {
 
         texts.details = "Includi registrazioni donazioni";
         texts.useExtractTable = "Usa tabella Estrai";
-        texts.warningMessageExtractTable = "Tabella 'Estrai' non trovata.\nSeleziona un gruppo nella tabella Conti, colonna SommaIn > Estrai righe.";
+        texts.warningMessageExtractTable = "Usa il comando Dati > Estrai righe";
         texts.embeddedTextFile = "Testo tabella Documenti (.txt / .md)";
-        texts.css = "CSS (opzionale)";
+        texts.css = "CSS";
         texts.textSignature = "Testo firma";
-        texts.description = "Includi descrizioni registrazioni";
-        texts.textToUse = "Seleziona testo"
+        texts.description = "Includi colonna descrizione";
+        texts.textToUse = "Seleziona testo";
         texts.textEmbedded = "Testo tabella Documenti (.txt / .md)";
         texts.accountsToPrint = "Seleziona gli indirizzi da stampare";
         texts.printText = "Stampa testo";
+        texts.begin = "Inizio";
     }
     else if (lang === "nl") {
         texts.reportTitle = "Kwitantie voor giften";
@@ -1932,15 +1961,16 @@ function loadTexts(banDoc,lang) {
 
         texts.details = "Neem donatietransacties op";
         texts.useExtractTable = "Gebruik tabel Extract";
-        texts.warningMessageExtractTable = "Tabel 'Extract' niet gevonden.\Selecteer een groep in de tabel Rekeningen, kolom SomIn > Extract rijen."
+        texts.warningMessageExtractTable = "Gebruik het commando Gegevens > Rijen ophalen en sorteren";
         texts.embeddedTextFile = "Teksttabel Documenten (.txt / .md)";
-        texts.css = "CSS (optioneel)";
-        texts.textSignature = "Tekst handtekening".
-        texts.description = "Transactiebeschrijvingen opnemen";
-        texts.textToUse = "Selecteer tekst".
-        texts.textEmbedded = "Teksttabel Documenten (.txt / .md)"
-        texts.accountsToPrint = "Selecteer adressen om af te drukken"
-        texts.printText = "Tekst afdrukken"
+        texts.css = "CSS";
+        texts.textSignature = "Tekst handtekening";
+        texts.description = "Beschrijvingskolom opnemen";
+        texts.textToUse = "Selecteer tekst";
+        texts.textEmbedded = "Teksttabel Documenten (.txt / .md)";
+        texts.accountsToPrint = "Selecteer adressen om af te drukken";
+        texts.printText = "Tekst afdrukken";
+        texts.begin = "Begin";
     }
     else { //lang == en
         texts.reportTitle = "Statement of donation";
@@ -1970,15 +2000,16 @@ function loadTexts(banDoc,lang) {
 
         texts.details = "Include donations transactions";
         texts.useExtractTable = "Use table Extract";
-        texts.warningMessageExtractTable = "Table 'Extract' not found.\nSelect a group in the Accounts table, column SumIn > Extract rows."
+        texts.warningMessageExtractTable = "Use the command Data > Extract and sort rows";
         texts.embeddedTextFile = "Text table Documents (.txt / .md)";
-        texts.css = "CSS (optional)";
-        texts.textSignature = "Text signature"
-        texts.description = "Include transactions descriptions";
-        texts.textToUse = "Select text"
-        texts.textEmbedded = "Text table Documents (.txt / .md)"
-        texts.accountsToPrint = "Select addresses to print"
-        texts.printText = "Print text"
+        texts.css = "CSS";
+        texts.textSignature = "Text signature";
+        texts.description = "Include description column";
+        texts.textToUse = "Select text";
+        texts.textEmbedded = "Text table Documents (.txt / .md)";
+        texts.accountsToPrint = "Select addresses to print";
+        texts.printText = "Print text";
+        texts.begin = "Begin";
     }
 
     return texts;

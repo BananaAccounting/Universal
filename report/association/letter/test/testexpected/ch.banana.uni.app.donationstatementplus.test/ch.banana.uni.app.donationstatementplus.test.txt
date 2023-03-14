@@ -1,0 +1,815 @@
+%%info_test_name{ch.banana.uni.app.donationstatementplus.test}
+\documentclass{report}
+\usepackage{longtable}
+\usepackage{color}
+\usepackage{listings}
+\usepackage[margin=1cm]{geometry}
+\begin{document}
+\newenvironment{tablevalue}[2]{\textbf{Table: #1}\begin{longtable}[l]{#2}}{\end{longtable}}
+\newenvironment{reportvalue}[1]{\textbf{Report: #1}\\}{}
+\lstnewenvironment{jsonvalue}[1]{\textbf{Json: #1}\lstset{language=Java}}{}
+\lstnewenvironment{xmlvalue}[1]{\textbf{Xml: #1}\lstset{language=Xml}}{}
+\newcommand{\info}[2]{\textit{#1: #2}\\}
+\newcommand{\fatalerror}[1]{\textbf{\textcolor[rgb]{1,0,0}{Fatal error: #1}}\\}
+\newcommand{\keyvalue}[2]{\textbf{Keyvalue: #1} #2\\}
+\newcommand{\textvalue}[1]{#1\\}
+\newcommand{\excltest}[1]{\\Excluded from compare: #1}
+\newcommand{\lognewpage}{\newpage}
+\newenvironment{testcase}[1]{\section*{Test: #1}}{\newpage}
+\newenvironment{test}[1]{\section*{Test case: #1}}{}
+%Begin test data
+%%SCRIPT{/Users/ivan/GitHub/BananaAccounting/Universal/report/association/donationstatementplus/test/ch.banana.uni.app.donationstatementplus.test.js}
+%
+\begin{testcase}{ReportTest}
+\begin{test}{testBananaApp}
+%****************************************************************************** TEST #1 ******************************************************************************
+\begin{reportvalue}{year report}
+Associazione Sportiva xyz \\
+Pinco Pallino \\
+Via Boschetto 34 \\
+6900 Lugano \\
+Tel. 1112223344 ,  www.banana.ch ,  info@banana.ch \\
+\begin{longtable}[l]{ l }
+Sig. \\
+Gianpaolo Bianchi \\
+Via Beltramina \\
+6962 Viganello \\
+\end{longtable}
+Lugano, 2 ottobre 2023 \\
+Statement of donation 2023 \\
+  \\
+We hereby declare that  Gianpaolo Bianchi, Via Beltramina, 6962 Viganello  between  01.01.2023  and  31.12.2023 donated  CHF 500.35  to our Association. \\
+  \\
+\begin{longtable}[l]{ l  l  l  l  l  l  l  l  l }
+1  &    & 30.03.2023  &    & CHF  &    & 500.35  &    & Spende2 \\
+ &    & Total  &    & CHF  &    & 500.35  &    & \\
+\end{longtable}
+Pinco Pallino \P Associazione Sportiva xyz \\
+\begin{longtable}[l]{ l }
+Sig. \\
+Mario Rossi \\
+Via abc 12 \\
+6500 Bellinzona \\
+\end{longtable}
+Lugano, 2 ottobre 2023 \\
+Statement of donation 2023 \\
+  \\
+We hereby declare that  Mario Rossi, Via abc 12, 6500 Bellinzona  between  01.01.2023  and  31.12.2023 donated  CHF 1'200.00  to our Association. \\
+  \\
+\begin{longtable}[l]{ l  l  l  l  l  l  l  l  l }
+1  &    & 01.01.2023  &    & CHF  &    & 100.00  &    & Spende Januar \\
+2  &    & 01.02.2023  &    & CHF  &    & 100.00  &    & Spende Februar \\
+3  &    & 01.03.2023  &    & CHF  &    & 100.00  &    & Spende März \\
+4  &    & 01.04.2023  &    & CHF  &    & 100.00  &    & Spende April \\
+5  &    & 01.05.2023  &    & CHF  &    & 100.00  &    & Spende Mai \\
+6  &    & 01.06.2023  &    & CHF  &    & 100.00  &    & Spende Juni \\
+7  &    & 01.07.2023  &    & CHF  &    & 100.00  &    & Spende Juli \\
+8  &    & 01.08.2023  &    & CHF  &    & 100.00  &    & Spende August \\
+9  &    & 01.09.2023  &    & CHF  &    & 100.00  &    & Spende September \\
+10  &    & 01.10.2023  &    & CHF  &    & 100.00  &    & Spende Oktober \\
+11  &    & 01.11.2023  &    & CHF  &    & 100.00  &    & Spende November \\
+12  &    & 01.12.2023  &    & CHF  &    & 100.00  &    & Spende Dezember \\
+ &    & Total  &    & CHF  &    & 1'200.00  &    & \\
+\end{longtable}
+Pinco Pallino \P Associazione Sportiva xyz \\
+\begin{longtable}[l]{ l }
+Signora \\
+Sara Guidi \\
+Via Boschetto 45 \\
+6901 Lugano \\
+\end{longtable}
+Lugano, 2 ottobre 2023 \\
+Statement of donation 2023 \\
+  \\
+We hereby declare that  Sara Guidi, Via Boschetto 45, 6901 Lugano  between  01.01.2023  and  31.12.2023 donated  CHF 270.00  to our Association. \\
+  \\
+\begin{longtable}[l]{ l  l  l  l  l  l  l  l  l }
+1  &    & 01.04.2023  &    & CHF  &    & 60.00  &    & Spende1 \\
+2  &    & 01.08.2023  &    & CHF  &    & 210.00  &    & Spende5 \\
+ &    & Total  &    & CHF  &    & 270.00  &    & \\
+\end{longtable}
+Pinco Pallino \P Associazione Sportiva xyz \\
+\begin{longtable}[l]{ l }
+Sig. \\
+Voit Ulrich \\
+Via alla Chiesa \\
+6800 Mendrisio \\
+\end{longtable}
+Lugano, 2 ottobre 2023 \\
+Statement of donation 2023 \\
+  \\
+We hereby declare that  Voit Ulrich, Via alla Chiesa, 6800 Mendrisio  between  01.01.2023  and  31.12.2023 donated  CHF 250.00  to our Association. \\
+  \\
+\begin{longtable}[l]{ l  l  l  l  l  l  l  l  l }
+1  &    & 01.05.2023  &    & CHF  &    & 150.00  &    & Spende2 \\
+2  &    & 01.09.2023  &    & CHF  &    & 100.00  &    & Spende6 \\
+ &    & Total  &    & CHF  &    & 250.00  &    & \\
+\end{longtable}
+Pinco Pallino \P Associazione Sportiva xyz \\
+\end{reportvalue}
+\begin{reportvalue}{1. semester report}
+Associazione Sportiva xyz \\
+Pinco Pallino \\
+Via Boschetto 34 \\
+6900 Lugano \\
+Tel. 1112223344 ,  www.banana.ch ,  info@banana.ch \\
+\begin{longtable}[l]{ l }
+Sig. \\
+Gianpaolo Bianchi \\
+Via Beltramina \\
+6962 Viganello \\
+\end{longtable}
+Lugano, 2 ottobre 2023 \\
+Statement of donation 1. Semester 2023 \\
+  \\
+We hereby declare that  Gianpaolo Bianchi, Via Beltramina, 6962 Viganello  between  01.01.2023  and  30.06.2023 donated  CHF 500.35  to our Association. \\
+  \\
+\begin{longtable}[l]{ l  l  l  l  l  l  l  l  l }
+1  &    & 30.03.2023  &    & CHF  &    & 500.35  &    & Spende2 \\
+ &    & Total  &    & CHF  &    & 500.35  &    & \\
+\end{longtable}
+Pinco Pallino \P Associazione Sportiva xyz \\
+\begin{longtable}[l]{ l }
+Sig. \\
+Mario Rossi \\
+Via abc 12 \\
+6500 Bellinzona \\
+\end{longtable}
+Lugano, 2 ottobre 2023 \\
+Statement of donation 1. Semester 2023 \\
+  \\
+We hereby declare that  Mario Rossi, Via abc 12, 6500 Bellinzona  between  01.01.2023  and  30.06.2023 donated  CHF 600.00  to our Association. \\
+  \\
+\begin{longtable}[l]{ l  l  l  l  l  l  l  l  l }
+1  &    & 01.01.2023  &    & CHF  &    & 100.00  &    & Spende Januar \\
+2  &    & 01.02.2023  &    & CHF  &    & 100.00  &    & Spende Februar \\
+3  &    & 01.03.2023  &    & CHF  &    & 100.00  &    & Spende März \\
+4  &    & 01.04.2023  &    & CHF  &    & 100.00  &    & Spende April \\
+5  &    & 01.05.2023  &    & CHF  &    & 100.00  &    & Spende Mai \\
+6  &    & 01.06.2023  &    & CHF  &    & 100.00  &    & Spende Juni \\
+ &    & Total  &    & CHF  &    & 600.00  &    & \\
+\end{longtable}
+Pinco Pallino \P Associazione Sportiva xyz \\
+\begin{longtable}[l]{ l }
+Signora \\
+Sara Guidi \\
+Via Boschetto 45 \\
+6901 Lugano \\
+\end{longtable}
+Lugano, 2 ottobre 2023 \\
+Statement of donation 1. Semester 2023 \\
+  \\
+We hereby declare that  Sara Guidi, Via Boschetto 45, 6901 Lugano  between  01.01.2023  and  30.06.2023 donated  CHF 60.00  to our Association. \\
+  \\
+\begin{longtable}[l]{ l  l  l  l  l  l  l  l  l }
+1  &    & 01.04.2023  &    & CHF  &    & 60.00  &    & Spende1 \\
+ &    & Total  &    & CHF  &    & 60.00  &    & \\
+\end{longtable}
+Pinco Pallino \P Associazione Sportiva xyz \\
+\begin{longtable}[l]{ l }
+Sig. \\
+Voit Ulrich \\
+Via alla Chiesa \\
+6800 Mendrisio \\
+\end{longtable}
+Lugano, 2 ottobre 2023 \\
+Statement of donation 1. Semester 2023 \\
+  \\
+We hereby declare that  Voit Ulrich, Via alla Chiesa, 6800 Mendrisio  between  01.01.2023  and  30.06.2023 donated  CHF 150.00  to our Association. \\
+  \\
+\begin{longtable}[l]{ l  l  l  l  l  l  l  l  l }
+1  &    & 01.05.2023  &    & CHF  &    & 150.00  &    & Spende2 \\
+ &    & Total  &    & CHF  &    & 150.00  &    & \\
+\end{longtable}
+Pinco Pallino \P Associazione Sportiva xyz \\
+\end{reportvalue}
+\begin{reportvalue}{1. quarter report}
+Associazione Sportiva xyz \\
+Pinco Pallino \\
+Via Boschetto 34 \\
+6900 Lugano \\
+Tel. 1112223344 ,  www.banana.ch ,  info@banana.ch \\
+\begin{longtable}[l]{ l }
+Sig. \\
+Gianpaolo Bianchi \\
+Via Beltramina \\
+6962 Viganello \\
+\end{longtable}
+Lugano, 2 ottobre 2023 \\
+Statement of donation 1. Quarter 2023 \\
+  \\
+We hereby declare that  Gianpaolo Bianchi, Via Beltramina, 6962 Viganello  between  01.01.2023  and  31.03.2023 donated  CHF 500.35  to our Association. \\
+  \\
+\begin{longtable}[l]{ l  l  l  l  l  l  l  l  l }
+1  &    & 30.03.2023  &    & CHF  &    & 500.35  &    & Spende2 \\
+ &    & Total  &    & CHF  &    & 500.35  &    & \\
+\end{longtable}
+Pinco Pallino \P Associazione Sportiva xyz \\
+\begin{longtable}[l]{ l }
+Sig. \\
+Mario Rossi \\
+Via abc 12 \\
+6500 Bellinzona \\
+\end{longtable}
+Lugano, 2 ottobre 2023 \\
+Statement of donation 1. Quarter 2023 \\
+  \\
+We hereby declare that  Mario Rossi, Via abc 12, 6500 Bellinzona  between  01.01.2023  and  31.03.2023 donated  CHF 300.00  to our Association. \\
+  \\
+\begin{longtable}[l]{ l  l  l  l  l  l  l  l  l }
+1  &    & 01.01.2023  &    & CHF  &    & 100.00  &    & Spende Januar \\
+2  &    & 01.02.2023  &    & CHF  &    & 100.00  &    & Spende Februar \\
+3  &    & 01.03.2023  &    & CHF  &    & 100.00  &    & Spende März \\
+ &    & Total  &    & CHF  &    & 300.00  &    & \\
+\end{longtable}
+Pinco Pallino \P Associazione Sportiva xyz \\
+\end{reportvalue}
+\begin{reportvalue}{january report}
+Associazione Sportiva xyz \\
+Pinco Pallino \\
+Via Boschetto 34 \\
+6900 Lugano \\
+Tel. 1112223344 ,  www.banana.ch ,  info@banana.ch \\
+\begin{longtable}[l]{ l }
+Sig. \\
+Mario Rossi \\
+Via abc 12 \\
+6500 Bellinzona \\
+\end{longtable}
+Lugano, 2 ottobre 2023 \\
+Statement of donation January 2023 \\
+  \\
+We hereby declare that  Mario Rossi, Via abc 12, 6500 Bellinzona  between  01.01.2023  and  31.01.2023 donated  CHF 100.00  to our Association. \\
+  \\
+\begin{longtable}[l]{ l  l  l  l  l  l  l  l  l }
+1  &    & 01.01.2023  &    & CHF  &    & 100.00  &    & Spende Januar \\
+ &    & Total  &    & CHF  &    & 100.00  &    & \\
+\end{longtable}
+Pinco Pallino \P Associazione Sportiva xyz \\
+\end{reportvalue}
+%****************************************************************************** TEST #2 ******************************************************************************
+\begin{reportvalue}{year report}
+Associazione Sportiva xyz \\
+Pinco Pallino \\
+Via Boschetto 34 \\
+6900 Lugano \\
+Tel. 1112223344 ,  www.banana.ch ,  info@banana.ch \\
+\begin{longtable}[l]{ l }
+Sig. \\
+Gianpaolo Bianchi \\
+Via Beltramina \\
+6962 Viganello \\
+\end{longtable}
+Lugano, dicembre 2023 \\
+TEXT2 - Donazioni \#;10001: 2023 \\
+  \\
+Con la presente attestiamo che  Gianpaolo Bianchi  ha donato alla nostra associazione  CHF 500.35 . \\
+Periodo delle donazioni: dal 01.01.2023 al 31.12.2023. \\
+Indirizzo: Via Beltramina, 6962 Viganello. \\
+Ringraziamo cordialmente. \\
+  \\
+Pinco Pallino \P Associazione Sportiva xyz \\
+\begin{longtable}[l]{ l }
+Sig. \\
+Mario Rossi \\
+Via abc 12 \\
+6500 Bellinzona \\
+\end{longtable}
+Lugano, dicembre 2023 \\
+TEXT2 - Donazioni \#;10002: 2023 \\
+  \\
+Con la presente attestiamo che  Mario Rossi  ha donato alla nostra associazione  CHF 1'200.00 . \\
+Periodo delle donazioni: dal 01.01.2023 al 31.12.2023. \\
+Indirizzo: Via abc 12, 6500 Bellinzona. \\
+Ringraziamo cordialmente. \\
+  \\
+Pinco Pallino \P Associazione Sportiva xyz \\
+\begin{longtable}[l]{ l }
+Signora \\
+Sara Guidi \\
+Via Boschetto 45 \\
+6901 Lugano \\
+\end{longtable}
+Lugano, dicembre 2023 \\
+TEXT2 - Donazioni \#;10003: 2023 \\
+  \\
+Con la presente attestiamo che  Sara Guidi  ha donato alla nostra associazione  CHF 270.00 . \\
+Periodo delle donazioni: dal 01.01.2023 al 31.12.2023. \\
+Indirizzo: Via Boschetto 45, 6901 Lugano. \\
+Ringraziamo cordialmente. \\
+  \\
+Pinco Pallino \P Associazione Sportiva xyz \\
+\begin{longtable}[l]{ l }
+Sig. \\
+Voit Ulrich \\
+Via alla Chiesa \\
+6800 Mendrisio \\
+\end{longtable}
+Lugano, dicembre 2023 \\
+TEXT2 - Donazioni \#;10004: 2023 \\
+  \\
+Con la presente attestiamo che  Voit Ulrich  ha donato alla nostra associazione  CHF 250.00 . \\
+Periodo delle donazioni: dal 01.01.2023 al 31.12.2023. \\
+Indirizzo: Via alla Chiesa, 6800 Mendrisio. \\
+Ringraziamo cordialmente. \\
+  \\
+Pinco Pallino \P Associazione Sportiva xyz \\
+\end{reportvalue}
+\begin{reportvalue}{1. semester report}
+Associazione Sportiva xyz \\
+Pinco Pallino \\
+Via Boschetto 34 \\
+6900 Lugano \\
+Tel. 1112223344 ,  www.banana.ch ,  info@banana.ch \\
+\begin{longtable}[l]{ l }
+Sig. \\
+Gianpaolo Bianchi \\
+Via Beltramina \\
+6962 Viganello \\
+\end{longtable}
+Lugano, dicembre 2023 \\
+TEXT2 - Donazioni \#;10001: 1. Semester 2023 \\
+  \\
+Con la presente attestiamo che  Gianpaolo Bianchi  ha donato alla nostra associazione  CHF 500.35 . \\
+Periodo delle donazioni: dal 01.01.2023 al 30.06.2023. \\
+Indirizzo: Via Beltramina, 6962 Viganello. \\
+Ringraziamo cordialmente. \\
+  \\
+Pinco Pallino \P Associazione Sportiva xyz \\
+\begin{longtable}[l]{ l }
+Sig. \\
+Mario Rossi \\
+Via abc 12 \\
+6500 Bellinzona \\
+\end{longtable}
+Lugano, dicembre 2023 \\
+TEXT2 - Donazioni \#;10002: 1. Semester 2023 \\
+  \\
+Con la presente attestiamo che  Mario Rossi  ha donato alla nostra associazione  CHF 600.00 . \\
+Periodo delle donazioni: dal 01.01.2023 al 30.06.2023. \\
+Indirizzo: Via abc 12, 6500 Bellinzona. \\
+Ringraziamo cordialmente. \\
+  \\
+Pinco Pallino \P Associazione Sportiva xyz \\
+\begin{longtable}[l]{ l }
+Signora \\
+Sara Guidi \\
+Via Boschetto 45 \\
+6901 Lugano \\
+\end{longtable}
+Lugano, dicembre 2023 \\
+TEXT2 - Donazioni \#;10003: 1. Semester 2023 \\
+  \\
+Con la presente attestiamo che  Sara Guidi  ha donato alla nostra associazione  CHF 60.00 . \\
+Periodo delle donazioni: dal 01.01.2023 al 30.06.2023. \\
+Indirizzo: Via Boschetto 45, 6901 Lugano. \\
+Ringraziamo cordialmente. \\
+  \\
+Pinco Pallino \P Associazione Sportiva xyz \\
+\begin{longtable}[l]{ l }
+Sig. \\
+Voit Ulrich \\
+Via alla Chiesa \\
+6800 Mendrisio \\
+\end{longtable}
+Lugano, dicembre 2023 \\
+TEXT2 - Donazioni \#;10004: 1. Semester 2023 \\
+  \\
+Con la presente attestiamo che  Voit Ulrich  ha donato alla nostra associazione  CHF 150.00 . \\
+Periodo delle donazioni: dal 01.01.2023 al 30.06.2023. \\
+Indirizzo: Via alla Chiesa, 6800 Mendrisio. \\
+Ringraziamo cordialmente. \\
+  \\
+Pinco Pallino \P Associazione Sportiva xyz \\
+\end{reportvalue}
+\begin{reportvalue}{1. quarter report}
+Associazione Sportiva xyz \\
+Pinco Pallino \\
+Via Boschetto 34 \\
+6900 Lugano \\
+Tel. 1112223344 ,  www.banana.ch ,  info@banana.ch \\
+\begin{longtable}[l]{ l }
+Sig. \\
+Gianpaolo Bianchi \\
+Via Beltramina \\
+6962 Viganello \\
+\end{longtable}
+Lugano, dicembre 2023 \\
+TEXT2 - Donazioni \#;10001: 1. Quarter 2023 \\
+  \\
+Con la presente attestiamo che  Gianpaolo Bianchi  ha donato alla nostra associazione  CHF 500.35 . \\
+Periodo delle donazioni: dal 01.01.2023 al 31.03.2023. \\
+Indirizzo: Via Beltramina, 6962 Viganello. \\
+Ringraziamo cordialmente. \\
+  \\
+Pinco Pallino \P Associazione Sportiva xyz \\
+\begin{longtable}[l]{ l }
+Sig. \\
+Mario Rossi \\
+Via abc 12 \\
+6500 Bellinzona \\
+\end{longtable}
+Lugano, dicembre 2023 \\
+TEXT2 - Donazioni \#;10002: 1. Quarter 2023 \\
+  \\
+Con la presente attestiamo che  Mario Rossi  ha donato alla nostra associazione  CHF 300.00 . \\
+Periodo delle donazioni: dal 01.01.2023 al 31.03.2023. \\
+Indirizzo: Via abc 12, 6500 Bellinzona. \\
+Ringraziamo cordialmente. \\
+  \\
+Pinco Pallino \P Associazione Sportiva xyz \\
+\end{reportvalue}
+\begin{reportvalue}{january report}
+Associazione Sportiva xyz \\
+Pinco Pallino \\
+Via Boschetto 34 \\
+6900 Lugano \\
+Tel. 1112223344 ,  www.banana.ch ,  info@banana.ch \\
+\begin{longtable}[l]{ l }
+Sig. \\
+Mario Rossi \\
+Via abc 12 \\
+6500 Bellinzona \\
+\end{longtable}
+Lugano, dicembre 2023 \\
+TEXT2 - Donazioni \#;10002: January 2023 \\
+  \\
+Con la presente attestiamo che  Mario Rossi  ha donato alla nostra associazione  CHF 100.00 . \\
+Periodo delle donazioni: dal 01.01.2023 al 31.01.2023. \\
+Indirizzo: Via abc 12, 6500 Bellinzona. \\
+Ringraziamo cordialmente. \\
+  \\
+Pinco Pallino \P Associazione Sportiva xyz \\
+\end{reportvalue}
+%****************************************************************************** TEST #3 ******************************************************************************
+\begin{reportvalue}{year report}
+Associazione Sportiva xyz \\
+Pinco Pallino \\
+Via Boschetto 34 \\
+6900 Lugano \\
+Tel. 1112223344 ,  www.banana.ch ,  info@banana.ch \\
+\begin{longtable}[l]{ l }
+Sig. \\
+Gianpaolo Bianchi \\
+Via Beltramina \\
+6962 Viganello \\
+\end{longtable}
+Lugano, december 2023 \\
+Statement of donation 2023 \\
+  \\
+Thank you  Gianpaolo Bianchi  for your donations between 01.01.2023 and 31.12.2023. \\
+You donated a total of  CHF 500.35  to our Association. \\
+  \\
+Thank you very much! \\
+  \\
+\begin{longtable}[l]{ l  l  l  l  l  l  l  l }
+1  &    & 30.03.2023  &    & CHF  &    & 500.35  &   \\
+ &    & Total  &    & CHF  &    & 500.35  &   \\
+\end{longtable}
+Pinco Pallino \P Associazione Sportiva xyz \\
+\begin{longtable}[l]{ l }
+Sig. \\
+Mario Rossi \\
+Via abc 12 \\
+6500 Bellinzona \\
+\end{longtable}
+Lugano, december 2023 \\
+Statement of donation 2023 \\
+  \\
+Thank you  Mario Rossi  for your donations between 01.01.2023 and 31.12.2023. \\
+You donated a total of  CHF 1'200.00  to our Association. \\
+  \\
+Thank you very much! \\
+  \\
+\begin{longtable}[l]{ l  l  l  l  l  l  l  l }
+1  &    & 01.01.2023  &    & CHF  &    & 100.00  &   \\
+2  &    & 01.02.2023  &    & CHF  &    & 100.00  &   \\
+3  &    & 01.03.2023  &    & CHF  &    & 100.00  &   \\
+4  &    & 01.04.2023  &    & CHF  &    & 100.00  &   \\
+5  &    & 01.05.2023  &    & CHF  &    & 100.00  &   \\
+6  &    & 01.06.2023  &    & CHF  &    & 100.00  &   \\
+7  &    & 01.07.2023  &    & CHF  &    & 100.00  &   \\
+8  &    & 01.08.2023  &    & CHF  &    & 100.00  &   \\
+9  &    & 01.09.2023  &    & CHF  &    & 100.00  &   \\
+10  &    & 01.10.2023  &    & CHF  &    & 100.00  &   \\
+11  &    & 01.11.2023  &    & CHF  &    & 100.00  &   \\
+12  &    & 01.12.2023  &    & CHF  &    & 100.00  &   \\
+ &    & Total  &    & CHF  &    & 1'200.00  &   \\
+\end{longtable}
+Pinco Pallino \P Associazione Sportiva xyz \\
+\begin{longtable}[l]{ l }
+Signora \\
+Sara Guidi \\
+Via Boschetto 45 \\
+6901 Lugano \\
+\end{longtable}
+Lugano, december 2023 \\
+Statement of donation 2023 \\
+  \\
+Thank you  Sara Guidi  for your donations between 01.01.2023 and 31.12.2023. \\
+You donated a total of  CHF 270.00  to our Association. \\
+  \\
+Thank you very much! \\
+  \\
+\begin{longtable}[l]{ l  l  l  l  l  l  l  l }
+1  &    & 01.04.2023  &    & CHF  &    & 60.00  &   \\
+2  &    & 01.08.2023  &    & CHF  &    & 210.00  &   \\
+ &    & Total  &    & CHF  &    & 270.00  &   \\
+\end{longtable}
+Pinco Pallino \P Associazione Sportiva xyz \\
+\begin{longtable}[l]{ l }
+Sig. \\
+Voit Ulrich \\
+Via alla Chiesa \\
+6800 Mendrisio \\
+\end{longtable}
+Lugano, december 2023 \\
+Statement of donation 2023 \\
+  \\
+Thank you  Voit Ulrich  for your donations between 01.01.2023 and 31.12.2023. \\
+You donated a total of  CHF 250.00  to our Association. \\
+  \\
+Thank you very much! \\
+  \\
+\begin{longtable}[l]{ l  l  l  l  l  l  l  l }
+1  &    & 01.05.2023  &    & CHF  &    & 150.00  &   \\
+2  &    & 01.09.2023  &    & CHF  &    & 100.00  &   \\
+ &    & Total  &    & CHF  &    & 250.00  &   \\
+\end{longtable}
+Pinco Pallino \P Associazione Sportiva xyz \\
+\end{reportvalue}
+\begin{reportvalue}{1. semester report}
+Associazione Sportiva xyz \\
+Pinco Pallino \\
+Via Boschetto 34 \\
+6900 Lugano \\
+Tel. 1112223344 ,  www.banana.ch ,  info@banana.ch \\
+\begin{longtable}[l]{ l }
+Sig. \\
+Gianpaolo Bianchi \\
+Via Beltramina \\
+6962 Viganello \\
+\end{longtable}
+Lugano, december 2023 \\
+Statement of donation 1. Semester 2023 \\
+  \\
+Thank you  Gianpaolo Bianchi  for your donations between 01.01.2023 and 30.06.2023. \\
+You donated a total of  CHF 500.35  to our Association. \\
+  \\
+Thank you very much! \\
+  \\
+\begin{longtable}[l]{ l  l  l  l  l  l  l  l }
+1  &    & 30.03.2023  &    & CHF  &    & 500.35  &   \\
+ &    & Total  &    & CHF  &    & 500.35  &   \\
+\end{longtable}
+Pinco Pallino \P Associazione Sportiva xyz \\
+\begin{longtable}[l]{ l }
+Sig. \\
+Mario Rossi \\
+Via abc 12 \\
+6500 Bellinzona \\
+\end{longtable}
+Lugano, december 2023 \\
+Statement of donation 1. Semester 2023 \\
+  \\
+Thank you  Mario Rossi  for your donations between 01.01.2023 and 30.06.2023. \\
+You donated a total of  CHF 600.00  to our Association. \\
+  \\
+Thank you very much! \\
+  \\
+\begin{longtable}[l]{ l  l  l  l  l  l  l  l }
+1  &    & 01.01.2023  &    & CHF  &    & 100.00  &   \\
+2  &    & 01.02.2023  &    & CHF  &    & 100.00  &   \\
+3  &    & 01.03.2023  &    & CHF  &    & 100.00  &   \\
+4  &    & 01.04.2023  &    & CHF  &    & 100.00  &   \\
+5  &    & 01.05.2023  &    & CHF  &    & 100.00  &   \\
+6  &    & 01.06.2023  &    & CHF  &    & 100.00  &   \\
+ &    & Total  &    & CHF  &    & 600.00  &   \\
+\end{longtable}
+Pinco Pallino \P Associazione Sportiva xyz \\
+\begin{longtable}[l]{ l }
+Signora \\
+Sara Guidi \\
+Via Boschetto 45 \\
+6901 Lugano \\
+\end{longtable}
+Lugano, december 2023 \\
+Statement of donation 1. Semester 2023 \\
+  \\
+Thank you  Sara Guidi  for your donations between 01.01.2023 and 30.06.2023. \\
+You donated a total of  CHF 60.00  to our Association. \\
+  \\
+Thank you very much! \\
+  \\
+\begin{longtable}[l]{ l  l  l  l  l  l  l  l }
+1  &    & 01.04.2023  &    & CHF  &    & 60.00  &   \\
+ &    & Total  &    & CHF  &    & 60.00  &   \\
+\end{longtable}
+Pinco Pallino \P Associazione Sportiva xyz \\
+\begin{longtable}[l]{ l }
+Sig. \\
+Voit Ulrich \\
+Via alla Chiesa \\
+6800 Mendrisio \\
+\end{longtable}
+Lugano, december 2023 \\
+Statement of donation 1. Semester 2023 \\
+  \\
+Thank you  Voit Ulrich  for your donations between 01.01.2023 and 30.06.2023. \\
+You donated a total of  CHF 150.00  to our Association. \\
+  \\
+Thank you very much! \\
+  \\
+\begin{longtable}[l]{ l  l  l  l  l  l  l  l }
+1  &    & 01.05.2023  &    & CHF  &    & 150.00  &   \\
+ &    & Total  &    & CHF  &    & 150.00  &   \\
+\end{longtable}
+Pinco Pallino \P Associazione Sportiva xyz \\
+\end{reportvalue}
+\begin{reportvalue}{1. quarter report}
+Associazione Sportiva xyz \\
+Pinco Pallino \\
+Via Boschetto 34 \\
+6900 Lugano \\
+Tel. 1112223344 ,  www.banana.ch ,  info@banana.ch \\
+\begin{longtable}[l]{ l }
+Sig. \\
+Gianpaolo Bianchi \\
+Via Beltramina \\
+6962 Viganello \\
+\end{longtable}
+Lugano, december 2023 \\
+Statement of donation 1. Quarter 2023 \\
+  \\
+Thank you  Gianpaolo Bianchi  for your donations between 01.01.2023 and 31.03.2023. \\
+You donated a total of  CHF 500.35  to our Association. \\
+  \\
+Thank you very much! \\
+  \\
+\begin{longtable}[l]{ l  l  l  l  l  l  l  l }
+1  &    & 30.03.2023  &    & CHF  &    & 500.35  &   \\
+ &    & Total  &    & CHF  &    & 500.35  &   \\
+\end{longtable}
+Pinco Pallino \P Associazione Sportiva xyz \\
+\begin{longtable}[l]{ l }
+Sig. \\
+Mario Rossi \\
+Via abc 12 \\
+6500 Bellinzona \\
+\end{longtable}
+Lugano, december 2023 \\
+Statement of donation 1. Quarter 2023 \\
+  \\
+Thank you  Mario Rossi  for your donations between 01.01.2023 and 31.03.2023. \\
+You donated a total of  CHF 300.00  to our Association. \\
+  \\
+Thank you very much! \\
+  \\
+\begin{longtable}[l]{ l  l  l  l  l  l  l  l }
+1  &    & 01.01.2023  &    & CHF  &    & 100.00  &   \\
+2  &    & 01.02.2023  &    & CHF  &    & 100.00  &   \\
+3  &    & 01.03.2023  &    & CHF  &    & 100.00  &   \\
+ &    & Total  &    & CHF  &    & 300.00  &   \\
+\end{longtable}
+Pinco Pallino \P Associazione Sportiva xyz \\
+\end{reportvalue}
+\begin{reportvalue}{january report}
+Associazione Sportiva xyz \\
+Pinco Pallino \\
+Via Boschetto 34 \\
+6900 Lugano \\
+Tel. 1112223344 ,  www.banana.ch ,  info@banana.ch \\
+\begin{longtable}[l]{ l }
+Sig. \\
+Mario Rossi \\
+Via abc 12 \\
+6500 Bellinzona \\
+\end{longtable}
+Lugano, december 2023 \\
+Statement of donation January 2023 \\
+  \\
+Thank you  Mario Rossi  for your donations between 01.01.2023 and 31.01.2023. \\
+You donated a total of  CHF 100.00  to our Association. \\
+  \\
+Thank you very much! \\
+  \\
+\begin{longtable}[l]{ l  l  l  l  l  l  l  l }
+1  &    & 01.01.2023  &    & CHF  &    & 100.00  &   \\
+ &    & Total  &    & CHF  &    & 100.00  &   \\
+\end{longtable}
+Pinco Pallino \P Associazione Sportiva xyz \\
+\end{reportvalue}
+%****************************************************************************** TEST #4 ******************************************************************************
+\begin{reportvalue}{year report}
+Associazione Sportiva xyz \\
+Pinco Pallino \\
+Via Boschetto 34 \\
+6900 Lugano \\
+Tel. 1112223344 ,  www.banana.ch ,  info@banana.ch \\
+\begin{longtable}[l]{ l }
+Sig. \\
+Gianpaolo Bianchi \\
+Via Beltramina \\
+6962 Viganello \\
+\end{longtable}
+Lugano 2023 \\
+Statement of donation 2023 \\
+  \\
+We hereby declare that  Gianpaolo Bianchi, Via Beltramina, 6962 Viganello  between  01.01.2023  and  31.12.2023 donated  CHF 500.35  to our Association. \\
+  \\
+\begin{longtable}[l]{ l  l  l  l  l  l  l  l  l }
+1  &    & 30.03.2023  &    & CHF  &    & 500.35  &    & Spende2 \\
+ &    & Total  &    & CHF  &    & 500.35  &    & \\
+\end{longtable}
+Pinco Pallino \P Associazione Sportiva xyz \\
+\begin{longtable}[l]{ l }
+Sig. \\
+Voit Ulrich \\
+Via alla Chiesa \\
+6800 Mendrisio \\
+\end{longtable}
+Lugano 2023 \\
+Statement of donation 2023 \\
+  \\
+We hereby declare that  Voit Ulrich, Via alla Chiesa, 6800 Mendrisio  between  01.01.2023  and  31.12.2023 donated  CHF 250.00  to our Association. \\
+  \\
+\begin{longtable}[l]{ l  l  l  l  l  l  l  l  l }
+1  &    & 01.05.2023  &    & CHF  &    & 150.00  &    & Spende2 \\
+2  &    & 01.09.2023  &    & CHF  &    & 100.00  &    & Spende6 \\
+ &    & Total  &    & CHF  &    & 250.00  &    & \\
+\end{longtable}
+Pinco Pallino \P Associazione Sportiva xyz \\
+\end{reportvalue}
+\begin{reportvalue}{1. semester report}
+Associazione Sportiva xyz \\
+Pinco Pallino \\
+Via Boschetto 34 \\
+6900 Lugano \\
+Tel. 1112223344 ,  www.banana.ch ,  info@banana.ch \\
+\begin{longtable}[l]{ l }
+Sig. \\
+Gianpaolo Bianchi \\
+Via Beltramina \\
+6962 Viganello \\
+\end{longtable}
+Lugano 2023 \\
+Statement of donation 1. Semester 2023 \\
+  \\
+We hereby declare that  Gianpaolo Bianchi, Via Beltramina, 6962 Viganello  between  01.01.2023  and  30.06.2023 donated  CHF 500.35  to our Association. \\
+  \\
+\begin{longtable}[l]{ l  l  l  l  l  l  l  l  l }
+1  &    & 30.03.2023  &    & CHF  &    & 500.35  &    & Spende2 \\
+ &    & Total  &    & CHF  &    & 500.35  &    & \\
+\end{longtable}
+Pinco Pallino \P Associazione Sportiva xyz \\
+\begin{longtable}[l]{ l }
+Sig. \\
+Voit Ulrich \\
+Via alla Chiesa \\
+6800 Mendrisio \\
+\end{longtable}
+Lugano 2023 \\
+Statement of donation 1. Semester 2023 \\
+  \\
+We hereby declare that  Voit Ulrich, Via alla Chiesa, 6800 Mendrisio  between  01.01.2023  and  30.06.2023 donated  CHF 150.00  to our Association. \\
+  \\
+\begin{longtable}[l]{ l  l  l  l  l  l  l  l  l }
+1  &    & 01.05.2023  &    & CHF  &    & 150.00  &    & Spende2 \\
+ &    & Total  &    & CHF  &    & 150.00  &    & \\
+\end{longtable}
+Pinco Pallino \P Associazione Sportiva xyz \\
+\end{reportvalue}
+\begin{reportvalue}{1. quarter report}
+Associazione Sportiva xyz \\
+Pinco Pallino \\
+Via Boschetto 34 \\
+6900 Lugano \\
+Tel. 1112223344 ,  www.banana.ch ,  info@banana.ch \\
+\begin{longtable}[l]{ l }
+Sig. \\
+Gianpaolo Bianchi \\
+Via Beltramina \\
+6962 Viganello \\
+\end{longtable}
+Lugano 2023 \\
+Statement of donation 1. Quarter 2023 \\
+  \\
+We hereby declare that  Gianpaolo Bianchi, Via Beltramina, 6962 Viganello  between  01.01.2023  and  31.03.2023 donated  CHF 500.35  to our Association. \\
+  \\
+\begin{longtable}[l]{ l  l  l  l  l  l  l  l  l }
+1  &    & 30.03.2023  &    & CHF  &    & 500.35  &    & Spende2 \\
+ &    & Total  &    & CHF  &    & 500.35  &    & \\
+\end{longtable}
+Pinco Pallino \P Associazione Sportiva xyz \\
+\end{reportvalue}
+\begin{reportvalue}{january report}
+Associazione Sportiva xyz \\
+Pinco Pallino \\
+Via Boschetto 34 \\
+6900 Lugano \\
+Tel. 1112223344 ,  www.banana.ch ,  info@banana.ch \\
+\end{reportvalue}
+\keyvalue{Result}{Passed}
+\end{test}
+\end{testcase}
+\end{document}
