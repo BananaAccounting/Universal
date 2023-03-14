@@ -19,7 +19,6 @@
 \newenvironment{test}[1]{\section*{Test case: #1}}{}
 %Begin test data
 \begin{reportvalue}{FILENAME: file:script/../test/testcases/Contabilita in partita doppia multi-moneta con IVA.ac2}
-\excltest{Year to Date/Budget to Date ref: } \\
 \begin{longtable}[l]{ l  l  l  l  l  l  l  l  l }
 BALANCE Acronym  & Description  & Year to Date  & Budget to Date  & Budget to Date +/-  & Year to Date + Budget  & Budget  & Budget +/- \\
 \multicolumn{9}{l}{Assets }\\
@@ -72,48 +71,17 @@ CONTROL SUMS Year  & Accounting Total  & Calculated Total  & Difference \\
 2020  & 19'420.00  & 19'420.00  & 0.00 \\
 \end{longtable}
 \begin{longtable}[l]{ l  l  l  l  l  l  l  l  l }
-LIQUIDITY RATIOS Description  & formula  & Benchmark  & Year to Date  & Budget to Date  & Budget to Date +/-  & Year to Date + Budget  & Budget  & Budget +/- \\
-Cash ratio  & liqu / stdc  & 10\%-35\%  & -54.24\%   & 0.00\%  ↑  & -54.24\%   & -54.24\%   & 0.00\%  ↑  & -54.24\%  \\
-Quick ratio  & (liqu + cred) / stdc  & 100\%  & 109.42\%   & 0.00\%  ↓  & 109.42\%   & 109.42\%   & 0.00\%  ↓  & 109.42\%  \\
-Current ratio  & cuas / stdc  & 150\%  & 110.22\%   & 0.00\%  ↓  & 110.22\%   & 110.22\%   & 0.00\%  ↓  & 110.22\%  \\
-Net Current Assets  & cuas-stdc  & >0  & 1'530.00   & 110.00  ↓  & 1'420.00   & 1'530.00   & 110.00  ↓  & 1'420.00  \\
-\end{longtable}
-\begin{longtable}[l]{ l  l  l  l  l  l  l  l  l }
-LEVERAGE RATIOS Description  & formula  & Benchmark  & Year to Date  & Budget to Date  & Budget to Date +/-  & Year to Date + Budget  & Budget  & Budget +/- \\
-Degree of Circulating Assets  & cuas / tota  & 60\%  & 52.38\%   & 100.00\%  ↑  & -47.62\%   & 52.38\%   & 100.00\%  ↑  & -47.62\%  \\
-Percentage Fixed Assets  & fixa / tota  & 40\%  & 47.62\%   & 0.00\%  ↓  & 47.62\%   & 47.62\%   & 0.00\%  ↓  & 47.62\%  \\
-Debt ratio  & (stdc+ltdc) / totp  & 40\%-70\%  & 76.36\%   & 0.00\%  ↓  & 76.36\%   & 76.36\%   & 0.00\%  ↓  & 76.36\%  \\
-Equity ratio  & owca / totp  & 30\%-60\%  & 23.64\%   & 0.00\%  ↓  & 23.64\%   & 23.64\%   & 0.00\%  ↓  & 23.64\%  \\
-Self financing ratio  & rese / owca  & 33,3\%  & 1.35\%   & 0.00\%  ↓  & 1.35\%   & 1.35\%   & 0.00\%  ↓  & 1.35\%  \\
-Fixed Assets Coverage  & (owca + ltdc) / fixa  & >100\%  & 109.47\%   & 0.00\%  ↓  & 109.47\%   & 109.47\%   & 0.00\%  ↓  & 109.47\%  \\
-\end{longtable}
-\begin{longtable}[l]{ l  l  l  l  l  l  l  l  l }
-PROFITABILITY RATIOS Description  & formula  & Benchmark  & Year to Date  & Budget to Date  & Budget to Date +/-  & Year to Date + Budget  & Budget  & Budget +/- \\
-Return on equity (ROE)  & profit / owca  & 8\%-14\%  & 261.73\%   & 0.00\%  ↓  & 261.73\%   & 261.73\%   & 0.00\%  ↓  & 261.73\%  \\
-Return on investment (ROI)  & EBIT / tota    & 10\%  & 61.65\%   & 0.00\%  ↓  & 61.65\%   & 61.65\%   & 0.00\%  ↓  & 61.65\%  \\
-Return on sales (ROS)  & EBIT / satu  & >0  & 86.31\%   & 0.00\%  ↓  & 86.31\%   & 86.31\%   & 0.00\%  ↓  & 86.31\%  \\
-Gross profit margin (MOL)  & EBITDA / satu  & 40\%  & 86.31\%   & 0.00\%  ↓  & 86.31\%   & 86.31\%   & 0.00\%  ↓  & 86.31\%  \\
-EBT margin  & EBT / satu  & 2.4\%  & 86.31\%   & 0.00\%  ↓  & 86.31\%   & 86.31\%   & 0.00\%  ↓  & 86.31\%  \\
-Profit margin  & net profit / satu  & 1.4\%  & 86.31\%   & 0.00\%  ↓  & 86.31\%   & 86.31\%   & 0.00\%  ↓  & 86.31\%  \\
-\end{longtable}
-\begin{longtable}[l]{ l  l  l  l  l  l  l  l  l }
-EFFICIENCY RATIOS Description  & formula  & Benchmark  & Year to Date  & Budget to Date  & Budget to Date +/-  & Year to Date + Budget  & Budget  & Budget +/- \\
-Revenue per Employee  & satu/employees  & >0  & 22'500.00  & 0.00  & 22'500.00  & 22'500.00  & 0.00  & 22'500.00 \\
-Added Value per Employee  & adva/employees  & >0  & 19'420.00  & 0.00  & 19'420.00  & 19'420.00  & 0.00  & 19'420.00 \\
-Personnel Cost per Employee  & cope/employees  & >0  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00 \\
-\end{longtable}
-\begin{longtable}[l]{ l  l  l  l  l  l  l  l  l }
 CASH FLOW STATEMENT (INDIRECT METHOD) Acronym  & Description  & Year to Date  & Budget to Date  & Budget to Date +/-  & Year to Date + Budget  & Budget  & Budget +/- \\
 fire  & Annual result  & 19'420.00  & 0.00  & 19'420.00  & 19'420.00  & 0.00  & 19'420.00 \\
 \#revaluation  & - Revaluations on Fixed Assets  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00 \\
 \#devaluation  & + Devaluations on Fixed Assets  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00 \\
 amre  & Depreciations and adjustments  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00 \\
 prov  & +/- (+)Creation and (-)release of provisions  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00 \\
-\multicolumn{9}{l}{Adjustment with assets accounts  }\\
+ & \multicolumn{8}{l}{Adjustment with assets accounts  }\\
 cred  & +/- (+) Decrease or (-) increase of credits  & -24'500.00  & 0.00  & -24'500.00  & -24'500.00  & 0.00  & -24'500.00 \\
 stoc  & +/- (+) Decrease or (-) increase of stocks  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00 \\
 prep  & +/- (+) Decrease or (-) increase of prepaid expenses  & -120.00  & 0.00  & -120.00  & -120.00  & 0.00  & -120.00 \\
-\multicolumn{9}{l}{Adjustment with liabilities accounts  }\\
+ & \multicolumn{8}{l}{Adjustment with liabilities accounts  }\\
 stdc  & +/- (+)Increase or (-) decrease of liabilities  & 14'970.00  & 0.00  & 14'970.00  & 14'970.00  & 0.00  & 14'970.00 \\
 accr  & +/- (+) Increase or (-) decrease of accruals and deferred income  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00 \\
 A  & = Cash Flow from operations  & 9'770.00  & 0.00  & 9'770.00  & 9'770.00  & 0.00  & 9'770.00 \\
@@ -150,6 +118,37 @@ Cash Flow to current Liabilities  & cashflow(A)/stdc  & -  & 65.26\%   & 0.00\% 
 Cash Flow to Liabilities  & cashflow(A)/deca  & -  & 40.76\%   & 0.00\%  ↓  & 40.76\%   & 40.76\%   & 0.00\%  ↓  & 40.76\%  \\
 Cash Flow to Investments  & cashflow(A)/inve  & -  & 65.13\%   & 0.00\%  ↓  & 65.13\%   & 65.13\%   & 0.00\%  ↓  & 65.13\%  \\
 \end{longtable}
+\begin{longtable}[l]{ l  l  l  l  l  l  l  l  l }
+LIQUIDITY RATIOS Description  & formula  & Benchmark  & Year to Date  & Budget to Date  & Budget to Date +/-  & Year to Date + Budget  & Budget  & Budget +/- \\
+Cash ratio  & liqu / stdc  & 10\%-35\%  & -54.24\%   & 0.00\%  ↑  & -54.24\%   & -54.24\%   & 0.00\%  ↑  & -54.24\%  \\
+Quick ratio  & (liqu + cred) / stdc  & 100\%  & 109.42\%   & 0.00\%  ↓  & 109.42\%   & 109.42\%   & 0.00\%  ↓  & 109.42\%  \\
+Current ratio  & cuas / stdc  & 150\%  & 110.22\%   & 0.00\%  ↓  & 110.22\%   & 110.22\%   & 0.00\%  ↓  & 110.22\%  \\
+Net Current Assets  & cuas-stdc  & >0  & 1'530.00   & 110.00  ↓  & 1'420.00   & 1'530.00   & 110.00  ↓  & 1'420.00  \\
+\end{longtable}
+\begin{longtable}[l]{ l  l  l  l  l  l  l  l  l }
+LEVERAGE RATIOS Description  & formula  & Benchmark  & Year to Date  & Budget to Date  & Budget to Date +/-  & Year to Date + Budget  & Budget  & Budget +/- \\
+Degree of Circulating Assets  & cuas / tota  & 60\%  & 52.38\%   & 100.00\%  ↑  & -47.62\%   & 52.38\%   & 100.00\%  ↑  & -47.62\%  \\
+Percentage Fixed Assets  & fixa / tota  & 40\%  & 47.62\%   & 0.00\%  ↓  & 47.62\%   & 47.62\%   & 0.00\%  ↓  & 47.62\%  \\
+Debt ratio  & (stdc+ltdc) / totp  & 40\%-70\%  & 76.36\%   & 0.00\%  ↓  & 76.36\%   & 76.36\%   & 0.00\%  ↓  & 76.36\%  \\
+Equity ratio  & owca / totp  & 30\%-60\%  & 23.64\%   & 0.00\%  ↓  & 23.64\%   & 23.64\%   & 0.00\%  ↓  & 23.64\%  \\
+Self financing ratio  & rese / owca  & 33,3\%  & 1.35\%   & 0.00\%  ↓  & 1.35\%   & 1.35\%   & 0.00\%  ↓  & 1.35\%  \\
+Fixed Assets Coverage  & (owca + ltdc) / fixa  & >100\%  & 109.47\%   & 0.00\%  ↓  & 109.47\%   & 109.47\%   & 0.00\%  ↓  & 109.47\%  \\
+\end{longtable}
+\begin{longtable}[l]{ l  l  l  l  l  l  l  l  l }
+PROFITABILITY RATIOS Description  & formula  & Benchmark  & Year to Date  & Budget to Date  & Budget to Date +/-  & Year to Date + Budget  & Budget  & Budget +/- \\
+Return on equity (ROE)  & profit / owca  & 8\%-14\%  & 261.73\%   & 0.00\%  ↓  & 261.73\%   & 261.73\%   & 0.00\%  ↓  & 261.73\%  \\
+Return on investment (ROI)  & EBIT / tota    & 10\%  & 61.65\%   & 0.00\%  ↓  & 61.65\%   & 61.65\%   & 0.00\%  ↓  & 61.65\%  \\
+Return on sales (ROS)  & EBIT / satu  & >0  & 86.31\%   & 0.00\%  ↓  & 86.31\%   & 86.31\%   & 0.00\%  ↓  & 86.31\%  \\
+Gross profit margin (MOL)  & EBITDA / satu  & 40\%  & 86.31\%   & 0.00\%  ↓  & 86.31\%   & 86.31\%   & 0.00\%  ↓  & 86.31\%  \\
+EBT margin  & EBT / satu  & 2.4\%  & 86.31\%   & 0.00\%  ↓  & 86.31\%   & 86.31\%   & 0.00\%  ↓  & 86.31\%  \\
+Profit margin  & net profit / satu  & 1.4\%  & 86.31\%   & 0.00\%  ↓  & 86.31\%   & 86.31\%   & 0.00\%  ↓  & 86.31\%  \\
+\end{longtable}
+\begin{longtable}[l]{ l  l  l  l  l  l  l  l  l }
+EFFICIENCY RATIOS Description  & formula  & Benchmark  & Year to Date  & Budget to Date  & Budget to Date +/-  & Year to Date + Budget  & Budget  & Budget +/- \\
+Revenue per Employee  & satu/employees  & >0  & 22'500.00  & 0.00  & 22'500.00  & 22'500.00  & 0.00  & 22'500.00 \\
+Added Value per Employee  & adva/employees  & >0  & 19'420.00  & 0.00  & 19'420.00  & 19'420.00  & 0.00  & 19'420.00 \\
+Personnel Cost per Employee  & cope/employees  & >0  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00 \\
+\end{longtable}
 \begin{longtable}[l]{ l  l  l  l  l  l  l }
 DUPONT ANALYSIS  Description  & Year to Date  & Budget to Date  & Budget to Date +/-  & Year to Date + Budget  & Budget  & Budget +/- \\
 Operating result before taxes (EBT)  & 19'420.00   & 0.00  ↓  & 19'420.00   & 19'420.00   & 0.00  ↓  & 19'420.00  \\
@@ -160,19 +159,26 @@ Total Assets  & 31'500.00   & 110.00  ↓  & 31'390.00   & 31'500.00   & 110.00 
 Total Assets Turnover  & 0.71   & 0.00  ↓  & 0.71   & 0.71   & 0.00  ↓  & 0.71  \\
 Return on investment (ROI)  & 61.65\%   & 0.00\%  ↓  & 61.65\%   & 61.65\%   & 0.00\%  ↓  & 61.65\%  \\
 \end{longtable}
-\begin{longtable}[l]{ l  l  l  l  l  l  l  l }
-ALTMAN INDEX Z-SCORE Year to Date  & Budget to Date  & Budget to Date +/-  & Year to Date + Budget  & Budget  & Budget +/- \\
-3.01  & 0.72  & 2.29  & 3.01  & 0.72  & 2.29 \\
-\multicolumn{8}{l}{formula used for the calculation  = 0.717 X1 + 0.847 X2 +3.107 X3 +0.420 X4 + 0.998 X5 }\\
-\multicolumn{8}{l}{X1 = cuas / tota }\\
-\multicolumn{8}{l}{X2 = rese / tota  }\\
-\multicolumn{8}{l}{X3 = EBIT / tota  }\\
-\multicolumn{8}{l}{X4 = pant / totp }\\
-\multicolumn{8}{l}{X5 = sale / tota }\\
+\begin{longtable}[l]{ l  l  l  l  l  l  l  l  l }
+ALTMAN Z-SCORE Description  & formula  & Weighting  & Year to Date  & Budget to Date  & Budget to Date +/-  & Year to Date + Budget  & Budget  & Budget +/- \\
+\\
+Working capital / total Assets  & (cuas-stdc) / tota  & 1.2  & 0.06  & 1.20  & -1.14  & 0.06  & 1.20  & -1.14 \\
+Retained earnings / total Assets  & Total retained earning / tota  & 1.4  & 0.33  & 0.00  & 0.33  & 0.33  & 0.00  & 0.33 \\
+Earnings before interest and task payment /total Assets  & EBIT / tota  & 3.3  & 2.03  & 0.00  & 2.03  & 2.03  & 0.00  & 2.03 \\
+The equity’s market value / total Liabilities  & owca / deca  & 0.6  & 0.19  & 0.00  & 0.19  & 0.19  & 0.00  & 0.19 \\
+Total Sales / total Assets  & satu / tota  & 0.999  & 0.71  & 0.00  & 0.71  & 0.71  & 0.00  & 0.71 \\
+Z-Score  & (1.2 x A) + (1.4 x B) + (3.3 x C) + (0.6 x D) + (0.999 x E)  &  & 3.32  & 1.20  & 2.12  & 3.32  & 1.20  & 2.12 \\
 \end{longtable}
-for values > than 3 correspond a low probability of a financial crisis \\
-for values >= than 1.8 but <= than 3 there are possibilities of a financial crisis, should be kept under control \\
-for values < than 1.8 there is a strong probability of a financial crisis \\
-\excltest{03.05.2022} \\
+\begin{longtable}[l]{ l  l  l  l  l  l  l  l  l }
+Z-SCORE FOR PRIVATE COMPANIES Description  & formula  & Weighting  & Year to Date  & Budget to Date  & Budget to Date +/-  & Year to Date + Budget  & Budget  & Budget +/- \\
+\\
+(Current Assets - Current Liabilities) / total Assets  & (cuas-stdc) / tota  & 0.717  & 0.03  & 0.72  & -0.69  & 0.03  & 0.72  & -0.69 \\
+Retained earnings / total Assets  & Total retained earning / tota  & 0.847  & 0.20  & 0.00  & 0.20  & 0.20  & 0.00  & 0.20 \\
+Earnings before interest and task payment /total Assets  & EBIT / tota  & 3.107  & 1.92  & 0.00  & 1.92  & 1.92  & 0.00  & 1.92 \\
+Book Value of Equity/Total Liabilities  & owca / deca  & 0.42  & 0.13  & 0.00  & 0.13  & 0.13  & 0.00  & 0.13 \\
+Total Sales / total Assets  & satu / tota  & 0.998  & 0.71  & 0.00  & 0.71  & 0.71  & 0.00  & 0.71 \\
+Z-Score  & (0.717 x A) + (0.847 x B) + (3.107 x C) + (0.420 x D) + (0.998 x E)  &  & 2.99  & 0.72  & 2.27  & 2.99  & 0.72  & 2.27 \\
+\end{longtable}
+\excltest{14.03.2023} \\
 \#page-nr \end{reportvalue}
 \end{document}
