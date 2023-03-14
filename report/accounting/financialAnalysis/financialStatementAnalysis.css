@@ -86,6 +86,11 @@ style's for the amounts
         text-align: right;
     }
 
+    .styleTitlesTotalAmount_withoutColor {
+        font-weight: bold;
+        text-align: left;
+    }
+
     /*those 3 style's are for the Altman z Score Index values*/
 
     .styleZIndexLow {
