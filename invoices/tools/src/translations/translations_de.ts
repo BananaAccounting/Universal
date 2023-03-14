@@ -12,62 +12,74 @@
         <translation type="vanished">ZeilenID ist ein erforderliches Feld</translation>
     </message>
     <message>
-        <location filename="../export_contacts.js" line="72"/>
         <source>RowId is a required field</source>
-        <translation>RowId ist ein erforderliches Feld</translation>
+        <translation type="vanished">RowId ist ein erforderliches Feld</translation>
     </message>
     <message>
-        <location filename="../export_contacts.js" line="79"/>
-        <location filename="../export_contacts.js" line="97"/>
         <source>Organisation name is a required field</source>
-        <translation>OrganisationName ist ein erforderliches Feld</translation>
+        <translation type="vanished">OrganisationName ist ein erforderliches Feld</translation>
     </message>
     <message>
-        <location filename="../export_contacts.js" line="81"/>
-        <location filename="../export_contacts.js" line="105"/>
         <source>FirstName is a required field</source>
-        <translation>FirstName ist ein erforderliches Feld</translation>
+        <translation type="vanished">FirstName ist ein erforderliches Feld</translation>
     </message>
     <message>
-        <location filename="../export_contacts.js" line="83"/>
-        <location filename="../export_contacts.js" line="113"/>
         <source>LastName is a required field</source>
-        <translation>LastName ist ein erforderliches Feld</translation>
+        <translation type="vanished">LastName ist ein erforderliches Feld</translation>
     </message>
     <message>
-        <location filename="../export_contacts.js" line="124"/>
         <source>Street is a required field</source>
-        <translation>Street ist ein erforderliches Feld</translation>
+        <translation type="vanished">Street ist ein erforderliches Feld</translation>
     </message>
     <message>
-        <location filename="../export_contacts.js" line="131"/>
         <source>PostalCode is a required field</source>
-        <translation>PostalCode ist ein erforderliches Feld</translation>
+        <translation type="vanished">PostalCode ist ein erforderliches Feld</translation>
     </message>
     <message>
-        <location filename="../export_contacts.js" line="138"/>
         <source>Locality is a required field</source>
-        <translation>Locality ist ein erforderliches Feld</translation>
+        <translation type="vanished">Locality ist ein erforderliches Feld</translation>
     </message>
     <message>
-        <location filename="../export_contacts.js" line="145"/>
         <source>CountryCode is a required field</source>
-        <translation>CountryCode ist ein erforderliches Feld</translation>
+        <translation type="vanished">CountryCode ist ein erforderliches Feld</translation>
     </message>
     <message>
-        <location filename="../export_contacts.js" line="153"/>
         <source>Error Description: </source>
-        <translation>Fehlerbeschreibung: </translation>
+        <translation type="vanished">Fehlerbeschreibung: </translation>
     </message>
     <message>
-        <location filename="../export_contacts.js" line="153"/>
         <source>An error occured while exporting the csv contacts! </source>
-        <translation>Beim Exportieren der csv-Kontakte ist ein Fehler aufgetreten! </translation>
+        <translation type="vanished">Beim Exportieren der csv-Kontakte ist ein Fehler aufgetreten! </translation>
     </message>
     <message>
-        <location filename="../export_contacts.js" line="162"/>
         <source>Complete the missing details first, as listed in the message pane below.</source>
-        <translation>Vervollständigen Sie zunächst die fehlenden Angaben, die im nachstehenden Meldungsfenster aufgeführt sind.</translation>
+        <translation type="vanished">Vervollständigen Sie zunächst die fehlenden Angaben, die im nachstehenden Meldungsfenster aufgeführt sind.</translation>
+    </message>
+    <message>
+        <location filename="../export_contacts.js" line="35"/>
+        <source>Fix errors first, as listed in the pane Messages.</source>
+        <translation type="unfinished">Beheben Sie zuerst die Fehlern, wie in der Registerkarte Meldungen aufgeführt.</translation>
+    </message>
+    <message>
+        <location filename="../export_contacts.js" line="71"/>
+        <location filename="../export_contacts.js" line="75"/>
+        <location filename="../export_contacts.js" line="76"/>
+        <location filename="../export_contacts.js" line="77"/>
+        <location filename="../export_contacts.js" line="82"/>
+        <location filename="../export_contacts.js" line="87"/>
+        <location filename="../export_contacts.js" line="92"/>
+        <location filename="../export_contacts.js" line="99"/>
+        <location filename="../export_contacts.js" line="103"/>
+        <location filename="../export_contacts.js" line="107"/>
+        <location filename="../export_contacts.js" line="111"/>
+        <source>%1 is a required field</source>
+        <translation type="unfinished">%1 ist ein erforderliches Feld</translation>
+    </message>
+    <message>
+        <location filename="../export_contacts.js" line="117"/>
+        <source>Contact not valid.
+Error: %1</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -141,34 +153,46 @@ Fehler: %1</translation>
         <translation type="vanished">Id ist ein erforderliches Feld</translation>
     </message>
     <message>
-        <location filename="../export_items.js" line="65"/>
         <source>RowId is a required field</source>
-        <translation>RowId ist ein erforderliches Feld</translation>
+        <translation type="vanished">RowId ist ein erforderliches Feld</translation>
     </message>
     <message>
-        <location filename="../export_items.js" line="71"/>
         <source>Description is a required field</source>
-        <translation>Description ist ein erforderliches Feld</translation>
+        <translation type="vanished">Description ist ein erforderliches Feld</translation>
     </message>
     <message>
-        <location filename="../export_items.js" line="77"/>
         <source>UnitPrice is a required field</source>
-        <translation>UnitPrice ist ein erforderliches Feld</translation>
+        <translation type="vanished">UnitPrice ist ein erforderliches Feld</translation>
     </message>
     <message>
-        <location filename="../export_items.js" line="85"/>
         <source>Error Description: </source>
-        <translation>Fehlerbeschreibung: </translation>
+        <translation type="vanished">Fehlerbeschreibung: </translation>
     </message>
     <message>
-        <location filename="../export_items.js" line="85"/>
         <source>An error occured while exporting the csv items! </source>
-        <translation>Beim Exportieren der csv-Artikel ist ein Fehler aufgetreten! </translation>
+        <translation type="vanished">Beim Exportieren der csv-Artikel ist ein Fehler aufgetreten! </translation>
     </message>
     <message>
-        <location filename="../export_items.js" line="94"/>
         <source>Complete the missing details first, as listed in the message pane below.</source>
-        <translation>Vervollständigen Sie zunächst die fehlenden Angaben, die im nachstehenden Meldungsfenster aufgeführt sind.</translation>
+        <translation type="vanished">Vervollständigen Sie zunächst die fehlenden Angaben, die im nachstehenden Meldungsfenster aufgeführt sind.</translation>
+    </message>
+    <message>
+        <location filename="../export_items.js" line="35"/>
+        <source>Fix errors first, as listed in the pane Messages.</source>
+        <translation type="unfinished">Beheben Sie zuerst die Fehlern, wie in der Registerkarte Meldungen aufgeführt.</translation>
+    </message>
+    <message>
+        <location filename="../export_items.js" line="63"/>
+        <location filename="../export_items.js" line="66"/>
+        <location filename="../export_items.js" line="69"/>
+        <source>%1 is a required field</source>
+        <translation type="unfinished">%1 ist ein erforderliches Feld</translation>
+    </message>
+    <message>
+        <location filename="../export_items.js" line="75"/>
+        <source>Item not valid.
+Error: %1</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

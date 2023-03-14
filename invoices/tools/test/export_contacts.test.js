@@ -62,45 +62,45 @@ TestExportContacts.prototype.cleanup = function() {
 //Export Contacts with complete data
 TestExportContacts.prototype.testContactsWithCompleteData = function(){
 	//get the *ac2 file
-	let fileAC2 = "file:script/../test/testcases/contacts_testfiles/contacts_complete_data_test.ac2";
+	let fileAC2 = "file:script/test/testcases/contacts_testfiles/contacts_complete_data_test.ac2";
 	let banDoc = Banana.application.openDocument(fileAC2);
-	//create a new logger to split the result of this test on a different file.
-	let parentLogger = this.testLogger;
-	this.testLogger = parentLogger.newLogger(Banana.IO.fileCompleteBaseName(fileAC2));
-	if (banDoc) {
-		let contactsTable = banDoc.table("Contacts");
-		if (contactsTable){
-			let csvData = "";
-			csvData += generateCsvContacts(contactsTable);
-			this.testLogger.addCsv("Data",csvData);
-		} else {
-			this.testLogger.addFatalError("Contacts table not found !");
-		}
-	} else {
-		this.testLogger.addFatalError("File not found: " + fileAC2);
-	}
+	Test.assert(banDoc, `file not found: "${fileAC2}"`);
+
+	let contactsTable = banDoc.table("Contacts");
+	Test.assert(contactsTable);
+		
+	banDoc.clearMessages();
+	let csvData = generateCsvContacts(contactsTable);
+	this.testLogger.addCsv("Data", csvData);
+	
+	let msgs = banDoc.getMessages();
+    for (let i = 0; i < msgs.length; ++i) {
+        let msg = msgs[i];
+        this.testLogger.addKeyValue("ERROR_MSG_ROW_" + msg.rowNr, msg.message);
+        this.testLogger.addKeyValue("ERROR_HELPID_ROW_" + msg.rowNr, msg.helpId);
+    }
 }
 
 //Export Contacts with missing data
 TestExportContacts.prototype.testContactsWithMissingData = function(){
 	//get the *ac2 file
-	let fileAC2 = "file:script/../test/testcases/contacts_testfiles/contacts_missing_data_test.ac2";
+	let fileAC2 = "file:script/test/testcases/contacts_testfiles/contacts_missing_data_test.ac2";
 	let banDoc = Banana.application.openDocument(fileAC2);
-	//create a new logger to split the result of this test on a different file.
-	let parentLogger = this.testLogger;
-	this.testLogger = parentLogger.newLogger(Banana.IO.fileCompleteBaseName(fileAC2));
-	if (banDoc) {
-		let contactsTable = banDoc.table("Contacts");
-		if (contactsTable){
-			let csvData = "";
-			csvData += generateCsvContacts(contactsTable);
-			this.testLogger.addCsv("Data",csvData);
-		} else {
-			this.testLogger.addFatalError("Contacts table not found !");
-		}
-	} else {
-		this.testLogger.addFatalError("File not found: " + fileAC2);
-	}
+	Test.assert(banDoc, `file not found: "${fileAC2}"`);
+	
+	let contactsTable = banDoc.table("Contacts");
+	Test.assert(contactsTable);
+		
+	banDoc.clearMessages();
+	let csvData = generateCsvContacts(contactsTable);
+	this.testLogger.addCsv("Data", csvData);
+	
+	let msgs = banDoc.getMessages();
+    for (let i = 0; i < msgs.length; ++i) {
+        let msg = msgs[i];
+        this.testLogger.addKeyValue("ERROR_MSG_ROW_" + msg.rowNr, msg.message);
+        this.testLogger.addKeyValue("ERROR_HELPID_ROW_" + msg.rowNr, msg.helpId);
+    }
 }
 
 // Export Contacts with missing mandatory data
@@ -108,19 +108,19 @@ TestExportContacts.prototype.testContactsWithMissingMandatoryData = function(){
 	//get the *ac2 file
 	let fileAC2 = "file:script/../test/testcases/contacts_testfiles/contacts_missing_mandatory_data_test.ac2";
 	let banDoc = Banana.application.openDocument(fileAC2);
-	//create a new logger to split the result of this test on a different file.
-	let parentLogger = this.testLogger;
-	this.testLogger = parentLogger.newLogger(Banana.IO.fileCompleteBaseName(fileAC2));
-	if (banDoc) {
-		let contactsTable = banDoc.table("Contacts");
-		if (contactsTable){
-			let csvData = "";
-			csvData += generateCsvContacts(contactsTable, true);
-			this.testLogger.addCsv("Data",csvData);
-		} else {
-			this.testLogger.addFatalError("Contacts table not found !");
-		}
-	} else {
-		this.testLogger.addFatalError("File not found: " + fileAC2);
-	}
+	Test.assert(banDoc, `file not found: "${fileAC2}"`);
+	
+	let contactsTable = banDoc.table("Contacts");
+	Test.assert(contactsTable);
+		
+	banDoc.clearMessages();
+	let csvData = generateCsvContacts(contactsTable);
+	this.testLogger.addCsv("Data", csvData);
+		
+	let msgs = banDoc.getMessages();
+    for (let i = 0; i < msgs.length; ++i) {
+        let msg = msgs[i];
+        this.testLogger.addKeyValue("ERROR_MSG_ROW_" + msg.rowNr, msg.message);
+        this.testLogger.addKeyValue("ERROR_HELPID_ROW_" + msg.rowNr, msg.helpId);
+    }
 }
