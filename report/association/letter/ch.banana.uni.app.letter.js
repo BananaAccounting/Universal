@@ -14,15 +14,14 @@
 //
 // @id = ch.banana.uni.app.letter.js
 // @api = 1.0
-// @pubdate = 2023-03-03
+// @pubdate = 2023-03-14
 // @publisher = Banana.ch SA
-// @description = [DEV] Letter
-// @description.de = [DEV] Letter (Banana+)
-// @description.it = [DEV] Letter (Banana+)
-// @description.fr = [DEV] Letter (Banana+)
-// @description.en = [DEV] Letter (Banana+)
-// @description.nl = [DEV] Letter (Banana+)
-// @description.pt = [DEV] Letter (Banana+)
+// @description = Letter (Banana+)
+// @description.de = Brief (Banana+)
+// @description.it = Lettera (Banana+)
+// @description.fr = Lettre (Banana+)
+// @description.en = Letter (Banana+)
+// @description.nl = Brief (Banana+)
 // @doctype = *
 // @task = app.command
 // @timeout = -1
@@ -50,7 +49,9 @@ function convertParam(userParam) {
     convertedParam.version = '1.0';
     convertedParam.data = []; /* array dei parametri dello script */
 
-    // Address to print
+    /**
+     * ADDRESS GROUP
+     */
     var currentParam = {};
     currentParam.name = 'accountsToPrint';
     currentParam.title = texts.accountsToPrint;
@@ -89,59 +90,61 @@ function convertParam(userParam) {
     convertedParam.data.push(currentParam);
 
 
-    // Texts
+    /**
+     * BEGIN GROUP
+     */
     var currentParam = {};
-    currentParam.name = 'texts';
-    currentParam.title = texts.textsGroup;
+    currentParam.name = 'begin';
+    currentParam.title = texts.begin;
     currentParam.type = 'string';
     currentParam.value = '';
     currentParam.editable = false;
     currentParam.readValue = function() {
-        userParam.texts = this.value;
+        userParam.begin = this.value;
     }
     convertedParam.data.push(currentParam);
 
-    //Free text 1
-    var currentParam = {};
-    currentParam.name = 'text1';
-    currentParam.parentObject = 'texts';
-    currentParam.title = texts.text1;
-    currentParam.type = 'multilinestring';
-    currentParam.value = userParam.text1 ? userParam.text1 : '';
-    currentParam.defaultvalue = '';
+    currentParam = {};
+    currentParam.name = 'printHeaderLogo';
+    currentParam.parentObject = 'begin';
+    currentParam.title = texts.printHeaderLogo;
+    currentParam.type = 'bool';
+    currentParam.value = userParam.printHeaderLogo ? true : false;
+    currentParam.defaultvalue = false;
     currentParam.readValue = function() {
-        userParam.text1 = this.value;
+    userParam.printHeaderLogo = this.value;
     }
     convertedParam.data.push(currentParam);
 
-    //Free text Document table
     var currentParam = {};
-    currentParam.name = 'embeddedTextFile';
-    currentParam.parentObject = 'texts';
-    currentParam.title = texts.embeddedTextFile;
+    currentParam.name = 'headerLogoName';
+    currentParam.parentObject = 'begin'
+    currentParam.title = texts.headerLogoName;
     currentParam.type = 'string';
-    currentParam.value = userParam.embeddedTextFile ? userParam.embeddedTextFile : '';
-    currentParam.defaultvalue = '';
+    currentParam.value = userParam.headerLogoName ? userParam.headerLogoName : 'Logo';
+    currentParam.defaultvalue = 'Logo';
     currentParam.readValue = function() {
-        userParam.embeddedTextFile = this.value;
+        userParam.headerLogoName = this.value;
     }
     convertedParam.data.push(currentParam);
 
     // locality and date
     var currentParam = {};
     currentParam.name = 'localityAndDate';
-    currentParam.parentObject = 'texts';
+    currentParam.parentObject = 'begin';
     currentParam.title = texts.localityAndDate;
     currentParam.type = 'string';
     currentParam.value = userParam.localityAndDate ? userParam.localityAndDate : '';
-    currentParam.defaultvalue = '';
+    currentParam.defaultvalue = texts.localityAndDate;
     currentParam.readValue = function() {
         userParam.localityAndDate = this.value;
     }
     convertedParam.data.push(currentParam);
 
 
-    // Print text
+    /**
+     * PRINT TEXT GROUP
+     */
     var currentParam = {};
     currentParam.name = 'printText';
     currentParam.title = texts.printText;
@@ -156,8 +159,10 @@ function convertParam(userParam) {
 
     var textChoices = [];
     textChoices.push(texts.text1);
+    textChoices.push(texts.text2);
+    textChoices.push(texts.text3);
+    textChoices.push(texts.text4);
     textChoices.push(texts.textEmbedded);
-
     var currentParam = {};
     currentParam.name = 'textToUse';
     currentParam.parentObject = 'printText';
@@ -184,7 +189,10 @@ function convertParam(userParam) {
     }
     convertedParam.data.push(currentParam);
 
-    // signature
+
+    /**
+     * SIGNATURE GROUP
+     */
     var currentParam = {};
     currentParam.name = 'signature';
     currentParam.title = texts.signature;
@@ -235,7 +243,90 @@ function convertParam(userParam) {
     }
     convertedParam.data.push(currentParam);
 
-    // Styles
+
+    /**
+     * TEXTS GROUP
+     */
+    var currentParam = {};
+    currentParam.name = 'texts';
+    currentParam.title = texts.textsGroup;
+    currentParam.type = 'string';
+    currentParam.value = '';
+    currentParam.editable = false;
+    currentParam.readValue = function() {
+        userParam.texts = this.value;
+    }
+    convertedParam.data.push(currentParam);
+
+    //Free text 1
+    var currentParam = {};
+    currentParam.name = 'text1';
+    currentParam.parentObject = 'texts';
+    currentParam.title = texts.text1;
+    currentParam.type = 'multilinestring';
+    currentParam.value = userParam.text1 ? userParam.text1 : '';
+    currentParam.defaultvalue = '';
+    currentParam.readValue = function() {
+        userParam.text1 = this.value;
+    }
+    convertedParam.data.push(currentParam);
+
+    //Free text 2
+    var currentParam = {};
+    currentParam.name = 'text2';
+    currentParam.parentObject = 'texts';
+    currentParam.title = texts.text2;
+    currentParam.type = 'multilinestring';
+    currentParam.value = userParam.text2 ? userParam.text2 : '';
+    currentParam.defaultvalue = '';
+    currentParam.readValue = function() {
+        userParam.text2 = this.value;
+    }
+    convertedParam.data.push(currentParam);
+
+    //Free text 3
+    var currentParam = {};
+    currentParam.name = 'text3';
+    currentParam.parentObject = 'texts';
+    currentParam.title = texts.text3;
+    currentParam.type = 'multilinestring';
+    currentParam.value = userParam.text3 ? userParam.text3 : '';
+    currentParam.defaultvalue = '';
+    currentParam.readValue = function() {
+        userParam.text3 = this.value;
+    }
+    convertedParam.data.push(currentParam);
+
+    //Free text 4
+    var currentParam = {};
+    currentParam.name = 'text4';
+    currentParam.parentObject = 'texts';
+    currentParam.title = texts.text4;
+    currentParam.type = 'multilinestring';
+    currentParam.value = userParam.text4 ? userParam.text4 : '';
+    currentParam.defaultvalue = '';
+    currentParam.readValue = function() {
+        userParam.text4 = this.value;
+    }
+    convertedParam.data.push(currentParam);
+
+    //Free text Document table
+    var currentParam = {};
+    currentParam.name = 'embeddedTextFile';
+    currentParam.parentObject = 'texts';
+    currentParam.title = texts.embeddedTextFile;
+    currentParam.type = 'string';
+    currentParam.value = userParam.embeddedTextFile ? userParam.embeddedTextFile : '';
+    currentParam.defaultvalue = '';
+    currentParam.readValue = function() {
+        userParam.embeddedTextFile = this.value;
+    }
+    convertedParam.data.push(currentParam);
+
+
+    /**
+     * STYLES GROUP
+     */
     var currentParam = {};
     currentParam.name = 'styles';
     currentParam.title = texts.styles;
@@ -244,30 +335,6 @@ function convertParam(userParam) {
     currentParam.editable = false;
     currentParam.readValue = function() {
         userParam.styles = this.value;
-    }
-    convertedParam.data.push(currentParam);
-
-    currentParam = {};
-    currentParam.name = 'printHeaderLogo';
-    currentParam.parentObject = 'styles';
-    currentParam.title = texts.printHeaderLogo;
-    currentParam.type = 'bool';
-    currentParam.value = userParam.printHeaderLogo ? true : false;
-    currentParam.defaultvalue = false;
-    currentParam.readValue = function() {
-    userParam.printHeaderLogo = this.value;
-    }
-    convertedParam.data.push(currentParam);
-
-    var currentParam = {};
-    currentParam.name = 'headerLogoName';
-    currentParam.parentObject = 'styles'
-    currentParam.title = texts.headerLogoName;
-    currentParam.type = 'string';
-    currentParam.value = userParam.headerLogoName ? userParam.headerLogoName : 'Logo';
-    currentParam.defaultvalue = 'Logo';
-    currentParam.readValue = function() {
-        userParam.headerLogoName = this.value;
     }
     convertedParam.data.push(currentParam);
 
@@ -321,10 +388,13 @@ function initUserParam() {
     userParam.useExtractTable = false;
     userParam.textToUse = texts.text1;
     userParam.text1 = '';
+    userParam.text2 = '';
+    userParam.text3 = '';
+    userParam.text4 = '';
     userParam.embeddedTextFile = '';
     userParam.useMarkdown = false;
     userParam.textSignature = '';
-    userParam.localityAndDate = '';
+    userParam.localityAndDate = texts.localityAndDate;
     userParam.printSignatureImage = false;
     userParam.nameSignatureImage = '';
     userParam.printHeaderLogo = false;
@@ -388,7 +458,7 @@ function exec(inData, options) {
     }
 
     //Checks Banana version and license
-    var isCurrentBananaVersionSupported = bananaRequiredVersion("10.1.0");
+    var isCurrentBananaVersionSupported = bananaRequiredVersion("10.0.12.22054");
     if (!isCurrentBananaVersionSupported) {
         return "@Cancel";
     }
@@ -585,13 +655,22 @@ function printReportLetter(report, banDoc, userParam, account, texts) {
     if (userParam.textToUse === texts.text1) {
         textselected = userParam.text1;
     }
+    else if (userParam.textToUse === texts.text2) {
+        textselected = userParam.text2;
+    } 
+    else if (userParam.textToUse === texts.text3) {
+        textselected = userParam.text3;
+    } 
+    else if (userParam.textToUse === texts.text4) {
+        textselected = userParam.text4;
+    } 
     else if (userParam.textToUse === texts.textEmbedded) {
         var embeddedText = getEmbeddedTextFile(banDoc, userParam);
         textselected = embeddedText;
     }
 
     // Print
-    if (userParam.useMarkdown) {
+    if (userParam.useMarkdown || userParam.embeddedTextFile.indexOf(".md") > -1) {
         var format = "md"; //md,html,text
         text = convertFieldsMarkdown(banDoc, textselected, address, account);
         sectionText.addStructuredText(text, format, ""); // "" = stylesheet
@@ -1041,7 +1120,10 @@ function loadTexts(banDoc,lang) {
         texts.printSignatureImage = "Unterschrift mit Bild";
         texts.nameSignatureImage = "Bild";
         texts.memberAccount = "Mitgliedskonto";
-        texts.text1 = "Text";
+        texts.text1 = "Text 1";
+        texts.text2 = "Text 2";
+        texts.text3 = "Text 3";
+        texts.text4 = "Text 4";
         texts.textsGroup = "Texte";
         texts.styles = "Stilarten";
         texts.fontFamily = "Schriftarttyp";
@@ -1051,14 +1133,15 @@ function loadTexts(banDoc,lang) {
         texts.useMarkdown = "Markdown verwenden";
 
         texts.useExtractTable = "Tabelle Extraktion verwenden";
-        texts.warningMessageExtractTable = "Tabelle 'Extraktion' nicht gefunden.\nWählen Sie eine Gruppe in der Tabelle Konten, Spalte SummIn > Zeilen extrahieren.";
+        texts.warningMessageExtractTable = "Verwenden Sie den Befehl Daten > Zeilen extrahieren und sortieren";
         texts.embeddedTextFile = "Text Tabelle Dokumente (.txt / .md)";
-        texts.css = "CSS (optional)";
+        texts.css = "CSS";
         texts.textSignature = "Text Unterschrift";
         texts.textToUse = "Text auswählen";
         texts.textEmbedded = "Text Tabelle Dokumente (.txt / .md)";
         texts.accountsToPrint = "Zu druckende Adressen auswählen";
         texts.printText = "Text drucken";
+        texts.begin = "Beginn";
     }
     else if (lang === "fr") {
         texts.reportTitle = "Lettre";
@@ -1070,7 +1153,10 @@ function loadTexts(banDoc,lang) {
         texts.printSignatureImage = "Signature avec image";
         texts.nameSignatureImage = "Image";
         texts.memberAccount = "Compte de membre";
-        texts.text1 = "Texte";
+        texts.text1 = "Texte 1";
+        texts.text2 = "Texte 2";
+        texts.text3 = "Texte 3";
+        texts.text4 = "Texte 4";
         texts.textsGroup = "Textes";
         texts.styles = "Styles";
         texts.fontFamily = "Type de police";
@@ -1080,14 +1166,15 @@ function loadTexts(banDoc,lang) {
         texts.useMarkdown = "Utiliser Markdown";
     
         texts.useExtractTable = "Utiliser le tableau Extraire";
-        texts.warningMessageExtractTable = "Table 'Extraire' non trouvée.\nSélectionner un groupe dans le tableau Comptes, colonne AddDans > Extraire lignes.";
+        texts.warningMessageExtractTable = "Utilisez la commande Données > Extraire et trier lignes";
         texts.embeddedTextFile = "Texte tableau Documents (.txt / .md)";
-        texts.css = "CSS (facultatif)";
+        texts.css = "CSS";
         texts.textSignature = "Texte de signature";
-        texts.textToUse = "Sélectionner le texte".
+        texts.textToUse = "Sélectionner le texte";
         texts.textEmbedded = "Texte tableau Documents (.txt / .md)";
         texts.accountsToPrint = "Sélectionner les adresses à imprimer";
         texts.printText = "Imprimer le texte";
+        texts.begin = "Début";
     }
     else if (lang === "it") {
         texts.reportTitle = "Lettera";
@@ -1099,7 +1186,10 @@ function loadTexts(banDoc,lang) {
         texts.printSignatureImage = "Firma con immagine";
         texts.nameSignatureImage = "Immagine";
         texts.memberAccount = "Conto del membro";
-        texts.text1 = "Testo";
+        texts.text1 = "Testo 1";
+        texts.text2 = "Testo 2";
+        texts.text3 = "Testo 3";
+        texts.text4 = "Testo 4";
         texts.textsGroup = "Testi";
         texts.styles = "Stili";
         texts.fontFamily = "Tipo di carattere";
@@ -1109,14 +1199,15 @@ function loadTexts(banDoc,lang) {
         texts.useMarkdown = "Usa Markdown";
 
         texts.useExtractTable = "Usa tabella Estrai";
-        texts.warningMessageExtractTable = "Tabella 'Estrai' non trovata.\nSeleziona un gruppo nella tabella Conti, colonna SommaIn > Estrai righe.";
+        texts.warningMessageExtractTable = "Usa il comando Dati > Estrai righe";
         texts.embeddedTextFile = "Testo tabella Documenti (.txt / .md)";
-        texts.css = "CSS (opzionale)";
+        texts.css = "CSS";
         texts.textSignature = "Testo firma";
         texts.textToUse = "Seleziona testo"
         texts.textEmbedded = "Testo tabella Documenti (.txt / .md)";
         texts.accountsToPrint = "Seleziona gli indirizzi da stampare";
         texts.printText = "Stampa testo";
+        texts.begin = "Inizio";
     }
     else if (lang === "nl") {
         texts.reportTitle = "Brief";
@@ -1128,7 +1219,10 @@ function loadTexts(banDoc,lang) {
         texts.printSignatureImage = "Handtekening met afbeelding";
         texts.nameSignatureImage = "Afbeelding";
         texts.memberAccount = "Rekening gever";
-        texts.text1 = "Tekst";
+        texts.text1 = "Tekst 1";
+        texts.text2 = "Tekst 2";
+        texts.text3 = "Tekst 3";
+        texts.text4 = "Tekst 4";
         texts.textsGroup = "Teksten";
         texts.styles = "Stijl";
         texts.fontFamily = "Type lettertype";
@@ -1138,14 +1232,15 @@ function loadTexts(banDoc,lang) {
         texts.useMarkdown = "Gebruik Markdown";
 
         texts.useExtractTable = "Gebruik tabel Extract";
-        texts.warningMessageExtractTable = "Tabel 'Extract' niet gevonden.\Selecteer een groep in de tabel Rekeningen, kolom SomIn > Extract rijen."
+        texts.warningMessageExtractTable = "Gebruik het commando Gegevens > Rijen ophalen en sorteren";
         texts.embeddedTextFile = "Teksttabel Documenten (.txt / .md)";
-        texts.css = "CSS (optioneel)";
-        texts.textSignature = "Tekst handtekening".
-        texts.textToUse = "Selecteer tekst".
-        texts.textEmbedded = "Teksttabel Documenten (.txt / .md)"
-        texts.accountsToPrint = "Selecteer adressen om af te drukken"
-        texts.printText = "Tekst afdrukken"
+        texts.css = "CSS";
+        texts.textSignature = "Tekst handtekening";
+        texts.textToUse = "Selecteer tekst";
+        texts.textEmbedded = "Teksttabel Documenten (.txt / .md)";
+        texts.accountsToPrint = "Selecteer adressen om af te drukken";
+        texts.printText = "Tekst afdrukken";
+        texts.begin = "Begin";
     }
     else { //lang == en
         texts.reportTitle = "Letter";
@@ -1157,7 +1252,10 @@ function loadTexts(banDoc,lang) {
         texts.printSignatureImage = "Signature with image";
         texts.nameSignatureImage = "Image";
         texts.memberAccount = "Member account";
-        texts.text1 = "Text";
+        texts.text1 = "Text 1";
+        texts.text2 = "Text 2";
+        texts.text3 = "Text 3";
+        texts.text4 = "Text 4";
         texts.textsGroup = "Texts";
         texts.styles = "Styles";
         texts.fontFamily = "Font type";
@@ -1167,14 +1265,15 @@ function loadTexts(banDoc,lang) {
         texts.useMarkdown = "Use Markdown";
 
         texts.useExtractTable = "Use table Extract";
-        texts.warningMessageExtractTable = "Table 'Extract' not found.\nSelect a group in the Accounts table, column SumIn > Extract rows."
+        texts.warningMessageExtractTable = "Use the command Data > Extract and sort rows";
         texts.embeddedTextFile = "Text table Documents (.txt / .md)";
-        texts.css = "CSS (optional)";
-        texts.textSignature = "Text signature"
-        texts.textToUse = "Select text"
-        texts.textEmbedded = "Text table Documents (.txt / .md)"
-        texts.accountsToPrint = "Select addresses to print"
-        texts.printText = "Print text"
+        texts.css = "CSS";
+        texts.textSignature = "Text signature";
+        texts.textToUse = "Select text";
+        texts.textEmbedded = "Text table Documents (.txt / .md)";
+        texts.accountsToPrint = "Select addresses to print";
+        texts.printText = "Print text";
+        texts.begin = "Begin";
     }
 
     return texts;
