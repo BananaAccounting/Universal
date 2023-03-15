@@ -62,7 +62,7 @@ TestExportItems.prototype.cleanup = function() {
 TestExportItems.prototype.testItemsWithCompleteData = function(){
 	
 	//get the *ac2 file
-	let fileAC2 = "file:script/test/testcases/items_testfiles/items_complete_data_test.ac2";
+	let fileAC2 = "file:script/../test/testcases/items_testfiles/items_complete_data_test.ac2";
 	let banDoc = Banana.application.openDocument(fileAC2);
 	Test.assert(banDoc, `file not found: "${fileAC2}"`);
 	
@@ -84,7 +84,7 @@ TestExportItems.prototype.testItemsWithCompleteData = function(){
 //Export Items with missing Data
 TestExportItems.prototype.testItemsWithMissingData = function(){
 	//get the *ac2 file
-	let fileAC2 = "file:script/test/testcases/items_testfiles/items_missing_data_test.ac2";
+	let fileAC2 = "file:script/../test/testcases/items_testfiles/items_missing_data_test.ac2";
 	let banDoc = Banana.application.openDocument(fileAC2);
 	Test.assert(banDoc, `file not found: "${fileAC2}"`);
 	
