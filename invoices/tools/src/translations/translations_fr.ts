@@ -147,7 +147,7 @@ Error: %1</source>
         <translation>Le champ %1 est obligatoire</translation>
     </message>
     <message>
-        <location filename="../export_invoices.js" line="121"/>
+        <location filename="../export_invoices.js" line="128"/>
         <source>Invoice not valid.
 Error: %1</source>
         <translation>Facture pas valide.
