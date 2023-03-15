@@ -62,7 +62,7 @@ TestExportContacts.prototype.cleanup = function() {
 //Export Contacts with complete data
 TestExportContacts.prototype.testContactsWithCompleteData = function(){
 	//get the *ac2 file
-	let fileAC2 = "file:script/test/testcases/contacts_testfiles/contacts_complete_data_test.ac2";
+	let fileAC2 = "file:script/../test/testcases/contacts_testfiles/contacts_complete_data_test.ac2";
 	let banDoc = Banana.application.openDocument(fileAC2);
 	Test.assert(banDoc, `file not found: "${fileAC2}"`);
 
@@ -84,7 +84,7 @@ TestExportContacts.prototype.testContactsWithCompleteData = function(){
 //Export Contacts with missing data
 TestExportContacts.prototype.testContactsWithMissingData = function(){
 	//get the *ac2 file
-	let fileAC2 = "file:script/test/testcases/contacts_testfiles/contacts_missing_data_test.ac2";
+	let fileAC2 = "file:script/../test/testcases/contacts_testfiles/contacts_missing_data_test.ac2";
 	let banDoc = Banana.application.openDocument(fileAC2);
 	Test.assert(banDoc, `file not found: "${fileAC2}"`);
 	
