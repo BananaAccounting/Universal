@@ -239,7 +239,7 @@ TestExportInvoices.prototype.testInvoiceWithMissingMandatoryData = function(){
 //Export Invoices with 1'000 with Items
 TestExportInvoices.prototype.testInvoiceErrors = function() {
     //get the *ac2 file
-    let fileAC2 = "file:script/../testcases/invoices_testfiles/invoices_export_errors_test.ac2";
+    let fileAC2 = "file:script/../test/testcases/invoices_testfiles/invoices_export_errors_test.ac2";
 	let banDoc = Banana.application.openDocument(fileAC2);
     Test.assert(banDoc, `file not found: "${fileAC2}"`);
 
