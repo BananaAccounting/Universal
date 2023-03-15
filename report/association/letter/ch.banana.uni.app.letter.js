@@ -652,6 +652,7 @@ function printReportLetter(report, banDoc, userParam, account, texts) {
 
     // Text of the letter
     var textselected = "";
+    var usemarkdown = userParam.useMarkdown;
     if (userParam.textToUse === texts.text1) {
         textselected = userParam.text1;
     }
@@ -665,12 +666,16 @@ function printReportLetter(report, banDoc, userParam, account, texts) {
         textselected = userParam.text4;
     } 
     else if (userParam.textToUse === texts.textEmbedded) {
+        usemarkdown = false;
+        if (userParam.embeddedTextFile.indexOf(".md") > -1) {
+            usemarkdown = true;
+        }
         var embeddedText = getEmbeddedTextFile(banDoc, userParam);
         textselected = embeddedText;
     }
 
     // Print
-    if (userParam.useMarkdown || userParam.embeddedTextFile.indexOf(".md") > -1) {
+    if (usemarkdown) {
         var format = "md"; //md,html,text
         text = convertFieldsMarkdown(banDoc, textselected, address, account);
         sectionText.addStructuredText(text, format, ""); // "" = stylesheet

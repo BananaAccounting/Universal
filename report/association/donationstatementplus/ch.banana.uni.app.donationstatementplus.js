@@ -720,6 +720,7 @@ function printReportLetter(report, banDoc, userParam, account, texts) {
 
     // Text of the letter
     var textselected = "";
+    var usemarkdown = userParam.useMarkdown;
     if (userParam.textToUse === texts.text1) {
         textselected = userParam.text1;
     } 
@@ -733,12 +734,17 @@ function printReportLetter(report, banDoc, userParam, account, texts) {
         textselected = userParam.text4;
     } 
     else if (userParam.textToUse === texts.textEmbedded) {
+        usemarkdown = false;
+        if (userParam.embeddedTextFile.indexOf(".md") > -1) {
+            usemarkdown = true;
+        }
         var embeddedText = getEmbeddedTextFile(banDoc, userParam);
         textselected = embeddedText;
     }
 
     // Print
-    if (userParam.useMarkdown || userParam.embeddedTextFile.indexOf(".md") > -1) {
+    if (usemarkdown) {
+        //available with advanced plan
         var format = "md"; //md,html,text
         text = convertFieldsMarkdown(banDoc, textselected, address, trDate, startDate, endDate, totalOfDonations, account);
         sectionText.addStructuredText(text, format, ""); // "" = stylesheet
@@ -2035,34 +2041,34 @@ function bananaRequiredVersion(requiredVersion) {
     }
 
     var msg = "";
-    if (Banana.compareVersion && Banana.compareVersion(Banana.application.version, requiredVersion) < 0 || Banana.application.license.licenseType !== "advanced") {
+    if (Banana.compareVersion && Banana.compareVersion(Banana.application.version, requiredVersion) < 0) {
         switch(language) {
             case "en":
-                msg = "The extension requires Banana Accounting Plus (version "+ requiredVersion + " or later) and the Advanced plan";
+                msg = "The extension requires Banana Accounting Plus (version "+ requiredVersion + " or later)";
                 break;
 
             case "it":
-                msg = "L'estensione richiede Banana Contabilità Plus (versione "+ requiredVersion + " o successiva) e il piano Advanced";
+                msg = "L'estensione richiede Banana Contabilità Plus (versione "+ requiredVersion + " o successiva)";
                 break;
 
             case "fr":
-                msg = "L'extension nécessite de Banana Comptabilité Plus (version "+ requiredVersion + " ou plus récente) et le plan Advanced.";
+                msg = "L'extension nécessite de Banana Comptabilité Plus (version "+ requiredVersion + " ou plus récente)";
                 break;
 
             case "de":
-                msg = "Die Erweiterung erfordert Banana Buchhaltung Plus (Version "+ requiredVersion + " oder neuer) und den Advanced-Plan";
+                msg = "Die Erweiterung erfordert Banana Buchhaltung Plus (Version "+ requiredVersion + " oder neuer)";
                 break;
 
             case "nl":
-                msg = "De extensie vereist Banana Boekhouding Plus (versie "+ requiredVersion + " of meer recent) en het Advanced plan.";
+                msg = "De extensie vereist Banana Boekhouding Plus (versie "+ requiredVersion + " of meer recent)";
                 break;
 
             case "pt":
-                msg = "A extensão requer Banana Contabilidade Plus (versão "+ requiredVersion + " ou posterior) e o plano Advanced";
+                msg = "A extensão requer Banana Contabilidade Plus (versão "+ requiredVersion + " ou posterior)";
                 break;
 
             default:
-                msg = "The extension requires Banana Accounting Plus (version "+ requiredVersion + " or later) and the Advanced plan";
+                msg = "The extension requires Banana Accounting Plus (version "+ requiredVersion + " or later)";
                 break;
         }
         Banana.application.showMessages();
