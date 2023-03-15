@@ -61,6 +61,21 @@ body {
    margin-right: 1.0cm;
 }
 
+.transactions_details {
+   margin-top: 0.5cm;
+   margin-left: 1.65cm;
+}
+
+.transactions_rows {
+   border-bottom:thin solid black;
+}
+
+.transactions_total {
+   font-weight: bold;
+   border-top:thin solid black;
+   border-bottom:thin solid black;
+}
+
 .signature {
    margin-top: 1.5cm;
    margin-left: 12.3cm;
