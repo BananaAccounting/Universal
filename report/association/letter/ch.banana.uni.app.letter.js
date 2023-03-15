@@ -1136,7 +1136,6 @@ function loadTexts(banDoc,lang) {
         texts.printHeaderLogo = "Logo";
         texts.headerLogoName = "Logo-Name";
         texts.useMarkdown = "Markdown verwenden";
-
         texts.useExtractTable = "Tabelle Extraktion verwenden";
         texts.warningMessageExtractTable = "Verwenden Sie den Befehl Daten > Zeilen extrahieren und sortieren";
         texts.embeddedTextFile = "Text Tabelle Dokumente (.txt / .md)";
@@ -1169,7 +1168,6 @@ function loadTexts(banDoc,lang) {
         texts.printHeaderLogo = "Logo";
         texts.headerLogoName = "Logo nom";
         texts.useMarkdown = "Utiliser Markdown";
-    
         texts.useExtractTable = "Utiliser le tableau Extraire";
         texts.warningMessageExtractTable = "Utilisez la commande Données > Extraire et trier lignes";
         texts.embeddedTextFile = "Texte tableau Documents (.txt / .md)";
@@ -1202,7 +1200,6 @@ function loadTexts(banDoc,lang) {
         texts.printHeaderLogo = "Logo";
         texts.headerLogoName = "Nome logo";
         texts.useMarkdown = "Usa Markdown";
-
         texts.useExtractTable = "Usa tabella Estrai";
         texts.warningMessageExtractTable = "Usa il comando Dati > Estrai righe";
         texts.embeddedTextFile = "Testo tabella Documenti (.txt / .md)";
@@ -1235,7 +1232,6 @@ function loadTexts(banDoc,lang) {
         texts.printHeaderLogo = "Logo";
         texts.headerLogoName = "Logo naam";
         texts.useMarkdown = "Gebruik Markdown";
-
         texts.useExtractTable = "Gebruik tabel Extract";
         texts.warningMessageExtractTable = "Gebruik het commando Gegevens > Rijen ophalen en sorteren";
         texts.embeddedTextFile = "Teksttabel Documenten (.txt / .md)";
@@ -1245,7 +1241,7 @@ function loadTexts(banDoc,lang) {
         texts.textEmbedded = "Teksttabel Documenten (.txt / .md)";
         texts.accountsToPrint = "Selecteer adressen om af te drukken";
         texts.printText = "Tekst afdrukken";
-        texts.begin = "Begin";
+        texts.begin = "Start";
     }
     else { //lang == en
         texts.reportTitle = "Letter";
@@ -1268,7 +1264,6 @@ function loadTexts(banDoc,lang) {
         texts.printHeaderLogo = "Logo";
         texts.headerLogoName = "Logo name";
         texts.useMarkdown = "Use Markdown";
-
         texts.useExtractTable = "Use table Extract";
         texts.warningMessageExtractTable = "Use the command Data > Extract and sort rows";
         texts.embeddedTextFile = "Text table Documents (.txt / .md)";
@@ -1278,7 +1273,7 @@ function loadTexts(banDoc,lang) {
         texts.textEmbedded = "Text table Documents (.txt / .md)";
         texts.accountsToPrint = "Select addresses to print";
         texts.printText = "Print text";
-        texts.begin = "Begin";
+        texts.begin = "Start";
     }
 
     return texts;
