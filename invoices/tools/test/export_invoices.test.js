@@ -63,7 +63,7 @@ TestExportInvoices.prototype.cleanup = function() {
 //Export Invoices without VAT
 TestExportInvoices.prototype.testInvoicesWithoutVat = function(){
 	//get the *ac2 file
-	let fileAC2 = "file:script/test/testcases/invoices_testfiles/invoices_without_vat_test.ac2";
+	let fileAC2 = "file:script/../test/testcases/invoices_testfiles/invoices_without_vat_test.ac2";
 	let banDoc = Banana.application.openDocument(fileAC2);
 	Test.assert(banDoc, `file not found: "${fileAC2}"`);
 	
@@ -85,7 +85,7 @@ TestExportInvoices.prototype.testInvoicesWithoutVat = function(){
 //Export Invoices VAT included
 TestExportInvoices.prototype.testInvoicesVatIncluded = function(){
 	//get the *ac2 file
-	let fileAC2 = "file:script/test/testcases/invoices_testfiles/invoices_vat_included_test.ac2";
+	let fileAC2 = "file:script/../test/testcases/invoices_testfiles/invoices_vat_included_test.ac2";
 	let banDoc = Banana.application.openDocument(fileAC2);
 	Test.assert(banDoc, `file not found: "${fileAC2}"`);
 	
@@ -107,7 +107,7 @@ TestExportInvoices.prototype.testInvoicesVatIncluded = function(){
 // Export Invoices VAT excluded
 TestExportInvoices.prototype.testInvoicesVatExcluded = function(){
 	//get the *ac2 file
-	let fileAC2 = "file:script/test/testcases/invoices_testfiles/invoices_vat_excluded_test.ac2";
+	let fileAC2 = "file:script/../test/testcases/invoices_testfiles/invoices_vat_excluded_test.ac2";
 	let banDoc = Banana.application.openDocument(fileAC2);
 	Test.assert(banDoc, `file not found: "${fileAC2}"`);
 	
@@ -129,7 +129,7 @@ TestExportInvoices.prototype.testInvoicesVatExcluded = function(){
 //Export Invoices without VAT, amounts rounded at 0.05
 TestExportInvoices.prototype.testInvoicesVatExcludedAmountsRounded = function(){
 	//get the *ac2 file
-	let fileAC2 = "file:script/test/testcases/invoices_testfiles/invoices_vat_excluded_amounts_rounded_test.ac2";
+	let fileAC2 = "file:script/../test/testcases/invoices_testfiles/invoices_vat_excluded_amounts_rounded_test.ac2";
 	let banDoc = Banana.application.openDocument(fileAC2);
 	Test.assert(banDoc, `file not found: "${fileAC2}"`);
 	
@@ -151,7 +151,7 @@ TestExportInvoices.prototype.testInvoicesVatExcludedAmountsRounded = function(){
 //Export Invoices with particular amounts (0.0001, 333333.33,...)
 TestExportInvoices.prototype.testInvoicesWithParticularAmounts = function(){
 	//get the *ac2 file
-	let fileAC2 = "file:script/test/testcases/invoices_testfiles/invoices_with_particular_amounts_test.ac2";
+	let fileAC2 = "file:script/../test/testcases/invoices_testfiles/invoices_with_particular_amounts_test.ac2";
 	let banDoc = Banana.application.openDocument(fileAC2);
 	Test.assert(banDoc, `file not found: "${fileAC2}"`);
 	
@@ -173,7 +173,7 @@ TestExportInvoices.prototype.testInvoicesWithParticularAmounts = function(){
 //Export Invoices with 1'000 with Items
 TestExportInvoices.prototype.testInvoiceWithThousandItems = function(){
 	//get the *ac2 file
-	let fileAC2 = "file:script/test/testcases/invoices_testfiles/invoices_with_thousand_items.ac2";
+	let fileAC2 = "file:script/../test/testcases/invoices_testfiles/invoices_with_thousand_items.ac2";
 	let banDoc = Banana.application.openDocument(fileAC2);
 	Test.assert(banDoc, `file not found: "${fileAC2}"`);
 	
@@ -195,7 +195,7 @@ TestExportInvoices.prototype.testInvoiceWithThousandItems = function(){
 //Export Invoices with missing data
 TestExportInvoices.prototype.testInvoiceWithMissingData = function(){
 	//get the *ac2 file
-	let fileAC2 = "file:script/test/testcases/invoices_testfiles/invoices_with_missing_data_test.ac2";
+	let fileAC2 = "file:script/../test/testcases/invoices_testfiles/invoices_with_missing_data_test.ac2";
 	let banDoc = Banana.application.openDocument(fileAC2);
 	Test.assert(banDoc, `file not found: "${fileAC2}"`);
 	
@@ -217,7 +217,7 @@ TestExportInvoices.prototype.testInvoiceWithMissingData = function(){
 //Export Invoices with missing mandatory data
 TestExportInvoices.prototype.testInvoiceWithMissingMandatoryData = function(){
 	//get the *ac2 file
-	let fileAC2 = "file:script/test/testcases/invoices_testfiles/invoices_with_missing_mandatory_data_test.ac2";
+	let fileAC2 = "file:script/../test/testcases/invoices_testfiles/invoices_with_missing_mandatory_data_test.ac2";
 	let banDoc = Banana.application.openDocument(fileAC2);
 	Test.assert(banDoc, `file not found: "${fileAC2}"`);
 	
@@ -239,7 +239,7 @@ TestExportInvoices.prototype.testInvoiceWithMissingMandatoryData = function(){
 //Export Invoices with 1'000 with Items
 TestExportInvoices.prototype.testInvoiceErrors = function() {
     //get the *ac2 file
-    let fileAC2 = "file:script/testcases/invoices_testfiles/invoices_export_errors_test.ac2";
+    let fileAC2 = "file:script/../testcases/invoices_testfiles/invoices_export_errors_test.ac2";
 	let banDoc = Banana.application.openDocument(fileAC2);
     Test.assert(banDoc, `file not found: "${fileAC2}"`);
 
