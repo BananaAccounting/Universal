@@ -18,24 +18,47 @@
 \newenvironment{testcase}[1]{\section*{Test: #1}}{\newpage}
 \newenvironment{test}[1]{\section*{Test case: #1}}{}
 %Begin test data
-%%SCRIPT{/Users/lorenzo/Programmazione/Repo/joel/Universal/invoices/tools/test/export_contacts.test.js}
+%%SCRIPT{C:/Users/joemb/Banana/Universal/invoices/tools/test/export_contacts.test.js}
 %
 \begin{testcase}{TestExportContacts}
 \begin{test}{testContactsWithCompleteData}
+\begin{tablevalue}{Data}{ l  l  l  l  l  l  l  l  l  l  l  l  l  l  l }
+Number & OrganisationName & OrganisationUnit & NamePrefix & FirstName & LastName & Street & AddressExtra & POBox & PostalCode & Locality & CountryCode & LanguageCode & EmailWork & Discount\\
+1 & The Tea corner &  &  &  &  & Rue des salines 44 &  &  & 1007 & Lausanne & CH & en &  &  \\
+2 &  &  &  & Peter & Ridge & Hauptstrasse 1 &  &  & 9400 & Rorschach & CH & en &  &  \\
+3 & Domos GmbH &  &  & Luis & Smith & Rifistrasse 76 &  &  & 8001 & Zürich & CH & en &  &  \\
+\\
+\end{tablevalue}
 \keyvalue{Result}{Passed}
 \end{test}
 \begin{test}{testContactsWithMissingData}
+\begin{tablevalue}{Data}{ l  l  l  l  l  l  l  l  l  l  l  l  l  l  l }
+Number & OrganisationName & OrganisationUnit & NamePrefix & FirstName & LastName & Street & AddressExtra & POBox & PostalCode & Locality & CountryCode & LanguageCode & EmailWork & Discount\\
+1 & The Tea corner &  &  &  &  & Rue des salines 44 &  &  & 1007 & Lausanne & CH & en &  &  \\
+2 &  &  &  & Peter & Ridge & Hauptstrasse 1 &  &  & 9400 & Rorschach & CH & en &  &  \\
+3 & Domos GmbH &  &  & Luis & Smith & Rifistrasse 76 &  &  & 8001 & Zürich & CH & en &  &  \\
+\\
+\end{tablevalue}
 \keyvalue{Result}{Passed}
 \end{test}
 \begin{test}{testContactsWithMissingMandatoryData}
-\textvalue{RowId is a required field}\\
-\textvalue{Street is a required field}\\
-\textvalue{Organisation name is a required field}\\
-\textvalue{LastName is a required field}\\
-\textvalue{PostalCode is a required field}\\
-\textvalue{Locality is a required field}\\
-\textvalue{CountryCode is a required field}\\
-\textvalue{Complete the missing details first, as listed in the message pane below.}\\
+\begin{tablevalue}{Data}{ l }
+\\
+\end{tablevalue}
+\keyvalue{ERROR\_MSG\_ROW\_0}{RowId is a required field}
+\keyvalue{ERROR\_HELPID\_ROW\_0}{export\_contacts.test::missing\_field}
+\keyvalue{ERROR\_MSG\_ROW\_0}{Street is a required field}
+\keyvalue{ERROR\_HELPID\_ROW\_0}{export\_contacts.test::missing\_field}
+\keyvalue{ERROR\_MSG\_ROW\_1}{OrganisationName is a required field}
+\keyvalue{ERROR\_HELPID\_ROW\_1}{export\_contacts.test::missing\_field}
+\keyvalue{ERROR\_MSG\_ROW\_1}{LastName is a required field}
+\keyvalue{ERROR\_HELPID\_ROW\_1}{export\_contacts.test::missing\_field}
+\keyvalue{ERROR\_MSG\_ROW\_1}{PostalCode is a required field}
+\keyvalue{ERROR\_HELPID\_ROW\_1}{export\_contacts.test::missing\_field}
+\keyvalue{ERROR\_MSG\_ROW\_2}{Locality is a required field}
+\keyvalue{ERROR\_HELPID\_ROW\_2}{export\_contacts.test::missing\_field}
+\keyvalue{ERROR\_MSG\_ROW\_2}{CountryCode is a required field}
+\keyvalue{ERROR\_HELPID\_ROW\_2}{export\_contacts.test::missing\_field}
 \keyvalue{Result}{Passed}
 \end{test}
 \end{testcase}
