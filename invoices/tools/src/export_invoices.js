@@ -55,7 +55,7 @@ function convertToCsv(jsonArray) {
 }
 
 function generateCsvInvoices(invoicesTable) {
-    let header = "InvoiceNumber,InvoiceDate,InvoiceDueDate,InvoiceDescription,InvoiceDiscount,InvoiceVatTotal,InvoiceTotalToPay,InvoiceCurrency,InvoiceRounded,InvoiceAmountType,CustomerNumber,CustomerName,ItemNumber,ItemDescription,ItemQuantity,ItemUnitPrice,ItemUnit,ItemVatRate,ItemVatCode,ItemDiscount,ItemTotal,ItemVatTotal\n";
+    let header = "InvoiceNumber,InvoiceDate,InvoiceDueDate,InvoiceDescription,InvoiceDiscount,InvoiceVatTotal,InvoiceTotalToPay,InvoiceCurrency,InvoiceRoundingTotal,InvoiceAmountType,CustomerNumber,CustomerName,ItemNumber,ItemDescription,ItemQuantity,ItemUnitPrice,ItemUnit,ItemVatRate,ItemVatCode,ItemDiscount,ItemTotal,ItemVatTotal\n";
     let csv = "";
     let rowMatched = true;
 
