@@ -1335,10 +1335,16 @@ InvoiceNumber & InvoiceDate & InvoiceDueDate & InvoiceDescription & InvoiceDisco
 \keyvalue{Result}{Passed}
 \end{test}
 \begin{test}{testInvoiceErrors}
-\keyvalue{Result}{Failed}
-\fatalerror{Error: file not found: "file:script/../testcases/invoices\_testfiles/invoices\_export\_errors\_test.ac2"}
-\info{Location}{qrc - /javascript/test/ch.banana.test.script.testsuite.js:166}
+\begin{tablevalue}{Data}{ l }
+\\
+\end{tablevalue}
+\keyvalue{ERROR\_MSG\_ROW\_1}{InvoiceDate is a required field}
+\keyvalue{ERROR\_HELPID\_ROW\_1}{export\_invoices.test::missing\_field}
+\keyvalue{ERROR\_MSG\_ROW\_3}{CustomerId is a required field}
+\keyvalue{ERROR\_HELPID\_ROW\_3}{export\_invoices.test::missing\_field}
+\keyvalue{ERROR\_MSG\_ROW\_4}{ItemDescription is a required field}
+\keyvalue{ERROR\_HELPID\_ROW\_4}{export\_invoices.test::missing\_field}
+\keyvalue{Result}{Passed}
 \end{test}
-\fatalerror{Error: One or more tests failed}
 \end{testcase}
 \end{document}

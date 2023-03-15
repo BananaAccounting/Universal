@@ -135,7 +135,7 @@ Error: %1</source>
         <translation>%1 ist ein erforderliches Feld</translation>
     </message>
     <message>
-        <location filename="../export_invoices.js" line="121"/>
+        <location filename="../export_invoices.js" line="128"/>
         <source>Invoice not valid.
 Error: %1</source>
         <translation>Rechnung ungultig.
