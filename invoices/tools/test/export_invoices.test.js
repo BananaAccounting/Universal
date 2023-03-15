@@ -173,7 +173,7 @@ TestExportInvoices.prototype.testInvoicesWithParticularAmounts = function(){
 //Export Invoices with 1'000 with Items
 TestExportInvoices.prototype.testInvoiceWithThousandItems = function(){
 	//get the *ac2 file
-	let fileAC2 = "file:script/../test/testcases/invoices_testfiles/invoices_with_thousand_items.ac2";
+	let fileAC2 = "file:script/../test/testcases/invoices_testfiles/invoices_with_thousand_items_test.ac2";
 	let banDoc = Banana.application.openDocument(fileAC2);
 	Test.assert(banDoc, `file not found: "${fileAC2}"`);
 	
