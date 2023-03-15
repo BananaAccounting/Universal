@@ -1847,7 +1847,6 @@ function loadTexts(banDoc,lang) {
 		texts.headerLogoName = "Logo-Name";
         texts.total = 'Total';
         texts.useMarkdown = "Markdown verwenden";
-
         texts.details = " Spendenbuchungen einbeziehen";
         texts.useExtractTable = "Tabelle Extraktion verwenden";
         texts.warningMessageExtractTable = "Verwenden Sie den Befehl Daten > Zeilen extrahieren und sortieren";
@@ -1886,14 +1885,13 @@ function loadTexts(banDoc,lang) {
 		texts.headerLogoName = "Logo nom";
         texts.total = 'Total';
         texts.useMarkdown = "Utiliser Markdown";
-
         texts.details = "Inclure les écritures de dons";        
         texts.useExtractTable = "Utiliser le tableau Extraire";
         texts.warningMessageExtractTable = "Utilisez la commande Données > Extraire et trier lignes";
         texts.embeddedTextFile = "Texte tableau Documents (.txt / .md)";
         texts.css = "CSS";
         texts.textSignature = "Texte de signature";
-        texts.description = "Inclure la colonne de description";
+        texts.description = "Inclure la colonne Libellé";
         texts.textToUse = "Sélectionner le texte";
         texts.textEmbedded = "Texte tableau Documents (.txt / .md)";
         texts.accountsToPrint = "Sélectionner les adresses à imprimer";
@@ -1925,7 +1923,6 @@ function loadTexts(banDoc,lang) {
 		texts.headerLogoName = "Nome logo";
         texts.total = 'Totale';
         texts.useMarkdown = "Usa Markdown";
-
         texts.details = "Includi registrazioni donazioni";
         texts.useExtractTable = "Usa tabella Estrai";
         texts.warningMessageExtractTable = "Usa il comando Dati > Estrai righe";
@@ -1964,7 +1961,6 @@ function loadTexts(banDoc,lang) {
 		texts.headerLogoName = "Logo naam";
         texts.total = 'Totaal';
         texts.useMarkdown = "Gebruik Markdown";
-
         texts.details = "Neem donatietransacties op";
         texts.useExtractTable = "Gebruik tabel Extract";
         texts.warningMessageExtractTable = "Gebruik het commando Gegevens > Rijen ophalen en sorteren";
@@ -1976,7 +1972,7 @@ function loadTexts(banDoc,lang) {
         texts.textEmbedded = "Teksttabel Documenten (.txt / .md)";
         texts.accountsToPrint = "Selecteer adressen om af te drukken";
         texts.printText = "Tekst afdrukken";
-        texts.begin = "Begin";
+        texts.begin = "Start";
     }
     else { //lang == en
         texts.reportTitle = "Statement of donation";
@@ -2003,7 +1999,6 @@ function loadTexts(banDoc,lang) {
 		texts.headerLogoName = "Logo name";
         texts.total = 'Total';
         texts.useMarkdown = "Use Markdown";
-
         texts.details = "Include donations transactions";
         texts.useExtractTable = "Use table Extract";
         texts.warningMessageExtractTable = "Use the command Data > Extract and sort rows";
@@ -2015,7 +2010,7 @@ function loadTexts(banDoc,lang) {
         texts.textEmbedded = "Text table Documents (.txt / .md)";
         texts.accountsToPrint = "Select addresses to print";
         texts.printText = "Print text";
-        texts.begin = "Begin";
+        texts.begin = "Start";
     }
 
     return texts;
