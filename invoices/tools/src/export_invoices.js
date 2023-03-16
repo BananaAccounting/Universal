@@ -115,8 +115,7 @@ function generateCsvInvoices(invoicesTable) {
                     }
                     let itemDescription = invoiceObj.items[j].description;
                     let checkDescription = /[,']/.test(itemDescription); // check for special characters in itemDescription
-                    if (checkDescription) {
-                        itemDescription = itemDescription.replace(/'/g, ''); // remove all occurences of ' 
+                    if (checkDescription) { 
                         itemDescription = `"${itemDescription}"`;
                     }
                         
