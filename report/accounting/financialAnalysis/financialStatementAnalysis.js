@@ -549,6 +549,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         let company = "";
         let address1 = "";
         let city = "";
+        let headerSx  = "";
         var headerParagraph = report.getHeader().addSection();
         if (this.dialogparam.printlogo) {
             headerParagraph = report.addSection("");
@@ -568,13 +569,18 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             if (this.docInfo) {
                 company = this.docInfo.company;
                 address1 = this.docInfo.address1;
-                city = this.docInfo.City;
-            }
+                city = this.docInfo.City; 
+                headerSx = this.docInfo.headerLeft;
 
-            //headerParagraph.addParagraph(texts.financialstatementanalysis, "header_rows");
-            headerParagraph.addParagraph(company, "header_row_company_name");
-            headerParagraph.addParagraph(address1, "header_row_address");
-            headerParagraph.addParagraph(city, "header_row_address");
+                if(company !== ""){
+                    headerParagraph.addParagraph(company, "header_row_company_name");
+                    headerParagraph.addParagraph(address1, "header_row_address");
+                    headerParagraph.addParagraph(city, "header_row_address");
+                }else{
+                    headerParagraph.addParagraph(headerSx, "header_row_company_name");
+                }
+
+            }
         }
 
         //add the reference date choose as current date
@@ -6382,6 +6388,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
      */
     getDocumentInfo() {
         var documentInfo = {};
+        documentInfo.headerLeft = "";
         documentInfo.isDoubleEntry = false;
         documentInfo.isIncomeExpenses = false;
         documentInfo.isCashBook = false;
@@ -6423,6 +6430,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                 documentInfo.multiCurrency = true;
                 documentInfo.withVat = true;
             }
+            if (this.banDocument.info("Base", "HeaderLeft"))
+                documentInfo.headerLeft =
+                this.banDocument.info("Base", "HeaderLeft");
 
             if (this.banDocument.info("AccountingDataBase", "ClosureDate"))
                 documentInfo.EndPeriod =
@@ -6942,7 +6952,6 @@ function settingsDialog() {
 
     //set the parameters
     var paramToString = JSON.stringify(financialStatementAnalysis.dialogparam);
-    Banana.Ui.showText(paramToString);
     Banana.document.setScriptSettings("financialStatementAnalysis", paramToString);
     return true;
 }
