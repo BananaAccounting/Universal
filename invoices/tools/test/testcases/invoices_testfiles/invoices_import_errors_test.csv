@@ -1,0 +1,5 @@
+InvoiceNumber,InvoiceDate,InvoiceDueDate,InvoiceDescription,InvoiceDiscount,InvoiceVatTotal,InvoiceTotalToPay,InvoiceCurrency,InvoiceAmountType,CustomerNumber,CustomerName,ItemNumber,ItemDescription,ItemQuantity,ItemUnitPrice,ItemUnit,ItemVatRate,ItemVatCode,ItemDiscount,ItemTotal,ItemVatTotal
+1,2022-11-14,2022-12-13,Facture GK,3750.00,,121250.00,CHF,vat_none,1,Eddy Mbuyamba,1000,Thé,50.00,1000.00,pc,,,,50000.00,
+1,2022-11-14,2022-12-13,Facture GK,3750.00,,121250.00,CHF,vat_none,1,Eddy Mbuyamba,1200,Tisanne,30.00,2500.00,pc,,,,75000.00,
+2,2022-11-14,2022-12-13,Facture Lezo,,,125000.00,CHF,vat_none,2,Joel Mbele,1000,Thé,50.00,1000.00,pc,,,,50000.00,
+2,2022-11-14,2022-12-13,Facture Lezo,,,125000.00,CHF,vat_none,2,Joel Mbele,1200,Tisanne,30.00,2500.00,pc,,,,75000.00,
