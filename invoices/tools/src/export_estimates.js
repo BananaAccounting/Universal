@@ -4,8 +4,8 @@
 // @publisher = Banana.ch SA
 // @description = Export estimates
 // @description.de = Rechnungen exportieren
-// @description.fr = Exporter devis
-// @description.it = Esporta preventivi
+// @description.fr = Exporter offres
+// @description.it = Esporta Offerte
 // @doctype = 400.400
 // @docproperties =
 // @task = export.file
