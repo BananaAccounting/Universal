@@ -4,6 +4,7 @@
         <file>export_contacts.js</file>
         <file>export_invoices.js</file>
         <file>export_items.js</file>
+        <file>export_estimates.js</file>
         <file>import_invoices.js</file>
         <file>import_contacts.js</file>
         <file>import_items.js</file>
