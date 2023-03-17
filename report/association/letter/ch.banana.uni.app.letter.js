@@ -458,7 +458,7 @@ function exec(inData, options) {
     }
 
     //Checks Banana version and license
-    var isCurrentBananaVersionSupported = bananaRequiredVersion("10.0.12.22054");
+    var isCurrentBananaVersionSupported = bananaRequiredVersion("10.1.0.23068");
     if (!isCurrentBananaVersionSupported) {
         return "@Cancel";
     }
@@ -793,6 +793,10 @@ function convertFields(banDoc, text, address, account) {
         var currency = banDoc.info("AccountingDataBase", "BasicCurrency");
         text = text.replace(/<Currency>/g,currency);
     }
+    if (text.indexOf("<Amount>") > -1) {
+        var amount = Banana.Converter.toLocaleNumberFormat(totalOfDonations);
+        text = text.replace(/<Amount>/g,amount);
+    }
     if (text.indexOf("<NamePrefix>") > -1) {
         text = text.replace(/<NamePrefix>/g,address.nameprefix);
     }
@@ -835,6 +839,10 @@ function convertFieldsMarkdown(banDoc, text, address, account) {
     if (text.indexOf("{{Currency}}") > -1) {
         var currency = banDoc.info("AccountingDataBase", "BasicCurrency");
         text = text.replace(/{{Currency}}/g,currency);
+    }
+    if (text.indexOf("{{Amount}}") > -1) {
+        var amount = Banana.Converter.toLocaleNumberFormat(totalOfDonations);
+        text = text.replace(/{{Amount}}/g,amount);
     }
     if (text.indexOf("{{NamePrefix}}") > -1) {
         text = text.replace(/{{NamePrefix}}/g,address.nameprefix);

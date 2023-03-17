@@ -519,7 +519,7 @@ function exec(inData, options) {
     }
 
     //Checks Banana version and license
-    var isCurrentBananaVersionSupported = bananaRequiredVersion("10.0.12.22054");
+    var isCurrentBananaVersionSupported = bananaRequiredVersion("10.1.0.23068");
     if (!isCurrentBananaVersionSupported) {
         return "@Cancel";
     }
