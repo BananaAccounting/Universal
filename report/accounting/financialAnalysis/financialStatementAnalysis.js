@@ -549,7 +549,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         let company = "";
         let address1 = "";
         let city = "";
-        let headerSx  = "";
+        let headerSx = "";
         var headerParagraph = report.getHeader().addSection();
         if (this.dialogparam.printlogo) {
             headerParagraph = report.addSection("");
@@ -569,14 +569,14 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             if (this.docInfo) {
                 company = this.docInfo.company;
                 address1 = this.docInfo.address1;
-                city = this.docInfo.City; 
+                city = this.docInfo.City;
                 headerSx = this.docInfo.headerLeft;
 
-                if(company !== ""){
+                if (company !== "") {
                     headerParagraph.addParagraph(company, "header_row_company_name");
                     headerParagraph.addParagraph(address1, "header_row_address");
                     headerParagraph.addParagraph(city, "header_row_address");
-                }else{
+                } else {
                     headerParagraph.addParagraph(headerSx, "header_row_company_name");
                 }
 
@@ -3642,7 +3642,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         cashflow.finalCashflow.acronym.style = this.getColorStyle("styleTitlesTotalAmount");
         cashflow.finalCashflow.amount = {};
         cashflow.finalCashflow.amount.value = Banana.SDecimal.subtract(current_calculated_data.finalCashflow.amount.value, budget_calculated_data.finalCashflow.amount.value);
-        cashflow.finalCashflow.amount.style = this.getColorStyle("styleTitlesTotalAmount");
+        cashflow.finalCashflow.amount.style = this.getColorStyle("styleTotalAmount");
 
         //verification section
         cashflow.verifData = {};
@@ -5494,14 +5494,14 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.type = 'date';
         currentParam.parentObject = 'Analysis Details';
         currentParam.value = userParam.currentdate ? userParam.currentdate : yearToDate;
-        Banana.console.debug("current param: " + currentParam.value);
+        /*Banana.console.debug("current param: " + currentParam.value);
         Banana.console.debug("user param: " + userParam.currentdate);
-        Banana.console.debug("yeartodate: " + yearToDate);
+        Banana.console.debug("yeartodate: " + yearToDate);*/
         //Default value is red differently so we have to use the local format.
         currentParam.defaultvalue = Banana.Converter.toLocaleDateFormat(yearToDate);
         currentParam.readValue = function() {
             userParam.currentdate = this.value;
-            Banana.console.debug("read value: " + yearToDate); //vedere se forse il formato locale viene impostato in c++, e quindi devo re impostare quello corretto.
+            //Banana.console.debug("read value: " + yearToDate); //vedere se forse il formato locale viene impostato in c++, e quindi devo re impostare quello corretto.
         }
         convertedParam.data.push(currentParam);
 
