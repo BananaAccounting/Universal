@@ -589,8 +589,10 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             budgetToDate = "/" + texts.budget_to_date;
         }
 
+        Banana.console.debug("header date: " + this.dialogparam.currentdate);
+
         headerParagraph.addParagraph(texts.year_to_date + budgetToDate + " ref: " +
-            Banana.Converter.toLocaleDateFormat(Banana.Converter.toInternalDateFormat(this.dialogparam.currentdate, 'yyyymmdd')), "header_row_address");
+            Banana.Converter.toLocaleDateFormat(Banana.Converter.toInternalDateFormat(this.dialogparam.currentdate)), "header_row_address");
         headerParagraph.excludeFromTest();
     }
 
@@ -2459,7 +2461,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         dialogparam.isBudget = false;
         dialogparam.period = {};
         dialogparam.period.StartDate = _banDocument.info("AccountingDataBase", "OpeningDate");
-        dialogparam.period.EndDate = Banana.Converter.toInternalDateFormat(this.dialogparam.currentdate, 'yyyymmdd');
+        dialogparam.period.EndDate = Banana.Converter.toInternalDateFormat(this.dialogparam.currentdate);
         //CYP=CURRENT YEAR PROJECTION
         dialogparam.period.Type = "CYP";
 
@@ -2491,18 +2493,18 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                 if (budgetBalances) {
                     var current_date = "";
                     if (budgetToDate) {
-                        current_date = Banana.Converter.toInternalDateFormat(this.dialogparam.currentdate, 'yyyymmdd');
+                        current_date = Banana.Converter.toInternalDateFormat(this.dialogparam.currentdate);
                     }
                     bal = _banDocument.budgetBalance(value, "", current_date, null);
                     transactions = _banDocument.budgetCard(value, "", current_date, null);
                 } else {
                     var projectionStartDate = "";
-                    var endDate = Banana.Converter.toInternalDateFormat(this.dialogparam.currentdate, 'yyyymmdd');
+                    var endDate = Banana.Converter.toInternalDateFormat(this.dialogparam.currentdate);
                     if (currentProjection) {
-                        projectionStartDate = new Date(Banana.Converter.toInternalDateFormat(this.dialogparam.currentdate, 'yyyymmdd'));
+                        projectionStartDate = new Date(Banana.Converter.toInternalDateFormat(this.dialogparam.currentdate));
                         //la proiezione la faccio partire dal giorno dopo la data corrente
                         projectionStartDate.setDate(projectionStartDate.getDate() + 1);
-                        projectionStartDate = Banana.Converter.toInternalDateFormat(projectionStartDate, 'yyyy-mm-dd');
+                        projectionStartDate = Banana.Converter.toInternalDateFormat(projectionStartDate);
                         endDate = "";
                     }
                     bal = _banDocument.projectionBalance(value, projectionStartDate, "", endDate, null);
@@ -3701,7 +3703,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
     getAccountingSheetValue(_banDocument, periodType, grType, multiplier) {
         var accountingValue = "";
         if (periodType == "CY" || periodType == "PY") {
-            accountingValue = _banDocument.projectionBalance(grType, "", "", Banana.Converter.toInternalDateFormat(this.dialogparam.currentdate, 'yyyymmdd'), null);
+            accountingValue = _banDocument.projectionBalance(grType, "", "", Banana.Converter.toInternalDateFormat(this.dialogparam.currentdate), null);
             accountingValue = accountingValue.balance;
             accountingValue = Banana.SDecimal.multiply(accountingValue, multiplier);
             return accountingValue;
@@ -5485,8 +5487,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         convertedParam.data.push(currentParam);
 
         //Enter the current date
-        //Calendar date is displayed in the local format. returns and accept format "yyyymmdd"
-        let yearToDate = this.getCurrentDate();
+        //Calendar date is displayed in the local format
+        let yearToDate = this.getCurrentDate(); //returns date in Local format.
+        Banana.console.debug("year to date fresco: " + yearToDate);
         currentParam = {};
         currentParam.name = 'currentdate';
         currentParam.group = 'preferences';
@@ -5494,14 +5497,14 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.type = 'date';
         currentParam.parentObject = 'Analysis Details';
         currentParam.value = userParam.currentdate ? userParam.currentdate : yearToDate;
-        /*Banana.console.debug("current param: " + currentParam.value);
+        Banana.console.debug("current param: " + currentParam.value);
         Banana.console.debug("user param: " + userParam.currentdate);
-        Banana.console.debug("yeartodate: " + yearToDate);*/
+        Banana.console.debug("yeartodate: " + yearToDate);
         //Default value is red differently so we have to use the local format.
-        currentParam.defaultvalue = Banana.Converter.toLocaleDateFormat(yearToDate);
+        currentParam.defaultvalue = yearToDate;
+        Banana.console.debug("default value: " + yearToDate);
         currentParam.readValue = function() {
             userParam.currentdate = this.value;
-            //Banana.console.debug("read value: " + yearToDate); //vedere se forse il formato locale viene impostato in c++, e quindi devo re impostare quello corretto.
         }
         convertedParam.data.push(currentParam);
 
@@ -5955,7 +5958,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
     /**
      * This method returns the current date. If the current date is higher than the accounting closing date, the
      * accounting closing date is returned
-     * @returns the date of the day in format: 'yyyymmdd'.
+     * @returns the date of the day local format
      */
     getCurrentDate() {
         let currentDate = "";
@@ -5968,7 +5971,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                 currentDate = this.getCurrentDate_Formatted(today);
             }
         }
-        return currentDate;
+        Banana.console.debug("current date: " + currentDate);
+        return Banana.Converter.toLocaleDateFormat(currentDate);
     }
 
     getCurrentDate_Formatted(formattedDate) {
@@ -6494,6 +6498,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
      */
     setParam(dialogparam) {
         this.dialogparam = dialogparam;
+        Banana.Ui.showText(JSON.stringify(this.dialogparam));
         return this.verifyParam();
     }
 

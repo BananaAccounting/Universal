@@ -17,7 +17,9 @@
   * Applica lo stesso stile a tutti gli elementi di una riga.
   * Toglie lo stile colorato dalle righe degli aggiustamenti con attivi e capitale di terzi dal cashflow
 - Rimuove i grafici, la libreria utilizzata è incompatibile con il Qt6, al suo posto si può usare la libreria QtCharts, attualmente però è stato deciso di aspettare per la transazione.
-- Aggiusta alcuni problemi con il campo data, se l'utente non cliccava all'interno del campo con il mouse, il campo rimaneva vuoto e i dati nel report uscivano sbagliati.
+- Aggiusta alcuni problemi con il campo data, se l'utente non cliccava all'interno del campo con il mouse, il campo rimaneva vuoto e i dati nel report uscivano sbagliati, piu precisamente:
+  * In c++ è stato corretto il fatto che il dialogo possa prendere le date sia in formato "yyyymmdd" che in formato locale, prima non era possibile e quando si cercava di impostare automaticamente la data, in alcuni arrivava il formato locale che non era considerato valido
+  * Nel Javscript attualmente si lavora con il formato locale della data, e la si passa già formattata al dialogo, anche esso la ritorna già formattata, per utilizzarla nel report poi la si converte nel formato interno.
 - Modifica l'analisi Z-Score. più precisamente:
   * Corregge la formula
   * Modifica la tabella esistente
