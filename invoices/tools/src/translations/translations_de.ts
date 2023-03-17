@@ -83,6 +83,29 @@ Error: %1</source>
     </message>
 </context>
 <context>
+    <name>export_estimates</name>
+    <message>
+        <location filename="../export_estimates.js" line="33"/>
+        <source>Fix errors first, as listed in the pane Messages.</source>
+        <translation type="unfinished">Beheben Sie zuerst die Fehlern, wie in der Registerkarte Meldungen aufgeführt.</translation>
+    </message>
+    <message>
+        <location filename="../export_estimates.js" line="70"/>
+        <location filename="../export_estimates.js" line="74"/>
+        <location filename="../export_estimates.js" line="83"/>
+        <location filename="../export_estimates.js" line="89"/>
+        <location filename="../export_estimates.js" line="99"/>
+        <source>%1 is a required field</source>
+        <translation type="unfinished">%1 ist ein erforderliches Feld</translation>
+    </message>
+    <message>
+        <location filename="../export_estimates.js" line="127"/>
+        <source>Estimate not valid.
+Error: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>export_invoices</name>
     <message>
         <source>Invoices</source>
@@ -135,7 +158,7 @@ Error: %1</source>
         <translation>%1 ist ein erforderliches Feld</translation>
     </message>
     <message>
-        <location filename="../export_invoices.js" line="128"/>
+        <location filename="../export_invoices.js" line="127"/>
         <source>Invoice not valid.
 Error: %1</source>
         <translation>Rechnung ungultig.
