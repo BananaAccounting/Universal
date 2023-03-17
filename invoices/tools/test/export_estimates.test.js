@@ -83,7 +83,7 @@ TestExportEstimates.prototype.testEstimatesWithoutVat = function(){
 }
 
 //Export Estimates VAT included
-TestExportInvoices.prototype.testEstimatesVatIncluded = function(){
+TestExportEstimates.prototype.testEstimatesVatIncluded = function(){
 	//get the *ac2 file
 	let fileAC2 = "file:script/../test/testcases/invoices_testfiles/invoices_vat_included_test.ac2";
 	let banDoc = Banana.application.openDocument(fileAC2);
@@ -105,7 +105,7 @@ TestExportInvoices.prototype.testEstimatesVatIncluded = function(){
 }
 
 // Export Estimates VAT excluded
-TestExportInvoices.prototype.testEstimatesVatExcluded = function(){
+TestExportEstimates.prototype.testEstimatesVatExcluded = function(){
 	//get the *ac2 file
 	let fileAC2 = "file:script/../test/testcases/invoices_testfiles/invoices_vat_excluded_test.ac2";
 	let banDoc = Banana.application.openDocument(fileAC2);
@@ -127,7 +127,7 @@ TestExportInvoices.prototype.testEstimatesVatExcluded = function(){
 }
 
 //Export Estimates without VAT, amounts rounded at 0.05
-TestExportInvoices.prototype.testEstimatesVatExcludedAmountsRounded = function(){
+TestExportEstimates.prototype.testEstimatesVatExcludedAmountsRounded = function(){
 	//get the *ac2 file
 	let fileAC2 = "file:script/../test/testcases/invoices_testfiles/invoices_vat_excluded_amounts_rounded_test.ac2";
 	let banDoc = Banana.application.openDocument(fileAC2);
@@ -149,7 +149,7 @@ TestExportInvoices.prototype.testEstimatesVatExcludedAmountsRounded = function()
 }
 
 //Export Estimates with particular amounts (0.0001, 333333.33,...)
-TestExportInvoices.prototype.testEstimatesWithParticularAmounts = function(){
+TestExportEstimates.prototype.testEstimatesWithParticularAmounts = function(){
 	//get the *ac2 file
 	let fileAC2 = "file:script/../test/testcases/invoices_testfiles/invoices_with_particular_amounts_test.ac2";
 	let banDoc = Banana.application.openDocument(fileAC2);
@@ -171,7 +171,7 @@ TestExportInvoices.prototype.testEstimatesWithParticularAmounts = function(){
 }
 
 //Export Estimates with 1'000 with Items
-TestExportInvoices.prototype.testEstimateWithThousandItems = function(){
+TestExportEstimates.prototype.testEstimateWithThousandItems = function(){
 	//get the *ac2 file
 	let fileAC2 = "file:script/../test/testcases/invoices_testfiles/invoices_with_thousand_items_test.ac2";
 	let banDoc = Banana.application.openDocument(fileAC2);
@@ -193,7 +193,7 @@ TestExportInvoices.prototype.testEstimateWithThousandItems = function(){
 }
 
 //Export Estimates with missing data
-TestExportInvoices.prototype.testEstimateWithMissingData = function(){
+TestExportEstimates.prototype.testEstimateWithMissingData = function(){
 	//get the *ac2 file
 	let fileAC2 = "file:script/../test/testcases/invoices_testfiles/invoices_with_missing_data_test.ac2";
 	let banDoc = Banana.application.openDocument(fileAC2);
@@ -215,7 +215,7 @@ TestExportInvoices.prototype.testEstimateWithMissingData = function(){
 }
 
 //Export Estimates with missing mandatory data
-TestExportInvoices.prototype.testEstimateWithMissingMandatoryData = function(){
+TestExportEstimates.prototype.testEstimateWithMissingMandatoryData = function(){
 	//get the *ac2 file
 	let fileAC2 = "file:script/../test/testcases/invoices_testfiles/invoices_with_missing_mandatory_data_test.ac2";
 	let banDoc = Banana.application.openDocument(fileAC2);
@@ -237,7 +237,7 @@ TestExportInvoices.prototype.testEstimateWithMissingMandatoryData = function(){
 }
 
 //Export Estimates with errors
-TestExportInvoices.prototype.testEstimateErrors = function() {
+TestExportEstimates.prototype.testEstimateErrors = function() {
     //get the *ac2 file
     let fileAC2 = "file:script/../test/testcases/invoices_testfiles/invoices_export_errors_test.ac2";
 	let banDoc = Banana.application.openDocument(fileAC2);
