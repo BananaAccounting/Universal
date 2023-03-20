@@ -1010,13 +1010,11 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                 if (this.data[0].cashflowData.operatingCashflow[key].acronym.text == provisionsAcronym) {
                     //add asset adjustment section title
                     var tableRow = tableCashflow.addRow("styleTablRows");
-                    tableRow.addCell("", "styleTablRows");
-                    tableRow.addCell(texts.adjusted_assets_cashflow, "styleUnderGroupTitles", spanBalanceTitle - 1);
+                    tableRow.addCell(texts.adjusted_assets_cashflow, "styleUnderGroupTitles", spanBalanceTitle);
                 } else if (this.data[0].cashflowData.operatingCashflow[key].acronym.text == prepaidExpensesAcronym) {
                     //add liabilities adjustment section title
                     var tableRow = tableCashflow.addRow("styleTablRows");
-                    tableRow.addCell("", "styleTablRows");
-                    tableRow.addCell(texts.adjusted_liabilities_cashflow, "styleUnderGroupTitles", spanBalanceTitle - 1);
+                    tableRow.addCell(texts.adjusted_liabilities_cashflow, "styleUnderGroupTitles", spanBalanceTitle);
                 }
             }
         }
