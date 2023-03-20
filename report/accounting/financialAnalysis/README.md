@@ -4,33 +4,34 @@
 
 ### 15.03.2023
 
-#### Modifiche
+#### Changes
 
-- Modifica il campo per la scelta dei colori impostando il campo di tipo "colore", adesso l'utente può visualizzare una tabella con i colori da scegliere.
-- il campo "Include control sums" diventa "Include always contro sums", questo perchè le somme di controllo vengono mostrate anche quando non ci sono errori
-- L'acronimo "totp" (totale passivi) diventa "totle" (total liabilities and equity).
-- Risolve bug con posizionamento del logo e dell'intestazione.
-- Risolve bug nel bilancio con le immobilizzazioni non tangibili che non venivano calcolate correttamente.
-- Risolve bug con i tag #revalutation e #devaluation, il controllo sui tag non veniva effetuato correttamente, ed in alcuni casi venivano prese in considerazione alcune registrazioni non necessarie.
-- Modifica stili nel report, più precisamente:
-  * Sposta analisi del cashflow appena dopo il Bilancio ed il CE
-  * Applica lo stesso stile a tutti gli elementi di una riga.
-  * Toglie lo stile colorato dalle righe degli aggiustamenti con attivi e capitale di terzi dal cashflow
-- Rimuove i grafici, la libreria utilizzata è incompatibile con il Qt6, al suo posto si può usare la libreria QtCharts, attualmente però è stato deciso di aspettare per la transazione.
-- Aggiusta alcuni problemi con il campo data, se l'utente non cliccava all'interno del campo con il mouse, il campo rimaneva vuoto e i dati nel report uscivano sbagliati, piu precisamente:
-  * In c++ è stato corretto il fatto che il dialogo possa prendere le date sia in formato "yyyymmdd" che in formato locale, prima non era possibile e quando si cercava di impostare automaticamente la data, in alcuni arrivava il formato locale che non era considerato valido
-  * Nel Javscript attualmente si lavora con il formato locale della data, e la si passa già formattata al dialogo, anche esso la ritorna già formattata, per utilizzarla nel report poi la si converte nel formato interno.
-- Modifica l'analisi Z-Score. più precisamente:
-  * Corregge la formula
-  * Modifica la tabella esistente
-  * Aggiunge una nuova tabella con l'analisi per le aziende quotate in borsa.
-- Refactoring del codice
-- Modificato i testcases in maniera di avere un file con almeno un anno (o periodo) con tutti gli importi.
+- Change the field for choosing colours to 'colour'type, now the user can display a table with the colours to be chosen.
+- the field "Include control sums" becomes "Include always counter sums", this is because control sums are shown even when there are no errors.
+- The acronym "totp" (total liabilities) becomes "totle" (total liabilities and equity).
+- Fixes bug with logo and header positioning.
+- Fixes bug in the balance sheet with non-tangible fixed assets that were not calculated correctly.
+- Resolves bug with #revaluation and #devaluation tags, the check on the tags was not being carried out correctly, and in some cases some unnecessary entries were being taken into account.
+- Modified styles in the report, more specifically:
+  * Move cashflow analysis just after the balance sheet and the Profit and Loss
+  * Applies the same style to all elements in a row.
+  * Removes the coloured style from the asset and equity adjustment rows from the cashflow.
+- Removes charts, the library used is incompatible with Qt6, the 'QtCharts' library can be used instead.
+- Fixed some problems with the date field, if the user did not click inside the field with the mouse, the field would remain empty and the data in the report would come out wrong, more precisely:
+  * In c++ it has been corrected that the dialogue can take dates in both "yyyymmdd" and local format, previously this was not possible and when trying to set the date automatically, in some cases the local format would come up which was not considered valid.
+  * In Javscript we currently work with the local date format, you pass it already formatted to the dialogue, it also returns it already formatted, to use it in the report we convert again the data to the internal format.
+- Modifies the Z-Score analysis. more precisely:
+  * Corrects the formula
+  * Modifies the existing table
+  * Adds a new table with the analysis for normal companies (quoted ones).
+- Refactoring the code
+- Modified the testcases so as to have a file with at least one year (or period) with all amounts.
 
 
-#### Note
-- Si è provato ad inserire il bottone per importare i settings da un altro file, il problema e che questa è un estensione condivisa e ha salvato i settings usando un proprio id, la funzionalità lavora con l'id dello script.
+#### Notes
+- Tried to insert a button to import settings from another file, the problem is that this is a shared extension and saved the settings using its own id, the functionality works with the script id.
+- It has been discussed that it would be convenient if the dialogue could move to the background of the account file to allow those who insert groups into the dialogue to have an open view of their chart of accounts, unfortunately this is currently not possible.
 
-### In sospeso
-- Permettere di visualizzare solamente la colonna preventivo.
-- Incrementare la data automaticamente nel dialogo.
+### Pending
+- Allow only the estimate column to be displayed.
+- Increase the date automatically in the dialogue.
