@@ -31,6 +31,7 @@
 #### Notes
 - Tried to insert a button to import settings from another file, the problem is that this is a shared extension and saved the settings using its own id, the functionality works with the script id.
 - It has been discussed that it would be convenient if the dialogue could move to the background of the account file to allow those who insert groups into the dialogue to have an open view of their chart of accounts, unfortunately this is currently not possible.
+- The correct version of the date field in the property editor is currently only available with the dev channel version which will be released in the week 20.03-24.03, with previous version of Banana the user could have some problem with the behaviour of the field, to be specified in the documentation.
 
 ### Pending
 - Allow only the estimate column to be displayed.
