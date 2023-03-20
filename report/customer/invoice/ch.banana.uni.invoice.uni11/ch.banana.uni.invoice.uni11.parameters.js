@@ -17,7 +17,7 @@
 
 
 
-/* User parameters update: 2022-12-30 */
+/* User parameters update: 2023-03-10 */
 
 
 
@@ -1023,115 +1023,172 @@ function convertParam(userParam) {
     convertedParam.data.push(currentParam);
   
 
+
+    /*******************************************************************************************
+    * PROFORMA INVOICE PARAMETERS
+    ********************************************************************************************/
+    var currentParam = {};
+    currentParam.name = langCode+'_proforma_invoice';
+    currentParam.parentObject = langCode;
+    currentParam.title = langTexts.proforma_invoice;
+    currentParam.type = 'string';
+    currentParam.value = '';
+    currentParam.editable = false;
+    currentParam.language = langCode;
+    currentParam.readValueLang = function(langCode) {
+    userParam.texts = this.value;
+    }
+    convertedParam.data.push(currentParam);
+
+    currentParam = {};
+    currentParam.name = langCode+'_title_proforma_invoice';
+    currentParam.parentObject = langCode+'_proforma_invoice';
+    currentParam.title = langTexts[langCodeTitle+'_param_text_title_proforma_invoice'];
+    currentParam.type = 'string';
+    currentParam.value = userParam[langCode+'_title_proforma_invoice'] ? userParam[langCode+'_title_proforma_invoice'] : '';
+    currentParam.defaultvalue = langTexts.proforma_invoice + " <DocInvoice>";
+    currentParam.tooltip = langTexts['param_tooltip_title_proforma_invoice'];
+    currentParam.language = langCode;
+    currentParam.readValueLang = function(langCode) {
+      userParam[langCode+'_title_proforma_invoice'] = this.value;
+    }
+    convertedParam.data.push(currentParam);
+
+    currentParam = {};
+    currentParam.name = langCode+'_text_begin_proforma_invoice';
+    currentParam.parentObject = langCode+'_proforma_invoice';
+    currentParam.title = langTexts[langCodeTitle+'_param_text_begin_proforma_invoice'];
+    currentParam.type = 'multilinestring';
+    currentParam.value = userParam[langCode+'_text_begin_proforma_invoice'] ? userParam[langCode+'_text_begin_proforma_invoice'] : '';
+    currentParam.defaultvalue = '';
+    currentParam.tooltip = langTexts['param_tooltip_text_begin_proforma_invoice'];
+    currentParam.language = langCode;
+    currentParam.readValueLang = function(langCode) {
+    userParam[langCode+'_text_begin_proforma_invoice'] = this.value;
+    }
+    convertedParam.data.push(currentParam);
+
+    currentParam = {};
+    currentParam.name = langCode+'_text_final_proforma_invoice';
+    currentParam.parentObject = langCode+'_proforma_invoice';
+    currentParam.title = langTexts[langCodeTitle+'_param_text_final_proforma_invoice'];
+    currentParam.type = 'multilinestring';
+    currentParam.value = userParam[langCode+'_text_final_proforma_invoice'] ? userParam[langCode+'_text_final_proforma_invoice'] : '';
+    currentParam.defaultvalue = '';
+    currentParam.tooltip = langTexts['param_tooltip_text_final_proforma_invoice'];
+    currentParam.language = langCode;
+    currentParam.readValueLang = function(langCode) {
+    userParam[langCode+'_text_final_proforma_invoice'] = this.value;
+    }
+    convertedParam.data.push(currentParam);
+
+
     /*******************************************************************************************
     * ESTIMATE PARAMETERS
-    * Only for Estimates and Invoices Application
     ********************************************************************************************/
-    if (!IS_INTEGRATED_INVOICE) {
-      var currentParam = {};
-      currentParam.name = langCode+'_offer';
-      currentParam.parentObject = langCode;
-      currentParam.title = langTexts.offer;
-      currentParam.type = 'string';
-      currentParam.value = '';
-      currentParam.editable = false;
-      currentParam.language = langCode;
-      currentParam.readValueLang = function(langCode) {
-      userParam.texts = this.value;
-      }
-      convertedParam.data.push(currentParam);
-
-      currentParam = {};
-      currentParam.name = langCode+'_text_info_offer_number';
-      currentParam.parentObject = langCode+'_offer';
-      currentParam.title = langTexts[langCodeTitle+'_param_text_info_offer_number'];
-      currentParam.type = 'string';
-      currentParam.value = userParam[langCode+'_text_info_offer_number'] ? userParam[langCode+'_text_info_offer_number'] : '';
-      currentParam.defaultvalue = langTexts.offer;
-      currentParam.tooltip = langTexts['param_tooltip_text_info_offer_number'];
-      currentParam.language = langCode;
-      currentParam.readValueLang = function(langCode) {
-      userParam[langCode+'_text_info_offer_number'] = this.value;
-      }
-      convertedParam.data.push(currentParam);
-
-      currentParam = {};
-      currentParam.name = langCode+'_text_info_date_offer';
-      currentParam.parentObject = langCode+'_offer';
-      currentParam.title = langTexts[langCodeTitle+'_param_text_info_date_offer'];
-      currentParam.type = 'string';
-      currentParam.value = userParam[langCode+'_text_info_date_offer'] ? userParam[langCode+'_text_info_date_offer'] : '';
-      currentParam.defaultvalue = langTexts.date;
-      currentParam.tooltip = langTexts['param_tooltip_text_info_date_offer'];
-      currentParam.language = langCode;
-      currentParam.readValueLang = function(langCode) {
-      userParam[langCode+'_text_info_date_offer'] = this.value;
-      }
-      convertedParam.data.push(currentParam);
-
-      currentParam = {};
-      currentParam.name = langCode+'_text_info_validity_date_offer';
-      currentParam.parentObject = langCode+'_offer';
-      currentParam.title = langTexts[langCodeTitle+'_param_text_info_validity_date_offer'];
-      currentParam.type = 'string';
-      currentParam.value = userParam[langCode+'_text_info_validity_date_offer'] ? userParam[langCode+'_text_info_validity_date_offer'] : '';
-      currentParam.defaultvalue = langTexts.validity_terms_label;
-      currentParam.tooltip = langTexts['param_tooltip_text_info_validity_date_offer'];
-      currentParam.language = langCode;
-      currentParam.readValueLang = function(langCode) {
-      userParam[langCode+'_text_info_validity_date_offer'] = this.value;
-      }
-      convertedParam.data.push(currentParam);
-
-      currentParam = {};
-      currentParam.name = langCode+'_title_doctype_17';
-      currentParam.parentObject = langCode+'_offer';
-      currentParam.title = langTexts[langCodeTitle+'_param_text_title_doctype_17'];
-      currentParam.type = 'string';
-      currentParam.value = userParam[langCode+'_title_doctype_17'] ? userParam[langCode+'_title_doctype_17'] : '';
-      currentParam.defaultvalue = langTexts.offer  + " <DocInvoice>";
-      currentParam.tooltip = langTexts['param_tooltip_title_doctype_17'];
-      currentParam.language = langCode;
-      currentParam.readValueLang = function(langCode) {
-      userParam[langCode+'_title_doctype_17'] = this.value;
-      }
-      convertedParam.data.push(currentParam);
-
-      currentParam = {};
-      currentParam.name = langCode+'_text_begin_offer';
-      currentParam.parentObject = langCode+'_offer';
-      currentParam.title = langTexts[langCodeTitle+'_param_text_begin_offer'];
-      currentParam.type = 'multilinestring';
-      currentParam.value = userParam[langCode+'_text_begin_offer'] ? userParam[langCode+'_text_begin_offer'] : '';
-      currentParam.defaultvalue = '';
-      currentParam.tooltip = langTexts['param_tooltip_text_begin_offer'];
-      currentParam.language = langCode;
-      currentParam.readValueLang = function(langCode) {
-      userParam[langCode+'_text_begin_offer'] = this.value;
-      }
-      convertedParam.data.push(currentParam);
-
-      currentParam = {};
-      currentParam.name = langCode+'_text_final_offer';
-      currentParam.parentObject = langCode+'_offer';
-      currentParam.title = langTexts[langCodeTitle+'_param_text_final_offer'];
-      currentParam.type = 'multilinestring';
-      currentParam.value = userParam[langCode+'_text_final_offer'] ? userParam[langCode+'_text_final_offer'] : '';
-      currentParam.defaultvalue = '';
-      currentParam.tooltip = langTexts['param_tooltip_text_final_offer'];
-      currentParam.language = langCode;
-      currentParam.readValueLang = function(langCode) {
-      userParam[langCode+'_text_final_offer'] = this.value;
-      }
-      convertedParam.data.push(currentParam);
+    var currentParam = {};
+    currentParam.name = langCode+'_offer';
+    currentParam.parentObject = langCode;
+    currentParam.title = langTexts.offer;
+    currentParam.type = 'string';
+    currentParam.value = '';
+    currentParam.editable = false;
+    currentParam.language = langCode;
+    currentParam.readValueLang = function(langCode) {
+    userParam.texts = this.value;
     }
+    convertedParam.data.push(currentParam);
+
+    currentParam = {};
+    currentParam.name = langCode+'_text_info_offer_number';
+    currentParam.parentObject = langCode+'_offer';
+    currentParam.title = langTexts[langCodeTitle+'_param_text_info_offer_number'];
+    currentParam.type = 'string';
+    currentParam.value = userParam[langCode+'_text_info_offer_number'] ? userParam[langCode+'_text_info_offer_number'] : '';
+    currentParam.defaultvalue = langTexts.offer;
+    currentParam.tooltip = langTexts['param_tooltip_text_info_offer_number'];
+    currentParam.language = langCode;
+    currentParam.readValueLang = function(langCode) {
+    userParam[langCode+'_text_info_offer_number'] = this.value;
+    }
+    convertedParam.data.push(currentParam);
+
+    currentParam = {};
+    currentParam.name = langCode+'_text_info_date_offer';
+    currentParam.parentObject = langCode+'_offer';
+    currentParam.title = langTexts[langCodeTitle+'_param_text_info_date_offer'];
+    currentParam.type = 'string';
+    currentParam.value = userParam[langCode+'_text_info_date_offer'] ? userParam[langCode+'_text_info_date_offer'] : '';
+    currentParam.defaultvalue = langTexts.date;
+    currentParam.tooltip = langTexts['param_tooltip_text_info_date_offer'];
+    currentParam.language = langCode;
+    currentParam.readValueLang = function(langCode) {
+    userParam[langCode+'_text_info_date_offer'] = this.value;
+    }
+    convertedParam.data.push(currentParam);
+
+    currentParam = {};
+    currentParam.name = langCode+'_text_info_validity_date_offer';
+    currentParam.parentObject = langCode+'_offer';
+    currentParam.title = langTexts[langCodeTitle+'_param_text_info_validity_date_offer'];
+    currentParam.type = 'string';
+    currentParam.value = userParam[langCode+'_text_info_validity_date_offer'] ? userParam[langCode+'_text_info_validity_date_offer'] : '';
+    currentParam.defaultvalue = langTexts.validity_terms_label;
+    currentParam.tooltip = langTexts['param_tooltip_text_info_validity_date_offer'];
+    currentParam.language = langCode;
+    currentParam.readValueLang = function(langCode) {
+    userParam[langCode+'_text_info_validity_date_offer'] = this.value;
+    }
+    convertedParam.data.push(currentParam);
+
+    currentParam = {};
+    currentParam.name = langCode+'_title_doctype_17';
+    currentParam.parentObject = langCode+'_offer';
+    currentParam.title = langTexts[langCodeTitle+'_param_text_title_doctype_17'];
+    currentParam.type = 'string';
+    currentParam.value = userParam[langCode+'_title_doctype_17'] ? userParam[langCode+'_title_doctype_17'] : '';
+    currentParam.defaultvalue = langTexts.offer  + " <DocInvoice>";
+    currentParam.tooltip = langTexts['param_tooltip_title_doctype_17'];
+    currentParam.language = langCode;
+    currentParam.readValueLang = function(langCode) {
+    userParam[langCode+'_title_doctype_17'] = this.value;
+    }
+    convertedParam.data.push(currentParam);
+
+    currentParam = {};
+    currentParam.name = langCode+'_text_begin_offer';
+    currentParam.parentObject = langCode+'_offer';
+    currentParam.title = langTexts[langCodeTitle+'_param_text_begin_offer'];
+    currentParam.type = 'multilinestring';
+    currentParam.value = userParam[langCode+'_text_begin_offer'] ? userParam[langCode+'_text_begin_offer'] : '';
+    currentParam.defaultvalue = '';
+    currentParam.tooltip = langTexts['param_tooltip_text_begin_offer'];
+    currentParam.language = langCode;
+    currentParam.readValueLang = function(langCode) {
+    userParam[langCode+'_text_begin_offer'] = this.value;
+    }
+    convertedParam.data.push(currentParam);
+
+    currentParam = {};
+    currentParam.name = langCode+'_text_final_offer';
+    currentParam.parentObject = langCode+'_offer';
+    currentParam.title = langTexts[langCodeTitle+'_param_text_final_offer'];
+    currentParam.type = 'multilinestring';
+    currentParam.value = userParam[langCode+'_text_final_offer'] ? userParam[langCode+'_text_final_offer'] : '';
+    currentParam.defaultvalue = '';
+    currentParam.tooltip = langTexts['param_tooltip_text_final_offer'];
+    currentParam.language = langCode;
+    currentParam.readValueLang = function(langCode) {
+    userParam[langCode+'_text_final_offer'] = this.value;
+    }
+    convertedParam.data.push(currentParam);
 
 
 
     /*******************************************************************************************
     * DELIVERY NOTE PARAMETERS
     ********************************************************************************************/
-    currentParam = {};
+    var currentParam = {};
     currentParam.name = langCode+'_delivery_note';
     currentParam.parentObject = langCode;
     currentParam.title = langTexts.delivery_note;
@@ -1272,7 +1329,7 @@ function convertParam(userParam) {
     currentParam.readValueLang = function(langCode) {
       userParam[langCode+'_text_final_reminder'] = this.value;
     }
-    convertedParam.data.push(currentParam);    
+    convertedParam.data.push(currentParam);
 
   }
 
@@ -1535,6 +1592,11 @@ function initParam() {
     userParam[langCodes[i]+'_text_begin_reminder'] = '';
     userParam[langCodes[i]+'_text_final_reminder'] = '';
 
+    //Proforma Invoice
+    userParam[langCodes[i]+'_title_proforma_invoice'] = langTexts.proforma_invoice + " <DocInvoice>";
+    userParam[langCodes[i]+'_text_begin_proforma_invoice'] = '';
+    userParam[langCodes[i]+'_text_final_proforma_invoice'] = '';
+
   }
 
   //Styles
@@ -1789,6 +1851,18 @@ function verifyParam(userParam) {
     if (!userParam[langCodes[i]+'_text_final_reminder']) {
       userParam[langCodes[i]+'_text_final_reminder'] = "";
     }
+
+    //Proforma Invoice
+    if (!userParam[langCodes[i]+'_title_proforma_invoice']) {
+      userParam[langCodes[i]+'_title_proforma_invoice'] = langTexts.proforma_invoice + " <DocInvoice>";
+    }
+    if (!userParam[langCodes[i]+'_text_begin_proforma_invoice']) {
+      userParam[langCodes[i]+'_text_begin_proforma_invoice'] = "";
+    }
+    if (!userParam[langCodes[i]+'_text_final_proforma_invoice']) {
+      userParam[langCodes[i]+'_text_final_proforma_invoice'] = "";
+    }
+    
 
   }
 
