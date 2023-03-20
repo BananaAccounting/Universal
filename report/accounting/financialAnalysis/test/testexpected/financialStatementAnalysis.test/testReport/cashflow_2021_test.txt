@@ -19,6 +19,8 @@
 \newenvironment{test}[1]{\section*{Test case: #1}}{}
 %Begin test data
 \begin{reportvalue}{FILENAME: file:script/../test/testcases/cashflow\_2021\_test.ac2}
+\excltest{My Company} \\
+\excltest{Year to Date ref: 31.12.2021} \\
 \begin{longtable}[l]{ l  l  l }
 BALANCE Acronym  & Description  & Year to Date \\
 \multicolumn{3}{l}{Assets }\\
@@ -33,18 +35,18 @@ intfix  & Intangible Fixed Assets  & 560.00 \\
 fixa  & Total Fixed Assets  & 40'384.00 \\
 tota  & Total Assets  & 147'404.00 \\
 \multicolumn{3}{l}{Liabilities and Equity }\\
-dbts  & Debts  & 66'740.00 \\
+dbts  & Debts  & 101'740.00 \\
 accr  & Accruals and Deferred Income  & 3'000.00 \\
-stdc  & Total Short term Debt Capital  & 69'740.00 \\
+stdc  & Total Short term Debt Capital  & 104'740.00 \\
 ltde  & Long term Debts  & 26'000.00 \\
 prov  & Provisions and similar  & 5'000.00 \\
 ltdc  & Total Long term debt Capital  & 31'000.00 \\
-deca  & Total Debt Capital  & 100'740.00 \\
+deca  & Total Debt Capital  & 135'740.00 \\
 obca  & Own base capital  & 4'000.00 \\
-rese  & Reserves  & 1'500.00 \\
-balp  & Profit / Loss carried forward  & 41'164.00 \\
-owca  & Total Own Capital  & 46'664.00 \\
-totp  & Total Liabilities and Equity  & 147'404.00 \\
+rese  & Reserves  & 6'714.00 \\
+balp  & Profit / Loss carried forward  & 950.00 \\
+owca  & Total Own Capital  & 11'664.00 \\
+totle  & Total Liabilities and Equity  & 147'404.00 \\
 \end{longtable}
 \begin{longtable}[l]{ l  l  l }
 PROFIT AND LOSS Acronym  & Description  & Year to Date \\
@@ -82,19 +84,19 @@ cred  & +/- (+) Decrease or (-) increase of credits  & -47'000.00 \\
 stoc  & +/- (+) Decrease or (-) increase of stocks  & -3'000.00 \\
 prep  & +/- (+) Decrease or (-) increase of prepaid expenses  & -2'000.00 \\
  & \multicolumn{2}{l}{Adjustment with liabilities accounts  }\\
-stdc  & +/- (+)Increase or (-) decrease of liabilities  & 37'970.00 \\
+stdc  & +/- (+)Increase or (-) decrease of liabilities  & 72'970.00 \\
 accr  & +/- (+) Increase or (-) decrease of accruals and deferred income  & 3'000.00 \\
 \\
-A  & = Cash Flow from operations  & 45'660.00 \\
+A  & = Cash Flow from operations  & 80'660.00 \\
 \#disinvest  & + Disinvestments  & 2'500.00 \\
 inve  & - Investments  & 20'660.00 \\
 \\
 B  & = Cash Flow from investing  & -18'160.00 \\
 ltdc  & +/- Long term (+) increases or (-) repayments of debt capital  & 10'000.00 \\
-\#dividends  & - Dividends  & 15'000.00 \\
+\#dividends  & - Dividends  & 50'000.00 \\
 obca  & Share capital (+) increases or (-) reductions   & 4'000.00 \\
 \\
-C  & =Cash Flow from financing  & -1'000.00 \\
+C  & =Cash Flow from financing  & -36'000.00 \\
 A+B+C  & Increase/decrease in liquidity  & 26'500.00 \\
 \end{longtable}
 \begin{longtable}[l]{ l  l  l }
@@ -107,39 +109,39 @@ liqu  & Liquidity at the end of the period  & 54'220.00 \\
 RETAINED EARNINGS STATEMENT Description  & Year to Date \\
 Profit/Loss carried forward at the beginning of the Period  & 950.00 \\
 + Annual Result  & 55'714.00 \\
-- Dividends  & 15'000.00 \\
-+/- Reserves  & 500.00 \\
+- Dividends  & 50'000.00 \\
++/- Reserves  & 5'714.00 \\
 \\
-Total retained earning  & 41'164.00 \\
-Current year retained earning  & 40'214.00 \\
+Total retained earning  & 950.00 \\
+Current year retained earning  & 0.00 \\
 \end{longtable}
 \begin{longtable}[l]{ l  l  l  l }
 CASH FLOW RATIOS Description  & formula  & Benchmark  & Year to Date \\
-Operating Cash Flow Margin  & cashflow(A)/satu  & -  & 55.68\%  \\
-Asset Efficiency  & cashflow(A)/fixa  & -  & 113.06\%  \\
-Cash Flow to current Liabilities  & cashflow(A)/stdc  & -  & 65.47\%  \\
-Cash Flow to Liabilities  & cashflow(A)/deca  & -  & 45.32\%  \\
-Cash Flow to Investments  & cashflow(A)/inve  & -  & 221.01\%  \\
+Operating Cash Flow Margin  & cashflow(A)/satu  & -  & 98.37\%  \\
+Asset Efficiency  & cashflow(A)/fixa  & -  & 199.73\%  \\
+Cash Flow to current Liabilities  & cashflow(A)/stdc  & -  & 77.01\%  \\
+Cash Flow to Liabilities  & cashflow(A)/deca  & -  & 59.42\%  \\
+Cash Flow to Investments  & cashflow(A)/inve  & -  & 390.42\%  \\
 \end{longtable}
 \begin{longtable}[l]{ l  l  l  l }
 LIQUIDITY RATIOS Description  & formula  & Benchmark  & Year to Date \\
-Cash ratio  & liqu / stdc  & 10\%-35\%  & 77.75\%  \\
-Quick ratio  & (liqu + cred) / stdc  & 100\%  & 154.89\%  \\
-Current ratio  & cuas / stdc  & 150\%  & 153.46\%  \\
-Net Current Assets  & cuas-stdc  & >0  & 37'280.00  \\
+Cash ratio  & liqu / stdc  & 10\%-35\%  & 51.77\%  \\
+Quick ratio  & (liqu + cred) / stdc  & 100\%  & 103.13\%  \\
+Current ratio  & cuas / stdc  & 150\%  & 102.18\%  \\
+Net Current Assets  & cuas-stdc  & >0  & 2'280.00  \\
 \end{longtable}
 \begin{longtable}[l]{ l  l  l  l }
 LEVERAGE RATIOS Description  & formula  & Benchmark  & Year to Date \\
 Degree of Circulating Assets  & cuas / tota  & 60\%  & 72.60\%  \\
 Percentage Fixed Assets  & fixa / tota  & 40\%  & 27.40\%  \\
-Debt ratio  & (stdc+ltdc) / totp  & 40\%-70\%  & 68.34\%  \\
-Equity ratio  & owca / totp  & 30\%-60\%  & 31.66\%  \\
-Self financing ratio  & rese / owca  & 33,3\%  & 3.21\%  \\
-Fixed Assets Coverage  & (owca + ltdc) / fixa  & >100\%  & 192.31\%  \\
+Debt ratio  & (stdc+ltdc) / totle  & 40\%-70\%  & 92.09\%  \\
+Equity ratio  & owca / totle  & 30\%-60\%  & 7.91\%  \\
+Self financing ratio  & rese / owca  & 33,3\%  & 57.56\%  \\
+Fixed Assets Coverage  & (owca + ltdc) / fixa  & >100\%  & 105.65\%  \\
 \end{longtable}
 \begin{longtable}[l]{ l  l  l  l }
 PROFITABILITY RATIOS Description  & formula  & Benchmark  & Year to Date \\
-Return on equity (ROE)  & profit / owca  & 8\%-14\%  & 119.39\%  \\
+Return on equity (ROE)  & profit / owca  & 8\%-14\%  & 477.66\%  \\
 Return on investment (ROI)  & EBIT / tota    & 10\%  & 38.89\%  \\
 Return on sales (ROS)  & EBIT / satu  & >0  & 69.91\%  \\
 Gross profit margin (MOL)  & ebitda / satu  & 40\%  & 73.57\%  \\
@@ -165,23 +167,23 @@ Return on investment (ROI)  & 38.89\%  \\
 \begin{longtable}[l]{ l  l  l  l }
 ALTMAN Z-SCORE Description  & formula  & Weighting  & Year to Date \\
 \\
-Working capital / total Assets  & (cuas-stdc) / tota  & 1.2  & 0.30 \\
-Retained earnings / total Assets  & Total retained earning / tota  & 1.4  & 0.39 \\
-Earnings before interest and task payment /total Assets  & EBIT / tota  & 3.3  & 1.28 \\
-The equity’s market value / total Liabilities  & owca / deca  & 0.6  & 0.28 \\
+Working capital / total Assets  & (cuas-stdc) / tota  & 1.2  & 0.02 \\
+Retained earnings / total Assets  & Total retained earning / tota  & 1.4  & 0.01 \\
+Earnings before interest and task payment / total Assets  & EBIT / tota  & 3.3  & 1.28 \\
+Equity market value / total Liabilities  & owca / deca  & 0.6  & 0.05 \\
 Total Sales / total Assets  & satu / tota  & 0.999  & 0.56 \\
-Z-Score  & (1.2 x A) + (1.4 x B) + (3.3 x C) + (0.6 x D) + (0.999 x E)  &  & 2.81 \\
+Z-Score  & (1.2 x A) + (1.4 x B) + (3.3 x C) + (0.6 x D) + (0.999 x E)  &  & 1.92 \\
 \end{longtable}
 \begin{longtable}[l]{ l  l  l  l }
 Z-SCORE FOR PRIVATE COMPANIES Description  & formula  & Weighting  & Year to Date \\
 \\
-(Current Assets - Current Liabilities) / total Assets  & (cuas-stdc) / tota  & 0.717  & 0.18 \\
-Retained earnings / total Assets  & Total retained earning / tota  & 0.847  & 0.24 \\
-Earnings before interest and task payment /total Assets  & EBIT / tota  & 3.107  & 1.21 \\
-Book Value of Equity/Total Liabilities  & owca / deca  & 0.42  & 0.19 \\
+(Current Assets - Current Liabilities) / total Assets  & (cuas-stdc) / tota  & 0.717  & 0.01 \\
+Retained earnings / total Assets  & Total retained earning / tota  & 0.847  & 0.01 \\
+Earnings before interest and task payment / total Assets  & EBIT / tota  & 3.107  & 1.21 \\
+Book Value of Equity / total Liabilities  & owca / deca  & 0.42  & 0.04 \\
 Total Sales / total Assets  & satu / tota  & 0.998  & 0.56 \\
-Z-Score  & (0.717 x A) + (0.847 x B) + (3.107 x C) + (0.420 x D) + (0.998 x E)  &  & 2.38 \\
+Z-Score  & (0.717 x A) + (0.847 x B) + (3.107 x C) + (0.420 x D) + (0.998 x E)  &  & 1.83 \\
 \end{longtable}
-\excltest{14.03.2023} \\
+\excltest{20.03.2023} \\
 \#page-nr \end{reportvalue}
 \end{document}

@@ -19,6 +19,8 @@
 \newenvironment{test}[1]{\section*{Test case: #1}}{}
 %Begin test data
 \begin{reportvalue}{FILENAME: file:script/../test/testcases/Contabilita in partita doppia multi-moneta con IVA.ac2}
+\excltest{My Company} \\
+\excltest{Year to Date/Budget to Date ref: 31.12.2020} \\
 \begin{longtable}[l]{ l  l  l  l  l  l  l  l  l }
 BALANCE Acronym  & Description  & Year to Date  & Budget to Date  & Budget to Date +/-  & Year to Date + Budget  & Budget  & Budget +/- \\
 \multicolumn{9}{l}{Assets }\\
@@ -44,7 +46,7 @@ obca  & Own base capital  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00 \\
 rese  & Reserves  & 100.00  & 0.00  & 100.00  & 100.00  & 0.00  & 100.00 \\
 balp  & Profit / Loss carried forward  & 7'320.00  & 0.00  & 7'320.00  & 7'320.00  & 0.00  & 7'320.00 \\
 owca  & Total Own Capital  & 7'420.00  & 0.00  & 7'420.00  & 7'420.00  & 0.00  & 7'420.00 \\
-totp  & Total Liabilities and Equity  & 31'390.00  & 0.00  & 31'390.00  & 31'390.00  & 0.00  & 31'390.00 \\
+totle  & Total Liabilities and Equity  & 31'390.00  & 0.00  & 31'390.00  & 31'390.00  & 0.00  & 31'390.00 \\
 \end{longtable}
 \begin{longtable}[l]{ l  l  l  l  l  l  l  l }
 PROFIT AND LOSS Acronym  & Description  & Year to Date  & Budget to Date  & Budget to Date +/-  & Year to Date + Budget  & Budget  & Budget +/- \\
@@ -129,8 +131,8 @@ Net Current Assets  & cuas-stdc  & >0  & 1'530.00   & 110.00  ↓  & 1'420.00   
 LEVERAGE RATIOS Description  & formula  & Benchmark  & Year to Date  & Budget to Date  & Budget to Date +/-  & Year to Date + Budget  & Budget  & Budget +/- \\
 Degree of Circulating Assets  & cuas / tota  & 60\%  & 52.38\%   & 100.00\%  ↑  & -47.62\%   & 52.38\%   & 100.00\%  ↑  & -47.62\%  \\
 Percentage Fixed Assets  & fixa / tota  & 40\%  & 47.62\%   & 0.00\%  ↓  & 47.62\%   & 47.62\%   & 0.00\%  ↓  & 47.62\%  \\
-Debt ratio  & (stdc+ltdc) / totp  & 40\%-70\%  & 76.36\%   & 0.00\%  ↓  & 76.36\%   & 76.36\%   & 0.00\%  ↓  & 76.36\%  \\
-Equity ratio  & owca / totp  & 30\%-60\%  & 23.64\%   & 0.00\%  ↓  & 23.64\%   & 23.64\%   & 0.00\%  ↓  & 23.64\%  \\
+Debt ratio  & (stdc+ltdc) / totle  & 40\%-70\%  & 76.36\%   & 0.00\%  ↓  & 76.36\%   & 76.36\%   & 0.00\%  ↓  & 76.36\%  \\
+Equity ratio  & owca / totle  & 30\%-60\%  & 23.64\%   & 0.00\%  ↓  & 23.64\%   & 23.64\%   & 0.00\%  ↓  & 23.64\%  \\
 Self financing ratio  & rese / owca  & 33,3\%  & 1.35\%   & 0.00\%  ↓  & 1.35\%   & 1.35\%   & 0.00\%  ↓  & 1.35\%  \\
 Fixed Assets Coverage  & (owca + ltdc) / fixa  & >100\%  & 109.47\%   & 0.00\%  ↓  & 109.47\%   & 109.47\%   & 0.00\%  ↓  & 109.47\%  \\
 \end{longtable}
@@ -164,8 +166,8 @@ ALTMAN Z-SCORE Description  & formula  & Weighting  & Year to Date  & Budget to 
 \\
 Working capital / total Assets  & (cuas-stdc) / tota  & 1.2  & 0.06  & 1.20  & -1.14  & 0.06  & 1.20  & -1.14 \\
 Retained earnings / total Assets  & Total retained earning / tota  & 1.4  & 0.33  & 0.00  & 0.33  & 0.33  & 0.00  & 0.33 \\
-Earnings before interest and task payment /total Assets  & EBIT / tota  & 3.3  & 2.03  & 0.00  & 2.03  & 2.03  & 0.00  & 2.03 \\
-The equity’s market value / total Liabilities  & owca / deca  & 0.6  & 0.19  & 0.00  & 0.19  & 0.19  & 0.00  & 0.19 \\
+Earnings before interest and task payment / total Assets  & EBIT / tota  & 3.3  & 2.03  & 0.00  & 2.03  & 2.03  & 0.00  & 2.03 \\
+Equity market value / total Liabilities  & owca / deca  & 0.6  & 0.19  & 0.00  & 0.19  & 0.19  & 0.00  & 0.19 \\
 Total Sales / total Assets  & satu / tota  & 0.999  & 0.71  & 0.00  & 0.71  & 0.71  & 0.00  & 0.71 \\
 Z-Score  & (1.2 x A) + (1.4 x B) + (3.3 x C) + (0.6 x D) + (0.999 x E)  &  & 3.32  & 1.20  & 2.12  & 3.32  & 1.20  & 2.12 \\
 \end{longtable}
@@ -174,11 +176,11 @@ Z-SCORE FOR PRIVATE COMPANIES Description  & formula  & Weighting  & Year to Dat
 \\
 (Current Assets - Current Liabilities) / total Assets  & (cuas-stdc) / tota  & 0.717  & 0.03  & 0.72  & -0.69  & 0.03  & 0.72  & -0.69 \\
 Retained earnings / total Assets  & Total retained earning / tota  & 0.847  & 0.20  & 0.00  & 0.20  & 0.20  & 0.00  & 0.20 \\
-Earnings before interest and task payment /total Assets  & EBIT / tota  & 3.107  & 1.92  & 0.00  & 1.92  & 1.92  & 0.00  & 1.92 \\
-Book Value of Equity/Total Liabilities  & owca / deca  & 0.42  & 0.13  & 0.00  & 0.13  & 0.13  & 0.00  & 0.13 \\
+Earnings before interest and task payment / total Assets  & EBIT / tota  & 3.107  & 1.92  & 0.00  & 1.92  & 1.92  & 0.00  & 1.92 \\
+Book Value of Equity / total Liabilities  & owca / deca  & 0.42  & 0.13  & 0.00  & 0.13  & 0.13  & 0.00  & 0.13 \\
 Total Sales / total Assets  & satu / tota  & 0.998  & 0.71  & 0.00  & 0.71  & 0.71  & 0.00  & 0.71 \\
 Z-Score  & (0.717 x A) + (0.847 x B) + (3.107 x C) + (0.420 x D) + (0.998 x E)  &  & 2.99  & 0.72  & 2.27  & 2.99  & 0.72  & 2.27 \\
 \end{longtable}
-\excltest{14.03.2023} \\
+\excltest{20.03.2023} \\
 \#page-nr \end{reportvalue}
 \end{document}

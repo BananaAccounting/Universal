@@ -589,8 +589,6 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             budgetToDate = "/" + texts.budget_to_date;
         }
 
-        Banana.console.debug("header date: " + this.dialogparam.currentdate);
-
         headerParagraph.addParagraph(texts.year_to_date + budgetToDate + " ref: " +
             Banana.Converter.toLocaleDateFormat(Banana.Converter.toInternalDateFormat(this.dialogparam.currentdate)), "header_row_address");
         headerParagraph.excludeFromTest();
@@ -5489,7 +5487,6 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         //Enter the current date
         //Calendar date is displayed in the local format
         let yearToDate = this.getCurrentDate(); //returns date in Local format.
-        Banana.console.debug("year to date fresco: " + yearToDate);
         currentParam = {};
         currentParam.name = 'currentdate';
         currentParam.group = 'preferences';
@@ -5497,12 +5494,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.type = 'date';
         currentParam.parentObject = 'Analysis Details';
         currentParam.value = userParam.currentdate ? userParam.currentdate : yearToDate;
-        Banana.console.debug("current param: " + currentParam.value);
-        Banana.console.debug("user param: " + userParam.currentdate);
-        Banana.console.debug("yeartodate: " + yearToDate);
         //Default value is red differently so we have to use the local format.
         currentParam.defaultvalue = yearToDate;
-        Banana.console.debug("default value: " + yearToDate);
         currentParam.readValue = function() {
             userParam.currentdate = this.value;
         }
@@ -5971,7 +5964,6 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                 currentDate = this.getCurrentDate_Formatted(today);
             }
         }
-        Banana.console.debug("current date: " + currentDate);
         return Banana.Converter.toLocaleDateFormat(currentDate);
     }
 
@@ -6498,7 +6490,6 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
      */
     setParam(dialogparam) {
         this.dialogparam = dialogparam;
-        Banana.Ui.showText(JSON.stringify(this.dialogparam));
         return this.verifyParam();
     }
 
