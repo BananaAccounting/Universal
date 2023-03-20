@@ -2830,7 +2830,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         altmanIndexObj.finalScore.weighting.style = "";
         altmanIndexObj.finalScore.amount = {};
         altmanIndexObj.finalScore.amount.value = finalScore;
-        altmanIndexObj.finalScore.amount.style = "styleMidTotalAmount";
+        altmanIndexObj.finalScore.amount.style = this.altmanScoreType(finalScore);
 
         return altmanIndexObj;
 
@@ -2938,7 +2938,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         altmanIndexObj.finalScore.weighting.style = "";
         altmanIndexObj.finalScore.amount = {};
         altmanIndexObj.finalScore.amount.value = finalScore;
-        altmanIndexObj.finalScore.amount.style = "styleMidTotalAmount";
+        altmanIndexObj.finalScore.amount.style = this.altmanScoreType(finalScore);
 
         return altmanIndexObj;
 
@@ -6192,7 +6192,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         altmanIndexObj.finalScore.weighting.style = "";
         altmanIndexObj.finalScore.amount = {};
         altmanIndexObj.finalScore.amount.value = finalScore;
-        altmanIndexObj.finalScore.amount.style = "styleMidTotalAmount";
+        altmanIndexObj.finalScore.amount.style = this.altmanScoreType(finalScore);
 
         //Banana.Ui.showText(JSON.stringify(altmanIndexObj));
 
@@ -6327,7 +6327,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         altmanIndexObj.finalScore.weighting.style = "";
         altmanIndexObj.finalScore.amount = {};
         altmanIndexObj.finalScore.amount.value = finalScore;
-        altmanIndexObj.finalScore.amount.style = "styleMidTotalAmount";
+        altmanIndexObj.finalScore.amount.style = this.altmanScoreType(finalScore);
 
         //Banana.Ui.showText(JSON.stringify(altmanIndexObj));
 
