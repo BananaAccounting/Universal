@@ -8,6 +8,7 @@
         <file>import_invoices.js</file>
         <file>import_contacts.js</file>
         <file>import_items.js</file>
+        <file>import_estimates.js</file>
         <file>invoice_tools.manifest.json</file>
         <file>translations/translations_de.qm</file>
         <file>translations/translations_fr.qm</file>
