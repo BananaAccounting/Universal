@@ -76,6 +76,7 @@ function generateCsvEstimates(estimatesTable) {
                 } 
                 
                 for (let j = 0; j < estimateObj.items.length; j++) {
+                    let invoiceDiscount = "";
                     let itemTotal = "";
                     let itemUnitPrice = "";
                     let itemDiscount = "";
@@ -85,6 +86,7 @@ function generateCsvEstimates(estimatesTable) {
                         return "";
                     }
                     if (estimateObj.document_info.vat_mode === "vat_excl") {
+                        invoiceDiscount = estimateObj.billing_info.total_discount_vat_exclusive;
                         if (!estimateObj.items[j].total_amount_vat_exclusive) {
                             row.addMessage(qsTr("%1 is a required field").arg("ItemTotal"), "RowId", "missing_field");
                             rowMatched = false;
@@ -95,6 +97,7 @@ function generateCsvEstimates(estimatesTable) {
                         }
                         
                     } else {
+                        invoiceDiscount = estimateObj.billing_info.total_discount_vat_inclusive;
                         if (!estimateObj.items[j].total_amount_vat_inclusive) {
                             row.addMessage(qsTr("%1 is a required field").arg("ItemTotal"), "RowId", "missing_field");
                             rowMatched = false;
@@ -118,8 +121,8 @@ function generateCsvEstimates(estimatesTable) {
                     if (checkDescription) { 
                         itemDescription = `"${itemDescription}"`;
                     }
-                        
-                    csv += `${getValue(estimateObj.document_info.number)},${getValue(estimateObj.document_info.date)},${getValue(estimateObj.payment_info.due_date)},${getValue(estimateObj.document_info.description)},${getValue(estimateObj.billing_info.total_discount_vat_inclusive)},${getValue(estimateObj.billing_info.total_vat_amount)},${getValue(estimateObj.billing_info.total_to_pay)},${getValue(estimateObj.document_info.currency)},${getValue(estimateObj.document_info.rounding_total)},${getValue(estimateObj.document_info.vat_mode)},`+
+
+                    csv += `${getValue(estimateObj.document_info.number)},${getValue(estimateObj.document_info.date)},${getValue(estimateObj.payment_info.due_date)},${getValue(estimateObj.document_info.description)},${getValue(invoiceDiscount)},${getValue(estimateObj.billing_info.total_vat_amount)},${getValue(estimateObj.billing_info.total_to_pay)},${getValue(estimateObj.document_info.currency)},${getValue(estimateObj.document_info.rounding_total)},${getValue(estimateObj.document_info.vat_mode)},`+
                            `${getValue(estimateObj.customer_info.number)},${getValue(estimateObj.customer_info.first_name)} ${getValue(estimateObj.customer_info.last_name)},${getValue(estimateObj.items[j].number)},${getValue(itemDescription)},${getValue(estimateObj.items[j].quantity)},${itemUnitPrice},${getValue(estimateObj.items[j].mesure_unit)},${getValue(estimateObj.items[j].unit_price.vat_rate)},${getValue(estimateObj.items[j].unit_price.vat_code)},${getValue(itemDiscount)},${getValue(itemTotal)},${getValue(estimateObj.items[j].total_vat_amount)}\n`;
                 }
             }
