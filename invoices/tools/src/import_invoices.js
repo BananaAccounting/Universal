@@ -421,7 +421,7 @@ class formatInvs {
     setInvoiceStructure_items_unitPrice(invoiceTransaction){
         let unitPrice = {};
   
-        unitPrice.amount_vat_exclusive = null;
+        unitPrice.amount_vat_exclusive = this.isVatExcl(invTransaction["InvoiceAmountType"]) ? invTransaction["ItemUnitPrice"] : null;
         // round to 4 decimals
         // unitPrice.amount_vat_inclusive = Banana.SDecimal.divide(invoiceTransaction["position_nettotal"],invoiceTransaction["position_amount"],{'decimals':4});
         unitPrice.amount_vat_inclusive = this.isVatExcl(invTransaction["InvoiceAmountType"]) ? null : invTransaction["ItemUnitPrice"];
