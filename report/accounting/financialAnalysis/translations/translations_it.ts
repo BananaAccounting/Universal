@@ -684,7 +684,7 @@
     <message>
         <location filename="../financialStatementAnalysis.js" line="1706"/>
         <source>Assets</source>
-        <translation>Attiivi</translation>
+        <translation>Attivi</translation>
     </message>
     <message>
         <location filename="../financialStatementAnalysis.js" line="1705"/>

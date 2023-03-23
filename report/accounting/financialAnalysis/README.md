@@ -2,7 +2,7 @@
 
 ## FINANCIAL ANALYSIS, UPDATES LOG (since march 2023)
 
-### 15.03.2023
+### UPDATE 15.03.2023
 
 #### Changes
 
@@ -33,6 +33,13 @@
 - It has been discussed that it would be convenient if the dialogue could move to the background of the account file to allow those who insert groups into the dialogue to have an open view of their chart of accounts, unfortunately this is currently not possible.
 - The correct version of the date field in the property editor is currently only available with the dev channel version which will be released in the week 20.03-24.03, with previous version of Banana the user could have some problem with the behaviour of the field, to be specified in the documentation.
 
-### Pending
+#### Pending
 - Allow only the estimate column to be displayed.
 - Increase the date automatically in the dialogue.
+
+#### UPDATE 23.03.2023
+
+- Instaed of using the api method "createPropertyEditor" we come back to "openPropertyEditor"
+ * Use of "createPropertyEditor" gives an error if you do not use the dev Channel
+ * Before we switched from "openPropertyEditor" to "createPropertyEditor" to implement the button to import settings from an another file
+ but as we cant use that (seee 15.03.2023 updates) we can come back to simply use "openPropertyEditor" wich works for each version.

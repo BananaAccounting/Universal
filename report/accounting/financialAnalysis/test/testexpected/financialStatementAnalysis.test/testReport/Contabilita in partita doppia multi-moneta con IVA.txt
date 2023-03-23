@@ -79,11 +79,11 @@ fire  & Annual result  & 19'420.00  & 0.00  & 19'420.00  & 19'420.00  & 0.00  & 
 \#devaluation  & + Devaluations on Fixed Assets  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00 \\
 amre  & Depreciations and adjustments  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00 \\
 prov  & +/- (+)Creation and (-)release of provisions  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00 \\
- & \multicolumn{8}{l}{Adjustment with assets accounts  }\\
+\multicolumn{9}{l}{Adjustment with assets accounts  }\\
 cred  & +/- (+) Decrease or (-) increase of credits  & -24'500.00  & 0.00  & -24'500.00  & -24'500.00  & 0.00  & -24'500.00 \\
 stoc  & +/- (+) Decrease or (-) increase of stocks  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00 \\
 prep  & +/- (+) Decrease or (-) increase of prepaid expenses  & -120.00  & 0.00  & -120.00  & -120.00  & 0.00  & -120.00 \\
- & \multicolumn{8}{l}{Adjustment with liabilities accounts  }\\
+\multicolumn{9}{l}{Adjustment with liabilities accounts  }\\
 stdc  & +/- (+)Increase or (-) decrease of liabilities  & 14'970.00  & 0.00  & 14'970.00  & 14'970.00  & 0.00  & 14'970.00 \\
 accr  & +/- (+) Increase or (-) decrease of accruals and deferred income  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00 \\
 A  & = Cash Flow from operations  & 9'770.00  & 0.00  & 9'770.00  & 9'770.00  & 0.00  & 9'770.00 \\
@@ -181,6 +181,6 @@ Book Value of Equity / total Liabilities  & owca / deca  & 0.42  & 0.13  & 0.00 
 Total Sales / total Assets  & satu / tota  & 0.998  & 0.71  & 0.00  & 0.71  & 0.71  & 0.00  & 0.71 \\
 Z-Score  & (0.717 x A) + (0.847 x B) + (3.107 x C) + (0.420 x D) + (0.998 x E)  &  & 2.99  & 0.72  & 2.27  & 2.99  & 0.72  & 2.27 \\
 \end{longtable}
-\excltest{20.03.2023} \\
+\excltest{23.03.2023} \\
 \#page-nr \end{reportvalue}
 \end{document}

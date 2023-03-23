@@ -6934,9 +6934,7 @@ function settingsDialog() {
     var dialogTitle = 'Settings';
     var pageAnchor = 'financialStatementAnalysis';
     var convertedParam = financialStatementAnalysis.convertParam();
-    let settingsDialog = Banana.Ui.createPropertyEditor(dialogTitle, convertedParam, pageAnchor);
-    //settingsDialog.addImportCommand(); //non importa correttamente a causa del problema con l'id, lo disabilitiamo attualmente.
-    if (!settingsDialog.exec())
+    if (!Banana.Ui.openPropertyEditor(dialogTitle, convertedParam, pageAnchor))
         return false;
     for (var i = 0; i < convertedParam.data.length; i++) {
         // Read values to dialogparam (through the readValue function)

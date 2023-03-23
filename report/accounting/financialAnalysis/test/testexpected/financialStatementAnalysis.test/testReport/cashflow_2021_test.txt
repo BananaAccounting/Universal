@@ -79,11 +79,11 @@ fire  & Annual result  & 55'714.00 \\
 \#devaluation  & + Devaluations on Fixed Assets  & 100.00 \\
 amre  & Depreciations and adjustments  & 3'000.00 \\
 prov  & +/- (+)Creation and (-)release of provisions  & 3'000.00 \\
- & \multicolumn{2}{l}{Adjustment with assets accounts  }\\
+\multicolumn{3}{l}{Adjustment with assets accounts  }\\
 cred  & +/- (+) Decrease or (-) increase of credits  & -47'000.00 \\
 stoc  & +/- (+) Decrease or (-) increase of stocks  & -3'000.00 \\
 prep  & +/- (+) Decrease or (-) increase of prepaid expenses  & -2'000.00 \\
- & \multicolumn{2}{l}{Adjustment with liabilities accounts  }\\
+\multicolumn{3}{l}{Adjustment with liabilities accounts  }\\
 stdc  & +/- (+)Increase or (-) decrease of liabilities  & 72'970.00 \\
 accr  & +/- (+) Increase or (-) decrease of accruals and deferred income  & 3'000.00 \\
 \\
@@ -184,6 +184,6 @@ Book Value of Equity / total Liabilities  & owca / deca  & 0.42  & 0.04 \\
 Total Sales / total Assets  & satu / tota  & 0.998  & 0.56 \\
 Z-Score  & (0.717 x A) + (0.847 x B) + (3.107 x C) + (0.420 x D) + (0.998 x E)  &  & 1.83 \\
 \end{longtable}
-\excltest{20.03.2023} \\
+\excltest{23.03.2023} \\
 \#page-nr \end{reportvalue}
 \end{document}
