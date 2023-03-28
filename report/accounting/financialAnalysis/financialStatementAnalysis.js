@@ -369,9 +369,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         tableAltmanIndex.setStyleAttributes("width:100%");
         tableAltmanIndex.getCaption().addText(texts.upperaltmanindex, "styleTitles");
         //columns
-        tableAltmanIndex.addColumn("Description").setStyleAttributes("width:45%");
+        tableAltmanIndex.addColumn("Description").setStyleAttributes("width:50%");
         if (this.dialogparam.formulascolumn) {
-            tableAltmanIndex.addColumn("Formula").setStyleAttributes("width:55%");
+            tableAltmanIndex.addColumn("Formula").setStyleAttributes("width:20%");
         }
         tableAltmanIndex.addColumn("Weighting").setStyleAttributes("width:15%");
         this.setColumnsWidthDinamically(tableAltmanIndex);
@@ -393,9 +393,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         var texts = this.getFinancialAnalysisTexts();
         var tableAltmanIndexPC = report.addTable('myTableZScorePrivateCompanies');
         tableAltmanIndexPC.getCaption().addText(texts.upperzscoreprivatecompanies, "styleTitles");
-        tableAltmanIndexPC.addColumn("Description").setStyleAttributes("width:45%");
+        tableAltmanIndexPC.addColumn("Description").setStyleAttributes("width:50%");
         if (this.dialogparam.formulascolumn) {
-            tableAltmanIndexPC.addColumn("Formula").setStyleAttributes("width:55%");
+            tableAltmanIndexPC.addColumn("Formula").setStyleAttributes("width:20%");
         }
         tableAltmanIndexPC.addColumn("Weighting").setStyleAttributes("width:15%");
         this.setColumnsWidthDinamically(tableAltmanIndexPC);
@@ -608,55 +608,19 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
     }
 
     /**
-     * @description this method do the following things:
-     * -call some other methods to recover the neccesary values
-     * -print the tables and others report elements entering the different data.
-     * -set the cells and the rows values
-     * @returns a report object.
+     * Add Balance table to the report.
+     * @param {*} report 
      */
-    printReport(styleSheet) {
+    addBalanceTable(report,texts,spanBalanceTitle){
 
-        //Banana.console.debug(JSON.stringify(this.data));
-
-        /******************************************************************************************
-         * initialize the variables i will use frequently in this method
-         * ***************************************************************************************/
-
-        var texts = this.getFinancialAnalysisTexts();
-        var report = Banana.Report.newReport('Financial Statement Analysis Report');
-
-        var analsysisYears = this.data.length;
-        analsysisYears -= 1;
-        var cell = "";
-        var perc = "%";
-        var amount = "";
-        var description = "";
-        var acronym = "";
-        var ratios = "";
-        var textstyle = "";
-        var spanBalanceTitle = this.generateSpanForBalanceTitles();
         var styleAssetsAdjustments = this.getColorStyle("styleAssetsAdjustments");
         var styleLiabilitiesAdjustments = this.getColorStyle("styleLiabilitiesAdjustments");
         var styleTotalAmount = this.getColorStyle("styleTotalAmount");
-        let styleTitlesTotalAmount = this.getColorStyle("styleTitlesTotalAmount");
+        var styleTitlesTotalAmount = this.getColorStyle("styleTitlesTotalAmount");
+        var acronym = "";
+        var description = "";
+        var amount = "";
 
-        if (!this.data || this.data.length <= 0) {
-            return report;
-        }
-
-
-        this.addHeader(report, styleSheet);
-        this.addFooter(report);
-
-        /******************************************************************************************
-         * exporting liquidity
-         * ***************************************************************************************/
-        //this.exportingNegativeLiquidity();
-
-
-        /******************************************************************************************
-         * Add the balance table
-         * ***************************************************************************************/
         var tableBalance = this.printReportAdd_TableBalance(report);
         //Assets title
         var tableRow = tableBalance.addRow("styleTablRows");
@@ -856,11 +820,23 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         for (var i = this.data.length - 1; i >= 0; i--) {
             tableRow.addCell(this.toLocaleAmountFormat(this.data[i].calculated_data.totalliabilitiesandequity), styleTotalAmount);
         }
+    }
 
-        /******************************************************************************************
-         * Add the profit and loss table
-         * ***************************************************************************************/
+    /**
+     * Add Profit and loss table to the report.
+     * @param {*} report 
+     * @param {*} texts 
+     * @param {*} styleTitlesTotalAmount 
+     */
+    addProfitAndLossTable(report,texts,styleTitlesTotalAmount){
+
         var tableCe = this.printReportAdd_TableConCe(report);
+        var styleTotalAmount = this.getColorStyle("styleTotalAmount");
+        var styleTitlesTotalAmount = this.getColorStyle("styleTitlesTotalAmount");
+        var acronym = "";
+        var description = "";
+        var amount = "";
+
         for (var key in this.data[0].profitandloss) {
 
             var tableRow = tableCe.addRow("styleTablRows");
@@ -946,12 +922,14 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         }
 
         report.addPageBreak();
+    }
 
-
-
-        /******************************************************************************************
-         * Add the control sums table (could be done better with a method)
-         * ***************************************************************************************/
+    /**
+     * add control sums table to the report.
+     * @param {*} report 
+     * @param {*} texts 
+     */
+    addControlSumsTable(report,texts){
         let ctsumsData = this.getControlSumsTitlesData(texts);
         if (this.dialogparam.includecontrolsums) {
             var tableControlSums = this.printReportAdd_TableControlSums(report);
@@ -984,11 +962,15 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             }
             report.addPageBreak();
         }
+    }
 
-        /******************************************************************
-         * Add the Cashflow table (only if we have at least 2yr of analysis)
-         *****************************************************************/
-
+    /**
+     * add cashflow table to the report.
+     * @param {*} report 
+     * @param {*} texts 
+     * @param {*} spanBalanceTitle 
+     */
+    addCashflowTable(report,texts,spanBalanceTitle){
         var tableCashflow = this.printReportAdd_TableCashflow(report);
         //save the acronyms I need for reference
         let provisionsAcronym = this.data[0].cashflowData.operatingCashflow.provsionsAndSimilar.acronym.text;
@@ -1055,12 +1037,16 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         for (var i = this.data.length - 1; i >= 0; i--) {
             tableRow.addCell(this.toLocaleAmountFormat(this.data[i].cashflowData.finalCashflow.amount.value), this.data[i].cashflowData.finalCashflow.amount.style);
         }
+    }
 
-        /**********************************************************
-         * Add the Cashflow verification section 
-         **********************************************************/
+    /**
+     * add casfhlow verification table to the report.
+     * @param {*} report 
+     * @param {*} texts 
+     * @param {*} spanBalanceTitle 
+     */
+    addCashflowVerificationTable(report,texts,spanBalanceTitle){
         //first ad white row
-
         var tableCashflowVerif = this.printReportAdd_TableCashflowVerification(report);
         var tableRow = tableCashflowVerif.addRow("styleTablRows");
         tableRow.addCell(texts.cashflow_verification, "styleUnderGroupTitles", spanBalanceTitle);
@@ -1089,11 +1075,13 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                 tableRow.addCell(this.toLocaleAmountFormat(differencesData.values[key].amount.value), differencesData.values[key].amount.getStyle());
             }
         }
+    }
 
-
-        /**********************************************************
-         * Add the Retained Earnings Statement table
-         **********************************************************/
+    /**
+     * add retained earnings table to the report.
+     * @param {*} report 
+     */
+    addRetainedEarningsTable(report){
         //I show the table even if the annual result is not positive, but the values are all 0
         var tableRetainedEarnings = this.printReportAdd_TableRetainedEarnings(report);
         for (var key in this.data[0].retEarningsData) {
@@ -1108,12 +1096,19 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                 }
             }
         }
+    }
 
-        /**************************************************
-         * Add the Cashflow ratios
-         *************************************************/
+    /**
+     * add cashflow ratios table to the report.
+     * @param {*} report 
+     * @param {*} analsysisYears 
+     */
+    addCashflowRatiosTable(report,analsysisYears){
         var tableIndCashflow = this.printReportAdd_TableIndCashflow(report);
-
+        analsysisYears -= 1;
+        var cell = "";
+        var ratios = "";
+        var perc = "%";
         for (var key in this.data[0].cashflow_index) {
             var tableRow = tableIndCashflow.addRow("styleTablRows");
             tableRow.addCell(this.data[0].cashflow_index[key].description, "styleTablRows");
@@ -1134,13 +1129,19 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
 
         report.addPageBreak();
+    }
 
-
-        /******************************************************************************************
-         * Add the Liquidity ratios table
-         * ***************************************************************************************/
+    /**
+     * add liquidity rations table to the report.
+     * @param {*} report 
+     * @param {*} analsysisYears 
+     */
+    addLiquidityRatiosTable(report, analsysisYears){
         var tableindliq = this.printReportAdd_TableIndliq(report);
-
+        analsysisYears -= 1;
+        var cell = "";
+        var ratios = "";
+        var perc = "%";
         for (var key in this.data[0].index.liqu) {
             var tableRow = tableindliq.addRow("styleTablRows");
             tableRow.addCell(qsTr(this.data[0].index.liqu[key].description), "styleTablRows");
@@ -1165,11 +1166,19 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
             }
         }
-        /******************************************************************************************
-         * Add the Leverage ratios table
-         * ***************************************************************************************/
-        var tableIndlev = this.printReportAdd_TableIndlev(report);
+    }
 
+    /**
+     * Add leverage ratios table to the report.
+     * @param {*} report 
+     * @param {*} analsysisYears 
+     */
+    addLeverageRatiosTable(report,analsysisYears){
+        var tableIndlev = this.printReportAdd_TableIndlev(report);
+        analsysisYears -= 1;
+        var cell = "";
+        var ratios = "";
+        var perc = "%";
         for (var key in this.data[0].index.lev) {
             var tableRow = tableIndlev.addRow("styleTablRows");
             tableRow.addCell(qsTr(this.data[0].index.lev[key].description), "styleTablRows");
@@ -1187,12 +1196,19 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                 }
             }
         }
+    }
 
-        /******************************************************************************************
-         * Add the Profitability ratios table
-         * ***************************************************************************************/
+    /**
+     * Add profitability rations table to the report.
+     * @param {*} report 
+     * @param {*} analsysisYears 
+     */
+    addProfitabilityRatiosTable(report,analsysisYears){
         var tableindprof = this.printReportAdd_TableIndprof(report);
-
+        analsysisYears -= 1;
+        var cell = "";
+        var ratios = "";
+        var perc = "%";
         for (var key in this.data[0].index.red) {
             var tableRow = tableindprof.addRow("styleTablRows");
             tableRow.addCell(qsTr(this.data[0].index.red[key].description), "styleTablRows");
@@ -1210,12 +1226,15 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                 }
             }
         }
+    }
 
-        /******************************************************************************************
-         * Add the Efficiency ratios table
-         * ***************************************************************************************/
+    /**
+     * Add efficiency ratios table to the report.
+     * @param {*} report 
+     */
+    addEfficiencyRatiosTable(report){
         var tableindeff = this.printReportAdd_TableIndeff(report);
-
+        var ratios = "";
         for (var key in this.data[0].index.eff) {
             var tableRow = tableindeff.addRow("styleTablRows");
             tableRow.addCell(qsTr(this.data[0].index.eff[key].description), "styleTablRows");
@@ -1230,87 +1249,154 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         }
 
         report.addPageBreak();
+    }
 
-        /******************************************************************************************
-         * Add the Dupont Analysis table, if the user included it
-         * ***************************************************************************************/
-
-        if (this.dialogparam.includedupontanalysis) {
-
-            var tabledupont = this.printReportAdd_TableDupont(report);
-
-            for (var key in this.data[0].dupont_data) {
-                //for the dupont data we dont display the "difference" columns as those are not useful for this analysis.
-                var tableRow = tabledupont.addRow("styleTablRows");
-                if (this.data[0].dupont_data[key].style == "titl") {
-                    textstyle = "styleUnderGroupTitles";
+    /**
+     * Add dupont analyis table to the report.
+     * @param {*} report 
+     * @param {*} analsysisYears 
+     */
+    addDupontAnalysisTable(report,analsysisYears){
+        var tabledupont = this.printReportAdd_TableDupont(report);
+        analsysisYears -= 1;
+        var cell = "";
+        var perc = "%";
+        var textstyle = "";
+        var ratios = "";
+        for (var key in this.data[0].dupont_data) {
+            //for the dupont data we dont display the "difference" columns as those are not useful for this analysis.
+            var tableRow = tabledupont.addRow("styleTablRows");
+            if (this.data[0].dupont_data[key].style == "titl") {
+                textstyle = "styleUnderGroupTitles";
+            } else {
+                textstyle = "styleTablRows";
+            }
+            tableRow.addCell(qsTr(this.data[0].dupont_data[key].description), textstyle);
+            for (var i = this.data.length - 1; i >= 0; i--) {
+                ratios = this.data[i].dupont_data[key].amount;
+                if (this.data[i].dupont_data[key].type === "perc") {
+                    cell = tableRow.addCell(ratios + perc + ' ', "styleNormalAmount");
                 } else {
-                    textstyle = "styleTablRows";
+                    cell = tableRow.addCell(this.toLocaleAmountFormat(ratios) + ' ', "styleNormalAmount");
                 }
-                tableRow.addCell(qsTr(this.data[0].dupont_data[key].description), textstyle);
-                for (var i = this.data.length - 1; i >= 0; i--) {
-                    ratios = this.data[i].dupont_data[key].amount;
-                    if (this.data[i].dupont_data[key].type === "perc") {
-                        cell = tableRow.addCell(ratios + perc + ' ', "styleNormalAmount");
-                    } else {
-                        cell = tableRow.addCell(this.toLocaleAmountFormat(ratios) + ' ', "styleNormalAmount");
-                    }
-                    if (i < analsysisYears) {
-                        var indexT1 = this.data[i].dupont_data[key].amount;
-                        var indexT2 = this.data[i + 1].dupont_data[key].amount;
-                        this.setIndexEvolution(indexT1, indexT2, cell, this.data[i].period.Type);
-                    }
+                if (i < analsysisYears) {
+                    var indexT1 = this.data[i].dupont_data[key].amount;
+                    var indexT2 = this.data[i + 1].dupont_data[key].amount;
+                    this.setIndexEvolution(indexT1, indexT2, cell, this.data[i].period.Type);
                 }
             }
         }
+    }
 
-        /******************************************************************************************
-         * Add the Z score Altman index Analysis
-         * ***************************************************************************************/
+    /**
+     * Add altman z score table to the report.
+     * @param {*} report 
+     */
+    addAltmanZScoreTable(report){
         var tableAltmanZScoreIndex = this.printReportAdd_TableAltmanZScoreIndex(report);
         var tableRow = tableAltmanZScoreIndex.addRow("styleTablRows");
+        let zScorePan = 1;
+        let keyRef = "finalScore";
+        let withFormulaColumn = this.dialogparam.formulascolumn;
         for (var key in this.data[0].altman_index) {
             var tableRow = tableAltmanZScoreIndex.addRow("styleTablRows");
+            if(key == keyRef)
+                withFormulaColumn ? zScorePan = 3 : zScorePan = 2;
             tableRow.addCell(this.data[0].altman_index[key].text.descr,
-                this.data[0].altman_index[key].text.style);
-            if (this.dialogparam.formulascolumn) {
+                this.data[0].altman_index[key].text.style, zScorePan);
+            if (withFormulaColumn && this.data[0].altman_index[key].formula.descr) {
                 tableRow.addCell(this.data[0].altman_index[key].formula.descr,
                     this.data[0].altman_index[key].formula.style);
             }
-            tableRow.addCell(this.data[0].altman_index[key].weighting.descr,
+            if(this.data[0].altman_index[key].weighting.descr){
+                tableRow.addCell(this.data[0].altman_index[key].weighting.descr,
                 this.data[0].altman_index[key].weighting.style);
-
+            }
             for (var i = this.data.length - 1; i >= 0; i--) {
                 tableRow.addCell(this.data[i].altman_index[key].amount.value, this.data[i].altman_index[key].amount.style);
             }
+            zScorePan = 1;
         }
+    }
 
-        /****************************************************************************************
-         * Add the Z Score for Private Companies
-         ****************************************************************************************/
+    /**
+     * Add altman z score table for companies to the report.
+     * @param {*} report 
+     * @param {*} texts
+     */
+    addAltmanZScorePrivateCompaniesTable(report,texts){
         var tableAltmanZScoreIndexPC = this.printReportAdd_TableZScorePrivateCompanies(report);
         var tableRow = tableAltmanZScoreIndexPC.addRow("styleTablRows");
+        let zScorePan = 1;
+        let keyRef = "finalScore";
+        let withFormulaColumn = this.dialogparam.formulascolumn;
         for (var key in this.data[0].altman_index_pc) {
             var tableRow = tableAltmanZScoreIndexPC.addRow("styleTablRows");
+            if(key == keyRef)
+                withFormulaColumn ? zScorePan = 3 : zScorePan = 2;
             tableRow.addCell(this.data[0].altman_index_pc[key].text.descr,
-                this.data[0].altman_index_pc[key].text.style);
-            if (this.dialogparam.formulascolumn) {
+                this.data[0].altman_index_pc[key].text.style,zScorePan);
+            if (withFormulaColumn && this.data[0].altman_index_pc[key].formula.descr ) {
                 tableRow.addCell(this.data[0].altman_index_pc[key].formula.descr,
                     this.data[0].altman_index_pc[key].formula.style);
             }
-            tableRow.addCell(this.data[0].altman_index_pc[key].weighting.descr,
+            if(this.data[0].altman_index_pc[key].weighting.descr){
+                tableRow.addCell(this.data[0].altman_index_pc[key].weighting.descr,
                 this.data[0].altman_index_pc[key].weighting.style);
+            }
 
             for (var i = this.data.length - 1; i >= 0; i--) {
                 tableRow.addCell(this.data[i].altman_index_pc[key].amount.value, this.data[i].altman_index_pc[key].amount.style);
             }
+
+            zScorePan = 1;
         }
 
-        /*report.addParagraph("","");
+        report.addParagraph("","");
+        report.addParagraph("","");
+        report.addParagraph("","");
         report.addParagraph(texts.altmanlowprob, "styleParagraphs");
         report.addParagraph(texts.altmanmediumprob, "styleParagraphs");
-        report.addParagraph(texts.altmanstrongprob, "styleParagraphs");*/
+        report.addParagraph(texts.altmanstrongprob, "styleParagraphs");
+    }
 
+    /**
+     * @description this method do the following things:
+     * -call some other methods to recover the neccesary values
+     * -print the tables and others report elements entering the different data.
+     * -set the cells and the rows values
+     * @returns a report object.
+     */
+    printReport(styleSheet) {
+
+        var texts = this.getFinancialAnalysisTexts();
+        var report = Banana.Report.newReport('Financial Statement Analysis Report');
+
+        var analsysisYears = this.data.length;
+        var spanBalanceTitle = this.generateSpanForBalanceTitles();
+
+        if (!this.data || this.data.length <= 0) {
+            return report;
+        }
+
+        this.addHeader(report, styleSheet);
+        this.addFooter(report);
+        this.addBalanceTable(report,texts,spanBalanceTitle);
+        this.addProfitAndLossTable(report,texts);
+        this.addControlSumsTable(report,texts);
+        this.addCashflowTable(report,texts,spanBalanceTitle);
+        this.addCashflowVerificationTable(report,texts,spanBalanceTitle);
+        this.addRetainedEarningsTable(report);
+        this.addCashflowRatiosTable(report,analsysisYears);
+        this.addLiquidityRatiosTable(report,analsysisYears);
+        this.addLeverageRatiosTable(report,analsysisYears);
+        this.addProfitabilityRatiosTable(report,analsysisYears);
+        this.addEfficiencyRatiosTable(report);
+        if (this.dialogparam.includedupontanalysis) {
+            this.addDupontAnalysisTable(report,analsysisYears);
+        }
+        this.addAltmanZScoreTable(report);
+        this.addAltmanZScorePrivateCompaniesTable(report,texts);
 
         return report;
 
@@ -1774,9 +1860,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
          * texts for the formulas
          * ***************************************************************************************/
         texts.altmanformula = qsTr("formula used for the calculation  = 1.2A + 1.4B + 3.3C + 0.6D + 1.0E");
-        texts.altmanlowprob = qsTr("for values > than 3 correspond a low probability of a financial crisis");
-        texts.altmanmediumprob = qsTr("for values >= than 1.8 but <= than 3 there are possibilities of a financial crisis, should be kept under control");
-        texts.altmanstrongprob = qsTr("for values < than 1.8 there is a strong probability of a financial crisis");
+        texts.altmanlowprob = qsTr("For values > than 3 correspond a low probability of a financial crisis");
+        texts.altmanmediumprob = qsTr("For values >= than 1.8 but <= than 3 there are possibilities of a financial crisis, should be kept under control");
+        texts.altmanstrongprob = qsTr("For values < than 1.8 there is a strong probability of a financial crisis");
         texts.efficiencyRPE = qsTr("satu/employees");
         texts.efficiencyAVE = qsTr("adva/employees");
         texts.efficiencyPCE = qsTr("cope/employees");
@@ -1785,7 +1871,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
          * texts for Altman Z-Score index Formulas
          * ***************************************************************************************/
         texts.altmanFormulaA = "(cuas-stdc) / tota";
-        texts.altmanFormulaB = qsTr("Total retained earning / tota");
+        texts.altmanFormulaB = qsTr("Retained earning / tota");
         texts.altmanFormulaC = "EBIT / tota";
         texts.altmanFormulaD = "owca / deca";
         texts.altmanFormulaE = "satu / tota";
@@ -2745,7 +2831,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         altmanIndexObj.ratioA.text.style = "";
         altmanIndexObj.ratioA.formula = {};
         altmanIndexObj.ratioA.formula.descr = texts.altmanFormulaA;
-        altmanIndexObj.ratioA.formula.style = "";
+        altmanIndexObj.ratioA.formula.style = "styleCentralText";
         altmanIndexObj.ratioA.weighting = {};
         altmanIndexObj.ratioA.weighting.descr = pondA.toString();
         altmanIndexObj.ratioA.weighting.style = "styleCentralText";
@@ -2759,7 +2845,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         altmanIndexObj.ratioB.text.style = "";
         altmanIndexObj.ratioB.formula = {};
         altmanIndexObj.ratioB.formula.descr = texts.altmanFormulaB;
-        altmanIndexObj.ratioB.formula.style = "";
+        altmanIndexObj.ratioB.formula.style = "styleCentralText";
         altmanIndexObj.ratioB.weighting = {};
         altmanIndexObj.ratioB.weighting.descr = pondB.toString();
         altmanIndexObj.ratioB.weighting.style = "styleCentralText";
@@ -2773,7 +2859,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         altmanIndexObj.ratioC.text.style = "";
         altmanIndexObj.ratioC.formula = {};
         altmanIndexObj.ratioC.formula.descr = texts.altmanFormulaC;
-        altmanIndexObj.ratioC.formula.style = "";
+        altmanIndexObj.ratioC.formula.style = "styleCentralText";
         altmanIndexObj.ratioC.weighting = {};
         altmanIndexObj.ratioC.weighting.descr = pondC.toString();
         altmanIndexObj.ratioC.weighting.style = "styleCentralText";
@@ -2787,7 +2873,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         altmanIndexObj.ratioD.text.style = "";
         altmanIndexObj.ratioD.formula = {};
         altmanIndexObj.ratioD.formula.descr = texts.altmanFormulaD;
-        altmanIndexObj.ratioD.formula.style = "";
+        altmanIndexObj.ratioD.formula.style = "styleCentralText";
         altmanIndexObj.ratioD.weighting = {};
         altmanIndexObj.ratioD.weighting.descr = pondD.toString();
         altmanIndexObj.ratioD.weighting.style = "styleCentralText";
@@ -2802,7 +2888,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         altmanIndexObj.ratioE.text.style = "";
         altmanIndexObj.ratioE.formula = {};
         altmanIndexObj.ratioE.formula.descr = texts.altmanFormulaE;
-        altmanIndexObj.ratioE.formula.style = "";
+        altmanIndexObj.ratioE.formula.style = "styleCentralText";
         altmanIndexObj.ratioE.weighting = {};
         altmanIndexObj.ratioE.weighting.descr = pondE.toString();
         altmanIndexObj.ratioE.weighting.style = "styleCentralText";
@@ -2818,11 +2904,11 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         }
         altmanIndexObj.finalScore = {};
         altmanIndexObj.finalScore.text = {};
-        altmanIndexObj.finalScore.text.descr = texts.altmanFinalZScore;
+        altmanIndexObj.finalScore.text.descr = texts.altmanFinalZScore + ": " + texts.altmanZScoreFormula;
         altmanIndexObj.finalScore.text.style = "styleUnderGroupTitles";
         altmanIndexObj.finalScore.formula = {};
-        altmanIndexObj.finalScore.formula.descr = texts.altmanZScoreFormula;
-        altmanIndexObj.finalScore.formula.style = "styleUnderGroupTitles";
+        altmanIndexObj.finalScore.formula.descr = "";
+        altmanIndexObj.finalScore.formula.style = "styleUnderGroupTitles_Formula";
         altmanIndexObj.finalScore.weighting = {};
         altmanIndexObj.finalScore.weighting.descr = ""
         altmanIndexObj.finalScore.weighting.style = "";
@@ -2853,7 +2939,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         altmanIndexObj.ratioA.text.style = "";
         altmanIndexObj.ratioA.formula = {};
         altmanIndexObj.ratioA.formula.descr = texts.altmanFormulaA;
-        altmanIndexObj.ratioA.formula.style = "";
+        altmanIndexObj.ratioA.formula.style = "styleCentralText";
         altmanIndexObj.ratioA.weighting = {};
         altmanIndexObj.ratioA.weighting.descr = pondA.toString();
         altmanIndexObj.ratioA.weighting.style = "styleCentralText";
@@ -2867,7 +2953,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         altmanIndexObj.ratioB.text.style = "";
         altmanIndexObj.ratioB.formula = {};
         altmanIndexObj.ratioB.formula.descr = texts.altmanFormulaB;
-        altmanIndexObj.ratioB.formula.style = "";
+        altmanIndexObj.ratioB.formula.style = "styleCentralText";
         altmanIndexObj.ratioB.weighting = {};
         altmanIndexObj.ratioB.weighting.descr = pondB.toString();
         altmanIndexObj.ratioB.weighting.style = "styleCentralText";
@@ -2881,7 +2967,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         altmanIndexObj.ratioC.text.style = "";
         altmanIndexObj.ratioC.formula = {};
         altmanIndexObj.ratioC.formula.descr = texts.altmanFormulaC;
-        altmanIndexObj.ratioC.formula.style = "";
+        altmanIndexObj.ratioC.formula.style = "styleCentralText";
         altmanIndexObj.ratioC.weighting = {};
         altmanIndexObj.ratioC.weighting.descr = pondC.toString();
         altmanIndexObj.ratioC.weighting.style = "styleCentralText";
@@ -2895,7 +2981,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         altmanIndexObj.ratioD.text.style = "";
         altmanIndexObj.ratioD.formula = {};
         altmanIndexObj.ratioD.formula.descr = texts.altmanFormulaD;
-        altmanIndexObj.ratioD.formula.style = "";
+        altmanIndexObj.ratioD.formula.style = "styleCentralText";
         altmanIndexObj.ratioD.weighting = {};
         altmanIndexObj.ratioD.weighting.descr = pondD.toString();
         altmanIndexObj.ratioD.weighting.style = "styleCentralText";
@@ -2910,7 +2996,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         altmanIndexObj.ratioE.text.style = "";
         altmanIndexObj.ratioE.formula = {};
         altmanIndexObj.ratioE.formula.descr = texts.altmanFormulaE;
-        altmanIndexObj.ratioE.formula.style = "";
+        altmanIndexObj.ratioE.formula.style = "styleCentralText";
         altmanIndexObj.ratioE.weighting = {};
         altmanIndexObj.ratioE.weighting.descr = pondE.toString();
         altmanIndexObj.ratioE.weighting.style = "styleCentralText";
@@ -2926,11 +3012,11 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         }
         altmanIndexObj.finalScore = {};
         altmanIndexObj.finalScore.text = {};
-        altmanIndexObj.finalScore.text.descr = texts.altmanFinalZScore;
+        altmanIndexObj.finalScore.text.descr = texts.altmanFinalZScore + ": " + texts.altmanZScoreFormulaPC;
         altmanIndexObj.finalScore.text.style = "styleUnderGroupTitles";
         altmanIndexObj.finalScore.formula = {};
-        altmanIndexObj.finalScore.formula.descr = texts.altmanZScoreFormulaPC;
-        altmanIndexObj.finalScore.formula.style = "styleUnderGroupTitles";
+        altmanIndexObj.finalScore.formula.descr = "";
+        altmanIndexObj.finalScore.formula.style = "styleUnderGroupTitles_formula";
         altmanIndexObj.finalScore.weighting = {};
         altmanIndexObj.finalScore.weighting.descr = ""
         altmanIndexObj.finalScore.weighting.style = "";
@@ -4777,7 +4863,6 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
      * @returns an object containing an array and the version.
      */
     convertParam() {
-        var lang = this.getLang();
         var defaultParam = this.initDialogParam();
         var userParam = this.dialogparam;
         var convertedParam = {};
@@ -6107,7 +6192,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         altmanIndexObj.ratioA.text.style = "";
         altmanIndexObj.ratioA.formula = {};
         altmanIndexObj.ratioA.formula.descr = texts.altmanFormulaA;
-        altmanIndexObj.ratioA.formula.style = "";
+        altmanIndexObj.ratioA.formula.style = "styleCentralText";
         altmanIndexObj.ratioA.weighting = {};
         altmanIndexObj.ratioA.weighting.descr = pondA.toString();
         altmanIndexObj.ratioA.weighting.style = "styleCentralText";
@@ -6121,7 +6206,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         altmanIndexObj.ratioB.text.style = "";
         altmanIndexObj.ratioB.formula = {};
         altmanIndexObj.ratioB.formula.descr = texts.altmanFormulaB;
-        altmanIndexObj.ratioB.formula.style = "";
+        altmanIndexObj.ratioB.formula.style = "styleCentralText";
         altmanIndexObj.ratioB.weighting = {};
         altmanIndexObj.ratioB.weighting.descr = pondB.toString();
         altmanIndexObj.ratioB.weighting.style = "styleCentralText";
@@ -6135,7 +6220,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         altmanIndexObj.ratioC.text.style = "";
         altmanIndexObj.ratioC.formula = {};
         altmanIndexObj.ratioC.formula.descr = texts.altmanFormulaC;
-        altmanIndexObj.ratioC.formula.style = "";
+        altmanIndexObj.ratioC.formula.style = "styleCentralText";
         altmanIndexObj.ratioC.weighting = {};
         altmanIndexObj.ratioC.weighting.descr = pondC.toString();
         altmanIndexObj.ratioC.weighting.style = "styleCentralText";
@@ -6149,7 +6234,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         altmanIndexObj.ratioD.text.style = "";
         altmanIndexObj.ratioD.formula = {};
         altmanIndexObj.ratioD.formula.descr = texts.altmanFormulaD;
-        altmanIndexObj.ratioD.formula.style = "";
+        altmanIndexObj.ratioD.formula.style = "styleCentralText";
         altmanIndexObj.ratioD.weighting = {};
         altmanIndexObj.ratioD.weighting.descr = pondD.toString();
         altmanIndexObj.ratioD.weighting.style = "styleCentralText";
@@ -6164,7 +6249,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         altmanIndexObj.ratioE.text.style = "";
         altmanIndexObj.ratioE.formula = {};
         altmanIndexObj.ratioE.formula.descr = texts.altmanFormulaE;
-        altmanIndexObj.ratioE.formula.style = "";
+        altmanIndexObj.ratioE.formula.style = "styleCentralText";
         altmanIndexObj.ratioE.weighting = {};
         altmanIndexObj.ratioE.weighting.descr = pondE.toString();
         altmanIndexObj.ratioE.weighting.style = "styleCentralText";
@@ -6180,11 +6265,11 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         }
         altmanIndexObj.finalScore = {};
         altmanIndexObj.finalScore.text = {};
-        altmanIndexObj.finalScore.text.descr = texts.altmanFinalZScore;
+        altmanIndexObj.finalScore.text.descr = texts.altmanFinalZScore + ": " + texts.altmanZScoreFormula;
         altmanIndexObj.finalScore.text.style = "styleUnderGroupTitles";
         altmanIndexObj.finalScore.formula = {};
-        altmanIndexObj.finalScore.formula.descr = texts.altmanZScoreFormula;
-        altmanIndexObj.finalScore.formula.style = "styleUnderGroupTitles";
+        altmanIndexObj.finalScore.formula.descr = "";
+        altmanIndexObj.finalScore.formula.style = "styleUnderGroupTitles_Formula";
         altmanIndexObj.finalScore.weighting = {};
         altmanIndexObj.finalScore.weighting.descr = ""
         altmanIndexObj.finalScore.weighting.style = "";
@@ -6242,7 +6327,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         altmanIndexObj.ratioA.text.style = "";
         altmanIndexObj.ratioA.formula = {};
         altmanIndexObj.ratioA.formula.descr = texts.altmanFormulaA;
-        altmanIndexObj.ratioA.formula.style = "";
+        altmanIndexObj.ratioA.formula.style = "styleCentralText";
         altmanIndexObj.ratioA.weighting = {};
         altmanIndexObj.ratioA.weighting.descr = pondA.toString();
         altmanIndexObj.ratioA.weighting.style = "styleCentralText";
@@ -6256,7 +6341,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         altmanIndexObj.ratioB.text.style = "";
         altmanIndexObj.ratioB.formula = {};
         altmanIndexObj.ratioB.formula.descr = texts.altmanFormulaB;
-        altmanIndexObj.ratioB.formula.style = "";
+        altmanIndexObj.ratioB.formula.style = "styleCentralText";
         altmanIndexObj.ratioB.weighting = {};
         altmanIndexObj.ratioB.weighting.descr = pondB.toString();
         altmanIndexObj.ratioB.weighting.style = "styleCentralText";
@@ -6270,7 +6355,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         altmanIndexObj.ratioC.text.style = "";
         altmanIndexObj.ratioC.formula = {};
         altmanIndexObj.ratioC.formula.descr = texts.altmanFormulaC;
-        altmanIndexObj.ratioC.formula.style = "";
+        altmanIndexObj.ratioC.formula.style = "styleCentralText";
         altmanIndexObj.ratioC.weighting = {};
         altmanIndexObj.ratioC.weighting.descr = pondC.toString();
         altmanIndexObj.ratioC.weighting.style = "styleCentralText";
@@ -6284,7 +6369,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         altmanIndexObj.ratioD.text.style = "";
         altmanIndexObj.ratioD.formula = {};
         altmanIndexObj.ratioD.formula.descr = texts.altmanFormulaD;
-        altmanIndexObj.ratioD.formula.style = "";
+        altmanIndexObj.ratioD.formula.style = "styleCentralText";
         altmanIndexObj.ratioD.weighting = {};
         altmanIndexObj.ratioD.weighting.descr = pondD.toString();
         altmanIndexObj.ratioD.weighting.style = "styleCentralText";
@@ -6299,7 +6384,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         altmanIndexObj.ratioE.text.style = "";
         altmanIndexObj.ratioE.formula = {};
         altmanIndexObj.ratioE.formula.descr = texts.altmanFormulaE;
-        altmanIndexObj.ratioE.formula.style = "";
+        altmanIndexObj.ratioE.formula.style = "styleCentralText";
         altmanIndexObj.ratioE.weighting = {};
         altmanIndexObj.ratioE.weighting.descr = pondE.toString();
         altmanIndexObj.ratioE.weighting.style = "styleCentralText";
@@ -6315,11 +6400,11 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         }
         altmanIndexObj.finalScore = {};
         altmanIndexObj.finalScore.text = {};
-        altmanIndexObj.finalScore.text.descr = texts.altmanFinalZScore;
+        altmanIndexObj.finalScore.text.descr = texts.altmanFinalZScore + ": " + texts.altmanZScoreFormulaPC;
         altmanIndexObj.finalScore.text.style = "styleUnderGroupTitles";
         altmanIndexObj.finalScore.formula = {};
-        altmanIndexObj.finalScore.formula.descr = texts.altmanZScoreFormulaPC;
-        altmanIndexObj.finalScore.formula.style = "styleUnderGroupTitles";
+        altmanIndexObj.finalScore.formula.descr = "";
+        altmanIndexObj.finalScore.formula.style = "styleUnderGroupTitles_Formula";
         altmanIndexObj.finalScore.weighting = {};
         altmanIndexObj.finalScore.weighting.descr = ""
         altmanIndexObj.finalScore.weighting.style = "";

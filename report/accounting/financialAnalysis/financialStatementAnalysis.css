@@ -95,29 +95,35 @@ style's for the amounts
 
     .styleZIndexLow {
         background-color: #a4ff8b;
+        font-weight: bold;
         text-align: right;
     }
 
     .styleZIndexLow_withoutColor {
         text-align: right;
+        font-weight: bold;
     }
 
     .styleZIndexMid {
         background-color: #fdfb74;
+        font-weight: bold;
         text-align: right;
     }
 
     .styleZIndexMid_withoutColor {
         text-align: right;
+        font-weight: bold;
     }
 
     .styleZIndexProb {
         background-color: #ee7d73;
+        font-weight: bold;
         text-align: right;
     }
 
     .styleZIndexProb_withoutColor {
         text-align: right;
+        font-weight: bold;
     }
 
     /*style for the amount when the difference between calculated total and the accounting total is>than 0*/
@@ -161,12 +167,18 @@ style's for the texts
         font-weight: bold;
     }
 
+    .styleUnderGroupTitles_Formula{
+        font-weight: bold;
+        text-align: center;
+    }
+
     .styleTitlesTotalAmount {
         font-weight: bold;
         background-color: #e5f2ff;
     }
 
     .styleParagraphs {
+        font-size: 8;
         text-align: left;
         font-style: italic;
     }
