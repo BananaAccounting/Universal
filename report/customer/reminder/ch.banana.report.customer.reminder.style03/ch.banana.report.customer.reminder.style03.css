@@ -1,4 +1,4 @@
-/* Update 2023-01-20  */
+/* Update 2023-02-28  */
 
 @page {
     margin-top: 0.0cm;
@@ -122,6 +122,10 @@ body {
 
 .repTableCol7 {
     width: 10%;
+}
+
+.address_error {
+    color: red;
 }
 
 .summary_title {
