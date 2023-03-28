@@ -168,22 +168,29 @@ Return on investment (ROI)  & 38.89\%  \\
 ALTMAN Z-SCORE Description  & formula  & Weighting  & Year to Date \\
 \\
 Working capital / total Assets  & (cuas-stdc) / tota  & 1.2  & 0.02 \\
-Retained earnings / total Assets  & Total retained earning / tota  & 1.4  & 0.01 \\
+Retained earnings / total Assets  & Retained earning / tota  & 1.4  & 0.01 \\
 Earnings before interest and task payment / total Assets  & EBIT / tota  & 3.3  & 1.28 \\
 Equity market value / total Liabilities  & owca / deca  & 0.6  & 0.05 \\
 Total Sales / total Assets  & satu / tota  & 0.999  & 0.56 \\
-Z-Score  & (1.2 x A) + (1.4 x B) + (3.3 x C) + (0.6 x D) + (0.999 x E)  &  & 1.92 \\
+\multicolumn{3}{l}{Z-Score: (1.2 x A) + (1.4 x B) + (3.3 x C) + (0.6 x D) + (0.999 x E) } & 1.92 \\
 \end{longtable}
 \begin{longtable}[l]{ l  l  l  l }
 Z-SCORE FOR PRIVATE COMPANIES Description  & formula  & Weighting  & Year to Date \\
 \\
 (Current Assets - Current Liabilities) / total Assets  & (cuas-stdc) / tota  & 0.717  & 0.01 \\
-Retained earnings / total Assets  & Total retained earning / tota  & 0.847  & 0.01 \\
+Retained earnings / total Assets  & Retained earning / tota  & 0.847  & 0.01 \\
 Earnings before interest and task payment / total Assets  & EBIT / tota  & 3.107  & 1.21 \\
 Book Value of Equity / total Liabilities  & owca / deca  & 0.42  & 0.04 \\
 Total Sales / total Assets  & satu / tota  & 0.998  & 0.56 \\
-Z-Score  & (0.717 x A) + (0.847 x B) + (3.107 x C) + (0.420 x D) + (0.998 x E)  &  & 1.83 \\
+\multicolumn{3}{l}{Z-Score: (0.717 x A) + (0.847 x B) + (3.107 x C) + (0.420 x D) + (0.998 x E) } & 1.83 \\
 \end{longtable}
+<<<<<<< Updated upstream
 \excltest{20.03.2023} \\
+=======
+For values > than 3 correspond a low probability of a financial crisis \\
+For values >= than 1.8 but <= than 3 there are possibilities of a financial crisis, should be kept under control \\
+For values < than 1.8 there is a strong probability of a financial crisis \\
+\excltest{28.03.2023} \\
+>>>>>>> Stashed changes
 \#page-nr \end{reportvalue}
 \end{document}

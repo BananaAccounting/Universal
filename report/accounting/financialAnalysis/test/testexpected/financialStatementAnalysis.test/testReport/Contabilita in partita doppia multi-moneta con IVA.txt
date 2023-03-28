@@ -165,22 +165,29 @@ Return on investment (ROI)  & 61.65\%   & 0.00\%  ↓  & 61.65\%   & 61.65\%   &
 ALTMAN Z-SCORE Description  & formula  & Weighting  & Year to Date  & Budget to Date  & Budget to Date +/-  & Year to Date + Budget  & Budget  & Budget +/- \\
 \\
 Working capital / total Assets  & (cuas-stdc) / tota  & 1.2  & 0.06  & 1.20  & -1.14  & 0.06  & 1.20  & -1.14 \\
-Retained earnings / total Assets  & Total retained earning / tota  & 1.4  & 0.33  & 0.00  & 0.33  & 0.33  & 0.00  & 0.33 \\
+Retained earnings / total Assets  & Retained earning / tota  & 1.4  & 0.33  & 0.00  & 0.33  & 0.33  & 0.00  & 0.33 \\
 Earnings before interest and task payment / total Assets  & EBIT / tota  & 3.3  & 2.03  & 0.00  & 2.03  & 2.03  & 0.00  & 2.03 \\
 Equity market value / total Liabilities  & owca / deca  & 0.6  & 0.19  & 0.00  & 0.19  & 0.19  & 0.00  & 0.19 \\
 Total Sales / total Assets  & satu / tota  & 0.999  & 0.71  & 0.00  & 0.71  & 0.71  & 0.00  & 0.71 \\
-Z-Score  & (1.2 x A) + (1.4 x B) + (3.3 x C) + (0.6 x D) + (0.999 x E)  &  & 3.32  & 1.20  & 2.12  & 3.32  & 1.20  & 2.12 \\
+\multicolumn{3}{l}{Z-Score: (1.2 x A) + (1.4 x B) + (3.3 x C) + (0.6 x D) + (0.999 x E) } & 3.32  & 1.20  & 2.12  & 3.32  & 1.20  & 2.12 \\
 \end{longtable}
 \begin{longtable}[l]{ l  l  l  l  l  l  l  l  l }
 Z-SCORE FOR PRIVATE COMPANIES Description  & formula  & Weighting  & Year to Date  & Budget to Date  & Budget to Date +/-  & Year to Date + Budget  & Budget  & Budget +/- \\
 \\
 (Current Assets - Current Liabilities) / total Assets  & (cuas-stdc) / tota  & 0.717  & 0.03  & 0.72  & -0.69  & 0.03  & 0.72  & -0.69 \\
-Retained earnings / total Assets  & Total retained earning / tota  & 0.847  & 0.20  & 0.00  & 0.20  & 0.20  & 0.00  & 0.20 \\
+Retained earnings / total Assets  & Retained earning / tota  & 0.847  & 0.20  & 0.00  & 0.20  & 0.20  & 0.00  & 0.20 \\
 Earnings before interest and task payment / total Assets  & EBIT / tota  & 3.107  & 1.92  & 0.00  & 1.92  & 1.92  & 0.00  & 1.92 \\
 Book Value of Equity / total Liabilities  & owca / deca  & 0.42  & 0.13  & 0.00  & 0.13  & 0.13  & 0.00  & 0.13 \\
 Total Sales / total Assets  & satu / tota  & 0.998  & 0.71  & 0.00  & 0.71  & 0.71  & 0.00  & 0.71 \\
-Z-Score  & (0.717 x A) + (0.847 x B) + (3.107 x C) + (0.420 x D) + (0.998 x E)  &  & 2.99  & 0.72  & 2.27  & 2.99  & 0.72  & 2.27 \\
+\multicolumn{3}{l}{Z-Score: (0.717 x A) + (0.847 x B) + (3.107 x C) + (0.420 x D) + (0.998 x E) } & 2.99  & 0.72  & 2.27  & 2.99  & 0.72  & 2.27 \\
 \end{longtable}
+<<<<<<< Updated upstream
 \excltest{20.03.2023} \\
+=======
+For values > than 3 correspond a low probability of a financial crisis \\
+For values >= than 1.8 but <= than 3 there are possibilities of a financial crisis, should be kept under control \\
+For values < than 1.8 there is a strong probability of a financial crisis \\
+\excltest{28.03.2023} \\
+>>>>>>> Stashed changes
 \#page-nr \end{reportvalue}
 \end{document}

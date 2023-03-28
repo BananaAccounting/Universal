@@ -35,3 +35,16 @@
 ### Pending
 - Allow only the estimate column to be displayed.
 - Increase the date automatically in the dialogue.
+
+#### UPDATE 23.03.2023
+
+- Instaed of using the api method "createPropertyEditor" we come back to "openPropertyEditor"
+ * Use of "createPropertyEditor" gives an error if you do not use the dev Channel
+ * Before we switched from "openPropertyEditor" to "createPropertyEditor" to implement the button to import settings from an another file
+ but as we cant use that (seee 15.03.2023 updates) we can come back to simply use "openPropertyEditor" wich works for each version.
+
+### UPDATE 28.03.2023
+
+- Modifica totale Z score nella tabella dupont togliendo le colonne per la formula ed il peso, aggiungendo la formula nella descrizione. Questa modifica permette alla tabella di avere una larghezza non sopra il limite, che causava dei problemi con gli elementi circostanti (paragrafi,altre tabelle)
+- Sono stati reinseriti i paragrafi finale per l'analisi Z - Score.
+- La stampa delle varie tabelle dei report è stata suddivisa in funzioni, richiamate nella funzione printReport.
