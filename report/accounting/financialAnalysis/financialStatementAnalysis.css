@@ -1,71 +1,80 @@
     /***************************************************
 style for the Report sections/principal objects
 ***************************************************/
-    
+
     @page {
         margin-top: 10mm;
         margin-bottom: 10mm;
         margin-left: 10mm;
         margin-right: 10mm;
     }
-    
+
     body {
         font-size: 9pt;
     }
-    
+
     .header_text {
-        font-size: 8pt;
-        padding: 0;
-        margin: 0;
+        margin-top: 0.0cm;
+        margin-left: 0.0cm;
+        margin-right: 0.0cm;
+        text-align: right;
     }
-    
+
+    .logo {
+        margin-top: 0.0cm;
+        margin-left: 0.0cm;
+        margin-right: 0.0cm;
+    }
+
     .header_row_company_name {
         font-weight: bold;
         font-size: 12pt;
     }
-    
+
     .header_row_address {
         font-size: 10pt;
     }
-    
+
     .footer_right {
         text-align: right;
     }
-    
+
     .footer_left {
         text-align: left;
     }
+
     /***************************************************
 style for the tables
 ****************************************************/
-table {
-    font-size: 9pt;
-    margin-bottom: 20px;
-    width: 100%;
-}
+    table {
+        font-size: 9pt;
+        margin-bottom: 20px;
+        width: 100%;
+    }
 
-table td {
-    border-style: solid;
-    border-color: rgb(0, 0, 0);
-    width: auto;
-    padding-top: 1px;
-    padding-bottom: 1px;
-}
+    table td {
+        border-style: solid;
+        border-color: rgb(0, 0, 0);
+        width: auto;
+        padding-top: 1px;
+        padding-bottom: 1px;
+    }
 
     /**********************************************************
 style's for the amounts
 **********************************************************/
-    
+
     .styleNormalAmount {
         text-align: right;
     }
+
     /*style for the middle totals*/
-    
+
     .styleMidTotalAmount {
         text-align: right;
         font-weight: bold;
     }
-    
+
     .styleTotalAmount {
         background-color: #e5f2ff;
         font-weight: bold;
@@ -76,45 +85,52 @@ style's for the amounts
         font-weight: bold;
         text-align: right;
     }
-    
+
+    .styleTitlesTotalAmount_withoutColor {
+        font-weight: bold;
+        text-align: left;
+    }
+
     /*those 3 style's are for the Altman z Score Index values*/
-    
+
     .styleZIndexLow {
-        background-color: #71FA4C;
-        text-align: center;
+        background-color: #a4ff8b;
+        text-align: right;
     }
 
     .styleZIndexLow_withoutColor {
-        text-align: center;
+        text-align: right;
     }
-    
+
     .styleZIndexMid {
-        background-color: #FFFD54;
-        text-align: center;
+        background-color: #fdfb74;
+        text-align: right;
     }
 
     .styleZIndexMid_withoutColor {
-        text-align: center;
+        text-align: right;
     }
-    
+
     .styleZIndexProb {
-        background-color: #EC3323;
-        text-align: center;
+        background-color: #ee7d73;
+        text-align: right;
     }
 
     .styleZIndexProb_withoutColor {
-        text-align: center;
+        text-align: right;
     }
+
     /*style for the amount when the difference between calculated total and the accounting total is>than 0*/
-    
+
     .styleDifferenceFoundAmount {
         color: #EC3323;
         text-align: right;
     }
+
     /*******************************************************
 style's for the texts
 ********************************************************/
-    
+
     .styleTitles {
         font-weight: bold;
         color: #354793;
@@ -122,7 +138,7 @@ style's for the texts
         padding-top: 5px;
         padding-bottom: 5px;
     }
-    
+
     .styleTablesHeaderText {
         color: $headers_texts_color;
         background-color: $headers_background_color;
@@ -130,26 +146,33 @@ style's for the texts
         text-align: center;
     }
 
-    .styleTablesHeaderText_withoutColor{
+    .styleTablesHeaderText_withoutColor {
         font-weight: bold;
         text-align: center;
     }
-    
+
     .styleCentralText {
         text-align: center;
     }
+
     /*style for the titles of total amounts*/
-    
-    .styleTitlesTotalAmount {
+
+    .styleUnderGroupTitles{
         font-weight: bold;
     }
-    
+
+    .styleTitlesTotalAmount {
+        font-weight: bold;
+        background-color: #e5f2ff;
+    }
+
     .styleParagraphs {
         text-align: left;
         font-style: italic;
     }
+
     /*style for the Cashflow sections*/
-    
+
     .styleAssetsAdjustments {
         text-align: left;
         font-weight: bold;
@@ -160,7 +183,7 @@ style's for the texts
         text-align: left;
         font-weight: bold;
     }
-    
+
     .styleLiabilitiesAdjustments {
         text-align: left;
         font-weight: bold;
@@ -171,8 +194,9 @@ style's for the texts
         text-align: left;
         font-weight: bold;
     }
+
     /*style for the 'difference founds' warning*/
-    
+
     .styleWarningText {
         color: #EC3323;
         text-align: left;
@@ -186,21 +210,21 @@ style's for the texts
         font-size: 9pt;
         padding-top: 5px;
     }
-    
+
     .styleUpArrow {
         text-align: right;
         color: green;
         font-size: 12px;
         margin: 0px;
     }
-    
+
     .styleDownArrow {
         text-align: right;
         color: #EC3323;
         font-size: 12px;
         margin: 0px;
     }
-    
+
     .styleEqualArrow {
         text-align: right;
         color: orange;

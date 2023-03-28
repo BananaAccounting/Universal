@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.uni.invoice.uni11
 // @api = 1.0
-// @pubdate = 2022-12-30
+// @pubdate = 2023-03-10
 // @publisher = Banana.ch SA
 // @description = [UNI11] Programmable Invoice layout
 // @description.it = [UNI11] Layout Fattura Programmabile
@@ -160,6 +160,9 @@ function printInvoice(banDoc, repDocObj, texts, userParam, repStyleObj, invoiceO
 
   // Get the print format that is used to print the document.
   let printFormat = getPrintFormat(preferencesObj);
+  if (printFormat === "estimate") {
+    invoiceObj.document_info.doc_type = "17"; // 17=estimate
+  }
 
 
   /* PRINT HEADER */
@@ -242,6 +245,13 @@ function printInvoice(banDoc, repDocObj, texts, userParam, repStyleObj, invoiceO
       print_text_begin_reminder(sectionClassBegin, invoiceObj, texts, userParam, printFormat);
     }
   }
+  else if (printFormat === "proforma_invoice") {
+    if (BAN_ADVANCED && typeof(hook_print_text_begin_proforma_invoice) === typeof(Function)) {
+      hook_print_text_begin_proforma_invoice(sectionClassBegin, invoiceObj, texts, userParam);
+    } else {
+      print_text_begin_proforma_invoice(sectionClassBegin, invoiceObj, texts, userParam);
+    }
+  }
   else {
     if (BAN_ADVANCED && typeof(hook_print_text_begin) === typeof(Function)) {
       hook_print_text_begin(sectionClassBegin, invoiceObj, texts, userParam);
@@ -293,6 +303,13 @@ function printInvoice(banDoc, repDocObj, texts, userParam, repStyleObj, invoiceO
       hook_print_final_texts_reminder(sectionClassFinalTexts, invoiceObj, userParam);
     } else {
       print_final_texts_reminder(sectionClassFinalTexts, invoiceObj, userParam);
+    }
+  }
+  else if (printFormat === "proforma_invoice") {
+    if (BAN_ADVANCED && typeof(hook_print_final_texts_proforma_invoice) === typeof(Function)) {
+      hook_print_final_texts_proforma_invoice(sectionClassFinalTexts, invoiceObj, userParam);
+    } else {
+      print_final_texts_proforma_invoice(sectionClassFinalTexts, invoiceObj, userParam);
     }
   }
   else {
@@ -668,7 +685,7 @@ function print_customer_address(repDocObj, invoiceObj, userParam) {
       }
       locality += invoiceObj.supplier_info.city;
     }
-    
+
     var supplierAddressLine = "";
     if (name) {
       supplierAddressLine += name;
@@ -3205,6 +3222,128 @@ function print_final_texts_reminder(repDocObj, invoiceObj, userParam) {
         addMdBoldText(paragraph, text[i]);
       } else {
         addMdBoldText(paragraph, " "); //empty lines
+      }
+    }
+  }
+}
+
+
+
+//====================================================================//
+// FUNCTIONS THAT PRINT THE PROFORMA INVOICE.
+// USER CAN REPLACE THEM WITH 'HOOK' FUNCTIONS DEFINED USING EMBEDDED 
+// JAVASCRIPT FILES ON DOCUMENTS TABLE
+//====================================================================//
+function print_text_begin_proforma_invoice(repDocObj, invoiceObj, texts, userParam) {
+  /*
+    Prints the text before the proforma invoice details
+  */
+  var textTitle = "";
+  var textBegin = invoiceObj.document_info.text_begin;
+  var textBeginSettings = userParam[lang+'_text_begin_proforma_invoice'];
+  var table = repDocObj.addTable("begin_text_table");
+  var tableRow;
+  
+  // print the title  
+  textTitle = texts.proforma_invoice;
+  if (userParam[lang+'_title_proforma_invoice'] && userParam[lang+'_title_proforma_invoice'] !== "<none>") {
+    textTitle = userParam[lang+'_title_proforma_invoice'];
+  } else {
+    textTitle = "";
+  }
+
+  if (textTitle) {
+    textTitle = textTitle.replace(/<DocInvoice>/g, invoiceObj.document_info.number.trim());
+    textTitle = columnNamesToValues(invoiceObj, textTitle);
+    tableRow = table.addRow();
+    var titleCell = tableRow.addCell("","",1);
+    titleCell.addParagraph(textTitle, "title_text");
+  }
+
+  if (textBegin) {
+    tableRow = table.addRow();
+    var textCell = tableRow.addCell("","begin_text",1);
+    var textBeginLines = textBegin.split('\n');
+    for (var i = 0; i < textBeginLines.length; i++) {
+      if (textBeginLines[i]) {
+        textBeginLines[i] = columnNamesToValues(invoiceObj, textBeginLines[i]);
+        addMdBoldText(textCell, textBeginLines[i]);
+      }
+      else {
+        addMdBoldText(textCell, " "); //empty lines
+      }
+    }
+  }
+  else if (!textBegin && textBeginSettings) {
+    tableRow = table.addRow();
+    var textCell = tableRow.addCell("","begin_text",1);
+    var textBeginLines = textBeginSettings.split('\n');
+    for (var i = 0; i < textBeginLines.length; i++) {
+      if (textBeginLines[i]) {
+        textBeginLines[i] = columnNamesToValues(invoiceObj, textBeginLines[i]);
+        addMdBoldText(textCell, textBeginLines[i]);
+      }
+      else {
+        addMdBoldText(textCell, " "); //empty lines
+      }
+    }
+  }
+}
+
+function print_final_texts_proforma_invoice(repDocObj, invoiceObj, userParam) {
+  /*
+    Prints final texts for the proforma invoice after the details table.
+    - Default text is taken from the Print invoices -> Template options.
+    - If user let empty the parameter on Settings dialog -> Final text, it is used the default
+    - If user enter a text as parameter on Settings dialog -> Final text, it is used this instead.
+  */
+
+  //Text taken from the Settings dialog's parameter "Final text"
+  if (invoiceObj.document_info.doc_type !== "17") { //invoices and credit notes
+    if (userParam[lang+'_text_final_proforma_invoice'] && userParam[lang+'_text_final_proforma_invoice'] !== "<none>") {
+      var text = userParam[lang+'_text_final_proforma_invoice'];
+      text = text.split('\n');
+      // if (invoiceObj.note.length > 0 || invoiceObj.document_info.greetings) {
+      //   repDocObj.addParagraph(" ", "");
+      // }
+      for (var i = 0; i < text.length; i++) {
+        var paragraph = repDocObj.addParagraph("","final_texts");
+        if (text[i]) {
+          text[i] = columnNamesToValues(invoiceObj, text[i]);
+          addMdBoldText(paragraph, text[i]);
+        } else {
+          addMdBoldText(paragraph, " "); //empty lines
+        }
+      }
+    }
+
+    // Template params, default text starts with "(" and ends with ")" (default), (Vorderfiniert)
+    else if (invoiceObj.template_parameters && invoiceObj.template_parameters.footer_texts && !userParam[lang+'_text_final_proforma_invoice']) {
+      var textDefault = [];
+      var text = [];
+      for (var i = 0; i < invoiceObj.template_parameters.footer_texts.length; i++) {
+        var textLang = invoiceObj.template_parameters.footer_texts[i].lang;
+        if (textLang.indexOf('(') === 0 && textLang.indexOf(')') === textLang.length-1) {
+          textDefault = invoiceObj.template_parameters.footer_texts[i].text;
+        }
+        else if (textLang == lang) {
+          text = invoiceObj.template_parameters.footer_texts[i].text;
+        }
+      }
+      if (text.join().length <= 0) {
+        text = textDefault;
+      }
+      // if (invoiceObj.note.length > 0 || invoiceObj.document_info.greetings) {
+      //   repDocObj.addParagraph(" ", "");
+      // }
+      for (var i = 0; i < text.length; i++) {
+        var paragraph = repDocObj.addParagraph("","final_texts");
+        if (text[i]) {
+          text[i] = columnNamesToValues(invoiceObj, text[i]);
+          addMdBoldText(paragraph, text[i]);
+        } else {
+          addMdBoldText(paragraph, " "); //empty lines
+        }
       }
     }
   }

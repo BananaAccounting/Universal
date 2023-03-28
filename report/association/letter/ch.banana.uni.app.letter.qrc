@@ -1,0 +1,7 @@
+<!DOCTYPE RCC><RCC version="1.0">
+ <qresource>
+   <file>ch.banana.uni.app.letter.manifest.json</file>
+   <file>ch.banana.uni.app.letter.js</file>
+   <file>ch.banana.uni.app.letter.css</file>
+ </qresource>
+ </RCC>
