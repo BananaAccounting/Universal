@@ -17,7 +17,7 @@
 
 
 
-/* Texts update: 2022-12-30 */
+/* Texts update: 2023-03-10 */
 
 
 
@@ -263,6 +263,14 @@ function setTexts_it(texts) {
   texts.it_param_text_final_reminder = "Testo finale";
   texts.param_tooltip_text_final_reminder = "Inserisci un testo per sostituire quello predefinito";
 
+  texts.proforma_invoice = "Fattura Proforma";
+  texts.it_param_text_title_proforma_invoice = "Titolo";
+  texts.param_tooltip_title_proforma_invoice = "Inserisci un testo per sostituire quello predefinito";
+  texts.it_param_text_begin_proforma_invoice = "Testo iniziale";
+  texts.param_tooltip_text_begin_proforma_invoice = "Inserisci un testo per sostituire quello predefinito";
+  texts.it_param_text_final_proforma_invoice = "Testo finale";
+  texts.param_tooltip_text_final_proforma_invoice = "Inserisci un testo per sostituire quello predefinito";
+
   texts.param_color_title_total = "Colore titolo e totale";
   texts.param_tooltip_color_title_total = "Inserisci il colore";
 }
@@ -476,6 +484,14 @@ function setTexts_fr(texts) {
   texts.param_tooltip_text_begin_reminder = "Insérez un texte pour remplacer le texte par défaut";
   texts.fr_param_text_final_reminder = "Texte final";
   texts.param_tooltip_text_final_reminder = "Insérez un texte pour remplacer le texte par défaut";
+
+  texts.proforma_invoice = "Facture Proforma";
+  texts.fr_param_text_title_proforma_invoice = "Titre";
+  texts.param_tooltip_title_proforma_invoice = "Insérez un texte pour remplacer le texte par défaut";
+  texts.fr_param_text_begin_proforma_invoice = "Texte de début";
+  texts.param_tooltip_text_begin_proforma_invoice = "Insérez un texte pour remplacer le texte par défaut";
+  texts.fr_param_text_final_proforma_invoice = "Texte final";
+  texts.param_tooltip_text_final_proforma_invoice = "Insérez un texte pour remplacer le texte par défaut";
 
   texts.param_color_title_total = "Couleur titre et totale";
   texts.param_tooltip_color_title_total = "Insérer la couleur";
@@ -691,6 +707,14 @@ function setTexts_de(texts) {
   texts.de_param_text_final_reminder = "Schlusstext";
   texts.param_tooltip_text_final_reminder = "Text eingeben, um Standardtext zu ersetzen";
 
+  texts.proforma_invoice = "Proforma-Rechnung";
+  texts.de_param_text_title_proforma_invoice = "Titel";
+  texts.param_tooltip_title_proforma_invoice = "Text eingeben, um Standardtext zu ersetzen";
+  texts.de_param_text_begin_proforma_invoice = "Anfangstext";
+  texts.param_tooltip_text_begin_proforma_invoice = "Text eingeben, um Standardtext zu ersetzen";
+  texts.de_param_text_final_proforma_invoice = "Schlusstext";
+  texts.param_tooltip_text_final_proforma_invoice = "Text eingeben, um Standardtext zu ersetzen";
+
   texts.param_color_title_total = "Titel und Gesamtfarbe";
   texts.param_tooltip_color_title_total = "Farbe eingeben";
 }
@@ -904,6 +928,14 @@ function setTexts_nl(texts) {
   texts.param_tooltip_text_begin_reminder = "Voer tekst in om de standaard te vervangen";
   texts.nl_param_text_final_reminder = "Eindtekst";
   texts.param_tooltip_text_final_reminder = "Voer tekst in ter vervanging van de standaard";
+
+  texts.proforma_invoice = "Proforma factuur";
+  texts.nl_param_text_title_proforma_invoice = "Titel";
+  texts.param_tooltip_title_proforma_invoice = "Voer tekst in ter vervanging van de standaard";
+  texts.nl_param_text_begin_proforma_invoice = "Begin tekst";
+  texts.param_tooltip_text_begin_proforma_invoice = "Voer tekst in ter vervanging van de standaard";
+  texts.nl_param_text_final_proforma_invoice = "Eindtekst";
+  texts.param_tooltip_text_final_proforma_invoice = "Voer tekst in ter vervanging van de standaard";
 
   texts.param_color_title_total = "Titel en totale kleur";
   texts.param_tooltip_color_title_total = "Voer de kleur in";
@@ -1119,6 +1151,14 @@ function setTexts_zh(texts) {
   texts.zh_param_text_final_reminder = "最后文本";
   texts.param_tooltip_text_final_reminder = "输入替代默认值的文本";
 
+  texts.proforma_invoice = "形式发票";
+  texts.zh_param_text_title_proforma_invoice = "标题";
+  texts.param_tooltip_title_proforma_invoice = "输入替代默认值的文本";
+  texts.zh_param_text_begin_proforma_invoice = "开始文本";
+  texts.param_tooltip_text_begin_proforma_invoice = "输入替代默认值的文本";
+  texts.zh_param_text_final_proforma_invoice = "最后文本";
+  texts.param_tooltip_text_final_proforma_invoice = "输入替代默认值的文本";
+
   texts.param_color_title_total = "标题和总数的颜色";
   texts.param_tooltip_color_title_total = "输入颜色";
 }
@@ -1332,6 +1372,14 @@ function setTexts_en(texts) {
   texts.param_tooltip_text_begin_reminder = "Enter text to replace the default";
   texts.en_param_text_final_reminder = "Final text";
   texts.param_tooltip_text_final_reminder = "Enter text to replace the default";
+
+  texts.proforma_invoice = "Proforma Invoice";
+  texts.en_param_text_title_proforma_invoice = "Title";
+  texts.param_tooltip_title_proforma_invoice = "Enter text to replace the default";
+  texts.en_param_text_begin_proforma_invoice = "Begin text";
+  texts.param_tooltip_text_begin_proforma_invoice = "Enter text to replace the default";
+  texts.en_param_text_final_proforma_invoice = "Final text";
+  texts.param_tooltip_text_final_proforma_invoice = "Enter text to replace the default";
 
   texts.param_color_title_total = "Title and total color";
   texts.param_tooltip_color_title_total = "Enter the color";
