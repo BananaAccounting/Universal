@@ -1,19 +1,11 @@
-
-/* Update 2021-10-11 */
-
 @page {
-   margin-top: 10mm;
-   margin-bottom: 10mm;
-   margin-left: 20mm;
-   margin-right: 10mm;
+   margin-top: 0.0cm;
+   margin-bottom: 0.0cm;
+   margin-left: 0.0cm;
+   margin-right: 0.0cm;
 }
 
 body {
-   font-family: $font_family;
-   font-size: $font_size;
-}
-
-.address {
    font-family: $font_family;
    font-size: $font_size;
 }
@@ -30,45 +22,51 @@ body {
    text-align: center;
 }
 
-.imgSignature {
-   height: 10mm;
+.header_address {
+   font-family: $font_family;
+   font-size: $font_size;
 }
 
-/*.tableAddress {
-   margin-top: 2cm;
-   margin-left: 10.5cm;
-}*/
+.header_text {
+  margin-top: 1.2cm;
+  margin-left: 1.2cm;
+  margin-right: 1.2cm;
+  text-align: right;
+  position: absolute;
+}
 
-.tableAddress_right {
-  font-size: $font_size;
-  margin-top: 4.5cm;
-  margin-left: 10.3cm;
+.logo {
+  margin-top: 1.2cm;
+  margin-left: 1.34cm;
   margin-right: 1.2cm;
   position: absolute;
 }
 
-.tableAddress_left {
-  margin-top: 4.5cm;
-  margin-left: 2.2cm;
-  margin-right: 1.2cm;
+.address {
+  top: 4.5cm;
+  left: 12.3cm;
+  width: 7.5cm;
   position: absolute;
 }
 
-.custom_tableAddress_right {
-  font-size: $font_size;
-  margin-top: $right_address_margin_top;
-  margin-left: $right_address_margin_left;
-  margin-right: 1.2cm;
-  position: absolute;
+.date {
+   margin-top: 4.6cm;
+   margin-left: 1.5cm;
+   position: absolute;
 }
 
-.custom_tableAddress_left {
-  margin-top: $left_address_margin_top;
-  margin-left: $left_address_margin_left;
-  margin-right: 1.2cm;
-  position: absolute;
+.text {
+   margin-top: 8.5cm;
+   margin-left: 1.5cm;
+   margin-right: 1.0cm;
 }
 
-.textLetter {
-   margin-top: 7cm;
+.signature {
+   margin-top: 1.5cm;
+   margin-left: 12.3cm;
+}
+
+.image-signature {
+   height: 15mm;
+   margin-left: 12.3cm;
 }

@@ -21,5 +21,7 @@ All notable changes to the [[UNI11] Layout 11 Programmable Invoice](https://www.
     * Print custom columns of invoice item objects (i.e.: unit_price.calculated_amount_vat_exclusive, ...)  
 * 2023-01-09
 	* Added Delivery Notes and Reminders as print options (Advanced plan required).
-	* Added a new color for 'Title and Total' in parameters settings. 
+	* Added a new color for 'Title and Total' in parameters settings.  
+* 2023-03-10
+	* Added Proforma Invoice and Estimate as print options (Advanced plan required).   
     

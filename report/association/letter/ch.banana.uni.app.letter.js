@@ -1,4 +1,4 @@
-// Copyright [2021] [Banana.ch SA - Lugano Switzerland]
+// Copyright [2023] [Banana.ch SA - Lugano Switzerland]
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,15 +14,14 @@
 //
 // @id = ch.banana.uni.app.letter.js
 // @api = 1.0
-// @pubdate = 2021-10-11
+// @pubdate = 2023-03-14
 // @publisher = Banana.ch SA
-// @description = [DEV] Letter
-// @description.de = [DEV] Letter
-// @description.it = [DEV] Letter
-// @description.fr = [DEV] Letter
-// @description.en = [DEV] Letter
-// @description.nl = [DEV] Letter
-// @description.pt = [DEV] Letter
+// @description = Letter (Banana+)
+// @description.de = Brief (Banana+)
+// @description.it = Lettera (Banana+)
+// @description.fr = Lettre (Banana+)
+// @description.en = Letter (Banana+)
+// @description.nl = Brief (Banana+)
 // @doctype = *
 // @task = app.command
 // @timeout = -1
@@ -38,365 +37,11 @@
 
 
 
-// https://www.bigomega.dev/markdown-parser
 
 
-
-
-
-function exec(inData, options) {
-    
-    if (!Banana.document) {
-        return "@Cancel";
-    }
-
-    var lang = getLang(Banana.document);
-    if (!lang) {
-        lang = "en";
-    }
-
-    var texts = loadTexts(Banana.document,lang);
-    var userParam = initUserParam();
-
-    // Retrieve saved param
-    var savedParam = Banana.document.getScriptSettings();
-    if (savedParam && savedParam.length > 0) {
-        userParam = JSON.parse(savedParam);
-    }
-
-    // If needed show the settings dialog to the user
-    if (!options || !options.useLastSettings) {
-        userParam = settingsDialog(); // From properties
-    }
-
-    if (!userParam) {
-        return "@Cancel";
-    }
-
-    // Retrieves all the donors to print
-    var accounts = getAccountsToPrint(Banana.document, userParam, texts);
-
-    // Creates the report
-    if (accounts.length > 0) {
-
-        // CSS variable starts with $
-        var variables = {};
-        set_variables(variables, userParam);
-
-    	var stylesheet = Banana.Report.newStyleSheet();
-        var report = print_report(Banana.document, userParam, accounts, texts, stylesheet, variables);
-
-        if (userParam.useMarkdown) {
-            // ???
-        }
-        else {
-            setCss(Banana.document, stylesheet, userParam, variables);
-        }
-
-        Banana.Report.preview(report, stylesheet);
-    }
-    else {
-        return "@Cancel";
-    }
-}
-
-function print_report(banDoc, userParam, accounts, texts, stylesheet) {
-
-    var report = Banana.Report.newReport(texts.reportTitle);
-
-    print_header(report, banDoc, userParam, stylesheet);
-    
-    // Create the report for each cc3
-    for (var k = 0; k < accounts.length; k++) {
-
-        print_address(report, banDoc, userParam, accounts[k]);
-        print_letter(report, banDoc, userParam, accounts[k]);
-        print_signature(report, banDoc, userParam);
-        
-        // Page break at the end of all the pages (except the last)
-        if (k < accounts.length-1) {
-            report.addPageBreak();
-        }
-    }
-
-    return report;
-}
-
-function print_header(report, banDoc, userParam, stylesheet) {
-    
-    // Logo
-    var headerParagraph = report.getHeader().addSection();
-    if (userParam.printHeaderLogo) {
-        headerParagraph = report.addSection("");
-        var logoFormat = Banana.Report.logoFormat(userParam.headerLogoName);
-        if (logoFormat) {
-            var logoElement = logoFormat.createDocNode(headerParagraph, stylesheet, "logo");
-            report.getHeader().addChild(logoElement);
-        }
-    }
-
-    // Address of the sender (Organization)
-    var company = banDoc.info("AccountingDataBase","Company");
-    var name = banDoc.info("AccountingDataBase","Name");
-    var familyName = banDoc.info("AccountingDataBase","FamilyName");
-    var address1 = banDoc.info("AccountingDataBase","Address1");
-    var address2 = banDoc.info("AccountingDataBase","Address2");
-    var zip = banDoc.info("AccountingDataBase","Zip");
-    var city = banDoc.info("AccountingDataBase","City");
-    var country = banDoc.info("AccountingDataBase","Country");
-    var phone = banDoc.info("AccountingDataBase","Phone");
-    var web = banDoc.info("AccountingDataBase","Web");
-    var email = banDoc.info("AccountingDataBase","Email");
-
-    if (company) {
-        headerParagraph.addParagraph(company, "address");
-    }
-    if (name && familyName) {
-        headerParagraph.addParagraph(name + " " + familyName, "address");
-    } else if (!name && familyName) {
-        headerParagraph.addParagraph(familyName, "address");
-    } else if (name && !familyName) {
-        headerParagraph.addParagraph(name, "address");
-    }
-
-    if (address1) {
-        headerParagraph.addParagraph(address1, "address");
-    }
-    if (address2) {
-        headerParagraph.addParagraph(address2, "address");
-    }
-
-    if (zip && city) {
-        headerParagraph.addParagraph(zip + " " + city, "address");
-    }
-
-    if (phone) {
-        headerParagraph.addParagraph("Tel. " + phone, "address");
-    }
-
-    if (web) {
-        headerParagraph.addParagraph("Web: " + web, "address");
-    }
-
-    if (email) {
-        headerParagraph.addParagraph("Email: " + email, "address");
-    }
-}
-
-function print_address(report, banDoc, userParam, account) {
-
-    var titleText = "";
-    var text = "";
-    var address = getAddress(banDoc, account);
-
-    // Address of the membership (donor)
-    var tableAddress = "";
-    if (userParam.addressPositionDX != 0 || userParam.addressPositionDY != 0) {
-        if (userParam.alignleft) {
-            tableAddress = report.addTable("custom_tableAddress_left");
-        } else {
-            tableAddress = report.addTable("custom_tableAddress_right");
-        }
-    }
-    else {
-        if (userParam.alignleft) {
-            tableAddress = report.addTable("tableAddress_left");
-        } else {
-            tableAddress = report.addTable("tableAddress_right");
-        }
-    }
-    
-    if (address.nameprefix) {
-        var row = tableAddress.addRow();
-        row.addCell(address.nameprefix, "address", 1);
-    }
-
-    if (address.firstname && address.familyname) {
-        var row = tableAddress.addRow();
-        row.addCell(address.firstname + " " + address.familyname, "address", 1);
-    } else if (!address.firstname && address.familyname) {
-        var row = tableAddress.addRow();
-        row.addCell(address.familyname, "address", 1);
-    }
-
-    if (address.street) {
-        var row = tableAddress.addRow();
-        row.addCell(address.street, "address", 1);
-    }
-
-    if (address.postalcode && address.locality) {
-        var row = tableAddress.addRow();
-        row.addCell(address.postalcode + " " + address.locality, "address", 1);
-    }
-}
-
-function print_letter(report, banDoc, userParam, account) {
-    var text = "";
-    var address = getAddress(banDoc, account);
-    if (userParam.letterText) {
-        text = convertFields(banDoc, userParam.letterText, address, account);
-        report.addParagraph(text, "textLetter");
-    }
-}
-
-function print_signature(report, banDoc, userParam) {
-
-    var company = banDoc.info("AccountingDataBase","Company");
-
-    // Signature
-    report.addParagraph(" ", "");
-    report.addParagraph(" ", "");
-    report.addParagraph(" ", "");
-    
-    var tableSignature = report.addTable("table04");
-    tableSignature.setStyleAttributes("width:100%");
-    var col1 = tableSignature.addColumn("col1").setStyleAttributes("width:60%");
-    var col2 = tableSignature.addColumn("col2").setStyleAttributes("width:40%");
-
-    tableRow = tableSignature.addRow();
-    tableRow.addCell(userParam.localityAndDate, "bold", 1);
-    tableRow.addCell(userParam.signature, "bold", 1);
-    tableRow = tableSignature.addRow();
-    tableRow.addCell();
-    tableRow.addCell(company, "");
-
-    if (userParam.printLogo) {
-        tableRow = tableSignature.addRow();
-        tableRow.addCell();
-        tableRow.addCell().addImage(userParam.signatureImage, "imgSignature");
-    }
-}
-
-
-/**
- * UTILITIES
- */
-
-/* Function that retrieves the donors account to print.
-   As default, accounts with donation amount 0 are not taken.
-   User can choose to include them or not */
-function getAccountsToPrint(banDoc, userParam, texts) {
-
-    // Get the list of all the donors (CC3)
-    var membershipList = getCC3Accounts(banDoc);
-    var accounts = [];
-
-    if (userParam.costcenter) {
-        var list = userParam.costcenter.split(",");
-        for (var i = 0; i < list.length; i++) {
-            list[i] = list[i].trim();
-            
-            // If user insert the Cc3 account without ";" we add it
-            if (list[i].substring(0,1) !== ";") {
-                list[i] = ";"+list[i];
-            }
-
-            // The inserted Cc3 exists
-            if (membershipList.indexOf(list[i]) > -1) {
-                accounts.push(list[i]);
-            }
-            else { // The inserted Cc3 does not exists
-                Banana.document.addMessage(texts.warningMessage + ": <" + list[i] + ">");              
-            }
-        }
-    }
-    // Empty field = take all the Cc3
-    else if (!userParam.costcenter || userParam.costcenter === "" || userParam.costcenter === undefined) {
-        for (var i = 0; i < membershipList.length; i++) {
-            accounts.push(membershipList[i]);
-        }
-    }
-    return accounts;
-}
-
-/* Function that retrieves the address of the given account */
-function getAddress(banDoc, accountNumber) {
-    var address = {};
-    var table = banDoc.table("Accounts");
-    for (var i = 0; i < table.rowCount; i++) {
-        var tRow = table.row(i);
-        var account = tRow.value("Account");
-
-        if (accountNumber === account) {
-
-            address.nameprefix = tRow.value("NamePrefix");
-            address.firstname = tRow.value("FirstName");
-            address.familyname = tRow.value("FamilyName");
-            address.street = tRow.value("Street");
-            address.postalcode = tRow.value("PostalCode");
-            address.locality = tRow.value("Locality");
-            address.organisationname = tRow.value("OrganisationName");
-            address.addressextra = tRow.value("AddressExtra");
-            address.pobox = tRow.value("POBox");
-            address.region = tRow.value("Region");
-            address.country = tRow.value("Country");
-        }
-    }
-    return address;
-}
-
-/* Function that retrieves in a list all the CC3 accounts */
-function getCC3Accounts(banDoc) {
-    var membershipList = [];
-    var accountsTable = banDoc.table("Accounts");
-    for (var i = 0; i < accountsTable.rowCount; i++) {
-        var tRow = accountsTable.row(i);
-        var account = tRow.value("Account");
-        if (account.substring(0,1) === ";" && account.substring(1,2) !== "") {
-            membershipList.push(account);
-        }
-    }
-    return membershipList;
-}
-
-/* Function that replaces the tags with the respective data */
-function convertFields(banDoc, text, address, account) {
-
-    if (text.indexOf("{{Account}}") > -1) {
-        text = text.replace(/{{Account}}/g,account);
-    }
-    if (text.indexOf("{{FirstName}}") > -1) {
-        var firstname = address.firstname;
-        text = text.replace(/{{FirstName}}/g,firstname);
-    }
-    if (text.indexOf("{{FamilyName}}") > -1) {
-        var familyname = address.familyname;
-        text = text.replace(/{{FamilyName}}/g,familyname);
-    }    
-    if (text.indexOf("{{Address}}") > -1) {
-        var addressstring = address.street + ", " + address.postalcode + " " + address.locality;
-        text = text.replace(/{{Address}}/g,addressstring);
-    }
-    if (text.indexOf("{{Currency}}") > -1) {
-        var currency = banDoc.info("AccountingDataBase", "BasicCurrency");
-        text = text.replace(/{{Currency}}/g,currency);
-    }
-    if (text.indexOf("{{NamePrefix}}") > -1) {
-        text = text.replace(/{{NamePrefix}}/g,address.nameprefix);
-    }
-    if (text.indexOf("{{OrganisationName}}") > -1) {
-        text = text.replace(/{{OrganisationName}}/g,address.organisationname);
-    }
-    if (text.indexOf("{{AddressExtra}}") > -1) {
-        text = text.replace(/{{AddressExtra}}/g,address.addressextra);
-    }
-    if (text.indexOf("{{POBox}}") > -1) {
-        text = text.replace(/{{POBox}}/g,address.pobox);
-    }
-    if (text.indexOf("{{Region}}") > -1) {
-        text = text.replace(/{{Region}}/g,address.region);
-    }
-    if (text.indexOf("{{Country}}") > -1) {
-        text = text.replace(/{{Country}}/g,address.country);
-    }
-    return text;
-}
-
-
-/**
- * PARAMETERS
- */
-
+//===========================================================================
+// PARAMETERS
+//===========================================================================
 /* Function that converts parameters of the dialog */
 function convertParam(userParam) {
 
@@ -404,9 +49,24 @@ function convertParam(userParam) {
     convertedParam.version = '1.0';
     convertedParam.data = []; /* array dei parametri dello script */
 
+    /**
+     * ADDRESS GROUP
+     */
+    var currentParam = {};
+    currentParam.name = 'accountsToPrint';
+    currentParam.title = texts.accountsToPrint;
+    currentParam.type = 'string';
+    currentParam.value = '';
+    currentParam.editable = false;
+    currentParam.readValue = function() {
+        userParam.accountsToPrint = this.value;
+    }
+    convertedParam.data.push(currentParam);
+
     //Cc3 (donor)
     var currentParam = {};
     currentParam.name = 'costcenter';
+    currentParam.parentObject = 'accountsToPrint';
     currentParam.title = texts.accountNumber;
     currentParam.type = 'string';
     currentParam.value = userParam.costcenter ? userParam.costcenter : '';
@@ -416,81 +76,110 @@ function convertParam(userParam) {
     }
     convertedParam.data.push(currentParam);
 
-    //function
+    // Use Extract table
     var currentParam = {};
-    currentParam.name = 'function';
-    currentParam.title = texts.function;
-    currentParam.type = 'multilinestring';
-    currentParam.value = userParam.function ? userParam.function : '';
-    currentParam.defaultvalue = '';
-    currentParam.readValue = function() {
-        userParam.function = this.value;
-    }
-    convertedParam.data.push(currentParam);
-
-    // Group title - Address
-    var currentParam = {};
-    currentParam.name = 'address';
-    currentParam.title = texts.address;
-    currentParam.type = 'string';
-    currentParam.value = userParam.address ? userParam.address : '';
-    currentParam.readValue = function() {
-        userParam.address = this.value;
-    }
-    convertedParam.data.push(currentParam);
-
-    // Address align left
-    var currentParam = {};
-    currentParam.name = 'alignleft';
-    currentParam.parentObject = 'address';
-    currentParam.title = texts.alignleft;
+    currentParam.name = 'useExtractTable';
+    currentParam.parentObject = 'accountsToPrint';
+    currentParam.title = texts.useExtractTable;
     currentParam.type = 'bool';
-    currentParam.value = userParam.alignleft ? true : false;
+    currentParam.value = userParam.useExtractTable ? true : false;
     currentParam.defaultvalue = false;
     currentParam.readValue = function() {
-        userParam.alignleft = this.value;
+        userParam.useExtractTable = this.value;
     }
     convertedParam.data.push(currentParam);
 
-    var currentParam = {};
-    currentParam.name = 'addressPositionDX';
-    currentParam.parentObject = 'address';
-    currentParam.title = texts.addressPositionDX;
-    currentParam.type = 'number';
-    currentParam.value = userParam.addressPositionDX ? userParam.addressPositionDX : '0';
-    currentParam.defaultvalue = '0';
-    currentParam.readValue = function() {
-        userParam.addressPositionDX = this.value;
-    }
-    convertedParam.data.push(currentParam);
 
+    /**
+     * BEGIN GROUP
+     */
     var currentParam = {};
-    currentParam.name = 'addressPositionDY';
-    currentParam.parentObject = 'address';
-    currentParam.title = texts.addressPositionDY;
-    currentParam.type = 'number';
-    currentParam.value = userParam.addressPositionDY ? userParam.addressPositionDY : '0';
-    currentParam.defaultvalue = '0';
-    currentParam.readValue = function() {
-        userParam.addressPositionDY = this.value;
-    }
-    convertedParam.data.push(currentParam);
-
-    // Group title - Texts
-    var currentParam = {};
-    currentParam.name = 'texts';
-    currentParam.title = texts.textsGroup;
+    currentParam.name = 'begin';
+    currentParam.title = texts.begin;
     currentParam.type = 'string';
-    currentParam.value = userParam.texts ? userParam.texts : '';
+    currentParam.value = '';
+    currentParam.editable = false;
     currentParam.readValue = function() {
-        userParam.texts = this.value;
+        userParam.begin = this.value;
+    }
+    convertedParam.data.push(currentParam);
+
+    currentParam = {};
+    currentParam.name = 'printHeaderLogo';
+    currentParam.parentObject = 'begin';
+    currentParam.title = texts.printHeaderLogo;
+    currentParam.type = 'bool';
+    currentParam.value = userParam.printHeaderLogo ? true : false;
+    currentParam.defaultvalue = false;
+    currentParam.readValue = function() {
+    userParam.printHeaderLogo = this.value;
+    }
+    convertedParam.data.push(currentParam);
+
+    var currentParam = {};
+    currentParam.name = 'headerLogoName';
+    currentParam.parentObject = 'begin'
+    currentParam.title = texts.headerLogoName;
+    currentParam.type = 'string';
+    currentParam.value = userParam.headerLogoName ? userParam.headerLogoName : 'Logo';
+    currentParam.defaultvalue = 'Logo';
+    currentParam.readValue = function() {
+        userParam.headerLogoName = this.value;
+    }
+    convertedParam.data.push(currentParam);
+
+    // locality and date
+    var currentParam = {};
+    currentParam.name = 'localityAndDate';
+    currentParam.parentObject = 'begin';
+    currentParam.title = texts.localityAndDate;
+    currentParam.type = 'string';
+    currentParam.value = userParam.localityAndDate ? userParam.localityAndDate : '';
+    currentParam.defaultvalue = texts.localityAndDate;
+    currentParam.readValue = function() {
+        userParam.localityAndDate = this.value;
+    }
+    convertedParam.data.push(currentParam);
+
+
+    /**
+     * PRINT TEXT GROUP
+     */
+    var currentParam = {};
+    currentParam.name = 'printText';
+    currentParam.title = texts.printText;
+    currentParam.type = 'string';
+    currentParam.value = '';
+    currentParam.editable = false;
+    currentParam.readValue = function() {
+        userParam.printText = this.value;
+    }
+    convertedParam.data.push(currentParam);
+
+
+    var textChoices = [];
+    textChoices.push(texts.text1);
+    textChoices.push(texts.text2);
+    textChoices.push(texts.text3);
+    textChoices.push(texts.text4);
+    textChoices.push(texts.textEmbedded);
+    var currentParam = {};
+    currentParam.name = 'textToUse';
+    currentParam.parentObject = 'printText';
+    currentParam.title = texts.textToUse;
+    currentParam.type = 'combobox';
+    currentParam.items = textChoices;
+    currentParam.value = userParam.textToUse ? userParam.textToUse : texts.text1;
+    currentParam.defaultvalue = texts.text1;
+    currentParam.readValue = function () {
+        userParam.textToUse = this.value;
     }
     convertedParam.data.push(currentParam);
 
     // Use Markdown
     var currentParam = {};
     currentParam.name = 'useMarkdown';
-    currentParam.parentObject = 'texts';
+    currentParam.parentObject = 'printText';
     currentParam.title = texts.useMarkdown;
     currentParam.type = 'bool';
     currentParam.value = userParam.useMarkdown ? true : false;
@@ -500,114 +189,152 @@ function convertParam(userParam) {
     }
     convertedParam.data.push(currentParam);
 
-    //Free text
-    var currentParam = {};
-    currentParam.name = 'letterText';
-    currentParam.parentObject = 'texts';
-    currentParam.title = texts.letterText;
-    currentParam.type = 'multilinestring';
-    currentParam.value = userParam.letterText ? userParam.letterText : '';
-    currentParam.defaultvalue = '';
-    currentParam.readValue = function() {
-        userParam.letterText = this.value;
-    }
-    convertedParam.data.push(currentParam);
 
-    // Group title - Signature
+    /**
+     * SIGNATURE GROUP
+     */
     var currentParam = {};
     currentParam.name = 'signature';
     currentParam.title = texts.signature;
     currentParam.type = 'string';
-    currentParam.value = userParam.signature ? userParam.signature : '';
+    currentParam.value = '';
+    currentParam.editable = false;
+    currentParam.defaultvalue = '';
     currentParam.readValue = function() {
         userParam.signature = this.value;
     }
     convertedParam.data.push(currentParam);
 
-    // locality and date
     var currentParam = {};
-    currentParam.name = 'localityAndDate';
+    currentParam.name = 'textSignature';
     currentParam.parentObject = 'signature';
-    currentParam.title = texts.localityAndDate;
+    currentParam.title = texts.textSignature;
     currentParam.type = 'string';
-    currentParam.value = userParam.localityAndDate ? userParam.localityAndDate : '';
+    currentParam.value = userParam.textSignature ? userParam.textSignature : '';
     currentParam.defaultvalue = '';
     currentParam.readValue = function() {
-        userParam.localityAndDate = this.value;
+        userParam.textSignature = this.value;
     }
     convertedParam.data.push(currentParam);
 
     // image for signature
     var currentParam = {};
-    currentParam.name = 'printLogo';
+    currentParam.name = 'printSignatureImage';
     currentParam.parentObject = 'signature';
-    currentParam.title = texts.signature_image;
+    currentParam.title = texts.printSignatureImage;
     currentParam.type = 'bool';
-    currentParam.value = userParam.printLogo ? true : false;
+    currentParam.value = userParam.printSignatureImage ? true : false;
     currentParam.defaultvalue = false;
     currentParam.readValue = function() {
-     userParam.printLogo = this.value;
+     userParam.printSignatureImage = this.value;
     }
     convertedParam.data.push(currentParam);
 
     // image for signature
     var currentParam = {};
-    currentParam.name = 'signatureImage';
+    currentParam.name = 'nameSignatureImage';
     currentParam.parentObject = 'signature';
-    currentParam.title = texts.signatureImage;
+    currentParam.title = texts.nameSignatureImage;
     currentParam.type = 'string';
-    currentParam.value = userParam.signatureImage ? userParam.signatureImage : 'documents:<image_id>';
+    currentParam.value = userParam.nameSignatureImage ? userParam.nameSignatureImage : 'documents:<image_id>';
     currentParam.defaultvalue = 'documents:<image_id>';
     currentParam.readValue = function() {
-     userParam.signatureImage = this.value;
+     userParam.nameSignatureImage = this.value;
     }
     convertedParam.data.push(currentParam);
 
-    // image height
+
+    /**
+     * TEXTS GROUP
+     */
     var currentParam = {};
-    currentParam.name = 'imageHeight';
-    currentParam.parentObject = 'signature';
-    currentParam.title = texts.imageHeight;
-    currentParam.type = 'number';
-    currentParam.value = userParam.imageHeight ? userParam.imageHeight : '10';
+    currentParam.name = 'texts';
+    currentParam.title = texts.textsGroup;
+    currentParam.type = 'string';
+    currentParam.value = '';
+    currentParam.editable = false;
+    currentParam.readValue = function() {
+        userParam.texts = this.value;
+    }
+    convertedParam.data.push(currentParam);
+
+    //Free text 1
+    var currentParam = {};
+    currentParam.name = 'text1';
+    currentParam.parentObject = 'texts';
+    currentParam.title = texts.text1;
+    currentParam.type = 'multilinestring';
+    currentParam.value = userParam.text1 ? userParam.text1 : '';
     currentParam.defaultvalue = '';
     currentParam.readValue = function() {
-     userParam.imageHeight = this.value;
+        userParam.text1 = this.value;
     }
     convertedParam.data.push(currentParam);
 
-    // Group title - Styles
+    //Free text 2
+    var currentParam = {};
+    currentParam.name = 'text2';
+    currentParam.parentObject = 'texts';
+    currentParam.title = texts.text2;
+    currentParam.type = 'multilinestring';
+    currentParam.value = userParam.text2 ? userParam.text2 : '';
+    currentParam.defaultvalue = '';
+    currentParam.readValue = function() {
+        userParam.text2 = this.value;
+    }
+    convertedParam.data.push(currentParam);
+
+    //Free text 3
+    var currentParam = {};
+    currentParam.name = 'text3';
+    currentParam.parentObject = 'texts';
+    currentParam.title = texts.text3;
+    currentParam.type = 'multilinestring';
+    currentParam.value = userParam.text3 ? userParam.text3 : '';
+    currentParam.defaultvalue = '';
+    currentParam.readValue = function() {
+        userParam.text3 = this.value;
+    }
+    convertedParam.data.push(currentParam);
+
+    //Free text 4
+    var currentParam = {};
+    currentParam.name = 'text4';
+    currentParam.parentObject = 'texts';
+    currentParam.title = texts.text4;
+    currentParam.type = 'multilinestring';
+    currentParam.value = userParam.text4 ? userParam.text4 : '';
+    currentParam.defaultvalue = '';
+    currentParam.readValue = function() {
+        userParam.text4 = this.value;
+    }
+    convertedParam.data.push(currentParam);
+
+    //Free text Document table
+    var currentParam = {};
+    currentParam.name = 'embeddedTextFile';
+    currentParam.parentObject = 'texts';
+    currentParam.title = texts.embeddedTextFile;
+    currentParam.type = 'string';
+    currentParam.value = userParam.embeddedTextFile ? userParam.embeddedTextFile : '';
+    currentParam.defaultvalue = '';
+    currentParam.readValue = function() {
+        userParam.embeddedTextFile = this.value;
+    }
+    convertedParam.data.push(currentParam);
+
+
+    /**
+     * STYLES GROUP
+     */
     var currentParam = {};
     currentParam.name = 'styles';
     currentParam.title = texts.styles;
     currentParam.type = 'string';
-    currentParam.value = userParam.styles ? userParam.styles : '';
+    currentParam.value = '';
+    currentParam.editable = false;
     currentParam.readValue = function() {
         userParam.styles = this.value;
-    }
-    convertedParam.data.push(currentParam);
-
-	currentParam = {};
-	currentParam.name = 'printHeaderLogo';
-	currentParam.parentObject = 'styles';
-	currentParam.title = texts.printHeaderLogo;
-	currentParam.type = 'bool';
-	currentParam.value = userParam.printHeaderLogo ? true : false;
-    currentParam.defaultvalue = false;
-	currentParam.readValue = function() {
-	userParam.printHeaderLogo = this.value;
-	}
-	convertedParam.data.push(currentParam);
-
-    var currentParam = {};
-    currentParam.name = 'headerLogoName';
-    currentParam.parentObject = 'styles'
-    currentParam.title = texts.headerLogoName;
-    currentParam.type = 'string';
-    currentParam.value = userParam.headerLogoName ? userParam.headerLogoName : 'Logo';
-    currentParam.defaultvalue = 'Logo';
-    currentParam.readValue = function() {
-        userParam.headerLogoName = this.value;
     }
     convertedParam.data.push(currentParam);
 
@@ -637,36 +364,48 @@ function convertParam(userParam) {
     }
     convertedParam.data.push(currentParam);
 
+    currentParam = {};
+    currentParam.name = 'css';
+    currentParam.parentObject = 'styles';
+    currentParam.title = texts.css;
+    currentParam.type = 'multilinestring';
+    currentParam.value = userParam.css ? userParam.css : '';
+    currentParam.defaultvalue = '';
+    currentParam.readValue = function() {
+        userParam.css = this.value;
+    }
+    convertedParam.data.push(currentParam);
+
     return convertedParam;
 }
 
 /* Function that initializes the user parameters */
 function initUserParam() {
+    var texts = loadTexts();
     var userParam = {};
     userParam.version = '1.0';
     userParam.costcenter = '';
-    userParam.function = '';
-    userParam.address = '';
-    userParam.alignleft = false;
-    userParam.addressPositionDX = '0';
-    userParam.addressPositionDY = '0';
-    userParam.texts = '';
+    userParam.useExtractTable = false;
+    userParam.textToUse = texts.text1;
+    userParam.text1 = '';
+    userParam.text2 = '';
+    userParam.text3 = '';
+    userParam.text4 = '';
+    userParam.embeddedTextFile = '';
     userParam.useMarkdown = false;
-    userParam.letterText = '';
-    userParam.signature = '';
-    userParam.localityAndDate = '';
-    userParam.printLogo = '';
-    userParam.signatureImage = '';
-    userParam.imageHeight = '';
-    userParam.styles = '';
+    userParam.textSignature = '';
+    userParam.localityAndDate = texts.localityAndDate;
+    userParam.printSignatureImage = false;
+    userParam.nameSignatureImage = '';
     userParam.printHeaderLogo = false;
     userParam.headerLogoName = 'Logo';
-    userParam.fontFamily = '';
-    userParam.fontSize = '';
+    userParam.fontFamily = 'Helvetica';
+    userParam.fontSize = '10';
+    userParam.css = '';
     return userParam;
 }
 
-/* Function that shows the dialog window and var user to modify the parameters */
+/* Function that shows the dialog window and let user to modify the parameters */
 function parametersDialog(userParam) {
 
     if (typeof(Banana.Ui.openPropertyEditor) !== 'undefined') {
@@ -676,7 +415,6 @@ function parametersDialog(userParam) {
         if (!Banana.Ui.openPropertyEditor(dialogTitle, convertedParam, pageAnchor)) {
             return null;
         }
-        
         for (var i = 0; i < convertedParam.data.length; i++) {
             // Read values to userParam (through the readValue function)
             convertedParam.data[i].readValue();
@@ -686,13 +424,10 @@ function parametersDialog(userParam) {
     return userParam;
 }
 
-/* Function that shows a dialog window for the period and var user to modify the parameters */
+/* Function that shows a dialog window for the period and let user to modify the parameters */
 function settingsDialog() {
 
     var lang = getLang(Banana.document);
-    if (!lang) {
-        lang = "en";
-    }
     texts = loadTexts(Banana.document,lang);
     var scriptform = initUserParam();
     
@@ -713,212 +448,588 @@ function settingsDialog() {
 
 
 
-/**
- * LANG AND TEXTS
- */
+//===========================================================================
+// PRINT REPORT
+//===========================================================================
+function exec(inData, options) {
+    
+    if (!Banana.document) {
+        return "@Cancel";
+    }
+
+    //Checks Banana version and license
+    var isCurrentBananaVersionSupported = bananaRequiredVersion("10.1.0.23068");
+    if (!isCurrentBananaVersionSupported) {
+        return "@Cancel";
+    }
+
+    var lang = getLang(Banana.document);
+    var texts = loadTexts(Banana.document,lang);
+    
+    var userParam = initUserParam();
+    // Retrieve saved param
+    var savedParam = Banana.document.getScriptSettings();
+    if (savedParam && savedParam.length > 0) {
+        userParam = JSON.parse(savedParam);
+    }
+
+    // If needed show the settings dialog to the user
+    if (!options || !options.useLastSettings) {
+        userParam = settingsDialog(); // From properties
+    }
+
+    if (!userParam) {
+        return "@Cancel";
+    }
+
+    // Retrieves all the donors to print
+    var accounts = getAccountsToPrint(Banana.document, userParam, texts);
+
+    // Creates the report
+    if (accounts.length > 0) {
+
+        // CSS variable starts with $
+        var variables = {};
+        set_variables(variables, userParam);
+
+        var stylesheet = Banana.Report.newStyleSheet();
+        var report = printReport(Banana.document, userParam, accounts, texts, stylesheet);
+        
+        setCss(Banana.document, stylesheet, userParam, variables);
+        Banana.Report.preview(report, stylesheet);
+    } else {
+        return "@Cancel";
+    }
+}
+
+/* Function that prints the report */
+function printReport(banDoc, userParam, accounts, texts, stylesheet) {
+
+    var report = Banana.Report.newReport(texts.reportTitle);
+    
+    printReportHeader(report, banDoc, userParam, stylesheet);
+    
+    for (var k = 0; k < accounts.length; k++) {
+        
+        printReportAddress(report, banDoc, accounts[k]);
+        printReportLetter(report, banDoc, userParam, accounts[k], texts);
+        printReportSignature(report, banDoc, userParam);
+        
+        if (k < accounts.length-1) {
+            report.addPageBreak(); // Page break at the end of all the pages (not last one)
+        }
+    }
+
+    return report;
+}
+
+/* Function that prints the header of the report */
+function printReportHeader(report, banDoc, userParam, stylesheet) {
+
+    // Logo
+    var headerParagraph = report.getHeader().addSection();
+    if (userParam.printHeaderLogo) {
+        headerParagraph = report.addSection("");
+        var logoFormat = Banana.Report.logoFormat(userParam.headerLogoName); //Logo
+        if (logoFormat) {
+            var logoElement = logoFormat.createDocNode(headerParagraph, stylesheet, "logo");
+            report.getHeader().addChild(logoElement);
+        } else {
+            headerParagraph.addClass("header_text");
+        }
+    } else {
+        headerParagraph.addClass("header_text");
+    }
+
+    // Address of the sender (Organization)
+    var company = banDoc.info("AccountingDataBase","Company");
+    var name = banDoc.info("AccountingDataBase","Name");
+    var familyName = banDoc.info("AccountingDataBase","FamilyName");
+    var address1 = banDoc.info("AccountingDataBase","Address1");
+    var address2 = banDoc.info("AccountingDataBase","Address2");
+    var zip = banDoc.info("AccountingDataBase","Zip");
+    var city = banDoc.info("AccountingDataBase","City");
+    var country = banDoc.info("AccountingDataBase","Country");
+    var phone = banDoc.info("AccountingDataBase","Phone");
+    var web = banDoc.info("AccountingDataBase","Web");
+    var email = banDoc.info("AccountingDataBase","Email");
+
+    if (company) {
+        headerParagraph.addParagraph(company, "header_address");
+    }
+    if (name && familyName) {
+        headerParagraph.addParagraph(name + " " + familyName, "header_address");
+    } else if (!name && familyName) {
+        headerParagraph.addParagraph(familyName, "header_address");
+    } else if (name && !familyName) {
+        headerParagraph.addParagraph(name, "header_address");
+    }
+    if (address1) {
+        headerParagraph.addParagraph(address1, "header_address");
+    }
+    if (address2) {
+        headerParagraph.addParagraph(address2, "header_address");
+    }
+    if (zip && city) {
+        headerParagraph.addParagraph(zip + " " + city, "header_address");
+    }
+
+    var paragraph = headerParagraph.addParagraph("","header_address");
+    if (phone) {
+        paragraph.addText("Tel. " + phone);
+    }
+    if (web) {
+        if (phone) {
+            paragraph.addText(", ");
+        } 
+        paragraph.addText(web);
+    }
+    if (email) {
+        if (phone || web) {
+            paragraph.addText(", ");
+        }
+        paragraph.addText(email);
+    }
+}
+
+/* Function that prints the address of the report */
+function printReportAddress(report, banDoc, account) {
+
+    /**
+     * Print the address of the membership (CC3 account)
+     */
+
+    var address = getAddress(banDoc, account);
+    var tableAddress = report.addTable("address");
+    var row;
+
+    if (address.nameprefix) {
+        row = tableAddress.addRow();
+        row.addCell(address.nameprefix, "", 1);
+    }
+    if (address.firstname && address.familyname) {
+        row = tableAddress.addRow();
+        row.addCell(address.firstname + " " + address.familyname, "", 1);
+    } else if (!address.firstname && address.familyname) {
+        row = tableAddress.addRow();
+        row.addCell(address.familyname, "", 1);
+    }
+    if (address.street) {
+        row = tableAddress.addRow();
+        row.addCell(address.street, "", 1);
+    }
+    if (address.addressextra) {
+        row = tableAddress.addRow();
+        row.addCell(address.addressextra, "", 1);
+    }
+    if (address.pobox) {
+        row = tableAddress.addRow();
+        row.addCell(address.pobox, "", 1);
+    }
+    if (address.postalcode && address.locality) {
+        row = tableAddress.addRow();
+        row.addCell(address.postalcode + " " + address.locality, "", 1);
+    }
+}
+
+/* Function that prints the letter of the report */
+function printReportLetter(report, banDoc, userParam, account, texts) {
+
+    /**
+     * Print the text of the letter
+     */
+
+    var text = "";
+    var address = getAddress(banDoc, account);
+
+
+    // Locality and date
+    if (userParam.localityAndDate) {
+        report.addParagraph(userParam.localityAndDate, "date");
+    }
+
+    var sectionText = report.addSection("text");
+
+    // Text of the letter
+    var textselected = "";
+    var usemarkdown = userParam.useMarkdown;
+    if (userParam.textToUse === texts.text1) {
+        textselected = userParam.text1;
+    }
+    else if (userParam.textToUse === texts.text2) {
+        textselected = userParam.text2;
+    } 
+    else if (userParam.textToUse === texts.text3) {
+        textselected = userParam.text3;
+    } 
+    else if (userParam.textToUse === texts.text4) {
+        textselected = userParam.text4;
+    } 
+    else if (userParam.textToUse === texts.textEmbedded) {
+        usemarkdown = false;
+        if (userParam.embeddedTextFile.indexOf(".md") > -1) {
+            usemarkdown = true;
+        }
+        var embeddedText = getEmbeddedTextFile(banDoc, userParam);
+        textselected = embeddedText;
+    }
+
+    // Print
+    if (usemarkdown) {
+        var format = "md"; //md,html,text
+        text = convertFieldsMarkdown(banDoc, textselected, address, account);
+        sectionText.addStructuredText(text, format, ""); // "" = stylesheet
+    }
+    else {
+        // var format = "text"; //md,html,text
+        text = convertFields(banDoc, textselected, address, account);
+        addNewLine(sectionText, text);
+        sectionText.addParagraph(" ", "");
+    }
+}
+
+/* Function that prints the signature part of the report */
+function printReportSignature(report, banDoc, userParam) {
+
+    /**
+     * Print the signature of the letter
+     */
+
+    var paragraph = report.addParagraph("","signature");
+    if (userParam.textSignature) {
+        paragraph.addText(userParam.textSignature);
+    }
+
+    var company = banDoc.info("AccountingDataBase","Company");
+    if (company) {
+        paragraph.addText("\n"+company);
+    }
+
+    if (userParam.printSignatureImage && userParam.nameSignatureImage) {
+        report.addImage(userParam.nameSignatureImage, "image-signature");
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/* Function that add a new line to the paragraph */
+function addNewLine(reportElement, text) {
+
+    var str = text.split('\n');
+    
+    for (var i = 0; i < str.length; i++) {
+        if (str[i]) {
+            addMdParagraph(reportElement, str[i]);
+        }
+        else {
+            addMdParagraph(reportElement, " "); //empty lines
+        }
+    }
+}
+
+/* Function that add bold style to the text between '**' */
+function addMdParagraph(reportElement, text) {
+    
+    /*
+    * BOLD TEXT STYLE
+    *
+    * Use '**' characters where the bold starts and ends.
+    *
+    * - set bold all the paragraph => **This is bold text
+    *                              => **This is bold text**
+    *
+    * - set bold single/multiple words => This is **bold** text
+    *                                  => This **is bold** text
+    *                                  => **This** is **bold** text
+    */
+
+    var p = reportElement.addParagraph();
+    var printBold = false;
+    var startPosition = 0;
+    var endPosition = -1;
+
+    do {
+        endPosition = text.indexOf("**", startPosition);
+        var charCount = endPosition === -1 ? text.length - startPosition : endPosition - startPosition;
+        if (charCount > 0) {
+            //Banana.console.log(text.substr(startPosition, charCount) + ", " + printBold);
+            var span = p.addText(text.substr(startPosition, charCount), "");
+            if (printBold)
+                span.setStyleAttribute("font-weight", "bold");
+        }
+        printBold = !printBold;
+        startPosition = endPosition >= 0 ? endPosition + 2 : text.length;
+    } while (startPosition < text.length && endPosition >= 0);
+}
+
+/* Function that replaces the tags with the respective data */
+function convertFields(banDoc, text, address, account) {
+
+    if (text.indexOf("<Account>") > -1) {
+        text = text.replace(/<Account>/g,account);
+    }
+    if (text.indexOf("<FirstName>") > -1) {
+        var firstname = address.firstname;
+        text = text.replace(/<FirstName>/g,firstname);
+    }
+    if (text.indexOf("<FamilyName>") > -1) {
+        var familyname = address.familyname;
+        text = text.replace(/<FamilyName>/g,familyname);
+    }    
+    if (text.indexOf("<Address>") > -1) {
+        var addressstring = address.street + ", " + address.postalcode + " " + address.locality;
+        text = text.replace(/<Address>/g,addressstring);
+    }
+    if (text.indexOf("<Currency>") > -1) {
+        var currency = banDoc.info("AccountingDataBase", "BasicCurrency");
+        text = text.replace(/<Currency>/g,currency);
+    }
+    if (text.indexOf("<Amount>") > -1) {
+        var amount = Banana.Converter.toLocaleNumberFormat(totalOfDonations);
+        text = text.replace(/<Amount>/g,amount);
+    }
+    if (text.indexOf("<NamePrefix>") > -1) {
+        text = text.replace(/<NamePrefix>/g,address.nameprefix);
+    }
+    if (text.indexOf("<OrganisationName>") > -1) {
+        text = text.replace(/<OrganisationName>/g,address.organisationname);
+    }
+    if (text.indexOf("<AddressExtra>") > -1) {
+        text = text.replace(/<AddressExtra>/g,address.addressextra);
+    }
+    if (text.indexOf("<POBox>") > -1) {
+        text = text.replace(/<POBox>/g,address.pobox);
+    }
+    if (text.indexOf("<Region>") > -1) {
+        text = text.replace(/<Region>/g,address.region);
+    }
+    if (text.indexOf("<Country>") > -1) {
+        text = text.replace(/<Country>/g,address.country);
+    }
+    return text;
+}
+
+/* Function that replaces the tags with the respective data */
+function convertFieldsMarkdown(banDoc, text, address, account) {
+
+    if (text.indexOf("{{Account}}") > -1) {
+        text = text.replace(/{{Account}}/g,account);
+    }
+    if (text.indexOf("{{FirstName}}") > -1) {
+        var firstname = address.firstname;
+        text = text.replace(/{{FirstName}}/g,firstname);
+    }
+    if (text.indexOf("{{FamilyName}}") > -1) {
+        var familyname = address.familyname;
+        text = text.replace(/{{FamilyName}}/g,familyname);
+    }    
+    if (text.indexOf("{{Address}}") > -1) {
+        var addressstring = address.street + ", " + address.postalcode + " " + address.locality;
+        text = text.replace(/{{Address}}/g,addressstring);
+    }
+    if (text.indexOf("{{Currency}}") > -1) {
+        var currency = banDoc.info("AccountingDataBase", "BasicCurrency");
+        text = text.replace(/{{Currency}}/g,currency);
+    }
+    if (text.indexOf("{{Amount}}") > -1) {
+        var amount = Banana.Converter.toLocaleNumberFormat(totalOfDonations);
+        text = text.replace(/{{Amount}}/g,amount);
+    }
+    if (text.indexOf("{{NamePrefix}}") > -1) {
+        text = text.replace(/{{NamePrefix}}/g,address.nameprefix);
+    }
+    if (text.indexOf("{{OrganisationName}}") > -1) {
+        text = text.replace(/{{OrganisationName}}/g,address.organisationname);
+    }
+    if (text.indexOf("{{AddressExtra}}") > -1) {
+        text = text.replace(/{{AddressExtra}}/g,address.addressextra);
+    }
+    if (text.indexOf("{{POBox}}") > -1) {
+        text = text.replace(/{{POBox}}/g,address.pobox);
+    }
+    if (text.indexOf("{{Region}}") > -1) {
+        text = text.replace(/{{Region}}/g,address.region);
+    }
+    if (text.indexOf("{{Country}}") > -1) {
+        text = text.replace(/{{Country}}/g,address.country);
+    }
+    return text;
+}
+
+
+
+
+
+//===========================================================================
+// GET DATA FROM ACCOUNTING
+//===========================================================================
+/* Function that retrieves the donors account to print.
+   As default, accounts with donation amount 0 are not taken.
+   User can choose to include them or not */
+function getAccountsToPrint(banDoc, userParam, texts) {
+
+    // Get the list of all the donors (CC3)
+    var membershipList = getCC3Accounts(banDoc, userParam, texts);
+    var accounts = [];
+    
+    if (userParam.useExtractTable) {
+        for (var i = 0; i < membershipList.length; i++) {
+            accounts.push(membershipList[i]);
+        }
+    }
+    else {
+        if (userParam.costcenter) {
+            var list = userParam.costcenter.split(",");
+            for (var i = 0; i < list.length; i++) {
+                list[i] = list[i].trim();
+                
+                // If user insert the Cc3 account without ";" we add it
+                if (list[i].substring(0,1) !== ";") {
+                    list[i] = ";"+list[i];
+                }
+
+                // The inserted Cc3 exists
+                if (membershipList.indexOf(list[i]) > -1) {
+                    accounts.push(list[i]);
+                }
+                else { // The inserted Cc3 does not exists
+                    Banana.document.addMessage(texts.warningMessage + ": <" + list[i] + ">");              
+                }
+            }
+        }
+        // Empty field = take all the Cc3
+        else if (!userParam.costcenter || userParam.costcenter === "" || userParam.costcenter === undefined) {
+            for (var i = 0; i < membershipList.length; i++) {
+                accounts.push(membershipList[i]);
+            }
+        }
+    }
+
+    return accounts;
+}
+
+/* Function that retrieves in a list all the CC3 accounts */
+function getCC3Accounts(banDoc, userParam, texts) {
+    
+    var membershipList = [];
+    var tableName = "Accounts";
+    
+    // When the Extract Rows is used, we take all the cc3 accounts from the extracted rows only => table Extract
+    if (userParam.useExtractTable) {
+        
+        tableName = "Extract";
+        
+        // If the Extract table doesnt exist, use the Accounts table
+        if (!banDoc.table("Extract")) {
+            Banana.document.addMessage(texts.warningMessageExtractTable);
+            tableName = "Accounts"; //if table Extract does not exists, use table Accounts instead
+        }
+    }
+
+    var bantable = banDoc.table(tableName);
+    for (var i = 0; i < bantable.rowCount; i++) {
+        var tRow = bantable.row(i);
+        var account = tRow.value("Account");
+        if (account.substring(0,1) === ";" && account.substring(1,2)) {
+            membershipList.push(account);
+        }
+    }
+
+    return membershipList;
+}
+
+/* Function that retrieves the address of the given account */
+function getAddress(banDoc, accountNumber) {
+    var address = {};
+    var table = banDoc.table("Accounts");
+    for (var i = 0; i < table.rowCount; i++) {
+        var tRow = table.row(i);
+        var account = tRow.value("Account");
+
+        if (accountNumber === account) {
+
+            address.nameprefix = tRow.value("NamePrefix");
+            address.firstname = tRow.value("FirstName");
+            address.familyname = tRow.value("FamilyName");
+            address.street = tRow.value("Street");
+            address.postalcode = tRow.value("PostalCode");
+            address.locality = tRow.value("Locality");
+            address.organisationname = tRow.value("OrganisationName");
+            address.addressextra = tRow.value("AddressExtra");
+            address.pobox = tRow.value("POBox");
+            address.region = tRow.value("Region");
+            address.country = tRow.value("Country");
+        }
+    }
+    return address;
+}
 
 /* Function that takes the locale language of Banana */
 function getLang(banDoc) {
-    var lang = banDoc.locale;
-    if (lang && lang.length > 2)
+    var lang = "";
+    if (banDoc.locale) {
+        lang = banDoc.locale;
+    }
+    if (lang && lang.length > 2) {
         lang = lang.substr(0, 2);
+    }
     return lang;
 }
 
-/* Function that loads all the default texts used for the dialog and the report  */
-function loadTexts(banDoc,lang) {
+/* Function that takes the content of the embedded text file in table Documents*/
+function getEmbeddedTextFile(banDoc, userParam) {
 
-    var texts = {};
+    /**
+     * Include the embedded text defined in the Document table as 'text file' type.
+     * ID name must always finish with ".txt" or ".doc"
+    */
 
-    if (lang === "de") {
-        texts.reportTitle = "";
-        texts.dialogTitle = "Einstellungen";
-        texts.warningMessage = "Ungültiges Mitgliedkonto Konto";
-        texts.accountNumber = "Mitgliedskonto eingeben (leer = alle ausdrucken)";
-        texts.localityAndDate = "Ort und Datum";
-        texts.signature = "Unterschrift";
-        texts.signature_image = "Unterschrift mit Bild";
-        texts.signatureImage = "Bild";
-        texts.imageHeight = "Bildhöhe (mm)";
-        texts.memberAccount = "Mitgliedskonto";
-        texts.letterText = "Text";
-        texts.useMarkdown = "Markdown verwenden";
-        texts.multilineText = "";
-        texts.textsGroup = "Texte";
-        texts.styles = "Stilarten";
-        texts.fontFamily = "Schriftarttyp";
-        texts.fontSize = "Schriftgrad";
-		texts.printHeaderLogo = "Logo";
-		texts.headerLogoName = "Logo-Name";
-        texts.address = "Adresse";
-        texts.alignleft = "Adresse linksbündig";
-        texts.addressPositionDX = 'Horizontal verschieben +/- (in cm, Voreinstellung 0)';
-        texts.addressPositionDY = 'Vertikal verschieben +/- (in cm, Voreinstellung 0)';
-        texts.function = "Function..."
+    var text = "";
+    var documentsTable = banDoc.table("Documents");
+    if (documentsTable) {
+        for (var i = 0; i < documentsTable.rowCount; i++) {
+            var tRow = documentsTable.row(i);
+            var id = tRow.value("RowId");
+            if (id === userParam.embeddedTextFile) {
+                // The text file name entered by user exists on Documents table
+                text = banDoc.table("Documents").findRowByValue("RowId",userParam.embeddedTextFile).value("Attachments");
+            }
+        }
     }
-    else if (lang === "fr") {
-        texts.reportTitle = "";
-        texts.dialogTitle = "Paramètres";
-        texts.warningMessage = "Compte de membre non valide";
-        texts.accountNumber = "Entrer le compte du membre (vide = imprimer tout)";
-        texts.localityAndDate = "Lieu et date";
-        texts.signature = "Signature";
-        texts.signature_image = "Signature avec image";
-        texts.signatureImage = "Image";
-        texts.imageHeight = "Hauteur de l'image (mm)";
-        texts.memberAccount = "Compte de membre";
-        texts.letterText = "Texte";
-        texts.useMarkdown = "Utiliser Markdown";
-        texts.multilineText = "";
-        texts.textsGroup = "Textes";
-        texts.styles = "Styles";
-        texts.fontFamily = "Type de police";
-        texts.fontSize = "Taille de police";
-		texts.printHeaderLogo = "Logo";
-		texts.headerLogoName = "Logo nom";
-        texts.address = "Adresse";
-        texts.alignleft = "Aligner à gauche";
-        texts.addressPositionDX = 'Déplacer horizontalement +/- (en cm, défaut 0)';
-        texts.addressPositionDY = 'Déplacer verticalement +/- (en cm, défaut 0)';
-        texts.function = "Function..."
-    }
-    else if (lang === "it") {
-        texts.reportTitle = "Lettera";
-        texts.dialogTitle = "Impostazioni";
-        texts.warningMessage = "Conto membro non valido";
-        texts.accountNumber = "Indicare il conto del membro (vuoto = stampa tutti)";
-        texts.localityAndDate = "Località e data";
-        texts.signature = "Firma";
-        texts.signature_image = "Firma con immagine";
-        texts.signatureImage = "Immagine";
-        texts.imageHeight = "Altezza immagine (mm)";
-        texts.memberAccount = "Conto del membro";
-        texts.letterText = "Testo";
-        texts.useMarkdown = "Usa Markdown";
-        texts.multilineText = "";
-        texts.textsGroup = "Testi";
-        texts.styles = "Stili";
-        texts.fontFamily = "Tipo di carattere";
-        texts.fontSize = "Dimensione carattere";
-		texts.printHeaderLogo = "Logo";
-		texts.headerLogoName = "Nome logo";
-        texts.address = "Indirizzo";
-        texts.alignleft = "Allinea a sinistra";
-        texts.addressPositionDX = 'Sposta orizzontalmente +/- (in cm, default 0)';
-        texts.addressPositionDY = 'Sposta verticalmente +/- (in cm, default 0)';
-        texts.function = "Function..."
-    }
-    else if (lang === "nl") {
-        texts.reportTitle = "";
-        texts.dialogTitle = "Instellingen";
-        texts.warningMessage = "Ongeldige rekening gever";
-        texts.accountNumber = "Rekening gever invoeren (leeg = alles afdrukken)";
-        texts.localityAndDate = "Plaats en datum";
-        texts.signature = "Handtekening";
-        texts.signature_image = "Handtekening met afbeelding";
-        texts.signatureImage = "Afbeelding";
-        texts.imageHeight = "Hoogte afbeelding (mm)";
-        texts.memberAccount = "Rekening gever";
-        texts.letterText = "Tekst";
-        texts.useMarkdown = "Gebruik Markdown";
-        texts.multilineText = "";
-        texts.textsGroup = "Teksten";
-        texts.styles = "Stijl";
-        texts.fontFamily = "Type vartertype";
-        texts.fontSize = "Lettergrootte";
-		texts.printHeaderLogo = "Logo";
-		texts.headerLogoName = "Logo naam";
-        texts.address = "Adres";
-        texts.alignleft = "Links uitlijnen";
-        texts.addressPositionDX = 'Horizontaal verplaatsen +/- (in cm, standaard 0)';
-        texts.addressPositionDY = 'Verplaats verticaal +/- (in cm, standaard 0)';
-        texts.function = "Function..."
-    }
-    else if (lang === "pt") {
-        texts.reportTitle = "";
-        texts.dialogTitle = "Configurações";
-        texts.warningMessage = "Conta de membro inválida";
-        texts.accountNumber = "Inserir conta de membro (vazio = imprimir todos)";
-        texts.localityAndDate = "Localidade e data";
-        texts.signature = "Assinatura";
-        texts.signature_image = "Assinatura com imagem";
-        texts.signatureImage = "Imagem";
-        texts.imageHeight = "Altura da imagem (mm)";
-        texts.memberAccount = "Conta de membro";
-        texts.letterText = "Texto";
-        texts.useMarkdown = "Use Markdown";
-        texts.multilineText = "";
-        texts.textsGroup = "Textos";
-        texts.styles = "Estilos";
-        texts.fontFamily = "Tipo de varra";
-        texts.fontSize = "Tamanho da varra";
-        texts.printHeaderLogo = "Logo";
-        texts.headerLogoName = "Nome logótipo";
-        texts.address = "Endereço";
-        texts.alignleft = "Alinhar à esquerda";
-        texts.addressPositionDX = 'Mover horizontalmente +/- (em cm, por defeito 0)';
-        texts.addressPositionDY = 'Mover verticalmente +/- (em cm, por defeito 0)';
-        texts.function = "Function..."
-    }
-    else { //lang == en
-        texts.reportTitle = "";
-        texts.dialogTitle = "Settings";
-        texts.warningMessage = "Invalid member account";
-        texts.accountNumber = "Insert account member (empty = print all)";
-        texts.localityAndDate = "Locality and date";
-        texts.signature = "Signature";
-        texts.signature_image = "Signature with image";
-        texts.signatureImage = "Image";
-        texts.imageHeight = "Image height (mm)";
-        texts.memberAccount = "Member account";
-        texts.letterText = "Text";
-        texts.useMarkdown = "Use Markdown";
-        texts.multilineText = "";
-        texts.textsGroup = "Texts";
-        texts.styles = "Styles";
-        texts.fontFamily = "Font type";
-        texts.fontSize = "Font size";
-		texts.printHeaderLogo = "Logo";
-		texts.headerLogoName = "Logo name";
-        texts.address = "Address";
-        texts.alignleft = "Align left";
-        texts.addressPositionDX = 'Move horizontally +/- (in cm, default 0)';
-        texts.addressPositionDY = 'Move vertically +/- (in cm, default 0)';
-        texts.function = "Function..."
-    }
-
-    return texts;
+    return text;
 }
 
 
-/**
- * STYLESHEET
- */
 
+//===========================================================================
+// STYLESHEET
+//===========================================================================
+/* Sets all the variables values */
 function set_variables(variables, userParam) {
-  /** 
-    Sets all the variables values.
-  */
+    if (!userParam.fontFamily) {
+        userParam.fontFamily = "Helvetica";
+    }
 
-  variables.$font_family = userParam.fontFamily;
-  variables.$font_size = userParam.fontSize+"pt";
-  
-  /* Variables that set the position of the invoice address
-   * Default margins when the address on right: 10.3cm margin left, 4.5cm margin top
-   * Default margins when the address on left: 2.2cm margin left, 4.5cm margin top
-   * Sum userParam DX and DY adjustments to default values */
-  variables.$right_address_margin_left = parseFloat(10.3) + parseFloat(userParam.addressPositionDX)+"cm";
-  variables.$right_address_margin_top = parseFloat(4.5) + parseFloat(userParam.addressPositionDY)+"cm";
-  variables.$left_address_margin_left = parseFloat(2.2) + parseFloat(userParam.addressPositionDX)+"cm";
-  variables.$left_address_margin_top = parseFloat(4.5) + parseFloat(userParam.addressPositionDY)+"cm";
+    if (!userParam.fontSize) {
+        userParam.fontSize = "10";
+    }
+
+    variables.$font_family = userParam.fontFamily;
+    variables.$font_size = userParam.fontSize+"pt";
 }
 
+/* Function that replaces all the css variables inside of the given cssText with their values.
+   All the css variables start with "$" (i.e. $font_size, $margin_top) */
 function replaceVariables(cssText, variables) {
-
-  /* 
-    Function that replaces all the css variables inside of the given cssText with their values.
-    All the css variables start with "$" (i.e. $font_size, $margin_top)
-  */
 
   var result = "";
   var varName = "";
@@ -973,13 +1084,12 @@ function replaceVariables(cssText, variables) {
   return result;
 }
 
+/* Function that set the CSS used to print the report */
 function setCss(banDoc, repStyleObj, userParam, variables) {
 
   var textCSS = "";
 
-  /**
-    Default CSS file
-  */
+  //Default CSS file
   var file = Banana.IO.getLocalFile("file:script/ch.banana.uni.app.letter.css");
   var fileContent = file.read();
   if (!file.errorString) {
@@ -990,10 +1100,247 @@ function setCss(banDoc, repStyleObj, userParam, variables) {
     Banana.console.log(file.errorString);
   }
 
+  // User defined CSS in parameters
+  if (userParam.css) {
+    textCSS += userParam.css;
+  }
+
   // Replace all the "$xxx" variables with the real value
   textCSS = replaceVariables(textCSS, variables);
 
   // Parse the CSS text
   repStyleObj.parse(textCSS);
+}
+
+
+
+
+//===========================================================================
+// TEXTS
+//===========================================================================
+/* Function that loads all the default texts used for the dialog and the report  */
+function loadTexts(banDoc,lang) {
+
+    var texts = {};
+
+    if (lang === "de") {
+        texts.reportTitle = "Brief";
+        texts.dialogTitle = "Einstellungen";
+        texts.warningMessage = "Ungültiges Mitgliedkonto Konto";
+        texts.accountNumber = "Mitgliedskonto eingeben (leer = alle ausdrucken)";
+        texts.localityAndDate = "Ort und Datum";
+        texts.signature = "Unterschrift";
+        texts.printSignatureImage = "Unterschrift mit Bild";
+        texts.nameSignatureImage = "Bild";
+        texts.memberAccount = "Mitgliedskonto";
+        texts.text1 = "Text 1";
+        texts.text2 = "Text 2";
+        texts.text3 = "Text 3";
+        texts.text4 = "Text 4";
+        texts.textsGroup = "Texte";
+        texts.styles = "Stilarten";
+        texts.fontFamily = "Schriftarttyp";
+        texts.fontSize = "Schriftgrad";
+        texts.printHeaderLogo = "Logo";
+        texts.headerLogoName = "Logo-Name";
+        texts.useMarkdown = "Markdown verwenden";
+        texts.useExtractTable = "Tabelle Extraktion verwenden";
+        texts.warningMessageExtractTable = "Verwenden Sie den Befehl Daten > Zeilen extrahieren und sortieren";
+        texts.embeddedTextFile = "Text Tabelle Dokumente (.txt / .md)";
+        texts.css = "CSS";
+        texts.textSignature = "Text Unterschrift";
+        texts.textToUse = "Text auswählen";
+        texts.textEmbedded = "Text Tabelle Dokumente (.txt / .md)";
+        texts.accountsToPrint = "Zu druckende Adressen auswählen";
+        texts.printText = "Text drucken";
+        texts.begin = "Beginn";
+    }
+    else if (lang === "fr") {
+        texts.reportTitle = "Lettre";
+        texts.dialogTitle = "Paramètres";
+        texts.warningMessage = "Compte de membre non valide";
+        texts.accountNumber = "Entrer le compte du membre (vide = imprimer tout)";
+        texts.localityAndDate = "Lieu et date";
+        texts.signature = "Signature";
+        texts.printSignatureImage = "Signature avec image";
+        texts.nameSignatureImage = "Image";
+        texts.memberAccount = "Compte de membre";
+        texts.text1 = "Texte 1";
+        texts.text2 = "Texte 2";
+        texts.text3 = "Texte 3";
+        texts.text4 = "Texte 4";
+        texts.textsGroup = "Textes";
+        texts.styles = "Styles";
+        texts.fontFamily = "Type de police";
+        texts.fontSize = "Taille de police";
+        texts.printHeaderLogo = "Logo";
+        texts.headerLogoName = "Logo nom";
+        texts.useMarkdown = "Utiliser Markdown";
+        texts.useExtractTable = "Utiliser le tableau Extraire";
+        texts.warningMessageExtractTable = "Utilisez la commande Données > Extraire et trier lignes";
+        texts.embeddedTextFile = "Texte tableau Documents (.txt / .md)";
+        texts.css = "CSS";
+        texts.textSignature = "Texte de signature";
+        texts.textToUse = "Sélectionner le texte";
+        texts.textEmbedded = "Texte tableau Documents (.txt / .md)";
+        texts.accountsToPrint = "Sélectionner les adresses à imprimer";
+        texts.printText = "Imprimer le texte";
+        texts.begin = "Début";
+    }
+    else if (lang === "it") {
+        texts.reportTitle = "Lettera";
+        texts.dialogTitle = "Impostazioni";
+        texts.warningMessage = "Conto membro non valido";
+        texts.accountNumber = "Indicare il conto del membro (vuoto = stampa tutti)";
+        texts.localityAndDate = "Località e data";
+        texts.signature = "Firma";
+        texts.printSignatureImage = "Firma con immagine";
+        texts.nameSignatureImage = "Immagine";
+        texts.memberAccount = "Conto del membro";
+        texts.text1 = "Testo 1";
+        texts.text2 = "Testo 2";
+        texts.text3 = "Testo 3";
+        texts.text4 = "Testo 4";
+        texts.textsGroup = "Testi";
+        texts.styles = "Stili";
+        texts.fontFamily = "Tipo di carattere";
+        texts.fontSize = "Dimensione carattere";
+        texts.printHeaderLogo = "Logo";
+        texts.headerLogoName = "Nome logo";
+        texts.useMarkdown = "Usa Markdown";
+        texts.useExtractTable = "Usa tabella Estrai";
+        texts.warningMessageExtractTable = "Usa il comando Dati > Estrai righe";
+        texts.embeddedTextFile = "Testo tabella Documenti (.txt / .md)";
+        texts.css = "CSS";
+        texts.textSignature = "Testo firma";
+        texts.textToUse = "Seleziona testo"
+        texts.textEmbedded = "Testo tabella Documenti (.txt / .md)";
+        texts.accountsToPrint = "Seleziona gli indirizzi da stampare";
+        texts.printText = "Stampa testo";
+        texts.begin = "Inizio";
+    }
+    else if (lang === "nl") {
+        texts.reportTitle = "Brief";
+        texts.dialogTitle = "Instellingen";
+        texts.warningMessage = "Ongeldige rekening gever";
+        texts.accountNumber = "Rekening gever invoeren (leeg = alles afdrukken)";
+        texts.localityAndDate = "Plaats en datum";
+        texts.signature = "Handtekening";
+        texts.printSignatureImage = "Handtekening met afbeelding";
+        texts.nameSignatureImage = "Afbeelding";
+        texts.memberAccount = "Rekening gever";
+        texts.text1 = "Tekst 1";
+        texts.text2 = "Tekst 2";
+        texts.text3 = "Tekst 3";
+        texts.text4 = "Tekst 4";
+        texts.textsGroup = "Teksten";
+        texts.styles = "Stijl";
+        texts.fontFamily = "Type lettertype";
+        texts.fontSize = "Lettergrootte";
+        texts.printHeaderLogo = "Logo";
+        texts.headerLogoName = "Logo naam";
+        texts.useMarkdown = "Gebruik Markdown";
+        texts.useExtractTable = "Gebruik tabel Extract";
+        texts.warningMessageExtractTable = "Gebruik het commando Gegevens > Rijen ophalen en sorteren";
+        texts.embeddedTextFile = "Teksttabel Documenten (.txt / .md)";
+        texts.css = "CSS";
+        texts.textSignature = "Tekst handtekening";
+        texts.textToUse = "Selecteer tekst";
+        texts.textEmbedded = "Teksttabel Documenten (.txt / .md)";
+        texts.accountsToPrint = "Selecteer adressen om af te drukken";
+        texts.printText = "Tekst afdrukken";
+        texts.begin = "Start";
+    }
+    else { //lang == en
+        texts.reportTitle = "Letter";
+        texts.dialogTitle = "Settings";
+        texts.warningMessage = "Invalid member account";
+        texts.accountNumber = "Insert account member (empty = print all)";
+        texts.localityAndDate = "Locality and date";
+        texts.signature = "Signature";
+        texts.printSignatureImage = "Signature with image";
+        texts.nameSignatureImage = "Image";
+        texts.memberAccount = "Member account";
+        texts.text1 = "Text 1";
+        texts.text2 = "Text 2";
+        texts.text3 = "Text 3";
+        texts.text4 = "Text 4";
+        texts.textsGroup = "Texts";
+        texts.styles = "Styles";
+        texts.fontFamily = "Font type";
+        texts.fontSize = "Font size";
+        texts.printHeaderLogo = "Logo";
+        texts.headerLogoName = "Logo name";
+        texts.useMarkdown = "Use Markdown";
+        texts.useExtractTable = "Use table Extract";
+        texts.warningMessageExtractTable = "Use the command Data > Extract and sort rows";
+        texts.embeddedTextFile = "Text table Documents (.txt / .md)";
+        texts.css = "CSS";
+        texts.textSignature = "Text signature";
+        texts.textToUse = "Select text";
+        texts.textEmbedded = "Text table Documents (.txt / .md)";
+        texts.accountsToPrint = "Select addresses to print";
+        texts.printText = "Print text";
+        texts.begin = "Start";
+    }
+
+    return texts;
+}
+
+
+
+
+
+
+//===========================================================================
+// OTHER
+//===========================================================================
+/* Function that checks Banana version and license type */
+function bananaRequiredVersion(requiredVersion) {
+    
+    var language = "";
+    if (Banana.document.locale) {
+        language = Banana.document.locale;
+    }
+    if (language && language.length > 2) {
+        language = language.substr(0, 2);
+    }
+
+    var msg = "";
+    if (Banana.compareVersion && Banana.compareVersion(Banana.application.version, requiredVersion) < 0 || Banana.application.license.licenseType !== "advanced") {
+        switch(language) {
+            case "en":
+                msg = "The extension requires Banana Accounting Plus (version "+ requiredVersion + " or later) and the Advanced plan";
+                break;
+
+            case "it":
+                msg = "L'estensione richiede Banana Contabilità Plus (versione "+ requiredVersion + " o successiva) e il piano Advanced";
+                break;
+
+            case "fr":
+                msg = "L'extension nécessite de Banana Comptabilité Plus (version "+ requiredVersion + " ou plus récente) et le plan Advanced.";
+                break;
+
+            case "de":
+                msg = "Die Erweiterung erfordert Banana Buchhaltung Plus (Version "+ requiredVersion + " oder neuer) und den Advanced-Plan";
+                break;
+
+            case "nl":
+                msg = "De extensie vereist Banana Boekhouding Plus (versie "+ requiredVersion + " of meer recent) en het Advanced plan.";
+                break;
+
+            case "pt":
+                msg = "A extensão requer Banana Contabilidade Plus (versão "+ requiredVersion + " ou posterior) e o plano Advanced";
+                break;
+
+            default:
+                msg = "The extension requires Banana Accounting Plus (version "+ requiredVersion + " or later) and the Advanced plan";
+                break;
+        }
+        Banana.application.showMessages();
+        Banana.document.addMessage(msg);
+        return false;
+    }
+    return true;
 }
 

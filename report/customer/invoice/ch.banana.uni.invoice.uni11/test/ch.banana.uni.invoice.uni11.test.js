@@ -16,7 +16,7 @@
 
 // @id = ch.banana.uni.invoice.uni11.test
 // @api = 1.0
-// @pubdate = 2023-01-04
+// @pubdate = 2023-03-10
 // @publisher = Banana.ch SA
 // @description = <TEST ch.banana.uni.invoice.uni11.js>
 // @task = app.command
@@ -115,6 +115,8 @@ ReportInvoiceTemplate11.prototype.testReport = function() {
     this.addReport(banDoc, jsonInvoices[i], "reminder_1");
     this.addReport(banDoc, jsonInvoices[i], "reminder_2");
     this.addReport(banDoc, jsonInvoices[i], "reminder_3");
+    this.addReport(banDoc, jsonInvoices[i], "proforma_invoice");
+    this.addReport(banDoc, jsonInvoices[i], "estimate");
   }
 }
 
@@ -204,6 +206,15 @@ function setUserParam(texts) {
   userParam.en_title_reminder = '%1. ' + texts.reminder;
   userParam.en_text_begin_reminder = 'This is the begin text of the reminder.';
   userParam.en_text_final_reminder = 'This is the final text of the reminder.\nIt can be on multiple lines.';
+  userParam.en_title_proforma_invoice = texts.proforma_invoice + " <DocInvoice>";
+  userParam.en_text_begin_proforma_invoice = 'This is the begin text of the proforma invoice.';
+  userParam.en_text_final_proforma_invoice = 'This is the final text of the proforma invoice.\nIt can be on multiple lines.';
+  userParam.en_text_info_offer_number = texts.offer;
+  userParam.en_text_info_date_offer = texts.date;
+  userParam.en_text_info_validity_date_offer = texts.validity_terms_label;
+  userParam.en_title_doctype_17 = texts.offer + " <DocInvoice>";
+  userParam.en_text_begin_offer = 'This is the begin text of the estimate.';
+  userParam.en_text_final_offer = 'This is the final text of the estimate.\nIt can be on multiple lines.';
 
   //Styles
   userParam.text_color = '#000000';
