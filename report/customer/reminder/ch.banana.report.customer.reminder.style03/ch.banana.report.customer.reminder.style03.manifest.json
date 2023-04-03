@@ -1,0 +1,18 @@
+{
+    "category": "invoice reminder",
+    "country":"universal",
+    "countryCode":"",
+    "description": "Payment reminder (banana+)",
+    "description.it": "Richiamo di pagamento (banana+)",
+    "description.fr": "Rappel de paiement (banana+)",
+    "description.de": "Zahlungserinnerung (banana+)",
+    "description.nl": "Betalingsherinnering (banana+)",
+    "language":"",
+    "publisher": "Banana.ch",
+    "title": "Payment reminder (banana+)",
+    "title.it": "Richiamo di pagamento (banana+)",
+    "title.fr": "Rappel de paiement (banana+)",
+    "title.de": "Zahlungserinnerung (banana+)",
+    "title.nl": "Betalingsherinnering (banana+)",
+    "version": "1.0"
+}
