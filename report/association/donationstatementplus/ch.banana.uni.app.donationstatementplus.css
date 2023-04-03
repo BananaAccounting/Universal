@@ -1,0 +1,87 @@
+@page {
+   margin-top: 0.0cm;
+   margin-bottom: 0.0cm;
+   margin-left: 0.0cm;
+   margin-right: 0.0cm;
+}
+
+body {
+   font-family: $font_family;
+   font-size: $font_size;
+}
+
+.bold {
+   font-weight: bold;
+}
+
+.right {
+   text-align: right;
+}
+
+.center {
+   text-align: center;
+}
+
+.header_address {
+   font-family: $font_family;
+   font-size: $font_size;
+}
+
+.header_text {
+  margin-top: 1.2cm;
+  margin-left: 1.2cm;
+  margin-right: 1.2cm;
+  text-align: right;
+  position: absolute;
+}
+
+.logo {
+  margin-top: 1.2cm;
+  margin-left: 1.34cm;
+  margin-right: 1.2cm;
+  position: absolute;
+}
+
+.address {
+  top: 4.5cm;
+  left: 12.3cm;
+  width: 7.5cm;
+  position: absolute;
+}
+
+.date {
+   margin-top: 4.6cm;
+   margin-left: 1.5cm;
+   position: absolute;
+}
+
+.text {
+   margin-top: 8.5cm;
+   margin-left: 1.5cm;
+   margin-right: 1.0cm;
+}
+
+.transactions_details {
+   margin-top: 0.5cm;
+   margin-left: 1.65cm;
+}
+
+.transactions_rows {
+   border-bottom:thin solid black;
+}
+
+.transactions_total {
+   font-weight: bold;
+   border-top:thin solid black;
+   border-bottom:thin solid black;
+}
+
+.signature {
+   margin-top: 1.5cm;
+   margin-left: 12.3cm;
+}
+
+.image-signature {
+   height: 15mm;
+   margin-left: 12.3cm;
+}
