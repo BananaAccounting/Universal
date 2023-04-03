@@ -1,0 +1,7 @@
+<!DOCTYPE RCC><RCC version="1.0">
+ <qresource>
+   <file>ch.banana.report.customer.reminder.style03.manifest.json</file>
+   <file>ch.banana.report.customer.reminder.style03.js</file>
+   <file>ch.banana.report.customer.reminder.style03.css</file>
+ </qresource>
+</RCC>

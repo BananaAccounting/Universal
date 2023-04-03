@@ -1,0 +1,65 @@
+%%info_test_name{export_contacts.test}
+\documentclass{report}
+\usepackage{longtable}
+\usepackage{color}
+\usepackage{listings}
+\usepackage[margin=1cm]{geometry}
+\begin{document}
+\newenvironment{tablevalue}[2]{\textbf{Table: #1}\begin{longtable}[l]{#2}}{\end{longtable}}
+\newenvironment{reportvalue}[1]{\textbf{Report: #1}\\}{}
+\lstnewenvironment{jsonvalue}[1]{\textbf{Json: #1}\lstset{language=Java}}{}
+\lstnewenvironment{xmlvalue}[1]{\textbf{Xml: #1}\lstset{language=Xml}}{}
+\newcommand{\info}[2]{\textit{#1: #2}\\}
+\newcommand{\fatalerror}[1]{\textbf{\textcolor[rgb]{1,0,0}{Fatal error: #1}}\\}
+\newcommand{\keyvalue}[2]{\textbf{Keyvalue: #1} #2\\}
+\newcommand{\textvalue}[1]{#1\\}
+\newcommand{\excltest}[1]{\\Excluded from compare: #1}
+\newcommand{\lognewpage}{\newpage}
+\newenvironment{testcase}[1]{\section*{Test: #1}}{\newpage}
+\newenvironment{test}[1]{\section*{Test case: #1}}{}
+%Begin test data
+%%SCRIPT{C:/Users/joemb/Banana/Universal/invoices/tools/test/export_contacts.test.js}
+%
+\begin{testcase}{TestExportContacts}
+\begin{test}{testContactsWithCompleteData}
+\begin{tablevalue}{Data}{ l  l  l  l  l  l  l  l  l  l  l  l  l  l  l }
+Number & OrganisationName & OrganisationUnit & NamePrefix & FirstName & LastName & Street & AddressExtra & POBox & PostalCode & Locality & CountryCode & LanguageCode & EmailWork & Discount\\
+1 & The Tea corner &  &  &  &  & Rue des salines 44 &  &  & 1007 & Lausanne & CH & en &  &  \\
+2 &  &  &  & Peter & Ridge & Hauptstrasse 1 &  &  & 9400 & Rorschach & CH & en &  &  \\
+3 & Domos GmbH &  &  & Luis & Smith & Rifistrasse 76 &  &  & 8001 & Zürich & CH & en &  &  \\
+\\
+\end{tablevalue}
+\keyvalue{Result}{Passed}
+\end{test}
+\begin{test}{testContactsWithMissingData}
+\begin{tablevalue}{Data}{ l  l  l  l  l  l  l  l  l  l  l  l  l  l  l }
+Number & OrganisationName & OrganisationUnit & NamePrefix & FirstName & LastName & Street & AddressExtra & POBox & PostalCode & Locality & CountryCode & LanguageCode & EmailWork & Discount\\
+1 & The Tea corner &  &  &  &  & Rue des salines 44 &  &  & 1007 & Lausanne & CH & en &  &  \\
+2 &  &  &  & Peter & Ridge & Hauptstrasse 1 &  &  & 9400 & Rorschach & CH & en &  &  \\
+3 & Domos GmbH &  &  & Luis & Smith & Rifistrasse 76 &  &  & 8001 & Zürich & CH & en &  &  \\
+\\
+\end{tablevalue}
+\keyvalue{Result}{Passed}
+\end{test}
+\begin{test}{testContactsWithMissingMandatoryData}
+\begin{tablevalue}{Data}{ l }
+\\
+\end{tablevalue}
+\keyvalue{ERROR\_MSG\_ROW\_0}{RowId is a required field}
+\keyvalue{ERROR\_HELPID\_ROW\_0}{export\_contacts.test::missing\_field}
+\keyvalue{ERROR\_MSG\_ROW\_0}{Street is a required field}
+\keyvalue{ERROR\_HELPID\_ROW\_0}{export\_contacts.test::missing\_field}
+\keyvalue{ERROR\_MSG\_ROW\_1}{OrganisationName is a required field}
+\keyvalue{ERROR\_HELPID\_ROW\_1}{export\_contacts.test::missing\_field}
+\keyvalue{ERROR\_MSG\_ROW\_1}{LastName is a required field}
+\keyvalue{ERROR\_HELPID\_ROW\_1}{export\_contacts.test::missing\_field}
+\keyvalue{ERROR\_MSG\_ROW\_1}{PostalCode is a required field}
+\keyvalue{ERROR\_HELPID\_ROW\_1}{export\_contacts.test::missing\_field}
+\keyvalue{ERROR\_MSG\_ROW\_2}{Locality is a required field}
+\keyvalue{ERROR\_HELPID\_ROW\_2}{export\_contacts.test::missing\_field}
+\keyvalue{ERROR\_MSG\_ROW\_2}{CountryCode is a required field}
+\keyvalue{ERROR\_HELPID\_ROW\_2}{export\_contacts.test::missing\_field}
+\keyvalue{Result}{Passed}
+\end{test}
+\end{testcase}
+\end{document}
