@@ -7,8 +7,8 @@
 
 Changes availables only with the latest BananaPlus Insider version (10.0.13.340 or newer).
 
-* [Fix] Fix error opening dialog with Qt6.6
-* [Fix] Fix vat total not showed in the invoice dialog
+* [Fix] Fix error opening dialog with Qt6.6.
+* [Fix] Fix vat total not showed in the invoice dialog.
 
 ## 2022-12-14
 
