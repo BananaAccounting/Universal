@@ -828,6 +828,9 @@ function CreateAmountsInBasicCurrency_ConvertAmounts(param, fileData, messageDis
 		var ppRow = fileData.paypalTransactions[rowIndex];
 		var TransactionGroupId = ppRow.TransactionGroupId;
 		var CurrencyConversionType = 0;
+		let keyAmount = "";
+		let keyTransactionId = "";
+		let keyDate = "";
 		if (ppRow.Currency && ppRow.Currency != param.BasicCurrency && ppRow.CurrencyConversionType) {
 			var currency = ppRow.Currency;
 			keyAmount = ppRow.Date + '$' + TransactionGroupId + '$' + currency + '$' + Math.abs(ppRow.Net);

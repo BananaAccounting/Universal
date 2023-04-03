@@ -1,0 +1,256 @@
+%%info_test_name{ch.banana.uni.app.letter.test}
+\documentclass{report}
+\usepackage{longtable}
+\usepackage{color}
+\usepackage{listings}
+\usepackage[margin=1cm]{geometry}
+\begin{document}
+\newenvironment{tablevalue}[2]{\textbf{Table: #1}\begin{longtable}[l]{#2}}{\end{longtable}}
+\newenvironment{reportvalue}[1]{\textbf{Report: #1}\\}{}
+\lstnewenvironment{jsonvalue}[1]{\textbf{Json: #1}\lstset{language=Java}}{}
+\lstnewenvironment{xmlvalue}[1]{\textbf{Xml: #1}\lstset{language=Xml}}{}
+\newcommand{\info}[2]{\textit{#1: #2}\\}
+\newcommand{\fatalerror}[1]{\textbf{\textcolor[rgb]{1,0,0}{Fatal error: #1}}\\}
+\newcommand{\keyvalue}[2]{\textbf{Keyvalue: #1} #2\\}
+\newcommand{\textvalue}[1]{#1\\}
+\newcommand{\excltest}[1]{\\Excluded from compare: #1}
+\newcommand{\lognewpage}{\newpage}
+\newenvironment{testcase}[1]{\section*{Test: #1}}{\newpage}
+\newenvironment{test}[1]{\section*{Test case: #1}}{}
+%Begin test data
+%%SCRIPT{/Users/ivan/GitHub/BananaAccounting/Universal/report/association/letter/test/ch.banana.uni.app.letter.test.js}
+%
+\begin{testcase}{ReportTest}
+\begin{test}{testBananaApp}
+%****************************************************************************** TEST #1 ******************************************************************************
+\begin{reportvalue}{letter test 1}
+Associazione Sportiva xyz \\
+Pinco Pallino \\
+Via Boschetto 34 \\
+6900 Lugano \\
+Tel. 1112223344 ,  www.banana.ch ,  info@banana.ch \\
+\begin{longtable}[l]{ l }
+Sig. \\
+Gianpaolo Bianchi \\
+Via Beltramina \\
+6962 Viganello \\
+\end{longtable}
+Lugano, 2 ottobre 2023 \\
+Lettera  di test \\
+  \\
+Lorem ipsum dolor sit amet consectetur adipiscing elit scelerisque augue mollis, pharetra lobortis mus quisque aptent conubia molestie fringilla ac phasellus purus, parturient integer proin viverra ornare nibh tempus malesuada ante. \\
+Urna sit convallis interdum penatibus nostra dui senectus lobortis habitant pellentesque, quisque blandit phasellus egestas aenean nec ligula maecenas taciti. \\
+Nulla lobortis, urna quis semper efficitur, tortor felis placerat elit, sed porta velit risus ac diam. Vivamus at tempus ex. \\
+  \\
+Pinco Pallino \P Associazione Sportiva xyz \\
+\begin{longtable}[l]{ l }
+Sig. \\
+Mario Rossi \\
+Via abc 12 \\
+6500 Bellinzona \\
+\end{longtable}
+Lugano, 2 ottobre 2023 \\
+Lettera  di test \\
+  \\
+Lorem ipsum dolor sit amet consectetur adipiscing elit scelerisque augue mollis, pharetra lobortis mus quisque aptent conubia molestie fringilla ac phasellus purus, parturient integer proin viverra ornare nibh tempus malesuada ante. \\
+Urna sit convallis interdum penatibus nostra dui senectus lobortis habitant pellentesque, quisque blandit phasellus egestas aenean nec ligula maecenas taciti. \\
+Nulla lobortis, urna quis semper efficitur, tortor felis placerat elit, sed porta velit risus ac diam. Vivamus at tempus ex. \\
+  \\
+Pinco Pallino \P Associazione Sportiva xyz \\
+\begin{longtable}[l]{ l }
+Signora \\
+Sara Guidi \\
+Via Boschetto 45 \\
+6901 Lugano \\
+\end{longtable}
+Lugano, 2 ottobre 2023 \\
+Lettera  di test \\
+  \\
+Lorem ipsum dolor sit amet consectetur adipiscing elit scelerisque augue mollis, pharetra lobortis mus quisque aptent conubia molestie fringilla ac phasellus purus, parturient integer proin viverra ornare nibh tempus malesuada ante. \\
+Urna sit convallis interdum penatibus nostra dui senectus lobortis habitant pellentesque, quisque blandit phasellus egestas aenean nec ligula maecenas taciti. \\
+Nulla lobortis, urna quis semper efficitur, tortor felis placerat elit, sed porta velit risus ac diam. Vivamus at tempus ex. \\
+  \\
+Pinco Pallino \P Associazione Sportiva xyz \\
+\begin{longtable}[l]{ l }
+Sig. \\
+Voit Ulrich \\
+Via alla Chiesa \\
+6800 Mendrisio \\
+\end{longtable}
+Lugano, 2 ottobre 2023 \\
+Lettera  di test \\
+  \\
+Lorem ipsum dolor sit amet consectetur adipiscing elit scelerisque augue mollis, pharetra lobortis mus quisque aptent conubia molestie fringilla ac phasellus purus, parturient integer proin viverra ornare nibh tempus malesuada ante. \\
+Urna sit convallis interdum penatibus nostra dui senectus lobortis habitant pellentesque, quisque blandit phasellus egestas aenean nec ligula maecenas taciti. \\
+Nulla lobortis, urna quis semper efficitur, tortor felis placerat elit, sed porta velit risus ac diam. Vivamus at tempus ex. \\
+  \\
+Pinco Pallino \P Associazione Sportiva xyz \\
+\end{reportvalue}
+%****************************************************************************** TEST #2 ******************************************************************************
+\begin{reportvalue}{letter test 2}
+Associazione Sportiva xyz \\
+Pinco Pallino \\
+Via Boschetto 34 \\
+6900 Lugano \\
+Tel. 1112223344 ,  www.banana.ch ,  info@banana.ch \\
+\begin{longtable}[l]{ l }
+Sig. \\
+Gianpaolo Bianchi \\
+Via Beltramina \\
+6962 Viganello \\
+\end{longtable}
+Lugano, dicembre 2023 \\
+TEXT2 - conto \#;10001 \\
+  \\
+Con la presente testiamo la lettera a  Gianpaolo Bianchi ,  \\
+Indirizzo:  Via Beltramina, 6962 Viganello . \\
+Ringraziamo cordialmente. \\
+  \\
+Pinco Pallino \P Associazione Sportiva xyz \\
+\begin{longtable}[l]{ l }
+Sig. \\
+Mario Rossi \\
+Via abc 12 \\
+6500 Bellinzona \\
+\end{longtable}
+Lugano, dicembre 2023 \\
+TEXT2 - conto \#;10002 \\
+  \\
+Con la presente testiamo la lettera a  Mario Rossi ,  \\
+Indirizzo:  Via abc 12, 6500 Bellinzona . \\
+Ringraziamo cordialmente. \\
+  \\
+Pinco Pallino \P Associazione Sportiva xyz \\
+\begin{longtable}[l]{ l }
+Signora \\
+Sara Guidi \\
+Via Boschetto 45 \\
+6901 Lugano \\
+\end{longtable}
+Lugano, dicembre 2023 \\
+TEXT2 - conto \#;10003 \\
+  \\
+Con la presente testiamo la lettera a  Sara Guidi ,  \\
+Indirizzo:  Via Boschetto 45, 6901 Lugano . \\
+Ringraziamo cordialmente. \\
+  \\
+Pinco Pallino \P Associazione Sportiva xyz \\
+\begin{longtable}[l]{ l }
+Sig. \\
+Voit Ulrich \\
+Via alla Chiesa \\
+6800 Mendrisio \\
+\end{longtable}
+Lugano, dicembre 2023 \\
+TEXT2 - conto \#;10004 \\
+  \\
+Con la presente testiamo la lettera a  Voit Ulrich ,  \\
+Indirizzo:  Via alla Chiesa, 6800 Mendrisio . \\
+Ringraziamo cordialmente. \\
+  \\
+Pinco Pallino \P Associazione Sportiva xyz \\
+\end{reportvalue}
+%****************************************************************************** TEST #3 ******************************************************************************
+\begin{reportvalue}{letter test 3}
+Associazione Sportiva xyz \\
+Pinco Pallino \\
+Via Boschetto 34 \\
+6900 Lugano \\
+Tel. 1112223344 ,  www.banana.ch ,  info@banana.ch \\
+\begin{longtable}[l]{ l }
+Sig. \\
+Gianpaolo Bianchi \\
+Via Beltramina \\
+6962 Viganello \\
+\end{longtable}
+Lugano, december 2023 \\
+Statement of donation \\
+  \\
+Thank you  Gianpaolo Bianchi  for your donations to our Association. \\
+  \\
+Thank you very much! \\
+  \\
+Pinco Pallino \P Associazione Sportiva xyz \\
+\begin{longtable}[l]{ l }
+Sig. \\
+Mario Rossi \\
+Via abc 12 \\
+6500 Bellinzona \\
+\end{longtable}
+Lugano, december 2023 \\
+Statement of donation \\
+  \\
+Thank you  Mario Rossi  for your donations to our Association. \\
+  \\
+Thank you very much! \\
+  \\
+Pinco Pallino \P Associazione Sportiva xyz \\
+\begin{longtable}[l]{ l }
+Signora \\
+Sara Guidi \\
+Via Boschetto 45 \\
+6901 Lugano \\
+\end{longtable}
+Lugano, december 2023 \\
+Statement of donation \\
+  \\
+Thank you  Sara Guidi  for your donations to our Association. \\
+  \\
+Thank you very much! \\
+  \\
+Pinco Pallino \P Associazione Sportiva xyz \\
+\begin{longtable}[l]{ l }
+Sig. \\
+Voit Ulrich \\
+Via alla Chiesa \\
+6800 Mendrisio \\
+\end{longtable}
+Lugano, december 2023 \\
+Statement of donation \\
+  \\
+Thank you  Voit Ulrich  for your donations to our Association. \\
+  \\
+Thank you very much! \\
+  \\
+Pinco Pallino \P Associazione Sportiva xyz \\
+\end{reportvalue}
+%****************************************************************************** TEST #4 ******************************************************************************
+\begin{reportvalue}{letter test 4}
+Associazione Sportiva xyz \\
+Pinco Pallino \\
+Via Boschetto 34 \\
+6900 Lugano \\
+Tel. 1112223344 ,  www.banana.ch ,  info@banana.ch \\
+\begin{longtable}[l]{ l }
+Sig. \\
+Gianpaolo Bianchi \\
+Via Beltramina \\
+6962 Viganello \\
+\end{longtable}
+Lugano 2023 \\
+Lettera  di test \\
+  \\
+Lorem ipsum dolor sit amet consectetur adipiscing elit scelerisque augue mollis, pharetra lobortis mus quisque aptent conubia molestie fringilla ac phasellus purus, parturient integer proin viverra ornare nibh tempus malesuada ante. \\
+Urna sit convallis interdum penatibus nostra dui senectus lobortis habitant pellentesque, quisque blandit phasellus egestas aenean nec ligula maecenas taciti. \\
+Nulla lobortis, urna quis semper efficitur, tortor felis placerat elit, sed porta velit risus ac diam. Vivamus at tempus ex. \\
+  \\
+Pinco Pallino \P Associazione Sportiva xyz \\
+\begin{longtable}[l]{ l }
+Sig. \\
+Voit Ulrich \\
+Via alla Chiesa \\
+6800 Mendrisio \\
+\end{longtable}
+Lugano 2023 \\
+Lettera  di test \\
+  \\
+Lorem ipsum dolor sit amet consectetur adipiscing elit scelerisque augue mollis, pharetra lobortis mus quisque aptent conubia molestie fringilla ac phasellus purus, parturient integer proin viverra ornare nibh tempus malesuada ante. \\
+Urna sit convallis interdum penatibus nostra dui senectus lobortis habitant pellentesque, quisque blandit phasellus egestas aenean nec ligula maecenas taciti. \\
+Nulla lobortis, urna quis semper efficitur, tortor felis placerat elit, sed porta velit risus ac diam. Vivamus at tempus ex. \\
+  \\
+Pinco Pallino \P Associazione Sportiva xyz \\
+\end{reportvalue}
+\keyvalue{Result}{Passed}
+\end{test}
+\end{testcase}
+\end{document}
