@@ -33,6 +33,7 @@ TestImportInvoices.prototype.initTestCase = function() {
 
     this.fileAC2 = "file:script/../test/testcases/invoices_testfiles/import_invoices_test.ac2";
     this.csvInvoicesFile = "file:script/../test/testcases/invoices_testfiles/invoices.csv";
+    this.csvInvoicesFileWithMissingData = "file:script/../test/testcases/invoices_testfiles/invoices_with_missing_data.csv";
     this.jsonDoc = this.initJson();
 }
 
@@ -60,6 +61,45 @@ TestImportInvoices.prototype.testImportInvoices = function() {
 
     let file = Banana.IO.getLocalFile(this.csvInvoicesFile);
     Test.assert(file, `file not found: "${this.csvInvoicesFile}"`);
+
+    fileContent = file.read();
+   
+    banDoc.clearMessages();
+    let jsonDocArray = {};
+    let transactions = Banana.Converter.csvToArray(fileContent, ";", '"');
+    let transactions_header = transactions[0];
+
+    transactions.splice(0, 1);
+    let transactionsObjs = Banana.Converter.arrayToObject(transactions_header, transactions, true);
+    let format_invs = createFormatInvs(banDoc);
+    if (format_invs.match(transactionsObjs)) {
+        let format = format_invs.convertInDocChange(transactionsObjs, this.jsonDoc);
+        jsonDocArray = format;
+    }
+    
+    let documentChange = { "format": "documentChange", "error": "","data":[]};
+    documentChange["data"].push(jsonDocArray);
+
+    let msgs = banDoc.getMessages();
+    for (let i = 0; i < msgs.length; ++i) {
+        let msg = msgs[i];
+        this.testLogger.addKeyValue("ERROR_MSG_ROW_" + msg.rowNr, msg.message);
+        this.testLogger.addKeyValue("ERROR_HELPID_ROW_" + msg.rowNr, msg.helpId);
+    }
+
+    return documentChange;
+    
+}
+
+TestImportInvoices.prototype.testImportInvoicesWithMissingData = function() {
+    this.testLogger.addKeyValue("ImportInvoices", "testReport");
+    this.testLogger.addComment("Test Invoices import: missing data");
+
+    let banDoc = Banana.application.openDocument(this.fileAC2);
+    Test.assert(banDoc, `file not found: "${this.fileAC2}"`);
+
+    let file = Banana.IO.getLocalFile(this.csvInvoicesFileWithMissingData);
+    Test.assert(file, `file not found: "${this.csvInvoicesFileWithMissingData}"`);
 
     fileContent = file.read();
    
