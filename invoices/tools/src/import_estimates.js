@@ -3,7 +3,7 @@
 // @pubdate = 2023-03-20
 // @publisher = Banana.ch SA
 // @description = Import estimates
-// @description.de = Angebote importieren
+// @description.de = Offerten importieren
 // @description.fr = Importer offres
 // @description.it = Importa offerte
 // @doctype = 400.400
