@@ -161,14 +161,7 @@ class formatInvs {
                     };
                 }
 
-                // if (invoiceTransaction["ItemDiscount"]) {
-                //     for(let i = 0; i < invoiceObj.items.length; i++) {
-                //         invoiceObj.items[i].discount = {
-                //             amount: invoiceTransaction["ItemDiscount"] ? invoiceTransaction["ItemDiscount"] : null
-                //         };
-                //     }
-                // }
-                // Banana.Ui.showText(JSON.stringify(invoiceObj));
+                // Banana.Ui.showText(JSON.stringify(invoiceTransaction));
                 // Recalculate invoice
                 invoiceObj = JSON.parse(this.banDoc.calculateInvoice(JSON.stringify(invoiceObj)));
                 // Banana.Ui.showText(JSON.stringify(invoiceObj));
