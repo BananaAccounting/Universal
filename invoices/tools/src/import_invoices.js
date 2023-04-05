@@ -161,10 +161,8 @@ class formatInvs {
                     };
                 }
 
-                // Banana.Ui.showText(JSON.stringify(invoiceTransaction));
                 // Recalculate invoice
                 invoiceObj = JSON.parse(this.banDoc.calculateInvoice(JSON.stringify(invoiceObj)));
-                // Banana.Ui.showText(JSON.stringify(invoiceObj));
 
                 // check that the information in the billing info property coincides with the totals taken from the invoice lines
                 this.checkCalculatedAmounts(invoiceObj);
@@ -177,7 +175,7 @@ class formatInvs {
                 row.fields["InvoiceData"] = {"invoice_json":JSON.stringify(invoiceObj)};
 
                 rows.push(row);
-
+                
                 this.invoiceTotalToPay = "";
                 this.invoiceVatTotal = "";
                 this.discountTotal = "";
@@ -401,9 +399,16 @@ class formatInvs {
                     vat_code: invTransaction["ItemVatCode"] ? invTransaction["ItemVatCode"] : null,
                     vat_rate: invTransaction["ItemVatRate"] ? invTransaction["ItemVatRate"] : null
                 }
-                // The next fields are recalculated
-                //invoiceObj_items.total_amount_vat_exclusive = invTransaction["ItemTotal"];
-                //invoiceObj_items.total_amount_vat_inclusive = invTransaction["ItemTotal"];
+                
+                if (!invoiceObj_items.description) {
+                    Banana.application.addMessage(qsTr("%1 is a required field").arg("ItemDescription"), "ItemDescription", "missing_field");
+                }
+                if (!invoiceObj_items.quantity) {
+                    Banana.application.addMessage(qsTr("%1 is a required field").arg("ItemQuantity"), "ItemQuantity", "missing_field");
+                }
+                if (!invoiceObj_items.unit_price) {
+                    Banana.application.addMessage(qsTr("%1 is a required field").arg("ItemUnitPrice"), "ItemUnitPrice", "missing_field");
+                }
                 
                 invoiceArr_items.push(invoiceObj_items);
             }
