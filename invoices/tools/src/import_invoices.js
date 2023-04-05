@@ -406,7 +406,7 @@ class formatInvs {
                 if (!invoiceObj_items.quantity) {
                     Banana.application.addMessage(qsTr("%1 is a required field").arg("ItemQuantity"), "ItemQuantity", "missing_field");
                 }
-                if (!invoiceObj_items.unit_price) {
+                if (!invoiceObj_items.unit_price.amount_vat_exclusive && !invoiceObj_items.unit_price.amount_vat_inclusive) {
                     Banana.application.addMessage(qsTr("%1 is a required field").arg("ItemUnitPrice"), "ItemUnitPrice", "missing_field");
                 }
                 
