@@ -400,6 +400,15 @@ function exec(string) {
                      vat_rate: invTransaction["ItemVatRate"] ? invTransaction["ItemVatRate"] : null
                  }
                  
+                if (!invoiceObj_items.description) {
+                    Banana.application.addMessage(qsTr("%1 is a required field").arg("ItemDescription"), "ItemDescription", "missing_field");
+                }
+                if (!invoiceObj_items.quantity) {
+                    Banana.application.addMessage(qsTr("%1 is a required field").arg("ItemQuantity"), "ItemQuantity", "missing_field");
+                }
+                if (!invoiceObj_items.unit_price.amount_vat_exclusive && !invoiceObj_items.unit_price.amount_vat_inclusive) {
+                    Banana.application.addMessage(qsTr("%1 is a required field").arg("ItemUnitPrice"), "ItemUnitPrice", "missing_field");
+                }
                  invoiceArr_items.push(invoiceObj_items);
              }
          }
