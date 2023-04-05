@@ -8,7 +8,16 @@
 // @inputdataform = none
 // @task = app.command
 // @timeout = -1
+// @task = import.rows
+// @outputformat = transactions.simple
+// @inputdatasource = openfiledialog
+// @inputencoding = utf8
+// @inputfilefilter = Text file (*.csv);;All files (*.*)
+// @inputfilefilter.de = Text datei (*.csv);;All files (*.*)
+// @inputfilefilter.fr = Fichier text(*.csv);;All files (*.*)
+// @inputfilefilter.it = File testo (*.csv);;All files (*.*)
 // @includejs = ../src/export_estimates.js
+// @includejs = ../src/import_estimates.js
 
 /*
   SUMMARY
@@ -40,9 +49,13 @@ function TestExportEstimates() {
 // This method will be called at the beginning of the test case
 TestExportEstimates.prototype.initTestCase = function() {
 	this.testLogger = Test.logger;
+	this.progressBar = Banana.application.progressBar;
 	if(!this.testLogger){
 		this.testLogger.addFatalError("Test logger not found");
 	}
+	this.fileImportAC2 = "file:script/../test/testcases/invoices_testfiles/export_import_invoices_test.ac2";
+    this.csvEstimatesFile = "file:script/../test/testcases/invoices_testfiles/estimates.csv";
+	this.jsonDoc = this.initJson();
 }
 
 // This method will be called at the end of the test case
@@ -256,4 +269,73 @@ TestExportEstimates.prototype.testEstimateErrors = function() {
         this.testLogger.addKeyValue("ERROR_MSG_ROW_" + msg.rowNr, msg.message);
         this.testLogger.addKeyValue("ERROR_HELPID_ROW_" + msg.rowNr, msg.helpId);
     }
+}
+
+// Test Export/Import 
+TestExportEstimates.prototype.testExportImportInvoices = function() {
+    //get the *ac2 file
+    let fileAC2 = "file:script/../test/testcases/invoices_testfiles/invoices_vat_excluded_test.ac2";
+	let banDoc = Banana.application.openDocument(fileAC2);
+    Test.assert(banDoc, `file not found: "${fileAC2}"`);
+
+    let estimatesTable = banDoc.table("Estimates");
+    Test.assert(estimatesTable);
+
+    banDoc.clearMessages();
+    let csvData = generateCsvEstimates(estimatesTable);
+	this.testLogger.addCsv("Data", csvData);
+
+    let msgs = banDoc.getMessages();
+    for (let i = 0; i < msgs.length; ++i) {
+        let msg = msgs[i];
+        this.testLogger.addKeyValue("ERROR_MSG_ROW_" + msg.rowNr, msg.message);
+        this.testLogger.addKeyValue("ERROR_HELPID_ROW_" + msg.rowNr, msg.helpId);
+    }
+
+	// Import estimates
+	let banDocImport = Banana.application.openDocument(this.fileImportAC2);
+    Test.assert(banDocImport, `file not found: "${this.fileImportAC2}"`);
+
+    let file = Banana.IO.getLocalFile(this.csvEstimatesFile);
+    Test.assert(file, `file not found: "${this.csvEstimatesFile}"`);
+
+    fileContent = file.read();
+
+	banDocImport.clearMessages();
+    let jsonDocArray = {};
+    let transactions = Banana.Converter.csvToArray(fileContent, ";", '"');
+    let transactions_header = transactions[0];
+
+    transactions.splice(0, 1);
+    let transactionsObjs = Banana.Converter.arrayToObject(transactions_header, transactions, true);
+    let format_invs = createFormatEsts(banDocImport);
+    if (format_invs.match(transactionsObjs)) {
+        let format = format_invs.convertInDocChange(transactionsObjs, this.jsonDoc);
+        jsonDocArray = format;
+    }
+    
+    let documentChange = { "format": "documentChange", "error": "","data":[]};
+    documentChange["data"].push(jsonDocArray);
+
+    let msgs_i = banDocImport.getMessages();
+    for (let i = 0; i < msgs.length; ++i) {
+        let msg = msgs_i[i];
+        this.testLogger.addKeyValue("ERROR_MSG_ROW_" + msg.rowNr, msg.message);
+        this.testLogger.addKeyValue("ERROR_HELPID_ROW_" + msg.rowNr, msg.helpId);
+    }
+
+    return documentChange;
+}
+
+TestExportEstimates.prototype.initJson = function() {
+    let jsonDoc = {};
+    jsonDoc.document = {};
+    jsonDoc.document.dataUnits = [];
+
+    jsonDoc.creator = {};
+    jsonDoc.creator.executionDate = "";
+    jsonDoc.creator.name = "this is a test"
+    jsonDoc.creator.version = "1.0";
+
+    return jsonDoc;
 }
