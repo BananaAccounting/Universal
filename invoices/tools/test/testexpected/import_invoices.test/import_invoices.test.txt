@@ -26,5 +26,10 @@
 %Test Invoices import
 \keyvalue{Result}{Passed}
 \end{test}
+\begin{test}{testImportInvoicesWithMissingData}
+\keyvalue{ImportInvoices}{testReport}
+%Test Invoices import: missing data
+\keyvalue{Result}{Passed}
+\end{test}
 \end{testcase}
 \end{document}
