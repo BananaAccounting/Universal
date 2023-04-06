@@ -145,6 +145,7 @@ class formatInvs {
         let docInfo = getDocumentInfo();
         let rows = [];
         let invoiceObj = {};
+        let rowMatched = true;
 
         /* Iterate over the rows and create object */
         for (let trRow in transactionsObjs) {
@@ -152,7 +153,7 @@ class formatInvs {
             
             if (this.placeholder !== invoiceTransaction["InvoiceNumber"]) {
                 invoiceObj = this.setInvoiceStructure(invoiceTransaction, docInfo);
-                invoiceObj.items = this.setInvoiceStructure_items(transactionsObjs, invoiceTransaction["InvoiceNumber"]);
+                invoiceObj.items = this.setInvoiceStructure_items(transactionsObjs, invoiceTransaction["InvoiceNumber"], rowMatched);
                 
                 if (invoiceTransaction["InvoiceDiscount"]) {
                     invoiceObj.billing_info.discount = {
@@ -161,6 +162,8 @@ class formatInvs {
                     };
                 }
 
+                if (invoiceObj.items === null)
+                    return null;
                 // Recalculate invoice
                 invoiceObj = JSON.parse(this.banDoc.calculateInvoice(JSON.stringify(invoiceObj)));
 
@@ -377,8 +380,9 @@ class formatInvs {
         return invoiceObj_documentInfo;
     }
 
-    setInvoiceStructure_items(invoiceTransactions, ref_number){
+    setInvoiceStructure_items(invoiceTransactions, ref_number, rowMatched){
         let invoiceArr_items = [];
+        
         for(let row in invoiceTransactions){
            let invTransaction = invoiceTransactions[row];
         
@@ -402,17 +406,25 @@ class formatInvs {
                 
                 if (!invoiceObj_items.description) {
                     Banana.application.addMessage(qsTr("%1 is a required field").arg("ItemDescription"), "ItemDescription", "missing_field");
+                    rowMatched = false;
                 }
                 if (!invoiceObj_items.quantity) {
                     Banana.application.addMessage(qsTr("%1 is a required field").arg("ItemQuantity"), "ItemQuantity", "missing_field");
+                    rowMatched = false;
                 }
                 if (!invoiceObj_items.unit_price.amount_vat_exclusive && !invoiceObj_items.unit_price.amount_vat_inclusive) {
                     Banana.application.addMessage(qsTr("%1 is a required field").arg("ItemUnitPrice"), "ItemUnitPrice", "missing_field");
+                    rowMatched = false;
                 }
-                
+                    
                 invoiceArr_items.push(invoiceObj_items);
             }
         }
+        if (!rowMatched) {
+            rowMatched = true;
+            return null;
+        }
+        
         return invoiceArr_items;
     }
 
