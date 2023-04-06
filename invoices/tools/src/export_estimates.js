@@ -3,7 +3,7 @@
 // @pubdate = 2023-03-17
 // @publisher = Banana.ch SA
 // @description = Export estimates
-// @description.de = Rechnungen exportieren
+// @description.de = Offerten exportieren
 // @description.fr = Exporter offres
 // @description.it = Esporta Offerte
 // @doctype = 400.400
