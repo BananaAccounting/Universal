@@ -115,11 +115,11 @@ TestImportInvoices.prototype.testImportInvoicesWithMissingData = function() {
         let format = format_invs.convertInDocChange(transactionsObjs, this.jsonDoc);
         jsonDocArray = format;
     }
-    
+    let msgs = banDoc.getMessages();
+
     let documentChange = { "format": "documentChange", "error": "","data":[]};
     documentChange["data"].push(jsonDocArray);
 
-    let msgs = banDoc.getMessages();
     for (let i = 0; i < msgs.length; ++i) {
         let msg = msgs[i];
         this.testLogger.addKeyValue("ERROR_MSG_ROW_" + msg.rowNr, msg.message);
