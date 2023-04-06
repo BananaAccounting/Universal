@@ -73,7 +73,7 @@
     <message>
         <location filename="../export_estimates.js" line="33"/>
         <source>Fix errors first, as listed in the pane Messages.</source>
-        <translation type="unfinished">Correggere prima gli errori, come elencato nel riquadro Messaggi.</translation>
+        <translation>Correggere prima gli errori, come elencato nel riquadro Messaggi.</translation>
     </message>
     <message>
         <location filename="../export_estimates.js" line="70"/>
@@ -82,13 +82,13 @@
         <location filename="../export_estimates.js" line="91"/>
         <location filename="../export_estimates.js" line="102"/>
         <source>%1 is a required field</source>
-        <translation type="unfinished">%1 è un campo obbligatorio</translation>
+        <translation>%1 è un campo obbligatorio</translation>
     </message>
     <message>
         <location filename="../export_estimates.js" line="130"/>
         <source>Estimate not valid.
 Error: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Offerta non valida, Errore: %1</translation>
     </message>
 </context>
 <context>
@@ -207,44 +207,44 @@ Errore: %1</translation>
     <message>
         <location filename="../import_estimates.js" line="212"/>
         <source>The calculated amount for invoice %1 is different from the amount in the imported file. Calculated amount %2, amount imported file: %3</source>
-        <translation type="unfinished">L&apos;importo calcolato per la fattura %1 è diverso dall&apos;importo nel file importato. Importo calcolato %2, importo file importato: %3</translation>
+        <translation>L&apos;importo calcolato per la fattura %1 è diverso dall&apos;importo nel file importato. Importo calcolato %2, importo file importato: %3</translation>
     </message>
     <message>
         <location filename="../import_estimates.js" line="223"/>
         <source>The calculated vat amount for invoice %1 is different from the amount in the imported file. Calculated vat amount %2, amount imported file: %3</source>
-        <translation type="unfinished">L&apos;importo IVA calcolato per la fattura %1 è diverso dall&apos;importo IVA nel file importato. Importo calcolato %2, importo file importato: %3</translation>
+        <translation>L&apos;importo IVA calcolato per la fattura %1 è diverso dall&apos;importo IVA nel file importato. Importo calcolato %2, importo file importato: %3</translation>
     </message>
     <message>
         <location filename="../import_estimates.js" line="235"/>
         <source>Estimate</source>
-        <translation type="unfinished"></translation>
+        <translation>Offerta</translation>
     </message>
     <message>
         <location filename="../import_estimates.js" line="236"/>
         <source>Reference nr: </source>
-        <translation type="unfinished">Numero di riferimento: </translation>
+        <translation>Numero di riferimento: </translation>
     </message>
     <message>
         <location filename="../import_estimates.js" line="407"/>
         <location filename="../import_estimates.js" line="411"/>
         <location filename="../import_estimates.js" line="415"/>
         <source>%1 is a required field</source>
-        <translation type="unfinished">%1 è un campo obbligatorio</translation>
+        <translation>%1 è un campo obbligatorio</translation>
     </message>
     <message>
         <location filename="../import_estimates.js" line="493"/>
         <source>Contact id &apos;%1&apos; not found in contact table. Did you import the contacts?</source>
-        <translation type="unfinished">ID contatto &apos;%1&apos; non trovato nella tabella contatti. Hai importato i contatti?</translation>
+        <translation>ID contatto &apos;%1&apos; non trovato nella tabella contatti. Hai importato i contatti?</translation>
     </message>
     <message>
         <location filename="../import_estimates.js" line="495"/>
         <source>The calculated amount is different from the amount in your file, invoice nr: %1</source>
-        <translation type="unfinished">L&apos;importo calcolato è diverso dall&apos;importo nel file, numero fattura: %1</translation>
+        <translation>L&apos;importo calcolato è diverso dall&apos;importo nel file, numero fattura: %1</translation>
     </message>
     <message>
         <location filename="../import_estimates.js" line="497"/>
         <source>You are trying to import a &apos;Single line&apos; invoice, import a &apos;Detailed&apos; invoice instead.</source>
-        <translation type="unfinished">Stai tentando di importare una fattura &quot;a riga singola&quot;, importa invece una fattura &quot;dettagliata&quot;.</translation>
+        <translation>Stai tentando di importare una fattura &quot;a riga singola&quot;, importa invece una fattura &quot;dettagliata&quot;.</translation>
     </message>
 </context>
 <context>
@@ -274,7 +274,7 @@ Errore: %1</translation>
         <location filename="../import_invoices.js" line="412"/>
         <location filename="../import_invoices.js" line="416"/>
         <source>%1 is a required field</source>
-        <translation type="unfinished">%1 è un campo obbligatorio</translation>
+        <translation>%1 è un campo obbligatorio</translation>
     </message>
     <message>
         <location filename="../import_invoices.js" line="495"/>
