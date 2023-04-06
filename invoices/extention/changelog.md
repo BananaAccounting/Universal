@@ -1,5 +1,15 @@
 # Changelog
 
+## 2022-04-03
+
+* [RELEASE STABLE] Released as Stable
+* [RELEASE DEV] Released as Dev
+
+Changes availables only with the latest BananaPlus Insider version (10.0.13.340 or newer).
+
+* [Fix] Fix error opening dialog with Qt6.6.
+* [Fix] Fix vat total not showed in the invoice dialog.
+
 ## 2022-12-14
 
 * [RELEASE STABLE] Released as Stable
