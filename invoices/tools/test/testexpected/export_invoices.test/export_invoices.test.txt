@@ -66,16 +66,16 @@ InvoiceNumber & InvoiceDate & InvoiceDueDate & InvoiceDescription & InvoiceDisco
 \begin{test}{testInvoicesVatExcluded}
 \begin{tablevalue}{Data}{ l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l }
 InvoiceNumber & InvoiceDate & InvoiceDueDate & InvoiceDescription & InvoiceDiscount & InvoiceVatTotal & InvoiceTotalToPay & InvoiceCurrency & InvoiceRoundingTotal & InvoiceAmountType & CustomerNumber & CustomerName & ItemNumber & ItemDescription & ItemQuantity & ItemUnitPrice & ItemUnit & ItemVatRate & ItemVatCode & ItemDiscount & ItemTotal & ItemVatTotal\\
-1 & 2023-06-17 & 2023-07-17 & Invoice 1 & 2.20 & 1.96 & 27.40 & CHF & 0.05 & vat\_excl & 1 &   & 1200 & Herbal teas & 4.00 & 5.00 & pc & 7.70 & V77 &  & 20.00 & 1.54\\
-1 & 2023-06-17 & 2023-07-17 & Invoice 1 & 2.20 & 1.96 & 27.40 & CHF & 0.05 & vat\_excl & 1 &   & 6000 & Shipping fees & 1 & 7.50 & pc & 7.70 & V77 &  & 7.50 & 0.58\\
-2 & 2023-06-17 & 2023-07-17 & Invoice 2 & 2.50 & 10.03 & 140.20 & CHF & 0.05 & vat\_excl & 2 & Peter Ridge & 1000 & Tea & 50.00 & 2.50 & pc & 7.70 & V77 &  & 125.00 & 9.63\\
-2 & 2023-06-17 & 2023-07-17 & Invoice 2 & 2.50 & 10.03 & 140.20 & CHF & 0.05 & vat\_excl & 2 & Peter Ridge & 6000 & Shipping fees & 1 & 7.50 & pc & 7.70 & V77 &  & 7.50 & 0.58\\
-3 & 2023-10-15 & 2023-11-15 & Invoice 3 & 2.54 & 1.94 & 27.10 & CHF & 0.05 & vat\_excl & 3 & Luis Smith & 1200 & Herbal teas & 4.00 & 5.00 & pc & 7.70 & V77 &  & 20.00 & 1.54\\
-3 & 2023-10-15 & 2023-11-15 & Invoice 3 & 2.54 & 1.94 & 27.10 & CHF & 0.05 & vat\_excl & 3 & Luis Smith & 6000 & Shipping fees & 1 & 7.50 & pc & 7.70 & V77 &  & 7.50 & 0.58\\
+1 & 2023-06-17 & 2023-07-17 & Invoice 1 & 2.04 & 1.96 & 27.40 & CHF & 0.05 & vat\_excl & 1 &   & 1200 & Herbal teas & 4.00 & 5.00 & pc & 7.70 & V77 &  & 20.00 & 1.54\\
+1 & 2023-06-17 & 2023-07-17 & Invoice 1 & 2.04 & 1.96 & 27.40 & CHF & 0.05 & vat\_excl & 1 &   & 6000 & Shipping fees & 1 & 7.50 & pc & 7.70 & V77 &  & 7.50 & 0.58\\
+2 & 2023-06-17 & 2023-07-17 & Invoice 2 & 2.32 & 10.03 & 140.20 & CHF & 0.05 & vat\_excl & 2 & Peter Ridge & 1000 & Tea & 50.00 & 2.50 & pc & 7.70 & V77 &  & 125.00 & 9.63\\
+2 & 2023-06-17 & 2023-07-17 & Invoice 2 & 2.32 & 10.03 & 140.20 & CHF & 0.05 & vat\_excl & 2 & Peter Ridge & 6000 & Shipping fees & 1 & 7.50 & pc & 7.70 & V77 &  & 7.50 & 0.58\\
+3 & 2023-10-15 & 2023-11-15 & Invoice 3 & 2.36 & 1.94 & 27.10 & CHF & 0.05 & vat\_excl & 3 & Luis Smith & 1200 & Herbal teas & 4.00 & 5.00 & pc & 7.70 & V77 &  & 20.00 & 1.54\\
+3 & 2023-10-15 & 2023-11-15 & Invoice 3 & 2.36 & 1.94 & 27.10 & CHF & 0.05 & vat\_excl & 3 & Luis Smith & 6000 & Shipping fees & 1 & 7.50 & pc & 7.70 & V77 &  & 7.50 & 0.58\\
 4 & 2023-11-11 & 2023-12-11 & Invoice 4 &  & 10.21 & 142.70 & CHF & 0.05 & vat\_excl & 2 & Peter Ridge & 1000 & Tea & 50.00 & 2.50 & pc & 7.70 & V77 &  & 125.00 & 9.63\\
 4 & 2023-11-11 & 2023-12-11 & Invoice 4 &  & 10.21 & 142.70 & CHF & 0.05 & vat\_excl & 2 & Peter Ridge & 6000 & Shipping fees & 1 & 7.50 & pc & 7.70 & V77 &  & 7.50 & 0.58\\
-5 & 2023-11-29 & 2023-12-31 & Invoice 5 & 1.75 & 1.99 & 27.85 & CHF & 0.05 & vat\_excl & 3 & Luis Smith & 1200 & Herbal teas & 4.00 & 5.00 & pc & 7.70 & V77 &  & 20.00 & 1.54\\
-5 & 2023-11-29 & 2023-12-31 & Invoice 5 & 1.75 & 1.99 & 27.85 & CHF & 0.05 & vat\_excl & 3 & Luis Smith & 6000 & Shipping fees & 1 & 7.50 & pc & 7.70 & V77 &  & 7.50 & 0.58\\
+5 & 2023-11-29 & 2023-12-31 & Invoice 5 & 1.62 & 1.99 & 27.85 & CHF & 0.05 & vat\_excl & 3 & Luis Smith & 1200 & Herbal teas & 4.00 & 5.00 & pc & 7.70 & V77 &  & 20.00 & 1.54\\
+5 & 2023-11-29 & 2023-12-31 & Invoice 5 & 1.62 & 1.99 & 27.85 & CHF & 0.05 & vat\_excl & 3 & Luis Smith & 6000 & Shipping fees & 1 & 7.50 & pc & 7.70 & V77 &  & 7.50 & 0.58\\
 6 & 2023-12-01 & 2023-12-30 & Invoice 6 &  & 0.57 & 15.55 & CHF & 0.05 & vat\_excl & 1 &   & 1000 & Tea & 1 & 2.50 & pc & 7.70 & V77 &  & 2.50 & 0.19\\
 6 & 2023-12-01 & 2023-12-30 & Invoice 6 &  & 0.57 & 15.55 & CHF & 0.05 & vat\_excl & 1 &   & 1200 & Herbal teas & 1 & 5.00 & pc & 3.70 & V37 &  & 5.00 & 0.19\\
 6 & 2023-12-01 & 2023-12-30 & Invoice 6 &  & 0.57 & 15.55 & CHF & 0.05 & vat\_excl & 1 &   & 6000 & Shipping fees & 1 & 7.50 & pc & 2.50 & V25 &  & 7.50 & 0.19\\
@@ -87,20 +87,20 @@ InvoiceNumber & InvoiceDate & InvoiceDueDate & InvoiceDescription & InvoiceDisco
 \begin{test}{testInvoicesVatExcludedAmountsRounded}
 \begin{tablevalue}{Data}{ l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l }
 InvoiceNumber & InvoiceDate & InvoiceDueDate & InvoiceDescription & InvoiceDiscount & InvoiceVatTotal & InvoiceTotalToPay & InvoiceCurrency & InvoiceRoundingTotal & InvoiceAmountType & CustomerNumber & CustomerName & ItemNumber & ItemDescription & ItemQuantity & ItemUnitPrice & ItemUnit & ItemVatRate & ItemVatCode & ItemDiscount & ItemTotal & ItemVatTotal\\
-1 & 2023-06-17 & 2023-07-17 & Invoice 1 & 2.20 & 1.98 & 27.70 & CHF & 0.05 & vat\_excl & 1 &   & 1200 & Herbal teas & 4.00 & 5.05 & pc & 7.70 & V77 &  & 20.20 & 1.56\\
-1 & 2023-06-17 & 2023-07-17 & Invoice 1 & 2.20 & 1.98 & 27.70 & CHF & 0.05 & vat\_excl & 1 &   & 6000 & Shipping fees & 1.00 & 7.55 & pc & 7.70 & V77 &  & 7.55 & 0.58\\
-2 & 2023-06-17 & 2023-07-17 & Invoice 2 & 2.50 & 10.26 & 143.50 & CHF & 0.05 & vat\_excl & 2 & Peter Ridge & 1000 & Tea & 50.00 & 2.56 & pc & 7.70 & V77 &  & 128.00 & 9.86\\
-2 & 2023-06-17 & 2023-07-17 & Invoice 2 & 2.50 & 10.26 & 143.50 & CHF & 0.05 & vat\_excl & 2 & Peter Ridge & 6000 & Shipping fees & 1.00 & 7.57 & pc & 7.70 & V77 &  & 7.57 & 0.58\\
-3 & 2023-10-15 & 2023-11-15 & Invoice 3 & 2.54 & 2.08 & 29.00 & EUR & 0.05 & vat\_excl & 3 & Luis Smith & 1200 & Herbal teas & 4.00 & 5.44 & pc & 7.70 & V77 &  & 21.76 & 1.68\\
-3 & 2023-10-15 & 2023-11-15 & Invoice 3 & 2.54 & 2.08 & 29.00 & EUR & 0.05 & vat\_excl & 3 & Luis Smith & 6000 & Shipping fees & 1.00 & 7.52 & pc & 7.70 & V77 &  & 7.52 & 0.58\\
+1 & 2023-06-17 & 2023-07-17 & Invoice 1 & 2.04 & 1.98 & 27.70 & CHF & 0.05 & vat\_excl & 1 &   & 1200 & Herbal teas & 4.00 & 5.05 & pc & 7.70 & V77 &  & 20.20 & 1.56\\
+1 & 2023-06-17 & 2023-07-17 & Invoice 1 & 2.04 & 1.98 & 27.70 & CHF & 0.05 & vat\_excl & 1 &   & 6000 & Shipping fees & 1.00 & 7.55 & pc & 7.70 & V77 &  & 7.55 & 0.58\\
+2 & 2023-06-17 & 2023-07-17 & Invoice 2 & 2.32 & 10.26 & 143.50 & CHF & 0.05 & vat\_excl & 2 & Peter Ridge & 1000 & Tea & 50.00 & 2.56 & pc & 7.70 & V77 &  & 128.00 & 9.86\\
+2 & 2023-06-17 & 2023-07-17 & Invoice 2 & 2.32 & 10.26 & 143.50 & CHF & 0.05 & vat\_excl & 2 & Peter Ridge & 6000 & Shipping fees & 1.00 & 7.57 & pc & 7.70 & V77 &  & 7.57 & 0.58\\
+3 & 2023-10-15 & 2023-11-15 & Invoice 3 & 2.36 & 2.08 & 29.00 & EUR & 0.05 & vat\_excl & 3 & Luis Smith & 1200 & Herbal teas & 4.00 & 5.44 & pc & 7.70 & V77 &  & 21.76 & 1.68\\
+3 & 2023-10-15 & 2023-11-15 & Invoice 3 & 2.36 & 2.08 & 29.00 & EUR & 0.05 & vat\_excl & 3 & Luis Smith & 6000 & Shipping fees & 1.00 & 7.52 & pc & 7.70 & V77 &  & 7.52 & 0.58\\
 4 & 2023-11-11 & 2023-12-11 & Invoice 4 &  & 10.51 & 147.05 & CHF & 0.05 & vat\_excl & 2 & Peter Ridge & 1000 & Tea & 50.00 & 2.58 & pc & 7.70 & V77 &  & 129.00 & 9.93\\
 4 & 2023-11-11 & 2023-12-11 & Invoice 4 &  & 10.51 & 147.05 & CHF & 0.05 & vat\_excl & 2 & Peter Ridge & 6000 & Shipping fees & 1.00 & 7.53 & pc & 7.70 & V77 &  & 7.53 & 0.58\\
-5 & 2023-11-29 & 2023-12-31 & Invoice 5 & 1.75 & 2.10 & 29.45 & EUR & 0.05 & vat\_excl & 3 & Luis Smith & 1200 & Herbal teas & 4.00 & 5.45 & pc & 7.70 & V77 &  & 21.80 & 1.68\\
-5 & 2023-11-29 & 2023-12-31 & Invoice 5 & 1.75 & 2.10 & 29.45 & EUR & 0.05 & vat\_excl & 3 & Luis Smith & 6000 & Shipping fees & 1.00 & 7.15 & pc & 7.70 & V77 &  & 7.15 & 0.55\\
+5 & 2023-11-29 & 2023-12-31 & Invoice 5 & 1.62 & 2.10 & 29.45 & EUR & 0.05 & vat\_excl & 3 & Luis Smith & 1200 & Herbal teas & 4.00 & 5.45 & pc & 7.70 & V77 &  & 21.80 & 1.68\\
+5 & 2023-11-29 & 2023-12-31 & Invoice 5 & 1.62 & 2.10 & 29.45 & EUR & 0.05 & vat\_excl & 3 & Luis Smith & 6000 & Shipping fees & 1.00 & 7.15 & pc & 7.70 & V77 &  & 7.15 & 0.55\\
 6 & 2023-12-01 & 2023-12-30 & Invoice 6 &  & 0.58 & 15.75 & CHF & 0.05 & vat\_excl & 1 &   & 1000 & Tea & 1 & 2.59 & pc & 7.70 & V77 &  & 2.59 & 0.20\\
 6 & 2023-12-01 & 2023-12-30 & Invoice 6 &  & 0.58 & 15.75 & CHF & 0.05 & vat\_excl & 1 &   & 1200 & Herbal teas & 1 & 5.03 & pc & 3.70 & V37 &  & 5.03 & 0.19\\
 6 & 2023-12-01 & 2023-12-30 & Invoice 6 &  & 0.58 & 15.75 & CHF & 0.05 & vat\_excl & 1 &   & 6000 & Shipping fees & 1 & 7.55 & pc & 2.50 & V25 &  & 7.55 & 0.19\\
-7 & 2023-12-15 & 2024-01-13 & Invoice 7 & 0.07 & 0.19 & 2.65 & CHF & 0.05 & vat\_excl & 2 & Peter Ridge & 1000 & Tea & 1 & 2.51 & pc & 7.70 & V77 &  & 2.51 & 0.19\\
+7 & 2023-12-15 & 2024-01-13 & Invoice 7 & 0.06 & 0.19 & 2.65 & CHF & 0.05 & vat\_excl & 2 & Peter Ridge & 1000 & Tea & 1 & 2.51 & pc & 7.70 & V77 &  & 2.51 & 0.19\\
 \\
 \end{tablevalue}
 \keyvalue{Result}{Passed}
@@ -108,20 +108,20 @@ InvoiceNumber & InvoiceDate & InvoiceDueDate & InvoiceDescription & InvoiceDisco
 \begin{test}{testInvoicesWithParticularAmounts}
 \begin{tablevalue}{Data}{ l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l }
 InvoiceNumber & InvoiceDate & InvoiceDueDate & InvoiceDescription & InvoiceDiscount & InvoiceVatTotal & InvoiceTotalToPay & InvoiceCurrency & InvoiceRoundingTotal & InvoiceAmountType & CustomerNumber & CustomerName & ItemNumber & ItemDescription & ItemQuantity & ItemUnitPrice & ItemUnit & ItemVatRate & ItemVatCode & ItemDiscount & ItemTotal & ItemVatTotal\\
-1 & 2023-06-17 & 2023-07-17 & Invoice 1 & 2.20 & 2.04 & 28.65 & CHF & 0.05 & vat\_excl & 1 &   & 1200 & Herbal teas & 4.00 & 5.33 & pc & 7.70 & V77 &  & 21.32 & 1.64\\
-1 & 2023-06-17 & 2023-07-17 & Invoice 1 & 2.20 & 2.04 & 28.65 & CHF & 0.05 & vat\_excl & 1 &   & 6000 & Shipping fees & 1.00 & 7.33 & pc & 7.70 & V77 &  & 7.33 & 0.56\\
-2 & 2023-06-17 & 2023-07-17 & Invoice 2 & 2.50 & 9.38 & 131.20 & CHF & 0.05 & vat\_excl & 2 & Peter Ridge & 1000 & Tea & 50.00 & 2.33 & pc & 7.70 & V77 &  & 116.50 & 8.97\\
-2 & 2023-06-17 & 2023-07-17 & Invoice 2 & 2.50 & 9.38 & 131.20 & CHF & 0.05 & vat\_excl & 2 & Peter Ridge & 6000 & Shipping fees & 1.00 & 7.66 & pc & 7.70 & V77 &  & 7.66 & 0.59\\
-3 & 2023-10-15 & 2023-11-15 & Invoice 3 & 2.54 & 2.02 & 28.30 & EUR & 0.05 & vat\_excl & 3 & Luis Smith & 1200 & Herbal teas & 4.00 & 5.3333 & pc & 7.70 & V77 &  & 21.33 & 1.64\\
-3 & 2023-10-15 & 2023-11-15 & Invoice 3 & 2.54 & 2.02 & 28.30 & EUR & 0.05 & vat\_excl & 3 & Luis Smith & 6000 & Shipping fees & 1.00 & 7.3333 & pc & 7.70 & V77 &  & 7.33 & 0.56\\
+1 & 2023-06-17 & 2023-07-17 & Invoice 1 & 2.04 & 2.04 & 28.65 & CHF & 0.05 & vat\_excl & 1 &   & 1200 & Herbal teas & 4.00 & 5.33 & pc & 7.70 & V77 &  & 21.32 & 1.64\\
+1 & 2023-06-17 & 2023-07-17 & Invoice 1 & 2.04 & 2.04 & 28.65 & CHF & 0.05 & vat\_excl & 1 &   & 6000 & Shipping fees & 1.00 & 7.33 & pc & 7.70 & V77 &  & 7.33 & 0.56\\
+2 & 2023-06-17 & 2023-07-17 & Invoice 2 & 2.32 & 9.38 & 131.20 & CHF & 0.05 & vat\_excl & 2 & Peter Ridge & 1000 & Tea & 50.00 & 2.33 & pc & 7.70 & V77 &  & 116.50 & 8.97\\
+2 & 2023-06-17 & 2023-07-17 & Invoice 2 & 2.32 & 9.38 & 131.20 & CHF & 0.05 & vat\_excl & 2 & Peter Ridge & 6000 & Shipping fees & 1.00 & 7.66 & pc & 7.70 & V77 &  & 7.66 & 0.59\\
+3 & 2023-10-15 & 2023-11-15 & Invoice 3 & 2.36 & 2.02 & 28.30 & EUR & 0.05 & vat\_excl & 3 & Luis Smith & 1200 & Herbal teas & 4.00 & 5.3333 & pc & 7.70 & V77 &  & 21.33 & 1.64\\
+3 & 2023-10-15 & 2023-11-15 & Invoice 3 & 2.36 & 2.02 & 28.30 & EUR & 0.05 & vat\_excl & 3 & Luis Smith & 6000 & Shipping fees & 1.00 & 7.3333 & pc & 7.70 & V77 &  & 7.33 & 0.56\\
 4 & 2023-11-11 & 2023-12-11 & Invoice 4 &  & 128589.99 & 1798589.80 & CHF & 0.05 & vat\_excl & 2 & Peter Ridge & 1000 & Tea & 50.00 & 33333.33 & pc & 7.70 & V77 &  & 1666666.50 & 128333.32\\
 4 & 2023-11-11 & 2023-12-11 & Invoice 4 &  & 128589.99 & 1798589.80 & CHF & 0.05 & vat\_excl & 2 & Peter Ridge & 6000 & Shipping fees & 1.00 & 3333.33 & pc & 7.70 & V77 &  & 3333.33 & 256.67\\
-5 & 2023-11-29 & 2023-12-31 & Invoice 5 & 1.75 & 10.68 & 149.40 & EUR & 0.05 & vat\_excl & 3 & Luis Smith & 1200 & Herbal teas & 4.00 & 33.33 & pc & 7.70 & V77 &  & 133.32 & 10.27\\
-5 & 2023-11-29 & 2023-12-31 & Invoice 5 & 1.75 & 10.68 & 149.40 & EUR & 0.05 & vat\_excl & 3 & Luis Smith & 6000 & Shipping fees & 1.00 & 7.01 & pc & 7.70 & V77 &  & 7.01 & 0.54\\
+5 & 2023-11-29 & 2023-12-31 & Invoice 5 & 1.62 & 10.68 & 149.40 & EUR & 0.05 & vat\_excl & 3 & Luis Smith & 1200 & Herbal teas & 4.00 & 33.33 & pc & 7.70 & V77 &  & 133.32 & 10.27\\
+5 & 2023-11-29 & 2023-12-31 & Invoice 5 & 1.62 & 10.68 & 149.40 & EUR & 0.05 & vat\_excl & 3 & Luis Smith & 6000 & Shipping fees & 1.00 & 7.01 & pc & 7.70 & V77 &  & 7.01 & 0.54\\
 6 & 2023-12-01 & 2023-12-30 & Invoice 6 &  & 0.39 & 8.00 & CHF & 0.05 & vat\_excl & 1 &   & 1000 & Tea & 1 & 2.5900 & pc & 7.70 & V77 &  & 2.59 & 0.20\\
 6 & 2023-12-01 & 2023-12-30 & Invoice 6 &  & 0.39 & 8.00 & CHF & 0.05 & vat\_excl & 1 &   & 1200 & Herbal teas & 1 & 5.0300 & pc & 3.70 & V37 &  & 5.03 & 0.19\\
 6 & 2023-12-01 & 2023-12-30 & Invoice 6 &  & 0.39 & 8.00 & CHF & 0.05 & vat\_excl & 1 &   & 6000 & Shipping fees & 1 & 0.01 & pc & 2.50 & V25 &  & 0.01 & \\
-7 & 2023-12-15 & 2024-01-13 & Invoice 7 & 0.07 & 0.15 & 2.10 & CHF & 0.05 & vat\_excl & 2 & Peter Ridge & 1000 & Tea & 1 & 2.01 & pc & 7.70 & V77 &  & 2.01 & 0.15\\
+7 & 2023-12-15 & 2024-01-13 & Invoice 7 & 0.06 & 0.15 & 2.10 & CHF & 0.05 & vat\_excl & 2 & Peter Ridge & 1000 & Tea & 1 & 2.01 & pc & 7.70 & V77 &  & 2.01 & 0.15\\
 \\
 \end{tablevalue}
 \keyvalue{Result}{Passed}
@@ -1229,16 +1229,16 @@ InvoiceNumber & InvoiceDate & InvoiceDueDate & InvoiceDescription & InvoiceDisco
 \begin{test}{testInvoiceWithMissingData}
 \begin{tablevalue}{Data}{ l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l }
 InvoiceNumber & InvoiceDate & InvoiceDueDate & InvoiceDescription & InvoiceDiscount & InvoiceVatTotal & InvoiceTotalToPay & InvoiceCurrency & InvoiceRoundingTotal & InvoiceAmountType & CustomerNumber & CustomerName & ItemNumber & ItemDescription & ItemQuantity & ItemUnitPrice & ItemUnit & ItemVatRate & ItemVatCode & ItemDiscount & ItemTotal & ItemVatTotal\\
-1 & 2023-06-17 &  & Invoice 1 & 2.20 & 1.96 & 27.40 & CHF & 0.05 & vat\_excl & 1 &   & 1200 & Herbal teas & 4.00 & 5.00 & pc & 7.70 & V77 &  & 20.00 & 1.54\\
-1 & 2023-06-17 &  & Invoice 1 & 2.20 & 1.96 & 27.40 & CHF & 0.05 & vat\_excl & 1 &   & 6000 & Shipping fees & 1 & 7.50 & pc & 7.70 & V77 &  & 7.50 & 0.58\\
-2 & 2023-06-17 & 2023-07-17 & Invoice 2 & 2.50 & 10.03 & 140.20 & CHF & 0.05 & vat\_excl & 2 & Peter Ridge & 1000 & Tea & 50.00 & 2.50 & pc & 7.70 & V77 &  & 125.00 & 9.63\\
-2 & 2023-06-17 & 2023-07-17 & Invoice 2 & 2.50 & 10.03 & 140.20 & CHF & 0.05 & vat\_excl & 2 & Peter Ridge & 6000 & Shipping fees & 1 & 7.50 & pc & 7.70 & V77 &  & 7.50 & 0.58\\
-3 & 2023-10-15 & 2023-11-15 &  & 2.54 & 1.94 & 27.10 & CHF & 0.05 & vat\_excl & 3 & Luis Smith & 1200 & Herbal teas & 4.00 & 5.00 & pc & 7.70 & V77 &  & 20.00 & 1.54\\
-3 & 2023-10-15 & 2023-11-15 &  & 2.54 & 1.94 & 27.10 & CHF & 0.05 & vat\_excl & 3 & Luis Smith & 6000 & Shipping fees & 1 & 7.50 & pc & 7.70 & V77 &  & 7.50 & 0.58\\
+1 & 2023-06-17 &  & Invoice 1 & 2.04 & 1.96 & 27.40 & CHF & 0.05 & vat\_excl & 1 &   & 1200 & Herbal teas & 4.00 & 5.00 & pc & 7.70 & V77 &  & 20.00 & 1.54\\
+1 & 2023-06-17 &  & Invoice 1 & 2.04 & 1.96 & 27.40 & CHF & 0.05 & vat\_excl & 1 &   & 6000 & Shipping fees & 1 & 7.50 & pc & 7.70 & V77 &  & 7.50 & 0.58\\
+2 & 2023-06-17 & 2023-07-17 & Invoice 2 & 2.32 & 10.03 & 140.20 & CHF & 0.05 & vat\_excl & 2 & Peter Ridge & 1000 & Tea & 50.00 & 2.50 & pc & 7.70 & V77 &  & 125.00 & 9.63\\
+2 & 2023-06-17 & 2023-07-17 & Invoice 2 & 2.32 & 10.03 & 140.20 & CHF & 0.05 & vat\_excl & 2 & Peter Ridge & 6000 & Shipping fees & 1 & 7.50 & pc & 7.70 & V77 &  & 7.50 & 0.58\\
+3 & 2023-10-15 & 2023-11-15 &  & 2.36 & 1.94 & 27.10 & CHF & 0.05 & vat\_excl & 3 & Luis Smith & 1200 & Herbal teas & 4.00 & 5.00 & pc & 7.70 & V77 &  & 20.00 & 1.54\\
+3 & 2023-10-15 & 2023-11-15 &  & 2.36 & 1.94 & 27.10 & CHF & 0.05 & vat\_excl & 3 & Luis Smith & 6000 & Shipping fees & 1 & 7.50 & pc & 7.70 & V77 &  & 7.50 & 0.58\\
 4 & 2023-11-11 & 2023-12-11 & Invoice 4 &  & 10.21 & 142.70 & CHF & 0.05 & vat\_excl & 2 & Peter Ridge & 1000 & Tea & 50.00 & 2.50 & pc & 7.70 & V77 &  & 125.00 & 9.63\\
 4 & 2023-11-11 & 2023-12-11 & Invoice 4 &  & 10.21 & 142.70 & CHF & 0.05 & vat\_excl & 2 & Peter Ridge & 6000 & Shipping fees & 1 & 7.50 & pc & 7.70 & V77 &  & 7.50 & 0.58\\
-5 & 2023-11-29 & 2023-12-31 & Invoice 5 & 1.75 & 1.99 & 27.85 & CHF & 0.05 & vat\_excl & 3 & Luis Smith & 1200 & Herbal teas & 4.00 & 5.00 & pc & 7.70 & V77 &  & 20.00 & 1.54\\
-5 & 2023-11-29 & 2023-12-31 & Invoice 5 & 1.75 & 1.99 & 27.85 & CHF & 0.05 & vat\_excl & 3 & Luis Smith & 6000 & Shipping fees & 1 & 7.50 & pc & 7.70 & V77 &  & 7.50 & 0.58\\
+5 & 2023-11-29 & 2023-12-31 & Invoice 5 & 1.62 & 1.99 & 27.85 & CHF & 0.05 & vat\_excl & 3 & Luis Smith & 1200 & Herbal teas & 4.00 & 5.00 & pc & 7.70 & V77 &  & 20.00 & 1.54\\
+5 & 2023-11-29 & 2023-12-31 & Invoice 5 & 1.62 & 1.99 & 27.85 & CHF & 0.05 & vat\_excl & 3 & Luis Smith & 6000 & Shipping fees & 1 & 7.50 & pc & 7.70 & V77 &  & 7.50 & 0.58\\
 6 & 2023-12-01 & 2023-12-30 &  &  & 0.57 & 15.55 & CHF & 0.05 & vat\_excl & 1 &   & 1000 & Tea & 1 & 2.50 & pc & 7.70 & V77 &  & 2.50 & 0.19\\
 6 & 2023-12-01 & 2023-12-30 &  &  & 0.57 & 15.55 & CHF & 0.05 & vat\_excl & 1 &   & 1200 & Herbal teas & 1 & 5.00 & pc & 3.70 & V37 &  & 5.00 & 0.19\\
 6 & 2023-12-01 & 2023-12-30 &  &  & 0.57 & 15.55 & CHF & 0.05 & vat\_excl & 1 &   & 6000 & Shipping fees & 1 & 7.50 & pc & 2.50 & V25 &  & 7.50 & 0.19\\
@@ -1344,6 +1344,27 @@ InvoiceNumber & InvoiceDate & InvoiceDueDate & InvoiceDescription & InvoiceDisco
 \keyvalue{ERROR\_HELPID\_ROW\_3}{export\_invoices.test::missing\_field}
 \keyvalue{ERROR\_MSG\_ROW\_4}{ItemDescription is a required field}
 \keyvalue{ERROR\_HELPID\_ROW\_4}{export\_invoices.test::missing\_field}
+\keyvalue{Result}{Passed}
+\end{test}
+\begin{test}{testExportImportInvoices}
+\begin{tablevalue}{Data}{ l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l }
+InvoiceNumber & InvoiceDate & InvoiceDueDate & InvoiceDescription & InvoiceDiscount & InvoiceVatTotal & InvoiceTotalToPay & InvoiceCurrency & InvoiceRoundingTotal & InvoiceAmountType & CustomerNumber & CustomerName & ItemNumber & ItemDescription & ItemQuantity & ItemUnitPrice & ItemUnit & ItemVatRate & ItemVatCode & ItemDiscount & ItemTotal & ItemVatTotal\\
+1 & 2023-06-17 & 2023-07-17 & Invoice 1 & 2.04 & 1.96 & 27.40 & CHF & 0.05 & vat\_excl & 1 &   & 1200 & Herbal teas & 4.00 & 5.00 & pc & 7.70 & V77 &  & 20.00 & 1.54\\
+1 & 2023-06-17 & 2023-07-17 & Invoice 1 & 2.04 & 1.96 & 27.40 & CHF & 0.05 & vat\_excl & 1 &   & 6000 & Shipping fees & 1 & 7.50 & pc & 7.70 & V77 &  & 7.50 & 0.58\\
+2 & 2023-06-17 & 2023-07-17 & Invoice 2 & 2.32 & 10.03 & 140.20 & CHF & 0.05 & vat\_excl & 2 & Peter Ridge & 1000 & Tea & 50.00 & 2.50 & pc & 7.70 & V77 &  & 125.00 & 9.63\\
+2 & 2023-06-17 & 2023-07-17 & Invoice 2 & 2.32 & 10.03 & 140.20 & CHF & 0.05 & vat\_excl & 2 & Peter Ridge & 6000 & Shipping fees & 1 & 7.50 & pc & 7.70 & V77 &  & 7.50 & 0.58\\
+3 & 2023-10-15 & 2023-11-15 & Invoice 3 & 2.36 & 1.94 & 27.10 & CHF & 0.05 & vat\_excl & 3 & Luis Smith & 1200 & Herbal teas & 4.00 & 5.00 & pc & 7.70 & V77 &  & 20.00 & 1.54\\
+3 & 2023-10-15 & 2023-11-15 & Invoice 3 & 2.36 & 1.94 & 27.10 & CHF & 0.05 & vat\_excl & 3 & Luis Smith & 6000 & Shipping fees & 1 & 7.50 & pc & 7.70 & V77 &  & 7.50 & 0.58\\
+4 & 2023-11-11 & 2023-12-11 & Invoice 4 &  & 10.21 & 142.70 & CHF & 0.05 & vat\_excl & 2 & Peter Ridge & 1000 & Tea & 50.00 & 2.50 & pc & 7.70 & V77 &  & 125.00 & 9.63\\
+4 & 2023-11-11 & 2023-12-11 & Invoice 4 &  & 10.21 & 142.70 & CHF & 0.05 & vat\_excl & 2 & Peter Ridge & 6000 & Shipping fees & 1 & 7.50 & pc & 7.70 & V77 &  & 7.50 & 0.58\\
+5 & 2023-11-29 & 2023-12-31 & Invoice 5 & 1.62 & 1.99 & 27.85 & CHF & 0.05 & vat\_excl & 3 & Luis Smith & 1200 & Herbal teas & 4.00 & 5.00 & pc & 7.70 & V77 &  & 20.00 & 1.54\\
+5 & 2023-11-29 & 2023-12-31 & Invoice 5 & 1.62 & 1.99 & 27.85 & CHF & 0.05 & vat\_excl & 3 & Luis Smith & 6000 & Shipping fees & 1 & 7.50 & pc & 7.70 & V77 &  & 7.50 & 0.58\\
+6 & 2023-12-01 & 2023-12-30 & Invoice 6 &  & 0.57 & 15.55 & CHF & 0.05 & vat\_excl & 1 &   & 1000 & Tea & 1 & 2.50 & pc & 7.70 & V77 &  & 2.50 & 0.19\\
+6 & 2023-12-01 & 2023-12-30 & Invoice 6 &  & 0.57 & 15.55 & CHF & 0.05 & vat\_excl & 1 &   & 1200 & Herbal teas & 1 & 5.00 & pc & 3.70 & V37 &  & 5.00 & 0.19\\
+6 & 2023-12-01 & 2023-12-30 & Invoice 6 &  & 0.57 & 15.55 & CHF & 0.05 & vat\_excl & 1 &   & 6000 & Shipping fees & 1 & 7.50 & pc & 2.50 & V25 &  & 7.50 & 0.19\\
+7 & 2023-12-15 & 2024-01-13 & Invoice 7 & 0.07 & 0.19 & 2.60 & CHF & 0.05 & vat\_excl & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc & 7.70 & V77 &  & 2.50 & 0.19\\
+\\
+\end{tablevalue}
 \keyvalue{Result}{Passed}
 \end{test}
 \end{testcase}
