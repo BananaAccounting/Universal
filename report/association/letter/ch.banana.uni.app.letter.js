@@ -22,7 +22,7 @@
 // @description.fr = Lettre (Banana+)
 // @description.en = Letter (Banana+)
 // @description.nl = Brief (Banana+)
-// @doctype = *
+// @doctype = 100.*;110.*;130.*
 // @task = app.command
 // @timeout = -1
 

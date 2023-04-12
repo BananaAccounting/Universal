@@ -22,7 +22,7 @@
 // @description.fr = Certificat de don pour Associations (Banana+)
 // @description.en = Statement of donation for Associations (Banana+)
 // @description.nl = Kwitantie voor giften (Banana+)
-// @doctype = *
+// @doctype = 100.*;110.*;130.*
 // @task = app.command
 // @timeout = -1
 
