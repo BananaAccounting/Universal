@@ -1829,7 +1829,7 @@ function loadTexts(banDoc,lang) {
         texts.accountNumber = "Mitgliedskonto eingeben (leer = alle ausdrucken)";
         texts.localityAndDate = "Ort und Datum";
         texts.signature = "Unterschrift";
-        texts.printSignatureImage = "Unterschrift mit Bild";
+        texts.printSignatureImage = "Unterschrift Bild";
         texts.nameSignatureImage = "Bild";
         texts.memberAccount = "Mitgliedskonto";
         texts.donationDate = "Periode";
@@ -1847,7 +1847,7 @@ function loadTexts(banDoc,lang) {
 		texts.headerLogoName = "Logo-Name";
         texts.total = 'Total';
         texts.useMarkdown = "Markdown verwenden";
-        texts.details = " Spendenbuchungen einbeziehen";
+        texts.details = "Buchungen der Spenden einbeziehen";
         texts.useExtractTable = "Tabelle Extraktion verwenden";
         texts.warningMessageExtractTable = "Verwenden Sie den Befehl Daten > Zeilen extrahieren und sortieren";
         texts.embeddedTextFile = "Text Tabelle Dokumente (.txt / .md)";
@@ -1856,8 +1856,8 @@ function loadTexts(banDoc,lang) {
         texts.description = "Spalte Beschreibung einbeziehen";
         texts.textToUse = "Text auswählen";
         texts.textEmbedded = "Text Tabelle Dokumente (.txt / .md)";
-        texts.accountsToPrint = "Zu druckende Adressen auswählen";
-        texts.printText = "Text drucken";
+        texts.accountsToPrint = "Adressen für den Ausdruck auswählen";
+        texts.printText = "Text ausdrucken";
         texts.begin = "Beginn";
     }
     else if (lang === "fr") {
