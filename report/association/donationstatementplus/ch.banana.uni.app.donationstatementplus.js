@@ -1902,7 +1902,7 @@ function loadTexts(banDoc,lang) {
         texts.reportTitle = "Attestato di donazione";
         texts.dialogTitle = "Impostazioni";
         texts.warningMessage = "Conto membro non valido";
-        texts.accountNumber = "Indicare il conto del membro (vuoto = stampa tutti)";
+        texts.accountNumber = "Indica il conto del membro (vuoto = stampa tutti)";
         texts.localityAndDate = "Località e data";
         texts.signature = "Firma";
         texts.printSignatureImage = "Firma digitale";
@@ -1929,7 +1929,7 @@ function loadTexts(banDoc,lang) {
         texts.embeddedTextFile = "Testo tabella Documenti (.txt / .md)";
         texts.css = "CSS";
         texts.textSignature = "Testo firma";
-        texts.description = "Includi colonna descrizione";
+        texts.description = "Includi colonna Descrizione";
         texts.textToUse = "Seleziona testo";
         texts.textEmbedded = "Testo tabella Documenti (.txt / .md)";
         texts.accountsToPrint = "Seleziona gli indirizzi da stampare";
