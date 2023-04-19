@@ -1978,7 +1978,7 @@ function loadTexts(banDoc,lang) {
         texts.reportTitle = "Donation Statement";
         texts.dialogTitle = "Settings";
         texts.warningMessage = "Invalid member account";
-        texts.accountNumber = "Insert account member (empty = print all)";
+        texts.accountNumber = "Enter member's account (empty = print all)";
         texts.localityAndDate = "Place and date";
         texts.signature = "Signature";
         texts.printSignatureImage = "Digital signature";
@@ -2002,12 +2002,12 @@ function loadTexts(banDoc,lang) {
         texts.details = "Include donation transactions";
         texts.useExtractTable = "Use table Extract";
         texts.warningMessageExtractTable = "Use the command Data > Extract and sort rows";
-        texts.embeddedTextFile = "Text table Documents (.txt / .md)";
+        texts.embeddedTextFile = "Text from Documents table (.txt / .md)";
         texts.css = "CSS";
         texts.textSignature = "Text signature";
-        texts.description = "Include description column";
+        texts.description = "Include Description column";
         texts.textToUse = "Select text";
-        texts.textEmbedded = "Text table Documents (.txt / .md)";
+        texts.textEmbedded = "Text from Documents table (.txt / .md)";
         texts.accountsToPrint = "Select addresses to print";
         texts.printText = "Print text";
         texts.begin = "Start";
