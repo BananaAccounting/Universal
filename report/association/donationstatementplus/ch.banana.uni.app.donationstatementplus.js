@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.uni.app.donationstatementplus.js
 // @api = 1.0
-// @pubdate = 2023-03-14
+// @pubdate = 2023-04-19
 // @publisher = Banana.ch SA
 // @description = Donation Statement for Associations (Banana+)
 // @description.de = Spendenbescheinigung für Vereine (Banana+)
@@ -1830,7 +1830,7 @@ function loadTexts(banDoc,lang) {
         texts.localityAndDate = "Ort und Datum";
         texts.signature = "Unterschrift";
         texts.printSignatureImage = "Unterschrift Bild";
-        texts.nameSignatureImage = "Bild";
+        texts.nameSignatureImage = "Bild mit Unterschrift";
         texts.memberAccount = "Mitgliedskonto";
         texts.donationDate = "Periode";
         texts.text1 = "Text 1";
@@ -1867,8 +1867,8 @@ function loadTexts(banDoc,lang) {
         texts.accountNumber = "Entrer le compte du membre (vide = imprimer tout)";
         texts.localityAndDate = "Lieu et date";
         texts.signature = "Signature";
-        texts.printSignatureImage = "Signature avec image";
-        texts.nameSignatureImage = "Image";
+        texts.printSignatureImage = "Signature digitale";
+        texts.nameSignatureImage = "Image avec signature";
         texts.memberAccount = "Compte de membre";
         texts.donationDate = "Période";
         texts.text1 = "Texte 1";
@@ -1905,8 +1905,8 @@ function loadTexts(banDoc,lang) {
         texts.accountNumber = "Indicare il conto del membro (vuoto = stampa tutti)";
         texts.localityAndDate = "Località e data";
         texts.signature = "Firma";
-        texts.printSignatureImage = "Firma con immagine";
-        texts.nameSignatureImage = "Immagine";
+        texts.printSignatureImage = "Firma digitale";
+        texts.nameSignatureImage = "Immagine con firma";
         texts.memberAccount = "Conto del membro";
         texts.donationDate = "Periodo";
         texts.text1 = "Testo 1";
@@ -1981,8 +1981,8 @@ function loadTexts(banDoc,lang) {
         texts.accountNumber = "Insert account member (empty = print all)";
         texts.localityAndDate = "Place and date";
         texts.signature = "Signature";
-        texts.printSignatureImage = "Signature with image";
-        texts.nameSignatureImage = "Image";
+        texts.printSignatureImage = "Digital signature";
+        texts.nameSignatureImage = "Image with signature";
         texts.memberAccount = "Member account";
         texts.donationDate = "Period";
         texts.text1 = "Text 1";
