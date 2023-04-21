@@ -1829,7 +1829,7 @@ function loadTexts(banDoc,lang) {
         texts.accountNumber = "Mitgliedskonto eingeben (leer = alle ausdrucken)";
         texts.localityAndDate = "Ort und Datum";
         texts.signature = "Unterschrift";
-        texts.printSignatureImage = "Unterschrift Bild";
+        texts.printSignatureImage = "Digitale Unterschrift";
         texts.nameSignatureImage = "Bild mit Unterschrift";
         texts.memberAccount = "Mitgliedskonto";
         texts.donationDate = "Periode";
