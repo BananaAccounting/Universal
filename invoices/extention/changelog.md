@@ -1,5 +1,19 @@
 # Changelog
 
+## 2022-04-17
+
+* [RELEASE STABLE] Released as Stable
+* [RELEASE DEV] Released as Dev
+
+* [Fix] Fix with BananaPlus RC (Qt 6.5) it is not possible to enter in edit in text fields over the table header.
+
+## 2022-04-05
+
+* [RELEASE STABLE] Released as Stable
+* [RELEASE DEV] Released as Dev
+
+* [Fix] Fix the invoice discount entered as percentage is set vat inclusive even if the invoice is vat exclusive.
+
 ## 2022-04-03
 
 * [RELEASE STABLE] Released as Stable
