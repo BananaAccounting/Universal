@@ -1,11 +1,11 @@
-// @id = import_invoices.test
+// @id = import_estimates.test
 // @api = 1.0
-// @pubdate = 2023-01-20
+// @pubdate = 2023-06-04
 // @publisher = Banana.ch SA
-// @description = Import invoices
-// @description.de = Rechnungen importieren
-// @description.fr = Importer factures
-// @description.it = Importa fatture
+// @description = Import estimates
+// @description.de = Angebote importieren
+// @description.fr = Importer offres
+// @description.it = Importa offerte
 // @doctype = 400.400
 // @docproperties =
 // @task = import.rows
@@ -16,18 +16,18 @@
 // @inputfilefilter.de = Text datei (*.csv);;All files (*.*)
 // @inputfilefilter.fr = Fichier text(*.csv);;All files (*.*)
 // @inputfilefilter.it = File testo (*.csv);;All files (*.*)
-// @includejs = ../src/import_invoices.js
+// @includejs = ../src/import_estimates.js
 
 // Register test case to be executed
-Test.registerTestCase(new TestImportInvoices());
+Test.registerTestCase(new TestImportEstimates());
 
 // Here we define the class, the name of the class is not important
-function TestImportInvoices() {
+function TestImportEstimates() {
 
 }
 
 // This method will be called at the beginning of the test case
-TestImportInvoices.prototype.initTestCase = function() {
+TestImportEstimates.prototype.initTestCase = function() {
     this.testLogger = Test.logger;
     this.progressBar = Banana.application.progressBar;
 
@@ -38,23 +38,23 @@ TestImportInvoices.prototype.initTestCase = function() {
 }
 
 // This method will be called at the end of the test case
-TestImportInvoices.prototype.cleanupTestCase = function() {
+TestImportEstimates.prototype.cleanupTestCase = function() {
 
 }
 
 // This method will be called before every test method is executed
-TestImportInvoices.prototype.init = function() {
+TestImportEstimates.prototype.init = function() {
 
 }
 
 // This method will be called after every test method is executed
-TestImportInvoices.prototype.cleanup = function() {
+TestImportEstimates.prototype.cleanup = function() {
 
 }
 
-TestImportInvoices.prototype.testImportInvoices = function() {
-    this.testLogger.addKeyValue("ImportInvoices", "testReport");
-    this.testLogger.addComment("Test Invoices import");
+TestImportEstimates.prototype.testImportEstimates = function() {
+    this.testLogger.addKeyValue("ImportEstimates", "testReport");
+    this.testLogger.addComment("Test Estimates import");
 
     let banDoc = Banana.application.openDocument(this.fileAC2);
     Test.assert(banDoc, `file not found: "${this.fileAC2}"`);
@@ -71,9 +71,9 @@ TestImportInvoices.prototype.testImportInvoices = function() {
 
     transactions.splice(0, 1);
     let transactionsObjs = Banana.Converter.arrayToObject(transactions_header, transactions, true);
-    let format_invs = createFormatInvs(banDoc);
-    if (format_invs.match(transactionsObjs)) {
-        let format = format_invs.convertInDocChange(transactionsObjs, this.jsonDoc);
+    let format_ests = createFormatEsts(banDoc);
+    if (format_ests.match(transactionsObjs)) {
+        let format = format_ests.convertInDocChange(transactionsObjs, this.jsonDoc);
         jsonDocArray = format;
     }
     
@@ -91,9 +91,9 @@ TestImportInvoices.prototype.testImportInvoices = function() {
     
 }
 
-TestImportInvoices.prototype.testImportInvoicesWithMissingData = function() {
-    this.testLogger.addKeyValue("ImportInvoices", "testReport");
-    this.testLogger.addComment("Test Invoices import: missing data");
+TestImportEstimates.prototype.testImportEstimatesWithMissingData = function() {
+    this.testLogger.addKeyValue("ImportEstimates", "testReport");
+    this.testLogger.addComment("Test Estimates import: missing data");
 
     let banDoc = Banana.application.openDocument(this.fileAC2);
     Test.assert(banDoc, `file not found: "${this.fileAC2}"`);
@@ -110,9 +110,9 @@ TestImportInvoices.prototype.testImportInvoicesWithMissingData = function() {
 
     transactions.splice(0, 1);
     let transactionsObjs = Banana.Converter.arrayToObject(transactions_header, transactions, true);
-    let format_invs = createFormatInvs(banDoc);
-    if (format_invs.match(transactionsObjs)) {
-        let format = format_invs.convertInDocChange(transactionsObjs, this.jsonDoc);
+    let format_ests = createFormatEsts(banDoc);
+    if (format_ests.match(transactionsObjs)) {
+        let format = format_ests.convertInDocChange(transactionsObjs, this.jsonDoc);
         jsonDocArray = format;
     }
     let msgs = banDoc.getMessages();
@@ -130,7 +130,7 @@ TestImportInvoices.prototype.testImportInvoicesWithMissingData = function() {
     
 }
 
-TestImportInvoices.prototype.initJson = function() {
+TestImportEstimates.prototype.initJson = function() {
     let jsonDoc = {};
     jsonDoc.document = {};
     jsonDoc.document.dataUnits = [];

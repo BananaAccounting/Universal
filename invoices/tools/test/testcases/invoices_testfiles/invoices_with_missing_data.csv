@@ -1,0 +1,16 @@
+InvoiceNumber,InvoiceDate,InvoiceDueDate,InvoiceDescription,InvoiceDiscount,InvoiceVatTotal,InvoiceTotalToPay,InvoiceCurrency,InvoiceRoundingTotal,InvoiceAmountType,CustomerNumber,CustomerName,ItemNumber,ItemDescription,ItemQuantity,ItemUnitPrice,ItemUnit,ItemVatRate,ItemVatCode,ItemDiscount,ItemTotal,ItemVatTotal
+8,2023-12-15,2024-01-13,Invoice 1,0.08,0.18,2.60,CHF,0.05,vat_excl,2,Peter Ridge,1000,,1,2.50,pc,7.70,V77,,2.50,0.19
+1,2023-06-17,2023-07-17,Invoice 1,2.04,1.96,27.40,CHF,0.05,vat_excl,1, ,1200,Herbal teas,4.00,5.00,pc,7.70,V77,,20.00,1.54
+1,2023-06-17,2023-07-17,Invoice 1,2.04,1.96,27.40,CHF,0.05,vat_excl,1, ,6000,Shipping fees,1,7.50,pc,7.70,V77,,7.50,0.58
+2,2023-06-17,2023-07-17,Invoice 2,2.32,10.03,140.20,CHF,0.05,vat_excl,2,Peter Ridge,1000,Tea,,2.50,pc,7.70,V77,,125.00,9.63
+2,2023-06-17,2023-07-17,Invoice 2,2.32,10.03,140.20,CHF,0.05,vat_excl,2,Peter Ridge,6000,Shipping fees,1,7.50,pc,7.70,V77,,7.50,0.58
+3,2023-10-15,2023-11-15,Invoice 3,2.36,1.94,27.10,CHF,0.05,vat_excl,3,Luis Smith,1200,Herbal teas,4.00,5.00,pc,7.70,V77,,20.00,1.54
+3,2023-10-15,2023-11-15,Invoice 3,2.36,1.94,27.10,CHF,0.05,vat_excl,3,Luis Smith,6000,Shipping fees,1,7.50,pc,7.70,V77,,7.50,0.58
+4,2023-11-11,2023-12-11,Invoice 4,,10.21,142.70,CHF,0.05,vat_excl,2,Peter Ridge,1000,Tea,50.00,2.50,pc,7.70,V77,,125.00,9.63
+4,2023-11-11,2023-12-11,Invoice 4,,10.21,142.70,CHF,0.05,vat_excl,2,Peter Ridge,6000,Shipping fees,1,7.50,pc,7.70,V77,,7.50,0.58
+5,2023-11-29,2023-12-31,Invoice 5,0.83,2.06,28.75,CHF,0.05,vat_excl,3,Luis Smith,1200,Herbal teas,4.00,5.00,pc,7.70,V77,,20.00,1.54
+5,2023-11-29,2023-12-31,Invoice 5,0.83,2.06,28.75,CHF,0.05,vat_excl,3,Luis Smith,6000,Shipping fees,1,7.50,pc,7.70,V77,,7.50,0.58
+6,2023-12-01,2023-12-30,Invoice 6,,0.57,15.55,CHF,0.05,vat_excl,1, ,1000,Tea,1,,pc,7.70,V77,,2.50,0.19
+6,2023-12-01,2023-12-30,Invoice 6,,0.57,15.55,CHF,0.05,vat_excl,1, ,1200,Herbal teas,1,5.00,pc,3.70,V37,,5.00,0.19
+6,2023-12-01,2023-12-30,Invoice 6,,0.57,15.55,CHF,0.05,vat_excl,1, ,6000,Shipping fees,1,7.50,pc,2.50,V25,,7.50,0.19
+7,2023-12-15,2024-01-13,Invoice 7,0.20,0.17,2.45,CHF,0.05,vat_excl,2,Peter Ridge,1000,Tea,1,2.50,pc,7.70,V77,,2.50,0.19
