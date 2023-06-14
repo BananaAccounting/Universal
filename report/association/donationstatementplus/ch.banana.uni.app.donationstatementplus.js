@@ -14,15 +14,15 @@
 //
 // @id = ch.banana.uni.app.donationstatementplus.js
 // @api = 1.0
-// @pubdate = 2023-03-14
+// @pubdate = 2023-04-19
 // @publisher = Banana.ch SA
-// @description = Statement of donation for Associations (Banana+)
+// @description = Donation Statement for Associations (Banana+)
 // @description.de = Spendenbescheinigung für Vereine (Banana+)
 // @description.it = Attestato di donazione per Associazioni (Banana+)
 // @description.fr = Certificat de don pour Associations (Banana+)
-// @description.en = Statement of donation for Associations (Banana+)
+// @description.en = Donation Statement for Associations (Banana+)
 // @description.nl = Kwitantie voor giften (Banana+)
-// @doctype = *
+// @doctype = 100.*;110.*;130.*
 // @task = app.command
 // @timeout = -1
 
@@ -418,8 +418,8 @@ function convertParam(userParam) {
 }
 
 /* Function that initializes the user parameters */
-function initUserParam() {
-    var texts = loadTexts();
+function initUserParam(banDoc, lang) {
+    var texts = loadTexts(banDoc, lang);
     var userParam = {};
     userParam.version = '1.0';
     userParam.costcenter = '';
@@ -471,7 +471,7 @@ function settingsDialog() {
 
     var lang = getLang(Banana.document);
     texts = loadTexts(Banana.document,lang);
-    var scriptform = initUserParam();
+    var scriptform = initUserParam(Banana.document,lang);
     
     // Retrieve saved param
     var savedParam = Banana.document.getScriptSettings();
@@ -527,7 +527,7 @@ function exec(inData, options) {
     var lang = getLang(Banana.document);
     var texts = loadTexts(Banana.document,lang);
     
-    var userParam = initUserParam();
+    var userParam = initUserParam(Banana.document,lang);
     // Retrieve saved param
     var savedParam = Banana.document.getScriptSettings();
     if (savedParam && savedParam.length > 0) {
@@ -1829,8 +1829,8 @@ function loadTexts(banDoc,lang) {
         texts.accountNumber = "Mitgliedskonto eingeben (leer = alle ausdrucken)";
         texts.localityAndDate = "Ort und Datum";
         texts.signature = "Unterschrift";
-        texts.printSignatureImage = "Unterschrift mit Bild";
-        texts.nameSignatureImage = "Bild";
+        texts.printSignatureImage = "Digitale Unterschrift";
+        texts.nameSignatureImage = "Bild mit Unterschrift";
         texts.memberAccount = "Mitgliedskonto";
         texts.donationDate = "Periode";
         texts.text1 = "Text 1";
@@ -1847,7 +1847,7 @@ function loadTexts(banDoc,lang) {
 		texts.headerLogoName = "Logo-Name";
         texts.total = 'Total';
         texts.useMarkdown = "Markdown verwenden";
-        texts.details = " Spendenbuchungen einbeziehen";
+        texts.details = "Buchungen der Spenden einbeziehen";
         texts.useExtractTable = "Tabelle Extraktion verwenden";
         texts.warningMessageExtractTable = "Verwenden Sie den Befehl Daten > Zeilen extrahieren und sortieren";
         texts.embeddedTextFile = "Text Tabelle Dokumente (.txt / .md)";
@@ -1856,8 +1856,8 @@ function loadTexts(banDoc,lang) {
         texts.description = "Spalte Beschreibung einbeziehen";
         texts.textToUse = "Text auswählen";
         texts.textEmbedded = "Text Tabelle Dokumente (.txt / .md)";
-        texts.accountsToPrint = "Zu druckende Adressen auswählen";
-        texts.printText = "Text drucken";
+        texts.accountsToPrint = "Adressen für den Ausdruck auswählen";
+        texts.printText = "Text ausdrucken";
         texts.begin = "Beginn";
     }
     else if (lang === "fr") {
@@ -1867,8 +1867,8 @@ function loadTexts(banDoc,lang) {
         texts.accountNumber = "Entrer le compte du membre (vide = imprimer tout)";
         texts.localityAndDate = "Lieu et date";
         texts.signature = "Signature";
-        texts.printSignatureImage = "Signature avec image";
-        texts.nameSignatureImage = "Image";
+        texts.printSignatureImage = "Signature digitale";
+        texts.nameSignatureImage = "Image avec signature";
         texts.memberAccount = "Compte de membre";
         texts.donationDate = "Période";
         texts.text1 = "Texte 1";
@@ -1902,11 +1902,11 @@ function loadTexts(banDoc,lang) {
         texts.reportTitle = "Attestato di donazione";
         texts.dialogTitle = "Impostazioni";
         texts.warningMessage = "Conto membro non valido";
-        texts.accountNumber = "Indicare il conto del membro (vuoto = stampa tutti)";
+        texts.accountNumber = "Indica il conto del membro (vuoto = stampa tutti)";
         texts.localityAndDate = "Località e data";
         texts.signature = "Firma";
-        texts.printSignatureImage = "Firma con immagine";
-        texts.nameSignatureImage = "Immagine";
+        texts.printSignatureImage = "Firma digitale";
+        texts.nameSignatureImage = "Immagine con firma";
         texts.memberAccount = "Conto del membro";
         texts.donationDate = "Periodo";
         texts.text1 = "Testo 1";
@@ -1929,7 +1929,7 @@ function loadTexts(banDoc,lang) {
         texts.embeddedTextFile = "Testo tabella Documenti (.txt / .md)";
         texts.css = "CSS";
         texts.textSignature = "Testo firma";
-        texts.description = "Includi colonna descrizione";
+        texts.description = "Includi colonna Descrizione";
         texts.textToUse = "Seleziona testo";
         texts.textEmbedded = "Testo tabella Documenti (.txt / .md)";
         texts.accountsToPrint = "Seleziona gli indirizzi da stampare";
@@ -1975,14 +1975,14 @@ function loadTexts(banDoc,lang) {
         texts.begin = "Start";
     }
     else { //lang == en
-        texts.reportTitle = "Statement of donation";
+        texts.reportTitle = "Donation Statement";
         texts.dialogTitle = "Settings";
         texts.warningMessage = "Invalid member account";
-        texts.accountNumber = "Insert account member (empty = print all)";
-        texts.localityAndDate = "Locality and date";
+        texts.accountNumber = "Enter member's account (empty = print all)";
+        texts.localityAndDate = "Place and date";
         texts.signature = "Signature";
-        texts.printSignatureImage = "Signature with image";
-        texts.nameSignatureImage = "Image";
+        texts.printSignatureImage = "Digital signature";
+        texts.nameSignatureImage = "Image with signature";
         texts.memberAccount = "Member account";
         texts.donationDate = "Period";
         texts.text1 = "Text 1";
@@ -1991,7 +1991,7 @@ function loadTexts(banDoc,lang) {
         texts.text4 = "Text 4";
         texts.predefinedText = "**Statement of donation <Period>**\n\nWe hereby declare that **<FirstName> <FamilyName>, <Address>** between **<StartDate>** and **<EndDate>**donated **<Currency> <Amount>** to our Association.";
         texts.textsGroup = "Texts";
-        texts.minimumAmount = "Minimum amount of the donation";
+        texts.minimumAmount = "Donation minimum amount";
         texts.styles = "Styles";
         texts.fontFamily = "Font type";
         texts.fontSize = "Font size";
@@ -1999,15 +1999,15 @@ function loadTexts(banDoc,lang) {
 		texts.headerLogoName = "Logo name";
         texts.total = 'Total';
         texts.useMarkdown = "Use Markdown";
-        texts.details = "Include donations transactions";
+        texts.details = "Include donation transactions";
         texts.useExtractTable = "Use table Extract";
         texts.warningMessageExtractTable = "Use the command Data > Extract and sort rows";
-        texts.embeddedTextFile = "Text table Documents (.txt / .md)";
+        texts.embeddedTextFile = "Text from Documents table (.txt / .md)";
         texts.css = "CSS";
         texts.textSignature = "Text signature";
-        texts.description = "Include description column";
+        texts.description = "Include Description column";
         texts.textToUse = "Select text";
-        texts.textEmbedded = "Text table Documents (.txt / .md)";
+        texts.textEmbedded = "Text from Documents table (.txt / .md)";
         texts.accountsToPrint = "Select addresses to print";
         texts.printText = "Print text";
         texts.begin = "Start";

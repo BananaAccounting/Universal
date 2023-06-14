@@ -1,12 +1,17 @@
 # Developer environment
 
-Thid document descibe how to set up the developer enviroment.
+This document descibe how to set up the developer enviroment.
 
 After you setup the project you will be able to:
 
 - Build the extention's package
 - Update the translations
 - Run the tests
+
+## Install CMake
+
+Download and install CMake from <https://cmake.org>.
+Verify that the installed version is is your PATH, if not open CMake go to Menu Tools -> How to install CMake for command line use and follow the instructions.
 
 ## Visual Studio Code
 
