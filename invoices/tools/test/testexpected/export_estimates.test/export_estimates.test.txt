@@ -1,0 +1,1286 @@
+%%info_test_name{export_estimates.test}
+\documentclass{report}
+\usepackage{longtable}
+\usepackage{color}
+\usepackage{listings}
+\usepackage[margin=1cm]{geometry}
+\begin{document}
+\newenvironment{tablevalue}[2]{\textbf{Table: #1}\begin{longtable}[l]{#2}}{\end{longtable}}
+\newenvironment{reportvalue}[1]{\textbf{Report: #1}\\}{}
+\lstnewenvironment{jsonvalue}[1]{\textbf{Json: #1}\lstset{language=Java}}{}
+\lstnewenvironment{xmlvalue}[1]{\textbf{Xml: #1}\lstset{language=Xml}}{}
+\newcommand{\info}[2]{\textit{#1: #2}\\}
+\newcommand{\fatalerror}[1]{\textbf{\textcolor[rgb]{1,0,0}{Fatal error: #1}}\\}
+\newcommand{\keyvalue}[2]{\textbf{Keyvalue: #1} #2\\}
+\newcommand{\textvalue}[1]{#1\\}
+\newcommand{\excltest}[1]{\\Excluded from compare: #1}
+\newcommand{\lognewpage}{\newpage}
+\newenvironment{testcase}[1]{\section*{Test: #1}}{\newpage}
+\newenvironment{test}[1]{\section*{Test case: #1}}{}
+%Begin test data
+%%SCRIPT{C:/Users/joemb/Banana/Universal/invoices/tools/test/export_estimates.test.js}
+%
+\begin{testcase}{TestExportEstimates}
+\begin{test}{testEstimatesWithoutVat}
+\begin{tablevalue}{Data}{ l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l }
+InvoiceNumber & InvoiceDate & InvoiceDueDate & InvoiceDescription & InvoiceDiscount & InvoiceVatTotal & InvoiceTotalToPay & InvoiceCurrency & InvoiceRoundingTotal & InvoiceAmountType & CustomerNumber & CustomerName & ItemNumber & ItemDescription & ItemQuantity & ItemUnitPrice & ItemUnit & ItemVatRate & ItemVatCode & ItemDiscount & ItemTotal & ItemVatTotal\\
+1 & 2022-10-22 & 2022-12-21 & Estimate 1 & 8.00 &  & 360.00 & CHF & 0.05 & vat\_none & 1 &   & 1000 & Thé et tisanes & 100.00 & 3.50 &  &  &  &  & 350.00 & \\
+1 & 2022-10-22 & 2022-12-21 & Estimate 1 & 8.00 &  & 360.00 & CHF & 0.05 & vat\_none & 1 &   & 4000 & Frais de port & 1.00 & 18.00 &  &  &  &  & 18.00 & \\
+2 & 2023-01-03 & 2023-03-03 & Estimate 2 &  &  & 257.50 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 100.00 & 2.50 & pc &  &  &  & 250.00 & \\
+2 & 2023-01-03 & 2023-03-03 & Estimate 2 &  &  & 257.50 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 6000 & Shipping fees & 1 & 7.50 & pc &  &  &  & 7.50 & \\
+3 & 2023-03-05 & 2023-05-03 & Estimate 3 & 50.15 &  & 2457.35 & EUR & 0.05 & vat\_none & 3 & Luis Smith & 1200 & Herbal teas & 500.00 & 5.00 & pc &  &  &  & 2500.00 & \\
+3 & 2023-03-05 & 2023-05-03 & Estimate 3 & 50.15 &  & 2457.35 & EUR & 0.05 & vat\_none & 3 & Luis Smith & 6000 & Shipping fees & 1 & 7.50 & pc &  &  &  & 7.50 & \\
+4 & 2023-03-07 & 2023-05-05 & Estimate 4 & 2.50 &  & 130.00 & CHF & 0.05 & vat\_none & 1 &   & 1000 & Tea & 50.00 & 2.50 & pc &  &  &  & 125.00 & \\
+4 & 2023-03-07 & 2023-05-05 & Estimate 4 & 2.50 &  & 130.00 & CHF & 0.05 & vat\_none & 1 &   & 6000 & Shipping fees & 1 & 7.50 & pc &  &  &  & 7.50 & \\
+5 & 2023-03-12 & 2023-05-10 & Estimate 5 & 30.00 &  & 1470.00 & EUR & 0.05 & vat\_none & 3 & Luis Smith & 1200 & Herbal teas & 300.00 & 5.00 & pc &  &  &  & 1500.00 & \\
+6 & 2023-03-12 & 2023-05-10 & Estimate 6 &  &  & 100.00 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1200 & Herbal teas & 20.00 & 5.00 & pc &  &  &  & 100.00 & \\
+7 & 2023-03-17 & 2023-05-15 & Estimate 7 & 12.50 &  & 370.00 & CHF & 0.05 & vat\_none & 1 &   & 1000 & Tea & 150.00 & 2.50 & pc &  &  &  & 375.00 & \\
+7 & 2023-03-17 & 2023-05-15 & Estimate 7 & 12.50 &  & 370.00 & CHF & 0.05 & vat\_none & 1 &   & 6000 & Shipping fees & 1 & 7.50 & pc &  &  &  & 7.50 & \\
+\\
+\end{tablevalue}
+\keyvalue{Result}{Passed}
+\end{test}
+\begin{test}{testEstimatesVatIncluded}
+\begin{tablevalue}{Data}{ l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l }
+InvoiceNumber & InvoiceDate & InvoiceDueDate & InvoiceDescription & InvoiceDiscount & InvoiceVatTotal & InvoiceTotalToPay & InvoiceCurrency & InvoiceRoundingTotal & InvoiceAmountType & CustomerNumber & CustomerName & ItemNumber & ItemDescription & ItemQuantity & ItemUnitPrice & ItemUnit & ItemVatRate & ItemVatCode & ItemDiscount & ItemTotal & ItemVatTotal\\
+1 & 2022-10-22 & 2022-12-21 & Estimate 1 & 8.00 & 25.74 & 360.00 & CHF & 0.05 & vat\_incl & 1 &   & 1000 & Thé et tisanes & 100.00 & 3.50 &  & 7.70 & V77 &  & 350.00 & 25.02\\
+1 & 2022-10-22 & 2022-12-21 & Estimate 1 & 8.00 & 25.74 & 360.00 & CHF & 0.05 & vat\_incl & 1 &   & 4000 & Frais de port & 1.00 & 18.00 &  & 7.70 & V77 &  & 18.00 & 1.29\\
+2 & 2023-01-03 & 2023-03-03 & Estimate 2 &  & 18.41 & 257.50 & CHF & 0.05 & vat\_incl & 2 & Peter Ridge & 1000 & Tea & 100.00 & 2.50 & pc & 7.70 & V77 &  & 250.00 & 17.87\\
+2 & 2023-01-03 & 2023-03-03 & Estimate 2 &  & 18.41 & 257.50 & CHF & 0.05 & vat\_incl & 2 & Peter Ridge & 6000 & Shipping fees & 1 & 7.50 & pc & 7.70 & V77 &  & 7.50 & 0.54\\
+3 & 2023-03-05 & 2023-05-03 & Estimate 3 & 50.15 & 175.69 & 2457.35 & EUR & 0.05 & vat\_incl & 3 & Luis Smith & 1200 & Herbal teas & 500.00 & 5.00 & pc & 7.70 & V77 &  & 2500.00 & 178.74\\
+3 & 2023-03-05 & 2023-05-03 & Estimate 3 & 50.15 & 175.69 & 2457.35 & EUR & 0.05 & vat\_incl & 3 & Luis Smith & 6000 & Shipping fees & 1 & 7.50 & pc & 7.70 & V77 &  & 7.50 & 0.54\\
+4 & 2023-03-07 & 2023-05-05 & Estimate 4 & 2.50 & 9.30 & 130.00 & CHF & 0.05 & vat\_incl & 1 &   & 1000 & Tea & 50.00 & 2.50 & pc & 7.70 & V77 &  & 125.00 & 8.94\\
+4 & 2023-03-07 & 2023-05-05 & Estimate 4 & 2.50 & 9.30 & 130.00 & CHF & 0.05 & vat\_incl & 1 &   & 6000 & Shipping fees & 1 & 7.50 & pc & 7.70 & V77 &  & 7.50 & 0.54\\
+5 & 2023-03-12 & 2023-05-10 & Estimate 5 & 30.00 & 105.10 & 1470.00 & EUR & 0.05 & vat\_incl & 3 & Luis Smith & 1200 & Herbal teas & 300.00 & 5.00 & pc & 7.70 & V77 &  & 1500.00 & 107.24\\
+6 & 2023-03-12 & 2023-05-10 & Estimate 6 &  & 7.15 & 100.00 & CHF & 0.05 & vat\_incl & 2 & Peter Ridge & 1200 & Herbal teas & 20.00 & 5.00 & pc & 7.70 & V77 &  & 100.00 & 7.15\\
+7 & 2023-03-17 & 2023-05-15 & Estimate 7 & 12.50 & 26.46 & 370.00 & CHF & 0.05 & vat\_incl & 1 &   & 1000 & Tea & 150.00 & 2.50 & pc & 7.70 & V77 &  & 375.00 & 26.81\\
+7 & 2023-03-17 & 2023-05-15 & Estimate 7 & 12.50 & 26.46 & 370.00 & CHF & 0.05 & vat\_incl & 1 &   & 6000 & Shipping fees & 1 & 7.50 & pc & 7.70 & V77 &  & 7.50 & 0.54\\
+\\
+\end{tablevalue}
+\keyvalue{Result}{Passed}
+\end{test}
+\begin{test}{testEstimatesVatExcluded}
+\begin{tablevalue}{Data}{ l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l }
+InvoiceNumber & InvoiceDate & InvoiceDueDate & InvoiceDescription & InvoiceDiscount & InvoiceVatTotal & InvoiceTotalToPay & InvoiceCurrency & InvoiceRoundingTotal & InvoiceAmountType & CustomerNumber & CustomerName & ItemNumber & ItemDescription & ItemQuantity & ItemUnitPrice & ItemUnit & ItemVatRate & ItemVatCode & ItemDiscount & ItemTotal & ItemVatTotal\\
+1 & 2022-10-22 & 2022-12-21 & Estimate 1 & 7.36 & 27.77 & 388.40 & CHF & 0.05 & vat\_excl & 1 &   & 1000 & Thé et tisanes & 100.00 & 3.50 &  & 7.70 & V77 &  & 350.00 & 26.95\\
+1 & 2022-10-22 & 2022-12-21 & Estimate 1 & 7.36 & 27.77 & 388.40 & CHF & 0.05 & vat\_excl & 1 &   & 4000 & Frais de port & 1.00 & 18.00 &  & 7.70 & V77 &  & 18.00 & 1.39\\
+2 & 2023-01-03 & 2023-03-03 & Estimate 2 &  & 19.83 & 277.35 & CHF & 0.05 & vat\_excl & 2 & Peter Ridge & 1000 & Tea & 100.00 & 2.50 & pc & 7.70 & V77 &  & 250.00 & 19.25\\
+2 & 2023-01-03 & 2023-03-03 & Estimate 2 &  & 19.83 & 277.35 & CHF & 0.05 & vat\_excl & 2 & Peter Ridge & 6000 & Shipping fees & 1 & 7.50 & pc & 7.70 & V77 &  & 7.50 & 0.58\\
+3 & 2023-03-05 & 2023-05-03 & Estimate 3 & 50.15 & 189.22 & 2646.55 & EUR & 0.05 & vat\_excl & 3 & Luis Smith & 1200 & Herbal teas & 500.00 & 5.00 & pc & 7.70 & V77 &  & 2500.00 & 192.50\\
+3 & 2023-03-05 & 2023-05-03 & Estimate 3 & 50.15 & 189.22 & 2646.55 & EUR & 0.05 & vat\_excl & 3 & Luis Smith & 6000 & Shipping fees & 1 & 7.50 & pc & 7.70 & V77 &  & 7.50 & 0.58\\
+4 & 2023-03-07 & 2023-05-05 & Estimate 4 & 2.32 & 10.03 & 140.20 & CHF & 0.05 & vat\_excl & 1 &   & 1000 & Tea & 50.00 & 2.50 & pc & 7.70 & V77 &  & 125.00 & 9.63\\
+4 & 2023-03-07 & 2023-05-05 & Estimate 4 & 2.32 & 10.03 & 140.20 & CHF & 0.05 & vat\_excl & 1 &   & 6000 & Shipping fees & 1 & 7.50 & pc & 7.70 & V77 &  & 7.50 & 0.58\\
+5 & 2023-03-12 & 2023-05-10 & Estimate 5 & 27.86 & 113.36 & 1585.50 & EUR & 0.05 & vat\_excl & 3 & Luis Smith & 1200 & Herbal teas & 300.00 & 5.00 & pc & 7.70 & V77 &  & 1500.00 & 115.50\\
+6 & 2023-03-12 & 2023-05-10 & Estimate 6 &  & 7.70 & 107.70 & CHF & 0.05 & vat\_excl & 2 & Peter Ridge & 1200 & Herbal teas & 20.00 & 5.00 & pc & 7.70 & V77 &  & 100.00 & 7.70\\
+7 & 2023-03-17 & 2023-05-15 & Estimate 7 & 11.61 & 28.57 & 399.45 & CHF & 0.05 & vat\_excl & 1 &   & 1000 & Tea & 150.00 & 2.50 & pc & 7.70 & V77 &  & 375.00 & 28.88\\
+7 & 2023-03-17 & 2023-05-15 & Estimate 7 & 11.61 & 28.57 & 399.45 & CHF & 0.05 & vat\_excl & 1 &   & 6000 & Shipping fees & 1 & 7.50 & pc & 7.70 & V77 &  & 7.50 & 0.58\\
+\\
+\end{tablevalue}
+\keyvalue{Result}{Passed}
+\end{test}
+\begin{test}{testEstimatesVatExcludedAmountsRounded}
+\begin{tablevalue}{Data}{ l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l }
+InvoiceNumber & InvoiceDate & InvoiceDueDate & InvoiceDescription & InvoiceDiscount & InvoiceVatTotal & InvoiceTotalToPay & InvoiceCurrency & InvoiceRoundingTotal & InvoiceAmountType & CustomerNumber & CustomerName & ItemNumber & ItemDescription & ItemQuantity & ItemUnitPrice & ItemUnit & ItemVatRate & ItemVatCode & ItemDiscount & ItemTotal & ItemVatTotal\\
+1 & 2022-10-22 & 2022-12-21 & Estimate 1 & 7.43 & 28.23 & 394.85 & CHF & 0.05 & vat\_excl & 1 &   & 1000 & Thé et tisanes & 100.00 & 3.56 &  & 7.70 & V77 &  & 356.00 & 27.41\\
+1 & 2022-10-22 & 2022-12-21 & Estimate 1 & 7.43 & 28.23 & 394.85 & CHF & 0.05 & vat\_excl & 1 &   & 4000 & Frais de port & 1.00 & 18.05 &  & 7.70 & V77 &  & 18.05 & 1.39\\
+2 & 2023-01-03 & 2023-03-03 & Estimate 2 &  & 20.02 & 280.05 & CHF & 0.05 & vat\_excl & 2 & Peter Ridge & 1000 & Tea & 100.00 & 2.53 & pc & 7.70 & V77 &  & 253.00 & 19.48\\
+2 & 2023-01-03 & 2023-03-03 & Estimate 2 &  & 20.02 & 280.05 & CHF & 0.05 & vat\_excl & 2 & Peter Ridge & 6000 & Shipping fees & 1 & 7.05 & pc & 7.70 & V77 &  & 7.05 & 0.54\\
+3 & 2023-03-05 & 2023-05-03 & Estimate 3 & 50.35 & 189.97 & 2657.20 & EUR & 0.05 & vat\_excl & 3 & Luis Smith & 1200 & Herbal teas & 500.00 & 5.02 & pc & 7.70 & V77 &  & 2510.00 & 193.27\\
+3 & 2023-03-05 & 2023-05-03 & Estimate 3 & 50.35 & 189.97 & 2657.20 & EUR & 0.05 & vat\_excl & 3 & Luis Smith & 6000 & Shipping fees & 1 & 7.58 & pc & 7.70 & V77 &  & 7.58 & 0.58\\
+4 & 2023-03-07 & 2023-05-05 & Estimate 4 & 2.32 & 9.52 & 133.25 & CHF & 0.05 & vat\_excl & 1 &   & 1000 & Tea & 50.00 & 2.37 & pc & 7.70 & V77 &  & 118.50 & 9.12\\
+4 & 2023-03-07 & 2023-05-05 & Estimate 4 & 2.32 & 9.52 & 133.25 & CHF & 0.05 & vat\_excl & 1 &   & 6000 & Shipping fees & 1 & 7.54 & pc & 7.70 & V77 &  & 7.54 & 0.58\\
+5 & 2023-03-12 & 2023-05-10 & Estimate 5 & 27.86 & 113.82 & 1591.95 & EUR & 0.05 & vat\_excl & 3 & Luis Smith & 1200 & Herbal teas & 300.00 & 5.02 & pc & 7.70 & V77 &  & 1506.00 & 115.96\\
+6 & 2023-03-12 & 2023-05-10 & Estimate 6 &  & 7.93 & 110.95 & CHF & 0.05 & vat\_excl & 2 & Peter Ridge & 1200 & Herbal teas & 20.00 & 5.15 & pc & 7.70 & V77 &  & 103.00 & 7.93\\
+7 & 2023-03-17 & 2023-05-15 & Estimate 7 & 11.61 & 29.49 & 412.45 & CHF & 0.05 & vat\_excl & 1 &   & 1000 & Tea & 150.00 & 2.58 & pc & 7.70 & V77 &  & 387.00 & 29.80\\
+7 & 2023-03-17 & 2023-05-15 & Estimate 7 & 11.61 & 29.49 & 412.45 & CHF & 0.05 & vat\_excl & 1 &   & 6000 & Shipping fees & 1 & 7.59 & pc & 7.70 & V77 &  & 7.59 & 0.58\\
+\\
+\end{tablevalue}
+\keyvalue{Result}{Passed}
+\end{test}
+\begin{test}{testEstimatesWithParticularAmounts}
+\begin{tablevalue}{Data}{ l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l }
+InvoiceNumber & InvoiceDate & InvoiceDueDate & InvoiceDescription & InvoiceDiscount & InvoiceVatTotal & InvoiceTotalToPay & InvoiceCurrency & InvoiceRoundingTotal & InvoiceAmountType & CustomerNumber & CustomerName & ItemNumber & ItemDescription & ItemQuantity & ItemUnitPrice & ItemUnit & ItemVatRate & ItemVatCode & ItemDiscount & ItemTotal & ItemVatTotal\\
+1 & 2022-10-22 & 2022-12-21 & Estimate 1 & 7.43 & 26.48 & 370.40 & CHF & 0.05 & vat\_excl & 1 &   & 1000 & Thé et tisanes & 100.00 & 3.33 &  & 7.70 & V77 &  & 333.00 & 25.64\\
+1 & 2022-10-22 & 2022-12-21 & Estimate 1 & 7.43 & 26.48 & 370.40 & CHF & 0.05 & vat\_excl & 1 &   & 4000 & Frais de port & 1.00 & 18.33 &  & 7.70 & V77 &  & 18.33 & 1.41\\
+2 & 2023-01-03 & 2023-03-03 & Estimate 2 &  & 18.53 & 259.20 & CHF & 0.05 & vat\_excl & 2 & Peter Ridge & 1000 & Tea & 100.00 & 2.33 & pc & 7.70 & V77 &  & 233.00 & 17.94\\
+2 & 2023-01-03 & 2023-03-03 & Estimate 2 &  & 18.53 & 259.20 & CHF & 0.05 & vat\_excl & 2 & Peter Ridge & 6000 & Shipping fees & 1 & 7.66 & pc & 7.70 & V77 &  & 7.66 & 0.59\\
+3 & 2023-03-05 & 2023-05-03 & Estimate 3 & 53.48 & 201.77 & 2822.25 & EUR & 0.05 & vat\_excl & 3 & Luis Smith & 1200 & Herbal teas & 500.00 & 5.3333 & pc & 7.70 & V77 &  & 2666.65 & 205.33\\
+3 & 2023-03-05 & 2023-05-03 & Estimate 3 & 53.48 & 201.77 & 2822.25 & EUR & 0.05 & vat\_excl & 3 & Luis Smith & 6000 & Shipping fees & 1 & 7.3333 & pc & 7.70 & V77 &  & 7.33 & 0.56\\
+4 & 2023-03-07 & 2023-05-05 & Estimate 4 & 2.32 & 1285.71 & 17983.20 & CHF & 0.05 & vat\_excl & 1 &   & 1000 & Tea & 50.00 & 333.33 & pc & 7.70 & V77 &  & 16666.50 & 1283.32\\
+4 & 2023-03-07 & 2023-05-05 & Estimate 4 & 2.32 & 1285.71 & 17983.20 & CHF & 0.05 & vat\_excl & 1 &   & 6000 & Shipping fees & 1 & 33.33 & pc & 7.70 & V77 &  & 33.33 & 2.57\\
+5 & 2023-03-12 & 2023-05-10 & Estimate 5 & 27.86 & 113.59 & 1588.75 & EUR & 0.05 & vat\_excl & 3 & Luis Smith & 1200 & Herbal teas & 300.00 & 5.01 & pc & 7.70 & V77 &  & 1503.00 & 115.73\\
+6 & 2023-03-12 & 2023-05-10 & Estimate 6 &  & 7.75 & 108.35 & CHF & 0.05 & vat\_excl & 2 & Peter Ridge & 1200 & Herbal teas & 20.00 & 5.0301 & pc & 7.70 & V77 &  & 100.60 & 7.75\\
+7 & 2023-03-17 & 2023-05-15 & Estimate 7 & 11.61 & 22.89 & 320.10 & CHF & 0.05 & vat\_excl & 1 &   & 1000 & Tea & 150.00 & 2.01 & pc & 7.70 & V77 &  & 301.50 & 23.22\\
+7 & 2023-03-17 & 2023-05-15 & Estimate 7 & 11.61 & 22.89 & 320.10 & CHF & 0.05 & vat\_excl & 1 &   & 6000 & Shipping fees & 1 & 7.33 & pc & 7.70 & V77 &  & 7.33 & 0.56\\
+\\
+\end{tablevalue}
+\keyvalue{Result}{Passed}
+\end{test}
+\begin{test}{testEstimateWithThousandItems}
+\begin{tablevalue}{Data}{ l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l }
+InvoiceNumber & InvoiceDate & InvoiceDueDate & InvoiceDescription & InvoiceDiscount & InvoiceVatTotal & InvoiceTotalToPay & InvoiceCurrency & InvoiceRoundingTotal & InvoiceAmountType & CustomerNumber & CustomerName & ItemNumber & ItemDescription & ItemQuantity & ItemUnitPrice & ItemUnit & ItemVatRate & ItemVatCode & ItemDiscount & ItemTotal & ItemVatTotal\\
+1 & 2023-06-17 & 2023-07-17 & Estimate 1 & 2.20 &  & 25.30 & CHF & 0.05 & vat\_none & 1 &   & 1200 & "Herbal teas &  sugar &  soda &  pop corn" & 4.00 & 5.00 & pc &  &  &  & 20.00 & \\
+1 & 2023-06-17 & 2023-07-17 & Estimate 1 & 2.20 &  & 25.30 & CHF & 0.05 & vat\_none & 1 &   & 6000 & Shipping fees & 1.00 & 7.50 & pc &  &  &  & 7.50 & \\
+2 & 2023-06-17 & 2023-07-17 & Estimate 2 & 2.50 &  & 130.00 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 50.00 & 2.50 & pc &  &  &  & 125.00 & \\
+2 & 2023-06-17 & 2023-07-17 & Estimate 2 & 2.50 &  & 130.00 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 6000 & Shipping fees & 1.00 & 7.50 & pc &  &  &  & 7.50 & \\
+3 & 2023-10-15 & 2023-11-15 & Estimate 3 & 2.54 &  & 24.95 & EUR & 0.05 & vat\_none & 3 & Luis Smith & 1200 & Herbal teas & 4.00 & 5.00 & pc &  &  &  & 20.00 & \\
+3 & 2023-10-15 & 2023-11-15 & Estimate 3 & 2.54 &  & 24.95 & EUR & 0.05 & vat\_none & 3 & Luis Smith & 6000 & Shipping fees & 1.00 & 7.50 & pc &  &  &  & 7.50 & \\
+4 & 2023-11-11 & 2023-12-11 & Estimate 4 &  &  & 132.50 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 50.00 & 2.50 & pc &  &  &  & 125.00 & \\
+4 & 2023-11-11 & 2023-12-11 & Estimate 4 &  &  & 132.50 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 6000 & Shipping fees & 1.00 & 7.50 & pc &  &  &  & 7.50 & \\
+5 & 2023-11-29 & 2023-12-31 & Estimate 5 & 1.75 &  & 25.75 & EUR & 0.05 & vat\_none & 3 & Luis Smith & 1200 & Herbal teas & 4.00 & 5.00 & pc &  &  &  & 20.00 & \\
+5 & 2023-11-29 & 2023-12-31 & Estimate 5 & 1.75 &  & 25.75 & EUR & 0.05 & vat\_none & 3 & Luis Smith & 6000 & Shipping fees & 1.00 & 7.50 & pc &  &  &  & 7.50 & \\
+6 & 2023-12-01 & 2023-12-30 & Estimate 6 &  &  & 15.00 & CHF & 0.05 & vat\_none & 1 &   & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+6 & 2023-12-01 & 2023-12-30 & Estimate 6 &  &  & 15.00 & CHF & 0.05 & vat\_none & 1 &   & 1200 & Herbal teas & 1 & 5.00 & pc &  &  &  & 5.00 & \\
+6 & 2023-12-01 & 2023-12-30 & Estimate 6 &  &  & 15.00 & CHF & 0.05 & vat\_none & 1 &   & 6000 & Shipping fees & 1 & 7.50 & pc &  &  &  & 7.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+7 & 2023-12-15 & 2024-01-13 & Estimate 7 & 0.07 &  & 2699.95 & CHF & 0.05 & vat\_none & 2 & Peter Ridge & 1000 & Tea & 1 & 2.50 & pc &  &  &  & 2.50 & \\
+\\
+\end{tablevalue}
+\keyvalue{Result}{Passed}
+\end{test}
+\begin{test}{testEstimateWithMissingData}
+\begin{tablevalue}{Data}{ l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l }
+InvoiceNumber & InvoiceDate & InvoiceDueDate & InvoiceDescription & InvoiceDiscount & InvoiceVatTotal & InvoiceTotalToPay & InvoiceCurrency & InvoiceRoundingTotal & InvoiceAmountType & CustomerNumber & CustomerName & ItemNumber & ItemDescription & ItemQuantity & ItemUnitPrice & ItemUnit & ItemVatRate & ItemVatCode & ItemDiscount & ItemTotal & ItemVatTotal\\
+1 & 2022-10-22 &  & Estimate 1 & 7.43 & 27.77 & 388.35 & CHF & 0.05 & vat\_excl & 1 &   & 1000 & Thé et tisanes & 100.00 & 3.50 &  & 7.70 & V77 &  & 350.00 & 26.95\\
+1 & 2022-10-22 &  & Estimate 1 & 7.43 & 27.77 & 388.35 & CHF & 0.05 & vat\_excl & 1 &   & 4000 & Frais de port & 1.00 & 18.00 &  & 7.70 & V77 &  & 18.00 & 1.39\\
+2 & 2023-01-03 & 2023-03-03 & Estimate 2 &  & 19.83 & 277.35 & CHF & 0.05 & vat\_excl & 2 & Peter Ridge & 1000 & Tea & 100.00 & 2.50 & pc & 7.70 & V77 &  & 250.00 & 19.25\\
+2 & 2023-01-03 & 2023-03-03 & Estimate 2 &  & 19.83 & 277.35 & CHF & 0.05 & vat\_excl & 2 & Peter Ridge & 6000 & Shipping fees & 1 & 7.50 & pc & 7.70 & V77 &  & 7.50 & 0.58\\
+3 & 2023-03-05 & 2023-05-03 &  & 50.15 & 189.22 & 2646.55 & EUR & 0.05 & vat\_excl & 3 & Luis Smith & 1200 & Herbal teas & 500.00 & 5.00 & pc & 7.70 & V77 &  & 2500.00 & 192.50\\
+3 & 2023-03-05 & 2023-05-03 &  & 50.15 & 189.22 & 2646.55 & EUR & 0.05 & vat\_excl & 3 & Luis Smith & 6000 & Shipping fees & 1 & 7.50 & pc & 7.70 & V77 &  & 7.50 & 0.58\\
+4 & 2023-03-07 & 2023-05-05 & Estimate 4 & 2.32 & 10.03 & 140.20 & CHF & 0.05 & vat\_excl & 1 &   & 1000 & Tea & 50.00 & 2.50 & pc & 7.70 & V77 &  & 125.00 & 9.63\\
+4 & 2023-03-07 & 2023-05-05 & Estimate 4 & 2.32 & 10.03 & 140.20 & CHF & 0.05 & vat\_excl & 1 &   & 6000 & Shipping fees & 1 & 7.50 & pc & 7.70 & V77 &  & 7.50 & 0.58\\
+5 & 2023-03-12 & 2023-05-10 &  & 27.86 & 113.36 & 1585.50 & EUR & 0.05 & vat\_excl & 3 & Luis Smith & 1200 & Herbal teas & 300.00 & 5.00 & pc & 7.70 & V77 &  & 1500.00 & 115.50\\
+6 & 2023-03-12 &  & Estimate 6 &  & 7.70 & 107.70 & CHF & 0.05 & vat\_excl & 2 & Peter Ridge & 1200 & Herbal teas & 20.00 & 5.00 & pc & 7.70 & V77 &  & 100.00 & 7.70\\
+7 & 2023-03-17 & 2023-05-15 &  & 11.61 & 28.57 & 399.45 & CHF & 0.05 & vat\_excl & 1 &   & 1000 & Tea & 150.00 & 2.50 & pc & 7.70 & V77 &  & 375.00 & 28.88\\
+7 & 2023-03-17 & 2023-05-15 &  & 11.61 & 28.57 & 399.45 & CHF & 0.05 & vat\_excl & 1 &   & 6000 & Shipping fees & 1 & 7.50 & pc & 7.70 & V77 &  & 7.50 & 0.58\\
+\\
+\end{tablevalue}
+\keyvalue{Result}{Passed}
+\end{test}
+\begin{test}{testEstimateWithMissingMandatoryData}
+\begin{tablevalue}{Data}{ l }
+\\
+\end{tablevalue}
+\keyvalue{ERROR\_MSG\_ROW\_0}{CustomerId is a required field}
+\keyvalue{ERROR\_HELPID\_ROW\_0}{export\_estimates.test::missing\_field}
+\keyvalue{ERROR\_MSG\_ROW\_1}{InvoiceDate is a required field}
+\keyvalue{ERROR\_HELPID\_ROW\_1}{export\_estimates.test::missing\_field}
+\keyvalue{ERROR\_MSG\_ROW\_2}{CustomerId is a required field}
+\keyvalue{ERROR\_HELPID\_ROW\_2}{export\_estimates.test::missing\_field}
+\keyvalue{ERROR\_MSG\_ROW\_5}{InvoiceDate is a required field}
+\keyvalue{ERROR\_HELPID\_ROW\_5}{export\_estimates.test::missing\_field}
+\keyvalue{ERROR\_MSG\_ROW\_5}{CustomerId is a required field}
+\keyvalue{ERROR\_HELPID\_ROW\_5}{export\_estimates.test::missing\_field}
+\keyvalue{Result}{Passed}
+\end{test}
+\begin{test}{testEstimateErrors}
+\begin{tablevalue}{Data}{ l }
+\\
+\end{tablevalue}
+\keyvalue{ERROR\_MSG\_ROW\_1}{InvoiceDate is a required field}
+\keyvalue{ERROR\_HELPID\_ROW\_1}{export\_estimates.test::missing\_field}
+\keyvalue{ERROR\_MSG\_ROW\_3}{CustomerId is a required field}
+\keyvalue{ERROR\_HELPID\_ROW\_3}{export\_estimates.test::missing\_field}
+\keyvalue{ERROR\_MSG\_ROW\_4}{ItemDescription is a required field}
+\keyvalue{ERROR\_HELPID\_ROW\_4}{export\_estimates.test::missing\_field}
+\keyvalue{Result}{Passed}
+\end{test}
+\begin{test}{testExportImportInvoices}
+\begin{tablevalue}{Data}{ l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l }
+InvoiceNumber & InvoiceDate & InvoiceDueDate & InvoiceDescription & InvoiceDiscount & InvoiceVatTotal & InvoiceTotalToPay & InvoiceCurrency & InvoiceRoundingTotal & InvoiceAmountType & CustomerNumber & CustomerName & ItemNumber & ItemDescription & ItemQuantity & ItemUnitPrice & ItemUnit & ItemVatRate & ItemVatCode & ItemDiscount & ItemTotal & ItemVatTotal\\
+1 & 2022-10-22 & 2022-12-21 & Estimate 1 & 7.36 & 27.77 & 388.40 & CHF & 0.05 & vat\_excl & 1 &   & 1000 & Thé et tisanes & 100.00 & 3.50 &  & 7.70 & V77 &  & 350.00 & 26.95\\
+1 & 2022-10-22 & 2022-12-21 & Estimate 1 & 7.36 & 27.77 & 388.40 & CHF & 0.05 & vat\_excl & 1 &   & 4000 & Frais de port & 1.00 & 18.00 &  & 7.70 & V77 &  & 18.00 & 1.39\\
+2 & 2023-01-03 & 2023-03-03 & Estimate 2 &  & 19.83 & 277.35 & CHF & 0.05 & vat\_excl & 2 & Peter Ridge & 1000 & Tea & 100.00 & 2.50 & pc & 7.70 & V77 &  & 250.00 & 19.25\\
+2 & 2023-01-03 & 2023-03-03 & Estimate 2 &  & 19.83 & 277.35 & CHF & 0.05 & vat\_excl & 2 & Peter Ridge & 6000 & Shipping fees & 1 & 7.50 & pc & 7.70 & V77 &  & 7.50 & 0.58\\
+3 & 2023-03-05 & 2023-05-03 & Estimate 3 & 50.15 & 189.22 & 2646.55 & EUR & 0.05 & vat\_excl & 3 & Luis Smith & 1200 & Herbal teas & 500.00 & 5.00 & pc & 7.70 & V77 &  & 2500.00 & 192.50\\
+3 & 2023-03-05 & 2023-05-03 & Estimate 3 & 50.15 & 189.22 & 2646.55 & EUR & 0.05 & vat\_excl & 3 & Luis Smith & 6000 & Shipping fees & 1 & 7.50 & pc & 7.70 & V77 &  & 7.50 & 0.58\\
+4 & 2023-03-07 & 2023-05-05 & Estimate 4 & 2.32 & 10.03 & 140.20 & CHF & 0.05 & vat\_excl & 1 &   & 1000 & Tea & 50.00 & 2.50 & pc & 7.70 & V77 &  & 125.00 & 9.63\\
+4 & 2023-03-07 & 2023-05-05 & Estimate 4 & 2.32 & 10.03 & 140.20 & CHF & 0.05 & vat\_excl & 1 &   & 6000 & Shipping fees & 1 & 7.50 & pc & 7.70 & V77 &  & 7.50 & 0.58\\
+5 & 2023-03-12 & 2023-05-10 & Estimate 5 & 27.86 & 113.36 & 1585.50 & EUR & 0.05 & vat\_excl & 3 & Luis Smith & 1200 & Herbal teas & 300.00 & 5.00 & pc & 7.70 & V77 &  & 1500.00 & 115.50\\
+6 & 2023-03-12 & 2023-05-10 & Estimate 6 &  & 7.70 & 107.70 & CHF & 0.05 & vat\_excl & 2 & Peter Ridge & 1200 & Herbal teas & 20.00 & 5.00 & pc & 7.70 & V77 &  & 100.00 & 7.70\\
+7 & 2023-03-17 & 2023-05-15 & Estimate 7 & 11.61 & 28.57 & 399.45 & CHF & 0.05 & vat\_excl & 1 &   & 1000 & Tea & 150.00 & 2.50 & pc & 7.70 & V77 &  & 375.00 & 28.88\\
+7 & 2023-03-17 & 2023-05-15 & Estimate 7 & 11.61 & 28.57 & 399.45 & CHF & 0.05 & vat\_excl & 1 &   & 6000 & Shipping fees & 1 & 7.50 & pc & 7.70 & V77 &  & 7.50 & 0.58\\
+\\
+\end{tablevalue}
+\keyvalue{Result}{Passed}
+\end{test}
+\end{testcase}
+\end{document}

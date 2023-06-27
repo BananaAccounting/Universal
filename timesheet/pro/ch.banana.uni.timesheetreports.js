@@ -23,7 +23,7 @@
 // @description.en = Timesheet Projects
 // @description.nl = Timesheet Projecten
 // @task = app.command
-// @doctype = 400.*
+// @doctype = 400.600
 // @docproperties = 
 // @outputformat = none
 // @inputdataform = none

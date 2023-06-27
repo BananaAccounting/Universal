@@ -1,0 +1,13 @@
+{
+    "category": "Import",
+    "country": "universal",
+    "countryCode": "un",
+    "description": "Wise - Import transactions (*.csv)",
+    "description.en": "Wise - Import transactions (*.csv)",
+    "id": "ch.banana.uni.import.wise",
+    "language": "en",
+    "publisher": "Banana.ch",
+    "title": "Wise - Import transactions (*.csv)",
+    "title.en": "Wise - Import transactions (*.csv)",
+    "version": "1.0"
+}
