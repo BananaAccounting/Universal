@@ -1,0 +1,5 @@
+RowId,Description,UnitPrice,AmountType,Unit,VatCode,VatRate,Discount
+1000,Thé,1000.0000,,pc,,,
+1200,Tisanne,2500.0000,,pc,,,
+4000,Filet d'oignon,4000.0000,,pc,,,
+4050,Orange,3390.0000,,pc,,,

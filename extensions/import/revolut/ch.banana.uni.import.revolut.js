@@ -17,7 +17,7 @@
 // @api = 1.0
 // @pubdate = 2022-03-23
 // @publisher = Banana.ch SA
-// @description = Revolut import transactions (*.csv)
+// @description = Revolut - import transactions (*.csv)
 // @doctype = 100.*; 110.*; 130.*
 // @docproperties =
 // @task = import.transactions
@@ -86,7 +86,9 @@ function exec(inData, isTest) {
     }
 
     // Format is unknow, return an error
-    return "@Error: Unknow format";
+    importUtilities.getUnknownFormatError();
+
+    return "";
 }
 
 /**
