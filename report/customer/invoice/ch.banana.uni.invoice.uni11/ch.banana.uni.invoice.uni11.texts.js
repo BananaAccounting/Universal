@@ -17,7 +17,7 @@
 
 
 
-/* Texts update: 2023-03-10 */
+/* Texts update: 2023-06-20 */
 
 
 
@@ -235,9 +235,10 @@ function setTexts_it(texts) {
   texts.predefined_columns_3 = "Articolo,Descrizione,Importo";
   texts.predefined_columns_4 = "Articolo,Descrizione,Quantità,Unità,Prezzo Unità,Importo";
   texts.predefined_columns_5 = "Immagine articolo,Articolo,Descrizione,Quantità,Unità,Prezzo Unità,Importo (ADVANCED)";
-  texts.predefined_columns_6 = "Descrizione,Sconto,Importo (ADVANCED)";
-  texts.predefined_columns_7 = "Descrizione,Quantità,Unità,Prezzo Unità,Sconto,Importo (ADVANCED)";
-  texts.predefined_columns_8 = "Articolo,Data,Descrizione,Quantità,Unit,Unit Price,Sconto,Importo (ADVANCED)";
+  texts.predefined_columns_6 = "Descrizione,Quantità,Unità,Prezzo Unità,%IVA,Importo";
+  texts.predefined_columns_7 = "Descrizione,Sconto,Importo (ADVANCED)";
+  texts.predefined_columns_8 = "Descrizione,Quantità,Unità,Prezzo Unità,Sconto,Importo (ADVANCED)";
+  texts.predefined_columns_9 = "Articolo,Data,Descrizione,Quantità,Unit,Unit Price,Sconto,Importo (ADVANCED)";
   texts.style_change_confirm_title = "Colonne predefinite";
   texts.style_change_confirm_msg = "Applicare le colonne '%1'?\nLe attuali impostazioni delle colonne saranno sostituite.";
 
@@ -457,9 +458,10 @@ function setTexts_fr(texts) {
   texts.predefined_columns_3 = "Article,Libellé,Montant";
   texts.predefined_columns_4 = "Article,Libellé,Quantité,Unité,Prix Unitaire,Montant";
   texts.predefined_columns_5 = "Image article,Article,Libellé,Quantité,Unité,Prix Unitaire,Montant (ADVANCED)";
-  texts.predefined_columns_6 = "Libellé,Rabais,Montant (ADVANCED)";
-  texts.predefined_columns_7 = "Libellé,Quantité,Unité,Prix Unitaire,Rabais,Montant (ADVANCED)";
-  texts.predefined_columns_8 = "Article,Date,Libellé,Quantité,Unité,Prix Unitaire,Rabais,Montant (ADVANCED)";
+  texts.predefined_columns_6 = "Libellé,Quantité,Unité,Prix Unitaire,%TVA,Montant";
+  texts.predefined_columns_7 = "Libellé,Rabais,Montant (ADVANCED)";
+  texts.predefined_columns_8 = "Libellé,Quantité,Unité,Prix Unitaire,Rabais,Montant (ADVANCED)";
+  texts.predefined_columns_9 = "Article,Date,Libellé,Quantité,Unité,Prix Unitaire,Rabais,Montant (ADVANCED)";
   texts.style_change_confirm_title = "Colonnes prédéfinies";
   texts.style_change_confirm_msg = "Appliquer les colonnes '%1'?\nLes paramètres actuels des colonnes seront remplacés.";
 
@@ -679,9 +681,10 @@ function setTexts_de(texts) {
   texts.predefined_columns_3 = "Artikel,Beschreibung,Betrag";
   texts.predefined_columns_4 = "Artikel,Beschreibung,Menge,Einheit,Preiseinheit,Betrag";
   texts.predefined_columns_5 = "Produktbild,Artikel,Beschreibung,Menge,Einheit,Preiseinheit,Betrag (ADVANCED)";
-  texts.predefined_columns_6 = "Beschreibung,Rabatt,Betrag (ADVANCED)";
-  texts.predefined_columns_7 = "Beschreibung,Menge,Einheit,Preiseinheit,Rabatt,Betrag (ADVANCED)";
-  texts.predefined_columns_8 = "Artikel,Datum,Beschreibung,Menge,Einheit,Preiseinheit,Rabatt,Betrag (ADVANCED)";
+  texts.predefined_columns_6 = "Beschreibung,Menge,Einheit,Preiseinheit,MwSt%,Betrag";
+  texts.predefined_columns_7 = "Beschreibung,Rabatt,Betrag (ADVANCED)";
+  texts.predefined_columns_8 = "Beschreibung,Menge,Einheit,Preiseinheit,Rabatt,Betrag (ADVANCED)";
+  texts.predefined_columns_9 = "Artikel,Datum,Beschreibung,Menge,Einheit,Preiseinheit,Rabatt,Betrag (ADVANCED)";
   texts.style_change_confirm_title = "Vordefinierte Spalten";
   texts.style_change_confirm_msg = "'%1' Spalten anwenden?\nDie aktuellen Spalteneinstellungen werden ersetzt.";
 
@@ -901,9 +904,10 @@ function setTexts_nl(texts) {
   texts.predefined_columns_3 = "Item,Beschrijving,Bedrag";
   texts.predefined_columns_4 = "Item,Beschrijving,Hoeveelheid,Eenheid,Eenheidsprijs,Bedrag";
   texts.predefined_columns_5 = "Afbeelding Item,Item,Beschrijving,Hoeveelheid,Eenheid,Eenheidsprijs,Bedrag (ADVANCED)";
-  texts.predefined_columns_6 = "Beschrijving,Korting,Bedrag (ADVANCED)";
-  texts.predefined_columns_7 = "Beschrijving,Hoeveelheid,Eenheid,Eenheidsprijs,Korting,Bedrag (ADVANCED)";
-  texts.predefined_columns_8 = "Item,Datum,Beschrijving,Hoeveelheid,Eenheid,Eenheidsprijs,Korting,Bedrag (ADVANCED)";
+  texts.predefined_columns_6 = "Beschrijving;Hoeveelheid;Eenheid;Eenheidsprijs;%BTW;Bedrag";
+  texts.predefined_columns_7 = "Beschrijving,Korting,Bedrag (ADVANCED)";
+  texts.predefined_columns_8 = "Beschrijving,Hoeveelheid,Eenheid,Eenheidsprijs,Korting,Bedrag (ADVANCED)";
+  texts.predefined_columns_9 = "Item,Datum,Beschrijving,Hoeveelheid,Eenheid,Eenheidsprijs,Korting,Bedrag (ADVANCED)";
   texts.style_change_confirm_title = "Voorgedefinieerde kolommen";
   texts.style_change_confirm_msg = "De ’%1' kolommen toepassen?\nDe huidige kolominstellingen worden vervangen.";
 
@@ -1123,9 +1127,10 @@ function setTexts_zh(texts) {
   texts.predefined_columns_3 = "物品,摘要,金额";
   texts.predefined_columns_4 = "物品,摘要,数量,单位,单价,金额";
   texts.predefined_columns_5 = "物品图片,物品,摘要,数量,单位,单价,金额 (高级计划)";
-  texts.predefined_columns_6 = "摘要,折扣,金额 (高级计划)";
-  texts.predefined_columns_7 = "摘要,数量,单位,单价,折扣,金额 (高级计划)";
-  texts.predefined_columns_8 = "物品,日期,摘要,数量,单位,单价,折扣,金额 (高级计划)";
+  texts.predefined_columns_6 = "摘要;数量;单位;单价;%增值税率;金额";
+  texts.predefined_columns_7 = "摘要,折扣,金额 (高级计划)";
+  texts.predefined_columns_8 = "摘要,数量,单位,单价,折扣,金额 (高级计划)";
+  texts.predefined_columns_9 = "物品,日期,摘要,数量,单位,单价,折扣,金额 (高级计划)";
   texts.style_change_confirm_title = "预定义列";
   texts.style_change_confirm_msg = "应用 '%1' 列?\n当前的列设置将被替换.";
 
@@ -1345,9 +1350,10 @@ function setTexts_en(texts) {
   texts.predefined_columns_3 = "Item,Description,Amount";
   texts.predefined_columns_4 = "Item,Description,Quantity,Unit,Unit Price,Amount";
   texts.predefined_columns_5 = "Item Image,Item,Description,Quantity,Unit,Unit Price,Amount (ADVANCED)";
-  texts.predefined_columns_6 = "Description,Discount,Amount (ADVANCED)";
-  texts.predefined_columns_7 = "Description,Quantity,Unit,Unit Price,Discount,Amount (ADVANCED)";
-  texts.predefined_columns_8 = "Item,Date,Description,Quantity,Unit,Unit Price,Discount,Amount (ADVANCED)";
+  texts.predefined_columns_6 = "Description,Quantity,Unit,Unit Price,%VAT,Amount";
+  texts.predefined_columns_7 = "Description,Discount,Amount (ADVANCED)";
+  texts.predefined_columns_8 = "Description,Quantity,Unit,Unit Price,Discount,Amount (ADVANCED)";
+  texts.predefined_columns_9 = "Item,Date,Description,Quantity,Unit,Unit Price,Discount,Amount (ADVANCED)";
   texts.style_change_confirm_title = "Predefined columns";
   texts.style_change_confirm_msg = "Apply '%1' columns?\nCurrent column settings will be replaced.";
 
