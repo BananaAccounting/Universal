@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.uni.invoice.uni11
 // @api = 1.0
-// @pubdate = 2023-03-10
+// @pubdate = 2023-06-20
 // @publisher = Banana.ch SA
 // @description = [UNI11] Programmable Invoice layout
 // @description.it = [UNI11] Layout Fattura Programmabile
@@ -1608,7 +1608,11 @@ function formatItemsValue(value, variables, columnName, className, item) {
     itemFormatted.className = className;
   }
   else if (columnName === "vatrate" || columnName === "vat_rate") {
-    itemFormatted.value = Banana.Converter.toLocaleNumberFormat(Banana.SDecimal.abs(value));
+    if (className === "item_cell") { //print vat rate only for items rows
+      itemFormatted.value = Banana.Converter.toLocaleNumberFormat(Banana.SDecimal.abs(value));
+    } else {
+      itemFormatted.value = "";
+    }
     itemFormatted.className = className;
   }
   else if (columnName) {
