@@ -12,7 +12,7 @@ Changes availables only with BananaPlus version 10.1.7 or newer.
 * [Fix] Fix in settings tab the option's switchs are not visibles when the dialog is resized
 * [Fix] Fix in invoice dialog the move item down button is not active
 * [Fix] Fix moving up / down an item create an invalid item object
-* [Fix] Fix creating an invoice from an estimate doesn't update the due date (payment term)
+* [Fix] Fix creating an invoice from an estimate doesn't update the due date
 * [Fix] Fix the due date can't be left empty
 * [Fix] Fix in settings tab the vertical scrollbar has to be always visible
 * [Fix] Fix wrong dialog title for estimates
