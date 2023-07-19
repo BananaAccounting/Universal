@@ -17,7 +17,7 @@
 // @api = 1.0
 // @pubdate = 2022-03-23
 // @publisher = Banana.ch SA
-// @description = Revolut - import movements csv (Banana+ Advanced)
+// @description = Revolut - Import movements .csv (Banana+ Advanced)
 // @doctype = 100.*; 110.*; 130.*
 // @docproperties =
 // @task = import.transactions
