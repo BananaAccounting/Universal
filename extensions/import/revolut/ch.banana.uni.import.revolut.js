@@ -17,7 +17,7 @@
 // @api = 1.0
 // @pubdate = 2022-03-23
 // @publisher = Banana.ch SA
-// @description = Revolut - import transactions (*.csv)
+// @description = Revolut - import movements csv (Banana+ Advanced)
 // @doctype = 100.*; 110.*; 130.*
 // @docproperties =
 // @task = import.transactions
@@ -414,7 +414,7 @@ var ImportRevolutBusinessFormat1 = class ImportRevolutBusinessFormat1 extends Im
  * 2022-07-03,2022-07-03,1234abc-def456,CARD_PAYMENT,Payment with card,,Bruno Frey,1234567890,CHF,0.00,CHF,0.00,0.00,2675.48,Bank CHF,,,,2
  * @param {*} banDocument 
  */
- var ImportRevolutBusinessFormat2 = class ImportRevolutBusinessFormat2 extends ImportUtilities {
+var ImportRevolutBusinessFormat2 = class ImportRevolutBusinessFormat2 extends ImportUtilities {
     constructor(banDocument) {
         super(banDocument);
 
