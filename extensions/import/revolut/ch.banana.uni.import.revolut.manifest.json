@@ -2,12 +2,12 @@
     "category": "Import",
     "country": "universal",
     "countryCode": "un",
-    "description": "Revolut - import movements csv (Banana+ Advanced)",
-    "description.en": "Revolut - import movements csv (Banana+ Advanced)",
+    "description": "Revolut - Import movements .csv (Banana+ Advanced)",
+    "description.en": "Revolut - Import movements .csv (Banana+ Advanced)",
     "id": "ch.banana.uni.import.revolut",
     "language": "en",
     "publisher": "Banana.ch",
-    "title": "Revolut - import movements csv (Banana+ Advanced)",
-    "title.en": "Revolut - import movements csv (Banana+ Advanced)",
+    "title": "Revolut - Import movements .csv (Banana+ Advanced)",
+    "title.en": "Revolut - Import movements .csv (Banana+ Advanced)",
     "version": "1.0"
 }
