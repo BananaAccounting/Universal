@@ -2,12 +2,12 @@
     "category": "Import",
     "country": "universal",
     "countryCode": "un",
-    "description": "Wise - Import transactions (*.csv)",
-    "description.en": "Wise - Import transactions (*.csv)",
+    "description": "Wise - Import movements .csv (Banana+ Advanced)",
+    "description.en": "Wise - Import movements .csv (Banana+ Advanced)",
     "id": "ch.banana.uni.import.wise",
     "language": "en",
     "publisher": "Banana.ch",
-    "title": "Wise - Import transactions (*.csv)",
-    "title.en": "Wise - Import transactions (*.csv)",
+    "title": "Wise - Import movements .csv (Banana+ Advanced)",
+    "title.en": "Wise - Import movements .csv (Banana+ Advanced)",
     "version": "1.0"
 }
