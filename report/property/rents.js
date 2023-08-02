@@ -17,7 +17,7 @@
 
 // SUMMARY //
 
-// Funzione che stampa un estratto riguardo al pagamento degli affitti, degli acconti spese e degli scoperti da parte degli inquilini per un immobile a reddito
+// Function that prints a report regarding rent payments, expense advances, and accounting shortfalls made by tenants for a rental property or apartment.
 
 
 
