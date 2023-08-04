@@ -1,0 +1,18 @@
+{ 
+"category": "productivity",
+    "country":"switzerland",
+    "countryCode":"ch",
+    "description": "Rents",
+    "description.en": "Rents",
+    "description.it": "Affitti",
+    "description.fr": "Locations",
+    "description.de": "Mieten",
+    "language":"en",
+    "publisher": "Banana.ch",
+    "title": "Rents",
+    "title.en": "Rents",
+    "title.it": "Affitti",
+    "title.fr": "Locations",
+    "title.de": "Mieten",
+    "version": "1.0"
+}
