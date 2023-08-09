@@ -1,12 +1,12 @@
 // @id = ch.banana.app/rents
 // @api = 1.0
-// @pubdate = 2023-03-27
+// @pubdate = 2023-08-03
 // @publisher = Banana.ch SA
-// @description = List of uncovered rents
-// @description.it = Lista degli affitti scoperti
-// @description.fr = Liste des locations découvertes
-// @description.de = Liste der ungedeckten Mieten
-// @description.en = List of uncovered rents
+// @description = Simple report
+// @description.it = Report semplice
+// @description.fr = Rapport simple
+// @description.de = Einfacher Bericht
+// @description.en = Simple report
 // @task = app.command
 // @doctype = *.*
 // @docproperties =
@@ -17,14 +17,33 @@
 
 // SUMMARY //
 
-// Function that prints a report regarding rent payments, expense advances, and accounting shortfalls made by tenants for a rental property or apartment.
+// Function that prints a simple report regarding rent payments, expense advances, and accounting shortfalls made by tenants for a rental property or apartment.
 
+//Check if the version of Banana Accounting is compatible
+function verifyBananaAdvancedVersion() {
+  if (!this.banDocument)
+      return false;
+
+
+  if (!Banana.application.license || Banana.application.license.licenseType !== "advanced") {
+      var lang = this.getLang();
+      var msg = "This extension requires Banana Accounting+ Advanced";
+      this.banDocument.addMessage(msg, "ID_ERR_LICENSE_NOTVALID");
+      return false;
+  }
+
+
+
+  return true;
+}
 
 
 var reportlanguage = {};
 var lan;
 
-function exec(inData) {
+function exec() {
+
+  verifyBananaAdvancedVersion();
 
   setlanguage(lan);
 
@@ -37,6 +56,14 @@ function exec(inData) {
   var today = new Date();
   var accounts = Banana.document.table("Accounts");
   var recurringtransactions = Banana.document.table("RecurringTransactions");
+  // var recurringtransactions = Banana.document.table('Transactions').list('Recurring');
+  if (!accounts) {
+    return;
+  }
+  if (!recurringtransactions) {
+    console.debug("Tabella Registrazioni ricorrenti non aperta.");
+    return;
+  }
 
   /*
       List of accounting overdrafts
@@ -84,19 +111,6 @@ function exec(inData) {
     } else if (month === "12") {
       return reportlanguage.december;
     }
-  }
-
-
-  // Ask for simple report or detailed report
-  var reporttype = Banana.Ui.getItem(reportlanguage.input, reportlanguage.choose, [reportlanguage.simplereport, reportlanguage.detailedreport], 2, false);
-  var detailedreport = false;
-  if (reporttype === reportlanguage.simplereport) {
-    null;
-  } else if (reporttype === reportlanguage.detailedreport) {
-    detailedreport = true;
-  }
-  else {
-    return;
   }
 
   // Add the header to the report
@@ -213,65 +227,11 @@ function exec(inData) {
 
       var debtorAccount = accounts.row(i).value("Account");
 
-      if (detailedreport) {
-        var accountdescription = false;
-        for (var k = 0; k < recurringtransactions.rowCount; k++) {
-
-          var cc1debit = recurringtransactions.row(k).value("Cc1");
-          var accountdebit = recurringtransactions.row(k).value("AccountDebit");
-          var account = recurringtransactions.row(k).value("Account");
-
-          if (debtorAccount === accountdebit | debtorAccount === "."+cc1debit | debtorAccount === account) {
-            j = j + 1;
-            if (accountdescription === false) {
-              tableRow.addCell(debtorAccount, "border-bottom border-left left " + classNameEvenRow());
-              tableRow.addCell(accounts.row(i).value("Description"), "border-bottom left bold " + classNameEvenRow());
-              accountdescription = true;
-            }
-            else {
-              tableRow.addCell("", "border-bottom border-left left " + classNameEvenRow());
-              tableRow.addCell("", "border-bottom " + classNameEvenRow());
-            }
-
-            if ( Banana.document.table("Categories") === undefined) {
-              debit = recurringtransactions.row(k).value("Amount");
-            }
-            else if ( Banana.document.table("Categories") ) {
-              debit = recurringtransactions.row(k).value("Income");
-            }
-
-
-            tableRow.addCell(recurringtransactions.row(k).value("Description"), "border-bottom left bold " + classNameEvenRow());
-            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(0, 2, true) + " " + currency, "border-bottom right " + classNameEvenRow());
-            tableRow.addCell(FormatNumber(debit) + " " + currency, "border-bottom right january " + classNameEvenRow() + " " + TodayMonth());
-            tableRow.addCell(FormatNumber(debit) + " " + currency, "border-bottom right february " + classNameEvenRow() + " " + TodayMonth());
-            tableRow.addCell(FormatNumber(debit) + " " + currency, "border-bottom right march " + classNameEvenRow() + " " + TodayMonth());
-            tableRow.addCell(FormatNumber(debit) + " " + currency, "border-bottom right april " + classNameEvenRow() + " " + TodayMonth());
-            tableRow.addCell(FormatNumber(debit) + " " + currency, "border-bottom right may " + classNameEvenRow() + " " + TodayMonth());
-            tableRow.addCell(FormatNumber(debit) + " " + currency, "border-bottom right june " + classNameEvenRow() + " " + TodayMonth());
-            tableRow.addCell(FormatNumber(debit) + " " + currency, "border-bottom right july " + classNameEvenRow() + " " + TodayMonth());
-            tableRow.addCell(FormatNumber(debit) + " " + currency, "border-bottom right august " + classNameEvenRow() + " " + TodayMonth());
-            tableRow.addCell(FormatNumber(debit) + " " + currency, "border-bottom right september " + classNameEvenRow() + " " + TodayMonth());
-            tableRow.addCell(FormatNumber(debit) + " " + currency, "border-bottom right october " + classNameEvenRow() + " " + TodayMonth());
-            tableRow.addCell(FormatNumber(debit) + " " + currency, "border-bottom right november " + classNameEvenRow() + " " + TodayMonth());
-            tableRow.addCell(FormatNumber(debit) + " " + currency, "border-bottom right december " + classNameEvenRow() + " " + TodayMonth());
-            tableRow.addCell(FormatNumber(debit * 12) + " " + currency, "border-bottom border-right right " + classNameEvenRow());
-            tableRow = table.addRow();
-          }
-        }
-      }
-
       // Calculate the monthly debit of the debtor accounts
       j = j + 1;
-      if (detailedreport) {
-        tableRow.addCell("", "border-bottom border-left left " + classNameEvenRow());
-        tableRow.addCell("", "border-bottom left " + classNameEvenRow());
-        tableRow.addCell(reportlanguage.charged, "border-bottom left bold " + classNameEvenRow());
-      } else {
-        tableRow.addCell(debtorAccount, "border-bottom border-left left " + classNameEvenRow());
-        tableRow.addCell(accounts.row(i).value("Description"), "border-bottom left bold " + classNameEvenRow());
-        tableRow.addCell(reportlanguage.charged, "border-bottom left bold " + classNameEvenRow());
-      }
+      tableRow.addCell(debtorAccount, "border-bottom border-left left " + classNameEvenRow());
+      tableRow.addCell(accounts.row(i).value("Description"), "border-bottom left bold " + classNameEvenRow());
+      tableRow.addCell(reportlanguage.charged, "border-bottom left bold " + classNameEvenRow());
       debit = 0.00;
 
       tableRow.addCell(FormatNumber(debit) + " " + currency, "border-bottom right " + classNameEvenRow());
@@ -488,8 +448,6 @@ function setlanguage(lan) {
     reportlanguage.uncovered = "Scoperto";
     reportlanguage.input = "Inserisci";
     reportlanguage.choose = "Scegli";
-    reportlanguage.simplereport = "Report semplice";
-    reportlanguage.detailedreport = "Report dettagliato";
     reportlanguage.debit = "Debito";
     reportlanguage.january = "Gennaio";
     reportlanguage.february = "Febbraio";
@@ -526,8 +484,6 @@ function setlanguage(lan) {
     reportlanguage.uncovered = "Uncovered";
     reportlanguage.input = "Input";
     reportlanguage.choose = "Choose";
-    reportlanguage.simplereport = "Simple report";
-    reportlanguage.detailedreport = "Detailed report";
     reportlanguage.debit = "Debit";
     reportlanguage.january = "January";
     reportlanguage.february = "February";
@@ -564,8 +520,6 @@ function setlanguage(lan) {
     reportlanguage.uncovered = "Non couvert";
     reportlanguage.input = "Entrée";
     reportlanguage.choose = "Choisir";
-    reportlanguage.simplereport = "Rapport simple";
-    reportlanguage.detailedreport = "Rapport détaillé";
     reportlanguage.debit = "Débit";
     reportlanguage.january = "Janvier";
     reportlanguage.february = "Février";
@@ -602,8 +556,6 @@ function setlanguage(lan) {
     reportlanguage.uncovered = "Nicht gedeckt";
     reportlanguage.input = "Eingabe";
     reportlanguage.choose = "Wählen";
-    reportlanguage.simplereport = "Einfacher Bericht";
-    reportlanguage.detailedreport = "Detaillierter Bericht";
     reportlanguage.debit = "Debit";
     reportlanguage.january = "Januar";
     reportlanguage.february = "Februar";
