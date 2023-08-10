@@ -1,0 +1,19 @@
+{ 
+"category": "productivity",
+    "country":"universal",
+    "countryCode":"un",
+    "description": "WooCommerce Export/Import",
+    "description.en": "WooCommerce Export/Import",
+    "description.it": "WooCommerce Export/Import",
+    "description.fr": "WooCommerce Export/Import",
+    "description.de": "WooCommerce Export/Import",
+    "id": "ch.banana.ch.woocommerce",
+    "language":"en",
+    "publisher": "Banana.ch",
+    "title": "WooCommerce Export/Import",
+    "title.en": "WooCommerce Export/Import",
+    "title.it": "WooCommerce Export/Import",
+    "title.fr": "WooCommerce Export/Import",
+    "title.de": "WooCommerce Export/Import",
+    "version": "1.0"
+}
