@@ -2,7 +2,7 @@
 // @api = 1.0
 // @pubdate = 2023-08-09
 // @publisher = Banana.ch SA
-// @doctype = *.*
+// @doctype = 400.500
 // @docproperties =
 // @description = Export Products for WooCommerce
 // @task = export.file
