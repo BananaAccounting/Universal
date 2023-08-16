@@ -39,7 +39,7 @@ function getCurrentDate() {
 function getCurrentTime() {
     var d = new Date();
     var timestring = ("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2);
-    return Banana.Converter.toInternalTimeFormat(timestring, "hh:mm");
+    return Banana.Converter.toInternalTimeFormat(timestring);
 }
 
 function initDocument() {
@@ -56,9 +56,9 @@ function initDocument() {
 }
 
 
-function exec(inText) {
+function exec(inText, isTest) {
 
-    if ( !verifyBananaAdvancedVersion() ) {
+    if ( isTest !== true && !verifyBananaAdvancedVersion() ) {
         return "@Cancel";
     }
     
@@ -82,13 +82,13 @@ function exec(inText) {
     var rows = [];
     var producttocreate = [];
     var index = 0;
-    var flag = false;
+    var flag = true;
 
     // update the items table with the data from the csv file
     for (var i = 1; i < csvFile.length; i++) {
         for (var k = 0; k < items.rowCount; k++) {
 
-            if (items.row(k).value("RowId") === csvFile[i][2]) {
+            if (items.row(k).value("RowId") === csvFile[i][2] && items.row(k).value("RowId") != "") {
                 //row operation
                 var row = {};
                 row.operation = {};
@@ -106,14 +106,14 @@ function exec(inText) {
 
                 //rows 
                 rows.push(row);
-                flag = true;
+                flag = false;
             }
         }
-        if (!flag) {
+        if ( flag ) {
         producttocreate[index] = i;
         index++;
-        flag = false;
         }
+        flag = true;
     }
 
 
@@ -147,7 +147,7 @@ function exec(inText) {
     var jsonDoc = initDocument();
     jsonDoc.document.dataUnits.push(dataUnitTransactions);
     documentChange["data"].push(jsonDoc);
-
+    
     // return the updated items table
     return documentChange;
 
