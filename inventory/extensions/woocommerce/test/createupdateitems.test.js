@@ -19,58 +19,60 @@ function TestWooCommerceImport() {
 }
 
 // This method will be called at the beginning of the test case
-TestWooCommerceImport.prototype.initTestCase = function() {
+TestWooCommerceImport.prototype.initTestCase = function () {
    this.progressBar = Banana.application.progressBar;
 }
 
 // This method will be called at the end of the test case
-TestWooCommerceImport.prototype.cleanupTestCase = function() {
+TestWooCommerceImport.prototype.cleanupTestCase = function () {
 }
 
 // This method will be called before every test method is executed
-TestWooCommerceImport.prototype.init = function() {
+TestWooCommerceImport.prototype.init = function () {
 }
 
 // This method will be called after every test method is executed
-TestWooCommerceImport.prototype.cleanup = function() {
+TestWooCommerceImport.prototype.cleanup = function () {
 }
 
-// Every method with the prefix 'test' are executed automatically as test method
-// You can defiend as many test methods as you need
+TestWooCommerceImport.prototype.testImport = function () {
+   let csvNameList = [];
+   let fileAc2Path = "file:script/../test/testcases/Magazzino.ac2";
+   csvNameList.push("file:script/../test/testcases/csv.woocommerce.example.format1.csv");
 
-TestWooCommerceImport.prototype.testVerifyMethods = function() {
-   Test.logger.addText("The object Test defines methods to verify conditions.");
 
-   // This method verify that the condition is true
-   Test.assert(true);
-   Test.assert(true, "message"); // You can specify a message to be logged in case of failure
+   let parentLogger = Test.logger;
+   Banana.application.progressBar.start(csvNameList.length);
+   let banDoc = Banana.application.openDocument(fileAc2Path);
 
-   // This method verify that the two parameters are equals
-   Test.assertIsEqual("Same text", "Same text");
-}
+   if (banDoc) {
+      for (let i = 0; i < csvNameList.length; i++) {
+         let fileName = csvNameList[i];
+         let logger = parentLogger.newLogger(Banana.IO.fileCompleteBaseName(fileName));
+         let file = Banana.IO.getLocalFile(fileName);
+         Test.assert(file);
+         let fileContent = file.read();
+         Test.assert(fileContent);
+         let csvFile = Banana.Converter.csvToArray(fileContent, ',', '"');
+         //Check if the csv file is not empty
+         if (csvFile.length <= 1) {
+            logger.addFatalError("File not found" + fileName);
+            return;
+         }
+         let create_update = new CreateUpdate(banDoc);
+         let jsonDoc = "";
+         rows = create_update.getUpdatedItemsRows(csvFile);
+         jsonDoc = create_update.getJsonDocument(rows);
 
-TestWooCommerceImport.prototype.testImport = function() {
-   var fileNameList = [];
+         let documentChange = { "format": "documentChange", "error": "", "data": [] };
+         documentChange["data"].push(jsonDoc);
+         logger.addJson(fileName, JSON.stringify(documentChange));
 
-   fileNameList.push("file:script/../test/testcases/csv.woocommerce.example.format1.csv");
-
-   
-   var parentLogger = Test.logger;
-   Banana.application.progressBar.start(fileNameList.length);
-
-   for (var i = 0; i < fileNameList.length; i++) {
-      var fileName = fileNameList[i];
-      let logger = parentLogger.newLogger(Banana.IO.fileCompleteBaseName(fileName));
-
-      var file = Banana.IO.getLocalFile(fileName);
-      Test.assert(file);
-      var fileContent = file.read();
-      Test.assert(fileContent);
-      var jsonitems = exec(fileContent,true); //takes the exec from the import script.
-      logger.addJson('Format Data', JSON.stringify(jsonitems));
-      
-      if (! Banana.application.progressBar.step())
-         break;
+         if (!Banana.application.progressBar.step())
+            break;
+      }
+   } else {
+      logger.addFatalError("No valid file ac2 found in this directory: " + fileAc2Path);
    }
 
    Banana.application.progressBar.finish();
