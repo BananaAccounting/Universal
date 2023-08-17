@@ -37,13 +37,13 @@ TestWooCommerceImport.prototype.cleanup = function () {
 
 TestWooCommerceImport.prototype.testImport = function () {
    let csvNameList = [];
-   let fileAc2Path = "file:script/../test/testcases/Magazzino.ac2";
+   let fileAC2Path = "file:script/../test/testcases/Magazzino.ac2";
    csvNameList.push("file:script/../test/testcases/csv.woocommerce.example.format1.csv");
 
 
    let parentLogger = Test.logger;
    Banana.application.progressBar.start(csvNameList.length);
-   let banDoc = Banana.application.openDocument(fileAc2Path);
+   let banDoc = Banana.application.openDocument(fileAC2Path);
 
    if (banDoc) {
       for (let i = 0; i < csvNameList.length; i++) {
@@ -72,7 +72,7 @@ TestWooCommerceImport.prototype.testImport = function () {
             break;
       }
    } else {
-      logger.addFatalError("No valid file ac2 found in this directory: " + fileAc2Path);
+      logger.addFatalError("No valid file ac2 found in this directory: " + fileAC2Path);
    }
 
    Banana.application.progressBar.finish();

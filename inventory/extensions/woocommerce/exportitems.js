@@ -38,6 +38,11 @@ function exec() {
     //Check if there is the Items table
     if (!Banana.document.table("Items")) { return; }
     var items = Banana.document.table("Items");
+    
+    return generateCsvItems(items);
+}
+
+function generateCsvItems(items) {
 
     var exportResult = '';
 
