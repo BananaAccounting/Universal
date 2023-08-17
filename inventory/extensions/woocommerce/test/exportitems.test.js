@@ -38,24 +38,27 @@ TestWooCommerceExport.prototype.cleanup = function() {
 // Every method with the prefix 'test' are executed automatically as test method
 // You can defiend as many test methods as you need
 
-TestWooCommerceExport.prototype.testVerifyMethods = function() {
-   Test.logger.addText("The object Test defines methods to verify conditions.");
-
-   // This method verify that the condition is true
-   Test.assert(true);
-   Test.assert(true, "message"); // You can specify a message to be logged in case of failure
-
-   // This method verify that the two parameters are equals
-   Test.assertIsEqual("Same text", "Same text");
-}
-
-TestWooCommerceExport.prototype.testBananaApps = function() {
-   Test.logger.addText("This test will tests the BananaApp helloworld.js");
-   
-   var document = Banana.application.openDocument("file:script/../test/testcases/Magazzino.ac2");
-   Test.assert(document, "File ac2 not found");
-   
-   // Add the report content text to the result txt file
-   var report = createReport();
-   Test.logger.addReport("ReportName", report);
+//Export Items with missing Data
+TestWooCommerceExport.prototype.testExport = function(){
+	//get the *ac2 file
+	let fileAC2Path = "file:script/../test/testcases/Magazzino.ac2";
+	let banDoc = Banana.application.openDocument(fileAC2Path);
+   if (banDoc) {
+	let itemsTable = banDoc.table("Items");
+	Test.assert(itemsTable);
+	
+	banDoc.clearMessages();
+	let csvData = generateCsvItems(itemsTable);
+	Test.logger.addCsv("Data", csvData);
+		
+	let msgs = banDoc.getMessages();
+    for (let i = 0; i < msgs.length; ++i) {
+        let msg = msgs[i];
+        this.testLogger.addKeyValue("ERROR_MSG_ROW_" + msg.rowNr, msg.message);
+        this.testLogger.addKeyValue("ERROR_HELPID_ROW_" + msg.rowNr, msg.helpId);
+    } 
+   }
+   else {
+      logger.addFatalError("No valid file ac2 found in this directory: " + fileAC2Path);
+   }
 }
