@@ -7,6 +7,7 @@
     "description.it": "Lista degli affitti scoperti",
     "description.fr": "Liste des locations découvertes",
     "description.de": "Liste der ungedeckten Mieten",
+    "id": "ch.banana.ch.rents",
     "language":"en",
     "publisher": "Banana.ch",
     "title": "List of uncovered rents",

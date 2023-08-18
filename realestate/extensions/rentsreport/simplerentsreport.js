@@ -1,4 +1,4 @@
-// @id = ch.banana.app/rents
+// @id = ch.banana.app/rentssimple
 // @api = 1.0
 // @pubdate = 2023-08-03
 // @publisher = Banana.ch SA
