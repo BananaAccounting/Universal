@@ -1,0 +1,8 @@
+<RCC>
+	<qresource prefix="/">
+		<file alias="manifest.json">ch.banana.uni.import.csv.manifest.json</file>
+		<file alias="import.utilities.js">../import.utilities.js</file>
+		<file>ch.banana.uni.import.csv.js</file>
+		<file>ch.banana.uni.dlgmap.csv.js</file>
+	</qresource>
+</RCC>

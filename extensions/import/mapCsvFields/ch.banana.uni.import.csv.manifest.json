@@ -1,0 +1,19 @@
+{
+    "category": "Import",
+    "country": "universal",
+    "countryCode": "un",
+    "description": "Import CSV",
+    "description.en": "Import CSV",
+    "description.de": "CSV-Datei importieren",
+    "description.it": "Importa CSV",
+    "description.fr": "Importer CSV",
+    "id": "ch.banana.uni.import.csv",
+    "language": "en",
+    "publisher": "Banana.ch",
+    "title": "Import CSV",
+    "title.en": "Import CSV",
+    "title.de": "CSV-Datei importieren",
+    "title.it": "Importa CSV",
+    "title.fr": "Importer CSV",
+    "version": "1.0"
+}
