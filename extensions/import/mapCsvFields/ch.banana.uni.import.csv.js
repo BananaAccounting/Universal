@@ -51,7 +51,30 @@ function exec(inData, test) {
         return "@Cancel";
     }
 
-    //Banana.console.debug(inData); ok
+    let userParams = dlgMapCsvFields.dialogParam;
+    let csvRows = readCsvFile(inData, userParams);
+
+    //Implementare la logica per la lettura del file csv.
 
     return "";
+}
+
+function readCsvFile(inData, userParams) {
+    let csvRows = [];
+    if (userParams) {
+        Banana.console.debug("Delim fields: " + userParams.fieldsDelimiter);
+        Banana.console.debug("Delim texts: " + userParams.textDelimiter);
+        csvRows = Banana.Converter.csvToArray(inData, userParams.fieldsDelimiter,
+            userParams.textDelimiter);
+        if (csvRows.length >= 0) {
+            Banana.console.debug("Rows: " + csvRows);
+            return csvRows;
+        }
+    }
+    return csvRows;
+}
+
+function sum(due, tre) {
+    let result = due + tre;
+    return result;
 }

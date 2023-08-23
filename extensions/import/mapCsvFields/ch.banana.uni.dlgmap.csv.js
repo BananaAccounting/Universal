@@ -18,38 +18,52 @@
 
 
 var DlgMapCsvFields = class DlgMapCsvFields {
+
     constructor() {
-        this.dialogParam = "";
+        this.dialogParam = this.initParam(); // Mi serve per accedere ai valori dal file "ch.banana.uni.import.csv.js".
     }
 
     settingsDialog() {
-        let savedParam = Banana.document.getScriptSettings("csvFieldsParams1");
+        /*Banana.document.setScriptSettings("csvFieldsParams", "");
+        return;*/
+        let savedParam = Banana.document.getScriptSettings("csvFieldsParams");
         if (savedParam.length > 0) {
             let parsedParam = JSON.parse(savedParam);
             if (parsedParam) {
                 this.dialogParam = parsedParam;
             }
         }
+        //Verify Params.
+        verifyParam();
 
         //Settings dialog
         var dialogTitle = 'Settings';
-        var pageAnchor = 'csvFieldsParams1';
+        var pageAnchor = 'csvFieldsParams';
+        var convertedParam = {};
 
-        var convertedParam = this.convertParam();
+        let editorDlg = Banana.Ui.createPropertyEditor(dialogTitle, convertedParam, pageAnchor);
 
-        let dlgEditor = Banana.Ui.createPropertyEditor(dialogTitle, convertedParam, pageAnchor);
+        Banana.console.debug(JSON.stringify(this.dialogParam));
 
-        let rtnValue = dlgEditor.exec();
+        convertedParam = this.convertParam();
+
+        editorDlg.setParams(convertedParam);
+
+        // Aggiungere comando per salvare i preferiti nella tabella dei preferiti
+
+        // editorDlg.addImportCommand
+        // editorDlgAddCustomCommand
+        // Poi riproporre i preferiti in un comboBox.
+
+        let rtnValue = editorDlg.exec();
         if (parseInt(rtnValue) === 1) {
-            for (var i = 0; i < convertedParam.length; i++) {
+            for (var i = 0; i < convertedParam.data.length; i++) {
                 // Read values to dialogparam (through the readValue function)
                 if (typeof (convertedParam.data[i].readValue) == "function")
                     convertedParam.data[i].readValue();
             }
-
-            //Set the parameters
-            var paramToString = JSON.stringify(this.dialogparam);
-            Banana.document.setScriptSettings("csvFieldsParams1", paramToString);
+            var paramToString = JSON.stringify(this.dialogParam);
+            Banana.document.setScriptSettings("csvFieldsParams", paramToString);
             return true;
         }
 
@@ -58,7 +72,8 @@ var DlgMapCsvFields = class DlgMapCsvFields {
 
     convertParam() {
         var paramList = {};
-        let userParam = this.dialogParam;
+        var defaultParam = this.initParam();
+        var userParam = this.dialogParam;
         paramList.version = '1.0';
         paramList.data = [];
 
@@ -70,8 +85,9 @@ var DlgMapCsvFields = class DlgMapCsvFields {
 
         paramList.data.push(param);
 
+        // Csv Fields group
         var param = {};
-        param.name = 'Csvfields';
+        param.name = 'CsvFields';
         param.title = "CSV Fields";
         param.editable = false;
 
@@ -82,60 +98,65 @@ var DlgMapCsvFields = class DlgMapCsvFields {
         // Mapping Preferences Name.
         var param = {};
         param.name = 'MappingPrefrencesName';
-        param.group = "CsvParameters";
+        param.parentObject = 'CsvParameters';
         param.title = 'Mapping Preferences Name';
         param.type = 'string';
-        param.value = userParam.preferencesName;
+        param.value = userParam.preferencesName ? userParam.preferencesName : '';
+        param.defaultvalue = defaultParam.preferencesName;
         param.readValue = function () {
-            param.preferencesName = this.value;
+            userParam.preferencesName = this.value;
         }
         paramList.data.push(param);
 
         // Fields Delimiter.
         var param = {};
         param.name = 'FieldsDelimiter';
-        param.group = "CsvParameters";
+        param.parentObject = 'CsvParameters';
         param.title = 'Fields Delimiter';
         param.type = 'string';
-        param.value = userParam.fieldsDelimiter;
+        param.value = userParam.fieldsDelimiter ? userParam.fieldsDelimiter : ',';
+        param.defaultvalue = defaultParam.fieldsDelimiter;
         param.readValue = function () {
-            param.fieldsDelimiter = this.value;
+            userParam.fieldsDelimiter = this.value;
         }
         paramList.data.push(param);
 
         // Text Delimiter.
         var param = {};
         param.name = 'TextDelimiter';
-        param.group = "CsvParameters";
+        param.parentObject = 'CsvParameters';
         param.title = 'Text Delimiter';
         param.type = 'string';
-        param.value = userParam.textDelimiter;
+        param.value = userParam.textDelimiter ? userParam.textDelimiter : '"';
+        param.defaultvalue = defaultParam.textDelimiter;
         param.readValue = function () {
-            param.textDelimiter = this.value;
+            userParam.textDelimiter = this.value;
         }
         paramList.data.push(param);
 
         // Date format
         var param = {};
         param.name = 'DateFormat';
-        param.group = "CsvParameters";
+        param.parentObject = 'CsvParameters';
         param.title = 'Date Format';
-        param.type = 'string'; //example: example dd.mm.yyyy
-        param.value = userParam.dateFormat;
+        param.type = 'string'; //example: dd.mm.yyyy
+        param.value = userParam.dateFormat ? userParam.dateFormat : 'dd.mm.yyyy';
+        param.defaultvalue = defaultParam.dateFormat;
         param.readValue = function () {
-            param.dateFormat = this.value;
+            userParam.dateFormat = this.value;
         }
         paramList.data.push(param);
 
         // Decimal separator
         var param = {};
-        param.name = 'AmountFormat';
-        param.group = "CsvParameters";
-        param.title = 'Amount Format';
-        param.type = 'string'; //example: example dd.mm.yyyy
-        param.value = userParam.dateFormat;
+        param.name = 'DecimalSeparator';
+        param.parentObject = 'CsvParameters';
+        param.title = 'Decimal Separator';
+        param.type = 'string';
+        param.value = userParam.decimalSeparator ? userParam.decimalSeparator : '.';
+        param.defaultvalue = defaultParam.decimalSeparator;
         param.readValue = function () {
-            param.dateFormat = this.value;
+            userParam.decimalSeparator = this.value;
         }
         paramList.data.push(param);
 
@@ -146,24 +167,26 @@ var DlgMapCsvFields = class DlgMapCsvFields {
         // Date Column
         var param = {};
         param.name = 'DateColumn';
-        param.group = "Csvfields";
+        param.parentObject = 'CsvFields';
         param.title = 'Date Column';
         param.type = 'string'; // for example if the date is in the first colum, the user should put "1"
-        param.value = userParam.dateColumn;
+        param.value = userParam.dateColumn ? userParam.dateColumn : '';
+        param.defaultvalue = "";
         param.readValue = function () {
-            param.dateColumn = this.value;
+            userParam.dateColumn = this.value;
         }
         paramList.data.push(param);
 
         // Description Column
         var param = {};
         param.name = 'DescriptionColumn';
-        param.group = "Csvfields";
+        param.parentObject = 'CsvFields';
         param.title = 'Description Column';
         param.type = 'string'; // for example if the date is in the first colum, the user should put "1"
-        param.value = userParam.descriptionColumn;
+        param.value = userParam.descriptionColumn ? userParam.descriptionColumn : '';
+        param.defaultvalue = "";
         param.readValue = function () {
-            param.descriptionColumn = this.value;
+            userParam.descriptionColumn = this.value;
         }
         paramList.data.push(param);
 
@@ -173,15 +196,52 @@ var DlgMapCsvFields = class DlgMapCsvFields {
         */
         var param = {};
         param.name = 'AmountColumn';
-        param.group = "Csvfields";
+        param.parentObject = 'CsvFields';
         param.title = 'Amount Column';
         param.type = 'string'; // One amount column: "1", more amounts columns: "1;2"
-        param.value = userParam.amountColumn;
+        param.value = userParam.amountColumn ? userParam.amountColumn : '';
+        param.defaultvalue = "";
         param.readValue = function () {
-            param.amountColumn = this.value;
+            userParam.amountColumn = this.value;
         }
         paramList.data.push(param);
 
         return paramList;
+    }
+
+    initParam() {
+
+        let params = {};
+
+        params.preferencesName = '';
+        params.fieldsDelimiter = ';';
+        params.textDelimiter = '"';
+        params.dateFormat = 'dd.mm.yyyy';
+        params.decimalSeparator = '.';
+
+        //Aggiungere anche gli altri.
+
+        return params;
+
+    }
+
+    verifyParam() {
+        let defaultParam = this.initParam();
+
+        if (!this.dialogParam.preferencesName) {
+            this.dialogParam.preferencesName = defaultParam.preferencesName;
+        }
+        if (!this.dialogParam.fieldsDelimiter) {
+            this.dialogParam.fieldsDelimiter = defaultParam.fieldsDelimiter;
+        }
+        if (!this.dialogParam.textDelimiter) {
+            this.dialogParam.textDelimiter = defaultParam.textDelimiter;
+        }
+        if (!this.dialogParam.dateFormat) {
+            this.dialogParam.dateFormat = defaultParam.dateFormat;
+        }
+        if (!this.dialogParam.decimalSeparator) {
+            this.dialogParam.decimalSeparator = defaultParam.decimalSeparator;
+        }
     }
 }
