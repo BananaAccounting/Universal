@@ -26,9 +26,9 @@ function verifyBananaAdvancedVersion() {
     return true;
 }
 
-function exec() {
+function exec(isTest) {
 
-    if ( /* isTest !== true && */ !verifyBananaAdvancedVersion() ) {
+    if ( isTest !== true && !verifyBananaAdvancedVersion() ) {
         return "@Cancel";
     }
 
