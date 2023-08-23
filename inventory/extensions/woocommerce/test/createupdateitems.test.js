@@ -37,7 +37,7 @@ TestWooCommerceImport.prototype.cleanup = function () {
 
 TestWooCommerceImport.prototype.testImport = function () {
    let csvNameList = [];
-   let fileAC2Path = "file:script/../test/testcases/Magazzino.ac2";
+   let fileAC2Path = "file:script/../test/testcases/Inventory.ac2";
    csvNameList.push("file:script/../test/testcases/csv.woocommerce.example.format1.csv");
 
 

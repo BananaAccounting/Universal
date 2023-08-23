@@ -41,7 +41,7 @@ TestWooCommerceExport.prototype.cleanup = function() {
 //Export Items with missing Data
 TestWooCommerceExport.prototype.testExport = function(){
 	//get the *ac2 file
-	let fileAC2Path = "file:script/../test/testcases/Magazzino.ac2";
+	let fileAC2Path = "file:script/../test/testcases/Inventory.ac2";
 	let banDoc = Banana.application.openDocument(fileAC2Path);
    if (banDoc) {
 	let itemsTable = banDoc.table("Items");
