@@ -56,7 +56,7 @@ function exec() {
   var today = new Date();
   var accounts = Banana.document.table("Accounts");
   var recurringtransactions = Banana.document.table("RecurringTransactions");
-  // var recurringtransactions = Banana.document.table('Transactions').list('Recurring');
+  
   if (!accounts) {
     return;
   }
