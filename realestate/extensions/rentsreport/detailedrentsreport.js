@@ -1,6 +1,6 @@
 // @id = ch.banana.app/rentsdetailed
 // @api = 1.0
-// @pubdate = 2023-08-03
+// @pubdate = 2023-08-23
 // @publisher = Banana.ch SA
 // @description = Detailed report
 // @description.it = Report dettagliato
@@ -70,19 +70,17 @@ function exec() {
       List of accounting overdrafts
   */
 
-  // Read the settings
-  var param = initParam();
-  var savedParam = Banana.document.getScriptSettings();
-  if (savedParam.length > 0) {
-    param = JSON.parse(savedParam);
-    param = verifyParam(param);
-  }
-
   // Create the report
 
   var report = Banana.Report.newReport(reportlanguage.uncoveredrents);
   var stylesheet = createStyleSheet(); // create the first stylesheet
   var currency = Banana.document.info("AccountingDataBase", "BasicCurrency");
+  var tenants = Banana.document.info("AccountingDataBase", "CustomersGroup");
+
+  if (tenants === undefined) {
+    Banana.document.addMessage(reportlanguage.settenants);
+    return;
+  }
 
   // Function to get the month from the date format "YYYY-MM-DD" and return the month in the language selected by the user (italian, english, french, german) 
   function getMonth(date) {
@@ -643,6 +641,7 @@ function exec() {
       reportlanguage.email = "E-mail";
       reportlanguage.total = "Totale";
       reportlanguage.repeatwarning = "Avviso: valore della colonna Ripeti non supportato.";
+      reportlanguage.settenants = "Impostare il Gruppo dei clienti dal menu Report > Clienti > Impostazioni.";
 
     }
 
@@ -680,6 +679,7 @@ function exec() {
       reportlanguage.email = "E-mail";
       reportlanguage.total = "Total";
       reportlanguage.repeatwarning = "Warning: value of the Repeat column is not supported.";
+      reportlanguage.settenants = "Set the Group of customers from the menu Report > Customers > Settings.";
 
     }
 
@@ -717,6 +717,7 @@ function exec() {
       reportlanguage.email = "E-mail";
       reportlanguage.total = "Total";
       reportlanguage.repeatwarning = "Avertissement: la valeur de la colonne Répéter n'est pas prise en charge.";
+      reportlanguage.settenants = "Définir le Groupe de clients dans le menu Rapport > Clients > Paramètres.";
 
     }
 
@@ -754,6 +755,7 @@ function exec() {
       reportlanguage.email = "E-mail";
       reportlanguage.total = "Gesamt";
       reportlanguage.repeatwarning = "Warnung: Wert der Spalte Wiederholen wird nicht unterstützt.";
+      reportlanguage.settenants = "Setzen Sie die Gruppe der Kunden aus dem Menü Bericht > Kunden > Einstellungen.";
 
     }
 
@@ -855,69 +857,4 @@ function exec() {
 
     return stylesheet;
 
-  }
-
-  function initParam() {
-    var param = {};
-    param.debtors = "";
-    return param;
-  }
-
-  function convertParam(param) {
-
-    var convertedParam = {};
-    convertedParam.version = "1.0";
-    /*parameters array*/
-    convertedParam.data = [];
-
-    var currentParam = {};
-    currentParam.name = "debtors";
-    currentParam.title = reportlanguage.debtors;
-    currentParam.type = "string";
-    currentParam.value = param.debtors ? param.debtors : "110A";
-    currentParam.readValue = function () {
-      param.debtors = this.value;
-    }
-    convertedParam.data.push(currentParam);
-
-    return convertedParam;
-  }
-
-  /*Update script"s parameters*/
-  function settingsDialog() {
-    setlanguage();
-    var param = initParam();
-    var savedParam = Banana.document.getScriptSettings();
-    if (savedParam.length > 0) {
-      param = JSON.parse(savedParam);
-    }
-    param = verifyParam(param);
-
-    if (typeof (Banana.Ui.openPropertyEditor) !== "undefined") {
-      var dialogTitle = "Settings";
-      var convertedParam = convertParam(param);
-      var pageAnchor = "dlgSettings";
-      if (!Banana.Ui.openPropertyEditor(dialogTitle, convertedParam, pageAnchor))
-        return;
-      for (var i = 0; i < convertedParam.data.length; i++) {
-        // Read values to param (through the readValue function)
-        convertedParam.data[i].readValue();
-      }
-    }
-    else {
-
-      param.debtors = Banana.Ui.getText("Settings", reportlanguage.debtors, param.debtors);
-      if (param.debtors === undefined)
-        return;
-
-    }
-
-    var paramToString = JSON.stringify(param);
-    Banana.document.setScriptSettings(paramToString);
-  }
-
-  function verifyParam(param) {
-    if (!param.debtors)
-      param.debtors = "";
-    return param;
   }

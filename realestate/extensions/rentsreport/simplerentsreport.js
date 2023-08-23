@@ -1,6 +1,6 @@
 // @id = ch.banana.app/rentssimple
 // @api = 1.0
-// @pubdate = 2023-08-03
+// @pubdate = 2023-08-23
 // @publisher = Banana.ch SA
 // @description = Simple report
 // @description.it = Report semplice
@@ -69,19 +69,17 @@ function exec() {
       List of accounting overdrafts
   */
 
-  // Read the settings
-  var param = initParam();
-  var savedParam = Banana.document.getScriptSettings();
-  if (savedParam.length > 0) {
-    param = JSON.parse(savedParam);
-    param = verifyParam(param);
-  }
-
   // Create the report
 
   var report = Banana.Report.newReport(reportlanguage.uncoveredrents);
   var stylesheet = createStyleSheet(); // create the first stylesheet
   var currency = Banana.document.info("AccountingDataBase", "BasicCurrency");
+  var tenants = Banana.document.info("AccountingDataBase", "CustomersGroup");
+
+  if (tenants === undefined) {
+    Banana.document.addMessage(reportlanguage.settenants);
+    return;
+  }
 
   // Function to get the month from the date format "YYYY-MM-DD" and return the month in the language selected by the user (italian, english, french, german) 
   function getMonth(date) {
@@ -464,6 +462,7 @@ function setlanguage(lan) {
     reportlanguage.phone = "Telefono";
     reportlanguage.email = "E-mail";
     reportlanguage.total = "Totale";
+    reportlanguage.settenants = "Impostare il Gruppo dei clienti dal menu Report > Clienti > Impostazioni.";
 
   }
 
@@ -500,6 +499,7 @@ function setlanguage(lan) {
     reportlanguage.phone = "Phone";
     reportlanguage.email = "E-mail";
     reportlanguage.total = "Total";
+    reportlanguage.settenants = "Set the Customers Group from the menu Report > Customers > Settings.";
 
   }
 
@@ -536,6 +536,7 @@ function setlanguage(lan) {
     reportlanguage.phone = "Téléphone";
     reportlanguage.email = "E-mail";
     reportlanguage.total = "Total";
+    reportlanguage.settenants = "Définir le Groupe de clients dans le menu Rapport > Clients > Paramètres.";
 
   }
 
@@ -572,6 +573,7 @@ function setlanguage(lan) {
     reportlanguage.phone = "Telefon";
     reportlanguage.email = "E-mail";
     reportlanguage.total = "Gesamt";
+    reportlanguage.settenants = "Setzen Sie die Kunden-Gruppe aus dem Menü Bericht > Kunden > Einstellungen.";
 
   }
 
@@ -673,69 +675,4 @@ function createStyleSheet() {
 
   return stylesheet;
 
-}
-
-function initParam() {
-  var param = {};
-  param.debtors = "";
-  return param;
-}
-
-function convertParam(param) {
-
-  var convertedParam = {};
-  convertedParam.version = "1.0";
-  /*parameters array*/
-  convertedParam.data = [];
-
-  var currentParam = {};
-  currentParam.name = "debtors";
-  currentParam.title = reportlanguage.debtors;
-  currentParam.type = "string";
-  currentParam.value = param.debtors ? param.debtors : "110A";
-  currentParam.readValue = function () {
-    param.debtors = this.value;
-  }
-  convertedParam.data.push(currentParam);
-
-  return convertedParam;
-}
-
-/*Update script"s parameters*/
-function settingsDialog() {
-  setlanguage();
-  var param = initParam();
-  var savedParam = Banana.document.getScriptSettings();
-  if (savedParam.length > 0) {
-    param = JSON.parse(savedParam);
-  }
-  param = verifyParam(param);
-
-  if (typeof (Banana.Ui.openPropertyEditor) !== "undefined") {
-    var dialogTitle = "Settings";
-    var convertedParam = convertParam(param);
-    var pageAnchor = "dlgSettings";
-    if (!Banana.Ui.openPropertyEditor(dialogTitle, convertedParam, pageAnchor))
-      return;
-    for (var i = 0; i < convertedParam.data.length; i++) {
-      // Read values to param (through the readValue function)
-      convertedParam.data[i].readValue();
-    }
-  }
-  else {
-
-    param.debtors = Banana.Ui.getText("Settings", reportlanguage.debtors, param.debtors);
-    if (param.debtors === undefined)
-      return;
-
-  }
-
-  var paramToString = JSON.stringify(param);
-  Banana.document.setScriptSettings(paramToString);
-}
-
-function verifyParam(param) {
-  if (!param.debtors)
-    param.debtors = "";
-  return param;
 }
