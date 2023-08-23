@@ -28,7 +28,7 @@ function verifyBananaAdvancedVersion() {
 
 function exec() {
 
-    if ( isTest !== true && !verifyBananaAdvancedVersion() ) {
+    if ( /* isTest !== true && */ !verifyBananaAdvancedVersion() ) {
         return "@Cancel";
     }
 
