@@ -45,17 +45,36 @@ function exec() {
 
   verifyBananaAdvancedVersion();
 
-  setlanguage(lan);
-
   //Check if a document is opened
   if (!Banana.document) { return; }
 
+  var printreport = new PrintReport(Banana.document);
+
+  return printreport;
+
+}
+
+/**
+ * Questa classe gestisce la logica ed i metodi per la creazione del report 
+ * @param {*} banDocument 
+ */
+
+var PrintReport = class PrintReport {
+
+  constructor(banDocument) {
+    this.banDoc = banDocument;
+  }
+
+  report() {
+
+  setlanguage(lan);
+
   //Check if there is the Accounts table
-  if (!Banana.document.table("Accounts")) { return; }
+  if (!this.banDoc.table("Accounts")) { return; }
 
   var today = new Date();
-  var accounts = Banana.document.table("Accounts");
-  var recurringtransactions = Banana.document.table("RecurringTransactions");
+  var accounts = this.banDoc.table("Accounts");
+  var recurringtransactions = this.banDoc.table("RecurringTransactions");
   
   if (!accounts) {
     return;
@@ -597,6 +616,7 @@ function exec() {
     Banana.Report.preview(report, stylesheet);
 
   }
+}
 
 
   function setlanguage(lan) {
