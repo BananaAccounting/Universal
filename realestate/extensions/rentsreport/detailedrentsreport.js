@@ -249,7 +249,7 @@ function exec() {
 
   for (var i = 0; i < accounts.rowCount; i++) {
 
-    if (accounts.row(i).value("Gr") === param.debtors) {
+    if (accounts.row(i).value("Gr") === tenants) {
 
       var debtorAccount = accounts.row(i).value("Account");
 
