@@ -34,7 +34,7 @@ var DlgMapCsvFields = class DlgMapCsvFields {
             }
         }
         //Verify Params.
-        verifyParam();
+        this.verifyParam();
 
         //Settings dialog
         var dialogTitle = 'Settings';
@@ -42,8 +42,6 @@ var DlgMapCsvFields = class DlgMapCsvFields {
         var convertedParam = {};
 
         let editorDlg = Banana.Ui.createPropertyEditor(dialogTitle, convertedParam, pageAnchor);
-
-        Banana.console.debug(JSON.stringify(this.dialogParam));
 
         convertedParam = this.convertParam();
 
@@ -73,6 +71,7 @@ var DlgMapCsvFields = class DlgMapCsvFields {
     convertParam() {
         var paramList = {};
         var defaultParam = this.initParam();
+        Banana.console.debug(JSON.stringify(defaultParam));
         var userParam = this.dialogParam;
         paramList.version = '1.0';
         paramList.data = [];
@@ -171,7 +170,7 @@ var DlgMapCsvFields = class DlgMapCsvFields {
         param.title = 'Date Column';
         param.type = 'string'; // for example if the date is in the first colum, the user should put "1"
         param.value = userParam.dateColumn ? userParam.dateColumn : '';
-        param.defaultvalue = "";
+        param.defaultvalue = defaultParam.dateColumn;
         param.readValue = function () {
             userParam.dateColumn = this.value;
         }
@@ -184,7 +183,7 @@ var DlgMapCsvFields = class DlgMapCsvFields {
         param.title = 'Description Column';
         param.type = 'string'; // for example if the date is in the first colum, the user should put "1"
         param.value = userParam.descriptionColumn ? userParam.descriptionColumn : '';
-        param.defaultvalue = "";
+        param.defaultvalue = defaultParam.descriptionColumn;
         param.readValue = function () {
             userParam.descriptionColumn = this.value;
         }
@@ -200,7 +199,7 @@ var DlgMapCsvFields = class DlgMapCsvFields {
         param.title = 'Amount Column';
         param.type = 'string'; // One amount column: "1", more amounts columns: "1;2"
         param.value = userParam.amountColumn ? userParam.amountColumn : '';
-        param.defaultvalue = "";
+        param.defaultvalue = defaultParam.amountColumn;
         param.readValue = function () {
             userParam.amountColumn = this.value;
         }
@@ -218,6 +217,9 @@ var DlgMapCsvFields = class DlgMapCsvFields {
         params.textDelimiter = '"';
         params.dateFormat = 'dd.mm.yyyy';
         params.decimalSeparator = '.';
+        params.dateColumn = '';
+        params.descriptionColumn = '';
+        params.amountColumn = '';
 
         //Aggiungere anche gli altri.
 
@@ -242,6 +244,15 @@ var DlgMapCsvFields = class DlgMapCsvFields {
         }
         if (!this.dialogParam.decimalSeparator) {
             this.dialogParam.decimalSeparator = defaultParam.decimalSeparator;
+        }
+        if (!this.dialogParam.dateColumn) {
+            this.dialogParam.dateColumn = defaultParam.dateColumn;
+        }
+        if (!this.dialogParam.descriptionColumn) {
+            this.dialogParam.descriptionColumn = defaultParam.descriptionColumn;
+        }
+        if (!this.dialogParam.amountColumn) {
+            this.dialogParam.amountColumn = defaultParam.amountColumn;
         }
     }
 }

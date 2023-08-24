@@ -53,6 +53,7 @@ function exec(inData, test) {
 
     let userParams = dlgMapCsvFields.dialogParam;
     let csvRows = readCsvFile(inData, userParams);
+    let transactions = convertRows(csvRows);
 
     //Implementare la logica per la lettura del file csv.
 
@@ -62,19 +63,21 @@ function exec(inData, test) {
 function readCsvFile(inData, userParams) {
     let csvRows = [];
     if (userParams) {
-        Banana.console.debug("Delim fields: " + userParams.fieldsDelimiter);
-        Banana.console.debug("Delim texts: " + userParams.textDelimiter);
         csvRows = Banana.Converter.csvToArray(inData, userParams.fieldsDelimiter,
             userParams.textDelimiter);
         if (csvRows.length >= 0) {
-            Banana.console.debug("Rows: " + csvRows);
             return csvRows;
         }
     }
     return csvRows;
 }
 
-function sum(due, tre) {
-    let result = due + tre;
-    return result;
+function convertRows(csvRows) {
+
+    for (i = 0; i < csvRows.length; i++) {
+        var transaction = csvRows[i];
+        //Banana.console.debug(transaction);
+    }
+
+
 }
