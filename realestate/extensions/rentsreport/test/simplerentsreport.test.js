@@ -21,7 +21,14 @@ function TestSimpleReport() {
 
 // This method will be called at the beginning of the test case
 TestSimpleReport.prototype.initTestCase = function () {
+  this.testLogger = Test.logger;
   this.progressBar = Banana.application.progressBar;
+  this.fileAC2Path = [];
+
+  this.fileAC2Path.push("file:script/../test/testcases/AffittiPartitaDoppia.ac2");
+  this.fileAC2Path.push("file:script/../test/testcases/AffittiPartitaDoppiaNOPartitario.ac2");
+  this.fileAC2Path.push("file:script/../test/testcases/AffittiEntrateUscite.ac2");
+  this.fileAC2Path.push("file:script/../test/testcases/AffittiEntrateUsciteNOPartitario.ac2");
 }
 
 // This method will be called at the end of the test case
@@ -36,35 +43,25 @@ TestSimpleReport.prototype.init = function () {
 TestSimpleReport.prototype.cleanup = function () {
 }
 
-TestSimpleReport.prototype.testImport = function () {
+TestSimpleReport.prototype.testSimpleReport = function () {
 
-  let fileAC2Path = [];
-
-  fileAC2Path.push("file:script/../test/testcases/AffittiPartitaDoppia.ac2");
-  fileAC2Path.push("file:script/../test/testcases/AffittiPartitaDoppiaNOPartitario.ac2");
-  fileAC2Path.push("file:script/../test/testcases/AffittiEntrateUscite.ac2");
-  fileAC2Path.push("file:script/../test/testcases/AffittiEntrateUsciteNOPartitario.ac2");
-
-
-  let logger = Test.logger;
+  let parentLogger = this.testLogger;
+  this.progressBar.start(this.fileAC2Path.length);
   
-  for (let k = 0; k.lenght; k++) {
+  for (let k = 0; k.length; k++) {
+    
     let banDoc = Banana.application.openDocument(fileAC2Path[k]);
-
+    this.testLogger = parentLogger.newLogger(Banana.IO.fileCompleteBaseName(fileAC2Path[k]));
+    
     if (banDoc) {
-
       let printreport = new PrintReport(banDoc);
-      var result = printreport.report();
-      logger.addReport("Result simple report", result);
-      logger.addComment("Test " + (k + 1) + ": " + fileAC2Path[k]);
-
-      if (!Banana.application.progressBar.step())
-        break;
-
+      let result = printreport.report();
+      let reportName = "FILENAME: " + fileAC2Path[k] + "\n";
+      this.testLogger.addReport(reportName, result, "Test " + (k + 1) + ": " + fileAC2Path[k]);
     } else {
-      logger.addFatalError("No valid file ac2 found in this directory: " + fileAC2Path[k]);
+      this.testLogger.addReport("No valid file ac2 found in this directory: " + fileAC2Path[k]);
     }
   }
 
-  Banana.application.progressBar.finish();
+  this.progressBar.finish();
 }
