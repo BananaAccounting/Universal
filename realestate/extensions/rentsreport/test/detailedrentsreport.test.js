@@ -45,6 +45,7 @@ TestDetailedReport.prototype.testImport = function () {
 
 
   let logger = Test.logger;
+  
   for (let k = 0; k.lenght; k++) {
     let banDoc = Banana.application.openDocument(fileAC2Path[k]);
 
