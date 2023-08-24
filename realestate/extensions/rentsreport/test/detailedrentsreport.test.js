@@ -52,8 +52,8 @@ TestDetailedReport.prototype.testImport = function () {
 
       let printreport = new PrintReport(banDoc);
       var result = printreport.report();
-      logger.addTable("Table", result);
-
+      logger.addReport("Result detailed report", result);
+      logger.addComment("Test " + (k + 1) + ": " + fileAC2Path[k]);
       if (!Banana.application.progressBar.step())
         break;
 
