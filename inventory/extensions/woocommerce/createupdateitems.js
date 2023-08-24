@@ -1,6 +1,6 @@
 // @id = ch.banana.apps.createwoocommerceitems
 // @api = 1.0
-// @pubdate = 2023-08-09
+// @pubdate = 2023-08-23
 // @publisher = Banana.ch SA
 // @doctype = 400.500
 // @docproperties =
@@ -118,7 +118,7 @@ var CreateUpdate = class CreateUpdate {
                     row.operation.name = 'modify';
                     row.operation.sequence = k.toString();
 
-                    //campi riga
+                    //row fields
                     row.fields = {};
                     row.fields["RowId"] = csvFile[i][2];
                     row.fields["Description"] = csvFile[i][3];
@@ -146,7 +146,7 @@ var CreateUpdate = class CreateUpdate {
             row.operation = {};
             row.operation.name = 'add';
 
-            //campi riga
+            //row fields
             row.fields = {};
             row.fields["RowId"] = csvFile[producttocreate[i]][2];
             row.fields["Description"] = csvFile[producttocreate[i]][3];

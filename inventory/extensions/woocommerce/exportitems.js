@@ -1,6 +1,6 @@
 // @id = ch.banana.apps.exportwoocommerce
 // @api = 1.0
-// @pubdate = 2023-08-09
+// @pubdate = 2023-08-23
 // @publisher = Banana.ch SA
 // @doctype = 400.500
 // @docproperties =
@@ -26,7 +26,7 @@ function verifyBananaAdvancedVersion() {
     return true;
 }
 
-function exec() {
+function exec(isTest) {
 
     if ( isTest !== true && !verifyBananaAdvancedVersion() ) {
         return "@Cancel";
