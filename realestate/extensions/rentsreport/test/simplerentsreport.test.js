@@ -47,6 +47,7 @@ TestSimpleReport.prototype.testImport = function () {
 
 
   let logger = Test.logger;
+  
   for (let k = 0; k.lenght; k++) {
     let banDoc = Banana.application.openDocument(fileAC2Path[k]);
 
@@ -56,7 +57,7 @@ TestSimpleReport.prototype.testImport = function () {
       var result = printreport.report();
       logger.addReport("Result simple report", result);
       logger.addComment("Test " + (k + 1) + ": " + fileAC2Path[k]);
-      
+
       if (!Banana.application.progressBar.step())
         break;
 
