@@ -49,8 +49,9 @@ function exec() {
   if (!Banana.document) { return; }
 
   var printreport = new PrintReport(Banana.document);
+  
 
-  return printreport;
+  return printreport.report();
 
 }
 
