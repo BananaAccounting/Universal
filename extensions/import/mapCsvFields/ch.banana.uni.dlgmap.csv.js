@@ -41,11 +41,11 @@ var DlgMapCsvFields = class DlgMapCsvFields {
         var pageAnchor = 'csvFieldsParams';
         var convertedParam = {};
 
-        let editorDlg = Banana.Ui.createPropertyEditor(dialogTitle, convertedParam, pageAnchor);
-
         convertedParam = this.convertParam();
 
-        editorDlg.setParams(convertedParam);
+        let editorDlg = Banana.Ui.createPropertyEditor(dialogTitle, convertedParam, pageAnchor);
+
+        //editorDlg.setParams(convertedParam);
 
         // Aggiungere comando per salvare i preferiti nella tabella dei preferiti
 
