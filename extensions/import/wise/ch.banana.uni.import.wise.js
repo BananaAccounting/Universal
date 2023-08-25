@@ -17,7 +17,7 @@
 // @api = 1.0
 // @pubdate = 2023-01-05
 // @publisher = Banana.ch SA
-// @description = Wise - import transactions (*.csv)
+// @description = Wise - Import movements .csv (Banana+ Advanced)
 // @doctype = 100.*; 110.*; 130.*
 // @docproperties =
 // @task = import.transactions
