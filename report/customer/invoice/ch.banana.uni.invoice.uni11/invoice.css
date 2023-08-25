@@ -291,6 +291,12 @@ table.info_table_row0 td {
   border-bottom-color: $color_title_total;
   border-bottom-width: 1px;
 }
+/* Total bottom border with partial payments */
+.total_cell_border {
+  border-bottom-style: solid;
+  border-bottom-color: $color_title_total;
+  border-bottom-width: 1px;
+}
 /* Subtotal row of the invoice details.
    Sets the font weight and a bottom border used as underline for the entire row. */
 .subtotal_cell {
