@@ -17,7 +17,7 @@
 
 
 
-/* Texts update: 2023-06-20 */
+/* Texts update: 2023-08-25 */
 
 
 
@@ -240,7 +240,7 @@ function setTexts_it(texts) {
   texts.predefined_columns_6 = "Descrizione,Quantità,Unità,Prezzo Unità,%IVA,Importo";
   texts.predefined_columns_7 = "Descrizione,Sconto,Importo (ADVANCED)";
   texts.predefined_columns_8 = "Descrizione,Quantità,Unità,Prezzo Unità,Sconto,Importo (ADVANCED)";
-  texts.predefined_columns_9 = "Articolo,Data,Descrizione,Quantità,Unit,Unit Price,Sconto,Importo (ADVANCED)";
+  texts.predefined_columns_9 = "Articolo,Data,Descrizione,Quantità,Unità,Prezzo Unità,Sconto,Importo (ADVANCED)";
   texts.style_change_confirm_title = "Colonne predefinite";
   texts.style_change_confirm_msg = "Applicare le colonne '%1'?\nLe attuali impostazioni delle colonne saranno sostituite.";
 

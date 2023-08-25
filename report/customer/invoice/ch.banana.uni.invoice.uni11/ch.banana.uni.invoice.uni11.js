@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.uni.invoice.uni11
 // @api = 1.0
-// @pubdate = 2023-06-20
+// @pubdate = 2023-08-25
 // @publisher = Banana.ch SA
 // @description = [UNI11] Programmable Invoice layout
 // @description.it = [UNI11] Layout Fattura Programmabile
@@ -1047,7 +1047,7 @@ function print_details_net_amounts(banDoc, repDocObj, invoiceObj, texts, userPar
   else {
     tableRow.addCell(userParam[lang+'_text_total'] + " " + invoiceObj.document_info.currency, "total_cell", columnsNumber-1);
     tableRow.addCell(Banana.Converter.toLocaleNumberFormat(invoiceObj.billing_info.total_to_pay, variables.decimals_amounts, true), "total_cell right", 1);
-  } 
+  }
 
   //PARTIAL PAYMENTS
   //Can be partial payment transactions for integrated invoice or deposit for application estimates-invoices
@@ -1265,7 +1265,7 @@ function print_details_gross_amounts(banDoc, repDocObj, invoiceObj, texts, userP
 
   //SUBTOTAL
   //used only for the "Application Invoice"
-  //Print subtotal if there is discount or rounding or deposit
+  //Print subtotal if there is discount or rounding
   if (invoiceObj.billing_info.total_amount_vat_inclusive_before_discount
     && (invoiceObj.billing_info.total_discount_vat_inclusive 
     || invoiceObj.billing_info.total_rounding_difference)
@@ -1339,7 +1339,7 @@ function print_details_gross_amounts(banDoc, repDocObj, invoiceObj, texts, userP
     tableRow.addCell(texts.pending + " " + invoiceObj.document_info.currency, "total_cell total_cell_border", columnsNumber-1);
     tableRow.addCell(Banana.Converter.toLocaleNumberFormat(invoiceObj.billing_info.total_to_pay, variables.decimals_amounts, true), "total_cell total_cell_border right", 1);
   }
-  
+
   tableRow = repTableObj.addRow();
   tableRow.addCell("", "", columnsNumber);
 
