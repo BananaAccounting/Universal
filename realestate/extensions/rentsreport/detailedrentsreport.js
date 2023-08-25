@@ -287,6 +287,9 @@ var PrintReport = class PrintReport {
 
           if (debtorAccount === accountdebit | debtorAccount === "." + cc1debit | debtorAccount === account) {
             j = j + 1;
+
+            Banana.console.info("Account description: "+accountdescription);
+
             if (accountdescription === false) {
               tableRow.addCell(debtorAccount, "border-bottom border-left left " + classNameEvenRow());
               tableRow.addCell(accounts.row(i).value("Description"), "border-bottom left bold " + classNameEvenRow());
@@ -863,7 +866,7 @@ var PrintReport = class PrintReport {
     stylesheet.addStyle(".heading", "font-size: 7pt");
     stylesheet.addStyle(".bigLogo", "font-size: 35");
     stylesheet.addStyle(".logo", "width: 200pt");
-    stylesheet.addStyle(".img", "heigth:50%;width:50%;padding-bottom:20pt");
+    stylesheet.addStyle(".img", "height:50%;width:50%;padding-bottom:20pt");
     stylesheet.addStyle(".padding-top", "padding-top:6pt");
     stylesheet.addStyle(".padding-bottom", "padding-bottom:3pt");
     stylesheet.addStyle(".green", "font-weight: bold; color:#00B000");
