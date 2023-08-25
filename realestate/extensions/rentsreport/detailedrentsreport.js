@@ -288,8 +288,6 @@ var PrintReport = class PrintReport {
           if (debtorAccount === accountdebit | debtorAccount === "." + cc1debit | debtorAccount === account) {
             j = j + 1;
 
-            Banana.console.info("Account description: "+accountdescription);
-
             if (accountdescription === false) {
               tableRow.addCell(debtorAccount, "border-bottom border-left left " + classNameEvenRow());
               tableRow.addCell(accounts.row(i).value("Description"), "border-bottom left bold " + classNameEvenRow());
