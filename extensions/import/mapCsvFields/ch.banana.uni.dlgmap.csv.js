@@ -47,10 +47,8 @@ var DlgMapCsvFields = class DlgMapCsvFields {
 
         //editorDlg.setParams(convertedParam);
 
-        // Aggiungere comando per salvare i preferiti nella tabella dei preferiti
-
-        // editorDlg.addImportCommand
-        // editorDlgAddCustomCommand
+        // AggiungO comando per salvare i preferiti nella tabella dei preferiti
+        editorDlg.addCustomCommand("savePreferences", "Save Preferences");
         // Poi riproporre i preferiti in un comboBox.
 
         let rtnValue = editorDlg.exec();
@@ -71,7 +69,6 @@ var DlgMapCsvFields = class DlgMapCsvFields {
     convertParam() {
         var paramList = {};
         var defaultParam = this.initParam();
-        Banana.console.debug(JSON.stringify(defaultParam));
         var userParam = this.dialogParam;
         paramList.version = '1.0';
         paramList.data = [];
@@ -255,4 +252,11 @@ var DlgMapCsvFields = class DlgMapCsvFields {
             this.dialogParam.amountColumn = defaultParam.amountColumn;
         }
     }
+}
+
+function savePreferences() {
+    Banana.console.debug("called savePreferences");
+    //salvare i parametri.
+    //come accedo alla tabella con i preferiti per salvarli ?
+    return this.dialogParam;
 }

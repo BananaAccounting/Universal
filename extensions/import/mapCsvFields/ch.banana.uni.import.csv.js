@@ -52,32 +52,129 @@ function exec(inData, test) {
     }
 
     let userParams = dlgMapCsvFields.dialogParam;
-    let csvRows = readCsvFile(inData, userParams);
-    let transactions = convertRows(csvRows);
-
-    //Implementare la logica per la lettura del file csv.
+    if (Object.keys(userParams).length > 0) {
+        let csvReader = new CsvReader(inData, userParams);
+        let transactions = csvReader.getCsvTransactions();
+        if (transactions.length >= 0) {
+            return Banana.Converter.arrayToTsv(transactions);
+        }
+    }
 
     return "";
 }
 
-function readCsvFile(inData, userParams) {
-    let csvRows = [];
-    if (userParams) {
-        csvRows = Banana.Converter.csvToArray(inData, userParams.fieldsDelimiter,
-            userParams.textDelimiter);
+var CsvReader = class CsvReader {
+    constructor(inData, userParams) {
+        /** Initialize fields to be imported with values defined by the user */
+        this.inData = inData;
+        this.dateFormat = userParams.dateFormat;
+        this.dateCol = Banana.SDecimal.subtract(userParams.dateColumn, 1);
+        this.descriptionCol = Banana.SDecimal.subtract(userParams.descriptionColumn, 1);
+        this.amountCol = userParams.amountColumn;
+        this.decimalSep = userParams.decimalSeparator;
+        this.fieldsDelim = userParams.fieldsDelimiter;
+        this.textDelim = userParams.textDelimiter;
+    }
+
+    getCsvTransactions() {
+        let csvRows = [];
+        csvRows = Banana.Converter.csvToArray(this.inData, this.fieldsDelim,
+            this.textDelim);
         if (csvRows.length >= 0) {
-            return csvRows;
+            return this.convertRows(csvRows);
         }
+        return csvRows;
     }
-    return csvRows;
+    convertRows(csvRows) {
+
+        let transactionsToImport = [];
+
+        for (let i = 0; i < csvRows.length; i++) {
+            let transaction = csvRows[i];
+            if (this.transactionMatch(transaction)) {
+                transactionsToImport.push(this.mapTransaction(csvRows[i]));
+            } else {
+                //Aggiungere messaggio con info sulla registrazione.
+            }
+        }
+
+        //Order the entries by Date.
+        transactionsToImport = transactionsToImport.reverse();
+
+        // Add header and return
+        var header = [["Date", "Description", "Income", "Expenses"]];
+        return header.concat(transactionsToImport);
+    }
+
+    transactionMatch(transaction) {
+        if (this.dateFormatMatch(transaction[this.dateCol])) {
+            return true;
+        }
+        return false;
+    }
+
+    dateFormatMatch(rowDate) {
+        //CONTINUARE DA QUIIIII
+        if (rowDate && rowDate.length == this.dateFormat.length) {
+            let parsedDate = Banana.Converter.toInternalDateFormat(rowDate, this.dateFormat);
+            //Dopo la conversione controllo che il formato risulti ancora corretto.
+            for (let i = 0; i < parsedDate.length; i++) {
+                //Banana.console.debug("orig char: " + parsedDate[i]);
+                if (!isNaN(parsedDate[i])) {
+                    continue; // Il carattere è numerico, continua con il prossimo carattere
+                }
+                /**Il carattere della data parsata non è numerico, 
+                 * controllo se è lo stesso anche con quello della data originale alla posizionie i.
+                 * cosi controllo che almeno le posizioni (giorni, mesi e anni) siano rimasti gli stessi.
+                 *  */
+                let char = rowDate.indexOf(i);
+                //Banana.console.debug("orig char: " + parsedDate[i]);
+                if (isNaN(char)) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        return false;
+    }
+
+    mapTransaction(transaction) {
+
+        /** User starts counting columns from 1, we start from 0 */
+        let mappedTr = [];
+        let amtColumns = [];
+
+        mappedTr.push(Banana.Converter.toInternalDateFormat(transaction[this.dateCol], this.dateFormat));
+        mappedTr.push(transaction[this.descriptionCol]);
+        if (this.amountCol.indexOf(";") >= 0) {
+            // Debit and Credit amounts are on two different columns.
+            amtColumns = this.amountCol.split(";");
+            //Prima la colonna di accredito e poi di addebito
+            if (amtColumns.length == 2) { // 2 columns: [1] = Credit amount and [2] = Debit amount
+                let creditAmt = transaction[Banana.SDecimal.subtract(amtColumns[0], 1)];
+                let debitAmt = transaction[Banana.SDecimal.subtract(amtColumns[1], 1)];
+                mappedTr.push(Banana.Converter.toInternalNumberFormat(creditAmt, this.decimalSep));
+                mappedTr.push(Banana.Converter.toInternalNumberFormat(debitAmt, this.decimalSep));
+            } else {
+                mappedTr.push("");
+                mappedTr.push("");
+            }
+        } else {
+            /** Debit and Credit amounts are on the same column. 
+             * In this case, the debit amount MUST be identified a minus: "-"
+            */
+            let amount = transaction[Banana.SDecimal.subtract(this.amountCol) - 1];
+            if (amount.indexOf("-") >= 0) { // It's a debit amount.
+                mappedTr.push("");
+                mappedTr.push(Banana.Converter.toInternalNumberFormat(amount, this.decimalSep));
+            } else { //It's a credit amount.
+                mappedTr.push(Banana.Converter.toInternalNumberFormat(amount, this.decimalSep));
+                mappedTr.push("");
+            }
+        }
+
+        return mappedTr;
+
+    }
 }
 
-function convertRows(csvRows) {
-
-    for (i = 0; i < csvRows.length; i++) {
-        var transaction = csvRows[i];
-        //Banana.console.debug(transaction);
-    }
-
-
-}
