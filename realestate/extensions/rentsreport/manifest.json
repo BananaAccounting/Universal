@@ -1,0 +1,19 @@
+{ 
+"category": "productivity",
+    "country":"universal",
+    "countryCode":"un",
+    "description": "List of uncovered rents",
+    "description.en": "List of uncovered rents",
+    "description.it": "Lista degli affitti scoperti",
+    "description.fr": "Liste des locations découvertes",
+    "description.de": "Liste der ungedeckten Mieten",
+    "id": "ch.banana.ch.rents",
+    "language":"en",
+    "publisher": "Banana.ch",
+    "title": "List of uncovered rents",
+    "title.en": "List of uncovered rents",
+    "title.it": "Lista degli affitti scoperti",
+    "title.fr": "Liste des locations découvertes",
+    "title.de": "Liste der ungedeckten Mieten",
+    "version": "1.0"
+}
