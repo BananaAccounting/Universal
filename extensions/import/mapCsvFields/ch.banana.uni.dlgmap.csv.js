@@ -21,21 +21,23 @@ var DlgMapCsvFields = class DlgMapCsvFields {
 
     constructor() {
         this.dialogParam = this.initParam(); // Mi serve per accedere ai valori dal file "ch.banana.uni.import.csv.js".
+        this.dialogParam_Preferences = this.initParam_Preferences();
     }
 
     settingsDialog() {
-        /*Banana.document.setScriptSettings("csvFieldsParams", "");
+        /**Banana.document.setScriptSettings("csvFieldsParams", "");
+         * Banana.document.setScriptSettings("csvFieldsParams_Preferences", "");
         return;*/
-        let savedParam = Banana.document.getScriptSettings("csvFieldsParams");
-        if (savedParam.length > 0) {
-            let parsedParam = JSON.parse(savedParam);
+        let savedDlgParam = Banana.document.getScriptSettings("csvFieldsParams"); //Parametri per struttura dialogo.
+
+        if (savedDlgParam.length > 0) {
+            let parsedParam = JSON.parse(savedDlgParam);
             if (parsedParam) {
                 this.dialogParam = parsedParam;
             }
         }
         //Verify Params.
         this.verifyParam();
-
         //Settings dialog
         var dialogTitle = 'Settings';
         var pageAnchor = 'csvFieldsParams';
@@ -44,11 +46,11 @@ var DlgMapCsvFields = class DlgMapCsvFields {
         convertedParam = this.convertParam();
 
         let editorDlg = Banana.Ui.createPropertyEditor(dialogTitle, convertedParam, pageAnchor);
-
-        //editorDlg.setParams(convertedParam);
-
-        // AggiungO comando per salvare i preferiti nella tabella dei preferiti
+        editorDlg.setParams(convertedParam);
+        // Aggiungo comando per salvare i preferiti nella tabella dei preferiti
         editorDlg.addCustomCommand("savePreferences", "Save Preferences");
+        //Aggiungo comando per importare nel dialogo i dati della preferenza correntemente selezionata.
+        editorDlg.addCustomCommand("importPreference", "Import Preference");
         // Poi riproporre i preferiti in un comboBox.
 
         let rtnValue = editorDlg.exec();
@@ -63,6 +65,25 @@ var DlgMapCsvFields = class DlgMapCsvFields {
             return true;
         }
 
+        return false;
+    }
+
+    newPreferenceExists(savedPreferencesParam) {
+        //Recupero la preferenza inserita, Ad esempio bancastato, raiffeisen, ecc, formato nome consigliato: MyBankName_31122023
+        let currNewPreference = this.dialogParam.newPreference;
+        //Controllo se la preferenza esiste già nei preferiti
+        if (savedPreferencesParam.length > 0) {
+            let parsedParam_Preferences = JSON.parse(savedPreferencesParam);
+            if (parsedParam_Preferences) {
+                this.dialogParam_Preferences = parsedParam_Preferences;
+            }
+            let preferencesListData = this.dialogParam_Preferences.preferencesListData;
+            for (var i = 0; i < preferencesListData.length; i++) {
+                if (preferencesListData[i] == currNewPreference) {
+                    return true;
+                }
+            }
+        }
         return false;
     }
 
@@ -95,12 +116,32 @@ var DlgMapCsvFields = class DlgMapCsvFields {
         var param = {};
         param.name = 'MappingPrefrencesName';
         param.parentObject = 'CsvParameters';
-        param.title = 'Mapping Preferences Name';
+        param.title = 'Map New Preference';
         param.type = 'string';
-        param.value = userParam.preferencesName ? userParam.preferencesName : '';
-        param.defaultvalue = defaultParam.preferencesName;
+        param.value = userParam.newPreference ? userParam.newPreference : '';
+        param.defaultvalue = defaultParam.newPreference;
         param.readValue = function () {
-            userParam.preferencesName = this.value;
+            userParam.newPreference = this.value;
+        }
+        paramList.data.push(param);
+
+        // Preferences List (list of Banks).
+        let prefList = []; // Prendo i valori salvati nelle preferenze
+        prefList.push("New Preference");
+        if (userParam.preferencesList.length > 0) {
+            prefList = userParam.preferencesList;
+        }
+        var param = {};
+        param.name = 'PreferencesList';
+        param.parentObject = 'CsvParameters';
+        param.title = 'Preferences List';
+        param.type = 'combobox';
+        param.items = prefList;
+        param.value = userParam.lastPreferenceSelected ? userParam.lastPreferenceSelected : '';
+        param.defaultvalue = defaultParam.lastPreferenceSelected;
+        param.readValue = function () {
+            userParam.lastPreferenceSelected = this.value;
+            userParam.preferencesList = prefList;
         }
         paramList.data.push(param);
 
@@ -209,7 +250,9 @@ var DlgMapCsvFields = class DlgMapCsvFields {
 
         let params = {};
 
-        params.preferencesName = '';
+        params.newPreference = '';
+        params.lastPreferenceSelected = '';
+        params.preferencesList = [];
         params.fieldsDelimiter = ';';
         params.textDelimiter = '"';
         params.dateFormat = 'dd.mm.yyyy';
@@ -224,11 +267,21 @@ var DlgMapCsvFields = class DlgMapCsvFields {
 
     }
 
+    initParam_Preferences() {
+        let params = {};
+        params.preferencesListData = [];
+
+        return params;
+    }
+
     verifyParam() {
         let defaultParam = this.initParam();
 
-        if (!this.dialogParam.preferencesName) {
-            this.dialogParam.preferencesName = defaultParam.preferencesName;
+        if (!this.dialogParam.newPreference) {
+            this.dialogParam.newPreference = defaultParam.newPreference;
+        }
+        if (!this.dialogParam.preferencesList) {
+            this.dialogParam.preferencesList = defaultParam.preferencesList;
         }
         if (!this.dialogParam.fieldsDelimiter) {
             this.dialogParam.fieldsDelimiter = defaultParam.fieldsDelimiter;
@@ -252,11 +305,27 @@ var DlgMapCsvFields = class DlgMapCsvFields {
             this.dialogParam.amountColumn = defaultParam.amountColumn;
         }
     }
-}
+    savePreferences(params) {
+        Banana.console.debug("called savePreferences");
+        let savedPreferencesParam = Banana.document.getScriptSettings("csvFieldsParams_Preferences"); //Lista delle preferenze salvate.
+        if (!this.newPreferenceExists(savedPreferencesParam)) {
+            //Aggiungo la nuova preferenza in fondo (poi posso chiamare questo metodo se l'utente schiaccia Save Preferences)
+            this.dialogParam.preferencesList.push(this.dialogParam.newPreference);
+            this.dialogParam_Preferences.preferencesListData.push(this.dialogParam.newPreference);
+        }
 
-function savePreferences() {
-    Banana.console.debug("called savePreferences");
-    //salvare i parametri.
-    //come accedo alla tabella con i preferiti per salvarli ?
-    return this.dialogParam;
+        var paramToString = JSON.stringify(this.dialogParam);
+        var paramToString_preferences = JSON.stringify(this.dialogParam_Preferences);
+        Banana.document.setScriptSettings("csvFieldsParams", paramToString);
+        Banana.document.setScriptSettings("csvFieldsParams_Preferences", paramToString_preferences);
+
+        /** !!!! valutare se salvando sia qui che nel settings dialog i parametri poi non ci 
+         * sia un conflittooo !!!!!
+          */
+
+        return params;
+    }
+}
+function importPreference(params) {
+    return params;
 }
