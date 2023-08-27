@@ -68,25 +68,6 @@ var DlgMapCsvFields = class DlgMapCsvFields {
         return false;
     }
 
-    newPreferenceExists(savedPreferencesParam) {
-        //Recupero la preferenza inserita, Ad esempio bancastato, raiffeisen, ecc, formato nome consigliato: MyBankName_31122023
-        let currNewPreference = this.dialogParam.newPreference;
-        //Controllo se la preferenza esiste già nei preferiti
-        if (savedPreferencesParam.length > 0) {
-            let parsedParam_Preferences = JSON.parse(savedPreferencesParam);
-            if (parsedParam_Preferences) {
-                this.dialogParam_Preferences = parsedParam_Preferences;
-            }
-            let preferencesListData = this.dialogParam_Preferences.preferencesListData;
-            for (var i = 0; i < preferencesListData.length; i++) {
-                if (preferencesListData[i] == currNewPreference) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
     convertParam() {
         var paramList = {};
         var defaultParam = this.initParam();
@@ -305,27 +286,49 @@ var DlgMapCsvFields = class DlgMapCsvFields {
             this.dialogParam.amountColumn = defaultParam.amountColumn;
         }
     }
-    savePreferences(params) {
-        Banana.console.debug("called savePreferences");
-        let savedPreferencesParam = Banana.document.getScriptSettings("csvFieldsParams_Preferences"); //Lista delle preferenze salvate.
-        if (!this.newPreferenceExists(savedPreferencesParam)) {
-            //Aggiungo la nuova preferenza in fondo (poi posso chiamare questo metodo se l'utente schiaccia Save Preferences)
-            this.dialogParam.preferencesList.push(this.dialogParam.newPreference);
-            this.dialogParam_Preferences.preferencesListData.push(this.dialogParam.newPreference);
-        }
-
-        var paramToString = JSON.stringify(this.dialogParam);
-        var paramToString_preferences = JSON.stringify(this.dialogParam_Preferences);
-        Banana.document.setScriptSettings("csvFieldsParams", paramToString);
-        Banana.document.setScriptSettings("csvFieldsParams_Preferences", paramToString_preferences);
-
-        /** !!!! valutare se salvando sia qui che nel settings dialog i parametri poi non ci 
-         * sia un conflittooo !!!!!
-          */
-
-        return params;
-    }
 }
 function importPreference(params) {
     return params;
+}
+
+function savePreferences(currentDlgParams) {
+    Banana.console.debug("called savePreferences"); //  riprendere da quiiiiiii, non salva correttamente.
+    let savedPreferencesParam = Banana.document.getScriptSettings("csvFieldsParams_Preferences"); //Lista delle preferenze salvate.
+    if (newPreferenceExists(savedPreferencesParam, currentDlgParams)) {
+        //Aggiungo la nuova preferenza in fondo (poi posso chiamare questo metodo se l'utente schiaccia Save Preferences)
+        this.dialogParam.preferencesList.push(this.dialogParam.newPreference);
+        this.dialogParam_Preferences.preferencesListData.push(this.dialogParam.newPreference);
+    }
+
+    var paramToString = JSON.stringify(this.dialogParam);
+    var paramToString_preferences = JSON.stringify(this.dialogParam_Preferences);
+    Banana.document.setScriptSettings("csvFieldsParams", paramToString);
+    Banana.document.setScriptSettings("csvFieldsParams_Preferences", paramToString_preferences);
+
+    /** !!!! valutare se salvando sia qui che nel settings dialog i parametri poi non ci 
+     * sia un conflittooo !!!!!
+      */
+
+    return currentDlgParams;
+}
+
+function newPreferenceExists(savedPreferencesParam, currentDlgParams) {
+    //Recupero la preferenza inserita, Ad esempio bancastato, raiffeisen, ecc, formato nome consigliato: MyBankName_31122023
+    let currNewPreference = "";
+    if (currentDlgParams && currentDlgParams.newPreference) {
+        currNewPreference = currentDlgParams.newPreference;
+    }
+    //Controllo se la preferenza esiste già nei preferiti
+    if (savedPreferencesParam.length > 0) {
+        let parsedParam_Preferences = JSON.parse(savedPreferencesParam);
+        if (parsedParam_Preferences && parsedParam_Preferences.preferencesListData) {
+            let preferencesListData = parsedParam_Preferences.preferencesListData;
+            for (var i = 0; i < preferencesListData.length; i++) {
+                if (preferencesListData[i] == currNewPreference) {
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
 }
