@@ -28,7 +28,6 @@ var DlgMapCsvFields = class DlgMapCsvFields {
          * Banana.document.setScriptSettings("csvFieldsParams_Preferences", "");
         return;*/
         let savedDlgParam = Banana.document.getScriptSettings("csvFieldsParams"); //Parametri per struttura dialogo.
-
         if (savedDlgParam.length > 0) {
             let parsedParam = JSON.parse(savedDlgParam);
             if (parsedParam) {
@@ -77,15 +76,22 @@ var DlgMapCsvFields = class DlgMapCsvFields {
      */
     updatePreferencesList() {
         let csvFieldsParams_preferences = Banana.document.getScriptSettings("csvFieldsParams_Preferences");
-        if (csvFieldsParams_preferences.length > 0) {
+        if (csvFieldsParams_preferences) {
             let parsedParam_preferences = JSON.parse(csvFieldsParams_preferences);
-            let prefData = parsedParam_preferences.preferencesListData;
+            let prefData = parsedParam_preferences.preferencesListData; // Array of objects.
             let paramData = this.dialogParam.preferencesList;
-            if (prefData.length !== paramData.length || prefData.every((value, index) => value !== paramData[index])) {
+            if (!this.containsSameObjects(prefData, paramData)) {
                 Banana.console.debug("diversi"); //ok
-                this.dialogParam.preferencesList = parsedParam_preferences.preferencesListData; // sincronizzo i due array.
+                this.dialogParam.preferencesList = prefData; // sincronizzo i due array.
             }
         }
+    }
+    containsSameObjects(prefData, paramData) {
+        //The lenght of the arrays initally is the same, thats why we do not check it.
+        if (JSON.stringify(prefData) !== JSON.stringify(paramData)) { //Controllo da cambiare in futuro.
+            return false;
+        }
+        return true;
     }
     convertParam() {
         var paramList = {};
@@ -127,9 +133,9 @@ var DlgMapCsvFields = class DlgMapCsvFields {
 
         // Preferences List (list of Banks).
         let prefList = []; // Prendo i valori salvati nelle preferenze
-        prefList.push("New Preference");
+        prefList.push("New Preference...");
         if (userParam.preferencesList.length > 0) {
-            prefList = userParam.preferencesList;
+            prefList = getObjectKeysList(userParam.preferencesList);
         }
         var param = {};
         param.name = 'PreferencesList';
@@ -299,8 +305,19 @@ var DlgMapCsvFields = class DlgMapCsvFields {
         }
     }
 }
-function importPreference(params) {
-    return params;
+function importPreference(currentParams) {
+    /** Questo comando imposta nel dialogo i parametri in base al campo correntemente selezionato del comboBox */
+    if (currentParams) {
+        let selectedPreference = currentParams.data.find(item => item.name === "PreferencesList").value;
+        let csvFieldsParams_preferences = Banana.document.getScriptSettings("csvFieldsParams_Preferences");
+        if (csvFieldsParams_preferences.length > 0) {
+            let preferencesParams = JSON.parse(csvFieldsParams_preferences);
+            Banana.Ui.showText(JSON.stringify(preferencesParams));
+            //prendere i dati al posto giusto e ritornarli.
+        }
+    }
+
+    return currentParams;
 }
 
 function savePreferences(currentDlgParams) {
@@ -310,14 +327,44 @@ function savePreferences(currentDlgParams) {
     if (savedPreferencesParam.length > 0) {
         preferencesParam = JSON.parse(savedPreferencesParam);
     }
-    if (!newPreferenceExists(preferencesParam, currentDlgParams)) {
-        preferencesParam.preferencesListData.push(currentDlgParams.data.find(item => item.name === "MappingPrefrencesName").value); //Controllare prima che esista.
+    let currentPreference = getCurrentPreference(currentDlgParams);
+    if (!preferenceExists(preferencesParam, currentPreference)) {
+        saveNewPreferencesData(preferencesParam, currentDlgParams, currentPreference);
         let paramToString = JSON.stringify(preferencesParam);
         Banana.document.setScriptSettings("csvFieldsParams_Preferences", paramToString);
     } else {
         Banana.document.addMessage("A preference with the same name already exists, to be able to save, please change preference name");
     }
     return currentDlgParams;
+}
+
+function getCurrentPreference(currentDlgParams) {
+    //Recupero la preferenza inserita, Ad esempio bancastato, raiffeisen, ecc, formato nome consigliato: MyBankName_31122023
+    let currentPreference = "";
+    if (currentDlgParams && currentDlgParams.data.find(item => item.name === "MappingPrefrencesName").value) {
+        currentPreference = currentDlgParams.data.find(item => item.name === "MappingPrefrencesName").value;
+    }
+    return currentPreference;
+}
+
+function preferenceExists(preferencesParam, currentPreference) {
+    //Controllo se la preferenza esiste già nei preferiti
+    if (preferencesParam && preferencesParam.preferencesListData) {
+        for (const obj in preferencesParam.preferencesListData) {
+            let object = preferencesParam.preferencesListData[obj];
+            for (const key in object) {
+                if (key == currentPreference)
+                    return true;
+            }
+        }
+    }
+    return false;
+}
+
+function saveNewPreferencesData(preferencesParam, currentDlgParams, currentPreference) {
+    /** Salvo le info del nuovo oggetto nel oggetto delle preferenze  */
+    const newPreferenceObject = { [currentPreference]: currentDlgParams };
+    preferencesParam.preferencesListData.push(newPreferenceObject);
 }
 
 function initParam_Preferences() {
@@ -327,20 +374,15 @@ function initParam_Preferences() {
     return params;
 }
 
-function newPreferenceExists(preferencesParam, currentDlgParams) {
-    //Recupero la preferenza inserita, Ad esempio bancastato, raiffeisen, ecc, formato nome consigliato: MyBankName_31122023
-    let currNewPreference = "";
-    if (currentDlgParams && currentDlgParams.data.find(item => item.name === "MappingPrefrencesName").value) {
-        currNewPreference = currentDlgParams.data.find(item => item.name === "MappingPrefrencesName").value;
-    }
-    //Controllo se la preferenza esiste già nei preferiti
-    if (preferencesParam && preferencesParam.preferencesListData) {
-        let preferencesListData = preferencesParam.preferencesListData;
-        for (var i = 0; i < preferencesListData.length; i++) {
-            if (preferencesListData[i] == currNewPreference) {
-                return true;
+function getObjectKeysList(objectsList) {
+    let keysList = [];
+    if (objectsList.length > 0) {
+        for (const obj in objectsList) {
+            let object = objectsList[obj];
+            for (const key in object) {
+                keysList.push(key);
             }
         }
     }
-    return false;
+    return keysList;
 }
