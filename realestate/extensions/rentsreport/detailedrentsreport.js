@@ -74,7 +74,8 @@ var PrintReport = class PrintReport {
 
   var today = new Date();
   var accounts = this.banDoc.table("Accounts");
-  var recurringtransactions = this.banDoc.table("RecurringTransactions");
+  //var recurringtransactions = this.banDoc.table("RecurringTransactions");
+  var recurringtransactions = this.banDoc.table('Transactions').list('Recurring');
   
   if (!accounts) {
     return;
@@ -172,6 +173,7 @@ var PrintReport = class PrintReport {
   // Function to print in green the credit and in red the debit over 0 CHF
 
   var classNameAmount = "";
+  var j = 1;
 
   function CreditAmountColor(number) {
     if (number > 0.00) {
@@ -200,7 +202,7 @@ var PrintReport = class PrintReport {
   function FormatNumber(number) {
     return Banana.Converter.toLocaleNumberFormat(number, 2, true);
   }
-  var j = 1;
+  
   function classNameEvenRow() {
     if (j % 2 === 0) {
       return "even_rows_background_color";
@@ -266,9 +268,8 @@ var PrintReport = class PrintReport {
     return Banana.Converter.toInternalDateFormat(nextdate);
   }
 
-
   for (var i = 0; i < accounts.rowCount; i++) {
-
+    
     if (accounts.row(i).value("Gr") === tenants) {
 
       var debtorAccount = accounts.row(i).value("Account");
@@ -286,9 +287,9 @@ var PrintReport = class PrintReport {
         var finaldate = recurringtransactions.row(k).value("DateEnd");
         var repeat = recurringtransactions.row(k).value("Repeat");
 
-          if (debtorAccount === accountdebit | debtorAccount === "." + cc1debit | debtorAccount === account) {
+          if (debtorAccount === accountdebit || debtorAccount === "." + cc1debit || debtorAccount === account) {
             j = j + 1;
-
+            
             if (accountdescription === false) {
               tableRow.addCell(debtorAccount, "border-bottom border-left left " + classNameEvenRow());
               tableRow.addCell(accounts.row(i).value("Description"), "border-bottom left bold " + classNameEvenRow());

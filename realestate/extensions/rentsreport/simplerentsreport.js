@@ -74,7 +74,8 @@ var PrintReport = class PrintReport {
 
     var today = new Date();
     var accounts = this.banDoc.table("Accounts");
-    var recurringtransactions = this.banDoc.table("RecurringTransactions");
+    // var recurringtransactions = this.banDoc.table("RecurringTransactions");
+    var recurringtransactions = this.banDoc.table('Transactions').list('Recurring');
 
     if (!accounts) {
       return;

@@ -46,14 +46,15 @@ TestSimpleReport.prototype.cleanup = function () {
 TestSimpleReport.prototype.testSimpleReport = function () {
 
   let parentLogger = this.testLogger;
-  this.progressBar.start(this.fileAC2Path.length);
+  //this.progressBar.start(this.fileAC2Path.length);
   
   for (let k = 0; k.length; k++) {
     
     let banDoc = Banana.application.openDocument(fileAC2Path[k]);
     this.testLogger = parentLogger.newLogger(Banana.IO.fileCompleteBaseName(fileAC2Path[k]));
-    
+
     if (banDoc) {
+      Banana.console.log("ARRIVA");
       let printreport = new PrintReport(banDoc);
       let result = printreport.report();
       let reportName = "FILENAME: " + fileAC2Path[k] + "\n";
@@ -63,5 +64,5 @@ TestSimpleReport.prototype.testSimpleReport = function () {
     }
   }
 
-  this.progressBar.finish();
+  //this.progressBar.finish();
 }
