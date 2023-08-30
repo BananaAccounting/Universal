@@ -26,6 +26,7 @@ var DlgMapCsvFields = class DlgMapCsvFields {
     settingsDialog() {
         /**Banana.document.setScriptSettings("csvFieldsParams", "");
          * Banana.document.setScriptSettings("csvFieldsParams_Preferences", "");
+         * Banana.document.setScriptSettings("csvFieldsParams_PreferencesNames", "");
         return;*/
         let savedDlgParam = Banana.document.getScriptSettings("csvFieldsParams"); //Parametri per struttura dialogo.
         if (savedDlgParam.length > 0) {
@@ -133,9 +134,13 @@ var DlgMapCsvFields = class DlgMapCsvFields {
 
         // Preferences List (list of Banks).
         let prefList = []; // Prendo i valori salvati nelle preferenze
-        prefList.push("New Preference...");
-        if (userParam.preferencesList.length > 0) {
-            prefList = getObjectKeysList(userParam.preferencesList);
+        prefList = initPreferencesNamesList();
+        let csvFieldsParams_PreferencesNames = Banana.document.getScriptSettings("csvFieldsParams_PreferencesNames");
+        if (csvFieldsParams_PreferencesNames.length > 0) {
+            let parsedPreferencesName = JSON.parse(csvFieldsParams_PreferencesNames);
+            if (parsedPreferencesName) {
+                prefList = parsedPreferencesName;
+            }
         }
         var param = {};
         param.name = 'PreferencesList';
@@ -308,12 +313,22 @@ var DlgMapCsvFields = class DlgMapCsvFields {
 function importPreference(currentParams) {
     /** Questo comando imposta nel dialogo i parametri in base al campo correntemente selezionato del comboBox */
     if (currentParams) {
+        //Banana.Ui.showText(JSON.stringify(currentParams));
         let selectedPreference = currentParams.data.find(item => item.name === "PreferencesList").value;
         let csvFieldsParams_preferences = Banana.document.getScriptSettings("csvFieldsParams_Preferences");
-        if (csvFieldsParams_preferences.length > 0) {
+        if (selectedPreference && csvFieldsParams_preferences) {
             let preferencesParams = JSON.parse(csvFieldsParams_preferences);
-            Banana.Ui.showText(JSON.stringify(preferencesParams));
-            //prendere i dati al posto giusto e ritornarli.
+            let preferencesList = preferencesParams.preferencesListData;
+            for (const item of preferencesList) {
+                /** This line extracts the keys of the current object in the loop  using Object.keys(item).
+                 * As we have only one key for each object (e.g., "Bank1" or "Bank2") we dont need to specifiy the first element.
+                */
+                const preferenceName = Object.keys(item);
+                if (preferenceName.toString() === selectedPreference.toString()) {
+                    return item[preferenceName];
+                }
+            }
+
         }
     }
 
@@ -328,13 +343,14 @@ function savePreferences(currentDlgParams) {
         preferencesParam = JSON.parse(savedPreferencesParam);
     }
     let currentPreference = getCurrentPreference(currentDlgParams);
-    if (!preferenceExists(preferencesParam, currentPreference)) {
-        saveNewPreferencesData(preferencesParam, currentDlgParams, currentPreference);
-        let paramToString = JSON.stringify(preferencesParam);
-        Banana.document.setScriptSettings("csvFieldsParams_Preferences", paramToString);
-    } else {
-        Banana.document.addMessage("A preference with the same name already exists, to be able to save, please change preference name");
+    let preferenceToModify = false;
+    if (preferenceExists(preferencesParam, currentPreference)) {
+        preferenceToModify = true;
     }
+    saveNewPreferencesData(preferencesParam, currentDlgParams, currentPreference, preferenceToModify);
+    let paramToString = JSON.stringify(preferencesParam);
+    Banana.document.setScriptSettings("csvFieldsParams_Preferences", paramToString);
+
     return currentDlgParams;
 }
 
@@ -361,17 +377,90 @@ function preferenceExists(preferencesParam, currentPreference) {
     return false;
 }
 
-function saveNewPreferencesData(preferencesParam, currentDlgParams, currentPreference) {
-    /** Salvo le info del nuovo oggetto nel oggetto delle preferenze  */
+function saveNewPreferencesData(preferencesParam, currentDlgParams, currentPreference, preferenceToModify) {
+    //Riprendere da qui per 31.08, da aggiornare lista items di ogni preferenza
     const newPreferenceObject = { [currentPreference]: currentDlgParams };
+    if (preferenceToModify) { // Modifico quello esistente.
+        for (const obj in preferencesParam.preferencesListData) {
+            let object = preferencesParam.preferencesListData[obj];
+            for (const key in object) {
+                if (key == currentPreference)
+                    preferencesParam.preferencesListData[obj] = newPreferenceObject;
+            }
+        }
+        Banana.document.addMessage("Preference: " + " \"" + currentPreference + "\" " + " has been modified");
+    } else {
+        /** 
+         * 1) Aggiorno la lista con il nome delle preferenze
+         * 2) Aggiorno la lista di nomi delle preferenze in ogni oggetto, in maniera di averli sempre aggiornati appena cambia qualcosa.
+         */
+        UpdatePreferencesNameList();
+        UpdatedPreferencesObjectListOfNames(preferencesParam,);
+    }
+}
+
+/**
+ * Aggiorno la lista di nomi delle preferenze in ogni oggetto, in maniera di averli sempre aggiornati appena cambia qualcosa.
+ */
+function UpdatedPreferencesObjectListOfNames() {
+    let preferencesNameList_updated = getPreferencesNameList();
+    if (preferencesParam && preferencesParam.preferencesListData) {
+        for (var item of preferencesParam.preferencesListData) {
+            var bankKey = Object.keys(item);
+            var preferenceData = item[bankKey].data;
+
+            // Find the object with the "items" property and update its value
+            for (var subItem of preferenceData) {
+                if (subItem.hasOwnProperty("items")) {
+                    subItem.items = preferencesNameList_updated; // Imposto i valori aggiornati.
+                }
+            }
+        }
+    }
+    // Aggiungo il nuovo valore.
     preferencesParam.preferencesListData.push(newPreferenceObject);
 }
+
+function UpdatePreferencesNameList() {
+    let preferencesNameList = getPreferencesNameList();
+    if (preferencesNameList.length > 0) {
+        preferencesNameList.push(currentPreference);
+        let namesListToString = JSON.stringify(preferencesNameList);
+        Banana.document.setScriptSettings("csvFieldsParams_PreferencesNames", namesListToString);
+    } else {
+        let csvFieldsParams_PreferencesNames = initPreferencesNamesList();
+        csvFieldsParams_PreferencesNames.push(currentPreference);
+        let paramsToString = JSON.stringify(csvFieldsParams_PreferencesNames);
+        Banana.document.setScriptSettings("csvFieldsParams_PreferencesNames", paramsToString);
+    }
+}
+
+/**
+ * Ritorna la lista con i nomi delle preferenze salvate nei preferiti: id = csvFieldsParams_PreferencesNames.
+ */
+function getPreferencesNameList() {
+    let preferencesNamesList = Banana.document.getScriptSettings("csvFieldsParams_PreferencesNames");
+    let parsedNamesList = [];
+    if (preferencesNamesList.length > 0) {
+        let parsedPreferencesName = JSON.parse(preferencesNamesList);
+        if (parsedPreferencesName) {
+            parsedNamesList = parsedPreferencesName;
+        }
+    }
+    return parsedNamesList;
+}
+
 
 function initParam_Preferences() {
     let params = {};
     params.preferencesListData = [];
 
     return params;
+}
+
+function initPreferencesNamesList() {
+    let preferencesNamesList = [];
+    return preferencesNamesList;
 }
 
 function getObjectKeysList(objectsList) {
