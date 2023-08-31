@@ -394,16 +394,20 @@ function saveNewPreferencesData(preferencesParam, currentDlgParams, currentPrefe
          * 1) Aggiorno la lista con il nome delle preferenze
          * 2) Aggiorno la lista di nomi delle preferenze in ogni oggetto, in maniera di averli sempre aggiornati appena cambia qualcosa.
          */
-        UpdatePreferencesNameList();
-        UpdatedPreferencesObjectListOfNames(preferencesParam,);
+        UpdatePreferencesNameList(currentPreference);
+        UpdatedPreferencesObjectListOfNames(preferencesParam);
+        // Aggiungo il nuovo valore.
+        Banana.Ui.showText(JSON.stringify(newPreferenceObject));
+        preferencesParam.preferencesListData.push(newPreferenceObject);
     }
 }
 
 /**
  * Aggiorno la lista di nomi delle preferenze in ogni oggetto, in maniera di averli sempre aggiornati appena cambia qualcosa.
  */
-function UpdatedPreferencesObjectListOfNames() {
-    let preferencesNameList_updated = getPreferencesNameList();
+function UpdatedPreferencesObjectListOfNames(preferencesParam) {
+    let preferencesNameList = getPreferencesNameList(preferencesParam);
+    Banana.console.debug(preferencesNameList);
     if (preferencesParam && preferencesParam.preferencesListData) {
         for (var item of preferencesParam.preferencesListData) {
             var bankKey = Object.keys(item);
@@ -411,17 +415,16 @@ function UpdatedPreferencesObjectListOfNames() {
 
             // Find the object with the "items" property and update its value
             for (var subItem of preferenceData) {
-                if (subItem.hasOwnProperty("items")) {
-                    subItem.items = preferencesNameList_updated; // Imposto i valori aggiornati.
+                if (subItem.hasOwnProperty("items") && preferencesNameList.length > 0) {
+                    Banana.console.debug("entra");
+                    subItem.items = preferencesNameList; // Imposto i valori aggiornati.
                 }
             }
         }
     }
-    // Aggiungo il nuovo valore.
-    preferencesParam.preferencesListData.push(newPreferenceObject);
 }
 
-function UpdatePreferencesNameList() {
+function UpdatePreferencesNameList(currentPreference) {
     let preferencesNameList = getPreferencesNameList();
     if (preferencesNameList.length > 0) {
         preferencesNameList.push(currentPreference);
