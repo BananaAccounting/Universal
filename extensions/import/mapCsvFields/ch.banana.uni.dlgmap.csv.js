@@ -82,7 +82,7 @@ var DlgMapCsvFields = class DlgMapCsvFields {
             let prefData = parsedParam_preferences.preferencesListData; // Array of objects.
             let paramData = this.dialogParam.preferencesList;
             if (!this.containsSameObjects(prefData, paramData)) {
-                Banana.console.debug("diversi"); //ok
+                //Banana.console.debug("diversi"); //ok
                 this.dialogParam.preferencesList = prefData; // sincronizzo i due array.
             }
         }
@@ -378,27 +378,28 @@ function preferenceExists(preferencesParam, currentPreference) {
 }
 
 function saveNewPreferencesData(preferencesParam, currentDlgParams, currentPreference, preferenceToModify) {
-    //Riprendere da qui per 31.08, da aggiornare lista items di ogni preferenza
-    const newPreferenceObject = { [currentPreference]: currentDlgParams };
     if (preferenceToModify) { // Modifico quello esistente.
         for (const obj in preferencesParam.preferencesListData) {
             let object = preferencesParam.preferencesListData[obj];
             for (const key in object) {
-                if (key == currentPreference)
+                if (key == currentPreference) {
+                    let newPreferenceObject = { [currentPreference]: currentDlgParams };
                     preferencesParam.preferencesListData[obj] = newPreferenceObject;
+                }
             }
         }
         Banana.document.addMessage("Preference: " + " \"" + currentPreference + "\" " + " has been modified");
     } else {
         /** 
-         * 1) Aggiorno la lista con il nome delle preferenze
-         * 2) Aggiorno la lista di nomi delle preferenze in ogni oggetto, in maniera di averli sempre aggiornati appena cambia qualcosa.
+         * 1) Aggiungo il nuovo oggetto alla lista
+         * 2) Aggiorno la lista con il nome delle preferenze
+         * 3) Aggiorno la lista di nomi delle preferenze in ogni oggetto esistente (incluso quello nuovo appena aggiunto).
          */
+        let newPreferenceObject = { [currentPreference]: currentDlgParams };
+        preferencesParam.preferencesListData.push(newPreferenceObject);
         UpdatePreferencesNameList(currentPreference);
         UpdatedPreferencesObjectListOfNames(preferencesParam);
-        // Aggiungo il nuovo valore.
-        Banana.Ui.showText(JSON.stringify(newPreferenceObject));
-        preferencesParam.preferencesListData.push(newPreferenceObject);
+        Banana.Ui.showText(JSON.stringify(preferencesParam));
     }
 }
 
@@ -407,7 +408,6 @@ function saveNewPreferencesData(preferencesParam, currentDlgParams, currentPrefe
  */
 function UpdatedPreferencesObjectListOfNames(preferencesParam) {
     let preferencesNameList = getPreferencesNameList(preferencesParam);
-    Banana.console.debug(preferencesNameList);
     if (preferencesParam && preferencesParam.preferencesListData) {
         for (var item of preferencesParam.preferencesListData) {
             var bankKey = Object.keys(item);
@@ -416,7 +416,6 @@ function UpdatedPreferencesObjectListOfNames(preferencesParam) {
             // Find the object with the "items" property and update its value
             for (var subItem of preferenceData) {
                 if (subItem.hasOwnProperty("items") && preferencesNameList.length > 0) {
-                    Banana.console.debug("entra");
                     subItem.items = preferencesNameList; // Imposto i valori aggiornati.
                 }
             }

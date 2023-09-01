@@ -114,7 +114,6 @@ var CsvReader = class CsvReader {
     }
 
     dateFormatMatch(rowDate) {
-        //CONTINUARE DA QUIIIII
         if (rowDate && rowDate.length == this.dateFormat.length) {
             let parsedDate = Banana.Converter.toInternalDateFormat(rowDate, this.dateFormat);
             //Dopo la conversione controllo che il formato risulti ancora corretto.
@@ -163,12 +162,12 @@ var CsvReader = class CsvReader {
             /** Debit and Credit amounts are on the same column. 
              * In this case, the debit amount MUST be identified a minus: "-"
             */
-            let amount = transaction[Banana.SDecimal.subtract(this.amountCol) - 1];
-            if (amount.indexOf("-") >= 0) { // It's a debit amount.
+            let amountCol = transaction[Banana.SDecimal.subtract(this.amountCol, 1)];
+            if (amountCol.indexOf("-") >= 0) { // It's a debit amount.
                 mappedTr.push("");
-                mappedTr.push(Banana.Converter.toInternalNumberFormat(amount, this.decimalSep));
+                mappedTr.push(Banana.Converter.toInternalNumberFormat(amountCol, this.decimalSep));
             } else { //It's a credit amount.
-                mappedTr.push(Banana.Converter.toInternalNumberFormat(amount, this.decimalSep));
+                mappedTr.push(Banana.Converter.toInternalNumberFormat(amountCol, this.decimalSep));
                 mappedTr.push("");
             }
         }
