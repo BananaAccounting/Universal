@@ -54,12 +54,19 @@ var DlgMapCsvFields = class DlgMapCsvFields {
 
         let rtnValue = editorDlg.exec();
         if (parseInt(rtnValue) === 1) {
+            Banana.console.debug("leggo parametri");
             for (var i = 0; i < convertedParam.data.length; i++) {
                 // Read values to dialogparam (through the readValue function)
                 if (typeof (convertedParam.data[i].readValue) == "function")
                     convertedParam.data[i].readValue();
             }
-            this.updatePreferencesList();
+            /** Per qualche motivo anche se do il comando importPreference, i valori importati 
+             * non vengono salvati, nemmeno quelli scritti dopo, è come se poi non venissero più riletti i valori.
+             * devo chiamare un get ?
+             * 
+            */
+            this.updatePreferencesList(); //aggiornare la lista ad ogni salvataggio invece che qui ?
+            Banana.Ui.showText(JSON.stringify(this.dialogParam));
             var paramToString = JSON.stringify(this.dialogParam);
             Banana.document.setScriptSettings("csvFieldsParams", paramToString);
             return true;
@@ -399,7 +406,7 @@ function saveNewPreferencesData(preferencesParam, currentDlgParams, currentPrefe
         preferencesParam.preferencesListData.push(newPreferenceObject);
         UpdatePreferencesNameList(currentPreference);
         UpdatedPreferencesObjectListOfNames(preferencesParam);
-        Banana.Ui.showText(JSON.stringify(preferencesParam));
+        //Banana.Ui.showText(JSON.stringify(preferencesParam));
     }
 }
 

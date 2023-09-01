@@ -152,6 +152,7 @@ var CsvReader = class CsvReader {
             if (amtColumns.length == 2) { // 2 columns: [1] = Credit amount and [2] = Debit amount
                 let creditAmt = transaction[Banana.SDecimal.subtract(amtColumns[0], 1)];
                 let debitAmt = transaction[Banana.SDecimal.subtract(amtColumns[1], 1)];
+                debitAmt = debitAmt.replace(/-/g, '');
                 mappedTr.push(Banana.Converter.toInternalNumberFormat(creditAmt, this.decimalSep));
                 mappedTr.push(Banana.Converter.toInternalNumberFormat(debitAmt, this.decimalSep));
             } else {
@@ -164,6 +165,7 @@ var CsvReader = class CsvReader {
             */
             let amountCol = transaction[Banana.SDecimal.subtract(this.amountCol, 1)];
             if (amountCol.indexOf("-") >= 0) { // It's a debit amount.
+                amountCol = amountCol.replace(/-/g, '');
                 mappedTr.push("");
                 mappedTr.push(Banana.Converter.toInternalNumberFormat(amountCol, this.decimalSep));
             } else { //It's a credit amount.
