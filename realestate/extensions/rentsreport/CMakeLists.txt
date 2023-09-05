@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.16)
 
 project(rentsreport)
-set(EXTENSION_ID "Rents")
+set(EXTENSION_ID "ch.banana.ch.rents")
 
 # CMake options
 # Create a file .vscode/settings.json with the following content to set the options, 
