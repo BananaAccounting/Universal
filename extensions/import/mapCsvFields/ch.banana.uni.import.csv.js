@@ -38,9 +38,10 @@
  * The exec function calls the Map dialog each time is executed.
  */
 
-function exec(inData, test) {
+function exec(inData, isTest) {
 
     let importUtilities = new ImportUtilities(Banana.document);
+    let errId = "ID_ERR_FORMAT_NOT_MATCH";
 
     if (!importUtilities.verifyBananaAdvancedVersion())
         return "";
@@ -52,12 +53,18 @@ function exec(inData, test) {
     }
 
     let userParams = dlgMapCsvFields.dialogParam;
+    Banana.console.debug(JSON.stringify(userParams));
     if (Object.keys(userParams).length > 0) {
         let csvReader = new CsvReader(inData, userParams);
-        let transactions = csvReader.getCsvTransactions();
-        if (transactions.length >= 0) {
-            return Banana.Converter.arrayToTsv(transactions);
+        let csvRows = Banana.Converter.csvToArray(csvReader.inData, csvReader.fieldsDelim,
+            csvReader.textDelim);
+        if (csvReader.separatorMatch(inData) && csvReader.formatMatch(csvRows)) {
+            let transactions = csvReader.getCsvTransactions(csvRows);
+            if (transactions.length >= 0) {
+                return Banana.Converter.arrayToTsv(transactions);
+            }
         }
+        getErrorMessage(errId);
     }
 
     return "";
@@ -76,69 +83,59 @@ var CsvReader = class CsvReader {
         this.textDelim = userParams.textDelimiter;
     }
 
-    getCsvTransactions() {
-        let csvRows = [];
-        csvRows = Banana.Converter.csvToArray(this.inData, this.fieldsDelim,
-            this.textDelim);
-        if (csvRows.length >= 0) {
-            return this.convertRows(csvRows);
-        }
-        return csvRows;
-    }
-    convertRows(csvRows) {
+    separatorMatch(stringRows) {
 
+        if (this.findSeparator(stringRows) == this.fieldsDelim) {
+            return true;
+        }
+        return false;
+    }
+
+    formatMatch(csvRows) {
+        if (csvRows.length === 0)
+            return false;
+
+
+        for (var i = 0; i < csvRows.length; i++) {
+            var row = csvRows[i];
+
+            var formatMatched = false;
+
+            /** Eseguo i controlli sui parametri che l'utente mi ha fornito per identificare le colonne. */
+
+            //Controllo se il formato data coincide.
+            /*Banana.console.debug(row.length);
+            Banana.console.debug(row[this.dateCol]);
+            Banana.console.debug(row[0]);*/
+            if (row[this.dateCol] && this.dateFormatMatch(row[this.dateCol])) {
+                formatMatched = true;
+            }
+
+            if (formatMatched)
+                return true;
+        }
+
+        return false;
+    }
+
+    getCsvTransactions(csvRows) {
         let transactionsToImport = [];
-
-        for (let i = 0; i < csvRows.length; i++) {
-            let transaction = csvRows[i];
-            if (this.transactionMatch(transaction)) {
-                transactionsToImport.push(this.mapTransaction(csvRows[i]));
-            } else {
-                //Aggiungere messaggio con info sulla registrazione.
-            }
-        }
-
-        //Order the entries by Date.
-        transactionsToImport = transactionsToImport.reverse();
-
-        // Add header and return
-        var header = [["Date", "Description", "Income", "Expenses"]];
-        return header.concat(transactionsToImport);
-    }
-
-    transactionMatch(transaction) {
-        if (this.dateFormatMatch(transaction[this.dateCol])) {
-            return true;
-        }
-        return false;
-    }
-
-    dateFormatMatch(rowDate) {
-        if (rowDate && rowDate.length == this.dateFormat.length) {
-            let parsedDate = Banana.Converter.toInternalDateFormat(rowDate, this.dateFormat);
-            //Dopo la conversione controllo che il formato risulti ancora corretto.
-            for (let i = 0; i < parsedDate.length; i++) {
-                //Banana.console.debug("orig char: " + parsedDate[i]);
-                if (!isNaN(parsedDate[i])) {
-                    continue; // Il carattere è numerico, continua con il prossimo carattere
-                }
-                /**Il carattere della data parsata non è numerico, 
-                 * controllo se è lo stesso anche con quello della data originale alla posizionie i.
-                 * cosi controllo che almeno le posizioni (giorni, mesi e anni) siano rimasti gli stessi.
-                 *  */
-                let char = rowDate.indexOf(i);
-                //Banana.console.debug("orig char: " + parsedDate[i]);
-                if (isNaN(char)) {
-                    return false;
+        if (csvRows && csvRows.length >= 0) {
+            for (let i = 0; i < csvRows.length; i++) {
+                if (this.transactionMatch(csvRows[i])) {
+                    transactionsToImport.push(this.mapTransaction(csvRows[i]));
                 }
             }
-            return true;
+            //Order the entries by Date.
+            transactionsToImport = transactionsToImport.reverse();
+            // Add header and return
+            var header = [["Date", "Description", "Income", "Expenses"]];
+            return header.concat(transactionsToImport);
         }
-        return false;
+        return transactionsToImport;
     }
 
     mapTransaction(transaction) {
-
         /** User starts counting columns from 1, we start from 0 */
         let mappedTr = [];
         let amtColumns = [];
@@ -177,5 +174,100 @@ var CsvReader = class CsvReader {
         return mappedTr;
 
     }
+
+    /** 
+     * Per ora lo uso per controllare se si tratta di un movimento che voglio prendere in considerazione 
+     * o di una di quelle righe che non mi interessa (come l'header o eventuali righe iniziali o finali)
+     */
+    transactionMatch(transaction) {
+        if (this.dateFormatMatch(transaction[this.dateCol])) {
+            return true;
+        }
+
+        return false;
+    }
+
+    dateFormatMatch(rowDate) {
+        if (rowDate && rowDate.length == this.dateFormat.length) {
+            let parsedDate = Banana.Converter.toInternalDateFormat(rowDate, this.dateFormat);
+            //Dopo la conversione controllo che il formato risulti ancora corretto.
+            for (let i = 0; i < parsedDate.length; i++) {
+                //Banana.console.debug("orig char: " + parsedDate[i]);
+                if (!isNaN(parsedDate[i])) {
+                    continue; // Il carattere è numerico, continua con il prossimo carattere
+                }
+                /**Il carattere della data parsata non è numerico, 
+                 * controllo se è lo stesso anche con quello della data originale alla posizionie i.
+                 * cosi controllo che almeno le posizioni (giorni, mesi e anni) siano rimasti gli stessi.
+                 *  */
+                let char = rowDate.indexOf(i);
+                //Banana.console.debug("orig char: " + parsedDate[i]);
+                if (isNaN(char)) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        return false;
+    }
+
+    findSeparator(string) {
+
+        var commaCount = 0;
+        var semicolonCount = 0;
+        var tabCount = 0;
+
+        for (var i = 0; i < 1000 && i < string.length; i++) {
+            var c = string[i];
+            if (c === ',')
+                commaCount++;
+            else if (c === ';')
+                semicolonCount++;
+            else if (c === '\t')
+                tabCount++;
+        }
+
+        if (tabCount > commaCount && tabCount > semicolonCount) {
+            return '\t';
+        }
+        else if (semicolonCount > commaCount) {
+            return ';';
+        }
+
+        return ',';
+    }
+}
+
+function getLang() {
+    var lang = 'en';
+    if (Banana.application.locale)
+        lang = Banana.application.locale;
+    if (lang.length > 2)
+        lang = lang.substring(0, 2);
+    return lang;
+}
+
+
+function getErrorSpecificMessage(errorId, lang) {
+    if (!lang)
+        lang = 'en';
+    switch (errorId) {
+        case "ID_ERR_FORMAT_NOT_MATCH":
+            if (lang == 'it')
+                return "Il formato del file non corrisponde ai parametri";
+            else if (lang == 'fr')
+                return "Le format du fichier ne correspond pas aux paramètres";
+            else if (lang == 'de')
+                return "Das Dateiformat stimmt nicht mit den Parametern überein";
+            else
+                return "The file format does not match the parameters";
+    }
+    return '';
+}
+
+function getErrorMessage(errID) {
+    let lang = getLang();
+    let msg = getErrorSpecificMessage(errID, lang);
+    Banana.document.addMessage(msg, errID);
 }
 

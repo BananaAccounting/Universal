@@ -54,25 +54,61 @@ var DlgMapCsvFields = class DlgMapCsvFields {
 
         let rtnValue = editorDlg.exec();
         if (parseInt(rtnValue) === 1) {
-            Banana.console.debug("leggo parametri");
-            for (var i = 0; i < convertedParam.data.length; i++) {
-                // Read values to dialogparam (through the readValue function)
-                if (typeof (convertedParam.data[i].readValue) == "function")
-                    convertedParam.data[i].readValue();
-            }
-            /** Per qualche motivo anche se do il comando importPreference, i valori importati 
-             * non vengono salvati, nemmeno quelli scritti dopo, è come se poi non venissero più riletti i valori.
-             * devo chiamare un get ?
-             * 
-            */
-            this.updatePreferencesList(); //aggiornare la lista ad ogni salvataggio invece che qui ?
-            Banana.Ui.showText(JSON.stringify(this.dialogParam));
+            let modifiedParams = editorDlg.getParams();
+            this.saveParams(modifiedParams);
+            // Aggiorno i parametri con quelli nuovi 
+            this.updatePreferencesList(); //aggiornare la lista ad ogni salvataggio invece che qui ? è possibile ?
             var paramToString = JSON.stringify(this.dialogParam);
             Banana.document.setScriptSettings("csvFieldsParams", paramToString);
             return true;
         }
 
         return false;
+    }
+
+    saveParams(modifiedParams) {
+        if (modifiedParams && modifiedParams.data &&
+            modifiedParams.data.length > 0) {
+            let arrayData = modifiedParams.data;
+            let object = {};
+
+            object = arrayData.find(obj => obj.name === "MappingPrefrencesName");
+            if (object && object.value) {
+                this.dialogParam.newPreference = object.value;
+            }
+            object = arrayData.find(obj => obj.name === "PreferencesList");
+            if (object && object.value) {
+                this.dialogParam.preferencesList = object.value;
+            }
+            object = arrayData.find(obj => obj.name === "FieldsDelimiter");
+            if (object && object.value) {
+                this.dialogParam.fieldsDelimiter = object.value;
+            }
+            object = arrayData.find(obj => obj.name === "TextDelimiter");
+            if (object && object.value) {
+                this.dialogParam.textDelimiter = object.value;
+            }
+            object = arrayData.find(obj => obj.name === "DateFormat");
+            if (object && object.value) {
+                this.dialogParam.dateFormat = object.value;
+            }
+            object = arrayData.find(obj => obj.name === "DecimalSeparator");
+            if (object && object.value) {
+                this.dialogParam.decimalSeparator = object.value;
+            }
+            object = arrayData.find(obj => obj.name === "DateColumn");
+            if (object && object.value) {
+                this.dialogParam.dateColumn = object.value;
+            }
+            object = arrayData.find(obj => obj.name === "DescriptionColumn");
+            if (object && object.value) {
+                this.dialogParam.descriptionColumn = object.value;
+            }
+            object = arrayData.find(obj => obj.name === "AmountColumn");
+            if (object && object.value) {
+                this.dialogParam.amountColumn = object.value;
+            }
+        }
     }
 
     /**
@@ -320,7 +356,6 @@ var DlgMapCsvFields = class DlgMapCsvFields {
 function importPreference(currentParams) {
     /** Questo comando imposta nel dialogo i parametri in base al campo correntemente selezionato del comboBox */
     if (currentParams) {
-        //Banana.Ui.showText(JSON.stringify(currentParams));
         let selectedPreference = currentParams.data.find(item => item.name === "PreferencesList").value;
         let csvFieldsParams_preferences = Banana.document.getScriptSettings("csvFieldsParams_Preferences");
         if (selectedPreference && csvFieldsParams_preferences) {
@@ -406,7 +441,6 @@ function saveNewPreferencesData(preferencesParam, currentDlgParams, currentPrefe
         preferencesParam.preferencesListData.push(newPreferenceObject);
         UpdatePreferencesNameList(currentPreference);
         UpdatedPreferencesObjectListOfNames(preferencesParam);
-        //Banana.Ui.showText(JSON.stringify(preferencesParam));
     }
 }
 
