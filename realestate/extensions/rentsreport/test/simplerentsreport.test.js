@@ -9,7 +9,9 @@
 // @outputformat = none
 // @inputdataform = none
 // @timeout = -1
-// @includejs = ../Rents.sbaa/simplerentsreport.js
+// @includejs = ../simplerentsreport.js
+
+//../Rents.sbaa/simplerentsreport.js
 
 
 // Register this test case to be executed
@@ -22,9 +24,9 @@ function TestSimpleReport() {
 // This method will be called at the beginning of the test case
 TestSimpleReport.prototype.initTestCase = function () {
   this.testLogger = Test.logger;
-  this.progressBar = Banana.application.progressBar;
-  this.fileAC2Path = [];
+  //this.progressBar = Banana.application.progressBar;
 
+  this.fileAC2Path = [];
   this.fileAC2Path.push("file:script/../test/testcases/AffittiPartitaDoppia.ac2");
   this.fileAC2Path.push("file:script/../test/testcases/AffittiPartitaDoppiaNOPartitario.ac2");
   this.fileAC2Path.push("file:script/../test/testcases/AffittiEntrateUscite.ac2");
@@ -45,22 +47,22 @@ TestSimpleReport.prototype.cleanup = function () {
 
 TestSimpleReport.prototype.testSimpleReport = function () {
 
-  let parentLogger = this.testLogger;
+  //var parentLogger = this.testLogger;
   //this.progressBar.start(this.fileAC2Path.length);
   
-  for (let k = 0; k.length; k++) {
+  for (var k = 0; k < this.fileAC2Path.length; k++) {
     
-    let banDoc = Banana.application.openDocument(fileAC2Path[k]);
-    this.testLogger = parentLogger.newLogger(Banana.IO.fileCompleteBaseName(fileAC2Path[k]));
+    //this.testLogger = parentLogger.newLogger(Banana.IO.fileCompleteBaseName(this.fileAC2Path[k]));
+    var banDoc = Banana.application.openDocument(this.fileAC2Path[k]);
 
     if (banDoc) {
-      Banana.console.log("ARRIVA");
-      let printreport = new PrintReport(banDoc);
-      let result = printreport.report();
-      let reportName = "FILENAME: " + fileAC2Path[k] + "\n";
-      this.testLogger.addReport(reportName, result, "Test " + (k + 1) + ": " + fileAC2Path[k]);
+      var stylesheet = createStyleSheet(); // create the first stylesheet
+      var printreport = new PrintReport(banDoc,stylesheet);
+      var result = printreport.report();
+      var reportName = "FILENAME: " + this.fileAC2Path[k];
+      this.testLogger.addReport(reportName, result, "Test " + (k + 1) + ": " + this.fileAC2Path[k]);
     } else {
-      this.testLogger.addReport("No valid file ac2 found in this directory: " + fileAC2Path[k]);
+      this.testLogger.addFatalError("No valid file ac2 found in this directory: " + this.fileAC2Path[k]);
     }
   }
 
