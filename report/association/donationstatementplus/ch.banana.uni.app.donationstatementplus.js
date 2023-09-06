@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.uni.app.donationstatementplus.js
 // @api = 1.0
-// @pubdate = 2023-04-19
+// @pubdate = 2023-09-06
 // @publisher = Banana.ch SA
 // @description = Donation Statement for Associations (Banana+)
 // @description.de = Spendenbescheinigung für Vereine (Banana+)
@@ -554,35 +554,53 @@ function exec(inData, options) {
         set_variables(variables, userParam);
 
         var stylesheet = Banana.Report.newStyleSheet();
-        var report = printReport(Banana.document, userParam, accounts, texts, stylesheet);
+        var docs = []; //array of reports
+        var styles = []; //array of stylesheets
+        printReport(Banana.document, userParam, accounts, texts, stylesheet, docs, styles);
         
         setCss(Banana.document, stylesheet, userParam, variables);
-        Banana.Report.preview(report, stylesheet);
+        Banana.Report.preview(texts.reportTitle, docs, styles);
     } else {
         return "@Cancel";
     }
 }
 
-/* Function that prints the report */
-function printReport(banDoc, userParam, accounts, texts, stylesheet) {
+/* Function that adds information for multiple separated pdfs export */
+function addDocumentInformation(report, banDoc, userParam, account, texts) {
 
-    var report = Banana.Report.newReport(texts.reportTitle);
+    // Document's informations are used to build meaningful file names for the exported pdf files
+
+    if (report.addDocInfo) {
+
+        var startDate = userParam.selectionStartDate;
+        var endDate = userParam.selectionEndDate;
+        var address = getAddress(banDoc, account);
+        var transactionsObj = calculateTotalTransactions(banDoc, account, startDate, endDate);
+        var totalOfDonations = transactionsObj.total;
     
-    printReportHeader(report, banDoc, userParam, stylesheet);
-    
+        report.addDocInfo("name", texts.reportTitle + " - " + endDate + " - " + address.firstname + " " + address.familyname);
+        report.addDocInfo("doc_amount", totalOfDonations);
+        report.addDocInfo("doc_period", startDate + " - " + endDate, texts.doc_period);
+    }
+}
+
+/* Function that prints the report */
+function printReport(banDoc, userParam, accounts, texts, stylesheet, docs, styles) {
+
     for (var k = 0; k < accounts.length; k++) {
+
+        var report = Banana.Report.newReport(texts.reportTitle);
         
+        printReportHeader(report, banDoc, userParam, stylesheet);
         printReportAddress(report, banDoc, accounts[k]);
         printReportLetter(report, banDoc, userParam, accounts[k], texts);
         printReportDetailsTransaction(report, banDoc, userParam, accounts[k], texts);
         printReportSignature(report, banDoc, userParam);
-        
-        if (k < accounts.length-1) {
-            report.addPageBreak(); // Page break at the end of all the pages (not last one)
-        }
-    }
 
-    return report;
+        addDocumentInformation(report, banDoc, userParam, accounts[k], texts);
+        docs.push(report);
+        styles.push(stylesheet);
+    }
 }
 
 /* Function that prints the header of the report */
@@ -710,7 +728,6 @@ function printReportLetter(report, banDoc, userParam, account, texts) {
     var text = "";
     var address = getAddress(banDoc, account);
 
-
     // Locality and date
     if (userParam.localityAndDate) {
         report.addParagraph(userParam.localityAndDate, "date");
@@ -746,12 +763,12 @@ function printReportLetter(report, banDoc, userParam, account, texts) {
     if (usemarkdown) {
         //available with advanced plan
         var format = "md"; //md,html,text
-        text = convertFieldsMarkdown(banDoc, textselected, address, trDate, startDate, endDate, totalOfDonations, account);
+        text = convertFieldsMarkdown(banDoc, userParam, account, textselected);
         sectionText.addStructuredText(text, format, ""); // "" = stylesheet
     }
     else {
         // var format = "text"; //md,html,text
-        text = convertFields(banDoc, textselected, address, trDate, startDate, endDate, totalOfDonations, account);
+        text = convertFields(banDoc, userParam, account, textselected);
         addNewLine(sectionText, text);
         sectionText.addParagraph(" ", "");
     }
@@ -912,7 +929,14 @@ function addMdParagraph(reportElement, text) {
 }
 
 /* Function that replaces the tags with the respective data */
-function convertFields(banDoc, text, address, trDate, startDate, endDate, totalOfDonations, account) {
+function convertFields(banDoc, userParam, account, text) {
+
+    var startDate = userParam.selectionStartDate;
+    var endDate = userParam.selectionEndDate;
+    var transactionsObj = calculateTotalTransactions(banDoc, account, startDate, endDate);
+    var totalOfDonations = transactionsObj.total;
+    var trDate = getTransactionDate(banDoc, account, startDate, endDate);
+    var address = getAddress(banDoc, account);
 
     if (text.indexOf("<Period>") > -1) {
         var period = getPeriod(banDoc, startDate, endDate);
@@ -975,7 +999,14 @@ function convertFields(banDoc, text, address, trDate, startDate, endDate, totalO
 }
 
 /* Function that replaces the tags with the respective data */
-function convertFieldsMarkdown(banDoc, text, address, trDate, startDate, endDate, totalOfDonations, account) {
+function convertFieldsMarkdown(banDoc, userParam, account, text) {
+
+    var startDate = userParam.selectionStartDate;
+    var endDate = userParam.selectionEndDate;
+    var transactionsObj = calculateTotalTransactions(banDoc, account, startDate, endDate);
+    var totalOfDonations = transactionsObj.total;
+    var trDate = getTransactionDate(banDoc, account, startDate, endDate);
+    var address = getAddress(banDoc, account);
 
     if (text.indexOf("{{Period}}") > -1) {
         var period = getPeriod(banDoc, startDate, endDate);
@@ -1859,6 +1890,7 @@ function loadTexts(banDoc,lang) {
         texts.accountsToPrint = "Adressen für den Ausdruck auswählen";
         texts.printText = "Text ausdrucken";
         texts.begin = "Beginn";
+        texts.doc_period = "Periode";
     }
     else if (lang === "fr") {
         texts.reportTitle = "Certificat de don";
@@ -1897,6 +1929,7 @@ function loadTexts(banDoc,lang) {
         texts.accountsToPrint = "Sélectionner les adresses à imprimer";
         texts.printText = "Imprimer le texte";
         texts.begin = "Début";
+        texts.doc_period = "Période";
     }
     else if (lang === "it") {
         texts.reportTitle = "Attestato di donazione";
@@ -1935,6 +1968,7 @@ function loadTexts(banDoc,lang) {
         texts.accountsToPrint = "Seleziona gli indirizzi da stampare";
         texts.printText = "Stampa testo";
         texts.begin = "Inizio";
+        texts.doc_period = "Periodo";
     }
     else if (lang === "nl") {
         texts.reportTitle = "Kwitantie voor giften";
@@ -1973,6 +2007,7 @@ function loadTexts(banDoc,lang) {
         texts.accountsToPrint = "Selecteer adressen om af te drukken";
         texts.printText = "Tekst afdrukken";
         texts.begin = "Start";
+        texts.doc_period = "Periode";
     }
     else { //lang == en
         texts.reportTitle = "Donation Statement";
@@ -2011,6 +2046,7 @@ function loadTexts(banDoc,lang) {
         texts.accountsToPrint = "Select addresses to print";
         texts.printText = "Print text";
         texts.begin = "Start";
+        texts.doc_period = "Period";
     }
 
     return texts;

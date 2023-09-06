@@ -14,9 +14,9 @@
 //
 
 
-// @id = ch.banana.uni.app.donationstatement.test
+// @id = ch.banana.uni.app.donationstatementplus.test
 // @api = 1.0
-// @pubdate = 2023-03-03
+// @pubdate = 2023-09-06
 // @publisher = Banana.ch SA
 // @description = <TEST ch.banana.uni.app.donationstatementplus.js>
 // @task = app.command
@@ -227,11 +227,15 @@ ReportTest.prototype.testBananaApp = function() {
 
 //Function that create the report for the test
 ReportTest.prototype.report_test = function(banDoc, startDate, endDate, userParam, lang, reportName) {
+  var docs = [];
+  var styles = [];
   userParam.selectionStartDate = startDate;
   userParam.selectionEndDate = endDate;
   texts = loadTexts(banDoc,lang);
   var accounts = getAccountsToPrint(banDoc, userParam, texts);
-  var report = printReport(banDoc, userParam, accounts, texts, "");
-  Test.logger.addReport(reportName, report);
+  printReport(banDoc, userParam, accounts, texts, "", docs, styles);
+  for (var i = 0; i < docs.length; i++) {
+    Test.logger.addReport(reportName, docs[i]);
+  }
 }
 
