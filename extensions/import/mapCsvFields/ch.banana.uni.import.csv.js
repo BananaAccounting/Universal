@@ -53,7 +53,6 @@ function exec(inData, isTest) {
     }
 
     let userParams = dlgMapCsvFields.dialogParam;
-    Banana.console.debug(JSON.stringify(userParams));
     if (Object.keys(userParams).length > 0) {
         let csvReader = new CsvReader(inData, userParams);
         let csvRows = Banana.Converter.csvToArray(csvReader.inData, csvReader.fieldsDelim,
@@ -104,9 +103,6 @@ var CsvReader = class CsvReader {
             /** Eseguo i controlli sui parametri che l'utente mi ha fornito per identificare le colonne. */
 
             //Controllo se il formato data coincide.
-            /*Banana.console.debug(row.length);
-            Banana.console.debug(row[this.dateCol]);
-            Banana.console.debug(row[0]);*/
             if (row[this.dateCol] && this.dateFormatMatch(row[this.dateCol])) {
                 formatMatched = true;
             }
@@ -192,7 +188,6 @@ var CsvReader = class CsvReader {
             let parsedDate = Banana.Converter.toInternalDateFormat(rowDate, this.dateFormat);
             //Dopo la conversione controllo che il formato risulti ancora corretto.
             for (let i = 0; i < parsedDate.length; i++) {
-                //Banana.console.debug("orig char: " + parsedDate[i]);
                 if (!isNaN(parsedDate[i])) {
                     continue; // Il carattere è numerico, continua con il prossimo carattere
                 }
@@ -201,7 +196,6 @@ var CsvReader = class CsvReader {
                  * cosi controllo che almeno le posizioni (giorni, mesi e anni) siano rimasti gli stessi.
                  *  */
                 let char = rowDate.indexOf(i);
-                //Banana.console.debug("orig char: " + parsedDate[i]);
                 if (isNaN(char)) {
                     return false;
                 }
