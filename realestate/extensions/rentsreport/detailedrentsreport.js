@@ -50,7 +50,10 @@ function exec() {
 
   var printreport = new PrintReport(Banana.document);
 
-  return printreport.report();
+  var stylesheet = printreport.createStyleSheet(); // create the first stylesheet
+  var report = printreport.report(stylesheet);
+
+  Banana.Report.preview(report, stylesheet);
 
 }
 
@@ -65,14 +68,13 @@ var PrintReport = class PrintReport {
     this.banDoc = banDocument;
   }
 
-  report() {
+  report(stylesheet) {
 
-  setlanguage(lan);
-
+  this.setlanguage(this.banDoc, lan);
   //Check if there is the Accounts table
   if (!this.banDoc.table("Accounts")) { return; }
 
-  var today = new Date();
+  
   var accounts = this.banDoc.table("Accounts");
   //var recurringtransactions = this.banDoc.table("RecurringTransactions");
   var recurringtransactions = this.banDoc.table('Transactions').list('Recurring');
@@ -93,50 +95,22 @@ var PrintReport = class PrintReport {
   // Create the report
 
   var report = Banana.Report.newReport(reportlanguage.uncoveredrents);
-  var stylesheet = createStyleSheet(); // create the first stylesheet
-  var currency = Banana.document.info("AccountingDataBase", "BasicCurrency");
-  var tenants = Banana.document.info("AccountingDataBase", "CustomersGroup");
+  var currency = this.banDoc.info("AccountingDataBase", "BasicCurrency");
+  var tenants = this.banDoc.info("AccountingDataBase", "CustomersGroup");
 
   if (tenants === undefined) {
-    Banana.document.addMessage(reportlanguage.settenants);
+    this.banDoc.addMessage(reportlanguage.settenants);
     return;
   }
 
-  // Function to get the month from the date format "YYYY-MM-DD" and return the month in the language selected by the user (italian, english, french, german) 
-  function getMonth(date) {
-    var month = date.substr(5, 2);
-    if (month === "01") {
-      return reportlanguage.january;
-    } else if (month === "02") {
-      return reportlanguage.february;
-    } else if (month === "03") {
-      return reportlanguage.march;
-    } else if (month === "04") {
-      return reportlanguage.april;
-    } else if (month === "05") {
-      return reportlanguage.may;
-    } else if (month === "06") {
-      return reportlanguage.june;
-    } else if (month === "07") {
-      return reportlanguage.july;
-    } else if (month === "08") {
-      return reportlanguage.august;
-    } else if (month === "09") {
-      return reportlanguage.september;
-    } else if (month === "10") {
-      return reportlanguage.october;
-    } else if (month === "11") {
-      return reportlanguage.november;
-    } else if (month === "12") {
-      return reportlanguage.december;
-    }
-  }
-
   // Add the header to the report
-  addHeader(report, stylesheet);
+  this.addHeader(this.banDoc, report, stylesheet);
+
+  
 
   // Add paragraph with the title and the date of the report
   report.addParagraph(reportlanguage.uncoveredrents, "heading");
+  var today = new Date();
   report.addParagraph(today.toLocaleString(), "heading");
 
 
@@ -150,18 +124,18 @@ var PrintReport = class PrintReport {
   tableRow.addCell(reportlanguage.debit, "border-bottom left bold");
   tableRow.addCell(reportlanguage.currency, "border-bottom center bold");
   tableRow.addCell(reportlanguage.startbalance, "border-bottom right bold");
-  tableRow.addCell(getMonth(Banana.document.startPeriod("M")), "border-bottom right bold january");
-  tableRow.addCell(getMonth(Banana.document.startPeriod("2M")), "border-bottom right bold february");
-  tableRow.addCell(getMonth(Banana.document.startPeriod("3M")), "border-bottom right bold march");
-  tableRow.addCell(getMonth(Banana.document.startPeriod("4M")), "border-bottom right bold april");
-  tableRow.addCell(getMonth(Banana.document.startPeriod("5M")), "border-bottom right bold may");
-  tableRow.addCell(getMonth(Banana.document.startPeriod("6M")), "border-bottom right bold june");
-  tableRow.addCell(getMonth(Banana.document.startPeriod("7M")), "border-bottom right bold july");
-  tableRow.addCell(getMonth(Banana.document.startPeriod("8M")), "border-bottom right bold august");
-  tableRow.addCell(getMonth(Banana.document.startPeriod("9M")), "border-bottom right bold september");
-  tableRow.addCell(getMonth(Banana.document.startPeriod("10M")), "border-bottom right bold october");
-  tableRow.addCell(getMonth(Banana.document.startPeriod("11M")), "border-bottom right bold november");
-  tableRow.addCell(getMonth(Banana.document.startPeriod("12M")), "border-bottom right bold december");
+  tableRow.addCell(this.getMonthNumber(this.banDoc.startPeriod("M")), "border-bottom right bold january");
+  tableRow.addCell(this.getMonthNumber(this.banDoc.startPeriod("2M")), "border-bottom right bold february");
+  tableRow.addCell(this.getMonthNumber(this.banDoc.startPeriod("3M")), "border-bottom right bold march");
+  tableRow.addCell(this.getMonthNumber(this.banDoc.startPeriod("4M")), "border-bottom right bold april");
+  tableRow.addCell(this.getMonthNumber(this.banDoc.startPeriod("5M")), "border-bottom right bold may");
+  tableRow.addCell(this.getMonthNumber(this.banDoc.startPeriod("6M")), "border-bottom right bold june");
+  tableRow.addCell(this.getMonthNumber(this.banDoc.startPeriod("7M")), "border-bottom right bold july");
+  tableRow.addCell(this.getMonthNumber(this.banDoc.startPeriod("8M")), "border-bottom right bold august");
+  tableRow.addCell(this.getMonthNumber(this.banDoc.startPeriod("9M")), "border-bottom right bold september");
+  tableRow.addCell(this.getMonthNumber(this.banDoc.startPeriod("10M")), "border-bottom right bold october");
+  tableRow.addCell(this.getMonthNumber(this.banDoc.startPeriod("11M")), "border-bottom right bold november");
+  tableRow.addCell(this.getMonthNumber(this.banDoc.startPeriod("12M")), "border-bottom right bold december");
   tableRow.addCell(reportlanguage.total, "border-bottom right bold");
   tableRow = table.addRow();
 
@@ -169,104 +143,7 @@ var PrintReport = class PrintReport {
   var debit = 0.00;
   var credit = 0.00;
   var balance = 0.00;
-
-  // Function to print in green the credit and in red the debit over 0 CHF
-
-  var classNameAmount = "";
   var j = 1;
-
-  function CreditAmountColor(number) {
-    if (number > 0.00) {
-      classNameAmount = "green";
-      return Banana.Converter.toLocaleNumberFormat(number, 2, true);
-    }
-    else {
-      classNameAmount = "";
-      return Banana.Converter.toLocaleNumberFormat(number, 2, true);
-    }
-  }
-
-  function BalanceAmountColor(number) {
-
-    if (number > 0.00) {
-      classNameAmount = "red";
-      return Banana.Converter.toLocaleNumberFormat(number, 2, true);
-    }
-    else {
-      classNameAmount = "";
-      return Banana.Converter.toLocaleNumberFormat(number, 2, true);
-    }
-
-  }
-
-  function FormatNumber(number) {
-    return Banana.Converter.toLocaleNumberFormat(number, 2, true);
-  }
-  
-  function classNameEvenRow() {
-    if (j % 2 === 0) {
-      return "even_rows_background_color";
-    }
-    else {
-      return;
-    }
-  }
-
-  function TodayMonth() {
-    var month = today.getMonth() + 1;
-    // if column is the current month, return "yellow"
-    if (month === 1) {
-      return stylesheet.addStyle(".january", "background-color:#FFFF8A");
-    } else if (month === 2) {
-      stylesheet.addStyle(".february", "background-color:#FFFF8A");
-    } else if (month === 3) {
-      stylesheet.addStyle(".march", "background-color:#FFFF8A");
-    } else if (month === 4) {
-      stylesheet.addStyle(".april", "background-color:#FFFF8A");
-    } else if (month === 5) {
-      stylesheet.addStyle(".may", "background-color:#FFFF8A");
-    } else if (month === 6) {
-      stylesheet.addStyle(".june", "background-color:#FFFF8A");
-    } else if (month === 7) {
-      stylesheet.addStyle(".july", "background-color:#FFFF8A");
-    } else if (month === 8) {
-      stylesheet.addStyle(".august", "background-color:#FFFF8A");
-    } else if (month === 9) {
-      stylesheet.addStyle(".september", "background-color:#FFFF8A");
-    } else if (month === 10) {
-      stylesheet.addStyle(".october", "background-color:#FFFF8A");
-    } else if (month === 11) {
-      stylesheet.addStyle(".november", "background-color:#FFFF8A");
-    } else if (month === 12) {
-      stylesheet.addStyle(".december", "background-color:#FFFF8A");
-    }
-  }
-
-  function NextDate(startmonth, repeat) {
-    var startmonth = new Date(startmonth);
-    var nextdate;
-    if (repeat === "M") {
-      nextdate = new Date(startmonth.getFullYear(), startmonth.getMonth() + 1, startmonth.getDate());
-    }
-    else if (repeat === "3M") {
-      nextdate = new Date(startmonth.getFullYear(), startmonth.getMonth() + 3, startmonth.getDate());
-    }
-    else if (repeat === "6M") {
-      nextdate = new Date(startmonth.getFullYear(), startmonth.getMonth() + 6, startmonth.getDate());
-    }
-    else if (repeat === "Y") {
-      nextdate = new Date(startmonth.getFullYear() + 1, startmonth.getMonth(), startmonth.getDate());
-    }
-    else if (repeat === "") {
-      nextdate = startmonth;
-    }
-    else {
-      nextdate = startmonth;
-      Banana.document.addMessage(reportlanguage.repeatwarning);
-    }
- 
-    return Banana.Converter.toInternalDateFormat(nextdate);
-  }
 
   for (var i = 0; i < accounts.rowCount; i++) {
     
@@ -291,351 +168,482 @@ var PrintReport = class PrintReport {
             j = j + 1;
             
             if (accountdescription === false) {
-              tableRow.addCell(debtorAccount, "border-bottom border-left left " + classNameEvenRow());
-              tableRow.addCell(accounts.row(i).value("Description"), "border-bottom left bold " + classNameEvenRow());
+              tableRow.addCell(debtorAccount, "border-bottom border-left left " + this.classNameEvenRow(j));
+              tableRow.addCell(accounts.row(i).value("Description"), "border-bottom left bold " + this.classNameEvenRow(j));
               accountdescription = true;
             }
             else {
-              tableRow.addCell("", "border-bottom border-left left " + classNameEvenRow());
-              tableRow.addCell("", "border-bottom " + classNameEvenRow());
+              tableRow.addCell("", "border-bottom border-left left " + this.classNameEvenRow(j));
+              tableRow.addCell("", "border-bottom " + this.classNameEvenRow(j));
             }
 
-            if (Banana.document.table("Categories") === undefined) {
+            if (this.banDoc.table("Categories") === undefined) {
               debit = recurringtransactions.row(k).value("Amount");
             }
-            else if (Banana.document.table("Categories")) {
+            else if (this.banDoc.table("Categories")) {
               debit = recurringtransactions.row(k).value("Income");
             }
 
 
-            tableRow.addCell(recurringtransactions.row(k).value("Description"), "border-bottom left bold " + classNameEvenRow());
-            tableRow.addCell(currency, "border-bottom center " + classNameEvenRow());
-            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(0, 2, true), "border-bottom right " + classNameEvenRow());
+            tableRow.addCell(recurringtransactions.row(k).value("Description"), "border-bottom left bold " + this.classNameEvenRow(j));
+            tableRow.addCell(currency, "border-bottom center " + this.classNameEvenRow(j));
+            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(0, 2, true), "border-bottom right " + this.classNameEvenRow(j));
 
-            if ( (finaldate === "" || finaldate > Banana.document.startPeriod("M")) && Banana.document.startPeriod("M") === startmonth )  {
-            tableRow.addCell(FormatNumber(debit), "border-bottom right january " + classNameEvenRow() + " " + TodayMonth());
-            startmonth = NextDate(startmonth, repeat);
+            if ( (finaldate === "" || finaldate > this.banDoc.startPeriod("M")) && this.banDoc.startPeriod("M") === startmonth )  {
+            tableRow.addCell(this.FormatNumber(debit), "border-bottom right january " + this.classNameEvenRow(j) + " " + this.TodayMonth(stylesheet));
+            startmonth = this.NextDate(startmonth, repeat);
             monthnumber = monthnumber + 1;
           }
             else {      
-              tableRow.addCell(FormatNumber(0), "border-bottom right january " + classNameEvenRow() + " " + TodayMonth());
+              tableRow.addCell(this.FormatNumber(0), "border-bottom right january " + this.classNameEvenRow(j) + " " + this.TodayMonth(stylesheet));
             }
             
-            if ( (finaldate === "" || finaldate > Banana.document.startPeriod("2M"))  && Banana.document.startPeriod("2M") === startmonth ) {
-            tableRow.addCell(FormatNumber(debit), "border-bottom right february " + classNameEvenRow() + " " + TodayMonth());
-            startmonth = NextDate(startmonth, repeat);
+            if ( (finaldate === "" || finaldate > this.banDoc.startPeriod("2M"))  && this.banDoc.startPeriod("2M") === startmonth ) {
+            tableRow.addCell(this.FormatNumber(debit), "border-bottom right february " + this.classNameEvenRow(j) + " " + this.TodayMonth(stylesheet));
+            startmonth = this.NextDate(startmonth, repeat);
             monthnumber = monthnumber + 1;
           }
             else {     
-              tableRow.addCell(FormatNumber(0), "border-bottom right february " + classNameEvenRow() + " " + TodayMonth());
+              tableRow.addCell(this.FormatNumber(0), "border-bottom right february " + this.classNameEvenRow(j) + " " + this.TodayMonth(stylesheet));
             }
             
-            if ( (finaldate === "" || finaldate > Banana.document.startPeriod("3M"))  && Banana.document.startPeriod("3M") === startmonth ) {
-            tableRow.addCell(FormatNumber(debit), "border-bottom right march " + classNameEvenRow() + " " + TodayMonth());
-            startmonth = NextDate(startmonth, repeat);
+            if ( (finaldate === "" || finaldate > this.banDoc.startPeriod("3M"))  && this.banDoc.startPeriod("3M") === startmonth ) {
+            tableRow.addCell(this.FormatNumber(debit), "border-bottom right march " + this.classNameEvenRow(j) + " " + this.TodayMonth(stylesheet));
+            startmonth = this.NextDate(startmonth, repeat);
             monthnumber = monthnumber + 1;
           }
             else {    
-              tableRow.addCell(FormatNumber(0), "border-bottom right march " + classNameEvenRow() + " " + TodayMonth());
+              tableRow.addCell(this.FormatNumber(0), "border-bottom right march " + this.classNameEvenRow(j) + " " + this.TodayMonth(stylesheet));
             }
             
-            if ( (finaldate === "" || finaldate > Banana.document.startPeriod("4M"))  && Banana.document.startPeriod("4M") === startmonth ) {
-            tableRow.addCell(FormatNumber(debit), "border-bottom right april " + classNameEvenRow() + " " + TodayMonth());
-            startmonth = NextDate(startmonth, repeat);
+            if ( (finaldate === "" || finaldate > this.banDoc.startPeriod("4M"))  && this.banDoc.startPeriod("4M") === startmonth ) {
+            tableRow.addCell(this.FormatNumber(debit), "border-bottom right april " + this.classNameEvenRow(j) + " " + this.TodayMonth(stylesheet));
+            startmonth = this.NextDate(startmonth, repeat);
             monthnumber = monthnumber + 1;
           }
             else {     
-              tableRow.addCell(FormatNumber(0), "border-bottom right april " + classNameEvenRow() + " " + TodayMonth());
+              tableRow.addCell(this.FormatNumber(0), "border-bottom right april " + this.classNameEvenRow(j) + " " + this.TodayMonth(stylesheet));
             }
             
-            if ( (finaldate === "" || finaldate > Banana.document.startPeriod("5M"))  && Banana.document.startPeriod("5M") === startmonth ) {
-            tableRow.addCell(FormatNumber(debit), "border-bottom right may " + classNameEvenRow() + " " + TodayMonth());
-            startmonth = NextDate(startmonth, repeat);
+            if ( (finaldate === "" || finaldate > this.banDoc.startPeriod("5M"))  && this.banDoc.startPeriod("5M") === startmonth ) {
+            tableRow.addCell(this.FormatNumber(debit), "border-bottom right may " + this.classNameEvenRow(j) + " " + this.TodayMonth(stylesheet));
+            startmonth = this.NextDate(startmonth, repeat);
             monthnumber = monthnumber + 1;
           }
             else {  
-              tableRow.addCell(FormatNumber(0), "border-bottom right may " + classNameEvenRow() + " " + TodayMonth());
+              tableRow.addCell(this.FormatNumber(0), "border-bottom right may " + this.classNameEvenRow(j) + " " + this.TodayMonth(stylesheet));
             }
             
-            if ( (finaldate === "" || finaldate > Banana.document.startPeriod("6M"))  && Banana.document.startPeriod("6M") === startmonth ) {
-            tableRow.addCell(FormatNumber(debit), "border-bottom right june " + classNameEvenRow() + " " + TodayMonth());
-            startmonth = NextDate(startmonth, repeat);
+            if ( (finaldate === "" || finaldate > this.banDoc.startPeriod("6M"))  && this.banDoc.startPeriod("6M") === startmonth ) {
+            tableRow.addCell(this.FormatNumber(debit), "border-bottom right june " + this.classNameEvenRow(j) + " " + this.TodayMonth(stylesheet));
+            startmonth = this.NextDate(startmonth, repeat);
             monthnumber = monthnumber + 1;
           }
             else {    
-              tableRow.addCell(FormatNumber(0), "border-bottom right june " + classNameEvenRow() + " " + TodayMonth());
+              tableRow.addCell(this.FormatNumber(0), "border-bottom right june " + this.classNameEvenRow(j) + " " + this.TodayMonth(stylesheet));
             }
             
-            if ( (finaldate === "" || finaldate > Banana.document.startPeriod("7M"))  && Banana.document.startPeriod("7M") === startmonth ) {
-            tableRow.addCell(FormatNumber(debit), "border-bottom right july " + classNameEvenRow() + " " + TodayMonth());
-            startmonth = NextDate(startmonth, repeat);
+            if ( (finaldate === "" || finaldate > this.banDoc.startPeriod("7M"))  && this.banDoc.startPeriod("7M") === startmonth ) {
+            tableRow.addCell(this.FormatNumber(debit), "border-bottom right july " + this.classNameEvenRow(j) + " " + this.TodayMonth(stylesheet));
+            startmonth = this.NextDate(startmonth, repeat);
             monthnumber = monthnumber + 1;
           }
             else {  
-              tableRow.addCell(FormatNumber(0), "border-bottom right july " + classNameEvenRow() + " " + TodayMonth());
+              tableRow.addCell(this.FormatNumber(0), "border-bottom right july " + this.classNameEvenRow(j) + " " + this.TodayMonth(stylesheet));
             }
             
-            if ( (finaldate === "" || finaldate > Banana.document.startPeriod("8M"))  && Banana.document.startPeriod("8M") === startmonth ) {
-            tableRow.addCell(FormatNumber(debit), "border-bottom right august " + classNameEvenRow() + " " + TodayMonth());
-            startmonth = NextDate(startmonth, repeat);
+            if ( (finaldate === "" || finaldate > this.banDoc.startPeriod("8M"))  && this.banDoc.startPeriod("8M") === startmonth ) {
+            tableRow.addCell(this.FormatNumber(debit), "border-bottom right august " + this.classNameEvenRow(j) + " " + this.TodayMonth(stylesheet));
+            startmonth = this.NextDate(startmonth, repeat);
             monthnumber = monthnumber + 1;
           }
             else {   
-              tableRow.addCell(FormatNumber(0), "border-bottom right august " + classNameEvenRow() + " " + TodayMonth());
+              tableRow.addCell(this.FormatNumber(0), "border-bottom right august " + this.classNameEvenRow(j) + " " + this.TodayMonth(stylesheet));
             }
             
-            if ( (finaldate === "" || finaldate > Banana.document.startPeriod("9M"))  && Banana.document.startPeriod("9M") === startmonth ) {
-            tableRow.addCell(FormatNumber(debit), "border-bottom right september " + classNameEvenRow() + " " + TodayMonth());
-            startmonth = NextDate(startmonth, repeat);
+            if ( (finaldate === "" || finaldate > this.banDoc.startPeriod("9M"))  && this.banDoc.startPeriod("9M") === startmonth ) {
+            tableRow.addCell(this.FormatNumber(debit), "border-bottom right september " + this.classNameEvenRow(j) + " " + this.TodayMonth(stylesheet));
+            startmonth = this.NextDate(startmonth, repeat);
             monthnumber = monthnumber + 1;
           }
             else {
               
-              tableRow.addCell(FormatNumber(0), "border-bottom right september " + classNameEvenRow() + " " + TodayMonth());
+              tableRow.addCell(this.FormatNumber(0), "border-bottom right september " + this.classNameEvenRow(j) + " " + this.TodayMonth(stylesheet));
             }
             
-            if ( (finaldate === "" || finaldate > Banana.document.startPeriod("10M"))  && Banana.document.startPeriod("10M") === startmonth ) {
-            tableRow.addCell(FormatNumber(debit), "border-bottom right october " + classNameEvenRow() + " " + TodayMonth());
-            startmonth = NextDate(startmonth, repeat);
+            if ( (finaldate === "" || finaldate > this.banDoc.startPeriod("10M"))  && this.banDoc.startPeriod("10M") === startmonth ) {
+            tableRow.addCell(this.FormatNumber(debit), "border-bottom right october " + this.classNameEvenRow(j) + " " + this.TodayMonth(stylesheet));
+            startmonth = this.NextDate(startmonth, repeat);
             monthnumber = monthnumber + 1;
           }
             else {  
-              tableRow.addCell(FormatNumber(0), "border-bottom right october " + classNameEvenRow() + " " + TodayMonth());
+              tableRow.addCell(this.FormatNumber(0), "border-bottom right october " + this.classNameEvenRow(j) + " " + this.TodayMonth(stylesheet));
             }
             
-            if ( (finaldate === "" || finaldate > Banana.document.startPeriod("11M"))  && Banana.document.startPeriod("11M") === startmonth ) {
-            tableRow.addCell(FormatNumber(debit), "border-bottom right november " + classNameEvenRow() + " " + TodayMonth());
-            startmonth = NextDate(startmonth, repeat);
+            if ( (finaldate === "" || finaldate > this.banDoc.startPeriod("11M"))  && this.banDoc.startPeriod("11M") === startmonth ) {
+            tableRow.addCell(this.FormatNumber(debit), "border-bottom right november " + this.classNameEvenRow(j) + " " + this.TodayMonth(stylesheet));
+            startmonth = this.NextDate(startmonth, repeat);
             monthnumber = monthnumber + 1;  
           }
             else { 
-              tableRow.addCell(FormatNumber(0), "border-bottom right november " + classNameEvenRow() + " " + TodayMonth());
+              tableRow.addCell(this.FormatNumber(0), "border-bottom right november " + this.classNameEvenRow(j) + " " + this.TodayMonth(stylesheet));
             }
             
-            if ( (finaldate === "" || finaldate > Banana.document.startPeriod("12M"))  && Banana.document.startPeriod("12M") === startmonth ) {
-            tableRow.addCell(FormatNumber(debit), "border-bottom right december " + classNameEvenRow() + " " + TodayMonth());
-            startmonth = NextDate(startmonth, repeat);
+            if ( (finaldate === "" || finaldate > this.banDoc.startPeriod("12M"))  && this.banDoc.startPeriod("12M") === startmonth ) {
+            tableRow.addCell(this.FormatNumber(debit), "border-bottom right december " + this.classNameEvenRow(j) + " " + this.TodayMonth(stylesheet));
+            startmonth = this.NextDate(startmonth, repeat);
             monthnumber = monthnumber + 1;
           }
             else {   
-              tableRow.addCell(FormatNumber(0), "border-bottom right december " + classNameEvenRow() + " " + TodayMonth());
+              tableRow.addCell(this.FormatNumber(0), "border-bottom right december " + this.classNameEvenRow(j) + " " + this.TodayMonth(stylesheet));
             }
-            tableRow.addCell(FormatNumber(debit * monthnumber), "border-bottom border-right right " + classNameEvenRow());
+            tableRow.addCell(this.FormatNumber(debit * monthnumber), "border-bottom border-right right " + this.classNameEvenRow(j));
           tableRow = table.addRow();
           }
         }
 
         // Calculate the monthly debit of the debtor accounts
         j = j + 1;
-        tableRow.addCell("", "border-bottom border-left left " + classNameEvenRow());
-        tableRow.addCell("", "border-bottom left " + classNameEvenRow());
-        tableRow.addCell(reportlanguage.charged, "border-bottom left bold " + classNameEvenRow());
+        tableRow.addCell("", "border-bottom border-left left " + this.classNameEvenRow(j));
+        tableRow.addCell("", "border-bottom left " + this.classNameEvenRow(j));
+        tableRow.addCell(reportlanguage.charged, "border-bottom left bold " + this.classNameEvenRow(j));
 
-        tableRow.addCell(currency, "border-bottom center " + classNameEvenRow());
+        tableRow.addCell(currency, "border-bottom center " + this.classNameEvenRow(j));
 
         debit = 0.00;
 
-        tableRow.addCell(FormatNumber(debit), "border-bottom right " + classNameEvenRow());
-        currentbalance = Banana.document.currentBalance(debtorAccount, Banana.document.startPeriod("M"), Banana.document.endPeriod("M"));
+        tableRow.addCell(this.FormatNumber(debit), "border-bottom right " + this.classNameEvenRow(j));
+        currentbalance = this.banDoc.currentBalance(debtorAccount, this.banDoc.startPeriod("M"), this.banDoc.endPeriod("M"));
         debit = currentbalance.debit;
 
-        tableRow.addCell(FormatNumber(debit), "border-bottom right january " + classNameEvenRow() + " " + TodayMonth());
-        currentbalance = Banana.document.currentBalance(debtorAccount, Banana.document.startPeriod("2M"), Banana.document.endPeriod("2M"));
+        tableRow.addCell(this.FormatNumber(debit), "border-bottom right january " + this.classNameEvenRow(j) + " " + this.TodayMonth(stylesheet));
+        currentbalance = this.banDoc.currentBalance(debtorAccount, this.banDoc.startPeriod("2M"), this.banDoc.endPeriod("2M"));
         debit = currentbalance.debit;
 
-        tableRow.addCell(FormatNumber(debit), "border-bottom right february " + classNameEvenRow() + " " + TodayMonth());
-        currentbalance = Banana.document.currentBalance(debtorAccount, Banana.document.startPeriod("3M"), Banana.document.endPeriod("3M"));
+        tableRow.addCell(this.FormatNumber(debit), "border-bottom right february " + this.classNameEvenRow(j) + " " + this.TodayMonth(stylesheet));
+        currentbalance = this.banDoc.currentBalance(debtorAccount, this.banDoc.startPeriod("3M"), this.banDoc.endPeriod("3M"));
         debit = currentbalance.debit;
 
-        tableRow.addCell(FormatNumber(debit), "border-bottom right march " + classNameEvenRow() + " " + TodayMonth());
-        currentbalance = Banana.document.currentBalance(debtorAccount, Banana.document.startPeriod("4M"), Banana.document.endPeriod("4M"));
+        tableRow.addCell(this.FormatNumber(debit), "border-bottom right march " + this.classNameEvenRow(j) + " " + this.TodayMonth(stylesheet));
+        currentbalance = this.banDoc.currentBalance(debtorAccount, this.banDoc.startPeriod("4M"), this.banDoc.endPeriod("4M"));
         debit = currentbalance.debit;
 
-        tableRow.addCell(FormatNumber(debit), "border-bottom right april " + classNameEvenRow() + " " + TodayMonth());
-        currentbalance = Banana.document.currentBalance(debtorAccount, Banana.document.startPeriod("5M"), Banana.document.endPeriod("5M"));
+        tableRow.addCell(this.FormatNumber(debit), "border-bottom right april " + this.classNameEvenRow(j) + " " + this.TodayMonth(stylesheet));
+        currentbalance = this.banDoc.currentBalance(debtorAccount, this.banDoc.startPeriod("5M"), this.banDoc.endPeriod("5M"));
         debit = currentbalance.debit;
 
-        tableRow.addCell(FormatNumber(debit), "border-bottom right may " + classNameEvenRow() + " " + TodayMonth());
-        currentbalance = Banana.document.currentBalance(debtorAccount, Banana.document.startPeriod("6M"), Banana.document.endPeriod("6M"));
+        tableRow.addCell(this.FormatNumber(debit), "border-bottom right may " + this.classNameEvenRow(j) + " " + this.TodayMonth(stylesheet));
+        currentbalance = this.banDoc.currentBalance(debtorAccount, this.banDoc.startPeriod("6M"), this.banDoc.endPeriod("6M"));
         debit = currentbalance.debit;
 
-        tableRow.addCell(FormatNumber(debit), "border-bottom right june " + classNameEvenRow() + " " + TodayMonth());
-        currentbalance = Banana.document.currentBalance(debtorAccount, Banana.document.startPeriod("7M"), Banana.document.endPeriod("7M"));
+        tableRow.addCell(this.FormatNumber(debit), "border-bottom right june " + this.classNameEvenRow(j) + " " + this.TodayMonth(stylesheet));
+        currentbalance = this.banDoc.currentBalance(debtorAccount, this.banDoc.startPeriod("7M"), this.banDoc.endPeriod("7M"));
         debit = currentbalance.debit;
 
-        tableRow.addCell(FormatNumber(debit), "border-bottom right july " + classNameEvenRow() + " " + TodayMonth());
-        currentbalance = Banana.document.currentBalance(debtorAccount, Banana.document.startPeriod("8M"), Banana.document.endPeriod("8M"));
+        tableRow.addCell(this.FormatNumber(debit), "border-bottom right july " + this.classNameEvenRow(j) + " " + this.TodayMonth(stylesheet));
+        currentbalance = this.banDoc.currentBalance(debtorAccount, this.banDoc.startPeriod("8M"), this.banDoc.endPeriod("8M"));
         debit = currentbalance.debit;
 
-        tableRow.addCell(FormatNumber(debit), "border-bottom right august " + classNameEvenRow() + " " + TodayMonth());
-        currentbalance = Banana.document.currentBalance(debtorAccount, Banana.document.startPeriod("9M"), Banana.document.endPeriod("9M"));
+        tableRow.addCell(this.FormatNumber(debit), "border-bottom right august " + this.classNameEvenRow(j) + " " + this.TodayMonth(stylesheet));
+        currentbalance = this.banDoc.currentBalance(debtorAccount, this.banDoc.startPeriod("9M"), this.banDoc.endPeriod("9M"));
         debit = currentbalance.debit;
 
-        tableRow.addCell(FormatNumber(debit), "border-bottom right september " + classNameEvenRow() + " " + TodayMonth());
-        currentbalance = Banana.document.currentBalance(debtorAccount, Banana.document.startPeriod("10M"), Banana.document.endPeriod("10M"));
+        tableRow.addCell(this.FormatNumber(debit), "border-bottom right september " + this.classNameEvenRow(j) + " " + this.TodayMonth(stylesheet));
+        currentbalance = this.banDoc.currentBalance(debtorAccount, this.banDoc.startPeriod("10M"), this.banDoc.endPeriod("10M"));
         debit = currentbalance.debit;
 
-        tableRow.addCell(FormatNumber(debit), "border-bottom right october " + classNameEvenRow() + " " + TodayMonth());
-        currentbalance = Banana.document.currentBalance(debtorAccount, Banana.document.startPeriod("11M"), Banana.document.endPeriod("11M"));
+        tableRow.addCell(this.FormatNumber(debit), "border-bottom right october " + this.classNameEvenRow(j) + " " + this.TodayMonth(stylesheet));
+        currentbalance = this.banDoc.currentBalance(debtorAccount, this.banDoc.startPeriod("11M"), this.banDoc.endPeriod("11M"));
         debit = currentbalance.debit;
 
-        tableRow.addCell(FormatNumber(debit), "border-bottom right november " + classNameEvenRow() + " " + TodayMonth());
-        currentbalance = Banana.document.currentBalance(debtorAccount, Banana.document.startPeriod("12M"), Banana.document.endPeriod("12M"));
+        tableRow.addCell(this.FormatNumber(debit), "border-bottom right november " + this.classNameEvenRow(j) + " " + this.TodayMonth(stylesheet));
+        currentbalance = this.banDoc.currentBalance(debtorAccount, this.banDoc.startPeriod("12M"), this.banDoc.endPeriod("12M"));
         debit = currentbalance.debit;
 
-        tableRow.addCell(FormatNumber(debit), "border-bottom right december " + classNameEvenRow() + " " + TodayMonth());
-        currentbalance = Banana.document.currentBalance(debtorAccount, Banana.document.startPeriod(), Banana.document.endPeriod());
+        tableRow.addCell(this.FormatNumber(debit), "border-bottom right december " + this.classNameEvenRow(j) + " " + this.TodayMonth(stylesheet));
+        currentbalance = this.banDoc.currentBalance(debtorAccount, this.banDoc.startPeriod(), this.banDoc.endPeriod());
         debit = currentbalance.debit;
 
-        tableRow.addCell(FormatNumber(debit), "border-bottom border-right right " + classNameEvenRow());
+        tableRow.addCell(this.FormatNumber(debit), "border-bottom border-right right " + this.classNameEvenRow(j));
         tableRow = table.addRow();
 
         // Add the credit of the debtor accounts
         j = j + 1;
-        tableRow.addCell("", "border-bottom border-left left " + classNameEvenRow());
-        tableRow.addCell("", "border-bottom left " + classNameEvenRow());
-        tableRow.addCell(reportlanguage.paid, "border-bottom left bold " + classNameEvenRow());
+        tableRow.addCell("", "border-bottom border-left left " + this.classNameEvenRow(j));
+        tableRow.addCell("", "border-bottom left " + this.classNameEvenRow(j));
+        tableRow.addCell(reportlanguage.paid, "border-bottom left bold " + this.classNameEvenRow(j));
 
-        tableRow.addCell(currency, "border-bottom center " + classNameEvenRow());
+        tableRow.addCell(currency, "border-bottom center " + this.classNameEvenRow(j));
 
         credit = 0.00;
-        tableRow.addCell(CreditAmountColor(credit), "border-bottom right " + classNameEvenRow() + " " + classNameAmount);
-        currentbalance = Banana.document.currentBalance(debtorAccount, Banana.document.startPeriod("M"), Banana.document.endPeriod("M"));
+        tableRow.addCell(this.FormatNumber(credit), "border-bottom right " + this.classNameEvenRow(j) + " " + this.CreditAmountColor(credit));
+        currentbalance = this.banDoc.currentBalance(debtorAccount, this.banDoc.startPeriod("M"), this.banDoc.endPeriod("M"));
         credit = currentbalance.credit;
 
-        tableRow.addCell(CreditAmountColor(credit), "border-bottom right january " + classNameEvenRow() + " " + classNameAmount + " " + TodayMonth());
-        currentbalance = Banana.document.currentBalance(debtorAccount, Banana.document.startPeriod("2M"), Banana.document.endPeriod("2M"));
+        tableRow.addCell(this.FormatNumber(credit), "border-bottom right january " + this.classNameEvenRow(j) + " " + this.CreditAmountColor(credit) + " " + this.TodayMonth(stylesheet));
+        currentbalance = this.banDoc.currentBalance(debtorAccount, this.banDoc.startPeriod("2M"), this.banDoc.endPeriod("2M"));
         credit = currentbalance.credit;
 
-        tableRow.addCell(CreditAmountColor(credit), "border-bottom right february " + classNameEvenRow() + " " + classNameAmount + " " + TodayMonth());
-        currentbalance = Banana.document.currentBalance(debtorAccount, Banana.document.startPeriod("3M"), Banana.document.endPeriod("3M"));
+        tableRow.addCell(this.FormatNumber(credit), "border-bottom right february " + this.classNameEvenRow(j) + " " + this.CreditAmountColor(credit) + " " + this.TodayMonth(stylesheet));
+        currentbalance = this.banDoc.currentBalance(debtorAccount, this.banDoc.startPeriod("3M"), this.banDoc.endPeriod("3M"));
         credit = currentbalance.credit;
 
-        tableRow.addCell(CreditAmountColor(credit), "border-bottom right march " + classNameEvenRow() + " " + classNameAmount + " " + TodayMonth());
-        currentbalance = Banana.document.currentBalance(debtorAccount, Banana.document.startPeriod("4M"), Banana.document.endPeriod("4M"));
+        tableRow.addCell(this.FormatNumber(credit), "border-bottom right march " + this.classNameEvenRow(j) + " " + this.CreditAmountColor(credit) + " " + this.TodayMonth(stylesheet));
+        currentbalance = this.banDoc.currentBalance(debtorAccount, this.banDoc.startPeriod("4M"), this.banDoc.endPeriod("4M"));
         credit = currentbalance.credit;
 
-        tableRow.addCell(CreditAmountColor(credit), "border-bottom right april " + classNameEvenRow() + " " + classNameAmount + " " + TodayMonth());
-        currentbalance = Banana.document.currentBalance(debtorAccount, Banana.document.startPeriod("5M"), Banana.document.endPeriod("5M"));
+        tableRow.addCell(this.FormatNumber(credit), "border-bottom right april " + this.classNameEvenRow(j) + " " + this.CreditAmountColor(credit) + " " + this.TodayMonth(stylesheet));
+        currentbalance = this.banDoc.currentBalance(debtorAccount, this.banDoc.startPeriod("5M"), this.banDoc.endPeriod("5M"));
         credit = currentbalance.credit;
 
-        tableRow.addCell(CreditAmountColor(credit), "border-bottom right may " + classNameEvenRow() + " " + classNameAmount + " " + TodayMonth());
-        currentbalance = Banana.document.currentBalance(debtorAccount, Banana.document.startPeriod("6M"), Banana.document.endPeriod("6M"));
+        tableRow.addCell(this.FormatNumber(credit), "border-bottom right may " + this.classNameEvenRow(j) + " " + this.CreditAmountColor(credit) + " " + this.TodayMonth(stylesheet));
+        currentbalance = this.banDoc.currentBalance(debtorAccount, this.banDoc.startPeriod("6M"), this.banDoc.endPeriod("6M"));
         credit = currentbalance.credit;
 
-        tableRow.addCell(CreditAmountColor(credit), "border-bottom right june " + classNameEvenRow() + " " + classNameAmount + " " + TodayMonth());
-        currentbalance = Banana.document.currentBalance(debtorAccount, Banana.document.startPeriod("7M"), Banana.document.endPeriod("7M"));
+        tableRow.addCell(this.FormatNumber(credit), "border-bottom right june " + this.classNameEvenRow(j) + " " + this.CreditAmountColor(credit) + " " + this.TodayMonth(stylesheet));
+        currentbalance = this.banDoc.currentBalance(debtorAccount, this.banDoc.startPeriod("7M"), this.banDoc.endPeriod("7M"));
         credit = currentbalance.credit;
 
-        tableRow.addCell(CreditAmountColor(credit), "border-bottom right july " + classNameEvenRow() + " " + classNameAmount + " " + TodayMonth());
-        currentbalance = Banana.document.currentBalance(debtorAccount, Banana.document.startPeriod("8M"), Banana.document.endPeriod("8M"));
+        tableRow.addCell(this.FormatNumber(credit), "border-bottom right july " + this.classNameEvenRow(j) + " " + this.CreditAmountColor(credit) + " " + this.TodayMonth(stylesheet));
+        currentbalance = this.banDoc.currentBalance(debtorAccount, this.banDoc.startPeriod("8M"), this.banDoc.endPeriod("8M"));
         credit = currentbalance.credit;
 
-        tableRow.addCell(CreditAmountColor(credit), "border-bottom right august " + classNameEvenRow() + " " + classNameAmount + " " + TodayMonth());
-        currentbalance = Banana.document.currentBalance(debtorAccount, Banana.document.startPeriod("9M"), Banana.document.endPeriod("9M"));
+        tableRow.addCell(this.FormatNumber(credit), "border-bottom right august " + this.classNameEvenRow(j) + " " + this.CreditAmountColor(credit) + " " + this.TodayMonth(stylesheet));
+        currentbalance = this.banDoc.currentBalance(debtorAccount, this.banDoc.startPeriod("9M"), this.banDoc.endPeriod("9M"));
         credit = currentbalance.credit;
 
-        tableRow.addCell(CreditAmountColor(credit), "border-bottom right september " + classNameEvenRow() + " " + classNameAmount + " " + TodayMonth());
-        currentbalance = Banana.document.currentBalance(debtorAccount, Banana.document.startPeriod("10M"), Banana.document.endPeriod("10M"));
+        tableRow.addCell(this.FormatNumber(credit), "border-bottom right september " + this.classNameEvenRow(j) + " " + this.CreditAmountColor(credit) + " " + this.TodayMonth(stylesheet));
+        currentbalance = this.banDoc.currentBalance(debtorAccount, this.banDoc.startPeriod("10M"), this.banDoc.endPeriod("10M"));
         credit = currentbalance.credit;
 
-        tableRow.addCell(CreditAmountColor(credit), "border-bottom right october " + classNameEvenRow() + " " + classNameAmount + " " + TodayMonth());
-        currentbalance = Banana.document.currentBalance(debtorAccount, Banana.document.startPeriod("11M"), Banana.document.endPeriod("11M"));
+        tableRow.addCell(this.FormatNumber(credit), "border-bottom right october " + this.classNameEvenRow(j) + " " + this.CreditAmountColor(credit) + " " + this.TodayMonth(stylesheet));
+        currentbalance = this.banDoc.currentBalance(debtorAccount, this.banDoc.startPeriod("11M"), this.banDoc.endPeriod("11M"));
         credit = currentbalance.credit;
 
-        tableRow.addCell(CreditAmountColor(credit), "border-bottom right november " + classNameEvenRow() + " " + classNameAmount + " " + TodayMonth());
-        currentbalance = Banana.document.currentBalance(debtorAccount, Banana.document.startPeriod("12M"), Banana.document.endPeriod("12M"));
+        tableRow.addCell(this.FormatNumber(credit), "border-bottom right november " + this.classNameEvenRow(j) + " " + this.CreditAmountColor(credit) + " " + this.TodayMonth(stylesheet));
+        currentbalance = this.banDoc.currentBalance(debtorAccount, this.banDoc.startPeriod("12M"), this.banDoc.endPeriod("12M"));
         credit = currentbalance.credit;
 
-        tableRow.addCell(CreditAmountColor(credit), "border-bottom right december " + classNameEvenRow() + " " + classNameAmount + " " + TodayMonth());
-        currentbalance = Banana.document.currentBalance(debtorAccount, Banana.document.startPeriod(), Banana.document.endPeriod());
+        tableRow.addCell(this.FormatNumber(credit), "border-bottom right december " + this.classNameEvenRow(j) + " " + this.CreditAmountColor(credit) + " " + this.TodayMonth(stylesheet));
+        currentbalance = this.banDoc.currentBalance(debtorAccount, this.banDoc.startPeriod(), this.banDoc.endPeriod());
         credit = currentbalance.credit;
 
-        tableRow.addCell(CreditAmountColor(credit), "border-bottom border-right right " + classNameEvenRow() + " " + classNameAmount);
+        tableRow.addCell(this.FormatNumber(credit), "border-bottom border-right right " + this.classNameEvenRow(j) + " " + this.CreditAmountColor(credit));
         tableRow = table.addRow();
 
         // Add the total of the debtor accounts
         j = j + 1;
-        tableRow.addCell("", "border-bottom border-left left " + classNameEvenRow());
-        tableRow.addCell("", "border-bottom left " + classNameEvenRow());
-        tableRow.addCell(reportlanguage.uncovered, "border-bottom left bold " + classNameEvenRow());
+        tableRow.addCell("", "border-bottom border-left left " + this.classNameEvenRow(j));
+        tableRow.addCell("", "border-bottom left " + this.classNameEvenRow(j));
+        tableRow.addCell(reportlanguage.uncovered, "border-bottom left bold " + this.classNameEvenRow(j));
 
-        tableRow.addCell(currency, "border-bottom center " + classNameEvenRow());
+        tableRow.addCell(currency, "border-bottom center " + this.classNameEvenRow(j));
 
-        currentbalance = Banana.document.currentBalance(debtorAccount, Banana.document.startPeriod(""));
+        currentbalance = this.banDoc.currentBalance(debtorAccount, this.banDoc.startPeriod(""));
         balance = currentbalance.opening;
 
-        tableRow.addCell(BalanceAmountColor(balance), "border-bottom right " + classNameEvenRow() + " " + classNameAmount);
-        currentbalance = Banana.document.currentBalance(debtorAccount, Banana.document.startPeriod("M"), Banana.document.endPeriod("M"));
+        tableRow.addCell(this.FormatNumber(balance), "border-bottom right " + this.classNameEvenRow(j) + " " + this.BalanceAmountColor(balance));
+        currentbalance = this.banDoc.currentBalance(debtorAccount, this.banDoc.startPeriod("M"), this.banDoc.endPeriod("M"));
         balance = currentbalance.balance;
 
-        tableRow.addCell(BalanceAmountColor(balance), "border-bottom right january " + classNameEvenRow() + " " + classNameAmount + " " + TodayMonth());
-        currentbalance = Banana.document.currentBalance(debtorAccount, Banana.document.startPeriod("2M"), Banana.document.endPeriod("2M"));
+        tableRow.addCell(this.FormatNumber(balance), "border-bottom right january " + this.classNameEvenRow(j) + " " + this.BalanceAmountColor(balance) + " " + this.TodayMonth(stylesheet));
+        currentbalance = this.banDoc.currentBalance(debtorAccount, this.banDoc.startPeriod("2M"), this.banDoc.endPeriod("2M"));
         balance = currentbalance.balance;
 
-        tableRow.addCell(BalanceAmountColor(balance), "border-bottom right february " + classNameEvenRow() + " " + classNameAmount + " " + TodayMonth());
-        currentbalance = Banana.document.currentBalance(debtorAccount, Banana.document.startPeriod("3M"), Banana.document.endPeriod("3M"));
+        tableRow.addCell(this.FormatNumber(balance), "border-bottom right february " + this.classNameEvenRow(j) + " " + this.BalanceAmountColor(balance) + " " + this.TodayMonth(stylesheet));
+        currentbalance = this.banDoc.currentBalance(debtorAccount, this.banDoc.startPeriod("3M"), this.banDoc.endPeriod("3M"));
         balance = currentbalance.balance;
 
-        tableRow.addCell(BalanceAmountColor(balance), "border-bottom right march " + classNameEvenRow() + " " + classNameAmount + " " + TodayMonth());
-        currentbalance = Banana.document.currentBalance(debtorAccount, Banana.document.startPeriod("4M"), Banana.document.endPeriod("4M"));
+        tableRow.addCell(this.FormatNumber(balance), "border-bottom right march " + this.classNameEvenRow(j) + " " + this.BalanceAmountColor(balance) + " " + this.TodayMonth(stylesheet));
+        currentbalance = this.banDoc.currentBalance(debtorAccount, this.banDoc.startPeriod("4M"), this.banDoc.endPeriod("4M"));
         balance = currentbalance.balance;
 
-        tableRow.addCell(BalanceAmountColor(balance), "border-bottom right april " + classNameEvenRow() + " " + classNameAmount + " " + TodayMonth());
-        currentbalance = Banana.document.currentBalance(debtorAccount, Banana.document.startPeriod("5M"), Banana.document.endPeriod("5M"));
+        tableRow.addCell(this.FormatNumber(balance), "border-bottom right april " + this.classNameEvenRow(j) + " " + this.BalanceAmountColor(balance) + " " + this.TodayMonth(stylesheet));
+        currentbalance = this.banDoc.currentBalance(debtorAccount, this.banDoc.startPeriod("5M"), this.banDoc.endPeriod("5M"));
         balance = currentbalance.balance;
 
-        tableRow.addCell(BalanceAmountColor(balance), "border-bottom right may " + classNameEvenRow() + " " + classNameAmount + " " + TodayMonth());
-        currentbalance = Banana.document.currentBalance(debtorAccount, Banana.document.startPeriod("6M"), Banana.document.endPeriod("6M"));
+        tableRow.addCell(this.FormatNumber(balance), "border-bottom right may " + this.classNameEvenRow(j) + " " + this.BalanceAmountColor(balance) + " " + this.TodayMonth(stylesheet));
+        currentbalance = this.banDoc.currentBalance(debtorAccount, this.banDoc.startPeriod("6M"), this.banDoc.endPeriod("6M"));
         balance = currentbalance.balance;
 
-        tableRow.addCell(BalanceAmountColor(balance), "border-bottom right june " + classNameEvenRow() + " " + classNameAmount + " " + TodayMonth());
-        currentbalance = Banana.document.currentBalance(debtorAccount, Banana.document.startPeriod("7M"), Banana.document.endPeriod("7M"));
+        tableRow.addCell(this.FormatNumber(balance), "border-bottom right june " + this.classNameEvenRow(j) + " " + this.BalanceAmountColor(balance) + " " + this.TodayMonth(stylesheet));
+        currentbalance = this.banDoc.currentBalance(debtorAccount, this.banDoc.startPeriod("7M"), this.banDoc.endPeriod("7M"));
         balance = currentbalance.balance;
 
-        tableRow.addCell(BalanceAmountColor(balance), "border-bottom right july " + classNameEvenRow() + " " + classNameAmount + " " + TodayMonth());
-        currentbalance = Banana.document.currentBalance(debtorAccount, Banana.document.startPeriod("8M"), Banana.document.endPeriod("8M"));
+        tableRow.addCell(this.FormatNumber(balance), "border-bottom right july " + this.classNameEvenRow(j) + " " + this.BalanceAmountColor(balance) + " " + this.TodayMonth(stylesheet));
+        currentbalance = this.banDoc.currentBalance(debtorAccount, this.banDoc.startPeriod("8M"), this.banDoc.endPeriod("8M"));
         balance = currentbalance.balance;
 
-        tableRow.addCell(BalanceAmountColor(balance), "border-bottom right august " + classNameEvenRow() + " " + classNameAmount + " " + TodayMonth());
-        currentbalance = Banana.document.currentBalance(debtorAccount, Banana.document.startPeriod("9M"), Banana.document.endPeriod("9M"));
+        tableRow.addCell(this.FormatNumber(balance), "border-bottom right august " + this.classNameEvenRow(j) + " " + this.BalanceAmountColor(balance) + " " + this.TodayMonth(stylesheet));
+        currentbalance = this.banDoc.currentBalance(debtorAccount, this.banDoc.startPeriod("9M"), this.banDoc.endPeriod("9M"));
         balance = currentbalance.balance;
 
-        tableRow.addCell(BalanceAmountColor(balance), "border-bottom right september " + classNameEvenRow() + " " + classNameAmount + " " + TodayMonth());
-        currentbalance = Banana.document.currentBalance(debtorAccount, Banana.document.startPeriod("10M"), Banana.document.endPeriod("10M"));
+        tableRow.addCell(this.FormatNumber(balance), "border-bottom right september " + this.classNameEvenRow(j) + " " + this.BalanceAmountColor(balance) + " " + this.TodayMonth(stylesheet));
+        currentbalance = this.banDoc.currentBalance(debtorAccount, this.banDoc.startPeriod("10M"), this.banDoc.endPeriod("10M"));
         balance = currentbalance.balance;
 
-        tableRow.addCell(BalanceAmountColor(balance), "border-bottom right october " + classNameEvenRow() + " " + classNameAmount + " " + TodayMonth());
-        currentbalance = Banana.document.currentBalance(debtorAccount, Banana.document.startPeriod("11M"), Banana.document.endPeriod("11M"));
+        tableRow.addCell(this.FormatNumber(balance), "border-bottom right october " + this.classNameEvenRow(j) + " " + this.BalanceAmountColor(balance) + " " + this.TodayMonth(stylesheet));
+        currentbalance = this.banDoc.currentBalance(debtorAccount, this.banDoc.startPeriod("11M"), this.banDoc.endPeriod("11M"));
         balance = currentbalance.balance;
 
-        tableRow.addCell(BalanceAmountColor(balance), "border-bottom right november " + classNameEvenRow() + " " + classNameAmount + " " + TodayMonth());
-        currentbalance = Banana.document.currentBalance(debtorAccount, Banana.document.startPeriod("12M"), Banana.document.endPeriod("12M"));
+        tableRow.addCell(this.FormatNumber(balance), "border-bottom right november " + this.classNameEvenRow(j) + " " + this.BalanceAmountColor(balance) + " " + this.TodayMonth(stylesheet));
+        currentbalance = this.banDoc.currentBalance(debtorAccount, this.banDoc.startPeriod("12M"), this.banDoc.endPeriod("12M"));
         balance = currentbalance.balance;
 
-        tableRow.addCell(BalanceAmountColor(balance), "border-bottom right december " + classNameEvenRow() + " " + classNameAmount + " " + TodayMonth());
-        currentbalance = Banana.document.currentBalance(debtorAccount, Banana.document.startPeriod(), Banana.document.endPeriod());
+        tableRow.addCell(this.FormatNumber(balance), "border-bottom right december " + this.classNameEvenRow(j) + " " + this.BalanceAmountColor(balance) + " " + this.TodayMonth(stylesheet));
+        currentbalance = this.banDoc.currentBalance(debtorAccount, this.banDoc.startPeriod(), this.banDoc.endPeriod());
         balance = currentbalance.balance;
 
-        tableRow.addCell(BalanceAmountColor(balance), "border-bottom border-right right " + classNameEvenRow() + " " + classNameAmount);
+        tableRow.addCell(this.FormatNumber(balance), "border-bottom border-right right " + this.classNameEvenRow(j) + " " + this.BalanceAmountColor(balance));
         tableRow = table.addRow();
       }
     }
 
     // Add the footer to the report
-    addFooter(report);
+    this.addFooter(report);
 
-    Banana.Report.preview(report, stylesheet);
+    return report;
 
+  }
+
+// Function to get the month from the date format "YYYY-MM-DD" and return the month in the language selected by the user (italian, english, french, german) 
+getMonthNumber(date) {
+  var month = date.substr(5, 2);
+  if (month === "01") {
+    return reportlanguage.january;
+  } else if (month === "02") {
+    return reportlanguage.february;
+  } else if (month === "03") {
+    return reportlanguage.march;
+  } else if (month === "04") {
+    return reportlanguage.april;
+  } else if (month === "05") {
+    return reportlanguage.may;
+  } else if (month === "06") {
+    return reportlanguage.june;
+  } else if (month === "07") {
+    return reportlanguage.july;
+  } else if (month === "08") {
+    return reportlanguage.august;
+  } else if (month === "09") {
+    return reportlanguage.september;
+  } else if (month === "10") {
+    return reportlanguage.october;
+  } else if (month === "11") {
+    return reportlanguage.november;
+  } else if (month === "12") {
+    return reportlanguage.december;
   }
 }
 
+TodayMonth(stylesheet) {
+  var today = new Date();
+  var month = today.getMonth() + 1;
+  // if column is the current month, return "yellow"
+  if (month === 1) {
+    return stylesheet.addStyle(".january", "background-color:#FFFF8A");
+  } else if (month === 2) {
+    stylesheet.addStyle(".february", "background-color:#FFFF8A");
+  } else if (month === 3) {
+    stylesheet.addStyle(".march", "background-color:#FFFF8A");
+  } else if (month === 4) {
+    stylesheet.addStyle(".april", "background-color:#FFFF8A");
+  } else if (month === 5) {
+    stylesheet.addStyle(".may", "background-color:#FFFF8A");
+  } else if (month === 6) {
+    stylesheet.addStyle(".june", "background-color:#FFFF8A");
+  } else if (month === 7) {
+    stylesheet.addStyle(".july", "background-color:#FFFF8A");
+  } else if (month === 8) {
+    stylesheet.addStyle(".august", "background-color:#FFFF8A");
+  } else if (month === 9) {
+    stylesheet.addStyle(".september", "background-color:#FFFF8A");
+  } else if (month === 10) {
+    stylesheet.addStyle(".october", "background-color:#FFFF8A");
+  } else if (month === 11) {
+    stylesheet.addStyle(".november", "background-color:#FFFF8A");
+  } else if (month === 12) {
+    stylesheet.addStyle(".december", "background-color:#FFFF8A");
+  }
+}
 
-  function setlanguage(lan) {
+// Function to print in green the credit and in red the debit over 0 CHF
 
-    if (Banana.document) {
+CreditAmountColor(number) {
+if (number > 0.00) {
+  var classNameAmount = "green";
+  return classNameAmount;
+}
+else {
+  var classNameAmount = "";
+  return classNameAmount;
+}
+}
 
-      lan = Banana.document.locale.substring(0, 2);
+BalanceAmountColor(number) {
+
+if (number > 0.00) {
+  var classNameAmount = "red";
+  return classNameAmount;
+}
+else {
+  var classNameAmount = "";
+  return classNameAmount;
+}
+
+}
+
+FormatNumber(number) {
+return Banana.Converter.toLocaleNumberFormat(number, 2, true);
+}
+
+classNameEvenRow(j) {
+if (j % 2 === 0) {
+  return "even_rows_background_color";
+}
+else {
+  return;
+}
+}
+
+  NextDate(startmonth, repeat) {
+  var startmonth = new Date(startmonth);
+  var nextdate;
+  if (repeat === "M") {
+    nextdate = new Date(startmonth.getFullYear(), startmonth.getMonth() + 1, startmonth.getDate());
+  }
+  else if (repeat === "2M") {
+    nextdate = new Date(startmonth.getFullYear(), startmonth.getMonth() + 2, startmonth.getDate());
+  }
+  else if (repeat === "3M") {
+    nextdate = new Date(startmonth.getFullYear(), startmonth.getMonth() + 3, startmonth.getDate());
+  }
+  else if (repeat === "4M") {
+    nextdate = new Date(startmonth.getFullYear(), startmonth.getMonth() + 4, startmonth.getDate());
+  }
+  else if (repeat === "6M") {
+    nextdate = new Date(startmonth.getFullYear(), startmonth.getMonth() + 6, startmonth.getDate());
+  }
+  else if (repeat === "Y") {
+    nextdate = new Date(startmonth.getFullYear() + 1, startmonth.getMonth(), startmonth.getDate());
+  }
+  else if (repeat === "") {
+    nextdate = startmonth;
+  }
+  else {
+    nextdate = startmonth;
+    banDoc.addMessage(reportlanguage.repeatwarning);
+  }
+
+  return Banana.Converter.toInternalDateFormat(nextdate);
+}
+
+
+  setlanguage(banDoc, lan) {
+
+    if (banDoc) {
+
+      lan = banDoc.locale.substring(0, 2);
 
     }
 
@@ -798,15 +806,15 @@ var PrintReport = class PrintReport {
   }
 
   /* Function that prints the header */
-  function addHeader(report, stylesheet) {
+  addHeader(banDoc, report, stylesheet) {
 
     var tableRow = report.addSection("header");
-    var company = Banana.document.info("AccountingDataBase", "Company");
-    var address1 = Banana.document.info("AccountingDataBase", "Address1");
-    var zip = Banana.document.info("AccountingDataBase", "Zip");
-    var city = Banana.document.info("AccountingDataBase", "City");
-    var email = Banana.document.info("AccountingDataBase", "Email");
-    var phone = Banana.document.info("AccountingDataBase", "Phone");
+    var company = banDoc.info("AccountingDataBase", "Company");
+    var address1 = banDoc.info("AccountingDataBase", "Address1");
+    var zip = banDoc.info("AccountingDataBase", "Zip");
+    var city = banDoc.info("AccountingDataBase", "City");
+    var email = banDoc.info("AccountingDataBase", "Email");
+    var phone = banDoc.info("AccountingDataBase", "Phone");
     var logoFormat = Banana.Report.logoFormat("Logo");
     var headerLogoSection = tableRow.addCell("", "");
     if (logoFormat != null) {
@@ -829,13 +837,13 @@ var PrintReport = class PrintReport {
 
 
   /* Function that prints the footer */
-  function addFooter(report) {
+  addFooter(report) {
     var footer = report.getFooter();
     footer.addText(Banana.Converter.toLocaleDateFormat(new Date()) + "" + "");
   }
 
   /* Function that adds styles for the report print */
-  function createStyleSheet() {
+  createStyleSheet() {
 
     var stylesheet = Banana.Report.newStyleSheet();
     var pageStyle = stylesheet.addStyle("@page");
@@ -894,3 +902,5 @@ var PrintReport = class PrintReport {
     return stylesheet;
 
   }
+
+}
