@@ -35,53 +35,53 @@ function TestPortfolioEvaluationReport() {
 }
 
 // This method will be called at the beginning of the test case
-TestPortfolioEvaluationReport.prototype.initTestCase = function() {
-   this.testLogger = Test.logger;
-   this.progressBar = Banana.application.progressBar;
-   this.fileNameList = [];
+TestPortfolioEvaluationReport.prototype.initTestCase = function () {
+    this.testLogger = Test.logger;
+    this.progressBar = Banana.application.progressBar;
+    this.fileNameList = [];
 
-   this.fileNameList.push("file:script/../test/testcases/portfolio_accounting_double_entry_tutorial.ac2");
+    this.fileNameList.push("file:script/../test/testcases/portfolio_accounting_double_entry_tutorial.ac2");
 }
 
 // This method will be called at the end of the test case
-TestPortfolioEvaluationReport.prototype.cleanupTestCase = function() {
+TestPortfolioEvaluationReport.prototype.cleanupTestCase = function () {
 
 }
 
 // This method will be called before every test method is executed
-TestPortfolioEvaluationReport.prototype.init = function() {
+TestPortfolioEvaluationReport.prototype.init = function () {
 
 }
 
 // This method will be called after every test method is executed
-TestPortfolioEvaluationReport.prototype.cleanup = function() {
+TestPortfolioEvaluationReport.prototype.cleanup = function () {
 
 }
 
-TestPortfolioEvaluationReport.prototype.testCompleteReport = function() {
+TestPortfolioEvaluationReport.prototype.testCompleteReport = function () {
     let parentLogger = this.testLogger;
-   this.progressBar.start(this.fileNameList.length);
+    this.progressBar.start(this.fileNameList.length);
     for (var i = 0; i < this.fileNameList.length; i++) {
         let fileName = this.fileNameList[i];
         if (!this.progressBar.step())
             break;
-        let banDoc=Banana.application.openDocument(fileName);
+        let banDoc = Banana.application.openDocument(fileName);
         this.testLogger = parentLogger.newLogger(Banana.IO.fileCompleteBaseName(fileName));
-        if(banDoc){
+        if (banDoc) {
             //Appraisal Report
-            let userParam= "Market Value";
-            let docInfo=getDocumentInfo(banDoc);
-            let itemsData=getItemsTableData(banDoc,docInfo);
-            let appraisalDataList=getAppraisalData(banDoc,docInfo,itemsData);
-            let portfolioTrData=getportfolioTrData(banDoc,docInfo,itemsData);
+            let userParam = "Market Value";
+            let docInfo = getDocumentInfo(banDoc);
+            let itemsData = getItemsTableData(banDoc, docInfo);
+            let appraisalDataList = getAppraisalData(banDoc, docInfo, itemsData);
+            let portfolioTrData = getportfolioTrData(banDoc, docInfo, itemsData);
             //Add the report
             let reportName = "FILENAME: " + fileName;
-            let report = printReport(appraisalDataList,portfolioTrData,userParam);
+            let report = printReport(appraisalDataList, portfolioTrData, userParam);
             this.testLogger.addReport(reportName, report);
 
-        }else{
+        } else {
             this.testLogger.addFatalError("File not found: " + fileName);
         }
-   }
+    }
 }
 

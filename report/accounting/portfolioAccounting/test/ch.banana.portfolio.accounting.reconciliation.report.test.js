@@ -35,60 +35,60 @@ function TestReconciliationReport() {
 }
 
 // This method will be called at the beginning of the test case
-TestReconciliationReport.prototype.initTestCase = function() {
-   this.testLogger = Test.logger;
-   this.progressBar = Banana.application.progressBar;
-   this.fileNameList = [];
+TestReconciliationReport.prototype.initTestCase = function () {
+    this.testLogger = Test.logger;
+    this.progressBar = Banana.application.progressBar;
+    this.fileNameList = [];
 
-   this.fileNameList.push("file:script/../test/testcases/portfolio_accounting_double_entry_tutorial.ac2");
-   this.fileNameList.push("file:script/../test/testcases/portfolio_accounting_double_entry_multi_currency_tutorial.ac2");
+    this.fileNameList.push("file:script/../test/testcases/portfolio_accounting_double_entry_tutorial.ac2");
+    this.fileNameList.push("file:script/../test/testcases/portfolio_accounting_double_entry_multi_currency_tutorial.ac2");
 }
 
 // This method will be called at the end of the test case
-TestReconciliationReport.prototype.cleanupTestCase = function() {
+TestReconciliationReport.prototype.cleanupTestCase = function () {
 
 }
 
 // This method will be called before every test method is executed
-TestReconciliationReport.prototype.init = function() {
+TestReconciliationReport.prototype.init = function () {
 
 }
 
 // This method will be called after every test method is executed
-TestReconciliationReport.prototype.cleanup = function() {
+TestReconciliationReport.prototype.cleanup = function () {
 
 }
 
-TestReconciliationReport.prototype.testDataStructure = function() {
+TestReconciliationReport.prototype.testDataStructure = function () {
     let parentLogger = this.testLogger;
-   this.progressBar.start(this.fileNameList.length);
+    this.progressBar.start(this.fileNameList.length);
     for (var i = 0; i < this.fileNameList.length; i++) {
         let fileName = this.fileNameList[i];
         if (!this.progressBar.step())
             break;
-        let banDoc=Banana.application.openDocument(fileName);
+        let banDoc = Banana.application.openDocument(fileName);
         this.testLogger = parentLogger.newLogger(Banana.IO.fileCompleteBaseName(fileName));
-        if(banDoc){
-            let reconciliationData={};
-            let accountsList=getAccountList(i);
-            let docInfo=getDocumentInfo(banDoc);
-            let itemsData=getItemsTableData(banDoc,docInfo);
-            let accountsDataList=getAccountsDataList(banDoc,docInfo,accountsList,itemsData);
-            reconciliationData.data=accountsDataList;
+        if (banDoc) {
+            let reconciliationData = {};
+            let accountsList = getAccountList(i);
+            let docInfo = getDocumentInfo(banDoc);
+            let itemsData = getItemsTableData(banDoc, docInfo);
+            let accountsDataList = getAccountsDataList(banDoc, docInfo, accountsList, itemsData);
+            reconciliationData.data = accountsDataList;
             let reportName = "FILENAME: " + fileName;
-            let report = printReport(reconciliationData,docInfo);
+            let report = printReport(reconciliationData, docInfo);
             this.testLogger.addReport(reportName, report);
-        }else{
+        } else {
             this.testLogger.addFatalError("File not found: " + fileName);
         }
-   }
+    }
 }
 
-function getAccountList(index){
-    accountList=[];
-    if(index==0)
-    accountList=['Swiss Shares','Bonds Holcim'];
-    else if(index==1)
-    accountList=['Shares Unicredit','Shares UBS','Bonds Bnp Paribas'];
+function getAccountList(index) {
+    accountList = [];
+    if (index == 0)
+        accountList = ['Shares', 'Bonds'];
+    else if (index == 1)
+        accountList = ['Shares EUR', 'Shares CHF', 'Bonds EUR'];
     return accountList;
 }
