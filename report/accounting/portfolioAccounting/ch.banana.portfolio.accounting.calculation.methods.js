@@ -18,7 +18,7 @@
  * 
  *********************************************************/
 
- function initJsonDoc() {
+function initJsonDoc() {
     var jsonDoc = {};
     jsonDoc.document = {};
     jsonDoc.document.dataUnitsfileVersion = "1.0.0";
@@ -42,7 +42,7 @@ function getReportHeader(report, docInfo) {
 
 }
 
-function getComboBoxElement(scriptId,title,label) {
+function getComboBoxElement(scriptId, title, label) {
 
     var item = "";
     //Read script settings
@@ -57,15 +57,15 @@ function getComboBoxElement(scriptId,title,label) {
         }
     }
     //A dialog window is opened asking the user to insert the desired period. By default is the accounting period
-    var selectedItem = Banana.Ui.getText(title,label,item);
+    var selectedItem = Banana.Ui.getText(title, label, item);
 
     //We take the values entered by the user and save them as "new default" values.
     //This because the next time the script will be executed, the dialog window will contains the new values.
     if (selectedItem) {
-        item=selectedItem;
+        item = selectedItem;
         //Save script settings
         var valueToString = JSON.stringify(item);
-        Banana.document.setScriptSettings(scriptId,valueToString);
+        Banana.document.setScriptSettings(scriptId, valueToString);
     } else {
         //User clicked cancel
         return false;
@@ -73,31 +73,31 @@ function getComboBoxElement(scriptId,title,label) {
     return item;
 }
 
-function getItemCurrency(itemData,item){
-    let itemcCurr="";
+function getItemCurrency(itemData, item) {
+    let itemcCurr = "";
 
-    for(var e in itemData){
-        if(itemData[e].item==item && itemData[e].currency!==""){
-            itemcCurr=itemData[e].currency;
+    for (var e in itemData) {
+        if (itemData[e].item == item && itemData[e].currency !== "") {
+            itemcCurr = itemData[e].currency;
             return itemcCurr;
         }
     }
 
 }
 
-function getCurrentRowData(banDoc,transList){
-    var currRowNr=banDoc.cursor.rowNr;
+function getCurrentRowData(banDoc, transList) {
+    var currRowNr = banDoc.cursor.rowNr;
 
-    if(transList){
+    if (transList) {
         for (var i = 0; i < transList.length; i++) {
-            if(transList[i].row==currRowNr){
-                currentRowData={};
-                currentRowData.date=transList[i].date;
-                currentRowData.description=transList[i].description;
-                currentRowData.debit=transList[i].debit;
-                currentRowData.credit=transList[i].credit;
-                currentRowData.amount=transList[i].amount;
-                currentRowData.rate=transList[i].rate;
+            if (transList[i].row == currRowNr) {
+                currentRowData = {};
+                currentRowData.date = transList[i].date;
+                currentRowData.description = transList[i].description;
+                currentRowData.debit = transList[i].debit;
+                currentRowData.credit = transList[i].credit;
+                currentRowData.amount = transList[i].amount;
+                currentRowData.rate = transList[i].rate;
 
                 return currentRowData;
             }
@@ -106,28 +106,28 @@ function getCurrentRowData(banDoc,transList){
 }
 
 
-function getDocumentInfo(banDoc){
+function getDocumentInfo(banDoc) {
 
-    var docInfo={};
+    var docInfo = {};
 
     //define if its a multicurrency accounting
-    let multiCurrency="120";
-    let multiCurrency_withVat="130";
-    docInfo.isMultiCurrency=false;
-    var fileNumber=banDoc.info("Base","FileTypeNumber");
-    if(fileNumber===multiCurrency || fileNumber===multiCurrency_withVat)
-        docInfo.isMultiCurrency=true;
+    let multiCurrency = "120";
+    let multiCurrency_withVat = "130";
+    docInfo.isMultiCurrency = false;
+    var fileNumber = banDoc.info("Base", "FileTypeNumber");
+    if (fileNumber === multiCurrency || fileNumber === multiCurrency_withVat)
+        docInfo.isMultiCurrency = true;
 
     //get the base currency
-    docInfo.baseCurrency=banDoc.info("AccountingDataBase","BasicCurrency");
+    docInfo.baseCurrency = banDoc.info("AccountingDataBase", "BasicCurrency");
 
     //get the accounts for the recording of exchange rate differences.
-    docInfo.accountExchangeRateProfit=banDoc.info("AccountingDataBase","AccountExchangeRateProfit");
-    docInfo.accountExchangeRateLoss=banDoc.info("AccountingDataBase","AccountExchangeRateLoss");
-    docInfo.company=banDoc.info("AccountingDataBase","Company");
-    docInfo.address=banDoc.info("AccountingDataBase","Address1");
-    docInfo.zip=banDoc.info("AccountingDataBase","Zip");
-    docInfo.city=banDoc.info("AccountingDataBase","City");
+    docInfo.accountExchangeRateProfit = banDoc.info("AccountingDataBase", "AccountExchangeRateProfit");
+    docInfo.accountExchangeRateLoss = banDoc.info("AccountingDataBase", "AccountExchangeRateLoss");
+    docInfo.company = banDoc.info("AccountingDataBase", "Company");
+    docInfo.address = banDoc.info("AccountingDataBase", "Address1");
+    docInfo.zip = banDoc.info("AccountingDataBase", "Zip");
+    docInfo.city = banDoc.info("AccountingDataBase", "City");
 
 
     return docInfo;
@@ -138,15 +138,15 @@ function getDocumentInfo(banDoc){
  * Reads the journal data and returns an array of objects with the information we need
  * @param {*} journal journal table
  */
- function getJournalData(docInfo,journal){
-    var journalData=[];
+function getJournalData(docInfo, journal) {
+    var journalData = [];
 
     for (var i = 0; i < journal.rowCount; i++) {
         var tRow = journal.row(i);
-        var jrRow={};
-        jrRow.date=tRow.value("JDate");
-        jrRow.doc=tRow.value("Doc");
-        jrRow.trId=tRow.value("JContraAccountGroup");
+        var jrRow = {};
+        jrRow.date = tRow.value("JDate");
+        jrRow.doc = tRow.value("Doc");
+        jrRow.trId = tRow.value("JContraAccountGroup");
         jrRow.item = tRow.value("ItemsId");
         jrRow.description = tRow.value("Description");
         jrRow.debitBase = tRow.value("JDebitAmount"); //debit value in base currency
@@ -154,7 +154,7 @@ function getDocumentInfo(banDoc){
         jrRow.balanceBase = tRow.value("JBalance"); //credit value base currency
         jrRow.qt = tRow.value("Quantity"); //credit value base currency
         jrRow.unitPrice = tRow.value("UnitPrice"); //credit value base currency
-        if(docInfo.isMultiCurrency){
+        if (docInfo.isMultiCurrency) {
             jrRow.debitCurr = tRow.value("JDebitAmountCurrency"); //debit value in base currency
             jrRow.creditCurr = tRow.value("JCreditAmountCurrency"); //credit value base currency
             jrRow.balanceCurr = tRow.value("JBalanceAccountCurrency"); //credit value base currency
@@ -171,15 +171,15 @@ function getDocumentInfo(banDoc){
  * saves the list of ids of all registrations in an array. each id is saved only once
  * @param {*} journalData 
  */
- function getTransactionsIdList(journalData){
-    var trIdElements=new Set();
-    var trIdList=[];
+function getTransactionsIdList(journalData) {
+    var trIdElements = new Set();
+    var trIdList = [];
 
-    for(var key in journalData){
+    for (var key in journalData) {
         trIdElements.add(journalData[key].trId);
     }
 
-    trIdList=Array.from(trIdElements);
+    trIdList = Array.from(trIdElements);
 
     return trIdList;
 
@@ -192,56 +192,56 @@ function getDocumentInfo(banDoc){
  * @param {*} currentRowData the current line transaction data
  * @returns an object with the calculation data.
  */
- function calculateShareSaleData(banDoc,docInfo,userParam,itemsData){
-    
-    let saleData={};
-    let item="";
-    let journal="";
-    let quantity="";
-    let marketPrice="";
-    let currExRate=""; //current exchange rate
-    let accExRate=""; //accounting exchange rate
-    let avgCost="";
-    let avgSharesValue="";
-    let totalSharesvalue="";
-    let saleResult="";
-    let exRateResult="";
-    let accountCard="";
-    let accountCardData="";
-    let itemAccount="";
-    let itemCardData=[];
-    
-    item=userParam.selectedItem;//get the item
-    itemAccount=getItemValue(itemsData,item,"account");//get the account of the item
+function calculateShareSaleData(banDoc, docInfo, userParam, itemsData) {
+
+    let saleData = {};
+    let item = "";
+    let journal = "";
+    let quantity = "";
+    let marketPrice = "";
+    let currExRate = ""; //current exchange rate
+    let accExRate = ""; //accounting exchange rate
+    let avgCost = "";
+    let avgSharesValue = "";
+    let totalSharesvalue = "";
+    let saleResult = "";
+    let exRateResult = "";
+    let accountCard = "";
+    let accountCardData = "";
+    let itemAccount = "";
+    let itemCardData = [];
+
+    item = userParam.selectedItem;//get the item
+    itemAccount = getItemValue(itemsData, item, "account");//get the account of the item
     //check if element exist
-    findElement(banDoc,item, itemsData,"item","Items table");
+    findElement(banDoc, item, itemsData, "item", "Items table");
     //get item card data to find the current average cost
     journal = banDoc.journal(banDoc.ORIGINTYPE_CURRENT, banDoc.ACCOUNTTYPE_NONE);
-    journalData=getJournalData(docInfo,journal);
-    accountCard=banDoc.currentCard(itemAccount);
-    accountCardData=getAccountCardData(docInfo,item,accountCard);
-    itemCardData=getItemCardDataList(accountCardData,journalData);
+    journalData = getJournalData(docInfo, journal);
+    accountCard = banDoc.currentCard(itemAccount);
+    accountCardData = getAccountCardData(docInfo, item, accountCard);
+    itemCardData = getItemCardDataList(accountCardData, journalData);
     //extract from the array the current avg cost value (accounting value)
-    if(itemCardData.length>=1){
-        avgCost=itemCardData.slice(-1)[0].accAvgCost;
+    if (itemCardData.length >= 1) {
+        avgCost = itemCardData.slice(-1)[0].accAvgCost;
     }
 
-    quantity=userParam.quantity;
-    marketPrice=userParam.marketPrice;
-    currExRate=userParam.currExRate;
-    accExRate=getAccountingCourse(item,itemsData,banDoc);
+    quantity = userParam.quantity;
+    marketPrice = userParam.marketPrice;
+    currExRate = userParam.currExRate;
+    accExRate = getAccountingCourse(item, itemsData, banDoc);
 
     //avgCost=getAverageCost(item,transList);
-    avgSharesValue=getSharesAvgValue(quantity,avgCost);
-    totalSharesvalue=getSharesTotalValue(quantity,marketPrice);
-    saleResult=getSaleResult(avgSharesValue,totalSharesvalue);
-    exRateResult=getExchangeResult(marketPrice,quantity,currExRate,accExRate);
+    avgSharesValue = getSharesAvgValue(quantity, avgCost);
+    totalSharesvalue = getSharesTotalValue(quantity, marketPrice);
+    saleResult = getSaleResult(avgSharesValue, totalSharesvalue);
+    exRateResult = getExchangeResult(marketPrice, quantity, currExRate, accExRate);
 
-    saleData.avgCost=avgCost;
-    saleData.avgSharesValue=avgSharesValue;
-    saleData.totalSharesvalue=totalSharesvalue;
-    saleData.saleResult=saleResult;
-    saleData.exRateResult=exRateResult;
+    saleData.avgCost = avgCost;
+    saleData.avgSharesValue = avgSharesValue;
+    saleData.totalSharesvalue = totalSharesvalue;
+    saleData.saleResult = saleResult;
+    saleData.exRateResult = exRateResult;
 
     return saleData;
 
@@ -255,53 +255,59 @@ function getDocumentInfo(banDoc){
  * @param {*} docInfo item selected by the user
  * @param {*} accountCard account card (table obj)
  */
- function getAccountCardData(docInfo,selectedItem,accountCard){
-    let transactions=[];
+function getAccountCardData(docInfo, selectedItem, accountCard) {
+    let transactions = [];
+    let accBaseBalance = "";
 
     for (var i = 0; i < accountCard.rowCount; i++) {
         let tRow = accountCard.row(i);
-        let trData={};
-        trData.rowNr=tRow.rowNr;
-        trData.doc=tRow.value("Doc");
-        trData.date=tRow.value("Date");
-        trData.trId=tRow.value("JContraAccountGroup");
+        let trData = {};
+        trData.rowNr = tRow.rowNr;
+        trData.doc = tRow.value("Doc");
+        trData.date = tRow.value("Date");
+        trData.trId = tRow.value("JContraAccountGroup");
         trData.item = tRow.value("ItemsId");
         trData.description = tRow.value("Description");
         trData.debitBase = tRow.value("JDebitAmount"); //debit value in base currency
         trData.creditBase = tRow.value("JCreditAmount"); //credit value base currency
-        trData.balanceBase = tRow.value("JBalance"); //credit value base currency
-        trData.unitPrice=tRow.value("UnitPrice");
-        if(docInfo.isMultiCurrency){
+        //trData.balanceBase = tRow.value("JBalance"); //Se il conto è usato per più items, il bilancio deve essere ripreso in altro modo.
+        trData.unitPrice = tRow.value("UnitPrice");
+        if (docInfo.isMultiCurrency) {
             trData.debitCurr = tRow.value("JDebitAmountAccountCurrency"); //debit value in base currency
             trData.creditCurr = tRow.value("JCreditAmountAccountCurrency"); //credit value base currency
             trData.balanceCurr = tRow.value("JBalanceAccountCurrency"); //credit value base currency
         }
-        trData.qt=tRow.value("Quantity");
+        trData.qt = tRow.value("Quantity");
 
-        /**
-         * 
-         */
-        if (trData.item===selectedItem){//each item transaction has the item id (isin)
+        if (trData.item === selectedItem) {//each item transaction has the item id (isin)
+            //Calculate the balance manually.
+            if (trData.debitBase !== "") {
+                accBaseBalance = Banana.SDecimal.add(accBaseBalance, trData.debitBase);
+            }
+            if (trData.creditBase !== "") {
+                accBaseBalance = Banana.SDecimal.subtract(accBaseBalance, trData.creditBase);
+            }
+            trData.balanceBase = accBaseBalance;
             transactions.push(trData);
         }
     }
-    if(transactions.length>0)
+    if (transactions.length > 0)
         return transactions;
-    else 
+    else
         return false;
 }
 
-function getItemCardDataList(accountCardData,journalData){
+function getItemCardDataList(accountCardData, journalData) {
 
-    SetSoldData(accountCardData,journalData);
+    SetSoldData(accountCardData, journalData);
     getQuantityBalance(accountCardData);
     getCurrentAccAvgCost(accountCardData);
 
-    if(accountCardData){
+    if (accountCardData) {
         return accountCardData;
     }
-    else{
-        return false;
+    else {
+        return "";
     }
 }
 
@@ -312,18 +318,18 @@ function getItemCardDataList(accountCardData,journalData){
  * @param {*} accountCardData 
  * @param {*} balanceCol 
  */
- function getCurrentAccAvgCost(accountCardData){
-    var context = {'decimals' : 2, 'mode' : Banana.SDecimal.HALF_EVEN};
-    for(var key in accountCardData){
+function getCurrentAccAvgCost(accountCardData) {
+    var context = { 'decimals': 2, 'mode': Banana.SDecimal.HALF_EVEN };
+    for (var key in accountCardData) {
         /**
          * if the balance sheet column in foreign currency exists, I am sure that it is a multi-currency account, 
          * so I take the value of the balance sheet in the currency of the asset, wich in case of an asset in the same currency as the base currency, 
          * the value is the same.
          */
-        if(accountCardData[key].balanceCurr)
-            accountCardData[key].accAvgCost=Banana.SDecimal.divide(accountCardData[key].balanceCurr,accountCardData[key].qtBalance,context);
+        if (accountCardData[key].balanceCurr)
+            accountCardData[key].accAvgCost = Banana.SDecimal.divide(accountCardData[key].balanceCurr, accountCardData[key].qtBalance, context);
         else
-            accountCardData[key].accAvgCost=Banana.SDecimal.divide(accountCardData[key].balanceBase,accountCardData[key].qtBalance,context);
+            accountCardData[key].accAvgCost = Banana.SDecimal.divide(accountCardData[key].balanceBase, accountCardData[key].qtBalance, context);
     }
 
     return accountCardData;
@@ -334,11 +340,11 @@ function getItemCardDataList(accountCardData,journalData){
  * @param {*} itemCardData 
  * @param {*} ref Indicates the name of the property in the object (column) from which the values to be summed are to be taken
  */
- function getSum(itemCardData,ref){
-    var sum="";
-    if(ref){
-        for(var key in itemCardData){
-            sum=Banana.SDecimal.add(sum,itemCardData[key][ref]);
+function getSum(itemCardData, ref) {
+    var sum = "";
+    if (ref) {
+        for (var key in itemCardData) {
+            sum = Banana.SDecimal.add(sum, itemCardData[key][ref]);
         }
     }
     return sum;
@@ -350,13 +356,13 @@ function getItemCardDataList(accountCardData,journalData){
  * @param {*} credRef credita data
  * @returns 
  */
-function getBalance(itemCardData,debRef,credRef){
-    var balance="";
-    if(debRef || credRef){
-        for(var key in itemCardData){
+function getBalance(itemCardData, debRef, credRef) {
+    var balance = "";
+    if (debRef || credRef) {
+        for (var key in itemCardData) {
             //At each iteration, I add the value found in dates to the value on the balance sheet and subtract the value found in credits.
-            balance=Banana.SDecimal.add(balance,itemCardData[key][debRef]);
-            balance=Banana.SDecimal.subtract(balance,itemCardData[key][credRef]);
+            balance = Banana.SDecimal.add(balance, itemCardData[key][debRef]);
+            balance = Banana.SDecimal.subtract(balance, itemCardData[key][credRef]);
         }
     }
     return balance;
@@ -370,12 +376,12 @@ function getBalance(itemCardData,debRef,credRef){
  * @param {*} accountCardData 
  * @param {*} journalData 
  */
- function SetSoldData(accountCardData,journalData){
+function SetSoldData(accountCardData, journalData) {
 
-    for(var key in accountCardData){
-        let trId=accountCardData[key].trId;
-        accountCardData[key].qt=getJournalValueFiltered(journalData,trId,"qt",);
-        accountCardData[key].unitPrice=getJournalValueFiltered(journalData,trId,"unitPrice");
+    for (var key in accountCardData) {
+        let trId = accountCardData[key].trId;
+        accountCardData[key].qt = getJournalValueFiltered(journalData, trId, "qt",);
+        accountCardData[key].unitPrice = getJournalValueFiltered(journalData, trId, "unitPrice");
     }
     return accountCardData
 }
@@ -385,22 +391,22 @@ function getBalance(itemCardData,debRef,credRef){
  * @param {*} accountCardData 
  * @returns 
  */
- function getQuantityBalance(accountCardData){
-    let amountBalance="";
-    for(var key in accountCardData){
-        amountBalance=Banana.SDecimal.add(amountBalance,accountCardData[key].qt);
-        accountCardData[key].qtBalance=amountBalance;
+function getQuantityBalance(accountCardData) {
+    let amountBalance = "";
+    for (var key in accountCardData) {
+        amountBalance = Banana.SDecimal.add(amountBalance, accountCardData[key].qt);
+        accountCardData[key].qtBalance = amountBalance;
     }
     return accountCardData;
 }
 
-function getJournalValueFiltered(journalData,trId,objProp){
+function getJournalValueFiltered(journalData, trId, objProp) {
 
-    let value="";
-    for(var key in journalData){
-        if(journalData[key].trId==trId && journalData[key][objProp]){
+    let value = "";
+    for (var key in journalData) {
+        if (journalData[key].trId == trId && journalData[key][objProp]) {
             //in the journal I should only have one entry line that corresponds to the control parameters.
-            value=journalData[key][objProp];
+            value = journalData[key][objProp];
             return value;
         }
     }
@@ -412,9 +418,9 @@ function getJournalValueFiltered(journalData,trId,objProp){
  * @param {*} trIdList list of id
  * @param {*} trId the transaction id
  */
- function transactionRefToTheItem(trIdList,trId){
-    for(var i=0;i<trIdList.length;i++){
-        if(trId===trIdList[i])
+function transactionRefToTheItem(trIdList, trId) {
+    for (var i = 0; i < trIdList.length; i++) {
+        if (trId === trIdList[i])
             return true;
     }
     return false;
@@ -424,38 +430,38 @@ function getJournalValueFiltered(journalData,trId,objProp){
  * Get the data from the transactions table only once
  * The isreport parameter identifies the script from which i call the method. for the report i need to take the amount in base currency in any case (method to be reviewed)
  */
- function getTransactionsTableData(banDoc,docInfo){
+function getTransactionsTableData(banDoc, docInfo) {
     var transactionsList = [];
     var trnsactionsTable = banDoc.table("Transactions");
 
 
     if (trnsactionsTable) {
         for (var i = 0; i < trnsactionsTable.rowCount; i++) {
-            var trData={};
+            var trData = {};
             var tRow = trnsactionsTable.row(i);
-            trData.row=tRow.rowNr;
-            trData.date=tRow.value("Date");
-            trData.doc=tRow.value("Doc");
-            trData.type=tRow.value("DocType");
-            trData.item=tRow.value("ItemsId");
-            trData.description=tRow.value("Description");
-            trData.debit=tRow.value("AccountDebit");
-            trData.credit=tRow.value("AccountCredit");
-            trData.qt=tRow.value("Quantity");
-            trData.unitPrice=tRow.value("UnitPrice");
+            trData.row = tRow.rowNr;
+            trData.date = tRow.value("Date");
+            trData.doc = tRow.value("Doc");
+            trData.type = tRow.value("DocType");
+            trData.item = tRow.value("ItemsId");
+            trData.description = tRow.value("Description");
+            trData.debit = tRow.value("AccountDebit");
+            trData.credit = tRow.value("AccountCredit");
+            trData.qt = tRow.value("Quantity");
+            trData.unitPrice = tRow.value("UnitPrice");
             //check if it is a multichange file or not
-            if(docInfo.isMultiCurrency){
-                trData.amountCurr=tRow.value("AmountCurrency");
-                trData.currency=tRow.value("ExchangeCurrency");
-                trData.rate=tRow.value("ExchangeRate");
+            if (docInfo.isMultiCurrency) {
+                trData.amountCurr = tRow.value("AmountCurrency");
+                trData.currency = tRow.value("ExchangeCurrency");
+                trData.rate = tRow.value("ExchangeRate");
             }
-            trData.amountBase=tRow.value("Amount");
+            trData.amountBase = tRow.value("Amount");
 
 
             transactionsList.push(trData);
 
         }
-    } else(Banana.console.debug("no transactions table"));
+    } else (Banana.console.debug("no transactions table"));
 
     return transactionsList;
 }
@@ -463,16 +469,16 @@ function getJournalValueFiltered(journalData,trId,objProp){
 /**
  * Ritorna il cambio contabile calcolato sulla base della differenza tra i saldi nelle due valute ad una certa data.
  */
-function getAccountingCourse(item,itemsData,banDoc){
+function getAccountingCourse(item, itemsData, banDoc) {
 
-    var accData=getItemBalance(banDoc,item,itemsData);
-    var course="";
+    var accData = getItemBalance(banDoc, item, itemsData);
+    var course = "";
 
-   baseCurrBalance =accData.currbalance.balance;
-   assetCurrBalance=accData.currbalance.balanceCurrency;
+    baseCurrBalance = accData.currbalance.balance;
+    assetCurrBalance = accData.currbalance.balanceCurrency;
 
     //divido il saldo in moneta base per quello del asset
-    course=Banana.SDecimal.divide(baseCurrBalance,assetCurrBalance);
+    course = Banana.SDecimal.divide(baseCurrBalance, assetCurrBalance);
 
     return course;
 
@@ -482,10 +488,10 @@ function getAccountingCourse(item,itemsData,banDoc){
  * 
  * Ritorna il valore medio di un azione.
  */
-function getSharesAvgValue(quantity,avgCost){
-    var avgValue="";
+function getSharesAvgValue(quantity, avgCost) {
+    var avgValue = "";
 
-    avgValue=Banana.SDecimal.multiply(quantity,avgCost);
+    avgValue = Banana.SDecimal.multiply(quantity, avgCost);
 
     return avgValue;
 }
@@ -494,10 +500,10 @@ function getSharesAvgValue(quantity,avgCost){
  * 
  * Ritorna il valore totale di un azione.
  */
- function getSharesTotalValue(quantity,marketPrice){
-    var totalValue="";
+function getSharesTotalValue(quantity, marketPrice) {
+    var totalValue = "";
 
-    totalValue=Banana.SDecimal.multiply(quantity,marketPrice);
+    totalValue = Banana.SDecimal.multiply(quantity, marketPrice);
 
     return totalValue;
 }
@@ -505,78 +511,78 @@ function getSharesAvgValue(quantity,avgCost){
 /**
  * Calcola il risultato di vendita.
  */
-function getSaleResult(avgSharesValue,totalSharesvalue){
-    var saleResult="";
+function getSaleResult(avgSharesValue, totalSharesvalue) {
+    var saleResult = "";
 
-    saleResult=Banana.SDecimal.subtract(totalSharesvalue,avgSharesValue);
+    saleResult = Banana.SDecimal.subtract(totalSharesvalue, avgSharesValue);
 
 
     return saleResult;
 
 }
 
-function getExchangeResult(marketPrice,quantity,currExRate,accExRate){
-    var exResult="";
-    var accAmount="";
-    var currAmount="";
+function getExchangeResult(marketPrice, quantity, currExRate, accExRate) {
+    var exResult = "";
+    var accAmount = "";
+    var currAmount = "";
 
-    if(!currExRate)
-        currExRate=accExRate;//if thr user leaves empty this field we consider the current exchange rate the same as the accounting change rate.
+    if (!currExRate)
+        currExRate = accExRate;//if thr user leaves empty this field we consider the current exchange rate the same as the accounting change rate.
 
-    accAmount=Banana.SDecimal.multiply(accExRate,Banana.SDecimal.multiply(marketPrice,quantity));//valore al cambio contabile
-    currAmount=Banana.SDecimal.multiply(currExRate,Banana.SDecimal.multiply(marketPrice,quantity));//valore al cambiol corrente
-    exResult=Banana.SDecimal.subtract(currAmount,accAmount);
+    accAmount = Banana.SDecimal.multiply(accExRate, Banana.SDecimal.multiply(marketPrice, quantity));//valore al cambio contabile
+    currAmount = Banana.SDecimal.multiply(currExRate, Banana.SDecimal.multiply(marketPrice, quantity));//valore al cambiol corrente
+    exResult = Banana.SDecimal.subtract(currAmount, accAmount);
 
     return exResult;
 }
 
-function getItemBalance(banDoc,item,itemsData){
-    var accBalance={};
+function getItemBalance(banDoc, item, itemsData) {
+    var accBalance = {};
 
-    accBalance.account=getItemValue(itemsData,item,"account");
-    accBalance.currbalance=banDoc.currentBalance(accBalance.account);
+    accBalance.account = getItemValue(itemsData, item, "account");
+    accBalance.currbalance = banDoc.currentBalance(accBalance.account);
 
     return accBalance;
 }
 
-function getItemValue(itemsData,item,value){
-    if(itemsData){
-        for(var e in itemsData){
-            if(itemsData[e].item==item && itemsData[e][value]!=""){
+function getItemValue(itemsData, item, value) {
+    if (itemsData) {
+        for (var e in itemsData) {
+            if (itemsData[e].item == item && itemsData[e][value] != "") {
                 return itemsData[e][value];
             }
         }
-    }else 
+    } else
         return false;
 }
 
 /**
  * Ritorna i dati presenti nella tabella conti.
  */
-function getAccountsTableData(banDoc,docInfo){
-    let accountsData=[];
-    let accTable=banDoc.table("Accounts");
+function getAccountsTableData(banDoc, docInfo) {
+    let accountsData = [];
+    let accTable = banDoc.table("Accounts");
 
-    if(!accTable){
+    if (!accTable) {
         accountsData;
     }
 
     for (var i = 0; i < accTable.rowCount; i++) {
         var tRow = accTable.row(i);
-        var accRow={};
-        accRow.rowNr=tRow.rowNr;
+        var accRow = {};
+        accRow.rowNr = tRow.rowNr;
         accRow.group = tRow.value("Group");
         accRow.account = tRow.value("Account");
         accRow.description = tRow.value("Description");
         accRow.bClass = tRow.value("BClass");
         accRow.sumIn = tRow.value("Gr");
         accRow.bankAccount = tRow.value("BankAccount");
-        accRow.exchangeRateDiffAcc=tRow.value("AccountExchangeDifference");
-        if(docInfo.isMultiCurrency)
-            accRow.currency=tRow.value("Currency");       
+        accRow.exchangeRateDiffAcc = tRow.value("AccountExchangeDifference");
+        if (docInfo.isMultiCurrency)
+            accRow.currency = tRow.value("Currency");
         //...
 
-        if(accRow.account || accRow.group)
+        if (accRow.account || accRow.group)
             accountsData.push(accRow);
     }
 
@@ -589,30 +595,30 @@ function getAccountsTableData(banDoc,docInfo){
  * Retrieves item information from the items table
  * @returns 
  */
-function getItemsTableData(banDoc,docInfo){
+function getItemsTableData(banDoc, docInfo) {
     //get the items list from the items table
-    var itemsData=[];
+    var itemsData = [];
     let table = banDoc.table("Items");
     if (!table) {
         return itemsData;
     }
     for (var i = 0; i < table.rowCount; i++) {
         var tRow = table.row(i);
-        var itemData={};
-        itemData.rowNr=tRow.rowNr;
+        var itemData = {};
+        itemData.rowNr = tRow.rowNr;
         itemData.item = tRow.value("ItemsId");
-        itemData.description=tRow.value("Description");
-        itemData.account=tRow.value("Account");
-        itemData.currentQt=tRow.value("QuantityCurrent");
-        itemData.valueCurrent=tRow.value("ValueCurrent");
-        itemData.sumIn=tRow.value("Gr");
-        itemData.group=tRow.value("Group");
-        itemData.expiryDate=tRow.value("ExpiryDate");
-        itemData.interestRate=tRow.value("Notes");
-        itemData.unitPriceCurrent=tRow.value("UnitPriceCurrent");
-        itemData.currency="";
-        if(docInfo.isMultiCurrency)
-            itemData.currency=tRow.value("Currency");
+        itemData.description = tRow.value("Description");
+        itemData.account = tRow.value("Account");
+        itemData.currentQt = tRow.value("QuantityCurrent");
+        itemData.valueCurrent = tRow.value("ValueCurrent");
+        itemData.sumIn = tRow.value("Gr");
+        itemData.group = tRow.value("Group");
+        itemData.expiryDate = tRow.value("ExpiryDate");
+        itemData.interestRate = tRow.value("Notes");
+        itemData.unitPriceCurrent = tRow.value("UnitPriceCurrent");
+        itemData.currency = "";
+        if (docInfo.isMultiCurrency)
+            itemData.currency = tRow.value("Currency");
         if (itemsData && itemData.item)//only if the item has an id (isin)
             itemsData.push(itemData);
     }
@@ -623,18 +629,18 @@ function getItemsTableData(banDoc,docInfo){
  * @param {*} refGroup reference group.
  * @param {*} tabItemsData 
  */
-function getItemRowNr(refGroup,tabItemsData){
-    var refNr="";
-    for(var r in tabItemsData){
-        tRow=tabItemsData[r];
-        if(refGroup==tRow.group){
-            refNr=tRow.rowNr;
+function getItemRowNr(refGroup, tabItemsData) {
+    var refNr = "";
+    for (var r in tabItemsData) {
+        tRow = tabItemsData[r];
+        if (refGroup == tRow.group) {
+            refNr = tRow.rowNr;
         }
     }
     // format the number so that it is added after the line I have taken as a reference.--> if row = 6 became 6.6
-    if(refNr){
-        refNr=Banana.SDecimal.subtract(refNr,"1");
-        refNr=refNr+"."+refNr;
+    if (refNr) {
+        refNr = Banana.SDecimal.subtract(refNr, "1");
+        refNr = refNr + "." + refNr;
     }
     return refNr;
 }
@@ -649,15 +655,15 @@ function getItemRowNr(refGroup,tabItemsData){
  * @param {*} qt 
  * @param {*} debitAmount 
  */
-function setSign(amount,qt,debitAmount){
-    var newAmount="";
+function setSign(amount, qt, debitAmount) {
+    var newAmount = "";
 
-    if(!amount){
+    if (!amount) {
         return newAmount;
     }
 
-    if((qt.includes("-"))|| debitAmount!=="" && qt==""){
-        newAmount="-"+amount;
+    if ((qt.includes("-")) || debitAmount !== "" && qt == "") {
+        newAmount = "-" + amount;
         return newAmount;
     }
 
@@ -669,11 +675,11 @@ function setSign(amount,qt,debitAmount){
  * @param {*} transactions 
  * @returns 
  */
-function sumArrayElements(objArray,property){
-    var sum="";
+function sumArrayElements(objArray, property) {
+    var sum = "";
 
-    for(var key in objArray){
-        sum=Banana.SDecimal.add(sum,objArray[key][property]);
+    for (var key in objArray) {
+        sum = Banana.SDecimal.add(sum, objArray[key][property]);
     }
 
 
@@ -686,144 +692,144 @@ function hexToHSL(H, hue, saturation, lightness) {
     // Convert hex to RGB first
     let r = 0, g = 0, b = 0;
     if (H.length == 4) {
-      r = "0x" + H[1] + H[1];
-      g = "0x" + H[2] + H[2];
-      b = "0x" + H[3] + H[3];
+        r = "0x" + H[1] + H[1];
+        g = "0x" + H[2] + H[2];
+        b = "0x" + H[3] + H[3];
     } else if (H.length == 7) {
-      r = "0x" + H[1] + H[2];
-      g = "0x" + H[3] + H[4];
-      b = "0x" + H[5] + H[6];
+        r = "0x" + H[1] + H[2];
+        g = "0x" + H[3] + H[4];
+        b = "0x" + H[5] + H[6];
     }
     // Then to HSL
     r /= 255;
     g /= 255;
     b /= 255;
-    let cmin = Math.min(r,g,b),
-        cmax = Math.max(r,g,b),
+    let cmin = Math.min(r, g, b),
+        cmax = Math.max(r, g, b),
         delta = cmax - cmin,
         h = 0,
         s = 0,
         l = 0;
-  
+
     if (delta == 0)
-      h = 0;
+        h = 0;
     else if (cmax == r)
-      h = ((g - b) / delta) % 6;
+        h = ((g - b) / delta) % 6;
     else if (cmax == g)
-      h = (b - r) / delta + 2;
+        h = (b - r) / delta + 2;
     else
-      h = (r - g) / delta + 4;
-  
+        h = (r - g) / delta + 4;
+
     h = Math.round(h * 60);
-  
+
     if (h < 0)
-      h += 360;
-  
+        h += 360;
+
     l = (cmax + cmin) / 2;
     s = delta == 0 ? 0 : delta / (1 - Math.abs(2 * l - 1));
     s = +(s * 100).toFixed(1);
     l = +(l * 100).toFixed(1);
-  
-  
+
+
     // eventually overwrite values
     if (hue) {
-      h = hue;
+        h = hue;
     }
     if (saturation) {
-      s = saturation;
+        s = saturation;
     }
     if (lightness) {
-      l = lightness;
+        l = lightness;
     }
-  
-    return "hsl(" + h + "," + s + "%," + l + "%)"
-  }
 
-  
-  function HSLToHex(hslColor) {
-  
+    return "hsl(" + h + "," + s + "%," + l + "%)"
+}
+
+
+function HSLToHex(hslColor) {
+
     // hsl(167,47.3%,39.4%)
-  
+
     let h = '';
     let s = '';
     let l = '';
-  
+
     let regexp = /hsl\(\s*(\d+)\s*,\s*(\d+(?:\.\d+)?%)\s*,\s*(\d+(?:\.\d+)?%)\)/g;
     let res = regexp.exec(hslColor).slice(1);
     h = res[0];
-    s = res[1].replace(/%/,'');
-    l = res[2].replace(/%/,'');
+    s = res[1].replace(/%/, '');
+    l = res[2].replace(/%/, '');
     //Banana.console.log("Hue: " + res[0] + "\nSaturation: " + res[1] + "\nValue: " + res[2]);
-  
-  
+
+
     //.... (h,s,l)
     s /= 100;
     l /= 100;
-  
+
     let c = (1 - Math.abs(2 * l - 1)) * s,
         x = c * (1 - Math.abs((h / 60) % 2 - 1)),
-        m = l - c/2,
+        m = l - c / 2,
         r = 0,
-        g = 0, 
-        b = 0; 
-  
+        g = 0,
+        b = 0;
+
     if (0 <= h && h < 60) {
-      r = c; g = x; b = 0;
+        r = c; g = x; b = 0;
     } else if (60 <= h && h < 120) {
-      r = x; g = c; b = 0;
+        r = x; g = c; b = 0;
     } else if (120 <= h && h < 180) {
-      r = 0; g = c; b = x;
+        r = 0; g = c; b = x;
     } else if (180 <= h && h < 240) {
-      r = 0; g = x; b = c;
+        r = 0; g = x; b = c;
     } else if (240 <= h && h < 300) {
-      r = x; g = 0; b = c;
+        r = x; g = 0; b = c;
     } else if (300 <= h && h < 360) {
-      r = c; g = 0; b = x;
+        r = c; g = 0; b = x;
     }
     // Having obtained RGB, convert channels to hex
     r = Math.round((r + m) * 255).toString(16);
     g = Math.round((g + m) * 255).toString(16);
     b = Math.round((b + m) * 255).toString(16);
-  
+
     // Prepend 0s, if necessary
     if (r.length == 1)
-      r = "0" + r;
+        r = "0" + r;
     if (g.length == 1)
-      g = "0" + g;
+        g = "0" + g;
     if (b.length == 1)
-      b = "0" + b;
-  
-    return "#" + r + g + b;
-  }
+        b = "0" + b;
 
-  /**
-   * Returns an object with colour gradients for the report
-   * @param {*} HexColor the base color.
-   */
-  function getColors(HexColor){
-    let colors={};
+    return "#" + r + g + b;
+}
+
+/**
+ * Returns an object with colour gradients for the report
+ * @param {*} HexColor the base color.
+ */
+function getColors(HexColor) {
+    let colors = {};
 
     //change the colors properties
-    colors.hslColorEvenTableRow=hexToHSL(HexColor,'235','44','95');
-    colors.hslColorOddTableRow=hexToHSL(HexColor,'231', '45', '85');
+    colors.hslColorEvenTableRow = hexToHSL(HexColor, '235', '44', '95');
+    colors.hslColorOddTableRow = hexToHSL(HexColor, '231', '45', '85');
 
     //Set back the colors to HEX format
     colors.hslColorEvenTableRow = HSLToHex(colors.hslColorEvenTableRow);
     colors.hslColorOddTableRow = HSLToHex(colors.hslColorOddTableRow);
 
     return colors;
-  }
+}
 
-  function checkIfNumberisEven(number){
-      isEven=false;
+function checkIfNumberisEven(number) {
+    isEven = false;
 
-      if(number%2==0)
-        isEven=true;
-    
-        return isEven;
-  }
+    if (number % 2 == 0)
+        isEven = true;
 
-  
+    return isEven;
+}
+
+
 function setVariables(variables, baseColor) {
     /* Variables that set the colors */
     variables.$baseColor = baseColor;
@@ -895,22 +901,22 @@ function replaceVariables(cssText, variables) {
  * @param {*} refProp the property to be searched in the data list
  * @param {*} refTableName the name of the table where the param is searched.
  */
- function findElement(banDoc,userParam, listData,refProp,refTableName){
-     //define error messages
-     let ELEMENT_NOT_FOUND_IN_ACCOUNTING="ELEMENT_NOT_FOUND_IN_ACCOUNTING";
-     let lang='en';
-     let msg=getErrorMessage(ELEMENT_NOT_FOUND_IN_ACCOUNTING,lang,userParam,refTableName);
+function findElement(banDoc, userParam, listData, refProp, refTableName) {
+    //define error messages
+    let ELEMENT_NOT_FOUND_IN_ACCOUNTING = "ELEMENT_NOT_FOUND_IN_ACCOUNTING";
+    let lang = 'en';
+    let msg = getErrorMessage(ELEMENT_NOT_FOUND_IN_ACCOUNTING, lang, userParam, refTableName);
 
-    for(var key in listData){
+    for (var key in listData) {
         //set to lower case the strings
-        let ref_lower=listData[key][refProp].toLowerCase();
-        let userParam_lower=userParam.toLowerCase();
-        if((userParam_lower && ref_lower) && userParam_lower.includes(ref_lower)){//check the strings after the lower case.
+        let ref_lower = listData[key][refProp].toLowerCase();
+        let userParam_lower = userParam.toLowerCase();
+        if ((userParam_lower && ref_lower) && userParam_lower.includes(ref_lower)) {//check the strings after the lower case.
             return listData[key][refProp];//return the original (not formatted value)
         }
     }
     //element not found in the listData, display a message
-    banDoc.addMessage(msg,ELEMENT_NOT_FOUND_IN_ACCOUNTING);
+    banDoc.addMessage(msg, ELEMENT_NOT_FOUND_IN_ACCOUNTING);
 
     return userParam;
 
@@ -919,14 +925,14 @@ function replaceVariables(cssText, variables) {
 /**
  * Returns true if it is a multi-currency accounting
  */
-function isMultiCurrency(banDoc){
+function isMultiCurrency(banDoc) {
 
-    var FileTypeNr = banDoc.info("Base","FileTypeNumber");
-    if (FileTypeNr == "120" || FileTypeNr =="130"){
-        let NOT_AVAILABLE_WITH_MULTI_CURRENCY="NOT_AVAILABLE_WITH_MULTI_CURRENCY";
-        let lang='en';
-        let msg=getErrorMessage(NOT_AVAILABLE_WITH_MULTI_CURRENCY,lang,"","");
-        banDoc.addMessage(msg,NOT_AVAILABLE_WITH_MULTI_CURRENCY);
+    var FileTypeNr = banDoc.info("Base", "FileTypeNumber");
+    if (FileTypeNr == "120" || FileTypeNr == "130") {
+        let NOT_AVAILABLE_WITH_MULTI_CURRENCY = "NOT_AVAILABLE_WITH_MULTI_CURRENCY";
+        let lang = 'en';
+        let msg = getErrorMessage(NOT_AVAILABLE_WITH_MULTI_CURRENCY, lang, "", "");
+        banDoc.addMessage(msg, NOT_AVAILABLE_WITH_MULTI_CURRENCY);
         return true;
     }
 
@@ -934,15 +940,15 @@ function isMultiCurrency(banDoc){
 
 }
 
-function getErrorMessage(errorId, lang,userParam,refTableName){
+function getErrorMessage(errorId, lang, userParam, refTableName) {
     if (!lang)
-    lang = 'en';
+        lang = 'en';
     switch (errorId) {
         case "ELEMENT_NOT_FOUND_IN_ACCOUNTING":
             if (lang == "en")
-                return "Element: "+userParam+" not found in "+refTableName;
+                return "Element: " + userParam + " not found in " + refTableName;
             else
-                return "Element: "+userParam+" not found in "+refTableName;
+                return "Element: " + userParam + " not found in " + refTableName;
         case "ID_ERR_VERSION_NOTSUPPORTED":
             return "This script does not run with your current version of Banana Accounting.\nMinimum version required: %1.\nTo update or for more information click on Help";
         case "ID_ERR_LICENSE_NOTVALID":
@@ -962,8 +968,8 @@ function verifyBananaVersion(banDoc) {
 
     let BAN_VERSION_MIN = "10.0.10";
     let BAN_DEV_VERSION_MIN = "";
-    let ID_ERR_VERSION_NOTSUPPORTED="ID_ERR_VERSION_NOTSUPPORTED";
-    let ID_ERR_LICENSE_NOTVALID="ID_ERR_LICENSE_NOTVALID";
+    let ID_ERR_VERSION_NOTSUPPORTED = "ID_ERR_VERSION_NOTSUPPORTED";
+    let ID_ERR_LICENSE_NOTVALID = "ID_ERR_LICENSE_NOTVALID";
     let CURR_VERSION = bananaRequiredVersion(BAN_VERSION_MIN, BAN_DEV_VERSION_MIN);
     let CURR_LICENSE = isBananaAdvanced();
 
@@ -982,7 +988,7 @@ function verifyBananaVersion(banDoc) {
 }
 
 function bananaRequiredVersion(requiredVersion, expmVersion) {
-     //Check Banana version
+    //Check Banana version
     if (expmVersion) {
         requiredVersion = requiredVersion + "." + expmVersion;
     }
