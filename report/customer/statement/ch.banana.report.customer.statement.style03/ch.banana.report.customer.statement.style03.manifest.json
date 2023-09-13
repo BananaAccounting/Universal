@@ -1,0 +1,18 @@
+{
+    "category": "invoice statement",
+    "country":"universal",
+    "countryCode":"",
+    "description": "Customer Statement (banana+)",
+    "description.it": "Estratto cliente (banana+)",
+    "description.fr": "Extrait de compte client (banana+)",
+    "description.de": "Kundenauszug (banana+)",
+    "description.nl": "Rekeninguittreksel klant (banana+)",
+    "language":"",
+    "publisher": "Banana.ch",
+    "title": "Customer Statement (banana+)",
+    "title.it": "Estratto cliente (banana+)",
+    "title.fr": "Extrait de compte client (banana+)",
+    "title.de": "Kundenauszug (banana+)",
+    "title.nl": "Rekeninguittreksel klant (banana+)",
+    "version": "1.0"
+}
