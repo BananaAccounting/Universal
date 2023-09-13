@@ -16,12 +16,12 @@
 // @api = 1.0
 // @pubdate = 2023-09-13
 // @publisher = Banana.ch SA
-// @description = Customer Statement (banana+)
-// @description.it = Estratto cliente (banana+)
-// @description.de = Kundenauszug (banana+)
-// @description.fr = Extrait de compte client (banana+)
-// @description.nl = Rekeninguittreksel klant (banana+)
-// @description.en = Customer statement (banana+)
+// @description = Customer Statement (Banana+)
+// @description.it = Estratto cliente (Banana+)
+// @description.de = Kundenauszug (Banana+)
+// @description.fr = Extrait de compte client (Banana+)
+// @description.nl = Rekeninguittreksel klant (Banana+)
+// @description.en = Customer statement (Banana+)
 // @doctype = *
 // @task = report.customer.statement
 
