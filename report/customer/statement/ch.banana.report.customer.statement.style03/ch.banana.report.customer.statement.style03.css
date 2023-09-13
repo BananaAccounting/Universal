@@ -1,0 +1,205 @@
+/* Update 2023-09-13  */
+
+@page {
+    margin-top: 0.0cm;
+    margin-bottom: 0.0cm;
+    margin-left: 0.0cm;
+    margin-right: 0.0cm;
+}
+
+.pageReset {
+    counter-reset: page;
+}
+
+body {
+    font-size: 10pt;
+    font-family: $font_family;
+}
+
+.amount {
+    text-align: right;
+}
+
+.center {
+    text-align: center;
+}
+
+.left {
+    text-align: left;
+}
+
+.right {
+    text-align: right;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.title {
+    font-size: 18pt;
+}
+
+.items_table_header {
+    font-weight: bold;
+    background-color: #ffffff;
+    color: $color;
+    font-size: 9pt;
+}
+
+.items_table_header td {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-bottom: thin solid black;
+}
+
+.total {
+    font-size: 10pt;
+}
+
+.border-bottom {
+    border-bottom: thin solid black;
+}
+
+.padding-right {
+    padding-right: 3px;
+}
+
+.padding-left {
+    padding-left: 3px;
+}
+
+.logo {
+    margin-top: 1.2cm;
+    margin-left: 1.34cm;
+    margin-right: 1.2cm;
+    position: absolute;
+}
+
+.header_text {
+    margin-top: 1.2cm;
+    margin-left: 1.2cm;
+    margin-right: 1.2cm;
+    text-align: right;
+    position: absolute;
+}
+
+.header_rows {
+    font-size: 10pt;
+}
+
+.repTableCol1 {
+    width: 9%;
+}
+
+.repTableCol2 {
+    width: 8%;
+}
+
+.repTableCol3 {
+    width: 11%;
+}
+
+.repTableCol4 {
+    width: 11%;
+}
+
+.repTableCol5 {
+    width: 11%;
+}
+
+.repTableCol6 {
+    width: 8%;
+}
+
+.repTableCol7 {
+    width: 10%;
+}
+
+.repTableCol8 {
+    width: 9%;
+}
+
+.repTableCol9 {
+    width: 10%;
+}
+
+.repTableCol10 {
+    width: 13%;
+}
+
+.info_table {
+    font-size: 10pt;
+    margin-top: 4.5cm;
+    margin-left: 1.2cm;
+    margin-right: 1.2cm;
+}
+
+/*table.info_table td {
+    border: thin solid black;
+}*/
+
+.address_table_right {
+  font-size: 10pt;
+  top: 4.5cm;
+  left: 12.3cm;
+  width: 7.5cm;
+  position: absolute;
+}
+
+/*table.address_table_right td {
+    border: thin solid black;
+}*/
+
+.info_table_row0 {
+    font-size: 10pt;
+    margin-top: 3.5cm;
+    margin-left: 1.2cm;
+    margin-right: 1.2cm;
+}
+
+/*table.info_table_row0 td {
+    border: thin solid black;
+}*/
+
+.title_table {
+    margin-top: 2.5cm;
+    margin-left: 1.2cm;
+    margin-right: 1.2cm;
+    width: 100%;
+}
+
+/*table.info_table td {
+    border: thin solid black;
+}*/
+
+.doc_table {
+    margin-top: 0.5cm;
+    margin-left: 1.2cm;
+    margin-right: 1.2cm;
+    width: 100%;
+}
+
+/* table.doc_table td {
+    border: thin solid black;
+} */
+
+.doc_table_row0 {
+    margin-top: 1.0cm;
+    margin-left: 1.2cm;
+    margin-right: 1.2cm;
+    width: 100%;
+}
+
+/* table.doc_table_row0 td {
+    border: thin solid black;
+} */
+
+.begin_text {
+    font-size: 10pt;
+}
+
+.final_text {
+    font-size: 10pt;
+}
+
