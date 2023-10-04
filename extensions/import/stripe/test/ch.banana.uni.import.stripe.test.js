@@ -16,7 +16,7 @@
 
 // @id = ch.banana.uni.import.stripe.test
 // @api = 1.0
-// @pubdate = 2023-09-26
+// @pubdate = 2023-10-04
 // @publisher = Banana.ch SA
 // @description = <TEST ch.banana.uni.import.stripe.test>
 // @task = app.command
@@ -63,7 +63,7 @@ TestImportStripeTrans.prototype.testImport = function () {
 
    var parentLogger = this.testLogger;
    this.progressBar.start(fileNameList.length);
-   
+
    for (var i = 0; i < fileNameList.length; i++) {
       var fileName = fileNameList[i];
       this.testLogger = parentLogger.newLogger(Banana.IO.fileCompleteBaseName(fileName));
