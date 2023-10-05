@@ -22,6 +22,112 @@
 %
 \begin{testcase}{TestSimpleReport}
 \begin{test}{testSimpleReport}
+%Test 1: file:script/../test/testcases/AffittiPartitaDoppia.ac2
+\begin{reportvalue}{FILENAME: file:script/../test/testcases/AffittiPartitaDoppia.ac2}
+Nexum SA \\
+via immobile 1 \\
+6900 Lugano \\
+  \\
+  \\
+Lista degli affitti scoperti \\
+giovedì, 7 settembre 2023 16:51:24 \\
+\begin{longtable}[l]{ l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l }
+\\
+Conto  & Debitore  & Debito  & Valuta  & Saldo iniziale  & Gennaio  & Febbraio  & Marzo  & Aprile  & Maggio  & Giugno  & Luglio  & Agosto  & Settembre  & Ottobre  & Novembre  & Dicembre  & Totale \\
+10001  & Inquilino 1  & Addebitato  & CHF  & 0.00  & 1'400.00  & 1'400.00  & 1'400.00  & 1'400.00  & 1'400.00  & 1'400.00  & 1'400.00  & 1'400.00  & 0.00  & 0.00  & 0.00  & 0.00  & 11'200.00 \\
+ &  & Pagato  & CHF  & 0.00  & 1'400.00  & 1'400.00  & 1'400.00  & 1'400.00  & 1'400.00  & 1'400.00  & 1'400.00  & 1'400.00  & 0.00  & 0.00  & 0.00  & 0.00  & 11'200.00 \\
+ &  & Scoperto  & CHF  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00 \\
+10002  & Inquilino 2  & Addebitato  & CHF  & 0.00  & 4'890.00  & 0.00  & 0.00  & 4'890.00  & 0.00  & 0.00  & 4'890.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 14'670.00 \\
+ &  & Pagato  & CHF  & 0.00  & 4'890.00  & 0.00  & 0.00  & 4'890.00  & 0.00  & 0.00  & 4'890.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 14'670.00 \\
+ &  & Scoperto  & CHF  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00 \\
+10003  & Inquilino 3  & Addebitato  & CHF  & 0.00  & 11'500.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 11'500.00 \\
+ &  & Pagato  & CHF  & 0.00  & 8'500.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 8'500.00 \\
+ &  & Scoperto  & CHF  & 1'000.00  & 4'000.00  & 4'000.00  & 4'000.00  & 4'000.00  & 4'000.00  & 4'000.00  & 4'000.00  & 4'000.00  & 4'000.00  & 4'000.00  & 4'000.00  & 4'000.00  & 4'000.00 \\
+10004  & Inquilino 4  & Addebitato  & CHF  & 0.00  & 1'200.00  & 1'200.00  & 1'200.00  & 1'200.00  & 1'200.00  & 1'200.00  & 1'200.00  & 1'200.00  & 0.00  & 0.00  & 0.00  & 0.00  & 9'600.00 \\
+ &  & Pagato  & CHF  & 0.00  & 1'200.00  & 1'200.00  & 1'200.00  & 1'200.00  & 1'200.00  & 1'200.00  & 1'200.00  & 600.00  & 0.00  & 0.00  & 0.00  & 0.00  & 9'000.00 \\
+ &  & Scoperto  & CHF  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 600.00  & 600.00  & 600.00  & 600.00  & 600.00  & 600.00 \\
+\\
+\end{longtable}
+07.09.2023 \\
+\end{reportvalue}
+%Test 2: file:script/../test/testcases/AffittiPartitaDoppiaNOPartitario.ac2
+\begin{reportvalue}{FILENAME: file:script/../test/testcases/AffittiPartitaDoppiaNOPartitario.ac2}
+Nexum SA \\
+via immobile 1 \\
+6900 Lugano \\
+  \\
+  \\
+Lista degli affitti scoperti \\
+giovedì, 7 settembre 2023 16:51:24 \\
+\begin{longtable}[l]{ l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l }
+\\
+Conto  & Debitore  & Debito  & Valuta  & Saldo iniziale  & Gennaio  & Febbraio  & Marzo  & Aprile  & Maggio  & Giugno  & Luglio  & Agosto  & Settembre  & Ottobre  & Novembre  & Dicembre  & Totale \\
+.Inquilino 1  & Pinco Pallino  & Addebitato  & CHF  & 0.00  & 1'400.00  & 1'400.00  & 1'400.00  & 1'400.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 5'600.00 \\
+ &  & Pagato  & CHF  & 0.00  & 1'400.00  & 1'400.00  & 1'400.00  & 1'400.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 5'600.00 \\
+ &  & Scoperto  & CHF  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00 \\
+.Inquilino 2  & Marco Bianchi  & Addebitato  & CHF  & 0.00  & 1'630.00  & 1'630.00  & 1'630.00  & 1'630.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 6'520.00 \\
+ &  & Pagato  & CHF  & 0.00  & 1'550.00  & 1'550.00  & 1'550.00  & 1'550.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 6'200.00 \\
+ &  & Scoperto  & CHF  & 0.00  & 80.00  & 160.00  & 240.00  & 320.00  & 320.00  & 320.00  & 320.00  & 320.00  & 320.00  & 320.00  & 320.00  & 320.00  & 320.00 \\
+.Inquilino 3  & Luca Togni  & Addebitato  & CHF  & 0.00  & 1'550.00  & 1'550.00  & 1'550.00  & 1'550.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 6'200.00 \\
+ &  & Pagato  & CHF  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00 \\
+ &  & Scoperto  & CHF  & 0.00  & 1'550.00  & 3'100.00  & 4'650.00  & 6'200.00  & 6'200.00  & 6'200.00  & 6'200.00  & 6'200.00  & 6'200.00  & 6'200.00  & 6'200.00  & 6'200.00  & 6'200.00 \\
+.Inquilino 4  & Inquilino 4  & Addebitato  & CHF  & 0.00  & 1'200.00  & 1'200.00  & 1'200.00  & 1'200.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 4'800.00 \\
+ &  & Pagato  & CHF  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00 \\
+ &  & Scoperto  & CHF  & 0.00  & 1'200.00  & 2'400.00  & 3'600.00  & 4'800.00  & 4'800.00  & 4'800.00  & 4'800.00  & 4'800.00  & 4'800.00  & 4'800.00  & 4'800.00  & 4'800.00  & 4'800.00 \\
+\\
+\end{longtable}
+07.09.2023 \\
+\end{reportvalue}
+%Test 3: file:script/../test/testcases/AffittiEntrateUscite.ac2
+\begin{reportvalue}{FILENAME: file:script/../test/testcases/AffittiEntrateUscite.ac2}
+Nexum SA \\
+via immobile 1 \\
+6900 Lugano \\
+  \\
+  \\
+Lista degli affitti scoperti \\
+giovedì, 7 settembre 2023 16:51:24 \\
+\begin{longtable}[l]{ l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l }
+\\
+Conto  & Debitore  & Debito  & Valuta  & Saldo iniziale  & Gennaio  & Febbraio  & Marzo  & Aprile  & Maggio  & Giugno  & Luglio  & Agosto  & Settembre  & Ottobre  & Novembre  & Dicembre  & Totale \\
+Debitore 1  & Pinco Pallino  & Addebitato  & CHF  & 0.00  & 1'400.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 1'400.00 \\
+ &  & Pagato  & CHF  & 0.00  & 1'400.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 1'400.00 \\
+ &  & Scoperto  & CHF  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00 \\
+Debitore 2  & Marco Bianchi  & Addebitato  & CHF  & 0.00  & 1'630.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 1'630.00 \\
+ &  & Pagato  & CHF  & 0.00  & 1'550.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 1'550.00 \\
+ &  & Scoperto  & CHF  & 0.00  & 80.00  & 80.00  & 80.00  & 80.00  & 80.00  & 80.00  & 80.00  & 80.00  & 80.00  & 80.00  & 80.00  & 80.00  & 80.00 \\
+Debitore 3  & Luca Togni  & Addebitato  & CHF  & 0.00  & 1'550.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 1'550.00 \\
+ &  & Pagato  & CHF  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00 \\
+ &  & Scoperto  & CHF  & 0.00  & 1'550.00  & 1'550.00  & 1'550.00  & 1'550.00  & 1'550.00  & 1'550.00  & 1'550.00  & 1'550.00  & 1'550.00  & 1'550.00  & 1'550.00  & 1'550.00  & 1'550.00 \\
+\\
+\end{longtable}
+07.09.2023 \\
+\end{reportvalue}
+%Test 4: file:script/../test/testcases/AffittiEntrateUsciteNOPartitario.ac2
+\begin{reportvalue}{FILENAME: file:script/../test/testcases/AffittiEntrateUsciteNOPartitario.ac2}
+Nexum SA \\
+via immobile 1 \\
+6900 Lugano \\
+  \\
+  \\
+Lista degli affitti scoperti \\
+giovedì, 7 settembre 2023 16:51:25 \\
+\begin{longtable}[l]{ l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l }
+\\
+Conto  & Debitore  & Debito  & Valuta  & Saldo iniziale  & Gennaio  & Febbraio  & Marzo  & Aprile  & Maggio  & Giugno  & Luglio  & Agosto  & Settembre  & Ottobre  & Novembre  & Dicembre  & Totale \\
+.Inquilino 1  & Pinco Pallino  & Addebitato  & CHF  & 0.00  & 1'400.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 1'400.00 \\
+ &  & Pagato  & CHF  & 0.00  & 1'400.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 1'400.00 \\
+ &  & Scoperto  & CHF  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00 \\
+.Inquilino 2  & Marco Bianchi  & Addebitato  & CHF  & 0.00  & 1'630.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 1'630.00 \\
+ &  & Pagato  & CHF  & 0.00  & 1'550.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 1'550.00 \\
+ &  & Scoperto  & CHF  & 0.00  & 80.00  & 80.00  & 80.00  & 80.00  & 80.00  & 80.00  & 80.00  & 80.00  & 80.00  & 80.00  & 80.00  & 80.00  & 80.00 \\
+.Inquilino 3  & Luca Togni  & Addebitato  & CHF  & 0.00  & 1'550.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 1'550.00 \\
+ &  & Pagato  & CHF  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00 \\
+ &  & Scoperto  & CHF  & 0.00  & 1'550.00  & 1'550.00  & 1'550.00  & 1'550.00  & 1'550.00  & 1'550.00  & 1'550.00  & 1'550.00  & 1'550.00  & 1'550.00  & 1'550.00  & 1'550.00  & 1'550.00 \\
+\\
+\end{longtable}
+07.09.2023 \\
+\end{reportvalue}
 \keyvalue{Result}{Passed}
 \end{test}
 \end{testcase}

@@ -1,0 +1,149 @@
+{
+   "billing_info":{
+      "payment_term":"",
+      "total_amount_vat_exclusive":"",
+      "total_amount_vat_exclusive_before_discount":"",
+      "total_amount_vat_inclusive":"",
+      "total_amount_vat_inclusive_before_discount":"",
+      "total_categories":[
+         
+      ],
+      "total_discount_percent":"",
+      "total_discount_vat_exclusive":"",
+      "total_discount_vat_inclusive":"",
+      "total_rounding_difference":"",
+      "total_to_pay":"",
+      "total_vat_amount":"",
+      "total_vat_amount_before_discount":"",
+      "total_vat_codes":[
+         
+      ],
+      "total_vat_rates":[
+         
+      ]
+   },
+   "customer_info":{
+      "address1":"Via Regina",
+      "balance":"10500.00",
+      "balance_base_currency":"10500.00",
+      "city":"Agno",
+      "country_code":"CH",
+      "first_name":"Robert",
+      "lang":"de",
+      "last_name":"Schwartz",
+      "number":"1102",
+      "origin_row":"28",
+      "origin_table":"Accounts",
+      "postal_code":"6982"
+   },
+   "document_info":{
+      "date":"20230116",
+      "decimals_amounts":2,
+      "description":"",
+      "locale":"it",
+      "number":"",
+      "type":"reminder"
+   },
+   "items":[
+      {
+         "balance":"1000.00",
+         "balance_base_currency":"",
+         "base_currency":"",
+         "credit":"",
+         "credit_base_currency":"",
+         "currency":"CHF",
+         "date":"20220104",
+         "debit":"1000.00",
+         "debit_base_currency":"",
+         "item_type":"InvoiceTotal",
+         "number":"40",
+         "status":"1. richiamo",
+         "total_amount_vat_exclusive":"",
+         "total_amount_vat_inclusive":"",
+         "total_vat_amount":"",
+         "unit_price":{
+            
+         }
+      },
+      {
+         "balance":"4500.00",
+         "balance_base_currency":"",
+         "base_currency":"",
+         "credit":"500.00",
+         "credit_base_currency":"",
+         "currency":"CHF",
+         "date":"20220105",
+         "debit":"5000.00",
+         "debit_base_currency":"",
+         "item_type":"InvoiceTotal",
+         "number":"13",
+         "status":"1. richiamo",
+         "total_amount_vat_exclusive":"",
+         "total_amount_vat_inclusive":"",
+         "total_vat_amount":"",
+         "unit_price":{
+            
+         }
+      },
+      {
+         "balance":"5000.00",
+         "balance_base_currency":"",
+         "base_currency":"",
+         "credit":"",
+         "credit_base_currency":"",
+         "currency":"CHF",
+         "date":"20220105",
+         "debit":"5000.00",
+         "debit_base_currency":"",
+         "item_type":"InvoiceTotal",
+         "number":"51",
+         "status":"1. richiamo",
+         "total_amount_vat_exclusive":"",
+         "total_amount_vat_inclusive":"",
+         "total_vat_amount":"",
+         "unit_price":{
+            
+         }
+      },
+      {
+         "balance":"10500.00",
+         "balance_base_currency":"",
+         "base_currency":"",
+         "credit":"500.00",
+         "credit_base_currency":"",
+         "currency":"",
+         "date":"",
+         "debit":"11000.00",
+         "debit_base_currency":"",
+         "item_type":"total",
+         "number":"",
+         "status":"",
+         "total_amount_vat_exclusive":"",
+         "total_amount_vat_inclusive":"",
+         "total_vat_amount":"",
+         "unit_price":{
+            
+         }
+      }
+   ],
+   "shipping_info":{
+      "different_shipping_address":false
+   },
+   "supplier_info":{
+      "address1":"Indirizzo 1",
+      "address2":"Indirizzo 2",
+      "business_name":"Nome Società",
+      "city":"Loc",
+      "country":"Svizzera",
+      "country_code":"CH",
+      "email":"info@myweb",
+      "first_name":"Nome",
+      "fiscal_number":"numerofiscale",
+      "last_name":"Cognome",
+      "postal_code":"CAP",
+      "vat_number":"CHE-111.222.333",
+      "web":"http://www.myweb"
+   },
+   "type":"invoice",
+   "version":"1.0"
+}
