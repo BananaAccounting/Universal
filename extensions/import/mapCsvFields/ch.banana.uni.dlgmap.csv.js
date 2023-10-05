@@ -46,8 +46,10 @@ var DlgMapCsvFields = class DlgMapCsvFields {
 
         let editorDlg = Banana.Ui.createPropertyEditor(dialogTitle, convertedParam, pageAnchor);
         editorDlg.setParams(convertedParam);
-        // Aggiungo comando per salvare i preferiti nella tabella dei preferiti
+        // Aggiungo comando per salvare un nuovo preferito o modificarlo sovrascrivendo i valori esistenti.
         editorDlg.addCustomCommand("savePreferences", "Save Preferences");
+        // Aggiungo comando per eliminare un preferito dalla lista dei preferiti salvati.
+        editorDlg.addCustomCommand("deletePreferences", "Delete Preferences");
         //Aggiungo comando per importare nel dialogo i dati della preferenza correntemente selezionata.
         editorDlg.addCustomCommand("importPreference", "Import Preference");
         // Poi riproporre i preferiti in un comboBox.
@@ -396,6 +398,22 @@ function savePreferences(currentDlgParams) {
     return currentDlgParams;
 }
 
+function deletePreferences(currentDlgParams) {
+    //Salvo solo queste preferenze qui, e poi controllo le altre che coincidano, caso le aggiorno.
+    let preferencesParam = initParam_Preferences();
+    let savedPreferencesParam = Banana.document.getScriptSettings("csvFieldsParams_Preferences");
+    if (savedPreferencesParam.length > 0) {
+        preferencesParam = JSON.parse(savedPreferencesParam);
+    }
+    let currentPreference = getCurrentPreference(currentDlgParams);
+
+    deletePreferencesData(preferencesParam, currentPreference);
+    let paramToString = JSON.stringify(preferencesParam);
+    Banana.document.setScriptSettings("csvFieldsParams_Preferences", paramToString);
+
+    return currentDlgParams;
+}
+
 function getCurrentPreference(currentDlgParams) {
     //Recupero la preferenza inserita, Ad esempio bancastato, raiffeisen, ecc, formato nome consigliato: MyBankName_31122023
     let currentPreference = "";
@@ -417,6 +435,11 @@ function preferenceExists(preferencesParam, currentPreference) {
         }
     }
     return false;
+}
+
+function deletePreferencesData(preferencesParam, currentPreference) {
+    UpdatePreferencesNameList(currentPreference); // Inserire un nuovo parametro che permette di definire se aggiungere o togliere l'oggetto, o meglio fare due metodi, un add ad un remove.
+    UpdatedPreferencesObjectListOfNames(preferencesParam);// Inserire un nuovo parametro che permette di definire se aggiungere o togliere l'oggetto.
 }
 
 function saveNewPreferencesData(preferencesParam, currentDlgParams, currentPreference, preferenceToModify) {
@@ -518,3 +541,411 @@ function getObjectKeysList(objectsList) {
     }
     return keysList;
 }
+
+/* ******* EXAMPLE OF STRUCTURES SAVED INTO SYSKEY TABLE ************
+
+csvFieldsParams_PreferencesNames:["Postfinance","SwissCard"]
+
+csvFieldsParams_Preferences: 
+
+{
+  "preferencesListData": [
+    {
+      "Postfinance": {
+        "data": [
+          {
+            "editable": false,
+            "name": "CsvParameters",
+            "title": "CSV Parameters",
+            "value": ""
+          },
+          {
+            "editable": false,
+            "name": "CsvFields",
+            "title": "CSV Fields",
+            "value": ""
+          },
+          {
+            "defaultvalue": "",
+            "name": "MappingPrefrencesName",
+            "parentObject": "CsvParameters",
+            "title": "Map New Preference",
+            "type": "string",
+            "value": "Postfinance"
+          },
+          {
+            "defaultvalue": "",
+            "items": [
+              "Postfinance",
+              "Swisscard"
+            ],
+            "name": "PreferencesList",
+            "parentObject": "CsvParameters",
+            "title": "Preferences List",
+            "type": "combobox",
+            "value": ""
+          },
+          {
+            "defaultvalue": ";",
+            "name": "FieldsDelimiter",
+            "parentObject": "CsvParameters",
+            "title": "Fields Delimiter",
+            "type": "string",
+            "value": ";"
+          },
+          {
+            "defaultvalue": "\"",
+            "name": "TextDelimiter",
+            "parentObject": "CsvParameters",
+            "title": "Text Delimiter",
+            "type": "string",
+            "value": "\""
+          },
+          {
+            "defaultvalue": "dd.mm.yyyy",
+            "name": "DateFormat",
+            "parentObject": "CsvParameters",
+            "title": "Date Format",
+            "type": "string",
+            "value": "dd.mm.yyyy"
+          },
+          {
+            "defaultvalue": ".",
+            "name": "DecimalSeparator",
+            "parentObject": "CsvParameters",
+            "title": "Decimal Separator",
+            "type": "string",
+            "value": "."
+          },
+          {
+            "defaultvalue": "",
+            "name": "DateColumn",
+            "parentObject": "CsvFields",
+            "title": "Date Column",
+            "type": "string",
+            "value": "1"
+          },
+          {
+            "defaultvalue": "",
+            "name": "DescriptionColumn",
+            "parentObject": "CsvFields",
+            "title": "Description Column",
+            "type": "string",
+            "value": "2"
+          },
+          {
+            "defaultvalue": "",
+            "name": "AmountColumn",
+            "parentObject": "CsvFields",
+            "title": "Amount Column",
+            "type": "string",
+            "value": "4;5"
+          }
+        ],
+        "version": "1.0"
+      }
+    },
+    {
+      "Swisscard": {
+        "data": [
+          {
+            "editable": false,
+            "name": "CsvParameters",
+            "title": "CSV Parameters",
+            "value": ""
+          },
+          {
+            "editable": false,
+            "name": "CsvFields",
+            "title": "CSV Fields",
+            "value": ""
+          },
+          {
+            "defaultvalue": "",
+            "name": "MappingPrefrencesName",
+            "parentObject": "CsvParameters",
+            "title": "Map New Preference",
+            "type": "string",
+            "value": "Swisscard"
+          },
+          {
+            "defaultvalue": "",
+            "items": [
+              "Postfinance",
+              "Swisscard"
+            ],
+            "name": "PreferencesList",
+            "parentObject": "CsvParameters",
+            "title": "Preferences List",
+            "type": "combobox",
+            "value": "Postfinance"
+          },
+          {
+            "defaultvalue": ";",
+            "name": "FieldsDelimiter",
+            "parentObject": "CsvParameters",
+            "title": "Fields Delimiter",
+            "type": "string",
+            "value": ","
+          },
+          {
+            "defaultvalue": "\"",
+            "name": "TextDelimiter",
+            "parentObject": "CsvParameters",
+            "title": "Text Delimiter",
+            "type": "string",
+            "value": "\""
+          },
+          {
+            "defaultvalue": "dd.mm.yyyy",
+            "name": "DateFormat",
+            "parentObject": "CsvParameters",
+            "title": "Date Format",
+            "type": "string",
+            "value": "dd.mm.yyyy"
+          },
+          {
+            "defaultvalue": ".",
+            "name": "DecimalSeparator",
+            "parentObject": "CsvParameters",
+            "title": "Decimal Separator",
+            "type": "string",
+            "value": "."
+          },
+          {
+            "defaultvalue": "",
+            "name": "DateColumn",
+            "parentObject": "CsvFields",
+            "title": "Date Column",
+            "type": "string",
+            "value": "1"
+          },
+          {
+            "defaultvalue": "",
+            "name": "DescriptionColumn",
+            "parentObject": "CsvFields",
+            "title": "Description Column",
+            "type": "string",
+            "value": "2"
+          },
+          {
+            "defaultvalue": "",
+            "name": "AmountColumn",
+            "parentObject": "CsvFields",
+            "title": "Amount Column",
+            "type": "string",
+            "value": "5"
+          }
+        ],
+        "version": "1.0"
+      }
+    }
+  ]
+}
+
+csvFieldsParams:
+
+{
+  "amountColumn": "5",
+  "dateColumn": "1",
+  "dateFormat": "dd.mm.yyyy",
+  "decimalSeparator": ".",
+  "descriptionColumn": "2",
+  "fieldsDelimiter": ",",
+  "lastPreferenceSelected": "",
+  "newPreference": "Swisscard",
+  "preferencesList": [
+    {
+      "Postfinance": {
+        "data": [
+          {
+            "editable": false,
+            "name": "CsvParameters",
+            "title": "CSV Parameters",
+            "value": ""
+          },
+          {
+            "editable": false,
+            "name": "CsvFields",
+            "title": "CSV Fields",
+            "value": ""
+          },
+          {
+            "defaultvalue": "",
+            "name": "MappingPrefrencesName",
+            "parentObject": "CsvParameters",
+            "title": "Map New Preference",
+            "type": "string",
+            "value": "Postfinance"
+          },
+          {
+            "defaultvalue": "",
+            "items": [
+              "Postfinance",
+              "Swisscard"
+            ],
+            "name": "PreferencesList",
+            "parentObject": "CsvParameters",
+            "title": "Preferences List",
+            "type": "combobox",
+            "value": ""
+          },
+          {
+            "defaultvalue": ";",
+            "name": "FieldsDelimiter",
+            "parentObject": "CsvParameters",
+            "title": "Fields Delimiter",
+            "type": "string",
+            "value": ";"
+          },
+          {
+            "defaultvalue": "\"",
+            "name": "TextDelimiter",
+            "parentObject": "CsvParameters",
+            "title": "Text Delimiter",
+            "type": "string",
+            "value": "\""
+          },
+          {
+            "defaultvalue": "dd.mm.yyyy",
+            "name": "DateFormat",
+            "parentObject": "CsvParameters",
+            "title": "Date Format",
+            "type": "string",
+            "value": "dd.mm.yyyy"
+          },
+          {
+            "defaultvalue": ".",
+            "name": "DecimalSeparator",
+            "parentObject": "CsvParameters",
+            "title": "Decimal Separator",
+            "type": "string",
+            "value": "."
+          },
+          {
+            "defaultvalue": "",
+            "name": "DateColumn",
+            "parentObject": "CsvFields",
+            "title": "Date Column",
+            "type": "string",
+            "value": "1"
+          },
+          {
+            "defaultvalue": "",
+            "name": "DescriptionColumn",
+            "parentObject": "CsvFields",
+            "title": "Description Column",
+            "type": "string",
+            "value": "2"
+          },
+          {
+            "defaultvalue": "",
+            "name": "AmountColumn",
+            "parentObject": "CsvFields",
+            "title": "Amount Column",
+            "type": "string",
+            "value": "4;5"
+          }
+        ],
+        "version": "1.0"
+      }
+    },
+    {
+      "Swisscard": {
+        "data": [
+          {
+            "editable": false,
+            "name": "CsvParameters",
+            "title": "CSV Parameters",
+            "value": ""
+          },
+          {
+            "editable": false,
+            "name": "CsvFields",
+            "title": "CSV Fields",
+            "value": ""
+          },
+          {
+            "defaultvalue": "",
+            "name": "MappingPrefrencesName",
+            "parentObject": "CsvParameters",
+            "title": "Map New Preference",
+            "type": "string",
+            "value": "Swisscard"
+          },
+          {
+            "defaultvalue": "",
+            "items": [
+              "Postfinance",
+              "Swisscard"
+            ],
+            "name": "PreferencesList",
+            "parentObject": "CsvParameters",
+            "title": "Preferences List",
+            "type": "combobox",
+            "value": "Postfinance"
+          },
+          {
+            "defaultvalue": ";",
+            "name": "FieldsDelimiter",
+            "parentObject": "CsvParameters",
+            "title": "Fields Delimiter",
+            "type": "string",
+            "value": ","
+          },
+          {
+            "defaultvalue": "\"",
+            "name": "TextDelimiter",
+            "parentObject": "CsvParameters",
+            "title": "Text Delimiter",
+            "type": "string",
+            "value": "\""
+          },
+          {
+            "defaultvalue": "dd.mm.yyyy",
+            "name": "DateFormat",
+            "parentObject": "CsvParameters",
+            "title": "Date Format",
+            "type": "string",
+            "value": "dd.mm.yyyy"
+          },
+          {
+            "defaultvalue": ".",
+            "name": "DecimalSeparator",
+            "parentObject": "CsvParameters",
+            "title": "Decimal Separator",
+            "type": "string",
+            "value": "."
+          },
+          {
+            "defaultvalue": "",
+            "name": "DateColumn",
+            "parentObject": "CsvFields",
+            "title": "Date Column",
+            "type": "string",
+            "value": "1"
+          },
+          {
+            "defaultvalue": "",
+            "name": "DescriptionColumn",
+            "parentObject": "CsvFields",
+            "title": "Description Column",
+            "type": "string",
+            "value": "2"
+          },
+          {
+            "defaultvalue": "",
+            "name": "AmountColumn",
+            "parentObject": "CsvFields",
+            "title": "Amount Column",
+            "type": "string",
+            "value": "5"
+          }
+        ],
+        "version": "1.0"
+      }
+    }
+  ],
+  "textDelimiter": "\""
+}
+*/
