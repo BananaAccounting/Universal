@@ -59,7 +59,7 @@ TestImportStripeTrans.prototype.cleanup = function () {
 TestImportStripeTrans.prototype.testImport = function () {
    var fileNameList = [];
 
-   fileNameList.push("file:script/../test/testcases/ch.banana.filter.import.stripe_20230926.csv");
+   fileNameList.push("file:script/../test/testcases/ch.banana.filter.import.stripe_payments_20231004.csv");
 
    var parentLogger = this.testLogger;
    this.progressBar.start(fileNameList.length);
