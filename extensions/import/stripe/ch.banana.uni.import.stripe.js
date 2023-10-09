@@ -15,7 +15,7 @@
 //
 // @id = ch.banana.uni.import.stripe
 // @api = 1.0
-// @pubdate = 2023-10-04
+// @pubdate = 2023-10-09
 // @publisher = Banana.ch SA
 // @description = Stripe - Import movements .csv (Banana+ Advanced)
 // @doctype = 100.*; 110.*; 130.*
@@ -34,9 +34,10 @@
 function exec(inData, isTest) {
 
 
-    var convertionParam = "";
-    var transactions = "";
-    var importUtilities = new ImportUtilities(Banana.document);
+    let convertionParam = "";
+    let csvData = "";
+    let transactionsData = [];
+    let importUtilities = new ImportUtilities(Banana.document);
 
     if (!inData)
         return "";
@@ -45,11 +46,12 @@ function exec(inData, isTest) {
         return "";
 
     convertionParam = defineConversionParam(inData);
-    transactions = Banana.Converter.csvToArray(inData, convertionParam.separator, convertionParam.textDelim);
+    csvData = Banana.Converter.csvToArray(inData, convertionParam.separator, convertionParam.textDelim);
 
     let stripeFormat1 = new ImportStripeFormat1(Banana.document);
-    if (stripeFormat1.match(transactions)) {
-        let intermediaryData = stripeFormat1.convertCsvToIntermediaryData(transactions, convertionParam);
+    transactionsData = stripeFormat1.getformattedData(csvData, convertionParam);
+    if (stripeFormat1.match(transactionsData)) {
+        let intermediaryData = stripeFormat1.convertCsvToIntermediaryData(transactionsData, convertionParam);
         stripeFormat1.postProcessIntermediaryData(intermediaryData);
         return Banana.Converter.arrayToTsv(intermediaryData);
     }
@@ -61,10 +63,11 @@ function exec(inData, isTest) {
 }
 
 /**
- * CSV  structure:
- * "automatic_payout_id","balance_transaction_id","created","available_on","currency","gross","fee","net","reporting_category","description"
- * "sd_4Fo4U4EYTmn5oT4sVY3ch5nt","awq_6FlEY0IMHrk1dQ3s4kily3vN","2023-04-05 15:25:14","2023-04-12 02:00:00","ror","120.00","3.78","116.22","pribus","Prodo Orage Adde'i Vite: Men veraest iné at alis-anget"
- * "jx_0YbvMwVVEof6tW2iRPOd2A7L","wxb_1GssUCEVBni4mU1f5GUtBm1Q","2023-04-08 19:04:23","2023-04-14 02:00:00","ror","65.00","2.19","62.81","pribus","Description"
+ * CSV  structure details:
+ * Export mode: Payments, Standard columns.
+ * We only import Stripe standard columns, 
+ * for the columns that are added from other platforms to the csv we do not offer currently a solution.
+ * https://support.stripe.com/questions/exporting-payment-reports.
  * 
  * @param {*} banDocument 
  */
@@ -73,48 +76,103 @@ var ImportStripeFormat1 = class ImportStripeFormat1 extends ImportUtilities {
         super(banDocument);
 
         this.decimalSeparator = ".";
-
-        this.colPayoutId = 0;
-        this.colTransactionId = 1;
-        this.colCreatedAt = 2;
-        this.colAvailableOn = 3;
-        this.colCurrency = 4;
-        this.colGrossAmount = 5;
-        this.colFee = 6;
-        this.colNetAmount = 7;
-        this.colCategory = 8;
-        this.colDescription = 9;
-
-        //Index of columns in import format.
-        // this.newColExpenses = 4;
-
-
-        this.dateFormat = "";
+        this.columnsLenght = 16;
+        this.dateFormat = 'yyyy-mm-dd';
     }
 
-    match(transactions) {
+    getformattedData(csvData, convertionParam) {
+        let columns = this.getHeaderData(csvData, convertionParam); //array
+        let rows = this.getRowData(csvData, convertionParam); //array of array
+        let form = [];
 
-        if (transactions.length === 0)
+        //We pass them all so as not to have to guess the language of the header.
+        columns = this.convertHeaderIt(columns); // Converte le intestazioni dall'italiano all'inglese.
+        columns = this.convertHeaderDe(columns); // Converte le intestazioni dal tedesco all'inglese.
+        columns = this.convertHeaderFr(columns); // Converte le intestazioni dal francese all'inglese.
+
+        //Load the form with data taken from the array. Create objects
+        this.loadForm(form, columns, rows);
+        return form;
+    }
+
+    convertHeaderIt(columns) {
+        for (var i = 0; i < columns.length; i++) {
+            // Convert headers...
+        }
+
+        return columns;
+    }
+
+    convertHeaderDe(columns) {
+        for (var i = 0; i < columns.length; i++) {
+            // Convert headers...
+        }
+
+        return columns;
+    }
+
+    convertHeaderFr(columns) {
+        for (var i = 0; i < columns.length; i++) {
+            // Convert headers...
+        }
+
+        return columns;
+    }
+
+    getHeaderData(csvData, convertionParam) {
+        var headerData = csvData[convertionParam.headerLineStart];
+        for (var i = 0; i < headerData.length; i++) {
+
+            headerData[i] = headerData[i].trim();
+
+            if (!headerData[i]) {
+                headerData[i] = i;
+            }
+        }
+        return headerData;
+    }
+
+    getRowData(csvData, convertionParam) {
+        var rowData = [];
+        for (var i = convertionParam.dataLineStart; i < csvData.length; i++) {
+            rowData.push(csvData[i]);
+        }
+        return rowData;
+    }
+
+    //The purpose of this function is to load all the data (titles of the columns and rows) and create a list of objects.
+    //Each object represents a row of the csv file
+    loadForm(form, columns, rows) {
+        var obj = new Object;
+
+        for (var j = 0; j < rows.length; j++) {
+            var obj = {};
+
+            for (var i = 0; i < columns.length; i++) {
+                obj[columns[i]] = rows[j][i];
+            }
+            form.push(obj);
+        }
+    }
+
+    match(transactionsData) {
+
+        if (transactionsData.length === 0)
             return false;
-        for (var i = 0; i < transactions.length; i++) {
-            var transaction = transactions[i];
 
-            var formatMatched = false;
+        for (var i = 0; i < transactionsData.length; i++) {
+            var transaction = transactionsData[i];
 
-            /* array should have all columns */
-            if (transaction.length === (this.colDescription + 1))
+            var formatMatched = true;
+
+            if (formatMatched && transaction["Created (UTC)"] && transaction["Created (UTC)"].length >= 16 &&
+                transaction["Created (UTC)"].match(/^\d{2,4}[-.]\d{2}[-.]\d{2} \d{2}:\d{2}$/))
                 formatMatched = true;
             else
                 formatMatched = false;
 
-            if (formatMatched && transaction[this.colCreatedAt] && transaction[this.colCreatedAt].length >= 19 &&
-                transaction[this.colCreatedAt].match(/^[0-9]+(\-|\.)[0-9]+(\-|\.)[0-9]+\s[0-9]+\:[0-9]+(\:[0-9]+)?$/))
+            if (formatMatched && transaction["Seller Message"] && transaction["Seller Message"] != "")
                 formatMatched = true;
-
-            if (formatMatched && transaction[this.colAvailableOn] && transaction[this.colAvailableOn].length >= 19 &&
-                transaction[this.colAvailableOn].match(/^[0-9]+(\-|\.)[0-9]+(\-|\.)[0-9]+\s[0-9]+\:[0-9]+(\:[0-9]+)?$/))
-                formatMatched = true;
-
             else
                 formatMatched = false;
 
@@ -126,21 +184,13 @@ var ImportStripeFormat1 = class ImportStripeFormat1 extends ImportUtilities {
     }
 
     /** Convert the transaction to the format to be imported */
-    convertCsvToIntermediaryData(transactions, convertionParam) {
+    convertCsvToIntermediaryData(transactionsData, convertionParam) {
         var transactionsToImport = [];
 
         // Filter and map rows
-        for (let i = 0; i < transactions.length; i++) {
-            var transaction = transactions[i];
-            var date = transaction[this.colCreatedAt].substring(0, 10);
-            if (transaction.length < (this.colCount + 1)) {
-
-                continue;
-            }
-
-            if (date.match(/[0-9\.]+/g) && date.length === 10) {
-                transactionsToImport.push(this.mapTransaction(transaction));
-            }
+        for (let i = 0; i < transactionsData.length; i++) {
+            var transactionObj = transactionsData[i];
+            transactionsToImport.push(this.mapTransaction(transactionObj));
         }
 
         // Sort rows
@@ -148,19 +198,21 @@ var ImportStripeFormat1 = class ImportStripeFormat1 extends ImportUtilities {
 
         // Add header and return
         var header = [
-            ["Date", "ExternalReference", "Description", "Expenses", "Income"]
+            ["Date", "ExternalReference", "Description", "Notes", "Expenses", "Income"]
         ];
         return header.concat(transactionsToImport);
     }
 
-    mapTransaction(element) {
+    mapTransaction(transationObj) {
         var mappedLine = [];
 
-        mappedLine.push(Banana.Converter.toInternalDateFormat(element[this.colCreatedAt], "yyyy-mm-dd"));
-        mappedLine.push(element[this.colTransactionId]);
-        let description = this.getDescription(element);
+        mappedLine.push(Banana.Converter.toInternalDateFormat(transationObj["Created (UTC)"], "yyyy-mm-dd"));
+        mappedLine.push(transationObj["id"]);
+        let description = this.getDescription(transationObj);
         mappedLine.push(description);
-        let netAmount = element[this.colNetAmount];
+        mappedLine.push(transationObj["Seller Message"]);
+        let netAmount = transationObj["Amount"];
+        this.setDecimalSeparator(netAmount); // could be done better.
         if (netAmount.length > 0) {
             if (netAmount[0] === "-") {
                 netAmount = netAmount.replace(/-/g, ''); //remove minus sign
@@ -176,14 +228,27 @@ var ImportStripeFormat1 = class ImportStripeFormat1 extends ImportUtilities {
         return mappedLine;
     }
 
+    setDecimalSeparator(amount) {
+        /** As far as we know the decimal separator could be: ',' or '.' and there is no thousand divisor  */
+        const parts = amount.split('.');
+        if (parts.length === 1) {
+            const commaParts = amount.split(',');
+            if (commaParts.length === 2 && !isNaN(commaParts[1])) {
+                this.decimalSeparator = ',';
+            }
+        } else if (parts.length === 2 && !isNaN(parts[1])) {
+            this.decimalSeparator = '.';
+        }
+    }
+
     getDescription(element) {
         let description = "";
         let texts = this.getTexts();
 
-        description = element[this.colDescription];
+        description = element["Description"];
 
-        if (element[this.colFee] !== "") {
-            description += ", " + texts.fee + ": " + element[this.colFee];
+        if (description !== "" && element["Fee"] !== "") {
+            description += ", " + texts.fee + ": " + element["Fee"];
         }
 
         return description;
