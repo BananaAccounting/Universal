@@ -414,301 +414,301 @@ var PrintReport = class PrintReport {
 
   // Function to print in green the credit and in red the debit over 0 CHF
 
-CreditAmountColor(number) {
-  if (number > 0.00) {
-    var classNameAmount = "green";
-    return classNameAmount;
-  }
-  else {
-    var classNameAmount = "";
-    return classNameAmount;
-  }
-}
-
-BalanceAmountColor(number) {
-
-  if (number > 0.00) {
-    var classNameAmount = "red";
-    return classNameAmount;
-  }
-  else {
-    var classNameAmount = "";
-    return classNameAmount;
+  CreditAmountColor(number) {
+    if (number > 0.00) {
+      var classNameAmount = "green";
+      return classNameAmount;
+    }
+    else {
+      var classNameAmount = "";
+      return classNameAmount;
+    }
   }
 
-}
+  BalanceAmountColor(number) {
 
-FormatNumber(number) {
-  return Banana.Converter.toLocaleNumberFormat(number, 2, true);
-}
-
-classNameEvenRow(j) {
-  if (j % 2 === 0) {
-    return "even_rows_background_color";
-  }
-  else {
-    return;
-  }
-}
-
-setlanguage(banDoc, lan) {
-
-  if (banDoc) {
-
-    lan = banDoc.locale.substring(0, 2);
+    if (number > 0.00) {
+      var classNameAmount = "red";
+      return classNameAmount;
+    }
+    else {
+      var classNameAmount = "";
+      return classNameAmount;
+    }
 
   }
 
-  if (lan.substring(0, 2) === "it") {
+  FormatNumber(number) {
+    return Banana.Converter.toLocaleNumberFormat(number, 2, true);
+  }
 
-    reportlanguage.rents = "Affitti";
-    reportlanguage.uncoveredrents = "Lista degli affitti scoperti";
-    reportlanguage.account = "Conto";
-    reportlanguage.debtor = "Debitore";
-    reportlanguage.debtors = "Gr Debitori (Somma in)";
-    reportlanguage.startbalance = "Saldo iniziale";
-    reportlanguage.charged = "Addebitato";
-    reportlanguage.advances = "Acconti spese";
-    reportlanguage.adjustments = "Conguaglio spese";
-    reportlanguage.endbalance = "Saldo finale";
-    reportlanguage.date = "Data";
-    reportlanguage.paid = "Pagato";
-    reportlanguage.uncovered = "Scoperto";
-    reportlanguage.input = "Inserisci";
-    reportlanguage.choose = "Scegli";
-    reportlanguage.debit = "Debito";
-    reportlanguage.january = "Gennaio";
-    reportlanguage.february = "Febbraio";
-    reportlanguage.march = "Marzo";
-    reportlanguage.april = "Aprile";
-    reportlanguage.may = "Maggio";
-    reportlanguage.june = "Giugno";
-    reportlanguage.july = "Luglio";
-    reportlanguage.august = "Agosto";
-    reportlanguage.september = "Settembre";
-    reportlanguage.october = "Ottobre";
-    reportlanguage.november = "Novembre";
-    reportlanguage.december = "Dicembre";
-    reportlanguage.phone = "Telefono";
-    reportlanguage.email = "E-mail";
-    reportlanguage.total = "Totale";
-    reportlanguage.settenants = "Impostare il Gruppo dei clienti dal menu Report > Clienti > Impostazioni.";
-    reportlanguage.currency = "Valuta";
+  classNameEvenRow(j) {
+    if (j % 2 === 0) {
+      return "even_rows_background_color";
+    }
+    else {
+      return;
+    }
+  }
+
+  setlanguage(banDoc, lan) {
+
+    if (banDoc) {
+
+      lan = banDoc.locale.substring(0, 2);
+
+    }
+
+    if (lan.substring(0, 2) === "it") {
+
+      reportlanguage.rents = "Affitti";
+      reportlanguage.uncoveredrents = "Lista degli affitti scoperti";
+      reportlanguage.account = "Conto";
+      reportlanguage.debtor = "Debitore";
+      reportlanguage.debtors = "Gr Debitori (Somma in)";
+      reportlanguage.startbalance = "Saldo iniziale";
+      reportlanguage.charged = "Addebitato";
+      reportlanguage.advances = "Acconti spese";
+      reportlanguage.adjustments = "Conguaglio spese";
+      reportlanguage.endbalance = "Saldo finale";
+      reportlanguage.date = "Data";
+      reportlanguage.paid = "Pagato";
+      reportlanguage.uncovered = "Scoperto";
+      reportlanguage.input = "Inserisci";
+      reportlanguage.choose = "Scegli";
+      reportlanguage.debit = "Debito";
+      reportlanguage.january = "Gennaio";
+      reportlanguage.february = "Febbraio";
+      reportlanguage.march = "Marzo";
+      reportlanguage.april = "Aprile";
+      reportlanguage.may = "Maggio";
+      reportlanguage.june = "Giugno";
+      reportlanguage.july = "Luglio";
+      reportlanguage.august = "Agosto";
+      reportlanguage.september = "Settembre";
+      reportlanguage.october = "Ottobre";
+      reportlanguage.november = "Novembre";
+      reportlanguage.december = "Dicembre";
+      reportlanguage.phone = "Telefono";
+      reportlanguage.email = "E-mail";
+      reportlanguage.total = "Totale";
+      reportlanguage.settenants = "Impostare il Gruppo dei clienti dal menu Report > Clienti > Impostazioni.";
+      reportlanguage.currency = "Valuta";
+
+    }
+
+    else if (lan.substring(0, 2) === "en") {
+
+      reportlanguage.rents = "Rents";
+      reportlanguage.uncoveredrents = "List of uncovered rents";
+      reportlanguage.account = "Account";
+      reportlanguage.debtor = "Debtor";
+      reportlanguage.debtors = "Gr Debtor (Sum in)";
+      reportlanguage.startbalance = "Start balance";
+      reportlanguage.charged = "Charged";
+      reportlanguage.advances = "Advances";
+      reportlanguage.adjustments = "Adjustments";
+      reportlanguage.endbalance = "End balance";
+      reportlanguage.date = "Date";
+      reportlanguage.paid = "Paid";
+      reportlanguage.uncovered = "Uncovered";
+      reportlanguage.input = "Input";
+      reportlanguage.choose = "Choose";
+      reportlanguage.debit = "Debit";
+      reportlanguage.january = "January";
+      reportlanguage.february = "February";
+      reportlanguage.march = "March";
+      reportlanguage.april = "April";
+      reportlanguage.may = "May";
+      reportlanguage.june = "June";
+      reportlanguage.july = "July";
+      reportlanguage.august = "August";
+      reportlanguage.september = "September";
+      reportlanguage.october = "October";
+      reportlanguage.november = "November";
+      reportlanguage.december = "December";
+      reportlanguage.phone = "Phone";
+      reportlanguage.email = "E-mail";
+      reportlanguage.total = "Total";
+      reportlanguage.settenants = "Set the Customers Group from the menu Report > Customers > Settings.";
+      reportlanguage.currency = "Currency";
+
+    }
+
+    else if (lan.substring(0, 2) === "fr") {
+
+      reportlanguage.rents = "Loyers";
+      reportlanguage.uncoveredrents = "Liste des locations découvertes";
+      reportlanguage.account = "Compte";
+      reportlanguage.debtor = "Débiteur";
+      reportlanguage.debtors = "Gr Débiteurs (Somme en)";
+      reportlanguage.startbalance = "Solde initial";
+      reportlanguage.charged = "Facturé";
+      reportlanguage.advances = "Avances";
+      reportlanguage.adjustments = "Ajustements";
+      reportlanguage.endbalance = "Solde final";
+      reportlanguage.date = "Date";
+      reportlanguage.paid = "Payé";
+      reportlanguage.uncovered = "Non couvert";
+      reportlanguage.input = "Entrée";
+      reportlanguage.choose = "Choisir";
+      reportlanguage.debit = "Débit";
+      reportlanguage.january = "Janvier";
+      reportlanguage.february = "Février";
+      reportlanguage.march = "Mars";
+      reportlanguage.april = "Avril";
+      reportlanguage.may = "Mai";
+      reportlanguage.june = "Juin";
+      reportlanguage.july = "Juillet";
+      reportlanguage.august = "Août";
+      reportlanguage.september = "Septembre";
+      reportlanguage.october = "Octobre";
+      reportlanguage.november = "Novembre";
+      reportlanguage.december = "Décembre";
+      reportlanguage.phone = "Téléphone";
+      reportlanguage.email = "E-mail";
+      reportlanguage.total = "Total";
+      reportlanguage.settenants = "Définir le Groupe de clients dans le menu Rapport > Clients > Paramètres.";
+      reportlanguage.currency = "Devise";
+
+    }
+
+    else if (lan.substring(0, 2) === "de") {
+
+      reportlanguage.rents = "Mieten";
+      reportlanguage.uncoveredrents = "Liste der unbezahlten Mieten";
+      reportlanguage.account = "Konto";
+      reportlanguage.debtor = "Mieter";
+      reportlanguage.debtors = "Gr Mieter (Summe in)";
+      reportlanguage.startbalance = "Anfangssaldo";
+      reportlanguage.charged = "Belastet";
+      reportlanguage.advances = "Nebenkosten";
+      reportlanguage.adjustments = "Nebenkostenabrechnung";
+      reportlanguage.endbalance = "Schlusssaldo";
+      reportlanguage.date = "Datum";
+      reportlanguage.paid = "Bezahlt";
+      reportlanguage.uncovered = "Unbezahlt";
+      reportlanguage.input = "Eingabe";
+      reportlanguage.choose = "Wählen";
+      reportlanguage.debit = "Schuld";
+      reportlanguage.january = "Januar";
+      reportlanguage.february = "Februar";
+      reportlanguage.march = "März";
+      reportlanguage.april = "April";
+      reportlanguage.may = "Mai";
+      reportlanguage.june = "Juni";
+      reportlanguage.july = "Juli";
+      reportlanguage.august = "August";
+      reportlanguage.september = "September";
+      reportlanguage.october = "Oktober";
+      reportlanguage.november = "November";
+      reportlanguage.december = "Dezember";
+      reportlanguage.phone = "Telefon";
+      reportlanguage.email = "E-Mail";
+      reportlanguage.total = "Total";
+      reportlanguage.settenants = "Legen Sie die Kunden-Gruppe über dem Menü Berichte > Kunden > Einstellungen fest.";
+      reportlanguage.currency = "Währung";
+
+    }
 
   }
 
-  else if (lan.substring(0, 2) === "en") {
+  /* Function that prints the header */
+  addHeader(banDoc, report, stylesheet) {
 
-    reportlanguage.rents = "Rents";
-    reportlanguage.uncoveredrents = "List of uncovered rents";
-    reportlanguage.account = "Account";
-    reportlanguage.debtor = "Debtor";
-    reportlanguage.debtors = "Gr Debtor (Sum in)";
-    reportlanguage.startbalance = "Start balance";
-    reportlanguage.charged = "Charged";
-    reportlanguage.advances = "Advances";
-    reportlanguage.adjustments = "Adjustments";
-    reportlanguage.endbalance = "End balance";
-    reportlanguage.date = "Date";
-    reportlanguage.paid = "Paid";
-    reportlanguage.uncovered = "Uncovered";
-    reportlanguage.input = "Input";
-    reportlanguage.choose = "Choose";
-    reportlanguage.debit = "Debit";
-    reportlanguage.january = "January";
-    reportlanguage.february = "February";
-    reportlanguage.march = "March";
-    reportlanguage.april = "April";
-    reportlanguage.may = "May";
-    reportlanguage.june = "June";
-    reportlanguage.july = "July";
-    reportlanguage.august = "August";
-    reportlanguage.september = "September";
-    reportlanguage.october = "October";
-    reportlanguage.november = "November";
-    reportlanguage.december = "December";
-    reportlanguage.phone = "Phone";
-    reportlanguage.email = "E-mail";
-    reportlanguage.total = "Total";
-    reportlanguage.settenants = "Set the Customers Group from the menu Report > Customers > Settings.";
-    reportlanguage.currency = "Currency";
+    var tableRow = report.addSection("header");
+    var company = banDoc.info("AccountingDataBase", "Company");
+    var address1 = banDoc.info("AccountingDataBase", "Address1");
+    var zip = banDoc.info("AccountingDataBase", "Zip");
+    var city = banDoc.info("AccountingDataBase", "City");
+    var email = banDoc.info("AccountingDataBase", "Email");
+    var phone = banDoc.info("AccountingDataBase", "Phone");
+    var logoFormat = Banana.Report.logoFormat("Logo");
+    var headerLogoSection = tableRow.addCell("", "");
+    if (logoFormat != null) {
+      var logoElement = logoFormat.createDocNode(headerLogoSection, stylesheet, "logo");
+      report.addChild(logoElement);
+    }
 
+    report.addParagraph(company, "left");
+    report.addParagraph(address1, "left");
+    report.addParagraph(zip + " " + city, "left");
+    if (phone != "") {
+      report.addParagraph(reportlanguage.phone + phone, "left");
+    }
+    if (email != "") {
+      report.addParagraph(reportlanguage.email + email, "left");
+    }
+    report.addParagraph(" ", "left");
+    report.addParagraph(" ", "left");
   }
 
-  else if (lan.substring(0, 2) === "fr") {
-
-    reportlanguage.rents = "Loyers";
-    reportlanguage.uncoveredrents = "Liste des locations découvertes";
-    reportlanguage.account = "Compte";
-    reportlanguage.debtor = "Débiteur";
-    reportlanguage.debtors = "Gr Débiteurs (Somme en)";
-    reportlanguage.startbalance = "Solde initial";
-    reportlanguage.charged = "Facturé";
-    reportlanguage.advances = "Avances";
-    reportlanguage.adjustments = "Ajustements";
-    reportlanguage.endbalance = "Solde final";
-    reportlanguage.date = "Date";
-    reportlanguage.paid = "Payé";
-    reportlanguage.uncovered = "Non couvert";
-    reportlanguage.input = "Entrée";
-    reportlanguage.choose = "Choisir";
-    reportlanguage.debit = "Débit";
-    reportlanguage.january = "Janvier";
-    reportlanguage.february = "Février";
-    reportlanguage.march = "Mars";
-    reportlanguage.april = "Avril";
-    reportlanguage.may = "Mai";
-    reportlanguage.june = "Juin";
-    reportlanguage.july = "Juillet";
-    reportlanguage.august = "Août";
-    reportlanguage.september = "Septembre";
-    reportlanguage.october = "Octobre";
-    reportlanguage.november = "Novembre";
-    reportlanguage.december = "Décembre";
-    reportlanguage.phone = "Téléphone";
-    reportlanguage.email = "E-mail";
-    reportlanguage.total = "Total";
-    reportlanguage.settenants = "Définir le Groupe de clients dans le menu Rapport > Clients > Paramètres.";
-    reportlanguage.currency = "Devise";
-
+  /* Function that prints the footer */
+  addFooter(report) {
+    var footer = report.getFooter();
+    footer.addText(Banana.Converter.toLocaleDateFormat(new Date()) + "" + "");
   }
 
-  else if (lan.substring(0, 2) === "de") {
+  /* Function that adds styles for the report print */
+  createStyleSheet() {
 
-    reportlanguage.rents = "Mieten";
-    reportlanguage.uncoveredrents = "Liste der ungedeckten Mieten";
-    reportlanguage.account = "Konto";
-    reportlanguage.debtor = "Schuldner";
-    reportlanguage.debtors = "Gr Schuldner (Summe in)";
-    reportlanguage.startbalance = "Anfangsbestand";
-    reportlanguage.charged = "Belastet";
-    reportlanguage.advances = "Vorauszahlungen";
-    reportlanguage.adjustments = "Anpassungen";
-    reportlanguage.endbalance = "Endbestand";
-    reportlanguage.date = "Datum";
-    reportlanguage.paid = "Bezahlt";
-    reportlanguage.uncovered = "Nicht gedeckt";
-    reportlanguage.input = "Eingabe";
-    reportlanguage.choose = "Wählen";
-    reportlanguage.debit = "Debit";
-    reportlanguage.january = "Januar";
-    reportlanguage.february = "Februar";
-    reportlanguage.march = "März";
-    reportlanguage.april = "April";
-    reportlanguage.may = "Mai";
-    reportlanguage.june = "Juni";
-    reportlanguage.july = "Juli";
-    reportlanguage.august = "August";
-    reportlanguage.september = "September";
-    reportlanguage.october = "Oktober";
-    reportlanguage.november = "November";
-    reportlanguage.december = "Dezember";
-    reportlanguage.phone = "Telefon";
-    reportlanguage.email = "E-mail";
-    reportlanguage.total = "Gesamt";
-    reportlanguage.settenants = "Setzen Sie die Kunden-Gruppe aus dem Menü Bericht > Kunden > Einstellungen.";
-    reportlanguage.currency = "Währung";
+    var stylesheet = Banana.Report.newStyleSheet();
+    var pageStyle = stylesheet.addStyle("@page");
+    pageStyle.setAttribute("margin", "20mm 5mm 10mm 5mm");
+    pageStyle.setAttribute("size", "landscape");
+
+    var headerStyle = stylesheet.addStyle(".header");
+    headerStyle.setAttribute("width", "100%");
+
+    var titleStyle = stylesheet.addStyle(".title");
+    titleStyle.setAttribute("font-size", "20");
+    titleStyle.setAttribute("text-align", "center");
+    titleStyle.setAttribute("font-weight", "bold");
+    titleStyle.setAttribute("margin-bottom", "0.5em");
+
+    var headerTableStyle = stylesheet.addStyle(".headerTable");
+    headerTableStyle.setAttribute("background-color", "#E0E0E0");
+    headerTableStyle.setAttribute("color", "black");
+
+    var tableStyle = stylesheet.addStyle(".infoTable");
+    tableStyle.setAttribute("width", "50%");
+    stylesheet.addStyle("table.infoTable td", "border: thin solid black;");
+
+    var tableStyle = stylesheet.addStyle(".internalTable");
+    tableStyle.setAttribute("width", "100%");
+
+    stylesheet.addStyle("body", "font-family:Helvetica; font-size:6pt");
+    stylesheet.addStyle(".italic", "font-style:italic;");
+    stylesheet.addStyle(".bold", "font-weight:bold");
+    stylesheet.addStyle(".left", "text-align:left");
+    stylesheet.addStyle(".center", "text-align:center");
+    stylesheet.addStyle(".right", "text-align:right");
+    stylesheet.addStyle(".warning", "color:red");
+    stylesheet.addStyle(".warningOK", "color:green");
+    stylesheet.addStyle(".border-top", "border-top:thin solid black");
+    stylesheet.addStyle(".border-right", "border-right:thin solid black");
+    stylesheet.addStyle(".border-bottom", "border-bottom:thin solid black");
+    stylesheet.addStyle(".border-left", "border-left:thin solid black");
+    stylesheet.addStyle(".headerCol1", "width:20pt");
+    stylesheet.addStyle(".headerCol2", "width:65pt");
+    stylesheet.addStyle(".heading", "font-size: 7pt");
+    stylesheet.addStyle(".bigLogo", "font-size: 35");
+    stylesheet.addStyle(".logo", "width: 200pt");
+    stylesheet.addStyle(".img", "height:50%;width:50%;padding-bottom:20pt");
+    stylesheet.addStyle(".padding-top", "padding-top:6pt");
+    stylesheet.addStyle(".padding-bottom", "padding-bottom:3pt");
+    stylesheet.addStyle(".green", "font-weight: bold; color:#00B000");
+    stylesheet.addStyle(".red", "font-weight: bold; color:#FF0000");
+
+    /* Even rows style of the invoice details.
+  
+     Sets the background color for even rows. */
+
+    stylesheet.addStyle(".even_rows_background_color", "background-color:#f5f5f5");
+
+    return stylesheet;
 
   }
-
-}
-
-/* Function that prints the header */
-addHeader(banDoc, report, stylesheet) {
-
-  var tableRow = report.addSection("header");
-  var company = banDoc.info("AccountingDataBase", "Company");
-  var address1 = banDoc.info("AccountingDataBase", "Address1");
-  var zip = banDoc.info("AccountingDataBase", "Zip");
-  var city = banDoc.info("AccountingDataBase", "City");
-  var email = banDoc.info("AccountingDataBase", "Email");
-  var phone = banDoc.info("AccountingDataBase", "Phone");
-  var logoFormat = Banana.Report.logoFormat("Logo");
-  var headerLogoSection = tableRow.addCell("", "");
-  if (logoFormat != null) {
-    var logoElement = logoFormat.createDocNode(headerLogoSection, stylesheet, "logo");
-    report.addChild(logoElement);
-  }
-
-  report.addParagraph(company, "left");
-  report.addParagraph(address1, "left");
-  report.addParagraph(zip + " " + city, "left");
-  if (phone != "") {
-    report.addParagraph(reportlanguage.phone + phone, "left");
-  }
-  if (email != "") {
-    report.addParagraph(reportlanguage.email + email, "left");
-  }
-  report.addParagraph(" ", "left");
-  report.addParagraph(" ", "left");
-}
-
-/* Function that prints the footer */
-addFooter(report) {
-  var footer = report.getFooter();
-  footer.addText(Banana.Converter.toLocaleDateFormat(new Date()) + "" + "");
-}
-
-/* Function that adds styles for the report print */
-createStyleSheet() {
-
-  var stylesheet = Banana.Report.newStyleSheet();
-  var pageStyle = stylesheet.addStyle("@page");
-  pageStyle.setAttribute("margin", "20mm 5mm 10mm 5mm");
-  pageStyle.setAttribute("size", "landscape");
-
-  var headerStyle = stylesheet.addStyle(".header");
-  headerStyle.setAttribute("width", "100%");
-
-  var titleStyle = stylesheet.addStyle(".title");
-  titleStyle.setAttribute("font-size", "20");
-  titleStyle.setAttribute("text-align", "center");
-  titleStyle.setAttribute("font-weight", "bold");
-  titleStyle.setAttribute("margin-bottom", "0.5em");
-
-  var headerTableStyle = stylesheet.addStyle(".headerTable");
-  headerTableStyle.setAttribute("background-color", "#E0E0E0");
-  headerTableStyle.setAttribute("color", "black");
-
-  var tableStyle = stylesheet.addStyle(".infoTable");
-  tableStyle.setAttribute("width", "50%");
-  stylesheet.addStyle("table.infoTable td", "border: thin solid black;");
-
-  var tableStyle = stylesheet.addStyle(".internalTable");
-  tableStyle.setAttribute("width", "100%");
-
-  stylesheet.addStyle("body", "font-family:Helvetica; font-size:6pt");
-  stylesheet.addStyle(".italic", "font-style:italic;");
-  stylesheet.addStyle(".bold", "font-weight:bold");
-  stylesheet.addStyle(".left", "text-align:left");
-  stylesheet.addStyle(".center", "text-align:center");
-  stylesheet.addStyle(".right", "text-align:right");
-  stylesheet.addStyle(".warning", "color:red");
-  stylesheet.addStyle(".warningOK", "color:green");
-  stylesheet.addStyle(".border-top", "border-top:thin solid black");
-  stylesheet.addStyle(".border-right", "border-right:thin solid black");
-  stylesheet.addStyle(".border-bottom", "border-bottom:thin solid black");
-  stylesheet.addStyle(".border-left", "border-left:thin solid black");
-  stylesheet.addStyle(".headerCol1", "width:20pt");
-  stylesheet.addStyle(".headerCol2", "width:65pt");
-  stylesheet.addStyle(".heading", "font-size: 7pt");
-  stylesheet.addStyle(".bigLogo", "font-size: 35");
-  stylesheet.addStyle(".logo", "width: 200pt");
-  stylesheet.addStyle(".img", "height:50%;width:50%;padding-bottom:20pt");
-  stylesheet.addStyle(".padding-top", "padding-top:6pt");
-  stylesheet.addStyle(".padding-bottom", "padding-bottom:3pt");
-  stylesheet.addStyle(".green", "font-weight: bold; color:#00B000");
-  stylesheet.addStyle(".red", "font-weight: bold; color:#FF0000");
-
-  /* Even rows style of the invoice details.
-
-   Sets the background color for even rows. */
-
-  stylesheet.addStyle(".even_rows_background_color", "background-color:#f5f5f5");
-
-  return stylesheet;
-
-}
 
 
 }
