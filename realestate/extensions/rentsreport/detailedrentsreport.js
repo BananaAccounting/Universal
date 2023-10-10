@@ -22,14 +22,14 @@
 //Check if the version of Banana Accounting is compatible
 function verifyBananaAdvancedVersion() {
   if (!this.banDocument)
-      return false;
+    return false;
 
 
   if (!Banana.application.license || Banana.application.license.licenseType !== "advanced") {
-      var lang = this.getLang();
-      var msg = "This extension requires Banana Accounting+ Advanced";
-      this.banDocument.addMessage(msg, "ID_ERR_LICENSE_NOTVALID");
-      return false;
+    var lang = this.getLang();
+    var msg = "This extension requires Banana Accounting+ Advanced";
+    this.banDocument.addMessage(msg, "ID_ERR_LICENSE_NOTVALID");
+    return false;
   }
 
 
@@ -70,103 +70,103 @@ var PrintReport = class PrintReport {
 
   report(stylesheet) {
 
-  this.setlanguage(this.banDoc, lan);
-  //Check if there is the Accounts table
-  if (!this.banDoc.table("Accounts")) { return; }
-
-  
-  var accounts = this.banDoc.table("Accounts");
-  //var recurringtransactions = this.banDoc.table("RecurringTransactions");
-  var recurringtransactions = this.banDoc.table('Transactions').list('Recurring');
-  
-  if (!accounts) {
-    return;
-  }
-  if (!recurringtransactions) {
-    console.debug("Tabella Registrazioni ricorrenti non aperta.");
-    return;
-  }
+    this.setlanguage(this.banDoc, lan);
+    //Check if there is the Accounts table
+    if (!this.banDoc.table("Accounts")) { return; }
 
 
-  /*
-      List of accounting overdrafts
-  */
+    var accounts = this.banDoc.table("Accounts");
+    //var recurringtransactions = this.banDoc.table("RecurringTransactions");
+    var recurringtransactions = this.banDoc.table('Transactions').list('Recurring');
 
-  // Create the report
-
-  var report = Banana.Report.newReport(reportlanguage.uncoveredrents);
-  var currency = this.banDoc.info("AccountingDataBase", "BasicCurrency");
-  var tenants = this.banDoc.info("AccountingDataBase", "CustomersGroup");
-
-  if (tenants === undefined) {
-    this.banDoc.addMessage(reportlanguage.settenants);
-    return;
-  }
-
-  // Add the header to the report
-  this.addHeader(this.banDoc, report, stylesheet);
-
-  
-
-  // Add paragraph with the title and the date of the report
-  report.addParagraph(reportlanguage.uncoveredrents, "heading");
-  var today = new Date();
-  report.addParagraph(today.toLocaleString(), "heading");
+    if (!accounts) {
+      return;
+    }
+    if (!recurringtransactions) {
+      console.debug("Tabella Registrazioni ricorrenti non aperta.");
+      return;
+    }
 
 
-  var table = report.addTable("internalTable");
-  var tableRow = table.addRow();
+    /*
+        List of accounting overdrafts
+    */
 
-  // Add the table column titles
-  tableRow = table.addRow();
-  tableRow.addCell(reportlanguage.account, "border-bottom left bold");
-  tableRow.addCell(reportlanguage.debtor, "border-bottom left bold");
-  tableRow.addCell(reportlanguage.debit, "border-bottom left bold");
-  tableRow.addCell(reportlanguage.currency, "border-bottom center bold");
-  tableRow.addCell(reportlanguage.startbalance, "border-bottom right bold");
-  tableRow.addCell(this.getMonthNumber(this.banDoc.startPeriod("M")), "border-bottom right bold january");
-  tableRow.addCell(this.getMonthNumber(this.banDoc.startPeriod("2M")), "border-bottom right bold february");
-  tableRow.addCell(this.getMonthNumber(this.banDoc.startPeriod("3M")), "border-bottom right bold march");
-  tableRow.addCell(this.getMonthNumber(this.banDoc.startPeriod("4M")), "border-bottom right bold april");
-  tableRow.addCell(this.getMonthNumber(this.banDoc.startPeriod("5M")), "border-bottom right bold may");
-  tableRow.addCell(this.getMonthNumber(this.banDoc.startPeriod("6M")), "border-bottom right bold june");
-  tableRow.addCell(this.getMonthNumber(this.banDoc.startPeriod("7M")), "border-bottom right bold july");
-  tableRow.addCell(this.getMonthNumber(this.banDoc.startPeriod("8M")), "border-bottom right bold august");
-  tableRow.addCell(this.getMonthNumber(this.banDoc.startPeriod("9M")), "border-bottom right bold september");
-  tableRow.addCell(this.getMonthNumber(this.banDoc.startPeriod("10M")), "border-bottom right bold october");
-  tableRow.addCell(this.getMonthNumber(this.banDoc.startPeriod("11M")), "border-bottom right bold november");
-  tableRow.addCell(this.getMonthNumber(this.banDoc.startPeriod("12M")), "border-bottom right bold december");
-  tableRow.addCell(reportlanguage.total, "border-bottom right bold");
-  tableRow = table.addRow();
+    // Create the report
 
-  var currentbalance;
-  var debit = 0.00;
-  var credit = 0.00;
-  var balance = 0.00;
-  var j = 1;
+    var report = Banana.Report.newReport(reportlanguage.uncoveredrents);
+    var currency = this.banDoc.info("AccountingDataBase", "BasicCurrency");
+    var tenants = this.banDoc.info("AccountingDataBase", "CustomersGroup");
 
-  for (var i = 0; i < accounts.rowCount; i++) {
-    
-    if (accounts.row(i).value("Gr") === tenants) {
+    if (tenants === undefined) {
+      this.banDoc.addMessage(reportlanguage.settenants);
+      return;
+    }
 
-      var debtorAccount = accounts.row(i).value("Account");
+    // Add the header to the report
+    this.addHeader(this.banDoc, report, stylesheet);
 
-      var accountdescription = false;
-      for (var k = 0; k < recurringtransactions.rowCount; k++) {
 
-        var monthnumber = 0;
 
-        var cc1debit = recurringtransactions.row(k).value("Cc1");
-        var accountdebit = recurringtransactions.row(k).value("AccountDebit");
-        var account = recurringtransactions.row(k).value("Account");
-        var startdate = new Date(recurringtransactions.row(k).value("Date"));
-        var startmonth = Banana.Converter.toInternalDateFormat(new Date(startdate.getFullYear(), startdate.getMonth(), 1));
-        var finaldate = recurringtransactions.row(k).value("DateEnd");
-        var repeat = recurringtransactions.row(k).value("Repeat");
+    // Add paragraph with the title and the date of the report
+    report.addParagraph(reportlanguage.uncoveredrents, "heading");
+    var today = new Date();
+    report.addParagraph(today.toLocaleString(), "heading");
+
+
+    var table = report.addTable("internalTable");
+    var tableRow = table.addRow();
+
+    // Add the table column titles
+    tableRow = table.addRow();
+    tableRow.addCell(reportlanguage.account, "border-bottom left bold");
+    tableRow.addCell(reportlanguage.debtor, "border-bottom left bold");
+    tableRow.addCell(reportlanguage.debit, "border-bottom left bold");
+    tableRow.addCell(reportlanguage.currency, "border-bottom center bold");
+    tableRow.addCell(reportlanguage.startbalance, "border-bottom right bold");
+    tableRow.addCell(this.getMonthNumber(this.banDoc.startPeriod("M")), "border-bottom right bold january");
+    tableRow.addCell(this.getMonthNumber(this.banDoc.startPeriod("2M")), "border-bottom right bold february");
+    tableRow.addCell(this.getMonthNumber(this.banDoc.startPeriod("3M")), "border-bottom right bold march");
+    tableRow.addCell(this.getMonthNumber(this.banDoc.startPeriod("4M")), "border-bottom right bold april");
+    tableRow.addCell(this.getMonthNumber(this.banDoc.startPeriod("5M")), "border-bottom right bold may");
+    tableRow.addCell(this.getMonthNumber(this.banDoc.startPeriod("6M")), "border-bottom right bold june");
+    tableRow.addCell(this.getMonthNumber(this.banDoc.startPeriod("7M")), "border-bottom right bold july");
+    tableRow.addCell(this.getMonthNumber(this.banDoc.startPeriod("8M")), "border-bottom right bold august");
+    tableRow.addCell(this.getMonthNumber(this.banDoc.startPeriod("9M")), "border-bottom right bold september");
+    tableRow.addCell(this.getMonthNumber(this.banDoc.startPeriod("10M")), "border-bottom right bold october");
+    tableRow.addCell(this.getMonthNumber(this.banDoc.startPeriod("11M")), "border-bottom right bold november");
+    tableRow.addCell(this.getMonthNumber(this.banDoc.startPeriod("12M")), "border-bottom right bold december");
+    tableRow.addCell(reportlanguage.total, "border-bottom right bold");
+    tableRow = table.addRow();
+
+    var currentbalance;
+    var debit = 0.00;
+    var credit = 0.00;
+    var balance = 0.00;
+    var j = 1;
+
+    for (var i = 0; i < accounts.rowCount; i++) {
+
+      if (accounts.row(i).value("Gr") === tenants) {
+
+        var debtorAccount = accounts.row(i).value("Account");
+
+        var accountdescription = false;
+        for (var k = 0; k < recurringtransactions.rowCount; k++) {
+
+          var monthnumber = 0;
+
+          var cc1debit = recurringtransactions.row(k).value("Cc1");
+          var accountdebit = recurringtransactions.row(k).value("AccountDebit");
+          var account = recurringtransactions.row(k).value("Account");
+          var startdate = new Date(recurringtransactions.row(k).value("Date"));
+          var startmonth = Banana.Converter.toInternalDateFormat(new Date(startdate.getFullYear(), startdate.getMonth(), 1));
+          var finaldate = recurringtransactions.row(k).value("DateEnd");
+          var repeat = recurringtransactions.row(k).value("Repeat");
 
           if (debtorAccount === accountdebit || debtorAccount === "." + cc1debit || debtorAccount === account) {
             j = j + 1;
-            
+
             if (accountdescription === false) {
               tableRow.addCell(debtorAccount, "border-bottom border-left left " + this.classNameEvenRow(j));
               tableRow.addCell(accounts.row(i).value("Description"), "border-bottom left bold " + this.classNameEvenRow(j));
@@ -189,116 +189,116 @@ var PrintReport = class PrintReport {
             tableRow.addCell(currency, "border-bottom center " + this.classNameEvenRow(j));
             tableRow.addCell(Banana.Converter.toLocaleNumberFormat(0, 2, true), "border-bottom right " + this.classNameEvenRow(j));
 
-            if ( (finaldate === "" || finaldate > this.banDoc.startPeriod("M")) && this.banDoc.startPeriod("M") === startmonth )  {
-            tableRow.addCell(this.FormatNumber(debit), "border-bottom right january " + this.classNameEvenRow(j) + " " + this.TodayMonth(stylesheet));
-            startmonth = this.NextDate(startmonth, repeat);
-            monthnumber = monthnumber + 1;
-          }
-            else {      
+            if ((finaldate === "" || finaldate > this.banDoc.startPeriod("M")) && this.banDoc.startPeriod("M") === startmonth) {
+              tableRow.addCell(this.FormatNumber(debit), "border-bottom right january " + this.classNameEvenRow(j) + " " + this.TodayMonth(stylesheet));
+              startmonth = this.NextDate(startmonth, repeat);
+              monthnumber = monthnumber + 1;
+            }
+            else {
               tableRow.addCell(this.FormatNumber(0), "border-bottom right january " + this.classNameEvenRow(j) + " " + this.TodayMonth(stylesheet));
             }
-            
-            if ( (finaldate === "" || finaldate > this.banDoc.startPeriod("2M"))  && this.banDoc.startPeriod("2M") === startmonth ) {
-            tableRow.addCell(this.FormatNumber(debit), "border-bottom right february " + this.classNameEvenRow(j) + " " + this.TodayMonth(stylesheet));
-            startmonth = this.NextDate(startmonth, repeat);
-            monthnumber = monthnumber + 1;
-          }
-            else {     
+
+            if ((finaldate === "" || finaldate > this.banDoc.startPeriod("2M")) && this.banDoc.startPeriod("2M") === startmonth) {
+              tableRow.addCell(this.FormatNumber(debit), "border-bottom right february " + this.classNameEvenRow(j) + " " + this.TodayMonth(stylesheet));
+              startmonth = this.NextDate(startmonth, repeat);
+              monthnumber = monthnumber + 1;
+            }
+            else {
               tableRow.addCell(this.FormatNumber(0), "border-bottom right february " + this.classNameEvenRow(j) + " " + this.TodayMonth(stylesheet));
             }
-            
-            if ( (finaldate === "" || finaldate > this.banDoc.startPeriod("3M"))  && this.banDoc.startPeriod("3M") === startmonth ) {
-            tableRow.addCell(this.FormatNumber(debit), "border-bottom right march " + this.classNameEvenRow(j) + " " + this.TodayMonth(stylesheet));
-            startmonth = this.NextDate(startmonth, repeat);
-            monthnumber = monthnumber + 1;
-          }
-            else {    
+
+            if ((finaldate === "" || finaldate > this.banDoc.startPeriod("3M")) && this.banDoc.startPeriod("3M") === startmonth) {
+              tableRow.addCell(this.FormatNumber(debit), "border-bottom right march " + this.classNameEvenRow(j) + " " + this.TodayMonth(stylesheet));
+              startmonth = this.NextDate(startmonth, repeat);
+              monthnumber = monthnumber + 1;
+            }
+            else {
               tableRow.addCell(this.FormatNumber(0), "border-bottom right march " + this.classNameEvenRow(j) + " " + this.TodayMonth(stylesheet));
             }
-            
-            if ( (finaldate === "" || finaldate > this.banDoc.startPeriod("4M"))  && this.banDoc.startPeriod("4M") === startmonth ) {
-            tableRow.addCell(this.FormatNumber(debit), "border-bottom right april " + this.classNameEvenRow(j) + " " + this.TodayMonth(stylesheet));
-            startmonth = this.NextDate(startmonth, repeat);
-            monthnumber = monthnumber + 1;
-          }
-            else {     
+
+            if ((finaldate === "" || finaldate > this.banDoc.startPeriod("4M")) && this.banDoc.startPeriod("4M") === startmonth) {
+              tableRow.addCell(this.FormatNumber(debit), "border-bottom right april " + this.classNameEvenRow(j) + " " + this.TodayMonth(stylesheet));
+              startmonth = this.NextDate(startmonth, repeat);
+              monthnumber = monthnumber + 1;
+            }
+            else {
               tableRow.addCell(this.FormatNumber(0), "border-bottom right april " + this.classNameEvenRow(j) + " " + this.TodayMonth(stylesheet));
             }
-            
-            if ( (finaldate === "" || finaldate > this.banDoc.startPeriod("5M"))  && this.banDoc.startPeriod("5M") === startmonth ) {
-            tableRow.addCell(this.FormatNumber(debit), "border-bottom right may " + this.classNameEvenRow(j) + " " + this.TodayMonth(stylesheet));
-            startmonth = this.NextDate(startmonth, repeat);
-            monthnumber = monthnumber + 1;
-          }
-            else {  
+
+            if ((finaldate === "" || finaldate > this.banDoc.startPeriod("5M")) && this.banDoc.startPeriod("5M") === startmonth) {
+              tableRow.addCell(this.FormatNumber(debit), "border-bottom right may " + this.classNameEvenRow(j) + " " + this.TodayMonth(stylesheet));
+              startmonth = this.NextDate(startmonth, repeat);
+              monthnumber = monthnumber + 1;
+            }
+            else {
               tableRow.addCell(this.FormatNumber(0), "border-bottom right may " + this.classNameEvenRow(j) + " " + this.TodayMonth(stylesheet));
             }
-            
-            if ( (finaldate === "" || finaldate > this.banDoc.startPeriod("6M"))  && this.banDoc.startPeriod("6M") === startmonth ) {
-            tableRow.addCell(this.FormatNumber(debit), "border-bottom right june " + this.classNameEvenRow(j) + " " + this.TodayMonth(stylesheet));
-            startmonth = this.NextDate(startmonth, repeat);
-            monthnumber = monthnumber + 1;
-          }
-            else {    
+
+            if ((finaldate === "" || finaldate > this.banDoc.startPeriod("6M")) && this.banDoc.startPeriod("6M") === startmonth) {
+              tableRow.addCell(this.FormatNumber(debit), "border-bottom right june " + this.classNameEvenRow(j) + " " + this.TodayMonth(stylesheet));
+              startmonth = this.NextDate(startmonth, repeat);
+              monthnumber = monthnumber + 1;
+            }
+            else {
               tableRow.addCell(this.FormatNumber(0), "border-bottom right june " + this.classNameEvenRow(j) + " " + this.TodayMonth(stylesheet));
             }
-            
-            if ( (finaldate === "" || finaldate > this.banDoc.startPeriod("7M"))  && this.banDoc.startPeriod("7M") === startmonth ) {
-            tableRow.addCell(this.FormatNumber(debit), "border-bottom right july " + this.classNameEvenRow(j) + " " + this.TodayMonth(stylesheet));
-            startmonth = this.NextDate(startmonth, repeat);
-            monthnumber = monthnumber + 1;
-          }
-            else {  
+
+            if ((finaldate === "" || finaldate > this.banDoc.startPeriod("7M")) && this.banDoc.startPeriod("7M") === startmonth) {
+              tableRow.addCell(this.FormatNumber(debit), "border-bottom right july " + this.classNameEvenRow(j) + " " + this.TodayMonth(stylesheet));
+              startmonth = this.NextDate(startmonth, repeat);
+              monthnumber = monthnumber + 1;
+            }
+            else {
               tableRow.addCell(this.FormatNumber(0), "border-bottom right july " + this.classNameEvenRow(j) + " " + this.TodayMonth(stylesheet));
             }
-            
-            if ( (finaldate === "" || finaldate > this.banDoc.startPeriod("8M"))  && this.banDoc.startPeriod("8M") === startmonth ) {
-            tableRow.addCell(this.FormatNumber(debit), "border-bottom right august " + this.classNameEvenRow(j) + " " + this.TodayMonth(stylesheet));
-            startmonth = this.NextDate(startmonth, repeat);
-            monthnumber = monthnumber + 1;
-          }
-            else {   
+
+            if ((finaldate === "" || finaldate > this.banDoc.startPeriod("8M")) && this.banDoc.startPeriod("8M") === startmonth) {
+              tableRow.addCell(this.FormatNumber(debit), "border-bottom right august " + this.classNameEvenRow(j) + " " + this.TodayMonth(stylesheet));
+              startmonth = this.NextDate(startmonth, repeat);
+              monthnumber = monthnumber + 1;
+            }
+            else {
               tableRow.addCell(this.FormatNumber(0), "border-bottom right august " + this.classNameEvenRow(j) + " " + this.TodayMonth(stylesheet));
             }
-            
-            if ( (finaldate === "" || finaldate > this.banDoc.startPeriod("9M"))  && this.banDoc.startPeriod("9M") === startmonth ) {
-            tableRow.addCell(this.FormatNumber(debit), "border-bottom right september " + this.classNameEvenRow(j) + " " + this.TodayMonth(stylesheet));
-            startmonth = this.NextDate(startmonth, repeat);
-            monthnumber = monthnumber + 1;
-          }
+
+            if ((finaldate === "" || finaldate > this.banDoc.startPeriod("9M")) && this.banDoc.startPeriod("9M") === startmonth) {
+              tableRow.addCell(this.FormatNumber(debit), "border-bottom right september " + this.classNameEvenRow(j) + " " + this.TodayMonth(stylesheet));
+              startmonth = this.NextDate(startmonth, repeat);
+              monthnumber = monthnumber + 1;
+            }
             else {
-              
+
               tableRow.addCell(this.FormatNumber(0), "border-bottom right september " + this.classNameEvenRow(j) + " " + this.TodayMonth(stylesheet));
             }
-            
-            if ( (finaldate === "" || finaldate > this.banDoc.startPeriod("10M"))  && this.banDoc.startPeriod("10M") === startmonth ) {
-            tableRow.addCell(this.FormatNumber(debit), "border-bottom right october " + this.classNameEvenRow(j) + " " + this.TodayMonth(stylesheet));
-            startmonth = this.NextDate(startmonth, repeat);
-            monthnumber = monthnumber + 1;
-          }
-            else {  
+
+            if ((finaldate === "" || finaldate > this.banDoc.startPeriod("10M")) && this.banDoc.startPeriod("10M") === startmonth) {
+              tableRow.addCell(this.FormatNumber(debit), "border-bottom right october " + this.classNameEvenRow(j) + " " + this.TodayMonth(stylesheet));
+              startmonth = this.NextDate(startmonth, repeat);
+              monthnumber = monthnumber + 1;
+            }
+            else {
               tableRow.addCell(this.FormatNumber(0), "border-bottom right october " + this.classNameEvenRow(j) + " " + this.TodayMonth(stylesheet));
             }
-            
-            if ( (finaldate === "" || finaldate > this.banDoc.startPeriod("11M"))  && this.banDoc.startPeriod("11M") === startmonth ) {
-            tableRow.addCell(this.FormatNumber(debit), "border-bottom right november " + this.classNameEvenRow(j) + " " + this.TodayMonth(stylesheet));
-            startmonth = this.NextDate(startmonth, repeat);
-            monthnumber = monthnumber + 1;  
-          }
-            else { 
+
+            if ((finaldate === "" || finaldate > this.banDoc.startPeriod("11M")) && this.banDoc.startPeriod("11M") === startmonth) {
+              tableRow.addCell(this.FormatNumber(debit), "border-bottom right november " + this.classNameEvenRow(j) + " " + this.TodayMonth(stylesheet));
+              startmonth = this.NextDate(startmonth, repeat);
+              monthnumber = monthnumber + 1;
+            }
+            else {
               tableRow.addCell(this.FormatNumber(0), "border-bottom right november " + this.classNameEvenRow(j) + " " + this.TodayMonth(stylesheet));
             }
-            
-            if ( (finaldate === "" || finaldate > this.banDoc.startPeriod("12M"))  && this.banDoc.startPeriod("12M") === startmonth ) {
-            tableRow.addCell(this.FormatNumber(debit), "border-bottom right december " + this.classNameEvenRow(j) + " " + this.TodayMonth(stylesheet));
-            startmonth = this.NextDate(startmonth, repeat);
-            monthnumber = monthnumber + 1;
-          }
-            else {   
+
+            if ((finaldate === "" || finaldate > this.banDoc.startPeriod("12M")) && this.banDoc.startPeriod("12M") === startmonth) {
+              tableRow.addCell(this.FormatNumber(debit), "border-bottom right december " + this.classNameEvenRow(j) + " " + this.TodayMonth(stylesheet));
+              startmonth = this.NextDate(startmonth, repeat);
+              monthnumber = monthnumber + 1;
+            }
+            else {
               tableRow.addCell(this.FormatNumber(0), "border-bottom right december " + this.classNameEvenRow(j) + " " + this.TodayMonth(stylesheet));
             }
             tableRow.addCell(this.FormatNumber(debit * monthnumber), "border-bottom border-right right " + this.classNameEvenRow(j));
-          tableRow = table.addRow();
+            tableRow = table.addRow();
           }
         }
 
@@ -506,137 +506,137 @@ var PrintReport = class PrintReport {
 
   }
 
-// Function to get the month from the date format "YYYY-MM-DD" and return the month in the language selected by the user (italian, english, french, german) 
-getMonthNumber(date) {
-  var month = date.substr(5, 2);
-  if (month === "01") {
-    return reportlanguage.january;
-  } else if (month === "02") {
-    return reportlanguage.february;
-  } else if (month === "03") {
-    return reportlanguage.march;
-  } else if (month === "04") {
-    return reportlanguage.april;
-  } else if (month === "05") {
-    return reportlanguage.may;
-  } else if (month === "06") {
-    return reportlanguage.june;
-  } else if (month === "07") {
-    return reportlanguage.july;
-  } else if (month === "08") {
-    return reportlanguage.august;
-  } else if (month === "09") {
-    return reportlanguage.september;
-  } else if (month === "10") {
-    return reportlanguage.october;
-  } else if (month === "11") {
-    return reportlanguage.november;
-  } else if (month === "12") {
-    return reportlanguage.december;
+  // Function to get the month from the date format "YYYY-MM-DD" and return the month in the language selected by the user (italian, english, french, german) 
+  getMonthNumber(date) {
+    var month = date.substr(5, 2);
+    if (month === "01") {
+      return reportlanguage.january;
+    } else if (month === "02") {
+      return reportlanguage.february;
+    } else if (month === "03") {
+      return reportlanguage.march;
+    } else if (month === "04") {
+      return reportlanguage.april;
+    } else if (month === "05") {
+      return reportlanguage.may;
+    } else if (month === "06") {
+      return reportlanguage.june;
+    } else if (month === "07") {
+      return reportlanguage.july;
+    } else if (month === "08") {
+      return reportlanguage.august;
+    } else if (month === "09") {
+      return reportlanguage.september;
+    } else if (month === "10") {
+      return reportlanguage.october;
+    } else if (month === "11") {
+      return reportlanguage.november;
+    } else if (month === "12") {
+      return reportlanguage.december;
+    }
   }
-}
 
-TodayMonth(stylesheet) {
-  var today = new Date();
-  var month = today.getMonth() + 1;
-  // if column is the current month, return "yellow"
-  if (month === 1) {
-    return stylesheet.addStyle(".january", "background-color:#FFFF8A");
-  } else if (month === 2) {
-    stylesheet.addStyle(".february", "background-color:#FFFF8A");
-  } else if (month === 3) {
-    stylesheet.addStyle(".march", "background-color:#FFFF8A");
-  } else if (month === 4) {
-    stylesheet.addStyle(".april", "background-color:#FFFF8A");
-  } else if (month === 5) {
-    stylesheet.addStyle(".may", "background-color:#FFFF8A");
-  } else if (month === 6) {
-    stylesheet.addStyle(".june", "background-color:#FFFF8A");
-  } else if (month === 7) {
-    stylesheet.addStyle(".july", "background-color:#FFFF8A");
-  } else if (month === 8) {
-    stylesheet.addStyle(".august", "background-color:#FFFF8A");
-  } else if (month === 9) {
-    stylesheet.addStyle(".september", "background-color:#FFFF8A");
-  } else if (month === 10) {
-    stylesheet.addStyle(".october", "background-color:#FFFF8A");
-  } else if (month === 11) {
-    stylesheet.addStyle(".november", "background-color:#FFFF8A");
-  } else if (month === 12) {
-    stylesheet.addStyle(".december", "background-color:#FFFF8A");
+  TodayMonth(stylesheet) {
+    var today = new Date();
+    var month = today.getMonth() + 1;
+    // if column is the current month, return "yellow"
+    if (month === 1) {
+      return stylesheet.addStyle(".january", "background-color:#FFFF8A");
+    } else if (month === 2) {
+      stylesheet.addStyle(".february", "background-color:#FFFF8A");
+    } else if (month === 3) {
+      stylesheet.addStyle(".march", "background-color:#FFFF8A");
+    } else if (month === 4) {
+      stylesheet.addStyle(".april", "background-color:#FFFF8A");
+    } else if (month === 5) {
+      stylesheet.addStyle(".may", "background-color:#FFFF8A");
+    } else if (month === 6) {
+      stylesheet.addStyle(".june", "background-color:#FFFF8A");
+    } else if (month === 7) {
+      stylesheet.addStyle(".july", "background-color:#FFFF8A");
+    } else if (month === 8) {
+      stylesheet.addStyle(".august", "background-color:#FFFF8A");
+    } else if (month === 9) {
+      stylesheet.addStyle(".september", "background-color:#FFFF8A");
+    } else if (month === 10) {
+      stylesheet.addStyle(".october", "background-color:#FFFF8A");
+    } else if (month === 11) {
+      stylesheet.addStyle(".november", "background-color:#FFFF8A");
+    } else if (month === 12) {
+      stylesheet.addStyle(".december", "background-color:#FFFF8A");
+    }
   }
-}
 
-// Function to print in green the credit and in red the debit over 0 CHF
+  // Function to print in green the credit and in red the debit over 0 CHF
 
-CreditAmountColor(number) {
-if (number > 0.00) {
-  var classNameAmount = "green";
-  return classNameAmount;
-}
-else {
-  var classNameAmount = "";
-  return classNameAmount;
-}
-}
+  CreditAmountColor(number) {
+    if (number > 0.00) {
+      var classNameAmount = "green";
+      return classNameAmount;
+    }
+    else {
+      var classNameAmount = "";
+      return classNameAmount;
+    }
+  }
 
-BalanceAmountColor(number) {
+  BalanceAmountColor(number) {
 
-if (number > 0.00) {
-  var classNameAmount = "red";
-  return classNameAmount;
-}
-else {
-  var classNameAmount = "";
-  return classNameAmount;
-}
+    if (number > 0.00) {
+      var classNameAmount = "red";
+      return classNameAmount;
+    }
+    else {
+      var classNameAmount = "";
+      return classNameAmount;
+    }
 
-}
+  }
 
-FormatNumber(number) {
-return Banana.Converter.toLocaleNumberFormat(number, 2, true);
-}
+  FormatNumber(number) {
+    return Banana.Converter.toLocaleNumberFormat(number, 2, true);
+  }
 
-classNameEvenRow(j) {
-if (j % 2 === 0) {
-  return "even_rows_background_color";
-}
-else {
-  return;
-}
-}
+  classNameEvenRow(j) {
+    if (j % 2 === 0) {
+      return "even_rows_background_color";
+    }
+    else {
+      return;
+    }
+  }
 
   NextDate(startmonth, repeat) {
-  var startmonth = new Date(startmonth);
-  var nextdate;
-  if (repeat === "M") {
-    nextdate = new Date(startmonth.getFullYear(), startmonth.getMonth() + 1, startmonth.getDate());
-  }
-  else if (repeat === "2M") {
-    nextdate = new Date(startmonth.getFullYear(), startmonth.getMonth() + 2, startmonth.getDate());
-  }
-  else if (repeat === "3M") {
-    nextdate = new Date(startmonth.getFullYear(), startmonth.getMonth() + 3, startmonth.getDate());
-  }
-  else if (repeat === "4M") {
-    nextdate = new Date(startmonth.getFullYear(), startmonth.getMonth() + 4, startmonth.getDate());
-  }
-  else if (repeat === "6M") {
-    nextdate = new Date(startmonth.getFullYear(), startmonth.getMonth() + 6, startmonth.getDate());
-  }
-  else if (repeat === "Y") {
-    nextdate = new Date(startmonth.getFullYear() + 1, startmonth.getMonth(), startmonth.getDate());
-  }
-  else if (repeat === "") {
-    nextdate = startmonth;
-  }
-  else {
-    nextdate = startmonth;
-    banDoc.addMessage(reportlanguage.repeatwarning);
-  }
+    var startmonth = new Date(startmonth);
+    var nextdate;
+    if (repeat === "M") {
+      nextdate = new Date(startmonth.getFullYear(), startmonth.getMonth() + 1, startmonth.getDate());
+    }
+    else if (repeat === "2M") {
+      nextdate = new Date(startmonth.getFullYear(), startmonth.getMonth() + 2, startmonth.getDate());
+    }
+    else if (repeat === "3M") {
+      nextdate = new Date(startmonth.getFullYear(), startmonth.getMonth() + 3, startmonth.getDate());
+    }
+    else if (repeat === "4M") {
+      nextdate = new Date(startmonth.getFullYear(), startmonth.getMonth() + 4, startmonth.getDate());
+    }
+    else if (repeat === "6M") {
+      nextdate = new Date(startmonth.getFullYear(), startmonth.getMonth() + 6, startmonth.getDate());
+    }
+    else if (repeat === "Y") {
+      nextdate = new Date(startmonth.getFullYear() + 1, startmonth.getMonth(), startmonth.getDate());
+    }
+    else if (repeat === "") {
+      nextdate = startmonth;
+    }
+    else {
+      nextdate = startmonth;
+      banDoc.addMessage(reportlanguage.repeatwarning);
+    }
 
-  return Banana.Converter.toInternalDateFormat(nextdate);
-}
+    return Banana.Converter.toInternalDateFormat(nextdate);
+  }
 
 
   setlanguage(banDoc, lan) {
@@ -767,21 +767,21 @@ else {
     else if (lan.substring(0, 2) === "de") {
 
       reportlanguage.rents = "Mieten";
-      reportlanguage.uncoveredrents = "Liste der ungedeckten Mieten";
+      reportlanguage.uncoveredrents = "Liste der unbezahlten Mieten";
       reportlanguage.account = "Konto";
-      reportlanguage.debtor = "Schuldner";
-      reportlanguage.debtors = "Gr Schuldner (Summe in)";
-      reportlanguage.startbalance = "Anfangsbestand";
+      reportlanguage.debtor = "Mieter";
+      reportlanguage.debtors = "Gr Mieter (Summe in)";
+      reportlanguage.startbalance = "Anfangssaldo";
       reportlanguage.charged = "Belastet";
-      reportlanguage.advances = "Vorauszahlungen";
-      reportlanguage.adjustments = "Anpassungen";
-      reportlanguage.endbalance = "Endbestand";
+      reportlanguage.advances = "Nebenkosten";
+      reportlanguage.adjustments = "Nebenkostenabrechnung";
+      reportlanguage.endbalance = "Schlusssaldo";
       reportlanguage.date = "Datum";
       reportlanguage.paid = "Bezahlt";
-      reportlanguage.uncovered = "Nicht gedeckt";
+      reportlanguage.uncovered = "Unbezahlt";
       reportlanguage.input = "Eingabe";
       reportlanguage.choose = "Wählen";
-      reportlanguage.debit = "Debit";
+      reportlanguage.debit = "Schuld";
       reportlanguage.january = "Januar";
       reportlanguage.february = "Februar";
       reportlanguage.march = "März";
@@ -795,10 +795,9 @@ else {
       reportlanguage.november = "November";
       reportlanguage.december = "Dezember";
       reportlanguage.phone = "Telefon";
-      reportlanguage.email = "E-mail";
-      reportlanguage.total = "Gesamt";
-      reportlanguage.repeatwarning = "Warnung: Wert der Spalte Wiederholen wird nicht unterstützt.";
-      reportlanguage.settenants = "Setzen Sie die Gruppe der Kunden aus dem Menü Bericht > Kunden > Einstellungen.";
+      reportlanguage.email = "E-Mail";
+      reportlanguage.total = "Total";
+      reportlanguage.settenants = "Legen Sie die Kunden-Gruppe über dem Menü Berichte > Kunden > Einstellungen fest.";
       reportlanguage.currency = "Währung";
 
     }
