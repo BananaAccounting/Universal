@@ -438,8 +438,16 @@ function preferenceExists(preferencesParam, currentPreference) {
 }
 
 function deletePreferencesData(preferencesParam, currentPreference) {
-  DeletePreferencesNameList(currentPreference); // Inserire un nuovo parametro che permette di definire se aggiungere o togliere l'oggetto, o meglio fare due metodi, un add ad un remove.
-  UpdatedPreferencesObjectListOfNames(preferencesParam);// Inserire un nuovo parametro che permette di definire se aggiungere o togliere l'oggetto.
+  //Cancello l'elemento da l'oggetto: csvFieldsParams_Preferences.
+  const newData = preferencesParam.preferencesListData.filter(item => {
+    // Check if the item key is not equal to the element i want to remove
+    return !item.hasOwnProperty(currentPreference);
+  });
+  //Cancello l'elemento dalle lista con i nomi delle preferenze: csvFieldsParams_PreferencesNames
+  if (DeletePreferencesNameList(currentPreference)) {
+    //Aggiorno la lista con i nomi delle preferenze nell oggetto: csvFieldsParams_Preferences
+    UpdatedPreferencesObjectListOfNames(preferencesParam);
+  }
 }
 
 function saveNewPreferencesData(preferencesParam, currentDlgParams, currentPreference, preferenceToModify) {
@@ -462,13 +470,15 @@ function saveNewPreferencesData(preferencesParam, currentDlgParams, currentPrefe
      */
     let newPreferenceObject = { [currentPreference]: currentDlgParams };
     preferencesParam.preferencesListData.push(newPreferenceObject);
-    AddPreferencesNameList(currentPreference);
-    UpdatedPreferencesObjectListOfNames(preferencesParam);
+    if (AddPreferencesNameList(currentPreference)) {
+      UpdatedPreferencesObjectListOfNames(preferencesParam);
+    }
   }
 }
 
 /**
  * Aggiorno la lista di nomi delle preferenze in ogni oggetto, in maniera di averli sempre aggiornati appena cambia qualcosa.
+ * Questo metodo deve essere chiamato SEMPRE dopo aver aggiunto o rimosso degli elementi dalla lista con i nomi dei preferiti.
  */
 function UpdatedPreferencesObjectListOfNames(preferencesParam) {
   let preferencesNameList = getPreferencesNameList(preferencesParam);
@@ -499,19 +509,20 @@ function AddPreferencesNameList(currentPreference) {
     let paramsToString = JSON.stringify(csvFieldsParams_PreferencesNames);
     Banana.document.setScriptSettings("csvFieldsParams_PreferencesNames", paramsToString);
   }
+  return true;
 }
 
 function DeletePreferencesNameList(currentPreference) {
+  //Delete the element from the preferences list
   let preferencesNameList = getPreferencesNameList();
   if (preferencesNameList.length > 0) {
-    preferencesNameList.push(currentPreference);
+    let prefIndex = preferencesNameList.indexOf(currentPreference);
+    if (prefIndex > -1) {
+      preferencesNameList.splice(prefIndex);
+    }
     let namesListToString = JSON.stringify(preferencesNameList);
     Banana.document.setScriptSettings("csvFieldsParams_PreferencesNames", namesListToString);
-  } else {
-    let csvFieldsParams_PreferencesNames = initPreferencesNamesList();
-    csvFieldsParams_PreferencesNames.push(currentPreference);
-    let paramsToString = JSON.stringify(csvFieldsParams_PreferencesNames);
-    Banana.document.setScriptSettings("csvFieldsParams_PreferencesNames", paramsToString);
+    return true;
   }
 }
 
