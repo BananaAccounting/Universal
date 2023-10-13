@@ -49,7 +49,7 @@ function exec(inData, isTest) {
     let dlgMapCsvFields = new DlgMapCsvFields();
 
     if (!dlgMapCsvFields.settingsDialog()) {
-        return "@Cancel";
+        return "";
     }
 
     let userParams = dlgMapCsvFields.dialogParam;

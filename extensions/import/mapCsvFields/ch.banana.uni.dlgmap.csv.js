@@ -24,10 +24,6 @@ var DlgMapCsvFields = class DlgMapCsvFields {
   }
 
   settingsDialog() {
-    /**Banana.document.setScriptSettings("csvFieldsParams", "");
-     * Banana.document.setScriptSettings("csvFieldsParams_Preferences", "");
-     * Banana.document.setScriptSettings("csvFieldsParams_PreferencesNames", "");
-    return;*/
     let savedDlgParam = Banana.document.getScriptSettings("csvFieldsParams"); //Parametri per struttura dialogo.
     if (savedDlgParam.length > 0) {
       let parsedParam = JSON.parse(savedDlgParam);
@@ -47,25 +43,27 @@ var DlgMapCsvFields = class DlgMapCsvFields {
     let editorDlg = Banana.Ui.createPropertyEditor(dialogTitle, convertedParam, pageAnchor);
     editorDlg.setParams(convertedParam);
     // Aggiungo comando per salvare un nuovo preferito o modificarlo sovrascrivendo i valori esistenti.
-    editorDlg.addCustomCommand("savePreferences", "Save Preferences");
+    editorDlg.addCustomCommand("saveConfiguration", "Save Configuration");
     // Aggiungo comando per eliminare un preferito dalla lista dei preferiti salvati.
-    editorDlg.addCustomCommand("deletePreferences", "Delete Preferences");
+    editorDlg.addCustomCommand("deleteConfiguration", "Delete Cpnfiguration");
     //Aggiungo comando per importare nel dialogo i dati della preferenza correntemente selezionata.
-    editorDlg.addCustomCommand("importPreference", "Import Preference");
+    editorDlg.addCustomCommand("selectConfiguration", "Select Configuration");
     // Poi riproporre i preferiti in un comboBox.
 
     let rtnValue = editorDlg.exec();
     if (parseInt(rtnValue) === 1) {
       let modifiedParams = editorDlg.getParams();
       this.saveParams(modifiedParams);
-      // Aggiorno i parametri con quelli nuovi 
-      this.updatePreferencesList(); //aggiornare la lista ad ogni salvataggio invece che qui ? è possibile ?
+      /** Aggiorno i parametri con quelli nuovi, devo farlo qui e non nei comandi per avere un solo set dei
+       * csvFieldsParams ed evitare che le modifiche si sovrascrivano a vicenda.
+       */
+      this.updatePreferencesList();
       var paramToString = JSON.stringify(this.dialogParam);
       Banana.document.setScriptSettings("csvFieldsParams", paramToString);
       return true;
     }
 
-    return false;
+    return "@Cancel";
   }
 
   saveParams(modifiedParams) {
@@ -74,9 +72,9 @@ var DlgMapCsvFields = class DlgMapCsvFields {
       let arrayData = modifiedParams.data;
       let object = {};
 
-      object = arrayData.find(obj => obj.name === "MappingPrefrencesName");
+      object = arrayData.find(obj => obj.name === "MapConfigurationName");
       if (object && object.value) {
-        this.dialogParam.newPreference = object.value;
+        this.dialogParam.newConfiguration = object.value;
       }
       object = arrayData.find(obj => obj.name === "PreferencesList");
       if (object && object.value) {
@@ -114,12 +112,12 @@ var DlgMapCsvFields = class DlgMapCsvFields {
   }
 
   /**
-   * Aggiorna la lista delle preferenze in csvFieldsParams con le ultime salvate o rimosse in csvFieldsParams_Preferences tramite i comandi.
-   * passo tutti gli elementi presenti nei preferiti: "csvFieldsParams_Preferences" (che viene modificato tramite i comandi nel button) e passo tutti gli elementi, se nei preferiti 
-   * "csvFieldsParams" manca un oggetto, allora lo aggiungo, viceversa se ce un oggetto di troppo, allora lo rimuovo.
-   * Uso come riferimento csvFieldsParams_Preferences perche l'oggetto che viene modificato solo dai comandi in basso (aggiungere rimuovere preferenze) e in base a
-   * quello che rimane poi quando chiudo il dialogo, aggiorno le preferenze generali con quello che risulta in csvFieldsParams_Preferences.
-   */
+ * Aggiorna la lista delle preferenze in csvFieldsParams con le ultime salvate o rimosse in csvFieldsParams_Preferences tramite i comandi.
+ * passo tutti gli elementi presenti nei preferiti: "csvFieldsParams_Preferences" (che viene modificato tramite i comandi nel button) e passo tutti gli elementi, se nei preferiti 
+ * "csvFieldsParams" manca un oggetto, allora lo aggiungo, viceversa se ce un oggetto di troppo, allora lo rimuovo.
+ * Uso come riferimento csvFieldsParams_Preferences perche l'oggetto che viene modificato solo dai comandi in basso (aggiungere rimuovere preferenze) e in base a
+ * quello che rimane poi quando chiudo il dialogo, aggiorno le preferenze generali con quello che risulta in csvFieldsParams_Preferences.
+ */
   updatePreferencesList() {
     let csvFieldsParams_preferences = Banana.document.getScriptSettings("csvFieldsParams_Preferences");
     if (csvFieldsParams_preferences) {
@@ -139,6 +137,7 @@ var DlgMapCsvFields = class DlgMapCsvFields {
     }
     return true;
   }
+
   convertParam() {
     var paramList = {};
     var defaultParam = this.initParam();
@@ -164,40 +163,40 @@ var DlgMapCsvFields = class DlgMapCsvFields {
 
     // CSV PARAMETERS
 
-    // Mapping Preferences Name.
+    // Mapping Configuration Name.
     var param = {};
-    param.name = 'MappingPrefrencesName';
+    param.name = 'MapConfigurationName';
     param.parentObject = 'CsvParameters';
-    param.title = 'Map New Preference';
+    param.title = 'Configuration Name';
     param.type = 'string';
-    param.value = userParam.newPreference ? userParam.newPreference : '';
-    param.defaultvalue = defaultParam.newPreference;
+    param.value = userParam.newConfiguration ? userParam.newConfiguration : '';
+    param.defaultvalue = defaultParam.newConfiguration;
     param.readValue = function () {
-      userParam.newPreference = this.value;
+      userParam.newConfiguration = this.value;
     }
     paramList.data.push(param);
 
     // Preferences List (list of Banks).
-    let prefList = []; // Prendo i valori salvati nelle preferenze
-    prefList = initPreferencesNamesList();
-    let csvFieldsParams_PreferencesNames = Banana.document.getScriptSettings("csvFieldsParams_PreferencesNames");
-    if (csvFieldsParams_PreferencesNames.length > 0) {
-      let parsedPreferencesName = JSON.parse(csvFieldsParams_PreferencesNames);
-      if (parsedPreferencesName) {
-        prefList = parsedPreferencesName;
+    let confList = []; // Prendo i valori salvati nelle preferenze
+    confList = initConfigurationsList();
+    let configurationsNameList = Banana.document.getScriptSettings("csvFieldsParams_configurationsNameList");
+    if (configurationsNameList.length > 0) {
+      let parsedConfigurationsNameList = JSON.parse(configurationsNameList);
+      if (parsedConfigurationsNameList) {
+        confList = parsedConfigurationsNameList;
       }
     }
     var param = {};
-    param.name = 'PreferencesList';
+    param.name = 'ConfigurationsList';
     param.parentObject = 'CsvParameters';
-    param.title = 'Preferences List';
+    param.title = 'Configurations List';
     param.type = 'combobox';
-    param.items = prefList;
+    param.items = confList;
     param.value = userParam.lastPreferenceSelected ? userParam.lastPreferenceSelected : '';
     param.defaultvalue = defaultParam.lastPreferenceSelected;
     param.readValue = function () {
       userParam.lastPreferenceSelected = this.value;
-      userParam.preferencesList = prefList;
+      userParam.preferencesList = confList;
     }
     paramList.data.push(param);
 
@@ -306,7 +305,7 @@ var DlgMapCsvFields = class DlgMapCsvFields {
 
     let params = {};
 
-    params.newPreference = '';
+    params.newConfiguration = '';
     params.lastPreferenceSelected = '';
     params.preferencesList = [];
     params.fieldsDelimiter = ';';
@@ -326,8 +325,8 @@ var DlgMapCsvFields = class DlgMapCsvFields {
   verifyParam() {
     let defaultParam = this.initParam();
 
-    if (!this.dialogParam.newPreference) {
-      this.dialogParam.newPreference = defaultParam.newPreference;
+    if (!this.dialogParam.newConfiguration) {
+      this.dialogParam.newConfiguration = defaultParam.newConfiguration;
     }
     if (!this.dialogParam.preferencesList) {
       this.dialogParam.preferencesList = defaultParam.preferencesList;
@@ -355,7 +354,8 @@ var DlgMapCsvFields = class DlgMapCsvFields {
     }
   }
 }
-function importPreference(currentParams) {
+
+function selectConfiguration(currentParams) {
   /** Questo comando imposta nel dialogo i parametri in base al campo correntemente selezionato del comboBox */
   if (currentParams) {
     let selectedPreference = currentParams.data.find(item => item.name === "PreferencesList").value;
@@ -379,7 +379,7 @@ function importPreference(currentParams) {
   return currentParams;
 }
 
-function savePreferences(currentDlgParams) {
+function saveConfiguration(currentDlgParams) {
   //Salvo solo queste preferenze qui, e poi controllo le altre che coincidano, caso le aggiorno.
   let preferencesParam = initParam_Preferences();
   let savedPreferencesParam = Banana.document.getScriptSettings("csvFieldsParams_Preferences");
@@ -398,18 +398,25 @@ function savePreferences(currentDlgParams) {
   return currentDlgParams;
 }
 
-function deletePreferences(currentDlgParams) {
-  //Salvo solo queste preferenze qui, e poi controllo le altre che coincidano, caso le aggiorno.
-  let preferencesParam = initParam_Preferences();
-  let savedPreferencesParam = Banana.document.getScriptSettings("csvFieldsParams_Preferences");
-  if (savedPreferencesParam.length > 0) {
-    preferencesParam = JSON.parse(savedPreferencesParam);
-  }
-  let currentPreference = getCurrentPreference(currentDlgParams);
 
-  deletePreferencesData(preferencesParam, currentPreference);
-  let paramToString = JSON.stringify(preferencesParam);
-  Banana.document.setScriptSettings("csvFieldsParams_Preferences", paramToString);
+function deleteConfiguration(currentDlgParams) {
+  /**- Come per il save preferences, il comando funziona in base al valore inserito nel campo "Map New Preference.
+   * - Una volta premuto il comando viene chiesta la conferma della cancellazione della preferenza.
+   * - La preferenza viene cancellata da tutti gli oggetti nella syskey
+   * - vengono ritornati gli stessi parametri ma con la lista dei preferiti aggiornata. (forse da migliorare la metodologia)
+   *  */
+  let currentPreference = getCurrentPreference(currentDlgParams);
+  if (Banana.Ui.showQuestion("Delete", "Are you sure to delete the following preference: " + currentPreference)) {
+    let preferencesParam = initParam_Preferences();
+    let savedPreferencesParam = Banana.document.getScriptSettings("csvFieldsParams_Preferences");
+    if (savedPreferencesParam.length > 0) {
+      preferencesParam = JSON.parse(savedPreferencesParam);
+    }
+
+    deleteConfigurationData(preferencesParam, currentDlgParams, currentPreference);
+    let paramToString = JSON.stringify(preferencesParam);
+    Banana.document.setScriptSettings("csvFieldsParams_Preferences", paramToString);
+  }
 
   return currentDlgParams;
 }
@@ -417,8 +424,8 @@ function deletePreferences(currentDlgParams) {
 function getCurrentPreference(currentDlgParams) {
   //Recupero la preferenza inserita, Ad esempio bancastato, raiffeisen, ecc, formato nome consigliato: MyBankName_31122023
   let currentPreference = "";
-  if (currentDlgParams && currentDlgParams.data.find(item => item.name === "MappingPrefrencesName").value) {
-    currentPreference = currentDlgParams.data.find(item => item.name === "MappingPrefrencesName").value;
+  if (currentDlgParams && currentDlgParams.data.find(item => item.name === "MapConfigurationName").value) {
+    currentPreference = currentDlgParams.data.find(item => item.name === "MapConfigurationName").value;
   }
   return currentPreference;
 }
@@ -437,14 +444,17 @@ function preferenceExists(preferencesParam, currentPreference) {
   return false;
 }
 
-function deletePreferencesData(preferencesParam, currentPreference) {
+function deleteConfigurationData(preferencesParam, currentDlgParams, currentPreference) {
   //Cancello l'elemento da l'oggetto: csvFieldsParams_Preferences.
   const newData = preferencesParam.preferencesListData.filter(item => {
     // Check if the item key is not equal to the element i want to remove
     return !item.hasOwnProperty(currentPreference);
   });
+  if (newData.length > 0) {
+    preferencesParam.preferencesListData = newData;
+  }
   //Cancello l'elemento dalle lista con i nomi delle preferenze: csvFieldsParams_PreferencesNames
-  if (DeletePreferencesNameList(currentPreference)) {
+  if (DeletePreferencesNameList(currentDlgParams, currentPreference)) {
     //Aggiorno la lista con i nomi delle preferenze nell oggetto: csvFieldsParams_Preferences
     UpdatedPreferencesObjectListOfNames(preferencesParam);
   }
@@ -464,13 +474,13 @@ function saveNewPreferencesData(preferencesParam, currentDlgParams, currentPrefe
     Banana.document.addMessage("Preference: " + " \"" + currentPreference + "\" " + " has been modified");
   } else {
     /** 
-     * 1) Aggiungo il nuovo oggetto alla lista
-     * 2) Aggiorno la lista con il nome delle preferenze
-     * 3) Aggiorno la lista di nomi delle preferenze in ogni oggetto esistente (incluso quello nuovo appena aggiunto).
+     * 1) Aggiungo il nuovo oggetto alla lista: csvFieldsParams_Preferences
+     * 2) Aggiorno la lista con il nome delle preferenze: csvFieldsParams_PreferencesNames
+     * 3) Aggiorno la lista di nomi delle preferenze (campo "items") in ogni oggetto esistente (csvFieldsParams_Preferences).
      */
     let newPreferenceObject = { [currentPreference]: currentDlgParams };
     preferencesParam.preferencesListData.push(newPreferenceObject);
-    if (AddPreferencesNameList(currentPreference)) {
+    if (AddPreferencesNameList(currentDlgParams, currentPreference)) {
       UpdatedPreferencesObjectListOfNames(preferencesParam);
     }
   }
@@ -497,14 +507,16 @@ function UpdatedPreferencesObjectListOfNames(preferencesParam) {
   }
 }
 
-function AddPreferencesNameList(currentPreference) {
+function AddPreferencesNameList(currentDlgParams, currentPreference) {
   let preferencesNameList = getPreferencesNameList();
   if (preferencesNameList.length > 0) {
     preferencesNameList.push(currentPreference);
+    // aggiorno il comboBox nel dialogo attuale.
+    currentDlgParams.data.find(item => item.name === "PreferencesList")["items"] = preferencesNameList;
     let namesListToString = JSON.stringify(preferencesNameList);
     Banana.document.setScriptSettings("csvFieldsParams_PreferencesNames", namesListToString);
   } else {
-    let csvFieldsParams_PreferencesNames = initPreferencesNamesList();
+    let csvFieldsParams_PreferencesNames = initConfigurationsNamesList();
     csvFieldsParams_PreferencesNames.push(currentPreference);
     let paramsToString = JSON.stringify(csvFieldsParams_PreferencesNames);
     Banana.document.setScriptSettings("csvFieldsParams_PreferencesNames", paramsToString);
@@ -512,7 +524,7 @@ function AddPreferencesNameList(currentPreference) {
   return true;
 }
 
-function DeletePreferencesNameList(currentPreference) {
+function DeletePreferencesNameList(currentDlgParams, currentPreference) {
   //Delete the element from the preferences list
   let preferencesNameList = getPreferencesNameList();
   if (preferencesNameList.length > 0) {
@@ -520,6 +532,8 @@ function DeletePreferencesNameList(currentPreference) {
     if (prefIndex > -1) {
       preferencesNameList.splice(prefIndex);
     }
+    // aggiorno il comboBox nel dialogo attuale.
+    currentDlgParams.data.find(item => item.name === "PreferencesList")["items"] = preferencesNameList;
     let namesListToString = JSON.stringify(preferencesNameList);
     Banana.document.setScriptSettings("csvFieldsParams_PreferencesNames", namesListToString);
     return true;
@@ -549,9 +563,9 @@ function initParam_Preferences() {
   return params;
 }
 
-function initPreferencesNamesList() {
-  let preferencesNamesList = [];
-  return preferencesNamesList;
+function initConfigurationsList() {
+  let configurationsList = [];
+  return configurationsList;
 }
 
 function getObjectKeysList(objectsList) {
@@ -592,7 +606,7 @@ csvFieldsParams_Preferences:
           },
           {
             "defaultvalue": "",
-            "name": "MappingPrefrencesName",
+            "name": "MapConfigurationName",
             "parentObject": "CsvParameters",
             "title": "Map New Preference",
             "type": "string",
@@ -687,7 +701,7 @@ csvFieldsParams_Preferences:
           },
           {
             "defaultvalue": "",
-            "name": "MappingPrefrencesName",
+            "name": "MapConfigurationName",
             "parentObject": "CsvParameters",
             "title": "Map New Preference",
             "type": "string",
@@ -778,7 +792,7 @@ csvFieldsParams:
   "descriptionColumn": "2",
   "fieldsDelimiter": ",",
   "lastPreferenceSelected": "",
-  "newPreference": "Swisscard",
+  "newConfiguration": "Swisscard",
   "preferencesList": [
     {
       "Postfinance": {
@@ -797,7 +811,7 @@ csvFieldsParams:
           },
           {
             "defaultvalue": "",
-            "name": "MappingPrefrencesName",
+            "name": "MapConfigurationName",
             "parentObject": "CsvParameters",
             "title": "Map New Preference",
             "type": "string",
@@ -892,7 +906,7 @@ csvFieldsParams:
           },
           {
             "defaultvalue": "",
-            "name": "MappingPrefrencesName",
+            "name": "MapConfigurationName",
             "parentObject": "CsvParameters",
             "title": "Map New Preference",
             "type": "string",
