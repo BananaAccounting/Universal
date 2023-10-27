@@ -21,7 +21,10 @@
 %%SCRIPT{C:/P/Universal Images/Universal/extensions/import/stripe/test/ch.banana.uni.import.stripe.test.js}
 %
 \begin{testcase}{TestImportStripeTrans}
-\begin{test}{testImport}
+\begin{test}{testImportDoubleEntry}
+\keyvalue{Result}{Passed}
+\end{test}
+\begin{test}{testImportIncomeExpenses}
 \keyvalue{Result}{Passed}
 \end{test}
 \end{testcase}
