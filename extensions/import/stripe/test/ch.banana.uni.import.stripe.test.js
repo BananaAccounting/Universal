@@ -16,7 +16,7 @@
 
 // @id = ch.banana.uni.import.stripe.test
 // @api = 1.0
-// @pubdate = 2023-10-04
+// @pubdate = 2023-10-27
 // @publisher = Banana.ch SA
 // @description = <TEST ch.banana.uni.import.stripe.test>
 // @task = app.command
@@ -48,7 +48,6 @@ TestImportStripeTrans.prototype.cleanupTestCase = function () {
 
 // This method will be called before every test method is executed
 TestImportStripeTrans.prototype.init = function () {
-
 }
 
 // This method will be called after every test method is executed
@@ -56,23 +55,31 @@ TestImportStripeTrans.prototype.cleanup = function () {
 
 }
 
-TestImportStripeTrans.prototype.testImport = function () {
-   var fileNameList = [];
+TestImportStripeTrans.prototype.testImportDoubleEntry = function () {
+   let fileNameList = [];
+   let ac2File = "file:script/../test/testcases/Double-entry Stripe.ac2";
 
-   fileNameList.push("file:script/../test/testcases/ch.banana.filter.import.stripe_payments_20231004.csv");
+   fileNameList.push("file:script/../test/testcases/ch.banana.filter.import.stripe.balance_change_20231010.csv");
+   fileNameList.push("file:script/../test/testcases/ch.banana.filter.import.stripe.balance_history_20231004.csv");
 
-   var parentLogger = this.testLogger;
+   let parentLogger = this.testLogger;
    this.progressBar.start(fileNameList.length);
+   let banDocument = Banana.application.openDocument(ac2File);
 
-   for (var i = 0; i < fileNameList.length; i++) {
-      var fileName = fileNameList[i];
-      this.testLogger = parentLogger.newLogger(Banana.IO.fileCompleteBaseName(fileName));
+   if (!banDocument)
+      parentLogger.addFatalError("File not found: " + ac2File);
 
-      var file = Banana.IO.getLocalFile(fileName);
+   for (let i = 0; i < fileNameList.length; i++) {
+      let fileName = fileNameList[i];
+      let loggerName = Banana.IO.fileCompleteBaseName(ac2File) + ";" + Banana.IO.fileCompleteBaseName(fileName);
+      this.testLogger = parentLogger.newLogger(loggerName);
+
+      let file = Banana.IO.getLocalFile(fileName);
       Test.assert(file);
-      var fileContent = file.read();
+      let fileContent = file.read();
       Test.assert(fileContent);
-      var transactions = exec(fileContent, true); //takes the exec from the import script.
+      let userParam = getUserParam_DoubleEntry();
+      let transactions = processStripeTransactions(fileContent, userParam, banDocument);
       this.testLogger.addCsv('', transactions);
 
       if (!this.progressBar.step())
@@ -80,4 +87,64 @@ TestImportStripeTrans.prototype.testImport = function () {
    }
 
    this.progressBar.finish();
+}
+TestImportStripeTrans.prototype.testImportIncomeExpenses = function () {
+   let fileNameList = [];
+   let ac2File = "file:script/../test/testcases/Income & Expense accounting Stripe.ac2";
+
+   fileNameList.push("file:script/../test/testcases/ch.banana.filter.import.stripe.balance_change_20231010.csv");
+   fileNameList.push("file:script/../test/testcases/ch.banana.filter.import.stripe.balance_history_20231004.csv");
+
+   let parentLogger = this.testLogger;
+   this.progressBar.start(fileNameList.length);
+   let banDocument = Banana.application.openDocument(ac2File);
+
+   if (!banDocument)
+      parentLogger.addFatalError("File not found: " + ac2File);
+
+   for (let i = 0; i < fileNameList.length; i++) {
+
+      let fileName = fileNameList[i];
+      let loggerName = Banana.IO.fileCompleteBaseName(ac2File) + ";" + Banana.IO.fileCompleteBaseName(fileName);
+      this.testLogger = parentLogger.newLogger(loggerName);
+
+      let file = Banana.IO.getLocalFile(fileName);
+      Test.assert(file);
+      let fileContent = file.read();
+      Test.assert(fileContent);
+      let userParam = getUserParam_IncomeExpenses();
+      let transactions = processStripeTransactions(fileContent, userParam, banDocument);
+      this.testLogger.addCsv('', transactions);
+
+      if (!this.progressBar.step())
+         break;
+   }
+
+   this.progressBar.finish();
+}
+
+function getUserParam_DoubleEntry() {
+   var params = {};
+
+   params.dateFormat = "yyyy-mm-dd";
+   params.stripeAccount = "1001"; // Bank account
+   params.stripeIn = "3000"; // Revenues account.
+   params.stripeFunds = "6941"; // Costs account.
+   params.stripeFee = "6940"; // Costs account.
+
+   return params;
+
+}
+
+function getUserParam_IncomeExpenses() {
+   var params = {};
+
+   params.dateFormat = "yyyy-mm-dd";
+   params.stripeAccount = "1001"; // Bank account
+   params.stripeIn = "3621"; // Revenues account.
+   params.stripeFunds = "6901"; // Costs account.
+   params.stripeFee = "6900"; // Costs account.
+
+   return params;
+
 }
