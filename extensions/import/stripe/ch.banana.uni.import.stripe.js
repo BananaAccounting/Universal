@@ -132,10 +132,10 @@ var ImportPaymentsTransactionsFormat1 = class ImportPaymentsTransactionsFormat1 
 
         if (accoutingType == INCOME_EXPENSES_TYPE) {
             processedTrans = this.processTransactions_IncomeExpenses(transactions);
-            headers = ["Date", "ExternalReference", "Description", "Income", "Expenses", "Account", "Category"];
+            headers = ["Date", "ExternalReference", "Description", "Income", "Expenses", "Account", "Category", "Notes"];
         } else if (accoutingType == DOUBLE_ENTRY_TYPE) {
             processedTrans = this.processTransactions_DoubleEntry(transactions);
-            headers = ["Date", "ExternalReference", "Description", "AccountDebit", "AccountCredit", "Amount"];
+            headers = ["Date", "ExternalReference", "Description", "AccountDebit", "AccountCredit", "Amount", "Notes"];
         }
 
         objectArrayToCsv = Banana.Converter.objectArrayToCsv(headers, processedTrans, ";");
@@ -172,6 +172,7 @@ var ImportPaymentsTransactionsFormat1 = class ImportPaymentsTransactionsFormat1 
                     trRow.Expenses = CONTRA_ACCOUNT;
                     trRow.Account = this.param.stripeAccount;
                     trRow.Category = this.param.stripeIn;
+                    trRow.Notes = transaction["automatic_payout_id"];
 
                     transactionsObjs.push(trRow);
                     break;
@@ -207,7 +208,7 @@ var ImportPaymentsTransactionsFormat1 = class ImportPaymentsTransactionsFormat1 
                     if (amount.length > 0) {
                         trRow.Amount = Banana.Converter.toInternalNumberFormat(amount, this.decimalSeparator);
                     }
-
+                    trRow.Notes = transaction["automatic_payout_id"];
                     transactionsObjs.push(trRow);
                     break;
             }
@@ -434,7 +435,7 @@ var ImportStripeAllTransactionsFormat1 = class ImportStripeAllTransactionsFormat
         trRow.ExternalReference = transaction["id"];
         let description = this.getDescription(transaction, transaction["Type"]); // Put the type in the description for the Rules !!!!
         trRow.Description = description;
-        trRow.AccountDebit = CONTRA_ACCOUNT;
+        trRow.AccountDebit = "";
         trRow.AccountCredit = this.param.stripeIn;
         let amount = transaction["Amount"];
         if (amount.length > 0) {
@@ -477,7 +478,7 @@ var ImportStripeAllTransactionsFormat1 = class ImportStripeAllTransactionsFormat
         let description = this.getDescription(transaction, this.texts.net); // Put the type in the description for the Rules !!!!
         trRow.Description = description;
         trRow.AccountDebit = this.param.stripeAccount;
-        trRow.AccountCredit = CONTRA_ACCOUNT;
+        trRow.AccountCredit = "";
         let amount = transaction["Net"];
         if (amount.length > 0) {
             trRow.Amount = Banana.Converter.toInternalNumberFormat(amount, this.decimalSeparator);
@@ -518,7 +519,7 @@ var ImportStripeAllTransactionsFormat1 = class ImportStripeAllTransactionsFormat
         let description = this.getDescription(transaction, this.texts.fee); // Put the type in the description for the Rules !!!!
         trRow.Description = description;
         trRow.AccountDebit = this.param.stripeFee;
-        trRow.AccountCredit = CONTRA_ACCOUNT;
+        trRow.AccountCredit = "";
         let feeAmount = transaction["Fee"];
         if (feeAmount.length > 0) {
             trRow.Amount = Banana.Converter.toInternalNumberFormat(feeAmount, this.decimalSeparator);
@@ -976,14 +977,16 @@ function validateParams(params) {
     let texts = getTexts();
     params.data.forEach(item => {
         if (accountNames.includes(item.name)) {
-            accountsList.push(item.value);
+            accountsList.push({ name: item.name, value: item.value });
         }
     });
 
     if (accountsList.length > 0) {
         for (var i = 0; i < params.data.length; i++) {
-            account = params.data[i].value;
-            if (accountsList.includes(account)) {
+            let account = params.data[i].value;
+            let name = params.data[i].name;
+            const isValueInArray = accountsList.some(obj => obj.value === account);
+            if (isValueInArray && name == STRIPE_ACCOUNT || name == STRIPE_IN) { //STRIPE_FUNDS && STRIPE_FEE are not mandatory for the balance change in history.
                 if (account == "") {
                     params.data[i].errorMsg = texts.accountMissing;
                     return false;
