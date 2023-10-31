@@ -110,8 +110,8 @@ var ImportPaymentsTransactionsFormat1 = class ImportPaymentsTransactionsFormat1 
             else
                 formatMatched = false;
 
-            if (formatMatched && transaction["available_on"] && transaction["available_on"].length >= 16 &&
-                transaction["available_on"].match(/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/))
+            if (formatMatched && transaction["created"] && transaction["created"].length >= 16 &&
+                transaction["created"].match(/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/))
                 formatMatched = true;
             else
                 formatMatched = false;
@@ -161,7 +161,7 @@ var ImportPaymentsTransactionsFormat1 = class ImportPaymentsTransactionsFormat1 
             switch (trType) {
                 case CHARGE_MOV:
                     let trRow = initTrRowObjectStructure_IncomeExpenses();
-                    trRow.Date = Banana.Converter.toInternalDateFormat(transaction["available_on"], this.param.dateFormat);
+                    trRow.Date = Banana.Converter.toInternalDateFormat(transaction["created"], this.param.dateFormat);
                     trRow.ExternalReference = transaction["balance_transaction_id"];
                     let description = this.getDescription(transaction, transaction["reporting_category"]); // Put the type in the description for the Rules !!!!
                     trRow.Description = description;
@@ -198,7 +198,7 @@ var ImportPaymentsTransactionsFormat1 = class ImportPaymentsTransactionsFormat1 
             switch (trType) {
                 case CHARGE_MOV:
                     let trRow = initTrRowObjectStructure_DoubleEntry();
-                    trRow.Date = Banana.Converter.toInternalDateFormat(transaction["available_on"], this.param.dateFormat);
+                    trRow.Date = Banana.Converter.toInternalDateFormat(transaction["created"], this.param.dateFormat);
                     trRow.ExternalReference = transaction["balance_transaction_id"];
                     let description = this.getDescription(transaction, this.texts.net); // Put the type in the description for the Rules !!!!
                     trRow.Description = description;
@@ -383,7 +383,7 @@ var ImportStripeAllTransactionsFormat1 = class ImportStripeAllTransactionsFormat
      */
     mapTransaction_Payment_Gross_IncomeExpenses(transaction) {
         let trRow = initTrRowObjectStructure_IncomeExpenses();
-        trRow.Date = Banana.Converter.toInternalDateFormat(transaction["Available On (UTC)"], this.param.dateFormat);
+        trRow.Date = Banana.Converter.toInternalDateFormat(transaction["Created (UTC)"], this.param.dateFormat);
         trRow.ExternalReference = transaction["id"]; // Balance id
         let description = this.getDescription(transaction, transaction["Type"]); // Put the type in the description for the Rules !!!!
         trRow.Description = description;
@@ -404,7 +404,7 @@ var ImportStripeAllTransactionsFormat1 = class ImportStripeAllTransactionsFormat
     */
     mapTransaction_Payment_Gross_DoubleEntry(transaction) {
         let trRow = initTrRowObjectStructure_DoubleEntry();
-        trRow.Date = Banana.Converter.toInternalDateFormat(transaction["Available On (UTC)"], this.param.dateFormat);
+        trRow.Date = Banana.Converter.toInternalDateFormat(transaction["Created (UTC)"], this.param.dateFormat);
         trRow.ExternalReference = transaction["id"];
         let description = this.getDescription(transaction, transaction["Type"]); // Put the type in the description for the Rules !!!!
         trRow.Description = description;
@@ -424,7 +424,7 @@ var ImportStripeAllTransactionsFormat1 = class ImportStripeAllTransactionsFormat
      */
     mapTransaction_Payment_Net_IncomeExpenses(transaction) {
         let trRow = initTrRowObjectStructure_IncomeExpenses();
-        trRow.Date = Banana.Converter.toInternalDateFormat(transaction["Available On (UTC)"], this.param.dateFormat);
+        trRow.Date = Banana.Converter.toInternalDateFormat(transaction["Created (UTC)"], this.param.dateFormat);
         trRow.ExternalReference = transaction["id"];
         let description = this.getDescription(transaction, this.texts.net); // Put the type in the description for the Rules !!!!
         trRow.Description = description;
@@ -446,7 +446,7 @@ var ImportStripeAllTransactionsFormat1 = class ImportStripeAllTransactionsFormat
     */
     mapTransaction_Payment_Net_DoubleEntry(transaction) {
         let trRow = initTrRowObjectStructure_DoubleEntry();
-        trRow.Date = Banana.Converter.toInternalDateFormat(transaction["Available On (UTC)"], this.param.dateFormat);
+        trRow.Date = Banana.Converter.toInternalDateFormat(transaction["Created (UTC)"], this.param.dateFormat);
         trRow.ExternalReference = transaction["id"];
         let description = this.getDescription(transaction, this.texts.net); // Put the type in the description for the Rules !!!!
         trRow.Description = description;
@@ -466,7 +466,7 @@ var ImportStripeAllTransactionsFormat1 = class ImportStripeAllTransactionsFormat
      */
     mapTransaction_Payment_Fee_IncomeExpenses(transaction) {
         let trRow = initTrRowObjectStructure_IncomeExpenses();
-        trRow.Date = Banana.Converter.toInternalDateFormat(transaction["Available On (UTC)"], this.param.dateFormat);
+        trRow.Date = Banana.Converter.toInternalDateFormat(transaction["Created (UTC)"], this.param.dateFormat);
         trRow.ExternalReference = transaction["id"];
         let description = this.getDescription(transaction, this.texts.fee); // Put the type in the description for the Rules !!!!
         trRow.Description = description;
@@ -487,7 +487,7 @@ var ImportStripeAllTransactionsFormat1 = class ImportStripeAllTransactionsFormat
      */
     mapTransaction_Payment_Fee_DoubleEntry(transaction) {
         let trRow = initTrRowObjectStructure_DoubleEntry();
-        trRow.Date = Banana.Converter.toInternalDateFormat(transaction["Available On (UTC)"], this.param.dateFormat);
+        trRow.Date = Banana.Converter.toInternalDateFormat(transaction["Created (UTC)"], this.param.dateFormat);
         trRow.ExternalReference = transaction["id"];
         let description = this.getDescription(transaction, this.texts.fee); // Put the type in the description for the Rules !!!!
         trRow.Description = description;
@@ -507,7 +507,7 @@ var ImportStripeAllTransactionsFormat1 = class ImportStripeAllTransactionsFormat
     */
     mapTransaction_Refund_IncomeExpenses(transaction) {
         let trRow = initTrRowObjectStructure_IncomeExpenses();
-        trRow.Date = Banana.Converter.toInternalDateFormat(transaction["Available On (UTC)"], this.param.dateFormat);
+        trRow.Date = Banana.Converter.toInternalDateFormat(transaction["Created (UTC)"], this.param.dateFormat);
         trRow.ExternalReference = transaction["id"];
         let description = this.getDescription(transaction, ""); // Put the type in the description for the Rules !!!!
         trRow.Description = description;
@@ -535,7 +535,7 @@ var ImportStripeAllTransactionsFormat1 = class ImportStripeAllTransactionsFormat
     * */
     mapTransaction_Refund_DoubleEntry(transaction) {
         let trRow = initTrRowObjectStructure_DoubleEntry();
-        trRow.Date = Banana.Converter.toInternalDateFormat(transaction["Available On (UTC)"], this.param.dateFormat);
+        trRow.Date = Banana.Converter.toInternalDateFormat(transaction["Created (UTC)"], this.param.dateFormat);
         trRow.ExternalReference = transaction["id"];
         let description = this.getDescription(transaction, ""); // Put the type in the description for the Rules !!!!
         trRow.Description = description;
