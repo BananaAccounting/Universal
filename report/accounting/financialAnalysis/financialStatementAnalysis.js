@@ -96,7 +96,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                 case "styleTablesHeaderText":
                     styleWithoutColor = "styleTablesHeaderText_withoutColor";
                     return styleWithoutColor;
-                    //Altman index performance indicators colors
+                //Altman index performance indicators colors
                 case "styleZIndexLow":
                     styleWithoutColor = "styleZIndexLow_withoutColor";
                     return styleWithoutColor;
@@ -106,14 +106,14 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                 case "styleZIndexProb":
                     styleWithoutColor = "styleZIndexProb_withoutColor";
                     return styleWithoutColor;
-                    //assets and liabilities 
+                //assets and liabilities 
                 case "styleAssetsAdjustments":
                     styleWithoutColor = "styleAssetsAdjustments_withoutColor";
                     return styleWithoutColor;
                 case "styleLiabilitiesAdjustments":
                     styleWithoutColor = "styleLiabilitiesAdjustments_withoutColor";
                     return styleWithoutColor;
-                    //totals
+                //totals
                 case "styleTotalAmount":
                     styleWithoutColor = "styleTotalAmount_withoutColor";
                     return styleWithoutColor;
@@ -423,27 +423,27 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                 case "PY":
                     year = year.substr(0, 4);
                     break;
-                    //current year (to date)
+                //current year (to date)
                 case "CY":
                     year = texts.year_to_date;
                     break;
-                    //current year projection
+                //current year projection
                 case "CYP":
                     year = texts.year_projection;
                     break;
-                    //budget
+                //budget
                 case "B":
                     year = texts.budget;
                     break;
-                    //budget to date
+                //budget to date
                 case "BTD":
                     year = texts.budget_to_date;
                     break;
-                    //budget differences complete
+                //budget differences complete
                 case "BDC":
                     year = texts.budget_differences_complete;
                     break;
-                    //budget differences to date
+                //budget differences to date
                 case "BDT":
                     year = texts.budget_differences_todate;
                     break;
@@ -953,7 +953,8 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
          * Add the control sums table (could be done better with a method)
          * ***************************************************************************************/
         let ctsumsData = this.getControlSumsTitlesData(texts);
-        if (this.dialogparam.includecontrolsums) {
+        let hasDifferences = this.controlSumsWithDifferences(this.data);
+        if (this.dialogparam.includecontrolsums || hasDifferences) {
             var tableControlSums = this.printReportAdd_TableControlSums(report);
             for (var key in ctsumsData) {
                 let descrTableRow = tableControlSums.addRow("styleTablRows");
@@ -964,7 +965,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                     let year = period.substr(0, 4);
                     if (this.data[i].period.Type == "CY" || this.data[i].period.Type == "PY") {
                         for (var key in this.data[i].controlSumsData) {
-                            let type = typeof(this.data[i].controlSumsData[key]);
+                            let type = typeof (this.data[i].controlSumsData[key]);
                             if (type == "object" && this.data[i].controlSumsData[key].id == dataId) {
                                 let diffStyle = this.data[i].controlSumsData[key].getStyle();
                                 let amtRow = tableControlSums.addRow("styleTablRows");
@@ -978,7 +979,6 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                 }
             }
             //if differences are presents, display a warning
-            let hasDifferences = this.controlSumsWithDifferences(this.data);
             if (hasDifferences) {
                 report.addParagraph(texts.controlSums, "styleWarningText");
             }
@@ -997,7 +997,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         //add the operating cashflow elements
         for (var key in this.data[0].cashflowData.operatingCashflow) {
             var tableRow = tableCashflow.addRow("styleTablRows");
-            if (typeof(this.data[0].cashflowData.operatingCashflow[key]) == 'object') {
+            if (typeof (this.data[0].cashflowData.operatingCashflow[key]) == 'object') {
                 if (this.dialogparam.acronymcolumn) {
                     //add acronym
                     tableRow.addCell(this.data[0].cashflowData.operatingCashflow[key].acronym.text, this.data[0].cashflowData.operatingCashflow[key].acronym.style);
@@ -1022,7 +1022,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         //add the investing cashflow elements
         for (var key in this.data[0].cashflowData.cashflowFromInvesting) {
             var tableRow = tableCashflow.addRow("styleTablRows");
-            if (typeof(this.data[0].cashflowData.cashflowFromInvesting[key]) == 'object') {
+            if (typeof (this.data[0].cashflowData.cashflowFromInvesting[key]) == 'object') {
                 if (this.dialogparam.acronymcolumn) {
                     tableRow.addCell(this.data[0].cashflowData.cashflowFromInvesting[key].acronym.text, this.data[0].cashflowData.cashflowFromInvesting[key].acronym.style);
                 }
@@ -1035,7 +1035,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         //add the financing cashflow elements
         for (var key in this.data[0].cashflowData.cashflowFromFinancing) {
             var tableRow = tableCashflow.addRow("styleTablRows");
-            if (typeof(this.data[0].cashflowData.cashflowFromFinancing[key]) == 'object') {
+            if (typeof (this.data[0].cashflowData.cashflowFromFinancing[key]) == 'object') {
                 if (this.dialogparam.acronymcolumn) {
                     tableRow.addCell(this.data[0].cashflowData.cashflowFromFinancing[key].acronym.text, this.data[0].cashflowData.cashflowFromFinancing[key].acronym.style);
                 }
@@ -1067,7 +1067,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         //add the investing cashflow elements
         for (var key in this.data[0].cashflowData.verifData) {
             var tableRow = tableCashflowVerif.addRow("styleTablRows");
-            if (typeof(this.data[0].cashflowData.verifData[key]) == 'object') {
+            if (typeof (this.data[0].cashflowData.verifData[key]) == 'object') {
                 if (this.dialogparam.acronymcolumn) {
                     tableRow.addCell(this.data[0].cashflowData.verifData[key].acronym.text, this.data[0].cashflowData.verifData[key].acronym.style);
                 }
@@ -2169,146 +2169,146 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
      * unlike the loadDataBudget the loadDataYear is called up for each prevous year of the document.
      */
     loadData() {
-            this.data = [];
-            var yeardocument = this.banDocument;
-            var i = 0;
-            var data_year_todate = {};
-            var data_budget_todate = {};
+        this.data = [];
+        var yeardocument = this.banDocument;
+        var i = 0;
+        var data_year_todate = {};
+        var data_budget_todate = {};
 
-            var data_year_projection = {};
-            var data_budget_complete = {};
-            //converto l'attributo di classe this.dialogparam.current_date nel formato corretto
+        var data_year_projection = {};
+        var data_budget_complete = {};
+        //converto l'attributo di classe this.dialogparam.current_date nel formato corretto
 
-            // only if the table budget exists and if the User choosed to use it.
-            var isIncluded = this.dialogparam.includebudgettable;
-            if (this.with_budget && isIncluded) {
-                //Normal Budget data (complete)
-                let data_budget = this.loadData_Budget(yeardocument);
-                let calculated_data = this.calculateData(data_budget, yeardocument, isIncluded, "");
-                let index = this.calculateIndex(data_budget, calculated_data);
-                let dupont_data = this.createdupont_data(data_budget, calculated_data, index);
-                let cashflowData = this.calculateCashflowData(data_budget, calculated_data);
-                let retEarningsData = this.setRetainedEarningsData(data_budget, calculated_data);
-                let cashflow_index = this.calculateCashflowIndex(data_budget, calculated_data, cashflowData);
-                let altman_index = this.calculateAltmanZScoreIndex(data_budget, calculated_data, retEarningsData);
-                let altman_index_pc = this.calculateAltmanZScoreIndexPC(data_budget, calculated_data, retEarningsData); // Z score for private companies
-                data_budget.calculated_data = calculated_data;
-                data_budget.index = index;
-                data_budget.dupont_data = dupont_data;
-                data_budget.altman_index = altman_index;
-                data_budget.altman_index_pc = altman_index_pc;
-                data_budget.cashflowData = cashflowData;
-                data_budget.retEarningsData = retEarningsData;
-                data_budget.cashflow_index = cashflow_index;
-                this.data.push(data_budget);
-                data_budget_complete = data_budget;
-            }
+        // only if the table budget exists and if the User choosed to use it.
+        var isIncluded = this.dialogparam.includebudgettable;
+        if (this.with_budget && isIncluded) {
+            //Normal Budget data (complete)
+            let data_budget = this.loadData_Budget(yeardocument);
+            let calculated_data = this.calculateData(data_budget, yeardocument, isIncluded, "");
+            let index = this.calculateIndex(data_budget, calculated_data);
+            let dupont_data = this.createdupont_data(data_budget, calculated_data, index);
+            let cashflowData = this.calculateCashflowData(data_budget, calculated_data);
+            let retEarningsData = this.setRetainedEarningsData(data_budget, calculated_data);
+            let cashflow_index = this.calculateCashflowIndex(data_budget, calculated_data, cashflowData);
+            let altman_index = this.calculateAltmanZScoreIndex(data_budget, calculated_data, retEarningsData);
+            let altman_index_pc = this.calculateAltmanZScoreIndexPC(data_budget, calculated_data, retEarningsData); // Z score for private companies
+            data_budget.calculated_data = calculated_data;
+            data_budget.index = index;
+            data_budget.dupont_data = dupont_data;
+            data_budget.altman_index = altman_index;
+            data_budget.altman_index_pc = altman_index_pc;
+            data_budget.cashflowData = cashflowData;
+            data_budget.retEarningsData = retEarningsData;
+            data_budget.cashflow_index = cashflow_index;
+            this.data.push(data_budget);
+            data_budget_complete = data_budget;
+        }
 
-            //current year with projection
-            if (this.dialogparam.includecurrentyear_projection && this.with_budget && isIncluded) {
-                let data_year = this.loadData_Year_Projection(yeardocument);
-                let calculated_data = this.calculateData(data_year, yeardocument, false, "");
-                let index = this.calculateIndex(data_year, calculated_data);
-                let dupont_data = this.createdupont_data(data_year, calculated_data, index);
-                let cashflowData = this.calculateCashflowData(data_year, calculated_data);
-                let retEarningsData = this.setRetainedEarningsData(data_year, calculated_data);
-                let cashflow_index = this.calculateCashflowIndex(data_year, calculated_data, cashflowData);
-                let altman_index = this.calculateAltmanZScoreIndex(data_year, calculated_data, retEarningsData);
-                let altman_index_pc = this.calculateAltmanZScoreIndexPC(data_year, calculated_data, retEarningsData); // Z score for private companies
-                data_year.calculated_data = calculated_data;
-                data_year.index = index;
-                data_year.dupont_data = dupont_data;
-                data_year.altman_index = altman_index;
-                data_year.altman_index_pc = altman_index_pc;
-                data_year.cashflowData = cashflowData;
-                data_year.retEarningsData = retEarningsData;
-                data_year.cashflow_index = cashflow_index;
-                data_year_projection = data_year;
-                this.data.push(data_year);
-            }
+        //current year with projection
+        if (this.dialogparam.includecurrentyear_projection && this.with_budget && isIncluded) {
+            let data_year = this.loadData_Year_Projection(yeardocument);
+            let calculated_data = this.calculateData(data_year, yeardocument, false, "");
+            let index = this.calculateIndex(data_year, calculated_data);
+            let dupont_data = this.createdupont_data(data_year, calculated_data, index);
+            let cashflowData = this.calculateCashflowData(data_year, calculated_data);
+            let retEarningsData = this.setRetainedEarningsData(data_year, calculated_data);
+            let cashflow_index = this.calculateCashflowIndex(data_year, calculated_data, cashflowData);
+            let altman_index = this.calculateAltmanZScoreIndex(data_year, calculated_data, retEarningsData);
+            let altman_index_pc = this.calculateAltmanZScoreIndexPC(data_year, calculated_data, retEarningsData); // Z score for private companies
+            data_year.calculated_data = calculated_data;
+            data_year.index = index;
+            data_year.dupont_data = dupont_data;
+            data_year.altman_index = altman_index;
+            data_year.altman_index_pc = altman_index_pc;
+            data_year.cashflowData = cashflowData;
+            data_year.retEarningsData = retEarningsData;
+            data_year.cashflow_index = cashflow_index;
+            data_year_projection = data_year;
+            this.data.push(data_year);
+        }
 
-            //Budget to Date (until the current date)
-            //if user selected it
-            if (this.with_budget && isIncluded && this.dialogparam.includebudget_todate) {
-                let data_budget = this.loadData_Budget_ToDate(yeardocument);
-                let calculated_data = this.calculateData(data_budget, yeardocument, isIncluded, "");
-                let index = this.calculateIndex(data_budget, calculated_data);
-                let dupont_data = this.createdupont_data(data_budget, calculated_data, index);
-                let cashflowData = this.calculateCashflowData(data_budget, calculated_data);
-                let retEarningsData = this.setRetainedEarningsData(data_budget, calculated_data);
-                let cashflow_index = this.calculateCashflowIndex(data_budget, calculated_data, cashflowData);
-                let altman_index = this.calculateAltmanZScoreIndex(data_budget, calculated_data, retEarningsData);
-                let altman_index_pc = this.calculateAltmanZScoreIndexPC(data_budget, calculated_data, retEarningsData); // Z score for private companies
-                data_budget.calculated_data = calculated_data;
-                data_budget.index = index;
-                data_budget.dupont_data = dupont_data;
-                data_budget.altman_index = altman_index;
-                data_budget.altman_index_pc = altman_index_pc;
-                data_budget.cashflowData = cashflowData;
-                data_budget.retEarningsData = retEarningsData;
-                data_budget.cashflow_index = cashflow_index;
-                data_budget_todate = data_budget;
-                this.data.push(data_budget);
-
-            }
-
-            //current year to date and previous years
-            while (yeardocument && i <= this.dialogparam.maxpreviousyears) {
-                let data_year = this.loadData_Year(yeardocument, i);
-                let calculated_data = this.calculateData(data_year, yeardocument, false, i);
-                let controlSumsData = this.getControlSumsData(calculated_data); //only for the current year and previous year
-                let index = this.calculateIndex(data_year, calculated_data);
-                let dupont_data = this.createdupont_data(data_year, calculated_data, index);
-                let cashflowData = this.calculateCashflowData(data_year, calculated_data);
-                let retEarningsData = this.setRetainedEarningsData(data_year, calculated_data);
-                let cashflow_index = this.calculateCashflowIndex(data_year, calculated_data, cashflowData);
-                let altman_index = this.calculateAltmanZScoreIndex(data_year, calculated_data, retEarningsData);
-                let altman_index_pc = this.calculateAltmanZScoreIndexPC(data_year, calculated_data, retEarningsData); // Z score for private companies
-                data_year.calculated_data = calculated_data;
-                data_year.controlSumsData = controlSumsData;
-                data_year.index = index;
-                data_year.dupont_data = dupont_data;
-                data_year.altman_index = altman_index;
-                data_year.altman_index_pc = altman_index_pc;
-                data_year.cashflowData = cashflowData;
-                data_year.retEarningsData = retEarningsData;
-                data_year.cashflow_index = cashflow_index;
-                if (i == 0) {
-                    data_year_todate = data_year;
-                }
-                this.data.push(data_year);
-                yeardocument = yeardocument.previousYear();
-                i++;
-            }
-
-            //calculate the differences between current and budget (complete) BDC=budget difference complete
-            if (this.with_budget && isIncluded && this.dialogparam.includecurrentyear_projection) {
-                var differences = this.getCurrAndBudgDiff(data_year_projection, data_budget_complete);
-                differences.period = {};
-                differences.period.StartDate = this.banDocument.info("AccountingDataBase", "OpeningDate");
-                differences.period.EndDate = this.banDocument.info("AccountingDataBase", "ClosureDate");
-                differences.period.Type = "BDC";
-                this.data.unshift(differences);
-            }
-
-            //calculate the differences between current and budget (to date) BDT=budget difference to date
-            if (this.with_budget && isIncluded && this.dialogparam.includebudget_todate) {
-                var differences = this.getCurrAndBudgDiff(data_year_todate, data_budget_todate);
-                differences.period = {};
-                differences.period.StartDate = this.banDocument.info("AccountingDataBase", "OpeningDate");
-                differences.period.EndDate = this.banDocument.info("AccountingDataBase", "ClosureDate");
-                differences.period.Type = "BDT";
-                var position = this.getArrayPosition(this.data, "BTD", "");
-                this.data.splice(position, 0, differences);
-            }
+        //Budget to Date (until the current date)
+        //if user selected it
+        if (this.with_budget && isIncluded && this.dialogparam.includebudget_todate) {
+            let data_budget = this.loadData_Budget_ToDate(yeardocument);
+            let calculated_data = this.calculateData(data_budget, yeardocument, isIncluded, "");
+            let index = this.calculateIndex(data_budget, calculated_data);
+            let dupont_data = this.createdupont_data(data_budget, calculated_data, index);
+            let cashflowData = this.calculateCashflowData(data_budget, calculated_data);
+            let retEarningsData = this.setRetainedEarningsData(data_budget, calculated_data);
+            let cashflow_index = this.calculateCashflowIndex(data_budget, calculated_data, cashflowData);
+            let altman_index = this.calculateAltmanZScoreIndex(data_budget, calculated_data, retEarningsData);
+            let altman_index_pc = this.calculateAltmanZScoreIndexPC(data_budget, calculated_data, retEarningsData); // Z score for private companies
+            data_budget.calculated_data = calculated_data;
+            data_budget.index = index;
+            data_budget.dupont_data = dupont_data;
+            data_budget.altman_index = altman_index;
+            data_budget.altman_index_pc = altman_index_pc;
+            data_budget.cashflowData = cashflowData;
+            data_budget.retEarningsData = retEarningsData;
+            data_budget.cashflow_index = cashflow_index;
+            data_budget_todate = data_budget;
+            this.data.push(data_budget);
 
         }
-        /**
-         * searches the array for the position of a certain object, using the ref parameter as a reference.
-         * @param {*} array the array where look for the position
-         * @param {*} ref this parameter identifies the objects within the array
-         * @param {*} position insert before or after in case you want to insert an element either before or after the found position.
-         */
+
+        //current year to date and previous years
+        while (yeardocument && i <= this.dialogparam.maxpreviousyears) {
+            let data_year = this.loadData_Year(yeardocument, i);
+            let calculated_data = this.calculateData(data_year, yeardocument, false, i);
+            let controlSumsData = this.getControlSumsData(calculated_data); //only for the current year and previous year
+            let index = this.calculateIndex(data_year, calculated_data);
+            let dupont_data = this.createdupont_data(data_year, calculated_data, index);
+            let cashflowData = this.calculateCashflowData(data_year, calculated_data);
+            let retEarningsData = this.setRetainedEarningsData(data_year, calculated_data);
+            let cashflow_index = this.calculateCashflowIndex(data_year, calculated_data, cashflowData);
+            let altman_index = this.calculateAltmanZScoreIndex(data_year, calculated_data, retEarningsData);
+            let altman_index_pc = this.calculateAltmanZScoreIndexPC(data_year, calculated_data, retEarningsData); // Z score for private companies
+            data_year.calculated_data = calculated_data;
+            data_year.controlSumsData = controlSumsData;
+            data_year.index = index;
+            data_year.dupont_data = dupont_data;
+            data_year.altman_index = altman_index;
+            data_year.altman_index_pc = altman_index_pc;
+            data_year.cashflowData = cashflowData;
+            data_year.retEarningsData = retEarningsData;
+            data_year.cashflow_index = cashflow_index;
+            if (i == 0) {
+                data_year_todate = data_year;
+            }
+            this.data.push(data_year);
+            yeardocument = yeardocument.previousYear();
+            i++;
+        }
+
+        //calculate the differences between current and budget (complete) BDC=budget difference complete
+        if (this.with_budget && isIncluded && this.dialogparam.includecurrentyear_projection) {
+            var differences = this.getCurrAndBudgDiff(data_year_projection, data_budget_complete);
+            differences.period = {};
+            differences.period.StartDate = this.banDocument.info("AccountingDataBase", "OpeningDate");
+            differences.period.EndDate = this.banDocument.info("AccountingDataBase", "ClosureDate");
+            differences.period.Type = "BDC";
+            this.data.unshift(differences);
+        }
+
+        //calculate the differences between current and budget (to date) BDT=budget difference to date
+        if (this.with_budget && isIncluded && this.dialogparam.includebudget_todate) {
+            var differences = this.getCurrAndBudgDiff(data_year_todate, data_budget_todate);
+            differences.period = {};
+            differences.period.StartDate = this.banDocument.info("AccountingDataBase", "OpeningDate");
+            differences.period.EndDate = this.banDocument.info("AccountingDataBase", "ClosureDate");
+            differences.period.Type = "BDT";
+            var position = this.getArrayPosition(this.data, "BTD", "");
+            this.data.splice(position, 0, differences);
+        }
+
+    }
+    /**
+     * searches the array for the position of a certain object, using the ref parameter as a reference.
+     * @param {*} array the array where look for the position
+     * @param {*} ref this parameter identifies the objects within the array
+     * @param {*} position insert before or after in case you want to insert an element either before or after the found position.
+     */
     getArrayPosition(array, ref, position) {
         var current_pos = "";
 
@@ -2322,11 +2322,11 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             case "before":
                 current_pos -= 1;
                 return current_pos;
-                //current year (to date)
+            //current year (to date)
             case "after":
                 current_pos += 1;
                 return current_pos;
-                //current year projection
+            //current year projection
             default:
                 return current_pos;
         }
@@ -2591,7 +2591,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
                     }
                 }
             } else {
-                if (typeof(dialogparam[key]) === "object")
+                if (typeof (dialogparam[key]) === "object")
                     this.loadData_Param(dialogparam[key], groupList, currentProjection, budgetBalances, budgetToDate, _banDocument);
             }
         }
@@ -2700,7 +2700,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         retEarningsData.reserves.description = texts.reservesVariation;
         retEarningsData.reserves.amount = Banana.SDecimal.subtract(retained_earnings_current_data.reserves.amount, retained_earnings_budget_data.reserves.amount);
 
-        retEarningsData.calcTotal = function() {
+        retEarningsData.calcTotal = function () {
             let total = "";
             total = Banana.SDecimal.add(total, this.balanceProfitCarriedForward.amount);
             total = Banana.SDecimal.add(total, this.annualResult.amount);
@@ -3686,7 +3686,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         cashflow.difference.description.style = "styleWarningText";
         cashflow.difference.amount = {};
         cashflow.difference.amount.value = Banana.SDecimal.subtract(current_calculated_data.difference.amount.value, budget_calculated_data.difference.amount.value);
-        cashflow.difference.amount.getStyle = function() {
+        cashflow.difference.amount.getStyle = function () {
             if (this.value == "0")
                 return "styleNormalAmount";
             else
@@ -3869,13 +3869,13 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         controlSumsData.totalAssets.calc = calculated_data.totalassets;
         controlSumsData.totalAssets.sheet = calculated_data.totalassets_sheet;
         controlSumsData.totalAssets.difference = Banana.SDecimal.abs(Banana.SDecimal.subtract(controlSumsData.totalAssets.calc, controlSumsData.totalAssets.sheet));
-        controlSumsData.totalAssets.hasDifference = function() {
+        controlSumsData.totalAssets.hasDifference = function () {
             if (!Banana.SDecimal.isZero(this.difference))
                 return true;
             else
                 return false;
         }
-        controlSumsData.totalAssets.getStyle = function() {
+        controlSumsData.totalAssets.getStyle = function () {
             let style = "styleNormalAmount";
             if (this.hasDifference())
                 style = "styleDifferenceFoundAmount";
@@ -3890,13 +3890,13 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         controlSumsData.totalliabilitiesandequity.sheet = calculated_data.totalliabilitiesandequity_sheet;
         controlSumsData.totalliabilitiesandequity.difference = Banana.SDecimal.abs(Banana.SDecimal.subtract(controlSumsData.totalliabilitiesandequity.calc, controlSumsData.totalliabilitiesandequity.sheet));
         controlSumsData.totalliabilitiesandequity.style = "styleNormalAmount";
-        controlSumsData.totalliabilitiesandequity.hasDifference = function() {
+        controlSumsData.totalliabilitiesandequity.hasDifference = function () {
             if (!Banana.SDecimal.isZero(this.difference))
                 return true;
             else
                 return false;
         }
-        controlSumsData.totalliabilitiesandequity.getStyle = function() {
+        controlSumsData.totalliabilitiesandequity.getStyle = function () {
             let style = "styleNormalAmount";
             if (this.hasDifference())
                 style = "styleDifferenceFoundAmount";
@@ -3910,13 +3910,13 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         controlSumsData.annualresult.calc = calculated_data.annualresult;
         controlSumsData.annualresult.sheet = calculated_data.annualresult_sheet;
         controlSumsData.annualresult.difference = Banana.SDecimal.abs(Banana.SDecimal.subtract(controlSumsData.annualresult.calc, controlSumsData.annualresult.sheet));
-        controlSumsData.annualresult.hasDifference = function() {
+        controlSumsData.annualresult.hasDifference = function () {
             if (!Banana.SDecimal.isZero(this.difference))
                 return true;
             else
                 return false;
         }
-        controlSumsData.annualresult.getStyle = function() {
+        controlSumsData.annualresult.getStyle = function () {
             let style = "styleNormalAmount";
             if (this.hasDifference())
                 style = "styleDifferenceFoundAmount";
@@ -3924,9 +3924,9 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             return style;
         }
 
-        controlSumsData.hasDifferences = function() {
+        controlSumsData.hasDifferences = function () {
             for (var key in this) {
-                let type = typeof(this[key])
+                let type = typeof (this[key])
                 if (type == "object") {
                     if (this[key].hasDifference())
                         return true;
@@ -3963,20 +3963,20 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
     }
 
     controlSumsWithDifferences(data) {
-            for (var i = data.length - 1; i >= 0; i--) {
-                if (data[i].period.Type == "CY" || data[i].period.Type == "PY") {
-                    if (data[i].controlSumsData.hasDifferences())
-                        return true;
-                    else
-                        continue;
-                }
+        for (var i = data.length - 1; i >= 0; i--) {
+            if (data[i].period.Type == "CY" || data[i].period.Type == "PY") {
+                if (data[i].controlSumsData.hasDifferences())
+                    return true;
+                else
+                    continue;
             }
-            return false;
         }
-        /**
-         * give the value 0.00 to an index, wich is equal to "";
-         * @dialogparam {*} index 
-         */
+        return false;
+    }
+    /**
+     * give the value 0.00 to an index, wich is equal to "";
+     * @dialogparam {*} index 
+     */
     setIndexToZero(index) {
         var zero = "0";
         if (index === "") {
@@ -4023,7 +4023,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         retEarningsData.reserves.description = texts.reservesVariation;
         retEarningsData.reserves.amount = data.balance.oc.reserves.delta;
 
-        retEarningsData.calcTotal = function() {
+        retEarningsData.calcTotal = function () {
             let total = "";
             total = Banana.SDecimal.add(total, this.balanceProfitCarriedForward.amount);
             total = Banana.SDecimal.add(total, this.annualResult.amount);
@@ -4167,7 +4167,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
         //calculate cashflow from operations
 
-        cashflow.operatingCashflow.calcOperationsCashFlow = function() {
+        cashflow.operatingCashflow.calcOperationsCashFlow = function () {
             let operatingCashflow = "";
             operatingCashflow = this.finalResult.amount.value;
             operatingCashflow = Banana.SDecimal.subtract(operatingCashflow, this.fixedAssetsGain.amount.value);
@@ -4222,7 +4222,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
         //calculate cashflow from investing activities
 
-        cashflow.cashflowFromInvesting.calcCashFlowFromInvesting = function() {
+        cashflow.cashflowFromInvesting.calcCashFlowFromInvesting = function () {
             let cashflowFromInvesting = "";
             cashflowFromInvesting = Banana.SDecimal.subtract(cashflowFromInvesting, this.investments.amount.value);
             cashflowFromInvesting = Banana.SDecimal.add(cashflowFromInvesting, this.disinvestments.amount.value);
@@ -4279,7 +4279,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
 
 
         //calculate cash flow from financing activities
-        cashflow.cashflowFromFinancing.calcCashFlowFromFinancing = function() {
+        cashflow.cashflowFromFinancing.calcCashFlowFromFinancing = function () {
             let cashflowFromFinancing = "";
             cashflowFromFinancing = Banana.SDecimal.add(cashflowFromFinancing, this.longTermDebts.amount.value);
             cashflowFromFinancing = Banana.SDecimal.subtract(cashflowFromFinancing, this.dividends.amount.value);
@@ -4302,7 +4302,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         // final cashflow sections
 
 
-        cashflow.calcFinalCashFlow = function() {
+        cashflow.calcFinalCashFlow = function () {
             let finalCashFlow = "";
             finalCashFlow = Banana.SDecimal.add(this.operatingCashflow.total.amount.value, this.cashflowFromInvesting.total.amount.value);
             finalCashFlow = Banana.SDecimal.add(finalCashFlow, this.cashflowFromFinancing.total.amount.value);
@@ -4365,7 +4365,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         cashflow.difference.description.style = "styleWarningText";
         cashflow.difference.amount = {};
         cashflow.difference.amount.value = Banana.SDecimal.subtract(data.balance.ca.liquidity.balance, cashflow.verifData.colosingLiqu_calc.amount.value);
-        cashflow.difference.amount.getStyle = function() {
+        cashflow.difference.amount.getStyle = function () {
             if (Banana.SDecimal.isZero(this.value))
                 return "styleNormalAmount";
             else
@@ -5005,7 +5005,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.defaultvalue = defaultParam.balance.ca.liquidity.gr;
         currentParam.tooltip = texts.groups_tooltip;
         currentParam.parentObject = 'Current Assets';
-        currentParam.readValue = function() {
+        currentParam.readValue = function () {
             userParam.balance.ca.liquidity.gr = this.value;
         }
 
@@ -5020,7 +5020,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.defaultvalue = defaultParam.balance.ca.credits.gr;
         currentParam.tooltip = texts.groups_tooltip;
         currentParam.parentObject = 'Current Assets';
-        currentParam.readValue = function() {
+        currentParam.readValue = function () {
             userParam.balance.ca.credits.gr = this.value;
         }
         convertedParam.data.push(currentParam);
@@ -5034,7 +5034,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.defaultvalue = defaultParam.balance.ca.stocks.gr;
         currentParam.tooltip = texts.groups_tooltip;
         currentParam.parentObject = 'Current Assets';
-        currentParam.readValue = function() {
+        currentParam.readValue = function () {
             userParam.balance.ca.stocks.gr = this.value;
         }
         convertedParam.data.push(currentParam);
@@ -5049,7 +5049,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.defaultvalue = defaultParam.balance.ca.prepaid_expenses.gr;
         currentParam.tooltip = texts.groups_tooltip;
         currentParam.parentObject = 'Current Assets';
-        currentParam.readValue = function() {
+        currentParam.readValue = function () {
             userParam.balance.ca.prepaid_expenses.gr = this.value;
         }
         convertedParam.data.push(currentParam);
@@ -5063,7 +5063,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.defaultvalue = defaultParam.balance.fa.financial_fixedassets.gr;
         currentParam.tooltip = texts.groups_tooltip;
         currentParam.parentObject = 'Fixed Assets';
-        currentParam.readValue = function() {
+        currentParam.readValue = function () {
             userParam.balance.fa.financial_fixedassets.gr = this.value;
         }
         convertedParam.data.push(currentParam);
@@ -5077,7 +5077,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.defaultvalue = defaultParam.balance.fa.tangible_fixedassets.gr;
         currentParam.tooltip = texts.groups_tooltip;
         currentParam.parentObject = 'Fixed Assets';
-        currentParam.readValue = function() {
+        currentParam.readValue = function () {
             userParam.balance.fa.tangible_fixedassets.gr = this.value;
         }
         convertedParam.data.push(currentParam);
@@ -5091,7 +5091,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.defaultvalue = defaultParam.balance.fa.intangible_fixedassets.gr;
         currentParam.tooltip = texts.groups_tooltip;
         currentParam.parentObject = 'Fixed Assets';
-        currentParam.readValue = function() {
+        currentParam.readValue = function () {
             userParam.balance.fa.intangible_fixedassets.gr = this.value;
         }
         convertedParam.data.push(currentParam);
@@ -5105,7 +5105,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.defaultvalue = defaultParam.balance.stdc.debts.gr;
         currentParam.tooltip = texts.groups_tooltip;
         currentParam.parentObject = 'Short term Debt Capital';
-        currentParam.readValue = function() {
+        currentParam.readValue = function () {
             userParam.balance.stdc.debts.gr = this.value;
         }
         convertedParam.data.push(currentParam);
@@ -5120,7 +5120,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.defaultvalue = defaultParam.balance.stdc.accruals_and_deferred_income.gr;
         currentParam.tooltip = texts.amounts_tooltip;
         currentParam.parentObject = 'Short term Debt Capital';
-        currentParam.readValue = function() {
+        currentParam.readValue = function () {
             userParam.balance.stdc.accruals_and_deferred_income.gr = this.value;
         }
         convertedParam.data.push(currentParam);
@@ -5134,7 +5134,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.defaultvalue = defaultParam.balance.ltdc.longter_debts.gr;
         currentParam.tooltip = texts.groups_tooltip;
         currentParam.parentObject = 'Long term Debt Capital';
-        currentParam.readValue = function() {
+        currentParam.readValue = function () {
             userParam.balance.ltdc.longter_debts.gr = this.value;
         }
         convertedParam.data.push(currentParam);
@@ -5149,7 +5149,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.defaultvalue = defaultParam.balance.ltdc.provisionsandsimilar.gr;
         currentParam.tooltip = texts.groups_tooltip;
         currentParam.parentObject = 'Long term Debt Capital';
-        currentParam.readValue = function() {
+        currentParam.readValue = function () {
             userParam.balance.ltdc.provisionsandsimilar.gr = this.value;
         }
         convertedParam.data.push(currentParam);
@@ -5163,7 +5163,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.defaultvalue = defaultParam.balance.oc.ownbasecapital.gr;
         currentParam.tooltip = texts.groups_tooltip;
         currentParam.parentObject = 'Own Capital';
-        currentParam.readValue = function() {
+        currentParam.readValue = function () {
             userParam.balance.oc.ownbasecapital.gr = this.value;
         }
         convertedParam.data.push(currentParam);
@@ -5177,7 +5177,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.defaultvalue = defaultParam.balance.oc.reserves.gr;
         currentParam.tooltip = texts.groups_tooltip;
         currentParam.parentObject = 'Own Capital';
-        currentParam.readValue = function() {
+        currentParam.readValue = function () {
             userParam.balance.oc.reserves.gr = this.value;
         }
         convertedParam.data.push(currentParam);
@@ -5192,7 +5192,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.defaultvalue = defaultParam.balance.oc.balanceProfits.gr;
         currentParam.tooltip = texts.groups_tooltip;
         currentParam.parentObject = 'Own Capital';
-        currentParam.readValue = function() {
+        currentParam.readValue = function () {
             userParam.balance.oc.balanceProfits.gr = this.value;
         }
         convertedParam.data.push(currentParam);
@@ -5206,7 +5206,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.defaultvalue = defaultParam.profitandloss.salesturnover.gr;
         currentParam.tooltip = texts.groups_tooltip;
         currentParam.parentObject = 'Revenues';
-        currentParam.readValue = function() {
+        currentParam.readValue = function () {
             userParam.profitandloss.salesturnover.gr = this.value;
         }
         convertedParam.data.push(currentParam);
@@ -5220,7 +5220,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.defaultvalue = defaultParam.profitandloss.costofmerchandservices.gr;
         currentParam.tooltip = texts.groups_tooltip;
         currentParam.parentObject = 'Costs';
-        currentParam.readValue = function() {
+        currentParam.readValue = function () {
             userParam.profitandloss.costofmerchandservices.gr = this.value;
         }
         convertedParam.data.push(currentParam);
@@ -5234,7 +5234,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.defaultvalue = defaultParam.profitandloss.personnelcosts.gr;
         currentParam.tooltip = texts.groups_tooltip;
         currentParam.parentObject = 'Costs';
-        currentParam.readValue = function() {
+        currentParam.readValue = function () {
             userParam.profitandloss.personnelcosts.gr = this.value;
         }
         convertedParam.data.push(currentParam);
@@ -5248,7 +5248,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.defaultvalue = defaultParam.profitandloss.differentcosts.gr;
         currentParam.tooltip = texts.groups_tooltip;
         currentParam.parentObject = 'Costs';
-        currentParam.readValue = function() {
+        currentParam.readValue = function () {
             userParam.profitandloss.differentcosts.gr = this.value;
         }
         convertedParam.data.push(currentParam);
@@ -5262,7 +5262,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.defaultvalue = defaultParam.profitandloss.depreandadjust.gr;
         currentParam.tooltip = texts.groups_tooltip;
         currentParam.parentObject = 'Costs';
-        currentParam.readValue = function() {
+        currentParam.readValue = function () {
             userParam.profitandloss.depreandadjust.gr = this.value;
         }
         convertedParam.data.push(currentParam);
@@ -5276,7 +5276,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.defaultvalue = defaultParam.profitandloss.interests.gr;
         currentParam.tooltip = texts.groups_tooltip;
         currentParam.parentObject = 'Costs';
-        currentParam.readValue = function() {
+        currentParam.readValue = function () {
             userParam.profitandloss.interests.gr = this.value;
         }
         convertedParam.data.push(currentParam);
@@ -5290,7 +5290,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.defaultvalue = defaultParam.profitandloss.directtaxes.gr;
         currentParam.tooltip = texts.groups_tooltip;
         currentParam.parentObject = 'Costs';
-        currentParam.readValue = function() {
+        currentParam.readValue = function () {
             userParam.profitandloss.directtaxes.gr = this.value;
         }
         convertedParam.data.push(currentParam);
@@ -5306,7 +5306,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.defaultvalue = defaultParam.finalresult.finalresult.gr;
         currentParam.tooltip = texts.groups_tooltip;
         currentParam.parentObject = 'Final Result';
-        currentParam.readValue = function() {
+        currentParam.readValue = function () {
             userParam.finalresult.finalresult.gr = this.value;
         }
         convertedParam.data.push(currentParam);
@@ -5321,7 +5321,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.defaultvalue = defaultParam.pageheader;
         currentParam.tooltip = texts.logo_tooltip;
         currentParam.parentObject = 'Print Details';
-        currentParam.readValue = function() {
+        currentParam.readValue = function () {
             userParam.pageheader = this.value;
         }
         convertedParam.data.push(currentParam);
@@ -5336,7 +5336,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.defaultvalue = defaultParam.printlogo;
         currentParam.tooltip = texts.logo_tooltip;
         currentParam.parentObject = 'Print Details';
-        currentParam.readValue = function() {
+        currentParam.readValue = function () {
             userParam.printlogo = this.value;
         }
         convertedParam.data.push(currentParam);
@@ -5351,7 +5351,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.defaultvalue = defaultParam.logoname;
         currentParam.tooltip = texts.logoname_tooltip;
         currentParam.parentObject = 'Print Details';
-        currentParam.readValue = function() {
+        currentParam.readValue = function () {
             userParam.logoname = this.value;
         }
         convertedParam.data.push(currentParam);
@@ -5366,7 +5366,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.defaultvalue = defaultParam.headers_background_color;
         currentParam.tooltip = texts.headers_background_color_tooltip;
         currentParam.parentObject = 'Print Details';
-        currentParam.readValue = function() {
+        currentParam.readValue = function () {
             userParam.headers_background_color = this.value;
         }
         convertedParam.data.push(currentParam);
@@ -5381,7 +5381,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.defaultvalue = defaultParam.headers_texts_color;
         currentParam.tooltip = texts.headers_texts_color_tooltip;
         currentParam.parentObject = 'Print Details';
-        currentParam.readValue = function() {
+        currentParam.readValue = function () {
             userParam.headers_texts_color = this.value;
         }
         convertedParam.data.push(currentParam);
@@ -5396,7 +5396,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.defaultvalue = defaultParam.without_colors;
         currentParam.tooltip = texts.without_colors_tooltip;
         currentParam.parentObject = 'Print Details';
-        currentParam.readValue = function() {
+        currentParam.readValue = function () {
             userParam.without_colors = this.value;
         }
         convertedParam.data.push(currentParam);
@@ -5412,7 +5412,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.defaultvalue = defaultParam.maxpreviousyears;
         currentParam.tooltip = texts.numberofpreviousyear_tooltip;
         currentParam.parentObject = 'Analysis Details';
-        currentParam.readValue = function() {
+        currentParam.readValue = function () {
             userParam.maxpreviousyears = this.value;
         }
 
@@ -5428,7 +5428,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.defaultvalue = defaultParam.numberofdecimals;
         currentParam.tooltip = texts.numberofdecimals_tooltip;
         currentParam.parentObject = 'Analysis Details';
-        currentParam.readValue = function() {
+        currentParam.readValue = function () {
             userParam.numberofdecimals = this.value;
         }
 
@@ -5444,7 +5444,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.defaultvalue = defaultParam.includebudgettable;
         currentParam.tooltip = texts.includebudget_tooltip;
         currentParam.parentObject = 'Analysis Details';
-        currentParam.readValue = function() {
+        currentParam.readValue = function () {
             userParam.includebudgettable = this.value;
         }
 
@@ -5460,7 +5460,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.defaultvalue = defaultParam.includebudget_todate;
         currentParam.tooltip = texts.includebudget_todate_tooltip;
         currentParam.parentObject = 'Analysis Details';
-        currentParam.readValue = function() {
+        currentParam.readValue = function () {
             userParam.includebudget_todate = this.value;
         }
 
@@ -5476,7 +5476,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.defaultvalue = defaultParam.includecurrentyear_projection;
         currentParam.tooltip = texts.includecurrentyear_projection_tooltip;
         currentParam.parentObject = 'Analysis Details';
-        currentParam.readValue = function() {
+        currentParam.readValue = function () {
             userParam.includecurrentyear_projection = this.value;
         }
 
@@ -5494,7 +5494,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.value = userParam.currentdate ? userParam.currentdate : yearToDate;
         //Default value is red differently so we have to use the local format.
         currentParam.defaultvalue = yearToDate;
-        currentParam.readValue = function() {
+        currentParam.readValue = function () {
             userParam.currentdate = this.value;
         }
         convertedParam.data.push(currentParam);
@@ -5509,7 +5509,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.defaultvalue = defaultParam.includedupontanalysis;
         currentParam.tooltip = texts.includedupontanalysis_tooltip;
         currentParam.parentObject = 'Analysis Details';
-        currentParam.readValue = function() {
+        currentParam.readValue = function () {
             userParam.includedupontanalysis = this.value;
         }
 
@@ -5525,7 +5525,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.defaultvalue = defaultParam.includecontrolsums;
         currentParam.tooltip = texts.includecontrolsums_tooltip;
         currentParam.parentObject = 'Analysis Details';
-        currentParam.readValue = function() {
+        currentParam.readValue = function () {
             userParam.includecontrolsums = this.value;
         }
 
@@ -5541,7 +5541,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.defaultvalue = defaultParam.acronymcolumn;
         currentParam.tooltip = texts.showacronymcolumn_tooltip;
         currentParam.parentObject = 'Analysis Details';
-        currentParam.readValue = function() {
+        currentParam.readValue = function () {
             userParam.acronymcolumn = this.value;
         }
 
@@ -5558,7 +5558,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.defaultvalue = defaultParam.formulascolumn;
         currentParam.tooltip = texts.showformulascolumn_tooltip;
         currentParam.parentObject = 'Analysis Details';
-        currentParam.readValue = function() {
+        currentParam.readValue = function () {
             userParam.formulascolumn = this.value;
         }
 
@@ -5575,7 +5575,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.defaultvalue = defaultParam.numberofemployees;
         currentParam.tooltip = texts.averagenumberofemployee_tooltip;
         currentParam.parentObject = 'Company Information';
-        currentParam.readValue = function() {
+        currentParam.readValue = function () {
             userParam.numberofemployees = this.value;
         }
 
@@ -5592,7 +5592,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.defaultvalue = defaultParam.ratios.liquidityratios.cashratio.value;
         currentParam.tooltip = texts.benchmarks_tooltip;
         currentParam.parentObject = 'Liquidity';
-        currentParam.readValue = function() {
+        currentParam.readValue = function () {
             userParam.ratios.liquidityratios.cashratio.value = this.value;
         }
         convertedParam.data.push(currentParam);
@@ -5607,7 +5607,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.defaultvalue = defaultParam.ratios.liquidityratios.quickratio.value;
         currentParam.tooltip = texts.benchmarks_tooltip;
         currentParam.parentObject = 'Liquidity';
-        currentParam.readValue = function() {
+        currentParam.readValue = function () {
             userParam.ratios.liquidityratios.quickratio.value = this.value;
         }
         convertedParam.data.push(currentParam);
@@ -5622,7 +5622,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.defaultvalue = defaultParam.ratios.liquidityratios.currentratio.value;
         currentParam.tooltip = texts.benchmarks_tooltip;
         currentParam.parentObject = 'Liquidity';
-        currentParam.readValue = function() {
+        currentParam.readValue = function () {
             userParam.ratios.liquidityratios.currentratio.value = this.value;
         }
         convertedParam.data.push(currentParam);
@@ -5637,7 +5637,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.defaultvalue = defaultParam.ratios.liquidityratios.netcurrentasset.value;
         currentParam.tooltip = texts.benchmarks_tooltip;
         currentParam.parentObject = 'Liquidity';
-        currentParam.readValue = function() {
+        currentParam.readValue = function () {
             userParam.ratios.liquidityratios.netcurrentasset.value = this.value;
         }
         convertedParam.data.push(currentParam);
@@ -5652,7 +5652,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.defaultvalue = defaultParam.ratios.leverageratios.degreecirculatingasset.value;
         currentParam.tooltip = texts.benchmarks_tooltip;
         currentParam.parentObject = 'Leverage';
-        currentParam.readValue = function() {
+        currentParam.readValue = function () {
             userParam.ratios.leverageratios.degreecirculatingasset.value = this.value;
         }
         convertedParam.data.push(currentParam);
@@ -5667,7 +5667,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.defaultvalue = defaultParam.ratios.leverageratios.percentagefixedasset.value;
         currentParam.tooltip = texts.benchmarks_tooltip;
         currentParam.parentObject = 'Leverage';
-        currentParam.readValue = function() {
+        currentParam.readValue = function () {
             userParam.ratios.leverageratios.percentagefixedasset.value = this.value;
         }
         convertedParam.data.push(currentParam);
@@ -5682,7 +5682,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.defaultvalue = defaultParam.ratios.leverageratios.debtratio.value;
         currentParam.tooltip = texts.benchmarks_tooltip;
         currentParam.parentObject = 'Leverage';
-        currentParam.readValue = function() {
+        currentParam.readValue = function () {
             userParam.ratios.leverageratios.debtratio.value = this.value;
         }
         convertedParam.data.push(currentParam);
@@ -5697,7 +5697,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.defaultvalue = defaultParam.ratios.leverageratios.equityratio.value;
         currentParam.tooltip = texts.benchmarks_tooltip;
         currentParam.parentObject = 'Leverage';
-        currentParam.readValue = function() {
+        currentParam.readValue = function () {
             userParam.ratios.leverageratios.equityratio.value = this.value;
         }
         convertedParam.data.push(currentParam);
@@ -5712,7 +5712,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.defaultvalue = defaultParam.ratios.leverageratios.selfinancingratio.value;
         currentParam.tooltip = texts.benchmarks_tooltip;
         currentParam.parentObject = 'Leverage';
-        currentParam.readValue = function() {
+        currentParam.readValue = function () {
             userParam.ratios.leverageratios.selfinancingratio.value = this.value;
         }
         convertedParam.data.push(currentParam);
@@ -5727,7 +5727,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.defaultvalue = defaultParam.ratios.leverageratios.fixedassetcoverage.value;
         currentParam.tooltip = texts.benchmarks_tooltip;
         currentParam.parentObject = 'Leverage';
-        currentParam.readValue = function() {
+        currentParam.readValue = function () {
             userParam.ratios.leverageratios.fixedassetcoverage.value = this.value;
         }
         convertedParam.data.push(currentParam);
@@ -5742,7 +5742,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.defaultvalue = defaultParam.ratios.profitabilityratios.profroe.value;
         currentParam.tooltip = texts.benchmarks_tooltip;
         currentParam.parentObject = 'Profitability';
-        currentParam.readValue = function() {
+        currentParam.readValue = function () {
             userParam.ratios.profitabilityratios.profroe.value = this.value;
         }
         convertedParam.data.push(currentParam);
@@ -5757,7 +5757,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.defaultvalue = defaultParam.ratios.profitabilityratios.profroi.value;
         currentParam.tooltip = texts.benchmarks_tooltip;
         currentParam.parentObject = 'Profitability';
-        currentParam.readValue = function() {
+        currentParam.readValue = function () {
             userParam.ratios.profitabilityratios.profroi.value = this.value;
         }
         convertedParam.data.push(currentParam)
@@ -5773,7 +5773,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.defaultvalue = defaultParam.ratios.profitabilityratios.profros.value;
         currentParam.tooltip = texts.benchmarks_tooltip;
         currentParam.parentObject = 'Profitability';
-        currentParam.readValue = function() {
+        currentParam.readValue = function () {
             userParam.ratios.profitabilityratios.profros.value = this.value;
         }
         convertedParam.data.push(currentParam)
@@ -5788,7 +5788,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.defaultvalue = defaultParam.ratios.profitabilityratios.profmol.value;
         currentParam.tooltip = texts.benchmarks_tooltip;
         currentParam.parentObject = 'Profitability';
-        currentParam.readValue = function() {
+        currentParam.readValue = function () {
             userParam.ratios.profitabilityratios.profmol.value = this.value;
         }
         convertedParam.data.push(currentParam)
@@ -5803,7 +5803,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.defaultvalue = defaultParam.ratios.profitabilityratios.profebm.value;
         currentParam.tooltip = texts.benchmarks_tooltip;
         currentParam.parentObject = 'Profitability';
-        currentParam.readValue = function() {
+        currentParam.readValue = function () {
             userParam.ratios.profitabilityratios.profebm.value = this.value;
         }
         convertedParam.data.push(currentParam)
@@ -5818,7 +5818,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.defaultvalue = defaultParam.ratios.profitabilityratios.profmon.value;
         currentParam.tooltip = texts.benchmarks_tooltip;
         currentParam.parentObject = 'Profitability';
-        currentParam.readValue = function() {
+        currentParam.readValue = function () {
             userParam.ratios.profitabilityratios.profmon.value = this.value;
         }
         convertedParam.data.push(currentParam)
@@ -5833,7 +5833,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.defaultvalue = defaultParam.ratios.efficiencyratios.revenueperemployee.value;
         currentParam.tooltip = texts.benchmarks_tooltip;
         currentParam.parentObject = 'Efficiency';
-        currentParam.readValue = function() {
+        currentParam.readValue = function () {
             userParam.ratios.efficiencyratios.revenueperemployee.value = this.value;
         }
         convertedParam.data.push(currentParam)
@@ -5848,7 +5848,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.defaultvalue = defaultParam.ratios.efficiencyratios.addedvalueperemployee.value;
         currentParam.tooltip = texts.benchmarks_tooltip;
         currentParam.parentObject = 'Efficiency';
-        currentParam.readValue = function() {
+        currentParam.readValue = function () {
             userParam.ratios.efficiencyratios.addedvalueperemployee.value = this.value;
         }
         convertedParam.data.push(currentParam)
@@ -5863,7 +5863,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.defaultvalue = defaultParam.ratios.efficiencyratios.personnelcostperemployee.value;
         currentParam.tooltip = texts.benchmarks_tooltip;
         currentParam.parentObject = 'Efficiency';
-        currentParam.readValue = function() {
+        currentParam.readValue = function () {
             userParam.ratios.efficiencyratios.personnelcostperemployee.value = this.value;
         }
         convertedParam.data.push(currentParam)
@@ -5878,7 +5878,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.defaultvalue = defaultParam.ratios.cashflowratios.cashflow_margin.value;
         currentParam.tooltip = texts.benchmarks_tooltip;
         currentParam.parentObject = 'CashflowRatios';
-        currentParam.readValue = function() {
+        currentParam.readValue = function () {
             userParam.ratios.cashflowratios.cashflow_margin.value = this.value;
         }
         convertedParam.data.push(currentParam)
@@ -5893,7 +5893,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.defaultvalue = defaultParam.ratios.cashflowratios.cashflow_asset_efficiency.value;
         currentParam.tooltip = texts.benchmarks_tooltip;
         currentParam.parentObject = 'CashflowRatios';
-        currentParam.readValue = function() {
+        currentParam.readValue = function () {
             userParam.ratios.cashflowratios.cashflow_asset_efficiency.value = this.value;
         }
         convertedParam.data.push(currentParam)
@@ -5908,7 +5908,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.defaultvalue = defaultParam.ratios.cashflowratios.cashflow_current_liabilities.value;
         currentParam.tooltip = texts.benchmarks_tooltip;
         currentParam.parentObject = 'CashflowRatios';
-        currentParam.readValue = function() {
+        currentParam.readValue = function () {
             userParam.ratios.cashflowratios.cashflow_current_liabilities.value = this.value;
         }
         convertedParam.data.push(currentParam)
@@ -5923,7 +5923,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.defaultvalue = defaultParam.ratios.cashflowratios.cashflow_liabilities.value;
         currentParam.tooltip = texts.benchmarks_tooltip;
         currentParam.parentObject = 'CashflowRatios';
-        currentParam.readValue = function() {
+        currentParam.readValue = function () {
             userParam.ratios.cashflowratios.cashflow_liabilities.value = this.value;
         }
         convertedParam.data.push(currentParam)
@@ -5938,7 +5938,7 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
         currentParam.defaultvalue = defaultParam.ratios.cashflowratios.cashflow_to_investments.value;
         currentParam.tooltip = texts.benchmarks_tooltip;
         currentParam.parentObject = 'CashflowRatios';
-        currentParam.readValue = function() {
+        currentParam.readValue = function () {
             userParam.ratios.cashflowratios.cashflow_to_investments.value = this.value;
         }
         convertedParam.data.push(currentParam)
@@ -6426,58 +6426,58 @@ var FinancialStatementAnalysis = class FinancialStatementAnalysis {
             }
             if (this.banDocument.info("Base", "HeaderLeft"))
                 documentInfo.headerLeft =
-                this.banDocument.info("Base", "HeaderLeft");
+                    this.banDocument.info("Base", "HeaderLeft");
 
             if (this.banDocument.info("AccountingDataBase", "ClosureDate"))
                 documentInfo.EndPeriod =
-                this.banDocument.info("AccountingDataBase", "ClosureDate")
+                    this.banDocument.info("AccountingDataBase", "ClosureDate")
 
             if (this.banDocument.info("AccountingDataBase", "VatAccount"))
                 documentInfo.vatAccount =
-                this.banDocument.info("AccountingDataBase", "VatAccount");
+                    this.banDocument.info("AccountingDataBase", "VatAccount");
 
             if (this.banDocument.info("AccountingDataBase", "CustomersGroup"))
                 documentInfo.customersGroup =
-                this.banDocument.info("AccountingDataBase", "CustomersGroup");
+                    this.banDocument.info("AccountingDataBase", "CustomersGroup");
             if (this.banDocument.info("AccountingDataBase", "SuppliersGroup"))
                 documentInfo.suppliersGroup =
-                this.banDocument.info("AccountingDataBase", "SuppliersGroup");
+                    this.banDocument.info("AccountingDataBase", "SuppliersGroup");
 
             if (this.banDocument.info("AccountingDataBase", "BasicCurrency"))
                 documentInfo.basicCurrency =
-                this.banDocument.info("AccountingDataBase", "BasicCurrency");
+                    this.banDocument.info("AccountingDataBase", "BasicCurrency");
 
             if (this.banDocument.info("AccountingDataBase", "Company"))
                 documentInfo.company =
-                this.banDocument.info("AccountingDataBase", "Company");
+                    this.banDocument.info("AccountingDataBase", "Company");
 
             if (this.banDocument.info("AccountingDataBase", "Name"))
                 documentInfo.name =
-                this.banDocument.info("AccountingDataBase", "Name");
+                    this.banDocument.info("AccountingDataBase", "Name");
 
             if (this.banDocument.info("AccountingDataBase", "FamilyName"))
                 documentInfo.familyName =
-                this.banDocument.info("AccountingDataBase", "FamilyName");
+                    this.banDocument.info("AccountingDataBase", "FamilyName");
 
             if (this.banDocument.info("Base", "DecimalsAmounts"))
                 documentInfo.decimalsAmounts =
-                this.banDocument.info("Base", "DecimalsAmounts");
+                    this.banDocument.info("Base", "DecimalsAmounts");
 
             if (this.banDocument.info("AccountingDataBase", "OpeningDate"))
                 documentInfo.StartPeriod =
-                this.banDocument.info("AccountingDataBase", "OpeningDate");
+                    this.banDocument.info("AccountingDataBase", "OpeningDate");
 
             if (this.banDocument.info("AccountingDataBase", "ClosureDate"))
                 documentInfo.Address1 =
-                this.banDocument.info("AccountingDataBase", "ClosureDate");
+                    this.banDocument.info("AccountingDataBase", "ClosureDate");
 
             if (this.banDocument.info("AccountingDataBase", "Address1"))
                 documentInfo.address1 =
-                this.banDocument.info("AccountingDataBase", "Address1");
+                    this.banDocument.info("AccountingDataBase", "Address1");
 
             if (this.banDocument.info("AccountingDataBase", "City"))
                 documentInfo.City =
-                this.banDocument.info("AccountingDataBase", "City");
+                    this.banDocument.info("AccountingDataBase", "City");
         }
         return documentInfo;
     }
@@ -6938,7 +6938,7 @@ function settingsDialog() {
         return false;
     for (var i = 0; i < convertedParam.data.length; i++) {
         // Read values to dialogparam (through the readValue function)
-        if (typeof(convertedParam.data[i].readValue) == "function")
+        if (typeof (convertedParam.data[i].readValue) == "function")
             convertedParam.data[i].readValue();
     }
 
