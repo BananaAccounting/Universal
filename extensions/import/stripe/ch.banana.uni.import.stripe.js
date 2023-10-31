@@ -313,7 +313,6 @@ var ImportStripeAllTransactionsFormat1 = class ImportStripeAllTransactionsFormat
      */
     processTransactions_DoubleEntry(transactions) {
         // Filter and map rows
-        let transactionID = "";
         let transactionsObjs = [];
         for (let i = 0; i < transactions.length; i++) {
             var transaction = transactions[i];
@@ -321,28 +320,18 @@ var ImportStripeAllTransactionsFormat1 = class ImportStripeAllTransactionsFormat
             this.decimalSeparator = getDecimalSeparator(transaction["Amount"]);
             switch (trType) {
                 case PAYOUT_MOV:
-                    transactionID = transaction["Transfer"];
                     /** We do not need to take this amount directly but it is visible in the
                      * account card.
                     */
                     break;
                 case CHARGE_MOV:
                 case PAYMENT_MOV:
-                    if (transactionID == transaction["Transfer"]) { // Has a payout.
-                        transactionsObjs.push(this.mapTransaction_Payment_Gross_DoubleEntry(transaction));
-                        transactionsObjs.push(this.mapTransaction_Payment_Net_DoubleEntry(transaction));
-                        transactionsObjs.push(this.mapTransaction_Payment_Fee_DoubleEntry(transaction));
-                    }
+                    transactionsObjs.push(this.mapTransaction_Payment_Gross_DoubleEntry(transaction));
+                    transactionsObjs.push(this.mapTransaction_Payment_Net_DoubleEntry(transaction));
+                    transactionsObjs.push(this.mapTransaction_Payment_Fee_DoubleEntry(transaction));
                     break;
                 case RES_FUNDS_MOV:
-                    /**
-                     * When the reimbursement amount is returned, the row does not have an id, 
-                     * in that case I check if the id is empty, if it is, we assume is related to the previous id
-                     * operations.
-                     */
-                    if (transactionID == transaction["Transfer"] || transaction["Transfer"] == "") { // Ref
-                        transactionsObjs.push(this.mapTransaction_Refund_DoubleEntry(transaction));
-                    }
+                    transactionsObjs.push(this.mapTransaction_Refund_DoubleEntry(transaction));
                     break;
             }
         }
@@ -366,7 +355,6 @@ var ImportStripeAllTransactionsFormat1 = class ImportStripeAllTransactionsFormat
 
     processTransactions_IncomeExpenses(transactions) {
         // Filter and map rows
-        let transactionID = "";
         let transactionsObjs = [];
         for (let i = 0; i < transactions.length; i++) {
             var transaction = transactions[i];
@@ -374,30 +362,15 @@ var ImportStripeAllTransactionsFormat1 = class ImportStripeAllTransactionsFormat
             this.decimalSeparator = getDecimalSeparator(transaction["Amount"]);
             switch (trType) {
                 case PAYOUT_MOV:
-                    transactionID = transaction["Transfer"];
-                    /** We do not need to take this amount directly but it is visible in the
-                     * account card.
-                    */
                     break;
                 case CHARGE_MOV:
                 case PAYMENT_MOV:
-                    if (transactionID == transaction["Transfer"]) { // Has a payout.
-                        transactionsObjs.push(this.mapTransaction_Payment_Gross_IncomeExpenses(transaction));
-                        transactionsObjs.push(this.mapTransaction_Payment_Net_IncomeExpenses(transaction));
-                        transactionsObjs.push(this.mapTransaction_Payment_Fee_IncomeExpenses(transaction));
-                    } else {
-                        continue;
-                    }
+                    transactionsObjs.push(this.mapTransaction_Payment_Gross_IncomeExpenses(transaction));
+                    transactionsObjs.push(this.mapTransaction_Payment_Net_IncomeExpenses(transaction));
+                    transactionsObjs.push(this.mapTransaction_Payment_Fee_IncomeExpenses(transaction));
                     break;
                 case RES_FUNDS_MOV:
-                    /**
-                     * When the reimbursement amount is returned, the row does not have an id, 
-                     * in that case I check if the id is empty, if it is, we assume is related to the previous id
-                     * operations.
-                     */
-                    if (transactionID == transaction["Transfer"] || transaction["Transfer"] == "") { // Ref
-                        transactionsObjs.push(this.mapTransaction_Refund_IncomeExpenses(transaction));
-                    }
+                    transactionsObjs.push(this.mapTransaction_Refund_IncomeExpenses(transaction));
                     break;
             }
         }
