@@ -17,7 +17,7 @@
 // @api = 1.0
 // @pubdate = 2022-03-07
 // @publisher = Banana.ch SA
-// @description = Yokoy - Import transactions (*.csv)
+// @description = Yokoy - Import movements .csv (Banana+ Advanced)
 // @doctype = 100.110
 // @docproperties =
 // @task = import.transactions
@@ -28,7 +28,7 @@
 // @includejs = import.utilities.js
 
 
-function exec(inData,isTest) {
+function exec(inData, isTest) {
 
     var convertionParam = "";
     var intermediaryData = "";
@@ -57,9 +57,9 @@ function exec(inData,isTest) {
     }
 
     // Format is unknow, return an error
-	importUtilities.getUnknownFormatError();
+    importUtilities.getUnknownFormatError();
 
-	return "";
+    return "";
 }
 
 /**
@@ -108,54 +108,54 @@ var ImportYokoyTransFormat1 = class ImportYokoyTransFormat1 extends ImportUtilit
     //Override the utilities method by adding language control
     convertCsvToIntermediaryData(transactions, convertionParam) {
         let form = [];
-		let intermediaryData = [];
+        let intermediaryData = [];
 
-		/** SPECIFY AT WHICH ROW OF THE CSV FILE IS THE HEADER (COLUMN TITLES)
-		We suppose the data will always begin right away after the header line */
-		convertionParam.headerLineStart = 0;
-		convertionParam.dataLineStart = 1;
+        /** SPECIFY AT WHICH ROW OF THE CSV FILE IS THE HEADER (COLUMN TITLES)
+        We suppose the data will always begin right away after the header line */
+        convertionParam.headerLineStart = 0;
+        convertionParam.dataLineStart = 1;
 
-		//Variables used to save the columns titles and the rows values
-		let columns = this.getHeaderData(transactions, convertionParam.headerLineStart); //array
-		let rows = this.getRowData(transactions, convertionParam.dataLineStart); //array of array
-		let lang = this.getLanguage(transactions, convertionParam.headerLineStart);
+        //Variables used to save the columns titles and the rows values
+        let columns = this.getHeaderData(transactions, convertionParam.headerLineStart); //array
+        let rows = this.getRowData(transactions, convertionParam.dataLineStart); //array of array
+        let lang = this.getLanguage(transactions, convertionParam.headerLineStart);
 
-		//Load the form with data taken from the array. Create objects
-		this.loadForm(form, columns, rows);
-		//get the language of the headers
-		//For each row of the form, we call the rowConverter() function and we save the converted data
-		for (var i = 0; i < form.length; i++) {
-			let convertedRow = {};
-			let transaction = form[i];
-			switch(lang){
-				case "de":
-				if(transaction["Datum"].match(/[0-9\/]+/g) && transaction["Datum"].length == 8){
-					convertedRow = this.translateHeaderDe(transaction, convertedRow);
-					intermediaryData.push(convertedRow);
-				}
-				break;
-				default:
-				Banana.console.info("csv format not recognised");
-			}
-		}
+        //Load the form with data taken from the array. Create objects
+        this.loadForm(form, columns, rows);
+        //get the language of the headers
+        //For each row of the form, we call the rowConverter() function and we save the converted data
+        for (var i = 0; i < form.length; i++) {
+            let convertedRow = {};
+            let transaction = form[i];
+            switch (lang) {
+                case "de":
+                    if (transaction["Datum"].match(/[0-9\/]+/g) && transaction["Datum"].length == 8) {
+                        convertedRow = this.translateHeaderDe(transaction, convertedRow);
+                        intermediaryData.push(convertedRow);
+                    }
+                    break;
+                default:
+                    Banana.console.info("csv format not recognised");
+            }
+        }
         //Return the converted CSV data into the Banana document table
         return intermediaryData;
     }
 
 
-    getLanguage(transactions,headerRow) {
+    getLanguage(transactions, headerRow) {
         //Check language on header field: "Description".
-		let lang = "";
-		let headerData = transactions[headerRow];
-		for (var i = 0; i < headerData.length; i++) {
-			let element = headerData[i];
-			switch(element){
-				case "Beschreibung":
-				lang = "de";
-				break;
-			}
-		}
-		return lang;
+        let lang = "";
+        let headerData = transactions[headerRow];
+        for (var i = 0; i < headerData.length; i++) {
+            let element = headerData[i];
+            switch (element) {
+                case "Beschreibung":
+                    lang = "de";
+                    break;
+            }
+        }
+        return lang;
     }
 
     translateHeaderEn(inputRow, convertedRow) {
@@ -183,18 +183,18 @@ var ImportYokoyTransFormat1 = class ImportYokoyTransFormat1 extends ImportUtilit
 }
 
 function defineConversionParam() {
-	var convertionParam = {};
-	/** SPECIFY THE SEPARATOR AND THE TEXT DELIMITER USED IN THE CSV FILE */
-	convertionParam.format = "csv"; // available formats are "csv", "html"
-	//get text delimiter
-	convertionParam.textDelim = '\"';
-	// get separator
-	convertionParam.separator = ";";
-  
-	/** SPECIFY THE COLUMN TO USE FOR SORTING
-	If sortColums is empty the data are not sorted */
-	convertionParam.sortColums = ["Date", "Description"];
-	convertionParam.sortDescending = false;
-  
-	return convertionParam;
-  }
+    var convertionParam = {};
+    /** SPECIFY THE SEPARATOR AND THE TEXT DELIMITER USED IN THE CSV FILE */
+    convertionParam.format = "csv"; // available formats are "csv", "html"
+    //get text delimiter
+    convertionParam.textDelim = '\"';
+    // get separator
+    convertionParam.separator = ";";
+
+    /** SPECIFY THE COLUMN TO USE FOR SORTING
+    If sortColums is empty the data are not sorted */
+    convertionParam.sortColums = ["Date", "Description"];
+    convertionParam.sortDescending = false;
+
+    return convertionParam;
+}

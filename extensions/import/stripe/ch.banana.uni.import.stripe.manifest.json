@@ -1,0 +1,13 @@
+{
+    "category": "Import",
+    "country": "universal",
+    "countryCode": "un",
+    "description": "Stripe - Import movements .csv (Banana+ Advanced)",
+    "description.en": "Stripe - Import movements .csv (Banana+ Advanced)",
+    "id": "ch.banana.uni.import.stripe",
+    "language": "en",
+    "publisher": "Banana.ch",
+    "title": "Stripe - Import movements .csv (Banana+ Advanced)",
+    "title.en": "Stripe - Import movements .csv (Banana+ Advanced)",
+    "version": "1.0"
+}
