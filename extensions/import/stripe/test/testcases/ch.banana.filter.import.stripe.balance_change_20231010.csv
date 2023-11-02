@@ -1,0 +1,13 @@
+"balance_transaction_id","created","available_on","currency","gross","fee","net","reporting_category","description","automatic_payout_id","automatic_payout_effective_at"
+"txn_1Noh05Kh5QAlWt1C76QBqatA","2023-09-10 08:20:04","2023-10-13 02:00:00","tes","0.65","0.00","0.65","risk_reserved_funds","Reserved Funds","po_1Nzr7YKh5QAlWt1CBKvGMVAL","2023-10-16 02:00:00"
+"txn_1NvIOXKh5QAlWt1Cw0VRgJTc","2023-09-28 13:28:35","2023-10-13 02:00:00","tes","61.83","0.00","61.83","risk_reserved_funds","Reserved Funds","po_1Nzr7YKh5QAlWt1CBKvGMVAL","2023-10-16 02:00:00"
+"txn_1NvvU8Kh5QAlWt1Ckjq1vJ6U","2023-09-30 07:12:59","2023-10-13 02:00:00","tes","6.15","0.00","6.15","risk_reserved_funds","Reserved Funds","po_1Nzr7YKh5QAlWt1CBKvGMVAL","2023-10-16 02:00:00"
+"txn_1NwgrXKh5QAlWt1CqSk1AKn9","2023-10-02 09:48:17","2023-10-13 02:00:00","tes","25.19","0.00","25.19","risk_reserved_funds","Reserved Funds","po_1Nzr7YKh5QAlWt1CBKvGMVAL","2023-10-16 02:00:00"
+"txn_1NxTleKh5QAlWt1CMQue8k7q","2023-10-04 14:01:29","2023-10-11 02:00:00","tes","-23.75","0.00","-23.75","risk_reserved_funds","Reserved Funds","po_1Nzr7YKh5QAlWt1CBKvGMVAL","2023-10-16 02:00:00"
+"txn_1NxTleKh5QAlWt1CO1Ithi23","2023-10-04 14:01:29","2023-10-13 02:00:00","tes","23.75","0.00","23.75","risk_reserved_funds","Reserved Funds","po_1Nzr7YKh5QAlWt1CBKvGMVAL","2023-10-16 02:00:00"
+"txn_3NxTlcKh5QAlWt1C19hNW8yk","2023-10-04 14:01:29","2023-10-11 02:00:00","tes","100.00","5.00","95.00","charge","seriples et antes.pia Colvero brae cogino.inimanes@cabular.vi","po_1Nzr7YKh5QAlWt1CBKvGMVAL","2023-10-16 02:00:00"
+"txn_3NyzC9Kh5QAlWt1C0rnawqnl","2023-10-08 17:47:50","2023-10-15 02:00:00","tes","311.82","8.67","303.15","charge","seriples et antes.pia Colvero brae shabultianimum@opror.cut","po_1Nzr7YKh5QAlWt1CBKvGMVAL","2023-10-16 02:00:00"
+"txn_3NzOetKh5QAlWt1C1zI5rLBs","2023-10-09 20:58:28","2023-10-16 02:00:00","tes","104.13","3.06","101.07","charge","seriples et antes.pia Colvero brae sufer.t@vit.pia","po_1Nzr7YKh5QAlWt1CBKvGMVAL","2023-10-16 02:00:00"
+"txn_3Nzb5hKh5QAlWt1C0AghLph4","2023-10-10 10:14:57","2023-10-17 02:00:00","tes","25.00","0.93","24.07","charge","seriples et antes.pia Colvero brae vine.sentinto@t-virura.ex",,
+"txn_3Nzm0oKh5QAlWt1C1HNxilhZ","2023-10-10 21:54:38","2023-10-17 02:00:00","tes","52.21","2.73","49.48","charge","seriples et antes.pia Colvero brae ciptumn@me.cut",,
+"txn_3NytKnKh5QAlWt1C09qR6XZ2","2023-10-11 17:54:55","2023-10-18 02:00:00","tes","25.59","0.99","24.60","charge","seriples et antes.pia Colvero brae orunnecurunime@vit.et",,
