@@ -20,9 +20,9 @@
 %Begin test data
 \begin{tablevalue}{}{ l  l  l  l  l  l }
 Date & Description & ExternalReference & Notes & Expenses & Income\\
-2023-01-01 & Post fectibratus an 4.33 ICA fugant me Inava.pra/frit LENDIS.PRA & POST-766417851 &  & 1.00 & \\
-2023-01-01 & Post fectibratus an 74.50 CAR fugant me Idicum*Ponuit Matumen. VI IDICUM.PRA & POST-426887720 &  & 61.20 & \\
 2023-01-01 & Plis angus si Peridum G. & EVISPELL-680562537 &  & 280.00 & \\
+2023-01-01 & Post fectibratus an 74.50 CAR fugant me Idicum*Ponuit Matumen. VI IDICUM.PRA & POST-426887720 &  & 61.20 & \\
+2023-01-01 & Post fectibratus an 4.33 ICA fugant me Inava.pra/frit LENDIS.PRA & POST-766417851 &  & 1.00 & \\
 \\
 \end{tablevalue}
 \end{document}
