@@ -36,33 +36,34 @@ function TestImportWiseTrans() {
 }
 
 // This method will be called at the beginning of the test case
-TestImportWiseTrans.prototype.initTestCase = function() {
+TestImportWiseTrans.prototype.initTestCase = function () {
    this.testLogger = Test.logger;
    this.progressBar = Banana.application.progressBar;
 }
 
 // This method will be called at the end of the test case
-TestImportWiseTrans.prototype.cleanupTestCase = function() {
+TestImportWiseTrans.prototype.cleanupTestCase = function () {
 
 }
 
 // This method will be called before every test method is executed
-TestImportWiseTrans.prototype.init = function() {
+TestImportWiseTrans.prototype.init = function () {
 
 }
 
 // This method will be called after every test method is executed
-TestImportWiseTrans.prototype.cleanup = function() {
+TestImportWiseTrans.prototype.cleanup = function () {
 
 }
 
-TestImportWiseTrans.prototype.testImport = function() {
+TestImportWiseTrans.prototype.testImport = function () {
    var fileNameList = [];
 
    fileNameList.push("file:script/../test/testcases/ch.banana.wise.transactions.business.fee.separate1_20230105.csv");
    fileNameList.push("file:script/../test/testcases/ch.banana.wise.transactions.business1_20230105.csv");
    fileNameList.push("file:script/../test/testcases/ch.banana.wise.transactions.personal1_20230105.csv");
-   
+   fileNameList.push("file:script/../test/testcases/ch.banana.wise.transactions.personal1_20231103.csv");
+
    var parentLogger = this.testLogger;
    this.progressBar.start(fileNameList.length);
 
@@ -74,9 +75,9 @@ TestImportWiseTrans.prototype.testImport = function() {
       Test.assert(file);
       var fileContent = file.read();
       Test.assert(fileContent);
-      var transactions = exec(fileContent,true); //takes the exec from the import script.
+      var transactions = exec(fileContent, true); //takes the exec from the import script.
       this.testLogger.addCsv('', transactions);
-      
+
       if (!this.progressBar.step())
          break;
    }
