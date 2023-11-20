@@ -170,7 +170,7 @@ Retained earnings / total Assets  & Total retained earning / tota  & 1.4  & -3.4
 Earnings before interest and task payment / total Assets  & EBIT / tota  & 3.3  & -4.63  & 0.00  & -4.63  & -3.59  & 1.75  & -5.34 \\
 Equity market value / total Liabilities  & owca / deca  & 0.6  & -0.46  & 0.60  & -1.06  & -0.44  & 0.69  & -1.13 \\
 Total Sales / total Assets  & satu / tota  & 0.999  & 1.03  & 0.00  & 1.03  & 0.96  & 0.55  & 0.41 \\
-Z-Score  & (1.2 x A) + (1.4 x B) + (3.3 x C) + (0.6 x D) + (0.999 x E)  &  & -11.64  & 1.90  & -13.54  & -9.27  & 3.94  & -13.21 \\
+Z-Score (1.2 x A) + (1.4 x B) + (3.3 x C) + (0.6 x D) + (0.999 x E)  &  &  & -11.64  & 1.90  & -13.54  & -9.27  & 3.94  & -13.21 \\
 \end{longtable}
 \begin{longtable}[l]{ l  l  l  l  l  l  l  l  l }
 Z-SCORE FOR PRIVATE COMPANIES Description  & formula  & Weighting  & Year to Date  & Budget to Date  & Budget to Date +/-  & Year to Date + Budget  & Budget  & Budget +/- \\
@@ -180,8 +180,8 @@ Retained earnings / total Assets  & Total retained earning / tota  & 0.847  & -2
 Earnings before interest and task payment / total Assets  & EBIT / tota  & 3.107  & -4.36  & 0.00  & -4.36  & -3.38  & 1.64  & -5.02 \\
 Book Value of Equity / total Liabilities  & owca / deca  & 0.42  & -0.32  & 0.42  & -0.74  & -0.31  & 0.48  & -0.79 \\
 Total Sales / total Assets  & satu / tota  & 0.998  & 1.03  & 0.00  & 1.03  & 0.96  & 0.55  & 0.41 \\
-Z-Score  & (0.717 x A) + (0.847 x B) + (3.107 x C) + (0.420 x D) + (0.998 x E)  &  & -8.21  & 1.20  & -9.41  & -6.46  & 3.24  & -9.70 \\
+Z-Score (0.717 x A) + (0.847 x B) + (3.107 x C) + (0.420 x D) + (0.998 x E)  &  &  & -8.21  & 1.20  & -9.41  & -6.46  & 3.24  & -9.70 \\
 \end{longtable}
-\excltest{23.03.2023} \\
+\excltest{20.11.2023} \\
 \#page-nr \end{reportvalue}
 \end{document}
