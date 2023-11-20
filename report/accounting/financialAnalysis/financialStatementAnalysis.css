@@ -46,11 +46,6 @@ style for the Report sections/principal objects
     /***************************************************
 style for the tables
 ****************************************************/
-    table {
-        font-size: 9pt;
-        margin-bottom: 20px;
-        width: 100%;
-    }
 
     table td {
         border-style: solid;
@@ -58,6 +53,60 @@ style for the tables
         width: auto;
         padding-top: 1px;
         padding-bottom: 1px;
+    }
+
+    .myTableBalance {
+        font-size: 8pt;
+        margin-bottom: 20px;
+        width: 100%;
+    }
+
+    .myTableProfitAndLoss {
+        font-size: 8pt;
+        margin-bottom: 20px;
+        width: 100%;
+    }
+
+    .myTableControlSums {
+        font-size: 8pt;
+        margin-bottom: 20px;
+        width: 100%;
+    }
+
+    .myTableRatios {
+        font-size: 8pt;
+        margin-bottom: 20px;
+        width: 100%;
+    }
+
+    .myTableCashflow {
+        font-size: 8pt;
+        margin-bottom: 20px;
+        width: 100%;
+    }
+
+    .myTableCashflowVerif {
+        font-size: 8pt;
+        margin-bottom: 20px;
+        width: 100%;
+    }
+
+    .myTableRetainedEarnings {
+        font-size: 8pt;
+        margin-bottom: 20px;
+        width: 100%;
+    }
+
+    .myTableDupont {
+        font-size: 8pt;
+        margin-bottom: 20px;
+        width: 100%;
+    }
+
+    .myTableAltmanZScore {
+        font-size: 8pt;
+        margin-bottom: 20px;
+        width: 100%;
     }
 
     /**********************************************************
