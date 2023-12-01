@@ -43,12 +43,13 @@ TestDetailedReport.prototype.cleanup = function () {
 
 TestDetailedReport.prototype.testDetailedReport = function () {
   
+  let isTest = true;
   for (let k = 0; k < this.fileAC2Path.length; k++) {
     
     let banDoc = Banana.application.openDocument(this.fileAC2Path[k]);
     
     if (banDoc) {
-      let printreport = new PrintReport(banDoc);
+      let printreport = new PrintReport(banDoc,isTest);
       let stylesheet = printreport.createStyleSheet(); // create the first stylesheet
       let result = printreport.report(stylesheet);
       let reportName = "FILENAME: " + this.fileAC2Path[k] + "\n";

@@ -111,7 +111,7 @@ via immobile 1 \\
   \\
   \\
 Lista degli affitti scoperti \\
-giovedì, 7 settembre 2023 16:51:25 \\
+giovedì, 7 settembre 2023 16:51:24 \\
 \begin{longtable}[l]{ l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l }
 \\
 Conto  & Debitore  & Debito  & Valuta  & Saldo iniziale  & Gennaio  & Febbraio  & Marzo  & Aprile  & Maggio  & Giugno  & Luglio  & Agosto  & Settembre  & Ottobre  & Novembre  & Dicembre  & Totale \\
