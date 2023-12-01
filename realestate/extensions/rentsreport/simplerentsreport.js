@@ -48,7 +48,7 @@ function exec() {
   //Check if a document is opened
   if (!Banana.document) { return; }
 
-  var printreport = new PrintReport(Banana.document);
+  var printreport = new PrintReport(Banana.document,false);
 
   var stylesheet = printreport.createStyleSheet(); // create the first stylesheet
   var report = printreport.report(stylesheet);
@@ -64,8 +64,9 @@ function exec() {
 
 var PrintReport = class PrintReport {
 
-  constructor(banDocument) {
+  constructor(banDocument, isTest) {
     this.banDoc = banDocument;
+    this.isTest = isTest;
   }
 
   report(stylesheet) {
@@ -109,8 +110,14 @@ var PrintReport = class PrintReport {
     // Add paragraph with the title and the date of the report
     report.addParagraph(reportlanguage.uncoveredrents, "heading");
     var today = new Date();
-    report.addParagraph(today.toLocaleString(), "heading");
 
+    // se test la data è fissa
+    if (this.isTest === true) {
+      report.addParagraph("giovedì, 7 settembre 2023 16:51:24", "heading");
+    }
+    else {
+    report.addParagraph(today.toLocaleString(), "heading");
+    }
 
     var table = report.addTable("internalTable");
     var tableRow = table.addRow();
@@ -646,7 +653,13 @@ var PrintReport = class PrintReport {
   /* Function that prints the footer */
   addFooter(report) {
     var footer = report.getFooter();
+    // Se test la data è fissa
+    if (this.isTest === true) {
+      footer.addText("07.09.2023", "description");
+    }
+    else {
     footer.addText(Banana.Converter.toLocaleDateFormat(new Date()) + "" + "");
+    }
   }
 
   /* Function that adds styles for the report print */
