@@ -64,6 +64,10 @@ TestWooCommerceImport.prototype.testImport = function () {
          rows = create_update.getUpdatedItemsRows(csvFile);
          jsonDoc = create_update.getJsonDocument(rows);
 
+         // We set the executionDate and the executionTime to avoid differences messages in test
+         jsonDoc.creator.executionDate = "2023-12-01";
+         jsonDoc.creator.executionTime = "15:20:00";
+
          let documentChange = { "format": "documentChange", "error": "", "data": [] };
          documentChange["data"].push(jsonDoc);
          logger.addJson(fileName, JSON.stringify(documentChange));
