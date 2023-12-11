@@ -72,7 +72,6 @@ TestCalcSalesDialog.prototype.testDataStructure = function () {
         if (banDoc) {
             let docInfo = getDocumentInfo(banDoc);
             let params = getParams(i);
-            Banana.console.debug(JSON.stringify(params));
             let itemsData = getItemsTableData(banDoc, docInfo);
             let salesData = calculateShareSaleData(banDoc, docInfo, params, itemsData);
             let jsonName = "FILENAME: " + fileName;

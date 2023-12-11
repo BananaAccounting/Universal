@@ -18,15 +18,10 @@
 // @task = app.command
 // @doctype = 100.*
 // @publisher = Banana.ch SA
-// @pubdate = 2021-04-14
+// @pubdate = 2023-12-11
 // @inputdatasource = none
 // @timeout = -1
 // @includejs = ch.banana.portfolio.accounting.calculation.methods.js
-
-/**
- * 
- * This report is currently available only for base accounting, without other currencies.
- */
 
 
 function addTableBaSAppraisal(report) {
