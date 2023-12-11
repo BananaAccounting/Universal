@@ -31,12 +31,13 @@
 
 function addTableBaSAppraisal(report) {
     let current_date = new Date();
-    current_date = Banana.Converter.toInternalDateFormat(current_date);
+    current_date = Banana.Converter.toLocaleDateFormat(current_date);
     var table_bas_appraisal = report.addTable('myAppraisalTable');
     table_bas_appraisal.setStyleAttributes("width:100%;");
     //columns definition
     table_bas_appraisal.addColumn("Type/Security").setStyleAttributes("width:15%");
     table_bas_appraisal.addColumn("ISIN").setStyleAttributes("width:15%");
+    table_bas_appraisal.addColumn("Currency").setStyleAttributes("width:15%");
     table_bas_appraisal.addColumn("Quantity").setStyleAttributes("width:15%");
     table_bas_appraisal.addColumn("Unit Cost").setStyleAttributes("width:15%");
     table_bas_appraisal.addColumn("Total Cost").setStyleAttributes("width:15%");
@@ -52,6 +53,7 @@ function addTableBaSAppraisal(report) {
     var tableRow = tableHeader.addRow();
     tableRow.addCell("Type/Security", "styleTablesHeaderText");
     tableRow.addCell("ISIN", "styleTablesHeaderText");
+    tableRow.addCell("Currency", "styleTablesHeaderText");
     tableRow.addCell("Current quantity", "styleTablesHeaderText");
     tableRow.addCell("Book value\nper unit", "styleTablesHeaderText");
     tableRow.addCell("Book value", "styleTablesHeaderText");
@@ -106,55 +108,71 @@ function printReport(appraisalDataList, portfolioTrData, comboboxParam) {
     let rowStyle = "";
 
     //APPRAISAL REPORT
-    for (var key in appraisalDataList.secType) {
-        let secType = appraisalDataList.secType[key];
+    const reportData = appraisalDataList.securitiesData;
+
+    //Print accounts Data
+    reportData.accountsData.forEach(accountData => {
+        const element = accountData;
         var tableRow = appraisalTable.addRow("");
-        tableRow.addCell(secType.type, 'styleDescrTotals');
-        tableRow.addCell('', '', 9);
-        //sort the results before printing them
-        if (secType.data && secType.data.length >= 1)
-            secType.data.setSortParam(comboboxParam);
+        tableRow.addCell(element.account.name, 'styleDescrTotals');
+        tableRow.addCell('', '', 10);
+        const itemsData = element.account.data.items;
+        const itemsTotals = element.account.data.totals;
+        itemsData.setSortParam(comboboxParam); // verificare che funzioni correttamente.
         //Define the style for the values taken as reference for the data sorting
         let styleMarketValue = setSortedColumnStyle(comboboxParam, 'Market Value');
         let stylePerPorfolio = setSortedColumnStyle(comboboxParam, 'Percentage of Portfolio');
         let styleCurrentQt = setSortedColumnStyle(comboboxParam, 'Quantity');
-        //define cell styles for the value
-        //print data
-        for (var e in secType.data) {
+        //Print account data.
+        itemsData.forEach(itemData => {
+            //Defines style for alternating rows 
             isEven = checkIfNumberisEven(rowColorIndex);
             if (isEven)
                 rowStyle = "styleEvenRows";
             else
                 rowStyle = "styleOddRows";
-
             var tableRow = appraisalTable.addRow(rowStyle);
-            let sec = secType.data[e];
-            tableRow.addCell(sec.description, '');
-            tableRow.addCell(sec.item, 'styleNormalAmount');
-            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(sec.currentQt, 0, true), styleCurrentQt);
-            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(sec.avgCost, 2, true), 'styleNormalAmount');
-            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(sec.totalCost, 2, true), 'styleNormalAmount');
-            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(sec.marketPrice, 2, true), 'styleNormalAmount');
-            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(sec.marketValue, 2, true), styleMarketValue);
-            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(sec.percOfPort, 2, true), stylePerPorfolio);
-            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(sec.unGainLoss, 2, true), 'styleNormalAmount');
-            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(sec.percGL, 2, true), 'styleNormalAmount');
-
+            tableRow.addCell(itemData.description, '');
+            tableRow.addCell(itemData.item, 'styleNormalAmount');
+            tableRow.addCell(itemData.currency, 'styleNormalAmount');
+            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemData.currentQt, 0, true), 'styleNormalAmount');
+            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemData.avgCost, 2, true), 'styleNormalAmount');
+            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemData.totalCost, 2, true), 'styleNormalAmount');
+            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemData.marketPrice, 2, true), 'styleNormalAmount');
+            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemData.marketValue, 2, true), 'styleNormalAmount');
+            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemData.percOfPort, 2, true), 'styleNormalAmount');
+            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemData.unGainLoss, 2, true), 'styleNormalAmount');
+            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemData.percGL, 2, true), 'styleNormalAmount');
             rowColorIndex++;
-        }
-        //print totals
-        if (secType.type) {
-            var tableRow = appraisalTable.addRow("rowStyle");
-            tableRow.addCell("Totals", 'styleDescrTotals');
-            tableRow.addCell("", '', 3);
-            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(secType.totalCostSum, 2, true), 'styleTotalAmount');
+        });
+        rowColorIndex = 0;
+        //Print account totals.
+        itemsTotals.forEach(total => {
+            var tableRow = appraisalTable.addRow("");
+            tableRow.addCell(total.description, 'styleDescrTotals');
             tableRow.addCell("", '', 1);
-            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(secType.marketValueSum, 2, true), 'styleTotalAmount');
-            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(secType.percOfPortSum, 2, true), 'styleTotalAmount');
-            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(secType.unGainLossSum, 2, true), 'styleTotalAmount');
-            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(secType.percGLSum, 2, true), 'styleTotalAmount');
-        }
-    }
+            tableRow.addCell(total.currency, 'styleTotalAmount');
+            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(total.accountTotCurrentQt, 0, true), 'styleTotalAmount');
+            tableRow.addCell("", '', 1);
+            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(total.accountTotBookValue, 2, true), 'styleTotalAmount');
+            tableRow.addCell("", '', 1);
+            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(total.accountTotMarketValue, 2, true), 'styleTotalAmount');
+            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(total.accountTotPercOfPort, 2, true), 'styleTotalAmount');
+            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(total.accountTotUnGainLoss, 2, true), 'styleTotalAmount');
+            tableRow.addCell("", '', 1);
+        });
+
+    });
+    //Print Portfolio totals
+    var tableRow = appraisalTable.addRow("styleTotaPortfolio");
+    reportData.portfolioTotals.forEach(portFolioTotal => {
+        tableRow.addCell(portFolioTotal.description, 'styleDescrTotals');
+        tableRow.addCell("", '', 2);
+        tableRow.addCell(Banana.Converter.toLocaleNumberFormat(portFolioTotal.portfolioTotCurrentQt, 0, true), 'styleTotalAmount');
+        tableRow.addCell("", '', 4);
+        tableRow.addCell(Banana.Converter.toLocaleNumberFormat(portFolioTotal.portfolioTotPercOfPort, 2, true), 'styleTotalAmount');
+        tableRow.addCell("", '', 2);
+    });
 
     report.addPageBreak();
 
@@ -163,7 +181,7 @@ function printReport(appraisalDataList, portfolioTrData, comboboxParam) {
     //reset row color index to zero
     rowColorIndex = 0;
 
-    //PORTFOLIO TRANSACTIONS REPORT
+    //PORTFOLIO TRANSACTIONS REPORT DA RIVEDERE ANCHE QUESTOOO.
     for (var key in portfolioTrData.data) {
         let trElement = portfolioTrData.data[key];
         var tableRow = transactionsTable.addRow("");
@@ -226,62 +244,64 @@ function setSortedColumnStyle(comboboxParam, value) {
 
 function getAppraisalData(banDoc, docInfo, itemsData) {
     let appraisalData = {};
-    let secTypesList = getSecurityTypesList(itemsData);//list of groups into which the titles in the items table are grouped
+    let accountsList = getSecurityAccountsList(itemsData);
 
     let d = new Date();//save the current date
     appraisalData.date = d.getDate();
-    appraisalData.secType = getAppraisalDataList(banDoc, docInfo, secTypesList, itemsData);
+    appraisalData.securitiesData = getAppraisalDataList(banDoc, docInfo, accountsList, itemsData);
 
     return appraisalData;
 
 }
 
-function getAppraisalDataList(banDoc, docInfo, secTypesList, itemsData) {
+function getAppraisalDataList(banDoc, docInfo, accountsList, itemsData) {
 
-    let appraisalDataList = [];
+    let appraisalDataList = {};
+    let accountsData = [];
+    let portfolioTotals = [];
     let journal = banDoc.journal(banDoc.ORIGINTYPE_CURRENT, banDoc.ACCOUNTTYPE_NONE);
     let journalData = getJournalData(docInfo, journal);
 
-    //For each group I create an object that will contain the movements of the titles concerning the group
-    for (var i = 0; i < secTypesList.length; i++) {
-        secType = {};
-        secType.type = secTypesList[i];
-        secType.data = getAppraisalDataList_transactions(banDoc, docInfo, itemsData, journalData, secTypesList[i]);
-        //calculate portfolio percentage for each transactions and then totals for each type
-        getAppraisalDataList_portfolioPercentage(secType.data);
-        getAppraisalDataList_calculateTotals(secType, secType.data);
-        if (secType) {
-            appraisalDataList.push(secType);
-        }
+    //Get the transactions data for every item.
+    for (var i = 0; i < accountsList.length; i++) {
+        let secAccountData = {};
+        let account = accountsList[i];
+        secAccountData.account = {};
+        secAccountData.account.name = account;
+        secAccountData.account.data = {};
+        secAccountData.account.data.items = getAppraisalDataList_transactions(banDoc, docInfo, itemsData, journalData, account);
+        accountsData.push(secAccountData);
     }
+
+    let portfolioMarketValueSum = getPortfolioMarketValueSum(accountsData);
+    addPortfolioPercentages(accountsData, portfolioMarketValueSum);
+    calculateAccountsTotals(accountsData, banDoc);
+    calculatePortfolioTotals(accountsData, portfolioTotals);
+
+    appraisalDataList.accountsData = accountsData;
+    appraisalDataList.portfolioTotals = portfolioTotals;
 
     return appraisalDataList;
 }
 
-function getAppraisalDataList_transactions(banDoc, docInfo, itemsData, journalData, sumInName) {
+function getAppraisalDataList_transactions(banDoc, docInfo, itemsData, journalData, account) {
     let appraisalDataListTrans = [];
+    //Get rows data.
     for (var key in itemsData) {
-        if (itemsData[key].sumIn === sumInName) {
-            itemAccount = getItemValue(itemsData, itemsData[key].item, "account");//get the account of the item
-            accountCard = banDoc.currentCard(itemAccount);
-            /**
-             * getAccountCardData = Per ogni item ritorna una scheda "item" creata partendo dalla scheda conto del conto associato a quell item.
-             */
-            let accountCardData = getAccountCardData(docInfo, itemsData[key].item, accountCard);
+        if (itemsData[key].account === account) {
+            let itemName = itemsData[key].item;
+            accountCard = banDoc.currentCard(account);
+            let accountCardData = getAccountCardData(banDoc, docInfo, itemName, accountCard, account);
             let appraisalData = {};
-            appraisalData.item = itemsData[key].item;
+            appraisalData.item = itemName;
             appraisalData.description = itemsData[key].description;
+            appraisalData.currency = getAccountCurrency(account, banDoc); // Per ora usiamo la valuta del conto, che è quella effettiva, e non quella nella tab items, siccome non ce nessun controllo.
             appraisalData.currentQt = itemsData[key].currentQt;
             //get the average cost
             appraisalData.avgCost = "";
-            /**
-             * getItemCardDataList = Aggiunge info all'oggetto accountCardData, tra cui il book value
-             */
             let itemCardData = getItemCardDataList(accountCardData, journalData);
-            //Banana.Ui.showText(JSON.stringify(itemCardData));
             if (itemCardData.length >= 1) {
                 appraisalData.avgCost = itemCardData.slice(-1)[0].accAvgCost;
-                //Banana.console.debug(itemCardData.slice(-1)[0].accAvgCost);
             }
             appraisalData.totalCost = Banana.SDecimal.multiply(appraisalData.currentQt, appraisalData.avgCost);
             /**
@@ -298,14 +318,104 @@ function getAppraisalDataList_transactions(banDoc, docInfo, itemsData, journalDa
             }
         }
     }
+
     return appraisalDataListTrans;
 }
 
-function getSecurityTypesList(itemsData) {
+function addPortfolioPercentages(accountsData, portfolioMarketValueSum) {
+
+    accountsData.forEach(item => {
+        const accountName = item.account.name;
+        const accountData = item.account.data;
+
+        accountData.items.forEach(subItem => {
+            let temp = Banana.SDecimal.divide(subItem.marketValue, portfolioMarketValueSum);
+            subItem.percOfPort = Banana.SDecimal.multiply(temp, 100);
+        });
+
+    });
+}
+
+/**
+ * Calculate the totals for each object    /** Calcolo i totali per ogni conto:
+ * - Current Qt --> sommo le qt di ogni item.
+ * - % of port --> vedo il valore di mercato in base al totale calcolato sopra.
+ * - Book value --> totale del total cost.
+ * - Market value --> totale unrealized gain or loss.
+ * - Unrealized gain or loss --> totale unrealized gain or loss
+ */
+function calculateAccountsTotals(accountsData, banDoc) {
+
+    accountsData.forEach(item => {
+        const accountName = item.account.name;
+        const accountData = item.account.data;
+        let totals = [];
+        let total = {};
+
+        let totCurrentQt = "";
+        let totBookValue = "";
+        let totMarketValue = "";
+        let totUnGainLoss = "";
+        let totPercOfPort = "";
+
+        accountData.items.forEach(subItem => {
+            totCurrentQt = Banana.SDecimal.add(totCurrentQt, subItem.currentQt);
+            totBookValue = Banana.SDecimal.add(totBookValue, subItem.totalCost);
+            totMarketValue = Banana.SDecimal.add(totMarketValue, subItem.marketValue);
+            totUnGainLoss = Banana.SDecimal.add(totUnGainLoss, subItem.unGainLoss);
+            totPercOfPort = Banana.SDecimal.add(totPercOfPort, subItem.percOfPort);
+        });
+
+        // Aggiungo un nuovo oggetto in cui salvo i totali.
+        total.description = qsTr("Total ") + accountName; // da tradurre
+        total.currency = getAccountCurrency(accountName, banDoc);
+        total.accountTotCurrentQt = totCurrentQt;
+        total.accountTotBookValue = totBookValue;
+        total.accountTotMarketValue = totMarketValue;
+        total.accountTotUnGainLoss = totUnGainLoss;
+        total.accountTotPercOfPort = totPercOfPort
+
+        totals.push(total);
+
+        item.account.data.totals = totals;
+
+    });
+
+}
+
+/**
+ * Calcolo i totali per l'intero Portfolio
+ * - Current Qt --> sommo tutte le Current Qt degli items.
+ * - % of port -->  sommo tutte le perc of port.
+*/
+function calculatePortfolioTotals(accountsData, portfolioTotals) {
+    let totals = {};
+    let totCurrentQt = "";
+    let totPercOfPort = "";
+
+    accountsData.forEach(item => {
+        const accountName = item.account.name;
+        const accountData = item.account.data;
+
+        accountData.totals.forEach(subItem => {
+            totCurrentQt = Banana.SDecimal.add(totCurrentQt, subItem.accountTotCurrentQt);
+            totPercOfPort = Banana.SDecimal.add(totPercOfPort, subItem.accountTotPercOfPort);
+        });
+
+    });
+
+    totals.description = qsTr("Total Portfolio");
+    totals.portfolioTotCurrentQt = totCurrentQt;
+    totals.portfolioTotPercOfPort = totPercOfPort;
+    portfolioTotals.push(totals);
+
+}
+
+function getSecurityAccountsList(itemsData) {
     let secTypesList = new Set();
     for (var key in itemsData) {
-        if (itemsData[key].sumIn) {
-            secTypesList.add(itemsData[key].sumIn);
+        if (itemsData[key].account) {
+            secTypesList.add(itemsData[key].account);
         }
     }
     let secTypesList_array = Array.from(secTypesList); //convert the set into an array.
@@ -323,8 +433,6 @@ function getGLPerc(marketValue, totalCost) {
 }
 
 function getAppraisalDataList_portfolioPercentage(appraisalDataList) {
-    let portfolioTotalAmount = getPortfolioSum(appraisalDataList);
-
     for (var key in appraisalDataList) {
         let temp = Banana.SDecimal.divide(appraisalDataList[key].marketValue, portfolioTotalAmount);
         appraisalDataList[key].percOfPort = Banana.SDecimal.multiply(temp, 100);
@@ -339,45 +447,18 @@ function getAppraisalDataList_portfolioPercentage(appraisalDataList) {
  * @param {*} appraisalDataList 
  * @returns 
  */
-function getPortfolioSum(appraisalDataList) {
-    let portSum = "";
+function getPortfolioMarketValueSum(appraisalDataList) {
+    let totalMarketValue = 0;
 
-    //sum the elements mapped in the new array items and returns the value.
-    portSum = appraisalDataList.map(item => parseInt(item.marketValue)).reduce((prev, curr) => prev + curr, 0);
+    appraisalDataList.forEach(item => {
+        item.account.data.items.forEach(subItem => {
+            const marketValue = parseFloat(subItem.marketValue);
+            totalMarketValue += marketValue;
+        });
+    });
 
-    return portSum;
+    return totalMarketValue;
 
-}
-
-/**
- * 
- * @param {*} appraisalDataList the appraisalDataList object
- * @param {*} arrayData the array with the data to sum.
- * @returns 
- */
-function getAppraisalDataList_calculateTotals(appraisalDataList, arrayData) {
-    appraisalDataList.totalCostSum = "";
-    appraisalDataList.marketValueSum = "";
-    appraisalDataList.percOfPortSum = "";
-    appraisalDataList.unGainLossSum = "";
-    appraisalDataList.percGLSum = "";
-
-    //get the sums
-    let totalCostSum = arrayData.map(item => parseFloat(item.totalCost)).reduce((prev, curr) => prev + curr, 0);
-    let marketValueSum = arrayData.map(item => parseFloat(item.marketValue)).reduce((prev, curr) => prev + curr, 0);
-    let percOfPortSum = arrayData.map(item => parseFloat(item.percOfPort)).reduce((prev, curr) => prev + curr, 0);
-    let unGainLossSum = arrayData.map(item => parseFloat(item.unGainLoss)).reduce((prev, curr) => prev + curr, 0);
-    let percGLSum = arrayData.map(item => parseFloat(item.percGL)).reduce((prev, curr) => prev + curr, 0);
-
-    //reset values to string and save values as ohbect properties.
-    appraisalDataList.totalCostSum = totalCostSum.toString();
-    appraisalDataList.marketValueSum = marketValueSum.toString();
-    appraisalDataList.percOfPortSum = percOfPortSum.toString();
-    appraisalDataList.unGainLossSum = unGainLossSum.toString();
-    appraisalDataList.percGLSum = percGLSum.toString();
-
-
-    return appraisalDataList;
 }
 
 function getportfolioTrData(banDoc, docInfo, itemsData) {
@@ -513,12 +594,12 @@ function getComboBoxElement() {
     return combobox_value;
 }
 
-function exec(inData, options) {
+function exec() {
 
     let banDoc = Banana.document;
     let docInfo = getDocumentInfo(banDoc);
 
-    if (isMultiCurrency(banDoc) || !verifyBananaVersion())
+    if (!verifyBananaVersion())
         return "@Cancel";
 
     var comboboxParam = getComboBoxElement();
@@ -526,7 +607,7 @@ function exec(inData, options) {
         return;
 
     //get the items table data
-    let itemsData = getItemsTableData(banDoc, docInfo);
+    let itemsData = getItemsTableData(banDoc);
     //get the appraisal data list
     let appraisalDataList = getAppraisalData(banDoc, docInfo, itemsData);
     //get the transactionsList
@@ -540,136 +621,105 @@ function exec(inData, options) {
 }
 
 /*example  Appraisal data structure
-var appraisalData={
-    "date":"date",
-    "securityTypes":[
-        {
-            "Type":"Stocks",
-            "data":[
-                {
-                "item":"IT0005239360",
-                "Quantity Balance":"",
-                "Current Avg cost":"",
-                "Currency":"",
-                "Total Cost":"",
-                "MarketPrice":"",
-                "MarketValue":"",
-                "PercOfPort":"",
-                "UnrealizedGainOrLoss":"",
-                "PercGL":"",
-                },
-                {
-                "item":"CH003886335",
-                "Quantity Balance":"",
-                "Current Avg cost":"",
-                "Currency":"",
-                "Total Cost":"",
-                "MarketPrice":"",
-                "MarketValue":"",
-                "PercOfPort":"",
-                "UnrealizedGainOrLoss":"",
-                "PercGL":"",
-                },
-            ],
-            "totalCost":"",
-            "totalMarketValue":"",
-            "totalPerOfPort":"",
-            "totalUnGainOrLoss":"",
-            "totalGl":"",
-            
-        },
-        {
-            "Type":"Bonds",
-            "data":[
-                {
-                "item":"IT0005239360",
-                "Quantity Balance":"",
-                "Current Avg cost":"",
-                "Currency":"",
-                "Total Cost":"",
-                "MarketPrice":"",
-                "MarketValue":"",
-                "PercOfPort":"",
-                "UnrealizedGainOrLoss":"",
-                "PercGL":"",
-                },
-                {
-                "item":"CH003886335",
-                "Quantity Balance":"",
-                "Current Avg cost":"",
-                "Currency":"",
-                "Total Cost":"",
-                "MarketPrice":"",
-                "MarketValue":"",
-                "PercOfPort":"",
-                "UnrealizedGainOrLoss":"",
-                "PercGL":"",
-                },
-            ],
-            "totalCost":"",
-            "totalMarketValue":"",
-            "totalPerOfPort":"",
-            "totalUnGainOrLoss":"",
-            "totalGl":""
+ * 
+{
+  "accountsData": [
+    {
+      "account": {
+        "name": "Shares CHF",
+        "data": {
+          "items": [
+            {
+              "item": "CH003886335",
+              "description": "Shares UBS",
+              "currentQt": "5.0000",
+              "avgCost": "11.00",
+              "totalCost": "55.000000",
+              "marketPrice": "11.7000",
+              "marketValue": "58.50000000",
+              "unGainLoss": "3.50000000",
+              "percGL": "5.982905982905982905982905982905983",
+              "percOfPort": "1.762844658731354527648033750188338"
+            }
+          ],
+          "totals": [
+            {
+              "accountTotCurrentQt": "5.0000",
+              "accountTotBookValue": "55.000000",
+              "accountTotMarketValue": "58.50000000",
+              "accountTotUnGainLoss": "3.50000000",
+              "accountTotPercOfPort": "1.762844658731354527648033750188338"
+            }
+          ]
         }
-    ]
-}*/
-
-/*example portfolio transactions data structure
-var appraisalData={
-    "date":"currentDate",
-    "data":[
-        {
-            item:"CH003886335",
-            transactions:[
-                {
-                    "date":"",
-                    "Doc":"",
-                    "Item":"",
-                    "Description":"",
-                    "Debit":"",
-                    "Credit":"",
-                    "Qt":"",
-                    "UnitPrice":""
-
-                },
-                {
-                    "date":"",
-                    "Doc":"",
-                    "Item":"",
-                    "Description":"",
-                    "Debit":"",
-                    "Credit":"",
-                    "Qt":"",
-                    "UnitPrice":""
-
-                }
-            ]
-        },
-            item:"CH012775214",
-            transactions:[
-                {
-                    "date":"",
-                    "Doc":"",
-                    "Item":"",
-                    "Description":"",
-                    "Debit":"",
-                    "Credit":"",
-                    "Qt":"",
-                    "UnitPrice":""
-
-                },
-                {
-                    "date":"",
-                    "Doc":"",
-                    "Item":"",
-                    "Description":"",
-                    "Debit":"",
-                    "Credit":"",
-                    "Qt":"",
-                    "UnitPrice":""
-
-                }
-            ]
-    ]
-}*/
+      }
+    },
+    {
+      "account": {
+        "name": "Shares EUR",
+        "data": {
+          "items": [
+            {
+              "item": "IT0005239360",
+              "description": "Shares Unicredit",
+              "currentQt": "50.0000",
+              "avgCost": "10.48",
+              "totalCost": "524.000000",
+              "marketPrice": "10.7000",
+              "marketValue": "535.00000000",
+              "unGainLoss": "11.00000000",
+              "percGL": "2.056074766355140186915887850467290",
+              "percOfPort": "16.12174175079102003917432574958566"
+            }
+          ],
+          "totals": [
+            {
+              "accountTotCurrentQt": "50.0000",
+              "accountTotBookValue": "524.000000",
+              "accountTotMarketValue": "535.00000000",
+              "accountTotUnGainLoss": "11.00000000",
+              "accountTotPercOfPort": "16.12174175079102003917432574958566"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "account": {
+        "name": "Bonds EUR",
+        "data": {
+          "items": [
+            {
+              "item": "IT000792468",
+              "description": "Bonds Bnp Paribas ",
+              "currentQt": "2500.0000",
+              "avgCost": "1.09",
+              "totalCost": "2725.000000",
+              "marketPrice": "1.09",
+              "marketValue": "2725.000000",
+              "unGainLoss": "0",
+              "percGL": "0",
+              "percOfPort": "82.11541359047762543317764050022601"
+            }
+          ],
+          "totals": [
+            {
+              "accountTotCurrentQt": "2500.0000",
+              "accountTotBookValue": "2725.000000",
+              "accountTotMarketValue": "2725.000000",
+              "accountTotUnGainLoss": "0",
+              "accountTotPercOfPort": "82.11541359047762543317764050022601"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "portfolioTotals": [
+    {
+      "portfolioTotCurrentQt": "2555.0000",
+      "portfolioTotPercOfPort": "100.0000000000000000000000000000000"
+    }
+  ]
+}
+*/

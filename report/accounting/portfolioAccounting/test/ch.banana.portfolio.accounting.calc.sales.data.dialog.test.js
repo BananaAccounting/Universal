@@ -35,51 +35,52 @@ function TestCalcSalesDialog() {
 }
 
 // This method will be called at the beginning of the test case
-TestCalcSalesDialog.prototype.initTestCase = function() {
-   this.testLogger = Test.logger;
-   this.progressBar = Banana.application.progressBar;
-   this.fileNameList = [];
+TestCalcSalesDialog.prototype.initTestCase = function () {
+    this.testLogger = Test.logger;
+    this.progressBar = Banana.application.progressBar;
+    this.fileNameList = [];
 
-   this.fileNameList.push("file:script/../test/testcases/portfolio_accounting_double_entry_tutorial.ac2");
-   this.fileNameList.push("file:script/../test/testcases/portfolio_accounting_double_entry_multi_currency_tutorial.ac2");
+    this.fileNameList.push("file:script/../test/testcases/portfolio_accounting_double_entry_tutorial.ac2");
+    this.fileNameList.push("file:script/../test/testcases/portfolio_accounting_double_entry_multi_currency_tutorial.ac2");
 }
 
 // This method will be called at the end of the test case
-TestCalcSalesDialog.prototype.cleanupTestCase = function() {
+TestCalcSalesDialog.prototype.cleanupTestCase = function () {
 
 }
 
 // This method will be called before every test method is executed
-TestCalcSalesDialog.prototype.init = function() {
+TestCalcSalesDialog.prototype.init = function () {
 
 }
 
 // This method will be called after every test method is executed
-TestCalcSalesDialog.prototype.cleanup = function() {
+TestCalcSalesDialog.prototype.cleanup = function () {
 
 }
 
-TestCalcSalesDialog.prototype.testDataStructure = function() {
+TestCalcSalesDialog.prototype.testDataStructure = function () {
     let parentLogger = this.testLogger;
-   this.progressBar.start(this.fileNameList.length);
+    this.progressBar.start(this.fileNameList.length);
     for (var i = 0; i < this.fileNameList.length; i++) {
 
         let fileName = this.fileNameList[i];
         if (!this.progressBar.step())
             break;
-        let banDoc=Banana.application.openDocument(fileName);
+        let banDoc = Banana.application.openDocument(fileName);
         this.testLogger = parentLogger.newLogger(Banana.IO.fileCompleteBaseName(fileName));
-        if(banDoc){
-            let docInfo=getDocumentInfo(banDoc);
-            let params=getParams(i);
-            let itemsData=getItemsTableData(banDoc,docInfo);
-            let salesData=calculateShareSaleData(banDoc,docInfo,params,itemsData);
+        if (banDoc) {
+            let docInfo = getDocumentInfo(banDoc);
+            let params = getParams(i);
+            Banana.console.debug(JSON.stringify(params));
+            let itemsData = getItemsTableData(banDoc, docInfo);
+            let salesData = calculateShareSaleData(banDoc, docInfo, params, itemsData);
             let jsonName = "FILENAME: " + fileName;
-            this.testLogger.addJson(jsonName,JSON.stringify(salesData));
-        }else{
+            this.testLogger.addJson(jsonName, JSON.stringify(salesData));
+        } else {
             this.testLogger.addFatalError("File not found: " + fileName);
         }
-   }
+    }
 }
 
 /**
@@ -91,20 +92,22 @@ TestCalcSalesDialog.prototype.testDataStructure = function() {
  * @param {*} index 
  * @returns 
  */
-function getParams(index){
-    params={};
-    if(index==0){
-        params.selectedItem="CH003886335";
-        params.quantity="20";
-        params.marketPrice="12";
-        params.currExRate="";
+function getParams(index) {
+    params = {};
+    switch (index) {
+        case 0:
+            params.selectedItem = "CH003886335";
+            params.quantity = "20";
+            params.marketPrice = "12";
+            params.currExRate = "";
+            return params;
+        case 1:
+            params.selectedItem = "IT0005239360";
+            params.quantity = "10";
+            params.marketPrice = "12";
+            params.currExRate = "1.12";
+            return params;
+        default:
+            return params;
     }
-    else if(index==1){
-        params.selectedItem="IT0005239360";
-        params.quantity="10";
-        params.marketPrice="12";
-        params.currExRate="1.12";
-    }
-
-    return params;
 }

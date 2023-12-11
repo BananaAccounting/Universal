@@ -219,7 +219,7 @@ function calculateShareSaleData(banDoc, docInfo, userParam, itemsData) {
     journal = banDoc.journal(banDoc.ORIGINTYPE_CURRENT, banDoc.ACCOUNTTYPE_NONE);
     journalData = getJournalData(docInfo, journal);
     accountCard = banDoc.currentCard(itemAccount);
-    accountCardData = getAccountCardData(docInfo, item, accountCard);
+    accountCardData = getAccountCardData(banDoc, docInfo, item, accountCard, itemAccount);
     itemCardData = getItemCardDataList(accountCardData, journalData);
     //extract from the array the current avg cost value (accounting value)
     if (itemCardData.length >= 1) {
@@ -248,46 +248,51 @@ function calculateShareSaleData(banDoc, docInfo, userParam, itemsData) {
 }
 
 /**
- * Retrieves the transactions from the account card of the item selected by the user and
- * returns the transactions as objects.
- * In order to save the data from the account card, i checks that the isin in the item column matches. 
- * @param {*} selectedItem item selected by the user.
- * @param {*} docInfo item selected by the user
- * @param {*} accountCard account card (table obj)
+ * Ritorna le informazioni contenute nella scheda conto del conto collegato all'item.
  */
-function getAccountCardData(docInfo, selectedItem, accountCard) {
+function getAccountCardData(banDoc, docInfo, itemName, accountCard, account) {
     let transactions = [];
-    let accBaseBalance = "";
+    let accBalance = "";
+    let accountInBaseCurrency = isAccountInBaseCurrency(banDoc, docInfo, account);
 
     for (var i = 0; i < accountCard.rowCount; i++) {
         let tRow = accountCard.row(i);
-        let trData = {};
-        trData.rowNr = tRow.rowNr;
-        trData.doc = tRow.value("Doc");
-        trData.date = tRow.value("Date");
-        trData.trId = tRow.value("JContraAccountGroup");
-        trData.item = tRow.value("ItemsId");
-        trData.description = tRow.value("Description");
-        trData.debitBase = tRow.value("JDebitAmount"); //debit value in base currency
-        trData.creditBase = tRow.value("JCreditAmount"); //credit value base currency
-        //trData.balanceBase = tRow.value("JBalance"); //Se il conto è usato per più items, il bilancio deve essere ripreso in altro modo.
-        trData.unitPrice = tRow.value("UnitPrice");
-        if (docInfo.isMultiCurrency) {
-            trData.debitCurr = tRow.value("JDebitAmountAccountCurrency"); //debit value in base currency
-            trData.creditCurr = tRow.value("JCreditAmountAccountCurrency"); //credit value base currency
-            trData.balanceCurr = tRow.value("JBalanceAccountCurrency"); //credit value base currency
-        }
-        trData.qt = tRow.value("Quantity");
+        if (tRow.value("ItemsId") == itemName) {
+            let trData = {};
+            trData.rowNr = tRow.rowNr;
+            trData.doc = tRow.value("Doc");
+            trData.date = tRow.value("Date");
+            trData.trId = tRow.value("JContraAccountGroup");
+            trData.item = tRow.value("ItemsId");
+            trData.description = tRow.value("Description");
+            trData.qt = tRow.value("Quantity");
+            trData.currency = tRow.value("ExchangeCurrency");
+            if (accountInBaseCurrency) {
+                trData.debitBase = tRow.value("JDebitAmount"); //debit value in base currency
+                trData.creditBase = tRow.value("JCreditAmount"); //credit value base currency
+                //trData.balanceBase = tRow.value("JBalance"); //Se il conto è usato per più items, il bilancio deve essere ripreso in altro modo.
+                trData.unitPrice = tRow.value("UnitPrice");
+                //Calculate the balance manually.
+                if (trData.debitBase !== "") {
+                    accBalance = Banana.SDecimal.add(accBalance, trData.debitBase);
+                }
+                if (trData.creditBase !== "") {
+                    accBalance = Banana.SDecimal.subtract(accBalance, trData.creditBase);
+                }
+                trData.balanceBase = accBalance;
+            } else {
+                trData.debitCurr = tRow.value("JDebitAmountAccountCurrency");
+                trData.creditCurr = tRow.value("JCreditAmountAccountCurrency");
+                trData.balanceCurr = tRow.value("JBalanceAccountCurrency");
+                if (trData.debitCurr !== "") {
+                    accBalance = Banana.SDecimal.add(accBalance, trData.debitCurr);
+                }
+                if (trData.creditCurr !== "") {
+                    accBalance = Banana.SDecimal.subtract(accBalance, trData.creditCurr);
+                }
+                trData.balanceCurr = accBalance;
+            }
 
-        if (trData.item === selectedItem) {//each item transaction has the item id (isin)
-            //Calculate the balance manually.
-            if (trData.debitBase !== "") {
-                accBaseBalance = Banana.SDecimal.add(accBaseBalance, trData.debitBase);
-            }
-            if (trData.creditBase !== "") {
-                accBaseBalance = Banana.SDecimal.subtract(accBaseBalance, trData.creditBase);
-            }
-            trData.balanceBase = accBaseBalance;
             transactions.push(trData);
         }
     }
@@ -295,6 +300,81 @@ function getAccountCardData(docInfo, selectedItem, accountCard) {
         return transactions;
     else
         return false;
+}
+
+/**
+ * Ritorna le informazioni contenute nella scheda conto del conto collegato all'item, sia in multimoneta che in moneta base
+ */
+function getAccountCardCompleteData(itemName, accountCard) {
+    let transactions = [];
+    let balanceBase = "";
+    let balanceCurr = "";
+
+    for (var i = 0; i < accountCard.rowCount; i++) {
+        let tRow = accountCard.row(i);
+        if (tRow.value("ItemsId") == itemName) {
+            let trData = {};
+            trData.rowNr = tRow.rowNr;
+            trData.doc = tRow.value("Doc");
+            trData.date = tRow.value("Date");
+            trData.trId = tRow.value("JContraAccountGroup");
+            trData.item = tRow.value("ItemsId");
+            trData.description = tRow.value("Description");
+            trData.qt = tRow.value("Quantity");
+            trData.currency = tRow.value("ExchangeCurrency");
+            trData.debitBase = tRow.value("JDebitAmount"); //debit value in base currency
+            trData.creditBase = tRow.value("JCreditAmount"); //credit value base currency
+            //trData.balanceBase = tRow.value("JBalance"); //Se il conto è usato per più items, il bilancio deve essere ripreso in altro modo.
+            trData.unitPrice = tRow.value("UnitPrice");
+            //Calculate the balance manually.
+            if (trData.debitBase !== "") {
+                balanceBase = Banana.SDecimal.add(balanceBase, trData.debitBase);
+            }
+            if (trData.creditBase !== "") {
+                balanceBase = Banana.SDecimal.subtract(balanceBase, trData.creditBase);
+            }
+            trData.balanceBase = balanceBase;
+            trData.debitCurr = tRow.value("JDebitAmountAccountCurrency");
+            trData.creditCurr = tRow.value("JCreditAmountAccountCurrency");
+            trData.balanceCurr = tRow.value("JBalanceAccountCurrency");
+            if (trData.debitCurr !== "") {
+                balanceCurr = Banana.SDecimal.add(balanceCurr, trData.debitCurr);
+            }
+            if (trData.creditCurr !== "") {
+                balanceCurr = Banana.SDecimal.subtract(balanceCurr, trData.creditCurr);
+            }
+            trData.balanceCurr = balanceCurr;
+
+            transactions.push(trData);
+        }
+    }
+    if (transactions.length > 0)
+        return transactions;
+    else
+        return false;
+}
+
+function getAccountCurrency(accountName, banDoc) {
+    const accountsData = getAccountsTableData(banDoc);
+    let currency = "";
+
+    // Iterate through the array of objects
+    for (const obj of accountsData) {
+        // Check if the "description" field matches the desired description
+        if (obj.account == accountName) {
+            // If there's a match, store the currency from the current object
+            currency = obj.currency;
+            break;
+        }
+    }
+    return currency;
+}
+
+function isAccountInBaseCurrency(banDoc, docInfo, account) {
+    let currency = getAccountCurrency(account, banDoc);
+    if (currency == docInfo.baseCurrency)
+        return true;
+    return false;
 }
 
 function getItemCardDataList(accountCardData, journalData) {
@@ -559,7 +639,7 @@ function getItemValue(itemsData, item, value) {
 /**
  * Ritorna i dati presenti nella tabella conti.
  */
-function getAccountsTableData(banDoc, docInfo) {
+function getAccountsTableData(banDoc) {
     let accountsData = [];
     let accTable = banDoc.table("Accounts");
 
@@ -578,12 +658,9 @@ function getAccountsTableData(banDoc, docInfo) {
         accRow.sumIn = tRow.value("Gr");
         accRow.bankAccount = tRow.value("BankAccount");
         accRow.exchangeRateDiffAcc = tRow.value("AccountExchangeDifference");
-        if (docInfo.isMultiCurrency)
-            accRow.currency = tRow.value("Currency");
-        //...
+        accRow.currency = tRow.value("Currency");
 
-        if (accRow.account || accRow.group)
-            accountsData.push(accRow);
+        accountsData.push(accRow);
     }
 
     return accountsData;
@@ -595,7 +672,7 @@ function getAccountsTableData(banDoc, docInfo) {
  * Retrieves item information from the items table
  * @returns 
  */
-function getItemsTableData(banDoc, docInfo) {
+function getItemsTableData(banDoc) {
     //get the items list from the items table
     var itemsData = [];
     let table = banDoc.table("Items");
@@ -616,9 +693,7 @@ function getItemsTableData(banDoc, docInfo) {
         itemData.expiryDate = tRow.value("ExpiryDate");
         itemData.interestRate = tRow.value("Notes");
         itemData.unitPriceCurrent = tRow.value("UnitPriceCurrent");
-        itemData.currency = "";
-        if (docInfo.isMultiCurrency)
-            itemData.currency = tRow.value("Currency");
+        itemData.currency = tRow.value("Currency");
         if (itemsData && itemData.item)//only if the item has an id (isin)
             itemsData.push(itemData);
     }
@@ -910,7 +985,9 @@ function findElement(banDoc, userParam, listData, refProp, refTableName) {
     for (var key in listData) {
         //set to lower case the strings
         let ref_lower = listData[key][refProp].toLowerCase();
-        let userParam_lower = userParam.toLowerCase();
+        let userParam_lower = "";
+        if (userParam)
+            userParam_lower = userParam.toLowerCase();
         if ((userParam_lower && ref_lower) && userParam_lower.includes(ref_lower)) {//check the strings after the lower case.
             return listData[key][refProp];//return the original (not formatted value)
         }

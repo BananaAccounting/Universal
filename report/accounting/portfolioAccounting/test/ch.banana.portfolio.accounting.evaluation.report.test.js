@@ -71,7 +71,7 @@ TestPortfolioEvaluationReport.prototype.testCompleteReport = function () {
             //Appraisal Report
             let userParam = "Market Value";
             let docInfo = getDocumentInfo(banDoc);
-            let itemsData = getItemsTableData(banDoc, docInfo);
+            let itemsData = getItemsTableData(banDoc);
             let appraisalDataList = getAppraisalData(banDoc, docInfo, itemsData);
             let portfolioTrData = getportfolioTrData(banDoc, docInfo, itemsData);
             //Add the report

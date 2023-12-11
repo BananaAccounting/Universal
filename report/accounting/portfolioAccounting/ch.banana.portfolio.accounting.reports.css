@@ -141,3 +141,10 @@ style for the rows
 .styleOddRows{
     background-color: #b4bde4;
 }
+
+/********************
+Total porfolio Style.
+*********************/
+.styleTotaPortfolio{
+    background-color: #8795d2;
+}
