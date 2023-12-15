@@ -1,0 +1,19 @@
+{ 
+"category": "productivity",
+    "country":"switzerland",
+    "countryCode":"ch",
+    "description": "Correction of exercises",
+    "description.en": "Correction of exercises",
+    "description.it": "Correzione degli esercizi",
+    "description.fr": "Correction d'exercices",
+    "description.de": "Berichtigung von Übungen",
+    "id": "ch.banana.app.exercisecorrection",
+    "language":"en",
+    "publisher": "Banana.ch",
+    "title": "Correction of exercises",
+    "title.en": "Correction of exercises",
+    "title.it": "Correzione degli esercizi",
+    "title.fr": "Correction d'exercices",
+    "title.de": "Berichtigung von Übungen",
+    "version": "1.0"
+}

@@ -1,0 +1,6 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource prefix="/">
+<file>ch.banana.app.exercisecorrection.json</file>
+<file>ch.banana.app.exercisecorrection.js</file>
+</qresource>
+</RCC>
