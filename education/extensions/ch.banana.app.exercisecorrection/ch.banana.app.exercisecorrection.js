@@ -81,6 +81,9 @@ var PrintReport = class PrintReport {
     else {
       //Open the file
       let teacherfile = Banana.application.openDocument("*.*");
+      if (!teacherfile) {
+        return;
+      }
       teachertransactions = teacherfile.table('Transactions');
     }
 
