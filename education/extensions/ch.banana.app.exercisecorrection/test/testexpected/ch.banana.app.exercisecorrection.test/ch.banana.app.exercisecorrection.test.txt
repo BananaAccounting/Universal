@@ -1,0 +1,580 @@
+%%info_test_name{ch.banana.app.exercisecorrection.test}
+\documentclass{report}
+\usepackage{longtable}
+\usepackage{color}
+\usepackage{listings}
+\usepackage[margin=1cm]{geometry}
+\begin{document}
+\newenvironment{tablevalue}[2]{\textbf{Table: #1}\begin{longtable}[l]{#2}}{\end{longtable}}
+\newenvironment{reportvalue}[1]{\textbf{Report: #1}\\}{}
+\lstnewenvironment{jsonvalue}[1]{\textbf{Json: #1}\lstset{language=Java}}{}
+\lstnewenvironment{xmlvalue}[1]{\textbf{Xml: #1}\lstset{language=Xml}}{}
+\newcommand{\info}[2]{\textit{#1: #2}\\}
+\newcommand{\fatalerror}[1]{\textbf{\textcolor[rgb]{1,0,0}{Fatal error: #1}}\\}
+\newcommand{\keyvalue}[2]{\textbf{Keyvalue: #1} #2\\}
+\newcommand{\textvalue}[1]{#1\\}
+\newcommand{\excltest}[1]{\\Excluded from compare: #1}
+\newcommand{\lognewpage}{\newpage}
+\newenvironment{testcase}[1]{\section*{Test: #1}}{\newpage}
+\newenvironment{test}[1]{\section*{Test case: #1}}{}
+%Begin test data
+%%SCRIPT{C:/Users/patrick.pasquillo/Documents/GitHub/Universal/education/extensions/ch.banana.app.exercisecorrection/test/ch.banana.app.exercisecorrection.test.js}
+%
+\begin{testcase}{TestImportFile}
+\begin{test}{testImportFile}
+\begin{jsonvalue}{TestImportFile}
+{
+    "data": [
+        {
+            "creator": {
+                "name": "ch.banana.app.exercisecorrection.test",
+                "version": "1.0"
+            },
+            "document": {
+                "dataUnits": [
+                    {
+                        "data": {
+                            "rowLists": [
+                                {
+                                    "rows": [
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "[Earnings services]",
+                                                "AccountDebit": "[Credits]",
+                                                "Amount": "5000.00",
+                                                "Date": "2023-01-01",
+                                                "Description": "Invoices to customers for executed services",
+                                                "Doc": "1"
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "0.1"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "-1.1"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "Description": "# 1",
+                                                "Doc": "1"
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "-1.2"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "[Debts]",
+                                                "AccountDebit": "[Purchases]",
+                                                "Amount": "1500.00",
+                                                "Date": "2023-01-01",
+                                                "Description": "Invoices from suppliers for plants purchases",
+                                                "Doc": "2"
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "1.1"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "0.1"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "Description": "# 2",
+                                                "Doc": "2"
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "0.2"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "[Earnings sales]",
+                                                "AccountDebit": "[Credits]",
+                                                "Amount": "3000.00",
+                                                "Date": "2023-01-01",
+                                                "Description": "Invoices to customers for plants sales",
+                                                "Doc": "3"
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "2.1"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "1.1"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "Description": "# 3",
+                                                "Doc": "3"
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "1.2"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "[Bank]",
+                                                "AccountDebit": "[]",
+                                                "Amount": "1500.00",
+                                                "Date": "2023-01-02",
+                                                "Description": "Bank transfer for miscellaneous expenses",
+                                                "Doc": "4"
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "8.1"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "2.1"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "Description": "# 4",
+                                                "Doc": "4"
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "2.2"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "[]",
+                                                "AccountDebit": "[Salaries]",
+                                                "Amount": "1000.00",
+                                                "Date": "2023-01-02",
+                                                "Description": "Payment of workers' salaries",
+                                                "Doc": "4"
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "8.1"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "[]",
+                                                "AccountDebit": "[Interests]",
+                                                "Amount": "50.00",
+                                                "Date": "2023-01-02",
+                                                "Description": "Payment of bank interest",
+                                                "Doc": "4"
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "8.1"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "[]",
+                                                "AccountDebit": "[Other costs]",
+                                                "Amount": "50.00",
+                                                "Date": "2023-01-02",
+                                                "Description": "Payment of office equipment",
+                                                "Doc": "4"
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "8.1"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "[]",
+                                                "AccountDebit": "[Energy]",
+                                                "Amount": "300.00",
+                                                "Date": "2023-01-02",
+                                                "Description": "Payment of electricity invoice",
+                                                "Doc": "4"
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "8.1"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "[]",
+                                                "AccountDebit": "[Advertising]",
+                                                "Amount": "100.00",
+                                                "Date": "2023-01-02",
+                                                "Description": "Payment of advertising agency invoice",
+                                                "Doc": "4"
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "8.1"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "[Credits]",
+                                                "AccountDebit": "[Earnings services]",
+                                                "Amount": "300.00",
+                                                "Date": "2023-01-03",
+                                                "Description": "Credit note (reason: our mistake)",
+                                                "Doc": "5"
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "9.1"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "8.1"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "Description": "# 5",
+                                                "Doc": "5"
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "8.2"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "[Share capital]",
+                                                "AccountDebit": "[Cash]",
+                                                "Amount": "10000.00",
+                                                "Date": "2023-01-04",
+                                                "Description": "Increase in cash contribution",
+                                                "Doc": "6"
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "10.1"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "9.1"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "Description": "# 6",
+                                                "Doc": "6"
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "9.2"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "[Credits]",
+                                                "AccountDebit": "[Bank]",
+                                                "Amount": "2000.00",
+                                                "Date": "2023-01-05",
+                                                "Description": "Bank transfer from customer (invoice payment)",
+                                                "Doc": "7"
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "11.1"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "10.1"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "Description": "# 7",
+                                                "Doc": "7"
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "10.2"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "[Cash]",
+                                                "AccountDebit": "[Debts]",
+                                                "Amount": "1000.00",
+                                                "Date": "2023-01-06",
+                                                "Description": "Cash transfer to supplier (invoice payment)",
+                                                "Doc": "8"
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "12.1"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "11.1"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "Description": "# 8",
+                                                "Doc": "8"
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "11.2"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "[]",
+                                                "AccountDebit": "[Cash]",
+                                                "Amount": "500.00",
+                                                "Date": "2023-01-07",
+                                                "Description": "Cash receipt for work performed and flower sales",
+                                                "Doc": "9"
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "15.1"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "12.1"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "Description": "# 9",
+                                                "Doc": "9"
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "12.2"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "[Earnings services]",
+                                                "AccountDebit": "[]",
+                                                "Amount": "400.00",
+                                                "Date": "2023-01-07",
+                                                "Description": "Services performed to customer",
+                                                "Doc": "9"
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "15.1"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "[Earnings sales]",
+                                                "AccountDebit": "[]",
+                                                "Amount": "100.00",
+                                                "Date": "2023-01-07",
+                                                "Description": "Flower sales to customer",
+                                                "Doc": "9"
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "15.1"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        "nameXml": "Transactions"
+                    }
+                ],
+                "fileVersion": "1.0.0"
+            }
+        }
+    ],
+    "error": "",
+    "format": "documentChange"
+}
+\end{jsonvalue}
+\keyvalue{Result}{Passed}
+\end{test}
+\end{testcase}
+\end{document}
