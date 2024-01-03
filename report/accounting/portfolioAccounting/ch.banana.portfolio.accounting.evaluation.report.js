@@ -30,8 +30,8 @@
 
 
 function addTableBaSAppraisal(report) {
-    let current_date=new Date();
-    current_date=Banana.Converter.toInternalDateFormat(current_date);
+    let current_date = new Date();
+    current_date = Banana.Converter.toInternalDateFormat(current_date);
     var table_bas_appraisal = report.addTable('myAppraisalTable');
     table_bas_appraisal.setStyleAttributes("width:100%;");
     //columns definition
@@ -46,7 +46,7 @@ function addTableBaSAppraisal(report) {
     table_bas_appraisal.addColumn("Un. Gain or Loss").setStyleAttributes("width:15%");
     table_bas_appraisal.addColumn("% G/L").setStyleAttributes("width:15%");
     //headers definition
-    let caption=table_bas_appraisal.getCaption().addText(qsTr("Appraisal Report \n Holdings as of: "+current_date), "styleTitles");
+    let caption = table_bas_appraisal.getCaption().addText(qsTr("Appraisal Report \n Holdings as of: " + current_date), "styleTitles");
     caption.excludeFromTest();
     var tableHeader = table_bas_appraisal.getHeader();
     var tableRow = tableHeader.addRow();
@@ -64,11 +64,11 @@ function addTableBaSAppraisal(report) {
 }
 
 function addTableBaSTransactions(report) {
-    let current_date=new Date()
-    current_date=Banana.Converter.toInternalDateFormat(current_date);
+    let current_date = new Date()
+    current_date = Banana.Converter.toInternalDateFormat(current_date);
     var table_bas_transactions_details = report.addTable('myTransactionsTable');
     table_bas_transactions_details.setStyleAttributes("width:100%;");
-    let caption=table_bas_transactions_details.getCaption().addText(qsTr("Portfolio Transactions \n Transactions as of: "+current_date), "styleTitles");
+    let caption = table_bas_transactions_details.getCaption().addText(qsTr("Portfolio Transactions \n Transactions as of: " + current_date), "styleTitles");
     caption.excludeFromTest();
     var tableHeader = table_bas_transactions_details.getHeader();
     var tableRow = tableHeader.addRow();
@@ -95,64 +95,64 @@ function addTableBaSTransactions(report) {
     return table_bas_transactions_details;
 }
 
-function printReport(appraisalDataList,portfolioTrData,comboboxParam){
+function printReport(appraisalDataList, portfolioTrData, comboboxParam) {
 
     //creates a new report
     let report = Banana.Report.newReport("Portfolio Evaluation Report");
     //add appraisal table
     let appraisalTable = addTableBaSAppraisal(report);
-    let rowColorIndex=0;//to know whether a line is odd or even.
-    let isEven=false;
-    let rowStyle="";
+    let rowColorIndex = 0;//to know whether a line is odd or even.
+    let isEven = false;
+    let rowStyle = "";
 
     //APPRAISAL REPORT
-    for(var key in appraisalDataList.secType){
-        let secType=appraisalDataList.secType[key];
+    for (var key in appraisalDataList.secType) {
+        let secType = appraisalDataList.secType[key];
         var tableRow = appraisalTable.addRow("");
         tableRow.addCell(secType.type, 'styleDescrTotals');
-        tableRow.addCell('', '',9);
+        tableRow.addCell('', '', 9);
         //sort the results before printing them
-        if(secType.data && secType.data.length>=1)
+        if (secType.data && secType.data.length >= 1)
             secType.data.setSortParam(comboboxParam);
         //Define the style for the values taken as reference for the data sorting
-        let styleMarketValue=setSortedColumnStyle(comboboxParam,'Market Value');
-        let stylePerPorfolio=setSortedColumnStyle(comboboxParam,'Percentage of Portfolio');
-        let styleCurrentQt=setSortedColumnStyle(comboboxParam,'Quantity');
+        let styleMarketValue = setSortedColumnStyle(comboboxParam, 'Market Value');
+        let stylePerPorfolio = setSortedColumnStyle(comboboxParam, 'Percentage of Portfolio');
+        let styleCurrentQt = setSortedColumnStyle(comboboxParam, 'Quantity');
         //define cell styles for the value
         //print data
-        for(var e in secType.data){
-            isEven=checkIfNumberisEven(rowColorIndex);
-            if(isEven)
-                rowStyle="styleEvenRows";
+        for (var e in secType.data) {
+            isEven = checkIfNumberisEven(rowColorIndex);
+            if (isEven)
+                rowStyle = "styleEvenRows";
             else
-            rowStyle="styleOddRows";
+                rowStyle = "styleOddRows";
 
             var tableRow = appraisalTable.addRow(rowStyle);
-            let sec=secType.data[e];
+            let sec = secType.data[e];
             tableRow.addCell(sec.description, '');
             tableRow.addCell(sec.item, 'styleNormalAmount');
-            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(sec.currentQt,0,true), styleCurrentQt);
-            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(sec.avgCost,2,true), 'styleNormalAmount');
-            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(sec.totalCost,2,true), 'styleNormalAmount');
-            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(sec.marketPrice,2,true), 'styleNormalAmount');
-            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(sec.marketValue,2,true), styleMarketValue);
-            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(sec.percOfPort,2,true),stylePerPorfolio);
-            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(sec.unGainLoss,2,true), 'styleNormalAmount');
-            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(sec.percGL,2,true), 'styleNormalAmount');
+            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(sec.currentQt, 0, true), styleCurrentQt);
+            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(sec.avgCost, 2, true), 'styleNormalAmount');
+            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(sec.totalCost, 2, true), 'styleNormalAmount');
+            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(sec.marketPrice, 2, true), 'styleNormalAmount');
+            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(sec.marketValue, 2, true), styleMarketValue);
+            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(sec.percOfPort, 2, true), stylePerPorfolio);
+            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(sec.unGainLoss, 2, true), 'styleNormalAmount');
+            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(sec.percGL, 2, true), 'styleNormalAmount');
 
             rowColorIndex++;
         }
         //print totals
-        if(secType.type){
+        if (secType.type) {
             var tableRow = appraisalTable.addRow("rowStyle");
             tableRow.addCell("Totals", 'styleDescrTotals');
-            tableRow.addCell("", '',3);
-            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(secType.totalCostSum,2,true), 'styleTotalAmount');
-            tableRow.addCell("", '',1);
-            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(secType.marketValueSum,2,true), 'styleTotalAmount');
-            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(secType.percOfPortSum,2,true), 'styleTotalAmount');
-            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(secType.unGainLossSum,2,true), 'styleTotalAmount');
-            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(secType.percGLSum,2,true), 'styleTotalAmount');
+            tableRow.addCell("", '', 3);
+            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(secType.totalCostSum, 2, true), 'styleTotalAmount');
+            tableRow.addCell("", '', 1);
+            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(secType.marketValueSum, 2, true), 'styleTotalAmount');
+            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(secType.percOfPortSum, 2, true), 'styleTotalAmount');
+            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(secType.unGainLossSum, 2, true), 'styleTotalAmount');
+            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(secType.percGLSum, 2, true), 'styleTotalAmount');
         }
     }
 
@@ -161,131 +161,139 @@ function printReport(appraisalDataList,portfolioTrData,comboboxParam){
     //add portfolio transactions table
     let transactionsTable = addTableBaSTransactions(report);
     //reset row color index to zero
-    rowColorIndex=0;
+    rowColorIndex = 0;
 
     //PORTFOLIO TRANSACTIONS REPORT
-    for(var key in portfolioTrData.data){
-        let trElement=portfolioTrData.data[key];
+    for (var key in portfolioTrData.data) {
+        let trElement = portfolioTrData.data[key];
         var tableRow = transactionsTable.addRow("");
         tableRow.addCell(trElement.item, 'styleDescrTotals');
-        tableRow.addCell('', '',8);
-        if(trElement.transactions && trElement.transactions.length>=1){
-            for(var e in trElement.transactions){
-                isEven=checkIfNumberisEven(rowColorIndex);
-                if(isEven)
-                    rowStyle="styleEvenRows";
+        tableRow.addCell('', '', 8);
+        if (trElement.transactions && trElement.transactions.length >= 1) {
+            for (var e in trElement.transactions) {
+                isEven = checkIfNumberisEven(rowColorIndex);
+                if (isEven)
+                    rowStyle = "styleEvenRows";
                 else
-                rowStyle="styleOddRows";
-                let transaction =trElement.transactions[e];
+                    rowStyle = "styleOddRows";
+                let transaction = trElement.transactions[e];
                 var tableRow = transactionsTable.addRow(rowStyle);
                 tableRow.addCell(Banana.Converter.toLocaleDateFormat(transaction.date, ''));
                 tableRow.addCell(transaction.doc, 'styleAlignCenter');
                 tableRow.addCell(transaction.item, '');
                 tableRow.addCell(transaction.description, '');
-                tableRow.addCell(transaction.debit,'');
-                tableRow.addCell(transaction.credit,'');
-                tableRow.addCell(Banana.Converter.toLocaleNumberFormat(transaction.qt,0,false),'styleNormalAmount');
-                tableRow.addCell(Banana.Converter.toLocaleNumberFormat(transaction.unitPrice,0,false),'styleNormalAmount');
-                tableRow.addCell(Banana.Converter.toLocaleNumberFormat(transaction.amount,2,false),'styleNormalAmount');
+                tableRow.addCell(transaction.debit, '');
+                tableRow.addCell(transaction.credit, '');
+                tableRow.addCell(Banana.Converter.toLocaleNumberFormat(transaction.qt, 0, false), 'styleNormalAmount');
+                tableRow.addCell(Banana.Converter.toLocaleNumberFormat(transaction.unitPrice, 0, false), 'styleNormalAmount');
+                tableRow.addCell(Banana.Converter.toLocaleNumberFormat(transaction.amount, 2, false), 'styleNormalAmount');
 
                 rowColorIndex++;
             }
         }
-            
+
     }
 
     return report;
 
 }
 
-function getQtStyle(qt){
-    var style="";
-    var sign=Banana.SDecimal.sign(qt);
+function getQtStyle(qt) {
+    var style = "";
+    var sign = Banana.SDecimal.sign(qt);
 
-    if(sign==-1)
-        style='styleNegativeAmount';
+    if (sign == -1)
+        style = 'styleNegativeAmount';
     else
-        style='styleTablesBasResults';
+        style = 'styleTablesBasResults';
 
     return style;
 }
 
-function setSortedColumnStyle(comboboxParam,value){
-    if(comboboxParam){
-        var style="";
-        if(comboboxParam===value){
-            style="styleSortedByColumn";
+function setSortedColumnStyle(comboboxParam, value) {
+    if (comboboxParam) {
+        var style = "";
+        if (comboboxParam === value) {
+            style = "styleSortedByColumn";
             return style;
-        }else{
-            style="styleNormalAmount";
+        } else {
+            style = "styleNormalAmount";
             return style;
         }
-    }else
+    } else
         return 'styleNormalAmount';
 }
 
-function getAppraisalData(banDoc,docInfo,itemsData) {
-    let appraisalData={};
-    let secTypesList=getSecurityTypesList(itemsData);//list of groups into which the titles in the items table are grouped
-    
-    let d=new Date();//save the current date
-    appraisalData.date=d.getDate();
-    appraisalData.secType=getAppraisalDataList(banDoc,docInfo,secTypesList,itemsData);
+function getAppraisalData(banDoc, docInfo, itemsData) {
+    let appraisalData = {};
+    let secTypesList = getSecurityTypesList(itemsData);//list of groups into which the titles in the items table are grouped
+
+    let d = new Date();//save the current date
+    appraisalData.date = d.getDate();
+    appraisalData.secType = getAppraisalDataList(banDoc, docInfo, secTypesList, itemsData);
 
     return appraisalData;
 
 }
 
-function getAppraisalDataList(banDoc,docInfo,secTypesList,itemsData){
+function getAppraisalDataList(banDoc, docInfo, secTypesList, itemsData) {
 
-    let appraisalDataList=[];
+    let appraisalDataList = [];
     let journal = banDoc.journal(banDoc.ORIGINTYPE_CURRENT, banDoc.ACCOUNTTYPE_NONE);
-    let journalData=getJournalData(docInfo,journal);
+    let journalData = getJournalData(docInfo, journal);
 
     //For each group I create an object that will contain the movements of the titles concerning the group
-    for(var i=0;i<secTypesList.length;i++){
-        secType={};
-        secType.type=secTypesList[i];
-        secType.data=getAppraisalDataList_transactions(banDoc,docInfo,itemsData,journalData,secTypesList[i]);
+    for (var i = 0; i < secTypesList.length; i++) {
+        secType = {};
+        secType.type = secTypesList[i];
+        secType.data = getAppraisalDataList_transactions(banDoc, docInfo, itemsData, journalData, secTypesList[i]);
         //calculate portfolio percentage for each transactions and then totals for each type
         getAppraisalDataList_portfolioPercentage(secType.data);
-        getAppraisalDataList_calculateTotals(secType,secType.data);
-        if(secType){
+        getAppraisalDataList_calculateTotals(secType, secType.data);
+        if (secType) {
             appraisalDataList.push(secType);
         }
     }
-    
+
     return appraisalDataList;
 }
 
-function getAppraisalDataList_transactions(banDoc,docInfo,itemsData,journalData,sumInName){
-    let appraisalDataListTrans=[];
-    for(var key in itemsData){
-        if(itemsData[key].sumIn===sumInName){
-            itemAccount=getItemValue(itemsData,itemsData[key].item,"account");//get the account of the item
-            accountCard=banDoc.currentCard(itemAccount);
-            let accountCardData=getAccountCardData(docInfo,itemsData[key].item,accountCard);
-            let appraisalData={};
-            appraisalData.item=itemsData[key].item;
-            appraisalData.description=itemsData[key].description;
-            appraisalData.currentQt=itemsData[key].currentQt;
+function getAppraisalDataList_transactions(banDoc, docInfo, itemsData, journalData, sumInName) {
+    let appraisalDataListTrans = [];
+    for (var key in itemsData) {
+        if (itemsData[key].sumIn === sumInName) {
+            itemAccount = getItemValue(itemsData, itemsData[key].item, "account");//get the account of the item
+            accountCard = banDoc.currentCard(itemAccount);
+            /**
+             * getAccountCardData = Per ogni item ritorna una scheda "item" creata partendo dalla scheda conto del conto associato a quell item.
+             */
+            let accountCardData = getAccountCardData(docInfo, itemsData[key].item, accountCard);
+            let appraisalData = {};
+            appraisalData.item = itemsData[key].item;
+            appraisalData.description = itemsData[key].description;
+            appraisalData.currentQt = itemsData[key].currentQt;
             //get the average cost
-            appraisalData.avgCost="";
-            let itemCardData=getItemCardDataList(accountCardData,journalData);
-            if(itemCardData.length>=1){
-                appraisalData.avgCost=itemCardData.slice(-1)[0].accAvgCost;
+            appraisalData.avgCost = "";
+            /**
+             * getItemCardDataList = Aggiunge info all'oggetto accountCardData, tra cui il book value
+             */
+            let itemCardData = getItemCardDataList(accountCardData, journalData);
+            //Banana.Ui.showText(JSON.stringify(itemCardData));
+            if (itemCardData.length >= 1) {
+                appraisalData.avgCost = itemCardData.slice(-1)[0].accAvgCost;
+                //Banana.console.debug(itemCardData.slice(-1)[0].accAvgCost);
             }
-            appraisalData.totalCost=Banana.SDecimal.multiply(appraisalData.currentQt,appraisalData.avgCost);
+            appraisalData.totalCost = Banana.SDecimal.multiply(appraisalData.currentQt, appraisalData.avgCost);
             /**
              * If market price is not present, we put the average also as market price.
              * In this way  the gain or loss will be zero
              */
-            itemsData[key].unitPriceCurrent ? appraisalData.marketPrice=itemsData[key].unitPriceCurrent: appraisalData.marketPrice=appraisalData.avgCost;
-            appraisalData.marketValue=Banana.SDecimal.multiply(appraisalData.currentQt,appraisalData.marketPrice);
-            appraisalData.unGainLoss=Banana.SDecimal.subtract(appraisalData.marketValue,appraisalData.totalCost);
-            appraisalData.percGL=getGLPerc(appraisalData.marketValue,appraisalData.totalCost);
+            itemsData[key].unitPriceCurrent ? appraisalData.marketPrice = itemsData[key].unitPriceCurrent : appraisalData.marketPrice = appraisalData.avgCost;
+            appraisalData.marketValue = Banana.SDecimal.multiply(appraisalData.currentQt, appraisalData.marketPrice);
+            appraisalData.unGainLoss = Banana.SDecimal.subtract(appraisalData.marketValue, appraisalData.totalCost);
+            appraisalData.percGL = getGLPerc(appraisalData.marketValue, appraisalData.totalCost);
 
-            if(appraisalData){
+            if (appraisalData) {
                 appraisalDataListTrans.push(appraisalData);
             }
         }
@@ -293,20 +301,20 @@ function getAppraisalDataList_transactions(banDoc,docInfo,itemsData,journalData,
     return appraisalDataListTrans;
 }
 
-function getSecurityTypesList(itemsData){
-    let secTypesList=new Set();
-    for(var key in itemsData){
-        if(itemsData[key].sumIn){
+function getSecurityTypesList(itemsData) {
+    let secTypesList = new Set();
+    for (var key in itemsData) {
+        if (itemsData[key].sumIn) {
             secTypesList.add(itemsData[key].sumIn);
         }
     }
-    let secTypesList_array=Array.from(secTypesList); //convert the set into an array.
-    
+    let secTypesList_array = Array.from(secTypesList); //convert the set into an array.
+
     return secTypesList_array;
 
 }
 
-function getGLPerc(marketValue,totalCost){
+function getGLPerc(marketValue, totalCost) {
     let percGL = Banana.SDecimal.subtract(marketValue, totalCost);
     percGL = Banana.SDecimal.divide(percGL, marketValue);
     percGL = Banana.SDecimal.multiply(percGL, 100);
@@ -314,12 +322,12 @@ function getGLPerc(marketValue,totalCost){
     return percGL;
 }
 
-function getAppraisalDataList_portfolioPercentage(appraisalDataList){
-    let portfolioTotalAmount=getPortfolioSum(appraisalDataList);
+function getAppraisalDataList_portfolioPercentage(appraisalDataList) {
+    let portfolioTotalAmount = getPortfolioSum(appraisalDataList);
 
-    for(var key in appraisalDataList){
-        let temp=Banana.SDecimal.divide(appraisalDataList[key].marketValue,portfolioTotalAmount);
-        appraisalDataList[key].percOfPort=Banana.SDecimal.multiply(temp,100);
+    for (var key in appraisalDataList) {
+        let temp = Banana.SDecimal.divide(appraisalDataList[key].marketValue, portfolioTotalAmount);
+        appraisalDataList[key].percOfPort = Banana.SDecimal.multiply(temp, 100);
     }
 
     return appraisalDataList;
@@ -331,11 +339,11 @@ function getAppraisalDataList_portfolioPercentage(appraisalDataList){
  * @param {*} appraisalDataList 
  * @returns 
  */
-function getPortfolioSum(appraisalDataList){
-    let portSum="";
+function getPortfolioSum(appraisalDataList) {
+    let portSum = "";
 
-//sum the elements mapped in the new array items and returns the value.
-    portSum=appraisalDataList.map(item=>parseInt(item.marketValue)).reduce((prev,curr)=>prev+curr,0);
+    //sum the elements mapped in the new array items and returns the value.
+    portSum = appraisalDataList.map(item => parseInt(item.marketValue)).reduce((prev, curr) => prev + curr, 0);
 
     return portSum;
 
@@ -347,47 +355,47 @@ function getPortfolioSum(appraisalDataList){
  * @param {*} arrayData the array with the data to sum.
  * @returns 
  */
-function getAppraisalDataList_calculateTotals(appraisalDataList,arrayData){
-    appraisalDataList.totalCostSum="";
-    appraisalDataList.marketValueSum="";
-    appraisalDataList.percOfPortSum="";
-    appraisalDataList.unGainLossSum="";
-    appraisalDataList.percGLSum="";
+function getAppraisalDataList_calculateTotals(appraisalDataList, arrayData) {
+    appraisalDataList.totalCostSum = "";
+    appraisalDataList.marketValueSum = "";
+    appraisalDataList.percOfPortSum = "";
+    appraisalDataList.unGainLossSum = "";
+    appraisalDataList.percGLSum = "";
 
     //get the sums
-    let totalCostSum=arrayData.map(item=>parseFloat(item.totalCost)).reduce((prev,curr)=>prev+curr,0);
-    let marketValueSum=arrayData.map(item=>parseFloat(item.marketValue)).reduce((prev,curr)=>prev+curr,0);
-    let percOfPortSum=arrayData.map(item=>parseFloat(item.percOfPort)).reduce((prev,curr)=>prev+curr,0);
-    let unGainLossSum=arrayData.map(item=>parseFloat(item.unGainLoss)).reduce((prev,curr)=>prev+curr,0);
-    let percGLSum=arrayData.map(item=>parseFloat(item.percGL)).reduce((prev,curr)=>prev+curr,0);
+    let totalCostSum = arrayData.map(item => parseFloat(item.totalCost)).reduce((prev, curr) => prev + curr, 0);
+    let marketValueSum = arrayData.map(item => parseFloat(item.marketValue)).reduce((prev, curr) => prev + curr, 0);
+    let percOfPortSum = arrayData.map(item => parseFloat(item.percOfPort)).reduce((prev, curr) => prev + curr, 0);
+    let unGainLossSum = arrayData.map(item => parseFloat(item.unGainLoss)).reduce((prev, curr) => prev + curr, 0);
+    let percGLSum = arrayData.map(item => parseFloat(item.percGL)).reduce((prev, curr) => prev + curr, 0);
 
     //reset values to string and save values as ohbect properties.
-    appraisalDataList.totalCostSum=totalCostSum.toString();
-    appraisalDataList.marketValueSum=marketValueSum.toString();
-    appraisalDataList.percOfPortSum=percOfPortSum.toString();
-    appraisalDataList.unGainLossSum=unGainLossSum.toString();
-    appraisalDataList.percGLSum=percGLSum.toString();
+    appraisalDataList.totalCostSum = totalCostSum.toString();
+    appraisalDataList.marketValueSum = marketValueSum.toString();
+    appraisalDataList.percOfPortSum = percOfPortSum.toString();
+    appraisalDataList.unGainLossSum = unGainLossSum.toString();
+    appraisalDataList.percGLSum = percGLSum.toString();
 
 
     return appraisalDataList;
 }
 
-function getportfolioTrData(banDoc,docInfo,itemsData){
-   let portfolioTrData={};
-   portfolioTrData.date="";
-   portfolioTrData.data=[];
-   let trTableData={};
+function getportfolioTrData(banDoc, docInfo, itemsData) {
+    let portfolioTrData = {};
+    portfolioTrData.date = "";
+    portfolioTrData.data = [];
+    let trTableData = {};
 
-   trTableData=getTransactionsTableData(banDoc,docInfo);
+    trTableData = getTransactionsTableData(banDoc, docInfo);
 
-   for(var key in itemsData){
-       let item={};
-       item.item=itemsData[key].item;
-       item.transactions=getportfolioTrData_transactions(item.item,trTableData);
-       if(item.item)
-        portfolioTrData.data.push(item);
+    for (var key in itemsData) {
+        let item = {};
+        item.item = itemsData[key].item;
+        item.transactions = getportfolioTrData_transactions(item.item, trTableData);
+        if (item.item)
+            portfolioTrData.data.push(item);
 
-   }
+    }
     return portfolioTrData;
 }
 
@@ -396,22 +404,22 @@ function getportfolioTrData(banDoc,docInfo,itemsData){
  * @param {*} itemId ref item
  * @param {*} trTableData transactions tabel data
  */
-function getportfolioTrData_transactions(itemId,trTableData){
-    let transactions=[];
+function getportfolioTrData_transactions(itemId, trTableData) {
+    let transactions = [];
 
-    for(var key in trTableData){
-        if(trTableData[key].item!="" && itemId==trTableData[key].item){
-            let transaction={};
-            transaction.date=trTableData[key].date;
-            transaction.doc=trTableData[key].doc;
-            transaction.item=trTableData[key].item;
-            transaction.description=trTableData[key].description;
-            transaction.debit=trTableData[key].debit;
-            transaction.credit=trTableData[key].credit;
-            transaction.qt=trTableData[key].qt;
-            transaction.unitPrice=trTableData[key].unitPrice;
-            transaction.amount=trTableData[key].amountBase;
-            if(transaction)
+    for (var key in trTableData) {
+        if (trTableData[key].item != "" && itemId == trTableData[key].item) {
+            let transaction = {};
+            transaction.date = trTableData[key].date;
+            transaction.doc = trTableData[key].doc;
+            transaction.item = trTableData[key].item;
+            transaction.description = trTableData[key].description;
+            transaction.debit = trTableData[key].debit;
+            transaction.credit = trTableData[key].credit;
+            transaction.qt = trTableData[key].qt;
+            transaction.unitPrice = trTableData[key].unitPrice;
+            transaction.amount = trTableData[key].amountBase;
+            if (transaction)
                 transactions.push(transaction);
         }
     }
@@ -432,10 +440,10 @@ function convertParam(userParam) {
     currentParam.name = 'sort_items_by';
     currentParam.title = 'Sort Holdings by';
     currentParam.type = 'combobox';
-    currentParam.items = ['Market Value','Percentage of Portfolio','Quantity'];
+    currentParam.items = ['Market Value', 'Percentage of Portfolio', 'Quantity'];
     currentParam.value = userParam.sort_items_by ? userParam.sort_items_by : userParam.sort_items_by;
     currentParam.editable = true;
-    currentParam.readValue = function() {
+    currentParam.readValue = function () {
         userParam.sort_items_by = this.value;
     }
     convertedParam.data.push(currentParam);
@@ -449,18 +457,18 @@ function convertParam(userParam) {
  * @param {*} b 
  * @returns items ordered 
  */
- Array.prototype.setSortParam=function (userParam){
-    function compare(a,b){
+Array.prototype.setSortParam = function (userParam) {
+    function compare(a, b) {
 
-        switch(userParam){
+        switch (userParam) {
             case "Market Value":
-                return b.marketValue-a.marketValue;
+                return b.marketValue - a.marketValue;
                 break;
             case "Percentage of Portfolio":
-                return b.percOfPort-a.percOfPort;
+                return b.percOfPort - a.percOfPort;
                 break;
             case "Quantity":
-                return b.currentQt-a.currentQt;
+                return b.currentQt - a.currentQt;
                 break;
         }
     }
@@ -469,9 +477,9 @@ function convertParam(userParam) {
 
 function getComboBoxElement() {
 
-    var market_value=qsTr("Market Value");
-    var quantity=qsTr("Quantity");
-    var perc_of_port=qsTr("Percentage of Portfolio");
+    var market_value = qsTr("Market Value");
+    var quantity = qsTr("Quantity");
+    var perc_of_port = qsTr("Percentage of Portfolio");
 
     //The formeters of the period that we need
 
@@ -489,12 +497,12 @@ function getComboBoxElement() {
     }
     //A dialog window is opened asking the user to insert the desired period. By default is the accounting period
 
-    var selected_value = Banana.Ui.getItem("Sort by", "Choose a value", [market_value,quantity,perc_of_port], combobox_value, false);
+    var selected_value = Banana.Ui.getItem("Sort by", "Choose a value", [market_value, quantity, perc_of_port], combobox_value, false);
 
     //We take the values entered by the user and save them as "new default" values.
     //This because the next time the script will be executed, the dialog window will contains the new values.
     if (selected_value) {
-        combobox_value=selected_value;
+        combobox_value = selected_value;
         //Save script settings
         var valueToString = JSON.stringify(combobox_value);
         Banana.document.setScriptSettings(valueToString);
@@ -507,8 +515,8 @@ function getComboBoxElement() {
 
 function exec(inData, options) {
 
-    let banDoc=Banana.document;
-    let docInfo=getDocumentInfo(banDoc);
+    let banDoc = Banana.document;
+    let docInfo = getDocumentInfo(banDoc);
 
     if (isMultiCurrency(banDoc) || !verifyBananaVersion())
         return "@Cancel";
@@ -518,13 +526,13 @@ function exec(inData, options) {
         return;
 
     //get the items table data
-    let itemsData=getItemsTableData(banDoc,docInfo);
+    let itemsData = getItemsTableData(banDoc, docInfo);
     //get the appraisal data list
-    let appraisalDataList=getAppraisalData(banDoc,docInfo,itemsData);
+    let appraisalDataList = getAppraisalData(banDoc, docInfo, itemsData);
     //get the transactionsList
-    let portfolioTrData=getportfolioTrData(banDoc,docInfo,itemsData);
-    var report = printReport(appraisalDataList,portfolioTrData,comboboxParam);
-    getReportHeader(report,docInfo);
+    let portfolioTrData = getportfolioTrData(banDoc, docInfo, itemsData);
+    var report = printReport(appraisalDataList, portfolioTrData, comboboxParam);
+    getReportHeader(report, docInfo);
     var stylesheet = getReportStyle();
     Banana.Report.preview(report, stylesheet);
 

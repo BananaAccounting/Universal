@@ -20,11 +20,11 @@
 %Begin test data
 \begin{tablevalue}{}{ l  l  l  l  l  l }
 Date & Description & ExternalReference & Notes & Expenses & Income\\
-2023-01-01 & Sper quisu et Forperm O. & LIBERRUM-520757333 &  & 278.14 & \\
 2023-01-01 & Cent Dimurra off: LIBERRUM-520757333 & LIBERRUM-520757333 &  & 1.86 & \\
+2023-01-01 & Sper quisu et Forperm O. & LIBERRUM-520757333 &  & 278.14 & \\
 2023-01-01 & Cent Dimurra off: GANT-116454107 & GANT-116454107 &  & 0.24 & \\
-2023-01-01 & Gant remptiffine in COR diffig an Sente.sed/fice ÆDIFIG.SED & GANT-208846541 &  & 1.00 & \\
 2023-01-01 & Gant remptiffine in DEO diffig an Dectus*Ligune Pramnit. UT DECTUS.SED & GANT-116454107 &  & 60.96 & \\
+2023-01-01 & Gant remptiffine in COR diffig an Sente.sed/fice ÆDIFIG.SED & GANT-208846541 &  & 1.00 & \\
 \\
 \end{tablevalue}
 \end{document}

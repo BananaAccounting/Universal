@@ -45,6 +45,13 @@ We hereby declare that  Gianpaolo Bianchi, Via Beltramina, 6962 Viganello  betwe
  &    & Total  &    & CHF  &    & 500.35  &    & \\
 \end{longtable}
 Pinco Pallino \P Associazione Sportiva xyz \\
+\end{reportvalue}
+\begin{reportvalue}{year report}
+Associazione Sportiva xyz \\
+Pinco Pallino \\
+Via Boschetto 34 \\
+6900 Lugano \\
+Tel. 1112223344 ,  www.banana.ch ,  info@banana.ch \\
 \begin{longtable}[l]{ l }
 Sig. \\
 Mario Rossi \\
@@ -72,6 +79,13 @@ We hereby declare that  Mario Rossi, Via abc 12, 6500 Bellinzona  between  01.01
  &    & Total  &    & CHF  &    & 1'200.00  &    & \\
 \end{longtable}
 Pinco Pallino \P Associazione Sportiva xyz \\
+\end{reportvalue}
+\begin{reportvalue}{year report}
+Associazione Sportiva xyz \\
+Pinco Pallino \\
+Via Boschetto 34 \\
+6900 Lugano \\
+Tel. 1112223344 ,  www.banana.ch ,  info@banana.ch \\
 \begin{longtable}[l]{ l }
 Signora \\
 Sara Guidi \\
@@ -89,6 +103,13 @@ We hereby declare that  Sara Guidi, Via Boschetto 45, 6901 Lugano  between  01.0
  &    & Total  &    & CHF  &    & 270.00  &    & \\
 \end{longtable}
 Pinco Pallino \P Associazione Sportiva xyz \\
+\end{reportvalue}
+\begin{reportvalue}{year report}
+Associazione Sportiva xyz \\
+Pinco Pallino \\
+Via Boschetto 34 \\
+6900 Lugano \\
+Tel. 1112223344 ,  www.banana.ch ,  info@banana.ch \\
 \begin{longtable}[l]{ l }
 Sig. \\
 Voit Ulrich \\
@@ -129,6 +150,13 @@ We hereby declare that  Gianpaolo Bianchi, Via Beltramina, 6962 Viganello  betwe
  &    & Total  &    & CHF  &    & 500.35  &    & \\
 \end{longtable}
 Pinco Pallino \P Associazione Sportiva xyz \\
+\end{reportvalue}
+\begin{reportvalue}{1. semester report}
+Associazione Sportiva xyz \\
+Pinco Pallino \\
+Via Boschetto 34 \\
+6900 Lugano \\
+Tel. 1112223344 ,  www.banana.ch ,  info@banana.ch \\
 \begin{longtable}[l]{ l }
 Sig. \\
 Mario Rossi \\
@@ -150,6 +178,13 @@ We hereby declare that  Mario Rossi, Via abc 12, 6500 Bellinzona  between  01.01
  &    & Total  &    & CHF  &    & 600.00  &    & \\
 \end{longtable}
 Pinco Pallino \P Associazione Sportiva xyz \\
+\end{reportvalue}
+\begin{reportvalue}{1. semester report}
+Associazione Sportiva xyz \\
+Pinco Pallino \\
+Via Boschetto 34 \\
+6900 Lugano \\
+Tel. 1112223344 ,  www.banana.ch ,  info@banana.ch \\
 \begin{longtable}[l]{ l }
 Signora \\
 Sara Guidi \\
@@ -166,6 +201,13 @@ We hereby declare that  Sara Guidi, Via Boschetto 45, 6901 Lugano  between  01.0
  &    & Total  &    & CHF  &    & 60.00  &    & \\
 \end{longtable}
 Pinco Pallino \P Associazione Sportiva xyz \\
+\end{reportvalue}
+\begin{reportvalue}{1. semester report}
+Associazione Sportiva xyz \\
+Pinco Pallino \\
+Via Boschetto 34 \\
+6900 Lugano \\
+Tel. 1112223344 ,  www.banana.ch ,  info@banana.ch \\
 \begin{longtable}[l]{ l }
 Sig. \\
 Voit Ulrich \\
@@ -205,6 +247,13 @@ We hereby declare that  Gianpaolo Bianchi, Via Beltramina, 6962 Viganello  betwe
  &    & Total  &    & CHF  &    & 500.35  &    & \\
 \end{longtable}
 Pinco Pallino \P Associazione Sportiva xyz \\
+\end{reportvalue}
+\begin{reportvalue}{1. quarter report}
+Associazione Sportiva xyz \\
+Pinco Pallino \\
+Via Boschetto 34 \\
+6900 Lugano \\
+Tel. 1112223344 ,  www.banana.ch ,  info@banana.ch \\
 \begin{longtable}[l]{ l }
 Sig. \\
 Mario Rossi \\
@@ -269,6 +318,13 @@ Indirizzo: Via Beltramina, 6962 Viganello. \\
 Ringraziamo cordialmente. \\
   \\
 Pinco Pallino \P Associazione Sportiva xyz \\
+\end{reportvalue}
+\begin{reportvalue}{year report}
+Associazione Sportiva xyz \\
+Pinco Pallino \\
+Via Boschetto 34 \\
+6900 Lugano \\
+Tel. 1112223344 ,  www.banana.ch ,  info@banana.ch \\
 \begin{longtable}[l]{ l }
 Sig. \\
 Mario Rossi \\
@@ -284,6 +340,13 @@ Indirizzo: Via abc 12, 6500 Bellinzona. \\
 Ringraziamo cordialmente. \\
   \\
 Pinco Pallino \P Associazione Sportiva xyz \\
+\end{reportvalue}
+\begin{reportvalue}{year report}
+Associazione Sportiva xyz \\
+Pinco Pallino \\
+Via Boschetto 34 \\
+6900 Lugano \\
+Tel. 1112223344 ,  www.banana.ch ,  info@banana.ch \\
 \begin{longtable}[l]{ l }
 Signora \\
 Sara Guidi \\
@@ -299,6 +362,13 @@ Indirizzo: Via Boschetto 45, 6901 Lugano. \\
 Ringraziamo cordialmente. \\
   \\
 Pinco Pallino \P Associazione Sportiva xyz \\
+\end{reportvalue}
+\begin{reportvalue}{year report}
+Associazione Sportiva xyz \\
+Pinco Pallino \\
+Via Boschetto 34 \\
+6900 Lugano \\
+Tel. 1112223344 ,  www.banana.ch ,  info@banana.ch \\
 \begin{longtable}[l]{ l }
 Sig. \\
 Voit Ulrich \\
@@ -336,6 +406,13 @@ Indirizzo: Via Beltramina, 6962 Viganello. \\
 Ringraziamo cordialmente. \\
   \\
 Pinco Pallino \P Associazione Sportiva xyz \\
+\end{reportvalue}
+\begin{reportvalue}{1. semester report}
+Associazione Sportiva xyz \\
+Pinco Pallino \\
+Via Boschetto 34 \\
+6900 Lugano \\
+Tel. 1112223344 ,  www.banana.ch ,  info@banana.ch \\
 \begin{longtable}[l]{ l }
 Sig. \\
 Mario Rossi \\
@@ -351,6 +428,13 @@ Indirizzo: Via abc 12, 6500 Bellinzona. \\
 Ringraziamo cordialmente. \\
   \\
 Pinco Pallino \P Associazione Sportiva xyz \\
+\end{reportvalue}
+\begin{reportvalue}{1. semester report}
+Associazione Sportiva xyz \\
+Pinco Pallino \\
+Via Boschetto 34 \\
+6900 Lugano \\
+Tel. 1112223344 ,  www.banana.ch ,  info@banana.ch \\
 \begin{longtable}[l]{ l }
 Signora \\
 Sara Guidi \\
@@ -366,6 +450,13 @@ Indirizzo: Via Boschetto 45, 6901 Lugano. \\
 Ringraziamo cordialmente. \\
   \\
 Pinco Pallino \P Associazione Sportiva xyz \\
+\end{reportvalue}
+\begin{reportvalue}{1. semester report}
+Associazione Sportiva xyz \\
+Pinco Pallino \\
+Via Boschetto 34 \\
+6900 Lugano \\
+Tel. 1112223344 ,  www.banana.ch ,  info@banana.ch \\
 \begin{longtable}[l]{ l }
 Sig. \\
 Voit Ulrich \\
@@ -403,6 +494,13 @@ Indirizzo: Via Beltramina, 6962 Viganello. \\
 Ringraziamo cordialmente. \\
   \\
 Pinco Pallino \P Associazione Sportiva xyz \\
+\end{reportvalue}
+\begin{reportvalue}{1. quarter report}
+Associazione Sportiva xyz \\
+Pinco Pallino \\
+Via Boschetto 34 \\
+6900 Lugano \\
+Tel. 1112223344 ,  www.banana.ch ,  info@banana.ch \\
 \begin{longtable}[l]{ l }
 Sig. \\
 Mario Rossi \\
@@ -467,6 +565,13 @@ Thank you very much! \\
  &    & Total  &    & CHF  &    & 500.35  &   \\
 \end{longtable}
 Pinco Pallino \P Associazione Sportiva xyz \\
+\end{reportvalue}
+\begin{reportvalue}{year report}
+Associazione Sportiva xyz \\
+Pinco Pallino \\
+Via Boschetto 34 \\
+6900 Lugano \\
+Tel. 1112223344 ,  www.banana.ch ,  info@banana.ch \\
 \begin{longtable}[l]{ l }
 Sig. \\
 Mario Rossi \\
@@ -497,6 +602,13 @@ Thank you very much! \\
  &    & Total  &    & CHF  &    & 1'200.00  &   \\
 \end{longtable}
 Pinco Pallino \P Associazione Sportiva xyz \\
+\end{reportvalue}
+\begin{reportvalue}{year report}
+Associazione Sportiva xyz \\
+Pinco Pallino \\
+Via Boschetto 34 \\
+6900 Lugano \\
+Tel. 1112223344 ,  www.banana.ch ,  info@banana.ch \\
 \begin{longtable}[l]{ l }
 Signora \\
 Sara Guidi \\
@@ -517,6 +629,13 @@ Thank you very much! \\
  &    & Total  &    & CHF  &    & 270.00  &   \\
 \end{longtable}
 Pinco Pallino \P Associazione Sportiva xyz \\
+\end{reportvalue}
+\begin{reportvalue}{year report}
+Associazione Sportiva xyz \\
+Pinco Pallino \\
+Via Boschetto 34 \\
+6900 Lugano \\
+Tel. 1112223344 ,  www.banana.ch ,  info@banana.ch \\
 \begin{longtable}[l]{ l }
 Sig. \\
 Voit Ulrich \\
@@ -563,6 +682,13 @@ Thank you very much! \\
  &    & Total  &    & CHF  &    & 500.35  &   \\
 \end{longtable}
 Pinco Pallino \P Associazione Sportiva xyz \\
+\end{reportvalue}
+\begin{reportvalue}{1. semester report}
+Associazione Sportiva xyz \\
+Pinco Pallino \\
+Via Boschetto 34 \\
+6900 Lugano \\
+Tel. 1112223344 ,  www.banana.ch ,  info@banana.ch \\
 \begin{longtable}[l]{ l }
 Sig. \\
 Mario Rossi \\
@@ -587,6 +713,13 @@ Thank you very much! \\
  &    & Total  &    & CHF  &    & 600.00  &   \\
 \end{longtable}
 Pinco Pallino \P Associazione Sportiva xyz \\
+\end{reportvalue}
+\begin{reportvalue}{1. semester report}
+Associazione Sportiva xyz \\
+Pinco Pallino \\
+Via Boschetto 34 \\
+6900 Lugano \\
+Tel. 1112223344 ,  www.banana.ch ,  info@banana.ch \\
 \begin{longtable}[l]{ l }
 Signora \\
 Sara Guidi \\
@@ -606,6 +739,13 @@ Thank you very much! \\
  &    & Total  &    & CHF  &    & 60.00  &   \\
 \end{longtable}
 Pinco Pallino \P Associazione Sportiva xyz \\
+\end{reportvalue}
+\begin{reportvalue}{1. semester report}
+Associazione Sportiva xyz \\
+Pinco Pallino \\
+Via Boschetto 34 \\
+6900 Lugano \\
+Tel. 1112223344 ,  www.banana.ch ,  info@banana.ch \\
 \begin{longtable}[l]{ l }
 Sig. \\
 Voit Ulrich \\
@@ -651,6 +791,13 @@ Thank you very much! \\
  &    & Total  &    & CHF  &    & 500.35  &   \\
 \end{longtable}
 Pinco Pallino \P Associazione Sportiva xyz \\
+\end{reportvalue}
+\begin{reportvalue}{1. quarter report}
+Associazione Sportiva xyz \\
+Pinco Pallino \\
+Via Boschetto 34 \\
+6900 Lugano \\
+Tel. 1112223344 ,  www.banana.ch ,  info@banana.ch \\
 \begin{longtable}[l]{ l }
 Sig. \\
 Mario Rossi \\
@@ -722,6 +869,13 @@ We hereby declare that  Gianpaolo Bianchi, Via Beltramina, 6962 Viganello  betwe
  &    & Total  &    & CHF  &    & 500.35  &    & \\
 \end{longtable}
 Pinco Pallino \P Associazione Sportiva xyz \\
+\end{reportvalue}
+\begin{reportvalue}{year report}
+Associazione Sportiva xyz \\
+Pinco Pallino \\
+Via Boschetto 34 \\
+6900 Lugano \\
+Tel. 1112223344 ,  www.banana.ch ,  info@banana.ch \\
 \begin{longtable}[l]{ l }
 Sig. \\
 Voit Ulrich \\
@@ -762,6 +916,13 @@ We hereby declare that  Gianpaolo Bianchi, Via Beltramina, 6962 Viganello  betwe
  &    & Total  &    & CHF  &    & 500.35  &    & \\
 \end{longtable}
 Pinco Pallino \P Associazione Sportiva xyz \\
+\end{reportvalue}
+\begin{reportvalue}{1. semester report}
+Associazione Sportiva xyz \\
+Pinco Pallino \\
+Via Boschetto 34 \\
+6900 Lugano \\
+Tel. 1112223344 ,  www.banana.ch ,  info@banana.ch \\
 \begin{longtable}[l]{ l }
 Sig. \\
 Voit Ulrich \\
@@ -801,13 +962,6 @@ We hereby declare that  Gianpaolo Bianchi, Via Beltramina, 6962 Viganello  betwe
  &    & Total  &    & CHF  &    & 500.35  &    & \\
 \end{longtable}
 Pinco Pallino \P Associazione Sportiva xyz \\
-\end{reportvalue}
-\begin{reportvalue}{january report}
-Associazione Sportiva xyz \\
-Pinco Pallino \\
-Via Boschetto 34 \\
-6900 Lugano \\
-Tel. 1112223344 ,  www.banana.ch ,  info@banana.ch \\
 \end{reportvalue}
 \keyvalue{Result}{Passed}
 \end{test}

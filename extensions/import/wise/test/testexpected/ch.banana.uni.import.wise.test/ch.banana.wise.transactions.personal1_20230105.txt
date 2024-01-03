@@ -22,8 +22,8 @@
 Date & Description & ExternalReference & Notes & Expenses & Income\\
 2022-01-04 & Frit divia an OSTUDIT I. & BIGAVIAE-361320314 &  & 191.49 & \\
 2022-01-11 & Frit divia an OSTUDIT I. & BIGAVIAE-730688867 &  & 193.88 & \\
-2022-01-23 & Frit divia an Lapuple IN Fruccutuid & BIGAVIAE-707401703 &  & 1071.84 & \\
 2022-01-17 & Frit divia an OSTUDIT I. & BIGAVIAE-683586350 &  & 154.91 & \\
+2022-01-23 & Frit divia an Lapuple IN Fruccutuid & BIGAVIAE-707401703 &  & 1071.84 & \\
 \\
 \end{tablevalue}
 \end{document}
