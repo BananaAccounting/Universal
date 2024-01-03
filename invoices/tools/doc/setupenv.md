@@ -1,6 +1,6 @@
 # Developer environment
 
-Thid document descibe how to set up the developer enviroment.
+This document descibe how to set up the developer enviroment.
 
 After you setup the project you will be able to:
 

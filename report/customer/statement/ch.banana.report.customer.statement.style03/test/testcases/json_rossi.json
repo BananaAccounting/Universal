@@ -1,0 +1,1532 @@
+{
+   "billing_info":{
+      "payment_term":"",
+      "total_amount_vat_exclusive":"",
+      "total_amount_vat_exclusive_before_discount":"",
+      "total_amount_vat_inclusive":"",
+      "total_amount_vat_inclusive_before_discount":"",
+      "total_categories":[
+         
+      ],
+      "total_discount_percent":"",
+      "total_discount_vat_exclusive":"",
+      "total_discount_vat_inclusive":"",
+      "total_rounding_difference":"",
+      "total_to_pay":"",
+      "total_vat_amount":"",
+      "total_vat_amount_before_discount":"",
+      "total_vat_codes":[
+         
+      ],
+      "total_vat_rates":[
+         
+      ]
+   },
+   "customer_info":{
+      "address1":"Viale Stazione 11",
+      "address3":"CP 123",
+      "balance":"3740.00",
+      "balance_base_currency":"3740.00",
+      "business_name":"Rossi SA",
+      "city":"Bellinzona",
+      "country_code":"CH",
+      "first_name":"Andrea",
+      "lang":"it",
+      "last_name":"Rossi",
+      "member_fee":"10.00",
+      "number":"1100",
+      "origin_row":"26",
+      "origin_table":"Accounts",
+      "postal_code":"6500"
+   },
+   "document_info":{
+      "date":"20230116",
+      "decimals_amounts":2,
+      "description":"",
+      "locale":"it",
+      "number":"",
+      "type":"reminder"
+   },
+   "items":[
+      {
+         "balance":"50.00",
+         "balance_base_currency":"",
+         "base_currency":"",
+         "credit":"",
+         "credit_base_currency":"",
+         "currency":"CHF",
+         "date":"20220101",
+         "debit":"50.00",
+         "debit_base_currency":"",
+         "item_type":"InvoiceTotal",
+         "number":"10",
+         "status":"1. richiamo",
+         "total_amount_vat_exclusive":"",
+         "total_amount_vat_inclusive":"",
+         "total_vat_amount":"",
+         "unit_price":{
+            
+         }
+      },
+      {
+         "balance":"50.00",
+         "balance_base_currency":"",
+         "base_currency":"",
+         "credit":"",
+         "credit_base_currency":"",
+         "currency":"CHF",
+         "date":"20220101",
+         "debit":"50.00",
+         "debit_base_currency":"",
+         "item_type":"InvoiceTotal",
+         "number":"101",
+         "status":"1. richiamo",
+         "total_amount_vat_exclusive":"",
+         "total_amount_vat_inclusive":"",
+         "total_vat_amount":"",
+         "unit_price":{
+            
+         }
+      },
+      {
+         "balance":"50.00",
+         "balance_base_currency":"",
+         "base_currency":"",
+         "credit":"",
+         "credit_base_currency":"",
+         "currency":"CHF",
+         "date":"20220101",
+         "debit":"50.00",
+         "debit_base_currency":"",
+         "item_type":"InvoiceTotal",
+         "number":"102",
+         "status":"1. richiamo",
+         "total_amount_vat_exclusive":"",
+         "total_amount_vat_inclusive":"",
+         "total_vat_amount":"",
+         "unit_price":{
+            
+         }
+      },
+      {
+         "balance":"50.00",
+         "balance_base_currency":"",
+         "base_currency":"",
+         "credit":"",
+         "credit_base_currency":"",
+         "currency":"CHF",
+         "date":"20220101",
+         "debit":"50.00",
+         "debit_base_currency":"",
+         "item_type":"InvoiceTotal",
+         "number":"103",
+         "status":"1. richiamo",
+         "total_amount_vat_exclusive":"",
+         "total_amount_vat_inclusive":"",
+         "total_vat_amount":"",
+         "unit_price":{
+            
+         }
+      },
+      {
+         "balance":"50.00",
+         "balance_base_currency":"",
+         "base_currency":"",
+         "credit":"",
+         "credit_base_currency":"",
+         "currency":"CHF",
+         "date":"20220101",
+         "debit":"50.00",
+         "debit_base_currency":"",
+         "item_type":"InvoiceTotal",
+         "number":"104",
+         "status":"1. richiamo",
+         "total_amount_vat_exclusive":"",
+         "total_amount_vat_inclusive":"",
+         "total_vat_amount":"",
+         "unit_price":{
+            
+         }
+      },
+      {
+         "balance":"50.00",
+         "balance_base_currency":"",
+         "base_currency":"",
+         "credit":"",
+         "credit_base_currency":"",
+         "currency":"CHF",
+         "date":"20220101",
+         "debit":"50.00",
+         "debit_base_currency":"",
+         "item_type":"InvoiceTotal",
+         "number":"105",
+         "status":"1. richiamo",
+         "total_amount_vat_exclusive":"",
+         "total_amount_vat_inclusive":"",
+         "total_vat_amount":"",
+         "unit_price":{
+            
+         }
+      },
+      {
+         "balance":"50.00",
+         "balance_base_currency":"",
+         "base_currency":"",
+         "credit":"",
+         "credit_base_currency":"",
+         "currency":"CHF",
+         "date":"20220101",
+         "debit":"50.00",
+         "debit_base_currency":"",
+         "item_type":"InvoiceTotal",
+         "number":"106",
+         "status":"1. richiamo",
+         "total_amount_vat_exclusive":"",
+         "total_amount_vat_inclusive":"",
+         "total_vat_amount":"",
+         "unit_price":{
+            
+         }
+      },
+      {
+         "balance":"50.00",
+         "balance_base_currency":"",
+         "base_currency":"",
+         "credit":"",
+         "credit_base_currency":"",
+         "currency":"CHF",
+         "date":"20220101",
+         "debit":"50.00",
+         "debit_base_currency":"",
+         "item_type":"InvoiceTotal",
+         "number":"107",
+         "status":"1. richiamo",
+         "total_amount_vat_exclusive":"",
+         "total_amount_vat_inclusive":"",
+         "total_vat_amount":"",
+         "unit_price":{
+            
+         }
+      },
+      {
+         "balance":"50.00",
+         "balance_base_currency":"",
+         "base_currency":"",
+         "credit":"",
+         "credit_base_currency":"",
+         "currency":"CHF",
+         "date":"20220101",
+         "debit":"50.00",
+         "debit_base_currency":"",
+         "item_type":"InvoiceTotal",
+         "number":"108",
+         "status":"1. richiamo",
+         "total_amount_vat_exclusive":"",
+         "total_amount_vat_inclusive":"",
+         "total_vat_amount":"",
+         "unit_price":{
+            
+         }
+      },
+      {
+         "balance":"50.00",
+         "balance_base_currency":"",
+         "base_currency":"",
+         "credit":"",
+         "credit_base_currency":"",
+         "currency":"CHF",
+         "date":"20220101",
+         "debit":"50.00",
+         "debit_base_currency":"",
+         "item_type":"InvoiceTotal",
+         "number":"109",
+         "status":"1. richiamo",
+         "total_amount_vat_exclusive":"",
+         "total_amount_vat_inclusive":"",
+         "total_vat_amount":"",
+         "unit_price":{
+            
+         }
+      },
+      {
+         "balance":"50.00",
+         "balance_base_currency":"",
+         "base_currency":"",
+         "credit":"",
+         "credit_base_currency":"",
+         "currency":"CHF",
+         "date":"20220101",
+         "debit":"50.00",
+         "debit_base_currency":"",
+         "item_type":"InvoiceTotal",
+         "number":"110",
+         "status":"1. richiamo",
+         "total_amount_vat_exclusive":"",
+         "total_amount_vat_inclusive":"",
+         "total_vat_amount":"",
+         "unit_price":{
+            
+         }
+      },
+      {
+         "balance":"50.00",
+         "balance_base_currency":"",
+         "base_currency":"",
+         "credit":"",
+         "credit_base_currency":"",
+         "currency":"CHF",
+         "date":"20220101",
+         "debit":"50.00",
+         "debit_base_currency":"",
+         "item_type":"InvoiceTotal",
+         "number":"111",
+         "status":"1. richiamo",
+         "total_amount_vat_exclusive":"",
+         "total_amount_vat_inclusive":"",
+         "total_vat_amount":"",
+         "unit_price":{
+            
+         }
+      },
+      {
+         "balance":"50.00",
+         "balance_base_currency":"",
+         "base_currency":"",
+         "credit":"",
+         "credit_base_currency":"",
+         "currency":"CHF",
+         "date":"20220101",
+         "debit":"50.00",
+         "debit_base_currency":"",
+         "item_type":"InvoiceTotal",
+         "number":"112",
+         "status":"1. richiamo",
+         "total_amount_vat_exclusive":"",
+         "total_amount_vat_inclusive":"",
+         "total_vat_amount":"",
+         "unit_price":{
+            
+         }
+      },
+      {
+         "balance":"50.00",
+         "balance_base_currency":"",
+         "base_currency":"",
+         "credit":"",
+         "credit_base_currency":"",
+         "currency":"CHF",
+         "date":"20220101",
+         "debit":"50.00",
+         "debit_base_currency":"",
+         "item_type":"InvoiceTotal",
+         "number":"113",
+         "status":"1. richiamo",
+         "total_amount_vat_exclusive":"",
+         "total_amount_vat_inclusive":"",
+         "total_vat_amount":"",
+         "unit_price":{
+            
+         }
+      },
+      {
+         "balance":"50.00",
+         "balance_base_currency":"",
+         "base_currency":"",
+         "credit":"",
+         "credit_base_currency":"",
+         "currency":"CHF",
+         "date":"20220101",
+         "debit":"50.00",
+         "debit_base_currency":"",
+         "item_type":"InvoiceTotal",
+         "number":"114",
+         "status":"1. richiamo",
+         "total_amount_vat_exclusive":"",
+         "total_amount_vat_inclusive":"",
+         "total_vat_amount":"",
+         "unit_price":{
+            
+         }
+      },
+      {
+         "balance":"50.00",
+         "balance_base_currency":"",
+         "base_currency":"",
+         "credit":"",
+         "credit_base_currency":"",
+         "currency":"CHF",
+         "date":"20220101",
+         "debit":"50.00",
+         "debit_base_currency":"",
+         "item_type":"InvoiceTotal",
+         "number":"115",
+         "status":"1. richiamo",
+         "total_amount_vat_exclusive":"",
+         "total_amount_vat_inclusive":"",
+         "total_vat_amount":"",
+         "unit_price":{
+            
+         }
+      },
+      {
+         "balance":"50.00",
+         "balance_base_currency":"",
+         "base_currency":"",
+         "credit":"",
+         "credit_base_currency":"",
+         "currency":"CHF",
+         "date":"20220101",
+         "debit":"50.00",
+         "debit_base_currency":"",
+         "item_type":"InvoiceTotal",
+         "number":"116",
+         "status":"1. richiamo",
+         "total_amount_vat_exclusive":"",
+         "total_amount_vat_inclusive":"",
+         "total_vat_amount":"",
+         "unit_price":{
+            
+         }
+      },
+      {
+         "balance":"50.00",
+         "balance_base_currency":"",
+         "base_currency":"",
+         "credit":"",
+         "credit_base_currency":"",
+         "currency":"CHF",
+         "date":"20220101",
+         "debit":"50.00",
+         "debit_base_currency":"",
+         "item_type":"InvoiceTotal",
+         "number":"117",
+         "status":"1. richiamo",
+         "total_amount_vat_exclusive":"",
+         "total_amount_vat_inclusive":"",
+         "total_vat_amount":"",
+         "unit_price":{
+            
+         }
+      },
+      {
+         "balance":"50.00",
+         "balance_base_currency":"",
+         "base_currency":"",
+         "credit":"",
+         "credit_base_currency":"",
+         "currency":"CHF",
+         "date":"20220101",
+         "debit":"50.00",
+         "debit_base_currency":"",
+         "item_type":"InvoiceTotal",
+         "number":"118",
+         "status":"1. richiamo",
+         "total_amount_vat_exclusive":"",
+         "total_amount_vat_inclusive":"",
+         "total_vat_amount":"",
+         "unit_price":{
+            
+         }
+      },
+      {
+         "balance":"50.00",
+         "balance_base_currency":"",
+         "base_currency":"",
+         "credit":"",
+         "credit_base_currency":"",
+         "currency":"CHF",
+         "date":"20220101",
+         "debit":"50.00",
+         "debit_base_currency":"",
+         "item_type":"InvoiceTotal",
+         "number":"119",
+         "status":"1. richiamo",
+         "total_amount_vat_exclusive":"",
+         "total_amount_vat_inclusive":"",
+         "total_vat_amount":"",
+         "unit_price":{
+            
+         }
+      },
+      {
+         "balance":"50.00",
+         "balance_base_currency":"",
+         "base_currency":"",
+         "credit":"",
+         "credit_base_currency":"",
+         "currency":"CHF",
+         "date":"20220101",
+         "debit":"50.00",
+         "debit_base_currency":"",
+         "item_type":"InvoiceTotal",
+         "number":"120",
+         "status":"1. richiamo",
+         "total_amount_vat_exclusive":"",
+         "total_amount_vat_inclusive":"",
+         "total_vat_amount":"",
+         "unit_price":{
+            
+         }
+      },
+      {
+         "balance":"50.00",
+         "balance_base_currency":"",
+         "base_currency":"",
+         "credit":"",
+         "credit_base_currency":"",
+         "currency":"CHF",
+         "date":"20220101",
+         "debit":"50.00",
+         "debit_base_currency":"",
+         "item_type":"InvoiceTotal",
+         "number":"121",
+         "status":"1. richiamo",
+         "total_amount_vat_exclusive":"",
+         "total_amount_vat_inclusive":"",
+         "total_vat_amount":"",
+         "unit_price":{
+            
+         }
+      },
+      {
+         "balance":"50.00",
+         "balance_base_currency":"",
+         "base_currency":"",
+         "credit":"",
+         "credit_base_currency":"",
+         "currency":"CHF",
+         "date":"20220101",
+         "debit":"50.00",
+         "debit_base_currency":"",
+         "item_type":"InvoiceTotal",
+         "number":"122",
+         "status":"1. richiamo",
+         "total_amount_vat_exclusive":"",
+         "total_amount_vat_inclusive":"",
+         "total_vat_amount":"",
+         "unit_price":{
+            
+         }
+      },
+      {
+         "balance":"50.00",
+         "balance_base_currency":"",
+         "base_currency":"",
+         "credit":"",
+         "credit_base_currency":"",
+         "currency":"CHF",
+         "date":"20220101",
+         "debit":"50.00",
+         "debit_base_currency":"",
+         "item_type":"InvoiceTotal",
+         "number":"123",
+         "status":"1. richiamo",
+         "total_amount_vat_exclusive":"",
+         "total_amount_vat_inclusive":"",
+         "total_vat_amount":"",
+         "unit_price":{
+            
+         }
+      },
+      {
+         "balance":"50.00",
+         "balance_base_currency":"",
+         "base_currency":"",
+         "credit":"",
+         "credit_base_currency":"",
+         "currency":"CHF",
+         "date":"20220101",
+         "debit":"50.00",
+         "debit_base_currency":"",
+         "item_type":"InvoiceTotal",
+         "number":"124",
+         "status":"1. richiamo",
+         "total_amount_vat_exclusive":"",
+         "total_amount_vat_inclusive":"",
+         "total_vat_amount":"",
+         "unit_price":{
+            
+         }
+      },
+      {
+         "balance":"50.00",
+         "balance_base_currency":"",
+         "base_currency":"",
+         "credit":"",
+         "credit_base_currency":"",
+         "currency":"CHF",
+         "date":"20220101",
+         "debit":"50.00",
+         "debit_base_currency":"",
+         "item_type":"InvoiceTotal",
+         "number":"125",
+         "status":"1. richiamo",
+         "total_amount_vat_exclusive":"",
+         "total_amount_vat_inclusive":"",
+         "total_vat_amount":"",
+         "unit_price":{
+            
+         }
+      },
+      {
+         "balance":"50.00",
+         "balance_base_currency":"",
+         "base_currency":"",
+         "credit":"",
+         "credit_base_currency":"",
+         "currency":"CHF",
+         "date":"20220101",
+         "debit":"50.00",
+         "debit_base_currency":"",
+         "item_type":"InvoiceTotal",
+         "number":"126",
+         "status":"1. richiamo",
+         "total_amount_vat_exclusive":"",
+         "total_amount_vat_inclusive":"",
+         "total_vat_amount":"",
+         "unit_price":{
+            
+         }
+      },
+      {
+         "balance":"50.00",
+         "balance_base_currency":"",
+         "base_currency":"",
+         "credit":"",
+         "credit_base_currency":"",
+         "currency":"CHF",
+         "date":"20220101",
+         "debit":"50.00",
+         "debit_base_currency":"",
+         "item_type":"InvoiceTotal",
+         "number":"127",
+         "status":"1. richiamo",
+         "total_amount_vat_exclusive":"",
+         "total_amount_vat_inclusive":"",
+         "total_vat_amount":"",
+         "unit_price":{
+            
+         }
+      },
+      {
+         "balance":"50.00",
+         "balance_base_currency":"",
+         "base_currency":"",
+         "credit":"",
+         "credit_base_currency":"",
+         "currency":"CHF",
+         "date":"20220101",
+         "debit":"50.00",
+         "debit_base_currency":"",
+         "item_type":"InvoiceTotal",
+         "number":"128",
+         "status":"1. richiamo",
+         "total_amount_vat_exclusive":"",
+         "total_amount_vat_inclusive":"",
+         "total_vat_amount":"",
+         "unit_price":{
+            
+         }
+      },
+      {
+         "balance":"50.00",
+         "balance_base_currency":"",
+         "base_currency":"",
+         "credit":"",
+         "credit_base_currency":"",
+         "currency":"CHF",
+         "date":"20220101",
+         "debit":"50.00",
+         "debit_base_currency":"",
+         "item_type":"InvoiceTotal",
+         "number":"129",
+         "status":"1. richiamo",
+         "total_amount_vat_exclusive":"",
+         "total_amount_vat_inclusive":"",
+         "total_vat_amount":"",
+         "unit_price":{
+            
+         }
+      },
+      {
+         "balance":"50.00",
+         "balance_base_currency":"",
+         "base_currency":"",
+         "credit":"",
+         "credit_base_currency":"",
+         "currency":"CHF",
+         "date":"20220101",
+         "debit":"50.00",
+         "debit_base_currency":"",
+         "item_type":"InvoiceTotal",
+         "number":"130",
+         "status":"1. richiamo",
+         "total_amount_vat_exclusive":"",
+         "total_amount_vat_inclusive":"",
+         "total_vat_amount":"",
+         "unit_price":{
+            
+         }
+      },
+      {
+         "balance":"50.00",
+         "balance_base_currency":"",
+         "base_currency":"",
+         "credit":"",
+         "credit_base_currency":"",
+         "currency":"CHF",
+         "date":"20220101",
+         "debit":"50.00",
+         "debit_base_currency":"",
+         "item_type":"InvoiceTotal",
+         "number":"131",
+         "status":"1. richiamo",
+         "total_amount_vat_exclusive":"",
+         "total_amount_vat_inclusive":"",
+         "total_vat_amount":"",
+         "unit_price":{
+            
+         }
+      },
+      {
+         "balance":"50.00",
+         "balance_base_currency":"",
+         "base_currency":"",
+         "credit":"",
+         "credit_base_currency":"",
+         "currency":"CHF",
+         "date":"20220101",
+         "debit":"50.00",
+         "debit_base_currency":"",
+         "item_type":"InvoiceTotal",
+         "number":"132",
+         "status":"1. richiamo",
+         "total_amount_vat_exclusive":"",
+         "total_amount_vat_inclusive":"",
+         "total_vat_amount":"",
+         "unit_price":{
+            
+         }
+      },
+      {
+         "balance":"50.00",
+         "balance_base_currency":"",
+         "base_currency":"",
+         "credit":"",
+         "credit_base_currency":"",
+         "currency":"CHF",
+         "date":"20220101",
+         "debit":"50.00",
+         "debit_base_currency":"",
+         "item_type":"InvoiceTotal",
+         "number":"133",
+         "status":"1. richiamo",
+         "total_amount_vat_exclusive":"",
+         "total_amount_vat_inclusive":"",
+         "total_vat_amount":"",
+         "unit_price":{
+            
+         }
+      },
+      {
+         "balance":"50.00",
+         "balance_base_currency":"",
+         "base_currency":"",
+         "credit":"",
+         "credit_base_currency":"",
+         "currency":"CHF",
+         "date":"20220101",
+         "debit":"50.00",
+         "debit_base_currency":"",
+         "item_type":"InvoiceTotal",
+         "number":"134",
+         "status":"1. richiamo",
+         "total_amount_vat_exclusive":"",
+         "total_amount_vat_inclusive":"",
+         "total_vat_amount":"",
+         "unit_price":{
+            
+         }
+      },
+      {
+         "balance":"50.00",
+         "balance_base_currency":"",
+         "base_currency":"",
+         "credit":"",
+         "credit_base_currency":"",
+         "currency":"CHF",
+         "date":"20220101",
+         "debit":"50.00",
+         "debit_base_currency":"",
+         "item_type":"InvoiceTotal",
+         "number":"135",
+         "status":"1. richiamo",
+         "total_amount_vat_exclusive":"",
+         "total_amount_vat_inclusive":"",
+         "total_vat_amount":"",
+         "unit_price":{
+            
+         }
+      },
+      {
+         "balance":"50.00",
+         "balance_base_currency":"",
+         "base_currency":"",
+         "credit":"",
+         "credit_base_currency":"",
+         "currency":"CHF",
+         "date":"20220101",
+         "debit":"50.00",
+         "debit_base_currency":"",
+         "item_type":"InvoiceTotal",
+         "number":"136",
+         "status":"1. richiamo",
+         "total_amount_vat_exclusive":"",
+         "total_amount_vat_inclusive":"",
+         "total_vat_amount":"",
+         "unit_price":{
+            
+         }
+      },
+      {
+         "balance":"50.00",
+         "balance_base_currency":"",
+         "base_currency":"",
+         "credit":"",
+         "credit_base_currency":"",
+         "currency":"CHF",
+         "date":"20220101",
+         "debit":"50.00",
+         "debit_base_currency":"",
+         "item_type":"InvoiceTotal",
+         "number":"137",
+         "status":"1. richiamo",
+         "total_amount_vat_exclusive":"",
+         "total_amount_vat_inclusive":"",
+         "total_vat_amount":"",
+         "unit_price":{
+            
+         }
+      },
+      {
+         "balance":"50.00",
+         "balance_base_currency":"",
+         "base_currency":"",
+         "credit":"",
+         "credit_base_currency":"",
+         "currency":"CHF",
+         "date":"20220101",
+         "debit":"50.00",
+         "debit_base_currency":"",
+         "item_type":"InvoiceTotal",
+         "number":"138",
+         "status":"1. richiamo",
+         "total_amount_vat_exclusive":"",
+         "total_amount_vat_inclusive":"",
+         "total_vat_amount":"",
+         "unit_price":{
+            
+         }
+      },
+      {
+         "balance":"50.00",
+         "balance_base_currency":"",
+         "base_currency":"",
+         "credit":"",
+         "credit_base_currency":"",
+         "currency":"CHF",
+         "date":"20220101",
+         "debit":"50.00",
+         "debit_base_currency":"",
+         "item_type":"InvoiceTotal",
+         "number":"139",
+         "status":"1. richiamo",
+         "total_amount_vat_exclusive":"",
+         "total_amount_vat_inclusive":"",
+         "total_vat_amount":"",
+         "unit_price":{
+            
+         }
+      },
+      {
+         "balance":"50.00",
+         "balance_base_currency":"",
+         "base_currency":"",
+         "credit":"",
+         "credit_base_currency":"",
+         "currency":"CHF",
+         "date":"20220101",
+         "debit":"50.00",
+         "debit_base_currency":"",
+         "item_type":"InvoiceTotal",
+         "number":"140",
+         "status":"1. richiamo",
+         "total_amount_vat_exclusive":"",
+         "total_amount_vat_inclusive":"",
+         "total_vat_amount":"",
+         "unit_price":{
+            
+         }
+      },
+      {
+         "balance":"50.00",
+         "balance_base_currency":"",
+         "base_currency":"",
+         "credit":"",
+         "credit_base_currency":"",
+         "currency":"CHF",
+         "date":"20220101",
+         "debit":"50.00",
+         "debit_base_currency":"",
+         "item_type":"InvoiceTotal",
+         "number":"141",
+         "status":"1. richiamo",
+         "total_amount_vat_exclusive":"",
+         "total_amount_vat_inclusive":"",
+         "total_vat_amount":"",
+         "unit_price":{
+            
+         }
+      },
+      {
+         "balance":"50.00",
+         "balance_base_currency":"",
+         "base_currency":"",
+         "credit":"",
+         "credit_base_currency":"",
+         "currency":"CHF",
+         "date":"20220101",
+         "debit":"50.00",
+         "debit_base_currency":"",
+         "item_type":"InvoiceTotal",
+         "number":"142",
+         "status":"1. richiamo",
+         "total_amount_vat_exclusive":"",
+         "total_amount_vat_inclusive":"",
+         "total_vat_amount":"",
+         "unit_price":{
+            
+         }
+      },
+      {
+         "balance":"50.00",
+         "balance_base_currency":"",
+         "base_currency":"",
+         "credit":"",
+         "credit_base_currency":"",
+         "currency":"CHF",
+         "date":"20220101",
+         "debit":"50.00",
+         "debit_base_currency":"",
+         "item_type":"InvoiceTotal",
+         "number":"143",
+         "status":"1. richiamo",
+         "total_amount_vat_exclusive":"",
+         "total_amount_vat_inclusive":"",
+         "total_vat_amount":"",
+         "unit_price":{
+            
+         }
+      },
+      {
+         "balance":"50.00",
+         "balance_base_currency":"",
+         "base_currency":"",
+         "credit":"",
+         "credit_base_currency":"",
+         "currency":"CHF",
+         "date":"20220101",
+         "debit":"50.00",
+         "debit_base_currency":"",
+         "item_type":"InvoiceTotal",
+         "number":"144",
+         "status":"1. richiamo",
+         "total_amount_vat_exclusive":"",
+         "total_amount_vat_inclusive":"",
+         "total_vat_amount":"",
+         "unit_price":{
+            
+         }
+      },
+      {
+         "balance":"50.00",
+         "balance_base_currency":"",
+         "base_currency":"",
+         "credit":"",
+         "credit_base_currency":"",
+         "currency":"CHF",
+         "date":"20220101",
+         "debit":"50.00",
+         "debit_base_currency":"",
+         "item_type":"InvoiceTotal",
+         "number":"145",
+         "status":"1. richiamo",
+         "total_amount_vat_exclusive":"",
+         "total_amount_vat_inclusive":"",
+         "total_vat_amount":"",
+         "unit_price":{
+            
+         }
+      },
+      {
+         "balance":"50.00",
+         "balance_base_currency":"",
+         "base_currency":"",
+         "credit":"",
+         "credit_base_currency":"",
+         "currency":"CHF",
+         "date":"20220101",
+         "debit":"50.00",
+         "debit_base_currency":"",
+         "item_type":"InvoiceTotal",
+         "number":"146",
+         "status":"1. richiamo",
+         "total_amount_vat_exclusive":"",
+         "total_amount_vat_inclusive":"",
+         "total_vat_amount":"",
+         "unit_price":{
+            
+         }
+      },
+      {
+         "balance":"50.00",
+         "balance_base_currency":"",
+         "base_currency":"",
+         "credit":"",
+         "credit_base_currency":"",
+         "currency":"CHF",
+         "date":"20220101",
+         "debit":"50.00",
+         "debit_base_currency":"",
+         "item_type":"InvoiceTotal",
+         "number":"147",
+         "status":"1. richiamo",
+         "total_amount_vat_exclusive":"",
+         "total_amount_vat_inclusive":"",
+         "total_vat_amount":"",
+         "unit_price":{
+            
+         }
+      },
+      {
+         "balance":"50.00",
+         "balance_base_currency":"",
+         "base_currency":"",
+         "credit":"",
+         "credit_base_currency":"",
+         "currency":"CHF",
+         "date":"20220101",
+         "debit":"50.00",
+         "debit_base_currency":"",
+         "item_type":"InvoiceTotal",
+         "number":"148",
+         "status":"1. richiamo",
+         "total_amount_vat_exclusive":"",
+         "total_amount_vat_inclusive":"",
+         "total_vat_amount":"",
+         "unit_price":{
+            
+         }
+      },
+      {
+         "balance":"50.00",
+         "balance_base_currency":"",
+         "base_currency":"",
+         "credit":"",
+         "credit_base_currency":"",
+         "currency":"CHF",
+         "date":"20220101",
+         "debit":"50.00",
+         "debit_base_currency":"",
+         "item_type":"InvoiceTotal",
+         "number":"149",
+         "status":"1. richiamo",
+         "total_amount_vat_exclusive":"",
+         "total_amount_vat_inclusive":"",
+         "total_vat_amount":"",
+         "unit_price":{
+            
+         }
+      },
+      {
+         "balance":"50.00",
+         "balance_base_currency":"",
+         "base_currency":"",
+         "credit":"",
+         "credit_base_currency":"",
+         "currency":"CHF",
+         "date":"20220101",
+         "debit":"50.00",
+         "debit_base_currency":"",
+         "item_type":"InvoiceTotal",
+         "number":"150",
+         "status":"1. richiamo",
+         "total_amount_vat_exclusive":"",
+         "total_amount_vat_inclusive":"",
+         "total_vat_amount":"",
+         "unit_price":{
+            
+         }
+      },
+      {
+         "balance":"50.00",
+         "balance_base_currency":"",
+         "base_currency":"",
+         "credit":"",
+         "credit_base_currency":"",
+         "currency":"CHF",
+         "date":"20220101",
+         "debit":"50.00",
+         "debit_base_currency":"",
+         "item_type":"InvoiceTotal",
+         "number":"151",
+         "status":"1. richiamo",
+         "total_amount_vat_exclusive":"",
+         "total_amount_vat_inclusive":"",
+         "total_vat_amount":"",
+         "unit_price":{
+            
+         }
+      },
+      {
+         "balance":"50.00",
+         "balance_base_currency":"",
+         "base_currency":"",
+         "credit":"",
+         "credit_base_currency":"",
+         "currency":"CHF",
+         "date":"20220101",
+         "debit":"50.00",
+         "debit_base_currency":"",
+         "item_type":"InvoiceTotal",
+         "number":"152",
+         "status":"1. richiamo",
+         "total_amount_vat_exclusive":"",
+         "total_amount_vat_inclusive":"",
+         "total_vat_amount":"",
+         "unit_price":{
+            
+         }
+      },
+      {
+         "balance":"50.00",
+         "balance_base_currency":"",
+         "base_currency":"",
+         "credit":"",
+         "credit_base_currency":"",
+         "currency":"CHF",
+         "date":"20220101",
+         "debit":"50.00",
+         "debit_base_currency":"",
+         "item_type":"InvoiceTotal",
+         "number":"153",
+         "status":"1. richiamo",
+         "total_amount_vat_exclusive":"",
+         "total_amount_vat_inclusive":"",
+         "total_vat_amount":"",
+         "unit_price":{
+            
+         }
+      },
+      {
+         "balance":"50.00",
+         "balance_base_currency":"",
+         "base_currency":"",
+         "credit":"",
+         "credit_base_currency":"",
+         "currency":"CHF",
+         "date":"20220101",
+         "debit":"50.00",
+         "debit_base_currency":"",
+         "item_type":"InvoiceTotal",
+         "number":"154",
+         "status":"1. richiamo",
+         "total_amount_vat_exclusive":"",
+         "total_amount_vat_inclusive":"",
+         "total_vat_amount":"",
+         "unit_price":{
+            
+         }
+      },
+      {
+         "balance":"50.00",
+         "balance_base_currency":"",
+         "base_currency":"",
+         "credit":"",
+         "credit_base_currency":"",
+         "currency":"CHF",
+         "date":"20220101",
+         "debit":"50.00",
+         "debit_base_currency":"",
+         "item_type":"InvoiceTotal",
+         "number":"155",
+         "status":"1. richiamo",
+         "total_amount_vat_exclusive":"",
+         "total_amount_vat_inclusive":"",
+         "total_vat_amount":"",
+         "unit_price":{
+            
+         }
+      },
+      {
+         "balance":"50.00",
+         "balance_base_currency":"",
+         "base_currency":"",
+         "credit":"",
+         "credit_base_currency":"",
+         "currency":"CHF",
+         "date":"20220101",
+         "debit":"50.00",
+         "debit_base_currency":"",
+         "item_type":"InvoiceTotal",
+         "number":"156",
+         "status":"1. richiamo",
+         "total_amount_vat_exclusive":"",
+         "total_amount_vat_inclusive":"",
+         "total_vat_amount":"",
+         "unit_price":{
+            
+         }
+      },
+      {
+         "balance":"50.00",
+         "balance_base_currency":"",
+         "base_currency":"",
+         "credit":"",
+         "credit_base_currency":"",
+         "currency":"CHF",
+         "date":"20220101",
+         "debit":"50.00",
+         "debit_base_currency":"",
+         "item_type":"InvoiceTotal",
+         "number":"157",
+         "status":"1. richiamo",
+         "total_amount_vat_exclusive":"",
+         "total_amount_vat_inclusive":"",
+         "total_vat_amount":"",
+         "unit_price":{
+            
+         }
+      },
+      {
+         "balance":"50.00",
+         "balance_base_currency":"",
+         "base_currency":"",
+         "credit":"",
+         "credit_base_currency":"",
+         "currency":"CHF",
+         "date":"20220101",
+         "debit":"50.00",
+         "debit_base_currency":"",
+         "item_type":"InvoiceTotal",
+         "number":"158",
+         "status":"1. richiamo",
+         "total_amount_vat_exclusive":"",
+         "total_amount_vat_inclusive":"",
+         "total_vat_amount":"",
+         "unit_price":{
+            
+         }
+      },
+      {
+         "balance":"50.00",
+         "balance_base_currency":"",
+         "base_currency":"",
+         "credit":"",
+         "credit_base_currency":"",
+         "currency":"CHF",
+         "date":"20220101",
+         "debit":"50.00",
+         "debit_base_currency":"",
+         "item_type":"InvoiceTotal",
+         "number":"159",
+         "status":"1. richiamo",
+         "total_amount_vat_exclusive":"",
+         "total_amount_vat_inclusive":"",
+         "total_vat_amount":"",
+         "unit_price":{
+            
+         }
+      },
+      {
+         "balance":"50.00",
+         "balance_base_currency":"",
+         "base_currency":"",
+         "credit":"",
+         "credit_base_currency":"",
+         "currency":"CHF",
+         "date":"20220101",
+         "debit":"50.00",
+         "debit_base_currency":"",
+         "item_type":"InvoiceTotal",
+         "number":"160",
+         "status":"1. richiamo",
+         "total_amount_vat_exclusive":"",
+         "total_amount_vat_inclusive":"",
+         "total_vat_amount":"",
+         "unit_price":{
+            
+         }
+      },
+      {
+         "balance":"50.00",
+         "balance_base_currency":"",
+         "base_currency":"",
+         "credit":"",
+         "credit_base_currency":"",
+         "currency":"CHF",
+         "date":"20220101",
+         "debit":"50.00",
+         "debit_base_currency":"",
+         "item_type":"InvoiceTotal",
+         "number":"161",
+         "status":"1. richiamo",
+         "total_amount_vat_exclusive":"",
+         "total_amount_vat_inclusive":"",
+         "total_vat_amount":"",
+         "unit_price":{
+            
+         }
+      },
+      {
+         "balance":"50.00",
+         "balance_base_currency":"",
+         "base_currency":"",
+         "credit":"",
+         "credit_base_currency":"",
+         "currency":"CHF",
+         "date":"20220101",
+         "debit":"50.00",
+         "debit_base_currency":"",
+         "item_type":"InvoiceTotal",
+         "number":"162",
+         "status":"1. richiamo",
+         "total_amount_vat_exclusive":"",
+         "total_amount_vat_inclusive":"",
+         "total_vat_amount":"",
+         "unit_price":{
+            
+         }
+      },
+      {
+         "balance":"50.00",
+         "balance_base_currency":"",
+         "base_currency":"",
+         "credit":"",
+         "credit_base_currency":"",
+         "currency":"CHF",
+         "date":"20220101",
+         "debit":"50.00",
+         "debit_base_currency":"",
+         "item_type":"InvoiceTotal",
+         "number":"163",
+         "status":"1. richiamo",
+         "total_amount_vat_exclusive":"",
+         "total_amount_vat_inclusive":"",
+         "total_vat_amount":"",
+         "unit_price":{
+            
+         }
+      },
+      {
+         "balance":"50.00",
+         "balance_base_currency":"",
+         "base_currency":"",
+         "credit":"",
+         "credit_base_currency":"",
+         "currency":"CHF",
+         "date":"20220101",
+         "debit":"50.00",
+         "debit_base_currency":"",
+         "item_type":"InvoiceTotal",
+         "number":"164",
+         "status":"1. richiamo",
+         "total_amount_vat_exclusive":"",
+         "total_amount_vat_inclusive":"",
+         "total_vat_amount":"",
+         "unit_price":{
+            
+         }
+      },
+      {
+         "balance":"50.00",
+         "balance_base_currency":"",
+         "base_currency":"",
+         "credit":"",
+         "credit_base_currency":"",
+         "currency":"CHF",
+         "date":"20220101",
+         "debit":"50.00",
+         "debit_base_currency":"",
+         "item_type":"InvoiceTotal",
+         "number":"165",
+         "status":"1. richiamo",
+         "total_amount_vat_exclusive":"",
+         "total_amount_vat_inclusive":"",
+         "total_vat_amount":"",
+         "unit_price":{
+            
+         }
+      },
+      {
+         "balance":"50.00",
+         "balance_base_currency":"",
+         "base_currency":"",
+         "credit":"",
+         "credit_base_currency":"",
+         "currency":"CHF",
+         "date":"20220101",
+         "debit":"50.00",
+         "debit_base_currency":"",
+         "item_type":"InvoiceTotal",
+         "number":"166",
+         "status":"1. richiamo",
+         "total_amount_vat_exclusive":"",
+         "total_amount_vat_inclusive":"",
+         "total_vat_amount":"",
+         "unit_price":{
+            
+         }
+      },
+      {
+         "balance":"50.00",
+         "balance_base_currency":"",
+         "base_currency":"",
+         "credit":"",
+         "credit_base_currency":"",
+         "currency":"CHF",
+         "date":"20220101",
+         "debit":"50.00",
+         "debit_base_currency":"",
+         "item_type":"InvoiceTotal",
+         "number":"167",
+         "status":"1. richiamo",
+         "total_amount_vat_exclusive":"",
+         "total_amount_vat_inclusive":"",
+         "total_vat_amount":"",
+         "unit_price":{
+            
+         }
+      },
+      {
+         "balance":"50.00",
+         "balance_base_currency":"",
+         "base_currency":"",
+         "credit":"",
+         "credit_base_currency":"",
+         "currency":"CHF",
+         "date":"20220101",
+         "debit":"50.00",
+         "debit_base_currency":"",
+         "item_type":"InvoiceTotal",
+         "number":"168",
+         "status":"1. richiamo",
+         "total_amount_vat_exclusive":"",
+         "total_amount_vat_inclusive":"",
+         "total_vat_amount":"",
+         "unit_price":{
+            
+         }
+      },
+      {
+         "balance":"50.00",
+         "balance_base_currency":"",
+         "base_currency":"",
+         "credit":"",
+         "credit_base_currency":"",
+         "currency":"CHF",
+         "date":"20220101",
+         "debit":"50.00",
+         "debit_base_currency":"",
+         "item_type":"InvoiceTotal",
+         "number":"169",
+         "status":"1. richiamo",
+         "total_amount_vat_exclusive":"",
+         "total_amount_vat_inclusive":"",
+         "total_vat_amount":"",
+         "unit_price":{
+            
+         }
+      },
+      {
+         "balance":"240.00",
+         "balance_base_currency":"",
+         "base_currency":"",
+         "credit":"",
+         "credit_base_currency":"",
+         "currency":"CHF",
+         "date":"20220102",
+         "debit":"240.00",
+         "debit_base_currency":"",
+         "item_type":"InvoiceTotal",
+         "number":"11",
+         "status":"1. richiamo",
+         "total_amount_vat_exclusive":"",
+         "total_amount_vat_inclusive":"",
+         "total_vat_amount":"",
+         "unit_price":{
+            
+         }
+      },
+      {
+         "balance":"",
+         "balance_base_currency":"",
+         "base_currency":"",
+         "credit":"523.50",
+         "credit_base_currency":"",
+         "currency":"CHF",
+         "date":"20220103",
+         "debit":"523.50",
+         "debit_base_currency":"",
+         "item_type":"InvoiceTotal",
+         "number":"12",
+         "status":"paidInvoice",
+         "total_amount_vat_exclusive":"",
+         "total_amount_vat_inclusive":"",
+         "total_vat_amount":"",
+         "unit_price":{
+            
+         }
+      },
+      {
+         "balance":"3740.00",
+         "balance_base_currency":"",
+         "base_currency":"",
+         "credit":"523.50",
+         "credit_base_currency":"",
+         "currency":"",
+         "date":"",
+         "debit":"4263.50",
+         "debit_base_currency":"",
+         "item_type":"total",
+         "number":"",
+         "status":"",
+         "total_amount_vat_exclusive":"",
+         "total_amount_vat_inclusive":"",
+         "total_vat_amount":"",
+         "unit_price":{
+            
+         }
+      }
+   ],
+   "shipping_info":{
+      "different_shipping_address":false
+   },
+   "supplier_info":{
+      "address1":"Indirizzo 1",
+      "address2":"Indirizzo 2",
+      "business_name":"Nome Società",
+      "city":"Loc",
+      "country":"Svizzera",
+      "country_code":"CH",
+      "email":"info@myweb",
+      "first_name":"Nome",
+      "fiscal_number":"numerofiscale",
+      "last_name":"Cognome",
+      "postal_code":"CAP",
+      "vat_number":"CHE-111.222.333",
+      "web":"http://www.myweb"
+   },
+   "type":"invoice",
+   "version":"1.0"
+}

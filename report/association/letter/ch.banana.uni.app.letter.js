@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.uni.app.letter.js
 // @api = 1.0
-// @pubdate = 2023-03-14
+// @pubdate = 2023-04-21
 // @publisher = Banana.ch SA
 // @description = Letter (Banana+)
 // @description.de = Brief (Banana+)
@@ -22,7 +22,7 @@
 // @description.fr = Lettre (Banana+)
 // @description.en = Letter (Banana+)
 // @description.nl = Brief (Banana+)
-// @doctype = *
+// @doctype = 100.*;110.*;130.*
 // @task = app.command
 // @timeout = -1
 
@@ -1130,8 +1130,8 @@ function loadTexts(banDoc,lang) {
         texts.accountNumber = "Mitgliedskonto eingeben (leer = alle ausdrucken)";
         texts.localityAndDate = "Ort und Datum";
         texts.signature = "Unterschrift";
-        texts.printSignatureImage = "Unterschrift mit Bild";
-        texts.nameSignatureImage = "Bild";
+        texts.printSignatureImage = "Digitale Unterschrift";
+        texts.nameSignatureImage = "Bild mit Unterschrift";
         texts.memberAccount = "Mitgliedskonto";
         texts.text1 = "Text 1";
         texts.text2 = "Text 2";
@@ -1151,8 +1151,8 @@ function loadTexts(banDoc,lang) {
         texts.textSignature = "Text Unterschrift";
         texts.textToUse = "Text auswählen";
         texts.textEmbedded = "Text Tabelle Dokumente (.txt / .md)";
-        texts.accountsToPrint = "Zu druckende Adressen auswählen";
-        texts.printText = "Text drucken";
+        texts.accountsToPrint = "Adressen für den Ausdruck auswählen";
+        texts.printText = "Text ausdrucken";
         texts.begin = "Beginn";
     }
     else if (lang === "fr") {
@@ -1162,8 +1162,8 @@ function loadTexts(banDoc,lang) {
         texts.accountNumber = "Entrer le compte du membre (vide = imprimer tout)";
         texts.localityAndDate = "Lieu et date";
         texts.signature = "Signature";
-        texts.printSignatureImage = "Signature avec image";
-        texts.nameSignatureImage = "Image";
+        texts.printSignatureImage = "Signature digitale";
+        texts.nameSignatureImage = "Image avec signature";
         texts.memberAccount = "Compte de membre";
         texts.text1 = "Texte 1";
         texts.text2 = "Texte 2";
@@ -1191,11 +1191,11 @@ function loadTexts(banDoc,lang) {
         texts.reportTitle = "Lettera";
         texts.dialogTitle = "Impostazioni";
         texts.warningMessage = "Conto membro non valido";
-        texts.accountNumber = "Indicare il conto del membro (vuoto = stampa tutti)";
+        texts.accountNumber = "Indica il conto del membro (vuoto = stampa tutti)";
         texts.localityAndDate = "Località e data";
         texts.signature = "Firma";
-        texts.printSignatureImage = "Firma con immagine";
-        texts.nameSignatureImage = "Immagine";
+        texts.printSignatureImage = "Firma digitale";
+        texts.nameSignatureImage = "Immagine con firma";
         texts.memberAccount = "Conto del membro";
         texts.text1 = "Testo 1";
         texts.text2 = "Testo 2";
@@ -1255,11 +1255,11 @@ function loadTexts(banDoc,lang) {
         texts.reportTitle = "Letter";
         texts.dialogTitle = "Settings";
         texts.warningMessage = "Invalid member account";
-        texts.accountNumber = "Insert account member (empty = print all)";
-        texts.localityAndDate = "Locality and date";
+        texts.accountNumber = "Enter member's account (empty = print all)";
+        texts.localityAndDate = "Place and date";
         texts.signature = "Signature";
-        texts.printSignatureImage = "Signature with image";
-        texts.nameSignatureImage = "Image";
+        texts.printSignatureImage = "Digital signature";
+        texts.nameSignatureImage = "Image with signature";
         texts.memberAccount = "Member account";
         texts.text1 = "Text 1";
         texts.text2 = "Text 2";
@@ -1274,11 +1274,11 @@ function loadTexts(banDoc,lang) {
         texts.useMarkdown = "Use Markdown";
         texts.useExtractTable = "Use table Extract";
         texts.warningMessageExtractTable = "Use the command Data > Extract and sort rows";
-        texts.embeddedTextFile = "Text table Documents (.txt / .md)";
+        texts.embeddedTextFile = "Text from Documents table (.txt / .md)";
         texts.css = "CSS";
         texts.textSignature = "Text signature";
         texts.textToUse = "Select text";
-        texts.textEmbedded = "Text table Documents (.txt / .md)";
+        texts.textEmbedded = "Text from Documents table (.txt / .md)";
         texts.accountsToPrint = "Select addresses to print";
         texts.printText = "Print text";
         texts.begin = "Start";

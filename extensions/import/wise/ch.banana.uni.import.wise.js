@@ -15,9 +15,9 @@
 //
 // @id = ch.banana.uni.import.wise
 // @api = 1.0
-// @pubdate = 2023-01-05
+// @pubdate = 2023-11-03
 // @publisher = Banana.ch SA
-// @description = Wise - import transactions (*.csv)
+// @description = Wise - Import movements .csv (Banana+ Advanced)
 // @doctype = 100.*; 110.*; 130.*
 // @docproperties =
 // @task = import.transactions
@@ -57,18 +57,18 @@ function exec(inData, isTest) {
     }
 
     transactions = Banana.Converter.csvToArray(inData, convertionParam.separator, convertionParam.textDelim);
+    let transactionsData = getFormattedData(transactions, convertionParam, importUtilities);
+
 
     let importWisePersonalFormat1 = new ImportWisePersonalFormat1(Banana.document);
-    if (importWisePersonalFormat1.match(transactions)) {
-        let intermediaryData = importWisePersonalFormat1.convertCsvToIntermediaryData(transactions, convertionParam);
-        importWisePersonalFormat1.postProcessIntermediaryData(intermediaryData);
+    if (importWisePersonalFormat1.match(transactionsData)) {
+        let intermediaryData = importWisePersonalFormat1.convertCsvToIntermediaryData(transactionsData);
         return Banana.Converter.arrayToTsv(intermediaryData);
     }
 
     let importWiseBusinessFormat1 = new ImportWiseBusinessFormat1(Banana.document);
-    if (importWiseBusinessFormat1.match(transactions)) {
-        let intermediaryData = importWiseBusinessFormat1.convertCsvToIntermediaryData(transactions, convertionParam);
-        importWiseBusinessFormat1.postProcessIntermediaryData(intermediaryData);
+    if (importWiseBusinessFormat1.match(transactionsData)) {
+        let intermediaryData = importWiseBusinessFormat1.convertCsvToIntermediaryData(transactionsData);
         return Banana.Converter.arrayToTsv(intermediaryData);
     }
 
@@ -93,21 +93,6 @@ var ImportWisePersonalFormat1 = class ImportWisePersonalFormat1 extends ImportUt
         super(banDocument);
 
         this.decimalSeparator = ".";
-
-        this.colExternalRef = 0;
-        this.colDate = 1;
-        this.colAmount = 2;
-        this.colDescription = 4;
-        this.colPaymentRef = 5;
-        this.colBalance = 6;
-        this.colNotes = 17;
-        this.colTotalFees = 18;
-
-        //Index of columns in import format.
-        this.newColExpenses = 4;
-
-
-        this.dateFormat = "";
     }
 
     match(transactions) {
@@ -119,14 +104,13 @@ var ImportWisePersonalFormat1 = class ImportWisePersonalFormat1 extends ImportUt
 
             var formatMatched = false;
 
-            /* array should have all columns */
-            if (transaction.length === (this.colTotalFees + 1))
+            if (transaction["TransferWise ID"] && transaction["TransferWise ID"].length !== 0)
                 formatMatched = true;
             else
                 formatMatched = false;
 
-            if (formatMatched && transaction[this.colDate] && transaction[this.colDate].length == 10 &&
-                transaction[this.colDate].match(/^[0-9]+\-[0-9]+\-[0-9]+$/))
+            if (formatMatched && transaction["Date"] && transaction["Date"].length >= 10 &&
+                transaction["Date"].match(/^[0-9]+\-[0-9]+\-[0-9]+$/))
                 formatMatched = true;
             else
                 formatMatched = false;
@@ -138,20 +122,17 @@ var ImportWisePersonalFormat1 = class ImportWisePersonalFormat1 extends ImportUt
     }
 
     /** Convert the transaction to the format to be imported */
-    convertCsvToIntermediaryData(transactions, convertionParam) {
+    convertCsvToIntermediaryData(transactions) {
         var transactionsToImport = [];
 
         // Filter and map rows
         for (let i = 0; i < transactions.length; i++) {
             var transaction = transactions[i];
-            if (transaction.length < (this.colCount + 1))
-                continue;
-            if (transaction[this.colDate].match(/[0-9\.]+/g) && transaction[this.colDate].length === 10)
-                transactionsToImport.push(this.mapTransaction(transaction));
+            transactionsToImport.push(this.mapTransaction(transaction));
         }
 
-        // Sort rows
-        transactionsToImport = this.sortData(transactionsToImport, convertionParam);
+        // Sort rows by date
+        transactionsToImport = transactionsToImport.reverse();
 
         // Add header and return
         var header = [
@@ -160,52 +141,23 @@ var ImportWisePersonalFormat1 = class ImportWisePersonalFormat1 extends ImportUt
         return header.concat(transactionsToImport);
     }
 
-    mapTransaction(element) {
+    mapTransaction(transaction) {
         var mappedLine = [];
 
-        mappedLine.push(Banana.Converter.toInternalDateFormat(element[this.colDate], "dd-mm-yyyy"));
-        mappedLine.push(element[this.colDescription]);
-        mappedLine.push(element[this.colExternalRef]);
-        mappedLine.push(element[this.colNotes]);
+        mappedLine.push(Banana.Converter.toInternalDateFormat(transaction["Date"], "dd-mm-yyyy"));
+        mappedLine.push(transaction["Description"]);
+        mappedLine.push(transaction["TransferWise ID"]);
+        mappedLine.push(transaction["Note"]);
 
-        if (element[this.colAmount].indexOf("-") == -1) {
+        if (transaction["Amount"].indexOf("-") == -1) {
             mappedLine.push("");
-            mappedLine.push(Banana.Converter.toInternalNumberFormat(element[this.colAmount], this.decimalSeparator));
+            mappedLine.push(Banana.Converter.toInternalNumberFormat(transaction["Amount"], this.decimalSeparator));
         } else {
-            mappedLine.push(Banana.Converter.toInternalNumberFormat(element[this.colAmount], this.decimalSeparator));
+            let amount = Banana.SDecimal.abs(transaction["Amount"]);
+            mappedLine.push(Banana.Converter.toInternalNumberFormat(amount, this.decimalSeparator));
             mappedLine.push("");
         }
         return mappedLine;
-    }
-
-    //The purpose of this function is to let the user specify how to convert the categories
-    postProcessIntermediaryData(intermediaryData) {
-        /** INSERT HERE THE LIST OF ACCOUNTS NAME AND THE CONVERSION NUMBER 
-         *   If the content of "Account" is the same of the text 
-         *   it will be replaced by the account number given */
-        //Accounts conversion
-        let accounts = {
-            //...
-        }
-
-        /** INSERT HERE THE LIST OF CATEGORIES NAME AND THE CONVERSION NUMBER 
-         *   If the content of "ContraAccount" is the same of the text 
-         *   it will be replaced by the account number given */
-
-        //Categories conversion
-        let categories = {
-            //...
-        }
-
-        //Apply the conversions
-        for (let i = 1; i < intermediaryData.length; i++) {
-            let convertedData = intermediaryData[i];
-
-            //Invert values
-            if (convertedData[this.newColExpenses]) {
-                convertedData[this.newColExpenses] = Banana.SDecimal.invert(convertedData[this.newColExpenses]);
-            }
-        }
     }
 }
 
@@ -227,18 +179,6 @@ var ImportWiseBusinessFormat1 = class ImportWiseBusinessFormat1 extends ImportUt
 
         this.decimalSeparator = ".";
 
-        this.colExternalRef = 0;
-        this.colDate = 1;
-        this.colAmount = 2;
-        this.colDescription = 4;
-        this.colPaymentRef = 5;
-        this.colBalance = 6;
-        this.colNotes = 17;
-        this.colTotalFees = 18;
-
-        //Index of columns in import format.
-        this.newColExpenses = 4;
-
     }
 
     match(transactions) {
@@ -250,14 +190,13 @@ var ImportWiseBusinessFormat1 = class ImportWiseBusinessFormat1 extends ImportUt
 
             var formatMatched = false;
 
-            /* array should have all columns */
-            if (transaction.length === (this.totalFees + 1))
+            if (transaction["TransferWise ID"] && transaction["TransferWise ID"].length !== 0)
                 formatMatched = true;
             else
                 formatMatched = false;
 
-            if (formatMatched && transaction[this.colDate] && transaction[this.colDate].length == 10 &&
-                transaction[this.colDate].match(/^[0-9]+\-[0-9]+\-[0-9]+$/))
+            if (formatMatched && transaction["Date"] && transaction["Date"].length >= 10 &&
+                transaction["Date"].match(/^[0-9]+\-[0-9]+\-[0-9]+$/))
                 formatMatched = true;
             else
                 formatMatched = false;
@@ -275,14 +214,11 @@ var ImportWiseBusinessFormat1 = class ImportWiseBusinessFormat1 extends ImportUt
         // Filter and map rows
         for (let i = 0; i < transactions.length; i++) {
             var transaction = transactions[i];
-            if (transaction.length < (this.colCount + 1))
-                continue;
-            if (transaction[this.colDate].match(/[0-9\.]+/g) && transaction[this.colDate].length === 10)
-                transactionsToImport.push(this.mapTransaction(transaction));
+            transactionsToImport.push(this.mapTransaction(transaction));
         }
 
-        // Sort rows
-        transactionsToImport = this.sortData(transactionsToImport, convertionParam);
+        // Sort rows by date
+        transactionsToImport = transactionsToImport.reverse();
 
         // Add header and return
         var header = [
@@ -291,52 +227,23 @@ var ImportWiseBusinessFormat1 = class ImportWiseBusinessFormat1 extends ImportUt
         return header.concat(transactionsToImport);
     }
 
-    mapTransaction(element) {
+    mapTransaction(transaction) {
         var mappedLine = [];
 
-        mappedLine.push(Banana.Converter.toInternalDateFormat(element[this.colDate], "dd-mm-yyyy"));
-        mappedLine.push(element[this.colDescription]);
-        mappedLine.push(element[this.colExternalRef]);
-        mappedLine.push(element[this.colNotes]);
+        mappedLine.push(Banana.Converter.toInternalDateFormat(transaction["Date"], "dd-mm-yyyy"));
+        mappedLine.push(transaction["Description"]);
+        mappedLine.push(transaction["TransferWise ID"]);
+        mappedLine.push(transaction["Note"]);
 
-        if (element[this.colAmount].indexOf("-") == -1) {
+        if (transaction["Amount"].indexOf("-") == -1) {
             mappedLine.push("");
-            mappedLine.push(Banana.Converter.toInternalNumberFormat(element[this.colAmount], this.decimalSeparator));
+            mappedLine.push(Banana.Converter.toInternalNumberFormat(transaction["Amount"], this.decimalSeparator));
         } else {
-            mappedLine.push(Banana.Converter.toInternalNumberFormat(element[this.colAmount], this.decimalSeparator));
+            let amount = Banana.SDecimal.abs(transaction["Amount"]);
+            mappedLine.push(Banana.Converter.toInternalNumberFormat(amount, this.decimalSeparator));
             mappedLine.push("");
         }
         return mappedLine;
-    }
-
-    //The purpose of this function is to let the user specify how to convert the categories
-    postProcessIntermediaryData(intermediaryData) {
-        /** INSERT HERE THE LIST OF ACCOUNTS NAME AND THE CONVERSION NUMBER 
-         *   If the content of "Account" is the same of the text 
-         *   it will be replaced by the account number given */
-        //Accounts conversion
-        var accounts = {
-            //...
-        }
-
-        /** INSERT HERE THE LIST OF CATEGORIES NAME AND THE CONVERSION NUMBER 
-         *   If the content of "ContraAccount" is the same of the text 
-         *   it will be replaced by the account number given */
-
-        //Categories conversion
-        var categories = {
-            //...
-        }
-
-        //Apply the conversions
-        for (let i = 1; i < intermediaryData.length; i++) {
-            var convertedData = intermediaryData[i];
-
-            //Invert values
-            if (convertedData[this.newColExpenses]) {
-                convertedData[this.newColExpenses] = Banana.SDecimal.invert(convertedData[this.newColExpenses]);
-            }
-        }
     }
 }
 
@@ -367,4 +274,13 @@ function defineConversionParam(inData) {
     convertionParam.sortDescending = false;
 
     return convertionParam;
+}
+
+function getFormattedData(inData, convertionParam, importUtilities) {
+    var columns = importUtilities.getHeaderData(inData, convertionParam.headerLineStart); //array
+    var rows = importUtilities.getRowData(inData, convertionParam.dataLineStart); //array of array
+    let form = [];
+    //Load the form with data taken from the array. Create objects
+    importUtilities.loadForm(form, columns, rows);
+    return form;
 }

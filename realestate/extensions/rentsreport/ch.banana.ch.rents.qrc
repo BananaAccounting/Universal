@@ -1,0 +1,7 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource prefix="/">
+<file>manifest.json</file>
+<file>simplerentsreport.js</file>
+<file>detailedrentsreport.js</file>
+</qresource>
+</RCC>
