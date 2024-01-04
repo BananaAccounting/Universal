@@ -385,6 +385,10 @@ function getAccountsDataList(banDoc, docInfo, accountsList, itemsData) {
         accData.currentBalanceCurr = accBalance.balanceCurrency;
         accData.currency = "";
 
+        // Opening balance - currentBalance = Calculated movements amount.
+        accData.balanceDiffBase = Banana.SDecimal.subtract(accBalance.balance, accBalance.opening);
+        accData.balanceDiffCurr = Banana.SDecimal.subtract(accBalance.balanceCurrency, accBalance.openingCurrency);
+
         //get the items data.
         itemsDataList = getItemsDataList(docInfo, itemsData, accountCard, journalData, accData.account); //ritorna l'array di items con questo account.
         accData.items = itemsDataList;
@@ -394,8 +398,8 @@ function getAccountsDataList(banDoc, docInfo, accountsList, itemsData) {
         accData.securityTrAmountCurrency = sumBalances(itemsDataList, "totalBalanceCurr");
 
         //difference between the securities transactions and the account balance (should be 0).
-        accData.differenceBase = Banana.SDecimal.subtract(accData.securityTrAmountBase, accData.currentBalanceBase);
-        accData.differenceCurr = Banana.SDecimal.subtract(accData.securityTrAmountCurrency, accData.currentBalanceCurr);
+        accData.differenceBase = Banana.SDecimal.subtract(accData.securityTrAmountBase, accData.balanceDiffBase);
+        accData.differenceCurr = Banana.SDecimal.subtract(accData.securityTrAmountCurrency, accData.balanceDiffCurr);
 
         accDataList.push(accData);
 
