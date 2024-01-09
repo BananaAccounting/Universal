@@ -1,0 +1,13 @@
+{
+    "category": "Import",
+    "country": "universal",
+    "countryCode": "un",
+    "description": "Chase - Import transactions (*.csv)",
+    "description.en": "Chase - Import transactions (*.csv)",
+    "id": "ch.banana.uni.import.chase",
+    "language": "en",
+    "publisher": "Banana.ch",
+    "title": "Chase - Import transactions (*.csv)",
+    "title.en": "Chase - Import transactions (*.csv)",
+    "version": "1.0"
+}
