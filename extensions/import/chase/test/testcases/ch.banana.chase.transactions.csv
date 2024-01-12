@@ -1,0 +1,12 @@
+"Transaction Date","Post Date",Description,Category,Type,Amount,Memo
+12/10/2023,12/11/2023,"INFORM #123",Groceries,Sale,-87.04,
+12/8/2023,12/10/2023,"RAKT Mktp GB*STUVWXYZ",Shopping,Sale,-63.28,
+12/9/2023,12/10/2023,"RAKT Mktp GB*ABCDEFGH",Shopping,Sale,-32.98,
+12/9/2023,12/10/2023,"PIZZA HUT - KEY CHATSWORTH","Food & Drink",Sale,-9.89,
+12/8/2023,12/10/2023,"RAKT Mktp GB*IJKLMNOP",Shopping,Sale,-68.43,
+12/7/2023,12/8/2023,"RAKT Mktp GB*QRSTUVWX",Shopping,Sale,-129.67,
+12/7/2023,12/8/2023,"Amazon.com*AB0CD12E3",Shopping,Sale,-13.22,
+12/7/2023,12/8/2023,"EVERGREEN #1234","Health & Wellness",Sale,-50.71,
+12/5/2023,12/6/2023,"Amazon.com*1AB2C3D45",Shopping,Sale,-33.24,
+12/4/2023,12/6/2023,"BP 1234567890",Gas,Sale,-47.06,
+12/3/2023,12/4/2023,"RAKT Mktp GB*CDEFGHIJ",Shopping,Sale,-5.25,

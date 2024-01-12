@@ -1,0 +1,42 @@
+%%info_test_name{ch.banana.wise.transactions.personal1_20231103}
+\documentclass{report}
+\usepackage{longtable}
+\usepackage{color}
+\usepackage{listings}
+\usepackage[margin=1cm]{geometry}
+\begin{document}
+\newenvironment{tablevalue}[2]{\textbf{Table: #1}\begin{longtable}[l]{#2}}{\end{longtable}}
+\newenvironment{reportvalue}[1]{\textbf{Report: #1}\\}{}
+\lstnewenvironment{jsonvalue}[1]{\textbf{Json: #1}\lstset{language=Java}}{}
+\lstnewenvironment{xmlvalue}[1]{\textbf{Xml: #1}\lstset{language=Xml}}{}
+\newcommand{\info}[2]{\textit{#1: #2}\\}
+\newcommand{\fatalerror}[1]{\textbf{\textcolor[rgb]{1,0,0}{Fatal error: #1}}\\}
+\newcommand{\keyvalue}[2]{\textbf{Keyvalue: #1} #2\\}
+\newcommand{\textvalue}[1]{#1\\}
+\newcommand{\excltest}[1]{\\Excluded from compare: #1}
+\newcommand{\lognewpage}{\newpage}
+\newenvironment{testcase}[1]{\section*{Test: #1}}{\newpage}
+\newenvironment{test}[1]{\section*{Test case: #1}}{}
+%Begin test data
+\begin{tablevalue}{}{ l  l  l  l  l  l }
+Date & Description & ExternalReference & Notes & Expenses & Income\\
+2023-07-09 & Cabo intinsuarte at ARI evolor an Xxx.divensi.in + & CABO-177317284 &  & 801.50 & \\
+2023-07-10 & Reaniunt lavit ubes Facibo Entictus EO Cro misu antumnunt FACIBO R8A4W8 & COHOSTEP-474123746 &  &  & 480.81\\
+2023-07-11 & Cabo intinsuarte at ARI evolor an Xxx.divensi.in + & CABO-800263685 &  & 250.00 & \\
+2023-07-11 & Cabo intinsuarte at ARI evolor an Xxx.divensi.in + & CABO-416503018 &  & 34.50 & \\
+2023-07-12 & Idie Austant xxx: DIUNTEM-3152768718 & DIUNTEM-3152768718 &  & 1.76 & \\
+2023-07-12 & Manerepto ARI in HAT & DIUNTEM-3152768718 &  & 298.24 & \\
+2023-07-18 & Cabo intinsuarte at ARI evolor an Xxx.divensi.in + & CABO-800263685 &  &  & 250.00\\
+2023-07-18 & Cabo intinsuarte at ARI evolor an Xxx.divensi.in + & CABO-702015562 &  & 250.00 & \\
+2023-07-24 & Cabo intinsuarte at ARI evolor an Xxx.divensi.in + & CABO-702015562 &  &  & 250.00\\
+2023-07-25 & Idie Austant xxx: DIUNTEM-1462537404 & DIUNTEM-1462537404 &  & 11.08 & \\
+2023-07-25 & Manerepto ARI in STO & DIUNTEM-1462537404 &  & 2091.39 & \\
+2023-07-26 & Reaniunt lavit ubes NEIURGANGENIT REHENAVIT misu antumnunt NEIURGANGENIT REHENAVIT & COHOSTEP-357502746 &  &  & 2270.00\\
+2023-08-07 & Reaniunt lavit ubes Facibo Entictus EO Cro misu antumnunt FACIBO Q8V0W6 & COHOSTEP-182886512 &  &  & 480.81\\
+2023-08-19 & Cabo intinsuarte at ARI evolor an Vi Ceprotabige.que + & CABO-821634531 &  & 170.30 & \\
+2023-08-25 & Reaniunt lavit ubes NEIURGANGENIT REHENAVIT misu antumnunt NEIURGANGENIT REHENAVIT & COHOSTEP-270052513 &  &  & 2270.00\\
+2023-09-04 & Reaniunt lavit ubes Facibo Entictus EO Cro misu antumnunt FACIBO O7O2G0 & COHOSTEP-273604850 &  &  & 480.81\\
+2023-09-05 & Cabo intinsuarte at ARI evolor an Angulus Fugnita Colent QUATU.QUE/BY & CABO-513223800 &  & 24.48 & \\
+\\
+\end{tablevalue}
+\end{document}
