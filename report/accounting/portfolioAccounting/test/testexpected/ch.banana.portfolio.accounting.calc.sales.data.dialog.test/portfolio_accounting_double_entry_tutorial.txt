@@ -20,10 +20,10 @@
 %Begin test data
 \begin{jsonvalue}{FILENAME: file:script/../test/testcases/portfolio\_accounting\_double\_entry\_tutorial.ac2}
 {
-    "avgCost": "15.34",
-    "avgSharesValue": "306.80",
+    "avgCost": "10.80",
+    "avgSharesValue": "216.00",
     "exRateResult": "0",
-    "saleResult": "-66.80",
+    "saleResult": "24.00",
     "totalSharesvalue": "240"
 }
 \end{jsonvalue}

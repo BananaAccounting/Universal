@@ -32,9 +32,10 @@
  *******************************************/
 
 /** Dialog's functions declaration */
-dialog=Banana.Ui.createUi("ch.banana.portfolio.accounting.calc.sales.data.dialog.ui");
+dialog = Banana.Ui.createUi("ch.banana.portfolio.accounting.calc.sales.data.dialog.ui");
 
 //sales data section objects
+//07.09.2023: Warning: file:....ch.banana.portfolio.accounting.calc.sales.data.dialog.js:38: Calling C++ methods with 'this' objects different from the one they were retrieved from is broken, due to historical reasons. The original object is used as 'this' object. You can allow the given 'this' object to be used by setting 'pragma NativeMethodBehavior: AcceptThisObject'
 var itemsCombobox = dialog.findChild('item_comboBox');
 var quantity = dialog.findChild('quantity_lineEdit');
 var marketPrice = dialog.findChild('marketPrice_lineEdit');
@@ -43,9 +44,9 @@ var currExRate = dialog.findChild('currentExchangeRate_lineEdit');
 //preview result label
 var saleResultPreview = dialog.findChild('saleResultPreview_label');
 var avgCostPreview = dialog.findChild('averageCost_label');
-var exchangeResultPreview=dialog.findChild('exchangeResultPreview_label');
-var totalValueOfSharesPreview=dialog.findChild('totalValueOfShares_label');
-var avgValueOfSharesPreview=dialog.findChild('averageValueOfShares_label');
+var exchangeResultPreview = dialog.findChild('exchangeResultPreview_label');
+var totalValueOfSharesPreview = dialog.findChild('totalValueOfShares_label');
+var avgValueOfSharesPreview = dialog.findChild('averageValueOfShares_label');
 
 //Buttons
 var okButton = dialog.findChild('okButton');
@@ -53,40 +54,40 @@ var closeButton = dialog.findChild('closeButton');
 var showResultsPreviewButton = dialog.findChild('showResultsPreview_button');
 
 
-dialog.showPreviews=function(){
+dialog.showPreviews = function () {
 
-    var banDoc=Banana.document;
-    var avgCost="";
-    var baseCurr="";
-    var assetCurr="";
-    var saleResult="";
-    var avgSharesValue="";
-    var totalSharesvalue="";
-    var itemsData=[];
-    var userParam={};
-    var salesData={};
+    var banDoc = Banana.document;
+    var avgCost = "";
+    var baseCurr = "";
+    var assetCurr = "";
+    var saleResult = "";
+    var avgSharesValue = "";
+    var totalSharesvalue = "";
+    var itemsData = [];
+    var userParam = {};
+    var salesData = {};
 
 
-    docInfo=getDocumentInfo(banDoc);
-    userParam=readDialogParams();
-    itemsData=getItemsTableData(banDoc,docInfo);
-    salesData=calculateShareSaleData(banDoc,docInfo,userParam,itemsData);
-    assetCurr=getItemCurrency(itemsData,userParam.selectedItem);
-    baseCurr=docInfo.baseCurrency;
+    docInfo = getDocumentInfo(banDoc);
+    userParam = readDialogParams();
+    itemsData = getItemsTableData(banDoc, docInfo);
+    salesData = calculateShareSaleData(banDoc, docInfo, userParam, itemsData);
+    assetCurr = getItemCurrency(itemsData, userParam.selectedItem);
+    baseCurr = docInfo.baseCurrency;
 
-    avgCost=Banana.Converter.toLocaleNumberFormat(salesData.avgCost,2,true);
-    saleResult=Banana.Converter.toLocaleNumberFormat(salesData.saleResult,2,true);
-    exRateResult=Banana.Converter.toLocaleNumberFormat(salesData.exRateResult,2,true);
-    avgSharesValue=Banana.Converter.toLocaleNumberFormat(salesData.avgSharesValue,2,true);
-    totalSharesvalue=Banana.Converter.toLocaleNumberFormat(salesData.totalSharesvalue,2,true);
+    avgCost = Banana.Converter.toLocaleNumberFormat(salesData.avgCost, 2, true);
+    saleResult = Banana.Converter.toLocaleNumberFormat(salesData.saleResult, 2, true);
+    exRateResult = Banana.Converter.toLocaleNumberFormat(salesData.exRateResult, 2, true);
+    avgSharesValue = Banana.Converter.toLocaleNumberFormat(salesData.avgSharesValue, 2, true);
+    totalSharesvalue = Banana.Converter.toLocaleNumberFormat(salesData.totalSharesvalue, 2, true);
 
-    if(docInfo.isMultiCurrency){
-        avgCostPreview.setText(avgCost+" ("+assetCurr+")");
-        saleResultPreview.setText(saleResult+" ("+assetCurr+")");
-        exchangeResultPreview.setText(exRateResult+" ("+baseCurr+")");
-        avgValueOfSharesPreview.setText(avgSharesValue+" ("+assetCurr+")");
-        totalValueOfSharesPreview.setText(totalSharesvalue+" ("+assetCurr+")");
-    }else{
+    if (docInfo.isMultiCurrency) {
+        avgCostPreview.setText(avgCost + " (" + assetCurr + ")");
+        saleResultPreview.setText(saleResult + " (" + assetCurr + ")");
+        exchangeResultPreview.setText(exRateResult + " (" + baseCurr + ")");
+        avgValueOfSharesPreview.setText(avgSharesValue + " (" + assetCurr + ")");
+        totalValueOfSharesPreview.setText(totalSharesvalue + " (" + assetCurr + ")");
+    } else {
         avgCostPreview.setText(avgCost);
         saleResultPreview.setText(saleResult);
         exchangeResultPreview.setText(exRateResult);
@@ -101,18 +102,18 @@ dialog.showPreviews=function(){
 /** Dialog's events declaration */
 //quantity.editingFinished.connect(dialog,dialog.formatQt);
 //bankChargesAmount.editingFinished.connect(dialog,dialog.formatBankCharges);
-showResultsPreviewButton.clicked.connect(dialog,dialog.showPreviews);
+showResultsPreviewButton.clicked.connect(dialog, dialog.showPreviews);
 
 /**
  * Read the params from the dialog
  */
-function readDialogParams(){
-    var userParam={};
+function readDialogParams() {
+    var userParam = {};
 
-    userParam.selectedItem=itemsCombobox.currentText;
-    userParam.quantity=quantity.text;
-    userParam.marketPrice=marketPrice.text;
-    userParam.currExRate=currExRate.text;
+    userParam.selectedItem = itemsCombobox.currentText;
+    userParam.quantity = quantity.text;
+    userParam.marketPrice = marketPrice.text;
+    userParam.currExRate = currExRate.text;
 
     return userParam;
 
@@ -122,36 +123,36 @@ function readDialogParams(){
  * Fills the dialogue combobox with the items found in the item table
  * @param {*} itemsCombobox 
  */
- function insertComboBoxElements(banDoc,docInfo){
+function insertComboBoxElements(banDoc, docInfo) {
     //First set the editable attribute to true,in this way the user can also enter the text.
-    itemsCombobox.editable=true;
+    itemsCombobox.editable = true;
 
-    const itemList=new Set();
-    var itemsData=getItemsTableData(banDoc,docInfo); //I give as parameter "false" as I only need the list of items
+    const itemList = new Set();
+    var itemsData = getItemsTableData(banDoc, docInfo); //I give as parameter "false" as I only need the list of items
 
     //fill the listString with the existing items
-    for(var r in itemsData){
-        if(itemsData[r].item){
+    for (var r in itemsData) {
+        if (itemsData[r].item) {
             itemList.add(itemsData[r].item);
         }
     }
 
-    var itemList_array=Array.from(itemList); //convert the set into an array.
-    
-    if(itemsCombobox)
+    var itemList_array = Array.from(itemList); //convert the set into an array.
+
+    if (itemsCombobox)
         itemsCombobox.insertItems(1, itemList_array);
 }
 
 
-function exec(){
+function exec() {
 
-    let banDoc=Banana.document;
-    let docInfo=getDocumentInfo(banDoc);
+    let banDoc = Banana.document;
+    let docInfo = getDocumentInfo(banDoc);
 
-    if(!verifyBananaVersion())
+    if (!verifyBananaVersion())
         return "@Cancel";
     //fill the combobox with the existent groups and fill the labelw with the known data
-    insertComboBoxElements(banDoc,docInfo);
+    insertComboBoxElements(banDoc, docInfo);
     Banana.application.progressBar.pause();
     var dlgResult = dialog.exec();
     Banana.application.progressBar.resume();
