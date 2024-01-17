@@ -36,31 +36,31 @@ function TestImportChaseTrans() {
 }
 
 // This method will be called at the beginning of the test case
-TestImportChaseTrans.prototype.initTestCase = function() {
+TestImportChaseTrans.prototype.initTestCase = function () {
    this.testLogger = Test.logger;
    this.progressBar = Banana.application.progressBar;
 }
 
 // This method will be called at the end of the test case
-TestImportChaseTrans.prototype.cleanupTestCase = function() {
+TestImportChaseTrans.prototype.cleanupTestCase = function () {
 
 }
 
 // This method will be called before every test method is executed
-TestImportChaseTrans.prototype.init = function() {
+TestImportChaseTrans.prototype.init = function () {
 
 }
 
 // This method will be called after every test method is executed
-TestImportChaseTrans.prototype.cleanup = function() {
+TestImportChaseTrans.prototype.cleanup = function () {
 
 }
 
-TestImportChaseTrans.prototype.testImport = function() {
+TestImportChaseTrans.prototype.testImport = function () {
    var fileNameList = [];
 
-   fileNameList.push("file:script/../test/testcases/ch.banana.chase.transactions.csv");
-   
+   fileNameList.push("file:script/../test/testcases/ch.banana.chase.transactions.format1.csv");
+
    var parentLogger = this.testLogger;
    this.progressBar.start(fileNameList.length);
 
@@ -72,9 +72,9 @@ TestImportChaseTrans.prototype.testImport = function() {
       Test.assert(file);
       var fileContent = file.read();
       Test.assert(fileContent);
-      var transactions = exec(fileContent,true); //takes the exec from the import script.
+      var transactions = exec(fileContent, true); //takes the exec from the import script.
       this.testLogger.addCsv('', transactions);
-      
+
       if (!this.progressBar.step())
          break;
    }
