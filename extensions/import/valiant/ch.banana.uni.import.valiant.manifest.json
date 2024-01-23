@@ -1,0 +1,13 @@
+{
+    "category": "Import",
+    "country": "universal",
+    "countryCode": "un",
+    "description": "Valiant - Import transactions (*.csv)",
+    "description.en": "Valiant - Import transactions (*.csv)",
+    "id": "ch.banana.uni.import.valiant",
+    "language": "en",
+    "publisher": "Banana.ch",
+    "title": "Valiant - Import transactions (*.csv)",
+    "title.en": "Valiant - Import transactions (*.csv)",
+    "version": "1.0"
+}
