@@ -1,4 +1,4 @@
-// Copyright [2023] [Banana.ch SA - Lugano Switzerland]
+// Copyright [2024] [Banana.ch SA - Lugano Switzerland]
 //
 // Licensed under the Apache License, Version 2.0 (the 'License');
 // you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
 //
 // @id = ch.banana.uni.import.chase
 // @api = 1.0
-// @pubdate = 2023-12-21
+// @pubdate = 2024-01.17
 // @publisher = Banana.ch SA
 // @description = Chase - import transactions (*.csv)
 // @doctype = 100.*; 110.*; 130.*
@@ -29,10 +29,6 @@
 
 /**
  * Parse the Chase transactions file and returns the data in a format readable by banana
- * 
- */
-/**
- * Main function
  */
 function exec(inData, isTest) {
 
@@ -48,18 +44,14 @@ function exec(inData, isTest) {
         return "";
 
     convertionParam = defineConversionParam(inData);
-    
-    //Add the header if present 
-    if (convertionParam.header) {
-        inData = convertionParam.header + inData;
-    }
 
     transactions = Banana.Converter.csvToArray(inData, convertionParam.separator, convertionParam.textDelim);
-    
+    let transactionsData = getFormattedData(transactions, convertionParam, importUtilities);
+
+
     let importChaseFormat = new ImportChaseFormat(Banana.document);
-    if (importChaseFormat.match(transactions)) {
-        let intermediaryData = importChaseFormat.convertCsvToIntermediaryData(transactions, convertionParam);
-        importChaseFormat.postProcessIntermediaryData(intermediaryData);
+    if (importChaseFormat.match(transactionsData)) {
+        let intermediaryData = importChaseFormat.convertCsvToIntermediaryData(transactionsData);
         return Banana.Converter.arrayToTsv(intermediaryData);
     }
 
@@ -71,7 +63,7 @@ function exec(inData, isTest) {
 
 /**
  * CSV  structure
- * "Transaction Date","Post Date",Description,Category,Type,Amount,Memo
+ * Transaction Date,Post Date,Description,Category,Type,Amount,Memo
  * 12/10/2023,12/11/2023,INFORM #123,Groceries,Sale,-87.04,
  * 12/8/2023,12/10/2023,RAKT Mktp GB*STUVWXYZ,Shopping,Sale,-63.28,
  * 12/9/2023,12/10/2023,RAKT Mktp GB*ABCDEFGH,Shopping,Sale,-32.98,
@@ -82,46 +74,31 @@ function exec(inData, isTest) {
 var ImportChaseFormat = class ImportChaseFormat extends ImportUtilities {
     constructor(banDocument) {
         super(banDocument);
-
         this.decimalSeparator = ".";
-
-        this.colTransactionDate = 0;
-        this.colPostDate = 1;
-        this.colDescription = 2;
-        this.colCategory = 3;
-        this.colType = 4;
-        this.colAmount = 5;
-        this.colMemo = 6;
-
-        //Index of columns in import format.
-        this.newColExpenses = 4;
-
-
-        this.dateFormat = "";
     }
 
-    match(transactions) {
+    match(transactionsData) {
 
-        if (transactions.length === 0)
+        if (transactionsData.length === 0)
             return false;
-        
-        for (var i = 0; i < transactions.length; i++) {
-            var transaction = transactions[i];
+
+        for (var i = 0; i < transactionsData.length; i++) {
+            var transaction = transactionsData[i];
 
             var formatMatched = false;
 
-            /* array should have all columns */
-            if (transaction.length === (this.colMemo + 1)) 
+            if (transaction["Transaction Date"] && (transaction["Transaction Date"].length >= 8 &&
+                transaction["Transaction Date"].length <= 10) && transaction["Transaction Date"].match(/^[0-9]+\/[0-9]+\/[0-9]+$/))
                 formatMatched = true;
             else
                 formatMatched = false;
 
-            if (formatMatched && transaction[this.colTransactionDate] && (transaction[this.colTransactionDate].length >= 8 && 
-                transaction[this.colTransactionDate].length <= 10 ) && transaction[this.colTransactionDate].match(/^[0-9]+\/[0-9]+\/[0-9]+$/))
+            if (formatMatched && transaction["Post Date"] && (transaction["Post Date"].length >= 8 &&
+                transaction["Post Date"].length <= 10) && transaction["Post Date"].match(/^[0-9]+\/[0-9]+\/[0-9]+$/))
                 formatMatched = true;
             else
                 formatMatched = false;
-            
+
             if (formatMatched)
                 return true;
         }
@@ -129,24 +106,23 @@ var ImportChaseFormat = class ImportChaseFormat extends ImportUtilities {
     }
 
     /** Convert the transaction to the format to be imported */
-    convertCsvToIntermediaryData(transactions, convertionParam) {
+    convertCsvToIntermediaryData(transactionsData) {
         var transactionsToImport = [];
 
-        // Filter and map rows
-        for (let i = 0; i < transactions.length; i++) {
-            var transaction = transactions[i];
-            if (transaction.length < (this.colCount + 1))
-                continue;
-            if (transaction[this.colTransactionDate].match(/[0-9\.]+/g) && transaction[this.colTransactionDate].length >= 8 && transaction[this.colTransactionDate].length <= 10)
-                transactionsToImport.push(this.mapTransaction(transaction));
+        for (var i = 0; i < transactionsData.length; i++) {
+            if (transactionsData[i]["Transaction Date"] && (transactionsData[i]["Transaction Date"].length >= 8 &&
+                transactionsData[i]["Transaction Date"].length <= 10) &&
+                transactionsData[i]["Transaction Date"].match(/^[0-9]+\/[0-9]+\/[0-9]+$/)) {
+                transactionsToImport.push(this.mapTransaction(transactionsData[i]));
+            }
         }
 
         // Sort rows
-        transactionsToImport = this.sortData(transactionsToImport, convertionParam);
+        transactionsToImport = transactionsToImport.reverse();
 
         // Add header and return
         var header = [
-            ["Date", "Description", "ExternalReference", "Notes", "Expenses", "Amount"]
+            ["Date", "Description", "ExternalReference", "Notes", "Income", "Expenses"]
         ];
         return header.concat(transactionsToImport);
     }
@@ -154,49 +130,21 @@ var ImportChaseFormat = class ImportChaseFormat extends ImportUtilities {
     mapTransaction(element) {
         var mappedLine = [];
 
-        mappedLine.push(Banana.Converter.toInternalDateFormat(element[this.colTransactionDate], "mm/dd/yyyy"));
-        mappedLine.push(element[this.colDescription] + " - " + element[this.colCategory]);
-        mappedLine.push(element[this.colCategory]);
-        mappedLine.push(element[this.colType]);
-
-        if (element[this.colAmount].indexOf("-") == -1) {
+        mappedLine.push(Banana.Converter.toInternalDateFormat(element["Transaction Date"], "mm/dd/yyyy"));
+        mappedLine.push(element["Description"] + ", " + element["Category"] + ", " + element["Type"]);
+        mappedLine.push("") //External reference is not present in this format.
+        mappedLine.push(element["Memo"])
+        let indexOfMinusSign = element["Amount"].indexOf("-");
+        if (indexOfMinusSign == -1) {
+            mappedLine.push(Banana.Converter.toInternalNumberFormat(element["Amount"], this.decimalSeparator));
             mappedLine.push("");
-            mappedLine.push(Banana.Converter.toInternalNumberFormat(element[this.colAmount], this.decimalSeparator));
         } else {
-            mappedLine.push(Banana.Converter.toInternalNumberFormat(element[this.colAmount], this.decimalSeparator));
+            let amount = element["Amount"];
+            amount = amount.slice(indexOfMinusSign + 1); // remove minus sign and keep the remaining of the string after
             mappedLine.push("");
+            mappedLine.push(Banana.Converter.toInternalNumberFormat(amount, this.decimalSeparator));
         }
         return mappedLine;
-    }
-
-    //The purpose of this function is to let the user specify how to convert the categories
-    postProcessIntermediaryData(intermediaryData) {
-        /** INSERT HERE THE LIST OF ACCOUNTS NAME AND THE CONVERSION NUMBER 
-         *   If the content of "Account" is the same of the text 
-         *   it will be replaced by the account number given */
-        //Accounts conversion
-        let accounts = {
-            //...
-        }
-
-        /** INSERT HERE THE LIST OF CATEGORIES NAME AND THE CONVERSION NUMBER 
-         *   If the content of "ContraAccount" is the same of the text 
-         *   it will be replaced by the account number given */
-
-        //Categories conversion
-        let categories = {
-            //...
-        }
-
-        //Apply the conversions
-        for (let i = 1; i < intermediaryData.length; i++) {
-            let convertedData = intermediaryData[i];
-
-            //Invert values
-            if (convertedData[this.newColExpenses]) {
-                convertedData[this.newColExpenses] = Banana.SDecimal.invert(convertedData[this.newColExpenses]);
-            }
-        }
     }
 }
 
@@ -227,4 +175,13 @@ function defineConversionParam(inData) {
     convertionParam.sortDescending = false;
 
     return convertionParam;
+}
+
+function getFormattedData(inData, convertionParam, importUtilities) {
+    var columns = importUtilities.getHeaderData(inData, convertionParam.headerLineStart); //array
+    var rows = importUtilities.getRowData(inData, convertionParam.dataLineStart); //array of array
+    let form = [];
+    //Load the form with data taken from the array. Create objects
+    importUtilities.loadForm(form, columns, rows);
+    return form;
 }
