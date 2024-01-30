@@ -201,7 +201,7 @@ Fehler: %1</translation>
     <message>
         <location filename="../import_estimates.js" line="223"/>
         <source>The calculated vat amount for invoice %1 is different from the amount in the imported file. Calculated vat amount %2, amount imported file: %3</source>
-        <translation>Der berechnete MwSt-Betrag für die Rechnung %1 unterscheidet sich von dem MwSt-Betrag in der importierten Datei. Berechnete Betrag %2, Betrag importierte Datei: %3</translation>
+        <translation>Der berechnete MWST-Betrag für die Rechnung %1 unterscheidet sich von dem MWST-Betrag in der importierten Datei. Berechnete Betrag %2, Betrag importierte Datei: %3</translation>
     </message>
     <message>
         <location filename="../import_estimates.js" line="235"/>
@@ -246,7 +246,7 @@ Fehler: %1</translation>
     <message>
         <location filename="../import_invoices.js" line="223"/>
         <source>The calculated vat amount for invoice %1 is different from the amount in the imported file. Calculated vat amount %2, amount imported file: %3</source>
-        <translation>Der berechnete MwSt-Betrag für die Rechnung %1 unterscheidet sich von dem MwSt-Betrag in der importierten Datei. Berechnete Betrag %2, Betrag importierte Datei: %3</translation>
+        <translation>Der berechnete MWST-Betrag für die Rechnung %1 unterscheidet sich von dem MWST-Betrag in der importierten Datei. Berechnete Betrag %2, Betrag importierte Datei: %3</translation>
     </message>
     <message>
         <location filename="../import_invoices.js" line="235"/>
