@@ -39,7 +39,7 @@
                                     "rows": [
                                         {
                                             "fields": {
-                                                "AccountCredit": "[Earnings services]",
+                                                "AccountCredit": "[Earnings Services]",
                                                 "AccountDebit": "[Credits]",
                                                 "Amount": "5000.00",
                                                 "Date": "2023-01-01",
@@ -127,7 +127,7 @@
                                         },
                                         {
                                             "fields": {
-                                                "AccountCredit": "[Earnings sales]",
+                                                "AccountCredit": "[Earnings Sales]",
                                                 "AccountDebit": "[Credits]",
                                                 "Amount": "3000.00",
                                                 "Date": "2023-01-01",
@@ -306,7 +306,7 @@
                                         {
                                             "fields": {
                                                 "AccountCredit": "[Credits]",
-                                                "AccountDebit": "[Earnings services]",
+                                                "AccountDebit": "[Earnings Services]",
                                                 "Amount": "300.00",
                                                 "Date": "2023-01-03",
                                                 "Description": "Credit note (reason: our mistake)",
@@ -349,7 +349,7 @@
                                         },
                                         {
                                             "fields": {
-                                                "AccountCredit": "[Share capital]",
+                                                "AccountCredit": "[Share Capital]",
                                                 "AccountDebit": "[Cash]",
                                                 "Amount": "10000.00",
                                                 "Date": "2023-01-04",
@@ -525,7 +525,7 @@
                                         },
                                         {
                                             "fields": {
-                                                "AccountCredit": "[Earnings services]",
+                                                "AccountCredit": "[Earnings Services]",
                                                 "AccountDebit": "[]",
                                                 "Amount": "400.00",
                                                 "Date": "2023-01-07",
@@ -543,7 +543,7 @@
                                         },
                                         {
                                             "fields": {
-                                                "AccountCredit": "[Earnings sales]",
+                                                "AccountCredit": "[Earnings Sales]",
                                                 "AccountDebit": "[]",
                                                 "Amount": "100.00",
                                                 "Date": "2023-01-07",
