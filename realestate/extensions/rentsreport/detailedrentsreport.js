@@ -43,7 +43,9 @@ var lan;
 
 function exec() {
 
-  verifyBananaAdvancedVersion();
+  if (!verifyBananaAdvancedVersion()) {
+    return "@Cancel";
+}
 
   //Check if a document is opened
   if (!Banana.document) { return; }
