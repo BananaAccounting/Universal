@@ -141,7 +141,7 @@ var ISO20022_Swiss_JSONConverter = class ISO20022_Swiss_JSONConverter {
         this.setFileData(jsonDoc, docNode, fileName);
         let statementsNode = this.getStatementsNode_camt053(docNode);
         this.setStatementData(statementsNode, jsonDoc);
-        Banana.Ui.showText(JSON.stringify(jsonDoc));
+        //Banana.Ui.showText(JSON.stringify(jsonDoc)); ok
         return jsonDoc;
 
     }
@@ -644,8 +644,8 @@ function formatDate(dateString) {
     let year = date.getFullYear();
     let month = (date.getMonth() + 1).toString().padStart(2, '0');
     let day = date.getDate().toString().padStart(2, '0');
-    // Get the time.
     let formattedDate = year + "-" + month + "-" + day;
+    // Get also the time... ?
 
     return formattedDate;
 }
