@@ -131,27 +131,31 @@ var ISO20022_Swiss_JSONConverter = class ISO20022_Swiss_JSONConverter {
 
     convertToJson_fromCamt052(docNode, fileName) {
         let jsonDoc = {};
-        let statementsNode = getStatementsNode_camt052(docNode);
-        jsonDoc = this.readXmlData(statementsNode, jsonDoc, fileName);
+        this.setFileData(jsonDoc, docNode, fileName);
+        let statementsNode = this.getStatementsNode_camt052(docNode);
+        this.setStatementData(statementsNode, jsonDoc);
         return jsonDoc;
     }
     convertToJson_fromCamt053(docNode, fileName) {
         let jsonDoc = {};
-        let statementsNode = getStatementsNode_camt053(docNode);
-        jsonDoc = this.readXmlData(statementsNode, jsonDoc, fileName);
+        this.setFileData(jsonDoc, docNode, fileName);
+        let statementsNode = this.getStatementsNode_camt053(docNode);
+        this.setStatementData(statementsNode, jsonDoc);
+        Banana.Ui.showText(JSON.stringify(jsonDoc));
         return jsonDoc;
 
     }
     convertToJson_fromCamt054(docNode, fileName) {
         let jsonDoc = {};
-        let statementsNode = getStatementsNode_camt054(docNode);
-        jsonDoc = this.readXmlData(statementsNode, jsonDoc, fileName);
+        this.setFileData(jsonDoc, docNode, fileName);
+        let statementsNode = this.getStatementsNode_camt054(docNode);
+        this.setStatementData(statementsNode, jsonDoc);
         return jsonDoc;
     }
 
-    getStatementsNode_camt052() {
+    getStatementsNode_camt052(docNode) {
         let statementsNode = [];
-        statementNode = firstGrandChildElement(docNode, ['BkToCstmrAcctRpt', 'Rpt']);
+        let statementNode = firstGrandChildElement(docNode, ['BkToCstmrAcctRpt', 'Rpt']);
         while (statementNode) {
             statementsNode.push(statementNode)
             statementNode = statementNode.nextSiblingElement('Rpt');
@@ -160,9 +164,9 @@ var ISO20022_Swiss_JSONConverter = class ISO20022_Swiss_JSONConverter {
         return statementsNode;
     }
 
-    getStatementsNode_camt053() {
+    getStatementsNode_camt053(docNode) {
         let statementsNode = [];
-        statementNode = firstGrandChildElement(docNode, ['BkToCstmrStmt', 'Stmt']);
+        let statementNode = firstGrandChildElement(docNode, ['BkToCstmrStmt', 'Stmt']);
         while (statementNode) {
             statementsNode.push(statementNode)
             statementNode = statementNode.nextSiblingElement('Stmt');
@@ -171,9 +175,9 @@ var ISO20022_Swiss_JSONConverter = class ISO20022_Swiss_JSONConverter {
         return statementsNode;
     }
 
-    getStatementsNode_camt054() {
+    getStatementsNode_camt054(docNode) {
         let statementsNode = [];
-        statementNode = firstGrandChildElement(docNode, ['BkToCstmrDbtCdtNtfctn', 'Ntfctn']);
+        let statementNode = firstGrandChildElement(docNode, ['BkToCstmrDbtCdtNtfctn', 'Ntfctn']);
         while (statementNode) {
             statementsNode.push(statementNode)
             statementNode = statementNode.nextSiblingElement('Ntfctn');
@@ -183,28 +187,54 @@ var ISO20022_Swiss_JSONConverter = class ISO20022_Swiss_JSONConverter {
     }
 
     /**
-     * Saves the xml file parameters into a json object.
-     * @param {*} fileContent 
+     * Saves the file data into a json object: jsonDoc
+     * @param {*} jsonDoc 
+     * @param {*} fileName 
      */
-    getXmlParams(statementNode, fileName) {
+    setFileData(jsonDoc, docNode, fileName) {
         /**
          * The data we want to save:
-         * - File Name.
-         * - Account IBAN
-         * - Data di creazione del file
-         * - Bilancio iniziale
-         * - Bilancio finale
-         * - Totale movimenti
-         * - Possessore del rendiconto 
+         * - File Name (Path)
+         * - File Type
+         * - Creation Date
          */
-        let xmlParams = {};
 
         let name = fileName;
-        let iban = getStatementIban(docNode);
-        Banana.console.debug(iban);
+        let type = this.camtType
+        let creationDate = getDocumentCreationDate(docNode);
 
+        jsonDoc.FileName = name;
+        jsonDoc.FileType = type;
+        jsonDoc.FileCreationDate = creationDate;
+    }
 
-        xmlParams.fileName = name;
+    /**
+     * Saves the statement parameters into a json object.
+     * @param {*} fileContent 
+     */
+    getXmlParams(statementNode) {
+        /**
+         * The data we want to save:
+         * - IBAN
+         * - Statement owner
+         * - Initial balance
+         * - Final balance
+         */
+        let StatementParams = {};
+
+        let iban = getStatementIban(statementNode);
+        let statementOwner = getStatementOwner(statementNode);
+        let statementCurrency = getStatementCurrency(statementNode);
+        let initialBalance = getStatementBeginBalance(statementNode);
+        let finalBalance = getStatementEndBalance(statementNode);
+
+        StatementParams.statementParamIban = iban;
+        StatementParams.StatementParamOwner = statementOwner;
+        StatementParams.StatementParamCurrency = statementCurrency;
+        StatementParams.StatementParamInitialBalance = initialBalance;
+        StatementParams.StatementParamFinalBalance = finalBalance;
+
+        return StatementParams;
     }
 
     /**
@@ -212,38 +242,122 @@ var ISO20022_Swiss_JSONConverter = class ISO20022_Swiss_JSONConverter {
      * @param {*} fileContent 
      * @returns 
      */
-    readXmlData(statementsNode, jsonDoc, fileName) {
+    setStatementData(statementsNode, jsonDoc) {
         /**
-         * ****** NOTES ***************
-         * Se un file XML ha piu statement,li ritorno nello stesso "jsonDoc", definire poi che struttura
-         * dovrà avere il tutto. (31.01.2024)
+         * ********* NOTES ***************
+         * Json structure: (Version 1.0, 02.02.2024).
+         * Fields were named in a manner to follow the notation used for xml column names in banana and to keep
+         * the notation the same throughout the JSON.
+         * {
+         *   "FileName": C:/P/Universal Images/Universal/extensions/bank_synchronisation/test/testcases/1284_test_Bank1 - B.xml,
+         *   "FileType": "CAMT.053"
+         *   "FileCreationDate": 20240202
+         *   "FileStatementsData":[       // all data
+         *      {                   // first statement data ...
+         *         "StatementParams":{      // params of the statement like iban, inital balance, final balance
+         *                "StatementParamIban": "CHXXXXXXXXXXXXXXX",
+         *                "StatementParamOwner": "Happy Deer Group"
+         *                "StatementParamCurrency": "CHF"
+         *                "StatementParamInitialBalance": "1235.40",
+         *                "StatementParamFinalBalance"  : "2100.20",
+         *           },
+         *          StatementTransactions: [
+         *              {                    // first transaction
+         *                 "Date": "2024-04-21",
+         *                 "DateValue": "2024-04-21",
+         *                 "Description": "Transfert",
+         *                 "Income": "77.66",
+         *                 "Expenses": "",
+         *                 "ExternalReference": "15324748436",
+         *                 "ContraAccount": "",
+         *                 "Cc1": "",
+         *                 "Cc2": "",
+         *                 "Cc3": "",
+         *                 "IsDetail": ""
+         *              },
+         *              {                  // second transaction
+         *                 "Date": "2024-04-22",
+         *                 "DateValue": "2023-04-22",
+         *                 "Description": "Payment",
+         *                 "Income": "",
+         *                 "Expenses": "34.25",
+         *                 "ExternalReference": "19257246225",
+         *                 "ContraAccount": "",
+         *                 "Cc1": "",
+         *                 "Cc2": "",
+         *                 "Cc3": "",
+         *                 "IsDetail": ""
+         *              }
+         *          ]
+         *      },
+         *      {                  // second statement data ...
+         *         "StatementParams":{ 
+         *                "StatementParamIban": "CH1111111111111111",
+         *                "StatementParamOwner": "Sad Deer Group"
+         *                "StatementParamCurrency": "EUR"
+         *                "StatementParamInitialBalance": "4500.00",
+         *                "StatementParamFinalBalance"  : "6200.20",
+         *           },
+         *          StatementTransactions: [
+         *              {
+         *                 "Date": "2024-05-19",
+         *                 "DateValue": "2024-05-19",
+         *                 "Description": "Payment",
+         *                 "Income": "12.44",
+         *                 "Expenses": "",
+         *                 "ExternalReference": "15324748436",
+         *                 "ContraAccount": "",
+         *                 "Cc1": "",
+         *                 "Cc2": "",
+         *                 "Cc3": "",
+         *                 "IsDetail": ""
+         *              },
+         *              {
+         *                 "Date": "2023-04-22",
+         *                 "DateValue": "2023-04-22",
+         *                 "Description": "Transfer",
+         *                 "Income": "",
+         *                 "Expenses": "34.25",
+         *                 "ExternalReference": "19257246225",
+         *                 "ContraAccount": "",
+         *                 "Cc1": "",
+         *                 "Cc2": "",
+         *                 "Cc3": "",
+         *                 "IsDetail": ""
+         *              },
+         *                  // other transactions
+         *          ]
+         *      },
+         *          // other statemens ....
+         *   ]
+         * }
          */
-        jsonDoc.statementData = [];
+        let statementsData = [];
         if (statementsNode.length >= 0) {
             /** We have to get the data for each statement, wich could have a different account (IBAN) */
-            for (var i = 0; i < statementsNode.length; i++) {
-                let statementData = {};
-                let xmlTransactions = [];
-                let xmlParams = [];
+            for (let i = 0; i < statementsNode.length; i++) {
+                let fileStatementData = {};
+                let statementTransactions = [];
+                let statementParams = {};
 
-                xmlParams = getXmlParams(statementNodes[i], fileName);
-                xmlTransactions = xmlTransactions.concat(this.readStatementEntries(statementNodes[i]));
+                statementParams = this.getXmlParams(statementsNode[i]);
+                statementTransactions = statementTransactions.concat(this.readStatementEntries(statementsNode[i]));
 
-                statementData.params = xmlParams;
-                statementData.transactions = xmlTransactions;
+                fileStatementData.StatementParams = statementParams;
+                fileStatementData.StatementTransactions = statementTransactions;
 
-                jsonDoc.statementData.push(statementData);
+                statementsData.push(fileStatementData);
             }
         }
-        return jsonDoc;
+        jsonDoc.FileStatementData = statementsData;
     }
 
     readStatementEntries(statementNode) {
         if (!statementNode)
             return;
 
-        var transactions = [];
-        var entryNode = statementNode.firstChildElement('Ntry');
+        let transactions = [];
+        let entryNode = statementNode.firstChildElement('Ntry');
         while (entryNode) {
             transactions = transactions.concat(this.readStatementEntry(entryNode));
             entryNode = entryNode.nextSiblingElement('Ntry'); // next account movement
@@ -252,28 +366,28 @@ var ISO20022_Swiss_JSONConverter = class ISO20022_Swiss_JSONConverter {
     }
 
     readStatementEntry(entryNode) {
-        var transaction = null;
-        var transactions = [];
+        let transaction = null;
+        let transactions = [];
 
-        var entryBookingDate = entryNode.hasChildElements('BookgDt') ? entryNode.firstChildElement('BookgDt').text.substr(0, 10) : '';
-        var entryValutaDate = entryNode.hasChildElements('ValDt') ? entryNode.firstChildElement('ValDt').text.substr(0, 10) : '';
-        var entryIsCredit = entryNode.firstChildElement('CdtDbtInd').text === 'CRDT';
-        var entryAmount = entryNode.firstChildElement('Amt').text;
-        var entryDescription = entryNode.hasChildElements('AddtlNtryInf') ? entryNode.firstChildElement('AddtlNtryInf').text : '';
-        var entryExternalReference = entryNode.hasChildElements('AcctSvcrRef') ? entryNode.firstChildElement('AcctSvcrRef').text : '';
+        let entryBookingDate = entryNode.hasChildElements('BookgDt') ? entryNode.firstChildElement('BookgDt').text.substr(0, 10) : '';
+        let entryValutaDate = entryNode.hasChildElements('ValDt') ? entryNode.firstChildElement('ValDt').text.substr(0, 10) : '';
+        let entryIsCredit = entryNode.firstChildElement('CdtDbtInd').text === 'CRDT';
+        let entryAmount = entryNode.firstChildElement('Amt').text;
+        let entryDescription = entryNode.hasChildElements('AddtlNtryInf') ? entryNode.firstChildElement('AddtlNtryInf').text : '';
+        let entryExternalReference = entryNode.hasChildElements('AcctSvcrRef') ? entryNode.firstChildElement('AcctSvcrRef').text : '';
 
         if (entryNode.hasChildElements('NtryDtls')) {
-            var detailsNode = entryNode.firstChildElement('NtryDtls');
+            let detailsNode = entryNode.firstChildElement('NtryDtls');
             while (detailsNode) {
                 // Count text elements
-                var txDtlsCount = 0;
-                var textDetailsNode = detailsNode.firstChildElement('TxDtls');
+                let txDtlsCount = 0;
+                let textDetailsNode = detailsNode.firstChildElement('TxDtls');
                 while (textDetailsNode) {
                     txDtlsCount++;
                     textDetailsNode = textDetailsNode.nextSiblingElement('TxDtls'); // next movement detail
                 }
 
-                var entryDetailsBatchMsgId = readStatementEntryDetailsMatchMsgId(detailsNode);
+                let entryDetailsBatchMsgId = readStatementEntryDetailsMatchMsgId(detailsNode);
 
                 if (txDtlsCount > 1) {
                     // Insert counterpart transaction
@@ -294,19 +408,17 @@ var ISO20022_Swiss_JSONConverter = class ISO20022_Swiss_JSONConverter {
                 if (detailsNode.hasChildElements('TxDtls')) {
                     textDetailsNode = detailsNode.firstChildElement('TxDtls');
                     while (textDetailsNode) {
-                        var cdtDbtIndNode = textDetailsNode.firstChildElement('CdtDbtInd');
-                        var deatailsIsCredit = cdtDbtIndNode && cdtDbtIndNode.text === 'CRDT' ? true : entryIsCredit;
-                        var deatailAmount = readStatementEntryDetailsAmount(textDetailsNode);
-                        var acctSvcrRefNode = firstGrandChildElement(textDetailsNode, ['Refs', 'AcctSvcrRef']);
-                        var detailExternalReference = acctSvcrRefNode ? acctSvcrRefNode.text : '';
-                        var rmtInfRefNode = firstGrandChildElement(textDetailsNode, ['RmtInf', 'Strd', 'CdtrRefInf', 'Ref']);
-                        var detailEsrReference = rmtInfRefNode ? rmtInfRefNode.text : '';
-                        var instrIdNode = firstGrandChildElement(textDetailsNode, ['Refs', 'InstrId']);
+                        let cdtDbtIndNode = textDetailsNode.firstChildElement('CdtDbtInd');
+                        let deatailsIsCredit = cdtDbtIndNode && cdtDbtIndNode.text === 'CRDT' ? true : entryIsCredit;
+                        let deatailAmount = readStatementEntryDetailsAmount(textDetailsNode);
+                        let acctSvcrRefNode = firstGrandChildElement(textDetailsNode, ['Refs', 'AcctSvcrRef']);
+                        let detailExternalReference = acctSvcrRefNode ? acctSvcrRefNode.text : '';
+                        let instrIdNode = firstGrandChildElement(textDetailsNode, ['Refs', 'InstrId']);
 
-                        //var invoiceNumber = extractInvoiceNumber(detailEsrReference); // Da valutare.
+                        //let invoiceNumber = extractInvoiceNumber(detailEsrReference); // Da valutare.
 
                         // Build description
-                        var detailDescription = readStatementEntryDetailsDescription(textDetailsNode, deatailsIsCredit);
+                        let detailDescription = readStatementEntryDetailsDescription(textDetailsNode, deatailsIsCredit);
                         if (detailDescription.length === 0 && instrIdNode)
                             detailDescription = instrIdNode.text;
 
@@ -332,8 +444,8 @@ var ISO20022_Swiss_JSONConverter = class ISO20022_Swiss_JSONConverter {
                         };
 
                         /*if (this.params.customer_no && this.params.customer_no.extract) { // Set customer number
-                            var customerNumber = extractCustomerNumber(detailEsrReference);
-                            var ccPrefix = deatailsIsCredit ? '-' : '';
+                            let customerNumber = extractCustomerNumber(detailEsrReference);
+                            let ccPrefix = deatailsIsCredit ? '-' : '';
                             if (this.params.customer_no.use_cc && this.params.customer_no.use_cc.trim().toUpperCase() === 'CC1') {
                                 if (customerNumber)
                                     transaction.Cc1 = ccPrefix + customerNumber;
@@ -421,21 +533,21 @@ var ISO20022_General_JSONConverter = class ISO20022_General_JSONConverter {
         // Check for CAMT.052
         if (root.firstChildElement() === 'BkToCstmrAcctRpt' && root.namespaceURI().includes('camt.052')) {
             this.camtType = "CAMT.052";
-            Banana.console.debug(this.camtType);
+            //Banana.console.debug(this.camtType);
             return true;
         }
 
         // Check for CAMT.053
         if (root.firstChildElement() === 'BkToCstmrStmt' && root.namespaceURI().includes('camt.053')) {
             this.camtType = "CAMT.053";
-            Banana.console.debug(this.camtType);
+            //Banana.console.debug(this.camtType);
             return true;
         }
 
         // Check for CAMT.054
         if (root.firstChildElement() === 'BkToCstmrDbtCdtNtfctn' && root.namespaceURI().includes('camt.054')) {
             this.camtType = "CAMT.054";
-            Banana.console.debug(this.camtType);
+            //Banana.console.debug(this.camtType);
             return true;
         }
         return false
@@ -468,8 +580,92 @@ var JSON_Thinker_JSONConverter = class JSON_Thinker_JSONConverter {
 
 // ******** XML PROCESSING UTILITIES FUNCTIONS **********
 
+function getStatementEndBalance(statementNode) {
+    if (!statementNode)
+        return '';
+
+    var balNode = statementNode.firstChildElement('Bal');
+    while (balNode) {
+        var tpNode = balNode.firstChildElement('Tp');
+        if (tpNode) {
+            var cdOrPrtryNode = tpNode.firstChildElement('CdOrPrtry');
+            if (cdOrPrtryNode && (cdOrPrtryNode.text === 'CLBD' || cdOrPrtryNode.text === 'CLAV')) {
+                var amtNode = balNode.firstChildElement('Amt');
+                if (amtNode) {
+                    var amount = amtNode.text;
+                    if (balNode.hasChildElements('CdtDbtInd') && balNode.hasChildElements('CdtDbtInd').text === 'DBIT') {
+                        amount = Banana.SDecimal.invert(amount);
+                    }
+                    return amount;
+                }
+            }
+        }
+        balNode = balNode.nextSiblingElement();
+    }
+    return '';
+}
+
+function getStatementBeginBalance(statementNode) {
+    if (!statementNode)
+        return '';
+
+    var balNode = statementNode.firstChildElement('Bal');
+    while (balNode) {
+        var tpNode = balNode.firstChildElement('Tp');
+        if (tpNode) {
+            var cdOrPrtryNode = tpNode.firstChildElement('CdOrPrtry');
+            if (cdOrPrtryNode && cdOrPrtryNode.text === 'OPBD') {
+                var amtNode = balNode.firstChildElement('Amt');
+                if (amtNode) {
+                    var amount = amtNode.text;
+                    if (balNode.hasChildElements('CdtDbtInd') && balNode.hasChildElements('CdtDbtInd').text === 'DBIT') {
+                        amount = Banana.SDecimal.invert(amount);
+                    }
+                    return amount;
+                }
+            }
+        }
+        balNode = balNode.nextSiblingElement();
+    }
+    return '';
+}
+
+function getDocumentCreationDate(docNode) {
+    let node = this.firstGrandChildElement(docNode, ['BkToCstmrStmt', 'GrpHdr', 'CreDtTm']);
+    if (node)
+        return formatDate(node.text);
+    return '';
+}
+
+function formatDate(dateString) {
+    let date = new Date(dateString);
+
+    //Get the date.
+    let year = date.getFullYear();
+    let month = (date.getMonth() + 1).toString().padStart(2, '0');
+    let day = date.getDate().toString().padStart(2, '0');
+    // Get the time.
+    let formattedDate = year + "-" + month + "-" + day;
+
+    return formattedDate;
+}
+
+function getStatementCurrency(statementNode) {
+    let node = this.firstGrandChildElement(statementNode, ['Acct', 'Ccy']);
+    if (node)
+        return node.text;
+    return '';
+}
+
+function getStatementOwner(statementNode) {
+    let node = firstGrandChildElement(statementNode, ['Acct', 'Ownr', 'Nm']);
+    if (node)
+        return node.text;
+    return '';
+}
+
 function getStatementIban(statementNode) {
-    var node = firstGrandChildElement(statementNode, ['Acct', 'Id', 'IBAN']);
+    let node = firstGrandChildElement(statementNode, ['Acct', 'Id', 'IBAN']);
     if (node)
         return node.text;
     return '';
@@ -478,8 +674,8 @@ function getStatementIban(statementNode) {
 function firstGrandChildElement(node, childs) {
     if (!node)
         return null;
-    var grandChildNode = node;
-    for (var i = 0; i < childs.length; i++) {
+    let grandChildNode = node;
+    for (let i = 0; i < childs.length; i++) {
         grandChildNode = grandChildNode.firstChildElement(childs[i]);
         if (!grandChildNode)
             break;
@@ -489,7 +685,7 @@ function firstGrandChildElement(node, childs) {
 }
 
 function readStatementEntryDetailsMatchMsgId(detailsNode) {
-    var batchMsgIdNode = firstGrandChildElement(detailsNode, ['Btch', 'MsgId']);
+    let batchMsgIdNode = firstGrandChildElement(detailsNode, ['Btch', 'MsgId']);
     return batchMsgIdNode ? batchMsgIdNode.text : '';
 }
 
@@ -497,7 +693,7 @@ function readStatementEntryDetailsAmount(detailsNode) {
     if (!detailsNode)
         return '';
 
-    var amtNode = detailsNode.firstChildElement('Amt');
+    let amtNode = detailsNode.firstChildElement('Amt');
     if (amtNode)
         return amtNode.text;
 
@@ -519,7 +715,7 @@ function extractCustomerNumber(esrNumber) {
     if (!esrNumber || esrNumber.length <= 0)
         return '';
 
-    var customerNumber = esrNumber;
+    let customerNumber = esrNumber;
 
     // Use Banana format for PVR and QR
     if (this.params.customer_no.banana_format) {
@@ -547,8 +743,8 @@ function extractCustomerNumber(esrNumber) {
             //   invoice = 101 */
             //customerNumber = "RF02411003101";
             ///////////////////////////////////////
-            var invLen = customerNumber.substr(4, 1);
-            var cust = customerNumber.substr(5, invLen);
+            let invLen = customerNumber.substr(4, 1);
+            let cust = customerNumber.substr(5, invLen);
             customerNumber = cust;
         }
         else {
@@ -561,7 +757,7 @@ function extractCustomerNumber(esrNumber) {
             //   invoice =  1234567*/
             //customerNumber = "00 00000 00007 65432 11234 56700";
             /////////////////////////////////////////////////////////
-            var cust = customerNumber.substr(11, 7);
+            let cust = customerNumber.substr(11, 7);
             customerNumber = cust;
 
             // Remove traling zeros
@@ -582,7 +778,7 @@ function extractCustomerNumber(esrNumber) {
 
             // Second apply method if defined
             if (this.params.customer_no.method.length > "0") {
-                var customerMethod = eval(this.params.customer_no.method);
+                let customerMethod = eval(this.params.customer_no.method);
                 if (typeof (customerMethod) === 'function') {
                     customerNumber = customerMethod(customerNumber);
                 }
@@ -602,7 +798,7 @@ function extractInvoiceNumber(esrNumber) {
     if (!esrNumber || esrNumber.length <= 0)
         return '';
 
-    var invoiceNumber = esrNumber;
+    let invoiceNumber = esrNumber;
 
     // Use Banana format for PVR and QR
     if (this.params.invoice_no.banana_format) {
@@ -630,11 +826,11 @@ function extractInvoiceNumber(esrNumber) {
             //   invoice = 101 */
             //invoiceNumber = "RF02411003101";
             ///////////////////////////////////////
-            var invLen = invoiceNumber.substr(4, 1);
-            var inv = invoiceNumber.substr(5, invLen);
-            var invNoBegin = 5 + Number(invLen);
-            var invNoLen = invoiceNumber.substr(invNoBegin, 1);
-            var invNo = invoiceNumber.substr(invNoBegin + 1, invNoLen);
+            let invLen = invoiceNumber.substr(4, 1);
+            let inv = invoiceNumber.substr(5, invLen);
+            let invNoBegin = 5 + Number(invLen);
+            let invNoLen = invoiceNumber.substr(invNoBegin, 1);
+            let invNo = invoiceNumber.substr(invNoBegin + 1, invNoLen);
             invoiceNumber = invNo;
         }
         else {
@@ -648,7 +844,7 @@ function extractInvoiceNumber(esrNumber) {
             //   invoice =  1234567*/
             //invoiceNumber = "00 00000 00007 65432 11234 56700";
             /////////////////////////////////////////////////////////
-            var inv = invoiceNumber.substr(18, 7);
+            let inv = invoiceNumber.substr(18, 7);
             invoiceNumber = inv;
 
             // Remove traling zeros
@@ -669,7 +865,7 @@ function extractInvoiceNumber(esrNumber) {
 
         // Second apply method if defined
         if (this.params.invoice_no.method.length > 0) {
-            var invoiceMethod = eval(this.params.invoice_no.method);
+            let invoiceMethod = eval(this.params.invoice_no.method);
             if (typeof (invoiceMethod) === 'function') {
                 invoiceNumber = invoiceMethod(invoiceNumber);
             }
@@ -683,14 +879,14 @@ function extractInvoiceNumber(esrNumber) {
 }
 
 function readStatementEntryDetailsDescription(detailsNode, isCredit) {
-    var detailsDescriptionTexts = [];
+    let detailsDescriptionTexts = [];
 
     detailsDescriptionTexts.push(readStatementEntryDetailsAddress(detailsNode, isCredit));
 
     if (detailsNode.hasChildElements('RmtInf')) {
-        var ustrdNode = detailsNode.firstChildElement('RmtInf').firstChildElement('Ustrd');
+        let ustrdNode = detailsNode.firstChildElement('RmtInf').firstChildElement('Ustrd');
         while (ustrdNode) {
-            var ustrdString = ustrdNode.text.trim();
+            let ustrdString = ustrdNode.text.trim();
             if (ustrdString === '?REJECT?0') {
                 ustrdString = '';
             }
@@ -700,13 +896,13 @@ function readStatementEntryDetailsDescription(detailsNode, isCredit) {
             ustrdNode = ustrdNode.nextSiblingElement('Ustrd');
         }
     } else if (detailsNode.hasChildElements('AddtlTxInf')) {
-        var addtlTxInfString = detailsNode.firstChildElement('AddtlTxInf').text.trim();
+        let addtlTxInfString = detailsNode.firstChildElement('AddtlTxInf').text.trim();
         if (addtlTxInfString.length > 0)
             detailsDescriptionTexts.push(addtlTxInfString);
     }
 
-    var rmtInfRefNode = firstGrandChildElement(detailsNode, ['RmtInf', 'Strd', 'CdtrRefInf', 'Ref']);
-    var detailEsrReference = rmtInfRefNode ? rmtInfRefNode.text.trim() : '';
+    let rmtInfRefNode = firstGrandChildElement(detailsNode, ['RmtInf', 'Strd', 'CdtrRefInf', 'Ref']);
+    let detailEsrReference = rmtInfRefNode ? rmtInfRefNode.text.trim() : '';
     if (detailEsrReference.length > 0)
         detailsDescriptionTexts.push(detailEsrReference); // removed lang param.
 
@@ -714,11 +910,11 @@ function readStatementEntryDetailsDescription(detailsNode, isCredit) {
 }
 
 function readStatementEntryDetailsAddress(detailsNode, isCredit) {
-    var rltdPtiesNode = detailsNode.firstChildElement('RltdPties');
+    let rltdPtiesNode = detailsNode.firstChildElement('RltdPties');
     if (!rltdPtiesNode)
         return '';
 
-    var addressNode = null;
+    let addressNode = null;
     if (isCredit) {
         if (rltdPtiesNode.hasChildElements('UltmtDbtr'))
             addressNode = rltdPtiesNode.firstChildElement('UltmtDbtr')
@@ -742,13 +938,13 @@ function readStatementEntryDetailsAddress(detailsNode, isCredit) {
     if (!addressNode)
         return '';
 
-    var addressStrings = [];
+    let addressStrings = [];
     if (addressNode.firstChildElement('Nm'))
         addressStrings.push(addressNode.firstChildElement('Nm').text);
-    var pstlAdrNode = addressNode.firstChildElement('PstlAdr');
+    let pstlAdrNode = addressNode.firstChildElement('PstlAdr');
     if (pstlAdrNode) {
         if (pstlAdrNode.hasChildElements('AdrLine')) {
-            var adrLineNode = pstlAdrNode.firstChildElement('AdrLine');
+            let adrLineNode = pstlAdrNode.firstChildElement('AdrLine');
             while (adrLineNode) {
                 addressStrings.push(adrLineNode.text);
                 adrLineNode = adrLineNode.nextSiblingElement('AdrLine');
@@ -764,6 +960,6 @@ function readStatementEntryDetailsAddress(detailsNode, isCredit) {
 }
 
 function joinNotEmpty(texts, separator) {
-    var cleanTexts = texts.filter(function (n) { return n && n.trim().length });
+    let cleanTexts = texts.filter(function (n) { return n && n.trim().length });
     return cleanTexts.join(separator);
 }

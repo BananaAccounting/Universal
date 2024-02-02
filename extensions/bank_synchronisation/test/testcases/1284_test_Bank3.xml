@@ -1,0 +1,410 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<n1:Document xmlns:n1="urn:iso:std:iso:20022:tech:xsd:camt.053.001.08">
+    <n1:BkToCstmrStmt>
+        <n1:GrpHdr>
+            <n1:MsgId>HPOY585a5623120670421278288QCIMGASJ</n1:MsgId>
+            <n1:CreDtTm>2023-08-31T00:40:58.220+02:00</n1:CreDtTm>
+            <n1:MsgPgntn>
+                <n1:PgNb>4</n1:PgNb>
+                <n1:LastPgInd>vige</n1:LastPgInd>
+            </n1:MsgPgntn>
+            <n1:AddtlInf>SPS/2.0/PROD</n1:AddtlInf>
+        </n1:GrpHdr>
+        <n1:Stmt>
+            <n1:Id>73v27h703bd57s6qm400mmn468xdbc84</n1:Id>
+            <n1:ElctrncSeqNb>883</n1:ElctrncSeqNb>
+            <n1:CreDtTm>2023-08-31T00:40:58.220+02:00</n1:CreDtTm>
+            <n1:FrToDt>
+                <n1:FrDtTm>2023-08-30T00:00:00+02:00</n1:FrDtTm>
+                <n1:ToDtTm>2023-08-30T23:59:00+02:00</n1:ToDtTm>
+            </n1:FrToDt>
+            <n1:Acct>
+                <n1:Id>
+                    <n1:Othr>
+                        <n1:Id>0251-0949995-41-001</n1:Id>
+                    </n1:Othr>
+                </n1:Id>
+                <n1:Ccy>XXX</n1:Ccy>
+                <n1:Ownr>
+                    <n1:Nm>Peritiunch EX</n1:Nm>
+                    <n1:PstlAdr>
+                        <n1:AdrLine>Opra</n1:AdrLine>
+                    </n1:PstlAdr>
+                </n1:Ownr>
+                <n1:Svcr>
+                    <n1:FinInstnId>
+                        <n1:BICFI>TMOHOTON12Q</n1:BICFI>
+                        <n1:Nm>NUMQUE PAREST (Usubsevapta) Xxx.</n1:Nm>
+                        <n1:Othr>
+                            <n1:Id>CHE-116.285.487 MWST</n1:Id>
+                            <n1:Issr>LIS-ME</n1:Issr>
+                        </n1:Othr>
+                    </n1:FinInstnId>
+                </n1:Svcr>
+            </n1:Acct>
+            <n1:Bal>
+                <n1:Tp>
+                    <n1:CdOrPrtry>
+                        <n1:Cd>JUBA</n1:Cd>
+                    </n1:CdOrPrtry>
+                </n1:Tp>
+                <n1:Amt Ccy="CHF">60757.83</n1:Amt>
+                <n1:CdtDbtInd>GRIS</n1:CdtDbtInd>
+                <n1:Dt>
+                    <n1:Dt>2023-08-30</n1:Dt>
+                </n1:Dt>
+            </n1:Bal>
+            <n1:Bal>
+                <n1:Tp>
+                    <n1:CdOrPrtry>
+                        <n1:Cd>FORE</n1:Cd>
+                    </n1:CdOrPrtry>
+                </n1:Tp>
+                <n1:Amt Ccy="CHF">55375.62</n1:Amt>
+                <n1:CdtDbtInd>GRIS</n1:CdtDbtInd>
+                <n1:Dt>
+                    <n1:Dt>2023-08-30</n1:Dt>
+                </n1:Dt>
+            </n1:Bal>
+            <n1:Bal>
+                <n1:Tp>
+                    <n1:CdOrPrtry>
+                        <n1:Cd>INNO</n1:Cd>
+                    </n1:CdOrPrtry>
+                </n1:Tp>
+                <n1:Amt Ccy="CHF">55375.62</n1:Amt>
+                <n1:CdtDbtInd>GRIS</n1:CdtDbtInd>
+                <n1:Dt>
+                    <n1:Dt>2023-08-30</n1:Dt>
+                </n1:Dt>
+            </n1:Bal>
+            <n1:TxsSummry>
+                <n1:TtlNtries>
+                    <n1:NbOfNtries>8</n1:NbOfNtries>
+                    <n1:Sum>5382.21</n1:Sum>
+                    <n1:TtlNetNtry>
+                        <n1:Amt>5382.21</n1:Amt>
+                        <n1:CdtDbtInd>TURA</n1:CdtDbtInd>
+                    </n1:TtlNetNtry>
+                </n1:TtlNtries>
+                <n1:TtlCdtNtries>
+                    <n1:NbOfNtries>2</n1:NbOfNtries>
+                    <n1:Sum>0.00</n1:Sum>
+                </n1:TtlCdtNtries>
+                <n1:TtlDbtNtries>
+                    <n1:NbOfNtries>8</n1:NbOfNtries>
+                    <n1:Sum>5382.21</n1:Sum>
+                </n1:TtlDbtNtries>
+            </n1:TxsSummry>
+            <n1:Ntry>
+                <n1:Amt Ccy="CHF">112.35</n1:Amt>
+                <n1:CdtDbtInd>TURA</n1:CdtDbtInd>
+                <n1:RvslInd>desto</n1:RvslInd>
+                <n1:Sts>
+                    <n1:Cd>FLUM</n1:Cd>
+                </n1:Sts>
+                <n1:BookgDt>
+                    <n1:Dt>2023-08-30</n1:Dt>
+                </n1:BookgDt>
+                <n1:ValDt>
+                    <n1:Dt>2023-08-30</n1:Dt>
+                </n1:ValDt>
+                <n1:AcctSvcrRef>URCS610331KP23715/3743/A</n1:AcctSvcrRef>
+                <n1:BkTxCd>
+                    <n1:Domn>
+                        <n1:Cd>VENS</n1:Cd>
+                        <n1:Fmly>
+                            <n1:Cd>SPOR</n1:Cd>
+                            <n1:SubFmlyCd>MONE</n1:SubFmlyCd>
+                        </n1:Fmly>
+                    </n1:Domn>
+                </n1:BkTxCd>
+                <n1:AmtDtls>
+                    <n1:InstdAmt>
+                        <n1:Amt Ccy="CHF">112.35</n1:Amt>
+                    </n1:InstdAmt>
+                    <n1:TxAmt>
+                        <n1:Amt Ccy="CHF">112.35</n1:Amt>
+                    </n1:TxAmt>
+                </n1:AmtDtls>
+                <n1:NtryDtls>
+                    <n1:TxDtls>
+                        <n1:Refs>
+                            <n1:MsgId>210866C112525112687Q8L</n1:MsgId>
+                            <n1:AcctSvcrRef>PERE-845562-EX-36608</n1:AcctSvcrRef>
+                            <n1:PmtInfId>E386880100734C3N</n1:PmtInfId>
+                            <n1:InstrId>E386880100734C3N</n1:InstrId>
+                            <n1:EndToEndId>SILIQUIENTE</n1:EndToEndId>
+                            <n1:UETR>8da6f409-3489-43b2-8d83-25a7698c8696</n1:UETR>
+                            <n1:MndtId>MNV5C</n1:MndtId>
+                        </n1:Refs>
+                        <n1:Amt Ccy="CHF">112.35</n1:Amt>
+                        <n1:CdtDbtInd>TURA</n1:CdtDbtInd>
+                        <n1:RltdPties>
+                            <n1:InitgPty>
+                                <n1:Pty>
+                                    <n1:Nm>REM-Pauxerum</n1:Nm>
+                                </n1:Pty>
+                            </n1:InitgPty>
+                            <n1:Cdtr>
+                                <n1:Pty>
+                                    <n1:Nm>RINIANAS (VARECUM) EX</n1:Nm>
+                                    <n1:PstlAdr>
+                                        <n1:AdrLine>SURUCET PENGUS MOR COLO ABICINUBSERURRA 4</n1:AdrLine>
+                                        <n1:AdrLine>2351 PENDABITEM</n1:AdrLine>
+                                    </n1:PstlAdr>
+                                </n1:Pty>
+                            </n1:Cdtr>
+                            <n1:CdtrAcct>
+                                <n1:Id>
+                                    <n1:Othr>
+                                        <n1:Id>468608670</n1:Id>
+                                    </n1:Othr>
+                                </n1:Id>
+                            </n1:CdtrAcct>
+                        </n1:RltdPties>
+                        <n1:RltdAgts>
+                            <n1:CdtrAgt>
+                                <n1:FinInstnId>
+                                    <n1:BICFI>TMOHOTON12Q</n1:BICFI>
+                                    <n1:ClrSysMmbId>
+                                        <n1:ClrSysId>
+                                            <n1:Cd>NATER</n1:Cd>
+                                        </n1:ClrSysId>
+                                        <n1:MmbId>25060</n1:MmbId>
+                                    </n1:ClrSysMmbId>
+                                    <n1:Nm>Numque Parest (Varecum) EX</n1:Nm>
+                                    <n1:PstlAdr>
+                                        <n1:AdrLine>Pedrangundo 5</n1:AdrLine>
+                                        <n1:AdrLine>2726 Dülium OS</n1:AdrLine>
+                                    </n1:PstlAdr>
+                                </n1:FinInstnId>
+                            </n1:CdtrAgt>
+                        </n1:RltdAgts>
+                        <n1:RmtInf>
+                            <n1:Strd>
+                                <n1:RfrdDocInf>
+                                    <n1:Tp>
+                                        <n1:CdOrPrtry>
+                                            <n1:Prtry>QUALAE</n1:Prtry>
+                                        </n1:CdOrPrtry>
+                                    </n1:Tp>
+                                    <n1:Nb>MNV5C</n1:Nb>
+                                    <n1:RltdDt>2023-08-30</n1:RltdDt>
+                                </n1:RfrdDocInf>
+                                <n1:CdtrRefInf>
+                                    <n1:Tp>
+                                        <n1:CdOrPrtry>
+                                            <n1:Prtry>ASE Reganeine</n1:Prtry>
+                                        </n1:CdOrPrtry>
+                                    </n1:Tp>
+                                    <n1:Ref>854153565766262207573130647</n1:Ref>
+                                </n1:CdtrRefInf>
+                                <n1:AddtlRmtInf>COMPTE DE FACT.: 7265041 FACTURE DU 03.08.2023 NO DE
+                                    FACTURE: 3301644284082023 REFERENCE +41787505729</n1:AddtlRmtInf>
+                            </n1:Strd>
+                        </n1:RmtInf>
+                    </n1:TxDtls>
+                </n1:NtryDtls>
+            </n1:Ntry>
+            <n1:Ntry>
+                <n1:Amt Ccy="CHF">115.80</n1:Amt>
+                <n1:CdtDbtInd>TURA</n1:CdtDbtInd>
+                <n1:RvslInd>desto</n1:RvslInd>
+                <n1:Sts>
+                    <n1:Cd>FLUM</n1:Cd>
+                </n1:Sts>
+                <n1:BookgDt>
+                    <n1:Dt>2023-08-30</n1:Dt>
+                </n1:BookgDt>
+                <n1:ValDt>
+                    <n1:Dt>2023-08-30</n1:Dt>
+                </n1:ValDt>
+                <n1:AcctSvcrRef>JDIT265318FM43722/3743/A</n1:AcctSvcrRef>
+                <n1:BkTxCd>
+                    <n1:Domn>
+                        <n1:Cd>VENS</n1:Cd>
+                        <n1:Fmly>
+                            <n1:Cd>SPOR</n1:Cd>
+                            <n1:SubFmlyCd>MONE</n1:SubFmlyCd>
+                        </n1:Fmly>
+                    </n1:Domn>
+                </n1:BkTxCd>
+                <n1:AmtDtls>
+                    <n1:InstdAmt>
+                        <n1:Amt Ccy="CHF">115.80</n1:Amt>
+                    </n1:InstdAmt>
+                    <n1:TxAmt>
+                        <n1:Amt Ccy="CHF">115.80</n1:Amt>
+                    </n1:TxAmt>
+                </n1:AmtDtls>
+                <n1:NtryDtls>
+                    <n1:TxDtls>
+                        <n1:Refs>
+                            <n1:MsgId>304528H501648130CP774S</n1:MsgId>
+                            <n1:AcctSvcrRef>RIUM-845562-EX-80807</n1:AcctSvcrRef>
+                            <n1:PmtInfId>U521752723QF577I</n1:PmtInfId>
+                            <n1:InstrId>U521752723QF577I</n1:InstrId>
+                            <n1:EndToEndId>SILIQUIENTE</n1:EndToEndId>
+                            <n1:UETR>99ed13b9-ed2d-4ac0-b1c6-766a980d5ad3</n1:UETR>
+                            <n1:MndtId>MNV5C</n1:MndtId>
+                        </n1:Refs>
+                        <n1:Amt Ccy="CHF">115.80</n1:Amt>
+                        <n1:CdtDbtInd>TURA</n1:CdtDbtInd>
+                        <n1:RltdPties>
+                            <n1:InitgPty>
+                                <n1:Pty>
+                                    <n1:Nm>REM-Pauxerum</n1:Nm>
+                                </n1:Pty>
+                            </n1:InitgPty>
+                            <n1:Cdtr>
+                                <n1:Pty>
+                                    <n1:Nm>RINIANAS (VARECUM) EX</n1:Nm>
+                                    <n1:PstlAdr>
+                                        <n1:AdrLine>SURUCET PENGUS MOR COLO ABICINUBSERURRA 4</n1:AdrLine>
+                                        <n1:AdrLine>2351 PENDABITEM</n1:AdrLine>
+                                    </n1:PstlAdr>
+                                </n1:Pty>
+                            </n1:Cdtr>
+                            <n1:CdtrAcct>
+                                <n1:Id>
+                                    <n1:Othr>
+                                        <n1:Id>468608670</n1:Id>
+                                    </n1:Othr>
+                                </n1:Id>
+                            </n1:CdtrAcct>
+                        </n1:RltdPties>
+                        <n1:RltdAgts>
+                            <n1:CdtrAgt>
+                                <n1:FinInstnId>
+                                    <n1:BICFI>TMOHOTON12Q</n1:BICFI>
+                                    <n1:ClrSysMmbId>
+                                        <n1:ClrSysId>
+                                            <n1:Cd>NATER</n1:Cd>
+                                        </n1:ClrSysId>
+                                        <n1:MmbId>25060</n1:MmbId>
+                                    </n1:ClrSysMmbId>
+                                    <n1:Nm>Numque Parest (Varecum) EX</n1:Nm>
+                                    <n1:PstlAdr>
+                                        <n1:AdrLine>Pedrangundo 5</n1:AdrLine>
+                                        <n1:AdrLine>2726 Dülium OS</n1:AdrLine>
+                                    </n1:PstlAdr>
+                                </n1:FinInstnId>
+                            </n1:CdtrAgt>
+                        </n1:RltdAgts>
+                        <n1:RmtInf>
+                            <n1:Strd>
+                                <n1:RfrdDocInf>
+                                    <n1:Tp>
+                                        <n1:CdOrPrtry>
+                                            <n1:Prtry>QUALAE</n1:Prtry>
+                                        </n1:CdOrPrtry>
+                                    </n1:Tp>
+                                    <n1:Nb>MNV5C</n1:Nb>
+                                    <n1:RltdDt>2023-08-30</n1:RltdDt>
+                                </n1:RfrdDocInf>
+                                <n1:CdtrRefInf>
+                                    <n1:Tp>
+                                        <n1:CdOrPrtry>
+                                            <n1:Prtry>ASE Reganeine</n1:Prtry>
+                                        </n1:CdOrPrtry>
+                                    </n1:Tp>
+                                    <n1:Ref>801388845810580026352706346</n1:Ref>
+                                </n1:CdtrRefInf>
+                                <n1:AddtlRmtInf>COMPTE DE FACT.: 12805041 FACTURE DU 03.08.2023 NO
+                                    DE FACTURE: 7702284278082023 REFERENCE +41789184211</n1:AddtlRmtInf>
+                            </n1:Strd>
+                        </n1:RmtInf>
+                    </n1:TxDtls>
+                </n1:NtryDtls>
+            </n1:Ntry>
+            <n1:Ntry>
+                <n1:Amt Ccy="CHF">5154.06</n1:Amt>
+                <n1:CdtDbtInd>TURA</n1:CdtDbtInd>
+                <n1:RvslInd>desto</n1:RvslInd>
+                <n1:Sts>
+                    <n1:Cd>FLUM</n1:Cd>
+                </n1:Sts>
+                <n1:BookgDt>
+                    <n1:Dt>2023-08-30</n1:Dt>
+                </n1:BookgDt>
+                <n1:ValDt>
+                    <n1:Dt>2023-08-30</n1:Dt>
+                </n1:ValDt>
+                <n1:AcctSvcrRef>QVT1347185WE85773/3743/A</n1:AcctSvcrRef>
+                <n1:BkTxCd>
+                    <n1:Domn>
+                        <n1:Cd>VENS</n1:Cd>
+                        <n1:Fmly>
+                            <n1:Cd>REDE</n1:Cd>
+                            <n1:SubFmlyCd>CIBI</n1:SubFmlyCd>
+                        </n1:Fmly>
+                    </n1:Domn>
+                </n1:BkTxCd>
+                <n1:AmtDtls>
+                    <n1:InstdAmt>
+                        <n1:Amt Ccy="CHF">5154.06</n1:Amt>
+                    </n1:InstdAmt>
+                    <n1:TxAmt>
+                        <n1:Amt Ccy="CHF">5154.06</n1:Amt>
+                    </n1:TxAmt>
+                </n1:AmtDtls>
+                <n1:NtryDtls>
+                    <n1:TxDtls>
+                        <n1:Refs>
+                            <n1:MsgId>SO1000-230829-14-62116</n1:MsgId>
+                            <n1:AcctSvcrRef>FYG4-845562-EX-14354</n1:AcctSvcrRef>
+                            <n1:PmtInfId>52750541261131668</n1:PmtInfId>
+                            <n1:EndToEndId>YB0182260160226454806</n1:EndToEndId>
+                            <n1:UETR>db406fc9-ef01-4b37-94c9-2780d05a6844</n1:UETR>
+                        </n1:Refs>
+                        <n1:Amt Ccy="CHF">5154.06</n1:Amt>
+                        <n1:CdtDbtInd>TURA</n1:CdtDbtInd>
+                        <n1:RltdPties>
+                            <n1:InitgPty>
+                                <n1:Pty>
+                                    <n1:Nm>WP00/QUID-332/ET</n1:Nm>
+                                </n1:Pty>
+                            </n1:InitgPty>
+                            <n1:Cdtr>
+                                <n1:Pty>
+                                    <n1:Nm>Frundam Pensurem</n1:Nm>
+                                    <n1:PstlAdr>
+                                        <n1:AdrLine>Nunt-Plapost 4, 7472 Soncem, OS</n1:AdrLine>
+                                    </n1:PstlAdr>
+                                </n1:Pty>
+                            </n1:Cdtr>
+                            <n1:CdtrAcct>
+                                <n1:Id>
+                                    <n1:IBAN>CH7722222222222222223</n1:IBAN>
+                                </n1:Id>
+                            </n1:CdtrAcct>
+                        </n1:RltdPties>
+                        <n1:RltdAgts>
+                            <n1:CdtrAgt>
+                                <n1:FinInstnId>
+                                    <n1:BICFI>QNCBGBUQ13X</n1:BICFI>
+                                    <n1:ClrSysMmbId>
+                                        <n1:ClrSysId>
+                                            <n1:Cd>NATER</n1:Cd>
+                                        </n1:ClrSysId>
+                                        <n1:MmbId>64823</n1:MmbId>
+                                    </n1:ClrSysMmbId>
+                                    <n1:Nm>XXX Usubsevapta EX</n1:Nm>
+                                    <n1:PstlAdr>
+                                        <n1:AdrLine>Xxx by Meôvi 5</n1:AdrLine>
+                                        <n1:AdrLine>5701 Baeèsi 3 OS</n1:AdrLine>
+                                    </n1:PstlAdr>
+                                </n1:FinInstnId>
+                            </n1:CdtrAgt>
+                        </n1:RltdAgts>
+                        <n1:RmtInf>
+                            <n1:Ustrd>Inicit UT 1318</n1:Ustrd>
+                        </n1:RmtInf>
+                    </n1:TxDtls>
+                </n1:NtryDtls>
+                <n1:AddtlNtryInf>?56Injtkf UT 1318</n1:AddtlNtryInf>
+            </n1:Ntry>
+        </n1:Stmt>
+    </n1:BkToCstmrStmt>
+</n1:Document>
