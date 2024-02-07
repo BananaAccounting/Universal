@@ -1,0 +1,1384 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Structure subject to change, do not rely on optional tags -->
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:camt.053.001.04">
+    <BkToCstmrStmt>
+        <GrpHdr>
+            <MsgId>CAMT053_20221223_010729756_VJC7LIIF</MsgId>
+            <CreDtTm>2022-12-23T01:07:29.756Z</CreDtTm>
+            <MsgPgntn>
+                <PgNb>1</PgNb>
+                <LastPgInd>true</LastPgInd>
+            </MsgPgntn>
+            <AddtlInf>SPS/1.7/PROD</AddtlInf>
+        </GrpHdr>
+        <Stmt>
+            <Id>cbe792bcaaf74a87b6c5c0c77df10872</Id>
+            <ElctrncSeqNb>58</ElctrncSeqNb>
+            <CreDtTm>2022-12-23T01:07:29.778Z</CreDtTm>
+            <FrToDt>
+                <FrDtTm>2022-12-22T00:00:00+01:00</FrDtTm>
+                <ToDtTm>2022-12-22T23:59:00+01:00</ToDtTm>
+            </FrToDt>
+            <Acct>
+                <Id>
+                    <Othr>
+                        <Id>0885831854071000</Id>
+                    </Othr>
+                </Id>
+                <Ccy>CHF</Ccy>
+                <Ownr>
+                    <Nm>Barbara Muster</Nm>
+                    <PstlAdr>
+                        <AdrLine>Zürich</AdrLine>
+                    </PstlAdr>
+                </Ownr>
+                <Svcr>
+                    <FinInstnId>
+                        <BICFI>CRESCHZZ80A</BICFI>
+                        <Nm>CREDIT SUISSE (Switzerland) Ltd.</Nm>
+                        <Othr>
+                            <Id>CHE-116.285.487 MWST</Id>
+                            <Issr>VAT-ID</Issr>
+                        </Othr>
+                    </FinInstnId>
+                </Svcr>
+            </Acct>
+            <Bal>
+                <Tp>
+                    <CdOrPrtry>
+                        <Cd>OPBD</Cd>
+                    </CdOrPrtry>
+                </Tp>
+                <Amt Ccy="CHF">7751.38</Amt>
+                <CdtDbtInd>CRDT</CdtDbtInd>
+                <Dt>
+                    <Dt>2022-12-22</Dt>
+                </Dt>
+            </Bal>
+            <Bal>
+                <Tp>
+                    <CdOrPrtry>
+                        <Cd>FWAV</Cd>
+                    </CdOrPrtry>
+                </Tp>
+                <Amt Ccy="CHF">25153.89</Amt>
+                <CdtDbtInd>CRDT</CdtDbtInd>
+                <Dt>
+                    <Dt>2022-12-23</Dt>
+                </Dt>
+            </Bal>
+            <Bal>
+                <Tp>
+                    <CdOrPrtry>
+                        <Cd>CLAV</Cd>
+                    </CdOrPrtry>
+                </Tp>
+                <Amt Ccy="CHF">19153.89</Amt>
+                <CdtDbtInd>CRDT</CdtDbtInd>
+                <Dt>
+                    <Dt>2022-12-22</Dt>
+                </Dt>
+            </Bal>
+            <Bal>
+                <Tp>
+                    <CdOrPrtry>
+                        <Cd>CLBD</Cd>
+                    </CdOrPrtry>
+                </Tp>
+                <Amt Ccy="CHF">25153.89</Amt>
+                <CdtDbtInd>CRDT</CdtDbtInd>
+                <Dt>
+                    <Dt>2022-12-22</Dt>
+                </Dt>
+            </Bal>
+            <TxsSummry>
+                <TtlNtries>
+                    <NbOfNtries>16</NbOfNtries>
+                    <Sum>18138.73</Sum>
+                    <TtlNetNtry>
+                        <Amt>17402.51</Amt>
+                        <CdtDbtInd>CRDT</CdtDbtInd>
+                    </TtlNetNtry>
+                </TtlNtries>
+                <TtlCdtNtries>
+                    <NbOfNtries>8</NbOfNtries>
+                    <Sum>17770.62</Sum>
+                </TtlCdtNtries>
+                <TtlDbtNtries>
+                    <NbOfNtries>8</NbOfNtries>
+                    <Sum>368.11</Sum>
+                </TtlDbtNtries>
+            </TxsSummry>
+            <Ntry>
+                <Amt Ccy="CHF">2.36</Amt>
+                <CdtDbtInd>DBIT</CdtDbtInd>
+                <Sts>BOOK</Sts>
+                <BookgDt>
+                    <Dt>2022-12-22</Dt>
+                </BookgDt>
+                <ValDt>
+                    <Dt>2022-12-22</Dt>
+                </ValDt>
+                <AcctSvcrRef>DNQR-180322-CS-43783/1</AcctSvcrRef>
+                <BkTxCd>
+                    <Domn>
+                        <Cd>PMNT</Cd>
+                        <Fmly>
+                            <Cd>ICDT</Cd>
+                            <SubFmlyCd>ESCT</SubFmlyCd>
+                        </Fmly>
+                    </Domn>
+                </BkTxCd>
+                <AmtDtls>
+                    <InstdAmt>
+                        <Amt Ccy="EUR">2</Amt>
+                    </InstdAmt>
+                    <TxAmt>
+                        <Amt Ccy="EUR">2</Amt>
+                    </TxAmt>
+                    <CntrValAmt>
+                        <Amt Ccy="CHF">2.36</Amt>
+                        <CcyXchg>
+                            <SrcCcy>EUR</SrcCcy>
+                            <TrgtCcy>CHF</TrgtCcy>
+                            <XchgRate>1.18</XchgRate>
+                            <QtnDt>2022-12-22T00:00:00.000+01:00</QtnDt>
+                        </CcyXchg>
+                    </CntrValAmt>
+                </AmtDtls>
+                <NtryDtls>
+                    <TxDtls>
+                        <Refs>
+                            <MsgId>MSG0150D4D8E71C447EBF774FB84E1F7946</MsgId>
+                            <AcctSvcrRef>DNQR-180322-CS-43783</AcctSvcrRef>
+                            <PmtInfId>BLVL-1-18032208215187</PmtInfId>
+                            <InstrId>CLVL-1-18032711450502-1</InstrId>
+                            <EndToEndId>ETEF9123BE97B2243629A9CF12FC6B6B80D</EndToEndId>
+                        </Refs>
+                        <Amt Ccy="EUR">2</Amt>
+                        <CdtDbtInd>DBIT</CdtDbtInd>
+                        <RltdPties>
+                            <InitgPty>
+                                <Nm>Barbara Muster</Nm>
+                            </InitgPty>
+                            <Cdtr>
+                                <Nm>Jan Kowalski</Nm>
+                                <PstlAdr>
+                                    <Ctry>PL</Ctry>
+                                    <AdrLine>Szczytnicka 9</AdrLine>
+                                    <AdrLine>50-382 Wroclaw</AdrLine>
+                                </PstlAdr>
+                            </Cdtr>
+                            <CdtrAcct>
+                                <Id>
+                                    <IBAN>PL79105015751000002345678901</IBAN>
+                                </Id>
+                            </CdtrAcct>
+                        </RltdPties>
+                        <RltdAgts>
+                            <CdtrAgt>
+                                <FinInstnId>
+                                    <BICFI>INGBPLPW</BICFI>
+                                    <Nm>ING BANK SLASKI SA</Nm>
+                                    <PstlAdr>
+                                        <Ctry>PL</Ctry>
+                                        <AdrLine>UL. SOKOLSKA 34 40-086 KATOWICE </AdrLine>
+                                        <AdrLine>PL</AdrLine>
+                                    </PstlAdr>
+                                </FinInstnId>
+                            </CdtrAgt>
+                        </RltdAgts>
+                    </TxDtls>
+                </NtryDtls>
+            </Ntry>
+            <Ntry>
+                <Amt Ccy="CHF">4.78</Amt>
+                <CdtDbtInd>DBIT</CdtDbtInd>
+                <Sts>BOOK</Sts>
+                <BookgDt>
+                    <Dt>2022-12-22</Dt>
+                </BookgDt>
+                <ValDt>
+                    <Dt>2022-12-22</Dt>
+                </ValDt>
+                <AcctSvcrRef>DNQN-180322-CS-58740/1</AcctSvcrRef>
+                <BkTxCd>
+                    <Domn>
+                        <Cd>PMNT</Cd>
+                        <Fmly>
+                            <Cd>ICDT</Cd>
+                            <SubFmlyCd>AUTT</SubFmlyCd>
+                        </Fmly>
+                    </Domn>
+                </BkTxCd>
+                <AmtDtls>
+                    <InstdAmt>
+                        <Amt Ccy="USD">5</Amt>
+                    </InstdAmt>
+                    <TxAmt>
+                        <Amt Ccy="USD">5</Amt>
+                    </TxAmt>
+                    <CntrValAmt>
+                        <Amt Ccy="CHF">4.78</Amt>
+                        <CcyXchg>
+                            <SrcCcy>USD</SrcCcy>
+                            <TrgtCcy>CHF</TrgtCcy>
+                            <XchgRate>0.95611387</XchgRate>
+                            <QtnDt>2022-12-22T00:00:00.000+01:00</QtnDt>
+                        </CcyXchg>
+                    </CntrValAmt>
+                </AmtDtls>
+                <Chrgs>
+                    <TtlChrgsAndTaxAmt Ccy="CHF">5</TtlChrgsAndTaxAmt>
+                    <Rcrd>
+                        <Amt Ccy="CHF">5</Amt>
+                        <CdtDbtInd>DBIT</CdtDbtInd>
+                        <ChrgInclInd>false</ChrgInclInd>
+                        <Tp>
+                            <Prtry>
+                                <Id>INTERNAL</Id>
+                            </Prtry>
+                        </Tp>
+                    </Rcrd>
+                </Chrgs>
+                <NtryDtls>
+                    <Btch>
+                        <MsgId>MSG40BF23DB52794241A8DBE60391E04976</MsgId>
+                        <PmtInfId>BLVL-1-18032208093429</PmtInfId>
+                        <NbOfTxs>1</NbOfTxs>
+                        <TtlAmt Ccy="USD">5</TtlAmt>
+                    </Btch>
+                    <TxDtls>
+                        <Refs>
+                            <MsgId>MSG40BF23DB52794241A8DBE60391E04976</MsgId>
+                            <AcctSvcrRef>DNQR-180322-CS-43794</AcctSvcrRef>
+                            <PmtInfId>BLVL-1-18032208093429</PmtInfId>
+                            <InstrId>CLVL-1-18032711020928-1</InstrId>
+                            <EndToEndId>ETE6A71EE9E18FF485EAC881A3B2E93475A</EndToEndId>
+                        </Refs>
+                        <Amt Ccy="USD">5</Amt>
+                        <CdtDbtInd>DBIT</CdtDbtInd>
+                        <BkTxCd>
+                            <Domn>
+                                <Cd>PMNT</Cd>
+                                <Fmly>
+                                    <Cd>ICDT</Cd>
+                                    <SubFmlyCd>XBCT</SubFmlyCd>
+                                </Fmly>
+                            </Domn>
+                        </BkTxCd>
+                        <RltdPties>
+                            <InitgPty>
+                                <Nm>Barbara Muster</Nm>
+                            </InitgPty>
+                            <Cdtr>
+                                <Nm>Max Muster</Nm>
+                                <PstlAdr>
+                                    <PstCd>8008</PstCd>
+                                    <TwnNm>Zuerich</TwnNm>
+                                </PstlAdr>
+                            </Cdtr>
+                            <CdtrAcct>
+                                <Id>
+                                    <IBAN>CH85002582584X1234560</IBAN>
+                                </Id>
+                            </CdtrAcct>
+                        </RltdPties>
+                        <RltdAgts>
+                            <CdtrAgt>
+                                <FinInstnId>
+                                    <ClrSysMmbId>
+                                        <ClrSysId>
+                                            <Cd>CHBCC</Cd>
+                                        </ClrSysId>
+                                        <MmbId>00258</MmbId>
+                                    </ClrSysMmbId>
+                                    <Nm>UBS Switzerland AG</Nm>
+                                    <PstlAdr>
+                                        <AdrLine>Zentralstrasse 55</AdrLine>
+                                        <AdrLine>5610 Wohlen AG 1 CH</AdrLine>
+                                    </PstlAdr>
+                                </FinInstnId>
+                            </CdtrAgt>
+                        </RltdAgts>
+                    </TxDtls>
+                </NtryDtls>
+                <AddtlNtryInf>?62Relevant charges will be billed at the end of the accounting period
+                    taking into account the product-specific terms and conditions.</AddtlNtryInf>
+            </Ntry>
+            <Ntry>
+                <Amt Ccy="CHF">9.57</Amt>
+                <CdtDbtInd>DBIT</CdtDbtInd>
+                <Sts>BOOK</Sts>
+                <BookgDt>
+                    <Dt>2022-12-22</Dt>
+                </BookgDt>
+                <ValDt>
+                    <Dt>2022-12-22</Dt>
+                </ValDt>
+                <AcctSvcrRef>DNQR-180322-CS-43962/1</AcctSvcrRef>
+                <BkTxCd>
+                    <Domn>
+                        <Cd>PMNT</Cd>
+                        <Fmly>
+                            <Cd>ICDT</Cd>
+                            <SubFmlyCd>AUTT</SubFmlyCd>
+                        </Fmly>
+                    </Domn>
+                </BkTxCd>
+                <AmtDtls>
+                    <InstdAmt>
+                        <Amt Ccy="USD">10</Amt>
+                    </InstdAmt>
+                    <TxAmt>
+                        <Amt Ccy="USD">10</Amt>
+                    </TxAmt>
+                    <CntrValAmt>
+                        <Amt Ccy="CHF">9.57</Amt>
+                        <CcyXchg>
+                            <SrcCcy>USD</SrcCcy>
+                            <TrgtCcy>CHF</TrgtCcy>
+                            <XchgRate>0.95711254</XchgRate>
+                            <QtnDt>2022-12-22T00:00:00.000+01:00</QtnDt>
+                        </CcyXchg>
+                    </CntrValAmt>
+                </AmtDtls>
+                <Chrgs>
+                    <TtlChrgsAndTaxAmt Ccy="CHF">23</TtlChrgsAndTaxAmt>
+                    <Rcrd>
+                        <Amt Ccy="CHF">5</Amt>
+                        <CdtDbtInd>DBIT</CdtDbtInd>
+                        <ChrgInclInd>false</ChrgInclInd>
+                        <Tp>
+                            <Prtry>
+                                <Id>INTERNAL</Id>
+                            </Prtry>
+                        </Tp>
+                    </Rcrd>
+                    <Rcrd>
+                        <Amt Ccy="CHF">18</Amt>
+                        <CdtDbtInd>DBIT</CdtDbtInd>
+                        <ChrgInclInd>false</ChrgInclInd>
+                        <Tp>
+                            <Prtry>
+                                <Id>EXTERNAL</Id>
+                            </Prtry>
+                        </Tp>
+                    </Rcrd>
+                </Chrgs>
+                <NtryDtls>
+                    <Btch>
+                        <MsgId>MSGEADAC6D735B14EEBA29FB52A459DD44F</MsgId>
+                        <PmtInfId>BLVL-1-18032208261993</PmtInfId>
+                        <NbOfTxs>1</NbOfTxs>
+                        <TtlAmt Ccy="USD">10</TtlAmt>
+                    </Btch>
+                    <TxDtls>
+                        <Refs>
+                            <MsgId>MSGEADAC6D735B14EEBA29FB52A459DD44F</MsgId>
+                            <AcctSvcrRef>DNQR-180322-CS-43705</AcctSvcrRef>
+                            <PmtInfId>BLVL-1-18032208261993</PmtInfId>
+                            <InstrId>CLVL-1-18032711084266-1</InstrId>
+                            <EndToEndId>ETE1B58D1C4D44F4D75A481832C36D54D3E</EndToEndId>
+                        </Refs>
+                        <Amt Ccy="USD">10</Amt>
+                        <CdtDbtInd>DBIT</CdtDbtInd>
+                        <BkTxCd>
+                            <Domn>
+                                <Cd>PMNT</Cd>
+                                <Fmly>
+                                    <Cd>ICDT</Cd>
+                                    <SubFmlyCd>XBCT</SubFmlyCd>
+                                </Fmly>
+                            </Domn>
+                        </BkTxCd>
+                        <RltdPties>
+                            <InitgPty>
+                                <Nm>Barbara Muster</Nm>
+                            </InitgPty>
+                            <Cdtr>
+                                <Nm>Jan Kowalski</Nm>
+                                <PstlAdr>
+                                    <StrtNm>Szczytnicka 9</StrtNm>
+                                    <PstCd>50-382</PstCd>
+                                    <TwnNm>Wroclaw</TwnNm>
+                                    <Ctry>PL</Ctry>
+                                </PstlAdr>
+                            </Cdtr>
+                            <CdtrAcct>
+                                <Id>
+                                    <IBAN>PL79105015751000002345678901</IBAN>
+                                </Id>
+                            </CdtrAcct>
+                        </RltdPties>
+                        <RltdAgts>
+                            <CdtrAgt>
+                                <FinInstnId>
+                                    <BICFI>INGBPLPW</BICFI>
+                                    <Nm>ING BANK SLASKI SA</Nm>
+                                    <PstlAdr>
+                                        <Ctry>PL</Ctry>
+                                        <AdrLine>UL. SOKOLSKA 34 40-086 KATOWICE </AdrLine>
+                                        <AdrLine>PL</AdrLine>
+                                    </PstlAdr>
+                                </FinInstnId>
+                            </CdtrAgt>
+                        </RltdAgts>
+                        <RmtInf>
+                            <Ustrd>Invoice AB-123-C</Ustrd>
+                        </RmtInf>
+                    </TxDtls>
+                </NtryDtls>
+                <AddtlNtryInf>?62Relevant charges will be billed at the end of the accounting period
+                    taking into account the product-specific terms and conditions.</AddtlNtryInf>
+            </Ntry>
+            <Ntry>
+                <Amt Ccy="CHF">10.1</Amt>
+                <CdtDbtInd>DBIT</CdtDbtInd>
+                <Sts>BOOK</Sts>
+                <BookgDt>
+                    <Dt>2022-12-22</Dt>
+                </BookgDt>
+                <ValDt>
+                    <Dt>2022-12-22</Dt>
+                </ValDt>
+                <AcctSvcrRef>DNQN-180322-CS-58062/1</AcctSvcrRef>
+                <BkTxCd>
+                    <Domn>
+                        <Cd>PMNT</Cd>
+                        <Fmly>
+                            <Cd>ICDT</Cd>
+                            <SubFmlyCd>DMCT</SubFmlyCd>
+                        </Fmly>
+                    </Domn>
+                </BkTxCd>
+                <AmtDtls>
+                    <InstdAmt>
+                        <Amt Ccy="CHF">10.1</Amt>
+                    </InstdAmt>
+                    <TxAmt>
+                        <Amt Ccy="CHF">10.1</Amt>
+                    </TxAmt>
+                </AmtDtls>
+                <NtryDtls>
+                    <TxDtls>
+                        <Refs>
+                            <MsgId>MSG0D6E675AB5794B5BA889A0CCEAAD1D16</MsgId>
+                            <AcctSvcrRef>DNQN-180322-CS-58062</AcctSvcrRef>
+                            <PmtInfId>BLVL-1-18032207545645</PmtInfId>
+                            <InstrId>5139/180314/1ABC</InstrId>
+                            <EndToEndId>5139/180314/1ABC</EndToEndId>
+                        </Refs>
+                        <Amt Ccy="CHF">10.1</Amt>
+                        <CdtDbtInd>DBIT</CdtDbtInd>
+                        <RltdPties>
+                            <Cdtr>
+                                <Nm>Max Muster</Nm>
+                                <PstlAdr>
+                                    <Ctry>CH</Ctry>
+                                    <AdrLine>Seefeldstrasse 1</AdrLine>
+                                    <AdrLine>8008 Zurich</AdrLine>
+                                </PstlAdr>
+                            </Cdtr>
+                            <CdtrAcct>
+                                <Id>
+                                    <IBAN>CH85002582584X1234560</IBAN>
+                                </Id>
+                            </CdtrAcct>
+                        </RltdPties>
+                        <RltdAgts>
+                            <CdtrAgt>
+                                <FinInstnId>
+                                    <ClrSysMmbId>
+                                        <ClrSysId>
+                                            <Cd>CHBCC</Cd>
+                                        </ClrSysId>
+                                        <MmbId>00258</MmbId>
+                                    </ClrSysMmbId>
+                                    <Nm>UBS Switzerland AG</Nm>
+                                    <PstlAdr>
+                                        <AdrLine>Zentralstrasse 55</AdrLine>
+                                        <AdrLine>5610 Wohlen AG 1 CH</AdrLine>
+                                    </PstlAdr>
+                                </FinInstnId>
+                            </CdtrAgt>
+                        </RltdAgts>
+                        <RmtInf>
+                            <Ustrd>Rechnungsnummer 18C527-005</Ustrd>
+                        </RmtInf>
+                    </TxDtls>
+                </NtryDtls>
+            </Ntry>
+            <Ntry>
+                <Amt Ccy="CHF">10.2</Amt>
+                <CdtDbtInd>DBIT</CdtDbtInd>
+                <Sts>BOOK</Sts>
+                <BookgDt>
+                    <Dt>2022-12-22</Dt>
+                </BookgDt>
+                <ValDt>
+                    <Dt>2022-12-22</Dt>
+                </ValDt>
+                <AcctSvcrRef>DNQR-180322-CS-40797/1</AcctSvcrRef>
+                <BkTxCd>
+                    <Domn>
+                        <Cd>PMNT</Cd>
+                        <Fmly>
+                            <Cd>ICDT</Cd>
+                            <SubFmlyCd>AUTT</SubFmlyCd>
+                        </Fmly>
+                    </Domn>
+                </BkTxCd>
+                <AmtDtls>
+                    <InstdAmt>
+                        <Amt Ccy="CHF">10.2</Amt>
+                    </InstdAmt>
+                    <TxAmt>
+                        <Amt Ccy="CHF">10.2</Amt>
+                    </TxAmt>
+                </AmtDtls>
+                <NtryDtls>
+                    <Btch>
+                        <MsgId>MSG71784A43AF5747B6A60C17CFD29B1712</MsgId>
+                        <PmtInfId>BLVL-1-18032207590104</PmtInfId>
+                        <NbOfTxs>1</NbOfTxs>
+                        <TtlAmt Ccy="CHF">10.2</TtlAmt>
+                    </Btch>
+                    <TxDtls>
+                        <Refs>
+                            <MsgId>MSG71784A43AF5747B6A60C17CFD29B1712</MsgId>
+                            <AcctSvcrRef>DNQR-180322-CS-43716</AcctSvcrRef>
+                            <PmtInfId>BLVL-1-18032207590104</PmtInfId>
+                            <InstrId>CLVL-1-18032710592518-1</InstrId>
+                            <EndToEndId>ETE53005D7923CD49509A3E7DB9BEC094A9</EndToEndId>
+                        </Refs>
+                        <Amt Ccy="CHF">10.2</Amt>
+                        <CdtDbtInd>DBIT</CdtDbtInd>
+                        <BkTxCd>
+                            <Domn>
+                                <Cd>PMNT</Cd>
+                                <Fmly>
+                                    <Cd>ICDT</Cd>
+                                    <SubFmlyCd>DMCT</SubFmlyCd>
+                                </Fmly>
+                            </Domn>
+                        </BkTxCd>
+                        <RltdPties>
+                            <InitgPty>
+                                <Nm>Barbara Muster</Nm>
+                            </InitgPty>
+                            <Cdtr>
+                                <Nm>Max Muster</Nm>
+                                <PstlAdr>
+                                    <PstCd>8008</PstCd>
+                                    <TwnNm>Zuerich</TwnNm>
+                                </PstlAdr>
+                            </Cdtr>
+                            <CdtrAcct>
+                                <Id>
+                                    <IBAN>CH85002582584X1234560</IBAN>
+                                </Id>
+                            </CdtrAcct>
+                        </RltdPties>
+                        <RltdAgts>
+                            <CdtrAgt>
+                                <FinInstnId>
+                                    <ClrSysMmbId>
+                                        <ClrSysId>
+                                            <Cd>CHBCC</Cd>
+                                        </ClrSysId>
+                                        <MmbId>00258</MmbId>
+                                    </ClrSysMmbId>
+                                    <Nm>UBS Switzerland AG</Nm>
+                                    <PstlAdr>
+                                        <AdrLine>Zentralstrasse 55</AdrLine>
+                                        <AdrLine>5610 Wohlen AG 1 CH</AdrLine>
+                                    </PstlAdr>
+                                </FinInstnId>
+                            </CdtrAgt>
+                        </RltdAgts>
+                    </TxDtls>
+                </NtryDtls>
+            </Ntry>
+            <Ntry>
+                <Amt Ccy="CHF">100</Amt>
+                <CdtDbtInd>DBIT</CdtDbtInd>
+                <Sts>BOOK</Sts>
+                <BookgDt>
+                    <Dt>2022-12-22</Dt>
+                </BookgDt>
+                <ValDt>
+                    <Dt>2022-12-22</Dt>
+                </ValDt>
+                <AcctSvcrRef>DNWL-180322-CS-87851/1</AcctSvcrRef>
+                <BkTxCd>
+                    <Domn>
+                        <Cd>PMNT</Cd>
+                        <Fmly>
+                            <Cd>ICDT</Cd>
+                            <SubFmlyCd>BOOK</SubFmlyCd>
+                        </Fmly>
+                    </Domn>
+                </BkTxCd>
+                <AmtDtls>
+                    <InstdAmt>
+                        <Amt Ccy="CHF">100</Amt>
+                    </InstdAmt>
+                    <TxAmt>
+                        <Amt Ccy="CHF">100</Amt>
+                    </TxAmt>
+                </AmtDtls>
+                <NtryDtls>
+                    <TxDtls>
+                        <Refs>
+                            <MsgId>57af4bcfda8d4f8fb958c5424d73c12e</MsgId>
+                            <AcctSvcrRef>DNWL-180322-CS-87851</AcctSvcrRef>
+                            <PmtInfId>DNCS-20220322-IXN0</PmtInfId>
+                            <InstrId>DNCS-20220322-IXN0-TXN0</InstrId>
+                            <EndToEndId>SP-57273905-0</EndToEndId>
+                        </Refs>
+                        <Amt Ccy="CHF">100</Amt>
+                        <CdtDbtInd>DBIT</CdtDbtInd>
+                        <RltdPties>
+                            <Cdtr>
+                                <Nm>Barbara Muster, Zürich</Nm>
+                                <PstlAdr>
+                                    <AdrLine>Barbara Muster, Zürich</AdrLine>
+                                </PstlAdr>
+                            </Cdtr>
+                            <CdtrAcct>
+                                <Id>
+                                    <IBAN>CH3704835833740031000</IBAN>
+                                </Id>
+                            </CdtrAcct>
+                        </RltdPties>
+                        <RltdAgts>
+                            <CdtrAgt>
+                                <FinInstnId>
+                                    <ClrSysMmbId>
+                                        <ClrSysId>
+                                            <Cd>CHBCC</Cd>
+                                        </ClrSysId>
+                                        <MmbId>04835</MmbId>
+                                    </ClrSysMmbId>
+                                    <Nm>Credit Suisse (Schweiz) AG</Nm>
+                                    <PstlAdr>
+                                        <AdrLine>Paradeplatz 8</AdrLine>
+                                        <AdrLine>8070 Zürich CH</AdrLine>
+                                    </PstlAdr>
+                                </FinInstnId>
+                            </CdtrAgt>
+                        </RltdAgts>
+                    </TxDtls>
+                </NtryDtls>
+            </Ntry>
+            <Ntry>
+                <Amt Ccy="CHF">120</Amt>
+                <CdtDbtInd>DBIT</CdtDbtInd>
+                <Sts>BOOK</Sts>
+                <BookgDt>
+                    <Dt>2022-12-22</Dt>
+                </BookgDt>
+                <ValDt>
+                    <Dt>2022-12-22</Dt>
+                </ValDt>
+                <AcctSvcrRef>DNQR-180322-CS-40193/1</AcctSvcrRef>
+                <BkTxCd>
+                    <Domn>
+                        <Cd>PMNT</Cd>
+                        <Fmly>
+                            <Cd>ICDT</Cd>
+                            <SubFmlyCd>AUTT</SubFmlyCd>
+                        </Fmly>
+                    </Domn>
+                </BkTxCd>
+                <AmtDtls>
+                    <InstdAmt>
+                        <Amt Ccy="CHF">120</Amt>
+                    </InstdAmt>
+                    <TxAmt>
+                        <Amt Ccy="CHF">120</Amt>
+                    </TxAmt>
+                </AmtDtls>
+                <NtryDtls>
+                    <Btch>
+                        <MsgId>MSG270C529F8169437186D63B1339FC09F9</MsgId>
+                        <PmtInfId>BLVL-1-18032207463420</PmtInfId>
+                        <NbOfTxs>1</NbOfTxs>
+                        <TtlAmt Ccy="CHF">120</TtlAmt>
+                    </Btch>
+                    <TxDtls>
+                        <Refs>
+                            <MsgId>MSG270C529F8169437186D63B1339FC09F9</MsgId>
+                            <AcctSvcrRef>DNQR-180322-CS-43727</AcctSvcrRef>
+                            <PmtInfId>BLVL-1-18032207463420</PmtInfId>
+                            <InstrId>CLVL-1-18032710510965-1</InstrId>
+                            <EndToEndId>ETEE529F052BD2B4C8B85F345FC543B4930</EndToEndId>
+                        </Refs>
+                        <Amt Ccy="CHF">120</Amt>
+                        <CdtDbtInd>DBIT</CdtDbtInd>
+                        <RltdPties>
+                            <UltmtDbtr>
+                                <Nm>Barbara Muster</Nm>
+                                <PstlAdr>
+                                    <StrtNm>Hauptstrasse 1</StrtNm>
+                                    <PstCd>8001</PstCd>
+									<TwnNm>Zürich</TwnNm>
+									<Ctry>CH</Ctry>
+                                </PstlAdr>
+                            </UltmtDbtr>
+                            <Cdtr>
+                                <Nm>Aero Club der Schweiz</Nm>
+                                <PstlAdr>
+                                    <AdrLine>Lidostrasse 5</AdrLine>
+                                    <AdrLine>6006 Luzern</AdrLine>
+                                </PstlAdr>
+                            </Cdtr>
+                            <CdtrAcct>
+                                <Id>
+                                    <IBAN>CH0930778123456789000</IBAN>
+                                </Id>
+                            </CdtrAcct>
+                        </RltdPties>
+                        <RltdAgts>
+                            <CdtrAgt>
+                                <FinInstnId>
+                                    <ClrSysMmbId>
+                                        <ClrSysId>
+                                            <Cd>CHBCC</Cd>
+                                        </ClrSysId>
+                                        <MmbId>00778</MmbId>
+                                    </ClrSysMmbId>
+                                    <Nm>Luzerner Kantonalbank AG</Nm>
+                                    <PstlAdr>
+                                        <AdrLine>Pilatusstrasse 12</AdrLine>
+                                        <AdrLine>6002 Luzern CH</AdrLine>
+                                    </PstlAdr>
+                                </FinInstnId>
+                            </CdtrAgt>
+                        </RltdAgts>
+                        <RmtInf>
+                            <Strd>
+                                <CdtrRefInf>
+                                    <Tp>
+                                        <CdOrPrtry>
+                                            <Prtry>QRR</Prtry>
+                                        </CdOrPrtry>
+                                    </Tp>
+                                    <Ref>047280000701047470007679672</Ref>
+                                </CdtrRefInf>
+                                <AddtlRmtInf>Aero Club der Schweiz</AddtlRmtInf>
+                            </Strd>
+                        </RmtInf>
+                    </TxDtls>
+                </NtryDtls>
+            </Ntry>
+            <Ntry>
+                <Amt Ccy="CHF">111.1</Amt>
+                <CdtDbtInd>DBIT</CdtDbtInd>
+                <Sts>BOOK</Sts>
+                <BookgDt>
+                    <Dt>2022-12-22</Dt>
+                </BookgDt>
+                <ValDt>
+                    <Dt>2022-12-22</Dt>
+                </ValDt>
+                <AcctSvcrRef>DNRD-180323-CS-75599/1</AcctSvcrRef>
+                <BkTxCd>
+                    <Domn>
+                        <Cd>PMNT</Cd>
+                        <Fmly>
+                            <Cd>ICDT</Cd>
+                            <SubFmlyCd>AUTT</SubFmlyCd>
+                        </Fmly>
+                    </Domn>
+                </BkTxCd>
+                <AmtDtls>
+                    <InstdAmt>
+                        <Amt Ccy="CHF">111.1</Amt>
+                    </InstdAmt>
+                    <TxAmt>
+                        <Amt Ccy="CHF">111.1</Amt>
+                    </TxAmt>
+                </AmtDtls>
+                <NtryDtls>
+                    <Btch>
+                        <MsgId>MSG4583D8DC482546E1B19F092AC83A2665</MsgId>
+                        <PmtInfId>BLVL-1-19030708451663</PmtInfId>
+                        <NbOfTxs>2</NbOfTxs>
+                        <TtlAmt Ccy="CHF">111.1</TtlAmt>
+                    </Btch>
+                    <TxDtls>
+                        <Refs>
+                            <MsgId>MSG4583D8DC482546E1B19F092AC83A2665</MsgId>
+                            <AcctSvcrRef>DNQR-180322-CS-43738</AcctSvcrRef>
+                            <PmtInfId>BLVL-1-19030708451663</PmtInfId>
+                            <InstrId>CLVL-1-19030708451663-1</InstrId>
+                            <EndToEndId>ETE29CDDA854EE2484ABEF9DE87A81E0C8F</EndToEndId>
+                        </Refs>
+                        <Amt Ccy="CHF">11.10</Amt>
+                        <CdtDbtInd>DBIT</CdtDbtInd>
+                        <BkTxCd>
+                            <Domn>
+                                <Cd>PMNT</Cd>
+                                <Fmly>
+                                    <Cd>ICDT</Cd>
+                                    <SubFmlyCd>DMCT</SubFmlyCd>
+                                </Fmly>
+                            </Domn>
+                        </BkTxCd>
+                        <RltdPties>
+                            <InitgPty>
+                                <Nm>Barbara Muster</Nm>
+                            </InitgPty>
+                            <Cdtr>
+                                <Nm>Max Muster</Nm>
+                                <PstlAdr>
+                                    <PstCd>8008</PstCd>
+                                    <TwnNm>Zuerich</TwnNm>
+                                </PstlAdr>
+                            </Cdtr>
+                            <CdtrAcct>
+                                <Id>
+                                    <IBAN>CH85002582584X1234560</IBAN>
+                                </Id>
+                            </CdtrAcct>
+                        </RltdPties>
+                        <RltdAgts>
+                            <CdtrAgt>
+                                <FinInstnId>
+                                    <ClrSysMmbId>
+                                        <ClrSysId>
+                                            <Cd>CHBCC</Cd>
+                                        </ClrSysId>
+                                        <MmbId>00258</MmbId>
+                                    </ClrSysMmbId>
+                                    <Nm>UBS Switzerland AG</Nm>
+                                    <PstlAdr>
+                                        <AdrLine>Zentralstrasse 55</AdrLine>
+                                        <AdrLine>5610 Wohlen AG 1 CH</AdrLine>
+                                    </PstlAdr>
+                                </FinInstnId>
+                            </CdtrAgt>
+                        </RltdAgts>
+                    </TxDtls>
+                    <TxDtls>
+                        <Refs>
+                            <MsgId>MSG4583D8DC482546E1B19F092AC83A2665</MsgId>
+                            <AcctSvcrRef>DNQR-180322-CS-43749</AcctSvcrRef>
+                            <PmtInfId>BLVL-1-19030708451663</PmtInfId>
+                            <InstrId>CLVL-1-19030708451663-2</InstrId>
+                            <EndToEndId>ETE241D2750BC49461AAE9A98093F458940</EndToEndId>
+                        </Refs>
+                        <Amt Ccy="CHF">100</Amt>
+                        <CdtDbtInd>DBIT</CdtDbtInd>
+                        <BkTxCd>
+                            <Domn>
+                                <Cd>PMNT</Cd>
+                                <Fmly>
+                                    <Cd>ICDT</Cd>
+                                    <SubFmlyCd>VCOM</SubFmlyCd>
+                                </Fmly>
+                            </Domn>
+                        </BkTxCd>
+						<RltdPties>
+                            <UltmtDbtr>
+                                <Nm>Barbara Muster</Nm>
+                                <PstlAdr>
+                                    <StrtNm>Hauptstrasse 1</StrtNm>
+                                    <PstCd>8001</PstCd>
+									<TwnNm>Zürich</TwnNm>
+									<Ctry>CH</Ctry>
+                                </PstlAdr>
+                            </UltmtDbtr>
+                            <Cdtr>
+                                <Nm>Aero Club der Schweiz</Nm>
+                                <PstlAdr>
+                                    <AdrLine>Lidostrasse 5</AdrLine>
+                                    <AdrLine>6006 Luzern</AdrLine>
+                                </PstlAdr>
+                            </Cdtr>
+                            <CdtrAcct>
+                                <Id>
+                                    <IBAN>CH0930778123456789000</IBAN>
+                                </Id>
+                            </CdtrAcct>
+                        </RltdPties>
+                        <RltdAgts>
+                            <CdtrAgt>
+                                <FinInstnId>
+                                    <ClrSysMmbId>
+                                        <ClrSysId>
+                                            <Cd>CHBCC</Cd>
+                                        </ClrSysId>
+                                        <MmbId>00778</MmbId>
+                                    </ClrSysMmbId>
+                                    <Nm>Luzerner Kantonalbank AG</Nm>
+                                    <PstlAdr>
+                                        <AdrLine>Pilatusstrasse 12</AdrLine>
+                                        <AdrLine>6002 Luzern CH</AdrLine>
+                                    </PstlAdr>
+                                </FinInstnId>
+                            </CdtrAgt>
+                        </RltdAgts>
+                        <RmtInf>
+                            <Strd>
+                                <CdtrRefInf>
+                                    <Tp>
+                                        <CdOrPrtry>
+                                            <Prtry>QRR</Prtry>
+                                        </CdOrPrtry>
+                                    </Tp>
+                                    <Ref>047280000701047470007679688</Ref>
+                                </CdtrRefInf>
+                            </Strd>
+                        </RmtInf>
+                    </TxDtls>
+                </NtryDtls>
+            </Ntry>
+            <Ntry>
+                <Amt Ccy="CHF">2.8</Amt>
+                <CdtDbtInd>CRDT</CdtDbtInd>
+                <RvslInd>false</RvslInd>
+                <Sts>BOOK</Sts>
+                <BookgDt>
+                    <Dt>2022-12-22</Dt>
+                </BookgDt>
+                <ValDt>
+                    <Dt>2022-12-22</Dt>
+                </ValDt>
+                <AcctSvcrRef>08351803222247667/1</AcctSvcrRef>
+                <BkTxCd>
+                    <Domn>
+                        <Cd>XTND</Cd>
+                        <Fmly>
+                            <Cd>NTAV</Cd>
+                            <SubFmlyCd>NTAV</SubFmlyCd>
+                        </Fmly>
+                    </Domn>
+                    <Prtry>
+                        <Cd>8037</Cd>
+                    </Prtry>
+                </BkTxCd>
+                <AddtlNtryInf>8037?0508351803222247667?32BARBARA MUSTER 8001 ZURICH?60RECHNUNG
+                    34567?24USD 3.00 Kurs 0.939874 fixiert am 22.12.22</AddtlNtryInf>
+            </Ntry>
+            <Ntry>
+                <Amt Ccy="CHF">3</Amt>
+                <CdtDbtInd>CRDT</CdtDbtInd>
+                <Sts>BOOK</Sts>
+                <BookgDt>
+                    <Dt>2022-12-22</Dt>
+                </BookgDt>
+                <ValDt>
+                    <Dt>2022-12-22</Dt>
+                </ValDt>
+                <AcctSvcrRef>80WL-180322-CS-55958/1</AcctSvcrRef>
+                <BkTxCd>
+                    <Domn>
+                        <Cd>PMNT</Cd>
+                        <Fmly>
+                            <Cd>RCDT</Cd>
+                            <SubFmlyCd>DMCT</SubFmlyCd>
+                        </Fmly>
+                    </Domn>
+                </BkTxCd>
+                <AmtDtls>
+                    <TxAmt>
+                        <Amt Ccy="CHF">3</Amt>
+                    </TxAmt>
+                </AmtDtls>
+                <NtryDtls>
+                    <TxDtls>
+                        <Refs>
+                            <MsgId>13TF-180322-MS-85571</MsgId>
+                            <AcctSvcrRef>80WL-180322-CS-55958</AcctSvcrRef>
+                            <PmtInfId>13TF-180322-MS-85571</PmtInfId>
+                            <EndToEndId>NOTPROVIDED</EndToEndId>
+                        </Refs>
+                        <Amt Ccy="CHF">3</Amt>
+                        <CdtDbtInd>CRDT</CdtDbtInd>
+                        <RltdPties>
+                            <Dbtr>
+                                <Nm>BARBARA MUSTER</Nm>
+                                <PstlAdr>
+                                    <AdrLine>8001 ZURICH</AdrLine>
+                                </PstlAdr>
+                            </Dbtr>
+                        </RltdPties>
+                        <RmtInf>
+                            <Ustrd>RECHNUNG 23456</Ustrd>
+                        </RmtInf>
+                    </TxDtls>
+                </NtryDtls>
+            </Ntry>
+            <Ntry>
+                <Amt Ccy="CHF">3.47</Amt>
+                <CdtDbtInd>CRDT</CdtDbtInd>
+                <Sts>BOOK</Sts>
+                <BookgDt>
+                    <Dt>2022-12-22</Dt>
+                </BookgDt>
+                <ValDt>
+                    <Dt>2022-12-22</Dt>
+                </ValDt>
+                <AcctSvcrRef>80WR-180322-CS-15197/1</AcctSvcrRef>
+                <BkTxCd>
+                    <Domn>
+                        <Cd>PMNT</Cd>
+                        <Fmly>
+                            <Cd>RCDT</Cd>
+                            <SubFmlyCd>ESCT</SubFmlyCd>
+                        </Fmly>
+                    </Domn>
+                </BkTxCd>
+                <AmtDtls>
+                    <TxAmt>
+                        <Amt Ccy="EUR">3</Amt>
+                    </TxAmt>
+                    <CntrValAmt>
+                        <Amt Ccy="CHF">3.47</Amt>
+                        <CcyXchg>
+                            <SrcCcy>EUR</SrcCcy>
+                            <TrgtCcy>CHF</TrgtCcy>
+                            <XchgRate>1.15632286</XchgRate>
+                            <QtnDt>2022-12-22T00:00:00.000+01:00</QtnDt>
+                        </CcyXchg>
+                    </CntrValAmt>
+                </AmtDtls>
+                <NtryDtls>
+                    <TxDtls>
+                        <Refs>
+                            <MsgId>13TL-180322-MS-32279</MsgId>
+                            <AcctSvcrRef>80WR-180322-CS-15197</AcctSvcrRef>
+                            <PmtInfId>13TL-180322-MS-32279</PmtInfId>
+                            <EndToEndId>NOTPROVIDED</EndToEndId>
+                        </Refs>
+                        <Amt Ccy="EUR">3</Amt>
+                        <CdtDbtInd>CRDT</CdtDbtInd>
+                        <RltdPties>
+                            <Dbtr>
+                                <Nm>KOWALSKI JAN</Nm>
+                                <PstlAdr>
+                                    <Ctry>PL</Ctry>
+                                    <AdrLine>SZCZYTNICKA 9</AdrLine>
+                                    <AdrLine>PL WROCLAW</AdrLine>
+                                </PstlAdr>
+                            </Dbtr>
+                        </RltdPties>
+                        <RmtInf>
+                            <Ustrd>Invoice 45678</Ustrd>
+                        </RmtInf>
+                    </TxDtls>
+                </NtryDtls>
+            </Ntry>
+            <Ntry>
+                <Amt Ccy="CHF">6000</Amt>
+                <CdtDbtInd>CRDT</CdtDbtInd>
+                <Sts>BOOK</Sts>
+                <BookgDt>
+                    <Dt>2022-12-22</Dt>
+                </BookgDt>
+                <ValDt>
+                    <Dt>2022-12-23</Dt>
+                </ValDt>
+                <AcctSvcrRef>08922018031005244600/1</AcctSvcrRef>
+                <BkTxCd>
+                    <Domn>
+                        <Cd>PMNT</Cd>
+                        <Fmly>
+                            <Cd>RCDT</Cd>
+                            <SubFmlyCd>DMCT</SubFmlyCd>
+                        </Fmly>
+                    </Domn>
+                </BkTxCd>
+                <AmtDtls>
+                    <TxAmt>
+                        <Amt Ccy="CHF">6000</Amt>
+                    </TxAmt>
+                </AmtDtls>
+                <NtryDtls>
+                    <TxDtls>
+                        <Refs>
+                            <MsgId>31XY-180322-MS-85571</MsgId>
+                            <AcctSvcrRef>91AB-180322-CS-55958</AcctSvcrRef>
+                            <PmtInfId>31XY-180322-MS-85571</PmtInfId>
+                            <EndToEndId>NOTPROVIDED</EndToEndId>
+                        </Refs>
+                        <Amt Ccy="CHF">6000</Amt>
+                        <CdtDbtInd>CRDT</CdtDbtInd>
+                        <RltdPties>
+                            <Dbtr>
+                                <Nm>BARBARA MUSTER</Nm>
+                                <PstlAdr>
+                                    <AdrLine>8001 ZURICH</AdrLine>
+                                </PstlAdr>
+                            </Dbtr>
+                        </RltdPties>
+                        <RmtInf>
+                            <Ustrd>RECHNUNG 67890</Ustrd>
+                        </RmtInf>
+                    </TxDtls>
+                </NtryDtls>
+            </Ntry>
+            <Ntry>
+                <Amt Ccy="CHF">3000</Amt>
+                <CdtDbtInd>CRDT</CdtDbtInd>
+                <RvslInd>true</RvslInd>
+                <Sts>BOOK</Sts>
+                <BookgDt>
+                    <Dt>2022-12-22</Dt>
+                </BookgDt>
+                <ValDt>
+                    <Dt>2022-12-22</Dt>
+                </ValDt>
+                <AcctSvcrRef>80WE-180321-CS-53986/1</AcctSvcrRef>
+                <BkTxCd>
+                    <Domn>
+                        <Cd>PMNT</Cd>
+                        <Fmly>
+                            <Cd>RCDT</Cd>
+                            <SubFmlyCd>RRTN</SubFmlyCd>
+                        </Fmly>
+                    </Domn>
+                </BkTxCd>
+                <AmtDtls>
+                    <TxAmt>
+                        <Amt Ccy="CHF">3000</Amt>
+                    </TxAmt>
+                </AmtDtls>
+                <NtryDtls>
+                    <TxDtls>
+                        <Refs>
+                            <MsgId>13TJ-180321-MS-42880</MsgId>
+                            <AcctSvcrRef>80WE-180321-CS-53986</AcctSvcrRef>
+                            <PmtInfId>13TJ-180321-MS-42880</PmtInfId>
+                            <EndToEndId>ETE68E82E7E701E4DB2B838318A8BA551CF</EndToEndId>
+                        </Refs>
+                        <Amt Ccy="CHF">3000</Amt>
+                        <CdtDbtInd>CRDT</CdtDbtInd>
+                        <RltdPties>
+                            <Cdtr>
+                                <Nm>Barbara Muster</Nm>
+                                <PstlAdr>
+                                    <PstCd>8001</PstCd>
+                                    <TwnNm>Zuerich</TwnNm>
+                                </PstlAdr>
+                            </Cdtr>
+                        </RltdPties>
+                        <RtrInf>
+                            <OrgnlBkTxCd>
+                                <Domn>
+                                    <Cd>PMNT</Cd>
+                                    <Fmly>
+                                        <Cd>ICDT</Cd>
+                                        <SubFmlyCd>DMCT</SubFmlyCd>
+                                    </Fmly>
+                                </Domn>
+                            </OrgnlBkTxCd>
+                            <Orgtr>
+                                <Id>
+                                    <OrgId>
+                                        <AnyBIC>UBSWCHZH80A</AnyBIC>
+                                    </OrgId>
+                                </Id>
+                            </Orgtr>
+                            <Rsn>
+                                <Cd>NARR</Cd>
+                            </Rsn>
+                            <AddtlInf>RETOUR SIC VAL 22.12.2022 BEGUENSTIGTENANGABEN UNGENUEGEND BARBARA MUSTER 8001 ZUERICH</AddtlInf>
+                            <AddtlInf>/SETT/2022-12-22T15:52:42</AddtlInf>
+                        </RtrInf>
+                    </TxDtls>
+                </NtryDtls>
+            </Ntry>
+            <Ntry>
+                <Amt Ccy="CHF">2.75</Amt>
+                <CdtDbtInd>CRDT</CdtDbtInd>
+                <RvslInd>false</RvslInd>
+                <Sts>BOOK</Sts>
+                <BookgDt>
+                    <Dt>2022-12-22</Dt>
+                </BookgDt>
+                <ValDt>
+                    <Dt>2022-12-22</Dt>
+                </ValDt>
+                <AcctSvcrRef>08351803222252626/1</AcctSvcrRef>
+                <BkTxCd>
+                    <Domn>
+                        <Cd>XTND</Cd>
+                        <Fmly>
+                            <Cd>NTAV</Cd>
+                            <SubFmlyCd>NTAV</SubFmlyCd>
+                        </Fmly>
+                    </Domn>
+                    <Prtry>
+                        <Cd>8037</Cd>
+                    </Prtry>
+                </BkTxCd>
+                <AddtlNtryInf>8037?0508351803222252626?32KOWALSKI JAN SZCZYTNICKA 9 PL
+                    WROCLAW?60CREDIT TRANSFER IN PLN?24PLN 10.00 Kurs 27.34535 fixiert am
+                    22.12.22</AddtlNtryInf>
+            </Ntry>
+            <Ntry>
+                <NtryRef>010026540</NtryRef>
+                <Amt Ccy="CHF">7761.35</Amt>
+                <CdtDbtInd>CRDT</CdtDbtInd>
+                <Sts>BOOK</Sts>
+                <BookgDt>
+                    <Dt>2022-12-22</Dt>
+                </BookgDt>
+                <ValDt>
+                    <Dt>2022-12-22</Dt>
+                </ValDt>
+                <AcctSvcrRef>80UL-171123-CS-35153/1</AcctSvcrRef>
+                <BkTxCd>
+                    <Domn>
+                        <Cd>PMNT</Cd>
+                        <Fmly>
+                            <Cd>IDDT</Cd>
+                            <SubFmlyCd>PMDD</SubFmlyCd>
+                        </Fmly>
+                    </Domn>
+                </BkTxCd>
+                <AmtDtls>
+                    <TxAmt>
+                        <Amt Ccy="CHF">7761.35</Amt>
+                    </TxAmt>
+                </AmtDtls>
+                <NtryDtls>
+                    <TxDtls>
+                        <Refs>
+                            <MsgId>13RG-171123-MS-49259</MsgId>
+                            <AcctSvcrRef>80UL-171123-CS-35153</AcctSvcrRef>
+                            <PmtInfId>13RG-171123-MS-49259</PmtInfId>
+                            <EndToEndId>E2EBP11-ESR12171123</EndToEndId>
+                        </Refs>
+                        <Amt Ccy="CHF">7761.35</Amt>
+                        <CdtDbtInd>CRDT</CdtDbtInd>
+                        <RltdPties>
+                            <Dbtr>
+                                <Nm>Max Muster</Nm>
+                                <PstlAdr>
+                                    <Ctry>CH</Ctry>
+                                    <AdrLine>Bundesplatz 1</AdrLine>
+                                    <AdrLine>3003 Bern</AdrLine>
+                                </PstlAdr>
+                            </Dbtr>
+                        </RltdPties>
+                        <RmtInf>
+                            <Strd>
+                                <CdtrRefInf>
+                                    <Tp>
+                                        <CdOrPrtry>
+                                            <Prtry>ISR Reference</Prtry>
+                                        </CdOrPrtry>
+                                    </Tp>
+                                    <Ref>999999111122233344455678805</Ref>
+                                </CdtrRefInf>
+                            </Strd>
+                        </RmtInf>
+                    </TxDtls>
+                </NtryDtls>
+                <AddtlNtryInf>?21010026540 999999</AddtlNtryInf>
+            </Ntry>
+            <Ntry>
+                <NtryRef>CH4531000831854071000</NtryRef>
+                <Amt Ccy="CHF">997.25</Amt>
+                <CdtDbtInd>CRDT</CdtDbtInd>
+                <RvslInd>false</RvslInd>
+                <Sts>BOOK</Sts>
+                <BookgDt>
+                    <Dt>2022-12-22</Dt>
+                </BookgDt>
+                <ValDt>
+                    <Dt>2022-12-22</Dt>
+                </ValDt>
+                <AcctSvcrRef>80UL171123CS35154/1001</AcctSvcrRef>
+                <BkTxCd>
+                    <Domn>
+                        <Cd>PMNT</Cd>
+                        <Fmly>
+                            <Cd>RCDT</Cd>
+                            <SubFmlyCd>VCOM</SubFmlyCd>
+                        </Fmly>
+                    </Domn>
+                </BkTxCd>
+                <AmtDtls>
+                    <TxAmt>
+                        <Amt Ccy="CHF">997.25</Amt>
+                    </TxAmt>
+                </AmtDtls>
+				<Chrgs>
+					<TtlChrgsAndTaxAmt Ccy="CHF">0.10</TtlChrgsAndTaxAmt>
+					<Rcrd>
+						<Amt Ccy="CHF">0.10</Amt>
+						<CdtDbtInd>DBIT</CdtDbtInd>
+						<ChrgInclInd>false</ChrgInclInd>
+						<Tp>
+							<Prtry>
+								<Id>INTERNAL</Id>
+							</Prtry>
+						</Tp>
+					</Rcrd>
+				</Chrgs>
+                <NtryDtls>
+                    <TxDtls>
+                        <Refs>
+                            <MsgId>13RG-171123-MS-49260</MsgId>
+                            <AcctSvcrRef>80UL-171123-CS-35154</AcctSvcrRef>
+                            <PmtInfId>13RG-171123-MS-49260</PmtInfId>
+                            <EndToEndId>E2EBP11-ESR12171124</EndToEndId>
+                        </Refs>
+                        <Amt Ccy="CHF">997.25</Amt>
+                        <CdtDbtInd>CRDT</CdtDbtInd>
+						<Chrgs>
+							<TtlChrgsAndTaxAmt Ccy="CHF">0.10</TtlChrgsAndTaxAmt>
+							<Rcrd>
+								<Amt Ccy="CHF">0.10</Amt>
+								<CdtDbtInd>DBIT</CdtDbtInd>
+								<ChrgInclInd>false</ChrgInclInd>
+								<Tp>
+									<Prtry>
+										<Id>INTERNAL</Id>
+									</Prtry>
+								</Tp>
+							</Rcrd>
+						</Chrgs>
+                        <RltdPties>
+                            <Dbtr>
+                                <Nm>Max Muster</Nm>
+                                <PstlAdr>
+                                    <Ctry>CH</Ctry>
+                                    <AdrLine>Bundesplatz 1</AdrLine>
+                                    <AdrLine>3003 Bern</AdrLine>
+                                </PstlAdr>
+                            </Dbtr>
+							<UltmtDbtr>
+                                <Nm>Pia-Maria Rutschmann-Schnyder</Nm>
+                                <PstlAdr>
+                                    <Ctry>CH</Ctry>
+                                    <AdrLine>Grosse Marktgasse 28</AdrLine>
+                                    <AdrLine>9400 Rorschach</AdrLine>
+                                </PstlAdr>
+                            </UltmtDbtr>
+                        </RltdPties>
+                        <RmtInf>
+                            <Strd>
+                                <CdtrRefInf>
+                                    <Tp>
+                                        <CdOrPrtry>
+                                            <Prtry>QRR</Prtry>
+                                        </CdOrPrtry>
+                                    </Tp>
+                                    <Ref>999999111122233344455678805</Ref>
+                                </CdtrRefInf>
+								<AddtlRmtInf>Manuelle Bemerkung</AddtlRmtInf>
+                            </Strd>
+                        </RmtInf>
+                    </TxDtls>
+                </NtryDtls>
+            </Ntry>
+        </Stmt>
+    </BkToCstmrStmt>
+</Document>

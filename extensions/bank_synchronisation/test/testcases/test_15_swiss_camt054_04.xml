@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Structure subject to change, do not rely on optional tags -->
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:camt.054.001.04">
+    <BkToCstmrDbtCdtNtfctn>
+        <GrpHdr>
+            <MsgId>CAMT054_20221022_180251119_4Z2WCTQ4</MsgId>
+            <CreDtTm>2022-10-22T17:02:51.119Z</CreDtTm>
+			<MsgPgntn>
+				<PgNb>1</PgNb>
+				<LastPgInd>true</LastPgInd>
+			</MsgPgntn>
+        </GrpHdr>
+        <Ntfctn>
+            <Id>4BA01709118000075</Id>
+            <CreDtTm>2022-10-22T17:02:51.119Z</CreDtTm>
+            <FrToDt>
+                <FrDtTm>2022-10-22T00:00:00.000+01:00</FrDtTm>
+                <ToDtTm>2022-10-22T23:59:59.999+01:00</ToDtTm>
+            </FrToDt>
+			<RptgSrc>
+				<Prtry>C53F</Prtry>
+			</RptgSrc>
+            <Acct>
+                <Id>
+                    <IBAN>CH7705881831854071000</IBAN>
+                </Id>
+            </Acct>
+            <Ntry>
+                <NtryRef>010026540</NtryRef>
+                <Amt Ccy="CHF">7761.35</Amt>
+                <CdtDbtInd>CRDT</CdtDbtInd>
+                <Sts>BOOK</Sts>
+                <BookgDt>
+                    <Dt>2022-10-22</Dt>
+                </BookgDt>
+                <ValDt>
+                    <Dt>2022-10-22</Dt>
+                </ValDt>
+				<AcctSvcrRef>4BA01709118000075/1</AcctSvcrRef>
+                <BkTxCd>
+                    <Domn>
+                        <Cd>PMNT</Cd>
+                        <Fmly>
+                            <Cd>IDDT</Cd>
+                            <SubFmlyCd>PMDD</SubFmlyCd>
+                        </Fmly>
+                    </Domn>
+                </BkTxCd>
+                <NtryDtls>
+                    <Btch>
+                        <NbOfTxs>5</NbOfTxs>
+                        <TtlAmt Ccy="CHF">7761.35</TtlAmt>
+                    </Btch>
+                    <TxDtls>
+                        <Amt Ccy="CHF">2561.35</Amt>
+                        <CdtDbtInd>CRDT</CdtDbtInd>
+                        <AmtDtls>
+                            <TxAmt>
+                                <Amt Ccy="CHF">2561.35</Amt>
+                            </TxAmt>
+                        </AmtDtls>
+                        <BkTxCd>
+                            <Domn>
+                                <Cd>PMNT</Cd>
+                                <Fmly>
+                                    <Cd>IDDT</Cd>
+                                    <SubFmlyCd>PMDD</SubFmlyCd>
+                                </Fmly>
+                            </Domn>
+                        </BkTxCd>
+						<RltdPties>
+							<Dbtr>
+								<Nm>Example SA</Nm>
+								<PstlAdr>
+									<AdrLine>Place du Marché 1</AdrLine>
+									<AdrLine>2222 Village</AdrLine>
+								</PstlAdr>
+							</Dbtr>
+						</RltdPties>
+                        <RmtInf>
+                            <Strd>
+                                <CdtrRefInf>
+									<Tp>
+										<CdOrPrtry>
+											<Prtry>ISR Reference</Prtry>
+										</CdOrPrtry>
+									</Tp>
+                                    <Ref>999999123456789012345678028</Ref>
+                                </CdtrRefInf>
+                            </Strd>
+                        </RmtInf>
+                    </TxDtls>
+                    <TxDtls>
+                        <Amt Ccy="CHF">1400.00</Amt>
+                        <CdtDbtInd>CRDT</CdtDbtInd>
+                        <AmtDtls>
+                            <TxAmt>
+                                <Amt Ccy="CHF">1400.00</Amt>
+                            </TxAmt>
+                        </AmtDtls>
+                        <BkTxCd>
+                            <Domn>
+                                <Cd>PMNT</Cd>
+                                <Fmly>
+                                    <Cd>IDDT</Cd>
+                                    <SubFmlyCd>PMDD</SubFmlyCd>
+                                </Fmly>
+                            </Domn>
+                        </BkTxCd>
+						<RltdPties>
+							<Dbtr>
+								<Nm>Bäckerei-Konditorei Meier</Nm>
+								<PstlAdr>
+									<StrtNm>Landstrasse</StrtNm>
+									<BldgNb>1</BldgNb>
+									<PstCd>5555</PstCd>
+									<TwnNm>Unterdorf</TwnNm>
+									<Ctry>CH</Ctry>
+								</PstlAdr>
+							</Dbtr>
+						</RltdPties>
+                        <RmtInf>
+                            <Strd>
+                                <CdtrRefInf>
+									<Tp>
+										<CdOrPrtry>
+											<Prtry>ISR Reference</Prtry>
+										</CdOrPrtry>
+									</Tp>
+                                    <Ref>999999123456789012345678033</Ref>
+                                </CdtrRefInf>
+                            </Strd>
+                        </RmtInf>
+                    </TxDtls>
+                    <TxDtls>
+                        <Amt Ccy="CHF">1200.00</Amt>
+                        <CdtDbtInd>CRDT</CdtDbtInd>
+                        <AmtDtls>
+                            <TxAmt>
+                                <Amt Ccy="CHF">1200.00</Amt>
+                            </TxAmt>
+                        </AmtDtls>
+                        <BkTxCd>
+                            <Domn>
+                                <Cd>PMNT</Cd>
+                                <Fmly>
+                                    <Cd>IDDT</Cd>
+                                    <SubFmlyCd>PMDD</SubFmlyCd>
+                                </Fmly>
+                            </Domn>
+                        </BkTxCd>
+						<RltdPties>
+							<Dbtr>
+								<Nm>NOTPROVIDED</Nm>
+							</Dbtr>
+						</RltdPties>						
+                        <RmtInf>
+                            <Strd>
+                                <CdtrRefInf>
+									<Tp>
+										<CdOrPrtry>
+											<Prtry>ISR Reference</Prtry>
+										</CdOrPrtry>
+									</Tp>
+                                    <Ref>999999123456789012345678049</Ref>
+                                </CdtrRefInf>
+                            </Strd>
+                        </RmtInf>
+                    </TxDtls>
+                    <TxDtls>
+                        <Amt Ccy="CHF">1100.00</Amt>
+                        <CdtDbtInd>CRDT</CdtDbtInd>
+                        <AmtDtls>
+                            <TxAmt>
+                                <Amt Ccy="CHF">1100.00</Amt>
+                            </TxAmt>
+                        </AmtDtls>
+                        <BkTxCd>
+                            <Domn>
+                                <Cd>PMNT</Cd>
+                                <Fmly>
+                                    <Cd>IDDT</Cd>
+                                    <SubFmlyCd>PMDD</SubFmlyCd>
+                                </Fmly>
+                            </Domn>
+                        </BkTxCd>
+						<RltdPties>
+							<Dbtr>
+								<Nm>NOTPROVIDED</Nm>
+							</Dbtr>
+						</RltdPties>
+                        <RmtInf>
+                            <Strd>
+                                <CdtrRefInf>
+									<Tp>
+										<CdOrPrtry>
+											<Prtry>ISR Reference</Prtry>
+										</CdOrPrtry>
+									</Tp>
+                                    <Ref>999999123456789012345678057</Ref>
+                                </CdtrRefInf>
+                            </Strd>
+                        </RmtInf>
+                    </TxDtls>
+                    <TxDtls>
+                        <Amt Ccy="CHF">1500.00</Amt>
+                        <CdtDbtInd>CRDT</CdtDbtInd>
+                        <AmtDtls>
+                            <TxAmt>
+                                <Amt Ccy="CHF">1500.00</Amt>
+                            </TxAmt>
+                        </AmtDtls>
+                        <BkTxCd>
+                            <Domn>
+                                <Cd>PMNT</Cd>
+                                <Fmly>
+                                    <Cd>IDDT</Cd>
+                                    <SubFmlyCd>PMDD</SubFmlyCd>
+                                </Fmly>
+                            </Domn>
+                        </BkTxCd>
+						<RltdPties>
+							<Dbtr>
+								<Nm>NOTPROVIDED</Nm>
+							</Dbtr>
+						</RltdPties>
+                        <RmtInf>
+                            <Strd>
+                                <CdtrRefInf>
+									<Tp>
+										<CdOrPrtry>
+											<Prtry>ISR Reference</Prtry>
+										</CdOrPrtry>
+									</Tp>
+                                    <Ref>999999123456789012345678065</Ref>
+                                </CdtrRefInf>
+                            </Strd>
+                        </RmtInf>
+                    </TxDtls>
+                </NtryDtls>
+            </Ntry>
+            <Ntry>
+                <NtryRef>010026540</NtryRef>
+                <Amt Ccy="CHF">119.45</Amt>
+                <CdtDbtInd>CRDT</CdtDbtInd>
+                <Sts>BOOK</Sts>
+                <BookgDt>
+                    <Dt>2022-10-22</Dt>
+                </BookgDt>
+                <ValDt>
+                    <Dt>2022-10-21</Dt>
+                </ValDt>
+                <AcctSvcrRef>4BA02002068000015/1</AcctSvcrRef>
+                <BkTxCd>
+                    <Domn>
+                        <Cd>PMNT</Cd>
+                        <Fmly>
+                            <Cd>IDDT</Cd>
+                            <SubFmlyCd>PMDD</SubFmlyCd>
+                        </Fmly>
+                    </Domn>
+                </BkTxCd>
+                <NtryDtls>
+                    <Btch>
+                        <NbOfTxs>1</NbOfTxs>
+                        <TtlAmt Ccy="CHF">119.45</TtlAmt>
+                    </Btch>
+                    <TxDtls>
+                        <Amt Ccy="CHF">119.45</Amt>
+                        <CdtDbtInd>CRDT</CdtDbtInd>
+                        <AmtDtls>
+                            <TxAmt>
+                                <Amt Ccy="CHF">119.45</Amt>
+                            </TxAmt>
+                        </AmtDtls>
+                        <BkTxCd>
+                            <Domn>
+                                <Cd>PMNT</Cd>
+                                <Fmly>
+                                    <Cd>IDDT</Cd>
+                                    <SubFmlyCd>PMDD</SubFmlyCd>
+                                </Fmly>
+                            </Domn>
+                        </BkTxCd>
+                        <RltdPties>
+                            <Dbtr>
+                                <Nm>Peter Muster</Nm>
+                                <PstlAdr>
+                                    <StrtNm>Musterstrasse 5</StrtNm>
+                                    <PstCd>8001</PstCd>
+                                    <TwnNm>Zuerich</TwnNm>
+                                    <Ctry>CH</Ctry>
+                                </PstlAdr>
+                            </Dbtr>
+                        </RltdPties>
+                        <RmtInf>
+                            <Strd>
+                                <CdtrRefInf>
+                                    <Tp>
+                                        <CdOrPrtry>
+                                            <Prtry>ISR Reference</Prtry>
+                                        </CdOrPrtry>
+                                    </Tp>
+                                    <Ref>901709123456789012345000003</Ref>
+                                </CdtrRefInf>
+                            </Strd>
+                        </RmtInf>
+                    </TxDtls>
+                </NtryDtls>
+            </Ntry>
+        </Ntfctn>
+    </BkToCstmrDbtCdtNtfctn>
+</Document>

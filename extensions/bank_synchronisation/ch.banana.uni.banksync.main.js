@@ -46,22 +46,26 @@ function exec(fileContent, fileName) {
     let iso20022_swiss = new ISO20022_Swiss_JSONConverter();
     if (iso20022_swiss.match(fileContent)) {
         let jsonData = iso20022_swiss.convertToJson(fileContent, fileName);
-        if (jsonData.length > 0)
+        if (jsonData) {
+            //Banana.Ui.showText("data: " + JSON.stringify(jsonData)); // ok
             return jsonData;
+        }
     }
 
     let iso20022_general = new ISO20022_General_JSONConverter();
     if (iso20022_general.match(fileContent)) {
         let jsonData = iso20022_general.convertToJson(fileContent, fileName);
-        if (jsonData.length > 0)
+        if (jsonData) {
             return jsonData;
+        }
     }
 
     let json_thinker = new JSON_Thinker_JSONConverter();
     if (json_thinker.match(fileContent)) {
         let jsonData = json_thinker.convertToJson(fileContent, fileName);
-        if (jsonData.length > 0)
+        if (jsonData) {
             return jsonData;
+        }
     }
 
     return "";

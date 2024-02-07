@@ -1,0 +1,886 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Structure subject to change, do not rely on optional tags -->
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:camt.053.001.04">
+<BkToCstmrStmt>
+<GrpHdr>
+<MsgId>CAMT053_20220323_010729756_VJC7LIIF</MsgId>
+<CreDtTm>2022-03-23T01:07:29.756Z</CreDtTm>
+<MsgPgntn>
+<PgNb>1</PgNb>
+<LastPgInd>true</LastPgInd>
+</MsgPgntn>
+<AddtlInf>SPS/1.7/PROD</AddtlInf>
+</GrpHdr>
+<Stmt>
+<Id>cbe792bcaaf74a87b6c5c0c77df10872</Id>
+<ElctrncSeqNb>58</ElctrncSeqNb>
+<CreDtTm>2022-03-23T01:07:29.778Z</CreDtTm>
+<FrToDt>
+<FrDtTm>2022-03-22T00:00:00+01:00</FrDtTm>
+<ToDtTm>2022-03-22T23:59:00+01:00</ToDtTm>
+</FrToDt>
+<Acct>
+<Id>
+<Othr>
+<Id>0885831854071000</Id>
+</Othr>
+</Id>
+<Ccy>CHF</Ccy>
+<Ownr>
+<Nm>Barbara Muster</Nm>
+<PstlAdr>
+<AdrLine>Zürich</AdrLine>
+</PstlAdr>
+</Ownr>
+<Svcr>
+<FinInstnId>
+<BICFI>CRESCHZZ80A</BICFI>
+<Nm>CREDIT SUISSE (Switzerland) Ltd.</Nm>
+<Othr>
+<Id>CHE-116.285.487 MWST</Id>
+<Issr>VAT-ID</Issr>
+</Othr>
+</FinInstnId>
+</Svcr>
+</Acct>
+<Bal>
+<Tp>
+<CdOrPrtry>
+<Cd>OPBD</Cd>
+</CdOrPrtry>
+</Tp>
+<Amt Ccy="CHF">7751.38</Amt>
+<CdtDbtInd>CRDT</CdtDbtInd>
+<Dt>
+<Dt>2022-03-22</Dt>
+</Dt>
+</Bal>
+<Bal>
+<Tp>
+<CdOrPrtry>
+<Cd>FWAV</Cd>
+</CdOrPrtry>
+</Tp>
+<Amt Ccy="CHF">25273.34</Amt>
+<CdtDbtInd>CRDT</CdtDbtInd>
+<Dt>
+<Dt>2022-03-23</Dt>
+</Dt>
+</Bal>
+<Bal>
+<Tp>
+<CdOrPrtry>
+<Cd>CLAV</Cd>
+</CdOrPrtry>
+</Tp>
+<Amt Ccy="CHF">19273.34</Amt>
+<CdtDbtInd>CRDT</CdtDbtInd>
+<Dt>
+<Dt>2022-03-22</Dt>
+</Dt>
+</Bal>
+<Bal>
+<Tp>
+<CdOrPrtry>
+<Cd>CLBD</Cd>
+</CdOrPrtry>
+</Tp>
+<Amt Ccy="CHF">25273.34</Amt>
+<CdtDbtInd>CRDT</CdtDbtInd>
+<Dt>
+<Dt>2022-03-22</Dt>
+</Dt>
+</Bal>
+<TxsSummry>
+<TtlNtries>
+<NbOfNtries>17</NbOfNtries>
+<Sum>18258.18</Sum>
+<TtlNetNtry>
+<Amt>17521.96</Amt>
+<CdtDbtInd>CRDT</CdtDbtInd>
+</TtlNetNtry>
+</TtlNtries>
+<TtlCdtNtries>
+<NbOfNtries>9</NbOfNtries>
+<Sum>17890.07</Sum>
+</TtlCdtNtries>
+<TtlDbtNtries>
+<NbOfNtries>8</NbOfNtries>
+<Sum>368.11</Sum>
+</TtlDbtNtries>
+</TxsSummry>
+<Ntry>
+<Amt Ccy="CHF">2.36</Amt>
+<CdtDbtInd>DBIT</CdtDbtInd>
+<Sts>BOOK</Sts>
+<BookgDt>
+<Dt>2022-03-22</Dt>
+</BookgDt>
+<ValDt>
+<Dt>2022-03-22</Dt>
+</ValDt>
+<AcctSvcrRef>DNQR-180322-CS-43783/1</AcctSvcrRef>
+<BkTxCd>
+<Domn>
+<Cd>PMNT</Cd>
+<Fmly>
+<Cd>ICDT</Cd>
+<SubFmlyCd>AUTT</SubFmlyCd>
+</Fmly>
+</Domn>
+</BkTxCd>
+<AmtDtls>
+<InstdAmt>
+<Amt Ccy="EUR">2</Amt>
+</InstdAmt>
+<TxAmt>
+<Amt Ccy="EUR">2</Amt>
+</TxAmt>
+<CntrValAmt>
+<Amt Ccy="CHF">2.36</Amt>
+<CcyXchg>
+<SrcCcy>EUR</SrcCcy>
+<TrgtCcy>CHF</TrgtCcy>
+<XchgRate>1.18</XchgRate>
+<QtnDt>2022-03-22T00:00:00.000+01:00</QtnDt>
+</CcyXchg>
+</CntrValAmt>
+</AmtDtls>
+<NtryDtls>
+<Btch>
+<MsgId>MSG0150D4D8E71C447EBF774FB84E1F7946</MsgId>
+<PmtInfId>BLVL-1-18032208215187</PmtInfId>
+<NbOfTxs>1</NbOfTxs>
+<TtlAmt Ccy="EUR">2</TtlAmt>
+</Btch>
+</NtryDtls>
+</Ntry>
+<Ntry>
+<Amt Ccy="CHF">4.78</Amt>
+<CdtDbtInd>DBIT</CdtDbtInd>
+<Sts>BOOK</Sts>
+<BookgDt>
+<Dt>2022-03-22</Dt>
+</BookgDt>
+<ValDt>
+<Dt>2022-03-22</Dt>
+</ValDt>
+<AcctSvcrRef>DNQN-180322-CS-58740/1</AcctSvcrRef>
+<BkTxCd>
+<Domn>
+<Cd>PMNT</Cd>
+<Fmly>
+<Cd>ICDT</Cd>
+<SubFmlyCd>AUTT</SubFmlyCd>
+</Fmly>
+</Domn>
+</BkTxCd>
+<AmtDtls>
+<InstdAmt>
+<Amt Ccy="USD">5</Amt>
+</InstdAmt>
+<TxAmt>
+<Amt Ccy="USD">5</Amt>
+</TxAmt>
+<CntrValAmt>
+<Amt Ccy="CHF">4.78</Amt>
+<CcyXchg>
+<SrcCcy>USD</SrcCcy>
+<TrgtCcy>CHF</TrgtCcy>
+<XchgRate>0.95611387</XchgRate>
+<QtnDt>2022-03-22T00:00:00.000+01:00</QtnDt>
+</CcyXchg>
+</CntrValAmt>
+</AmtDtls>
+<Chrgs>
+<TtlChrgsAndTaxAmt Ccy="CHF">5</TtlChrgsAndTaxAmt>
+<Rcrd>
+<Amt Ccy="CHF">5</Amt>
+<CdtDbtInd>DBIT</CdtDbtInd>
+<ChrgInclInd>false</ChrgInclInd>
+<Tp>
+<Prtry>
+<Id>INTERNAL</Id>
+</Prtry>
+</Tp>
+</Rcrd>
+</Chrgs>
+<NtryDtls>
+<Btch>
+<MsgId>MSG40BF23DB52794241A8DBE60391E04976</MsgId>
+<PmtInfId>BLVL-1-18032208093429</PmtInfId>
+<NbOfTxs>1</NbOfTxs>
+<TtlAmt Ccy="USD">5</TtlAmt>
+</Btch>
+</NtryDtls>
+<AddtlNtryInf>?62Relevant charges will be billed at the end of the accounting period taking into account the product-specific terms and conditions.</AddtlNtryInf>
+</Ntry>
+<Ntry>
+<Amt Ccy="CHF">9.57</Amt>
+<CdtDbtInd>DBIT</CdtDbtInd>
+<Sts>BOOK</Sts>
+<BookgDt>
+<Dt>2022-03-22</Dt>
+</BookgDt>
+<ValDt>
+<Dt>2022-03-22</Dt>
+</ValDt>
+<AcctSvcrRef>DNQR-180322-CS-43962/1</AcctSvcrRef>
+<BkTxCd>
+<Domn>
+<Cd>PMNT</Cd>
+<Fmly>
+<Cd>ICDT</Cd>
+<SubFmlyCd>AUTT</SubFmlyCd>
+</Fmly>
+</Domn>
+</BkTxCd>
+<AmtDtls>
+<InstdAmt>
+<Amt Ccy="USD">10</Amt>
+</InstdAmt>
+<TxAmt>
+<Amt Ccy="USD">10</Amt>
+</TxAmt>
+<CntrValAmt>
+<Amt Ccy="CHF">9.57</Amt>
+<CcyXchg>
+<SrcCcy>USD</SrcCcy>
+<TrgtCcy>CHF</TrgtCcy>
+<XchgRate>0.95711254</XchgRate>
+<QtnDt>2022-03-22T00:00:00.000+01:00</QtnDt>
+</CcyXchg>
+</CntrValAmt>
+</AmtDtls>
+<Chrgs>
+<TtlChrgsAndTaxAmt Ccy="CHF">23</TtlChrgsAndTaxAmt>
+<Rcrd>
+<Amt Ccy="CHF">5</Amt>
+<CdtDbtInd>DBIT</CdtDbtInd>
+<ChrgInclInd>false</ChrgInclInd>
+<Tp>
+<Prtry>
+<Id>INTERNAL</Id>
+</Prtry>
+</Tp>
+</Rcrd>
+<Rcrd>
+<Amt Ccy="CHF">18</Amt>
+<CdtDbtInd>DBIT</CdtDbtInd>
+<ChrgInclInd>false</ChrgInclInd>
+<Tp>
+<Prtry>
+<Id>EXTERNAL</Id>
+</Prtry>
+</Tp>
+</Rcrd>
+</Chrgs>
+<NtryDtls>
+<Btch>
+<MsgId>MSGEADAC6D735B14EEBA29FB52A459DD44F</MsgId>
+<PmtInfId>BLVL-1-18032208261993</PmtInfId>
+<NbOfTxs>1</NbOfTxs>
+<TtlAmt Ccy="USD">10</TtlAmt>
+</Btch>
+</NtryDtls>
+<AddtlNtryInf>?62Relevant charges will be billed at the end of the accounting period taking into account the product-specific terms and conditions.</AddtlNtryInf>
+</Ntry>
+<Ntry>
+<Amt Ccy="CHF">10.1</Amt>
+<CdtDbtInd>DBIT</CdtDbtInd>
+<Sts>BOOK</Sts>
+<BookgDt>
+<Dt>2022-03-22</Dt>
+</BookgDt>
+<ValDt>
+<Dt>2022-03-22</Dt>
+</ValDt>
+<AcctSvcrRef>DNQN-180322-CS-58062/1</AcctSvcrRef>
+<BkTxCd>
+<Domn>
+<Cd>PMNT</Cd>
+<Fmly>
+<Cd>ICDT</Cd>
+<SubFmlyCd>AUTT</SubFmlyCd>
+</Fmly>
+</Domn>
+</BkTxCd>
+<AmtDtls>
+<InstdAmt>
+<Amt Ccy="CHF">10.1</Amt>
+</InstdAmt>
+<TxAmt>
+<Amt Ccy="CHF">10.1</Amt>
+</TxAmt>
+</AmtDtls>
+<NtryDtls>
+<Btch>
+<MsgId>MSG0D6E675AB5794B5BA889A0CCEAAD1D16</MsgId>
+<PmtInfId>BLVL-1-18032207545645</PmtInfId>
+<NbOfTxs>1</NbOfTxs>
+<TtlAmt Ccy="CHF">10.1</TtlAmt>
+</Btch>
+</NtryDtls>
+</Ntry>
+<Ntry>
+<Amt Ccy="CHF">10.2</Amt>
+<CdtDbtInd>DBIT</CdtDbtInd>
+<Sts>BOOK</Sts>
+<BookgDt>
+<Dt>2022-03-22</Dt>
+</BookgDt>
+<ValDt>
+<Dt>2022-03-22</Dt>
+</ValDt>
+<AcctSvcrRef>DNQR-180322-CS-40797/1</AcctSvcrRef>
+<BkTxCd>
+<Domn>
+<Cd>PMNT</Cd>
+<Fmly>
+<Cd>ICDT</Cd>
+<SubFmlyCd>AUTT</SubFmlyCd>
+</Fmly>
+</Domn>
+</BkTxCd>
+<AmtDtls>
+<InstdAmt>
+<Amt Ccy="CHF">10.2</Amt>
+</InstdAmt>
+<TxAmt>
+<Amt Ccy="CHF">10.2</Amt>
+</TxAmt>
+</AmtDtls>
+<NtryDtls>
+<Btch>
+<MsgId>MSG71784A43AF5747B6A60C17CFD29B1712</MsgId>
+<PmtInfId>BLVL-1-18032207590104</PmtInfId>
+<NbOfTxs>1</NbOfTxs>
+<TtlAmt Ccy="CHF">10.2</TtlAmt>
+</Btch>
+</NtryDtls>
+</Ntry>
+<Ntry>
+<Amt Ccy="CHF">100</Amt>
+<CdtDbtInd>DBIT</CdtDbtInd>
+<Sts>BOOK</Sts>
+<BookgDt>
+<Dt>2022-03-22</Dt>
+</BookgDt>
+<ValDt>
+<Dt>2022-03-22</Dt>
+</ValDt>
+<AcctSvcrRef>DNWL-180322-CS-87851/1</AcctSvcrRef>
+<BkTxCd>
+<Domn>
+<Cd>PMNT</Cd>
+<Fmly>
+<Cd>ICDT</Cd>
+<SubFmlyCd>BOOK</SubFmlyCd>
+</Fmly>
+</Domn>
+</BkTxCd>
+<AmtDtls>
+<InstdAmt>
+<Amt Ccy="CHF">100</Amt>
+</InstdAmt>
+<TxAmt>
+<Amt Ccy="CHF">100</Amt>
+</TxAmt>
+</AmtDtls>
+<NtryDtls>
+<TxDtls>
+<Refs>
+<MsgId>57af4bcfda8d4f8fb958c5424d73c12e</MsgId>
+<AcctSvcrRef>DNWL-180322-CS-87851</AcctSvcrRef>
+<PmtInfId>DNCS-20220322-IXN0</PmtInfId>
+<InstrId>DNCS-20220322-IXN0-TXN0</InstrId>
+<EndToEndId>SP-57273905-0</EndToEndId>
+</Refs>
+<Amt Ccy="CHF">100</Amt>
+<CdtDbtInd>DBIT</CdtDbtInd>
+<RltdPties>
+<Cdtr>
+<Nm>Barbara Muster, Zürich</Nm>
+<PstlAdr>
+<AdrLine>Barbara Muster, Zürich</AdrLine>
+</PstlAdr>
+</Cdtr>
+<CdtrAcct>
+<Id>
+<IBAN>CH3704835833740031000</IBAN>
+</Id>
+</CdtrAcct>
+</RltdPties>
+<RltdAgts>
+<CdtrAgt>
+<FinInstnId>
+<ClrSysMmbId>
+<ClrSysId>
+<Cd>CHBCC</Cd>
+</ClrSysId>
+<MmbId>04835</MmbId>
+</ClrSysMmbId>
+<Nm>Credit Suisse (Schweiz) AG</Nm>
+<PstlAdr>
+<AdrLine>Paradeplatz 8</AdrLine>
+<AdrLine>8070 Zürich CH</AdrLine>
+</PstlAdr>
+</FinInstnId>
+</CdtrAgt>
+</RltdAgts>
+</TxDtls>
+</NtryDtls>
+</Ntry>
+<Ntry>
+<Amt Ccy="CHF">120</Amt>
+<CdtDbtInd>DBIT</CdtDbtInd>
+<Sts>BOOK</Sts>
+<BookgDt>
+<Dt>2022-03-22</Dt>
+</BookgDt>
+<ValDt>
+<Dt>2022-03-22</Dt>
+</ValDt>
+<AcctSvcrRef>DNQR-180322-CS-40193/1</AcctSvcrRef>
+<BkTxCd>
+<Domn>
+<Cd>PMNT</Cd>
+<Fmly>
+<Cd>ICDT</Cd>
+<SubFmlyCd>AUTT</SubFmlyCd>
+</Fmly>
+</Domn>
+</BkTxCd>
+<AmtDtls>
+<InstdAmt>
+<Amt Ccy="CHF">120</Amt>
+</InstdAmt>
+<TxAmt>
+<Amt Ccy="CHF">120</Amt>
+</TxAmt>
+</AmtDtls>
+<NtryDtls>
+<Btch>
+<MsgId>MSG270C529F8169437186D63B1339FC09F9</MsgId>
+<PmtInfId>BLVL-1-18032207463420</PmtInfId>
+<NbOfTxs>1</NbOfTxs>
+<TtlAmt Ccy="CHF">120</TtlAmt>
+</Btch>
+</NtryDtls>
+</Ntry>
+<Ntry>
+<Amt Ccy="CHF">111.1</Amt>
+<CdtDbtInd>DBIT</CdtDbtInd>
+<Sts>BOOK</Sts>
+<BookgDt>
+<Dt>2022-03-22</Dt>
+</BookgDt>
+<ValDt>
+<Dt>2022-03-22</Dt>
+</ValDt>
+<AcctSvcrRef>DNRD-180323-CS-75599/1</AcctSvcrRef>
+<BkTxCd>
+<Domn>
+<Cd>PMNT</Cd>
+<Fmly>
+<Cd>ICDT</Cd>
+<SubFmlyCd>AUTT</SubFmlyCd>
+</Fmly>
+</Domn>
+</BkTxCd>
+<AmtDtls>
+<InstdAmt>
+<Amt Ccy="CHF">111.1</Amt>
+</InstdAmt>
+<TxAmt>
+<Amt Ccy="CHF">111.1</Amt>
+</TxAmt>
+</AmtDtls>
+<NtryDtls>
+<Btch>
+<MsgId>MSG4583D8DC482546E1B19F092AC83A2665</MsgId>
+<PmtInfId>BLVL-1-19030708451663</PmtInfId>
+<NbOfTxs>2</NbOfTxs>
+<TtlAmt Ccy="CHF">111.1</TtlAmt>
+</Btch>
+</NtryDtls>
+</Ntry>
+<Ntry>
+<Amt Ccy="CHF">2.8</Amt>
+<CdtDbtInd>CRDT</CdtDbtInd>
+<RvslInd>false</RvslInd>
+<Sts>BOOK</Sts>
+<BookgDt>
+<Dt>2022-03-22</Dt>
+</BookgDt>
+<ValDt>
+<Dt>2022-03-22</Dt>
+</ValDt>
+<AcctSvcrRef>08351803222247667/1</AcctSvcrRef>
+<BkTxCd>
+<Domn>
+<Cd>XTND</Cd>
+<Fmly>
+<Cd>NTAV</Cd>
+<SubFmlyCd>NTAV</SubFmlyCd>
+</Fmly>
+</Domn>
+<Prtry>
+<Cd>8037</Cd>
+</Prtry>
+</BkTxCd>
+<AddtlNtryInf>8037?0508351803222247667?32BARBARA MUSTER 8001 ZURICH?60RECHNUNG 34567?24USD 3.00 Kurs 0.939874 fixiert am 22.03.18</AddtlNtryInf>
+</Ntry>
+<Ntry>
+<Amt Ccy="CHF">3</Amt>
+<CdtDbtInd>CRDT</CdtDbtInd>
+<Sts>BOOK</Sts>
+<BookgDt>
+<Dt>2022-03-22</Dt>
+</BookgDt>
+<ValDt>
+<Dt>2022-03-22</Dt>
+</ValDt>
+<AcctSvcrRef>80WL-180322-CS-55958/1</AcctSvcrRef>
+<BkTxCd>
+<Domn>
+<Cd>PMNT</Cd>
+<Fmly>
+<Cd>RCDT</Cd>
+<SubFmlyCd>DMCT</SubFmlyCd>
+</Fmly>
+</Domn>
+</BkTxCd>
+<AmtDtls>
+<TxAmt>
+<Amt Ccy="CHF">3</Amt>
+</TxAmt>
+</AmtDtls>
+<NtryDtls>
+<TxDtls>
+<Refs>
+<MsgId>13TF-180322-MS-85571</MsgId>
+<AcctSvcrRef>80WL-180322-CS-55958</AcctSvcrRef>
+<PmtInfId>13TF-180322-MS-85571</PmtInfId>
+<EndToEndId>NOTPROVIDED</EndToEndId>
+</Refs>
+<Amt Ccy="CHF">3</Amt>
+<CdtDbtInd>CRDT</CdtDbtInd>
+<RltdPties>
+<Dbtr>
+<Nm>BARBARA MUSTER</Nm>
+<PstlAdr>
+<AdrLine>8001 ZURICH</AdrLine>
+</PstlAdr>
+</Dbtr>
+</RltdPties>
+<RmtInf>
+<Ustrd>RECHNUNG 23456</Ustrd>
+</RmtInf>
+</TxDtls>
+</NtryDtls>
+</Ntry>
+<Ntry>
+<Amt Ccy="CHF">3.47</Amt>
+<CdtDbtInd>CRDT</CdtDbtInd>
+<Sts>BOOK</Sts>
+<BookgDt>
+<Dt>2022-03-22</Dt>
+</BookgDt>
+<ValDt>
+<Dt>2022-03-22</Dt>
+</ValDt>
+<AcctSvcrRef>80WR-180322-CS-15197/1</AcctSvcrRef>
+<BkTxCd>
+<Domn>
+<Cd>PMNT</Cd>
+<Fmly>
+<Cd>RCDT</Cd>
+<SubFmlyCd>ESCT</SubFmlyCd>
+</Fmly>
+</Domn>
+</BkTxCd>
+<AmtDtls>
+<TxAmt>
+<Amt Ccy="EUR">3</Amt>
+</TxAmt>
+<CntrValAmt>
+<Amt Ccy="CHF">3.47</Amt>
+<CcyXchg>
+<SrcCcy>EUR</SrcCcy>
+<TrgtCcy>CHF</TrgtCcy>
+<XchgRate>1.15632286</XchgRate>
+<QtnDt>2022-03-22T00:00:00.000+01:00</QtnDt>
+</CcyXchg>
+</CntrValAmt>
+</AmtDtls>
+<NtryDtls>
+<TxDtls>
+<Refs>
+<MsgId>13TL-180322-MS-32279</MsgId>
+<AcctSvcrRef>80WR-180322-CS-15197</AcctSvcrRef>
+<PmtInfId>13TL-180322-MS-32279</PmtInfId>
+<EndToEndId>NOTPROVIDED</EndToEndId>
+</Refs>
+<Amt Ccy="EUR">3</Amt>
+<CdtDbtInd>CRDT</CdtDbtInd>
+<RltdPties>
+<Dbtr>
+<Nm>KOWALSKI JAN</Nm>
+<PstlAdr>
+<Ctry>PL</Ctry>
+<AdrLine>SZCZYTNICKA 9</AdrLine>
+<AdrLine>PL WROCLAW</AdrLine>
+</PstlAdr>
+</Dbtr>
+</RltdPties>
+<RmtInf>
+<Ustrd>Invoice 45678</Ustrd>
+</RmtInf>
+</TxDtls>
+</NtryDtls>
+</Ntry>
+<Ntry>
+<Amt Ccy="CHF">6000</Amt>
+<CdtDbtInd>CRDT</CdtDbtInd>
+<Sts>BOOK</Sts>
+<BookgDt>
+<Dt>2022-03-22</Dt>
+</BookgDt>
+<ValDt>
+<Dt>2022-03-23</Dt>
+</ValDt>
+<AcctSvcrRef>08922018031005244600/1</AcctSvcrRef>
+<BkTxCd>
+<Domn>
+<Cd>PMNT</Cd>
+<Fmly>
+<Cd>RCDT</Cd>
+<SubFmlyCd>DMCT</SubFmlyCd>
+</Fmly>
+</Domn>
+</BkTxCd>
+<AmtDtls>
+<TxAmt>
+<Amt Ccy="CHF">6000</Amt>
+</TxAmt>
+</AmtDtls>
+<NtryDtls>
+<TxDtls>
+<Refs>
+<MsgId>31XY-180322-MS-85571</MsgId>
+<AcctSvcrRef>91AB-180322-CS-55958</AcctSvcrRef>
+<PmtInfId>31XY-180322-MS-85571</PmtInfId>
+<EndToEndId>NOTPROVIDED</EndToEndId>
+</Refs>
+<Amt Ccy="CHF">6000</Amt>
+<CdtDbtInd>CRDT</CdtDbtInd>
+<RltdPties>
+<Dbtr>
+<Nm>BARBARA MUSTER</Nm>
+<PstlAdr>
+<AdrLine>8001 ZURICH</AdrLine>
+</PstlAdr>
+</Dbtr>
+</RltdPties>
+<RmtInf>
+<Ustrd>RECHNUNG 67890</Ustrd>
+</RmtInf>
+</TxDtls>
+</NtryDtls>
+</Ntry>
+<Ntry>
+<Amt Ccy="CHF">3000</Amt>
+<CdtDbtInd>CRDT</CdtDbtInd>
+<RvslInd>true</RvslInd>
+<Sts>BOOK</Sts>
+<BookgDt>
+<Dt>2022-03-22</Dt>
+</BookgDt>
+<ValDt>
+<Dt>2022-03-22</Dt>
+</ValDt>
+<AcctSvcrRef>80WE-180321-CS-53986/1</AcctSvcrRef>
+<BkTxCd>
+<Domn>
+<Cd>PMNT</Cd>
+<Fmly>
+<Cd>RCDT</Cd>
+<SubFmlyCd>RRTN</SubFmlyCd>
+</Fmly>
+</Domn>
+</BkTxCd>
+<AmtDtls>
+<TxAmt>
+<Amt Ccy="CHF">3000</Amt>
+</TxAmt>
+</AmtDtls>
+<NtryDtls>
+<TxDtls>
+<Refs>
+<MsgId>13TJ-180321-MS-42880</MsgId>
+<AcctSvcrRef>80WE-180321-CS-53986</AcctSvcrRef>
+<PmtInfId>13TJ-180321-MS-42880</PmtInfId>
+<EndToEndId>ETE68E82E7E701E4DB2B838318A8BA551CF</EndToEndId>
+</Refs>
+<Amt Ccy="CHF">3000</Amt>
+<CdtDbtInd>CRDT</CdtDbtInd>
+<RltdPties>
+<Cdtr>
+<Nm>Barbara Muster</Nm>
+<PstlAdr>
+<PstCd>8001</PstCd>
+<TwnNm>Zuerich</TwnNm>
+</PstlAdr>
+</Cdtr>
+</RltdPties>
+<RtrInf>
+<OrgnlBkTxCd>
+<Domn>
+<Cd>PMNT</Cd>
+<Fmly>
+<Cd>ICDT</Cd>
+<SubFmlyCd>DMCT</SubFmlyCd>
+</Fmly>
+</Domn>
+</OrgnlBkTxCd>
+<Orgtr>
+<Id>
+<OrgId>
+<AnyBIC>UBSWCHZH80A</AnyBIC>
+</OrgId>
+</Id>
+</Orgtr>
+<Rsn>
+<Cd>NARR</Cd>
+</Rsn>
+<AddtlInf>RETOUR SIC VAL 22.03.2022 BEGUENSTIGTENANGABEN UNGENUEGEND BARBARA MUSTER  8001 ZUERICH</AddtlInf>
+<AddtlInf>/SETT/2022-03-22T15:52:42</AddtlInf>
+</RtrInf>
+</TxDtls>
+</NtryDtls>
+</Ntry>
+<Ntry>
+<Amt Ccy="CHF">2.75</Amt>
+<CdtDbtInd>CRDT</CdtDbtInd>
+<RvslInd>false</RvslInd>
+<Sts>BOOK</Sts>
+<BookgDt>
+<Dt>2022-03-22</Dt>
+</BookgDt>
+<ValDt>
+<Dt>2022-03-22</Dt>
+</ValDt>
+<AcctSvcrRef>08351803222252626/1</AcctSvcrRef>
+<BkTxCd>
+<Domn>
+<Cd>XTND</Cd>
+<Fmly>
+<Cd>NTAV</Cd>
+<SubFmlyCd>NTAV</SubFmlyCd>
+</Fmly>
+</Domn>
+<Prtry>
+<Cd>8037</Cd>
+</Prtry>
+</BkTxCd>
+<AddtlNtryInf>8037?0508351803222252626?32KOWALSKI JAN SZCZYTNICKA 9 PL WROCLAW?60CREDIT TRANSFER IN PLN?24PLN 10.00 Kurs 27.34535 fixiert am 22.03.18</AddtlNtryInf>
+</Ntry>
+<Ntry>
+<NtryRef>010026540</NtryRef>
+<Amt Ccy="CHF">7761.35</Amt>
+<CdtDbtInd>CRDT</CdtDbtInd>
+<RvslInd>false</RvslInd>
+<Sts>BOOK</Sts>
+<BookgDt>
+<Dt>2022-03-22</Dt>
+</BookgDt>
+<ValDt>
+<Dt>2022-03-22</Dt>
+</ValDt>
+<AcctSvcrRef>4BA01709118000075/1</AcctSvcrRef>
+<BkTxCd>
+<Domn>
+<Cd>PMNT</Cd>
+<Fmly>
+<Cd>IDDT</Cd>
+<SubFmlyCd>PMDD</SubFmlyCd>
+</Fmly>
+</Domn>
+</BkTxCd>
+<NtryDtls>
+<Btch>
+<MsgId>4BA01709118000075</MsgId>
+<NbOfTxs>5</NbOfTxs>
+<TtlAmt Ccy="CHF">7761.35</TtlAmt>
+<CdtDbtInd>CRDT</CdtDbtInd>
+</Btch>
+</NtryDtls>
+<AddtlNtryInf>?21010026540 999999</AddtlNtryInf>
+</Ntry>
+<Ntry>
+<NtryRef>010026540</NtryRef>
+<Amt Ccy="CHF">119.45</Amt>
+<CdtDbtInd>CRDT</CdtDbtInd>
+<RvslInd>false</RvslInd>
+<Sts>BOOK</Sts>
+<BookgDt>
+<Dt>2022-03-22</Dt>
+</BookgDt>
+<ValDt>
+<Dt>2022-03-21</Dt>
+</ValDt>
+<AcctSvcrRef>4BA02002068000015/1</AcctSvcrRef>
+<BkTxCd>
+<Domn>
+<Cd>PMNT</Cd>
+<Fmly>
+<Cd>IDDT</Cd>
+<SubFmlyCd>PMDD</SubFmlyCd>
+</Fmly>
+</Domn>
+</BkTxCd>
+<NtryDtls>
+<Btch>
+<MsgId>4BA02002068000015</MsgId>
+<NbOfTxs>1</NbOfTxs>
+<TtlAmt Ccy="CHF">119.45</TtlAmt>
+<CdtDbtInd>CRDT</CdtDbtInd>
+</Btch>
+</NtryDtls>
+<AddtlNtryInf>?21010026540 901709</AddtlNtryInf>
+</Ntry>
+<Ntry>
+<NtryRef>CH4531000831854071000</NtryRef>
+<Amt Ccy="CHF">997.25</Amt>
+<CdtDbtInd>CRDT</CdtDbtInd>
+<RvslInd>false</RvslInd>
+<Sts>BOOK</Sts>
+<BookgDt>
+<Dt>2022-03-22</Dt>
+</BookgDt>
+<ValDt>
+<Dt>2022-03-22</Dt>
+</ValDt>
+<AcctSvcrRef>4BA01709118000076/1</AcctSvcrRef>
+<BkTxCd>
+<Domn>
+<Cd>PMNT</Cd>
+<Fmly>
+<Cd>RCDT</Cd>
+<SubFmlyCd>VCOM</SubFmlyCd>
+</Fmly>
+</Domn>
+</BkTxCd>
+<NtryDtls>
+<Btch>
+<MsgId>4BA01709118000076</MsgId>
+<NbOfTxs>5</NbOfTxs>
+<TtlAmt Ccy="CHF">997.25</TtlAmt>
+<CdtDbtInd>CRDT</CdtDbtInd>
+</Btch>
+</NtryDtls>
+</Ntry>
+</Stmt>
+</BkToCstmrStmt>
+</Document>

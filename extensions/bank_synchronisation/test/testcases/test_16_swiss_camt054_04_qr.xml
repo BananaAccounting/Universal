@@ -1,0 +1,427 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Structure subject to change, do not rely on optional tags -->
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:camt.054.001.04">
+    <BkToCstmrDbtCdtNtfctn>
+        <GrpHdr>
+            <MsgId>CAMT054_20221222_180251119_4Z2WCTQ4</MsgId>
+            <CreDtTm>2022-12-22T17:02:51.119Z</CreDtTm>
+			<MsgPgntn>
+				<PgNb>1</PgNb>
+				<LastPgInd>true</LastPgInd>
+			</MsgPgntn>
+			<AddtlInf>SPS/1.7/PROD</AddtlInf>
+        </GrpHdr>
+        <Ntfctn>
+            <Id>4BA01709118000076</Id>
+            <CreDtTm>2022-12-22T17:02:51.119Z</CreDtTm>
+            <FrToDt>
+                <FrDtTm>2022-12-22T00:00:00.000+01:00</FrDtTm>
+                <ToDtTm>2022-12-22T23:59:59.999+01:00</ToDtTm>
+            </FrToDt>
+			<RptgSrc>
+				<Prtry>C53F</Prtry>
+			</RptgSrc>
+            <Acct>
+                <Id>
+                    <IBAN>CH5104835831854071000</IBAN>
+                </Id>
+				<Svcr>
+					<FinInstnId>
+						<BICFI>CRESCHZZ80A</BICFI>
+						<Nm>CREDIT SUISSE (Switzerland) Ltd.</Nm>
+						<Othr>
+							<Id>CHE-116.285.487 MWST</Id>
+							<Issr>VAT-ID</Issr>
+						</Othr>
+					</FinInstnId>
+				</Svcr>
+            </Acct>
+            <Ntry>
+                <NtryRef>CH4531000831854071000</NtryRef>
+                <Amt Ccy="CHF">997.25</Amt>
+                <CdtDbtInd>CRDT</CdtDbtInd>
+                <Sts>BOOK</Sts>
+                <BookgDt>
+                    <Dt>2022-12-22</Dt>
+                </BookgDt>
+                <ValDt>
+                    <Dt>2010-12-22</Dt>
+                </ValDt>
+				<AcctSvcrRef>4BA01709118000076/1</AcctSvcrRef>
+                <BkTxCd>
+                    <Domn>
+                        <Cd>PMNT</Cd>
+                        <Fmly>
+                            <Cd>RCDT</Cd>
+                            <SubFmlyCd>VCOM</SubFmlyCd>
+                        </Fmly>
+                    </Domn>
+                </BkTxCd>
+				<AmtDtls>
+                    <TxAmt>
+                        <Amt Ccy="CHF">997.25</Amt>
+                    </TxAmt>
+                </AmtDtls>
+                <Chrgs>
+                    <TtlChrgsAndTaxAmt Ccy="CHF">2.85</TtlChrgsAndTaxAmt>
+                    <Rcrd>
+                        <Amt Ccy="CHF">2.85</Amt>
+                        <ChrgInclInd>false</ChrgInclInd>
+                    </Rcrd>
+                </Chrgs>
+                <NtryDtls>
+                    <Btch>
+						<MsgId>4BA01709118000076</MsgId>
+                        <NbOfTxs>5</NbOfTxs>
+                        <TtlAmt Ccy="CHF">997.25</TtlAmt>
+                    </Btch>
+                    <TxDtls>
+						<Refs>
+							<MsgId>13RF-190418-MS-65113</MsgId>
+							<AcctSvcrRef>80XI-190418-CS-80256</AcctSvcrRef>
+							<PmtInfId>13RF-190418-MS-65113</PmtInfId>
+							<EndToEndId>EndToEndId-0000000010</EndToEndId>
+						</Refs>
+                        <Amt Ccy="CHF">477.25</Amt>
+                        <CdtDbtInd>CRDT</CdtDbtInd>
+                        <AmtDtls>
+                            <TxAmt>
+                                <Amt Ccy="CHF">477.25</Amt>
+                            </TxAmt>
+                        </AmtDtls>
+                        <BkTxCd>
+                            <Domn>
+                                <Cd>PMNT</Cd>
+                                <Fmly>
+                                    <Cd>RCDT</Cd>
+                                    <SubFmlyCd>VCOM</SubFmlyCd>
+                                </Fmly>
+                            </Domn>
+                        </BkTxCd>
+                        <Chrgs>
+                            <TtlChrgsAndTaxAmt Ccy="CHF">0.10</TtlChrgsAndTaxAmt>
+                            <Rcrd>
+                                <Amt Ccy="CHF">0.10</Amt>
+								<CdtDbtInd>DBIT</CdtDbtInd>
+                                <ChrgInclInd>false</ChrgInclInd>
+								<Tp>
+									<Prtry>
+										<Id>INTERNAL</Id>
+									</Prtry>
+								</Tp>
+                            </Rcrd>
+                        </Chrgs>
+						<RltdPties>
+							<Dbtr>
+								<Nm>Example SA</Nm>
+								<PstlAdr>
+									<Ctry>CH</Ctry>
+									<AdrLine>Place du Marché 1</AdrLine>
+									<AdrLine>2222 Village</AdrLine>
+								</PstlAdr>
+							</Dbtr>
+							<UltmtDbtr>
+								<Nm>Example SA</Nm>
+								<PstlAdr>
+									<Ctry>CH</Ctry>
+									<AdrLine>Place du Marché 1</AdrLine>
+									<AdrLine>2222 Village</AdrLine>
+								</PstlAdr>
+							</UltmtDbtr>
+						</RltdPties>
+                        <RmtInf>
+                            <Strd>
+                                <CdtrRefInf>
+									<Tp>
+										<CdOrPrtry>
+											<Prtry>QRR</Prtry>
+										</CdOrPrtry>
+									</Tp>
+                                    <Ref>999999123456789012345678028</Ref>
+                                </CdtrRefInf>
+                                <AddtlRmtInf>Déduction faite de 3% d'escompte</AddtlRmtInf>
+                            </Strd>
+                        </RmtInf>
+                    </TxDtls>
+                    <TxDtls>
+						<Refs>
+							<MsgId>13RF-190418-MS-65114</MsgId>
+							<AcctSvcrRef>80XI-190418-CS-80257</AcctSvcrRef>
+							<PmtInfId>13RF-190418-MS-65114</PmtInfId>
+							<EndToEndId>EndToEndId-0000000011</EndToEndId>
+						</Refs>
+                        <Amt Ccy="CHF">140</Amt>
+                        <CdtDbtInd>CRDT</CdtDbtInd>
+                        <AmtDtls>
+                            <TxAmt>
+                                <Amt Ccy="CHF">140</Amt>
+                            </TxAmt>
+                        </AmtDtls>
+                        <BkTxCd>
+                            <Domn>
+                                <Cd>PMNT</Cd>
+                                <Fmly>
+                                    <Cd>RCDT</Cd>
+                                    <SubFmlyCd>VCOM</SubFmlyCd>
+                                </Fmly>
+                            </Domn>
+                        </BkTxCd>
+                        <Chrgs>
+                            <TtlChrgsAndTaxAmt Ccy="CHF">0.10</TtlChrgsAndTaxAmt>
+                            <Rcrd>
+                                <Amt Ccy="CHF">0.10</Amt>
+								<CdtDbtInd>DBIT</CdtDbtInd>
+                                <ChrgInclInd>false</ChrgInclInd>
+								<Tp>
+									<Prtry>
+										<Id>INTERNAL</Id>
+									</Prtry>
+								</Tp>
+                            </Rcrd>
+                        </Chrgs>
+						<RltdPties>
+							<Dbtr>
+								<Nm>Hans Meier</Nm>
+								<PstlAdr>
+									<StrtNm>Landstrasse</StrtNm>
+									<BldgNb>1</BldgNb>
+									<PstCd>5555</PstCd>
+									<TwnNm>Unterdorf</TwnNm>
+									<Ctry>CH</Ctry>
+								</PstlAdr>
+							</Dbtr>
+							<UltmtDbtr>
+								<Nm>Bäckerei-Konditorei Meier</Nm>
+								<PstlAdr>
+									<StrtNm>Landstrasse</StrtNm>
+									<BldgNb>1</BldgNb>
+									<PstCd>5555</PstCd>
+									<TwnNm>Unterdorf</TwnNm>
+									<Ctry>CH</Ctry>
+								</PstlAdr>
+							</UltmtDbtr>
+						</RltdPties>
+                        <RmtInf>
+                            <Strd>
+                                <CdtrRefInf>
+									<Tp>
+										<CdOrPrtry>
+											<Prtry>QRR</Prtry>
+										</CdOrPrtry>
+									</Tp>
+                                    <Ref>999999123456789012345678033</Ref>
+                                </CdtrRefInf>
+                                <AddtlRmtInf>Auftrag vom 15.02.2022</AddtlRmtInf>
+                            </Strd>
+                        </RmtInf>
+                    </TxDtls>
+                    <TxDtls>
+						<Refs>
+							<MsgId>13RF-190418-MS-65115</MsgId>
+							<AcctSvcrRef>80XI-190418-CS-80258</AcctSvcrRef>
+							<PmtInfId>13RF-190418-MS-65115</PmtInfId>
+							<EndToEndId>EndToEndId-0000000012</EndToEndId>
+						</Refs>
+                        <Amt Ccy="CHF">120</Amt>
+                        <CdtDbtInd>CRDT</CdtDbtInd>
+                        <AmtDtls>
+                            <TxAmt>
+                                <Amt Ccy="CHF">120</Amt>
+                            </TxAmt>
+                        </AmtDtls>
+                        <BkTxCd>
+                            <Domn>
+                                <Cd>PMNT</Cd>
+                                <Fmly>
+                                    <Cd>RCDT</Cd>
+                                    <SubFmlyCd>VCOM</SubFmlyCd>
+                                </Fmly>
+                            </Domn>
+                        </BkTxCd>
+                        <Chrgs>
+                            <TtlChrgsAndTaxAmt Ccy="CHF">2.45</TtlChrgsAndTaxAmt>
+                            <Rcrd>
+                                <Amt Ccy="CHF">2.35</Amt>
+								<CdtDbtInd>DBIT</CdtDbtInd>
+                                <ChrgInclInd>false</ChrgInclInd>
+								<Tp>
+									<Prtry>
+										<Id>2</Id>
+									</Prtry>
+								</Tp>
+                            </Rcrd>
+							<Rcrd>
+                                <Amt Ccy="CHF">0.10</Amt>
+								<CdtDbtInd>DBIT</CdtDbtInd>
+                                <ChrgInclInd>false</ChrgInclInd>
+								<Tp>
+									<Prtry>
+										<Id>INTERNAL</Id>
+									</Prtry>
+								</Tp>
+                            </Rcrd>
+                        </Chrgs>
+						<RltdPties>
+							<Dbtr>
+								<Nm>SCHALTEREINZAHLUNG</Nm>
+								<PstlAdr>
+									<Ctry>CH</Ctry>
+								</PstlAdr>
+							</Dbtr>
+							<UltmtDbtr>
+								<Nm>PETER MEIER</Nm>
+								<PstlAdr>
+									<StrtNm>SEMPACHERSTRASSE</StrtNm>
+									<BldgNb>1</BldgNb>
+									<PstCd>6789</PstCd>
+									<TwnNm>MITTELDORF</TwnNm>
+									<Ctry>CH</Ctry>
+								</PstlAdr>
+							</UltmtDbtr>
+						</RltdPties>						
+                        <RmtInf>
+                            <Strd>
+                                <CdtrRefInf>
+									<Tp>
+										<CdOrPrtry>
+											<Prtry>QRR</Prtry>
+										</CdOrPrtry>
+									</Tp>
+                                    <Ref>999999123456789012345678049</Ref>
+                                </CdtrRefInf>
+								<AddtlRmtInf>000000/00000/000000/17.02.2022</AddtlRmtInf>
+                            </Strd>
+                        </RmtInf>
+                    </TxDtls>
+                    <TxDtls>
+						<Refs>
+							<MsgId>13RF-190418-MS-65116</MsgId>
+							<AcctSvcrRef>80XI-190418-CS-80259</AcctSvcrRef>
+							<PmtInfId>13RF-190418-MS-65116</PmtInfId>
+							<EndToEndId>EndToEndId-0000000013</EndToEndId>
+						</Refs>
+                        <Amt Ccy="CHF">110</Amt>
+                        <CdtDbtInd>CRDT</CdtDbtInd>
+                        <AmtDtls>
+                            <TxAmt>
+                                <Amt Ccy="CHF">110</Amt>
+                            </TxAmt>
+                        </AmtDtls>
+                        <BkTxCd>
+                            <Domn>
+                                <Cd>PMNT</Cd>
+                                <Fmly>
+                                    <Cd>RCDT</Cd>
+                                    <SubFmlyCd>VCOM</SubFmlyCd>
+                                </Fmly>
+                            </Domn>
+                        </BkTxCd>
+                        <Chrgs>
+                            <TtlChrgsAndTaxAmt Ccy="CHF">0.10</TtlChrgsAndTaxAmt>
+                            <Rcrd>
+                                <Amt Ccy="CHF">0.10</Amt>
+								<CdtDbtInd>DBIT</CdtDbtInd>
+                                <ChrgInclInd>false</ChrgInclInd>
+								<Tp>
+									<Prtry>
+										<Id>INTERNAL</Id>
+									</Prtry>
+								</Tp>
+                            </Rcrd>
+                        </Chrgs>
+						<RltdPties>
+							<Dbtr>
+								<Nm>RUTH MEIER</Nm>
+								<PstlAdr>
+									<AdrLine>OBERDORFSTRASSE 1 CH 5678 UNTERDORF</AdrLine>
+								</PstlAdr>
+							</Dbtr>
+						</RltdPties>
+                        <RmtInf>
+                            <Strd>
+                                <CdtrRefInf>
+									<Tp>
+										<CdOrPrtry>
+											<Prtry>QRR</Prtry>
+										</CdOrPrtry>
+									</Tp>
+                                    <Ref>999999123456789012345678057</Ref>
+                                </CdtrRefInf>
+                            </Strd>
+                        </RmtInf>
+                    </TxDtls>
+                    <TxDtls>
+						<Refs>
+							<MsgId>13RF-190418-MS-65117</MsgId>
+							<AcctSvcrRef>80XI-190418-CS-80260</AcctSvcrRef>
+							<PmtInfId>13RF-190418-MS-65117</PmtInfId>
+							<EndToEndId>EndToEndId-0000000014</EndToEndId>
+						</Refs>
+                        <Amt Ccy="CHF">150</Amt>
+                        <CdtDbtInd>CRDT</CdtDbtInd>
+                        <AmtDtls>
+                            <TxAmt>
+                                <Amt Ccy="CHF">150</Amt>
+                            </TxAmt>
+                        </AmtDtls>
+                        <BkTxCd>
+                            <Domn>
+                                <Cd>PMNT</Cd>
+                                <Fmly>
+                                    <Cd>RCDT</Cd>
+                                    <SubFmlyCd>VCOM</SubFmlyCd>
+                                </Fmly>
+                            </Domn>
+                        </BkTxCd>
+                        <Chrgs>
+                            <TtlChrgsAndTaxAmt Ccy="CHF">0.10</TtlChrgsAndTaxAmt>
+                            <Rcrd>
+                                <Amt Ccy="CHF">0.10</Amt>
+								<CdtDbtInd>DBIT</CdtDbtInd>
+                                <ChrgInclInd>false</ChrgInclInd>
+								<Tp>
+									<Prtry>
+										<Id>INTERNAL</Id>
+									</Prtry>
+								</Tp>
+                            </Rcrd>
+                        </Chrgs>
+						<RltdPties>
+							<Dbtr>
+								<Nm>Anna Meier</Nm>
+								<PstlAdr>
+									<Ctry>CH</Ctry>
+									<AdrLine>Nachbardorfstrasse 1</AdrLine>
+									<AdrLine>9999 Obertal</AdrLine>
+								</PstlAdr>
+							</Dbtr>
+							<UltmtDbtr>
+								<Nm>Anna Meier</Nm>
+								<PstlAdr>
+									<StrtNm>Nachbardorfstrasse</StrtNm>
+									<BldgNb>1</BldgNb>
+									<PstCd>9999</PstCd>
+									<TwnNm>Obertal</TwnNm>
+									<Ctry>CH</Ctry>
+								</PstlAdr>
+							</UltmtDbtr>
+						</RltdPties>
+                        <RmtInf>
+                            <Strd>
+                                <CdtrRefInf>
+									<Tp>
+										<CdOrPrtry>
+											<Prtry>QRR</Prtry>
+										</CdOrPrtry>
+									</Tp>
+                                    <Ref>999999123456789012345678065</Ref>
+                                </CdtrRefInf>
+                                <AddtlRmtInf>Order 1234567</AddtlRmtInf>
+                            </Strd>
+                        </RmtInf>
+                    </TxDtls>
+                </NtryDtls>
+            </Ntry>
+        </Ntfctn>
+    </BkToCstmrDbtCdtNtfctn>
+</Document>

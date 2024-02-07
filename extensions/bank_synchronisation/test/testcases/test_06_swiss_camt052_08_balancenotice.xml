@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Structure subject to change, do not rely on optional tags -->
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:camt.052.001.08">
+    <BkToCstmrAcctRpt>
+        <GrpHdr>
+            <MsgId>CAMT052_20171127_230054037_5R83DWV3</MsgId>
+            <CreDtTm>2017-11-27T23:00:54.038Z</CreDtTm>
+            <MsgPgntn>
+                <PgNb>1</PgNb>
+                <LastPgInd>true</LastPgInd>
+            </MsgPgntn>
+			<AddtlInf>SPS/1.7/PROD</AddtlInf>
+        </GrpHdr>
+        <Rpt>
+            <Id>4c41ae16ae0a41bda7575de162e53b2a</Id>
+            <ElctrncSeqNb>4</ElctrncSeqNb>
+            <CreDtTm>2017-11-27T23:00:54.149Z</CreDtTm>
+            <Acct>
+                <Id>
+                    <Othr>
+                        <Id>0504830178442001</Id>
+                    </Othr>
+                </Id>
+                <Ccy>EUR</Ccy>
+                <Ownr>
+                    <Nm>Your Company Name</Nm>
+                    <PstlAdr>
+                        <AdrLine>Adress Line</AdrLine>
+                    </PstlAdr>
+                </Ownr>
+                <Svcr>
+                    <FinInstnId>
+                        <BICFI>CRESCHZZ80A</BICFI>
+                        <Nm>CREDIT SUISSE (Switzerland) Ltd.</Nm>
+						<Othr>
+							<Id>CHE-116.285.487 MWST</Id>
+							<Issr>VAT-ID</Issr>
+						</Othr>
+                    </FinInstnId>
+                </Svcr>
+            </Acct>
+            <Bal>
+                <Tp>
+                    <CdOrPrtry>
+                        <Cd>OPBD</Cd>
+                    </CdOrPrtry>
+                </Tp>
+                <Amt Ccy="EUR">582975.5</Amt>
+                <CdtDbtInd>DBIT</CdtDbtInd>
+                <Dt>
+                    <Dt>2017-11-27</Dt>
+                </Dt>
+            </Bal>
+            <Bal>
+                <Tp>
+                    <CdOrPrtry>
+                        <Cd>ITBD</Cd>
+                    </CdOrPrtry>
+                </Tp>
+                <Amt Ccy="EUR">808704.88</Amt>
+                <CdtDbtInd>DBIT</CdtDbtInd>
+                <Dt>
+                    <Dt>2017-11-27</Dt>
+                </Dt>
+            </Bal>
+            <TxsSummry>
+                <TtlNtries>
+                    <NbOfNtries>50</NbOfNtries>
+                    <Sum>333005.56</Sum>
+                    <TtlNetNtry>
+                        <Amt>225729.38</Amt>
+                        <CdtDbtInd>DBIT</CdtDbtInd>
+                    </TtlNetNtry>
+                </TtlNtries>
+                <TtlCdtNtries>
+                    <NbOfNtries>22</NbOfNtries>
+                    <Sum>53638.09</Sum>
+                </TtlCdtNtries>
+                <TtlDbtNtries>
+                    <NbOfNtries>28</NbOfNtries>
+                    <Sum>279367.47</Sum>
+                </TtlDbtNtries>
+            </TxsSummry>
+        </Rpt>
+    </BkToCstmrAcctRpt>
+</Document>
