@@ -1,4 +1,4 @@
-%%info_test_name{ch.banana.uni.import.revolut.test}
+%%info_test_name{ch.banana.revolut.transactions.business_exp1_USD_20240131}
 \documentclass{report}
 \usepackage{longtable}
 \usepackage{color}
@@ -18,11 +18,13 @@
 \newenvironment{testcase}[1]{\section*{Test: #1}}{\newpage}
 \newenvironment{test}[1]{\section*{Test case: #1}}{}
 %Begin test data
-%%SCRIPT{C:/P/Universal Images/Universal/extensions/import/revolut/test/ch.banana.uni.import.revolut.test.js}
-%
-\begin{testcase}{TestImportRevolutTrans}
-\begin{test}{testImport}
-\keyvalue{Result}{Passed}
-\end{test}
-\end{testcase}
+\begin{tablevalue}{}{ l  l  l  l  l  l  l }
+Date & DateValue & Doc & ExternalReference & Description & Income & Expenses\\
+2024-01-12 & 2024-01-13 &  & 11111111-1111-1111-1111-111111111115 & FERAnEINICIA, preant.cro/vare Inginch Icta &  & 14.00\\
+2024-01-20 & 2024-01-21 &  & 11111111-1111-1111-1111-111111111114 & FERAnEINICIA, Posinum Molaratiquid Terum Conere &  & 21.62\\
+2024-01-26 & 2024-01-27 &  & 11111111-1111-1111-1111-111111111113 & FERAnEINICIA, Aeprater Terum Conere &  & 50.09\\
+2024-01-31 & 2024-01-31 &  & 11111111-1111-1111-1111-111111111112 & FERAnEINICIA, discretumn.cro Terum Conere &  & 184.74\\
+2024-01-31 & 2024-01-31 &  & 11111111-1111-1111-1111-111111111111 & FERAnEINICIA, Posinum Molaratiquid Terum Conere &  & 972.90\\
+\\
+\end{tablevalue}
 \end{document}

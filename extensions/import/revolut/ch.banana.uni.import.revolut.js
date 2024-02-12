@@ -30,16 +30,15 @@
 /**
  * Parse the revolut file and return a string in with data in tab separated
  * 
- * REVOLUT has two mains platforms: PRIVATE and BUSINESS, each one export csv files
- * with different format.
- * 
- * Private platform does not allow to change or customise csv format, Business one could (to verify)
- * 
- * 
+ * REVOLUT has two mains platforms: 
+ * - PRIVATE
+ * - BUSINESS
+ * Each platform:
+ * - Exports .csv files with different format. Csv export formats are standard and not customizable.
+ * - Allows to export all the transactions or just the expenses, files format are different.
  */
-/**
- * Main function
- */
+
+
 function exec(inData, isTest) {
 
 
@@ -59,30 +58,39 @@ function exec(inData, isTest) {
     if (convertionParam.header) {
         inData = convertionParam.header + inData;
     }
-    transactions = Banana.Converter.csvToArray(inData, convertionParam.separator, convertionParam.textDelim);
 
+    transactions = Banana.Converter.csvToArray(inData, convertionParam.separator, convertionParam.textDelim);
+    let transactionsData = getFormattedData(transactions, convertionParam, importUtilities);
+
+    // Format Private 1. (All transactions)
     var importRevolutPrivateFormat1 = new ImportRevolutPrivateFormat1(Banana.document);
     if (importRevolutPrivateFormat1.match(transactions)) {
         var intermediaryData = importRevolutPrivateFormat1.convertCsvToIntermediaryData(transactions, convertionParam);
         intermediaryData = importRevolutPrivateFormat1.sortData(intermediaryData, convertionParam);
-        //importRevolutPrivateFormat1.postProcessIntermediaryData(intermediaryData);
         return importRevolutPrivateFormat1.convertToBananaFormat(intermediaryData);
     }
 
+    // Format Business 1. (All transactions)
     var importRevolutBusinessFormat1 = new ImportRevolutBusinessFormat1(Banana.document);
     if (importRevolutBusinessFormat1.match(transactions)) {
         var intermediaryData = importRevolutBusinessFormat1.convertCsvToIntermediaryData(transactions, convertionParam);
         intermediaryData = importRevolutBusinessFormat1.sortData(intermediaryData, convertionParam);
-        //importRevolutBusinessFormat1.postProcessIntermediaryData(intermediaryData);
         return importRevolutBusinessFormat1.convertToBananaFormat(intermediaryData);
     }
 
+    // Format Business 2. (All transactions)
     var importRevolutBusinessFormat2 = new ImportRevolutBusinessFormat2(Banana.document);
     if (importRevolutBusinessFormat2.match(transactions)) {
         var intermediaryData = importRevolutBusinessFormat2.convertCsvToIntermediaryData(transactions, convertionParam);
         intermediaryData = importRevolutBusinessFormat2.sortData(intermediaryData, convertionParam);
-        //importRevolutBusinessFormat2.postProcessIntermediaryData(intermediaryData);
         return importRevolutBusinessFormat2.convertToBananaFormat(intermediaryData);
+    }
+
+    // Format Business Expenses 1. Works with column headers.(All transactions)
+    var importRevolutBusinessExpensesFormat1 = new ImportRevolutBusinessExpensesFormat1(Banana.document);
+    if (importRevolutBusinessExpensesFormat1.match(transactionsData)) {
+        var intermediaryData = importRevolutBusinessExpensesFormat1.convertCsvToIntermediaryData(transactionsData);
+        return Banana.Converter.arrayToTsv(intermediaryData);
     }
 
     // Format is unknow, return an error
@@ -567,6 +575,124 @@ var ImportRevolutBusinessFormat2 = class ImportRevolutBusinessFormat2 extends Im
             }
         }
     }
+}
+
+/**
+ * CSV  structure format 1 for Revoluts Business Expenses Report
+ * For more info see:
+ * - https://help.revolut.com/en-IT/business/help/managing-my-business/expenses/introduction-to-expenses/what-information-does-the-expenses-csv-export-contain/
+ * 
+ */
+var ImportRevolutBusinessExpensesFormat1 = class ImportRevolutBusinessExpensesFormat1 extends ImportUtilities {
+    constructor(banDocument) {
+        super(banDocument);
+    }
+
+    match(transactionsData) {
+        if (transactionsData.length === 0)
+            return false;
+        for (var i = 0; i < transactionsData.length; i++) {
+            var transaction = transactionsData[i];
+            var formatMatched = true;
+
+            if (formatMatched && transaction["Transaction started (UTC)"] && transaction["Transaction started (UTC)"].length >= 10 &&
+                transaction["Transaction started (UTC)"].match(/^[0-9]+(\-|\.)[0-9]+(\-|\.)[0-9]/))
+                formatMatched = true;
+            else
+                formatMatched = false;
+
+            if (formatMatched && transaction["Transaction completed (UTC)"] && transaction["Transaction completed (UTC)"].length >= 10 &&
+                transaction["Transaction completed (UTC)"].match(/^[0-9]+(\-|\.)[0-9]+(\-|\.)[0-9]/))
+                formatMatched = true;
+            else
+                formatMatched = false;
+
+            if (formatMatched)
+                return true;
+        }
+        return false;
+    }
+
+    //Override the utilities method by adding language control
+    convertCsvToIntermediaryData(transactionsData) {
+        var transactionsToImport = [];
+        for (var i = 0; i < transactionsData.length; i++) {
+            if (transactionsData[i]["Transaction started (UTC)"] && transactionsData[i]["Transaction started (UTC)"].length >= 10 &&
+                transactionsData[i]["Transaction started (UTC)"].match(/^[0-9]+(\-|\.)[0-9]+(\-|\.)[0-9]/)) {
+                transactionsToImport.push(this.mapTransaction(transactionsData[i]));
+            }
+        }
+
+        // Sort rows by date
+        transactionsToImport = transactionsToImport.reverse();
+
+        // Add header and return
+        var header = [["Date", "DateValue", "Doc", "ExternalReference", "Description", "Income", "Expenses"]];
+        return header.concat(transactionsToImport);
+    }
+
+    mapTransaction(transaction) {
+
+        let mappedLine = [];
+        let descText = "";
+        let amountValue = "";
+        let feeValue = "";
+        let totAmount = "";
+
+
+        mappedLine.push(Banana.Converter.toInternalDateFormat(transaction["Transaction started (UTC)"], "yyyy-mm-dd"));
+        mappedLine.push(Banana.Converter.toInternalDateFormat(transaction["Transaction completed (UTC)"], "yyyy-mm-dd"));
+        mappedLine.push("");
+        mappedLine.push(transaction["Transaction ID"]);
+        descText = transaction["Transaction type"] + ", " + transaction["Transaction description"] + " " + transaction["Payer"];
+        mappedLine.push(descText);
+        amountValue = transaction["Amount (Payment currency)"];
+        feeValue = transaction["Fee"];
+        totAmount = calculateAmount(amountValue, feeValue);
+        mappedLine.push("");
+        mappedLine.push(Banana.Converter.toInternalNumberFormat(totAmount, '.'));
+
+        return mappedLine;
+    }
+
+    //The purpose of this function is to let the user specify how to convert the categories
+    postProcessIntermediaryData(intermediaryData) {
+        /** INSERT HERE THE LIST OF ACCOUNTS NAME AND THE CONVERSION NUMBER 
+         *   If the content of "Account" is the same of the text 
+         *   it will be replaced by the account number given */
+        //Accounts conversion
+        var accounts = {
+            //...
+        }
+
+        /** INSERT HERE THE LIST OF CATEGORIES NAME AND THE CONVERSION NUMBER 
+         *   If the content of "ContraAccount" is the same of the text 
+         *   it will be replaced by the account number given */
+
+        //Categories conversion
+        var categories = {
+            //...
+        }
+
+        //Apply the conversions
+        for (var i = 0; i < intermediaryData.length; i++) {
+            var convertedData = intermediaryData[i];
+
+            //Invert values
+            if (convertedData["Expenses"]) {
+                convertedData["Expenses"] = Banana.SDecimal.invert(convertedData["Expenses"]);
+            }
+        }
+    }
+}
+
+function getFormattedData(inData, convertionParam, importUtilities) {
+    var columns = importUtilities.getHeaderData(inData, convertionParam.headerLineStart); //array
+    var rows = importUtilities.getRowData(inData, convertionParam.dataLineStart); //array of array
+    let form = [];
+    //Load the form with data taken from the array. Create objects
+    importUtilities.loadForm(form, columns, rows);
+    return form;
 }
 
 function defineConversionParam(inData) {

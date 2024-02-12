@@ -36,33 +36,35 @@ function TestImportRevolutTrans() {
 }
 
 // This method will be called at the beginning of the test case
-TestImportRevolutTrans.prototype.initTestCase = function() {
+TestImportRevolutTrans.prototype.initTestCase = function () {
    this.testLogger = Test.logger;
    this.progressBar = Banana.application.progressBar;
 }
 
 // This method will be called at the end of the test case
-TestImportRevolutTrans.prototype.cleanupTestCase = function() {
+TestImportRevolutTrans.prototype.cleanupTestCase = function () {
 
 }
 
 // This method will be called before every test method is executed
-TestImportRevolutTrans.prototype.init = function() {
+TestImportRevolutTrans.prototype.init = function () {
 
 }
 
 // This method will be called after every test method is executed
-TestImportRevolutTrans.prototype.cleanup = function() {
+TestImportRevolutTrans.prototype.cleanup = function () {
 
 }
 
-TestImportRevolutTrans.prototype.testImport = function() {
+TestImportRevolutTrans.prototype.testImport = function () {
    var fileNameList = [];
 
    fileNameList.push("file:script/../test/testcases/ch.banana.revolut.transactions.business1_20222609.csv");
    fileNameList.push("file:script/../test/testcases/ch.banana.revolut.transactions.private1_20222609.csv");
    fileNameList.push("file:script/../test/testcases/ch.banana.revolut.transactions.business2_20222410.csv");
-   
+   fileNameList.push("file:script/../test/testcases/ch.banana.revolut.transactions.business_exp1_EUR_20240131.csv");
+   fileNameList.push("file:script/../test/testcases/ch.banana.revolut.transactions.business_exp1_USD_20240131.csv");
+
    var parentLogger = this.testLogger;
    this.progressBar.start(fileNameList.length);
 
@@ -74,9 +76,9 @@ TestImportRevolutTrans.prototype.testImport = function() {
       Test.assert(file);
       var fileContent = file.read();
       Test.assert(fileContent);
-      var transactions = exec(fileContent,true); //takes the exec from the import script.
+      var transactions = exec(fileContent, true); //takes the exec from the import script.
       this.testLogger.addCsv('', transactions);
-      
+
       if (!this.progressBar.step())
          break;
    }
