@@ -32,7 +32,7 @@ TestImportInvoices.prototype.initTestCase = function() {
     this.progressBar = Banana.application.progressBar;
 
     this.fileAC2 = "file:script/../test/testcases/invoices_testfiles/import_invoices_test.ac2";
-    this.csvInvoicesFile = "file:script/../test/testcases/invoices_testfiles/invoices.csv";
+    this.csvInvoicesFile = "file:script/../test/testcases/invoices_testfiles/invoices_new_format.csv";
     this.csvInvoicesFileWithMissingData = "file:script/../test/testcases/invoices_testfiles/invoices_with_missing_data.csv";
     this.jsonDoc = this.initJson();
 }
