@@ -47,7 +47,7 @@ function exec(fileContent, fileName) {
     if (iso20022_swiss.match(fileContent)) {
         let jsonData = iso20022_swiss.convertToJson(fileContent, fileName);
         if (jsonData) {
-            //Banana.Ui.showText("data: " + JSON.stringify(jsonData)); // ok
+            //Banana.Ui.showText(JSON.stringify(jsonData));
             return jsonData;
         }
     }
@@ -232,7 +232,7 @@ var ISO20022_Swiss_JSONConverter = class ISO20022_Swiss_JSONConverter {
         let initialBalance = getStatementBeginBalance(statementNode);
         let finalBalance = getStatementEndBalance(statementNode);
 
-        StatementParams.statementParamIban = iban;
+        StatementParams.StatementParamIban = iban;
         StatementParams.StatementParamOwner = statementOwner;
         StatementParams.StatementParamCurrency = statementCurrency;
         StatementParams.StatementParamInitialBalance = initialBalance;
@@ -256,7 +256,7 @@ var ISO20022_Swiss_JSONConverter = class ISO20022_Swiss_JSONConverter {
          *   "FileName": C:/P/Universal Images/Universal/extensions/bank_synchronisation/test/testcases/1284_test_Bank1 - B.xml,
          *   "FileType": "CAMT.053"
          *   "FileCreationDate": 20240202
-         *   "FileStatementsData":[       // all data
+         *   "FileStatementsData":[       // each element correspond to a statement (statement Node)
          *      {                   // first statement data ...
          *         "StatementParams":{      // params of the statement like iban, inital balance, final balance
          *                "StatementParamIban": "CHXXXXXXXXXXXXXXX",
