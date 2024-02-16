@@ -155,6 +155,7 @@ var PrintReport = class PrintReport {
       rows.push(row);
 
       if (teachertransactions.row(k).value("Doc") !== teachertransactions.row(k - 1).value("Doc")) {
+        
         //row operation
         row = {};
         row.operation = {};
@@ -170,8 +171,8 @@ var PrintReport = class PrintReport {
         row.style = { "fontSize": 0, "bold": true };
         row.operation.sequence = (rowstart - 1).toString() + '.2';
         row.fields = {};
-        row.fields["Doc"] = teachertransactions.row(rowstart + 1).value("Doc");
-        row.fields["Description"] = "# " + teachertransactions.row(rowstart + 1).value("Doc");
+        row.fields["Doc"] = teachertransactions.row(rowstart).value("Doc");
+        row.fields["Description"] = "# " + teachertransactions.row(rowstart).value("Doc");
         rows.push(row);
       }
     }
