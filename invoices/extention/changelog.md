@@ -1,5 +1,18 @@
 # Changelog
 
+## 2024-02-15
+
+* [RELEASE BETA]
+
+* [Fix] Fix error with Qt 6.7.0 version.
+
+## 2024-02-13
+
+* [RELEASE BETA]
+
+* [Fix] Fix problem with import in invoices table with document change.
+* [Fix] Fix problem with column payment term in days not working in the contacts table.
+
 ## 2024-02-01
 
 * [RELEASE STABLE] Released as Stable
