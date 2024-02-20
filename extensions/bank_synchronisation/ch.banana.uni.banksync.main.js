@@ -227,12 +227,13 @@ var ISO20022_Swiss_JSONConverter = class ISO20022_Swiss_JSONConverter {
         let StatementParams = {};
 
         let iban = getStatementIban(statementNode);
+        let id = getStatementId(statementNode); // Sobstitute to the IBAN, we use this only if the IBAN is not present.
         let statementOwner = getStatementOwner(statementNode);
         let statementCurrency = getStatementCurrency(statementNode);
         let initialBalance = getStatementBeginBalance(statementNode);
         let finalBalance = getStatementEndBalance(statementNode);
 
-        StatementParams.StatementParamIban = iban;
+        StatementParams.StatementParamIban = iban == "" ? id : iban
         StatementParams.StatementParamOwner = statementOwner;
         StatementParams.StatementParamCurrency = statementCurrency;
         StatementParams.StatementParamInitialBalance = initialBalance;
@@ -674,6 +675,12 @@ function getStatementIban(statementNode) {
         return node.text;
     return '';
 
+}
+function getStatementId(statementNode) {
+    let node = firstGrandChildElement(statementNode, ['Acct', 'Id', 'Othr', 'Id']);
+    if (node)
+        return node.text;
+    return '';
 }
 function firstGrandChildElement(node, childs) {
     if (!node)
