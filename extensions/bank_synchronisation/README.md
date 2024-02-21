@@ -10,3 +10,6 @@
    1) Banking systems not based on IBAN: In some regions or for some banks, the IBAN might not be the standard method for identifying bank accounts. In these cases, an alternative ID provided by the bank is the primary way to identify an account.
    2) Internal needs: Some banks use internal identifiers or specific codes for managing accounts and transactions. These IDs can be useful for internal processing, account reconciliation, or other administrative operations.
    3) Additional information: In some cases, the ID in <n1:Othr> can provide additional or contextual information useful for data processing, especially if the IBAN is not sufficient for a unique identification of the account within a certain banking or financial system.
+- Some transactions does not have any external reference, should we check in this case the date and the amount ?
+- We want to let the user decide (trough a comboBox) wich transactions to import ?
+- We use the QTreeView just to be sure to have more flexibility in the future if we want to make the sync more customizable for the users.
