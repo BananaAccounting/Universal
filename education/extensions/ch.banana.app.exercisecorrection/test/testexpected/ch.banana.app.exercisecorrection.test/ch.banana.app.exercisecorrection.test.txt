@@ -22,11 +22,14 @@
 %
 \begin{testcase}{TestImportFile}
 \begin{test}{testImportFile}
+\textvalue{TestImportFile 0 and 1}\\
 \begin{jsonvalue}{TestImportFile}
 {
     "data": [
         {
             "creator": {
+                "executionDate": "",
+                "executionTime": "",
                 "name": "ch.banana.app.exercisecorrection.test",
                 "version": "1.0"
             },
@@ -39,28 +42,10 @@
                                     "rows": [
                                         {
                                             "fields": {
-                                                "AccountCredit": "[Earnings Services]",
-                                                "AccountDebit": "[Credits]",
-                                                "Amount": "5000.00",
-                                                "Date": "2023-01-01",
-                                                "Description": "Invoices to customers for executed services",
-                                                "Doc": "1"
                                             },
                                             "operation": {
                                                 "name": "add",
-                                                "sequence": "0.1"
-                                            },
-                                            "style": {
-                                                "bold": true,
-                                                "fontSize": 0
-                                            }
-                                        },
-                                        {
-                                            "fields": {
-                                            },
-                                            "operation": {
-                                                "name": "add",
-                                                "sequence": "-1.1"
+                                                "sequence": "0.0"
                                             },
                                             "style": {
                                                 "bold": true,
@@ -74,7 +59,51 @@
                                             },
                                             "operation": {
                                                 "name": "add",
-                                                "sequence": "-1.2"
+                                                "sequence": "0.0"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "[Earnings Services]",
+                                                "AccountDebit": "[Credits]",
+                                                "Amount": "5000.00",
+                                                "Date": "2023-01-01",
+                                                "Description": "Invoices to customers for executed services",
+                                                "Doc": "1"
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "1.0"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "3.0"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "Description": "# 2",
+                                                "Doc": "2"
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "3.0"
                                             },
                                             "style": {
                                                 "bold": true,
@@ -92,7 +121,7 @@
                                             },
                                             "operation": {
                                                 "name": "add",
-                                                "sequence": "1.1"
+                                                "sequence": "4.0"
                                             },
                                             "style": {
                                                 "bold": true,
@@ -104,7 +133,7 @@
                                             },
                                             "operation": {
                                                 "name": "add",
-                                                "sequence": "0.1"
+                                                "sequence": "6.0"
                                             },
                                             "style": {
                                                 "bold": true,
@@ -113,12 +142,12 @@
                                         },
                                         {
                                             "fields": {
-                                                "Description": "# 2",
-                                                "Doc": "2"
+                                                "Description": "# 3",
+                                                "Doc": "3"
                                             },
                                             "operation": {
                                                 "name": "add",
-                                                "sequence": "0.2"
+                                                "sequence": "6.0"
                                             },
                                             "style": {
                                                 "bold": true,
@@ -136,7 +165,7 @@
                                             },
                                             "operation": {
                                                 "name": "add",
-                                                "sequence": "2.1"
+                                                "sequence": "7.0"
                                             },
                                             "style": {
                                                 "bold": true,
@@ -148,7 +177,7 @@
                                             },
                                             "operation": {
                                                 "name": "add",
-                                                "sequence": "1.1"
+                                                "sequence": "10.0"
                                             },
                                             "style": {
                                                 "bold": true,
@@ -157,12 +186,12 @@
                                         },
                                         {
                                             "fields": {
-                                                "Description": "# 3",
-                                                "Doc": "3"
+                                                "Description": "# 4",
+                                                "Doc": "4"
                                             },
                                             "operation": {
                                                 "name": "add",
-                                                "sequence": "1.2"
+                                                "sequence": "10.0"
                                             },
                                             "style": {
                                                 "bold": true,
@@ -180,33 +209,7 @@
                                             },
                                             "operation": {
                                                 "name": "add",
-                                                "sequence": "8.1"
-                                            },
-                                            "style": {
-                                                "bold": true,
-                                                "fontSize": 0
-                                            }
-                                        },
-                                        {
-                                            "fields": {
-                                            },
-                                            "operation": {
-                                                "name": "add",
-                                                "sequence": "2.1"
-                                            },
-                                            "style": {
-                                                "bold": true,
-                                                "fontSize": 0
-                                            }
-                                        },
-                                        {
-                                            "fields": {
-                                                "Description": "# 4",
-                                                "Doc": "4"
-                                            },
-                                            "operation": {
-                                                "name": "add",
-                                                "sequence": "2.2"
+                                                "sequence": "16.0"
                                             },
                                             "style": {
                                                 "bold": true,
@@ -224,7 +227,7 @@
                                             },
                                             "operation": {
                                                 "name": "add",
-                                                "sequence": "8.1"
+                                                "sequence": "16.0"
                                             },
                                             "style": {
                                                 "bold": true,
@@ -242,7 +245,7 @@
                                             },
                                             "operation": {
                                                 "name": "add",
-                                                "sequence": "8.1"
+                                                "sequence": "16.0"
                                             },
                                             "style": {
                                                 "bold": true,
@@ -260,7 +263,7 @@
                                             },
                                             "operation": {
                                                 "name": "add",
-                                                "sequence": "8.1"
+                                                "sequence": "16.0"
                                             },
                                             "style": {
                                                 "bold": true,
@@ -278,7 +281,7 @@
                                             },
                                             "operation": {
                                                 "name": "add",
-                                                "sequence": "8.1"
+                                                "sequence": "16.0"
                                             },
                                             "style": {
                                                 "bold": true,
@@ -296,7 +299,33 @@
                                             },
                                             "operation": {
                                                 "name": "add",
-                                                "sequence": "8.1"
+                                                "sequence": "16.0"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "18.0"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "Description": "# 5",
+                                                "Doc": "5"
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "18.0"
                                             },
                                             "style": {
                                                 "bold": true,
@@ -314,7 +343,7 @@
                                             },
                                             "operation": {
                                                 "name": "add",
-                                                "sequence": "9.1"
+                                                "sequence": "19.0"
                                             },
                                             "style": {
                                                 "bold": true,
@@ -326,7 +355,7 @@
                                             },
                                             "operation": {
                                                 "name": "add",
-                                                "sequence": "8.1"
+                                                "sequence": "21.0"
                                             },
                                             "style": {
                                                 "bold": true,
@@ -335,12 +364,12 @@
                                         },
                                         {
                                             "fields": {
-                                                "Description": "# 5",
-                                                "Doc": "5"
+                                                "Description": "# 6",
+                                                "Doc": "6"
                                             },
                                             "operation": {
                                                 "name": "add",
-                                                "sequence": "8.2"
+                                                "sequence": "21.0"
                                             },
                                             "style": {
                                                 "bold": true,
@@ -358,7 +387,7 @@
                                             },
                                             "operation": {
                                                 "name": "add",
-                                                "sequence": "10.1"
+                                                "sequence": "22.0"
                                             },
                                             "style": {
                                                 "bold": true,
@@ -370,7 +399,7 @@
                                             },
                                             "operation": {
                                                 "name": "add",
-                                                "sequence": "9.1"
+                                                "sequence": "24.0"
                                             },
                                             "style": {
                                                 "bold": true,
@@ -379,12 +408,12 @@
                                         },
                                         {
                                             "fields": {
-                                                "Description": "# 6",
-                                                "Doc": "6"
+                                                "Description": "# 7",
+                                                "Doc": "7"
                                             },
                                             "operation": {
                                                 "name": "add",
-                                                "sequence": "9.2"
+                                                "sequence": "24.0"
                                             },
                                             "style": {
                                                 "bold": true,
@@ -402,7 +431,7 @@
                                             },
                                             "operation": {
                                                 "name": "add",
-                                                "sequence": "11.1"
+                                                "sequence": "25.0"
                                             },
                                             "style": {
                                                 "bold": true,
@@ -414,7 +443,7 @@
                                             },
                                             "operation": {
                                                 "name": "add",
-                                                "sequence": "10.1"
+                                                "sequence": "27.0"
                                             },
                                             "style": {
                                                 "bold": true,
@@ -423,12 +452,12 @@
                                         },
                                         {
                                             "fields": {
-                                                "Description": "# 7",
-                                                "Doc": "7"
+                                                "Description": "# 8",
+                                                "Doc": "8"
                                             },
                                             "operation": {
                                                 "name": "add",
-                                                "sequence": "10.2"
+                                                "sequence": "27.0"
                                             },
                                             "style": {
                                                 "bold": true,
@@ -446,7 +475,7 @@
                                             },
                                             "operation": {
                                                 "name": "add",
-                                                "sequence": "12.1"
+                                                "sequence": "28.0"
                                             },
                                             "style": {
                                                 "bold": true,
@@ -458,7 +487,7 @@
                                             },
                                             "operation": {
                                                 "name": "add",
-                                                "sequence": "11.1"
+                                                "sequence": "30.0"
                                             },
                                             "style": {
                                                 "bold": true,
@@ -467,12 +496,12 @@
                                         },
                                         {
                                             "fields": {
-                                                "Description": "# 8",
-                                                "Doc": "8"
+                                                "Description": "# 9",
+                                                "Doc": "9"
                                             },
                                             "operation": {
                                                 "name": "add",
-                                                "sequence": "11.2"
+                                                "sequence": "30.0"
                                             },
                                             "style": {
                                                 "bold": true,
@@ -490,33 +519,7 @@
                                             },
                                             "operation": {
                                                 "name": "add",
-                                                "sequence": "15.1"
-                                            },
-                                            "style": {
-                                                "bold": true,
-                                                "fontSize": 0
-                                            }
-                                        },
-                                        {
-                                            "fields": {
-                                            },
-                                            "operation": {
-                                                "name": "add",
-                                                "sequence": "12.1"
-                                            },
-                                            "style": {
-                                                "bold": true,
-                                                "fontSize": 0
-                                            }
-                                        },
-                                        {
-                                            "fields": {
-                                                "Description": "# 9",
-                                                "Doc": "9"
-                                            },
-                                            "operation": {
-                                                "name": "add",
-                                                "sequence": "12.2"
+                                                "sequence": "33.0"
                                             },
                                             "style": {
                                                 "bold": true,
@@ -534,7 +537,7 @@
                                             },
                                             "operation": {
                                                 "name": "add",
-                                                "sequence": "15.1"
+                                                "sequence": "33.0"
                                             },
                                             "style": {
                                                 "bold": true,
@@ -552,7 +555,562 @@
                                             },
                                             "operation": {
                                                 "name": "add",
-                                                "sequence": "15.1"
+                                                "sequence": "33.0"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        "nameXml": "Transactions"
+                    }
+                ],
+                "fileVersion": "1.0.0"
+            }
+        }
+    ],
+    "error": "",
+    "format": "documentChange"
+}
+\end{jsonvalue}
+\textvalue{TestImportFile 2 and 3}\\
+\begin{jsonvalue}{TestImportFile}
+{
+    "data": [
+        {
+            "creator": {
+                "executionDate": "",
+                "executionTime": "",
+                "name": "ch.banana.app.exercisecorrection.test",
+                "version": "1.0"
+            },
+            "document": {
+                "dataUnits": [
+                    {
+                        "data": {
+                            "rowLists": [
+                                {
+                                    "rows": [
+                                        {
+                                            "fields": {
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "-1.0"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "Description": "# 1",
+                                                "Doc": "1"
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "-1.0"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "[Earnings Services]",
+                                                "AccountDebit": "[Credits]",
+                                                "Amount": "5000.00",
+                                                "Date": "2023-01-01",
+                                                "Description": "Invoices to customers for executed services",
+                                                "Doc": "1"
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "0.0"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "0.0"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "Description": "# 2",
+                                                "Doc": "2"
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "0.0"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "[Debts]",
+                                                "AccountDebit": "[Purchases]",
+                                                "Amount": "1500.00",
+                                                "Date": "2023-01-01",
+                                                "Description": "Invoices from suppliers for plants purchases",
+                                                "Doc": "2"
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "1.0"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "1.0"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "Description": "# 3",
+                                                "Doc": "3"
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "1.0"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "[Earnings Sales]",
+                                                "AccountDebit": "[Credits]",
+                                                "Amount": "3000.00",
+                                                "Date": "2023-01-01",
+                                                "Description": "Invoices to customers for plants sales",
+                                                "Doc": "3"
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "2.0"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "2.0"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "Description": "# 4",
+                                                "Doc": "4"
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "2.0"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "[Bank]",
+                                                "AccountDebit": "[]",
+                                                "Amount": "1500.00",
+                                                "Date": "2023-01-02",
+                                                "Description": "Bank transfer for miscellaneous expenses",
+                                                "Doc": "4"
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "8.0"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "[]",
+                                                "AccountDebit": "[Salaries]",
+                                                "Amount": "1000.00",
+                                                "Date": "2023-01-02",
+                                                "Description": "Payment of workers' salaries",
+                                                "Doc": "4"
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "8.0"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "[]",
+                                                "AccountDebit": "[Interests]",
+                                                "Amount": "50.00",
+                                                "Date": "2023-01-02",
+                                                "Description": "Payment of bank interest",
+                                                "Doc": "4"
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "8.0"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "[]",
+                                                "AccountDebit": "[Other costs]",
+                                                "Amount": "50.00",
+                                                "Date": "2023-01-02",
+                                                "Description": "Payment of office equipment",
+                                                "Doc": "4"
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "8.0"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "[]",
+                                                "AccountDebit": "[Energy]",
+                                                "Amount": "300.00",
+                                                "Date": "2023-01-02",
+                                                "Description": "Payment of electricity invoice",
+                                                "Doc": "4"
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "8.0"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "[]",
+                                                "AccountDebit": "[Advertising]",
+                                                "Amount": "100.00",
+                                                "Date": "2023-01-02",
+                                                "Description": "Payment of advertising agency invoice",
+                                                "Doc": "4"
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "8.0"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "8.0"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "Description": "# 5",
+                                                "Doc": "5"
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "8.0"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "[Credits]",
+                                                "AccountDebit": "[Earnings Services]",
+                                                "Amount": "300.00",
+                                                "Date": "2023-01-03",
+                                                "Description": "Credit note (reason: our mistake)",
+                                                "Doc": "5"
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "9.0"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "9.0"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "Description": "# 6",
+                                                "Doc": "6"
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "9.0"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "[Share Capital]",
+                                                "AccountDebit": "[Cash]",
+                                                "Amount": "10000.00",
+                                                "Date": "2023-01-04",
+                                                "Description": "Increase in cash contribution",
+                                                "Doc": "6"
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "10.0"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "10.0"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "Description": "# 7",
+                                                "Doc": "7"
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "10.0"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "[Credits]",
+                                                "AccountDebit": "[Bank]",
+                                                "Amount": "2000.00",
+                                                "Date": "2023-01-05",
+                                                "Description": "Bank transfer from customer (invoice payment)",
+                                                "Doc": "7"
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "11.0"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "11.0"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "Description": "# 8",
+                                                "Doc": "8"
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "11.0"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "[Cash]",
+                                                "AccountDebit": "[Debts]",
+                                                "Amount": "1000.00",
+                                                "Date": "2023-01-06",
+                                                "Description": "Cash transfer to supplier (invoice payment)",
+                                                "Doc": "8"
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "12.0"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "12.0"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "Description": "# 9",
+                                                "Doc": "9"
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "12.0"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "[]",
+                                                "AccountDebit": "[Cash]",
+                                                "Amount": "500.00",
+                                                "Date": "2023-01-07",
+                                                "Description": "Cash receipt for work performed and flower sales",
+                                                "Doc": "9"
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "15.0"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "[Earnings Services]",
+                                                "AccountDebit": "[]",
+                                                "Amount": "400.00",
+                                                "Date": "2023-01-07",
+                                                "Description": "Services performed to customer",
+                                                "Doc": "9"
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "15.0"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "[Earnings Sales]",
+                                                "AccountDebit": "[]",
+                                                "Amount": "100.00",
+                                                "Date": "2023-01-07",
+                                                "Description": "Flower sales to customer",
+                                                "Doc": "9"
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "15.0"
                                             },
                                             "style": {
                                                 "bold": true,
