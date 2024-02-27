@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.16)
 
 project(InvoiceTools)
-set(EXTENSION_ID "invoice_tools")
+set(EXTENSION_ID "ch.banana.application.invoice.tools")
 
 set(BAN_QT_RCC $ENV{BAN_QT_RCC} CACHE FILEPATH "Path to Qt rcc executable")
 set(BAN_QT_LUPDATE $ENV{BAN_QT_LUPDATE} CACHE FILEPATH "Path to Qt lupdate executable")
@@ -18,7 +18,7 @@ add_custom_target(InvoiceTools ALL
     COMMAND ${BAN_QT_RCC} -o ${EXTENSION_ID}.sbaa --binary src/${EXTENSION_ID}.qrc
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
     SOURCES src/${EXTENSION_ID}.qrc
-    SOURCES src/invoice_tools.manifest.json
+    SOURCES src/ch.banana.application.invoice.tools.manifest.json
     SOURCES ${TS_SRC_FILES}
     SOURCES ${JS_SRC_FILES}
     SOURCES ${QML_SRC_FILES}
