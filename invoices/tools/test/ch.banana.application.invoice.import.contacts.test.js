@@ -1,8 +1,8 @@
-// @id = import_items.test
+// @id = ch.banana.application.invoice.import.contacts.test
 // @api = 1.0
-// @pubdate = 2023-01-20
+// @pubdate = 2023-01-19
 // @publisher = Banana.ch SA
-// @description = <TEST import_items.test>
+// @description = <TEST ch.banana.application.invoice.import.contacts.test>
 // @doctype = *.*
 // @outputformat = none
 // @inputdatasource = none
@@ -10,50 +10,50 @@
 // @task = app.command
 // @timeout = -1
 // @inputfilefilter = Text file (*.csv);;All files (*.*)
-// @includejs = ../src/import_items.js
+// @includejs = ../src/ch.banana.application.invoice.import.contacts.js
 
 // Register test case to be executed
-Test.registerTestCase(new TestImportItems());
+Test.registerTestCase(new TestImportContacts());
 
 // Here we define the class, the name of the class is not important
-function TestImportItems() {
+function TestImportContacts() {
 
 }
 
 // This method will be called at the beginning of the test case
-TestImportItems.prototype.initTestCase = function() {
+TestImportContacts.prototype.initTestCase = function() {
     this.testLogger = Test.logger;
     this.progressBar = Banana.application.progressBar;
 
-    this.fileAC2 = "file:script/../test/testcases/items_testfiles/items_empty_import_test.ac2";
-    this.csvItemsFile = "file:script/../test/testcases/items.csv";
+    this.fileAC2 = "file:script/../test/testcases/contacts_testfiles/contatcs_empty_import_test.ac2";
+    this.csvContactsFile = "file:script/../test/testcases/contacts.csv";
     this.jsonDoc = this.initJson();
 }
 
 // This method will be called at the end of the test case
-TestImportItems.prototype.cleanupTestCase = function() {
+TestImportContacts.prototype.cleanupTestCase = function() {
 
 }
 
 // This method will be called before every test method is executed
-TestImportItems.prototype.init = function() {
+TestImportContacts.prototype.init = function() {
 
 }
 
 // This method will be called after every test method is executed
-TestImportItems.prototype.cleanup = function() {
+TestImportContacts.prototype.cleanup = function() {
 
 }
 
-TestImportItems.prototype.testImportItems = function() {
-    this.testLogger.addKeyValue("ImportItems", "testReport");
-    this.testLogger.addComment("Test Items import");
+TestImportContacts.prototype.testImportContacts = function() {
+    this.testLogger.addKeyValue("ImportContacts", "testReport");
+    this.testLogger.addComment("Test Contacts import");
 
     let parentLogger = this.testLogger;
     this.testLogger = parentLogger.newLogger(Banana.IO.fileCompleteBaseName(this.fileAC2));
 
     let banDoc = Banana.application.openDocument(this.fileAC2);
-    let file = Banana.IO.getLocalFile(this.csvItemsFile);
+    let file = Banana.IO.getLocalFile(this.csvContactsFile);
 
     if (file) {
         fileContent = file.read();
@@ -68,9 +68,9 @@ TestImportItems.prototype.testImportItems = function() {
 
         transactions.splice(0, 1);
         let transactionsObjs = Banana.Converter.arrayToObject(transactions_header, transactions, true);
-        let format_itm = createFormatItm();
-        if (format_itm.match(transactionsObjs)) {
-            let format = format_itm.convertInDocChange(transactionsObjs, this.jsonDoc);
+        let format_cnt = createFormatCnt();
+        if (format_cnt.match(transactionsObjs)) {
+            let format = format_cnt.convertInDocChange(transactionsObjs, this.jsonDoc);
             jsonDocArray = format;
         }
         
@@ -81,7 +81,7 @@ TestImportItems.prototype.testImportItems = function() {
     }
 }
 
-TestImportItems.prototype.initJson = function() {
+TestImportContacts.prototype.initJson = function() {
     let jsonDoc = {};
     jsonDoc.document = {};
     jsonDoc.document.dataUnits = [];

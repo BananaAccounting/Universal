@@ -1,8 +1,8 @@
-// @id = export_estimates.test
+// @id = ch.banana.application.invoice.export.estimates.test
 // @api = 1.0
 // @pubdate = 2023-03-17
 // @publisher = Banana.ch SA
-// @description = <TEST export_estimates.test>
+// @description = <TEST ch.banana.application.invoice.export.estimates.test>
 // @doctype = *.*
 // @outputformat = none
 // @inputdataform = none
@@ -16,8 +16,8 @@
 // @inputfilefilter.de = Text datei (*.csv);;All files (*.*)
 // @inputfilefilter.fr = Fichier text(*.csv);;All files (*.*)
 // @inputfilefilter.it = File testo (*.csv);;All files (*.*)
-// @includejs = ../src/export_estimates.js
-// @includejs = ../src/import_estimates.js
+// @includejs = ../src/ch.banana.application.invoice.export.estimates.js
+// @includejs = ../src/ch.banana.application.invoice.import.estimates.js
 
 /*
   SUMMARY
