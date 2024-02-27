@@ -1,11 +1,8 @@
-// @id = import_estimates.test
+// @id = ch.banana.application.invoice.import.invoices.test
 // @api = 1.0
-// @pubdate = 2023-06-04
+// @pubdate = 2023-01-20
 // @publisher = Banana.ch SA
-// @description = Import estimates
-// @description.de = Angebote importieren
-// @description.fr = Importer offres
-// @description.it = Importa offerte
+// @description = <TEST ch.banana.application.invoice.import.invoices.test>
 // @doctype = 400.400
 // @docproperties =
 // @task = import.rows
@@ -13,48 +10,45 @@
 // @inputdatasource = openfiledialog
 // @inputencoding = utf8
 // @inputfilefilter = Text file (*.csv);;All files (*.*)
-// @inputfilefilter.de = Text datei (*.csv);;All files (*.*)
-// @inputfilefilter.fr = Fichier text(*.csv);;All files (*.*)
-// @inputfilefilter.it = File testo (*.csv);;All files (*.*)
-// @includejs = ../src/import_estimates.js
+// @includejs = ../src/ch.banana.application.invoice.import.invoices.js
 
 // Register test case to be executed
-Test.registerTestCase(new TestImportEstimates());
+Test.registerTestCase(new TestImportInvoices());
 
 // Here we define the class, the name of the class is not important
-function TestImportEstimates() {
+function TestImportInvoices() {
 
 }
 
 // This method will be called at the beginning of the test case
-TestImportEstimates.prototype.initTestCase = function() {
+TestImportInvoices.prototype.initTestCase = function() {
     this.testLogger = Test.logger;
     this.progressBar = Banana.application.progressBar;
 
     this.fileAC2 = "file:script/../test/testcases/invoices_testfiles/import_invoices_test.ac2";
-    this.csvInvoicesFile = "file:script/../test/testcases/invoices_testfiles/invoices.csv";
+    this.csvInvoicesFile = "file:script/../test/testcases/invoices_testfiles/invoices_new_format.csv";
     this.csvInvoicesFileWithMissingData = "file:script/../test/testcases/invoices_testfiles/invoices_with_missing_data.csv";
     this.jsonDoc = this.initJson();
 }
 
 // This method will be called at the end of the test case
-TestImportEstimates.prototype.cleanupTestCase = function() {
+TestImportInvoices.prototype.cleanupTestCase = function() {
 
 }
 
 // This method will be called before every test method is executed
-TestImportEstimates.prototype.init = function() {
+TestImportInvoices.prototype.init = function() {
 
 }
 
 // This method will be called after every test method is executed
-TestImportEstimates.prototype.cleanup = function() {
+TestImportInvoices.prototype.cleanup = function() {
 
 }
 
-TestImportEstimates.prototype.testImportEstimates = function() {
-    this.testLogger.addKeyValue("ImportEstimates", "testReport");
-    this.testLogger.addComment("Test Estimates import");
+TestImportInvoices.prototype.testImportInvoices = function() {
+    this.testLogger.addKeyValue("ImportInvoices", "testReport");
+    this.testLogger.addComment("Test Invoices import");
 
     let banDoc = Banana.application.openDocument(this.fileAC2);
     Test.assert(banDoc, `file not found: "${this.fileAC2}"`);
@@ -71,9 +65,9 @@ TestImportEstimates.prototype.testImportEstimates = function() {
 
     transactions.splice(0, 1);
     let transactionsObjs = Banana.Converter.arrayToObject(transactions_header, transactions, true);
-    let format_ests = createFormatEsts(banDoc);
-    if (format_ests.match(transactionsObjs)) {
-        let format = format_ests.convertInDocChange(transactionsObjs, this.jsonDoc);
+    let format_invs = createFormatInvs(banDoc);
+    if (format_invs.match(transactionsObjs)) {
+        let format = format_invs.convertInDocChange(transactionsObjs, this.jsonDoc);
         jsonDocArray = format;
     }
     
@@ -91,9 +85,9 @@ TestImportEstimates.prototype.testImportEstimates = function() {
     
 }
 
-TestImportEstimates.prototype.testImportEstimatesWithMissingData = function() {
-    this.testLogger.addKeyValue("ImportEstimates", "testReport");
-    this.testLogger.addComment("Test Estimates import: missing data");
+TestImportInvoices.prototype.testImportInvoicesWithMissingData = function() {
+    this.testLogger.addKeyValue("ImportInvoices", "testReport");
+    this.testLogger.addComment("Test Invoices import: missing data");
 
     let banDoc = Banana.application.openDocument(this.fileAC2);
     Test.assert(banDoc, `file not found: "${this.fileAC2}"`);
@@ -110,9 +104,9 @@ TestImportEstimates.prototype.testImportEstimatesWithMissingData = function() {
 
     transactions.splice(0, 1);
     let transactionsObjs = Banana.Converter.arrayToObject(transactions_header, transactions, true);
-    let format_ests = createFormatEsts(banDoc);
-    if (format_ests.match(transactionsObjs)) {
-        let format = format_ests.convertInDocChange(transactionsObjs, this.jsonDoc);
+    let format_invs = createFormatInvs(banDoc);
+    if (format_invs.match(transactionsObjs)) {
+        let format = format_invs.convertInDocChange(transactionsObjs, this.jsonDoc);
         jsonDocArray = format;
     }
     let msgs = banDoc.getMessages();
@@ -130,7 +124,7 @@ TestImportEstimates.prototype.testImportEstimatesWithMissingData = function() {
     
 }
 
-TestImportEstimates.prototype.initJson = function() {
+TestImportInvoices.prototype.initJson = function() {
     let jsonDoc = {};
     jsonDoc.document = {};
     jsonDoc.document.dataUnits = [];
