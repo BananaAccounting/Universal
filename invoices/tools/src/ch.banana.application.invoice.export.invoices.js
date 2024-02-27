@@ -1,4 +1,4 @@
-// @id = export_invoices
+// @id = ch.banana.application.invoice.export.invoices
 // @api = 1.0
 // @pubdate = 2023-02-21
 // @publisher = Banana.ch SA
