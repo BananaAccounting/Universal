@@ -1,4 +1,4 @@
-// @id = import_estimates
+// @id = ch.banana.application.invoice.import.estimates
 // @api = 1.0
 // @pubdate = 2023-03-20
 // @publisher = Banana.ch SA
@@ -366,7 +366,7 @@ function exec(string) {
          invoiceObj_documentInfo.currency = invoiceTransaction["InvoiceCurrency"];
          invoiceObj_documentInfo.date = invoiceTransaction["InvoiceDate"];
          invoiceObj_documentInfo.decimals_amounts = 2;
-         invoiceObj_documentInfo.description = invoiceTransaction["InvoiceDescription"] ? invoiceTransaction["InvoiceDescription"] : transWord;
+         invoiceObj_documentInfo.description = invoiceTransaction["InvoiceDescription"] ? invoiceTransaction["InvoiceDescription"] : qsTr("Estimate ") + invoiceTransaction["InvoiceNumber" ];
          invoiceObj_documentInfo.doc_type = "";
          invoiceObj_documentInfo.locale = "";
          invoiceObj_documentInfo.number = invoiceTransaction["InvoiceNumber"];

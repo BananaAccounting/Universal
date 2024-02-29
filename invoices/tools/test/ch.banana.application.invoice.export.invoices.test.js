@@ -1,8 +1,8 @@
-// @id = export_invoices.test
+// @id = ch.banana.application.invoice.export.invoices.test
 // @api = 1.0
 // @pubdate = 2023-02-08
 // @publisher = Banana.ch SA
-// @description = <TEST export_invoices.test>
+// @description = <TEST ch.banana.application.invoice.export.invoices.test>
 // @doctype = *.*
 // @outputformat = none
 // @inputdataform = none
@@ -16,8 +16,8 @@
 // @inputfilefilter.de = Text datei (*.csv);;All files (*.*)
 // @inputfilefilter.fr = Fichier text(*.csv);;All files (*.*)
 // @inputfilefilter.it = File testo (*.csv);;All files (*.*)
-// @includejs = ../src/export_invoices.js
-// @includejs = ../src/import_invoices.js
+// @includejs = ../src/ch.banana.application.invoice.export.invoices.js
+// @includejs = ../src/ch.banana.application.invoice.import.invoices.js
 /*
   SUMMARY
   -------

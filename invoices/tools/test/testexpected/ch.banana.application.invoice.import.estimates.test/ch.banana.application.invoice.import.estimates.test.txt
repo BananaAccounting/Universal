@@ -1,4 +1,4 @@
-%%info_test_name{import_invoices.test}
+%%info_test_name{ch.banana.application.invoice.import.estimates.test}
 \documentclass{report}
 \usepackage{longtable}
 \usepackage{color}
@@ -18,17 +18,17 @@
 \newenvironment{testcase}[1]{\section*{Test: #1}}{\newpage}
 \newenvironment{test}[1]{\section*{Test case: #1}}{}
 %Begin test data
-%%SCRIPT{C:/Users/joemb/Banana/Universal/invoices/tools/test/import_invoices.test.js}
+%%SCRIPT{C:/Users/joemb/Banana/BananaRepo/Universal/invoices/tools/test/ch.banana.application.invoice.import.estimates.test.js}
 %
-\begin{testcase}{TestImportInvoices}
-\begin{test}{testImportInvoices}
-\keyvalue{ImportInvoices}{testReport}
-%Test Invoices import
+\begin{testcase}{TestImportEstimates}
+\begin{test}{testImportEstimates}
+\keyvalue{ImportEstimates}{testReport}
+%Test Estimates import
 \keyvalue{Result}{Passed}
 \end{test}
-\begin{test}{testImportInvoicesWithMissingData}
-\keyvalue{ImportInvoices}{testReport}
-%Test Invoices import: missing data
+\begin{test}{testImportEstimatesWithMissingData}
+\keyvalue{ImportEstimates}{testReport}
+%Test Estimates import: missing data
 \keyvalue{Result}{Passed}
 \end{test}
 \end{testcase}

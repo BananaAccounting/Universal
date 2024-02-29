@@ -1,14 +1,14 @@
-// @id = export_contacts.test
+// @id = ch.banana.application.invoice.export.contacts.test
 // @api = 1.0
 // @pubdate = 2023-02-08
 // @publisher = Banana.ch SA
-// @description = <TEST export_contacts.test>
+// @description = <TEST ch.banana.application.invoice.export.contacts.test>
 // @doctype = *.*
 // @outputformat = none
 // @inputdataform = none
 // @task = app.command
 // @timeout = -1
-// @includejs = ../src/export_contacts.js
+// @includejs = ../src/ch.banana.application.invoice.export.contacts.js
 
 /*
   SUMMARY
