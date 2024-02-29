@@ -1,4 +1,4 @@
-// @id = ch.banana.application.invoice.import.estimates
+// @id = ch.banana.application.invoice.tools
 // @api = 1.0
 // @pubdate = 2023-03-20
 // @publisher = Banana.ch SA
