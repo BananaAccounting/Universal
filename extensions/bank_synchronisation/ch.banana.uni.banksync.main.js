@@ -47,7 +47,7 @@ function exec(fileContent, fileName) {
     if (iso20022_swiss.match(fileContent)) {
         let jsonData = iso20022_swiss.convertToJson(fileContent, fileName);
         if (jsonData) {
-            //Banana.Ui.showText(JSON.stringify(jsonData));
+            Banana.Ui.showText(JSON.stringify(jsonData));
             return jsonData;
         }
     }

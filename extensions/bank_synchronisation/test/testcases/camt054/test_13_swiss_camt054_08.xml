@@ -5,10 +5,10 @@
         <GrpHdr>
             <MsgId>CAMT054_20221222_180251119_4Z2WCTQ4</MsgId>
             <CreDtTm>2022-12-22T17:02:51.119Z</CreDtTm>
-			<MsgPgntn>
-				<PgNb>1</PgNb>
-				<LastPgInd>true</LastPgInd>
-			</MsgPgntn>
+            <MsgPgntn>
+                <PgNb>1</PgNb>
+                <LastPgInd>true</LastPgInd>
+            </MsgPgntn>
         </GrpHdr>
         <Ntfctn>
             <Id>4BA01709118000075</Id>
@@ -27,15 +27,15 @@
                 <Amt Ccy="CHF">7761.35</Amt>
                 <CdtDbtInd>CRDT</CdtDbtInd>
                 <Sts>
-					<Cd>BOOK</Cd>
-				</Sts>
+                    <Cd>BOOK</Cd>
+                </Sts>
                 <BookgDt>
                     <Dt>2022-12-22</Dt>
                 </BookgDt>
                 <ValDt>
                     <Dt>2022-12-22</Dt>
                 </ValDt>
-				<AcctSvcrRef>4BA01709118000075/1</AcctSvcrRef>
+                <AcctSvcrRef>4BA01709118000075/1</AcctSvcrRef>
                 <BkTxCd>
                     <Domn>
                         <Cd>PMNT</Cd>
@@ -67,25 +67,25 @@
                                 </Fmly>
                             </Domn>
                         </BkTxCd>
-						<RltdPties>
-							<Dbtr>
-								<Pty>
-									<Nm>Example SA</Nm>
-									<PstlAdr>
-										<AdrLine>Place du Marché 1</AdrLine>
-										<AdrLine>2222 Village</AdrLine>
-									</PstlAdr>
-								</Pty>
-							</Dbtr>
-						</RltdPties>
+                        <RltdPties>
+                            <Dbtr>
+                                <Pty>
+                                    <Nm>Example SA</Nm>
+                                    <PstlAdr>
+                                        <AdrLine>Place du Marché 1</AdrLine>
+                                        <AdrLine>2222 Village</AdrLine>
+                                    </PstlAdr>
+                                </Pty>
+                            </Dbtr>
+                        </RltdPties>
                         <RmtInf>
                             <Strd>
                                 <CdtrRefInf>
-									<Tp>
-										<CdOrPrtry>
-											<Prtry>ISR Reference</Prtry>
-										</CdOrPrtry>
-									</Tp>
+                                    <Tp>
+                                        <CdOrPrtry>
+                                            <Prtry>ISR Reference</Prtry>
+                                        </CdOrPrtry>
+                                    </Tp>
                                     <Ref>999999123456789012345678028</Ref>
                                 </CdtrRefInf>
                             </Strd>
@@ -108,28 +108,28 @@
                                 </Fmly>
                             </Domn>
                         </BkTxCd>
-						<RltdPties>
-							<Dbtr>
-								<Pty>
-									<Nm>Bäckerei-Konditorei Meier</Nm>
-									<PstlAdr>
-										<StrtNm>Landstrasse</StrtNm>
-										<BldgNb>1</BldgNb>
-										<PstCd>5555</PstCd>
-										<TwnNm>Unterdorf</TwnNm>
-										<Ctry>CH</Ctry>
-									</PstlAdr>
-								</Pty>
-							</Dbtr>
-						</RltdPties>
+                        <RltdPties>
+                            <Dbtr>
+                                <Pty>
+                                    <Nm>Bäckerei-Konditorei Meier</Nm>
+                                    <PstlAdr>
+                                        <StrtNm>Landstrasse</StrtNm>
+                                        <BldgNb>1</BldgNb>
+                                        <PstCd>5555</PstCd>
+                                        <TwnNm>Unterdorf</TwnNm>
+                                        <Ctry>CH</Ctry>
+                                    </PstlAdr>
+                                </Pty>
+                            </Dbtr>
+                        </RltdPties>
                         <RmtInf>
                             <Strd>
                                 <CdtrRefInf>
-									<Tp>
-										<CdOrPrtry>
-											<Prtry>ISR Reference</Prtry>
-										</CdOrPrtry>
-									</Tp>
+                                    <Tp>
+                                        <CdOrPrtry>
+                                            <Prtry>ISR Reference</Prtry>
+                                        </CdOrPrtry>
+                                    </Tp>
                                     <Ref>999999123456789012345678033</Ref>
                                 </CdtrRefInf>
                             </Strd>
@@ -152,21 +152,21 @@
                                 </Fmly>
                             </Domn>
                         </BkTxCd>
-						<RltdPties>
-							<Dbtr>
-								<Pty>
-									<Nm>NOTPROVIDED</Nm>
-								</Pty>
-							</Dbtr>
-						</RltdPties>
+                        <RltdPties>
+                            <Dbtr>
+                                <Pty>
+                                    <Nm>NOTPROVIDED</Nm>
+                                </Pty>
+                            </Dbtr>
+                        </RltdPties>
                         <RmtInf>
                             <Strd>
                                 <CdtrRefInf>
-									<Tp>
-										<CdOrPrtry>
-											<Prtry>ISR Reference</Prtry>
-										</CdOrPrtry>
-									</Tp>
+                                    <Tp>
+                                        <CdOrPrtry>
+                                            <Prtry>ISR Reference</Prtry>
+                                        </CdOrPrtry>
+                                    </Tp>
                                     <Ref>999999123456789012345678049</Ref>
                                 </CdtrRefInf>
                             </Strd>
@@ -189,21 +189,21 @@
                                 </Fmly>
                             </Domn>
                         </BkTxCd>
-						<RltdPties>
-							<Dbtr>
-								<Pty>
-									<Nm>NOTPROVIDED</Nm>
-								</Pty>
-							</Dbtr>
-						</RltdPties>
+                        <RltdPties>
+                            <Dbtr>
+                                <Pty>
+                                    <Nm>NOTPROVIDED</Nm>
+                                </Pty>
+                            </Dbtr>
+                        </RltdPties>
                         <RmtInf>
                             <Strd>
                                 <CdtrRefInf>
-									<Tp>
-										<CdOrPrtry>
-											<Prtry>ISR Reference</Prtry>
-										</CdOrPrtry>
-									</Tp>
+                                    <Tp>
+                                        <CdOrPrtry>
+                                            <Prtry>ISR Reference</Prtry>
+                                        </CdOrPrtry>
+                                    </Tp>
                                     <Ref>999999123456789012345678057</Ref>
                                 </CdtrRefInf>
                             </Strd>
@@ -226,21 +226,21 @@
                                 </Fmly>
                             </Domn>
                         </BkTxCd>
-						<RltdPties>
-							<Dbtr>
-								<Pty>
-									<Nm>NOTPROVIDED</Nm>
-								</Pty>
-							</Dbtr>
-						</RltdPties>
+                        <RltdPties>
+                            <Dbtr>
+                                <Pty>
+                                    <Nm>NOTPROVIDED</Nm>
+                                </Pty>
+                            </Dbtr>
+                        </RltdPties>
                         <RmtInf>
                             <Strd>
                                 <CdtrRefInf>
-									<Tp>
-										<CdOrPrtry>
-											<Prtry>ISR Reference</Prtry>
-										</CdOrPrtry>
-									</Tp>
+                                    <Tp>
+                                        <CdOrPrtry>
+                                            <Prtry>ISR Reference</Prtry>
+                                        </CdOrPrtry>
+                                    </Tp>
                                     <Ref>999999123456789012345678065</Ref>
                                 </CdtrRefInf>
                             </Strd>
