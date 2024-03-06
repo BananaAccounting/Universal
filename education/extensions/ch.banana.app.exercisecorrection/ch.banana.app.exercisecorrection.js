@@ -1,6 +1,6 @@
 // @id = ch.banana.app.exercisecorrection
 // @api = 1.0
-// @pubdate = 2024-02-21
+// @pubdate = 2024-03-06
 // @publisher = Banana.ch SA
 // @description = Correction of exercises
 // @description.it = Correzione degli esercizi
@@ -68,7 +68,7 @@ var PrintReport = class PrintReport {
     // Check if the Student file has all the exercise numbers
     for (let i = 0; i < studenttransactions.rowCount; i++) {
       if (studenttransactions.row(i).value("Doc") === "" && (studenttransactions.row(i).value("AccountDebit") != "" || studenttransactions.row(i).value("AccountCredit") != "" || (studenttransactions.row(i).value("AccountDebit") != "" && studenttransactions.row(i).value("AccountCredit") != ""))) {
-        this.banDoc1.addMessage("Il documento iniziale non ha tutti i numeri di esercizio. I numeri di esercizio devono corrispondere.");
+        this.banDoc1.addMessage("The initial file doesn't have all the exercise numbers. The exercise numbers must match.");
         return;
       }
     }
@@ -91,7 +91,7 @@ var PrintReport = class PrintReport {
     // Check if the Teacher file has all the exercise numbers
     for (let i = 0; i < teachertransactions.rowCount; i++) {
       if (teachertransactions.row(i).value("Doc") === "" && (teachertransactions.row(i).value("AccountDebit") != "" || teachertransactions.row(i).value("AccountCredit") != "")) {
-        this.banDoc2.addMessage("Il documento da importare non ha tutti i numeri di esercizio. I numeri di esercizio devono corrispondere.");
+        this.banDoc2.addMessage("The file to be imported doesn't have all the exercise numbers. The exercise numbers must match.");
         return;
       }
     }
