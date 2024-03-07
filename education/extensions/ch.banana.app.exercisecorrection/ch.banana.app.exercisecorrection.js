@@ -207,6 +207,64 @@ var PrintReport = class PrintReport {
     //rows
     let rows = [];
 
+
+    // Add the columns Score and MaxScore to the transactions if they don't exist
+
+    if (!this.banDoc1.table('Transactions').column('Score') || !this.banDoc1.table('Transactions').column('MaxScore')) {
+
+      //column operation
+      let column = {};
+      //columns
+      let columns = [];
+
+      if (!this.banDoc1.table('Transactions').column('Score')) {
+        //column operation
+        column = {};
+        column.operation = {};
+        column.operation.name = 'add';
+        //column parameters
+        column.nameXml = 'Score';
+        column.width = '200';
+        column.description = 'Score';
+        column.definition = { "type": "number", "decimals": '2' };
+        column.operation = { "name": "add" };
+        columns.push(column);
+      }
+
+      if (!this.banDoc1.table('Transactions').column('MaxScore')) {
+        //column operation
+        column = {};
+        column.operation = {};
+        column.operation.name = 'add';
+        //column parameters
+        column.nameXml = 'MaxScore';
+        column.width = '200';
+        column.description = 'MaxScore';
+        column.definition = { "type": "number", "decimals": '2' };
+        column.operation = { "name": "add" };
+        columns.push(column);
+      }
+
+      //table
+      let dataUnitTransactions = {};
+      dataUnitTransactions.nameXml = 'Transactions';
+      dataUnitTransactions.data = {};
+
+      dataUnitTransactions.data.viewList = {};
+      dataUnitTransactions.data.viewList.views = [];
+      dataUnitTransactions.data.viewList.views.push({ 'columns': columns });
+
+      //document
+      let document = new PrintReport(this.banDoc1, this.banDoc2, this.isTest);
+      let jsonDoc = document.initDocument(this.isTest);
+      jsonDoc.document.dataUnits.push(dataUnitTransactions);
+
+      return jsonDoc;
+
+    }
+
+    else {
+
     for (let i = 0; i < studenttransactionsArray.length; i++) {
       // modify row to add the score and the maxscore to the transactions
       row = {};
@@ -320,7 +378,6 @@ var PrintReport = class PrintReport {
     let dataUnitTransactions = {};
     dataUnitTransactions.nameXml = 'Transactions';
     dataUnitTransactions.data = {};
-
     dataUnitTransactions.data.rowLists = [];
     dataUnitTransactions.data.rowLists.push({ 'rows': rows });
 
@@ -332,6 +389,8 @@ var PrintReport = class PrintReport {
     return jsonDoc;
 
   }
+
+}
 
   //Functions to write the ac2 file
 
