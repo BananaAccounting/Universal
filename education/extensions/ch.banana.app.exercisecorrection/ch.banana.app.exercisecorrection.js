@@ -1,6 +1,6 @@
 // @id = ch.banana.app.exercisecorrection
 // @api = 1.0
-// @pubdate = 2024-03-06
+// @pubdate = 2024-03-07
 // @publisher = Banana.ch SA
 // @description = Correction of exercises
 // @description.it = Correzione degli esercizi
@@ -177,6 +177,12 @@ var PrintReport = class PrintReport {
             bestscore[n] = studenttransactionsArray[i].score - 1;
             studenttransactionsArray[i].score = bestscore[n];
           }
+          /*
+          if (studenttransactionsArray[i].date !== teachertransactionsArray[k].date) {
+            bestscore[n] = studenttransactionsArray[i].score - 1;
+            studenttransactionsArray[i].score = bestscore[n];
+          }
+          */
 
           n++;
 
