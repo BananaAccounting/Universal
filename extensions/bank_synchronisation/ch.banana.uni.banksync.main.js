@@ -19,6 +19,7 @@
 // @publisher = Banana.ch SA
 // @pubdate = 2024-01-30
 // @inputdatasource = none
+// @include = src/csv_import_extensions/postfinance_sync_csv/ch.banana.switzerland.sync.postfinance.js
 
 /**
 * This extension receives the contents of a file from Banana and checks what type of file it is
@@ -32,20 +33,58 @@
  * Depending on the file format, this extension will call specific data conversion classes.
  */
 
+const CSV_FILE_SUFFIX = "csv";
+const XML_FILE_SUFFIX = "xml";
+const TXT_FILE_SUFFIX = "txt";
+
 /**
  * Main function.
  * Takes as parameter the content of a file, the content is given as a string.
  * @param {*} fileContent 
  * @returns 
  */
-function exec(fileContent, fileName) {
+function exec(fileContent, filePath, fileName, fileSuffix) {
 
     if (fileContent.length < 0)
         return;
 
+    switch (fileSuffix) {
+        case CSV_FILE_SUFFIX:
+            return processCsvFile(filePath, fileName, fileContent);
+        case XML_FILE_SUFFIX:
+            return processXmlFile(filePath, fileContent);
+        case TXT_FILE_SUFFIX:
+            return processTxtFile(filePath, fileName, fileContent);
+        default:
+            return "";
+    }
+}
+
+function processCsvFile(filePath, fileName, fileContent) {
+
+    /**
+     * Each csv file must begin with a specific prefix (bank name) --> bank_name_*.csv (all in lower case), e.g:
+     * postfinance_money.csv
+     * With each prefix we have associated an extension that will be called upon to read the data from the file.
+     */
+    let csv_jsonConverter = new CSV_JSONConverter();
+    //Get the prefix
+    let elements = fileName.split("_");
+    let filePrefix = elements.shift();
+    banksList = getCsvBanksList();
+    if (banksList.has(filePrefix)) {
+        let jsonData = csv_jsonConverter.convertToJson(banksList.get(filePrefix));
+        if (jsonData) {
+            //Banana.Ui.showText(JSON.stringify(jsonData));
+            return jsonData;
+        } // Riprendere da quii il 15.
+    }
+
+}
+function processXmlFile(filePath, fileContent) {
     let iso20022_swiss = new ISO20022_Swiss_JSONConverter();
     if (iso20022_swiss.match(fileContent)) {
-        let jsonData = iso20022_swiss.convertToJson(fileContent, fileName);
+        let jsonData = iso20022_swiss.convertToJson(fileContent, filePath);
         if (jsonData) {
             //Banana.Ui.showText(JSON.stringify(jsonData));
             return jsonData;
@@ -54,7 +93,7 @@ function exec(fileContent, fileName) {
 
     let iso20022_general = new ISO20022_General_JSONConverter();
     if (iso20022_general.match(fileContent)) {
-        let jsonData = iso20022_general.convertToJson(fileContent, fileName);
+        let jsonData = iso20022_general.convertToJson(fileContent, filePath);
         if (jsonData) {
             return jsonData;
         }
@@ -62,13 +101,20 @@ function exec(fileContent, fileName) {
 
     let json_thinker = new JSON_Thinker_JSONConverter();
     if (json_thinker.match(fileContent)) {
-        let jsonData = json_thinker.convertToJson(fileContent, fileName);
+        let jsonData = json_thinker.convertToJson(fileContent, filePath);
         if (jsonData) {
             return jsonData;
         }
     }
+}
 
-    return "";
+function processTxtFile(filePath, fileName, fileContent) {
+    //for the JSON format data...?
+}
+
+var CSV_JSONConverter = class CSV_JSONConverter {
+    constructor() {
+    }
 }
 
 /**
@@ -116,42 +162,42 @@ var ISO20022_Swiss_JSONConverter = class ISO20022_Swiss_JSONConverter {
         return false
     }
 
-    convertToJson(fileContent, fileName) {
+    convertToJson(fileContent, filePath) {
         let xmlDoc = Banana.Xml.parse(fileContent);
         let docNode = xmlDoc.firstChildElement(); // Document
         if (!docNode)
             return xmlTransactions
         switch (this.camtType) {
             case "CAMT.052":
-                return this.convertToJson_fromCamt052(docNode, fileName);
+                return this.convertToJson_fromCamt052(docNode, filePath);
             case "CAMT.053":
-                return this.convertToJson_fromCamt053(docNode, fileName);
+                return this.convertToJson_fromCamt053(docNode, filePath);
             case "CAMT.054":
-                return this.convertToJson_fromCamt054(docNode, fileName);
+                return this.convertToJson_fromCamt054(docNode, filePath);
             default:
                 return jsonDoc;
         }
     }
 
-    convertToJson_fromCamt052(docNode, fileName) {
+    convertToJson_fromCamt052(docNode, filePath) {
         let jsonDoc = {};
-        this.setFileData(jsonDoc, docNode, fileName);
+        this.setFileData(jsonDoc, docNode, filePath);
         let statementsNode = this.getStatementsNode_camt052(docNode);
         this.setStatementData(statementsNode, jsonDoc);
         return jsonDoc;
     }
-    convertToJson_fromCamt053(docNode, fileName) {
+    convertToJson_fromCamt053(docNode, filePath) {
         let jsonDoc = {};
-        this.setFileData(jsonDoc, docNode, fileName);
+        this.setFileData(jsonDoc, docNode, filePath);
         let statementsNode = this.getStatementsNode_camt053(docNode);
         this.setStatementData(statementsNode, jsonDoc);
         //Banana.Ui.showText(JSON.stringify(jsonDoc)); ok
         return jsonDoc;
 
     }
-    convertToJson_fromCamt054(docNode, fileName) {
+    convertToJson_fromCamt054(docNode, filePath) {
         let jsonDoc = {};
-        this.setFileData(jsonDoc, docNode, fileName);
+        this.setFileData(jsonDoc, docNode, filePath);
         let statementsNode = this.getStatementsNode_camt054(docNode);
         this.setStatementData(statementsNode, jsonDoc);
         return jsonDoc;
@@ -193,9 +239,9 @@ var ISO20022_Swiss_JSONConverter = class ISO20022_Swiss_JSONConverter {
     /**
      * Saves the file data into a json object: jsonDoc
      * @param {*} jsonDoc 
-     * @param {*} fileName 
+     * @param {*} filePath 
      */
-    setFileData(jsonDoc, docNode, fileName) {
+    setFileData(jsonDoc, docNode, filePath) {
         /**
          * The data we want to save:
          * - File Name (Path)
@@ -203,7 +249,7 @@ var ISO20022_Swiss_JSONConverter = class ISO20022_Swiss_JSONConverter {
          * - Creation Date
          */
 
-        let name = fileName;
+        let name = filePath;
         let type = this.camtType
         let creationDate = getDocumentCreationDate(docNode);
 
@@ -256,7 +302,7 @@ var ISO20022_Swiss_JSONConverter = class ISO20022_Swiss_JSONConverter {
          * {
          *   "FileName": C:/P/Universal Images/Universal/extensions/bank_synchronisation/test/testcases/1284_test_Bank1 - B.xml,
          *   "FileType": "CAMT.053"
-         *   "FileCreationDate": 20240202
+         *   "FileCreationDate": 2024-02-02
          *   "FileStatementsData":[       // each element correspond to a statement (statement Node)
          *      {                   // first statement data ...
          *         "StatementParams":{      // params of the statement like iban, inital balance, final balance
@@ -973,4 +1019,27 @@ function readStatementEntryDetailsAddress(detailsNode, isCredit) {
 function joinNotEmpty(texts, separator) {
     let cleanTexts = texts.filter(function (n) { return n && n.trim().length });
     return cleanTexts.join(separator);
+}
+
+function getCsvBanksList() {
+
+    /**
+     * We associate each bank to the related extension
+     */
+    let banksList = new Map();
+    banksList.set('postfinance', 'ch.banana.sync.postfinance.js');
+    banksList.set('ubs', 'ch.banana.sync.ubs.js');
+    banksList.set('credisuisse', 'ch.banana.sync.credisuisse.js');
+    banksList.set('bancastato', 'ch.banana.sync.bancastato.js');
+    banksList.set('baslerkantonalbank', 'ch.banana.sync.baslerkantonalbank.js');
+    banksList.set('cornerbank', 'ch.banana.sync.cornerbank.js');
+    banksList.set('cornercard', 'ch.banana.sync.cornercard.js');
+    banksList.set('luzernerkantonalbank', 'ch.banana.sync.luzernerkantonalbank.js');
+    banksList.set('migrosbank', 'ch.banana.sync.migrosbank.js');
+    banksList.set('neonbank', 'ch.banana.sync.neonbank.js');
+    banksList.set('raiffeisen', 'ch.banana.sync.raiffeisen.js');
+    banksList.set('valiant', 'ch.banana.sync.valiant.js');
+    banksList.set('zurcherkantonalbank', 'ch.banana.sync.zurcherkantonalbank.js');
+
+    return banksList;
 }
