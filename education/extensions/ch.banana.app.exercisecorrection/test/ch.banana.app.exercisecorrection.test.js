@@ -24,10 +24,12 @@ TestImportFile.prototype.initTestCase = function () {
 
   this.testLogger = Test.logger;
   this.fileAC2Path = [];
-  this.fileAC2Path.push("file:script/../test/testcases/EducationStudent1.ac2");
-  this.fileAC2Path.push("file:script/../test/testcases/EducationTeacher1.ac2");
-  this.fileAC2Path.push("file:script/../test/testcases/EducationStudent2.ac2");
-  this.fileAC2Path.push("file:script/../test/testcases/EducationTeacher2.ac2");
+  this.fileAC2Path.push("file:script/../test/testcases/student-result-file-1.ac2");
+  this.fileAC2Path.push("file:script/../test/testcases/teacher-solution-file-1.ac2");
+  this.fileAC2Path.push("file:script/../test/testcases/student-result-file-2.ac2");
+  this.fileAC2Path.push("file:script/../test/testcases/teacher-solution-file-2.ac2");
+  this.fileAC2Path.push("file:script/../test/testcases/student-result-file-3.ac2");
+  this.fileAC2Path.push("file:script/../test/testcases/teacher-solution-file-3.ac2");
 
 }
 
