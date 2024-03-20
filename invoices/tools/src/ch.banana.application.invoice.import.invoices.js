@@ -217,7 +217,9 @@ class formatInvs {
             }
         }
 
-        if (this.invoiceVatTotal) {
+        // Verification is done only when the invoiceVatTotal is not 0 (when empty is always set to 0.00).
+        // With this the invoiceVatTotal field of the csv can be empty and no verification message is shown.
+        if (this.invoiceVatTotal && this.invoiceVatTotal !== "0.00") {
             if (Banana.SDecimal.compare(invoiceObj.billing_info.total_vat_amount, this.invoiceVatTotal) === 0) {
                this.VatTotalIsOk=true;
             } else {
