@@ -1,0 +1,19 @@
+{
+    "category": "Import",
+    "country": "universal",
+    "countryCode": "un",
+    "description": "Lightspeed - Import movements .csv (Banana+ Advanced)",
+    "description.en": "Lightspeed - Import movements .csv (Banana+ Advanced)",
+    "description.it": "Lightspeed - Importa movimenti .csv (Banana+ Advanced)",
+    "description.de": "Lightspeed - Bewegungen importieren .csv (Banana+ Advanced)",
+    "description.fr": "Lightspeed - Importer mouvements .csv (Banana+ Advanced)",
+    "id": "ch.banana.uni.import.lightspeed",
+    "language": "en",
+    "publisher": "Banana.ch",
+    "title": "Lightspeed - Import movements .csv (Banana+ Advanced)",
+    "title.en": "Lightspeed - Import movements .csv (Banana+ Advanced)",
+    "title.it": "Lightspeed - Importa movimenti .csv (Banana+ Advanced)",
+    "title.de": "Lightspeed - Bewegungen importieren .csv (Banana+ Advanced)",
+    "title.fr": "Lightspeed - Importer mouvements .csv (Banana+ Advanced)",
+    "version": "1.0"
+}
