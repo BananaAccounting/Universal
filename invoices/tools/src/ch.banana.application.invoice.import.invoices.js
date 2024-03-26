@@ -203,8 +203,10 @@ class formatInvs {
 
         let msg = this.getInvoiceErrorMessage(this.ID_ERR_AMOUNTS_WITH_DIFFERENCES,this.lang,invoiceObj.document_info.number);
   
-        // Verifiy calculated total amount is the same as in the imported file
-        if (this.invoiceTotalToPay) {
+        // Verifiy calculated total amount is the same as in the imported file.
+        // Verification is done only when the invoiceTotalToPay is not 0 (when empty is always set to 0.00).
+        // With this the invoiceTotalToPay field of the csv can be empty and no verification message is shown.
+        if (this.invoiceTotalToPay && this.invoiceTotalToPay !== "0.00") {
             if (Banana.SDecimal.compare(invoiceObj.billing_info.total_to_pay, this.invoiceTotalToPay) === 0) {
                this.NetTotalIsOk=true;
             }else{
@@ -215,7 +217,9 @@ class formatInvs {
             }
         }
 
-        if (this.invoiceVatTotal) {
+        // Verification is done only when the invoiceVatTotal is not 0 (when empty is always set to 0.00).
+        // With this the invoiceVatTotal field of the csv can be empty and no verification message is shown.
+        if (this.invoiceVatTotal && this.invoiceVatTotal !== "0.00") {
             if (Banana.SDecimal.compare(invoiceObj.billing_info.total_vat_amount, this.invoiceVatTotal) === 0) {
                this.VatTotalIsOk=true;
             } else {
@@ -328,7 +332,8 @@ class formatInvs {
            'country': '',
            'phone': '',
            'email': '',
-           'web': ''
+           'web': '',
+           'lang':''
        };
         if (tableContacts) {
             let contactRow = tableContacts.findRowByValue("RowId", id);
@@ -348,6 +353,7 @@ class formatInvs {
                 customer_info.email = contactRow.value('EmailWork');
                 customer_info.phone = contactRow.value('PhoneWork');
                 customer_info.mobile = contactRow.value('PhoneMobile');
+                customer_info.lang = contactRow.value('LanguageCode');
                 return customer_info;
             }
             let table = this.banDoc.table("Invoices");
@@ -368,7 +374,7 @@ class formatInvs {
         invoiceObj_documentInfo.decimals_amounts = 2;
         invoiceObj_documentInfo.description = invoiceTransaction["InvoiceDescription"] ? invoiceTransaction["InvoiceDescription"] : qsTr("Invoice ") + invoiceTransaction["InvoiceNumber"];
         invoiceObj_documentInfo.doc_type = "";
-        invoiceObj_documentInfo.locale = "";
+        invoiceObj_documentInfo.locale = this.setInvoiceStructure_customerInfo(invoiceTransaction).lang;
         invoiceObj_documentInfo.number = invoiceTransaction["InvoiceNumber"];
         invoiceObj_documentInfo.origin_row = "";
         invoiceObj_documentInfo.origin_table = "";

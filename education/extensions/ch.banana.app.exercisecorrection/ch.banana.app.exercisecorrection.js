@@ -1,6 +1,6 @@
 // @id = ch.banana.app.exercisecorrection
 // @api = 1.0
-// @pubdate = 2024-02-21
+// @pubdate = 2024-03-07
 // @publisher = Banana.ch SA
 // @description = Correction of exercises
 // @description.it = Correzione degli esercizi
@@ -68,7 +68,7 @@ var PrintReport = class PrintReport {
     // Check if the Student file has all the exercise numbers
     for (let i = 0; i < studenttransactions.rowCount; i++) {
       if (studenttransactions.row(i).value("Doc") === "" && (studenttransactions.row(i).value("AccountDebit") != "" || studenttransactions.row(i).value("AccountCredit") != "" || (studenttransactions.row(i).value("AccountDebit") != "" && studenttransactions.row(i).value("AccountCredit") != ""))) {
-        this.banDoc1.addMessage("Il documento iniziale non ha tutti i numeri di esercizio. I numeri di esercizio devono corrispondere.");
+        this.banDoc1.addMessage("The initial file doesn't have all the exercise numbers. The exercise numbers must match.");
         return;
       }
     }
@@ -91,7 +91,7 @@ var PrintReport = class PrintReport {
     // Check if the Teacher file has all the exercise numbers
     for (let i = 0; i < teachertransactions.rowCount; i++) {
       if (teachertransactions.row(i).value("Doc") === "" && (teachertransactions.row(i).value("AccountDebit") != "" || teachertransactions.row(i).value("AccountCredit") != "")) {
-        this.banDoc2.addMessage("Il documento da importare non ha tutti i numeri di esercizio. I numeri di esercizio devono corrispondere.");
+        this.banDoc2.addMessage("The file to be imported doesn't have all the exercise numbers. The exercise numbers must match.");
         return;
       }
     }
@@ -108,7 +108,14 @@ var PrintReport = class PrintReport {
       if (studenttransactions.row(i).value("Doc") !== "" && (studenttransactions.row(i).value("AccountDebit") != "" || studenttransactions.row(i).value("AccountCredit") != "")) {
         studenttransactionsArray[k] = {
           "position": i,
-          "doc": studenttransactions.row(i).value("Doc")
+          "date": studenttransactions.row(i).value("Date"),
+          "doc": studenttransactions.row(i).value("Doc"),
+          "description": studenttransactions.row(i).value("Description"),
+          "accountdebit": studenttransactions.row(i).value("AccountDebit"),
+          "accountcredit": studenttransactions.row(i).value("AccountCredit"),
+          "amount": studenttransactions.row(i).value("Amount"),
+          "score": 3,
+          "maxscore": 3
         };
 
         k++;
@@ -122,26 +129,160 @@ var PrintReport = class PrintReport {
       if (teachertransactions.row(i).value("Doc") !== "" && (teachertransactions.row(i).value("AccountDebit") != "" || teachertransactions.row(i).value("AccountCredit") != "")) {
         teachertransactionsArray[k] = {
           "position": i,
-          "doc": teachertransactions.row(i).value("Doc")
+          "date": teachertransactions.row(i).value("Date"),
+          "doc": teachertransactions.row(i).value("Doc"),
+          "description": teachertransactions.row(i).value("Description"),
+          "accountdebit": teachertransactions.row(i).value("AccountDebit"),
+          "accountcredit": teachertransactions.row(i).value("AccountCredit"),
+          "amount": teachertransactions.row(i).value("Amount"),
+          "maxscore": 3
         };
         k++;
       }
     }
 
     let transactions = new PrintReport(Banana.document, Banana.document, this.isTest);
-    let jsonDoc = transactions.inserttransactions(studenttransactionsArray, teachertransactions, teachertransactionsArray);
+    transactions.calculatescore(studenttransactionsArray, teachertransactionsArray);
+    let jsonDoc = transactions.inserttransactions(studenttransactionsArray, teachertransactionsArray);
 
     documentChange["data"].push(jsonDoc);
 
     return documentChange;
   }
 
-  inserttransactions(studenttransactionsArray, teachertransactions, teachertransactionsArray) {
+  //Function to calculate the score of the student transactions
+  calculatescore(studenttransactionsArray, teachertransactionsArray) {
+
+    for (let i = 0; i < studenttransactionsArray.length; i++) {
+
+      let bestscore = [];
+      let n = 0;
+
+      for (let k = 0; k < teachertransactionsArray.length; k++) {
+
+        if (studenttransactionsArray[i].doc === teachertransactionsArray[k].doc) {
+
+          studenttransactionsArray[i].score = 3;
+          bestscore[n] = studenttransactionsArray[i].score;
+
+          if (studenttransactionsArray[i].accountdebit !== teachertransactionsArray[k].accountdebit) {
+            bestscore[n] = studenttransactionsArray[i].score - 1;
+            studenttransactionsArray[i].score = bestscore[n];
+          }
+          if (studenttransactionsArray[i].accountcredit !== teachertransactionsArray[k].accountcredit) {
+            bestscore[n] = studenttransactionsArray[i].score - 1;
+            studenttransactionsArray[i].score = bestscore[n];
+          }
+          if (studenttransactionsArray[i].amount !== teachertransactionsArray[k].amount) {
+            bestscore[n] = studenttransactionsArray[i].score - 1;
+            studenttransactionsArray[i].score = bestscore[n];
+          }
+          /*
+          if (studenttransactionsArray[i].date !== teachertransactionsArray[k].date) {
+            bestscore[n] = studenttransactionsArray[i].score - 1;
+            studenttransactionsArray[i].score = bestscore[n];
+          }
+          */
+
+          n++;
+
+        }
+      }
+
+      // find out the higher number in the array bestscore
+      studenttransactionsArray[i].score = Math.max(...bestscore);
+
+      // Banana.console.info("Score: " + studenttransactionsArray[i].score + " for the exercise number: " + studenttransactionsArray[i].doc)
+    }
+
+    return studenttransactionsArray;
+  }
+
+  //Function to write the ac2 file
+
+  inserttransactions(studenttransactionsArray, teachertransactionsArray) {
 
     //row operation
     let row = {};
     //rows
     let rows = [];
+
+
+    // Add the columns Score and MaxScore to the transactions if they don't exist
+
+    if (!this.banDoc1.table('Transactions').column('Score') || !this.banDoc1.table('Transactions').column('MaxScore')) {
+
+      //column operation
+      let column = {};
+      //columns
+      let columns = [];
+
+      if (!this.banDoc1.table('Transactions').column('Score')) {
+        //column operation
+        column = {};
+        column.operation = {};
+        column.operation.name = 'add';
+        //column parameters
+        column.nameXml = 'Score';
+        column.width = '200';
+        column.description = 'Score';
+        column.definition = { "type": "number", "decimals": '2' };
+        column.operation = { "name": "add" };
+        columns.push(column);
+      }
+
+      if (!this.banDoc1.table('Transactions').column('MaxScore')) {
+        //column operation
+        column = {};
+        column.operation = {};
+        column.operation.name = 'add';
+        //column parameters
+        column.nameXml = 'MaxScore';
+        column.width = '200';
+        column.description = 'MaxScore';
+        column.definition = { "type": "number", "decimals": '2' };
+        column.operation = { "name": "add" };
+        columns.push(column);
+      }
+
+      //table
+      let dataUnitTransactions = {};
+      dataUnitTransactions.nameXml = 'Transactions';
+      dataUnitTransactions.data = {};
+
+      dataUnitTransactions.data.viewList = {};
+      dataUnitTransactions.data.viewList.views = [];
+      dataUnitTransactions.data.viewList.views.push({ 'columns': columns });
+
+      //document
+      let document = new PrintReport(this.banDoc1, this.banDoc2, this.isTest);
+      let jsonDoc = document.initDocument(this.isTest);
+      jsonDoc.document.dataUnits.push(dataUnitTransactions);
+
+      return jsonDoc;
+
+    }
+
+    else {
+
+    for (let i = 0; i < studenttransactionsArray.length; i++) {
+      // modify row to add the score and the maxscore to the transactions
+      row = {};
+      row.operation = {};
+      row.operation.name = 'modify';
+      row.operation.sequence = (studenttransactionsArray[i].position).toString();
+      //row fields
+      row.fields = {};
+      row.fields["Date"] = studenttransactionsArray[i].date;
+      row.fields["Doc"] = studenttransactionsArray[i].doc;
+      row.fields["Description"] = studenttransactionsArray[i].description;
+      row.fields["AccountDebit"] = studenttransactionsArray[i].accountdebit;
+      row.fields["AccountCredit"] = studenttransactionsArray[i].accountcredit;
+      row.fields["Amount"] = studenttransactionsArray[i].amount;
+      row.fields["Score"] = Banana.Converter.toInternalNumberFormat(studenttransactionsArray[i].score);
+      row.fields["MaxScore"] = Banana.Converter.toInternalNumberFormat(studenttransactionsArray[i].maxscore);
+      rows.push(row);
+    }
 
     for (let i = 0; i < studenttransactionsArray.length; i++) {
 
@@ -169,6 +310,7 @@ var PrintReport = class PrintReport {
 
         // Skip the same exercise number to write when the exercise is finished
         for (let j = i + 1; j < studenttransactionsArray.length; j++) {
+
           if (studenttransactionsArray[i].doc === studenttransactionsArray[j].doc) {
             i++;
           }
@@ -185,26 +327,57 @@ var PrintReport = class PrintReport {
           row.operation.name = 'add';
           row.style = { "fontSize": 0, "bold": true };
           row.operation.sequence = (studenttransactionsArray[i].position).toString() + '.0';
-
           //row fields
           row.fields = {};
-          row.fields["Date"] = teachertransactions.row(teachertransactionsArray[k].position).value("Date");
-          row.fields["Doc"] = teachertransactions.row(teachertransactionsArray[k].position).value("Doc");
-          row.fields["Description"] = teachertransactions.row(teachertransactionsArray[k].position).value("Description");
-          row.fields["AccountDebit"] = "[" + teachertransactions.row(teachertransactionsArray[k].position).value("AccountDebit") + "]";
-          row.fields["AccountCredit"] = "[" + teachertransactions.row(teachertransactionsArray[k].position).value("AccountCredit") + "]";
-          row.fields["Amount"] = teachertransactions.row(teachertransactionsArray[k].position).value("Amount");
-
+          row.fields["Date"] = teachertransactionsArray[k].date;
+          row.fields["Doc"] = teachertransactionsArray[k].doc;
+          row.fields["Description"] = teachertransactionsArray[k].description;
+          row.fields["AccountDebit"] = "[" + teachertransactionsArray[k].accountdebit + "]";
+          row.fields["AccountCredit"] = "[" + teachertransactionsArray[k].accountcredit + "]";
+          row.fields["Amount"] = teachertransactionsArray[k].amount;
           rows.push(row);
         }
       }
     }
 
+    // Sum all the scores array
+    let score = 0;
+    for (let i = 0; i < studenttransactionsArray.length; i++) {
+      score += studenttransactionsArray[i].score;
+    }
+
+    // Sum all the MaxScore from the Teacher file
+    let maxScore = 0;
+    for (let i = 0; i < teachertransactionsArray.length; i++) {
+      maxScore += teachertransactionsArray[i].maxscore;
+    }
+
+    //rows operation for adding the total of the scores at the end of the document
+
+    //row operation for a white row
+    row = {};
+    row.operation = {};
+    row.operation.name = 'add';
+    row.style = { "fontSize": 0, "bold": true };
+    row.fields = {};
+    rows.push(row);
+
+    // row for the total score
+    row = {};
+    row.operation = {};
+    row.operation.name = 'add';
+    row.style = { "fontSize": 0, "bold": true };
+    //row fields
+    row.fields = {};
+    row.fields["Description"] = "Total score: ";
+    row.fields["Score"] = Banana.Converter.toInternalNumberFormat(score);
+    row.fields["MaxScore"] = Banana.Converter.toInternalNumberFormat(maxScore);
+    rows.push(row);
+
     //table
     let dataUnitTransactions = {};
     dataUnitTransactions.nameXml = 'Transactions';
     dataUnitTransactions.data = {};
-
     dataUnitTransactions.data.rowLists = [];
     dataUnitTransactions.data.rowLists.push({ 'rows': rows });
 
@@ -216,6 +389,8 @@ var PrintReport = class PrintReport {
     return jsonDoc;
 
   }
+
+}
 
   //Functions to write the ac2 file
 
