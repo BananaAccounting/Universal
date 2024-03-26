@@ -87,8 +87,8 @@ function exec(string, isTest) {
           var transaction = transactionsData[i];
           var formatMatched = true;
  
-          if (formatMatched && transaction["Data transazione"] && transaction["Data transazione"].length >= 16 &&
-             transaction["Data transazione"].match(/^[0-9]+\/[0-9]+\/[0-9]+\s[0-9]+\:[0-9]+$/))
+          if (formatMatched && transaction["Date"] && transaction["Date"].length >= 10 &&
+             transaction["Date"].match(/^[0-9]+\.[0-9]+\.[0-9]+$/))
              formatMatched = true;
           else
              formatMatched = false;
@@ -104,8 +104,8 @@ function exec(string, isTest) {
        var transactionsToImport = [];
  
        for (var i = 0; i < transactionsData.length; i++) {
-          if (transactionsData[i]["Data transazione"] && transactionsData[i]["Data transazione"].length >= 16 &&
-             transactionsData[i]["Data transazione"].match(/^[0-9]+\/[0-9]+\/[0-9]+\s[0-9]+\:[0-9]+$/)) {
+          if (transactionsData[i]["Date"] && transactionsData[i]["Date"].length >= 10 &&
+             transactionsData[i]["Date"].match(/^[0-9]+\.[0-9]+\.[0-9]+$/)) {
              transactionsToImport.push(this.mapTransaction(transactionsData[i]));
           }
        }
@@ -114,22 +114,24 @@ function exec(string, isTest) {
        transactionsToImport = transactionsToImport.reverse();
  
        // Add header and return
-       var header = [["Date", "DateValue", "Doc", "ExternalReference", "Description", "Income", "Expenses"]];
+       var header = [["Date", "Doc", "ExternalReference", "Description", "AccountDebit", "AccountCredit", "Amount", "VatRate", "VatAmount"]];
        return header.concat(transactionsToImport);
     }
  
     this.mapTransaction = function (transaction) {
-       let mappedLine = [];
+        let mappedLine = [];
  
-       mappedLine.push(Banana.Converter.toInternalDateFormat(transaction["Data transazione"], "dd/mm/yyyy"));
-       mappedLine.push(Banana.Converter.toInternalDateFormat("", "dd.mm.yyyy"));
-       mappedLine.push(transaction["Codice transazione"]);
-       mappedLine.push("");
-       mappedLine.push(transaction["Tipo transazione"] + " - " + transaction["Riferimento"]);
-       mappedLine.push(Banana.Converter.toInternalNumberFormat(transaction["Importo transazione in entrata"], '.'));
-       mappedLine.push(Banana.Converter.toInternalNumberFormat(transaction["Importo transazione in uscita"], '.'));
-    
-       return mappedLine;
+        mappedLine.push(Banana.Converter.toInternalDateFormat(transaction["Date"], "dd/mm/yyyy"));
+        mappedLine.push(transaction["Voucher Nb."]);
+        mappedLine.push("");
+        mappedLine.push(transaction["Text"]);
+        mappedLine.push(transaction["Cpt_debit"]);
+        mappedLine.push(transaction["Cpt_credit"]);
+        mappedLine.push(Banana.Converter.toInternalNumberFormat(transaction["Montant"]), '.');
+        mappedLine.push(Banana.Converter.toInternalNumberFormat(transaction["TVA_Taux"]), '.');
+        mappedLine.push(Banana.Converter.toInternalNumberFormat(transaction["TVA_mnt"]), '.');
+        
+        return mappedLine;
     }
  }
  
