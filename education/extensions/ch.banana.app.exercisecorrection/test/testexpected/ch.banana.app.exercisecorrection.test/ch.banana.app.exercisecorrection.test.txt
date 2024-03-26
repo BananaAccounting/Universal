@@ -42,6 +42,262 @@
                                     "rows": [
                                         {
                                             "fields": {
+                                                "AccountCredit": "Salaries",
+                                                "AccountDebit": "Credits",
+                                                "Amount": "5000.00",
+                                                "Date": "2023-01-01",
+                                                "Description": "Invoices to customers for executed services",
+                                                "Doc": "1",
+                                                "MaxScore": "3",
+                                                "Score": "2"
+                                            },
+                                            "operation": {
+                                                "name": "modify",
+                                                "sequence": "1"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "Debts",
+                                                "AccountDebit": "Earnings Sales",
+                                                "Amount": "1500.00",
+                                                "Date": "2023-01-01",
+                                                "Description": "Invoices from suppliers for plants purchases",
+                                                "Doc": "2",
+                                                "MaxScore": "3",
+                                                "Score": "2"
+                                            },
+                                            "operation": {
+                                                "name": "modify",
+                                                "sequence": "4"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "Earnings Sales",
+                                                "AccountDebit": "Credits",
+                                                "Amount": "3000.00",
+                                                "Date": "2023-01-01",
+                                                "Description": "Invoices to customers for plants sales",
+                                                "Doc": "3",
+                                                "MaxScore": "3",
+                                                "Score": "3"
+                                            },
+                                            "operation": {
+                                                "name": "modify",
+                                                "sequence": "7"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "",
+                                                "AccountDebit": "Salaries",
+                                                "Amount": "1000.00",
+                                                "Date": "2023-01-02",
+                                                "Description": "Payment of workers' salaries",
+                                                "Doc": "4",
+                                                "MaxScore": "3",
+                                                "Score": "3"
+                                            },
+                                            "operation": {
+                                                "name": "modify",
+                                                "sequence": "11"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "",
+                                                "AccountDebit": "Other Costs",
+                                                "Amount": "50.00",
+                                                "Date": "2023-01-02",
+                                                "Description": "Payment of bank interest",
+                                                "Doc": "4",
+                                                "MaxScore": "3",
+                                                "Score": "2"
+                                            },
+                                            "operation": {
+                                                "name": "modify",
+                                                "sequence": "12"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "",
+                                                "AccountDebit": "Purchases",
+                                                "Amount": "50.00",
+                                                "Date": "2023-01-02",
+                                                "Description": "Payment of office equipment",
+                                                "Doc": "4",
+                                                "MaxScore": "3",
+                                                "Score": "2"
+                                            },
+                                            "operation": {
+                                                "name": "modify",
+                                                "sequence": "13"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "",
+                                                "AccountDebit": "Energy",
+                                                "Amount": "300.00",
+                                                "Date": "2023-01-02",
+                                                "Description": "Payment of electricity invoice",
+                                                "Doc": "4",
+                                                "MaxScore": "3",
+                                                "Score": "3"
+                                            },
+                                            "operation": {
+                                                "name": "modify",
+                                                "sequence": "14"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "",
+                                                "AccountDebit": "Advertising",
+                                                "Amount": "100.00",
+                                                "Date": "2023-01-02",
+                                                "Description": "Payment of advertising agency invoice",
+                                                "Doc": "4",
+                                                "MaxScore": "3",
+                                                "Score": "3"
+                                            },
+                                            "operation": {
+                                                "name": "modify",
+                                                "sequence": "15"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "Bank",
+                                                "AccountDebit": "",
+                                                "Amount": "1500.00",
+                                                "Date": "2023-01-02",
+                                                "Description": "Bank transfer for miscellaneous expenses",
+                                                "Doc": "4",
+                                                "MaxScore": "3",
+                                                "Score": "3"
+                                            },
+                                            "operation": {
+                                                "name": "modify",
+                                                "sequence": "16"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "Credits",
+                                                "AccountDebit": "Earnings Services",
+                                                "Amount": "300.00",
+                                                "Date": "2023-01-03",
+                                                "Description": "Credit note (reason: our mistake)",
+                                                "Doc": "5",
+                                                "MaxScore": "3",
+                                                "Score": "3"
+                                            },
+                                            "operation": {
+                                                "name": "modify",
+                                                "sequence": "19"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "Bank",
+                                                "AccountDebit": "Cash",
+                                                "Amount": "1000.00",
+                                                "Date": "2023-01-04",
+                                                "Description": "Fund withdrawal",
+                                                "Doc": "6",
+                                                "MaxScore": "3",
+                                                "Score": "3"
+                                            },
+                                            "operation": {
+                                                "name": "modify",
+                                                "sequence": "22"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "Credits",
+                                                "AccountDebit": "Bank",
+                                                "Amount": "2000.00",
+                                                "Date": "2023-01-05",
+                                                "Description": "Bank transfer from customer (invoice payment)",
+                                                "Doc": "7",
+                                                "MaxScore": "3",
+                                                "Score": "3"
+                                            },
+                                            "operation": {
+                                                "name": "modify",
+                                                "sequence": "25"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "Cash",
+                                                "AccountDebit": "Debts",
+                                                "Amount": "1000.00",
+                                                "Date": "2023-01-06",
+                                                "Description": "Cash transfer to supplier (invoice payment)",
+                                                "Doc": "8",
+                                                "MaxScore": "3",
+                                                "Score": "3"
+                                            },
+                                            "operation": {
+                                                "name": "modify",
+                                                "sequence": "28"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "",
+                                                "AccountDebit": "Cash",
+                                                "Amount": "500.00",
+                                                "Date": "2023-01-07",
+                                                "Description": "Cash receipt for work performed and flower sales",
+                                                "Doc": "9",
+                                                "MaxScore": "3",
+                                                "Score": "3"
+                                            },
+                                            "operation": {
+                                                "name": "modify",
+                                                "sequence": "31"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "Earnings Services",
+                                                "AccountDebit": "",
+                                                "Amount": "400.00",
+                                                "Date": "2023-01-07",
+                                                "Description": "Services performed to customer",
+                                                "Doc": "9",
+                                                "MaxScore": "3",
+                                                "Score": "3"
+                                            },
+                                            "operation": {
+                                                "name": "modify",
+                                                "sequence": "32"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "Earnings Sales",
+                                                "AccountDebit": "",
+                                                "Amount": "100.00",
+                                                "Date": "2023-01-07",
+                                                "Description": "Flower sales to customer",
+                                                "Doc": "9",
+                                                "MaxScore": "3",
+                                                "Score": "3"
+                                            },
+                                            "operation": {
+                                                "name": "modify",
+                                                "sequence": "33"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
                                             },
                                             "operation": {
                                                 "name": "add",
@@ -378,11 +634,11 @@
                                         },
                                         {
                                             "fields": {
-                                                "AccountCredit": "[Share Capital]",
+                                                "AccountCredit": "[Bank]",
                                                 "AccountDebit": "[Cash]",
-                                                "Amount": "10000.00",
+                                                "Amount": "1000.00",
                                                 "Date": "2023-01-04",
-                                                "Description": "Increase in cash contribution",
+                                                "Description": "Fund withdrawal",
                                                 "Doc": "6"
                                             },
                                             "operation": {
@@ -561,6 +817,31 @@
                                                 "bold": true,
                                                 "fontSize": 0
                                             }
+                                        },
+                                        {
+                                            "fields": {
+                                            },
+                                            "operation": {
+                                                "name": "add"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "Description": "Total score: ",
+                                                "MaxScore": "48",
+                                                "Score": "44"
+                                            },
+                                            "operation": {
+                                                "name": "add"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
                                         }
                                     ]
                                 }
@@ -597,6 +878,262 @@
                                     "rows": [
                                         {
                                             "fields": {
+                                                "AccountCredit": "Salaries",
+                                                "AccountDebit": "Credits",
+                                                "Amount": "5000.00",
+                                                "Date": "2023-01-01",
+                                                "Description": "Invoices to customers for executed services",
+                                                "Doc": "a",
+                                                "MaxScore": "3",
+                                                "Score": "2"
+                                            },
+                                            "operation": {
+                                                "name": "modify",
+                                                "sequence": "0"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "Debts",
+                                                "AccountDebit": "Earnings Sales",
+                                                "Amount": "1500.00",
+                                                "Date": "2023-01-01",
+                                                "Description": "Invoices from suppliers for plants purchases",
+                                                "Doc": "b",
+                                                "MaxScore": "3",
+                                                "Score": "2"
+                                            },
+                                            "operation": {
+                                                "name": "modify",
+                                                "sequence": "1"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "Earnings Sales",
+                                                "AccountDebit": "Credits",
+                                                "Amount": "3000.00",
+                                                "Date": "2023-01-01",
+                                                "Description": "Invoices to customers for plants sales",
+                                                "Doc": "c",
+                                                "MaxScore": "3",
+                                                "Score": "3"
+                                            },
+                                            "operation": {
+                                                "name": "modify",
+                                                "sequence": "2"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "Bank",
+                                                "AccountDebit": "",
+                                                "Amount": "1500.00",
+                                                "Date": "2023-01-02",
+                                                "Description": "Bank transfer for miscellaneous expenses",
+                                                "Doc": "d",
+                                                "MaxScore": "3",
+                                                "Score": "3"
+                                            },
+                                            "operation": {
+                                                "name": "modify",
+                                                "sequence": "3"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "",
+                                                "AccountDebit": "Salaries",
+                                                "Amount": "1000.00",
+                                                "Date": "2023-01-02",
+                                                "Description": "Payment of workers' salaries",
+                                                "Doc": "d",
+                                                "MaxScore": "3",
+                                                "Score": "3"
+                                            },
+                                            "operation": {
+                                                "name": "modify",
+                                                "sequence": "4"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "",
+                                                "AccountDebit": "Other Costs",
+                                                "Amount": "50.00",
+                                                "Date": "2023-01-02",
+                                                "Description": "Payment of bank interest",
+                                                "Doc": "d",
+                                                "MaxScore": "3",
+                                                "Score": "2"
+                                            },
+                                            "operation": {
+                                                "name": "modify",
+                                                "sequence": "5"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "",
+                                                "AccountDebit": "Purchases",
+                                                "Amount": "50.00",
+                                                "Date": "2023-01-02",
+                                                "Description": "Payment of office equipment",
+                                                "Doc": "d",
+                                                "MaxScore": "3",
+                                                "Score": "2"
+                                            },
+                                            "operation": {
+                                                "name": "modify",
+                                                "sequence": "6"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "",
+                                                "AccountDebit": "Energy",
+                                                "Amount": "300.00",
+                                                "Date": "2023-01-02",
+                                                "Description": "Payment of electricity invoice",
+                                                "Doc": "d",
+                                                "MaxScore": "3",
+                                                "Score": "3"
+                                            },
+                                            "operation": {
+                                                "name": "modify",
+                                                "sequence": "7"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "",
+                                                "AccountDebit": "Advertising",
+                                                "Amount": "100.00",
+                                                "Date": "2023-01-02",
+                                                "Description": "Payment of advertising agency invoice",
+                                                "Doc": "d",
+                                                "MaxScore": "3",
+                                                "Score": "3"
+                                            },
+                                            "operation": {
+                                                "name": "modify",
+                                                "sequence": "8"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "Credits",
+                                                "AccountDebit": "Earnings Services",
+                                                "Amount": "300.00",
+                                                "Date": "2023-01-03",
+                                                "Description": "Credit note (reason: our mistake)",
+                                                "Doc": "e",
+                                                "MaxScore": "3",
+                                                "Score": "3"
+                                            },
+                                            "operation": {
+                                                "name": "modify",
+                                                "sequence": "9"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "Share Capital",
+                                                "AccountDebit": "Cash",
+                                                "Amount": "10000.00",
+                                                "Date": "2023-01-04",
+                                                "Description": "Increase in cash contribution",
+                                                "Doc": "f",
+                                                "MaxScore": "3",
+                                                "Score": "1"
+                                            },
+                                            "operation": {
+                                                "name": "modify",
+                                                "sequence": "10"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "Credits",
+                                                "AccountDebit": "Bank",
+                                                "Amount": "2000.00",
+                                                "Date": "2023-01-05",
+                                                "Description": "Bank transfer from customer (invoice payment)",
+                                                "Doc": "g",
+                                                "MaxScore": "3",
+                                                "Score": "3"
+                                            },
+                                            "operation": {
+                                                "name": "modify",
+                                                "sequence": "11"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "Cash",
+                                                "AccountDebit": "Debts",
+                                                "Amount": "1000.00",
+                                                "Date": "2023-01-06",
+                                                "Description": "Cash transfer to supplier (invoice payment)",
+                                                "Doc": "h",
+                                                "MaxScore": "3",
+                                                "Score": "3"
+                                            },
+                                            "operation": {
+                                                "name": "modify",
+                                                "sequence": "12"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "",
+                                                "AccountDebit": "Cash",
+                                                "Amount": "500.00",
+                                                "Date": "2023-01-07",
+                                                "Description": "Cash receipt for work performed and flower sales",
+                                                "Doc": "i",
+                                                "MaxScore": "3",
+                                                "Score": "3"
+                                            },
+                                            "operation": {
+                                                "name": "modify",
+                                                "sequence": "13"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "Earnings Services",
+                                                "AccountDebit": "",
+                                                "Amount": "400.00",
+                                                "Date": "2023-01-07",
+                                                "Description": "Services performed to customer",
+                                                "Doc": "i",
+                                                "MaxScore": "3",
+                                                "Score": "3"
+                                            },
+                                            "operation": {
+                                                "name": "modify",
+                                                "sequence": "14"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "Earnings Sales",
+                                                "AccountDebit": "",
+                                                "Amount": "100.00",
+                                                "Date": "2023-01-07",
+                                                "Description": "Flower sales to customer",
+                                                "Doc": "i",
+                                                "MaxScore": "3",
+                                                "Score": "3"
+                                            },
+                                            "operation": {
+                                                "name": "modify",
+                                                "sequence": "15"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
                                             },
                                             "operation": {
                                                 "name": "add",
@@ -609,8 +1146,8 @@
                                         },
                                         {
                                             "fields": {
-                                                "Description": "# 1",
-                                                "Doc": "1"
+                                                "Description": "# a",
+                                                "Doc": "a"
                                             },
                                             "operation": {
                                                 "name": "add",
@@ -628,7 +1165,7 @@
                                                 "Amount": "5000.00",
                                                 "Date": "2023-01-01",
                                                 "Description": "Invoices to customers for executed services",
-                                                "Doc": "1"
+                                                "Doc": "a"
                                             },
                                             "operation": {
                                                 "name": "add",
@@ -653,8 +1190,8 @@
                                         },
                                         {
                                             "fields": {
-                                                "Description": "# 2",
-                                                "Doc": "2"
+                                                "Description": "# b",
+                                                "Doc": "b"
                                             },
                                             "operation": {
                                                 "name": "add",
@@ -672,7 +1209,7 @@
                                                 "Amount": "1500.00",
                                                 "Date": "2023-01-01",
                                                 "Description": "Invoices from suppliers for plants purchases",
-                                                "Doc": "2"
+                                                "Doc": "b"
                                             },
                                             "operation": {
                                                 "name": "add",
@@ -697,8 +1234,8 @@
                                         },
                                         {
                                             "fields": {
-                                                "Description": "# 3",
-                                                "Doc": "3"
+                                                "Description": "# c",
+                                                "Doc": "c"
                                             },
                                             "operation": {
                                                 "name": "add",
@@ -716,7 +1253,7 @@
                                                 "Amount": "3000.00",
                                                 "Date": "2023-01-01",
                                                 "Description": "Invoices to customers for plants sales",
-                                                "Doc": "3"
+                                                "Doc": "c"
                                             },
                                             "operation": {
                                                 "name": "add",
@@ -741,8 +1278,8 @@
                                         },
                                         {
                                             "fields": {
-                                                "Description": "# 4",
-                                                "Doc": "4"
+                                                "Description": "# d",
+                                                "Doc": "d"
                                             },
                                             "operation": {
                                                 "name": "add",
@@ -760,7 +1297,7 @@
                                                 "Amount": "1500.00",
                                                 "Date": "2023-01-02",
                                                 "Description": "Bank transfer for miscellaneous expenses",
-                                                "Doc": "4"
+                                                "Doc": "d"
                                             },
                                             "operation": {
                                                 "name": "add",
@@ -778,7 +1315,7 @@
                                                 "Amount": "1000.00",
                                                 "Date": "2023-01-02",
                                                 "Description": "Payment of workers' salaries",
-                                                "Doc": "4"
+                                                "Doc": "d"
                                             },
                                             "operation": {
                                                 "name": "add",
@@ -796,7 +1333,7 @@
                                                 "Amount": "50.00",
                                                 "Date": "2023-01-02",
                                                 "Description": "Payment of bank interest",
-                                                "Doc": "4"
+                                                "Doc": "d"
                                             },
                                             "operation": {
                                                 "name": "add",
@@ -814,7 +1351,7 @@
                                                 "Amount": "50.00",
                                                 "Date": "2023-01-02",
                                                 "Description": "Payment of office equipment",
-                                                "Doc": "4"
+                                                "Doc": "d"
                                             },
                                             "operation": {
                                                 "name": "add",
@@ -832,7 +1369,7 @@
                                                 "Amount": "300.00",
                                                 "Date": "2023-01-02",
                                                 "Description": "Payment of electricity invoice",
-                                                "Doc": "4"
+                                                "Doc": "d"
                                             },
                                             "operation": {
                                                 "name": "add",
@@ -850,7 +1387,7 @@
                                                 "Amount": "100.00",
                                                 "Date": "2023-01-02",
                                                 "Description": "Payment of advertising agency invoice",
-                                                "Doc": "4"
+                                                "Doc": "d"
                                             },
                                             "operation": {
                                                 "name": "add",
@@ -875,8 +1412,8 @@
                                         },
                                         {
                                             "fields": {
-                                                "Description": "# 5",
-                                                "Doc": "5"
+                                                "Description": "# e",
+                                                "Doc": "e"
                                             },
                                             "operation": {
                                                 "name": "add",
@@ -894,7 +1431,7 @@
                                                 "Amount": "300.00",
                                                 "Date": "2023-01-03",
                                                 "Description": "Credit note (reason: our mistake)",
-                                                "Doc": "5"
+                                                "Doc": "e"
                                             },
                                             "operation": {
                                                 "name": "add",
@@ -919,8 +1456,8 @@
                                         },
                                         {
                                             "fields": {
-                                                "Description": "# 6",
-                                                "Doc": "6"
+                                                "Description": "# f",
+                                                "Doc": "f"
                                             },
                                             "operation": {
                                                 "name": "add",
@@ -933,12 +1470,12 @@
                                         },
                                         {
                                             "fields": {
-                                                "AccountCredit": "[Share Capital]",
+                                                "AccountCredit": "[Bank]",
                                                 "AccountDebit": "[Cash]",
-                                                "Amount": "10000.00",
+                                                "Amount": "1000.00",
                                                 "Date": "2023-01-04",
-                                                "Description": "Increase in cash contribution",
-                                                "Doc": "6"
+                                                "Description": "Fund withdrawal",
+                                                "Doc": "f"
                                             },
                                             "operation": {
                                                 "name": "add",
@@ -963,8 +1500,8 @@
                                         },
                                         {
                                             "fields": {
-                                                "Description": "# 7",
-                                                "Doc": "7"
+                                                "Description": "# g",
+                                                "Doc": "g"
                                             },
                                             "operation": {
                                                 "name": "add",
@@ -982,7 +1519,7 @@
                                                 "Amount": "2000.00",
                                                 "Date": "2023-01-05",
                                                 "Description": "Bank transfer from customer (invoice payment)",
-                                                "Doc": "7"
+                                                "Doc": "g"
                                             },
                                             "operation": {
                                                 "name": "add",
@@ -1007,8 +1544,8 @@
                                         },
                                         {
                                             "fields": {
-                                                "Description": "# 8",
-                                                "Doc": "8"
+                                                "Description": "# h",
+                                                "Doc": "h"
                                             },
                                             "operation": {
                                                 "name": "add",
@@ -1026,7 +1563,7 @@
                                                 "Amount": "1000.00",
                                                 "Date": "2023-01-06",
                                                 "Description": "Cash transfer to supplier (invoice payment)",
-                                                "Doc": "8"
+                                                "Doc": "h"
                                             },
                                             "operation": {
                                                 "name": "add",
@@ -1051,8 +1588,8 @@
                                         },
                                         {
                                             "fields": {
-                                                "Description": "# 9",
-                                                "Doc": "9"
+                                                "Description": "# i",
+                                                "Doc": "i"
                                             },
                                             "operation": {
                                                 "name": "add",
@@ -1070,7 +1607,7 @@
                                                 "Amount": "500.00",
                                                 "Date": "2023-01-07",
                                                 "Description": "Cash receipt for work performed and flower sales",
-                                                "Doc": "9"
+                                                "Doc": "i"
                                             },
                                             "operation": {
                                                 "name": "add",
@@ -1088,7 +1625,7 @@
                                                 "Amount": "400.00",
                                                 "Date": "2023-01-07",
                                                 "Description": "Services performed to customer",
-                                                "Doc": "9"
+                                                "Doc": "i"
                                             },
                                             "operation": {
                                                 "name": "add",
@@ -1106,11 +1643,872 @@
                                                 "Amount": "100.00",
                                                 "Date": "2023-01-07",
                                                 "Description": "Flower sales to customer",
-                                                "Doc": "9"
+                                                "Doc": "i"
                                             },
                                             "operation": {
                                                 "name": "add",
                                                 "sequence": "15.0"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                            },
+                                            "operation": {
+                                                "name": "add"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "Description": "Total score: ",
+                                                "MaxScore": "48",
+                                                "Score": "42"
+                                            },
+                                            "operation": {
+                                                "name": "add"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        "nameXml": "Transactions"
+                    }
+                ],
+                "fileVersion": "1.0.0"
+            }
+        }
+    ],
+    "error": "",
+    "format": "documentChange"
+}
+\end{jsonvalue}
+\textvalue{TestImportFile 4 and 5}\\
+\begin{jsonvalue}{TestImportFile}
+{
+    "data": [
+        {
+            "creator": {
+                "executionDate": "",
+                "executionTime": "",
+                "name": "ch.banana.app.exercisecorrection.test",
+                "version": "1.0"
+            },
+            "document": {
+                "dataUnits": [
+                    {
+                        "data": {
+                            "rowLists": [
+                                {
+                                    "rows": [
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "Salaries",
+                                                "AccountDebit": "Credits",
+                                                "Amount": "5000.00",
+                                                "Date": "2023-01-01",
+                                                "Description": "Invoices to customers for executed services",
+                                                "Doc": "1.1",
+                                                "MaxScore": "3",
+                                                "Score": "2"
+                                            },
+                                            "operation": {
+                                                "name": "modify",
+                                                "sequence": "0"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "Debts",
+                                                "AccountDebit": "Earnings Sales",
+                                                "Amount": "1500.00",
+                                                "Date": "2023-01-01",
+                                                "Description": "Invoices from suppliers for plants purchases",
+                                                "Doc": "1.2",
+                                                "MaxScore": "3",
+                                                "Score": "2"
+                                            },
+                                            "operation": {
+                                                "name": "modify",
+                                                "sequence": "1"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "Earnings Sales",
+                                                "AccountDebit": "Credits",
+                                                "Amount": "3000.00",
+                                                "Date": "2023-01-01",
+                                                "Description": "Invoices to customers for plants sales",
+                                                "Doc": "1.3",
+                                                "MaxScore": "3",
+                                                "Score": "3"
+                                            },
+                                            "operation": {
+                                                "name": "modify",
+                                                "sequence": "2"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "Bank",
+                                                "AccountDebit": "",
+                                                "Amount": "1500.00",
+                                                "Date": "2023-01-02",
+                                                "Description": "Bank transfer for miscellaneous expenses",
+                                                "Doc": "1.4",
+                                                "MaxScore": "3",
+                                                "Score": "3"
+                                            },
+                                            "operation": {
+                                                "name": "modify",
+                                                "sequence": "3"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "",
+                                                "AccountDebit": "Salaries",
+                                                "Amount": "1000.00",
+                                                "Date": "2023-01-02",
+                                                "Description": "Payment of workers' salaries",
+                                                "Doc": "1.4",
+                                                "MaxScore": "3",
+                                                "Score": "3"
+                                            },
+                                            "operation": {
+                                                "name": "modify",
+                                                "sequence": "4"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "",
+                                                "AccountDebit": "Other Costs",
+                                                "Amount": "50.00",
+                                                "Date": "2023-01-02",
+                                                "Description": "Payment of bank interest",
+                                                "Doc": "1.4",
+                                                "MaxScore": "3",
+                                                "Score": "2"
+                                            },
+                                            "operation": {
+                                                "name": "modify",
+                                                "sequence": "5"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "",
+                                                "AccountDebit": "Purchases",
+                                                "Amount": "50.00",
+                                                "Date": "2023-01-02",
+                                                "Description": "Payment of office equipment",
+                                                "Doc": "1.4",
+                                                "MaxScore": "3",
+                                                "Score": "2"
+                                            },
+                                            "operation": {
+                                                "name": "modify",
+                                                "sequence": "6"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "",
+                                                "AccountDebit": "Energy",
+                                                "Amount": "300.00",
+                                                "Date": "2023-01-02",
+                                                "Description": "Payment of electricity invoice",
+                                                "Doc": "1.4",
+                                                "MaxScore": "3",
+                                                "Score": "3"
+                                            },
+                                            "operation": {
+                                                "name": "modify",
+                                                "sequence": "7"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "",
+                                                "AccountDebit": "Advertising",
+                                                "Amount": "100.00",
+                                                "Date": "2023-01-02",
+                                                "Description": "Payment of advertising agency invoice",
+                                                "Doc": "1.4",
+                                                "MaxScore": "3",
+                                                "Score": "3"
+                                            },
+                                            "operation": {
+                                                "name": "modify",
+                                                "sequence": "8"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "Credits",
+                                                "AccountDebit": "Earnings Services",
+                                                "Amount": "300.00",
+                                                "Date": "2023-01-03",
+                                                "Description": "Credit note (reason: our mistake)",
+                                                "Doc": "1.5",
+                                                "MaxScore": "3",
+                                                "Score": "3"
+                                            },
+                                            "operation": {
+                                                "name": "modify",
+                                                "sequence": "9"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "Bank",
+                                                "AccountDebit": "Cash",
+                                                "Amount": "1000.00",
+                                                "Date": "2023-01-04",
+                                                "Description": "Fund withdrawal",
+                                                "Doc": "1.6",
+                                                "MaxScore": "3",
+                                                "Score": "3"
+                                            },
+                                            "operation": {
+                                                "name": "modify",
+                                                "sequence": "10"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "Credits",
+                                                "AccountDebit": "Bank",
+                                                "Amount": "2000.00",
+                                                "Date": "2023-01-05",
+                                                "Description": "Bank transfer from customer (invoice payment)",
+                                                "Doc": "1.7",
+                                                "MaxScore": "3",
+                                                "Score": "3"
+                                            },
+                                            "operation": {
+                                                "name": "modify",
+                                                "sequence": "11"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "Cash",
+                                                "AccountDebit": "Debts",
+                                                "Amount": "1000.00",
+                                                "Date": "2023-01-06",
+                                                "Description": "Cash transfer to supplier (invoice payment)",
+                                                "Doc": "1.8",
+                                                "MaxScore": "3",
+                                                "Score": "3"
+                                            },
+                                            "operation": {
+                                                "name": "modify",
+                                                "sequence": "12"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "",
+                                                "AccountDebit": "Cash",
+                                                "Amount": "500.00",
+                                                "Date": "2023-01-07",
+                                                "Description": "Cash receipt for work performed and flower sales",
+                                                "Doc": "1.9",
+                                                "MaxScore": "3",
+                                                "Score": "3"
+                                            },
+                                            "operation": {
+                                                "name": "modify",
+                                                "sequence": "13"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "Earnings Services",
+                                                "AccountDebit": "",
+                                                "Amount": "400.00",
+                                                "Date": "2023-01-07",
+                                                "Description": "Services performed to customer",
+                                                "Doc": "1.9",
+                                                "MaxScore": "3",
+                                                "Score": "3"
+                                            },
+                                            "operation": {
+                                                "name": "modify",
+                                                "sequence": "14"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "Earnings Sales",
+                                                "AccountDebit": "",
+                                                "Amount": "100.00",
+                                                "Date": "2023-01-07",
+                                                "Description": "Flower sales to customer",
+                                                "Doc": "1.9",
+                                                "MaxScore": "3",
+                                                "Score": "3"
+                                            },
+                                            "operation": {
+                                                "name": "modify",
+                                                "sequence": "15"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "-1.0"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "Description": "# 1.1",
+                                                "Doc": "1.1"
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "-1.0"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "[Earnings Services]",
+                                                "AccountDebit": "[Credits]",
+                                                "Amount": "5000.00",
+                                                "Date": "2023-01-01",
+                                                "Description": "Invoices to customers for executed services",
+                                                "Doc": "1.1"
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "0.0"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "0.0"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "Description": "# 1.2",
+                                                "Doc": "1.2"
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "0.0"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "[Debts]",
+                                                "AccountDebit": "[Purchases]",
+                                                "Amount": "1500.00",
+                                                "Date": "2023-01-01",
+                                                "Description": "Invoices from suppliers for plants purchases",
+                                                "Doc": "1.2"
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "1.0"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "1.0"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "Description": "# 1.3",
+                                                "Doc": "1.3"
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "1.0"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "[Earnings Sales]",
+                                                "AccountDebit": "[Credits]",
+                                                "Amount": "3000.00",
+                                                "Date": "2023-01-01",
+                                                "Description": "Invoices to customers for plants sales",
+                                                "Doc": "1.3"
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "2.0"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "2.0"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "Description": "# 1.4",
+                                                "Doc": "1.4"
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "2.0"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "[Bank]",
+                                                "AccountDebit": "[]",
+                                                "Amount": "1500.00",
+                                                "Date": "2023-01-02",
+                                                "Description": "Bank transfer for miscellaneous expenses",
+                                                "Doc": "1.4"
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "8.0"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "[]",
+                                                "AccountDebit": "[Salaries]",
+                                                "Amount": "1000.00",
+                                                "Date": "2023-01-02",
+                                                "Description": "Payment of workers' salaries",
+                                                "Doc": "1.4"
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "8.0"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "[]",
+                                                "AccountDebit": "[Interests]",
+                                                "Amount": "50.00",
+                                                "Date": "2023-01-02",
+                                                "Description": "Payment of bank interest",
+                                                "Doc": "1.4"
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "8.0"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "[]",
+                                                "AccountDebit": "[Other costs]",
+                                                "Amount": "50.00",
+                                                "Date": "2023-01-02",
+                                                "Description": "Payment of office equipment",
+                                                "Doc": "1.4"
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "8.0"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "[]",
+                                                "AccountDebit": "[Energy]",
+                                                "Amount": "300.00",
+                                                "Date": "2023-01-02",
+                                                "Description": "Payment of electricity invoice",
+                                                "Doc": "1.4"
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "8.0"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "[]",
+                                                "AccountDebit": "[Advertising]",
+                                                "Amount": "100.00",
+                                                "Date": "2023-01-02",
+                                                "Description": "Payment of advertising agency invoice",
+                                                "Doc": "1.4"
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "8.0"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "8.0"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "Description": "# 1.5",
+                                                "Doc": "1.5"
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "8.0"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "[Credits]",
+                                                "AccountDebit": "[Earnings Services]",
+                                                "Amount": "300.00",
+                                                "Date": "2023-01-03",
+                                                "Description": "Credit note (reason: our mistake)",
+                                                "Doc": "1.5"
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "9.0"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "9.0"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "Description": "# 1.6",
+                                                "Doc": "1.6"
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "9.0"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "[Bank]",
+                                                "AccountDebit": "[Cash]",
+                                                "Amount": "1000.00",
+                                                "Date": "2023-01-04",
+                                                "Description": "Fund withdrawal",
+                                                "Doc": "1.6"
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "10.0"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "10.0"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "Description": "# 1.7",
+                                                "Doc": "1.7"
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "10.0"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "[Credits]",
+                                                "AccountDebit": "[Bank]",
+                                                "Amount": "2000.00",
+                                                "Date": "2023-01-05",
+                                                "Description": "Bank transfer from customer (invoice payment)",
+                                                "Doc": "1.7"
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "11.0"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "11.0"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "Description": "# 1.8",
+                                                "Doc": "1.8"
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "11.0"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "[Cash]",
+                                                "AccountDebit": "[Debts]",
+                                                "Amount": "1000.00",
+                                                "Date": "2023-01-06",
+                                                "Description": "Cash transfer to supplier (invoice payment)",
+                                                "Doc": "1.8"
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "12.0"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "12.0"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "Description": "# 1.9",
+                                                "Doc": "1.9"
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "12.0"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "[]",
+                                                "AccountDebit": "[Cash]",
+                                                "Amount": "500.00",
+                                                "Date": "2023-01-07",
+                                                "Description": "Cash receipt for work performed and flower sales",
+                                                "Doc": "1.9"
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "15.0"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "[Earnings Services]",
+                                                "AccountDebit": "[]",
+                                                "Amount": "400.00",
+                                                "Date": "2023-01-07",
+                                                "Description": "Services performed to customer",
+                                                "Doc": "1.9"
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "15.0"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "[Earnings Sales]",
+                                                "AccountDebit": "[]",
+                                                "Amount": "100.00",
+                                                "Date": "2023-01-07",
+                                                "Description": "Flower sales to customer",
+                                                "Doc": "1.9"
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "15.0"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                            },
+                                            "operation": {
+                                                "name": "add"
+                                            },
+                                            "style": {
+                                                "bold": true,
+                                                "fontSize": 0
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "Description": "Total score: ",
+                                                "MaxScore": "48",
+                                                "Score": "44"
+                                            },
+                                            "operation": {
+                                                "name": "add"
                                             },
                                             "style": {
                                                 "bold": true,
