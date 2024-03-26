@@ -1,0 +1,9 @@
+Date,Voucher Nb.,Text,Cpt_debit,Cpt_credit,Montant,Journal,ME_cours,ME_mnt,TVA_taux,TVA_mnt,TVA_cpt,TVA_typ,TVA_meth,TVA_soum,Ecr_monnai,Ecr_monqte,Comment,Ecr_ana,Ecr_vtcode
+23.01.2024,IK23010001,iKentoo AFG (MwSt. 8.1%) [BIERlab GmbH],1100,3200,76.5,d,,,8.1000,5.7322,c,2,2,,,,,,
+23.01.2024,IK23010002,iKentoo Alkoholische GetrÃ¤nke (MwSt. 8.1%) [BIERlab GmbH],1100,3200,1127.6,d,,,8.1000,84.4918,c,2,2,,,,,,
+23.01.2024,IK23010003,iKentoo Essen (MwSt. 8.1%) [BIERlab GmbH],1100,3210,15.0,d,,,8.1000,1.1240,c,2,2,,,,,,
+23.01.2024,IK23010004,iKentoo pourboire [BIERlab GmbH],1100,1001,8.8,d,,,,,,,,,,,Pourboire [BIERlab GmbH],,
+23.01.2024,IK23010005,iKentoo Cash [BIERlab GmbH],1000,1100,34.7,d,,,,,,,,,,,Cash,,
+23.01.2024,IK23010006,iKentoo Geschenkkarte [BIERlab GmbH],2030,1100,-120.0,d,,,,,,,,,,,Geschenkkarte,,
+23.01.2024,IK23010007,iKentoo Karte [BIERlab GmbH],1100,1100,1313.2,d,,,,,,,,,,,Karte,,
+23.01.2024,,,1001,1100,8.8,d,,,,,,,,,,,Pourboire Karte [BIERlab GmbH],,
