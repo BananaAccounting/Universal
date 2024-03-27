@@ -67,18 +67,28 @@ function processCsvFile(filePath, fileName, fileContent) {
      * postfinance_money.csv
      * With each prefix we have associated an extension that will be called upon to read the data from the file.
      */
-    let csv_jsonConverter = new CSV_JSONConverter();
     //Get the prefix
+    let csv_jsonConverter = new CSV_JSONConverter();
     let elements = fileName.split("_");
     let filePrefix = elements.shift();
     banksList = getCsvBanksList();
-    if (banksList.has(filePrefix)) {
-        let jsonData = csv_jsonConverter.convertToJson(banksList.get(filePrefix));
-        if (jsonData) {
-            //Banana.Ui.showText(JSON.stringify(jsonData));
-            return jsonData;
-        } // Riprendere da quii il 15.
+    let jsonData = {};
+    if (filePrefix in banksList) {
+        /**
+         * "eval()" method could execute any javascript code, is important to not
+         * use this method in situations where the string comes from an uncontrolled source.
+         * Thats why use "Object.freeze()".
+         */
+        let scriptSyncUtilities = eval(`new ${banksList[filePrefix].referenceClass}`);
+        if (typeof scriptSyncUtilities.getStatementData() === 'function') {//class intance is valid.
+            jsonData = scriptSyncUtilities.getStatementData(fileContent);
+            if (jsonData) {
+                //Banana.Ui.showText(JSON.stringify(jsonData));
+                return jsonData;
+            }
+        }
     }
+    return jsonData;
 
 }
 function processXmlFile(filePath, fileContent) {
@@ -1024,12 +1034,28 @@ function joinNotEmpty(texts, separator) {
 function getCsvBanksList() {
 
     /**
-     * We associate each bank to the related extension
+     * We associate each bank to the related extension and the main class with the method to manage the conversion.
+     * This is the list of banks for which we currently have an import extension, 
+     * currently the list is to be updated by hand, in the future the list could be retrieved dynamically.
      */
-    let banksList = new Map();
-    banksList.set('postfinance', 'ch.banana.sync.postfinance.js');
-    banksList.set('ubs', 'ch.banana.sync.ubs.js');
-    banksList.set('credisuisse', 'ch.banana.sync.credisuisse.js');
+    let banksList = [];
+
+    banksList.postfinance = {
+        prefixName: "postfinance",
+        scriptName: "ch.banana.sync.postfinance.js",
+        referenceClass: "SyncPostFinanceData",
+    };
+
+    banksList.ubs = {
+        prefixName: "ubs",
+        scriptName: "ch.banana.sync.ubs.js",
+        referenceClass: "SyncUbsData",
+    };
+
+
+    //Other banks...
+
+    /*banksList.set('credisuisse', 'ch.banana.sync.credisuisse.js');
     banksList.set('bancastato', 'ch.banana.sync.bancastato.js');
     banksList.set('baslerkantonalbank', 'ch.banana.sync.baslerkantonalbank.js');
     banksList.set('cornerbank', 'ch.banana.sync.cornerbank.js');
@@ -1039,7 +1065,7 @@ function getCsvBanksList() {
     banksList.set('neonbank', 'ch.banana.sync.neonbank.js');
     banksList.set('raiffeisen', 'ch.banana.sync.raiffeisen.js');
     banksList.set('valiant', 'ch.banana.sync.valiant.js');
-    banksList.set('zurcherkantonalbank', 'ch.banana.sync.zurcherkantonalbank.js');
+    banksList.set('zurcherkantonalbank', 'ch.banana.sync.zurcherkantonalbank.js');*/
 
-    return banksList;
+    return Object.freeze(banksList);
 }

@@ -16,51 +16,32 @@
 // @api = 1.0
 // @pubdate = 2023-09-29
 // @publisher = Banana.ch SA
-// @doctype = *
-// @docproperties =
-// @task = import.transactions
-// @outputformat = transactions.simple
-// @includejs = import.utilities.js
-// @inputdatasource = openfiledialog
-// @inputencoding = latin1
-// @inputfilefilter = Text files (*.txt *.csv);;All files (*.*)
-// @inputfilefilter.de = Text (*.txt *.csv);;Alle Dateien (*.*)
-// @inputfilefilter.fr = Texte (*.txt *.csv);;Tous (*.*)
-// @inputfilefilter.it = Testo (*.txt *.csv);;Tutti i files (*.*)
-
+// @include = synchronisationUtilities.js
 /**
  * Parse the data and return the data to be imported as a tab separated file.
  */
-function exec(inData, isTest) {
 
-   if (!inData) return "";
+var SyncPostFinanceData = class SyncPostFinanceData {
+   constructor() {
+   }
 
-   var importUtilities = new ImportUtilities(Banana.document);
+   getStatementData(fileContent) {
 
-   if (isTest !== true && !importUtilities.verifyBananaAdvancedVersion())
-      return "";
+      if (!fileContent) return "";
 
-   if (inData.indexOf("<html") >= 0) {
-      var formatHtml1 = new PFHtmlFormat1();
-      var rows = formatHtml1.convert(inData);
-      var csv = Banana.Converter.objectArrayToCsv(
-         ["Date", "DateValue", "Description", "Income", "Expenses"],
-         rows);
-      return csv;
-
-   } else {
-      var fieldSeparator = findSeparator(inData);
-      let inDataCleared = clearText(inData);
-      var transactions = Banana.Converter.csvToArray(inDataCleared, fieldSeparator);
+      var fieldSeparator = findSeparator(fileContent);
+      let fileContentCleared = clearText(fileContent);
+      var transactions = Banana.Converter.csvToArray(fileContentCleared, fieldSeparator);
 
       // Format SBU 1
       var formatSBU1 = new PFCSVFormatSBU1();
       if (formatSBU1.match(transactions)) {
-         transactions = formatSBU1.convert(transactions);
-         return Banana.Converter.arrayToTsv(transactions);
+         let transactionData = [];
+         transactionData = formatSBU1.getJsonData(transactions);
+         return transactionData;
       }
 
-      // Credit Card format 1
+      // Credit Card format 1 // riprendere da qui domaniii (28.03)
       var format1_CreditCard = new PFCSVFormat1_CreditCard();
       if (format1_CreditCard.match(transactions)) {
          transactions = format1_CreditCard.convert(transactions);
@@ -111,20 +92,6 @@ function exec(inData, isTest) {
          return Banana.Converter.arrayToTsv(convTransactions);
       }
    }
-
-   importUtilities.getUnknownFormatError();
-
-   return "";
-}
-
-/**
- * Pulisce il testo dai doppi a capo, con la versione 6 del formato csv, per qualche motivo quando il file .csv
- * viene aperto su windows vengono aggiunti degli a capo aggiuntivi (uno o più).
- * Ogni riga dovrebbe contenere un "\r\n" non di più, anche quelle vuote.
- */
-function clearText(text) {
-   // Sostituisce tutte le occorrenze multiple di "\r\r\n" con un singolo "\r\n"
-   return text.replace(/\r\r\n/g, "\r\n");
 }
 
 /**
@@ -1118,7 +1085,7 @@ function PFCSVFormatSBU1() {
 
 
    /** Convert the transaction to the format to be imported */
-   this.convert = function (transactions) {
+   this.getJsonData = function (transactions) {
       var transactionsToImport = [];
 
       // Filter and map rows
@@ -1129,13 +1096,7 @@ function PFCSVFormatSBU1() {
          if (transaction[this.colDate].match(/[0-9\.]{3}/g))
             transactionsToImport.push(this.mapTransaction(transaction));
       }
-
-      // Sort rows by date
-      transactionsToImport = this.sort(transactionsToImport);
-
-      // Add header and return
-      var header = [["Date", "DateValue", "Doc", "Description", "Income", "Expenses"]];
-      return header.concat(transactionsToImport);
+      return transactionsToImport;
    }
 
 
@@ -1157,16 +1118,22 @@ function PFCSVFormatSBU1() {
    }
 
    this.mapTransaction = function (element) {
-      var mappedLine = [];
+      transaction = {
+         'Date': Banana.Converter.toInternalDateFormat(element[this.colDate], this.dateFormat),
+         'DateValue': '',
+         'DocInvoice': '',
+         'Description': element[this.colDescr],
+         'Income': Banana.Converter.toInternalNumberFormat(element[this.colCredit], this.decimalSeparator),
+         'Expenses': '',
+         'ExternalReference': '',
+         'ContraAccount': '',
+         'Cc1': '',
+         'Cc2': '',
+         'Cc3': '',
+         'IsDetail': ''
+      };
 
-      mappedLine.push(Banana.Converter.toInternalDateFormat(element[this.colDate], this.dateFormat));
-      mappedLine.push("");
-      mappedLine.push("");
-      mappedLine.push(element[this.colDescr]);
-      mappedLine.push(Banana.Converter.toInternalNumberFormat(element[this.colCredit], this.decimalSeparator));
-      mappedLine.push("");
-
-      return mappedLine;
+      return transaction;
    }
 }
 
@@ -1197,5 +1164,14 @@ function findSeparator(string) {
    }
 
    return ',';
+}
+/**
+ * Pulisce il testo dai doppi a capo, con la versione 6 del formato csv, per qualche motivo quando il file .csv
+ * viene aperto su windows vengono aggiunti degli a capo aggiuntivi (uno o più).
+ * Ogni riga dovrebbe contenere un "\r\n" non di più, anche quelle vuote.
+ */
+function clearText(text) {
+   // Sostituisce tutte le occorrenze multiple di "\r\r\n" con un singolo "\r\n"
+   return text.replace(/\r\r\n/g, "\r\n");
 }
 
