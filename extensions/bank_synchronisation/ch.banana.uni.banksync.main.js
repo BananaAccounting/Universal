@@ -19,7 +19,7 @@
 // @publisher = Banana.ch SA
 // @pubdate = 2024-01-30
 // @inputdatasource = none
-// @include = src/csv_import_extensions/postfinance_sync_csv/ch.banana.switzerland.sync.postfinance.js
+// @includejs = src/csv_import_extensions/postfinance_sync_csv/ch.banana.sync.postfinance.js
 
 /**
 * This extension receives the contents of a file from Banana and checks what type of file it is
@@ -60,37 +60,6 @@ function exec(fileContent, filePath, fileName, fileSuffix) {
     }
 }
 
-function processCsvFile(filePath, fileName, fileContent) {
-
-    /**
-     * Each csv file must begin with a specific prefix (bank name) --> bank_name_*.csv (all in lower case), e.g:
-     * postfinance_money.csv
-     * With each prefix we have associated an extension that will be called upon to read the data from the file.
-     */
-    //Get the prefix
-    let csv_jsonConverter = new CSV_JSONConverter();
-    let elements = fileName.split("_");
-    let filePrefix = elements.shift();
-    banksList = getCsvBanksList();
-    let jsonData = {};
-    if (filePrefix in banksList) {
-        /**
-         * "eval()" method could execute any javascript code, is important to not
-         * use this method in situations where the string comes from an uncontrolled source.
-         * Thats why use "Object.freeze()".
-         */
-        let scriptSyncUtilities = eval(`new ${banksList[filePrefix].referenceClass}`);
-        if (typeof scriptSyncUtilities.getStatementData() === 'function') {//class intance is valid.
-            jsonData = scriptSyncUtilities.getStatementData(fileContent);
-            if (jsonData) {
-                //Banana.Ui.showText(JSON.stringify(jsonData));
-                return jsonData;
-            }
-        }
-    }
-    return jsonData;
-
-}
 function processXmlFile(filePath, fileContent) {
     let iso20022_swiss = new ISO20022_Swiss_JSONConverter();
     if (iso20022_swiss.match(fileContent)) {
@@ -122,8 +91,74 @@ function processTxtFile(filePath, fileName, fileContent) {
     //for the JSON format data...?
 }
 
+function processCsvFile(filePath, fileName, fileContent) {
+
+    /**
+     * Each csv file must begin with a specific prefix (bank name) --> bank_name_*.csv (all in lower case), e.g:
+     * postfinance_money.csv
+     * With each prefix we have associated an extension that will be called upon to read the data from the file.
+     */
+    //Get the prefix
+    let jsonData = {};
+    let csv_jsonConverter = new CSV_JSONConverter(fileName, filePath, fileContent);
+    if (csv_jsonConverter.match()) {
+        jsonData = csv_jsonConverter.convertToJson_fromCsv();
+        Banana.Ui.showText(JSON.stringify(jsonData));
+    }
+    return jsonData;
+}
+
 var CSV_JSONConverter = class CSV_JSONConverter {
-    constructor() {
+    constructor(fileName, filePath, fileContent) {
+        this.fileName = fileName
+        this.filePath = filePath;
+        this.fileContent = fileContent;
+        let elements = fileName.split("_");
+        this.filePrefix = elements.shift();
+        this.banksList = getCsvBanksList();
+    }
+
+    /**
+     * Check if we have the extension in our list.
+     */
+    match() {
+        if (this.filePrefix.length > 0 && this.filePrefix in this.banksList) {
+            return true;
+        }
+    }
+
+    convertToJson_fromCsv() {
+        let jsonDoc = {};
+        this.setFiledata(jsonDoc);
+        this.setStatementData(jsonDoc);
+        return jsonDoc;
+    }
+
+    setFiledata(jsonDoc) {
+        let name = this.filePath;
+        let type = CSV_FILE_SUFFIX;
+
+        jsonDoc.FileName = name;
+        jsonDoc.FileType = type;
+        jsonDoc.FileCreationDate = ""; //Not available for csv.
+    }
+
+    setStatementData(jsonDoc) {
+        /**
+        * "eval()" method could execute any javascript code, is important to not
+        * use this method in situations where the string comes from an uncontrolled source.
+        * Thats why use "Object.freeze()" once we have defined the extensions list of the banks (and the related data) we want
+        * to work with.
+        */
+        let statementData = [];
+        let scriptSyncUtilities = eval(`new ${this.banksList[this.filePrefix].referenceClass}`);
+        if (typeof scriptSyncUtilities.getStatementData === 'function') {//check if class intance is valid.
+            statementData = scriptSyncUtilities.getStatementData(this.fileContent); //riprendere dal controllo di cosa ritornaaaa.
+            if (statementData.length < 0)
+                Banana.console.debug("csv format not recognised: " + this.fileName);
+        }
+
+        jsonDoc.FileStatementData = statementData;
     }
 }
 
@@ -201,7 +236,6 @@ var ISO20022_Swiss_JSONConverter = class ISO20022_Swiss_JSONConverter {
         this.setFileData(jsonDoc, docNode, filePath);
         let statementsNode = this.getStatementsNode_camt053(docNode);
         this.setStatementData(statementsNode, jsonDoc);
-        //Banana.Ui.showText(JSON.stringify(jsonDoc)); ok
         return jsonDoc;
 
     }
@@ -261,11 +295,18 @@ var ISO20022_Swiss_JSONConverter = class ISO20022_Swiss_JSONConverter {
 
         let name = filePath;
         let type = this.camtType
-        let creationDate = getDocumentCreationDate(docNode);
+        let creationDate = this.getDocumentCreationDate(docNode);
 
         jsonDoc.FileName = name;
         jsonDoc.FileType = type;
         jsonDoc.FileCreationDate = creationDate;
+    }
+
+    getDocumentCreationDate(docNode) {
+        let node = this.firstGrandChildElement(docNode, ['BkToCstmrStmt', 'GrpHdr', 'CreDtTm']);
+        if (node)
+            return formatDate(node.text);
+        return '';
     }
 
     /**
@@ -688,13 +729,6 @@ function getStatementBeginBalance(statementNode) {
         }
         balNode = balNode.nextSiblingElement();
     }
-    return '';
-}
-
-function getDocumentCreationDate(docNode) {
-    let node = this.firstGrandChildElement(docNode, ['BkToCstmrStmt', 'GrpHdr', 'CreDtTm']);
-    if (node)
-        return formatDate(node.text);
     return '';
 }
 

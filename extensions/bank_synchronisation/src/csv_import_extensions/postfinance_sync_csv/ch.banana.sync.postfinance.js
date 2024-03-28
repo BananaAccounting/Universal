@@ -16,7 +16,7 @@
 // @api = 1.0
 // @pubdate = 2023-09-29
 // @publisher = Banana.ch SA
-// @include = synchronisationUtilities.js
+// @includejs = import.utilities.js
 /**
  * Parse the data and return the data to be imported as a tab separated file.
  */
@@ -29,6 +29,7 @@ var SyncPostFinanceData = class SyncPostFinanceData {
 
       if (!fileContent) return "";
 
+      var importUtilities = new ImportUtilities(Banana.document);
       var fieldSeparator = findSeparator(fileContent);
       let fileContentCleared = clearText(fileContent);
       var transactions = Banana.Converter.csvToArray(fileContentCleared, fieldSeparator);
@@ -36,51 +37,57 @@ var SyncPostFinanceData = class SyncPostFinanceData {
       // Format SBU 1
       var formatSBU1 = new PFCSVFormatSBU1();
       if (formatSBU1.match(transactions)) {
-         let transactionData = [];
-         transactionData = formatSBU1.getJsonData(transactions);
-         return transactionData;
+         let statementData = [];
+         statementData = formatSBU1.getStatementTransactions(transactions);
+         return statementData;
       }
 
       // Credit Card format 1 // riprendere da qui domaniii (28.03)
       var format1_CreditCard = new PFCSVFormat1_CreditCard();
       if (format1_CreditCard.match(transactions)) {
-         transactions = format1_CreditCard.convert(transactions);
-         return Banana.Converter.arrayToTsv(transactions);
+         let statementData = [];
+         statementData = format1_CreditCard.getStatementTransactions(transactions);
+         return statementData;
       }
 
       // Format 1
       var format1 = new PFCSVFormat1();
       if (format1.match(transactions)) {
-         transactions = format1.convert(transactions);
-         return Banana.Converter.arrayToTsv(transactions);
+         let statementData = [];
+         statementData = format1.getStatementTransactions(transactions);
+         return statementData;
       }
 
       // Format 2
       var format2 = new PFCSVFormat2();
       if (format2.match(transactions)) {
-         transactions = format2.convert(transactions);
-         return Banana.Converter.arrayToTsv(transactions);
+         let statementData = [];
+         statementData = format2.getStatementTransactions(transactions);
+         return statementData;
       }
 
       // Format 3
       var format3 = new PFCSVFormat3();
       if (format3.match(transactions)) {
-         transactions = format3.convert(transactions);
-         return Banana.Converter.arrayToTsv(transactions);
+         let statementData = [];
+         statementData = format3.getStatementTransactions(transactions);
+         return statementData;
       }
 
       // Format 4
       var format4 = new PFCSVFormat4();
       if (format4.match(transactions)) {
-         transactions = format4.convert(transactions);
-         return Banana.Converter.arrayToTsv(transactions);
+         let statementData = [];
+         statementData = format4.getStatementTransactions(transactions);
+         return statementData;
       }
 
       // Format 5
       var format5 = new PFCSVFormat5();
       if (format5.match(transactions)) {
-         transactions = format5.convert(transactions);
-         return Banana.Converter.arrayToTsv(transactions);
+         let statementData = [];
+         statementData = format5.getStatementTransactions(transactions);
+         return statementData;
       }
 
       // Format 6, works with translated column headers.
@@ -88,9 +95,12 @@ var SyncPostFinanceData = class SyncPostFinanceData {
       // getFormattedData () works with specifics headers and to translate them. 
       let transactionsData = format6.getFormattedData(transactions, importUtilities);
       if (format6.match(transactionsData)) {
-         let convTransactions = format6.convert(transactionsData);
-         return Banana.Converter.arrayToTsv(convTransactions);
+         let statementData = [];
+         statementData = format6.getStatementTransactions(transactions);
+         return statementData;
       }
+
+      return [];
    }
 }
 
@@ -327,7 +337,7 @@ function PFCSVFormat6() {
       return false;
    }
 
-   this.convert = function (transactionsData) {
+   this.getStatementTransactions = function (transactionsData) {
       var transactionsToImport = [];
 
       for (var i = 0; i < transactionsData.length; i++) {
@@ -337,27 +347,27 @@ function PFCSVFormat6() {
          }
       }
 
-      // Sort rows by date
-      transactionsToImport = transactionsToImport.reverse();
-
-      // Add header and return
-      var header = [["Date", "DateValue", "Doc", "ExternalReference", "Description", "Income", "Expenses"]];
-      return header.concat(transactionsToImport);
+      return transactionsToImport;
    }
 
    this.mapTransaction = function (transaction) {
-      let mappedLine = [];
-
-      mappedLine.push(Banana.Converter.toInternalDateFormat(transaction["Date"], "dd.mm.yyyy"));
-      mappedLine.push(Banana.Converter.toInternalDateFormat("", "dd.mm.yyyy"));
-      mappedLine.push("");
-      mappedLine.push("");
       let trDescription = transaction["Description"] + ", " + transaction["Type"];
-      mappedLine.push(trDescription);
-      mappedLine.push(Banana.Converter.toInternalNumberFormat(transaction["Income"], '.'));
-      mappedLine.push(Banana.Converter.toInternalNumberFormat(Banana.SDecimal.abs(transaction["Expenses"]), '.'));
+      transaction = {
+         'Date': Banana.Converter.toInternalDateFormat(transaction["Date"], "dd.mm.yyyy"),
+         'DateValue': '',
+         'DocInvoice': '',
+         'Description': trDescription,
+         'Income': Banana.Converter.toInternalNumberFormat(transaction["Income"], '.'),
+         'Expenses': Banana.Converter.toInternalNumberFormat(Banana.SDecimal.abs(transaction["Expenses"]), '.'),
+         'ExternalReference': '',
+         'ContraAccount': '',
+         'Cc1': '',
+         'Cc2': '',
+         'Cc3': '',
+         'IsDetail': ''
+      };
 
-      return mappedLine;
+      return transaction;
    }
 
 }
@@ -410,7 +420,7 @@ function PFCSVFormat1_CreditCard() {
    }
 
    /** Convert the transaction to the format to be imported */
-   this.convert = function (transactions) {
+   this.getStatementTransactions = function (transactions) {
       var transactionsToImport = [];
 
       // Filter and map rows
@@ -423,28 +433,31 @@ function PFCSVFormat1_CreditCard() {
             transactionsToImport.push(this.mapTransaction(transaction));
       }
 
-      // Sort rows by date (just invert)
-      transactionsToImport = transactionsToImport.reverse();
-
-      // Add header and return
-      var header = [["Date", "Doc", "Description", "Income", "Expenses"]];
-      return header.concat(transactionsToImport);
+      return transactionsToImport;
    }
 
 
    this.mapTransaction = function (element) {
-      var mappedLine = [];
-
-      mappedLine.push(Banana.Converter.toInternalDateFormat(element[this.colDate], this.dateFormat));
-      mappedLine.push(""); // Doc is empty for now
       var tidyDescr = element[this.colDescr].replace(/ {2,}/g, ''); //remove white spaces
-      mappedLine.push(Banana.Converter.stringToCamelCase(tidyDescr));
-      var amount = element[this.colCredit].replace(/-/g, ''); //remove minus sign
-      mappedLine.push(Banana.Converter.toInternalNumberFormat(amount));
-      amount = element[this.colDebit].replace(/-/g, ''); //remove minus sign
-      mappedLine.push(Banana.Converter.toInternalNumberFormat(amount));
+      var crAmount = element[this.colCredit].replace(/-/g, ''); //remove minus sign
+      var dbAmount = element[this.colDebit].replace(/-/g, ''); //remove minus sign
 
-      return mappedLine;
+      transaction = {
+         'Date': Banana.Converter.toInternalDateFormat(element[this.colDate], this.dateFormat),
+         'DateValue': '',
+         'DocInvoice': '',
+         'Description': Banana.Converter.stringToCamelCase(tidyDescr),
+         'Income': Banana.Converter.toInternalNumberFormat(crAmount),
+         'Expenses': Banana.Converter.toInternalNumberFormat(dbAmount),
+         'ExternalReference': '',
+         'ContraAccount': '',
+         'Cc1': '',
+         'Cc2': '',
+         'Cc3': '',
+         'IsDetail': ''
+      };
+
+      return transaction;
    }
 }
 /**
@@ -489,7 +502,7 @@ function PFCSVFormat5() {
    }
 
    /** Convert the transaction to the format to be imported */
-   this.convert = function (transactions) {
+   this.getStatementTransactions = function (transactions) {
       var transactionsToImport = [];
 
       // Filter and map rows
@@ -501,27 +514,30 @@ function PFCSVFormat5() {
             transactionsToImport.push(this.mapTransaction(transaction));
       }
 
-      // Sort rows by date (just invert)
-      transactionsToImport = transactionsToImport.reverse();
-
-      // Add header and return
-      var header = [["Date", "Doc", "Description", "Income", "Expenses"]];
-      return header.concat(transactionsToImport);
+      return transactionsToImport;
    }
 
 
    this.mapTransaction = function (element) {
-      var mappedLine = [];
-
-      mappedLine.push(Banana.Converter.toInternalDateFormat(element[this.colDate], this.dateFormat));
-      mappedLine.push(""); // Doc is empty for now
       var tidyDescr = element[this.colDescr].replace(/ {2,}/g, ''); //remove white spaces
-      mappedLine.push(Banana.Converter.stringToCamelCase(tidyDescr));
-      mappedLine.push(Banana.Converter.toInternalNumberFormat(element[this.colCredit]));
       amountDebit = element[this.colDebit].replace(/-/g, ''); //remove minus sign
-      mappedLine.push(Banana.Converter.toInternalNumberFormat(amountDebit));
 
-      return mappedLine;
+      transaction = {
+         'Date': Banana.Converter.toInternalDateFormat(element[this.colDate], this.dateFormat),
+         'DateValue': '',
+         'DocInvoice': '',
+         'Description': Banana.Converter.stringToCamelCase(tidyDescr),
+         'Income': Banana.Converter.toInternalNumberFormat(element[this.colCredit]),
+         'Expenses': Banana.Converter.toInternalNumberFormat(amountDebit),
+         'ExternalReference': '',
+         'ContraAccount': '',
+         'Cc1': '',
+         'Cc2': '',
+         'Cc3': '',
+         'IsDetail': ''
+      };
+
+      return transaction;
    }
 }
 
@@ -581,7 +597,7 @@ function PFCSVFormat4() {
    }
 
    /** Convert the transaction to the format to be imported */
-   this.convert = function (transactions) {
+   this.getStatementTransactions = function (transactions) {
       var transactionsToImport = [];
 
       // Filter and map rows
@@ -593,28 +609,31 @@ function PFCSVFormat4() {
             transactionsToImport.push(this.mapTransaction(transaction));
       }
 
-      // Sort rows by date (just invert)
-      transactionsToImport = transactionsToImport.reverse();
-
-      // Add header and return
-      var header = [["Date", "Doc", "Description", "Income", "Expenses"]];
-      return header.concat(transactionsToImport);
+      return transactionsToImport;
    }
 
 
    this.mapTransaction = function (element) {
-      var mappedLine = [];
-
-      mappedLine.push(Banana.Converter.toInternalDateFormat(element[this.colDate], this.dateFormat));
-      mappedLine.push(""); // Doc is empty for now
       var tidyDescr = element[this.colDescr].replace(/ {2,}/g, ''); //remove white spaces
-      mappedLine.push(Banana.Converter.stringToCamelCase(tidyDescr));
-      var amount = element[this.colCredit].replace(/-/g, ''); //remove minus sign
-      mappedLine.push(Banana.Converter.toInternalNumberFormat(amount));
-      amount = element[this.colDebit].replace(/-/g, ''); //remove minus sign
-      mappedLine.push(Banana.Converter.toInternalNumberFormat(amount));
+      var crAmount = element[this.colCredit].replace(/-/g, ''); //remove minus sign
+      var dbAmount = element[this.colDebit].replace(/-/g, ''); //remove minus sign
 
-      return mappedLine;
+      transaction = {
+         'Date': Banana.Converter.toInternalDateFormat(element[this.colDate], this.dateFormat),
+         'DateValue': '',
+         'DocInvoice': '',
+         'Description': Banana.Converter.stringToCamelCase(tidyDescr),
+         'Income': Banana.Converter.toInternalNumberFormat(crAmount),
+         'Expenses': Banana.Converter.toInternalNumberFormat(dbAmount),
+         'ExternalReference': '',
+         'ContraAccount': '',
+         'Cc1': '',
+         'Cc2': '',
+         'Cc3': '',
+         'IsDetail': ''
+      };
+
+      return transaction;
    }
 }
 
@@ -760,7 +779,7 @@ function PFCSVFormat3() {
    }
 
    /** Convert the transaction to the format to be imported */
-   this.convert = function (transactions) {
+   this.getStatementTransactions = function (transactions) {
       var transactionsToImport = [];
 
       // Filter and map rows
@@ -773,29 +792,31 @@ function PFCSVFormat3() {
             transactionsToImport.push(this.mapTransaction(transaction));
       }
 
-      // Sort rows by date (just invert)
-      transactionsToImport = transactionsToImport.reverse();
-
-      // Add header and return
-      var header = [["Date", "DateValue", "Doc", "Description", "Income", "Expenses"]];
-      return header.concat(transactionsToImport);
+      return transactionsToImport;
    }
 
 
    this.mapTransaction = function (element) {
-      var mappedLine = [];
-
-      mappedLine.push(Banana.Converter.toInternalDateFormat(element[this.colDate], 'dd-mm-yyyy'));
-      mappedLine.push(Banana.Converter.toInternalDateFormat(element[this.colDateValuta], 'dd-mm-yyyy'));
-      mappedLine.push(""); // Doc is empty for now
       var tidyDescr = element[this.colDescr].replace(/ {2,}/g, ''); //remove white spaces
-      mappedLine.push(Banana.Converter.stringToCamelCase(tidyDescr));
-      var amount = element[this.colCredit].replace(/-/g, ''); //remove minus sign
-      mappedLine.push(Banana.Converter.toInternalNumberFormat(amount));
-      amount = element[this.colDebit].replace(/-/g, ''); //remove minus sign
-      mappedLine.push(Banana.Converter.toInternalNumberFormat(amount));
+      var crAmount = element[this.colCredit].replace(/-/g, ''); //remove minus sign
+      var dbAmount = element[this.colDebit].replace(/-/g, ''); //remove minus sign
 
-      return mappedLine;
+      transaction = {
+         'Date': Banana.Converter.toInternalDateFormat(element[this.colDate], 'dd-mm-yyyy'),
+         'DateValue': Banana.Converter.toInternalDateFormat(element[this.colDateValuta], 'dd-mm-yyyy'),
+         'DocInvoice': '',
+         'Description': Banana.Converter.stringToCamelCase(tidyDescr),
+         'Income': Banana.Converter.toInternalNumberFormat(crAmount),
+         'Expenses': Banana.Converter.toInternalNumberFormat(dbAmount),
+         'ExternalReference': '',
+         'ContraAccount': '',
+         'Cc1': '',
+         'Cc2': '',
+         'Cc3': '',
+         'IsDetail': ''
+      };
+
+      return transaction;
    }
 }
 
@@ -852,7 +873,7 @@ function PFCSVFormat2() {
    }
 
    /** Convert the transaction to the format to be imported */
-   this.convert = function (transactions) {
+   this.getStatementTransactions = function (transactions) {
       var transactionsToImport = [];
 
       // Filter and map rows
@@ -865,27 +886,29 @@ function PFCSVFormat2() {
             transactionsToImport.push(this.mapTransaction(transaction));
       }
 
-      // Sort rows by date (just invert)
-      transactionsToImport = transactionsToImport.reverse();
-
-      // Add header and return
-      var header = [["Date", "DateValue", "Doc", "Description", "Income", "Expenses"]];
-      return header.concat(transactionsToImport);
+      return transactionsToImport;
    }
 
 
    this.mapTransaction = function (element) {
-      var mappedLine = [];
-
-      mappedLine.push(element[this.colDate]);
-      mappedLine.push(element[this.colDateValuta]);
-      mappedLine.push(""); // Doc is empty for now
       var tidyDescr = element[this.colDescr].replace(/ {2,}/g, ' '); //remove white spaces
-      mappedLine.push(Banana.Converter.stringToCamelCase(tidyDescr));
-      mappedLine.push(Banana.Converter.toInternalNumberFormat(element[this.colCredit]));
-      mappedLine.push(Banana.Converter.toInternalNumberFormat(element[this.colDebit]));
 
-      return mappedLine;
+      transaction = {
+         'Date': element[this.colDate],
+         'DateValue': element[this.colDateValuta],
+         'DocInvoice': '',
+         'Description': Banana.Converter.stringToCamelCase(tidyDescr),
+         'Income': Banana.Converter.toInternalNumberFormat(element[this.colCredit]),
+         'Expenses': Banana.Converter.toInternalNumberFormat(element[this.colDebit]),
+         'ExternalReference': '',
+         'ContraAccount': '',
+         'Cc1': '',
+         'Cc2': '',
+         'Cc3': '',
+         'IsDetail': ''
+      };
+
+      return transaction;
    }
 }
 
@@ -954,7 +977,7 @@ function PFCSVFormat1() {
 
 
    /** Convert the transaction to the format to be imported */
-   this.convert = function (transactions) {
+   this.getStatementTransactions = function (transactions) {
       var transactionsToImport = [];
 
       // Filter and map rows
@@ -965,47 +988,30 @@ function PFCSVFormat1() {
          if (transaction[this.colDate].match(/[0-9\.]{3}/g) && transaction[this.colDateValuta].match(/[0-9\.]{3}/g))
             transactionsToImport.push(this.mapTransaction(transaction));
       }
-
-      // Sort rows by date
-      transactionsToImport = this.sort(transactionsToImport);
-
-      // Add header and return
-      var header = [["Date", "DateValue", "Doc", "Description", "Income", "Expenses"]];
-      return header.concat(transactionsToImport);
-   }
-
-
-   /** Sort transactions by date */
-   this.sort = function (transactions) {
-      if (transactions.length <= 0)
-         return transactions;
-      var i = 0;
-      var previousDate = transactions[0][this.colDate];
-      while (i < transactions.length) {
-         var date = transactions[i][this.colDate];
-         if (previousDate.length > 0 && previousDate > date)
-            return transactions.reverse();
-         else if (previousDate.length > 0 && previousDate < date)
-            return transactions;
-         i++;
-      }
-      return transactions;
+      return transactionsToImport;
    }
 
    this.mapTransaction = function (element) {
-      var mappedLine = [];
+      var tidyDescr = element[this.colDescr].replace(/ {2,}/g, ''); // remove white spaces
+      var crAmount = element[this.colCredit].replace(/\+/g, ''); // remove plus sign
+      var dbAmount = element[this.colDebit].replace(/-/g, ''); // remove minus sign
 
-      mappedLine.push(Banana.Converter.toInternalDateFormat(element[this.colDate], this.dateFormat));
-      mappedLine.push(Banana.Converter.toInternalDateFormat(element[this.colDateValuta], this.dateFormat));
-      mappedLine.push(""); // Doc is empty for now
-      var tidyDescr = element[this.colDescr].replace(/ {2,}/g, ''); //remove white spaces
-      mappedLine.push(Banana.Converter.stringToCamelCase(tidyDescr));
-      var amount = element[this.colCredit].replace(/\+/g, ''); //remove plus sign
-      mappedLine.push(Banana.Converter.toInternalNumberFormat(amount, this.decimalSeparator));
-      amount = element[this.colDebit].replace(/-/g, ''); //remove minus sign
-      mappedLine.push(Banana.Converter.toInternalNumberFormat(amount, this.decimalSeparator));
+      transaction = {
+         'Date': Banana.Converter.toInternalDateFormat(element[this.colDate], this.dateFormat),
+         'DateValue': Banana.Converter.toInternalDateFormat(element[this.colDateValuta], this.dateFormat),
+         'DocInvoice': '',
+         'Description': Banana.Converter.stringToCamelCase(tidyDescr),
+         'Income': Banana.Converter.toInternalNumberFormat(crAmount, this.decimalSeparator),
+         'Expenses': Banana.Converter.toInternalNumberFormat(dbAmount, this.decimalSeparator),
+         'ExternalReference': '',
+         'ContraAccount': '',
+         'Cc1': '',
+         'Cc2': '',
+         'Cc3': '',
+         'IsDetail': ''
+      };
 
-      return mappedLine;
+      return transaction;
    }
 }
 
@@ -1085,7 +1091,7 @@ function PFCSVFormatSBU1() {
 
 
    /** Convert the transaction to the format to be imported */
-   this.getJsonData = function (transactions) {
+   this.getStatementTransactions = function (transactions) {
       var transactionsToImport = [];
 
       // Filter and map rows
@@ -1097,24 +1103,6 @@ function PFCSVFormatSBU1() {
             transactionsToImport.push(this.mapTransaction(transaction));
       }
       return transactionsToImport;
-   }
-
-
-   /** Sort transactions by date */
-   this.sort = function (transactions) {
-      if (transactions.length <= 0)
-         return transactions;
-      var i = 0;
-      var previousDate = transactions[0][this.colDate];
-      while (i < transactions.length) {
-         var date = transactions[i][this.colDate];
-         if (previousDate.length > 0 && previousDate > date)
-            return transactions.reverse();
-         else if (previousDate.length > 0 && previousDate < date)
-            return transactions;
-         i++;
-      }
-      return transactions;
    }
 
    this.mapTransaction = function (element) {
