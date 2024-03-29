@@ -103,8 +103,8 @@ function processCsvFile(filePath, fileName, fileContent) {
     let csv_jsonConverter = new CSV_JSONConverter(fileName, filePath, fileContent);
     if (csv_jsonConverter.match()) {
         jsonData = csv_jsonConverter.convertToJson_fromCsv();
-        Banana.Ui.showText(JSON.stringify(jsonData));
     }
+    //Banana.Ui.showText(fileName + ": " + JSON.stringify(jsonData));
     return jsonData;
 }
 
@@ -144,20 +144,23 @@ var CSV_JSONConverter = class CSV_JSONConverter {
     }
 
     setStatementData(jsonDoc) {
+
+        let statementData = [];
+        let fileStatementData = {};
         /**
         * "eval()" method could execute any javascript code, is important to not
         * use this method in situations where the string comes from an uncontrolled source.
         * Thats why use "Object.freeze()" once we have defined the extensions list of the banks (and the related data) we want
         * to work with.
         */
-        let statementData = [];
         let scriptSyncUtilities = eval(`new ${this.banksList[this.filePrefix].referenceClass}`);
         if (typeof scriptSyncUtilities.getStatementData === 'function') {//check if class intance is valid.
-            statementData = scriptSyncUtilities.getStatementData(this.fileContent); //riprendere dal controllo di cosa ritornaaaa.
-            if (statementData.length < 0)
+            fileStatementData = scriptSyncUtilities.getStatementData(this.fileContent);
+            if (!fileStatementData)
                 Banana.console.debug("csv format not recognised: " + this.fileName);
         }
 
+        statementData.push(fileStatementData); // with the csv we have just one statement for each file.
         jsonDoc.FileStatementData = statementData;
     }
 }
@@ -303,7 +306,7 @@ var ISO20022_Swiss_JSONConverter = class ISO20022_Swiss_JSONConverter {
     }
 
     getDocumentCreationDate(docNode) {
-        let node = this.firstGrandChildElement(docNode, ['BkToCstmrStmt', 'GrpHdr', 'CreDtTm']);
+        let node = firstGrandChildElement(docNode, ['BkToCstmrStmt', 'GrpHdr', 'CreDtTm']);
         if (node)
             return formatDate(node.text);
         return '';

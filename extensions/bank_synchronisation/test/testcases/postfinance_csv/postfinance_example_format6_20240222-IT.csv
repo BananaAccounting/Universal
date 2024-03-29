@@ -1,8 +1,8 @@
-Iget cat:;"=75.50.4610"
-Iget mell eo:;"=75.50.8183"
-Mongerumn:;"=Navio"
-Sanam:;"=SL4560330166848035805"
-Flavit:;"=ALE"
+Data dal:;="08.11.2023"
+Data fino al:;="31.12.2023"
+Categoria:;="Tutti"
+Conto:;="CH5104835831854071000"
+Valuta:;="CHF"
 
 Data;Tipo di movimento;Testo di avviso;Accredito in CHF;Addebito in CHF;Tag;Categoria
 

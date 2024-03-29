@@ -25,6 +25,9 @@ var SyncPostFinanceData = class SyncPostFinanceData {
    constructor() {
    }
 
+   /**
+    * This method returns an object containing the statement data ( statement params + statement transactions)
+    */
    getStatementData(fileContent) {
 
       if (!fileContent) return "";
@@ -37,67 +40,106 @@ var SyncPostFinanceData = class SyncPostFinanceData {
       // Format SBU 1
       var formatSBU1 = new PFCSVFormatSBU1();
       if (formatSBU1.match(transactions)) {
-         let statementData = [];
-         statementData = formatSBU1.getStatementTransactions(transactions);
-         return statementData;
+         let fileStatementData = {};
+         let statementTransactions = [];
+         let statementParams = {};
+         statementParams = formatSBU1.getStatementParams(transactions);
+         statementTransactions = formatSBU1.getStatementTransactions(transactions);
+         fileStatementData.StatementParams = statementParams;
+         fileStatementData.StatementTransactions = statementTransactions;
+         return fileStatementData;
       }
 
-      // Credit Card format 1 // riprendere da qui domaniii (28.03)
+      // Credit Card format 1
       var format1_CreditCard = new PFCSVFormat1_CreditCard();
       if (format1_CreditCard.match(transactions)) {
-         let statementData = [];
-         statementData = format1_CreditCard.getStatementTransactions(transactions);
-         return statementData;
+         let fileStatementData = {};
+         let statementTransactions = [];
+         let statementParams = {};
+         statementParams = format1_CreditCard.getStatementParams(transactions);
+         statementTransactions = format1_CreditCard.getStatementTransactions(transactions);
+         fileStatementData.StatementParams = statementParams;
+         fileStatementData.StatementTransactions = statementTransactions;
+         return fileStatementData;
       }
 
       // Format 1
       var format1 = new PFCSVFormat1();
       if (format1.match(transactions)) {
-         let statementData = [];
-         statementData = format1.getStatementTransactions(transactions);
-         return statementData;
+         let fileStatementData = {};
+         let statementTransactions = [];
+         let statementParams = {};
+         statementParams = format1.getStatementParams(transactions);
+         statementTransactions = format1.getStatementTransactions(transactions);
+         fileStatementData.StatementParams = statementParams;
+         fileStatementData.StatementTransactions = statementTransactions;
+         return fileStatementData;
       }
 
       // Format 2
       var format2 = new PFCSVFormat2();
       if (format2.match(transactions)) {
-         let statementData = [];
-         statementData = format2.getStatementTransactions(transactions);
-         return statementData;
+         let fileStatementData = {};
+         let statementTransactions = [];
+         let statementParams = {};
+         statementParams = format2.getStatementParams(transactions);
+         statementTransactions = format2.getStatementTransactions(transactions);
+         fileStatementData.StatementParams = statementParams;
+         fileStatementData.StatementTransactions = statementTransactions;
+         return fileStatementData;
       }
 
       // Format 3
       var format3 = new PFCSVFormat3();
       if (format3.match(transactions)) {
-         let statementData = [];
-         statementData = format3.getStatementTransactions(transactions);
-         return statementData;
+         let fileStatementData = {};
+         let statementTransactions = [];
+         let statementParams = {};
+         statementParams = format3.getStatementParams(transactions);
+         statementTransactions = format3.getStatementTransactions(transactions);
+         fileStatementData.StatementParams = statementParams;
+         fileStatementData.StatementTransactions = statementTransactions;
+         return fileStatementData;
       }
 
       // Format 4
       var format4 = new PFCSVFormat4();
       if (format4.match(transactions)) {
-         let statementData = [];
-         statementData = format4.getStatementTransactions(transactions);
-         return statementData;
+         let fileStatementData = {};
+         let statementTransactions = [];
+         let statementParams = {};
+         statementParams = format4.getStatementParams(transactions);
+         statementTransactions = format4.getStatementTransactions(transactions);
+         fileStatementData.StatementParams = statementParams;
+         fileStatementData.StatementTransactions = statementTransactions;
+         return fileStatementData;
       }
 
       // Format 5
       var format5 = new PFCSVFormat5();
       if (format5.match(transactions)) {
-         let statementData = [];
-         statementData = format5.getStatementTransactions(transactions);
-         return statementData;
+         let fileStatementData = {};
+         let statementTransactions = [];
+         let statementParams = {};
+         statementParams = format5.getStatementParams(transactions);
+         statementTransactions = format5.getStatementTransactions(transactions);
+         fileStatementData.StatementParams = statementParams;
+         fileStatementData.StatementTransactions = statementTransactions;
+         return fileStatementData;
       }
 
       // Format 6, works with translated column headers.
       var format6 = new PFCSVFormat6();
-      // getFormattedData () works with specifics headers and to translate them. 
       let transactionsData = format6.getFormattedData(transactions, importUtilities);
       if (format6.match(transactionsData)) {
-         let statementData = [];
-         statementData = format6.getStatementTransactions(transactions);
-         return statementData;
+         let fileStatementData = {};
+         let statementTransactions = [];
+         let statementParams = {};
+         statementParams = format6.getStatementParams(transactions); // here we must work with the original array
+         statementTransactions = format6.getStatementTransactions(transactionsData);
+         fileStatementData.StatementParams = statementParams;
+         fileStatementData.StatementTransactions = statementTransactions;
+         return fileStatementData;
       }
 
       return [];
@@ -236,7 +278,6 @@ function PFCSVFormat6() {
    }
 
    this.convertHeaderFr = function (columns, convertedColumns) {
-      Banana.console.debug(columns);
       for (var i = 0; i < columns.length; i++) {
          switch (columns[i]) {
             case "Date":
@@ -265,7 +306,6 @@ function PFCSVFormat6() {
          }
       }
 
-      Banana.console.debug(convertedColumns);
       if (convertedColumns.indexOf("Date") < 0
          || convertedColumns.indexOf("Description") < 0
          || convertedColumns.indexOf("Income") < 0
@@ -337,6 +377,36 @@ function PFCSVFormat6() {
       return false;
    }
 
+   this.getStatementParams = function (transactions) {
+      /**
+       * File params for this format are located in the first rows of the document:
+       * Data dal:;="22.02.2024"
+       * Data fino al:;="27.02.2024"
+       * Tipo di registrazione:;="Tutti"
+       * Conto:;="CH5809000000652501224"
+       * Valuta:;="CHF"
+       * 
+       * Data;Tipo di movimento;Testo di avviso;Accredito in CHF;Addebito in CHF
+       *  6 ....
+       *  7 ....
+       */
+      let statementParams = {};
+
+      let iban = transactions[3][1];
+      let statementOwner = "";
+      let statementCurrency = transactions[4][1];
+      let initialBalance = "";
+      let finalBalance = "";
+
+      statementParams.StatementParamIban = iban;
+      statementParams.StatementParamOwner = statementOwner;
+      statementParams.StatementParamCurrency = statementCurrency;
+      statementParams.StatementParamInitialBalance = initialBalance;
+      statementParams.StatementParamFinalBalance = finalBalance;
+
+      return statementParams;
+   }
+
    this.getStatementTransactions = function (transactionsData) {
       var transactionsToImport = [];
 
@@ -346,7 +416,7 @@ function PFCSVFormat6() {
             transactionsToImport.push(this.mapTransaction(transactionsData[i]));
          }
       }
-
+      transactionsToImport = transactionsToImport.reverse();
       return transactionsToImport;
    }
 
@@ -419,6 +489,36 @@ function PFCSVFormat1_CreditCard() {
       return false;
    }
 
+   this.getStatementParams = function (transactions) {
+      /**
+       * File params for this format are located in the first two rows of the document:
+       * 1  Kartenkonto:;0000 1234 5467 7654
+      *  2  Karte:;XXXX XXXX XXXX 1111 PostFinance Visa Business Card
+      *  3  Datum;Buchungsdetails;Gutschrift in CHF;Lastschrift in CHF
+      *  4  2023-08-24;"Tankstelle";;-94.70
+      *  5  2023-08-21;"Tankstelle";;-114.05
+      *  6 ....
+      *  7 ....
+      *  For some reasons, for this format the params are different, as it is an old format we
+      *  currently can keep it like this, for the future, if it will be necessary we could manage various cases.
+       */
+      let statementParams = {};
+
+      let iban = transactions[0][1];
+      let statementOwner = "";
+      let statementCurrency = ""; // recuperarla dalle intestazioni ?
+      let initialBalance = "";
+      let finalBalance = "";
+
+      statementParams.StatementParamIban = iban.replace(/^=/, "");
+      statementParams.StatementParamOwner = statementOwner;
+      statementParams.StatementParamCurrency = statementCurrency.replace(/^=/, "");;
+      statementParams.StatementParamInitialBalance = initialBalance;
+      statementParams.StatementParamFinalBalance = finalBalance;
+
+      return statementParams;
+   }
+
    /** Convert the transaction to the format to be imported */
    this.getStatementTransactions = function (transactions) {
       var transactionsToImport = [];
@@ -432,7 +532,7 @@ function PFCSVFormat1_CreditCard() {
             && transaction[this.colDate].length == 10)
             transactionsToImport.push(this.mapTransaction(transaction));
       }
-
+      transactionsToImport = transactionsToImport.reverse();
       return transactionsToImport;
    }
 
@@ -501,6 +601,34 @@ function PFCSVFormat5() {
       return false;
    }
 
+   this.getStatementParams = function (transactions) {
+      /**
+       * File params for this format are located in the first rows of the document:
+       * 1  Data dal:;="23.08.2023"
+       * 2  Data fino al:;="30.08.2023"
+       * 3  Tipo di registrazione:;="Tutti"
+       * 4  Conto:;="CH5809000000652501224"
+       * 5  Valuta:;="CHF"
+       * 6  Data;Tipo di movimento;Testo di avviso;Accredito in CHF;Addebito in CHF
+       * 7  ...
+       */
+      let statementParams = {};
+
+      let iban = transactions[3][1];
+      let statementOwner = "";
+      let statementCurrency = transactions[4][1];
+      let initialBalance = "";
+      let finalBalance = "";
+
+      statementParams.StatementParamIban = iban.replace(/^=/, "");
+      statementParams.StatementParamOwner = statementOwner;
+      statementParams.StatementParamCurrency = statementCurrency.replace(/^=/, "");;
+      statementParams.StatementParamInitialBalance = initialBalance;
+      statementParams.StatementParamFinalBalance = finalBalance;
+
+      return statementParams;
+   }
+
    /** Convert the transaction to the format to be imported */
    this.getStatementTransactions = function (transactions) {
       var transactionsToImport = [];
@@ -513,7 +641,7 @@ function PFCSVFormat5() {
          if (transaction[this.colDate] && transaction[this.colDate].match(/[0-9]{2}(\.)[0-9]{2}(\.)[0-9]{4}/g) && transaction[this.colDate].length == 10)
             transactionsToImport.push(this.mapTransaction(transaction));
       }
-
+      transactionsToImport = transactionsToImport.reverse();
       return transactionsToImport;
    }
 
@@ -596,6 +724,32 @@ function PFCSVFormat4() {
       return false;
    }
 
+   this.getStatementParams = function (transactions) {
+      /**
+       * File params for this format are located in the first three rows of the document:
+       * 1  Conto della carta:;0000 8003 3386 9363
+       * 2  Carta:;XXXX XXXX XXXX 6953 PostFinance Mastercard Value Design
+       * 3  Periodo contabile:;06.04.2022 - 05.05.2022
+       * 4  Data;Denominazione;Accredito in CHF;Addebito in CHF;Importo in CHF
+       * 5  2022-05-04;"ARTION *PRATIUNDICO      52163467544  XXX";;52.00;
+       */
+      let statementParams = {};
+
+      let iban = transactions[0][1];
+      let statementOwner = "";
+      let statementCurrency = ""; // recuperarla dalle intestazioni ?
+      let initialBalance = "";
+      let finalBalance = "";
+
+      statementParams.StatementParamIban = iban.replace(/^=/, "");
+      statementParams.StatementParamOwner = statementOwner;
+      statementParams.StatementParamCurrency = statementCurrency.replace(/^=/, "");;
+      statementParams.StatementParamInitialBalance = initialBalance;
+      statementParams.StatementParamFinalBalance = finalBalance;
+
+      return statementParams;
+   }
+
    /** Convert the transaction to the format to be imported */
    this.getStatementTransactions = function (transactions) {
       var transactionsToImport = [];
@@ -608,7 +762,7 @@ function PFCSVFormat4() {
          if (transaction[this.colDate].match(/[0-9]{2,4}(\-)[0-9]{2}(\-)[0-9]{2,4}/g) && transaction[this.colDate].length == 10)
             transactionsToImport.push(this.mapTransaction(transaction));
       }
-
+      transactionsToImport = transactionsToImport.reverse();
       return transactionsToImport;
    }
 
@@ -778,6 +932,27 @@ function PFCSVFormat3() {
       return false;
    }
 
+   this.getStatementParams = function (transactions) {
+      /**
+       * File params for this format are not present...
+       */
+      let statementParams = {};
+
+      let iban = "";
+      let statementOwner = "";
+      let statementCurrency = "";
+      let initialBalance = "";
+      let finalBalance = "";
+
+      statementParams.StatementParamIban = iban.replace(/^=/, "");
+      statementParams.StatementParamOwner = statementOwner;
+      statementParams.StatementParamCurrency = statementCurrency.replace(/^=/, "");;
+      statementParams.StatementParamInitialBalance = initialBalance;
+      statementParams.StatementParamFinalBalance = finalBalance;
+
+      return statementParams;
+   }
+
    /** Convert the transaction to the format to be imported */
    this.getStatementTransactions = function (transactions) {
       var transactionsToImport = [];
@@ -791,7 +966,7 @@ function PFCSVFormat3() {
             transaction[this.colDateValuta].match(/[0-9]{2,4}(\.|-)[0-9]{2}(\.|-)[0-9]{2,4}/g) && transaction[this.colDateValuta].length == 10)
             transactionsToImport.push(this.mapTransaction(transaction));
       }
-
+      transactionsToImport = transactionsToImport.reverse();
       return transactionsToImport;
    }
 
@@ -872,6 +1047,27 @@ function PFCSVFormat2() {
       return false;
    }
 
+   this.getStatementParams = function (transactions) {
+      /**
+       * File params for this format are not present...
+       */
+      let statementParams = {};
+
+      let iban = "";
+      let statementOwner = "";
+      let statementCurrency = "";
+      let initialBalance = "";
+      let finalBalance = "";
+
+      statementParams.StatementParamIban = iban.replace(/^=/, "");
+      statementParams.StatementParamOwner = statementOwner;
+      statementParams.StatementParamCurrency = statementCurrency.replace(/^=/, "");;
+      statementParams.StatementParamInitialBalance = initialBalance;
+      statementParams.StatementParamFinalBalance = finalBalance;
+
+      return statementParams;
+   }
+
    /** Convert the transaction to the format to be imported */
    this.getStatementTransactions = function (transactions) {
       var transactionsToImport = [];
@@ -885,7 +1081,7 @@ function PFCSVFormat2() {
             transaction[this.colDateValuta].match(/[0-9]+/g) && transaction[this.colDateValuta].length == 8)
             transactionsToImport.push(this.mapTransaction(transaction));
       }
-
+      transactionsToImport = transactionsToImport.reverse();
       return transactionsToImport;
    }
 
@@ -975,6 +1171,35 @@ function PFCSVFormat1() {
       return false;
    }
 
+   this.getStatementParams = function (transactions) {
+      /**
+       * File params for this format are located in the secont and third row of the document:
+       * 1  Tipo di registrazione:;Tutte le registrazioni
+       * 2  Conto :;CH5809000000652501224
+       * 3  Valuta del conto:;CHF
+       * 4  Data di contabilizzazione;Testo d'avviso;Accredito;Addebito;Valuta;Saldo;
+       * 5  ....
+       * 6  ....
+       */
+      let statementParams = {};
+
+      let iban = transactions[1][1];
+      if (iban)
+         iban = iban.replace(/^=/, "");
+      let statementOwner = "";
+      let statementCurrency = transactions[2][1];
+      let initialBalance = "";
+      let finalBalance = "";
+
+      statementParams.StatementParamIban = iban;
+      statementParams.StatementParamOwner = statementOwner;
+      statementParams.StatementParamCurrency = statementCurrency.replace(/^=/, "");;
+      statementParams.StatementParamInitialBalance = initialBalance;
+      statementParams.StatementParamFinalBalance = finalBalance;
+
+      return statementParams;
+   }
+
 
    /** Convert the transaction to the format to be imported */
    this.getStatementTransactions = function (transactions) {
@@ -988,6 +1213,7 @@ function PFCSVFormat1() {
          if (transaction[this.colDate].match(/[0-9\.]{3}/g) && transaction[this.colDateValuta].match(/[0-9\.]{3}/g))
             transactionsToImport.push(this.mapTransaction(transaction));
       }
+      transactionsToImport = transactionsToImport.reverse();
       return transactionsToImport;
    }
 
@@ -1089,6 +1315,29 @@ function PFCSVFormatSBU1() {
       return false;
    }
 
+   this.getStatementParams = function (transactions) {
+      /**
+       * File params for this format are not present...
+       */
+
+      let statementParams = {};
+
+      let iban = "";
+      let id = ""; // Sobstitute to the IBAN, we use this only if the IBAN is not present.
+      let statementOwner = "";
+      let statementCurrency = ""; // recuperarla dalle intestazioni ?
+      let initialBalance = "";
+      let finalBalance = "";
+
+      statementParams.StatementParamIban = iban.replace(/^=/, "");
+      statementParams.StatementParamOwner = statementOwner;
+      statementParams.StatementParamCurrency = statementCurrency.replace(/^=/, "");;
+      statementParams.StatementParamInitialBalance = initialBalance;
+      statementParams.StatementParamFinalBalance = finalBalance;
+
+      return statementParams;
+   }
+
 
    /** Convert the transaction to the format to be imported */
    this.getStatementTransactions = function (transactions) {
@@ -1102,6 +1351,7 @@ function PFCSVFormatSBU1() {
          if (transaction[this.colDate].match(/[0-9\.]{3}/g))
             transactionsToImport.push(this.mapTransaction(transaction));
       }
+      transactionsToImport = transactionsToImport.reverse();
       return transactionsToImport;
    }
 
