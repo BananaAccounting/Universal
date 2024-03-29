@@ -332,7 +332,8 @@ function exec(string) {
             'country': '',
             'phone': '',
             'email': '',
-            'web': ''
+            'web': '',
+            'lang':''
         };
          if (tableContacts) {
              let contactRow = tableContacts.findRowByValue("RowId", id);
@@ -352,6 +353,7 @@ function exec(string) {
                  customer_info.email = contactRow.value('EmailWork');
                  customer_info.phone = contactRow.value('PhoneWork');
                  customer_info.mobile = contactRow.value('PhoneMobile');
+                 customer_info.lang = contactRow.value('LanguageCode');
                  return customer_info;
              }
              let table = this.banDoc.table("Estimates");
@@ -372,7 +374,7 @@ function exec(string) {
          invoiceObj_documentInfo.decimals_amounts = 2;
          invoiceObj_documentInfo.description = invoiceTransaction["InvoiceDescription"] ? invoiceTransaction["InvoiceDescription"] : qsTr("Estimate ") + invoiceTransaction["InvoiceNumber" ];
          invoiceObj_documentInfo.doc_type = "";
-         invoiceObj_documentInfo.locale = "";
+         invoiceObj_documentInfo.locale = this.setInvoiceStructure_customerInfo(invoiceTransaction).lang;
          invoiceObj_documentInfo.number = invoiceTransaction["InvoiceNumber"];
          invoiceObj_documentInfo.origin_row = "";
          invoiceObj_documentInfo.origin_table = "";
