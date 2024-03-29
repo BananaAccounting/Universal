@@ -373,7 +373,7 @@ class formatInvs {
         invoiceObj_documentInfo.date = invoiceTransaction["InvoiceDate"];
         invoiceObj_documentInfo.decimals_amounts = 2;
         invoiceObj_documentInfo.description = invoiceTransaction["InvoiceDescription"] ? invoiceTransaction["InvoiceDescription"] : qsTr("Invoice ") + invoiceTransaction["InvoiceNumber"];
-        invoiceObj_documentInfo.doc_type = "";
+        invoiceObj_documentInfo.doc_type = "10";
         invoiceObj_documentInfo.locale = this.setInvoiceStructure_customerInfo(invoiceTransaction).lang;
         invoiceObj_documentInfo.number = invoiceTransaction["InvoiceNumber"];
         invoiceObj_documentInfo.origin_row = "";
