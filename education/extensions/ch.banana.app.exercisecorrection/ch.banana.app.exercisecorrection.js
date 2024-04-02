@@ -222,7 +222,7 @@ var PrintReport = class PrintReport {
 
     // Add the columns Score and MaxScore to the transactions if they don't exist
 
-    if (!this.banDoc1.table('Transactions').column('AutomaticScore') || !this.banDoc1.table('Transactions').column('MaxScore') || !this.banDoc1.table('Transactions').column('TeacherScore') || !this.banDoc1.table('Transactions').column('ScoreInfo')) {
+    if (!this.banDoc1.table('Transactions').column('CalculationScore') || !this.banDoc1.table('Transactions').column('MaxScore') || !this.banDoc1.table('Transactions').column('TeacherScore') || !this.banDoc1.table('Transactions').column('CalculationNotes')) {
 
       //table for the operations
       let dataUnitTransactions = {};
@@ -238,7 +238,7 @@ var PrintReport = class PrintReport {
       //columns
       let columns = [];
 
-      if (!this.banDoc1.table('Transactions').column('AutomaticScore')) {
+      if (!this.banDoc1.table('Transactions').column('CalculationScore')) {
         //column operation
         column = {};
         column.operation = {};
@@ -283,7 +283,7 @@ var PrintReport = class PrintReport {
         columns.push(column);
       }
 
-      if (!this.banDoc1.table('Transactions').column('ScoreInfo')) {
+      if (!this.banDoc1.table('Transactions').column('CalculationNotes')) {
         //column operation
         column = {};
         column.operation = {};
