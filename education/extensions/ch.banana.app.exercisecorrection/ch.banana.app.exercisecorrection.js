@@ -114,7 +114,7 @@ var PrintReport = class PrintReport {
           "amount": studenttransactions.row(i).value("Amount"),
           "automaticscore": 4,
           "maxscore": 4,
-          "scoreinfo": ""
+          "CalculationNotes": ""
         };
 
         k++;
@@ -168,12 +168,12 @@ var PrintReport = class PrintReport {
           if (studenttransactionsArray[i].accountdebit !== teachertransactionsArray[k].accountdebit) {
             bestscore[n] = studenttransactionsArray[i].automaticscore - 1;
             studenttransactionsArray[i].automaticscore = bestscore[n];
-            textscore[n].debit = "DebitAccount; ";
+            textscore[n].debit = "Debit Account; ";
           }
           if (studenttransactionsArray[i].accountcredit !== teachertransactionsArray[k].accountcredit) {
             bestscore[n] = studenttransactionsArray[i].automaticscore - 1;
             studenttransactionsArray[i].automaticscore = bestscore[n];
-            textscore[n].credit = "CreditAccount; ";
+            textscore[n].credit = "Credit Account; ";
           }
           if (studenttransactionsArray[i].amount !== teachertransactionsArray[k].amount) {
             bestscore[n] = studenttransactionsArray[i].automaticscore - 1;
@@ -244,10 +244,10 @@ var PrintReport = class PrintReport {
         column.operation = {};
         column.operation.name = 'add';
         //column parameters
-        column.nameXml = 'AutomaticScore';
+        column.nameXml = 'CalculationScore';
         column.width = '200';
-        column.description = 'Automatic Score';
-        column.header1 = 'Automatic Score';
+        column.description = 'Calculation Score';
+        column.header1 = 'Calculation Score';
         column.definition = { "type": "number", "decimals": '2' };
         column.operation = { "name": "add" };
         columns.push(column);
@@ -289,10 +289,10 @@ var PrintReport = class PrintReport {
         column.operation = {};
         column.operation.name = 'add';
         //column parameters
-        column.nameXml = 'ScoreInfo';
+        column.nameXml = 'CalculationNotes';
         column.width = '200';
-        column.description = 'Score Info';
-        column.header1 = 'Score Info';
+        column.description = 'Calculation Notes';
+        column.header1 = 'Calculation Notes';
         column.definition = { "type": "text" };
         column.operation = { "name": "add" };
         columns.push(column);
@@ -319,12 +319,12 @@ var PrintReport = class PrintReport {
       if (studenttransactionsArray[i].automaticscore === 4) {
         // green
         row.style = { "background-color": "#afffaf" };
-        row.fields["ScoreInfo"] = "";
+        row.fields["CalculationNotes"] = "";
       }
       else {
         // red
         row.style = { "background-color": "#ff8198" };
-        row.fields["ScoreInfo"] = "Wrong: ";
+        row.fields["CalculationNotes"] = "Wrong: ";
       }
 
 
@@ -334,10 +334,10 @@ var PrintReport = class PrintReport {
       row.fields["AccountDebit"] = studenttransactionsArray[i].accountdebit;
       row.fields["AccountCredit"] = studenttransactionsArray[i].accountcredit;
       row.fields["Amount"] = studenttransactionsArray[i].amount;
-      row.fields["AutomaticScore"] = Banana.Converter.toInternalNumberFormat(studenttransactionsArray[i].automaticscore);
+      row.fields["CalculationScore"] = Banana.Converter.toInternalNumberFormat(studenttransactionsArray[i].automaticscore);
       row.fields["MaxScore"] = Banana.Converter.toInternalNumberFormat(studenttransactionsArray[i].maxscore);
       row.fields["TeacherScore"] = Banana.Converter.toInternalNumberFormat(studenttransactionsArray[i].automaticscore);
-      row.fields["ScoreInfo"] = row.fields["ScoreInfo"] + studenttransactionsArray[i].scoreinfo;
+      row.fields["CalculationNotes"] = row.fields["CalculationNotes"] + studenttransactionsArray[i].scoreinfo;
 
       rows.push(row);
 
@@ -429,7 +429,7 @@ var PrintReport = class PrintReport {
     //row fields
     row.fields = {};
     row.fields["Description"] = "Total score: ";
-    row.fields["AutomaticScore"] = Banana.Converter.toInternalNumberFormat(score);
+    row.fields["CalculationScore"] = Banana.Converter.toInternalNumberFormat(score);
     row.fields["MaxScore"] = Banana.Converter.toInternalNumberFormat(maxScore);
     rows.push(row);
 
