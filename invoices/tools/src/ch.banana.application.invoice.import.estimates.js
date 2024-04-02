@@ -1,6 +1,6 @@
 // @id = ch.banana.application.invoice.tools
 // @api = 1.0
-// @pubdate = 2023-03-20
+// @pubdate = 2024-04-02
 // @publisher = Banana.ch SA
 // @description = Import estimates
 // @description.de = Offerten importieren

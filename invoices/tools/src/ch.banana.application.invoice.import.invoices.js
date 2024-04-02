@@ -1,6 +1,6 @@
 // @id = ch.banana.application.invoice.tools
 // @api = 1.0
-// @pubdate = 2022-10-24
+// @pubdate = 2024-04-02
 // @publisher = Banana.ch SA
 // @description = Import invoices
 // @description.de = Rechnungen importieren
