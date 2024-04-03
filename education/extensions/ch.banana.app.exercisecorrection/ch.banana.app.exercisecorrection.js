@@ -302,7 +302,11 @@ var PrintReport = class PrintReport {
       jsonDocColumns.document.dataUnits.push(dataUnitTransactions);
       documentChange["data"].push(jsonDocColumns);
 
+      return documentChange;
+
     }
+
+    else {
 
     for (let i = 0; i < studenttransactionsArray.length; i++) {
       // modify row to add the score and the maxscore to the transactions
@@ -430,6 +434,7 @@ var PrintReport = class PrintReport {
     row.fields = {};
     row.fields["Description"] = "Total score: ";
     row.fields["CalculationScore"] = Banana.Converter.toInternalNumberFormat(score);
+    row.fields["TeacherScore"] = Banana.Converter.toInternalNumberFormat(score);
     row.fields["MaxScore"] = Banana.Converter.toInternalNumberFormat(maxScore);
     rows.push(row);
 
@@ -448,6 +453,7 @@ var PrintReport = class PrintReport {
     return documentChange;
 
   }
+}
 
   //Functions to write the ac2 file
 
