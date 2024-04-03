@@ -114,7 +114,7 @@ function exec(string, isTest) {
        transactionsToImport = transactionsToImport.reverse();
  
        // Add header and return
-       var header = [["Date", "DateValue", "Doc", "ExternalReference", "Description", "Income", "Expenses"]];
+       var header = [["Date", "DateValue", "Doc", "ExternalReference", "Description", "Notes", "Income", "Expenses"]];
        return header.concat(transactionsToImport);
     }
  
@@ -123,9 +123,10 @@ function exec(string, isTest) {
  
        mappedLine.push(Banana.Converter.toInternalDateFormat(transaction["Data transazione"], "dd/mm/yyyy"));
        mappedLine.push(Banana.Converter.toInternalDateFormat("", "dd.mm.yyyy"));
-       mappedLine.push(transaction["Codice transazione"]);
        mappedLine.push("");
-       mappedLine.push(transaction["Tipo transazione"] + " - " + transaction["Riferimento"]);
+       mappedLine.push(transaction["Codice transazione"]);
+       mappedLine.push(transaction["Riferimento"].replace(/\s+/g, ' '));
+       mappedLine.push(transaction["Tipo transazione"]);
        mappedLine.push(Banana.Converter.toInternalNumberFormat(transaction["Importo transazione in entrata"], '.'));
        mappedLine.push(Banana.Converter.toInternalNumberFormat(transaction["Importo transazione in uscita"], '.'));
     
