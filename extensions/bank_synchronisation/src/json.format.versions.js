@@ -7,7 +7,7 @@
  * */
 let fileStatementData = {};
 
-fileStatementData.data = [
+fileStatementData.TransactionsList = [
     {                    // first transaction
         "FileName": "C:/ P / Universal Images / Universal / extensions / bank_synchronisation / test / testcases /1284_test_Bank1 - B.xml",
         "FileType": "CAMT.053",

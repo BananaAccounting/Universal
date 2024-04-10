@@ -40,82 +40,82 @@ var SyncPostFinanceData = class SyncPostFinanceData {
       // Format SBU 1
       var formatSBU1 = new PFCSVFormatSBU1();
       if (formatSBU1.match(transactions)) {
-         let fileStatementData = [];
+         let transactionsList = [];
          let statementParams = {};
          statementParams = formatSBU1.getStatementParams(transactions);
-         fileStatementData = formatSBU1.getStatementTransactions(transactions, fileParams, statementParams);
-         return fileStatementData;
+         transactionsList = formatSBU1.getStatementTransactions(transactions, fileParams, statementParams);
+         return transactionsList;
       }
 
       // Credit Card format 1
       var format1_CreditCard = new PFCSVFormat1_CreditCard();
       if (format1_CreditCard.match(transactions)) {
-         let fileStatementData = [];
+         let transactionsList = [];
          let statementParams = {};
          statementParams = format1_CreditCard.getStatementParams(transactions);
-         fileStatementData = format1_CreditCard.getStatementTransactions(transactions, fileParams, statementParams);
-         return fileStatementData;
+         transactionsList = format1_CreditCard.getStatementTransactions(transactions, fileParams, statementParams);
+         return transactionsList;
       }
 
       // Format 1
       var format1 = new PFCSVFormat1(fileParams);
       if (format1.match(transactions)) {
-         let fileStatementData = [];
+         let transactionsList = [];
          let statementParams = {};
          statementParams = format1.getStatementParams(transactions);
-         fileStatementData = format1.getStatementTransactions(transactions, fileParams, statementParams);
-         return fileStatementData;
+         transactionsList = format1.getStatementTransactions(transactions, fileParams, statementParams);
+         return transactionsList;
       }
 
       // Format 2
       var format2 = new PFCSVFormat2();
       if (format2.match(transactions)) {
-         let fileStatementData = [];
+         let transactionsList = [];
          let statementParams = {};
          statementParams = format2.getStatementParams(transactions);
-         fileStatementData = format2.getStatementTransactions(transactions, fileParams, statementParams);
-         return fileStatementData;
+         transactionsList = format2.getStatementTransactions(transactions, fileParams, statementParams);
+         return transactionsList;
       }
 
       // Format 3
       var format3 = new PFCSVFormat3();
       if (format3.match(transactions)) {
-         let fileStatementData = [];
+         let transactionsList = [];
          let statementParams = {};
          statementParams = format3.getStatementParams(transactions);
-         fileStatementData = format3.getStatementTransactions(transactions, fileParams, statementParams);
-         return fileStatementData;
+         transactionsList = format3.getStatementTransactions(transactions, fileParams, statementParams);
+         return transactionsList;
       }
 
       // Format 4
       var format4 = new PFCSVFormat4();
       if (format4.match(transactions)) {
-         let fileStatementData = [];
+         let transactionsList = [];
          let statementParams = {};
          statementParams = format4.getStatementParams(transactions);
-         fileStatementData = format4.getStatementTransactions(transactions, fileParams, statementParams);
-         return fileStatementData;
+         transactionsList = format4.getStatementTransactions(transactions, fileParams, statementParams);
+         return transactionsList;
       }
 
       // Format 5
       var format5 = new PFCSVFormat5();
       if (format5.match(transactions)) {
-         let fileStatementData = [];
+         let transactionsList = [];
          let statementParams = {};
          statementParams = format5.getStatementParams(transactions);
-         fileStatementData = format5.getStatementTransactions(transactions, fileParams, statementParams);
-         return fileStatementData;
+         transactionsList = format5.getStatementTransactions(transactions, fileParams, statementParams);
+         return transactionsList;
       }
 
       // Format 6, works with translated column headers.
       var format6 = new PFCSVFormat6();
       let transactionsData = format6.getFormattedData(transactions, importUtilities);
       if (format6.match(transactionsData)) {
-         let fileStatementData = [];
+         let transactionsList = [];
          let statementParams = {};
          statementParams = format6.getStatementParams(transactions); // here we must work with the original array
-         fileStatementData = format6.getStatementTransactions(transactionsData, fileParams, statementParams);
-         return fileStatementData;
+         transactionsList = format6.getStatementTransactions(transactionsData, fileParams, statementParams);
+         return transactionsList;
       }
 
       return [];

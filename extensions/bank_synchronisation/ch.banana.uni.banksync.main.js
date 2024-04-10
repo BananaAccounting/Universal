@@ -149,7 +149,7 @@ var CSV_JSONConverter = class CSV_JSONConverter {
     }
 
     setData(jsonDoc, fileParams) {
-        jsonDoc.data = [];
+        jsonDoc.TransactionsList = [];
         let fileStatementData = [];
         /**
         * "eval()" method could execute any javascript code, is important to not
@@ -164,7 +164,7 @@ var CSV_JSONConverter = class CSV_JSONConverter {
                 Banana.console.debug("csv format not recognised: " + this.fileName);
         }
 
-        jsonDoc.data = fileStatementData;
+        jsonDoc.TransactionsList = fileStatementData;
     }
 }
 
@@ -359,7 +359,7 @@ var ISO20022_Swiss_JSONConverter = class ISO20022_Swiss_JSONConverter {
      */
     setData(statementsNode, jsonDoc, fileParams) {
         let statementTransactionsData = [];
-        jsonDoc.data = [];
+        jsonDoc.TransactionsList = [];
         if (statementsNode.length >= 0) {
             /** We have to get the data for each statement, wich could have a different account (IBAN) */
             for (let i = 0; i < statementsNode.length; i++) {
@@ -368,7 +368,7 @@ var ISO20022_Swiss_JSONConverter = class ISO20022_Swiss_JSONConverter {
                 statementTransactionsData = statementTransactionsData.concat(this.readStatementEntries(statementsNode[i], fileParams, statementParams));
             }
         }
-        jsonDoc.data = statementTransactionsData;
+        jsonDoc.TransactionsList = statementTransactionsData;
     }
 
     /**
