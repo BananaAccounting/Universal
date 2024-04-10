@@ -110,7 +110,7 @@ function processCsvFile(filePath, fileName, fileContent) {
 
 var CSV_JSONConverter = class CSV_JSONConverter {
     constructor(fileName, filePath, fileContent) {
-        this.fileName = fileName
+        this.fileName = fileName;
         this.filePath = filePath;
         this.fileContent = fileContent;
         let elements = fileName.split("_");
@@ -129,24 +129,28 @@ var CSV_JSONConverter = class CSV_JSONConverter {
 
     convertToJson_fromCsv() {
         let jsonDoc = {};
-        this.setFiledata(jsonDoc);
-        this.setStatementData(jsonDoc);
+        let fileParams = {};
+        fileParams = readFileParams();
+        this.setData(jsonDoc, fileParams);
         return jsonDoc;
     }
 
-    setFiledata(jsonDoc) {
+    readFileParams() {
         let name = this.filePath;
         let type = CSV_FILE_SUFFIX;
 
-        jsonDoc.FileName = name;
-        jsonDoc.FileType = type;
-        jsonDoc.FileCreationDate = ""; //Not available for csv.
+        let fileParams = {};
+
+        fileParams.FileName = name;
+        fileParams.FileType = type;
+        fileParams.FileCreationDate = ""; //Not available for csv.
+
+        return fileParams;
     }
 
-    setStatementData(jsonDoc) {
-
-        let statementData = [];
-        let fileStatementData = {};
+    setData(jsonDoc, fileParams) {
+        jsonDoc.data = [];
+        let fileStatementData = [];
         /**
         * "eval()" method could execute any javascript code, is important to not
         * use this method in situations where the string comes from an uncontrolled source.
@@ -155,13 +159,12 @@ var CSV_JSONConverter = class CSV_JSONConverter {
         */
         let scriptSyncUtilities = eval(`new ${this.banksList[this.filePrefix].referenceClass}`);
         if (typeof scriptSyncUtilities.getStatementData === 'function') {//check if class intance is valid.
-            fileStatementData = scriptSyncUtilities.getStatementData(this.fileContent);
-            if (!fileStatementData)
+            fileStatementData = scriptSyncUtilities.getStatementData(this.fileContent, fileParams);
+            if (fileStatementData.length < 0)
                 Banana.console.debug("csv format not recognised: " + this.fileName);
         }
 
-        statementData.push(fileStatementData); // with the csv we have just one statement for each file.
-        jsonDoc.FileStatementData = statementData;
+        jsonDoc.data = fileStatementData;
     }
 }
 
@@ -229,24 +232,27 @@ var ISO20022_Swiss_JSONConverter = class ISO20022_Swiss_JSONConverter {
 
     convertToJson_fromCamt052(docNode, filePath) {
         let jsonDoc = {};
-        this.setFileData(jsonDoc, docNode, filePath);
+        let fileParams = {};
+        fileParams = readFileParams(docNode, filePath);
         let statementsNode = this.getStatementsNode_camt052(docNode);
-        this.setStatementData(statementsNode, jsonDoc);
+        this.setData(statementsNode, jsonDoc, fileParams);
         return jsonDoc;
     }
     convertToJson_fromCamt053(docNode, filePath) {
         let jsonDoc = {};
-        this.setFileData(jsonDoc, docNode, filePath);
+        let fileParams = {};
+        fileParams = readFileParams(docNode, filePath);
         let statementsNode = this.getStatementsNode_camt053(docNode);
-        this.setStatementData(statementsNode, jsonDoc);
+        this.setData(statementsNode, jsonDoc, fileParams);
         return jsonDoc;
 
     }
     convertToJson_fromCamt054(docNode, filePath) {
         let jsonDoc = {};
-        this.setFileData(jsonDoc, docNode, filePath);
+        let fileParams = {};
+        fileParams = readFileParams(docNode, filePath);
         let statementsNode = this.getStatementsNode_camt054(docNode);
-        this.setStatementData(statementsNode, jsonDoc);
+        this.setData(statementsNode, jsonDoc, fileParams);
         return jsonDoc;
     }
 
@@ -288,7 +294,7 @@ var ISO20022_Swiss_JSONConverter = class ISO20022_Swiss_JSONConverter {
      * @param {*} jsonDoc 
      * @param {*} filePath 
      */
-    setFileData(jsonDoc, docNode, filePath) {
+    readFileParams(docNode, filePath) {
         /**
          * The data we want to save:
          * - File Name (Path)
@@ -296,13 +302,15 @@ var ISO20022_Swiss_JSONConverter = class ISO20022_Swiss_JSONConverter {
          * - Creation Date
          */
 
+        let fileParams = {};
+
         let name = filePath;
         let type = this.camtType
         let creationDate = this.getDocumentCreationDate(docNode);
 
-        jsonDoc.FileName = name;
-        jsonDoc.FileType = type;
-        jsonDoc.FileCreationDate = creationDate;
+        fileParams.FileName = name;
+        fileParams.FileType = type;
+        fileParams.FileCreationDate = creationDate;
     }
 
     getDocumentCreationDate(docNode) {
@@ -316,7 +324,7 @@ var ISO20022_Swiss_JSONConverter = class ISO20022_Swiss_JSONConverter {
      * Saves the statement parameters into a json object.
      * @param {*} fileContent 
      */
-    getXmlParams(statementNode) {
+    readStatementParams(statementNode) {
         /**
          * The data we want to save:
          * - IBAN
@@ -324,7 +332,8 @@ var ISO20022_Swiss_JSONConverter = class ISO20022_Swiss_JSONConverter {
          * - Initial balance
          * - Final balance
          */
-        let StatementParams = {};
+
+        let statementParams = {};
 
         let iban = getStatementIban(statementNode);
         let id = getStatementId(statementNode); // Sobstitute to the IBAN, we use this only if the IBAN is not present.
@@ -333,113 +342,45 @@ var ISO20022_Swiss_JSONConverter = class ISO20022_Swiss_JSONConverter {
         let initialBalance = getStatementBeginBalance(statementNode);
         let finalBalance = getStatementEndBalance(statementNode);
 
-        StatementParams.StatementParamIban = iban == "" ? id : iban
-        StatementParams.StatementParamOwner = statementOwner;
-        StatementParams.StatementParamCurrency = statementCurrency;
-        StatementParams.StatementParamInitialBalance = initialBalance;
-        StatementParams.StatementParamFinalBalance = finalBalance;
+        statementParams.StatementParamIban = iban == "" ? id : iban
+        statementParams.StatementParamOwner = statementOwner;
+        statementParams.StatementParamCurrency = statementCurrency;
+        statementParams.StatementParamInitialBalance = initialBalance;
+        statementParams.StatementParamFinalBalance = finalBalance;
 
-        return StatementParams;
+        return statementParams;
+
     }
 
     /**
-     * read the transactions in the file and returns an array of objects.
-     * @param {*} fileContent 
-     * @returns 
+     * Read the transactions in the file and returns an array of objects.
+     * works with the V2 of the json structure, sobstitutes "setStatementData()".
+     * For each transaction we set also the fileParams and the statementParams.
      */
-    setStatementData(statementsNode, jsonDoc) {
-        /**
-         * ********* NOTES ***************
-         * Json structure: (Version 1.0, 02.02.2024).
-         * Fields were named in a manner to follow the notation used for xml column names in banana and to keep
-         * the notation the same throughout the JSON.
-         * {
-         *   "FileName": C:/P/Universal Images/Universal/extensions/bank_synchronisation/test/testcases/1284_test_Bank1 - B.xml,
-         *   "FileType": "CAMT.053"
-         *   "FileCreationDate": 2024-02-02
-         *   "FileStatementsData":[       // each element correspond to a statement (statement Node)
-         *      {                   // first statement data ...
-         *         "StatementParams":{      // params of the statement like iban, inital balance, final balance
-         *                "StatementParamIban": "CHXXXXXXXXXXXXXXX",
-         *                "StatementParamOwner": "Happy Deer Group"
-         *                "StatementParamCurrency": "CHF"
-         *                "StatementParamInitialBalance": "1235.40",
-         *                "StatementParamFinalBalance"  : "2100.20",
-         *           },
-         *          StatementTransactions: [
-         *              {                    // first transaction
-         *                 "Date": "2024-04-21",
-         *                 "DateValue": "2024-04-21",
-         *                 "Description": "Transfert",
-         *                 "Income": "77.66",
-         *                 "Expenses": "",
-         *                 "ExternalReference": "15324748436",
-         *                 "ContraAccount": "",
-         *                 "Cc1": "",
-         *                 "Cc2": "",
-         *                 "Cc3": "",
-         *                 "IsDetail": ""
-         *              },
-         *              {                  // second transaction
-         *                 "Date": "2024-04-22",
-         *                 "DateValue": "2023-04-22",
-         *                 "Description": "Payment",
-         *                 "Income": "",
-         *                 "Expenses": "34.25",
-         *                 "ExternalReference": "19257246225",
-         *                 "ContraAccount": "",
-         *                 "Cc1": "",
-         *                 "Cc2": "",
-         *                 "Cc3": "",
-         *                 "IsDetail": ""
-         *              }
-         *          ]
-         *      },
-         *      {                  // second statement data ...
-         *         "StatementParams":{ 
-         *                "StatementParamIban": "CH1111111111111111",
-         *                "StatementParamOwner": "Sad Deer Group"
-         *                "StatementParamCurrency": "EUR"
-         *                "StatementParamInitialBalance": "4500.00",
-         *                "StatementParamFinalBalance"  : "6200.20",
-         *           },
-         *          StatementTransactions: [
-         *              {
-         *                 "Date": "2024-05-19",
-         *                 "DateValue": "2024-05-19",
-         *                 "Description": "Payment",
-         *                 "Income": "12.44",
-         *                 "Expenses": "",
-         *                 "ExternalReference": "15324748436",
-         *                 "ContraAccount": "",
-         *                 "Cc1": "",
-         *                 "Cc2": "",
-         *                 "Cc3": "",
-         *                 "IsDetail": ""
-         *              },
-         *              {
-         *                 "Date": "2023-04-22",
-         *                 "DateValue": "2023-04-22",
-         *                 "Description": "Transfer",
-         *                 "Income": "",
-         *                 "Expenses": "34.25",
-         *                 "ExternalReference": "19257246225",
-         *                 "ContraAccount": "",
-         *                 "Cc1": "",
-         *                 "Cc2": "",
-         *                 "Cc3": "",
-         *                 "IsDetail": ""
-         *              },
-         *                  // other transactions
-         *          ]
-         *      },
-         *          // other statemens ....
-         *   ]
-         * }
-         */
-        let statementsData = [];
+    setData(statementsNode, jsonDoc, fileParams) {
+        let statementTransactionsData = [];
+        jsonDoc.data = [];
         if (statementsNode.length >= 0) {
             /** We have to get the data for each statement, wich could have a different account (IBAN) */
+            for (let i = 0; i < statementsNode.length; i++) {
+                let statementParams = {};
+                statementParams = this.readStatementParams(statementsNode[i]);
+                statementTransactionsData = statementTransactionsData.concat(this.readStatementEntries(statementsNode[i], fileParams, statementParams));
+            }
+        }
+        jsonDoc.data = statementTransactionsData;
+    }
+
+    /**
+     * Read the transactions in the file and returns an array of objects.
+     * works with the V1 of the json structure.
+     * @param {*} fileContent
+     * @returns 
+     */
+    /** 
+    setStatementData(statementsNode, jsonDoc) {
+        let statementsData = [];
+        if (statementsNode.length >= 0) {
             for (let i = 0; i < statementsNode.length; i++) {
                 let fileStatementData = {};
                 let statementTransactions = [];
@@ -455,22 +396,22 @@ var ISO20022_Swiss_JSONConverter = class ISO20022_Swiss_JSONConverter {
             }
         }
         jsonDoc.FileStatementData = statementsData;
-    }
+    }*/
 
-    readStatementEntries(statementNode) {
+    readStatementEntries(statementNode, fileParams, statementParams) {
         if (!statementNode)
             return;
 
         let transactions = [];
         let entryNode = statementNode.firstChildElement('Ntry');
         while (entryNode) {
-            transactions = transactions.concat(this.readStatementEntry(entryNode));
+            transactions.push(this.readStatementEntry(entryNode, fileParams, statementParams));
             entryNode = entryNode.nextSiblingElement('Ntry'); // next account movement
         }
         return transactions;
     }
 
-    readStatementEntry(entryNode) {
+    readStatementEntry(entryNode, fileParams, statementParams) {
         let transaction = null;
         let transactions = [];
 
@@ -497,14 +438,22 @@ var ISO20022_Swiss_JSONConverter = class ISO20022_Swiss_JSONConverter {
                 if (txDtlsCount > 1) {
                     // Insert counterpart transaction
                     transaction = {
-                        'Date': entryBookingDate,
-                        'DateValue': entryValutaDate,
-                        'DocInvoice': '',
-                        'Description': joinNotEmpty([entryDescription, entryDetailsBatchMsgId], " / "),
-                        'Income': entryIsCredit ? entryAmount : '',
-                        'Expenses': entryIsCredit ? '' : entryAmount,
-                        'ExternalReference': entryExternalReference,
-                        'IsDetail': 'S'
+                        'FileName': fileParams.FileName,
+                        'FileType': fileParams.FileType,
+                        'FileCreationDate': fileParams.FileCreationDate,
+                        'StatementParamIban': statementParams.StatementParamIban,
+                        'StatementParamOwner': statementParams.StatementParamOwner,
+                        'StatementParamCurrency': statementParams.StatementParamCurrency,
+                        'StatementParamInitialBalance': statementParams.StatementParamInitialBalance,
+                        'StatementParamFinalBalance': statementParams.StatementParamFinalBalance,
+                        'TransactionDate': entryBookingDate,
+                        'TransactionDateValue': entryValutaDate,
+                        'TransactionDocInvoice': '',
+                        'TransactionDescription': joinNotEmpty([entryDescription, entryDetailsBatchMsgId], " / "),
+                        'TransactionIncome': entryIsCredit ? entryAmount : '',
+                        'TransactionExpenses': entryIsCredit ? '' : entryAmount,
+                        'TransactionExternalReference': entryExternalReference,
+                        'TransactionIsDetail': 'S'
                     };
                     transactions.push(transaction);
                 }
@@ -534,18 +483,26 @@ var ISO20022_Swiss_JSONConverter = class ISO20022_Swiss_JSONConverter {
                         }
 
                         transaction = {
-                            'Date': entryBookingDate,
-                            'DateValue': entryValutaDate,
+                            'FileName': fileParams.FileName,
+                            'FileType': fileParams.FileType,
+                            'FileCreationDate': fileParams.FileCreationDate,
+                            'StatementParamIban': statementParams.StatementParamIban,
+                            'StatementParamOwner': statementParams.StatementParamOwner,
+                            'StatementParamCurrency': statementParams.StatementParamCurrency,
+                            'StatementParamInitialBalance': statementParams.StatementParamInitialBalance,
+                            'StatementParamFinalBalance': statementParams.StatementParamFinalBalance,
+                            'TransactionDate': entryBookingDate,
+                            'TransactionDateValue': entryValutaDate,
                             //'DocInvoice': invoiceNumber,
-                            'Description': detailDescription,
-                            'Income': deatailsIsCredit ? deatailAmount : '',
-                            'Expenses': deatailsIsCredit ? '' : deatailAmount,
-                            'ExternalReference': detailExternalReference,
-                            'ContraAccount': '',
-                            'Cc1': '',
-                            'Cc2': '',
-                            'Cc3': '',
-                            'IsDetail': txDtlsCount > 1 ? 'D' : ''
+                            'TransactionDescription': detailDescription,
+                            'TransactionIncome': deatailsIsCredit ? deatailAmount : '',
+                            'TransactionExpenses': deatailsIsCredit ? '' : deatailAmount,
+                            'TransactionExternalReference': detailExternalReference,
+                            'TransactionContraAccount': '',
+                            'TransactionCc1': '',
+                            'TransactionCc2': '',
+                            'TransactionCc3': '',
+                            'TransactionIsDetail': txDtlsCount > 1 ? 'D' : ''
                         };
 
                         /*if (this.params.customer_no && this.params.customer_no.extract) { // Set customer number
@@ -572,18 +529,26 @@ var ISO20022_Swiss_JSONConverter = class ISO20022_Swiss_JSONConverter {
                     }
                 } else { // No entry text details elements
                     transaction = {
-                        'Date': entryBookingDate,
-                        'DateValue': entryValutaDate,
-                        'DocInvoice': '',
-                        'Description': joinNotEmpty([entryDescription, entryDetailsBatchMsgId], " / "),
-                        'Income': entryIsCredit ? entryAmount : '',
-                        'Expenses': entryIsCredit ? '' : entryAmount,
-                        'ExternalReference': entryExternalReference,
-                        'ContraAccount': '',
-                        'Cc1': '',
-                        'Cc2': '',
-                        'Cc3': '',
-                        'IsDetail': ''
+                        'FileName': fileParams.FileName,
+                        'FileType': fileParams.FileType,
+                        'FileCreationDate': fileParams.FileCreationDate,
+                        'StatementParamIban': statementParams.StatementParamIban,
+                        'StatementParamOwner': statementParams.StatementParamOwner,
+                        'StatementParamCurrency': statementParams.StatementParamCurrency,
+                        'StatementParamInitialBalance': statementParams.StatementParamInitialBalance,
+                        'StatementParamFinalBalance': statementParams.StatementParamFinalBalance,
+                        'TransactionDate': entryBookingDate,
+                        'TransactionDateValue': entryValutaDate,
+                        'TransactionDocInvoice': '',
+                        'TransactionDescription': joinNotEmpty([entryDescription, entryDetailsBatchMsgId], " / "),
+                        'TransactionIncome': entryIsCredit ? entryAmount : '',
+                        'TransactionExpenses': entryIsCredit ? '' : entryAmount,
+                        'TransactionExternalReference': entryExternalReference,
+                        'TransactionContraAccount': '',
+                        'TransactionCc1': '',
+                        'TransactionCc2': '',
+                        'TransactionCc3': '',
+                        'TransactionIsDetail': ''
                     };
                     transactions.push(transaction);
 
@@ -594,18 +559,26 @@ var ISO20022_Swiss_JSONConverter = class ISO20022_Swiss_JSONConverter {
 
         } else { // No entry details
             transaction = {
-                'Date': entryBookingDate,
-                'DateValue': entryValutaDate,
-                'DocInvoice': '',
-                'Description': entryDescription,
-                'Income': entryIsCredit ? entryAmount : '',
-                'Expenses': entryIsCredit ? '' : entryAmount,
-                'ExternalReference': entryExternalReference,
-                'ContraAccount': '',
-                'Cc1': '',
-                'Cc2': '',
-                'Cc3': '',
-                'IsDetail': ''
+                'FileName': fileParams.FileName,
+                'FileType': fileParams.FileType,
+                'FileCreationDate': fileParams.FileCreationDate,
+                'StatementParamIban': statementParams.StatementParamIban,
+                'StatementParamOwner': statementParams.StatementParamOwner,
+                'StatementParamCurrency': statementParams.StatementParamCurrency,
+                'StatementParamInitialBalance': statementParams.StatementParamInitialBalance,
+                'StatementParamFinalBalance': statementParams.StatementParamFinalBalance,
+                'TransactionDate': entryBookingDate,
+                'TransactionDateValue': entryValutaDate,
+                'TransactionDocInvoice': '',
+                'TransactionDescription': entryDescription,
+                'TransactionIncome': entryIsCredit ? entryAmount : '',
+                'TransactionExpenses': entryIsCredit ? '' : entryAmount,
+                'TransactionExternalReference': entryExternalReference,
+                'TransactionContraAccount': '',
+                'TransactionCc1': '',
+                'TransactionCc2': '',
+                'TransactionCc3': '',
+                'TransactionIsDetail': ''
             };
             transactions.push(transaction);
 

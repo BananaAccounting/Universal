@@ -28,7 +28,7 @@ var SyncPostFinanceData = class SyncPostFinanceData {
    /**
     * This method returns an object containing the statement data ( statement params + statement transactions)
     */
-   getStatementData(fileContent) {
+   getStatementData(fileContent, fileParams) {
 
       if (!fileContent) return "";
 
@@ -40,91 +40,70 @@ var SyncPostFinanceData = class SyncPostFinanceData {
       // Format SBU 1
       var formatSBU1 = new PFCSVFormatSBU1();
       if (formatSBU1.match(transactions)) {
-         let fileStatementData = {};
-         let statementTransactions = [];
+         let fileStatementData = [];
          let statementParams = {};
          statementParams = formatSBU1.getStatementParams(transactions);
-         statementTransactions = formatSBU1.getStatementTransactions(transactions);
-         fileStatementData.StatementParams = statementParams;
-         fileStatementData.StatementTransactions = statementTransactions;
+         fileStatementData = formatSBU1.getStatementTransactions(transactions, fileParams, statementParams);
          return fileStatementData;
       }
 
       // Credit Card format 1
       var format1_CreditCard = new PFCSVFormat1_CreditCard();
       if (format1_CreditCard.match(transactions)) {
-         let fileStatementData = {};
-         let statementTransactions = [];
+         let fileStatementData = [];
          let statementParams = {};
          statementParams = format1_CreditCard.getStatementParams(transactions);
-         statementTransactions = format1_CreditCard.getStatementTransactions(transactions);
-         fileStatementData.StatementParams = statementParams;
-         fileStatementData.StatementTransactions = statementTransactions;
+         fileStatementData = format1_CreditCard.getStatementTransactions(transactions, fileParams, statementParams);
          return fileStatementData;
       }
 
       // Format 1
-      var format1 = new PFCSVFormat1();
+      var format1 = new PFCSVFormat1(fileParams);
       if (format1.match(transactions)) {
-         let fileStatementData = {};
-         let statementTransactions = [];
+         let fileStatementData = [];
          let statementParams = {};
          statementParams = format1.getStatementParams(transactions);
-         statementTransactions = format1.getStatementTransactions(transactions);
-         fileStatementData.StatementParams = statementParams;
-         fileStatementData.StatementTransactions = statementTransactions;
+         fileStatementData = format1.getStatementTransactions(transactions, fileParams, statementParams);
          return fileStatementData;
       }
 
       // Format 2
       var format2 = new PFCSVFormat2();
       if (format2.match(transactions)) {
-         let fileStatementData = {};
-         let statementTransactions = [];
+         let fileStatementData = [];
          let statementParams = {};
          statementParams = format2.getStatementParams(transactions);
-         statementTransactions = format2.getStatementTransactions(transactions);
-         fileStatementData.StatementParams = statementParams;
-         fileStatementData.StatementTransactions = statementTransactions;
+         fileStatementData = format2.getStatementTransactions(transactions, fileParams, statementParams);
          return fileStatementData;
       }
 
       // Format 3
       var format3 = new PFCSVFormat3();
       if (format3.match(transactions)) {
-         let fileStatementData = {};
-         let statementTransactions = [];
+         let fileStatementData = [];
          let statementParams = {};
          statementParams = format3.getStatementParams(transactions);
-         statementTransactions = format3.getStatementTransactions(transactions);
-         fileStatementData.StatementParams = statementParams;
-         fileStatementData.StatementTransactions = statementTransactions;
+         fileStatementData = format3.getStatementTransactions(transactions, fileParams, statementParams);
          return fileStatementData;
       }
 
       // Format 4
       var format4 = new PFCSVFormat4();
       if (format4.match(transactions)) {
-         let fileStatementData = {};
-         let statementTransactions = [];
+         let fileStatementData = [];
          let statementParams = {};
          statementParams = format4.getStatementParams(transactions);
-         statementTransactions = format4.getStatementTransactions(transactions);
-         fileStatementData.StatementParams = statementParams;
-         fileStatementData.StatementTransactions = statementTransactions;
+         fileStatementData = format4.getStatementTransactions(transactions, fileParams, statementParams);
          return fileStatementData;
       }
 
       // Format 5
       var format5 = new PFCSVFormat5();
       if (format5.match(transactions)) {
-         let fileStatementData = {};
-         let statementTransactions = [];
+         let fileStatementData = [];
          let statementParams = {};
          statementParams = format5.getStatementParams(transactions);
-         statementTransactions = format5.getStatementTransactions(transactions);
-         fileStatementData.StatementParams = statementParams;
-         fileStatementData.StatementTransactions = statementTransactions;
+         fileStatementData = format5.getStatementTransactions(transactions, fileParams, statementParams);
          return fileStatementData;
       }
 
@@ -132,13 +111,10 @@ var SyncPostFinanceData = class SyncPostFinanceData {
       var format6 = new PFCSVFormat6();
       let transactionsData = format6.getFormattedData(transactions, importUtilities);
       if (format6.match(transactionsData)) {
-         let fileStatementData = {};
-         let statementTransactions = [];
+         let fileStatementData = [];
          let statementParams = {};
          statementParams = format6.getStatementParams(transactions); // here we must work with the original array
-         statementTransactions = format6.getStatementTransactions(transactionsData);
-         fileStatementData.StatementParams = statementParams;
-         fileStatementData.StatementTransactions = statementTransactions;
+         fileStatementData = format6.getStatementTransactions(transactionsData, fileParams, statementParams);
          return fileStatementData;
       }
 
@@ -150,6 +126,7 @@ var SyncPostFinanceData = class SyncPostFinanceData {
  * PFCSV Format 6, since february 2024.
  */
 function PFCSVFormat6() {
+
 
    this.getFormattedData = function (transactions, importUtilities) {
       let headerLineStart = 6;
@@ -407,34 +384,41 @@ function PFCSVFormat6() {
       return statementParams;
    }
 
-   this.getStatementTransactions = function (transactionsData) {
+   this.getStatementTransactions = function (transactionsData, fileParams, statementParams) {
       var transactionsToImport = [];
 
       for (var i = 0; i < transactionsData.length; i++) {
          if (transactionsData[i]["Date"] && transactionsData[i]["Date"].length >= 10 &&
             transactionsData[i]["Date"].match(/^\d{2}.\d{2}.\d{4}$/)) {
-            transactionsToImport.push(this.mapTransaction(transactionsData[i]));
+            transactionsToImport.push(this.mapTransaction(transactionsData[i], fileParams, statementParams));
          }
       }
       transactionsToImport = transactionsToImport.reverse();
       return transactionsToImport;
    }
 
-   this.mapTransaction = function (transaction) {
+   this.mapTransaction = function (transaction, fileParams, statementParams) {
       let trDescription = transaction["Description"] + ", " + transaction["Type"];
       transaction = {
-         'Date': Banana.Converter.toInternalDateFormat(transaction["Date"], "dd.mm.yyyy"),
-         'DateValue': '',
-         'DocInvoice': '',
-         'Description': trDescription,
-         'Income': Banana.Converter.toInternalNumberFormat(transaction["Income"], '.'),
-         'Expenses': Banana.Converter.toInternalNumberFormat(Banana.SDecimal.abs(transaction["Expenses"]), '.'),
-         'ExternalReference': '',
-         'ContraAccount': '',
-         'Cc1': '',
-         'Cc2': '',
-         'Cc3': '',
-         'IsDetail': ''
+         'FileName': fileParams.FileName,
+         'FileType"': fileParams.FileType,
+         'StatementParamIban': statementParams.StatementParamIban,
+         'StatementParamOwner': statementParams.StatementParamOwner,
+         'StatementParamCurrencyi': statementParams.StatementParamCurrency,
+         'StatementParamInitialBalance': statementParams.StatementParamInitialBalance,
+         'StatementParamFinalBalance': statementParams.StatementParamFinalBalance,
+         'TransactionDate': Banana.Converter.toInternalDateFormat(transaction["Date"], "dd.mm.yyyy"),
+         'TransactionDateValue': '',
+         'TransactionDescription': '',
+         'TransactionDescription': trDescription,
+         'TransactionIncome': Banana.Converter.toInternalNumberFormat(transaction["Income"], '.'),
+         'TransactionExpenses': Banana.Converter.toInternalNumberFormat(Banana.SDecimal.abs(transaction["Expenses"]), '.'),
+         'TransactionExternalReference': '',
+         'TransactionContraAccount': '',
+         'TransactionCc1': '',
+         'TransactionCc2': '',
+         'TransactionCc3': '',
+         'TransactionIsDetail': ''
       };
 
       return transaction;
@@ -530,31 +514,38 @@ function PFCSVFormat1_CreditCard() {
             continue;
          if (transaction[this.colDate] && transaction[this.colDate].match(/[0-9]{2,4}(\-)[0-9]{2}(\-)[0-9]{2,4}/g)
             && transaction[this.colDate].length == 10)
-            transactionsToImport.push(this.mapTransaction(transaction));
+            transactionsToImport.push(this.mapTransaction(transaction, fileParams, statementParams));
       }
       transactionsToImport = transactionsToImport.reverse();
       return transactionsToImport;
    }
 
 
-   this.mapTransaction = function (element) {
+   this.mapTransaction = function (element, fileParams, statementParams) {
       var tidyDescr = element[this.colDescr].replace(/ {2,}/g, ''); //remove white spaces
       var crAmount = element[this.colCredit].replace(/-/g, ''); //remove minus sign
       var dbAmount = element[this.colDebit].replace(/-/g, ''); //remove minus sign
 
       transaction = {
-         'Date': Banana.Converter.toInternalDateFormat(element[this.colDate], this.dateFormat),
-         'DateValue': '',
-         'DocInvoice': '',
-         'Description': Banana.Converter.stringToCamelCase(tidyDescr),
-         'Income': Banana.Converter.toInternalNumberFormat(crAmount),
-         'Expenses': Banana.Converter.toInternalNumberFormat(dbAmount),
-         'ExternalReference': '',
-         'ContraAccount': '',
-         'Cc1': '',
-         'Cc2': '',
-         'Cc3': '',
-         'IsDetail': ''
+         'FileName': fileParams.FileName,
+         'FileType"': fileParams.FileType,
+         'StatementParamIban': statementParams.StatementParamIban,
+         'StatementParamOwner': statementParams.StatementParamOwner,
+         'StatementParamCurrencyi': statementParams.StatementParamCurrency,
+         'StatementParamInitialBalance': statementParams.StatementParamInitialBalance,
+         'StatementParamFinalBalance': statementParams.StatementParamFinalBalance,
+         'TransactionDate': Banana.Converter.toInternalDateFormat(element[this.colDate], this.dateFormat),
+         'TransactionDateValue': '',
+         'TransactionDocInvoice': '',
+         'TransactionDescription': Banana.Converter.stringToCamelCase(tidyDescr),
+         'TransactionIncome': Banana.Converter.toInternalNumberFormat(crAmount),
+         'TransactionExpenses': Banana.Converter.toInternalNumberFormat(dbAmount),
+         'TransactionExternalReference': '',
+         'TransactionContraAccount': '',
+         'TransactionCc1': '',
+         'TransactionCc2': '',
+         'TransactionCc3': '',
+         'TransactionIsDetail': ''
       };
 
       return transaction;
@@ -639,30 +630,37 @@ function PFCSVFormat5() {
          if (transaction.length < (this.colAmount + 1))
             continue;
          if (transaction[this.colDate] && transaction[this.colDate].match(/[0-9]{2}(\.)[0-9]{2}(\.)[0-9]{4}/g) && transaction[this.colDate].length == 10)
-            transactionsToImport.push(this.mapTransaction(transaction));
+            transactionsToImport.push(this.mapTransaction(transaction, fileParams, statementParams));
       }
       transactionsToImport = transactionsToImport.reverse();
       return transactionsToImport;
    }
 
 
-   this.mapTransaction = function (element) {
+   this.mapTransaction = function (element, fileParams, statementParams) {
       var tidyDescr = element[this.colDescr].replace(/ {2,}/g, ''); //remove white spaces
       amountDebit = element[this.colDebit].replace(/-/g, ''); //remove minus sign
 
       transaction = {
-         'Date': Banana.Converter.toInternalDateFormat(element[this.colDate], this.dateFormat),
-         'DateValue': '',
-         'DocInvoice': '',
-         'Description': Banana.Converter.stringToCamelCase(tidyDescr),
-         'Income': Banana.Converter.toInternalNumberFormat(element[this.colCredit]),
-         'Expenses': Banana.Converter.toInternalNumberFormat(amountDebit),
-         'ExternalReference': '',
-         'ContraAccount': '',
-         'Cc1': '',
-         'Cc2': '',
-         'Cc3': '',
-         'IsDetail': ''
+         'FileName': fileParams.FileName,
+         'FileType"': fileParams.FileType,
+         'StatementParamIban': statementParams.StatementParamIban,
+         'StatementParamOwner': statementParams.StatementParamOwner,
+         'StatementParamCurrencyi': statementParams.StatementParamCurrency,
+         'StatementParamInitialBalance': statementParams.StatementParamInitialBalance,
+         'StatementParamFinalBalance': statementParams.StatementParamFinalBalance,
+         'TransactionDate': Banana.Converter.toInternalDateFormat(element[this.colDate], this.dateFormat),
+         'TransactionDateValue': '',
+         'TransactionDocInvoice': '',
+         'TransactionDescription': Banana.Converter.stringToCamelCase(tidyDescr),
+         'TransactionIncome': Banana.Converter.toInternalNumberFormat(element[this.colCredit]),
+         'TransactionExpenses': Banana.Converter.toInternalNumberFormat(amountDebit),
+         'TransactionExternalReference': '',
+         'TransactionContraAccount': '',
+         'TransactionCc1': '',
+         'TransactionCc2': '',
+         'TransactionCc3': '',
+         'TransactionIsDetail': ''
       };
 
       return transaction;
@@ -760,115 +758,41 @@ function PFCSVFormat4() {
          if (transaction.length < (this.colAmount + 1))
             continue;
          if (transaction[this.colDate].match(/[0-9]{2,4}(\-)[0-9]{2}(\-)[0-9]{2,4}/g) && transaction[this.colDate].length == 10)
-            transactionsToImport.push(this.mapTransaction(transaction));
+            transactionsToImport.push(this.mapTransaction(transaction, fileParams, statementParams));
       }
       transactionsToImport = transactionsToImport.reverse();
       return transactionsToImport;
    }
 
 
-   this.mapTransaction = function (element) {
+   this.mapTransaction = function (element, fileParams, statementParams) {
       var tidyDescr = element[this.colDescr].replace(/ {2,}/g, ''); //remove white spaces
       var crAmount = element[this.colCredit].replace(/-/g, ''); //remove minus sign
       var dbAmount = element[this.colDebit].replace(/-/g, ''); //remove minus sign
 
       transaction = {
-         'Date': Banana.Converter.toInternalDateFormat(element[this.colDate], this.dateFormat),
-         'DateValue': '',
-         'DocInvoice': '',
-         'Description': Banana.Converter.stringToCamelCase(tidyDescr),
-         'Income': Banana.Converter.toInternalNumberFormat(crAmount),
-         'Expenses': Banana.Converter.toInternalNumberFormat(dbAmount),
-         'ExternalReference': '',
-         'ContraAccount': '',
-         'Cc1': '',
-         'Cc2': '',
-         'Cc3': '',
-         'IsDetail': ''
+         'FileName': fileParams.FileName,
+         'FileType"': fileParams.FileType,
+         'StatementParamIban': statementParams.StatementParamIban,
+         'StatementParamOwner': statementParams.StatementParamOwner,
+         'StatementParamCurrencyi': statementParams.StatementParamCurrency,
+         'StatementParamInitialBalance': statementParams.StatementParamInitialBalance,
+         'StatementParamFinalBalance': statementParams.StatementParamFinalBalance,
+         'TransactionDate': Banana.Converter.toInternalDateFormat(element[this.colDate], this.dateFormat),
+         'TransactionDateValue': '',
+         'TransactionDocInvoice': '',
+         'TransactionDescription': Banana.Converter.stringToCamelCase(tidyDescr),
+         'TransactionIncome': Banana.Converter.toInternalNumberFormat(crAmount),
+         'TransactionExpenses': Banana.Converter.toInternalNumberFormat(dbAmount),
+         'TransactionExternalReference': '',
+         'TransactionContraAccount': '',
+         'TransactionCc1': '',
+         'TransactionCc2': '',
+         'TransactionCc3': '',
+         'TransactionIsDetail': ''
       };
 
       return transaction;
-   }
-}
-
-/**
- * PF Html Format 1
- * Html table with the followings colums:
- * 0:Details; 1:Date; 2:Description; 3:Income; 4:Expenses; 5:DateValue; 6:Balance;
-**/
-function PFHtmlFormat1() {
-
-   /** This function defines the convertion of the single html table rows to Banana fields.
-     This is the only function to be adapted to the desired format. */
-   this.htmlRowToObject = function (htmlString) {
-
-      // Extract html fields (tags td)
-      var htmlTableFields = htmlString.match(/<td[^>]*>[\s\S]*?<\/td>/g); //[\s\S]*? match all chars non gready
-      if (!htmlTableFields)
-         return null;
-
-      // Verify fields count
-      if (htmlTableFields.length < 6)
-         return null;
-
-      // Verify if date field match
-      var date = this.htmlText(htmlTableFields[1]);
-      if (!date.match(/[0-9.]{8}/))
-         return null;
-
-      // Convert row
-      var rowObject = {};
-      rowObject.Date = Banana.Converter.toInternalDateFormat(this.htmlText(htmlTableFields[1]));
-      rowObject.Description = Banana.Converter.stringToCamelCase(this.htmlText(htmlTableFields[2]));
-      rowObject.ContraAccount = "";
-      rowObject.Income = Banana.Converter.toInternalNumberFormat(this.htmlText(htmlTableFields[3]));
-      rowObject.Expenses = Banana.Converter.toInternalNumberFormat(this.htmlText(htmlTableFields[4]));
-      rowObject.DateValue = Banana.Converter.toInternalDateFormat(this.htmlText(htmlTableFields[5]));
-      rowObject._Balance = Banana.Converter.toInternalNumberFormat(this.htmlText(htmlTableFields[6]));
-      return rowObject;
-   }
-
-   /** This function extract from the html the data to be imported in Banana Accounting.
-       It use the function htmlRowToObject to convert the single data rows. */
-   this.convert = function (htmlString) {
-      var rows = [];
-      var htmlTables = htmlString.match(/<tbody[^>]*>[\s\S]*?<\/tbody>/g);  //[\s\S]*? match all chars non gready
-      if (htmlTables) {
-         for (var t = 0; t < htmlTables.length; t++) {
-            var htmlTableRows = htmlTables[t].match(/<tr[^>]*>[\s\S]*?<\/tr>/g); //[\s\S]*? match all chars non gready
-            if (htmlTableRows) {
-               for (var r = 0; r < htmlTableRows.length; r++) {
-                  var row = this.htmlRowToObject(htmlTableRows[r]);
-                  if (row) {
-                     rows.push(row);
-                  }
-               }
-            }
-         }
-      }
-      return rows;
-   }
-
-   /** This function extract the text inside an html element */
-   this.htmlText = function (htmlString) {
-      // Read text from html string
-      // The text is found between each ">...<" sequence
-      var retText = "";
-      var htmlTexts = htmlString.match(/>[^<]+</g);
-      if (htmlTexts) {
-         for (var i = 0; i < htmlTexts.length; i++) {
-            var htmlSubText = htmlTexts[i];
-            if (htmlSubText.length > 2)
-               retText = retText + htmlSubText.substr(1, htmlSubText.length - 2);
-         }
-      }
-
-      // Remove line feeds
-      retText = retText.replace(/^[ \n\r]+/, ""); // at the beginning
-      retText = retText.replace(/[ \n\r]+$/, ""); // at the end
-      retText = retText.replace(/ *[\n\r]+ */g, ", "); // in the middle
-
-      return retText;
    }
 }
 
@@ -932,7 +856,7 @@ function PFCSVFormat3() {
       return false;
    }
 
-   this.getStatementParams = function (transactions) {
+   this.getStatementParams = function () {
       /**
        * File params for this format are not present...
        */
@@ -964,37 +888,43 @@ function PFCSVFormat3() {
             continue;
          if (transaction[this.colDate].match(/[0-9]{2,4}(\.|-)[0-9]{2}(\.|-)[0-9]{2,4}/g) && transaction[this.colDate].length == 10 &&
             transaction[this.colDateValuta].match(/[0-9]{2,4}(\.|-)[0-9]{2}(\.|-)[0-9]{2,4}/g) && transaction[this.colDateValuta].length == 10)
-            transactionsToImport.push(this.mapTransaction(transaction));
+            transactionsToImport.push(this.mapTransaction(transaction, fileParams, statementParams));
       }
       transactionsToImport = transactionsToImport.reverse();
       return transactionsToImport;
    }
 
 
-   this.mapTransaction = function (element) {
+   this.mapTransaction = function (element, fileParams, statementParams) {
       var tidyDescr = element[this.colDescr].replace(/ {2,}/g, ''); //remove white spaces
       var crAmount = element[this.colCredit].replace(/-/g, ''); //remove minus sign
       var dbAmount = element[this.colDebit].replace(/-/g, ''); //remove minus sign
 
       transaction = {
-         'Date': Banana.Converter.toInternalDateFormat(element[this.colDate], 'dd-mm-yyyy'),
-         'DateValue': Banana.Converter.toInternalDateFormat(element[this.colDateValuta], 'dd-mm-yyyy'),
-         'DocInvoice': '',
-         'Description': Banana.Converter.stringToCamelCase(tidyDescr),
-         'Income': Banana.Converter.toInternalNumberFormat(crAmount),
-         'Expenses': Banana.Converter.toInternalNumberFormat(dbAmount),
-         'ExternalReference': '',
-         'ContraAccount': '',
-         'Cc1': '',
-         'Cc2': '',
-         'Cc3': '',
-         'IsDetail': ''
+         'FileName': fileParams.FileName,
+         'FileType"': fileParams.FileType,
+         'StatementParamIban': statementParams.StatementParamIban,
+         'StatementParamOwner': statementParams.StatementParamOwner,
+         'StatementParamCurrencyi': statementParams.StatementParamCurrency,
+         'StatementParamInitialBalance': statementParams.StatementParamInitialBalance,
+         'StatementParamFinalBalance': statementParams.StatementParamFinalBalance,
+         'TransactionDate': Banana.Converter.toInternalDateFormat(element[this.colDate], 'dd-mm-yyyy'),
+         'TransactionDateValue': Banana.Converter.toInternalDateFormat(element[this.colDateValuta], 'dd-mm-yyyy'),
+         'TransactionDocInvoice': '',
+         'TransactionDescription': Banana.Converter.stringToCamelCase(tidyDescr),
+         'TransactionIncome': Banana.Converter.toInternalNumberFormat(crAmount),
+         'TransactionExpenses': Banana.Converter.toInternalNumberFormat(dbAmount),
+         'TransactionExternalReference': '',
+         'TransactionContraAccount': '',
+         'TransactionCc1': '',
+         'TransactionCc2': '',
+         'TransactionCc3': '',
+         'TransactionIsDetail': ''
       };
 
       return transaction;
    }
 }
-
 
 /**
  * PFCSV Format 2
@@ -1047,7 +977,7 @@ function PFCSVFormat2() {
       return false;
    }
 
-   this.getStatementParams = function (transactions) {
+   this.getStatementParams = function () {
       /**
        * File params for this format are not present...
        */
@@ -1079,35 +1009,41 @@ function PFCSVFormat2() {
             continue;
          if (transaction[this.colDate].match(/[0-9]+/g) && transaction[this.colDate].length == 8 &&
             transaction[this.colDateValuta].match(/[0-9]+/g) && transaction[this.colDateValuta].length == 8)
-            transactionsToImport.push(this.mapTransaction(transaction));
+            transactionsToImport.push(this.mapTransaction(transaction, fileParams, statementParams));
       }
       transactionsToImport = transactionsToImport.reverse();
       return transactionsToImport;
    }
 
 
-   this.mapTransaction = function (element) {
+   this.mapTransaction = function (element, fileParams, statementParams) {
       var tidyDescr = element[this.colDescr].replace(/ {2,}/g, ' '); //remove white spaces
 
       transaction = {
-         'Date': element[this.colDate],
-         'DateValue': element[this.colDateValuta],
-         'DocInvoice': '',
-         'Description': Banana.Converter.stringToCamelCase(tidyDescr),
-         'Income': Banana.Converter.toInternalNumberFormat(element[this.colCredit]),
-         'Expenses': Banana.Converter.toInternalNumberFormat(element[this.colDebit]),
-         'ExternalReference': '',
-         'ContraAccount': '',
-         'Cc1': '',
-         'Cc2': '',
-         'Cc3': '',
-         'IsDetail': ''
+         'FileName': fileParams.FileName,
+         'FileType"': fileParams.FileType,
+         'StatementParamIban': statementParams.StatementParamIban,
+         'StatementParamOwner': statementParams.StatementParamOwner,
+         'StatementParamCurrencyi': statementParams.StatementParamCurrency,
+         'StatementParamInitialBalance': statementParams.StatementParamInitialBalance,
+         'StatementParamFinalBalance': statementParams.StatementParamFinalBalance,
+         'TransactionDate': element[this.colDate],
+         'TransactionDateValue': element[this.colDateValuta],
+         'TransactionDocInvoice': '',
+         'TransactionDescription': Banana.Converter.stringToCamelCase(tidyDescr),
+         'TransactionIncome': Banana.Converter.toInternalNumberFormat(element[this.colCredit]),
+         'TransactionExpenses': Banana.Converter.toInternalNumberFormat(element[this.colDebit]),
+         'TransactionExternalReference': '',
+         'TransactionContraAccount': '',
+         'TransactionCc1': '',
+         'TransactionCc2': '',
+         'TransactionCc3': '',
+         'TransactionIsDetail': ''
       };
 
       return transaction;
    }
 }
-
 
 /**
  * PFCSV Format 1
@@ -1200,7 +1136,6 @@ function PFCSVFormat1() {
       return statementParams;
    }
 
-
    /** Convert the transaction to the format to be imported */
    this.getStatementTransactions = function (transactions) {
       var transactionsToImport = [];
@@ -1211,30 +1146,37 @@ function PFCSVFormat1() {
          if (transaction.length < (this.colBalance + 1))
             continue;
          if (transaction[this.colDate].match(/[0-9\.]{3}/g) && transaction[this.colDateValuta].match(/[0-9\.]{3}/g))
-            transactionsToImport.push(this.mapTransaction(transaction));
+            transactionsToImport.push(this.mapTransaction(transaction, fileParams, statementParams));
       }
       transactionsToImport = transactionsToImport.reverse();
       return transactionsToImport;
    }
 
-   this.mapTransaction = function (element) {
+   this.mapTransaction = function (element, fileParams, statementParams) {
       var tidyDescr = element[this.colDescr].replace(/ {2,}/g, ''); // remove white spaces
       var crAmount = element[this.colCredit].replace(/\+/g, ''); // remove plus sign
       var dbAmount = element[this.colDebit].replace(/-/g, ''); // remove minus sign
 
       transaction = {
-         'Date': Banana.Converter.toInternalDateFormat(element[this.colDate], this.dateFormat),
-         'DateValue': Banana.Converter.toInternalDateFormat(element[this.colDateValuta], this.dateFormat),
-         'DocInvoice': '',
-         'Description': Banana.Converter.stringToCamelCase(tidyDescr),
-         'Income': Banana.Converter.toInternalNumberFormat(crAmount, this.decimalSeparator),
-         'Expenses': Banana.Converter.toInternalNumberFormat(dbAmount, this.decimalSeparator),
-         'ExternalReference': '',
-         'ContraAccount': '',
-         'Cc1': '',
-         'Cc2': '',
-         'Cc3': '',
-         'IsDetail': ''
+         'FileName': fileParams.FileName,
+         'FileType"': fileParams.FileType,
+         'StatementParamIban': statementParams.StatementParamIban,
+         'StatementParamOwner': statementParams.StatementParamOwner,
+         'StatementParamCurrencyi': statementParams.StatementParamCurrency,
+         'StatementParamInitialBalance': statementParams.StatementParamInitialBalance,
+         'StatementParamFinalBalance': statementParams.StatementParamFinalBalance,
+         'TransactionDate': Banana.Converter.toInternalDateFormat(element[this.colDate], this.dateFormat),
+         'TransactionDateValue': Banana.Converter.toInternalDateFormat(element[this.colDateValuta], this.dateFormat),
+         'TransactionDocInvoice': '',
+         'TransactionDescription': Banana.Converter.stringToCamelCase(tidyDescr),
+         'TransactionIncome': Banana.Converter.toInternalNumberFormat(crAmount, this.decimalSeparator),
+         'TransactionExpenses': Banana.Converter.toInternalNumberFormat(dbAmount, this.decimalSeparator),
+         'TransactionExternalReference': '',
+         'TransactionContraAccount': '',
+         'TransactionCc1': '',
+         'TransactionCc2': '',
+         'TransactionCc3': '',
+         'TransactionIsDetail': ''
       };
 
       return transaction;
@@ -1349,26 +1291,33 @@ function PFCSVFormatSBU1() {
          if (transaction.length < this.colCredit)
             continue;
          if (transaction[this.colDate].match(/[0-9\.]{3}/g))
-            transactionsToImport.push(this.mapTransaction(transaction));
+            transactionsToImport.push(this.mapTransaction(transaction, fileParams, statementParams));
       }
       transactionsToImport = transactionsToImport.reverse();
       return transactionsToImport;
    }
 
-   this.mapTransaction = function (element) {
+   this.mapTransaction = function (element, fileParams, statementParams) {
       transaction = {
-         'Date': Banana.Converter.toInternalDateFormat(element[this.colDate], this.dateFormat),
-         'DateValue': '',
-         'DocInvoice': '',
-         'Description': element[this.colDescr],
-         'Income': Banana.Converter.toInternalNumberFormat(element[this.colCredit], this.decimalSeparator),
-         'Expenses': '',
-         'ExternalReference': '',
-         'ContraAccount': '',
-         'Cc1': '',
-         'Cc2': '',
-         'Cc3': '',
-         'IsDetail': ''
+         'FileName': fileParams.FileName,
+         'FileType"': fileParams.FileType,
+         'StatementParamIban': statementParams.StatementParamIban,
+         'StatementParamOwner': statementParams.StatementParamOwner,
+         'StatementParamCurrencyi': statementParams.StatementParamCurrency,
+         'StatementParamInitialBalance': statementParams.StatementParamInitialBalance,
+         'StatementParamFinalBalance': statementParams.StatementParamFinalBalance,
+         'TransactionDate': Banana.Converter.toInternalDateFormat(element[this.colDate], this.dateFormat),
+         'TransactionDateValue': '',
+         'TransactionDocInvoice': '',
+         'TransactionDescription': element[this.colDescr],
+         'TransactionIncome': Banana.Converter.toInternalNumberFormat(element[this.colCredit], this.decimalSeparator),
+         'TransactionExpenses': '',
+         'TransactionExternalReference': '',
+         'TransactionContraAccount': '',
+         'TransactionCc1': '',
+         'TransactionCc2': '',
+         'TransactionCc3': '',
+         'TransactionIsDetail': ''
       };
 
       return transaction;
