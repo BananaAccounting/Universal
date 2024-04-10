@@ -11,6 +11,7 @@ fileStatementData.TransactionsList = [
     {                    // first transaction
         "FileName": "C:/ P / Universal Images / Universal / extensions / bank_synchronisation / test / testcases /1284_test_Bank1 - B.xml",
         "FileType": "CAMT.053",
+        "FileCreationDate": "2024-02-02",
         "StatementParamIban": "CHXXXXXXXXXXXXXXX",
         "StatementParamOwner": "Happy Deer Group",
         "StatementParamCurrency": "CHF",
@@ -31,6 +32,7 @@ fileStatementData.TransactionsList = [
     {                  // second transaction
         "FileName": "C:/ P / Universal Images / Universal / extensions / bank_synchronisation / test / testcases /1284_test_Bank1 - B.xml",
         "FileType": "CAMT.053",
+        "FileCreationDate": "2024-02-02",
         "StatementParamIban": "CHXXXXXXXXXXXXXXX",
         "StatementParamOwner": "Happy Deer Group",
         "StatementParamCurrency": "CHF",
@@ -51,6 +53,7 @@ fileStatementData.TransactionsList = [
     {                // second statement data ...
         "FileName": "C:/ P / Universal Images / Universal / extensions / bank_synchronisation / test / testcases /1284_test_Bank1 - B.xml",
         "FileType": "CAMT.053",
+        "FileCreationDate": "2024-02-02",
         "StatementParamIban": "CH111111111111111",
         "StatementParamOwner": "Sad Deer Group",
         "StatementParamCurrency": "CHF",
@@ -71,6 +74,7 @@ fileStatementData.TransactionsList = [
     {
         "FileName": "C: / P / Universal Images / Universal / extensions / bank_synchronisation / test / testcases /1284_test_Bank1 - B.xml",
         "FileType": "CAMT.053",
+        "FileCreationDate": "2024-02-02",
         "StatementParamIban": "CH111111111111111",
         "StatementParamOwner": "Sad Deer Group",
         "StatementParamCurrency": "CHF",
