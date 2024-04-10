@@ -1,12 +1,12 @@
 // @id = ch.banana.app.exercisecorrection
 // @api = 1.0
-// @pubdate = 2024-03-07
+// @pubdate = 2024-04-10
 // @publisher = Banana.ch SA
-// @description = Correction of exercises
-// @description.it = Correzione degli esercizi
-// @description.de = Berichtigung von Übungen
+// @description = Exercises correction
+// @description.it = Correzione esercizi
+// @description.de = Übungen korrigieren
 // @description.fr = Correction d'exercices
-// @description.en = Correction of exercises
+// @description.en = Exercises correction
 // @doctype = *
 // @docproperties =
 // @task = app.command
@@ -140,7 +140,7 @@ var PrintReport = class PrintReport {
       }
     }
 
-    let transactions = new PrintReport(Banana.document, Banana.document, this.isTest);
+    let transactions = new PrintReport(this.banDoc1, this.banDoc2, this.isTest);
     transactions.calculatescore(studenttransactionsArray, teachertransactionsArray);
     let jsonDoc = transactions.inserttransactions(studenttransactionsArray, teachertransactionsArray);
 
