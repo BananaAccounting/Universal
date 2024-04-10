@@ -1,6 +1,6 @@
 // @id = ch.banana.app.exercisecorrection.test
 // @api = 1.0
-// @pubdate = 2024-02-21
+// @pubdate = 2024-04-10
 // @publisher = Banana.ch SA
 // @description = <TEST ch.banana.app.exercisecorrection.test>
 // @task = app.command
