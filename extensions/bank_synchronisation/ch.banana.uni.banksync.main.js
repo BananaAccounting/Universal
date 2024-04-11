@@ -130,7 +130,7 @@ var CSV_JSONConverter = class CSV_JSONConverter {
     convertToJson_fromCsv() {
         let jsonDoc = {};
         let fileParams = {};
-        fileParams = readFileParams();
+        fileParams = this.readFileParams();
         this.setData(jsonDoc, fileParams);
         return jsonDoc;
     }
@@ -232,16 +232,18 @@ var ISO20022_Swiss_JSONConverter = class ISO20022_Swiss_JSONConverter {
 
     convertToJson_fromCamt052(docNode, filePath) {
         let jsonDoc = {};
+        jsonDoc.version = "1.0";
         let fileParams = {};
-        fileParams = readFileParams(docNode, filePath);
+        fileParams = this.readFileParams(docNode, filePath);
         let statementsNode = this.getStatementsNode_camt052(docNode);
         this.setData(statementsNode, jsonDoc, fileParams);
         return jsonDoc;
     }
     convertToJson_fromCamt053(docNode, filePath) {
         let jsonDoc = {};
+        jsonDoc.version = "1.0";
         let fileParams = {};
-        fileParams = readFileParams(docNode, filePath);
+        fileParams = this.readFileParams(docNode, filePath);
         let statementsNode = this.getStatementsNode_camt053(docNode);
         this.setData(statementsNode, jsonDoc, fileParams);
         return jsonDoc;
@@ -249,8 +251,9 @@ var ISO20022_Swiss_JSONConverter = class ISO20022_Swiss_JSONConverter {
     }
     convertToJson_fromCamt054(docNode, filePath) {
         let jsonDoc = {};
+        jsonDoc.version = "1.0";
         let fileParams = {};
-        fileParams = readFileParams(docNode, filePath);
+        fileParams = this.readFileParams(docNode, filePath);
         let statementsNode = this.getStatementsNode_camt054(docNode);
         this.setData(statementsNode, jsonDoc, fileParams);
         return jsonDoc;
@@ -311,6 +314,8 @@ var ISO20022_Swiss_JSONConverter = class ISO20022_Swiss_JSONConverter {
         fileParams.FileName = name;
         fileParams.FileType = type;
         fileParams.FileCreationDate = creationDate;
+
+        return fileParams;
     }
 
     getDocumentCreationDate(docNode) {
@@ -358,57 +363,20 @@ var ISO20022_Swiss_JSONConverter = class ISO20022_Swiss_JSONConverter {
      * For each transaction we set also the fileParams and the statementParams.
      */
     setData(statementsNode, jsonDoc, fileParams) {
-        let statementTransactionsData = [];
-        jsonDoc.TransactionsList = [];
+        let trData = [];
         if (statementsNode.length >= 0) {
             /** We have to get the data for each statement, wich could have a different account (IBAN) */
             for (let i = 0; i < statementsNode.length; i++) {
                 let statementParams = {};
                 statementParams = this.readStatementParams(statementsNode[i]);
-                statementTransactionsData = statementTransactionsData.concat(this.readStatementEntries(statementsNode[i], fileParams, statementParams));
+                let entryNode = statementsNode[i].firstChildElement('Ntry');
+                while (entryNode) { // concat each statement array to have one general
+                    trData = trData.concat((this.readStatementEntry(entryNode, fileParams, statementParams)));
+                    entryNode = entryNode.nextSiblingElement('Ntry'); // next account movement
+                }
             }
         }
-        jsonDoc.TransactionsList = statementTransactionsData;
-    }
-
-    /**
-     * Read the transactions in the file and returns an array of objects.
-     * works with the V1 of the json structure.
-     * @param {*} fileContent
-     * @returns 
-     */
-    /** 
-    setStatementData(statementsNode, jsonDoc) {
-        let statementsData = [];
-        if (statementsNode.length >= 0) {
-            for (let i = 0; i < statementsNode.length; i++) {
-                let fileStatementData = {};
-                let statementTransactions = [];
-                let statementParams = {};
-
-                statementParams = this.getXmlParams(statementsNode[i]);
-                statementTransactions = statementTransactions.concat(this.readStatementEntries(statementsNode[i]));
-
-                fileStatementData.StatementParams = statementParams;
-                fileStatementData.StatementTransactions = statementTransactions;
-
-                statementsData.push(fileStatementData);
-            }
-        }
-        jsonDoc.FileStatementData = statementsData;
-    }*/
-
-    readStatementEntries(statementNode, fileParams, statementParams) {
-        if (!statementNode)
-            return;
-
-        let transactions = [];
-        let entryNode = statementNode.firstChildElement('Ntry');
-        while (entryNode) {
-            transactions.push(this.readStatementEntry(entryNode, fileParams, statementParams));
-            entryNode = entryNode.nextSiblingElement('Ntry'); // next account movement
-        }
-        return transactions;
+        jsonDoc.TransactionsList = trData;
     }
 
     readStatementEntry(entryNode, fileParams, statementParams) {

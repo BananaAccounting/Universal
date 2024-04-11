@@ -504,7 +504,7 @@ function PFCSVFormat1_CreditCard() {
    }
 
    /** Convert the transaction to the format to be imported */
-   this.getStatementTransactions = function (transactions) {
+   this.getStatementTransactions = function (transactions, fileParams, statementParams) {
       var transactionsToImport = [];
 
       // Filter and map rows
@@ -621,7 +621,7 @@ function PFCSVFormat5() {
    }
 
    /** Convert the transaction to the format to be imported */
-   this.getStatementTransactions = function (transactions) {
+   this.getStatementTransactions = function (transactions, fileParams, statementParams) {
       var transactionsToImport = [];
 
       // Filter and map rows
@@ -749,7 +749,7 @@ function PFCSVFormat4() {
    }
 
    /** Convert the transaction to the format to be imported */
-   this.getStatementTransactions = function (transactions) {
+   this.getStatementTransactions = function (transactions, fileParams, statementParams) {
       var transactionsToImport = [];
 
       // Filter and map rows
@@ -878,7 +878,7 @@ function PFCSVFormat3() {
    }
 
    /** Convert the transaction to the format to be imported */
-   this.getStatementTransactions = function (transactions) {
+   this.getStatementTransactions = function (transactions, fileParams, statementParams) {
       var transactionsToImport = [];
 
       // Filter and map rows
@@ -999,7 +999,7 @@ function PFCSVFormat2() {
    }
 
    /** Convert the transaction to the format to be imported */
-   this.getStatementTransactions = function (transactions) {
+   this.getStatementTransactions = function (transactions, fileParams, statementParams) {
       var transactionsToImport = [];
 
       // Filter and map rows
@@ -1137,7 +1137,7 @@ function PFCSVFormat1() {
    }
 
    /** Convert the transaction to the format to be imported */
-   this.getStatementTransactions = function (transactions) {
+   this.getStatementTransactions = function (transactions, fileParams, statementParams) {
       var transactionsToImport = [];
 
       // Filter and map rows
@@ -1282,7 +1282,7 @@ function PFCSVFormatSBU1() {
 
 
    /** Convert the transaction to the format to be imported */
-   this.getStatementTransactions = function (transactions) {
+   this.getStatementTransactions = function (transactions, fileParams, statementParams) {
       var transactionsToImport = [];
 
       // Filter and map rows

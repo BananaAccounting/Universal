@@ -41,3 +41,10 @@
 #### Estimating Uniqueness
 
 In diversified contexts where standardized and recurring payments do not dominate, one might reasonably assume that uniqueness is assured in more than 95% of cases. For contexts with many recurring transactions (e.g., subscriptions, fixed monthly payments to the same supplier), this percentage might slightly decrease.
+
+TodoList:
+
+- cambiato struttura JSON, ora lavoriamo solo con gli oggetti delle transazioni che contengono tutti i dati
+- Aggiornare db e query in base alla nuova struttura, dovrebbe permettere di gestire meglio le esclusioni delle registrazioni singole.
+- Inserire il processFile() nel multi trhead.
+- Creare API per generare hash da chiamare nel js.--> Da aggiungere nel Banana.Converter.
