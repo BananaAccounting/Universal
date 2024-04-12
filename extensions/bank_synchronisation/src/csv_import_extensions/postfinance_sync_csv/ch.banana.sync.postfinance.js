@@ -375,11 +375,11 @@ function PFCSVFormat6() {
       let initialBalance = "";
       let finalBalance = "";
 
-      statementParams.StatementParamIban = iban;
-      statementParams.StatementParamOwner = statementOwner;
-      statementParams.StatementParamCurrency = statementCurrency;
-      statementParams.StatementParamInitialBalance = initialBalance;
-      statementParams.StatementParamFinalBalance = finalBalance;
+      statementParams.StatementIban = iban;
+      statementParams.StatementOwner = statementOwner;
+      statementParams.StatementCurrency = statementCurrency;
+      statementParams.StatementInitialBalance = initialBalance;
+      statementParams.StatementFinalBalance = finalBalance;
 
       return statementParams;
    }
@@ -402,11 +402,11 @@ function PFCSVFormat6() {
       transaction = {
          'FileName': fileParams.FileName,
          'FileType"': fileParams.FileType,
-         'StatementParamIban': statementParams.StatementParamIban,
-         'StatementParamOwner': statementParams.StatementParamOwner,
-         'StatementParamCurrencyi': statementParams.StatementParamCurrency,
-         'StatementParamInitialBalance': statementParams.StatementParamInitialBalance,
-         'StatementParamFinalBalance': statementParams.StatementParamFinalBalance,
+         'StatementIban': statementParams.StatementIban,
+         'StatementOwner': statementParams.StatementOwner,
+         'StatementCurrency': statementParams.StatementCurrency,
+         'StatementInitialBalance': statementParams.StatementInitialBalance,
+         'StatementFinalBalance': statementParams.StatementFinalBalance,
          'TransactionDate': Banana.Converter.toInternalDateFormat(transaction["Date"], "dd.mm.yyyy"),
          'TransactionDateValue': '',
          'TransactionDescription': '',
@@ -494,11 +494,11 @@ function PFCSVFormat1_CreditCard() {
       let initialBalance = "";
       let finalBalance = "";
 
-      statementParams.StatementParamIban = iban.replace(/^=/, "");
-      statementParams.StatementParamOwner = statementOwner;
-      statementParams.StatementParamCurrency = statementCurrency.replace(/^=/, "");;
-      statementParams.StatementParamInitialBalance = initialBalance;
-      statementParams.StatementParamFinalBalance = finalBalance;
+      statementParams.StatementIban = iban.replace(/^=/, "");
+      statementParams.StatementOwner = statementOwner;
+      statementParams.StatementCurrency = statementCurrency.replace(/^=/, "");;
+      statementParams.StatementInitialBalance = initialBalance;
+      statementParams.StatementFinalBalance = finalBalance;
 
       return statementParams;
    }
@@ -529,11 +529,11 @@ function PFCSVFormat1_CreditCard() {
       transaction = {
          'FileName': fileParams.FileName,
          'FileType"': fileParams.FileType,
-         'StatementParamIban': statementParams.StatementParamIban,
-         'StatementParamOwner': statementParams.StatementParamOwner,
-         'StatementParamCurrencyi': statementParams.StatementParamCurrency,
-         'StatementParamInitialBalance': statementParams.StatementParamInitialBalance,
-         'StatementParamFinalBalance': statementParams.StatementParamFinalBalance,
+         'StatementIban': statementParams.StatementIban,
+         'StatementOwner': statementParams.StatementOwner,
+         'StatementCurrency': statementParams.StatementCurrency,
+         'StatementInitialBalance': statementParams.StatementInitialBalance,
+         'StatementFinalBalance': statementParams.StatementFinalBalance,
          'TransactionDate': Banana.Converter.toInternalDateFormat(element[this.colDate], this.dateFormat),
          'TransactionDateValue': '',
          'TransactionDocInvoice': '',
@@ -611,11 +611,11 @@ function PFCSVFormat5() {
       let initialBalance = "";
       let finalBalance = "";
 
-      statementParams.StatementParamIban = iban.replace(/^=/, "");
-      statementParams.StatementParamOwner = statementOwner;
-      statementParams.StatementParamCurrency = statementCurrency.replace(/^=/, "");;
-      statementParams.StatementParamInitialBalance = initialBalance;
-      statementParams.StatementParamFinalBalance = finalBalance;
+      statementParams.StatementIban = iban.replace(/^=/, "");
+      statementParams.StatementOwner = statementOwner;
+      statementParams.StatementCurrency = statementCurrency.replace(/^=/, "");;
+      statementParams.StatementInitialBalance = initialBalance;
+      statementParams.StatementFinalBalance = finalBalance;
 
       return statementParams;
    }
@@ -644,11 +644,11 @@ function PFCSVFormat5() {
       transaction = {
          'FileName': fileParams.FileName,
          'FileType"': fileParams.FileType,
-         'StatementParamIban': statementParams.StatementParamIban,
-         'StatementParamOwner': statementParams.StatementParamOwner,
-         'StatementParamCurrencyi': statementParams.StatementParamCurrency,
-         'StatementParamInitialBalance': statementParams.StatementParamInitialBalance,
-         'StatementParamFinalBalance': statementParams.StatementParamFinalBalance,
+         'StatementIban': statementParams.StatementIban,
+         'StatementOwner': statementParams.StatementOwner,
+         'StatementCurrency': statementParams.StatementCurrency,
+         'StatementInitialBalance': statementParams.StatementInitialBalance,
+         'StatementFinalBalance': statementParams.StatementFinalBalance,
          'TransactionDate': Banana.Converter.toInternalDateFormat(element[this.colDate], this.dateFormat),
          'TransactionDateValue': '',
          'TransactionDocInvoice': '',
@@ -739,11 +739,11 @@ function PFCSVFormat4() {
       let initialBalance = "";
       let finalBalance = "";
 
-      statementParams.StatementParamIban = iban.replace(/^=/, "");
-      statementParams.StatementParamOwner = statementOwner;
-      statementParams.StatementParamCurrency = statementCurrency.replace(/^=/, "");;
-      statementParams.StatementParamInitialBalance = initialBalance;
-      statementParams.StatementParamFinalBalance = finalBalance;
+      statementParams.StatementIban = iban.replace(/^=/, "");
+      statementParams.StatementOwner = statementOwner;
+      statementParams.StatementCurrency = statementCurrency.replace(/^=/, "");;
+      statementParams.StatementInitialBalance = initialBalance;
+      statementParams.StatementFinalBalance = finalBalance;
 
       return statementParams;
    }
@@ -773,11 +773,11 @@ function PFCSVFormat4() {
       transaction = {
          'FileName': fileParams.FileName,
          'FileType"': fileParams.FileType,
-         'StatementParamIban': statementParams.StatementParamIban,
-         'StatementParamOwner': statementParams.StatementParamOwner,
-         'StatementParamCurrencyi': statementParams.StatementParamCurrency,
-         'StatementParamInitialBalance': statementParams.StatementParamInitialBalance,
-         'StatementParamFinalBalance': statementParams.StatementParamFinalBalance,
+         'StatementIban': statementParams.StatementIban,
+         'StatementOwner': statementParams.StatementOwner,
+         'StatementCurrency': statementParams.StatementCurrency,
+         'StatementInitialBalance': statementParams.StatementInitialBalance,
+         'StatementFinalBalance': statementParams.StatementFinalBalance,
          'TransactionDate': Banana.Converter.toInternalDateFormat(element[this.colDate], this.dateFormat),
          'TransactionDateValue': '',
          'TransactionDocInvoice': '',
@@ -868,11 +868,11 @@ function PFCSVFormat3() {
       let initialBalance = "";
       let finalBalance = "";
 
-      statementParams.StatementParamIban = iban.replace(/^=/, "");
-      statementParams.StatementParamOwner = statementOwner;
-      statementParams.StatementParamCurrency = statementCurrency.replace(/^=/, "");;
-      statementParams.StatementParamInitialBalance = initialBalance;
-      statementParams.StatementParamFinalBalance = finalBalance;
+      statementParams.StatementIban = iban.replace(/^=/, "");
+      statementParams.StatementOwner = statementOwner;
+      statementParams.StatementCurrency = statementCurrency.replace(/^=/, "");;
+      statementParams.StatementInitialBalance = initialBalance;
+      statementParams.StatementFinalBalance = finalBalance;
 
       return statementParams;
    }
@@ -903,11 +903,11 @@ function PFCSVFormat3() {
       transaction = {
          'FileName': fileParams.FileName,
          'FileType"': fileParams.FileType,
-         'StatementParamIban': statementParams.StatementParamIban,
-         'StatementParamOwner': statementParams.StatementParamOwner,
-         'StatementParamCurrencyi': statementParams.StatementParamCurrency,
-         'StatementParamInitialBalance': statementParams.StatementParamInitialBalance,
-         'StatementParamFinalBalance': statementParams.StatementParamFinalBalance,
+         'StatementIban': statementParams.StatementIban,
+         'StatementOwner': statementParams.StatementOwner,
+         'StatementCurrency': statementParams.StatementCurrency,
+         'StatementInitialBalance': statementParams.StatementInitialBalance,
+         'StatementFinalBalance': statementParams.StatementFinalBalance,
          'TransactionDate': Banana.Converter.toInternalDateFormat(element[this.colDate], 'dd-mm-yyyy'),
          'TransactionDateValue': Banana.Converter.toInternalDateFormat(element[this.colDateValuta], 'dd-mm-yyyy'),
          'TransactionDocInvoice': '',
@@ -989,11 +989,11 @@ function PFCSVFormat2() {
       let initialBalance = "";
       let finalBalance = "";
 
-      statementParams.StatementParamIban = iban.replace(/^=/, "");
-      statementParams.StatementParamOwner = statementOwner;
-      statementParams.StatementParamCurrency = statementCurrency.replace(/^=/, "");;
-      statementParams.StatementParamInitialBalance = initialBalance;
-      statementParams.StatementParamFinalBalance = finalBalance;
+      statementParams.StatementIban = iban.replace(/^=/, "");
+      statementParams.StatementOwner = statementOwner;
+      statementParams.StatementCurrency = statementCurrency.replace(/^=/, "");;
+      statementParams.StatementInitialBalance = initialBalance;
+      statementParams.StatementFinalBalance = finalBalance;
 
       return statementParams;
    }
@@ -1022,11 +1022,11 @@ function PFCSVFormat2() {
       transaction = {
          'FileName': fileParams.FileName,
          'FileType"': fileParams.FileType,
-         'StatementParamIban': statementParams.StatementParamIban,
-         'StatementParamOwner': statementParams.StatementParamOwner,
-         'StatementParamCurrencyi': statementParams.StatementParamCurrency,
-         'StatementParamInitialBalance': statementParams.StatementParamInitialBalance,
-         'StatementParamFinalBalance': statementParams.StatementParamFinalBalance,
+         'StatementIban': statementParams.StatementIban,
+         'StatementOwner': statementParams.StatementOwner,
+         'StatementCurrency': statementParams.StatementCurrency,
+         'StatementInitialBalance': statementParams.StatementInitialBalance,
+         'StatementFinalBalance': statementParams.StatementFinalBalance,
          'TransactionDate': element[this.colDate],
          'TransactionDateValue': element[this.colDateValuta],
          'TransactionDocInvoice': '',
@@ -1127,11 +1127,11 @@ function PFCSVFormat1() {
       let initialBalance = "";
       let finalBalance = "";
 
-      statementParams.StatementParamIban = iban;
-      statementParams.StatementParamOwner = statementOwner;
-      statementParams.StatementParamCurrency = statementCurrency.replace(/^=/, "");;
-      statementParams.StatementParamInitialBalance = initialBalance;
-      statementParams.StatementParamFinalBalance = finalBalance;
+      statementParams.StatementIban = iban;
+      statementParams.StatementOwner = statementOwner;
+      statementParams.StatementCurrency = statementCurrency.replace(/^=/, "");;
+      statementParams.StatementInitialBalance = initialBalance;
+      statementParams.StatementFinalBalance = finalBalance;
 
       return statementParams;
    }
@@ -1160,11 +1160,11 @@ function PFCSVFormat1() {
       transaction = {
          'FileName': fileParams.FileName,
          'FileType"': fileParams.FileType,
-         'StatementParamIban': statementParams.StatementParamIban,
-         'StatementParamOwner': statementParams.StatementParamOwner,
-         'StatementParamCurrencyi': statementParams.StatementParamCurrency,
-         'StatementParamInitialBalance': statementParams.StatementParamInitialBalance,
-         'StatementParamFinalBalance': statementParams.StatementParamFinalBalance,
+         'StatementIban': statementParams.StatementIban,
+         'StatementOwner': statementParams.StatementOwner,
+         'StatementCurrency': statementParams.StatementCurrency,
+         'StatementInitialBalance': statementParams.StatementInitialBalance,
+         'StatementFinalBalance': statementParams.StatementFinalBalance,
          'TransactionDate': Banana.Converter.toInternalDateFormat(element[this.colDate], this.dateFormat),
          'TransactionDateValue': Banana.Converter.toInternalDateFormat(element[this.colDateValuta], this.dateFormat),
          'TransactionDocInvoice': '',
@@ -1271,11 +1271,11 @@ function PFCSVFormatSBU1() {
       let initialBalance = "";
       let finalBalance = "";
 
-      statementParams.StatementParamIban = iban.replace(/^=/, "");
-      statementParams.StatementParamOwner = statementOwner;
-      statementParams.StatementParamCurrency = statementCurrency.replace(/^=/, "");;
-      statementParams.StatementParamInitialBalance = initialBalance;
-      statementParams.StatementParamFinalBalance = finalBalance;
+      statementParams.StatementIban = iban.replace(/^=/, "");
+      statementParams.StatementOwner = statementOwner;
+      statementParams.StatementCurrency = statementCurrency.replace(/^=/, "");;
+      statementParams.StatementInitialBalance = initialBalance;
+      statementParams.StatementFinalBalance = finalBalance;
 
       return statementParams;
    }
@@ -1301,11 +1301,11 @@ function PFCSVFormatSBU1() {
       transaction = {
          'FileName': fileParams.FileName,
          'FileType"': fileParams.FileType,
-         'StatementParamIban': statementParams.StatementParamIban,
-         'StatementParamOwner': statementParams.StatementParamOwner,
-         'StatementParamCurrencyi': statementParams.StatementParamCurrency,
-         'StatementParamInitialBalance': statementParams.StatementParamInitialBalance,
-         'StatementParamFinalBalance': statementParams.StatementParamFinalBalance,
+         'StatementIban': statementParams.StatementIban,
+         'StatementOwner': statementParams.StatementOwner,
+         'StatementCurrency': statementParams.StatementCurrency,
+         'StatementInitialBalance': statementParams.StatementInitialBalance,
+         'StatementFinalBalance': statementParams.StatementFinalBalance,
          'TransactionDate': Banana.Converter.toInternalDateFormat(element[this.colDate], this.dateFormat),
          'TransactionDateValue': '',
          'TransactionDocInvoice': '',

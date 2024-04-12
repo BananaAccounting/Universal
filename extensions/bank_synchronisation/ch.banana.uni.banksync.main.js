@@ -347,11 +347,11 @@ var ISO20022_Swiss_JSONConverter = class ISO20022_Swiss_JSONConverter {
         let initialBalance = getStatementBeginBalance(statementNode);
         let finalBalance = getStatementEndBalance(statementNode);
 
-        statementParams.StatementParamIban = iban == "" ? id : iban
-        statementParams.StatementParamOwner = statementOwner;
-        statementParams.StatementParamCurrency = statementCurrency;
-        statementParams.StatementParamInitialBalance = initialBalance;
-        statementParams.StatementParamFinalBalance = finalBalance;
+        statementParams.StatementIban = iban == "" ? id : iban
+        statementParams.StatementOwner = statementOwner;
+        statementParams.StatementCurrency = statementCurrency;
+        statementParams.StatementInitialBalance = initialBalance;
+        statementParams.StatementFinalBalance = finalBalance;
 
         return statementParams;
 
@@ -409,11 +409,11 @@ var ISO20022_Swiss_JSONConverter = class ISO20022_Swiss_JSONConverter {
                         'FileName': fileParams.FileName,
                         'FileType': fileParams.FileType,
                         'FileCreationDate': fileParams.FileCreationDate,
-                        'StatementParamIban': statementParams.StatementParamIban,
-                        'StatementParamOwner': statementParams.StatementParamOwner,
-                        'StatementParamCurrency': statementParams.StatementParamCurrency,
-                        'StatementParamInitialBalance': statementParams.StatementParamInitialBalance,
-                        'StatementParamFinalBalance': statementParams.StatementParamFinalBalance,
+                        'StatementIban': statementParams.StatementIban,
+                        'StatementOwner': statementParams.StatementOwner,
+                        'StatementCurrency': statementParams.StatementCurrency,
+                        'StatementInitialBalance': statementParams.StatementInitialBalance,
+                        'StatementFinalBalance': statementParams.StatementFinalBalance,
                         'TransactionDate': entryBookingDate,
                         'TransactionDateValue': entryValutaDate,
                         'TransactionDocInvoice': '',
@@ -454,11 +454,11 @@ var ISO20022_Swiss_JSONConverter = class ISO20022_Swiss_JSONConverter {
                             'FileName': fileParams.FileName,
                             'FileType': fileParams.FileType,
                             'FileCreationDate': fileParams.FileCreationDate,
-                            'StatementParamIban': statementParams.StatementParamIban,
-                            'StatementParamOwner': statementParams.StatementParamOwner,
-                            'StatementParamCurrency': statementParams.StatementParamCurrency,
-                            'StatementParamInitialBalance': statementParams.StatementParamInitialBalance,
-                            'StatementParamFinalBalance': statementParams.StatementParamFinalBalance,
+                            'StatementIban': statementParams.StatementIban,
+                            'StatementOwner': statementParams.StatementOwner,
+                            'StatementCurrency': statementParams.StatementCurrency,
+                            'StatementInitialBalance': statementParams.StatementInitialBalance,
+                            'StatementFinalBalance': statementParams.StatementFinalBalance,
                             'TransactionDate': entryBookingDate,
                             'TransactionDateValue': entryValutaDate,
                             //'DocInvoice': invoiceNumber,
@@ -500,11 +500,11 @@ var ISO20022_Swiss_JSONConverter = class ISO20022_Swiss_JSONConverter {
                         'FileName': fileParams.FileName,
                         'FileType': fileParams.FileType,
                         'FileCreationDate': fileParams.FileCreationDate,
-                        'StatementParamIban': statementParams.StatementParamIban,
-                        'StatementParamOwner': statementParams.StatementParamOwner,
-                        'StatementParamCurrency': statementParams.StatementParamCurrency,
-                        'StatementParamInitialBalance': statementParams.StatementParamInitialBalance,
-                        'StatementParamFinalBalance': statementParams.StatementParamFinalBalance,
+                        'StatementIban': statementParams.StatementIban,
+                        'StatementOwner': statementParams.StatementOwner,
+                        'StatementCurrency': statementParams.StatementCurrency,
+                        'StatementInitialBalance': statementParams.StatementInitialBalance,
+                        'StatementFinalBalance': statementParams.StatementFinalBalance,
                         'TransactionDate': entryBookingDate,
                         'TransactionDateValue': entryValutaDate,
                         'TransactionDocInvoice': '',
@@ -530,11 +530,11 @@ var ISO20022_Swiss_JSONConverter = class ISO20022_Swiss_JSONConverter {
                 'FileName': fileParams.FileName,
                 'FileType': fileParams.FileType,
                 'FileCreationDate': fileParams.FileCreationDate,
-                'StatementParamIban': statementParams.StatementParamIban,
-                'StatementParamOwner': statementParams.StatementParamOwner,
-                'StatementParamCurrency': statementParams.StatementParamCurrency,
-                'StatementParamInitialBalance': statementParams.StatementParamInitialBalance,
-                'StatementParamFinalBalance': statementParams.StatementParamFinalBalance,
+                'StatementIban': statementParams.StatementIban,
+                'StatementOwner': statementParams.StatementOwner,
+                'StatementCurrency': statementParams.StatementCurrency,
+                'StatementInitialBalance': statementParams.StatementInitialBalance,
+                'StatementFinalBalance': statementParams.StatementFinalBalance,
                 'TransactionDate': entryBookingDate,
                 'TransactionDateValue': entryValutaDate,
                 'TransactionDocInvoice': '',
