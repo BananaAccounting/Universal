@@ -1,0 +1,19 @@
+{
+    "category": "Import",
+    "country": "universal",
+    "countryCode": "un",
+    "description": "SumUp - Import movements .csv (Banana+ Advanced)",
+    "description.en": "SumUp - Import movements .csv (Banana+ Advanced)",
+    "description.it": "SumUp - Importa movimenti .csv (Banana+ Advanced)",
+    "description.de": "SumUp - Bewegungen importieren .csv (Banana+ Advanced)",
+    "description.fr": "SumUp - Importer mouvements .csv (Banana+ Advanced)",
+    "id": "ch.banana.uni.import.sumup",
+    "language": "en",
+    "publisher": "Banana.ch",
+    "title": "SumUp - Import movements .csv (Banana+ Advanced)",
+    "title.en": "SumUp - Import movements .csv (Banana+ Advanced)",
+    "title.it": "SumUp - Importa movimenti .csv (Banana+ Advanced)",
+    "title.de": "SumUp - Bewegungen importieren .csv (Banana+ Advanced)",
+    "title.fr": "SumUp - Importer mouvements .csv (Banana+ Advanced)",
+    "version": "1.0"
+}
