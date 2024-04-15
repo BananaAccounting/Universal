@@ -188,7 +188,7 @@ var ISO20022_Swiss_JSONConverter = class ISO20022_Swiss_JSONConverter {
         let root = xmlDoc.firstChildElement(); // Document
         if (!root)
             return false;
-        let docNs = root.attribute('xmlns');
+        let docNs = root.attribute('xmlns'); // non trova questo.
         let rootFirstChildNodeName = root.firstChildElement().nodeName;
         // Check for CAMT.052
         if ((rootFirstChildNodeName.indexOf('BkToCstmrAcctRpt') >= 0)
@@ -198,6 +198,7 @@ var ISO20022_Swiss_JSONConverter = class ISO20022_Swiss_JSONConverter {
         }
 
         // Check for CAMT.053
+        Banana.console.debug(docNs);
         if ((rootFirstChildNodeName.indexOf('BkToCstmrStmt') >= 0)
             && docNs.indexOf('camt.053') >= 0) {
             this.camtType = "CAMT.053";
@@ -571,6 +572,7 @@ var ISO20022_General_JSONConverter = class ISO20022_General_JSONConverter {
    */
     match(fileContent) {
         let xmlDoc = Banana.Xml.parse(fileContent);
+        //Banana.console.debug("error: " + Banana.Xml.errorString);
         if (!xmlDoc)
             return false;
         let root = xmlDoc.firstChildElement();
