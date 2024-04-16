@@ -6,6 +6,8 @@
 
 ## Developments Notes
 
+-Use SQLite Manager to visualise the content of a SQLite .db file, this is an extension on Chrome.
+
 ### Synchronise the accounting using .xml (camt) files.
 - Some statements does not have an account IBAN but they have a Id wich is also a specific reference to the account for the bank:
    1) Banking systems not based on IBAN: In some regions or for some banks, the IBAN might not be the standard method for identifying bank accounts. In these cases, an alternative ID provided by the bank is the primary way to identify an account.
