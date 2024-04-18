@@ -399,6 +399,10 @@ function PFCSVFormat6() {
 
    this.mapTransaction = function (transaction, fileParams, statementParams) {
       let trDescription = transaction["Description"] + ", " + transaction["Type"];
+      let trDate = transaction["Date"];
+      let trIncome = transaction["Income"];
+      let trExpenses = transaction["Expenses"];
+      let trTexts = trDate + trIncome + trExpenses + trDescription;
       transaction = {
          'FileName': fileParams.FileName,
          'FileType"': fileParams.FileType,
@@ -407,13 +411,13 @@ function PFCSVFormat6() {
          'StatementCurrency': statementParams.StatementCurrency,
          'StatementInitialBalance': statementParams.StatementInitialBalance,
          'StatementFinalBalance': statementParams.StatementFinalBalance,
-         'TransactionDate': Banana.Converter.toInternalDateFormat(transaction["Date"], "dd.mm.yyyy"),
+         'TransactionDate': Banana.Converter.toInternalDateFormat(trDate, "dd.mm.yyyy"),
          'TransactionDateValue': '',
          'TransactionDescription': '',
          'TransactionDescription': trDescription,
-         'TransactionIncome': Banana.Converter.toInternalNumberFormat(transaction["Income"], '.'),
-         'TransactionExpenses': Banana.Converter.toInternalNumberFormat(Banana.SDecimal.abs(transaction["Expenses"]), '.'),
-         'TransactionExternalReference': '',
+         'TransactionIncome': Banana.Converter.toInternalNumberFormat(trIncome, '.'),
+         'TransactionExpenses': Banana.Converter.toInternalNumberFormat(Banana.SDecimal.abs(trExpenses), '.'),
+         'TransactionExternalReference': getHash(trTexts, fileParams, statementParams),
          'TransactionContraAccount': '',
          'TransactionCc1': '',
          'TransactionCc2': '',
@@ -525,6 +529,8 @@ function PFCSVFormat1_CreditCard() {
       var tidyDescr = element[this.colDescr].replace(/ {2,}/g, ''); //remove white spaces
       var crAmount = element[this.colCredit].replace(/-/g, ''); //remove minus sign
       var dbAmount = element[this.colDebit].replace(/-/g, ''); //remove minus sign
+      let trDate = element[this.colDate];
+      let trTexts = trDate + crAmount + dbAmount + tidyDescr;
 
       transaction = {
          'FileName': fileParams.FileName,
@@ -534,13 +540,13 @@ function PFCSVFormat1_CreditCard() {
          'StatementCurrency': statementParams.StatementCurrency,
          'StatementInitialBalance': statementParams.StatementInitialBalance,
          'StatementFinalBalance': statementParams.StatementFinalBalance,
-         'TransactionDate': Banana.Converter.toInternalDateFormat(element[this.colDate], this.dateFormat),
+         'TransactionDate': Banana.Converter.toInternalDateFormat(trDate, this.dateFormat),
          'TransactionDateValue': '',
          'TransactionDocInvoice': '',
          'TransactionDescription': Banana.Converter.stringToCamelCase(tidyDescr),
          'TransactionIncome': Banana.Converter.toInternalNumberFormat(crAmount),
          'TransactionExpenses': Banana.Converter.toInternalNumberFormat(dbAmount),
-         'TransactionExternalReference': '',
+         'TransactionExternalReference': getHash(trTexts, fileParams, statementParams),
          'TransactionContraAccount': '',
          'TransactionCc1': '',
          'TransactionCc2': '',
@@ -638,8 +644,11 @@ function PFCSVFormat5() {
 
 
    this.mapTransaction = function (element, fileParams, statementParams) {
-      var tidyDescr = element[this.colDescr].replace(/ {2,}/g, ''); //remove white spaces
-      amountDebit = element[this.colDebit].replace(/-/g, ''); //remove minus sign
+      let tidyDescr = element[this.colDescr].replace(/ {2,}/g, ''); //remove white spaces
+      let amountDebit = element[this.colDebit].replace(/-/g, ''); //remove minus sign
+      let amountCredit = element[this.colCredit];
+      let trDate = element[this.colDate];
+      let trTexts = trDate + amountCredit + amountDebit + tidyDescr;
 
       transaction = {
          'FileName': fileParams.FileName,
@@ -649,13 +658,13 @@ function PFCSVFormat5() {
          'StatementCurrency': statementParams.StatementCurrency,
          'StatementInitialBalance': statementParams.StatementInitialBalance,
          'StatementFinalBalance': statementParams.StatementFinalBalance,
-         'TransactionDate': Banana.Converter.toInternalDateFormat(element[this.colDate], this.dateFormat),
+         'TransactionDate': Banana.Converter.toInternalDateFormat(trDate, this.dateFormat),
          'TransactionDateValue': '',
          'TransactionDocInvoice': '',
          'TransactionDescription': Banana.Converter.stringToCamelCase(tidyDescr),
-         'TransactionIncome': Banana.Converter.toInternalNumberFormat(element[this.colCredit]),
+         'TransactionIncome': Banana.Converter.toInternalNumberFormat(amountCredit),
          'TransactionExpenses': Banana.Converter.toInternalNumberFormat(amountDebit),
-         'TransactionExternalReference': '',
+         'TransactionExternalReference': getHash(trTexts, fileParams, statementParams),
          'TransactionContraAccount': '',
          'TransactionCc1': '',
          'TransactionCc2': '',
@@ -769,6 +778,8 @@ function PFCSVFormat4() {
       var tidyDescr = element[this.colDescr].replace(/ {2,}/g, ''); //remove white spaces
       var crAmount = element[this.colCredit].replace(/-/g, ''); //remove minus sign
       var dbAmount = element[this.colDebit].replace(/-/g, ''); //remove minus sign
+      let trDate = element[this.colDate];
+      let trTexts = trDate + crAmount + dbAmount + tidyDescr;
 
       transaction = {
          'FileName': fileParams.FileName,
@@ -778,13 +789,13 @@ function PFCSVFormat4() {
          'StatementCurrency': statementParams.StatementCurrency,
          'StatementInitialBalance': statementParams.StatementInitialBalance,
          'StatementFinalBalance': statementParams.StatementFinalBalance,
-         'TransactionDate': Banana.Converter.toInternalDateFormat(element[this.colDate], this.dateFormat),
+         'TransactionDate': Banana.Converter.toInternalDateFormat(trDate, this.dateFormat),
          'TransactionDateValue': '',
          'TransactionDocInvoice': '',
          'TransactionDescription': Banana.Converter.stringToCamelCase(tidyDescr),
          'TransactionIncome': Banana.Converter.toInternalNumberFormat(crAmount),
          'TransactionExpenses': Banana.Converter.toInternalNumberFormat(dbAmount),
-         'TransactionExternalReference': '',
+         'TransactionExternalReference': getHash(trTexts, fileParams, statementParams),
          'TransactionContraAccount': '',
          'TransactionCc1': '',
          'TransactionCc2': '',
@@ -899,6 +910,9 @@ function PFCSVFormat3() {
       var tidyDescr = element[this.colDescr].replace(/ {2,}/g, ''); //remove white spaces
       var crAmount = element[this.colCredit].replace(/-/g, ''); //remove minus sign
       var dbAmount = element[this.colDebit].replace(/-/g, ''); //remove minus sign
+      let trDate = element[this.colDate];
+      let trDateValuta = element[this.colDateValuta];
+      let trTexts = trDate + trDateValuta + crAmount + dbAmount + tidyDescr;
 
       transaction = {
          'FileName': fileParams.FileName,
@@ -908,13 +922,13 @@ function PFCSVFormat3() {
          'StatementCurrency': statementParams.StatementCurrency,
          'StatementInitialBalance': statementParams.StatementInitialBalance,
          'StatementFinalBalance': statementParams.StatementFinalBalance,
-         'TransactionDate': Banana.Converter.toInternalDateFormat(element[this.colDate], 'dd-mm-yyyy'),
-         'TransactionDateValue': Banana.Converter.toInternalDateFormat(element[this.colDateValuta], 'dd-mm-yyyy'),
+         'TransactionDate': Banana.Converter.toInternalDateFormat(trDate, 'dd-mm-yyyy'),
+         'TransactionDateValue': Banana.Converter.toInternalDateFormat(trDateValuta, 'dd-mm-yyyy'),
          'TransactionDocInvoice': '',
          'TransactionDescription': Banana.Converter.stringToCamelCase(tidyDescr),
          'TransactionIncome': Banana.Converter.toInternalNumberFormat(crAmount),
          'TransactionExpenses': Banana.Converter.toInternalNumberFormat(dbAmount),
-         'TransactionExternalReference': '',
+         'TransactionExternalReference': getHash(trTexts, fileParams, statementParams),
          'TransactionContraAccount': '',
          'TransactionCc1': '',
          'TransactionCc2': '',
@@ -1018,6 +1032,11 @@ function PFCSVFormat2() {
 
    this.mapTransaction = function (element, fileParams, statementParams) {
       var tidyDescr = element[this.colDescr].replace(/ {2,}/g, ' '); //remove white spaces
+      var crAmount = element[this.colCredit].replace(/-/g, ''); //remove minus sign
+      var dbAmount = element[this.colDebit].replace(/-/g, ''); //remove minus sign
+      let trDate = element[this.colDate];
+      let trDateValuta = element[this.colDateValuta];
+      let trTexts = trDate + trDateValuta + crAmount + dbAmount + tidyDescr;
 
       transaction = {
          'FileName': fileParams.FileName,
@@ -1027,13 +1046,13 @@ function PFCSVFormat2() {
          'StatementCurrency': statementParams.StatementCurrency,
          'StatementInitialBalance': statementParams.StatementInitialBalance,
          'StatementFinalBalance': statementParams.StatementFinalBalance,
-         'TransactionDate': element[this.colDate],
-         'TransactionDateValue': element[this.colDateValuta],
+         'TransactionDate': trDate,
+         'TransactionDateValue': trDateValuta,
          'TransactionDocInvoice': '',
          'TransactionDescription': Banana.Converter.stringToCamelCase(tidyDescr),
-         'TransactionIncome': Banana.Converter.toInternalNumberFormat(element[this.colCredit]),
-         'TransactionExpenses': Banana.Converter.toInternalNumberFormat(element[this.colDebit]),
-         'TransactionExternalReference': '',
+         'TransactionIncome': Banana.Converter.toInternalNumberFormat(crAmount),
+         'TransactionExpenses': Banana.Converter.toInternalNumberFormat(dbAmount),
+         'TransactionExternalReference': getHash(trTexts, fileParams, statementParams),
          'TransactionContraAccount': '',
          'TransactionCc1': '',
          'TransactionCc2': '',
@@ -1156,6 +1175,9 @@ function PFCSVFormat1() {
       var tidyDescr = element[this.colDescr].replace(/ {2,}/g, ''); // remove white spaces
       var crAmount = element[this.colCredit].replace(/\+/g, ''); // remove plus sign
       var dbAmount = element[this.colDebit].replace(/-/g, ''); // remove minus sign
+      let trDate = element[this.colDate];
+      let trDateValuta = element[this.colDateValuta];
+      let trTexts = trDate + trDateValuta + crAmount + dbAmount + tidyDescr;
 
       transaction = {
          'FileName': fileParams.FileName,
@@ -1165,13 +1187,13 @@ function PFCSVFormat1() {
          'StatementCurrency': statementParams.StatementCurrency,
          'StatementInitialBalance': statementParams.StatementInitialBalance,
          'StatementFinalBalance': statementParams.StatementFinalBalance,
-         'TransactionDate': Banana.Converter.toInternalDateFormat(element[this.colDate], this.dateFormat),
-         'TransactionDateValue': Banana.Converter.toInternalDateFormat(element[this.colDateValuta], this.dateFormat),
+         'TransactionDate': Banana.Converter.toInternalDateFormat(trDate, this.dateFormat),
+         'TransactionDateValue': Banana.Converter.toInternalDateFormat(trDateValuta, this.dateFormat),
          'TransactionDocInvoice': '',
          'TransactionDescription': Banana.Converter.stringToCamelCase(tidyDescr),
          'TransactionIncome': Banana.Converter.toInternalNumberFormat(crAmount, this.decimalSeparator),
          'TransactionExpenses': Banana.Converter.toInternalNumberFormat(dbAmount, this.decimalSeparator),
-         'TransactionExternalReference': '',
+         'TransactionExternalReference': getHash(trTexts, fileParams, statementParams),
          'TransactionContraAccount': '',
          'TransactionCc1': '',
          'TransactionCc2': '',
@@ -1298,6 +1320,11 @@ function PFCSVFormatSBU1() {
    }
 
    this.mapTransaction = function (element, fileParams, statementParams) {
+      var trDescr = element[this.colDescr];
+      var crAmount = element[this.colCredit];
+      let trDate = element[this.colDate];
+      let trTexts = trDate + crAmount + trDescr;
+
       transaction = {
          'FileName': fileParams.FileName,
          'FileType"': fileParams.FileType,
@@ -1306,13 +1333,13 @@ function PFCSVFormatSBU1() {
          'StatementCurrency': statementParams.StatementCurrency,
          'StatementInitialBalance': statementParams.StatementInitialBalance,
          'StatementFinalBalance': statementParams.StatementFinalBalance,
-         'TransactionDate': Banana.Converter.toInternalDateFormat(element[this.colDate], this.dateFormat),
+         'TransactionDate': Banana.Converter.toInternalDateFormat(trDate, this.dateFormat),
          'TransactionDateValue': '',
          'TransactionDocInvoice': '',
-         'TransactionDescription': element[this.colDescr],
-         'TransactionIncome': Banana.Converter.toInternalNumberFormat(element[this.colCredit], this.decimalSeparator),
+         'TransactionDescription': trDescr,
+         'TransactionIncome': Banana.Converter.toInternalNumberFormat(crAmount, this.decimalSeparator),
          'TransactionExpenses': '',
-         'TransactionExternalReference': '',
+         'TransactionExternalReference': getHash(trTexts, fileParams, statementParams),
          'TransactionContraAccount': '',
          'TransactionCc1': '',
          'TransactionCc2': '',
@@ -1360,5 +1387,28 @@ function findSeparator(string) {
 function clearText(text) {
    // Sostituisce tutte le occorrenze multiple di "\r\r\n" con un singolo "\r\n"
    return text.replace(/\r\r\n/g, "\r\n");
+}
+
+function getHash(entryTexts, fileParams, statementParams) {
+
+   let entryId = "";
+   let textToHash = entryTexts +
+      fileParams.filaName +
+      fileParams.FileType +
+      fileParams.FileCreationDate +
+      statementParams +
+      statementParams.StatementIban +
+      statementParams.StatementOwner +
+      statementParams.StatementIban +
+      statementParams.StatementCurrency +
+      statementParams.StatementInitialBalance +
+      statementParams.StatementFinalBalance;
+
+   entryId = Banana.Converter.textToHash(textToHash, "Sha256");
+
+   //Banana.console.debug(textToHash + " / " + entryId);
+
+   return entryId;
+
 }
 

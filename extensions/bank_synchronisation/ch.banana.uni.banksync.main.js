@@ -388,7 +388,9 @@ var ISO20022_Swiss_JSONConverter = class ISO20022_Swiss_JSONConverter {
         let entryIsCredit = entryNode.firstChildElement('CdtDbtInd').text === 'CRDT';
         let entryAmount = entryNode.firstChildElement('Amt').text;
         let entryDescription = entryNode.hasChildElements('AddtlNtryInf') ? entryNode.firstChildElement('AddtlNtryInf').text : '';
-        let entryExternalReference = entryNode.hasChildElements('AcctSvcrRef') ? entryNode.firstChildElement('AcctSvcrRef').text : '';
+        let entryTexts = entryBookingDate + entryValutaDate + entryAmount + entryDescription;
+        let entryExternalReference = entryNode.hasChildElements('AcctSvcrRef') && entryNode.firstChildElement('AcctSvcrRef').text.length >= 0 ?
+            entryNode.firstChildElement('AcctSvcrRef').text : getHash(entryTexts, fileParams, statementParams);
 
         if (entryNode.hasChildElements('NtryDtls')) {
             let detailsNode = entryNode.firstChildElement('NtryDtls');
@@ -434,15 +436,16 @@ var ISO20022_Swiss_JSONConverter = class ISO20022_Swiss_JSONConverter {
                         let deatailsIsCredit = cdtDbtIndNode && cdtDbtIndNode.text === 'CRDT' ? true : entryIsCredit;
                         let deatailAmount = readStatementEntryDetailsAmount(textDetailsNode);
                         let acctSvcrRefNode = firstGrandChildElement(textDetailsNode, ['Refs', 'AcctSvcrRef']);
-                        let detailExternalReference = acctSvcrRefNode ? acctSvcrRefNode.text : '';
                         let instrIdNode = firstGrandChildElement(textDetailsNode, ['Refs', 'InstrId']);
-
-                        //let invoiceNumber = extractInvoiceNumber(detailEsrReference); // Da valutare.
-
                         // Build description
                         let detailDescription = readStatementEntryDetailsDescription(textDetailsNode, deatailsIsCredit);
                         if (detailDescription.length === 0 && instrIdNode)
                             detailDescription = instrIdNode.text;
+                        // Set External reference
+                        let entryDetailTexts = entryBookingDate + entryValutaDate + deatailAmount + detailDescription;
+                        let detailExternalReference = acctSvcrRefNode && acctSvcrRefNode.text.length >= 0 ? acctSvcrRefNode.text : getHash(entryDetailTexts, fileParams, statementParams);
+
+                        //let invoiceNumber = extractInvoiceNumber(detailEsrReference); // Da valutare.
 
                         if (txDtlsCount === 1) {
                             deatailAmount = entryAmount;
@@ -1008,6 +1011,29 @@ function readStatementEntryDetailsAddress(detailsNode, isCredit) {
 function joinNotEmpty(texts, separator) {
     let cleanTexts = texts.filter(function (n) { return n && n.trim().length });
     return cleanTexts.join(separator);
+}
+
+function getHash(entryTexts, fileParams, statementParams) {
+
+    let entryId = "";
+    let textToHash = entryTexts +
+        fileParams.filaName +
+        fileParams.FileType +
+        fileParams.FileCreationDate +
+        statementParams +
+        statementParams.StatementIban +
+        statementParams.StatementOwner +
+        statementParams.StatementIban +
+        statementParams.StatementCurrency +
+        statementParams.StatementInitialBalance +
+        statementParams.StatementFinalBalance;
+
+    entryId = Banana.Converter.textToHash(textToHash, "Sha256");
+
+    //Banana.console.debug(textToHash + " / " + entryId);
+
+    return entryId;
+
 }
 
 function getCsvBanksList() {
