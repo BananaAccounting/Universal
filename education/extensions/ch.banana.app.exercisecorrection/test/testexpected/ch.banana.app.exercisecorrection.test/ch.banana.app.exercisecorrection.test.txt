@@ -43,17 +43,22 @@
                                         {
                                             "fields": {
                                                 "AccountCredit": "Salaries",
-                                                "AccountDebit": "Credits",
-                                                "Amount": "5000.00",
-                                                "Date": "2023-01-01",
+                                                "AccountDebit": "Debts",
+                                                "Amount": "4000.00",
+                                                "CalculationNotes": "Wrong: Debit Account; Credit Account; Amount; Date;",
+                                                "CalculationScore": "",
+                                                "Date": "2023-01-04",
                                                 "Description": "Invoices to customers for executed services",
                                                 "Doc": "1",
-                                                "MaxScore": "3",
-                                                "Score": "2"
+                                                "MaxScore": "4",
+                                                "TeacherScore": ""
                                             },
                                             "operation": {
                                                 "name": "modify",
                                                 "sequence": "1"
+                                            },
+                                            "style": {
+                                                "background-color": "#ff8198"
                                             }
                                         },
                                         {
@@ -61,15 +66,20 @@
                                                 "AccountCredit": "Debts",
                                                 "AccountDebit": "Earnings Sales",
                                                 "Amount": "1500.00",
+                                                "CalculationNotes": "Wrong: Debit Account;",
+                                                "CalculationScore": "3",
                                                 "Date": "2023-01-01",
                                                 "Description": "Invoices from suppliers for plants purchases",
                                                 "Doc": "2",
-                                                "MaxScore": "3",
-                                                "Score": "2"
+                                                "MaxScore": "4",
+                                                "TeacherScore": "3"
                                             },
                                             "operation": {
                                                 "name": "modify",
                                                 "sequence": "4"
+                                            },
+                                            "style": {
+                                                "background-color": "#ff8198"
                                             }
                                         },
                                         {
@@ -77,95 +87,20 @@
                                                 "AccountCredit": "Earnings Sales",
                                                 "AccountDebit": "Credits",
                                                 "Amount": "3000.00",
+                                                "CalculationNotes": "",
+                                                "CalculationScore": "4",
                                                 "Date": "2023-01-01",
                                                 "Description": "Invoices to customers for plants sales",
                                                 "Doc": "3",
-                                                "MaxScore": "3",
-                                                "Score": "3"
+                                                "MaxScore": "4",
+                                                "TeacherScore": "4"
                                             },
                                             "operation": {
                                                 "name": "modify",
                                                 "sequence": "7"
-                                            }
-                                        },
-                                        {
-                                            "fields": {
-                                                "AccountCredit": "",
-                                                "AccountDebit": "Salaries",
-                                                "Amount": "1000.00",
-                                                "Date": "2023-01-02",
-                                                "Description": "Payment of workers' salaries",
-                                                "Doc": "4",
-                                                "MaxScore": "3",
-                                                "Score": "3"
                                             },
-                                            "operation": {
-                                                "name": "modify",
-                                                "sequence": "11"
-                                            }
-                                        },
-                                        {
-                                            "fields": {
-                                                "AccountCredit": "",
-                                                "AccountDebit": "Other Costs",
-                                                "Amount": "50.00",
-                                                "Date": "2023-01-02",
-                                                "Description": "Payment of bank interest",
-                                                "Doc": "4",
-                                                "MaxScore": "3",
-                                                "Score": "2"
-                                            },
-                                            "operation": {
-                                                "name": "modify",
-                                                "sequence": "12"
-                                            }
-                                        },
-                                        {
-                                            "fields": {
-                                                "AccountCredit": "",
-                                                "AccountDebit": "Purchases",
-                                                "Amount": "50.00",
-                                                "Date": "2023-01-02",
-                                                "Description": "Payment of office equipment",
-                                                "Doc": "4",
-                                                "MaxScore": "3",
-                                                "Score": "2"
-                                            },
-                                            "operation": {
-                                                "name": "modify",
-                                                "sequence": "13"
-                                            }
-                                        },
-                                        {
-                                            "fields": {
-                                                "AccountCredit": "",
-                                                "AccountDebit": "Energy",
-                                                "Amount": "300.00",
-                                                "Date": "2023-01-02",
-                                                "Description": "Payment of electricity invoice",
-                                                "Doc": "4",
-                                                "MaxScore": "3",
-                                                "Score": "3"
-                                            },
-                                            "operation": {
-                                                "name": "modify",
-                                                "sequence": "14"
-                                            }
-                                        },
-                                        {
-                                            "fields": {
-                                                "AccountCredit": "",
-                                                "AccountDebit": "Advertising",
-                                                "Amount": "100.00",
-                                                "Date": "2023-01-02",
-                                                "Description": "Payment of advertising agency invoice",
-                                                "Doc": "4",
-                                                "MaxScore": "3",
-                                                "Score": "3"
-                                            },
-                                            "operation": {
-                                                "name": "modify",
-                                                "sequence": "15"
+                                            "style": {
+                                                "background-color": "#afffaf"
                                             }
                                         },
                                         {
@@ -173,15 +108,125 @@
                                                 "AccountCredit": "Bank",
                                                 "AccountDebit": "",
                                                 "Amount": "1500.00",
+                                                "CalculationNotes": "",
+                                                "CalculationScore": "4",
                                                 "Date": "2023-01-02",
                                                 "Description": "Bank transfer for miscellaneous expenses",
                                                 "Doc": "4",
-                                                "MaxScore": "3",
-                                                "Score": "3"
+                                                "MaxScore": "4",
+                                                "TeacherScore": "4"
+                                            },
+                                            "operation": {
+                                                "name": "modify",
+                                                "sequence": "11"
+                                            },
+                                            "style": {
+                                                "background-color": "#afffaf"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "",
+                                                "AccountDebit": "Salaries",
+                                                "Amount": "1000.00",
+                                                "CalculationNotes": "",
+                                                "CalculationScore": "4",
+                                                "Date": "2023-01-02",
+                                                "Description": "Payment of workers' salaries",
+                                                "Doc": "4",
+                                                "MaxScore": "4",
+                                                "TeacherScore": "4"
+                                            },
+                                            "operation": {
+                                                "name": "modify",
+                                                "sequence": "12"
+                                            },
+                                            "style": {
+                                                "background-color": "#afffaf"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "",
+                                                "AccountDebit": "Other Costs",
+                                                "Amount": "50.00",
+                                                "CalculationNotes": "",
+                                                "CalculationScore": "4",
+                                                "Date": "2023-01-02",
+                                                "Description": "Payment of bank interest",
+                                                "Doc": "4",
+                                                "MaxScore": "4",
+                                                "TeacherScore": "4"
+                                            },
+                                            "operation": {
+                                                "name": "modify",
+                                                "sequence": "13"
+                                            },
+                                            "style": {
+                                                "background-color": "#afffaf"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "",
+                                                "AccountDebit": "Purchases",
+                                                "Amount": "50.00",
+                                                "CalculationNotes": "Wrong: Debit Account;",
+                                                "CalculationScore": "3",
+                                                "Date": "2023-01-02",
+                                                "Description": "Payment of office equipment",
+                                                "Doc": "4",
+                                                "MaxScore": "4",
+                                                "TeacherScore": "3"
+                                            },
+                                            "operation": {
+                                                "name": "modify",
+                                                "sequence": "14"
+                                            },
+                                            "style": {
+                                                "background-color": "#ff8198"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "",
+                                                "AccountDebit": "Energy",
+                                                "Amount": "300.00",
+                                                "CalculationNotes": "",
+                                                "CalculationScore": "4",
+                                                "Date": "2023-01-02",
+                                                "Description": "Payment of electricity invoice",
+                                                "Doc": "4",
+                                                "MaxScore": "4",
+                                                "TeacherScore": "4"
+                                            },
+                                            "operation": {
+                                                "name": "modify",
+                                                "sequence": "15"
+                                            },
+                                            "style": {
+                                                "background-color": "#afffaf"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "",
+                                                "AccountDebit": "Advertising",
+                                                "Amount": "100.00",
+                                                "CalculationNotes": "",
+                                                "CalculationScore": "4",
+                                                "Date": "2023-01-02",
+                                                "Description": "Payment of advertising agency invoice",
+                                                "Doc": "4",
+                                                "MaxScore": "4",
+                                                "TeacherScore": "4"
                                             },
                                             "operation": {
                                                 "name": "modify",
                                                 "sequence": "16"
+                                            },
+                                            "style": {
+                                                "background-color": "#afffaf"
                                             }
                                         },
                                         {
@@ -189,15 +234,20 @@
                                                 "AccountCredit": "Credits",
                                                 "AccountDebit": "Earnings Services",
                                                 "Amount": "300.00",
-                                                "Date": "2023-01-03",
+                                                "CalculationNotes": "Wrong: Date;",
+                                                "CalculationScore": "3",
+                                                "Date": "2023-01-04",
                                                 "Description": "Credit note (reason: our mistake)",
                                                 "Doc": "5",
-                                                "MaxScore": "3",
-                                                "Score": "3"
+                                                "MaxScore": "4",
+                                                "TeacherScore": "3"
                                             },
                                             "operation": {
                                                 "name": "modify",
                                                 "sequence": "19"
+                                            },
+                                            "style": {
+                                                "background-color": "#ff8198"
                                             }
                                         },
                                         {
@@ -205,15 +255,20 @@
                                                 "AccountCredit": "Bank",
                                                 "AccountDebit": "Cash",
                                                 "Amount": "1000.00",
+                                                "CalculationNotes": "",
+                                                "CalculationScore": "4",
                                                 "Date": "2023-01-04",
                                                 "Description": "Fund withdrawal",
                                                 "Doc": "6",
-                                                "MaxScore": "3",
-                                                "Score": "3"
+                                                "MaxScore": "4",
+                                                "TeacherScore": "4"
                                             },
                                             "operation": {
                                                 "name": "modify",
                                                 "sequence": "22"
+                                            },
+                                            "style": {
+                                                "background-color": "#afffaf"
                                             }
                                         },
                                         {
@@ -221,15 +276,20 @@
                                                 "AccountCredit": "Credits",
                                                 "AccountDebit": "Bank",
                                                 "Amount": "2000.00",
+                                                "CalculationNotes": "",
+                                                "CalculationScore": "4",
                                                 "Date": "2023-01-05",
                                                 "Description": "Bank transfer from customer (invoice payment)",
                                                 "Doc": "7",
-                                                "MaxScore": "3",
-                                                "Score": "3"
+                                                "MaxScore": "4",
+                                                "TeacherScore": "4"
                                             },
                                             "operation": {
                                                 "name": "modify",
                                                 "sequence": "25"
+                                            },
+                                            "style": {
+                                                "background-color": "#afffaf"
                                             }
                                         },
                                         {
@@ -237,15 +297,20 @@
                                                 "AccountCredit": "Cash",
                                                 "AccountDebit": "Debts",
                                                 "Amount": "1000.00",
+                                                "CalculationNotes": "",
+                                                "CalculationScore": "4",
                                                 "Date": "2023-01-06",
                                                 "Description": "Cash transfer to supplier (invoice payment)",
                                                 "Doc": "8",
-                                                "MaxScore": "3",
-                                                "Score": "3"
+                                                "MaxScore": "4",
+                                                "TeacherScore": "4"
                                             },
                                             "operation": {
                                                 "name": "modify",
                                                 "sequence": "28"
+                                            },
+                                            "style": {
+                                                "background-color": "#afffaf"
                                             }
                                         },
                                         {
@@ -253,15 +318,20 @@
                                                 "AccountCredit": "",
                                                 "AccountDebit": "Cash",
                                                 "Amount": "500.00",
+                                                "CalculationNotes": "",
+                                                "CalculationScore": "4",
                                                 "Date": "2023-01-07",
                                                 "Description": "Cash receipt for work performed and flower sales",
                                                 "Doc": "9",
-                                                "MaxScore": "3",
-                                                "Score": "3"
+                                                "MaxScore": "4",
+                                                "TeacherScore": "4"
                                             },
                                             "operation": {
                                                 "name": "modify",
                                                 "sequence": "31"
+                                            },
+                                            "style": {
+                                                "background-color": "#afffaf"
                                             }
                                         },
                                         {
@@ -269,15 +339,20 @@
                                                 "AccountCredit": "Earnings Services",
                                                 "AccountDebit": "",
                                                 "Amount": "400.00",
+                                                "CalculationNotes": "",
+                                                "CalculationScore": "4",
                                                 "Date": "2023-01-07",
                                                 "Description": "Services performed to customer",
                                                 "Doc": "9",
-                                                "MaxScore": "3",
-                                                "Score": "3"
+                                                "MaxScore": "4",
+                                                "TeacherScore": "4"
                                             },
                                             "operation": {
                                                 "name": "modify",
                                                 "sequence": "32"
+                                            },
+                                            "style": {
+                                                "background-color": "#afffaf"
                                             }
                                         },
                                         {
@@ -285,15 +360,20 @@
                                                 "AccountCredit": "Earnings Sales",
                                                 "AccountDebit": "",
                                                 "Amount": "100.00",
+                                                "CalculationNotes": "",
+                                                "CalculationScore": "4",
                                                 "Date": "2023-01-07",
                                                 "Description": "Flower sales to customer",
                                                 "Doc": "9",
-                                                "MaxScore": "3",
-                                                "Score": "3"
+                                                "MaxScore": "4",
+                                                "TeacherScore": "4"
                                             },
                                             "operation": {
                                                 "name": "modify",
                                                 "sequence": "33"
+                                            },
+                                            "style": {
+                                                "background-color": "#afffaf"
                                             }
                                         },
                                         {
@@ -511,7 +591,7 @@
                                         {
                                             "fields": {
                                                 "AccountCredit": "[]",
-                                                "AccountDebit": "[Other costs]",
+                                                "AccountDebit": "[Other Costs]",
                                                 "Amount": "50.00",
                                                 "Date": "2023-01-02",
                                                 "Description": "Payment of office equipment",
@@ -831,9 +911,10 @@
                                         },
                                         {
                                             "fields": {
+                                                "CalculationScore": "57",
                                                 "Description": "Total score: ",
-                                                "MaxScore": "48",
-                                                "Score": "44"
+                                                "MaxScore": "64",
+                                                "TeacherScore": "57"
                                             },
                                             "operation": {
                                                 "name": "add"
@@ -881,15 +962,20 @@
                                                 "AccountCredit": "Salaries",
                                                 "AccountDebit": "Credits",
                                                 "Amount": "5000.00",
+                                                "CalculationNotes": "Wrong: Credit Account;",
+                                                "CalculationScore": "3",
                                                 "Date": "2023-01-01",
                                                 "Description": "Invoices to customers for executed services",
                                                 "Doc": "a",
-                                                "MaxScore": "3",
-                                                "Score": "2"
+                                                "MaxScore": "4",
+                                                "TeacherScore": "3"
                                             },
                                             "operation": {
                                                 "name": "modify",
                                                 "sequence": "0"
+                                            },
+                                            "style": {
+                                                "background-color": "#ff8198"
                                             }
                                         },
                                         {
@@ -897,15 +983,20 @@
                                                 "AccountCredit": "Debts",
                                                 "AccountDebit": "Earnings Sales",
                                                 "Amount": "1500.00",
+                                                "CalculationNotes": "Wrong: Debit Account;",
+                                                "CalculationScore": "3",
                                                 "Date": "2023-01-01",
                                                 "Description": "Invoices from suppliers for plants purchases",
                                                 "Doc": "b",
-                                                "MaxScore": "3",
-                                                "Score": "2"
+                                                "MaxScore": "4",
+                                                "TeacherScore": "3"
                                             },
                                             "operation": {
                                                 "name": "modify",
                                                 "sequence": "1"
+                                            },
+                                            "style": {
+                                                "background-color": "#ff8198"
                                             }
                                         },
                                         {
@@ -913,15 +1004,20 @@
                                                 "AccountCredit": "Earnings Sales",
                                                 "AccountDebit": "Credits",
                                                 "Amount": "3000.00",
+                                                "CalculationNotes": "",
+                                                "CalculationScore": "4",
                                                 "Date": "2023-01-01",
                                                 "Description": "Invoices to customers for plants sales",
                                                 "Doc": "c",
-                                                "MaxScore": "3",
-                                                "Score": "3"
+                                                "MaxScore": "4",
+                                                "TeacherScore": "4"
                                             },
                                             "operation": {
                                                 "name": "modify",
                                                 "sequence": "2"
+                                            },
+                                            "style": {
+                                                "background-color": "#afffaf"
                                             }
                                         },
                                         {
@@ -929,15 +1025,20 @@
                                                 "AccountCredit": "Bank",
                                                 "AccountDebit": "",
                                                 "Amount": "1500.00",
+                                                "CalculationNotes": "",
+                                                "CalculationScore": "4",
                                                 "Date": "2023-01-02",
                                                 "Description": "Bank transfer for miscellaneous expenses",
                                                 "Doc": "d",
-                                                "MaxScore": "3",
-                                                "Score": "3"
+                                                "MaxScore": "4",
+                                                "TeacherScore": "4"
                                             },
                                             "operation": {
                                                 "name": "modify",
                                                 "sequence": "3"
+                                            },
+                                            "style": {
+                                                "background-color": "#afffaf"
                                             }
                                         },
                                         {
@@ -945,15 +1046,20 @@
                                                 "AccountCredit": "",
                                                 "AccountDebit": "Salaries",
                                                 "Amount": "1000.00",
+                                                "CalculationNotes": "",
+                                                "CalculationScore": "4",
                                                 "Date": "2023-01-02",
                                                 "Description": "Payment of workers' salaries",
                                                 "Doc": "d",
-                                                "MaxScore": "3",
-                                                "Score": "3"
+                                                "MaxScore": "4",
+                                                "TeacherScore": "4"
                                             },
                                             "operation": {
                                                 "name": "modify",
                                                 "sequence": "4"
+                                            },
+                                            "style": {
+                                                "background-color": "#afffaf"
                                             }
                                         },
                                         {
@@ -961,15 +1067,20 @@
                                                 "AccountCredit": "",
                                                 "AccountDebit": "Other Costs",
                                                 "Amount": "50.00",
+                                                "CalculationNotes": "Wrong: Debit Account;",
+                                                "CalculationScore": "3",
                                                 "Date": "2023-01-02",
                                                 "Description": "Payment of bank interest",
                                                 "Doc": "d",
-                                                "MaxScore": "3",
-                                                "Score": "2"
+                                                "MaxScore": "4",
+                                                "TeacherScore": "3"
                                             },
                                             "operation": {
                                                 "name": "modify",
                                                 "sequence": "5"
+                                            },
+                                            "style": {
+                                                "background-color": "#ff8198"
                                             }
                                         },
                                         {
@@ -977,15 +1088,20 @@
                                                 "AccountCredit": "",
                                                 "AccountDebit": "Purchases",
                                                 "Amount": "50.00",
+                                                "CalculationNotes": "Wrong: Debit Account;",
+                                                "CalculationScore": "3",
                                                 "Date": "2023-01-02",
                                                 "Description": "Payment of office equipment",
                                                 "Doc": "d",
-                                                "MaxScore": "3",
-                                                "Score": "2"
+                                                "MaxScore": "4",
+                                                "TeacherScore": "3"
                                             },
                                             "operation": {
                                                 "name": "modify",
                                                 "sequence": "6"
+                                            },
+                                            "style": {
+                                                "background-color": "#ff8198"
                                             }
                                         },
                                         {
@@ -993,15 +1109,20 @@
                                                 "AccountCredit": "",
                                                 "AccountDebit": "Energy",
                                                 "Amount": "300.00",
+                                                "CalculationNotes": "",
+                                                "CalculationScore": "4",
                                                 "Date": "2023-01-02",
                                                 "Description": "Payment of electricity invoice",
                                                 "Doc": "d",
-                                                "MaxScore": "3",
-                                                "Score": "3"
+                                                "MaxScore": "4",
+                                                "TeacherScore": "4"
                                             },
                                             "operation": {
                                                 "name": "modify",
                                                 "sequence": "7"
+                                            },
+                                            "style": {
+                                                "background-color": "#afffaf"
                                             }
                                         },
                                         {
@@ -1009,15 +1130,20 @@
                                                 "AccountCredit": "",
                                                 "AccountDebit": "Advertising",
                                                 "Amount": "100.00",
+                                                "CalculationNotes": "",
+                                                "CalculationScore": "4",
                                                 "Date": "2023-01-02",
                                                 "Description": "Payment of advertising agency invoice",
                                                 "Doc": "d",
-                                                "MaxScore": "3",
-                                                "Score": "3"
+                                                "MaxScore": "4",
+                                                "TeacherScore": "4"
                                             },
                                             "operation": {
                                                 "name": "modify",
                                                 "sequence": "8"
+                                            },
+                                            "style": {
+                                                "background-color": "#afffaf"
                                             }
                                         },
                                         {
@@ -1025,15 +1151,20 @@
                                                 "AccountCredit": "Credits",
                                                 "AccountDebit": "Earnings Services",
                                                 "Amount": "300.00",
+                                                "CalculationNotes": "",
+                                                "CalculationScore": "4",
                                                 "Date": "2023-01-03",
                                                 "Description": "Credit note (reason: our mistake)",
                                                 "Doc": "e",
-                                                "MaxScore": "3",
-                                                "Score": "3"
+                                                "MaxScore": "4",
+                                                "TeacherScore": "4"
                                             },
                                             "operation": {
                                                 "name": "modify",
                                                 "sequence": "9"
+                                            },
+                                            "style": {
+                                                "background-color": "#afffaf"
                                             }
                                         },
                                         {
@@ -1041,15 +1172,20 @@
                                                 "AccountCredit": "Share Capital",
                                                 "AccountDebit": "Cash",
                                                 "Amount": "10000.00",
+                                                "CalculationNotes": "Wrong: Credit Account; Amount;",
+                                                "CalculationScore": "2",
                                                 "Date": "2023-01-04",
                                                 "Description": "Increase in cash contribution",
                                                 "Doc": "f",
-                                                "MaxScore": "3",
-                                                "Score": "1"
+                                                "MaxScore": "4",
+                                                "TeacherScore": "2"
                                             },
                                             "operation": {
                                                 "name": "modify",
                                                 "sequence": "10"
+                                            },
+                                            "style": {
+                                                "background-color": "#ff8198"
                                             }
                                         },
                                         {
@@ -1057,15 +1193,20 @@
                                                 "AccountCredit": "Credits",
                                                 "AccountDebit": "Bank",
                                                 "Amount": "2000.00",
+                                                "CalculationNotes": "",
+                                                "CalculationScore": "4",
                                                 "Date": "2023-01-05",
                                                 "Description": "Bank transfer from customer (invoice payment)",
                                                 "Doc": "g",
-                                                "MaxScore": "3",
-                                                "Score": "3"
+                                                "MaxScore": "4",
+                                                "TeacherScore": "4"
                                             },
                                             "operation": {
                                                 "name": "modify",
                                                 "sequence": "11"
+                                            },
+                                            "style": {
+                                                "background-color": "#afffaf"
                                             }
                                         },
                                         {
@@ -1073,15 +1214,20 @@
                                                 "AccountCredit": "Cash",
                                                 "AccountDebit": "Debts",
                                                 "Amount": "1000.00",
+                                                "CalculationNotes": "",
+                                                "CalculationScore": "4",
                                                 "Date": "2023-01-06",
                                                 "Description": "Cash transfer to supplier (invoice payment)",
                                                 "Doc": "h",
-                                                "MaxScore": "3",
-                                                "Score": "3"
+                                                "MaxScore": "4",
+                                                "TeacherScore": "4"
                                             },
                                             "operation": {
                                                 "name": "modify",
                                                 "sequence": "12"
+                                            },
+                                            "style": {
+                                                "background-color": "#afffaf"
                                             }
                                         },
                                         {
@@ -1089,15 +1235,20 @@
                                                 "AccountCredit": "",
                                                 "AccountDebit": "Cash",
                                                 "Amount": "500.00",
+                                                "CalculationNotes": "",
+                                                "CalculationScore": "4",
                                                 "Date": "2023-01-07",
                                                 "Description": "Cash receipt for work performed and flower sales",
                                                 "Doc": "i",
-                                                "MaxScore": "3",
-                                                "Score": "3"
+                                                "MaxScore": "4",
+                                                "TeacherScore": "4"
                                             },
                                             "operation": {
                                                 "name": "modify",
                                                 "sequence": "13"
+                                            },
+                                            "style": {
+                                                "background-color": "#afffaf"
                                             }
                                         },
                                         {
@@ -1105,15 +1256,20 @@
                                                 "AccountCredit": "Earnings Services",
                                                 "AccountDebit": "",
                                                 "Amount": "400.00",
+                                                "CalculationNotes": "",
+                                                "CalculationScore": "4",
                                                 "Date": "2023-01-07",
                                                 "Description": "Services performed to customer",
                                                 "Doc": "i",
-                                                "MaxScore": "3",
-                                                "Score": "3"
+                                                "MaxScore": "4",
+                                                "TeacherScore": "4"
                                             },
                                             "operation": {
                                                 "name": "modify",
                                                 "sequence": "14"
+                                            },
+                                            "style": {
+                                                "background-color": "#afffaf"
                                             }
                                         },
                                         {
@@ -1121,15 +1277,20 @@
                                                 "AccountCredit": "Earnings Sales",
                                                 "AccountDebit": "",
                                                 "Amount": "100.00",
+                                                "CalculationNotes": "",
+                                                "CalculationScore": "4",
                                                 "Date": "2023-01-07",
                                                 "Description": "Flower sales to customer",
                                                 "Doc": "i",
-                                                "MaxScore": "3",
-                                                "Score": "3"
+                                                "MaxScore": "4",
+                                                "TeacherScore": "4"
                                             },
                                             "operation": {
                                                 "name": "modify",
                                                 "sequence": "15"
+                                            },
+                                            "style": {
+                                                "background-color": "#afffaf"
                                             }
                                         },
                                         {
@@ -1667,9 +1828,10 @@
                                         },
                                         {
                                             "fields": {
+                                                "CalculationScore": "58",
                                                 "Description": "Total score: ",
-                                                "MaxScore": "48",
-                                                "Score": "42"
+                                                "MaxScore": "64",
+                                                "TeacherScore": "58"
                                             },
                                             "operation": {
                                                 "name": "add"
@@ -1717,15 +1879,20 @@
                                                 "AccountCredit": "Salaries",
                                                 "AccountDebit": "Credits",
                                                 "Amount": "5000.00",
+                                                "CalculationNotes": "Wrong: Credit Account;",
+                                                "CalculationScore": "3",
                                                 "Date": "2023-01-01",
                                                 "Description": "Invoices to customers for executed services",
                                                 "Doc": "1.1",
-                                                "MaxScore": "3",
-                                                "Score": "2"
+                                                "MaxScore": "4",
+                                                "TeacherScore": "3"
                                             },
                                             "operation": {
                                                 "name": "modify",
                                                 "sequence": "0"
+                                            },
+                                            "style": {
+                                                "background-color": "#ff8198"
                                             }
                                         },
                                         {
@@ -1733,15 +1900,20 @@
                                                 "AccountCredit": "Debts",
                                                 "AccountDebit": "Earnings Sales",
                                                 "Amount": "1500.00",
+                                                "CalculationNotes": "Wrong: Debit Account;",
+                                                "CalculationScore": "3",
                                                 "Date": "2023-01-01",
                                                 "Description": "Invoices from suppliers for plants purchases",
                                                 "Doc": "1.2",
-                                                "MaxScore": "3",
-                                                "Score": "2"
+                                                "MaxScore": "4",
+                                                "TeacherScore": "3"
                                             },
                                             "operation": {
                                                 "name": "modify",
                                                 "sequence": "1"
+                                            },
+                                            "style": {
+                                                "background-color": "#ff8198"
                                             }
                                         },
                                         {
@@ -1749,15 +1921,20 @@
                                                 "AccountCredit": "Earnings Sales",
                                                 "AccountDebit": "Credits",
                                                 "Amount": "3000.00",
+                                                "CalculationNotes": "",
+                                                "CalculationScore": "4",
                                                 "Date": "2023-01-01",
                                                 "Description": "Invoices to customers for plants sales",
                                                 "Doc": "1.3",
-                                                "MaxScore": "3",
-                                                "Score": "3"
+                                                "MaxScore": "4",
+                                                "TeacherScore": "4"
                                             },
                                             "operation": {
                                                 "name": "modify",
                                                 "sequence": "2"
+                                            },
+                                            "style": {
+                                                "background-color": "#afffaf"
                                             }
                                         },
                                         {
@@ -1765,15 +1942,20 @@
                                                 "AccountCredit": "Bank",
                                                 "AccountDebit": "",
                                                 "Amount": "1500.00",
+                                                "CalculationNotes": "",
+                                                "CalculationScore": "4",
                                                 "Date": "2023-01-02",
                                                 "Description": "Bank transfer for miscellaneous expenses",
                                                 "Doc": "1.4",
-                                                "MaxScore": "3",
-                                                "Score": "3"
+                                                "MaxScore": "4",
+                                                "TeacherScore": "4"
                                             },
                                             "operation": {
                                                 "name": "modify",
                                                 "sequence": "3"
+                                            },
+                                            "style": {
+                                                "background-color": "#afffaf"
                                             }
                                         },
                                         {
@@ -1781,15 +1963,20 @@
                                                 "AccountCredit": "",
                                                 "AccountDebit": "Salaries",
                                                 "Amount": "1000.00",
+                                                "CalculationNotes": "",
+                                                "CalculationScore": "4",
                                                 "Date": "2023-01-02",
                                                 "Description": "Payment of workers' salaries",
                                                 "Doc": "1.4",
-                                                "MaxScore": "3",
-                                                "Score": "3"
+                                                "MaxScore": "4",
+                                                "TeacherScore": "4"
                                             },
                                             "operation": {
                                                 "name": "modify",
                                                 "sequence": "4"
+                                            },
+                                            "style": {
+                                                "background-color": "#afffaf"
                                             }
                                         },
                                         {
@@ -1797,15 +1984,20 @@
                                                 "AccountCredit": "",
                                                 "AccountDebit": "Other Costs",
                                                 "Amount": "50.00",
+                                                "CalculationNotes": "Wrong: Debit Account;",
+                                                "CalculationScore": "3",
                                                 "Date": "2023-01-02",
                                                 "Description": "Payment of bank interest",
                                                 "Doc": "1.4",
-                                                "MaxScore": "3",
-                                                "Score": "2"
+                                                "MaxScore": "4",
+                                                "TeacherScore": "3"
                                             },
                                             "operation": {
                                                 "name": "modify",
                                                 "sequence": "5"
+                                            },
+                                            "style": {
+                                                "background-color": "#ff8198"
                                             }
                                         },
                                         {
@@ -1813,15 +2005,20 @@
                                                 "AccountCredit": "",
                                                 "AccountDebit": "Purchases",
                                                 "Amount": "50.00",
+                                                "CalculationNotes": "Wrong: Debit Account;",
+                                                "CalculationScore": "3",
                                                 "Date": "2023-01-02",
                                                 "Description": "Payment of office equipment",
                                                 "Doc": "1.4",
-                                                "MaxScore": "3",
-                                                "Score": "2"
+                                                "MaxScore": "4",
+                                                "TeacherScore": "3"
                                             },
                                             "operation": {
                                                 "name": "modify",
                                                 "sequence": "6"
+                                            },
+                                            "style": {
+                                                "background-color": "#ff8198"
                                             }
                                         },
                                         {
@@ -1829,15 +2026,20 @@
                                                 "AccountCredit": "",
                                                 "AccountDebit": "Energy",
                                                 "Amount": "300.00",
+                                                "CalculationNotes": "",
+                                                "CalculationScore": "4",
                                                 "Date": "2023-01-02",
                                                 "Description": "Payment of electricity invoice",
                                                 "Doc": "1.4",
-                                                "MaxScore": "3",
-                                                "Score": "3"
+                                                "MaxScore": "4",
+                                                "TeacherScore": "4"
                                             },
                                             "operation": {
                                                 "name": "modify",
                                                 "sequence": "7"
+                                            },
+                                            "style": {
+                                                "background-color": "#afffaf"
                                             }
                                         },
                                         {
@@ -1845,15 +2047,20 @@
                                                 "AccountCredit": "",
                                                 "AccountDebit": "Advertising",
                                                 "Amount": "100.00",
+                                                "CalculationNotes": "",
+                                                "CalculationScore": "4",
                                                 "Date": "2023-01-02",
                                                 "Description": "Payment of advertising agency invoice",
                                                 "Doc": "1.4",
-                                                "MaxScore": "3",
-                                                "Score": "3"
+                                                "MaxScore": "4",
+                                                "TeacherScore": "4"
                                             },
                                             "operation": {
                                                 "name": "modify",
                                                 "sequence": "8"
+                                            },
+                                            "style": {
+                                                "background-color": "#afffaf"
                                             }
                                         },
                                         {
@@ -1861,15 +2068,20 @@
                                                 "AccountCredit": "Credits",
                                                 "AccountDebit": "Earnings Services",
                                                 "Amount": "300.00",
+                                                "CalculationNotes": "",
+                                                "CalculationScore": "4",
                                                 "Date": "2023-01-03",
                                                 "Description": "Credit note (reason: our mistake)",
                                                 "Doc": "1.5",
-                                                "MaxScore": "3",
-                                                "Score": "3"
+                                                "MaxScore": "4",
+                                                "TeacherScore": "4"
                                             },
                                             "operation": {
                                                 "name": "modify",
                                                 "sequence": "9"
+                                            },
+                                            "style": {
+                                                "background-color": "#afffaf"
                                             }
                                         },
                                         {
@@ -1877,15 +2089,20 @@
                                                 "AccountCredit": "Bank",
                                                 "AccountDebit": "Cash",
                                                 "Amount": "1000.00",
+                                                "CalculationNotes": "",
+                                                "CalculationScore": "4",
                                                 "Date": "2023-01-04",
                                                 "Description": "Fund withdrawal",
                                                 "Doc": "1.6",
-                                                "MaxScore": "3",
-                                                "Score": "3"
+                                                "MaxScore": "4",
+                                                "TeacherScore": "4"
                                             },
                                             "operation": {
                                                 "name": "modify",
                                                 "sequence": "10"
+                                            },
+                                            "style": {
+                                                "background-color": "#afffaf"
                                             }
                                         },
                                         {
@@ -1893,15 +2110,20 @@
                                                 "AccountCredit": "Credits",
                                                 "AccountDebit": "Bank",
                                                 "Amount": "2000.00",
+                                                "CalculationNotes": "",
+                                                "CalculationScore": "4",
                                                 "Date": "2023-01-05",
                                                 "Description": "Bank transfer from customer (invoice payment)",
                                                 "Doc": "1.7",
-                                                "MaxScore": "3",
-                                                "Score": "3"
+                                                "MaxScore": "4",
+                                                "TeacherScore": "4"
                                             },
                                             "operation": {
                                                 "name": "modify",
                                                 "sequence": "11"
+                                            },
+                                            "style": {
+                                                "background-color": "#afffaf"
                                             }
                                         },
                                         {
@@ -1909,15 +2131,20 @@
                                                 "AccountCredit": "Cash",
                                                 "AccountDebit": "Debts",
                                                 "Amount": "1000.00",
+                                                "CalculationNotes": "",
+                                                "CalculationScore": "4",
                                                 "Date": "2023-01-06",
                                                 "Description": "Cash transfer to supplier (invoice payment)",
                                                 "Doc": "1.8",
-                                                "MaxScore": "3",
-                                                "Score": "3"
+                                                "MaxScore": "4",
+                                                "TeacherScore": "4"
                                             },
                                             "operation": {
                                                 "name": "modify",
                                                 "sequence": "12"
+                                            },
+                                            "style": {
+                                                "background-color": "#afffaf"
                                             }
                                         },
                                         {
@@ -1925,15 +2152,20 @@
                                                 "AccountCredit": "",
                                                 "AccountDebit": "Cash",
                                                 "Amount": "500.00",
+                                                "CalculationNotes": "",
+                                                "CalculationScore": "4",
                                                 "Date": "2023-01-07",
                                                 "Description": "Cash receipt for work performed and flower sales",
                                                 "Doc": "1.9",
-                                                "MaxScore": "3",
-                                                "Score": "3"
+                                                "MaxScore": "4",
+                                                "TeacherScore": "4"
                                             },
                                             "operation": {
                                                 "name": "modify",
                                                 "sequence": "13"
+                                            },
+                                            "style": {
+                                                "background-color": "#afffaf"
                                             }
                                         },
                                         {
@@ -1941,15 +2173,20 @@
                                                 "AccountCredit": "Earnings Services",
                                                 "AccountDebit": "",
                                                 "Amount": "400.00",
+                                                "CalculationNotes": "",
+                                                "CalculationScore": "4",
                                                 "Date": "2023-01-07",
                                                 "Description": "Services performed to customer",
                                                 "Doc": "1.9",
-                                                "MaxScore": "3",
-                                                "Score": "3"
+                                                "MaxScore": "4",
+                                                "TeacherScore": "4"
                                             },
                                             "operation": {
                                                 "name": "modify",
                                                 "sequence": "14"
+                                            },
+                                            "style": {
+                                                "background-color": "#afffaf"
                                             }
                                         },
                                         {
@@ -1957,15 +2194,20 @@
                                                 "AccountCredit": "Earnings Sales",
                                                 "AccountDebit": "",
                                                 "Amount": "100.00",
+                                                "CalculationNotes": "",
+                                                "CalculationScore": "4",
                                                 "Date": "2023-01-07",
                                                 "Description": "Flower sales to customer",
                                                 "Doc": "1.9",
-                                                "MaxScore": "3",
-                                                "Score": "3"
+                                                "MaxScore": "4",
+                                                "TeacherScore": "4"
                                             },
                                             "operation": {
                                                 "name": "modify",
                                                 "sequence": "15"
+                                            },
+                                            "style": {
+                                                "background-color": "#afffaf"
                                             }
                                         },
                                         {
@@ -2503,9 +2745,10 @@
                                         },
                                         {
                                             "fields": {
+                                                "CalculationScore": "60",
                                                 "Description": "Total score: ",
-                                                "MaxScore": "48",
-                                                "Score": "44"
+                                                "MaxScore": "64",
+                                                "TeacherScore": "60"
                                             },
                                             "operation": {
                                                 "name": "add"
