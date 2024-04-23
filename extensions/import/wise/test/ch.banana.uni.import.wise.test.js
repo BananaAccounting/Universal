@@ -16,7 +16,7 @@
 
 // @id = ch.banana.uni.import.wise.test
 // @api = 1.0
-// @pubdate = 2021-03-08
+// @pubdate = 2024-04-23
 // @publisher = Banana.ch SA
 // @description = <TEST ch.banana.uni.import.wise.test>
 // @task = app.command
@@ -63,6 +63,7 @@ TestImportWiseTrans.prototype.testImport = function () {
    fileNameList.push("file:script/../test/testcases/ch.banana.wise.transactions.business1_20230105.csv");
    fileNameList.push("file:script/../test/testcases/ch.banana.wise.transactions.personal1_20230105.csv");
    fileNameList.push("file:script/../test/testcases/ch.banana.wise.transactions.personal1_20231103.csv");
+   fileNameList.push("file:script/../test/testcases/ch.banana.wise.transactions.business2_20240423.csv");
 
    var parentLogger = this.testLogger;
    this.progressBar.start(fileNameList.length);
