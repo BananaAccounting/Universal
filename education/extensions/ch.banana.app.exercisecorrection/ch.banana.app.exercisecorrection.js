@@ -7,7 +7,7 @@
 // @description.de = Übungen korrigieren
 // @description.fr = Correction d'exercices
 // @description.en = Exercises correction
-// @doctype = *
+// @doctype = 100
 // @docproperties =
 // @task = app.command
 // @timeout = -1
