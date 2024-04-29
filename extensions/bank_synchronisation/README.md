@@ -26,27 +26,24 @@
     -  Expenses
   to create an hash that identifies a transactions, those are base fields that are present basically in all the transactions. To make this decision we also used chatgpt, wich also made us an analysi about the unicity that this fields could have in our context:
 
-  #### Factors Influencing Uniqueness
-
-    - Date: If transactions are evenly distributed over time and the granularity is to the day, the date provides an initial level of discrimination. However, on days with a high volume of transactions, the date alone is not sufficient to guarantee uniqueness.
-
-    - Description: Transaction descriptions tend to have significant variations, especially in contexts where each transaction can be described in detail. However, cases such as recurring payments or purchases from common suppliers may have very similar or identical descriptions.
-
-    - Income and Expenses: The amounts of transactions can vary widely. Identical transactions in terms of amount might be common in certain contexts (e.g., standardized subscriptions, recurring payments of the same amount), but combining this with the description and date reduces this likelihood.
-
-#### Uniqueness Analysis
-
-   - Unique Transactions: For most business and personal contexts, a combination of these four fields will be sufficiently unique. This is particularly true for transactions that are not standardized or recurring with the same description and amount.
-
-   - Recurring Transactions: In the case of recurring payments with identical descriptions and amounts, uniqueness could be questioned. However, if these recurrences are recorded on different dates, uniqueness is maintained.
-
 #### Estimating Uniqueness
 
 In diversified contexts where standardized and recurring payments do not dominate, one might reasonably assume that uniqueness is assured in more than 95% of cases. For contexts with many recurring transactions (e.g., subscriptions, fixed monthly payments to the same supplier), this percentage might slightly decrease.
 
 TodoList:
 
-- cambiato struttura JSON, ora lavoriamo solo con gli oggetti delle transazioni che contengono tutti i dati
-- Aggiornare db e query in base alla nuova struttura, dovrebbe permettere di gestire meglio le esclusioni delle registrazioni singole.
-- Inserire il processFile() nel multi trhead.
-- Creare API per generare hash da chiamare nel js.--> Da aggiungere nel Banana.Converter.
+- Changed JSON structure, now only work with transaction objects containing all data-->Done
+- Update db and queries according to the new structure, should allow better handling of single record exclusions-->Done
+- Put processFile() in the multi trhead-->Testing
+- Create API to generate hashes to be called in the js.-->To be added in the Banana.Converter.-->Done.
+- Define how to:
+  * Show the Bank Balance, based on the content fo the xml files, is possible ? Intuit can do it, but maybe trough the API they can define it easy, we should use the info in the camt, but it might be confusing, rather we can show the total of the movements which added to the banana balance should lead to the same result
+  * Show the last synchronisation date (could be done using the SyncHostoryData table data).--> Done, but we could improve it by showing the value for each account ? Now we have the last update
+  * Let the user start using the synchronisation when they already have transactions in accouting without any id. --> We could build an extension that looks for the transactions and gives them an id.
+  * Manage if we are processing two new files containing the same transaction (could happen if it has been exported two times (in two different files) and those file have not been processed yet.) If we process the same transaction twice we will have the same id twice, what we could do is a filtering method who checks if there are duplicated transactions by checking the id.--> Done.
+
+
+### Notes for automated tests.
+
+* Transactions who refers to an iban that not exists in the accounting, are not imported.
+
