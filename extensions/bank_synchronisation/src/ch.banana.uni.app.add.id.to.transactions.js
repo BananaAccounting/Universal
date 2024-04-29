@@ -22,6 +22,7 @@
 // @outputformat = none
 // @inputdatasource = none
 // @timeout = -1
+// @includejs = base/documentchange.js
 
 /**
  * Questa estensione si occupa di attribuire un id creato con l'API Banana.Converter.textToHash() a tutte quelle
@@ -38,10 +39,12 @@ function exec() {
      * 2. Sulla base dei dati delle riga, creo un hash univoco e lo assegno.
      * 3. Creo un document change con le modifiche e lo ritorno.
      */
+    let docChange = new DocumentChange();
     let transactionsData = getTrWithoutIdData();
     setIdToTransactions(transactionsData);
-
-
+    setChangesObj(docChange, transactionsData);
+    Banana.Ui.showText(JSON.stringify(docChange.getDocChange()));
+    return docChange.getDocChange();
 }
 
 function getTrWithoutIdData() {
@@ -57,6 +60,7 @@ function getTrWithoutIdData() {
         var rowData = {};
         let trId = tRow.value("ExternalReference");
         if (trId.length == "") { // id empty
+            rowData["RowNumber"] = tRow.rowNr;
             rowData["Date"] = tRow.value("Date");
             rowData["Description"] = tRow.value("Description");
             /** Uso campi differenti a dipendenza del tipo di contabilità, non importa, successivamente
@@ -71,9 +75,11 @@ function getTrWithoutIdData() {
                 rowData["Expenses"] = tRow.value("Income");
                 rowData["Account"] = tRow.value("Account");
             }
+            rowData["ExternalReference"] = "";
+
+            if (rowData)
+                trData.push(rowData);
         }
-        if (rowData)
-            trData.push(rowData);
     }
 
     return trData;
@@ -83,7 +89,23 @@ function setIdToTransactions(transactionsData) {
     if (transactionsData.length < 0)
         return transactionsData;
 
-    for (let key in transactionsData) {
-        //implement code here...
+    for (let trObj of transactionsData) {
+        if (trObj["ExternalReference"] == "") {
+            let textToHash = trObj["Date"] + trObj["Description"] + trObj["Debit"] + trObj["Credit"] +
+                trObj["Amount"] + trObj["Income"] + trObj["Expenses"] + trObj["Account"];
+            let newExtRef = Banana.Converter.textToHash(textToHash, "Sha256");
+            if (newExtRef !== "")
+                trObj["ExternalReference"] = newExtRef;
+        }
     }
+}
+
+function setChangesObj(docChange, transactionsData) {
+    let tableName = "Transactions";
+    for (let trObj of transactionsData) {
+        let rowNr = trObj["RowNumber"];
+        let fields = { "ExternalReference": trObj["ExternalReference"] }
+        docChange.addOperationRowModify(tableName, rowNr, fields);
+    }
+    return docChange;
 }
