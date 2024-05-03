@@ -6,8 +6,6 @@
 
 ## Developments Notes
 
--Use SQLite Manager to visualise the content of a SQLite .db file, this is an extension on Chrome.
-
 ### Synchronise the accounting using .xml (camt) files.
 - Some statements does not have an account IBAN but they have a Id wich is also a specific reference to the account for the bank:
    1) Banking systems not based on IBAN: In some regions or for some banks, the IBAN might not be the standard method for identifying bank accounts. In these cases, an alternative ID provided by the bank is the primary way to identify an account.
@@ -38,11 +36,13 @@ TodoList:
 - Create API to generate hashes to be called in the js.-->To be added in the Banana.Converter.-->Done.
 - Define how to:
   * Show the Bank Balance, based on the content fo the xml files, is possible ? Intuit can do it, but maybe trough the API they can define it easy, we should use the info in the camt, but it might be confusing, rather we can show the total of the movements which added to the banana balance should lead to the same result
-  * Show the last synchronisation date (could be done using the SyncHostoryData table data).--> Done, but we could improve it by showing the value for each account ? Now we have the last update
-  * Let the user start using the synchronisation when they already have transactions in accouting without any id. --> We could build an extension that looks for the transactions and gives them an id.
+  * Show the last synchronisation date ? To define.
+  * Let the user start using the synchronisation when they already have transactions in accouting without any id. --> We could build an extension that looks for the transactions and gives them an id.--> Done.
   * Manage if we are processing two new files containing the same transaction (could happen if it has been exported two times (in two different files) and those file have not been processed yet.) If we process the same transaction twice we will have the same id twice, what we could do is a filtering method who checks if there are duplicated transactions by checking the id.--> Done.
-
-
+- Add to the overview the date of the last importation for each iban.
+- Add the balance of the new transactions.
+- Test what happens if:
+  * An iban is modified in the accounts table--> works good.
 ### Notes for automated tests.
 
 * Transactions who refers to an iban that not exists in the accounting, are not imported.
