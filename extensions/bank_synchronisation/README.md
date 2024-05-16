@@ -28,7 +28,9 @@
 
 In diversified contexts where standardized and recurring payments do not dominate, one might reasonably assume that uniqueness is assured in more than 95% of cases. For contexts with many recurring transactions (e.g., subscriptions, fixed monthly payments to the same supplier), this percentage might slightly decrease.
 
-TodoList:
+### TODO
+
+25.04.2024: TodoList:
 
 - Changed JSON structure, now only work with transaction objects containing all data-->Done
 - Update db and queries according to the new structure, should allow better handling of single record exclusions-->Done
@@ -36,13 +38,41 @@ TodoList:
 - Create API to generate hashes to be called in the js.-->To be added in the Banana.Converter.-->Done.
 - Define how to:
   * Show the Bank Balance, based on the content fo the xml files, is possible ? Intuit can do it, but maybe trough the API they can define it easy, we should use the info in the camt, but it might be confusing, rather we can show the total of the movements which added to the banana balance should lead to the same result
-  * Show the last synchronisation date ? To define.
+  * Show the last synchronisation date ? To define.--> added
   * Let the user start using the synchronisation when they already have transactions in accouting without any id. --> We could build an extension that looks for the transactions and gives them an id.--> Done.
   * Manage if we are processing two new files containing the same transaction (could happen if it has been exported two times (in two different files) and those file have not been processed yet.) If we process the same transaction twice we will have the same id twice, what we could do is a filtering method who checks if there are duplicated transactions by checking the id.--> Done.
 - Add to the overview the date of the last importation for each iban.
 - Add the balance of the new transactions.
 - Test what happens if:
   * An iban is modified in the accounts table--> works good.
+
+08.05.2024, Incontro con Domenico.
+
+TodoList e modifiche:
+
+
+- [x] Cambiare "Balance in Banana" con "Balance in Accounting"
+- [x] Inserire la voce "Last Balance" dove mostriamo l'importo dell bilancio più aggiornato collegato allo statement.
+- [x] Spostare il file .db dentro la cartella dove esistono i file e la contabilità, in maniera che ogni contabilità lavori con un proprio DB.
+- [x] Aggiungere nella tabella "SyncHistoryData" due nuovi campi:
+   * UserName: Il nome dell'utente che sta usando il computer.
+   * ComputerName: Il nome del computer utilizzato
+- [x] Creare una nuova tab "Overview" dove mostrare i dati relativi ai file processati, per contro la vecchia tab overview verrà chiamata: "Bank accounts" e conterrà tutte le informazioni relative ai conti bancari presenti in Banana.
+   * Aggiungere ai dati presenti nella tab "Bank Overview" le info relative all'ultimo movimento importato.
+   * Alla nuova tab "Overview" aggiungere dati relativi anche a chi ha fatto l'ultima transazione (Nome utente e nome computer)
+   * Spostare i dati presenti nella tab "Bank Overview" in colonne adiacenti quella del conto (a cui aggiungo l'iban dopo la descrizione) usando una stuttura simile a quella che gia usiamo per i dati nella tab details.
+- [x] Aggiungere nuovo bottone "Clear All" che elimina tutti i dati dal database. Questo bottone coesiste con "Read all Files"
+- [ ] Aggiustare come funziona ora la processazione e la ri-lettura dei file, attualmente se elimino delle transazioni dalla contabilità ma il file risulta processato, esse non mi verranno più automaticamente proposte da importare, invece dovremmo essere in grado di riproporle nel caso in cui non vengano trovate in contabilità, anche se il file risulta processato.
+- [ ] Quando controllo l'esistenza di una transazione o la importo, devo controllare che riguardi la contabilità corrente, devo quindi controllare che stia dentro il range definito dalla data di apertura e chiusura della contabilità.
+- [ ] Aggiungere una classe per mostrare all'utente i dati relativi alla processazione del file (Progress bar, numero di dati elaborati).
+- [ ] Fare in maniera di ottimizzare le tempistiche dei processi li dove è possibile non fare qualcosa non lo facciamo.
+
+Altre idee post:
+1) Salvare il last balance nel db in maniera che sia visibile anche quando non vengono letti i nuovi file, per mostrare che il file è sincronizzato.
+2) aggiungere un controllo anche sul bilancio di apertura dell'ultimo statement presente ? in questo modo possiamo anche controllare che l'apertura sia uguale...
+3) L'aggiornamento delle tabelle dei db, trasformarli in slot e segnali.
+4) Attualmente per salvare i dati delle transazioni e dei conti bancari usiamo due oggetti differenti, sarebbe utile unificare il tutto in un solo oggetto ? Attualmente lavoriamo solo con i dati impostati nei dettagli delle transazioni, nelle altre tab recuperiamo gia quei dati li e li mostriamo per non creare doppioni.
+
 ### Notes for automated tests.
 
 * Transactions who refers to an iban that not exists in the accounting, are not imported.

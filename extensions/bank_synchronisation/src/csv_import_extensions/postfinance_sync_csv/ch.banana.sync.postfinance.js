@@ -117,7 +117,6 @@ var SyncPostFinanceData = class SyncPostFinanceData {
          transactionsList = format6.getStatementTransactions(transactionsData, fileParams, statementParams);
          return transactionsList;
       }
-
       return [];
    }
 }
@@ -370,12 +369,14 @@ function PFCSVFormat6() {
       let statementParams = {};
 
       let iban = transactions[3][1];
+      let statementCreationDate = this.getStatementCreationDate(transactions);
       let statementOwner = "";
       let statementCurrency = transactions[4][1];
       let initialBalance = "";
       let finalBalance = "";
 
       statementParams.StatementIban = iban;
+      statementParams.StatementCreationDate = statementCreationDate;
       statementParams.StatementOwner = statementOwner;
       statementParams.StatementCurrency = statementCurrency;
       statementParams.StatementInitialBalance = initialBalance;
@@ -397,6 +398,14 @@ function PFCSVFormat6() {
       return transactionsToImport;
    }
 
+   this.getStatementCreationDate = function (transactions) {
+      let dateClean = "";
+      let dateTxt = transactions[1][1]; // ="27.02.2024"
+      if (dateTxt.length > 0)
+         dateClean = dateTxt;
+      return dateClean;
+   }
+
    this.mapTransaction = function (transaction, fileParams, statementParams) {
       let trDescription = transaction["Description"] + ", " + transaction["Type"];
       let trDate = transaction["Date"];
@@ -407,6 +416,7 @@ function PFCSVFormat6() {
          'FileName': fileParams.FileName,
          'FileType"': fileParams.FileType,
          'StatementIban': statementParams.StatementIban,
+         'StatementCreationDate': statementParams.StatementCreationDate,
          'StatementOwner': statementParams.StatementOwner,
          'StatementCurrency': statementParams.StatementCurrency,
          'StatementInitialBalance': statementParams.StatementInitialBalance,
@@ -493,12 +503,14 @@ function PFCSVFormat1_CreditCard() {
       let statementParams = {};
 
       let iban = transactions[0][1];
+      let statementCreationDate = "";
       let statementOwner = "";
-      let statementCurrency = ""; // recuperarla dalle intestazioni ?
+      let statementCurrency = "";
       let initialBalance = "";
       let finalBalance = "";
 
       statementParams.StatementIban = iban.replace(/^=/, "");
+      statementParams.StatementCreationDate = statementCreationDate;
       statementParams.StatementOwner = statementOwner;
       statementParams.StatementCurrency = statementCurrency.replace(/^=/, "");;
       statementParams.StatementInitialBalance = initialBalance;
@@ -536,6 +548,7 @@ function PFCSVFormat1_CreditCard() {
          'FileName': fileParams.FileName,
          'FileType"': fileParams.FileType,
          'StatementIban': statementParams.StatementIban,
+         'StatementCreationDate': statementParams.StatementCreationDate,
          'StatementOwner': statementParams.StatementOwner,
          'StatementCurrency': statementParams.StatementCurrency,
          'StatementInitialBalance': statementParams.StatementInitialBalance,
@@ -612,12 +625,14 @@ function PFCSVFormat5() {
       let statementParams = {};
 
       let iban = transactions[3][1];
+      let statementCreationDate = this.getStatementCreationDate(transactions);
       let statementOwner = "";
       let statementCurrency = transactions[4][1];
       let initialBalance = "";
       let finalBalance = "";
 
       statementParams.StatementIban = iban.replace(/^=/, "");
+      statementParams.statementCreationDate = statementCreationDate;
       statementParams.StatementOwner = statementOwner;
       statementParams.StatementCurrency = statementCurrency.replace(/^=/, "");;
       statementParams.StatementInitialBalance = initialBalance;
@@ -642,6 +657,13 @@ function PFCSVFormat5() {
       return transactionsToImport;
    }
 
+   this.getStatementCreationDate = function (transactions) {
+      let dateClean = "";
+      let dateTxt = transactions[1][1]; // ="27.02.2024"
+      if (dateTxt.length > 0)
+         dateClean = dateTxt;
+      return dateClean;
+   }
 
    this.mapTransaction = function (element, fileParams, statementParams) {
       let tidyDescr = element[this.colDescr].replace(/ {2,}/g, ''); //remove white spaces
@@ -654,6 +676,7 @@ function PFCSVFormat5() {
          'FileName': fileParams.FileName,
          'FileType"': fileParams.FileType,
          'StatementIban': statementParams.StatementIban,
+         'StatementcreationDate': statementParams.statementCreationDate,
          'StatementOwner': statementParams.StatementOwner,
          'StatementCurrency': statementParams.StatementCurrency,
          'StatementInitialBalance': statementParams.StatementInitialBalance,
@@ -743,12 +766,14 @@ function PFCSVFormat4() {
       let statementParams = {};
 
       let iban = transactions[0][1];
+      let statementCreationDate = this.getStatementCreationDate(transactions);
       let statementOwner = "";
       let statementCurrency = ""; // recuperarla dalle intestazioni ?
       let initialBalance = "";
       let finalBalance = "";
 
       statementParams.StatementIban = iban.replace(/^=/, "");
+      statementParams.StatementCreationDate = statementCreationDate;
       statementParams.StatementOwner = statementOwner;
       statementParams.StatementCurrency = statementCurrency.replace(/^=/, "");;
       statementParams.StatementInitialBalance = initialBalance;
@@ -773,6 +798,15 @@ function PFCSVFormat4() {
       return transactionsToImport;
    }
 
+   this.getStatementCreationDate = function (transactions) {
+      let dateClean = "";
+      let dateTxt = transactions[2][1]; // 06.04.2022 - 05.05.2022
+      let dates = dateTxt.split(' - ');  // Divide la stringa in un array usando ' - ' come delimitatore
+      if (dates[1].length > 0)
+         dateClean = dates[1];
+      return formatCreationStatementDate(dateClean);
+   }
+
 
    this.mapTransaction = function (element, fileParams, statementParams) {
       var tidyDescr = element[this.colDescr].replace(/ {2,}/g, ''); //remove white spaces
@@ -785,6 +819,7 @@ function PFCSVFormat4() {
          'FileName': fileParams.FileName,
          'FileType"': fileParams.FileType,
          'StatementIban': statementParams.StatementIban,
+         'StatementCreationDate': statementParams.StatementCreationDate,
          'StatementOwner': statementParams.StatementOwner,
          'StatementCurrency': statementParams.StatementCurrency,
          'StatementInitialBalance': statementParams.StatementInitialBalance,
@@ -874,12 +909,14 @@ function PFCSVFormat3() {
       let statementParams = {};
 
       let iban = "";
+      let statementCreationDate = "";
       let statementOwner = "";
       let statementCurrency = "";
       let initialBalance = "";
       let finalBalance = "";
 
       statementParams.StatementIban = iban.replace(/^=/, "");
+      statementParams.StatementCreationDate = statementCreationDate
       statementParams.StatementOwner = statementOwner;
       statementParams.StatementCurrency = statementCurrency.replace(/^=/, "");;
       statementParams.StatementInitialBalance = initialBalance;
@@ -918,6 +955,7 @@ function PFCSVFormat3() {
          'FileName': fileParams.FileName,
          'FileType"': fileParams.FileType,
          'StatementIban': statementParams.StatementIban,
+         'StatementCreationDate': statementParams.StatementCreationDate,
          'StatementOwner': statementParams.StatementOwner,
          'StatementCurrency': statementParams.StatementCurrency,
          'StatementInitialBalance': statementParams.StatementInitialBalance,
@@ -998,12 +1036,14 @@ function PFCSVFormat2() {
       let statementParams = {};
 
       let iban = "";
+      let statementCreationDate = "";
       let statementOwner = "";
       let statementCurrency = "";
       let initialBalance = "";
       let finalBalance = "";
 
       statementParams.StatementIban = iban.replace(/^=/, "");
+      statementParams.StatementCreationDate = statementCreationDate;
       statementParams.StatementOwner = statementOwner;
       statementParams.StatementCurrency = statementCurrency.replace(/^=/, "");;
       statementParams.StatementInitialBalance = initialBalance;
@@ -1042,6 +1082,7 @@ function PFCSVFormat2() {
          'FileName': fileParams.FileName,
          'FileType"': fileParams.FileType,
          'StatementIban': statementParams.StatementIban,
+         'StatementCreationDate': statementParams.statementCreationDate,
          'StatementOwner': statementParams.StatementOwner,
          'StatementCurrency': statementParams.StatementCurrency,
          'StatementInitialBalance': statementParams.StatementInitialBalance,
@@ -1141,12 +1182,14 @@ function PFCSVFormat1() {
       let iban = transactions[1][1];
       if (iban)
          iban = iban.replace(/^=/, "");
+      let statementCreationDate = "";
       let statementOwner = "";
       let statementCurrency = transactions[2][1];
       let initialBalance = "";
       let finalBalance = "";
 
       statementParams.StatementIban = iban;
+      statementParams.StatementCreationDate = statementCreationDate;
       statementParams.StatementOwner = statementOwner;
       statementParams.StatementCurrency = statementCurrency.replace(/^=/, "");;
       statementParams.StatementInitialBalance = initialBalance;
@@ -1183,6 +1226,7 @@ function PFCSVFormat1() {
          'FileName': fileParams.FileName,
          'FileType"': fileParams.FileType,
          'StatementIban': statementParams.StatementIban,
+         'StatementCreationDate': statementParams.StatementCreationDate,
          'StatementOwner': statementParams.StatementOwner,
          'StatementCurrency': statementParams.StatementCurrency,
          'StatementInitialBalance': statementParams.StatementInitialBalance,
@@ -1288,12 +1332,14 @@ function PFCSVFormatSBU1() {
 
       let iban = "";
       let id = ""; // Sobstitute to the IBAN, we use this only if the IBAN is not present.
+      let statementCreationDate = "";
       let statementOwner = "";
       let statementCurrency = ""; // recuperarla dalle intestazioni ?
       let initialBalance = "";
       let finalBalance = "";
 
       statementParams.StatementIban = iban.replace(/^=/, "");
+      statementParams.StatementCreationDate = statementCreationDate;
       statementParams.StatementOwner = statementOwner;
       statementParams.StatementCurrency = statementCurrency.replace(/^=/, "");;
       statementParams.StatementInitialBalance = initialBalance;
@@ -1329,6 +1375,7 @@ function PFCSVFormatSBU1() {
          'FileName': fileParams.FileName,
          'FileType"': fileParams.FileType,
          'StatementIban': statementParams.StatementIban,
+         'StatementCreationDate': statementParams.statementCreationDate,
          'StatementOwner': statementParams.StatementOwner,
          'StatementCurrency': statementParams.StatementCurrency,
          'StatementInitialBalance': statementParams.StatementInitialBalance,
@@ -1398,6 +1445,7 @@ function getHash(entryTexts, fileParams, statementParams) {
       fileParams.FileCreationDate +
       statementParams +
       statementParams.StatementIban +
+      statementParams.statementCreationDate +
       statementParams.StatementOwner +
       statementParams.StatementIban +
       statementParams.StatementCurrency +
@@ -1410,5 +1458,18 @@ function getHash(entryTexts, fileParams, statementParams) {
 
    return entryId;
 
+}
+
+function formatCreationStatementDate(dateString) {
+   let date = new Date(dateString);
+
+   //Get the date.
+   let year = date.getFullYear();
+   let month = (date.getMonth() + 1).toString().padStart(2, '0');
+   let day = date.getDate().toString().padStart(2, '0');
+   let formattedDate = year + "-" + month + "-" + day;
+   // Do we need also the time... ?
+
+   return formattedDate;
 }
 

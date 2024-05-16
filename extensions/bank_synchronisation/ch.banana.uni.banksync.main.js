@@ -342,12 +342,14 @@ var ISO20022_Swiss_JSONConverter = class ISO20022_Swiss_JSONConverter {
 
         let iban = getStatementIban(statementNode);
         let id = getStatementId(statementNode); // Sobstitute to the IBAN, we use this only if the IBAN is not present.
+        let statementCreationDate = getStatementCreationDate(statementNode)
         let statementOwner = getStatementOwner(statementNode);
         let statementCurrency = getStatementCurrency(statementNode);
         let initialBalance = getStatementBeginBalance(statementNode);
         let finalBalance = getStatementEndBalance(statementNode);
 
-        statementParams.StatementIban = iban == "" ? id : iban
+        statementParams.StatementIban = iban == "" ? id : iban;
+        statementParams.StatementCreationDate = statementCreationDate;
         statementParams.StatementOwner = statementOwner;
         statementParams.StatementCurrency = statementCurrency;
         statementParams.StatementInitialBalance = initialBalance;
@@ -412,6 +414,7 @@ var ISO20022_Swiss_JSONConverter = class ISO20022_Swiss_JSONConverter {
                         'FileType': fileParams.FileType,
                         'FileCreationDate': fileParams.FileCreationDate,
                         'StatementIban': statementParams.StatementIban,
+                        'StatementCreationDate': statementParams.StatementCreationDate,
                         'StatementOwner': statementParams.StatementOwner,
                         'StatementCurrency': statementParams.StatementCurrency,
                         'StatementInitialBalance': statementParams.StatementInitialBalance,
@@ -458,6 +461,7 @@ var ISO20022_Swiss_JSONConverter = class ISO20022_Swiss_JSONConverter {
                             'FileType': fileParams.FileType,
                             'FileCreationDate': fileParams.FileCreationDate,
                             'StatementIban': statementParams.StatementIban,
+                            'StatementCreationDate': statementParams.StatementCreationDate,
                             'StatementOwner': statementParams.StatementOwner,
                             'StatementCurrency': statementParams.StatementCurrency,
                             'StatementInitialBalance': statementParams.StatementInitialBalance,
@@ -504,6 +508,7 @@ var ISO20022_Swiss_JSONConverter = class ISO20022_Swiss_JSONConverter {
                         'FileType': fileParams.FileType,
                         'FileCreationDate': fileParams.FileCreationDate,
                         'StatementIban': statementParams.StatementIban,
+                        'StatementCreationDate': statementParams.StatementCreationDate,
                         'StatementOwner': statementParams.StatementOwner,
                         'StatementCurrency': statementParams.StatementCurrency,
                         'StatementInitialBalance': statementParams.StatementInitialBalance,
@@ -534,6 +539,7 @@ var ISO20022_Swiss_JSONConverter = class ISO20022_Swiss_JSONConverter {
                 'FileType': fileParams.FileType,
                 'FileCreationDate': fileParams.FileCreationDate,
                 'StatementIban': statementParams.StatementIban,
+                'StatementCreationDate': statementParams.StatementCreationDate,
                 'StatementOwner': statementParams.StatementOwner,
                 'StatementCurrency': statementParams.StatementCurrency,
                 'StatementInitialBalance': statementParams.StatementInitialBalance,
@@ -718,6 +724,15 @@ function getStatementId(statementNode) {
     let node = firstGrandChildElement(statementNode, ['Acct', 'Id', 'Othr', 'Id']);
     if (node)
         return node.text;
+    return '';
+}
+
+function getStatementCreationDate(statementNode) {
+    if (!statementNode)
+        return null;
+    let dateNode = statementNode.firstChildElement('CreDtTm');
+    if (dateNode)
+        return formatDate(dateNode.text);
     return '';
 }
 function firstGrandChildElement(node, childs) {
