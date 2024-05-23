@@ -1,4 +1,4 @@
-// Copyright [2022] [Banana.ch SA - Lugano Switzerland]
+// Copyright [2024] [Banana.ch SA - Lugano Switzerland]
 //
 // Licensed under the Apache License, Version 2.0 (the 'License');
 // you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
 //
 // @id = ch.banana.uni.import.wise
 // @api = 1.0
-// @pubdate = 2023-11-03
+// @pubdate = 2024-04-23
 // @publisher = Banana.ch SA
 // @description = Wise - Import movements .csv (Banana+ Advanced)
 // @doctype = 100.*; 110.*; 130.*
@@ -69,6 +69,12 @@ function exec(inData, isTest) {
     let importWiseBusinessFormat1 = new ImportWiseBusinessFormat1(Banana.document);
     if (importWiseBusinessFormat1.match(transactionsData)) {
         let intermediaryData = importWiseBusinessFormat1.convertCsvToIntermediaryData(transactionsData);
+        return Banana.Converter.arrayToTsv(intermediaryData);
+    }
+
+    let importWiseBusinessFormat2 = new ImportWiseBusinessFormat2(Banana.document);
+    if (importWiseBusinessFormat2.match(transactionsData)) {
+        let intermediaryData = importWiseBusinessFormat2.convertCsvToIntermediaryData(transactionsData);
         return Banana.Converter.arrayToTsv(intermediaryData);
     }
 
@@ -240,6 +246,99 @@ var ImportWiseBusinessFormat1 = class ImportWiseBusinessFormat1 extends ImportUt
             mappedLine.push(Banana.Converter.toInternalNumberFormat(transaction["Amount"], this.decimalSeparator));
         } else {
             let amount = Banana.SDecimal.abs(transaction["Amount"]);
+            mappedLine.push(Banana.Converter.toInternalNumberFormat(amount, this.decimalSeparator));
+            mappedLine.push("");
+        }
+        return mappedLine;
+    }
+}
+
+/**
+ *  Business format 2
+ *  - Format is standard, cant customize it.
+ *  - Private format has a similar format.
+ * ID,Status,Direction,"Created on","Finished on","Source fee amount","Source fee currency","Target fee amount","Target fee currency","Source name","Source amount (after fees)","Source currency","Target name","Target amount (after fees)","Target currency","Exchange rate",Reference,Batch
+ * TRANSFER-1033053142,COMPLETED,IN,"2024-04-12 14:00:47","2024-04-12 14:01:05",4.14,USD,,,"XXX SCHWEIZ AG",35797.44,USD,cybovate,35797.44,USD,1.0,"CH24Q2 002",
+ * TRANSFER-1030251410,COMPLETED,OUT,"2024-04-10 08:26:47","2024-04-10 08:50:23",12.38,USD,,,cybovate,13819.77,USD,"YYY AG",13819.77,USD,1.0,"Rechnung Nr 200506",
+ * TRANSFER-1023612560,COMPLETED,IN,"2024-04-04 13:48:40","2024-04-04 13:49:06",0.00,USD,,,"ZZZ In",2500.0,USD,cybovate,2500.0,USD,1.0,AB-TNTHQSI,
+ * @param {*} banDocument 
+ */
+var ImportWiseBusinessFormat2 = class ImportWiseBusinessFormat2 extends ImportUtilities {
+    constructor(banDocument) {
+        super(banDocument);
+
+        this.decimalSeparator = ".";
+
+    }
+
+    match(transactions) {
+
+        if (transactions.length === 0)
+            return false;
+        for (var i = 0; i < transactions.length; i++) {
+            var transaction = transactions[i];
+
+            var formatMatched = false;
+
+            if (transaction["ID"] && transaction["ID"].length !== 0)
+                formatMatched = true;
+            else
+                formatMatched = false;
+
+            //18 as the format is YYYY-MM-DD HH:MM:SS -> 2024-04-12 14:00:47
+            if (formatMatched && transaction["Created on"] && transaction["Created on"].length >= 18 &&
+                transaction["Created on"].match(/^[0-9]+(\-|\.)[0-9]+(\-|\.)[0-9]+\s[0-9]+\:[0-9]+(\:[0-9]+)?$/))
+                formatMatched = true;
+            else
+                formatMatched = false;
+
+            if (formatMatched && transaction["Finished on"] && transaction["Finished on"].length >= 18 &&
+                transaction["Finished on"].match(/^[0-9]+(\-|\.)[0-9]+(\-|\.)[0-9]+\s[0-9]+\:[0-9]+(\:[0-9]+)?$/))
+                formatMatched = true;
+            else
+                formatMatched = false;
+
+            if (formatMatched)
+                return true;
+        }
+        return false;
+    }
+
+    /** Convert the transaction to the format to be imported */
+    convertCsvToIntermediaryData(transactions, convertionParam) {
+        var transactionsToImport = [];
+
+        // Filter and map rows
+        for (let i = 0; i < transactions.length; i++) {
+            var transaction = transactions[i];
+            transactionsToImport.push(this.mapTransaction(transaction));
+        }
+
+        // Sort rows by date
+        transactionsToImport = transactionsToImport.reverse();
+
+        // Add header and return
+        var header = [
+            ["Date", "Description", "ExternalReference", "Notes", "Expenses", "Income"]
+        ];
+        return header.concat(transactionsToImport);
+    }
+
+    mapTransaction(transaction) {
+        var mappedLine = [];
+
+        let dateText = transaction["Finished on"].substring(0, 10);
+        mappedLine.push(Banana.Converter.toInternalDateFormat(dateText, "yyyy-mm-dd"));
+        let description = transaction["Source name"] + ", " + transaction["Reference"];
+        mappedLine.push(description);
+        mappedLine.push(transaction["ID"]);
+        mappedLine.push(transaction["Source fee amount"]);
+
+        if (transaction["Direction"] == "IN") {
+            mappedLine.push("");
+            mappedLine.push(Banana.Converter.toInternalNumberFormat(transaction["Source amount (after fees)"], this.decimalSeparator));
+        } else { // Direction == OUT.
+            let amount = Banana.SDecimal.abs(transaction["Source amount (after fees)"]);
             mappedLine.push(Banana.Converter.toInternalNumberFormat(amount, this.decimalSeparator));
             mappedLine.push("");
         }

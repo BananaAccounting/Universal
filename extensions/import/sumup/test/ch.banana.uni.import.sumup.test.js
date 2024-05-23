@@ -1,4 +1,4 @@
-// Copyright [2022] [Banana.ch SA - Lugano Switzerland]
+// Copyright [2024] [Banana.ch SA - Lugano Switzerland]
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,56 +14,52 @@
 //
 
 
-// @id = ch.banana.uni.import.wise.test
+// @id = ch.banana.uni.import.sumup.test
 // @api = 1.0
-// @pubdate = 2024-04-23
+// @pubdate = 2024-03-25
 // @publisher = Banana.ch SA
-// @description = <TEST ch.banana.uni.import.wise.test>
+// @description = <TEST ch.banana.uni.import.sumup.test>
 // @task = app.command
 // @doctype = *.*
 // @docproperties = 
 // @outputformat = none
 // @inputdataform = none
-// @includejs = ../ch.banana.uni.import.wise.sbaa/import.utilities.js
-// @includejs = ../ch.banana.uni.import.wise.sbaa/ch.banana.uni.import.wise.js
+// @includejs = ../ch.banana.uni.import.sumup.sbaa/import.utilities.js
+// @includejs = ../ch.banana.uni.import.sumup.sbaa/ch.banana.uni.import.sumup.js
 // @timeout = -1
 
 // Register test case to be executed
-Test.registerTestCase(new TestImportWiseTrans());
+Test.registerTestCase(new TestImportSumupTrans());
 
 // Here we define the class, the name of the class is not important
-function TestImportWiseTrans() {
+function TestImportSumupTrans() {
 }
 
 // This method will be called at the beginning of the test case
-TestImportWiseTrans.prototype.initTestCase = function () {
+TestImportSumupTrans.prototype.initTestCase = function () {
    this.testLogger = Test.logger;
    this.progressBar = Banana.application.progressBar;
 }
 
 // This method will be called at the end of the test case
-TestImportWiseTrans.prototype.cleanupTestCase = function () {
+TestImportSumupTrans.prototype.cleanupTestCase = function () {
 
 }
 
 // This method will be called before every test method is executed
-TestImportWiseTrans.prototype.init = function () {
+TestImportSumupTrans.prototype.init = function () {
 
 }
 
 // This method will be called after every test method is executed
-TestImportWiseTrans.prototype.cleanup = function () {
+TestImportSumupTrans.prototype.cleanup = function () {
 
 }
 
-TestImportWiseTrans.prototype.testImport = function () {
+TestImportSumupTrans.prototype.testImport = function () {
    var fileNameList = [];
 
-   fileNameList.push("file:script/../test/testcases/ch.banana.wise.transactions.business.fee.separate1_20230105.csv");
-   fileNameList.push("file:script/../test/testcases/ch.banana.wise.transactions.business1_20230105.csv");
-   fileNameList.push("file:script/../test/testcases/ch.banana.wise.transactions.personal1_20230105.csv");
-   fileNameList.push("file:script/../test/testcases/ch.banana.wise.transactions.personal1_20231103.csv");
-   fileNameList.push("file:script/../test/testcases/ch.banana.wise.transactions.business2_20240423.csv");
+   fileNameList.push("file:script/../test/testcases/ch.banana.sumup.transactions1.csv");
 
    var parentLogger = this.testLogger;
    this.progressBar.start(fileNameList.length);
