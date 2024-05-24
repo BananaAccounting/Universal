@@ -63,8 +63,12 @@ TodoList e modifiche:
    * Spostare i dati presenti nella tab "Bank Overview" in colonne adiacenti quella del conto (a cui aggiungo l'iban dopo la descrizione) usando una stuttura simile a quella che gia usiamo per i dati nella tab details.
 - [x] Aggiungere nuovo bottone "Clear All" che elimina tutti i dati dal database. Questo bottone coesiste con "Read all Files"
 - [ ] Aggiustare come funziona ora la processazione e la ri-lettura dei file, attualmente se elimino delle transazioni dalla contabilità ma il file risulta processato, esse non mi verranno più automaticamente proposte da importare, invece dovremmo essere in grado di riproporle nel caso in cui non vengano trovate in contabilità, anche se il file risulta processato.
-- [ ] Quando controllo l'esistenza di una transazione o la importo, devo controllare che riguardi la contabilità corrente, devo quindi controllare che stia dentro il range definito dalla data di apertura e chiusura della contabilità.
+- [x] Quando controllo l'esistenza di una transazione o la importo, devo controllare che riguardi la contabilità corrente, devo quindi controllare che stia dentro il range definito dalla data di apertura e chiusura della contabilità.
 - [ ] Aggiungere una classe per mostrare all'utente i dati relativi alla processazione del file (Progress bar, numero di dati elaborati).
+  - I tempi di processazione avvengono:
+    - Quando viene selezionato il file, la classe deve mostrare una barra di caricamento in base al tempo di processazione di ogni file in base al totale dei file che ci sono da processare.
+    - Se è possibile, collegare anche il tasto "read all files" per mostrare tutti i file che vengono processati nuovamente.
+    - i dati di processazione poi sarebbe bello poterli mostrare nel dialogo, per esempio indicando nell'overview quanti file sono stati processati, quante transazioni totali nuove sono state trovate.
 - [ ] Fare in maniera di ottimizzare le tempistiche dei processi li dove è possibile non fare qualcosa non lo facciamo.
 
 Altre idee post:
@@ -72,6 +76,7 @@ Altre idee post:
 2) aggiungere un controllo anche sul bilancio di apertura dell'ultimo statement presente ? in questo modo possiamo anche controllare che l'apertura sia uguale...
 3) L'aggiornamento delle tabelle dei db, trasformarli in slot e segnali.
 4) Attualmente per salvare i dati delle transazioni e dei conti bancari usiamo due oggetti differenti, sarebbe utile unificare il tutto in un solo oggetto ? Attualmente lavoriamo solo con i dati impostati nei dettagli delle transazioni, nelle altre tab recuperiamo gia quei dati li e li mostriamo per non creare doppioni.
+5) Come ci comportiamo con le registrazioni di dettaglio che hanno data, id e importo uguale ? Attualmente dobbiamo testare cosa sucede in un caso tipo quello che accade con il file della zurcher.
 
 ### Notes for automated tests.
 
