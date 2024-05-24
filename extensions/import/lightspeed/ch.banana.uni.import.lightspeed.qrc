@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/">
+		<file alias="manifest.json">ch.banana.uni.import.lightspeed.manifest.json</file>
+		<file alias="import.utilities.js">../import.utilities.js</file>
+		<file>ch.banana.uni.import.lightspeed.js</file>
+    </qresource>
+</RCC>
