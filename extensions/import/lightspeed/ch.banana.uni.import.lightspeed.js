@@ -211,7 +211,6 @@ var LightspeedTransactionsImportFormat1 = class LightspeedTransactionsImportForm
                     row.fields["Account"] = account;
                     row.fields["Description"] = description;
                     row.fields["BClass"] = bClass;
-                    // row.fields["Currency"] = this.banDocument.info("AccountingDataBase", "BasicCurrency"); //actually set the base currency to all.
 
                     rows.push(row);
             }
@@ -305,12 +304,11 @@ var LightspeedTransactionsImportFormat1 = class LightspeedTransactionsImportForm
        columnsNames.push(vatRateCl);
 
        vatRatesList = this.getDataFromFile(transactions, columnsNames);
-       Banana.console.log("Vat codes list: " + vatCodesList);
-       Banana.console.log("Vat rates list: " + vatRatesList);
+       
        /**Create an object with the new accounts data*/
        this.setNewVatCodesDataObj(vatCodesList, vatRatesList, newVatCodesData);
        existingVatCodes = this.getExistingData("VatCodes", "VatCode");
-       Banana.console.log("New vat codes data: " + JSON.stringify(newVatCodesData));
+       /**Filter the vat codes by removing the existing ones */
        this.filterVatCodesData(newVatCodesData, existingVatCodes);
 
        //add new vat codes to the doc change json.
@@ -374,26 +372,21 @@ var LightspeedTransactionsImportFormat1 = class LightspeedTransactionsImportForm
     */
    setNewVatCodesDataObj(vatCodesList, vatRatesList, newVatCodesData) {
        let vatCodesData = [];
-       Banana.console.log("Vat codes list length: " + vatCodesList.length);
+       
        if (vatCodesList.length > 0) {
            for (var i = 0; i < vatCodesList.length; i++) {
                
                let vatCode = vatCodesList[i];
                let vatRate = vatRatesList[i];
                let vatData = {};
-            //    if (element) {
-            //        vatCode = vatCodesList[i];
-            //        vatRate = vatCodesList[i];
-
-                   vatData.code = vatCode;
-                   vatData.rate = vatRate;
-                    // Banana.console.log("Vat code: " + vatCode + " Vat rate: " + vatRate);
-                   vatCodesData.push(vatData);
-            //    }
-                
+        
+                vatData.code = this.getBananaVatCode(vatCode);
+                vatData.rate = vatRate;
+                    
+                vatCodesData.push(vatData);
            }
        }
-    //    Banana.console.log("Vat codes data: " + JSON.stringify(vatCodesData));
+
        newVatCodesData.data = vatCodesData;
    }
 
@@ -475,9 +468,6 @@ var LightspeedTransactionsImportFormat1 = class LightspeedTransactionsImportForm
            row.fields["AccountDebit"] = transaction["Cpt_debit"];
            row.fields["AccountCredit"] = transaction["Cpt_credit"];
            row.fields["Description"] = this.getDescription(transaction);
-        //    row.fields["AmountCurrency"] = transaction["Betrag"];
-        //    row.fields["ExchangeCurrency"] = transaction["Buchungswährung"];
-        //    row.fields["ExchangeRate"] = transaction["Umrechnungsfaktor"];
            row.fields["Amount"] = Banana.Converter.toInternalNumberFormat(transaction["Montant"], 2);
            if (vatCode)
                row.fields["VatCode"] = vatCode;
@@ -520,17 +510,17 @@ var LightspeedTransactionsImportFormat1 = class LightspeedTransactionsImportForm
     }
 
    /**
-    * Dato un coidce iva Bexio ritorna il codice corrispondente in Banana.
+    * Dato un coidce iva Lightspeed ritorna il codice corrispondente in Banana.
     * 
-    * Given a vat code Bexio returns the corresponding code in Banana
+    * Given a vat code Lightspeed returns the corresponding code in Banana
     */
-   getBananaVatCode(bxVatCode) {
-       if (bxVatCode) {
+   getBananaVatCode(LspVatCode) {
+       if (LspVatCode) {
            let mpdVatCodes = this.getMappedVatCodes();
            let banVatCode;
 
            /**get the Banana vat code */
-           banVatCode = mpdVatCodes.get(bxVatCode);
+           banVatCode = mpdVatCodes.get(LspVatCode);
 
            if (banVatCode) {
                return banVatCode;
@@ -579,25 +569,24 @@ var LightspeedTransactionsImportFormat1 = class LightspeedTransactionsImportForm
    }
 
    /**
-    * Ritorna la struttura contenente i codici iva mappati da Bexio
+    * Ritorna la struttura contenente i codici iva mappati da Lightspeed
     * questa struttura contiene i codici standard, non funziona in 
     * caso in cui l'utente abbia personalizzato la tabella codici iva.
     * 
-    * Returns the structure containing the vat codes mapped from Bexio
+    * Returns the structure containing the vat codes mapped from Lightspeed
     * this structure contains the standard codes, it does not work in
     * case the user has customized the vat codes table.
     */
    getMappedVatCodes() {
        /**
         * Map structure:
-        * key = Bexio vat code
+        * key = Lightspeed vat code
         * value = Banana vat code
         */
        const vatCodes = new Map()
 
        //set codes
-       vatCodes.set("UN77", "V77");
-       vatCodes.set("UR25", "V25-N"); // Nuovi codici iva.
+       vatCodes.set("2", "V81");
 
        return vatCodes;
    }
