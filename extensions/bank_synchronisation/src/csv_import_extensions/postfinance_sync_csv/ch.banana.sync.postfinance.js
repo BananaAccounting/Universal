@@ -414,7 +414,7 @@ function PFCSVFormat6() {
       let trTexts = trDate + trIncome + trExpenses + trDescription;
       transaction = {
          'FileName': fileParams.FileName,
-         'FileType"': fileParams.FileType,
+         'FileType': fileParams.FileType,
          'StatementIban': statementParams.StatementIban,
          'StatementCreationDate': statementParams.StatementCreationDate,
          'StatementOwner': statementParams.StatementOwner,
@@ -546,7 +546,7 @@ function PFCSVFormat1_CreditCard() {
 
       transaction = {
          'FileName': fileParams.FileName,
-         'FileType"': fileParams.FileType,
+         'FileType': fileParams.FileType,
          'StatementIban': statementParams.StatementIban,
          'StatementCreationDate': statementParams.StatementCreationDate,
          'StatementOwner': statementParams.StatementOwner,
@@ -674,7 +674,7 @@ function PFCSVFormat5() {
 
       transaction = {
          'FileName': fileParams.FileName,
-         'FileType"': fileParams.FileType,
+         'FileType': fileParams.FileType,
          'StatementIban': statementParams.StatementIban,
          'StatementcreationDate': statementParams.statementCreationDate,
          'StatementOwner': statementParams.StatementOwner,
@@ -817,7 +817,7 @@ function PFCSVFormat4() {
 
       transaction = {
          'FileName': fileParams.FileName,
-         'FileType"': fileParams.FileType,
+         'FileType': fileParams.FileType,
          'StatementIban': statementParams.StatementIban,
          'StatementCreationDate': statementParams.StatementCreationDate,
          'StatementOwner': statementParams.StatementOwner,
@@ -953,7 +953,7 @@ function PFCSVFormat3() {
 
       transaction = {
          'FileName': fileParams.FileName,
-         'FileType"': fileParams.FileType,
+         'FileType': fileParams.FileType,
          'StatementIban': statementParams.StatementIban,
          'StatementCreationDate': statementParams.StatementCreationDate,
          'StatementOwner': statementParams.StatementOwner,
@@ -1080,7 +1080,7 @@ function PFCSVFormat2() {
 
       transaction = {
          'FileName': fileParams.FileName,
-         'FileType"': fileParams.FileType,
+         'FileType': fileParams.FileType,
          'StatementIban': statementParams.StatementIban,
          'StatementCreationDate': statementParams.statementCreationDate,
          'StatementOwner': statementParams.StatementOwner,
@@ -1224,7 +1224,7 @@ function PFCSVFormat1() {
 
       transaction = {
          'FileName': fileParams.FileName,
-         'FileType"': fileParams.FileType,
+         'FileType': fileParams.FileType,
          'StatementIban': statementParams.StatementIban,
          'StatementCreationDate': statementParams.StatementCreationDate,
          'StatementOwner': statementParams.StatementOwner,
@@ -1373,7 +1373,7 @@ function PFCSVFormatSBU1() {
 
       transaction = {
          'FileName': fileParams.FileName,
-         'FileType"': fileParams.FileType,
+         'FileType': fileParams.FileType,
          'StatementIban': statementParams.StatementIban,
          'StatementCreationDate': statementParams.statementCreationDate,
          'StatementOwner': statementParams.StatementOwner,

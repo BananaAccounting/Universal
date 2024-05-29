@@ -104,7 +104,6 @@ function processCsvFile(filePath, fileName, fileContent) {
     if (csv_jsonConverter.match()) {
         jsonData = csv_jsonConverter.convertToJson_fromCsv();
     }
-    //Banana.Ui.showText(fileName + ": " + JSON.stringify(jsonData));
     return jsonData;
 }
 
@@ -137,7 +136,7 @@ var CSV_JSONConverter = class CSV_JSONConverter {
 
     readFileParams() {
         let name = this.filePath;
-        let type = CSV_FILE_SUFFIX;
+        let type = "CSV";
 
         let fileParams = {};
 
@@ -308,7 +307,7 @@ var ISO20022_Swiss_JSONConverter = class ISO20022_Swiss_JSONConverter {
         let fileParams = {};
 
         let name = filePath;
-        let type = this.camtType
+        let type = this.camtType;
         let creationDate = this.getDocumentCreationDate(docNode);
 
         fileParams.FileName = name;
