@@ -112,7 +112,7 @@
                                     "rows": [
                                         {
                                             "fields": {
-                                                "VatCode": "2",
+                                                "VatCode": "V81",
                                                 "VatRate": "8.1000"
                                             },
                                             "operation": {
@@ -210,7 +210,7 @@
                                                 "Date": "2024-03-02",
                                                 "Description": "Lightspeed Dessert (MwSt. 8.1%) [FoodLovers SA]",
                                                 "ExternalReference": "AB0203004",
-                                                "VatCode": "2"
+                                                "VatCode": "V81"
                                             },
                                             "operation": {
                                                 "name": "add",
@@ -225,7 +225,7 @@
                                                 "Date": "2024-03-02",
                                                 "Description": "Lightspeed Canned Food (MwSt. 8.1%) [FoodLovers SA]",
                                                 "ExternalReference": "AB0203003",
-                                                "VatCode": "2"
+                                                "VatCode": "V81"
                                             },
                                             "operation": {
                                                 "name": "add",
@@ -240,7 +240,7 @@
                                                 "Date": "2024-03-02",
                                                 "Description": "Lightspeed Fruity Drinks (MwSt. 8.1%) [FoodLovers SA]",
                                                 "ExternalReference": "AB0203002",
-                                                "VatCode": "2"
+                                                "VatCode": "V81"
                                             },
                                             "operation": {
                                                 "name": "add",
@@ -255,7 +255,7 @@
                                                 "Date": "2024-03-02",
                                                 "Description": "Lightspeed ABC (MwSt. 8.1%) [FoodLovers SA]",
                                                 "ExternalReference": "AB0203001",
-                                                "VatCode": "2"
+                                                "VatCode": "V81"
                                             },
                                             "operation": {
                                                 "name": "add",
