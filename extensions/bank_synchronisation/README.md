@@ -64,7 +64,7 @@ TodoList e modifiche:
 - [x] Aggiungere nuovo bottone "Clear All" che elimina tutti i dati dal database. Questo bottone coesiste con "Read all Files"
 - [ ] Aggiustare come funziona ora la processazione e la ri-lettura dei file, attualmente se elimino delle transazioni dalla contabilità ma il file risulta processato, esse non mi verranno più automaticamente proposte da importare, invece dovremmo essere in grado di riproporle nel caso in cui non vengano trovate in contabilità, anche se il file risulta processato.
 - [x] Quando controllo l'esistenza di una transazione o la importo, devo controllare che riguardi la contabilità corrente, devo quindi controllare che stia dentro il range definito dalla data di apertura e chiusura della contabilità.
-- [ ] Aggiungere una classe per mostrare all'utente i dati relativi alla processazione del file (Progress bar, numero di dati elaborati).
+- [x] Aggiungere una classe per mostrare all'utente i dati relativi alla processazione del file (Progress bar, numero di dati elaborati).
   - I tempi di processazione avvengono:
     - Quando viene selezionato il file, la classe deve mostrare una barra di caricamento in base al tempo di processazione di ogni file in base al totale dei file che ci sono da processare.
     - Se è possibile, collegare anche il tasto "read all files" per mostrare tutti i file che vengono processati nuovamente.

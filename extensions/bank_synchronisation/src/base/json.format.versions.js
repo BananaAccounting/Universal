@@ -8,7 +8,8 @@
 let fileStatementData = {};
 
 fileStatementData.TransactionsList = [
-    {                    // first transaction
+    {
+        "FileId": "6e340b9cffb37a989ca6095ba428fbee5fcb6ceb5e79eabe3291d143177af8c8",
         "FileName": "C:/ P / Universal Images / Universal / extensions / bank_synchronisation / test / testcases /1284_test_Bank1 - B.xml",
         "FileType": "CAMT.053",
         "FileCreationDate": "2024-02-02",
@@ -31,6 +32,7 @@ fileStatementData.TransactionsList = [
         "TransactionIsDetail": ""
     },
     {                  // second transaction
+        "FileId": "6e340b9cffb37a989ca6095ba428fbee5fcb6ceb5e79eabe3291d143177af8c8",
         "FileName": "C:/ P / Universal Images / Universal / extensions / bank_synchronisation / test / testcases /1284_test_Bank1 - B.xml",
         "FileType": "CAMT.053",
         "FileCreationDate": "2024-02-02",
@@ -53,6 +55,7 @@ fileStatementData.TransactionsList = [
         "TransactionIsDetail": ""
     },
     {                // second statement data ...
+        "FileId": "6e340b9cffb37a989ca6095ba428fbee5fcb6ceb5e79eabe3291d143177af8c8",
         "FileName": "C:/ P / Universal Images / Universal / extensions / bank_synchronisation / test / testcases /1284_test_Bank1 - B.xml",
         "FileType": "CAMT.053",
         "FileCreationDate": "2024-02-02",
@@ -75,6 +78,7 @@ fileStatementData.TransactionsList = [
         "TransactionIsDetail": ""
     },
     {
+        "FileId": "6e340b9cffb37a989ca6095ba428fbee5fcb6ceb5e79eabe3291d143177af8c8",
         "FileName": "C: / P / Universal Images / Universal / extensions / bank_synchronisation / test / testcases /1284_test_Bank1 - B.xml",
         "FileType": "CAMT.053",
         "FileCreationDate": "2024-02-02",

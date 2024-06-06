@@ -43,27 +43,27 @@ const TXT_FILE_SUFFIX = "txt";
  * @param {*} fileContent 
  * @returns 
  */
-function exec(fileContent, filePath, fileName, fileSuffix) {
+function exec(fileContent, fileId, filePath, fileName, fileSuffix) {
 
     if (fileContent.length < 0)
         return;
 
     switch (fileSuffix) {
         case CSV_FILE_SUFFIX:
-            return processCsvFile(filePath, fileName, fileContent);
+            return processCsvFile(fileId, filePath, fileName, fileContent);
         case XML_FILE_SUFFIX:
-            return processXmlFile(filePath, fileContent);
+            return processXmlFile(fileId, filePath, fileContent);
         case TXT_FILE_SUFFIX:
-            return processTxtFile(filePath, fileName, fileContent);
+            return processTxtFile(fileId, filePath, fileName, fileContent);
         default:
             return "";
     }
 }
 
-function processXmlFile(filePath, fileContent) {
+function processXmlFile(fileId, filePath, fileContent) {
     let iso20022_swiss = new ISO20022_Swiss_JSONConverter();
     if (iso20022_swiss.match(fileContent)) {
-        let jsonData = iso20022_swiss.convertToJson(fileContent, filePath);
+        let jsonData = iso20022_swiss.convertToJson(fileContent, fileId, filePath);
         if (jsonData) {
             //Banana.Ui.showText(JSON.stringify(jsonData));
             return jsonData;
@@ -72,7 +72,7 @@ function processXmlFile(filePath, fileContent) {
 
     let iso20022_general = new ISO20022_General_JSONConverter();
     if (iso20022_general.match(fileContent)) {
-        let jsonData = iso20022_general.convertToJson(fileContent, filePath);
+        let jsonData = iso20022_general.convertToJson(fileContent, fileId, filePath);
         if (jsonData) {
             return jsonData;
         }
@@ -80,18 +80,18 @@ function processXmlFile(filePath, fileContent) {
 
     let json_thinker = new JSON_Thinker_JSONConverter();
     if (json_thinker.match(fileContent)) {
-        let jsonData = json_thinker.convertToJson(fileContent, filePath);
+        let jsonData = json_thinker.convertToJson(fileContent, fileId, filePath);
         if (jsonData) {
             return jsonData;
         }
     }
 }
 
-function processTxtFile(filePath, fileName, fileContent) {
+function processTxtFile(fileId, filePath, fileName, fileContent) {
     //for the JSON format data...?
 }
 
-function processCsvFile(filePath, fileName, fileContent) {
+function processCsvFile(fileId, filePath, fileName, fileContent) {
 
     /**
      * Each csv file must begin with a specific prefix (bank name) --> bank_name_*.csv (all in lower case), e.g:
@@ -100,7 +100,7 @@ function processCsvFile(filePath, fileName, fileContent) {
      */
     //Get the prefix
     let jsonData = {};
-    let csv_jsonConverter = new CSV_JSONConverter(fileName, filePath, fileContent);
+    let csv_jsonConverter = new CSV_JSONConverter(fileId, fileName, filePath, fileContent);
     if (csv_jsonConverter.match()) {
         jsonData = csv_jsonConverter.convertToJson_fromCsv();
     }
@@ -108,9 +108,11 @@ function processCsvFile(filePath, fileName, fileContent) {
 }
 
 var CSV_JSONConverter = class CSV_JSONConverter {
-    constructor(fileName, filePath, fileContent) {
+    constructor(fileId, fileName, filePath, fileContent) {
+        this.fileId = fileId;
         this.fileName = fileName;
         this.filePath = filePath;
+        this.fileId = fileId;
         this.fileContent = fileContent;
         let elements = fileName.split("_");
         this.filePrefix = elements.shift();
@@ -135,11 +137,13 @@ var CSV_JSONConverter = class CSV_JSONConverter {
     }
 
     readFileParams() {
+        let id = this.fileId;
         let name = this.filePath;
         let type = "CSV";
 
         let fileParams = {};
 
+        fileParams.FileId = id;
         fileParams.FileName = name;
         fileParams.FileType = type;
         fileParams.FileCreationDate = ""; //Not available for csv.
@@ -306,10 +310,12 @@ var ISO20022_Swiss_JSONConverter = class ISO20022_Swiss_JSONConverter {
 
         let fileParams = {};
 
+        let id = this.fileId;
         let name = filePath;
         let type = this.camtType;
         let creationDate = this.getDocumentCreationDate(docNode);
 
+        fileParams.FileId = id;
         fileParams.FileName = name;
         fileParams.FileType = type;
         fileParams.FileCreationDate = creationDate;
@@ -409,6 +415,7 @@ var ISO20022_Swiss_JSONConverter = class ISO20022_Swiss_JSONConverter {
                 if (txDtlsCount > 1) {
                     // Insert counterpart transaction
                     transaction = {
+                        'FileId': fileParams.FileId,
                         'FileName': fileParams.FileName,
                         'FileType': fileParams.FileType,
                         'FileCreationDate': fileParams.FileCreationDate,
@@ -456,6 +463,7 @@ var ISO20022_Swiss_JSONConverter = class ISO20022_Swiss_JSONConverter {
                         }
 
                         transaction = {
+                            'FileId': fileParams.FileId,
                             'FileName': fileParams.FileName,
                             'FileType': fileParams.FileType,
                             'FileCreationDate': fileParams.FileCreationDate,
@@ -503,6 +511,7 @@ var ISO20022_Swiss_JSONConverter = class ISO20022_Swiss_JSONConverter {
                     }
                 } else { // No entry text details elements
                     transaction = {
+                        'FileId': fileParams.FileId,
                         'FileName': fileParams.FileName,
                         'FileType': fileParams.FileType,
                         'FileCreationDate': fileParams.FileCreationDate,
@@ -534,6 +543,7 @@ var ISO20022_Swiss_JSONConverter = class ISO20022_Swiss_JSONConverter {
 
         } else { // No entry details
             transaction = {
+                'FileId': fileParams.FileId,
                 'FileName': fileParams.FileName,
                 'FileType': fileParams.FileType,
                 'FileCreationDate': fileParams.FileCreationDate,

@@ -413,6 +413,7 @@ function PFCSVFormat6() {
       let trExpenses = transaction["Expenses"];
       let trTexts = trDate + trIncome + trExpenses + trDescription;
       transaction = {
+         'FileId': fileParams.FileId,
          'FileName': fileParams.FileName,
          'FileType': fileParams.FileType,
          'StatementIban': statementParams.StatementIban,
@@ -545,6 +546,7 @@ function PFCSVFormat1_CreditCard() {
       let trTexts = trDate + crAmount + dbAmount + tidyDescr;
 
       transaction = {
+         'FileId': fileParams.FileId,
          'FileName': fileParams.FileName,
          'FileType': fileParams.FileType,
          'StatementIban': statementParams.StatementIban,
@@ -673,6 +675,7 @@ function PFCSVFormat5() {
       let trTexts = trDate + amountCredit + amountDebit + tidyDescr;
 
       transaction = {
+         'FileId': fileParams.FileId,
          'FileName': fileParams.FileName,
          'FileType': fileParams.FileType,
          'StatementIban': statementParams.StatementIban,
@@ -816,6 +819,7 @@ function PFCSVFormat4() {
       let trTexts = trDate + crAmount + dbAmount + tidyDescr;
 
       transaction = {
+         'FileId': fileParams.FileId,
          'FileName': fileParams.FileName,
          'FileType': fileParams.FileType,
          'StatementIban': statementParams.StatementIban,
@@ -952,6 +956,7 @@ function PFCSVFormat3() {
       let trTexts = trDate + trDateValuta + crAmount + dbAmount + tidyDescr;
 
       transaction = {
+         'FileId': fileParams.FileId,
          'FileName': fileParams.FileName,
          'FileType': fileParams.FileType,
          'StatementIban': statementParams.StatementIban,
@@ -1079,6 +1084,7 @@ function PFCSVFormat2() {
       let trTexts = trDate + trDateValuta + crAmount + dbAmount + tidyDescr;
 
       transaction = {
+         'FileId': fileParams.FileId,
          'FileName': fileParams.FileName,
          'FileType': fileParams.FileType,
          'StatementIban': statementParams.StatementIban,
@@ -1223,6 +1229,7 @@ function PFCSVFormat1() {
       let trTexts = trDate + trDateValuta + crAmount + dbAmount + tidyDescr;
 
       transaction = {
+         'FileId': fileParams.FileId,
          'FileName': fileParams.FileName,
          'FileType': fileParams.FileType,
          'StatementIban': statementParams.StatementIban,
@@ -1372,6 +1379,7 @@ function PFCSVFormatSBU1() {
       let trTexts = trDate + crAmount + trDescr;
 
       transaction = {
+         'FileId': fileParams.FileId,
          'FileName': fileParams.FileName,
          'FileType': fileParams.FileType,
          'StatementIban': statementParams.StatementIban,
