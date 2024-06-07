@@ -72,7 +72,7 @@ TodoList e modifiche:
 - [ ] Fare in maniera di ottimizzare le tempistiche dei processi li dove è possibile non fare qualcosa non lo facciamo.
 
 Altre idee post:
-1) Salvare il last balance nel db in maniera che sia visibile anche quando non vengono letti i nuovi file, per mostrare che il file è sincronizzato.
+1) Salvare il last balance nel db in maniera che sia visibile anche quando non vengono letti i nuovi file, per mostrare che il file è sincronizzato. 
 2) aggiungere un controllo anche sul bilancio di apertura dell'ultimo statement presente ? in questo modo possiamo anche controllare che l'apertura sia uguale...
 3) L'aggiornamento delle tabelle dei db, trasformarli in slot e segnali.
 4) Attualmente per salvare i dati delle transazioni e dei conti bancari usiamo due oggetti differenti, sarebbe utile unificare il tutto in un solo oggetto ? Attualmente lavoriamo solo con i dati impostati nei dettagli delle transazioni, nelle altre tab recuperiamo gia quei dati li e li mostriamo per non creare doppioni.

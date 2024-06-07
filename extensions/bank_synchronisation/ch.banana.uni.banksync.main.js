@@ -112,7 +112,6 @@ var CSV_JSONConverter = class CSV_JSONConverter {
         this.fileId = fileId;
         this.fileName = fileName;
         this.filePath = filePath;
-        this.fileId = fileId;
         this.fileContent = fileContent;
         let elements = fileName.split("_");
         this.filePrefix = elements.shift();
@@ -216,47 +215,47 @@ var ISO20022_Swiss_JSONConverter = class ISO20022_Swiss_JSONConverter {
         return false
     }
 
-    convertToJson(fileContent, filePath) {
+    convertToJson(fileContent, fileId, filePath) {
         let xmlDoc = Banana.Xml.parse(fileContent);
         let docNode = xmlDoc.firstChildElement(); // Document
         if (!docNode)
             return xmlTransactions
         switch (this.camtType) {
             case "CAMT.052":
-                return this.convertToJson_fromCamt052(docNode, filePath);
+                return this.convertToJson_fromCamt052(docNode, fileId, filePath);
             case "CAMT.053":
-                return this.convertToJson_fromCamt053(docNode, filePath);
+                return this.convertToJson_fromCamt053(docNode, fileId, filePath);
             case "CAMT.054":
-                return this.convertToJson_fromCamt054(docNode, filePath);
+                return this.convertToJson_fromCamt054(docNode, fileId, filePath);
             default:
                 return jsonDoc;
         }
     }
 
-    convertToJson_fromCamt052(docNode, filePath) {
+    convertToJson_fromCamt052(docNode, fileId, filePath) {
         let jsonDoc = {};
         jsonDoc.version = "1.0";
         let fileParams = {};
-        fileParams = this.readFileParams(docNode, filePath);
+        fileParams = this.readFileParams(docNode, fileId, filePath);
         let statementsNode = this.getStatementsNode_camt052(docNode);
         this.setData(statementsNode, jsonDoc, fileParams);
         return jsonDoc;
     }
-    convertToJson_fromCamt053(docNode, filePath) {
+    convertToJson_fromCamt053(docNode, fileId, filePath) {
         let jsonDoc = {};
         jsonDoc.version = "1.0";
         let fileParams = {};
-        fileParams = this.readFileParams(docNode, filePath);
+        fileParams = this.readFileParams(docNode, fileId, filePath);
         let statementsNode = this.getStatementsNode_camt053(docNode);
         this.setData(statementsNode, jsonDoc, fileParams);
         return jsonDoc;
 
     }
-    convertToJson_fromCamt054(docNode, filePath) {
+    convertToJson_fromCamt054(docNode, fileId, filePath) {
         let jsonDoc = {};
         jsonDoc.version = "1.0";
         let fileParams = {};
-        fileParams = this.readFileParams(docNode, filePath);
+        fileParams = this.readFileParams(docNode, fileId, filePath);
         let statementsNode = this.getStatementsNode_camt054(docNode);
         this.setData(statementsNode, jsonDoc, fileParams);
         return jsonDoc;
@@ -300,7 +299,7 @@ var ISO20022_Swiss_JSONConverter = class ISO20022_Swiss_JSONConverter {
      * @param {*} jsonDoc 
      * @param {*} filePath 
      */
-    readFileParams(docNode, filePath) {
+    readFileParams(docNode, fileId, filePath) {
         /**
          * The data we want to save:
          * - File Name (Path)
@@ -310,7 +309,7 @@ var ISO20022_Swiss_JSONConverter = class ISO20022_Swiss_JSONConverter {
 
         let fileParams = {};
 
-        let id = this.fileId;
+        let id = fileId;
         let name = filePath;
         let type = this.camtType;
         let creationDate = this.getDocumentCreationDate(docNode);
