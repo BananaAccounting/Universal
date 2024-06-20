@@ -72,11 +72,20 @@ TodoList e modifiche:
 - [ ] Fare in maniera di ottimizzare le tempistiche dei processi li dove è possibile non fare qualcosa non lo facciamo.
 
 Altre idee post:
-1) Salvare il last balance nel db in maniera che sia visibile anche quando non vengono letti i nuovi file, per mostrare che il file è sincronizzato. 
+1) Salvare il last balance nel db in maniera che sia visibile anche quando non vengono letti i nuovi file, per mostrare che il file è sincronizzato. (fatto)
 2) aggiungere un controllo anche sul bilancio di apertura dell'ultimo statement presente ? in questo modo possiamo anche controllare che l'apertura sia uguale...
 3) L'aggiornamento delle tabelle dei db, trasformarli in slot e segnali.
-4) Attualmente per salvare i dati delle transazioni e dei conti bancari usiamo due oggetti differenti, sarebbe utile unificare il tutto in un solo oggetto ? Attualmente lavoriamo solo con i dati impostati nei dettagli delle transazioni, nelle altre tab recuperiamo gia quei dati li e li mostriamo per non creare doppioni.
-5) Come ci comportiamo con le registrazioni di dettaglio che hanno data, id e importo uguale ? Attualmente dobbiamo testare cosa sucede in un caso tipo quello che accade con il file della zurcher.
+4) Come ci comportiamo con le registrazioni di dettaglio che hanno data, id e importo uguale ? Attualmente dobbiamo testare cosa sucede in un caso tipo quello che accade con il file della zurcher.
+   20.06.2024
+5) Come controlliamo che un file sia relativo alla contabilità attualmente aperta --> La data che fa conto è quella degli statement al suo interno, siccome riprendono il periodo che comprende i movimenti presenti, qindi bisognerebbe fare un controllo a questo livello. Attualmente abbiamo il flag che permette di ignorare i file piu vecchi di una certa data e poi abbiamo anche il controllo sulle singole registrazioni, da testare.
+6) Nel files overview sarebbe utile aggiungere una colonna per indicare la data del file, cosi l'utente può vedere a colpo d'occhio se i file centrano con la contabilità corrente
+7) se un file che è stato aggiungo alla tabella dei file non viene più ritrovato, è meglio toglierlo anche dal db ? Nel caso in cui qualcuni modifica il contenuto del file, questo risulterà come file diverso (cambia l'hash) e risulteranno esserci piu file nel db di quelli che effettivamente ci sono nella cartella.
+
+
+### 20.06, Note test manuali:
+
+- La prima volta, in ogni caso, vengono letti tutti i file, siccome non è possibile definire fin dal prinicipio se un file rientra in quelli sincronizzabili senza prima aprirlo.
+- Da correggere un problema dove se nel caso un file venga modificato (quindi cambia l'hash e risulta come file nuovo) esso non viene mai processato (non vengono lette le sue registrazioni) perche quando viene chiamato il metodo processFile, viene passato l'id che a sua volta viene recuperato usando il percorso del file, ma siccome ce ne sono due uguali (percorso e nome rimangono identici) viene ritornato quello sbagliato--> la soluzione potrebbe essere creare uno struct come fatto per transazioni e conti e lavorare su quello in maniera da poter lavorare direttamente usando i file specifici senza doverli recuperare usando il path. (risolto)
 
 ### Notes for automated tests.
 
