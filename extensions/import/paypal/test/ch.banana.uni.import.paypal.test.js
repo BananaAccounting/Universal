@@ -35,33 +35,34 @@ function TestImportPaypal() {
 }
 
 // This method will be called at the beginning of the test case
-TestImportPaypal.prototype.initTestCase = function() {
+TestImportPaypal.prototype.initTestCase = function () {
    this.testLogger = Test.logger;
    this.progressBar = Banana.application.progressBar;
 }
 
 // This method will be called at the end of the test case
-TestImportPaypal.prototype.cleanupTestCase = function() {
+TestImportPaypal.prototype.cleanupTestCase = function () {
 
 }
 
 // This method will be called before every test method is executed
-TestImportPaypal.prototype.init = function() {
+TestImportPaypal.prototype.init = function () {
 
 }
 
 // This method will be called after every test method is executed
-TestImportPaypal.prototype.cleanup = function() {
+TestImportPaypal.prototype.cleanup = function () {
 
 }
 
-TestImportPaypal.prototype.testImport = function() {
+TestImportPaypal.prototype.testImport = function () {
    var fileNameList = [];
 
    fileNameList.push("file:script/../test/testcases/ch.banana.filter.import.paypal.#cash20140529.csv");
    fileNameList.push("file:script/../test/testcases/ch.banana.filter.import.paypal.#claudia20140526.csv");
    fileNameList.push("file:script/../test/testcases/download.csv");
    fileNameList.push("file:script/../test/testcases/download2.csv");
+   fileNameList.push("file:script/../test/testcases/ch.banana.filter.import.paypal.#It20240624.csv");
 
    var parentLogger = this.testLogger;
    this.progressBar.start(fileNameList.length);

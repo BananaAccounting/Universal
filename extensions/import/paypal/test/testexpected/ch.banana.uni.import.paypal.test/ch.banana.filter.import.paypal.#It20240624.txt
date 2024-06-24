@@ -1,0 +1,98 @@
+%%info_test_name{ch.banana.filter.import.paypal.#It20240624}
+\documentclass{report}
+\usepackage{longtable}
+\usepackage{color}
+\usepackage{listings}
+\usepackage[margin=1cm]{geometry}
+\begin{document}
+\newenvironment{tablevalue}[2]{\textbf{Table: #1}\begin{longtable}[l]{#2}}{\end{longtable}}
+\newenvironment{reportvalue}[1]{\textbf{Report: #1}\\}{}
+\lstnewenvironment{jsonvalue}[1]{\textbf{Json: #1}\lstset{language=Java}}{}
+\lstnewenvironment{xmlvalue}[1]{\textbf{Xml: #1}\lstset{language=Xml}}{}
+\newcommand{\info}[2]{\textit{#1: #2}\\}
+\newcommand{\fatalerror}[1]{\textbf{\textcolor[rgb]{1,0,0}{Fatal error: #1}}\\}
+\newcommand{\keyvalue}[2]{\textbf{Keyvalue: #1} #2\\}
+\newcommand{\textvalue}[1]{#1\\}
+\newcommand{\excltest}[1]{\\Excluded from compare: #1}
+\newcommand{\lognewpage}{\newpage}
+\newenvironment{testcase}[1]{\section*{Test: #1}}{\newpage}
+\newenvironment{test}[1]{\section*{Test case: #1}}{}
+%Begin test data
+\begin{tablevalue}{}{ l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l }
+Date & ExternalReference & Description & AccountDebit & AccountCredit & Amount & ExchangeCurrency & AmountCurrency & PaypalType & PaypalStatus & TransactionGroupId & NetBasicCurrency & FeeBasicCurrency & GrossBasicCurrency & PaypalBalance & CurrencyTo & CurrencyToAmount & ReferenceId & AccountImpact & AmountTransactionCurrency & Gross & Fee & Net & OriginalSequence & CurrencyConversionType\\
+2023-01-04 & 1AL337050L0223614 & ADUCURO PUERRUNUM LII 19.03 & AcctCHF &  & 0.00 & CHF & 0.00 & Payment Net & Perexactis & 1AL337050L0223614 & 0 & 0 & 0 & 19.03 &  & 0 & X-QGFWQ8XKYSA3 & Credit & 19.03 & 20 & -0.97 & 19.03 & 0 & 0\\
+2023-01-04 & 1AL337050L0223614 & ADUCURO PUERRUNUM LII 20.00 &  & PaypalIn & 0.00 & CHF & 0.00 & Natuenico poperrempes & Perexactis & 1AL337050L0223614 & 0 & 0 & 0 & 19.03 &  & 0 & X-QGFWQ8XKYSA3 & Credit & 20.00 & 20 & -0.97 & 19.03 & 0 & 0\\
+2023-01-04 & 1AL337050L0223614 & ADUCURO PUERRUNUM LII 0.97 & PaypalFee &  & 0.00 & CHF & 0.00 & Paypal Fee & Perexactis & 1AL337050L0223614 & 0 & 0 & 0 & 19.03 &  & 0 & X-QGFWQ8XKYSA3 & Debit & -0.97 & 20 & -0.97 & 19.03 & 0 & 0\\
+2023-01-09 & 1D817234CT613827F & Invarem Instondis LII 3.74 & AcctCHF &  & 0.00 & CHF & 0.00 & Payment Net & Perexactis & 1D817234CT613827F & 0 & 0 & 0 & 21.03 &  & 0 & 1D817234CT613827F & Credit & 3.74 & 3.74 & 7.74 & 3.74 & 1 & 0\\
+2023-01-09 & 1D817234CT613827F & Invarem Instondis LII 3.74 &  & PaypalIn & 0.00 & CHF & 0.00 & Natuenico opituunum & Perexactis & 1D817234CT613827F & 0 & 0 & 0 & 21.03 &  & 0 & 1D817234CT613827F & Credit & 3.74 & 3.74 & 7.74 & 3.74 & 1 & 0\\
+2023-01-09 & 1D817234CT613827F & Invarem Instondis LII 7.74 &  & PaypalFee & 0.00 & CHF & 0.00 & Paypal Fee & Perexactis & 1D817234CT613827F & 0 & 0 & 0 & 21.03 &  & 0 & 1D817234CT613827F & Credit & 7.74 & 3.74 & 7.74 & 3.74 & 1 & 0\\
+2023-01-10 & 59V49654V05702208 & NIUM LENSA LII 29.11 & AcctCHF &  & 0.00 & CHF & 0.00 & Payment Net & Perexactis & 59V49654V05702208 & 0 & 0 & 0 & 50.14 &  & 0 & X-ORKYYS226H5Y & Credit & 29.11 & 30 & -0.89 & 29.11 & 2 & 0\\
+2023-01-10 & 59V49654V05702208 & NIUM LENSA LII 30.00 &  & PaypalIn & 0.00 & CHF & 0.00 & Natuenico poperrempes & Perexactis & 59V49654V05702208 & 0 & 0 & 0 & 50.14 &  & 0 & X-ORKYYS226H5Y & Credit & 30.00 & 30 & -0.89 & 29.11 & 2 & 0\\
+2023-01-10 & 59V49654V05702208 & NIUM LENSA LII 0.89 & PaypalFee &  & 0.00 & CHF & 0.00 & Paypal Fee & Perexactis & 59V49654V05702208 & 0 & 0 & 0 & 50.14 &  & 0 & X-ORKYYS226H5Y & Debit & -0.89 & 30 & -0.89 & 29.11 & 2 & 0\\
+2023-02-04 & 4CG67157D13036332 & ADUCURO PUERRUNUM LII 19.03 & AcctCHF &  & 0.00 & CHF & 0.00 & Payment Net & Perexactis & 4CG67157D13036332 & 0 & 0 & 0 & 69.17 &  & 0 & X-QGFWQ8XKYSA3 & Credit & 19.03 & 20 & -0.97 & 19.03 & 3 & 0\\
+2023-02-04 & 4CG67157D13036332 & ADUCURO PUERRUNUM LII 20.00 &  & PaypalIn & 0.00 & CHF & 0.00 & Natuenico poperrempes & Perexactis & 4CG67157D13036332 & 0 & 0 & 0 & 69.17 &  & 0 & X-QGFWQ8XKYSA3 & Credit & 20.00 & 20 & -0.97 & 19.03 & 3 & 0\\
+2023-02-04 & 4CG67157D13036332 & ADUCURO PUERRUNUM LII 0.97 & PaypalFee &  & 0.00 & CHF & 0.00 & Paypal Fee & Perexactis & 4CG67157D13036332 & 0 & 0 & 0 & 69.17 &  & 0 & X-QGFWQ8XKYSA3 & Debit & -0.97 & 20 & -0.97 & 19.03 & 3 & 0\\
+2023-02-06 & 84D574446J091412N & Sorunica Cuntens LII 19.29 & AcctCHF &  & 0.00 & CHF & 0.00 & Payment Net & Perexactis & 84D574446J091412N & 0 & 0 & 0 & 147.7 &  & 0 & 84D574446J091412N & Credit & 19.29 & 20 & -0.71 & 19.29 & 23 & 0\\
+2023-02-06 & 84D574446J091412N & Sorunica Cuntens LII 20.00 &  & PaypalIn & 0.00 & CHF & 0.00 & Natuenico eo revendect & Perexactis & 84D574446J091412N & 0 & 0 & 0 & 147.7 &  & 0 & 84D574446J091412N & Credit & 20.00 & 20 & -0.71 & 19.29 & 23 & 0\\
+2023-02-06 & 84D574446J091412N & Sorunica Cuntens LII 0.71 & PaypalFee &  & 0.00 & CHF & 0.00 & Paypal Fee & Perexactis & 84D574446J091412N & 0 & 0 & 0 & 147.7 &  & 0 & 84D574446J091412N & Debit & -0.71 & 20 & -0.71 & 19.29 & 23 & 0\\
+2023-02-06 & 7MS74387CW0631558 & Regraxit Audo LII 19.29 & AcctCHF &  & 0.00 & CHF & 0.00 & Payment Net & Perexactis & 7MS74387CW0631558 & 0 & 0 & 0 & 128.41 &  & 0 & 7MS74387CW0631558 & Credit & 19.29 & 20 & -0.71 & 19.29 & 22 & 0\\
+2023-02-06 & 7MS74387CW0631558 & Regraxit Audo LII 20.00 &  & PaypalIn & 0.00 & CHF & 0.00 & Natuenico eo revendect & Perexactis & 7MS74387CW0631558 & 0 & 0 & 0 & 128.41 &  & 0 & 7MS74387CW0631558 & Credit & 20.00 & 20 & -0.71 & 19.29 & 22 & 0\\
+2023-02-06 & 7MS74387CW0631558 & Regraxit Audo LII 0.71 & PaypalFee &  & 0.00 & CHF & 0.00 & Paypal Fee & Perexactis & 7MS74387CW0631558 & 0 & 0 & 0 & 128.41 &  & 0 & 7MS74387CW0631558 & Debit & -0.71 & 20 & -0.71 & 19.29 & 22 & 0\\
+2023-02-06 & 6TT000238C601765C & Freget Simerem LII 40.00 & AcctCHF &  & 0.00 & CHF & 0.00 & Payment Net & Perexactis & 6TT000238C601765C & 0 & 0 & 0 & 109.12 &  & 0 & 6TT000238C601765C & Credit & 40.00 & 40 & 7.74 & 40 & 21 & 0\\
+2023-02-06 & 6TT000238C601765C & Freget Simerem LII 40.00 &  & PaypalIn & 0.00 & CHF & 0.00 & Natuenico paratere & Perexactis & 6TT000238C601765C & 0 & 0 & 0 & 109.12 &  & 0 & 6TT000238C601765C & Credit & 40.00 & 40 & 7.74 & 40 & 21 & 0\\
+2023-02-06 & 6TT000238C601765C & Freget Simerem LII 7.74 &  & PaypalFee & 0.00 & CHF & 0.00 & Paypal Fee & Perexactis & 6TT000238C601765C & 0 & 0 & 0 & 109.12 &  & 0 & 6TT000238C601765C & Credit & 7.74 & 40 & 7.74 & 40 & 21 & 0\\
+2023-02-06 & 1P752426735327724 & Venent Perraniam LII 20.37 & AcctCHF &  & 0.00 & CHF & 0.00 & Payment Net & Perexactis & 1P752426735327724 & 0 & 0 & 0 & 69.12 &  & 0 & 1P752426735327724 & Credit & 20.37 & 21.38 & -1.01 & 20.37 & 20 & 0\\
+2023-02-06 & 1P752426735327724 & Venent Perraniam LII 21.38 &  & PaypalIn & 0.00 & CHF & 0.00 & Natuenico eo revendect & Perexactis & 1P752426735327724 & 0 & 0 & 0 & 69.12 &  & 0 & 1P752426735327724 & Credit & 21.38 & 21.38 & -1.01 & 20.37 & 20 & 0\\
+2023-02-06 & 1P752426735327724 & Venent Perraniam LII 1.01 & PaypalFee &  & 0.00 & CHF & 0.00 & Paypal Fee & Perexactis & 1P752426735327724 & 0 & 0 & 0 & 69.12 &  & 0 & 1P752426735327724 & Debit & -1.01 & 21.38 & -1.01 & 20.37 & 20 & 0\\
+2023-02-06 & 5O753071PK566762W & Runitundit Natum LII 48.75 & AcctCHF &  & 0.00 & CHF & 0.00 & Payment Net & Perexactis & 5O753071PK566762W & 0 & 0 & 0 & 48.75 &  & 0 & 5O753071PK566762W & Credit & 48.75 & 50 & -1.25 & 48.75 & 19 & 0\\
+2023-02-06 & 5O753071PK566762W & Runitundit Natum LII 50.00 &  & PaypalIn & 0.00 & CHF & 0.00 & Natuenico eo revendect & Perexactis & 5O753071PK566762W & 0 & 0 & 0 & 48.75 &  & 0 & 5O753071PK566762W & Credit & 50.00 & 50 & -1.25 & 48.75 & 19 & 0\\
+2023-02-06 & 5O753071PK566762W & Runitundit Natum LII 1.25 & PaypalFee &  & 0.00 & CHF & 0.00 & Paypal Fee & Perexactis & 5O753071PK566762W & 0 & 0 & 0 & 48.75 &  & 0 & 5O753071PK566762W & Debit & -1.25 & 50 & -1.25 & 48.75 & 19 & 0\\
+2023-02-06 & 5C863516LK6322381 & Payment Net LII 533.67 &  & AcctCHF & 0.00 & CHF & 0.00 & Payment Net & Perexactis & 5C863516LK6322381 & 0 & 0 & 0 & 7.74 &  & 0 & 5C863516LK6322381 & Debit & -533.67 & -533.67 & 7.74 & -533.67 & 18 & 0\\
+2023-02-06 & 5C863516LK6322381 & Lecertio paratere LII 533.67 & PaypalOut &  & 0.00 & CHF & 0.00 & Lecertio paratere & Perexactis & 5C863516LK6322381 & 0 & 0 & 0 & 7.74 &  & 0 & 5C863516LK6322381 & Debit & -533.67 & -533.67 & 7.74 & -533.67 & 18 & 0\\
+2023-02-06 & 5C863516LK6322381 & Paypal Fee LII 7.74 &  & PaypalFee & 0.00 & CHF & 0.00 & Paypal Fee & Perexactis & 5C863516LK6322381 & 0 & 0 & 0 & 7.74 &  & 0 & 5C863516LK6322381 & Credit & 7.74 & -533.67 & 7.74 & -533.67 & 18 & 0\\
+2023-02-06 & 91F40929Y7817632K & Inete Seride LII 5.58 & AcctCHF &  & 0.00 & CHF & 0.00 & Payment Net & Perexactis & 91F40929Y7817632K & 0 & 0 & 0 & 533.67 &  & 0 & 91F40929Y7817632K & Credit & 5.58 & 1.74 & -0.42 & 5.58 & 17 & 0\\
+2023-02-06 & 91F40929Y7817632K & Inete Seride LII 1.74 &  & PaypalIn & 0.00 & CHF & 0.00 & Natuenico eo revendect & Perexactis & 91F40929Y7817632K & 0 & 0 & 0 & 533.67 &  & 0 & 91F40929Y7817632K & Credit & 1.74 & 1.74 & -0.42 & 5.58 & 17 & 0\\
+2023-02-06 & 91F40929Y7817632K & Inete Seride LII 0.42 & PaypalFee &  & 0.00 & CHF & 0.00 & Paypal Fee & Perexactis & 91F40929Y7817632K & 0 & 0 & 0 & 533.67 &  & 0 & 91F40929Y7817632K & Debit & -0.42 & 1.74 & -0.42 & 5.58 & 17 & 0\\
+2023-02-06 & 6KC37530EF6443147 & ATIANTI MISSE' LII 29.11 & AcctCHF &  & 0.00 & CHF & 0.00 & Payment Net & Perexactis & 6KC37530EF6443147 & 0 & 0 & 0 & 530.09 &  & 0 & 6KC37530EF6443147 & Credit & 29.11 & 30 & -0.89 & 29.11 & 16 & 0\\
+2023-02-06 & 6KC37530EF6443147 & ATIANTI MISSE' LII 30.00 &  & PaypalIn & 0.00 & CHF & 0.00 & Natuenico eo revendect & Perexactis & 6KC37530EF6443147 & 0 & 0 & 0 & 530.09 &  & 0 & 6KC37530EF6443147 & Credit & 30.00 & 30 & -0.89 & 29.11 & 16 & 0\\
+2023-02-06 & 6KC37530EF6443147 & ATIANTI MISSE' LII 0.89 & PaypalFee &  & 0.00 & CHF & 0.00 & Paypal Fee & Perexactis & 6KC37530EF6443147 & 0 & 0 & 0 & 530.09 &  & 0 & 6KC37530EF6443147 & Debit & -0.89 & 30 & -0.89 & 29.11 & 16 & 0\\
+2023-02-06 & 80W69975FH6716923 & Hunies Autundam LII 8.88 & AcctCHF &  & 0.00 & CHF & 0.00 & Payment Net & Perexactis & 80W69975FH6716923 & 0 & 0 & 0 & 500.98 &  & 0 & 80W69975FH6716923 & Credit & 8.88 & 10 & -0.53 & 8.88 & 15 & 0\\
+2023-02-06 & 80W69975FH6716923 & Hunies Autundam LII 10.00 &  & PaypalIn & 0.00 & CHF & 0.00 & Natuenico eo revendect & Perexactis & 80W69975FH6716923 & 0 & 0 & 0 & 500.98 &  & 0 & 80W69975FH6716923 & Credit & 10.00 & 10 & -0.53 & 8.88 & 15 & 0\\
+2023-02-06 & 80W69975FH6716923 & Hunies Autundam LII 0.53 & PaypalFee &  & 0.00 & CHF & 0.00 & Paypal Fee & Perexactis & 80W69975FH6716923 & 0 & 0 & 0 & 500.98 &  & 0 & 80W69975FH6716923 & Debit & -0.53 & 10 & -0.53 & 8.88 & 15 & 0\\
+2023-02-06 & 8DW35254B47645032 & Canti Suprope LII 19.29 & AcctCHF &  & 0.00 & CHF & 0.00 & Payment Net & Perexactis & 8DW35254B47645032 & 0 & 0 & 0 & 491.51 &  & 0 & 8DW35254B47645032 & Credit & 19.29 & 20 & -0.71 & 19.29 & 14 & 0\\
+2023-02-06 & 8DW35254B47645032 & Canti Suprope LII 20.00 &  & PaypalIn & 0.00 & CHF & 0.00 & Natuenico eo revendect & Perexactis & 8DW35254B47645032 & 0 & 0 & 0 & 491.51 &  & 0 & 8DW35254B47645032 & Credit & 20.00 & 20 & -0.71 & 19.29 & 14 & 0\\
+2023-02-06 & 8DW35254B47645032 & Canti Suprope LII 0.71 & PaypalFee &  & 0.00 & CHF & 0.00 & Paypal Fee & Perexactis & 8DW35254B47645032 & 0 & 0 & 0 & 491.51 &  & 0 & 8DW35254B47645032 & Debit & -0.71 & 20 & -0.71 & 19.29 & 14 & 0\\
+2023-02-06 & 43E896870C0955313 & surest osus LII 97.85 & AcctCHF &  & 0.00 & CHF & 0.00 & Payment Net & Perexactis & 43E896870C0955313 & 0 & 0 & 0 & 472.22 &  & 0 & 43E896870C0955313 & Credit & 97.85 & 100 & -2.15 & 97.85 & 13 & 0\\
+2023-02-06 & 43E896870C0955313 & surest osus LII 100.00 &  & PaypalIn & 0.00 & CHF & 0.00 & Natuenico paratere & Perexactis & 43E896870C0955313 & 0 & 0 & 0 & 472.22 &  & 0 & 43E896870C0955313 & Credit & 100.00 & 100 & -2.15 & 97.85 & 13 & 0\\
+2023-02-06 & 43E896870C0955313 & surest osus LII 2.15 & PaypalFee &  & 0.00 & CHF & 0.00 & Paypal Fee & Perexactis & 43E896870C0955313 & 0 & 0 & 0 & 472.22 &  & 0 & 43E896870C0955313 & Debit & -2.15 & 100 & -2.15 & 97.85 & 13 & 0\\
+2023-02-06 & 8BO75571VI1340746 & Révile Artatula LII 5.58 & AcctCHF &  & 0.00 & CHF & 0.00 & Payment Net & Perexactis & 8BO75571VI1340746 & 0 & 0 & 0 & 374.37 &  & 0 & 8BO75571VI1340746 & Credit & 5.58 & 1.74 & -0.42 & 5.58 & 12 & 0\\
+2023-02-06 & 8BO75571VI1340746 & Révile Artatula LII 1.74 &  & PaypalIn & 0.00 & CHF & 0.00 & Natuenico eo revendect & Perexactis & 8BO75571VI1340746 & 0 & 0 & 0 & 374.37 &  & 0 & 8BO75571VI1340746 & Credit & 1.74 & 1.74 & -0.42 & 5.58 & 12 & 0\\
+2023-02-06 & 8BO75571VI1340746 & Révile Artatula LII 0.42 & PaypalFee &  & 0.00 & CHF & 0.00 & Paypal Fee & Perexactis & 8BO75571VI1340746 & 0 & 0 & 0 & 374.37 &  & 0 & 8BO75571VI1340746 & Debit & -0.42 & 1.74 & -0.42 & 5.58 & 12 & 0\\
+2023-02-06 & 4HO77071K7786561M & Citio Constae LII 97.85 & AcctCHF &  & 0.00 & CHF & 0.00 & Payment Net & Perexactis & 4HO77071K7786561M & 0 & 0 & 0 & 370.79 &  & 0 & 4HO77071K7786561M & Credit & 97.85 & 100 & -2.15 & 97.85 & 11 & 0\\
+2023-02-06 & 4HO77071K7786561M & Citio Constae LII 100.00 &  & PaypalIn & 0.00 & CHF & 0.00 & Natuenico eo revendect & Perexactis & 4HO77071K7786561M & 0 & 0 & 0 & 370.79 &  & 0 & 4HO77071K7786561M & Credit & 100.00 & 100 & -2.15 & 97.85 & 11 & 0\\
+2023-02-06 & 4HO77071K7786561M & Citio Constae LII 2.15 & PaypalFee &  & 0.00 & CHF & 0.00 & Paypal Fee & Perexactis & 4HO77071K7786561M & 0 & 0 & 0 & 370.79 &  & 0 & 4HO77071K7786561M & Debit & -2.15 & 100 & -2.15 & 97.85 & 11 & 0\\
+2023-02-06 & 8J546728SU4342348 & Commen Idisse LII 19.29 & AcctCHF &  & 0.00 & CHF & 0.00 & Payment Net & Perexactis & 8J546728SU4342348 & 0 & 0 & 0 & 272.94 &  & 0 & 8J546728SU4342348 & Credit & 19.29 & 20 & -0.71 & 19.29 & 10 & 0\\
+2023-02-06 & 8J546728SU4342348 & Commen Idisse LII 20.00 &  & PaypalIn & 0.00 & CHF & 0.00 & Natuenico eo revendect & Perexactis & 8J546728SU4342348 & 0 & 0 & 0 & 272.94 &  & 0 & 8J546728SU4342348 & Credit & 20.00 & 20 & -0.71 & 19.29 & 10 & 0\\
+2023-02-06 & 8J546728SU4342348 & Commen Idisse LII 0.71 & PaypalFee &  & 0.00 & CHF & 0.00 & Paypal Fee & Perexactis & 8J546728SU4342348 & 0 & 0 & 0 & 272.94 &  & 0 & 8J546728SU4342348 & Debit & -0.71 & 20 & -0.71 & 19.29 & 10 & 0\\
+2023-02-06 & 5IM45012UW5663000 & Ragnitte Gerate LII 24.20 & AcctCHF &  & 0.00 & CHF & 0.00 & Payment Net & Perexactis & 5IM45012UW5663000 & 0 & 0 & 0 & 253.65 &  & 0 & 5IM45012UW5663000 & Credit & 24.20 & 25 & -0.8 & 24.2 & 9 & 0\\
+2023-02-06 & 5IM45012UW5663000 & Ragnitte Gerate LII 25.00 &  & PaypalIn & 0.00 & CHF & 0.00 & Natuenico paratere & Perexactis & 5IM45012UW5663000 & 0 & 0 & 0 & 253.65 &  & 0 & 5IM45012UW5663000 & Credit & 25.00 & 25 & -0.8 & 24.2 & 9 & 0\\
+2023-02-06 & 5IM45012UW5663000 & Ragnitte Gerate LII 0.80 & PaypalFee &  & 0.00 & CHF & 0.00 & Paypal Fee & Perexactis & 5IM45012UW5663000 & 0 & 0 & 0 & 253.65 &  & 0 & 5IM45012UW5663000 & Debit & -0.8 & 25 & -0.8 & 24.2 & 9 & 0\\
+2023-02-06 & 7IE78718RE734548X & Matius Multion LII 48.75 & AcctCHF &  & 0.00 & CHF & 0.00 & Payment Net & Perexactis & 7IE78718RE734548X & 0 & 0 & 0 & 229.45 &  & 0 & 7IE78718RE734548X & Credit & 48.75 & 50 & -1.25 & 48.75 & 8 & 0\\
+2023-02-06 & 7IE78718RE734548X & Matius Multion LII 50.00 &  & PaypalIn & 0.00 & CHF & 0.00 & Natuenico eo revendect & Perexactis & 7IE78718RE734548X & 0 & 0 & 0 & 229.45 &  & 0 & 7IE78718RE734548X & Credit & 50.00 & 50 & -1.25 & 48.75 & 8 & 0\\
+2023-02-06 & 7IE78718RE734548X & Matius Multion LII 1.25 & PaypalFee &  & 0.00 & CHF & 0.00 & Paypal Fee & Perexactis & 7IE78718RE734548X & 0 & 0 & 0 & 229.45 &  & 0 & 7IE78718RE734548X & Debit & -1.25 & 50 & -1.25 & 48.75 & 8 & 0\\
+2023-02-06 & 6G632120N8721802T & Resto Portali LII 29.11 & AcctCHF &  & 0.00 & CHF & 0.00 & Payment Net & Perexactis & 6G632120N8721802T & 0 & 0 & 0 & 180.7 &  & 0 & 6G632120N8721802T & Credit & 29.11 & 30 & -0.89 & 29.11 & 7 & 0\\
+2023-02-06 & 6G632120N8721802T & Resto Portali LII 30.00 &  & PaypalIn & 0.00 & CHF & 0.00 & Natuenico paratere & Perexactis & 6G632120N8721802T & 0 & 0 & 0 & 180.7 &  & 0 & 6G632120N8721802T & Credit & 30.00 & 30 & -0.89 & 29.11 & 7 & 0\\
+2023-02-06 & 6G632120N8721802T & Resto Portali LII 0.89 & PaypalFee &  & 0.00 & CHF & 0.00 & Paypal Fee & Perexactis & 6G632120N8721802T & 0 & 0 & 0 & 180.7 &  & 0 & 6G632120N8721802T & Debit & -0.89 & 30 & -0.89 & 29.11 & 7 & 0\\
+2023-02-06 & 1BS86625SA865833S & Chraest Grumn LII 14.38 & AcctCHF &  & 0.00 & CHF & 0.00 & Payment Net & Perexactis & 1BS86625SA865833S & 0 & 0 & 0 & 151.59 &  & 0 & 1BS86625SA865833S & Credit & 14.38 & 15 & -0.62 & 14.38 & 6 & 0\\
+2023-02-06 & 1BS86625SA865833S & Chraest Grumn LII 15.00 &  & PaypalIn & 0.00 & CHF & 0.00 & Natuenico paratere & Perexactis & 1BS86625SA865833S & 0 & 0 & 0 & 151.59 &  & 0 & 1BS86625SA865833S & Credit & 15.00 & 15 & -0.62 & 14.38 & 6 & 0\\
+2023-02-06 & 1BS86625SA865833S & Chraest Grumn LII 0.62 & PaypalFee &  & 0.00 & CHF & 0.00 & Paypal Fee & Perexactis & 1BS86625SA865833S & 0 & 0 & 0 & 151.59 &  & 0 & 1BS86625SA865833S & Debit & -0.62 & 15 & -0.62 & 14.38 & 6 & 0\\
+2023-02-06 & 6OC0713142661426X & Citio Liquit Vition LII 48.75 & AcctCHF &  & 0.00 & CHF & 0.00 & Payment Net & Perexactis & 6OC0713142661426X & 0 & 0 & 0 & 137.21 &  & 0 & 6OC0713142661426X & Credit & 48.75 & 50 & -1.25 & 48.75 & 5 & 0\\
+2023-02-06 & 6OC0713142661426X & Citio Liquit Vition LII 50.00 &  & PaypalIn & 0.00 & CHF & 0.00 & Natuenico paratere & Perexactis & 6OC0713142661426X & 0 & 0 & 0 & 137.21 &  & 0 & 6OC0713142661426X & Credit & 50.00 & 50 & -1.25 & 48.75 & 5 & 0\\
+2023-02-06 & 6OC0713142661426X & Citio Liquit Vition LII 1.25 & PaypalFee &  & 0.00 & CHF & 0.00 & Paypal Fee & Perexactis & 6OC0713142661426X & 0 & 0 & 0 & 137.21 &  & 0 & 6OC0713142661426X & Debit & -1.25 & 50 & -1.25 & 48.75 & 5 & 0\\
+2023-02-06 & 8EQ48428UR000287E & Quere Securris LII 19.29 & AcctCHF &  & 0.00 & CHF & 0.00 & Payment Net & Perexactis & 8EQ48428UR000287E & 0 & 0 & 0 & 88.46 &  & 0 & 8EQ48428UR000287E & Credit & 19.29 & 20 & -0.71 & 19.29 & 4 & 0\\
+2023-02-06 & 8EQ48428UR000287E & Quere Securris LII 20.00 &  & PaypalIn & 0.00 & CHF & 0.00 & Natuenico paratere & Perexactis & 8EQ48428UR000287E & 0 & 0 & 0 & 88.46 &  & 0 & 8EQ48428UR000287E & Credit & 20.00 & 20 & -0.71 & 19.29 & 4 & 0\\
+2023-02-06 & 8EQ48428UR000287E & Quere Securris LII 0.71 & PaypalFee &  & 0.00 & CHF & 0.00 & Paypal Fee & Perexactis & 8EQ48428UR000287E & 0 & 0 & 0 & 88.46 &  & 0 & 8EQ48428UR000287E & Debit & -0.71 & 20 & -0.71 & 19.29 & 4 & 0\\
+2023-01-04 &  & Last Balance: LII 19.03 & AcctCHF &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+\\
+\end{tablevalue}
+\end{document}

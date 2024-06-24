@@ -15,7 +15,7 @@
 //
 // @id = ch.banana.uni.import.paypal
 // @api = 1.0
-// @pubdate = 2021-03-24
+// @pubdate = 2024-06-24
 // @publisher = Banana.ch SA
 // @description = PayPal Import (*.csv)
 // @doctype = *
@@ -33,12 +33,12 @@
 function exec(string) {
 
 	if (!verifyBananaVersion()) {
-        return String();
-    }
+		return String();
+	}
 
 	var userParam = initUserParam();
 	// include all data read and other
-	
+
 	var fileData = {};
 
 	if (Banana.document && Banana.document.getScriptSettings()) {
@@ -48,11 +48,11 @@ function exec(string) {
 			userParam = verifyUserParam(userParam);
 		}
 	}
-	
+
 	if (!readTransactions(userParam, string, fileData)) {
 		return String();
 	}
-	
+
 	if (Banana.document) {
 
 		// If needed show the settings dialog to the user
@@ -87,7 +87,7 @@ function exec(string) {
 	var exportArray = ProcessTransactions(userParam, fileData);
 	// Own change to export data should be insert here
 	// OwnFunction(param, exportArray);
-    // export the data
+	// export the data
 	return ExportTransactions(userParam, fileData, exportArray);
 }
 
@@ -175,7 +175,7 @@ function Param_Dialog(param, fileData) {
 		}
 	}
 	if (!paypalAccountDefined
-		 && Number(param.AccountType) != 130) {
+		&& Number(param.AccountType) != 130) {
 		// not cash book
 		inputText = savedParam.PaypalAccount ? savedParam.PaypalAccount : '';
 		inputText = Banana.Ui.getText('Paypal Import', 'Account paypal [Paypal Account] (Empty text = exit)', inputText);
@@ -228,11 +228,11 @@ function Param_Verify(param, fileData) {
 	AddMessage('Error: Basic currency (File properties) different from paypal used currencies ');
 	return false;
 	} */
-    // Assign account if not defined
-    param.AccountList[param.BasicCurrency] = param.PaypalAccount;
-    param.AccountList['PaypalIn'] = param.PaypalIn;
-    param.AccountList['PaypalOut'] = param.PaypalOut;
-    param.AccountList['PaypalFee'] = param.PaypalFee;
+	// Assign account if not defined
+	param.AccountList[param.BasicCurrency] = param.PaypalAccount;
+	param.AccountList['PaypalIn'] = param.PaypalIn;
+	param.AccountList['PaypalOut'] = param.PaypalOut;
+	param.AccountList['PaypalFee'] = param.PaypalFee;
 
 	if (!param.AccountList['PaypalIn']) {
 		AddMessage('Account PaypalIn not defined in accounting plan: using PaypalIn');
@@ -266,12 +266,12 @@ function Param_Verify_PaypalAccount(param, fileData) {
 	}
 	// no PaypalAccount and no account defined for currency
 	if (!paypalAccountDefined
-		 && Number(param.AccountType) != 130) {
+		&& Number(param.AccountType) != 130) {
 		// not cash book
 		AddMessage('PaypalAccount not defined using PaypalAccount');
 		param.AccountList[param.BasicCurrency] = 'PaypalAccount';
 	}
-	
+
 	return true;
 }
 
@@ -280,7 +280,7 @@ function Param_Verify_PaypalAccount(param, fileData) {
 ***********************/
 function convertParam(userParam, fileData) {
 	var lang = 'en';
-	
+
 	if (Banana.document.locale) {
 		lang = Banana.document.locale;
 	}
@@ -373,12 +373,12 @@ function convertParam(userParam, fileData) {
 			}
 			convertedParam.data.push(currentParam);
 		}
-	}    	
+	}
 
 	return convertedParam;
 }
 
-function initUserParam () {
+function initUserParam() {
 	var userParam = {};
 
 	userParam.PaypalAccount = '';
@@ -412,9 +412,9 @@ function initUserParam () {
 	// the currency of the accounting file
 	// this value need to be automatically read from BananaAccounting
 	userParam.BasicCurrency = ''
-		// if the accounting file is double entry
-		// this value need to be automatically read from BananaAccounting
-		userParam.AccountType = 100;
+	// if the accounting file is double entry
+	// this value need to be automatically read from BananaAccounting
+	userParam.AccountType = 100;
 	// if the accounting file is multi currency
 	// this value need to be automatically read from BananaAccounting
 	userParam.IsMultiCurrency = false;
@@ -438,7 +438,7 @@ function initUserParam () {
 
 	userParam.SupplementaryColumns = {};
 
-	return userParam;	
+	return userParam;
 }
 
 function verifyUserParam(userParam) {
@@ -487,9 +487,9 @@ function verifyUserParam(userParam) {
 	return userParam;
 }
 
-function paramatersDialog (userParam, fileData) {
+function paramatersDialog(userParam, fileData) {
 
-	if (typeof(Banana.Ui.openPropertyEditor) !== 'undefined') {
+	if (typeof (Banana.Ui.openPropertyEditor) !== 'undefined') {
 		var dialogTitle = "";
 		var convertedParam = convertParam(userParam, fileData);
 		var pageAnchor = 'dlgSettings';
@@ -503,7 +503,7 @@ function paramatersDialog (userParam, fileData) {
 				convertedParam.data[i].readValue();
 			}
 		}
-		
+
 		//  Reset reset default values
 		userParam.useDefaultTexts = false;
 	}
@@ -541,7 +541,7 @@ function settingsDialog(userParam, fileData) {
 			}
 		}
 	}
-	
+
 	if (!paypalAccountDefined
 		&& Number(userParam.AccountType) != 130) {
 		userParam.AccountList[userParam.BasicCurrency] = userParam.PaypalAccount;
@@ -638,7 +638,7 @@ function AddMessage(messageText, helpTag) {
 }
 
 function readCurrencies(param, fileData) {
-	
+
 	param.ExchangeRateList = {};
 	CreateAmountsInBasicCurrency_BasicCurrency(param, fileData);
 	CreateAmountsInBasicCurrency_CurrencyConversion(param, fileData);
@@ -674,7 +674,8 @@ function CreateAmountsInBasicCurrency(param, fileData) {
 	CreateAmountsInBasicCurrency_BasicCurrency(param, fileData);
 	CreateAmountsInBasicCurrency_CurrencyConversion(param, fileData);
 	// repeat while there is no more conversion in BasicCurrency
-	while (CreateAmountsInBasicCurrency_ConvertAmounts(param, fileData)) { ;
+	while (CreateAmountsInBasicCurrency_ConvertAmounts(param, fileData)) {
+		;
 	}
 	CreateAmountsInBasicCurrency_CreateListUnconvertedExchangeRates(param, fileData);
 	var unconvertedCurrencies = Object.keys(fileData.listUnconvertedCurrencies).length;
@@ -716,7 +717,8 @@ function CreateAmountsInBasicCurrency(param, fileData) {
 		}
 
 		// repeat while there is no more conversion in BasicCurrency
-		while (CreateAmountsInBasicCurrency_ConvertAmounts(param, fileData)) { ;
+		while (CreateAmountsInBasicCurrency_ConvertAmounts(param, fileData)) {
+			;
 		}
 		// recreate list unconverted exchange rates
 		CreateAmountsInBasicCurrency_CreateListUnconvertedExchangeRates(param, fileData);
@@ -734,8 +736,8 @@ function CreateAmountsInBasicCurrency_CreateListUnconvertedExchangeRates(param, 
 	for (var rowIndex = 0; rowIndex < fileData.paypalTransactions.length; ++rowIndex) {
 		var ppRow = fileData.paypalTransactions[rowIndex];
 		if (ppRow.Currency !== param.BasicCurrency && !ppRow.CurrencyConversionType
-			 && Number(ppRow.Net)
-			 && (ppRow.BalanceImpactInternal === 'Debit' || ppRow.BalanceImpactInternal === 'Credit')) {
+			&& Number(ppRow.Net)
+			&& (ppRow.BalanceImpactInternal === 'Debit' || ppRow.BalanceImpactInternal === 'Credit')) {
 			if (ppRow.Currency in fileData.listUnconvertedCurrencies) {
 				fileData.listUnconvertedCurrencies[ppRow.Currency] += 1;
 			} else {
@@ -773,7 +775,7 @@ function CreateAmountsInBasicCurrency_CurrencyConversion(param, fileData) {
 		if (ppRow.Type === 'Currency Conversion' && !ppRow.CurrencyTo) {
 			var rowIndexNext = rowIndex + 1;
 			if (rowIndexNext < fileData.paypalTransactions.length
-				 && fileData.paypalTransactions[rowIndexNext].Type === 'Currency Conversion') {
+				&& fileData.paypalTransactions[rowIndexNext].Type === 'Currency Conversion') {
 				var ppRowNext = fileData.paypalTransactions[rowIndexNext];
 				ppRow.CurrencyTo = ppRowNext.Currency;
 				ppRow.CurrencyToAmount = ppRowNext.Net;
@@ -895,16 +897,16 @@ function CreateAmountsInBasicCurrency_ConvertAmounts(param, fileData, messageDis
 				var rowIndexNext = rowIndex + 1;
 				var rowIndexPrev = rowIndex - 1;
 				if (ppRow.Type === 'Currency Conversion' && rowIndexNext < fileData.paypalTransactions.length
-					 && fileData.paypalTransactions[rowIndexNext].TransactionGroupId === ppRow.TransactionGroupId
-					 && fileData.paypalTransactions[rowIndexNext].Type === 'Currency Conversion') {
+					&& fileData.paypalTransactions[rowIndexNext].TransactionGroupId === ppRow.TransactionGroupId
+					&& fileData.paypalTransactions[rowIndexNext].Type === 'Currency Conversion') {
 					fileData.paypalTransactions[rowIndexNext].CurrencyConversionType = CurrencyConversionType;
 					fileData.paypalTransactions[rowIndexNext].NetBasicCurrency = Math.abs(netBasicCurrency);
 					if (Number(fileData.paypalTransactions[rowIndexNext].Net) < 0) {
 						fileData.paypalTransactions[rowIndexNext].NetBasicCurrency *= -1;
 					}
 				} else if (ppRow.Type === 'Currency Conversion' && rowIndexPrev > 0
-					 && fileData.paypalTransactions[rowIndexPrev].TransactionGroupId === ppRow.TransactionGroupId
-					 && fileData.paypalTransactions[rowIndexPrev].Type === 'Currency Conversion') {
+					&& fileData.paypalTransactions[rowIndexPrev].TransactionGroupId === ppRow.TransactionGroupId
+					&& fileData.paypalTransactions[rowIndexPrev].Type === 'Currency Conversion') {
 					fileData.paypalTransactions[rowIndexPrev].CurrencyConversionType = CurrencyConversionType;
 					fileData.paypalTransactions[rowIndexPrev].NetBasicCurrency = Math.abs(netBasicCurrency);
 					if (Number(fileData.paypalTransactions[rowIndexPrev].Net) < 0) {
@@ -1219,7 +1221,7 @@ function ProcessTransactions_SetDescription(param, fileData, exportArray) {
 			} else if (ppRow.AccountImpact) {
 				// Use the original amounnt and currency
 				if (param.SetCurrencyInDesctriptionAlways
-					 || (param.SetCurrencyInDesctriptionNotBasicCurrency && param.BasicCurrency != ppRow.Currency)) {
+					|| (param.SetCurrencyInDesctriptionNotBasicCurrency && param.BasicCurrency != ppRow.Currency)) {
 					// we could also test to ppRow.ExchangeCurrency != ppRow.Currency
 					if (ppRow.Description.indexOf(ppRow.Currency) < 0) {
 						ppRow.Description += ' ' + ppRow.Currency;
@@ -1371,14 +1373,16 @@ function ReadTransactions_ConvertImportedData(param, fileData) {
 		if (ppRow.BalanceImpact) {
 			ppRow.BalanceImpactInternal = ppRow.BalanceImpact;
 			if (ppRow.BalanceImpact === 'Gutschrift'
-				 || ppRow.BalanceImpact === 'Gutschrift/ gutschreiben'
-				 || ppRow.BalanceImpact === 'Haben'
-				 || ppRow.BalanceImpact === 'Crédit') {
+				|| ppRow.BalanceImpact === 'Gutschrift/ gutschreiben'
+				|| ppRow.BalanceImpact === 'Haben'
+				|| ppRow.BalanceImpact === 'Crédit'
+				|| ppRow.BalanceImpact === 'Accredito') {
 				ppRow.BalanceImpactInternal = 'Credit';
 			}
-			if (ppRow.BalanceImpact === 'Lastschrift' 
-			|| ppRow.BalanceImpact === 'Soll'
-			|| ppRow.BalanceImpact === 'Débit') {
+			if (ppRow.BalanceImpact === 'Lastschrift'
+				|| ppRow.BalanceImpact === 'Soll'
+				|| ppRow.BalanceImpact === 'Débit'
+				|| ppRow.BalanceImpact === 'Addebito') {
 				ppRow.BalanceImpactInternal = 'Debit';
 			}
 		} else {
@@ -1402,9 +1406,9 @@ function ReadTransactions_ConvertImportedData(param, fileData) {
 		}
 		/* Nov 2016 "General Currency  Conversion" instead of "Currency  Conversion" */
 		if (ppRow.Type == "General Currency Conversion"
-			 || ppRow.Type === 'Conversion de devise'
-			 || ppRow.Type === 'Währungsumrechnung'
-			 || ppRow.Type === 'Allgemeine Währungsumrechnung') {
+			|| ppRow.Type === 'Conversion de devise'
+			|| ppRow.Type === 'Währungsumrechnung'
+			|| ppRow.Type === 'Allgemeine Währungsumrechnung') {
 			ppRow.Type = 'Currency Conversion';
 		}
 	}
@@ -1502,7 +1506,7 @@ function ReadTransactions_CreateBalanceList(param, fileData) {
 	for (var rowIndex = 0; rowIndex < fileData.paypalTransactions.length; ++rowIndex) {
 		var ppRow = fileData.paypalTransactions[rowIndex];
 		if (!fileData.BalanceList[ppRow.Currency]
-			 && (ppRow.BalanceImpactInternal === 'Credit' || ppRow.BalanceImpactInternal === 'Debit')) {
+			&& (ppRow.BalanceImpactInternal === 'Credit' || ppRow.BalanceImpactInternal === 'Debit')) {
 			fileData.BalanceList[ppRow.Currency] = {};
 			fileData.BalanceList[ppRow.Currency].Balance = ppRow.Balance;
 			fileData.BalanceList[ppRow.Currency].Date = ppRow.Date;
@@ -1528,8 +1532,8 @@ function ReadTransactions_CreateBalanceList(param, fileData) {
 			lastTransactionGroupId = ppRow.TransactionGroupId;
 		}
 		if (!fileData.CurrencyListBalanceNotZero[ppRow.Currency]
-			 && !currencyListGroupId[ppRow.Currency]
-			 && (ppRow.BalanceImpactInternal === 'Credit' || ppRow.BalanceImpactInternal === 'Debit')) {
+			&& !currencyListGroupId[ppRow.Currency]
+			&& (ppRow.BalanceImpactInternal === 'Credit' || ppRow.BalanceImpactInternal === 'Debit')) {
 			currencyListGroupId[ppRow.Currency] = '';
 			// the first row of this group with this currency is not zero
 			if (Number(ppRow.Balance) !== 0) {
@@ -1561,6 +1565,12 @@ function ReadTransactions_TranslateHeader(param, fileData) {
 		if (fileData.headers[i] === 'Heure') {
 			fileData.language = 'fr';
 			translated = ReadTransactions_TranslateHeader_French(fileData.headers);
+			break;
+		}
+
+		if (fileData.headers[i] === 'Orario') {
+			fileData.language = 'it';
+			translated = ReadTransactions_TranslateHeader_Italian(fileData.headers);
 			break;
 		}
 	}
@@ -1780,6 +1790,56 @@ function ReadTransactions_TranslateHeader_French(headers) {
 	return false;
 }
 
+function ReadTransactions_TranslateHeader_Italian(headers) {
+	// Internal use different names sot that if paypal change the header we only need
+	// to modify here
+	var textMap = {};
+	textMap['Data'] = 'Date';
+	textMap['Orario'] = 'Time';
+	textMap['Fuso orario'] = 'TimeZone';
+	textMap['Tipo'] = 'Type';
+	textMap['Nome'] = 'Name';
+	textMap['Stato'] = 'Status';
+	textMap['Valuta'] = 'Currency';
+	textMap['Lordo'] = 'Gross';
+	textMap['Tariffa'] = 'Fee';
+	textMap['Netto'] = 'Net';
+	textMap['Indirizzo email mittente'] = 'FromEmailAddress';
+	textMap['Indirizzo email destinatario'] = 'ToEmailAddress';
+	textMap['Codice transazione'] = 'TransactionId';
+	textMap['Indirizzo di spedizione'] = 'ShippingAddress';
+	textMap["Stato dell'indirizzo"] = 'AddressStatus';
+	textMap['Titolo oggetto'] = 'ItemTitle';
+	textMap['Codice articolo'] = 'ItemId';
+	textMap['Importo spese di spedizione e imballaggio'] = 'ShippingAndHandlingAmount';
+	textMap['Importo assicurazione'] = 'InsuranceAmount';
+	textMap['Imposte sulle vendite'] = 'SalesTax';
+	textMap['Discount'] = 'Discount';
+	textMap['Nome opzione 1'] = 'Option1Name';
+	textMap['Valore opzione 1'] = 'Option1Value';
+	textMap['Nome opzione 2'] = 'Option2Name';
+	textMap['Valore opzione 2'] = 'Option2Value';
+	textMap['Data di chiusura'] = 'ClosingDate';
+	textMap['Codice transazione di riferimento'] = 'ReferenceTxnId';
+	textMap['Numero personalizzato'] = 'CustomNumber';
+	textMap['Codice ricevuta'] = 'ReceiptId';
+	textMap['Saldo'] = 'Balance';
+	textMap['Telefono'] = 'ContactPhoneNumber';
+	textMap['Impatto sul saldo'] = 'BalanceImpact';
+	textMap['Indirizzo'] = 'AddressLine1';
+	textMap['Indirizzo (continua)'] = 'AddressLine2';
+	textMap['Provincia'] = 'State';
+	textMap['Città'] = 'Town';
+	textMap['CAP/Codice postale'] = 'Zip';
+	textMap['Paese'] = 'Country';
+	for (var i = 0; i < headers.length; i++) {
+		if (textMap[headers[i]]) {
+			headers[i] = textMap[headers[i]];
+		}
+	}
+	return true;
+}
+
 // Initialize the values for test purpose
 function Banana_GetValuesForTest(param, fileData) {
 	// test case internal Banana.ch
@@ -1913,18 +1973,18 @@ function Banana_GetAccountsList(param, fileData) {
 			if (param.IsMultiCurrency) {
 				var accountCurrency = row.value('Currency');
 				if ('paypal account' == description
-					 && !param.AccountList[param.BasicCurrency]
-					 && accountCurrency == param.BasicCurrency) {
+					&& !param.AccountList[param.BasicCurrency]
+					&& accountCurrency == param.BasicCurrency) {
 					// probably just one account
 					param.AccountList[param.BasicCurrency] = account;
 				}
 				if (description.substring(0, 14) == 'paypal account'
-					 && !param.AccountList[accountCurrency]) {
+					&& !param.AccountList[accountCurrency]) {
 					param.AccountList[accountCurrency] = account;
 				}
-			} else {	
+			} else {
 				if (!param.AccountList[param.BasicCurrency]
-					 && ('paypal account') == description) {
+					&& ('paypal account') == description) {
 					param.AccountList[param.BasicCurrency] = account;
 				}
 				if (('paypal account ' + param.BasicCurrency.toLowerCase()) == description) {
@@ -1932,7 +1992,7 @@ function Banana_GetAccountsList(param, fileData) {
 				}
 				for (var currency in fileData.BalanceList) {
 					if (('paypal account ' + currency.toLowerCase()) == description
-						 && !param.AccountList[currency]) {
+						&& !param.AccountList[currency]) {
 						param.AccountList[currency] = account;
 					}
 				}
@@ -2041,7 +2101,7 @@ if (Banana.Converter.objectArrayToCsv === undefined) {
 		var output = "";
 		var row = "";
 		// Initialize default parameters.
-		if (typeof(separator) === "undefined" || separator === null) {
+		if (typeof (separator) === "undefined" || separator === null) {
 			separator = ",";
 		}
 		// headers
