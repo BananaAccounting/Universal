@@ -82,12 +82,19 @@ Altre idee post:
 7) se un file che è stato aggiungo alla tabella dei file non viene più ritrovato, è meglio toglierlo anche dal db ? Nel caso in cui qualcuni modifica il contenuto del file, questo risulterà come file diverso (cambia l'hash) e risulteranno esserci piu file nel db di quelli che effettivamente ci sono nella cartella.
 
 
-### 20.06, Note test manuali:
+### 20.06, Note
 
 - La prima volta, in ogni caso, vengono letti tutti i file, siccome non è possibile definire fin dal prinicipio se un file rientra in quelli sincronizzabili senza prima aprirlo.
 - Da correggere un problema dove se nel caso un file venga modificato (quindi cambia l'hash e risulta come file nuovo) esso non viene mai processato (non vengono lette le sue registrazioni) perche quando viene chiamato il metodo processFile, viene passato l'id che a sua volta viene recuperato usando il percorso del file, ma siccome ce ne sono due uguali (percorso e nome rimangono identici) viene ritornato quello sbagliato--> la soluzione potrebbe essere creare uno struct come fatto per transazioni e conti e lavorare su quello in maniera da poter lavorare direttamente usando i file specifici senza doverli recuperare usando il path. (risolto)
 
+### 21.06, Note
+
+- Malgrado il flag attivo, vengono comunque lette tutte le registrazioni presenti nel db perche in esso sono gia presenti tutti i file e le transazioni ad esso correlate, bisognerebbe inserire anche un filtro a livello di DB-->
+- Quando si clicca il bottone clear all, siccome viene chiamato l'updateInterface, vengono ricaricati i parametri salvati nella syskey e se nel frattempo ho cambiato ad esempio lo stato del checkbox, esso mi riprende lo stato precedentemente salvato che non va bene-->è corretto così ? Alla fine ricacola tutto--> vedere il 24.06
+- Clear all dovrebbe eliminare i dati e poi riposizionarsi alla tab iniziale con i dati tutti resettati, se l'utente vuole rifare il processo deve farlo manualmente.
+
 ### Notes for automated tests.
 
 * Transactions who refers to an iban that not exists in the accounting, are not imported.
+* Se due file nella cartella hanno lo stesso contenuto, il file viene salvato una sola volta, la copia viene ignorata.
 
