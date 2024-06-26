@@ -17,7 +17,7 @@
 // @description = Synchronisation of Bank data
 // @task = app.command
 // @publisher = Banana.ch SA
-// @pubdate = 2024-01-30
+// @pubdate = 2024-06-26
 // @inputdatasource = none
 // @includejs = src/csv_import_extensions/postfinance_sync_csv/ch.banana.sync.postfinance.js
 
@@ -43,36 +43,36 @@ const TXT_FILE_SUFFIX = "txt";
  * @param {*} fileContent 
  * @returns 
  */
-function exec(fileContent, fileId, filePath, fileName, fileSuffix) {
+function exec(fileContent, fileId, filePath, fileName, fileDateTime, fileSuffix) {
 
     if (fileContent.length < 0)
         return;
 
     switch (fileSuffix) {
         case CSV_FILE_SUFFIX:
-            return processCsvFile(fileId, filePath, fileName, fileContent);
+            return processCsvFile(fileId, filePath, fileName, fileDateTime, fileContent);
         case XML_FILE_SUFFIX:
-            return processXmlFile(fileId, filePath, fileContent);
+            return processXmlFile(fileId, filePath, fileDateTime, fileContent);
         case TXT_FILE_SUFFIX:
-            return processTxtFile(fileId, filePath, fileName, fileContent);
+            return processTxtFile(fileId, filePath, fileName, fileDateTime, fileContent);
         default:
             return "";
     }
 }
 
-function processXmlFile(fileId, filePath, fileContent) {
+function processXmlFile(fileId, filePath, fileDateTime, fileContent) {
     let iso20022_swiss = new ISO20022_Swiss_JSONConverter();
     if (iso20022_swiss.match(fileContent)) {
-        let jsonData = iso20022_swiss.convertToJson(fileContent, fileId, filePath);
+        let jsonData = iso20022_swiss.convertToJson(fileContent, fileId, filePath, fileDateTime);
         if (jsonData) {
-            //Banana.Ui.showText(JSON.stringify(jsonData));
+            Banana.Ui.showText(JSON.stringify(jsonData));
             return jsonData;
         }
     }
 
     let iso20022_general = new ISO20022_General_JSONConverter();
     if (iso20022_general.match(fileContent)) {
-        let jsonData = iso20022_general.convertToJson(fileContent, fileId, filePath);
+        let jsonData = iso20022_general.convertToJson(fileContent, fileId, filePath, fileDateTime);
         if (jsonData) {
             return jsonData;
         }
@@ -80,7 +80,7 @@ function processXmlFile(fileId, filePath, fileContent) {
 
     let json_thinker = new JSON_Thinker_JSONConverter();
     if (json_thinker.match(fileContent)) {
-        let jsonData = json_thinker.convertToJson(fileContent, fileId, filePath);
+        let jsonData = json_thinker.convertToJson(fileContent, fileId, filePath, fileDateTime);
         if (jsonData) {
             return jsonData;
         }
@@ -91,7 +91,7 @@ function processTxtFile(fileId, filePath, fileName, fileContent) {
     //for the JSON format data...?
 }
 
-function processCsvFile(fileId, filePath, fileName, fileContent) {
+function processCsvFile(fileId, filePath, fileName, fileDateTime, fileContent) {
 
     /**
      * Each csv file must begin with a specific prefix (bank name) --> bank_name_*.csv (all in lower case), e.g:
@@ -100,7 +100,7 @@ function processCsvFile(fileId, filePath, fileName, fileContent) {
      */
     //Get the prefix
     let jsonData = {};
-    let csv_jsonConverter = new CSV_JSONConverter(fileId, fileName, filePath, fileContent);
+    let csv_jsonConverter = new CSV_JSONConverter(fileId, fileName, filePath, fileDateTime, fileContent);
     if (csv_jsonConverter.match()) {
         jsonData = csv_jsonConverter.convertToJson_fromCsv();
     }
@@ -108,10 +108,11 @@ function processCsvFile(fileId, filePath, fileName, fileContent) {
 }
 
 var CSV_JSONConverter = class CSV_JSONConverter {
-    constructor(fileId, fileName, filePath, fileContent) {
+    constructor(fileId, fileName, filePath, fileDateTime, fileContent) {
         this.fileId = fileId;
         this.fileName = fileName;
         this.filePath = filePath;
+        this.fileDateTime = fileDateTime;
         this.fileContent = fileContent;
         let elements = fileName.split("_");
         this.filePrefix = elements.shift();
@@ -145,7 +146,7 @@ var CSV_JSONConverter = class CSV_JSONConverter {
         fileParams.FileId = id;
         fileParams.FileName = name;
         fileParams.FileType = type;
-        fileParams.FileCreationDate = ""; //Not available for csv.
+        fileParams.FileCreationDate = this.fileDateTime;
 
         return fileParams;
     }
@@ -215,47 +216,47 @@ var ISO20022_Swiss_JSONConverter = class ISO20022_Swiss_JSONConverter {
         return false
     }
 
-    convertToJson(fileContent, fileId, filePath) {
+    convertToJson(fileContent, fileId, filePath, fileDateTime) {
         let xmlDoc = Banana.Xml.parse(fileContent);
         let docNode = xmlDoc.firstChildElement(); // Document
         if (!docNode)
             return xmlTransactions
         switch (this.camtType) {
             case "CAMT.052":
-                return this.convertToJson_fromCamt052(docNode, fileId, filePath);
+                return this.convertToJson_fromCamt052(docNode, fileId, filePath, fileDateTime);
             case "CAMT.053":
-                return this.convertToJson_fromCamt053(docNode, fileId, filePath);
+                return this.convertToJson_fromCamt053(docNode, fileId, filePath, fileDateTime);
             case "CAMT.054":
-                return this.convertToJson_fromCamt054(docNode, fileId, filePath);
+                return this.convertToJson_fromCamt054(docNode, fileId, filePath, fileDateTime);
             default:
                 return jsonDoc;
         }
     }
 
-    convertToJson_fromCamt052(docNode, fileId, filePath) {
+    convertToJson_fromCamt052(docNode, fileId, filePath, fileDateTime) {
         let jsonDoc = {};
         jsonDoc.version = "1.0";
         let fileParams = {};
-        fileParams = this.readFileParams(docNode, fileId, filePath);
+        fileParams = this.readFileParams(docNode, fileId, filePath, fileDateTime);
         let statementsNode = this.getStatementsNode_camt052(docNode);
         this.setData(statementsNode, jsonDoc, fileParams);
         return jsonDoc;
     }
-    convertToJson_fromCamt053(docNode, fileId, filePath) {
+    convertToJson_fromCamt053(docNode, fileId, filePath, fileDateTime) {
         let jsonDoc = {};
         jsonDoc.version = "1.0";
         let fileParams = {};
-        fileParams = this.readFileParams(docNode, fileId, filePath);
+        fileParams = this.readFileParams(docNode, fileId, filePath, fileDateTime);
         let statementsNode = this.getStatementsNode_camt053(docNode);
         this.setData(statementsNode, jsonDoc, fileParams);
         return jsonDoc;
 
     }
-    convertToJson_fromCamt054(docNode, fileId, filePath) {
+    convertToJson_fromCamt054(docNode, fileId, filePath, fileDateTime) {
         let jsonDoc = {};
         jsonDoc.version = "1.0";
         let fileParams = {};
-        fileParams = this.readFileParams(docNode, fileId, filePath);
+        fileParams = this.readFileParams(docNode, fileId, filePath, fileDateTime);
         let statementsNode = this.getStatementsNode_camt054(docNode);
         this.setData(statementsNode, jsonDoc, fileParams);
         return jsonDoc;
@@ -299,7 +300,7 @@ var ISO20022_Swiss_JSONConverter = class ISO20022_Swiss_JSONConverter {
      * @param {*} jsonDoc 
      * @param {*} filePath 
      */
-    readFileParams(docNode, fileId, filePath) {
+    readFileParams(docNode, fileId, filePath, fileDateTime) {
         /**
          * The data we want to save:
          * - File Name (Path)
@@ -312,7 +313,7 @@ var ISO20022_Swiss_JSONConverter = class ISO20022_Swiss_JSONConverter {
         let id = fileId;
         let name = filePath;
         let type = this.camtType;
-        let creationDate = this.getDocumentCreationDate(docNode);
+        let creationDate = fileDateTime;
 
         fileParams.FileId = id;
         fileParams.FileName = name;
@@ -322,12 +323,12 @@ var ISO20022_Swiss_JSONConverter = class ISO20022_Swiss_JSONConverter {
         return fileParams;
     }
 
-    getDocumentCreationDate(docNode) {
+    /*getDocumentCreationDate(docNode) {
         let node = firstGrandChildElement(docNode, ['BkToCstmrStmt', 'GrpHdr', 'CreDtTm']);
         if (node)
             return formatDate(node.text);
         return '';
-    }
+    }*/
 
     /**
      * Saves the statement parameters into a json object.

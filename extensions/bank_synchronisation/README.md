@@ -75,11 +75,11 @@ Altre idee post:
 1) Salvare il last balance nel db in maniera che sia visibile anche quando non vengono letti i nuovi file, per mostrare che il file è sincronizzato. (fatto)
 2) aggiungere un controllo anche sul bilancio di apertura dell'ultimo statement presente ? in questo modo possiamo anche controllare che l'apertura sia uguale...
 3) L'aggiornamento delle tabelle dei db, trasformarli in slot e segnali.
-4) Come ci comportiamo con le registrazioni di dettaglio che hanno data, id e importo uguale ? Attualmente dobbiamo testare cosa sucede in un caso tipo quello che accade con il file della zurcher.
+4) Come ci comportiamo con le registrazioni di dettaglio che hanno data, id e importo uguale ? Attualmente dobbiamo testare cosa sucede in un caso tipo quello che accade con il file della zurcher. In teoria il camt053 prevede che tutte le transazioni, incluse quelle di dettaglio, abbiano un id diverso.
    20.06.2024
 5) Come controlliamo che un file sia relativo alla contabilità attualmente aperta --> La data che fa conto è quella degli statement al suo interno, siccome riprendono il periodo che comprende i movimenti presenti, qindi bisognerebbe fare un controllo a questo livello. Attualmente abbiamo il flag che permette di ignorare i file piu vecchi di una certa data e poi abbiamo anche il controllo sulle singole registrazioni, da testare.
-6) Nel files overview sarebbe utile aggiungere una colonna per indicare la data del file, cosi l'utente può vedere a colpo d'occhio se i file centrano con la contabilità corrente
-7) se un file che è stato aggiungo alla tabella dei file non viene più ritrovato, è meglio toglierlo anche dal db ? Nel caso in cui qualcuni modifica il contenuto del file, questo risulterà come file diverso (cambia l'hash) e risulteranno esserci piu file nel db di quelli che effettivamente ci sono nella cartella.
+6) Nel files overview sarebbe utile aggiungere una colonna per indicare la data del file, cosi l'utente può vedere a colpo d'occhio se i file centrano con la contabilità corrente (fatto)
+7) se un file che è stato aggiungo alla tabella dei file non viene più ritrovato, è meglio toglierlo anche dal db ? Nel caso in cui qualcuni modifica il contenuto del file, questo risulterà come file diverso (cambia l'hash) e risulteranno esserci piu file nel db di quelli che effettivamente ci sono nella cartella. (risolto)
 
 
 ### 20.06, Note
@@ -90,8 +90,29 @@ Altre idee post:
 ### 21.06, Note
 
 - Malgrado il flag attivo, vengono comunque lette tutte le registrazioni presenti nel db perche in esso sono gia presenti tutti i file e le transazioni ad esso correlate, bisognerebbe inserire anche un filtro a livello di DB-->
-- Quando si clicca il bottone clear all, siccome viene chiamato l'updateInterface, vengono ricaricati i parametri salvati nella syskey e se nel frattempo ho cambiato ad esempio lo stato del checkbox, esso mi riprende lo stato precedentemente salvato che non va bene-->è corretto così ? Alla fine ricacola tutto--> vedere il 24.06
-- Clear all dovrebbe eliminare i dati e poi riposizionarsi alla tab iniziale con i dati tutti resettati, se l'utente vuole rifare il processo deve farlo manualmente.
+- Quando si clicca il bottone clear all, siccome viene chiamato l'updateInterface, vengono ricaricati i parametri salvati nella syskey e se nel frattempo ho cambiato ad esempio lo stato del checkbox, esso mi riprende lo stato precedentemente salvato che non va bene-->è corretto così ? Alla fine ricacola tutto--> risolto
+- Clear all dovrebbe eliminare i dati e poi riposizionarsi alla tab iniziale con i dati tutti resettati, se l'utente vuole rifare il processo deve farlo manualmente.--> risolto
+
+### 24.06, Note
+- Vedere come fare in caso l'utente interrompa la sync ad un certo punto.
+
+### 25.06, Note.
+- Tasti ok
+- come filtrare le registrazioni che poi vengono lett ? Nel database esistono tutti i file e tutte le transazioni anche relativi ai file vecchi, in base alla data che l'utente inserisce come filtro:
+- i file vecchi non vengono più aperti e processati se la loro da di creazione è piu vecchia del filtro.
+- le registrazioni salvate che sono relative a file vecchi, non vengono più proposte nel dialogo (sebbene esistano già nel db)
+- Un altra idea per il problema sopra, potrebbe essere di non aggiungere proprio nella tabella i file più vecchi di un tot, e se l'utente attiva il flag e da l'ok, eliminiamo i file più vecchi di un tot.
+- Se per default impostassimo già la data di filtro alla data di apertura della contabilità e non leggessimo i file più vecchi ? (fatto)
+-  Messo a posto problema con accounting balance e last balance. 
+-  Sarebbe meglio unire le due tab dei files ? la prima tab risulta un po vuota.
+- Vedere formato data dell overview dei file da sincronizzare
+- Vedere perche il browsefile non funziona come dovrebbe.
+
+### 26.06, Note.
+
+- Usare la data di creazione dei file passata dal c++ per FileCreationDate ?-->sarebbe meglio per usare sempre la stessa data di riferimento ovunque. (fatto)
+- Inserire nel tab settings un bottone che apre il dialogo di gestione delle estensioni in maniera da permettere all'utente di installare le estensioni utili.
+- Tab file --> tab folder (unisce le info dei file, altrimenti rimane troppo spazio vuoto)
 
 ### Notes for automated tests.
 
