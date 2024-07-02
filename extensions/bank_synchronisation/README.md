@@ -94,7 +94,7 @@ Altre idee post:
 - Clear all dovrebbe eliminare i dati e poi riposizionarsi alla tab iniziale con i dati tutti resettati, se l'utente vuole rifare il processo deve farlo manualmente.--> risolto
 
 ### 24.06, Note
-- Vedere come fare in caso l'utente interrompa la sync ad un certo punto.
+- Vedere come fare in caso l'utente interrompa la sync ad un certo punto. *
 
 ### 25.06, Note.
 - Tasti ok
@@ -104,15 +104,39 @@ Altre idee post:
 - Un altra idea per il problema sopra, potrebbe essere di non aggiungere proprio nella tabella i file più vecchi di un tot, e se l'utente attiva il flag e da l'ok, eliminiamo i file più vecchi di un tot.
 - Se per default impostassimo già la data di filtro alla data di apertura della contabilità e non leggessimo i file più vecchi ? (fatto)
 -  Messo a posto problema con accounting balance e last balance. 
--  Sarebbe meglio unire le due tab dei files ? la prima tab risulta un po vuota.
-- Vedere formato data dell overview dei file da sincronizzare
+-  Sarebbe meglio unire le due tab dei files ? la prima tab risulta un po vuota.(fatto)
+- Vedere formato data dell overview dei file da sincronizzare (fatto)
 - Vedere perche il browsefile non funziona come dovrebbe.
 
 ### 26.06, Note.
 
 - Usare la data di creazione dei file passata dal c++ per FileCreationDate ?-->sarebbe meglio per usare sempre la stessa data di riferimento ovunque. (fatto)
 - Inserire nel tab settings un bottone che apre il dialogo di gestione delle estensioni in maniera da permettere all'utente di installare le estensioni utili.
-- Tab file --> tab folder (unisce le info dei file, altrimenti rimane troppo spazio vuoto)
+- Tab file --> tab folder (unisce le info dei file, altrimenti rimane troppo spazio vuoto) (fatto)
+- Controllare la lingua usata nelle date, che tutte le date rispettino quella giusta.
+- se la cartella cambia (tramite il bottone browse folder) è necessario chiudere la connessione al db corrente e creare quella legata alla cartella correntemente selezionata. (fatto)
+- * se qualcosa dovesse andare male nella sincronizzazione cosa facciamo ?--> devo abilitare nuovamente il bottone, e nel caso che l'utente mi clicchi su "cancella" durante la lettura, interrompiamo il ciclo di sincronizzazione ritornando i dati elaborati fino a quel punto. La volta dopo verranno elaborati tutti quei file che ancora non sono stati sincronizzati.(fatto)
+- 
+### 27.06, Note
+
+Iniziare a pensare ai test:
+- Generale, campi da escludere per l'anonimizzazione: Cd;CdtDbtInd;CdOrPrtry;Ustrd
+### 28.06 Note
+- Se ci sono due registrazioni uguali, possiamo salvarle da qualche parte e lasciar poi decidere all'utente cosa fare ? Da valutare
+### 02.07
+- Rivedere i nomi dei campi delle tabelle in maniera che seguano tutti lo stesso formato.
+- Vedere il problema del filtro di lettura.
+- Cosa facciamo nel db, con le transazioni che che si ripetono ? Per ora salviamo comunque tutte le transazioni relative ai file da sincronizzare , poi salviamo per essere importate solo la prima trovata con un certo id, se viene trovata un altra transazione che esiste gia in contabilità o che è gia stata letta dal database, la ignoriamo.
+-  * nel metodo transactionsAreMissingInAccounting, dobbiamo inserire un controllo se la transazione rientra nel range della contabilità, altrimenti continuerà a leggere i file con transazioni che non riguardano il periodo, per poi comunque non mostrarle anche perche fa il filtro dopo controllando la data.
+- Per quanto riguarda il problema del flag, giusto sarebbe che di default è attivo ed ignora i file precedenti alla contabilità, poi l'utente può cambiarlo, ma cosi, come nel caso di schopfer.
+
+Fatte modifiche, ore il processo del file è suddiviso in 3 livelli:
+1) File da leggere dalla cartella, tutti i file vengono letti dalla cartelle e salvati nel database
+2) File da processare, (ovvero viene aperto e letto il contenuto). I file vengono processati se:
+   1) Se la data di creazione rientra nel range dell'apertura e chiusura della contabilità. L'utente può disabilitare questa opzione che è abilitata per default e può anche cambiare date di riferimento, di default è a true per quei casi che in una cartella hanno molti files, per non aprirli e leggerli tutti.
+   2) Se il file non risulta già processato, ovvero se il campo "isProcessed" nella tabella File del database è a false, quando un file è stato letto, questo valore viene impostato a true.
+   3) Se nel database esistono delle transazioni associate a quel file, che invece nella contabilità non esistono, in quel caso viene ancora aperto e viene fatto il controllo. Per questo controllo è utile avere il flag "ignoreOlderFiles" attivo, altrimenti vengono aperti e processati anche i file vecchi salvati nel db (le transazioni vengono poi successivamente scartate se fuori dal range (vedi punto 3))
+3) File da sincronizzare. Le transazioni salvate, vengono filtrate per data, quindi vengono tenute solo quelle che rientrano nel range della contabilità, di queste transazioni salvate, i file ad essi associati risulteranno come da sincronizzare nel dialogo, ma a livello di database questa informazione attualmente non rimane.
 
 ### Notes for automated tests.
 
