@@ -98,10 +98,6 @@ Altre idee post:
 
 ### 25.06, Note.
 - Tasti ok
-- come filtrare le registrazioni che poi vengono lett ? Nel database esistono tutti i file e tutte le transazioni anche relativi ai file vecchi, in base alla data che l'utente inserisce come filtro:
-- i file vecchi non vengono più aperti e processati se la loro da di creazione è piu vecchia del filtro.
-- le registrazioni salvate che sono relative a file vecchi, non vengono più proposte nel dialogo (sebbene esistano già nel db)
-- Un altra idea per il problema sopra, potrebbe essere di non aggiungere proprio nella tabella i file più vecchi di un tot, e se l'utente attiva il flag e da l'ok, eliminiamo i file più vecchi di un tot.
 - Se per default impostassimo già la data di filtro alla data di apertura della contabilità e non leggessimo i file più vecchi ? (fatto)
 -  Messo a posto problema con accounting balance e last balance. 
 -  Sarebbe meglio unire le due tab dei files ? la prima tab risulta un po vuota.(fatto)
@@ -128,7 +124,7 @@ Iniziare a pensare ai test:
 - Vedere il problema del filtro di lettura.
 - Cosa facciamo nel db, con le transazioni che che si ripetono ? Per ora salviamo comunque tutte le transazioni relative ai file da sincronizzare , poi salviamo per essere importate solo la prima trovata con un certo id, se viene trovata un altra transazione che esiste gia in contabilità o che è gia stata letta dal database, la ignoriamo.
 -  * nel metodo transactionsAreMissingInAccounting, dobbiamo inserire un controllo se la transazione rientra nel range della contabilità, altrimenti continuerà a leggere i file con transazioni che non riguardano il periodo, per poi comunque non mostrarle anche perche fa il filtro dopo controllando la data.
-- Per quanto riguarda il problema del flag, giusto sarebbe che di default è attivo ed ignora i file precedenti alla contabilità, poi l'utente può cambiarlo, ma cosi, come nel caso di schopfer.
+- Per quanto riguarda il problema del flag, giusto sarebbe che di default è attivo ed ignora i file precedenti alla contabilità, poi l'utente può cambiarlo, ma cosi, come nel caso di schopfer. (fatto, cosi è più veloce)
 
 Fatte modifiche, ore il processo del file è suddiviso in 3 livelli:
 1) File da leggere dalla cartella, tutti i file vengono letti dalla cartelle e salvati nel database
@@ -136,7 +132,17 @@ Fatte modifiche, ore il processo del file è suddiviso in 3 livelli:
    1) Se la data di creazione rientra nel range dell'apertura e chiusura della contabilità. L'utente può disabilitare questa opzione che è abilitata per default e può anche cambiare date di riferimento, di default è a true per quei casi che in una cartella hanno molti files, per non aprirli e leggerli tutti.
    2) Se il file non risulta già processato, ovvero se il campo "isProcessed" nella tabella File del database è a false, quando un file è stato letto, questo valore viene impostato a true.
    3) Se nel database esistono delle transazioni associate a quel file, che invece nella contabilità non esistono, in quel caso viene ancora aperto e viene fatto il controllo. Per questo controllo è utile avere il flag "ignoreOlderFiles" attivo, altrimenti vengono aperti e processati anche i file vecchi salvati nel db (le transazioni vengono poi successivamente scartate se fuori dal range (vedi punto 3))
-3) File da sincronizzare. Le transazioni salvate, vengono filtrate per data, quindi vengono tenute solo quelle che rientrano nel range della contabilità, di queste transazioni salvate, i file ad essi associati risulteranno come da sincronizzare nel dialogo, ma a livello di database questa informazione attualmente non rimane.
+3) File da sincronizzare (file che contengono delle transazioni relative al periodo contabile). Le transazioni salvate, vengono filtrate per data, quindi vengono tenute solo quelle che rientrano nel range della contabilità, di queste transazioni salvate, i file ad essi associati risulteranno come da sincronizzare nel dialogo, ma a livello di database questa informazione attualmente non rimane.
+
+### 03.07
+- aggiungere un modo per forzare il fatto di aprire e leggere tutti i files ? attualmente se un file ha isprocessed, non viene più aperto e letto, però non è del tutto giusto
+- forse nel metodo DlgSyncBankData::setChildItemsData, è meglio, una volta chiamato getAllTransactions, chiamare un metodo (da creare in SyncBankData) che mi filtra le transazioni tenendomi solamente quelle relative alla contabilità corrente, in maniera da poter poi anche usare il metodo nei test, invece che fare tutto nel setChildItemsData che non è corretto. (modifica fatta, vedi nuovo metodo filterTransactions)
+- sempre legato alla modifiche per il punto sopra, attualmente controlliamo che la stessa transazione non venga importata due volte (nella stessa importazione), quello che potremmo fare è segnalare se in una importazione ce due volte la stessa transazione, cosi poi l'utente puo decidere se importarla o meno, la volta dopo non li verrâ più proposta in quanto sarâ già presente in contabilità. (tolto il controllo sul dialogo, da implementare eventualmente quello nuovo, vedi nuova proprieta transactionIsRepeated in struct Transaction)
+- Modificare il metodo DlgSyncBankData::getListFileToProcess() in maniera che non lavori con la lista delle transazioni prese dal dialogo direttamente, ma salvare la lista delle transazioni filtrate in una variabile (di classe ?) in maniera che poi lavoro con il valore di quella variabile e posso accedere al metodo dai test.
+- Vedere se è possibile salvare le registrazioni in una struct Transaction invece che in un json, valutare se aiuta poi anche nei test. In teoria se scrivo i dati in contabilità usando gli attributi della struct invece che il json come ora, nei test posso testare i metodi di scrittura in contabilità bypassando  la lettura dei dati dal dialogo, vedi dlgSyncBankData->getTransactionsToSave(), deovrebbe tornare una lista di Transactions (struct). (fatto)
+
+### 04.07
+- attualmente il controllo sul fatto che i movimenti siano relativi ad un iban esistente in contabilità, non è possibile farlo nei test siccome viene fatto prendendo i dati gia inseriti nel dialogo, fare una modifica che permetta di avere un metodo a parte.
 
 ### Notes for automated tests.
 
