@@ -65,7 +65,6 @@ function processXmlFile(fileId, filePath, fileDateTime, fileContent) {
     if (iso20022_swiss.match(fileContent)) {
         let jsonData = iso20022_swiss.convertToJson(fileContent, fileId, filePath, fileDateTime);
         if (jsonData) {
-            Banana.Ui.showText(JSON.stringify(jsonData));
             return jsonData;
         }
     }
