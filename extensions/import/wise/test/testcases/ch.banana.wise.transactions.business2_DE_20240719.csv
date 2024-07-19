@@ -1,0 +1,6 @@
+ID,Status,Richtung,"Erstellt am","Abgeschlossen am","Betrag der Ausgangsgebühr","Währung der Ausgangsgebühr","Betrag der Zielgebühr","Währung der Zielgebühr",Quellenname,"Ausgangsbetrag (nach Gebühren)",Ausgangswährung,"Name des Empfängers","Zielbetrag (nach Gebühren)",Zielwährung,Wechselkurs,Referenz,Sammelüberweisung
+CARD_TRANSACTION-1111111111,COMPLETED,OUT,"2023-12-30 14:47:11","2023-12-30 14:47:11","0.00","EUR",,,Steve,"58.19",EUR,"Receiver SA","58.19",EUR,1.00000000,,
+CARD_TRANSACTION-1111111112,COMPLETED,OUT,"2023-12-30 14:37:52","2023-12-30 14:37:52","0.00","EUR",,,Steve,"36.52",EUR,"Receiver SA","36.52",EUR,1.00000000,,
+CARD_TRANSACTION-1111111113,COMPLETED,OUT,"2023-12-28 08:41:00","2023-12-28 08:41:00","0.00","EUR",,,Steve,"7.47",EUR,"Receiver SA","7.47",EUR,1.00000000,,
+CARD_TRANSACTION-1111111114,COMPLETED,OUT,"2023-12-28 08:29:16","2023-12-28 08:29:16","0.00","EUR",,,Steve,"48.56",EUR,"Receiver SA","48.56",EUR,1.00000000,,
+TRANSFER-22222222,COMPLETED,OUT,"2023-12-27 00:50:09","2023-12-27 00:50:23","1.73","EUR",,,Steve,"131.26",EUR,"Receiver SA","5000.0",THB,38.0925,,
