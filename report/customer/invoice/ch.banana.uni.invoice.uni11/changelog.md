@@ -23,5 +23,11 @@ All notable changes to the [[UNI11] Layout 11 Programmable Invoice](https://www.
 	* Added Delivery Notes and Reminders as print options (Advanced plan required).
 	* Added a new color for 'Title and Total' in parameters settings.  
 * 2023-03-10
-	* Added Proforma Invoice and Estimate as print options (Advanced plan required).   
-    
+	* Added Proforma Invoice and Estimate as print options (Advanced plan required).  
+* 2024-07-22
+	* Integrated invoice: Added reminders date and remiders due date when dates are set via the Report > Customers > Print reminders function.
+	* Integrated invoice: Added for proforma invoice the possibility to set the title and final notes/greetings using the column DocType of Transactions table.
+	* Integrated invoice: The content of the column Quantity is always printed when used.
+	* Integrated invoice: The format number of Quantity column in Transactions table can be modified to print decimals on the invoice (0,1,2,3,4 decimals).
+	* Estimates and Invoices Application: discount and deposit now appear with negative sings on the invoice.
+	* Added new parameters in layout options to view the invoice JSONs (useful for development, Advanced plan required).  

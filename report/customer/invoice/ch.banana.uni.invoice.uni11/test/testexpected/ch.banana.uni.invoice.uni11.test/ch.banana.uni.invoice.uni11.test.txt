@@ -999,6 +999,14 @@ Vendita merce prodotto C, fattura \#35, cliente B \newline \newline  & 22.0000  
 \multicolumn{91}{l}{}\\
 \multicolumn{90}{l}{TOTAL CHF } & 1'130.00 \\
 \end{longtable}
+  \\
+Prima nota definita con il comando '10:not' nella colonna DocType. \\
+Seconda nota definita con il comando '10:not' nella colonna DocType . \\
+  \\
+  \\
+  \\
+Testo saluti finali  utilizzando il comando  '10:gre'  nella colonna  DocType . \\
+  \\
 This is the final text of the proforma invoice. \\
 It can be on multiple lines. \\
 \begin{longtable}[l]{ l  l }
@@ -2811,6 +2819,12 @@ Product CCC \newline \newline  & 1.0000  & pz.  & 51.85  & 51.85 \\
 \multicolumn{235}{l}{}\\
 \multicolumn{234}{l}{TOTAL CHF } & 1'593.00 \\
 \end{longtable}
+Prima nota finale stampata con il comando '10:not' nella colonna DocType \\
+Seconda  Nota finale  stampata con il comando  '10:not'  nella  colonna DocType \\
+Terza Nota finale stampata con il comando '10:not' nella colonna DocType \\
+  \\
+Saluti finali stampati con il comando '10:gre' nella colonna DocType \\
+  \\
 This is the final text of the proforma invoice. \\
 It can be on multiple lines. \\
 \begin{longtable}[l]{ l  l }
