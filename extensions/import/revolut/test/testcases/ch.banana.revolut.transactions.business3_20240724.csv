@@ -1,0 +1,5 @@
+Date started (UTC),Date completed (UTC),Date started (Europe/Zurich),Date completed (Europe/Zurich),ID,Type,Description,Reference,Payer,Card number,Orig currency,Orig amount,Payment currency,Amount,Exchange rate,Fee,Fee currency,Balance,Account,Beneficiary account number,Beneficiary sort code or routing number,Beneficiary IBAN,Beneficiary BIC
+2024-06-27,2024-06-29,2024-06-27,2024-06-29,667d6596-999d-af5d-a1bf-aef8af4633f7,CARD_PAYMENT,Transaction Description,,Payer Name,12345********5432,GBP,72.92,EUR,-86.05,0.847429,0.00,EUR,93.71,EUR Main,,,,
+2024-06-28,2024-06-29,2024-06-28,2024-06-29,667eed0b-4f0f-a4cd-9018-8ac923d6106a,CARD_PAYMENT,Transaction Description,,Payer Name,12345********5432,EUR,48.00,EUR,-48.00,,0.00,EUR,179.76,EUR Main,,,,
+2024-06-28,2024-06-29,2024-06-28,2024-06-29,667e82e6-15bd-a252-ae31-d9320d794b5d,CARD_PAYMENT,Transaction Description,,Payer Name,12345********5432,USD,41.99,EUR,-39.26,1.069678,0.00,EUR,227.76,EUR Main,,,,
+2024-06-29,2024-06-29,2024-06-29,2024-06-29,667f6ba2-44aa-a444-ac1c-1f8729115d6d,CARD_REFUND,Transaction Description,,Payer Name,12345********5432,RON,23.99,EUR,4.83,4.974445,0.00,EUR,267.02,EUR Main,,,,

@@ -1,4 +1,4 @@
-// Copyright [2022] [Banana.ch SA - Lugano Switzerland]
+// Copyright [2024] [Banana.ch SA - Lugano Switzerland]
 //
 // Licensed under the Apache License, Version 2.0 (the 'License');
 // you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
 //
 // @id = ch.banana.uni.import.revolut
 // @api = 1.0
-// @pubdate = 2022-03-23
+// @pubdate = 2024-07-24
 // @publisher = Banana.ch SA
 // @description = Revolut - Import movements .csv (Banana+ Advanced)
 // @doctype = 100.*; 110.*; 130.*
@@ -81,15 +81,22 @@ function exec(inData, isTest) {
     // Format Business 2. (All transactions)
     var importRevolutBusinessFormat2 = new ImportRevolutBusinessFormat2(Banana.document);
     if (importRevolutBusinessFormat2.match(transactions)) {
-        var intermediaryData = importRevolutBusinessFormat2.convertCsvToIntermediaryData(transactions, convertionParam);
+        let intermediaryData = importRevolutBusinessFormat2.convertCsvToIntermediaryData(transactions, convertionParam);
         intermediaryData = importRevolutBusinessFormat2.sortData(intermediaryData, convertionParam);
         return importRevolutBusinessFormat2.convertToBananaFormat(intermediaryData);
     }
 
-    // Format Business Expenses 1. Works with column headers.(All transactions)
+    // Format Business 3. Works with column headers (All transactions)
+    var importRevolutBusinessFormat3 = new ImportRevolutBusinessFormat3(Banana.document);
+    if (importRevolutBusinessFormat3.match(transactionsData)) {
+        let intermediaryData = importRevolutBusinessFormat3.convertCsvToIntermediaryData(transactionsData);
+        return Banana.Converter.arrayToTsv(intermediaryData);
+    }
+
+    // Format Business Expenses 1. Works with column headers.
     var importRevolutBusinessExpensesFormat1 = new ImportRevolutBusinessExpensesFormat1(Banana.document);
     if (importRevolutBusinessExpensesFormat1.match(transactionsData)) {
-        var intermediaryData = importRevolutBusinessExpensesFormat1.convertCsvToIntermediaryData(transactionsData);
+        let intermediaryData = importRevolutBusinessExpensesFormat1.convertCsvToIntermediaryData(transactionsData);
         return Banana.Converter.arrayToTsv(intermediaryData);
     }
 
@@ -574,6 +581,91 @@ var ImportRevolutBusinessFormat2 = class ImportRevolutBusinessFormat2 extends Im
                 convertedData["Expenses"] = Banana.SDecimal.invert(convertedData["Expenses"]);
             }
         }
+    }
+}
+
+/**
+ * CSV  structure format 3 Business All transactions
+ */
+var ImportRevolutBusinessFormat3 = class ImportRevolutBusinessFormat3 extends ImportUtilities {
+    constructor(banDocument) {
+        super(banDocument);
+    }
+
+    match(transactionsData) {
+        if (transactionsData.length === 0)
+            return false;
+        for (var i = 0; i < transactionsData.length; i++) {
+            var transaction = transactionsData[i];
+            var formatMatched = true;
+
+            if (formatMatched && transaction["Date started (UTC)"] && transaction["Date started (UTC)"].length >= 10 &&
+                transaction["Date started (UTC)"].match(/^[0-9]+(\-|\.)[0-9]+(\-|\.)[0-9]/))
+                formatMatched = true;
+            else
+                formatMatched = false;
+
+            if (formatMatched && transaction["Date completed (UTC)"] && transaction["Date completed (UTC)"].length >= 10 &&
+                transaction["Date completed (UTC)"].match(/^[0-9]+(\-|\.)[0-9]+(\-|\.)[0-9]/))
+                formatMatched = true;
+            else
+                formatMatched = false;
+
+            if (formatMatched)
+                return true;
+        }
+        return false;
+    }
+
+    //Override the utilities method by adding language control
+    convertCsvToIntermediaryData(transactionsData) {
+        var transactionsToImport = [];
+        for (var i = 0; i < transactionsData.length; i++) {
+            if (transactionsData[i]["Date started (UTC)"] && transactionsData[i]["Date started (UTC)"].length >= 10 &&
+                transactionsData[i]["Date started (UTC)"].match(/^[0-9]+(\-|\.)[0-9]+(\-|\.)[0-9]/)) {
+                transactionsToImport.push(this.mapTransaction(transactionsData[i]));
+            }
+        }
+
+        // Sort rows by date
+        transactionsToImport = transactionsToImport.reverse();
+
+        // Add header and return
+        var header = [["Date", "DateValue", "Doc", "ExternalReference", "Description", "Income", "Expenses"]];
+        return header.concat(transactionsToImport);
+    }
+
+    mapTransaction(transaction) {
+
+        let mappedLine = [];
+        let descText = "";
+        let amount = "";
+        let feeAmount = "";
+        let absFeeAmount = "";
+        let absAmount = "";
+        let totAmount = "";
+
+        mappedLine.push(Banana.Converter.toInternalDateFormat(transaction["Date started (UTC)"], "yyyy-mm-dd"));
+        mappedLine.push(Banana.Converter.toInternalDateFormat(transaction["Date completed (UTC)"], "yyyy-mm-dd"));
+        mappedLine.push("");
+        mappedLine.push(transaction["ID"]);
+        descText = transaction["Type"] + ", " + transaction["Description"] + " " + transaction["Payer"];
+        mappedLine.push(descText);
+        amount = transaction["Amount"];
+        feeAmount = transaction["Fee"];
+        if (transaction["Amount"].indexOf("-") == -1) {
+            totAmount = calculateAmount(amount, feeAmount);
+            mappedLine.push(Banana.Converter.toInternalNumberFormat(totAmount, '.'));
+            mappedLine.push("");
+        } else {
+            absAmount = Banana.SDecimal.abs(amount);
+            absFeeAmount = Banana.SDecimal.abs(feeAmount);
+            totAmount = calculateAmount(absAmount, absFeeAmount);
+            mappedLine.push("");
+            mappedLine.push(Banana.Converter.toInternalNumberFormat(totAmount, '.'));
+        }
+
+        return mappedLine;
     }
 }
 

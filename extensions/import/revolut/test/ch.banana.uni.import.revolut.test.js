@@ -62,6 +62,7 @@ TestImportRevolutTrans.prototype.testImport = function () {
    fileNameList.push("file:script/../test/testcases/ch.banana.revolut.transactions.business1_20222609.csv");
    fileNameList.push("file:script/../test/testcases/ch.banana.revolut.transactions.private1_20222609.csv");
    fileNameList.push("file:script/../test/testcases/ch.banana.revolut.transactions.business2_20222410.csv");
+   fileNameList.push("file:script/../test/testcases/ch.banana.revolut.transactions.business3_20240724.csv");
    fileNameList.push("file:script/../test/testcases/ch.banana.revolut.transactions.business_exp1_EUR_20240131.csv");
    fileNameList.push("file:script/../test/testcases/ch.banana.revolut.transactions.business_exp1_USD_20240131.csv");
 
