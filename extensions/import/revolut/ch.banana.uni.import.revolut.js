@@ -36,6 +36,8 @@
  * Each platform:
  * - Exports .csv files with different format. Csv export formats are standard and not customizable.
  * - Allows to export all the transactions or just the expenses, files format are different.
+ * The user could also choose to export just the expenses, 
+ * this file has a different format from the ones containing the complete transactions.
  */
 
 
