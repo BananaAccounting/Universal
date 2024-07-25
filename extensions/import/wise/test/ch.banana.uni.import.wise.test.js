@@ -64,6 +64,7 @@ TestImportWiseTrans.prototype.testImport = function () {
    fileNameList.push("file:script/../test/testcases/ch.banana.wise.transactions.personal1_20230105.csv");
    fileNameList.push("file:script/../test/testcases/ch.banana.wise.transactions.personal1_20231103.csv");
    fileNameList.push("file:script/../test/testcases/ch.banana.wise.transactions.business2_20240423.csv");
+   fileNameList.push("file:script/../test/testcases/ch.banana.wise.transactions.business2_DE_20240719.csv");
 
    var parentLogger = this.testLogger;
    this.progressBar.start(fileNameList.length);
