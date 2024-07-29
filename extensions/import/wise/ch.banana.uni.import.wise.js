@@ -15,7 +15,7 @@
 //
 // @id = ch.banana.uni.import.wise
 // @api = 1.0
-// @pubdate = 2024-04-23
+// @pubdate = 2024-04-26
 // @publisher = Banana.ch SA
 // @description = Wise - Import movements .csv (Banana+ Advanced)
 // @doctype = 100.*; 110.*; 130.*
@@ -379,7 +379,119 @@ function getFormattedData(inData, convertionParam, importUtilities) {
     var columns = importUtilities.getHeaderData(inData, convertionParam.headerLineStart); //array
     var rows = importUtilities.getRowData(inData, convertionParam.dataLineStart); //array of array
     let form = [];
-    //Load the form with data taken from the array. Create objects
-    importUtilities.loadForm(form, columns, rows);
-    return form;
+
+    let convertedColumns = [];
+
+    convertedColumns = convertHeaderDe(columns);
+    // Load the form with data taken from the array. Create objects
+    if (convertedColumns.length > 0) {
+        importUtilities.loadForm(form, convertedColumns, rows);
+        return form;
+    }
+
+    convertedColumns = convertHeaderEn(columns);
+
+    if (convertedColumns.length > 0) {
+        importUtilities.loadForm(form, convertedColumns, rows);
+        return form;
+    }
+
+    return [];
+}
+
+function convertHeaderDe(columns) {
+    let convertedColumns = [];
+
+    for (var i = 0; i < columns.length; i++) {
+        switch (columns[i]) {
+            case "ID":
+                convertedColumns[i] = "ID";
+                break;
+            case "Erstellt am":
+                convertedColumns[i] = "Created on";
+                break;
+            case "Abgeschlossen am":
+                convertedColumns[i] = "Finished on";
+                break;
+            case "Quellenname":
+                convertedColumns[i] = "Source name";
+                break;
+            case "Referenz":
+                convertedColumns[i] = "Reference";
+                break;
+            case "Betrag der Ausgangsgebühr":
+                convertedColumns[i] = "Source fee amount";
+                break;
+            case "Richtung":
+                convertedColumns[i] = "Direction";
+                break;
+            case "Ausgangsbetrag (nach Gebühren)":
+                convertedColumns[i] = "Source amount (after fees)";
+                break;
+            default:
+                break;
+        }
+    }
+
+    if (convertedColumns.indexOf("Created on") < 0) {
+        return [];
+    }
+
+    return convertedColumns;
+}
+
+function convertHeaderEn(columns) {
+    let convertedColumns = [];
+
+    for (var i = 0; i < columns.length; i++) {
+        switch (columns[i]) {
+            case "TransferWise ID":
+                convertedColumns[i] = "TransferWise ID";
+                break;
+            case "ID":
+                convertedColumns[i] = "ID";
+                break;
+            case "Date":
+                convertedColumns[i] = "Date";
+                break;
+            case "Amount":
+                convertedColumns[i] = "Amount";
+                break;
+            case "Description":
+                convertedColumns[i] = "Description";
+                break;
+            case "Note":
+                convertedColumns[i] = "Note";
+                break;
+            case "Created on":
+                convertedColumns[i] = "Created on";
+                break;
+            case "Finished on":
+                convertedColumns[i] = "Finished on";
+                break;
+            case "Source name":
+                convertedColumns[i] = "Source name";
+                break;
+            case "Reference":
+                convertedColumns[i] = "Reference";
+                break;
+            case "Source fee amount":
+                convertedColumns[i] = "Source fee amount";
+                break;
+            case "Direction":
+                convertedColumns[i] = "Direction";
+                break;
+            case "Source amount (after fees)":
+                convertedColumns[i] = "Source amount (after fees)";
+                break;
+            default:
+                break;
+        }
+    }
+
+    if (convertedColumns.indexOf("Created on") < 0 && convertedColumns.indexOf("Date") < 0) {
+        return [];
+    }
+
+    return convertedColumns;
 }
