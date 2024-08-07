@@ -19,6 +19,10 @@
 // @publisher = Banana.ch SA
 // @pubdate = 2024-06-26
 // @inputdatasource = none
+// @doctype = *
+// @docproperties =
+// @inputencoding = latin1
+// @timeout = -1
 // @includejs = src/csv_import_extensions/postfinance_sync_csv/ch.banana.sync.postfinance.js
 
 /**
