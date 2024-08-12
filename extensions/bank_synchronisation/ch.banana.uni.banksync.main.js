@@ -191,28 +191,15 @@ var ISO20022_Swiss_JSONConverter = class ISO20022_Swiss_JSONConverter {
         let xmlDoc = Banana.Xml.parse(fileContent);
         if (!xmlDoc)
             return false;
-        let root = xmlDoc.firstChildElement(); // Document
-        if (!root)
-            return false;
-        let nameSpace = root.namespaceURI();
-        let rootFirstChildNodeName = root.firstChildElement().nodeName;
-        // Check for CAMT.052
-        if ((rootFirstChildNodeName.indexOf('BkToCstmrAcctRpt') >= 0)
-            && nameSpace.indexOf('camt.052') >= 0) {
+        let docNode = xmlDoc.firstChildElement(); // 'Document'
+        let docNs = docNode.attribute('xmlns');
+        if (docNs.indexOf('camt.052') >= 0) {         // Check for CAMT.052
             this.camtType = "CAMT.052";
             return true;
-        }
-
-        // Check for CAMT.053
-        if ((rootFirstChildNodeName.indexOf('BkToCstmrStmt') >= 0)
-            && nameSpace.indexOf('camt.053') >= 0) {
+        } else if (docNs.indexOf('camt.053') >= 0) { // Check for CAMT.053
             this.camtType = "CAMT.053";
             return true;
-        }
-
-        // Check for CAMT.054
-        if ((rootFirstChildNodeName.indexOf('BkToCstmrDbtCdtNtfctn') >= 0)
-            && nameSpace.indexOf('camt.054') >= 0) {
+        } else if (docNs.indexOf('camt.054') >= 0) { // Check for CAMT.054
             this.camtType = "CAMT.054";
             return true;
         }
