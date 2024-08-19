@@ -13,11 +13,11 @@
 // limitations under the License.
 
 // @api = 1.0
-// @id = ch.banana.uni.bank.data.sync
-// @description = Synchronisation of Bank data
+// @id = ch.banana.uni.read.file.to.reconcile
+// @description = Read file to reconcile.
 // @task = app.command
 // @publisher = Banana.ch SA
-// @pubdate = 2024-06-26
+// @pubdate = 2024-08-19
 // @inputdatasource = none
 // @doctype = *
 // @docproperties =

@@ -1,0 +1,7 @@
+<RCC>
+	<qresource>
+		<file>ch.banana.uni.read.file.to.reconcile.js</file>
+		<file>ch.banana.uni.read.file.to.reconcile.manifest.json</file>
+		<file>src/csv_import_extensions/postfinance_sync_csv/ch.banana.sync.postfinance.js</file>
+	</qresource>
+</RCC>
