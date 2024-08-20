@@ -387,7 +387,7 @@ var ISO20022_Swiss_JSONConverter = class ISO20022_Swiss_JSONConverter {
         let entryDescription = entryNode.hasChildElements('AddtlNtryInf') ? entryNode.firstChildElement('AddtlNtryInf').text : '';
         let entryTexts = entryBookingDate + entryValutaDate + entryAmount + entryDescription;
         let entryExternalReference = entryNode.hasChildElements('AcctSvcrRef') && entryNode.firstChildElement('AcctSvcrRef').text.length >= 0 ?
-            entryNode.firstChildElement('AcctSvcrRef').text : getHash(entryTexts, fileParams, statementParams);
+            entryNode.firstChildElement('AcctSvcrRef').text : getHash(entryTexts, statementParams);
 
         if (entryNode.hasChildElements('NtryDtls')) {
             let detailsNode = entryNode.firstChildElement('NtryDtls');
@@ -442,7 +442,7 @@ var ISO20022_Swiss_JSONConverter = class ISO20022_Swiss_JSONConverter {
                             detailDescription = instrIdNode.text;
                         // Set External reference
                         let entryDetailTexts = entryBookingDate + entryValutaDate + deatailAmount + detailDescription;
-                        let detailExternalReference = acctSvcrRefNode && acctSvcrRefNode.text.length >= 0 ? acctSvcrRefNode.text : getHash(entryDetailTexts, fileParams, statementParams);
+                        let detailExternalReference = acctSvcrRefNode && acctSvcrRefNode.text.length >= 0 ? acctSvcrRefNode.text : getHash(entryDetailTexts, statementParams);
 
                         //let invoiceNumber = extractInvoiceNumber(detailEsrReference); // Da valutare.
 
@@ -1027,20 +1027,12 @@ function joinNotEmpty(texts, separator) {
     return cleanTexts.join(separator);
 }
 
-function getHash(entryTexts, fileParams, statementParams) {
+function getHash(entryTexts, statementParams) {
 
     let entryId = "";
     let textToHash = entryTexts +
-        fileParams.filaName +
-        fileParams.FileType +
-        fileParams.FileCreationDate +
-        statementParams +
         statementParams.StatementIban +
-        statementParams.StatementOwner +
-        statementParams.StatementIban +
-        statementParams.StatementCurrency +
-        statementParams.StatementInitialBalance +
-        statementParams.StatementFinalBalance;
+        statementParams.StatementCurrency;
 
     entryId = Banana.Converter.textToHash(textToHash, "Sha256");
 
