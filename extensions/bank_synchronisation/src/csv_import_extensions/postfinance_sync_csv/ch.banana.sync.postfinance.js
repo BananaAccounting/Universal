@@ -12,9 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// @id = ch.banana.sync.postfinance
-// @api = 1.0
-// @pubdate = 2023-09-29
+// @pubdate = 2024-08-20
 // @publisher = Banana.ch SA
 // @includejs = import.utilities.js
 /**

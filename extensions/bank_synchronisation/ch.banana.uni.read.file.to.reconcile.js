@@ -14,7 +14,7 @@
 
 // @api = 1.0
 // @id = ch.banana.uni.read.file.to.reconcile
-// @description = Read file to reconcile.
+// @description = Read file to reconcile
 // @task = app.command
 // @publisher = Banana.ch SA
 // @pubdate = 2024-08-19
@@ -52,7 +52,7 @@ function exec(fileContent, fileId, filePath, fileName, fileDateTime, fileSuffix)
     if (fileContent.length < 0)
         return;
 
-    switch (fileSuffix) {
+    switch (fileSuffix.toLowerCase()) {
         case CSV_FILE_SUFFIX:
             return processCsvFile(fileId, filePath, fileName, fileDateTime, fileContent);
         case XML_FILE_SUFFIX:
