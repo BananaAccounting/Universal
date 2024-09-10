@@ -1,4 +1,4 @@
-// Copyright [2023] [Banana.ch SA - Lugano Switzerland]
+// Copyright [2024] [Banana.ch SA - Lugano Switzerland]
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 // @id = ch.banana.uni.app.donationstatementplus.test
 // @api = 1.0
-// @pubdate = 2023-09-06
+// @pubdate = 2024-09-10
 // @publisher = Banana.ch SA
 // @description = <TEST ch.banana.uni.app.donationstatementplus.js>
 // @task = app.command
@@ -231,8 +231,12 @@ ReportTest.prototype.report_test = function(banDoc, startDate, endDate, userPara
   var styles = [];
   userParam.selectionStartDate = startDate;
   userParam.selectionEndDate = endDate;
+  userParam.transactions = [];
   texts = loadTexts(banDoc,lang);
-  var accounts = getAccountsToPrint(banDoc, userParam, texts);
+
+  fillTransactionStructure(banDoc, userParam, texts);
+  var accounts = getListOfAccountsToPrint(userParam);
+
   printReport(banDoc, userParam, accounts, texts, "", docs, styles);
   for (var i = 0; i < docs.length; i++) {
     Test.logger.addReport(reportName, docs[i]);
