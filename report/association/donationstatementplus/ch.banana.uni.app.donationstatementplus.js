@@ -1,4 +1,4 @@
-// Copyright [2023] [Banana.ch SA - Lugano Switzerland]
+// Copyright [2024] [Banana.ch SA - Lugano Switzerland]
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.uni.app.donationstatementplus.js
 // @api = 1.0
-// @pubdate = 2023-09-06
+// @pubdate = 2024-09-10
 // @publisher = Banana.ch SA
 // @description = Donation Statement for Associations (Banana+)
 // @description.de = Spendenbescheinigung für Vereine (Banana+)
@@ -37,7 +37,7 @@
 *   It works for simple and double accounting files.
 */
 
-
+var mimimunAmountDonation = "";
 
 //===========================================================================
 // PARAMETERS
@@ -543,10 +543,15 @@ function exec(inData, options) {
         return "@Cancel";
     }
 
-    // Retrieves all the donors to print
-    var accounts = getAccountsToPrint(Banana.document, userParam, texts);
+    // Get the minimum donation amount entered by the user
+    mimimunAmountDonation = userParam.minimumAmount;
+
+    // Add a transactions property to userParam object, and fill it with transactions data
+    userParam.transactions = [];
+    fillTransactionStructure(Banana.document, userParam, texts);
 
     // Creates the report
+    var accounts = getListOfAccountsToPrint(userParam);
     if (accounts.length > 0) {
 
         // CSS variable starts with $
@@ -556,8 +561,8 @@ function exec(inData, options) {
         var stylesheet = Banana.Report.newStyleSheet();
         var docs = []; //array of reports
         var styles = []; //array of stylesheets
+
         printReport(Banana.document, userParam, accounts, texts, stylesheet, docs, styles);
-        
         setCss(Banana.document, stylesheet, userParam, variables);
         Banana.Report.preview(texts.reportTitle, docs, styles);
     } else {
@@ -565,19 +570,19 @@ function exec(inData, options) {
     }
 }
 
+
 /* Function that adds information for multiple separated pdfs export */
 function addDocumentInformation(report, banDoc, userParam, account, texts) {
 
     // Document's informations are used to build meaningful file names for the exported pdf files
 
     if (report.addDocInfo) {
-
+        
         var startDate = userParam.selectionStartDate;
         var endDate = userParam.selectionEndDate;
         var address = getAddress(banDoc, account);
-        var transactionsObj = calculateTotalTransactions(banDoc, account, startDate, endDate);
-        var totalOfDonations = transactionsObj.total;
-    
+        var totalOfDonations = calculateTotalAmount(banDoc, userParam, account);
+        
         report.addDocInfo("name", texts.reportTitle + " - " + endDate + " - " + address.firstname + " " + address.familyname);
         report.addDocInfo("doc_amount", totalOfDonations);
         report.addDocInfo("doc_period", startDate + " - " + endDate, texts.doc_period);
@@ -718,15 +723,7 @@ function printReportLetter(report, banDoc, userParam, account, texts) {
     /**
      * Print the text of the letter
      */
-
-    var startDate = userParam.selectionStartDate;
-    var endDate = userParam.selectionEndDate;
-    var transactionsObj = calculateTotalTransactions(banDoc, account, startDate, endDate);
-    var totalOfDonations = transactionsObj.total;
-    var numberOfDonations = transactionsObj.numberOfTransactions;
-    var trDate = getTransactionDate(banDoc, account, startDate, endDate);
     var text = "";
-    var address = getAddress(banDoc, account);
 
     // Locality and date
     if (userParam.localityAndDate) {
@@ -782,47 +779,34 @@ function printReportDetailsTransaction(report, banDoc, userParam, account, texts
      */
 
     if (userParam.details) {
-        var startDate = userParam.selectionStartDate;
-        var endDate = userParam.selectionEndDate;
+
         var total = "";
+        total = calculateTotalAmount(banDoc, userParam, account);
         var rowCnt = 0;
         account = account.substring(1); //remove first character ";"
 
         var table = report.addTable("transactions_details");
-        var transTab = banDoc.table("Transactions");
 
-        for (var i = 0; i < transTab.rowCount; i++) {
-            var tRow = transTab.row(i);
-            var date = tRow.value("Date");
-            var cc3 = tRow.value("Cc3");
-            var desc = tRow.value("Description");
+        for (var i = 0; i < userParam.transactions.length; i++) {
 
-            if (date >= startDate && date <= endDate) {
+            var cc3 = userParam.transactions[i].cc3;
+            var date = userParam.transactions[i].date;
+            var desc = userParam.transactions[i].description;
+            var amount = userParam.transactions[i].amount;
 
-                if (account && account === cc3) {
-
-                    /*  If simple accounting, amount=Income column of transaction
-                        If double accounting, amount=Amount column of transaction */
-                    if (banDoc.table('Categories')) {
-                        var amount = tRow.value("Income");
-                    } else {
-                        var amount = tRow.value("Amount");
-                    }
-
-                    rowCnt++;
-                    tableRow = table.addRow();
-                    tableRow.addCell(rowCnt, "transactions_rows", 1); //sequencial numbers
-                    tableRow.addCell(" ", "transactions_rows");
-                    tableRow.addCell(Banana.Converter.toLocaleDateFormat(tRow.value("Date")), "transactions_rows", 1);
-                    tableRow.addCell(" ", "transactions_rows");
-                    tableRow.addCell(banDoc.info("AccountingDataBase", "BasicCurrency"), "transactions_rows", 1);
-                    tableRow.addCell(" ", "transactions_rows");
-                    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(amount), "right transactions_rows", 1);
-                    tableRow.addCell(" ", "transactions_rows");
-                    if (userParam.description) {
-                        tableRow.addCell(desc, " right transactions_rows", 1);
-                    }
-                    total = Banana.SDecimal.add(total, amount);
+            if (account && account === cc3) {
+                rowCnt++;
+                tableRow = table.addRow();
+                tableRow.addCell(rowCnt, "transactions_rows", 1); //sequencial numbers
+                tableRow.addCell(" ", "transactions_rows");
+                tableRow.addCell(Banana.Converter.toLocaleDateFormat(date), "transactions_rows", 1);
+                tableRow.addCell(" ", "transactions_rows");
+                tableRow.addCell(banDoc.info("AccountingDataBase", "BasicCurrency"), "transactions_rows", 1);
+                tableRow.addCell(" ", "transactions_rows");
+                tableRow.addCell(Banana.Converter.toLocaleNumberFormat(amount), "right transactions_rows", 1);
+                tableRow.addCell(" ", "transactions_rows");
+                if (userParam.description) {
+                    tableRow.addCell(desc, " right transactions_rows", 1);
                 }
             }
         }
@@ -866,17 +850,6 @@ function printReportSignature(report, banDoc, userParam) {
         report.addImage(userParam.nameSignatureImage, "image-signature");
     }
 }
-
-
-
-
-
-
-
-
-
-
-
 
 /* Function that add a new line to the paragraph */
 function addNewLine(reportElement, text) {
@@ -933,8 +906,7 @@ function convertFields(banDoc, userParam, account, text) {
 
     var startDate = userParam.selectionStartDate;
     var endDate = userParam.selectionEndDate;
-    var transactionsObj = calculateTotalTransactions(banDoc, account, startDate, endDate);
-    var totalOfDonations = transactionsObj.total;
+    var totalOfDonations = calculateTotalAmount(banDoc, userParam, account);
     var trDate = getTransactionDate(banDoc, account, startDate, endDate);
     var address = getAddress(banDoc, account);
 
@@ -1003,8 +975,7 @@ function convertFieldsMarkdown(banDoc, userParam, account, text) {
 
     var startDate = userParam.selectionStartDate;
     var endDate = userParam.selectionEndDate;
-    var transactionsObj = calculateTotalTransactions(banDoc, account, startDate, endDate);
-    var totalOfDonations = transactionsObj.total;
+    var totalOfDonations = calculateTotalAmount(banDoc, userParam, account);
     var trDate = getTransactionDate(banDoc, account, startDate, endDate);
     var address = getAddress(banDoc, account);
 
@@ -1070,32 +1041,64 @@ function convertFieldsMarkdown(banDoc, userParam, account, text) {
 
 
 
-
-
 //===========================================================================
 // GET DATA FROM ACCOUNTING
 //===========================================================================
-/* Function that retrieves the donors account to print.
-   As default, accounts with donation amount 0 are not taken.
-   User can choose to include them or not */
-function getAccountsToPrint(banDoc, userParam, texts) {
+/* This function returns an array of objects with all the donation transactions.
+   Transactions are filtered by period and minimum donation amount entered by the user.
+   Only the filtered transactions are taken. */
+function getTransactionsData(banDoc, userParam, account) {
+
+    var transactions = userParam.transactions;
+    var startDate = userParam.selectionStartDate;
+    var endDate = userParam.selectionEndDate;
+    var transTab = banDoc.table("Transactions");
+    account = account.substring(1); //remove first character ;
+    
+    for (var i = 0; i < transTab.rowCount; i++) {
+        var tRow = transTab.row(i);
+        var date = tRow.value("Date");
+        var cc3 = tRow.value("Cc3");
+        var description = tRow.value("Description");
+        
+        var amount = "";
+        if (banDoc.table('Categories')) {
+            amount = tRow.value("Income");
+        } else {
+            amount = tRow.value("Amount");
+        }
+
+        if (cc3 && cc3 === account && date >= startDate && date <= endDate && Banana.SDecimal.compare(amount, userParam.minimumAmount) > -1) {
+            transactions.push({"cc3":cc3, "date":date, "description":description, "amount":amount});
+        }
+    }
+}
+
+/* This function returns true only if the row has the amount >= userParam.minimumAmount */
+function onlyMinimunAmountTableCategories(row, rowNr, table) {
+    if (Banana.SDecimal.compare(row.value('Income'), mimimunAmountDonation) > -1) {
+        return true;
+    }
+    return false;
+}
+
+/* This function returns true only if the row has the amount >= userParam.minimumAmount */
+function onlyMinimunAmountTableAccounts(row, rowNr, table) {
+    if (Banana.SDecimal.compare(row.value('Amount'), mimimunAmountDonation) > -1) {
+        return true;
+    }
+    return false;
+}
+
+/* This function fill the data structure with the transactions data taken with getTransactionsData() */
+function fillTransactionStructure(banDoc, userParam, texts) {
 
     // Get the list of all the donors (CC3)
     var membershipList = getCC3Accounts(banDoc, userParam, texts);
-    var accounts = [];
-    var transactionsObj = "";
-    var totalOfDonations = "";
-    var startDate = userParam.selectionStartDate;
-    var endDate = userParam.selectionEndDate;
 
-    
-    if (userParam.useExtractTable) {
+    if (userParam.useExtractTable || (!userParam.costcenter || userParam.costcenter === "" || userParam.costcenter === undefined)) {
         for (var i = 0; i < membershipList.length; i++) {
-            transactionsObj = calculateTotalTransactions(banDoc, membershipList[i], startDate, endDate);
-            totalOfDonations = transactionsObj.total;
-            if (Banana.SDecimal.compare(totalOfDonations, userParam.minimumAmount) > -1) { //totalOfDonation >= mimimunAmount
-                accounts.push(membershipList[i]);
-            }
+            getTransactionsData(banDoc, userParam, membershipList[i]);
         }
     }
     else {
@@ -1110,33 +1113,52 @@ function getAccountsToPrint(banDoc, userParam, texts) {
                 }
 
                 // The inserted Cc3 exists
-                // Check the minimum amount of the donation
                 if (membershipList.indexOf(list[i]) > -1) {
-                    transactionsObj = calculateTotalTransactions(banDoc, list[i], startDate, endDate);
-                    totalOfDonations = transactionsObj.total;
-                    if (Banana.SDecimal.compare(totalOfDonations, userParam.minimumAmount) > -1) { //totalOfDonation >= mimimunAmount
-                        accounts.push(list[i]);
-                    }
+                    getTransactionsData(banDoc, userParam, list[i]);
                 }
                 else { // The inserted Cc3 does not exists
-                    Banana.document.addMessage(texts.warningMessage + ": <" + list[i] + ">");              
+                    banDoc.addMessage(texts.warningMessage + ": <" + list[i] + ">");              
                 }
             }
         }
-        // Empty field = take all the Cc3
-        // Check the mimimun amount of the donation
-        else if (!userParam.costcenter || userParam.costcenter === "" || userParam.costcenter === undefined) {
-            for (var i = 0; i < membershipList.length; i++) {
-                transactionsObj = calculateTotalTransactions(banDoc, membershipList[i], startDate, endDate);
-                totalOfDonations = transactionsObj.total;
-                if (Banana.SDecimal.compare(totalOfDonations, userParam.minimumAmount) > -1) { //totalOfDonation >= mimimunAmount
-                    accounts.push(membershipList[i]);
-                }
+    }
+}
+
+/* This function renturns a list of all the cc3 accounts contained in data structure */
+function getListOfAccountsToPrint(userParam) {
+    
+    var accounts = [];
+
+    for (var i = 0; i < userParam.transactions.length; i++) {
+        var account = userParam.transactions[i].cc3;
+        accounts.push(";"+account);
+    }
+
+    //Remove duplicates
+    for (var i = 0; i < accounts.length; i++) {
+        for (var x = i+1; x < accounts.length; x++) {
+            if (accounts[x] === accounts[i]) {
+                accounts.splice(x,1);
+                --x;
             }
         }
     }
 
     return accounts;
+}
+
+/* This function returns the total amount for a specific account and period */
+function calculateTotalAmount(banDoc, userParam, account) {
+
+    var startDate = userParam.selectionStartDate;
+    var endDate = userParam.selectionEndDate;
+    if (banDoc.table('Categories')) {
+        var totalAmount = banDoc.currentBalance(account,startDate,endDate,onlyMinimunAmountTableCategories).debit;
+    } else {
+        var totalAmount = banDoc.currentBalance(account,startDate,endDate,onlyMinimunAmountTableAccounts).debit;
+    }
+    
+    return totalAmount;
 }
 
 /* Function that retrieves in a list all the CC3 accounts */
@@ -1152,7 +1174,7 @@ function getCC3Accounts(banDoc, userParam, texts) {
         
         // If the Extract table doesnt exist, use the Accounts table
         if (!banDoc.table("Extract")) {
-            Banana.document.addMessage(texts.warningMessageExtractTable);
+            banDoc.addMessage(texts.warningMessageExtractTable);
             tableName = "Accounts"; //if table Extract does not exists, use table Accounts instead
         }
     }
@@ -1663,45 +1685,6 @@ function getTransactionDate(banDoc, costcenter, startDate, endDate) {
     }
 }
 
-/* Function that calculates the total of the transactions for the given account and period */
-function calculateTotalTransactions(banDoc, costcenter, startDate, endDate) {
-    var transTab = banDoc.table("Transactions");
-    var date = "";
-    var total = "";
-    var numberOfTransactions = 0;
-    var transactionsObj = {};
-    costcenter = costcenter.substring(1); //remove first character ;
-
-    for (var i = 0; i < transTab.rowCount; i++) {
-        var tRow = transTab.row(i);
-        date = tRow.value("Date");
-        transactionsObj.date = date;
-        var cc3 = tRow.value("Cc3");
-
-        if (date >= startDate && date <= endDate) {
-
-            if (costcenter && costcenter === cc3) {
-
-                /*  If simple accounting, amount=Income column of transaction
-                    If double accounting, amount=Amount column of transaction */
-                if (banDoc.table('Categories')) {
-                    var amount = tRow.value("Income");
-                } else {
-                    var amount = tRow.value("Amount");
-                }
-
-                total = Banana.SDecimal.add(total, amount);
-                numberOfTransactions++;
-            }
-        }
-    }
-
-    transactionsObj.total = total;
-    transactionsObj.numberOfTransactions = numberOfTransactions;
-    
-    return transactionsObj;
-}
-
 /* Function that takes the locale language of Banana */
 function getLang(banDoc) {
     var lang = "";
@@ -1731,7 +1714,7 @@ function getEmbeddedTextFile(banDoc, userParam) {
             if (id === userParam.embeddedTextFile) {
                 // The text file name entered by user exists on Documents table
                 text = banDoc.table("Documents").findRowByValue("RowId",userParam.embeddedTextFile).value("Attachments");
-                Banana.console.log(text);
+                //Banana.console.log(text);
             }
         }
     }
@@ -1841,7 +1824,6 @@ function setCss(banDoc, repStyleObj, userParam, variables) {
   // Parse the CSS text
   repStyleObj.parse(textCSS);
 }
-
 
 
 
@@ -2051,9 +2033,6 @@ function loadTexts(banDoc,lang) {
 
     return texts;
 }
-
-
-
 
 
 
