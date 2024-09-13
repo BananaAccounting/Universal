@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.uni.app.donationstatementplus.js
 // @api = 1.0
-// @pubdate = 2024-09-10
+// @pubdate = 2024-09-13
 // @publisher = Banana.ch SA
 // @description = Donation Statement for Associations (Banana+)
 // @description.de = Spendenbescheinigung für Vereine (Banana+)
@@ -786,8 +786,8 @@ function printReportDetailsTransaction(report, banDoc, userParam, account, texts
         account = account.substring(1); //remove first character ";"
 
         var table = report.addTable("transactions_details");
-
-        for (var i = 0; i < userParam.transactions.length; i++) {
+        var transactionsLength = userParam.transactions.length;
+        for (var i = 0; i < transactionsLength; i++) {
 
             var cc3 = userParam.transactions[i].cc3;
             var date = userParam.transactions[i].date;
@@ -906,8 +906,6 @@ function convertFields(banDoc, userParam, account, text) {
 
     var startDate = userParam.selectionStartDate;
     var endDate = userParam.selectionEndDate;
-    var totalOfDonations = calculateTotalAmount(banDoc, userParam, account);
-    var trDate = getTransactionDate(banDoc, account, startDate, endDate);
     var address = getAddress(banDoc, account);
 
     if (text.indexOf("<Period>") > -1) {
@@ -930,6 +928,7 @@ function convertFields(banDoc, userParam, account, text) {
         text = text.replace(/<Address>/g,addressstring);
     }
     if (text.indexOf("<TrDate>") > -1) {
+        var trDate = getTransactionDate(userParam, account);
         var trdate = Banana.Converter.toLocaleDateFormat(trDate);
         text = text.replace(/<TrDate>/g,trdate);
     }
@@ -946,6 +945,7 @@ function convertFields(banDoc, userParam, account, text) {
         text = text.replace(/<Currency>/g,currency);
     }
     if (text.indexOf("<Amount>") > -1) {
+        var totalOfDonations = calculateTotalAmount(banDoc, userParam, account);
         var amount = Banana.Converter.toLocaleNumberFormat(totalOfDonations);
         text = text.replace(/<Amount>/g,amount);
     }
@@ -975,8 +975,6 @@ function convertFieldsMarkdown(banDoc, userParam, account, text) {
 
     var startDate = userParam.selectionStartDate;
     var endDate = userParam.selectionEndDate;
-    var totalOfDonations = calculateTotalAmount(banDoc, userParam, account);
-    var trDate = getTransactionDate(banDoc, account, startDate, endDate);
     var address = getAddress(banDoc, account);
 
     if (text.indexOf("{{Period}}") > -1) {
@@ -999,6 +997,7 @@ function convertFieldsMarkdown(banDoc, userParam, account, text) {
         text = text.replace(/{{Address}}/g,addressstring);
     }
     if (text.indexOf("{{TrDate}}") > -1) {
+        var trDate = getTransactionDate(userParam, account);
         var trdate = Banana.Converter.toLocaleDateFormat(trDate);
         text = text.replace(/{{TrDate}}/g,trdate);
     }
@@ -1015,6 +1014,7 @@ function convertFieldsMarkdown(banDoc, userParam, account, text) {
         text = text.replace(/{{Currency}}/g,currency);
     }
     if (text.indexOf("{{Amount}}") > -1) {
+        var totalOfDonations = calculateTotalAmount(banDoc, userParam, account);
         var amount = Banana.Converter.toLocaleNumberFormat(totalOfDonations);
         text = text.replace(/{{Amount}}/g,amount);
     }
@@ -1053,9 +1053,10 @@ function getTransactionsData(banDoc, userParam, account) {
     var startDate = userParam.selectionStartDate;
     var endDate = userParam.selectionEndDate;
     var transTab = banDoc.table("Transactions");
+    var tableLength = transTab.rowCount;
     account = account.substring(1); //remove first character ;
     
-    for (var i = 0; i < transTab.rowCount; i++) {
+    for (var i = 0; i < tableLength; i++) {
         var tRow = transTab.row(i);
         var date = tRow.value("Date");
         var cc3 = tRow.value("Cc3");
@@ -1096,30 +1097,29 @@ function fillTransactionStructure(banDoc, userParam, texts) {
     // Get the list of all the donors (CC3)
     var membershipList = getCC3Accounts(banDoc, userParam, texts);
 
-    if (userParam.useExtractTable || (!userParam.costcenter || userParam.costcenter === "" || userParam.costcenter === undefined)) {
-        for (var i = 0; i < membershipList.length; i++) {
-            getTransactionsData(banDoc, userParam, membershipList[i]);
+    if (userParam.costcenter) {
+        var list = userParam.costcenter.split(",");
+        for (var i = 0; i < list.length; i++) {
+            list[i] = list[i].trim();
+            
+            // If user insert the Cc3 account without ";" we add it
+            if (list[i].substring(0,1) !== ";") {
+                list[i] = ";"+list[i];
+            }
+
+            // The inserted Cc3 exists
+            if (membershipList.indexOf(list[i]) > -1) {
+                getTransactionsData(banDoc, userParam, list[i]);
+            }
+            else { // The inserted Cc3 does not exists
+                banDoc.addMessage(texts.warningMessage + ": <" + list[i] + ">");              
+            }
         }
     }
-    else {
-        if (userParam.costcenter) {
-            var list = userParam.costcenter.split(",");
-            for (var i = 0; i < list.length; i++) {
-                list[i] = list[i].trim();
-                
-                // If user insert the Cc3 account without ";" we add it
-                if (list[i].substring(0,1) !== ";") {
-                    list[i] = ";"+list[i];
-                }
-
-                // The inserted Cc3 exists
-                if (membershipList.indexOf(list[i]) > -1) {
-                    getTransactionsData(banDoc, userParam, list[i]);
-                }
-                else { // The inserted Cc3 does not exists
-                    banDoc.addMessage(texts.warningMessage + ": <" + list[i] + ">");              
-                }
-            }
+    else if (userParam.useExtractTable || (!userParam.costcenter || userParam.costcenter === "" || userParam.costcenter === undefined)) {
+        var membersLength = membershipList.length;
+        for (var i = 0; i < membersLength; i++) {
+            getTransactionsData(banDoc, userParam, membershipList[i]);
         }
     }
 }
@@ -1128,8 +1128,9 @@ function fillTransactionStructure(banDoc, userParam, texts) {
 function getListOfAccountsToPrint(userParam) {
     
     var accounts = [];
+    var transactionsLength = userParam.transactions.length;
 
-    for (var i = 0; i < userParam.transactions.length; i++) {
+    for (var i = 0; i < transactionsLength; i++) {
         var account = userParam.transactions[i].cc3;
         accounts.push(";"+account);
     }
@@ -1180,7 +1181,8 @@ function getCC3Accounts(banDoc, userParam, texts) {
     }
 
     var bantable = banDoc.table(tableName);
-    for (var i = 0; i < bantable.rowCount; i++) {
+    var tableLength = bantable.rowCount;
+    for (var i = 0; i < tableLength; i++) {
         var tRow = bantable.row(i);
         var account = tRow.value("Account");
         if (account.substring(0,1) === ";" && account.substring(1,2)) {
@@ -1645,7 +1647,8 @@ function getPeriod(banDoc, startDate, endDate) {
 function getAddress(banDoc, accountNumber) {
     var address = {};
     var table = banDoc.table("Accounts");
-    for (var i = 0; i < table.rowCount; i++) {
+    var tableLength = table.rowCount;
+    for (var i = 0; i < tableLength; i++) {
         var tRow = table.row(i);
         var account = tRow.value("Account");
 
@@ -1668,19 +1671,13 @@ function getAddress(banDoc, accountNumber) {
 }
 
 /* Function that retrieves the transaction date */
-function getTransactionDate(banDoc, costcenter, startDate, endDate) {
-    var transTab = banDoc.table("Transactions");
+function getTransactionDate(userParam, costcenter) {
     costcenter = costcenter.substring(1); //remove first character ;
-    
-    for (var i = 0; i < transTab.rowCount; i++) {
-        var tRow = transTab.row(i);
-        var date = tRow.value("Date");
-        var cc3 = tRow.value("Cc3");
-
-        if (date >= startDate && date <= endDate) {
-            if (costcenter && costcenter === cc3) {
-                return date;
-            }
+    var transactionsLength = userParam.transactions.length;
+    for (var i = 0; i < transactionsLength; i++) {
+        var cc3 = userParam.transactions[i].cc3;
+        if (costcenter === cc3) {
+            return userParam.transactions[i].date;
         }
     }
 }
