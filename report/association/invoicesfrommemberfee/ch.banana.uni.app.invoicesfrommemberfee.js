@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// @id = ch.banana.script.invoices.frommemberfee
+// @id = ch.banana.uni.app.invoicesfrommemberfee
 // @version = 1.0
 // @pubdate = 2024-08-08
 // @publisher = Banana.ch SA
-// @description = Create invoice transactions, from account - New version
+// @description = Create invoice transactions, from account
 // @task = import.transactions
 // @xtask = app.command
 // @outputformat = tablewithheaders
