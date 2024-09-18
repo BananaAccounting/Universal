@@ -1,4 +1,4 @@
-// @id = ch.banana.script.invoices.frommemberfee.test
+// @id = ch.banana.uni.app.invoicesfrommemberfee.test
 // @api = 1.0
 // @pubdate = 2024.08.23
 // @publisher = Banana.ch SA
@@ -9,7 +9,7 @@
 // @outputformat = none
 // @inputdataform = none
 // @timeout = -1
-// @includejs = ../ch.banana.script.invoices.frommemberfee.js
+// @includejs = ../ch.banana.uni.app.invoicesfrommemberfee.js
 
 // Register this test case to be executed
 Test.registerTestCase(new TestCreateInvoiceTransactions());
