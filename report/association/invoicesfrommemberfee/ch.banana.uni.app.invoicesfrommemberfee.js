@@ -34,10 +34,14 @@ function exec(banDocument, isTest) {
 
 	let banDoc;
 
+	var options = {};
+
 	if (isTest.useLastSettings && !banDocument)
         return "";
-    else if (isTest.useLastSettings && banDocument)
-        banDoc = banDocument;
+    else if (isTest.useLastSettings && banDocument){
+		banDoc = banDocument;
+		options.useLastSettings = true;
+	}
     else if (!isTest.useLastSettings)
         banDoc = Banana.document;
 	
@@ -45,8 +49,6 @@ function exec(banDocument, isTest) {
 	
 	var userParam = initUserParam();
 
-	var options = {};
-	options.useLastSettings = true;
 	if (!options || !options.useLastSettings) {
 		userParam = parametersDialog(userParam); // From properties
 	}
