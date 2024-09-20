@@ -14,7 +14,7 @@
 
 // @id = ch.banana.uni.app.invoicesfrommemberfee
 // @version = 1.0
-// @pubdate = 2024-08-08
+// @pubdate = 2024-09-20
 // @publisher = Banana.ch SA
 // @description = Create invoice transactions, from account
 // @task = import.transactions
