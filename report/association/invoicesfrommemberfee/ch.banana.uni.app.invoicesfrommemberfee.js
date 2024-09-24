@@ -14,7 +14,7 @@
 
 // @id = ch.banana.uni.app.invoicesfrommemberfee
 // @version = 1.0
-// @pubdate = 2024-08-08
+// @pubdate = 2024-09-20
 // @publisher = Banana.ch SA
 // @description = Create invoice transactions, from account
 // @task = import.transactions
@@ -34,10 +34,14 @@ function exec(banDocument, isTest) {
 
 	let banDoc;
 
+	var options = {};
+
 	if (isTest.useLastSettings && !banDocument)
         return "";
-    else if (isTest.useLastSettings && banDocument)
-        banDoc = banDocument;
+    else if (isTest.useLastSettings && banDocument){
+		banDoc = banDocument;
+		options.useLastSettings = true;
+	}
     else if (!isTest.useLastSettings)
         banDoc = Banana.document;
 	
@@ -45,8 +49,6 @@ function exec(banDocument, isTest) {
 	
 	var userParam = initUserParam();
 
-	var options = {};
-	options.useLastSettings = true;
 	if (!options || !options.useLastSettings) {
 		userParam = parametersDialog(userParam); // From properties
 	}
