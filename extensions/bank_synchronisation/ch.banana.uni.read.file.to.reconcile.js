@@ -17,7 +17,7 @@
 // @description = Read file to reconcile
 // @task = app.command
 // @publisher = Banana.ch SA
-// @pubdate = 2024-08-19
+// @pubdate = 2024-08-25
 // @inputdatasource = none
 // @doctype = *
 // @docproperties =
