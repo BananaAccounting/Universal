@@ -21,7 +21,7 @@
 // @inputdatasource = none
 // @doctype = *
 // @docproperties =
-// @inputencoding = latin1
+// @inputencoding = utf-8
 // @timeout = -1
 // @includejs = src/csv_import_extensions/postfinance_sync_csv/ch.banana.sync.postfinance.js
 
