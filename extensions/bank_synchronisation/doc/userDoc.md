@@ -1,4 +1,4 @@
-# RECONCILE BANK TRANSACTIONS WITH ACCOUNTING
+# RECONCILE BANK TRANSACTIONS WITH ACCOUNTING [BETA]
 
 This functionality allows to reconcile the bank transactions with the accounting usinge files camt053 (ISO20022). Banana automatically detects all transactions that have not yet been imported into the accounts and imports them, attributing them directly to the bank account to which they refer.
 
