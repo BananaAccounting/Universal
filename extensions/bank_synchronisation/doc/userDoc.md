@@ -1,43 +1,45 @@
 # RECONCILE BANK TRANSACTIONS WITH ACCOUNTING [BETA]
 
-This functionality allows to reconcile the bank transactions with the accounting usinge files camt053 (ISO20022). Banana automatically detects all transactions that have not yet been imported into the accounts and imports them, attributing them directly to the bank account to which they refer.
+With this functionality, you can automatically reconcile bank transactions with your accounting using files in CAMT format (ISO20022). By selecting a folder containing CAMT files, the programme detects all transactions not yet recorded in the accounts and easily imports them. This feature helps you speed up the process and reduce the risk of errors or duplications.
 
 ## Prerequisites
-
 - Using Banana Accounting Plus (Version greater than 10.1.23.24269) with the advanced plan
 - Using a Double-Entry or Income and Expenses accounting.
 
 ## How to start
 1) Open Banana Accounting Plus.
 2) Open your accounting file or create a new one
-3) If you have not already done so, in the ‘Accounts’ table enter the bank accounts you intend to manage in the accounts, for each account, enter the iban associated with the bank account in the 'BankIban' column also in the ‘Accounts’ table. If you do not see the 'BankIban' column in the ‘Accounts’ table, you can add it from the menu ‘Tools-->Add/Remove functionalities and select ’Add address columns in Accounts table. Make sure that the iban is written correctly, all in uppercase and without any space or character between the numbers.
+3) if they are not already present, in the ‘Accounts’ table enter the bank accounts you intend to manage in the accounts, for each account, enter the IBAN in the 'BankIban' column also in the ‘Accounts’ table. If you do not see the 'BankIban' column in the ‘Accounts’ table, you can add it from the menu ‘Tools-->Add/Remove functionalities and select ’Add address columns in Accounts table. Make sure that the iban is written correctly, all in uppercase and without any space or character between the numbers.
 4) Install the extension: "Read file to reconcile". This extension is mandatory to make the reconciliation work.
 5) On menu 'Actions' click on command "Reconcile Bank Data"
-6) [Select the folder where your files are placed](##Folder-selection).
+6) [Select the folder where your CAMT (ISO20022) files are placed](##Folder-selection).
 7) Visualize reconciliation data inside the [Reconcile Bank Data dialog](##Reconcile-Bank-Data-dialog).
 8) Press OK in the dialog.
  
-Once you have reconciled the transactions, if you select againg the command "Reconcile Bank Data", now you see that all the bank accounts are reconciled with the accounting.
+Once you have reconciled the transactions, if you select againg the command "Reconcile Bank Data", you should see that all the bank accounts are reconciled with the accounting.
 
 ## Folder selection
-Banana performs reconciliation of the data starting from the selected folder. Once the folder is selected, the program will begin reading the files in the folder and their contents. During this process, you can see a dialog indicating the progress of the operation. The data reading is divided into two processes:
+# Banana: Data Reconciliation Process
 
-1) Reading the files in the folder: The entire folder is read, and all new files are saved in the [Database](##Reconciliation -Database).
-2) Reading the content of the files: Files that have a creation date within the period to which the accounting file refers are opened and read. In the [dialog](##Dialog), you can choose to also read files with a creation date older than the accounting opening date, simply by modifying the date in the [Ignore files older than](##Dialog) field.
+Banana performs data reconciliation starting from the selected folder. Once the folder is selected, the program begins reading the files and their contents. During this process, a dialog will show you the progress of the operation. The data reading is divided into two main steps:
 
-Clicking the "Cancel" button during the data reading process does not interrupt the reconciliation process but continues with the data processed up to that point. If you wish to resume the data reading and complete it, just select the reconciliation command again and let the reading process finish. The new data found will be added to the already saved data.
+1) **Reading the files in the folder**: The entire folder is scanned, and all new files are saved in the [Database](##Reconciliation -Database).
+2) **Reading the content of the files**: Only files with a creation date within the accounting period are opened and read. In the [dialog](##Dialog), you can also choose to include files created before the accounting opening date by simply adjusting the [Ignore files older than](##Dialog) field.
 
-Keep in mind that for convenience, the program automatically reads the new contents of the folder every 24 hours. If you have added new files to the folder and want to force the reading, you can do so by pressing the [Read all Files](##Dialog) button in the data reconciliation dialog.
+Clicking the "Cancel" button during the data reading process does not stop the reconciliation but continues processing the data read up to that point. To resume and complete the data reading, simply select the reconciliation command again, and the program will finish processing, adding any new data to what has already been saved.
 
-All files in the folder are saved, but only the ISO20022 files (camt052,camt053 and camt054) are opened and read, everything else is ingested. You can create as many sub-levels of folder as you want, the program take care to go and search the content in each folder and sub-folder.
+For convenience, the program automatically checks for new content in the folder every 24 hours. If you have added new files and want to force a read, you can do so by pressing the [Read all Files](##Dialog) button in the data reconciliation dialog.
+
+All files in the folder are saved, but only ISO20022 files (camt052, camt053, and camt054) are opened and read; everything else is stored. You can create as many sub-levels of folders as you wish, and the program will search for content in each folder and subfolder.
+
 
 ## Reconcile Bank Data dialog
 
-Il dialogo offre una panoramica sui file elaborati, i parametri utilizzati e ovviamente sulle transazioni da conciliare con la contabilità. Puoi modificare i parametri nel dialogo in qualunque momento, la rielaborazione dei dati viene eseguita immediatamente.
+The dialogue provides an overview of the processed files, the parameters used and of course the transactions to be reconciled with the accounting. You can change the parameters in the dialogue at any time, and data processing is performed immediately.
 
 ### Folder Tab
 
-This tab provides an overview of the reconciliation performed and the list of files that contain transactions to be reconciled with the accounting.
+Provides an overview of the reconciliation performed and the list of files containing transactions to be reconciled with the accounting.
 
 In the "Select Folder" box, you can see the path of the chosen folder, and you can change it at any time. The program will immediately start processing the data in the selected folder. As explained in the [Folder selection](##Folder-selection) section, you have the option to modify the filter date for file processing, which by default is the same as the accounting opening date.
 
@@ -61,7 +63,7 @@ The accounts tab groups the list of bank accounts appearing in the accounting. F
 
 ### Transactions details Tab
 
-This tab shows,grouped by account, the data for all the transactions that need to be reconciled with the accounting. You have the option to exclude specific transactions or all transactions related to a certain account by using the appropriate checkboxes, these excluded transactions will then be proposed to you again the next time you display the dialog.
+Shows,grouped by account, the data for all the transactions that need to be reconciled with the accounting. You have the option to exclude specific transactions or all transactions related to a certain account by using the checkboxes, these excluded transactions will then be proposed to you again the next time you display the dialog.
 
 For the reconciliation process, you can choose to consider only incoming transactions after a certain date. This is useful when you are sure that all the transactions in the "Transactions" table are checked and correct, and you only want to consider those after this date. This can be particularly helpful when the transactions in the accounting do not have an ID (External Reference column), which is the primary value used to determine whether a transaction exists or not. By setting the filter date to the date of the last transaction in the accounting, the program will ignore all transactions with the same or older date.
 
