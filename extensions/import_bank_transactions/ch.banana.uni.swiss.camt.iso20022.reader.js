@@ -13,8 +13,8 @@
 // limitations under the License.
 
 // @api = 1.0
-// @id = ch.banana.uni.read.file.to.import
-// @description = Read file to import
+// @id = ch.banana.uni.swiss.camt.iso20022.reader
+// @description = Swiss Camt ISO20022 Reader
 // @task = app.command
 // @publisher = Banana.ch SA
 // @pubdate = 2024-10-01
