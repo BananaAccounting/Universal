@@ -13,11 +13,11 @@
 // limitations under the License.
 
 // @api = 1.0
-// @id = ch.banana.uni.read.file.to.reconcile
-// @description = Read file to reconcile
+// @id = ch.banana.uni.read.file.to.import
+// @description = Read file to import
 // @task = app.command
 // @publisher = Banana.ch SA
-// @pubdate = 2024-08-25
+// @pubdate = 2024-10-01
 // @inputdatasource = none
 // @doctype = *
 // @docproperties =
