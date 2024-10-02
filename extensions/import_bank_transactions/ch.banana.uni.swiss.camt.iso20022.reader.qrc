@@ -1,0 +1,8 @@
+<RCC>
+	<qresource>
+		<file>ch.banana.uni.swiss.camt.iso20022.reader.js</file>
+		<file>ch.banana.uni.swiss.camt.iso20022.reader.manifest.json</file>
+		<file>src/csv_import_extensions/postfinance_sync_csv/ch.banana.sync.postfinance.js</file>
+		<file>src/csv_import_extensions/postfinance_sync_csv/import.utilities.js</file>
+	</qresource>
+</RCC>
