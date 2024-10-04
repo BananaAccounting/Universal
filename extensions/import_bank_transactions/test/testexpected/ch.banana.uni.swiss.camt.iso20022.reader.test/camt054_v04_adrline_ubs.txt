@@ -1,0 +1,121 @@
+%%info_test_name{camt054_v04_adrline_ubs}
+\documentclass{report}
+\usepackage{longtable}
+\usepackage{color}
+\usepackage{listings}
+\usepackage[margin=1cm]{geometry}
+\begin{document}
+\newenvironment{tablevalue}[2]{\textbf{Table: #1}\begin{longtable}[l]{#2}}{\end{longtable}}
+\newenvironment{reportvalue}[1]{\textbf{Report: #1}\\}{}
+\lstnewenvironment{jsonvalue}[1]{\textbf{Json: #1}\lstset{language=Java}}{}
+\lstnewenvironment{xmlvalue}[1]{\textbf{Xml: #1}\lstset{language=Xml}}{}
+\newcommand{\info}[2]{\textit{#1: #2}\\}
+\newcommand{\fatalerror}[1]{\textbf{\textcolor[rgb]{1,0,0}{Fatal error: #1}}\\}
+\newcommand{\keyvalue}[2]{\textbf{Keyvalue: #1} #2\\}
+\newcommand{\textvalue}[1]{#1\\}
+\newcommand{\excltest}[1]{\\Excluded from compare: #1}
+\newcommand{\lognewpage}{\newpage}
+\newenvironment{testcase}[1]{\section*{Test: #1}}{\newpage}
+\newenvironment{test}[1]{\section*{Test case: #1}}{}
+%Begin test data
+\begin{jsonvalue}{FileData}
+{
+    "TransactionsList": [
+        {
+            "FileCreationDate": "2024-05-13 13:55:43",
+            "FileId": "16abbec40a8e089a3ccc6a0b3498cdb2e45b7912cea293a27762b6a6ea7e2204",
+            "FileName": "file:script/../test/testcases/camt054_v04_adrline_ubs.xml",
+            "FileType": "CAMT.053",
+            "StatementCreationDate": "2020-11-02",
+            "StatementCurrency": "CHF",
+            "StatementFinalBalance": "30754.67",
+            "StatementIban": "CH2801234000123456789",
+            "StatementInitialBalance": "31016.42",
+            "StatementOwner": "Mandi Allroundreparaturen",
+            "TransactionCc1": "",
+            "TransactionCc2": "",
+            "TransactionCc3": "",
+            "TransactionContraAccount": "",
+            "TransactionDate": "2020-11-02",
+            "TransactionDateValue": "2020-11-02",
+            "TransactionDescription": "Keller Fahnen AG, 4562 Biberist / 934545800011543260001271905 / e-banking Order",
+            "TransactionExpenses": "209.7",
+            "TransactionExternalReference": "9939304TO9287634",
+            "TransactionIncome": "",
+            "TransactionIsDetail": ""
+        },
+        {
+            "FileCreationDate": "2024-05-13 13:55:43",
+            "FileId": "16abbec40a8e089a3ccc6a0b3498cdb2e45b7912cea293a27762b6a6ea7e2204",
+            "FileName": "file:script/../test/testcases/camt054_v04_adrline_ubs.xml",
+            "FileType": "CAMT.053",
+            "StatementCreationDate": "2020-11-02",
+            "StatementCurrency": "CHF",
+            "StatementFinalBalance": "30754.67",
+            "StatementIban": "CH2801234000123456789",
+            "StatementInitialBalance": "31016.42",
+            "StatementOwner": "Mandi Allroundreparaturen",
+            "TransactionCc1": "",
+            "TransactionCc2": "",
+            "TransactionCc3": "",
+            "TransactionContraAccount": "",
+            "TransactionDate": "2020-11-02",
+            "TransactionDateValue": "2020-10-30",
+            "TransactionDescription": "Debit card payment // KARTE 15795343-0 2211 // TS Auto Bürki AG\n                            Pfyn / Debit card payment // KARTE 15795343-0 2211 // TS Auto Bürki AG Pfyn",
+            "TransactionExpenses": "109",
+            "TransactionExternalReference": "9930805BN6444751",
+            "TransactionIncome": "",
+            "TransactionIsDetail": ""
+        },
+        {
+            "FileCreationDate": "2024-05-13 13:55:43",
+            "FileId": "16abbec40a8e089a3ccc6a0b3498cdb2e45b7912cea293a27762b6a6ea7e2204",
+            "FileName": "file:script/../test/testcases/camt054_v04_adrline_ubs.xml",
+            "FileType": "CAMT.053",
+            "StatementCreationDate": "2020-11-02",
+            "StatementCurrency": "CHF",
+            "StatementFinalBalance": "30754.67",
+            "StatementIban": "CH2801234000123456789",
+            "StatementInitialBalance": "31016.42",
+            "StatementOwner": "Mandi Allroundreparaturen",
+            "TransactionCc1": "",
+            "TransactionCc2": "",
+            "TransactionCc3": "",
+            "TransactionContraAccount": "",
+            "TransactionDate": "2020-11-02",
+            "TransactionDateValue": "2020-11-02",
+            "TransactionDescription": "SWISSCOM (SCHWEIZ) AG, 3048 WORBLAUFEN / 969688000066000246100000003 / Direct Debit // SCW1W WIDERSPRUCH AN UBS // INNERT 30 TAGEN",
+            "TransactionExpenses": "33.05",
+            "TransactionExternalReference": "9939804KH6836936",
+            "TransactionIncome": "",
+            "TransactionIsDetail": ""
+        },
+        {
+            "FileCreationDate": "2024-05-13 13:55:43",
+            "FileId": "16abbec40a8e089a3ccc6a0b3498cdb2e45b7912cea293a27762b6a6ea7e2204",
+            "FileName": "file:script/../test/testcases/camt054_v04_adrline_ubs.xml",
+            "FileType": "CAMT.053",
+            "StatementCreationDate": "2020-11-02",
+            "StatementCurrency": "CHF",
+            "StatementFinalBalance": "30754.67",
+            "StatementIban": "CH2801234000123456789",
+            "StatementInitialBalance": "31016.42",
+            "StatementOwner": "Mandi Allroundreparaturen",
+            "TransactionCc1": "",
+            "TransactionCc2": "",
+            "TransactionCc3": "",
+            "TransactionContraAccount": "",
+            "TransactionDate": "2020-11-02",
+            "TransactionDateValue": "2020-11-02",
+            "TransactionDescription": "Incomings UBS BESR Quick",
+            "TransactionDocInvoice": "",
+            "TransactionExpenses": "",
+            "TransactionExternalReference": "2020307PH0005036",
+            "TransactionIncome": "90",
+            "TransactionIsDetail": ""
+        }
+    ],
+    "version": "1.0"
+}
+\end{jsonvalue}
+\end{document}

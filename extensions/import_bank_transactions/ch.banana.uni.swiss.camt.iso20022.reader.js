@@ -23,6 +23,7 @@
 // @docproperties =
 // @inputencoding = utf-8
 // @timeout = -1
+// @visibility = never
 // @includejs = src/csv_import_extensions/postfinance_sync_csv/ch.banana.sync.postfinance.js
 
 /**
@@ -49,7 +50,7 @@ const TXT_FILE_SUFFIX = "txt";
  */
 function exec(fileContent, fileId, filePath, fileName, fileDateTime, fileSuffix) {
 
-    if (fileContent.length < 0)
+    if (!fileContent)
         return;
 
     switch (fileSuffix.toLowerCase()) {

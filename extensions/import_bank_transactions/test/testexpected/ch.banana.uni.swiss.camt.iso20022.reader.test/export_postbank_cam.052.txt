@@ -1,0 +1,189 @@
+%%info_test_name{export_postbank_cam.052}
+\documentclass{report}
+\usepackage{longtable}
+\usepackage{color}
+\usepackage{listings}
+\usepackage[margin=1cm]{geometry}
+\begin{document}
+\newenvironment{tablevalue}[2]{\textbf{Table: #1}\begin{longtable}[l]{#2}}{\end{longtable}}
+\newenvironment{reportvalue}[1]{\textbf{Report: #1}\\}{}
+\lstnewenvironment{jsonvalue}[1]{\textbf{Json: #1}\lstset{language=Java}}{}
+\lstnewenvironment{xmlvalue}[1]{\textbf{Xml: #1}\lstset{language=Xml}}{}
+\newcommand{\info}[2]{\textit{#1: #2}\\}
+\newcommand{\fatalerror}[1]{\textbf{\textcolor[rgb]{1,0,0}{Fatal error: #1}}\\}
+\newcommand{\keyvalue}[2]{\textbf{Keyvalue: #1} #2\\}
+\newcommand{\textvalue}[1]{#1\\}
+\newcommand{\excltest}[1]{\\Excluded from compare: #1}
+\newcommand{\lognewpage}{\newpage}
+\newenvironment{testcase}[1]{\section*{Test: #1}}{\newpage}
+\newenvironment{test}[1]{\section*{Test case: #1}}{}
+%Begin test data
+\begin{jsonvalue}{FileData}
+{
+    "TransactionsList": [
+        {
+            "FileCreationDate": "2024-05-13 13:55:43",
+            "FileId": "41accd80df17d7a376b5dd0384e18514956593a652aeab2bfaa9cf8f5577af63",
+            "FileName": "file:script/../test/testcases/export_postbank_cam.052.xml",
+            "FileType": "CAMT.052",
+            "StatementCreationDate": "2012-12-17",
+            "StatementCurrency": "",
+            "StatementFinalBalance": "596.22",
+            "StatementIban": "DE80000000800000617802",
+            "StatementInitialBalance": "",
+            "StatementOwner": "",
+            "TransactionCc1": "",
+            "TransactionCc2": "",
+            "TransactionCc3": "",
+            "TransactionContraAccount": "",
+            "TransactionDate": "2012-12-17",
+            "TransactionDateValue": "2012-12-17",
+            "TransactionDescription": "PATRICK / KAUF 3",
+            "TransactionExpenses": "",
+            "TransactionExternalReference": "f085a16cc1fdaff3dfc5bf3ebf2e3a872c979c1a7aede6618b0e4443ac108103",
+            "TransactionIncome": "21.40",
+            "TransactionIsDetail": ""
+        },
+        {
+            "FileCreationDate": "2024-05-13 13:55:43",
+            "FileId": "41accd80df17d7a376b5dd0384e18514956593a652aeab2bfaa9cf8f5577af63",
+            "FileName": "file:script/../test/testcases/export_postbank_cam.052.xml",
+            "FileType": "CAMT.052",
+            "StatementCreationDate": "2012-12-17",
+            "StatementCurrency": "",
+            "StatementFinalBalance": "596.22",
+            "StatementIban": "DE80000000800000617802",
+            "StatementInitialBalance": "",
+            "StatementOwner": "",
+            "TransactionCc1": "",
+            "TransactionCc2": "",
+            "TransactionCc3": "",
+            "TransactionContraAccount": "",
+            "TransactionDate": "2012-12-17",
+            "TransactionDateValue": "2012-12-17",
+            "TransactionDescription": "ANDREAS / DAWANDA 3",
+            "TransactionExpenses": "",
+            "TransactionExternalReference": "f085a16cc1fdaff3dfc5bf3ebf2e3a872c979c1a7aede6618b0e4443ac108103",
+            "TransactionIncome": "21.40",
+            "TransactionIsDetail": ""
+        },
+        {
+            "FileCreationDate": "2024-05-13 13:55:43",
+            "FileId": "41accd80df17d7a376b5dd0384e18514956593a652aeab2bfaa9cf8f5577af63",
+            "FileName": "file:script/../test/testcases/export_postbank_cam.052.xml",
+            "FileType": "CAMT.052",
+            "StatementCreationDate": "2012-12-17",
+            "StatementCurrency": "",
+            "StatementFinalBalance": "596.22",
+            "StatementIban": "DE80000000800000617802",
+            "StatementInitialBalance": "",
+            "StatementOwner": "",
+            "TransactionCc1": "",
+            "TransactionCc2": "",
+            "TransactionCc3": "",
+            "TransactionContraAccount": "",
+            "TransactionDate": "2012-12-14",
+            "TransactionDateValue": "2012-12-14",
+            "TransactionDescription": "malmo GmbH / 12345 / Rechnung 123, / Kunde Nr. 1111 / openbroascast Veröffentlich",
+            "TransactionExpenses": "71.40",
+            "TransactionExternalReference": "ae80eecad4ca2e889be98f32c9be9869e190ed71c3dfb39a0313254af1d7277a",
+            "TransactionIncome": "",
+            "TransactionIsDetail": ""
+        },
+        {
+            "FileCreationDate": "2024-05-13 13:55:43",
+            "FileId": "41accd80df17d7a376b5dd0384e18514956593a652aeab2bfaa9cf8f5577af63",
+            "FileName": "file:script/../test/testcases/export_postbank_cam.052.xml",
+            "FileType": "CAMT.052",
+            "StatementCreationDate": "2012-12-17",
+            "StatementCurrency": "",
+            "StatementFinalBalance": "596.22",
+            "StatementIban": "DE80000000800000617802",
+            "StatementInitialBalance": "",
+            "StatementOwner": "",
+            "TransactionCc1": "",
+            "TransactionCc2": "",
+            "TransactionCc3": "",
+            "TransactionContraAccount": "",
+            "TransactionDate": "2012-12-14",
+            "TransactionDateValue": "2012-12-14",
+            "TransactionDescription": "VANESSA / KAUF 0",
+            "TransactionExpenses": "",
+            "TransactionExternalReference": "8db8af8679afbb2044486e59d2ca949161e8e5df8c530b823820453bf810d942",
+            "TransactionIncome": "21.40",
+            "TransactionIsDetail": ""
+        },
+        {
+            "FileCreationDate": "2024-05-13 13:55:43",
+            "FileId": "41accd80df17d7a376b5dd0384e18514956593a652aeab2bfaa9cf8f5577af63",
+            "FileName": "file:script/../test/testcases/export_postbank_cam.052.xml",
+            "FileType": "CAMT.052",
+            "StatementCreationDate": "2012-12-17",
+            "StatementCurrency": "",
+            "StatementFinalBalance": "596.22",
+            "StatementIban": "DE80000000800000617802",
+            "StatementInitialBalance": "",
+            "StatementOwner": "",
+            "TransactionCc1": "",
+            "TransactionCc2": "",
+            "TransactionCc3": "",
+            "TransactionContraAccount": "",
+            "TransactionDate": "2012-12-14",
+            "TransactionDateValue": "2012-12-14",
+            "TransactionDescription": "FARINA / KAUF 4",
+            "TransactionExpenses": "",
+            "TransactionExternalReference": "8db8af8679afbb2044486e59d2ca949161e8e5df8c530b823820453bf810d942",
+            "TransactionIncome": "21.40",
+            "TransactionIsDetail": ""
+        },
+        {
+            "FileCreationDate": "2024-05-13 13:55:43",
+            "FileId": "41accd80df17d7a376b5dd0384e18514956593a652aeab2bfaa9cf8f5577af63",
+            "FileName": "file:script/../test/testcases/export_postbank_cam.052.xml",
+            "FileType": "CAMT.052",
+            "StatementCreationDate": "2012-12-17",
+            "StatementCurrency": "",
+            "StatementFinalBalance": "596.22",
+            "StatementIban": "DE80000000800000617802",
+            "StatementInitialBalance": "",
+            "StatementOwner": "",
+            "TransactionCc1": "",
+            "TransactionCc2": "",
+            "TransactionCc3": "",
+            "TransactionContraAccount": "",
+            "TransactionDate": "2012-12-12",
+            "TransactionDateValue": "2012-12-12",
+            "TransactionDescription": "ANNE / Kauf 4",
+            "TransactionExpenses": "",
+            "TransactionExternalReference": "1fa7dbcaeb1afd4cee1fde8f58e53903bcb51fe9a02b1729977bcff179423293",
+            "TransactionIncome": "21.40",
+            "TransactionIsDetail": ""
+        },
+        {
+            "FileCreationDate": "2024-05-13 13:55:43",
+            "FileId": "41accd80df17d7a376b5dd0384e18514956593a652aeab2bfaa9cf8f5577af63",
+            "FileName": "file:script/../test/testcases/export_postbank_cam.052.xml",
+            "FileType": "CAMT.052",
+            "StatementCreationDate": "2012-12-17",
+            "StatementCurrency": "",
+            "StatementFinalBalance": "596.22",
+            "StatementIban": "DE80000000800000617802",
+            "StatementInitialBalance": "",
+            "StatementOwner": "",
+            "TransactionCc1": "",
+            "TransactionCc2": "",
+            "TransactionCc3": "",
+            "TransactionContraAccount": "",
+            "TransactionDate": "2012-12-11",
+            "TransactionDateValue": "2012-12-11",
+            "TransactionDescription": "jetpack GmbH / 456 / Rechnung DE-456 / 250 567 kaka / Referenz 689",
+            "TransactionExpenses": "203.51",
+            "TransactionExternalReference": "c44a17f1a57a20cfd36cbecc7f79db80580b2393f3393d750230324cfc622f3f",
+            "TransactionIncome": "",
+            "TransactionIsDetail": ""
+        }
+    ],
+    "version": "1.0"
+}
+\end{jsonvalue}
+\end{document}
