@@ -182,6 +182,7 @@ var CSV_JSONConverter = class CSV_JSONConverter {
 var ISO20022_Swiss_JSONConverter = class ISO20022_Swiss_JSONConverter {
     constructor() {
         this.camtType = "";
+        this.schema = "";
     }
 
     /**
@@ -193,14 +194,14 @@ var ISO20022_Swiss_JSONConverter = class ISO20022_Swiss_JSONConverter {
         if (!xmlDoc)
             return false;
         let docNode = xmlDoc.firstChildElement(); // 'Document'
-        let docNs = docNode.attribute('xmlns');
-        if (docNs.indexOf('camt.052') >= 0) {         // Check for CAMT.052
+        this.schema = docNode.attribute('xmlns');
+        if (this.schema.indexOf('camt.052') >= 0) {         // Check for CAMT.052
             this.camtType = "CAMT.052";
             return true;
-        } else if (docNs.indexOf('camt.053') >= 0) { // Check for CAMT.053
+        } else if (this.schema.indexOf('camt.053') >= 0) { // Check for CAMT.053
             this.camtType = "CAMT.053";
             return true;
-        } else if (docNs.indexOf('camt.054') >= 0) { // Check for CAMT.054
+        } else if (this.schema.indexOf('camt.054') >= 0) { // Check for CAMT.054
             this.camtType = "CAMT.054";
             return true;
         }
@@ -255,7 +256,7 @@ var ISO20022_Swiss_JSONConverter = class ISO20022_Swiss_JSONConverter {
 
     getStatementsNode_camt052(docNode) {
         let statementsNode = [];
-        let statementNode = firstGrandChildElement(docNode, ['BkToCstmrAcctRpt', 'Rpt']);
+        let statementNode = this.firstGrandChildElement(docNode, ['BkToCstmrAcctRpt', 'Rpt']);
         while (statementNode) {
             statementsNode.push(statementNode)
             statementNode = statementNode.nextSiblingElement('Rpt');
@@ -266,7 +267,7 @@ var ISO20022_Swiss_JSONConverter = class ISO20022_Swiss_JSONConverter {
 
     getStatementsNode_camt053(docNode) {
         let statementsNode = [];
-        let statementNode = firstGrandChildElement(docNode, ['BkToCstmrStmt', 'Stmt']);
+        let statementNode = this.firstGrandChildElement(docNode, ['BkToCstmrStmt', 'Stmt']);
         while (statementNode) {
             statementsNode.push(statementNode)
             statementNode = statementNode.nextSiblingElement('Stmt');
@@ -277,7 +278,7 @@ var ISO20022_Swiss_JSONConverter = class ISO20022_Swiss_JSONConverter {
 
     getStatementsNode_camt054(docNode) {
         let statementsNode = [];
-        let statementNode = firstGrandChildElement(docNode, ['BkToCstmrDbtCdtNtfctn', 'Ntfctn']);
+        let statementNode = this.firstGrandChildElement(docNode, ['BkToCstmrDbtCdtNtfctn', 'Ntfctn']);
         while (statementNode) {
             statementsNode.push(statementNode)
             statementNode = statementNode.nextSiblingElement('Ntfctn');
@@ -336,13 +337,13 @@ var ISO20022_Swiss_JSONConverter = class ISO20022_Swiss_JSONConverter {
 
         let statementParams = {};
 
-        let iban = getStatementIban(statementNode);
-        let id = getStatementId(statementNode); // Sobstitute to the IBAN, we use this only if the IBAN is not present.
-        let statementCreationDate = getStatementCreationDate(statementNode)
-        let statementOwner = getStatementOwner(statementNode);
-        let statementCurrency = getStatementCurrency(statementNode);
-        let initialBalance = getStatementBeginBalance(statementNode);
-        let finalBalance = getStatementEndBalance(statementNode);
+        let iban = this.getStatementIban(statementNode);
+        let id = this.getStatementId(statementNode); // Sobstitute to the IBAN, we use this only if the IBAN is not present.
+        let statementCreationDate = this.getStatementCreationDate(statementNode)
+        let statementOwner = this.getStatementOwner(statementNode);
+        let statementCurrency = this.getStatementCurrency(statementNode);
+        let initialBalance = this.getStatementBeginBalance(statementNode);
+        let finalBalance = this.getStatementEndBalance(statementNode);
 
         statementParams.StatementIban = iban == "" ? id : iban;
         statementParams.StatementCreationDate = statementCreationDate;
@@ -401,7 +402,7 @@ var ISO20022_Swiss_JSONConverter = class ISO20022_Swiss_JSONConverter {
                     textDetailsNode = textDetailsNode.nextSiblingElement('TxDtls'); // next movement detail
                 }
 
-                let entryDetailsBatchMsgId = readStatementEntryDetailsMatchMsgId(detailsNode);
+                let entryDetailsBatchMsgId = this.readStatementEntryDetailsMatchMsgId(detailsNode);
 
                 if (txDtlsCount > 1) {
                     // Insert counterpart transaction
@@ -419,7 +420,7 @@ var ISO20022_Swiss_JSONConverter = class ISO20022_Swiss_JSONConverter {
                         'TransactionDate': entryBookingDate,
                         'TransactionDateValue': entryValutaDate,
                         'TransactionDocInvoice': '',
-                        'TransactionDescription': joinNotEmpty([entryDescription, entryDetailsBatchMsgId], " / "),
+                        'TransactionDescription': this.joinNotEmpty([entryDescription, entryDetailsBatchMsgId], " / "),
                         'TransactionIncome': entryIsCredit ? entryAmount : '',
                         'TransactionExpenses': entryIsCredit ? '' : entryAmount,
                         'TransactionExternalReference': entryExternalReference,
@@ -434,23 +435,23 @@ var ISO20022_Swiss_JSONConverter = class ISO20022_Swiss_JSONConverter {
                     while (textDetailsNode) {
                         let cdtDbtIndNode = textDetailsNode.firstChildElement('CdtDbtInd');
                         let deatailsIsCredit = cdtDbtIndNode && cdtDbtIndNode.text === 'CRDT' ? true : entryIsCredit;
-                        let deatailAmount = readStatementEntryDetailsAmount(textDetailsNode);
-                        let acctSvcrRefNode = firstGrandChildElement(textDetailsNode, ['Refs', 'AcctSvcrRef']);
-                        let instrIdNode = firstGrandChildElement(textDetailsNode, ['Refs', 'InstrId']);
+                        let deatailAmount = this.readStatementEntryDetailsAmount(textDetailsNode);
+                        let acctSvcrRefNode = this.firstGrandChildElement(textDetailsNode, ['Refs', 'AcctSvcrRef']);
+                        let instrIdNode = this.firstGrandChildElement(textDetailsNode, ['Refs', 'InstrId']);
                         // Build description
-                        let detailDescription = readStatementEntryDetailsDescription(textDetailsNode, deatailsIsCredit);
+                        let detailDescription = this.readStatementEntryDetailsDescription(textDetailsNode, deatailsIsCredit);
                         if (detailDescription.length === 0 && instrIdNode)
                             detailDescription = instrIdNode.text;
                         // Set External reference
                         let entryDetailTexts = entryBookingDate + entryValutaDate + deatailAmount + detailDescription;
                         let detailExternalReference = acctSvcrRefNode && acctSvcrRefNode.text.length >= 0 ? acctSvcrRefNode.text : getHash(entryDetailTexts, statementParams);
 
-                        //let invoiceNumber = extractInvoiceNumber(detailEsrReference); // Da valutare.
+                        //let invoiceNumber = this.extractInvoiceNumber(detailEsrReference); // Da valutare.
 
                         if (txDtlsCount === 1) {
                             deatailAmount = entryAmount;
                             detailExternalReference = entryExternalReference;
-                            detailDescription = joinNotEmpty([detailDescription, entryDetailsBatchMsgId, entryDescription], ' / ');
+                            detailDescription = this.joinNotEmpty([detailDescription, entryDetailsBatchMsgId, entryDescription], ' / ');
                         }
 
                         transaction = {
@@ -479,7 +480,7 @@ var ISO20022_Swiss_JSONConverter = class ISO20022_Swiss_JSONConverter {
                         };
 
                         /*if (this.params.customer_no && this.params.customer_no.extract) { // Set customer number
-                            let customerNumber = extractCustomerNumber(detailEsrReference);
+                            let customerNumber = this.extractCustomerNumber(detailEsrReference);
                             let ccPrefix = deatailsIsCredit ? '-' : '';
                             if (this.params.customer_no.use_cc && this.params.customer_no.use_cc.trim().toUpperCase() === 'CC1') {
                                 if (customerNumber)
@@ -515,7 +516,7 @@ var ISO20022_Swiss_JSONConverter = class ISO20022_Swiss_JSONConverter {
                         'TransactionDate': entryBookingDate,
                         'TransactionDateValue': entryValutaDate,
                         'TransactionDocInvoice': '',
-                        'TransactionDescription': joinNotEmpty([entryDescription, entryDetailsBatchMsgId], " / "),
+                        'TransactionDescription': this.joinNotEmpty([entryDescription, entryDetailsBatchMsgId], " / "),
                         'TransactionIncome': entryIsCredit ? entryAmount : '',
                         'TransactionExpenses': entryIsCredit ? '' : entryAmount,
                         'TransactionExternalReference': entryExternalReference,
@@ -562,6 +563,461 @@ var ISO20022_Swiss_JSONConverter = class ISO20022_Swiss_JSONConverter {
         }
 
         return transactions;
+    }
+
+    getStatementEndBalance(statementNode) {
+        if (!statementNode)
+            return '';
+
+        var balNode = statementNode.firstChildElement('Bal');
+        while (balNode) {
+            var tpNode = balNode.firstChildElement('Tp');
+            if (tpNode) {
+                var cdOrPrtryNode = tpNode.firstChildElement('CdOrPrtry');
+                if (cdOrPrtryNode && (cdOrPrtryNode.text === 'CLBD' || cdOrPrtryNode.text === 'CLAV')) {
+                    var amtNode = balNode.firstChildElement('Amt');
+                    if (amtNode) {
+                        var amount = amtNode.text;
+                        if (balNode.hasChildElements('CdtDbtInd') && balNode.hasChildElements('CdtDbtInd').text === 'DBIT') {
+                            amount = Banana.SDecimal.invert(amount);
+                        }
+                        return amount;
+                    }
+                }
+            }
+            balNode = balNode.nextSiblingElement();
+        }
+        return '';
+    }
+
+    getStatementBeginBalance(statementNode) {
+        if (!statementNode)
+            return '';
+
+        var balNode = statementNode.firstChildElement('Bal');
+        while (balNode) {
+            var tpNode = balNode.firstChildElement('Tp');
+            if (tpNode) {
+                var cdOrPrtryNode = tpNode.firstChildElement('CdOrPrtry');
+                if (cdOrPrtryNode && cdOrPrtryNode.text === 'OPBD') {
+                    var amtNode = balNode.firstChildElement('Amt');
+                    if (amtNode) {
+                        var amount = amtNode.text;
+                        if (balNode.hasChildElements('CdtDbtInd') && balNode.hasChildElements('CdtDbtInd').text === 'DBIT') {
+                            amount = Banana.SDecimal.invert(amount);
+                        }
+                        return amount;
+                    }
+                }
+            }
+            balNode = balNode.nextSiblingElement();
+        }
+        return '';
+    }
+
+    formatDate(dateString) {
+        let date = new Date(dateString);
+
+        //Get the date.
+        let year = date.getFullYear();
+        let month = (date.getMonth() + 1).toString().padStart(2, '0');
+        let day = date.getDate().toString().padStart(2, '0');
+        let formattedDate = year + "-" + month + "-" + day;
+        // Get also the time... ?
+
+        return formattedDate;
+    }
+
+    getStatementCurrency(statementNode) {
+        let node = this.firstGrandChildElement(statementNode, ['Acct', 'Ccy']);
+        if (node)
+            return node.text;
+        return '';
+    }
+
+    getStatementOwner(statementNode) {
+        let node = this.firstGrandChildElement(statementNode, ['Acct', 'Ownr', 'Nm']);
+        if (node)
+            return node.text;
+        return '';
+    }
+
+    getStatementIban(statementNode) {
+        let node = this.firstGrandChildElement(statementNode, ['Acct', 'Id', 'IBAN']);
+        if (node)
+            return node.text;
+        return '';
+
+    }
+    getStatementId(statementNode) {
+        let node = this.firstGrandChildElement(statementNode, ['Acct', 'Id', 'Othr', 'Id']);
+        if (node)
+            return node.text;
+        return '';
+    }
+
+    getStatementCreationDate(statementNode) {
+        if (!statementNode)
+            return null;
+        let dateNode = statementNode.firstChildElement('CreDtTm');
+        if (dateNode)
+            return this.formatDate(dateNode.text);
+        return '';
+    }
+
+    firstGrandChildElement(node, childs) {
+        if (!node)
+            return null;
+        let grandChildNode = node;
+        for (let i = 0; i < childs.length; i++) {
+            grandChildNode = grandChildNode.firstChildElement(childs[i]);
+            if (!grandChildNode)
+                break;
+        }
+
+        return grandChildNode;
+    }
+
+    readStatementEntryDetailsMatchMsgId(detailsNode) {
+        let batchMsgIdNode = this.firstGrandChildElement(detailsNode, ['Btch', 'MsgId']);
+        return batchMsgIdNode ? batchMsgIdNode.text : '';
+    }
+
+    readStatementEntryDetailsAmount(detailsNode) {
+        if (!detailsNode)
+            return '';
+
+        let amtNode = detailsNode.firstChildElement('Amt');
+        if (amtNode)
+            return amtNode.text;
+
+        amtNode = this.firstGrandChildElement(detailsNode, ['AmtDtls', 'TxAmt', 'Amt'])
+        if (amtNode)
+            return amtNode.text;
+
+        amtNode = this.firstGrandChildElement(detailsNode, ['AmtDtls', 'InstdAmt'])
+        if (amtNode)
+            return amtNode.text;
+
+        amtNode = this.firstGrandChildElement(detailsNode, ['AmtDtls', 'CntrValAmt'])
+        if (amtNode)
+            return amtNode.text;
+
+        return '';
+    }
+    extractCustomerNumber(esrNumber) {
+        if (!esrNumber || esrNumber.length <= 0)
+            return '';
+
+        let customerNumber = esrNumber;
+
+        // Use Banana format for PVR and QR
+        if (this.params.customer_no.banana_format) {
+
+            // Extract customer number from QR reference
+            if (customerNumber.startsWith("RF")) {
+
+                /*
+                  - RF
+                  - 2 control digits
+                  - customer no. length (min 1, max 7), hexadecimal string
+                  - customer no.
+                  - invoice no. length (min 1, max 7), hexadecimal string
+                  - invoice no.
+                  When account/invoice numbers doesn't exist we use "0" as value
+               */
+
+                ///////////////////////////////////////
+                // TEST
+                //   reference number = RF02411003101
+                //   ref+control digits = RF02
+                //   customer length = 4
+                //   customer = 1100
+                //   invoice length = 3
+                //   invoice = 101 */
+                //customerNumber = "RF02411003101";
+                ///////////////////////////////////////
+                let invLen = customerNumber.substr(4, 1);
+                let cust = customerNumber.substr(5, invLen);
+                customerNumber = cust;
+            }
+            else {
+                // Extract customer number from PVR reference
+
+                /////////////////////////////////////////////////////////
+                // TEST
+                //   reference number = 00 00000 00007 65432 11234 56700
+                //   customer = 7654321
+                //   invoice =  1234567*/
+                //customerNumber = "00 00000 00007 65432 11234 56700";
+                /////////////////////////////////////////////////////////
+                let cust = customerNumber.substr(11, 7);
+                customerNumber = cust;
+
+                // Remove traling zeros
+                if (!this.params.customer_no.keep_initial_zeros) {
+                    customerNumber = customerNumber.replace(/^0+/, '');
+                }
+            }
+        }
+        else {
+            if (this.params.customer_no) {
+                // First apply start / length extraction
+                if (this.params.customer_no.start !== "0" || this.params.customer_no.count !== "-1") {
+                    if (this.params.customer_no.count === "-1")
+                        customerNumber = customerNumber.substr(this.params.customer_no.start);
+                    else
+                        customerNumber = customerNumber.substr(this.params.customer_no.start, this.params.customer_no.count);
+                }
+
+                // Second apply method if defined
+                if (this.params.customer_no.method.length > "0") {
+                    let customerMethod = eval(this.params.customer_no.method);
+                    if (typeof (customerMethod) === 'function') {
+                        customerNumber = customerMethod(customerNumber);
+                    }
+                }
+
+                // Remove traling zeros
+                if (!this.params.customer_no.keep_initial_zeros) {
+                    customerNumber = customerNumber.replace(/^0+/, '');
+                }
+            }
+        }
+
+        return customerNumber;
+    }
+
+    extractInvoiceNumber(esrNumber) {
+        if (!esrNumber || esrNumber.length <= 0)
+            return '';
+
+        let invoiceNumber = esrNumber;
+
+        // Use Banana format for PVR and QR
+        if (this.params.invoice_no.banana_format) {
+
+            // Extract invoice number from QR reference
+            if (invoiceNumber.startsWith("RF")) {
+
+                /*
+                   - RF
+                   - 2 control digits
+                   - customer no. length (min 1, max 7), hexadecimal string
+                   - customer no.
+                   - invoice no. length (min 1, max 7), hexadecimal string
+                   - invoice no.
+                   When account/invoice numbers doesn't exist we use "0" as value
+                */
+
+                ///////////////////////////////////////
+                // TEST
+                //   reference number = RF02411003101
+                //   ref+control digits = RF02
+                //   customer length = 4
+                //   customer = 1100
+                //   invoice length = 3
+                //   invoice = 101 */
+                //invoiceNumber = "RF02411003101";
+                ///////////////////////////////////////
+                let invLen = invoiceNumber.substr(4, 1);
+                let inv = invoiceNumber.substr(5, invLen);
+                let invNoBegin = 5 + Number(invLen);
+                let invNoLen = invoiceNumber.substr(invNoBegin, 1);
+                let invNo = invoiceNumber.substr(invNoBegin + 1, invNoLen);
+                invoiceNumber = invNo;
+            }
+            else {
+
+                // Extract invoice number from PVR reference
+
+                /////////////////////////////////////////////////////////
+                // TEST
+                //   reference number = 00 00000 00007 65432 11234 56700
+                //   customer = 7654321
+                //   invoice =  1234567*/
+                //invoiceNumber = "00 00000 00007 65432 11234 56700";
+                /////////////////////////////////////////////////////////
+                let inv = invoiceNumber.substr(18, 7);
+                invoiceNumber = inv;
+
+                // Remove traling zeros
+                invoiceNumber = invoiceNumber.replace(/^0+/, '')
+            }
+        }
+        else {
+
+            // First apply start / length extraction
+            if (this.params.invoice_no.start !== "0" || this.params.invoice_no.count !== "-1") {
+                if (this.params.invoice_no.count === "-1") {
+                    invoiceNumber = invoiceNumber.substr(this.params.invoice_no.start);
+                }
+                else {
+                    invoiceNumber = invoiceNumber.substr(this.params.invoice_no.start, this.params.invoice_no.count);
+                }
+            }
+
+            // Second apply method if defined
+            if (this.params.invoice_no.method.length > 0) {
+                let invoiceMethod = eval(this.params.invoice_no.method);
+                if (typeof (invoiceMethod) === 'function') {
+                    invoiceNumber = invoiceMethod(invoiceNumber);
+                }
+            }
+
+            // Remove traling zeros
+            invoiceNumber = invoiceNumber.replace(/^0+/, '')
+        }
+
+        return invoiceNumber;
+    }
+
+    readStatementEntryDetailsDescription(detailsNode, isCredit) {
+        let detailsDescriptionTexts = [];
+
+        detailsDescriptionTexts.push(this.readStatementEntryDetailsAddress(detailsNode, isCredit));
+
+        if (detailsNode.hasChildElements('RmtInf')) {
+            let ustrdNode = detailsNode.firstChildElement('RmtInf').firstChildElement('Ustrd');
+            while (ustrdNode) {
+                let ustrdString = ustrdNode.text.trim();
+                if (ustrdString === '?REJECT?0') {
+                    ustrdString = '';
+                }
+                if (ustrdString.length === 0)
+                    break;
+                detailsDescriptionTexts.push(ustrdString);
+                ustrdNode = ustrdNode.nextSiblingElement('Ustrd');
+            }
+        } else if (detailsNode.hasChildElements('AddtlTxInf')) {
+            let addtlTxInfString = detailsNode.firstChildElement('AddtlTxInf').text.trim();
+            if (addtlTxInfString.length > 0)
+                detailsDescriptionTexts.push(addtlTxInfString);
+        }
+
+        let rmtInfRefNode = this.firstGrandChildElement(detailsNode, ['RmtInf', 'Strd', 'CdtrRefInf', 'Ref']);
+        let detailEsrReference = rmtInfRefNode ? rmtInfRefNode.text.trim() : '';
+        if (detailEsrReference.length > 0)
+            detailsDescriptionTexts.push(detailEsrReference); // removed lang param.
+
+        return this.joinNotEmpty(detailsDescriptionTexts, ' / ');
+    }
+
+    /** Xml versions older than .08 (.04 or minor) */
+    readStatementEntryDetailsAddress_oldVersion(detailsNode, isCredit) {
+        let rltdPtiesNode = detailsNode.firstChildElement('RltdPties');
+        if (!rltdPtiesNode)
+            return '';
+
+        let addressNode = null;
+        if (isCredit) {
+            if (rltdPtiesNode.hasChildElements('UltmtDbtr'))
+                addressNode = rltdPtiesNode.firstChildElement('UltmtDbtr')
+            else if (rltdPtiesNode.hasChildElements('Dbtr'))
+                addressNode = rltdPtiesNode.firstChildElement('Dbtr')
+            else if (rltdPtiesNode.hasChildElements('UltmtCdtr'))
+                addressNode = rltdPtiesNode.firstChildElement('UltmtCdtr')
+            else if (rltdPtiesNode.hasChildElements('Cdtr'))
+                addressNode = rltdPtiesNode.firstChildElement('Cdtr')
+        } else {
+            if (rltdPtiesNode.hasChildElements('UltmtCdtr'))
+                addressNode = rltdPtiesNode.firstChildElement('UltmtCdtr')
+            else if (rltdPtiesNode.hasChildElements('Cdtr'))
+                addressNode = rltdPtiesNode.firstChildElement('Cdtr')
+            else if (rltdPtiesNode.hasChildElements('UltmtDbtr'))
+                addressNode = rltdPtiesNode.firstChildElement('UltmtDbtr')
+            else if (rltdPtiesNode.hasChildElements('Dbtr'))
+                addressNode = rltdPtiesNode.firstChildElement('Dbtr')
+        }
+
+        if (!addressNode)
+            return '';
+
+        let addressStrings = [];
+        if (addressNode.firstChildElement('Nm'))
+            addressStrings.push(addressNode.firstChildElement('Nm').text);
+        let pstlAdrNode = addressNode.firstChildElement('PstlAdr');
+        if (pstlAdrNode) {
+            if (pstlAdrNode.hasChildElements('AdrLine')) {
+                let adrLineNode = pstlAdrNode.firstChildElement('AdrLine');
+                while (adrLineNode) {
+                    addressStrings.push(adrLineNode.text);
+                    adrLineNode = adrLineNode.nextSiblingElement('AdrLine');
+                }
+            }
+            if (pstlAdrNode.hasChildElements('TwnNm'))
+                addressStrings.push(pstlAdrNode.firstChildElement('TwnNm').text);
+            if (pstlAdrNode.hasChildElements('Ctry'))
+                addressStrings.push(pstlAdrNode.firstChildElement('Ctry').text);
+        }
+
+        return addressStrings.join(', ');
+    }
+
+    readStatementEntryDetailsAddress(detailsNode, isCredit) {
+
+        if (!this.schema.endsWith(".08")) {
+            return this.readStatementEntryDetailsAddress_oldVersion(detailsNode, isCredit);
+        }
+
+        var rltdPtiesNode = detailsNode.firstChildElement('RltdPties'); //Optional
+        if (!rltdPtiesNode)
+            return '';
+
+        var addressNode = null;
+        if (isCredit) {
+            if (rltdPtiesNode.hasChildElements('UltmtDbtr'))
+                addressNode = rltdPtiesNode.firstChildElement('UltmtDbtr')
+            else if (rltdPtiesNode.hasChildElements('Dbtr'))
+                addressNode = rltdPtiesNode.firstChildElement('Dbtr')
+            else if (rltdPtiesNode.hasChildElements('UltmtCdtr'))
+                addressNode = rltdPtiesNode.firstChildElement('UltmtCdtr')
+            else if (rltdPtiesNode.hasChildElements('Cdtr'))
+                addressNode = rltdPtiesNode.firstChildElement('Cdtr')
+            else
+                return ''; // No childs found
+        } else {
+            if (rltdPtiesNode.hasChildElements('UltmtCdtr'))
+                addressNode = rltdPtiesNode.firstChildElement('UltmtCdtr')
+            else if (rltdPtiesNode.hasChildElements('Cdtr'))
+                addressNode = rltdPtiesNode.firstChildElement('Cdtr')
+            else if (rltdPtiesNode.hasChildElements('UltmtDbtr'))
+                addressNode = rltdPtiesNode.firstChildElement('UltmtDbtr')
+            else if (rltdPtiesNode.hasChildElements('Dbtr'))
+                addressNode = rltdPtiesNode.firstChildElement('Dbtr')
+            else
+                return ''; // No childs found
+        }
+
+        // 'Pty' new element not present in the previous version SPS2021
+        if (addressNode.hasChildElements('Pty')) {
+            addressNode = addressNode.firstChildElement('Pty');
+        }
+
+        var addressStrings = [];
+        if (addressNode.firstChildElement('Nm'))
+            addressStrings.push(addressNode.firstChildElement('Nm').text);
+        var pstlAdrNode = addressNode.firstChildElement('PstlAdr');
+        if (pstlAdrNode) {
+            if (pstlAdrNode.hasChildElements('AdrLine')) {
+                var adrLineNode = pstlAdrNode.firstChildElement('AdrLine');
+                while (adrLineNode) {
+                    addressStrings.push(adrLineNode.text);
+                    adrLineNode = adrLineNode.nextSiblingElement('AdrLine');
+                }
+            }
+            if (pstlAdrNode.hasChildElements('TwnNm'))
+                addressStrings.push(pstlAdrNode.firstChildElement('TwnNm').text);
+            if (pstlAdrNode.hasChildElements('Ctry'))
+                addressStrings.push(pstlAdrNode.firstChildElement('Ctry').text);
+        }
+
+        return addressStrings.join(', ');
+    }
+
+    joinNotEmpty(texts, separator) {
+        let cleanTexts = texts.filter(function (n) { return n && n.trim().length });
+        return cleanTexts.join(separator);
     }
 }
 
@@ -634,399 +1090,7 @@ var JSON_Thinker_JSONConverter = class JSON_Thinker_JSONConverter {
     }
 }
 
-// ******** XML PROCESSING UTILITIES FUNCTIONS **********
 
-function getStatementEndBalance(statementNode) {
-    if (!statementNode)
-        return '';
-
-    var balNode = statementNode.firstChildElement('Bal');
-    while (balNode) {
-        var tpNode = balNode.firstChildElement('Tp');
-        if (tpNode) {
-            var cdOrPrtryNode = tpNode.firstChildElement('CdOrPrtry');
-            if (cdOrPrtryNode && (cdOrPrtryNode.text === 'CLBD' || cdOrPrtryNode.text === 'CLAV')) {
-                var amtNode = balNode.firstChildElement('Amt');
-                if (amtNode) {
-                    var amount = amtNode.text;
-                    if (balNode.hasChildElements('CdtDbtInd') && balNode.hasChildElements('CdtDbtInd').text === 'DBIT') {
-                        amount = Banana.SDecimal.invert(amount);
-                    }
-                    return amount;
-                }
-            }
-        }
-        balNode = balNode.nextSiblingElement();
-    }
-    return '';
-}
-
-function getStatementBeginBalance(statementNode) {
-    if (!statementNode)
-        return '';
-
-    var balNode = statementNode.firstChildElement('Bal');
-    while (balNode) {
-        var tpNode = balNode.firstChildElement('Tp');
-        if (tpNode) {
-            var cdOrPrtryNode = tpNode.firstChildElement('CdOrPrtry');
-            if (cdOrPrtryNode && cdOrPrtryNode.text === 'OPBD') {
-                var amtNode = balNode.firstChildElement('Amt');
-                if (amtNode) {
-                    var amount = amtNode.text;
-                    if (balNode.hasChildElements('CdtDbtInd') && balNode.hasChildElements('CdtDbtInd').text === 'DBIT') {
-                        amount = Banana.SDecimal.invert(amount);
-                    }
-                    return amount;
-                }
-            }
-        }
-        balNode = balNode.nextSiblingElement();
-    }
-    return '';
-}
-
-function formatDate(dateString) {
-    let date = new Date(dateString);
-
-    //Get the date.
-    let year = date.getFullYear();
-    let month = (date.getMonth() + 1).toString().padStart(2, '0');
-    let day = date.getDate().toString().padStart(2, '0');
-    let formattedDate = year + "-" + month + "-" + day;
-    // Get also the time... ?
-
-    return formattedDate;
-}
-
-function getStatementCurrency(statementNode) {
-    let node = this.firstGrandChildElement(statementNode, ['Acct', 'Ccy']);
-    if (node)
-        return node.text;
-    return '';
-}
-
-function getStatementOwner(statementNode) {
-    let node = firstGrandChildElement(statementNode, ['Acct', 'Ownr', 'Nm']);
-    if (node)
-        return node.text;
-    return '';
-}
-
-function getStatementIban(statementNode) {
-    let node = firstGrandChildElement(statementNode, ['Acct', 'Id', 'IBAN']);
-    if (node)
-        return node.text;
-    return '';
-
-}
-function getStatementId(statementNode) {
-    let node = firstGrandChildElement(statementNode, ['Acct', 'Id', 'Othr', 'Id']);
-    if (node)
-        return node.text;
-    return '';
-}
-
-function getStatementCreationDate(statementNode) {
-    if (!statementNode)
-        return null;
-    let dateNode = statementNode.firstChildElement('CreDtTm');
-    if (dateNode)
-        return formatDate(dateNode.text);
-    return '';
-}
-function firstGrandChildElement(node, childs) {
-    if (!node)
-        return null;
-    let grandChildNode = node;
-    for (let i = 0; i < childs.length; i++) {
-        grandChildNode = grandChildNode.firstChildElement(childs[i]);
-        if (!grandChildNode)
-            break;
-    }
-
-    return grandChildNode;
-}
-
-function readStatementEntryDetailsMatchMsgId(detailsNode) {
-    let batchMsgIdNode = firstGrandChildElement(detailsNode, ['Btch', 'MsgId']);
-    return batchMsgIdNode ? batchMsgIdNode.text : '';
-}
-
-function readStatementEntryDetailsAmount(detailsNode) {
-    if (!detailsNode)
-        return '';
-
-    let amtNode = detailsNode.firstChildElement('Amt');
-    if (amtNode)
-        return amtNode.text;
-
-    amtNode = firstGrandChildElement(detailsNode, ['AmtDtls', 'TxAmt', 'Amt'])
-    if (amtNode)
-        return amtNode.text;
-
-    amtNode = firstGrandChildElement(detailsNode, ['AmtDtls', 'InstdAmt'])
-    if (amtNode)
-        return amtNode.text;
-
-    amtNode = firstGrandChildElement(detailsNode, ['AmtDtls', 'CntrValAmt'])
-    if (amtNode)
-        return amtNode.text;
-
-    return '';
-}
-function extractCustomerNumber(esrNumber) {
-    if (!esrNumber || esrNumber.length <= 0)
-        return '';
-
-    let customerNumber = esrNumber;
-
-    // Use Banana format for PVR and QR
-    if (this.params.customer_no.banana_format) {
-
-        // Extract customer number from QR reference
-        if (customerNumber.startsWith("RF")) {
-
-            /*
-              - RF
-              - 2 control digits
-              - customer no. length (min 1, max 7), hexadecimal string
-              - customer no.
-              - invoice no. length (min 1, max 7), hexadecimal string
-              - invoice no.
-              When account/invoice numbers doesn't exist we use "0" as value
-           */
-
-            ///////////////////////////////////////
-            // TEST
-            //   reference number = RF02411003101
-            //   ref+control digits = RF02
-            //   customer length = 4
-            //   customer = 1100
-            //   invoice length = 3
-            //   invoice = 101 */
-            //customerNumber = "RF02411003101";
-            ///////////////////////////////////////
-            let invLen = customerNumber.substr(4, 1);
-            let cust = customerNumber.substr(5, invLen);
-            customerNumber = cust;
-        }
-        else {
-            // Extract customer number from PVR reference
-
-            /////////////////////////////////////////////////////////
-            // TEST
-            //   reference number = 00 00000 00007 65432 11234 56700
-            //   customer = 7654321
-            //   invoice =  1234567*/
-            //customerNumber = "00 00000 00007 65432 11234 56700";
-            /////////////////////////////////////////////////////////
-            let cust = customerNumber.substr(11, 7);
-            customerNumber = cust;
-
-            // Remove traling zeros
-            if (!this.params.customer_no.keep_initial_zeros) {
-                customerNumber = customerNumber.replace(/^0+/, '');
-            }
-        }
-    }
-    else {
-        if (this.params.customer_no) {
-            // First apply start / length extraction
-            if (this.params.customer_no.start !== "0" || this.params.customer_no.count !== "-1") {
-                if (this.params.customer_no.count === "-1")
-                    customerNumber = customerNumber.substr(this.params.customer_no.start);
-                else
-                    customerNumber = customerNumber.substr(this.params.customer_no.start, this.params.customer_no.count);
-            }
-
-            // Second apply method if defined
-            if (this.params.customer_no.method.length > "0") {
-                let customerMethod = eval(this.params.customer_no.method);
-                if (typeof (customerMethod) === 'function') {
-                    customerNumber = customerMethod(customerNumber);
-                }
-            }
-
-            // Remove traling zeros
-            if (!this.params.customer_no.keep_initial_zeros) {
-                customerNumber = customerNumber.replace(/^0+/, '');
-            }
-        }
-    }
-
-    return customerNumber;
-}
-
-function extractInvoiceNumber(esrNumber) {
-    if (!esrNumber || esrNumber.length <= 0)
-        return '';
-
-    let invoiceNumber = esrNumber;
-
-    // Use Banana format for PVR and QR
-    if (this.params.invoice_no.banana_format) {
-
-        // Extract invoice number from QR reference
-        if (invoiceNumber.startsWith("RF")) {
-
-            /*
-               - RF
-               - 2 control digits
-               - customer no. length (min 1, max 7), hexadecimal string
-               - customer no.
-               - invoice no. length (min 1, max 7), hexadecimal string
-               - invoice no.
-               When account/invoice numbers doesn't exist we use "0" as value
-            */
-
-            ///////////////////////////////////////
-            // TEST
-            //   reference number = RF02411003101
-            //   ref+control digits = RF02
-            //   customer length = 4
-            //   customer = 1100
-            //   invoice length = 3
-            //   invoice = 101 */
-            //invoiceNumber = "RF02411003101";
-            ///////////////////////////////////////
-            let invLen = invoiceNumber.substr(4, 1);
-            let inv = invoiceNumber.substr(5, invLen);
-            let invNoBegin = 5 + Number(invLen);
-            let invNoLen = invoiceNumber.substr(invNoBegin, 1);
-            let invNo = invoiceNumber.substr(invNoBegin + 1, invNoLen);
-            invoiceNumber = invNo;
-        }
-        else {
-
-            // Extract invoice number from PVR reference
-
-            /////////////////////////////////////////////////////////
-            // TEST
-            //   reference number = 00 00000 00007 65432 11234 56700
-            //   customer = 7654321
-            //   invoice =  1234567*/
-            //invoiceNumber = "00 00000 00007 65432 11234 56700";
-            /////////////////////////////////////////////////////////
-            let inv = invoiceNumber.substr(18, 7);
-            invoiceNumber = inv;
-
-            // Remove traling zeros
-            invoiceNumber = invoiceNumber.replace(/^0+/, '')
-        }
-    }
-    else {
-
-        // First apply start / length extraction
-        if (this.params.invoice_no.start !== "0" || this.params.invoice_no.count !== "-1") {
-            if (this.params.invoice_no.count === "-1") {
-                invoiceNumber = invoiceNumber.substr(this.params.invoice_no.start);
-            }
-            else {
-                invoiceNumber = invoiceNumber.substr(this.params.invoice_no.start, this.params.invoice_no.count);
-            }
-        }
-
-        // Second apply method if defined
-        if (this.params.invoice_no.method.length > 0) {
-            let invoiceMethod = eval(this.params.invoice_no.method);
-            if (typeof (invoiceMethod) === 'function') {
-                invoiceNumber = invoiceMethod(invoiceNumber);
-            }
-        }
-
-        // Remove traling zeros
-        invoiceNumber = invoiceNumber.replace(/^0+/, '')
-    }
-
-    return invoiceNumber;
-}
-
-function readStatementEntryDetailsDescription(detailsNode, isCredit) {
-    let detailsDescriptionTexts = [];
-
-    detailsDescriptionTexts.push(readStatementEntryDetailsAddress(detailsNode, isCredit));
-
-    if (detailsNode.hasChildElements('RmtInf')) {
-        let ustrdNode = detailsNode.firstChildElement('RmtInf').firstChildElement('Ustrd');
-        while (ustrdNode) {
-            let ustrdString = ustrdNode.text.trim();
-            if (ustrdString === '?REJECT?0') {
-                ustrdString = '';
-            }
-            if (ustrdString.length === 0)
-                break;
-            detailsDescriptionTexts.push(ustrdString);
-            ustrdNode = ustrdNode.nextSiblingElement('Ustrd');
-        }
-    } else if (detailsNode.hasChildElements('AddtlTxInf')) {
-        let addtlTxInfString = detailsNode.firstChildElement('AddtlTxInf').text.trim();
-        if (addtlTxInfString.length > 0)
-            detailsDescriptionTexts.push(addtlTxInfString);
-    }
-
-    let rmtInfRefNode = firstGrandChildElement(detailsNode, ['RmtInf', 'Strd', 'CdtrRefInf', 'Ref']);
-    let detailEsrReference = rmtInfRefNode ? rmtInfRefNode.text.trim() : '';
-    if (detailEsrReference.length > 0)
-        detailsDescriptionTexts.push(detailEsrReference); // removed lang param.
-
-    return this.joinNotEmpty(detailsDescriptionTexts, ' / ');
-}
-
-function readStatementEntryDetailsAddress(detailsNode, isCredit) {
-    let rltdPtiesNode = detailsNode.firstChildElement('RltdPties');
-    if (!rltdPtiesNode)
-        return '';
-
-    let addressNode = null;
-    if (isCredit) {
-        if (rltdPtiesNode.hasChildElements('UltmtDbtr'))
-            addressNode = rltdPtiesNode.firstChildElement('UltmtDbtr')
-        else if (rltdPtiesNode.hasChildElements('Dbtr'))
-            addressNode = rltdPtiesNode.firstChildElement('Dbtr')
-        else if (rltdPtiesNode.hasChildElements('UltmtCdtr'))
-            addressNode = rltdPtiesNode.firstChildElement('UltmtCdtr')
-        else if (rltdPtiesNode.hasChildElements('Cdtr'))
-            addressNode = rltdPtiesNode.firstChildElement('Cdtr')
-    } else {
-        if (rltdPtiesNode.hasChildElements('UltmtCdtr'))
-            addressNode = rltdPtiesNode.firstChildElement('UltmtCdtr')
-        else if (rltdPtiesNode.hasChildElements('Cdtr'))
-            addressNode = rltdPtiesNode.firstChildElement('Cdtr')
-        else if (rltdPtiesNode.hasChildElements('UltmtDbtr'))
-            addressNode = rltdPtiesNode.firstChildElement('UltmtDbtr')
-        else if (rltdPtiesNode.hasChildElements('Dbtr'))
-            addressNode = rltdPtiesNode.firstChildElement('Dbtr')
-    }
-
-    if (!addressNode)
-        return '';
-
-    let addressStrings = [];
-    if (addressNode.firstChildElement('Nm'))
-        addressStrings.push(addressNode.firstChildElement('Nm').text);
-    let pstlAdrNode = addressNode.firstChildElement('PstlAdr');
-    if (pstlAdrNode) {
-        if (pstlAdrNode.hasChildElements('AdrLine')) {
-            let adrLineNode = pstlAdrNode.firstChildElement('AdrLine');
-            while (adrLineNode) {
-                addressStrings.push(adrLineNode.text);
-                adrLineNode = adrLineNode.nextSiblingElement('AdrLine');
-            }
-        }
-        if (pstlAdrNode.hasChildElements('TwnNm'))
-            addressStrings.push(pstlAdrNode.firstChildElement('TwnNm').text);
-        if (pstlAdrNode.hasChildElements('Ctry'))
-            addressStrings.push(pstlAdrNode.firstChildElement('Ctry').text);
-    }
-
-    return addressStrings.join(', ');
-}
-
-function joinNotEmpty(texts, separator) {
-    let cleanTexts = texts.filter(function (n) { return n && n.trim().length });
-    return cleanTexts.join(separator);
-}
 
 function getHash(entryTexts, statementParams) {
 
