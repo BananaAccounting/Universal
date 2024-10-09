@@ -152,6 +152,7 @@ var CSV_JSONConverter = class CSV_JSONConverter {
         fileParams.FileId = id;
         fileParams.FileName = name;
         fileParams.FileType = type;
+        fileParams.FileSchema = "" //Only for camt files
         fileParams.FileCreationDate = this.fileDateTime;
 
         return fileParams;
@@ -185,6 +186,7 @@ var ISO20022_Swiss_JSONConverter = class ISO20022_Swiss_JSONConverter {
     constructor() {
         this.camtType = "";
         this.schema = "";
+        this.schemaNr = "";
         // Base schemes 04.version
         this.schemaFileName_05204 = "src/camt_schemes/ch/schema_04/camt.052.001.04.xsd";
         this.schemaFileName_05304 = "src/camt_schemes/ch/schema_04/camt.053.001.04.xsd";
@@ -210,6 +212,7 @@ var ISO20022_Swiss_JSONConverter = class ISO20022_Swiss_JSONConverter {
 
         let docNode = xmlDoc.firstChildElement(); // 'Document'
         this.schema = docNode.attribute('xmlns');
+        this.schemaNr = extractSchemaNumber(this.schema);
         if (this.schema.indexOf('camt.052') >= 0) {         // Check for CAMT.052
             this.camtType = "CAMT.052";
             let isValid = this.isValidCamt052Schema(xmlDoc, isTest);
@@ -361,6 +364,7 @@ var ISO20022_Swiss_JSONConverter = class ISO20022_Swiss_JSONConverter {
         fileParams.FileId = id;
         fileParams.FileName = name;
         fileParams.FileType = type;
+        fileParams.FileSchema = this.schemaNr;
         fileParams.FileCreationDate = creationDate;
 
         return fileParams;
@@ -454,6 +458,7 @@ var ISO20022_Swiss_JSONConverter = class ISO20022_Swiss_JSONConverter {
                         'FileId': fileParams.FileId,
                         'FileName': fileParams.FileName,
                         'FileType': fileParams.FileType,
+                        'FileSchema': fileParams.FileSchema,
                         'FileCreationDate': fileParams.FileCreationDate,
                         'StatementIban': statementParams.StatementIban,
                         'StatementCreationDate': statementParams.StatementCreationDate,
@@ -502,6 +507,7 @@ var ISO20022_Swiss_JSONConverter = class ISO20022_Swiss_JSONConverter {
                             'FileId': fileParams.FileId,
                             'FileName': fileParams.FileName,
                             'FileType': fileParams.FileType,
+                            'FileSchema': fileParams.FileSchema,
                             'FileCreationDate': fileParams.FileCreationDate,
                             'StatementIban': statementParams.StatementIban,
                             'StatementCreationDate': statementParams.StatementCreationDate,
@@ -550,6 +556,7 @@ var ISO20022_Swiss_JSONConverter = class ISO20022_Swiss_JSONConverter {
                         'FileId': fileParams.FileId,
                         'FileName': fileParams.FileName,
                         'FileType': fileParams.FileType,
+                        'FileSchema': fileParams.FileSchema,
                         'FileCreationDate': fileParams.FileCreationDate,
                         'StatementIban': statementParams.StatementIban,
                         'StatementCreationDate': statementParams.StatementCreationDate,
@@ -582,6 +589,7 @@ var ISO20022_Swiss_JSONConverter = class ISO20022_Swiss_JSONConverter {
                 'FileId': fileParams.FileId,
                 'FileName': fileParams.FileName,
                 'FileType': fileParams.FileType,
+                'FileSchema': fileParams.FileSchema,
                 'FileCreationDate': fileParams.FileCreationDate,
                 'StatementIban': statementParams.StatementIban,
                 'StatementCreationDate': statementParams.StatementCreationDate,
@@ -1060,6 +1068,7 @@ var ISO20022_Universal_JSONConverter = class ISO20022_Universal_JSONConverter {
     constructor() {
         this.camtType = "";
         this.schema = "";
+        this.schemaNr = "";
         // Base schemes 05.version
         this.schemaFileName_05205 = "src/camt_schemes/un/schema_05/camt.052.001.05.xsd";
         this.schemaFileName_05305 = "src/camt_schemes/un/schema_05/camt.053.001.05.xsd";
@@ -1088,21 +1097,23 @@ var ISO20022_Universal_JSONConverter = class ISO20022_Universal_JSONConverter {
          * otherwise an alternative relative path to the patterns would 
          * have to be defined in the tests. We use already validated schemes in the tests */
 
-        let root = xmlDoc.firstChildElement();
-        if (!root)
+        let docNode = xmlDoc.firstChildElement(); // 'Document'
+        this.schema = docNode.attribute('xmlns');
+        this.schemaNr = extractSchemaNumber(this.schema);
+        if (!docNode)
             return false;
-        if (root.firstChildElement() === 'BkToCstmrAcctRpt' &&         // Check for CAMT.052
-            root.namespaceURI().includes('camt.052')) {
+        if (docNode.firstChildElement() === 'BkToCstmrAcctRpt' &&         // Check for CAMT.052
+            docNode.namespaceURI().includes('camt.052')) {
             this.camtType = "CAMT.052";
             let isValid = this.isValidCamt052Schema(xmlDoc, isTest);
             return isValid;
-        } else if (root.firstChildElement() === 'BkToCstmrStmt' &&         // Check for CAMT.053
-            root.namespaceURI().includes('camt.053')) {
+        } else if (docNode.firstChildElement() === 'BkToCstmrStmt' &&         // Check for CAMT.053
+            docNode.namespaceURI().includes('camt.053')) {
             this.camtType = "CAMT.053";
             let isValid = this.isValidCamt053Schema(xmlDoc, isTest);
             return isValid;
-        } else if (root.firstChildElement() === 'BkToCstmrDbtCdtNtfctn' &&
-            root.namespaceURI().includes('camt.054')) {         // Check for CAMT.054
+        } else if (docNode.firstChildElement() === 'BkToCstmrDbtCdtNtfctn' &&
+            docNode.namespaceURI().includes('camt.054')) {         // Check for CAMT.054
             this.camtType = "CAMT.054";
             let isValid = this.isValidCamt054Schema(xmlDoc, isTest);
             return isValid;
@@ -1193,6 +1204,7 @@ var ISO20022_Universal_JSONConverter = class ISO20022_Universal_JSONConverter {
         fileParams.FileId = id;
         fileParams.FileName = name;
         fileParams.FileType = type;
+        fileParams.FileSchema = this.schemaNr;
         fileParams.FileCreationDate = creationDate;
 
         return fileParams;
@@ -1374,6 +1386,7 @@ var ISO20022_Universal_JSONConverter = class ISO20022_Universal_JSONConverter {
                         'FileId': fileParams.FileId,
                         'FileName': fileParams.FileName,
                         'FileType': fileParams.FileType,
+                        'FileSchema': fileParams.FileSchema,
                         'FileCreationDate': fileParams.FileCreationDate,
                         'StatementIban': statementParams.StatementIban,
                         'StatementCreationDate': statementParams.StatementCreationDate,
@@ -1422,6 +1435,7 @@ var ISO20022_Universal_JSONConverter = class ISO20022_Universal_JSONConverter {
                             'FileId': fileParams.FileId,
                             'FileName': fileParams.FileName,
                             'FileType': fileParams.FileType,
+                            'FileSchema': fileParams.FileSchema,
                             'FileCreationDate': fileParams.FileCreationDate,
                             'StatementIban': statementParams.StatementIban,
                             'StatementCreationDate': statementParams.StatementCreationDate,
@@ -1470,6 +1484,7 @@ var ISO20022_Universal_JSONConverter = class ISO20022_Universal_JSONConverter {
                         'FileId': fileParams.FileId,
                         'FileName': fileParams.FileName,
                         'FileType': fileParams.FileType,
+                        'FileSchema': fileParams.FileSchema,
                         'FileCreationDate': fileParams.FileCreationDate,
                         'StatementIban': statementParams.StatementIban,
                         'StatementCreationDate': statementParams.StatementCreationDate,
@@ -1502,6 +1517,7 @@ var ISO20022_Universal_JSONConverter = class ISO20022_Universal_JSONConverter {
                 'FileId': fileParams.FileId,
                 'FileName': fileParams.FileName,
                 'FileType': fileParams.FileType,
+                'FileSchema': fileParams.FileSchema,
                 'FileCreationDate': fileParams.FileCreationDate,
                 'StatementIban': statementParams.StatementIban,
                 'StatementCreationDate': statementParams.StatementCreationDate,
@@ -1547,6 +1563,11 @@ var JSON_Thinker_JSONConverter = class JSON_Thinker_JSONConverter {
         let jsonDoc = {};
         return jsonDoc;
     }
+}
+
+function extractSchemaNumber(schemaString) {
+    if (schemaString)
+        return schemaString.split('.').pop();
 }
 
 function firstGrandChildElement(node, childs) {
