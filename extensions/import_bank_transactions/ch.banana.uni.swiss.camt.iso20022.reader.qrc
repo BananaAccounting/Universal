@@ -4,5 +4,11 @@
 		<file>ch.banana.uni.swiss.camt.iso20022.reader.manifest.json</file>
 		<file>src/csv_import_extensions/postfinance_sync_csv/ch.banana.sync.postfinance.js</file>
 		<file>src/csv_import_extensions/postfinance_sync_csv/import.utilities.js</file>
+		<file>src/camt_schemes/ch/schema_04/camt.052.001.04.xsd</file>
+		<file>src/camt_schemes/ch/schema_04/camt.053.001.04.xsd</file>
+		<file>src/camt_schemes/ch/schema_04/camt.054.001.04.xsd</file>
+		<file>src/camt_schemes/ch/schema_08/camt.052.001.08.xsd</file>
+		<file>src/camt_schemes/ch/schema_08/camt.053.001.08.xsd</file>
+		<file>src/camt_schemes/ch/schema_08/camt.054.001.08.xsd</file>
 	</qresource>
 </RCC>

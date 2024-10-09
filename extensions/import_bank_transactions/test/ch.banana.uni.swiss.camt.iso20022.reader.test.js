@@ -75,6 +75,7 @@ TestSwissCamtReader.prototype.testImport = function () {
    let fileName = "test_file";
    let fileDateTime = "2024-05-13 13:55:43";
    let fileSuffix = "xml";
+   let isTest = true;
 
    for (var i = 0; i < fileNameList.length; i++) {
       var fName = fileNameList[i];
@@ -87,7 +88,7 @@ TestSwissCamtReader.prototype.testImport = function () {
       fileId = Banana.Converter.textToHash(fileContent, "Sha256");
       filePath = fName;
 
-      var jsonObj = exec(fileContent, fileId, filePath, fileName, fileDateTime, fileSuffix); //takes the exec from the import script.
+      var jsonObj = exec(fileContent, fileId, filePath, fileName, fileDateTime, fileSuffix, isTest); //takes the exec from the import script.
       this.testLogger.addJson('FileData', JSON.stringify(jsonObj));
 
       if (!this.progressBar.step())
