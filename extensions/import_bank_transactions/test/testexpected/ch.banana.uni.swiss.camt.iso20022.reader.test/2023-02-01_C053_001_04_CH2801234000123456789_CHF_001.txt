@@ -25,6 +25,7 @@
             "FileCreationDate": "2024-05-13 13:55:43",
             "FileId": "a4cb553550fa185c68fa4690a728e4efa90b7551da9ab7c0498fda1977d97ea6",
             "FileName": "file:script/../test/testcases/2023-02-01_C053_001_04_CH2801234000123456789_CHF_001.xml",
+            "FileSchema": "04",
             "FileType": "CAMT.053",
             "StatementCreationDate": "2023-02-01",
             "StatementCurrency": "CHF",
