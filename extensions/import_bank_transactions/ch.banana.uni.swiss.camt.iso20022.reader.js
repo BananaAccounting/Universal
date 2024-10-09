@@ -17,7 +17,7 @@
 // @description = Swiss Camt ISO20022 Reader
 // @task = app.command
 // @publisher = Banana.ch SA
-// @pubdate = 2024-10-01
+// @pubdate = 2024-10-09
 // @inputdatasource = none
 // @doctype = *
 // @docproperties =
@@ -48,7 +48,7 @@ const TXT_FILE_SUFFIX = "txt";
  * @param {*} fileContent 
  * @returns 
  */
-function exec(fileContent, fileId, filePath, fileName, fileDateTime, fileSuffix) {
+function exec(fileContent, fileId, filePath, fileName, fileDateTime, fileSuffix, isTest) {
 
     if (!fileContent)
         return;
@@ -57,7 +57,7 @@ function exec(fileContent, fileId, filePath, fileName, fileDateTime, fileSuffix)
         case CSV_FILE_SUFFIX:
             return processCsvFile(fileId, filePath, fileName, fileDateTime, fileContent);
         case XML_FILE_SUFFIX:
-            return processXmlFile(fileId, filePath, fileDateTime, fileContent);
+            return processXmlFile(fileId, filePath, fileDateTime, fileContent, isTest);
         case TXT_FILE_SUFFIX:
             return processTxtFile(fileId, filePath, fileName, fileDateTime, fileContent);
         default:
@@ -65,18 +65,20 @@ function exec(fileContent, fileId, filePath, fileName, fileDateTime, fileSuffix)
     }
 }
 
-function processXmlFile(fileId, filePath, fileDateTime, fileContent) {
+function processXmlFile(fileId, filePath, fileDateTime, fileContent, isTest) {
     let iso20022_swiss = new ISO20022_Swiss_JSONConverter();
-    if (iso20022_swiss.match(fileContent)) {
+    if (iso20022_swiss.match(fileContent, isTest)) {
+        //Banana.console.debug("match swiss format: " + filePath);
         let jsonData = iso20022_swiss.convertToJson(fileContent, fileId, filePath, fileDateTime);
         if (jsonData) {
             return jsonData;
         }
     }
 
-    let iso20022_general = new ISO20022_General_JSONConverter();
-    if (iso20022_general.match(fileContent)) {
-        let jsonData = iso20022_general.convertToJson(fileContent, fileId, filePath, fileDateTime);
+    let iso20022_universal = new ISO20022_Universal_JSONConverter();
+    if (iso20022_universal.match(fileContent, isTest)) {
+        //Banana.console.debug("match universal format: " + filePath);
+        let jsonData = iso20022_universal.convertToJson(fileContent, fileId, filePath, fileDateTime);
         if (jsonData) {
             return jsonData;
         }
@@ -183,29 +185,78 @@ var ISO20022_Swiss_JSONConverter = class ISO20022_Swiss_JSONConverter {
     constructor() {
         this.camtType = "";
         this.schema = "";
+        // Base schemes 04.version
+        this.schemaFileName_05204 = "src/camt_schemes/ch/schema_04/camt.052.001.04.xsd";
+        this.schemaFileName_05304 = "src/camt_schemes/ch/schema_04/camt.053.001.04.xsd";
+        this.schemaFileName_05404 = "src/camt_schemes/ch/schema_04/camt.054.001.04.xsd";
+        // Base schemes 08.version
+        this.schemaFileName_05208 = "src/camt_schemes/ch/schema_08/camt.052.001.08.xsd";
+        this.schemaFileName_05308 = "src/camt_schemes/ch/schema_08/camt.053.001.08.xsd";
+        this.schemaFileName_05408 = "src/camt_schemes/ch/schema_08/camt.054.001.08.xsd";
     }
 
     /**
      * Check if the file is a ISO20022 Camt 052/053/054 with Swiss specifics.
      * @param {*} fileContent 
      */
-    match(fileContent) {
+    match(fileContent, isTest) {
         let xmlDoc = Banana.Xml.parse(fileContent);
         if (!xmlDoc)
             return false;
+
+        /** We do not do pattern validation during tests for convenience, 
+        * otherwise an alternative relative path to the patterns would 
+        * have to be defined in the tests. We use already validated schemes in the tests */
+
         let docNode = xmlDoc.firstChildElement(); // 'Document'
         this.schema = docNode.attribute('xmlns');
         if (this.schema.indexOf('camt.052') >= 0) {         // Check for CAMT.052
             this.camtType = "CAMT.052";
-            return true;
+            let isValid = this.isValidCamt052Schema(xmlDoc, isTest);
+            return isValid;
         } else if (this.schema.indexOf('camt.053') >= 0) { // Check for CAMT.053
             this.camtType = "CAMT.053";
-            return true;
+            let isValid = this.isValidCamt053Schema(xmlDoc, isTest);
+            return isValid;
         } else if (this.schema.indexOf('camt.054') >= 0) { // Check for CAMT.054
             this.camtType = "CAMT.054";
-            return true;
+            let isValid = this.isValidCamt054Schema(xmlDoc, isTest);
+            return isValid;
+        } else {
+            return false;
         }
-        return false
+    }
+
+    /** This function tests wether the xml stucture is valid */
+    isValidCamt052Schema(xmlDoc, isTest) {
+        /** we do not perform validation during test*/
+        if (isTest)
+            return true;
+        if (Banana.Xml.validate(xmlDoc, this.schemaFileName_05204)) // Check old schema.
+            return true;
+        if (Banana.Xml.validate(xmlDoc, this.schemaFileName_05208)) // Check new schema
+            return true;
+        return false;
+    }
+
+    isValidCamt053Schema(xmlDoc, isTest) {
+        if (isTest)
+            return true;
+        if (Banana.Xml.validate(xmlDoc, this.schemaFileName_05304)) // Check old schema.
+            return true;
+        if (Banana.Xml.validate(xmlDoc, this.schemaFileName_05308)) // Check new schema
+            return true;
+        return false;
+    }
+
+    isValidCamt054Schema(xmlDoc, isTest) {
+        if (isTest)
+            return true;
+        if (Banana.Xml.validate(xmlDoc, this.schemaFileName_05404)) // Check old schema.
+            return true;
+        if (Banana.Xml.validate(xmlDoc, this.schemaFileName_05408)) // Check new schema
+            return true;
+        return false;
     }
 
     convertToJson(fileContent, fileId, filePath, fileDateTime) {
@@ -256,7 +307,7 @@ var ISO20022_Swiss_JSONConverter = class ISO20022_Swiss_JSONConverter {
 
     getStatementsNode_camt052(docNode) {
         let statementsNode = [];
-        let statementNode = this.firstGrandChildElement(docNode, ['BkToCstmrAcctRpt', 'Rpt']);
+        let statementNode = firstGrandChildElement(docNode, ['BkToCstmrAcctRpt', 'Rpt']);
         while (statementNode) {
             statementsNode.push(statementNode)
             statementNode = statementNode.nextSiblingElement('Rpt');
@@ -267,7 +318,7 @@ var ISO20022_Swiss_JSONConverter = class ISO20022_Swiss_JSONConverter {
 
     getStatementsNode_camt053(docNode) {
         let statementsNode = [];
-        let statementNode = this.firstGrandChildElement(docNode, ['BkToCstmrStmt', 'Stmt']);
+        let statementNode = firstGrandChildElement(docNode, ['BkToCstmrStmt', 'Stmt']);
         while (statementNode) {
             statementsNode.push(statementNode)
             statementNode = statementNode.nextSiblingElement('Stmt');
@@ -278,7 +329,7 @@ var ISO20022_Swiss_JSONConverter = class ISO20022_Swiss_JSONConverter {
 
     getStatementsNode_camt054(docNode) {
         let statementsNode = [];
-        let statementNode = this.firstGrandChildElement(docNode, ['BkToCstmrDbtCdtNtfctn', 'Ntfctn']);
+        let statementNode = firstGrandChildElement(docNode, ['BkToCstmrDbtCdtNtfctn', 'Ntfctn']);
         while (statementNode) {
             statementsNode.push(statementNode)
             statementNode = statementNode.nextSiblingElement('Ntfctn');
@@ -314,13 +365,6 @@ var ISO20022_Swiss_JSONConverter = class ISO20022_Swiss_JSONConverter {
 
         return fileParams;
     }
-
-    /*getDocumentCreationDate(docNode) {
-        let node = firstGrandChildElement(docNode, ['BkToCstmrStmt', 'GrpHdr', 'CreDtTm']);
-        if (node)
-            return formatDate(node.text);
-        return '';
-    }*/
 
     /**
      * Saves the statement parameters into a json object.
@@ -436,8 +480,8 @@ var ISO20022_Swiss_JSONConverter = class ISO20022_Swiss_JSONConverter {
                         let cdtDbtIndNode = textDetailsNode.firstChildElement('CdtDbtInd');
                         let deatailsIsCredit = cdtDbtIndNode && cdtDbtIndNode.text === 'CRDT' ? true : entryIsCredit;
                         let deatailAmount = this.readStatementEntryDetailsAmount(textDetailsNode);
-                        let acctSvcrRefNode = this.firstGrandChildElement(textDetailsNode, ['Refs', 'AcctSvcrRef']);
-                        let instrIdNode = this.firstGrandChildElement(textDetailsNode, ['Refs', 'InstrId']);
+                        let acctSvcrRefNode = firstGrandChildElement(textDetailsNode, ['Refs', 'AcctSvcrRef']);
+                        let instrIdNode = firstGrandChildElement(textDetailsNode, ['Refs', 'InstrId']);
                         // Build description
                         let detailDescription = this.readStatementEntryDetailsDescription(textDetailsNode, deatailsIsCredit);
                         if (detailDescription.length === 0 && instrIdNode)
@@ -629,28 +673,28 @@ var ISO20022_Swiss_JSONConverter = class ISO20022_Swiss_JSONConverter {
     }
 
     getStatementCurrency(statementNode) {
-        let node = this.firstGrandChildElement(statementNode, ['Acct', 'Ccy']);
+        let node = firstGrandChildElement(statementNode, ['Acct', 'Ccy']);
         if (node)
             return node.text;
         return '';
     }
 
     getStatementOwner(statementNode) {
-        let node = this.firstGrandChildElement(statementNode, ['Acct', 'Ownr', 'Nm']);
+        let node = firstGrandChildElement(statementNode, ['Acct', 'Ownr', 'Nm']);
         if (node)
             return node.text;
         return '';
     }
 
     getStatementIban(statementNode) {
-        let node = this.firstGrandChildElement(statementNode, ['Acct', 'Id', 'IBAN']);
+        let node = firstGrandChildElement(statementNode, ['Acct', 'Id', 'IBAN']);
         if (node)
             return node.text;
         return '';
 
     }
     getStatementId(statementNode) {
-        let node = this.firstGrandChildElement(statementNode, ['Acct', 'Id', 'Othr', 'Id']);
+        let node = firstGrandChildElement(statementNode, ['Acct', 'Id', 'Othr', 'Id']);
         if (node)
             return node.text;
         return '';
@@ -665,21 +709,8 @@ var ISO20022_Swiss_JSONConverter = class ISO20022_Swiss_JSONConverter {
         return '';
     }
 
-    firstGrandChildElement(node, childs) {
-        if (!node)
-            return null;
-        let grandChildNode = node;
-        for (let i = 0; i < childs.length; i++) {
-            grandChildNode = grandChildNode.firstChildElement(childs[i]);
-            if (!grandChildNode)
-                break;
-        }
-
-        return grandChildNode;
-    }
-
     readStatementEntryDetailsMatchMsgId(detailsNode) {
-        let batchMsgIdNode = this.firstGrandChildElement(detailsNode, ['Btch', 'MsgId']);
+        let batchMsgIdNode = firstGrandChildElement(detailsNode, ['Btch', 'MsgId']);
         return batchMsgIdNode ? batchMsgIdNode.text : '';
     }
 
@@ -691,15 +722,15 @@ var ISO20022_Swiss_JSONConverter = class ISO20022_Swiss_JSONConverter {
         if (amtNode)
             return amtNode.text;
 
-        amtNode = this.firstGrandChildElement(detailsNode, ['AmtDtls', 'TxAmt', 'Amt'])
+        amtNode = firstGrandChildElement(detailsNode, ['AmtDtls', 'TxAmt', 'Amt'])
         if (amtNode)
             return amtNode.text;
 
-        amtNode = this.firstGrandChildElement(detailsNode, ['AmtDtls', 'InstdAmt'])
+        amtNode = firstGrandChildElement(detailsNode, ['AmtDtls', 'InstdAmt'])
         if (amtNode)
             return amtNode.text;
 
-        amtNode = this.firstGrandChildElement(detailsNode, ['AmtDtls', 'CntrValAmt'])
+        amtNode = firstGrandChildElement(detailsNode, ['AmtDtls', 'CntrValAmt'])
         if (amtNode)
             return amtNode.text;
 
@@ -895,7 +926,7 @@ var ISO20022_Swiss_JSONConverter = class ISO20022_Swiss_JSONConverter {
                 detailsDescriptionTexts.push(addtlTxInfString);
         }
 
-        let rmtInfRefNode = this.firstGrandChildElement(detailsNode, ['RmtInf', 'Strd', 'CdtrRefInf', 'Ref']);
+        let rmtInfRefNode = firstGrandChildElement(detailsNode, ['RmtInf', 'Strd', 'CdtrRefInf', 'Ref']);
         let detailEsrReference = rmtInfRefNode ? rmtInfRefNode.text.trim() : '';
         if (detailEsrReference.length > 0)
             detailsDescriptionTexts.push(detailEsrReference); // removed lang param.
@@ -1022,52 +1053,480 @@ var ISO20022_Swiss_JSONConverter = class ISO20022_Swiss_JSONConverter {
 }
 
 /**
- * This class takes the data from a file ISO 20022 Camt052/53/54 with general specifics
+ * This class takes the data from a file ISO 20022 Camt052/53/54 with universal specifics
  * and returns a JSON with the file data.
  */
-var ISO20022_General_JSONConverter = class ISO20022_General_JSONConverter {
+var ISO20022_Universal_JSONConverter = class ISO20022_Universal_JSONConverter {
     constructor() {
-        //...
+        this.camtType = "";
+        this.schema = "";
+        // Base schemes 05.version
+        this.schemaFileName_05205 = "src/camt_schemes/un/schema_05/camt.052.001.05.xsd";
+        this.schemaFileName_05305 = "src/camt_schemes/un/schema_05/camt.053.001.05.xsd";
+        this.schemaFileName_05405 = "src/camt_schemes/un/schema_05/camt.054.001.05.xsd";
+        // Base schemes 08.version
+        this.schemaFileName_05208 = "src/camt_schemes/un/schema_08/camt.052.001.08.xsd";
+        this.schemaFileName_05308 = "src/camt_schemes/un/schema_08/camt.053.001.08.xsd";
+        this.schemaFileName_05408 = "src/camt_schemes/un/schema_08/camt.054.001.08.xsd";
+        // Base schemes 12.version
+        this.schemaFileName_05208 = "src/camt_schemes/un/schema_12/camt.052.001.12.xsd";
+        this.schemaFileName_05308 = "src/camt_schemes/un/schema_12/camt.053.001.12.xsd";
+        this.schemaFileName_05408 = "src/camt_schemes/un/schema_12/camt.054.001.12.xsd";
     }
 
     /**
-    * Check if the file is a ISO20022 Camt 052/053/054 with General specifics.
+    * Check if the file is a ISO20022 Camt 052/053/054 with Universal specifics.
     * @param {*} fileContent 
    */
-    match(fileContent) {
+    match(fileContent, isTest) {
         let xmlDoc = Banana.Xml.parse(fileContent);
         //Banana.console.debug("error: " + Banana.Xml.errorString);
         if (!xmlDoc)
             return false;
+
+        /** We do not do pattern validation during tests for convenience, 
+         * otherwise an alternative relative path to the patterns would 
+         * have to be defined in the tests. We use already validated schemes in the tests */
+
         let root = xmlDoc.firstChildElement();
         if (!root)
             return false;
-        // Check for CAMT.052
-        if (root.firstChildElement() === 'BkToCstmrAcctRpt' && root.namespaceURI().includes('camt.052')) {
+        if (root.firstChildElement() === 'BkToCstmrAcctRpt' &&         // Check for CAMT.052
+            root.namespaceURI().includes('camt.052')) {
             this.camtType = "CAMT.052";
-            //Banana.console.debug(this.camtType);
-            return true;
-        }
-
-        // Check for CAMT.053
-        if (root.firstChildElement() === 'BkToCstmrStmt' && root.namespaceURI().includes('camt.053')) {
+            let isValid = this.isValidCamt052Schema(xmlDoc, isTest);
+            return isValid;
+        } else if (root.firstChildElement() === 'BkToCstmrStmt' &&         // Check for CAMT.053
+            root.namespaceURI().includes('camt.053')) {
             this.camtType = "CAMT.053";
-            //Banana.console.debug(this.camtType);
-            return true;
-        }
-
-        // Check for CAMT.054
-        if (root.firstChildElement() === 'BkToCstmrDbtCdtNtfctn' && root.namespaceURI().includes('camt.054')) {
+            let isValid = this.isValidCamt053Schema(xmlDoc, isTest);
+            return isValid;
+        } else if (root.firstChildElement() === 'BkToCstmrDbtCdtNtfctn' &&
+            root.namespaceURI().includes('camt.054')) {         // Check for CAMT.054
             this.camtType = "CAMT.054";
-            //Banana.console.debug(this.camtType);
-            return true;
+            let isValid = this.isValidCamt054Schema(xmlDoc, isTest);
+            return isValid;
         }
         return false
     }
 
-    convertToJson() {
+    /** This function tests wether the xml stucture is valid */
+    isValidCamt052Schema(xmlDoc, isTest) {
+        if (isTest)
+            return true;
+        if (Banana.Xml.validate(xmlDoc, this.schemaFileName_05205))
+            return true;
+        if (Banana.Xml.validate(xmlDoc, this.schemaFileName_05208))
+            return true;
+        if (Banana.Xml.validate(xmlDoc, this.schemaFileName_05212))
+            return true;
+        return false;
+    }
+
+    isValidCamt053Schema(xmlDoc, isTest) {
+        if (isTest)
+            return true;
+        if (Banana.Xml.validate(xmlDoc, this.schemaFileName_05305))
+            return true;
+        if (Banana.Xml.validate(xmlDoc, this.schemaFileName_05308))
+            return true;
+        if (Banana.Xml.validate(xmlDoc, this.schemaFileName_05312))
+            return true;
+        return false;
+    }
+
+    isValidCamt054Schema(xmlDoc, isTest) {
+        if (isTest)
+            return true;
+        if (Banana.Xml.validate(xmlDoc, this.schemaFileName_05405))
+            return true;
+        if (Banana.Xml.validate(xmlDoc, this.schemaFileName_05408))
+            return true;
+        if (Banana.Xml.validate(xmlDoc, this.schemaFileName_05412))
+            return true;
+        return false;
+    }
+
+    convertToJson(fileContent, fileId, filePath, fileDateTime) {
+        let xmlDoc = Banana.Xml.parse(fileContent);
         let jsonDoc = {};
+        let fileParams = {};
+        let statementNodes = [];
+        let docNode = xmlDoc.firstChildElement(); // Document
+        if (!docNode)
+            return xmlTransactions;
+        let baseNodeName = "";
+        let statementNodeName = "";
+
+        switch (this.camtType) {
+            case "CAMT.052":
+                baseNodeName = "BkToCstmrAcctRpt";
+                statementNodeName = "Rpt";
+            case "CAMT.053":
+                baseNodeName = "BkToCstmrStmt";
+                statementNodeName = "Stmt";
+            case "CAMT.054":
+                baseNodeName = "BkToCstmrDbtCdtNtfctn";
+                statementNodeName = "Ntfctn";
+            default:
+                "";
+        }
+
+        if (!baseNodeName || !statementNodeName)
+            return jsonDoc;
+
+        //Get file params
+        fileParams = this.readFileParams(fileId, filePath, fileDateTime);
+        statementNodes = this.getStatementNodes(docNode, baseNodeName, statementNodeName);
+        this.setData(statementNodes, jsonDoc, fileParams);
         return jsonDoc;
+    }
+
+    readFileParams() {
+        let fileParams = {};
+
+        let id = fileId;
+        let name = filePath;
+        let type = this.camtType;
+        let creationDate = fileDateTime;
+
+        fileParams.FileId = id;
+        fileParams.FileName = name;
+        fileParams.FileType = type;
+        fileParams.FileCreationDate = creationDate;
+
+        return fileParams;
+    }
+
+    getStatementNodes(docNode, basNode, statementNode) {
+        let statementsNodes = [];
+        let node = firstGrandChildElement(docNode, [basNode, statementNode]);
+        while (node) {
+            statementsNodes.push(node)
+            node = node.nextSiblingElement('Stmt');
+        }
+        return statementsNode;
+    }
+
+    setData(statementsNode, jsonDoc, fileParams) {
+        let trData = [];
+        if (statementsNode.length >= 0) {
+            /** We have to get the data for each statement, wich could have a different account (IBAN) */
+            for (let i = 0; i < statementsNode.length; i++) {
+                let statementParams = {};
+                statementParams = this.readStatementParams(statementsNode[i]);
+                let entryNode = statementsNode[i].firstChildElement('Ntry');
+                while (entryNode) { // concat each statement array to have one general
+                    trData = trData.concat((this.readStatementEntry(entryNode, fileParams, statementParams)));
+                    entryNode = entryNode.nextSiblingElement('Ntry'); // next account movement
+                }
+            }
+        }
+        jsonDoc.TransactionsList = trData;
+    }
+
+    readStatementParams(statementNode) {
+        /**
+         * The data we want to save:
+         * - IBAN
+         * - Statement owner
+         * - Initial balance
+         * - Final balance
+         */
+
+        let statementParams = {};
+
+        let iban = this.getStatementIban(statementNode);
+        let id = this.getStatementId(statementNode); // Sobstitute to the IBAN, we use this only if the IBAN is not present.
+        let statementCreationDate = this.getStatementCreationDate(statementNode)
+        let statementOwner = this.getStatementOwner(statementNode);
+        let statementCurrency = this.getStatementCurrency(statementNode);
+        let initialBalance = this.getStatementBeginBalance(statementNode);
+        let finalBalance = this.getStatementEndBalance(statementNode);
+
+        statementParams.StatementIban = iban == "" ? id : iban;
+        statementParams.StatementCreationDate = statementCreationDate;
+        statementParams.StatementOwner = statementOwner;
+        statementParams.StatementCurrency = statementCurrency;
+        statementParams.StatementInitialBalance = initialBalance;
+        statementParams.StatementFinalBalance = finalBalance;
+
+        return statementParams;
+
+    }
+
+    getStatementEndBalance(statementNode) {
+        if (!statementNode)
+            return '';
+
+        var balNode = statementNode.firstChildElement('Bal');
+        while (balNode) {
+            var tpNode = balNode.firstChildElement('Tp');
+            if (tpNode) {
+                var cdOrPrtryNode = tpNode.firstChildElement('CdOrPrtry');
+                if (cdOrPrtryNode && (cdOrPrtryNode.text === 'CLBD' || cdOrPrtryNode.text === 'CLAV')) {
+                    var amtNode = balNode.firstChildElement('Amt');
+                    if (amtNode) {
+                        var amount = amtNode.text;
+                        if (balNode.hasChildElements('CdtDbtInd') && balNode.hasChildElements('CdtDbtInd').text === 'DBIT') {
+                            amount = Banana.SDecimal.invert(amount);
+                        }
+                        return amount;
+                    }
+                }
+            }
+            balNode = balNode.nextSiblingElement();
+        }
+        return '';
+    }
+
+    getStatementBeginBalance(statementNode) {
+        if (!statementNode)
+            return '';
+
+        var balNode = statementNode.firstChildElement('Bal');
+        while (balNode) {
+            var tpNode = balNode.firstChildElement('Tp');
+            if (tpNode) {
+                var cdOrPrtryNode = tpNode.firstChildElement('CdOrPrtry');
+                if (cdOrPrtryNode && cdOrPrtryNode.text === 'OPBD') {
+                    var amtNode = balNode.firstChildElement('Amt');
+                    if (amtNode) {
+                        var amount = amtNode.text;
+                        if (balNode.hasChildElements('CdtDbtInd') && balNode.hasChildElements('CdtDbtInd').text === 'DBIT') {
+                            amount = Banana.SDecimal.invert(amount);
+                        }
+                        return amount;
+                    }
+                }
+            }
+            balNode = balNode.nextSiblingElement();
+        }
+        return '';
+    }
+
+    getStatementCurrency(statementNode) {
+        let node = firstGrandChildElement(statementNode, ['Acct', 'Ccy']);
+        if (node)
+            return node.text;
+        return '';
+    }
+
+    getStatementOwner(statementNode) {
+        let node = firstGrandChildElement(statementNode, ['Acct', 'Ownr', 'Nm']);
+        if (node)
+            return node.text;
+        return '';
+    }
+
+    getStatementIban(statementNode) {
+        let node = firstGrandChildElement(statementNode, ['Acct', 'Id', 'IBAN']);
+        if (node)
+            return node.text;
+        return '';
+
+    }
+    getStatementId(statementNode) {
+        let node = firstGrandChildElement(statementNode, ['Acct', 'Id', 'Othr', 'Id']);
+        if (node)
+            return node.text;
+        return '';
+    }
+
+    getStatementCreationDate(statementNode) {
+        if (!statementNode)
+            return null;
+        let dateNode = statementNode.firstChildElement('CreDtTm');
+        if (dateNode)
+            return this.formatDate(dateNode.text);
+        return '';
+    }
+
+    readStatementEntry(entryNode, fileParams, statementParams) {
+        let transaction = null;
+        let transactions = [];
+
+        let entryBookingDate = entryNode.hasChildElements('BookgDt') ? entryNode.firstChildElement('BookgDt').text.substr(0, 10) : '';
+        let entryValutaDate = entryNode.hasChildElements('ValDt') ? entryNode.firstChildElement('ValDt').text.substr(0, 10) : '';
+        let entryIsCredit = entryNode.firstChildElement('CdtDbtInd').text === 'CRDT';
+        let entryAmount = entryNode.firstChildElement('Amt').text;
+        let entryDescription = entryNode.hasChildElements('AddtlNtryInf') ? entryNode.firstChildElement('AddtlNtryInf').text : '';
+        let entryTexts = entryBookingDate + entryValutaDate + entryAmount + entryDescription;
+        let entryExternalReference = entryNode.hasChildElements('AcctSvcrRef') && entryNode.firstChildElement('AcctSvcrRef').text.length >= 0 ?
+            entryNode.firstChildElement('AcctSvcrRef').text : getHash(entryTexts, statementParams);
+
+        if (entryNode.hasChildElements('NtryDtls')) {
+            let detailsNode = entryNode.firstChildElement('NtryDtls');
+            while (detailsNode) {
+                // Count text elements
+                let txDtlsCount = 0;
+                let textDetailsNode = detailsNode.firstChildElement('TxDtls');
+                while (textDetailsNode) {
+                    txDtlsCount++;
+                    textDetailsNode = textDetailsNode.nextSiblingElement('TxDtls'); // next movement detail
+                }
+
+                let entryDetailsBatchMsgId = this.readStatementEntryDetailsMatchMsgId(detailsNode);
+
+                if (txDtlsCount > 1) {
+                    // Insert counterpart transaction
+                    transaction = {
+                        'FileId': fileParams.FileId,
+                        'FileName': fileParams.FileName,
+                        'FileType': fileParams.FileType,
+                        'FileCreationDate': fileParams.FileCreationDate,
+                        'StatementIban': statementParams.StatementIban,
+                        'StatementCreationDate': statementParams.StatementCreationDate,
+                        'StatementOwner': statementParams.StatementOwner,
+                        'StatementCurrency': statementParams.StatementCurrency,
+                        'StatementInitialBalance': statementParams.StatementInitialBalance,
+                        'StatementFinalBalance': statementParams.StatementFinalBalance,
+                        'TransactionDate': entryBookingDate,
+                        'TransactionDateValue': entryValutaDate,
+                        'TransactionDocInvoice': '',
+                        'TransactionDescription': this.joinNotEmpty([entryDescription, entryDetailsBatchMsgId], " / "),
+                        'TransactionIncome': entryIsCredit ? entryAmount : '',
+                        'TransactionExpenses': entryIsCredit ? '' : entryAmount,
+                        'TransactionExternalReference': entryExternalReference,
+                        'TransactionIsDetail': 'S'
+                    };
+                    transactions.push(transaction);
+                }
+
+                // Text elements (Details transactions)
+                if (detailsNode.hasChildElements('TxDtls')) {
+                    textDetailsNode = detailsNode.firstChildElement('TxDtls');
+                    while (textDetailsNode) {
+                        let cdtDbtIndNode = textDetailsNode.firstChildElement('CdtDbtInd');
+                        let deatailsIsCredit = cdtDbtIndNode && cdtDbtIndNode.text === 'CRDT' ? true : entryIsCredit;
+                        let deatailAmount = this.readStatementEntryDetailsAmount(textDetailsNode);
+                        let acctSvcrRefNode = firstGrandChildElement(textDetailsNode, ['Refs', 'AcctSvcrRef']);
+                        let instrIdNode = firstGrandChildElement(textDetailsNode, ['Refs', 'InstrId']);
+                        // Build description
+                        let detailDescription = this.readStatementEntryDetailsDescription(textDetailsNode, deatailsIsCredit);
+                        if (detailDescription.length === 0 && instrIdNode)
+                            detailDescription = instrIdNode.text;
+                        // Set External reference
+                        let entryDetailTexts = entryBookingDate + entryValutaDate + deatailAmount + detailDescription;
+                        let detailExternalReference = acctSvcrRefNode && acctSvcrRefNode.text.length >= 0 ? acctSvcrRefNode.text : getHash(entryDetailTexts, statementParams);
+
+                        //let invoiceNumber = this.extractInvoiceNumber(detailEsrReference); // Da valutare.
+
+                        if (txDtlsCount === 1) {
+                            deatailAmount = entryAmount;
+                            detailExternalReference = entryExternalReference;
+                            detailDescription = this.joinNotEmpty([detailDescription, entryDetailsBatchMsgId, entryDescription], ' / ');
+                        }
+
+                        transaction = {
+                            'FileId': fileParams.FileId,
+                            'FileName': fileParams.FileName,
+                            'FileType': fileParams.FileType,
+                            'FileCreationDate': fileParams.FileCreationDate,
+                            'StatementIban': statementParams.StatementIban,
+                            'StatementCreationDate': statementParams.StatementCreationDate,
+                            'StatementOwner': statementParams.StatementOwner,
+                            'StatementCurrency': statementParams.StatementCurrency,
+                            'StatementInitialBalance': statementParams.StatementInitialBalance,
+                            'StatementFinalBalance': statementParams.StatementFinalBalance,
+                            'TransactionDate': entryBookingDate,
+                            'TransactionDateValue': entryValutaDate,
+                            //'DocInvoice': invoiceNumber,
+                            'TransactionDescription': detailDescription,
+                            'TransactionIncome': deatailsIsCredit ? deatailAmount : '',
+                            'TransactionExpenses': deatailsIsCredit ? '' : deatailAmount,
+                            'TransactionExternalReference': detailExternalReference,
+                            'TransactionContraAccount': '',
+                            'TransactionCc1': '',
+                            'TransactionCc2': '',
+                            'TransactionCc3': '',
+                            'TransactionIsDetail': txDtlsCount > 1 ? 'D' : ''
+                        };
+
+                        /*if (this.params.customer_no && this.params.customer_no.extract) { // Set customer number
+                            let customerNumber = this.extractCustomerNumber(detailEsrReference);
+                            let ccPrefix = deatailsIsCredit ? '-' : '';
+                            if (this.params.customer_no.use_cc && this.params.customer_no.use_cc.trim().toUpperCase() === 'CC1') {
+                                if (customerNumber)
+                                    transaction.Cc1 = ccPrefix + customerNumber;
+                            } else if (this.params.customer_no.use_cc && this.params.customer_no.use_cc.trim().toUpperCase() === 'CC2') {
+                                if (customerNumber)
+                                    transaction.Cc2 = ccPrefix + customerNumber;
+                            } else if (this.params.customer_no.use_cc && this.params.customer_no.use_cc.trim().toUpperCase() === 'CC3') {
+                                if (customerNumber)
+                                    transaction.Cc3 = ccPrefix + customerNumber;
+                            } else {
+                                transaction.ContraAccount = customerNumber;
+                            }
+                        }*/
+
+                        transactions.push(transaction);
+                        txDtlsCount++;
+
+                        textDetailsNode = textDetailsNode.nextSiblingElement('TxDtls'); // next movement detail
+                    }
+                } else { // No entry text details elements
+                    transaction = {
+                        'FileId': fileParams.FileId,
+                        'FileName': fileParams.FileName,
+                        'FileType': fileParams.FileType,
+                        'FileCreationDate': fileParams.FileCreationDate,
+                        'StatementIban': statementParams.StatementIban,
+                        'StatementCreationDate': statementParams.StatementCreationDate,
+                        'StatementOwner': statementParams.StatementOwner,
+                        'StatementCurrency': statementParams.StatementCurrency,
+                        'StatementInitialBalance': statementParams.StatementInitialBalance,
+                        'StatementFinalBalance': statementParams.StatementFinalBalance,
+                        'TransactionDate': entryBookingDate,
+                        'TransactionDateValue': entryValutaDate,
+                        'TransactionDocInvoice': '',
+                        'TransactionDescription': this.joinNotEmpty([entryDescription, entryDetailsBatchMsgId], " / "),
+                        'TransactionIncome': entryIsCredit ? entryAmount : '',
+                        'TransactionExpenses': entryIsCredit ? '' : entryAmount,
+                        'TransactionExternalReference': entryExternalReference,
+                        'TransactionContraAccount': '',
+                        'TransactionCc1': '',
+                        'TransactionCc2': '',
+                        'TransactionCc3': '',
+                        'TransactionIsDetail': ''
+                    };
+                    transactions.push(transaction);
+
+                }
+
+                detailsNode = detailsNode.nextSiblingElement('NtryDtls'); // next movement detail
+            }
+
+        } else { // No entry details
+            transaction = {
+                'FileId': fileParams.FileId,
+                'FileName': fileParams.FileName,
+                'FileType': fileParams.FileType,
+                'FileCreationDate': fileParams.FileCreationDate,
+                'StatementIban': statementParams.StatementIban,
+                'StatementCreationDate': statementParams.StatementCreationDate,
+                'StatementOwner': statementParams.StatementOwner,
+                'StatementCurrency': statementParams.StatementCurrency,
+                'StatementInitialBalance': statementParams.StatementInitialBalance,
+                'StatementFinalBalance': statementParams.StatementFinalBalance,
+                'TransactionDate': entryBookingDate,
+                'TransactionDateValue': entryValutaDate,
+                'TransactionDocInvoice': '',
+                'TransactionDescription': entryDescription,
+                'TransactionIncome': entryIsCredit ? entryAmount : '',
+                'TransactionExpenses': entryIsCredit ? '' : entryAmount,
+                'TransactionExternalReference': entryExternalReference,
+                'TransactionContraAccount': '',
+                'TransactionCc1': '',
+                'TransactionCc2': '',
+                'TransactionCc3': '',
+                'TransactionIsDetail': ''
+            };
+            transactions.push(transaction);
+
+        }
+
+        return transactions;
     }
 }
 
@@ -1090,6 +1549,19 @@ var JSON_Thinker_JSONConverter = class JSON_Thinker_JSONConverter {
     }
 }
 
+function firstGrandChildElement(node, childs) {
+    if (!node)
+        return null;
+    let grandChildNode = node;
+    for (let i = 0; i < childs.length; i++) {
+        grandChildNode = grandChildNode.firstChildElement(childs[i]);
+        if (!grandChildNode)
+            break;
+    }
+
+    return grandChildNode;
+}
+
 
 
 function getHash(entryTexts, statementParams) {
@@ -1100,8 +1572,6 @@ function getHash(entryTexts, statementParams) {
         statementParams.StatementCurrency;
 
     entryId = Banana.Converter.textToHash(textToHash, "Sha256");
-
-    //Banana.console.debug(textToHash + " / " + entryId);
 
     return entryId;
 
