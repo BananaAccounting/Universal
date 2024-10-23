@@ -23,7 +23,7 @@
     "TransactionsList": [
         {
             "FileCreationDate": "2024-05-13 13:55:43",
-            "FileId": "41accd80df17d7a376b5dd0384e18514956593a652aeab2bfaa9cf8f5577af63",
+            "FileId": "6e0fb4c609479bb26d944f74059a5daf0098759453b5efa6b1747e3b004865a9",
             "FileName": "file:script/../test/testcases/export_postbank_cam.052.xml",
             "FileSchema": "03",
             "FileType": "CAMT.052",
@@ -47,7 +47,7 @@
         },
         {
             "FileCreationDate": "2024-05-13 13:55:43",
-            "FileId": "41accd80df17d7a376b5dd0384e18514956593a652aeab2bfaa9cf8f5577af63",
+            "FileId": "6e0fb4c609479bb26d944f74059a5daf0098759453b5efa6b1747e3b004865a9",
             "FileName": "file:script/../test/testcases/export_postbank_cam.052.xml",
             "FileSchema": "03",
             "FileType": "CAMT.052",
@@ -71,7 +71,7 @@
         },
         {
             "FileCreationDate": "2024-05-13 13:55:43",
-            "FileId": "41accd80df17d7a376b5dd0384e18514956593a652aeab2bfaa9cf8f5577af63",
+            "FileId": "6e0fb4c609479bb26d944f74059a5daf0098759453b5efa6b1747e3b004865a9",
             "FileName": "file:script/../test/testcases/export_postbank_cam.052.xml",
             "FileSchema": "03",
             "FileType": "CAMT.052",
@@ -95,7 +95,7 @@
         },
         {
             "FileCreationDate": "2024-05-13 13:55:43",
-            "FileId": "41accd80df17d7a376b5dd0384e18514956593a652aeab2bfaa9cf8f5577af63",
+            "FileId": "6e0fb4c609479bb26d944f74059a5daf0098759453b5efa6b1747e3b004865a9",
             "FileName": "file:script/../test/testcases/export_postbank_cam.052.xml",
             "FileSchema": "03",
             "FileType": "CAMT.052",
@@ -119,7 +119,7 @@
         },
         {
             "FileCreationDate": "2024-05-13 13:55:43",
-            "FileId": "41accd80df17d7a376b5dd0384e18514956593a652aeab2bfaa9cf8f5577af63",
+            "FileId": "6e0fb4c609479bb26d944f74059a5daf0098759453b5efa6b1747e3b004865a9",
             "FileName": "file:script/../test/testcases/export_postbank_cam.052.xml",
             "FileSchema": "03",
             "FileType": "CAMT.052",
@@ -143,7 +143,7 @@
         },
         {
             "FileCreationDate": "2024-05-13 13:55:43",
-            "FileId": "41accd80df17d7a376b5dd0384e18514956593a652aeab2bfaa9cf8f5577af63",
+            "FileId": "6e0fb4c609479bb26d944f74059a5daf0098759453b5efa6b1747e3b004865a9",
             "FileName": "file:script/../test/testcases/export_postbank_cam.052.xml",
             "FileSchema": "03",
             "FileType": "CAMT.052",
@@ -167,7 +167,7 @@
         },
         {
             "FileCreationDate": "2024-05-13 13:55:43",
-            "FileId": "41accd80df17d7a376b5dd0384e18514956593a652aeab2bfaa9cf8f5577af63",
+            "FileId": "6e0fb4c609479bb26d944f74059a5daf0098759453b5efa6b1747e3b004865a9",
             "FileName": "file:script/../test/testcases/export_postbank_cam.052.xml",
             "FileSchema": "03",
             "FileType": "CAMT.052",
