@@ -65,7 +65,7 @@ function exec(inData, isTest) {
 /**
  * CSV file format
  * 
- * Datum;Beleg;Beschreibung;KtSoll;KtHaben;BetragCHF;MwSt/USt- Code
+ * Datum;Beleg;Beschreibung;KtSoll;KtHaben;BetragCHF;MWST/USt- Code
  * 03.03.21;uReKDacEo;IT Hardware, Y. Support, Personalentwicklung 2021/03, Migros;;1213;14;
  * 02.03.21;uReKDacEo;IT Hardware, Y. Support, Personalentwicklung 2021/03, Migros;6583;;13.78;33
  * 01.03.21;uReKDacEo;IT Hardware, Y. Support, Personalentwicklung 2021/03, Migros;6583;;0.22;35
@@ -172,7 +172,7 @@ var ImportYokoyTransFormat1 = class ImportYokoyTransFormat1 extends ImportUtilit
         convertedRow["AccountDebit"] = Banana.Converter.toInternalNumberFormat(inputRow["KtSoll"]);
         convertedRow["AccountCredit"] = Banana.Converter.toInternalNumberFormat(inputRow["KtHaben"]);
         convertedRow["Amount"] = Banana.Converter.toInternalNumberFormat(inputRow["BetragCHF"]);
-        convertedRow["VatCode"] = Banana.Converter.toInternalNumberFormat(inputRow["MwSt/USt- Code"]);
+        convertedRow["VatCode"] = Banana.Converter.toInternalNumberFormat(inputRow["MWST/USt- Code"]);
         return convertedRow;
     }
 

@@ -1,0 +1,4 @@
+ID,Status,Direction,"Created on","Finished on","Source fee amount","Source fee currency","Target fee amount","Target fee currency","Source name","Source amount (after fees)","Source currency","Target name","Target amount (after fees)","Target currency","Exchange rate",Reference,Batch
+TRANSFER-1033053142,COMPLETED,IN,"2024-04-12 14:00:47","2024-04-12 14:01:05",4.14,USD,,,"XXX SCHWEIZ AG",35797.44,USD,cybovate,35797.44,USD,1.0,"CH24Q2 002",
+TRANSFER-1030251410,COMPLETED,OUT,"2024-04-10 08:26:47","2024-04-10 08:50:23",12.38,USD,,,cybovate,13819.77,USD,"YYY AG",13819.77,USD,1.0,"Rechnung Nr 200506",
+TRANSFER-1023612560,COMPLETED,IN,"2024-04-04 13:48:40","2024-04-04 13:49:06",0.00,USD,,,"ZZZ In",2500.0,USD,cybovate,2500.0,USD,1.0,AB-TNTHQSI,

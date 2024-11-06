@@ -1,0 +1,13 @@
+{
+    "category": "Import",
+    "country": "universal",
+    "countryCode": "un",
+    "description": "Swiss Camt ISO20022 Reader",
+    "description.en": "Swiss Camt ISO20022 Reader",
+    "id": "ch.banana.uni.swiss.camt.iso20022.reader",
+    "language": "en",
+    "publisher": "Banana.ch",
+    "title": "Swiss Camt ISO20022 Reader",
+    "title.en": "Swiss Camt ISO20022 Reader",
+    "version": "1.0"
+}

@@ -181,7 +181,6 @@ Delivery note date:  & 03.02.2022 \\
 Customer No:  & 100001 \\
 VAT No:  & \\
 Fiscal No:  & \\
-Due date:  & 05.03.2022 \\
 Page:  & \#page-nr \\
 \end{longtable}
 Banana.ch SA \\
@@ -194,8 +193,8 @@ Delivery note date:  & 03.02.2022 \\
 Customer No:  & 100001 \\
 VAT No:  & \\
 Fiscal No:  & \\
-Due date:  & 05.03.2022 \\
 Page:  & \#page-nr \\
+\multicolumn{2}{l}{  }\\
 \end{longtable}
 \begin{longtable}[l]{ l }
 Banana.ch SA - Via alla Santa 7 - 6962 Viganello Rossi SA \newline Carlo Rossi \newline Via Trevano \newline 6963 Pregassona \newline \\
@@ -233,7 +232,6 @@ Delivery note date:  & 03.02.2022 \\
 Customer No:  & 100001 \\
 VAT No:  & \\
 Fiscal No:  & \\
-Due date:  & 05.03.2022 \\
 Page:  & \#page-nr \\
 \end{longtable}
 Banana.ch SA \\
@@ -246,8 +244,8 @@ Delivery note date:  & 03.02.2022 \\
 Customer No:  & 100001 \\
 VAT No:  & \\
 Fiscal No:  & \\
-Due date:  & 05.03.2022 \\
 Page:  & \#page-nr \\
+\multicolumn{2}{l}{  }\\
 \end{longtable}
 \begin{longtable}[l]{ l }
 Banana.ch SA - Via alla Santa 7 - 6962 Viganello Rossi SA \newline Carlo Rossi \newline Via Trevano \newline 6963 Pregassona \newline \\
@@ -571,7 +569,6 @@ Vendita merce prodotto C, fattura \#35, cliente B \newline \newline  & 22.0000  
 \multicolumn{52}{l}{VAT 8.00\% (277.78) } & 22.22 \\
 \multicolumn{52}{l}{VAT 3.70\% (482.16) } & 17.84 \\
 \multicolumn{52}{l}{VAT 2.50\% (321.95) } & 8.05 \\
-\multicolumn{52}{l}{Amount paid } & 5'000.00 \\
 \multicolumn{53}{l}{}\\
 \multicolumn{52}{l}{TOTAL CHF } & 1'130.00 \\
 \end{longtable}
@@ -632,7 +629,6 @@ Vendita merce prodotto C, fattura \#35, cliente B \newline \newline  & 22.0000  
 \multicolumn{57}{l}{VAT 8.00\% (277.78) } & 22.22 \\
 \multicolumn{57}{l}{VAT 3.70\% (482.16) } & 17.84 \\
 \multicolumn{57}{l}{VAT 2.50\% (321.95) } & 8.05 \\
-\multicolumn{57}{l}{Amount paid } & 5'000.00 \\
 \multicolumn{58}{l}{}\\
 \multicolumn{57}{l}{TOTAL CHF } & 1'130.00 \\
 \end{longtable}
@@ -693,7 +689,6 @@ Vendita merce prodotto C, fattura \#35, cliente B \newline \newline  & 22.0000  
 \multicolumn{62}{l}{VAT 8.00\% (277.78) } & 22.22 \\
 \multicolumn{62}{l}{VAT 3.70\% (482.16) } & 17.84 \\
 \multicolumn{62}{l}{VAT 2.50\% (321.95) } & 8.05 \\
-\multicolumn{62}{l}{Amount paid } & 5'000.00 \\
 \multicolumn{63}{l}{}\\
 \multicolumn{62}{l}{TOTAL CHF } & 1'130.00 \\
 \end{longtable}
@@ -718,7 +713,6 @@ Delivery note date:  & 29.01.2022 \\
 Customer No:  & 100002 \\
 VAT No:  & 123 456 789 \\
 Fiscal No:  & 001 002 003 \\
-Due date:  & 30 days \newline \\
 Page:  & \#page-nr \\
 \end{longtable}
 Banana.ch SA \\
@@ -731,8 +725,8 @@ Delivery note date:  & 29.01.2022 \\
 Customer No:  & 100002 \\
 VAT No:  & 123 456 789 \\
 Fiscal No:  & 001 002 003 \\
-Due date:  & 30 days \newline \\
 Page:  & \#page-nr \\
+\multicolumn{2}{l}{  }\\
 \end{longtable}
 \begin{longtable}[l]{ l }
 Banana.ch SA - Via alla Santa 7 - 6962 Viganello Sig. \newline Robert Schwartz \newline Via Regina \newline 6982 Agno \newline \\
@@ -751,7 +745,6 @@ Vendita merce prodotto C, fattura \#35, cliente B \newline \newline  & 22.0000  
 \multicolumn{67}{l}{VAT 8.00\% (277.78) } & 22.22 \\
 \multicolumn{67}{l}{VAT 3.70\% (482.16) } & 17.84 \\
 \multicolumn{67}{l}{VAT 2.50\% (321.95) } & 8.05 \\
-\multicolumn{67}{l}{Amount paid } & 5'000.00 \\
 \multicolumn{68}{l}{}\\
 \multicolumn{67}{l}{TOTAL CHF } & 1'130.00 \\
 \end{longtable}
@@ -769,7 +762,6 @@ Delivery note date:  & 29.01.2022 \\
 Customer No:  & 100002 \\
 VAT No:  & 123 456 789 \\
 Fiscal No:  & 001 002 003 \\
-Due date:  & 30 days \newline \\
 Page:  & \#page-nr \\
 \end{longtable}
 Banana.ch SA \\
@@ -782,8 +774,8 @@ Delivery note date:  & 29.01.2022 \\
 Customer No:  & 100002 \\
 VAT No:  & 123 456 789 \\
 Fiscal No:  & 001 002 003 \\
-Due date:  & 30 days \newline \\
 Page:  & \#page-nr \\
+\multicolumn{2}{l}{  }\\
 \end{longtable}
 \begin{longtable}[l]{ l }
 Banana.ch SA - Via alla Santa 7 - 6962 Viganello Sig. \newline Robert Schwartz \newline Via Regina \newline 6982 Agno \newline \\
@@ -848,7 +840,6 @@ Vendita merce prodotto C, fattura \#35, cliente B \newline \newline  & 22.0000  
 \multicolumn{75}{l}{VAT 8.00\% (277.78) } & 22.22 \\
 \multicolumn{75}{l}{VAT 3.70\% (482.16) } & 17.84 \\
 \multicolumn{75}{l}{VAT 2.50\% (321.95) } & 8.05 \\
-\multicolumn{75}{l}{Amount paid } & 5'000.00 \\
 \multicolumn{76}{l}{}\\
 \multicolumn{75}{l}{TOTAL CHF } & 1'130.00 \\
 \end{longtable}
@@ -901,7 +892,6 @@ Vendita merce prodotto C, fattura \#35, cliente B \newline \newline  & 22.0000  
 \multicolumn{80}{l}{VAT 8.00\% (277.78) } & 22.22 \\
 \multicolumn{80}{l}{VAT 3.70\% (482.16) } & 17.84 \\
 \multicolumn{80}{l}{VAT 2.50\% (321.95) } & 8.05 \\
-\multicolumn{80}{l}{Amount paid } & 5'000.00 \\
 \multicolumn{81}{l}{}\\
 \multicolumn{80}{l}{TOTAL CHF } & 1'130.00 \\
 \end{longtable}
@@ -954,7 +944,6 @@ Vendita merce prodotto C, fattura \#35, cliente B \newline \newline  & 22.0000  
 \multicolumn{85}{l}{VAT 8.00\% (277.78) } & 22.22 \\
 \multicolumn{85}{l}{VAT 3.70\% (482.16) } & 17.84 \\
 \multicolumn{85}{l}{VAT 2.50\% (321.95) } & 8.05 \\
-\multicolumn{85}{l}{Amount paid } & 5'000.00 \\
 \multicolumn{86}{l}{}\\
 \multicolumn{85}{l}{TOTAL CHF } & 1'130.00 \\
 \end{longtable}
@@ -1007,10 +996,17 @@ Vendita merce prodotto C, fattura \#35, cliente B \newline \newline  & 22.0000  
 \multicolumn{90}{l}{VAT 8.00\% (277.78) } & 22.22 \\
 \multicolumn{90}{l}{VAT 3.70\% (482.16) } & 17.84 \\
 \multicolumn{90}{l}{VAT 2.50\% (321.95) } & 8.05 \\
-\multicolumn{90}{l}{Amount paid } & 5'000.00 \\
 \multicolumn{91}{l}{}\\
 \multicolumn{90}{l}{TOTAL CHF } & 1'130.00 \\
 \end{longtable}
+  \\
+Prima nota definita con il comando '10:not' nella colonna DocType. \\
+Seconda nota definita con il comando '10:not' nella colonna DocType . \\
+  \\
+  \\
+  \\
+Testo saluti finali  utilizzando il comando  '10:gre'  nella colonna  DocType . \\
+  \\
 This is the final text of the proforma invoice. \\
 It can be on multiple lines. \\
 \begin{longtable}[l]{ l  l }
@@ -1060,7 +1056,6 @@ Vendita merce prodotto C, fattura \#35, cliente B \newline \newline  & 22.0000  
 \multicolumn{95}{l}{VAT 8.00\% (277.78) } & 22.22 \\
 \multicolumn{95}{l}{VAT 3.70\% (482.16) } & 17.84 \\
 \multicolumn{95}{l}{VAT 2.50\% (321.95) } & 8.05 \\
-\multicolumn{95}{l}{Amount paid } & 5'000.00 \\
 \multicolumn{96}{l}{}\\
 \multicolumn{95}{l}{TOTAL CHF } & 1'130.00 \\
 \end{longtable}
@@ -1211,7 +1206,6 @@ Delivery note date:  & 04.02.2022 \\
 Customer No:  & 100002 \\
 VAT No:  & 123 456 789 \\
 Fiscal No:  & 001 002 003 \\
-Due date:  & 06.03.2022 \\
 Page:  & \#page-nr \\
 \end{longtable}
 Banana.ch SA \\
@@ -1224,8 +1218,8 @@ Delivery note date:  & 04.02.2022 \\
 Customer No:  & 100002 \\
 VAT No:  & 123 456 789 \\
 Fiscal No:  & 001 002 003 \\
-Due date:  & 06.03.2022 \\
 Page:  & \#page-nr \\
+\multicolumn{2}{l}{  }\\
 \end{longtable}
 \begin{longtable}[l]{ l }
 Banana.ch SA - Via alla Santa 7 - 6962 Viganello \newline \\
@@ -1255,7 +1249,6 @@ Delivery note date:  & 04.02.2022 \\
 Customer No:  & 100002 \\
 VAT No:  & 123 456 789 \\
 Fiscal No:  & 001 002 003 \\
-Due date:  & 06.03.2022 \\
 Page:  & \#page-nr \\
 \end{longtable}
 Banana.ch SA \\
@@ -1268,8 +1261,8 @@ Delivery note date:  & 04.02.2022 \\
 Customer No:  & 100002 \\
 VAT No:  & 123 456 789 \\
 Fiscal No:  & 001 002 003 \\
-Due date:  & 06.03.2022 \\
 Page:  & \#page-nr \\
+\multicolumn{2}{l}{  }\\
 \end{longtable}
 \begin{longtable}[l]{ l }
 Banana.ch SA - Via alla Santa 7 - 6962 Viganello \newline \\
@@ -1637,7 +1630,6 @@ Delivery note date:  & 03.02.2022 \\
 Customer No:  & 100002 \\
 VAT No:  & 123 456 789 \\
 Fiscal No:  & 001 002 003 \\
-Due date:  & 05.03.2022 \\
 Page:  & \#page-nr \\
 \end{longtable}
 Banana.ch SA \\
@@ -1650,8 +1642,8 @@ Delivery note date:  & 03.02.2022 \\
 Customer No:  & 100002 \\
 VAT No:  & 123 456 789 \\
 Fiscal No:  & 001 002 003 \\
-Due date:  & 05.03.2022 \\
 Page:  & \#page-nr \\
+\multicolumn{2}{l}{  }\\
 \end{longtable}
 \begin{longtable}[l]{ l }
 Banana.ch SA - Via alla Santa 7 - 6962 Viganello \newline \\
@@ -1681,7 +1673,6 @@ Delivery note date:  & 03.02.2022 \\
 Customer No:  & 100002 \\
 VAT No:  & 123 456 789 \\
 Fiscal No:  & 001 002 003 \\
-Due date:  & 05.03.2022 \\
 Page:  & \#page-nr \\
 \end{longtable}
 Banana.ch SA \\
@@ -1694,8 +1685,8 @@ Delivery note date:  & 03.02.2022 \\
 Customer No:  & 100002 \\
 VAT No:  & 123 456 789 \\
 Fiscal No:  & 001 002 003 \\
-Due date:  & 05.03.2022 \\
 Page:  & \#page-nr \\
+\multicolumn{2}{l}{  }\\
 \end{longtable}
 \begin{longtable}[l]{ l }
 Banana.ch SA - Via alla Santa 7 - 6962 Viganello \newline \\
@@ -2252,7 +2243,6 @@ Delivery note date:  & 11.11.2022 \\
 Customer No:  & 100003 \\
 VAT No:  & \\
 Fiscal No:  & \\
-Due date:  & 11.12.2022 \\
 Page:  & \#page-nr \\
 \end{longtable}
 Banana.ch SA \\
@@ -2265,8 +2255,8 @@ Delivery note date:  & 11.11.2022 \\
 Customer No:  & 100003 \\
 VAT No:  & \\
 Fiscal No:  & \\
-Due date:  & 11.12.2022 \\
 Page:  & \#page-nr \\
+\multicolumn{2}{l}{  }\\
 \end{longtable}
 \begin{longtable}[l]{ l }
 Banana.ch SA - Via alla Santa 7 - 6962 Viganello Marco Alberti \newline V. Campuréta 40 \newline 6883 Novazzano \newline \\
@@ -2352,7 +2342,6 @@ Delivery note date:  & 11.11.2022 \\
 Customer No:  & 100003 \\
 VAT No:  & \\
 Fiscal No:  & \\
-Due date:  & 11.12.2022 \\
 Page:  & \#page-nr \\
 \end{longtable}
 Banana.ch SA \\
@@ -2365,8 +2354,8 @@ Delivery note date:  & 11.11.2022 \\
 Customer No:  & 100003 \\
 VAT No:  & \\
 Fiscal No:  & \\
-Due date:  & 11.12.2022 \\
 Page:  & \#page-nr \\
+\multicolumn{2}{l}{  }\\
 \end{longtable}
 \begin{longtable}[l]{ l }
 Banana.ch SA - Via alla Santa 7 - 6962 Viganello Marco Alberti \newline V. Campuréta 40 \newline 6883 Novazzano \newline \\
@@ -2830,6 +2819,12 @@ Product CCC \newline \newline  & 1.0000  & pz.  & 51.85  & 51.85 \\
 \multicolumn{235}{l}{}\\
 \multicolumn{234}{l}{TOTAL CHF } & 1'593.00 \\
 \end{longtable}
+Prima nota finale stampata con il comando '10:not' nella colonna DocType \\
+Seconda  Nota finale  stampata con il comando  '10:not'  nella  colonna DocType \\
+Terza Nota finale stampata con il comando '10:not' nella colonna DocType \\
+  \\
+Saluti finali stampati con il comando '10:gre' nella colonna DocType \\
+  \\
 This is the final text of the proforma invoice. \\
 It can be on multiple lines. \\
 \begin{longtable}[l]{ l  l }
@@ -3092,7 +3087,6 @@ Delivery note date:  & 05.06.2022 \\
 Customer No:  & 100003 \\
 VAT No:  & \\
 Fiscal No:  & \\
-Due date:  & 05.07.2022 \\
 Page:  & \#page-nr \\
 \end{longtable}
 Banana.ch SA \\
@@ -3105,8 +3099,8 @@ Delivery note date:  & 05.06.2022 \\
 Customer No:  & 100003 \\
 VAT No:  & \\
 Fiscal No:  & \\
-Due date:  & 05.07.2022 \\
 Page:  & \#page-nr \\
+\multicolumn{2}{l}{  }\\
 \end{longtable}
 \begin{longtable}[l]{ l }
 Banana.ch SA - Via alla Santa 7 - 6962 Viganello Marco Alberti \newline V. Campuréta 40 \newline 6883 Novazzano \newline \\
@@ -3142,7 +3136,6 @@ Delivery note date:  & 05.06.2022 \\
 Customer No:  & 100003 \\
 VAT No:  & \\
 Fiscal No:  & \\
-Due date:  & 05.07.2022 \\
 Page:  & \#page-nr \\
 \end{longtable}
 Banana.ch SA \\
@@ -3155,8 +3148,8 @@ Delivery note date:  & 05.06.2022 \\
 Customer No:  & 100003 \\
 VAT No:  & \\
 Fiscal No:  & \\
-Due date:  & 05.07.2022 \\
 Page:  & \#page-nr \\
+\multicolumn{2}{l}{  }\\
 \end{longtable}
 \begin{longtable}[l]{ l }
 Banana.ch SA - Via alla Santa 7 - 6962 Viganello Marco Alberti \newline V. Campuréta 40 \newline 6883 Novazzano \newline \\
@@ -3669,7 +3662,6 @@ Delivery note date:  & 04.06.2022 \\
 Customer No:  & 100003 \\
 VAT No:  & \\
 Fiscal No:  & \\
-Due date:  & 04.07.2022 \\
 Page:  & \#page-nr \\
 \end{longtable}
 Banana.ch SA \\
@@ -3682,8 +3674,8 @@ Delivery note date:  & 04.06.2022 \\
 Customer No:  & 100003 \\
 VAT No:  & \\
 Fiscal No:  & \\
-Due date:  & 04.07.2022 \\
 Page:  & \#page-nr \\
+\multicolumn{2}{l}{  }\\
 \end{longtable}
 \begin{longtable}[l]{ l }
 Banana.ch SA - Via alla Santa 7 - 6962 Viganello Marco Alberti \newline V. Campuréta 40 \newline 6883 Novazzano \newline \\
@@ -3749,7 +3741,6 @@ Delivery note date:  & 04.06.2022 \\
 Customer No:  & 100003 \\
 VAT No:  & \\
 Fiscal No:  & \\
-Due date:  & 04.07.2022 \\
 Page:  & \#page-nr \\
 \end{longtable}
 Banana.ch SA \\
@@ -3762,8 +3753,8 @@ Delivery note date:  & 04.06.2022 \\
 Customer No:  & 100003 \\
 VAT No:  & \\
 Fiscal No:  & \\
-Due date:  & 04.07.2022 \\
 Page:  & \#page-nr \\
+\multicolumn{2}{l}{  }\\
 \end{longtable}
 \begin{longtable}[l]{ l }
 Banana.ch SA - Via alla Santa 7 - 6962 Viganello Marco Alberti \newline V. Campuréta 40 \newline 6883 Novazzano \newline \\
@@ -4330,7 +4321,6 @@ Delivery note date:  & 01.02.2022 \\
 Customer No:  & 100004 \\
 VAT No:  & \\
 Fiscal No:  & \\
-Due date:  & 03.03.2022 \\
 Page:  & \#page-nr \\
 \end{longtable}
 Banana.ch SA \\
@@ -4343,8 +4333,8 @@ Delivery note date:  & 01.02.2022 \\
 Customer No:  & 100004 \\
 VAT No:  & \\
 Fiscal No:  & \\
-Due date:  & 03.03.2022 \\
 Page:  & \#page-nr \\
+\multicolumn{2}{l}{  }\\
 \end{longtable}
 \begin{longtable}[l]{ l }
 Banana.ch SA - Via alla Santa 7 - 6962 Viganello ABC SA \newline Signora \newline Susanna Lanfranchi \newline V.Meggiagra 3 \newline 6599 Robasacco \newline \\
@@ -4376,7 +4366,6 @@ Delivery note date:  & 01.02.2022 \\
 Customer No:  & 100004 \\
 VAT No:  & \\
 Fiscal No:  & \\
-Due date:  & 03.03.2022 \\
 Page:  & \#page-nr \\
 \end{longtable}
 Banana.ch SA \\
@@ -4389,8 +4378,8 @@ Delivery note date:  & 01.02.2022 \\
 Customer No:  & 100004 \\
 VAT No:  & \\
 Fiscal No:  & \\
-Due date:  & 03.03.2022 \\
 Page:  & \#page-nr \\
+\multicolumn{2}{l}{  }\\
 \end{longtable}
 \begin{longtable}[l]{ l }
 Banana.ch SA - Via alla Santa 7 - 6962 Viganello ABC SA \newline Signora \newline Susanna Lanfranchi \newline V.Meggiagra 3 \newline 6599 Robasacco \newline \\
@@ -4774,7 +4763,6 @@ Delivery note date:  & 05.03.2022 \\
 Customer No:  & 100004 \\
 VAT No:  & \\
 Fiscal No:  & \\
-Due date:  & 04.04.2022 \\
 Page:  & \#page-nr \\
 \end{longtable}
 Banana.ch SA \\
@@ -4787,8 +4775,8 @@ Delivery note date:  & 05.03.2022 \\
 Customer No:  & 100004 \\
 VAT No:  & \\
 Fiscal No:  & \\
-Due date:  & 04.04.2022 \\
 Page:  & \#page-nr \\
+\multicolumn{2}{l}{  }\\
 \end{longtable}
 \begin{longtable}[l]{ l }
 Banana.ch SA - Via alla Santa 7 - 6962 Viganello ABC SA \newline Signora \newline Susanna Lanfranchi \newline V.Meggiagra 3 \newline 6599 Robasacco \newline \\
@@ -4820,7 +4808,6 @@ Delivery note date:  & 05.03.2022 \\
 Customer No:  & 100004 \\
 VAT No:  & \\
 Fiscal No:  & \\
-Due date:  & 04.04.2022 \\
 Page:  & \#page-nr \\
 \end{longtable}
 Banana.ch SA \\
@@ -4833,8 +4820,8 @@ Delivery note date:  & 05.03.2022 \\
 Customer No:  & 100004 \\
 VAT No:  & \\
 Fiscal No:  & \\
-Due date:  & 04.04.2022 \\
 Page:  & \#page-nr \\
+\multicolumn{2}{l}{  }\\
 \end{longtable}
 \begin{longtable}[l]{ l }
 Banana.ch SA - Via alla Santa 7 - 6962 Viganello ABC SA \newline Signora \newline Susanna Lanfranchi \newline V.Meggiagra 3 \newline 6599 Robasacco \newline \\
@@ -5212,7 +5199,6 @@ Delivery note date:  & 01.02.2022 \\
 Customer No:  & 100004 \\
 VAT No:  & \\
 Fiscal No:  & \\
-Due date:  & 03.03.2022 \\
 Page:  & \#page-nr \\
 \end{longtable}
 Banana.ch SA \\
@@ -5225,8 +5211,8 @@ Delivery note date:  & 01.02.2022 \\
 Customer No:  & 100004 \\
 VAT No:  & \\
 Fiscal No:  & \\
-Due date:  & 03.03.2022 \\
 Page:  & \#page-nr \\
+\multicolumn{2}{l}{  }\\
 \end{longtable}
 \begin{longtable}[l]{ l }
 Banana.ch SA - Via alla Santa 7 - 6962 Viganello ABC SA \newline Signora \newline Susanna Lanfranchi \newline V.Meggiagra 3 \newline 6599 Robasacco \newline \\
@@ -5256,7 +5242,6 @@ Delivery note date:  & 01.02.2022 \\
 Customer No:  & 100004 \\
 VAT No:  & \\
 Fiscal No:  & \\
-Due date:  & 03.03.2022 \\
 Page:  & \#page-nr \\
 \end{longtable}
 Banana.ch SA \\
@@ -5269,8 +5254,8 @@ Delivery note date:  & 01.02.2022 \\
 Customer No:  & 100004 \\
 VAT No:  & \\
 Fiscal No:  & \\
-Due date:  & 03.03.2022 \\
 Page:  & \#page-nr \\
+\multicolumn{2}{l}{  }\\
 \end{longtable}
 \begin{longtable}[l]{ l }
 Banana.ch SA - Via alla Santa 7 - 6962 Viganello ABC SA \newline Signora \newline Susanna Lanfranchi \newline V.Meggiagra 3 \newline 6599 Robasacco \newline \\
@@ -5644,7 +5629,6 @@ Delivery note date:  & 07.03.2022 \\
 Customer No:  & 100004 \\
 VAT No:  & \\
 Fiscal No:  & \\
-Due date:  & 06.04.2022 \\
 Page:  & \#page-nr \\
 \end{longtable}
 Banana.ch SA \\
@@ -5657,8 +5641,8 @@ Delivery note date:  & 07.03.2022 \\
 Customer No:  & 100004 \\
 VAT No:  & \\
 Fiscal No:  & \\
-Due date:  & 06.04.2022 \\
 Page:  & \#page-nr \\
+\multicolumn{2}{l}{  }\\
 \end{longtable}
 \begin{longtable}[l]{ l }
 Banana.ch SA - Via alla Santa 7 - 6962 Viganello ABC SA \newline Signora \newline Susanna Lanfranchi \newline V.Meggiagra 3 \newline 6599 Robasacco \newline \\
@@ -5690,7 +5674,6 @@ Delivery note date:  & 07.03.2022 \\
 Customer No:  & 100004 \\
 VAT No:  & \\
 Fiscal No:  & \\
-Due date:  & 06.04.2022 \\
 Page:  & \#page-nr \\
 \end{longtable}
 Banana.ch SA \\
@@ -5703,8 +5686,8 @@ Delivery note date:  & 07.03.2022 \\
 Customer No:  & 100004 \\
 VAT No:  & \\
 Fiscal No:  & \\
-Due date:  & 06.04.2022 \\
 Page:  & \#page-nr \\
+\multicolumn{2}{l}{  }\\
 \end{longtable}
 \begin{longtable}[l]{ l }
 Banana.ch SA - Via alla Santa 7 - 6962 Viganello ABC SA \newline Signora \newline Susanna Lanfranchi \newline V.Meggiagra 3 \newline 6599 Robasacco \newline \\
@@ -6088,7 +6071,6 @@ Delivery note date:  & 06.03.2022 \\
 Customer No:  & 100004 \\
 VAT No:  & \\
 Fiscal No:  & \\
-Due date:  & 05.04.2022 \\
 Page:  & \#page-nr \\
 \end{longtable}
 Banana.ch SA \\
@@ -6101,8 +6083,8 @@ Delivery note date:  & 06.03.2022 \\
 Customer No:  & 100004 \\
 VAT No:  & \\
 Fiscal No:  & \\
-Due date:  & 05.04.2022 \\
 Page:  & \#page-nr \\
+\multicolumn{2}{l}{  }\\
 \end{longtable}
 \begin{longtable}[l]{ l }
 Banana.ch SA - Via alla Santa 7 - 6962 Viganello ABC SA \newline Signora \newline Susanna Lanfranchi \newline V.Meggiagra 3 \newline 6599 Robasacco \newline \\
@@ -6134,7 +6116,6 @@ Delivery note date:  & 06.03.2022 \\
 Customer No:  & 100004 \\
 VAT No:  & \\
 Fiscal No:  & \\
-Due date:  & 05.04.2022 \\
 Page:  & \#page-nr \\
 \end{longtable}
 Banana.ch SA \\
@@ -6147,8 +6128,8 @@ Delivery note date:  & 06.03.2022 \\
 Customer No:  & 100004 \\
 VAT No:  & \\
 Fiscal No:  & \\
-Due date:  & 05.04.2022 \\
 Page:  & \#page-nr \\
+\multicolumn{2}{l}{  }\\
 \end{longtable}
 \begin{longtable}[l]{ l }
 Banana.ch SA - Via alla Santa 7 - 6962 Viganello ABC SA \newline Signora \newline Susanna Lanfranchi \newline V.Meggiagra 3 \newline 6599 Robasacco \newline \\

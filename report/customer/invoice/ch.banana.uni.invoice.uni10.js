@@ -3003,7 +3003,7 @@ function setInvoiceTexts(language) {
     texts.invoice = "Rechnung";
     texts.date = "Datum";
     texts.customer = "Kundennummer";
-    texts.vat_number = "MwSt/USt-Nummer";
+    texts.vat_number = "MWST/USt-Nummer";
     texts.fiscal_number = "Steuernummer";
     texts.payment_due_date_label = "Fälligkeitsdatum";
     texts.payment_terms_label = "Bezahlung";
@@ -3020,7 +3020,7 @@ function setInvoiceTexts(language) {
     texts.unit_price = "Preiseinheit";
     texts.amount = "Betrag";
     texts.totalnet = "Netto-Betrag";
-    texts.vat = "MwSt/USt-Nummer";
+    texts.vat = "MWST/USt-Nummer";
     texts.rounding = "Rundung";
     texts.total = "Gesamtbetrag";
     texts.param_include = "Drucken";
@@ -3041,7 +3041,7 @@ function setInvoiceTexts(language) {
     texts.param_info_invoice_number = "Rechnungsnummer";
     texts.param_info_date = "Rechnungsdatum";
     texts.param_info_customer = "Kundennummer";
-    texts.param_info_customer_vat_number = "Kunden-MwSt/USt-Nummer";
+    texts.param_info_customer_vat_number = "Kunden-MWST/USt-Nummer";
     texts.param_info_customer_fiscal_number = "Kunden-Steuernummer";
     texts.param_info_due_date = "Fälligkeitsdatum";
     texts.param_info_page = "Seitenzahlen";
@@ -3049,7 +3049,7 @@ function setInvoiceTexts(language) {
     texts.param_details_columns = "Spaltennamen";
     texts.param_details_columns_widths = "Spaltenbreite";
     texts.param_details_columns_alignment = "Spaltenausrichtung";
-    texts.param_details_gross_amounts = "Bruttobeträgen (inklusive MwSt/USt)";
+    texts.param_details_gross_amounts = "Bruttobeträgen (inklusive MWST/USt)";
     texts.param_footer_include = "Fusszeile";
     texts.param_footer_add = "Fusszeile drucken";
     texts.param_footer_horizontal_line = "Trennlinie drucken";
@@ -3059,7 +3059,7 @@ function setInvoiceTexts(language) {
     texts.de_param_text_info_invoice_number = "Rechnungsnummer";
     texts.de_param_text_info_date = "Rechnungsdatum";
     texts.de_param_text_info_customer = "Kundennummer";
-    texts.de_param_text_info_customer_vat_number = "Kunden-MwSt/USt-Nummer";
+    texts.de_param_text_info_customer_vat_number = "Kunden-MWST/USt-Nummer";
     texts.de_param_text_info_customer_fiscal_number = "Kunden-Steuernummer";
     texts.de_param_text_info_due_date = "Fälligkeitsdatum";
     texts.de_param_text_info_page = "Seitennummer";
@@ -3088,7 +3088,7 @@ function setInvoiceTexts(language) {
     texts.param_tooltip_info_invoice_number = "Aktivieren, um Rechnungsnummer einzuschliessen";
     texts.param_tooltip_info_date = "Aktivieren, um Rechnungsdatum einzuschliessen";
     texts.param_tooltip_info_customer = "Aktivieren, um Kundennummer einzuschliessen";
-    texts.param_tooltip_info_customer_vat_number = "Aktivieren, um Kunden-MwSt/USt-Nummer einzuschliessen";
+    texts.param_tooltip_info_customer_vat_number = "Aktivieren, um Kunden-MWST/USt-Nummer einzuschliessen";
     texts.param_tooltip_info_customer_fiscal_number = "Aktivieren, um Kunden-Steuernummer einzuschliessen";
     texts.param_tooltip_info_due_date = "Aktivieren, um Fälligkeitsdatum der Rechnung einzuschliessen";
     texts.param_tooltip_info_page = "Aktivieren, um Seitennummer einzuschliessen";
@@ -3116,7 +3116,7 @@ function setInvoiceTexts(language) {
     texts.param_tooltip_address_small_line = "Lieferanten-Adresszeile direkt über Kundenadresse eingeben";
     texts.param_tooltip_shipping_address = "Aktivieren, um Lieferadresse zu drucken";
     texts.param_tooltip_address_left = "Aktivieren, um Kundenadresse auf der linken Seite zu drucken";
-    texts.param_tooltip_details_gross_amounts = "Aktivieren, um Rechnungsdetails mit Bruttobeträgen und enthaltener MwSt/USt zu drucken";
+    texts.param_tooltip_details_gross_amounts = "Aktivieren, um Rechnungsdetails mit Bruttobeträgen und enthaltener MWST/USt zu drucken";
     texts.param_tooltip_text_final = "Text eingeben, um Standardtext zu ersetzen";
     texts.param_tooltip_footer_add = "Aktivieren, um Fusszeile unten auf der Seite zu drucken";
     texts.param_tooltip_footer = "Fusszeilentext eingeben";
