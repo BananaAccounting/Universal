@@ -56,11 +56,17 @@ function exec(inData, options) {
 
     docInfo = getDocumentInfo(banDoc);
     itemsData = getItemsTableData(banDoc, docInfo);
-    itemAccount = getItemValue(itemsData, selectedItem, "account");
-    itemCurrency = getItemCurrency(itemsData, selectedItem);
 
-    //check if item exist
-    findElement(banDoc, selectedItem, itemsData, "item", "Items table");
+    const itemObject = itemsData.find(itemsData => itemsData.item === selectedItem)
+    if (!itemObject) {
+        const ITEM_NOT_FOUND = "ITEM_NOT_FOUND";
+        let msg = getErrorMessage_MissingElements(ITEM_NOT_FOUND, selectedItem);
+        banDoc.addMessage(msg, ITEM_NOT_FOUND);
+        return "";
+    }
+
+    itemAccount = itemObject.account;
+    itemCurrency = itemObject.currency;
 
     //get the journal data and creates an array of objects containing the transactions data
     journal = banDoc.journal(banDoc.ORIGINTYPE_CURRENT, banDoc.ACCOUNTTYPE_NONE);

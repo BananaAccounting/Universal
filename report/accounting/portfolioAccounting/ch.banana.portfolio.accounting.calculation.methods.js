@@ -12,6 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+
+// @includejs = ch.banana.portfolio.accounting.errormessagges.handler.js
+
 /**********************************************************
  * 
  * PORTFOLIO ACCOUNTING METHODS
@@ -71,18 +74,6 @@ function getComboBoxElement(scriptId, title, label) {
         return false;
     }
     return item;
-}
-
-function getItemCurrency(itemData, item) {
-    let itemcCurr = "";
-
-    for (var e in itemData) {
-        if (itemData[e].item == item && itemData[e].currency !== "") {
-            itemcCurr = itemData[e].currency;
-            return itemcCurr;
-        }
-    }
-
 }
 
 function getCurrentRowData(banDoc, transList) {
@@ -185,22 +176,14 @@ function getTransactionsIdList(journalData) {
 
 }
 
-/**
- * 
- * @param {*} avgCost the average cost
- * @param {*} userParam the parameters that the user defined in the dialog
- * @param {*} currentRowData the current line transaction data
- * @returns an object with the calculation data.
- */
-function calculateShareSaleData(banDoc, docInfo, userParam, itemsData) {
+function calculateShareSaleData(banDoc, docInfo, itemObj, userParam) {
 
     let saleData = {};
-    let item = "";
     let journal = "";
     let quantity = "";
     let marketPrice = "";
-    let currExRate = ""; //current exchange rate
-    let accExRate = ""; //accounting exchange rate
+    let currExRate = ""; //Current exchange rate.
+    let accExRate = ""; //Accounting exchange rate.
     let avgCost = "";
     let avgSharesValue = "";
     let totalSharesvalue = "";
@@ -211,17 +194,21 @@ function calculateShareSaleData(banDoc, docInfo, userParam, itemsData) {
     let itemAccount = "";
     let itemCardData = [];
 
-    item = userParam.selectedItem;//get the item
-    itemAccount = getItemValue(itemsData, item, "account");//get the account of the item
-    //check if element exist
-    findElement(banDoc, item, itemsData, "item", "Items table");
-    //get item card data to find the current average cost
+    //Get the account of the item
+    itemAccount = itemObj.account;
+    if (itemAccount === "") {
+        const ITEM_WITHOUT_ACCOUNT = "ITEM_WITHOUT_ACCOUNT";
+        let msg = getErrorMessage_MissingElements(ITEM_WITHOUT_ACCOUNT, itemObj.item);
+        banDoc.addMessage(msg, ITEM_WITHOUT_ACCOUNT);
+        return "";
+    }
+    //Get item card data to find the current average cost
     journal = banDoc.journal(banDoc.ORIGINTYPE_CURRENT, banDoc.ACCOUNTTYPE_NONE);
     journalData = getJournalData(docInfo, journal);
     accountCard = banDoc.currentCard(itemAccount);
     accountCardData = getAccountCardData(banDoc, docInfo, item, accountCard, itemAccount);
     itemCardData = getItemCardDataList(accountCardData, journalData);
-    //extract from the array the current avg cost value (accounting value)
+    //Extract from the array the current avg cost value (accounting value)
     if (itemCardData.length >= 1) {
         avgCost = itemCardData.slice(-1)[0].accAvgCost;
     }
@@ -229,7 +216,7 @@ function calculateShareSaleData(banDoc, docInfo, userParam, itemsData) {
     quantity = userParam.quantity;
     marketPrice = userParam.marketPrice;
     currExRate = userParam.currExRate;
-    accExRate = getAccountingCourse(item, itemsData, banDoc);
+    accExRate = getAccountingCourse(banDoc, itemAccount);
 
     //avgCost=getAverageCost(item,transList);
     avgSharesValue = getSharesAvgValue(quantity, avgCost);
@@ -241,7 +228,7 @@ function calculateShareSaleData(banDoc, docInfo, userParam, itemsData) {
     saleData.avgSharesValue = avgSharesValue;
     saleData.totalSharesvalue = totalSharesvalue;
     saleData.saleResult = saleResult;
-    saleData.exRateResult = exRateResult;
+    saleData.exRateResult = exRateResult; // Da rivedere con la nuova metodologia (tenendo conto dell'utile o perdita non realizzati)
 
     return saleData;
 
@@ -549,9 +536,9 @@ function getTransactionsTableData(banDoc, docInfo) {
 /**
  * Ritorna il cambio contabile calcolato sulla base della differenza tra i saldi nelle due valute ad una certa data.
  */
-function getAccountingCourse(item, itemsData, banDoc) {
+function getAccountingCourse(banDoc, itemAccount) {
 
-    var accData = getItemBalance(banDoc, item, itemsData);
+    var accData = getItemBalance(banDoc, itemAccount);
     var course = "";
 
     baseCurrBalance = accData.currbalance.balance;
@@ -616,24 +603,12 @@ function getExchangeResult(marketPrice, quantity, currExRate, accExRate) {
     return exResult;
 }
 
-function getItemBalance(banDoc, item, itemsData) {
+function getItemBalance(banDoc, itemAccount) {
     var accBalance = {};
-
-    accBalance.account = getItemValue(itemsData, item, "account");
-    accBalance.currbalance = banDoc.currentBalance(accBalance.account);
+    accBalance.account = itemAccount;
+    accBalance.currbalance = banDoc.currentBalance(itemAccount);
 
     return accBalance;
-}
-
-function getItemValue(itemsData, item, value) {
-    if (itemsData) {
-        for (var e in itemsData) {
-            if (itemsData[e].item == item && itemsData[e][value] != "") {
-                return itemsData[e][value];
-            }
-        }
-    } else
-        return false;
 }
 
 /**
@@ -968,38 +943,6 @@ function replaceVariables(cssText, variables) {
 }
 
 /**
- * The purpose of this function is to find the account number or user-defined item 
- * within the data extracted from the tables (accounts and item) 
- * in order to avoid errors such as spaces in the input dialogue.
- * @param {*} accountParam the account defined by the user
- * @param {*} listData the list of data within which to search for values (list of elements from accounts table or from items table)
- * @param {*} refProp the property to be searched in the data list
- * @param {*} refTableName the name of the table where the param is searched.
- */
-function findElement(banDoc, userParam, listData, refProp, refTableName) {
-    //define error messages
-    let ELEMENT_NOT_FOUND_IN_ACCOUNTING = "ELEMENT_NOT_FOUND_IN_ACCOUNTING";
-    let lang = 'en';
-    let msg = getErrorMessage(ELEMENT_NOT_FOUND_IN_ACCOUNTING, lang, userParam, refTableName);
-
-    for (var key in listData) {
-        //set to lower case the strings
-        let ref_lower = listData[key][refProp].toLowerCase();
-        let userParam_lower = "";
-        if (userParam)
-            userParam_lower = userParam.toLowerCase();
-        if ((userParam_lower && ref_lower) && userParam_lower.includes(ref_lower)) {//check the strings after the lower case.
-            return listData[key][refProp];//return the original (not formatted value)
-        }
-    }
-    //element not found in the listData, display a message
-    banDoc.addMessage(msg, ELEMENT_NOT_FOUND_IN_ACCOUNTING);
-
-    return userParam;
-
-}
-
-/**
  * Returns true if it is a multi-currency accounting
  */
 function isMultiCurrency(banDoc) {
@@ -1007,8 +950,7 @@ function isMultiCurrency(banDoc) {
     var FileTypeNr = banDoc.info("Base", "FileTypeNumber");
     if (FileTypeNr == "120" || FileTypeNr == "130") {
         let NOT_AVAILABLE_WITH_MULTI_CURRENCY = "NOT_AVAILABLE_WITH_MULTI_CURRENCY";
-        let lang = 'en';
-        let msg = getErrorMessage(NOT_AVAILABLE_WITH_MULTI_CURRENCY, lang, "", "");
+        let msg = getErrorMessage(NOT_AVAILABLE_WITH_MULTI_CURRENCY);
         banDoc.addMessage(msg, NOT_AVAILABLE_WITH_MULTI_CURRENCY);
         return true;
     }
@@ -1017,31 +959,10 @@ function isMultiCurrency(banDoc) {
 
 }
 
-function getErrorMessage(errorId, lang, userParam, refTableName) {
-    if (!lang)
-        lang = 'en';
-    switch (errorId) {
-        case "ELEMENT_NOT_FOUND_IN_ACCOUNTING":
-            if (lang == "en")
-                return "Element: " + userParam + " not found in " + refTableName;
-            else
-                return "Element: " + userParam + " not found in " + refTableName;
-        case "ID_ERR_VERSION_NOTSUPPORTED":
-            return "This script does not run with your current version of Banana Accounting.\nMinimum version required: %1.\nTo update or for more information click on Help";
-        case "ID_ERR_LICENSE_NOTVALID":
-            return "This extension requires Banana Accounting+ Advanced";
-        case "NOT_AVAILABLE_WITH_MULTI_CURRENCY":
-            return "This report is only available for accounting files without multi-currency"
-    }
-    return '';
-}
-
 //VERSION CONTROL FUNCTIONS
 function verifyBananaVersion(banDoc) {
     if (banDoc)
         return false;
-
-    let lang = "en";
 
     let BAN_VERSION_MIN = "10.0.10";
     let BAN_DEV_VERSION_MIN = "";
@@ -1051,13 +972,13 @@ function verifyBananaVersion(banDoc) {
     let CURR_LICENSE = isBananaAdvanced();
 
     if (!CURR_VERSION) {
-        let msg = getErrorMessage(ID_ERR_VERSION_NOTSUPPORTED, lang);
+        let msg = getErrorMessage(ID_ERR_VERSION_NOTSUPPORTED);
         msg = msg.replace("%1", BAN_VERSION_MIN);
         banDoc.addMessage(msg, ID_ERR_VERSION_NOTSUPPORTED);
         return false;
     }
     if (!CURR_LICENSE) {
-        let msg = getErrorMessage(ID_ERR_LICENSE_NOTVALID, lang);
+        let msg = getErrorMessage(ID_ERR_LICENSE_NOTVALID);
         banDoc.addMessage(msg, ID_ERR_LICENSE_NOTVALID);
         return false;
     }

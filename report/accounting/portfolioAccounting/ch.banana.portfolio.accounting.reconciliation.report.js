@@ -59,6 +59,10 @@ function exec(inData, options) {
 
     //Get Secrurity account data.
     accountsDataList = getAccountsDataList(banDoc, docInfo, accountsList, itemsData); //ritorna l'array con tutti i conti.
+
+    if (!accountsDataList.length)
+        return "";
+
     //Insert the data into the reconciliation obj.
     reconciliationData.data = accountsDataList;
 
@@ -362,23 +366,31 @@ function getAccountsDataList(banDoc, docInfo, accountsList, itemsData) {
     let journalData = "";
     let trIdList = "";
     let account = "";
-    let accountSTableData = getAccountsTableData(banDoc);
 
+    let accountsData = getAccountsTableData(banDoc);
     journal = banDoc.journal(banDoc.ORIGINTYPE_CURRENT, banDoc.ACCOUNTTYPE_NONE);
     journalData = getJournalData(docInfo, journal);
     trIdList = getTransactionsIdList(journalData);
 
 
     for (var i = 0; i < accountsList.length; i++) {
-        account = findElement(banDoc, accountsList[i], accountSTableData, "account", "Accounts Table");//look for the account in the account table
+
+        const accountObj = itemsData.find(accountsData => accountsData.account === accountsList[i])
+        if (!accountObj) {
+            const ACCOUNT_NOT_FOUND = "ACCOUNT_NOT_FOUND";
+            let msg = getErrorMessage_MissingElements(ACCOUNT_NOT_FOUND, accountsList[i]);
+            banDoc.addMessage(msg, ACCOUNT_NOT_FOUND);
+            continue;
+        }
+
         var itemsDataList = [];
         var accData = {};
         var accBalance = {};
-        let accountCard = banDoc.currentCard(account);//get the account card
+        let accountCard = banDoc.currentCard(accountObj.account);//get the account card
 
-        accBalance = banDoc.currentBalance(account);
+        accBalance = banDoc.currentBalance(accountObj.account);
 
-        accData.account = account;
+        accData.account = accountObj.account;
         accData.openBalanceBase = accBalance.opening;
         accData.openBalanceCurr = accBalance.openingCurrency;
         accData.currentBalanceBase = accBalance.balance;

@@ -24,6 +24,7 @@
 // @inputdatasource = none
 // @timeout = -1
 // @includejs = ch.banana.portfolio.accounting.calculation.methods.js
+// @includejs = ch.banana.portfolio.accounting.errormessagges.handler.js
 
 /*******************************************
  * 
@@ -55,24 +56,37 @@ var showResultsPreviewButton = dialog.findChild('showResultsPreview_button');
 
 
 dialog.showPreviews = function () {
+    updateDialogData();
+}
 
-    var banDoc = Banana.document;
-    var avgCost = "";
-    var baseCurr = "";
-    var assetCurr = "";
-    var saleResult = "";
-    var avgSharesValue = "";
-    var totalSharesvalue = "";
-    var itemsData = [];
-    var userParam = {};
-    var salesData = {};
-
+function updateDialogData() {
+    let banDoc = Banana.document;
+    let avgCost = "";
+    let baseCurr = "";
+    let assetCurr = "";
+    let saleResult = "";
+    let avgSharesValue = "";
+    let totalSharesvalue = "";
+    let itemsData = [];
+    let userParam = {};
+    let salesData = {};
 
     docInfo = getDocumentInfo(banDoc);
     userParam = readDialogParams();
     itemsData = getItemsTableData(banDoc, docInfo);
-    salesData = calculateShareSaleData(banDoc, docInfo, userParam, itemsData);
-    assetCurr = getItemCurrency(itemsData, userParam.selectedItem);
+
+    item = userParam.selectedItem;
+    // Check if the item exists
+    const itemObject = itemsData.find(obj => obj.item === item)
+    if (!itemObject) {
+        const ITEM_NOT_FOUND = "ITEM_NOT_FOUND";
+        let msg = getErrorMessage_MissingElements(ITEM_NOT_FOUND, item);
+        banDoc.addMessage(msg, ITEM_NOT_FOUND);
+        return "";
+    }
+
+    salesData = calculateShareSaleData(banDoc, docInfo, itemObject, userParam);
+    assetCurr = itemObject.currency;
     baseCurr = docInfo.baseCurrency;
 
     avgCost = Banana.Converter.toLocaleNumberFormat(salesData.avgCost, 2, true);
@@ -94,10 +108,7 @@ dialog.showPreviews = function () {
         avgValueOfSharesPreview.setText(avgSharesValue);
         totalValueOfSharesPreview.setText(totalSharesvalue);
     }
-
-    return true;
 }
-
 
 /** Dialog's events declaration */
 //quantity.editingFinished.connect(dialog,dialog.formatQt);
