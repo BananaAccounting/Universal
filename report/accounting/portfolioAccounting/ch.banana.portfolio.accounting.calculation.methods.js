@@ -176,7 +176,7 @@ function getTransactionsIdList(journalData) {
 
 }
 
-function calculateShareSaleData(banDoc, docInfo, itemObj, userParam) {
+function calculateShareSaleData(banDoc, docInfo, itemObj, userParam, currentRow) {
 
     let saleData = {};
     let journal = "";
@@ -206,9 +206,10 @@ function calculateShareSaleData(banDoc, docInfo, itemObj, userParam) {
     journal = banDoc.journal(banDoc.ORIGINTYPE_CURRENT, banDoc.ACCOUNTTYPE_NONE);
     journalData = getJournalData(docInfo, journal);
     accountCard = banDoc.currentCard(itemAccount);
-    accountCardData = getAccountCardData(banDoc, docInfo, item, accountCard, itemAccount);
+    //    Banana.Ui.showText(accountCard.toJSON());
+    accountCardData = getAccountCardData(banDoc, docInfo, itemObj.item, accountCard, itemAccount);
     itemCardData = getItemCardDataList(accountCardData, journalData);
-    //Extract from the array the current avg cost value (accounting value)
+    Banana.Ui.showText(JSON.stringify(itemCardData));
     if (itemCardData.length >= 1) {
         avgCost = itemCardData.slice(-1)[0].accAvgCost;
     }
@@ -218,11 +219,10 @@ function calculateShareSaleData(banDoc, docInfo, itemObj, userParam) {
     currExRate = userParam.currExRate;
     accExRate = getAccountingCourse(banDoc, itemAccount);
 
-    //avgCost=getAverageCost(item,transList);
     avgSharesValue = getSharesAvgValue(quantity, avgCost);
     totalSharesvalue = getSharesTotalValue(quantity, marketPrice);
     saleResult = getSaleResult(avgSharesValue, totalSharesvalue);
-    exRateResult = getExchangeResult(marketPrice, quantity, currExRate, accExRate);
+    exRateResult = getExchangeResult(totalSharesvalue, saleResult, currExRate, accExRate);
 
     saleData.avgCost = avgCost;
     saleData.avgSharesValue = avgSharesValue;
@@ -247,6 +247,8 @@ function getAccountCardData(banDoc, docInfo, itemName, accountCard, account) {
         if (tRow.value("ItemsId") == itemName) {
             let trData = {};
             trData.rowNr = tRow.rowNr;
+            trData.originTable = tRow.value("JTableOrigin");
+            trData.originRow = tRow.value("JRowOrigin");
             trData.doc = tRow.value("Doc");
             trData.date = tRow.value("Date");
             trData.trId = tRow.value("JContraAccountGroup");
@@ -367,15 +369,10 @@ function isAccountInBaseCurrency(banDoc, docInfo, account) {
 function getItemCardDataList(accountCardData, journalData) {
 
     SetSoldData(accountCardData, journalData);
-    getQuantityBalance(accountCardData);
-    getCurrentAccAvgCost(accountCardData);
+    setQuantityBalance(accountCardData);
+    setCurrentAccAvgCost(accountCardData);
 
-    if (accountCardData) {
-        return accountCardData;
-    }
-    else {
-        return "";
-    }
+    return accountCardData;
 }
 
 /**
@@ -385,7 +382,7 @@ function getItemCardDataList(accountCardData, journalData) {
  * @param {*} accountCardData 
  * @param {*} balanceCol 
  */
-function getCurrentAccAvgCost(accountCardData) {
+function setCurrentAccAvgCost(accountCardData) {
     var context = { 'decimals': 2, 'mode': Banana.SDecimal.HALF_EVEN };
     for (var key in accountCardData) {
         /**
@@ -458,7 +455,7 @@ function SetSoldData(accountCardData, journalData) {
  * @param {*} accountCardData 
  * @returns 
  */
-function getQuantityBalance(accountCardData) {
+function setQuantityBalance(accountCardData) {
     let amountBalance = "";
     for (var key in accountCardData) {
         amountBalance = Banana.SDecimal.add(amountBalance, accountCardData[key].qt);
@@ -580,27 +577,33 @@ function getSharesTotalValue(quantity, marketPrice) {
  */
 function getSaleResult(avgSharesValue, totalSharesvalue) {
     var saleResult = "";
-
     saleResult = Banana.SDecimal.subtract(totalSharesvalue, avgSharesValue);
-
-
     return saleResult;
 
 }
 
-function getExchangeResult(marketPrice, quantity, currExRate, accExRate) {
-    var exResult = "";
-    var accAmount = "";
-    var currAmount = "";
+function getExchangeResult(totalSharesvalue, saleResult, currExRate, accExRate) {
 
-    if (!currExRate)
-        currExRate = accExRate;//if thr user leaves empty this field we consider the current exchange rate the same as the accounting change rate.
+    // Default to accExRate if currExRate is not provided
+    if (!currExRate) {
+        currExRate = accExRate;
+    }
 
-    accAmount = Banana.SDecimal.multiply(accExRate, Banana.SDecimal.multiply(marketPrice, quantity));//valore al cambio contabile
-    currAmount = Banana.SDecimal.multiply(currExRate, Banana.SDecimal.multiply(marketPrice, quantity));//valore al cambiol corrente
-    exResult = Banana.SDecimal.subtract(currAmount, accAmount);
+    let eChangeDiff = "";
+    /** 1. Calculate the theoretical result on exchange. */
+    let totalShareValInBaseCurr = Banana.SDecimal.multiply(totalSharesvalue, currExRate);
+    let tExchangeDiff = Banana.SDecimal.subtract(totalSharesvalue, totalShareValInBaseCurr);
+    /**  2. Calculate the effective result on exchange by cheking also the operation result as already contains the profit or loss related to the change.
+     * If we do not subtract the unrealized gain from the theoretical exchange loss, we  are in fact accounting for the same loss twice. */
+    let saleResultInBaseCurr = Banana.SDecimal.multiply(saleResult, currExRate);
+    let unGainOrLoss = Banana.SDecimal.subtract(saleResult, saleResultInBaseCurr);
 
-    return exResult;
+    eChangeDiff = tExchangeDiff - unGainOrLoss;
+
+    Banana.console.debug(eChangeDiff);
+
+    return eChangeDiff;
+
 }
 
 function getItemBalance(banDoc, itemAccount) {

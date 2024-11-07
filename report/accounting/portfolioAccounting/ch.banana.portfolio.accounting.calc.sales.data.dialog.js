@@ -32,140 +32,198 @@
  * 
  *******************************************/
 
-/** Dialog's functions declaration */
-dialog = Banana.Ui.createUi("ch.banana.portfolio.accounting.calc.sales.data.dialog.ui");
+class DlgCalculateSaleDataManager {
+    constructor(banDoc, docInfo, currentRowNr) {
 
-//sales data section objects
-//07.09.2023: Warning: file:....ch.banana.portfolio.accounting.calc.sales.data.dialog.js:38: Calling C++ methods with 'this' objects different from the one they were retrieved from is broken, due to historical reasons. The original object is used as 'this' object. You can allow the given 'this' object to be used by setting 'pragma NativeMethodBehavior: AcceptThisObject'
-var itemsCombobox = dialog.findChild('item_comboBox');
-var quantity = dialog.findChild('quantity_lineEdit');
-var marketPrice = dialog.findChild('marketPrice_lineEdit');
-var currExRate = dialog.findChild('currentExchangeRate_lineEdit');
+        this.banDoc = banDoc;
+        this.docInfo = docInfo;
+        this.dialog = Banana.Ui.createUi("ch.banana.portfolio.accounting.calc.sales.data.dialog.ui");
+        this.cmbItems = "";
+        this.lineEditQt = "";
+        this.lineEditMarketPrice = "";
+        this.lineEditCurrentExRate = "";
+        this.labelSaleResultPrev = "";
+        this.labelAvgCostPrev = "";
+        this.labelExcResultPrev = "";
+        this.labelTotValSharesPrev = "";
+        this.AvgValSharesPrev = "";
+        this.buttonOk = "";
+        this.buttonClose = "";
+        this.buttonShowResults = "";
 
-//preview result label
-var saleResultPreview = dialog.findChild('saleResultPreview_label');
-var avgCostPreview = dialog.findChild('averageCost_label');
-var exchangeResultPreview = dialog.findChild('exchangeResultPreview_label');
-var totalValueOfSharesPreview = dialog.findChild('totalValueOfShares_label');
-var avgValueOfSharesPreview = dialog.findChild('averageValueOfShares_label');
+        this.currentRowNr = currentRowNr; // Selected row in transactions table.
+        this.currentRowObj = this.getCurrentRowObj();
 
-//Buttons
-var okButton = dialog.findChild('okButton');
-var closeButton = dialog.findChild('closeButton');
-var showResultsPreviewButton = dialog.findChild('showResultsPreview_button');
+        this.init();
 
+        /** We use an arrow function to make sure the "this" in "this.updateDialogData" refers to the class and not to this.dialog as per default. */
+        this.dialog.showPreviews = () => {
+            this.updateDialogData();
+        };
 
-dialog.showPreviews = function () {
-    updateDialogData();
-}
+        /** Dialog's events declaration */
+        this.buttonShowResults.clicked.connect(this.dialog, this.dialog.showPreviews);
 
-function updateDialogData() {
-    let banDoc = Banana.document;
-    let avgCost = "";
-    let baseCurr = "";
-    let assetCurr = "";
-    let saleResult = "";
-    let avgSharesValue = "";
-    let totalSharesvalue = "";
-    let itemsData = [];
-    let userParam = {};
-    let salesData = {};
-
-    docInfo = getDocumentInfo(banDoc);
-    userParam = readDialogParams();
-    itemsData = getItemsTableData(banDoc, docInfo);
-
-    item = userParam.selectedItem;
-    // Check if the item exists
-    const itemObject = itemsData.find(obj => obj.item === item)
-    if (!itemObject) {
-        const ITEM_NOT_FOUND = "ITEM_NOT_FOUND";
-        let msg = getErrorMessage_MissingElements(ITEM_NOT_FOUND, item);
-        banDoc.addMessage(msg, ITEM_NOT_FOUND);
-        return "";
     }
 
-    salesData = calculateShareSaleData(banDoc, docInfo, itemObject, userParam);
-    assetCurr = itemObject.currency;
-    baseCurr = docInfo.baseCurrency;
-
-    avgCost = Banana.Converter.toLocaleNumberFormat(salesData.avgCost, 2, true);
-    saleResult = Banana.Converter.toLocaleNumberFormat(salesData.saleResult, 2, true);
-    exRateResult = Banana.Converter.toLocaleNumberFormat(salesData.exRateResult, 2, true);
-    avgSharesValue = Banana.Converter.toLocaleNumberFormat(salesData.avgSharesValue, 2, true);
-    totalSharesvalue = Banana.Converter.toLocaleNumberFormat(salesData.totalSharesvalue, 2, true);
-
-    if (docInfo.isMultiCurrency) {
-        avgCostPreview.setText(avgCost + " (" + assetCurr + ")");
-        saleResultPreview.setText(saleResult + " (" + assetCurr + ")");
-        exchangeResultPreview.setText(exRateResult + " (" + baseCurr + ")");
-        avgValueOfSharesPreview.setText(avgSharesValue + " (" + assetCurr + ")");
-        totalValueOfSharesPreview.setText(totalSharesvalue + " (" + assetCurr + ")");
-    } else {
-        avgCostPreview.setText(avgCost);
-        saleResultPreview.setText(saleResult);
-        exchangeResultPreview.setText(exRateResult);
-        avgValueOfSharesPreview.setText(avgSharesValue);
-        totalValueOfSharesPreview.setText(totalSharesvalue);
+    getCurrentRowObj() {
+        var table = this.banDoc.table("Transactions");
+        if (!table)
+            return {};
+        return table.row(this.currentRowNr);
     }
-}
 
-/** Dialog's events declaration */
-//quantity.editingFinished.connect(dialog,dialog.formatQt);
-//bankChargesAmount.editingFinished.connect(dialog,dialog.formatBankCharges);
-showResultsPreviewButton.clicked.connect(dialog, dialog.showPreviews);
+    init() {
 
-/**
- * Read the params from the dialog
- */
-function readDialogParams() {
-    var userParam = {};
+        //sales data section objects
+        //07.09.2023: Warning: file:....ch.banana.portfolio.accounting.calc.sales.data.dialog.js:38: Calling C++ methods with 'this' objects different from the one they were retrieved from is broken, due to historical reasons. The original object is used as 'this' object. You can allow the given 'this' object to be used by setting 'pragma NativeMethodBehavior: AcceptThisObject'
+        this.cmbItems = this.dialog.findChild('item_comboBox');
+        this.lineEditQt = this.dialog.findChild('quantity_lineEdit');
+        this.lineEditMarketPrice = this.dialog.findChild('marketPrice_lineEdit');
+        this.lineEditCurrentExRate = this.dialog.findChild('currentExchangeRate_lineEdit');
 
-    userParam.selectedItem = itemsCombobox.currentText;
-    userParam.quantity = quantity.text;
-    userParam.marketPrice = marketPrice.text;
-    userParam.currExRate = currExRate.text;
+        //preview result label
+        this.labelSaleResultPrev = this.dialog.findChild('saleResultPreview_label');
+        this.labelAvgCostPrev = this.dialog.findChild('averageCost_label');
+        this.labelExcResultPrev = this.dialog.findChild('exchangeResultPreview_label');
+        this.labelTotValSharesPrev = this.dialog.findChild('totalValueOfShares_label');
+        this.AvgValSharesPrev = this.dialog.findChild('averageValueOfShares_label');
 
-    return userParam;
+        //Buttons
+        this.buttonOk = this.dialog.findChild('okButton');
+        this.buttonClose = this.dialog.findChild('closeButton');
+        this.buttonShowResults = this.dialog.findChild('showResultsPreview_button');
 
-}
+        // Displayed values
+        this.insertComboBoxElements(this.banDoc, this.docInfo);
+        this.setQuantity();
+        this.setCurrentPrice();
+        this.setCurrentExchangeRate();
+    }
 
-/**
- * Fills the dialogue combobox with the items found in the item table
- * @param {*} itemsCombobox 
- */
-function insertComboBoxElements(banDoc, docInfo) {
-    //First set the editable attribute to true,in this way the user can also enter the text.
-    itemsCombobox.editable = true;
+    setQuantity() {
+        if (!this.currentRowObj)
+            return;
+        let quantity = this.currentRowObj.value("Quantity");
+        this.lineEditQt.setText(quantity);
+    }
 
-    const itemList = new Set();
-    var itemsData = getItemsTableData(banDoc, docInfo); //I give as parameter "false" as I only need the list of items
+    setCurrentPrice() {
+        if (!this.currentRowObj)
+            return;
+        let currPrice = this.currentRowObj.value("UnitPrice");
+        this.lineEditMarketPrice.setText(currPrice);
+    }
 
-    //fill the listString with the existing items
-    for (var r in itemsData) {
-        if (itemsData[r].item) {
-            itemList.add(itemsData[r].item);
+    setCurrentExchangeRate() {
+        if (!this.currentRowObj || !this.docInfo.isMultiCurrency)
+            return;
+        let exRate = this.currentRowObj.value("ExchangeRate");
+        this.lineEditCurrentExRate.setText(exRate);
+    }
+
+    updateDialogData() {
+        let exRateResult = "";
+        let avgCost = "";
+        let baseCurr = "";
+        let assetCurr = "";
+        let saleResult = "";
+        let avgSharesValue = "";
+        let totalSharesvalue = "";
+        let itemsData = [];
+        let userParam = {};
+        let salesData = {};
+
+        userParam = this.readDialogParams();
+        itemsData = getItemsTableData(this.banDoc, this.docInfo);
+
+        let item = userParam.selectedItem;
+        // Check if the item exists
+        const itemObject = itemsData.find(obj => obj.item === item)
+        if (!itemObject) {
+            const ITEM_NOT_FOUND = "ITEM_NOT_FOUND";
+            let msg = getErrorMessage_MissingElements(ITEM_NOT_FOUND, item);
+            this.banDoc.addMessage(msg, ITEM_NOT_FOUND);
+            return "";
+        }
+
+        salesData = calculateShareSaleData(this.banDoc, this.docInfo, itemObject, userParam, this.currentRowNr);
+        assetCurr = itemObject.currency;
+        baseCurr = this.docInfo.baseCurrency;
+
+        avgCost = Banana.Converter.toLocaleNumberFormat(salesData.avgCost, 2, true);
+        saleResult = Banana.Converter.toLocaleNumberFormat(salesData.saleResult, 2, true);
+        exRateResult = Banana.Converter.toLocaleNumberFormat(salesData.exRateResult, 2, true);
+        avgSharesValue = Banana.Converter.toLocaleNumberFormat(salesData.avgSharesValue, 2, true);
+        totalSharesvalue = Banana.Converter.toLocaleNumberFormat(salesData.totalSharesvalue, 2, true);
+
+        if (this.docInfo.isMultiCurrency) {
+            this.labelAvgCostPrev.setText(avgCost + " (" + assetCurr + ")");
+            this.labelSaleResultPrev.setText(saleResult + " (" + assetCurr + ")");
+            this.labelExcResultPrev.setText(exRateResult + " (" + baseCurr + ")");
+            this.AvgValSharesPrev.setText(avgSharesValue + " (" + assetCurr + ")");
+            this.labelTotValSharesPrev.setText(totalSharesvalue + " (" + assetCurr + ")");
+        } else {
+            this.labelAvgCostPrev.setText(avgCost);
+            this.labelSaleResultPrev.setText(saleResult);
+            this.labelExcResultPrev.setText(exRateResult);
+            this.AvgValSharesPrev.setText(avgSharesValue);
+            this.labelTotValSharesPrev.setText(totalSharesvalue);
         }
     }
 
-    var itemList_array = Array.from(itemList); //convert the set into an array.
+    readDialogParams() {
+        var userParam = {};
 
-    if (itemsCombobox)
-        itemsCombobox.insertItems(1, itemList_array);
+        userParam.selectedItem = this.cmbItems.currentText;
+        userParam.quantity = this.lineEditQt.text;
+        userParam.marketPrice = this.lineEditMarketPrice.text;
+        userParam.currExRate = this.lineEditCurrentExRate.text;
+
+        return userParam;
+
+    }
+
+    insertComboBoxElements(banDoc, docInfo) {
+        //First set the editable attribute to true,in this way the user can also enter the text.
+        this.cmbItems.editable = true;
+        const itemList = new Set();
+        var itemsData = getItemsTableData(banDoc, docInfo); //I give as parameter "false" as I only need the list of items
+
+        //fill the listString with the existing items
+        for (var r in itemsData) {
+            if (itemsData[r].item) {
+                itemList.add(itemsData[r].item);
+            }
+        }
+
+        var itemList_array = Array.from(itemList); //convert the set into an array.
+
+        if (this.cmbItems)
+            this.cmbItems.insertItems(1, itemList_array);
+    }
 }
 
 
 function exec() {
 
     let banDoc = Banana.document;
+
+    if (!banDoc)
+        return;
+
     let docInfo = getDocumentInfo(banDoc);
+    let currentRowNr = "";
+    if (banDoc.cursor.tableName == "Transactions")
+        currentRowNr = banDoc.cursor.rowNr;
 
     if (!verifyBananaVersion())
         return "@Cancel";
-    //fill the combobox with the existent groups and fill the labelw with the known data
-    insertComboBoxElements(banDoc, docInfo);
+
+    const dlgCalculateSaleDataManager = new DlgCalculateSaleDataManager(banDoc, docInfo, currentRowNr);
+
     Banana.application.progressBar.pause();
-    var dlgResult = dialog.exec();
+    var dlgResult = dlgCalculateSaleDataManager.dialog.exec();
     Banana.application.progressBar.resume();
 
     if (dlgResult !== 1)
