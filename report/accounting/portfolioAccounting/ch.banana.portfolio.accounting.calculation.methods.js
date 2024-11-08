@@ -209,12 +209,9 @@ function calculateShareSaleData(banDoc, docInfo, itemObj, userParam, currentRow)
     //    Banana.Ui.showText(accountCard.toJSON());
     accountCardData = getAccountCardData(banDoc, docInfo, itemObj.item, accountCard, itemAccount);
     itemCardData = getItemCardDataList(accountCardData, journalData);
-    Banana.Ui.showText(JSON.stringify(itemCardData));
-    if (itemCardData.length >= 1) {
-        avgCost = itemCardData.slice(-1)[0].accAvgCost;
-    }
-
-    quantity = userParam.quantity;
+    // Banana.Ui.showText(JSON.stringify(itemCardData));
+    avgCost = getAvgCost(itemCardData, currentRow);
+    quantity = Banana.SDecimal.abs(userParam.quantity);
     marketPrice = userParam.marketPrice;
     currExRate = userParam.currExRate;
     accExRate = getAccountingCourse(banDoc, itemAccount);
@@ -232,6 +229,30 @@ function calculateShareSaleData(banDoc, docInfo, itemObj, userParam, currentRow)
 
     return saleData;
 
+}
+
+/**
+ * Saves the book value calculated up to the movement before the one currently recorded.
+ * We take the movement before because if the user has already written the sales entry, the
+ * current one already takes this into account and the values are not the correct ones we need for the calculation.
+ * @param {*} itemCardDataObj 
+ * @param {*} currentRow 
+ * @returns the avg cost (book value).
+ */
+function getAvgCost(itemCardDataObj, currentRow) {
+
+    const currentMovObject = itemCardDataObj.find(obj => obj.originRow == currentRow);
+    Banana.console.debug(currentRow);
+
+    if (!currentMovObject)
+        return "";
+
+    const previousMovObject = itemCardDataObj.find(obj => obj.rowNr == currentMovObject.rowNr - 1);
+
+    if (!previousMovObject)
+        return "";
+
+    return previousMovObject.accAvgCost;
 }
 
 /**
