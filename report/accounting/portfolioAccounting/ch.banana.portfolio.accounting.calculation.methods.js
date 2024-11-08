@@ -176,7 +176,7 @@ function getTransactionsIdList(journalData) {
 
 }
 
-function calculateShareSaleData(banDoc, docInfo, itemObj, userParam, currentRow) {
+function calculateShareSaleData(banDoc, docInfo, itemObj, userParam, currentRowNr) {
 
     let saleData = {};
     let journal = "";
@@ -186,7 +186,7 @@ function calculateShareSaleData(banDoc, docInfo, itemObj, userParam, currentRow)
     let accExRate = ""; //Accounting exchange rate.
     let avgCost = "";
     let avgSharesValue = "";
-    let totalSharesvalue = "";
+    let totalSharesValue = "";
     let saleResult = "";
     let exRateResult = "";
     let accountCard = "";
@@ -210,22 +210,25 @@ function calculateShareSaleData(banDoc, docInfo, itemObj, userParam, currentRow)
     accountCardData = getAccountCardData(banDoc, docInfo, itemObj.item, accountCard, itemAccount);
     itemCardData = getItemCardDataList(accountCardData, journalData);
     // Banana.Ui.showText(JSON.stringify(itemCardData));
-    avgCost = getAvgCost(itemCardData, currentRow);
+    avgCost = getAvgCost(itemCardData, currentRowNr);
     quantity = Banana.SDecimal.abs(userParam.quantity);
     marketPrice = userParam.marketPrice;
     currExRate = userParam.currExRate;
+    /** 08.11, lavora sull'ultima riga della scheda conto, dobbiamo fare in modo che lavori (come succede per il getAvgCost())
+     * con la riga della scheda item, precedente a quella correntemente selezionata.
+     * */
     accExRate = getAccountingCourse(banDoc, itemAccount);
 
     avgSharesValue = getSharesAvgValue(quantity, avgCost);
-    totalSharesvalue = getSharesTotalValue(quantity, marketPrice);
-    saleResult = getSaleResult(avgSharesValue, totalSharesvalue);
-    exRateResult = getExchangeResult(totalSharesvalue, saleResult, currExRate, accExRate);
+    totalSharesValue = getSharesTotalValue(quantity, marketPrice);
+    saleResult = getSaleResult(avgSharesValue, totalSharesValue);
+    exRateResult = getExchangeResult(totalSharesValue, saleResult, currExRate, accExRate);
 
     saleData.avgCost = avgCost;
     saleData.avgSharesValue = avgSharesValue;
-    saleData.totalSharesvalue = totalSharesvalue;
+    saleData.totalSharesvalue = totalSharesValue;
     saleData.saleResult = saleResult;
-    saleData.exRateResult = exRateResult; // Da rivedere con la nuova metodologia (tenendo conto dell'utile o perdita non realizzati)
+    saleData.exRateResult = exRateResult;
 
     return saleData;
 
@@ -236,23 +239,35 @@ function calculateShareSaleData(banDoc, docInfo, itemObj, userParam, currentRow)
  * We take the movement before because if the user has already written the sales entry, the
  * current one already takes this into account and the values are not the correct ones we need for the calculation.
  * @param {*} itemCardDataObj 
- * @param {*} currentRow 
+ * @param {*} currentRowNr 
  * @returns the avg cost (book value).
  */
-function getAvgCost(itemCardDataObj, currentRow) {
-
-    const currentMovObject = itemCardDataObj.find(obj => obj.originRow == currentRow);
-    Banana.console.debug(currentRow);
-
-    if (!currentMovObject)
+function getAvgCost(itemCardDataObj, currentRowNr) {
+    if (!itemCardDataObj)
         return "";
-
-    const previousMovObject = itemCardDataObj.find(obj => obj.rowNr == currentMovObject.rowNr - 1);
-
+    const previousMovObject = getClosestPreviousByRowNr(itemCardDataObj, currentRowNr);
     if (!previousMovObject)
         return "";
 
     return previousMovObject.accAvgCost;
+}
+
+function getClosestPreviousByRowNr(itemCardDataObj, currentRowNr) {
+    // Find the object with `originRow` equal to `currentRowNr`.
+    const currentObject = itemCardDataObj.find(obj => obj.originRow === currentRowNr.toString());
+
+    if (!currentObject)
+        return "";
+
+    // Finds the object with the immediately preceding `rowNr`.
+    const previousObject = itemCardDataObj
+        .filter(obj => obj.rowNr < currentObject.rowNr)
+        .sort((a, b) => b.rowNr - a.rowNr)[0];
+
+    if (!previousObject)
+        return "";
+
+    return previousObject;
 }
 
 /**
@@ -557,6 +572,7 @@ function getTransactionsTableData(banDoc, docInfo) {
 function getAccountingCourse(banDoc, itemAccount) {
 
     var accData = getItemBalance(banDoc, itemAccount);
+    Banana.Ui.showText(JSON.stringify(accData));
     var course = "";
 
     baseCurrBalance = accData.currbalance.balance;
@@ -603,27 +619,32 @@ function getSaleResult(avgSharesValue, totalSharesvalue) {
 
 }
 
-function getExchangeResult(totalSharesvalue, saleResult, currExRate, accExRate) {
+function getExchangeResult(totalSharesValue, saleResult, currExRate, accExRate) {
 
     // Default to accExRate if currExRate is not provided
     if (!currExRate) {
         currExRate = accExRate;
     }
 
-    let eChangeDiff = "";
-    /** 1. Calculate the theoretical result on exchange. */
-    let totalShareValInBaseCurr = Banana.SDecimal.multiply(totalSharesvalue, currExRate);
-    let tExchangeDiff = Banana.SDecimal.subtract(totalSharesvalue, totalShareValInBaseCurr);
-    /**  2. Calculate the effective result on exchange by cheking also the operation result as already contains the profit or loss related to the change.
-     * If we do not subtract the unrealized gain from the theoretical exchange loss, we  are in fact accounting for the same loss twice. */
-    let saleResultInBaseCurr = Banana.SDecimal.multiply(saleResult, currExRate);
-    let unGainOrLoss = Banana.SDecimal.subtract(saleResult, saleResultInBaseCurr);
+    // Calculate the realized exchange (theorical result)
+    let realizedExchangeResult = Banana.SDecimal.subtract(
+        Banana.SDecimal.multiply(totalSharesValue, currExRate),
+        Banana.SDecimal.multiply(totalSharesValue, accExRate)
+    );
 
-    eChangeDiff = tExchangeDiff - unGainOrLoss;
+    Banana.console.debug(realizedExchangeResult);
 
-    Banana.console.debug(eChangeDiff);
+    // Calculate the unrealized exchange profit/loss based on saleResult
+    let unrealizedExchangeProfitLoss = Banana.SDecimal.subtract(
+        Banana.SDecimal.multiply(saleResult, currExRate),
+        Banana.SDecimal.multiply(saleResult, accExRate)
+    );
 
-    return eChangeDiff;
+    // Calculate the effective exchange result by adding realized and unrealized components
+    let effectiveExchangeResult = Banana.SDecimal.add(realizedExchangeResult, unrealizedExchangeProfitLoss);
+
+    // Return the total effective exchange result
+    return effectiveExchangeResult;
 
 }
 

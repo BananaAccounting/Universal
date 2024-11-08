@@ -96,9 +96,16 @@ class DlgCalculateSaleDataManager {
 
         // Displayed values
         this.insertComboBoxElements(this.banDoc, this.docInfo);
+        this.setCurrentItem();
         this.setQuantity();
         this.setCurrentPrice();
         this.setCurrentExchangeRate();
+    }
+    setCurrentItem() {
+        if (!this.currentRowObj)
+            return;
+        let item = this.currentRowObj.value("ItemsId");
+        this.cmbItems.setCurrentText(item);
     }
 
     setQuantity() {
