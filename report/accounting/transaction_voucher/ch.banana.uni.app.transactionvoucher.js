@@ -77,6 +77,21 @@ function createReport(userParam, banDoc, stylesheet) {
     /* Print the report */
     var report = Banana.Report.newReport("Transaction Voucher");
 
+    // Logo
+	var headerLogoSection = report.getHeader().addSection();
+	if (userParam.printHeaderLogo) {
+		headerLogoSection = report.addSection("");
+		var logoFormat = Banana.Report.logoFormat(userParam.headerLogoName);
+		if (logoFormat) {
+			var logoElement = logoFormat.createDocNode(headerLogoSection, stylesheet, "logo");
+			report.getHeader().addChild(logoElement);
+		} else {
+            headerLogoSection.addClass("header_text");
+        }
+	} else {
+        headerLogoSection.addClass("header_text");
+    }
+
     printReport_title(report, userParam);
     printReport_information(report, banDoc, userParam);
     printReport_transaction(report, banDoc, userParam);
@@ -340,6 +355,12 @@ function createStyleSheet(userParam) {
     //Set the margins
     pageStyle.setAttribute("margin", "20mm 10mm 10mm 20mm");
 
+    if (userParam.printHeaderLogo) {
+        stylesheet.addStyle("@page", "margin:10mm 10mm 10mm 20mm;");    	
+    } else {
+        stylesheet.addStyle("@page", "margin:20mm 10mm 10mm 20mm;");
+    }
+
     //Set the page landscape
     //pageStyle.setAttribute("size", "landscape");
     
@@ -410,6 +431,31 @@ function createStyleSheet(userParam) {
     style.setAttribute("border-left", "thin solid black");
     style.setAttribute("border-right", "thin solid black");
     style.setAttribute("padding", "2px");
+
+    if (!userParam.addressPositionDX) {
+        userParam.addressPositionDX = '0';
+    }
+    if (!userParam.addressPositionDY) {
+        userParam.addressPositionDY = '0';
+    }
+    var addressMarginTop = parseFloat(2.0)+parseFloat(userParam.addressPositionDY);
+    var addressMarginTopLogo = parseFloat(1.6)+parseFloat(userParam.addressPositionDY);
+    var leftAddressMarginLeft = parseFloat(0.5)+parseFloat(userParam.addressPositionDX);
+    var rightAddressMarginLeft = parseFloat(10.5)+parseFloat(userParam.addressPositionDX);
+
+    if (userParam.printHeaderLogo) {
+        if (userParam.alignleft) {
+            stylesheet.addStyle(".tableAddress", "margin-top:"+addressMarginTop+"cm; margin-left:"+leftAddressMarginLeft+"cm");
+        } else {
+            stylesheet.addStyle(".tableAddress", "margin-top:"+addressMarginTop+"cm; margin-left:"+rightAddressMarginLeft+"cm");
+        }
+	} else {
+        if (userParam.alignleft) {
+            stylesheet.addStyle(".tableAddress", "margin-top:"+addressMarginTopLogo+"cm; margin-left:"+leftAddressMarginLeft+"cm");
+        } else {
+            stylesheet.addStyle(".tableAddress", "margin-top:"+addressMarginTopLogo+"cm; margin-left:"+rightAddressMarginLeft+"cm");
+        }
+	}
     
     return stylesheet;
 }
@@ -425,6 +471,43 @@ function convertParam(userParam) {
     convertedParam.version = '1.0';
     convertedParam.data = [];
 
+    /**
+     * BEGIN GROUP
+     */
+    var currentParam = {};
+    currentParam.name = 'begin';
+    currentParam.title = "Start";
+    currentParam.type = 'string';
+    currentParam.value = '';
+    currentParam.editable = false;
+    currentParam.readValue = function() {
+        userParam.begin = this.value;
+    }
+    convertedParam.data.push(currentParam);
+
+    currentParam = {};
+    currentParam.name = 'printHeaderLogo';
+    currentParam.parentObject = 'begin';
+    currentParam.title = "Logo";
+    currentParam.type = 'bool';
+    currentParam.value = userParam.printHeaderLogo ? true : false;
+    currentParam.defaultvalue = false;
+    currentParam.readValue = function() {
+    userParam.printHeaderLogo = this.value;
+    }
+    convertedParam.data.push(currentParam);
+
+    var currentParam = {};
+    currentParam.name = 'headerLogoName';
+    currentParam.parentObject = 'begin'
+    currentParam.title = "Logo-Name";
+    currentParam.type = 'string';
+    currentParam.value = userParam.headerLogoName ? userParam.headerLogoName : 'Logo';
+    currentParam.defaultvalue = 'Logo';
+    currentParam.readValue = function() {
+        userParam.headerLogoName = this.value;
+    }
+    convertedParam.data.push(currentParam);
 
     //
     // TITLE
@@ -572,6 +655,8 @@ function convertParam(userParam) {
 function initUserParam() {
 
     var userParam = {};
+    userParam.printHeaderLogo = false;
+    userParam.headerLogoName = 'Logo';
     userParam.voucherNumber = "";
     userParam.paidTo = "";
     userParam.paidIn = "Cash";
