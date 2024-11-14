@@ -76,6 +76,13 @@ function getComboBoxElement(scriptId, title, label) {
     return item;
 }
 
+function getCurrentRowObj(banDoc, currentRowNr) {
+    var table = banDoc.table("Transactions");
+    if (!table)
+        return {};
+    return table.row(currentRowNr);
+}
+
 function getCurrentRowData(banDoc, transList) {
     var currRowNr = banDoc.cursor.rowNr;
 
@@ -176,7 +183,7 @@ function getTransactionsIdList(journalData) {
 
 }
 
-function calculateShareSaleData(banDoc, docInfo, itemObj, userParam, currentRowNr) {
+function calculateShareSaleData(banDoc, docInfo, itemObj, calcParams, currentRowNr) {
 
     let saleData = {};
     let journal = "";
@@ -206,18 +213,13 @@ function calculateShareSaleData(banDoc, docInfo, itemObj, userParam, currentRowN
     journal = banDoc.journal(banDoc.ORIGINTYPE_CURRENT, banDoc.ACCOUNTTYPE_NONE);
     journalData = getJournalData(docInfo, journal);
     accountCard = banDoc.currentCard(itemAccount);
-    //    Banana.Ui.showText(accountCard.toJSON());
     accountCardData = getAccountCardData(banDoc, docInfo, itemObj.item, accountCard, itemAccount);
     itemCardData = getItemCardDataList(accountCardData, journalData);
-    // Banana.Ui.showText(JSON.stringify(itemCardData));
     avgCost = getAvgCost(itemCardData, currentRowNr);
-    quantity = Banana.SDecimal.abs(userParam.quantity);
-    marketPrice = userParam.marketPrice;
-    currExRate = userParam.currExRate;
-    /** 08.11, lavora sull'ultima riga della scheda conto, dobbiamo fare in modo che lavori (come succede per il getAvgCost())
-     * con la riga della scheda item, precedente a quella correntemente selezionata.
-     * */
-    accExRate = getAccountingCourse(banDoc, itemAccount);
+    quantity = Banana.SDecimal.abs(calcParams.quantity);
+    marketPrice = calcParams.marketPrice;
+    currExRate = calcParams.currExRate;
+    accExRate = getAccountingCourse(itemCardData, currentRowNr);
 
     avgSharesValue = getSharesAvgValue(quantity, avgCost);
     totalSharesValue = getSharesTotalValue(quantity, marketPrice);
@@ -245,14 +247,14 @@ function calculateShareSaleData(banDoc, docInfo, itemObj, userParam, currentRowN
 function getAvgCost(itemCardDataObj, currentRowNr) {
     if (!itemCardDataObj)
         return "";
-    const previousMovObject = getClosestPreviousByRowNr(itemCardDataObj, currentRowNr);
+    const previousMovObject = getClosestPreviousObjByRowNr(itemCardDataObj, currentRowNr);
     if (!previousMovObject)
         return "";
 
     return previousMovObject.accAvgCost;
 }
 
-function getClosestPreviousByRowNr(itemCardDataObj, currentRowNr) {
+function getClosestPreviousObjByRowNr(itemCardDataObj, currentRowNr) {
     // Find the object with `originRow` equal to `currentRowNr`.
     const currentObject = itemCardDataObj.find(obj => obj.originRow === currentRowNr.toString());
 
@@ -271,12 +273,13 @@ function getClosestPreviousByRowNr(itemCardDataObj, currentRowNr) {
 }
 
 /**
- * Ritorna le informazioni contenute nella scheda conto del conto collegato all'item.
+ * Returns the information contained in the account card of the account linked to the item..
  */
 function getAccountCardData(banDoc, docInfo, itemName, accountCard, account) {
     let transactions = [];
     let accBalance = "";
-    let accountInBaseCurrency = isAccountInBaseCurrency(banDoc, docInfo, account);
+    let accBalanceCurr = "";
+    let accInForeignCurr = accountIsInForeignCurrency(banDoc, docInfo, account);
 
     for (var i = 0; i < accountCard.rowCount; i++) {
         let tRow = accountCard.row(i);
@@ -292,30 +295,29 @@ function getAccountCardData(banDoc, docInfo, itemName, accountCard, account) {
             trData.description = tRow.value("Description");
             trData.qt = tRow.value("Quantity");
             trData.currency = tRow.value("ExchangeCurrency");
-            if (accountInBaseCurrency) {
-                trData.debitBase = tRow.value("JDebitAmount"); //debit value in base currency
-                trData.creditBase = tRow.value("JCreditAmount"); //credit value base currency
-                //trData.balanceBase = tRow.value("JBalance"); //Se il conto è usato per più items, il bilancio deve essere ripreso in altro modo.
-                trData.unitPrice = tRow.value("UnitPrice");
-                //Calculate the balance manually.
-                if (trData.debitBase !== "") {
-                    accBalance = Banana.SDecimal.add(accBalance, trData.debitBase);
-                }
-                if (trData.creditBase !== "") {
-                    accBalance = Banana.SDecimal.subtract(accBalance, trData.creditBase);
-                }
-                trData.balanceBase = accBalance;
-            } else {
+            //trData.balanceBase = tRow.value("JBalance"); //Se il conto è usato per più items, il bilancio deve essere ripreso in altro modo.
+            trData.unitPrice = tRow.value("UnitPrice");
+            trData.debitBase = tRow.value("JDebitAmount"); //debit value in base currency
+            trData.creditBase = tRow.value("JCreditAmount"); //credit value base currency
+            //Calculate the balance manually.
+            if (trData.debitBase !== "") {
+                accBalance = Banana.SDecimal.add(accBalance, trData.debitBase);
+            }
+            if (trData.creditBase !== "") {
+                accBalance = Banana.SDecimal.subtract(accBalance, trData.creditBase);
+            }
+            trData.balanceBase = accBalance;
+            if (accInForeignCurr) {
                 trData.debitCurr = tRow.value("JDebitAmountAccountCurrency");
                 trData.creditCurr = tRow.value("JCreditAmountAccountCurrency");
                 trData.balanceCurr = tRow.value("JBalanceAccountCurrency");
                 if (trData.debitCurr !== "") {
-                    accBalance = Banana.SDecimal.add(accBalance, trData.debitCurr);
+                    accBalanceCurr = Banana.SDecimal.add(accBalanceCurr, trData.debitCurr);
                 }
                 if (trData.creditCurr !== "") {
-                    accBalance = Banana.SDecimal.subtract(accBalance, trData.creditCurr);
+                    accBalanceCurr = Banana.SDecimal.subtract(accBalanceCurr, trData.creditCurr);
                 }
-                trData.balanceCurr = accBalance;
+                trData.balanceCurr = accBalanceCurr;
             }
 
             transactions.push(trData);
@@ -330,7 +332,7 @@ function getAccountCardData(banDoc, docInfo, itemName, accountCard, account) {
 /**
  * Ritorna le informazioni contenute nella scheda conto del conto collegato all'item, sia in multimoneta che in moneta base
  */
-function getAccountCardCompleteData(itemName, accountCard) {
+function getAccountCardCompleteData(itemName, accountCard) { // copione ? Esiste già getAccountCard data, da vedere....
     let transactions = [];
     let balanceBase = "";
     let balanceCurr = "";
@@ -395,15 +397,14 @@ function getAccountCurrency(accountName, banDoc) {
     return currency;
 }
 
-function isAccountInBaseCurrency(banDoc, docInfo, account) {
+function accountIsInForeignCurrency(banDoc, docInfo, account) {
     let currency = getAccountCurrency(account, banDoc);
-    if (currency == docInfo.baseCurrency)
+    if (currency !== docInfo.baseCurrency)
         return true;
     return false;
 }
 
 function getItemCardDataList(accountCardData, journalData) {
-
     SetSoldData(accountCardData, journalData);
     setQuantityBalance(accountCardData);
     setCurrentAccAvgCost(accountCardData);
@@ -567,21 +568,22 @@ function getTransactionsTableData(banDoc, docInfo) {
 }
 
 /**
- * Ritorna il cambio contabile calcolato sulla base della differenza tra i saldi nelle due valute ad una certa data.
+ * Returns the accounting exchange rate calculated on the basis of 
+ * the difference between the balances in the two currencies on a certain date.
  */
-function getAccountingCourse(banDoc, itemAccount) {
+function getAccountingCourse(itemCardDataObj, currentRowNr) {
 
-    var accData = getItemBalance(banDoc, itemAccount);
-    Banana.Ui.showText(JSON.stringify(accData));
-    var course = "";
+    if (!itemCardDataObj)
+        return "";
+    const previousMovObject = getClosestPreviousObjByRowNr(itemCardDataObj, currentRowNr);
+    if (!previousMovObject)
+        return "";
 
-    baseCurrBalance = accData.currbalance.balance;
-    assetCurrBalance = accData.currbalance.balanceCurrency;
+    let baseCurrBalance = previousMovObject.balanceBase;
+    let assetCurrBalance = previousMovObject.balanceCurr;
 
     //divido il saldo in moneta base per quello del asset
-    course = Banana.SDecimal.divide(baseCurrBalance, assetCurrBalance);
-
-    return course;
+    return Banana.SDecimal.divide(baseCurrBalance, assetCurrBalance);
 
 }
 
@@ -591,9 +593,7 @@ function getAccountingCourse(banDoc, itemAccount) {
  */
 function getSharesAvgValue(quantity, avgCost) {
     var avgValue = "";
-
     avgValue = Banana.SDecimal.multiply(quantity, avgCost);
-
     return avgValue;
 }
 
@@ -603,9 +603,7 @@ function getSharesAvgValue(quantity, avgCost) {
  */
 function getSharesTotalValue(quantity, marketPrice) {
     var totalValue = "";
-
     totalValue = Banana.SDecimal.multiply(quantity, marketPrice);
-
     return totalValue;
 }
 
@@ -616,7 +614,6 @@ function getSaleResult(avgSharesValue, totalSharesvalue) {
     var saleResult = "";
     saleResult = Banana.SDecimal.subtract(totalSharesvalue, avgSharesValue);
     return saleResult;
-
 }
 
 function getExchangeResult(totalSharesValue, saleResult, currExRate, accExRate) {
@@ -632,12 +629,10 @@ function getExchangeResult(totalSharesValue, saleResult, currExRate, accExRate) 
         Banana.SDecimal.multiply(totalSharesValue, accExRate)
     );
 
-    Banana.console.debug(realizedExchangeResult);
-
     // Calculate the unrealized exchange profit/loss based on saleResult
     let unrealizedExchangeProfitLoss = Banana.SDecimal.subtract(
-        Banana.SDecimal.multiply(saleResult, currExRate),
-        Banana.SDecimal.multiply(saleResult, accExRate)
+        Banana.SDecimal.multiply(saleResult, accExRate),
+        Banana.SDecimal.multiply(saleResult, currExRate)
     );
 
     // Calculate the effective exchange result by adding realized and unrealized components
@@ -646,14 +641,6 @@ function getExchangeResult(totalSharesValue, saleResult, currExRate, accExRate) 
     // Return the total effective exchange result
     return effectiveExchangeResult;
 
-}
-
-function getItemBalance(banDoc, itemAccount) {
-    var accBalance = {};
-    accBalance.account = itemAccount;
-    accBalance.currbalance = banDoc.currentBalance(itemAccount);
-
-    return accBalance;
 }
 
 /**

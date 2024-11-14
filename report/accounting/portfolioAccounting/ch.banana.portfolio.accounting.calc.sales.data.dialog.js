@@ -52,7 +52,7 @@ class DlgCalculateSaleDataManager {
         this.buttonShowResults = "";
 
         this.currentRowNr = currentRowNr; // Selected row in transactions table.
-        this.currentRowObj = this.getCurrentRowObj();
+        this.currentRowObj = getCurrentRowObj(this.banDoc, this.currentRowNr);
 
         this.init();
 
@@ -64,13 +64,6 @@ class DlgCalculateSaleDataManager {
         /** Dialog's events declaration */
         this.buttonShowResults.clicked.connect(this.dialog, this.dialog.showPreviews);
 
-    }
-
-    getCurrentRowObj() {
-        var table = this.banDoc.table("Transactions");
-        if (!table)
-            return {};
-        return table.row(this.currentRowNr);
     }
 
     init() {
@@ -138,13 +131,13 @@ class DlgCalculateSaleDataManager {
         let avgSharesValue = "";
         let totalSharesvalue = "";
         let itemsData = [];
-        let userParam = {};
+        let userParams = {};
         let salesData = {};
 
-        userParam = this.readDialogParams();
+        userParams = this.readDialogParams();
         itemsData = getItemsTableData(this.banDoc, this.docInfo);
 
-        let item = userParam.selectedItem;
+        let item = userParams.selectedItem;
         // Check if the item exists
         const itemObject = itemsData.find(obj => obj.item === item)
         if (!itemObject) {
@@ -154,7 +147,7 @@ class DlgCalculateSaleDataManager {
             return "";
         }
 
-        salesData = calculateShareSaleData(this.banDoc, this.docInfo, itemObject, userParam, this.currentRowNr);
+        salesData = calculateShareSaleData(this.banDoc, this.docInfo, itemObject, userParams, this.currentRowNr);
         assetCurr = itemObject.currency;
         baseCurr = this.docInfo.baseCurrency;
 
