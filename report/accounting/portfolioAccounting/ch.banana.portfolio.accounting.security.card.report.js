@@ -79,7 +79,7 @@ function exec(inData, options) {
     //get the calculated data and the totals
     itemCardData = getItemCardData(docInfo, accountCardData, journalData, itemCurrency, selectedItem);
 
-    let itemDescription = getItemValue(itemsData, selectedItem, "description");
+    let itemDescription = itemObject.description;
     var report = printReport(docInfo, itemCardData, itemDescription);
     getReportHeader(report, docInfo);
     var stylesheet = getReportStyle();
