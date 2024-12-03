@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:camt.053.001.04"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <BkToCstmrStmt>
+        <GrpHdr>
+            <MsgId>6H9BHDXAJCNBZ5AA</MsgId>
+            <CreDtTm>2020-11-02T18:43:20+01:00</CreDtTm>
+            <MsgRcpt>
+                <Id>
+                    <OrgId>
+                        <AnyBIC>UBSWCHZHREB</AnyBIC>
+                    </OrgId>
+                </Id>
+            </MsgRcpt>
+            <MsgPgntn>
+                <PgNb>1</PgNb>
+                <LastPgInd>true</LastPgInd>
+            </MsgPgntn>
+            <AddtlInf>SPS/1.7</AddtlInf>
+        </GrpHdr>
+        <Stmt>
+            <Id>6H9BHDXAJCNBZ5AA</Id>
+            <ElctrncSeqNb>1</ElctrncSeqNb>
+            <CreDtTm>2020-11-02T18:43:20+01:00</CreDtTm>
+            <FrToDt>
+                <FrDtTm>2020-11-02T00:00:00+01:00</FrDtTm>
+                <ToDtTm>2020-11-02T24:00:00+01:00</ToDtTm>
+            </FrToDt>
+            <Acct>
+                <Id>
+                    <IBAN>CH2801234000123456789</IBAN>
+                </Id>
+                <Ccy>CHF</Ccy>
+                <Ownr>
+                    <Nm>Mandi Allroundreparaturen</Nm>
+                </Ownr>
+                <Svcr>
+                    <FinInstnId>
+                        <BICFI>UBSWCHZH80A</BICFI>
+                        <Nm>UBS Switzerland AG</Nm>
+                        <Othr>
+                            <Id>CHE-116.303.292 MWST</Id>
+                            <Issr>VAT-ID</Issr>
+                        </Othr>
+                    </FinInstnId>
+                </Svcr>
+            </Acct>
+            <Bal>
+                <Tp>
+                    <CdOrPrtry>
+                        <Cd>OPBD</Cd>
+                    </CdOrPrtry>
+                </Tp>
+                <Amt Ccy="CHF">31016.42</Amt>
+                <CdtDbtInd>CRDT</CdtDbtInd>
+                <Dt>
+                    <Dt>2020-11-02</Dt>
+                </Dt>
+            </Bal>
+            <Bal>
+                <Tp>
+                    <CdOrPrtry>
+                        <Cd>CLBD</Cd>
+                    </CdOrPrtry>
+                </Tp>
+                <Amt Ccy="CHF">30754.67</Amt>
+                <CdtDbtInd>CRDT</CdtDbtInd>
+                <Dt>
+                    <Dt>2020-11-02</Dt>
+                </Dt>
+            </Bal>
+            <Bal>
+                <Tp>
+                    <CdOrPrtry>
+                        <Cd>CLAV</Cd>
+                    </CdOrPrtry>
+                </Tp>
+                <Amt Ccy="CHF">30649.67</Amt>
+                <CdtDbtInd>CRDT</CdtDbtInd>
+                <Dt>
+                    <Dt>2020-11-02</Dt>
+                </Dt>
+            </Bal>
+            <Ntry>
+                <Amt Ccy="CHF">209.7</Amt>
+                <CdtDbtInd>DBIT</CdtDbtInd>
+                <Sts>BOOK</Sts>
+                <BookgDt>
+                    <Dt>2020-11-02</Dt>
+                </BookgDt>
+                <ValDt>
+                    <Dt>2020-11-02</Dt>
+                </ValDt>
+                <AcctSvcrRef>9939304TO9287634</AcctSvcrRef>
+                <BkTxCd>
+                    <Domn>
+                        <Cd>PMNT</Cd>
+                        <Fmly>
+                            <Cd>ICDT</Cd>
+                            <SubFmlyCd>AUTT</SubFmlyCd>
+                        </Fmly>
+                    </Domn>
+                    <Prtry>
+                        <Cd>Z44</Cd>
+                    </Prtry>
+                </BkTxCd>
+                <AmtDtls>
+                    <InstdAmt>
+                        <Amt Ccy="CHF">209.7</Amt>
+                    </InstdAmt>
+                    <TxAmt>
+                        <Amt Ccy="CHF">209.7</Amt>
+                    </TxAmt>
+                </AmtDtls>
+                <NtryDtls>
+                    <TxDtls>
+                        <Refs>
+                            <AcctSvcrRef>9939304TO9287634</AcctSvcrRef>
+                        </Refs>
+                        <Amt Ccy="CHF">209.7</Amt>
+                        <CdtDbtInd>DBIT</CdtDbtInd>
+                        <AmtDtls>
+                            <InstdAmt>
+                                <Amt Ccy="CHF">209.7</Amt>
+                            </InstdAmt>
+                            <TxAmt>
+                                <Amt Ccy="CHF">209.7</Amt>
+                            </TxAmt>
+                        </AmtDtls>
+                        <BkTxCd>
+                            <Domn>
+                                <Cd>PMNT</Cd>
+                                <Fmly>
+                                    <Cd>ICDT</Cd>
+                                    <SubFmlyCd>AUTT</SubFmlyCd>
+                                </Fmly>
+                            </Domn>
+                            <Prtry>
+                                <Cd>Z44</Cd>
+                            </Prtry>
+                        </BkTxCd>
+                        <RltdPties>
+                            <Cdtr>
+                                <PstlAdr>
+                                    <AdrLine>Keller Fahnen AG</AdrLine>
+                                    <AdrLine>4562 Biberist</AdrLine>
+                                </PstlAdr>
+                            </Cdtr>
+                        </RltdPties>
+                        <RmtInf>
+                            <Strd>
+                                <CdtrRefInf>
+                                    <Tp>
+                                        <CdOrPrtry>
+                                            <Prtry>ISR Reference</Prtry>
+                                        </CdOrPrtry>
+                                    </Tp>
+                                    <Ref>934545800011543260001271905</Ref>
+                                </CdtrRefInf>
+                            </Strd>
+                        </RmtInf>
+                        <AddtlTxInf>e-banking Order</AddtlTxInf>
+                    </TxDtls>
+                </NtryDtls>
+                <AddtlNtryInf>e-banking Order</AddtlNtryInf>
+            </Ntry>
+            <Ntry>
+                <Amt Ccy="CHF">109</Amt>
+                <CdtDbtInd>DBIT</CdtDbtInd>
+                <Sts>BOOK</Sts>
+                <BookgDt>
+                    <Dt>2020-11-02</Dt>
+                </BookgDt>
+                <ValDt>
+                    <Dt>2020-10-30</Dt>
+                </ValDt>
+                <AcctSvcrRef>9930805BN6444751</AcctSvcrRef>
+                <BkTxCd>
+                    <Domn>
+                        <Cd>XTND</Cd>
+                        <Fmly>
+                            <Cd>NTAV</Cd>
+                            <SubFmlyCd>NTAV</SubFmlyCd>
+                        </Fmly>
+                    </Domn>
+                    <Prtry>
+                        <Cd>DE1</Cd>
+                    </Prtry>
+                </BkTxCd>
+                <AmtDtls>
+                    <TxAmt>
+                        <Amt Ccy="CHF">109</Amt>
+                    </TxAmt>
+                </AmtDtls>
+                <NtryDtls>
+                    <TxDtls>
+                        <Refs>
+                            <AcctSvcrRef>9930805BN6444751</AcctSvcrRef>
+                        </Refs>
+                        <Amt Ccy="CHF">109</Amt>
+                        <CdtDbtInd>DBIT</CdtDbtInd>
+                        <AmtDtls>
+                            <TxAmt>
+                                <Amt Ccy="CHF">109</Amt>
+                            </TxAmt>
+                        </AmtDtls>
+                        <BkTxCd>
+                            <Domn>
+                                <Cd>XTND</Cd>
+                                <Fmly>
+                                    <Cd>NTAV</Cd>
+                                    <SubFmlyCd>NTAV</SubFmlyCd>
+                                </Fmly>
+                            </Domn>
+                            <Prtry>
+                                <Cd>DE1</Cd>
+                            </Prtry>
+                        </BkTxCd>
+                        <AddtlTxInf>Debit card payment // KARTE 15795343-0 2211 // TS Auto Bürki AG
+                            Pfyn</AddtlTxInf>
+                    </TxDtls>
+                </NtryDtls>
+                <AddtlNtryInf>Debit card payment // KARTE 15795343-0 2211 // TS Auto Bürki AG Pfyn</AddtlNtryInf>
+            </Ntry>
+            <Ntry>
+                <Amt Ccy="CHF">33.05</Amt>
+                <CdtDbtInd>DBIT</CdtDbtInd>
+                <Sts>BOOK</Sts>
+                <BookgDt>
+                    <Dt>2020-11-02</Dt>
+                </BookgDt>
+                <ValDt>
+                    <Dt>2020-11-02</Dt>
+                </ValDt>
+                <AcctSvcrRef>9939804KH6836936</AcctSvcrRef>
+                <BkTxCd>
+                    <Domn>
+                        <Cd>PMNT</Cd>
+                        <Fmly>
+                            <Cd>RDDT</Cd>
+                            <SubFmlyCd>PMDD</SubFmlyCd>
+                        </Fmly>
+                    </Domn>
+                    <Prtry>
+                        <Cd>Z15</Cd>
+                    </Prtry>
+                </BkTxCd>
+                <AmtDtls>
+                    <InstdAmt>
+                        <Amt Ccy="CHF">33.05</Amt>
+                    </InstdAmt>
+                    <TxAmt>
+                        <Amt Ccy="CHF">33.05</Amt>
+                    </TxAmt>
+                </AmtDtls>
+                <NtryDtls>
+                    <TxDtls>
+                        <Refs>
+                            <AcctSvcrRef>9939804KH6836936</AcctSvcrRef>
+                        </Refs>
+                        <Amt Ccy="CHF">33.05</Amt>
+                        <CdtDbtInd>DBIT</CdtDbtInd>
+                        <AmtDtls>
+                            <InstdAmt>
+                                <Amt Ccy="CHF">33.05</Amt>
+                            </InstdAmt>
+                            <TxAmt>
+                                <Amt Ccy="CHF">33.05</Amt>
+                            </TxAmt>
+                        </AmtDtls>
+                        <BkTxCd>
+                            <Domn>
+                                <Cd>PMNT</Cd>
+                                <Fmly>
+                                    <Cd>RDDT</Cd>
+                                    <SubFmlyCd>PMDD</SubFmlyCd>
+                                </Fmly>
+                            </Domn>
+                            <Prtry>
+                                <Cd>Z15</Cd>
+                            </Prtry>
+                        </BkTxCd>
+                        <RltdPties>
+                            <Cdtr>
+                                <PstlAdr>
+                                    <AdrLine>SWISSCOM (SCHWEIZ) AG</AdrLine>
+                                    <AdrLine>3048 WORBLAUFEN</AdrLine>
+                                </PstlAdr>
+                            </Cdtr>
+                        </RltdPties>
+                        <RmtInf>
+                            <Strd>
+                                <CdtrRefInf>
+                                    <Tp>
+                                        <CdOrPrtry>
+                                            <Prtry>ISR Reference</Prtry>
+                                        </CdOrPrtry>
+                                    </Tp>
+                                    <Ref>969688000066000246100000003</Ref>
+                                </CdtrRefInf>
+                            </Strd>
+                        </RmtInf>
+                        <AddtlTxInf>Direct Debit // SCW1W WIDERSPRUCH AN UBS // INNERT 30 TAGEN</AddtlTxInf>
+                    </TxDtls>
+                </NtryDtls>
+                <AddtlNtryInf>Direct Debit // SCW1W WIDERSPRUCH AN UBS // INNERT 30 TAGEN</AddtlNtryInf>
+            </Ntry>
+            <Ntry>
+                <NtryRef>010001456</NtryRef>
+                <Amt Ccy="CHF">90</Amt>
+                <CdtDbtInd>CRDT</CdtDbtInd>
+                <Sts>BOOK</Sts>
+                <BookgDt>
+                    <Dt>2020-11-02</Dt>
+                </BookgDt>
+                <ValDt>
+                    <Dt>2020-11-02</Dt>
+                </ValDt>
+                <AcctSvcrRef>2020307PH0005036</AcctSvcrRef>
+                <BkTxCd>
+                    <Domn>
+                        <Cd>PMNT</Cd>
+                        <Fmly>
+                            <Cd>RCDT</Cd>
+                            <SubFmlyCd>VCOM</SubFmlyCd>
+                        </Fmly>
+                    </Domn>
+                    <Prtry>
+                        <Cd>Z62</Cd>
+                    </Prtry>
+                </BkTxCd>
+                <AddtlInfInd>
+                    <MsgNmId>camt.054.001.04</MsgNmId>
+                    <MsgId>6H9BHDXAJCPKGYPA</MsgId>
+                </AddtlInfInd>
+                <NtryDtls>
+                    <Btch>
+                        <NbOfTxs>1</NbOfTxs>
+                        <TtlAmt Ccy="CHF">90</TtlAmt>
+                        <CdtDbtInd>CRDT</CdtDbtInd>
+                    </Btch>
+                </NtryDtls>
+                <AddtlNtryInf>Incomings UBS BESR Quick</AddtlNtryInf>
+            </Ntry>
+        </Stmt>
+    </BkToCstmrStmt>
+</Document>

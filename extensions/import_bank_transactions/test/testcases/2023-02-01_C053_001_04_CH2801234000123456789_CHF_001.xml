@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:camt.053.001.04" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:iso:std:iso:20022:tech:xsd:camt.053.001.04 camt.053.001.04.xsd">
+  <BkToCstmrStmt>
+    <GrpHdr>
+      <MsgId>C053230201095801</MsgId>
+      <CreDtTm>2023-02-01T09:58:05+01:00</CreDtTm>
+      <MsgRcpt>
+        <Id>
+          <OrgId>
+            <AnyBIC>UBSWCHZHCCS</AnyBIC>
+          </OrgId>
+        </Id>
+      </MsgRcpt>
+      <MsgPgntn>
+        <PgNb>1</PgNb>
+        <LastPgInd>true</LastPgInd>
+      </MsgPgntn>
+      <AddtlInf>SPS/1.7</AddtlInf>
+    </GrpHdr>
+    <Stmt>
+      <Id>0002302010958001</Id>
+      <ElctrncSeqNb>3</ElctrncSeqNb>
+      <CreDtTm>2023-02-01T09:58:05+01:00</CreDtTm>
+      <FrToDt>
+        <FrDtTm>2023-02-01T00:00:00+01:00</FrDtTm>
+        <ToDtTm>2023-02-01T24:00:00+01:00</ToDtTm>
+      </FrToDt>
+      <Acct>
+        <Id>
+          <IBAN>CH2801234000123456789</IBAN>
+        </Id>
+        <Ccy>CHF</Ccy>
+        <Ownr>
+          <Nm>Unifits GmbH</Nm>
+        </Ownr>
+        <Svcr>
+          <FinInstnId>
+            <BICFI>UBSWCHZH80A</BICFI>
+            <Nm>UBS SWITZERLAND AG</Nm>
+            <Othr>
+              <Id>CHE-116.303.292 MWST</Id>
+              <Issr>VAT-ID</Issr>
+            </Othr>
+          </FinInstnId>
+        </Svcr>
+      </Acct>
+      <Bal>
+        <Tp>
+          <CdOrPrtry>
+            <Cd>OPBD</Cd>
+          </CdOrPrtry>
+        </Tp>
+        <Amt Ccy="CHF">9840</Amt>
+        <CdtDbtInd>CRDT</CdtDbtInd>
+        <Dt>
+          <Dt>2023-02-01</Dt>
+        </Dt>
+      </Bal>
+      <Bal>
+        <Tp>
+          <CdOrPrtry>
+            <Cd>CLBD</Cd>
+          </CdOrPrtry>
+        </Tp>
+        <Amt Ccy="CHF">9760</Amt>
+        <CdtDbtInd>CRDT</CdtDbtInd>
+        <Dt>
+          <Dt>2023-02-01</Dt>
+        </Dt>
+      </Bal>
+      <Bal>
+        <Tp>
+          <CdOrPrtry>
+            <Cd>CLAV</Cd>
+          </CdOrPrtry>
+        </Tp>
+        <Amt Ccy="CHF">9760</Amt>
+        <CdtDbtInd>CRDT</CdtDbtInd>
+        <Dt>
+          <Dt>2023-02-01</Dt>
+        </Dt>
+      </Bal>
+      <Ntry>
+        <Amt Ccy="CHF">80</Amt>
+        <CdtDbtInd>DBIT</CdtDbtInd>
+        <Sts>BOOK</Sts>
+        <BookgDt>
+          <Dt>2023-02-01</Dt>
+        </BookgDt>
+        <ValDt>
+          <Dt>2023-02-01</Dt>
+        </ValDt>
+        <AcctSvcrRef>ACSR230201095801</AcctSvcrRef>
+        <BkTxCd>
+          <Domn>
+            <Cd>PMNT</Cd>
+            <Fmly>
+              <Cd>ICDT</Cd>
+              <SubFmlyCd>AUTT</SubFmlyCd>
+            </Fmly>
+          </Domn>
+          <Prtry>
+            <Cd>Z24</Cd>
+          </Prtry>
+        </BkTxCd>
+        <AddtlInfInd>
+          <MsgNmId>camt.054.001.04</MsgNmId>
+          <MsgId>C054230201095801</MsgId>
+        </AddtlInfInd>
+        <AmtDtls>
+          <InstdAmt>
+            <Amt Ccy="CHF">80</Amt>
+          </InstdAmt>
+          <TxAmt>
+            <Amt Ccy="CHF">80</Amt>
+          </TxAmt>
+        </AmtDtls>
+        <NtryDtls>
+          <Btch>
+            <MsgId>UXC23020100044</MsgId>
+            <PmtInfId>UXC23020100044R00001</PmtInfId>
+            <NbOfTxs>8</NbOfTxs>
+            <TtlAmt Ccy="CHF">80</TtlAmt>
+            <CdtDbtInd>DBIT</CdtDbtInd>
+          </Btch>
+        </NtryDtls>
+        <AddtlNtryInf>Order</AddtlNtryInf>
+      </Ntry>
+    </Stmt>
+  </BkToCstmrStmt>
+</Document>
