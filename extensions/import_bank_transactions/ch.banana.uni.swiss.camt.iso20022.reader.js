@@ -67,7 +67,7 @@ function exec(fileContent, fileId, filePath, fileName, fileDateTime, fileSuffix,
 
 function processXmlFile(fileId, filePath, fileDateTime, fileContent, isTest) {
     let iso20022_swiss = new ISO20022_Swiss_JSONConverter();
-    if (iso20022_swiss.match(fileContent, isTest)) {
+    if (iso20022_swiss.match(fileContent)) {
         //Banana.console.debug("match swiss format: " + filePath);
         let jsonData = iso20022_swiss.convertToJson(fileContent, fileId, filePath, fileDateTime);
         if (jsonData) {
@@ -76,7 +76,7 @@ function processXmlFile(fileId, filePath, fileDateTime, fileContent, isTest) {
     }
 
     let iso20022_universal = new ISO20022_Universal_JSONConverter();
-    if (iso20022_universal.match(fileContent, isTest)) {
+    if (iso20022_universal.match(fileContent)) {
         //Banana.console.debug("match universal format: " + filePath);
         let jsonData = iso20022_universal.convertToJson(fileContent, fileId, filePath, fileDateTime);
         if (jsonData) {
@@ -206,24 +206,24 @@ var ISO20022_Swiss_JSONConverter = class ISO20022_Swiss_JSONConverter {
         if (!xmlDoc)
             return false;
 
-        /** We do not do pattern validation during tests for convenience, 
-        * otherwise an alternative relative path to the patterns would 
-        * have to be defined in the tests. We use already validated schemes in the tests */
+        /**We check schemas using the <Document xmlns="urn:iso:std:iso:20022:tech:xsd:camt.053.001.04"> tag
+         * in xml files and not the Banana.Xml.Validate API as casuses problems with multi threading and generally
+         * slows down a lot the process.*/
 
         let docNode = xmlDoc.firstChildElement(); // 'Document'
         this.schema = docNode.attribute('xmlns');
         this.schemaNr = extractSchemaNumber(this.schema);
         if (this.schema.indexOf('camt.052') >= 0) {         // Check for CAMT.052
             this.camtType = "CAMT.052";
-            let isValid = this.isValidCamt052Schema(xmlDoc, isTest);
+            let isValid = this.isValidCamt052Schema();
             return isValid;
         } else if (this.schema.indexOf('camt.053') >= 0) { // Check for CAMT.053
             this.camtType = "CAMT.053";
-            let isValid = this.isValidCamt053Schema(xmlDoc, isTest);
+            let isValid = this.isValidCamt053Schema();
             return isValid;
         } else if (this.schema.indexOf('camt.054') >= 0) { // Check for CAMT.054
             this.camtType = "CAMT.054";
-            let isValid = this.isValidCamt054Schema(xmlDoc, isTest);
+            let isValid = this.isValidCamt054Schema();
             return isValid;
         } else {
             return false;
@@ -231,35 +231,61 @@ var ISO20022_Swiss_JSONConverter = class ISO20022_Swiss_JSONConverter {
     }
 
     /** This function tests wether the xml stucture is valid */
-    isValidCamt052Schema(xmlDoc, isTest) {
-        /** we do not perform validation during test*/
-        if (isTest)
-            return true;
-        if (Banana.Xml.validate(xmlDoc, this.schemaFileName_05204)) // Check old schema.
-            return true;
-        if (Banana.Xml.validate(xmlDoc, this.schemaFileName_05208)) // Check new schema
-            return true;
-        return false;
+    isValidCamt052Schema() {
+        let refSchemas = this.getCamt052RefSchemas();
+        switch (refSchemas) {
+            case this.schema:
+                return true;
+            default:
+                return false;
+        }
     }
 
-    isValidCamt053Schema(xmlDoc, isTest) {
-        if (isTest)
-            return true;
-        if (Banana.Xml.validate(xmlDoc, this.schemaFileName_05304)) // Check old schema.
-            return true;
-        if (Banana.Xml.validate(xmlDoc, this.schemaFileName_05308)) // Check new schema
-            return true;
-        return false;
+    getCamt052RefSchemas() {
+        const schema05204Ref = "urn:iso:std:iso:20022:tech:xsd:camt.052.001.04";
+        const schema05208Ref = "urn:iso:std:iso:20022:tech:xsd:camt.052.001.08";
+        let schemasRefList = [];
+        schemasRefList.push(schema05204Ref);
+        schemasRefList.push(schema05208Ref);
+        return schemasRefList;
     }
 
-    isValidCamt054Schema(xmlDoc, isTest) {
-        if (isTest)
-            return true;
-        if (Banana.Xml.validate(xmlDoc, this.schemaFileName_05404)) // Check old schema.
-            return true;
-        if (Banana.Xml.validate(xmlDoc, this.schemaFileName_05408)) // Check new schema
-            return true;
-        return false;
+    isValidCamt053Schema() {
+        let refSchemas = this.getCamt053RefSchemas();
+        switch (refSchemas) {
+            case this.schema:
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    getCamt053RefSchemas() {
+        const schema05304Ref = "urn:iso:std:iso:20022:tech:xsd:camt.053.001.04";
+        const schema05308Ref = "urn:iso:std:iso:20022:tech:xsd:camt.053.001.08";
+        let schemasRefList = [];
+        schemasRefList.push(schema05304Ref);
+        schemasRefList.push(schema05308Ref);
+        return schemasRefList;
+    }
+
+    isValidCamt054Schema() {
+        let refSchemas = this.getCamt054RefSchemas();
+        switch (refSchemas) {
+            case this.schema:
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    getCamt054RefSchemas() {
+        const schema05404Ref = "urn:iso:std:iso:20022:tech:xsd:camt.054.001.04";
+        const schema05408Ref = "urn:iso:std:iso:20022:tech:xsd:camt.054.001.08";
+        let schemasRefList = [];
+        schemasRefList.push(schema05404Ref);
+        schemasRefList.push(schema05408Ref);
+        return schemasRefList;
     }
 
     convertToJson(fileContent, fileId, filePath, fileDateTime) {
@@ -1543,6 +1569,118 @@ var ISO20022_Universal_JSONConverter = class ISO20022_Universal_JSONConverter {
         }
 
         return transactions;
+    }
+}
+
+/**
+ * This class takes the data from a file ISO 20022 Camt052/53/54 with general specifics
+ * and returns a JSON with the file data.
+ */
+var ISO20022_General_JSONConverter = class ISO20022_General_JSONConverter {
+    constructor() {
+        //...
+    }
+
+    /**
+    * Check if the file is a ISO20022 Camt 052/053/054 with General specifics.
+    * @param {*} fileContent 
+   */
+    match(fileContent) {
+        let xmlDoc = Banana.Xml.parse(fileContent);
+        //Banana.console.debug("error: " + Banana.Xml.errorString);
+        if (!xmlDoc)
+            return false;
+        let root = xmlDoc.firstChildElement();
+        if (!root)
+            return false;
+        // Check for CAMT.052
+        if (root.firstChildElement() === 'BkToCstmrAcctRpt' && root.namespaceURI().includes('camt.052')) {
+            this.camtType = "CAMT.052";
+            let isValid = this.isValidCamt052Schema();
+            return isValid;
+        } else if (docNode.firstChildElement() === 'BkToCstmrStmt' &&         // Check for CAMT.053
+            docNode.namespaceURI().includes('camt.053')) {
+            this.camtType = "CAMT.053";
+            let isValid = this.isValidCamt053Schema();
+            return isValid;
+        } else if (docNode.firstChildElement() === 'BkToCstmrDbtCdtNtfctn' &&
+            docNode.namespaceURI().includes('camt.054')) {         // Check for CAMT.054
+            this.camtType = "CAMT.054";
+            let isValid = this.isValidCamt054Schema();
+            return isValid;
+        }
+        return false
+    }
+
+    /** This function tests wether the xml stucture is valid */
+    isValidCamt052Schema() {
+        let refSchemas = this.getCamt052RefSchemas();
+        switch (refSchemas) {
+            case this.schema:
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    getCamt052RefSchemas() {
+        const schema05205Ref = "urn:iso:std:iso:20022:tech:xsd:camt.052.001.05";
+        const schema05208Ref = "urn:iso:std:iso:20022:tech:xsd:camt.052.001.08";
+        const schema05212Ref = "urn:iso:std:iso:20022:tech:xsd:camt.052.001.12";
+        let schemasRefList = [];
+        schemasRefList.push(schema05205Ref);
+        schemasRefList.push(schema05208Ref);
+        schemasRefList.push(schema05212Ref);
+        return schemasRefList;
+    }
+
+
+    isValidCamt053Schema() {
+        let refSchemas = this.getCamt053RefSchemas();
+        switch (refSchemas) {
+            case this.schema:
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    getCamt053RefSchemas() {
+        const schema05305Ref = "urn:iso:std:iso:20022:tech:xsd:camt.053.001.05";
+        const schema05308Ref = "urn:iso:std:iso:20022:tech:xsd:camt.053.001.08";
+        const schema05312Ref = "urn:iso:std:iso:20022:tech:xsd:camt.053.001.12";
+        let schemasRefList = [];
+        schemasRefList.push(schema05305Ref);
+        schemasRefList.push(schema05308Ref);
+        schemasRefList.push(schema05312Ref);
+        return schemasRefList;
+    }
+
+    isValidCamt054Schema() {
+        let refSchemas = this.getCamt054RefSchemas();
+        switch (refSchemas) {
+            case this.schema:
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    getCamt054RefSchemas() {
+        const schema05405Ref = "urn:iso:std:iso:20022:tech:xsd:camt.054.001.05";
+        const schema05408Ref = "urn:iso:std:iso:20022:tech:xsd:camt.054.001.08";
+        const schema05412Ref = "urn:iso:std:iso:20022:tech:xsd:camt.054.001.12";
+        let schemasRefList = [];
+        schemasRefList.push(schema05405Ref);
+        schemasRefList.push(schema05408Ref);
+        schemasRefList.push(schema05412Ref);
+        return schemasRefList;
+    }
+
+    convertToJson(fileContent, fileId, filePath, fileDateTime) {
+        let xmlDoc = Banana.Xml.parse(fileContent);
+        let jsonDoc = {};
+        return jsonDoc;
     }
 }
 
