@@ -518,7 +518,7 @@ function exec(inData, options) {
     let banDoc = Banana.document;
     let docInfo = getDocumentInfo(banDoc);
 
-    if (isMultiCurrency(banDoc) || !verifyBananaVersion())
+    if (isMultiCurrency(banDoc) || !verifyBananaVersion(banDoc))
         return "@Cancel";
 
     var comboboxParam = getComboBoxElement();

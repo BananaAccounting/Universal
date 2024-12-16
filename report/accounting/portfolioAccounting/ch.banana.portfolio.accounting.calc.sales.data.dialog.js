@@ -149,7 +149,7 @@ function exec() {
     let banDoc = Banana.document;
     let docInfo = getDocumentInfo(banDoc);
 
-    if (!verifyBananaVersion())
+    if (!verifyBananaVersion(banDoc))
         return "@Cancel";
     //fill the combobox with the existent groups and fill the labelw with the known data
     insertComboBoxElements(banDoc, docInfo);
