@@ -1,4 +1,4 @@
-// Copyright [2023] [Banana.ch SA - Lugano Switzerland]
+// Copyright [2024] [Banana.ch SA - Lugano Switzerland]
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
 
 
 
-/* Print preferences update: 2023-03-10 */
+/* Print preferences update: 2024-12-16 */
 
 
 
@@ -112,6 +112,10 @@ function getPrintPreferences_en() {
           {
             "id":"proforma_invoice",
             "text": "Proforma Invoice"
+          },
+          {
+            "id":"order_confirmation",
+            "text": "Order Confirmation"
           }
         ],
         "default": "automatic"
@@ -167,6 +171,10 @@ function getPrintPreferences_it() {
           {
             "id":"proforma_invoice",
             "text": "Fattura Proforma"
+          },
+          {
+            "id":"order_confirmation",
+            "text": "Conferma d'ordine"
           }
         ],
         "default": "automatic"
@@ -222,6 +230,10 @@ function getPrintPreferences_fr() {
           {
             "id":"proforma_invoice",
             "text": "Facture Proforma"
+          },
+          {
+            "id":"order_confirmation",
+            "text": "Confirmation de commande"
           }
         ],
         "default": "automatic"
@@ -277,6 +289,10 @@ function getPrintPreferences_de() {
           {
             "id":"proforma_invoice",
             "text": "Proforma-Rechnung"
+          },
+          {
+            "id":"order_confirmation",
+            "text": "Bestellbestätigung"
           }
         ],
         "default": "automatic"
@@ -332,6 +348,10 @@ function getPrintPreferences_nl() {
           {
             "id":"proforma_invoice",
             "text": "Proforma factuur"
+          },
+          {
+            "id":"order_confirmation",
+            "text": "Betalingsbevestiging"
           }
         ],
         "default": "automatic"
@@ -387,6 +407,10 @@ function getPrintPreferences_zh() {
           {
             "id":"proforma_invoice",
             "text": "形式发票"
+          },
+          {
+            "id":"order_confirmation",
+            "text": "订单确认"
           }
         ],
         "default": "automatic"
