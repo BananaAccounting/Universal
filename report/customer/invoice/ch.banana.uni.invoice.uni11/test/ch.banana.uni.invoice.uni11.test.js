@@ -1,4 +1,4 @@
-// Copyright [2022] [Banana.ch SA - Lugano Switzerland]
+// Copyright [2024] [Banana.ch SA - Lugano Switzerland]
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 // @id = ch.banana.uni.invoice.uni11.test
 // @api = 1.0
-// @pubdate = 2023-03-10
+// @pubdate = 2024-12-16
 // @publisher = Banana.ch SA
 // @description = <TEST ch.banana.uni.invoice.uni11.js>
 // @task = app.command
@@ -117,6 +117,7 @@ ReportInvoiceTemplate11.prototype.testReport = function() {
     this.addReport(banDoc, jsonInvoices[i], "reminder_3");
     this.addReport(banDoc, jsonInvoices[i], "proforma_invoice");
     this.addReport(banDoc, jsonInvoices[i], "estimate");
+    this.addReport(banDoc, jsonInvoices[i], "order_confirmation");
   }
 }
 
@@ -215,6 +216,11 @@ function setUserParam(texts) {
   userParam.en_title_doctype_17 = texts.offer + " <DocInvoice>";
   userParam.en_text_begin_offer = 'This is the begin text of the estimate.';
   userParam.en_text_final_offer = 'This is the final text of the estimate.\nIt can be on multiple lines.';
+  userParam.en_text_info_order_confirmation_number = texts.number_order_confirmation;
+  userParam.en_text_info_date_order_confirmation = texts.date_order_confirmation;
+  userParam.en_title_order_confirmation = texts.order_confirmation;
+  userParam.en_text_begin_order_confirmation = 'This is the begin text of the order confirmation.';
+  userParam.en_text_final_order_confirmation = 'This is the final text of the order confirmation.\nIt can be on multiple lines.\nThank you very much.';
 
   //Styles
   userParam.text_color = '#000000';
