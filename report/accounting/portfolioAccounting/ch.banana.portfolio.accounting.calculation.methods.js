@@ -961,7 +961,7 @@ function getErrorMessage(errorId, lang, userParam, refTableName) {
 
 //VERSION CONTROL FUNCTIONS
 function verifyBananaVersion(banDoc) {
-    if (banDoc)
+    if (!banDoc)
         return false;
 
     let lang = "en";
