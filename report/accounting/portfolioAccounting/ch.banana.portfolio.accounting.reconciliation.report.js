@@ -32,7 +32,7 @@ function exec(inData, options) {
 
     var banDoc = Banana.document;
 
-    if (!verifyBananaVersion())
+    if (!verifyBananaVersion(banDoc))
         return "@Cancel";
 
 
