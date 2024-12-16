@@ -217,7 +217,7 @@ function exec() {
     if (banDoc.cursor.tableName == "Transactions")
         currentRowNr = banDoc.cursor.rowNr;
 
-    if (!verifyBananaVersion())
+    if (!verifyBananaVersion(banDoc))
         return "@Cancel";
 
     const dlgCalculateSaleDataManager = new DlgCalculateSaleDataManager(banDoc, docInfo, currentRowNr);

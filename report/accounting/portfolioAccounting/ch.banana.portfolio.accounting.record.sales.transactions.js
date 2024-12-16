@@ -41,7 +41,7 @@ function exec() { // se viene chiamato dal dialogo, devo passare gia i parametri
     if (banDoc.cursor.tableName == "Transactions")
         currentRowNr = banDoc.cursor.rowNr;
 
-    if (!verifyBananaVersion())
+    if (!verifyBananaVersion(banDoc))
         return "@Cancel";
 
     let docChange = getRecordSalesTransactions(banDoc, docInfo, currentRowNr);

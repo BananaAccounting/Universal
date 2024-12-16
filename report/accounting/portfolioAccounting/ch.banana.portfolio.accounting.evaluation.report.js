@@ -594,7 +594,7 @@ function exec() {
     let banDoc = Banana.document;
     let docInfo = getDocumentInfo(banDoc);
 
-    if (!verifyBananaVersion())
+    if (!verifyBananaVersion(banDoc))
         return "@Cancel";
 
     var comboboxParam = getComboBoxElement();

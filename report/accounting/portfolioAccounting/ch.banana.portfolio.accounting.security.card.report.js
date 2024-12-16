@@ -47,7 +47,7 @@ function exec(inData, options) {
     var itemCurrency = "";
     itemCardData.date = new Date();
 
-    if (!verifyBananaVersion())
+    if (!verifyBananaVersion(banDoc))
         return "@Cancel";
 
     selectedItem = getComboBoxElement(scriptId, dlgTitle, dlgLabel);
