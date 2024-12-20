@@ -35,11 +35,7 @@
 function exec() {
     let userParam = initDialogParams();
     let settingsId = "ch.banana.portfolio.accounting.accounts.dialog";
-    let savedParam = Banana.document.getScriptSettings(settingsId);
-    if (savedParam.length > 0) {
-        userParam = JSON.parse(savedParam);
-    }
-
+    userParam = getFormattedSavedParams(settingsId);
     userParam = verifyParam(userParam);
     let dlgTitle = 'Account Settings';
     let convertedParam = convertParam(userParam);

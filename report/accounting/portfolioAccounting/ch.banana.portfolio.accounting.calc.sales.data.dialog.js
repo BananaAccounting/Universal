@@ -42,6 +42,8 @@ class DlgCalculateSaleDataManager {
         this.lineEditQt = "";
         this.lineEditMarketPrice = "";
         this.lineEditCurrentExRate = "";
+        this.lineEditBankCharges = "";
+        this.lineEditOtherCharges = "";
         this.labelSaleResultPrev = "";
         this.labelAvgCostPrev = "";
         this.labelExcResultPrev = "";
@@ -50,9 +52,10 @@ class DlgCalculateSaleDataManager {
         this.buttonOk = "";
         this.buttonClose = "";
         this.buttonShowResults = "";
+        this.buttonCreateSalesRecord = "";
 
         this.currentRowNr = currentRowNr; // Selected row in transactions table.
-        this.currentRowObj = getCurrentRowObj(this.banDoc, this.currentRowNr);
+        this.currentRowObj = getCurrentRowObj(this.banDoc, this.currentRowNr, "Transactions");
 
         this.init();
 
@@ -61,8 +64,13 @@ class DlgCalculateSaleDataManager {
             this.updateDialogData();
         };
 
+        this.dialog.createSalesRecord = () => {
+            this.createDocChangeSaleRecord();
+        };
+
         /** Dialog's events declaration */
         this.buttonShowResults.clicked.connect(this.dialog, this.dialog.showPreviews);
+        this.buttonCreateSalesRecord.clicked.connect(this.dialog, this.dialog.showPreviews);
 
     }
 
@@ -74,6 +82,8 @@ class DlgCalculateSaleDataManager {
         this.lineEditQt = this.dialog.findChild('quantity_lineEdit');
         this.lineEditMarketPrice = this.dialog.findChild('marketPrice_lineEdit');
         this.lineEditCurrentExRate = this.dialog.findChild('currentExchangeRate_lineEdit');
+        this.lineEditBankCharges = this.dialog.findChild('bankCharges_lineEdit');
+        this.lineEditOtherCharges = this.dialog.findChild('othercharges_lineEdit');
 
         //preview result label
         this.labelSaleResultPrev = this.dialog.findChild('saleResultPreview_label');
@@ -86,6 +96,7 @@ class DlgCalculateSaleDataManager {
         this.buttonOk = this.dialog.findChild('okButton');
         this.buttonClose = this.dialog.findChild('closeButton');
         this.buttonShowResults = this.dialog.findChild('showResultsPreview_button');
+        this.buttonCreateSalesRecord = this.dialog.findChild('createSaleRecord_button');
 
         // Displayed values
         this.insertComboBoxElements(this.banDoc, this.docInfo);
@@ -94,6 +105,7 @@ class DlgCalculateSaleDataManager {
         this.setCurrentPrice();
         this.setCurrentExchangeRate();
     }
+
     setCurrentItem() {
         if (!this.currentRowObj)
             return;
@@ -122,6 +134,17 @@ class DlgCalculateSaleDataManager {
         this.lineEditCurrentExRate.setText(exRate);
     }
 
+    createDocChangeSaleRecord() {
+        userParams = this.readDialogParams();
+        itemsData = getItemsTableData(this.banDoc, this.docInfo);
+        let item = userParams.selectedItem;
+        if (!isValidItemSelected(item, itemsData))
+            return;
+
+        // Riprendere da quiii... 23.12
+
+    }
+
     updateDialogData() {
         let exRateResult = "";
         let avgCost = "";
@@ -136,16 +159,10 @@ class DlgCalculateSaleDataManager {
 
         userParams = this.readDialogParams();
         itemsData = getItemsTableData(this.banDoc, this.docInfo);
-
         let item = userParams.selectedItem;
-        // Check if the item exists
-        const itemObject = itemsData.find(obj => obj.item === item)
-        if (!itemObject) {
-            const ITEM_NOT_FOUND = "ITEM_NOT_FOUND";
-            let msg = getErrorMessage_MissingElements(ITEM_NOT_FOUND, item);
-            this.banDoc.addMessage(msg, ITEM_NOT_FOUND);
-            return "";
-        }
+
+        if (!isValidItemSelected(item, itemsData))
+            return;
 
         salesData = calculateShareSaleData(this.banDoc, this.docInfo, itemObject, userParams, this.currentRowNr);
         assetCurr = itemObject.currency;
@@ -172,6 +189,15 @@ class DlgCalculateSaleDataManager {
         }
     }
 
+    isvalidItemSelected(selectedItem, itemsData) {
+        const itemObject = itemsData.find(obj => obj.item === selectedItem)
+        if (!itemObject) {
+            const ITEM_NOT_FOUND = "ITEM_NOT_FOUND";
+            let msg = getErrorMessage_MissingElements(ITEM_NOT_FOUND, item);
+            this.banDoc.addMessage(msg, ITEM_NOT_FOUND);
+        }
+    }
+
     readDialogParams() {
         var userParam = {};
 
@@ -179,6 +205,8 @@ class DlgCalculateSaleDataManager {
         userParam.quantity = this.lineEditQt.text;
         userParam.marketPrice = this.lineEditMarketPrice.text;
         userParam.currExRate = this.lineEditCurrentExRate.text;
+        userParam.bankCharges = this.lineEditBankCharges.text;
+        userParam.bankCharges = this.lineEditOtherCharges.text;
 
         return userParam;
 
@@ -213,9 +241,7 @@ function exec() {
         return;
 
     let docInfo = getDocumentInfo(banDoc);
-    let currentRowNr = "";
-    if (banDoc.cursor.tableName == "Transactions")
-        currentRowNr = banDoc.cursor.rowNr;
+    let currentRowNr = getCurrentRowNumber(banDoc, "Transactions");
 
     if (!verifyBananaVersion(banDoc))
         return "@Cancel";

@@ -42,7 +42,6 @@ function getReportHeader(report, docInfo) {
     var headerParagraph = report.getHeader().addSection();
     headerParagraph.addParagraph(docInfo.company, "styleNormalHeader styleCompanyName");
     headerParagraph.addParagraph("", "");
-
 }
 
 function getComboBoxElement(scriptId, title, label) {
@@ -76,8 +75,42 @@ function getComboBoxElement(scriptId, title, label) {
     return item;
 }
 
-function getCurrentRowObj(banDoc, currentRowNr) {
-    var table = banDoc.table("Transactions");
+/** Returns the date of the current day in the internal format YYYYmmDD */
+function getCurrentDate() {
+    const today = new Date();
+    const yyyy = today.getFullYear();
+    const mm = String(today.getMonth() + 1).padStart(2, '0'); // Mesi da 0 a 11
+    const dd = String(today.getDate()).padStart(2, '0'); // Giorno del mese
+
+    return `${yyyy}${mm}${dd}`;
+}
+
+function getCurrentRowNumber(banDoc, tableName) {
+
+    let currentRowNr = "";
+
+    if (!banDoc)
+        return currentRowNr;
+
+    if (banDoc.cursor.tableName == tableName)
+        currentRowNr = banDoc.cursor.rowNr;
+
+    return currentRowNr;
+}
+
+function getCurrentLang(banDoc) {
+    let lang = 'en';
+    if (banDoc)
+        lang = banDoc.locale;
+    else if (Banana.application.locale)
+        lang = Banana.application.locale;
+    if (lang.length > 2)
+        lang = lang.slice(0, 2);
+    return lang;
+}
+
+function getCurrentRowObj(banDoc, currentRowNr, tableName) {
+    var table = banDoc.table(tableName);
     if (!table)
         return {};
     return table.row(currentRowNr);
@@ -163,6 +196,16 @@ function getJournalData(docInfo, journal) {
 
     return journalData;
 
+}
+
+function getFormattedSavedParams(paramsId) {
+    let savedParam = Banana.document.getScriptSettings(paramsId);
+    let userParam = {};
+    if (savedParam.length > 0) {
+        userParam = JSON.parse(savedParam);
+    }
+
+    return userParam;
 }
 
 /**
@@ -993,7 +1036,7 @@ function isMultiCurrency(banDoc) {
 
 //VERSION CONTROL FUNCTIONS
 function verifyBananaVersion(banDoc) {
-    if (banDoc)
+    if (!banDoc)
         return false;
 
     let BAN_VERSION_MIN = "10.0.10";

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>309</width>
-    <height>338</height>
+    <width>384</width>
+    <height>454</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,128 +15,173 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <layout class="QFormLayout" name="formLayout">
-     <property name="verticalSpacing">
-      <number>6</number>
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string>Security Data</string>
      </property>
-     <item row="1" column="0">
-      <widget class="QLabel" name="quantity_label">
-       <property name="text">
-        <string>Quantity</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <widget class="QLineEdit" name="quantity_lineEdit"/>
-     </item>
-     <item row="2" column="0">
-      <widget class="QLabel" name="marketPrice_label">
-       <property name="text">
-        <string>Current price</string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="1">
-      <widget class="QLineEdit" name="marketPrice_lineEdit"/>
-     </item>
-     <item row="3" column="0">
-      <widget class="QLabel" name="currentExchangerate_label">
-       <property name="text">
-        <string>Current exchange rate </string>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="1">
-      <widget class="QLineEdit" name="currentExchangeRate_lineEdit"/>
-     </item>
-     <item row="0" column="1">
-      <widget class="QComboBox" name="item_comboBox"/>
-     </item>
-     <item row="0" column="0">
-      <widget class="QLabel" name="item_label">
-       <property name="text">
-        <string>Security id</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="4" column="2">
+       <widget class="QLineEdit" name="bankCharges_lineEdit"/>
+      </item>
+      <item row="2" column="2">
+       <widget class="QLineEdit" name="marketPrice_lineEdit"/>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="marketPrice_label">
+        <property name="text">
+         <string>Current price</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="2">
+       <widget class="QLineEdit" name="quantity_lineEdit"/>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="item_label">
+        <property name="text">
+         <string>Id (ISIN)</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="2">
+       <widget class="QComboBox" name="item_comboBox"/>
+      </item>
+      <item row="4" column="0">
+       <widget class="QLabel" name="bankCharges_label">
+        <property name="text">
+         <string>Bank charges</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="quantity_label">
+        <property name="text">
+         <string>Quantity</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="2">
+       <widget class="QLineEdit" name="currentExchangeRate_lineEdit"/>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="currentExchangerate_label">
+        <property name="text">
+         <string>Current exchange rate </string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="0">
+       <widget class="QLabel" name="otherCharges_label">
+        <property name="text">
+         <string>Other charges</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="2">
+       <widget class="QLineEdit" name="otherCharges_lineEdit"/>
+      </item>
+     </layout>
+    </widget>
    </item>
    <item>
-    <layout class="QVBoxLayout" name="verticalLayout_2"/>
-   </item>
-   <item>
-    <layout class="QFormLayout" name="formLayout_3">
-     <item row="0" column="0">
-      <widget class="QLabel" name="averageCostTitle_label">
-       <property name="text">
-        <string>Book value per unit</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="QLabel" name="averageCost_label">
-       <property name="text">
-        <string>0</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="AverageValueOfSharesTitle_label">
-       <property name="text">
-        <string>Total book value</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <widget class="QLabel" name="averageValueOfShares_label">
-       <property name="text">
-        <string>0</string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="0">
-      <widget class="QLabel" name="TotalValueOfSharestitle_label">
-       <property name="text">
-        <string>Total at current price</string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="1">
-      <widget class="QLabel" name="totalValueOfShares_label">
-       <property name="text">
-        <string>0</string>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="0">
-      <widget class="QLabel" name="saleResultPreviewTitle_label">
-       <property name="text">
-        <string>Book profit/loss</string>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="1">
-      <widget class="QLabel" name="saleResultPreview_label">
-       <property name="text">
-        <string>0</string>
-       </property>
-      </widget>
-     </item>
-     <item row="4" column="0">
-      <widget class="QLabel" name="exchangeResultPreviewTitle_label">
-       <property name="text">
-        <string>Exchange rate profit/loss </string>
-       </property>
-      </widget>
-     </item>
-     <item row="4" column="1">
-      <widget class="QLabel" name="exchangeResultPreview_label">
-       <property name="text">
-        <string>0</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
+    <widget class="QGroupBox" name="groupBox_2">
+     <property name="title">
+      <string>Results preview</string>
+     </property>
+     <property name="flat">
+      <bool>false</bool>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_2">
+      <item row="1" column="0">
+       <widget class="QLabel" name="AverageValueOfSharesTitle_label">
+        <property name="text">
+         <string>Total book value</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="TotalValueOfSharestitle_label">
+        <property name="text">
+         <string>Total at current price</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLabel" name="averageCost_label">
+        <property name="layoutDirection">
+         <enum>Qt::LayoutDirection::RightToLeft</enum>
+        </property>
+        <property name="text">
+         <string>0</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="averageCostTitle_label">
+        <property name="text">
+         <string>Book value per unit</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QLabel" name="saleResultPreview_label">
+        <property name="text">
+         <string>0</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="saleResultPreviewTitle_label">
+        <property name="text">
+         <string>Book profit/loss</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QLabel" name="totalValueOfShares_label">
+        <property name="text">
+         <string>0</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QLabel" name="averageValueOfShares_label">
+        <property name="text">
+         <string>0</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="QLabel" name="exchangeResultPreviewTitle_label">
+        <property name="text">
+         <string>Exchange rate profit/loss </string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="QLabel" name="exchangeResultPreview_label">
+        <property name="text">
+         <string>0</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
    </item>
    <item>
     <spacer name="verticalSpacer">
@@ -158,6 +203,13 @@
     <widget class="QPushButton" name="showResultsPreview_button">
      <property name="text">
       <string>Calculate results</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="createSaleRecord_button">
+     <property name="text">
+      <string>Create sales record</string>
      </property>
     </widget>
    </item>
