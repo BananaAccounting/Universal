@@ -1,4 +1,4 @@
-// Copyright [2021] [Banana.ch SA - Lugano Switzerland]
+// Copyright [2024] [Banana.ch SA - Lugano Switzerland]
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -66,7 +66,7 @@ class DlgCalculateSaleDataManager {
         };
 
         this.dialog.createSalesRecord = () => {
-            this.createDocChangeSaleRecord();
+            let JsonDoc = this.createDocChangeSaleRecord();
         };
 
         /** Dialog's events declaration */
@@ -152,7 +152,7 @@ class DlgCalculateSaleDataManager {
         salesData = calculateShareSaleData(this.banDoc, this.docInfo, itemObj, dlgParams, this.currentRowNr);
         const recordSalesTransactions = new RecordSalesTransactions(this.banDoc, this.docInfo, salesData,
             dlgParams, itemsData, itemObj, this.currentRowNr);
-        recordSalesTransactions.getRecordSalesTransactions();
+        return recordSalesTransactions.getRecordSalesTransactions();
 
     }
 
@@ -220,7 +220,7 @@ class DlgCalculateSaleDataManager {
         userParam.marketPrice = this.lineEditMarketPrice.text;
         userParam.currExRate = this.lineEditCurrentExRate.text;
         userParam.bankCharges = this.lineEditBankCharges.text;
-        userParam.bankCharges = this.lineEditOtherCharges.text;
+        userParam.otherCharges = this.lineEditOtherCharges.text;
 
         return userParam;
 

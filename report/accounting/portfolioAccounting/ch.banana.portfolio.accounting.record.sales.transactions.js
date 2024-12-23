@@ -56,12 +56,12 @@ function exec() {
 
 /** We must use the class declaration using "var" to be able to correctly use this class outside this file. */
 var RecordSalesTransactions = class RecordSalesTransactions {
-    constructor(banDoc, docInfo, salesData, calcParams, itemsData, currItemObj, currentRowNr) {
+    constructor(banDoc, docInfo, salesData, dlgParams, itemsData, currItemObj, currentRowNr) {
         this.banDoc = banDoc;
         this.docInfo = docInfo;
         this.salesData = salesData;
         this.currentRowNr = currentRowNr;
-        this.calcParams = calcParams;
+        this.dlgParams = dlgParams;
         this.jsonDoc = { "format": "documentChange", "error": "" };
         this.settingsId = "ch.banana.portfolio.accounting.accounts.dialog";
         this.savedParams = getFormattedSavedParams(this.settingsId); // To access to the defined accounts
@@ -76,9 +76,8 @@ var RecordSalesTransactions = class RecordSalesTransactions {
             return jsonDoc;
         // Stocks.
         jsonDoc["data"] = this.getStockSaleResultDocChangeTransaction();
-
+        Banana.Ui.showText(JSON.stringify(jsonDoc));
         // Bonds (to define via itemType).
-
         return jsonDoc;
     }
 
@@ -94,11 +93,9 @@ var RecordSalesTransactions = class RecordSalesTransactions {
     */
     getStockSaleResultDocChangeTransaction() {
         let jsonDoc = this.getDocumentChangeInit();
-        let dataUnit = {};
-        dataUnit.nameXml = "Transactions";
-        let dataUnitFilePorperties = [];
-        dataUnitFilePorperties.data = {};
-        dataUnitFilePorperties.data.rowLists = [];
+        jsonDoc.document.dataUnits.nameXml = "Transactions";
+        jsonDoc.document.dataUnits.data = {};
+        jsonDoc.document.dataUnits.data.rowLists = [];
         let rows = [];
 
         if (this.docInfo.isMultiCurrency)
@@ -106,8 +103,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         else
             rows = this.getTransactionsRows();
 
-        dataUnitFilePorperties.data.rowLists.push({ "rows": rows });
-        jsonDoc.document.dataUnits.push(dataUnit);
+        jsonDoc.document.dataUnits.data.rowLists.push({ "rows": rows }); // Riprendere da qui e testare con le spese bancarie, vedere perche non vaa 27.12
         return jsonDoc;
     }
 
@@ -136,7 +132,11 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         row.fields["ItemsId"] = this.itemObject.item;
         row.fields["Description"] = this.getBankChargesDescription();
         row.fields["AccountDebit"] = this.savedParams.chargesAccount;
-        row.fields["AmountCurrency"] = "";
+        row.fields["AmountCurrency"] = this.savedParams.bankCharges;
+        row.fields["ExchangeCurrency"] = this.itemObject.currency;
+        row.fields["ExchangeRate"] = this.dlgParams.currExRate;
+
+        return row;
     }
 
     /**
