@@ -204,7 +204,6 @@ function getFormattedSavedParams(paramsId) {
     if (savedParam.length > 0) {
         userParam = JSON.parse(savedParam);
     }
-
     return userParam;
 }
 
@@ -226,7 +225,7 @@ function getTransactionsIdList(journalData) {
 
 }
 
-function calculateShareSaleData(banDoc, docInfo, itemObj, calcParams, currentRowNr) {
+function calculateShareSaleData(banDoc, docInfo, itemObj, dlgParams, currentRowNr) {
 
     let saleData = {};
     let journal = "";
@@ -259,9 +258,9 @@ function calculateShareSaleData(banDoc, docInfo, itemObj, calcParams, currentRow
     accountCardData = getAccountCardData(banDoc, docInfo, itemObj.item, accountCard, itemAccount);
     itemCardData = getItemCardDataList(accountCardData, journalData);
     avgCost = getAvgCost(itemCardData, currentRowNr);
-    quantity = Banana.SDecimal.abs(calcParams.quantity);
-    marketPrice = calcParams.marketPrice;
-    currExRate = calcParams.currExRate;
+    quantity = Banana.SDecimal.abs(dlgParams.quantity);
+    marketPrice = dlgParams.marketPrice;
+    currExRate = dlgParams.currExRate;
     accExRate = getAccountingCourse(itemCardData, currentRowNr);
 
     avgSharesValue = getSharesAvgValue(quantity, avgCost);

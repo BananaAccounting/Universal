@@ -23,8 +23,6 @@
 // @outputformat = none
 // @inputdatasource = none
 // @timeout = -1
-// @includejs = ch.banana.portfolio.accounting.calculation.methods.js
-// @includejs = ch.banana.portfolio.accounting.errormessagges.handler.js
 
 /**
  * This script generates and records the sales transactions.
@@ -49,41 +47,37 @@ function exec() {
     calcParams.currExRate = currentRowObj.value("ExchangeRate");
     calcParams.currency = currentRowObj.value("ExchangeCurrency");
 
-    const recordSalesTransactions = new RecordSalesTransactions(banDoc, docInfo, calcParams, currentRowNr);
+    salesData = calculateShareSaleData(banDoc, docInfo, itemObject, calcParams, currentRowNr);
+    const recordSalesTransactions = new RecordSalesTransactions(banDoc, docInfo, salesData, calcParams, currentRowNr);
     let docChange = recordSalesTransactions.getRecordSalesTransactions();
 
     return docChange;
 }
 
-class RecordSalesTransactions {
-    constructor(banDoc, docInfo, calcParams, currentRowNr) {
+/** We must use the class declaration using "var" to be able to correctly use this class outside this file. */
+var RecordSalesTransactions = class RecordSalesTransactions {
+    constructor(banDoc, docInfo, salesData, calcParams, itemsData, currItemObj, currentRowNr) {
         this.banDoc = banDoc;
         this.docInfo = docInfo;
+        this.salesData = salesData;
         this.currentRowNr = currentRowNr;
         this.calcParams = calcParams;
         this.jsonDoc = { "format": "documentChange", "error": "" };
         this.settingsId = "ch.banana.portfolio.accounting.accounts.dialog";
-        this.userParams = this.getFormattedSavedParams(this.settingsId);
+        this.savedParams = getFormattedSavedParams(this.settingsId); // To access to the defined accounts
         this.texts = this.getTransactionsTexts();
-        this.itemsData = this.getItemsTableData(banDoc, docInfo);
-        this.itemObject = itemsData.find(obj => obj.item === calcParams.itemId);
+        this.itemsData = itemsData;
+        this.itemObject = currItemObj;
         this.itemType = ""; // Stocks, bonds,... Far definire il tipo all'utente in una colonna ?  
     }
-
-    /**
-    * This method could be called:
-    *  - From the exec() function in this script.
-    *  - From the sales data dialog
-    */
     getRecordSalesTransactions() {
-        let saleData = {};
-        if (!this.itemObject)
+        let jsonDoc = {};
+        if (!this.salesData)
             return jsonDoc;
-        // Stocks (to define via itemType)
-        saleData = calculateShareSaleData(this.banDoc, this.docInfo, this.itemObject, this.calcParams, this.currentRowNr);
-        jsonDoc["data"] = this.getStockSaleResultDocChangeTransaction(saleData);
+        // Stocks.
+        jsonDoc["data"] = this.getStockSaleResultDocChangeTransaction();
 
-        // Bonds (to define via itemType)
+        // Bonds (to define via itemType).
 
         return jsonDoc;
     }
@@ -98,18 +92,19 @@ class RecordSalesTransactions {
     *     Loss or profit on sale	    (Loss share account)        (Share account)
     *     Exchange Rate Profit	        (Shares Unicredit)	        (Exchange profit/loss)      (This row is present only in multi-currency accounting)
     */
-    getStockSaleResultDocChangeTransaction(saleData) {
+    getStockSaleResultDocChangeTransaction() {
         let jsonDoc = this.getDocumentChangeInit();
         let dataUnit = {};
         dataUnit.nameXml = "Transactions";
+        let dataUnitFilePorperties = [];
         dataUnitFilePorperties.data = {};
         dataUnitFilePorperties.data.rowLists = [];
         let rows = [];
 
         if (this.docInfo.isMultiCurrency)
-            rows = getTransactionsRowsMulti();
+            rows = this.getTransactionsRowsMulti();
         else
-            rows = getTransactionsRows();
+            rows = this.getTransactionsRows();
 
         dataUnitFilePorperties.data.rowLists.push({ "rows": rows });
         jsonDoc.document.dataUnits.push(dataUnit);
@@ -119,7 +114,7 @@ class RecordSalesTransactions {
     getTransactionsRowsMulti() {
         let rows = [];
         // Bank charges transaction
-        let rowBankCharges = this.getDocChangeRow_bankCharges(saleData);
+        let rowBankCharges = this.getDocChangeRow_bankCharges();
         let rowCashedNet = {};
         let rowSaleResult = {};
 
@@ -131,7 +126,7 @@ class RecordSalesTransactions {
 
     }
 
-    getDocChangeRow_bankCharges(saleData) {
+    getDocChangeRow_bankCharges() {
         let row = {};
         row.operation = {};
         row.operation.name = "add";
@@ -140,7 +135,7 @@ class RecordSalesTransactions {
         row.fields["Date"] = getCurrentDate();
         row.fields["ItemsId"] = this.itemObject.item;
         row.fields["Description"] = this.getBankChargesDescription();
-        row.fields["AccountDebit"] = this.userParams.chargesAccount;
+        row.fields["AccountDebit"] = this.savedParams.chargesAccount;
         row.fields["AmountCurrency"] = "";
     }
 
@@ -154,8 +149,8 @@ class RecordSalesTransactions {
     getBankChargesDescription() {
         let description = this.itemObject.description;
         let accDescr = "";
-        if (this.userParams && this.userParams.chargesAccount) {
-            accDescr = this.userParams.chargesAccount;
+        if (this.savedParams && this.savedParams.chargesAccount) {
+            accDescr = this.savedParams.chargesAccount;
         }
         else {
             accDescr = this.texts.bankCharges;
@@ -172,17 +167,17 @@ class RecordSalesTransactions {
 
         switch (lang) {
             case "it":
-                text = getTransactionsTexts_it();
+                text = this.getTransactionsTexts_it();
                 break;
             case "de":
-                text = getTransactionsTexts_de();
+                text = this.getTransactionsTexts_de();
                 break;
             case "fr":
-                text = getTransactionsTexts_fr();
+                text = this.getTransactionsTexts_fr();
                 break;
             case "en":
             default:
-                text = getTransactionsTexts_en();
+                text = this.getTransactionsTexts_en();
                 break;
         }
 
@@ -231,8 +226,8 @@ class RecordSalesTransactions {
 
         jsonDoc.creator = {};
         var d = new Date();
-        jsonDoc.creator.executionDate = Banana.Converter.toInternalDateFormat(datestring, "yyyymmdd");
-        jsonDoc.creator.executionTime = Banana.Converter.toInternalTimeFormat(timestring, "hh:mm");
+        //jsonDoc.creator.executionDate = Banana.Converter.toInternalDateFormat(datestring, "yyyymmdd");
+        //jsonDoc.creator.executionTime = Banana.Converter.toInternalTimeFormat(timestring, "hh:mm");
         jsonDoc.creator.name = Banana.script.getParamValue('id');
         jsonDoc.creator.version = "1.0";
 

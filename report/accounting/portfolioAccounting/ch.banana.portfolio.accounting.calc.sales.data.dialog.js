@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.portfolio.accounting.js
 // @api = 1.0
-// @pubdate = 2022-02-16
+// @pubdate = 2024-12-23
 // @publisher = Banana.ch SA
 // @description = Calculate Sales Data
 // @task = app.command
@@ -23,6 +23,7 @@
 // @outputformat = none
 // @inputdatasource = none
 // @timeout = -1
+// @includejs = ch.banana.portfolio.accounting.record.sales.transactions.js
 // @includejs = ch.banana.portfolio.accounting.calculation.methods.js
 // @includejs = ch.banana.portfolio.accounting.errormessagges.handler.js
 
@@ -70,7 +71,7 @@ class DlgCalculateSaleDataManager {
 
         /** Dialog's events declaration */
         this.buttonShowResults.clicked.connect(this.dialog, this.dialog.showPreviews);
-        this.buttonCreateSalesRecord.clicked.connect(this.dialog, this.dialog.showPreviews);
+        this.buttonCreateSalesRecord.clicked.connect(this.dialog, this.dialog.createSalesRecord);
 
     }
 
@@ -83,7 +84,7 @@ class DlgCalculateSaleDataManager {
         this.lineEditMarketPrice = this.dialog.findChild('marketPrice_lineEdit');
         this.lineEditCurrentExRate = this.dialog.findChild('currentExchangeRate_lineEdit');
         this.lineEditBankCharges = this.dialog.findChild('bankCharges_lineEdit');
-        this.lineEditOtherCharges = this.dialog.findChild('othercharges_lineEdit');
+        this.lineEditOtherCharges = this.dialog.findChild('otherCharges_lineEdit');
 
         //preview result label
         this.labelSaleResultPrev = this.dialog.findChild('saleResultPreview_label');
@@ -135,13 +136,23 @@ class DlgCalculateSaleDataManager {
     }
 
     createDocChangeSaleRecord() {
-        userParams = this.readDialogParams();
-        itemsData = getItemsTableData(this.banDoc, this.docInfo);
-        let item = userParams.selectedItem;
-        if (!isValidItemSelected(item, itemsData))
+        let dlgParams = this.readDialogParams();
+        let itemsData = getItemsTableData(this.banDoc, this.docInfo);
+
+        if (!itemsData)
             return;
 
-        // Riprendere da quiii... 23.12
+        let salesData = {};
+
+        let item = dlgParams.selectedItem;
+        let itemObj = itemsData.find(obj => obj.item === item);
+        if (!this.isValidItemSelected(item, itemObj))
+            return;
+
+        salesData = calculateShareSaleData(this.banDoc, this.docInfo, itemObj, dlgParams, this.currentRowNr);
+        const recordSalesTransactions = new RecordSalesTransactions(this.banDoc, this.docInfo, salesData,
+            dlgParams, itemsData, itemObj, this.currentRowNr);
+        recordSalesTransactions.getRecordSalesTransactions();
 
     }
 
@@ -154,18 +165,19 @@ class DlgCalculateSaleDataManager {
         let avgSharesValue = "";
         let totalSharesvalue = "";
         let itemsData = [];
-        let userParams = {};
+        let dlgParams = {};
         let salesData = {};
 
-        userParams = this.readDialogParams();
+        dlgParams = this.readDialogParams();
         itemsData = getItemsTableData(this.banDoc, this.docInfo);
-        let item = userParams.selectedItem;
+        let item = dlgParams.selectedItem;
 
-        if (!isValidItemSelected(item, itemsData))
+        let itemObj = itemsData.find(obj => obj.item === item);
+        if (!this.isValidItemSelected(item, itemObj))
             return;
 
-        salesData = calculateShareSaleData(this.banDoc, this.docInfo, itemObject, userParams, this.currentRowNr);
-        assetCurr = itemObject.currency;
+        salesData = calculateShareSaleData(this.banDoc, this.docInfo, itemObj, dlgParams, this.currentRowNr);
+        assetCurr = itemObj.currency;
         baseCurr = this.docInfo.baseCurrency;
 
         avgCost = Banana.Converter.toLocaleNumberFormat(salesData.avgCost, 2, true);
@@ -189,13 +201,15 @@ class DlgCalculateSaleDataManager {
         }
     }
 
-    isvalidItemSelected(selectedItem, itemsData) {
-        const itemObject = itemsData.find(obj => obj.item === selectedItem)
-        if (!itemObject) {
+    isValidItemSelected(selectedItem, itemObj) {
+        if (!itemObj || !selectedItem) {
             const ITEM_NOT_FOUND = "ITEM_NOT_FOUND";
-            let msg = getErrorMessage_MissingElements(ITEM_NOT_FOUND, item);
+            let msg = getErrorMessage_MissingElements(ITEM_NOT_FOUND, selectedItem);
             this.banDoc.addMessage(msg, ITEM_NOT_FOUND);
+            return false;
         }
+
+        return true;
     }
 
     readDialogParams() {
