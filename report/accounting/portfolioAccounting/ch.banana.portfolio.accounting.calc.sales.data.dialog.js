@@ -54,6 +54,7 @@ class DlgCalculateSaleDataManager {
         this.buttonClose = "";
         this.buttonShowResults = "";
         this.buttonCreateSalesRecord = "";
+        this.documentChangeJsonDoc = {};
 
         this.currentRowNr = currentRowNr; // Selected row in transactions table.
         this.currentRowObj = getCurrentRowObj(this.banDoc, this.currentRowNr, "Transactions");
@@ -67,6 +68,8 @@ class DlgCalculateSaleDataManager {
 
         this.dialog.createSalesRecord = () => {
             let JsonDoc = this.createDocChangeSaleRecord();
+            this.documentChangeJsonDoc = JsonDoc;
+            this.dialog.close();
         };
 
         /** Dialog's events declaration */
@@ -256,6 +259,7 @@ function exec() {
 
     let docInfo = getDocumentInfo(banDoc);
     let currentRowNr = getCurrentRowNumber(banDoc, "Transactions");
+    let docChange = {};
 
     if (!verifyBananaVersion(banDoc))
         return "@Cancel";
@@ -263,12 +267,11 @@ function exec() {
     const dlgCalculateSaleDataManager = new DlgCalculateSaleDataManager(banDoc, docInfo, currentRowNr);
 
     Banana.application.progressBar.pause();
-    var dlgResult = dlgCalculateSaleDataManager.dialog.exec();
+    dlgCalculateSaleDataManager.dialog.exec();
+    docChange = dlgCalculateSaleDataManager.documentChangeJsonDoc;
+    //Banana.Ui.showText(JSON.stringify(docChange));
     Banana.application.progressBar.resume();
 
-    if (dlgResult !== 1)
-        return false;
-    else
-        return true;
-
+    if (docChange)
+        return docChange;
 }

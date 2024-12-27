@@ -56,7 +56,7 @@ function initDialogParams() {
 
     // Balance Accounts
     dialogParam.balanceAccounts = {};
-    dialogParam.balanceAccounts.investmentsAccount = "";
+    dialogParam.balanceAccounts.investmentsAccount = getInvestmentsAccountsFormatted();
     dialogParam.balanceAccounts.assetsAccount = "";
     dialogParam.balanceAccounts.liabilitiesAccount = "";
 
@@ -86,6 +86,14 @@ function initDialogParams() {
     dialogParam.profitAndLossAccounts.otherCostsAccount = "";
 
     return dialogParam;
+}
+
+function getInvestmentsAccountsFormatted() {
+    const accountsList = getItemsAccounts(Banana.document);
+    if (!accountsList || accountsList.length === 0)
+        return "";
+    let accountsStringList = accountsList.join(";");
+    return accountsStringList;
 }
 
 function verifyParam(userParam) {
@@ -133,7 +141,7 @@ function convertParam(userParam) {
     currentParam.value = userParam.balanceAccounts.investmentsAccount ? userParam.balanceAccounts.investmentsAccount : '';
     currentParam.parentObject = 'balanceaccounts';
     currentParam.readValue = function () {
-        userParam.balanceAccounts.investmentsAccount = this.value;
+        userParam.balanceAccounts.investmentsAccount = this.value; // values separated by ";"
     }
     convertedParam.data.push(currentParam);
 
@@ -195,7 +203,7 @@ function convertParam(userParam) {
     currentParam.value = userParam.valueChangingcontraAccounts.realizedLossAccount ? userParam.valueChangingcontraAccounts.realizedLossAccount : '';
     currentParam.parentObject = 'valuechangingaccounts';
     currentParam.readValue = function () {
-        userParam.realizedLossAccount = this.value;
+        userParam.valueChangingcontraAccounts.realizedLossAccount = this.value;
     }
     convertedParam.data.push(currentParam);
 
@@ -408,9 +416,17 @@ function validateParams(params) {
 
     data.forEach(item => {
         if (["balanceaccounts", "valuechangingaccounts", "profitandlossaccounts"].includes(item.parentObject)) {
-            if (!accountExists(accountsTable, item.value)) {
-                item.errorMsg = texts.nonExistentAccount.replace("%1", item.value);
-                paramsOk = false;
+            if (item.value.indexOf(";") > 0) { // Could happen with "balanceaccounts".
+                const accounts = item.value.split(";");
+                for (var i = 0; i < accounts.length; i++) {
+                    if (!accountExists(accountsTable, accounts[i]))
+                        paramsOk = false;
+                }
+            } else {
+                if (!accountExists(accountsTable, item.value)) {
+                    item.errorMsg = texts.nonExistentAccount.replace("%1", item.value);
+                    paramsOk = false;
+                }
             }
         }
     });

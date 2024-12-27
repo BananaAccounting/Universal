@@ -71,12 +71,11 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         this.itemType = ""; // Stocks, bonds,... Far definire il tipo all'utente in una colonna ?  
     }
     getRecordSalesTransactions() {
-        let jsonDoc = {};
+        let jsonDoc = { "format": "documentChange", "error": "" };
         if (!this.salesData)
             return jsonDoc;
         // Stocks.
         jsonDoc["data"] = this.getStockSaleResultDocChangeTransaction();
-        Banana.Ui.showText(JSON.stringify(jsonDoc));
         // Bonds (to define via itemType).
         return jsonDoc;
     }
@@ -93,9 +92,6 @@ var RecordSalesTransactions = class RecordSalesTransactions {
     */
     getStockSaleResultDocChangeTransaction() {
         let jsonDoc = this.getDocumentChangeInit();
-        jsonDoc.document.dataUnits.nameXml = "Transactions";
-        jsonDoc.document.dataUnits.data = {};
-        jsonDoc.document.dataUnits.data.rowLists = [];
         let rows = [];
 
         if (this.docInfo.isMultiCurrency)
@@ -103,7 +99,14 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         else
             rows = this.getTransactionsRows();
 
-        jsonDoc.document.dataUnits.data.rowLists.push({ "rows": rows }); // Riprendere da qui e testare con le spese bancarie, vedere perche non vaa 27.12
+        var dataUnitTransactionsTable = {};
+        dataUnitTransactionsTable.nameXml = "Transactions";
+        dataUnitTransactionsTable.data = {};
+        dataUnitTransactionsTable.data.rowLists = [];
+        dataUnitTransactionsTable.data.rowLists.push({ "rows": rows });
+
+        jsonDoc.document.dataUnits.push(dataUnitTransactionsTable);
+
         return jsonDoc;
     }
 
@@ -111,53 +114,132 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         let rows = [];
         // Bank charges transaction
         let rowBankCharges = this.getDocChangeRow_bankCharges();
-        let rowCashedNet = {};
-        let rowSaleResult = {};
+        let otherCahrges = this.getDocChangeRow_otherCharges();
+        let rowCashedNet = this.getDocChangeRow_cashedNet();
+        let rowSaleResult = this.getDocChangeRow_saleResult(); // 30.12, sembra funzionare, passare al prossimo e leggere appunti su modifiche da fare.
+        let rowExchangeResult = this.getDocChangeRow_ExhangeResult();
 
 
-        rows.push(rowBankCharges);
+        if (rowBankCharges)
+            rows.push(rowBankCharges);
+        if (otherCahrges)
+            rows.push(otherCahrges);
+        if (rowCashedNet)
+            rows.push(rowCashedNet);
+        if (rowSaleResult)
+            rows.push(rowSaleResult);
+        if (rowExchangeResult)
+            rows.push(rowExchangeResult);
+
+        return rows;
     }
 
     getTransactionsRows() {
 
     }
 
-    getDocChangeRow_bankCharges() {
+    getDocChangeRow_ExhangeResult() {
+    }
+
+    getDocChangeRow_saleResult() {
         let row = {};
+        let isLossOnSale = this.setIsLossOnSale(this.salesData.saleResult);
         row.operation = {};
         row.operation.name = "add";
+        row.operation.sequence = Banana.document.cursor.rowNr + ".4";
         row.fields = {};
+
+        let itemAccount = getItemAccount(this.itemObject.item, this.banDoc);
 
         row.fields["Date"] = getCurrentDate();
         row.fields["ItemsId"] = this.itemObject.item;
-        row.fields["Description"] = this.getBankChargesDescription();
-        row.fields["AccountDebit"] = this.savedParams.chargesAccount;
-        row.fields["AmountCurrency"] = this.savedParams.bankCharges;
+        row.fields["Description"] = this.texts.resultOnSale;
+        if (isLossOnSale) {
+            row.fields["AccountDebit"] = this.savedParams.realizedLossAccount;
+            row.fields["AccountCredit"] = itemAccount;
+        } else {
+            row.fields["AccountDebit"] = itemAccount;
+            row.fields["AccountCredit"] = this.savedParams.profitAccount;
+        }
+        row.fields["AmountCurrency"] = Banana.Converter.toInternalNumberFormat(this.salesData.saleResult);
         row.fields["ExchangeCurrency"] = this.itemObject.currency;
         row.fields["ExchangeRate"] = this.dlgParams.currExRate;
 
         return row;
     }
 
-    /**
-     * Compone la descrizione per la registrazione delle spese bancarie.
-     * La dscrizione è composta dal nome del titolo e dalla descrizione che l'utente
-     * usa per indicare il conto delle spese bancarie, che noi abbiamo salvato
-     * solo se l'utente lo ha indicato nei "Accounts settings." Se non ce, 
-     * lavoro con delle traduzioni predefinite.
-     */
-    getBankChargesDescription() {
-        let description = this.itemObject.description;
-        let accDescr = "";
-        if (this.savedParams && this.savedParams.chargesAccount) {
-            accDescr = this.savedParams.chargesAccount;
-        }
-        else {
-            accDescr = this.texts.bankCharges;
-        }
+    setIsLossOnSale(saleResult) {
+        let isLossOnSale = false;
+        if (saleResult.indexOf("-") > -1)
+            isLossOnSale = true;
 
-        description += " " + accDescr;
-        return description;
+        return isLossOnSale;
+    }
+
+    getDocChangeRow_cashedNet() {
+        let row = {};
+        row.operation = {};
+        row.operation.name = "add";
+        row.operation.sequence = Banana.document.cursor.rowNr + ".3";
+        row.fields = {};
+
+        row.fields["Date"] = getCurrentDate();
+        row.fields["ItemsId"] = this.itemObject.item;
+        row.fields["Description"] = this.texts.cashedNet;
+        row.fields["AccountDebit"] = "[Bank account]";
+        row.fields["AmountCurrency"] = Banana.Converter.toInternalNumberFormat(this.getCashedNetAmount());
+        row.fields["ExchangeCurrency"] = this.itemObject.currency;
+        row.fields["ExchangeRate"] = this.dlgParams.currExRate;
+
+        return row;
+    }
+
+    getCashedNetAmount() {
+        let netCashedAmount = Banana.SDecimal.subtract(this.salesData.totalSharesvalue, this.dlgParams.bankCharges);
+        netCashedAmount = Banana.SDecimal.subtract(netCashedAmount, this.dlgParams.otherCahrges);
+        return netCashedAmount;
+    }
+
+    getDocChangeRow_bankCharges() {
+        let row = {};
+        let bankCharges = Banana.Converter.toInternalNumberFormat(this.dlgParams.bankCharges);
+        if (!bankCharges)
+            return row;
+        row.operation = {};
+        row.operation.name = "add";
+        row.operation.sequence = Banana.document.cursor.rowNr + ".1";
+        row.fields = {};
+
+        row.fields["Date"] = getCurrentDate();
+        row.fields["ItemsId"] = this.itemObject.item;
+        row.fields["Description"] = this.texts.bankCharges;
+        row.fields["AccountDebit"] = this.savedParams.chargesAccount;
+        row.fields["AmountCurrency"] = Banana.Converter.toInternalNumberFormat(bankCharges);
+        row.fields["ExchangeCurrency"] = this.itemObject.currency;
+        row.fields["ExchangeRate"] = this.dlgParams.currExRate;
+
+        return row;
+    }
+
+    getDocChangeRow_otherCharges() {
+        let row = {};
+        let otherChargesAmount = Banana.Converter.toInternalNumberFormat(this.dlgParams.otherCahrges);
+        if (!otherChargesAmount)
+            return row;
+        row.operation = {};
+        row.operation.name = "add";
+        row.operation.sequence = Banana.document.cursor.rowNr + ".2";
+        row.fields = {};
+
+        row.fields["Date"] = getCurrentDate();
+        row.fields["ItemsId"] = this.itemObject.item;
+        row.fields["Description"] = this.texts.otherCharges;
+        row.fields["AccountDebit"] = this.savedParams.otherCostsAccount;
+        row.fields["AmountCurrency"] = Banana.Converter.toInternalNumberFormat(otherChargesAmount);
+        row.fields["ExchangeCurrency"] = this.itemObject.currency;
+        row.fields["ExchangeRate"] = this.dlgParams.currExRate;
+
+        return row;
     }
 
     getTransactionsTexts() {
@@ -188,6 +270,9 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         let texts = {};
 
         texts.bankCharges = "Bank charges";
+        texts.otherCharges = "Other charges";
+        texts.cashedNet = "Cashed Net";
+        texts.resultOnSale = "Result on sale";
 
         return texts;
     }
@@ -196,6 +281,9 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         let texts = {};
 
         texts.bankCharges = "Spese bancarie";
+        texts.otherCharges = "Altre spese";
+        texts.cashedNet = "Netto incassato";
+        texts.resultOnSale = "Risultato della vendita";
 
         return texts;
     }
@@ -204,6 +292,9 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         let texts = {};
 
         texts.bankCharges = "Bankspesen";
+        texts.otherCharges = "Sonstige Gebühren";
+        texts.cashedNet = "Netto eingelöst";
+        texts.resultOnSale = "Verkaufsergebnis";
 
         return texts;
     }
@@ -212,17 +303,20 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         let texts = {};
 
         texts.bankCharges = "Frais bancaires";
+        texts.otherCharges = "Autres frais";
+        texts.cashedNet = "Net encaissé";
+        texts.resultOnSale = "Résultat de la vente";
 
         return texts;
     }
 
     getDocumentChangeInit() {
 
-
         let jsonDoc = {};
         jsonDoc.document = {};
         jsonDoc.document.dataUnitsfileVersion = "1.0.0";
         jsonDoc.document.dataUnits = [];
+        jsonDoc.document.cursorPosition = {};
 
         jsonDoc.creator = {};
         var d = new Date();

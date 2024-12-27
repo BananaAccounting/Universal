@@ -682,7 +682,6 @@ function getExchangeResult(totalSharesValue, saleResult, currExRate, accExRate) 
 
     // Return the total effective exchange result
     return effectiveExchangeResult;
-
 }
 
 /**
@@ -714,7 +713,28 @@ function getAccountsTableData(banDoc) {
 
     return accountsData;
 
+}
 
+/**
+ * Returns the list of accounts assigned to securities in the Items table.
+ */
+function getItemsAccounts(banDoc) {
+    let itemTableData = getItemsTableData(banDoc);
+    if (!itemTableData)
+        return [];
+    const allAccounts = itemTableData.map(item => item.account);
+    const uniqueAccounts = [...new Set(allAccounts)];
+    return uniqueAccounts;
+}
+
+function getItemAccount(itemId, banDoc) {
+    let itemTableData = getItemsTableData(banDoc);
+    if (!itemTableData)
+        return "";
+    const item = itemTableData.find(item => item.item === itemId);
+    if (!item)
+        return "";
+    return item.account;
 }
 
 /**
