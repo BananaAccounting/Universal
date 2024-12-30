@@ -111,8 +111,12 @@ class DlgCalculateSaleDataManager {
     }
 
     setCurrentItem() {
-        if (!this.currentRowObj)
-            return;
+        if (!this.currentRowObj || !this.currentRowObj.value("ItemsId")) {
+            if (this.cmbItems.itemCount >= 0) {
+                this.cmbItems.setCurrentText(this.cmbItems.itemText(0));
+                return;
+            }
+        }
         let item = this.currentRowObj.value("ItemsId");
         this.cmbItems.setCurrentText(item);
     }
@@ -154,7 +158,7 @@ class DlgCalculateSaleDataManager {
 
         salesData = calculateShareSaleData(this.banDoc, this.docInfo, itemObj, dlgParams, this.currentRowNr);
         const recordSalesTransactions = new RecordSalesTransactions(this.banDoc, this.docInfo, salesData,
-            dlgParams, itemsData, itemObj, this.currentRowNr);
+            dlgParams, itemsData, itemObj, this.currentRowObj);
         return recordSalesTransactions.getRecordSalesTransactions();
 
     }

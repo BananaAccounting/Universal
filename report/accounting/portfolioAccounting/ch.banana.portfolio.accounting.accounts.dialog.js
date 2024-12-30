@@ -36,7 +36,7 @@ function exec() {
     let userParam = initDialogParams();
     let settingsId = "ch.banana.portfolio.accounting.accounts.dialog";
     userParam = getFormattedSavedParams(settingsId);
-    userParam = verifyParam(userParam);
+    userParam = verifyParams(userParam);
     let dlgTitle = 'Account Settings';
     let convertedParam = convertParam(userParam);
     if (!Banana.Ui.openPropertyEditor(dlgTitle, convertedParam))
@@ -96,9 +96,10 @@ function getInvestmentsAccountsFormatted() {
     return accountsStringList;
 }
 
-function verifyParam(userParam) {
-    if (!userParam)
+function verifyParams(userParam) {
+    if (!userParam || Object.keys(userParam).length === 0) {
         userParam = initDialogParams();
+    }
     return userParam;
 }
 
@@ -323,10 +324,10 @@ function convertParam(userParam) {
     currentParam.name = 'chargesaccount';
     currentParam.title = "Charges";
     currentParam.type = 'string';
-    currentParam.value = userParam.chargesAccount ? userParam.chargesAccount : '';
+    currentParam.value = userParam.profitAndLossAccounts.chargesAccount ? userParam.profitAndLossAccounts.chargesAccount : '';
     currentParam.parentObject = 'profitandlossaccounts';
     currentParam.readValue = function () {
-        userParam.chargesAccount = this.value;
+        userParam.profitAndLossAccounts.chargesAccount = this.value;
     }
     convertedParam.data.push(currentParam);
 
@@ -335,10 +336,10 @@ function convertParam(userParam) {
     currentParam.name = 'commissionsAccount';
     currentParam.title = "Commissions";
     currentParam.type = 'string';
-    currentParam.value = userParam.commissionsAccount ? userParam.commissionsAccount : '';
+    currentParam.value = userParam.profitAndLossAccounts.commissionsAccount ? userParam.profitAndLossAccounts.commissionsAccount : '';
     currentParam.parentObject = 'profitandlossaccounts';
     currentParam.readValue = function () {
-        userParam.commissionsAccount = this.value;
+        userParam.profitAndLossAccounts.commissionsAccount = this.value;
     }
     convertedParam.data.push(currentParam);
 
@@ -347,10 +348,10 @@ function convertParam(userParam) {
     currentParam.name = 'interestearnedaccount';
     currentParam.title = "Interest earned";
     currentParam.type = 'string';
-    currentParam.value = userParam.interestEarnedAccount ? userParam.interestEarnedAccount : '';
+    currentParam.value = userParam.profitAndLossAccounts.interestEarnedAccount ? userParam.profitAndLossAccounts.interestEarnedAccount : '';
     currentParam.parentObject = 'profitandlossaccounts';
     currentParam.readValue = function () {
-        userParam.interestEarnedAccount = this.value;
+        userParam.profitAndLossAccounts.interestEarnedAccount = this.value;
     }
     convertedParam.data.push(currentParam);
 
@@ -359,10 +360,10 @@ function convertParam(userParam) {
     currentParam.name = 'interestpayedaccount';
     currentParam.title = "Interest payed";
     currentParam.type = 'string';
-    currentParam.value = userParam.interestPayedAccount ? userParam.interestPayedAccount : '';
+    currentParam.value = userParam.profitAndLossAccounts.interestPayedAccount ? userParam.profitAndLossAccounts.interestPayedAccount : '';
     currentParam.parentObject = 'profitandlossaccounts';
     currentParam.readValue = function () {
-        userParam.interestPayedAccount = this.value;
+        userParam.profitAndLossAccounts.interestPayedAccount = this.value;
     }
     convertedParam.data.push(currentParam);
 
@@ -371,10 +372,10 @@ function convertParam(userParam) {
     currentParam.name = 'dividendincomeaccount';
     currentParam.title = "Dividends income";
     currentParam.type = 'string';
-    currentParam.value = userParam.dividendIncomeAccount ? userParam.dividendIncomeAccount : '';
+    currentParam.value = userParam.profitAndLossAccounts.dividendIncomeAccount ? userParam.profitAndLossAccounts.dividendIncomeAccount : '';
     currentParam.parentObject = 'profitandlossaccounts';
     currentParam.readValue = function () {
-        userParam.dividendIncomeAccount = this.value;
+        userParam.profitAndLossAccounts.dividendIncomeAccount = this.value;
     }
     convertedParam.data.push(currentParam);
 
@@ -383,10 +384,10 @@ function convertParam(userParam) {
     currentParam.name = 'otherincomeaccount';
     currentParam.title = "Other Income";
     currentParam.type = 'string';
-    currentParam.value = userParam.otherIncomeAccount ? userParam.otherIncomeAccount : '';
+    currentParam.value = userParam.profitAndLossAccounts.otherIncomeAccount ? userParam.profitAndLossAccounts.otherIncomeAccount : '';
     currentParam.parentObject = 'profitandlossaccounts';
     currentParam.readValue = function () {
-        userParam.otherIncomeAccount = this.value;
+        userParam.profitAndLossAccounts.otherIncomeAccount = this.value;
     }
     convertedParam.data.push(currentParam);
 
@@ -395,10 +396,10 @@ function convertParam(userParam) {
     currentParam.name = 'othercostsaccount';
     currentParam.title = "Other Costs";
     currentParam.type = 'string';
-    currentParam.value = userParam.otherCostsAccount ? userParam.otherCostsAccount : '';
+    currentParam.value = userParam.profitAndLossAccounts.otherCostsAccount ? userParam.profitAndLossAccounts.otherCostsAccount : '';
     currentParam.parentObject = 'profitandlossaccounts';
     currentParam.readValue = function () {
-        userParam.otherCostsAccount = this.value;
+        userParam.profitAndLossAccounts.otherCostsAccount = this.value;
     }
     convertedParam.data.push(currentParam);
 

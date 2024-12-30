@@ -763,6 +763,7 @@ function getItemsTableData(banDoc) {
         itemData.interestRate = tRow.value("Notes");
         itemData.unitPriceCurrent = tRow.value("UnitPriceCurrent");
         itemData.currency = tRow.value("Currency");
+        itemData.type = tRow.value("ReferenceUnit");
         if (itemsData && itemData.item)//only if the item has an id (isin)
             itemsData.push(itemData);
     }
