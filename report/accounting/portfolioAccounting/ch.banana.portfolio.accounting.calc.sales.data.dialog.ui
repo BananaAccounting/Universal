@@ -6,95 +6,57 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>384</width>
-    <height>489</height>
+    <width>426</width>
+    <height>596</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Calculate book profit/loss on sale</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
-   <item>
-    <widget class="QGroupBox" name="groupBox">
+  <layout class="QGridLayout" name="gridLayout_3">
+   <item row="3" column="0">
+    <layout class="QHBoxLayout" name="horizontalLayout"/>
+   </item>
+   <item row="2" column="0">
+    <widget class="QGroupBox" name="accruedInterest_groupBox">
      <property name="title">
-      <string>Security Data</string>
+      <string>Accrued interest data</string>
      </property>
-     <layout class="QGridLayout" name="gridLayout">
-      <item row="4" column="2">
-       <widget class="QLineEdit" name="bankCharges_lineEdit"/>
-      </item>
-      <item row="2" column="2">
-       <widget class="QLineEdit" name="marketPrice_lineEdit"/>
-      </item>
-      <item row="2" column="0">
-       <widget class="QLabel" name="marketPrice_label">
-        <property name="text">
-         <string>Current price</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="2">
-       <widget class="QLineEdit" name="quantity_lineEdit"/>
-      </item>
+     <layout class="QFormLayout" name="formLayout">
       <item row="0" column="0">
-       <widget class="QLabel" name="item_label">
+       <widget class="QLabel" name="lastCouponDate_label">
         <property name="text">
-         <string>Id (ISIN)</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="2">
-       <widget class="QComboBox" name="item_comboBox"/>
-      </item>
-      <item row="4" column="0">
-       <widget class="QLabel" name="bankCharges_label">
-        <property name="text">
-         <string>Bank charges</string>
+         <string>Last paid coupon date</string>
         </property>
        </widget>
       </item>
       <item row="1" column="0">
-       <widget class="QLabel" name="quantity_label">
+       <widget class="QLabel" name="currentSettlementDate_label">
         <property name="text">
-         <string>Quantity</string>
+         <string>Current settlement date</string>
         </property>
        </widget>
       </item>
-      <item row="3" column="2">
-       <widget class="QLineEdit" name="currentExchangeRate_lineEdit"/>
+      <item row="0" column="1">
+       <widget class="QDateEdit" name="lastCouponDate_dateEdit"/>
       </item>
-      <item row="3" column="0">
-       <widget class="QLabel" name="currentExchangerate_label">
+      <item row="1" column="1">
+       <widget class="QDateEdit" name="currentSettlementDate_dateEdit"/>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="dayCountConv_label">
         <property name="text">
-         <string>Current exchange rate </string>
+         <string>Day count convention:</string>
         </property>
        </widget>
       </item>
-      <item row="5" column="0">
-       <widget class="QLabel" name="otherCharges_label">
-        <property name="text">
-         <string>Other charges</string>
-        </property>
-       </widget>
-      </item>
-      <item row="5" column="2">
-       <widget class="QLineEdit" name="otherCharges_lineEdit"/>
+      <item row="2" column="1">
+       <widget class="QComboBox" name="dayCountConvention_comboBox"/>
       </item>
      </layout>
     </widget>
    </item>
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <item>
-      <widget class="QPushButton" name="showResultsPreview_button">
-       <property name="text">
-        <string>Calculate results</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item>
+   <item row="4" column="0">
     <widget class="QGroupBox" name="groupBox_2">
      <property name="title">
       <string>Results preview</string>
@@ -194,20 +156,96 @@
      </layout>
     </widget>
    </item>
-   <item>
+   <item row="5" column="0">
     <widget class="QPushButton" name="createSaleRecord_button">
      <property name="text">
       <string>Create sales record</string>
      </property>
     </widget>
    </item>
-   <item>
+   <item row="6" column="0">
     <widget class="QDialogButtonBox" name="cancel_button">
      <property name="orientation">
       <enum>Qt::Orientation::Horizontal</enum>
      </property>
      <property name="standardButtons">
       <set>QDialogButtonBox::StandardButton::Cancel|QDialogButtonBox::StandardButton::Ok</set>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="0">
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string>Security data</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="4" column="2">
+       <widget class="QLineEdit" name="bankCharges_lineEdit"/>
+      </item>
+      <item row="2" column="2">
+       <widget class="QLineEdit" name="marketPrice_lineEdit"/>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="marketPrice_label">
+        <property name="text">
+         <string>Current price</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="2">
+       <widget class="QLineEdit" name="quantity_lineEdit"/>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="item_label">
+        <property name="text">
+         <string>Id (ISIN)</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="2">
+       <widget class="QComboBox" name="item_comboBox"/>
+      </item>
+      <item row="4" column="0">
+       <widget class="QLabel" name="bankCharges_label">
+        <property name="text">
+         <string>Bank charges</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="quantity_label">
+        <property name="text">
+         <string>Quantity</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="2">
+       <widget class="QLineEdit" name="currentExchangeRate_lineEdit"/>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="currentExchangerate_label">
+        <property name="text">
+         <string>Current exchange rate </string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="0">
+       <widget class="QLabel" name="otherCharges_label">
+        <property name="text">
+         <string>Other charges</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="2">
+       <widget class="QLineEdit" name="otherCharges_lineEdit"/>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QPushButton" name="showResultsPreview_button">
+     <property name="text">
+      <string>Calculate results</string>
      </property>
     </widget>
    </item>

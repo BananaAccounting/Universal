@@ -134,6 +134,8 @@ var RecordSalesTransactions = class RecordSalesTransactions {
             rows.push(rowBankCharges);
         if (otherCahrges)
             rows.push(otherCahrges);
+        if (accruedInterests)
+            rows.push(accruedInterests);
         if (rowCashedNet)
             rows.push(rowCashedNet);
         if (rowSaleResult)
@@ -143,6 +145,97 @@ var RecordSalesTransactions = class RecordSalesTransactions {
 
         return rows;
     }
+
+    getBondDocChangeRow_bankCharges() {
+        let row = {};
+        let bankCharges = Banana.Converter.toInternalNumberFormat(this.dlgParams.bankCharges);
+        if (!bankCharges)
+            return row;
+        row.operation = {};
+        row.operation.name = "add";
+        row.operation.sequence = Banana.document.cursor.rowNr + ".1";
+        row.fields = {};
+
+        row.fields["Date"] = this.currentRowObj.value("Date") || getCurrentDate();
+        row.fields["Doc"] = this.currentRowObj.value("Doc") || "";
+        row.fields["ItemsId"] = this.itemObject.item;
+        row.fields["Description"] = this.texts.bankCharges;
+        row.fields["AccountDebit"] = this.savedParams.profitAndLossAccounts.chargesAccount || texts.bankChargesPlaceHolder;
+        row.fields["AmountCurrency"] = Banana.Converter.toInternalNumberFormat(bankCharges);
+        row.fields["ExchangeCurrency"] = this.itemObject.currency;
+        row.fields["ExchangeRate"] = this.dlgParams.currExRate;
+
+        return row;
+    }
+
+    getBondDocChangeRow_otherCharges() {
+        let row = {};
+        let otherChargesAmount = Banana.Converter.toInternalNumberFormat(this.dlgParams.otherCahrges);
+        if (!otherChargesAmount)
+            return row;
+        row.operation = {};
+        row.operation.name = "add";
+        row.operation.sequence = Banana.document.cursor.rowNr + ".2";
+        row.fields = {};
+
+        row.fields["Date"] = this.currentRowObj.value("Date") || getCurrentDate();
+        row.fields["Doc"] = this.currentRowObj.value("Doc") || "";
+        row.fields["ItemsId"] = this.itemObject.item;
+        row.fields["Description"] = this.texts.otherCharges;
+        row.fields["AccountDebit"] = this.savedParams.profitAndLossAccounts.otherCostsAccount;
+        row.fields["AmountCurrency"] = Banana.Converter.toInternalNumberFormat(otherChargesAmount);
+        row.fields["ExchangeCurrency"] = this.itemObject.currency;
+        row.fields["ExchangeRate"] = this.dlgParams.currExRate;
+
+        return row;
+    }
+
+    getBondDocChangeRow_accruedInterests() {
+        let row = {};
+        row.operation = {};
+        row.operation.name = "add";
+        row.operation.sequence = Banana.document.cursor.rowNr + ".3";
+        row.fields = {};
+
+        row.fields["Date"] = this.currentRowObj.value("Date") || getCurrentDate();
+        row.fields["Doc"] = this.currentRowObj.value("Doc") || "";
+        row.fields["ItemsId"] = this.itemObject.item;
+        row.fields["Description"] = this.texts.accruedInterests;
+        row.fields["AccountCredit"] = this.savedParams.profitAndLossAccounts.interestEarnedAccount || texts.accruedInterestsPlaceHolder;
+        row.fields["AmountCurrency"] = Banana.Converter.toInternalNumberFormat(otherChargesAmount);
+        row.fields["ExchangeCurrency"] = this.itemObject.currency;
+        row.fields["ExchangeRate"] = this.dlgParams.currExRate;
+
+        return row;
+    }
+
+    getBondDocChangeRow_cashedNet() {
+        let row = {};
+        row.operation = {};
+        row.operation.name = "add";
+        row.operation.sequence = Banana.document.cursor.rowNr + ".3";
+        row.fields = {};
+
+        row.fields["Date"] = this.currentRowObj.value("Date") || getCurrentDate();
+        row.fields["Doc"] = this.currentRowObj.value("Doc") || "";
+        row.fields["ItemsId"] = this.itemObject.item;
+        row.fields["Description"] = this.texts.cashedNet;
+        row.fields["AccountDebit"] = this.texts.bankAccountPlaceHolder;
+        row.fields["AmountCurrency"] = Banana.Converter.toInternalNumberFormat(this.getBondCashedNetAmount());
+        row.fields["ExchangeCurrency"] = this.itemObject.currency;
+        row.fields["ExchangeRate"] = this.dlgParams.currExRate;
+
+        return row;
+    }
+
+    getBondCashedNetAmount() {
+        let netCashedAmount = Banana.SDecimal.subtract(this.salesData.totalSharesvalue, this.dlgParams.bankCharges);
+        netCashedAmount = Banana.SDecimal.subtract(netCashedAmount, this.dlgParams.otherCahrges);
+        netCashedAmount = Banana.SDecimal.subtract(netCashedAmount, this.salesData.accruedInterests);
+        return netCashedAmount;
+    }
+
+
 
     /**
     * Returns a document change containing the record of sale of a stock.
@@ -289,14 +382,14 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         row.fields["ItemsId"] = this.itemObject.item;
         row.fields["Description"] = this.texts.cashedNet;
         row.fields["AccountDebit"] = this.texts.bankAccountPlaceHolder;
-        row.fields["AmountCurrency"] = Banana.Converter.toInternalNumberFormat(this.getCashedNetAmount());
+        row.fields["AmountCurrency"] = Banana.Converter.toInternalNumberFormat(this.getStockCashedNetAmount());
         row.fields["ExchangeCurrency"] = this.itemObject.currency;
         row.fields["ExchangeRate"] = this.dlgParams.currExRate;
 
         return row;
     }
 
-    getCashedNetAmount() {
+    getStockCashedNetAmount() {
         let netCashedAmount = Banana.SDecimal.subtract(this.salesData.totalSharesvalue, this.dlgParams.bankCharges);
         netCashedAmount = Banana.SDecimal.subtract(netCashedAmount, this.dlgParams.otherCahrges);
         return netCashedAmount;
@@ -334,7 +427,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         row.operation.sequence = Banana.document.cursor.rowNr + ".2";
         row.fields = {};
 
-        row.fields["Date"] = getCurrentDate();
+        row.fields["Date"] = this.currentRowObj.value("Date") || getCurrentDate();
         row.fields["Doc"] = this.currentRowObj.value("Doc") || "";
         row.fields["ItemsId"] = this.itemObject.item;
         row.fields["Description"] = this.texts.otherCharges;
@@ -379,6 +472,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         texts.cashedNet = "Cashed Net";
         texts.resultOnSale = "Result on sale";
         texts.resultExchange = "Result on exchange";
+        texts.accruedInterests = "Accrued interests";
         // Accounts placeholders (replaces accounts if not defined)
         texts.exRateLossAccounPlaceHolder = "[Realized exchange loss account]";
         texts.exRateGainAccounPlaceHolder = "[Realized exchange profit account]";
@@ -386,6 +480,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         texts.realizedGainAccountPlaceHolder = "[Realized profit account]";
         texts.bankAccountPlaceHolder = "[Bank account]";
         texts.bankChargesPlaceHolder = "[Bank charges account]";
+        texts.accruedInterestsPlaceHolder = "[Accrued interests account]";
 
         return texts;
     }
@@ -398,6 +493,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         texts.cashedNet = "Netto incassato";
         texts.resultOnSale = "Risultato della vendita";
         texts.resultExchange = "Risultato sul cambio";
+        texts.accruedInterests = "Interessi maturati";
 
         texts.exRateLossAccounPlaceHolder = "[Conto perdite su cambi realizzate]";
         texts.exRateGainAccounPlaceHolder = "[Conto profitti su cambi realizzati]";
@@ -405,6 +501,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         texts.realizedGainAccountPlaceHolder = "[Conto profitti realizzati]";
         texts.bankAccountPlaceHolder = "[Conto bancario]";
         texts.bankCharges = "[Conto spese bancarie]";
+        texts.accruedInterestsPlaceHolder = "[Conto interessi maturati]";
 
         return texts;
     }
@@ -417,6 +514,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         texts.cashedNet = "Netto eingelöst";
         texts.resultOnSale = "Verkaufsergebnis";
         texts.resultExchange = "Ergebnis des Wechselkurses";
+        texts.accruedInterests = "Aufgelaufene Zinsen";
 
         texts.exRateLossAccounPlaceHolder = "[Konto für realisierte Wechselkursverluste]";
         texts.exRateGainAccounPlaceHolder = "[Konto für realisierte Wechselkursgewinne]";
@@ -424,6 +522,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         texts.realizedGainAccountPlaceHolder = "[Konto für realisierte Gewinne]";
         texts.bankAccountPlaceHolder = "[Bankkonto]";
         texts.bankCharges = "[Konto für Bankspesen]";
+        texts.accruedInterestsPlaceHolder = "[Konto für aufgelaufene Zinsen]";
 
         return texts;
     }
@@ -436,6 +535,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         texts.cashedNet = "Net encaissé";
         texts.resultOnSale = "Résultat de la vente";
         texts.resultExchange = "Résultat du change";
+        texts.accruedInterests = "Intérêts courus";
 
         texts.exRateLossAccounPlaceHolder = "[Compte des pertes de change réalisées]";
         texts.exRateGainAccounPlaceHolder = "[Compte des gains de change réalisés]";
@@ -443,6 +543,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         texts.realizedGainAccountPlaceHolder = "[Compte des gains réalisés]";
         texts.bankAccountPlaceHolder = "[Compte bancaire]";
         texts.bankCharges = "[Compte des frais bancaires]";
+        texts.accruedInterestsPlaceHolder = "[Compte d’intérêts courus]"
 
         return texts;
     }

@@ -45,6 +45,9 @@ class DlgCalculateSaleDataManager {
         this.lineEditCurrentExRate = "";
         this.lineEditBankCharges = "";
         this.lineEditOtherCharges = "";
+        this.dateEditLastCouponDate = "";
+        this.dateEditCurrSettlementDate = "";
+        this.cmbCountConventions = "";
         this.labelSaleResultPrev = "";
         this.labelAvgCostPrev = "";
         this.labelExcResultPrev = "";
@@ -54,6 +57,7 @@ class DlgCalculateSaleDataManager {
         this.buttonClose = "";
         this.buttonShowResults = "";
         this.buttonCreateSalesRecord = "";
+        this.accruedInterestGroupBox = "";
         this.documentChangeJsonDoc = {};
 
         this.currentRowNr = currentRowNr; // Selected row in transactions table.
@@ -72,10 +76,15 @@ class DlgCalculateSaleDataManager {
             this.dialog.close();
         };
 
+        this.dialog.enableAccruedInterestGroupBox = () => {
+            this.setAccruedInterestGroupBoxEnabled();
+        }
+
         /** Dialog's events declaration */
         this.buttonShowResults.clicked.connect(this.dialog, this.dialog.showPreviews);
         this.buttonCreateSalesRecord.clicked.connect(this.dialog, this.dialog.createSalesRecord);
-
+        this.cmbItems.currentIndexChanged.connect(this.dialog, this.dialog.enableAccruedInterestGroupBox);
+        this.cmbItems.editTextChanged.connect(this.dialog, this.dialog.enableAccruedInterestGroupBox);
     }
 
     init() {
@@ -88,6 +97,12 @@ class DlgCalculateSaleDataManager {
         this.lineEditCurrentExRate = this.dialog.findChild('currentExchangeRate_lineEdit');
         this.lineEditBankCharges = this.dialog.findChild('bankCharges_lineEdit');
         this.lineEditOtherCharges = this.dialog.findChild('otherCharges_lineEdit');
+
+        // Accrued interest data section objects (Shown only if the selected item is a bond).
+        this.accruedInterestGroupBox = this.dialog.findChild('accruedInterest_groupBox');
+        this.dateEditLastCouponDate = this.dialog.findChild('lastCouponDate_dateEdit');
+        this.dateEditCurrSettlementDate = this.dialog.findChild('currentSettlementDate_dateEdit');
+        this.cmbCountConventions = this.dialog.findChild('dayCountConvention_comboBox');
 
         //preview result label
         this.labelSaleResultPrev = this.dialog.findChild('saleResultPreview_label');
@@ -103,11 +118,31 @@ class DlgCalculateSaleDataManager {
         this.buttonCreateSalesRecord = this.dialog.findChild('createSaleRecord_button');
 
         // Displayed values
-        this.insertComboBoxElements(this.banDoc, this.docInfo);
+        this.insertItemsComboBoxElements(this.banDoc, this.docInfo);
         this.setCurrentItem();
         this.setQuantity();
         this.setCurrentPrice();
         this.setCurrentExchangeRate();
+        this.insertDayCountConventionsComboBoxElements();
+        this.setCurrentDates();
+
+        // Disable the Accrued Interest Group Box if the selected item is not a bond.
+        this.setAccruedInterestGroupBoxEnabled(); // riprendere da quii 02.01. Sembra funzionare, pero spamma messaggi di errore troppo presto, da rivedere.
+    }
+
+    setAccruedInterestGroupBoxEnabled() {
+        let currentItem = this.cmbItems.currentText;
+        let itemsData = getItemsTableData(this.banDoc, this.docInfo);
+        let itemObj = itemsData.find(obj => obj.item === currentItem);
+        /*if (!this.isValidItemSelected(currentItem, itemObj)) {
+            this.accruedInterestGroupBox.enabled = false;
+            return;
+        }*/
+        if (itemObj.type == "B") {
+            this.accruedInterestGroupBox.enabled = true;
+        } else {
+            this.accruedInterestGroupBox.enabled = false;
+        }
     }
 
     setCurrentItem() {
@@ -233,7 +268,7 @@ class DlgCalculateSaleDataManager {
 
     }
 
-    insertComboBoxElements(banDoc, docInfo) {
+    insertItemsComboBoxElements(banDoc, docInfo) {
         //First set the editable attribute to true,in this way the user can also enter the text.
         this.cmbItems.editable = true;
         const itemList = new Set();
@@ -250,6 +285,17 @@ class DlgCalculateSaleDataManager {
 
         if (this.cmbItems)
             this.cmbItems.insertItems(1, itemList_array);
+    }
+
+    insertDayCountConventionsComboBoxElements() {
+        var countConventions = ["30/360", "Actual/360", "Actual/365", "Actual/Actual"];
+        if (this.cmbCountConventions)
+            this.cmbCountConventions.insertItems(1, countConventions);
+    }
+
+    setCurrentDates() {
+        this.dateEditLastCouponDate.setDate(new Date());
+        this.dateEditCurrSettlementDate.setDate(new Date());
     }
 }
 
