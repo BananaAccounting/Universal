@@ -53,11 +53,12 @@ class DlgCalculateSaleDataManager {
         this.labelExcResultPrev = "";
         this.labelTotValSharesPrev = "";
         this.AvgValSharesPrev = "";
+        this.accruedInterestsPrev = "";
         this.buttonOk = "";
         this.buttonClose = "";
         this.buttonShowResults = "";
         this.buttonCreateSalesRecord = "";
-        this.accruedInterestGroupBox = "";
+        this.accruedInterestsGroupBox = "";
         this.documentChangeJsonDoc = {};
 
         this.dayCountConventions_thirty_360 = "30/360";
@@ -81,15 +82,15 @@ class DlgCalculateSaleDataManager {
             this.dialog.close();
         };
 
-        this.dialog.enableAccruedInterestGroupBox = () => {
-            this.setAccruedInterestGroupBoxEnabled();
+        this.dialog.enableAccruedInterestsElements = () => {
+            this.setAccruedInterestsElementsEnabled();
         }
 
         /** Dialog's events declaration */
         this.buttonShowResults.clicked.connect(this.dialog, this.dialog.showPreviews);
         this.buttonCreateSalesRecord.clicked.connect(this.dialog, this.dialog.createSalesRecord);
-        this.cmbItems.currentIndexChanged.connect(this.dialog, this.dialog.enableAccruedInterestGroupBox);
-        this.cmbItems.editTextChanged.connect(this.dialog, this.dialog.enableAccruedInterestGroupBox);
+        this.cmbItems.currentIndexChanged.connect(this.dialog, this.dialog.enableAccruedInterestsElements);
+        this.cmbItems.editTextChanged.connect(this.dialog, this.dialog.enableAccruedInterestsElements);
     }
 
     init() {
@@ -104,7 +105,7 @@ class DlgCalculateSaleDataManager {
         this.lineEditOtherCharges = this.dialog.findChild('otherCharges_lineEdit');
 
         // Accrued interest data section objects (Shown only if the selected item is a bond).
-        this.accruedInterestGroupBox = this.dialog.findChild('accruedInterest_groupBox');
+        this.accruedInterestsGroupBox = this.dialog.findChild('accruedInterest_groupBox');
         this.dateEditLastCouponDate = this.dialog.findChild('lastCouponDate_dateEdit');
         this.dateEditCurrSettlementDate = this.dialog.findChild('currentSettlementDate_dateEdit');
         this.cmbCountConventions = this.dialog.findChild('dayCountConvention_comboBox');
@@ -115,6 +116,7 @@ class DlgCalculateSaleDataManager {
         this.labelExcResultPrev = this.dialog.findChild('exchangeResultPreview_label');
         this.labelTotValSharesPrev = this.dialog.findChild('totalValueOfShares_label');
         this.AvgValSharesPrev = this.dialog.findChild('averageValueOfShares_label');
+        this.accruedInterestsPrev = this.dialog.findChild('accruredInterestPreview_label');
 
         //Buttons
         this.buttonOk = this.dialog.findChild('okButton');
@@ -132,17 +134,19 @@ class DlgCalculateSaleDataManager {
         this.setCurrentDates();
 
         // Disable the Accrued Interest Group Box if the selected item is not a bond.
-        this.setAccruedInterestGroupBoxEnabled();
+        this.setAccruedInterestsElementsEnabled();
     }
 
-    setAccruedInterestGroupBoxEnabled() {
+    setAccruedInterestsElementsEnabled() {
         let currentItem = this.cmbItems.currentText;
         let itemsData = getItemsTableData(this.banDoc, this.docInfo);
         let itemObj = itemsData.find(obj => obj.item === currentItem);
         if (itemObj && itemObj.type == "B") {
-            this.accruedInterestGroupBox.enabled = true;
+            this.accruedInterestsGroupBox.enabled = true;
+            this.accruedInterestsPrev.enabled = true;
         } else {
-            this.accruedInterestGroupBox.enabled = false;
+            this.accruedInterestsGroupBox.enabled = false;
+            this.accruedInterestsPrev.enabled = false;
         }
     }
 
@@ -207,6 +211,7 @@ class DlgCalculateSaleDataManager {
         let saleResult = "";
         let avgSharesValue = "";
         let totalSharesvalue = "";
+        let accruedInterests = "";
         let itemsData = [];
         let dlgParams = {};
         let salesData = {};
@@ -228,6 +233,8 @@ class DlgCalculateSaleDataManager {
         exRateResult = Banana.Converter.toLocaleNumberFormat(salesData.exRateResult, 2, true);
         avgSharesValue = Banana.Converter.toLocaleNumberFormat(salesData.avgSharesValue, 2, true);
         totalSharesvalue = Banana.Converter.toLocaleNumberFormat(salesData.totalSharesvalue, 2, true);
+        accruedInterests = Banana.Converter.toLocaleNumberFormat(salesData.accruedInterests, 2, true);
+
 
         if (this.docInfo.isMultiCurrency) {
             this.labelAvgCostPrev.setText(avgCost + " (" + assetCurr + ")");
@@ -235,12 +242,14 @@ class DlgCalculateSaleDataManager {
             this.labelExcResultPrev.setText(exRateResult + " (" + baseCurr + ")");
             this.AvgValSharesPrev.setText(avgSharesValue + " (" + assetCurr + ")");
             this.labelTotValSharesPrev.setText(totalSharesvalue + " (" + assetCurr + ")");
+            this.accruedInterestsPrev.setText(accruedInterests + " (" + assetCurr + ")");
         } else {
             this.labelAvgCostPrev.setText(avgCost);
             this.labelSaleResultPrev.setText(saleResult);
             this.labelExcResultPrev.setText(exRateResult);
             this.AvgValSharesPrev.setText(avgSharesValue);
             this.labelTotValSharesPrev.setText(totalSharesvalue);
+            this.accruedInterestsPrev.setText(accruedInterests);
         }
     }
 

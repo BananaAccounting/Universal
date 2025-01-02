@@ -229,30 +229,33 @@ function getTransactionsIdList(journalData) {
  * This function calculate the accrued intererest for the bond based on parameters defined by the user.
  * Formula: Accrued interest = ((Tasso/Frequenza) x Valore Nominale) x (Giorni trascorsi/Giorni totali nel periodo della cedola)
  */
-function calculateAccruedInterest(dlgParams, itemObj) {
+function calculateAccruedInterests(dlgParams, itemObj) {
 
-    let accruedInterest = "";
+    let accruedInterests = "";
     let nominalValue = "";
     let rate = "";
     let frequency = "";
     let startDate = "";
     let endDate = "";
-    let fractionQuote = "";
+    let dayCountfractionQuote = "";
 
     if (!dlgParams || !itemObj)
-        return accruedInterest;
+        return accruedInterests;
 
     //Get the parameters from the user
-    nominalValue = dlgParams.quantity;
+    nominalValue = Banana.SDecimal.abs(dlgParams.quantity); // riprendere da quii.
     rate = itemObj.rate;
     frequency = itemObj.frequency;
     startDate = getDateObject(dlgParams.lastCouponDate, "dd.mm.yyyy");
     endDate = getDateObject(dlgParams.currSettlementDate, "dd.mm.yyyy");
-    /**
-     * Calculate the fraction of the coupon period (Days elapsed/Total days in the coupon period).
-     * The calculation i done based on the day count convention selected by the user.
-    */
-    fractionQuote = dayCountFractionBetweenDates(startDate, endDate, dlgParams.dayCountConvention); // testare.
+    /** Calculate the fraction of the coupon period (Days elapsed/Total days in the coupon period).
+     * The calculation i done based on the day count convention selected by the user.*/
+    dayCountfractionQuote = dayCountFractionBetweenDates(startDate, endDate, dlgParams.dayCountConvention);
+    //Calculate the accrued interest.
+    let perc = Banana.SDecimal.divide(Banana.SDecimal.divide(rate, frequency), 100);
+    accruedInterests = Banana.SDecimal.multiply(perc, nominalValue);
+    accruedInterests = Banana.SDecimal.multiply(accruedInterests, dayCountfractionQuote);
+    return accruedInterests;
 }
 
 /** Given two dates in format "format", calculates the day between the two first and second date.
@@ -374,6 +377,7 @@ function calculateShareSaleData(banDoc, docInfo, itemObj, dlgParams, currentRowN
     let exRateResult = "";
     let accountCard = "";
     let accountCardData = "";
+    let accruedInterests = "";
     let itemAccount = "";
     let itemCardData = [];
 
@@ -402,11 +406,17 @@ function calculateShareSaleData(banDoc, docInfo, itemObj, dlgParams, currentRowN
     saleResult = getSaleResult(avgSharesValue, totalSharesValue);
     exRateResult = getExchangeResult(totalSharesValue, saleResult, currExRate, accExRate);
 
+    // only for bonds
+    if (itemObj.type === "B") {
+        accruedInterests = calculateAccruedInterests(dlgParams, itemObj);
+    }
+
     saleData.avgCost = avgCost;
     saleData.avgSharesValue = avgSharesValue;
     saleData.totalSharesvalue = totalSharesValue;
     saleData.saleResult = saleResult;
     saleData.exRateResult = exRateResult;
+    saleData.accruedInterests = accruedInterests;
 
     return saleData;
 
