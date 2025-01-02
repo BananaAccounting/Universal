@@ -48,7 +48,7 @@ function exec() {
     calcParams.currency = currentRowObj.value("ExchangeCurrency");
 
     salesData = calculateShareSaleData(banDoc, docInfo, itemObject, calcParams, currentRowNr);
-    const recordSalesTransactions = new RecordSalesTransactions(banDoc, docInfo, salesData, calcParams, currentRowNr);
+    const recordSalesTransactions = new RecordSalesTransactions(banDoc, docInfo, salesData, calcParams, currentRowNr); // da rivedere comando diretto.
     let docChange = recordSalesTransactions.getRecordSalesTransactions();
 
     return docChange;
@@ -202,7 +202,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         row.fields["ItemsId"] = this.itemObject.item;
         row.fields["Description"] = this.texts.accruedInterests;
         row.fields["AccountCredit"] = this.savedParams.profitAndLossAccounts.interestEarnedAccount || texts.accruedInterestsPlaceHolder;
-        row.fields["AmountCurrency"] = Banana.Converter.toInternalNumberFormat(otherChargesAmount);
+        row.fields["AmountCurrency"] = Banana.Converter.toInternalNumberFormat(calculateAccruedInterest(this.dlgParams, this.itemObject));
         row.fields["ExchangeCurrency"] = this.itemObject.currency;
         row.fields["ExchangeRate"] = this.dlgParams.currExRate;
 

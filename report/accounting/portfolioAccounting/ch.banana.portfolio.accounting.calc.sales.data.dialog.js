@@ -60,6 +60,11 @@ class DlgCalculateSaleDataManager {
         this.accruedInterestGroupBox = "";
         this.documentChangeJsonDoc = {};
 
+        this.dayCountConventions_thirty_360 = "30/360";
+        this.dayCountConventions_actual_360 = "Actual/360";
+        this.dayCountConventions_actual_365 = "Actual/365";
+        this.dayCountConventions_actual_actual = "Actual/Actual";
+
         this.currentRowNr = currentRowNr; // Selected row in transactions table.
         this.currentRowObj = getCurrentRowObj(this.banDoc, this.currentRowNr, "Transactions");
 
@@ -127,18 +132,14 @@ class DlgCalculateSaleDataManager {
         this.setCurrentDates();
 
         // Disable the Accrued Interest Group Box if the selected item is not a bond.
-        this.setAccruedInterestGroupBoxEnabled(); // riprendere da quii 02.01. Sembra funzionare, pero spamma messaggi di errore troppo presto, da rivedere.
+        this.setAccruedInterestGroupBoxEnabled();
     }
 
     setAccruedInterestGroupBoxEnabled() {
         let currentItem = this.cmbItems.currentText;
         let itemsData = getItemsTableData(this.banDoc, this.docInfo);
         let itemObj = itemsData.find(obj => obj.item === currentItem);
-        /*if (!this.isValidItemSelected(currentItem, itemObj)) {
-            this.accruedInterestGroupBox.enabled = false;
-            return;
-        }*/
-        if (itemObj.type == "B") {
+        if (itemObj && itemObj.type == "B") {
             this.accruedInterestGroupBox.enabled = true;
         } else {
             this.accruedInterestGroupBox.enabled = false;
@@ -263,6 +264,9 @@ class DlgCalculateSaleDataManager {
         userParam.currExRate = this.lineEditCurrentExRate.text;
         userParam.bankCharges = this.lineEditBankCharges.text;
         userParam.otherCharges = this.lineEditOtherCharges.text;
+        userParam.lastCouponDate = this.dateEditLastCouponDate.text; // format dd.MM.yyyy (default)
+        userParam.currSettlementDate = this.dateEditCurrSettlementDate.text; // format dd.MM.yyyy (default)
+        userParam.dayCountConvention = this.cmbCountConventions.currentText;
 
         return userParam;
 
@@ -288,7 +292,10 @@ class DlgCalculateSaleDataManager {
     }
 
     insertDayCountConventionsComboBoxElements() {
-        var countConventions = ["30/360", "Actual/360", "Actual/365", "Actual/Actual"];
+        var countConventions = [this.dayCountConventions_thirty_360,
+        this.dayCountConventions_actual_360,
+        this.dayCountConventions_actual_365,
+        this.dayCountConventions_actual_actual];
         if (this.cmbCountConventions)
             this.cmbCountConventions.insertItems(1, countConventions);
     }

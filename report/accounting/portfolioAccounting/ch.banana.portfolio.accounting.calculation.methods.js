@@ -225,6 +225,140 @@ function getTransactionsIdList(journalData) {
 
 }
 
+/**
+ * This function calculate the accrued intererest for the bond based on parameters defined by the user.
+ * Formula: Accrued interest = ((Tasso/Frequenza) x Valore Nominale) x (Giorni trascorsi/Giorni totali nel periodo della cedola)
+ */
+function calculateAccruedInterest(dlgParams, itemObj) {
+
+    let accruedInterest = "";
+    let nominalValue = "";
+    let rate = "";
+    let frequency = "";
+    let startDate = "";
+    let endDate = "";
+    let fractionQuote = "";
+
+    if (!dlgParams || !itemObj)
+        return accruedInterest;
+
+    //Get the parameters from the user
+    nominalValue = dlgParams.quantity;
+    rate = itemObj.rate;
+    frequency = itemObj.frequency;
+    startDate = getDateObject(dlgParams.lastCouponDate, "dd.mm.yyyy");
+    endDate = getDateObject(dlgParams.currSettlementDate, "dd.mm.yyyy");
+    /**
+     * Calculate the fraction of the coupon period (Days elapsed/Total days in the coupon period).
+     * The calculation i done based on the day count convention selected by the user.
+    */
+    fractionQuote = dayCountFractionBetweenDates(startDate, endDate, dlgParams.dayCountConvention); // testare.
+}
+
+/** Given two dates in format "format", calculates the day between the two first and second date.
+ * @param {string} date1 first date, more actual date.
+ * @param {string} date2 second date, less actual date.
+*/
+function dayCountFractionBetweenDates(startDate, endDate, convention) {
+    if (startDate > endDate) {
+        [startDate, endDate] = [endDate, startDate];
+    }
+
+    switch (convention) {
+        case "30/360":
+            return fraction30_360(startDate, endDate);
+        case "Actual/360":
+            return fractionActual_360(startDate, endDate);
+        case "Actual/365":
+            return fractionActual_365(startDate, endDate);
+        case "Actual/Actual":
+        default:
+            return fractionActual_Actual(startDate, endDate);
+    }
+}
+
+/**
+ * 30/360 (US)
+ * @param {*} startDate 
+ * @param {*} endDate 
+ */
+function fraction30_360(startDate, endDate) {
+    // Extraction of year, month, day
+    let y1 = startDate.getFullYear();
+    let m1 = startDate.getMonth() + 1; // In JS: 0=January, 1=February, ...
+    let d1 = startDate.getDate();
+
+    let y2 = endDate.getFullYear();
+    let m2 = endDate.getMonth() + 1;
+    let d2 = endDate.getDate();
+
+    // 30/360 US rules (simplyfied):
+    //  1) Se d1 è 31 => d1 = 30
+    if (d1 === 31) {
+        d1 = 30;
+    }
+    //  2) Se d2 è 31 e d1 era 30 => d2 = 30
+    if (d2 === 31 && d1 === 30) {
+        d2 = 30;
+    }
+
+    // Generic formula:
+    // dayCount = 360*(Y2 - Y1) + 30*(M2 - M1) + (D2 - D1)
+    const dayCount = 360 * (y2 - y1) + 30 * (m2 - m1) + (d2 - d1);
+    return dayCount / 360;
+}
+
+/** 
+ * Actual/360.
+ * @param {*} startDate 
+ * @param {*} endDate 
+*/
+function fractionActual_360(startDate, endDate) {
+    const msPerDay = 24 * 60 * 60 * 1000;
+    const actualDays = Math.floor((endDate - startDate) / msPerDay);
+    return actualDays / 360;
+}
+
+/**
+ * Actual/365
+ * @param {*} startDate 
+ * @param {*} endDate 
+ * @returns 
+ */
+function fractionActual_365(startDate, endDate) {
+    const msPerDay = 24 * 60 * 60 * 1000;
+    const actualDays = Math.floor((endDate - startDate) / msPerDay);
+    return actualDays / 365;
+}
+
+/**
+ * Actual/Actual
+ * There are some different versions of Actual/Actual:
+ * - Actual/Actual ICMA (International Capital Market Association) (most used in Europe)
+ * - Actual/Actual ISDA (International Swaps and Derivatives Association)
+ * - Actual/Actual AFB (Association Française des Banques)
+ * Currently we use a simplified version of the ICMA convention.
+ * @param {*} startDate 
+ * @param {*} endDate
+ * @returns
+ */
+function fractionActual_Actual(startDate, endDate) {
+    const msPerDay = 24 * 60 * 60 * 1000;
+    const actualDays = Math.floor((endDate - startDate) / msPerDay);
+    return actualDays / 365;
+}
+
+
+function getDateObject(dateString, format) {
+    let dateObj = "";
+    let dateFormatted = Banana.Converter.toInternalDateFormat(dateString, format);
+
+    if (dateFormatted)
+        dateObj = Banana.Converter.toDate(dateFormatted);
+
+    return dateObj;
+}
+
 function calculateShareSaleData(banDoc, docInfo, itemObj, dlgParams, currentRowNr) {
 
     let saleData = {};
@@ -626,7 +760,6 @@ function getAccountingCourse(itemCardDataObj, currentRowNr) {
 
     //divido il saldo in moneta base per quello del asset
     return Banana.SDecimal.divide(baseCurrBalance, assetCurrBalance);
-
 }
 
 /**
@@ -764,6 +897,8 @@ function getItemsTableData(banDoc) {
         itemData.unitPriceCurrent = tRow.value("UnitPriceCurrent");
         itemData.currency = tRow.value("Currency");
         itemData.type = tRow.value("ReferenceUnit");
+        itemData.frequency = tRow.value("CouponFrequency"); // This column must be first created, not present as default.
+        itemData.rate = tRow.value("CouponRate"); // This column must be first created, not present as default.
         if (itemsData && itemData.item)//only if the item has an id (isin)
             itemsData.push(itemData);
     }
