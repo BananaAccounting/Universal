@@ -136,7 +136,6 @@ function getCurrentRowData(banDoc, transList) {
     }
 }
 
-
 function getDocumentInfo(banDoc) {
 
     var docInfo = {};
@@ -227,7 +226,15 @@ function getTransactionsIdList(journalData) {
 
 /**
  * This function calculate the accrued intererest for the bond based on parameters defined by the user.
- * Formula: Accrued interest = ((Tasso/Frequenza) x Valore Nominale) x (Giorni trascorsi/Giorni totali nel periodo della cedola)
+ * Formula: Accrued interest = ((Rate / Frequency) x Nominal Value) x (Days elapsed / Total days in the coupon period)
+ * Rate: Is taken from the items table. The user must insert this value in the new column "CouponRate".
+ * Frequency: Is taken from the items table. The user must insert this value in the new column "CouponFrequency".
+ * The frequency must be indicate using a number, wich is then mapped in the following way:
+ *  -1: Annual frequency.
+ *  -2: Six-monthly frequency.
+    -3: Quarterly frequency.
+    -4: Quarterly frequency.
+ *  If a different value is entered, the frequency is set to 1.
  */
 function calculateAccruedInterests(dlgParams, itemObj) {
 
@@ -238,16 +245,22 @@ function calculateAccruedInterests(dlgParams, itemObj) {
     let startDate = "";
     let endDate = "";
     let dayCountfractionQuote = "";
+    let frequencies = ["1", "2", "3", "4"];
 
     if (!dlgParams || !itemObj)
         return accruedInterests;
 
     //Get the parameters from the user
-    nominalValue = Banana.SDecimal.abs(dlgParams.quantity); // riprendere da quii.
-    rate = itemObj.rate;
+    nominalValue = Banana.SDecimal.abs(dlgParams.quantity);
+    rate = itemObj.rate; // in %
+
     frequency = itemObj.frequency;
+    if (!frequencies.includes(frequency))
+        frequency = "1";
+
     startDate = getDateObject(dlgParams.lastCouponDate, "dd.mm.yyyy");
     endDate = getDateObject(dlgParams.currSettlementDate, "dd.mm.yyyy");
+
     /** Calculate the fraction of the coupon period (Days elapsed/Total days in the coupon period).
      * The calculation i done based on the day count convention selected by the user.*/
     dayCountfractionQuote = dayCountFractionBetweenDates(startDate, endDate, dlgParams.dayCountConvention);
@@ -933,6 +946,17 @@ function getItemRowNr(refGroup, tabItemsData) {
         refNr = refNr + "." + refNr;
     }
     return refNr;
+}
+
+function isValidItemSelected(selectedItem, itemObj, banDoc) {
+    if (!itemObj || !selectedItem) {
+        const ITEM_NOT_FOUND = "ITEM_NOT_FOUND";
+        let msg = getErrorMessage_MissingElements(ITEM_NOT_FOUND, selectedItem);
+        banDoc.addMessage(msg, ITEM_NOT_FOUND);
+        return false;
+    }
+
+    return true;
 }
 
 /**

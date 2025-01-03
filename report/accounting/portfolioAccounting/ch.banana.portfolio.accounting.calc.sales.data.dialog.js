@@ -193,7 +193,7 @@ class DlgCalculateSaleDataManager {
 
         let item = dlgParams.selectedItem;
         let itemObj = itemsData.find(obj => obj.item === item);
-        if (!this.isValidItemSelected(item, itemObj))
+        if (!isValidItemSelected(item, itemObj, this.banDoc))
             return;
 
         salesData = calculateShareSaleData(this.banDoc, this.docInfo, itemObj, dlgParams, this.currentRowNr);
@@ -221,7 +221,7 @@ class DlgCalculateSaleDataManager {
         let item = dlgParams.selectedItem;
 
         let itemObj = itemsData.find(obj => obj.item === item);
-        if (!this.isValidItemSelected(item, itemObj))
+        if (!isValidItemSelected(item, itemObj, this.banDoc))
             return;
 
         salesData = calculateShareSaleData(this.banDoc, this.docInfo, itemObj, dlgParams, this.currentRowNr);
@@ -251,17 +251,6 @@ class DlgCalculateSaleDataManager {
             this.labelTotValSharesPrev.setText(totalSharesvalue);
             this.accruedInterestsPrev.setText(accruedInterests);
         }
-    }
-
-    isValidItemSelected(selectedItem, itemObj) {
-        if (!itemObj || !selectedItem) {
-            const ITEM_NOT_FOUND = "ITEM_NOT_FOUND";
-            let msg = getErrorMessage_MissingElements(ITEM_NOT_FOUND, selectedItem);
-            this.banDoc.addMessage(msg, ITEM_NOT_FOUND);
-            return false;
-        }
-
-        return true;
     }
 
     readDialogParams() {
