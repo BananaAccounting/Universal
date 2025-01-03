@@ -64,7 +64,6 @@ function exec() { // Valutare se tenere il comando a parte. (03.01)
     salesData = calculateShareSaleData(banDoc, docInfo, itemObj, calcParams, currentRowNr);
     const recordSalesTransactions = new RecordSalesTransactions(banDoc, docInfo, salesData, calcParams,
         itemsData, itemObj, currentRowObj);
-    Banana.Ui.showText(JSON.stringify(recordSalesTransactions.getRecordSalesTransactions()));
     return recordSalesTransactions.getRecordSalesTransactions();
 
 }

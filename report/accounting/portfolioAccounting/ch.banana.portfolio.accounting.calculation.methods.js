@@ -439,29 +439,37 @@ function calculateShareSaleData(banDoc, docInfo, itemObj, dlgParams, currentRowN
  * Saves the book value calculated up to the movement before the one currently recorded.
  * We take the movement before because if the user has already written the sales entry, the
  * current one already takes this into account and the values are not the correct ones we need for the calculation.
- * @param {*} itemCardDataObj 
+ * @param {*} itemCardData 
  * @param {*} currentRowNr 
  * @returns the avg cost (book value).
  */
-function getAvgCost(itemCardDataObj, currentRowNr) {
-    if (!itemCardDataObj)
+function getAvgCost(itemCardData, currentRowNr) {
+    if (!itemCardData)
         return "";
-    const previousMovObject = getClosestPreviousObjByRowNr(itemCardDataObj, currentRowNr);
-    if (!previousMovObject)
+    const movObj = getClosestPreviousObjByRowNr(itemCardData, currentRowNr);
+    if (!movObj)
         return "";
 
-    return previousMovObject.accAvgCost;
+    return movObj.accAvgCost;
 }
 
-function getClosestPreviousObjByRowNr(itemCardDataObj, currentRowNr) {
+function getClosestPreviousObjByRowNr(itemCardData, currentRowNr) {
     // Find the object with `originRow` equal to `currentRowNr`.
-    const currentObject = itemCardDataObj.find(obj => obj.originRow === currentRowNr.toString());
-
-    if (!currentObject)
-        return "";
+    const currentObject = itemCardData.find(obj => obj.originRow === currentRowNr.toString());
+    if (!currentObject) {
+        /** Could happen if the current selected row is emtpy, or if the user insert manually the data without selecting a row. 
+         * In that case we use the last object in the array, if the array has no objects, means there are not movements yet for the item selected. 
+         * */
+        if (itemCardData.length > 0) {
+            const lastObject = itemCardData[itemCardData.length - 1];
+            return lastObject;
+        } else {
+            return "";
+        }
+    }
 
     // Finds the object with the immediately preceding `rowNr`.
-    const previousObject = itemCardDataObj
+    const previousObject = itemCardData
         .filter(obj => obj.rowNr < currentObject.rowNr)
         .sort((a, b) => b.rowNr - a.rowNr)[0];
 
@@ -472,8 +480,8 @@ function getClosestPreviousObjByRowNr(itemCardDataObj, currentRowNr) {
 }
 
 /**
- * Returns the information contained in the account card of the account linked to the item..
- */
+* Returns the information contained in the account card of the account linked to the item..
+*/
 function getAccountCardData(banDoc, docInfo, itemName, accountCard, account) {
     let transactions = [];
     let accBalance = "";
