@@ -152,10 +152,9 @@ class DlgCalculateSaleDataManager {
 
     setCurrentItem() {
         if (!this.currentRowObj || !this.currentRowObj.value("ItemsId")) {
-            if (this.cmbItems.itemCount >= 0) {
+            if (this.cmbItems.itemCount >= 0)
                 this.cmbItems.setCurrentText(this.cmbItems.itemText(0));
-                return;
-            }
+            return;
         }
         let item = this.currentRowObj.value("ItemsId");
         this.cmbItems.setCurrentText(item);

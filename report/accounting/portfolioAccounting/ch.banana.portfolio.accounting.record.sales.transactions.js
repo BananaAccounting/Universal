@@ -203,7 +203,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         row.fields["Date"] = this.currentRowObj.value("Date") || getCurrentDate();
         row.fields["Doc"] = this.currentRowObj.value("Doc") || "";
         row.fields["ItemsId"] = this.itemObject.item;
-        row.fields["Description"] = this.texts.bankCharges;
+        row.fields["Description"] = this.itemObject.description.trim() + " " + this.texts.bankCharges;
         row.fields["AccountDebit"] = this.savedParams.profitAndLossAccounts.chargesAccount || texts.bankChargesPlaceHolder;
         row.fields["Amount"] = Banana.Converter.toInternalNumberFormat(bankCharges);
 
@@ -223,7 +223,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         row.fields["Date"] = this.currentRowObj.value("Date") || getCurrentDate();
         row.fields["Doc"] = this.currentRowObj.value("Doc") || "";
         row.fields["ItemsId"] = this.itemObject.item;
-        row.fields["Description"] = this.texts.bankCharges;
+        row.fields["Description"] = this.itemObject.description.trim() + " " + this.texts.bankCharges;
         row.fields["AccountDebit"] = this.savedParams.profitAndLossAccounts.chargesAccount || texts.bankChargesPlaceHolder;
         row.fields["AmountCurrency"] = Banana.Converter.toInternalNumberFormat(bankCharges);
         row.fields["ExchangeCurrency"] = this.itemObject.currency;
@@ -245,7 +245,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         row.fields["Date"] = this.currentRowObj.value("Date") || getCurrentDate();
         row.fields["Doc"] = this.currentRowObj.value("Doc") || "";
         row.fields["ItemsId"] = this.itemObject.item;
-        row.fields["Description"] = this.texts.otherCharges;
+        row.fields["Description"] = this.itemObject.description + " " + this.texts.otherCharges;
         row.fields["AccountDebit"] = this.savedParams.profitAndLossAccounts.otherCostsAccount;
         row.fields["Amount"] = Banana.Converter.toInternalNumberFormat(otherChargesAmount);
 
@@ -265,7 +265,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         row.fields["Date"] = this.currentRowObj.value("Date") || getCurrentDate();
         row.fields["Doc"] = this.currentRowObj.value("Doc") || "";
         row.fields["ItemsId"] = this.itemObject.item;
-        row.fields["Description"] = this.texts.otherCharges;
+        row.fields["Description"] = this.itemObject.description.trim() + " " + this.texts.otherCharges;
         row.fields["AccountDebit"] = this.savedParams.profitAndLossAccounts.otherCostsAccount;
         row.fields["AmountCurrency"] = Banana.Converter.toInternalNumberFormat(otherChargesAmount);
         row.fields["ExchangeCurrency"] = this.itemObject.currency;
@@ -284,7 +284,8 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         row.fields["Date"] = this.currentRowObj.value("Date") || getCurrentDate();
         row.fields["Doc"] = this.currentRowObj.value("Doc") || "";
         row.fields["ItemsId"] = this.itemObject.item;
-        row.fields["Description"] = this.texts.accruedInterests.replace("%1", this.dlgParams.lastCouponDate).replace("%2", this.dlgParams.currSettlementDate);
+        row.fields["Description"] = this.itemObject.description + " " +
+            this.texts.accruedInterests.replace("%1", this.dlgParams.lastCouponDate).replace("%2", this.dlgParams.currSettlementDate);
         row.fields["AccountCredit"] = this.savedParams.profitAndLossAccounts.interestEarnedAccount || texts.accruedInterestsPlaceHolder;
         row.fields["Amount"] = Banana.Converter.toInternalNumberFormat(this.salesData.accruedInterests);
 
@@ -301,7 +302,8 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         row.fields["Date"] = this.currentRowObj.value("Date") || getCurrentDate();
         row.fields["Doc"] = this.currentRowObj.value("Doc") || "";
         row.fields["ItemsId"] = this.itemObject.item;
-        row.fields["Description"] = this.texts.accruedInterests.replace("%1", this.dlgParams.lastCouponDate).replace("%2", this.dlgParams.currSettlementDate);
+        row.fields["Description"] = this.itemObject.description.trim() + " " +
+            this.texts.accruedInterests.replace("%1", this.dlgParams.lastCouponDate).replace("%2", this.dlgParams.currSettlementDate);
         row.fields["AccountCredit"] = this.savedParams.profitAndLossAccounts.interestEarnedAccount || texts.accruedInterestsPlaceHolder;
         row.fields["AmountCurrency"] = Banana.Converter.toInternalNumberFormat(this.salesData.accruedInterests);
         row.fields["ExchangeCurrency"] = this.itemObject.currency;
@@ -320,7 +322,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         row.fields["Date"] = this.currentRowObj.value("Date") || getCurrentDate();
         row.fields["Doc"] = this.currentRowObj.value("Doc") || "";
         row.fields["ItemsId"] = this.itemObject.item;
-        row.fields["Description"] = this.texts.cashedNet;
+        row.fields["Description"] = this.itemObject.description + " " + this.texts.cashedNet;
         row.fields["AccountDebit"] = this.texts.bankAccountPlaceHolder;
         row.fields["Amount"] = Banana.Converter.toInternalNumberFormat(this.getBondCashedNetAmount());
 
@@ -337,7 +339,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         row.fields["Date"] = this.currentRowObj.value("Date") || getCurrentDate();
         row.fields["Doc"] = this.currentRowObj.value("Doc") || "";
         row.fields["ItemsId"] = this.itemObject.item;
-        row.fields["Description"] = this.texts.cashedNet;
+        row.fields["Description"] = this.itemObject.description.trim() + " " + this.texts.cashedNet;
         row.fields["AccountDebit"] = this.texts.bankAccountPlaceHolder;
         row.fields["AmountCurrency"] = Banana.Converter.toInternalNumberFormat(this.getBondCashedNetAmount());
         row.fields["ExchangeCurrency"] = this.itemObject.currency;
@@ -359,7 +361,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         row.fields["Date"] = this.currentRowObj.value("Date") || getCurrentDate();
         row.fields["Doc"] = this.currentRowObj.value("Doc") || "";
         row.fields["ItemsId"] = this.itemObject.item;
-        row.fields["Description"] = this.texts.resultOnSale;
+        row.fields["Description"] = this.itemObject.description + " " + this.texts.resultOnSale;
         if (isLossOnSale) {
             row.fields["AccountDebit"] = this.savedParams.valueChangingcontraAccounts.realizedLossAccount
                 || this.texts.realizedLossAccountPlaceHolder;
@@ -387,7 +389,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         row.fields["Date"] = this.currentRowObj.value("Date") || getCurrentDate();
         row.fields["Doc"] = this.currentRowObj.value("Doc") || "";
         row.fields["ItemsId"] = this.itemObject.item;
-        row.fields["Description"] = this.texts.resultOnSale;
+        row.fields["Description"] = this.itemObject.description.trim() + " " + this.texts.resultOnSale;
         if (isLossOnSale) {
             row.fields["AccountDebit"] = this.savedParams.valueChangingcontraAccounts.realizedLossAccount
                 || this.texts.realizedLossAccountPlaceHolder;
@@ -417,7 +419,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         row.fields["Date"] = this.currentRowObj.value("Date") || getCurrentDate();
         row.fields["Doc"] = this.currentRowObj.value("Doc") || "";
         row.fields["ItemsId"] = this.itemObject.item;
-        row.fields["Description"] = this.texts.resultExchange;
+        row.fields["Description"] = this.itemObject.description.trim() + " " + this.texts.resultExchange;
         if (isLossOnExchange) {
             row.fields["AccountDebit"] = this.savedParams.valueChangingcontraAccounts.realizedExRateLossAccount
                 || this.texts.exRateLossAccounPlaceHolder;
@@ -473,13 +475,33 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         return jsonDoc;
     }
 
-    getStockTransactionsRowsMulti() {
+    getStockTransactionsRows() {
         let rows = [];
         // Bank charges transaction
         let rowBankCharges = this.getStockDocChangeRow_bankCharges();
         let otherCahrges = this.getStockDocChangeRow_otherCharges();
         let rowCashedNet = this.getStockDocChangeRow_cashedNet();
         let rowSaleResult = this.getStockDocChangeRow_saleResult();
+
+        if (rowBankCharges)
+            rows.push(rowBankCharges);
+        if (otherCahrges)
+            rows.push(otherCahrges);
+        if (rowCashedNet)
+            rows.push(rowCashedNet);
+        if (rowSaleResult)
+            rows.push(rowSaleResult);
+
+        return rows;
+    }
+
+    getStockTransactionsRowsMulti() {
+        let rows = [];
+        // Bank charges transaction
+        let rowBankCharges = this.getStockDocChangeRow_bankChargesMulti();
+        let otherCahrges = this.getStockDocChangeRow_otherChargesMulti();
+        let rowCashedNet = this.getStockDocChangeRow_cashedNetMulti();
+        let rowSaleResult = this.getStockDocChangeRow_saleResultMulti();
         let rowExchangeResult = this.getStockDocChangeRow_ExhangeResult();
 
         if (rowBankCharges)
@@ -496,8 +518,89 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         return rows;
     }
 
-    getStockTransactionsRows() {
+    getStockDocChangeRow_bankCharges() {
+        let row = {};
+        let bankCharges = Banana.Converter.toInternalNumberFormat(this.dlgParams.bankCharges);
+        if (!bankCharges)
+            return row;
+        row.operation = {};
+        row.operation.name = "add";
+        row.operation.sequence = Banana.document.cursor.rowNr + ".1";
+        row.fields = {};
 
+        row.fields["Date"] = this.currentRowObj.value("Date") || getCurrentDate();
+        row.fields["Doc"] = this.currentRowObj.value("Doc") || "";
+        row.fields["ItemsId"] = this.itemObject.item;
+        row.fields["Description"] = this.itemObject.description.trim() + " " + this.texts.bankCharges;
+        row.fields["AccountDebit"] = this.savedParams.profitAndLossAccounts.chargesAccount || texts.bankChargesPlaceHolder;
+        row.fields["Amount"] = Banana.Converter.toInternalNumberFormat(bankCharges);
+
+        return row;
+    }
+
+    getStockDocChangeRow_otherCharges() {
+        let row = {};
+        let otherChargesAmount = Banana.Converter.toInternalNumberFormat(this.dlgParams.otherCahrges);
+        if (!otherChargesAmount)
+            return row;
+        row.operation = {};
+        row.operation.name = "add";
+        row.operation.sequence = Banana.document.cursor.rowNr + ".2";
+        row.fields = {};
+
+        row.fields["Date"] = this.currentRowObj.value("Date") || getCurrentDate();
+        row.fields["Doc"] = this.currentRowObj.value("Doc") || "";
+        row.fields["ItemsId"] = this.itemObject.item;
+        row.fields["Description"] = this.itemObject.description.trim() + " " + this.texts.otherCharges;
+        row.fields["AccountDebit"] = this.savedParams.profitAndLossAccounts.otherCostsAccount;
+        row.fields["Amount"] = Banana.Converter.toInternalNumberFormat(otherChargesAmount);
+
+        return row;
+    }
+
+    getStockDocChangeRow_cashedNet() {
+        let row = {};
+        row.operation = {};
+        row.operation.name = "add";
+        row.operation.sequence = Banana.document.cursor.rowNr + ".3";
+        row.fields = {};
+
+        row.fields["Date"] = this.currentRowObj.value("Date") || getCurrentDate();
+        row.fields["Doc"] = this.currentRowObj.value("Doc") || "";
+        row.fields["ItemsId"] = this.itemObject.item;
+        row.fields["Description"] = this.itemObject.description.trim() + " " + this.texts.cashedNet;
+        row.fields["AccountDebit"] = this.texts.bankAccountPlaceHolder;
+        row.fields["Amount"] = Banana.Converter.toInternalNumberFormat(this.getStockCashedNetAmount());
+
+        return row;
+    }
+
+    getStockDocChangeRow_saleResult() {
+        let row = {};
+        let isLossOnSale = this.setIsLossOnSale(this.salesData.saleResult);
+        row.operation = {};
+        row.operation.name = "add";
+        row.operation.sequence = Banana.document.cursor.rowNr + ".4";
+        row.fields = {};
+
+        let itemAccount = getItemAccount(this.itemObject.item, this.banDoc);
+
+        row.fields["Date"] = this.currentRowObj.value("Date") || getCurrentDate();
+        row.fields["Doc"] = this.currentRowObj.value("Doc") || "";
+        row.fields["ItemsId"] = this.itemObject.item;
+        row.fields["Description"] = this.itemObject.description.trim() + " " + this.texts.resultOnSale;
+        if (isLossOnSale) {
+            row.fields["AccountDebit"] = this.savedParams.valueChangingcontraAccounts.realizedLossAccount
+                || this.texts.realizedLossAccountPlaceHolder;
+            row.fields["AccountCredit"] = itemAccount;
+        } else {
+            row.fields["AccountDebit"] = itemAccount;
+            row.fields["AccountCredit"] = this.savedParams.valueChangingcontraAccounts.realizedGainAccount
+                || this.texts.realizedGainAccountPlaceHolder;
+        }
+        row.fields["Amount"] = Banana.Converter.toInternalNumberFormat(this.salesData.saleResult);
+
+        return row;
     }
 
     getStockDocChangeRow_ExhangeResult() {
@@ -513,7 +616,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         row.fields["Date"] = this.currentRowObj.value("Date") || getCurrentDate();
         row.fields["Doc"] = this.currentRowObj.value("Doc") || "";
         row.fields["ItemsId"] = this.itemObject.item;
-        row.fields["Description"] = this.texts.resultExchange;
+        row.fields["Description"] = this.itemObject.description.trim() + " " + this.texts.resultExchange;
         if (isLossOnExchange) {
             row.fields["AccountDebit"] = this.savedParams.valueChangingcontraAccounts.realizedExRateLossAccount
                 || this.texts.exRateLossAccounPlaceHolder;
@@ -538,7 +641,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         return isLossOnExchange;
     }
 
-    getStockDocChangeRow_saleResult() {
+    getStockDocChangeRow_saleResultMulti() {
         let row = {};
         let isLossOnSale = this.setIsLossOnSale(this.salesData.saleResult);
         row.operation = {};
@@ -551,7 +654,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         row.fields["Date"] = this.currentRowObj.value("Date") || getCurrentDate();
         row.fields["Doc"] = this.currentRowObj.value("Doc") || "";
         row.fields["ItemsId"] = this.itemObject.item;
-        row.fields["Description"] = this.texts.resultOnSale;
+        row.fields["Description"] = this.itemObject.description.trim() + " " + this.texts.resultOnSale;
         if (isLossOnSale) {
             row.fields["AccountDebit"] = this.savedParams.valueChangingcontraAccounts.realizedLossAccount
                 || this.texts.realizedLossAccountPlaceHolder;
@@ -576,7 +679,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         return isLossOnSale;
     }
 
-    getStockDocChangeRow_cashedNet() {
+    getStockDocChangeRow_cashedNetMulti() {
         let row = {};
         row.operation = {};
         row.operation.name = "add";
@@ -586,7 +689,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         row.fields["Date"] = this.currentRowObj.value("Date") || getCurrentDate();
         row.fields["Doc"] = this.currentRowObj.value("Doc") || "";
         row.fields["ItemsId"] = this.itemObject.item;
-        row.fields["Description"] = this.texts.cashedNet;
+        row.fields["Description"] = this.itemObject.description.trim() + " " + this.texts.cashedNet;
         row.fields["AccountDebit"] = this.texts.bankAccountPlaceHolder;
         row.fields["AmountCurrency"] = Banana.Converter.toInternalNumberFormat(this.getStockCashedNetAmount());
         row.fields["ExchangeCurrency"] = this.itemObject.currency;
@@ -601,7 +704,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         return netCashedAmount;
     }
 
-    getStockDocChangeRow_bankCharges() {
+    getStockDocChangeRow_bankChargesMulti() {
         let row = {};
         let bankCharges = Banana.Converter.toInternalNumberFormat(this.dlgParams.bankCharges);
         if (!bankCharges)
@@ -614,7 +717,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         row.fields["Date"] = this.currentRowObj.value("Date") || getCurrentDate();
         row.fields["Doc"] = this.currentRowObj.value("Doc") || "";
         row.fields["ItemsId"] = this.itemObject.item;
-        row.fields["Description"] = this.texts.bankCharges;
+        row.fields["Description"] = this.itemObject.description.trim() + " " + this.texts.bankCharges;
         row.fields["AccountDebit"] = this.savedParams.profitAndLossAccounts.chargesAccount || texts.bankChargesPlaceHolder;
         row.fields["AmountCurrency"] = Banana.Converter.toInternalNumberFormat(bankCharges);
         row.fields["ExchangeCurrency"] = this.itemObject.currency;
@@ -623,7 +726,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         return row;
     }
 
-    getStockDocChangeRow_otherCharges() {
+    getStockDocChangeRow_otherChargesMulti() {
         let row = {};
         let otherChargesAmount = Banana.Converter.toInternalNumberFormat(this.dlgParams.otherCahrges);
         if (!otherChargesAmount)
@@ -636,7 +739,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         row.fields["Date"] = this.currentRowObj.value("Date") || getCurrentDate();
         row.fields["Doc"] = this.currentRowObj.value("Doc") || "";
         row.fields["ItemsId"] = this.itemObject.item;
-        row.fields["Description"] = this.texts.otherCharges;
+        row.fields["Description"] = this.itemObject.description.trim() + " " + this.texts.otherCharges;
         row.fields["AccountDebit"] = this.savedParams.profitAndLossAccounts.otherCostsAccount;
         row.fields["AmountCurrency"] = Banana.Converter.toInternalNumberFormat(otherChargesAmount);
         row.fields["ExchangeCurrency"] = this.itemObject.currency;
