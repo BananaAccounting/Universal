@@ -283,8 +283,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         row.fields["Date"] = this.currentRowObj.value("Date") || getCurrentDate();
         row.fields["Doc"] = this.currentRowObj.value("Doc") || "";
         row.fields["ItemsId"] = this.itemObject.item;
-        row.fields["Description"] = this.itemObject.description + " " +
-            this.texts.accruedInterests.replace("%1", this.dlgParams.lastCouponDate).replace("%2", this.dlgParams.currSettlementDate);
+        row.fields["Description"] = this.itemObject.description + " " + this.texts.accruedInterests;
         row.fields["AccountCredit"] = this.savedParams.profitAndLossAccounts.interestEarnedAccount || texts.accruedInterestsPlaceHolder;
         row.fields["Amount"] = Banana.Converter.toInternalNumberFormat(this.salesData.accruedInterests);
 
@@ -301,8 +300,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         row.fields["Date"] = this.currentRowObj.value("Date") || getCurrentDate();
         row.fields["Doc"] = this.currentRowObj.value("Doc") || "";
         row.fields["ItemsId"] = this.itemObject.item;
-        row.fields["Description"] = this.itemObject.description.trim() + " " +
-            this.texts.accruedInterests.replace("%1", this.dlgParams.lastCouponDate).replace("%2", this.dlgParams.currSettlementDate);
+        row.fields["Description"] = this.itemObject.description.trim() + " " + this.texts.accruedInterests;
         row.fields["AccountCredit"] = this.savedParams.profitAndLossAccounts.interestEarnedAccount || texts.accruedInterestsPlaceHolder;
         row.fields["AmountCurrency"] = Banana.Converter.toInternalNumberFormat(this.salesData.accruedInterests);
         row.fields["ExchangeCurrency"] = this.itemObject.currency;
@@ -780,7 +778,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         texts.cashedNet = "Cashed Net";
         texts.resultOnSale = "Result on sale";
         texts.resultExchange = "Result on exchange";
-        texts.accruedInterests = "Accrued interests, period %1 - %2";
+        texts.accruedInterests = "Accrued interests";
         // Accounts placeholders (replaces accounts if not defined)
         texts.exRateLossAccounPlaceHolder = "[Realized exchange loss account]";
         texts.exRateGainAccounPlaceHolder = "[Realized exchange profit account]";
@@ -801,7 +799,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         texts.cashedNet = "Netto incassato";
         texts.resultOnSale = "Risultato della vendita";
         texts.resultExchange = "Risultato sul cambio";
-        texts.accruedInterests = "Interessi maturati, periodo %1 - %2";
+        texts.accruedInterests = "Interessi maturati";
 
         texts.exRateLossAccounPlaceHolder = "[Conto perdite su cambi realizzate]";
         texts.exRateGainAccounPlaceHolder = "[Conto profitti su cambi realizzati]";
@@ -822,7 +820,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         texts.cashedNet = "Netto eingelöst";
         texts.resultOnSale = "Verkaufsergebnis";
         texts.resultExchange = "Ergebnis des Wechselkurses";
-        texts.accruedInterests = "Aufgelaufene Zinsen, Zeitraum %1 - %2";
+        texts.accruedInterests = "Aufgelaufene Zinsen";
 
         texts.exRateLossAccounPlaceHolder = "[Konto für realisierte Wechselkursverluste]";
         texts.exRateGainAccounPlaceHolder = "[Konto für realisierte Wechselkursgewinne]";
@@ -843,7 +841,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         texts.cashedNet = "Net encaissé";
         texts.resultOnSale = "Résultat de la vente";
         texts.resultExchange = "Résultat du change";
-        texts.accruedInterests = "Intérêts courus, période %1 - %2";
+        texts.accruedInterests = "Intérêts courus";
 
         texts.exRateLossAccounPlaceHolder = "[Compte des pertes de change réalisées]";
         texts.exRateGainAccounPlaceHolder = "[Compte des gains de change réalisés]";

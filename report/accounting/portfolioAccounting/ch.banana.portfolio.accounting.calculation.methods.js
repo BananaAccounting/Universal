@@ -225,6 +225,10 @@ function getTransactionsIdList(journalData) {
 }
 
 /**
+ * 08.01.2025, currently disabled and specific parameters deleted:
+ * - currSettlementDate
+ * - accruedInterests
+ * - dayCountConvention
  * This function calculate the accrued intererest for the bond based on parameters defined by the user.
  * Formula: Accrued interest = ((Rate / Frequency) x Nominal Value) x (Days elapsed / Total days in the coupon period)
  * Rate: Is taken from the items table. The user must insert this value in the new column "CouponRate".
@@ -380,8 +384,6 @@ function calculateShareSaleData(banDoc, docInfo, itemObj, dlgParams, currentRowN
     let saleData = {};
     let journal = "";
     let quantity = "";
-    let marketPrice = "";
-    let currExRate = ""; //Current exchange rate.
     let accExRate = ""; //Accounting exchange rate.
     let avgCost = "";
     let avgSharesValue = "";
@@ -410,18 +412,16 @@ function calculateShareSaleData(banDoc, docInfo, itemObj, dlgParams, currentRowN
     itemCardData = getItemCardDataList(accountCardData, journalData);
     avgCost = getAvgCost(itemCardData, currentRowNr);
     quantity = Banana.SDecimal.abs(dlgParams.quantity);
-    marketPrice = dlgParams.marketPrice;
-    currExRate = dlgParams.currExRate;
     accExRate = getAccountingCourse(itemCardData, currentRowNr);
 
     avgSharesValue = getSharesAvgValue(quantity, avgCost);
-    totalSharesValue = getSharesTotalValue(quantity, marketPrice);
+    totalSharesValue = getSharesTotalValue(quantity, dlgParams.marketPrice);
     saleResult = getSaleResult(avgSharesValue, totalSharesValue);
-    exRateResult = getExchangeResult(totalSharesValue, saleResult, currExRate, accExRate);
+    exRateResult = getExchangeResult(totalSharesValue, saleResult, dlgParams.currExRate, accExRate);
 
     // only for bonds
     if (itemObj.type === "B") {
-        accruedInterests = calculateAccruedInterests(dlgParams, itemObj);
+        accruedInterests = dlgParams.accruedInterests; //calculateAccruedInterests(dlgParams, itemObj);
     }
 
     saleData.avgCost = avgCost;

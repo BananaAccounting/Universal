@@ -45,15 +45,12 @@ class DlgCalculateSaleDataManager {
         this.lineEditCurrentExRate = "";
         this.lineEditBankCharges = "";
         this.lineEditOtherCharges = "";
-        this.dateEditLastCouponDate = "";
-        this.dateEditCurrSettlementDate = "";
-        this.cmbCountConventions = "";
+        this.lineEditAccruedInterests = "";
         this.labelSaleResultPrev = "";
         this.labelAvgCostPrev = "";
         this.labelExcResultPrev = "";
         this.labelTotValSharesPrev = "";
         this.AvgValSharesPrev = "";
-        this.accruedInterestsPrev = "";
         this.buttonOk = "";
         this.buttonClose = "";
         this.buttonShowResults = "";
@@ -61,10 +58,10 @@ class DlgCalculateSaleDataManager {
         this.accruedInterestsGroupBox = "";
         this.documentChangeJsonDoc = {};
 
-        this.dayCountConventions_thirty_360 = "30/360";
+        /*this.dayCountConventions_thirty_360 = "30/360";
         this.dayCountConventions_actual_360 = "Actual/360";
         this.dayCountConventions_actual_365 = "Actual/365";
-        this.dayCountConventions_actual_actual = "Actual/Actual";
+        this.dayCountConventions_actual_actual = "Actual/Actual";*/
 
         this.currentRowNr = currentRowNr; // Selected row in transactions table.
         this.currentRowObj = getCurrentRowObj(this.banDoc, this.currentRowNr, "Transactions");
@@ -95,6 +92,9 @@ class DlgCalculateSaleDataManager {
 
     init() {
 
+        /** We currently hide the Accrued Interest Group Box as we just want to make the user inserting the amount of
+         * the accrued interest avoiding all the complex calculations, as those could be much more complex than expected.*/
+
         //sales data section objects
         //07.09.2023: Warning: file:....ch.banana.portfolio.accounting.calc.sales.data.dialog.js:38: Calling C++ methods with 'this' objects different from the one they were retrieved from is broken, due to historical reasons. The original object is used as 'this' object. You can allow the given 'this' object to be used by setting 'pragma NativeMethodBehavior: AcceptThisObject'
         this.cmbItems = this.dialog.findChild('item_comboBox');
@@ -103,26 +103,21 @@ class DlgCalculateSaleDataManager {
         this.lineEditCurrentExRate = this.dialog.findChild('currentExchangeRate_lineEdit');
         this.lineEditBankCharges = this.dialog.findChild('bankCharges_lineEdit');
         this.lineEditOtherCharges = this.dialog.findChild('otherCharges_lineEdit');
+        this.lineEditAccruedInterests = this.dialog.findChild('accruedInterests_lineEdit');
 
-        // Accrued interest data section objects (Shown only if the selected item is a bond).
-        this.accruedInterestsGroupBox = this.dialog.findChild('accruedInterest_groupBox');
-        this.dateEditLastCouponDate = this.dialog.findChild('lastCouponDate_dateEdit');
-        this.dateEditCurrSettlementDate = this.dialog.findChild('currentSettlementDate_dateEdit');
-        this.cmbCountConventions = this.dialog.findChild('dayCountConvention_comboBox');
-
-        //preview result label
+        // Preview result label
         this.labelSaleResultPrev = this.dialog.findChild('saleResultPreview_label');
         this.labelAvgCostPrev = this.dialog.findChild('averageCost_label');
         this.labelExcResultPrev = this.dialog.findChild('exchangeResultPreview_label');
         this.labelTotValSharesPrev = this.dialog.findChild('totalValueOfShares_label');
         this.AvgValSharesPrev = this.dialog.findChild('averageValueOfShares_label');
-        this.accruedInterestsPrev = this.dialog.findChild('accruredInterestPreview_label');
 
-        //Buttons
+        // Buttons
         this.buttonOk = this.dialog.findChild('okButton');
         this.buttonClose = this.dialog.findChild('closeButton');
         this.buttonShowResults = this.dialog.findChild('showResultsPreview_button');
         this.buttonCreateSalesRecord = this.dialog.findChild('createSaleRecord_button');
+
 
         // Displayed values
         this.insertItemsComboBoxElements(this.banDoc, this.docInfo);
@@ -130,11 +125,11 @@ class DlgCalculateSaleDataManager {
         this.setQuantity();
         this.setCurrentPrice();
         this.setCurrentExchangeRate();
-        this.insertDayCountConventionsComboBoxElements();
-        this.setCurrentDates();
+        //this.insertDayCountConventionsComboBoxElements();
 
         // Disable the Accrued Interest Group Box if the selected item is not a bond.
         this.setAccruedInterestsElementsEnabled();
+
     }
 
     setAccruedInterestsElementsEnabled() {
@@ -142,11 +137,9 @@ class DlgCalculateSaleDataManager {
         let itemsData = getItemsTableData(this.banDoc, this.docInfo);
         let itemObj = itemsData.find(obj => obj.item === currentItem);
         if (itemObj && itemObj.type == "B") {
-            this.accruedInterestsGroupBox.enabled = true;
-            this.accruedInterestsPrev.enabled = true;
+            this.lineEditAccruedInterests.enabled = true;
         } else {
-            this.accruedInterestsGroupBox.enabled = false;
-            this.accruedInterestsPrev.enabled = false;
+            this.lineEditAccruedInterests.enabled = false;
         }
     }
 
@@ -164,7 +157,7 @@ class DlgCalculateSaleDataManager {
         if (!this.currentRowObj)
             return;
         let quantity = this.currentRowObj.value("Quantity");
-        this.lineEditQt.setText(quantity);
+        this.lineEditQt.setText(Banana.SDecimal.abs(quantity));
     }
 
     setCurrentPrice() {
@@ -210,7 +203,6 @@ class DlgCalculateSaleDataManager {
         let saleResult = "";
         let avgSharesValue = "";
         let totalSharesvalue = "";
-        let accruedInterests = "";
         let itemsData = [];
         let dlgParams = {};
         let salesData = {};
@@ -232,7 +224,6 @@ class DlgCalculateSaleDataManager {
         exRateResult = Banana.Converter.toLocaleNumberFormat(salesData.exRateResult, 2, true);
         avgSharesValue = Banana.Converter.toLocaleNumberFormat(salesData.avgSharesValue, 2, true);
         totalSharesvalue = Banana.Converter.toLocaleNumberFormat(salesData.totalSharesvalue, 2, true);
-        accruedInterests = Banana.Converter.toLocaleNumberFormat(salesData.accruedInterests, 2, true);
 
 
         if (this.docInfo.isMultiCurrency) {
@@ -241,14 +232,12 @@ class DlgCalculateSaleDataManager {
             this.labelExcResultPrev.setText(exRateResult + " (" + baseCurr + ")");
             this.AvgValSharesPrev.setText(avgSharesValue + " (" + assetCurr + ")");
             this.labelTotValSharesPrev.setText(totalSharesvalue + " (" + assetCurr + ")");
-            this.accruedInterestsPrev.setText(accruedInterests + " (" + assetCurr + ")");
         } else {
             this.labelAvgCostPrev.setText(avgCost);
             this.labelSaleResultPrev.setText(saleResult);
             this.labelExcResultPrev.setText(exRateResult);
             this.AvgValSharesPrev.setText(avgSharesValue);
             this.labelTotValSharesPrev.setText(totalSharesvalue);
-            this.accruedInterestsPrev.setText(accruedInterests);
         }
     }
 
@@ -261,9 +250,7 @@ class DlgCalculateSaleDataManager {
         userParam.currExRate = this.lineEditCurrentExRate.text;
         userParam.bankCharges = this.lineEditBankCharges.text;
         userParam.otherCharges = this.lineEditOtherCharges.text;
-        userParam.lastCouponDate = this.dateEditLastCouponDate.text; // format dd.MM.yyyy (default)
-        userParam.currSettlementDate = this.dateEditCurrSettlementDate.text; // format dd.MM.yyyy (default)
-        userParam.dayCountConvention = this.cmbCountConventions.currentText;
+        userParam.accruedInterests = this.lineEditAccruedInterests.text;
 
         return userParam;
 
@@ -287,20 +274,6 @@ class DlgCalculateSaleDataManager {
         if (this.cmbItems)
             this.cmbItems.insertItems(1, itemList_array);
     }
-
-    insertDayCountConventionsComboBoxElements() {
-        var countConventions = [this.dayCountConventions_thirty_360,
-        this.dayCountConventions_actual_360,
-        this.dayCountConventions_actual_365,
-        this.dayCountConventions_actual_actual];
-        if (this.cmbCountConventions)
-            this.cmbCountConventions.insertItems(1, countConventions);
-    }
-
-    setCurrentDates() {
-        this.dateEditLastCouponDate.setDate(new Date());
-        this.dateEditCurrSettlementDate.setDate(new Date());
-    }
 }
 
 
@@ -323,7 +296,6 @@ function exec() {
     Banana.application.progressBar.pause();
     dlgCalculateSaleDataManager.dialog.exec();
     docChange = dlgCalculateSaleDataManager.documentChangeJsonDoc;
-    //Banana.Ui.showText(JSON.stringify(docChange));
     Banana.application.progressBar.resume();
 
     if (docChange)
