@@ -1,4 +1,4 @@
-// Copyright [2024] [Banana.ch SA - Lugano Switzerland]
+// Copyright [2025] [Banana.ch SA - Lugano Switzerland]
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,59 +14,11 @@
 //
 // @id = ch.banana.portfolio.accounting.record.sales.transactions.js
 // @api = 1.0
-// @pubdate = 2024-12-20
+// @pubdate = 2025-01-09
 // @publisher = Banana.ch SA
-// @description = Create sales record
-// @task = app.command
-// @doctype = 100.*
-// @docproperties =
-// @outputformat = none
-// @inputdatasource = none
-// @timeout = -1
 // @includejs = ch.banana.portfolio.accounting.record.sales.transactions.js
 // @includejs = ch.banana.portfolio.accounting.calculation.methods.js
 // @includejs = ch.banana.portfolio.accounting.errormessagges.handler.js
-
-/**
- * This script generates and records the sales transactions.
- */
-function exec() { // Valutare se tenere il comando a parte. (03.01)
-
-    let banDoc = Banana.document;
-
-    if (!banDoc || !verifyBananaVersion(banDoc))
-        return "@Cancel";
-
-    let docInfo = getDocumentInfo(banDoc);
-    let currentRowNr = getCurrentRowNumber(banDoc, "Transactions");
-    let calcParams = {};
-    let currentRowObj = getCurrentRowObj(banDoc, currentRowNr, "Transactions");
-    let itemsData = getItemsTableData(banDoc, docInfo);
-
-    if (!currentRowObj || !itemsData)
-        return {};
-
-    calcParams.itemId = currentRowObj.value("ItemsId");
-    calcParams.quantity = currentRowObj.value("Quantity");
-    calcParams.marketPrice = currentRowObj.value("UnitPrice");
-    calcParams.currExRate = currentRowObj.value("ExchangeRate");
-    calcParams.currency = currentRowObj.value("ExchangeCurrency");
-    calcParams.bankCharges = "" // Defined on the dialog;
-    calcParams.otherCahrges = "" // Defined on the dialog;
-    calcParams.lastCouponDate = "" // Defined on the dialog;
-    calcParams.currSettlementDate = "" // Defined on the dialog;
-
-    let item = calcParams.itemId;
-    let itemObj = itemsData.find(obj => obj.item === item);
-    if (!isValidItemSelected(item, itemObj, banDoc))
-        return;
-
-    salesData = calculateShareSaleData(banDoc, docInfo, itemObj, calcParams, currentRowNr);
-    const recordSalesTransactions = new RecordSalesTransactions(banDoc, docInfo, salesData, calcParams,
-        itemsData, itemObj, currentRowObj);
-    return recordSalesTransactions.getRecordSalesTransactions();
-
-}
 
 /** We must use the class declaration using "var" to be able to correctly use this class outside this file. */
 var RecordSalesTransactions = class RecordSalesTransactions {

@@ -31,26 +31,26 @@
 
 function exec(inData, options) {
 
-    var banDoc = Banana.document;
-    var selectedItem = ""; //Selected by the user
-    var docInfo = "";
-    var itemsData = "";
-    var itemAccount = "";
-    var dlgTitle = "Security ISIN";
-    var dlgLabel = "Enter the ISIN number of the security";
-    var scriptId = "ch.banana.portfolio.accounting.security.card.report.js";
-    var journal = ""; //hold the journal table
-    var journalData = [];
-    var accountCard = ""; //hold the account card table
-    var accountCardData = "";
-    var itemCardData = {};
-    var itemCurrency = "";
+    let banDoc = Banana.document;
+    let selectedItem = ""; //Selected by the user
+    let docInfo = "";
+    let itemsData = "";
+    let itemAccount = "";
+    const dlgTitle = "Security ISIN";
+    const dlgLabel = "Enter the ISIN number of the security";
+    const scriptId = "ch.banana.portfolio.accounting.security.card.report.js";
+    let journal = ""; //hold the journal table
+    let journalData = [];
+    let accountCard = ""; //hold the account card table
+    let accountCardData = "";
+    let itemCardData = {};
+    let itemCurrency = "";
     itemCardData.date = new Date();
 
     if (!verifyBananaVersion(banDoc))
         return "@Cancel";
 
-    selectedItem = getComboBoxElement(scriptId, dlgTitle, dlgLabel);
+    selectedItem = getSelectedItem(banDoc, scriptId, dlgTitle, dlgLabel);
     if (!selectedItem)
         return false;
 
@@ -80,12 +80,34 @@ function exec(inData, options) {
     itemCardData = getItemCardData(docInfo, accountCardData, journalData, itemCurrency, selectedItem);
 
     let itemDescription = itemObject.description;
-    var report = printReport(docInfo, itemCardData, itemDescription);
+    let report = printReport(docInfo, itemCardData, itemDescription);
     getReportHeader(report, docInfo);
-    var stylesheet = getReportStyle();
+    let stylesheet = getReportStyle();
     Banana.Report.preview(report, stylesheet);
 
+}
 
+function getSelectedItem(banDoc, scriptId, dlgTitle, dlgLabel) {
+    let itemsListAvailable = [];
+    let itemSaved = "";
+    let itemSelected = "";
+    itemSaved = banDoc.getScriptSettings(scriptId);
+    let itemSavedIdx =
+        itemsListAvailable = getItemsIds(banDoc);
+    if (!itemsListAvailable || itemsListAvailable.length < 1) {
+        let msg = getErrorMessage_MissingElements("NO_SECURITIES_FOUND");
+        banDoc.addMessage(msg, "NO_SECURITIES_FOUND");
+        return itemSelected;
+    }
+
+    itemSavedIdx = itemsListAvailable.indexOf(itemSaved);
+    if (itemSavedIdx == -1)
+        itemSavedIdx = 0;
+    itemSelected = Banana.Ui.getItem(dlgTitle, dlgLabel, itemsListAvailable, itemSavedIdx, true);
+    if (itemSelected) {
+        banDoc.setScriptSettings(scriptId, itemSelected);
+    }
+    return itemSelected;
 }
 
 function getItemCardData(docInfo, accountCardData, journalData, itemCurrency, selectedItem) {

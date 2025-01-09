@@ -88,14 +88,6 @@ function initDialogParams() {
     return dialogParam;
 }
 
-function getInvestmentsAccountsFormatted() {
-    const accountsList = getItemsAccounts(Banana.document);
-    if (!accountsList || accountsList.length === 0)
-        return "";
-    let accountsStringList = accountsList.join(";");
-    return accountsStringList;
-}
-
 function verifyParams(userParam) {
     if (!userParam || Object.keys(userParam).length === 0) {
         userParam = initDialogParams();

@@ -52,5 +52,9 @@ function getErrorMessage_MissingElements(errorId, missingElement) {
             return "Account: " + missingElement + " not found";
         case "ITEM_WITHOUT_ACCOUNT":
             return "Item: " + missingElement + " without assigned account";
+        case "NO_INVESTMENTS_ACCOUNTS_FOUND":
+            return "No securities account found in the Items table";
+        case "NO_SECURITIES_FOUND":
+            return "No securities found in the Items table";
     }
 }

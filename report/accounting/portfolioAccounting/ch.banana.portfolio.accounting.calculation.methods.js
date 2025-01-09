@@ -44,35 +44,12 @@ function getReportHeader(report, docInfo) {
     headerParagraph.addParagraph("", "");
 }
 
-function getComboBoxElement(scriptId, title, label) {
-
-    var item = "";
-    //Read script settings
-    var data = Banana.document.getScriptSettings(scriptId);
-
-    //Check if there are previously saved settings and read them
-    if (data.length > 0) {
-        var readSettings = JSON.parse(data);
-        //We check if "readSettings" is not null, then we fill the formeters with the values just read
-        if (readSettings) {
-            item = readSettings;
-        }
-    }
-    //A dialog window is opened asking the user to insert the desired period. By default is the accounting period
-    var selectedItem = Banana.Ui.getText(title, label, item);
-
-    //We take the values entered by the user and save them as "new default" values.
-    //This because the next time the script will be executed, the dialog window will contains the new values.
-    if (selectedItem) {
-        item = selectedItem;
-        //Save script settings
-        var valueToString = JSON.stringify(item);
-        Banana.document.setScriptSettings(scriptId, valueToString);
-    } else {
-        //User clicked cancel
-        return false;
-    }
-    return item;
+function getInvestmentsAccountsFormatted() {
+    const accountsList = getItemsAccounts(Banana.document);
+    if (!accountsList || accountsList.length === 0)
+        return "";
+    let accountsStringList = accountsList.join(";");
+    return accountsStringList;
 }
 
 /** Returns the date of the current day in the internal format YYYYmmDD */
@@ -889,6 +866,15 @@ function getItemsAccounts(banDoc) {
     const allAccounts = itemTableData.map(item => item.account);
     const uniqueAccounts = [...new Set(allAccounts)];
     return uniqueAccounts;
+}
+
+function getItemsIds(banDoc) {
+    let itemTableData = getItemsTableData(banDoc);
+    if (!itemTableData)
+        return [];
+    const allItemsId = itemTableData.map(item => item.item);
+    const uniqueItemsId = [...new Set(allItemsId)];
+    return uniqueItemsId;
 }
 
 function getItemAccount(itemId, banDoc) {

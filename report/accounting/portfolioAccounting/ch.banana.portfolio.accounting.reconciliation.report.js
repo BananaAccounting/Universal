@@ -30,28 +30,26 @@
 
 function exec(inData, options) {
 
-    var banDoc = Banana.document;
+    let banDoc = Banana.document;
 
     if (!verifyBananaVersion(banDoc))
         return "@Cancel";
 
 
-    var docInfo = "";
-    var itemsData = "";
-    var dlgLabel = "Accounts Name (separated by semicolon ';')";
-    var dlgTitle = "Enter accounts for reconciliation";
-    var scriptId = "ch.banana.portfolio.accounting.riconciliation.report.js";
-    var userParam = "";
-    var accountsList = [];
-    var reconciliationData = {};
+    let docInfo = "";
+    let itemsData = "";
+    const dlgLabel = "Available accounts (select one or more accounts)";
+    const dlgTitle = "Select accounts to show";
+    const scriptId = "ch.banana.portfolio.accounting.riconciliation.report.js";
+    let userParam = "";
+    let accountsList = [];
+    let reconciliationData = {};
     reconciliationData.date = new Date();
-    var accountsDataList = [];
+    let accountsDataList = [];
 
-    userParam = getComboBoxElement(scriptId, dlgTitle, dlgLabel);
-    if (userParam)
-        accountsList = userParam.split(";");
-    else
-        return false;
+    accountsList = getSelectedAccounts(banDoc, scriptId, dlgTitle, dlgLabel);
+    if (!accountsList || accountsList.length < 0)
+        return;
 
     docInfo = getDocumentInfo(banDoc);
     //let transactionsData=getTransactionsTableData(banDoc,docInfo);
@@ -66,12 +64,37 @@ function exec(inData, options) {
     //Insert the data into the reconciliation obj.
     reconciliationData.data = accountsDataList;
 
-    var report = printReport(reconciliationData, docInfo);
+    let report = printReport(reconciliationData, docInfo);
     getReportHeader(report, docInfo);
-    var stylesheet = getReportStyle();
+    let stylesheet = getReportStyle();
     Banana.Report.preview(report, stylesheet);
 
+}
 
+function getSelectedAccounts(banDoc, scriptId, dlgTitle, dlgLabel) {
+    let accountsListAvailable = [];
+    let accountsListSaved = [];
+    let accountsListSelected = [];
+    let savedAccounts = banDoc.getScriptSettings(scriptId);
+    let savedAccList = savedAccounts.split(";");
+    if (savedAccList && savedAccList.length >= 1) {
+        accountsListSaved = savedAccList;
+    }
+    let invAccounts = getInvestmentsAccountsFormatted();
+    if (!invAccounts || invAccounts.length < 0) {
+        let msg = getErrorMessage_MissingElements("NO_INVESTMENTS_ACCOUNTS_FOUND");
+        banDoc.addMessage(msg, "NO_INVESTMENTS_ACCOUNTS_FOUND");
+        return accountsListSelected;
+    }
+
+    let invAccountsList = invAccounts.split(";");
+    accountsListAvailable = invAccountsList;
+    accountsListSelected = Banana.Ui.getItems(dlgTitle, dlgLabel, accountsListAvailable, accountsListSaved);
+    if (accountsListSelected && accountsListSelected.length > 0) {
+        let valuesToString = accountsListSelected.join(";");
+        banDoc.setScriptSettings(scriptId, valuesToString);
+    }
+    return accountsListSelected;
 }
 
 function getConciliationTable(report, currentDate, docInfo) {
