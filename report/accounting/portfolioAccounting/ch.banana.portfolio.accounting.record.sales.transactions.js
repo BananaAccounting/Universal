@@ -100,10 +100,16 @@ var RecordSalesTransactions = class RecordSalesTransactions {
 
     getBondTransactionsRows() {
         let rows = [];
+        let currExRef = this.currentRowObj.value("ExternalReference");
 
-        let rowSale = this.getDocChangeRowSale();
-        if (!rowSale || Object.entries(rowSale).length === 0)
-            return rows;
+        // Controlliamo se la riga di vendita selezionata è valida, se dobbiamo aggiungere il codice dell'operazione o crearla nuova da 0.
+        if (!selectedRowSaleIsComplete(currExRef)) {
+            let rowSale = this.getDocChangeRowSale(currExRef);
+            if (!rowSale || Object.entries(rowSale).length === 0)
+                return rows;
+            else
+                rows.push(rowSale);
+        }
 
         let rowBankCharges = this.getBondDocChangeRow_bankCharges();
         let otherCahrges = this.getBondDocChangeRow_otherCharges();
@@ -112,8 +118,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         let rowSaleResult = this.getBondDocChangeRow_saleResult();
 
 
-        rows.push(rowSale);
-        if (rowBankCharges && rowExistenceChecked(rowBankCharges, this.transactionsType.BANK_CHARGES)) // cambiare tutti sulla base di questi esempi 10.01-13.01 e poi testare.
+        if (rowBankCharges && rowExistenceChecked(rowBankCharges, this.transactionsType.BANK_CHARGES)) // cambiare tutti gli altri metodi sulla base di questi esempi 10.01-13.01 e poi testare.
             rows.push(rowBankCharges);
         if (otherCahrges)
             rows.push(otherCahrges);
@@ -741,18 +746,29 @@ var RecordSalesTransactions = class RecordSalesTransactions {
      * then we can create this record ourselves as well.
      * If the row is empty, and the values entered are the ones needed, we create a new row.
      * If the row exists, we update it by adding the operation identifier (Column “ExternalReference”).
+     * If the row is not empty and already has an operation identifier...
      */
-    getDocChangeRowSale() {
+    getDocChangeRowSale(currExRef) {
         let saleRow = {};
         if (this.currentRowObj.isEmpty) {
             saleRow = createSaleRow();
         } else {
-            let currExRef = this.currentRowObj.value("ExternalReference");
             if (!currExRef.match(this.salesCodesRegex))
                 saleRow = modifySaleRow();
         }
 
         return saleRow;
+    }
+
+    /**
+     * Returns true if the selected title sale row is already in place as is, and does not need to be changed.
+     */
+    selectedRowSaleIsComplete(currExRef) {
+        if (!this.currentRowObj.isEmpty && currExRef.match(this.salesCodesRegex)) {
+            return true;
+        }
+
+        return false;
     }
 
     createSaleRow() {
