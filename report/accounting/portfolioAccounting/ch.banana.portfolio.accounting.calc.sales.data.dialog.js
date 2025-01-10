@@ -75,8 +75,10 @@ class DlgCalculateSaleDataManager {
 
         this.dialog.createSalesRecord = () => {
             let JsonDoc = this.createDocChangeSaleRecord();
-            this.documentChangeJsonDoc = JsonDoc;
-            this.dialog.close();
+            if (JsonDoc.document.dataUnit.length > 0) {
+                this.documentChangeJsonDoc = JsonDoc;
+                this.dialog.close();
+            }
         };
 
         this.dialog.enableAccruedInterestsElements = () => {
@@ -157,7 +159,10 @@ class DlgCalculateSaleDataManager {
         if (!this.currentRowObj)
             return;
         let quantity = this.currentRowObj.value("Quantity");
-        this.lineEditQt.setText(Banana.SDecimal.abs(quantity));
+        let absQuantity = Banana.SDecimal.abs(quantity);
+        if (Banana.SDecimal.isZero(absQuantity))
+            absQuantity = "";
+        this.lineEditQt.setText(absQuantity);
     }
 
     setCurrentPrice() {

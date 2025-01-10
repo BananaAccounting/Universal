@@ -729,6 +729,7 @@ function getTransactionsTableData(banDoc, docInfo) {
             trData.doc = tRow.value("Doc");
             trData.type = tRow.value("DocType");
             trData.item = tRow.value("ItemsId");
+            trData.externalReference = tRow.value("ExternalReference");
             trData.description = tRow.value("Description");
             trData.debit = tRow.value("AccountDebit");
             trData.credit = tRow.value("AccountCredit");
@@ -885,6 +886,16 @@ function getItemAccount(itemId, banDoc) {
     if (!item)
         return "";
     return item.account;
+}
+
+function getItemDescription(itemId, banDoc) {
+    let itemTableData = getItemsTableData(banDoc);
+    if (!itemTableData)
+        return "";
+    const item = itemTableData.find(item => item.item === itemId);
+    if (!item)
+        return "";
+    return item.description;
 }
 
 /**

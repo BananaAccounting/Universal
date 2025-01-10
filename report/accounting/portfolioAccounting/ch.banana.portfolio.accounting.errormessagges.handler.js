@@ -56,5 +56,11 @@ function getErrorMessage_MissingElements(errorId, missingElement) {
             return "No securities account found in the Items table";
         case "NO_SECURITIES_FOUND":
             return "No securities found in the Items table";
+        case "DLG_QUANTITY_MISSING":
+            return "Enter the quantity of securities sold";
+        case "DLG_MARKETPRICE_MISSING":
+            return "Enter the current price of securities sold";
+        case "DLG_EXCHANGERATE_MISSING":
+            return "Enter the current exchange rate of securities sold";
     }
 }

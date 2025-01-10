@@ -41,7 +41,6 @@ function exec(inData, options) {
     const dlgLabel = "Available accounts (select one or more accounts)";
     const dlgTitle = "Select accounts to show";
     const scriptId = "ch.banana.portfolio.accounting.riconciliation.report.js";
-    let userParam = "";
     let accountsList = [];
     let reconciliationData = {};
     reconciliationData.date = new Date();
