@@ -102,16 +102,22 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         let rows = [];
         let currExRef = this.currentRowObj.value("ExternalReference");
 
-        // Controlliamo se la riga di vendita selezionata è valida, se dobbiamo aggiungere il codice dell'operazione o crearla nuova da 0.
+        /** Controlliamo se la riga di vendita selezionata è valida, se dobbiamo aggiungere il codice dell'operazione o crearla nuova da 0.
+         * Attualmente gestisco solo il caso dove una riga è vuota o non ha il codice operazione, però volendo si potrebbe controllare, sulla base dei dati inseriti
+         * nel dialogo, se la riga esistente è completa o meno, se nella riga manca un campo che però ce invece nel dialogo, possiamo aggiungerlo.
+         * si potrebbe creare ad esempio un metodo saleRowIsToComplete() e saleRowIsToCompleteMulti, vedere se è necessario o meno.
+         * */
         if (!selectedRowSaleIsComplete(currExRef)) {
             let rowSale = this.getDocChangeRowSale(currExRef);
-            if (!rowSale || Object.entries(rowSale).length === 0)
+            if (!rowSale || Object.entries(rowSale).length === 0) {
                 return rows;
-            else
-                rows.push(rowSale);
+            } else {
+                rows.push(rowSale); // add or modify
+                currExRef = rowSale.fields["ExternalReference"];
+            }
         }
 
-        let rowBankCharges = this.getBondDocChangeRow_bankCharges();
+        let rowBankCharges = this.getBondDocChangeRow_bankCharges(currExRef); // non passare rowsale, non è corretto, usare direttamente il valore (cambiare gli altri)
         let otherCahrges = this.getBondDocChangeRow_otherCharges();
         let accruedInterests = this.getBondDocChangeRow_accruedInterests();
         let rowCashedNet = this.getBondDocChangeRow_cashedNet();
@@ -160,7 +166,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         return rows;
     }
 
-    getBondDocChangeRow_bankCharges(rowSale) {
+    getBondDocChangeRow_bankCharges(currExRef) {
         let row = {};
         let bankCharges = Banana.Converter.toInternalNumberFormat(this.dlgParams.bankCharges);
         if (!bankCharges)
@@ -173,7 +179,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         row.fields["Date"] = this.currentRowObj.value("Date") || getCurrentDate();
         row.fields["Doc"] = this.currentRowObj.value("Doc") || "";
         row.fields["ItemsId"] = this.itemObject.item;
-        row.fields["ExternalReference"] = rowSale["ExternalReference"] + ".1";
+        row.fields["ExternalReference"] = currExRef + ".1";
         row.fields["Description"] = this.itemObject.description.trim() + " " + this.texts.bankCharges;
         row.fields["AccountDebit"] = this.savedParams.profitAndLossAccounts.chargesAccount || texts.bankChargesPlaceHolder;
         row.fields["Amount"] = Banana.Converter.toInternalNumberFormat(bankCharges);
