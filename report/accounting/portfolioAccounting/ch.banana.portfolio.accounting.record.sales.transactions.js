@@ -35,7 +35,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         this.itemsData = itemsData;
         this.itemObject = currItemObj;
         this.itemType = "S"; // Base is stock.
-        this.salesCodesRegex = "/^inv_sale_\d+$/";
+        this.salesCodesRegex = "/^inv_sale_\d+(\.\d+)?$/";
         this.trTableData = getTransactionsTableData(this.banDoc, this.docInfo);
         this.transactionsType = getTransactionsType();
     }
@@ -100,21 +100,33 @@ var RecordSalesTransactions = class RecordSalesTransactions {
 
     getBondTransactionsRows() {
         let rows = [];
+
+        /**Procedimento generale:
+         * - Controlliamo se la riga attualmente selezionata è valida o meno (Deve essere valida in quanto dobbiamo andare ad inserirsci il
+         *  riferimento della registrazione di vendita). Se non esiste mandiamo un messaggio all'utente e non creiamo le righe.
+         * - Controlliamo se la riga contiene già il riferimento esterno nel formato giusto, se non lo contiene modifichiamo anche la riga
+         * principale aggiungendolo.
+         * - Se l'utente seleziona una delle righe figlie, mostriamo un messaggio e non aggiungiamo le righe.
+         */
+
+        if (!this.currentRowObj) {
+            let msg = getErrorMessage_MissingElements("SELECTED_ROW_NOT_VALID");
+            banDoc.addMessage(msg, "SELECTED_ROW_NOT_VALID");
+            return rows;
+        }
+
         let currExRef = this.currentRowObj.value("ExternalReference");
 
-        /** Controlliamo se la riga di vendita selezionata è valida, se dobbiamo aggiungere il codice dell'operazione o crearla nuova da 0.
-         * Attualmente gestisco solo il caso dove una riga è vuota o non ha il codice operazione, però volendo si potrebbe controllare, sulla base dei dati inseriti
-         * nel dialogo, se la riga esistente è completa o meno, se nella riga manca un campo che però ce invece nel dialogo, possiamo aggiungerlo.
-         * si potrebbe creare ad esempio un metodo saleRowIsToComplete() e saleRowIsToCompleteMulti, vedere se è necessario o meno.
-         * */
-        if (!selectedRowSaleIsComplete(currExRef)) {
-            let rowSale = this.getDocChangeRowSale(currExRef);
-            if (!rowSale || Object.entries(rowSale).length === 0) {
-                return rows;
-            } else {
-                rows.push(rowSale); // add or modify
-                currExRef = rowSale.fields["ExternalReference"];
-            }
+        if (!currExRef.match(this.salesCodesRegex)) {
+            let rowSale = this.getDocChangeRow_addSaleRef(currExRef);
+            rows.push(rowSale);
+            currExRef = rowSale.fields["ExternalReference"];
+        }
+
+        if (currExRef.indexOf(".") > -1) { // User selected a child row.
+            let msg = getErrorMessage_MissingElements("CHILD_ROW_SELECTED");
+            banDoc.addMessage(msg, "CHILD_ROW_SELECTED");
+            return rows;
         }
 
         let rowBankCharges = this.getBondDocChangeRow_bankCharges(currExRef); // non passare rowsale, non è corretto, usare direttamente il valore (cambiare gli altri)
@@ -746,80 +758,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         return row;
     }
 
-    /**
-     * We advise the user to already enter this record manually; the dialog then automatically resumes the data entered.
-     * If the user starts from a blank row and fills in the data completely in the dialog, 
-     * then we can create this record ourselves as well.
-     * If the row is empty, and the values entered are the ones needed, we create a new row.
-     * If the row exists, we update it by adding the operation identifier (Column “ExternalReference”).
-     * If the row is not empty and already has an operation identifier...
-     */
-    getDocChangeRowSale(currExRef) {
-        let saleRow = {};
-        if (this.currentRowObj.isEmpty) {
-            saleRow = createSaleRow();
-        } else {
-            if (!currExRef.match(this.salesCodesRegex))
-                saleRow = modifySaleRow();
-        }
-
-        return saleRow;
-    }
-
-    /**
-     * Returns true if the selected title sale row is already in place as is, and does not need to be changed.
-     */
-    selectedRowSaleIsComplete(currExRef) {
-        if (!this.currentRowObj.isEmpty && currExRef.match(this.salesCodesRegex)) {
-            return true;
-        }
-
-        return false;
-    }
-
-    createSaleRow() {
-        let row = {};
-        row.operation = {};
-        row.operation.name = "add";
-        row.operation.sequence = Banana.document.cursor.rowNr || getFirstAvailableRowNr(); // testare se funziona.
-        row.fields = {};
-        let itemAccount = getItemAccount(this.dlgParams.selectedItem);
-
-        row.fields["Date"] = getCurrentDate();
-        row.fields["Doc"] = "";
-        row.fields["ItemsId"] = this.dlgParams.selectedItem;
-        row.fields["ExternalReference"] = getNewSaleCode();
-        row.fields["Description"] = getItemDescription(this.dlgParams.selectedItem);
-        row.fields["AccountCredit"] = itemAccount;
-        if (this.dlgParams.quantity && this.dlgParams.quantity.length >= 0) {
-            row.fields["Quantity"] = this.dlgParams.quantity;
-        } else {
-            let msg = getErrorMessage_MissingElements("DLG_QUANTITY_MISSING");
-            banDoc.addMessage(msg, "DLG_QUANTITY_MISSING");
-            return {};
-        }
-        if (this.dlgParams.marketPrice && this.dlgParams.marketPrice.length >= 0) {
-            row.fields["UnitPrice"] = this.dlgParams.marketPrice;
-        } else {
-            let msg = getErrorMessage_MissingElements("DLG_MARKETPRICE_MISSING");
-            banDoc.addMessage(msg, "DLG_MARKETPRICE_MISSING");
-            return {};
-        }
-
-        if (this.docInfo.isMultiCurrency) {
-            row.fields["ExchangeCurrency"] = getAccountCurrency(itemAccount, this.banDoc);
-            if (this.dlgParams.currExRate && this.dlgParams.currExRate.length >= 0) {
-                row.fields["ExchangeRate"] = this.dlgParams.currExRate;
-            } else {
-                let msg = getErrorMessage_MissingElements("DLG_EXCHANGERATE_MISSING");
-                banDoc.addMessage(msg, "DLG_EXCHANGERATE_MISSING");
-                return {};
-            }
-        }
-        return row;
-    }
-
-    modifySaleRow() {
+    getDocChangeRow_addSaleRef() {
         let row = {};
         row.operation = {};
         row.operation.name = "modify";
