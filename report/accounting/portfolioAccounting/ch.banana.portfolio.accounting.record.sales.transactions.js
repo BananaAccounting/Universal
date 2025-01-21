@@ -37,20 +37,28 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         this.itemType = "S"; // Base is stock.
         this.salesCodesRegex = "/^inv_sale_\d+(\.\d+)?$/";
         this.trTableData = getTransactionsTableData(this.banDoc, this.docInfo);
-        this.transactionsType = getTransactionsType();
+        this.transactionsType = this.getTransactionsType();
+        this.saleTrRef = ""; // In ExternalReference column of the transactions table.
     }
     getRecordSalesTransactions() {
         let jsonDoc = { "format": "documentChange", "error": "" };
-        if (!this.salesData)
+        if (!this.salesData || !this.currentSelectedRowIsValid())
             return jsonDoc;
-
         /**
          * In the “ReferenceUnit” column of the items table, 
          * we request to indicate the type of Title that is being used:
          * - S: Stock
          * - B: Bond
          */
+        this.saleTrRef = this.currentRowObj.value("ExternalReference"); // By default.
         this.itemType = this.itemObject.type;
+
+        /**Notes: 
+         * -To properly set up the document change with the changes, the modification of the main sale row and the addition
+         * of the new rows must be done in two separate documents
+         * - We identify the transactions automatically created by the program by adding in the ExternalReference column an identifier with
+         * the prefix “inv_sale_” followed by a sequence number. For example: inv_sale_1, inv_sale_2, etc. see method: getNewSaleCode()
+         * */
 
         switch (this.itemType) {
             case "B":
@@ -61,8 +69,97 @@ var RecordSalesTransactions = class RecordSalesTransactions {
                 jsonDoc["data"] = this.getStockSaleResultDocChangeTransaction();
                 break;
         }
+        //Banana.Ui.showText(JSON.stringify(jsonDoc));
         return jsonDoc;
     }
+
+    currentSelectedRowIsValid() {
+        /** Let's check whether or not the currently selected line is valid (It must be valid since we have to go and enter the
+         *  sales record reference). If it does not exist we send a message to the user and do not create the rows.
+         */
+        if (!this.currentRowObj) {
+            let msg = getErrorMessage_MissingElements("SELECTED_ROW_NOT_VALID");
+            banDoc.addMessage(msg, "SELECTED_ROW_NOT_VALID");
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Returns the document containing the changes to be made to the main sales line (the one with the quantity and sales price).
+     * These changes are the same for all title types.
+     */
+    getSaleRowChangesDocument() {
+        let docChangeObj = {};
+        let rowSale = this.getDocChangeRow_mainSale();
+        if (!isObjectEmpty(rowSale)) {
+            docChangeObj = this.getDocumentChangeInit();
+
+            // Add the row to the document (we just have one row to add)
+            let rows = [];
+            rows.push(rowSale);
+
+            var dataUnitTransactionsTable = {};
+            dataUnitTransactionsTable.nameXml = "Transactions";
+            dataUnitTransactionsTable.data = {};
+            dataUnitTransactionsTable.data.rowLists = [];
+            dataUnitTransactionsTable.data.rowLists.push({ "rows": rows });
+            docChangeObj.document.dataUnits.push(dataUnitTransactionsTable);
+        }
+
+        return docChangeObj;
+    }
+
+    /**
+     * Returns the document containing the rows to be added (Bonds)
+     */
+    getBondsOtherRowsChangesDocument() {
+        let docChangeObj = this.getDocumentChangeInit();
+        let rows = [];
+
+        if (this.docInfo.isMultiCurrency)
+            rows = this.getBondTransactionsRowsMulti();
+        else
+            rows = this.getBondTransactionsRows();
+
+        if (rows.length < 1)
+            return {};
+
+        var dataUnitTransactionsTable = {};
+        dataUnitTransactionsTable.nameXml = "Transactions";
+        dataUnitTransactionsTable.data = {};
+        dataUnitTransactionsTable.data.rowLists = [];
+        dataUnitTransactionsTable.data.rowLists.push({ "rows": rows });
+
+        docChangeObj.document.dataUnits.push(dataUnitTransactionsTable);
+
+        return docChangeObj;
+    }
+
+    /**
+ * Returns the document containing the rows to be added (Stocks)
+ */
+    getStocksOtherRowsChangesDocument() {
+        let docChangeObj = this.getDocumentChangeInit();
+        let rows = [];
+
+        if (this.docInfo.isMultiCurrency)
+            rows = this.getStockTransactionsRowsMulti();
+        else
+            rows = this.getStockTransactionsRows();
+
+        var dataUnitTransactionsTable = {};
+        dataUnitTransactionsTable.nameXml = "Transactions";
+        dataUnitTransactionsTable.data = {};
+        dataUnitTransactionsTable.data.rowLists = [];
+        dataUnitTransactionsTable.data.rowLists.push({ "rows": rows });
+
+        docChangeObj.document.dataUnits.push(dataUnitTransactionsTable);
+
+        return docChangeObj;
+    }
+
+
 
     /**
     * Returns a document change containing the record of sale of a bond.
@@ -76,75 +173,52 @@ var RecordSalesTransactions = class RecordSalesTransactions {
     *     Exchange Rate Profit	        (Share account)	                 (Exchange profit/loss)      (This row is present only in multi-currency accounting)
      */
     getBondSaleResultDocChangeTransaction() {
-        let jsonDoc = this.getDocumentChangeInit();
-        let rows = [];
 
-        if (this.docInfo.isMultiCurrency)
-            rows = this.getBondTransactionsRowsMulti();
-        else
-            rows = this.getBondTransactionsRows();
+        let data = [];
+        let saleRowChangeDocument = this.getSaleRowChangesDocument(); // Row to modify
+        let otherRowsChangeDocument = this.getBondsOtherRowsChangesDocument(); // Rows to add
 
-        if (rows.length < 1)
-            return jsonDoc;
+        if (saleRowChangeDocument && !isObjectEmpty(saleRowChangeDocument))
+            data.push(saleRowChangeDocument);
+        if (otherRowsChangeDocument && !isObjectEmpty(otherRowsChangeDocument))
+            data.push(otherRowsChangeDocument);
 
-        var dataUnitTransactionsTable = {};
-        dataUnitTransactionsTable.nameXml = "Transactions";
-        dataUnitTransactionsTable.data = {};
-        dataUnitTransactionsTable.data.rowLists = [];
-        dataUnitTransactionsTable.data.rowLists.push({ "rows": rows });
+        return data;
+    }
 
-        jsonDoc.document.dataUnits.push(dataUnitTransactionsTable);
-
-        return jsonDoc;
+    getDocChangeRow_mainSale() {
+        let rowSaleObj = {};
+        if (!this.saleTrRef.match(this.salesCodesRegex)) {
+            rowSaleObj = this.getDocChangeRow_addSaleRef();
+            this.saleTrRef = rowSaleObj.fields["ExternalReference"];
+            return rowSaleObj;
+        } else if (this.saleTrRef.match(this.salesCodesRegex) && this.saleTrRef.indexOf(".") > -1) { // User selected a child row.
+            let msg = getErrorMessage_MissingElements("CHILD_ROW_SELECTED");
+            banDoc.addMessage(msg, "CHILD_ROW_SELECTED");
+            return rowSaleObj;
+        } else {
+            return rowSaleObj; // The row already contains a valid reference, we return an empty object as we dont need any change
+        }
     }
 
     getBondTransactionsRows() {
         let rows = [];
 
-        /**Procedimento generale:
-         * - Controlliamo se la riga attualmente selezionata è valida o meno (Deve essere valida in quanto dobbiamo andare ad inserirsci il
-         *  riferimento della registrazione di vendita). Se non esiste mandiamo un messaggio all'utente e non creiamo le righe.
-         * - Controlliamo se la riga contiene già il riferimento esterno nel formato giusto, se non lo contiene modifichiamo anche la riga
-         * principale aggiungendolo.
-         * - Se l'utente seleziona una delle righe figlie, mostriamo un messaggio e non aggiungiamo le righe.
-         */
-
-        if (!this.currentRowObj) {
-            let msg = getErrorMessage_MissingElements("SELECTED_ROW_NOT_VALID");
-            banDoc.addMessage(msg, "SELECTED_ROW_NOT_VALID");
-            return rows;
-        }
-
-        let currExRef = this.currentRowObj.value("ExternalReference");
-
-        if (!currExRef.match(this.salesCodesRegex)) {
-            let rowSale = this.getDocChangeRow_addSaleRef(currExRef);
-            rows.push(rowSale);
-            currExRef = rowSale.fields["ExternalReference"];
-        }
-
-        if (currExRef.indexOf(".") > -1) { // User selected a child row.
-            let msg = getErrorMessage_MissingElements("CHILD_ROW_SELECTED");
-            banDoc.addMessage(msg, "CHILD_ROW_SELECTED");
-            return rows;
-        }
-
-        let rowBankCharges = this.getBondDocChangeRow_bankCharges(currExRef); // non passare rowsale, non è corretto, usare direttamente il valore (cambiare gli altri)
-        let otherCahrges = this.getBondDocChangeRow_otherCharges();
-        let accruedInterests = this.getBondDocChangeRow_accruedInterests();
+        let rowBankCharges = this.getBondDocChangeRow_bankCharges();
+        let rowOtherCahrges = this.getBondDocChangeRow_otherCharges();
+        let rowAccruedInterests = this.getBondDocChangeRow_accruedInterests();
         let rowCashedNet = this.getBondDocChangeRow_cashedNet();
         let rowSaleResult = this.getBondDocChangeRow_saleResult();
 
-
-        if (rowBankCharges && rowExistenceChecked(rowBankCharges, this.transactionsType.BANK_CHARGES)) // cambiare tutti gli altri metodi sulla base di questi esempi 10.01-13.01 e poi testare.
+        if (!isObjectEmpty(rowBankCharges) && this.rowExistenceChecked(rowBankCharges, this.transactionsType.BANK_CHARGES))
             rows.push(rowBankCharges);
-        if (otherCahrges)
-            rows.push(otherCahrges);
-        if (accruedInterests)
-            rows.push(accruedInterests);
-        if (rowCashedNet)
+        if (!isObjectEmpty(rowOtherCahrges) && this.rowExistenceChecked(rowOtherCahrges, this.transactionsType.OTHER_CHARGES))
+            rows.push(rowOtherCahrges);
+        if (!isObjectEmpty(rowAccruedInterests) && this.rowExistenceChecked(rowAccruedInterests, this.transactionsType.ACCRUED_INTERESTS))
+            rows.push(rowAccruedInterests);
+        if (!isObjectEmpty(rowCashedNet) && this.rowExistenceChecked(rowCashedNet, this.transactionsType.CASHED_NET))
             rows.push(rowCashedNet);
-        if (rowSaleResult)
+        if (!isObjectEmpty(rowSaleResult) && this.rowExistenceChecked(rowSaleResult, this.transactionsType.SALE_RESULT))
             rows.push(rowSaleResult);
 
         return rows;
@@ -152,33 +226,31 @@ var RecordSalesTransactions = class RecordSalesTransactions {
 
     getBondTransactionsRowsMulti() {
         let rows = [];
-        let rowSale = this.getDocChangeRowSale();
-        let rowBankCharges = this.getBondDocChangeRow_bankChargesMulti(rowSale);
-        let otherCahrges = this.getBondDocChangeRow_otherChargesMulti(rowSale);
-        let accruedInterests = this.getBondDocChangeRow_accruedInterestsMulti(rowSale);
-        let rowCashedNet = this.getBondDocChangeRow_cashedNetMulti(rowSale);
-        let rowSaleResult = this.getBondDocChangeRow_saleResultMulti(rowSale);
-        let rowExchangeResult = this.getBondDocChangeRow_ExhangeResult(rowSale);
 
-        if (rowSale)
-            rows.push(rowSale);
-        if (rowBankCharges)
+        let rowBankCharges = this.getBondDocChangeRow_bankChargesMulti();
+        let rowOtherCahrges = this.getBondDocChangeRow_otherChargesMulti();
+        let rowAccruedInterests = this.getBondDocChangeRow_accruedInterestsMulti();
+        let rowCashedNet = this.getBondDocChangeRow_cashedNetMulti();
+        let rowSaleResult = this.getBondDocChangeRow_saleResultMulti();
+        let rowExchangeResult = this.getBondDocChangeRow_ExhangeResult();
+
+        if (!isObjectEmpty(rowBankCharges) && this.rowExistenceChecked(rowBankCharges, this.transactionsType.BANK_CHARGES))
             rows.push(rowBankCharges);
-        if (otherCahrges)
-            rows.push(otherCahrges);
-        if (accruedInterests)
-            rows.push(accruedInterests);
-        if (rowCashedNet)
+        if (!isObjectEmpty(rowOtherCahrges) && this.rowExistenceChecked(rowOtherCahrges, this.transactionsType.OTHER_CHARGES))
+            rows.push(rowOtherCahrges);
+        if (!isObjectEmpty(rowAccruedInterests) && this.rowExistenceChecked(rowAccruedInterests, this.transactionsType.ACCRUED_INTERESTS))
+            rows.push(rowAccruedInterests);
+        if (!isObjectEmpty(rowCashedNet) && this.rowExistenceChecked(rowCashedNet, this.transactionsType.CASHED_NET))
             rows.push(rowCashedNet);
-        if (rowSaleResult)
+        if (!isObjectEmpty(rowSaleResult) && this.rowExistenceChecked(rowSaleResult, this.transactionsType.SALE_RESULT))
             rows.push(rowSaleResult);
-        if (rowExchangeResult)
+        if (!isObjectEmpty(rowExchangeResult) && this.rowExistenceChecked(rowSaleResult, this.transactionsType.EXCHANGE_RESULT))
             rows.push(rowExchangeResult);
 
         return rows;
     }
 
-    getBondDocChangeRow_bankCharges(currExRef) {
+    getBondDocChangeRow_bankCharges() {
         let row = {};
         let bankCharges = Banana.Converter.toInternalNumberFormat(this.dlgParams.bankCharges);
         if (!bankCharges)
@@ -191,7 +263,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         row.fields["Date"] = this.currentRowObj.value("Date") || getCurrentDate();
         row.fields["Doc"] = this.currentRowObj.value("Doc") || "";
         row.fields["ItemsId"] = this.itemObject.item;
-        row.fields["ExternalReference"] = currExRef + ".1";
+        row.fields["ExternalReference"] = this.saleTrRef + ".1";
         row.fields["Description"] = this.itemObject.description.trim() + " " + this.texts.bankCharges;
         row.fields["AccountDebit"] = this.savedParams.profitAndLossAccounts.chargesAccount || texts.bankChargesPlaceHolder;
         row.fields["Amount"] = Banana.Converter.toInternalNumberFormat(bankCharges);
@@ -199,7 +271,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         return row;
     }
 
-    getBondDocChangeRow_bankChargesMulti(rowSale) {
+    getBondDocChangeRow_bankChargesMulti() {
         let row = {};
         let bankCharges = Banana.Converter.toInternalNumberFormat(this.dlgParams.bankCharges);
         if (!bankCharges)
@@ -212,7 +284,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         row.fields["Date"] = this.currentRowObj.value("Date") || getCurrentDate();
         row.fields["Doc"] = this.currentRowObj.value("Doc") || "";
         row.fields["ItemsId"] = this.itemObject.item;
-        row.fields["ExternalReference"] = rowSale["ExternalReference"] + ".1";
+        row.fields["ExternalReference"] = this.saleTrRef + ".1";
         row.fields["Description"] = this.itemObject.description.trim() + " " + this.texts.bankCharges;
         row.fields["AccountDebit"] = this.savedParams.profitAndLossAccounts.chargesAccount || texts.bankChargesPlaceHolder;
         row.fields["AmountCurrency"] = Banana.Converter.toInternalNumberFormat(bankCharges);
@@ -222,7 +294,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         return row;
     }
 
-    getBondDocChangeRow_otherCharges(rowSale) {
+    getBondDocChangeRow_otherCharges() {
         let row = {};
         let otherChargesAmount = Banana.Converter.toInternalNumberFormat(this.dlgParams.otherCahrges);
         if (!otherChargesAmount)
@@ -235,7 +307,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         row.fields["Date"] = this.currentRowObj.value("Date") || getCurrentDate();
         row.fields["Doc"] = this.currentRowObj.value("Doc") || "";
         row.fields["ItemsId"] = this.itemObject.item;
-        row.fields["ExternalReference"] = rowSale["ExternalReference"] + ".2";
+        row.fields["ExternalReference"] = this.saleTrRef + ".2";
         row.fields["Description"] = this.itemObject.description + " " + this.texts.otherCharges;
         row.fields["AccountDebit"] = this.savedParams.profitAndLossAccounts.otherCostsAccount;
         row.fields["Amount"] = Banana.Converter.toInternalNumberFormat(otherChargesAmount);
@@ -243,7 +315,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         return row;
     }
 
-    getBondDocChangeRow_otherChargesMulti(rowSale) {
+    getBondDocChangeRow_otherChargesMulti() {
         let row = {};
         let otherChargesAmount = Banana.Converter.toInternalNumberFormat(this.dlgParams.otherCahrges);
         if (!otherChargesAmount)
@@ -256,7 +328,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         row.fields["Date"] = this.currentRowObj.value("Date") || getCurrentDate();
         row.fields["Doc"] = this.currentRowObj.value("Doc") || "";
         row.fields["ItemsId"] = this.itemObject.item;
-        row.fields["ExternalReference"] = rowSale["ExternalReference"] + ".2";
+        row.fields["ExternalReference"] = this.saleTrRef + ".2";
         row.fields["Description"] = this.itemObject.description.trim() + " " + this.texts.otherCharges;
         row.fields["AccountDebit"] = this.savedParams.profitAndLossAccounts.otherCostsAccount;
         row.fields["AmountCurrency"] = Banana.Converter.toInternalNumberFormat(otherChargesAmount);
@@ -266,7 +338,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         return row;
     }
 
-    getBondDocChangeRow_accruedInterests(rowSale) {
+    getBondDocChangeRow_accruedInterests() {
         let row = {};
         row.operation = {};
         row.operation.name = "add";
@@ -276,7 +348,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         row.fields["Date"] = this.currentRowObj.value("Date") || getCurrentDate();
         row.fields["Doc"] = this.currentRowObj.value("Doc") || "";
         row.fields["ItemsId"] = this.itemObject.item;
-        row.fields["ExternalReference"] = rowSale["ExternalReference"] + ".3";
+        row.fields["ExternalReference"] = this.saleTrRef + ".3";
         row.fields["Description"] = this.itemObject.description + " " + this.texts.accruedInterests;
         row.fields["AccountCredit"] = this.savedParams.profitAndLossAccounts.interestEarnedAccount || texts.accruedInterestsPlaceHolder;
         row.fields["Amount"] = Banana.Converter.toInternalNumberFormat(this.salesData.accruedInterests);
@@ -284,7 +356,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         return row;
     }
 
-    getBondDocChangeRow_accruedInterestsMulti(rowSale) {
+    getBondDocChangeRow_accruedInterestsMulti() {
         let row = {};
         row.operation = {};
         row.operation.name = "add";
@@ -294,7 +366,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         row.fields["Date"] = this.currentRowObj.value("Date") || getCurrentDate();
         row.fields["Doc"] = this.currentRowObj.value("Doc") || "";
         row.fields["ItemsId"] = this.itemObject.item;
-        row.fields["ExternalReference"] = rowSale["ExternalReference"] + ".3";
+        row.fields["ExternalReference"] = this.saleTrRef + ".3";
         row.fields["Description"] = this.itemObject.description.trim() + " " + this.texts.accruedInterests;
         row.fields["AccountCredit"] = this.savedParams.profitAndLossAccounts.interestEarnedAccount || texts.accruedInterestsPlaceHolder;
         row.fields["AmountCurrency"] = Banana.Converter.toInternalNumberFormat(this.salesData.accruedInterests);
@@ -304,7 +376,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         return row;
     }
 
-    getBondDocChangeRow_cashedNet(rowSale) {
+    getBondDocChangeRow_cashedNet() {
         let row = {};
         row.operation = {};
         row.operation.name = "add";
@@ -314,7 +386,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         row.fields["Date"] = this.currentRowObj.value("Date") || getCurrentDate();
         row.fields["Doc"] = this.currentRowObj.value("Doc") || "";
         row.fields["ItemsId"] = this.itemObject.item;
-        row.fields["ExternalReference"] = rowSale["ExternalReference"] + ".4";
+        row.fields["ExternalReference"] = this.saleTrRef + ".4";
         row.fields["Description"] = this.itemObject.description + " " + this.texts.cashedNet;
         row.fields["AccountDebit"] = this.texts.bankAccountPlaceHolder;
         row.fields["Amount"] = Banana.Converter.toInternalNumberFormat(this.getBondCashedNetAmount());
@@ -322,7 +394,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         return row;
     }
 
-    getBondDocChangeRow_cashedNetMulti(rowSale) {
+    getBondDocChangeRow_cashedNetMulti() {
         let row = {};
         row.operation = {};
         row.operation.name = "add";
@@ -332,7 +404,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         row.fields["Date"] = this.currentRowObj.value("Date") || getCurrentDate();
         row.fields["Doc"] = this.currentRowObj.value("Doc") || "";
         row.fields["ItemsId"] = this.itemObject.item;
-        row.fields["ExternalReference"] = rowSale["ExternalReference"] + ".4";
+        row.fields["ExternalReference"] = this.saleTrRef + ".4";
         row.fields["Description"] = this.itemObject.description.trim() + " " + this.texts.cashedNet;
         row.fields["AccountDebit"] = this.texts.bankAccountPlaceHolder;
         row.fields["AmountCurrency"] = Banana.Converter.toInternalNumberFormat(this.getBondCashedNetAmount());
@@ -342,7 +414,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         return row;
     }
 
-    getBondDocChangeRow_saleResult(rowSale) {
+    getBondDocChangeRow_saleResult() {
         let row = {};
         let isLossOnSale = this.setIsLossOnSale(this.salesData.saleResult);
         row.operation = {};
@@ -355,7 +427,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         row.fields["Date"] = this.currentRowObj.value("Date") || getCurrentDate();
         row.fields["Doc"] = this.currentRowObj.value("Doc") || "";
         row.fields["ItemsId"] = this.itemObject.item;
-        row.fields["ExternalReference"] = rowSale["ExternalReference"] + ".5";
+        row.fields["ExternalReference"] = this.saleTrRef + ".5";
         row.fields["Description"] = this.itemObject.description + " " + this.texts.resultOnSale;
         if (isLossOnSale) {
             row.fields["AccountDebit"] = this.savedParams.valueChangingcontraAccounts.realizedLossAccount
@@ -371,7 +443,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         return row;
     }
 
-    getBondDocChangeRow_saleResultMulti(rowSale) {
+    getBondDocChangeRow_saleResultMulti() {
         let row = {};
         let isLossOnSale = this.setIsLossOnSale(this.salesData.saleResult);
         row.operation = {};
@@ -384,7 +456,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         row.fields["Date"] = this.currentRowObj.value("Date") || getCurrentDate();
         row.fields["Doc"] = this.currentRowObj.value("Doc") || "";
         row.fields["ItemsId"] = this.itemObject.item;
-        row.fields["ExternalReference"] = rowSale["ExternalReference"] + ".5";
+        row.fields["ExternalReference"] = this.saleTrRef + ".5";
         row.fields["Description"] = this.itemObject.description.trim() + " " + this.texts.resultOnSale;
         if (isLossOnSale) {
             row.fields["AccountDebit"] = this.savedParams.valueChangingcontraAccounts.realizedLossAccount
@@ -402,7 +474,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         return row;
     }
 
-    getBondDocChangeRow_ExhangeResult(rowSale) {
+    getBondDocChangeRow_ExhangeResult() {
         let row = {};
         let isLossOnExchange = this.setIsLossOnSale(this.salesData.exRateResult);
         row.operation = {};
@@ -415,7 +487,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         row.fields["Date"] = this.currentRowObj.value("Date") || getCurrentDate();
         row.fields["Doc"] = this.currentRowObj.value("Doc") || "";
         row.fields["ItemsId"] = this.itemObject.item;
-        row.fields["ExternalReference"] = rowSale["ExternalReference"] + ".6";
+        row.fields["ExternalReference"] = this.saleTrRef + ".6";
         row.fields["Description"] = this.itemObject.description.trim() + " " + this.texts.resultExchange;
         if (isLossOnExchange) {
             row.fields["AccountDebit"] = this.savedParams.valueChangingcontraAccounts.realizedExRateLossAccount
@@ -453,42 +525,34 @@ var RecordSalesTransactions = class RecordSalesTransactions {
     *     Exchange Rate Profit	        (Share account)	                 (Exchange profit/loss)      (This row is present only in multi-currency accounting)
     */
     getStockSaleResultDocChangeTransaction() {
-        let jsonDoc = this.getDocumentChangeInit();
-        let rows = [];
 
-        if (this.docInfo.isMultiCurrency)
-            rows = this.getStockTransactionsRowsMulti();
-        else
-            rows = this.getStockTransactionsRows();
+        let data = [];
+        let saleRowChangeDocument = this.getSaleRowChangesDocument(); // Row to modify
+        let otherRowsChangeDocument = this.getStocksOtherRowsChangesDocument(); // Rows to add
 
-        var dataUnitTransactionsTable = {};
-        dataUnitTransactionsTable.nameXml = "Transactions";
-        dataUnitTransactionsTable.data = {};
-        dataUnitTransactionsTable.data.rowLists = [];
-        dataUnitTransactionsTable.data.rowLists.push({ "rows": rows });
+        if (saleRowChangeDocument && !isObjectEmpty(saleRowChangeDocument))
+            data.push(saleRowChangeDocument);
+        if (otherRowsChangeDocument && !isObjectEmpty(otherRowsChangeDocument))
+            data.push(otherRowsChangeDocument);
 
-        jsonDoc.document.dataUnits.push(dataUnitTransactionsTable);
-
-        return jsonDoc;
+        return data;
     }
 
     getStockTransactionsRows() {
         let rows = [];
-        let rowSale = this.getDocChangeRowSale();
-        let rowBankCharges = this.getStockDocChangeRow_bankCharges(rowSale);
-        let otherCahrges = this.getStockDocChangeRow_otherCharges(rowSale);
-        let rowCashedNet = this.getStockDocChangeRow_cashedNet(rowSale);
-        let rowSaleResult = this.getStockDocChangeRow_saleResult(rowSale);
 
-        if (rowSale)
-            rows.push(rowSale);
-        if (rowBankCharges)
+        let rowBankCharges = this.getStockDocChangeRow_bankCharges();
+        let rowOtherCahrges = this.getStockDocChangeRow_otherCharges();
+        let rowCashedNet = this.getStockDocChangeRow_cashedNet();
+        let rowSaleResult = this.getStockDocChangeRow_saleResult();
+
+        if (!isObjectEmpty(rowBankCharges) && this.rowExistenceChecked(rowBankCharges, this.transactionsType.BANK_CHARGES))
             rows.push(rowBankCharges);
-        if (otherCahrges)
-            rows.push(otherCahrges);
-        if (rowCashedNet)
+        if (!isObjectEmpty(rowOtherCahrges) && this.rowExistenceChecked(rowOtherCahrges, this.transactionsType.OTHER_CHARGES))
+            rows.push(rowOtherCahrges);
+        if (!isObjectEmpty(rowCashedNet) && this.rowExistenceChecked(rowCashedNet, this.transactionsType.CASHED_NET))
             rows.push(rowCashedNet);
-        if (rowSaleResult)
+        if (!isObjectEmpty(rowSaleResult) && this.rowExistenceChecked(rowSaleResult, this.transactionsType.SALE_RESULT))
             rows.push(rowSaleResult);
 
         return rows;
@@ -496,30 +560,28 @@ var RecordSalesTransactions = class RecordSalesTransactions {
 
     getStockTransactionsRowsMulti() {
         let rows = [];
-        let rowSale = this.getDocChangeRowSale();
-        let rowBankCharges = this.getStockDocChangeRow_bankChargesMulti(rowSale);
-        let otherCahrges = this.getStockDocChangeRow_otherChargesMulti(rowSale);
-        let rowCashedNet = this.getStockDocChangeRow_cashedNetMulti(rowSale);
-        let rowSaleResult = this.getStockDocChangeRow_saleResultMulti(rowSale);
-        let rowExchangeResult = this.getStockDocChangeRow_ExhangeResult(rowSale);
 
-        if (rowSale)
-            rows.push(rowSale);
-        if (rowBankCharges)
+        let rowBankCharges = this.getStockDocChangeRow_bankChargesMulti();
+        let rowOtherCahrges = this.getStockDocChangeRow_otherChargesMulti();
+        let rowCashedNet = this.getStockDocChangeRow_cashedNetMulti();
+        let rowSaleResult = this.getStockDocChangeRow_saleResultMulti();
+        let rowExchangeResult = this.getStockDocChangeRow_ExhangeResult();
+
+        if (!isObjectEmpty(rowBankCharges) && this.rowExistenceChecked(rowBankCharges, this.transactionsType.BANK_CHARGES))
             rows.push(rowBankCharges);
-        if (otherCahrges)
-            rows.push(otherCahrges);
-        if (rowCashedNet)
+        if (!isObjectEmpty(rowOtherCahrges) && this.rowExistenceChecked(rowOtherCahrges, this.transactionsType.OTHER_CHARGES))
+            rows.push(rowOtherCahrges);
+        if (!isObjectEmpty(rowCashedNet) && this.rowExistenceChecked(rowCashedNet, this.transactionsType.CASHED_NET))
             rows.push(rowCashedNet);
-        if (rowSaleResult)
+        if (!isObjectEmpty(rowSaleResult) && this.rowExistenceChecked(rowSaleResult, this.transactionsType.SALE_RESULT))
             rows.push(rowSaleResult);
-        if (rowExchangeResult)
+        if (!isObjectEmpty(rowExchangeResult) && this.rowExistenceChecked(rowSaleResult, this.transactionsType.EXCHANGE_RESULT))
             rows.push(rowExchangeResult);
 
         return rows;
     }
 
-    getStockDocChangeRow_bankCharges(rowSale) {
+    getStockDocChangeRow_bankCharges() {
         let row = {};
         let bankCharges = Banana.Converter.toInternalNumberFormat(this.dlgParams.bankCharges);
         if (!bankCharges)
@@ -532,7 +594,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         row.fields["Date"] = this.currentRowObj.value("Date") || getCurrentDate();
         row.fields["Doc"] = this.currentRowObj.value("Doc") || "";
         row.fields["ItemsId"] = this.itemObject.item;
-        row.fields["ExternalReference"] = rowSale["ExternalReference"] + ".1";
+        row.fields["ExternalReference"] = this.saleTrRef + ".1";
         row.fields["Description"] = this.itemObject.description.trim() + " " + this.texts.bankCharges;
         row.fields["AccountDebit"] = this.savedParams.profitAndLossAccounts.chargesAccount || texts.bankChargesPlaceHolder;
         row.fields["Amount"] = Banana.Converter.toInternalNumberFormat(bankCharges);
@@ -540,7 +602,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         return row;
     }
 
-    getStockDocChangeRow_otherCharges(rowSale) {
+    getStockDocChangeRow_otherCharges() {
         let row = {};
         let otherChargesAmount = Banana.Converter.toInternalNumberFormat(this.dlgParams.otherCahrges);
         if (!otherChargesAmount)
@@ -553,7 +615,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         row.fields["Date"] = this.currentRowObj.value("Date") || getCurrentDate();
         row.fields["Doc"] = this.currentRowObj.value("Doc") || "";
         row.fields["ItemsId"] = this.itemObject.item;
-        row.fields["ExternalReference"] = rowSale["ExternalReference"] + ".2";
+        row.fields["ExternalReference"] = this.saleTrRef + ".2";
         row.fields["Description"] = this.itemObject.description.trim() + " " + this.texts.otherCharges;
         row.fields["AccountDebit"] = this.savedParams.profitAndLossAccounts.otherCostsAccount;
         row.fields["Amount"] = Banana.Converter.toInternalNumberFormat(otherChargesAmount);
@@ -561,7 +623,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         return row;
     }
 
-    getStockDocChangeRow_cashedNet(rowSale) {
+    getStockDocChangeRow_cashedNet() {
         let row = {};
         row.operation = {};
         row.operation.name = "add";
@@ -571,7 +633,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         row.fields["Date"] = this.currentRowObj.value("Date") || getCurrentDate();
         row.fields["Doc"] = this.currentRowObj.value("Doc") || "";
         row.fields["ItemsId"] = this.itemObject.item;
-        row.fields["ExternalReference"] = rowSale["ExternalReference"] + ".3";
+        row.fields["ExternalReference"] = this.saleTrRef + ".3";
         row.fields["Description"] = this.itemObject.description.trim() + " " + this.texts.cashedNet;
         row.fields["AccountDebit"] = this.texts.bankAccountPlaceHolder;
         row.fields["Amount"] = Banana.Converter.toInternalNumberFormat(this.getStockCashedNetAmount());
@@ -579,7 +641,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         return row;
     }
 
-    getStockDocChangeRow_saleResult(rowSale) {
+    getStockDocChangeRow_saleResult() {
         let row = {};
         let isLossOnSale = this.setIsLossOnSale(this.salesData.saleResult);
         row.operation = {};
@@ -592,7 +654,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         row.fields["Date"] = this.currentRowObj.value("Date") || getCurrentDate();
         row.fields["Doc"] = this.currentRowObj.value("Doc") || "";
         row.fields["ItemsId"] = this.itemObject.item;
-        row.fields["ExternalReference"] = rowSale["ExternalReference"] + ".4";
+        row.fields["ExternalReference"] = this.saleTrRef + ".4";
         row.fields["Description"] = this.itemObject.description.trim() + " " + this.texts.resultOnSale;
         if (isLossOnSale) {
             row.fields["AccountDebit"] = this.savedParams.valueChangingcontraAccounts.realizedLossAccount
@@ -608,7 +670,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         return row;
     }
 
-    getStockDocChangeRow_ExhangeResult(rowSale) {
+    getStockDocChangeRow_ExhangeResult() {
         let row = {};
         let isLossOnExchange = this.setIsLossOnSale(this.salesData.exRateResult);
         row.operation = {};
@@ -621,7 +683,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         row.fields["Date"] = this.currentRowObj.value("Date") || getCurrentDate();
         row.fields["Doc"] = this.currentRowObj.value("Doc") || "";
         row.fields["ItemsId"] = this.itemObject.item;
-        row.fields["ExternalReference"] = rowSale["ExternalReference"] + ".5";
+        row.fields["ExternalReference"] = this.saleTrRef + ".5";
         row.fields["Description"] = this.itemObject.description.trim() + " " + this.texts.resultExchange;
         if (isLossOnExchange) {
             row.fields["AccountDebit"] = this.savedParams.valueChangingcontraAccounts.realizedExRateLossAccount
@@ -647,7 +709,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         return isLossOnExchange;
     }
 
-    getStockDocChangeRow_saleResultMulti(rowSale) {
+    getStockDocChangeRow_saleResultMulti() {
         let row = {};
         let isLossOnSale = this.setIsLossOnSale(this.salesData.saleResult);
         row.operation = {};
@@ -660,7 +722,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         row.fields["Date"] = this.currentRowObj.value("Date") || getCurrentDate();
         row.fields["Doc"] = this.currentRowObj.value("Doc") || "";
         row.fields["ItemsId"] = this.itemObject.item;
-        row.fields["ExternalReference"] = rowSale["ExternalReference"] + ".4";
+        row.fields["ExternalReference"] = this.saleTrRef + ".4";
         row.fields["Description"] = this.itemObject.description.trim() + " " + this.texts.resultOnSale;
         if (isLossOnSale) {
             row.fields["AccountDebit"] = this.savedParams.valueChangingcontraAccounts.realizedLossAccount
@@ -686,7 +748,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         return isLossOnSale;
     }
 
-    getStockDocChangeRow_cashedNetMulti(rowSale) {
+    getStockDocChangeRow_cashedNetMulti() {
         let row = {};
         row.operation = {};
         row.operation.name = "add";
@@ -696,7 +758,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         row.fields["Date"] = this.currentRowObj.value("Date") || getCurrentDate();
         row.fields["Doc"] = this.currentRowObj.value("Doc") || "";
         row.fields["ItemsId"] = this.itemObject.item;
-        row.fields["ExternalReference"] = rowSale["ExternalReference"] + ".3";
+        row.fields["ExternalReference"] = this.saleTrRef + ".3";
         row.fields["Description"] = this.itemObject.description.trim() + " " + this.texts.cashedNet;
         row.fields["AccountDebit"] = this.texts.bankAccountPlaceHolder;
         row.fields["AmountCurrency"] = Banana.Converter.toInternalNumberFormat(this.getStockCashedNetAmount());
@@ -712,7 +774,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         return netCashedAmount;
     }
 
-    getStockDocChangeRow_bankChargesMulti(rowSale) {
+    getStockDocChangeRow_bankChargesMulti() {
         let row = {};
         let bankCharges = Banana.Converter.toInternalNumberFormat(this.dlgParams.bankCharges);
         if (!bankCharges)
@@ -725,7 +787,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         row.fields["Date"] = this.currentRowObj.value("Date") || getCurrentDate();
         row.fields["Doc"] = this.currentRowObj.value("Doc") || "";
         row.fields["ItemsId"] = this.itemObject.item;
-        row.fields["ExternalReference"] = rowSale["ExternalReference"] + ".1";
+        row.fields["ExternalReference"] = this.saleTrRef + ".1";
         row.fields["Description"] = this.itemObject.description.trim() + " " + this.texts.bankCharges;
         row.fields["AccountDebit"] = this.savedParams.profitAndLossAccounts.chargesAccount || texts.bankChargesPlaceHolder;
         row.fields["AmountCurrency"] = Banana.Converter.toInternalNumberFormat(bankCharges);
@@ -735,7 +797,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         return row;
     }
 
-    getStockDocChangeRow_otherChargesMulti(rowSale) {
+    getStockDocChangeRow_otherChargesMulti() {
         let row = {};
         let otherChargesAmount = Banana.Converter.toInternalNumberFormat(this.dlgParams.otherCahrges);
         if (!otherChargesAmount)
@@ -748,7 +810,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         row.fields["Date"] = this.currentRowObj.value("Date") || getCurrentDate();
         row.fields["Doc"] = this.currentRowObj.value("Doc") || "";
         row.fields["ItemsId"] = this.itemObject.item;
-        row.fields["ExternalReference"] = rowSale["ExternalReference"] + ".2";
+        row.fields["ExternalReference"] = this.saleTrRef + ".2";
         row.fields["Description"] = this.itemObject.description.trim() + " " + this.texts.otherCharges;
         row.fields["AccountDebit"] = this.savedParams.profitAndLossAccounts.otherCostsAccount;
         row.fields["AmountCurrency"] = Banana.Converter.toInternalNumberFormat(otherChargesAmount);
@@ -762,9 +824,9 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         let row = {};
         row.operation = {};
         row.operation.name = "modify";
-        row.operation.sequence = Banana.document.cursor.rowNr
+        row.operation.sequence = String(this.banDoc.cursor.rowNr);
         row.fields = {};
-        row.fields["ExternalReference"] = getNewSaleCode();
+        row.fields["ExternalReference"] = this.getNewSaleCode();
         return row;
     }
 
@@ -778,8 +840,8 @@ var RecordSalesTransactions = class RecordSalesTransactions {
      * The method returns the first available code.
      */
     getNewSaleCode() {
-        let exCodes = getAllSaleExistingCodes();
-        return getFirstAvailableSaleCode(exCodes);
+        let exCodes = this.getAllSaleExistingCodes();
+        return this.getFirstAvailableSaleCode(exCodes);
     }
 
     /**
@@ -789,7 +851,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         let trTable = this.banDoc.table("Transactions");
         let exCodes = [];
         for (var i = 0; i < trTable.rowCount; i++) {
-            var tRow = table.row(i);
+            var tRow = trTable.row(i);
             let exReference = tRow.value("ExternalReference");
             if (exReference.match(this.salesCodesRegex))
                 exCodes.push(exReference);
@@ -811,10 +873,10 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         return false;
     }
 
-    rowExistenceChecked(rowBankCharges, transactionType) {
-        let rowExist = findRowByOperationSaleCode(rowBankCharges.fields["ExternalReference"]);
+    rowExistenceChecked(rowObj, transactionType) {
+        let rowExist = this.findRowByOperationSaleCode(rowObj.fields["ExternalReference"]);
         if (rowExist) {
-            return getOverwriteTransactionDlg(transactionType);
+            return this.getOverwriteTransactionDlg(transactionType);
         } else
             return true;
     }

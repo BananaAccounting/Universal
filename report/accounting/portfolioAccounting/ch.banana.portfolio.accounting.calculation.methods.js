@@ -596,6 +596,10 @@ function getItemCardDataList(accountCardData, journalData) {
     return accountCardData;
 }
 
+function isObjectEmpty(obj) {
+    return Object.keys(obj).length === 0;
+}
+
 /**
  *  * Calculates how the average accounting cost of the security is updated after each movement.
  * The accounting average cost is calculated by doing: Balance (in the item currency)/Quantity balance.
