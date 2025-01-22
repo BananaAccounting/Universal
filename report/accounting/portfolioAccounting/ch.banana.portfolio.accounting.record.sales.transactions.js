@@ -12,11 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-// @id = ch.banana.portfolio.accounting.record.sales.transactions.js
-// @api = 1.0
 // @pubdate = 2025-01-09
 // @publisher = Banana.ch SA
-// @includejs = ch.banana.portfolio.accounting.record.sales.transactions.js
+// @includejs = ch.banana.portfolio.accounting.accounts.dialog.js
 // @includejs = ch.banana.portfolio.accounting.calculation.methods.js
 // @includejs = ch.banana.portfolio.accounting.errormessagges.handler.js
 
@@ -30,7 +28,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         this.dlgParams = dlgParams;
         this.jsonDoc = { "format": "documentChange", "error": "" };
         this.settingsId = "ch.banana.portfolio.accounting.accounts.dialog";
-        this.savedParams = getFormattedSavedParams(this.settingsId); // To access to the defined accounts
+        this.savedParams = this.getAccountsParams(this.banDoc, this.settingsId); // To access to the defined accounts.
         this.texts = this.getTransactionsTexts();
         this.itemsData = itemsData;
         this.itemObject = currItemObj;
@@ -39,6 +37,12 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         this.trTableData = getTransactionsTableData(this.banDoc, this.docInfo);
         this.transactionsType = this.getTransactionsType();
         this.saleTrRef = ""; // In ExternalReference column of the transactions table.
+    }
+
+    getAccountsParams(banDoc, settingsId) {
+        const dlgInvestmentsAccounts = new DlgInvestmentsAccounts(banDoc);
+        let userParam = getFormattedSavedParams(banDoc, settingsId);
+        return dlgInvestmentsAccounts.verifyParams(userParam);
     }
     getRecordSalesTransactions() {
         let jsonDoc = { "format": "documentChange", "error": "" };
@@ -69,7 +73,6 @@ var RecordSalesTransactions = class RecordSalesTransactions {
                 jsonDoc["data"] = this.getStockSaleResultDocChangeTransaction();
                 break;
         }
-        //Banana.Ui.showText(JSON.stringify(jsonDoc));
         return jsonDoc;
     }
 
@@ -77,7 +80,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         /** Let's check whether or not the currently selected line is valid (It must be valid since we have to go and enter the
          *  sales record reference). If it does not exist we send a message to the user and do not create the rows.
          */
-        if (!this.currentRowObj) {
+        if (!this.currentRowObj || isObjectEmpty(this.currentRowObj)) {
             let msg = getErrorMessage_MissingElements("SELECTED_ROW_NOT_VALID");
             banDoc.addMessage(msg, "SELECTED_ROW_NOT_VALID");
             return false;
@@ -257,7 +260,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
             return row;
         row.operation = {};
         row.operation.name = "add";
-        row.operation.sequence = Banana.document.cursor.rowNr + ".1";
+        row.operation.sequence = this.banDoc.cursor.rowNr + ".1";
         row.fields = {};
 
         row.fields["Date"] = this.currentRowObj.value("Date") || getCurrentDate();
@@ -265,7 +268,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         row.fields["ItemsId"] = this.itemObject.item;
         row.fields["ExternalReference"] = this.saleTrRef + ".1";
         row.fields["Description"] = this.itemObject.description.trim() + " " + this.texts.bankCharges;
-        row.fields["AccountDebit"] = this.savedParams.profitAndLossAccounts.chargesAccount || texts.bankChargesPlaceHolder;
+        row.fields["AccountDebit"] = this.savedParams.profitAndLossAccounts.chargesAccount || this.texts.bankChargesPlaceHolder;
         row.fields["Amount"] = Banana.Converter.toInternalNumberFormat(bankCharges);
 
         return row;
@@ -278,7 +281,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
             return row;
         row.operation = {};
         row.operation.name = "add";
-        row.operation.sequence = Banana.document.cursor.rowNr + ".1";
+        row.operation.sequence = this.banDoc.cursor.rowNr + ".1";
         row.fields = {};
 
         row.fields["Date"] = this.currentRowObj.value("Date") || getCurrentDate();
@@ -286,7 +289,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         row.fields["ItemsId"] = this.itemObject.item;
         row.fields["ExternalReference"] = this.saleTrRef + ".1";
         row.fields["Description"] = this.itemObject.description.trim() + " " + this.texts.bankCharges;
-        row.fields["AccountDebit"] = this.savedParams.profitAndLossAccounts.chargesAccount || texts.bankChargesPlaceHolder;
+        row.fields["AccountDebit"] = this.savedParams.profitAndLossAccounts.chargesAccount || this.texts.bankChargesPlaceHolder;
         row.fields["AmountCurrency"] = Banana.Converter.toInternalNumberFormat(bankCharges);
         row.fields["ExchangeCurrency"] = this.itemObject.currency;
         row.fields["ExchangeRate"] = this.dlgParams.currExRate;
@@ -301,7 +304,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
             return row;
         row.operation = {};
         row.operation.name = "add";
-        row.operation.sequence = Banana.document.cursor.rowNr + ".2";
+        row.operation.sequence = this.banDoc.cursor.rowNr + ".2";
         row.fields = {};
 
         row.fields["Date"] = this.currentRowObj.value("Date") || getCurrentDate();
@@ -322,7 +325,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
             return row;
         row.operation = {};
         row.operation.name = "add";
-        row.operation.sequence = Banana.document.cursor.rowNr + ".2";
+        row.operation.sequence = this.banDoc.cursor.rowNr + ".2";
         row.fields = {};
 
         row.fields["Date"] = this.currentRowObj.value("Date") || getCurrentDate();
@@ -342,7 +345,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         let row = {};
         row.operation = {};
         row.operation.name = "add";
-        row.operation.sequence = Banana.document.cursor.rowNr + ".3";
+        row.operation.sequence = this.banDoc.cursor.rowNr + ".3";
         row.fields = {};
 
         row.fields["Date"] = this.currentRowObj.value("Date") || getCurrentDate();
@@ -350,7 +353,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         row.fields["ItemsId"] = this.itemObject.item;
         row.fields["ExternalReference"] = this.saleTrRef + ".3";
         row.fields["Description"] = this.itemObject.description + " " + this.texts.accruedInterests;
-        row.fields["AccountCredit"] = this.savedParams.profitAndLossAccounts.interestEarnedAccount || texts.accruedInterestsPlaceHolder;
+        row.fields["AccountCredit"] = this.savedParams.profitAndLossAccounts.interestEarnedAccount || this.texts.accruedInterestsPlaceHolder;
         row.fields["Amount"] = Banana.Converter.toInternalNumberFormat(this.salesData.accruedInterests);
 
         return row;
@@ -360,7 +363,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         let row = {};
         row.operation = {};
         row.operation.name = "add";
-        row.operation.sequence = Banana.document.cursor.rowNr + ".3";
+        row.operation.sequence = this.banDoc.cursor.rowNr + ".3";
         row.fields = {};
 
         row.fields["Date"] = this.currentRowObj.value("Date") || getCurrentDate();
@@ -368,7 +371,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         row.fields["ItemsId"] = this.itemObject.item;
         row.fields["ExternalReference"] = this.saleTrRef + ".3";
         row.fields["Description"] = this.itemObject.description.trim() + " " + this.texts.accruedInterests;
-        row.fields["AccountCredit"] = this.savedParams.profitAndLossAccounts.interestEarnedAccount || texts.accruedInterestsPlaceHolder;
+        row.fields["AccountCredit"] = this.savedParams.profitAndLossAccounts.interestEarnedAccount || this.texts.accruedInterestsPlaceHolder;
         row.fields["AmountCurrency"] = Banana.Converter.toInternalNumberFormat(this.salesData.accruedInterests);
         row.fields["ExchangeCurrency"] = this.itemObject.currency;
         row.fields["ExchangeRate"] = this.dlgParams.currExRate;
@@ -380,7 +383,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         let row = {};
         row.operation = {};
         row.operation.name = "add";
-        row.operation.sequence = Banana.document.cursor.rowNr + ".4";
+        row.operation.sequence = this.banDoc.cursor.rowNr + ".4";
         row.fields = {};
 
         row.fields["Date"] = this.currentRowObj.value("Date") || getCurrentDate();
@@ -398,7 +401,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         let row = {};
         row.operation = {};
         row.operation.name = "add";
-        row.operation.sequence = Banana.document.cursor.rowNr + ".4";
+        row.operation.sequence = this.banDoc.cursor.rowNr + ".4";
         row.fields = {};
 
         row.fields["Date"] = this.currentRowObj.value("Date") || getCurrentDate();
@@ -419,7 +422,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         let isLossOnSale = this.setIsLossOnSale(this.salesData.saleResult);
         row.operation = {};
         row.operation.name = "add";
-        row.operation.sequence = Banana.document.cursor.rowNr + ".5";
+        row.operation.sequence = this.banDoc.cursor.rowNr + ".5";
         row.fields = {};
 
         let itemAccount = getItemAccount(this.itemObject.item, this.banDoc);
@@ -448,7 +451,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         let isLossOnSale = this.setIsLossOnSale(this.salesData.saleResult);
         row.operation = {};
         row.operation.name = "add";
-        row.operation.sequence = Banana.document.cursor.rowNr + ".5";
+        row.operation.sequence = this.banDoc.cursor.rowNr + ".5";
         row.fields = {};
 
         let itemAccount = getItemAccount(this.itemObject.item, this.banDoc);
@@ -479,7 +482,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         let isLossOnExchange = this.setIsLossOnSale(this.salesData.exRateResult);
         row.operation = {};
         row.operation.name = "add";
-        row.operation.sequence = Banana.document.cursor.rowNr + ".6";
+        row.operation.sequence = this.banDoc.cursor.rowNr + ".6";
         row.fields = {};
 
         let itemAccount = getItemAccount(this.itemObject.item, this.banDoc);
@@ -588,7 +591,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
             return row;
         row.operation = {};
         row.operation.name = "add";
-        row.operation.sequence = Banana.document.cursor.rowNr + ".1";
+        row.operation.sequence = this.banDoc.cursor.rowNr + ".1";
         row.fields = {};
 
         row.fields["Date"] = this.currentRowObj.value("Date") || getCurrentDate();
@@ -596,7 +599,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         row.fields["ItemsId"] = this.itemObject.item;
         row.fields["ExternalReference"] = this.saleTrRef + ".1";
         row.fields["Description"] = this.itemObject.description.trim() + " " + this.texts.bankCharges;
-        row.fields["AccountDebit"] = this.savedParams.profitAndLossAccounts.chargesAccount || texts.bankChargesPlaceHolder;
+        row.fields["AccountDebit"] = this.savedParams.profitAndLossAccounts.chargesAccount || this.texts.bankChargesPlaceHolder;
         row.fields["Amount"] = Banana.Converter.toInternalNumberFormat(bankCharges);
 
         return row;
@@ -609,7 +612,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
             return row;
         row.operation = {};
         row.operation.name = "add";
-        row.operation.sequence = Banana.document.cursor.rowNr + ".2";
+        row.operation.sequence = this.banDoc.cursor.rowNr + ".2";
         row.fields = {};
 
         row.fields["Date"] = this.currentRowObj.value("Date") || getCurrentDate();
@@ -627,7 +630,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         let row = {};
         row.operation = {};
         row.operation.name = "add";
-        row.operation.sequence = Banana.document.cursor.rowNr + ".3";
+        row.operation.sequence = this.banDoc.cursor.rowNr + ".3";
         row.fields = {};
 
         row.fields["Date"] = this.currentRowObj.value("Date") || getCurrentDate();
@@ -646,7 +649,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         let isLossOnSale = this.setIsLossOnSale(this.salesData.saleResult);
         row.operation = {};
         row.operation.name = "add";
-        row.operation.sequence = Banana.document.cursor.rowNr + ".4";
+        row.operation.sequence = this.banDoc.cursor.rowNr + ".4";
         row.fields = {};
 
         let itemAccount = getItemAccount(this.itemObject.item, this.banDoc);
@@ -675,7 +678,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         let isLossOnExchange = this.setIsLossOnSale(this.salesData.exRateResult);
         row.operation = {};
         row.operation.name = "add";
-        row.operation.sequence = Banana.document.cursor.rowNr + ".5";
+        row.operation.sequence = this.banDoc.cursor.rowNr + ".5";
         row.fields = {};
 
         let itemAccount = getItemAccount(this.itemObject.item, this.banDoc);
@@ -714,7 +717,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         let isLossOnSale = this.setIsLossOnSale(this.salesData.saleResult);
         row.operation = {};
         row.operation.name = "add";
-        row.operation.sequence = Banana.document.cursor.rowNr + ".4";
+        row.operation.sequence = this.banDoc.cursor.rowNr + ".4";
         row.fields = {};
 
         let itemAccount = getItemAccount(this.itemObject.item, this.banDoc);
@@ -752,7 +755,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         let row = {};
         row.operation = {};
         row.operation.name = "add";
-        row.operation.sequence = Banana.document.cursor.rowNr + ".3";
+        row.operation.sequence = this.banDoc.cursor.rowNr + ".3";
         row.fields = {};
 
         row.fields["Date"] = this.currentRowObj.value("Date") || getCurrentDate();
@@ -781,7 +784,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
             return row;
         row.operation = {};
         row.operation.name = "add";
-        row.operation.sequence = Banana.document.cursor.rowNr + ".1";
+        row.operation.sequence = this.banDoc.cursor.rowNr + ".1";
         row.fields = {};
 
         row.fields["Date"] = this.currentRowObj.value("Date") || getCurrentDate();
@@ -789,7 +792,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         row.fields["ItemsId"] = this.itemObject.item;
         row.fields["ExternalReference"] = this.saleTrRef + ".1";
         row.fields["Description"] = this.itemObject.description.trim() + " " + this.texts.bankCharges;
-        row.fields["AccountDebit"] = this.savedParams.profitAndLossAccounts.chargesAccount || texts.bankChargesPlaceHolder;
+        row.fields["AccountDebit"] = this.savedParams.profitAndLossAccounts.chargesAccount || this.texts.bankChargesPlaceHolder;
         row.fields["AmountCurrency"] = Banana.Converter.toInternalNumberFormat(bankCharges);
         row.fields["ExchangeCurrency"] = this.itemObject.currency;
         row.fields["ExchangeRate"] = this.dlgParams.currExRate;
@@ -804,7 +807,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
             return row;
         row.operation = {};
         row.operation.name = "add";
-        row.operation.sequence = Banana.document.cursor.rowNr + ".2";
+        row.operation.sequence = this.banDoc.cursor.rowNr + ".2";
         row.fields = {};
 
         row.fields["Date"] = this.currentRowObj.value("Date") || getCurrentDate();
@@ -883,7 +886,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
 
     getOverwriteTransactionDlg(transactionType) {
         let baseMsg = "The %1 have already been recorded, you want to overwrite the transaction ?";
-        baseMsg.replace("%1", transactionType);
+        baseMsg = baseMsg.replace('%1', transactionType);
         let answer = Banana.Ui.showQuestion("Overwrite transaction", baseMsg);
         return answer;
     }

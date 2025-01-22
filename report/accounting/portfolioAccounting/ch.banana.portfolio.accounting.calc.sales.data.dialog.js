@@ -193,7 +193,7 @@ class DlgCalculateSaleDataManager {
         if (!isValidItemSelected(item, itemObj, this.banDoc))
             return;
 
-        salesData = calculateShareSaleData(this.banDoc, this.docInfo, itemObj, dlgParams, this.currentRowNr);
+        salesData = calculateStockSaleData(this.banDoc, this.docInfo, itemObj, dlgParams, this.currentRowNr);
         const recordSalesTransactions = new RecordSalesTransactions(this.banDoc, this.docInfo, salesData,
             dlgParams, itemsData, itemObj, this.currentRowObj);
         return recordSalesTransactions.getRecordSalesTransactions();
@@ -220,7 +220,7 @@ class DlgCalculateSaleDataManager {
         if (!isValidItemSelected(item, itemObj, this.banDoc))
             return;
 
-        salesData = calculateShareSaleData(this.banDoc, this.docInfo, itemObj, dlgParams, this.currentRowNr);
+        salesData = calculateStockSaleData(this.banDoc, this.docInfo, itemObj, dlgParams, this.currentRowNr);
         assetCurr = itemObj.currency;
         baseCurr = this.docInfo.baseCurrency;
 

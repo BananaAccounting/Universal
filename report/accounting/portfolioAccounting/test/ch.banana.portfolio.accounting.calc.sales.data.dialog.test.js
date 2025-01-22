@@ -1,4 +1,4 @@
-// Copyright [2022] [Banana.ch SA - Lugano Switzerland]
+// Copyright [2025] [Banana.ch SA - Lugano Switzerland]
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 // @id = ch.banana.portfolio.accounting.calc.sales.data.dialog.test
 // @api = 1.0
-// @pubdate = 2021-03-08
+// @pubdate = 2025-01-22
 // @publisher = Banana.ch SA
 // @description = <TEST ch.banana.portfolio.accounting.calc.sales.data.dialog.test>
 // @task = app.command
@@ -25,6 +25,7 @@
 // @outputformat = none
 // @inputdataform = none
 // @includejs = ../ch.banana.portfolio.accounting.calculation.methods.js
+// @includejs = ../ch.banana.portfolio.accounting.record.sales.transactions.js
 // @timeout = -1
 
 // Register test case to be executed
@@ -38,10 +39,14 @@ function TestCalcSalesDialog() {
 TestCalcSalesDialog.prototype.initTestCase = function () {
     this.testLogger = Test.logger;
     this.progressBar = Banana.application.progressBar;
-    this.fileNameList = [];
-
-    this.fileNameList.push("file:script/../test/testcases/portfolio_accounting_double_entry_tutorial.ac2");
-    this.fileNameList.push("file:script/../test/testcases/portfolio_accounting_double_entry_multi_currency_tutorial.ac2");
+    this.fileName = "file:script/../test/testcases/portfolio_accounting_double_entry_multi_currency_tutorial_salesrecordtest.ac2";
+    this.banDoc = Banana.application.openDocument(this.fileName);
+    if (!this.banDoc) {
+        this.testLogger.addFatalError("File not found: " + this.fileName);
+        return;
+    }
+    this.docInfo = getDocumentInfo(this.banDoc);
+    this.itemsData = getItemsTableData(this.banDoc, this.docInfo);
 }
 
 // This method will be called at the end of the test case
@@ -59,27 +64,64 @@ TestCalcSalesDialog.prototype.cleanup = function () {
 
 }
 
-TestCalcSalesDialog.prototype.testDataStructure = function () {
-    let parentLogger = this.testLogger;
-    this.progressBar.start(this.fileNameList.length);
-    for (var i = 0; i < this.fileNameList.length; i++) {
+/**
+ * We test the sale of various types of securities under various conditions.
+ * In the test results we save the data calculated via: calculateStockSaleData() and 
+ * After that we save the transactions generated via the getRecordSalesTransactions() method.
+ * We dont use (or save) the accounts saved by the user normally via "DlgInvestmentsAccounts", so
+ * we work by default with the placehoder texts defined for the accounts that are not defined by the user.
+ */
+TestCalcSalesDialog.prototype.testRecordSalesTransactions = function () {
 
-        let fileName = this.fileNameList[i];
-        if (!this.progressBar.step())
-            break;
-        let banDoc = Banana.application.openDocument(fileName);
-        this.testLogger = parentLogger.newLogger(Banana.IO.fileCompleteBaseName(fileName));
-        if (banDoc) {
-            let docInfo = getDocumentInfo(banDoc);
-            let params = getParams(i);
-            let itemsData = getItemsTableData(banDoc, docInfo);
-            let salesData = calculateShareSaleData(banDoc, docInfo, params, itemsData);
-            let jsonName = "FILENAME: " + fileName;
-            this.testLogger.addJson(jsonName, JSON.stringify(salesData));
-        } else {
-            this.testLogger.addFatalError("File not found: " + fileName);
-        }
-    }
+    // *** Ricordarsi in qualche maniere di disabilitare i messaggi se necessario, valutare ****
+
+    let testDataObj = {}
+    // Test 1
+    testDataObj = getTestData_1(this.banDoc, this.docInfo, this.itemsData);
+    this.testLogger.addSection("Test 1: Sell All Unicredit Shares purchased before.");
+    this.testLogger.addSubSection("Test 1: Calculate Data");
+    this.testLogger.addJson("Test 1", JSON.stringify(testDataObj.calcSaleData));
+    this.testLogger.addSubSection("Test 1: Record Data");
+    this.testLogger.addJson("Test 1", JSON.stringify(testDataObj.recordsSalesTransactions));
+    // Test 2
+
+}
+
+/**
+ * Test 1.
+ * Sell All Unicredit Shares purchased before. Row correctly filled with the following data:
+ * - ISIN: IT0005239360
+ * - Qt: 100
+ * - Current (Market) Price: 9.5000
+ * - Exhange rate: 1.150000
+ * - Bank Charges: 25.00
+ */
+function getTestData_1(banDoc, docInfo, itemsData) {
+
+    let testDataObj = {};
+    testDataObj.calcSaleData = {};
+    testDataObj.recordsSalesTransactions = {};
+
+    let userParams = {};
+    let itemObj = {};
+    let calcSaleData = {};
+    let currentRowNr = "-1";
+    let currentRowObj = {};
+
+    // Calculate Data
+    userParams = getUserParams("1");
+    itemObj = itemsData.find(obj => obj.item === userParams.selectedItem);
+    currentRowNr = "7";
+    currentRowObj = getCurrentRowObj(banDoc, currentRowNr, "Transactions");
+    calcSaleData = calculateStockSaleData(banDoc, docInfo, itemObj, userParams, currentRowNr);
+    const recordSalesTransactions = new RecordSalesTransactions(banDoc, docInfo, calcSaleData,
+        userParams, itemsData, itemObj, currentRowObj);
+
+    //Save the data into test object
+    testDataObj.calcSaleData = calcSaleData;
+    testDataObj.recordsSalesTransactions = recordSalesTransactions.getRecordSalesTransactions();
+
+    return testDataObj;
 }
 
 /**
@@ -91,20 +133,15 @@ TestCalcSalesDialog.prototype.testDataStructure = function () {
  * @param {*} index 
  * @returns 
  */
-function getParams(index) {
+function getUserParams(testNr) {
     params = {};
-    switch (index) {
-        case 0:
-            params.selectedItem = "CH003886335";
-            params.quantity = "20";
-            params.marketPrice = "12";
-            params.currExRate = "";
-            return params;
-        case 1:
+    switch (testNr) {
+        case "1":
             params.selectedItem = "IT0005239360";
-            params.quantity = "10";
-            params.marketPrice = "12";
-            params.currExRate = "1.12";
+            params.quantity = "100";
+            params.marketPrice = "9.5000";
+            params.currExRate = "1.150000";
+            params.bankCharges = "25.00";
             return params;
         default:
             return params;

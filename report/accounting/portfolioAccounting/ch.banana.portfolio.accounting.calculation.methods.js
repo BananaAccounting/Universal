@@ -44,8 +44,8 @@ function getReportHeader(report, docInfo) {
     headerParagraph.addParagraph("", "");
 }
 
-function getInvestmentsAccountsFormatted() {
-    const accountsList = getItemsAccounts(Banana.document);
+function getInvestmentsAccountsFormatted(banDoc) {
+    const accountsList = getItemsAccounts(banDoc);
     if (!accountsList || accountsList.length === 0)
         return "";
     let accountsStringList = accountsList.join(";");
@@ -174,8 +174,8 @@ function getJournalData(docInfo, journal) {
 
 }
 
-function getFormattedSavedParams(paramsId) {
-    let savedParam = Banana.document.getScriptSettings(paramsId);
+function getFormattedSavedParams(banDoc, paramsId) {
+    let savedParam = banDoc.getScriptSettings(paramsId);
     let userParam = {};
     if (savedParam.length > 0) {
         userParam = JSON.parse(savedParam);
@@ -356,7 +356,7 @@ function getDateObject(dateString, format) {
     return dateObj;
 }
 
-function calculateShareSaleData(banDoc, docInfo, itemObj, dlgParams, currentRowNr) {
+function calculateStockSaleData(banDoc, docInfo, itemObj, dlgParams, currentRowNr) {
 
     let saleData = {};
     let journal = "";
