@@ -70,6 +70,12 @@ TestCalcSalesDialog.prototype.cleanup = function () {
  * After that we save the transactions generated via the getRecordSalesTransactions() method.
  * We dont use (or save) the accounts saved by the user normally via "DlgInvestmentsAccounts", so
  * we work by default with the placehoder texts defined for the accounts that are not defined by the user.
+ * 
+ * Keep in mind that changes are not really applied to the document as we can not create a copy of
+ * the original file and modify it instead of the original one.
+ * 
+ * For the cases where we ask the user to overwwrite the existing transactions, we return always true as
+ * no real changes are applied to the document, just to have in the test the document change object.
  */
 TestCalcSalesDialog.prototype.testRecordSalesTransactions = function () {
 
@@ -84,6 +90,7 @@ TestCalcSalesDialog.prototype.testRecordSalesTransactions = function () {
     this.testLogger.addSubSection("Test 1: Record Data");
     this.testLogger.addJson("Test 1", JSON.stringify(testDataObj.recordsSalesTransactions));
     // Test 2
+    // da qui il 24.01...
 
 }
 
@@ -95,6 +102,9 @@ TestCalcSalesDialog.prototype.testRecordSalesTransactions = function () {
  * - Current (Market) Price: 9.5000
  * - Exhange rate: 1.150000
  * - Bank Charges: 25.00
+ * Loss on sale, profit on exchange, full sale.
+ * Rows already contains the sales code into the External reference column, so the result
+ * must show just the rows to add, without any change to first one.
  */
 function getTestData_1(banDoc, docInfo, itemsData) {
 
@@ -115,7 +125,46 @@ function getTestData_1(banDoc, docInfo, itemsData) {
     currentRowObj = getCurrentRowObj(banDoc, currentRowNr, "Transactions");
     calcSaleData = calculateStockSaleData(banDoc, docInfo, itemObj, userParams, currentRowNr);
     const recordSalesTransactions = new RecordSalesTransactions(banDoc, docInfo, calcSaleData,
-        userParams, itemsData, itemObj, currentRowObj);
+        userParams, itemsData, itemObj, currentRowObj, false);
+
+    //Save the data into test object
+    testDataObj.calcSaleData = calcSaleData;
+    testDataObj.recordsSalesTransactions = recordSalesTransactions.getRecordSalesTransactions();
+
+    return testDataObj;
+}
+
+/**
+ * Test 2.
+ * Sell half of Netflix shares purchased before. Row correctly filled with the following data:
+ * - ISIN: US123456789
+ * - Qt: 100
+ * - Current (Market) Price: 11.5000
+ * - Exhange rate: 0.970000
+ * - Bank Charges: 40.85
+ * Profit on sale, profit on exchange, half sale
+ * Rows does not contains yet the sale code. The result must show the rows to add and the first one modified
+ * with the new sale code created, wich should be inv_sale_2
+ */
+function getTestData_2(banDoc, docInfo, itemsData) {
+    let testDataObj = {};
+    testDataObj.calcSaleData = {};
+    testDataObj.recordsSalesTransactions = {};
+
+    let userParams = {};
+    let itemObj = {};
+    let calcSaleData = {};
+    let currentRowNr = "-1";
+    let currentRowObj = {};
+
+    // Calculate Data
+    userParams = getUserParams("2");
+    itemObj = itemsData.find(obj => obj.item === userParams.selectedItem);
+    currentRowNr = "21";
+    currentRowObj = getCurrentRowObj(banDoc, currentRowNr, "Transactions");
+    calcSaleData = calculateStockSaleData(banDoc, docInfo, itemObj, userParams, currentRowNr);
+    const recordSalesTransactions = new RecordSalesTransactions(banDoc, docInfo, calcSaleData,
+        userParams, itemsData, itemObj, currentRowObj, false);
 
     //Save the data into test object
     testDataObj.calcSaleData = calcSaleData;
@@ -142,6 +191,13 @@ function getUserParams(testNr) {
             params.marketPrice = "9.5000";
             params.currExRate = "1.150000";
             params.bankCharges = "25.00";
+            return params;
+        case "2":
+            params.selectedItem = "US123456789";
+            params.quantity = "100";
+            params.marketPrice = "11.5000";
+            params.currExRate = "0.970000";
+            params.bankCharges = "40.85";
             return params;
         default:
             return params;

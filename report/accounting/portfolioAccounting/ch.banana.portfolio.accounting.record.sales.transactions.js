@@ -20,7 +20,7 @@
 
 /** We must use the class declaration using "var" to be able to correctly use this class outside this file. */
 var RecordSalesTransactions = class RecordSalesTransactions {
-    constructor(banDoc, docInfo, salesData, dlgParams, itemsData, currItemObj, currentRowObj) {
+    constructor(banDoc, docInfo, salesData, dlgParams, itemsData, currItemObj, currentRowObj, showMsgDlg) {
         this.banDoc = banDoc;
         this.docInfo = docInfo;
         this.salesData = salesData;
@@ -33,10 +33,11 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         this.itemsData = itemsData;
         this.itemObject = currItemObj;
         this.itemType = "S"; // Base is stock.
-        this.salesCodesRegex = "/^inv_sale_\d+(\.\d+)?$/";
+        this.salesCodesRegex = new RegExp("^inv_sale_\\d+(\\.\\d+)?$");
         this.trTableData = getTransactionsTableData(this.banDoc, this.docInfo);
         this.transactionsType = this.getTransactionsType();
         this.saleTrRef = ""; // In ExternalReference column of the transactions table.
+        this.showMsgDlg = showMsgDlg; // To show messages to the user. Disabled during tests.
     }
 
     getAccountsParams(banDoc, settingsId) {
@@ -77,7 +78,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
     }
 
     currentSelectedRowIsValid() {
-        /** Let's check whether or not the currently selected line is valid (It must be valid since we have to go and enter the
+        /** Let's check whether or not the currently selected line is valid. It must be valid since we have to go and enter the
          *  sales record reference). If it does not exist we send a message to the user and do not create the rows.
          */
         if (!this.currentRowObj || isObjectEmpty(this.currentRowObj)) {
@@ -95,7 +96,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
     getSaleRowChangesDocument() {
         let docChangeObj = {};
         let rowSale = this.getDocChangeRow_mainSale();
-        if (!isObjectEmpty(rowSale)) {
+        if (rowSale && !isObjectEmpty(rowSale)) {
             docChangeObj = this.getDocumentChangeInit();
 
             // Add the row to the document (we just have one row to add)
@@ -191,11 +192,13 @@ var RecordSalesTransactions = class RecordSalesTransactions {
 
     getDocChangeRow_mainSale() {
         let rowSaleObj = {};
-        if (!this.saleTrRef.match(this.salesCodesRegex)) {
+        if (!this.salesCodesRegex.test(this.saleTrRef)) {
+            Banana.console.debug(this.salesCodesRegex.test(this.saleTrRef));
             rowSaleObj = this.getDocChangeRow_addSaleRef();
             this.saleTrRef = rowSaleObj.fields["ExternalReference"];
             return rowSaleObj;
-        } else if (this.saleTrRef.match(this.salesCodesRegex) && this.saleTrRef.indexOf(".") > -1) { // User selected a child row.
+        } else if (this.salesCodesRegex.test(this.saleTrRef) && this.saleTrRef.indexOf(".") > -1) { // User selected a child row.
+            Banana.console.debug("match child");
             let msg = getErrorMessage_MissingElements("CHILD_ROW_SELECTED");
             banDoc.addMessage(msg, "CHILD_ROW_SELECTED");
             return rowSaleObj;
@@ -213,15 +216,15 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         let rowCashedNet = this.getBondDocChangeRow_cashedNet();
         let rowSaleResult = this.getBondDocChangeRow_saleResult();
 
-        if (!isObjectEmpty(rowBankCharges) && this.rowExistenceChecked(rowBankCharges, this.transactionsType.BANK_CHARGES))
+        if (rowBankCharges && !isObjectEmpty(rowBankCharges) && this.rowExistenceChecked(rowBankCharges, this.transactionsType.BANK_CHARGES))
             rows.push(rowBankCharges);
-        if (!isObjectEmpty(rowOtherCahrges) && this.rowExistenceChecked(rowOtherCahrges, this.transactionsType.OTHER_CHARGES))
+        if (rowOtherCahrges && !isObjectEmpty(rowOtherCahrges) && this.rowExistenceChecked(rowOtherCahrges, this.transactionsType.OTHER_CHARGES))
             rows.push(rowOtherCahrges);
-        if (!isObjectEmpty(rowAccruedInterests) && this.rowExistenceChecked(rowAccruedInterests, this.transactionsType.ACCRUED_INTERESTS))
+        if (rowAccruedInterests && !isObjectEmpty(rowAccruedInterests) && this.rowExistenceChecked(rowAccruedInterests, this.transactionsType.ACCRUED_INTERESTS))
             rows.push(rowAccruedInterests);
-        if (!isObjectEmpty(rowCashedNet) && this.rowExistenceChecked(rowCashedNet, this.transactionsType.CASHED_NET))
+        if (rowCashedNet && !isObjectEmpty(rowCashedNet) && this.rowExistenceChecked(rowCashedNet, this.transactionsType.CASHED_NET))
             rows.push(rowCashedNet);
-        if (!isObjectEmpty(rowSaleResult) && this.rowExistenceChecked(rowSaleResult, this.transactionsType.SALE_RESULT))
+        if (rowSaleResult && !isObjectEmpty(rowSaleResult) && this.rowExistenceChecked(rowSaleResult, this.transactionsType.SALE_RESULT))
             rows.push(rowSaleResult);
 
         return rows;
@@ -237,17 +240,17 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         let rowSaleResult = this.getBondDocChangeRow_saleResultMulti();
         let rowExchangeResult = this.getBondDocChangeRow_ExhangeResult();
 
-        if (!isObjectEmpty(rowBankCharges) && this.rowExistenceChecked(rowBankCharges, this.transactionsType.BANK_CHARGES))
+        if (rowBankCharges && !isObjectEmpty(rowBankCharges) && this.rowExistenceChecked(rowBankCharges, this.transactionsType.BANK_CHARGES))
             rows.push(rowBankCharges);
-        if (!isObjectEmpty(rowOtherCahrges) && this.rowExistenceChecked(rowOtherCahrges, this.transactionsType.OTHER_CHARGES))
+        if (rowOtherCahrges && !isObjectEmpty(rowOtherCahrges) && this.rowExistenceChecked(rowOtherCahrges, this.transactionsType.OTHER_CHARGES))
             rows.push(rowOtherCahrges);
-        if (!isObjectEmpty(rowAccruedInterests) && this.rowExistenceChecked(rowAccruedInterests, this.transactionsType.ACCRUED_INTERESTS))
+        if (rowAccruedInterests && !isObjectEmpty(rowAccruedInterests) && this.rowExistenceChecked(rowAccruedInterests, this.transactionsType.ACCRUED_INTERESTS))
             rows.push(rowAccruedInterests);
-        if (!isObjectEmpty(rowCashedNet) && this.rowExistenceChecked(rowCashedNet, this.transactionsType.CASHED_NET))
+        if (rowCashedNet && !isObjectEmpty(rowCashedNet) && this.rowExistenceChecked(rowCashedNet, this.transactionsType.CASHED_NET))
             rows.push(rowCashedNet);
-        if (!isObjectEmpty(rowSaleResult) && this.rowExistenceChecked(rowSaleResult, this.transactionsType.SALE_RESULT))
+        if (rowSaleResult && !isObjectEmpty(rowSaleResult) && this.rowExistenceChecked(rowSaleResult, this.transactionsType.SALE_RESULT))
             rows.push(rowSaleResult);
-        if (!isObjectEmpty(rowExchangeResult) && this.rowExistenceChecked(rowSaleResult, this.transactionsType.EXCHANGE_RESULT))
+        if (rowExchangeResult && !isObjectEmpty(rowExchangeResult) && this.rowExistenceChecked(rowSaleResult, this.transactionsType.EXCHANGE_RESULT))
             rows.push(rowExchangeResult);
 
         return rows;
@@ -549,13 +552,13 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         let rowCashedNet = this.getStockDocChangeRow_cashedNet();
         let rowSaleResult = this.getStockDocChangeRow_saleResult();
 
-        if (!isObjectEmpty(rowBankCharges) && this.rowExistenceChecked(rowBankCharges, this.transactionsType.BANK_CHARGES))
+        if (rowBankCharges && !isObjectEmpty(rowBankCharges) && this.rowExistenceChecked(rowBankCharges, this.transactionsType.BANK_CHARGES))
             rows.push(rowBankCharges);
-        if (!isObjectEmpty(rowOtherCahrges) && this.rowExistenceChecked(rowOtherCahrges, this.transactionsType.OTHER_CHARGES))
+        if (rowOtherCahrges && !isObjectEmpty(rowOtherCahrges) && this.rowExistenceChecked(rowOtherCahrges, this.transactionsType.OTHER_CHARGES))
             rows.push(rowOtherCahrges);
-        if (!isObjectEmpty(rowCashedNet) && this.rowExistenceChecked(rowCashedNet, this.transactionsType.CASHED_NET))
+        if (rowCashedNet && !isObjectEmpty(rowCashedNet) && this.rowExistenceChecked(rowCashedNet, this.transactionsType.CASHED_NET))
             rows.push(rowCashedNet);
-        if (!isObjectEmpty(rowSaleResult) && this.rowExistenceChecked(rowSaleResult, this.transactionsType.SALE_RESULT))
+        if (rowSaleResult && !isObjectEmpty(rowSaleResult) && this.rowExistenceChecked(rowSaleResult, this.transactionsType.SALE_RESULT))
             rows.push(rowSaleResult);
 
         return rows;
@@ -570,15 +573,15 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         let rowSaleResult = this.getStockDocChangeRow_saleResultMulti();
         let rowExchangeResult = this.getStockDocChangeRow_ExhangeResult();
 
-        if (!isObjectEmpty(rowBankCharges) && this.rowExistenceChecked(rowBankCharges, this.transactionsType.BANK_CHARGES))
+        if (rowBankCharges && !isObjectEmpty(rowBankCharges) && this.rowExistenceChecked(rowBankCharges, this.transactionsType.BANK_CHARGES))
             rows.push(rowBankCharges);
-        if (!isObjectEmpty(rowOtherCahrges) && this.rowExistenceChecked(rowOtherCahrges, this.transactionsType.OTHER_CHARGES))
+        if (rowOtherCahrges && !isObjectEmpty(rowOtherCahrges) && this.rowExistenceChecked(rowOtherCahrges, this.transactionsType.OTHER_CHARGES))
             rows.push(rowOtherCahrges);
-        if (!isObjectEmpty(rowCashedNet) && this.rowExistenceChecked(rowCashedNet, this.transactionsType.CASHED_NET))
+        if (rowCashedNet && !isObjectEmpty(rowCashedNet) && this.rowExistenceChecked(rowCashedNet, this.transactionsType.CASHED_NET))
             rows.push(rowCashedNet);
-        if (!isObjectEmpty(rowSaleResult) && this.rowExistenceChecked(rowSaleResult, this.transactionsType.SALE_RESULT))
+        if (rowSaleResult && !isObjectEmpty(rowSaleResult) && this.rowExistenceChecked(rowSaleResult, this.transactionsType.SALE_RESULT))
             rows.push(rowSaleResult);
-        if (!isObjectEmpty(rowExchangeResult) && this.rowExistenceChecked(rowSaleResult, this.transactionsType.EXCHANGE_RESULT))
+        if (rowExchangeResult && !isObjectEmpty(rowExchangeResult) && this.rowExistenceChecked(rowSaleResult, this.transactionsType.EXCHANGE_RESULT))
             rows.push(rowExchangeResult);
 
         return rows;
@@ -856,7 +859,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         for (var i = 0; i < trTable.rowCount; i++) {
             var tRow = trTable.row(i);
             let exReference = tRow.value("ExternalReference");
-            if (exReference.match(this.salesCodesRegex))
+            if (this.salesCodesRegex.test(exReference))
                 exCodes.push(exReference);
         }
 
@@ -878,7 +881,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
 
     rowExistenceChecked(rowObj, transactionType) {
         let rowExist = this.findRowByOperationSaleCode(rowObj.fields["ExternalReference"]);
-        if (rowExist) {
+        if (this.showMsgDlg && rowExist) {
             return this.getOverwriteTransactionDlg(transactionType);
         } else
             return true;

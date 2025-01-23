@@ -35,7 +35,6 @@ function exec(inData, options) {
     if (!verifyBananaVersion(banDoc))
         return "@Cancel";
 
-
     let docInfo = "";
     let itemsData = "";
     const dlgLabel = "Available accounts (select one or more accounts)";
@@ -52,7 +51,7 @@ function exec(inData, options) {
 
     docInfo = getDocumentInfo(banDoc);
     //let transactionsData=getTransactionsTableData(banDoc,docInfo);
-    itemsData = getItemsTableData(banDoc, docInfo);
+    itemsData = getItemsTableData(banDoc);
 
     //Get Secrurity account data.
     accountsDataList = getAccountsDataList(banDoc, docInfo, accountsList, itemsData); //ritorna l'array con tutti i conti.
@@ -79,7 +78,7 @@ function getSelectedAccounts(banDoc, scriptId, dlgTitle, dlgLabel) {
     if (savedAccList && savedAccList.length >= 1) {
         accountsListSaved = savedAccList;
     }
-    let invAccounts = getInvestmentsAccountsFormatted();
+    let invAccounts = getInvestmentsAccountsFormatted(banDoc);
     if (!invAccounts || invAccounts.length < 0) {
         let msg = getErrorMessage_MissingElements("NO_INVESTMENTS_ACCOUNTS_FOUND");
         banDoc.addMessage(msg, "NO_INVESTMENTS_ACCOUNTS_FOUND");
