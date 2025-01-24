@@ -60,5 +60,11 @@ function getErrorMessage_MissingElements(errorId, missingElement) {
             return "The selected row in the Transactions table is not valid";
         case "CHILD_ROW_SELECTED":
             return "The selected row in the Transactions table is not correct"
+        case "ITEM_ID_MISSING_IN_ROW":
+            return "The selected row does not contain the Security ID";
+        case "QTY_MISSING_IN_ROW":
+            return "The selected row does not contain a valid sales Quantity";
+        case "UNITPRICE_MISSING_IN_ROW":
+            return "The selected row does not contain a valid Unit Price";
     }
 }

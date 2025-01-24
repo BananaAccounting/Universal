@@ -48,7 +48,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
     getRecordSalesTransactions() {
         let jsonDoc = { "format": "documentChange", "error": "" };
         if (!this.salesData || !this.currentSelectedRowIsValid())
-            return jsonDoc;
+            return {};
         /**
          * In the “ReferenceUnit” column of the items table, 
          * we request to indicate the type of Title that is being used:
@@ -78,12 +78,44 @@ var RecordSalesTransactions = class RecordSalesTransactions {
     }
 
     currentSelectedRowIsValid() {
-        /** Let's check whether or not the currently selected line is valid. It must be valid since we have to go and enter the
-         *  sales record reference). If it does not exist we send a message to the user and do not create the rows.
+        /** Let's check whether or not the currently selected line is valid. We wanto to reduce the cases where the user
+         *  generates new rows inside the table that are not correct, so we take case of checking if the selected row is 
+         * a row wich relates to a sale of a security, to do so we check:
+         * - The row is not empty.
+         * - The ItemsId column contains a valite item id.
+         * - The Quantity column contains a valid quantity (with the minus sign, thats means a sale).
+         * - The UnitPrice column is not empty.
          */
-        if (!this.currentRowObj || isObjectEmpty(this.currentRowObj)) {
+        if (this.currentRowObj || !isObjectEmpty(this.currentRowObj)) {
+            // row is a valid object, we check now the values.
+            let itemIdList = getItemsIds(this.banDoc);
+
+            // Check if the row contains the item id.
+            if (!this.currentRowObj.value("ItemsId") || this.currentRowObj.value("ItemsId") === ""
+                || !itemIdList.includes(this.currentRowObj.value("ItemsId"))) {
+                let msg = getErrorMessage_MissingElements("ITEM_ID_MISSING_IN_ROW");
+                this.banDoc.addMessage(msg, "ITEM_ID_MISSING_IN_ROW");
+                return false;
+            }
+
+            // Check if the row contains the quantity.
+            if (!this.currentRowObj.value("Quantity") || this.currentRowObj.value("Quantity") === ""
+                || this.currentRowObj.value("Quantity").indexOf("-") < 0) {
+                let msg = getErrorMessage_MissingElements("QTY_MISSING_IN_ROW");
+                this.banDoc.addMessage(msg, "QTY_MISSING_IN_ROW");
+                return false;
+            }
+
+            // Check if the row contains the unit price.
+            if (!this.currentRowObj.value("UnitPrice") || this.currentRowObj.value("UnitPrice") === "") {
+                let msg = getErrorMessage_MissingElements("UNITPRICE_MISSING_IN_ROW");
+                this.banDoc.addMessage(msg, "UNITPRICE_MISSING_IN_ROW");
+                return false;
+            }
+
+        } else {
             let msg = getErrorMessage_MissingElements("SELECTED_ROW_NOT_VALID");
-            banDoc.addMessage(msg, "SELECTED_ROW_NOT_VALID");
+            this.banDoc.addMessage(msg, "SELECTED_ROW_NOT_VALID");
             return false;
         }
         return true;
@@ -192,18 +224,22 @@ var RecordSalesTransactions = class RecordSalesTransactions {
 
     getDocChangeRow_mainSale() {
         let rowSaleObj = {};
-        if (!this.salesCodesRegex.test(this.saleTrRef)) {
-            Banana.console.debug(this.salesCodesRegex.test(this.saleTrRef));
+        if (this.saleTrRef.length < 1) { // empty.
+            rowSaleObj = this.getDocChangeRow_addSaleRef();
+            this.saleTrRef = rowSaleObj.fields["ExternalReference"];
+            return rowSaleObj;
+        } else if (this.saleTrRef.length > 0 && !this.salesCodesRegex.test(this.saleTrRef)
+            && this.customExternalReferenceChecked(this.saleTrRef, this.banDoc.cursor.rowNr)) {
+            // The code found in ExternalReference is custom code, we ask the user if he wants to overwrite it.
             rowSaleObj = this.getDocChangeRow_addSaleRef();
             this.saleTrRef = rowSaleObj.fields["ExternalReference"];
             return rowSaleObj;
         } else if (this.salesCodesRegex.test(this.saleTrRef) && this.saleTrRef.indexOf(".") > -1) { // User selected a child row.
-            Banana.console.debug("match child");
             let msg = getErrorMessage_MissingElements("CHILD_ROW_SELECTED");
             banDoc.addMessage(msg, "CHILD_ROW_SELECTED");
             return rowSaleObj;
         } else {
-            return rowSaleObj; // The row already contains a valid reference, we return an empty object as we dont need any change
+            return rowSaleObj; // The row already contains a valid code, we return an empty object as we dont need any change
         }
     }
 
@@ -885,6 +921,21 @@ var RecordSalesTransactions = class RecordSalesTransactions {
             return this.getOverwriteTransactionDlg(transactionType);
         } else
             return true;
+    }
+
+    customExternalReferenceChecked(currentExtRef, rowNr) {
+        if (this.showMsgDlg) {
+            return this.getOverWriteExternalReferenceDlg(currentExtRef, rowNr);
+        }
+        return true;
+    }
+
+    getOverWriteExternalReferenceDlg(currentExtRef, rowNr) {
+        let baseMsg = "The external reference '%1' found at row %2 will be overwritten. Would you like to proceed? ?";
+        baseMsg = baseMsg.replace('%1', currentExtRef);
+        baseMsg = baseMsg.replace('%2', rowNr);
+        let answer = Banana.Ui.showQuestion("Overwrite external reference", baseMsg);
+        return answer;
     }
 
     getOverwriteTransactionDlg(transactionType) {

@@ -79,19 +79,37 @@ TestCalcSalesDialog.prototype.cleanup = function () {
  */
 TestCalcSalesDialog.prototype.testRecordSalesTransactions = function () {
 
-    // *** Ricordarsi in qualche maniere di disabilitare i messaggi se necessario, valutare ****
-
     let testDataObj = {}
-    // Test 1
+    // Test 1, Share
     testDataObj = getTestData_1(this.banDoc, this.docInfo, this.itemsData);
     this.testLogger.addSection("Test 1: Sell All Unicredit Shares purchased before.");
-    this.testLogger.addSubSection("Test 1: Calculate Data");
+    this.testLogger.addSubSection("Test 1: Calculated Data");
     this.testLogger.addJson("Test 1", JSON.stringify(testDataObj.calcSaleData));
-    this.testLogger.addSubSection("Test 1: Record Data");
+    this.testLogger.addSubSection("Test 1: Recorded Data");
     this.testLogger.addJson("Test 1", JSON.stringify(testDataObj.recordsSalesTransactions));
-    // Test 2
-    // da qui il 24.01...
+    // Test 2, Share
+    testDataObj = getTestData_2(this.banDoc, this.docInfo, this.itemsData);
+    this.testLogger.addSection("Test 2: Sell first half of Netflix shares purchased before.");
+    this.testLogger.addSubSection("Test 2: Calculated Data");
+    this.testLogger.addJson("Test 2", JSON.stringify(testDataObj.calcSaleData));
+    this.testLogger.addSubSection("Test 2: Recorded Data");
+    this.testLogger.addJson("Test 2", JSON.stringify(testDataObj.recordsSalesTransactions));
+    // Test 3, Share
+    testDataObj = getTestData_3(this.banDoc, this.docInfo, this.itemsData);
+    this.testLogger.addSection("Test 3: Sell second half of Netflix shares purchased before.");
+    this.testLogger.addSubSection("Test 3: Calculated Data");
+    this.testLogger.addJson("Test 3", JSON.stringify(testDataObj.calcSaleData));
+    this.testLogger.addSubSection("Test 3: Recorded Data");
+    this.testLogger.addJson("Test 3", JSON.stringify(testDataObj.recordsSalesTransactions));
+    // Test 4, Bond
+    testDataObj = getTestData_4(this.banDoc, this.docInfo, this.itemsData);
+    this.testLogger.addSection("Test 4: Sell all Bnp Paribas Bonds purchased before.");
+    this.testLogger.addSubSection("Test 4: Calculated Data");
+    this.testLogger.addJson("Test 4", JSON.stringify(testDataObj.calcSaleData));
+    this.testLogger.addSubSection("Test 4: Recorded Data");
+    this.testLogger.addJson("Test 4", JSON.stringify(testDataObj.recordsSalesTransactions));
 
+    // Tests ok 24.01, !!! Do not upload tests references on github yet !!!
 }
 
 /**
@@ -104,7 +122,7 @@ TestCalcSalesDialog.prototype.testRecordSalesTransactions = function () {
  * - Bank Charges: 25.00
  * Loss on sale, profit on exchange, full sale.
  * Rows already contains the sales code into the External reference column, so the result
- * must show just the rows to add, without any change to first one.
+ * must show just the rows to add (overwrite existent set always to yes), without any change to first one.
  */
 function getTestData_1(banDoc, docInfo, itemsData) {
 
@@ -141,8 +159,8 @@ function getTestData_1(banDoc, docInfo, itemsData) {
  * - Qt: 100
  * - Current (Market) Price: 11.5000
  * - Exhange rate: 0.970000
- * - Bank Charges: 40.85
- * Profit on sale, profit on exchange, half sale
+ * - Bank Charges: 42.110
+ * Profit on sale, profit on exchange, first half sale
  * Rows does not contains yet the sale code. The result must show the rows to add and the first one modified
  * with the new sale code created, wich should be inv_sale_2
  */
@@ -161,6 +179,87 @@ function getTestData_2(banDoc, docInfo, itemsData) {
     userParams = getUserParams("2");
     itemObj = itemsData.find(obj => obj.item === userParams.selectedItem);
     currentRowNr = "21";
+    currentRowObj = getCurrentRowObj(banDoc, currentRowNr, "Transactions");
+    calcSaleData = calculateStockSaleData(banDoc, docInfo, itemObj, userParams, currentRowNr);
+    const recordSalesTransactions = new RecordSalesTransactions(banDoc, docInfo, calcSaleData,
+        userParams, itemsData, itemObj, currentRowObj, false);
+
+    //Save the data into test object
+    testDataObj.calcSaleData = calcSaleData;
+    testDataObj.recordsSalesTransactions = recordSalesTransactions.getRecordSalesTransactions();
+
+    return testDataObj;
+}
+
+/**
+ * Test 3.
+ * Sell the second half of Netflix shares purchased before. Row correctly filled with the following data:
+ * - ISIN: US123456789
+ * - Qt: 100
+ * - Current (Market) Price: 11.5562
+ * - Exhange rate: 0.945
+ * - Bank Charges: 42.33
+ * Profit on sale, loss on exchange, second half sale
+ * First row contains a custom code in ExternalReference column, wich should be replaced by the
+ * automatically generated one: inv_sale_2 (overwrite existent set always to yes).
+ * The other rows do not contains any sale code, so for them is added a new one.
+ */
+function getTestData_3(banDoc, docInfo, itemsData) {
+    let testDataObj = {};
+    testDataObj.calcSaleData = {};
+    testDataObj.recordsSalesTransactions = {};
+
+    let userParams = {};
+    let itemObj = {};
+    let calcSaleData = {};
+    let currentRowNr = "-1";
+    let currentRowObj = {};
+
+    // Calculate Data
+    userParams = getUserParams("3");
+    itemObj = itemsData.find(obj => obj.item === userParams.selectedItem);
+    currentRowNr = "28";
+    currentRowObj = getCurrentRowObj(banDoc, currentRowNr, "Transactions");
+    calcSaleData = calculateStockSaleData(banDoc, docInfo, itemObj, userParams, currentRowNr);
+    const recordSalesTransactions = new RecordSalesTransactions(banDoc, docInfo, calcSaleData,
+        userParams, itemsData, itemObj, currentRowObj, false);
+
+    //Save the data into test object
+    testDataObj.calcSaleData = calcSaleData;
+    testDataObj.recordsSalesTransactions = recordSalesTransactions.getRecordSalesTransactions();
+
+    return testDataObj;
+}
+
+/**
+ * Test 4.
+ * Sell all the Bnp Paribas bonds. Row correctly filled with the following data:
+ * - ISIN: IT000792468
+ * - Qt (Nominal value): -5000.00
+ * - Current (Market) Price: 1.025
+ * - Exhange rate: 1.13
+ * - Bank Charges: 55.00
+ * - Accrued interests: 25.56
+ * Profit on sale, profit on exchange.
+ * Rows does not contains yet the sale code. The result must show the rows to add and the first one modified
+ * with the new sale code created, wich should be inv_sale_2
+ */
+
+function getTestData_4(banDoc, docInfo, itemsData) {
+    let testDataObj = {};
+    testDataObj.calcSaleData = {};
+    testDataObj.recordsSalesTransactions = {};
+
+    let userParams = {};
+    let itemObj = {};
+    let calcSaleData = {};
+    let currentRowNr = "-1";
+    let currentRowObj = {};
+
+    // Calculate Data
+    userParams = getUserParams("4");
+    itemObj = itemsData.find(obj => obj.item === userParams.selectedItem);
+    currentRowNr = "47";
     currentRowObj = getCurrentRowObj(banDoc, currentRowNr, "Transactions");
     calcSaleData = calculateStockSaleData(banDoc, docInfo, itemObj, userParams, currentRowNr);
     const recordSalesTransactions = new RecordSalesTransactions(banDoc, docInfo, calcSaleData,
@@ -198,6 +297,21 @@ function getUserParams(testNr) {
             params.marketPrice = "11.5000";
             params.currExRate = "0.970000";
             params.bankCharges = "40.85";
+            return params;
+        case "3":
+            params.selectedItem = "US123456789";
+            params.quantity = "100";
+            params.marketPrice = "11.5562";
+            params.currExRate = "0.945";
+            params.bankCharges = "42.33";
+            return params;
+        case "4":
+            params.selectedItem = "IT000792468";
+            params.quantity = "5000";
+            params.marketPrice = "1.025";
+            params.currExRate = "1.13";
+            params.bankCharges = "55.00";
+            params.accruedInterests = "25.560";
             return params;
         default:
             return params;

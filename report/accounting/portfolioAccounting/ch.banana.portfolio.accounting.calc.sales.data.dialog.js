@@ -75,7 +75,7 @@ class DlgCalculateSaleDataManager {
 
         this.dialog.createSalesRecord = () => {
             let JsonDoc = this.createDocChangeSaleRecord();
-            if (JsonDoc.data[1] && !isObjectEmpty(JsonDoc.data[1])) { // Check if there are new transactions to add
+            if (!isObjectEmpty(JsonDoc) && JsonDoc.data[1] && !isObjectEmpty(JsonDoc.data[1])) { // Check if there are new transactions to add
                 this.documentChangeJsonDoc = JsonDoc;
                 this.dialog.close();
             }
