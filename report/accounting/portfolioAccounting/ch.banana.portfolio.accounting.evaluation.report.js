@@ -92,13 +92,13 @@ function addTableBaSTransactions(report) {
     return table_bas_transactions_details;
 }
 
-function printReport(appraisalDataList, portfolioTrData) {
+function printReport(banDoc, appraisalDataList, portfolioTrData) {
 
     /** Get the decimals used for the values in the Transactions table, to keep the same format in the report, 
      *  especially to display the full booking and market value based on the decimals used in the UnitPrice & UnitPriceCurrent columns.
      * */
-    let unitPriceColumn = Banana.document.table("Transactions").column("UnitPrice", "Base");
-    let priceCurrentColumn = Banana.document.table("Items").column("UnitPriceCurrent", "Base");
+    let unitPriceColumn = banDoc.table("Transactions").column("UnitPrice", "Base");
+    let priceCurrentColumn = banDoc.table("Items").column("UnitPriceCurrent", "Base");
 
     //creates a new report
     let report = Banana.Report.newReport("Portfolio Evaluation Report");
@@ -491,7 +491,7 @@ function exec() {
     let appraisalDataList = getAppraisalData(banDoc, docInfo, itemsData);
     //get the transactionsList
     let portfolioTrData = getportfolioTrData(banDoc, docInfo, itemsData);
-    var report = printReport(appraisalDataList, portfolioTrData);
+    var report = printReport(banDoc, appraisalDataList, portfolioTrData);
     getReportHeader(report, docInfo);
     var stylesheet = getReportStyle();
     Banana.Report.preview(report, stylesheet);
