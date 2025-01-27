@@ -109,7 +109,6 @@ TestCalcSalesDialog.prototype.testRecordSalesTransactions = function () {
     this.testLogger.addSubSection("Test 4: Recorded Data");
     this.testLogger.addJson("Test 4", JSON.stringify(testDataObj.recordsSalesTransactions));
 
-    // Tests ok 24.01, !!! Do not upload tests references on github yet !!!
 }
 
 /**

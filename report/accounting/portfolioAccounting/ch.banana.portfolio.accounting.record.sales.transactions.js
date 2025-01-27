@@ -32,7 +32,6 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         this.texts = this.getTransactionsTexts();
         this.itemsData = itemsData;
         this.itemObject = currItemObj;
-        this.itemType = "S"; // Base is stock.
         this.salesCodesRegex = new RegExp("^inv_sale_\\d+(\\.\\d+)?$");
         this.trTableData = getTransactionsTableData(this.banDoc, this.docInfo);
         this.transactionsType = this.getTransactionsType();
@@ -41,9 +40,8 @@ var RecordSalesTransactions = class RecordSalesTransactions {
     }
 
     getAccountsParams(banDoc, settingsId) {
-        const dlgInvestmentsAccounts = new DlgInvestmentsAccounts(banDoc);
         let userParam = getFormattedSavedParams(banDoc, settingsId);
-        return dlgInvestmentsAccounts.verifyParams(userParam);
+        return verifyParams(banDoc, userParam);
     }
     getRecordSalesTransactions() {
         let jsonDoc = { "format": "documentChange", "error": "" };
@@ -56,7 +54,6 @@ var RecordSalesTransactions = class RecordSalesTransactions {
          * - B: Bond
          */
         this.saleTrRef = this.currentRowObj.value("ExternalReference"); // By default.
-        this.itemType = this.itemObject.type;
 
         /**Notes: 
          * -To properly set up the document change with the changes, the modification of the main sale row and the addition
@@ -65,14 +62,17 @@ var RecordSalesTransactions = class RecordSalesTransactions {
          * the prefix “inv_sale_” followed by a sequence number. For example: inv_sale_1, inv_sale_2, etc. see method: getNewSaleCode()
          * */
 
-        switch (this.itemType) {
+        switch (this.itemObject.type) {
             case "B":
                 jsonDoc["data"] = this.getBondSaleResultDocChangeTransaction();
                 break;
             case "S":
-            default:
                 jsonDoc["data"] = this.getStockSaleResultDocChangeTransaction();
                 break;
+            default:
+                let msg = getErrorMessage_MissingElements("ITEM_WITHOUT_TYPE", this.itemObject.item); // 27.01 riprendere da quii.
+                this.banDoc.addMessage(msg, "ITEM_WITHOUT_TYPE");
+                return {};
         }
         return jsonDoc;
     }
@@ -90,7 +90,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
             // row is a valid object, we check now the values.
             let itemIdList = getItemsIds(this.banDoc);
 
-            // Check if the row contains the item id.
+            // Check if the row contains the item id and if the item exists in the items table.
             if (!this.currentRowObj.value("ItemsId") || this.currentRowObj.value("ItemsId") === ""
                 || !itemIdList.includes(this.currentRowObj.value("ItemsId"))) {
                 let msg = getErrorMessage_MissingElements("ITEM_ID_MISSING_IN_ROW");
