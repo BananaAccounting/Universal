@@ -92,7 +92,13 @@ function addTableBaSTransactions(report) {
     return table_bas_transactions_details;
 }
 
-function printReport(appraisalDataList, portfolioTrData, comboboxParam) {
+function printReport(appraisalDataList, portfolioTrData) {
+
+    /** Get the decimals used for the values in the Transactions table, to keep the same format in the report, 
+     *  especially to display the full booking and market value based on the decimals used in the UnitPrice & UnitPriceCurrent columns.
+     * */
+    let unitPriceColumn = Banana.document.table("Transactions").column("UnitPrice", "Base");
+    let priceCurrentColumn = Banana.document.table("Items").column("UnitPriceCurrent", "Base");
 
     //creates a new report
     let report = Banana.Report.newReport("Portfolio Evaluation Report");
@@ -113,11 +119,6 @@ function printReport(appraisalDataList, portfolioTrData, comboboxParam) {
         tableRow.addCell('', '', 10);
         const itemsData = element.account.data.items;
         const itemsTotals = element.account.data.totals;
-        itemsData.setSortParam(comboboxParam); // verificare che funzioni correttamente.
-        //Define the style for the values taken as reference for the data sorting
-        let styleMarketValue = setSortedColumnStyle(comboboxParam, 'Market Value');
-        let stylePerPorfolio = setSortedColumnStyle(comboboxParam, 'Percentage of Portfolio');
-        let styleCurrentQt = setSortedColumnStyle(comboboxParam, 'Quantity');
         //Print account data.
         itemsData.forEach(itemData => {
             //Defines style for alternating rows 
@@ -131,10 +132,10 @@ function printReport(appraisalDataList, portfolioTrData, comboboxParam) {
             tableRow.addCell(itemData.item, 'styleNormalAmount');
             tableRow.addCell(itemData.currency, 'styleNormalAmount');
             tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemData.currentQt, 0, true), 'styleNormalAmount');
-            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemData.avgCost, 2, true), 'styleNormalAmount');
-            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemData.totalCost, 2, true), 'styleNormalAmount');
-            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemData.marketPrice, 2, true), 'styleNormalAmount');
-            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemData.marketValue, 2, true), 'styleNormalAmount');
+            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemData.avgCost, unitPriceColumn.decimal, true), 'styleNormalAmount');
+            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemData.totalCost, unitPriceColumn.decimal, true), 'styleNormalAmount');
+            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemData.marketPrice, priceCurrentColumn.decimal, true), 'styleNormalAmount');
+            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemData.marketValue, priceCurrentColumn.decimal, true), 'styleNormalAmount');
             tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemData.percOfPort, 2, true), 'styleNormalAmount');
             tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemData.unGainLoss, 2, true), 'styleNormalAmount');
             tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemData.percGL, 2, true), 'styleNormalAmount');
@@ -211,32 +212,6 @@ function printReport(appraisalDataList, portfolioTrData, comboboxParam) {
 
 }
 
-function getQtStyle(qt) {
-    var style = "";
-    var sign = Banana.SDecimal.sign(qt);
-
-    if (sign == -1)
-        style = 'styleNegativeAmount';
-    else
-        style = 'styleTablesBasResults';
-
-    return style;
-}
-
-function setSortedColumnStyle(comboboxParam, value) {
-    if (comboboxParam) {
-        var style = "";
-        if (comboboxParam === value) {
-            style = "styleSortedByColumn";
-            return style;
-        } else {
-            style = "styleNormalAmount";
-            return style;
-        }
-    } else
-        return 'styleNormalAmount';
-}
-
 function getAppraisalData(banDoc, docInfo, itemsData) {
     let appraisalData = {};
     let accountsList = getSecurityAccountsList(itemsData);
@@ -296,14 +271,14 @@ function getAppraisalDataList_transactions(banDoc, docInfo, itemsData, journalDa
             appraisalData.avgCost = "";
             let itemCardData = getItemCardDataList(accountCardData, journalData);
             if (itemCardData.length >= 1) {
-                appraisalData.avgCost = itemCardData.slice(-1)[0].accAvgCost;
+                appraisalData.avgCost = itemCardData.slice(-1)[0].accAvgCost; // controllare qui se funziona correttamente. 27.01.2025
             }
             appraisalData.totalCost = Banana.SDecimal.multiply(appraisalData.currentQt, appraisalData.avgCost);
             /**
              * If market price is not present, we put the average also as market price.
              * In this way  the gain or loss will be zero
              */
-            itemsData[key].unitPriceCurrent ? appraisalData.marketPrice = itemsData[key].unitPriceCurrent : appraisalData.marketPrice = appraisalData.avgCost;
+            itemsData[key].unitPriceCurrent ? appraisalData.marketPrice = itemsData[key].unitPriceCurrent : appraisalData.marketPrice = appraisalData.avgCost; // Aggiungere avviso se non ce.
             appraisalData.marketValue = Banana.SDecimal.multiply(appraisalData.currentQt, appraisalData.marketPrice);
             appraisalData.unGainLoss = Banana.SDecimal.subtract(appraisalData.marketValue, appraisalData.totalCost);
             appraisalData.percGL = getGLPerc(appraisalData.marketValue, appraisalData.totalCost);
@@ -502,93 +477,6 @@ function getportfolioTrData_transactions(itemId, trTableData) {
     return transactions;
 }
 
-/**
- *  Create the parameters of the settings dialog
- */
-function convertParam(userParam) {
-
-    var convertedParam = {};
-    convertedParam.version = '1.0';
-    /* array of script's parameters */
-    convertedParam.data = [];
-
-    var currentParam = {};
-    currentParam.name = 'sort_items_by';
-    currentParam.title = 'Sort Holdings by';
-    currentParam.type = 'combobox';
-    currentParam.items = ['Market Value', 'Percentage of Portfolio', 'Quantity'];
-    currentParam.value = userParam.sort_items_by ? userParam.sort_items_by : userParam.sort_items_by;
-    currentParam.editable = true;
-    currentParam.readValue = function () {
-        userParam.sort_items_by = this.value;
-    }
-    convertedParam.data.push(currentParam);
-
-    return convertedParam;
-
-}
-/**
- * This function sorts the items according to what the user has chosen in the dialog 
- * @param {*} a 
- * @param {*} b 
- * @returns items ordered 
- */
-Array.prototype.setSortParam = function (userParam) {
-    function compare(a, b) {
-
-        switch (userParam) {
-            case "Market Value":
-                return b.marketValue - a.marketValue;
-                break;
-            case "Percentage of Portfolio":
-                return b.percOfPort - a.percOfPort;
-                break;
-            case "Quantity":
-                return b.currentQt - a.currentQt;
-                break;
-        }
-    }
-    this.sort(compare);
-}
-
-function getComboBoxElement() {
-
-    var market_value = qsTr("Market Value");
-    var quantity = qsTr("Quantity");
-    var perc_of_port = qsTr("Percentage of Portfolio");
-
-    //The formeters of the period that we need
-
-    var combobox_value = "";
-    //Read script settings
-    var data = Banana.document.getScriptSettings();
-
-    //Check if there are previously saved settings and read them
-    if (data.length > 0) {
-        var readSettings = JSON.parse(data);
-        //We check if "readSettings" is not null, then we fill the formeters with the values just read
-        if (readSettings) {
-            combobox_value = readSettings;
-        }
-    }
-    //A dialog window is opened asking the user to insert the desired period. By default is the accounting period
-
-    var selected_value = Banana.Ui.getItem("Sort by", "Choose a value", [market_value, quantity, perc_of_port], combobox_value, false);
-
-    //We take the values entered by the user and save them as "new default" values.
-    //This because the next time the script will be executed, the dialog window will contains the new values.
-    if (selected_value) {
-        combobox_value = selected_value;
-        //Save script settings
-        var valueToString = JSON.stringify(combobox_value);
-        Banana.document.setScriptSettings(valueToString);
-    } else {
-        //User clicked cancel
-        return;
-    }
-    return combobox_value;
-}
-
 function exec() {
 
     let banDoc = Banana.document;
@@ -597,17 +485,13 @@ function exec() {
     if (!verifyBananaVersion(banDoc))
         return "@Cancel";
 
-    var comboboxParam = getComboBoxElement();
-    if (!comboboxParam)
-        return;
-
     //get the items table data
     let itemsData = getItemsTableData(banDoc);
     //get the appraisal data list
     let appraisalDataList = getAppraisalData(banDoc, docInfo, itemsData);
     //get the transactionsList
     let portfolioTrData = getportfolioTrData(banDoc, docInfo, itemsData);
-    var report = printReport(appraisalDataList, portfolioTrData, comboboxParam);
+    var report = printReport(appraisalDataList, portfolioTrData);
     getReportHeader(report, docInfo);
     var stylesheet = getReportStyle();
     Banana.Report.preview(report, stylesheet);

@@ -608,7 +608,6 @@ function isObjectEmpty(obj) {
  * @param {*} balanceCol 
  */
 function setCurrentAccAvgCost(accountCardData) {
-    var context = { 'decimals': 2, 'mode': Banana.SDecimal.HALF_EVEN };
     for (var key in accountCardData) {
         /**
          * if the balance sheet column in foreign currency exists, I am sure that it is a multi-currency account, 
@@ -616,9 +615,9 @@ function setCurrentAccAvgCost(accountCardData) {
          * the value is the same.
          */
         if (accountCardData[key].balanceCurr)
-            accountCardData[key].accAvgCost = Banana.SDecimal.divide(accountCardData[key].balanceCurr, accountCardData[key].qtBalance, context);
+            accountCardData[key].accAvgCost = Banana.SDecimal.divide(accountCardData[key].balanceCurr, accountCardData[key].qtBalance);
         else
-            accountCardData[key].accAvgCost = Banana.SDecimal.divide(accountCardData[key].balanceBase, accountCardData[key].qtBalance, context);
+            accountCardData[key].accAvgCost = Banana.SDecimal.divide(accountCardData[key].balanceBase, accountCardData[key].qtBalance);
     }
 
     return accountCardData;
