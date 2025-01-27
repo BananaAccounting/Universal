@@ -902,6 +902,16 @@ function getItemDescription(itemId, banDoc) {
     return item.description;
 }
 
+function getItemCurrency(itemId, banDoc) {
+    let itemTableData = getItemsTableData(banDoc);
+    if (!itemTableData)
+        return "";
+    const item = itemTableData.find(item => item.item === itemId);
+    if (!item)
+        return "";
+    return item.currency;
+}
+
 /**
  * Retrieves item information from the items table
  * @returns 

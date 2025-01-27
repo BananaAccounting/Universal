@@ -71,16 +71,15 @@ TestSecurityCardReport.prototype.testDataStructure = function () {
         if (banDoc) {
             let selectedItem = getItemForTest(i);
             let docInfo = getDocumentInfo(banDoc);
-            let itemsData = getItemsTableData(banDoc, docInfo);
-            let itemAccount = getItemValue(itemsData, selectedItem, "account");
-            let itemCurrency = getItemCurrency(itemsData, selectedItem);
+            let itemAccount = getItemAccount(selectedItem, banDoc);
+            let itemCurrency = getItemCurrency(selectedItem, banDoc);
             let journal = banDoc.journal(banDoc.ORIGINTYPE_CURRENT, banDoc.ACCOUNTTYPE_NONE);
             let journalData = getJournalData(docInfo, journal);
             let accountCard = banDoc.currentCard(itemAccount);
             let accountCardData = getAccountCardCompleteData(selectedItem, accountCard);
             let itemCardData = getItemCardData(docInfo, accountCardData, journalData, itemCurrency, selectedItem);
             let reportName = "FILENAME: " + fileName;
-            let itemDescription = getItemValue(itemsData, selectedItem, "description");
+            let itemDescription = getItemDescription(selectedItem, banDoc);
             let report = printReport(docInfo, itemCardData, itemDescription);
             this.testLogger.addReport(reportName, report);
         } else {
