@@ -77,10 +77,10 @@ function exec(inData, options) {
     accountCardData = getAccountCardCompleteData(selectedItem, accountCard);
 
     //get the calculated data and the totals
-    itemCardData = getItemCardData(docInfo, accountCardData, journalData, itemCurrency, selectedItem);
+    itemCardData = getItemCardData(banDoc, docInfo, accountCardData, journalData, itemCurrency, selectedItem);
 
     let itemDescription = itemObject.description;
-    let report = printReport(docInfo, itemCardData, itemDescription);
+    let report = printReport(banDoc, docInfo, itemCardData, itemDescription);
     getReportHeader(report, docInfo);
     let stylesheet = getReportStyle();
     Banana.Report.preview(report, stylesheet);
@@ -110,9 +110,12 @@ function getSelectedItem(banDoc, scriptId, dlgTitle, dlgLabel) {
     return itemSelected;
 }
 
-function getItemCardData(docInfo, accountCardData, journalData, itemCurrency, selectedItem) {
+function getItemCardData(banDoc, docInfo, accountCardData, journalData, itemCurrency, selectedItem) {
     let itemCardData = {};
-    itemCardData.data = getItemCardDataList(accountCardData, journalData);
+    let unitPriceColumn = banDoc.table("Transactions").column("UnitPrice", "Base");
+    let unitPriceColDecimals = unitPriceColumn.decimal; // we want to use the same decimals as defined in the unit price column.
+
+    itemCardData.data = getItemCardDataList(accountCardData, journalData, unitPriceColDecimals);
     itemCardData.currency = itemCurrency;
     itemCardData.item = selectedItem;
     itemCardData.totalDebitBase = getSum(accountCardData, "debitBase");
@@ -192,11 +195,12 @@ function getItemCardTable(report, docInfo, currentDate, baseCurr, itemCardData, 
  * Print the report.
  * @param {*} itemCardData the data.
  */
-function printReport(docInfo, itemCardData, itemDescription) {
+function printReport(banDoc, docInfo, itemCardData, itemDescription) {
 
     //create the report
     var report = Banana.Report.newReport("Security Card Report");
     var currentDate = new Date();
+    let unitPriceColumn = banDoc.table("Transactions").column("UnitPrice", "Base"); // we want to use the same decimals as defined in the unit price column.
     //let hexColorBase = "#354793";//in the future we can let the user choose it.
     //let colorsObj=getColors(hexColorBase);
     let rowColorIndex = 0;//to know whether a line is odd or even.
@@ -229,9 +233,9 @@ function printReport(docInfo, itemCardData, itemDescription) {
         tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.creditBase, 2, false), "styleNormalAmount");
         tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.balanceBase, 2, true), "styleNormalAmount");
         tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.qt, 2, false), "styleNormalAmount");
-        tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.unitPrice, 2, false), "styleNormalAmount");
+        tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.unitPrice, unitPriceColumn.decimal, false), "styleNormalAmount");
         tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.qtBalance, 2, true), "styleNormalAmount");
-        tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.accAvgCost, 3, false), "styleNormalAmount");
+        tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.accAvgCost, unitPriceColumn.decimal, false), "styleNormalAmount");
 
         rowColorIndex++;
     }
@@ -252,7 +256,7 @@ function printReport(docInfo, itemCardData, itemDescription) {
     tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemCardData.totalBalanceBase, 2, false), "styleTotalAmount");
     tableRow.addCell("", "", 2);
     tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemCardData.totalQtBalance, 2, false), "styleTotalAmount");
-    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemCardData.totalCurrAvgCost, 3, false), "styleTotalAmount");
+    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemCardData.totalCurrAvgCost, unitPriceColumn.decimal, false), "styleTotalAmount");
 
     return report;
 

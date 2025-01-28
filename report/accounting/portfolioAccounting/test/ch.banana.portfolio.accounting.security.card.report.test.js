@@ -77,10 +77,10 @@ TestSecurityCardReport.prototype.testDataStructure = function () {
             let journalData = getJournalData(docInfo, journal);
             let accountCard = banDoc.currentCard(itemAccount);
             let accountCardData = getAccountCardCompleteData(selectedItem, accountCard);
-            let itemCardData = getItemCardData(docInfo, accountCardData, journalData, itemCurrency, selectedItem);
+            let itemCardData = getItemCardData(banDoc, docInfo, accountCardData, journalData, itemCurrency, selectedItem);
             let reportName = "FILENAME: " + fileName;
             let itemDescription = getItemDescription(selectedItem, banDoc);
-            let report = printReport(docInfo, itemCardData, itemDescription);
+            let report = printReport(banDoc, docInfo, itemCardData, itemDescription);
             this.testLogger.addReport(reportName, report);
         } else {
             this.testLogger.addFatalError("File not found: " + fileName);

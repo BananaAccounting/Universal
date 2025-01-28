@@ -135,6 +135,9 @@ var RecordSalesTransactions = class RecordSalesTransactions {
             let rows = [];
             rows.push(rowSale);
 
+            if (rows.length < 1)
+                return {};
+
             var dataUnitTransactionsTable = {};
             dataUnitTransactionsTable.nameXml = "Transactions";
             dataUnitTransactionsTable.data = {};
@@ -183,6 +186,9 @@ var RecordSalesTransactions = class RecordSalesTransactions {
             rows = this.getStockTransactionsRowsMulti();
         else
             rows = this.getStockTransactionsRows();
+
+        if (rows.length < 1)
+            return {};
 
         var dataUnitTransactionsTable = {};
         dataUnitTransactionsTable.nameXml = "Transactions";
@@ -617,7 +623,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
             rows.push(rowCashedNet);
         if (rowSaleResult && !isObjectEmpty(rowSaleResult) && this.rowExistenceChecked(rowSaleResult, this.transactionsType.SALE_RESULT))
             rows.push(rowSaleResult);
-        if (rowExchangeResult && !isObjectEmpty(rowExchangeResult) && this.rowExistenceChecked(rowSaleResult, this.transactionsType.EXCHANGE_RESULT))
+        if (rowExchangeResult && !isObjectEmpty(rowExchangeResult) && this.rowExistenceChecked(rowExchangeResult, this.transactionsType.EXCHANGE_RESULT))
             rows.push(rowExchangeResult);
 
         return rows;
@@ -910,15 +916,19 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         for (const tr of this.trTableData) {
             let rowCode = tr.externalReference;
             if (rowCode == saleCode)
-                return true;
+                return tr.row;
         }
-        return false;
+        return -1;
     }
 
     rowExistenceChecked(rowObj, transactionType) {
-        let rowExist = this.findRowByOperationSaleCode(rowObj.fields["ExternalReference"]);
-        if (this.showMsgDlg && rowExist) {
-            return this.getOverwriteTransactionDlg(transactionType);
+        let rowNr = this.findRowByOperationSaleCode(rowObj.fields["ExternalReference"]);
+        if (this.showMsgDlg && rowNr >= 0) {
+            if (this.getOverwriteTransactionDlg(transactionType)) {
+                rowObj.operation.name = "modify";
+                rowObj.operation.sequence = rowNr.toString();
+                return true;
+            }
         } else
             return true;
     }

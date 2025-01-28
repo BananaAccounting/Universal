@@ -372,6 +372,8 @@ function calculateStockSaleData(banDoc, docInfo, itemObj, dlgParams, currentRowN
     let accruedInterests = "";
     let itemAccount = "";
     let itemCardData = [];
+    let unitPriceColumn = banDoc.table("Transactions").column("UnitPrice", "Base");
+    let unitPriceColDecimals = unitPriceColumn.decimal; // we want to use the same decimals as defined in the unit price column.
 
     //Get the account of the item
     itemAccount = itemObj.account;
@@ -386,7 +388,7 @@ function calculateStockSaleData(banDoc, docInfo, itemObj, dlgParams, currentRowN
     journalData = getJournalData(docInfo, journal);
     accountCard = banDoc.currentCard(itemAccount);
     accountCardData = getAccountCardData(banDoc, docInfo, itemObj.item, accountCard, itemAccount);
-    itemCardData = getItemCardDataList(accountCardData, journalData);
+    itemCardData = getItemCardDataList(accountCardData, journalData, unitPriceColDecimals);
     avgCost = getAvgCost(itemCardData, currentRowNr);
     quantity = Banana.SDecimal.abs(dlgParams.quantity);
     accExRate = getAccountingCourse(itemCardData, currentRowNr);
@@ -588,10 +590,10 @@ function accountIsInForeignCurrency(banDoc, docInfo, account) {
     return false;
 }
 
-function getItemCardDataList(accountCardData, journalData) {
+function getItemCardDataList(accountCardData, journalData, unitPriceColDecimals) {
     SetSoldData(accountCardData, journalData);
     setQuantityBalance(accountCardData);
-    setCurrentAccAvgCost(accountCardData);
+    setCurrentAccAvgCost(accountCardData, unitPriceColDecimals);
 
     return accountCardData;
 }
@@ -607,7 +609,7 @@ function isObjectEmpty(obj) {
  * @param {*} accountCardData 
  * @param {*} balanceCol 
  */
-function setCurrentAccAvgCost(accountCardData) {
+function setCurrentAccAvgCost(accountCardData, unitPriceColDecimals) {
     for (var key in accountCardData) {
         /**
          * if the balance sheet column in foreign currency exists, I am sure that it is a multi-currency account, 
@@ -615,9 +617,12 @@ function setCurrentAccAvgCost(accountCardData) {
          * the value is the same.
          */
         if (accountCardData[key].balanceCurr)
-            accountCardData[key].accAvgCost = Banana.SDecimal.divide(accountCardData[key].balanceCurr, accountCardData[key].qtBalance);
+            accountCardData[key].accAvgCost = Banana.SDecimal.divide(accountCardData[key].balanceCurr, accountCardData[key].qtBalance, { 'decimals': unitPriceColDecimals });
         else
-            accountCardData[key].accAvgCost = Banana.SDecimal.divide(accountCardData[key].balanceBase, accountCardData[key].qtBalance);
+            accountCardData[key].accAvgCost = Banana.SDecimal.divide(accountCardData[key].balanceBase, accountCardData[key].qtBalance, { 'decimals': unitPriceColDecimals });
+
+
+        //Banana.console.debug(accountCardData[key].balanceCurr + " / " + accountCardData[key].accAvgCost + " / " + accountCardData[key].qtBalance + " / " + unitPriceColDecimals);
     }
 
     return accountCardData;

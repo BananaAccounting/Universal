@@ -62,7 +62,7 @@ function exec(inData, options) {
     //Insert the data into the reconciliation obj.
     reconciliationData.data = accountsDataList;
 
-    let report = printReport(reconciliationData, docInfo);
+    let report = printReport(banDoc, reconciliationData, docInfo);
     getReportHeader(report, docInfo);
     let stylesheet = getReportStyle();
     Banana.Report.preview(report, stylesheet);
@@ -172,12 +172,13 @@ function setSpanObject(docInfo) {
  * Print the report.
  * @param {*} reconciliationData the data.
  */
-function printReport(reconciliationData, docInfo) {
+function printReport(banDoc, reconciliationData, docInfo) {
 
     //create the report
     var report = Banana.Report.newReport("Reconciliation Report");
     var currentDate = new Date();
     let spanObj = setSpanObject(docInfo);
+    let unitPriceColumn = banDoc.table("Transactions").column("UnitPrice", "Base");
     //add Reconciliation table
     var concData = reconciliationData.data;
     var tabConc = getConciliationTable(report, currentDate, docInfo);
@@ -217,9 +218,9 @@ function printReport(reconciliationData, docInfo) {
                 tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemTr[t].creditBase, 2, false), "styleNormalAmount");
                 tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemTr[t].balanceBase, 2, true), "styleNormalAmount");
                 tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemTr[t].qt, 2, false), "styleNormalAmount");
-                tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemTr[t].unitPrice, 2, false), "styleNormalAmount");
+                tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemTr[t].unitPrice, unitPriceColumn.decimal, false), "styleNormalAmount");
                 tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemTr[t].qtBalance, 2, true), "styleNormalAmount");
-                tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemTr[t].accAvgCost, 2, false), "styleNormalAmount");
+                tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemTr[t].accAvgCost, unitPriceColumn.decimal, false), "styleNormalAmount");
 
                 rowColorIndex++;
             }
@@ -240,7 +241,7 @@ function printReport(reconciliationData, docInfo) {
             tableRow.addCell(Banana.Converter.toLocaleNumberFormat(item.totalBalanceBase, 2, true), "styleTotalAmount");
             tableRow.addCell("", "", 2);
             tableRow.addCell(Banana.Converter.toLocaleNumberFormat(item.totalQtBalance, 2, true), "styleTotalAmount");
-            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(item.totalCurrAvgCost, 2, true), "styleTotalAmount");
+            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(item.totalCurrAvgCost, unitPriceColumn.decimal, true), "styleTotalAmount");
             var tableRow = tabConc.addRow("styleTableRows");
             tableRow.addCell("", "", spanObj.allTable);
         }
@@ -320,11 +321,13 @@ function getDifferenceAmountStyle(diffAmount) {
  * @param {*} account ref. account.
  */
 
-function getItemsDataList(docInfo, itemsData, accountCard, journalData, account) {
+function getItemsDataList(banDoc, docInfo, itemsData, accountCard, journalData, account) {
 
     let itemsDataList = [];//list of item cards
     let accountCardData = "";
     let itemCardData = "";
+    let unitPriceColumn = banDoc.table("Transactions").column("UnitPrice", "Base");
+    let unitPriceColDecimals = unitPriceColumn.decimal; // we want to use the same decimals as defined in the unit price column.
 
     for (var key in itemsData) {
         //set the item values
@@ -333,7 +336,7 @@ function getItemsDataList(docInfo, itemsData, accountCard, journalData, account)
             itemData.item = itemsData[key].item;
             itemData.itemCardData = [];
             accountCardData = getAccountCardCompleteData(itemsData[key].item, accountCard);
-            itemCardData = getItemCardDataList(accountCardData, journalData);//returns an array of objects with the movements of the item card.
+            itemCardData = getItemCardDataList(accountCardData, journalData, unitPriceColDecimals);//returns an array of objects with the movements of the item card.
             if (itemCardData) {
                 itemData.itemCardData = itemCardData;
             }
@@ -423,7 +426,7 @@ function getAccountsDataList(banDoc, docInfo, accountsList, itemsData) {
         accData.balanceDiffCurr = Banana.SDecimal.subtract(accBalance.balanceCurrency, accBalance.openingCurrency);
 
         //get the items data.
-        itemsDataList = getItemsDataList(docInfo, itemsData, accountCard, journalData, accData.account); //ritorna l'array di items con questo account.
+        itemsDataList = getItemsDataList(banDoc, docInfo, itemsData, accountCard, journalData, accData.account); //ritorna l'array di items con questo account.
         accData.items = itemsDataList;
 
         //get total amount of balances calculated for the various items.

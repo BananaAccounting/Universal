@@ -57,6 +57,9 @@ class DlgCalculateSaleDataManager {
         this.buttonCreateSalesRecord = "";
         this.accruedInterestsGroupBox = "";
         this.documentChangeJsonDoc = {};
+        this.unitPriceColDecimals = "";
+        this.currentPriceColDecimals = "";
+        this.exRateColDecimals = "";
 
         /*this.dayCountConventions_thirty_360 = "30/360";
         this.dayCountConventions_actual_360 = "Actual/360";
@@ -75,7 +78,7 @@ class DlgCalculateSaleDataManager {
 
         this.dialog.createSalesRecord = () => {
             let JsonDoc = this.createDocChangeSaleRecord();
-            if (!isObjectEmpty(JsonDoc) && JsonDoc.data[1] && !isObjectEmpty(JsonDoc.data[1])) { // Check if there are new transactions to add
+            if (!isObjectEmpty(JsonDoc) && JsonDoc.data[0] && !isObjectEmpty(JsonDoc.data[0])) { // Check if there are new transactions to add
                 this.documentChangeJsonDoc = JsonDoc;
                 this.dialog.close();
             }
@@ -131,6 +134,14 @@ class DlgCalculateSaleDataManager {
 
         // Disable the Accrued Interest Group Box if the selected item is not a bond.
         this.setAccruedInterestsElementsEnabled();
+
+        // Others
+        let unitPriceColumn = this.banDoc.table("Transactions").column("UnitPrice", "Base");
+        let currentPriceColumn = this.banDoc.table("Items").column("UnitPriceCurrent", "Base");
+        let exRateColumn = this.banDoc.table("Transactions").column("ExchangeRate", "Base");
+        this.unitPriceColDecimals = unitPriceColumn.decimal; // we want to use the same decimals as defined in the unit price column.
+        this.currentPriceColDecimals = currentPriceColumn.decimal;
+        this.exRateColDecimals = exRateColumn.decimal;
 
     }
 
@@ -224,11 +235,11 @@ class DlgCalculateSaleDataManager {
         assetCurr = itemObj.currency;
         baseCurr = this.docInfo.baseCurrency;
 
-        avgCost = Banana.Converter.toLocaleNumberFormat(salesData.avgCost, 2, true);
+        avgCost = Banana.Converter.toLocaleNumberFormat(salesData.avgCost, this.unitPriceColDecimals, true);
         saleResult = Banana.Converter.toLocaleNumberFormat(salesData.saleResult, 2, true);
-        exRateResult = Banana.Converter.toLocaleNumberFormat(salesData.exRateResult, 2, true);
-        avgSharesValue = Banana.Converter.toLocaleNumberFormat(salesData.avgSharesValue, 2, true);
-        totalSharesvalue = Banana.Converter.toLocaleNumberFormat(salesData.totalSharesvalue, 2, true);
+        exRateResult = Banana.Converter.toLocaleNumberFormat(salesData.exRateResult, this.exRateColDecimals, true);
+        avgSharesValue = Banana.Converter.toLocaleNumberFormat(salesData.avgSharesValue, this.unitPriceColDecimals, true);
+        totalSharesvalue = Banana.Converter.toLocaleNumberFormat(salesData.totalSharesvalue, this.currentPriceColDecimals, true);
 
 
         if (this.docInfo.isMultiCurrency) {

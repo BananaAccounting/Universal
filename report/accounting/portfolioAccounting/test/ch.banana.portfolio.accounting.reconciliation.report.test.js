@@ -76,7 +76,7 @@ TestReconciliationReport.prototype.testDataStructure = function () {
             let accountsDataList = getAccountsDataList(banDoc, docInfo, accountsList, itemsData);
             reconciliationData.data = accountsDataList;
             let reportName = "FILENAME: " + fileName;
-            let report = printReport(reconciliationData, docInfo);
+            let report = printReport(banDoc, reconciliationData, docInfo);
             this.testLogger.addReport(reportName, report);
         } else {
             this.testLogger.addFatalError("File not found: " + fileName);
