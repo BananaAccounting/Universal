@@ -177,13 +177,12 @@ function printReport(banDoc, appraisalDataList, portfolioTrData) {
   //reset row color index to zero
   rowColorIndex = 0;
 
-  //PORTFOLIO TRANSACTIONS REPORT DA RIVEDERE ANCHE QUESTOOO.
   for (var key in portfolioTrData.data) {
     let trElement = portfolioTrData.data[key];
-    var tableRow = transactionsTable.addRow("");
-    tableRow.addCell(trElement.item, 'styleDescrTotals');
-    tableRow.addCell('', '', 8);
     if (trElement.transactions && trElement.transactions.length >= 1) {
+      var tableRow = transactionsTable.addRow("");
+      tableRow.addCell(trElement.item, 'styleDescrTotals');
+      tableRow.addCell('', '', 8);
       for (var e in trElement.transactions) {
         isEven = checkIfNumberisEven(rowColorIndex);
         if (isEven)

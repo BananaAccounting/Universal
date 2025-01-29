@@ -1,4 +1,4 @@
-// Copyright [2021] [Banana.ch SA - Lugano Switzerland]
+// Copyright [2025] [Banana.ch SA - Lugano Switzerland]
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -217,9 +217,9 @@ function printReport(banDoc, reconciliationData, docInfo) {
                 tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemTr[t].debitBase, 2, false), "styleNormalAmount");
                 tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemTr[t].creditBase, 2, false), "styleNormalAmount");
                 tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemTr[t].balanceBase, 2, true), "styleNormalAmount");
-                tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemTr[t].qt, 2, false), "styleNormalAmount");
+                tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemTr[t].qt, 0, false), "styleNormalAmount");
                 tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemTr[t].unitPrice, unitPriceColumn.decimal, false), "styleNormalAmount");
-                tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemTr[t].qtBalance, 2, true), "styleNormalAmount");
+                tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemTr[t].qtBalance, 0, true), "styleNormalAmount");
                 tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemTr[t].accAvgCost, unitPriceColumn.decimal, false), "styleNormalAmount");
 
                 rowColorIndex++;
@@ -240,7 +240,7 @@ function printReport(banDoc, reconciliationData, docInfo) {
             tableRow.addCell(Banana.Converter.toLocaleNumberFormat(item.totalCreditBase, 2, true), "styleTotalAmount");
             tableRow.addCell(Banana.Converter.toLocaleNumberFormat(item.totalBalanceBase, 2, true), "styleTotalAmount");
             tableRow.addCell("", "", 2);
-            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(item.totalQtBalance, 2, true), "styleTotalAmount");
+            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(item.totalQtBalance, 0, true), "styleTotalAmount");
             tableRow.addCell(Banana.Converter.toLocaleNumberFormat(item.totalCurrAvgCost, unitPriceColumn.decimal, true), "styleTotalAmount");
             var tableRow = tabConc.addRow("styleTableRows");
             tableRow.addCell("", "", spanObj.allTable);

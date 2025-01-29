@@ -170,7 +170,7 @@ class DlgCalculateSaleDataManager {
         if (!this.currentRowObj)
             return;
         let quantity = this.currentRowObj.value("Quantity");
-        let absQuantity = Banana.SDecimal.abs(quantity);
+        let absQuantity = Banana.SDecimal.abs(quantity, { 'decimals': 0 });
         if (Banana.SDecimal.isZero(absQuantity))
             absQuantity = "";
         this.lineEditQt.setText(absQuantity);

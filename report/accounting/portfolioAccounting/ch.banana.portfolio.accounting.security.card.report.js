@@ -44,7 +44,6 @@ function exec(inData, options) {
     let accountCard = ""; //hold the account card table
     let accountCardData = "";
     let itemCardData = {};
-    let itemCurrency = "";
     itemCardData.date = new Date();
 
     if (!verifyBananaVersion(banDoc))
@@ -65,19 +64,16 @@ function exec(inData, options) {
         return "";
     }
 
-    itemAccount = itemObject.account;
-    itemCurrency = itemObject.currency;
-
     //get the journal data and creates an array of objects containing the transactions data
     journal = banDoc.journal(banDoc.ORIGINTYPE_CURRENT, banDoc.ACCOUNTTYPE_NONE);
     journalData = getJournalData(docInfo, journal);
 
     //get the account card, filter the result by item and return an array of objects containing the transactions data
-    accountCard = banDoc.currentCard(itemAccount);
+    accountCard = banDoc.currentCard(itemObject.account);
     accountCardData = getAccountCardCompleteData(selectedItem, accountCard);
 
     //get the calculated data and the totals
-    itemCardData = getItemCardData(banDoc, docInfo, accountCardData, journalData, itemCurrency, selectedItem);
+    itemCardData = getItemCardData(banDoc, docInfo, accountCardData, journalData, itemObject);
 
     let itemDescription = itemObject.description;
     let report = printReport(banDoc, docInfo, itemCardData, itemDescription);
@@ -110,14 +106,14 @@ function getSelectedItem(banDoc, scriptId, dlgTitle, dlgLabel) {
     return itemSelected;
 }
 
-function getItemCardData(banDoc, docInfo, accountCardData, journalData, itemCurrency, selectedItem) {
+function getItemCardData(banDoc, docInfo, accountCardData, journalData, itemObject) {
     let itemCardData = {};
     let unitPriceColumn = banDoc.table("Transactions").column("UnitPrice", "Base");
     let unitPriceColDecimals = unitPriceColumn.decimal; // we want to use the same decimals as defined in the unit price column.
 
-    itemCardData.data = getItemCardDataList(accountCardData, journalData, unitPriceColDecimals);
-    itemCardData.currency = itemCurrency;
-    itemCardData.item = selectedItem;
+    itemCardData.data = getItemCardDataList(itemObject, accountCardData, journalData, unitPriceColDecimals);
+    itemCardData.currency = itemObject.currency;
+    itemCardData.item = itemObject.item;
     itemCardData.totalDebitBase = getSum(accountCardData, "debitBase");
     itemCardData.totalCreditBase = getSum(accountCardData, "creditBase");
     itemCardData.totalBalanceBase = getBalance(accountCardData, "debitBase", "creditBase");
@@ -232,9 +228,9 @@ function printReport(banDoc, docInfo, itemCardData, itemDescription) {
         tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.debitBase, 2, false), "styleNormalAmount");
         tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.creditBase, 2, false), "styleNormalAmount");
         tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.balanceBase, 2, true), "styleNormalAmount");
-        tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.qt, 2, false), "styleNormalAmount");
+        tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.qt, 0, false), "styleNormalAmount");
         tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.unitPrice, unitPriceColumn.decimal, false), "styleNormalAmount");
-        tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.qtBalance, 2, true), "styleNormalAmount");
+        tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.qtBalance, 0, true), "styleNormalAmount");
         tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.accAvgCost, unitPriceColumn.decimal, false), "styleNormalAmount");
 
         rowColorIndex++;
@@ -255,7 +251,7 @@ function printReport(banDoc, docInfo, itemCardData, itemDescription) {
     tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemCardData.totalCreditBase, 2, false), "styleTotalAmount");
     tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemCardData.totalBalanceBase, 2, false), "styleTotalAmount");
     tableRow.addCell("", "", 2);
-    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemCardData.totalQtBalance, 2, false), "styleTotalAmount");
+    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemCardData.totalQtBalance, 0, false), "styleTotalAmount");
     tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemCardData.totalCurrAvgCost, unitPriceColumn.decimal, false), "styleTotalAmount");
 
     return report;

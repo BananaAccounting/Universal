@@ -373,7 +373,7 @@ function calculateStockSaleData(banDoc, docInfo, itemObj, dlgParams, currentRowN
     let itemAccount = "";
     let itemCardData = [];
     let unitPriceColumn = banDoc.table("Transactions").column("UnitPrice", "Base");
-    let unitPriceColDecimals = unitPriceColumn.decimal; // we want to use the same decimals as defined in the unit price column.
+    let unitPriceColDecimals = unitPriceColumn.decimal; // We want to use the same decimals as defined in the unit price column.
 
     //Get the account of the item
     itemAccount = itemObj.account;
@@ -388,7 +388,7 @@ function calculateStockSaleData(banDoc, docInfo, itemObj, dlgParams, currentRowN
     journalData = getJournalData(docInfo, journal);
     accountCard = banDoc.currentCard(itemAccount);
     accountCardData = getAccountCardData(banDoc, docInfo, itemObj.item, accountCard, itemAccount);
-    itemCardData = getItemCardDataList(accountCardData, journalData, unitPriceColDecimals);
+    itemCardData = getItemCardDataList(itemObj, accountCardData, journalData, unitPriceColDecimals);
     avgCost = getAvgCost(itemCardData, currentRowNr);
     quantity = Banana.SDecimal.abs(dlgParams.quantity);
     accExRate = getAccountingCourse(itemCardData, currentRowNr);
@@ -458,9 +458,6 @@ function getClosestPreviousObjByRowNr(itemCardData, currentRowNr) {
     return previousObject;
 }
 
-/**
-* Returns the information contained in the account card of the account linked to the item..
-*/
 function getAccountCardData(banDoc, docInfo, itemName, accountCard, account) {
     let transactions = [];
     let accBalance = "";
@@ -512,7 +509,7 @@ function getAccountCardData(banDoc, docInfo, itemName, accountCard, account) {
     if (transactions.length > 0)
         return transactions;
     else
-        return false;
+        return [];
 }
 
 /**
@@ -564,7 +561,7 @@ function getAccountCardCompleteData(itemName, accountCard) { // copione ? Esiste
     if (transactions.length > 0)
         return transactions;
     else
-        return false;
+        return [];
 }
 
 function getAccountCurrency(accountName, banDoc) {
@@ -590,10 +587,57 @@ function accountIsInForeignCurrency(banDoc, docInfo, account) {
     return false;
 }
 
-function getItemCardDataList(accountCardData, journalData, unitPriceColDecimals) {
-    SetSoldData(accountCardData, journalData);
+/**
+ * Starting from the saved basic data of the account card, edit the object by adding for each movement present:
+ * - The quantity change (if present)
+ * - The unit price (if present)
+ * - The balance of the quantity (updated for each movement)
+ * - The book value (updated with each movement)
+ */
+function getItemCardDataList(itemObj, accountCardData, journalData, unitPriceColDecimals) {
+    // First set the opening data of the security
+    setOpeningData(itemObj, accountCardData);
+    // Then calculate the progression values
+    setSoldData(accountCardData, journalData);
     setQuantityBalance(accountCardData);
     setCurrentAccAvgCost(accountCardData, unitPriceColDecimals);
+
+    //Banana.Ui.showText(JSON.stringify(accountCardData)); 
+    /** 30.01 Il problema da risolvere è se non ci sono righe di registrazione ma solo i valori iniziali, bisogna fare si che funzioni comunque.
+     * Bisogna trovare una soluzione anche a livello del calcolo del bilancio cumulato. Una soluzione potrebbe essere alla fine implementare una logica
+     * che crei un oggetto alla fine delle transazioni che contenga i valori da usare poi per i calcoli, di default questo oggetto verrebbe inizializzato
+     * con i valori di apertura, per poi variare sulla base dei movimenti. Si potrebbe fre tutto dentro il getItemCardDataList() creando un oggetto anche 
+     * più complesso.
+     * */
+
+    return accountCardData;
+}
+
+/**
+ * Given the account card, inserts as the first object, an object containing the opening data of the security.
+ * The opening data of an object can be found in the table ‘Items’ in the columns:
+ * - UnitPriceBegin: Opening price of the security.
+ * - ValueBeginCurrency: Opening Balance of the security. 
+ * - QuantityBegin: Opening Quantity of the security.
+ * When the user creates a new year and wants to report the data correctly 
+ * as described above, he must have the following values in the table ‘Items’ after the adjustment
+ * - PriceCurrent: Current price of the security (resulting book value after settlement).
+ * - QuantityCurrent: Current quantity of the security (automatically calculated by Banana).
+ * - CurrentValue (or CurrencyCurrentValue): Current balance of the security (automatically calculated by Banana if given quantity and price).
+ * This data will then serve as the opening data for the new year.
+ */
+function setOpeningData(itemObj, accountCardData) {
+    let openingDataObj = {};
+
+    openingDataObj.itemId = itemObj.item;
+    openingDataObj.itemUnitPriceBegin = itemObj.unitPriceBegin;
+    openingDataObj.itemValueBegin = itemObj.valueBegin;
+    openingDataObj.itemQuantityBegin = itemObj.beginQt;
+
+    if (accountCardData.length === 0)
+        accountCardData.push(openingDataObj);
+    else
+        accountCardData.unshift(openingDataObj)
 
     return accountCardData;
 }
@@ -603,7 +647,7 @@ function isObjectEmpty(obj) {
 }
 
 /**
- *  * Calculates how the average accounting cost of the security is updated after each movement.
+ * Calculates how the average accounting cost of the security is updated after each movement.
  * The accounting average cost is calculated by doing: Balance (in the item currency)/Quantity balance.
  * Calculates for each line of the card the average accounting purchase price.
  * @param {*} accountCardData 
@@ -611,18 +655,17 @@ function isObjectEmpty(obj) {
  */
 function setCurrentAccAvgCost(accountCardData, unitPriceColDecimals) {
     for (var key in accountCardData) {
-        /**
-         * if the balance sheet column in foreign currency exists, I am sure that it is a multi-currency account, 
-         * so I take the value of the balance sheet in the currency of the asset, wich in case of an asset in the same currency as the base currency, 
-         * the value is the same.
-         */
-        if (accountCardData[key].balanceCurr)
-            accountCardData[key].accAvgCost = Banana.SDecimal.divide(accountCardData[key].balanceCurr, accountCardData[key].qtBalance, { 'decimals': unitPriceColDecimals });
-        else
-            accountCardData[key].accAvgCost = Banana.SDecimal.divide(accountCardData[key].balanceBase, accountCardData[key].qtBalance, { 'decimals': unitPriceColDecimals });
-
-
-        //Banana.console.debug(accountCardData[key].balanceCurr + " / " + accountCardData[key].accAvgCost + " / " + accountCardData[key].qtBalance + " / " + unitPriceColDecimals);
+        let trId = "";
+        trId = accountCardData[key].trId;
+        if (trId && trId !== "") {
+            /** if the balance sheet column in foreign currency exists, I am sure that it is a multi-currency account, 
+            * so I take the value of the balance sheet in the currency of the asset, wich in case of an asset in the same currency as the base currency, 
+            * the value is the same.*/
+            if (accountCardData[key].balanceCurr)
+                accountCardData[key].accAvgCost = Banana.SDecimal.divide(accountCardData[key].balanceCurr, accountCardData[key].qtBalance, { 'decimals': unitPriceColDecimals });
+            else
+                accountCardData[key].accAvgCost = Banana.SDecimal.divide(accountCardData[key].balanceBase, accountCardData[key].qtBalance, { 'decimals': unitPriceColDecimals });
+        }
     }
 
     return accountCardData;
@@ -669,12 +712,14 @@ function getBalance(itemCardData, debRef, credRef) {
  * @param {*} accountCardData 
  * @param {*} journalData 
  */
-function SetSoldData(accountCardData, journalData) {
-
+function setSoldData(accountCardData, journalData) {
     for (var key in accountCardData) {
-        let trId = accountCardData[key].trId;
-        accountCardData[key].qt = getJournalValueFiltered(journalData, trId, "qt",);
-        accountCardData[key].unitPrice = getJournalValueFiltered(journalData, trId, "unitPrice");
+        let trId = "";
+        trId = accountCardData[key].trId;
+        if (trId && trId !== "") {
+            accountCardData[key].qt = getJournalValueFiltered(journalData, trId, "qt",);
+            accountCardData[key].unitPrice = getJournalValueFiltered(journalData, trId, "unitPrice");
+        }
     }
     return accountCardData
 }
@@ -685,10 +730,19 @@ function SetSoldData(accountCardData, journalData) {
  * @returns 
  */
 function setQuantityBalance(accountCardData) {
-    let amountBalance = "";
+
+    let quantityBalance = "";
+
+    if (accountCardData[0].itemQuantityBegin)
+        quantityBalance = accountCardData[0].itemQuantityBegin;
+
     for (var key in accountCardData) {
-        amountBalance = Banana.SDecimal.add(amountBalance, accountCardData[key].qt);
-        accountCardData[key].qtBalance = amountBalance;
+        let quantity = "";
+        quantity = accountCardData[key].qt;
+        if (quantity && quantity !== "") {
+            quantityBalance = Banana.SDecimal.add(quantityBalance, accountCardData[key].qt);
+            accountCardData[key].qtBalance = quantityBalance;
+        }
     }
     return accountCardData;
 }
@@ -916,17 +970,37 @@ function getItemCurrency(itemId, banDoc) {
     return item.currency;
 }
 
+function getItemRowObj(itemId, banDoc) {
+    let itemTableData = getItemsTableData(banDoc);
+    if (!itemTableData)
+        return {};
+    const item = itemTableData.find(item => item.item === itemId);
+    if (!item)
+        return {};
+    return item;
+}
+
 /**
  * Retrieves item information from the items table
  * @returns 
  */
 function getItemsTableData(banDoc) {
-    //get the items list from the items table
+
     var itemsData = [];
+    if (!banDoc)
+        itemsData;
+
+    let docInfo = getDocumentInfo(banDoc);
+
+    if (!docInfo)
+        return itemsData;
+
     let table = banDoc.table("Items");
+
     if (!table) {
         return itemsData;
     }
+
     for (var i = 0; i < table.rowCount; i++) {
         var tRow = table.row(i);
         var itemData = {};
@@ -943,8 +1017,12 @@ function getItemsTableData(banDoc) {
         itemData.unitPriceCurrent = tRow.value("UnitPriceCurrent");
         itemData.currency = tRow.value("Currency");
         itemData.type = tRow.value("ReferenceUnit");
-        itemData.frequency = tRow.value("CouponFrequency"); // This column must be first created, not present as default.
-        itemData.rate = tRow.value("CouponRate"); // This column must be first created, not present as default.
+        itemData.unitPriceBegin = tRow.value("UnitPriceBegin");
+        if (docInfo.isMultiCurrency)
+            itemData.valueBegin = tRow.value("ValueBeginCurrency");
+        else
+            itemData.valueBegin = tRow.value("ValueBegin");
+        itemData.beginQt = tRow.value("QuantityBegin");
         if (itemsData && itemData.item)//only if the item has an id (isin)
             itemsData.push(itemData);
     }
@@ -1227,23 +1305,6 @@ function replaceVariables(cssText, variables) {
         //Banana.console.log(">>Variables not found: " + variablesNotFound);
     }
     return result;
-}
-
-/**
- * Returns true if it is a multi-currency accounting
- */
-function isMultiCurrency(banDoc) {
-
-    var FileTypeNr = banDoc.info("Base", "FileTypeNumber");
-    if (FileTypeNr == "120" || FileTypeNr == "130") {
-        let NOT_AVAILABLE_WITH_MULTI_CURRENCY = "NOT_AVAILABLE_WITH_MULTI_CURRENCY";
-        let msg = getErrorMessage(NOT_AVAILABLE_WITH_MULTI_CURRENCY);
-        banDoc.addMessage(msg, NOT_AVAILABLE_WITH_MULTI_CURRENCY);
-        return true;
-    }
-
-    return false
-
 }
 
 //VERSION CONTROL FUNCTIONS
