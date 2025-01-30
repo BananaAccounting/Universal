@@ -1,6 +1,10 @@
 <!DOCTYPE RCC><RCC version="1.0">
 <qresource prefix="/">
 <file>ch.banana.app.exercisecorrection.manifest.json</file>
-<file>ch.banana.app.exercisecorrection.js</file>
+<file>ch.banana.app.correctexercises.js</file>
+<file>ch.banana.app.recalculatetotal.js</file>
+<file>ch.banana.app.documentation.js</file>
+<file>ch.banana.app.functions.js</file>
+<file>ch.banana.app.settings.js</file>
 </qresource>
 </RCC>
