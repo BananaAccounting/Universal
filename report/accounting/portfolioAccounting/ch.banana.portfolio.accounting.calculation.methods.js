@@ -388,10 +388,14 @@ function calculateStockSaleData(banDoc, docInfo, itemObj, dlgParams, currentRowN
     journalData = getJournalData(docInfo, journal);
     accountCard = banDoc.currentCard(itemAccount);
     accountCardData = getAccountCardData(banDoc, docInfo, itemObj.item, accountCard, itemAccount);
-    itemCardData = getItemCardDataList(itemObj, accountCardData, journalData, unitPriceColDecimals);
-    avgCost = getAvgCost(itemCardData, currentRowNr);
+    itemCardData = getItemCardDataList(itemObj, accountCardData, journalData, unitPriceColDecimals, currentRowNr);
+
+    if (!itemCardData || isObjectEmpty(itemCardData))
+        return saleData;
+
+    avgCost = itemCardData.currentValues.itemAvgCost;
     quantity = Banana.SDecimal.abs(dlgParams.quantity);
-    accExRate = getAccountingCourse(itemCardData, currentRowNr);
+    accExRate = Banana.SDecimal.divide(itemCardData.currentValues.itemBalanceBase, itemCardData.currentValues.itemBalanceCurr);
 
     avgSharesValue = getSharesAvgValue(quantity, avgCost);
     totalSharesValue = getSharesTotalValue(quantity, dlgParams.marketPrice);
@@ -414,33 +418,15 @@ function calculateStockSaleData(banDoc, docInfo, itemObj, dlgParams, currentRowN
 
 }
 
-/**
- * Saves the book value calculated up to the movement before the one currently recorded.
- * We take the movement before because if the user has already written the sales entry, the
- * current one already takes this into account and the values are not the correct ones we need for the calculation.
- * @param {*} itemCardData 
- * @param {*} currentRowNr 
- * @returns the avg cost (book value).
- */
-function getAvgCost(itemCardData, currentRowNr) {
-    if (!itemCardData)
-        return "";
-    const movObj = getClosestPreviousObjByRowNr(itemCardData, currentRowNr);
-    if (!movObj)
-        return "";
-
-    return movObj.accAvgCost;
-}
-
-function getClosestPreviousObjByRowNr(itemCardData, currentRowNr) {
+function getClosestPreviousObjByRowNr(accountCardData, currentRowNr) {
     // Find the object with `originRow` equal to `currentRowNr`.
-    const currentObject = itemCardData.find(obj => obj.originRow === currentRowNr.toString());
+    const currentObject = accountCardData.find(obj => obj.originRow === currentRowNr.toString());
     if (!currentObject) {
         /** Could happen if the current selected row is emtpy, or if the user insert manually the data without selecting a row. 
          * In that case we use the last object in the array, if the array has no objects, means there are not movements yet for the item selected. 
          * */
-        if (itemCardData.length > 0) {
-            const lastObject = itemCardData[itemCardData.length - 1];
+        if (accountCardData.length > 0) {
+            const lastObject = accountCardData[accountCardData.length - 1];
             return lastObject;
         } else {
             return "";
@@ -448,22 +434,19 @@ function getClosestPreviousObjByRowNr(itemCardData, currentRowNr) {
     }
 
     // Finds the object with the immediately preceding `rowNr`.
-    const previousObject = itemCardData
+    const previousObject = accountCardData
         .filter(obj => obj.rowNr < currentObject.rowNr)
         .sort((a, b) => b.rowNr - a.rowNr)[0];
 
-    if (!previousObject)
-        return "";
+    if (!previousObject) // could happen if the first operation of the year is a sale, in this case we use the opening data.
+        return {};
 
     return previousObject;
 }
 
 function getAccountCardData(banDoc, docInfo, itemName, accountCard, account) {
     let transactions = [];
-    let accBalance = "";
-    let accBalanceCurr = "";
     let accInForeignCurr = accountIsInForeignCurrency(banDoc, docInfo, account);
-
     for (var i = 0; i < accountCard.rowCount; i++) {
         let tRow = accountCard.row(i);
         if (tRow.value("ItemsId") == itemName) {
@@ -482,25 +465,11 @@ function getAccountCardData(banDoc, docInfo, itemName, accountCard, account) {
             trData.unitPrice = tRow.value("UnitPrice");
             trData.debitBase = tRow.value("JDebitAmount"); //debit value in base currency
             trData.creditBase = tRow.value("JCreditAmount"); //credit value base currency
-            //Calculate the balance manually.
-            if (trData.debitBase !== "") {
-                accBalance = Banana.SDecimal.add(accBalance, trData.debitBase);
-            }
-            if (trData.creditBase !== "") {
-                accBalance = Banana.SDecimal.subtract(accBalance, trData.creditBase);
-            }
-            trData.balanceBase = accBalance;
+            trData.balanceBase = tRow.value("JBalance");
             if (accInForeignCurr) {
                 trData.debitCurr = tRow.value("JDebitAmountAccountCurrency");
                 trData.creditCurr = tRow.value("JCreditAmountAccountCurrency");
                 trData.balanceCurr = tRow.value("JBalanceAccountCurrency");
-                if (trData.debitCurr !== "") {
-                    accBalanceCurr = Banana.SDecimal.add(accBalanceCurr, trData.debitCurr);
-                }
-                if (trData.creditCurr !== "") {
-                    accBalanceCurr = Banana.SDecimal.subtract(accBalanceCurr, trData.creditCurr);
-                }
-                trData.balanceCurr = accBalanceCurr;
             }
 
             transactions.push(trData);
@@ -588,37 +557,164 @@ function accountIsInForeignCurrency(banDoc, docInfo, account) {
 }
 
 /**
- * Starting from the saved basic data of the account card, edit the object by adding for each movement present:
+ * Starting from the saved basic data of the account card, adds:
+ * - A new object in the first position of the array that contains the opening data (if found) of the security.
+ * Then for each transaction add:
  * - The quantity change (if present)
  * - The unit price (if present)
  * - The balance of the quantity (updated for each movement)
  * - The book value (updated with each movement)
+ * At the end add a new object containing the resulting values in the last transaction, these
+ * values rapresent the current situation for the quantity balance and the book value.
+ * If no transaction is found, the values are directly taken form the opening data.
+ * The returned structure looks like this:
+{
+  "itemId": "US123456789",
+  "openingData": {
+    "itemUnitPriceBegin": "",
+    "itemValueBeginCurrency": "",
+    "itemValueBegin": "",
+    "itemExchangeBegin": "",
+    "itemQuantityBegin": ""
+  },
+  "transactionsData": [
+    {
+      "rowNr": 0,
+      "originTable": "Transactions",
+      "originRow": "16",
+      "doc": "3",
+      "date": "2024-02-03",
+      "trId": "16",
+      "item": "US123456789",
+      "description": "Shares Netflix Purchase",
+      "qt": "200.0000",
+      "currency": "USD",
+      "unitPrice": "11.0012",
+      "debitBase": "2090.23",
+      "creditBase": "",
+      "balanceBase": "2090.23",
+      "debitCurr": "2200.24",
+      "creditCurr": "",
+      "balanceCurr": "2200.24",
+      "qtBalance": "200.0000",
+      "accAvgCost": "11.0012"
+    },
+    {
+      "rowNr": 1,
+      "originTable": "Transactions",
+      "originRow": "21",
+      "doc": "4",
+      "date": "2024-03-26",
+      "trId": "21",
+      "item": "US123456789",
+      "description": "Shares Netflix",
+      "qt": "-100.0000",
+      "currency": "USD",
+      "unitPrice": "11.5386",
+      "debitBase": "",
+      "creditBase": "1119.24",
+      "balanceBase": "970.99",
+      "debitCurr": "",
+      "creditCurr": "1153.86",
+      "balanceCurr": "1046.38",
+      "qtBalance": "100.0000",
+      "accAvgCost": "10.4638"
+    },
+    {
+      "rowNr": 2,
+      "originTable": "Transactions",
+      "originRow": "24",
+      "doc": "4",
+      "date": "2024-03-26",
+      "trId": "24",
+      "item": "US123456789",
+      "description": "Shares Netflix Profit on sale",
+      "qt": "",
+      "currency": "USD",
+      "unitPrice": "",
+      "debitBase": "52.13",
+      "creditBase": "",
+      "balanceBase": "1023.12",
+      "debitCurr": "53.74",
+      "creditCurr": "",
+      "balanceCurr": "1100.12",
+      "accAvgCost": ""
+    }
+  ],
+  "currentValues": {
+    "itemAvgCost": "11.0012",
+    "itemQtBalance": "200.0000",
+    "itemBalanceBase": "2090.23",
+    "itemBalanceCurr": "2200.24",
+    "itemExchangeRate": ""
+  }
+}
+This structure has been designed to allow saving separately the data related to the opening of the security, 
+those related to its evolution (transactions), and the current values (the latest transaction( or transaction x if a currentRowNr is defined) resulting data).
  */
-function getItemCardDataList(itemObj, accountCardData, journalData, unitPriceColDecimals) {
-    // First set the opening data of the security
-    setOpeningData(itemObj, accountCardData);
-    // Then calculate the progression values
+function getItemCardDataList(itemObj, accountCardData, journalData, unitPriceColDecimals, currentRowNr) {
+    let itemCardData = {};
+    let openingData = getItemOpeningDataObj(itemObj, accountCardData);
     setSoldData(accountCardData, journalData);
-    setQuantityBalance(accountCardData);
+    setQuantityBalance(openingData, accountCardData);
     setCurrentAccAvgCost(accountCardData, unitPriceColDecimals);
 
-    //Banana.Ui.showText(JSON.stringify(accountCardData)); 
-    /** 30.01 Il problema da risolvere è se non ci sono righe di registrazione ma solo i valori iniziali, bisogna fare si che funzioni comunque.
-     * Bisogna trovare una soluzione anche a livello del calcolo del bilancio cumulato. Una soluzione potrebbe essere alla fine implementare una logica
-     * che crei un oggetto alla fine delle transazioni che contenga i valori da usare poi per i calcoli, di default questo oggetto verrebbe inizializzato
-     * con i valori di apertura, per poi variare sulla base dei movimenti. Si potrebbe fre tutto dentro il getItemCardDataList() creando un oggetto anche 
-     * più complesso.
-     * */
+    itemCardData.itemId = itemObj.item;
+    itemCardData.openingData = openingData;
+    itemCardData.transactionsData = accountCardData;
+    itemCardData.currentValues = getItemCurrentValues(openingData, accountCardData, currentRowNr);
 
-    return accountCardData;
+    return itemCardData;
 }
 
 /**
- * Given the account card, inserts as the first object, an object containing the opening data of the security.
+ * Returns the object containing the current calculated data for the security, which is basically taken from the last transaction present.
+ * If currentRowNr is defined and valid, we do not take the last transaction but the one before it.
+ * If there are no transactions, we take the data from the opening data.
+ */
+function getItemCurrentValues(openingData, accountCardData, currentRowNr) {
+    let currentValuesObj = {};
+    let trObj = {};
+
+    if (accountCardData.length < 1) {
+        setOpeningValues(currentValuesObj, openingData);
+        return currentValuesObj;
+    }
+
+    if (Number.isFinite(currentRowNr)) {
+        trObj = getClosestPreviousObjByRowNr(accountCardData, currentRowNr);
+        if (!trObj || isObjectEmpty(trObj)) {
+            setOpeningValues(currentValuesObj, openingData);
+            return currentValuesObj;
+        }
+    } else {
+        trObj = accountCardData.slice(-1)
+    }
+
+    currentValuesObj.itemAvgCost = trObj.accAvgCost;
+    currentValuesObj.itemQtBalance = trObj.qtBalance;
+    currentValuesObj.itemBalanceBase = trObj.balanceBase;
+    currentValuesObj.itemBalanceCurr = trObj.balanceCurr;
+    currentValuesObj.itemExchangeRate = "";
+
+    return currentValuesObj;
+}
+
+function setOpeningValues(currentValuesObj, openingData) {
+    currentValuesObj.itemAvgCost = openingData.itemUnitPriceBegin;
+    currentValuesObj.itemQtBalance = openingData.itemQuantityBegin;
+    currentValuesObj.itemBalanceBase = openingData.itemValueBegin;
+    currentValuesObj.itemBalanceCurr = openingData.itemValueBeginCurrency;
+    currentValuesObj.itemExchangeRate = openingData.itemExchangeBegin;
+}
+
+/**
  * The opening data of an object can be found in the table ‘Items’ in the columns:
  * - UnitPriceBegin: Opening price of the security.
  * - ValueBeginCurrency: Opening Balance of the security. 
+ * - ValueBegin: Opening Balance of the security in the base currency
  * - QuantityBegin: Opening Quantity of the security.
+ * - ExchangeBegin: Opening exchange rate.
  * When the user creates a new year and wants to report the data correctly 
  * as described above, he must have the following values in the table ‘Items’ after the adjustment
  * - PriceCurrent: Current price of the security (resulting book value after settlement).
@@ -626,20 +722,16 @@ function getItemCardDataList(itemObj, accountCardData, journalData, unitPriceCol
  * - CurrentValue (or CurrencyCurrentValue): Current balance of the security (automatically calculated by Banana if given quantity and price).
  * This data will then serve as the opening data for the new year.
  */
-function setOpeningData(itemObj, accountCardData) {
+function getItemOpeningDataObj(itemObj) {
     let openingDataObj = {};
 
-    openingDataObj.itemId = itemObj.item;
     openingDataObj.itemUnitPriceBegin = itemObj.unitPriceBegin;
+    openingDataObj.itemValueBeginCurrency = itemObj.valueBeginCurrency;
     openingDataObj.itemValueBegin = itemObj.valueBegin;
+    openingDataObj.itemExchangeBegin = itemObj.exchangeBeginCurrency;
     openingDataObj.itemQuantityBegin = itemObj.beginQt;
 
-    if (accountCardData.length === 0)
-        accountCardData.push(openingDataObj);
-    else
-        accountCardData.unshift(openingDataObj)
-
-    return accountCardData;
+    return openingDataObj;
 }
 
 function isObjectEmpty(obj) {
@@ -654,6 +746,10 @@ function isObjectEmpty(obj) {
  * @param {*} balanceCol 
  */
 function setCurrentAccAvgCost(accountCardData, unitPriceColDecimals) {
+
+    if (accountCardData.length < 1)
+        return accountCardData;
+
     for (var key in accountCardData) {
         let trId = "";
         trId = accountCardData[key].trId;
@@ -713,6 +809,10 @@ function getBalance(itemCardData, debRef, credRef) {
  * @param {*} journalData 
  */
 function setSoldData(accountCardData, journalData) {
+
+    if (accountCardData.length < 1)
+        return accountCardData;
+
     for (var key in accountCardData) {
         let trId = "";
         trId = accountCardData[key].trId;
@@ -729,20 +829,23 @@ function setSoldData(accountCardData, journalData) {
  * @param {*} accountCardData 
  * @returns 
  */
-function setQuantityBalance(accountCardData) {
+function setQuantityBalance(openingData, accountCardData) {
 
     let quantityBalance = "";
 
-    if (accountCardData[0].itemQuantityBegin)
-        quantityBalance = accountCardData[0].itemQuantityBegin;
+    if (accountCardData.length < 1)
+        return accountCardData;
+
+    if (openingData.itemQuantityBegin)
+        quantityBalance = openingData.itemQuantityBegin;
 
     for (var key in accountCardData) {
         let quantity = "";
         quantity = accountCardData[key].qt;
-        if (quantity && quantity !== "") {
+        if (quantity && quantity !== "")
             quantityBalance = Banana.SDecimal.add(quantityBalance, accountCardData[key].qt);
-            accountCardData[key].qtBalance = quantityBalance;
-        }
+
+        accountCardData[key].qtBalance = quantityBalance;
     }
     return accountCardData;
 }
@@ -812,25 +915,6 @@ function getTransactionsTableData(banDoc, docInfo) {
     } else (Banana.console.debug("no transactions table"));
 
     return transactionsList;
-}
-
-/**
- * Returns the accounting exchange rate calculated on the basis of 
- * the difference between the balances in the two currencies on a certain date.
- */
-function getAccountingCourse(itemCardDataObj, currentRowNr) {
-
-    if (!itemCardDataObj)
-        return "";
-    const previousMovObject = getClosestPreviousObjByRowNr(itemCardDataObj, currentRowNr);
-    if (!previousMovObject)
-        return "";
-
-    let baseCurrBalance = previousMovObject.balanceBase;
-    let assetCurrBalance = previousMovObject.balanceCurr;
-
-    //divido il saldo in moneta base per quello del asset
-    return Banana.SDecimal.divide(baseCurrBalance, assetCurrBalance);
 }
 
 /**
@@ -1018,11 +1102,15 @@ function getItemsTableData(banDoc) {
         itemData.currency = tRow.value("Currency");
         itemData.type = tRow.value("ReferenceUnit");
         itemData.unitPriceBegin = tRow.value("UnitPriceBegin");
-        if (docInfo.isMultiCurrency)
-            itemData.valueBegin = tRow.value("ValueBeginCurrency");
-        else
-            itemData.valueBegin = tRow.value("ValueBegin");
+        itemData.valueBegin = tRow.value("ValueBegin");
         itemData.beginQt = tRow.value("QuantityBegin");
+        itemData.valueBeginCurrency = "";
+        itemData.exchangeBeginCurrency = "";
+        if (docInfo.isMultiCurrency) {
+            itemData.valueBeginCurrency = tRow.value("ValueBeginCurrency");
+            itemData.exchangeBeginCurrency = tRow.value("ExchangeBegin");
+        }
+
         if (itemsData && itemData.item)//only if the item has an id (isin)
             itemsData.push(itemData);
     }

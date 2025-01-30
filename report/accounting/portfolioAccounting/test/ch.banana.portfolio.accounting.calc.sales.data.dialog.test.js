@@ -132,13 +132,13 @@ function getTestData_1(banDoc, docInfo, itemsData) {
     let userParams = {};
     let itemObj = {};
     let calcSaleData = {};
-    let currentRowNr = "-1";
+    let currentRowNr = -1;
     let currentRowObj = {};
 
     // Calculate Data
     userParams = getUserParams("1");
     itemObj = itemsData.find(obj => obj.item === userParams.selectedItem);
-    currentRowNr = "7";
+    currentRowNr = 7;
     currentRowObj = getCurrentRowObj(banDoc, currentRowNr, "Transactions");
     calcSaleData = calculateStockSaleData(banDoc, docInfo, itemObj, userParams, currentRowNr);
     const recordSalesTransactions = new RecordSalesTransactions(banDoc, docInfo, calcSaleData,
@@ -171,13 +171,13 @@ function getTestData_2(banDoc, docInfo, itemsData) {
     let userParams = {};
     let itemObj = {};
     let calcSaleData = {};
-    let currentRowNr = "-1";
+    let currentRowNr = -1;
     let currentRowObj = {};
 
     // Calculate Data
     userParams = getUserParams("2");
     itemObj = itemsData.find(obj => obj.item === userParams.selectedItem);
-    currentRowNr = "21";
+    currentRowNr = 21;
     currentRowObj = getCurrentRowObj(banDoc, currentRowNr, "Transactions");
     calcSaleData = calculateStockSaleData(banDoc, docInfo, itemObj, userParams, currentRowNr);
     const recordSalesTransactions = new RecordSalesTransactions(banDoc, docInfo, calcSaleData,
@@ -211,13 +211,13 @@ function getTestData_3(banDoc, docInfo, itemsData) {
     let userParams = {};
     let itemObj = {};
     let calcSaleData = {};
-    let currentRowNr = "-1";
+    let currentRowNr = -1;
     let currentRowObj = {};
 
     // Calculate Data
     userParams = getUserParams("3");
     itemObj = itemsData.find(obj => obj.item === userParams.selectedItem);
-    currentRowNr = "28";
+    currentRowNr = 28;
     currentRowObj = getCurrentRowObj(banDoc, currentRowNr, "Transactions");
     calcSaleData = calculateStockSaleData(banDoc, docInfo, itemObj, userParams, currentRowNr);
     const recordSalesTransactions = new RecordSalesTransactions(banDoc, docInfo, calcSaleData,
@@ -252,13 +252,13 @@ function getTestData_4(banDoc, docInfo, itemsData) {
     let userParams = {};
     let itemObj = {};
     let calcSaleData = {};
-    let currentRowNr = "-1";
+    let currentRowNr = -1;
     let currentRowObj = {};
 
     // Calculate Data
     userParams = getUserParams("4");
     itemObj = itemsData.find(obj => obj.item === userParams.selectedItem);
-    currentRowNr = "47";
+    currentRowNr = 47;
     currentRowObj = getCurrentRowObj(banDoc, currentRowNr, "Transactions");
     calcSaleData = calculateStockSaleData(banDoc, docInfo, itemObj, userParams, currentRowNr);
     const recordSalesTransactions = new RecordSalesTransactions(banDoc, docInfo, calcSaleData,
