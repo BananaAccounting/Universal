@@ -321,11 +321,11 @@ function getDifferenceAmountStyle(diffAmount) {
  * @param {*} account ref. account.
  */
 
-function getItemsDataList(banDoc, docInfo, itemsData, accountCard, journalData, account) {
+function getItemsDataList(banDoc, docInfo, itemsData, accountCard, journalData, account, itemObject) {
 
     let itemsDataList = [];//list of item cards
     let accountCardData = "";
-    let itemCardData = "";
+    let itemCardData = {};
     let unitPriceColumn = banDoc.table("Transactions").column("UnitPrice", "Base");
     let unitPriceColDecimals = unitPriceColumn.decimal; // we want to use the same decimals as defined in the unit price column.
 
@@ -336,9 +336,9 @@ function getItemsDataList(banDoc, docInfo, itemsData, accountCard, journalData, 
             itemData.item = itemsData[key].item;
             itemData.itemCardData = [];
             accountCardData = getAccountCardCompleteData(itemsData[key].item, accountCard);
-            itemCardData = getItemCardDataList(accountCardData, journalData, unitPriceColDecimals);//returns an array of objects with the movements of the item card.
+            itemCardData = getItemCardDataList(itemObject, accountCardData, journalData, unitPriceColDecimals);//returns an array of objects with the movements of the item card.
             if (itemCardData) {
-                itemData.itemCardData = itemCardData;
+                itemData.itemCardData = itemCardData.transactionsData;
             }
             //calculate totals for the item
             itemData.totalDebitBase = getSum(accountCardData, "debitBase");
@@ -349,34 +349,15 @@ function getItemsDataList(banDoc, docInfo, itemsData, accountCard, journalData, 
                 itemData.totalCreditCurr = getSum(accountCardData, "creditCurr");
                 itemData.totalBalanceCurr = getBalance(accountCardData, "debitCurr", "creditCurr");
             }
-            if (itemData.itemCardData.length >= 1) {
-                itemData.totalQtBalance = itemData.itemCardData.slice(-1)[0].qtBalance;//I take the last calculated value
-                itemData.totalCurrAvgCost = itemData.itemCardData.slice(-1)[0].accAvgCost;//I take the last calculated value
+            if (itemData.currentValues) {
+                itemData.totalQtBalance = itemData.itemCardData.currentValues.itemQtBalance;//I take the last calculated value
+                itemData.totalCurrAvgCost = itemData.itemCardData.currentValues.itemAvgCost;//I take the last calculated value
             }
 
             itemsDataList.push(itemData);
         }
     }
     return itemsDataList;
-}
-
-/**
- * Sums the debit and credit values taken from the list of records and returns the calculated balance
- * @param {*} itemsDataList list od item transactions
- * @param {*} debitType debit column name in base currency or debit column name in item currency
- * @param {*} creditType credit column name in base currency or credit column name in item currency
- * @returns 
- */
-function calcBalanceFromTransactions(itemsDataList, debitType, creditType) {
-    let calcBalance = "";
-    for (var key in itemsDataList) {
-        let debit = itemsDataList.itemCardData[key][debitType];
-        let credit = itemsDataList.itemCardData[key][creditType];
-        calcBalance = Banana.SDecimal.add(calcBalance, credit);
-        calcBalance = Banana.SDecimal.subtract(calcBalance, debit);
-    }
-
-    return calcBalance;
 }
 
 /**
@@ -391,16 +372,14 @@ function getAccountsDataList(banDoc, docInfo, accountsList, itemsData) {
     let trIdList = "";
     let account = "";
 
-    let accountsData = getAccountsTableData(banDoc);
     journal = banDoc.journal(banDoc.ORIGINTYPE_CURRENT, banDoc.ACCOUNTTYPE_NONE);
     journalData = getJournalData(docInfo, journal);
     trIdList = getTransactionsIdList(journalData);
 
 
     for (var i = 0; i < accountsList.length; i++) {
-
-        const accountObj = itemsData.find(accountsData => accountsData.account === accountsList[i])
-        if (!accountObj) {
+        const itemObject = itemsData.find(item => item.account === accountsList[i])
+        if (!itemObject) {
             const ACCOUNT_NOT_FOUND = "ACCOUNT_NOT_FOUND";
             let msg = getErrorMessage_MissingElements(ACCOUNT_NOT_FOUND, accountsList[i]);
             banDoc.addMessage(msg, ACCOUNT_NOT_FOUND);
@@ -410,11 +389,11 @@ function getAccountsDataList(banDoc, docInfo, accountsList, itemsData) {
         var itemsDataList = [];
         var accData = {};
         var accBalance = {};
-        let accountCard = banDoc.currentCard(accountObj.account);//get the account card
+        let accountCard = banDoc.currentCard(itemObject.account);//get the account card
 
-        accBalance = banDoc.currentBalance(accountObj.account);
+        accBalance = banDoc.currentBalance(itemObject.account);
 
-        accData.account = accountObj.account;
+        accData.account = itemObject.account;
         accData.openBalanceBase = accBalance.opening;
         accData.openBalanceCurr = accBalance.openingCurrency;
         accData.currentBalanceBase = accBalance.balance;
@@ -426,7 +405,7 @@ function getAccountsDataList(banDoc, docInfo, accountsList, itemsData) {
         accData.balanceDiffCurr = Banana.SDecimal.subtract(accBalance.balanceCurrency, accBalance.openingCurrency);
 
         //get the items data.
-        itemsDataList = getItemsDataList(banDoc, docInfo, itemsData, accountCard, journalData, accData.account); //ritorna l'array di items con questo account.
+        itemsDataList = getItemsDataList(banDoc, docInfo, itemsData, accountCard, journalData, accData.account, itemObject); //ritorna l'array di items con questo account.
         accData.items = itemsDataList;
 
         //get total amount of balances calculated for the various items.

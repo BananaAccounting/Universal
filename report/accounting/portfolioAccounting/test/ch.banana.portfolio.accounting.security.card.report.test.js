@@ -69,15 +69,16 @@ TestSecurityCardReport.prototype.testDataStructure = function () {
         let banDoc = Banana.application.openDocument(fileName);
         this.testLogger = parentLogger.newLogger(Banana.IO.fileCompleteBaseName(fileName));
         if (banDoc) {
-            let selectedItem = getItemForTest(i);
             let docInfo = getDocumentInfo(banDoc);
+            let selectedItem = getItemForTest(i);
+            let itemsData = getItemsTableData(banDoc, docInfo);
+            let itemObject = itemsData.find(itemsData => itemsData.item === selectedItem)
             let itemAccount = getItemAccount(selectedItem, banDoc);
-            let itemCurrency = getItemCurrency(selectedItem, banDoc);
             let journal = banDoc.journal(banDoc.ORIGINTYPE_CURRENT, banDoc.ACCOUNTTYPE_NONE);
             let journalData = getJournalData(docInfo, journal);
             let accountCard = banDoc.currentCard(itemAccount);
             let accountCardData = getAccountCardCompleteData(selectedItem, accountCard);
-            let itemCardData = getItemCardData(banDoc, docInfo, accountCardData, journalData, itemCurrency, selectedItem);
+            let itemCardData = getItemCardData(banDoc, docInfo, accountCardData, journalData, itemObject);
             let reportName = "FILENAME: " + fileName;
             let itemDescription = getItemDescription(selectedItem, banDoc);
             let report = printReport(banDoc, docInfo, itemCardData, itemDescription);

@@ -124,8 +124,8 @@ function getItemCardData(banDoc, docInfo, accountCardData, journalData, itemObje
     }
     //In the total I also show the last known cumulative quantity and the last known average accounting cost.
     if (itemCardData.data) {
-        itemCardData.totalQtBalance = itemCardData.data.slice(-1)[0].qtBalance;
-        itemCardData.totalCurrAvgCost = itemCardData.data.slice(-1)[0].accAvgCost;
+        itemCardData.totalQtBalance = itemCardData.data.currentValues.itemQtBalance;
+        itemCardData.totalCurrAvgCost = itemCardData.data.currentValues.itemAvgCost;
     }
     return itemCardData;
 }
@@ -207,14 +207,14 @@ function printReport(banDoc, docInfo, itemCardData, itemDescription) {
     var tabItemCard = getItemCardTable(report, docInfo, currentDate, docInfo.baseCurrency, itemCardData, itemDescription);
 
     //Print the data.
-    for (var key in itemCardData.data) {
+    for (var key in itemCardData.data.transactionsData) {
         isEven = checkIfNumberisEven(rowColorIndex);
         if (isEven)
             rowStyle = "styleEvenRows";
         else
             rowStyle = "styleOddRows";
 
-        itCardRow = itemCardData.data[key];
+        itCardRow = itemCardData.data.transactionsData[key];
 
         var tableRow = tabItemCard.addRow(rowStyle);
         tableRow.addCell(Banana.Converter.toLocaleDateFormat(itCardRow.date), '');
