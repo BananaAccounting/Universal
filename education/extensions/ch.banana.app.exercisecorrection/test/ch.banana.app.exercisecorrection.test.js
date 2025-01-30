@@ -9,7 +9,7 @@
 // @outputformat = none
 // @inputdataform = none
 // @timeout = -1
-// @includejs = ../ch.banana.app.exercisecorrection.sbaa/ch.banana.app.exercisecorrection.js
+// @includejs = ../ch.banana.app.exercisecorrection.sbaa/ch.banana.app.correctexercises.js
 
 
 // Register this test case to be executed
