@@ -143,7 +143,6 @@ class DlgCalculateSaleDataManager {
         this.currentPriceColDecimals = currentPriceColumn.decimal;
         if (exRateColumn)
             this.exRateColDecimals = exRateColumn.decimal;
-
     }
 
     setAccruedInterestsElementsEnabled() {

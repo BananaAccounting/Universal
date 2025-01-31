@@ -39,7 +39,7 @@ function TestCalcSalesDialog() {
 TestCalcSalesDialog.prototype.initTestCase = function () {
     this.testLogger = Test.logger;
     this.progressBar = Banana.application.progressBar;
-    this.fileName = "file:script/../test/testcases/portfolio_accounting_double_entry_multi_currency_tutorial_salesrecordtest.ac2";
+    this.fileName = "file:script/../test/testcases/portfolio_accounting_double_entry_multi_currency_tutorial_salesrecordtest_2024.ac2";
     this.banDoc = Banana.application.openDocument(this.fileName);
     if (!this.banDoc) {
         this.testLogger.addFatalError("File not found: " + this.fileName);

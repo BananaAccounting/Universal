@@ -387,8 +387,9 @@ function calculateStockSaleData(banDoc, docInfo, itemObj, dlgParams, currentRowN
     journal = banDoc.journal(banDoc.ORIGINTYPE_CURRENT, banDoc.ACCOUNTTYPE_NONE);
     journalData = getJournalData(docInfo, journal);
     accountCard = banDoc.currentCard(itemAccount);
-    accountCardData = getAccountCardData(banDoc, docInfo, itemObj.item, accountCard, itemAccount);
+    accountCardData = getAccountCardData(banDoc, docInfo, itemObj, accountCard, itemAccount);
     itemCardData = getItemCardDataList(itemObj, accountCardData, journalData, unitPriceColDecimals, currentRowNr);
+    Banana.Ui.showText(JSON.stringify(itemCardData));
 
     if (!itemCardData || isObjectEmpty(itemCardData))
         return saleData;
@@ -444,18 +445,35 @@ function getClosestPreviousObjByRowNr(accountCardData, currentRowNr) {
     return previousObject;
 }
 
-function getAccountCardData(banDoc, docInfo, itemName, accountCard, account) {
+function getAccountCardData(banDoc, docInfo, itemObj, accountCard, account) {
     let transactions = [];
     let accBalance = "";
     let accBalanceCurr = "";
     let accInForeignCurr = accountIsInForeignCurrency(banDoc, docInfo, account);
+    /**
+     * When creating the account card, before calculating the balance manually using the debit and credit columns, 
+     * we must take into account, if any, the opening balance of the security found in the ‘ValueBegin’ ( or ‘ValueBeginCurrency’) column
+     * and use it as a starting point for the balance calculation. New options could be considered in the future, for now it seems 
+     * the only way to start from the correct initial balance of the security (and not of the account, which may consist of several securities).
+     */
+    let itemName = itemObj.item;
+    let itemValueBegin = itemObj.valueBegin;
+    let itemValueBeginCurrency = itemObj.valueBeginCurrency;
+
+    if (itemValueBegin)
+        accBalance = itemValueBegin;
+    if (itemValueBeginCurrency)
+        accBalanceCurr = itemValueBeginCurrency;
+
     for (var i = 0; i < accountCard.rowCount; i++) {
         let tRow = accountCard.row(i);
-        if (tRow.value("ItemsId") == itemName) {
+        let trType = tRow.value("JOperationType");
+        if (tRow.value("ItemsId") == itemName) { // 1 = OPERATIONTYPE_OPENING.
             let trData = {};
             trData.rowNr = tRow.rowNr;
             trData.originTable = tRow.value("JTableOrigin");
             trData.originRow = tRow.value("JRowOrigin");
+            trData.rowType = trType;
             trData.doc = tRow.value("Doc");
             trData.date = tRow.value("Date");
             trData.trId = tRow.value("JContraAccountGroup");
@@ -467,7 +485,8 @@ function getAccountCardData(banDoc, docInfo, itemName, accountCard, account) {
             trData.unitPrice = tRow.value("UnitPrice");
             trData.debitBase = tRow.value("JDebitAmount"); //debit value in base currency
             trData.creditBase = tRow.value("JCreditAmount"); //credit value base currency
-            /** Calculate the balances manually, as an account can include more items, 
+            /** 
+             * Calculate the balances manually, as an account can include more items, 
              * we need to calculate the balance only for the current item.
              * */
             if (trData.debitBase !== "") {
@@ -586,83 +605,58 @@ function accountIsInForeignCurrency(banDoc, docInfo, account) {
  * If no transaction is found, the values are directly taken form the opening data.
  * The returned structure looks like this:
 {
-  "itemId": "US123456789",
+  "itemId": "CH002775224",
   "openingData": {
-    "itemUnitPriceBegin": "",
-    "itemValueBeginCurrency": "",
-    "itemValueBegin": "",
+    "itemUnitPriceBegin": "5.9998",
+    "itemValueBeginCurrency": "1499.95",
+    "itemValueBegin": "1499.95",
     "itemExchangeBegin": "",
-    "itemQuantityBegin": ""
+    "itemQuantityBegin": "250.0000"
   },
   "transactionsData": [
     {
-      "rowNr": 0,
+      "rowNr": 3,
       "originTable": "Transactions",
-      "originRow": "16",
-      "doc": "3",
-      "date": "2024-02-03",
-      "trId": "16",
-      "item": "US123456789",
-      "description": "Shares Netflix Purchase",
-      "qt": "200.0000",
-      "currency": "USD",
-      "unitPrice": "11.0012",
-      "debitBase": "2090.23",
-      "creditBase": "",
-      "balanceBase": "2090.23",
-      "debitCurr": "2200.24",
-      "creditCurr": "",
-      "balanceCurr": "2200.24",
-      "qtBalance": "200.0000",
-      "accAvgCost": "11.0012"
-    },
-    {
-      "rowNr": 1,
-      "originTable": "Transactions",
-      "originRow": "21",
-      "doc": "4",
-      "date": "2024-03-26",
-      "trId": "21",
-      "item": "US123456789",
-      "description": "Shares Netflix",
-      "qt": "-100.0000",
-      "currency": "USD",
-      "unitPrice": "11.5386",
+      "originRow": "8",
+      "rowType": "3",
+      "doc": "2",
+      "date": "2025-01-31",
+      "trId": "8",
+      "item": "CH002775224",
+      "description": "Shares BancaStato",
+      "qt": "-200.0000",
+      "currency": "CHF",
+      "unitPrice": "6.0201",
       "debitBase": "",
-      "creditBase": "1119.24",
-      "balanceBase": "970.99",
-      "debitCurr": "",
-      "creditCurr": "1153.86",
-      "balanceCurr": "1046.38",
-      "qtBalance": "100.0000",
-      "accAvgCost": "10.4638"
+      "creditBase": "1204.02",
+      "balanceBase": "295.93",
+      "qtBalance": "50.0000",
+      "accAvgCost": "5.9186"
     },
     {
-      "rowNr": 2,
+      "rowNr": 4,
       "originTable": "Transactions",
-      "originRow": "24",
-      "doc": "4",
-      "date": "2024-03-26",
-      "trId": "24",
-      "item": "US123456789",
-      "description": "Shares Netflix Profit on sale",
+      "originRow": "11",
+      "rowType": "3",
+      "doc": "2",
+      "date": "2025-01-31",
+      "trId": "11",
+      "item": "CH002775224",
+      "description": "Shares BancaStato Result on sale",
       "qt": "",
-      "currency": "USD",
+      "currency": "CHF",
       "unitPrice": "",
-      "debitBase": "52.13",
+      "debitBase": "4.06",
       "creditBase": "",
-      "balanceBase": "1023.12",
-      "debitCurr": "53.74",
-      "creditCurr": "",
-      "balanceCurr": "1100.12",
-      "accAvgCost": ""
+      "balanceBase": "299.99",
+      "qtBalance": "50.0000",
+      "accAvgCost": "5.9998"
     }
   ],
   "currentValues": {
-    "itemAvgCost": "11.0012",
-    "itemQtBalance": "200.0000",
-    "itemBalanceBase": "2090.23",
-    "itemBalanceCurr": "2200.24",
+    "itemAvgCost": "5.9998",
+    "itemQtBalance": "50.0000",
+    "itemBalanceBase": "299.99",
     "itemExchangeRate": ""
   }
 }
@@ -671,7 +665,7 @@ those related to its evolution (transactions), and the current values (the lates
  */
 function getItemCardDataList(itemObj, accountCardData, journalData, unitPriceColDecimals, currentRowNr) {
     let itemCardData = {};
-    let openingData = getItemOpeningDataObj(itemObj, accountCardData);
+    let openingData = getItemOpeningDataObj(itemObj);
     setSoldData(accountCardData, journalData);
     setQuantityBalance(openingData, accountCardData);
     setCurrentAccAvgCost(accountCardData, unitPriceColDecimals);
@@ -693,15 +687,15 @@ function getItemCurrentValues(openingData, accountCardData, currentRowNr) {
     let currentValuesObj = {};
     let trObj = {};
 
+    setOpeningValues(currentValuesObj, openingData); // always set with the opening values.
+
     if (accountCardData.length < 1) {
-        setOpeningValues(currentValuesObj, openingData);
         return currentValuesObj;
     }
 
     if (Number.isFinite(currentRowNr)) {
         trObj = getClosestPreviousObjByRowNr(accountCardData, currentRowNr);
         if (!trObj || isObjectEmpty(trObj)) {
-            setOpeningValues(currentValuesObj, openingData);
             return currentValuesObj;
         }
     } else {
@@ -964,6 +958,9 @@ function getSaleResult(avgSharesValue, totalSharesvalue) {
 }
 
 function getExchangeResult(totalSharesValue, saleResult, currExRate, accExRate) {
+
+    if (!accExRate || accExRate.length < 1)
+        return Banana.Converter.toLocaleNumberFormat("0.00");
 
     // Default to accExRate if currExRate is not provided
     if (!currExRate) {

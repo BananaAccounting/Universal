@@ -263,7 +263,7 @@ function getAppraisalDataList_transactions(banDoc, docInfo, itemsData, journalDa
       let itemId = itemsData[key].item;
       let itemObj = itemsData.find(obj => obj.item === itemId);
       accountCard = banDoc.currentCard(account);
-      let accountCardData = getAccountCardData(banDoc, docInfo, itemId, accountCard, account);
+      let accountCardData = getAccountCardData(banDoc, docInfo, itemObj, accountCard, account);
       let appraisalData = {};
       appraisalData.item = itemId;
       appraisalData.description = itemsData[key].description;
@@ -272,6 +272,7 @@ function getAppraisalDataList_transactions(banDoc, docInfo, itemsData, journalDa
       //get the average cost
       appraisalData.avgCost = "";
       let itemCardData = getItemCardDataList(itemObj, accountCardData, journalData, unitPriceColDecimals);
+      Banana.Ui.showText(JSON.stringify(itemCardData));
       if (itemCardData && itemCardData.currentValues) {
         appraisalData.avgCost = itemCardData.currentValues.itemAvgCost;
       }
