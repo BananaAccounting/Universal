@@ -272,7 +272,6 @@ function getAppraisalDataList_transactions(banDoc, docInfo, itemsData, journalDa
       //get the average cost
       appraisalData.avgCost = "";
       let itemCardData = getItemCardDataList(itemObj, accountCardData, journalData, unitPriceColDecimals);
-      Banana.Ui.showText(JSON.stringify(itemCardData));
       if (itemCardData && itemCardData.currentValues) {
         appraisalData.avgCost = itemCardData.currentValues.itemAvgCost;
       }

@@ -292,7 +292,9 @@ var RecordSalesTransactions = class RecordSalesTransactions {
             rows.push(rowCashedNet);
         if (rowSaleResult && !isObjectEmpty(rowSaleResult) && this.rowExistenceChecked(rowSaleResult, this.transactionsType.SALE_RESULT))
             rows.push(rowSaleResult);
-        if (rowExchangeResult && !isObjectEmpty(rowExchangeResult) && this.rowExistenceChecked(rowSaleResult, this.transactionsType.EXCHANGE_RESULT))
+        if (rowExchangeResult && !isObjectEmpty(rowExchangeResult)
+            && this.rowExistenceChecked(rowSaleResult, this.transactionsType.EXCHANGE_RESULT)
+            && !Banana.SDecimal.isZero(this.salesData.exRateResult))
             rows.push(rowExchangeResult);
 
         return rows;
@@ -623,7 +625,9 @@ var RecordSalesTransactions = class RecordSalesTransactions {
             rows.push(rowCashedNet);
         if (rowSaleResult && !isObjectEmpty(rowSaleResult) && this.rowExistenceChecked(rowSaleResult, this.transactionsType.SALE_RESULT))
             rows.push(rowSaleResult);
-        if (rowExchangeResult && !isObjectEmpty(rowExchangeResult) && this.rowExistenceChecked(rowExchangeResult, this.transactionsType.EXCHANGE_RESULT))
+        if (rowExchangeResult && !isObjectEmpty(rowExchangeResult)
+            && this.rowExistenceChecked(rowExchangeResult, this.transactionsType.EXCHANGE_RESULT)
+            && !Banana.SDecimal.isZero(this.salesData.exRateResult))
             rows.push(rowExchangeResult);
 
         return rows;

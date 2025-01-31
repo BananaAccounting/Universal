@@ -39,14 +39,27 @@ function TestCalcSalesDialog() {
 TestCalcSalesDialog.prototype.initTestCase = function () {
     this.testLogger = Test.logger;
     this.progressBar = Banana.application.progressBar;
-    this.fileName = "file:script/../test/testcases/portfolio_accounting_double_entry_multi_currency_tutorial_salesrecordtest_2024.ac2";
-    this.banDoc = Banana.application.openDocument(this.fileName);
-    if (!this.banDoc) {
-        this.testLogger.addFatalError("File not found: " + this.fileName);
+
+    // File Year 2024
+    let fileName2024 = "file:script/../test/testcases/portfolio_accounting_double_entry_multi_currency_tutorial_salesrecordtest_2024.ac2";
+    this.banDoc2024 = Banana.application.openDocument(fileName2024);
+    if (!this.banDoc2024) {
+        this.testLogger.addFatalError("File not found: " + fileName2024);
         return;
     }
-    this.docInfo = getDocumentInfo(this.banDoc);
-    this.itemsData = getItemsTableData(this.banDoc, this.docInfo);
+    this.docInfo2024 = getDocumentInfo(this.banDoc2024);
+    this.itemsData2024 = getItemsTableData(this.banDoc2024, this.docInfo2024);
+
+    // File Year 2025
+    let fileName2025 = "file:script/../test/testcases/portfolio_accounting_double_entry_multi_currency_tutorial_salesrecordtest_2024.ac2";
+    this.banDoc2025 = Banana.application.openDocument(fileName2025);
+    if (!this.banDoc2025) {
+        this.testLogger.addFatalError("File not found: " + fileName2025);
+        return;
+    }
+    this.docInfo2025 = getDocumentInfo(this.banDoc2025);
+    this.itemsData2025 = getItemsTableData(this.banDoc2025, this.docInfo2025);
+
 }
 
 // This method will be called at the end of the test case
@@ -81,28 +94,28 @@ TestCalcSalesDialog.prototype.testRecordSalesTransactions = function () {
 
     let testDataObj = {}
     // Test 1, Share
-    testDataObj = getTestData_1(this.banDoc, this.docInfo, this.itemsData);
+    testDataObj = getTestData_1(this.banDoc2024, this.docInfo2024, this.itemsData2024);
     this.testLogger.addSection("Test 1: Sell All Unicredit Shares purchased before.");
     this.testLogger.addSubSection("Test 1: Calculated Data");
     this.testLogger.addJson("Test 1", JSON.stringify(testDataObj.calcSaleData));
     this.testLogger.addSubSection("Test 1: Recorded Data");
     this.testLogger.addJson("Test 1", JSON.stringify(testDataObj.recordsSalesTransactions));
     // Test 2, Share
-    testDataObj = getTestData_2(this.banDoc, this.docInfo, this.itemsData);
+    testDataObj = getTestData_2(this.banDoc2024, this.docInfo2024, this.itemsData2024);
     this.testLogger.addSection("Test 2: Sell first half of Netflix shares purchased before.");
     this.testLogger.addSubSection("Test 2: Calculated Data");
     this.testLogger.addJson("Test 2", JSON.stringify(testDataObj.calcSaleData));
     this.testLogger.addSubSection("Test 2: Recorded Data");
     this.testLogger.addJson("Test 2", JSON.stringify(testDataObj.recordsSalesTransactions));
     // Test 3, Share
-    testDataObj = getTestData_3(this.banDoc, this.docInfo, this.itemsData);
+    testDataObj = getTestData_3(this.banDoc2024, this.docInfo2024, this.itemsData2024);
     this.testLogger.addSection("Test 3: Sell second half of Netflix shares purchased before.");
     this.testLogger.addSubSection("Test 3: Calculated Data");
     this.testLogger.addJson("Test 3", JSON.stringify(testDataObj.calcSaleData));
     this.testLogger.addSubSection("Test 3: Recorded Data");
     this.testLogger.addJson("Test 3", JSON.stringify(testDataObj.recordsSalesTransactions));
     // Test 4, Bond
-    testDataObj = getTestData_4(this.banDoc, this.docInfo, this.itemsData);
+    testDataObj = getTestData_4(this.banDoc2024, this.docInfo2024, this.itemsData2024);
     this.testLogger.addSection("Test 4: Sell all Bnp Paribas Bonds purchased before.");
     this.testLogger.addSubSection("Test 4: Calculated Data");
     this.testLogger.addJson("Test 4", JSON.stringify(testDataObj.calcSaleData));
@@ -112,7 +125,7 @@ TestCalcSalesDialog.prototype.testRecordSalesTransactions = function () {
 }
 
 /**
- * Test 1.
+ * Test 1. (Accounting 2024)
  * Sell All Unicredit Shares purchased before. Row correctly filled with the following data:
  * - ISIN: IT0005239360
  * - Qt: 100
@@ -152,7 +165,7 @@ function getTestData_1(banDoc, docInfo, itemsData) {
 }
 
 /**
- * Test 2.
+ * Test 2. (Accounting 2024)
  * Sell half of Netflix shares purchased before. Row correctly filled with the following data:
  * - ISIN: US123456789
  * - Qt: 100
@@ -161,7 +174,7 @@ function getTestData_1(banDoc, docInfo, itemsData) {
  * - Bank Charges: 42.110
  * Profit on sale, profit on exchange, first half sale
  * Rows does not contains yet the sale code. The result must show the rows to add and the first one modified
- * with the new sale code created, wich should be inv_sale_2
+ * with the new sale code created, wich should be inv_sale_3
  */
 function getTestData_2(banDoc, docInfo, itemsData) {
     let testDataObj = {};
@@ -191,7 +204,7 @@ function getTestData_2(banDoc, docInfo, itemsData) {
 }
 
 /**
- * Test 3.
+ * Test 3. (Accounting 2024)
  * Sell the second half of Netflix shares purchased before. Row correctly filled with the following data:
  * - ISIN: US123456789
  * - Qt: 100
@@ -200,7 +213,7 @@ function getTestData_2(banDoc, docInfo, itemsData) {
  * - Bank Charges: 42.33
  * Profit on sale, loss on exchange, second half sale
  * First row contains a custom code in ExternalReference column, wich should be replaced by the
- * automatically generated one: inv_sale_2 (overwrite existent set always to yes).
+ * automatically generated one: inv_sale_3 (overwrite existent set always to yes).
  * The other rows do not contains any sale code, so for them is added a new one.
  */
 function getTestData_3(banDoc, docInfo, itemsData) {
@@ -231,7 +244,7 @@ function getTestData_3(banDoc, docInfo, itemsData) {
 }
 
 /**
- * Test 4.
+ * Test 4. (Accounting 2024)
  * Sell all the Bnp Paribas bonds. Row correctly filled with the following data:
  * - ISIN: IT000792468
  * - Qt (Nominal value): -5000.00
@@ -241,7 +254,7 @@ function getTestData_3(banDoc, docInfo, itemsData) {
  * - Accrued interests: 25.56
  * Profit on sale, profit on exchange.
  * Rows does not contains yet the sale code. The result must show the rows to add and the first one modified
- * with the new sale code created, wich should be inv_sale_2
+ * with the new sale code created, wich should be inv_sale_3
  */
 
 function getTestData_4(banDoc, docInfo, itemsData) {
@@ -270,6 +283,22 @@ function getTestData_4(banDoc, docInfo, itemsData) {
 
     return testDataObj;
 }
+
+/**
+ * Test 5. (2024)
+ * Sell some of the Bancastato shares
+ * - ISIN: CH002775224
+ * - Qt : -150.00
+ * - Current (Market) Price: 5.7944
+ * - Exhange rate: 1.00
+ * - Bank Charges: 15.00
+ * Loss on sale
+ * Rows constains already the correct sale codes (inv_sale_2, inv_sale_2.1, ...)
+ * We should See only three rows modified, riprendere 04.02.
+ */
+
+
+
 
 /**
  * Params object should have the following properties:

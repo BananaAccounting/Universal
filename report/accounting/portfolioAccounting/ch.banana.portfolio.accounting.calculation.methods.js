@@ -389,7 +389,6 @@ function calculateStockSaleData(banDoc, docInfo, itemObj, dlgParams, currentRowN
     accountCard = banDoc.currentCard(itemAccount);
     accountCardData = getAccountCardData(banDoc, docInfo, itemObj, accountCard, itemAccount);
     itemCardData = getItemCardDataList(itemObj, accountCardData, journalData, unitPriceColDecimals, currentRowNr);
-    Banana.Ui.showText(JSON.stringify(itemCardData));
 
     if (!itemCardData || isObjectEmpty(itemCardData))
         return saleData;
@@ -468,7 +467,7 @@ function getAccountCardData(banDoc, docInfo, itemObj, accountCard, account) {
     for (var i = 0; i < accountCard.rowCount; i++) {
         let tRow = accountCard.row(i);
         let trType = tRow.value("JOperationType");
-        if (tRow.value("ItemsId") == itemName) { // 1 = OPERATIONTYPE_OPENING.
+        if (tRow.value("ItemsId") == itemName) {
             let trData = {};
             trData.rowNr = tRow.rowNr;
             trData.originTable = tRow.value("JTableOrigin");
