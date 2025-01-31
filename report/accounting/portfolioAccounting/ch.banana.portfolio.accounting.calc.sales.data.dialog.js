@@ -141,7 +141,8 @@ class DlgCalculateSaleDataManager {
         let exRateColumn = this.banDoc.table("Transactions").column("ExchangeRate", "Base");
         this.unitPriceColDecimals = unitPriceColumn.decimal; // we want to use the same decimals as defined in the unit price column.
         this.currentPriceColDecimals = currentPriceColumn.decimal;
-        this.exRateColDecimals = exRateColumn.decimal;
+        if (exRateColumn)
+            this.exRateColDecimals = exRateColumn.decimal;
 
     }
 
