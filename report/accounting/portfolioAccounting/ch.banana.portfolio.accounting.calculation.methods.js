@@ -446,6 +446,8 @@ function getClosestPreviousObjByRowNr(accountCardData, currentRowNr) {
 
 function getAccountCardData(banDoc, docInfo, itemName, accountCard, account) {
     let transactions = [];
+    let accBalance = "";
+    let accBalanceCurr = "";
     let accInForeignCurr = accountIsInForeignCurrency(banDoc, docInfo, account);
     for (var i = 0; i < accountCard.rowCount; i++) {
         let tRow = accountCard.row(i);
@@ -465,11 +467,26 @@ function getAccountCardData(banDoc, docInfo, itemName, accountCard, account) {
             trData.unitPrice = tRow.value("UnitPrice");
             trData.debitBase = tRow.value("JDebitAmount"); //debit value in base currency
             trData.creditBase = tRow.value("JCreditAmount"); //credit value base currency
-            trData.balanceBase = tRow.value("JBalance");
+            /** Calculate the balances manually, as an account can include more items, 
+             * we need to calculate the balance only for the current item.
+             * */
+            if (trData.debitBase !== "") {
+                accBalance = Banana.SDecimal.add(accBalance, trData.debitBase);
+            }
+            if (trData.creditBase !== "") {
+                accBalance = Banana.SDecimal.subtract(accBalance, trData.creditBase);
+            }
+            trData.balanceBase = accBalance;
             if (accInForeignCurr) {
                 trData.debitCurr = tRow.value("JDebitAmountAccountCurrency");
                 trData.creditCurr = tRow.value("JCreditAmountAccountCurrency");
-                trData.balanceCurr = tRow.value("JBalanceAccountCurrency");
+                if (trData.debitCurr !== "") {
+                    accBalanceCurr = Banana.SDecimal.add(accBalanceCurr, trData.debitCurr);
+                }
+                if (trData.creditCurr !== "") {
+                    accBalanceCurr = Banana.SDecimal.subtract(accBalanceCurr, trData.creditCurr);
+                }
+                trData.balanceCurr = accBalanceCurr;
             }
 
             transactions.push(trData);
@@ -688,7 +705,7 @@ function getItemCurrentValues(openingData, accountCardData, currentRowNr) {
             return currentValuesObj;
         }
     } else {
-        trObj = accountCardData.slice(-1)
+        trObj = accountCardData[accountCardData.length - 1];
     }
 
     currentValuesObj.itemAvgCost = trObj.accAvgCost;

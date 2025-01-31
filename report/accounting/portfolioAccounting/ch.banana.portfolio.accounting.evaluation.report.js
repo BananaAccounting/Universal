@@ -260,19 +260,20 @@ function getAppraisalDataList_transactions(banDoc, docInfo, itemsData, journalDa
   //Get rows data.
   for (var key in itemsData) {
     if (itemsData[key].account === account) {
-      let itemName = itemsData[key].item;
+      let itemId = itemsData[key].item;
+      let itemObj = itemsData.find(obj => obj.item === itemId);
       accountCard = banDoc.currentCard(account);
-      let accountCardData = getAccountCardData(banDoc, docInfo, itemName, accountCard, account);
+      let accountCardData = getAccountCardData(banDoc, docInfo, itemId, accountCard, account);
       let appraisalData = {};
-      appraisalData.item = itemName;
+      appraisalData.item = itemId;
       appraisalData.description = itemsData[key].description;
       appraisalData.currency = getAccountCurrency(account, banDoc); // Per ora usiamo la valuta del conto, che è quella effettiva, e non quella nella tab items, siccome non ce nessun controllo.
       appraisalData.currentQt = itemsData[key].currentQt;
       //get the average cost
       appraisalData.avgCost = "";
-      let itemCardData = getItemCardDataList(accountCardData, journalData, unitPriceColDecimals);
-      if (itemCardData.length >= 1) {
-        appraisalData.avgCost = itemCardData.slice(-1)[0].accAvgCost; // controllare qui se funziona correttamente. 27.01.2025
+      let itemCardData = getItemCardDataList(itemObj, accountCardData, journalData, unitPriceColDecimals);
+      if (itemCardData && itemCardData.currentValues) {
+        appraisalData.avgCost = itemCardData.currentValues.itemAvgCost;
       }
       appraisalData.totalCost = Banana.SDecimal.multiply(appraisalData.currentQt, appraisalData.avgCost);
       /**

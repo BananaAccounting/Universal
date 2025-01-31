@@ -349,9 +349,9 @@ function getItemsDataList(banDoc, docInfo, itemsData, accountCard, journalData, 
                 itemData.totalCreditCurr = getSum(accountCardData, "creditCurr");
                 itemData.totalBalanceCurr = getBalance(accountCardData, "debitCurr", "creditCurr");
             }
-            if (itemData.currentValues) {
-                itemData.totalQtBalance = itemData.itemCardData.currentValues.itemQtBalance;//I take the last calculated value
-                itemData.totalCurrAvgCost = itemData.itemCardData.currentValues.itemAvgCost;//I take the last calculated value
+            if (itemCardData.currentValues) {
+                itemData.totalQtBalance = itemCardData.currentValues.itemQtBalance;//I take the last calculated value
+                itemData.totalCurrAvgCost = itemCardData.currentValues.itemAvgCost;//I take the last calculated value
             }
 
             itemsDataList.push(itemData);
@@ -370,7 +370,6 @@ function getAccountsDataList(banDoc, docInfo, accountsList, itemsData) {
     let journal = "";
     let journalData = "";
     let trIdList = "";
-    let account = "";
 
     journal = banDoc.journal(banDoc.ORIGINTYPE_CURRENT, banDoc.ACCOUNTTYPE_NONE);
     journalData = getJournalData(docInfo, journal);
