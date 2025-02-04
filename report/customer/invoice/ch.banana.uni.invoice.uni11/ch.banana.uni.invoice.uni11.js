@@ -1,4 +1,4 @@
-// Copyright [2024] [Banana.ch SA - Lugano Switzerland]
+// Copyright [2025] [Banana.ch SA - Lugano Switzerland]
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.uni.invoice.uni11
 // @api = 1.0
-// @pubdate = 2024-12-16
+// @pubdate = 2025-02-04
 // @publisher = Banana.ch SA
 // @description = [UNI11] Programmable Invoice layout
 // @description.it = [UNI11] Layout Fattura Programmabile
@@ -1747,6 +1747,7 @@ function columnNamesToValues(invoiceObj, text) {
   var state = invoiceObj.customer_info.state;
   var country = invoiceObj.customer_info.country;
   var countryCode = invoiceObj.customer_info.country_code;
+  var emailWork = invoiceObj.customer_info.email;
 
   // Replaces column names with values (only with the advanced license)
   if (BAN_ADVANCED) {
@@ -1834,6 +1835,11 @@ function columnNamesToValues(invoiceObj, text) {
       text = text.replace(/<CountryCode>/g, countryCode.trim());
     } else {
       text = text.replace(/<CountryCode>/g, "<>");
+    }
+    if (emailWork && text.indexOf("<EmailWork>") > -1) {
+      text = text.replace(/<EmailWork>/g, emailWork.trim());
+    } else {
+      text = text.replace(/<EmailWork>/g, "<>");
     }
     text = text.replace(/ \n/g,"");
     text = text.replace(/<> /g,"");
@@ -2032,6 +2038,7 @@ function getInvoiceAddress(invoiceAddress, userParam) {
   var state = invoiceAddress.state;
   var country = invoiceAddress.country;
   var countryCode = invoiceAddress.country_code;
+  var emailWork = invoiceAddress.email;
 
   var address = "";
 
@@ -2100,6 +2107,10 @@ function getInvoiceAddress(invoiceAddress, userParam) {
   
   if (address.indexOf("<CountryCode>") > -1 && countryCode) {
     address = address.replace(/<CountryCode>/g, countryCode.trim());
+  }
+
+  if (address.indexOf("<EmailWork>") > -1 && emailWork) {
+    address = address.replace(/<EmailWork>/g, emailWork.trim());
   }
 
   //replace all tags not replaced ("<text>") with an empty string
