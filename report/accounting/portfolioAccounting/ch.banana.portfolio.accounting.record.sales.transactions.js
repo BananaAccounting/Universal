@@ -927,7 +927,13 @@ var RecordSalesTransactions = class RecordSalesTransactions {
 
     rowExistenceChecked(rowObj, transactionType) {
         let rowNr = this.findRowByOperationSaleCode(rowObj.fields["ExternalReference"]);
-        if (this.showMsgDlg && rowNr >= 0) {
+        if ((rowNr >= 0)) {
+            if (!this.showMsgDlg) {
+                rowObj.operation.name = "modify";
+                rowObj.operation.sequence = rowNr.toString();
+                return true;
+            }
+
             if (this.getOverwriteTransactionDlg(transactionType)) {
                 rowObj.operation.name = "modify";
                 rowObj.operation.sequence = rowNr.toString();
@@ -935,6 +941,9 @@ var RecordSalesTransactions = class RecordSalesTransactions {
             }
         } else
             return true;
+
+
+        return false;
     }
 
     customExternalReferenceChecked(currentExtRef, rowNr) {

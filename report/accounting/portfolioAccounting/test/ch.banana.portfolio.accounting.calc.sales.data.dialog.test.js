@@ -51,7 +51,7 @@ TestCalcSalesDialog.prototype.initTestCase = function () {
     this.itemsData2024 = getItemsTableData(this.banDoc2024, this.docInfo2024);
 
     // File Year 2025
-    let fileName2025 = "file:script/../test/testcases/portfolio_accounting_double_entry_multi_currency_tutorial_salesrecordtest_2024.ac2";
+    let fileName2025 = "file:script/../test/testcases/portfolio_accounting_double_entry_multi_currency_tutorial_salesrecordtest_2025.ac2";
     this.banDoc2025 = Banana.application.openDocument(fileName2025);
     if (!this.banDoc2025) {
         this.testLogger.addFatalError("File not found: " + fileName2025);
@@ -121,6 +121,27 @@ TestCalcSalesDialog.prototype.testRecordSalesTransactions = function () {
     this.testLogger.addJson("Test 4", JSON.stringify(testDataObj.calcSaleData));
     this.testLogger.addSubSection("Test 4: Recorded Data");
     this.testLogger.addJson("Test 4", JSON.stringify(testDataObj.recordsSalesTransactions));
+    // Test 5, Share
+    testDataObj = getTestData_5(this.banDoc2024, this.docInfo2024, this.itemsData2024);
+    this.testLogger.addSection("Test 5: Sell part of BancaStato shares purchased before.");
+    this.testLogger.addSubSection("Test 5: Calculated Data");
+    this.testLogger.addJson("Test 5", JSON.stringify(testDataObj.calcSaleData));
+    this.testLogger.addSubSection("Test 5: Recorded Data");
+    this.testLogger.addJson("Test 5", JSON.stringify(testDataObj.recordsSalesTransactions));
+    // Test 6, Share
+    testDataObj = getTestData_6(this.banDoc2025, this.docInfo2025, this.itemsData2025);
+    this.testLogger.addSection("Test 6: Sell all UBS shares purchased in the previous year.");
+    this.testLogger.addSubSection("Test 6: Calculated Data");
+    this.testLogger.addJson("Test 6", JSON.stringify(testDataObj.calcSaleData));
+    this.testLogger.addSubSection("Test 6: Recorded Data");
+    this.testLogger.addJson("Test 6", JSON.stringify(testDataObj.recordsSalesTransactions));
+    // Test 7, Share
+    testDataObj = getTestData_7(this.banDoc2025, this.docInfo2025, this.itemsData2025);
+    this.testLogger.addSection("Test 7: Sell an another part of BancaStato shares purchased in the previous year.");
+    this.testLogger.addSubSection("Test 7: Calculated Data");
+    this.testLogger.addJson("Test 7", JSON.stringify(testDataObj.calcSaleData));
+    this.testLogger.addSubSection("Test 7: Recorded Data");
+    this.testLogger.addJson("Test 7", JSON.stringify(testDataObj.recordsSalesTransactions));
 
 }
 
@@ -134,7 +155,7 @@ TestCalcSalesDialog.prototype.testRecordSalesTransactions = function () {
  * - Bank Charges: 25.00
  * Loss on sale, profit on exchange, full sale.
  * Rows already contains the sales code into the External reference column, so the result
- * must show just the rows to add (overwrite existent set always to yes), without any change to first one.
+ * must show just the rows to mofify (overwrite existent set always to yes), without any change to first one.
  */
 function getTestData_1(banDoc, docInfo, itemsData) {
 
@@ -285,7 +306,7 @@ function getTestData_4(banDoc, docInfo, itemsData) {
 }
 
 /**
- * Test 5. (2024)
+ * Test 5. (Accounting 2024)
  * Sell some of the Bancastato shares
  * - ISIN: CH002775224
  * - Qt : -150.00
@@ -294,8 +315,115 @@ function getTestData_4(banDoc, docInfo, itemsData) {
  * - Bank Charges: 15.00
  * Loss on sale
  * Rows constains already the correct sale codes (inv_sale_2, inv_sale_2.1, ...)
- * We should See only three rows modified, riprendere 04.02.
+ * We should See only three rows modified (overwrited as already exists) while the main row is already on the 
+ * correct format.
  */
+function getTestData_5(banDoc, docInfo, itemsData) {
+    let testDataObj = {};
+    testDataObj.calcSaleData = {};
+    testDataObj.recordsSalesTransactions = {};
+
+    let userParams = {};
+    let itemObj = {};
+    let calcSaleData = {};
+    let currentRowNr = -1;
+    let currentRowObj = {};
+
+    // Calculate Data
+    userParams = getUserParams("5");
+    itemObj = itemsData.find(obj => obj.item === userParams.selectedItem);
+    currentRowNr = 68;
+    currentRowObj = getCurrentRowObj(banDoc, currentRowNr, "Transactions");
+    calcSaleData = calculateStockSaleData(banDoc, docInfo, itemObj, userParams, currentRowNr);
+    const recordSalesTransactions = new RecordSalesTransactions(banDoc, docInfo, calcSaleData,
+        userParams, itemsData, itemObj, currentRowObj, false);
+
+    //Save the data into test object
+    testDataObj.calcSaleData = calcSaleData;
+    testDataObj.recordsSalesTransactions = recordSalesTransactions.getRecordSalesTransactions();
+
+    return testDataObj;
+}
+
+/**
+ * Test 6. (Accounting 2025)
+ * Sell all the UBS Shares purchased the previous year.
+ * - ISIN: CH003886335
+ * - Qt : -200.00
+ * - Current (Market) Price: 12.75
+ * - Exhange rate: 1.00
+ * - Bank Charges: 22
+ * Loss on sale
+ * Rows constains already the correct sale codes (inv_sale_1, inv_sale_1.2, ...)
+ * We should See only three rows modified (overwrited as already exists) while the main row is already on the 
+ * correct format.
+ */
+function getTestData_6(banDoc, docInfo, itemsData) {
+    let testDataObj = {};
+    testDataObj.calcSaleData = {};
+    testDataObj.recordsSalesTransactions = {};
+
+    let userParams = {};
+    let itemObj = {};
+    let calcSaleData = {};
+    let currentRowNr = -1;
+    let currentRowObj = {};
+
+    // Calculate Data
+    userParams = getUserParams("6");
+    itemObj = itemsData.find(obj => obj.item === userParams.selectedItem);
+    currentRowNr = 3;
+    currentRowObj = getCurrentRowObj(banDoc, currentRowNr, "Transactions");
+    calcSaleData = calculateStockSaleData(banDoc, docInfo, itemObj, userParams, currentRowNr);
+    const recordSalesTransactions = new RecordSalesTransactions(banDoc, docInfo, calcSaleData,
+        userParams, itemsData, itemObj, currentRowObj, false);
+
+    //Save the data into test object
+    testDataObj.calcSaleData = calcSaleData;
+    testDataObj.recordsSalesTransactions = recordSalesTransactions.getRecordSalesTransactions();
+
+    return testDataObj;
+}
+
+/**
+ * Test 7. (Accounting 2025)
+ * Sell an another part of BancaStato shares.
+ * - ISIN: CH002775224
+ * - Qt : -200.00
+ * - Current (Market) Price: 6.0201
+ * - Exhange rate: 1.00
+ * - Bank Charges: 15
+ * Profit on sale
+ * Rows constains already the correct sale codes (inv_sale_2, inv_sale_2.1, ...)
+ * We should See only three rows modified (overwrited as already exists) while the main row is already on the 
+ * correct format.
+ */
+function getTestData_7(banDoc, docInfo, itemsData) {
+    let testDataObj = {};
+    testDataObj.calcSaleData = {};
+    testDataObj.recordsSalesTransactions = {};
+
+    let userParams = {};
+    let itemObj = {};
+    let calcSaleData = {};
+    let currentRowNr = -1;
+    let currentRowObj = {};
+
+    // Calculate Data
+    userParams = getUserParams("7");
+    itemObj = itemsData.find(obj => obj.item === userParams.selectedItem);
+    currentRowNr = 8;
+    currentRowObj = getCurrentRowObj(banDoc, currentRowNr, "Transactions");
+    calcSaleData = calculateStockSaleData(banDoc, docInfo, itemObj, userParams, currentRowNr);
+    const recordSalesTransactions = new RecordSalesTransactions(banDoc, docInfo, calcSaleData,
+        userParams, itemsData, itemObj, currentRowObj, false);
+
+    //Save the data into test object
+    testDataObj.calcSaleData = calcSaleData;
+    testDataObj.recordsSalesTransactions = recordSalesTransactions.getRecordSalesTransactions();
+
+    return testDataObj;
+}
 
 
 
@@ -340,6 +468,27 @@ function getUserParams(testNr) {
             params.currExRate = "1.13";
             params.bankCharges = "55.00";
             params.accruedInterests = "25.560";
+            return params;
+        case "5":
+            params.selectedItem = "CH002775224";
+            params.quantity = "150";
+            params.marketPrice = "5.7944";
+            params.currExRate = "1.00";
+            params.bankCharges = "15.00";
+            return params;
+        case "6":
+            params.selectedItem = "CH003886335";
+            params.quantity = "200";
+            params.marketPrice = "12.75";
+            params.currExRate = "1.00";
+            params.bankCharges = "22.00";
+            return params;
+        case "7":
+            params.selectedItem = "CH002775224";
+            params.quantity = "200";
+            params.marketPrice = "6.0201";
+            params.currExRate = "1.00";
+            params.bankCharges = "22.00";
             return params;
         default:
             return params;
