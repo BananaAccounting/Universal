@@ -96,7 +96,7 @@ function exec(string, isTest) {
        var transactionsToImport = [];
  
        for (var i = 0; i < transactionsData.length; i++) {
-          if (transactionsData[i]["Date"] && transactionsData[i]["Date"].length >= 16 &&
+          if (transactionsData[i]["Date"] && transactionsData[i]["Date"].length >= 19 &&
              transactionsData[i]["Date"].match(/^[0-9]+\-[0-9]+\-[0-9]+\s[0-9]+\:[0-9]+\:[0-9]+$/)) {
              transactionsToImport.push(this.mapTransaction(transactionsData[i]));
           }
@@ -111,18 +111,18 @@ function exec(string, isTest) {
     }
  
     this.mapTransaction = function (transaction) {
-       let mappedLine = [];
- 
-       mappedLine.push(Banana.Converter.toInternalDateFormat(transaction["Date"], "dd/mm/yyyy"));
-       mappedLine.push(Banana.Converter.toInternalDateFormat("", "dd.mm.yyyy"));
-       mappedLine.push("");
-       mappedLine.push("");
-       mappedLine.push(transaction["Description"]);
-       mappedLine.push(transaction["Category"]);
-       mappedLine.push(Banana.Converter.toInternalNumberFormat("", '.'));
-       mappedLine.push(Banana.Converter.toInternalNumberFormat(transaction["Amount"], '.'));
+        let mappedLine = [];
     
-       return mappedLine;
+        mappedLine.push(Banana.Converter.toInternalDateFormat(transaction["Date"].substring(0, 10), "yyyy.mm.dd"));
+        mappedLine.push(Banana.Converter.toInternalDateFormat("", "yyyy.mm.dd"));
+        mappedLine.push("");
+        mappedLine.push("");
+        mappedLine.push(transaction["Description"] + ', ' + transaction["Category"]);
+        mappedLine.push("");
+        mappedLine.push(Banana.Converter.toInternalNumberFormat("", '.'));
+        mappedLine.push(Banana.Converter.toInternalNumberFormat(transaction["Amount"], '.'));
+        
+        return mappedLine;
     }
  }
  
