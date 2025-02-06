@@ -1,4 +1,4 @@
-%%info_test_name{ch.banana.app.exercisecorrection.test}
+%%info_test_name{ch.banana.app.correctexercises.test}
 \documentclass{report}
 \usepackage{longtable}
 \usepackage{color}
@@ -18,7 +18,7 @@
 \newenvironment{testcase}[1]{\section*{Test: #1}}{\newpage}
 \newenvironment{test}[1]{\section*{Test case: #1}}{}
 %Begin test data
-%%SCRIPT{C:/Users/patrick.pasquillo/Documents/GitHub/Universal/education/extensions/ch.banana.app.exercisecorrection/test/ch.banana.app.exercisecorrection.test.js}
+%%SCRIPT{C:/Users/patrick.pasquillo/Documents/GitHub/Universal/education/extensions/ch.banana.app.exercisecorrection/test/ch.banana.app.correctexercises.test.js}
 %
 \begin{testcase}{TestImportFile}
 \begin{test}{testImportFile}
@@ -975,7 +975,7 @@
     "format": "documentChange"
 }
 \end{jsonvalue}
-\textvalue{TestImportFile 1}\\
+\textvalue{TestImportFile 2}\\
 \begin{jsonvalue}{TestImportFile}
 {
     "data": [
@@ -1928,7 +1928,7 @@
     "format": "documentChange"
 }
 \end{jsonvalue}
-\textvalue{TestImportFile 2}\\
+\textvalue{TestImportFile 4}\\
 \begin{jsonvalue}{TestImportFile}
 {
     "data": [
