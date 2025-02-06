@@ -1,0 +1,19 @@
+{
+    "category": "Import",
+    "country": "universal",
+    "countryCode": "un",
+    "description": "Expensify - Import movements .csv (Banana+ Advanced) [BETA]",
+    "description.en": "Expensify - Import movements .csv (Banana+ Advanced) [BETA]",
+    "description.it": "Expensify - Importa movimenti .csv (Banana+ Advanced) [BETA]",
+    "description.de": "Expensify - Bewegungen importieren .csv (Banana+ Advanced) [BETA]",
+    "description.fr": "Expensify - Importer mouvements .csv (Banana+ Advanced) [BETA]",
+    "id": "ch.banana.uni.import.expensify",
+    "language": "en",
+    "publisher": "Banana.ch",
+    "title": "Expensify - Import movements .csv (Banana+ Advanced) [BETA]",
+    "title.en": "Expensify - Import movements .csv (Banana+ Advanced) [BETA]",
+    "title.it": "Expensify - Importa movimenti .csv (Banana+ Advanced) [BETA]",
+    "title.de": "Expensify - Bewegungen importieren .csv (Banana+ Advanced) [BETA]",
+    "title.fr": "Expensify - Importer mouvements .csv (Banana+ Advanced) [BETA]",
+    "version": "1.0"
+}
