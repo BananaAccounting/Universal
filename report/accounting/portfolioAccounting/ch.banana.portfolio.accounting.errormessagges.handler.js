@@ -14,7 +14,7 @@
 
 /**********************************************************
  * 
- * PORTFOLIO ACCOUNTING ERROR MESSAGES HANDLER
+ * PORTFOLIO (INVESTMENT) ACCOUNTING ERROR MESSAGES HANDLER
  * 
  *********************************************************/
 

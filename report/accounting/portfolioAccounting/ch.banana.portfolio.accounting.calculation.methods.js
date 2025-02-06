@@ -17,7 +17,7 @@
 
 /**********************************************************
  * 
- * PORTFOLIO ACCOUNTING METHODS
+ * PORTFOLIO (INVESTMENT) ACCOUNTING METHODS
  * 
  *********************************************************/
 

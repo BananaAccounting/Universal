@@ -28,7 +28,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         this.dlgParams = dlgParams;
         this.jsonDoc = { "format": "documentChange", "error": "" };
         this.settingsId = "ch.banana.portfolio.accounting.accounts.dialog";
-        this.savedParams = this.getAccountsParams(this.banDoc, this.settingsId); // To access to the defined accounts.
+        this.savedAccountsParams = this.getAccountsParams(this.banDoc, this.settingsId); // To access to the defined accounts.
         this.texts = this.getTransactionsTexts();
         this.itemsData = itemsData;
         this.itemObject = currItemObj;
@@ -315,7 +315,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         row.fields["ItemsId"] = this.itemObject.item;
         row.fields["ExternalReference"] = this.saleTrRef + ".1";
         row.fields["Description"] = this.itemObject.description.trim() + " " + this.texts.bankCharges;
-        row.fields["AccountDebit"] = this.savedParams.profitAndLossAccounts.chargesAccount || this.texts.bankChargesPlaceHolder;
+        row.fields["AccountDebit"] = this.savedAccountsParams.profitAndLossAccounts.chargesAccount || this.texts.bankChargesPlaceHolder;
         row.fields["Amount"] = Banana.Converter.toInternalNumberFormat(bankCharges);
 
         return row;
@@ -336,7 +336,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         row.fields["ItemsId"] = this.itemObject.item;
         row.fields["ExternalReference"] = this.saleTrRef + ".1";
         row.fields["Description"] = this.itemObject.description.trim() + " " + this.texts.bankCharges;
-        row.fields["AccountDebit"] = this.savedParams.profitAndLossAccounts.chargesAccount || this.texts.bankChargesPlaceHolder;
+        row.fields["AccountDebit"] = this.savedAccountsParams.profitAndLossAccounts.chargesAccount || this.texts.bankChargesPlaceHolder;
         row.fields["AmountCurrency"] = Banana.Converter.toInternalNumberFormat(bankCharges);
         row.fields["ExchangeCurrency"] = this.itemObject.currency;
         row.fields["ExchangeRate"] = this.dlgParams.currExRate;
@@ -359,7 +359,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         row.fields["ItemsId"] = this.itemObject.item;
         row.fields["ExternalReference"] = this.saleTrRef + ".2";
         row.fields["Description"] = this.itemObject.description + " " + this.texts.otherCharges;
-        row.fields["AccountDebit"] = this.savedParams.profitAndLossAccounts.otherCostsAccount;
+        row.fields["AccountDebit"] = this.savedAccountsParams.profitAndLossAccounts.otherCostsAccount;
         row.fields["Amount"] = Banana.Converter.toInternalNumberFormat(otherChargesAmount);
 
         return row;
@@ -380,7 +380,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         row.fields["ItemsId"] = this.itemObject.item;
         row.fields["ExternalReference"] = this.saleTrRef + ".2";
         row.fields["Description"] = this.itemObject.description.trim() + " " + this.texts.otherCharges;
-        row.fields["AccountDebit"] = this.savedParams.profitAndLossAccounts.otherCostsAccount;
+        row.fields["AccountDebit"] = this.savedAccountsParams.profitAndLossAccounts.otherCostsAccount;
         row.fields["AmountCurrency"] = Banana.Converter.toInternalNumberFormat(otherChargesAmount);
         row.fields["ExchangeCurrency"] = this.itemObject.currency;
         row.fields["ExchangeRate"] = this.dlgParams.currExRate;
@@ -400,7 +400,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         row.fields["ItemsId"] = this.itemObject.item;
         row.fields["ExternalReference"] = this.saleTrRef + ".3";
         row.fields["Description"] = this.itemObject.description + " " + this.texts.accruedInterests;
-        row.fields["AccountCredit"] = this.savedParams.profitAndLossAccounts.interestEarnedAccount || this.texts.accruedInterestsPlaceHolder;
+        row.fields["AccountCredit"] = this.savedAccountsParams.profitAndLossAccounts.interestEarnedAccount || this.texts.accruedInterestsPlaceHolder;
         row.fields["Amount"] = Banana.Converter.toInternalNumberFormat(this.salesData.accruedInterests);
 
         return row;
@@ -418,7 +418,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         row.fields["ItemsId"] = this.itemObject.item;
         row.fields["ExternalReference"] = this.saleTrRef + ".3";
         row.fields["Description"] = this.itemObject.description.trim() + " " + this.texts.accruedInterests;
-        row.fields["AccountCredit"] = this.savedParams.profitAndLossAccounts.interestEarnedAccount || this.texts.accruedInterestsPlaceHolder;
+        row.fields["AccountCredit"] = this.savedAccountsParams.profitAndLossAccounts.interestEarnedAccount || this.texts.accruedInterestsPlaceHolder;
         row.fields["AmountCurrency"] = Banana.Converter.toInternalNumberFormat(this.salesData.accruedInterests);
         row.fields["ExchangeCurrency"] = this.itemObject.currency;
         row.fields["ExchangeRate"] = this.dlgParams.currExRate;
@@ -480,12 +480,12 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         row.fields["ExternalReference"] = this.saleTrRef + ".5";
         row.fields["Description"] = this.itemObject.description + " " + this.texts.resultOnSale;
         if (isLossOnSale) {
-            row.fields["AccountDebit"] = this.savedParams.valueChangingcontraAccounts.realizedLossAccount
+            row.fields["AccountDebit"] = this.savedAccountsParams.valueChangingcontraAccounts.realizedLossAccount
                 || this.texts.realizedLossAccountPlaceHolder;
             row.fields["AccountCredit"] = itemAccount;
         } else {
             row.fields["AccountDebit"] = itemAccount;
-            row.fields["AccountCredit"] = this.savedParams.valueChangingcontraAccounts.realizedGainAccount
+            row.fields["AccountCredit"] = this.savedAccountsParams.valueChangingcontraAccounts.realizedGainAccount
                 || this.texts.realizedGainAccountPlaceHolder;
         }
         row.fields["Amount"] = Banana.Converter.toInternalNumberFormat(this.salesData.saleResult);
@@ -509,12 +509,12 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         row.fields["ExternalReference"] = this.saleTrRef + ".5";
         row.fields["Description"] = this.itemObject.description.trim() + " " + this.texts.resultOnSale;
         if (isLossOnSale) {
-            row.fields["AccountDebit"] = this.savedParams.valueChangingcontraAccounts.realizedLossAccount
+            row.fields["AccountDebit"] = this.savedAccountsParams.valueChangingcontraAccounts.realizedLossAccount
                 || this.texts.realizedLossAccountPlaceHolder;
             row.fields["AccountCredit"] = itemAccount;
         } else {
             row.fields["AccountDebit"] = itemAccount;
-            row.fields["AccountCredit"] = this.savedParams.valueChangingcontraAccounts.realizedGainAccount
+            row.fields["AccountCredit"] = this.savedAccountsParams.valueChangingcontraAccounts.realizedGainAccount
                 || this.texts.realizedGainAccountPlaceHolder;
         }
         row.fields["AmountCurrency"] = Banana.Converter.toInternalNumberFormat(this.salesData.saleResult);
@@ -540,12 +540,12 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         row.fields["ExternalReference"] = this.saleTrRef + ".6";
         row.fields["Description"] = this.itemObject.description.trim() + " " + this.texts.resultExchange;
         if (isLossOnExchange) {
-            row.fields["AccountDebit"] = this.savedParams.valueChangingcontraAccounts.realizedExRateLossAccount
+            row.fields["AccountDebit"] = this.savedAccountsParams.valueChangingcontraAccounts.realizedExRateLossAccount
                 || this.texts.exRateLossAccounPlaceHolder;
             row.fields["AccountCredit"] = itemAccount;
         } else {
             row.fields["AccountDebit"] = itemAccount;
-            row.fields["AccountCredit"] = this.savedParams.valueChangingcontraAccounts.realizedExRateGainAccount
+            row.fields["AccountCredit"] = this.savedAccountsParams.valueChangingcontraAccounts.realizedExRateGainAccount
                 || this.texts.exRateGainAccounPlaceHolder;
         }
 
@@ -648,7 +648,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         row.fields["ItemsId"] = this.itemObject.item;
         row.fields["ExternalReference"] = this.saleTrRef + ".1";
         row.fields["Description"] = this.itemObject.description.trim() + " " + this.texts.bankCharges;
-        row.fields["AccountDebit"] = this.savedParams.profitAndLossAccounts.chargesAccount || this.texts.bankChargesPlaceHolder;
+        row.fields["AccountDebit"] = this.savedAccountsParams.profitAndLossAccounts.chargesAccount || this.texts.bankChargesPlaceHolder;
         row.fields["Amount"] = Banana.Converter.toInternalNumberFormat(bankCharges);
 
         return row;
@@ -669,7 +669,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         row.fields["ItemsId"] = this.itemObject.item;
         row.fields["ExternalReference"] = this.saleTrRef + ".2";
         row.fields["Description"] = this.itemObject.description.trim() + " " + this.texts.otherCharges;
-        row.fields["AccountDebit"] = this.savedParams.profitAndLossAccounts.otherCostsAccount;
+        row.fields["AccountDebit"] = this.savedAccountsParams.profitAndLossAccounts.otherCostsAccount;
         row.fields["Amount"] = Banana.Converter.toInternalNumberFormat(otherChargesAmount);
 
         return row;
@@ -709,12 +709,12 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         row.fields["ExternalReference"] = this.saleTrRef + ".4";
         row.fields["Description"] = this.itemObject.description.trim() + " " + this.texts.resultOnSale;
         if (isLossOnSale) {
-            row.fields["AccountDebit"] = this.savedParams.valueChangingcontraAccounts.realizedLossAccount
+            row.fields["AccountDebit"] = this.savedAccountsParams.valueChangingcontraAccounts.realizedLossAccount
                 || this.texts.realizedLossAccountPlaceHolder;
             row.fields["AccountCredit"] = itemAccount;
         } else {
             row.fields["AccountDebit"] = itemAccount;
-            row.fields["AccountCredit"] = this.savedParams.valueChangingcontraAccounts.realizedGainAccount
+            row.fields["AccountCredit"] = this.savedAccountsParams.valueChangingcontraAccounts.realizedGainAccount
                 || this.texts.realizedGainAccountPlaceHolder;
         }
         row.fields["Amount"] = Banana.Converter.toInternalNumberFormat(this.salesData.saleResult);
@@ -738,12 +738,12 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         row.fields["ExternalReference"] = this.saleTrRef + ".5";
         row.fields["Description"] = this.itemObject.description.trim() + " " + this.texts.resultExchange;
         if (isLossOnExchange) {
-            row.fields["AccountDebit"] = this.savedParams.valueChangingcontraAccounts.realizedExRateLossAccount
+            row.fields["AccountDebit"] = this.savedAccountsParams.valueChangingcontraAccounts.realizedExRateLossAccount
                 || this.texts.exRateLossAccounPlaceHolder;
             row.fields["AccountCredit"] = itemAccount;
         } else {
             row.fields["AccountDebit"] = itemAccount;
-            row.fields["AccountCredit"] = this.savedParams.valueChangingcontraAccounts.realizedExRateGainAccount
+            row.fields["AccountCredit"] = this.savedAccountsParams.valueChangingcontraAccounts.realizedExRateGainAccount
                 || this.texts.exRateGainAccounPlaceHolder;
         }
 
@@ -777,12 +777,12 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         row.fields["ExternalReference"] = this.saleTrRef + ".4";
         row.fields["Description"] = this.itemObject.description.trim() + " " + this.texts.resultOnSale;
         if (isLossOnSale) {
-            row.fields["AccountDebit"] = this.savedParams.valueChangingcontraAccounts.realizedLossAccount
+            row.fields["AccountDebit"] = this.savedAccountsParams.valueChangingcontraAccounts.realizedLossAccount
                 || this.texts.realizedLossAccountPlaceHolder;
             row.fields["AccountCredit"] = itemAccount;
         } else {
             row.fields["AccountDebit"] = itemAccount;
-            row.fields["AccountCredit"] = this.savedParams.valueChangingcontraAccounts.realizedGainAccount
+            row.fields["AccountCredit"] = this.savedAccountsParams.valueChangingcontraAccounts.realizedGainAccount
                 || this.texts.realizedGainAccountPlaceHolder;
         }
         row.fields["AmountCurrency"] = Banana.Converter.toInternalNumberFormat(this.salesData.saleResult);
@@ -841,7 +841,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         row.fields["ItemsId"] = this.itemObject.item;
         row.fields["ExternalReference"] = this.saleTrRef + ".1";
         row.fields["Description"] = this.itemObject.description.trim() + " " + this.texts.bankCharges;
-        row.fields["AccountDebit"] = this.savedParams.profitAndLossAccounts.chargesAccount || this.texts.bankChargesPlaceHolder;
+        row.fields["AccountDebit"] = this.savedAccountsParams.profitAndLossAccounts.chargesAccount || this.texts.bankChargesPlaceHolder;
         row.fields["AmountCurrency"] = Banana.Converter.toInternalNumberFormat(bankCharges);
         row.fields["ExchangeCurrency"] = this.itemObject.currency;
         row.fields["ExchangeRate"] = this.dlgParams.currExRate;
@@ -864,7 +864,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         row.fields["ItemsId"] = this.itemObject.item;
         row.fields["ExternalReference"] = this.saleTrRef + ".2";
         row.fields["Description"] = this.itemObject.description.trim() + " " + this.texts.otherCharges;
-        row.fields["AccountDebit"] = this.savedParams.profitAndLossAccounts.otherCostsAccount;
+        row.fields["AccountDebit"] = this.savedAccountsParams.profitAndLossAccounts.otherCostsAccount;
         row.fields["AmountCurrency"] = Banana.Converter.toInternalNumberFormat(otherChargesAmount);
         row.fields["ExchangeCurrency"] = this.itemObject.currency;
         row.fields["ExchangeRate"] = this.dlgParams.currExRate;

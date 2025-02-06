@@ -35,7 +35,6 @@ function exec(inData, options) {
     let selectedItem = ""; //Selected by the user
     let docInfo = "";
     let itemsData = "";
-    let itemAccount = "";
     const dlgTitle = "Security ISIN";
     const dlgLabel = "Enter the ISIN number of the security";
     const scriptId = "ch.banana.portfolio.accounting.security.card.report.js";
