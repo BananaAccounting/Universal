@@ -23,14 +23,13 @@ function TestImportFile() {
 TestImportFile.prototype.initTestCase = function () {
 
   this.testLogger = Test.logger;
-  this.fileAC2Path1 = [];
-  this.fileAC2Path2 = [];
-  this.fileAC2Path1.push("file:script/../test/testcases/student-result-file-1.ac2");
-  this.fileAC2Path2.push("file:script/../test/testcases/teacher-solution-file-1.ac2");
-  this.fileAC2Path1.push("file:script/../test/testcases/student-result-file-2.ac2");
-  this.fileAC2Path2.push("file:script/../test/testcases/teacher-solution-file-2.ac2");
-  this.fileAC2Path1.push("file:script/../test/testcases/student-result-file-3.ac2");
-  this.fileAC2Path2.push("file:script/../test/testcases/teacher-solution-file-3.ac2");
+  this.fileAC2Path = [];
+  this.fileAC2Path.push("file:script/../test/testcases/student-result-file-1.ac2");
+  this.fileAC2Path.push("file:script/../test/testcases/teacher-solution-file-1.ac2");
+  this.fileAC2Path.push("file:script/../test/testcases/student-result-file-2.ac2");
+  this.fileAC2Path.push("file:script/../test/testcases/teacher-solution-file-2.ac2");
+  this.fileAC2Path.push("file:script/../test/testcases/student-result-file-3.ac2");
+  this.fileAC2Path.push("file:script/../test/testcases/teacher-solution-file-3.ac2");
 
 }
 
@@ -49,19 +48,19 @@ TestImportFile.prototype.cleanup = function () {
 TestImportFile.prototype.testImportFile = function () {
 
 
-  for (let i = 0; i < this.fileAC2Path1.length; i++) {
+  for (let i = 0; i < this.fileAC2Path.length; i++) {
 
-    let banDoc1 = Banana.application.openDocument(this.fileAC2Path1[i]);
-    let banDoc2 = Banana.application.openDocument(this.fileAC2Path2[i]);
+    let banDoc1 = Banana.application.openDocument(this.fileAC2Path[i]);
+    let banDoc2 = Banana.application.openDocument(this.fileAC2Path[i + 1]);
     let isTest = true;
 
     let paramcorrections = {};
+    paramcorrections.score = true;
     paramcorrections.datescore = "1";
     paramcorrections.amountscore = "1";
     paramcorrections.debitaccountscore = "1";
     paramcorrections.creditaccountscore = "1";
     paramcorrections.debitcreditaccountsscore = false;
-    paramcorrections.noscore = false;
 
     if (banDoc1 && banDoc2) {
 
@@ -69,7 +68,7 @@ TestImportFile.prototype.testImportFile = function () {
       let result = test.result(paramcorrections);
       this.testLogger.addText("TestImportFile " + i);
       this.testLogger.addJson("TestImportFile", JSON.stringify(result));
-
+      i++;
     }
     else {
 

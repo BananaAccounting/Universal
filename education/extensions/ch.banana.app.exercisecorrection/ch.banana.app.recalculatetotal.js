@@ -62,8 +62,14 @@ var PrintReport = class PrintReport {
         //rows operation for adding the total of the scores at the end of the document
 
         let totalscorerow = this.banDoc1.table("Transactions").findRowByValue("Description", "Total score:");
-        // save the row number of the total score
-        let totalrow = totalscorerow.rowNr;
+        let totalrow;
+        if (this.isTest) {
+            totalrow = '0';
+        }
+        else {
+            // save the row number of the total score
+            totalrow = totalscorerow.rowNr;
+        }
 
         // row for the total score
         let rows = [];
