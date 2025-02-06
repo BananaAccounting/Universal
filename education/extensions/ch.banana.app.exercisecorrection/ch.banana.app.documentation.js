@@ -8,7 +8,7 @@
 // @description.fr = 5. Documentation
 // @description.en = 5. Documentation
 // @doctype = 100
-// @docproperties = teachertool
+// @docproperties = accountingteachingassistant
 // @task = app.command
 // @timeout = -1
 

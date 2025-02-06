@@ -8,7 +8,7 @@
 // @description.fr = 2. Recalculer le total
 // @description.en = 2. Recalculate the total
 // @doctype = 100
-// @docproperties = teachertool
+// @docproperties = accountingteachingassistant
 // @task = app.command
 // @timeout = -1
 // @includejs = ch.banana.app.functions.js
