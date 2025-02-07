@@ -8,7 +8,7 @@
 // @description.fr = 4. Paramètres
 // @description.en = 4. Settings
 // @doctype = 100
-// @docproperties = teachertool
+// @docproperties = accountingteachingassistant
 // @task = app.command
 // @timeout = -1
 // @includejs = ch.banana.app.functions.js
@@ -86,6 +86,9 @@ var PrintSettings = class PrintSettings {
 
     verifyparam(userParam) {
 
+        if (!userParam.score) {
+            userParam.score = true;
+        }
         if (!userParam.datescore) {
             userParam.datescore = '1';
         }
@@ -114,9 +117,6 @@ var PrintSettings = class PrintSettings {
         if (!userParam.debitcreditaccountsscore) {
             userParam.debitcreditaccountsscore = false;
         }
-        if (!userParam.noscore) {
-            userParam.noscore = false;
-        }
 
         return userParam;
     }
@@ -128,8 +128,20 @@ var PrintSettings = class PrintSettings {
         convertedParam.version = '1.0';
         convertedParam.data = []; /* array dei parametri dello script */
 
-        //Date Score
+        //Score
         let currentParam = {};
+        currentParam.name = 'score';
+        currentParam.title = texts.noscore;
+        currentParam.type = 'bool';
+        currentParam.value = userParam.score ? true : false;
+        currentParam.defaultvalue = true;
+        currentParam.readValue = function () {
+            userParam.score = this.value;
+        }
+        convertedParam.data.push(currentParam);
+
+        //Date Score
+        currentParam = {};
         currentParam.name = 'datescore';
         currentParam.title = texts.datescore;
         currentParam.type = 'string';
@@ -188,30 +200,18 @@ var PrintSettings = class PrintSettings {
         }
         convertedParam.data.push(currentParam);
 
-        //No Score
-        currentParam = {};
-        currentParam.name = 'nopoints';
-        currentParam.title = texts.noscore;
-        currentParam.type = 'bool';
-        currentParam.value = userParam.noscore ? true : false;
-        currentParam.defaultvalue = false;
-        currentParam.readValue = function () {
-            userParam.noscore = this.value;
-        }
-        convertedParam.data.push(currentParam);
-
         return convertedParam;
     }
 
     /* Function that initializes the user parameters */
     initParam(paramcorrections) {
         let userParam = {};
+        userParam.score = true;
         userParam.datescore = '1';
         userParam.debitaccountscore = '1';
         userParam.creditaccountscore = '1';
         userParam.amountscore = '1';
         userParam.debitcreditaccountsscore = true;
-        userParam.noscore = false;
 
         return userParam;
     }
@@ -264,7 +264,7 @@ var PrintSettings = class PrintSettings {
             texts.creditaccountscore = "Kreditorenkonto Punkte";
             texts.amountscore = "Betrag Punkte";
             texts.debitcreditaccountsscore = "Debitoren-/Kreditorenkonto separat berechnen?";
-            texts.noscore = "Keine Punkte";
+            texts.noscore = "Punkte";
             texts.changesettingsteacherfile = "Dieser Befehl kann nur in der Lehrerdatei verwendet werden.";
             texts.isnotteacherfile = "Die zu importierende Datei ist keine Lehrerdatei. Bitte wählen Sie eine Lehrerdatei zum Importieren in die Schülerdatei.";
             texts.isnotstudentfile = "Die Ausgangsdatei ist keine Schülerdatei. Bitte öffnen Sie eine Schülerdatei.";
@@ -276,19 +276,19 @@ var PrintSettings = class PrintSettings {
             texts.creditaccountscore = "Compte créditeur Score";
             texts.amountscore = "Montant Score";
             texts.debitcreditaccountsscore = "Comptes débiteur/créditeur calculés séparément?";
-            texts.noscore = "Pas de score";
+            texts.noscore = "Score";
             texts.changesettingsteacherfile = "Cette commande ne peut être utilisée que dans le fichier enseignant.";
             texts.isnotteacherfile = "Le fichier à importer n'est pas un fichier enseignant. Veuillez sélectionner un fichier enseignant à importer dans le fichier étudiant";
             texts.isnotstudentfile = "Le fichier initial n'est pas le fichier de l'étudiant. Veuillez ouvrir un fichier d'étudiant.";
         }
         else if (lang === "it") {
             texts.language = "Lingua";
-            texts.datescore = "Data Punti";
-            texts.debitaccountscore = "Conto Debitore Punti";
-            texts.creditaccountscore = "Conto Creditore Punti";
-            texts.amountscore = "Importo Punti";
+            texts.datescore = "Data Punteggio";
+            texts.debitaccountscore = "Conto Debitore Punteggio";
+            texts.creditaccountscore = "Conto Creditore Punteggio";
+            texts.amountscore = "Importo Punteggio";
             texts.debitcreditaccountsscore = "Conti Debitore/Creditore calcolati separati?";
-            texts.noscore = "Nessun punto";
+            texts.noscore = "Punteggio";
             texts.changesettingsteacherfile = "Questo comando può essere utilizzato solo nel file dell'insegnante.";
             texts.isnotteacherfile = "Il file da importare non è un file dell'insegnante. Selezionare un file dell'insegnante da importare nel file dello studente.";
             texts.isnotstudentfile = "Il file iniziale non è il file dello studente. Si prega di aprire un file studente.";
@@ -300,7 +300,7 @@ var PrintSettings = class PrintSettings {
             texts.creditaccountscore = "Credit Account Score";
             texts.amountscore = "Amount Score";
             texts.debitcreditaccountsscore = "Debit/Credit Accounts calculated separately?";
-            texts.noscore = "No Score";
+            texts.noscore = "Score";
             texts.changesettingsteacherfile = "This command can only be used in the teacher file.";
             texts.isnotteacherfile = "The file to be imported is not a teacher file. Please select a teacher file to import in the student file.";
             texts.isnotstudentfile = "The initial file is not the student file. Please open a student file.";

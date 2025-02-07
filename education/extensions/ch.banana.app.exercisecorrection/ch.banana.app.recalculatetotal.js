@@ -1,6 +1,6 @@
 // @id = ch.banana.app.recalculatetotal
 // @api = 1.0
-// @pubdate = 2025-01-22
+// @pubdate = 2025-02-06
 // @publisher = Banana.ch SA
 // @description = 2. Recalculate the total
 // @description.it = 2. Ricalcola il totale
@@ -8,7 +8,7 @@
 // @description.fr = 2. Recalculer le total
 // @description.en = 2. Recalculate the total
 // @doctype = 100
-// @docproperties = teachertool
+// @docproperties = accountingteachingassistant
 // @task = app.command
 // @timeout = -1
 // @includejs = ch.banana.app.functions.js
@@ -62,8 +62,14 @@ var PrintReport = class PrintReport {
         //rows operation for adding the total of the scores at the end of the document
 
         let totalscorerow = this.banDoc1.table("Transactions").findRowByValue("Description", "Total score:");
-        // save the row number of the total score
-        let totalrow = totalscorerow.rowNr;
+        let totalrow;
+        if (this.isTest) {
+            totalrow = '0';
+        }
+        else {
+            // save the row number of the total score
+            totalrow = totalscorerow.rowNr;
+        }
 
         // row for the total score
         let rows = [];

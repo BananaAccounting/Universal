@@ -1,6 +1,6 @@
 // @id = ch.banana.app.correctexercises
 // @api = 1.0
-// @pubdate = 2025-01-22
+// @pubdate = 2025-02-06
 // @publisher = Banana.ch SA
 // @description = 1. Correct the exercises
 // @description.it = 1. Correggi gli esercizi
@@ -8,7 +8,7 @@
 // @description.fr = 1. Corriger les exercices
 // @description.en = 1. Correct the exercises
 // @doctype = 100
-// @docproperties = teachertool
+// @docproperties = accountingteachingassistant
 // @task = app.command
 // @timeout = -1
 // @includejs = ch.banana.app.functions.js
@@ -41,20 +41,21 @@ function exec() {
 
 var PrintReport = class PrintReport {
   constructor(banDocument1, banDocument2, isTest) {
-    this.banDoc1 = banDocument1;
-    this.banDoc2 = banDocument2;
+    this.studentDoc = banDocument1;
+    this.teacherDoc = banDocument2;
     this.isTest = isTest;
   }
 
-  result() {
+  result(param) {
 
-    let studenttransactions = this.banDoc1.table("Transactions");
+    let studenttransactions = this.studentDoc.table("Transactions");
     let teacherfile;
-    let studentfile = this.banDoc1;
     let teachertransactions;
+    let paramcorrections = {};
 
     if (this.isTest) {
-      teachertransactions = this.banDoc2.table('Transactions');
+      teacherfile = this.teacherDoc;
+      paramcorrections = param;
     }
 
     else {
@@ -63,62 +64,41 @@ var PrintReport = class PrintReport {
       if (!teacherfile) {
         return;
       }
-      teachertransactions = teacherfile.table('Transactions');
+      // Readscript settings
+      paramcorrections = this.result_readsettings(teacherfile);
+      Banana.console.log("paramcorrections: " + JSON.stringify(paramcorrections, null, 2));
     }
 
-    let paramcorrections = {};
+    // this.teacherDoc = teacherfile;
+    teachertransactions = teacherfile.table('Transactions');
 
-    let lang = this.banDoc1.info("Base", "Language");
+    let lang = this.studentDoc.info("Base", "Language");
 
     if (!lang) {
       lang = "en";
     }
 
-    let printsettings = new PrintSettings(this.banDoc1, this.isTest);
+    let printsettings = new PrintSettings(this.studentDoc, this.isTest);
     // Load the texts based on the language code
     let texts = printsettings.loadTexts(lang);
 
+    let teacherrowvalue = this.result_readproperty(teacherfile);
+
     if (!this.isTest) {
-      let teacherrow = teacherfile.table("Transactions").findRowByValue("Doc", "#");
-      if (teacherrow === "undefined" || !teacherrow) {
-        Banana.application.addMessage(texts.isnotteacherfile);
-        return;
-      }
-      let teacherrowvalue = teacherrow.value("Description");
+
       // if the import file is not a teacher file, show a error message
       if (teacherrowvalue !== "teacherfile") {
         Banana.application.addMessage(texts.isnotteacherfile);
         return;
       }
-      let studentrow = studentfile.table("Transactions").findRowByValue("Doc", "Student");
+      let studentrow = this.studentDoc.table("Transactions").findRowByValue("Doc", "Student");
       // if the import file is not a teacher file, show a error message
       if (studentrow === "undefined"  || !studentrow) {
         Banana.application.addMessage(texts.isnotstudentfile);
         return;
       }
 
-
-      // Readscript settings
-      let strData = teacherfile.getScriptSettings("paramcorrections");
-      if (strData.length > 0) {
-        var objData = JSON.parse(strData);
-        if (objData) {
-          paramcorrections = objData;
-        }
-
-      }
     }
-
-    else {
-      paramcorrections = {};
-      paramcorrections.datescore = "1";
-      paramcorrections.amountscore = "1";
-      paramcorrections.debitaccountscore = "1";
-      paramcorrections.creditaccountscore = "1";
-      paramcorrections.debitcreditaccountsscore = false;
-      paramcorrections.noscore = false;
-    }
-
 
     let fullscore = 0;
 
@@ -138,19 +118,46 @@ var PrintReport = class PrintReport {
     Banana.console.log("paramcorrections: " + JSON.stringify(paramcorrections, null, 2));
 
     // Check if the Student file has all the exercise numbers
-    this.check(studenttransactions, teachertransactions);
-    let teacherarray = this.createarrayteacher(teachertransactions, fullscore);
+    this.result_check(studenttransactions, teachertransactions);
+    let teacherarray = this.result_createarrayteacher(teachertransactions, fullscore);
     let teachertransactionsArray = teacherarray[0];
     let docArray = teacherarray[1];
-    let studenttransactionsArray = this.createarraystudent(studenttransactions, docArray, fullscore);
-    let transactions = new PrintReport(this.banDoc1, this.banDoc2, this.isTest);
-    transactions.calculatescore(studenttransactionsArray, teachertransactionsArray, paramcorrections, fullscore);
-    let jsonDoc = transactions.inserttransactions(studenttransactionsArray, teachertransactionsArray, paramcorrections, fullscore);
+    let studenttransactionsArray = this.result_createarraystudent(studenttransactions, docArray, fullscore);
+    let transactions = new PrintReport(this.studentDoc, this.teacherDoc, this.isTest);
+    transactions.result_calculatescore(studenttransactionsArray, teachertransactionsArray, paramcorrections, fullscore);
+    let jsonDoc = transactions.result_inserttransactions(studenttransactionsArray, teachertransactionsArray, paramcorrections, fullscore);
 
     return jsonDoc;
   }
 
-  calculatescore(studenttransactionsArray, teachertransactionsArray, paramcorrections, fullscore) {
+  result_readsettings(teacherfile) {
+
+    let paramcorrections = {};
+
+    // Read the settings
+    let strData = teacherfile.getScriptSettings("paramcorrections");
+    if (strData.length > 0) {
+      var objData = JSON.parse(strData);
+      if (objData) {
+        paramcorrections = objData;
+      }
+    }
+    return paramcorrections;
+  }
+
+  result_readproperty(teacherfile) {
+
+    let teacherrow = teacherfile.table("Transactions").findRowByValue("Doc", "#")
+    if (!teacherrow) {
+      return;
+    }
+    let teacherrowvalue = teacherrow.value("Description");
+    
+    return teacherrowvalue;
+
+  }
+
+  result_calculatescore(studenttransactionsArray, teachertransactionsArray, paramcorrections, fullscore) {
 
     for (let i = 0; i < studenttransactionsArray.length; i++) {
 
@@ -217,6 +224,7 @@ var PrintReport = class PrintReport {
       studenttransactionsArray[i].automaticscore = Math.max(...bestscore);
       // find out first n index of the minimum number in the array bestscore
       let index = bestscore.indexOf(Math.max(...bestscore));
+      Banana.console.log("index: " + index);
       // Concatenate the textscore[index] to the scoreinfo and trim the string
       studenttransactionsArray[i].scoreinfo = textscore[index].debit + textscore[index].credit + textscore[index].amount + textscore[index].date;
       studenttransactionsArray[i].scoreinfo = studenttransactionsArray[i].scoreinfo.trim();
@@ -226,7 +234,7 @@ var PrintReport = class PrintReport {
   }
 
   //Function to write the ac2 file
-  inserttransactions(studenttransactionsArray, teachertransactionsArray, paramcorrections, fullscore) {
+  result_inserttransactions(studenttransactionsArray, teachertransactionsArray, paramcorrections, fullscore) {
 
     let documentChange = { "format": "documentChange", "error": "", "data": [] };
 
@@ -240,7 +248,7 @@ var PrintReport = class PrintReport {
 
     // Add the columns Score and MaxScore to the transactions if they don't exist
 
-    if (!this.banDoc1.table('Transactions').column('AutoScore') || !this.banDoc1.table('Transactions').column('MaxScore') || !this.banDoc1.table('Transactions').column('AdjustedScore') || !this.banDoc1.table('Transactions').column('CorrectionsNotes')) {
+    if (!this.studentDoc.table('Transactions').column('AutoScore') || !this.studentDoc.table('Transactions').column('MaxScore') || !this.studentDoc.table('Transactions').column('AdjustedScore') || !this.studentDoc.table('Transactions').column('CorrectionsNotes')) {
 
       //table for the operations
       let dataUnitTransactions = {};
@@ -256,7 +264,7 @@ var PrintReport = class PrintReport {
       //columns
       let columns = [];
 
-      if (!this.banDoc1.table('Transactions').column('MaxScore')) {
+      if (!this.studentDoc.table('Transactions').column('MaxScore')) {
         //column operation
         column = {};
         column.operation = {};
@@ -271,7 +279,7 @@ var PrintReport = class PrintReport {
         columns.push(column);
       }
 
-      if (!this.banDoc1.table('Transactions').column('AutoScore')) {
+      if (!this.studentDoc.table('Transactions').column('AutoScore')) {
         //column operation
         column = {};
         column.operation = {};
@@ -286,7 +294,7 @@ var PrintReport = class PrintReport {
         columns.push(column);
       }
 
-      if (!this.banDoc1.table('Transactions').column('AdjustedScore')) {
+      if (!this.studentDoc.table('Transactions').column('AdjustedScore')) {
         //column operation
         column = {};
         column.operation = {};
@@ -301,7 +309,7 @@ var PrintReport = class PrintReport {
         columns.push(column);
       }
 
-      if (!this.banDoc1.table('Transactions').column('CorrectionsNotes')) {
+      if (!this.studentDoc.table('Transactions').column('CorrectionsNotes')) {
         //column operation
         column = {};
         column.operation = {};
@@ -324,8 +332,8 @@ var PrintReport = class PrintReport {
     }
     else {
 
-      for (let i = 0; i < this.banDoc1.table("Transactions").rowCount; i++) {
-        if (this.banDoc1.table("Transactions").row(i).value("Section") === "teachertool") {
+      for (let i = 0; i < this.studentDoc.table("Transactions").rowCount; i++) {
+        if (this.studentDoc.table("Transactions").row(i).value("Section") === "teachingassistant") {
           return;
         }
       }
@@ -378,7 +386,7 @@ var PrintReport = class PrintReport {
         row.style = { "fontSize": 0, "bold": true };
         row.operation.sequence = (studenttransactionsArray[i].position - 1).toString() + '.0';
         row.fields = {};
-        row.fields["Section"] = "teachertool";
+        row.fields["Section"] = "teachingassistant";
         rows.push(row);
 
         //row operation for the exercise number title
@@ -388,7 +396,7 @@ var PrintReport = class PrintReport {
         row.style = { "fontSize": 0, "bold": true };
         row.operation.sequence = (studenttransactionsArray[i].position - 1).toString() + '.0';
         row.fields = {};
-        row.fields["Section"] = "teachertool";
+        row.fields["Section"] = "teachingassistant";
         row.fields["Doc"] = studenttransactionsArray[i].doc;
         row.fields["Description"] = "# " + studenttransactionsArray[i].doc;
         rows.push(row);
@@ -415,7 +423,7 @@ var PrintReport = class PrintReport {
             //row fields
             row.fields = {};
             row.fields["Date"] = teachertransactionsArray[k].date;
-            row.fields["Section"] = "teachertool";
+            row.fields["Section"] = "teachingassistant";
             row.fields["Doc"] = teachertransactionsArray[k].doc;
             row.fields["Description"] = teachertransactionsArray[k].description;
             row.fields["AccountDebit"] = "[" + teachertransactionsArray[k].accountdebit + "]";
@@ -446,7 +454,7 @@ var PrintReport = class PrintReport {
         row.operation.name = 'add';
         row.style = { "fontSize": 0, "bold": true };
         row.fields = {};
-        row.fields["Section"] = "teachertool";
+        row.fields["Section"] = "teachingassistant";
         rows.push(row);
 
         // row for the total score
@@ -456,7 +464,7 @@ var PrintReport = class PrintReport {
         row.style = { "fontSize": 0, "bold": true };
         //row fields
         row.fields = {};
-        row.fields["Section"] = "teachertool";
+        row.fields["Section"] = "teachingassistant";
         row.fields["Description"] = "Total score: ";
         row.fields["AutoScore"] = Banana.Converter.toInternalNumberFormat(score);
         row.fields["AdjustedScore"] = Banana.Converter.toInternalNumberFormat(score);
@@ -479,12 +487,12 @@ var PrintReport = class PrintReport {
     }
   }
 
-  check(studenttransactions, teachertransactions) {
+  result_check(studenttransactions, teachertransactions) {
 
     // Check if the Student file has all the exercise numbers
     for (let i = 0; i < studenttransactions.rowCount; i++) {
       if (studenttransactions.row(i).value("Doc") === "" && (studenttransactions.row(i).value("AccountDebit") != "" || studenttransactions.row(i).value("AccountCredit") != "" || (studenttransactions.row(i).value("AccountDebit") != "" && studenttransactions.row(i).value("AccountCredit") != ""))) {
-        this.banDoc1.addMessage("The initial file doesn't have all the exercise numbers. The exercise numbers must match.");
+        this.studentDoc.addMessage("The initial file doesn't have all the exercise numbers. The exercise numbers must match.");
         return;
       }
     }
@@ -492,13 +500,13 @@ var PrintReport = class PrintReport {
     // Check if the Teacher file has all the exercise numbers
     for (let i = 0; i < teachertransactions.rowCount; i++) {
       if (teachertransactions.row(i).value("Doc") === "" && (teachertransactions.row(i).value("AccountDebit") != "" || teachertransactions.row(i).value("AccountCredit") != "")) {
-        this.banDoc2.addMessage("The file to be imported doesn't have all the exercise numbers. The exercise numbers must match.");
+        this.teacherDoc.addMessage("The file to be imported doesn't have all the exercise numbers. The exercise numbers must match.");
         return;
       }
     }
   }
 
-  createarrayteacher(teachertransactions, fullscore) {
+  result_createarrayteacher(teachertransactions, fullscore) {
 
     let teachertransactionsArray = [];
     let docArray = [];
@@ -540,7 +548,7 @@ var PrintReport = class PrintReport {
     return [teachertransactionsArray, docArray];
   }
 
-  createarraystudent(studenttransactions, docArray, fullscore) {
+  result_createarraystudent(studenttransactions, docArray, fullscore) {
 
     let studenttransactionsArray = [];
     let k = 0;
