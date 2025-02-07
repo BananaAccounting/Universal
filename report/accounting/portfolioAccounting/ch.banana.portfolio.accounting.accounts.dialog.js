@@ -36,11 +36,11 @@ function exec() {
 
     if (!banDoc)
         return;
-    let userParam = initDialogParams(banDoc);
+    let userParam = initAccountsDialogParams(banDoc);
     let settingsId = "ch.banana.portfolio.accounting.accounts.dialog";
 
     userParam = getFormattedSavedParams(banDoc, settingsId);
-    userParam = verifyParams(banDoc, userParam);
+    userParam = verifyAccountsParams(banDoc, userParam);
     let dlgTitle = 'Account Settings';
     let convertedParam = convertParam(banDoc, userParam);
     if (!Banana.Ui.openPropertyEditor(dlgTitle, convertedParam))
@@ -54,14 +54,14 @@ function exec() {
     banDoc.setScriptSettings(settingsId, paramToString);
 }
 
-function verifyParams(banDoc, userParam) {
+function verifyAccountsParams(banDoc, userParam) {
     if (!userParam || Object.keys(userParam).length === 0) {
-        userParam = initDialogParams(banDoc);
+        userParam = initAccountsDialogParams(banDoc);
     }
     return userParam;
 }
 
-function initDialogParams(banDoc) {
+function initAccountsDialogParams(banDoc) {
     let dialogParam = {};
 
     // Balance Accounts
@@ -102,7 +102,7 @@ function convertParam(banDoc, userParam) {
     var convertedParam = {};
     convertedParam.version = '1.0';
     convertedParam.data = [];
-    let defaultParam = initDialogParams(banDoc);
+    let defaultParam = initAccountsDialogParams(banDoc);
 
     //create the Balance accounts section
     var currentParam = {};

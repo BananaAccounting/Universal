@@ -41,7 +41,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
 
     getAccountsParams(banDoc, settingsId) {
         let userParam = getFormattedSavedParams(banDoc, settingsId);
-        return verifyParams(banDoc, userParam);
+        return verifyAccountsParams(banDoc, userParam);
     }
     getRecordSalesTransactions() {
         let jsonDoc = { "format": "documentChange", "error": "" };

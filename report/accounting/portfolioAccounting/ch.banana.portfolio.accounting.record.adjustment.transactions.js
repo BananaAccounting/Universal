@@ -32,16 +32,26 @@
 
 function exec() {
     let banDoc = Banana.document;
-    let settingsId = "ch.banana.portfolio.accounting.record.adjustment.transactions";
+    let dlgAccountsSettingsId = "ch.banana.portfolio.accounting.accounts.dialog";
+    let adjustmentSettingsId = "ch.banana.portfolio.accounting.record.adjustment.transactions";
 
     if (!banDoc)
         return;
 
-    if (!settingsDialog(banDoc, settingsId))
+    if (!settingsDialog())
         return;
 
+    /** Recupero i parametri definiti dall'utente nel dialogo corrente e nel dialogo dei conti.*/
+    let savedAccountsParams = getFormattedSavedParams(banDoc, dlgAccountsSettingsId);
+    savedAccountsParams = verifyAccountsParams(banDoc, savedAccountsParams);
+
+    let savedMarketValuesParams = getFormattedSavedParams(banDoc, adjustmentSettingsId);
+    if (!savedMarketValuesParams || isObjectEmpty(savedMarketValuesParams))
+        return;
+
+
     let docChange = { "format": "documentChange", "error": "", "data": [] };
-    let jsonDoc = getDocChangeAdjustmentTransactions(banDoc, settingsId);
+    let jsonDoc = getDocChangeAdjustmentTransactions(banDoc, savedMarketValuesParams, savedAccountsParams);
     docChange["data"].push(jsonDoc);
     return docChange;
 }
@@ -53,9 +63,9 @@ function exec() {
  * |                   DESCRIPTION                   |                 DEBIT                  |                  CREDIT                |
  *     Shares Netflix Adjustment at market price                    Shares Netflix                   Other value changing income        
  */
-function getDocChangeAdjustmentTransactions(banDoc, settingsId) {
-    let docChangeObj = this.getDocumentChangeInit();
-    let rows = getAdjustmentTransactionsRows(banDoc, settingsId);
+function getDocChangeAdjustmentTransactions(banDoc, savedMarketValuesParams, savedAccountsParams) {
+    let docChangeObj = getDocumentChangeInit();
+    let rows = getAdjustmentTransactionsRows(banDoc, savedMarketValuesParams, savedAccountsParams);
 
     var dataUnitTransactionsTable = {};
     dataUnitTransactionsTable.nameXml = "Transactions";
@@ -73,18 +83,13 @@ function getDocChangeAdjustmentTransactions(banDoc, settingsId) {
  * If a security does not have a current book value as all the stocks has been sell, we do not
  * create the transaction.
  */
-function getAdjustmentTransactionsRows(banDoc, settingsId) {
+function getAdjustmentTransactionsRows(banDoc, savedMarketValuesParams, savedAccountsParams) {
     let rows = [];
     let texts = getTransactionsTexts(banDoc);
-    let dlgAccountsSettingsId = "ch.banana.portfolio.accounting.accounts.dialog";
+
     let docInfo = getDocumentInfo(banDoc);
     let unitPriceColumn = banDoc.table("Transactions").column("UnitPrice", "Base");
     let unitPriceColDecimals = unitPriceColumn.decimal;
-    let savedAccountsParams = getFormattedSavedParams(banDoc, dlgAccountsSettingsId);
-    let savedMarketValuesParams = getFormattedSavedParams(banDoc, settingsId);
-
-    if (!savedMarketValuesParams || isObjectEmpty(savedMarketValuesParams))
-        return rows;
 
     for (const param in savedMarketValuesParams) {
         let itemId = param;
@@ -256,12 +261,16 @@ function getDocumentChangeInit() {
 
 }
 
-function settingsDialog(banDoc, settingsId) {
-    let itemsData = getItemsTableData(banDoc);
-    let baseParams = initDialogParams(itemsData);
+function settingsDialog() {
 
-    let savedParams = getFormattedSavedParams(banDoc, settingsId);
-    userParam = verifyParams(baseParams, savedParams);
+    //BanDoc and settings id to define also inside this method to be correctly called from Manage extension dialog-->Settings button.
+    let adjustmentSettingsId = "ch.banana.portfolio.accounting.record.adjustment.transactions";
+    let banDoc = Banana.document;
+
+    let itemsData = getItemsTableData(banDoc);
+    let baseParams = initAdjustmentDialogParams(itemsData);
+    let savedParams = getFormattedSavedParams(banDoc, adjustmentSettingsId);
+    userParam = verifyAdjustmentParams(baseParams, savedParams);
     let dlgTitle = 'Create adjustment transactions';
     let convertedParam = convertParam(banDoc, userParam);
     if (!Banana.Ui.openPropertyEditor(dlgTitle, convertedParam))
@@ -272,11 +281,11 @@ function settingsDialog(banDoc, settingsId) {
             convertedParam.data[i].readValue();
     }
     var paramToString = JSON.stringify(userParam);
-    banDoc.setScriptSettings(settingsId, paramToString);
+    banDoc.setScriptSettings(adjustmentSettingsId, paramToString);
     return true;
 }
 
-function initDialogParams(itemsData) {
+function initAdjustmentDialogParams(itemsData) {
     let dialogParam = {};
 
     itemsData.forEach(item => {
@@ -289,7 +298,7 @@ function initDialogParams(itemsData) {
 /**
  * Add new items to the savedParams if has been added (baseParams), and delete those removed.
  */
-function verifyParams(baseParams, savedParams) {
+function verifyAdjustmentParams(baseParams, savedParams) {
     // Add new items from baseParams if they are missing in savedParams
     for (const key in baseParams) {
         if (!savedParams.hasOwnProperty(key)) {
