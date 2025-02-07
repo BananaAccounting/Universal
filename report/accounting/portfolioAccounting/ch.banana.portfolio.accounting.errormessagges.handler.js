@@ -46,6 +46,8 @@ function getErrorMessage(errorId) {
 function getErrorMessage_MissingElements(errorId, missingElement) {
     lang = 'en';
     switch (errorId) {
+        case "NO_ITEMS_TABLE":
+            return "Items table not found";
         case "ITEM_NOT_FOUND":
             return "Item: " + missingElement + " not found";
         case "ACCOUNT_NOT_FOUND":
@@ -70,3 +72,5 @@ function getErrorMessage_MissingElements(errorId, missingElement) {
             return "Item: " + missingElement + " without assigned type. Define the type in the Items table";
     }
 }
+
+// Add functions for transactions.

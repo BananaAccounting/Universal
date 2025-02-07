@@ -1124,7 +1124,7 @@ function getItemsTableData(banDoc) {
             itemData.exchangeBeginCurrency = tRow.value("ExchangeBegin");
         }
 
-        if (itemsData && itemData.item)//only if the item has an id (isin)
+        if (itemsData && itemData.item && itemData.account)//only if the item has an id (isin)
             itemsData.push(itemData);
     }
     return itemsData;
@@ -1343,6 +1343,15 @@ function checkIfNumberisEven(number) {
         isEven = true;
 
     return isEven;
+}
+
+function tableExists(banDoc, tableName) {
+    if (!banDoc)
+        return false;
+    let table = banDoc.table(tableName);
+    if (!table)
+        return false;
+    return true;
 }
 
 

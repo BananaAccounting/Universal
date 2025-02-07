@@ -38,6 +38,15 @@ function exec() {
     if (!banDoc)
         return;
 
+    if (!verifyBananaVersion(banDoc))
+        return "@Cancel";
+
+    if (!tableExists(banDoc, "Items")) {
+        let msg = getErrorMessage_MissingElements("NO_ITEMS_TABLE", "");
+        banDoc.addMessage(msg, "NO_ITEMS_TABLE");
+        return "@Cancel";
+    }
+
     if (!settingsDialog())
         return;
 
@@ -268,6 +277,13 @@ function settingsDialog() {
     let banDoc = Banana.document;
 
     let itemsData = getItemsTableData(banDoc);
+
+    if (itemsData.length < 1) {
+        let msg = getErrorMessage_MissingElements("NO_SECURITIES_FOUND", "");
+        banDoc.addMessage(msg, "NO_SECURITIES_FOUND");
+        return "@Cancel";
+    }
+
     let baseParams = initAdjustmentDialogParams(itemsData);
     let savedParams = getFormattedSavedParams(banDoc, adjustmentSettingsId);
     userParam = verifyAdjustmentParams(baseParams, savedParams);

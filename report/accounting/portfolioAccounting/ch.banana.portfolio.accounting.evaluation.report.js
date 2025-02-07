@@ -487,8 +487,21 @@ function exec() {
   if (!verifyBananaVersion(banDoc))
     return "@Cancel";
 
+  if (!tableExists(banDoc, "Items")) {
+    let msg = getErrorMessage_MissingElements("NO_ITEMS_TABLE", "");
+    banDoc.addMessage(msg, "NO_ITEMS_TABLE");
+    return "@Cancel";;
+  }
+
   //get the items table data
   let itemsData = getItemsTableData(banDoc);
+
+  if (itemsData.length < 1) {
+    let msg = getErrorMessage_MissingElements("NO_SECURITIES_FOUND", "");
+    banDoc.addMessage(msg, "NO_SECURITIES_FOUND");
+    return "@Cancel";
+  }
+
   //get the appraisal data list
   let appraisalDataList = getAppraisalData(banDoc, docInfo, itemsData);
   //get the transactionsList
@@ -497,8 +510,6 @@ function exec() {
   getReportHeader(report, docInfo);
   var stylesheet = getReportStyle();
   Banana.Report.preview(report, stylesheet);
-
-
 }
 
 /*example  Appraisal data structure

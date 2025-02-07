@@ -70,7 +70,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
                 jsonDoc["data"] = this.getStockSaleResultDocChangeTransaction();
                 break;
             default:
-                let msg = getErrorMessage_MissingElements("ITEM_WITHOUT_TYPE", this.itemObject.item); // 27.01 riprendere da quii.
+                let msg = getErrorMessage_MissingElements("ITEM_WITHOUT_TYPE", this.itemObject.item);
                 this.banDoc.addMessage(msg, "ITEM_WITHOUT_TYPE");
                 return {};
         }
@@ -78,6 +78,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
     }
 
     currentSelectedRowIsValid() {
+
         /** Let's check whether or not the currently selected line is valid. We wanto to reduce the cases where the user
          *  generates new rows inside the table that are not correct, so we take case of checking if the selected row is 
          * a row wich relates to a sale of a security, to do so we check:

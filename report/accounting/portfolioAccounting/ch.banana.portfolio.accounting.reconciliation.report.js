@@ -28,12 +28,18 @@
  * acronym bas= bonds and stocks
  */
 
-function exec(inData, options) {
+function exec() {
 
     let banDoc = Banana.document;
 
     if (!verifyBananaVersion(banDoc))
         return "@Cancel";
+
+    if (!tableExists(banDoc, "Items")) {
+        let msg = getErrorMessage_MissingElements("NO_ITEMS_TABLE", "");
+        banDoc.addMessage(msg, "NO_ITEMS_TABLE");
+        return "@Cancel";
+    }
 
     let docInfo = "";
     let itemsData = "";

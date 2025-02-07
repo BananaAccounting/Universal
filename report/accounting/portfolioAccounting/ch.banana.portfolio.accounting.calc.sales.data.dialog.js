@@ -199,10 +199,12 @@ class DlgCalculateSaleDataManager {
 
         let salesData = {};
 
+
         let item = dlgParams.selectedItem;
         let itemObj = itemsData.find(obj => obj.item === item);
-        if (!isValidItemSelected(item, itemObj, this.banDoc))
-            return;
+        if (!isValidItemSelected(item, itemObj, this.banDoc)) {
+            return {};
+        }
 
         salesData = calculateStockSaleData(this.banDoc, this.docInfo, itemObj, dlgParams, this.currentRowNr);
         const recordSalesTransactions = new RecordSalesTransactions(this.banDoc, this.docInfo, salesData,
@@ -300,12 +302,18 @@ function exec() {
     if (!banDoc)
         return;
 
+    if (!verifyBananaVersion(banDoc))
+        return "@Cancel";
+
+    if (!tableExists(banDoc, "Items")) {
+        let msg = getErrorMessage_MissingElements("NO_ITEMS_TABLE", "");
+        banDoc.addMessage(msg, "NO_ITEMS_TABLE");
+        return "@Cancel";
+    }
+
     let docInfo = getDocumentInfo(banDoc);
     let currentRowNr = getCurrentRowNumber(banDoc, "Transactions");
     let docChange = {};
-
-    if (!verifyBananaVersion(banDoc))
-        return "@Cancel";
 
     const dlgCalculateSaleDataManager = new DlgCalculateSaleDataManager(banDoc, docInfo, currentRowNr);
 
