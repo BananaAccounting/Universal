@@ -2,6 +2,8 @@
 
 All notable changes to the [[UNI11] Layout 11 Programmable Invoice](https://www.banana.ch/apps/en/node/9423) extension will be documented in this file.
 
+* 2025-02-04
+	* Added the customer email in the invoice address and as free text using the EmailWork column.
 * 2024-12-16
 	* Added Order Confirmation as print options (Advanced plan required).  
 * 2024-07-22
