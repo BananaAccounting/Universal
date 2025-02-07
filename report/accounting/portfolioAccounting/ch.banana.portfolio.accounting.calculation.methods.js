@@ -387,7 +387,7 @@ function calculateStockSaleData(banDoc, docInfo, itemObj, dlgParams, currentRowN
     journal = banDoc.journal(banDoc.ORIGINTYPE_CURRENT, banDoc.ACCOUNTTYPE_NONE);
     journalData = getJournalData(docInfo, journal);
     accountCard = banDoc.currentCard(itemAccount);
-    accountCardData = getAccountCardData(banDoc, docInfo, itemObj, accountCard, itemAccount);
+    accountCardData = getAccountCardDataAdapted(banDoc, docInfo, itemObj, accountCard, itemAccount);
     itemCardData = getItemCardDataList(itemObj, accountCardData, journalData, unitPriceColDecimals, currentRowNr);
 
     if (!itemCardData || isObjectEmpty(itemCardData))
@@ -444,7 +444,12 @@ function getClosestPreviousObjByRowNr(accountCardData, currentRowNr) {
     return previousObject;
 }
 
-function getAccountCardData(banDoc, docInfo, itemObj, accountCard, account) {
+/**
+ * Given an account card, it filters the transactions by item and adds values useful for creating
+ * of an account card by returning a new account card adapted to the creation of a
+ * item card. (see getItemCardDataList()). We may combine the two methods in the future.
+ */
+function getAccountCardDataAdapted(banDoc, docInfo, itemObj, accountCard, account) {
     let transactions = [];
     let accBalance = "";
     let accBalanceCurr = "";
@@ -519,7 +524,7 @@ function getAccountCardData(banDoc, docInfo, itemObj, accountCard, account) {
 /**
  * Ritorna le informazioni contenute nella scheda conto del conto collegato all'item, sia in multimoneta che in moneta base
  */
-function getAccountCardCompleteData(itemName, accountCard) { // copione ? Esiste già getAccountCard data, da vedere....
+function getAccountCardCompleteData(itemName, accountCard) { // copione ? Esiste già getAccountCardDataAdapted data, da vedere....
     let transactions = [];
     let balanceBase = "";
     let balanceCurr = "";
@@ -592,7 +597,7 @@ function accountIsInForeignCurrency(banDoc, docInfo, account) {
 }
 
 /**
- * Starting from the saved basic data of the account card, adds:
+ * Starting from the adapted account card data (see method: getAccountCardDataAdapted), adds:
  * - A new object in the first position of the array that contains the opening data (if found) of the security.
  * Then for each transaction add:
  * - The quantity change (if present)
@@ -656,6 +661,7 @@ function accountIsInForeignCurrency(banDoc, docInfo, account) {
     "itemAvgCost": "5.9998",
     "itemQtBalance": "50.0000",
     "itemBalanceBase": "299.99",
+    "itemBalanceCurr": "",
     "itemExchangeRate": ""
   }
 }
@@ -1008,6 +1014,10 @@ function getAccountsTableData(banDoc) {
         accRow.bankAccount = tRow.value("BankAccount");
         accRow.exchangeRateDiffAcc = tRow.value("AccountExchangeDifference");
         accRow.currency = tRow.value("Currency");
+        accRow.opening = tRow.value("Opening");
+        accRow.openingCurrency = tRow.value("OpeningCurrency");
+        accRow.balance = tRow.value("Balance");
+        accRow.balanceCurrency = tRow.value("BalanceCurrency");
 
         accountsData.push(accRow);
     }
@@ -1107,6 +1117,7 @@ function getItemsTableData(banDoc) {
         itemData.account = tRow.value("Account");
         itemData.currentQt = tRow.value("QuantityCurrent");
         itemData.valueCurrent = tRow.value("ValueCurrent");
+        itemData.valueCurrentCurrency = tRow.value("CurrencyCurrentValue");
         itemData.sumIn = tRow.value("Gr");
         itemData.group = tRow.value("Group");
         itemData.expiryDate = tRow.value("ExpiryDate");
