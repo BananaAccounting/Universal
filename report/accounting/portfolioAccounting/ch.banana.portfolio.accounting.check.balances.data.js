@@ -102,15 +102,15 @@ function addTableData(table, dataObj) {
 
 
     tableRow.addCell(accountName, "");
-    tableRow.addCell(Banana.Converter.toInternalNumberFormat(accOpBalance, 2, true), "");
-    tableRow.addCell(Banana.Converter.toInternalNumberFormat(secOpBalance, 2, true), "");
-    tableRow.addCell(Banana.Converter.toInternalNumberFormat(opBalancesDiff, 2, true), "");
-    tableRow.addCell(Banana.Converter.toInternalNumberFormat(accBalance, 2, true), "");
-    tableRow.addCell(Banana.Converter.toInternalNumberFormat(secBalance, 2, true), "");
-    tableRow.addCell(Banana.Converter.toInternalNumberFormat(balancesDiff, 2, true), "");
-    tableRow.addCell(Banana.Converter.toInternalNumberFormat(accMovements, 2, true), "");
-    tableRow.addCell(Banana.Converter.toInternalNumberFormat(secMovements, 2, true), "");
-    tableRow.addCell(Banana.Converter.toInternalNumberFormat(movDifferences, 2, true), "");
+    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(accOpBalance, 2, true), "");
+    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(secOpBalance, 2, true), "");
+    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(opBalancesDiff, 2, true), "");
+    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(accBalance, 2, true), "");
+    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(secBalance, 2, true), "");
+    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(balancesDiff, 2, true), "");
+    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(accMovements, 2, true), "");
+    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(secMovements, 2, true), "");
+    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(movDifferences, 2, true), "");
 
   });
 }
