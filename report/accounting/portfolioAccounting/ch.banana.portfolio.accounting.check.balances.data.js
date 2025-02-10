@@ -35,179 +35,515 @@
 
 function exec() {
 
-    let banDoc = Banana.document;
+  let banDoc = Banana.document;
 
-    if (!banDoc)
-        return;
+  if (!banDoc)
+    return;
 
-    let docInfo = getDocumentInfo(banDoc);
+  let docInfo = getDocumentInfo(banDoc);
 
-    let checkBalancesObj = {};
-    checkBalancesObj.accounts = getAccountsDataObjList(banDoc, docInfo);
+  let checkBalancesObj = {};
+  let data = getAccountsDataObjList(banDoc, docInfo);
 
+  if (data.length < 1)
+    return "";
+
+  checkBalancesObj.data = data;
+
+  Banana.Ui.showText(JSON.stringify(checkBalancesObj));
+
+  let report = getReport(banDoc, checkBalancesObj);
+  let styleSheet = getReportStyle();
+  Banana.Report.preview(report, styleSheet); // riprendere da quii 11.
+
+  return "";
+
+}
+
+function getReport(banDoc, checkBalancesObj) {
+  let texts = getTexts(banDoc);
+  let report = Banana.Report.newReport(texts.tablecaption);
+  let table = report.addTable('discrepanciesTable');
+  table.setStyleAttributes("width:100%");
+  table.getCaption().addText(texts.tablecaption);
+  defineTableColumns(table);
+  addTableHeaders(table);
+  addTableData(table, checkBalancesObj);
+  return report;
+}
+
+function addTableData(table, dataObj) {
+  // Show data (In the account currency).
+  let accountData = dataObj.data;
+  let accOpBalance = "";
+  let secOpBalance = "";
+  let opBalancesDiff = "";
+  let accBalance = "";
+  let secBalance = ""
+  let balancesDiff = "";
+  let accMovements = "";
+  let secMovements = "";
+  let movDifferences = "";
+  let accountName = "";
+
+  accountData.forEach(account => {
+    let tableRow = table.addRow();
+
+    accountName = account.account;
+    accOpBalance = account.accountDetails.accountOpeningCurrency || account.accountDetails.accountOpening;
+    secOpBalance = account.securitiesTotals.secTotalOpeningCurrency || account.securitiesTotals.secTotalOpening;
+    opBalancesDiff = account.discrepancies.openingBalanceCurrencyDifference || account.discrepancies.openingBalanceDifference;
+    accBalance = account.accountDetails.accountBalanceCurrency || account.accountDetails.accountBalance;
+    secBalance = account.securitiesTotals.secTotalBalanceCurrency || account.securitiesTotals.secTotalBalance;
+    balancesDiff = account.discrepancies.balanceCurrencyDifference || account.discrepancies.balanceDifference;
+    accMovements = account.accountDetails.accountTotalMovementsCurrency || account.accountDetails.accountTotalMovements;
+    secMovements = account.securitiesTotals.secTotalMovementsCurrency || account.securitiesTotals.secTotalMovements;
+    movDifferences = account.discrepancies.movementsCurrencyDifference || account.discrepancies.movementsDifference;
+
+
+    tableRow.addCell(accountName, "");
+    tableRow.addCell(Banana.Converter.toInternalNumberFormat(accOpBalance, 2, true), "");
+    tableRow.addCell(Banana.Converter.toInternalNumberFormat(secOpBalance, 2, true), "");
+    tableRow.addCell(Banana.Converter.toInternalNumberFormat(opBalancesDiff, 2, true), "");
+    tableRow.addCell(Banana.Converter.toInternalNumberFormat(accBalance, 2, true), "");
+    tableRow.addCell(Banana.Converter.toInternalNumberFormat(secBalance, 2, true), "");
+    tableRow.addCell(Banana.Converter.toInternalNumberFormat(balancesDiff, 2, true), "");
+    tableRow.addCell(Banana.Converter.toInternalNumberFormat(accMovements, 2, true), "");
+    tableRow.addCell(Banana.Converter.toInternalNumberFormat(secMovements, 2, true), "");
+    tableRow.addCell(Banana.Converter.toInternalNumberFormat(movDifferences, 2, true), "");
+
+  });
+}
+
+function defineTableColumns(table) {
+  table.addColumn("Account");
+  table.addColumn("Account opening balance");
+  table.addColumn("Securities opening balance");
+  table.addColumn("Opening balance differences");
+  table.addColumn("Account balance");
+  table.addColumn("Securities balance");
+  table.addColumn("Balance differences");
+  table.addColumn("Account movements");
+  table.addColumn("Securities movements");
+  table.addColumn("Movements differences");
+}
+
+function addTableHeaders(table) {
+  var tableHeader = table.getHeader();
+  var table = tableHeader.addRow();
+  table.addCell("Account", "");
+  table.addCell("Account opening balance", "");
+  table.addCell("Securities opening balance", "");
+  table.addCell("Opening balance differences", "");
+  table.addCell("Account balance", "");
+  table.addCell("Securities balance", "");
+  table.addCell("Balance differences", "");
+  table.addCell("Account movements", "");
+  table.addCell("Securities movements", "");
+  table.addCell("Movements differences", "");
 }
 
 function getAccountsDataObjList(banDoc, docInfo) {
-    let data = [];
-    const accountsData = getAccountsTableData(banDoc);
-    let accountsList = getItemsAccounts(banDoc);
+  let data = [];
+  const accountsData = getAccountsTableData(banDoc);
+  let accountsList = getItemsAccounts(banDoc);
 
-    for (const account of accountsList) {
-        accCheckBalancesObj = {};
-        accTableObj = accountsData.find(obj => obj.account === account); // Find the account in the Account table.
+  for (const account of accountsList) {
+    accCheckBalancesObj = {};
+    accTableObj = accountsData.find(obj => obj.account === account); // Find the account in the Account table.
 
-        if (!accTableObj || isObjectEmpty(accTableObj))
-            return data;
+    if (!accTableObj || isObjectEmpty(accTableObj))
+      return data;
 
-        accCheckBalancesObj.account = account;
-        accCheckBalancesObj.accountDescription = accTableObj.descritpion;
-        accCheckBalancesObj.accountOpening = accTableObj.opening;
-        accCheckBalancesObj.accountOpeningCurrency = accTableObj.openingCurrency;
-        accCheckBalancesObj.accountBalance = accTableObj.balance;
-        accCheckBalancesObj.accountBalanceCurrency = accTableObj.balanceCurrency;
-        accCheckBalancesObj.totalMovements = Banana.SDecimal.subtract(accTableObj.balance, accTableObj.opening);
-        accCheckBalancesObj.totalMovementsCurrency = Banana.SDecimal.subtract(accTableObj.balanceCurrency, accTableObj.openingCurrency);
-        accCheckBalancesObj.securities = [];
-        accCheckBalancesObj.causingSecurities = getSecuritiesDataObjList(banDoc, docInfo, account);
-        data.push(accCheckBalancesObj);
-    }
-    return data;
+    accCheckBalancesObj.account = account;
+
+    //Account details
+    accCheckBalancesObj.accountDetails = {};
+    accCheckBalancesObj.accountDetails.accountDescription = accTableObj.descritpion;
+    accCheckBalancesObj.accountDetails.accountOpening = accTableObj.opening || "";
+    accCheckBalancesObj.accountDetails.accountOpeningCurrency = accTableObj.openingCurrency || "";
+    accCheckBalancesObj.accountDetails.accountBalance = accTableObj.balance || "";
+    accCheckBalancesObj.accountDetails.accountBalanceCurrency = accTableObj.balanceCurrency || "";
+    accCheckBalancesObj.accountDetails.accountTotalMovements = Banana.SDecimal.subtract(accTableObj.balance, accTableObj.opening) || "";
+    accCheckBalancesObj.accountDetails.accountTotalMovementsCurrency = Banana.SDecimal.subtract(accTableObj.balanceCurrency, accTableObj.openingCurrency) || "";
+    // Securities
+    accCheckBalancesObj.securitiesData = [];
+    accCheckBalancesObj.securitiesData = getSecuritiesDataObjList(banDoc, docInfo, account);
+    //Securities Totals
+    accCheckBalancesObj.securitiesTotals = calculateSecuritiesTotals(accCheckBalancesObj.securitiesData);
+    // Discrepancies
+    accCheckBalancesObj.discrepancies = checkForDiscrepancies(accCheckBalancesObj);
+
+    data.push(accCheckBalancesObj);
+  }
+
+  return data;
 }
 
 function getSecuritiesDataObjList(banDoc, docInfo, account) {
-    let securitiesList = [];
-    let itemsTableData = getItemsTableData(banDoc);
-    let accountCard = banDoc.currentCard(account);
-    let journal = banDoc.journal(banDoc.ORIGINTYPE_CURRENT, banDoc.ACCOUNTTYPE_NONE);
-    let journalData = getJournalData(docInfo, journal);
-    let unitPriceColumn = banDoc.table("Transactions").column("UnitPrice", "Base");
-    let unitPriceColDecimals = unitPriceColumn.decimal;
+  let securitiesList = [];
+  let itemsTableData = getItemsTableData(banDoc);
+  let accountCard = banDoc.currentCard(account);
+  let journal = banDoc.journal(banDoc.ORIGINTYPE_CURRENT, banDoc.ACCOUNTTYPE_NONE);
+  let journalData = getJournalData(docInfo, journal);
+  let unitPriceColumn = banDoc.table("Transactions").column("UnitPrice", "Base");
+  let unitPriceColDecimals = unitPriceColumn.decimal;
 
-    /**
-     * We derive the current book value of a security on the basis of its movements (see Security card).
-     * An alternative would be to ask the user to enter the current book value in the ‘Price current’ column
-     * and use the value in the ValueCurrent column, but it would require explaining to the user to enter the price current
-     * before generating the report and may become annoying.
-     */
+  /**
+   * We derive the current book value of a security on the basis of its movements (see Security card).
+   * An alternative would be to ask the user to enter the current book value in the ‘Price current’ column
+   * and use the value in the ValueCurrent column, but it would require explaining to the user to enter the price current
+   * before generating the report and may become annoying.
+   */
 
-    itemsTableData.forEach(itemObj => {
-        if (itemObj && itemObj.account && itemObj.account == account) {
-            let secBalance = "";
-            let secBalanceCurrency = "";
+  itemsTableData.forEach(itemObj => {
+    if (itemObj && itemObj.account && itemObj.account == account) {
+      let secBalance = "";
+      let secBalanceCurrency = "";
 
-            let accountCardAdpt = getAccountCardDataAdapted(banDoc, docInfo, itemObj, accountCard, account);
-            let itemCardData = getItemCardDataList(itemObj, accountCardAdpt, journalData, unitPriceColDecimals, null);
+      let accountCardAdpt = getAccountCardDataAdapted(banDoc, docInfo, itemObj, accountCard, account);
+      let itemCardData = getItemCardDataList(itemObj, accountCardAdpt, journalData, unitPriceColDecimals, null);
 
-            if (!itemCardData || isObjectEmpty(itemCardData))
-                return;
+      if (!itemCardData || isObjectEmpty(itemCardData))
+        return;
 
-            secBalance = itemCardData.currentValues.itemBalance;
-            secBalanceCurrency = itemCardData.currentValues.itemBalanceCurr;
+      secBalance = itemCardData.currentValues.itemBalanceBase;
+      secBalanceCurrency = itemCardData.currentValues.itemBalanceCurr;
 
-            let secObj = {};
-            secObj.securityId = item.item;
-            secObj.securityName = item.description;
-            secObj.securityOpening = item.valueBegin;
-            secObj.valueBeginCurrency = item.valueCurrentCurrency;
-            secObj.securityBalance = secBalance; // 10.02, testare se funzionaaa.
-            secObj.securityBalanceCurrency = secBalanceCurrency;
-            secObj.securityTotalMovements = Banana.SDecimal.subtract(secBalance, item.valueBegin);
-            secObj.securityTotalMovementsCurrency = Banana.SDecimal.subtract(secBalanceCurrency, item.valueBeginCurrency);
-            secObj.discrepancies = [];
-            securitiesList.push(secObj);
-        }
-    });
+      let secObj = {};
+      secObj.securityId = itemObj.item || "";
+      secObj.securityName = itemObj.description || "";
+      secObj.securityOpening = itemObj.valueBegin || "";
+      secObj.securityOpeningCurrency = itemObj.valueBeginCurrency || "";
+      secObj.securityBalance = secBalance || "";
+      secObj.securityBalanceCurrency = secBalanceCurrency || "";
+      secObj.securityTotalMovements = Banana.SDecimal.subtract(secBalance, itemObj.valueBegin) || "";
+      secObj.securityTotalMovementsCurrency = Banana.SDecimal.subtract(secBalanceCurrency, itemObj.valueBeginCurrency) || "";
+      securitiesList.push(secObj);
+    }
+  });
 
-    return securitiesList;
+  return securitiesList;
+}
+
+function calculateSecuritiesTotals(securitiesData) {
+  let secTotals = {};
+  securitiesData.forEach(security => {
+    let totaleOpeningBalance = "0";
+    let totalOpeningBalanceCurrency = "0";
+    let totalMovements = "0";
+    let totalMovementsCurrency = "0";
+    let totalBalance = "0";
+    let totalBalanceCurrency = "0";
+
+    totalOpeningBalance = Banana.SDecimal.add(totaleOpeningBalance, security.securityOpening);
+    totalOpeningBalanceCurrency = Banana.SDecimal.add(totalOpeningBalanceCurrency, security.securityOpeningCurrency);
+    totalMovements = Banana.SDecimal.add(totalMovements, security.securityTotalMovements);
+    totalMovementsCurrency = Banana.SDecimal.add(totalMovementsCurrency, security.securityTotalMovementsCurrency);
+    totalBalance = Banana.SDecimal.add(totalBalance, security.securityBalance);
+    totalBalanceCurrency = Banana.SDecimal.add(security.securityBalanceCurrency, totalBalanceCurrency);
+
+
+    secTotals.secTotalOpening = totalOpeningBalance;
+    secTotals.secTotalOpeningCurrency = totalOpeningBalanceCurrency;
+    secTotals.secTotalBalance = totalBalance;
+    secTotals.secTotalBalanceCurrency = totalBalanceCurrency;
+    secTotals.secTotalMovements = totalMovements;
+    secTotals.secTotalMovementsCurrency = totalMovementsCurrency;
+  });
+
+  return secTotals;
+}
+
+function checkForDiscrepancies(accCheckBalancesObj) {
+
+  let accountTotals = accCheckBalancesObj.accountDetails;
+  let securitiesTotals = accCheckBalancesObj.securitiesTotals;
+
+  let discrepancy = {};
+
+  discrepancy.openingBalanceDifference = "";
+  discrepancy.openingBalanceCurrencyDifference = "";
+  discrepancy.balanceDifference = "";
+  discrepancy.balanceCurrencyDifference = "";
+  discrepancy.movementsDifference = "";
+  discrepancy.movementsCurrencyDifference = "";
+
+
+  // Opening differences
+  if (Banana.SDecimal.compare(accountTotals.accountOpening, securitiesTotals.secTotalOpening) !== 0) {
+    let discrepancyAmt = Banana.SDecimal.subtract(accountTotals.accountOpening, securitiesTotals.secTotalOpening);
+    discrepancyAmt = Banana.SDecimal.abs(discrepancyAmt);
+    discrepancy.openingBalanceDifference = discrepancyAmt;
+  }
+
+  // Opening differences currency
+  if (Banana.SDecimal.compare(accountTotals.accountOpeningCurrency, securitiesTotals.secTotalOpeningCurrency) !== 0) {
+    let discrepancyAmt = Banana.SDecimal.subtract(accountTotals.accountOpeningCurrency, securitiesTotals.secTotalOpeningCurrency);
+    discrepancyAmt = Banana.SDecimal.abs(discrepancyAmt);
+    discrepancy.openingBalanceCurrencyDifference = discrepancyAmt;
+  }
+
+  // Balance differences
+  if (Banana.SDecimal.compare(accountTotals.accountBalance, securitiesTotals.secTotalBalance) !== 0) {
+    let discrepancyAmt = Banana.SDecimal.subtract(accountTotals.accountBalance, securitiesTotals.secTotalBalance);
+    discrepancyAmt = Banana.SDecimal.abs(discrepancyAmt);
+    discrepancy.balanceDifference = discrepancyAmt;
+  }
+
+  // Balance currency differences
+  if (Banana.SDecimal.compare(accountTotals.accountBalanceCurrency, securitiesTotals.secTotalBalanceCurrency) !== 0) {
+    let discrepancyAmt = Banana.SDecimal.subtract(accountTotals.accountBalanceCurrency, securitiesTotals.secTotalBalanceCurrency);
+    discrepancyAmt = Banana.SDecimal.abs(discrepancyAmt);
+    discrepancy.balanceCurrencyDifference = discrepancyAmt;
+  }
+
+  // Movements differences
+  if (Banana.SDecimal.compare(accountTotals.accountTotalMovements, securitiesTotals.secTotalMovements) !== 0) {
+    let discrepancyAmt = Banana.SDecimal.subtract(accountTotals.accountZotalMovements, securitiesTotals.secTotalMovements);
+    discrepancyAmt = Banana.SDecimal.abs(discrepancyAmt);
+    discrepancy.movementsDifference = discrepancyAmt;
+  }
+
+  // Movements currency differences
+  if (Banana.SDecimal.compare(accountTotals.accountTotalMovementsCurrency, securitiesTotals.secTotalMovementsCurrency) !== 0) {
+    let discrepancyAmt = Banana.SDecimal.subtract(accountTotals.accountTotalMovementsCurrency, securitiesTotals.secTotalMovementsCurrency);
+    discrepancyAmt = Banana.SDecimal.abs(discrepancyAmt);
+    discrepancy.movementsCurrencyDifference = discrepancyAmt;
+  }
+
+  return discrepancy;
+
+}
+
+function getTexts(banDoc) {
+  let text = {};
+  let lang = getCurrentLang(banDoc);
+
+  switch (lang) {
+    case "it":
+      text = getTexts_it();
+      break;
+    case "de":
+      text = getTexts_de();
+      break;
+    case "fr":
+      text = getTexts_fr();
+      break;
+    case "en":
+    default:
+      text = getTexts_en();
+      break;
+  }
+
+  return text;
+}
+
+function getTexts_it() {
+  let texts = {};
+
+  texts.tablecaption = "Controllo bilancio dei conti titoli";
+  texts.discrepancy_openingBalance = "Il bilancio di apertura del conto %1 non corrisponde al totale \n dei bilanci di apertura dei titoli. Discrepanza: %2";
+  texts.discrepancy_currentBalance = "Il bilancio del conto %1 non corrisponde al totale \n dei bilanci dei titoli. Discrepanza: %2";
+  texts.discrepancy_totalmovements = "Il totale dei movimenti del conto %1 non corrisponde al totale \n dei movimenti dei titoli. Discrepanza: %2";
+
+  return texts;
+}
+
+function getTexts_de() {
+  let texts = {};
+
+  texts.tablecaption = "Überprüfung des Wertpapierkontosaldos";
+  texts.discrepancy_openingBalance = "Der Eröffnungssaldo des Kontos %1 stimmt nicht mit der Summe \n der Eröffnungssalden der Wertpapiere überein. Abweichung: %2";
+  texts.discrepancy_currentBalance = "Der Kontosaldo %1 stimmt nicht mit der Summe \n der Salden der Wertpapiere überein. Abweichung: %2";
+  texts.discrepancy_totalmovements = "Die Gesamtsummen der Bewegungen des Kontos %1 stimmen nicht mit der Summe \n der Bewegungen der Wertpapiere überein. Abweichung: %2";
+
+  return texts;
+}
+
+function getTexts_fr() {
+  let texts = {};
+
+  texts.tablecaption = "Vérification du solde des comptes de titres";
+  texts.discrepancy_openingBalance = "Le solde d'ouverture du compte %1 ne correspond pas au total \n des soldes d'ouverture des titres. Écart : %2";
+  texts.discrepancy_currentBalance = "Le solde du compte %1 ne correspond pas au total \n des soldes des titres. Écart : %2";
+  texts.discrepancy_totalmovements = "Le total des mouvements du compte %1 ne correspond pas au total \n des mouvements des titres. Écart : %2";
+
+  return texts;
+}
+
+function getTexts_en() {
+  let texts = {};
+
+  texts.tablecaption = "Securities Account Balance Check";
+  texts.discrepancy_openingBalance = "The opening balance of account %1 does not match the total \n of the securities' opening balances. Discrepancy: %2";
+  texts.discrepancy_currentBalance = "The balance of account %1 does not match the total \n of the securities' balances. Discrepancy: %2";
+  texts.discrepancy_totalmovements = "The total movements of account %1 do not match the total \n of the securities' movements. Discrepancy: %2";
+
+  return texts;
+
 }
 
 // !!! Alla fine aggiornare il json d'esempio sulla base della versione finale !!!
 /** Example generated object structure:
- * {
-  "accounts": [
+ *{
+  "data": [
     {
-      "account": "1001",
-      "accountName": "Investment Account USD",
-      "openingBalance": 5000.00,
-      "totalMovements": 1500.00,
-      "currentBalance": 6500.00,
-      "discrepancies": {
-        "hasDiscrepancy": true,
-        "expectedBalance": 7000.00,
-        "difference": -500.00,
-        "notes": "Il bilancio corrente del conto non coincide con la somma dei titoli.",
-        "causingSecurities": [
-          {
-            "securityId": "GOOGL",
-            "securityName": "Alphabet Inc.",
-            "expectedValue": 3500.00,
-            "currentValue": 4000.00,
-            "difference": 500.00
-          }
-        ]
+      "account": "Shares CHF",
+      "accountDetails": {
+        "accountOpening": "",
+        "accountOpeningCurrency": "",
+        "accountBalance": "",
+        "accountBalanceCurrency": "",
+        "accountTotalMovements": "0",
+        "accountTotalMovementsCurrency": "0"
       },
-      "securities": [
+      "securitiesData": [
         {
-          "securityId": "AAPL",
-          "securityName": "Apple Inc.",
-          "openingBalanceValue": 2000.00,
-          "openingBalanceSecurityCard": 2000.00,
-          "currentBalanceValue": 2500.00,
-          "discrepancies": {
-            "hasDiscrepancy": false,
-            "difference": 0.00,
-            "notes": ""
-          }
-        },
-        {
-          "securityId": "GOOGL",
-          "securityName": "Alphabet Inc.",
-          "openingBalanceValue": 3000.00,
-          "openingBalanceSecurityCard": 3000.00,
-          "currentBalanceValue": 4000.00,
-          "discrepancies": {
-            "hasDiscrepancy": true,
-            "expectedValue": 3500.00,
-            "difference": 500.00,
-            "notes": "Valore corrente del titolo superiore al previsto."
-          }
+          "securityId": "CH003886335",
+          "securityName": "Shares UBS",
+          "securityOpening": "",
+          "securityOpeningCurrency": "",
+          "securityBalance": "",
+          "securityBalanceCurrency": "",
+          "securityTotalMovements": "0",
+          "securityTotalMovementsCurrency": "0"
         }
-      ]
+      ],
+      "securitiesTotals": {
+        "secTotalOpening": "0",
+        "secTotalOpeningCurrency": "0",
+        "secTotalBalance": "0",
+        "secTotalBalanceCurrency": "0",
+        "secTotalMovements": "0",
+        "secTotalMovementsCurrency": "0"
+      },
+      "discrepancies": {
+        "openingBalanceDifference": "",
+        "openingBalanceCurrencyDifference": "",
+        "balanceDifference": "",
+        "balanceCurrencyDifference": "",
+        "movementsDifference": "",
+        "movementsCurrencyDifference": ""
+      }
     },
     {
-      "account": "1002",
-      "accountName": "Investment Account EUR",
-      "openingBalance": 8000.00,
-      "totalMovements": -1000.00,
-      "currentBalance": 7000.00,
-      "discrepancies": {
-        "hasDiscrepancy": false,
-        "difference": 0.00,
-        "notes": "",
-        "causingSecurities": []
+      "account": "Shares Unicredit",
+      "accountDetails": {
+        "accountOpening": "",
+        "accountOpeningCurrency": "",
+        "accountBalance": "",
+        "accountBalanceCurrency": "",
+        "accountTotalMovements": "0",
+        "accountTotalMovementsCurrency": "0"
       },
-      "securities": [
+      "securitiesData": [
         {
-          "securityId": "TSLA",
-          "securityName": "Tesla Inc.",
-          "openingBalanceValue": 4000.00,
-          "openingBalanceSecurityCard": 4000.00,
-          "currentBalanceValue": 3500.00,
-          "discrepancies": {
-            "hasDiscrepancy": false,
-            "difference": 0.00,
-            "notes": ""
-          }
+          "securityId": "IT0005239360",
+          "securityName": "Shares Unicredit",
+          "securityOpening": "",
+          "securityOpeningCurrency": "",
+          "securityBalance": "0",
+          "securityBalanceCurrency": "0",
+          "securityTotalMovements": "0",
+          "securityTotalMovementsCurrency": "0"
         }
-      ]
-    }
-  ],
-  "globalErrors": [
+      ],
+      "securitiesTotals": {
+        "secTotalOpening": "0",
+        "secTotalOpeningCurrency": "0",
+        "secTotalBalance": "0",
+        "secTotalBalanceCurrency": "0",
+        "secTotalMovements": "0",
+        "secTotalMovementsCurrency": "0"
+      },
+      "discrepancies": {
+        "openingBalanceDifference": "",
+        "openingBalanceCurrencyDifference": "",
+        "balanceDifference": "",
+        "balanceCurrencyDifference": "",
+        "movementsDifference": "",
+        "movementsCurrencyDifference": ""
+      }
+    },
     {
-      "type": "DataMismatch",
-      "message": "Discrepanze trovate in uno o più conti.",
-      "affectedAccounts": ["1001"]
+      "account": "Shares Netflix",
+      "accountDetails": {
+        "accountOpening": "",
+        "accountOpeningCurrency": "",
+        "accountBalance": "1569.15",
+        "accountBalanceCurrency": "1651.73",
+        "accountTotalMovements": "1569.15",
+        "accountTotalMovementsCurrency": "1651.73"
+      },
+      "securitiesData": [
+        {
+          "securityId": "US123456789",
+          "securityName": "Shares Netflix",
+          "securityOpening": "",
+          "securityOpeningCurrency": "",
+          "securityBalance": "1569.15",
+          "securityBalanceCurrency": "1651.73",
+          "securityTotalMovements": "1569.15",
+          "securityTotalMovementsCurrency": "1651.73"
+        }
+      ],
+      "securitiesTotals": {
+        "secTotalOpening": "0",
+        "secTotalOpeningCurrency": "0",
+        "secTotalBalance": "1569.15",
+        "secTotalBalanceCurrency": "1651.73",
+        "secTotalMovements": "1569.15",
+        "secTotalMovementsCurrency": "1651.73"
+      },
+      "discrepancies": {
+        "openingBalanceDifference": "",
+        "openingBalanceCurrencyDifference": "",
+        "balanceDifference": "",
+        "balanceCurrencyDifference": "",
+        "movementsDifference": "",
+        "movementsCurrencyDifference": ""
+      }
+    },
+    {
+      "account": "Bonds EUR",
+      "accountDetails": {
+        "accountOpening": "",
+        "accountOpeningCurrency": "",
+        "accountBalance": "",
+        "accountBalanceCurrency": "",
+        "accountTotalMovements": "0",
+        "accountTotalMovementsCurrency": "0"
+      },
+      "securitiesData": [
+        {
+          "securityId": "IT000792468",
+          "securityName": "Bonds Bnp Paribas",
+          "securityOpening": "",
+          "securityOpeningCurrency": "",
+          "securityBalance": "0",
+          "securityBalanceCurrency": "0",
+          "securityTotalMovements": "0",
+          "securityTotalMovementsCurrency": "0"
+        }
+      ],
+      "securitiesTotals": {
+        "secTotalOpening": "0",
+        "secTotalOpeningCurrency": "0",
+        "secTotalBalance": "0",
+        "secTotalBalanceCurrency": "0",
+        "secTotalMovements": "0",
+        "secTotalMovementsCurrency": "0"
+      },
+      "discrepancies": {
+        "openingBalanceDifference": "",
+        "openingBalanceCurrencyDifference": "",
+        "balanceDifference": "",
+        "balanceCurrencyDifference": "",
+        "movementsDifference": "",
+        "movementsCurrencyDifference": ""
+      }
     }
   ]
-} 
+}
  */
