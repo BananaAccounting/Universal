@@ -60,7 +60,7 @@ function exec() {
 
 
     let docChange = { "format": "documentChange", "error": "", "data": [] };
-    let jsonDoc = getDocChangeAdjustmentTransactions(banDoc, savedMarketValuesParams, savedAccountsParams);
+    let jsonDoc = getDocChangeAdjustmentTransactions(banDoc, savedMarketValuesParams, savedAccountsParams, false);
     docChange["data"].push(jsonDoc);
     return docChange;
 }
@@ -72,9 +72,9 @@ function exec() {
  * |                   DESCRIPTION                   |                 DEBIT                  |                  CREDIT                |
  *     Shares Netflix Adjustment at market price                    Shares Netflix                   Other value changing income        
  */
-function getDocChangeAdjustmentTransactions(banDoc, savedMarketValuesParams, savedAccountsParams) {
+function getDocChangeAdjustmentTransactions(banDoc, savedMarketValuesParams, savedAccountsParams, isTest) {
     let docChangeObj = getDocumentChangeInit();
-    let rows = getAdjustmentTransactionsRows(banDoc, savedMarketValuesParams, savedAccountsParams);
+    let rows = getAdjustmentTransactionsRows(banDoc, savedMarketValuesParams, savedAccountsParams, isTest);
 
     var dataUnitTransactionsTable = {};
     dataUnitTransactionsTable.nameXml = "Transactions";
@@ -92,7 +92,7 @@ function getDocChangeAdjustmentTransactions(banDoc, savedMarketValuesParams, sav
  * If a security does not have a current book value as all the stocks has been sell, we do not
  * create the transaction.
  */
-function getAdjustmentTransactionsRows(banDoc, savedMarketValuesParams, savedAccountsParams) {
+function getAdjustmentTransactionsRows(banDoc, savedMarketValuesParams, savedAccountsParams, isTest) {
     let rows = [];
     let texts = getTransactionsTexts(banDoc);
 
@@ -108,11 +108,15 @@ function getAdjustmentTransactionsRows(banDoc, savedMarketValuesParams, savedAcc
         if (!adjustmentResult || Banana.SDecimal.isZero(adjustmentResult))
             continue;
 
+        let currentDate = "";
+        if (!isTest)
+            currentDate = getCurrentDate();
+
         let row = {};
         row.operation = {};
         row.operation.name = "add";
         row.fields = {};
-        row.fields["Date"] = getCurrentDate();
+        row.fields["Date"] = currentDate;
         row.fields["Doc"] = "";
         row.fields["ItemsId"] = itemId;
         row.fields["Description"] = getItemDescription(itemId, banDoc) + " " + texts.adjustmentTxt + " (" + itemUnitMarketValue + ")";

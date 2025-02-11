@@ -89,7 +89,7 @@ function getTestData(banDoc) {
     let savedMarketValuesParams = getUserParams();
 
     let docChange = { "format": "documentChange", "error": "", "data": [] };
-    let jsonDoc = getDocChangeAdjustmentTransactions(banDoc, savedMarketValuesParams, savedAccountsParams);
+    let jsonDoc = getDocChangeAdjustmentTransactions(banDoc, savedMarketValuesParams, savedAccountsParams, true);
     docChange["data"].push(jsonDoc);
     return docChange;
 }
