@@ -500,17 +500,15 @@ function getAccountCardDataAdapted(banDoc, docInfo, itemObj, accountCard, accoun
                 accBalance = Banana.SDecimal.subtract(accBalance, trData.creditBase);
             }
             trData.balanceBase = accBalance;
-            if (accInForeignCurr) {
-                trData.debitCurr = tRow.value("JDebitAmountAccountCurrency");
-                trData.creditCurr = tRow.value("JCreditAmountAccountCurrency");
-                if (trData.debitCurr !== "") {
-                    accBalanceCurr = Banana.SDecimal.add(accBalanceCurr, trData.debitCurr);
-                }
-                if (trData.creditCurr !== "") {
-                    accBalanceCurr = Banana.SDecimal.subtract(accBalanceCurr, trData.creditCurr);
-                }
-                trData.balanceCurr = accBalanceCurr;
+            trData.debitCurr = tRow.value("JDebitAmountAccountCurrency");
+            trData.creditCurr = tRow.value("JCreditAmountAccountCurrency");
+            if (trData.debitCurr !== "") {
+                accBalanceCurr = Banana.SDecimal.add(accBalanceCurr, trData.debitCurr);
             }
+            if (trData.creditCurr !== "") {
+                accBalanceCurr = Banana.SDecimal.subtract(accBalanceCurr, trData.creditCurr);
+            }
+            trData.balanceCurr = accBalanceCurr;
 
             transactions.push(trData);
         }

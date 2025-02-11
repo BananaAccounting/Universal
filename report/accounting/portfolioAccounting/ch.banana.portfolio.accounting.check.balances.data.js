@@ -50,8 +50,6 @@ function exec() {
 
   checkBalancesObj.data = data;
 
-  Banana.Ui.showText(JSON.stringify(checkBalancesObj));
-
   let report = getReport(banDoc, checkBalancesObj);
   getReportHeader(report, docInfo);
   let styleSheet = getReportStyle();
@@ -229,21 +227,23 @@ function getSecuritiesDataObjList(banDoc, docInfo, account) {
 
 function calculateSecuritiesTotals(securitiesData) {
   let secTotals = {};
-  securitiesData.forEach(security => {
-    let totaleOpeningBalance = "0";
-    let totalOpeningBalanceCurrency = "0";
-    let totalMovements = "0";
-    let totalMovementsCurrency = "0";
-    let totalBalance = "0";
-    let totalBalanceCurrency = "0";
 
-    totalOpeningBalance = Banana.SDecimal.add(totaleOpeningBalance, security.securityOpening);
+  let totalOpeningBalance = "0";
+  let totalOpeningBalanceCurrency = "0";
+  let totalMovements = "0";
+  let totalMovementsCurrency = "0";
+  let totalBalance = "0";
+  let totalBalanceCurrency = "0";
+
+
+  securitiesData.forEach(security => {
+
+    totalOpeningBalance = Banana.SDecimal.add(totalOpeningBalance, security.securityOpening);
     totalOpeningBalanceCurrency = Banana.SDecimal.add(totalOpeningBalanceCurrency, security.securityOpeningCurrency);
     totalMovements = Banana.SDecimal.add(totalMovements, security.securityTotalMovements);
     totalMovementsCurrency = Banana.SDecimal.add(totalMovementsCurrency, security.securityTotalMovementsCurrency);
     totalBalance = Banana.SDecimal.add(totalBalance, security.securityBalance);
     totalBalanceCurrency = Banana.SDecimal.add(security.securityBalanceCurrency, totalBalanceCurrency);
-
 
     secTotals.secTotalOpening = totalOpeningBalance;
     secTotals.secTotalOpeningCurrency = totalOpeningBalanceCurrency;
