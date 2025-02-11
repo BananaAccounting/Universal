@@ -53,8 +53,9 @@ function exec() {
   Banana.Ui.showText(JSON.stringify(checkBalancesObj));
 
   let report = getReport(banDoc, checkBalancesObj);
+  getReportHeader(report, docInfo);
   let styleSheet = getReportStyle();
-  Banana.Report.preview(report, styleSheet); // riprendere da quii 11.
+  Banana.Report.preview(report, styleSheet);
 
   return "";
 
@@ -65,7 +66,7 @@ function getReport(banDoc, checkBalancesObj) {
   let report = Banana.Report.newReport(texts.tablecaption);
   let table = report.addTable('discrepanciesTable');
   table.setStyleAttributes("width:100%");
-  table.getCaption().addText(texts.tablecaption);
+  table.getCaption().addText(texts.tablecaption, "styleTitles");
   defineTableColumns(table);
   addTableHeaders(table);
   addTableData(table, checkBalancesObj);
@@ -83,7 +84,7 @@ function addTableData(table, dataObj) {
   let balancesDiff = "";
   let accMovements = "";
   let secMovements = "";
-  let movDifferences = "";
+  let movDiff = "";
   let accountName = "";
 
   accountData.forEach(account => {
@@ -98,19 +99,19 @@ function addTableData(table, dataObj) {
     balancesDiff = account.discrepancies.balanceCurrencyDifference || account.discrepancies.balanceDifference;
     accMovements = account.accountDetails.accountTotalMovementsCurrency || account.accountDetails.accountTotalMovements;
     secMovements = account.securitiesTotals.secTotalMovementsCurrency || account.securitiesTotals.secTotalMovements;
-    movDifferences = account.discrepancies.movementsCurrencyDifference || account.discrepancies.movementsDifference;
+    movDiff = account.discrepancies.movementsCurrencyDifference || account.discrepancies.movementsDifference;
 
 
     tableRow.addCell(accountName, "");
-    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(accOpBalance, 2, true), "");
-    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(secOpBalance, 2, true), "");
-    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(opBalancesDiff, 2, true), "");
-    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(accBalance, 2, true), "");
-    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(secBalance, 2, true), "");
-    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(balancesDiff, 2, true), "");
-    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(accMovements, 2, true), "");
-    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(secMovements, 2, true), "");
-    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(movDifferences, 2, true), "");
+    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(accOpBalance, 2, true), "styleNormalAmount");
+    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(secOpBalance, 2, true), "styleNormalAmount");
+    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(opBalancesDiff, 2, true), "styleNormalAmount_checkBalancesDiffCol");
+    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(accBalance, 2, true), "styleNormalAmount");
+    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(secBalance, 2, true), "styleNormalAmount");
+    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(balancesDiff, 2, true), "styleNormalAmount_checkBalancesDiffCol");
+    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(accMovements, 2, true), "styleNormalAmount");
+    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(secMovements, 2, true), "styleNormalAmount");
+    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(movDiff, 2, true), "styleNormalAmount_checkBalancesDiffCol");
 
   });
 }
@@ -131,16 +132,16 @@ function defineTableColumns(table) {
 function addTableHeaders(table) {
   var tableHeader = table.getHeader();
   var table = tableHeader.addRow();
-  table.addCell("Account", "");
-  table.addCell("Account opening balance", "");
-  table.addCell("Securities opening balance", "");
-  table.addCell("Opening balance differences", "");
-  table.addCell("Account balance", "");
-  table.addCell("Securities balance", "");
-  table.addCell("Balance differences", "");
-  table.addCell("Account movements", "");
-  table.addCell("Securities movements", "");
-  table.addCell("Movements differences", "");
+  table.addCell("Account", "styleTablesHeaderText");
+  table.addCell("Account opening balance", "styleTablesHeaderText");
+  table.addCell("Securities opening balance", "styleTablesHeaderText");
+  table.addCell("Opening balance differences", "styleTablesHeaderText");
+  table.addCell("Account balance", "styleTablesHeaderText");
+  table.addCell("Securities balance", "styleTablesHeaderText");
+  table.addCell("Balance differences", "styleTablesHeaderText");
+  table.addCell("Account movements", "styleTablesHeaderText");
+  table.addCell("Securities movements", "styleTablesHeaderText");
+  table.addCell("Movements differences", "styleTablesHeaderText");
 }
 
 function getAccountsDataObjList(banDoc, docInfo) {
