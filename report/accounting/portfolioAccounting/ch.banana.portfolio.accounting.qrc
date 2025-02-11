@@ -1,6 +1,7 @@
 <!DOCTYPE RCC>
 <RCC version="1.0">
     <qresource>
+        <file>ch.banana.portfolio.accounting.check.balances.data.js</file>
         <file>ch.banana.portfolio.accounting.record.sales.transactions.js</file>
         <file>ch.banana.portfolio.accounting.record.adjustment.transactions.js</file>
         <file>ch.banana.portfolio.accounting.calculation.methods.js</file>
