@@ -98,7 +98,9 @@ function printReport(banDoc, appraisalDataList, portfolioTrData) {
    *  especially to display the full booking and market value based on the decimals used in the UnitPrice & UnitPriceCurrent columns.
    * */
   let unitPriceColumn = banDoc.table("Transactions").column("UnitPrice", "Base");
-  let priceCurrentColumn = banDoc.table("Items").column("UnitPriceCurrent", "Base");
+  let decimals = unitPriceColumn.decimal;
+  if (decimals > 11)
+    decimals = 11; // Over 11 decimals shown, the amounts overlap each others.
 
   //creates a new report
   let report = Banana.Report.newReport("Portfolio Evaluation Report");
@@ -132,10 +134,10 @@ function printReport(banDoc, appraisalDataList, portfolioTrData) {
       tableRow.addCell(itemData.item, 'styleNormalAmount');
       tableRow.addCell(itemData.currency, 'styleNormalAmount');
       tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemData.currentQt, 0, true), 'styleNormalAmount');
-      tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemData.avgCost, unitPriceColumn.decimal, true), 'styleNormalAmount');
-      tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemData.totalCost, unitPriceColumn.decimal, true), 'styleNormalAmount');
-      tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemData.marketPrice, priceCurrentColumn.decimal, true), 'styleNormalAmount');
-      tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemData.marketValue, priceCurrentColumn.decimal, true), 'styleNormalAmount');
+      tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemData.avgCost, decimals, true), 'styleNormalAmount');
+      tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemData.totalCost, decimals, true), 'styleNormalAmount');
+      tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemData.marketPrice, decimals, true), 'styleNormalAmount');
+      tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemData.marketValue, decimals, true), 'styleNormalAmount');
       tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemData.percOfPort, 2, true), 'styleNormalAmount');
       tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemData.unGainLoss, 2, true), 'styleNormalAmount');
       tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemData.percGL, 2, true), 'styleNormalAmount');
@@ -150,9 +152,9 @@ function printReport(banDoc, appraisalDataList, portfolioTrData) {
       tableRow.addCell(total.currency, 'styleTotalAmount');
       tableRow.addCell(Banana.Converter.toLocaleNumberFormat(total.accountTotCurrentQt, 0, true), 'styleTotalAmount');
       tableRow.addCell("", '', 1);
-      tableRow.addCell(Banana.Converter.toLocaleNumberFormat(total.accountTotBookValue, 2, true), 'styleTotalAmount');
+      tableRow.addCell(Banana.Converter.toLocaleNumberFormat(total.accountTotBookValue, decimals, true), 'styleTotalAmount');
       tableRow.addCell("", '', 1);
-      tableRow.addCell(Banana.Converter.toLocaleNumberFormat(total.accountTotMarketValue, 2, true), 'styleTotalAmount');
+      tableRow.addCell(Banana.Converter.toLocaleNumberFormat(total.accountTotMarketValue, decimals, true), 'styleTotalAmount');
       tableRow.addCell(Banana.Converter.toLocaleNumberFormat(total.accountTotPercOfPort, 2, true), 'styleTotalAmount');
       tableRow.addCell(Banana.Converter.toLocaleNumberFormat(total.accountTotUnGainLoss, 2, true), 'styleTotalAmount');
       tableRow.addCell("", '', 1);
@@ -198,7 +200,7 @@ function printReport(banDoc, appraisalDataList, portfolioTrData) {
         tableRow.addCell(transaction.debit, '');
         tableRow.addCell(transaction.credit, '');
         tableRow.addCell(Banana.Converter.toLocaleNumberFormat(transaction.qt, 0, false), 'styleNormalAmount');
-        tableRow.addCell(Banana.Converter.toLocaleNumberFormat(transaction.unitPrice, 0, false), 'styleNormalAmount');
+        tableRow.addCell(Banana.Converter.toLocaleNumberFormat(transaction.unitPrice, decimals, false), 'styleNormalAmount');
         tableRow.addCell(Banana.Converter.toLocaleNumberFormat(transaction.amount, 2, false), 'styleNormalAmount');
 
         rowColorIndex++;

@@ -202,6 +202,10 @@ function printReport(banDoc, docInfo, itemCardData, itemDescription) {
     var report = Banana.Report.newReport("Security Card Report");
     var currentDate = new Date();
     let unitPriceColumn = banDoc.table("Transactions").column("UnitPrice", "Base"); // we want to use the same decimals as defined in the unit price column.
+    let decimals = unitPriceColumn.decimal;
+    if (decimals > 11)
+        decimals = 11; // Over 11 decimals shown, the amounts overlap each others.
+
     //let hexColorBase = "#354793";//in the future we can let the user choose it.
     //let colorsObj=getColors(hexColorBase);
     let rowColorIndex = 0;//to know whether a line is odd or even.
@@ -234,9 +238,9 @@ function printReport(banDoc, docInfo, itemCardData, itemDescription) {
         tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.creditBase, 2, false), "styleNormalAmount");
         tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.balanceBase, 2, true), "styleNormalAmount");
         tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.qt, 0, false), "styleNormalAmount");
-        tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.unitPrice, unitPriceColumn.decimal, false), "styleNormalAmount");
+        tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.unitPrice, decimals, false), "styleNormalAmount");
         tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.qtBalance, 0, true), "styleNormalAmount");
-        tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.accAvgCost, unitPriceColumn.decimal, false), "styleNormalAmount");
+        tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.accAvgCost, decimals, false), "styleNormalAmount");
 
         rowColorIndex++;
     }
@@ -257,7 +261,7 @@ function printReport(banDoc, docInfo, itemCardData, itemDescription) {
     tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemCardData.totalBalanceBase, 2, false), "styleTotalAmount");
     tableRow.addCell("", "", 2);
     tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemCardData.totalQtBalance, 0, false), "styleTotalAmount");
-    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemCardData.totalCurrAvgCost, unitPriceColumn.decimal, false), "styleTotalAmount");
+    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemCardData.totalCurrAvgCost, decimals, false), "styleTotalAmount");
 
     return report;
 

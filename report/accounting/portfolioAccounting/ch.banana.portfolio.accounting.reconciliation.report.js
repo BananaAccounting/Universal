@@ -185,6 +185,9 @@ function printReport(banDoc, reconciliationData, docInfo) {
     var currentDate = new Date();
     let spanObj = setSpanObject(docInfo);
     let unitPriceColumn = banDoc.table("Transactions").column("UnitPrice", "Base");
+    let decimals = unitPriceColumn.decimal;
+    if (decimals > 11)
+        decimals = 11; // Over 11 decimals shown, the amounts overlap each others.
     //add Reconciliation table
     var concData = reconciliationData.data;
     var tabConc = getConciliationTable(report, currentDate, docInfo);
@@ -224,9 +227,9 @@ function printReport(banDoc, reconciliationData, docInfo) {
                 tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemTr[t].creditBase, 2, false), "styleNormalAmount");
                 tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemTr[t].balanceBase, 2, true), "styleNormalAmount");
                 tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemTr[t].qt, 0, false), "styleNormalAmount");
-                tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemTr[t].unitPrice, unitPriceColumn.decimal, false), "styleNormalAmount");
+                tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemTr[t].unitPrice, decimals, false), "styleNormalAmount");
                 tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemTr[t].qtBalance, 0, true), "styleNormalAmount");
-                tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemTr[t].accAvgCost, unitPriceColumn.decimal, false), "styleNormalAmount");
+                tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemTr[t].accAvgCost, decimals, false), "styleNormalAmount");
 
                 rowColorIndex++;
             }
@@ -247,7 +250,7 @@ function printReport(banDoc, reconciliationData, docInfo) {
             tableRow.addCell(Banana.Converter.toLocaleNumberFormat(item.totalBalanceBase, 2, true), "styleTotalAmount");
             tableRow.addCell("", "", 2);
             tableRow.addCell(Banana.Converter.toLocaleNumberFormat(item.totalQtBalance, 0, true), "styleTotalAmount");
-            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(item.totalCurrAvgCost, unitPriceColumn.decimal, true), "styleTotalAmount");
+            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(item.totalCurrAvgCost, decimals, true), "styleTotalAmount");
             var tableRow = tabConc.addRow("styleTableRows");
             tableRow.addCell("", "", spanObj.allTable);
         }
