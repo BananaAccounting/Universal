@@ -46,6 +46,11 @@ Styles for the amounts
 .styleNormalAmount {
     text-align: right;
 }
+.styleNormalAmount_checkBalancesDiffCol {
+    text-align: right;
+    background-color: #edeef8;
+}
+
 .styleTotalAmount{
     text-align: right;
     font-weight: bold;
