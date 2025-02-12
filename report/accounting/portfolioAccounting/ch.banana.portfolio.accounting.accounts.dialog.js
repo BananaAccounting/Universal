@@ -16,7 +16,7 @@
 // @api = 1.0
 // @pubdate = 2025-01-22
 // @publisher = Banana.ch SA
-// @description = Account Settings
+// @description = Accounts Settings
 // @task = app.command
 // @doctype = 100.*
 // @timeout = -1

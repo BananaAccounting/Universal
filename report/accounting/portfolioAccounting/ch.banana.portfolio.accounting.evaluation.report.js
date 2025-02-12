@@ -14,7 +14,7 @@
 //
 // @api = 1.0
 // @id = ch.banana.portfolio.accounting.evaluation.report
-// @description = Evaluation of Portfolio
+// @description = Evaluation of investments
 // @task = app.command
 // @doctype = 100.*
 // @publisher = Banana.ch SA
@@ -65,7 +65,7 @@ function addTableBaSTransactions(report) {
   current_date = Banana.Converter.toInternalDateFormat(current_date);
   var table_bas_transactions_details = report.addTable('myTransactionsTable');
   table_bas_transactions_details.setStyleAttributes("width:100%;");
-  let caption = table_bas_transactions_details.getCaption().addText(qsTr("Portfolio Transactions \n Transactions as of: " + current_date), "styleTitles");
+  let caption = table_bas_transactions_details.getCaption().addText(qsTr("Investment accounting transactions \n Transactions as of: " + current_date), "styleTitles");
   caption.excludeFromTest();
   var tableHeader = table_bas_transactions_details.getHeader();
   var tableRow = tableHeader.addRow();
@@ -103,7 +103,7 @@ function printReport(banDoc, appraisalDataList, portfolioTrData) {
     decimals = 11; // Over 11 decimals shown, the amounts overlap each others.
 
   //creates a new report
-  let report = Banana.Report.newReport("Portfolio Evaluation Report");
+  let report = Banana.Report.newReport("Investment accounting evaluation report");
   //add appraisal table
   let appraisalTable = addTableBaSAppraisal(report);
   let rowColorIndex = 0;//to know whether a line is odd or even.

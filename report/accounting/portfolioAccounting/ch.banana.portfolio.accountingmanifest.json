@@ -2,12 +2,12 @@
     "category": "productivity",
     "country": "universal",
     "countryCode": "un",
-    "description": "Portfolio Accounting",
-    "description.en": "Portfolio Accounting",
+    "description": "Investment Accounting",
+    "description.en": "Investment Accounting",
     "id": "ch.banana.portfolio.accounting",
     "language": "en",
     "publisher": "Banana.ch",
-    "title": "Portfolio Accounting",
-    "title.en": "Portfolio Accounting",
+    "title": "Investment Accounting",
+    "title.en": "Investment Accounting",
     "version": "1.0"
 }
