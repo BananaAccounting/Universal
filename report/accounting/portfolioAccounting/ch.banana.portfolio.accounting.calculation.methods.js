@@ -117,6 +117,8 @@ function getDocumentInfo(banDoc) {
 
     var docInfo = {};
 
+    docInfo.openingDate = banDoc.info("AccountingDataBase", "OpeningDate");
+
     //define if its a multicurrency accounting
     let multiCurrency = "120";
     let multiCurrency_withVat = "130";
@@ -388,7 +390,7 @@ function calculateStockSaleData(banDoc, docInfo, itemObj, dlgParams, currentRowN
     journalData = getJournalData(docInfo, journal);
     accountCard = banDoc.currentCard(itemAccount);
     accountCardData = getAccountCardDataAdapted(itemObj, accountCard);
-    itemCardData = getItemCardDataList(itemObj, accountCardData, journalData, unitPriceColDecimals, currentRowNr);
+    itemCardData = getItemCardDataList(docInfo, itemObj, accountCardData, journalData, unitPriceColDecimals, currentRowNr);
 
     if (!itemCardData || isObjectEmpty(itemCardData))
         return saleData;
@@ -613,9 +615,9 @@ function accountIsInForeignCurrency(banDoc, docInfo, account) {
 This structure has been designed to allow saving separately the data related to the opening of the security, 
 those related to its evolution (transactions), and the current values (the latest transaction( or transaction x if a currentRowNr is defined) resulting data).
  */
-function getItemCardDataList(itemObj, accountCardData, journalData, unitPriceColDecimals, currentRowNr) {
+function getItemCardDataList(docInfo, itemObj, accountCardData, journalData, unitPriceColDecimals, currentRowNr) {
     let itemCardData = {};
-    let openingData = getItemOpeningDataObj(itemObj);
+    let openingData = getItemOpeningDataObj(docInfo, itemObj);
     setSoldData(accountCardData, journalData);
     setQuantityBalance(openingData, accountCardData);
     setCurrentAccAvgCost(accountCardData, unitPriceColDecimals);
@@ -684,9 +686,11 @@ function setOpeningValues(currentValuesObj, openingData) {
  * - CurrentValue (or CurrencyCurrentValue): Current balance of the security (automatically calculated by Banana if given quantity and price).
  * This data will then serve as the opening data for the new year.
  */
-function getItemOpeningDataObj(itemObj) {
+function getItemOpeningDataObj(docInfo, itemObj) {
     let openingDataObj = {};
 
+    openingDataObj.itemOpeningDate = docInfo.openingDate;
+    openingDataObj.itemOpeningDescription = "Initial balance";
     openingDataObj.itemUnitPriceBegin = itemObj.unitPriceBegin;
     openingDataObj.itemValueBeginCurrency = itemObj.valueBeginCurrency;
     openingDataObj.itemValueBegin = itemObj.valueBegin;

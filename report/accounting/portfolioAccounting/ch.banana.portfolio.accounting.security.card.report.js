@@ -80,8 +80,6 @@ function exec() {
     //get the calculated data and the totals
     itemCardData = getItemCardData(banDoc, docInfo, accountCardData, journalData, itemObject);
 
-    Banana.Ui.showText(JSON.stringify(itemCardData));
-
     let itemDescription = itemObject.description;
     let report = printReport(banDoc, docInfo, itemCardData, itemDescription);
     getReportHeader(report, docInfo);
@@ -118,8 +116,8 @@ function getItemCardData(banDoc, docInfo, accountCardData, journalData, itemObje
     let unitPriceColumn = banDoc.table("Transactions").column("UnitPrice", "Base");
     let unitPriceColDecimals = unitPriceColumn.decimal; // we want to use the same decimals as defined in the unit price column.
 
-    itemCardData.data = getItemCardDataList(itemObject, accountCardData, journalData, unitPriceColDecimals);
-    // We expand the object by adding the calculated sum of debit and credit columns (just for this report)
+    itemCardData.data = getItemCardDataList(docInfo, itemObject, accountCardData, journalData, unitPriceColDecimals);
+    // We expand the object by adding the calculated sum of debit and credit columns (just for build the security card).
     itemCardData.totalDebitBase = getSum(accountCardData, "debitBase");
     itemCardData.totalCreditBase = getSum(accountCardData, "creditBase");
     if (docInfo.isMultiCurrency) {
@@ -210,7 +208,24 @@ function printReport(banDoc, docInfo, itemCardData, itemDescription) {
     //add item card table
     var tabItemCard = getItemCardTable(report, docInfo, currentDate, docInfo.baseCurrency, itemCardData, itemDescription);
 
-    //Print the data.
+    //Add the opening data (if present)
+    if (itemCardData.data.openingData.itemValueBegin || itemCardData.data.openingData.itemValueBeginCurrency) {
+        var tableOpeningRow = tabItemCard.addRow("styleOddRows");
+        tableOpeningRow.addCell(Banana.Converter.toLocaleDateFormat(itemCardData.data.openingData.itemOpeningDate), '');
+        tableOpeningRow.addCell("", "", 1);
+        tableOpeningRow.addCell(itemCardData.data.openingData.itemOpeningDescription, '');
+        tableOpeningRow.addCell("", "", 2);
+        if (docInfo.isMultiCurrency) {
+            tableOpeningRow.addCell(Banana.Converter.toLocaleNumberFormat(itemCardData.data.openingData.itemValueBeginCurrency, 2, true), "styleNormalAmount");
+            tableOpeningRow.addCell("", "", 2);
+        }
+        tableOpeningRow.addCell(Banana.Converter.toLocaleNumberFormat(itemCardData.data.openingData.itemValueBegin, 2, true), "styleNormalAmount");
+        tableOpeningRow.addCell("", "", 2);
+        tableOpeningRow.addCell(Banana.Converter.toLocaleNumberFormat(itemCardData.data.openingData.itemQuantityBegin, 0, true), "styleNormalAmount");
+        tableOpeningRow.addCell(Banana.Converter.toLocaleNumberFormat(itemCardData.data.openingData.itemUnitPriceBegin, decimals, false), "styleNormalAmount");
+    }
+
+    //Add the movements data.
     for (var key in itemCardData.data.transactionsData) {
         isEven = checkIfNumberisEven(rowColorIndex);
         if (isEven)
@@ -240,7 +255,7 @@ function printReport(banDoc, docInfo, itemCardData, itemDescription) {
         rowColorIndex++;
     }
 
-    //Print the totals
+    //Add the totals.
     var tableRow = tabItemCard.addRow("styleTableRows");
     let dateCell = tableRow.addCell(Banana.Converter.toLocaleDateFormat(currentDate), '');
     dateCell.excludeFromTest();
