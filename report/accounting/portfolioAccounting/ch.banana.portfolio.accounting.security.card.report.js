@@ -75,10 +75,12 @@ function exec() {
 
     //get the account card, filter the result by item and return an array of objects containing the transactions data
     accountCard = banDoc.currentCard(itemObject.account);
-    accountCardData = getAccountCardCompleteData(selectedItem, accountCard);
+    accountCardData = getAccountCardDataAdapted(itemObject, accountCard);
 
     //get the calculated data and the totals
     itemCardData = getItemCardData(banDoc, docInfo, accountCardData, journalData, itemObject);
+
+    Banana.Ui.showText(JSON.stringify(itemCardData));
 
     let itemDescription = itemObject.description;
     let report = printReport(banDoc, docInfo, itemCardData, itemDescription);
@@ -117,29 +119,22 @@ function getItemCardData(banDoc, docInfo, accountCardData, journalData, itemObje
     let unitPriceColDecimals = unitPriceColumn.decimal; // we want to use the same decimals as defined in the unit price column.
 
     itemCardData.data = getItemCardDataList(itemObject, accountCardData, journalData, unitPriceColDecimals);
-    itemCardData.currency = itemObject.currency;
-    itemCardData.item = itemObject.item;
+    // We expand the object by adding the calculated sum of debit and credit columns (just for this report)
     itemCardData.totalDebitBase = getSum(accountCardData, "debitBase");
     itemCardData.totalCreditBase = getSum(accountCardData, "creditBase");
-    itemCardData.totalBalanceBase = getBalance(accountCardData, "debitBase", "creditBase");
     if (docInfo.isMultiCurrency) {
         itemCardData.totalDebitCurr = getSum(accountCardData, "debitCurr");
         itemCardData.totalCreditCurr = getSum(accountCardData, "creditCurr");
-        itemCardData.totalBalanceCurr = getBalance(accountCardData, "debitCurr", "creditCurr");
     }
-    //In the total I also show the last known cumulative quantity and the last known average accounting cost.
-    if (itemCardData.data) {
-        itemCardData.totalQtBalance = itemCardData.data.currentValues.itemQtBalance;
-        itemCardData.totalCurrAvgCost = itemCardData.data.currentValues.itemAvgCost;
-    }
+
     return itemCardData;
 }
 
 function getItemCardTable(report, docInfo, currentDate, baseCurr, itemCardData, itemDescription) {
     currentDate = Banana.Converter.toLocaleDateFormat(currentDate);
     var tableConc = report.addTable('mySecCardTable');
-    let itemId = itemCardData.item;
-    let itemCurr = itemCardData.currency;
+    let itemId = itemCardData.data.itemId;
+    let itemCurr = itemCardData.data.itemCurrency;
     let refCurr = itemCurr ? itemCurr : baseCurr; //currency dispayed on the header.
     tableConc.setStyleAttributes("width:100%;");
     let caption = tableConc.getCaption().addText(qsTr("Security Card: " + itemId + " " + itemDescription + " " + refCurr + ", Data as of: " + currentDate), "styleTitles");
@@ -254,14 +249,14 @@ function printReport(banDoc, docInfo, itemCardData, itemDescription) {
     if (docInfo.isMultiCurrency) {
         tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemCardData.totalDebitCurr, 2, false), "styleTotalAmount");
         tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemCardData.totalCreditCurr, 2, false), "styleTotalAmount");
-        tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemCardData.totalBalanceCurr, 2, false), "styleTotalAmount");
+        tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemCardData.data.currentValues.itemBalanceCurr, 2, false), "styleTotalAmount");
     }
     tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemCardData.totalDebitBase, 2, false), "styleTotalAmount");
     tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemCardData.totalCreditBase, 2, false), "styleTotalAmount");
-    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemCardData.totalBalanceBase, 2, false), "styleTotalAmount");
+    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemCardData.data.currentValues.itemBalanceBase, 2, false), "styleTotalAmount");
     tableRow.addCell("", "", 2);
-    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemCardData.totalQtBalance, 0, false), "styleTotalAmount");
-    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemCardData.totalCurrAvgCost, decimals, false), "styleTotalAmount");
+    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemCardData.data.currentValues.itemQtBalance, 0, false), "styleTotalAmount");
+    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemCardData.data.currentValues.itemAvgCost, decimals, false), "styleTotalAmount");
 
     return report;
 

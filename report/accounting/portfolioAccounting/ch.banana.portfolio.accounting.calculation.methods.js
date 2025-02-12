@@ -387,7 +387,7 @@ function calculateStockSaleData(banDoc, docInfo, itemObj, dlgParams, currentRowN
     journal = banDoc.journal(banDoc.ORIGINTYPE_CURRENT, banDoc.ACCOUNTTYPE_NONE);
     journalData = getJournalData(docInfo, journal);
     accountCard = banDoc.currentCard(itemAccount);
-    accountCardData = getAccountCardDataAdapted(banDoc, docInfo, itemObj, accountCard, itemAccount);
+    accountCardData = getAccountCardDataAdapted(itemObj, accountCard);
     itemCardData = getItemCardDataList(itemObj, accountCardData, journalData, unitPriceColDecimals, currentRowNr);
 
     if (!itemCardData || isObjectEmpty(itemCardData))
@@ -449,11 +449,10 @@ function getClosestPreviousObjByRowNr(accountCardData, currentRowNr) {
  * of an account card by returning a new account card adapted to the creation of a
  * item card. (see getItemCardDataList()). We may combine the two methods in the future.
  */
-function getAccountCardDataAdapted(banDoc, docInfo, itemObj, accountCard, account) {
+function getAccountCardDataAdapted(itemObj, accountCard) {
     let transactions = [];
     let accBalance = "";
     let accBalanceCurr = "";
-    let accInForeignCurr = accountIsInForeignCurrency(banDoc, docInfo, account);
     /**
      * When creating the account card, before calculating the balance manually using the debit and credit columns, 
      * we must take into account, if any, the opening balance of the security found in the ‘ValueBegin’ ( or ‘ValueBeginCurrency’) column
@@ -509,58 +508,6 @@ function getAccountCardDataAdapted(banDoc, docInfo, itemObj, accountCard, accoun
                 accBalanceCurr = Banana.SDecimal.subtract(accBalanceCurr, trData.creditCurr);
             }
             trData.balanceCurr = accBalanceCurr;
-
-            transactions.push(trData);
-        }
-    }
-    if (transactions.length > 0)
-        return transactions;
-    else
-        return [];
-}
-
-/**
- * Ritorna le informazioni contenute nella scheda conto del conto collegato all'item, sia in multimoneta che in moneta base
- */
-function getAccountCardCompleteData(itemName, accountCard) { // copione ? Esiste già getAccountCardDataAdapted data, da vedere....
-    let transactions = [];
-    let balanceBase = "";
-    let balanceCurr = "";
-
-    for (var i = 0; i < accountCard.rowCount; i++) {
-        let tRow = accountCard.row(i);
-        if (tRow.value("ItemsId") == itemName) {
-            let trData = {};
-            trData.rowNr = tRow.rowNr;
-            trData.doc = tRow.value("Doc");
-            trData.date = tRow.value("Date");
-            trData.trId = tRow.value("JContraAccountGroup");
-            trData.item = tRow.value("ItemsId");
-            trData.description = tRow.value("Description");
-            trData.qt = tRow.value("Quantity");
-            trData.currency = tRow.value("ExchangeCurrency");
-            trData.debitBase = tRow.value("JDebitAmount"); //debit value in base currency
-            trData.creditBase = tRow.value("JCreditAmount"); //credit value base currency
-            //trData.balanceBase = tRow.value("JBalance"); //Se il conto è usato per più items, il bilancio deve essere ripreso in altro modo.
-            trData.unitPrice = tRow.value("UnitPrice");
-            //Calculate the balance manually.
-            if (trData.debitBase !== "") {
-                balanceBase = Banana.SDecimal.add(balanceBase, trData.debitBase);
-            }
-            if (trData.creditBase !== "") {
-                balanceBase = Banana.SDecimal.subtract(balanceBase, trData.creditBase);
-            }
-            trData.balanceBase = balanceBase;
-            trData.debitCurr = tRow.value("JDebitAmountAccountCurrency");
-            trData.creditCurr = tRow.value("JCreditAmountAccountCurrency");
-            trData.balanceCurr = tRow.value("JBalanceAccountCurrency");
-            if (trData.debitCurr !== "") {
-                balanceCurr = Banana.SDecimal.add(balanceCurr, trData.debitCurr);
-            }
-            if (trData.creditCurr !== "") {
-                balanceCurr = Banana.SDecimal.subtract(balanceCurr, trData.creditCurr);
-            }
-            trData.balanceCurr = balanceCurr;
 
             transactions.push(trData);
         }
@@ -674,6 +621,7 @@ function getItemCardDataList(itemObj, accountCardData, journalData, unitPriceCol
     setCurrentAccAvgCost(accountCardData, unitPriceColDecimals);
 
     itemCardData.itemId = itemObj.item;
+    itemCardData.itemCurrency = itemObj.currency;
     itemCardData.openingData = openingData;
     itemCardData.transactionsData = accountCardData;
     itemCardData.currentValues = getItemCurrentValues(openingData, accountCardData, currentRowNr);

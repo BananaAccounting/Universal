@@ -344,7 +344,7 @@ function getItemsDataList(banDoc, docInfo, itemsData, accountCard, journalData, 
             let itemData = {};
             itemData.item = itemsData[key].item;
             itemData.itemCardData = [];
-            accountCardData = getAccountCardCompleteData(itemsData[key].item, accountCard);
+            accountCardData = getAccountCardDataAdapted(itemsData[key], accountCard);
             itemCardData = getItemCardDataList(itemObject, accountCardData, journalData, unitPriceColDecimals);//returns an array of objects with the movements of the item card.
             if (itemCardData) {
                 itemData.itemCardData = itemCardData.transactionsData;

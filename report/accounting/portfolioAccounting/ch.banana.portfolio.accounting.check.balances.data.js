@@ -200,8 +200,9 @@ function getSecuritiesDataObjList(banDoc, docInfo, account) {
       let secBalance = "";
       let secBalanceCurrency = "";
 
-      let accountCardAdpt = getAccountCardDataAdapted(banDoc, docInfo, itemObj, accountCard, account);
+      let accountCardAdpt = getAccountCardDataAdapted(itemObj, accountCard);
       let itemCardData = getItemCardDataList(itemObj, accountCardAdpt, journalData, unitPriceColDecimals, null);
+      Banana.Ui.showText(JSON.stringify(itemCardData));
 
       if (!itemCardData || isObjectEmpty(itemCardData))
         return;
