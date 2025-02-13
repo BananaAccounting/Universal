@@ -405,7 +405,6 @@ function getAccountsDataList(banDoc, docInfo, accountsList) {
 
         // Opening balance - currentBalance = Calculated movements amount.
         accData.balanceDiffBase = Banana.SDecimal.subtract(accBalance.balance, accBalance.opening);
-        Banana.console.debug("accData.balanceDiffBase" + " / " + accData.balanceDiffBase);
         accData.balanceDiffCurr = Banana.SDecimal.subtract(accBalance.balanceCurrency, accBalance.openingCurrency);
 
         //get the items data.
@@ -413,10 +412,10 @@ function getAccountsDataList(banDoc, docInfo, accountsList) {
         //Banana.Ui.showText(JSON.stringify(itemsDataList));
         accData.items = itemsDataList;
 
-        //get total amount of balances calculated for the various items.
+        //Get total movements from the securities
         let itemsTotalBalance = sumItemsBalances(itemsDataList);
-        accData.securityTrAmountBase = itemsTotalBalance.baseBalance;
-        accData.securityTrAmountCurrency = itemsTotalBalance.currencyBalance;
+        accData.securityTrAmountBase = itemsTotalBalance.movTotalBase;
+        accData.securityTrAmountCurrency = itemsTotalBalance.movTotalCurrency;
 
         //difference between the securities transactions and the account balance (should be 0).
         accData.differenceBase = Banana.SDecimal.subtract(accData.securityTrAmountBase, accData.balanceDiffBase);
@@ -429,19 +428,25 @@ function getAccountsDataList(banDoc, docInfo, accountsList) {
     return accDataList;
 }
 
-function sumItemsBalances(itemsDataList) { // 13.02 riprendere da quiii...
-    let itemBalances = {};
-    let itemBaseBalance = "";
-    let itemCurrencyBalance = "";
+function sumItemsBalances(itemsDataList) {
+    let itemsTotalMovements = {};
+    let itemTotalMov = "";
+    let itemTotalMovCurrency = "";
 
     itemsDataList.forEach(item => {
-        itemBaseBalance = Banana.SDecimal.add(itemBaseBalance, item.currentValues.itemBalanceBase);
-        itemCurrencyBalance = Banana.SDecimal.add(itemCurrencyBalance, item.currentValues.itemBalanceCurr);
+        let itemOpBalance = item.openingData.itemValueBegin;
+        let itemOpBalanceCurr = item.openingData.itemValueBeginCurrency;
+        let itemCurrBalance = item.currentValues.itemBalanceBase;
+        let itemCurrBalanceCurr = item.currentValues.itemBalanceCurr;
+
+        itemTotalMov = Banana.SDecimal.add(itemTotalMov, Banana.SDecimal.subtract(itemCurrBalance, itemOpBalance));
+        itemTotalMovCurrency = Banana.SDecimal.add(itemTotalMovCurrency, Banana.SDecimal.subtract(itemCurrBalanceCurr, itemOpBalanceCurr));
     });
 
-    itemBalances.baseBalance = itemBaseBalance;
-    itemBalances.currencyBalance = itemCurrencyBalance;
-    return itemBalances;
+    itemsTotalMovements.movTotalBase = itemTotalMov;
+    itemsTotalMovements.movTotalCurrency = itemTotalMovCurrency;
+
+    return itemsTotalMovements;
 }
 
 
