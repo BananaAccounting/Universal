@@ -73,7 +73,7 @@ TestCheckBalancesData.prototype.testRecordSalesTransactions = function () {
     // We add first the accounts calculated data.
     this.testLogger.addJson("ObjectData", JSON.stringify(testDataObj));
     //Then we add the complete report.
-    let report = getReport(this.banDoc, testDataObj);
+    let report = getReport(this.banDoc, this.docInfo, testDataObj);
     this.testLogger.addSubSection("Report data");
     this.testLogger.addReport("ReportData", report);
 }

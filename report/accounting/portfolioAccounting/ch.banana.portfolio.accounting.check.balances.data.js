@@ -50,7 +50,7 @@ function exec() {
 
   checkBalancesObj.data = data;
 
-  let report = getReport(banDoc, checkBalancesObj);
+  let report = getReport(banDoc, docInfo, checkBalancesObj);
   getReportHeader(report, docInfo);
   let styleSheet = getReportStyle();
   Banana.Report.preview(report, styleSheet);
@@ -59,7 +59,7 @@ function exec() {
 
 }
 
-function getReport(banDoc, checkBalancesObj) {
+function getReport(banDoc, docInfo, checkBalancesObj) {
   let texts = getTexts(banDoc);
   let report = Banana.Report.newReport(texts.tablecaption);
   let table = report.addTable('discrepanciesTable');
@@ -67,11 +67,11 @@ function getReport(banDoc, checkBalancesObj) {
   table.getCaption().addText(texts.tablecaption, "styleTitles");
   defineTableColumns(table);
   addTableHeaders(table);
-  addTableData(table, checkBalancesObj);
+  addTableData(docInfo, table, checkBalancesObj);
   return report;
 }
 
-function addTableData(table, dataObj) {
+function addTableData(docInfo, table, dataObj) {
   // Show data (In the account currency).
   let accountData = dataObj.data;
   let accOpBalance = "";
@@ -85,19 +85,39 @@ function addTableData(table, dataObj) {
   let movDiff = "";
   let accountName = "";
 
+  /**
+  * For the differencese take note that in normal accouting files (no multi), for data arriving from the journal (such as security movement data) we have the value also
+  * in currency of the security (same as in base currency-->JBalanceAccountCurrency), while for data coming from the ‘Accounts’ table if the accounts are not multi-currency, 
+  * this value does not exist, so could exists a difference in currencies fields wich is not real as wecorrectly miss data in one side. 
+  * We manage that by just using base amounts with a non multi-currency ac2 file.
+ */
+
   accountData.forEach(account => {
     let tableRow = table.addRow();
 
     accountName = account.account;
-    accOpBalance = account.accountDetails.accountOpeningCurrency || account.accountDetails.accountOpening;
-    secOpBalance = account.securitiesTotals.secTotalOpeningCurrency || account.securitiesTotals.secTotalOpening;
-    opBalancesDiff = account.discrepancies.openingBalanceCurrencyDifference || account.discrepancies.openingBalanceDifference;
-    accBalance = account.accountDetails.accountBalanceCurrency || account.accountDetails.accountBalance;
-    secBalance = account.securitiesTotals.secTotalBalanceCurrency || account.securitiesTotals.secTotalBalance;
-    balancesDiff = account.discrepancies.balanceCurrencyDifference || account.discrepancies.balanceDifference;
-    accMovements = account.accountDetails.accountTotalMovementsCurrency || account.accountDetails.accountTotalMovements;
-    secMovements = account.securitiesTotals.secTotalMovementsCurrency || account.securitiesTotals.secTotalMovements;
-    movDiff = account.discrepancies.movementsCurrencyDifference || account.discrepancies.movementsDifference;
+
+    if (docInfo.isMultiCurrency) {
+      accOpBalance = account.accountDetails.accountOpeningCurrency || account.accountDetails.accountOpening;
+      secOpBalance = account.securitiesTotals.secTotalOpeningCurrency || account.securitiesTotals.secTotalOpening;
+      opBalancesDiff = account.discrepancies.openingBalanceCurrencyDifference || account.discrepancies.openingBalanceDifference;
+      accBalance = account.accountDetails.accountBalanceCurrency || account.accountDetails.accountBalance;
+      secBalance = account.securitiesTotals.secTotalBalanceCurrency || account.securitiesTotals.secTotalBalance;
+      balancesDiff = account.discrepancies.balanceCurrencyDifference || account.discrepancies.balanceDifference;
+      accMovements = account.accountDetails.accountTotalMovementsCurrency || account.accountDetails.accountTotalMovements;
+      secMovements = account.securitiesTotals.secTotalMovementsCurrency || account.securitiesTotals.secTotalMovements;
+      movDiff = account.discrepancies.movementsCurrencyDifference || account.discrepancies.movementsDifference;
+    } else {
+      accOpBalance = account.accountDetails.accountOpening;
+      secOpBalance = account.securitiesTotals.secTotalOpening;
+      opBalancesDiff = account.discrepancies.openingBalanceDifference;
+      accBalance = account.accountDetails.accountBalance;
+      secBalance = account.securitiesTotals.secTotalBalance;
+      balancesDiff = account.discrepancies.balanceDifference;
+      accMovements = account.accountDetails.accountTotalMovements;
+      secMovements = account.securitiesTotals.secTotalMovements;
+      movDiff = account.discrepancies.movementsDifference;
+    }
 
 
     tableRow.addCell(accountName, "");
