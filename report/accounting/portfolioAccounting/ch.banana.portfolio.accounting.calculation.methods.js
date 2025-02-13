@@ -720,9 +720,6 @@ function setCurrentAccAvgCost(accountCardData, unitPriceColDecimals) {
         let trId = "";
         trId = accountCardData[key].trId;
         if (trId && trId !== "") {
-            /** if the balance sheet column in foreign currency exists, I am sure that it is a multi-currency account, 
-            * so I take the value of the balance sheet in the currency of the asset, wich in case of an asset in the same currency as the base currency, 
-            * the value is the same.*/
             if (accountCardData[key].balanceCurr)
                 accountCardData[key].accAvgCost = Banana.SDecimal.divide(accountCardData[key].balanceCurr, accountCardData[key].qtBalance, { 'decimals': unitPriceColDecimals });
             else
