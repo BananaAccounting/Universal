@@ -16,7 +16,7 @@
 // @api = 1.0
 // @pubdate = 2024-12-23
 // @publisher = Banana.ch SA
-// @description = Calculate Sales Data
+// @description = 2. Calculate Sales Data
 // @task = app.command
 // @doctype = 100.*
 // @docproperties =

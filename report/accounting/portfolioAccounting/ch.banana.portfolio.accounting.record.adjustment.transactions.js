@@ -14,7 +14,7 @@
 //
 // @api = 1.0
 // @id = ch.banana.portfolio.accounting.record.adjustment.transactions
-// @description = Create adjustment transactions 
+// @description = 3. Create adjustment transactions 
 // @task = app.command
 // @doctype = 100.*
 // @publisher = Banana.ch SA
@@ -131,7 +131,8 @@ function getAdjustmentTransactionsRows(banDoc, savedMarketValuesParams, savedAcc
             row.fields["AmountCurrency"] = Banana.Converter.toInternalNumberFormat(adjustmentResult);
         else
             row.fields["Amount"] = Banana.Converter.toInternalNumberFormat(adjustmentResult);
-        row.fields["ExchangeCurrency"] = getItemCurrency(itemId, banDoc);
+        if (docInfo.isMultiCurrency)
+            row.fields["ExchangeCurrency"] = getItemCurrency(itemId, banDoc);
 
         rows.push(row);
     }
