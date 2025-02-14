@@ -14,7 +14,7 @@
 //
 // @api = 1.0
 // @id = ch.banana.portfolio.accounting.evaluation.report
-// @description = 8. Evaluation of investments
+// @description = 8. Evaluation of investments report
 // @task = app.command
 // @doctype = 100.*
 // @publisher = Banana.ch SA

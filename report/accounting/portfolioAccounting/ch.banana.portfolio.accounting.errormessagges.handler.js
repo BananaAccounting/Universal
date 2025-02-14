@@ -68,6 +68,8 @@ function getErrorMessage_MissingElements(errorId, missingElement) {
             return "The selected row does not contain a valid sales Quantity";
         case "UNITPRICE_MISSING_IN_ROW":
             return "The selected row does not contain a valid Unit Price";
+        case "AMOUNT_MISSING_IN_ROW":
+            return "The selected row does not contain a valid Amount";
         case "ITEM_WITHOUT_TYPE":
             return "Item: " + missingElement + " without assigned type. Define the type in the Items table";
     }

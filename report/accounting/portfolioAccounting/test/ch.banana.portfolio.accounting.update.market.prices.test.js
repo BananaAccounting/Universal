@@ -77,8 +77,10 @@ TestUpdateMarketPricesTrans.prototype.testImport = function () {
       Test.assert(file);
       var fileContent = file.read();
       Test.assert(fileContent);
-      let docChangeObj = exec(fileContent, banDoc, true);
-      this.testLogger.addJson('', JSON.stringify(docChangeObj));
+      let arrData = getArrayData(fileContent);
+      arrData = validateData(banDoc, arrData);
+      let docChange = getDocChange(banDoc, arrData);
+      this.testLogger.addJson('', JSON.stringify(docChange));
 
       if (!this.progressBar.step())
          break;

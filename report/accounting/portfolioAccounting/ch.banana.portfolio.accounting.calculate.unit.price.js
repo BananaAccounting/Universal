@@ -13,96 +13,88 @@
 // limitations under the License.
 //
 // @api = 1.0
-// @id = ch.banana.portfolio.accounting.update.market.prices.js
-// @description = 2. Update market prices
-// @task = import.file
-// @inputdatasource = openfiledialog
+// @id = ch.banana.portfolio.accounting.calculate.unit.price.js
+// @description = 9. Calculate unit price
+// @task = app.command
 // @doctype = 100.*
 // @publisher = Banana.ch SA
 // @pubdate = 2025-02-13
 // @inputdatasource = none
 // @timeout = -1
-// @inputfilefilter = Text files (*.txt *.csv);;All files (*.*)
-// @inputfilefilter.de = Text (*.txt *.csv);;Alle Dateien (*.*)
-// @inputfilefilter.fr = Texte (*.txt *.csv);;Tous (*.*)
-// @inputfilefilter.it = Testo (*.txt *.csv);;Tutti i files (*.*)
 // @includejs = ch.banana.portfolio.accounting.calculation.methods.js
 // @includejs = ch.banana.portfolio.accounting.errormessagges.handler.js
 
 /**
- * This extension imports and updates the current prices of the securities with the 
- * latest market prices selected by the user.
- * We reuire the user to select a csv or to select the data directly from excel, the data must have the following format:
- * US123456789;11.04873
- * IT000792468;10.98732
- * ....
- * Without any header !
+ * This extension returns a document change that adds or modifies the unit price indicated in the current selected line, based on
+ * the amount entered.
  */
 
-function exec(inData) {
-
+function exec() {
     let banDoc = Banana.document;
 
     if (!banDoc)
         return;
 
-    if (!isTest && !verifyBananaVersion(banDoc))
+    if (!verifyBananaVersion(banDoc))
+        return "@Cancel";
+
+    let currentRowNr = getCurrentRowNumber(banDoc, "Transactions");
+    let currentRowObj = getCurrentRowObj(banDoc, currentRowNr, "Transactions");
+    let docInfo = getDocumentInfo(banDoc);
+
+    if (!currentSelectedRowIsValid(banDoc, docInfo, currentRowObj))
         return "";
 
-    if (!tableExists(banDoc, "Items")) {
-        let msg = getErrorMessage_MissingElements("NO_ITEMS_TABLE", "");
-        banDoc.addMessage(msg, "NO_ITEMS_TABLE");
-        return "";
-    }
-
-    let arrData = getArrayData(inData);
-    arrData = validateData(banDoc, arrData);
-
-    if (arrData.length < 1)
-        return "";
-
-    return getDocChange(banDoc, arrData);
-}
-
-function getDocChange(banDoc, arrData) {
     let docChange = { "format": "documentChange", "error": "", "data": [] };
-    let jsonDoc = getDocChangeData(banDoc, arrData);
+    let jsonDoc = getDocChange(banDoc, docInfo, currentRowObj, currentRowNr);
     docChange["data"].push(jsonDoc);
     return docChange;
 }
 
-function getArrayData(inData) {
-    let convertionParam = defineConversionParam(inData);
-    return Banana.Converter.csvToArray(inData, convertionParam.separator, convertionParam.textDelim);
-}
+function currentSelectedRowIsValid(banDoc, docInfo, currentRowObj) {
+    if (currentRowObj || !isObjectEmpty(currentRowObj)) {
+        // Check if the row contains the quantity.
 
-function validateData(banDoc, data) {
-    // Validate format
-    data.forEach(element => {
-        if (element.length !== 2) {
-            getUnknownFormatError(banDoc);
-            return [];
+        if (!currentRowObj.value("Quantity") || currentRowObj.value("Quantity") === ""
+            || currentRowObj.value("Quantity").indexOf("-") < 0) {
+            let msg = getErrorMessage_MissingElements("QTY_MISSING_IN_ROW");
+            banDoc.addMessage(msg, "QTY_MISSING_IN_ROW");
+            return false;
         }
-    });
 
-    // Validate data
-    for (let i = data.length - 1; i >= 0; i--) {
-        let itemId = data[i][0];
-        let itemObj = getItemRowObj(itemId, banDoc);
-        if (!isValidItemSelected(itemId, itemObj, banDoc)) {
-            data.splice(i, 1);
+        if (docInfo.isMultiCurrency && (!currentRowObj.value("AmountCurrency") || currentRowObj.value("AmountCurrency") === "")) {
+            let msg = getErrorMessage_MissingElements("AMOUNT_MISSING_IN_ROW");
+            banDoc.addMessage(msg, "AMOUNT_MISSING_IN_ROW");
+            return false;
         }
+
+        if (!docInfo.isMultiCurrency && (!currentRowObj.value("Amount") || currentRowObj.value("Amount") === "")) {
+            let msg = getErrorMessage_MissingElements("AMOUNT_MISSING_IN_ROW");
+            banDoc.addMessage(msg, "AMOUNT_MISSING_IN_ROW");
+            return false;
+        }
+
+        if (!currentRowObj.value("UnitPrice") || currentRowObj.value("UnitPrice") === "") {
+            let msg = getErrorMessage_MissingElements("UNITPRICE_MISSING_IN_ROW");
+            banDoc.addMessage(msg, "UNITPRICE_MISSING_IN_ROW");
+            return false;
+        }
+
+    } else {
+        let msg = getErrorMessage_MissingElements("SELECTED_ROW_NOT_VALID");
+        banDoc.addMessage(msg, "SELECTED_ROW_NOT_VALID");
+        return false;
     }
-
-    return data;
+    return true;
 }
 
-function getDocChangeData(banDoc, arrData) {
+function getDocChange(banDoc, docInfo, currentRowObj, currentRowNr) {
     let docChangeObj = getDocumentChangeInit();
-    let rows = getRowsToModify(banDoc, arrData);
+    let unitPrice = calculateUnitPrice(banDoc, docInfo, currentRowObj);
+    let rows = getRowToModify(currentRowNr, unitPrice);
 
     var dataUnitItemsTable = {};
-    dataUnitItemsTable.nameXml = "Items";
+    dataUnitItemsTable.nameXml = "Transactions";
     dataUnitItemsTable.data = {};
     dataUnitItemsTable.data.rowLists = [];
     dataUnitItemsTable.data.rowLists.push({ "rows": rows });
@@ -112,26 +104,25 @@ function getDocChangeData(banDoc, arrData) {
     return docChangeObj;
 }
 
-function getRowsToModify(banDoc, arrData) {
+function calculateUnitPrice(banDoc, docInfo, currentRowObj) {
+    let unitPriceColumn = banDoc.table("Transactions").column("UnitPrice", "Base");
+    let unitPriceColDecimals = unitPriceColumn.decimal;
+    let currentQt = Banana.SDecimal.abs(currentRowObj.value("Quantity"));
+    let currentAmount = "";
+    docInfo.isMultiCurrency ? currentAmount = currentRowObj.value("AmountCurrency") : currentAmount = currentRowObj.value("Amount");
+    Banana.console.debug(currentAmount);
+    return Banana.SDecimal.divide(currentAmount, currentQt, { 'decimals': unitPriceColDecimals });
+}
+
+function getRowToModify(currentRowNr, unitPrice) {
     let rows = [];
-
-    arrData.forEach(e => {
-        let itemId = e[0];
-        let marketValue = Banana.Converter.toInternalNumberFormat(e[1], ".");
-        let itemObj = getItemRowObj(itemId, banDoc);
-
-        if (!itemObj || isObjectEmpty(itemObj))
-            return;
-
-        let row = {};
-        row.operation = {};
-        row.operation.name = "modify";
-        row.operation.sequence = String(itemObj.rowNr);
-        row.fields = {};
-        row.fields["UnitPriceCurrent"] = marketValue;
-        rows.push(row);
-    });
-
+    let row = {};
+    row.operation = {};
+    row.operation.name = "modify";
+    row.operation.sequence = String(currentRowNr);
+    row.fields = {};
+    row.fields["UnitPrice"] = unitPrice;
+    rows.push(row);
     return rows;
 }
 
