@@ -40,7 +40,7 @@ TestPortfolioEvaluationReport.prototype.initTestCase = function () {
     this.progressBar = Banana.application.progressBar;
     this.fileNameList = [];
 
-    this.fileNameList.push("file:script/../test/testcases/portfolio_accounting_double_entry_tutorial.ac2");
+    this.fileNameList.push("file:script/../test/testcases/portfolio_accounting_double_entry_tutorial_2022.ac2");
 }
 
 // This method will be called at the end of the test case

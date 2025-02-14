@@ -38,15 +38,10 @@ function TestCheckBalancesData() {
 TestCheckBalancesData.prototype.initTestCase = function () {
     this.testLogger = Test.logger;
     this.progressBar = Banana.application.progressBar;
+    this.fileNameList = [];
 
-    let fileName = "file:script/../test/testcases/portfolio_accounting_double_entry_multi_currency_tutorial_salesrecordtest_2025.ac2";
-    this.banDoc = Banana.application.openDocument(fileName);
-    if (!this.banDoc) {
-        this.testLogger.addFatalError("File not found: " + fileName);
-        return;
-    }
-
-    this.docInfo = getDocumentInfo(this.banDoc);
+    this.fileNameList.push("file:script/../test/testcases/portfolio_accounting_double_entry_multi_currency_tutorial_salesrecordtest_2025.ac2");
+    this.fileNameList.push("file:script/../test/testcases/portfolio_accounting_double_entry_tutorial_2023.ac2");
 }
 
 // This method will be called at the end of the test case
@@ -66,16 +61,33 @@ TestCheckBalancesData.prototype.cleanup = function () {
 
 TestCheckBalancesData.prototype.testRecordSalesTransactions = function () {
 
-    let testDataObj = {};
-    this.testLogger.addSection("TestCheckBalancesData");
-    testDataObj.data = getAccountsDataObjList(this.banDoc, this.docInfo);
-    this.testLogger.addSubSection("Object data");
-    // We add first the accounts calculated data.
-    this.testLogger.addJson("ObjectData", JSON.stringify(testDataObj));
-    //Then we add the complete report.
-    let report = getReport(this.banDoc, this.docInfo, testDataObj);
-    this.testLogger.addSubSection("Report data");
-    this.testLogger.addReport("ReportData", report);
+    let parentLogger = this.testLogger;
+    this.progressBar.start(this.fileNameList.length);
+    for (var i = 0; i < this.fileNameList.length; i++) {
+
+        let fileName = this.fileNameList[i];
+        if (!this.progressBar.step())
+            break;
+        let banDoc = Banana.application.openDocument(fileName);
+        this.testLogger = parentLogger.newLogger(Banana.IO.fileCompleteBaseName(fileName));
+
+        if (!banDoc)
+            return this.testLogger.addFatalError("File not found: " + fileName);
+
+        let docInfo = getDocumentInfo(banDoc);
+        let testDataObj = {};
+        this.testLogger.addSection("TestCheckBalancesData");
+        testDataObj.data = getAccountsDataObjList(banDoc, docInfo);
+        this.testLogger.addSubSection("Object data");
+        // We add first the accounts calculated data.
+        this.testLogger.addJson("ObjectData", JSON.stringify(testDataObj));
+        //Then we add the complete report.
+        let report = getReport(banDoc, docInfo, testDataObj);
+        this.testLogger.addSubSection("Report data");
+        this.testLogger.addReport("ReportData", report);
+    }
+
+
 }
 
 /**

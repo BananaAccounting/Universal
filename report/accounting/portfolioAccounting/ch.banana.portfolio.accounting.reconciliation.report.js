@@ -14,7 +14,7 @@
 //
 // @api = 1.0
 // @id = ch.banana.portfolio.accounting.riconciliation.report.js
-// @description = 5. Reconciliation
+// @description = 6. Reconciliation
 // @task = app.command
 // @doctype = 100.*
 // @publisher = Banana.ch SA
