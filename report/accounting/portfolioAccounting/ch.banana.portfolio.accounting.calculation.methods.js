@@ -1109,7 +1109,7 @@ function getItemRowNr(refGroup, tabItemsData) {
 }
 
 function isValidItemSelected(selectedItem, itemObj, banDoc) {
-    if (!itemObj || !selectedItem) {
+    if (!itemObj || isObjectEmpty(itemObj) || !selectedItem) {
         const ITEM_NOT_FOUND = "ITEM_NOT_FOUND";
         let msg = getErrorMessage_MissingElements(ITEM_NOT_FOUND, selectedItem);
         banDoc.addMessage(msg, ITEM_NOT_FOUND);
