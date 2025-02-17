@@ -122,7 +122,7 @@ function getRowToModify(currentRowNr, unitPrice, qtSold) {
     row.operation.sequence = String(currentRowNr);
     row.fields = {};
     row.fields["UnitPrice"] = unitPrice;
-    row.fields["Quantity"] = "-" + qtSold;
+    row.fields["Quantity"] = qtSold;
     rows.push(row);
     return rows;
 }

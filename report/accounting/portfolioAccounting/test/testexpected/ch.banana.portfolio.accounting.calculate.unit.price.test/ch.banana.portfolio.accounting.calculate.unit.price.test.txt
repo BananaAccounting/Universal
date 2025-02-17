@@ -43,7 +43,7 @@
                                     "rows": [
                                         {
                                             "fields": {
-                                                "Quantity": "-100",
+                                                "Quantity": "100",
                                                 "UnitPrice": "9.5000"
                                             },
                                             "operation": {
@@ -86,7 +86,7 @@
                                     "rows": [
                                         {
                                             "fields": {
-                                                "Quantity": "-100",
+                                                "Quantity": "100",
                                                 "UnitPrice": "11.5000"
                                             },
                                             "operation": {
@@ -129,7 +129,7 @@
                                     "rows": [
                                         {
                                             "fields": {
-                                                "Quantity": "-100",
+                                                "Quantity": "100",
                                                 "UnitPrice": "11.5562"
                                             },
                                             "operation": {
@@ -172,7 +172,7 @@
                                     "rows": [
                                         {
                                             "fields": {
-                                                "Quantity": "-5000",
+                                                "Quantity": "5000",
                                                 "UnitPrice": "1.0250"
                                             },
                                             "operation": {
@@ -215,7 +215,7 @@
                                     "rows": [
                                         {
                                             "fields": {
-                                                "Quantity": "-150",
+                                                "Quantity": "150",
                                                 "UnitPrice": "5.7944"
                                             },
                                             "operation": {

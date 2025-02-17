@@ -271,6 +271,7 @@ function printReport(banDoc, reconciliationData, docInfo) {
             var tableRow = tabConc.addRow("styleTableRows");
             tableRow.addCell("", "", spanObj.allTable);
         }
+
         //add the account balance and the total transactions for the item
         var tableRow = tabConc.addRow("styleTableRows");
         tableRow.addCell("", "", 2);
@@ -280,8 +281,8 @@ function printReport(banDoc, reconciliationData, docInfo) {
         tableRow.addCell("", "", 1);
         tableRow.addCell("Opening Balance " + concData[a].account, "styleDescrTotals", 3);
         if (docInfo.isMultiCurrency) {
-            tableRow.addCell("", "", 1);
             tableRow.addCell(Banana.Converter.toLocaleNumberFormat(concData[a].openBalanceCurr, 2, true), 'styleTotalAmount');
+            tableRow.addCell("", "", 2);
         }
         tableRow.addCell(Banana.Converter.toLocaleNumberFormat(concData[a].openBalanceBase, 2, true), 'styleTotalAmount');
         tableRow.addCell("", "", spanObj.afterTotals);
@@ -293,8 +294,8 @@ function printReport(banDoc, reconciliationData, docInfo) {
         tableRow.addCell("", "", 1);
         tableRow.addCell("Current Balance " + concData[a].account, "styleDescrTotals", 3);
         if (docInfo.isMultiCurrency) {
-            tableRow.addCell("", "", 1);
             tableRow.addCell(Banana.Converter.toLocaleNumberFormat(concData[a].currentBalanceCurr, 2, true), 'styleTotalAmount');
+            tableRow.addCell("", "", 2);
         }
         tableRow.addCell(Banana.Converter.toLocaleNumberFormat(concData[a].currentBalanceBase, 2, true), 'styleTotalAmount');
         tableRow.addCell("", "", spanObj.afterTotals);
@@ -306,8 +307,8 @@ function printReport(banDoc, reconciliationData, docInfo) {
         tableRow.addCell("", "", 1);
         tableRow.addCell("Total securities movements", "styleDescrTotals", 3);
         if (docInfo.isMultiCurrency) {
-            tableRow.addCell("", "", 1);
             tableRow.addCell(Banana.Converter.toLocaleNumberFormat(concData[a].securityTrAmountCurrency, 2, true), 'styleTotalAmount');
+            tableRow.addCell("", "", 2);
         }
         tableRow.addCell(Banana.Converter.toLocaleNumberFormat(concData[a].securityTrAmountBase, 2, true), 'styleTotalAmount');
         tableRow.addCell("", "", spanObj.afterTotals);
@@ -321,8 +322,8 @@ function printReport(banDoc, reconciliationData, docInfo) {
         tableRow.addCell("", "", 1);
         tableRow.addCell("Differences", "styleDescrTotals", 3);
         if (docInfo.isMultiCurrency) {
-            tableRow.addCell("", "", 1);
             tableRow.addCell(Banana.Converter.toLocaleNumberFormat(concData[a].differenceCurr, 2, true), diffStyleCurr);
+            tableRow.addCell("", "", 2);
         }
         tableRow.addCell(Banana.Converter.toLocaleNumberFormat(concData[a].differenceBase, 2, true), diffStyleBase);
         tableRow.addCell("", "", spanObj.afterTotals);
