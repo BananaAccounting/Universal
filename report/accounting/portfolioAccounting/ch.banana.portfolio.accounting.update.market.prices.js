@@ -15,7 +15,8 @@
 // @api = 1.0
 // @id = ch.banana.portfolio.accounting.update.market.prices.js
 // @description = 2. Update market prices
-// @task = app.command
+// @task = import.file
+// @inputdatasource = openfiledialog
 // @doctype = 100.*
 // @publisher = Banana.ch SA
 // @pubdate = 2025-02-13
@@ -38,7 +39,7 @@
  * Without any header !
  */
 
-function exec() {
+function exec(inData) {
 
     let banDoc = Banana.document;
 
@@ -53,11 +54,6 @@ function exec() {
         banDoc.addMessage(msg, "NO_ITEMS_TABLE");
         return "";
     }
-
-    let inData = Banana.Ui.getText("Update market prices", "Paste csv content: ", "");
-
-    if (!inData)
-        return "";
 
     let arrData = getArrayData(inData);
     arrData = validateData(banDoc, arrData);
