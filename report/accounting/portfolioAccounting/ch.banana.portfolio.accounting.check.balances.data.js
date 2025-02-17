@@ -14,7 +14,7 @@
 //
 // @api = 1.0
 // @id = ch.banana.portfolio.accounting.check.balances.data
-// @description = 5. Check balances
+// @description = 6. Check balances
 // @task = app.command
 // @doctype = 100.*
 // @publisher = Banana.ch SA

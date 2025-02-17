@@ -1,5 +1,5 @@
 
-// Copyright [2021] [Banana.ch SA - Lugano Switzerland]
+// Copyright [2025] [Banana.ch SA - Lugano Switzerland]
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
 //
 // @api = 1.0
 // @id = ch.banana.portfolio.accounting.security.card.report.js
-// @description = 7. Security card report
+// @description = 8. Security card report
 // @task = app.command
 // @doctype = 100.*
 // @publisher = Banana.ch SA

@@ -14,7 +14,7 @@
 //
 // @api = 1.0
 // @id = ch.banana.portfolio.accounting.calculate.unit.price.js
-// @description = 9. Calculate unit price
+// @description = 3. Calculate unit price
 // @task = app.command
 // @doctype = 100.*
 // @publisher = Banana.ch SA
@@ -45,8 +45,14 @@ function exec() {
     if (!currentSelectedRowIsValid(banDoc, docInfo, currentRowObj))
         return "";
 
+    //Ask for the Quantity to add
+    let qtSold = Banana.Ui.getText("Calculate unit price", "Quantity sold");
+
+    if (!qtSold)
+        return "";
+
     let docChange = { "format": "documentChange", "error": "", "data": [] };
-    let jsonDoc = getDocChange(banDoc, docInfo, currentRowObj, currentRowNr);
+    let jsonDoc = getDocChange(banDoc, docInfo, currentRowObj, currentRowNr, qtSold);
     docChange["data"].push(jsonDoc);
     return docChange;
 }
@@ -54,11 +60,12 @@ function exec() {
 function currentSelectedRowIsValid(banDoc, docInfo, currentRowObj) {
     if (currentRowObj || !isObjectEmpty(currentRowObj)) {
         // Check if the row contains the quantity.
+        let itemIdList = getItemsIds(banDoc);
 
-        if (!currentRowObj.value("Quantity") || currentRowObj.value("Quantity") === ""
-            || currentRowObj.value("Quantity").indexOf("-") < 0) {
-            let msg = getErrorMessage_MissingElements("QTY_MISSING_IN_ROW");
-            banDoc.addMessage(msg, "QTY_MISSING_IN_ROW");
+        if (!currentRowObj.value("ItemsId") || currentRowObj.value("ItemsId") === ""
+            || !itemIdList.includes(currentRowObj.value("ItemsId"))) {
+            let msg = getErrorMessage_MissingElements("ITEM_ID_MISSING_IN_ROW");
+            banDoc.addMessage(msg, "ITEM_ID_MISSING_IN_ROW");
             return false;
         }
 
@@ -74,12 +81,6 @@ function currentSelectedRowIsValid(banDoc, docInfo, currentRowObj) {
             return false;
         }
 
-        if (!currentRowObj.value("UnitPrice") || currentRowObj.value("UnitPrice") === "") {
-            let msg = getErrorMessage_MissingElements("UNITPRICE_MISSING_IN_ROW");
-            banDoc.addMessage(msg, "UNITPRICE_MISSING_IN_ROW");
-            return false;
-        }
-
     } else {
         let msg = getErrorMessage_MissingElements("SELECTED_ROW_NOT_VALID");
         banDoc.addMessage(msg, "SELECTED_ROW_NOT_VALID");
@@ -88,10 +89,10 @@ function currentSelectedRowIsValid(banDoc, docInfo, currentRowObj) {
     return true;
 }
 
-function getDocChange(banDoc, docInfo, currentRowObj, currentRowNr) {
+function getDocChange(banDoc, docInfo, currentRowObj, currentRowNr, qtSold) {
     let docChangeObj = getDocumentChangeInit();
-    let unitPrice = calculateUnitPrice(banDoc, docInfo, currentRowObj);
-    let rows = getRowToModify(currentRowNr, unitPrice);
+    let unitPrice = calculateUnitPrice(banDoc, docInfo, currentRowObj, qtSold);
+    let rows = getRowToModify(currentRowNr, unitPrice, qtSold);
 
     var dataUnitItemsTable = {};
     dataUnitItemsTable.nameXml = "Transactions";
@@ -104,17 +105,16 @@ function getDocChange(banDoc, docInfo, currentRowObj, currentRowNr) {
     return docChangeObj;
 }
 
-function calculateUnitPrice(banDoc, docInfo, currentRowObj) {
+function calculateUnitPrice(banDoc, docInfo, currentRowObj, qtSold) {
     let unitPriceColumn = banDoc.table("Transactions").column("UnitPrice", "Base");
     let unitPriceColDecimals = unitPriceColumn.decimal;
-    let currentQt = Banana.SDecimal.abs(currentRowObj.value("Quantity"));
     let currentAmount = "";
     docInfo.isMultiCurrency ? currentAmount = currentRowObj.value("AmountCurrency") : currentAmount = currentRowObj.value("Amount");
     Banana.console.debug(currentAmount);
-    return Banana.SDecimal.divide(currentAmount, currentQt, { 'decimals': unitPriceColDecimals });
+    return Banana.SDecimal.divide(currentAmount, qtSold, { 'decimals': unitPriceColDecimals }); // controlla prima qtSold.
 }
 
-function getRowToModify(currentRowNr, unitPrice) {
+function getRowToModify(currentRowNr, unitPrice, qtSold) {
     let rows = [];
     let row = {};
     row.operation = {};
@@ -122,6 +122,7 @@ function getRowToModify(currentRowNr, unitPrice) {
     row.operation.sequence = String(currentRowNr);
     row.fields = {};
     row.fields["UnitPrice"] = unitPrice;
+    row.fields["Quantity"] = "-" + qtSold;
     rows.push(row);
     return rows;
 }

@@ -14,7 +14,7 @@
 //
 // @api = 1.0
 // @id = ch.banana.portfolio.accounting.record.adjustment.transactions
-// @description = 4. Create adjustment transactions 
+// @description = 5. Create adjustment transactions 
 // @task = app.command
 // @doctype = 100.*
 // @publisher = Banana.ch SA
