@@ -93,8 +93,7 @@ function getSelectedItem(banDoc, scriptId, dlgTitle, dlgLabel) {
     let itemSaved = "";
     let itemSelected = "";
     itemSaved = banDoc.getScriptSettings(scriptId);
-    let itemSavedIdx =
-        itemsListAvailable = getItemsIds(banDoc);
+    let itemSavedIdx = itemsListAvailable = getItemsIds(banDoc);
     if (!itemsListAvailable || itemsListAvailable.length < 1) {
         let msg = getErrorMessage_MissingElements("NO_SECURITIES_FOUND");
         banDoc.addMessage(msg, "NO_SECURITIES_FOUND");
