@@ -51,10 +51,7 @@ function exec() {
     if (!qtSold)
         return "";
 
-    let docChange = { "format": "documentChange", "error": "", "data": [] };
-    let jsonDoc = getDocChange(banDoc, docInfo, currentRowObj, currentRowNr, qtSold);
-    docChange["data"].push(jsonDoc);
-    return docChange;
+    return getUnitPriceDocChange(banDoc, docInfo, currentRowObj, currentRowNr, qtSold);
 }
 
 function currentSelectedRowIsValid(banDoc, docInfo, currentRowObj) {
@@ -89,7 +86,8 @@ function currentSelectedRowIsValid(banDoc, docInfo, currentRowObj) {
     return true;
 }
 
-function getDocChange(banDoc, docInfo, currentRowObj, currentRowNr, qtSold) {
+function getUnitPriceDocChange(banDoc, docInfo, currentRowObj, currentRowNr, qtSold) {
+    let docChange = { "format": "documentChange", "error": "", "data": [] };
     let docChangeObj = getDocumentChangeInit();
     let unitPrice = calculateUnitPrice(banDoc, docInfo, currentRowObj, qtSold);
     let rows = getRowToModify(currentRowNr, unitPrice, qtSold);
@@ -102,7 +100,9 @@ function getDocChange(banDoc, docInfo, currentRowObj, currentRowNr, qtSold) {
 
     docChangeObj.document.dataUnits.push(dataUnitItemsTable);
 
-    return docChangeObj;
+    docChange["data"].push(docChangeObj);
+
+    return docChange;
 }
 
 function calculateUnitPrice(banDoc, docInfo, currentRowObj, qtSold) {
