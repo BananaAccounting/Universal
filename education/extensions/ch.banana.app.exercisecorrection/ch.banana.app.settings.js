@@ -1,4 +1,4 @@
-// @id = ch.banana.app.recalculatetotal
+// @id = ch.banana.app.settings
 // @api = 1.0
 // @pubdate = 2025-01-22
 // @publisher = Banana.ch SA
