@@ -1,6 +1,6 @@
 // @id = ch.banana.app.exercisecorrection.test
 // @api = 1.0
-// @pubdate = 2024-04-10
+// @pubdate = 2025-02-06
 // @publisher = Banana.ch SA
 // @description = <TEST ch.banana.app.exercisecorrection.test>
 // @task = app.command
@@ -9,7 +9,7 @@
 // @outputformat = none
 // @inputdataform = none
 // @timeout = -1
-// @includejs = ../ch.banana.app.exercisecorrection.sbaa/ch.banana.app.exercisecorrection.js
+// @includejs = ../ch.banana.app.exercisecorrection.sbaa/ch.banana.app.correctexercises.js
 
 
 // Register this test case to be executed
@@ -54,11 +54,19 @@ TestImportFile.prototype.testImportFile = function () {
     let banDoc2 = Banana.application.openDocument(this.fileAC2Path[i + 1]);
     let isTest = true;
 
+    let paramcorrections = {};
+    paramcorrections.score = true;
+    paramcorrections.datescore = "1";
+    paramcorrections.amountscore = "1";
+    paramcorrections.debitaccountscore = "1";
+    paramcorrections.creditaccountscore = "1";
+    paramcorrections.debitcreditaccountsscore = false;
+
     if (banDoc1 && banDoc2) {
 
       let test = new PrintReport(banDoc1, banDoc2, isTest);
-      let result = test.result();
-      this.testLogger.addText("TestImportFile " + i + " and " + (i + 1));
+      let result = test.result(paramcorrections);
+      this.testLogger.addText("TestImportFile " + i);
       this.testLogger.addJson("TestImportFile", JSON.stringify(result));
       i++;
     }
