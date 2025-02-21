@@ -92,7 +92,7 @@ function addTableBaSTransactions(report) {
   return table_bas_transactions_details;
 }
 
-function printReport(banDoc, appraisalDataList, portfolioTrData) {
+function printReport(banDoc, docInfo, appraisalDataList, portfolioTrData) {
 
   /** Get the decimals used for the values in the Transactions table, to keep the same format in the report, 
    *  especially to display the full booking and market value based on the decimals used in the UnitPrice & UnitPriceCurrent columns.
@@ -129,10 +129,11 @@ function printReport(banDoc, appraisalDataList, portfolioTrData) {
         rowStyle = "styleEvenRows";
       else
         rowStyle = "styleOddRows";
+      let itemCurrency = itemData.currency || docInfo.baseCurrency;
       var tableRow = appraisalTable.addRow(rowStyle);
       tableRow.addCell(itemData.description, '');
       tableRow.addCell(itemData.item, 'styleNormalAmount');
-      tableRow.addCell(itemData.currency, 'styleNormalAmount');
+      tableRow.addCell(itemCurrency, 'styleNormalAmount');
       tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemData.currentQt, 0, true), 'styleNormalAmount');
       tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemData.avgCost, decimals, true), 'styleNormalAmount');
       tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemData.totalCost, decimals, true), 'styleNormalAmount');
@@ -508,7 +509,7 @@ function exec() {
   let appraisalDataList = getAppraisalData(banDoc, docInfo, itemsData);
   //get the transactionsList
   let portfolioTrData = getportfolioTrData(banDoc, docInfo, itemsData);
-  var report = printReport(banDoc, appraisalDataList, portfolioTrData);
+  var report = printReport(banDoc, docInfo, appraisalDataList, portfolioTrData);
   getReportHeader(report, docInfo);
   var stylesheet = getReportStyle();
   Banana.Report.preview(report, stylesheet);

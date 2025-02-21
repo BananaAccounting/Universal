@@ -20,18 +20,18 @@
 %Begin test data
 \begin{reportvalue}{FILENAME: file:script/../test/testcases/portfolio\_accounting\_double\_entry\_tutorial\_2022.ac2}
 \begin{longtable}[l]{ l  l  l  l  l  l  l  l  l  l  l }
-\excltest{Appraisal Report \P  Holdings as of: 13.02.2025} Type/Security  & ISIN  & Currency  & Current quantity  & Book value\P per unit  & Book value  & Market value\P per unit  & Market value  & \% of Port  & Un. Gain or Loss  & \% G/L \\
+\excltest{Appraisal Report \P  Holdings as of: 21.02.2025} Type/Security  & ISIN  & Currency  & Current quantity  & Book value\P per unit  & Book value  & Market value\P per unit  & Market value  & \% of Port  & Un. Gain or Loss  & \% G/L \\
 Shares  & \multicolumn{10}{l}{}\\
-Shares UBS  & CH003886335  &  & 110  & 10.8500  & 1'193.5000  & 10.8500  & 1'193.5000  & 68.45  & 0.00  & 0.00 \\
-Shares Nestlè  & CH012775214  &  & 50  & 11.0000  & 550.0000  & 11.0000  & 550.0000  & 31.55  & 0.00  & 0.00 \\
+Shares UBS  & CH003886335  & CHF  & 110  & 10.8500  & 1'193.5000  & 10.8500  & 1'193.5000  & 68.45  & 0.00  & 0.00 \\
+Shares Nestlè  & CH012775214  & CHF  & 50  & 11.0000  & 550.0000  & 11.0000  & 550.0000  & 31.55  & 0.00  & 0.00 \\
 Total Shares  &  &  & 160  &  & 1'743.5000  &  & 1'743.5000  & 100.00  & 0.00  & \\
 Bonds  & \multicolumn{10}{l}{}\\
-Bonds  Holcim   & CH135792468  &  & 0  & 0.0000  & 0.0000  & 0.0000  & 0.0000  & 0.00  & 0.00  & 0.00 \\
+Bonds  Holcim   & CH135792468  & CHF  & 0  & 0.0000  & 0.0000  & 0.0000  & 0.0000  & 0.00  & 0.00  & 0.00 \\
 Total Bonds  &  &  & 0  &  & 0.0000  &  & 0.0000  & 0.00  & 0.00  & \\
 Total Portfolio  & \multicolumn{2}{l}{} & 160  & \multicolumn{4}{l}{} & 100.00  & \multicolumn{2}{l}{}\\
 \end{longtable}
 \begin{longtable}[l]{ l  l  l  l  l  l  l  l  l }
-\excltest{Investment accounting transactions \P  Transactions as of: 2025-02-13} Date  & Doc  & Security  & Description  & Debit  & Credit  & Quantity  & Unit/Price  & Amount \\
+\excltest{Investment accounting transactions \P  Transactions as of: 2025-02-21} Date  & Doc  & Security  & Description  & Debit  & Credit  & Quantity  & Unit/Price  & Amount \\
 CH003886335  & \multicolumn{8}{l}{}\\
 20.02.2022  & 1  & CH003886335  & Shares UBS Purchase  & Shares  &  & 100  & 11.0000  & 1'100.00 \\
 20.02.2022  & 1  & CH003886335  & Shares UBS Bank Charges  & Bank charges  &  &  &  & 20.00 \\

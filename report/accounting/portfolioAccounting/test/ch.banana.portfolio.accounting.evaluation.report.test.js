@@ -75,7 +75,7 @@ TestPortfolioEvaluationReport.prototype.testCompleteReport = function () {
             let portfolioTrData = getportfolioTrData(banDoc, docInfo, itemsData);
             //Add the report
             let reportName = "FILENAME: " + fileName;
-            let report = printReport(banDoc, appraisalDataList, portfolioTrData);
+            let report = printReport(banDoc, docInfo, appraisalDataList, portfolioTrData);
             this.testLogger.addReport(reportName, report);
 
         } else {
