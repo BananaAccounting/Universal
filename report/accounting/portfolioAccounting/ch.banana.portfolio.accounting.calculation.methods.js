@@ -364,6 +364,7 @@ function calculateStockSaleData(banDoc, docInfo, itemObj, dlgParams, currentRowN
     let journal = "";
     let quantity = "";
     let accExRate = ""; //Accounting exchange rate.
+    let currentQt = "";
     let avgCost = "";
     let avgSharesValue = "";
     let totalSharesValue = "";
@@ -395,6 +396,7 @@ function calculateStockSaleData(banDoc, docInfo, itemObj, dlgParams, currentRowN
     if (!itemCardData || isObjectEmpty(itemCardData))
         return saleData;
 
+    currentQt = itemCardData.currentValues.itemQtBalance;
     avgCost = itemCardData.currentValues.itemAvgCost;
     quantity = Banana.SDecimal.abs(dlgParams.quantity);
     accExRate = Banana.SDecimal.divide(itemCardData.currentValues.itemBalanceBase, itemCardData.currentValues.itemBalanceCurr);
@@ -409,6 +411,7 @@ function calculateStockSaleData(banDoc, docInfo, itemObj, dlgParams, currentRowN
         accruedInterests = dlgParams.accruedInterests; //calculateAccruedInterests(dlgParams, itemObj);
     }
 
+    saleData.currentQt = currentQt;
     saleData.avgCost = avgCost;
     saleData.avgSharesValue = avgSharesValue;
     saleData.totalSharesvalue = totalSharesValue;

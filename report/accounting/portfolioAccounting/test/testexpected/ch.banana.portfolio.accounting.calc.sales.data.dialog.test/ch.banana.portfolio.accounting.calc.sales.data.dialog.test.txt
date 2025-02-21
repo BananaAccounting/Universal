@@ -29,6 +29,7 @@
     "accruedInterests": "",
     "avgCost": "10.0000",
     "avgSharesValue": "1000.0000",
+    "currentQt": "100.0000",
     "exRateResult": "50.0000000000",
     "saleResult": "-50.0000",
     "totalSharesvalue": "950.0000"
@@ -143,6 +144,7 @@
     "accruedInterests": "",
     "avgCost": "11.0000",
     "avgSharesValue": "1100.0000",
+    "currentQt": "200.0000",
     "exRateResult": "22.0000000000",
     "saleResult": "50.0000",
     "totalSharesvalue": "1150.0000"
@@ -290,6 +292,7 @@
     "accruedInterests": "",
     "avgCost": "11.0000",
     "avgSharesValue": "1100.0000",
+    "currentQt": "100.0000",
     "exRateResult": "-5.5000000",
     "saleResult": "55.6200",
     "totalSharesvalue": "1155.6200"
@@ -437,6 +440,7 @@
     "accruedInterests": "25.560",
     "avgCost": "0.9800",
     "avgSharesValue": "4900.0000",
+    "currentQt": "5000.0000",
     "exRateResult": "147.000000",
     "saleResult": "225.0000",
     "totalSharesvalue": "5125.000"
@@ -601,6 +605,7 @@
     "accruedInterests": "",
     "avgCost": "5.9876",
     "avgSharesValue": "898.1400",
+    "currentQt": "400.0000",
     "exRateResult": "0",
     "saleResult": "-28.9800",
     "totalSharesvalue": "869.1600"
@@ -698,6 +703,7 @@
     "accruedInterests": "",
     "avgCost": "12.8001",
     "avgSharesValue": "2560.0200",
+    "currentQt": "200.0000",
     "exRateResult": "0",
     "saleResult": "-10.0200",
     "totalSharesvalue": "2550.00"
@@ -795,6 +801,7 @@
     "accruedInterests": "",
     "avgCost": "5.9998",
     "avgSharesValue": "1199.9600",
+    "currentQt": "250.0000",
     "exRateResult": "0",
     "saleResult": "4.0600",
     "totalSharesvalue": "1204.0200"

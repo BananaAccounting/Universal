@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-// @id = ch.banana.portfolio.accounting.js
+// @id = ch.banana.portfolio.accounting.calc.sales.data.dialog.js
 // @api = 1.0
 // @pubdate = 2024-12-23
 // @publisher = Banana.ch SA
@@ -40,19 +40,20 @@ class DlgCalculateSaleDataManager {
         this.docInfo = docInfo;
         this.dialog = Banana.Ui.createUi("ch.banana.portfolio.accounting.calc.sales.data.dialog.ui");
         this.cmbItems = "";
+        this.labelType = "";
         this.lineEditQt = "";
         this.lineEditMarketPrice = "";
         this.lineEditCurrentExRate = "";
         this.lineEditBankCharges = "";
         this.lineEditOtherCharges = "";
         this.lineEditAccruedInterests = "";
+        this.labelActualQuantityPrev = "";
         this.labelSaleResultPrev = "";
         this.labelAvgCostPrev = "";
         this.labelExcResultPrev = "";
         this.labelTotValSharesPrev = "";
         this.AvgValSharesPrev = "";
-        this.buttonOk = "";
-        this.buttonClose = "";
+        this.buttonsBox = "";
         this.buttonShowResults = "";
         this.buttonCreateSalesRecord = "";
         this.accruedInterestsGroupBox = "";
@@ -76,6 +77,11 @@ class DlgCalculateSaleDataManager {
             this.updateDialogData();
         };
 
+        this.dialog.showHelp = () => {
+            Banana.Ui.showHelp("ch.banana.portfolio.accounting.calc.sales.data.dialog.js");
+        };
+
+
         this.dialog.createSalesRecord = () => {
             let JsonDoc = this.createDocChangeSaleRecord();
             if (!isObjectEmpty(JsonDoc) && JsonDoc.data[0] && !isObjectEmpty(JsonDoc.data[0])) { // Check if there are new transactions to add
@@ -88,11 +94,18 @@ class DlgCalculateSaleDataManager {
             this.setAccruedInterestsElementsEnabled();
         }
 
+        this.dialog.updateTypeLabel = () => {
+            this.setSecurityTypeLabel();
+        }
+
         /** Dialog's events declaration */
+        this.buttonsBox.helpRequested.connect(this.dialog, this.dialog.showHelp);
         this.buttonShowResults.clicked.connect(this.dialog, this.dialog.showPreviews);
         this.buttonCreateSalesRecord.clicked.connect(this.dialog, this.dialog.createSalesRecord);
         this.cmbItems.currentIndexChanged.connect(this.dialog, this.dialog.enableAccruedInterestsElements);
         this.cmbItems.editTextChanged.connect(this.dialog, this.dialog.enableAccruedInterestsElements);
+        this.cmbItems.currentIndexChanged.connect(this.dialog, this.dialog.updateTypeLabel);
+        this.cmbItems.editTextChanged.connect(this.dialog, this.dialog.updateTypeLabel);
     }
 
     init() {
@@ -103,6 +116,7 @@ class DlgCalculateSaleDataManager {
         //sales data section objects
         //07.09.2023: Warning: file:....ch.banana.portfolio.accounting.calc.sales.data.dialog.js:38: Calling C++ methods with 'this' objects different from the one they were retrieved from is broken, due to historical reasons. The original object is used as 'this' object. You can allow the given 'this' object to be used by setting 'pragma NativeMethodBehavior: AcceptThisObject'
         this.cmbItems = this.dialog.findChild('item_comboBox');
+        this.labelType = this.dialog.findChild('typeValue_label');
         this.lineEditQt = this.dialog.findChild('quantity_lineEdit');
         this.lineEditMarketPrice = this.dialog.findChild('marketPrice_lineEdit');
         this.lineEditCurrentExRate = this.dialog.findChild('currentExchangeRate_lineEdit');
@@ -111,6 +125,7 @@ class DlgCalculateSaleDataManager {
         this.lineEditAccruedInterests = this.dialog.findChild('accruedInterests_lineEdit');
 
         // Preview result label
+        this.labelActualQuantityPrev = this.dialog.findChild('actualQuantity_label');
         this.labelSaleResultPrev = this.dialog.findChild('saleResultPreview_label');
         this.labelAvgCostPrev = this.dialog.findChild('averageCost_label');
         this.labelExcResultPrev = this.dialog.findChild('exchangeResultPreview_label');
@@ -118,11 +133,9 @@ class DlgCalculateSaleDataManager {
         this.AvgValSharesPrev = this.dialog.findChild('averageValueOfShares_label');
 
         // Buttons
-        this.buttonOk = this.dialog.findChild('okButton');
-        this.buttonClose = this.dialog.findChild('closeButton');
+        this.buttonsBox = this.dialog.findChild('buttonsBox');
         this.buttonShowResults = this.dialog.findChild('showResultsPreview_button');
         this.buttonCreateSalesRecord = this.dialog.findChild('createSaleRecord_button');
-
 
         // Displayed values
         this.insertItemsComboBoxElements(this.banDoc, this.docInfo);
@@ -134,6 +147,7 @@ class DlgCalculateSaleDataManager {
 
         // Disable the Accrued Interest Group Box if the selected item is not a bond.
         this.setAccruedInterestsElementsEnabled();
+        this.setSecurityTypeLabel();
 
         // Others
         let unitPriceColumn = this.banDoc.table("Transactions").column("UnitPrice", "Base");
@@ -143,6 +157,18 @@ class DlgCalculateSaleDataManager {
         this.currentPriceColDecimals = currentPriceColumn.decimal;
         if (exRateColumn)
             this.exRateColDecimals = exRateColumn.decimal;
+    }
+
+    setSecurityTypeLabel() {
+        let type = "unknown";
+        let currentItem = this.cmbItems.currentText;
+        let itemsData = getItemsTableData(this.banDoc, this.docInfo);
+        let itemObj = itemsData.find(obj => obj.item === currentItem);
+        if (itemObj && itemObj.type == "S")
+            type = "Stock";
+        if (itemObj && itemObj.type == "B")
+            type = "Bond";
+        this.labelType.setText(type);
     }
 
     setAccruedInterestsElementsEnabled() {
@@ -215,6 +241,7 @@ class DlgCalculateSaleDataManager {
 
     updateDialogData() {
         let exRateResult = "";
+        let currentQt = "";
         let avgCost = "";
         let baseCurr = "";
         let assetCurr = "";
@@ -237,12 +264,14 @@ class DlgCalculateSaleDataManager {
         assetCurr = itemObj.currency;
         baseCurr = this.docInfo.baseCurrency;
 
+        currentQt = Banana.Converter.toLocaleNumberFormat(salesData.currentQt, 0, true);
         avgCost = Banana.Converter.toLocaleNumberFormat(salesData.avgCost, this.unitPriceColDecimals, true);
         saleResult = Banana.Converter.toLocaleNumberFormat(salesData.saleResult, 2, true);
         exRateResult = Banana.Converter.toLocaleNumberFormat(salesData.exRateResult, this.exRateColDecimals, true);
         avgSharesValue = Banana.Converter.toLocaleNumberFormat(salesData.avgSharesValue, this.unitPriceColDecimals, true);
         totalSharesvalue = Banana.Converter.toLocaleNumberFormat(salesData.totalSharesvalue, this.currentPriceColDecimals, true);
 
+        this.labelActualQuantityPrev.setText(currentQt);
 
         if (this.docInfo.isMultiCurrency) {
             this.labelAvgCostPrev.setText(avgCost + " (" + assetCurr + ")");
