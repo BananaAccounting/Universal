@@ -40,7 +40,7 @@ TestPortfolioEvaluationReport.prototype.initTestCase = function () {
     this.progressBar = Banana.application.progressBar;
     this.fileNameList = [];
 
-    this.fileNameList.push("file:script/../test/testcases/portfolio_accounting_double_entry_tutorial.ac2");
+    this.fileNameList.push("file:script/../test/testcases/portfolio_accounting_double_entry_tutorial_2022.ac2");
 }
 
 // This method will be called at the end of the test case
@@ -69,14 +69,13 @@ TestPortfolioEvaluationReport.prototype.testCompleteReport = function () {
         this.testLogger = parentLogger.newLogger(Banana.IO.fileCompleteBaseName(fileName));
         if (banDoc) {
             //Appraisal Report
-            let userParam = "Market Value";
             let docInfo = getDocumentInfo(banDoc);
-            let itemsData = getItemsTableData(banDoc, docInfo);
+            let itemsData = getItemsTableData(banDoc);
             let appraisalDataList = getAppraisalData(banDoc, docInfo, itemsData);
             let portfolioTrData = getportfolioTrData(banDoc, docInfo, itemsData);
             //Add the report
             let reportName = "FILENAME: " + fileName;
-            let report = printReport(appraisalDataList, portfolioTrData, userParam);
+            let report = printReport(banDoc, docInfo, appraisalDataList, portfolioTrData);
             this.testLogger.addReport(reportName, report);
 
         } else {

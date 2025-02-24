@@ -1,0 +1,125 @@
+%%info_test_name{portfolio_accounting_double_entry_tutorial_2023}
+\documentclass{report}
+\usepackage{longtable}
+\usepackage{color}
+\usepackage{listings}
+\usepackage[margin=1cm]{geometry}
+\begin{document}
+\newenvironment{tablevalue}[2]{\textbf{Table: #1}\begin{longtable}[l]{#2}}{\end{longtable}}
+\newenvironment{reportvalue}[1]{\textbf{Report: #1}\\}{}
+\lstnewenvironment{jsonvalue}[1]{\textbf{Json: #1}\lstset{language=Java}}{}
+\lstnewenvironment{xmlvalue}[1]{\textbf{Xml: #1}\lstset{language=Xml}}{}
+\newcommand{\info}[2]{\textit{#1: #2}\\}
+\newcommand{\fatalerror}[1]{\textbf{\textcolor[rgb]{1,0,0}{Fatal error: #1}}\\}
+\newcommand{\keyvalue}[2]{\textbf{Keyvalue: #1} #2\\}
+\newcommand{\textvalue}[1]{#1\\}
+\newcommand{\excltest}[1]{\\Excluded from compare: #1}
+\newcommand{\lognewpage}{\newpage}
+\newenvironment{testcase}[1]{\section*{Test: #1}}{\newpage}
+\newenvironment{test}[1]{\section*{Test case: #1}}{}
+%Begin test data
+\section{TestCheckBalancesData}
+\subsection{Object data}
+\begin{jsonvalue}{ObjectData}
+{
+    "data": [
+        {
+            "account": "Shares",
+            "accountDetails": {
+                "accountBalance": "1193.50",
+                "accountBalanceCurrency": "",
+                "accountOpening": "1743.50",
+                "accountOpeningCurrency": "",
+                "accountTotalMovements": "-550.00",
+                "accountTotalMovementsCurrency": "0"
+            },
+            "discrepancies": {
+                "balanceCurrencyDifference": "550.00",
+                "balanceDifference": "",
+                "movementsCurrencyDifference": "550.00",
+                "movementsDifference": "",
+                "openingBalanceCurrencyDifference": "",
+                "openingBalanceDifference": ""
+            },
+            "securitiesData": [
+                {
+                    "securityBalance": "1193.50",
+                    "securityBalanceCurrency": "",
+                    "securityId": "CH003886335",
+                    "securityName": "Shares UBS",
+                    "securityOpening": "1193.50",
+                    "securityOpeningCurrency": "",
+                    "securityTotalMovements": "0",
+                    "securityTotalMovementsCurrency": "0"
+                },
+                {
+                    "securityBalance": "0",
+                    "securityBalanceCurrency": "-550.00",
+                    "securityId": "CH012775214",
+                    "securityName": "Shares Nestlè",
+                    "securityOpening": "550.00",
+                    "securityOpeningCurrency": "",
+                    "securityTotalMovements": "-550.00",
+                    "securityTotalMovementsCurrency": "-550.00"
+                }
+            ],
+            "securitiesTotals": {
+                "secTotalBalance": "1193.50",
+                "secTotalBalanceCurrency": "-550.00",
+                "secTotalMovements": "-550.00",
+                "secTotalMovementsCurrency": "-550.00",
+                "secTotalOpening": "1743.50",
+                "secTotalOpeningCurrency": "0"
+            }
+        },
+        {
+            "account": "Bonds",
+            "accountDetails": {
+                "accountBalance": "",
+                "accountBalanceCurrency": "",
+                "accountOpening": "",
+                "accountOpeningCurrency": "",
+                "accountTotalMovements": "0",
+                "accountTotalMovementsCurrency": "0"
+            },
+            "discrepancies": {
+                "balanceCurrencyDifference": "",
+                "balanceDifference": "",
+                "movementsCurrencyDifference": "",
+                "movementsDifference": "",
+                "openingBalanceCurrencyDifference": "",
+                "openingBalanceDifference": ""
+            },
+            "securitiesData": [
+                {
+                    "securityBalance": "",
+                    "securityBalanceCurrency": "",
+                    "securityId": "CH135792468",
+                    "securityName": "Bonds  Holcim ",
+                    "securityOpening": "",
+                    "securityOpeningCurrency": "",
+                    "securityTotalMovements": "0",
+                    "securityTotalMovementsCurrency": "0"
+                }
+            ],
+            "securitiesTotals": {
+                "secTotalBalance": "0",
+                "secTotalBalanceCurrency": "0",
+                "secTotalMovements": "0",
+                "secTotalMovementsCurrency": "0",
+                "secTotalOpening": "0",
+                "secTotalOpeningCurrency": "0"
+            }
+        }
+    ]
+}
+\end{jsonvalue}
+\subsection{Report data}
+\begin{reportvalue}{ReportData}
+\begin{longtable}[l]{ l  l  l  l  l  l  l  l  l  l }
+Securities Account Balance Check Account  & Account opening balance  & Securities opening balance  & Opening balance differences  & Account balance  & Securities balance  & Balance differences  & Account movements  & Securities movements  & Movements differences \\
+Shares  & 1'743.50  & 1'743.50  & 0.00  & 1'193.50  & 1'193.50  & 0.00  & -550.00  & -550.00  & 0.00 \\
+Bonds  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00  & 0.00 \\
+\end{longtable}
+\end{reportvalue}
+\end{document}

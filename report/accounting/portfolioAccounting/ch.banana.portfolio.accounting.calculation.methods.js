@@ -1,4 +1,4 @@
-// Copyright [2024] [Banana.ch SA - Lugano Switzerland]
+// Copyright [2025] [Banana.ch SA - Lugano Switzerland]
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,9 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+
+// @includejs = ch.banana.portfolio.accounting.errormessagges.handler.js
+
 /**********************************************************
  * 
- * PORTFOLIO ACCOUNTING METHODS
+ * INVESTMENT ACCOUNTING METHODS
  * 
  *********************************************************/
 
@@ -39,50 +42,55 @@ function getReportHeader(report, docInfo) {
     var headerParagraph = report.getHeader().addSection();
     headerParagraph.addParagraph(docInfo.company, "styleNormalHeader styleCompanyName");
     headerParagraph.addParagraph("", "");
-
 }
 
-function getComboBoxElement(scriptId, title, label) {
-
-    var item = "";
-    //Read script settings
-    var data = Banana.document.getScriptSettings(scriptId);
-
-    //Check if there are previously saved settings and read them
-    if (data.length > 0) {
-        var readSettings = JSON.parse(data);
-        //We check if "readSettings" is not null, then we fill the formeters with the values just read
-        if (readSettings) {
-            item = readSettings;
-        }
-    }
-    //A dialog window is opened asking the user to insert the desired period. By default is the accounting period
-    var selectedItem = Banana.Ui.getText(title, label, item);
-
-    //We take the values entered by the user and save them as "new default" values.
-    //This because the next time the script will be executed, the dialog window will contains the new values.
-    if (selectedItem) {
-        item = selectedItem;
-        //Save script settings
-        var valueToString = JSON.stringify(item);
-        Banana.document.setScriptSettings(scriptId, valueToString);
-    } else {
-        //User clicked cancel
-        return false;
-    }
-    return item;
+function getInvestmentsAccountsFormatted(banDoc) {
+    const accountsList = getItemsAccounts(banDoc);
+    if (!accountsList || accountsList.length === 0)
+        return "";
+    let accountsStringList = accountsList.join(";");
+    return accountsStringList;
 }
 
-function getItemCurrency(itemData, item) {
-    let itemcCurr = "";
+/** Returns the date of the current day in the internal format YYYYmmDD */
+function getCurrentDate() {
+    const today = new Date();
+    const yyyy = today.getFullYear();
+    const mm = String(today.getMonth() + 1).padStart(2, '0'); // Mesi da 0 a 11
+    const dd = String(today.getDate()).padStart(2, '0'); // Giorno del mese
 
-    for (var e in itemData) {
-        if (itemData[e].item == item && itemData[e].currency !== "") {
-            itemcCurr = itemData[e].currency;
-            return itemcCurr;
-        }
-    }
+    return `${yyyy}${mm}${dd}`;
+}
 
+function getCurrentRowNumber(banDoc, tableName) {
+
+    let currentRowNr = "";
+
+    if (!banDoc)
+        return currentRowNr;
+
+    if (banDoc.cursor.tableName == tableName)
+        currentRowNr = banDoc.cursor.rowNr;
+
+    return currentRowNr;
+}
+
+function getCurrentLang(banDoc) {
+    let lang = 'en';
+    if (banDoc)
+        lang = banDoc.locale;
+    else if (Banana.application.locale)
+        lang = Banana.application.locale;
+    if (lang.length > 2)
+        lang = lang.slice(0, 2);
+    return lang;
+}
+
+function getCurrentRowObj(banDoc, currentRowNr, tableName) {
+    var table = banDoc.table(tableName);
+    if (!table)
+        return {};
+    return table.row(currentRowNr);
 }
 
 function getCurrentRowData(banDoc, transList) {
@@ -105,10 +113,11 @@ function getCurrentRowData(banDoc, transList) {
     }
 }
 
-
 function getDocumentInfo(banDoc) {
 
     var docInfo = {};
+
+    docInfo.openingDate = banDoc.info("AccountingDataBase", "OpeningDate");
 
     //define if its a multicurrency accounting
     let multiCurrency = "120";
@@ -167,6 +176,15 @@ function getJournalData(docInfo, journal) {
 
 }
 
+function getFormattedSavedParams(banDoc, paramsId) {
+    let savedParam = banDoc.getScriptSettings(paramsId);
+    let userParam = {};
+    if (savedParam.length > 0) {
+        userParam = JSON.parse(savedParam);
+    }
+    return userParam;
+}
+
 /**
  * saves the list of ids of all registrations in an array. each id is saved only once
  * @param {*} journalData 
@@ -186,150 +204,530 @@ function getTransactionsIdList(journalData) {
 }
 
 /**
- * 
- * @param {*} avgCost the average cost
- * @param {*} userParam the parameters that the user defined in the dialog
- * @param {*} currentRowData the current line transaction data
- * @returns an object with the calculation data.
+ * 08.01.2025, currently disabled and specific parameters deleted:
+ * - currSettlementDate
+ * - accruedInterests
+ * - dayCountConvention
+ * This function calculate the accrued intererest for the bond based on parameters defined by the user.
+ * Formula: Accrued interest = ((Rate / Frequency) x Nominal Value) x (Days elapsed / Total days in the coupon period)
+ * Rate: Is taken from the items table. The user must insert this value in the new column "CouponRate".
+ * Frequency: Is taken from the items table. The user must insert this value in the new column "CouponFrequency".
+ * The frequency must be indicate using a number, wich is then mapped in the following way:
+ *  -1: Annual frequency.
+ *  -2: Six-monthly frequency.
+    -3: Quarterly frequency.
+    -4: Quarterly frequency.
+ *  If a different value is entered, the frequency is set to 1.
  */
-function calculateShareSaleData(banDoc, docInfo, userParam, itemsData) {
+function calculateAccruedInterests(dlgParams, itemObj) {
+
+    let accruedInterests = "";
+    let nominalValue = "";
+    let rate = "";
+    let frequency = "";
+    let startDate = "";
+    let endDate = "";
+    let dayCountfractionQuote = "";
+    let frequencies = ["1", "2", "3", "4"];
+
+    if (!dlgParams || !itemObj)
+        return accruedInterests;
+
+    //Get the parameters from the user
+    nominalValue = Banana.SDecimal.abs(dlgParams.quantity);
+    rate = itemObj.rate; // in %
+
+    frequency = itemObj.frequency;
+    if (!frequencies.includes(frequency))
+        frequency = "1";
+
+    startDate = getDateObject(dlgParams.lastCouponDate, "dd.mm.yyyy");
+    endDate = getDateObject(dlgParams.currSettlementDate, "dd.mm.yyyy");
+
+    /** Calculate the fraction of the coupon period (Days elapsed/Total days in the coupon period).
+     * The calculation i done based on the day count convention selected by the user.*/
+    dayCountfractionQuote = dayCountFractionBetweenDates(startDate, endDate, dlgParams.dayCountConvention);
+    //Calculate the accrued interest.
+    let perc = Banana.SDecimal.divide(Banana.SDecimal.divide(rate, frequency), 100);
+    accruedInterests = Banana.SDecimal.multiply(perc, nominalValue);
+    accruedInterests = Banana.SDecimal.multiply(accruedInterests, dayCountfractionQuote);
+    return accruedInterests;
+}
+
+/** Given two dates in format "format", calculates the day between the two first and second date.
+ * @param {string} date1 first date, more actual date.
+ * @param {string} date2 second date, less actual date.
+*/
+function dayCountFractionBetweenDates(startDate, endDate, convention) {
+    if (startDate > endDate) {
+        [startDate, endDate] = [endDate, startDate];
+    }
+
+    switch (convention) {
+        case "30/360":
+            return fraction30_360(startDate, endDate);
+        case "Actual/360":
+            return fractionActual_360(startDate, endDate);
+        case "Actual/365":
+            return fractionActual_365(startDate, endDate);
+        case "Actual/Actual":
+        default:
+            return fractionActual_Actual(startDate, endDate);
+    }
+}
+
+/**
+ * 30/360 (US)
+ * @param {*} startDate 
+ * @param {*} endDate 
+ */
+function fraction30_360(startDate, endDate) {
+    // Extraction of year, month, day
+    let y1 = startDate.getFullYear();
+    let m1 = startDate.getMonth() + 1; // In JS: 0=January, 1=February, ...
+    let d1 = startDate.getDate();
+
+    let y2 = endDate.getFullYear();
+    let m2 = endDate.getMonth() + 1;
+    let d2 = endDate.getDate();
+
+    // 30/360 US rules (simplyfied):
+    //  1) Se d1 è 31 => d1 = 30
+    if (d1 === 31) {
+        d1 = 30;
+    }
+    //  2) Se d2 è 31 e d1 era 30 => d2 = 30
+    if (d2 === 31 && d1 === 30) {
+        d2 = 30;
+    }
+
+    // Generic formula:
+    // dayCount = 360*(Y2 - Y1) + 30*(M2 - M1) + (D2 - D1)
+    const dayCount = 360 * (y2 - y1) + 30 * (m2 - m1) + (d2 - d1);
+    return dayCount / 360;
+}
+
+/** 
+ * Actual/360.
+ * @param {*} startDate 
+ * @param {*} endDate 
+*/
+function fractionActual_360(startDate, endDate) {
+    const msPerDay = 24 * 60 * 60 * 1000;
+    const actualDays = Math.floor((endDate - startDate) / msPerDay);
+    return actualDays / 360;
+}
+
+/**
+ * Actual/365
+ * @param {*} startDate 
+ * @param {*} endDate 
+ * @returns 
+ */
+function fractionActual_365(startDate, endDate) {
+    const msPerDay = 24 * 60 * 60 * 1000;
+    const actualDays = Math.floor((endDate - startDate) / msPerDay);
+    return actualDays / 365;
+}
+
+/**
+ * Actual/Actual
+ * There are some different versions of Actual/Actual:
+ * - Actual/Actual ICMA (International Capital Market Association) (most used in Europe)
+ * - Actual/Actual ISDA (International Swaps and Derivatives Association)
+ * - Actual/Actual AFB (Association Française des Banques)
+ * Currently we use a simplified version of the ICMA convention.
+ * @param {*} startDate 
+ * @param {*} endDate
+ * @returns
+ */
+function fractionActual_Actual(startDate, endDate) {
+    const msPerDay = 24 * 60 * 60 * 1000;
+    const actualDays = Math.floor((endDate - startDate) / msPerDay);
+    return actualDays / 365;
+}
+
+
+function getDateObject(dateString, format) {
+    let dateObj = "";
+    let dateFormatted = Banana.Converter.toInternalDateFormat(dateString, format);
+
+    if (dateFormatted)
+        dateObj = Banana.Converter.toDate(dateFormatted);
+
+    return dateObj;
+}
+
+function calculateStockSaleData(banDoc, docInfo, itemObj, dlgParams, currentRowNr) {
 
     let saleData = {};
-    let item = "";
     let journal = "";
     let quantity = "";
-    let marketPrice = "";
-    let currExRate = ""; //current exchange rate
-    let accExRate = ""; //accounting exchange rate
+    let accExRate = ""; //Accounting exchange rate.
+    let currentQt = "";
     let avgCost = "";
     let avgSharesValue = "";
-    let totalSharesvalue = "";
+    let totalSharesValue = "";
     let saleResult = "";
     let exRateResult = "";
     let accountCard = "";
     let accountCardData = "";
+    let accruedInterests = "";
     let itemAccount = "";
     let itemCardData = [];
+    let unitPriceColumn = banDoc.table("Transactions").column("UnitPrice", "Base");
+    let unitPriceColDecimals = unitPriceColumn.decimal; // We want to use the same decimals as defined in the unit price column.
 
-    item = userParam.selectedItem;//get the item
-    itemAccount = getItemValue(itemsData, item, "account");//get the account of the item
-    //check if element exist
-    findElement(banDoc, item, itemsData, "item", "Items table");
-    //get item card data to find the current average cost
+    //Get the account of the item
+    itemAccount = itemObj.account;
+    if (itemAccount === "") {
+        const ITEM_WITHOUT_ACCOUNT = "ITEM_WITHOUT_ACCOUNT";
+        let msg = getErrorMessage_MissingElements(ITEM_WITHOUT_ACCOUNT, itemObj.item);
+        banDoc.addMessage(msg, ITEM_WITHOUT_ACCOUNT);
+        return "";
+    }
+    //Get item card data to find the current average cost
     journal = banDoc.journal(banDoc.ORIGINTYPE_CURRENT, banDoc.ACCOUNTTYPE_NONE);
     journalData = getJournalData(docInfo, journal);
     accountCard = banDoc.currentCard(itemAccount);
-    accountCardData = getAccountCardData(docInfo, item, accountCard);
-    itemCardData = getItemCardDataList(accountCardData, journalData);
-    //extract from the array the current avg cost value (accounting value)
-    if (itemCardData.length >= 1) {
-        avgCost = itemCardData.slice(-1)[0].accAvgCost;
+    accountCardData = getAccountCardDataAdapted(itemObj, accountCard);
+    itemCardData = getItemCardDataList(docInfo, itemObj, accountCardData, journalData, unitPriceColDecimals, currentRowNr);
+
+    if (!itemCardData || isObjectEmpty(itemCardData))
+        return saleData;
+
+    currentQt = itemCardData.currentValues.itemQtBalance;
+    avgCost = itemCardData.currentValues.itemAvgCost;
+    quantity = Banana.SDecimal.abs(dlgParams.quantity);
+    accExRate = Banana.SDecimal.divide(itemCardData.currentValues.itemBalanceBase, itemCardData.currentValues.itemBalanceCurr);
+
+    avgSharesValue = getSharesAvgValue(quantity, avgCost);
+    totalSharesValue = getSharesTotalValue(quantity, dlgParams.marketPrice);
+    saleResult = getSaleResult(avgSharesValue, totalSharesValue);
+    exRateResult = getExchangeResult(totalSharesValue, saleResult, dlgParams.currExRate, accExRate);
+
+    // only for bonds
+    if (itemObj.type === "B") {
+        accruedInterests = dlgParams.accruedInterests; //calculateAccruedInterests(dlgParams, itemObj);
     }
 
-    quantity = userParam.quantity;
-    marketPrice = userParam.marketPrice;
-    currExRate = userParam.currExRate;
-    accExRate = getAccountingCourse(item, itemsData, banDoc);
-
-    //avgCost=getAverageCost(item,transList);
-    avgSharesValue = getSharesAvgValue(quantity, avgCost);
-    totalSharesvalue = getSharesTotalValue(quantity, marketPrice);
-    saleResult = getSaleResult(avgSharesValue, totalSharesvalue);
-    exRateResult = getExchangeResult(marketPrice, quantity, currExRate, accExRate);
-
+    saleData.currentQt = currentQt;
     saleData.avgCost = avgCost;
     saleData.avgSharesValue = avgSharesValue;
-    saleData.totalSharesvalue = totalSharesvalue;
+    saleData.totalSharesvalue = totalSharesValue;
     saleData.saleResult = saleResult;
     saleData.exRateResult = exRateResult;
+    saleData.accruedInterests = accruedInterests;
 
     return saleData;
 
 }
 
+function getClosestPreviousObjByRowNr(accountCardData, currentRowNr) {
+    // Find the object with `originRow` equal to `currentRowNr`.
+    const currentObject = accountCardData.find(obj => obj.originRow === currentRowNr.toString());
+    if (!currentObject) {
+        /** Could happen if the current selected row is emtpy, or if the user insert manually the data without selecting a row. 
+         * In that case we use the last object in the array, if the array has no objects, means there are not movements yet for the item selected. 
+         * */
+        if (accountCardData.length > 0) {
+            const lastObject = accountCardData[accountCardData.length - 1];
+            return lastObject;
+        } else {
+            return "";
+        }
+    }
+
+    // Finds the object with the immediately preceding `rowNr`.
+    const previousObject = accountCardData
+        .filter(obj => obj.rowNr < currentObject.rowNr)
+        .sort((a, b) => b.rowNr - a.rowNr)[0];
+
+    if (!previousObject) // could happen if the first operation of the year is a sale, in this case we use the opening data.
+        return {};
+
+    return previousObject;
+}
+
 /**
- * Retrieves the transactions from the account card of the item selected by the user and
- * returns the transactions as objects.
- * In order to save the data from the account card, i checks that the isin in the item column matches. 
- * @param {*} selectedItem item selected by the user.
- * @param {*} docInfo item selected by the user
- * @param {*} accountCard account card (table obj)
+ * Given an account card, it filters the transactions by item and adds values useful for creating
+ * of an account card by returning a new account card adapted to the creation of a
+ * item card. (see getItemCardDataList()). We may combine the two methods in the future.
  */
-function getAccountCardData(docInfo, selectedItem, accountCard) {
+function getAccountCardDataAdapted(itemObj, accountCard) {
     let transactions = [];
-    let accBaseBalance = "";
+    let accBalance = "";
+    let accBalanceCurr = "";
+    /**
+     * When creating the account card, before calculating the balance manually using the debit and credit columns, 
+     * we must take into account, if any, the opening balance of the security found in the ‘ValueBegin’ ( or ‘ValueBeginCurrency’) column
+     * and use it as a starting point for the balance calculation. New options could be considered in the future, for now it seems 
+     * the only way to start from the correct initial balance of the security (and not of the account, which may consist of several securities).
+     */
+    let itemName = itemObj.item;
+    let itemValueBegin = itemObj.valueBegin;
+    let itemValueBeginCurrency = itemObj.valueBeginCurrency;
+
+    if (itemValueBegin)
+        accBalance = itemValueBegin;
+    if (itemValueBeginCurrency)
+        accBalanceCurr = itemValueBeginCurrency;
 
     for (var i = 0; i < accountCard.rowCount; i++) {
         let tRow = accountCard.row(i);
-        let trData = {};
-        trData.rowNr = tRow.rowNr;
-        trData.doc = tRow.value("Doc");
-        trData.date = tRow.value("Date");
-        trData.trId = tRow.value("JContraAccountGroup");
-        trData.item = tRow.value("ItemsId");
-        trData.description = tRow.value("Description");
-        trData.debitBase = tRow.value("JDebitAmount"); //debit value in base currency
-        trData.creditBase = tRow.value("JCreditAmount"); //credit value base currency
-        //trData.balanceBase = tRow.value("JBalance"); //Se il conto è usato per più items, il bilancio deve essere ripreso in altro modo.
-        trData.unitPrice = tRow.value("UnitPrice");
-        if (docInfo.isMultiCurrency) {
-            trData.debitCurr = tRow.value("JDebitAmountAccountCurrency"); //debit value in base currency
-            trData.creditCurr = tRow.value("JCreditAmountAccountCurrency"); //credit value base currency
-            trData.balanceCurr = tRow.value("JBalanceAccountCurrency"); //credit value base currency
-        }
-        trData.qt = tRow.value("Quantity");
-
-        if (trData.item === selectedItem) {//each item transaction has the item id (isin)
-            //Calculate the balance manually.
+        let trType = tRow.value("JOperationType");
+        if (tRow.value("ItemsId") == itemName) {
+            let trData = {};
+            trData.rowNr = tRow.rowNr;
+            trData.originTable = tRow.value("JTableOrigin");
+            trData.originRow = tRow.value("JRowOrigin");
+            trData.rowType = trType;
+            trData.doc = tRow.value("Doc");
+            trData.date = tRow.value("Date");
+            trData.trId = tRow.value("JContraAccountGroup");
+            trData.item = tRow.value("ItemsId");
+            trData.description = tRow.value("Description");
+            trData.qt = tRow.value("Quantity");
+            trData.currency = tRow.value("ExchangeCurrency");
+            //trData.balanceBase = tRow.value("JBalance"); //Se il conto è usato per più items, il bilancio deve essere ripreso in altro modo.
+            trData.unitPrice = tRow.value("UnitPrice");
+            trData.debitBase = tRow.value("JDebitAmount"); //debit value in base currency
+            trData.creditBase = tRow.value("JCreditAmount"); //credit value base currency
+            /** 
+             * Calculate the balances manually, as an account can include more items, 
+             * we need to calculate the balance only for the current item.
+             * */
             if (trData.debitBase !== "") {
-                accBaseBalance = Banana.SDecimal.add(accBaseBalance, trData.debitBase);
+                accBalance = Banana.SDecimal.add(accBalance, trData.debitBase);
             }
             if (trData.creditBase !== "") {
-                accBaseBalance = Banana.SDecimal.subtract(accBaseBalance, trData.creditBase);
+                accBalance = Banana.SDecimal.subtract(accBalance, trData.creditBase);
             }
-            trData.balanceBase = accBaseBalance;
+            trData.balanceBase = accBalance;
+            trData.debitCurr = tRow.value("JDebitAmountAccountCurrency");
+            trData.creditCurr = tRow.value("JCreditAmountAccountCurrency");
+            if (trData.debitCurr !== "") {
+                accBalanceCurr = Banana.SDecimal.add(accBalanceCurr, trData.debitCurr);
+            }
+            if (trData.creditCurr !== "") {
+                accBalanceCurr = Banana.SDecimal.subtract(accBalanceCurr, trData.creditCurr);
+            }
+            trData.balanceCurr = accBalanceCurr;
+
             transactions.push(trData);
         }
     }
     if (transactions.length > 0)
         return transactions;
     else
-        return false;
+        return [];
 }
 
-function getItemCardDataList(accountCardData, journalData) {
+function getAccountCurrency(accountName, banDoc) {
+    const accountsData = getAccountsTableData(banDoc);
+    let currency = "";
 
-    SetSoldData(accountCardData, journalData);
-    getQuantityBalance(accountCardData);
-    getCurrentAccAvgCost(accountCardData);
+    // Iterate through the array of objects
+    for (const obj of accountsData) {
+        // Check if the "description" field matches the desired description
+        if (obj.account == accountName) {
+            // If there's a match, store the currency from the current object
+            currency = obj.currency;
+            break;
+        }
+    }
+    return currency;
+}
 
-    if (accountCardData) {
-        return accountCardData;
-    }
-    else {
-        return "";
-    }
+function accountIsInForeignCurrency(banDoc, docInfo, account) {
+    let currency = getAccountCurrency(account, banDoc);
+    if (currency !== docInfo.baseCurrency)
+        return true;
+    return false;
 }
 
 /**
- *  * Calculates how the average accounting cost of the security is updated after each movement.
+ * Starting from the adapted account card data (see method: getAccountCardDataAdapted), adds:
+ * - A new object in the first position of the array that contains the opening data (if found) of the security.
+ * Then for each transaction add:
+ * - The quantity change (if present)
+ * - The unit price (if present)
+ * - The balance of the quantity (updated for each movement)
+ * - The book value (updated with each movement)
+ * At the end add a new object containing the resulting values in the last transaction, these
+ * values rapresent the current situation for the quantity balance and the book value.
+ * If no transaction is found, the values are directly taken form the opening data.
+ * The returned structure looks like this:
+{
+  "itemId": "CH002775224",
+  "openingData": {
+    "itemUnitPriceBegin": "5.9998",
+    "itemValueBeginCurrency": "1499.95",
+    "itemValueBegin": "1499.95",
+    "itemExchangeBegin": "",
+    "itemQuantityBegin": "250.0000"
+  },
+  "transactionsData": [
+    {
+      "rowNr": 3,
+      "originTable": "Transactions",
+      "originRow": "8",
+      "rowType": "3",
+      "doc": "2",
+      "date": "2025-01-31",
+      "trId": "8",
+      "item": "CH002775224",
+      "description": "Shares BancaStato",
+      "qt": "-200.0000",
+      "currency": "CHF",
+      "unitPrice": "6.0201",
+      "debitBase": "",
+      "creditBase": "1204.02",
+      "balanceBase": "295.93",
+      "qtBalance": "50.0000",
+      "accAvgCost": "5.9186"
+    },
+    {
+      "rowNr": 4,
+      "originTable": "Transactions",
+      "originRow": "11",
+      "rowType": "3",
+      "doc": "2",
+      "date": "2025-01-31",
+      "trId": "11",
+      "item": "CH002775224",
+      "description": "Shares BancaStato Result on sale",
+      "qt": "",
+      "currency": "CHF",
+      "unitPrice": "",
+      "debitBase": "4.06",
+      "creditBase": "",
+      "balanceBase": "299.99",
+      "qtBalance": "50.0000",
+      "accAvgCost": "5.9998"
+    }
+  ],
+  "currentValues": {
+    "itemAvgCost": "5.9998",
+    "itemQtBalance": "50.0000",
+    "itemBalanceBase": "299.99",
+    "itemBalanceCurr": "",
+    "itemExchangeRate": ""
+  }
+}
+This structure has been designed to allow saving separately the data related to the opening of the security, 
+those related to its evolution (transactions), and the current values (the latest transaction( or transaction x if a currentRowNr is defined) resulting data).
+ */
+function getItemCardDataList(docInfo, itemObj, accountCardData, journalData, unitPriceColDecimals, currentRowNr) {
+    let itemCardData = {};
+    let openingData = getItemOpeningDataObj(docInfo, itemObj);
+    setSoldData(accountCardData, journalData);
+    setQuantityBalance(openingData, accountCardData);
+    setCurrentAccAvgCost(accountCardData, unitPriceColDecimals);
+
+    itemCardData.itemId = itemObj.item;
+    itemCardData.itemCurrency = itemObj.currency;
+    itemCardData.openingData = openingData;
+    itemCardData.transactionsData = accountCardData;
+    itemCardData.currentValues = getItemCurrentValues(openingData, accountCardData, currentRowNr);
+
+    return itemCardData;
+}
+
+/**
+ * Returns the object containing the current calculated data for the security, which is basically taken from the last transaction present.
+ * If currentRowNr is defined and valid, we do not take the last transaction but the one before it.
+ * If there are no transactions, we take the data from the opening data.
+ */
+function getItemCurrentValues(openingData, accountCardData, currentRowNr) {
+    let currentValuesObj = {};
+    let trObj = {};
+
+    setOpeningValues(currentValuesObj, openingData); // always set with the opening values.
+
+    if (accountCardData.length < 1) {
+        return currentValuesObj;
+    }
+
+    if (Number.isFinite(currentRowNr)) {
+        trObj = getClosestPreviousObjByRowNr(accountCardData, currentRowNr);
+        if (!trObj || isObjectEmpty(trObj)) {
+            return currentValuesObj;
+        }
+    } else {
+        trObj = accountCardData[accountCardData.length - 1];
+    }
+
+    currentValuesObj.itemAvgCost = trObj.accAvgCost;
+    currentValuesObj.itemQtBalance = trObj.qtBalance;
+    currentValuesObj.itemBalanceBase = trObj.balanceBase;
+    currentValuesObj.itemBalanceCurr = trObj.balanceCurr;
+    currentValuesObj.itemExchangeRate = "";
+
+    return currentValuesObj;
+}
+
+function setOpeningValues(currentValuesObj, openingData) {
+    currentValuesObj.itemAvgCost = openingData.itemUnitPriceBegin;
+    currentValuesObj.itemQtBalance = openingData.itemQuantityBegin;
+    currentValuesObj.itemBalanceBase = openingData.itemValueBegin;
+    currentValuesObj.itemBalanceCurr = openingData.itemValueBeginCurrency;
+    currentValuesObj.itemExchangeRate = openingData.itemExchangeBegin;
+}
+
+/**
+ * The opening data of an object can be found in the table ‘Items’ in the columns:
+ * - UnitPriceBegin: Opening price of the security.
+ * - ValueBeginCurrency: Opening Balance of the security. 
+ * - ValueBegin: Opening Balance of the security in the base currency
+ * - QuantityBegin: Opening Quantity of the security.
+ * - ExchangeBegin: Opening exchange rate.
+ * When the user creates a new year and wants to report the data correctly 
+ * as described above, he must have the following values in the table ‘Items’ after the adjustment
+ * - PriceCurrent: Current price of the security (resulting book value after settlement).
+ * - QuantityCurrent: Current quantity of the security (automatically calculated by Banana).
+ * - CurrentValue (or CurrencyCurrentValue): Current balance of the security (automatically calculated by Banana if given quantity and price).
+ * This data will then serve as the opening data for the new year.
+ */
+function getItemOpeningDataObj(docInfo, itemObj) {
+    let openingDataObj = {};
+
+    openingDataObj.itemOpeningDate = docInfo.openingDate;
+    openingDataObj.itemOpeningDescription = "Initial balance";
+    openingDataObj.itemUnitPriceBegin = itemObj.unitPriceBegin;
+    openingDataObj.itemValueBeginCurrency = itemObj.valueBeginCurrency;
+    openingDataObj.itemValueBegin = itemObj.valueBegin;
+    openingDataObj.itemExchangeBegin = itemObj.exchangeBeginCurrency;
+    openingDataObj.itemQuantityBegin = itemObj.beginQt;
+
+    return openingDataObj;
+}
+
+function isObjectEmpty(obj) {
+    return Object.keys(obj).length === 0;
+}
+
+/**
+ * Calculates how the average accounting cost of the security is updated after each movement.
  * The accounting average cost is calculated by doing: Balance (in the item currency)/Quantity balance.
  * Calculates for each line of the card the average accounting purchase price.
  * @param {*} accountCardData 
  * @param {*} balanceCol 
  */
-function getCurrentAccAvgCost(accountCardData) {
-    var context = { 'decimals': 2, 'mode': Banana.SDecimal.HALF_EVEN };
+function setCurrentAccAvgCost(accountCardData, unitPriceColDecimals) {
+
+    if (accountCardData.length < 1)
+        return accountCardData;
+
     for (var key in accountCardData) {
-        /**
-         * if the balance sheet column in foreign currency exists, I am sure that it is a multi-currency account, 
-         * so I take the value of the balance sheet in the currency of the asset, wich in case of an asset in the same currency as the base currency, 
-         * the value is the same.
-         */
-        if (accountCardData[key].balanceCurr)
-            accountCardData[key].accAvgCost = Banana.SDecimal.divide(accountCardData[key].balanceCurr, accountCardData[key].qtBalance, context);
-        else
-            accountCardData[key].accAvgCost = Banana.SDecimal.divide(accountCardData[key].balanceBase, accountCardData[key].qtBalance, context);
+        let trId = "";
+        trId = accountCardData[key].trId;
+        if (trId && trId !== "") {
+            if (accountCardData[key].balanceCurr)
+                accountCardData[key].accAvgCost = Banana.SDecimal.divide(accountCardData[key].balanceCurr, accountCardData[key].qtBalance, { 'decimals': unitPriceColDecimals });
+            else
+                accountCardData[key].accAvgCost = Banana.SDecimal.divide(accountCardData[key].balanceBase, accountCardData[key].qtBalance, { 'decimals': unitPriceColDecimals });
+        }
     }
 
     return accountCardData;
@@ -376,12 +774,18 @@ function getBalance(itemCardData, debRef, credRef) {
  * @param {*} accountCardData 
  * @param {*} journalData 
  */
-function SetSoldData(accountCardData, journalData) {
+function setSoldData(accountCardData, journalData) {
+
+    if (accountCardData.length < 1)
+        return accountCardData;
 
     for (var key in accountCardData) {
-        let trId = accountCardData[key].trId;
-        accountCardData[key].qt = getJournalValueFiltered(journalData, trId, "qt",);
-        accountCardData[key].unitPrice = getJournalValueFiltered(journalData, trId, "unitPrice");
+        let trId = "";
+        trId = accountCardData[key].trId;
+        if (trId && trId !== "") {
+            accountCardData[key].qt = getJournalValueFiltered(journalData, trId, "qt",);
+            accountCardData[key].unitPrice = getJournalValueFiltered(journalData, trId, "unitPrice");
+        }
     }
     return accountCardData
 }
@@ -391,11 +795,23 @@ function SetSoldData(accountCardData, journalData) {
  * @param {*} accountCardData 
  * @returns 
  */
-function getQuantityBalance(accountCardData) {
-    let amountBalance = "";
+function setQuantityBalance(openingData, accountCardData) {
+
+    let quantityBalance = "";
+
+    if (accountCardData.length < 1)
+        return accountCardData;
+
+    if (openingData.itemQuantityBegin)
+        quantityBalance = openingData.itemQuantityBegin;
+
     for (var key in accountCardData) {
-        amountBalance = Banana.SDecimal.add(amountBalance, accountCardData[key].qt);
-        accountCardData[key].qtBalance = amountBalance;
+        let quantity = "";
+        quantity = accountCardData[key].qt;
+        if (quantity && quantity !== "")
+            quantityBalance = Banana.SDecimal.add(quantityBalance, accountCardData[key].qt);
+
+        accountCardData[key].qtBalance = quantityBalance;
     }
     return accountCardData;
 }
@@ -444,6 +860,7 @@ function getTransactionsTableData(banDoc, docInfo) {
             trData.doc = tRow.value("Doc");
             trData.type = tRow.value("DocType");
             trData.item = tRow.value("ItemsId");
+            trData.externalReference = tRow.value("ExternalReference");
             trData.description = tRow.value("Description");
             trData.debit = tRow.value("AccountDebit");
             trData.credit = tRow.value("AccountCredit");
@@ -467,32 +884,12 @@ function getTransactionsTableData(banDoc, docInfo) {
 }
 
 /**
- * Ritorna il cambio contabile calcolato sulla base della differenza tra i saldi nelle due valute ad una certa data.
- */
-function getAccountingCourse(item, itemsData, banDoc) {
-
-    var accData = getItemBalance(banDoc, item, itemsData);
-    var course = "";
-
-    baseCurrBalance = accData.currbalance.balance;
-    assetCurrBalance = accData.currbalance.balanceCurrency;
-
-    //divido il saldo in moneta base per quello del asset
-    course = Banana.SDecimal.divide(baseCurrBalance, assetCurrBalance);
-
-    return course;
-
-}
-
-/**
  * 
  * Ritorna il valore medio di un azione.
  */
 function getSharesAvgValue(quantity, avgCost) {
     var avgValue = "";
-
     avgValue = Banana.SDecimal.multiply(quantity, avgCost);
-
     return avgValue;
 }
 
@@ -502,9 +899,7 @@ function getSharesAvgValue(quantity, avgCost) {
  */
 function getSharesTotalValue(quantity, marketPrice) {
     var totalValue = "";
-
     totalValue = Banana.SDecimal.multiply(quantity, marketPrice);
-
     return totalValue;
 }
 
@@ -513,53 +908,43 @@ function getSharesTotalValue(quantity, marketPrice) {
  */
 function getSaleResult(avgSharesValue, totalSharesvalue) {
     var saleResult = "";
-
     saleResult = Banana.SDecimal.subtract(totalSharesvalue, avgSharesValue);
-
-
     return saleResult;
-
 }
 
-function getExchangeResult(marketPrice, quantity, currExRate, accExRate) {
-    var exResult = "";
-    var accAmount = "";
-    var currAmount = "";
+function getExchangeResult(totalSharesValue, saleResult, currExRate, accExRate) {
 
-    if (!currExRate)
-        currExRate = accExRate;//if thr user leaves empty this field we consider the current exchange rate the same as the accounting change rate.
+    if (!accExRate || accExRate.length < 1)
+        return Banana.Converter.toLocaleNumberFormat("0.00");
 
-    accAmount = Banana.SDecimal.multiply(accExRate, Banana.SDecimal.multiply(marketPrice, quantity));//valore al cambio contabile
-    currAmount = Banana.SDecimal.multiply(currExRate, Banana.SDecimal.multiply(marketPrice, quantity));//valore al cambiol corrente
-    exResult = Banana.SDecimal.subtract(currAmount, accAmount);
+    // Default to accExRate if currExRate is not provided
+    if (!currExRate) {
+        currExRate = accExRate;
+    }
 
-    return exResult;
-}
+    // Calculate the realized exchange (theorical result)
+    let realizedExchangeResult = Banana.SDecimal.subtract(
+        Banana.SDecimal.multiply(totalSharesValue, currExRate),
+        Banana.SDecimal.multiply(totalSharesValue, accExRate)
+    );
 
-function getItemBalance(banDoc, item, itemsData) {
-    var accBalance = {};
+    // Calculate the unrealized exchange profit/loss based on saleResult
+    let unrealizedExchangeProfitLoss = Banana.SDecimal.subtract(
+        Banana.SDecimal.multiply(saleResult, accExRate),
+        Banana.SDecimal.multiply(saleResult, currExRate)
+    );
 
-    accBalance.account = getItemValue(itemsData, item, "account");
-    accBalance.currbalance = banDoc.currentBalance(accBalance.account);
+    // Calculate the effective exchange result by adding realized and unrealized components
+    let effectiveExchangeResult = Banana.SDecimal.add(realizedExchangeResult, unrealizedExchangeProfitLoss);
 
-    return accBalance;
-}
-
-function getItemValue(itemsData, item, value) {
-    if (itemsData) {
-        for (var e in itemsData) {
-            if (itemsData[e].item == item && itemsData[e][value] != "") {
-                return itemsData[e][value];
-            }
-        }
-    } else
-        return false;
+    // Return the total effective exchange result
+    return effectiveExchangeResult;
 }
 
 /**
  * Ritorna i dati presenti nella tabella conti.
  */
-function getAccountsTableData(banDoc, docInfo) {
+function getAccountsTableData(banDoc) {
     let accountsData = [];
     let accTable = banDoc.table("Accounts");
 
@@ -578,30 +963,101 @@ function getAccountsTableData(banDoc, docInfo) {
         accRow.sumIn = tRow.value("Gr");
         accRow.bankAccount = tRow.value("BankAccount");
         accRow.exchangeRateDiffAcc = tRow.value("AccountExchangeDifference");
-        if (docInfo.isMultiCurrency)
-            accRow.currency = tRow.value("Currency");
-        //...
+        accRow.currency = tRow.value("Currency");
+        accRow.opening = tRow.value("Opening");
+        accRow.openingCurrency = tRow.value("OpeningCurrency");
+        accRow.balance = tRow.value("Balance");
+        accRow.balanceCurrency = tRow.value("BalanceCurrency");
 
-        if (accRow.account || accRow.group)
-            accountsData.push(accRow);
+        accountsData.push(accRow);
     }
 
     return accountsData;
 
+}
 
+/**
+ * Returns the list of accounts assigned to securities in the Items table.
+ */
+function getItemsAccounts(banDoc) {
+    let itemTableData = getItemsTableData(banDoc);
+    if (!itemTableData)
+        return [];
+    const allAccounts = itemTableData.map(item => item.account);
+    const uniqueAccounts = [...new Set(allAccounts)];
+    return uniqueAccounts;
+}
+
+function getItemsIds(banDoc) {
+    let itemTableData = getItemsTableData(banDoc);
+    if (!itemTableData)
+        return [];
+    const allItemsId = itemTableData.map(item => item.item);
+    const uniqueItemsId = [...new Set(allItemsId)];
+    return uniqueItemsId;
+}
+
+function getItemAccount(itemId, banDoc) {
+    let itemTableData = getItemsTableData(banDoc);
+    if (!itemTableData)
+        return "";
+    const item = itemTableData.find(item => item.item === itemId);
+    if (!item)
+        return "";
+    return item.account;
+}
+
+function getItemDescription(itemId, banDoc) {
+    let itemTableData = getItemsTableData(banDoc);
+    if (!itemTableData)
+        return "";
+    const item = itemTableData.find(item => item.item === itemId);
+    if (!item)
+        return "";
+    return item.description;
+}
+
+function getItemCurrency(itemId, banDoc) {
+    let itemTableData = getItemsTableData(banDoc);
+    if (!itemTableData)
+        return "";
+    const item = itemTableData.find(item => item.item === itemId);
+    if (!item)
+        return "";
+    return item.currency;
+}
+
+function getItemRowObj(itemId, banDoc) {
+    let itemTableData = getItemsTableData(banDoc);
+    if (!itemTableData)
+        return {};
+    const item = itemTableData.find(item => item.item === itemId);
+    if (!item)
+        return {};
+    return item;
 }
 
 /**
  * Retrieves item information from the items table
  * @returns 
  */
-function getItemsTableData(banDoc, docInfo) {
-    //get the items list from the items table
+function getItemsTableData(banDoc) {
+
     var itemsData = [];
+    if (!banDoc)
+        itemsData;
+
+    let docInfo = getDocumentInfo(banDoc);
+
+    if (!docInfo)
+        return itemsData;
+
     let table = banDoc.table("Items");
+
     if (!table) {
         return itemsData;
     }
+
     for (var i = 0; i < table.rowCount; i++) {
         var tRow = table.row(i);
         var itemData = {};
@@ -611,15 +1067,25 @@ function getItemsTableData(banDoc, docInfo) {
         itemData.account = tRow.value("Account");
         itemData.currentQt = tRow.value("QuantityCurrent");
         itemData.valueCurrent = tRow.value("ValueCurrent");
+        itemData.valueCurrentCurrency = tRow.value("CurrencyCurrentValue");
         itemData.sumIn = tRow.value("Gr");
         itemData.group = tRow.value("Group");
         itemData.expiryDate = tRow.value("ExpiryDate");
         itemData.interestRate = tRow.value("Notes");
         itemData.unitPriceCurrent = tRow.value("UnitPriceCurrent");
-        itemData.currency = "";
-        if (docInfo.isMultiCurrency)
-            itemData.currency = tRow.value("Currency");
-        if (itemsData && itemData.item)//only if the item has an id (isin)
+        itemData.currency = tRow.value("Currency");
+        itemData.type = tRow.value("ReferenceUnit");
+        itemData.unitPriceBegin = tRow.value("UnitPriceBegin");
+        itemData.valueBegin = tRow.value("ValueBegin");
+        itemData.beginQt = tRow.value("QuantityBegin");
+        itemData.valueBeginCurrency = "";
+        itemData.exchangeBeginCurrency = "";
+        if (docInfo.isMultiCurrency) {
+            itemData.valueBeginCurrency = tRow.value("ValueBeginCurrency");
+            itemData.exchangeBeginCurrency = tRow.value("ExchangeBegin");
+        }
+
+        if (itemsData && itemData.item && itemData.account)//only if the item has an id (isin)
             itemsData.push(itemData);
     }
     return itemsData;
@@ -643,6 +1109,17 @@ function getItemRowNr(refGroup, tabItemsData) {
         refNr = refNr + "." + refNr;
     }
     return refNr;
+}
+
+function isValidItemSelected(selectedItem, itemObj, banDoc) {
+    if (!itemObj || isObjectEmpty(itemObj) || !selectedItem) {
+        const ITEM_NOT_FOUND = "ITEM_NOT_FOUND";
+        let msg = getErrorMessage_MissingElements(ITEM_NOT_FOUND, selectedItem);
+        banDoc.addMessage(msg, ITEM_NOT_FOUND);
+        return false;
+    }
+
+    return true;
 }
 
 /**
@@ -829,6 +1306,15 @@ function checkIfNumberisEven(number) {
     return isEven;
 }
 
+function tableExists(banDoc, tableName) {
+    if (!banDoc)
+        return false;
+    let table = banDoc.table(tableName);
+    if (!table)
+        return false;
+    return true;
+}
+
 
 function setVariables(variables, baseColor) {
     /* Variables that set the colors */
@@ -892,79 +1378,10 @@ function replaceVariables(cssText, variables) {
     return result;
 }
 
-/**
- * The purpose of this function is to find the account number or user-defined item 
- * within the data extracted from the tables (accounts and item) 
- * in order to avoid errors such as spaces in the input dialogue.
- * @param {*} accountParam the account defined by the user
- * @param {*} listData the list of data within which to search for values (list of elements from accounts table or from items table)
- * @param {*} refProp the property to be searched in the data list
- * @param {*} refTableName the name of the table where the param is searched.
- */
-function findElement(banDoc, userParam, listData, refProp, refTableName) {
-    //define error messages
-    let ELEMENT_NOT_FOUND_IN_ACCOUNTING = "ELEMENT_NOT_FOUND_IN_ACCOUNTING";
-    let lang = 'en';
-    let msg = getErrorMessage(ELEMENT_NOT_FOUND_IN_ACCOUNTING, lang, userParam, refTableName);
-
-    for (var key in listData) {
-        //set to lower case the strings
-        let ref_lower = listData[key][refProp].toLowerCase();
-        let userParam_lower = userParam.toLowerCase();
-        if ((userParam_lower && ref_lower) && userParam_lower.includes(ref_lower)) {//check the strings after the lower case.
-            return listData[key][refProp];//return the original (not formatted value)
-        }
-    }
-    //element not found in the listData, display a message
-    banDoc.addMessage(msg, ELEMENT_NOT_FOUND_IN_ACCOUNTING);
-
-    return userParam;
-
-}
-
-/**
- * Returns true if it is a multi-currency accounting
- */
-function isMultiCurrency(banDoc) {
-
-    var FileTypeNr = banDoc.info("Base", "FileTypeNumber");
-    if (FileTypeNr == "120" || FileTypeNr == "130") {
-        let NOT_AVAILABLE_WITH_MULTI_CURRENCY = "NOT_AVAILABLE_WITH_MULTI_CURRENCY";
-        let lang = 'en';
-        let msg = getErrorMessage(NOT_AVAILABLE_WITH_MULTI_CURRENCY, lang, "", "");
-        banDoc.addMessage(msg, NOT_AVAILABLE_WITH_MULTI_CURRENCY);
-        return true;
-    }
-
-    return false
-
-}
-
-function getErrorMessage(errorId, lang, userParam, refTableName) {
-    if (!lang)
-        lang = 'en';
-    switch (errorId) {
-        case "ELEMENT_NOT_FOUND_IN_ACCOUNTING":
-            if (lang == "en")
-                return "Element: " + userParam + " not found in " + refTableName;
-            else
-                return "Element: " + userParam + " not found in " + refTableName;
-        case "ID_ERR_VERSION_NOTSUPPORTED":
-            return "This script does not run with your current version of Banana Accounting.\nMinimum version required: %1.\nTo update or for more information click on Help";
-        case "ID_ERR_LICENSE_NOTVALID":
-            return "This extension requires Banana Accounting+ Advanced";
-        case "NOT_AVAILABLE_WITH_MULTI_CURRENCY":
-            return "This report is only available for accounting files without multi-currency"
-    }
-    return '';
-}
-
 //VERSION CONTROL FUNCTIONS
 function verifyBananaVersion(banDoc) {
     if (!banDoc)
         return false;
-
-    let lang = "en";
 
     let BAN_VERSION_MIN = "10.0.10";
     let BAN_DEV_VERSION_MIN = "";
@@ -974,13 +1391,13 @@ function verifyBananaVersion(banDoc) {
     let CURR_LICENSE = isBananaAdvanced();
 
     if (!CURR_VERSION) {
-        let msg = getErrorMessage(ID_ERR_VERSION_NOTSUPPORTED, lang);
+        let msg = getErrorMessage(ID_ERR_VERSION_NOTSUPPORTED);
         msg = msg.replace("%1", BAN_VERSION_MIN);
         banDoc.addMessage(msg, ID_ERR_VERSION_NOTSUPPORTED);
         return false;
     }
     if (!CURR_LICENSE) {
-        let msg = getErrorMessage(ID_ERR_LICENSE_NOTVALID, lang);
+        let msg = getErrorMessage(ID_ERR_LICENSE_NOTVALID);
         banDoc.addMessage(msg, ID_ERR_LICENSE_NOTVALID);
         return false;
     }

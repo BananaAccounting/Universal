@@ -21,7 +21,877 @@
 %%SCRIPT{C:/P/Universal Images/Universal/report/accounting/portfolioAccounting/test/ch.banana.portfolio.accounting.calc.sales.data.dialog.test.js}
 %
 \begin{testcase}{TestCalcSalesDialog}
-\begin{test}{testDataStructure}
+\begin{test}{testRecordSalesTransactions}
+\section{Test 1: Sell All Unicredit Shares purchased before.}
+\subsection{Test 1: Calculated Data}
+\begin{jsonvalue}{Test 1}
+{
+    "accruedInterests": "",
+    "avgCost": "10.0000",
+    "avgSharesValue": "1000.0000",
+    "currentQt": "100.0000",
+    "exRateResult": "50.0000000000",
+    "saleResult": "-50.0000",
+    "totalSharesvalue": "950.0000"
+}
+\end{jsonvalue}
+\subsection{Test 1: Recorded Data}
+\begin{jsonvalue}{Test 1}
+{
+    "data": [
+        {
+            "creator": {
+                "name": "ch.banana.portfolio.accounting.calc.sales.data.dialog.test",
+                "version": "1.0"
+            },
+            "document": {
+                "cursorPosition": {
+                },
+                "dataUnits": [
+                    {
+                        "data": {
+                            "rowLists": [
+                                {
+                                    "rows": [
+                                        {
+                                            "fields": {
+                                                "AccountDebit": "[Bank charges account]",
+                                                "AmountCurrency": "25.00",
+                                                "Date": "2024-03-20",
+                                                "Description": "Shares Unicredit Bank charges",
+                                                "Doc": "2",
+                                                "ExchangeCurrency": "EUR",
+                                                "ExchangeRate": "1.150000",
+                                                "ExternalReference": "inv_sale_1.1",
+                                                "ItemsId": "IT0005239360"
+                                            },
+                                            "operation": {
+                                                "name": "modify",
+                                                "sequence": "8"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountDebit": "[Bank account]",
+                                                "AmountCurrency": "925.0000",
+                                                "Date": "2024-03-20",
+                                                "Description": "Shares Unicredit Cashed Net",
+                                                "Doc": "2",
+                                                "ExchangeCurrency": "EUR",
+                                                "ExchangeRate": "1.150000",
+                                                "ExternalReference": "inv_sale_1.3",
+                                                "ItemsId": "IT0005239360"
+                                            },
+                                            "operation": {
+                                                "name": "modify",
+                                                "sequence": "9"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "Shares Unicredit",
+                                                "AccountDebit": "[Realized loss account]",
+                                                "AmountCurrency": "-50.0000",
+                                                "Date": "2024-03-20",
+                                                "Description": "Shares Unicredit Result on sale",
+                                                "Doc": "2",
+                                                "ExchangeCurrency": "EUR",
+                                                "ExchangeRate": "1.150000",
+                                                "ExternalReference": "inv_sale_1.4",
+                                                "ItemsId": "IT0005239360"
+                                            },
+                                            "operation": {
+                                                "name": "modify",
+                                                "sequence": "10"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "[Realized exchange profit account]",
+                                                "AccountDebit": "Shares Unicredit",
+                                                "Amount": "50.0000000000",
+                                                "Date": "2024-03-20",
+                                                "Description": "Shares Unicredit Result on exchange",
+                                                "Doc": "2",
+                                                "ExchangeCurrency": "CHF",
+                                                "ExternalReference": "inv_sale_1.5",
+                                                "ItemsId": "IT0005239360"
+                                            },
+                                            "operation": {
+                                                "name": "modify",
+                                                "sequence": "11"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        "nameXml": "Transactions"
+                    }
+                ],
+                "dataUnitsfileVersion": "1.0.0"
+            }
+        }
+    ],
+    "error": "",
+    "format": "documentChange"
+}
+\end{jsonvalue}
+\section{Test 2: Sell first half of Netflix shares purchased before.}
+\subsection{Test 2: Calculated Data}
+\begin{jsonvalue}{Test 2}
+{
+    "accruedInterests": "",
+    "avgCost": "11.0000",
+    "avgSharesValue": "1100.0000",
+    "currentQt": "200.0000",
+    "exRateResult": "22.0000000000",
+    "saleResult": "50.0000",
+    "totalSharesvalue": "1150.0000"
+}
+\end{jsonvalue}
+\subsection{Test 2: Recorded Data}
+\begin{jsonvalue}{Test 2}
+{
+    "data": [
+        {
+            "creator": {
+                "name": "ch.banana.portfolio.accounting.calc.sales.data.dialog.test",
+                "version": "1.0"
+            },
+            "document": {
+                "cursorPosition": {
+                },
+                "dataUnits": [
+                    {
+                        "data": {
+                            "rowLists": [
+                                {
+                                    "rows": [
+                                        {
+                                            "fields": {
+                                                "ExternalReference": "inv_sale_3"
+                                            },
+                                            "operation": {
+                                                "name": "modify",
+                                                "sequence": "-1"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        "nameXml": "Transactions"
+                    }
+                ],
+                "dataUnitsfileVersion": "1.0.0"
+            }
+        },
+        {
+            "creator": {
+                "name": "ch.banana.portfolio.accounting.calc.sales.data.dialog.test",
+                "version": "1.0"
+            },
+            "document": {
+                "cursorPosition": {
+                },
+                "dataUnits": [
+                    {
+                        "data": {
+                            "rowLists": [
+                                {
+                                    "rows": [
+                                        {
+                                            "fields": {
+                                                "AccountDebit": "[Bank charges account]",
+                                                "AmountCurrency": "40.85",
+                                                "Date": "2024-03-26",
+                                                "Description": "Shares Netflix Bank charges",
+                                                "Doc": "4",
+                                                "ExchangeCurrency": "USD",
+                                                "ExchangeRate": "0.970000",
+                                                "ExternalReference": "inv_sale_3.1",
+                                                "ItemsId": "US123456789"
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "-1.1"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountDebit": "[Bank account]",
+                                                "AmountCurrency": "1109.1500",
+                                                "Date": "2024-03-26",
+                                                "Description": "Shares Netflix Cashed Net",
+                                                "Doc": "4",
+                                                "ExchangeCurrency": "USD",
+                                                "ExchangeRate": "0.970000",
+                                                "ExternalReference": "inv_sale_3.3",
+                                                "ItemsId": "US123456789"
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "-1.3"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "[Realized profit account]",
+                                                "AccountDebit": "Shares Netflix",
+                                                "AmountCurrency": "50.0000",
+                                                "Date": "2024-03-26",
+                                                "Description": "Shares Netflix Result on sale",
+                                                "Doc": "4",
+                                                "ExchangeCurrency": "USD",
+                                                "ExchangeRate": "0.970000",
+                                                "ExternalReference": "inv_sale_3.4",
+                                                "ItemsId": "US123456789"
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "-1.4"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "[Realized exchange profit account]",
+                                                "AccountDebit": "Shares Netflix",
+                                                "Amount": "22.0000000000",
+                                                "Date": "2024-03-26",
+                                                "Description": "Shares Netflix Result on exchange",
+                                                "Doc": "4",
+                                                "ExchangeCurrency": "CHF",
+                                                "ExternalReference": "inv_sale_3.5",
+                                                "ItemsId": "US123456789"
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "-1.5"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        "nameXml": "Transactions"
+                    }
+                ],
+                "dataUnitsfileVersion": "1.0.0"
+            }
+        }
+    ],
+    "error": "",
+    "format": "documentChange"
+}
+\end{jsonvalue}
+\section{Test 3: Sell second half of Netflix shares purchased before.}
+\subsection{Test 3: Calculated Data}
+\begin{jsonvalue}{Test 3}
+{
+    "accruedInterests": "",
+    "avgCost": "11.0000",
+    "avgSharesValue": "1100.0000",
+    "currentQt": "100.0000",
+    "exRateResult": "-5.5000000",
+    "saleResult": "55.6200",
+    "totalSharesvalue": "1155.6200"
+}
+\end{jsonvalue}
+\subsection{Test 3: Recorded Data}
+\begin{jsonvalue}{Test 3}
+{
+    "data": [
+        {
+            "creator": {
+                "name": "ch.banana.portfolio.accounting.calc.sales.data.dialog.test",
+                "version": "1.0"
+            },
+            "document": {
+                "cursorPosition": {
+                },
+                "dataUnits": [
+                    {
+                        "data": {
+                            "rowLists": [
+                                {
+                                    "rows": [
+                                        {
+                                            "fields": {
+                                                "ExternalReference": "inv_sale_3"
+                                            },
+                                            "operation": {
+                                                "name": "modify",
+                                                "sequence": "-1"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        "nameXml": "Transactions"
+                    }
+                ],
+                "dataUnitsfileVersion": "1.0.0"
+            }
+        },
+        {
+            "creator": {
+                "name": "ch.banana.portfolio.accounting.calc.sales.data.dialog.test",
+                "version": "1.0"
+            },
+            "document": {
+                "cursorPosition": {
+                },
+                "dataUnits": [
+                    {
+                        "data": {
+                            "rowLists": [
+                                {
+                                    "rows": [
+                                        {
+                                            "fields": {
+                                                "AccountDebit": "[Bank charges account]",
+                                                "AmountCurrency": "42.33",
+                                                "Date": "2024-04-26",
+                                                "Description": "Shares Netflix Bank charges",
+                                                "Doc": "5",
+                                                "ExchangeCurrency": "USD",
+                                                "ExchangeRate": "0.945",
+                                                "ExternalReference": "inv_sale_3.1",
+                                                "ItemsId": "US123456789"
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "-1.1"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountDebit": "[Bank account]",
+                                                "AmountCurrency": "1113.2900",
+                                                "Date": "2024-04-26",
+                                                "Description": "Shares Netflix Cashed Net",
+                                                "Doc": "5",
+                                                "ExchangeCurrency": "USD",
+                                                "ExchangeRate": "0.945",
+                                                "ExternalReference": "inv_sale_3.3",
+                                                "ItemsId": "US123456789"
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "-1.3"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "[Realized profit account]",
+                                                "AccountDebit": "Shares Netflix",
+                                                "AmountCurrency": "55.6200",
+                                                "Date": "2024-04-26",
+                                                "Description": "Shares Netflix Result on sale",
+                                                "Doc": "5",
+                                                "ExchangeCurrency": "USD",
+                                                "ExchangeRate": "0.945",
+                                                "ExternalReference": "inv_sale_3.4",
+                                                "ItemsId": "US123456789"
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "-1.4"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "Shares Netflix",
+                                                "AccountDebit": "[Realized exchange loss account]",
+                                                "Amount": "-5.5000000",
+                                                "Date": "2024-04-26",
+                                                "Description": "Shares Netflix Result on exchange",
+                                                "Doc": "5",
+                                                "ExchangeCurrency": "CHF",
+                                                "ExternalReference": "inv_sale_3.5",
+                                                "ItemsId": "US123456789"
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "-1.5"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        "nameXml": "Transactions"
+                    }
+                ],
+                "dataUnitsfileVersion": "1.0.0"
+            }
+        }
+    ],
+    "error": "",
+    "format": "documentChange"
+}
+\end{jsonvalue}
+\section{Test 4: Sell all Bnp Paribas Bonds purchased before.}
+\subsection{Test 4: Calculated Data}
+\begin{jsonvalue}{Test 4}
+{
+    "accruedInterests": "25.560",
+    "avgCost": "0.9800",
+    "avgSharesValue": "4900.0000",
+    "currentQt": "5000.0000",
+    "exRateResult": "147.000000",
+    "saleResult": "225.0000",
+    "totalSharesvalue": "5125.000"
+}
+\end{jsonvalue}
+\subsection{Test 4: Recorded Data}
+\begin{jsonvalue}{Test 4}
+{
+    "data": [
+        {
+            "creator": {
+                "name": "ch.banana.portfolio.accounting.calc.sales.data.dialog.test",
+                "version": "1.0"
+            },
+            "document": {
+                "cursorPosition": {
+                },
+                "dataUnits": [
+                    {
+                        "data": {
+                            "rowLists": [
+                                {
+                                    "rows": [
+                                        {
+                                            "fields": {
+                                                "ExternalReference": "inv_sale_3"
+                                            },
+                                            "operation": {
+                                                "name": "modify",
+                                                "sequence": "-1"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        "nameXml": "Transactions"
+                    }
+                ],
+                "dataUnitsfileVersion": "1.0.0"
+            }
+        },
+        {
+            "creator": {
+                "name": "ch.banana.portfolio.accounting.calc.sales.data.dialog.test",
+                "version": "1.0"
+            },
+            "document": {
+                "cursorPosition": {
+                },
+                "dataUnits": [
+                    {
+                        "data": {
+                            "rowLists": [
+                                {
+                                    "rows": [
+                                        {
+                                            "fields": {
+                                                "AccountDebit": "[Bank charges account]",
+                                                "AmountCurrency": "55.00",
+                                                "Date": "2024-10-31",
+                                                "Description": "Bonds Bnp Paribas Bank charges",
+                                                "Doc": "8",
+                                                "ExchangeCurrency": "EUR",
+                                                "ExchangeRate": "1.13",
+                                                "ExternalReference": "inv_sale_3.1",
+                                                "ItemsId": "IT000792468"
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "-1.1"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "[Accrued interests account]",
+                                                "AmountCurrency": "25.560",
+                                                "Date": "2024-10-31",
+                                                "Description": "Bonds Bnp Paribas Accrued interests",
+                                                "Doc": "8",
+                                                "ExchangeCurrency": "EUR",
+                                                "ExchangeRate": "1.13",
+                                                "ExternalReference": "inv_sale_3.3",
+                                                "ItemsId": "IT000792468"
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "-1.3"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountDebit": "[Bank account]",
+                                                "AmountCurrency": "5095.560",
+                                                "Date": "2024-10-31",
+                                                "Description": "Bonds Bnp Paribas Cashed Net",
+                                                "Doc": "8",
+                                                "ExchangeCurrency": "EUR",
+                                                "ExchangeRate": "1.13",
+                                                "ExternalReference": "inv_sale_3.4",
+                                                "ItemsId": "IT000792468"
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "-1.4"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "[Realized profit account]",
+                                                "AccountDebit": "Bonds EUR",
+                                                "AmountCurrency": "225.0000",
+                                                "Date": "2024-10-31",
+                                                "Description": "Bonds Bnp Paribas Result on sale",
+                                                "Doc": "8",
+                                                "ExchangeCurrency": "EUR",
+                                                "ExchangeRate": "1.13",
+                                                "ExternalReference": "inv_sale_3.5",
+                                                "ItemsId": "IT000792468"
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "-1.5"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "[Realized exchange profit account]",
+                                                "AccountDebit": "Bonds EUR",
+                                                "Amount": "147.000000",
+                                                "Date": "2024-10-31",
+                                                "Description": "Bonds Bnp Paribas Result on exchange",
+                                                "Doc": "8",
+                                                "ExchangeCurrency": "CHF",
+                                                "ExternalReference": "inv_sale_3.6",
+                                                "ItemsId": "IT000792468"
+                                            },
+                                            "operation": {
+                                                "name": "add",
+                                                "sequence": "-1.6"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        "nameXml": "Transactions"
+                    }
+                ],
+                "dataUnitsfileVersion": "1.0.0"
+            }
+        }
+    ],
+    "error": "",
+    "format": "documentChange"
+}
+\end{jsonvalue}
+\section{Test 5: Sell part of BancaStato shares purchased before.}
+\subsection{Test 5: Calculated Data}
+\begin{jsonvalue}{Test 5}
+{
+    "accruedInterests": "",
+    "avgCost": "5.9876",
+    "avgSharesValue": "898.1400",
+    "currentQt": "400.0000",
+    "exRateResult": "0",
+    "saleResult": "-28.9800",
+    "totalSharesvalue": "869.1600"
+}
+\end{jsonvalue}
+\subsection{Test 5: Recorded Data}
+\begin{jsonvalue}{Test 5}
+{
+    "data": [
+        {
+            "creator": {
+                "name": "ch.banana.portfolio.accounting.calc.sales.data.dialog.test",
+                "version": "1.0"
+            },
+            "document": {
+                "cursorPosition": {
+                },
+                "dataUnits": [
+                    {
+                        "data": {
+                            "rowLists": [
+                                {
+                                    "rows": [
+                                        {
+                                            "fields": {
+                                                "AccountDebit": "[Bank charges account]",
+                                                "AmountCurrency": "15.00",
+                                                "Date": "2024-12-16",
+                                                "Description": "Shares BancaStato Bank charges",
+                                                "Doc": "12",
+                                                "ExchangeCurrency": "CHF",
+                                                "ExchangeRate": "1.00",
+                                                "ExternalReference": "inv_sale_2.1",
+                                                "ItemsId": "CH002775224"
+                                            },
+                                            "operation": {
+                                                "name": "modify",
+                                                "sequence": "69"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountDebit": "[Bank account]",
+                                                "AmountCurrency": "854.1600",
+                                                "Date": "2024-12-16",
+                                                "Description": "Shares BancaStato Cashed Net",
+                                                "Doc": "12",
+                                                "ExchangeCurrency": "CHF",
+                                                "ExchangeRate": "1.00",
+                                                "ExternalReference": "inv_sale_2.3",
+                                                "ItemsId": "CH002775224"
+                                            },
+                                            "operation": {
+                                                "name": "modify",
+                                                "sequence": "70"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "Shares CHF",
+                                                "AccountDebit": "[Realized loss account]",
+                                                "AmountCurrency": "-28.9800",
+                                                "Date": "2024-12-16",
+                                                "Description": "Shares BancaStato Result on sale",
+                                                "Doc": "12",
+                                                "ExchangeCurrency": "CHF",
+                                                "ExchangeRate": "1.00",
+                                                "ExternalReference": "inv_sale_2.4",
+                                                "ItemsId": "CH002775224"
+                                            },
+                                            "operation": {
+                                                "name": "modify",
+                                                "sequence": "71"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        "nameXml": "Transactions"
+                    }
+                ],
+                "dataUnitsfileVersion": "1.0.0"
+            }
+        }
+    ],
+    "error": "",
+    "format": "documentChange"
+}
+\end{jsonvalue}
+\section{Test 6: Sell all UBS shares purchased in the previous year.}
+\subsection{Test 6: Calculated Data}
+\begin{jsonvalue}{Test 6}
+{
+    "accruedInterests": "",
+    "avgCost": "12.8001",
+    "avgSharesValue": "2560.0200",
+    "currentQt": "200.0000",
+    "exRateResult": "0",
+    "saleResult": "-10.0200",
+    "totalSharesvalue": "2550.00"
+}
+\end{jsonvalue}
+\subsection{Test 6: Recorded Data}
+\begin{jsonvalue}{Test 6}
+{
+    "data": [
+        {
+            "creator": {
+                "name": "ch.banana.portfolio.accounting.calc.sales.data.dialog.test",
+                "version": "1.0"
+            },
+            "document": {
+                "cursorPosition": {
+                },
+                "dataUnits": [
+                    {
+                        "data": {
+                            "rowLists": [
+                                {
+                                    "rows": [
+                                        {
+                                            "fields": {
+                                                "AccountDebit": "[Bank charges account]",
+                                                "AmountCurrency": "22.00",
+                                                "Date": "2025-01-31",
+                                                "Description": "Shares UBS Bank charges",
+                                                "Doc": "1",
+                                                "ExchangeCurrency": "CHF",
+                                                "ExchangeRate": "1.00",
+                                                "ExternalReference": "inv_sale_1.1",
+                                                "ItemsId": "CH003886335"
+                                            },
+                                            "operation": {
+                                                "name": "modify",
+                                                "sequence": "4"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountDebit": "[Bank account]",
+                                                "AmountCurrency": "2528.00",
+                                                "Date": "2025-01-31",
+                                                "Description": "Shares UBS Cashed Net",
+                                                "Doc": "1",
+                                                "ExchangeCurrency": "CHF",
+                                                "ExchangeRate": "1.00",
+                                                "ExternalReference": "inv_sale_1.3",
+                                                "ItemsId": "CH003886335"
+                                            },
+                                            "operation": {
+                                                "name": "modify",
+                                                "sequence": "5"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "Shares CHF",
+                                                "AccountDebit": "[Realized loss account]",
+                                                "AmountCurrency": "-10.0200",
+                                                "Date": "2025-01-31",
+                                                "Description": "Shares UBS Result on sale",
+                                                "Doc": "1",
+                                                "ExchangeCurrency": "CHF",
+                                                "ExchangeRate": "1.00",
+                                                "ExternalReference": "inv_sale_1.4",
+                                                "ItemsId": "CH003886335"
+                                            },
+                                            "operation": {
+                                                "name": "modify",
+                                                "sequence": "6"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        "nameXml": "Transactions"
+                    }
+                ],
+                "dataUnitsfileVersion": "1.0.0"
+            }
+        }
+    ],
+    "error": "",
+    "format": "documentChange"
+}
+\end{jsonvalue}
+\section{Test 7: Sell an another part of BancaStato shares purchased in the previous year.}
+\subsection{Test 7: Calculated Data}
+\begin{jsonvalue}{Test 7}
+{
+    "accruedInterests": "",
+    "avgCost": "5.9998",
+    "avgSharesValue": "1199.9600",
+    "currentQt": "250.0000",
+    "exRateResult": "0",
+    "saleResult": "4.0600",
+    "totalSharesvalue": "1204.0200"
+}
+\end{jsonvalue}
+\subsection{Test 7: Recorded Data}
+\begin{jsonvalue}{Test 7}
+{
+    "data": [
+        {
+            "creator": {
+                "name": "ch.banana.portfolio.accounting.calc.sales.data.dialog.test",
+                "version": "1.0"
+            },
+            "document": {
+                "cursorPosition": {
+                },
+                "dataUnits": [
+                    {
+                        "data": {
+                            "rowLists": [
+                                {
+                                    "rows": [
+                                        {
+                                            "fields": {
+                                                "AccountDebit": "[Bank charges account]",
+                                                "AmountCurrency": "22.00",
+                                                "Date": "2025-01-31",
+                                                "Description": "Shares BancaStato Bank charges",
+                                                "Doc": "2",
+                                                "ExchangeCurrency": "CHF",
+                                                "ExchangeRate": "1.00",
+                                                "ExternalReference": "inv_sale_2.1",
+                                                "ItemsId": "CH002775224"
+                                            },
+                                            "operation": {
+                                                "name": "modify",
+                                                "sequence": "9"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountDebit": "[Bank account]",
+                                                "AmountCurrency": "1182.0200",
+                                                "Date": "2025-01-31",
+                                                "Description": "Shares BancaStato Cashed Net",
+                                                "Doc": "2",
+                                                "ExchangeCurrency": "CHF",
+                                                "ExchangeRate": "1.00",
+                                                "ExternalReference": "inv_sale_2.3",
+                                                "ItemsId": "CH002775224"
+                                            },
+                                            "operation": {
+                                                "name": "modify",
+                                                "sequence": "10"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "[Realized profit account]",
+                                                "AccountDebit": "Shares CHF",
+                                                "AmountCurrency": "4.0600",
+                                                "Date": "2025-01-31",
+                                                "Description": "Shares BancaStato Result on sale",
+                                                "Doc": "2",
+                                                "ExchangeCurrency": "CHF",
+                                                "ExchangeRate": "1.00",
+                                                "ExternalReference": "inv_sale_2.4",
+                                                "ItemsId": "CH002775224"
+                                            },
+                                            "operation": {
+                                                "name": "modify",
+                                                "sequence": "11"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        "nameXml": "Transactions"
+                    }
+                ],
+                "dataUnitsfileVersion": "1.0.0"
+            }
+        }
+    ],
+    "error": "",
+    "format": "documentChange"
+}
+\end{jsonvalue}
 \keyvalue{Result}{Passed}
 \end{test}
 \end{testcase}

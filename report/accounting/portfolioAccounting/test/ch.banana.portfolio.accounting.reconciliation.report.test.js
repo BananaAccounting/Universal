@@ -40,7 +40,7 @@ TestReconciliationReport.prototype.initTestCase = function () {
     this.progressBar = Banana.application.progressBar;
     this.fileNameList = [];
 
-    this.fileNameList.push("file:script/../test/testcases/portfolio_accounting_double_entry_tutorial.ac2");
+    this.fileNameList.push("file:script/../test/testcases/portfolio_accounting_double_entry_tutorial_2022.ac2");
     this.fileNameList.push("file:script/../test/testcases/portfolio_accounting_double_entry_multi_currency_tutorial.ac2");
 }
 
@@ -76,7 +76,7 @@ TestReconciliationReport.prototype.testDataStructure = function () {
             let accountsDataList = getAccountsDataList(banDoc, docInfo, accountsList, itemsData);
             reconciliationData.data = accountsDataList;
             let reportName = "FILENAME: " + fileName;
-            let report = printReport(reconciliationData, docInfo);
+            let report = printReport(banDoc, reconciliationData, docInfo);
             this.testLogger.addReport(reportName, report);
         } else {
             this.testLogger.addFatalError("File not found: " + fileName);

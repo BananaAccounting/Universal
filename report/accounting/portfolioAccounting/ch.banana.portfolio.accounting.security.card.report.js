@@ -1,5 +1,5 @@
 
-// Copyright [2021] [Banana.ch SA - Lugano Switzerland]
+// Copyright [2025] [Banana.ch SA - Lugano Switzerland]
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
 //
 // @api = 1.0
 // @id = ch.banana.portfolio.accounting.security.card.report.js
-// @description = Security Card
+// @description = 8. Security card report
 // @task = app.command
 // @doctype = 100.*
 // @publisher = Banana.ch SA
@@ -29,85 +29,109 @@
  * acronym bas= bonds and stocks
  */
 
-function exec(inData, options) {
+function exec() {
 
-    var banDoc = Banana.document;
-    var selectedItem = ""; //Selected by the user
-    var docInfo = "";
-    var itemsData = "";
-    var itemAccount = "";
-    var dlgTitle = "Security ISIN";
-    var dlgLabel = "Enter the ISIN number of the security";
-    var scriptId = "ch.banana.portfolio.accounting.security.card.report.js";
-    var journal = ""; //hold the journal table
-    var journalData = [];
-    var accountCard = ""; //hold the account card table
-    var accountCardData = "";
-    var itemCardData = {};
-    var itemCurrency = "";
+    let banDoc = Banana.document;
+    let selectedItem = ""; //Selected by the user
+    let docInfo = "";
+    let itemsData = "";
+    const dlgTitle = "Security ISIN";
+    const dlgLabel = "Enter the ISIN number of the security";
+    const scriptId = "ch.banana.portfolio.accounting.security.card.report.js";
+    let journal = ""; //hold the journal table
+    let journalData = [];
+    let accountCard = ""; //hold the account card table
+    let accountCardData = "";
+    let itemCardData = {};
     itemCardData.date = new Date();
 
     if (!verifyBananaVersion(banDoc))
         return "@Cancel";
 
-    selectedItem = getComboBoxElement(scriptId, dlgTitle, dlgLabel);
+    if (!tableExists(banDoc, "Items")) {
+        let msg = getErrorMessage_MissingElements("NO_ITEMS_TABLE", "");
+        banDoc.addMessage(msg, "NO_ITEMS_TABLE");
+        return "@Cancel";
+    }
+
+    selectedItem = getSelectedItem(banDoc, scriptId, dlgTitle, dlgLabel);
     if (!selectedItem)
         return false;
 
     docInfo = getDocumentInfo(banDoc);
     itemsData = getItemsTableData(banDoc, docInfo);
-    itemAccount = getItemValue(itemsData, selectedItem, "account");
-    itemCurrency = getItemCurrency(itemsData, selectedItem);
 
-    //check if item exist
-    findElement(banDoc, selectedItem, itemsData, "item", "Items table");
+    const itemObject = itemsData.find(itemsData => itemsData.item === selectedItem)
+    if (!itemObject) {
+        const ITEM_NOT_FOUND = "ITEM_NOT_FOUND";
+        let msg = getErrorMessage_MissingElements(ITEM_NOT_FOUND, selectedItem);
+        banDoc.addMessage(msg, ITEM_NOT_FOUND);
+        return "";
+    }
 
     //get the journal data and creates an array of objects containing the transactions data
     journal = banDoc.journal(banDoc.ORIGINTYPE_CURRENT, banDoc.ACCOUNTTYPE_NONE);
     journalData = getJournalData(docInfo, journal);
 
     //get the account card, filter the result by item and return an array of objects containing the transactions data
-    accountCard = banDoc.currentCard(itemAccount);
-    accountCardData = getAccountCardData(docInfo, selectedItem, accountCard);
+    accountCard = banDoc.currentCard(itemObject.account);
+    accountCardData = getAccountCardDataAdapted(itemObject, accountCard);
 
     //get the calculated data and the totals
-    itemCardData = getItemCardData(docInfo, accountCardData, journalData, itemCurrency, selectedItem);
+    itemCardData = getItemCardData(banDoc, docInfo, accountCardData, journalData, itemObject);
 
-    let itemDescription = getItemValue(itemsData, selectedItem, "description");
-    var report = printReport(docInfo, itemCardData, itemDescription);
+    let itemDescription = itemObject.description;
+    let report = printReport(banDoc, docInfo, itemCardData, itemDescription);
     getReportHeader(report, docInfo);
-    var stylesheet = getReportStyle();
+    let stylesheet = getReportStyle();
     Banana.Report.preview(report, stylesheet);
-
 
 }
 
-function getItemCardData(docInfo, accountCardData, journalData, itemCurrency, selectedItem) {
+function getSelectedItem(banDoc, scriptId, dlgTitle, dlgLabel) {
+    let itemsListAvailable = [];
+    let itemSaved = "";
+    let itemSelected = "";
+    itemSaved = banDoc.getScriptSettings(scriptId);
+    let itemSavedIdx = itemsListAvailable = getItemsIds(banDoc);
+    if (!itemsListAvailable || itemsListAvailable.length < 1) {
+        let msg = getErrorMessage_MissingElements("NO_SECURITIES_FOUND");
+        banDoc.addMessage(msg, "NO_SECURITIES_FOUND");
+        return itemSelected;
+    }
+
+    itemSavedIdx = itemsListAvailable.indexOf(itemSaved);
+    if (itemSavedIdx == -1)
+        itemSavedIdx = 0;
+    itemSelected = Banana.Ui.getItem(dlgTitle, dlgLabel, itemsListAvailable, itemSavedIdx, true);
+    if (itemSelected) {
+        banDoc.setScriptSettings(scriptId, itemSelected);
+    }
+    return itemSelected;
+}
+
+function getItemCardData(banDoc, docInfo, accountCardData, journalData, itemObject) {
     let itemCardData = {};
-    itemCardData.data = getItemCardDataList(accountCardData, journalData);
-    itemCardData.currency = itemCurrency;
-    itemCardData.item = selectedItem;
+    let unitPriceColumn = banDoc.table("Transactions").column("UnitPrice", "Base");
+    let unitPriceColDecimals = unitPriceColumn.decimal; // we want to use the same decimals as defined in the unit price column.
+
+    itemCardData.data = getItemCardDataList(docInfo, itemObject, accountCardData, journalData, unitPriceColDecimals);
+    // We expand the object by adding the calculated sum of debit and credit columns (just for build the security card).
     itemCardData.totalDebitBase = getSum(accountCardData, "debitBase");
     itemCardData.totalCreditBase = getSum(accountCardData, "creditBase");
-    itemCardData.totalBalanceBase = getBalance(accountCardData, "debitBase", "creditBase");
     if (docInfo.isMultiCurrency) {
         itemCardData.totalDebitCurr = getSum(accountCardData, "debitCurr");
         itemCardData.totalCreditCurr = getSum(accountCardData, "creditCurr");
-        itemCardData.totalBalanceCurr = getBalance(accountCardData, "debitCurr", "creditCurr");
     }
-    //In the total I also show the last known cumulative quantity and the last known average accounting cost.
-    if (itemCardData.data) {
-        itemCardData.totalQtBalance = itemCardData.data.slice(-1)[0].qtBalance;
-        itemCardData.totalCurrAvgCost = itemCardData.data.slice(-1)[0].accAvgCost;
-    }
+
     return itemCardData;
 }
 
 function getItemCardTable(report, docInfo, currentDate, baseCurr, itemCardData, itemDescription) {
-    currentDate = Banana.Converter.toInternalDateFormat(currentDate);
+    currentDate = Banana.Converter.toLocaleDateFormat(currentDate);
     var tableConc = report.addTable('mySecCardTable');
-    let itemId = itemCardData.item;
-    let itemCurr = itemCardData.currency;
+    let itemId = itemCardData.data.itemId;
+    let itemCurr = itemCardData.data.itemCurrency;
     let refCurr = itemCurr ? itemCurr : baseCurr; //currency dispayed on the header.
     tableConc.setStyleAttributes("width:100%;");
     let caption = tableConc.getCaption().addText(qsTr("Security Card: " + itemId + " " + itemDescription + " " + refCurr + ", Data as of: " + currentDate), "styleTitles");
@@ -164,11 +188,16 @@ function getItemCardTable(report, docInfo, currentDate, baseCurr, itemCardData, 
  * Print the report.
  * @param {*} itemCardData the data.
  */
-function printReport(docInfo, itemCardData, itemDescription) {
+function printReport(banDoc, docInfo, itemCardData, itemDescription) {
 
     //create the report
     var report = Banana.Report.newReport("Security Card Report");
     var currentDate = new Date();
+    let unitPriceColumn = banDoc.table("Transactions").column("UnitPrice", "Base"); // we want to use the same decimals as defined in the unit price column.
+    let decimals = unitPriceColumn.decimal;
+    if (decimals > 11)
+        decimals = 11; // Over 11 decimals shown, the amounts overlap each others.
+
     //let hexColorBase = "#354793";//in the future we can let the user choose it.
     //let colorsObj=getColors(hexColorBase);
     let rowColorIndex = 0;//to know whether a line is odd or even.
@@ -178,15 +207,32 @@ function printReport(docInfo, itemCardData, itemDescription) {
     //add item card table
     var tabItemCard = getItemCardTable(report, docInfo, currentDate, docInfo.baseCurrency, itemCardData, itemDescription);
 
-    //Print the data.
-    for (var key in itemCardData.data) {
+    //Add the opening data (if present)
+    if (itemCardData.data.openingData.itemValueBegin || itemCardData.data.openingData.itemValueBeginCurrency) {
+        var tableOpeningRow = tabItemCard.addRow("styleOddRows");
+        tableOpeningRow.addCell(Banana.Converter.toLocaleDateFormat(itemCardData.data.openingData.itemOpeningDate), '');
+        tableOpeningRow.addCell("", "", 1);
+        tableOpeningRow.addCell(itemCardData.data.openingData.itemOpeningDescription, '');
+        tableOpeningRow.addCell("", "", 2);
+        if (docInfo.isMultiCurrency) {
+            tableOpeningRow.addCell(Banana.Converter.toLocaleNumberFormat(itemCardData.data.openingData.itemValueBeginCurrency, 2, true), "styleNormalAmount");
+            tableOpeningRow.addCell("", "", 2);
+        }
+        tableOpeningRow.addCell(Banana.Converter.toLocaleNumberFormat(itemCardData.data.openingData.itemValueBegin, 2, true), "styleNormalAmount");
+        tableOpeningRow.addCell("", "", 2);
+        tableOpeningRow.addCell(Banana.Converter.toLocaleNumberFormat(itemCardData.data.openingData.itemQuantityBegin, 0, true), "styleNormalAmount");
+        tableOpeningRow.addCell(Banana.Converter.toLocaleNumberFormat(itemCardData.data.openingData.itemUnitPriceBegin, decimals, false), "styleNormalAmount");
+    }
+
+    //Add the movements data.
+    for (var key in itemCardData.data.transactionsData) {
         isEven = checkIfNumberisEven(rowColorIndex);
         if (isEven)
             rowStyle = "styleEvenRows";
         else
             rowStyle = "styleOddRows";
 
-        itCardRow = itemCardData.data[key];
+        itCardRow = itemCardData.data.transactionsData[key];
 
         var tableRow = tabItemCard.addRow(rowStyle);
         tableRow.addCell(Banana.Converter.toLocaleDateFormat(itCardRow.date), '');
@@ -200,15 +246,15 @@ function printReport(docInfo, itemCardData, itemDescription) {
         tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.debitBase, 2, false), "styleNormalAmount");
         tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.creditBase, 2, false), "styleNormalAmount");
         tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.balanceBase, 2, true), "styleNormalAmount");
-        tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.qt, 2, false), "styleNormalAmount");
-        tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.unitPrice, 2, false), "styleNormalAmount");
-        tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.qtBalance, 2, true), "styleNormalAmount");
-        tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.accAvgCost, 3, false), "styleNormalAmount");
+        tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.qt, 0, false), "styleNormalAmount");
+        tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.unitPrice, decimals, false), "styleNormalAmount");
+        tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.qtBalance, 0, true), "styleNormalAmount");
+        tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.accAvgCost, decimals, false), "styleNormalAmount");
 
         rowColorIndex++;
     }
 
-    //Print the totals
+    //Add the totals.
     var tableRow = tabItemCard.addRow("styleTableRows");
     let dateCell = tableRow.addCell(Banana.Converter.toLocaleDateFormat(currentDate), '');
     dateCell.excludeFromTest();
@@ -217,14 +263,14 @@ function printReport(docInfo, itemCardData, itemDescription) {
     if (docInfo.isMultiCurrency) {
         tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemCardData.totalDebitCurr, 2, false), "styleTotalAmount");
         tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemCardData.totalCreditCurr, 2, false), "styleTotalAmount");
-        tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemCardData.totalBalanceCurr, 2, false), "styleTotalAmount");
+        tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemCardData.data.currentValues.itemBalanceCurr, 2, false), "styleTotalAmount");
     }
     tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemCardData.totalDebitBase, 2, false), "styleTotalAmount");
     tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemCardData.totalCreditBase, 2, false), "styleTotalAmount");
-    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemCardData.totalBalanceBase, 2, false), "styleTotalAmount");
+    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemCardData.data.currentValues.itemBalanceBase, 2, false), "styleTotalAmount");
     tableRow.addCell("", "", 2);
-    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemCardData.totalQtBalance, 2, false), "styleTotalAmount");
-    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemCardData.totalCurrAvgCost, 3, false), "styleTotalAmount");
+    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemCardData.data.currentValues.itemQtBalance, 0, false), "styleTotalAmount");
+    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemCardData.data.currentValues.itemAvgCost, decimals, false), "styleTotalAmount");
 
     return report;
 

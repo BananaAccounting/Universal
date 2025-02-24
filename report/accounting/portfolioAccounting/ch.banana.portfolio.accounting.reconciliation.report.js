@@ -1,4 +1,4 @@
-// Copyright [2021] [Banana.ch SA - Lugano Switzerland]
+// Copyright [2025] [Banana.ch SA - Lugano Switzerland]
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
 //
 // @api = 1.0
 // @id = ch.banana.portfolio.accounting.riconciliation.report.js
-// @description = Reconciliation
+// @description = 7. Reconciliation report
 // @task = app.command
 // @doctype = 100.*
 // @publisher = Banana.ch SA
@@ -28,46 +28,74 @@
  * acronym bas= bonds and stocks
  */
 
-function exec(inData, options) {
+function exec() {
 
-    var banDoc = Banana.document;
+    let banDoc = Banana.document;
 
     if (!verifyBananaVersion(banDoc))
         return "@Cancel";
 
+    if (!tableExists(banDoc, "Items")) {
+        let msg = getErrorMessage_MissingElements("NO_ITEMS_TABLE", "");
+        banDoc.addMessage(msg, "NO_ITEMS_TABLE");
+        return "@Cancel";
+    }
 
-    var docInfo = "";
-    var itemsData = "";
-    var dlgLabel = "Accounts Name (separated by semicolon ';')";
-    var dlgTitle = "Enter accounts for reconciliation";
-    var scriptId = "ch.banana.portfolio.accounting.riconciliation.report.js";
-    var userParam = "";
-    var accountsList = [];
-    var reconciliationData = {};
+    let docInfo = "";
+    const dlgLabel = "Available accounts (select one or more accounts)";
+    const dlgTitle = "Select accounts to show";
+    const scriptId = "ch.banana.portfolio.accounting.riconciliation.report.js";
+    let accountsList = [];
+    let reconciliationData = {};
     reconciliationData.date = new Date();
-    var accountsDataList = [];
+    let accountsDataList = [];
 
-    userParam = getComboBoxElement(scriptId, dlgTitle, dlgLabel);
-    if (userParam)
-        accountsList = userParam.split(";");
-    else
-        return false;
+    accountsList = getSelectedAccounts(banDoc, scriptId, dlgTitle, dlgLabel);
+    if (!accountsList || accountsList.length < 0)
+        return;
 
     docInfo = getDocumentInfo(banDoc);
-    //let transactionsData=getTransactionsTableData(banDoc,docInfo);
-    itemsData = getItemsTableData(banDoc, docInfo);
 
     //Get Secrurity account data.
-    accountsDataList = getAccountsDataList(banDoc, docInfo, accountsList, itemsData); //ritorna l'array con tutti i conti.
+    accountsDataList = getAccountsDataList(banDoc, docInfo, accountsList);
+
+    if (!accountsDataList.length)
+        return "";
+
     //Insert the data into the reconciliation obj.
     reconciliationData.data = accountsDataList;
 
-    var report = printReport(reconciliationData, docInfo);
+    let report = printReport(banDoc, reconciliationData, docInfo);
     getReportHeader(report, docInfo);
-    var stylesheet = getReportStyle();
+    let stylesheet = getReportStyle();
     Banana.Report.preview(report, stylesheet);
 
+}
 
+function getSelectedAccounts(banDoc, scriptId, dlgTitle, dlgLabel) {
+    let accountsListAvailable = [];
+    let accountsListSaved = [];
+    let accountsListSelected = [];
+    let savedAccounts = banDoc.getScriptSettings(scriptId);
+    let savedAccList = savedAccounts.split(";");
+    if (savedAccList && savedAccList.length >= 1) {
+        accountsListSaved = savedAccList;
+    }
+    let invAccounts = getInvestmentsAccountsFormatted(banDoc);
+    if (!invAccounts || invAccounts.length < 0) {
+        let msg = getErrorMessage_MissingElements("NO_INVESTMENTS_ACCOUNTS_FOUND");
+        banDoc.addMessage(msg, "NO_INVESTMENTS_ACCOUNTS_FOUND");
+        return accountsListSelected;
+    }
+
+    let invAccountsList = invAccounts.split(";");
+    accountsListAvailable = invAccountsList;
+    accountsListSelected = Banana.Ui.getItems(dlgTitle, dlgLabel, accountsListAvailable, accountsListSaved);
+    if (accountsListSelected && accountsListSelected.length > 0) {
+        let valuesToString = accountsListSelected.join(";");
+        banDoc.setScriptSettings(scriptId, valuesToString);
+    }
+    return accountsListSelected;
 }
 
 function getConciliationTable(report, currentDate, docInfo) {
@@ -147,16 +175,20 @@ function setSpanObject(docInfo) {
  * Print the report.
  * @param {*} reconciliationData the data.
  */
-function printReport(reconciliationData, docInfo) {
+function printReport(banDoc, reconciliationData, docInfo) {
 
     //create the report
     var report = Banana.Report.newReport("Reconciliation Report");
     var currentDate = new Date();
     let spanObj = setSpanObject(docInfo);
+    let unitPriceColumn = banDoc.table("Transactions").column("UnitPrice", "Base");
+    let decimals = unitPriceColumn.decimal;
+    if (decimals > 11)
+        decimals = 11; // Over 11 decimals shown, the amounts overlap each others.
     //add Reconciliation table
     var concData = reconciliationData.data;
     var tabConc = getConciliationTable(report, currentDate, docInfo);
-    let rowColorIndex = 0;//to know whether a line is odd or even.
+    let rowColorIndex = 0; //to know whether a line is odd or even.
     let isEven = false;
     let rowStyle = "";
 
@@ -166,12 +198,32 @@ function printReport(reconciliationData, docInfo) {
         tableRow.addCell(concData[a].account, 'styleDescrTotals', spanObj.allTable);
         var items = concData[a].items;
         for (var i in items) {
-            var item = items[i];
-            var itemTr = item.itemCardData;
+            let itemData = items[i];
+            let itemTrData = itemData.transactionsData;
+            let itemOpeningData = itemData.openingData;
+            let itemCurrentValues = itemData.currentValues;
             var tableRow = tabConc.addRow("styleTableRows");
             tableRow.addCell("", "");
-            tableRow.addCell(item.item, '', spanObj.itemId);
-            for (var t in itemTr) {//loop trough all the transactions for this item
+            tableRow.addCell(itemData.itemId, '', spanObj.itemId);
+            //Add the opening data (if present)
+            if (itemOpeningData.itemValueBegin || itemOpeningData.itemValueBeginCurrency) {
+                let tableOpeningRow = tabConc.addRow("styleOddRows");
+                tableOpeningRow.addCell("", "", 2);
+                tableOpeningRow.addCell(Banana.Converter.toLocaleDateFormat(itemOpeningData.itemOpeningDate), '');
+                tableOpeningRow.addCell("", "", 1);
+                tableOpeningRow.addCell(itemOpeningData.itemOpeningDescription, '');
+                tableOpeningRow.addCell("", "", 2);
+                if (docInfo.isMultiCurrency) {
+                    tableOpeningRow.addCell(Banana.Converter.toLocaleNumberFormat(itemOpeningData.itemValueBeginCurrency, 2, true), "styleNormalAmount");
+                    tableOpeningRow.addCell("", "", 2);
+                }
+                tableOpeningRow.addCell(Banana.Converter.toLocaleNumberFormat(itemOpeningData.itemValueBegin, 2, true), "styleNormalAmount");
+                tableOpeningRow.addCell("", "", 2);
+                tableOpeningRow.addCell(Banana.Converter.toLocaleNumberFormat(itemOpeningData.itemQuantityBegin, 0, true), "styleNormalAmount");
+                tableOpeningRow.addCell(Banana.Converter.toLocaleNumberFormat(itemOpeningData.itemUnitPriceBegin, decimals, false), "styleNormalAmount");
+            }
+            // Add the movements
+            for (var t in itemTrData) {
                 isEven = checkIfNumberisEven(rowColorIndex);
                 if (isEven)
                     rowStyle = "styleEvenRows";
@@ -180,21 +232,21 @@ function printReport(reconciliationData, docInfo) {
                 var tableRow = tabConc.addRow(rowStyle);
                 tableRow.addCell("", "");
                 tableRow.addCell("", "");
-                tableRow.addCell(Banana.Converter.toLocaleDateFormat(itemTr[t].date), 'styleAlignCenter');
-                tableRow.addCell(itemTr[t].doc, 'styleAlignCenter');
-                tableRow.addCell(itemTr[t].description, '');
+                tableRow.addCell(Banana.Converter.toLocaleDateFormat(itemTrData[t].date), 'styleAlignCenter');
+                tableRow.addCell(itemTrData[t].doc, 'styleAlignCenter');
+                tableRow.addCell(itemTrData[t].description, '');
                 if (docInfo.isMultiCurrency) {
-                    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemTr[t].debitCurr, 2, false), "styleNormalAmount");
-                    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemTr[t].creditCurr, 2, false), "styleNormalAmount");
-                    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemTr[t].balanceCurr, 2, true), "styleNormalAmount");
+                    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemTrData[t].debitCurr, 2, false), "styleNormalAmount");
+                    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemTrData[t].creditCurr, 2, false), "styleNormalAmount");
+                    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemTrData[t].balanceCurr, 2, true), "styleNormalAmount");
                 }
-                tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemTr[t].debitBase, 2, false), "styleNormalAmount");
-                tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemTr[t].creditBase, 2, false), "styleNormalAmount");
-                tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemTr[t].balanceBase, 2, true), "styleNormalAmount");
-                tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemTr[t].qt, 2, false), "styleNormalAmount");
-                tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemTr[t].unitPrice, 2, false), "styleNormalAmount");
-                tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemTr[t].qtBalance, 2, true), "styleNormalAmount");
-                tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemTr[t].accAvgCost, 2, false), "styleNormalAmount");
+                tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemTrData[t].debitBase, 2, false), "styleNormalAmount");
+                tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemTrData[t].creditBase, 2, false), "styleNormalAmount");
+                tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemTrData[t].balanceBase, 2, true), "styleNormalAmount");
+                tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemTrData[t].qt, 0, false), "styleNormalAmount");
+                tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemTrData[t].unitPrice, decimals, false), "styleNormalAmount");
+                tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemTrData[t].qtBalance, 0, true), "styleNormalAmount");
+                tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemTrData[t].accAvgCost, decimals, false), "styleNormalAmount");
 
                 rowColorIndex++;
             }
@@ -204,21 +256,22 @@ function printReport(reconciliationData, docInfo) {
             let cellDateItemBal = tableRow.addCell(Banana.Converter.toLocaleDateFormat(currentDate), 'styleAlignCenter');
             cellDateItemBal.excludeFromTest();
             tableRow.addCell("", "", 1);
-            tableRow.addCell("Balance " + item.item, "styleDescrTotals");
+            tableRow.addCell("Balance " + itemData.itemId, "styleDescrTotals");
             if (docInfo.isMultiCurrency) {
-                tableRow.addCell(Banana.Converter.toLocaleNumberFormat(item.totalDebitCurr, 2, true), "styleTotalAmount");
-                tableRow.addCell(Banana.Converter.toLocaleNumberFormat(item.totalCreditCurr, 2, true), "styleTotalAmount");
-                tableRow.addCell(Banana.Converter.toLocaleNumberFormat(item.totalBalanceCurr, 2, true), "styleTotalAmount");
+                tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemData.totalDebitCurr, 2, true), "styleTotalAmount");
+                tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemData.totalCreditCurr, 2, true), "styleTotalAmount");
+                tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemCurrentValues.itemBalanceCurr, 2, true), "styleTotalAmount");
             }
-            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(item.totalDebitBase, 2, true), "styleTotalAmount");
-            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(item.totalCreditBase, 2, true), "styleTotalAmount");
-            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(item.totalBalanceBase, 2, true), "styleTotalAmount");
+            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemData.totalDebitBase, 2, true), "styleTotalAmount");
+            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemData.totalCreditBase, 2, true), "styleTotalAmount");
+            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemCurrentValues.itemBalanceBase, 2, true), "styleTotalAmount");
             tableRow.addCell("", "", 2);
-            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(item.totalQtBalance, 2, true), "styleTotalAmount");
-            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(item.totalCurrAvgCost, 2, true), "styleTotalAmount");
+            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemCurrentValues.itemQtBalance, 0, true), "styleTotalAmount");
+            tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemCurrentValues.itemAvgCost, decimals, true), "styleTotalAmount");
             var tableRow = tabConc.addRow("styleTableRows");
             tableRow.addCell("", "", spanObj.allTable);
         }
+
         //add the account balance and the total transactions for the item
         var tableRow = tabConc.addRow("styleTableRows");
         tableRow.addCell("", "", 2);
@@ -228,8 +281,8 @@ function printReport(reconciliationData, docInfo) {
         tableRow.addCell("", "", 1);
         tableRow.addCell("Opening Balance " + concData[a].account, "styleDescrTotals", 3);
         if (docInfo.isMultiCurrency) {
-            tableRow.addCell("", "", 1);
             tableRow.addCell(Banana.Converter.toLocaleNumberFormat(concData[a].openBalanceCurr, 2, true), 'styleTotalAmount');
+            tableRow.addCell("", "", 2);
         }
         tableRow.addCell(Banana.Converter.toLocaleNumberFormat(concData[a].openBalanceBase, 2, true), 'styleTotalAmount');
         tableRow.addCell("", "", spanObj.afterTotals);
@@ -241,8 +294,8 @@ function printReport(reconciliationData, docInfo) {
         tableRow.addCell("", "", 1);
         tableRow.addCell("Current Balance " + concData[a].account, "styleDescrTotals", 3);
         if (docInfo.isMultiCurrency) {
-            tableRow.addCell("", "", 1);
             tableRow.addCell(Banana.Converter.toLocaleNumberFormat(concData[a].currentBalanceCurr, 2, true), 'styleTotalAmount');
+            tableRow.addCell("", "", 2);
         }
         tableRow.addCell(Banana.Converter.toLocaleNumberFormat(concData[a].currentBalanceBase, 2, true), 'styleTotalAmount');
         tableRow.addCell("", "", spanObj.afterTotals);
@@ -254,8 +307,8 @@ function printReport(reconciliationData, docInfo) {
         tableRow.addCell("", "", 1);
         tableRow.addCell("Total securities movements", "styleDescrTotals", 3);
         if (docInfo.isMultiCurrency) {
-            tableRow.addCell("", "", 1);
             tableRow.addCell(Banana.Converter.toLocaleNumberFormat(concData[a].securityTrAmountCurrency, 2, true), 'styleTotalAmount');
+            tableRow.addCell("", "", 2);
         }
         tableRow.addCell(Banana.Converter.toLocaleNumberFormat(concData[a].securityTrAmountBase, 2, true), 'styleTotalAmount');
         tableRow.addCell("", "", spanObj.afterTotals);
@@ -269,8 +322,8 @@ function printReport(reconciliationData, docInfo) {
         tableRow.addCell("", "", 1);
         tableRow.addCell("Differences", "styleDescrTotals", 3);
         if (docInfo.isMultiCurrency) {
-            tableRow.addCell("", "", 1);
             tableRow.addCell(Banana.Converter.toLocaleNumberFormat(concData[a].differenceCurr, 2, true), diffStyleCurr);
+            tableRow.addCell("", "", 2);
         }
         tableRow.addCell(Banana.Converter.toLocaleNumberFormat(concData[a].differenceBase, 2, true), diffStyleBase);
         tableRow.addCell("", "", spanObj.afterTotals);
@@ -290,42 +343,29 @@ function getDifferenceAmountStyle(diffAmount) {
 }
 /**
  * Creates an array with all the data of all the items that are registered under this account 
- * @param {*} itemsData list of items
- * @param {*} transactionsData list of transactions
- * @param {*} account ref. account.
  */
 
-function getItemsDataList(docInfo, itemsData, accountCard, journalData, account) {
+function getItemsDataList(banDoc, docInfo, accountCard, journalData, account) {
 
+    let itemsData = getItemsTableData(banDoc, docInfo);
     let itemsDataList = [];//list of item cards
     let accountCardData = "";
-    let itemCardData = "";
+    let unitPriceColumn = banDoc.table("Transactions").column("UnitPrice", "Base");
+    let unitPriceColDecimals = unitPriceColumn.decimal; // we want to use the same decimals as defined in the unit price column.
 
     for (var key in itemsData) {
         //set the item values
         if (itemsData[key].account == account) {
             let itemData = {};
-            itemData.item = itemsData[key].item;
-            itemData.itemCardData = [];
-            accountCardData = getAccountCardData(docInfo, itemsData[key].item, accountCard);
-            itemCardData = getItemCardDataList(accountCardData, journalData);//returns an array of objects with the movements of the item card.
-            if (itemCardData) {
-                itemData.itemCardData = itemCardData;
-            }
-            //calculate totals for the item
+            accountCardData = getAccountCardDataAdapted(itemsData[key], accountCard);
+            itemData = getItemCardDataList(docInfo, itemsData[key], accountCardData, journalData, unitPriceColDecimals);
+            // We expand the object by adding the calculated sum of debit and credit columns (just for build the security card).
             itemData.totalDebitBase = getSum(accountCardData, "debitBase");
-            itemData.totalCreditBase = getSum(accountCardData, "creditBase");;
-            itemData.totalBalanceBase = getBalance(accountCardData, "debitBase", "creditBase");
+            itemData.totalCreditBase = getSum(accountCardData, "creditBase");
             if (docInfo.isMultiCurrency) {
                 itemData.totalDebitCurr = getSum(accountCardData, "debitCurr");
                 itemData.totalCreditCurr = getSum(accountCardData, "creditCurr");
-                itemData.totalBalanceCurr = getBalance(accountCardData, "debitCurr", "creditCurr");
             }
-            if (itemData.itemCardData.length >= 1) {
-                itemData.totalQtBalance = itemData.itemCardData.slice(-1)[0].qtBalance;//I take the last calculated value
-                itemData.totalCurrAvgCost = itemData.itemCardData.slice(-1)[0].accAvgCost;//I take the last calculated value
-            }
-
             itemsDataList.push(itemData);
         }
     }
@@ -333,36 +373,15 @@ function getItemsDataList(docInfo, itemsData, accountCard, journalData, account)
 }
 
 /**
- * Sums the debit and credit values taken from the list of records and returns the calculated balance
- * @param {*} itemsDataList list od item transactions
- * @param {*} debitType debit column name in base currency or debit column name in item currency
- * @param {*} creditType credit column name in base currency or credit column name in item currency
- * @returns 
- */
-function calcBalanceFromTransactions(itemsDataList, debitType, creditType) {
-    let calcBalance = "";
-    for (var key in itemsDataList) {
-        let debit = itemsDataList.itemCardData[key][debitType];
-        let credit = itemsDataList.itemCardData[key][creditType];
-        calcBalance = Banana.SDecimal.add(calcBalance, credit);
-        calcBalance = Banana.SDecimal.subtract(calcBalance, debit);
-    }
-
-    return calcBalance;
-}
-
-/**
  * For each account creates an object containing the open balance, the current balance and the account nr of the account
  * @param {*} banDoc 
  * @param {*} accountsList the list of the accounts defined by the user.
  */
-function getAccountsDataList(banDoc, docInfo, accountsList, itemsData) {
+function getAccountsDataList(banDoc, docInfo, accountsList) {
     var accDataList = [];
     let journal = "";
     let journalData = "";
     let trIdList = "";
-    let account = "";
-    let accountSTableData = getAccountsTableData(banDoc, docInfo);
 
     journal = banDoc.journal(banDoc.ORIGINTYPE_CURRENT, banDoc.ACCOUNTTYPE_NONE);
     journalData = getJournalData(docInfo, journal);
@@ -370,7 +389,7 @@ function getAccountsDataList(banDoc, docInfo, accountsList, itemsData) {
 
 
     for (var i = 0; i < accountsList.length; i++) {
-        account = findElement(banDoc, accountsList[i], accountSTableData, "account", "Accounts Table");//look for the account in the account table
+        let account = accountsList[i];
         var itemsDataList = [];
         var accData = {};
         var accBalance = {};
@@ -378,7 +397,7 @@ function getAccountsDataList(banDoc, docInfo, accountsList, itemsData) {
 
         accBalance = banDoc.currentBalance(account);
 
-        accData.account = account;
+        accData.account = account
         accData.openBalanceBase = accBalance.opening;
         accData.openBalanceCurr = accBalance.openingCurrency;
         accData.currentBalanceBase = accBalance.balance;
@@ -390,12 +409,14 @@ function getAccountsDataList(banDoc, docInfo, accountsList, itemsData) {
         accData.balanceDiffCurr = Banana.SDecimal.subtract(accBalance.balanceCurrency, accBalance.openingCurrency);
 
         //get the items data.
-        itemsDataList = getItemsDataList(docInfo, itemsData, accountCard, journalData, accData.account); //ritorna l'array di items con questo account.
+        itemsDataList = getItemsDataList(banDoc, docInfo, accountCard, journalData, account);
+        //Banana.Ui.showText(JSON.stringify(itemsDataList));
         accData.items = itemsDataList;
 
-        //get total amount of balances calculated for the various items.
-        accData.securityTrAmountBase = sumBalances(itemsDataList, "totalBalanceBase");
-        accData.securityTrAmountCurrency = sumBalances(itemsDataList, "totalBalanceCurr");
+        //Get total movements from the securities
+        let itemsTotalBalance = sumItemsBalances(itemsDataList);
+        accData.securityTrAmountBase = itemsTotalBalance.movTotalBase;
+        accData.securityTrAmountCurrency = itemsTotalBalance.movTotalCurrency;
 
         //difference between the securities transactions and the account balance (should be 0).
         accData.differenceBase = Banana.SDecimal.subtract(accData.securityTrAmountBase, accData.balanceDiffBase);
@@ -408,17 +429,25 @@ function getAccountsDataList(banDoc, docInfo, accountsList, itemsData) {
     return accDataList;
 }
 
-/**
- * Sums the balances of each item
- */
-function sumBalances(itemsDataList, property) {
-    var sum = "";
+function sumItemsBalances(itemsDataList) {
+    let itemsTotalMovements = {};
+    let itemTotalMov = "";
+    let itemTotalMovCurrency = "";
 
-    for (var key in itemsDataList) {
-        sum = Banana.SDecimal.add(sum, itemsDataList[key][property]);
-    }
-    return sum;
+    itemsDataList.forEach(item => {
+        let itemOpBalance = item.openingData.itemValueBegin;
+        let itemOpBalanceCurr = item.openingData.itemValueBeginCurrency;
+        let itemCurrBalance = item.currentValues.itemBalanceBase;
+        let itemCurrBalanceCurr = item.currentValues.itemBalanceCurr;
 
+        itemTotalMov = Banana.SDecimal.add(itemTotalMov, Banana.SDecimal.subtract(itemCurrBalance, itemOpBalance));
+        itemTotalMovCurrency = Banana.SDecimal.add(itemTotalMovCurrency, Banana.SDecimal.subtract(itemCurrBalanceCurr, itemOpBalanceCurr));
+    });
+
+    itemsTotalMovements.movTotalBase = itemTotalMov;
+    itemsTotalMovements.movTotalCurrency = itemTotalMovCurrency;
+
+    return itemsTotalMovements;
 }
 
 

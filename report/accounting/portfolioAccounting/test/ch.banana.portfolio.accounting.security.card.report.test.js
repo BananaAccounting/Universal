@@ -35,66 +35,66 @@ function TestSecurityCardReport() {
 }
 
 // This method will be called at the beginning of the test case
-TestSecurityCardReport.prototype.initTestCase = function() {
-   this.testLogger = Test.logger;
-   this.progressBar = Banana.application.progressBar;
-   this.fileNameList = [];
+TestSecurityCardReport.prototype.initTestCase = function () {
+    this.testLogger = Test.logger;
+    this.progressBar = Banana.application.progressBar;
+    this.fileNameList = [];
 
-   this.fileNameList.push("file:script/../test/testcases/portfolio_accounting_double_entry_tutorial.ac2");
-   this.fileNameList.push("file:script/../test/testcases/portfolio_accounting_double_entry_multi_currency_tutorial.ac2");
+    this.fileNameList.push("file:script/../test/testcases/portfolio_accounting_double_entry_tutorial_2022.ac2");
+    this.fileNameList.push("file:script/../test/testcases/portfolio_accounting_double_entry_multi_currency_tutorial.ac2");
 }
 
 // This method will be called at the end of the test case
-TestSecurityCardReport.prototype.cleanupTestCase = function() {
+TestSecurityCardReport.prototype.cleanupTestCase = function () {
 
 }
 
 // This method will be called before every test method is executed
-TestSecurityCardReport.prototype.init = function() {
+TestSecurityCardReport.prototype.init = function () {
 
 }
 
 // This method will be called after every test method is executed
-TestSecurityCardReport.prototype.cleanup = function() {
+TestSecurityCardReport.prototype.cleanup = function () {
 
 }
 
-TestSecurityCardReport.prototype.testDataStructure = function() {
+TestSecurityCardReport.prototype.testDataStructure = function () {
     let parentLogger = this.testLogger;
-   this.progressBar.start(this.fileNameList.length);
+    this.progressBar.start(this.fileNameList.length);
     for (var i = 0; i < this.fileNameList.length; i++) {
         let fileName = this.fileNameList[i];
         if (!this.progressBar.step())
             break;
-        let banDoc=Banana.application.openDocument(fileName);
+        let banDoc = Banana.application.openDocument(fileName);
         this.testLogger = parentLogger.newLogger(Banana.IO.fileCompleteBaseName(fileName));
-        if(banDoc){
-            let selectedItem=getItemForTest(i);
-            let docInfo=getDocumentInfo(banDoc);
-            let itemsData=getItemsTableData(banDoc,docInfo);
-            let itemAccount=getItemValue(itemsData,selectedItem,"account");
-            let itemCurrency=getItemCurrency(itemsData,selectedItem);
+        if (banDoc) {
+            let docInfo = getDocumentInfo(banDoc);
+            let selectedItem = getItemForTest(i);
+            let itemsData = getItemsTableData(banDoc, docInfo);
+            let itemObject = itemsData.find(itemsData => itemsData.item === selectedItem)
+            let itemAccount = getItemAccount(selectedItem, banDoc);
             let journal = banDoc.journal(banDoc.ORIGINTYPE_CURRENT, banDoc.ACCOUNTTYPE_NONE);
-            let journalData=getJournalData(docInfo,journal);
-            let accountCard=banDoc.currentCard(itemAccount);
-            let accountCardData=getAccountCardData(docInfo,selectedItem,accountCard);
-            let itemCardData=getItemCardData(docInfo,accountCardData,journalData,itemCurrency,selectedItem);
+            let journalData = getJournalData(docInfo, journal);
+            let accountCard = banDoc.currentCard(itemAccount);
+            let accountCardData = getAccountCardDataAdapted(itemObject, accountCard);
+            let itemCardData = getItemCardData(banDoc, docInfo, accountCardData, journalData, itemObject);
             let reportName = "FILENAME: " + fileName;
-            let itemDescription=getItemValue(itemsData,selectedItem,"description");
-            let report = printReport(docInfo,itemCardData,itemDescription);
+            let itemDescription = getItemDescription(selectedItem, banDoc);
+            let report = printReport(banDoc, docInfo, itemCardData, itemDescription);
             this.testLogger.addReport(reportName, report);
-        }else{
+        } else {
             this.testLogger.addFatalError("File not found: " + fileName);
         }
-   }
+    }
 }
 
-function getItemForTest(index){
-    item="";
-    if(index==0)
-        item="CH003886335";
-    else if(index==1)
-        item="IT0005239360";
+function getItemForTest(index) {
+    item = "";
+    if (index == 0)
+        item = "CH003886335";
+    else if (index == 1)
+        item = "IT0005239360";
 
     return item;
 }

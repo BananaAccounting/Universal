@@ -19,53 +19,53 @@
 \newenvironment{test}[1]{\section*{Test case: #1}}{}
 %Begin test data
 \begin{reportvalue}{FILENAME: file:script/../test/testcases/portfolio\_accounting\_double\_entry\_multi\_currency\_tutorial.ac2}
-\begin{longtable}[l]{ l  l  l  l  l  l  l  l  l  l  l  l  l  l  l }
-\excltest{Securities Reconciliation Report, Data as of: 08.09.2023} Account  & Security  & Date  & Doc  & Description  & Debit\P Security Currency  & Credit\P Security Currency  & Balance\P Security Currency  & Debit CHF  & Credit CHF  & Balance CHF  & Quantity   & Unit Price   & Quantity balance  & Book value \P  per unit\P  \\
+\begin{longtable}[l]{ l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l }
+\excltest{Securities Reconciliation Report, Data as of: 17.02.2025} Account  & Security  & Date  & Doc  & Description  & Debit\P Security Currency  & Credit\P Security Currency  & Balance\P Security Currency  & Debit CHF  & Credit CHF  & Balance CHF  & Quantity   & Unit Price   & Quantity balance  & Book value \P  per unit\P  \\
 \multicolumn{15}{l}{Shares EUR }\\
  & \multicolumn{14}{l}{IT0005239360 }\\
- &  & 01.01.2022  & 1  & Shares Unicredit Purchase  & 1'000.00  &  & 1'000.00  & 1'100.00  &  & 1'100.00  & 100.00  & 10.00  & 100.00  & 10.00 \\
- &  & 20.01.2022  & 3  & Shares Unicredit Total Sale  &  & 475.00  & 525.00  &  & 546.25  & 553.75  & -50.00  & 9.50  & 50.00  & 10.50 \\
- &  & 20.01.2022  & 3  & Shares Unicredit Loss  &  & 25.00  & 500.00  &  & 28.75  & 525.00  &  &  & 50.00  & 10.00 \\
- &  & 20.01.2022  & 3  & Sale Unicredit Exchange rate profit  &  &  & 500.00  & 23.75  &  & 548.75  &  &  & 50.00  & 10.00 \\
- &  & 31.01.2022  & 4  & Unicredit, adjustment to the price of 8.00  &  & 100.00  & 400.00  &  & 112.00  & 436.75  &  &  & 50.00  & 8.00 \\
- &  & 20.02.2022  & 6  & Shares Unicredit Total Sale  &  & 90.00  & 310.00  &  & 97.20  & 339.55  & -10.00  & 9.00  & 40.00  & 7.75 \\
- &  & 20.02.2022  & 6  & Shares Unicredit Profit  & 10.00  &  & 320.00  & 10.80  &  & 350.35  &  &  & 40.00  & 8.00 \\
- &  & 20.02.2022  & 6  & Sale Unicredit Exchange rate profit  &  &  & 320.00  & 1.44  &  & 351.79  &  &  & 40.00  & 8.00 \\
- &  & 25.02.2022  & 7  & Unicredit, adjustment to the price of 10.00  & 80.00  &  & 400.00  & 88.80  &  & 440.59  &  &  & 40.00  & 10.00 \\
- &  & 27.02.2022  & 8  & Purchase Shares Unicredit  & 550.00  &  & 950.00  & 605.00  &  & 1'045.59  & 50.00  & 11.00  & 90.00  & 10.56 \\
- &  & 28.02.2022  & 9  & Shares Unicredit Total Sale  &  & 120.00  & 830.00  &  & 138.00  & 907.59  & -10.00  & 12.00  & 80.00  & 10.38 \\
- &  & 28.02.2022  & 9  & Shares Unicredit Profit  & 1.25  &  & 831.25  & 1.44  &  & 909.03  &  &  & 80.00  & 10.39 \\
- &  & 28.02.2022  & 9  & Sale Unicredit Exchange rate profit  &  &  & 831.25  & 6.36  &  & 915.39  &  &  & 80.00  & 10.39 \\
- &  & 01.03.2022  & 10  & Unicredit, adjustment to the price of 11.00  & 48.75  &  & 880.00  & 53.63  &  & 969.02  &  &  & 80.00  & 11.00 \\
-\multicolumn{2}{l}{} & \excltest{08.09.2023}  &  & Balance IT0005239360  & 1'690.00  & 810.00  & 880.00  & 1'891.22  & 922.20  & 969.02  & \multicolumn{2}{l}{} & 80.00  & 11.00 \\
+ &  & 01.01.2022  & 1  & Shares Unicredit Purchase  & 1'000.00  &  & 1'000.00  & 1'100.00  &  & 1'100.00  & 100  & 10.0000  & 100  & 10.0000 \\
+ &  & 20.01.2022  & 3  & Shares Unicredit Total Sale  &  & 475.00  & 525.00  &  & 546.25  & 553.75  & -50  & 9.5000  & 50  & 10.5000 \\
+ &  & 20.01.2022  & 3  & Shares Unicredit Loss  &  & 25.00  & 500.00  &  & 28.75  & 525.00  &  &  & 50  & 10.0000 \\
+ &  & 20.01.2022  & 3  & Sale Unicredit Exchange rate profit  &  &  & 500.00  & 23.75  &  & 548.75  &  &  & 50  & 10.0000 \\
+ &  & 31.01.2022  & 4  & Unicredit, adjustment to the price of 8.00  &  & 100.00  & 400.00  &  & 112.00  & 436.75  &  &  & 50  & 8.0000 \\
+ &  & 20.02.2022  & 6  & Shares Unicredit Total Sale  &  & 90.00  & 310.00  &  & 97.20  & 339.55  & -10  & 9.0000  & 40  & 7.7500 \\
+ &  & 20.02.2022  & 6  & Shares Unicredit Profit  & 10.00  &  & 320.00  & 10.80  &  & 350.35  &  &  & 40  & 8.0000 \\
+ &  & 20.02.2022  & 6  & Sale Unicredit Exchange rate profit  &  &  & 320.00  & 1.44  &  & 351.79  &  &  & 40  & 8.0000 \\
+ &  & 25.02.2022  & 7  & Unicredit, adjustment to the price of 10.00  & 80.00  &  & 400.00  & 88.80  &  & 440.59  &  &  & 40  & 10.0000 \\
+ &  & 27.02.2022  & 8  & Purchase Shares Unicredit  & 550.00  &  & 950.00  & 605.00  &  & 1'045.59  & 50  & 11.0000  & 90  & 10.5556 \\
+ &  & 28.02.2022  & 9  & Shares Unicredit Total Sale  &  & 120.00  & 830.00  &  & 138.00  & 907.59  & -10  & 12.0000  & 80  & 10.3750 \\
+ &  & 28.02.2022  & 9  & Shares Unicredit Profit  & 1.25  &  & 831.25  & 1.44  &  & 909.03  &  &  & 80  & 10.3906 \\
+ &  & 28.02.2022  & 9  & Sale Unicredit Exchange rate profit  &  &  & 831.25  & 6.36  &  & 915.39  &  &  & 80  & 10.3906 \\
+ &  & 01.03.2022  & 10  & Unicredit, adjustment to the price of 11.00  & 48.75  &  & 880.00  & 53.63  &  & 969.02  &  &  & 80  & 11.0000 \\
+\multicolumn{2}{l}{} & \excltest{17.02.2025}  &  & Balance IT0005239360  & 1'690.00  & 810.00  & 880.00  & 1'891.22  & 922.20  & 969.02  & \multicolumn{2}{l}{} & 80  & 11.0000 \\
 \multicolumn{15}{l}{}\\
-\multicolumn{2}{l}{} & \excltest{08.09.2023}  &  & \multicolumn{3}{l}{Opening Balance Shares EUR } &  & 0.00  & 0.00  & \multicolumn{5}{l}{}\\
-\multicolumn{2}{l}{} & \excltest{08.09.2023}  &  & \multicolumn{3}{l}{Current Balance Shares EUR } &  & 880.00  & 969.02  & \multicolumn{5}{l}{}\\
-\multicolumn{2}{l}{} & \excltest{08.09.2023}  &  & \multicolumn{3}{l}{Total securities movements } &  & 880.00  & 969.02  & \multicolumn{5}{l}{}\\
-\multicolumn{2}{l}{} & \excltest{08.09.2023}  &  & \multicolumn{3}{l}{Differences } &  & 0.00  & 0.00  & \multicolumn{5}{l}{}\\
+\multicolumn{2}{l}{} & \excltest{17.02.2025}  &  & \multicolumn{3}{l}{Opening Balance Shares EUR } & 0.00  & \multicolumn{2}{l}{} & 0.00  & \multicolumn{5}{l}{}\\
+\multicolumn{2}{l}{} & \excltest{17.02.2025}  &  & \multicolumn{3}{l}{Current Balance Shares EUR } & 880.00  & \multicolumn{2}{l}{} & 969.02  & \multicolumn{5}{l}{}\\
+\multicolumn{2}{l}{} & \excltest{17.02.2025}  &  & \multicolumn{3}{l}{Total securities movements } & 880.00  & \multicolumn{2}{l}{} & 969.02  & \multicolumn{5}{l}{}\\
+\multicolumn{2}{l}{} & \excltest{17.02.2025}  &  & \multicolumn{3}{l}{Differences } & 0.00  & \multicolumn{2}{l}{} & 0.00  & \multicolumn{5}{l}{}\\
 \multicolumn{15}{l}{Shares CHF }\\
  & \multicolumn{14}{l}{CH003886335 }\\
- &  & 20.01.2022  & 2  & Shares UBS Purchase  & 110.00  &  & 110.00  & 110.00  &  & 110.00  & 10.00  & 11.00  & 10.00  & 11.00 \\
- &  & 20.03.2022  & 5  & Shares UBS Total Sale  &  & 57.50  & 52.50  &  & 57.50  & 52.50  &  &  & 10.00  & 5.25 \\
- &  & 20.03.2022  & 5  & Shares UBS Profit on sale  & 2.50  &  & 55.00  & 2.50  &  & 55.00  &  &  & 10.00  & 5.50 \\
-\multicolumn{2}{l}{} & \excltest{08.09.2023}  &  & Balance CH003886335  & 112.50  & 57.50  & 55.00  & 112.50  & 57.50  & 55.00  & \multicolumn{2}{l}{} & 10.00  & 5.50 \\
+ &  & 20.01.2022  & 2  & Shares UBS Purchase  & 110.00  &  & 110.00  & 110.00  &  & 110.00  & 10  & 11.0000  & 10  & 11.0000 \\
+ &  & 20.03.2022  & 5  & Shares UBS Total Sale  &  & 57.50  & 52.50  &  & 57.50  & 52.50  &  &  & 10  & 5.2500 \\
+ &  & 20.03.2022  & 5  & Shares UBS Profit on sale  & 2.50  &  & 55.00  & 2.50  &  & 55.00  &  &  & 10  & 5.5000 \\
+\multicolumn{2}{l}{} & \excltest{17.02.2025}  &  & Balance CH003886335  & 112.50  & 57.50  & 55.00  & 112.50  & 57.50  & 55.00  & \multicolumn{2}{l}{} & 10  & 5.5000 \\
 \multicolumn{15}{l}{}\\
-\multicolumn{2}{l}{} & \excltest{08.09.2023}  &  & \multicolumn{3}{l}{Opening Balance Shares CHF } &  & 0.00  & 0.00  & \multicolumn{5}{l}{}\\
-\multicolumn{2}{l}{} & \excltest{08.09.2023}  &  & \multicolumn{3}{l}{Current Balance Shares CHF } &  & 55.00  & 55.00  & \multicolumn{5}{l}{}\\
-\multicolumn{2}{l}{} & \excltest{08.09.2023}  &  & \multicolumn{3}{l}{Total securities movements } &  & 55.00  & 55.00  & \multicolumn{5}{l}{}\\
-\multicolumn{2}{l}{} & \excltest{08.09.2023}  &  & \multicolumn{3}{l}{Differences } &  & 0.00  & 0.00  & \multicolumn{5}{l}{}\\
+\multicolumn{2}{l}{} & \excltest{17.02.2025}  &  & \multicolumn{3}{l}{Opening Balance Shares CHF } & 0.00  & \multicolumn{2}{l}{} & 0.00  & \multicolumn{5}{l}{}\\
+\multicolumn{2}{l}{} & \excltest{17.02.2025}  &  & \multicolumn{3}{l}{Current Balance Shares CHF } & 55.00  & \multicolumn{2}{l}{} & 55.00  & \multicolumn{5}{l}{}\\
+\multicolumn{2}{l}{} & \excltest{17.02.2025}  &  & \multicolumn{3}{l}{Total securities movements } & 55.00  & \multicolumn{2}{l}{} & 55.00  & \multicolumn{5}{l}{}\\
+\multicolumn{2}{l}{} & \excltest{17.02.2025}  &  & \multicolumn{3}{l}{Differences } & 0.00  & \multicolumn{2}{l}{} & 0.00  & \multicolumn{5}{l}{}\\
 \multicolumn{15}{l}{Bonds EUR }\\
  & \multicolumn{14}{l}{IT000792468 }\\
- &  & 25.03.2022  & 11  & Bonds Bnp Paribas Purchase  & 4'900.00  &  & 4'900.00  & 5'390.00  &  & 5'390.00  & 5'000.00  & 0.98  & 5'000.00  & 0.98 \\
- &  & 31.10.2022  & 13  & Bonds Bnp Paribas Total Sale  &  & 5'125.00  & -225.00  &  & 5'791.25  & -401.25  & -5'000.00  & 1.03  & 0.00  & \\
- &  & 31.10.2022  & 13  & Bonds Bnp Paribas Profit on sale  & 225.00  &  & 0.00  & 254.25  &  & -147.00  &  &  & 0.00  & \\
- &  & 31.10.2022  & 13  & Bonds Bnp Paribas Exchange rate Profit  &  &  & 0.00  & 153.75  &  & 6.75  &  &  & 0.00  & \\
-\multicolumn{2}{l}{} & \excltest{08.09.2023}  &  & Balance IT000792468  & 5'125.00  & 5'125.00  & 0.00  & 5'798.00  & 5'791.25  & 6.75  & \multicolumn{2}{l}{} & 0.00  & 0.00 \\
+ &  & 25.03.2022  & 11  & Bonds Bnp Paribas Purchase  & 4'900.00  &  & 4'900.00  & 5'390.00  &  & 5'390.00  & 5'000  & 0.9800  & 5'000  & 0.9800 \\
+ &  & 31.10.2022  & 13  & Bonds Bnp Paribas Total Sale  &  & 5'125.00  & -225.00  &  & 5'791.25  & -401.25  & -5'000  & 1.0250  & 0  & \\
+ &  & 31.10.2022  & 13  & Bonds Bnp Paribas Profit on sale  & 225.00  &  & 0.00  & 254.25  &  & -147.00  &  &  & 0  & \\
+ &  & 31.10.2022  & 13  & Bonds Bnp Paribas Exchange rate Profit  &  &  & 0.00  & 153.75  &  & 6.75  &  &  & 0  & \\
+\multicolumn{2}{l}{} & \excltest{17.02.2025}  &  & Balance IT000792468  & 5'125.00  & 5'125.00  & 0.00  & 5'798.00  & 5'791.25  & 6.75  & \multicolumn{2}{l}{} & 0  & 0.0000 \\
 \multicolumn{15}{l}{}\\
-\multicolumn{2}{l}{} & \excltest{08.09.2023}  &  & \multicolumn{3}{l}{Opening Balance Bonds EUR } &  & 0.00  & 0.00  & \multicolumn{5}{l}{}\\
-\multicolumn{2}{l}{} & \excltest{08.09.2023}  &  & \multicolumn{3}{l}{Current Balance Bonds EUR } &  & 0.00  & 6.75  & \multicolumn{5}{l}{}\\
-\multicolumn{2}{l}{} & \excltest{08.09.2023}  &  & \multicolumn{3}{l}{Total securities movements } &  & 0.00  & 6.75  & \multicolumn{5}{l}{}\\
-\multicolumn{2}{l}{} & \excltest{08.09.2023}  &  & \multicolumn{3}{l}{Differences } &  & 0.00  & 0.00  & \multicolumn{5}{l}{}\\
+\multicolumn{2}{l}{} & \excltest{17.02.2025}  &  & \multicolumn{3}{l}{Opening Balance Bonds EUR } & 0.00  & \multicolumn{2}{l}{} & 0.00  & \multicolumn{5}{l}{}\\
+\multicolumn{2}{l}{} & \excltest{17.02.2025}  &  & \multicolumn{3}{l}{Current Balance Bonds EUR } & 0.00  & \multicolumn{2}{l}{} & 6.75  & \multicolumn{5}{l}{}\\
+\multicolumn{2}{l}{} & \excltest{17.02.2025}  &  & \multicolumn{3}{l}{Total securities movements } & 0.00  & \multicolumn{2}{l}{} & 6.75  & \multicolumn{5}{l}{}\\
+\multicolumn{2}{l}{} & \excltest{17.02.2025}  &  & \multicolumn{3}{l}{Differences } & 0.00  & \multicolumn{2}{l}{} & 0.00  & \multicolumn{5}{l}{}\\
 \end{longtable}
 \end{reportvalue}
 \end{document}

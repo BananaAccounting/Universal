@@ -1,0 +1,36 @@
+%%info_test_name{portfolio_accounting_double_entry_tutorial_2022}
+\documentclass{report}
+\usepackage{longtable}
+\usepackage{color}
+\usepackage{listings}
+\usepackage[margin=1cm]{geometry}
+\begin{document}
+\newenvironment{tablevalue}[2]{\textbf{Table: #1}\begin{longtable}[l]{#2}}{\end{longtable}}
+\newenvironment{reportvalue}[1]{\textbf{Report: #1}\\}{}
+\lstnewenvironment{jsonvalue}[1]{\textbf{Json: #1}\lstset{language=Java}}{}
+\lstnewenvironment{xmlvalue}[1]{\textbf{Xml: #1}\lstset{language=Xml}}{}
+\newcommand{\info}[2]{\textit{#1: #2}\\}
+\newcommand{\fatalerror}[1]{\textbf{\textcolor[rgb]{1,0,0}{Fatal error: #1}}\\}
+\newcommand{\keyvalue}[2]{\textbf{Keyvalue: #1} #2\\}
+\newcommand{\textvalue}[1]{#1\\}
+\newcommand{\excltest}[1]{\\Excluded from compare: #1}
+\newcommand{\lognewpage}{\newpage}
+\newenvironment{testcase}[1]{\section*{Test: #1}}{\newpage}
+\newenvironment{test}[1]{\section*{Test case: #1}}{}
+%Begin test data
+\begin{reportvalue}{FILENAME: file:script/../test/testcases/portfolio\_accounting\_double\_entry\_tutorial\_2022.ac2}
+\begin{longtable}[l]{ l  l  l  l  l  l  l  l  l  l }
+\excltest{Security Card: CH003886335 Shares UBS CHF, Data as of: 13.02.2025} Date  & Doc  & Description  & Debit CHF  & Credit CHF  & Balance CHF  & Quantity   & Unit Price\P CHF  & Quantity\P Balance  & Book value \P  per unit\P CHF \\
+20.02.2022  & 1  & Shares UBS Purchase  & 1'100.00  &  & 1'100.00  & 100  & 11.0000  & 100  & 11.0000 \\
+20.03.2022  & 2  & Shares UBS Total Sale  &  & 172.50  & 927.50  & -15  & 11.5000  & 85  & 10.9118 \\
+20.03.2022  & 2  & Shares UBS Profit on Sale  & 7.50  &  & 935.00  &  &  & 85  & 11.0000 \\
+22.03.2022  & 3  & Shares UBS Total Sale  &  & 95.00  & 840.00  & -10  & 9.5000  & 75  & 11.2000 \\
+22.03.2022  & 3  & Shares UBS Loss on Sale  &  & 15.00  & 825.00  &  &  & 75  & 11.0000 \\
+20.04.2022  & 4  & Shares UBS Purchase  & 525.00  &  & 1'350.00  & 50  & 10.5000  & 125  & 10.8000 \\
+20.05.2022  & 5  & Shares UBS Total Sale  &  & 168.00  & 1'182.00  & -15  & 11.2000  & 110  & 10.7455 \\
+20.05.2022  & 5  & Shares UBS Profit on Sale  & 5.55  &  & 1'187.55  &  &  & 110  & 10.7959 \\
+31.12.2022  &  & Shares UBS Market Price Adjustment (10.85)  & 5.95  &  & 1'193.50  &  &  & 110  & 10.8500 \\
+\excltest{13.02.2025}  &  & Total transactions  & 1'644.00  & 450.50  & 1'193.50  & \multicolumn{2}{l}{} & 110  & 10.8500 \\
+\end{longtable}
+\end{reportvalue}
+\end{document}
