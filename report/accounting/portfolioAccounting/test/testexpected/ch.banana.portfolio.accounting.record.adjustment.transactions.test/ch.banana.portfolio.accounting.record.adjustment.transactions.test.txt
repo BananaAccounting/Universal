@@ -1,0 +1,136 @@
+%%info_test_name{ch.banana.portfolio.accounting.record.adjustment.transactions.test}
+\documentclass{report}
+\usepackage{longtable}
+\usepackage{color}
+\usepackage{listings}
+\usepackage[margin=1cm]{geometry}
+\begin{document}
+\newenvironment{tablevalue}[2]{\textbf{Table: #1}\begin{longtable}[l]{#2}}{\end{longtable}}
+\newenvironment{reportvalue}[1]{\textbf{Report: #1}\\}{}
+\lstnewenvironment{jsonvalue}[1]{\textbf{Json: #1}\lstset{language=Java}}{}
+\lstnewenvironment{xmlvalue}[1]{\textbf{Xml: #1}\lstset{language=Xml}}{}
+\newcommand{\info}[2]{\textit{#1: #2}\\}
+\newcommand{\fatalerror}[1]{\textbf{\textcolor[rgb]{1,0,0}{Fatal error: #1}}\\}
+\newcommand{\keyvalue}[2]{\textbf{Keyvalue: #1} #2\\}
+\newcommand{\textvalue}[1]{#1\\}
+\newcommand{\excltest}[1]{\\Excluded from compare: #1}
+\newcommand{\lognewpage}{\newpage}
+\newenvironment{testcase}[1]{\section*{Test: #1}}{\newpage}
+\newenvironment{test}[1]{\section*{Test case: #1}}{}
+%Begin test data
+%%SCRIPT{C:/P/Universal Images/Universal/report/accounting/portfolioAccounting/test/ch.banana.portfolio.accounting.record.adjustment.transactions.test.js}
+%
+\begin{testcase}{TestAdjustmentTransactions}
+\begin{test}{testRecordSalesTransactions}
+\section{Adjustment transactions document change.}
+\begin{jsonvalue}{Doc Change object}
+{
+    "data": [
+        {
+            "creator": {
+                "name": "ch.banana.portfolio.accounting.record.adjustment.transactions.test",
+                "version": "1.0"
+            },
+            "document": {
+                "cursorPosition": {
+                },
+                "dataUnits": [
+                    {
+                        "data": {
+                            "rowLists": [
+                                {
+                                    "rows": [
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "Shares CHF",
+                                                "AccountDebit": "[Other value changing costs account]",
+                                                "AmountCurrency": "-4.50000000",
+                                                "Date": "",
+                                                "Description": "Shares UBS Market Price Adjustment (12.8001)",
+                                                "Doc": "",
+                                                "ExchangeCurrency": "CHF",
+                                                "ItemsId": "CH003886335"
+                                            },
+                                            "operation": {
+                                                "name": "add"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "[Other value changing income account]",
+                                                "AccountDebit": "Shares CHF",
+                                                "AmountCurrency": "3.05000000",
+                                                "Date": "",
+                                                "Description": "Shares BancaStato Market Price Adjustment (5.9998)",
+                                                "Doc": "",
+                                                "ExchangeCurrency": "CHF",
+                                                "ItemsId": "CH002775224"
+                                            },
+                                            "operation": {
+                                                "name": "add"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "Shares Unicredit",
+                                                "AccountDebit": "[Other value changing costs account]",
+                                                "AmountCurrency": "-50.00000000",
+                                                "Date": "",
+                                                "Description": "Shares Unicredit Market Price Adjustment (9.50)",
+                                                "Doc": "",
+                                                "ExchangeCurrency": "EUR",
+                                                "ItemsId": "IT0005239360"
+                                            },
+                                            "operation": {
+                                                "name": "add"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "[Other value changing income account]",
+                                                "AccountDebit": "Shares Netflix",
+                                                "AmountCurrency": "55.62000000",
+                                                "Date": "",
+                                                "Description": "Shares Netflix Market Price Adjustment (11.5562)",
+                                                "Doc": "",
+                                                "ExchangeCurrency": "USD",
+                                                "ItemsId": "US123456789"
+                                            },
+                                            "operation": {
+                                                "name": "add"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "[Other value changing income account]",
+                                                "AccountDebit": "Bonds EUR",
+                                                "AmountCurrency": "225.00000000",
+                                                "Date": "",
+                                                "Description": "Bonds Bnp Paribas Market Price Adjustment (1.025)",
+                                                "Doc": "",
+                                                "ExchangeCurrency": "EUR",
+                                                "ItemsId": "IT000792468"
+                                            },
+                                            "operation": {
+                                                "name": "add"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        "nameXml": "Transactions"
+                    }
+                ],
+                "dataUnitsfileVersion": "1.0.0"
+            }
+        }
+    ],
+    "error": "",
+    "format": "documentChange"
+}
+\end{jsonvalue}
+\keyvalue{Result}{Passed}
+\end{test}
+\end{testcase}
+\end{document}

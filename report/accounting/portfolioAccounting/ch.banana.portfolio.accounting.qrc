@@ -1,12 +1,20 @@
-<!DOCTYPE RCC><RCC version="1.0">
- <qresource>
-     <file>ch.banana.portfolio.accounting.calc.sales.data.dialog.js</file>
-     <file>ch.banana.portfolio.accounting.calc.sales.data.dialog.ui</file>
-     <file>ch.banana.portfolio.accounting.calculation.methods.js</file>
-     <file>ch.banana.portfolio.accounting.reconciliation.report.js</file>
-     <file>ch.banana.portfolio.accounting.reports.css</file>
-     <file>ch.banana.portfolio.accounting.security.card.report.js</file>
-     <file>ch.banana.portfolio.accounting.evaluation.report.js</file>
-     <file>ch.banana.portfolio.accountingmanifest.json</file>
- </qresource>
- </RCC>
+<!DOCTYPE RCC>
+<RCC version="1.0">
+    <qresource>
+        <file>ch.banana.portfolio.accounting.check.balances.data.js</file>
+        <file>ch.banana.portfolio.accounting.update.market.prices.js</file>
+        <file>ch.banana.portfolio.accounting.calculate.unit.price.js</file>
+        <file>ch.banana.portfolio.accounting.record.sales.transactions.js</file>
+        <file>ch.banana.portfolio.accounting.record.adjustment.transactions.js</file>
+        <file>ch.banana.portfolio.accounting.calculation.methods.js</file>
+        <file>ch.banana.portfolio.accounting.errormessagges.handler.js</file>
+        <file>ch.banana.portfolio.accounting.reconciliation.report.js</file>
+        <file>ch.banana.portfolio.accounting.reports.css</file>
+        <file>ch.banana.portfolio.accounting.security.card.report.js</file>
+        <file>ch.banana.portfolio.accounting.evaluation.report.js</file>
+        <file>ch.banana.portfolio.accounting.accounts.dialog.js</file>
+        <file>ch.banana.portfolio.accounting.calc.sales.data.dialog.js</file>
+        <file>ch.banana.portfolio.accounting.calc.sales.data.dialog.ui</file>
+        <file>ch.banana.portfolio.accountingmanifest.json</file>
+    </qresource>
+</RCC>

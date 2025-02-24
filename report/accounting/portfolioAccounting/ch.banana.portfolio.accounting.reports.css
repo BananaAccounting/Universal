@@ -46,6 +46,11 @@ Styles for the amounts
 .styleNormalAmount {
     text-align: right;
 }
+.styleNormalAmount_checkBalancesDiffCol {
+    text-align: right;
+    background-color: #edeef8;
+}
+
 .styleTotalAmount{
     text-align: right;
     font-weight: bold;
@@ -140,4 +145,11 @@ style for the rows
 }
 .styleOddRows{
     background-color: #b4bde4;
+}
+
+/********************
+Total porfolio Style.
+*********************/
+.styleTotaPortfolio{
+    background-color: #8795d2;
 }

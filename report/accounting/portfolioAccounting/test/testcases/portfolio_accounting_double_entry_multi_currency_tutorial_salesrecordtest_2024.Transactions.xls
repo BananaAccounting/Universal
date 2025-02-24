@@ -1,0 +1,2836 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?mso-application progid="Excel.Sheet"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet" 
+xmlns:o="urn:schemas-microsoft-com:office:office" 
+xmlns:x="urn:schemas-microsoft-com:office:excel" 
+xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882" 
+xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet" 
+xmlns:html="http://WWW.W3.ORG/TR/REC-html40">
+<DocumentProperties xmlns="urn:schemas-microsoft-com:office:office">
+<Author></Author>
+<Created></Created>
+<Company></Company>
+<Version></Version>
+</DocumentProperties>
+<CustomDocumentProperties xmlns="urn:schemas-microsoft-com:office:office">
+<ProgramVersion dt:dt="string">10.1.26.25043</ProgramVersion>
+<RowFieldName dt:dt="float">5</RowFieldName>
+<RowFieldNameXml dt:dt="float">6</RowFieldNameXml>
+<RowFieldHeader1 dt:dt="float">3</RowFieldHeader1>
+<RowFieldHeader2 dt:dt="float">4</RowFieldHeader2>
+<RowFieldDescription dt:dt="float">2</RowFieldDescription>
+<RowPeriodId dt:dt="float">7</RowPeriodId>
+<RowPeriodBegin dt:dt="float">8</RowPeriodBegin>
+<RowPeriodEnd dt:dt="float">9</RowPeriodEnd>
+<RowPeriodFrequence dt:dt="float">10</RowPeriodFrequence>
+<RowFieldDataType dt:dt="float">11</RowFieldDataType>
+<RowDataBegin dt:dt="float">12</RowDataBegin>
+<ColumnDataBegin dt:dt="float">6</ColumnDataBegin><ColumnTableInfo dt:dt="float">1</ColumnTableInfo>
+<UseNameXml dt:dt="boolean">1</UseNameXml>
+</CustomDocumentProperties>
+<Styles>
+<Style  ss:ID="s0b"><Font  ss:Size="10" ss:Bold="1" ss:Italic="1" /></Style>
+<Style  ss:ID="s0i"><Font  ss:Size="10" /></Style>
+<Style  ss:ID="s0bi"><Font  ss:Size="10" ss:Bold="1" ss:Italic="1" /></Style>
+<Style  ss:ID="s8"><Font  ss:Size="8" /></Style>
+<Style  ss:ID="s8b"><Font  ss:Size="8" ss:Bold="1" ss:Italic="1" /></Style>
+<Style  ss:ID="s8i"><Font  ss:Size="8" /></Style>
+<Style  ss:ID="s8bi"><Font  ss:Size="8" ss:Bold="1" ss:Italic="1" /></Style>
+<Style  ss:ID="s10"><Font  ss:Size="10" /></Style>
+<Style  ss:ID="s10b"><Font  ss:Size="10" ss:Bold="1" ss:Italic="1" /></Style>
+<Style  ss:ID="s10i"><Font  ss:Size="10" /></Style>
+<Style  ss:ID="s10bi"><Font  ss:Size="10" ss:Bold="1" ss:Italic="1" /></Style>
+<Style  ss:ID="s12"><Font  ss:Size="12" /></Style>
+<Style  ss:ID="s12b"><Font  ss:Size="12" ss:Bold="1" ss:Italic="1" /></Style>
+<Style  ss:ID="s12i"><Font  ss:Size="12" /></Style>
+<Style  ss:ID="s12bi"><Font  ss:Size="12" ss:Bold="1" ss:Italic="1" /></Style>
+<Style  ss:ID="s14"><Font  ss:Size="14" /></Style>
+<Style  ss:ID="s14b"><Font  ss:Size="14" ss:Bold="1" ss:Italic="1" /></Style>
+<Style  ss:ID="s14i"><Font  ss:Size="14" /></Style>
+<Style  ss:ID="s14bi"><Font  ss:Size="14" ss:Bold="1" ss:Italic="1" /></Style>
+<Style ss:ID="Default" ss:Name="Normal"><Alignment ss:Vertical="Bottom" /><Borders /> <Interior /> <NumberFormat /><Protection /><Font ss:Size="10" /></Style>
+<Style ss:ID="sAmount"><NumberFormat ss:Format="Standard" /></Style>
+<Style ss:ID="sDate"><NumberFormat ss:Format="Short Date" /></Style>
+<Style ss:ID="sNumber"><NumberFormat ss:Format="0.00000" /></Style>
+<Style ss:ID="sHeader"><Alignment ss:Vertical="Bottom" ss:WrapText="1" />
+<Borders><Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#FFFFFF" /><Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#FFFFFF" /><Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#FFFFFF" /></Borders>
+<Font ss:Size="10" ss:Italic="1" /><Interior ss:Color="#CCCCCC" ss:Pattern="Solid" /></Style>
+<Style ss:ID="sHeaderDate"><NumberFormat ss:Format="Short Date" /><Alignment ss:Vertical="Bottom" ss:WrapText="1" />
+<Borders><Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#FFFFFF" /><Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#FFFFFF" /><Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#FFFFFF" /></Borders>
+<Font ss:Size="10" ss:Italic="1" /><Interior ss:Color="#CCCCCC" ss:Pattern="Solid" /></Style>
+</Styles>
+<Names>
+<NamedRange  ss:Name="DB_Transactions" ss:RefersTo="'Transactions'!R1C2:R97C49"/>
+</Names>
+<Worksheet  ss:Protected="1" ss:Name="Transactions">
+<Table>
+
+<Column ss:Index="1" ss:Hidden="1"/><Column ss:Index="2" ss:Hidden="1"/><Column ss:Index="3" ss:Hidden="1"/><Column ss:Index="4" ss:Hidden="1"/><Column ss:Index="5" ss:Hidden="1"/><Column ss:Index="6" ss:Hidden="1" ss:Width="44.10"/>
+<Column ss:Index="7" ss:Width="79.80"/>
+<Column ss:Index="8" ss:StyleID="sDate" ss:Width="82.50"/>
+<Column ss:Index="9" ss:StyleID="sDate" ss:Width="60.00"/>
+<Column ss:Index="10" ss:StyleID="sDate" ss:Width="60.00"/>
+<Column ss:Index="11" ss:Width="30.00"/>
+<Column ss:Index="12" ss:Width="30.00"/>
+<Column ss:Index="13" ss:Width="30.00"/>
+<Column ss:Index="14" ss:Width="30.00"/>
+<Column ss:Index="15" ss:Width="45.00"/>
+<Column ss:Index="16" ss:Width="30.00"/>
+<Column ss:Index="17" ss:Width="90.00"/>
+<Column ss:Index="18" ss:Width="82.80"/>
+<Column ss:Index="19" ss:Width="88.50"/>
+<Column ss:Index="20" ss:Width="286.80"/>
+<Column ss:Index="21" ss:Width="150.00"/>
+<Column ss:Index="22" ss:Width="171.60"/>
+<Column ss:Index="23" ss:Width="90.00"/>
+<Column ss:Index="24" ss:Width="130.80"/>
+<Column ss:Index="25" ss:Width="90.00"/>
+<Column ss:Index="26" ss:StyleID="sAmount" ss:Width="62.40"/>
+<Column ss:Index="27" ss:Width="64.80"/>
+<Column ss:Index="28" ss:StyleID="sAmount" ss:Width="98.40"/>
+<Column ss:Index="29" ss:StyleID="sAmount" ss:Width="109.50"/>
+<Column ss:Index="30" ss:Width="114.00"/>
+<Column ss:Index="31" ss:StyleID="sAmount" ss:Width="66.00"/>
+<Column ss:Index="32" ss:StyleID="sAmount" ss:Width="60.00"/>
+<Column ss:Index="33" ss:StyleID="sAmount" ss:Width="66.00"/>
+<Column ss:Index="34" ss:StyleID="sAmount" ss:Width="66.00"/>
+<Column ss:Index="35" ss:Width="45.00"/>
+<Column ss:Index="36" ss:Width="90.00"/>
+<Column ss:Index="37" ss:Width="45.00"/>
+<Column ss:Index="38" ss:Width="90.00"/>
+<Column ss:Index="39" ss:Width="45.00"/>
+<Column ss:Index="40" ss:Width="90.00"/>
+<Column ss:Index="41" ss:Width="45.00"/>
+<Column ss:Index="42" ss:StyleID="sDate" ss:Width="60.00"/>
+<Column ss:Index="43" ss:StyleID="sDate" ss:Width="60.00"/>
+<Column ss:Index="44" ss:StyleID="sDate" ss:Width="60.00"/>
+<Column ss:Index="45" ss:Width="30.00"/>
+<Column ss:Index="46" ss:StyleID="sAmount" ss:Width="60.00"/>
+<Column ss:Index="47" ss:Width="114.00"/>
+<Column ss:Index="48" ss:Width="45.00"/>
+<Row ss:Index="1" ss:StyleID="sHeader" ss:AutoFitHeight="0">
+<Cell ss:Index="1"><Data ss:Type="String">TableInfo</Data>
+</Cell>
+<Cell ss:Index="2"><Data ss:Type="String">Row</Data>
+</Cell>
+<Cell ss:Index="3"><Data ss:Type="String">Error</Data>
+</Cell>
+<Cell ss:Index="4"><Data ss:Type="String">Unique</Data>
+</Cell>
+<Cell ss:Index="5"><Data ss:Type="String">Base Row</Data>
+</Cell>
+<Cell ss:Index="6"><Data ss:Type="String">SysCod</Data>
+</Cell>
+<Cell ss:Index="7"><Data ss:Type="String">Section</Data>
+</Cell>
+<Cell ss:Index="8"><Data ss:Type="String">Date</Data>
+</Cell>
+<Cell ss:Index="9"><Data ss:Type="String">DateDocument</Data>
+</Cell>
+<Cell ss:Index="10"><Data ss:Type="String">DateValue</Data>
+</Cell>
+<Cell ss:Index="11"><Data ss:Type="String">Doc</Data>
+</Cell>
+<Cell ss:Index="12"><Data ss:Type="String">DocProtocol</Data>
+</Cell>
+<Cell ss:Index="13"><Data ss:Type="String">DocType</Data>
+</Cell>
+<Cell ss:Index="14"><Data ss:Type="String">DocOriginal</Data>
+</Cell>
+<Cell ss:Index="15"><Data ss:Type="String">DocInvoice</Data>
+</Cell>
+<Cell ss:Index="16"><Data ss:Type="String">InvoicePrinted</Data>
+</Cell>
+<Cell ss:Index="17"><Data ss:Type="String">DocLink</Data>
+</Cell>
+<Cell ss:Index="18"><Data ss:Type="String">ExternalReference</Data>
+</Cell>
+<Cell ss:Index="19"><Data ss:Type="String">ItemsId</Data>
+</Cell>
+<Cell ss:Index="20"><Data ss:Type="String">Description</Data>
+</Cell>
+<Cell ss:Index="21"><Data ss:Type="String">Notes</Data>
+</Cell>
+<Cell ss:Index="22"><Data ss:Type="String">AccountDebit</Data>
+</Cell>
+<Cell ss:Index="23"><Data ss:Type="String">AccountDebitDes</Data>
+</Cell>
+<Cell ss:Index="24"><Data ss:Type="String">AccountCredit</Data>
+</Cell>
+<Cell ss:Index="25"><Data ss:Type="String">AccountCreditDes</Data>
+</Cell>
+<Cell ss:Index="26"><Data ss:Type="String">Quantity</Data>
+</Cell>
+<Cell ss:Index="27"><Data ss:Type="String">ReferenceUnit</Data>
+</Cell>
+<Cell ss:Index="28"><Data ss:Type="String">UnitPrice</Data>
+</Cell>
+<Cell ss:Index="29"><Data ss:Type="String">AmountCurrency</Data>
+</Cell>
+<Cell ss:Index="30"><Data ss:Type="String">ExchangeCurrency</Data>
+</Cell>
+<Cell ss:Index="31"><Data ss:Type="String">ExchangeRate</Data>
+</Cell>
+<Cell ss:Index="32"><Data ss:Type="String">ExchangeMultiplier</Data>
+</Cell>
+<Cell ss:Index="33"><Data ss:Type="String">Amount</Data>
+</Cell>
+<Cell ss:Index="34"><Data ss:Type="String">Balance</Data>
+</Cell>
+<Cell ss:Index="35"><Data ss:Type="String">Cc1</Data>
+</Cell>
+<Cell ss:Index="36"><Data ss:Type="String">Cc1Des</Data>
+</Cell>
+<Cell ss:Index="37"><Data ss:Type="String">Cc2</Data>
+</Cell>
+<Cell ss:Index="38"><Data ss:Type="String">Cc2Des</Data>
+</Cell>
+<Cell ss:Index="39"><Data ss:Type="String">Cc3</Data>
+</Cell>
+<Cell ss:Index="40"><Data ss:Type="String">Cc3Des</Data>
+</Cell>
+<Cell ss:Index="41"><Data ss:Type="String">Segment</Data>
+</Cell>
+<Cell ss:Index="42"><Data ss:Type="String">DateExpiration</Data>
+</Cell>
+<Cell ss:Index="43"><Data ss:Type="String">DateExpected</Data>
+</Cell>
+<Cell ss:Index="44"><Data ss:Type="String">DatePayment</Data>
+</Cell>
+<Cell ss:Index="45"><Data ss:Type="String">LockNumber</Data>
+</Cell>
+<Cell ss:Index="46"><Data ss:Type="String">LockAmount</Data>
+</Cell>
+<Cell ss:Index="47"><Data ss:Type="String">LockProgressive</Data>
+</Cell>
+<Cell ss:Index="48"><Data ss:Type="String">LockLine</Data>
+</Cell>
+</Row>
+<Row ss:Index="2" ss:Hidden="1" ss:StyleID="sHeader" ss:AutoFitHeight="0">
+<Cell ss:Index="9"><Data ss:Type="String">Document date</Data>
+</Cell>
+<Cell ss:Index="11"><Data ss:Type="String">Document number</Data>
+</Cell>
+<Cell ss:Index="12"><Data ss:Type="String">Protocol number</Data>
+</Cell>
+<Cell ss:Index="13"><Data ss:Type="String">Document type</Data>
+</Cell>
+<Cell ss:Index="14"><Data ss:Type="String">Original document number</Data>
+</Cell>
+<Cell ss:Index="15"><Data ss:Type="String">Invoice number</Data>
+</Cell>
+<Cell ss:Index="16"><Data ss:Type="String">Invoice printed</Data>
+</Cell>
+<Cell ss:Index="17"><Data ss:Type="String">Link to external file</Data>
+</Cell>
+<Cell ss:Index="18"><Data ss:Type="String">External reference</Data>
+</Cell>
+<Cell ss:Index="19"><Data ss:Type="String">Items Id</Data>
+</Cell>
+<Cell ss:Index="21"><Data ss:Type="String">Annotations</Data>
+</Cell>
+<Cell ss:Index="22"><Data ss:Type="String">Debit account</Data>
+</Cell>
+<Cell ss:Index="24"><Data ss:Type="String">Credit account</Data>
+</Cell>
+<Cell ss:Index="26"><Data ss:Type="String">Quantity</Data>
+</Cell>
+<Cell ss:Index="27"><Data ss:Type="String">Reference unit</Data>
+</Cell>
+<Cell ss:Index="28"><Data ss:Type="String">Unit price</Data>
+</Cell>
+<Cell ss:Index="29"><Data ss:Type="String">Amount in currency</Data>
+</Cell>
+<Cell ss:Index="32"><Data ss:Type="String">Multiplier</Data>
+</Cell>
+<Cell ss:Index="35"><Data ss:Type="String">Cost center 1</Data>
+</Cell>
+<Cell ss:Index="36"><Data ss:Type="String">Description of cost center 1</Data>
+</Cell>
+<Cell ss:Index="37"><Data ss:Type="String">Cost center 2</Data>
+</Cell>
+<Cell ss:Index="38"><Data ss:Type="String">Description of cost center 2</Data>
+</Cell>
+<Cell ss:Index="39"><Data ss:Type="String">Cost center 3</Data>
+</Cell>
+<Cell ss:Index="40"><Data ss:Type="String">Description of cost center 3</Data>
+</Cell>
+<Cell ss:Index="41"><Data ss:Type="String">Segment</Data>
+</Cell>
+<Cell ss:Index="42"><Data ss:Type="String">Expiration date</Data>
+</Cell>
+<Cell ss:Index="43"><Data ss:Type="String">Date expected</Data>
+</Cell>
+<Cell ss:Index="44"><Data ss:Type="String">Payment date</Data>
+</Cell>
+<Cell ss:Index="45"><Data ss:Type="String">Lock number</Data>
+</Cell>
+<Cell ss:Index="46"><Data ss:Type="String">Lock amount</Data>
+</Cell>
+<Cell ss:Index="47"><Data ss:Type="String">Lock progressive</Data>
+</Cell>
+</Row>
+<Row ss:Index="3" ss:StyleID="sHeader" ss:AutoFitHeight="0">
+<Cell ss:Index="1"><Data ss:Type="Number">48</Data>
+</Cell>
+<Cell ss:Index="6"><Data ss:Type="String">SysCod</Data>
+</Cell>
+<Cell ss:Index="7"><Data ss:Type="String">Section</Data>
+</Cell>
+<Cell ss:Index="8"><Data ss:Type="String">Date</Data>
+</Cell>
+<Cell ss:Index="9"><Data ss:Type="String">Doc Date</Data>
+</Cell>
+<Cell ss:Index="10"><Data ss:Type="String">Date value</Data>
+</Cell>
+<Cell ss:Index="11"><Data ss:Type="String">Doc</Data>
+</Cell>
+<Cell ss:Index="12"><Data ss:Type="String">Doc.Prot.</Data>
+</Cell>
+<Cell ss:Index="13"><Data ss:Type="String">Type</Data>
+</Cell>
+<Cell ss:Index="14"><Data ss:Type="String">Doc.Original</Data>
+</Cell>
+<Cell ss:Index="15"><Data ss:Type="String">Invoice</Data>
+</Cell>
+<Cell ss:Index="16"><Data ss:Type="String">Printed</Data>
+</Cell>
+<Cell ss:Index="17"><Data ss:Type="String">Link</Data>
+</Cell>
+<Cell ss:Index="18"><Data ss:Type="String">ExtRef</Data>
+</Cell>
+<Cell ss:Index="19"><Data ss:Type="String">Item</Data>
+</Cell>
+<Cell ss:Index="20"><Data ss:Type="String">Description</Data>
+</Cell>
+<Cell ss:Index="21"><Data ss:Type="String">Notes</Data>
+</Cell>
+<Cell ss:Index="22"><Data ss:Type="String">Debit A/C </Data>
+</Cell>
+<Cell ss:Index="23"><Data ss:Type="String">Debit A/C Des.</Data>
+</Cell>
+<Cell ss:Index="24"><Data ss:Type="String">Credit A/C </Data>
+</Cell>
+<Cell ss:Index="25"><Data ss:Type="String">Credit A/C Des.</Data>
+</Cell>
+<Cell ss:Index="26"><Data ss:Type="String">Qt.</Data>
+</Cell>
+<Cell ss:Index="27"><Data ss:Type="String">Unit</Data>
+</Cell>
+<Cell ss:Index="28"><Data ss:Type="String">Unit/Price</Data>
+</Cell>
+<Cell ss:Index="29"><Data ss:Type="String">Currency Amount</Data>
+</Cell>
+<Cell ss:Index="30"><Data ss:Type="String">Currency</Data>
+</Cell>
+<Cell ss:Index="31"><Data ss:Type="String">Exchange Rate</Data>
+</Cell>
+<Cell ss:Index="32"><Data ss:Type="String">Mult.</Data>
+</Cell>
+<Cell ss:Index="33"><Data ss:Type="String">Amount</Data>
+</Cell>
+<Cell ss:Index="34"><Data ss:Type="String">Balance</Data>
+</Cell>
+<Cell ss:Index="35"><Data ss:Type="String">CC1</Data>
+</Cell>
+<Cell ss:Index="36"><Data ss:Type="String">CC1 Description</Data>
+</Cell>
+<Cell ss:Index="37"><Data ss:Type="String">CC2</Data>
+</Cell>
+<Cell ss:Index="38"><Data ss:Type="String">CC2 Description</Data>
+</Cell>
+<Cell ss:Index="39"><Data ss:Type="String">CC3</Data>
+</Cell>
+<Cell ss:Index="40"><Data ss:Type="String">CC3 Description</Data>
+</Cell>
+<Cell ss:Index="41"><Data ss:Type="String">Segment</Data>
+</Cell>
+<Cell ss:Index="42"><Data ss:Type="String">Date Exp.</Data>
+</Cell>
+<Cell ss:Index="43"><Data ss:Type="String">Expected</Data>
+</Cell>
+<Cell ss:Index="44"><Data ss:Type="String">Date Pay.</Data>
+</Cell>
+<Cell ss:Index="45"><Data ss:Type="String">LockNum</Data>
+</Cell>
+<Cell ss:Index="46"><Data ss:Type="String">LockAmt</Data>
+</Cell>
+<Cell ss:Index="47"><Data ss:Type="String">LockProgr</Data>
+</Cell>
+<Cell ss:Index="48"><Data ss:Type="String">LockLine</Data>
+</Cell>
+</Row>
+<Row ss:Index="4" ss:StyleID="sHeader" ss:AutoFitHeight="0">
+<Cell ss:Index="1"><Data ss:Type="Number">96</Data>
+</Cell>
+<Cell ss:Index="33"><Data ss:Type="String">CHF</Data>
+</Cell>
+</Row>
+<Row ss:Index="5" ss:Hidden="1" ss:StyleID="sHeader" ss:AutoFitHeight="0">
+<Cell ss:Index="1"><Data ss:Type="String">Transactions</Data>
+</Cell>
+<Cell ss:Index="2"><Data ss:Type="String">Row</Data>
+</Cell>
+<Cell ss:Index="3"><Data ss:Type="String">Error</Data>
+</Cell>
+<Cell ss:Index="4"><Data ss:Type="String">Unique</Data>
+</Cell>
+<Cell ss:Index="5"><Data ss:Type="String">Base Row</Data>
+</Cell>
+<Cell ss:Index="6"><Data ss:Type="String">SysCod</Data>
+</Cell>
+<Cell ss:Index="7"><Data ss:Type="String">Section</Data>
+</Cell>
+<Cell ss:Index="8"><Data ss:Type="String">Date</Data>
+</Cell>
+<Cell ss:Index="9"><Data ss:Type="String">DateDocument</Data>
+</Cell>
+<Cell ss:Index="10"><Data ss:Type="String">DateValue</Data>
+</Cell>
+<Cell ss:Index="11"><Data ss:Type="String">Doc</Data>
+</Cell>
+<Cell ss:Index="12"><Data ss:Type="String">DocProtocol</Data>
+</Cell>
+<Cell ss:Index="13"><Data ss:Type="String">DocType</Data>
+</Cell>
+<Cell ss:Index="14"><Data ss:Type="String">DocOriginal</Data>
+</Cell>
+<Cell ss:Index="15"><Data ss:Type="String">DocInvoice</Data>
+</Cell>
+<Cell ss:Index="16"><Data ss:Type="String">InvoicePrinted</Data>
+</Cell>
+<Cell ss:Index="17"><Data ss:Type="String">DocLink</Data>
+</Cell>
+<Cell ss:Index="18"><Data ss:Type="String">ExternalReference</Data>
+</Cell>
+<Cell ss:Index="19"><Data ss:Type="String">ItemsId</Data>
+</Cell>
+<Cell ss:Index="20"><Data ss:Type="String">Description</Data>
+</Cell>
+<Cell ss:Index="21"><Data ss:Type="String">Notes</Data>
+</Cell>
+<Cell ss:Index="22"><Data ss:Type="String">AccountDebit</Data>
+</Cell>
+<Cell ss:Index="23"><Data ss:Type="String">AccountDebitDes</Data>
+</Cell>
+<Cell ss:Index="24"><Data ss:Type="String">AccountCredit</Data>
+</Cell>
+<Cell ss:Index="25"><Data ss:Type="String">AccountCreditDes</Data>
+</Cell>
+<Cell ss:Index="26"><Data ss:Type="String">Quantity</Data>
+</Cell>
+<Cell ss:Index="27"><Data ss:Type="String">ReferenceUnit</Data>
+</Cell>
+<Cell ss:Index="28"><Data ss:Type="String">UnitPrice</Data>
+</Cell>
+<Cell ss:Index="29"><Data ss:Type="String">AmountCurrency</Data>
+</Cell>
+<Cell ss:Index="30"><Data ss:Type="String">ExchangeCurrency</Data>
+</Cell>
+<Cell ss:Index="31"><Data ss:Type="String">ExchangeRate</Data>
+</Cell>
+<Cell ss:Index="32"><Data ss:Type="String">ExchangeMultiplier</Data>
+</Cell>
+<Cell ss:Index="33"><Data ss:Type="String">Amount</Data>
+</Cell>
+<Cell ss:Index="34"><Data ss:Type="String">Balance</Data>
+</Cell>
+<Cell ss:Index="35"><Data ss:Type="String">Cc1</Data>
+</Cell>
+<Cell ss:Index="36"><Data ss:Type="String">Cc1Des</Data>
+</Cell>
+<Cell ss:Index="37"><Data ss:Type="String">Cc2</Data>
+</Cell>
+<Cell ss:Index="38"><Data ss:Type="String">Cc2Des</Data>
+</Cell>
+<Cell ss:Index="39"><Data ss:Type="String">Cc3</Data>
+</Cell>
+<Cell ss:Index="40"><Data ss:Type="String">Cc3Des</Data>
+</Cell>
+<Cell ss:Index="41"><Data ss:Type="String">Segment</Data>
+</Cell>
+<Cell ss:Index="42"><Data ss:Type="String">DateExpiration</Data>
+</Cell>
+<Cell ss:Index="43"><Data ss:Type="String">DateExpected</Data>
+</Cell>
+<Cell ss:Index="44"><Data ss:Type="String">DatePayment</Data>
+</Cell>
+<Cell ss:Index="45"><Data ss:Type="String">LockNumber</Data>
+</Cell>
+<Cell ss:Index="46"><Data ss:Type="String">LockAmount</Data>
+</Cell>
+<Cell ss:Index="47"><Data ss:Type="String">LockProgressive</Data>
+</Cell>
+<Cell ss:Index="48"><Data ss:Type="String">LockLine</Data>
+</Cell>
+</Row>
+<Row ss:Index="6" ss:StyleID="sHeader" ss:AutoFitHeight="0">
+<Cell ss:Index="1"><Data ss:Type="String">Transactions</Data>
+</Cell>
+<Cell ss:Index="2"><Data ss:Type="String">Row</Data>
+</Cell>
+<Cell ss:Index="3"><Data ss:Type="String">Error</Data>
+</Cell>
+<Cell ss:Index="4"><Data ss:Type="String">Unique</Data>
+</Cell>
+<Cell ss:Index="5"><Data ss:Type="String">Base Row</Data>
+</Cell>
+<Cell ss:Index="6"><Data ss:Type="String">SysCod</Data>
+</Cell>
+<Cell ss:Index="7"><Data ss:Type="String">Section</Data>
+</Cell>
+<Cell ss:Index="8"><Data ss:Type="String">Date</Data>
+</Cell>
+<Cell ss:Index="9"><Data ss:Type="String">DateDocument</Data>
+</Cell>
+<Cell ss:Index="10"><Data ss:Type="String">DateValue</Data>
+</Cell>
+<Cell ss:Index="11"><Data ss:Type="String">Doc</Data>
+</Cell>
+<Cell ss:Index="12"><Data ss:Type="String">DocProtocol</Data>
+</Cell>
+<Cell ss:Index="13"><Data ss:Type="String">DocType</Data>
+</Cell>
+<Cell ss:Index="14"><Data ss:Type="String">DocOriginal</Data>
+</Cell>
+<Cell ss:Index="15"><Data ss:Type="String">DocInvoice</Data>
+</Cell>
+<Cell ss:Index="16"><Data ss:Type="String">InvoicePrinted</Data>
+</Cell>
+<Cell ss:Index="17"><Data ss:Type="String">DocLink</Data>
+</Cell>
+<Cell ss:Index="18"><Data ss:Type="String">ExternalReference</Data>
+</Cell>
+<Cell ss:Index="19"><Data ss:Type="String">ItemsId</Data>
+</Cell>
+<Cell ss:Index="20"><Data ss:Type="String">Description</Data>
+</Cell>
+<Cell ss:Index="21"><Data ss:Type="String">Notes</Data>
+</Cell>
+<Cell ss:Index="22"><Data ss:Type="String">AccountDebit</Data>
+</Cell>
+<Cell ss:Index="23"><Data ss:Type="String">AccountDebitDes</Data>
+</Cell>
+<Cell ss:Index="24"><Data ss:Type="String">AccountCredit</Data>
+</Cell>
+<Cell ss:Index="25"><Data ss:Type="String">AccountCreditDes</Data>
+</Cell>
+<Cell ss:Index="26"><Data ss:Type="String">Quantity</Data>
+</Cell>
+<Cell ss:Index="27"><Data ss:Type="String">ReferenceUnit</Data>
+</Cell>
+<Cell ss:Index="28"><Data ss:Type="String">UnitPrice</Data>
+</Cell>
+<Cell ss:Index="29"><Data ss:Type="String">AmountCurrency</Data>
+</Cell>
+<Cell ss:Index="30"><Data ss:Type="String">ExchangeCurrency</Data>
+</Cell>
+<Cell ss:Index="31"><Data ss:Type="String">ExchangeRate</Data>
+</Cell>
+<Cell ss:Index="32"><Data ss:Type="String">ExchangeMultiplier</Data>
+</Cell>
+<Cell ss:Index="33"><Data ss:Type="String">Amount</Data>
+</Cell>
+<Cell ss:Index="34"><Data ss:Type="String">Balance</Data>
+</Cell>
+<Cell ss:Index="35"><Data ss:Type="String">Cc1</Data>
+</Cell>
+<Cell ss:Index="36"><Data ss:Type="String">Cc1Des</Data>
+</Cell>
+<Cell ss:Index="37"><Data ss:Type="String">Cc2</Data>
+</Cell>
+<Cell ss:Index="38"><Data ss:Type="String">Cc2Des</Data>
+</Cell>
+<Cell ss:Index="39"><Data ss:Type="String">Cc3</Data>
+</Cell>
+<Cell ss:Index="40"><Data ss:Type="String">Cc3Des</Data>
+</Cell>
+<Cell ss:Index="41"><Data ss:Type="String">Segment</Data>
+</Cell>
+<Cell ss:Index="42"><Data ss:Type="String">DateExpiration</Data>
+</Cell>
+<Cell ss:Index="43"><Data ss:Type="String">DateExpected</Data>
+</Cell>
+<Cell ss:Index="44"><Data ss:Type="String">DatePayment</Data>
+</Cell>
+<Cell ss:Index="45"><Data ss:Type="String">LockNumber</Data>
+</Cell>
+<Cell ss:Index="46"><Data ss:Type="String">LockAmount</Data>
+</Cell>
+<Cell ss:Index="47"><Data ss:Type="String">LockProgressive</Data>
+</Cell>
+<Cell ss:Index="48"><Data ss:Type="String">LockLine</Data>
+</Cell>
+</Row>
+<Row ss:Index="7" ss:Hidden="1" ss:StyleID="sHeader" ss:AutoFitHeight="0">
+</Row>
+<Row ss:Index="8" ss:Hidden="1" ss:StyleID="sHeader" ss:AutoFitHeight="0">
+</Row>
+<Row ss:Index="9" ss:Hidden="1" ss:StyleID="sHeader" ss:AutoFitHeight="0">
+</Row>
+<Row ss:Index="10" ss:Hidden="1" ss:StyleID="sHeader" ss:AutoFitHeight="0">
+</Row>
+<Row ss:Index="11" ss:Hidden="1" ss:StyleID="sHeader" ss:AutoFitHeight="0">
+<Cell ss:Index="6"><Data ss:Type="String">String</Data>
+</Cell>
+<Cell ss:Index="7"><Data ss:Type="String">String</Data>
+</Cell>
+<Cell ss:Index="8"><Data ss:Type="String">DateTime</Data>
+</Cell>
+<Cell ss:Index="9"><Data ss:Type="String">DateTime</Data>
+</Cell>
+<Cell ss:Index="10"><Data ss:Type="String">DateTime</Data>
+</Cell>
+<Cell ss:Index="11"><Data ss:Type="String">String</Data>
+</Cell>
+<Cell ss:Index="12"><Data ss:Type="String">String</Data>
+</Cell>
+<Cell ss:Index="13"><Data ss:Type="String">String</Data>
+</Cell>
+<Cell ss:Index="14"><Data ss:Type="String">String</Data>
+</Cell>
+<Cell ss:Index="15"><Data ss:Type="String">String</Data>
+</Cell>
+<Cell ss:Index="16"><Data ss:Type="String">String</Data>
+</Cell>
+<Cell ss:Index="17"><Data ss:Type="String">String</Data>
+</Cell>
+<Cell ss:Index="18"><Data ss:Type="String">String</Data>
+</Cell>
+<Cell ss:Index="19"><Data ss:Type="String">String</Data>
+</Cell>
+<Cell ss:Index="20"><Data ss:Type="String">String</Data>
+</Cell>
+<Cell ss:Index="21"><Data ss:Type="String">String</Data>
+</Cell>
+<Cell ss:Index="22"><Data ss:Type="String">String</Data>
+</Cell>
+<Cell ss:Index="23"><Data ss:Type="String">String</Data>
+</Cell>
+<Cell ss:Index="24"><Data ss:Type="String">String</Data>
+</Cell>
+<Cell ss:Index="25"><Data ss:Type="String">String</Data>
+</Cell>
+<Cell ss:Index="26"><Data ss:Type="String">Number</Data>
+</Cell>
+<Cell ss:Index="27"><Data ss:Type="String">String</Data>
+</Cell>
+<Cell ss:Index="28"><Data ss:Type="String">Number</Data>
+</Cell>
+<Cell ss:Index="29"><Data ss:Type="String">Number</Data>
+</Cell>
+<Cell ss:Index="30"><Data ss:Type="String">String</Data>
+</Cell>
+<Cell ss:Index="31"><Data ss:Type="String">Number</Data>
+</Cell>
+<Cell ss:Index="32"><Data ss:Type="String">Number</Data>
+</Cell>
+<Cell ss:Index="33"><Data ss:Type="String">Number</Data>
+</Cell>
+<Cell ss:Index="34"><Data ss:Type="String">Number</Data>
+</Cell>
+<Cell ss:Index="35"><Data ss:Type="String">String</Data>
+</Cell>
+<Cell ss:Index="36"><Data ss:Type="String">String</Data>
+</Cell>
+<Cell ss:Index="37"><Data ss:Type="String">String</Data>
+</Cell>
+<Cell ss:Index="38"><Data ss:Type="String">String</Data>
+</Cell>
+<Cell ss:Index="39"><Data ss:Type="String">String</Data>
+</Cell>
+<Cell ss:Index="40"><Data ss:Type="String">String</Data>
+</Cell>
+<Cell ss:Index="41"><Data ss:Type="String">String</Data>
+</Cell>
+<Cell ss:Index="42"><Data ss:Type="String">DateTime</Data>
+</Cell>
+<Cell ss:Index="43"><Data ss:Type="String">DateTime</Data>
+</Cell>
+<Cell ss:Index="44"><Data ss:Type="String">DateTime</Data>
+</Cell>
+<Cell ss:Index="45"><Data ss:Type="String">String</Data>
+</Cell>
+<Cell ss:Index="46"><Data ss:Type="String">Number</Data>
+</Cell>
+<Cell ss:Index="47"><Data ss:Type="String">String</Data>
+</Cell>
+<Cell ss:Index="48"><Data ss:Type="String">String</Data>
+</Cell>
+</Row>
+<Row ss:Index="12" ss:StyleID="s0b">
+<Cell ss:Index="2"><Data ss:Type="Number">1</Data>
+</Cell>
+<Cell ss:Index="3"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="4"><Data ss:Type="Number">1</Data>
+</Cell>
+<Cell ss:Index="5"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="20"><Data ss:Type="String">General operations with Bonds and Stocks</Data>
+</Cell>
+</Row>
+<Row ss:Index="13" ss:StyleID="">
+<Cell ss:Index="2"><Data ss:Type="Number">2</Data>
+</Cell>
+<Cell ss:Index="3"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="4"><Data ss:Type="Number">131</Data>
+</Cell>
+<Cell ss:Index="5"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="20"><Data ss:Type="String">Operation with Stock on a foreign currency</Data>
+</Cell>
+</Row>
+<Row ss:Index="14" ss:StyleID="">
+<Cell ss:Index="2"><Data ss:Type="Number">3</Data>
+</Cell>
+<Cell ss:Index="3"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="4"><Data ss:Type="Number">134</Data>
+</Cell>
+<Cell ss:Index="5"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="20"><Data ss:Type="String">Loss on sale, profit on exchange, full sale</Data>
+</Cell>
+</Row>
+<Row ss:Index="15" ss:StyleID="">
+<Cell ss:Index="2"><Data ss:Type="Number">4</Data>
+</Cell>
+<Cell ss:Index="3"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="4"><Data ss:Type="Number">74</Data>
+</Cell>
+<Cell ss:Index="5"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="8"><Data ss:Type="DateTime">2024-02-01T00:00:00.000</Data>
+</Cell>
+<Cell ss:Index="11"><Data ss:Type="String">1</Data>
+</Cell>
+<Cell ss:Index="19"><Data ss:Type="String">IT0005239360</Data>
+</Cell>
+<Cell ss:Index="20"><Data ss:Type="String">Shares Unicredit Purchase</Data>
+</Cell>
+<Cell ss:Index="22"><Data ss:Type="String">Shares Unicredit</Data>
+</Cell>
+<Cell ss:Index="23"><Data ss:Type="String">Shares Unicredit</Data>
+</Cell>
+<Cell ss:Index="26"><Data ss:Type="Number">100.0000</Data>
+</Cell>
+<Cell ss:Index="28"><Data ss:Type="Number">10.0000</Data>
+</Cell>
+<Cell ss:Index="29"><Data ss:Type="Number">1000.00</Data>
+</Cell>
+<Cell ss:Index="30"><Data ss:Type="String">EUR</Data>
+</Cell>
+<Cell ss:Index="31"><Data ss:Type="Number">1.100000000000</Data>
+</Cell>
+<Cell ss:Index="32"><Data ss:Type="Number">-1.000000000000</Data>
+</Cell>
+<Cell ss:Index="33"><Data ss:Type="Number">1100.00</Data>
+</Cell>
+<Cell ss:Index="34"><Data ss:Type="Number">1100.00</Data>
+</Cell>
+</Row>
+<Row ss:Index="16" ss:StyleID="">
+<Cell ss:Index="2"><Data ss:Type="Number">5</Data>
+</Cell>
+<Cell ss:Index="3"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="4"><Data ss:Type="Number">75</Data>
+</Cell>
+<Cell ss:Index="5"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="8"><Data ss:Type="DateTime">2024-02-01T00:00:00.000</Data>
+</Cell>
+<Cell ss:Index="11"><Data ss:Type="String">1</Data>
+</Cell>
+<Cell ss:Index="19"><Data ss:Type="String">IT0005239360</Data>
+</Cell>
+<Cell ss:Index="20"><Data ss:Type="String">Shares Unicredit Bank Charges</Data>
+</Cell>
+<Cell ss:Index="22"><Data ss:Type="String">Bank charges</Data>
+</Cell>
+<Cell ss:Index="23"><Data ss:Type="String">Bank service charges</Data>
+</Cell>
+<Cell ss:Index="29"><Data ss:Type="Number">20.00</Data>
+</Cell>
+<Cell ss:Index="30"><Data ss:Type="String">EUR</Data>
+</Cell>
+<Cell ss:Index="31"><Data ss:Type="Number">1.100000000000</Data>
+</Cell>
+<Cell ss:Index="32"><Data ss:Type="Number">-1.000000000000</Data>
+</Cell>
+<Cell ss:Index="33"><Data ss:Type="Number">22.00</Data>
+</Cell>
+<Cell ss:Index="34"><Data ss:Type="Number">1122.00</Data>
+</Cell>
+</Row>
+<Row ss:Index="17" ss:StyleID="">
+<Cell ss:Index="2"><Data ss:Type="Number">6</Data>
+</Cell>
+<Cell ss:Index="3"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="4"><Data ss:Type="Number">76</Data>
+</Cell>
+<Cell ss:Index="5"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="8"><Data ss:Type="DateTime">2024-02-01T00:00:00.000</Data>
+</Cell>
+<Cell ss:Index="11"><Data ss:Type="String">1</Data>
+</Cell>
+<Cell ss:Index="19"><Data ss:Type="String">IT0005239360</Data>
+</Cell>
+<Cell ss:Index="20"><Data ss:Type="String">Shares Unicredit Payment</Data>
+</Cell>
+<Cell ss:Index="24"><Data ss:Type="String">Bank EUR</Data>
+</Cell>
+<Cell ss:Index="25"><Data ss:Type="String">Bank assets EUR</Data>
+</Cell>
+<Cell ss:Index="29"><Data ss:Type="Number">1020.00</Data>
+</Cell>
+<Cell ss:Index="30"><Data ss:Type="String">EUR</Data>
+</Cell>
+<Cell ss:Index="31"><Data ss:Type="Number">1.100000000000</Data>
+</Cell>
+<Cell ss:Index="32"><Data ss:Type="Number">-1.000000000000</Data>
+</Cell>
+<Cell ss:Index="33"><Data ss:Type="Number">1122.00</Data>
+</Cell>
+</Row>
+<Row ss:Index="18" ss:StyleID="">
+<Cell ss:Index="2"><Data ss:Type="Number">7</Data>
+</Cell>
+<Cell ss:Index="3"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="4"><Data ss:Type="Number">138</Data>
+</Cell>
+<Cell ss:Index="5"><Data ss:Type="Number">0</Data>
+</Cell>
+</Row>
+<Row ss:Index="19" ss:StyleID="">
+<Cell ss:Index="2"><Data ss:Type="Number">8</Data>
+</Cell>
+<Cell ss:Index="3"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="4"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="5"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="8"><Data ss:Type="DateTime">2024-03-20T00:00:00.000</Data>
+</Cell>
+<Cell ss:Index="11"><Data ss:Type="String">2</Data>
+</Cell>
+<Cell ss:Index="18"><Data ss:Type="String">inv_sale_1</Data>
+</Cell>
+<Cell ss:Index="19"><Data ss:Type="String">IT0005239360</Data>
+</Cell>
+<Cell ss:Index="20"><Data ss:Type="String">Shares Unicredit Total Sale</Data>
+</Cell>
+<Cell ss:Index="24"><Data ss:Type="String">Shares Unicredit</Data>
+</Cell>
+<Cell ss:Index="25"><Data ss:Type="String">Shares Unicredit</Data>
+</Cell>
+<Cell ss:Index="26"><Data ss:Type="Number">-100.0000</Data>
+</Cell>
+<Cell ss:Index="28"><Data ss:Type="Number">9.5000</Data>
+</Cell>
+<Cell ss:Index="29"><Data ss:Type="Number">950.00</Data>
+</Cell>
+<Cell ss:Index="30"><Data ss:Type="String">EUR</Data>
+</Cell>
+<Cell ss:Index="31"><Data ss:Type="Number">1.150000000000</Data>
+</Cell>
+<Cell ss:Index="32"><Data ss:Type="Number">-1.000000000000</Data>
+</Cell>
+<Cell ss:Index="33"><Data ss:Type="Number">1092.50</Data>
+</Cell>
+<Cell ss:Index="34"><Data ss:Type="Number">-1092.50</Data>
+</Cell>
+</Row>
+<Row ss:Index="20" ss:StyleID="">
+<Cell ss:Index="2"><Data ss:Type="Number">9</Data>
+</Cell>
+<Cell ss:Index="3"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="4"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="5"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="8"><Data ss:Type="DateTime">2024-03-20T00:00:00.000</Data>
+</Cell>
+<Cell ss:Index="11"><Data ss:Type="String">2</Data>
+</Cell>
+<Cell ss:Index="18"><Data ss:Type="String">inv_sale_1.1</Data>
+</Cell>
+<Cell ss:Index="19"><Data ss:Type="String">IT0005239360</Data>
+</Cell>
+<Cell ss:Index="20"><Data ss:Type="String">Shares Unicredit Bank Charges</Data>
+</Cell>
+<Cell ss:Index="22"><Data ss:Type="String">Bank charges</Data>
+</Cell>
+<Cell ss:Index="23"><Data ss:Type="String">Bank service charges</Data>
+</Cell>
+<Cell ss:Index="29"><Data ss:Type="Number">25.00</Data>
+</Cell>
+<Cell ss:Index="30"><Data ss:Type="String">EUR</Data>
+</Cell>
+<Cell ss:Index="31"><Data ss:Type="Number">1.150000000000</Data>
+</Cell>
+<Cell ss:Index="32"><Data ss:Type="Number">-1.000000000000</Data>
+</Cell>
+<Cell ss:Index="33"><Data ss:Type="Number">28.75</Data>
+</Cell>
+<Cell ss:Index="34"><Data ss:Type="Number">-1063.75</Data>
+</Cell>
+</Row>
+<Row ss:Index="21" ss:StyleID="">
+<Cell ss:Index="2"><Data ss:Type="Number">10</Data>
+</Cell>
+<Cell ss:Index="3"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="4"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="5"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="8"><Data ss:Type="DateTime">2024-03-20T00:00:00.000</Data>
+</Cell>
+<Cell ss:Index="11"><Data ss:Type="String">2</Data>
+</Cell>
+<Cell ss:Index="18"><Data ss:Type="String">inv_sale_1.3</Data>
+</Cell>
+<Cell ss:Index="19"><Data ss:Type="String">IT0005239360</Data>
+</Cell>
+<Cell ss:Index="20"><Data ss:Type="String">Shares Unicredit Cashed Net</Data>
+</Cell>
+<Cell ss:Index="22"><Data ss:Type="String">Bank EUR</Data>
+</Cell>
+<Cell ss:Index="23"><Data ss:Type="String">Bank assets EUR</Data>
+</Cell>
+<Cell ss:Index="29"><Data ss:Type="Number">925.00</Data>
+</Cell>
+<Cell ss:Index="30"><Data ss:Type="String">EUR</Data>
+</Cell>
+<Cell ss:Index="31"><Data ss:Type="Number">1.150000000000</Data>
+</Cell>
+<Cell ss:Index="32"><Data ss:Type="Number">-1.000000000000</Data>
+</Cell>
+<Cell ss:Index="33"><Data ss:Type="Number">1063.75</Data>
+</Cell>
+</Row>
+<Row ss:Index="22" ss:StyleID="">
+<Cell ss:Index="2"><Data ss:Type="Number">11</Data>
+</Cell>
+<Cell ss:Index="3"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="4"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="5"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="8"><Data ss:Type="DateTime">2024-03-20T00:00:00.000</Data>
+</Cell>
+<Cell ss:Index="11"><Data ss:Type="String">2</Data>
+</Cell>
+<Cell ss:Index="18"><Data ss:Type="String">inv_sale_1.4</Data>
+</Cell>
+<Cell ss:Index="19"><Data ss:Type="String">IT0005239360</Data>
+</Cell>
+<Cell ss:Index="20"><Data ss:Type="String">Shares Unicredit Loss on Sale</Data>
+</Cell>
+<Cell ss:Index="22"><Data ss:Type="String">Loss from Securities</Data>
+</Cell>
+<Cell ss:Index="23"><Data ss:Type="String">Loss from Securities Sale</Data>
+</Cell>
+<Cell ss:Index="24"><Data ss:Type="String">Shares Unicredit</Data>
+</Cell>
+<Cell ss:Index="25"><Data ss:Type="String">Shares Unicredit</Data>
+</Cell>
+<Cell ss:Index="29"><Data ss:Type="Number">50.00</Data>
+</Cell>
+<Cell ss:Index="30"><Data ss:Type="String">EUR</Data>
+</Cell>
+<Cell ss:Index="31"><Data ss:Type="Number">1.150000000000</Data>
+</Cell>
+<Cell ss:Index="32"><Data ss:Type="Number">-1.000000000000</Data>
+</Cell>
+<Cell ss:Index="33"><Data ss:Type="Number">57.50</Data>
+</Cell>
+</Row>
+<Row ss:Index="23" ss:StyleID="">
+<Cell ss:Index="2"><Data ss:Type="Number">12</Data>
+</Cell>
+<Cell ss:Index="3"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="4"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="5"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="8"><Data ss:Type="DateTime">2024-03-20T00:00:00.000</Data>
+</Cell>
+<Cell ss:Index="11"><Data ss:Type="String">2</Data>
+</Cell>
+<Cell ss:Index="18"><Data ss:Type="String">inv_sale_1.5</Data>
+</Cell>
+<Cell ss:Index="19"><Data ss:Type="String">IT0005239360</Data>
+</Cell>
+<Cell ss:Index="20"><Data ss:Type="String">Shares Unicredit Exchange Rate Profit</Data>
+</Cell>
+<Cell ss:Index="22"><Data ss:Type="String">Shares Unicredit</Data>
+</Cell>
+<Cell ss:Index="23"><Data ss:Type="String">Shares Unicredit</Data>
+</Cell>
+<Cell ss:Index="24"><Data ss:Type="String">Realized exchange profit</Data>
+</Cell>
+<Cell ss:Index="25"><Data ss:Type="String">Realized exchange rate profit on sale</Data>
+</Cell>
+<Cell ss:Index="30"><Data ss:Type="String">CHF</Data>
+</Cell>
+<Cell ss:Index="33"><Data ss:Type="Number">50.00</Data>
+</Cell>
+</Row>
+<Row ss:Index="24" ss:StyleID="">
+<Cell ss:Index="2"><Data ss:Type="Number">13</Data>
+</Cell>
+<Cell ss:Index="3"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="4"><Data ss:Type="Number">142</Data>
+</Cell>
+<Cell ss:Index="5"><Data ss:Type="Number">0</Data>
+</Cell>
+</Row>
+<Row ss:Index="25" ss:StyleID="">
+<Cell ss:Index="2"><Data ss:Type="Number">14</Data>
+</Cell>
+<Cell ss:Index="3"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="4"><Data ss:Type="Number">79</Data>
+</Cell>
+<Cell ss:Index="5"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="20"><Data ss:Type="String">Operation with Stock on a foreign currency</Data>
+</Cell>
+</Row>
+<Row ss:Index="26" ss:StyleID="">
+<Cell ss:Index="2"><Data ss:Type="Number">15</Data>
+</Cell>
+<Cell ss:Index="3"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="4"><Data ss:Type="Number">80</Data>
+</Cell>
+<Cell ss:Index="5"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="20"><Data ss:Type="String">Profit on sale, profit on exchange, half sale</Data>
+</Cell>
+</Row>
+<Row ss:Index="27" ss:StyleID="">
+<Cell ss:Index="2"><Data ss:Type="Number">16</Data>
+</Cell>
+<Cell ss:Index="3"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="4"><Data ss:Type="Number">81</Data>
+</Cell>
+<Cell ss:Index="5"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="20"><Data ss:Type="String">Profit on sale, loss on exchange, second half sale</Data>
+</Cell>
+</Row>
+<Row ss:Index="28" ss:StyleID="">
+<Cell ss:Index="2"><Data ss:Type="Number">17</Data>
+</Cell>
+<Cell ss:Index="3"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="4"><Data ss:Type="Number">91</Data>
+</Cell>
+<Cell ss:Index="5"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="8"><Data ss:Type="DateTime">2024-02-03T00:00:00.000</Data>
+</Cell>
+<Cell ss:Index="11"><Data ss:Type="String">3</Data>
+</Cell>
+<Cell ss:Index="19"><Data ss:Type="String">US123456789</Data>
+</Cell>
+<Cell ss:Index="20"><Data ss:Type="String">Shares Netflix Purchase</Data>
+</Cell>
+<Cell ss:Index="22"><Data ss:Type="String">Shares Netflix</Data>
+</Cell>
+<Cell ss:Index="23"><Data ss:Type="String">Shares Netflix</Data>
+</Cell>
+<Cell ss:Index="26"><Data ss:Type="Number">200.0000</Data>
+</Cell>
+<Cell ss:Index="28"><Data ss:Type="Number">11.0000</Data>
+</Cell>
+<Cell ss:Index="29"><Data ss:Type="Number">2200.00</Data>
+</Cell>
+<Cell ss:Index="30"><Data ss:Type="String">USD</Data>
+</Cell>
+<Cell ss:Index="31"><Data ss:Type="Number">0.950000000000</Data>
+</Cell>
+<Cell ss:Index="32"><Data ss:Type="Number">-1.000000000000</Data>
+</Cell>
+<Cell ss:Index="33"><Data ss:Type="Number">2090.00</Data>
+</Cell>
+<Cell ss:Index="34"><Data ss:Type="Number">2090.00</Data>
+</Cell>
+</Row>
+<Row ss:Index="29" ss:StyleID="">
+<Cell ss:Index="2"><Data ss:Type="Number">18</Data>
+</Cell>
+<Cell ss:Index="3"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="4"><Data ss:Type="Number">92</Data>
+</Cell>
+<Cell ss:Index="5"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="8"><Data ss:Type="DateTime">2024-02-03T00:00:00.000</Data>
+</Cell>
+<Cell ss:Index="11"><Data ss:Type="String">3</Data>
+</Cell>
+<Cell ss:Index="19"><Data ss:Type="String">US123456789</Data>
+</Cell>
+<Cell ss:Index="20"><Data ss:Type="String">Shares Netflix Bank Charges</Data>
+</Cell>
+<Cell ss:Index="22"><Data ss:Type="String">Bank charges</Data>
+</Cell>
+<Cell ss:Index="23"><Data ss:Type="String">Bank service charges</Data>
+</Cell>
+<Cell ss:Index="29"><Data ss:Type="Number">45.00</Data>
+</Cell>
+<Cell ss:Index="30"><Data ss:Type="String">USD</Data>
+</Cell>
+<Cell ss:Index="31"><Data ss:Type="Number">0.950000000000</Data>
+</Cell>
+<Cell ss:Index="32"><Data ss:Type="Number">-1.000000000000</Data>
+</Cell>
+<Cell ss:Index="33"><Data ss:Type="Number">42.75</Data>
+</Cell>
+<Cell ss:Index="34"><Data ss:Type="Number">2132.75</Data>
+</Cell>
+</Row>
+<Row ss:Index="30" ss:StyleID="">
+<Cell ss:Index="2"><Data ss:Type="Number">19</Data>
+</Cell>
+<Cell ss:Index="3"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="4"><Data ss:Type="Number">93</Data>
+</Cell>
+<Cell ss:Index="5"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="8"><Data ss:Type="DateTime">2024-02-03T00:00:00.000</Data>
+</Cell>
+<Cell ss:Index="11"><Data ss:Type="String">3</Data>
+</Cell>
+<Cell ss:Index="19"><Data ss:Type="String">US123456789</Data>
+</Cell>
+<Cell ss:Index="20"><Data ss:Type="String">Shares Netflix Payment</Data>
+</Cell>
+<Cell ss:Index="24"><Data ss:Type="String">Bank USD</Data>
+</Cell>
+<Cell ss:Index="25"><Data ss:Type="String">Bank assets USD</Data>
+</Cell>
+<Cell ss:Index="29"><Data ss:Type="Number">2245.00</Data>
+</Cell>
+<Cell ss:Index="30"><Data ss:Type="String">USD</Data>
+</Cell>
+<Cell ss:Index="31"><Data ss:Type="Number">0.950000000000</Data>
+</Cell>
+<Cell ss:Index="32"><Data ss:Type="Number">-1.000000000000</Data>
+</Cell>
+<Cell ss:Index="33"><Data ss:Type="Number">2132.75</Data>
+</Cell>
+</Row>
+<Row ss:Index="31" ss:StyleID="">
+<Cell ss:Index="2"><Data ss:Type="Number">20</Data>
+</Cell>
+<Cell ss:Index="3"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="4"><Data ss:Type="Number">267</Data>
+</Cell>
+<Cell ss:Index="5"><Data ss:Type="Number">0</Data>
+</Cell>
+</Row>
+<Row ss:Index="32" ss:StyleID="">
+<Cell ss:Index="2"><Data ss:Type="Number">21</Data>
+</Cell>
+<Cell ss:Index="3"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="4"><Data ss:Type="Number">272</Data>
+</Cell>
+<Cell ss:Index="5"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="32"><Data ss:Type="Number">-1.000000000000</Data>
+</Cell>
+</Row>
+<Row ss:Index="33" ss:StyleID="">
+<Cell ss:Index="2"><Data ss:Type="Number">22</Data>
+</Cell>
+<Cell ss:Index="3"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="4"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="5"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="8"><Data ss:Type="DateTime">2024-03-26T00:00:00.000</Data>
+</Cell>
+<Cell ss:Index="11"><Data ss:Type="String">4</Data>
+</Cell>
+<Cell ss:Index="19"><Data ss:Type="String">US123456789</Data>
+</Cell>
+<Cell ss:Index="20"><Data ss:Type="String">Shares Netflix Total Sale</Data>
+</Cell>
+<Cell ss:Index="24"><Data ss:Type="String">Shares Netflix</Data>
+</Cell>
+<Cell ss:Index="25"><Data ss:Type="String">Shares Netflix</Data>
+</Cell>
+<Cell ss:Index="26"><Data ss:Type="Number">-100.0000</Data>
+</Cell>
+<Cell ss:Index="28"><Data ss:Type="Number">11.5000</Data>
+</Cell>
+<Cell ss:Index="29"><Data ss:Type="Number">1150.00</Data>
+</Cell>
+<Cell ss:Index="30"><Data ss:Type="String">USD</Data>
+</Cell>
+<Cell ss:Index="31"><Data ss:Type="Number">0.970000000000</Data>
+</Cell>
+<Cell ss:Index="32"><Data ss:Type="Number">-1.000000000000</Data>
+</Cell>
+<Cell ss:Index="33"><Data ss:Type="Number">1115.50</Data>
+</Cell>
+<Cell ss:Index="34"><Data ss:Type="Number">-1115.50</Data>
+</Cell>
+</Row>
+<Row ss:Index="34" ss:StyleID="">
+<Cell ss:Index="2"><Data ss:Type="Number">23</Data>
+</Cell>
+<Cell ss:Index="3"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="4"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="5"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="8"><Data ss:Type="DateTime">2024-03-26T00:00:00.000</Data>
+</Cell>
+<Cell ss:Index="11"><Data ss:Type="String">4</Data>
+</Cell>
+<Cell ss:Index="19"><Data ss:Type="String">US123456789</Data>
+</Cell>
+<Cell ss:Index="20"><Data ss:Type="String">Shares Netflix Bank Charges</Data>
+</Cell>
+<Cell ss:Index="22"><Data ss:Type="String">Bank charges</Data>
+</Cell>
+<Cell ss:Index="23"><Data ss:Type="String">Bank service charges</Data>
+</Cell>
+<Cell ss:Index="29"><Data ss:Type="Number">42.11</Data>
+</Cell>
+<Cell ss:Index="30"><Data ss:Type="String">USD</Data>
+</Cell>
+<Cell ss:Index="31"><Data ss:Type="Number">0.970000000000</Data>
+</Cell>
+<Cell ss:Index="32"><Data ss:Type="Number">-1.000000000000</Data>
+</Cell>
+<Cell ss:Index="33"><Data ss:Type="Number">40.85</Data>
+</Cell>
+<Cell ss:Index="34"><Data ss:Type="Number">-1074.65</Data>
+</Cell>
+</Row>
+<Row ss:Index="35" ss:StyleID="">
+<Cell ss:Index="2"><Data ss:Type="Number">24</Data>
+</Cell>
+<Cell ss:Index="3"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="4"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="5"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="8"><Data ss:Type="DateTime">2024-03-26T00:00:00.000</Data>
+</Cell>
+<Cell ss:Index="11"><Data ss:Type="String">4</Data>
+</Cell>
+<Cell ss:Index="19"><Data ss:Type="String">US123456789</Data>
+</Cell>
+<Cell ss:Index="20"><Data ss:Type="String">Shares Netflix Cashed net</Data>
+</Cell>
+<Cell ss:Index="22"><Data ss:Type="String">Bank USD</Data>
+</Cell>
+<Cell ss:Index="23"><Data ss:Type="String">Bank assets USD</Data>
+</Cell>
+<Cell ss:Index="29"><Data ss:Type="Number">1107.89</Data>
+</Cell>
+<Cell ss:Index="30"><Data ss:Type="String">USD</Data>
+</Cell>
+<Cell ss:Index="31"><Data ss:Type="Number">0.970000000000</Data>
+</Cell>
+<Cell ss:Index="32"><Data ss:Type="Number">-1.000000000000</Data>
+</Cell>
+<Cell ss:Index="33"><Data ss:Type="Number">1074.65</Data>
+</Cell>
+</Row>
+<Row ss:Index="36" ss:StyleID="">
+<Cell ss:Index="2"><Data ss:Type="Number">25</Data>
+</Cell>
+<Cell ss:Index="3"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="4"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="5"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="8"><Data ss:Type="DateTime">2024-03-26T00:00:00.000</Data>
+</Cell>
+<Cell ss:Index="11"><Data ss:Type="String">4</Data>
+</Cell>
+<Cell ss:Index="19"><Data ss:Type="String">US123456789</Data>
+</Cell>
+<Cell ss:Index="20"><Data ss:Type="String">Shares Netflix Profit on sale</Data>
+</Cell>
+<Cell ss:Index="22"><Data ss:Type="String">Shares Netflix</Data>
+</Cell>
+<Cell ss:Index="23"><Data ss:Type="String">Shares Netflix</Data>
+</Cell>
+<Cell ss:Index="24"><Data ss:Type="String">Realized profit</Data>
+</Cell>
+<Cell ss:Index="25"><Data ss:Type="String">Realized profit on sale</Data>
+</Cell>
+<Cell ss:Index="29"><Data ss:Type="Number">50.00</Data>
+</Cell>
+<Cell ss:Index="30"><Data ss:Type="String">USD</Data>
+</Cell>
+<Cell ss:Index="31"><Data ss:Type="Number">0.970000000000</Data>
+</Cell>
+<Cell ss:Index="32"><Data ss:Type="Number">-1.000000000000</Data>
+</Cell>
+<Cell ss:Index="33"><Data ss:Type="Number">48.50</Data>
+</Cell>
+</Row>
+<Row ss:Index="37" ss:StyleID="">
+<Cell ss:Index="2"><Data ss:Type="Number">26</Data>
+</Cell>
+<Cell ss:Index="3"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="4"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="5"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="8"><Data ss:Type="DateTime">2024-03-26T00:00:00.000</Data>
+</Cell>
+<Cell ss:Index="11"><Data ss:Type="String">4</Data>
+</Cell>
+<Cell ss:Index="19"><Data ss:Type="String">US123456789</Data>
+</Cell>
+<Cell ss:Index="20"><Data ss:Type="String">Shares Netflix Profit on exchange</Data>
+</Cell>
+<Cell ss:Index="22"><Data ss:Type="String">Shares Netflix</Data>
+</Cell>
+<Cell ss:Index="23"><Data ss:Type="String">Shares Netflix</Data>
+</Cell>
+<Cell ss:Index="24"><Data ss:Type="String">Realized exchange profit</Data>
+</Cell>
+<Cell ss:Index="25"><Data ss:Type="String">Realized exchange rate profit on sale</Data>
+</Cell>
+<Cell ss:Index="30"><Data ss:Type="String">CHF</Data>
+</Cell>
+<Cell ss:Index="33"><Data ss:Type="Number">22.00</Data>
+</Cell>
+</Row>
+<Row ss:Index="38" ss:StyleID="">
+<Cell ss:Index="2"><Data ss:Type="Number">27</Data>
+</Cell>
+<Cell ss:Index="3"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="4"><Data ss:Type="Number">115</Data>
+</Cell>
+<Cell ss:Index="5"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="32"><Data ss:Type="Number">-1.000000000000</Data>
+</Cell>
+</Row>
+<Row ss:Index="39" ss:StyleID="">
+<Cell ss:Index="2"><Data ss:Type="Number">28</Data>
+</Cell>
+<Cell ss:Index="3"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="4"><Data ss:Type="Number">279</Data>
+</Cell>
+<Cell ss:Index="5"><Data ss:Type="Number">0</Data>
+</Cell>
+</Row>
+<Row ss:Index="40" ss:StyleID="">
+<Cell ss:Index="2"><Data ss:Type="Number">29</Data>
+</Cell>
+<Cell ss:Index="3"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="4"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="5"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="8"><Data ss:Type="DateTime">2024-04-26T00:00:00.000</Data>
+</Cell>
+<Cell ss:Index="11"><Data ss:Type="String">5</Data>
+</Cell>
+<Cell ss:Index="18"><Data ss:Type="String">somebankref1</Data>
+</Cell>
+<Cell ss:Index="19"><Data ss:Type="String">US123456789</Data>
+</Cell>
+<Cell ss:Index="20"><Data ss:Type="String">Shares Netflix Total Sale</Data>
+</Cell>
+<Cell ss:Index="24"><Data ss:Type="String">Shares Netflix</Data>
+</Cell>
+<Cell ss:Index="25"><Data ss:Type="String">Shares Netflix</Data>
+</Cell>
+<Cell ss:Index="26"><Data ss:Type="Number">-100.0000</Data>
+</Cell>
+<Cell ss:Index="28"><Data ss:Type="Number">11.5562</Data>
+</Cell>
+<Cell ss:Index="29"><Data ss:Type="Number">1155.62</Data>
+</Cell>
+<Cell ss:Index="30"><Data ss:Type="String">USD</Data>
+</Cell>
+<Cell ss:Index="31"><Data ss:Type="Number">0.945000000000</Data>
+</Cell>
+<Cell ss:Index="32"><Data ss:Type="Number">-1.000000000000</Data>
+</Cell>
+<Cell ss:Index="33"><Data ss:Type="Number">1092.06</Data>
+</Cell>
+<Cell ss:Index="34"><Data ss:Type="Number">-1092.06</Data>
+</Cell>
+</Row>
+<Row ss:Index="41" ss:StyleID="">
+<Cell ss:Index="2"><Data ss:Type="Number">30</Data>
+</Cell>
+<Cell ss:Index="3"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="4"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="5"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="8"><Data ss:Type="DateTime">2024-04-26T00:00:00.000</Data>
+</Cell>
+<Cell ss:Index="11"><Data ss:Type="String">5</Data>
+</Cell>
+<Cell ss:Index="19"><Data ss:Type="String">US123456789</Data>
+</Cell>
+<Cell ss:Index="20"><Data ss:Type="String">Shares Netflix Bank Charges</Data>
+</Cell>
+<Cell ss:Index="22"><Data ss:Type="String">Bank charges</Data>
+</Cell>
+<Cell ss:Index="23"><Data ss:Type="String">Bank service charges</Data>
+</Cell>
+<Cell ss:Index="29"><Data ss:Type="Number">42.33</Data>
+</Cell>
+<Cell ss:Index="30"><Data ss:Type="String">USD</Data>
+</Cell>
+<Cell ss:Index="31"><Data ss:Type="Number">0.945000000000</Data>
+</Cell>
+<Cell ss:Index="32"><Data ss:Type="Number">-1.000000000000</Data>
+</Cell>
+<Cell ss:Index="33"><Data ss:Type="Number">40.00</Data>
+</Cell>
+<Cell ss:Index="34"><Data ss:Type="Number">-1052.06</Data>
+</Cell>
+</Row>
+<Row ss:Index="42" ss:StyleID="">
+<Cell ss:Index="2"><Data ss:Type="Number">31</Data>
+</Cell>
+<Cell ss:Index="3"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="4"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="5"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="8"><Data ss:Type="DateTime">2024-04-26T00:00:00.000</Data>
+</Cell>
+<Cell ss:Index="11"><Data ss:Type="String">5</Data>
+</Cell>
+<Cell ss:Index="19"><Data ss:Type="String">US123456789</Data>
+</Cell>
+<Cell ss:Index="20"><Data ss:Type="String">Shares Netflix Cashed net</Data>
+</Cell>
+<Cell ss:Index="22"><Data ss:Type="String">Bank USD</Data>
+</Cell>
+<Cell ss:Index="23"><Data ss:Type="String">Bank assets USD</Data>
+</Cell>
+<Cell ss:Index="29"><Data ss:Type="Number">1113.29</Data>
+</Cell>
+<Cell ss:Index="30"><Data ss:Type="String">USD</Data>
+</Cell>
+<Cell ss:Index="31"><Data ss:Type="Number">0.945000000000</Data>
+</Cell>
+<Cell ss:Index="32"><Data ss:Type="Number">-1.000000000000</Data>
+</Cell>
+<Cell ss:Index="33"><Data ss:Type="Number">1052.06</Data>
+</Cell>
+</Row>
+<Row ss:Index="43" ss:StyleID="">
+<Cell ss:Index="2"><Data ss:Type="Number">32</Data>
+</Cell>
+<Cell ss:Index="3"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="4"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="5"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="8"><Data ss:Type="DateTime">2024-04-26T00:00:00.000</Data>
+</Cell>
+<Cell ss:Index="11"><Data ss:Type="String">5</Data>
+</Cell>
+<Cell ss:Index="19"><Data ss:Type="String">US123456789</Data>
+</Cell>
+<Cell ss:Index="20"><Data ss:Type="String">Shares Netflix Profit on sale</Data>
+</Cell>
+<Cell ss:Index="22"><Data ss:Type="String">Shares Netflix</Data>
+</Cell>
+<Cell ss:Index="23"><Data ss:Type="String">Shares Netflix</Data>
+</Cell>
+<Cell ss:Index="24"><Data ss:Type="String">Realized profit</Data>
+</Cell>
+<Cell ss:Index="25"><Data ss:Type="String">Realized profit on sale</Data>
+</Cell>
+<Cell ss:Index="29"><Data ss:Type="Number">55.62</Data>
+</Cell>
+<Cell ss:Index="30"><Data ss:Type="String">USD</Data>
+</Cell>
+<Cell ss:Index="31"><Data ss:Type="Number">0.945000000000</Data>
+</Cell>
+<Cell ss:Index="32"><Data ss:Type="Number">-1.000000000000</Data>
+</Cell>
+<Cell ss:Index="33"><Data ss:Type="Number">52.56</Data>
+</Cell>
+</Row>
+<Row ss:Index="44" ss:StyleID="">
+<Cell ss:Index="2"><Data ss:Type="Number">33</Data>
+</Cell>
+<Cell ss:Index="3"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="4"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="5"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="8"><Data ss:Type="DateTime">2024-04-26T00:00:00.000</Data>
+</Cell>
+<Cell ss:Index="11"><Data ss:Type="String">5</Data>
+</Cell>
+<Cell ss:Index="19"><Data ss:Type="String">US123456789</Data>
+</Cell>
+<Cell ss:Index="20"><Data ss:Type="String">Shares Netflix Profit on exchange</Data>
+</Cell>
+<Cell ss:Index="22"><Data ss:Type="String">Realized exchange loss</Data>
+</Cell>
+<Cell ss:Index="23"><Data ss:Type="String">Realized exchange rate loss on sale</Data>
+</Cell>
+<Cell ss:Index="24"><Data ss:Type="String">Shares Netflix</Data>
+</Cell>
+<Cell ss:Index="25"><Data ss:Type="String">Shares Netflix</Data>
+</Cell>
+<Cell ss:Index="30"><Data ss:Type="String">CHF</Data>
+</Cell>
+<Cell ss:Index="33"><Data ss:Type="Number">5.50</Data>
+</Cell>
+</Row>
+<Row ss:Index="45" ss:StyleID="">
+<Cell ss:Index="2"><Data ss:Type="Number">34</Data>
+</Cell>
+<Cell ss:Index="3"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="4"><Data ss:Type="Number">288</Data>
+</Cell>
+<Cell ss:Index="5"><Data ss:Type="Number">0</Data>
+</Cell>
+</Row>
+<Row ss:Index="46" ss:StyleID="">
+<Cell ss:Index="2"><Data ss:Type="Number">35</Data>
+</Cell>
+<Cell ss:Index="3"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="4"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="5"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="20"><Data ss:Type="String">Operation with Bonds on a foreign currency</Data>
+</Cell>
+</Row>
+<Row ss:Index="47" ss:StyleID="">
+<Cell ss:Index="2"><Data ss:Type="Number">36</Data>
+</Cell>
+<Cell ss:Index="3"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="4"><Data ss:Type="Number">303</Data>
+</Cell>
+<Cell ss:Index="5"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="20"><Data ss:Type="String">Purchase</Data>
+</Cell>
+</Row>
+<Row ss:Index="48" ss:StyleID="">
+<Cell ss:Index="2"><Data ss:Type="Number">37</Data>
+</Cell>
+<Cell ss:Index="3"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="4"><Data ss:Type="Number">289</Data>
+</Cell>
+<Cell ss:Index="5"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="8"><Data ss:Type="DateTime">2024-05-25T00:00:00.000</Data>
+</Cell>
+<Cell ss:Index="11"><Data ss:Type="String">6</Data>
+</Cell>
+<Cell ss:Index="19"><Data ss:Type="String">IT000792468</Data>
+</Cell>
+<Cell ss:Index="20"><Data ss:Type="String">Bonds Bnp Paribas purchase</Data>
+</Cell>
+<Cell ss:Index="22"><Data ss:Type="String">Bonds EUR</Data>
+</Cell>
+<Cell ss:Index="23"><Data ss:Type="String">Bonds EUR</Data>
+</Cell>
+<Cell ss:Index="26"><Data ss:Type="Number">5000.0000</Data>
+</Cell>
+<Cell ss:Index="27"><Data ss:Type="String">B</Data>
+</Cell>
+<Cell ss:Index="28"><Data ss:Type="Number">0.9800</Data>
+</Cell>
+<Cell ss:Index="29"><Data ss:Type="Number">4900.00</Data>
+</Cell>
+<Cell ss:Index="30"><Data ss:Type="String">EUR</Data>
+</Cell>
+<Cell ss:Index="31"><Data ss:Type="Number">1.100000000000</Data>
+</Cell>
+<Cell ss:Index="32"><Data ss:Type="Number">-1.000000000000</Data>
+</Cell>
+<Cell ss:Index="33"><Data ss:Type="Number">5390.00</Data>
+</Cell>
+<Cell ss:Index="34"><Data ss:Type="Number">5390.00</Data>
+</Cell>
+</Row>
+<Row ss:Index="49" ss:StyleID="">
+<Cell ss:Index="2"><Data ss:Type="Number">38</Data>
+</Cell>
+<Cell ss:Index="3"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="4"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="5"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="8"><Data ss:Type="DateTime">2024-05-25T00:00:00.000</Data>
+</Cell>
+<Cell ss:Index="11"><Data ss:Type="String">6</Data>
+</Cell>
+<Cell ss:Index="19"><Data ss:Type="String">IT000792468</Data>
+</Cell>
+<Cell ss:Index="20"><Data ss:Type="String">Bonds Bnp Paribas Bank Charges</Data>
+</Cell>
+<Cell ss:Index="22"><Data ss:Type="String">Bank charges</Data>
+</Cell>
+<Cell ss:Index="23"><Data ss:Type="String">Bank service charges</Data>
+</Cell>
+<Cell ss:Index="27"><Data ss:Type="String">B</Data>
+</Cell>
+<Cell ss:Index="29"><Data ss:Type="Number">55.00</Data>
+</Cell>
+<Cell ss:Index="30"><Data ss:Type="String">EUR</Data>
+</Cell>
+<Cell ss:Index="31"><Data ss:Type="Number">1.100000000000</Data>
+</Cell>
+<Cell ss:Index="32"><Data ss:Type="Number">-1.000000000000</Data>
+</Cell>
+<Cell ss:Index="33"><Data ss:Type="Number">60.50</Data>
+</Cell>
+<Cell ss:Index="34"><Data ss:Type="Number">5450.50</Data>
+</Cell>
+</Row>
+<Row ss:Index="50" ss:StyleID="">
+<Cell ss:Index="2"><Data ss:Type="Number">39</Data>
+</Cell>
+<Cell ss:Index="3"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="4"><Data ss:Type="Number">290</Data>
+</Cell>
+<Cell ss:Index="5"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="8"><Data ss:Type="DateTime">2024-05-25T00:00:00.000</Data>
+</Cell>
+<Cell ss:Index="11"><Data ss:Type="String">6</Data>
+</Cell>
+<Cell ss:Index="19"><Data ss:Type="String">IT000792468</Data>
+</Cell>
+<Cell ss:Index="20"><Data ss:Type="String">Bonds Bnp Paribas pro-rata interest of 4% 15.09-25.05</Data>
+</Cell>
+<Cell ss:Index="22"><Data ss:Type="String">Interests payed</Data>
+</Cell>
+<Cell ss:Index="23"><Data ss:Type="String">Interests payed</Data>
+</Cell>
+<Cell ss:Index="27"><Data ss:Type="String">B</Data>
+</Cell>
+<Cell ss:Index="29"><Data ss:Type="Number">94.45</Data>
+</Cell>
+<Cell ss:Index="30"><Data ss:Type="String">EUR</Data>
+</Cell>
+<Cell ss:Index="31"><Data ss:Type="Number">1.100000000000</Data>
+</Cell>
+<Cell ss:Index="32"><Data ss:Type="Number">-1.000000000000</Data>
+</Cell>
+<Cell ss:Index="33"><Data ss:Type="Number">103.90</Data>
+</Cell>
+<Cell ss:Index="34"><Data ss:Type="Number">5554.40</Data>
+</Cell>
+</Row>
+<Row ss:Index="51" ss:StyleID="">
+<Cell ss:Index="2"><Data ss:Type="Number">40</Data>
+</Cell>
+<Cell ss:Index="3"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="4"><Data ss:Type="Number">291</Data>
+</Cell>
+<Cell ss:Index="5"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="8"><Data ss:Type="DateTime">2024-05-25T00:00:00.000</Data>
+</Cell>
+<Cell ss:Index="11"><Data ss:Type="String">6</Data>
+</Cell>
+<Cell ss:Index="19"><Data ss:Type="String">IT000792468</Data>
+</Cell>
+<Cell ss:Index="20"><Data ss:Type="String">Bonds Bnp Paribas Payment</Data>
+</Cell>
+<Cell ss:Index="24"><Data ss:Type="String">Bank EUR</Data>
+</Cell>
+<Cell ss:Index="25"><Data ss:Type="String">Bank assets EUR</Data>
+</Cell>
+<Cell ss:Index="27"><Data ss:Type="String">B</Data>
+</Cell>
+<Cell ss:Index="29"><Data ss:Type="Number">5049.45</Data>
+</Cell>
+<Cell ss:Index="30"><Data ss:Type="String">EUR</Data>
+</Cell>
+<Cell ss:Index="31"><Data ss:Type="Number">1.100000000000</Data>
+</Cell>
+<Cell ss:Index="32"><Data ss:Type="Number">-1.000000000000</Data>
+</Cell>
+<Cell ss:Index="33"><Data ss:Type="Number">5554.40</Data>
+</Cell>
+</Row>
+<Row ss:Index="52" ss:StyleID="">
+<Cell ss:Index="2"><Data ss:Type="Number">41</Data>
+</Cell>
+<Cell ss:Index="3"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="4"><Data ss:Type="Number">304</Data>
+</Cell>
+<Cell ss:Index="5"><Data ss:Type="Number">0</Data>
+</Cell>
+</Row>
+<Row ss:Index="53" ss:StyleID="">
+<Cell ss:Index="2"><Data ss:Type="Number">42</Data>
+</Cell>
+<Cell ss:Index="3"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="4"><Data ss:Type="Number">302</Data>
+</Cell>
+<Cell ss:Index="5"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="20"><Data ss:Type="String">Collection of interest</Data>
+</Cell>
+</Row>
+<Row ss:Index="54" ss:StyleID="">
+<Cell ss:Index="2"><Data ss:Type="Number">43</Data>
+</Cell>
+<Cell ss:Index="3"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="4"><Data ss:Type="Number">301</Data>
+</Cell>
+<Cell ss:Index="5"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="8"><Data ss:Type="DateTime">2024-09-15T00:00:00.000</Data>
+</Cell>
+<Cell ss:Index="11"><Data ss:Type="String">7</Data>
+</Cell>
+<Cell ss:Index="19"><Data ss:Type="String">IT000792468</Data>
+</Cell>
+<Cell ss:Index="20"><Data ss:Type="String">Bonds Bnp Paribas Net interest</Data>
+</Cell>
+<Cell ss:Index="22"><Data ss:Type="String">Bank EUR</Data>
+</Cell>
+<Cell ss:Index="23"><Data ss:Type="String">Bank assets EUR</Data>
+</Cell>
+<Cell ss:Index="27"><Data ss:Type="String">B</Data>
+</Cell>
+<Cell ss:Index="29"><Data ss:Type="Number">130.00</Data>
+</Cell>
+<Cell ss:Index="30"><Data ss:Type="String">EUR</Data>
+</Cell>
+<Cell ss:Index="31"><Data ss:Type="Number">1.110000000000</Data>
+</Cell>
+<Cell ss:Index="32"><Data ss:Type="Number">-1.000000000000</Data>
+</Cell>
+<Cell ss:Index="33"><Data ss:Type="Number">144.30</Data>
+</Cell>
+<Cell ss:Index="34"><Data ss:Type="Number">144.30</Data>
+</Cell>
+</Row>
+<Row ss:Index="55" ss:StyleID="">
+<Cell ss:Index="2"><Data ss:Type="Number">44</Data>
+</Cell>
+<Cell ss:Index="3"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="4"><Data ss:Type="Number">300</Data>
+</Cell>
+<Cell ss:Index="5"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="8"><Data ss:Type="DateTime">2024-09-15T00:00:00.000</Data>
+</Cell>
+<Cell ss:Index="11"><Data ss:Type="String">7</Data>
+</Cell>
+<Cell ss:Index="19"><Data ss:Type="String">IT000792468</Data>
+</Cell>
+<Cell ss:Index="20"><Data ss:Type="String">Bonds Bnp Paribas Recovery of Withholding Tax (35%)</Data>
+</Cell>
+<Cell ss:Index="22"><Data ss:Type="String">Credits for Withholding tax</Data>
+</Cell>
+<Cell ss:Index="23"><Data ss:Type="String">Credit for witholding tax</Data>
+</Cell>
+<Cell ss:Index="27"><Data ss:Type="String">B</Data>
+</Cell>
+<Cell ss:Index="29"><Data ss:Type="Number">70.00</Data>
+</Cell>
+<Cell ss:Index="30"><Data ss:Type="String">EUR</Data>
+</Cell>
+<Cell ss:Index="31"><Data ss:Type="Number">1.110000000000</Data>
+</Cell>
+<Cell ss:Index="32"><Data ss:Type="Number">-1.000000000000</Data>
+</Cell>
+<Cell ss:Index="33"><Data ss:Type="Number">77.70</Data>
+</Cell>
+<Cell ss:Index="34"><Data ss:Type="Number">222.00</Data>
+</Cell>
+</Row>
+<Row ss:Index="56" ss:StyleID="">
+<Cell ss:Index="2"><Data ss:Type="Number">45</Data>
+</Cell>
+<Cell ss:Index="3"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="4"><Data ss:Type="Number">299</Data>
+</Cell>
+<Cell ss:Index="5"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="8"><Data ss:Type="DateTime">2024-09-15T00:00:00.000</Data>
+</Cell>
+<Cell ss:Index="11"><Data ss:Type="String">7</Data>
+</Cell>
+<Cell ss:Index="19"><Data ss:Type="String">IT000792468</Data>
+</Cell>
+<Cell ss:Index="20"><Data ss:Type="String">Bonds Bnp Paribas total Interest</Data>
+</Cell>
+<Cell ss:Index="24"><Data ss:Type="String">Interest income</Data>
+</Cell>
+<Cell ss:Index="25"><Data ss:Type="String">Interest income</Data>
+</Cell>
+<Cell ss:Index="27"><Data ss:Type="String">B</Data>
+</Cell>
+<Cell ss:Index="29"><Data ss:Type="Number">200.00</Data>
+</Cell>
+<Cell ss:Index="30"><Data ss:Type="String">EUR</Data>
+</Cell>
+<Cell ss:Index="31"><Data ss:Type="Number">1.110000000000</Data>
+</Cell>
+<Cell ss:Index="32"><Data ss:Type="Number">-1.000000000000</Data>
+</Cell>
+<Cell ss:Index="33"><Data ss:Type="Number">222.00</Data>
+</Cell>
+</Row>
+<Row ss:Index="57" ss:StyleID="">
+<Cell ss:Index="2"><Data ss:Type="Number">46</Data>
+</Cell>
+<Cell ss:Index="3"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="4"><Data ss:Type="Number">298</Data>
+</Cell>
+<Cell ss:Index="5"><Data ss:Type="Number">0</Data>
+</Cell>
+</Row>
+<Row ss:Index="58" ss:StyleID="">
+<Cell ss:Index="2"><Data ss:Type="Number">47</Data>
+</Cell>
+<Cell ss:Index="3"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="4"><Data ss:Type="Number">297</Data>
+</Cell>
+<Cell ss:Index="5"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="20"><Data ss:Type="String">Bonds Sale Example</Data>
+</Cell>
+</Row>
+<Row ss:Index="59" ss:StyleID="">
+<Cell ss:Index="2"><Data ss:Type="Number">48</Data>
+</Cell>
+<Cell ss:Index="3"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="4"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="5"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="8"><Data ss:Type="DateTime">2024-10-31T00:00:00.000</Data>
+</Cell>
+<Cell ss:Index="11"><Data ss:Type="String">8</Data>
+</Cell>
+<Cell ss:Index="19"><Data ss:Type="String">IT000792468</Data>
+</Cell>
+<Cell ss:Index="20"><Data ss:Type="String">Bonds Bnp Paribas</Data>
+</Cell>
+<Cell ss:Index="24"><Data ss:Type="String">Bonds EUR</Data>
+</Cell>
+<Cell ss:Index="25"><Data ss:Type="String">Bonds EUR</Data>
+</Cell>
+<Cell ss:Index="26"><Data ss:Type="Number">-5000.0000</Data>
+</Cell>
+<Cell ss:Index="27"><Data ss:Type="String">B</Data>
+</Cell>
+<Cell ss:Index="28"><Data ss:Type="Number">1.0250</Data>
+</Cell>
+<Cell ss:Index="29"><Data ss:Type="Number">5125.00</Data>
+</Cell>
+<Cell ss:Index="30"><Data ss:Type="String">EUR</Data>
+</Cell>
+<Cell ss:Index="31"><Data ss:Type="Number">1.130000000000</Data>
+</Cell>
+<Cell ss:Index="32"><Data ss:Type="Number">-1.000000000000</Data>
+</Cell>
+<Cell ss:Index="33"><Data ss:Type="Number">5791.25</Data>
+</Cell>
+<Cell ss:Index="34"><Data ss:Type="Number">-5791.25</Data>
+</Cell>
+</Row>
+<Row ss:Index="60" ss:StyleID="">
+<Cell ss:Index="2"><Data ss:Type="Number">49</Data>
+</Cell>
+<Cell ss:Index="3"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="4"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="5"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="8"><Data ss:Type="DateTime">2024-10-31T00:00:00.000</Data>
+</Cell>
+<Cell ss:Index="11"><Data ss:Type="String">8</Data>
+</Cell>
+<Cell ss:Index="19"><Data ss:Type="String">IT000792468</Data>
+</Cell>
+<Cell ss:Index="20"><Data ss:Type="String">Bonds Bnp Paribas Bank charges</Data>
+</Cell>
+<Cell ss:Index="22"><Data ss:Type="String">Bank charges</Data>
+</Cell>
+<Cell ss:Index="23"><Data ss:Type="String">Bank service charges</Data>
+</Cell>
+<Cell ss:Index="29"><Data ss:Type="Number">55.00</Data>
+</Cell>
+<Cell ss:Index="30"><Data ss:Type="String">EUR</Data>
+</Cell>
+<Cell ss:Index="31"><Data ss:Type="Number">1.130000000000</Data>
+</Cell>
+<Cell ss:Index="32"><Data ss:Type="Number">-1.000000000000</Data>
+</Cell>
+<Cell ss:Index="33"><Data ss:Type="Number">62.15</Data>
+</Cell>
+<Cell ss:Index="34"><Data ss:Type="Number">-5729.10</Data>
+</Cell>
+</Row>
+<Row ss:Index="61" ss:StyleID="">
+<Cell ss:Index="2"><Data ss:Type="Number">50</Data>
+</Cell>
+<Cell ss:Index="3"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="4"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="5"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="8"><Data ss:Type="DateTime">2024-10-31T00:00:00.000</Data>
+</Cell>
+<Cell ss:Index="11"><Data ss:Type="String">8</Data>
+</Cell>
+<Cell ss:Index="19"><Data ss:Type="String">IT000792468</Data>
+</Cell>
+<Cell ss:Index="20"><Data ss:Type="String">Bonds Bnp Paribas Accrued interests, period 15.09.2024 - 31.10.2024</Data>
+</Cell>
+<Cell ss:Index="24"><Data ss:Type="String">Interest income</Data>
+</Cell>
+<Cell ss:Index="25"><Data ss:Type="String">Interest income</Data>
+</Cell>
+<Cell ss:Index="29"><Data ss:Type="Number">25.56</Data>
+</Cell>
+<Cell ss:Index="30"><Data ss:Type="String">EUR</Data>
+</Cell>
+<Cell ss:Index="31"><Data ss:Type="Number">1.130000000000</Data>
+</Cell>
+<Cell ss:Index="32"><Data ss:Type="Number">-1.000000000000</Data>
+</Cell>
+<Cell ss:Index="33"><Data ss:Type="Number">28.88</Data>
+</Cell>
+<Cell ss:Index="34"><Data ss:Type="Number">-5757.98</Data>
+</Cell>
+</Row>
+<Row ss:Index="62" ss:StyleID="">
+<Cell ss:Index="2"><Data ss:Type="Number">51</Data>
+</Cell>
+<Cell ss:Index="3"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="4"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="5"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="8"><Data ss:Type="DateTime">2024-10-31T00:00:00.000</Data>
+</Cell>
+<Cell ss:Index="11"><Data ss:Type="String">8</Data>
+</Cell>
+<Cell ss:Index="19"><Data ss:Type="String">IT000792468</Data>
+</Cell>
+<Cell ss:Index="20"><Data ss:Type="String">Bonds Bnp Paribas Cashed Net</Data>
+</Cell>
+<Cell ss:Index="22"><Data ss:Type="String">Bank EUR</Data>
+</Cell>
+<Cell ss:Index="23"><Data ss:Type="String">Bank assets EUR</Data>
+</Cell>
+<Cell ss:Index="29"><Data ss:Type="Number">5095.56</Data>
+</Cell>
+<Cell ss:Index="30"><Data ss:Type="String">EUR</Data>
+</Cell>
+<Cell ss:Index="31"><Data ss:Type="Number">1.130000000000</Data>
+</Cell>
+<Cell ss:Index="32"><Data ss:Type="Number">-1.000000000000</Data>
+</Cell>
+<Cell ss:Index="33"><Data ss:Type="Number">5757.98</Data>
+</Cell>
+</Row>
+<Row ss:Index="63" ss:StyleID="">
+<Cell ss:Index="2"><Data ss:Type="Number">52</Data>
+</Cell>
+<Cell ss:Index="3"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="4"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="5"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="8"><Data ss:Type="DateTime">2024-10-31T00:00:00.000</Data>
+</Cell>
+<Cell ss:Index="11"><Data ss:Type="String">8</Data>
+</Cell>
+<Cell ss:Index="19"><Data ss:Type="String">IT000792468</Data>
+</Cell>
+<Cell ss:Index="20"><Data ss:Type="String">Bonds Bnp Paribas Result on sale</Data>
+</Cell>
+<Cell ss:Index="22"><Data ss:Type="String">Bonds EUR</Data>
+</Cell>
+<Cell ss:Index="23"><Data ss:Type="String">Bonds EUR</Data>
+</Cell>
+<Cell ss:Index="24"><Data ss:Type="String">Realized profit</Data>
+</Cell>
+<Cell ss:Index="25"><Data ss:Type="String">Realized profit on sale</Data>
+</Cell>
+<Cell ss:Index="29"><Data ss:Type="Number">225.00</Data>
+</Cell>
+<Cell ss:Index="30"><Data ss:Type="String">EUR</Data>
+</Cell>
+<Cell ss:Index="31"><Data ss:Type="Number">1.130000000000</Data>
+</Cell>
+<Cell ss:Index="32"><Data ss:Type="Number">-1.000000000000</Data>
+</Cell>
+<Cell ss:Index="33"><Data ss:Type="Number">254.25</Data>
+</Cell>
+</Row>
+<Row ss:Index="64" ss:StyleID="">
+<Cell ss:Index="2"><Data ss:Type="Number">53</Data>
+</Cell>
+<Cell ss:Index="3"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="4"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="5"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="8"><Data ss:Type="DateTime">2024-10-31T00:00:00.000</Data>
+</Cell>
+<Cell ss:Index="11"><Data ss:Type="String">8</Data>
+</Cell>
+<Cell ss:Index="19"><Data ss:Type="String">IT000792468</Data>
+</Cell>
+<Cell ss:Index="20"><Data ss:Type="String">Bonds Bnp Paribas</Data>
+</Cell>
+<Cell ss:Index="22"><Data ss:Type="String">Bonds EUR</Data>
+</Cell>
+<Cell ss:Index="23"><Data ss:Type="String">Bonds EUR</Data>
+</Cell>
+<Cell ss:Index="24"><Data ss:Type="String">Realized exchange profit</Data>
+</Cell>
+<Cell ss:Index="25"><Data ss:Type="String">Realized exchange rate profit on sale</Data>
+</Cell>
+<Cell ss:Index="27"><Data ss:Type="String">B</Data>
+</Cell>
+<Cell ss:Index="30"><Data ss:Type="String">CHF</Data>
+</Cell>
+<Cell ss:Index="33"><Data ss:Type="Number">147.00</Data>
+</Cell>
+</Row>
+<Row ss:Index="65" ss:StyleID="">
+<Cell ss:Index="2"><Data ss:Type="Number">54</Data>
+</Cell>
+<Cell ss:Index="3"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="4"><Data ss:Type="Number">450</Data>
+</Cell>
+<Cell ss:Index="5"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="20"><Data ss:Type="String">Operations with Stock on base currency</Data>
+</Cell>
+</Row>
+<Row ss:Index="66" ss:StyleID="">
+<Cell ss:Index="2"><Data ss:Type="Number">55</Data>
+</Cell>
+<Cell ss:Index="3"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="4"><Data ss:Type="Number">569</Data>
+</Cell>
+<Cell ss:Index="5"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="20"><Data ss:Type="String">Purchase and Sale of multiple securities on same account</Data>
+</Cell>
+</Row>
+<Row ss:Index="67" ss:StyleID="">
+<Cell ss:Index="2"><Data ss:Type="Number">56</Data>
+</Cell>
+<Cell ss:Index="3"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="4"><Data ss:Type="Number">570</Data>
+</Cell>
+<Cell ss:Index="5"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="20"><Data ss:Type="String">Sale of some part of securities is done on the new year file</Data>
+</Cell>
+</Row>
+<Row ss:Index="68" ss:StyleID="">
+<Cell ss:Index="2"><Data ss:Type="Number">57</Data>
+</Cell>
+<Cell ss:Index="3"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="4"><Data ss:Type="Number">571</Data>
+</Cell>
+<Cell ss:Index="5"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="8"><Data ss:Type="DateTime">2024-11-29T00:00:00.000</Data>
+</Cell>
+<Cell ss:Index="11"><Data ss:Type="String">9</Data>
+</Cell>
+<Cell ss:Index="19"><Data ss:Type="String">CH003886335</Data>
+</Cell>
+<Cell ss:Index="20"><Data ss:Type="String">Shares UBS Purchase 1</Data>
+</Cell>
+<Cell ss:Index="22"><Data ss:Type="String">Shares CHF</Data>
+</Cell>
+<Cell ss:Index="23"><Data ss:Type="String">Shares CHF </Data>
+</Cell>
+<Cell ss:Index="26"><Data ss:Type="Number">150.0000</Data>
+</Cell>
+<Cell ss:Index="27"><Data ss:Type="String">S</Data>
+</Cell>
+<Cell ss:Index="28"><Data ss:Type="Number">12.8264</Data>
+</Cell>
+<Cell ss:Index="29"><Data ss:Type="Number">1923.96</Data>
+</Cell>
+<Cell ss:Index="30"><Data ss:Type="String">CHF</Data>
+</Cell>
+<Cell ss:Index="31"><Data ss:Type="Number">1</Data>
+</Cell>
+<Cell ss:Index="33"><Data ss:Type="Number">1923.96</Data>
+</Cell>
+<Cell ss:Index="34"><Data ss:Type="Number">1923.96</Data>
+</Cell>
+</Row>
+<Row ss:Index="69" ss:StyleID="">
+<Cell ss:Index="2"><Data ss:Type="Number">58</Data>
+</Cell>
+<Cell ss:Index="3"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="4"><Data ss:Type="Number">575</Data>
+</Cell>
+<Cell ss:Index="5"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="8"><Data ss:Type="DateTime">2024-11-29T00:00:00.000</Data>
+</Cell>
+<Cell ss:Index="11"><Data ss:Type="String">9</Data>
+</Cell>
+<Cell ss:Index="19"><Data ss:Type="String">CH003886335</Data>
+</Cell>
+<Cell ss:Index="20"><Data ss:Type="String">Shares UBS Bank Charges</Data>
+</Cell>
+<Cell ss:Index="22"><Data ss:Type="String">Bank charges</Data>
+</Cell>
+<Cell ss:Index="23"><Data ss:Type="String">Bank service charges</Data>
+</Cell>
+<Cell ss:Index="27"><Data ss:Type="String">S</Data>
+</Cell>
+<Cell ss:Index="29"><Data ss:Type="Number">22.00</Data>
+</Cell>
+<Cell ss:Index="30"><Data ss:Type="String">CHF</Data>
+</Cell>
+<Cell ss:Index="31"><Data ss:Type="Number">1</Data>
+</Cell>
+<Cell ss:Index="33"><Data ss:Type="Number">22.00</Data>
+</Cell>
+<Cell ss:Index="34"><Data ss:Type="Number">1945.96</Data>
+</Cell>
+</Row>
+<Row ss:Index="70" ss:StyleID="">
+<Cell ss:Index="2"><Data ss:Type="Number">59</Data>
+</Cell>
+<Cell ss:Index="3"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="4"><Data ss:Type="Number">574</Data>
+</Cell>
+<Cell ss:Index="5"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="8"><Data ss:Type="DateTime">2024-11-29T00:00:00.000</Data>
+</Cell>
+<Cell ss:Index="11"><Data ss:Type="String">9</Data>
+</Cell>
+<Cell ss:Index="19"><Data ss:Type="String">CH003886335</Data>
+</Cell>
+<Cell ss:Index="20"><Data ss:Type="String">Shares UBS Payment</Data>
+</Cell>
+<Cell ss:Index="24"><Data ss:Type="String">Bank CHF</Data>
+</Cell>
+<Cell ss:Index="25"><Data ss:Type="String">Bank assets CHF</Data>
+</Cell>
+<Cell ss:Index="27"><Data ss:Type="String">S</Data>
+</Cell>
+<Cell ss:Index="29"><Data ss:Type="Number">1945.96</Data>
+</Cell>
+<Cell ss:Index="30"><Data ss:Type="String">CHF</Data>
+</Cell>
+<Cell ss:Index="31"><Data ss:Type="Number">1</Data>
+</Cell>
+<Cell ss:Index="33"><Data ss:Type="Number">1945.96</Data>
+</Cell>
+</Row>
+<Row ss:Index="71" ss:StyleID="">
+<Cell ss:Index="2"><Data ss:Type="Number">60</Data>
+</Cell>
+<Cell ss:Index="3"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="4"><Data ss:Type="Number">581</Data>
+</Cell>
+<Cell ss:Index="5"><Data ss:Type="Number">0</Data>
+</Cell>
+</Row>
+<Row ss:Index="72" ss:StyleID="">
+<Cell ss:Index="2"><Data ss:Type="Number">61</Data>
+</Cell>
+<Cell ss:Index="3"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="4"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="5"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="8"><Data ss:Type="DateTime">2024-11-30T00:00:00.000</Data>
+</Cell>
+<Cell ss:Index="11"><Data ss:Type="String">10</Data>
+</Cell>
+<Cell ss:Index="19"><Data ss:Type="String">CH003886335</Data>
+</Cell>
+<Cell ss:Index="20"><Data ss:Type="String">Shares UBS Purchase 2</Data>
+</Cell>
+<Cell ss:Index="22"><Data ss:Type="String">Shares CHF</Data>
+</Cell>
+<Cell ss:Index="23"><Data ss:Type="String">Shares CHF </Data>
+</Cell>
+<Cell ss:Index="26"><Data ss:Type="Number">50.0000</Data>
+</Cell>
+<Cell ss:Index="27"><Data ss:Type="String">S</Data>
+</Cell>
+<Cell ss:Index="28"><Data ss:Type="Number">12.8111</Data>
+</Cell>
+<Cell ss:Index="29"><Data ss:Type="Number">640.56</Data>
+</Cell>
+<Cell ss:Index="30"><Data ss:Type="String">CHF</Data>
+</Cell>
+<Cell ss:Index="31"><Data ss:Type="Number">1</Data>
+</Cell>
+<Cell ss:Index="33"><Data ss:Type="Number">640.56</Data>
+</Cell>
+<Cell ss:Index="34"><Data ss:Type="Number">640.56</Data>
+</Cell>
+</Row>
+<Row ss:Index="73" ss:StyleID="">
+<Cell ss:Index="2"><Data ss:Type="Number">62</Data>
+</Cell>
+<Cell ss:Index="3"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="4"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="5"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="8"><Data ss:Type="DateTime">2024-11-30T00:00:00.000</Data>
+</Cell>
+<Cell ss:Index="11"><Data ss:Type="String">10</Data>
+</Cell>
+<Cell ss:Index="19"><Data ss:Type="String">CH003886335</Data>
+</Cell>
+<Cell ss:Index="20"><Data ss:Type="String">Shares UBS Bank Charges</Data>
+</Cell>
+<Cell ss:Index="22"><Data ss:Type="String">Bank charges</Data>
+</Cell>
+<Cell ss:Index="23"><Data ss:Type="String">Bank service charges</Data>
+</Cell>
+<Cell ss:Index="27"><Data ss:Type="String">S</Data>
+</Cell>
+<Cell ss:Index="29"><Data ss:Type="Number">22.00</Data>
+</Cell>
+<Cell ss:Index="30"><Data ss:Type="String">CHF</Data>
+</Cell>
+<Cell ss:Index="31"><Data ss:Type="Number">1</Data>
+</Cell>
+<Cell ss:Index="33"><Data ss:Type="Number">22.00</Data>
+</Cell>
+<Cell ss:Index="34"><Data ss:Type="Number">662.56</Data>
+</Cell>
+</Row>
+<Row ss:Index="74" ss:StyleID="">
+<Cell ss:Index="2"><Data ss:Type="Number">63</Data>
+</Cell>
+<Cell ss:Index="3"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="4"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="5"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="8"><Data ss:Type="DateTime">2024-11-30T00:00:00.000</Data>
+</Cell>
+<Cell ss:Index="11"><Data ss:Type="String">10</Data>
+</Cell>
+<Cell ss:Index="19"><Data ss:Type="String">CH003886335</Data>
+</Cell>
+<Cell ss:Index="20"><Data ss:Type="String">Shares UBS Payment</Data>
+</Cell>
+<Cell ss:Index="24"><Data ss:Type="String">Bank CHF</Data>
+</Cell>
+<Cell ss:Index="25"><Data ss:Type="String">Bank assets CHF</Data>
+</Cell>
+<Cell ss:Index="27"><Data ss:Type="String">S</Data>
+</Cell>
+<Cell ss:Index="29"><Data ss:Type="Number">662.56</Data>
+</Cell>
+<Cell ss:Index="30"><Data ss:Type="String">CHF</Data>
+</Cell>
+<Cell ss:Index="31"><Data ss:Type="Number">1</Data>
+</Cell>
+<Cell ss:Index="33"><Data ss:Type="Number">662.56</Data>
+</Cell>
+</Row>
+<Row ss:Index="75" ss:StyleID="">
+<Cell ss:Index="2"><Data ss:Type="Number">64</Data>
+</Cell>
+<Cell ss:Index="3"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="4"><Data ss:Type="Number">584</Data>
+</Cell>
+<Cell ss:Index="5"><Data ss:Type="Number">0</Data>
+</Cell>
+</Row>
+<Row ss:Index="76" ss:StyleID="">
+<Cell ss:Index="2"><Data ss:Type="Number">65</Data>
+</Cell>
+<Cell ss:Index="3"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="4"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="5"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="8"><Data ss:Type="DateTime">2024-12-01T00:00:00.000</Data>
+</Cell>
+<Cell ss:Index="11"><Data ss:Type="String">11</Data>
+</Cell>
+<Cell ss:Index="19"><Data ss:Type="String">CH002775224</Data>
+</Cell>
+<Cell ss:Index="20"><Data ss:Type="String">Shares BancaStato Purchase</Data>
+</Cell>
+<Cell ss:Index="22"><Data ss:Type="String">Shares CHF</Data>
+</Cell>
+<Cell ss:Index="23"><Data ss:Type="String">Shares CHF </Data>
+</Cell>
+<Cell ss:Index="26"><Data ss:Type="Number">400.0000</Data>
+</Cell>
+<Cell ss:Index="27"><Data ss:Type="String">S</Data>
+</Cell>
+<Cell ss:Index="28"><Data ss:Type="Number">5.9876</Data>
+</Cell>
+<Cell ss:Index="29"><Data ss:Type="Number">2395.04</Data>
+</Cell>
+<Cell ss:Index="30"><Data ss:Type="String">CHF</Data>
+</Cell>
+<Cell ss:Index="31"><Data ss:Type="Number">1</Data>
+</Cell>
+<Cell ss:Index="33"><Data ss:Type="Number">2395.04</Data>
+</Cell>
+<Cell ss:Index="34"><Data ss:Type="Number">2395.04</Data>
+</Cell>
+</Row>
+<Row ss:Index="77" ss:StyleID="">
+<Cell ss:Index="2"><Data ss:Type="Number">66</Data>
+</Cell>
+<Cell ss:Index="3"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="4"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="5"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="8"><Data ss:Type="DateTime">2024-12-01T00:00:00.000</Data>
+</Cell>
+<Cell ss:Index="11"><Data ss:Type="String">11</Data>
+</Cell>
+<Cell ss:Index="19"><Data ss:Type="String">CH002775224</Data>
+</Cell>
+<Cell ss:Index="20"><Data ss:Type="String">Shares BancaStato Bank Charges</Data>
+</Cell>
+<Cell ss:Index="22"><Data ss:Type="String">Bank charges</Data>
+</Cell>
+<Cell ss:Index="23"><Data ss:Type="String">Bank service charges</Data>
+</Cell>
+<Cell ss:Index="27"><Data ss:Type="String">S</Data>
+</Cell>
+<Cell ss:Index="29"><Data ss:Type="Number">15.00</Data>
+</Cell>
+<Cell ss:Index="30"><Data ss:Type="String">CHF</Data>
+</Cell>
+<Cell ss:Index="31"><Data ss:Type="Number">1</Data>
+</Cell>
+<Cell ss:Index="33"><Data ss:Type="Number">15.00</Data>
+</Cell>
+<Cell ss:Index="34"><Data ss:Type="Number">2410.04</Data>
+</Cell>
+</Row>
+<Row ss:Index="78" ss:StyleID="">
+<Cell ss:Index="2"><Data ss:Type="Number">67</Data>
+</Cell>
+<Cell ss:Index="3"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="4"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="5"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="8"><Data ss:Type="DateTime">2024-12-01T00:00:00.000</Data>
+</Cell>
+<Cell ss:Index="11"><Data ss:Type="String">11</Data>
+</Cell>
+<Cell ss:Index="19"><Data ss:Type="String">CH002775224</Data>
+</Cell>
+<Cell ss:Index="20"><Data ss:Type="String">Shares BancaStato Payment</Data>
+</Cell>
+<Cell ss:Index="24"><Data ss:Type="String">Bank CHF</Data>
+</Cell>
+<Cell ss:Index="25"><Data ss:Type="String">Bank assets CHF</Data>
+</Cell>
+<Cell ss:Index="27"><Data ss:Type="String">S</Data>
+</Cell>
+<Cell ss:Index="29"><Data ss:Type="Number">2410.04</Data>
+</Cell>
+<Cell ss:Index="30"><Data ss:Type="String">CHF</Data>
+</Cell>
+<Cell ss:Index="31"><Data ss:Type="Number">1</Data>
+</Cell>
+<Cell ss:Index="33"><Data ss:Type="Number">2410.04</Data>
+</Cell>
+</Row>
+<Row ss:Index="79" ss:StyleID="">
+<Cell ss:Index="2"><Data ss:Type="Number">68</Data>
+</Cell>
+<Cell ss:Index="3"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="4"><Data ss:Type="Number">573</Data>
+</Cell>
+<Cell ss:Index="5"><Data ss:Type="Number">0</Data>
+</Cell>
+</Row>
+<Row ss:Index="80" ss:StyleID="">
+<Cell ss:Index="2"><Data ss:Type="Number">69</Data>
+</Cell>
+<Cell ss:Index="3"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="4"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="5"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="8"><Data ss:Type="DateTime">2024-12-16T00:00:00.000</Data>
+</Cell>
+<Cell ss:Index="11"><Data ss:Type="String">12</Data>
+</Cell>
+<Cell ss:Index="18"><Data ss:Type="String">inv_sale_2</Data>
+</Cell>
+<Cell ss:Index="19"><Data ss:Type="String">CH002775224</Data>
+</Cell>
+<Cell ss:Index="20"><Data ss:Type="String">Shares BancaStato</Data>
+</Cell>
+<Cell ss:Index="24"><Data ss:Type="String">Shares CHF</Data>
+</Cell>
+<Cell ss:Index="25"><Data ss:Type="String">Shares CHF </Data>
+</Cell>
+<Cell ss:Index="26"><Data ss:Type="Number">-150.0000</Data>
+</Cell>
+<Cell ss:Index="27"><Data ss:Type="String">S</Data>
+</Cell>
+<Cell ss:Index="28"><Data ss:Type="Number">5.7944</Data>
+</Cell>
+<Cell ss:Index="29"><Data ss:Type="Number">869.16</Data>
+</Cell>
+<Cell ss:Index="30"><Data ss:Type="String">CHF</Data>
+</Cell>
+<Cell ss:Index="31"><Data ss:Type="Number">1</Data>
+</Cell>
+<Cell ss:Index="33"><Data ss:Type="Number">869.16</Data>
+</Cell>
+<Cell ss:Index="34"><Data ss:Type="Number">-869.16</Data>
+</Cell>
+</Row>
+<Row ss:Index="81" ss:StyleID="">
+<Cell ss:Index="2"><Data ss:Type="Number">70</Data>
+</Cell>
+<Cell ss:Index="3"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="4"><Data ss:Type="Number">596</Data>
+</Cell>
+<Cell ss:Index="5"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="8"><Data ss:Type="DateTime">2024-12-16T00:00:00.000</Data>
+</Cell>
+<Cell ss:Index="11"><Data ss:Type="String">12</Data>
+</Cell>
+<Cell ss:Index="18"><Data ss:Type="String">inv_sale_2.1</Data>
+</Cell>
+<Cell ss:Index="19"><Data ss:Type="String">CH002775224</Data>
+</Cell>
+<Cell ss:Index="20"><Data ss:Type="String">Shares BancaStato Bank charges</Data>
+</Cell>
+<Cell ss:Index="22"><Data ss:Type="String">Bank charges</Data>
+</Cell>
+<Cell ss:Index="23"><Data ss:Type="String">Bank service charges</Data>
+</Cell>
+<Cell ss:Index="29"><Data ss:Type="Number">15.00</Data>
+</Cell>
+<Cell ss:Index="30"><Data ss:Type="String">CHF</Data>
+</Cell>
+<Cell ss:Index="31"><Data ss:Type="Number">1</Data>
+</Cell>
+<Cell ss:Index="33"><Data ss:Type="Number">15.00</Data>
+</Cell>
+<Cell ss:Index="34"><Data ss:Type="Number">-854.16</Data>
+</Cell>
+</Row>
+<Row ss:Index="82" ss:StyleID="">
+<Cell ss:Index="2"><Data ss:Type="Number">71</Data>
+</Cell>
+<Cell ss:Index="3"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="4"><Data ss:Type="Number">597</Data>
+</Cell>
+<Cell ss:Index="5"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="8"><Data ss:Type="DateTime">2024-12-16T00:00:00.000</Data>
+</Cell>
+<Cell ss:Index="11"><Data ss:Type="String">12</Data>
+</Cell>
+<Cell ss:Index="18"><Data ss:Type="String">inv_sale_2.3</Data>
+</Cell>
+<Cell ss:Index="19"><Data ss:Type="String">CH002775224</Data>
+</Cell>
+<Cell ss:Index="20"><Data ss:Type="String">Shares BancaStato Cashed Net</Data>
+</Cell>
+<Cell ss:Index="22"><Data ss:Type="String">Bank CHF</Data>
+</Cell>
+<Cell ss:Index="23"><Data ss:Type="String">Bank assets CHF</Data>
+</Cell>
+<Cell ss:Index="29"><Data ss:Type="Number">854.16</Data>
+</Cell>
+<Cell ss:Index="30"><Data ss:Type="String">CHF</Data>
+</Cell>
+<Cell ss:Index="31"><Data ss:Type="Number">1</Data>
+</Cell>
+<Cell ss:Index="33"><Data ss:Type="Number">854.16</Data>
+</Cell>
+</Row>
+<Row ss:Index="83" ss:StyleID="">
+<Cell ss:Index="2"><Data ss:Type="Number">72</Data>
+</Cell>
+<Cell ss:Index="3"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="4"><Data ss:Type="Number">598</Data>
+</Cell>
+<Cell ss:Index="5"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="8"><Data ss:Type="DateTime">2024-12-16T00:00:00.000</Data>
+</Cell>
+<Cell ss:Index="11"><Data ss:Type="String">12</Data>
+</Cell>
+<Cell ss:Index="18"><Data ss:Type="String">inv_sale_2.4</Data>
+</Cell>
+<Cell ss:Index="19"><Data ss:Type="String">CH002775224</Data>
+</Cell>
+<Cell ss:Index="20"><Data ss:Type="String">Shares BancaStato Result on sale</Data>
+</Cell>
+<Cell ss:Index="22"><Data ss:Type="String">Realized loss</Data>
+</Cell>
+<Cell ss:Index="23"><Data ss:Type="String">Realized loss on sale</Data>
+</Cell>
+<Cell ss:Index="24"><Data ss:Type="String">Shares CHF</Data>
+</Cell>
+<Cell ss:Index="25"><Data ss:Type="String">Shares CHF </Data>
+</Cell>
+<Cell ss:Index="29"><Data ss:Type="Number">28.98</Data>
+</Cell>
+<Cell ss:Index="30"><Data ss:Type="String">CHF</Data>
+</Cell>
+<Cell ss:Index="31"><Data ss:Type="Number">1</Data>
+</Cell>
+<Cell ss:Index="33"><Data ss:Type="Number">28.98</Data>
+</Cell>
+</Row>
+<Row ss:Index="84" ss:StyleID="">
+<Cell ss:Index="2"><Data ss:Type="Number">73</Data>
+</Cell>
+<Cell ss:Index="3"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="4"><Data ss:Type="Number">599</Data>
+</Cell>
+<Cell ss:Index="5"><Data ss:Type="Number">0</Data>
+</Cell>
+</Row>
+<Row ss:Index="85" ss:StyleID="">
+<Cell ss:Index="2"><Data ss:Type="Number">74</Data>
+</Cell>
+<Cell ss:Index="3"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="4"><Data ss:Type="Number">594</Data>
+</Cell>
+<Cell ss:Index="5"><Data ss:Type="Number">0</Data>
+</Cell>
+</Row>
+<Row ss:Index="86" ss:StyleID="">
+<Cell ss:Index="2"><Data ss:Type="Number">75</Data>
+</Cell>
+<Cell ss:Index="3"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="4"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="5"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="20"><Data ss:Type="String">Settlement Shares</Data>
+</Cell>
+</Row>
+<Row ss:Index="87" ss:StyleID="">
+<Cell ss:Index="2"><Data ss:Type="Number">76</Data>
+</Cell>
+<Cell ss:Index="3"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="4"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="5"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="20"><Data ss:Type="String">Only of those we stille have:CH003886335, CH002775224</Data>
+</Cell>
+</Row>
+<Row ss:Index="88" ss:StyleID="">
+<Cell ss:Index="2"><Data ss:Type="Number">77</Data>
+</Cell>
+<Cell ss:Index="3"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="4"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="5"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="20"><Data ss:Type="String">CH003886335: Book value: 12.8226, Market value: 12.8001, Qt 200</Data>
+</Cell>
+</Row>
+<Row ss:Index="89" ss:StyleID="">
+<Cell ss:Index="2"><Data ss:Type="Number">78</Data>
+</Cell>
+<Cell ss:Index="3"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="4"><Data ss:Type="Number">595</Data>
+</Cell>
+<Cell ss:Index="5"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="20"><Data ss:Type="String">CH002775224: Book value: 5.9876, Market value: 5.9998, Qt 250</Data>
+</Cell>
+</Row>
+<Row ss:Index="90" ss:StyleID="">
+<Cell ss:Index="2"><Data ss:Type="Number">79</Data>
+</Cell>
+<Cell ss:Index="3"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="4"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="5"><Data ss:Type="Number">0</Data>
+</Cell>
+</Row>
+<Row ss:Index="91" ss:StyleID="">
+<Cell ss:Index="2"><Data ss:Type="Number">80</Data>
+</Cell>
+<Cell ss:Index="3"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="4"><Data ss:Type="Number">602</Data>
+</Cell>
+<Cell ss:Index="5"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="8"><Data ss:Type="DateTime">2024-12-31T00:00:00.000</Data>
+</Cell>
+<Cell ss:Index="11"><Data ss:Type="String">15</Data>
+</Cell>
+<Cell ss:Index="20"><Data ss:Type="String">Exchange rate loss Bank assets EUR</Data>
+</Cell>
+<Cell ss:Index="22"><Data ss:Type="String">Exchange loss</Data>
+</Cell>
+<Cell ss:Index="23"><Data ss:Type="String">Exchange rate  loss</Data>
+</Cell>
+<Cell ss:Index="24"><Data ss:Type="String">Bank EUR</Data>
+</Cell>
+<Cell ss:Index="25"><Data ss:Type="String">Bank assets EUR</Data>
+</Cell>
+<Cell ss:Index="30"><Data ss:Type="String">CHF</Data>
+</Cell>
+<Cell ss:Index="33"><Data ss:Type="Number">200.41</Data>
+</Cell>
+</Row>
+<Row ss:Index="92" ss:StyleID="">
+<Cell ss:Index="2"><Data ss:Type="Number">81</Data>
+</Cell>
+<Cell ss:Index="3"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="4"><Data ss:Type="Number">603</Data>
+</Cell>
+<Cell ss:Index="5"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="8"><Data ss:Type="DateTime">2024-12-31T00:00:00.000</Data>
+</Cell>
+<Cell ss:Index="11"><Data ss:Type="String">15</Data>
+</Cell>
+<Cell ss:Index="20"><Data ss:Type="String">Exchange rate loss Bank assets USD</Data>
+</Cell>
+<Cell ss:Index="22"><Data ss:Type="String">Exchange loss</Data>
+</Cell>
+<Cell ss:Index="23"><Data ss:Type="String">Exchange rate  loss</Data>
+</Cell>
+<Cell ss:Index="24"><Data ss:Type="String">Bank USD</Data>
+</Cell>
+<Cell ss:Index="25"><Data ss:Type="String">Bank assets USD</Data>
+</Cell>
+<Cell ss:Index="30"><Data ss:Type="String">CHF</Data>
+</Cell>
+<Cell ss:Index="33"><Data ss:Type="Number">16.59</Data>
+</Cell>
+</Row>
+<Row ss:Index="93" ss:StyleID="">
+<Cell ss:Index="2"><Data ss:Type="Number">82</Data>
+</Cell>
+<Cell ss:Index="3"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="4"><Data ss:Type="Number">578</Data>
+</Cell>
+<Cell ss:Index="5"><Data ss:Type="Number">0</Data>
+</Cell>
+</Row>
+<Row ss:Index="94" ss:StyleID="">
+<Cell ss:Index="2"><Data ss:Type="Number">83</Data>
+</Cell>
+<Cell ss:Index="3"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="4"><Data ss:Type="Number">577</Data>
+</Cell>
+<Cell ss:Index="5"><Data ss:Type="Number">0</Data>
+</Cell>
+</Row>
+<Row ss:Index="95" ss:StyleID="">
+<Cell ss:Index="2"><Data ss:Type="Number">84</Data>
+</Cell>
+<Cell ss:Index="3"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="4"><Data ss:Type="Number">610</Data>
+</Cell>
+<Cell ss:Index="5"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="8"><Data ss:Type="DateTime">2024-12-31T00:00:00.000</Data>
+</Cell>
+<Cell ss:Index="11"><Data ss:Type="String">16</Data>
+</Cell>
+<Cell ss:Index="19"><Data ss:Type="String">CH003886335</Data>
+</Cell>
+<Cell ss:Index="20"><Data ss:Type="String">Shares UBS Market Price Adjustment (12.8001)</Data>
+</Cell>
+<Cell ss:Index="22"><Data ss:Type="String">Other value changing costs</Data>
+</Cell>
+<Cell ss:Index="23"><Data ss:Type="String">Other value changing costs</Data>
+</Cell>
+<Cell ss:Index="24"><Data ss:Type="String">Shares CHF</Data>
+</Cell>
+<Cell ss:Index="25"><Data ss:Type="String">Shares CHF </Data>
+</Cell>
+<Cell ss:Index="29"><Data ss:Type="Number">4.50</Data>
+</Cell>
+<Cell ss:Index="30"><Data ss:Type="String">CHF</Data>
+</Cell>
+<Cell ss:Index="31"><Data ss:Type="Number">1</Data>
+</Cell>
+<Cell ss:Index="33"><Data ss:Type="Number">4.50</Data>
+</Cell>
+</Row>
+<Row ss:Index="96" ss:StyleID="">
+<Cell ss:Index="2"><Data ss:Type="Number">85</Data>
+</Cell>
+<Cell ss:Index="3"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="4"><Data ss:Type="Number">611</Data>
+</Cell>
+<Cell ss:Index="5"><Data ss:Type="Number">0</Data>
+</Cell>
+<Cell ss:Index="8"><Data ss:Type="DateTime">2024-12-31T00:00:00.000</Data>
+</Cell>
+<Cell ss:Index="11"><Data ss:Type="String">16</Data>
+</Cell>
+<Cell ss:Index="19"><Data ss:Type="String">CH002775224</Data>
+</Cell>
+<Cell ss:Index="20"><Data ss:Type="String">Shares BancaStato Market Price Adjustment (5.9998)</Data>
+</Cell>
+<Cell ss:Index="22"><Data ss:Type="String">Shares CHF</Data>
+</Cell>
+<Cell ss:Index="23"><Data ss:Type="String">Shares CHF </Data>
+</Cell>
+<Cell ss:Index="24"><Data ss:Type="String">Other value changing income</Data>
+</Cell>
+<Cell ss:Index="25"><Data ss:Type="String">Other value changing income</Data>
+</Cell>
+<Cell ss:Index="29"><Data ss:Type="Number">3.05</Data>
+</Cell>
+<Cell ss:Index="30"><Data ss:Type="String">CHF</Data>
+</Cell>
+<Cell ss:Index="31"><Data ss:Type="Number">1</Data>
+</Cell>
+<Cell ss:Index="33"><Data ss:Type="Number">3.05</Data>
+</Cell>
+</Row>
+</Table>
+
+<WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel"><Selected/>
+<FreezePanes/>
+<FrozenNoSplit/>
+<SplitHorizontal>11</SplitHorizontal>
+<TopRowBottomPane>11</TopRowBottomPane>
+<ActivePane>2</ActivePane>
+<Panes>
+<Pane>
+<Number>3</Number>
+<ActiveCol>2</ActiveCol>
+</Pane>
+<Pane>
+<Number>2</Number>
+<ActiveRow>12</ActiveRow>
+<ActiveCol>2</ActiveCol>
+</Pane>
+</Panes>
+<ProtectObjects>True</ProtectObjects>
+<ProtectScenarios>True</ProtectScenarios>
+<AllowFormatCells/>
+<AllowSizeCols/>
+<AllowSizeRows/>
+<AllowFilter/>
+<AllowUsePivotTables/>
+</WorksheetOptions>
+</Worksheet>
+
+</Workbook>
