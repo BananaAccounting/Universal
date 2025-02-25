@@ -66,6 +66,12 @@ var PrintReport = class PrintReport {
       }
       // Readscript settings
       paramcorrections = this.result_readsettings(teacherfile);
+
+      // Verify the settings
+      let printsettings = new PrintSettings(Banana.document, false);
+
+      printsettings.verifyparam(paramcorrections);
+
       Banana.console.log("paramcorrections: " + JSON.stringify(paramcorrections, null, 2));
     }
 
@@ -93,7 +99,7 @@ var PrintReport = class PrintReport {
       }
       let studentrow = this.studentDoc.table("Transactions").findRowByValue("Doc", "Student");
       // if the import file is not a teacher file, show a error message
-      if (studentrow === "undefined"  || !studentrow) {
+      if (studentrow === "undefined" || !studentrow) {
         Banana.application.addMessage(texts.isnotstudentfile);
         return;
       }
@@ -136,13 +142,14 @@ var PrintReport = class PrintReport {
 
     // Read the settings
     let strData = teacherfile.getScriptSettings("paramcorrections");
+
     if (strData.length > 0) {
       var objData = JSON.parse(strData);
       if (objData) {
         paramcorrections = objData;
       }
     }
-    return paramcorrections;
+      return paramcorrections;
   }
 
   result_readproperty(teacherfile) {
@@ -152,7 +159,7 @@ var PrintReport = class PrintReport {
       return;
     }
     let teacherrowvalue = teacherrow.value("Description");
-    
+
     return teacherrowvalue;
 
   }
