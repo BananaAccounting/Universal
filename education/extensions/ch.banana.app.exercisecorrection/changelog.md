@@ -4,7 +4,7 @@ All notable changes to the [Teacher Tools](https://www.banana.ch/apps/en/node/97
 
 *
 2025-02-26
-	* Added File Preparation function. Modified XML columns name and changed Section column. Modified tests.
+	* Added File Preparation function. Modified XML columns name and changed Section column. Modified tests. Renamed Accounting Automatic Corrections.
 *
 2025-02-06
 	* Added test. Modified Settings and Texts. Renamed: Accounting Teaching Assistant.
