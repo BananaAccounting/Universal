@@ -1,6 +1,6 @@
 // @id = ch.banana.app.settings
 // @api = 1.0
-// @pubdate = 2025-01-22
+// @pubdate = 2025-02-26
 // @publisher = Banana.ch SA
 // @description = 4. Settings
 // @description.it = 4. Impostazioni
@@ -8,7 +8,7 @@
 // @description.fr = 4. Paramètres
 // @description.en = 4. Settings
 // @doctype = 100
-// @docproperties = accountingteachingassistant
+// @docproperties =
 // @task = app.command
 // @timeout = -1
 // @includejs = ch.banana.app.functions.js
@@ -268,6 +268,7 @@ var PrintSettings = class PrintSettings {
             texts.changesettingsteacherfile = "Dieser Befehl kann nur in der Lehrerdatei verwendet werden.";
             texts.isnotteacherfile = "Die zu importierende Datei ist keine Lehrerdatei. Bitte wählen Sie eine Lehrerdatei zum Importieren in die Schülerdatei.";
             texts.isnotstudentfile = "Die Ausgangsdatei ist keine Schülerdatei. Bitte öffnen Sie eine Schülerdatei.";
+            texts.isnotfile = "Die Datei wurde noch nicht angepasst. Bitte öffnen Sie eine bereits angepasste Datei.";
         }
         else if (lang === "fr") {
             texts.language = "Langue";
@@ -280,6 +281,7 @@ var PrintSettings = class PrintSettings {
             texts.changesettingsteacherfile = "Cette commande ne peut être utilisée que dans le fichier enseignant.";
             texts.isnotteacherfile = "Le fichier à importer n'est pas un fichier enseignant. Veuillez sélectionner un fichier enseignant à importer dans le fichier étudiant";
             texts.isnotstudentfile = "Le fichier initial n'est pas le fichier de l'étudiant. Veuillez ouvrir un fichier d'étudiant.";
+            texts.isnotfile = "Le fichier n'a pas encore été adapté. Veuillez ouvrir un fichier déjà adapté.";
         }
         else if (lang === "it") {
             texts.language = "Lingua";
@@ -292,6 +294,7 @@ var PrintSettings = class PrintSettings {
             texts.changesettingsteacherfile = "Questo comando può essere utilizzato solo nel file dell'insegnante.";
             texts.isnotteacherfile = "Il file da importare non è un file dell'insegnante. Selezionare un file dell'insegnante da importare nel file dello studente.";
             texts.isnotstudentfile = "Il file iniziale non è il file dello studente. Si prega di aprire un file studente.";
+            texts.isnotfile = "Il file non è stato ancora adattato. Si prega di aprire un file già adattato.";
         }
         else { //lang === en
             texts.language = "Language";
@@ -304,6 +307,7 @@ var PrintSettings = class PrintSettings {
             texts.changesettingsteacherfile = "This command can only be used in the teacher file.";
             texts.isnotteacherfile = "The file to be imported is not a teacher file. Please select a teacher file to import in the student file.";
             texts.isnotstudentfile = "The initial file is not the student file. Please open a student file.";
+            texts.isnotfile = "The file has not been adapted yet. Please open an already adapted file.";
         }
 
         return texts;

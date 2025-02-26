@@ -40,6 +40,9 @@
 \textvalue{TestImportFile 5}\\
 \begin{jsonvalue}{TestImportFile}
 \end{jsonvalue}
+\textvalue{TestImportFile 6}\\
+\begin{jsonvalue}{TestImportFile}
+\end{jsonvalue}
 \keyvalue{Result}{Passed}
 \end{test}
 \end{testcase}

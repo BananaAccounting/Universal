@@ -42,9 +42,9 @@
                                     "rows": [
                                         {
                                             "fields": {
-                                                "AdjustedScore": "",
                                                 "Description": "Total score: ",
-                                                "Section": "auto"
+                                                "TAdjustedScore": "",
+                                                "TAuto": "teachingassistant"
                                             },
                                             "operation": {
                                                 "name": "modify",
@@ -72,51 +72,6 @@
 \end{jsonvalue}
 \textvalue{TestImportFile 1}\\
 \begin{jsonvalue}{TestImportFile}
-{
-    "data": [
-        {
-            "creator": {
-                "executionDate": "",
-                "executionTime": "",
-                "name": "ch.banana.app.exercisecorrection.test",
-                "version": "1.0"
-            },
-            "document": {
-                "dataUnits": [
-                    {
-                        "data": {
-                            "rowLists": [
-                                {
-                                    "rows": [
-                                        {
-                                            "fields": {
-                                                "AdjustedScore": "",
-                                                "Description": "Total score: ",
-                                                "Section": "auto"
-                                            },
-                                            "operation": {
-                                                "name": "modify",
-                                                "sequence": "0"
-                                            },
-                                            "style": {
-                                                "bold": true,
-                                                "fontSize": 0
-                                            }
-                                        }
-                                    ]
-                                }
-                            ]
-                        },
-                        "nameXml": "Transactions"
-                    }
-                ],
-                "fileVersion": "1.0.0"
-            }
-        }
-    ],
-    "error": "",
-    "format": "documentChange"
-}
 \end{jsonvalue}
 \textvalue{TestImportFile 2}\\
 \begin{jsonvalue}{TestImportFile}
@@ -138,9 +93,9 @@
                                     "rows": [
                                         {
                                             "fields": {
-                                                "AdjustedScore": "",
                                                 "Description": "Total score: ",
-                                                "Section": "auto"
+                                                "TAdjustedScore": "",
+                                                "TAuto": "teachingassistant"
                                             },
                                             "operation": {
                                                 "name": "modify",
@@ -168,51 +123,6 @@
 \end{jsonvalue}
 \textvalue{TestImportFile 3}\\
 \begin{jsonvalue}{TestImportFile}
-{
-    "data": [
-        {
-            "creator": {
-                "executionDate": "",
-                "executionTime": "",
-                "name": "ch.banana.app.exercisecorrection.test",
-                "version": "1.0"
-            },
-            "document": {
-                "dataUnits": [
-                    {
-                        "data": {
-                            "rowLists": [
-                                {
-                                    "rows": [
-                                        {
-                                            "fields": {
-                                                "AdjustedScore": "",
-                                                "Description": "Total score: ",
-                                                "Section": "auto"
-                                            },
-                                            "operation": {
-                                                "name": "modify",
-                                                "sequence": "0"
-                                            },
-                                            "style": {
-                                                "bold": true,
-                                                "fontSize": 0
-                                            }
-                                        }
-                                    ]
-                                }
-                            ]
-                        },
-                        "nameXml": "Transactions"
-                    }
-                ],
-                "fileVersion": "1.0.0"
-            }
-        }
-    ],
-    "error": "",
-    "format": "documentChange"
-}
 \end{jsonvalue}
 \textvalue{TestImportFile 4}\\
 \begin{jsonvalue}{TestImportFile}
@@ -234,9 +144,9 @@
                                     "rows": [
                                         {
                                             "fields": {
-                                                "AdjustedScore": "",
                                                 "Description": "Total score: ",
-                                                "Section": "auto"
+                                                "TAdjustedScore": "",
+                                                "TAuto": "teachingassistant"
                                             },
                                             "operation": {
                                                 "name": "modify",
@@ -264,51 +174,9 @@
 \end{jsonvalue}
 \textvalue{TestImportFile 5}\\
 \begin{jsonvalue}{TestImportFile}
-{
-    "data": [
-        {
-            "creator": {
-                "executionDate": "",
-                "executionTime": "",
-                "name": "ch.banana.app.exercisecorrection.test",
-                "version": "1.0"
-            },
-            "document": {
-                "dataUnits": [
-                    {
-                        "data": {
-                            "rowLists": [
-                                {
-                                    "rows": [
-                                        {
-                                            "fields": {
-                                                "AdjustedScore": "",
-                                                "Description": "Total score: ",
-                                                "Section": "auto"
-                                            },
-                                            "operation": {
-                                                "name": "modify",
-                                                "sequence": "0"
-                                            },
-                                            "style": {
-                                                "bold": true,
-                                                "fontSize": 0
-                                            }
-                                        }
-                                    ]
-                                }
-                            ]
-                        },
-                        "nameXml": "Transactions"
-                    }
-                ],
-                "fileVersion": "1.0.0"
-            }
-        }
-    ],
-    "error": "",
-    "format": "documentChange"
-}
+\end{jsonvalue}
+\textvalue{TestImportFile 6}\\
+\begin{jsonvalue}{TestImportFile}
 \end{jsonvalue}
 \keyvalue{Result}{Passed}
 \end{test}

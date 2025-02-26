@@ -9,7 +9,7 @@
 // @outputformat = none
 // @inputdataform = none
 // @timeout = -1
-// @includejs = ../ch.banana.app.exercisecorrection.sbaa/ch.banana.app.correctexercises.js
+// @includejs = ../ch.banana.app.exercisecorrection.sbaa/ch.banana.app.filepreparation.js
 
 
 // Register this test case to be executed
@@ -31,7 +31,7 @@ TestImportFile.prototype.initTestCase = function () {
   this.fileAC2Path.push("file:script/../test/testcases/student-result-file-3.ac2");
   this.fileAC2Path.push("file:script/../test/testcases/teacher-solution-file-3.ac2");
   this.fileAC2Path.push("file:script/../test/testcases/DoubleEntry.ac2");
-  this.fileAC2Path.push("file:script/../test/testcases/DoubleEntry.ac2");
+
 }
 
 // This method will be called at the end of the test case
@@ -52,28 +52,19 @@ TestImportFile.prototype.testImportFile = function () {
   for (let i = 0; i < this.fileAC2Path.length; i++) {
 
     let banDoc1 = Banana.application.openDocument(this.fileAC2Path[i]);
-    let banDoc2 = Banana.application.openDocument(this.fileAC2Path[i + 1]);
     let isTest = true;
 
-    let paramcorrections = {};
-    paramcorrections.score = true;
-    paramcorrections.datescore = "1";
-    paramcorrections.amountscore = "1";
-    paramcorrections.debitaccountscore = "1";
-    paramcorrections.creditaccountscore = "1";
-    paramcorrections.debitcreditaccountsscore = false;
+    if (banDoc1) {
 
-    if (banDoc1 && banDoc2) {
-
-      let test = new CorrectDoc(banDoc1, banDoc2, isTest);
-      let result = test.result(paramcorrections);
+      let test = new CreateDoc(banDoc1, isTest);
+      let result = test.result();
       this.testLogger.addText("TestImportFile " + i);
       this.testLogger.addJson("TestImportFile", JSON.stringify(result));
-      i++;
+
     }
     else {
 
-      this.testLogger.addFatalError("No valid file ac2 found in this directory: " + this.fileAC2Path[i] + " and/or " + this.fileAC2Path[i + 1]);
+      this.testLogger.addFatalError("No valid file ac2 found in this directory: " + this.fileAC2Path[i]);
 
     }
   }

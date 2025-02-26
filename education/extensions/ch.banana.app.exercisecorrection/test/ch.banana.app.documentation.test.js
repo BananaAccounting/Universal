@@ -30,6 +30,7 @@ TestImportFile.prototype.initTestCase = function () {
   this.fileAC2Path.push("file:script/../test/testcases/teacher-solution-file-2.ac2");
   this.fileAC2Path.push("file:script/../test/testcases/student-result-file-3.ac2");
   this.fileAC2Path.push("file:script/../test/testcases/teacher-solution-file-3.ac2");
+  this.fileAC2Path.push("file:script/../test/testcases/DoubleEntry.ac2");
 
 }
 
