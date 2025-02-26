@@ -1,6 +1,6 @@
 // @id = ch.banana.app.correctexercises
 // @api = 1.0
-// @pubdate = 2025-02-06
+// @pubdate = 2025-02-26
 // @publisher = Banana.ch SA
 // @description = 1. Correct the exercises
 // @description.it = 1. Correggi gli esercizi
@@ -8,7 +8,7 @@
 // @description.fr = 1. Corriger les exercices
 // @description.en = 1. Correct the exercises
 // @doctype = 100
-// @docproperties = accountingteachingassistant
+// @docproperties =
 // @task = app.command
 // @timeout = -1
 // @includejs = ch.banana.app.functions.js
@@ -29,7 +29,7 @@ function exec() {
     return;
   }
 
-  let printreport = new PrintReport(Banana.document, Banana.document, false);
+  let printreport = new CorrectDoc(Banana.document, Banana.document, false);
 
   return printreport.result();
 }
@@ -39,7 +39,7 @@ function exec() {
  * @param {*} banDocument 
  */
 
-var PrintReport = class PrintReport {
+var CorrectDoc = class CorrectDoc {
   constructor(banDocument1, banDocument2, isTest) {
     this.studentDoc = banDocument1;
     this.teacherDoc = banDocument2;
@@ -129,7 +129,7 @@ var PrintReport = class PrintReport {
     let teachertransactionsArray = teacherarray[0];
     let docArray = teacherarray[1];
     let studenttransactionsArray = this.result_createarraystudent(studenttransactions, docArray, fullscore);
-    let transactions = new PrintReport(this.studentDoc, this.teacherDoc, this.isTest);
+    let transactions = new CorrectDoc(this.studentDoc, this.teacherDoc, this.isTest);
     transactions.result_calculatescore(studenttransactionsArray, teachertransactionsArray, paramcorrections, fullscore);
     let jsonDoc = transactions.result_inserttransactions(studenttransactionsArray, teachertransactionsArray, paramcorrections, fullscore);
 
@@ -245,7 +245,6 @@ var PrintReport = class PrintReport {
 
     let documentChange = { "format": "documentChange", "error": "", "data": [] };
 
-    let jsonDocColumns = initDocument(this.isTest);
     let jsonDocRows = initDocument(this.isTest);
 
     //row operation
@@ -253,94 +252,8 @@ var PrintReport = class PrintReport {
     //rows
     let rows = [];
 
-    // Add the columns Score and MaxScore to the transactions if they don't exist
-
-    if (!this.studentDoc.table('Transactions').column('AutoScore') || !this.studentDoc.table('Transactions').column('MaxScore') || !this.studentDoc.table('Transactions').column('AdjustedScore') || !this.studentDoc.table('Transactions').column('CorrectionsNotes')) {
-
-      //table for the operations
-      let dataUnitTransactions = {};
-      dataUnitTransactions.nameXml = 'Transactions';
-
-      //data for columns
-      dataUnitTransactions.data = {};
-      dataUnitTransactions.data.viewList = {};
-      dataUnitTransactions.data.viewList.views = [];
-
-      //column operation
-      let column = {};
-      //columns
-      let columns = [];
-
-      if (!this.studentDoc.table('Transactions').column('MaxScore')) {
-        //column operation
-        column = {};
-        column.operation = {};
-        column.operation.name = 'add';
-        //column parameters
-        column.nameXml = 'MaxScore';
-        column.width = '200';
-        column.description = 'Max Score';
-        column.header1 = 'Max Score';
-        column.definition = { "type": "number", "decimals": '2' };
-        column.operation = { "name": "add" };
-        columns.push(column);
-      }
-
-      if (!this.studentDoc.table('Transactions').column('AutoScore')) {
-        //column operation
-        column = {};
-        column.operation = {};
-        column.operation.name = 'add';
-        //column parameters
-        column.nameXml = 'AutoScore';
-        column.width = '200';
-        column.description = 'Auto Score';
-        column.header1 = 'Auto Score';
-        column.definition = { "type": "number", "decimals": '2' };
-        column.operation = { "name": "add" };
-        columns.push(column);
-      }
-
-      if (!this.studentDoc.table('Transactions').column('AdjustedScore')) {
-        //column operation
-        column = {};
-        column.operation = {};
-        column.operation.name = 'add';
-        //column parameters
-        column.nameXml = 'AdjustedScore';
-        column.width = '200';
-        column.description = 'Adjusted Score';
-        column.header1 = 'Adjusted Score';
-        column.definition = { "type": "number", "decimals": '2' };
-        column.operation = { "name": "add" };
-        columns.push(column);
-      }
-
-      if (!this.studentDoc.table('Transactions').column('CorrectionsNotes')) {
-        //column operation
-        column = {};
-        column.operation = {};
-        column.operation.name = 'add';
-        //column parameters
-        column.nameXml = 'CorrectionsNotes';
-        column.width = '200';
-        column.description = 'Corrections Notes';
-        column.header1 = 'Corrections Notes';
-        column.definition = { "type": "text" };
-        column.operation = { "name": "add" };
-        columns.push(column);
-      }
-
-      dataUnitTransactions.data.viewList.views.push({ 'columns': columns });
-      jsonDocColumns.document.dataUnits.push(dataUnitTransactions);
-      documentChange["data"].push(jsonDocColumns);
-
-      return documentChange;
-    }
-    else {
-
       for (let i = 0; i < this.studentDoc.table("Transactions").rowCount; i++) {
-        if (this.studentDoc.table("Transactions").row(i).value("Section") === "teachingassistant") {
+        if (this.studentDoc.table("Transactions").row(i).value("TAuto") === "teachingassistant") {
           return;
         }
       }
@@ -360,13 +273,13 @@ var PrintReport = class PrintReport {
         if (studenttransactionsArray[i].automaticscore === fullscore) {
           // green
           row.style = { "background-color": "#afffaf" };
-          row.fields["CorrectionsNotes"] = "";
+          row.fields["TCorrectionsNotes"] = "";
         }
         else {
           // red
           row.style = { "background-color": "#ff8198" };
           if (!paramcorrections.noscore) {
-            row.fields["CorrectionsNotes"] = "Wrong: ";
+            row.fields["TCorrectionsNotes"] = "Wrong: ";
           }
         }
 
@@ -377,10 +290,10 @@ var PrintReport = class PrintReport {
         row.fields["AccountCredit"] = studenttransactionsArray[i].accountcredit;
         row.fields["Amount"] = studenttransactionsArray[i].amount;
         if (!paramcorrections.noscore) {
-          row.fields["AutoScore"] = Banana.Converter.toInternalNumberFormat(studenttransactionsArray[i].automaticscore);
-          row.fields["MaxScore"] = Banana.Converter.toInternalNumberFormat(studenttransactionsArray[i].maxscore);
-          row.fields["AdjustedScore"] = Banana.Converter.toInternalNumberFormat(studenttransactionsArray[i].automaticscore);
-          row.fields["CorrectionsNotes"] = row.fields["CorrectionsNotes"] + studenttransactionsArray[i].scoreinfo;
+          row.fields["TAutoScore"] = Banana.Converter.toInternalNumberFormat(studenttransactionsArray[i].automaticscore);
+          row.fields["TMaxScore"] = Banana.Converter.toInternalNumberFormat(studenttransactionsArray[i].maxscore);
+          row.fields["TAdjustedScore"] = Banana.Converter.toInternalNumberFormat(studenttransactionsArray[i].automaticscore);
+          row.fields["TCorrectionsNotes"] = row.fields["TCorrectionsNotes"] + studenttransactionsArray[i].scoreinfo;
         }
         rows.push(row);
       }
@@ -393,7 +306,7 @@ var PrintReport = class PrintReport {
         row.style = { "fontSize": 0, "bold": true };
         row.operation.sequence = (studenttransactionsArray[i].position - 1).toString() + '.0';
         row.fields = {};
-        row.fields["Section"] = "teachingassistant";
+        row.fields["TAuto"] = "teachingassistant";
         rows.push(row);
 
         //row operation for the exercise number title
@@ -403,7 +316,7 @@ var PrintReport = class PrintReport {
         row.style = { "fontSize": 0, "bold": true };
         row.operation.sequence = (studenttransactionsArray[i].position - 1).toString() + '.0';
         row.fields = {};
-        row.fields["Section"] = "teachingassistant";
+        row.fields["TAuto"] = "teachingassistant";
         row.fields["Doc"] = studenttransactionsArray[i].doc;
         row.fields["Description"] = "# " + studenttransactionsArray[i].doc;
         rows.push(row);
@@ -430,7 +343,7 @@ var PrintReport = class PrintReport {
             //row fields
             row.fields = {};
             row.fields["Date"] = teachertransactionsArray[k].date;
-            row.fields["Section"] = "teachingassistant";
+            row.fields["TAuto"] = "teachingassistant";
             row.fields["Doc"] = teachertransactionsArray[k].doc;
             row.fields["Description"] = teachertransactionsArray[k].description;
             row.fields["AccountDebit"] = "[" + teachertransactionsArray[k].accountdebit + "]";
@@ -461,7 +374,7 @@ var PrintReport = class PrintReport {
         row.operation.name = 'add';
         row.style = { "fontSize": 0, "bold": true };
         row.fields = {};
-        row.fields["Section"] = "teachingassistant";
+        row.fields["TAuto"] = "teachingassistant";
         rows.push(row);
 
         // row for the total score
@@ -471,11 +384,11 @@ var PrintReport = class PrintReport {
         row.style = { "fontSize": 0, "bold": true };
         //row fields
         row.fields = {};
-        row.fields["Section"] = "teachingassistant";
+        row.fields["TAuto"] = "teachingassistant";
         row.fields["Description"] = "Total score: ";
-        row.fields["AutoScore"] = Banana.Converter.toInternalNumberFormat(score);
-        row.fields["AdjustedScore"] = Banana.Converter.toInternalNumberFormat(score);
-        row.fields["MaxScore"] = Banana.Converter.toInternalNumberFormat(maxScore);
+        row.fields["TAutoScore"] = Banana.Converter.toInternalNumberFormat(score);
+        row.fields["TAdjustedScore"] = Banana.Converter.toInternalNumberFormat(score);
+        row.fields["TMaxScore"] = Banana.Converter.toInternalNumberFormat(maxScore);
         rows.push(row);
       }
 
@@ -492,7 +405,6 @@ var PrintReport = class PrintReport {
 
       return documentChange;
     }
-  }
 
   result_check(studenttransactions, teachertransactions) {
 

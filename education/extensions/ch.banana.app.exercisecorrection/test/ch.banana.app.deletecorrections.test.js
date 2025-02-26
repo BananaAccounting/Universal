@@ -30,6 +30,7 @@ TestImportFile.prototype.initTestCase = function () {
   this.fileAC2Path.push("file:script/../test/testcases/teacher-solution-file-2.ac2");
   this.fileAC2Path.push("file:script/../test/testcases/student-result-file-3.ac2");
   this.fileAC2Path.push("file:script/../test/testcases/teacher-solution-file-3.ac2");
+  this.fileAC2Path.push("file:script/../test/testcases/DoubleEntry.ac2");
 
 }
 
@@ -55,7 +56,9 @@ TestImportFile.prototype.testImportFile = function () {
 
     if (banDoc1) {
 
-      let test = new PrintReport(banDoc1, isTest);
+      let printsettings = new PrintSettings(banDoc1, false);
+      let correctdoc = new CorrectDoc(banDoc1,"", false);
+      let test = new PrintReport(banDoc1, isTest, correctdoc, printsettings);
       let result = test.deletecorrections();
       this.testLogger.addText("TestImportFile " + i);
       this.testLogger.addJson("TestImportFile", JSON.stringify(result));

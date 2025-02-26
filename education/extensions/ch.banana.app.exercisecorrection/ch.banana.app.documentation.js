@@ -1,6 +1,6 @@
-// @id = ch.banana.app.recalculatetotal
+// @id = ch.banana.app.documentation
 // @api = 1.0
-// @pubdate = 2025-02-06
+// @pubdate = 2025-02-26
 // @publisher = Banana.ch SA
 // @description = 5. Documentation
 // @description.it = 5. Documentazione
@@ -8,7 +8,7 @@
 // @description.fr = 5. Documentation
 // @description.en = 5. Documentation
 // @doctype = 100
-// @docproperties = accountingteachingassistant
+// @docproperties =
 // @task = app.command
 // @timeout = -1
 

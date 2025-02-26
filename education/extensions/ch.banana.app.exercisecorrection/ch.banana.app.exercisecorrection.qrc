@@ -7,5 +7,6 @@
 <file>ch.banana.app.deletecorrections.js</file>
 <file>ch.banana.app.functions.js</file>
 <file>ch.banana.app.settings.js</file>
+<file>ch.banana.app.filepreparation.js</file>
 </qresource>
 </RCC>

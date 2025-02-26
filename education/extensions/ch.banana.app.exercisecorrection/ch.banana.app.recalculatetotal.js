@@ -1,6 +1,6 @@
 // @id = ch.banana.app.recalculatetotal
 // @api = 1.0
-// @pubdate = 2025-02-06
+// @pubdate = 2025-02-26
 // @publisher = Banana.ch SA
 // @description = 2. Recalculate the total
 // @description.it = 2. Ricalcola il totale
@@ -8,10 +8,12 @@
 // @description.fr = 2. Recalculer le total
 // @description.en = 2. Recalculate the total
 // @doctype = 100
-// @docproperties = accountingteachingassistant
+// @docproperties =
 // @task = app.command
 // @timeout = -1
 // @includejs = ch.banana.app.functions.js
+// @includejs = ch.banana.app.settings.js
+// @includejs = ch.banana.app.correctexercises.js
 
 
 function exec() {
@@ -28,7 +30,10 @@ function exec() {
         return;
     }
 
-    let execute = new PrintReport(Banana.document, false);
+    let printsettings = new PrintSettings(Banana.document, false);
+    let correctdoc = new CorrectDoc(Banana.document, Banana.document, false);
+
+    let execute = new PrintReport(Banana.document, false, correctdoc, printsettings);
     let jsonDoc = execute.recalculatetotal();
 
     return jsonDoc;
@@ -40,28 +45,46 @@ function exec() {
  */
 
 var PrintReport = class PrintReport {
-    constructor(banDocument1, isTest) {
-        this.banDoc1 = banDocument1;
+    constructor(banDocument1, isTest, correctdoc, printsettings) {
+        this.banDoc = banDocument1;
         this.isTest = isTest;
+        this.correctdoc = correctdoc;
+        this.printsettings = printsettings
     }
 
     recalculatetotal() {
+
+        let lang = this.banDoc.info("Base", "Language");
+
+        if (!lang) {
+            lang = "en";
+        }
+
+        // Load the texts based on the language code
+        let texts = this.printsettings.loadTexts(lang);
+
+        let studentrow = this.banDoc.table("Transactions").findRowByValue("Doc", "Student");
+        // if the import file is not a teacher file, show a error message
+        if (studentrow === "undefined" || !studentrow) {
+            Banana.application.addMessage(texts.isnotstudentfile);
+            return;
+        }
 
         let documentChange = { "format": "documentChange", "error": "", "data": [] };
         let jsonDocRows = initDocument(this.isTest);
 
         // Sum all the scores in the transactions table
         let score = 0.0;
-        for (let i = 0; i < this.banDoc1.table("Transactions").rowCount; i++) {
-            if (this.banDoc1.table("Transactions").row(i).value("Description") === "Total score:") {
+        for (let i = 0; i < this.banDoc.table("Transactions").rowCount; i++) {
+            if (this.banDoc.table("Transactions").row(i).value("Description") === "Total score:") {
                 continue;
             }
-            score = Number(score) + Number(this.banDoc1.table("Transactions").row(i).value("AdjustedScore"));
+            score = Number(score) + Number(this.banDoc.table("Transactions").row(i).value("TAdjustedScore"));
         }
 
         //rows operation for adding the total of the scores at the end of the document
 
-        let totalscorerow = this.banDoc1.table("Transactions").findRowByValue("Description", "Total score:");
+        let totalscorerow = this.banDoc.table("Transactions").findRowByValue("Description", "Total score:");
         let totalrow;
         if (this.isTest) {
             totalrow = '0';
@@ -80,9 +103,9 @@ var PrintReport = class PrintReport {
         row.style = { "fontSize": 0, "bold": true };
         //row fields
         row.fields = {};
-        row.fields["Section"] = "auto";
+        row.fields["TAuto"] = "teachingassistant";
         row.fields["Description"] = "Total score: ";
-        row.fields["AdjustedScore"] = Banana.Converter.toInternalNumberFormat(score);
+        row.fields["TAdjustedScore"] = Banana.Converter.toInternalNumberFormat(score);
         rows.push(row);
 
         //table for the operations
