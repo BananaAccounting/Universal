@@ -60,8 +60,8 @@ TestImportFile.prototype.testImportFile = function () {
       let correctdoc = new CorrectDoc(banDoc1,"", false);
       let test = new PrintReport(banDoc1, isTest, correctdoc, printsettings);
       let result = test.recalculatetotal();
-      this.testLogger.addText("TestImportFile " + i);
-      this.testLogger.addJson("TestImportFile", JSON.stringify(result));
+      this.testLogger.addText("TestRecalculateTotal " + i);
+      this.testLogger.addJson("TestRecalculateTotal", JSON.stringify(result));
 
     }
     else {

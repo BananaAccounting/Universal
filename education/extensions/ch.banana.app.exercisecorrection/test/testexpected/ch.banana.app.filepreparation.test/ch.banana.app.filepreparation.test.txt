@@ -22,8 +22,8 @@
 %
 \begin{testcase}{TestImportFile}
 \begin{test}{testImportFile}
-\textvalue{TestImportFile 0}\\
-\begin{jsonvalue}{TestImportFile}
+\textvalue{TestFilePreparation 0}\\
+\begin{jsonvalue}{TestFilePreparation}
 {
     "data": [
         {
@@ -121,8 +121,8 @@
     "format": "documentChange"
 }
 \end{jsonvalue}
-\textvalue{TestImportFile 1}\\
-\begin{jsonvalue}{TestImportFile}
+\textvalue{TestFilePreparation 1}\\
+\begin{jsonvalue}{TestFilePreparation}
 {
     "data": [
         {
@@ -220,8 +220,8 @@
     "format": "documentChange"
 }
 \end{jsonvalue}
-\textvalue{TestImportFile 2}\\
-\begin{jsonvalue}{TestImportFile}
+\textvalue{TestFilePreparation 2}\\
+\begin{jsonvalue}{TestFilePreparation}
 {
     "data": [
         {
@@ -319,8 +319,8 @@
     "format": "documentChange"
 }
 \end{jsonvalue}
-\textvalue{TestImportFile 3}\\
-\begin{jsonvalue}{TestImportFile}
+\textvalue{TestFilePreparation 3}\\
+\begin{jsonvalue}{TestFilePreparation}
 {
     "data": [
         {
@@ -418,8 +418,8 @@
     "format": "documentChange"
 }
 \end{jsonvalue}
-\textvalue{TestImportFile 4}\\
-\begin{jsonvalue}{TestImportFile}
+\textvalue{TestFilePreparation 4}\\
+\begin{jsonvalue}{TestFilePreparation}
 {
     "data": [
         {
@@ -517,8 +517,8 @@
     "format": "documentChange"
 }
 \end{jsonvalue}
-\textvalue{TestImportFile 5}\\
-\begin{jsonvalue}{TestImportFile}
+\textvalue{TestFilePreparation 5}\\
+\begin{jsonvalue}{TestFilePreparation}
 {
     "data": [
         {
@@ -616,8 +616,8 @@
     "format": "documentChange"
 }
 \end{jsonvalue}
-\textvalue{TestImportFile 6}\\
-\begin{jsonvalue}{TestImportFile}
+\textvalue{TestFilePreparation 6}\\
+\begin{jsonvalue}{TestFilePreparation}
 {
     "data": [
         {

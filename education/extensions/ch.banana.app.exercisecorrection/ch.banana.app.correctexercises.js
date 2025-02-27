@@ -48,6 +48,12 @@ var CorrectDoc = class CorrectDoc {
 
   result(param) {
 
+    let lang = this.studentDoc.info("Base", "Language");
+
+    let printsettings = new PrintSettings(this.studentDoc, this.isTest);
+    // Load the texts based on the language code
+    let texts = printsettings.loadTexts(lang);
+    
     let studenttransactions = this.studentDoc.table("Transactions");
     let teacherfile;
     let teachertransactions;
@@ -59,6 +65,14 @@ var CorrectDoc = class CorrectDoc {
     }
 
     else {
+
+      let studentrow = this.studentDoc.table("Transactions").findRowByValue("Doc", "Student");
+      // if the import file is not a teacher file, show a error message
+      if (studentrow === "undefined" || !studentrow) {
+        Banana.application.addMessage(texts.isnotstudentfile);
+        return;
+      }
+
       //Open the file
       teacherfile = Banana.application.openDocument("*.*");
       if (!teacherfile) {
@@ -72,21 +86,10 @@ var CorrectDoc = class CorrectDoc {
 
       printsettings.verifyparam(paramcorrections);
 
-      Banana.console.log("paramcorrections: " + JSON.stringify(paramcorrections, null, 2));
     }
 
     // this.teacherDoc = teacherfile;
     teachertransactions = teacherfile.table('Transactions');
-
-    let lang = this.studentDoc.info("Base", "Language");
-
-    if (!lang) {
-      lang = "en";
-    }
-
-    let printsettings = new PrintSettings(this.studentDoc, this.isTest);
-    // Load the texts based on the language code
-    let texts = printsettings.loadTexts(lang);
 
     let teacherrowvalue = this.result_readproperty(teacherfile);
 
@@ -95,12 +98,6 @@ var CorrectDoc = class CorrectDoc {
       // if the import file is not a teacher file, show a error message
       if (teacherrowvalue !== "teacherfile") {
         Banana.application.addMessage(texts.isnotteacherfile);
-        return;
-      }
-      let studentrow = this.studentDoc.table("Transactions").findRowByValue("Doc", "Student");
-      // if the import file is not a teacher file, show a error message
-      if (studentrow === "undefined" || !studentrow) {
-        Banana.application.addMessage(texts.isnotstudentfile);
         return;
       }
 
@@ -120,8 +117,6 @@ var CorrectDoc = class CorrectDoc {
     else {
       fullscore = Number(paramcorrections.debitaccountscore) + Number(paramcorrections.creditaccountscore);
     }
-
-    Banana.console.log("paramcorrections: " + JSON.stringify(paramcorrections, null, 2));
 
     // Check if the Student file has all the exercise numbers
     this.result_check(studenttransactions, teachertransactions);
@@ -149,7 +144,7 @@ var CorrectDoc = class CorrectDoc {
         paramcorrections = objData;
       }
     }
-      return paramcorrections;
+    return paramcorrections;
   }
 
   result_readproperty(teacherfile) {
@@ -231,7 +226,6 @@ var CorrectDoc = class CorrectDoc {
       studenttransactionsArray[i].automaticscore = Math.max(...bestscore);
       // find out first n index of the minimum number in the array bestscore
       let index = bestscore.indexOf(Math.max(...bestscore));
-      Banana.console.log("index: " + index);
       // Concatenate the textscore[index] to the scoreinfo and trim the string
       studenttransactionsArray[i].scoreinfo = textscore[index].debit + textscore[index].credit + textscore[index].amount + textscore[index].date;
       studenttransactionsArray[i].scoreinfo = studenttransactionsArray[i].scoreinfo.trim();
@@ -252,159 +246,159 @@ var CorrectDoc = class CorrectDoc {
     //rows
     let rows = [];
 
-      for (let i = 0; i < this.studentDoc.table("Transactions").rowCount; i++) {
-        if (this.studentDoc.table("Transactions").row(i).value("TAuto") === "teachingassistant") {
-          return;
-        }
+    for (let i = 0; i < this.studentDoc.table("Transactions").rowCount; i++) {
+      if (this.studentDoc.table("Transactions").row(i).value("TAuto") === "automaticcorrection") {
+        return;
       }
-
-      for (let i = 0; i < studenttransactionsArray.length; i++) {
-        // modify row to add the score and the maxscore to the transactions
-        row = {};
-        row.operation = {};
-        row.operation.name = 'modify';
-        row.operation.sequence = (studenttransactionsArray[i].position).toString();
-
-        //row fields
-        row.fields = {};
-
-        // row style
-        row.style = {};
-        if (studenttransactionsArray[i].automaticscore === fullscore) {
-          // green
-          row.style = { "background-color": "#afffaf" };
-          row.fields["TCorrectionsNotes"] = "";
-        }
-        else {
-          // red
-          row.style = { "background-color": "#ff8198" };
-          if (!paramcorrections.noscore) {
-            row.fields["TCorrectionsNotes"] = "Wrong: ";
-          }
-        }
-
-        row.fields["Date"] = studenttransactionsArray[i].date;
-        row.fields["Doc"] = studenttransactionsArray[i].doc;
-        row.fields["Description"] = studenttransactionsArray[i].description;
-        row.fields["AccountDebit"] = studenttransactionsArray[i].accountdebit;
-        row.fields["AccountCredit"] = studenttransactionsArray[i].accountcredit;
-        row.fields["Amount"] = studenttransactionsArray[i].amount;
-        if (!paramcorrections.noscore) {
-          row.fields["TAutoScore"] = Banana.Converter.toInternalNumberFormat(studenttransactionsArray[i].automaticscore);
-          row.fields["TMaxScore"] = Banana.Converter.toInternalNumberFormat(studenttransactionsArray[i].maxscore);
-          row.fields["TAdjustedScore"] = Banana.Converter.toInternalNumberFormat(studenttransactionsArray[i].automaticscore);
-          row.fields["TCorrectionsNotes"] = row.fields["TCorrectionsNotes"] + studenttransactionsArray[i].scoreinfo;
-        }
-        rows.push(row);
-      }
-
-      for (let i = 0; i < studenttransactionsArray.length; i++) {
-        //row operation for a white row
-        row = {};
-        row.operation = {};
-        row.operation.name = 'add';
-        row.style = { "fontSize": 0, "bold": true };
-        row.operation.sequence = (studenttransactionsArray[i].position - 1).toString() + '.0';
-        row.fields = {};
-        row.fields["TAuto"] = "teachingassistant";
-        rows.push(row);
-
-        //row operation for the exercise number title
-        row = {};
-        row.operation = {};
-        row.operation.name = 'add';
-        row.style = { "fontSize": 0, "bold": true };
-        row.operation.sequence = (studenttransactionsArray[i].position - 1).toString() + '.0';
-        row.fields = {};
-        row.fields["TAuto"] = "teachingassistant";
-        row.fields["Doc"] = studenttransactionsArray[i].doc;
-        row.fields["Description"] = "# " + studenttransactionsArray[i].doc;
-        rows.push(row);
-
-        for (let k = 0; k < teachertransactionsArray.length; k++) {
-          // Skip the same exercise number to write when the exercise is finished
-          for (let j = i + 1; j < studenttransactionsArray.length; j++) {
-            if (studenttransactionsArray[i].doc === studenttransactionsArray[j].doc) {
-              i++;
-            }
-            else {
-              break;
-            }
-          }
-
-          if (studenttransactionsArray[i].doc === teachertransactionsArray[k].doc) {
-            //row operation for adding the exercise transactions from the Teacher file
-            row = {};
-            row.operation = {};
-            row.operation.name = 'add';
-            row.style = { "fontSize": 0, "bold": true };
-            row.operation.sequence = (studenttransactionsArray[i].position).toString() + '.0';
-
-            //row fields
-            row.fields = {};
-            row.fields["Date"] = teachertransactionsArray[k].date;
-            row.fields["TAuto"] = "teachingassistant";
-            row.fields["Doc"] = teachertransactionsArray[k].doc;
-            row.fields["Description"] = teachertransactionsArray[k].description;
-            row.fields["AccountDebit"] = "[" + teachertransactionsArray[k].accountdebit + "]";
-            row.fields["AccountCredit"] = "[" + teachertransactionsArray[k].accountcredit + "]";
-            row.fields["Amount"] = teachertransactionsArray[k].amount;
-            rows.push(row);
-          }
-        }
-      }
-
-      if (!paramcorrections.noscore) {
-        // Sum all the scores array
-        let score = 0;
-        for (let i = 0; i < studenttransactionsArray.length; i++) {
-          score += studenttransactionsArray[i].automaticscore;
-        }
-
-        // Sum all the MaxScore from the Teacher file
-        let maxScore = 0;
-        for (let i = 0; i < teachertransactionsArray.length; i++) {
-          maxScore += teachertransactionsArray[i].maxscore;
-        }
-
-        //rows operation for adding the total of the scores at the end of the document
-        //row operation for a white row
-        row = {};
-        row.operation = {};
-        row.operation.name = 'add';
-        row.style = { "fontSize": 0, "bold": true };
-        row.fields = {};
-        row.fields["TAuto"] = "teachingassistant";
-        rows.push(row);
-
-        // row for the total score
-        row = {};
-        row.operation = {};
-        row.operation.name = 'add';
-        row.style = { "fontSize": 0, "bold": true };
-        //row fields
-        row.fields = {};
-        row.fields["TAuto"] = "teachingassistant";
-        row.fields["Description"] = "Total score: ";
-        row.fields["TAutoScore"] = Banana.Converter.toInternalNumberFormat(score);
-        row.fields["TAdjustedScore"] = Banana.Converter.toInternalNumberFormat(score);
-        row.fields["TMaxScore"] = Banana.Converter.toInternalNumberFormat(maxScore);
-        rows.push(row);
-      }
-
-      //table for the operations
-      let dataUnitTransactions = {};
-      dataUnitTransactions.nameXml = 'Transactions';
-
-      //data for rows
-      dataUnitTransactions.data = {};
-      dataUnitTransactions.data.rowLists = [];
-      dataUnitTransactions.data.rowLists.push({ 'rows': rows });
-      jsonDocRows.document.dataUnits.push(dataUnitTransactions);
-      documentChange["data"].push(jsonDocRows);
-
-      return documentChange;
     }
+
+    for (let i = 0; i < studenttransactionsArray.length; i++) {
+      // modify row to add the score and the maxscore to the transactions
+      row = {};
+      row.operation = {};
+      row.operation.name = 'modify';
+      row.operation.sequence = (studenttransactionsArray[i].position).toString();
+
+      //row fields
+      row.fields = {};
+
+      // row style
+      row.style = {};
+      if (studenttransactionsArray[i].automaticscore === fullscore) {
+        // green
+        row.style = { "background-color": "#afffaf" };
+        row.fields["TCorrectionsNotes"] = "";
+      }
+      else {
+        // red
+        row.style = { "background-color": "#ff8198" };
+        if (!paramcorrections.noscore) {
+          row.fields["TCorrectionsNotes"] = "Wrong: ";
+        }
+      }
+
+      row.fields["Date"] = studenttransactionsArray[i].date;
+      row.fields["Doc"] = studenttransactionsArray[i].doc;
+      row.fields["Description"] = studenttransactionsArray[i].description;
+      row.fields["AccountDebit"] = studenttransactionsArray[i].accountdebit;
+      row.fields["AccountCredit"] = studenttransactionsArray[i].accountcredit;
+      row.fields["Amount"] = studenttransactionsArray[i].amount;
+      if (!paramcorrections.noscore) {
+        row.fields["TAutoScore"] = Banana.Converter.toInternalNumberFormat(studenttransactionsArray[i].automaticscore);
+        row.fields["TMaxScore"] = Banana.Converter.toInternalNumberFormat(studenttransactionsArray[i].maxscore);
+        row.fields["TAdjustedScore"] = Banana.Converter.toInternalNumberFormat(studenttransactionsArray[i].automaticscore);
+        row.fields["TCorrectionsNotes"] = row.fields["TCorrectionsNotes"] + studenttransactionsArray[i].scoreinfo;
+      }
+      rows.push(row);
+    }
+
+    for (let i = 0; i < studenttransactionsArray.length; i++) {
+      //row operation for a white row
+      row = {};
+      row.operation = {};
+      row.operation.name = 'add';
+      row.style = { "fontSize": 0, "bold": true };
+      row.operation.sequence = (studenttransactionsArray[i].position - 1).toString() + '.0';
+      row.fields = {};
+      row.fields["TAuto"] = "automaticcorrection";
+      rows.push(row);
+
+      //row operation for the exercise number title
+      row = {};
+      row.operation = {};
+      row.operation.name = 'add';
+      row.style = { "fontSize": 0, "bold": true };
+      row.operation.sequence = (studenttransactionsArray[i].position - 1).toString() + '.0';
+      row.fields = {};
+      row.fields["TAuto"] = "automaticcorrection";
+      row.fields["Doc"] = studenttransactionsArray[i].doc;
+      row.fields["Description"] = "# " + studenttransactionsArray[i].doc;
+      rows.push(row);
+
+      for (let k = 0; k < teachertransactionsArray.length; k++) {
+        // Skip the same exercise number to write when the exercise is finished
+        for (let j = i + 1; j < studenttransactionsArray.length; j++) {
+          if (studenttransactionsArray[i].doc === studenttransactionsArray[j].doc) {
+            i++;
+          }
+          else {
+            break;
+          }
+        }
+
+        if (studenttransactionsArray[i].doc === teachertransactionsArray[k].doc) {
+          //row operation for adding the exercise transactions from the Teacher file
+          row = {};
+          row.operation = {};
+          row.operation.name = 'add';
+          row.style = { "fontSize": 0, "bold": true };
+          row.operation.sequence = (studenttransactionsArray[i].position).toString() + '.0';
+
+          //row fields
+          row.fields = {};
+          row.fields["Date"] = teachertransactionsArray[k].date;
+          row.fields["TAuto"] = "automaticcorrection";
+          row.fields["Doc"] = teachertransactionsArray[k].doc;
+          row.fields["Description"] = teachertransactionsArray[k].description;
+          row.fields["AccountDebit"] = "[" + teachertransactionsArray[k].accountdebit + "]";
+          row.fields["AccountCredit"] = "[" + teachertransactionsArray[k].accountcredit + "]";
+          row.fields["Amount"] = teachertransactionsArray[k].amount;
+          rows.push(row);
+        }
+      }
+    }
+
+    if (!paramcorrections.noscore) {
+      // Sum all the scores array
+      let score = 0;
+      for (let i = 0; i < studenttransactionsArray.length; i++) {
+        score += studenttransactionsArray[i].automaticscore;
+      }
+
+      // Sum all the MaxScore from the Teacher file
+      let maxScore = 0;
+      for (let i = 0; i < teachertransactionsArray.length; i++) {
+        maxScore += teachertransactionsArray[i].maxscore;
+      }
+
+      //rows operation for adding the total of the scores at the end of the document
+      //row operation for a white row
+      row = {};
+      row.operation = {};
+      row.operation.name = 'add';
+      row.style = { "fontSize": 0, "bold": true };
+      row.fields = {};
+      row.fields["TAuto"] = "automaticcorrection";
+      rows.push(row);
+
+      // row for the total score
+      row = {};
+      row.operation = {};
+      row.operation.name = 'add';
+      row.style = { "fontSize": 0, "bold": true };
+      //row fields
+      row.fields = {};
+      row.fields["TAuto"] = "automaticcorrection";
+      row.fields["Description"] = "Total score: ";
+      row.fields["TAutoScore"] = Banana.Converter.toInternalNumberFormat(score);
+      row.fields["TAdjustedScore"] = Banana.Converter.toInternalNumberFormat(score);
+      row.fields["TMaxScore"] = Banana.Converter.toInternalNumberFormat(maxScore);
+      rows.push(row);
+    }
+
+    //table for the operations
+    let dataUnitTransactions = {};
+    dataUnitTransactions.nameXml = 'Transactions';
+
+    //data for rows
+    dataUnitTransactions.data = {};
+    dataUnitTransactions.data.rowLists = [];
+    dataUnitTransactions.data.rowLists.push({ 'rows': rows });
+    jsonDocRows.document.dataUnits.push(dataUnitTransactions);
+    documentChange["data"].push(jsonDocRows);
+
+    return documentChange;
+  }
 
   result_check(studenttransactions, teachertransactions) {
 

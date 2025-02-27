@@ -22,161 +22,26 @@
 %
 \begin{testcase}{TestImportFile}
 \begin{test}{testImportFile}
-\textvalue{TestImportFile 0}\\
-\begin{jsonvalue}{TestImportFile}
-{
-    "data": [
-        {
-            "creator": {
-                "executionDate": "",
-                "executionTime": "",
-                "name": "ch.banana.app.exercisecorrection.test",
-                "version": "1.0"
-            },
-            "document": {
-                "dataUnits": [
-                    {
-                        "data": {
-                            "rowLists": [
-                                {
-                                    "rows": [
-                                        {
-                                            "fields": {
-                                                "Description": "Total score: ",
-                                                "TAdjustedScore": "",
-                                                "TAuto": "teachingassistant"
-                                            },
-                                            "operation": {
-                                                "name": "modify",
-                                                "sequence": "0"
-                                            },
-                                            "style": {
-                                                "bold": true,
-                                                "fontSize": 0
-                                            }
-                                        }
-                                    ]
-                                }
-                            ]
-                        },
-                        "nameXml": "Transactions"
-                    }
-                ],
-                "fileVersion": "1.0.0"
-            }
-        }
-    ],
-    "error": "",
-    "format": "documentChange"
-}
+\textvalue{TestRecalculateTotal 0}\\
+\begin{jsonvalue}{TestRecalculateTotal}
 \end{jsonvalue}
-\textvalue{TestImportFile 1}\\
-\begin{jsonvalue}{TestImportFile}
+\textvalue{TestRecalculateTotal 1}\\
+\begin{jsonvalue}{TestRecalculateTotal}
 \end{jsonvalue}
-\textvalue{TestImportFile 2}\\
-\begin{jsonvalue}{TestImportFile}
-{
-    "data": [
-        {
-            "creator": {
-                "executionDate": "",
-                "executionTime": "",
-                "name": "ch.banana.app.exercisecorrection.test",
-                "version": "1.0"
-            },
-            "document": {
-                "dataUnits": [
-                    {
-                        "data": {
-                            "rowLists": [
-                                {
-                                    "rows": [
-                                        {
-                                            "fields": {
-                                                "Description": "Total score: ",
-                                                "TAdjustedScore": "",
-                                                "TAuto": "teachingassistant"
-                                            },
-                                            "operation": {
-                                                "name": "modify",
-                                                "sequence": "0"
-                                            },
-                                            "style": {
-                                                "bold": true,
-                                                "fontSize": 0
-                                            }
-                                        }
-                                    ]
-                                }
-                            ]
-                        },
-                        "nameXml": "Transactions"
-                    }
-                ],
-                "fileVersion": "1.0.0"
-            }
-        }
-    ],
-    "error": "",
-    "format": "documentChange"
-}
+\textvalue{TestRecalculateTotal 2}\\
+\begin{jsonvalue}{TestRecalculateTotal}
 \end{jsonvalue}
-\textvalue{TestImportFile 3}\\
-\begin{jsonvalue}{TestImportFile}
+\textvalue{TestRecalculateTotal 3}\\
+\begin{jsonvalue}{TestRecalculateTotal}
 \end{jsonvalue}
-\textvalue{TestImportFile 4}\\
-\begin{jsonvalue}{TestImportFile}
-{
-    "data": [
-        {
-            "creator": {
-                "executionDate": "",
-                "executionTime": "",
-                "name": "ch.banana.app.exercisecorrection.test",
-                "version": "1.0"
-            },
-            "document": {
-                "dataUnits": [
-                    {
-                        "data": {
-                            "rowLists": [
-                                {
-                                    "rows": [
-                                        {
-                                            "fields": {
-                                                "Description": "Total score: ",
-                                                "TAdjustedScore": "",
-                                                "TAuto": "teachingassistant"
-                                            },
-                                            "operation": {
-                                                "name": "modify",
-                                                "sequence": "0"
-                                            },
-                                            "style": {
-                                                "bold": true,
-                                                "fontSize": 0
-                                            }
-                                        }
-                                    ]
-                                }
-                            ]
-                        },
-                        "nameXml": "Transactions"
-                    }
-                ],
-                "fileVersion": "1.0.0"
-            }
-        }
-    ],
-    "error": "",
-    "format": "documentChange"
-}
+\textvalue{TestRecalculateTotal 4}\\
+\begin{jsonvalue}{TestRecalculateTotal}
 \end{jsonvalue}
-\textvalue{TestImportFile 5}\\
-\begin{jsonvalue}{TestImportFile}
+\textvalue{TestRecalculateTotal 5}\\
+\begin{jsonvalue}{TestRecalculateTotal}
 \end{jsonvalue}
-\textvalue{TestImportFile 6}\\
-\begin{jsonvalue}{TestImportFile}
+\textvalue{TestRecalculateTotal 6}\\
+\begin{jsonvalue}{TestRecalculateTotal}
 \end{jsonvalue}
 \keyvalue{Result}{Passed}
 \end{test}

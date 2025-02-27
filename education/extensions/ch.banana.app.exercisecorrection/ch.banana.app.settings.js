@@ -28,26 +28,7 @@ function exec() {
     }
 
     let printsettings = new PrintSettings(Banana.document, false);
-    let lang = Banana.document.info("Base", "Language");
 
-        if (!lang) {
-            lang = "en";
-        }
-
-        // Load the texts based on the language code
-        let texts = printsettings.loadTexts(lang);
-
-    let teacherrow = Banana.document.table("Transactions").findRowByValue("Doc", "#");
-    let teacherrowdescription = "";
-    if (teacherrow) {
-        teacherrowdescription = teacherrow.value("Description");
-    }
-
-        if (teacherrow === "undefined" || teacherrowdescription !== "teacherfile") {
-            return Banana.application.addMessage(texts.changesettingsteacherfile);
-        }
-
-    
     return printsettings.result();
 }
 
@@ -66,19 +47,28 @@ var PrintSettings = class PrintSettings {
 
         let lang = this.banDoc.info("Base", "Language");
 
-        if (!lang) {
-            lang = "en";
-        }
-
         // Load the texts based on the language code
         let texts = this.loadTexts(lang);
+
+        let teacherrow = this.banDoc.table("Transactions").findRowByValue("Doc", "#");
+        let teacherrowdescription = "";
+        if (teacherrow) {
+            teacherrowdescription = teacherrow.value("Description");
+        }
+
+        if (teacherrow === "undefined" || teacherrowdescription !== "teacherfile") {
+            return Banana.application.addMessage(texts.changesettingsteacherfile);
+        }
+
 
         let paramcorrections = {};
         this.initParam(paramcorrections);
         this.verifyparam(paramcorrections);
 
+        if (!this.isTest) {
         // Open the dialog and read the user parameters
         this.settingsDialog(texts, paramcorrections);
+        }
 
         return;
 
@@ -229,8 +219,6 @@ var PrintSettings = class PrintSettings {
         }
         userParam = this.verifyparam(userParam);
 
-        Banana.console.log("paramcorrections: " + JSON.stringify(userParam, null, 2));
-
         // Open the dialog
 
         if (typeof (Banana.Ui.openPropertyEditor) !== 'undefined') {
@@ -257,7 +245,7 @@ var PrintSettings = class PrintSettings {
 
         let texts = {};
 
-        if (lang === "de") {
+        if (lang === "deu") {
             texts.language = "Sprache";
             texts.datescore = "Datum Punkte";
             texts.debitaccountscore = "Debitorenkonto Punkte";
@@ -269,8 +257,11 @@ var PrintSettings = class PrintSettings {
             texts.isnotteacherfile = "Die zu importierende Datei ist keine Lehrerdatei. Bitte wählen Sie eine Lehrerdatei zum Importieren in die Schülerdatei.";
             texts.isnotstudentfile = "Die Ausgangsdatei ist keine Schülerdatei. Bitte öffnen Sie eine Schülerdatei.";
             texts.isnotfile = "Die Datei wurde noch nicht angepasst. Bitte öffnen Sie eine bereits angepasste Datei.";
+            texts.nocorrections = "Es gibt keine Korrekturen zum Löschen";
+            texts.noautomaticcorrection = "Es gibt keine automatischen Korrekturen zum Neuberechnen";
+            texts.nochanges = "Es gibt keine Änderungen zum Anwenden";
         }
-        else if (lang === "fr") {
+        else if (lang === "fra") {
             texts.language = "Langue";
             texts.datescore = "Date Score";
             texts.debitaccountscore = "Compte débiteur Score";
@@ -282,8 +273,11 @@ var PrintSettings = class PrintSettings {
             texts.isnotteacherfile = "Le fichier à importer n'est pas un fichier enseignant. Veuillez sélectionner un fichier enseignant à importer dans le fichier étudiant";
             texts.isnotstudentfile = "Le fichier initial n'est pas le fichier de l'étudiant. Veuillez ouvrir un fichier d'étudiant.";
             texts.isnotfile = "Le fichier n'a pas encore été adapté. Veuillez ouvrir un fichier déjà adapté.";
+            texts.nocorrections = "Il n'y a pas de corrections à supprimer";
+            texts.noautomaticcorrection = "Il n'y a pas de corrections automatiques à recalculer";
+            texts.nochanges = "Il n'y a pas de modifications à appliquer";
         }
-        else if (lang === "it") {
+        else if (lang === "ita") {
             texts.language = "Lingua";
             texts.datescore = "Data Punteggio";
             texts.debitaccountscore = "Conto Debitore Punteggio";
@@ -295,8 +289,11 @@ var PrintSettings = class PrintSettings {
             texts.isnotteacherfile = "Il file da importare non è un file dell'insegnante. Selezionare un file dell'insegnante da importare nel file dello studente.";
             texts.isnotstudentfile = "Il file iniziale non è il file dello studente. Si prega di aprire un file studente.";
             texts.isnotfile = "Il file non è stato ancora adattato. Si prega di aprire un file già adattato.";
+            texts.nocorrections = "Non ci sono correzioni da eliminare";
+            texts.noautomaticcorrection = "Non ci sono correzioni automatiche da ricalcolare";
+            texts.nochanges = "Non ci sono modifiche da applicare";
         }
-        else { //lang === en
+        else { //lang === enu
             texts.language = "Language";
             texts.datescore = "Date Score";
             texts.debitaccountscore = "Debit Account Score";
@@ -308,6 +305,9 @@ var PrintSettings = class PrintSettings {
             texts.isnotteacherfile = "The file to be imported is not a teacher file. Please select a teacher file to import in the student file.";
             texts.isnotstudentfile = "The initial file is not the student file. Please open a student file.";
             texts.isnotfile = "The file has not been adapted yet. Please open an already adapted file.";
+            texts.nocorrections = "There are no corrections to delete";
+            texts.noautomaticcorrection = "There are no automatic corrections to recalculate";
+            texts.nochanges = "There are no changes to apply";
         }
 
         return texts;

@@ -58,10 +58,10 @@ TestImportFile.prototype.testImportFile = function () {
 
       let printsettings = new PrintSettings(banDoc1, false);
       let correctdoc = new CorrectDoc(banDoc1,"", false);
-      let test = new PrintReport(banDoc1, isTest, correctdoc, printsettings);
+      let test = new DeleteCorrections(banDoc1, isTest, correctdoc, printsettings);
       let result = test.deletecorrections();
-      this.testLogger.addText("TestImportFile " + i);
-      this.testLogger.addJson("TestImportFile", JSON.stringify(result));
+      this.testLogger.addText("TestDeleteCorrections " + i);
+      this.testLogger.addJson("TestDeleteCorrections", JSON.stringify(result));
 
     }
     else {
