@@ -260,6 +260,7 @@ var PrintSettings = class PrintSettings {
             texts.nocorrections = "Es gibt keine Korrekturen zum Löschen";
             texts.noautomaticcorrection = "Es gibt keine automatischen Korrekturen zum Neuberechnen";
             texts.nochanges = "Es gibt keine Änderungen zum Anwenden";
+            texts.alreadycorrected = "Die Datei wurde bereits korrigiert";
         }
         else if (lang === "fra") {
             texts.language = "Langue";
@@ -276,6 +277,7 @@ var PrintSettings = class PrintSettings {
             texts.nocorrections = "Il n'y a pas de corrections à supprimer";
             texts.noautomaticcorrection = "Il n'y a pas de corrections automatiques à recalculer";
             texts.nochanges = "Il n'y a pas de modifications à appliquer";
+            texts.alreadycorrected = "Le fichier a déjà été corrigé";
         }
         else if (lang === "ita") {
             texts.language = "Lingua";
@@ -292,6 +294,7 @@ var PrintSettings = class PrintSettings {
             texts.nocorrections = "Non ci sono correzioni da eliminare";
             texts.noautomaticcorrection = "Non ci sono correzioni automatiche da ricalcolare";
             texts.nochanges = "Non ci sono modifiche da applicare";
+            texts.alreadycorrected = "Il file è già stato corretto";
         }
         else { //lang === enu
             texts.language = "Language";
@@ -308,6 +311,7 @@ var PrintSettings = class PrintSettings {
             texts.nocorrections = "There are no corrections to delete";
             texts.noautomaticcorrection = "There are no automatic corrections to recalculate";
             texts.nochanges = "There are no changes to apply";
+            texts.alreadycorrected = "The file has already been corrected";
         }
 
         return texts;
