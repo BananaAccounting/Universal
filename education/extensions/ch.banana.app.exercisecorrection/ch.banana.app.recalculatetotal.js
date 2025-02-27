@@ -56,10 +56,6 @@ var PrintReport = class PrintReport {
 
         let lang = this.banDoc.info("Base", "Language");
 
-        if (!lang) {
-            lang = "en";
-        }
-
         // Load the texts based on the language code
         let texts = this.printsettings.loadTexts(lang);
 
@@ -70,55 +66,71 @@ var PrintReport = class PrintReport {
             return;
         }
 
-        let documentChange = { "format": "documentChange", "error": "", "data": [] };
-        let jsonDocRows = initDocument(this.isTest);
+        let flag = false;
 
-        // Sum all the scores in the transactions table
-        let score = 0.0;
         for (let i = 0; i < this.banDoc.table("Transactions").rowCount; i++) {
-            if (this.banDoc.table("Transactions").row(i).value("Description") === "Total score:") {
+            if (this.banDoc.table("Transactions").row(i).value("TAuto") === "automaticcorrection") {
+                flag = true;
                 continue;
             }
-            score = Number(score) + Number(this.banDoc.table("Transactions").row(i).value("TAdjustedScore"));
         }
 
-        //rows operation for adding the total of the scores at the end of the document
+        if (flag) {
 
-        let totalscorerow = this.banDoc.table("Transactions").findRowByValue("Description", "Total score:");
-        let totalrow;
-        if (this.isTest) {
-            totalrow = '0';
+            let documentChange = { "format": "documentChange", "error": "", "data": [] };
+            let jsonDocRows = initDocument(this.isTest);
+
+            // Sum all the scores in the transactions table
+            let score = 0.0;
+            for (let i = 0; i < this.banDoc.table("Transactions").rowCount; i++) {
+                if (this.banDoc.table("Transactions").row(i).value("Description") === "Total score:") {
+                    continue;
+                }
+                score = Number(score) + Number(this.banDoc.table("Transactions").row(i).value("TAdjustedScore"));
+            }
+
+            //rows operation for adding the total of the scores at the end of the document
+
+            let totalscorerow = this.banDoc.table("Transactions").findRowByValue("Description", "Total score:");
+            let totalrow;
+            if (this.isTest) {
+                totalrow = '0';
+            }
+            else {
+                // save the row number of the total score
+                totalrow = totalscorerow.rowNr;
+            }
+
+            // row for the total score
+            let rows = [];
+            let row = {};
+            row.operation = {};
+            row.operation.name = 'modify';
+            row.operation.sequence = totalrow.toString();
+            row.style = { "fontSize": 0, "bold": true };
+            //row fields
+            row.fields = {};
+            row.fields["TAuto"] = "automaticcorrection";
+            row.fields["Description"] = "Total score: ";
+            row.fields["TAdjustedScore"] = Banana.Converter.toInternalNumberFormat(score);
+            rows.push(row);
+
+            //table for the operations
+            let dataUnitTransactions = {};
+            dataUnitTransactions.nameXml = 'Transactions';
+
+            //data for rows
+            dataUnitTransactions.data = {};
+            dataUnitTransactions.data.rowLists = [];
+            dataUnitTransactions.data.rowLists.push({ 'rows': rows });
+            jsonDocRows.document.dataUnits.push(dataUnitTransactions);
+            documentChange["data"].push(jsonDocRows);
+
+            return documentChange;
         }
+
         else {
-            // save the row number of the total score
-            totalrow = totalscorerow.rowNr;
+           return Banana.application.addMessage(texts.noautomaticcorrection);
         }
-
-        // row for the total score
-        let rows = [];
-        let row = {};
-        row.operation = {};
-        row.operation.name = 'modify';
-        row.operation.sequence = totalrow.toString();
-        row.style = { "fontSize": 0, "bold": true };
-        //row fields
-        row.fields = {};
-        row.fields["TAuto"] = "teachingassistant";
-        row.fields["Description"] = "Total score: ";
-        row.fields["TAdjustedScore"] = Banana.Converter.toInternalNumberFormat(score);
-        rows.push(row);
-
-        //table for the operations
-        let dataUnitTransactions = {};
-        dataUnitTransactions.nameXml = 'Transactions';
-
-        //data for rows
-        dataUnitTransactions.data = {};
-        dataUnitTransactions.data.rowLists = [];
-        dataUnitTransactions.data.rowLists.push({ 'rows': rows });
-        jsonDocRows.document.dataUnits.push(dataUnitTransactions);
-        documentChange["data"].push(jsonDocRows);
-
-        return documentChange;
     }
 }

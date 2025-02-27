@@ -55,11 +55,18 @@ function exec() {
 
 var CreateDoc = class CreateDoc {
   constructor(banDocument, isTest) {
-    this.bananaDoc = banDocument;
+    this.banDoc = banDocument;
     this.isTest = isTest;
   }
 
   result() {
+
+    let lang = this.banDoc.info("Base", "Language");
+
+    let printsettings = new PrintSettings(this.banDoc1, this.isTest);
+
+    // Load the texts based on the language code
+    let texts = printsettings.loadTexts(lang);
 
     let documentChange = { "format": "documentChange", "error": "", "data": [] };
 
@@ -81,7 +88,7 @@ var CreateDoc = class CreateDoc {
     //columns
     let columns = [];
 
-    if (!this.bananaDoc.table('Transactions').column('TAuto')) {
+    if (!this.banDoc.table('Transactions').column('TAuto')) {
       //column operation
       column = {};
       column.operation = {};
@@ -97,7 +104,7 @@ var CreateDoc = class CreateDoc {
       columns.push(column);
     }
 
-    if (!this.bananaDoc.table('Transactions').column('TMaxScore')) {
+    if (!this.banDoc.table('Transactions').column('TMaxScore')) {
       //column operation
       column = {};
       column.operation = {};
@@ -112,7 +119,7 @@ var CreateDoc = class CreateDoc {
       columns.push(column);
     }
 
-    if (!this.bananaDoc.table('Transactions').column('TAutoScore')) {
+    if (!this.banDoc.table('Transactions').column('TAutoScore')) {
       //column operation
       column = {};
       column.operation = {};
@@ -127,7 +134,7 @@ var CreateDoc = class CreateDoc {
       columns.push(column);
     }
 
-    if (!this.bananaDoc.table('Transactions').column('TAdjustedScore')) {
+    if (!this.banDoc.table('Transactions').column('TAdjustedScore')) {
       //column operation
       column = {};
       column.operation = {};
@@ -142,7 +149,7 @@ var CreateDoc = class CreateDoc {
       columns.push(column);
     }
 
-    if (!this.bananaDoc.table('Transactions').column('TCorrectionsNotes')) {
+    if (!this.banDoc.table('Transactions').column('TCorrectionsNotes')) {
       //column operation
       column = {};
       column.operation = {};
@@ -165,7 +172,7 @@ var CreateDoc = class CreateDoc {
       return documentChange;
     }
     else {
-      return;
+      return Banana.application.addMessage(texts.nochanges);
     }
   }
 }

@@ -11,6 +11,8 @@
 // @docproperties =
 // @task = app.command
 // @timeout = -1
+// @includejs = ch.banana.app.functions.js
+// @includejs = ch.banana.app.settings.js
 
 //Check if the version of Banana Accounting is compatible
 function verifyBananaAdvancedVersion() {
@@ -40,7 +42,7 @@ function exec() {
         return;
     }
 
-    let printdoc = new PrintDoc();
+    let printdoc = new PrintDoc(Banana.document, false);
     let doc = printdoc.documentation();
 
     return doc;
@@ -52,10 +54,18 @@ function exec() {
  */
 
 var PrintDoc = class PrintDoc {
-    constructor() {
+    constructor(banDocument, isTest) {
+        this.banDoc = banDocument;
+        this.isTest = isTest;
     }
 
     documentation() {
+
+        let lang = this.banDoc.info("Base", "Language");
+
+        let printsettings = new PrintSettings(this.banDoc1, this.isTest);
+        // Load the texts based on the language code
+        let texts = printsettings.loadTexts(lang);
 
         Banana.Ui.showHelp('ch.banana.app.exercisecorrection');
         return;

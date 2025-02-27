@@ -58,8 +58,8 @@ TestImportFile.prototype.testImportFile = function () {
 
       let test = new PrintSettings(banDoc1, isTest);
       let result = test.result();
-      this.testLogger.addText("TestImportFile " + i);
-      this.testLogger.addJson("TestImportFile", JSON.stringify(result));
+      this.testLogger.addText("TestSettings " + i);
+      this.testLogger.addJson("TestSettings", JSON.stringify(result));
 
     }
     else {

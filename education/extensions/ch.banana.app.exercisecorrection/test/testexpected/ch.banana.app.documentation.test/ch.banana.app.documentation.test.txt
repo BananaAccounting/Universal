@@ -22,26 +22,26 @@
 %
 \begin{testcase}{TestImportFile}
 \begin{test}{testImportFile}
-\textvalue{TestImportFile 0}\\
-\begin{jsonvalue}{TestImportFile}
+\textvalue{TestDocumentation 0}\\
+\begin{jsonvalue}{TestDocumentation}
 \end{jsonvalue}
-\textvalue{TestImportFile 1}\\
-\begin{jsonvalue}{TestImportFile}
+\textvalue{TestDocumentation 1}\\
+\begin{jsonvalue}{TestDocumentation}
 \end{jsonvalue}
-\textvalue{TestImportFile 2}\\
-\begin{jsonvalue}{TestImportFile}
+\textvalue{TestDocumentation 2}\\
+\begin{jsonvalue}{TestDocumentation}
 \end{jsonvalue}
-\textvalue{TestImportFile 3}\\
-\begin{jsonvalue}{TestImportFile}
+\textvalue{TestDocumentation 3}\\
+\begin{jsonvalue}{TestDocumentation}
 \end{jsonvalue}
-\textvalue{TestImportFile 4}\\
-\begin{jsonvalue}{TestImportFile}
+\textvalue{TestDocumentation 4}\\
+\begin{jsonvalue}{TestDocumentation}
 \end{jsonvalue}
-\textvalue{TestImportFile 5}\\
-\begin{jsonvalue}{TestImportFile}
+\textvalue{TestDocumentation 5}\\
+\begin{jsonvalue}{TestDocumentation}
 \end{jsonvalue}
-\textvalue{TestImportFile 6}\\
-\begin{jsonvalue}{TestImportFile}
+\textvalue{TestDocumentation 6}\\
+\begin{jsonvalue}{TestDocumentation}
 \end{jsonvalue}
 \keyvalue{Result}{Passed}
 \end{test}

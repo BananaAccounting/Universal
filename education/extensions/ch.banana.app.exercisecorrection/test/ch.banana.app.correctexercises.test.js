@@ -67,8 +67,37 @@ TestImportFile.prototype.testImportFile = function () {
 
       let test = new CorrectDoc(banDoc1, banDoc2, isTest);
       let result = test.result(paramcorrections);
-      this.testLogger.addText("TestImportFile " + i);
-      this.testLogger.addJson("TestImportFile", JSON.stringify(result));
+      this.testLogger.addText("TestExerciseCorrection " + i);
+      this.testLogger.addJson("TestExerciseCorrection", JSON.stringify(result));
+      i++;
+    }
+    else {
+
+      this.testLogger.addFatalError("No valid file ac2 found in this directory: " + this.fileAC2Path[i] + " and/or " + this.fileAC2Path[i + 1]);
+
+    }
+  }
+  
+  for (let i = 0; i < this.fileAC2Path.length; i++) {
+
+    let banDoc1 = Banana.application.openDocument(this.fileAC2Path[i + 1]);
+    let banDoc2 = Banana.application.openDocument(this.fileAC2Path[i]);
+    let isTest = true;
+
+    let paramcorrections = {};
+    paramcorrections.score = true;
+    paramcorrections.datescore = "1";
+    paramcorrections.amountscore = "1";
+    paramcorrections.debitaccountscore = "1";
+    paramcorrections.creditaccountscore = "1";
+    paramcorrections.debitcreditaccountsscore = false;
+
+    if (banDoc1 && banDoc2) {
+
+      let test = new CorrectDoc(banDoc1, banDoc2, isTest);
+      let result = test.result(paramcorrections);
+      this.testLogger.addText("TestExerciseCorrection Bad Workflow" + i);
+      this.testLogger.addJson("TestExerciseCorrection Bad Workflow", JSON.stringify(result));
       i++;
     }
     else {

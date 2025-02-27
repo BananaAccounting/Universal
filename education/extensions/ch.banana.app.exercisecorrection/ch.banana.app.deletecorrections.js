@@ -33,7 +33,7 @@ function exec() {
     let printsettings = new PrintSettings(Banana.document, false);
     let correctdoc = new CorrectDoc(Banana.document, Banana.document, false);
 
-    let execute = new PrintReport(Banana.document, false, correctdoc, printsettings);
+    let execute = new DeleteCorrections(Banana.document, false, correctdoc, printsettings);
     return execute.deletecorrections();
 }
 
@@ -42,7 +42,7 @@ function exec() {
  * @param {*} banDocument 
  */
 
-var PrintReport = class PrintReport {
+var DeleteCorrections = class DeleteCorrections {
     constructor(banDocument, isTest, correctdoc, printsettings) {
         this.banDoc = banDocument;
         this.isTest = isTest;
@@ -52,13 +52,9 @@ var PrintReport = class PrintReport {
 
     deletecorrections() {
 
+
         let lang = this.banDoc.info("Base", "Language");
 
-        if (!lang) {
-            lang = "en";
-        }
-
-        
         // Load the texts based on the language code
         let texts = this.printsettings.loadTexts(lang);
 
@@ -69,75 +65,90 @@ var PrintReport = class PrintReport {
             return;
         }
 
-        let documentChange = { "format": "documentChange", "error": "", "data": [] };
-        let jsonDocRowsDelete = initDocument(this.isTest);
-        let jsonDocRowsModify = initDocument(this.isTest);
-
-        //rows
-        let row = {};
-        let rowsdelete = [];
-        let rowsmodify = [];
+        let flag = false;
 
         for (let i = 0; i < this.banDoc.table("Transactions").rowCount; i++) {
-
-            //row operation
-            row = {};
-            row.operation = {};
-
-
-            if (this.banDoc.table("Transactions").row(i).value("TAuto") === "teachingassistant") {
-
-                // delete row to add the score and the maxscore to the transactions
-
-                row.operation.name = 'delete';
-                row.operation.sequence = i.toString();
-
-                rowsdelete.push(row);
+            if (this.banDoc.table("Transactions").row(i).value("TAuto") === "automaticcorrection") {
+                flag = true;
+                continue;
             }
-            else {
-                if (this.banDoc.table("Transactions").row(i).value("Doc") !== "Student") {
-                    row.style = { "fontSize": 0, "bold": false, "background-color": "#ffffff" };
-                }
-                row.operation.name = 'modify';
-                row.operation.sequence = i.toString();
-                row.fields = {};
-                row.fields["TAuto"] = this.banDoc.table("Transactions").row(i).value("TAuto");
-                row.fields["Date"] = this.banDoc.table("Transactions").row(i).value("Date");
-                row.fields["Doc"] = this.banDoc.table("Transactions").row(i).value("Doc");
-                row.fields["Description"] = this.banDoc.table("Transactions").row(i).value("Description");
-                row.fields["AccountDebit"] = this.banDoc.table("Transactions").row(i).value("AccountDebit");
-                row.fields["AccountCredit"] = this.banDoc.table("Transactions").row(i).value("AccountCredit");
-                row.fields["Amount"] = this.banDoc.table("Transactions").row(i).value("Amount");
-                row.fields["TMaxScore"] = "";
-                row.fields["TAutoScore"] = "";
-                row.fields["TAdjustedScore"] = "";
-                row.fields["TCorrectionsNotes"] = "";
-
-
-                rowsmodify.push(row);
-            }
-            Banana.console.log(JSON.stringify(row));
         }
 
-        //table for the operations
-        let dataUnitTransactions = {};
-        dataUnitTransactions.nameXml = 'Transactions';
-        dataUnitTransactions.data = {};
-        dataUnitTransactions.data.rowLists = [];
-        dataUnitTransactions.data.rowLists.push({ 'rows': rowsdelete });
-        jsonDocRowsDelete.document.dataUnits.push(dataUnitTransactions);
-        documentChange["data"].push(jsonDocRowsDelete);
+        if (flag) {
 
-        //table for the operations
-        dataUnitTransactions = {};
-        dataUnitTransactions.nameXml = 'Transactions';
-        dataUnitTransactions.data = {};
-        dataUnitTransactions.data.rowLists = [];
-        dataUnitTransactions.data.rowLists.push({ 'rows': rowsmodify });
-        jsonDocRowsModify.document.dataUnits.push(dataUnitTransactions);
-        documentChange["data"].push(jsonDocRowsModify);
+            let documentChange = { "format": "documentChange", "error": "", "data": [] };
+            let jsonDocRowsDelete = initDocument(this.isTest);
+            let jsonDocRowsModify = initDocument(this.isTest);
 
-        return documentChange;
+            //rows
+            let row = {};
+            let rowsdelete = [];
+            let rowsmodify = [];
+
+            for (let i = 0; i < this.banDoc.table("Transactions").rowCount; i++) {
+
+                //row operation
+                row = {};
+                row.operation = {};
+
+
+                if (this.banDoc.table("Transactions").row(i).value("TAuto") === "automaticcorrection") {
+
+                    // delete row to add the score and the maxscore to the transactions
+
+                    row.operation.name = 'delete';
+                    row.operation.sequence = i.toString();
+
+                    rowsdelete.push(row);
+                }
+                else {
+                    if (this.banDoc.table("Transactions").row(i).value("Doc") !== "Student") {
+                        row.style = { "fontSize": 0, "bold": false, "background-color": "#ffffff" };
+                    }
+                    row.operation.name = 'modify';
+                    row.operation.sequence = i.toString();
+                    row.fields = {};
+                    row.fields["TAuto"] = this.banDoc.table("Transactions").row(i).value("TAuto");
+                    row.fields["Date"] = this.banDoc.table("Transactions").row(i).value("Date");
+                    row.fields["Doc"] = this.banDoc.table("Transactions").row(i).value("Doc");
+                    row.fields["Description"] = this.banDoc.table("Transactions").row(i).value("Description");
+                    row.fields["AccountDebit"] = this.banDoc.table("Transactions").row(i).value("AccountDebit");
+                    row.fields["AccountCredit"] = this.banDoc.table("Transactions").row(i).value("AccountCredit");
+                    row.fields["Amount"] = this.banDoc.table("Transactions").row(i).value("Amount");
+                    row.fields["TMaxScore"] = "";
+                    row.fields["TAutoScore"] = "";
+                    row.fields["TAdjustedScore"] = "";
+                    row.fields["TCorrectionsNotes"] = "";
+
+
+                    rowsmodify.push(row);
+                }
+            }
+
+            //table for the operations
+            let dataUnitTransactions = {};
+            dataUnitTransactions.nameXml = 'Transactions';
+            dataUnitTransactions.data = {};
+            dataUnitTransactions.data.rowLists = [];
+            dataUnitTransactions.data.rowLists.push({ 'rows': rowsdelete });
+            jsonDocRowsDelete.document.dataUnits.push(dataUnitTransactions);
+            documentChange["data"].push(jsonDocRowsDelete);
+
+            //table for the operations
+            dataUnitTransactions = {};
+            dataUnitTransactions.nameXml = 'Transactions';
+            dataUnitTransactions.data = {};
+            dataUnitTransactions.data.rowLists = [];
+            dataUnitTransactions.data.rowLists.push({ 'rows': rowsmodify });
+            jsonDocRowsModify.document.dataUnits.push(dataUnitTransactions);
+            documentChange["data"].push(jsonDocRowsModify);
+
+            return documentChange;
+        }
+
+    else {
+        return Banana.application.addMessage(texts.nocorrections);
     }
+}
 
 }
