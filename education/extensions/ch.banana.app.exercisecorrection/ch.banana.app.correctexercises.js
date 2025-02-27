@@ -53,7 +53,7 @@ var CorrectDoc = class CorrectDoc {
     let printsettings = new PrintSettings(this.studentDoc, this.isTest);
     // Load the texts based on the language code
     let texts = printsettings.loadTexts(lang);
-    
+
     let studenttransactions = this.studentDoc.table("Transactions");
     let teacherfile;
     let teachertransactions;
@@ -73,6 +73,17 @@ var CorrectDoc = class CorrectDoc {
         return;
       }
 
+      let flag = false;
+
+        for (let i = 0; i < this.studentDoc.table("Transactions").rowCount; i++) {
+            if (this.studentDoc.table("Transactions").row(i).value("TAuto") === "automaticcorrection") {
+                flag = true;
+                continue;
+            }
+        }
+
+        if (!flag) {
+
       //Open the file
       teacherfile = Banana.application.openDocument("*.*");
       if (!teacherfile) {
@@ -85,6 +96,11 @@ var CorrectDoc = class CorrectDoc {
       let printsettings = new PrintSettings(Banana.document, false);
 
       printsettings.verifyparam(paramcorrections);
+    }
+
+    else {
+      return Banana.application.addMessage(texts.alreadycorrected);
+    }
 
     }
 
