@@ -3,7 +3,7 @@
 All notable changes to the [Teacher Tools](https://www.banana.ch/apps/en/node/9761) extension will be documented in this file.  
 
 *
-2025-02-26
+2025-02-27
 	* Added File Preparation function. Modified XML columns name and changed Section column. Modified tests. Renamed Accounting Automatic Corrections.
 *
 2025-02-06
