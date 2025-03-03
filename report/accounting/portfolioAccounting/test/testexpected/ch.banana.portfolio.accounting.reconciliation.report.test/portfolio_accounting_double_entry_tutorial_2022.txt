@@ -20,42 +20,42 @@
 %Begin test data
 \begin{reportvalue}{FILENAME: file:script/../test/testcases/portfolio\_accounting\_double\_entry\_tutorial\_2022.ac2}
 \begin{longtable}[l]{ l  l  l  l  l  l  l  l  l  l  l  l }
-\excltest{Securities Reconciliation Report, Data as of: 17.02.2025} Account  & Security  & Date  & Doc  & Description  & Debit CHF  & Credit CHF  & Balance CHF  & Quantity   & Unit Price   & Quantity balance  & Book value \P  per unit\P  \\
+\excltest{Securities Reconciliation Report, Data as of: 03.03.2025} Account  & Security  & Date  & Doc  & Description  & Quantity   & Unit Price   & Debit\P CHF  & Credit\P CHF  & Balance\P CHF  & Quantity balance  & Book value \P  per unit\P  \\
 \multicolumn{12}{l}{Shares }\\
  & \multicolumn{11}{l}{CH003886335 }\\
- &  & 20.02.2022  & 1  & Shares UBS Purchase  & 1'100.00  &  & 1'100.00  & 100  & 11.0000  & 100  & 11.0000 \\
- &  & 20.03.2022  & 2  & Shares UBS Total Sale  &  & 172.50  & 927.50  & -15  & 11.5000  & 85  & 10.9118 \\
- &  & 20.03.2022  & 2  & Shares UBS Profit on Sale  & 7.50  &  & 935.00  &  &  & 85  & 11.0000 \\
- &  & 22.03.2022  & 3  & Shares UBS Total Sale  &  & 95.00  & 840.00  & -10  & 9.5000  & 75  & 11.2000 \\
- &  & 22.03.2022  & 3  & Shares UBS Loss on Sale  &  & 15.00  & 825.00  &  &  & 75  & 11.0000 \\
- &  & 20.04.2022  & 4  & Shares UBS Purchase  & 525.00  &  & 1'350.00  & 50  & 10.5000  & 125  & 10.8000 \\
- &  & 20.05.2022  & 5  & Shares UBS Total Sale  &  & 168.00  & 1'182.00  & -15  & 11.2000  & 110  & 10.7455 \\
- &  & 20.05.2022  & 5  & Shares UBS Profit on Sale  & 5.55  &  & 1'187.55  &  &  & 110  & 10.7959 \\
- &  & 31.12.2022  &  & Shares UBS Market Price Adjustment (10.85)  & 5.95  &  & 1'193.50  &  &  & 110  & 10.8500 \\
-\multicolumn{2}{l}{} & \excltest{17.02.2025}  &  & Balance CH003886335  & 1'644.00  & 450.50  & 1'193.50  & \multicolumn{2}{l}{} & 110  & 10.8500 \\
+ &  & 20.02.2022  & 1  & Shares UBS Purchase  & 100  & 11.0000  & 1'100.00  &  & 1'100.00  & 100  & 11.0000 \\
+ &  & 20.03.2022  & 2  & Shares UBS Total Sale  & -15  & 11.5000  &  & 172.50  & 927.50  & 85  & 10.9118 \\
+ &  & 20.03.2022  & 2  & Shares UBS Profit on Sale  &  &  & 7.50  &  & 935.00  & 85  & 11.0000 \\
+ &  & 22.03.2022  & 3  & Shares UBS Total Sale  & -10  & 9.5000  &  & 95.00  & 840.00  & 75  & 11.2000 \\
+ &  & 22.03.2022  & 3  & Shares UBS Loss on Sale  &  &  &  & 15.00  & 825.00  & 75  & 11.0000 \\
+ &  & 20.04.2022  & 4  & Shares UBS Purchase  & 50  & 10.5000  & 525.00  &  & 1'350.00  & 125  & 10.8000 \\
+ &  & 20.05.2022  & 5  & Shares UBS Total Sale  & -15  & 11.2000  &  & 168.00  & 1'182.00  & 110  & 10.7455 \\
+ &  & 20.05.2022  & 5  & Shares UBS Profit on Sale  &  &  & 5.55  &  & 1'187.55  & 110  & 10.7959 \\
+ &  & 31.12.2022  &  & Shares UBS Market Price Adjustment (10.85)  &  &  & 5.95  &  & 1'193.50  & 110  & 10.8500 \\
+\multicolumn{2}{l}{} & \excltest{03.03.2025}  &  & Balance CH003886335  & \multicolumn{2}{l}{} & 1'644.00  & 450.50  & 1'193.50  & 110  & 10.8500 \\
 \multicolumn{12}{l}{}\\
  & \multicolumn{11}{l}{CH012775214 }\\
- &  & 20.02.2022  & 6  & Shares Nestlè Purchase  & 1'000.00  &  & 1'000.00  & 100  & 10.0000  & 100  & 10.0000 \\
- &  & 20.03.2022  & 7  & Shares Nestle Total Sale  &  & 475.00  & 525.00  & -50  & 9.5000  & 50  & 10.5000 \\
- &  & 20.03.2022  & 7  & Shares Nestle Loss on Sale  &  & 25.00  & 500.00  &  &  & 50  & 10.0000 \\
- &  & 31.12.2022  &  & Shares Nestlè Market Price Adjustment (11.00)  & 50.00  &  & 550.00  &  &  & 50  & 11.0000 \\
-\multicolumn{2}{l}{} & \excltest{17.02.2025}  &  & Balance CH012775214  & 1'050.00  & 500.00  & 550.00  & \multicolumn{2}{l}{} & 50  & 11.0000 \\
+ &  & 20.02.2022  & 6  & Shares Nestlè Purchase  & 100  & 10.0000  & 1'000.00  &  & 1'000.00  & 100  & 10.0000 \\
+ &  & 20.03.2022  & 7  & Shares Nestle Total Sale  & -50  & 9.5000  &  & 475.00  & 525.00  & 50  & 10.5000 \\
+ &  & 20.03.2022  & 7  & Shares Nestle Loss on Sale  &  &  &  & 25.00  & 500.00  & 50  & 10.0000 \\
+ &  & 31.12.2022  &  & Shares Nestlè Market Price Adjustment (11.00)  &  &  & 50.00  &  & 550.00  & 50  & 11.0000 \\
+\multicolumn{2}{l}{} & \excltest{03.03.2025}  &  & Balance CH012775214  & \multicolumn{2}{l}{} & 1'050.00  & 500.00  & 550.00  & 50  & 11.0000 \\
 \multicolumn{12}{l}{}\\
-\multicolumn{2}{l}{} & \excltest{17.02.2025}  &  & \multicolumn{3}{l}{Opening Balance Shares } & 0.00  & \multicolumn{4}{l}{}\\
-\multicolumn{2}{l}{} & \excltest{17.02.2025}  &  & \multicolumn{3}{l}{Current Balance Shares } & 1'743.50  & \multicolumn{4}{l}{}\\
-\multicolumn{2}{l}{} & \excltest{17.02.2025}  &  & \multicolumn{3}{l}{Total securities movements } & 1'743.50  & \multicolumn{4}{l}{}\\
-\multicolumn{2}{l}{} & \excltest{17.02.2025}  &  & \multicolumn{3}{l}{Differences } & 0.00  & \multicolumn{4}{l}{}\\
+\multicolumn{2}{l}{} & \excltest{03.03.2025}  &  & \multicolumn{5}{l}{Opening Balance Shares } & 0.00  & \multicolumn{2}{l}{}\\
+\multicolumn{2}{l}{} & \excltest{03.03.2025}  &  & \multicolumn{5}{l}{Current Balance Shares } & 0.00  & \multicolumn{2}{l}{}\\
+\multicolumn{2}{l}{} & \excltest{03.03.2025}  &  & \multicolumn{5}{l}{Total securities movements } & 1'743.50  & \multicolumn{2}{l}{}\\
+\multicolumn{2}{l}{} & \excltest{03.03.2025}  &  & \multicolumn{5}{l}{Differences } & 1'743.50  & \multicolumn{2}{l}{}\\
 \multicolumn{12}{l}{Bonds }\\
  & \multicolumn{11}{l}{CH135792468 }\\
- &  & 25.03.2022  & 8  & Bonds Holcim Purchase  & 4'900.00  &  & 4'900.00  & 5'000  & 0.9800  & 5'000  & 0.9800 \\
- &  & 31.10.2022  & 10  & Bonds Holcim Total Sale  &  & 5'125.00  & -225.00  & -5'000  & 1.0250  & 0  & \\
- &  & 31.10.2022  & 10  & Bonds Holcim Profit on Sale  & 225.00  &  & 0.00  &  &  & 0  & \\
-\multicolumn{2}{l}{} & \excltest{17.02.2025}  &  & Balance CH135792468  & 5'125.00  & 5'125.00  & 0.00  & \multicolumn{2}{l}{} & 0  & 0.0000 \\
+ &  & 25.03.2022  & 8  & Bonds Holcim Purchase  & 5'000  & 0.9800  & 4'900.00  &  & 4'900.00  & 5'000  & 0.9800 \\
+ &  & 31.10.2022  & 10  & Bonds Holcim Total Sale  & -5'000  & 1.0250  &  & 5'125.00  & -225.00  & 0  & \\
+ &  & 31.10.2022  & 10  & Bonds Holcim Profit on Sale  &  &  & 225.00  &  & 0.00  & 0  & \\
+\multicolumn{2}{l}{} & \excltest{03.03.2025}  &  & Balance CH135792468  & \multicolumn{2}{l}{} & 5'125.00  & 5'125.00  & 0.00  & 0  & 0.0000 \\
 \multicolumn{12}{l}{}\\
-\multicolumn{2}{l}{} & \excltest{17.02.2025}  &  & \multicolumn{3}{l}{Opening Balance Bonds } & 0.00  & \multicolumn{4}{l}{}\\
-\multicolumn{2}{l}{} & \excltest{17.02.2025}  &  & \multicolumn{3}{l}{Current Balance Bonds } & 0.00  & \multicolumn{4}{l}{}\\
-\multicolumn{2}{l}{} & \excltest{17.02.2025}  &  & \multicolumn{3}{l}{Total securities movements } & 0.00  & \multicolumn{4}{l}{}\\
-\multicolumn{2}{l}{} & \excltest{17.02.2025}  &  & \multicolumn{3}{l}{Differences } & 0.00  & \multicolumn{4}{l}{}\\
+\multicolumn{2}{l}{} & \excltest{03.03.2025}  &  & \multicolumn{5}{l}{Opening Balance Bonds } & 0.00  & \multicolumn{2}{l}{}\\
+\multicolumn{2}{l}{} & \excltest{03.03.2025}  &  & \multicolumn{5}{l}{Current Balance Bonds } & 0.00  & \multicolumn{2}{l}{}\\
+\multicolumn{2}{l}{} & \excltest{03.03.2025}  &  & \multicolumn{5}{l}{Total securities movements } & 0.00  & \multicolumn{2}{l}{}\\
+\multicolumn{2}{l}{} & \excltest{03.03.2025}  &  & \multicolumn{5}{l}{Differences } & 0.00  & \multicolumn{2}{l}{}\\
 \end{longtable}
 \end{reportvalue}
 \end{document}
