@@ -16,10 +16,6 @@
 
 function exec() {
 
-    if (!verifyBananaAdvancedVersion()) {
-        return "@Cancel";
-    }
-
     //Check if we are on an opened document
     if (!Banana.document) { return; }
 
