@@ -11,7 +11,6 @@
 // @docproperties =
 // @task = app.command
 // @timeout = -1
-// @includejs = ch.banana.app.functions.js
 // @includejs = ch.banana.app.settings.js
 
 function exec() {
