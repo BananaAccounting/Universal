@@ -121,11 +121,11 @@ function getAdjustmentTransactionsRows(banDoc, savedMarketValuesParams, savedAcc
         row.fields["ItemsId"] = itemId;
         row.fields["Description"] = getItemDescription(itemId, banDoc) + " " + texts.adjustmentTxt + " (" + itemUnitMarketValue + ")";
         if (adjustmentResult.indexOf("-") >= 0) {
-            row.fields["AccountDebit"] = savedAccountsParams.valueChangingcontraAccounts.otherValueChangingCostsAccount || texts.otherValChangeCostPlaceHolder;
+            row.fields["AccountDebit"] = savedAccountsParams.valueChangingcontraAccounts.unrealizedLossAccount || texts.otherValChangeCostPlaceHolder;
             row.fields["AccountCredit"] = getItemAccount(itemId, banDoc);
         } else {
             row.fields["AccountDebit"] = getItemAccount(itemId, banDoc);
-            row.fields["AccountCredit"] = savedAccountsParams.valueChangingcontraAccounts.otherValueChangingIncomeAccount || texts.otherValChangeIncomePlaceHolder;
+            row.fields["AccountCredit"] = savedAccountsParams.valueChangingcontraAccounts.unrealizedGainAccount || texts.otherValChangeIncomePlaceHolder;
         }
         if (docInfo.isMultiCurrency)
             row.fields["AmountCurrency"] = Banana.Converter.toInternalNumberFormat(adjustmentResult);
@@ -210,8 +210,11 @@ function getTransactionsTexts_it() {
     texts.adjustmentTxt = "Assestamento al prezzo di mercato";
 
     // Placeholder for accounts
-    texts.otherValChangeIncomePlaceHolder = "[Conto per altri ricavi da variazioni di valore]";
-    text.otherValChangeCostPlaceHolder = "[Conto per altri costi di variazione del valore]";
+    texts.otherValChangeIncomePlaceHolder = "[Conto per utili non realizzati]";
+    texts.otherValChangeCostPlaceHolder = "[Conto per perdite non realizzate]";
+
+    // tooltips
+    texts.tooltipdialog = "Inserire il prezzo di mercato attuale per questo titolo";
 
     return texts;
 }
@@ -223,8 +226,12 @@ function getTransactionsTexts_de() {
     texts.adjustmentTxt = "Anpassung zum Marktpreis";
 
     // Placeholder for accounts
-    texts.otherValChangeIncomePlaceHolder = "[Konto für sonstige wertverändernde Erträge]";
-    texts.otherValChangeCostPlaceHolder = "[Konto für sonstige wertverändernde Kosten]";
+    texts.otherValChangeIncomePlaceHolder = "[Konto für unrealisierte Gewinne]";
+    texts.otherValChangeCostPlaceHolder = "[Konto für unrealisierte Verluste]";
+
+    // Tooltip
+    texts.tooltipdialog = "Geben Sie den aktuellen Marktpreis für dieses Wertpapier ein";
+
 
     return texts;
 }
@@ -236,8 +243,11 @@ function getTransactionsTexts_fr() {
     texts.adjustmentTxt = "Ajustement au prix du marché";
 
     // Placeholder for accounts
-    texts.otherValChangeIncomePlaceHolder = "[Compte pour autres revenus liés aux variations de valeur]";
-    text.otherValChangeCostPlaceHolder = "[Compte pour autres coûts de variation de valeur]";
+    texts.otherValChangeIncomePlaceHolder = "[Compte pour les gains latents]";
+    texts.otherValChangeCostPlaceHolder = "[Compte pour les pertes latentes]";
+
+    // tooltip
+    texts.tooltipdialog = "Saisissez le prix du marché actuel pour ce titre";
 
     return texts;
 }
@@ -249,8 +259,11 @@ function getTransactionsTexts_en() {
     texts.adjustmentTxt = "Market Price Adjustment";
 
     // Placeholder for accounts
-    texts.otherValChangeIncomePlaceHolder = "[Other value changing income account]";
-    texts.otherValChangeCostPlaceHolder = "[Other value changing costs account]";
+    texts.otherValChangeIncomePlaceHolder = "[Account for unrealized gains]";
+    texts.otherValChangeCostPlaceHolder = "[Account for unrealized losses]";
+
+    //tooltip
+    texts.tooltipdialog = "Enter the current market price for this security";
 
     return texts;
 
@@ -310,7 +323,7 @@ function initAdjustmentDialogParams(itemsData) {
     let dialogParam = {};
 
     itemsData.forEach(item => {
-        dialogParam[item.item] = "";
+        dialogParam[item.item] = item.unitPriceCurrent || "";
     });
 
     return dialogParam;
@@ -334,6 +347,13 @@ function verifyAdjustmentParams(baseParams, savedParams) {
         }
     }
 
+    // if savedParams has an item without value, check in baseParams if it has a value and add it to savedParams
+    for (const key in savedParams) {
+        if (!savedParams[key]) {
+            savedParams[key] = baseParams[key];
+        }
+    }
+
     return savedParams;
 }
 
@@ -341,6 +361,7 @@ function convertParam(banDoc, userParam) {
     var convertedParam = {};
     convertedParam.version = '1.0';
     convertedParam.data = [];
+    let texts = getTransactionsTexts(banDoc);
 
     for (const param in userParam) {
         let itemDescription = getItemDescription(param, banDoc);
@@ -349,6 +370,7 @@ function convertParam(banDoc, userParam) {
         currentParam.title = itemDescription;
         currentParam.type = 'string';
         currentParam.defaultvalue = "";
+        currentParam.tooltip = texts.tooltipdialog;
         currentParam.value = userParam[param] ? userParam[param] : '';
         currentParam.readValue = function () {
             userParam[param] = this.value;

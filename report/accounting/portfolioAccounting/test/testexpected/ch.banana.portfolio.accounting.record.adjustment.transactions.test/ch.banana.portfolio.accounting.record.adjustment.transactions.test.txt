@@ -43,7 +43,7 @@
                                         {
                                             "fields": {
                                                 "AccountCredit": "Shares CHF",
-                                                "AccountDebit": "[Other value changing costs account]",
+                                                "AccountDebit": "[Account for unrealized losses]",
                                                 "AmountCurrency": "-4.50000000",
                                                 "Date": "",
                                                 "Description": "Shares UBS Market Price Adjustment (12.8001)",
@@ -57,7 +57,7 @@
                                         },
                                         {
                                             "fields": {
-                                                "AccountCredit": "[Other value changing income account]",
+                                                "AccountCredit": "[Account for unrealized gains]",
                                                 "AccountDebit": "Shares CHF",
                                                 "AmountCurrency": "3.05000000",
                                                 "Date": "",
@@ -73,7 +73,7 @@
                                         {
                                             "fields": {
                                                 "AccountCredit": "Shares Unicredit",
-                                                "AccountDebit": "[Other value changing costs account]",
+                                                "AccountDebit": "[Account for unrealized losses]",
                                                 "AmountCurrency": "-50.00000000",
                                                 "Date": "",
                                                 "Description": "Shares Unicredit Market Price Adjustment (9.50)",
@@ -87,7 +87,7 @@
                                         },
                                         {
                                             "fields": {
-                                                "AccountCredit": "[Other value changing income account]",
+                                                "AccountCredit": "[Account for unrealized gains]",
                                                 "AccountDebit": "Shares Netflix",
                                                 "AmountCurrency": "55.62000000",
                                                 "Date": "",
@@ -102,7 +102,7 @@
                                         },
                                         {
                                             "fields": {
-                                                "AccountCredit": "[Other value changing income account]",
+                                                "AccountCredit": "[Account for unrealized gains]",
                                                 "AccountDebit": "Bonds EUR",
                                                 "AmountCurrency": "225.00000000",
                                                 "Date": "",
