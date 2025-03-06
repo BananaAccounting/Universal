@@ -224,7 +224,7 @@ function getTransactionsTexts_de() {
 
     // Placeholder for accounts
     texts.otherValChangeIncomePlaceHolder = "[Konto für sonstige wertverändernde Erträge]";
-    text.otherValChangeCostPlaceHolder = "[Konto für sonstige wertverändernde Kosten]";
+    texts.otherValChangeCostPlaceHolder = "[Konto für sonstige wertverändernde Kosten]";
 
     return texts;
 }
