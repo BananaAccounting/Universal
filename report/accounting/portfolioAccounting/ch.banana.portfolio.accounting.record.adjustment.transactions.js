@@ -189,7 +189,7 @@ function getTransactionsTexts(banDoc) {
             text = getTransactionsTexts_it();
             break;
         case "de":
-            text = etTransactionsTexts_de();
+            text = getTransactionsTexts_de();
             break;
         case "fr":
             text = getTransactionsTexts_fr();
