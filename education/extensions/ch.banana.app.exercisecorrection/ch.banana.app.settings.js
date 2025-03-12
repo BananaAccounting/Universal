@@ -248,13 +248,13 @@ var PrintSettings = class PrintSettings {
         if (lang === "deu") {
             texts.language = "Sprache";
             texts.datescore = "Datum Punkte";
-            texts.debitaccountscore = "Debitorenkonto Punkte";
-            texts.creditaccountscore = "Kreditorenkonto Punkte";
+            texts.debitaccountscore = "Sollkonto Punkte";
+            texts.creditaccountscore = "Habenkonto Punkte";
             texts.amountscore = "Betrag Punkte";
-            texts.debitcreditaccountsscore = "Debitoren-/Kreditorenkonto separat berechnen?";
+            texts.debitcreditaccountsscore = "Soll- und Habenkonto separat berechnen?";
             texts.noscore = "Punkte";
             texts.changesettingsteacherfile = "Dieser Befehl kann nur in der Lehrerdatei verwendet werden.";
-            texts.isnotteacherfile = "Die zu importierende Datei ist keine Lehrerdatei. Bitte wählen Sie eine Lehrerdatei zum Importieren in die Schülerdatei.";
+            texts.isnotteacherfile = "Die zu importierende Datei ist keine Lehrerdatei. Bitte wählen Sie für den Import in die Schülerdatei eine Lehrdatei aus.";
             texts.isnotstudentfile = "Die Ausgangsdatei ist keine Schülerdatei. Bitte öffnen Sie eine Schülerdatei.";
             texts.isnotfile = "Die Datei wurde noch nicht angepasst. Bitte öffnen Sie eine bereits angepasste Datei.";
             texts.nocorrections = "Es gibt keine Korrekturen zum Löschen";
