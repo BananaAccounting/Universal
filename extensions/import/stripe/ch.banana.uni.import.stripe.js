@@ -222,11 +222,10 @@ var ImportPaymentsTransactionsFormat1 = class ImportPaymentsTransactionsFormat1 
         description = element["description"];
 
 
-        if (description !== "" && trType !== "") {
+        if (description !== "" && trType !== "")
             description += ", " + trType;
-        } else if (description == "") {
-            description = trType;
-        }
+        else if (description == "")
+            description = "";
         return description;
     }
 
