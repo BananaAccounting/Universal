@@ -72,7 +72,7 @@ TestImportSumupTrans.prototype.testImport = function () {
       Test.assert(file);
       var fileContent = file.read();
       Test.assert(fileContent);
-      var transactions = exec(fileContent, true); //takes the exec from the import script.
+      var transactions = processSumUpTransactions(fileContent);
       this.testLogger.addCsv('', transactions);
 
       if (!this.progressBar.step())
