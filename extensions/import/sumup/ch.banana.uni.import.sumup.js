@@ -133,6 +133,7 @@ function processSumUpTransactions(inData, userParam = {}, banDoc = {}) {
  * 1001->Cash account
  * 
  * We book the payouts and the cashed amounts and ignore the payments from the client that are not yet credited to the bank account.
+ * In the example in our hands we do not have any example about eventual refunds or chargebacks. 24.03.2025.
  * 
 */
 var SumupFormat2 = class SumupFormat2 extends ImportUtilities {
@@ -144,6 +145,7 @@ var SumupFormat2 = class SumupFormat2 extends ImportUtilities {
       this.decimalSeparator = ".";
       this.params = userParam;
       this.texts = getTexts(banDocument);
+      this.csvLanguage = "";
 
    }
    getFormattedData(csvData, convertionParam) {
@@ -240,6 +242,7 @@ var SumupFormat2 = class SumupFormat2 extends ImportUtilities {
          return [];
       }
 
+      this.csvLanguage = "de";
       return convertedColumns;
    }
 
@@ -284,25 +287,25 @@ var SumupFormat2 = class SumupFormat2 extends ImportUtilities {
          headers = ["Date", "ExternalReference", "Description", "AccountDebit", "AccountCredit", "Amount", "Notes"];
       }
 
-      objectArrayToCsv = Banana.Converter.objectArrayToCsv(headers, processedTrans, ";"); // Posso usare anche Banana.Converter.arrayToTsv(transactions); ?
+      objectArrayToCsv = Banana.Converter.objectArrayToCsv(headers, processedTrans, ";");
 
       return objectArrayToCsv;
-
    }
 
    getprocessedTransactions(transactionsData, accoutingType) {
 
       let transactionsMapped = [];
       let paymentTransactions = {};
+      let controlTerms = this.getControlTerms();
 
       if (transactionsData.length === 0)
          return transactionsMapped;
 
       for (let row of transactionsData) {
 
-         let trType = row["Transaction Type"];
+         let trType = row["Payment type"];
          let trStatus = row["Status"];
-         let trPaymentMethod = row["Payment Method"];
+         let trPaymentMethod = row["Payment method"];
          let trId = row["Transaction Id"];
 
          if (!trId || trId.trim() === "") {
@@ -310,26 +313,34 @@ var SumupFormat2 = class SumupFormat2 extends ImportUtilities {
             continue;
          }
 
-         if (trType === "Umsatz" && trStatus === "Erfolgreich" && trPaymentMethod == "POS") {
+         // Check if transactions is canceled or failed
+         if (trStatus === controlTerms.paymentStatusFailed || trStatus === controlTerms.paymentStatusCanceled) {
+            Banana.console.debug("Skipping canceled/failed transaction: " + trId);
+            continue;
+         }
+
+         if (trType === controlTerms.paymentTypeTransaction
+            && trStatus === controlTerms.paymentStatusSuccessful
+            && trPaymentMethod == controlTerms.paymentMethodPos) {
             paymentTransactions[trId] = row; // The transaction is a valid POS payment.
-         } else if (trType === "Auszahlung" && trStatus === "Gezahlt") {
+         } else if (trType === controlTerms.paymentTypePayout && trStatus === controlTerms.paymentStatusPaid) {
             /** The transaction is a valid payout.
              * As the payouts row do not have the description and other useful data, 
              * We search for the corresponding POS payment to get description and payment method. */
             let paymentRow = paymentTransactions[trId] || null;
             let paymentDescription = paymentRow ? paymentRow["Description"] : "";
-            let paymentMethod = paymentRow ? paymentRow["Payment Method"] : "";
+            let paymentMethod = paymentRow ? paymentRow["Payment method"] : "";
             this.mapBankPayoutTransactions(accoutingType, row, transactionsMapped, paymentDescription, paymentMethod);
-         } else if (trType === "Umsatz" && trStatus === "Erfolgreich" && trPaymentMethod == "CASH") {
+         } else if (trType === controlTerms.paymentTypeTransaction
+            && trStatus === controlTerms.paymentStatusSuccessful
+            && trPaymentMethod == controlTerms.paymentMethodCash) {
             this.mapCashPaymentTransactions(accoutingType, row, transactionsMapped); // The transaction is a valid cash payment.
          } else {
             Banana.console.debug("Transaction type not recognised: " + row["Transaction Id"]);
          }
       }
 
-      //24.03 TESTAREEEEEEEE
-
-      return transactionsMapped
+      return transactionsMapped;
    }
 
    mapCashPaymentTransactions(accoutingType, row, transactionsMapped) {
@@ -342,27 +353,27 @@ var SumupFormat2 = class SumupFormat2 extends ImportUtilities {
 
    mapCashPaymentDoubleEntry(row, transactionsMapped) {
       let trRow = initTrRowObjectStructure_DoubleEntry();
-      trRow.date = row["Transaction Date"];
-      trRow.externalReference = row["Transaction Id"];
-      trRow.description = row["Description"];
-      trRow.accountDebit = this.params.cashAccount;
-      trRow.accountCredit = this.params.sumUpIn;
-      trRow.amount = row["Amount incl. VAT"];
-      trRow.notes = row["Payment Method"];
+      trRow.Date = Banana.Converter.toInternalDateFormat(row["Transaction Date"], this.params.dateFormat);
+      trRow.ExternalReference = row["Transaction Id"];
+      trRow.Description = row["Description"];
+      trRow.AccountDebit = this.params.cashAccount;
+      trRow.AccountCredit = this.params.sumUpIn;
+      trRow.Amount = row["Amount incl. VAT"];
+      trRow.Notes = row["Payment method"];
 
       transactionsMapped.push(trRow);
    }
 
    mapCashPaymentIncomeExpenses(row, transactionsMapped) {
       let trRow = initTrRowObjectStructure_IncomeExpenses();
-      trRow.Date = row["Transaction Date"];
+      trRow.Date = Banana.Converter.toInternalDateFormat(row["Transaction Date"], this.params.dateFormat);
       trRow.ExternalReference = row["Transaction Id"];
       trRow.Description = row["Description"];
       trRow.Income = row["Amount incl. VAT"];
       trRow.Expenses = "";
       trRow.Account = this.params.cashAccount;
       trRow.Category = this.params.sumUpIn;
-      trRow.Notes = row["Payment Method"];
+      trRow.Notes = row["Payment method"];
 
       transactionsMapped.push(trRow);
    }
@@ -382,7 +393,7 @@ var SumupFormat2 = class SumupFormat2 extends ImportUtilities {
 
    mapGrossPaymentIncomeExpenses(row, transactionsMapped, paymentDescription, paymentMethod) {
       let trRow = initTrRowObjectStructure_IncomeExpenses();
-      trRow.Date = row["Transaction Date"];
+      trRow.Date = Banana.Converter.toInternalDateFormat(row["Transaction Date"], this.params.dateFormat);
       trRow.ExternalReference = row["Transaction Id"];
       trRow.Description = paymentDescription;
       trRow.Income = row["Amount incl. VAT"];
@@ -396,7 +407,7 @@ var SumupFormat2 = class SumupFormat2 extends ImportUtilities {
 
    mapPayoutIncomeExpenses(row, transactionsMapped) {
       let trRow = initTrRowObjectStructure_IncomeExpenses();
-      trRow.Date = row["Transaction Date"];
+      trRow.Date = Banana.Converter.toInternalDateFormat(row["Transaction Date"], this.params.dateFormat);
       trRow.ExternalReference = row["Transaction Id"];
       trRow.Description = this.texts.bankPayout;
       trRow.Income = row["Payout"];
@@ -410,7 +421,7 @@ var SumupFormat2 = class SumupFormat2 extends ImportUtilities {
 
    mapFeeIncomeExpenses(row, transactionsMapped) {
       let trRow = initTrRowObjectStructure_IncomeExpenses();
-      trRow.Date = row["Transaction Date"];
+      trRow.Date = Banana.Converter.toInternalDateFormat(row["Transaction Date"], this.params.dateFormat);
       trRow.ExternalReference = row["Transaction Id"];
       trRow.Description = this.texts.sumUpFee;
       trRow.Income = "";
@@ -424,84 +435,132 @@ var SumupFormat2 = class SumupFormat2 extends ImportUtilities {
 
    mapGrossPaymentDoubleEntry(row, transactionsMapped, paymentDescription, paymentMethod) {
       let trRow = initTrRowObjectStructure_DoubleEntry();
-      trRow.date = row["Transaction Date"];
-      trRow.externalReference = row["Transaction Id"];
-      trRow.description = paymentDescription
-      trRow.accountDebit = "";
-      trRow.accountCredit = this.params.sumUpIn;
-      trRow.amount = row["Amount incl. VAT"];
-      trRow.notes = paymentMethod;
+      trRow.Date = Banana.Converter.toInternalDateFormat(row["Transaction Date"], this.params.dateFormat);
+      trRow.ExternalReference = row["Transaction Id"];
+      trRow.Description = paymentDescription
+      trRow.AccountDebit = "";
+      trRow.AccountCredit = this.params.sumUpIn;
+      trRow.Amount = row["Amount incl. VAT"];
+      trRow.Notes = paymentMethod;
 
       transactionsMapped.push(trRow);
    }
 
    mapPayoutDoubleEntry(row, transactionsMapped) {
       let trRow = initTrRowObjectStructure_DoubleEntry();
-      trRow.date = row["Transaction Date"];
-      trRow.externalReference = row["Transaction Id"];
-      trRow.description = this.texts.bankPayout;
-      trRow.accountDebit = this.params.bankAccount;
-      trRow.accountCredit = "";
-      trRow.amount = row["Payout"];
-      trRow.notes = row["Payout ID"];
+      trRow.Date = Banana.Converter.toInternalDateFormat(row["Transaction Date"], this.params.dateFormat);
+      trRow.ExternalReference = row["Transaction Id"];
+      trRow.Description = this.texts.bankPayout;
+      trRow.AccountDebit = this.params.bankAccount;
+      trRow.AccountCredit = "";
+      trRow.Amount = row["Payout"];
+      trRow.Notes = row["Payout ID"];
 
       transactionsMapped.push(trRow);
    }
 
    mapFeeDoubleEntry(row, transactionsMapped) {
       let trRow = initTrRowObjectStructure_DoubleEntry();
-      trRow.date = row["Transaction Date"];
-      trRow.externalReference = row["Transaction Id"];
-      trRow.description = this.texts.sumUpFee;
-      trRow.accountDebit = this.params.sumUpFee;
-      trRow.accountCredit = "";
-      trRow.amount = row["Fee"];
-      trRow.notes = "";
+      trRow.Date = Banana.Converter.toInternalDateFormat(row["Transaction Date"], this.params.dateFormat);
+      trRow.ExternalReference = row["Transaction Id"];
+      trRow.Description = this.texts.sumUpFee;
+      trRow.AccountDebit = this.params.sumUpFee;
+      trRow.AccountCredit = "";
+      trRow.Amount = row["Fee"];
+      trRow.Notes = "";
 
       transactionsMapped.push(trRow);
    }
+
+   getControlTerms() {
+      switch (this.csvLanguage) {
+         case "de":
+            return this.getControlTermsDE();
+         default:
+            Banana.console.debug("*.csv headers language not recognized.");
+            return {};
+      }
+   }
+
+   getControlTermsDE() {
+      let terms = {};
+      terms.paymentStatusFailed = "Fehlgeschlagen";
+      terms.paymentStatusCanceled = "Abgebrochen";
+      terms.paymentStatusSuccessful = "Erfolgreich";
+      terms.paymentStatusPaid = "Gezahlt";
+      terms.paymentMethodPos = "POS";
+      terms.paymentMethodCash = "CASH";
+      terms.paymentTypeTransaction = "Umsatz";
+      terms.paymentTypePayout = "Auszahlung";
+      return terms;
+   }
+
+   getControlTermsEN() {
+      let terms = {};
+      terms.paymentStatusFailed = "";
+      terms.paymentStatusCanceled = "";
+      terms.paymentStatusSuccessful = "";
+      terms.paymentStatusPaid = "";
+      terms.paymentMethodPos = "";
+      terms.paymentMethodCash = "";
+      terms.paymentTypeTransaction = "";
+      terms.paymentTypePayout = "";
+      return terms;
+   }
+
+   getControlTermsIT() {
+      let terms = {};
+      terms.paymentStatusFailed = "";
+      terms.paymentStatusCanceled = "";
+      terms.paymentStatusSuccessful = "";
+      terms.paymentStatusPaid = "";
+      terms.paymentMethodPos = "";
+      terms.paymentMethodCash = "";
+      terms.paymentTypeTransaction = "";
+      terms.paymentTypePayout = "";
+      return terms;
+   }
+
+   getControlTermsFR() {
+      let terms = {};
+      terms.paymentStatusFailed = "";
+      terms.paymentStatusCanceled = "";
+      terms.paymentStatusSuccessful = "";
+      terms.paymentStatusPaid = "";
+      terms.paymentMethodPos = "";
+      terms.paymentMethodCash = "";
+      terms.paymentTypeTransaction = "";
+      terms.paymentTypePayout = "";
+      return terms;
+   }
 }
-
-function initTrRowObjectStructure_DoubleEntry() {
-   let trRow = {};
-
-   trRow.date = "";
-   trRow.externalReference = "";
-   trRow.description = "";
-   trRow.accountDebit = "";
-   trRow.accountCredit = "";
-   trRow.amount = "";
-   trRow.notes = "";
-
-   return trRow;
-}
-
-function initTrRowObjectStructure_IncomeExpenses() {
-   let trRow = {};
-
-   trRow.Date = "";
-   trRow.ExternalReference = "";
-   trRow.Description = "";
-   trRow.Income = "";
-   trRow.Expenses = "";
-   trRow.Account = "";
-   trRow.Category = "";
-   trRow.Notes = "";
-
-   return trRow;
-}
-
 /**
  * SumUp Format 1
  * Format example:
- * Data transazione,Codice transazione,Tipo transazione,Riferimento,Causale pagamento,employees_list_columns_status,Importo di fatturazione in uscita,Importo di fatturazione in entrata,Valuta della carta,Importo transazione in uscita,Importo transazione in entrata,Valuta della transazione,Tasso di cambio,Commissione,Saldo disponibile
- * 08/12/2023 13:54,rWFBrVpXHf,Pagamento da SumUp,nam similique,Maxime pariatur ex earum incidunt harum necessitatibus.,Raducutae,12.91,52.99,INE,14.72,48.59,INE,1.0,1.78,2469.51
- * 06/12/2023 15:51,qeLjIXraTh,Bonifico bancario in entrata,nobis velit dolores,,Raducutae,19.02,29.63,INE,93.86,76.62,INE,1.0,1.65,3076.86
- * 23/11/2023 05:15,zEOzLyZFyd,Pagamento online,voluptatem magni,Unde voluptas nihil provident quia blanditiis.,Inactive,87.57,4.78,INE,1.11,7.25,INE,1.0,1.27,2505.68
- * 14/11/2023 11:09,TCQIxlxYbe,Pagamento online,ut deleniti,,Inactive,1.8,79.04,INE,76.71,38.79,INE,1.0,4.83,3208.01
- * 07/11/2023 14:23,HVdVBqHyQh,Bonifico bancario in entrata,quia adipisci,Architecto nulla doloribus praesentium.,Raducutae,3.5,55.26,INE,60.85,93.52,INE,1.0,3.72,4084.97
+ * Data transazione,Codice transazione,Tipo transazione,Riferimento,Causale pagamento,employees.list.columns.status,Importo di fatturazione in uscita,Importo di fatturazione in entrata,Valuta della carta,Importo transazione in uscita,Importo transazione in entrata,Valuta della transazione,Tasso di cambio,Commissione,Saldo disponibile
+ * 23/12/2023 09:02,CD4MQ4JRRM,Pagamento online,Test,Test,Approvato,12.08,0.00,EUR,12.08,0.00,EUR,1.00,0.00,4352.16
+ * 22/12/2023 13:40,C9E6QPVQW3,Pagamento da SumUp,Test,Test,Pagamento in entrata,0.00,34.35,EUR,0.00,34.35,EUR,1.00,0.00,4364.24
+ * 19/12/2023 13:31,CDWM4ZYZXN,Pagamento da SumUp,Test,Test,Pagamento in entrata,0.00,34.32,EUR,0.00,34.32,EUR,1.00,0.00,4329.89
+ * 19/12/2023 11:28,CDVYJLP55W,Bonifico bancario in entrata,Test,Test,Approvato,0.00,35.00,EUR,0.00,35.00,EUR,1.00,0.00,4295.57
+ * 12/12/2023 13:32,CD27XM6M7G,Pagamento da SumUp,Test,Test,Pagamento in entrata,0.00,53.93,EUR,0.00,53.93,EUR,1.00,0.00,4260.57
+ * 08/12/2023 12:18,CD272EWGRR,Bonifico bancario in entrata,Test,Test,Approvato,0.00,75.00,EUR,0.00,75.00,EUR,1.00,0.00,4206.64
+ * 07/12/2023 12:44,CDWMXXKEWN,Bonifico bancario in uscita,Test,Test,Approvato,400.00,0.00,EUR,400.00,0.00,EUR,1.00,0.00,4131.64
+ * 07/12/2023 09:31,CO3ZNNW5M6,Prelievo allo sportello ATM,Test,Test,Approvato,300.00,0.00,EUR,300.00,0.00,EUR,1.00,0.00,4531.64
+ * 
+ * We treat this format as a bank statement as it contains both inflows and outflows, fees are set to 0 and there
+ * is no information about net or gross amounts.Moreover, looking at the data, seems be transactions related to a bank account.
 */
 var SumupFormat1 = class SumupFormat1 extends ImportUtilities {
+
+   constructor(banDocument, userParam) {
+      super(banDocument, userParam);
+
+      this.banDoc = banDocument;
+      this.decimalSeparator = ".";
+      this.params = userParam;
+      this.texts = getTexts(banDocument);
+
+   }
 
    getFormattedData(csvData, convertionParam) {
       var columns = getHeaderData(csvData, convertionParam); //array
@@ -608,39 +667,120 @@ var SumupFormat1 = class SumupFormat1 extends ImportUtilities {
       return false;
    }
 
-   convert(transactionsData) {
-      var transactionsToImport = [];
+   processTransactions(transactionsData) {
+      let accoutingType = this.banDoc.info("Base", "FileTypeGroup");
+      let headers = [];
+      let objectArrayToCsv = [];
+      let processedTrans = {};
 
-      for (var i = 0; i < transactionsData.length; i++) {
-         if (transactionsData[i]["Transaction Date"] && transactionsData[i]["Transaction Date"].length >= 16 &&
-            transactionsData[i]["Transaction Date"].match(/^[0-9]+\/[0-9]+\/[0-9]+\s[0-9]+\:[0-9]+$/)) {
-            transactionsToImport.push(this.mapTransaction(transactionsData[i]));
-         }
+      if (accoutingType == INCOME_EXPENSES_TYPE) {
+         processedTrans = this.getprocessedTransactions(transactionsData, accoutingType);
+         headers = ["Date", "ExternalReference", "Description", "Income", "Expenses", "Account", "Category", "Notes"];
+      } else if (accoutingType == DOUBLE_ENTRY_TYPE) {
+         processedTrans = this.getprocessedTransactions(transactionsData, accoutingType);
+         headers = ["Date", "ExternalReference", "Description", "AccountDebit", "AccountCredit", "Amount", "Notes"];
       }
 
-      // Sort rows by date
-      transactionsToImport = transactionsToImport.reverse();
+      objectArrayToCsv = Banana.Converter.objectArrayToCsv(headers, processedTrans, ";");
 
-      // Add header and return
-      var header = [["Date", "DateValue", "Doc", "ExternalReference", "Description", "Notes", "Income", "Expenses"]];
-      return header.concat(transactionsToImport);
+      return objectArrayToCsv;
    }
 
-   mapTransaction(transaction) {
-      let mappedLine = [];
+   getprocessedTransactions(transactionsData, accoutingType) {
 
-      mappedLine.push(Banana.Converter.toInternalDateFormat(transaction["Transaction Date"], "dd/mm/yyyy"));
-      mappedLine.push(Banana.Converter.toInternalDateFormat("", "dd.mm.yyyy"));
-      mappedLine.push("");
-      mappedLine.push(transaction["Transaction Code"]);
-      mappedLine.push(transaction["Reference"].replace(/\s+/g, ' '));
-      mappedLine.push(transaction["Transaction Type"]);
-      mappedLine.push(Banana.Converter.toInternalNumberFormat(transaction["Transaction Amount In"], '.'));
-      mappedLine.push(Banana.Converter.toInternalNumberFormat(transaction["Transaction Amount Out"], '.'));
+      let transactionsMapped = [];
 
-      return mappedLine;
+      if (transactionsData.length === 0)
+         return transactionsMapped;
+
+      for (let row of transactionsData) {
+         this.mapTransactions(accoutingType, row, transactionsMapped);
+      }
+
+      return transactionsMapped;
    }
+
+   mapTransactions(accoutingType, row, transactionsMapped) {
+      if (accoutingType == DOUBLE_ENTRY_TYPE) {
+         this.mapTransactionsDoubleEntry(row, transactionsMapped);
+      } else if (accoutingType == INCOME_EXPENSES_TYPE) {
+         this.mapTransactionsIncomeExpenses(row, transactionsMapped);
+      }
+   }
+
+   mapTransactionsDoubleEntry(row, transactionsMapped) {
+      let trRow = initTrRowObjectStructure_DoubleEntry();
+      trRow.Date = Banana.Converter.toInternalDateFormat(row["Transaction Date"], this.params.dateFormat);
+      trRow.ExternalReference = row["Transaction Code"];
+      trRow.Description = row["Transaction Type"];
+      if (row["Transaction Amount In"] > 0
+         && row["Transaction Amount Out"] == 0) {
+         trRow.AccountDebit = this.params.bankAccount;
+         trRow.AccountCredit = this.params.sumUpIn;
+         trRow.Amount = row["Transaction Amount In"];
+      } else if (row["Transaction Amount Out"] > 0
+         && row["Transaction Amount In"] == 0) {
+         trRow.AccountDebit = this.params.sumUpIn;
+         trRow.AccountCredit = this.params.bankAccount;
+         trRow.Amount = row["Transaction Amount Out"];
+      }
+
+      trRow.Notes = row["Reference"];
+      transactionsMapped.push(trRow);
+   }
+
+   mapTransactionsIncomeExpenses(row, transactionsMapped) {
+      let trRow = initTrRowObjectStructure_IncomeExpenses();
+      trRow.Date = Banana.Converter.toInternalDateFormat(row["Transaction Date"], this.params.dateFormat);
+      trRow.ExternalReference = row["Transaction Code"];
+      trRow.Description = row["Transaction Type"];
+      if (row["Transaction Amount In"] > 0
+         && row["Transaction Amount Out"] == 0) {
+         trRow.Income = row["Transaction Amount In"];
+         trRow.Expenses = "";
+         trRow.Category = this.params.sumUpIn;
+      } else if (row["Transaction Amount Out"] > 0
+         && row["Transaction Amount In"] == 0) {
+         trRow.Income = "";
+         trRow.Expenses = row["Transaction Amount Out"];
+         trRow.Category = this.params.sumUpIn;
+      }
+
+      trRow.Notes = row["Reference"];
+      transactionsMapped.push(trRow);
+   }
+
 }
+
+function initTrRowObjectStructure_DoubleEntry() {
+   let trRow = {};
+
+   trRow.Date = "";
+   trRow.ExternalReference = "";
+   trRow.Description = "";
+   trRow.AccountDebit = "";
+   trRow.AccountCredit = "";
+   trRow.Amount = "";
+   trRow.Notes = "";
+
+   return trRow;
+}
+
+function initTrRowObjectStructure_IncomeExpenses() {
+   let trRow = {};
+
+   trRow.Date = "";
+   trRow.ExternalReference = "";
+   trRow.Description = "";
+   trRow.Income = "";
+   trRow.Expenses = "";
+   trRow.Account = "";
+   trRow.Category = "";
+   trRow.Notes = "";
+
+   return trRow;
+}
+
 
 function settingsDialog() {
 

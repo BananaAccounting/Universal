@@ -57,27 +57,47 @@ TestImportSumupTrans.prototype.cleanup = function () {
 }
 
 TestImportSumupTrans.prototype.testImport = function () {
-   var fileNameList = [];
+   let fileNameList = [];
+   let ac2FileList = [];
 
-   fileNameList.push("file:script/../test/testcases/ch.banana.sumup.transactions1.csv");
+   //finire test 25.03
 
-   var parentLogger = this.testLogger;
+   fileNameList.push("file:script/../test/testcases/csv_example_format1_20240215.csv");
+   fileNameList.push("file:script/../test/testcases/csv_example_format2_20250324.csv");
+
+   ac2FileList.push("file:script/../test/testcases/Double-entry.ac2");
+   ac2FileList.push("file:script/../test/testcases/Income & Expense.ac2");
+
+   let parentLogger = this.testLogger;
    this.progressBar.start(fileNameList.length);
 
    for (var i = 0; i < fileNameList.length; i++) {
-      var fileName = fileNameList[i];
-      this.testLogger = parentLogger.newLogger(Banana.IO.fileCompleteBaseName(fileName));
-
-      var file = Banana.IO.getLocalFile(fileName);
-      Test.assert(file);
-      var fileContent = file.read();
-      Test.assert(fileContent);
-      var transactions = processSumUpTransactions(fileContent);
-      this.testLogger.addCsv('', transactions);
-
-      if (!this.progressBar.step())
-         break;
+      let fileName = fileNameList[i];
+      let file = Banana.IO.getLocalFile(fileName);
+      for (var j = 0; j < ac2FileList.length; j++) {
+         let ac2Name = ac2FileList[j];
+         let loggerName = fileName + "_" + ac2Name;
+         this.testLogger = parentLogger.newLogger(Banana.IO.fileCompleteBaseName(loggerName));
+         Test.assert(file);
+         let fileContent = file.read();
+         Test.assert(fileContent);
+         let transactions = processSumUpTransactions(fileContent);
+         this.testLogger.addCsv('', transactions);
+         if (!this.progressBar.step())
+            break;
+      }
    }
-
    this.progressBar.finish();
+}
+
+function getUserParams() {
+   var params = {};
+
+   params.dateFormat = "yyyy-mm-dd";
+   params.stripeAccount = "1001"; // Bank account
+   params.stripeIn = "3000"; // Revenues account.
+   params.stripeFunds = "6941"; // Costs account.
+   params.stripeFee = "6940"; // Costs account.
+
+   return params;
 }
