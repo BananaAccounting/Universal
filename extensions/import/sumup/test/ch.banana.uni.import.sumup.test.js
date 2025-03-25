@@ -1,4 +1,4 @@
-// Copyright [2024] [Banana.ch SA - Lugano Switzerland]
+// Copyright [2025] [Banana.ch SA - Lugano Switzerland]
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -39,6 +39,11 @@ function TestImportSumupTrans() {
 TestImportSumupTrans.prototype.initTestCase = function () {
    this.testLogger = Test.logger;
    this.progressBar = Banana.application.progressBar;
+
+   this.fileNameList = [];
+
+   this.fileNameList.push("file:script/../test/testcases/csv_example_format1_20240215.csv");
+   this.fileNameList.push("file:script/../test/testcases/csv_example_format2_20250324.csv");
 }
 
 // This method will be called at the end of the test case
@@ -56,23 +61,27 @@ TestImportSumupTrans.prototype.cleanup = function () {
 
 }
 
-TestImportSumupTrans.prototype.testImport = function () {
-   var fileNameList = [];
+TestImportSumupTrans.prototype.testImportDoubleEntry = function () {
+   let ac2File = "file:script/../test/testcases/Double-entry.ac2";
 
-   fileNameList.push("file:script/../test/testcases/ch.banana.sumup.transactions1.csv");
+   let parentLogger = this.testLogger;
+   this.progressBar.start(this.fileNameList.length);
+   let banDocument = Banana.application.openDocument(ac2File);
 
-   var parentLogger = this.testLogger;
-   this.progressBar.start(fileNameList.length);
+   if (!banDocument)
+      parentLogger.addFatalError("File not found: " + ac2File);
 
-   for (var i = 0; i < fileNameList.length; i++) {
-      var fileName = fileNameList[i];
-      this.testLogger = parentLogger.newLogger(Banana.IO.fileCompleteBaseName(fileName));
+   for (let i = 0; i < this.fileNameList.length; i++) {
+      let fileName = this.fileNameList[i];
+      let loggerName = Banana.IO.fileCompleteBaseName(ac2File) + ";" + Banana.IO.fileCompleteBaseName(fileName);
+      this.testLogger = parentLogger.newLogger(loggerName);
 
-      var file = Banana.IO.getLocalFile(fileName);
+      let file = Banana.IO.getLocalFile(fileName);
       Test.assert(file);
-      var fileContent = file.read();
+      let fileContent = file.read();
       Test.assert(fileContent);
-      var transactions = exec(fileContent, true); //takes the exec from the import script.
+      let userParam = getUserParam_DoubleEntry(i);
+      let transactions = processSumUpTransactions(fileContent, userParam, banDocument);
       this.testLogger.addCsv('', transactions);
 
       if (!this.progressBar.step())
@@ -80,4 +89,68 @@ TestImportSumupTrans.prototype.testImport = function () {
    }
 
    this.progressBar.finish();
+}
+TestImportSumupTrans.prototype.testImportIncomeExpenses = function () {
+   let ac2File = "file:script/../test/testcases/Income & Expense.ac2";
+
+   let parentLogger = this.testLogger;
+   this.progressBar.start(this.fileNameList.length);
+   let banDocument = Banana.application.openDocument(ac2File);
+
+   if (!banDocument)
+      parentLogger.addFatalError("File not found: " + ac2File);
+
+   for (let i = 0; i < this.fileNameList.length; i++) {
+
+      let fileName = this.fileNameList[i];
+      let loggerName = Banana.IO.fileCompleteBaseName(ac2File) + ";" + Banana.IO.fileCompleteBaseName(fileName);
+      this.testLogger = parentLogger.newLogger(loggerName);
+
+      let file = Banana.IO.getLocalFile(fileName);
+      Test.assert(file);
+      let fileContent = file.read();
+      Test.assert(fileContent);
+      let userParam = getUserParam_IncomeExpenses(i);
+      let transactions = processSumUpTransactions(fileContent, userParam, banDocument);
+      this.testLogger.addCsv('', transactions);
+
+      if (!this.progressBar.step())
+         break;
+   }
+
+   this.progressBar.finish();
+}
+
+function getUserParam_DoubleEntry(index) {
+   var params = {};
+
+   if (index === 0)
+      params.dateFormat = "dd/mm/yyyy";
+   else
+      params.dateFormat = "yyyy-mm-dd";
+
+   params.bankAccount = "1020";
+   params.sumUpIn = "3001";
+   params.cashAccount = "1000";
+   params.sumUpFee = "4001";
+
+   return params;
+
+}
+
+function getUserParam_IncomeExpenses(index) {
+   var params = {};
+
+   if (index === 0)
+      params.dateFormat = "dd/mm/yyyy";
+   else
+      params.dateFormat = "yyyy-mm-dd";
+
+   params.bankAccount = "1020";
+   params.sumUpIn = "3000";
+   params.cashAccount = "1000";
+   params.sumUpFee = "5001";
+
+   return params;
+
 }

@@ -1,0 +1,53 @@
+Data transazione,Codice transazione,Tipo transazione,Riferimento,Causale pagamento,employees.list.columns.status,Importo di fatturazione in uscita,Importo di fatturazione in entrata,Valuta della carta,Importo transazione in uscita,Importo transazione in entrata,Valuta della transazione,Tasso di cambio,Commissione,Saldo disponibile
+23/12/2023 09:02,CD4MQ4JRRM,Pagamento online,Test,Test,Approvato,12.08,0.00,EUR,12.08,0.00,EUR,1.00,0.00,4352.16
+22/12/2023 13:40,C9E6QPVQW3,Pagamento da SumUp,Test,Test,Pagamento in entrata,0.00,34.35,EUR,0.00,34.35,EUR,1.00,0.00,4364.24
+19/12/2023 13:31,CDWM4ZYZXN,Pagamento da SumUp,Test,Test,Pagamento in entrata,0.00,34.32,EUR,0.00,34.32,EUR,1.00,0.00,4329.89
+19/12/2023 11:28,CDVYJLP55W,Bonifico bancario in entrata,Test,Test,Approvato,0.00,35.00,EUR,0.00,35.00,EUR,1.00,0.00,4295.57
+12/12/2023 13:32,CD27XM6M7G,Pagamento da SumUp,Test,Test,Pagamento in entrata,0.00,53.93,EUR,0.00,53.93,EUR,1.00,0.00,4260.57
+08/12/2023 12:18,CD272EWGRR,Bonifico bancario in entrata,Test,Test,Approvato,0.00,75.00,EUR,0.00,75.00,EUR,1.00,0.00,4206.64
+07/12/2023 12:44,CDWMXXKEWN,Bonifico bancario in uscita,Test,Test,Approvato,400.00,0.00,EUR,400.00,0.00,EUR,1.00,0.00,4131.64
+07/12/2023 09:31,CO3ZNNW5M6,Prelievo allo sportello ATM,Test,Test,Approvato,300.00,0.00,EUR,300.00,0.00,EUR,1.00,0.00,4531.64
+07/12/2023 08:51,C9Q6774B2N,Pagamento POS,Test,Test,Approvato,119.00,0.00,EUR,119.00,0.00,EUR,1.00,0.00,4831.64
+05/12/2023 15:19,CD4MGPB34Q,Bonifico bancario in uscita,Test,Test,Approvato,100.00,0.00,EUR,100.00,0.00,EUR,1.00,0.00,4950.64
+05/12/2023 13:29,CO4MGJE2BV,Pagamento da SumUp,Test,Test,Pagamento in entrata,0.00,147.07,EUR,0.00,147.07,EUR,1.00,0.00,5050.64
+05/12/2023 11:40,C9ZN4B4KYN,Bonifico bancario in entrata,Test,Test,Approvato,0.00,135.00,EUR,0.00,135.00,EUR,1.00,0.00,4903.57
+05/12/2023 00:00,CD4MGJ5EGV,Addebito diretto,Test,Test,Approvato,54.60,0.00,EUR,54.60,0.00,EUR,1.00,0.00,4768.57
+02/12/2023 13:44,CO6GR7KM2X,Pagamento da SumUp,Test,Test,Pagamento in entrata,0.00,122.56,EUR,0.00,122.56,EUR,1.00,0.00,4823.17
+30/11/2023 13:39,C93ZN5E3WB,Pagamento da SumUp,Test,Test,Pagamento in entrata,0.00,166.68,EUR,0.00,166.68,EUR,1.00,0.00,4700.61
+23/11/2023 13:38,C9WM74PRG3,Pagamento da SumUp,Test,Test,Pagamento in entrata,0.00,34.32,EUR,0.00,34.32,EUR,1.00,0.00,4533.93
+17/11/2023 13:45,C9VYZ76XYW,Pagamento da SumUp,Test,Test,Pagamento in entrata,0.00,44.12,EUR,0.00,44.12,EUR,1.00,0.00,4499.61
+17/11/2023 09:25,CDJKNQWVLR,Bonifico bancario in entrata,Test,Test,Approvato,0.00,35.00,EUR,0.00,35.00,EUR,1.00,0.00,4455.49
+15/11/2023 13:38,CDZN5RMMMW,Pagamento da SumUp,Test,Test,Pagamento in entrata,0.00,122.56,EUR,0.00,122.56,EUR,1.00,0.00,4420.49
+15/11/2023 12:31,C9XK2355PE,Prelievo allo sportello ATM,Test,Test,Approvato,300.00,0.00,EUR,300.00,0.00,EUR,1.00,0.00,4297.93
+10/11/2023 13:43,C9YJ2XK44Q,Pagamento da SumUp,Test,Test,Pagamento in entrata,0.00,34.32,EUR,0.00,34.32,EUR,1.00,0.00,4597.93
+10/11/2023 13:03,C9PNQMG674,Rimborso,Test,Test,Rimborsata,0.00,101.00,EUR,0.00,101.00,EUR,1.00,0.00,4563.61
+10/11/2023 13:03,CDBEQNRMK2,Pagamento online,Test,Test,Approvato,60.02,0.00,EUR,60.02,0.00,EUR,1.00,0.00,4462.61
+10/11/2023 13:01,C9BEQNRP5L,Pagamento POS,Test,Test,Approvato,101.00,0.00,EUR,101.00,0.00,EUR,1.00,0.00,4522.63
+09/11/2023 12:00,C9K523PXNM,Pagamento POS,Test,Test,Approvato,116.00,0.00,EUR,116.00,0.00,EUR,1.00,0.00,4623.63
+08/11/2023 11:42,C9PNQZ4ZEL,Prelievo allo sportello ATM,Test,Test,Approvato,300.00,0.00,EUR,300.00,0.00,EUR,1.00,0.00,4739.63
+08/11/2023 09:22,C9PNQZE7GL,Bonifico bancario in entrata,Test,Test,Approvato,0.00,150.00,EUR,0.00,150.00,EUR,1.00,0.00,5039.63
+08/11/2023 00:00,C977PXGKG2,Addebito diretto,Test,Test,Approvato,46.46,0.00,EUR,46.46,0.00,EUR,1.00,0.00,4889.63
+07/11/2023 13:44,C9ZNG5G5N3,Pagamento da SumUp,Test,Test,Pagamento in entrata,0.00,161.78,EUR,0.00,161.78,EUR,1.00,0.00,4936.09
+07/11/2023 11:26,CDJK7NPNZ2,Bonifico bancario in entrata,Test,Test,Approvato,0.00,95.00,EUR,0.00,95.00,EUR,1.00,0.00,4774.31
+06/11/2023 08:57,COPNQ3ZPEK,Bonifico bancario in uscita,Test,Test,Approvato,400.00,0.00,EUR,400.00,0.00,EUR,1.00,0.00,4679.31
+04/11/2023 13:44,CD275YLE24,Pagamento da SumUp,Test,Test,Pagamento in entrata,0.00,210.81,EUR,0.00,210.81,EUR,1.00,0.00,5079.31
+01/11/2023 13:37,C9WMZ6J7BP,Pagamento da SumUp,Test,Test,Pagamento in entrata,0.00,176.49,EUR,0.00,176.49,EUR,1.00,0.00,4868.50
+29/10/2023 10:54,COE63YJMJ2,Prelievo allo sportello ATM,Test,Test,Approvato,300.00,0.00,EUR,300.00,0.00,EUR,1.00,0.00,4692.01
+29/10/2023 09:55,CDJK75G6KR,Rimborso,Test,Test,Rimborsata,0.00,101.00,EUR,0.00,101.00,EUR,1.00,0.00,4992.01
+29/10/2023 09:55,COE63YKPY2,Pagamento online,Test,Test,Approvato,30.08,0.00,EUR,30.08,0.00,EUR,1.00,0.00,4891.01
+29/10/2023 09:54,CO5XPZ36Y4,Pagamento POS,Test,Test,Approvato,101.00,0.00,EUR,101.00,0.00,EUR,1.00,0.00,4921.09
+21/10/2023 13:20,C9K5XXP447,Pagamento da SumUp,Test,Test,Pagamento in entrata,0.00,53.93,EUR,0.00,53.93,EUR,1.00,0.00,5022.09
+20/10/2023 13:37,C9VYB2ZGML,Pagamento da SumUp,Test,Test,Pagamento in entrata,0.00,107.85,EUR,0.00,107.85,EUR,1.00,0.00,4968.16
+18/10/2023 09:10,C9R5M76RL3,Bonifico bancario in entrata,Test,Test,Approvato,0.00,35.00,EUR,0.00,35.00,EUR,1.00,0.00,4860.31
+17/10/2023 13:35,C9XKBQQ6Z5,Pagamento da SumUp,Test,Test,Pagamento in entrata,0.00,132.37,EUR,0.00,132.37,EUR,1.00,0.00,4825.31
+13/10/2023 16:05,CDWMBMWWER,Prelievo allo sportello ATM,Test,Test,Approvato,300.00,0.00,EUR,300.00,0.00,EUR,1.00,0.00,4692.94
+10/10/2023 17:04,CDYJMBMPQY,Bonifico bancario in uscita,Test,Test,Approvato,197.00,0.00,EUR,197.00,0.00,EUR,1.00,0.00,4992.94
+10/10/2023 13:36,CONEB355BV,Pagamento da SumUp,Test,Test,Pagamento in entrata,0.00,34.32,EUR,0.00,34.32,EUR,1.00,0.00,5189.94
+06/10/2023 09:11,CD27WW4P74,Bonifico bancario in entrata,Test,Test,Approvato,0.00,150.00,EUR,0.00,150.00,EUR,1.00,0.00,5155.62
+05/10/2023 09:16,COQ6RJZ35N,Bonifico bancario in entrata,Test,Test,Approvato,0.00,95.00,EUR,0.00,95.00,EUR,1.00,0.00,5005.62
+04/10/2023 13:38,C9L2BVKZVY,Pagamento da SumUp,Test,Test,Pagamento in entrata,0.00,58.83,EUR,0.00,58.83,EUR,1.00,0.00,4910.62
+04/10/2023 01:00,CDZNL3L4BN,Addebito diretto,Test,Test,Approvato,28.69,0.00,EUR,28.69,0.00,EUR,1.00,0.00,4851.79
+03/10/2023 13:34,CDR5X7EPPV,Pagamento da SumUp,Test,Test,Pagamento in entrata,0.00,220.62,EUR,0.00,220.62,EUR,1.00,0.00,4880.48
+02/10/2023 15:43,CO5XMQYP4V,Bonifico bancario in uscita,Test,Test,Approvato,400.00,0.00,EUR,400.00,0.00,EUR,1.00,0.00,4659.86
+02/10/2023 15:34,CDZNLW53M2,Bonifico bancario in uscita,Test,Test,Approvato,75.00,0.00,EUR,75.00,0.00,EUR,1.00,0.00,5059.86
+02/10/2023 15:33,CD5XMQYNZG,Bonifico bancario in uscita,Test,Test,Approvato,380.00,0.00,EUR,380.00,0.00,EUR,1.00,0.00,5134.86
