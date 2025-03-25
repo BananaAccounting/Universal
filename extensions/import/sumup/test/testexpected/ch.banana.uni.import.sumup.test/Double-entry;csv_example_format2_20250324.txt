@@ -1,0 +1,2589 @@
+%%info_test_name{Double-entry;csv_example_format2_20250324}
+\documentclass{report}
+\usepackage{longtable}
+\usepackage{color}
+\usepackage{listings}
+\usepackage[margin=1cm]{geometry}
+\begin{document}
+\newenvironment{tablevalue}[2]{\textbf{Table: #1}\begin{longtable}[l]{#2}}{\end{longtable}}
+\newenvironment{reportvalue}[1]{\textbf{Report: #1}\\}{}
+\lstnewenvironment{jsonvalue}[1]{\textbf{Json: #1}\lstset{language=Java}}{}
+\lstnewenvironment{xmlvalue}[1]{\textbf{Xml: #1}\lstset{language=Xml}}{}
+\newcommand{\info}[2]{\textit{#1: #2}\\}
+\newcommand{\fatalerror}[1]{\textbf{\textcolor[rgb]{1,0,0}{Fatal error: #1}}\\}
+\newcommand{\keyvalue}[2]{\textbf{Keyvalue: #1} #2\\}
+\newcommand{\textvalue}[1]{#1\\}
+\newcommand{\excltest}[1]{\\Excluded from compare: #1}
+\newcommand{\lognewpage}{\newpage}
+\newenvironment{testcase}[1]{\section*{Test: #1}}{\newpage}
+\newenvironment{test}[1]{\section*{Test case: #1}}{}
+%Begin test data
+\begin{tablevalue}{}{ l  l  l  l  l  l  l }
+Date & ExternalReference & Description & AccountDebit & AccountCredit & Amount & Notes\\
+2025-01-31 & T4SLAD3TU4 & 2 x Getränk 4.50.-, 1 x Snack 2,50.- &  & 3001 & 11.5 & POS\\
+2025-01-31 & T4SLAD3TU4 & Bank payout & 1020 &  & 11.21 & 952982\\
+2025-01-31 & T4SLAD3TU4 & Fee & 4001 &  & 0.29 & \\
+2025-01-31 & TAAATLVFSDG & 1 x Snack 2,50.- & 1000 & 3001 & 2.5 & CASH\\
+2025-01-31 & TFAZULKF26 & 2 x Getränk 4.50.- &  & 3001 & 9.0 & POS\\
+2025-01-31 & TFAZULKF26 & Bank payout & 1020 &  & 8.77 & 952982\\
+2025-01-31 & TFAZULKF26 & Fee & 4001 &  & 0.23 & \\
+2025-01-31 & TFGXAVY3UF & 1 x Snack 2,50.- &  & 3001 & 2.5 & POS\\
+2025-01-31 & TFGXAVY3UF & Bank payout & 1020 &  & 2.46 & 952982\\
+2025-01-31 & TFGXAVY3UF & Fee & 4001 &  & 0.04 & \\
+2025-01-31 & TAAATLUYM44 & 1 x Obst 1.- & 1000 & 3001 & 1.0 & CASH\\
+2025-01-31 & TC6XLX3E7M & 1 x Getränk 4.50.- &  & 3001 & 4.5 & POS\\
+2025-01-31 & TC6XLX3E7M & Bank payout & 1020 &  & 4.39 & 952982\\
+2025-01-31 & TC6XLX3E7M & Fee & 4001 &  & 0.11 & \\
+2025-01-31 & TAAATLUNRR3 & 1 x Getränk 4.50.- & 1000 & 3001 & 4.5 & CASH\\
+2025-01-31 & TAAATLUK467 & 1 x Snack 2,50.- & 1000 & 3001 & 2.5 & CASH\\
+2025-01-31 & TAAATLT6AD9 & 1 x Snack 2,50.- & 1000 & 3001 & 2.5 & CASH\\
+2025-01-31 & TAAATLT4Q24 & 1 x Getränk 5.- & 1000 & 3001 & 5.0 & CASH\\
+2025-01-31 & TE2R2XX3GH & 1 x Getränk 4.50.-, 1 x Getränk 5.- &  & 3001 & 9.5 & POS\\
+2025-01-31 & TE2R2XX3GH & Bank payout & 1020 &  & 9.36 & 952982\\
+2025-01-31 & TE2R2XX3GH & Fee & 4001 &  & 0.14 & \\
+2025-01-31 & TMVFV3UK9K & 1 x Verlängerung 1h &  & 3001 & 5.0 & POS\\
+2025-01-31 & TMVFV3UK9K & Bank payout & 1020 &  & 4.92 & 952982\\
+2025-01-31 & TMVFV3UK9K & Fee & 4001 &  & 0.08 & \\
+2025-01-31 & TCTHQYPH4A & 1 x Tee &  & 3001 & 3.5 & POS\\
+2025-01-31 & TCTHQYPH4A & Bank payout & 1020 &  & 3.41 & 952982\\
+2025-01-31 & TCTHQYPH4A & Fee & 4001 &  & 0.09 & \\
+2025-01-31 & TAAATLTTFEP & 1 x Begleitperson & 1000 & 3001 & 8.0 & CASH\\
+2025-01-31 & T24LQQ4XMV & 1 x Verlängerung 1h pro Teinehmenr &  & 3001 & 5.0 & POS\\
+2025-01-31 & T24LQQ4XMV & Bank payout & 1020 &  & 4.92 & 952982\\
+2025-01-31 & T24LQQ4XMV & Fee & 4001 &  & 0.08 & \\
+2025-01-31 & TFLDPDZZQX & 3 x Verlängerung 1h &  & 3001 & 15.0 & POS\\
+2025-01-31 & TFLDPDZZQX & Bank payout & 1020 &  & 14.77 & 952982\\
+2025-01-31 & TFLDPDZZQX & Fee & 4001 &  & 0.23 & \\
+2025-01-31 & TDNQQKHS6E & 1 x Tee &  & 3001 & 3.5 & POS\\
+2025-01-31 & TDNQQKHS6E & Bank payout & 1020 &  & 3.45 & 952982\\
+2025-01-31 & TDNQQKHS6E & Fee & 4001 &  & 0.05 & \\
+2025-01-31 & TAAATLTNLKP & 1 x Verlängerung 1h & 1000 & 3001 & 5.0 & CASH\\
+2025-01-31 & TDRX2GU3ZC & 2 x Verlängerung 1h &  & 3001 & 10.0 & POS\\
+2025-01-31 & TDRX2GU3ZC & Bank payout & 1020 &  & 9.85 & 952982\\
+2025-01-31 & TDRX2GU3ZC & Fee & 4001 &  & 0.15 & \\
+2025-01-31 & TAAATLTMG4X & 1 x Getränk 6.-, 1 x Getränk 5.- & 1000 & 3001 & 11.0 & CASH\\
+2025-01-31 & TDSPNNF6HX & 2 x Getränk 4.50.- &  & 3001 & 9.0 & POS\\
+2025-01-31 & TDSPNNF6HX & Bank payout & 1020 &  & 8.86 & 952982\\
+2025-01-31 & TDSPNNF6HX & Fee & 4001 &  & 0.14 & \\
+2025-01-31 & TFN9SSZ4CF & 1 x Getränk 6.-, 1 x Verlängerung 1h &  & 3001 & 11.0 & POS\\
+2025-01-31 & TFN9SSZ4CF & Bank payout & 1020 &  & 10.83 & 952982\\
+2025-01-31 & TFN9SSZ4CF & Fee & 4001 &  & 0.17 & \\
+2025-01-31 & TAAATLTDD3D & 1 x Getränk 6.-, 1 x Snack 2,50.- & 1000 & 3001 & 8.5 & CASH\\
+2025-01-31 & T3ME2G6QRV & 1 x Eintritt Kind FOG &  & 3001 & 17.0 & POS\\
+2025-01-31 & T3ME2G6QRV & Bank payout & 1020 &  & 16.74 & 952982\\
+2025-01-31 & T3ME2G6QRV & Fee & 4001 &  & 0.26 & \\
+2025-01-31 & TD437F9PR3 & 1 x Begleitperson, 3 x Eintritt Kind (5-15) &  & 3001 & 68.0 & POS\\
+2025-01-31 & TD437F9PR3 & Bank payout & 1020 &  & 66.3 & 956463\\
+2025-01-31 & TD437F9PR3 & Fee & 4001 &  & 1.7 & \\
+2025-01-31 & TCKZGCVC2A & 1 x Begleitperson, 2 x Eintritt Kind FOG &  & 3001 & 42.0 & POS\\
+2025-01-31 & TCKZGCVC2A & Bank payout & 1020 &  & 41.37 & 952982\\
+2025-01-31 & TCKZGCVC2A & Fee & 4001 &  & 0.63 & \\
+2025-01-31 & T3HAPTMNQC & 1 x Begleitperson, 2 x Eintritt Kind (5-15) &  & 3001 & 48.0 & POS\\
+2025-01-31 & T3HAPTMNQC & Bank payout & 1020 &  & 47.28 & 952982\\
+2025-01-31 & T3HAPTMNQC & Fee & 4001 &  & 0.72 & \\
+2025-01-31 & TK3KALT3M7 & 1 x Getränk 6.-, 1 x Eintritt Kind FOG &  & 3001 & 23.0 & POS\\
+2025-01-31 & TK3KALT3M7 & Bank payout & 1020 &  & 22.42 & 952982\\
+2025-01-31 & TK3KALT3M7 & Fee & 4001 &  & 0.58 & \\
+2025-01-31 & TDCV4YHCEE & 1 x Eintritt Kind FOG, 1 x Begleitperson FOG 2* &  & 3001 & 29.0 & POS\\
+2025-01-31 & TDCV4YHCEE & Bank payout & 1020 &  & 28.56 & 952982\\
+2025-01-31 & TDCV4YHCEE & Fee & 4001 &  & 0.44 & \\
+2025-01-30 & TAAATLK39DP & 2 x Pizza Margherita 20cm &  & 3001 & 12.0 & POS\\
+2025-01-30 & TAAATLK39DP & Bank payout & 1020 &  & 11.82 & 947973\\
+2025-01-30 & TAAATLK39DP & Fee & 4001 &  & 0.18 & \\
+2025-01-30 & TAAATLK3YUK & 2 x Pizza Schinken 20cm, 2 x Getränk 4.50.-, 1 x Flammkuchen &  & 3001 & 36.0 & POS\\
+2025-01-30 & TAAATLK3YUK & Bank payout & 1020 &  & 35.46 & 947973\\
+2025-01-30 & TAAATLK3YUK & Fee & 4001 &  & 0.54 & \\
+2025-01-30 & TAAATLKG6QE & 1 x Getränk 4.50.- & 1000 & 3001 & 4.5 & CASH\\
+2025-01-30 & TAAATLKG2L2 & 1 x Tee, 1 x Snack 2,50.- &  & 3001 & 6.0 & POS\\
+2025-01-30 & TAAATLKG2L2 & Bank payout & 1020 &  & 5.91 & 947973\\
+2025-01-30 & TAAATLKG2L2 & Fee & 4001 &  & 0.09 & \\
+2025-01-30 & TAAATLKF2TK & 1 x Getränk 4.50.- & 1000 & 3001 & 4.5 & CASH\\
+2025-01-30 & TAAATLKFQ6K & 1 x FOG, 1 x Semesterkurs &  & 3001 & 405.5 & POS\\
+2025-01-30 & TAAATLKFQ6K & Bank payout & 1020 &  & 395.36 & 947973\\
+2025-01-30 & TAAATLKFQ6K & Fee & 4001 &  & 10.14 & \\
+2025-01-30 & TAAATLKA9AB & 1 x Snack 2,50.- &  & 3001 & 2.5 & POS\\
+2025-01-30 & TAAATLKA9AB & Bank payout & 1020 &  & 2.46 & 947973\\
+2025-01-30 & TAAATLKA9AB & Fee & 4001 &  & 0.04 & \\
+2025-01-30 & TAAATLH4FC6 & 2 x Getränk 4.50.- &  & 3001 & 9.0 & POS\\
+2025-01-30 & TAAATLH4FC6 & Bank payout & 1020 &  & 8.86 & 947973\\
+2025-01-30 & TAAATLH4FC6 & Fee & 4001 &  & 0.14 & \\
+2025-01-30 & TAAATLH2AVZ & 2 x Eintritt Kind (5-15), 1 x Eintritt Adult &  & 3001 & 67.0 & POS\\
+2025-01-30 & TAAATLH2AVZ & Bank payout & 1020 &  & 65.99 & 947973\\
+2025-01-30 & TAAATLH2AVZ & Fee & 4001 &  & 1.01 & \\
+2025-01-30 & TAAATLHM6DC & 2 x Getränk 4.50.-, 2 x Snack 2,50.- & 1000 & 3001 & 14.0 & CASH\\
+2025-01-30 & TAAATLHBERD & 1 x Getränk 4.50.- &  & 3001 & 4.5 & POS\\
+2025-01-30 & TAAATLHBERD & Bank payout & 1020 &  & 4.43 & 947973\\
+2025-01-30 & TAAATLHBERD & Fee & 4001 &  & 0.07 & \\
+2025-01-30 & TAAATLHAYVT & 4 x Eintritt Kind (5-15), 3 x Begleitperson &  & 3001 & 104.0 & POS\\
+2025-01-30 & TAAATLHAYVT & Bank payout & 1020 &  & 102.44 & 947973\\
+2025-01-30 & TAAATLHAYVT & Fee & 4001 &  & 1.56 & \\
+2025-01-30 & TAAATLHAPYU & 2 x Getränk 5.- &  & 3001 & 10.0 & POS\\
+2025-01-30 & TAAATLHAPYU & Bank payout & 1020 &  & 9.75 & 947973\\
+2025-01-30 & TAAATLHAPYU & Fee & 4001 &  & 0.25 & \\
+2025-01-30 & TAAATLG2VCR & 1 x Snack 2,50.-, 1 x Getränk 4.50.- & 1000 & 3001 & 7.0 & CASH\\
+2025-01-30 & TAAATLGZ6AH & 2 x Snack 2,50.- & 1000 & 3001 & 5.0 & CASH\\
+2025-01-30 & TAAATLGYQ2Q & 15 x Verlängerung 1h &  & 3001 & 75.0 & POS\\
+2025-01-30 & TAAATLGYQ2Q & Bank payout & 1020 &  & 73.87 & 947973\\
+2025-01-30 & TAAATLGYQ2Q & Fee & 4001 &  & 1.13 & \\
+2025-01-30 & TAAATLFUD9R & 1 x Individueller Betrag & 1000 & 3001 & 2.25 & CASH\\
+2025-01-30 & TAAATLFTSCL & 1 x Schule 15 Teilnehmer +Coach &  & 3001 & 300.0 & POS\\
+2025-01-30 & TAAATLFTSCL & Bank payout & 1020 &  & 295.5 & 947973\\
+2025-01-30 & TAAATLFTSCL & Fee & 4001 &  & 4.5 & \\
+2025-01-29 & TAAATLBZZBC & 3 x MA getränk &  & 3001 & 6.75 & POS\\
+2025-01-29 & TAAATLBZZBC & Bank payout & 1020 &  & 6.65 & 946153\\
+2025-01-29 & TAAATLBZZBC & Fee & 4001 &  & 0.1 & \\
+2025-01-29 & TAAATLAZMB3 & 1 x Snack 2,50.- & 1000 & 3001 & 2.5 & CASH\\
+2025-01-29 & TAAATLAYEZB & 1 x Getränk 4.50.- &  & 3001 & 4.5 & POS\\
+2025-01-29 & TAAATLAYEZB & Bank payout & 1020 &  & 4.43 & 946153\\
+2025-01-29 & TAAATLAYEZB & Fee & 4001 &  & 0.07 & \\
+2025-01-29 & TAAATLAX2XZ & 1 x Obst 1.- & 1000 & 3001 & 1.0 & CASH\\
+2025-01-29 & TAAATLAKP4C & 2 x Snack 4,50.-, 1 x Getränk 4.50.-, 1 x Snack 2,50.- &  & 3001 & 16.0 & POS\\
+2025-01-29 & TAAATLAKP4C & Bank payout & 1020 &  & 15.76 & 946153\\
+2025-01-29 & TAAATLAKP4C & Fee & 4001 &  & 0.24 & \\
+2025-01-29 & TAAATLADAXB & 1 x Snack 2,50.- & 1000 & 3001 & 2.5 & CASH\\
+2025-01-29 & TAAATLAAPYS & 1 x Verlängerung 1h & 1000 & 3001 & 5.0 & CASH\\
+2025-01-29 & TAAATK96LQY & 1 x Snack 2.- & 1000 & 3001 & 2.0 & CASH\\
+2025-01-29 & TAAATK9VUQC & 1 x Snack 2,50.- & 1000 & 3001 & 2.5 & CASH\\
+2025-01-29 & TAAATK9U62Q & 1 x Getränk 4.50.- & 1000 & 3001 & 4.5 & CASH\\
+2025-01-29 & TAAATK9UTRQ & 1 x Verlängerung 1h & 1000 & 3001 & 5.0 & CASH\\
+2025-01-29 & TAAATK9UARK & 1 x Snack 2.- & 1000 & 3001 & 2.0 & CASH\\
+2025-01-29 & TAAATK9PX7Z & 2 x Getränk 5.-, 1 x Tee &  & 3001 & 13.5 & POS\\
+2025-01-29 & TAAATK9PX7Z & Bank payout & 1020 &  & 13.3 & 946153\\
+2025-01-29 & TAAATK9PX7Z & Fee & 4001 &  & 0.2 & \\
+2025-01-29 & TAAATK9G3NK & 1 x Wasser 4.- & 1000 & 3001 & 4.0 & CASH\\
+2025-01-29 & TAAATK9GF9U & 1 x Getränk 5.- & 1000 & 3001 & 5.0 & CASH\\
+2025-01-29 & TAAATK9GDCL & 1 x Verlängerung 1h & 1000 & 3001 & 5.0 & CASH\\
+2025-01-29 & TAAATK9FRDH & 1 x Getränk 4.50.-, 1 x Spende &  & 3001 & 9.5 & POS\\
+2025-01-29 & TAAATK9FRDH & Bank payout & 1020 &  & 9.36 & 946153\\
+2025-01-29 & TAAATK9FRDH & Fee & 4001 &  & 0.14 & \\
+2025-01-29 & TAAATK72RYM & 1 x Verlängerung 1h, 1 x Schnupperkurs & 1000 & 3001 & 55.0 & CASH\\
+2025-01-28 & TEG39PENCS & 1 x Individueller Betrag &  & 3001 & 2.25 & POS\\
+2025-01-28 & TEG39PENCS & Bank payout & 1020 &  & 2.22 & 944328\\
+2025-01-28 & TEG39PENCS & Fee & 4001 &  & 0.03 & \\
+2025-01-28 & TFCYY396Y6 & 1 x Verlängerung 1h &  & 3001 & 5.0 & POS\\
+2025-01-28 & TFCYY396Y6 & Bank payout & 1020 &  & 4.92 & 944328\\
+2025-01-28 & TFCYY396Y6 & Fee & 4001 &  & 0.08 & \\
+2025-01-28 & TCF4PDRSYM & 2 x Snack 2,50.- &  & 3001 & 5.0 & POS\\
+2025-01-28 & TCF4PDRSYM & Bank payout & 1020 &  & 4.92 & 944328\\
+2025-01-28 & TCF4PDRSYM & Fee & 4001 &  & 0.08 & \\
+2025-01-28 & TAAATKZBK3D & 1 x Getränk 4.50.-, 1 x Snack 2,50.- & 1000 & 3001 & 7.0 & CASH\\
+2025-01-28 & TESEQXGFFP & 2 x Getränk 4.50.- &  & 3001 & 9.0 & POS\\
+2025-01-28 & TESEQXGFFP & Bank payout & 1020 &  & 8.77 & 944328\\
+2025-01-28 & TESEQXGFFP & Fee & 4001 &  & 0.23 & \\
+2025-01-28 & TAAATKY9GXF & 1 x Trinkgeld & 1000 & 3001 & 0.5 & CASH\\
+2025-01-28 & TAAATKY9CES & 1 x Getränk 4.50.- & 1000 & 3001 & 4.5 & CASH\\
+2025-01-28 & TAAATKY6BVE & 1 x Semesterkurs Emanuel Lorenz DiC3 & 1000 & 3001 & 365.5 & CASH\\
+2025-01-28 & TESMQYFG93 & 3 x Snack 2,50.- &  & 3001 & 7.5 & POS\\
+2025-01-28 & TESMQYFG93 & Bank payout & 1020 &  & 7.39 & 944328\\
+2025-01-28 & TESMQYFG93 & Fee & 4001 &  & 0.11 & \\
+2025-01-28 & TCC7MZRDE4 & 1 x Getränk 4.50.- &  & 3001 & 4.5 & POS\\
+2025-01-28 & TCC7MZRDE4 & Bank payout & 1020 &  & 4.43 & 944328\\
+2025-01-28 & TCC7MZRDE4 & Fee & 4001 &  & 0.07 & \\
+2025-01-28 & TAAATKYMNGG & 1 x Tee, 1 x Obst 1.- & 1000 & 3001 & 4.5 & CASH\\
+2025-01-28 & TC7PFZE4GC & 1 x Verlängerungsabo J. Schombach, 1 x Kursshirt &  & 3001 & 105.0 & POS\\
+2025-01-28 & TC7PFZE4GC & Bank payout & 1020 &  & 103.42 & 944328\\
+2025-01-28 & TC7PFZE4GC & Fee & 4001 &  & 1.58 & \\
+2025-01-28 & TAAATKYA9VT & 1 x Ma Getränk & 1000 & 3001 & 2.25 & CASH\\
+2025-01-28 & TEF7ZGA462 & 1 x Verlängerung 1h &  & 3001 & 5.0 & POS\\
+2025-01-28 & TEF7ZGA462 & Bank payout & 1020 &  & 4.87 & 944328\\
+2025-01-28 & TEF7ZGA462 & Fee & 4001 &  & 0.13 & \\
+2025-01-28 & TCARXS7Q3V & 1 x Eintritt Adult &  & 3001 & 27.0 & POS\\
+2025-01-28 & TCARXS7Q3V & Bank payout & 1020 &  & 26.59 & 944328\\
+2025-01-28 & TCARXS7Q3V & Fee & 4001 &  & 0.41 & \\
+2025-01-28 & TAAATKXS6NL & 1 x MA Banane & 1000 & 3001 & 0.5 & CASH\\
+2025-01-27 & TAAATKRCA7F & 1 x Getränk 4.50.- & 1000 & 3001 & 4.5 & CASH\\
+2025-01-27 & TAAATKRAPZ6 & 1 x Begleitperson & 1000 & 3001 & 8.0 & CASH\\
+2025-01-27 & TDGURFR6CC & 2 x Getränk 4.50.- &  & 3001 & 9.0 & POS\\
+2025-01-27 & TDGURFR6CC & Bank payout & 1020 &  & 8.86 & 942516\\
+2025-01-27 & TDGURFR6CC & Fee & 4001 &  & 0.14 & \\
+2025-01-27 & TAAATKQ66FX & 1 x Snack 3,50.- & 1000 & 3001 & 3.5 & CASH\\
+2025-01-27 & TAAATKQXQQ9 & 1 x Eintritt Kind (5-15), 1 x Begleitperson & 1000 & 3001 & 28.0 & CASH\\
+2025-01-27 & TCYFUX62TL & 1 x Getränk 4.50.-, 2 x Snack 2,50.-, 1 x Snack 3,50.- &  & 3001 & 13.0 & POS\\
+2025-01-27 & TCYFUX62TL & Bank payout & 1020 &  & 12.8 & 942516\\
+2025-01-27 & TCYFUX62TL & Fee & 4001 &  & 0.2 & \\
+2025-01-27 & T4ZXAKKQCZ & 1 x Getränk 5.- &  & 3001 & 5.0 & POS\\
+2025-01-27 & T4ZXAKKQCZ & Bank payout & 1020 &  & 4.92 & 942516\\
+2025-01-27 & T4ZXAKKQCZ & Fee & 4001 &  & 0.08 & \\
+2025-01-27 & TAAATKQUTKP & 1 x Getränk 4.50.- & 1000 & 3001 & 4.5 & CASH\\
+2025-01-27 & TCVHFM3LC6 & 1 x Snack 4,50.- &  & 3001 & 4.5 & POS\\
+2025-01-27 & TCVHFM3LC6 & Bank payout & 1020 &  & 4.43 & 942516\\
+2025-01-27 & TCVHFM3LC6 & Fee & 4001 &  & 0.07 & \\
+2025-01-27 & TAAATKQUGU2 & 1 x Verlängerung 1h & 1000 & 3001 & 5.0 & CASH\\
+2025-01-27 & TAAATKQP6BB & 1 x Semesterkurs Marco Rippstein MoD2 & 1000 & 3001 & 430.0 & CASH\\
+2025-01-27 & TD7MHM9PHK & 2 x Verlängerung 1h &  & 3001 & 10.0 & POS\\
+2025-01-27 & TD7MHM9PHK & Bank payout & 1020 &  & 9.85 & 942516\\
+2025-01-27 & TD7MHM9PHK & Fee & 4001 &  & 0.15 & \\
+2025-01-27 & TFSL4A94KC & 1 x Getränk 4.50.- &  & 3001 & 4.5 & POS\\
+2025-01-27 & TFSL4A94KC & Bank payout & 1020 &  & 4.43 & 942516\\
+2025-01-27 & TFSL4A94KC & Fee & 4001 &  & 0.07 & \\
+2025-01-27 & TCNKNA22MH & 1 x Getränk 4.50.- &  & 3001 & 4.5 & POS\\
+2025-01-27 & TCNKNA22MH & Bank payout & 1020 &  & 4.43 & 942516\\
+2025-01-27 & TCNKNA22MH & Fee & 4001 &  & 0.07 & \\
+2025-01-27 & TCSQDVVE4D & 1 x Getränk 5.- &  & 3001 & 5.0 & POS\\
+2025-01-27 & TCSQDVVE4D & Bank payout & 1020 &  & 4.92 & 942516\\
+2025-01-27 & TCSQDVVE4D & Fee & 4001 &  & 0.08 & \\
+2025-01-27 & TAAATKQDDVD & 1 x Obst 1.- & 1000 & 3001 & 1.0 & CASH\\
+2025-01-27 & TAAATKP3Z7R & 1 x Ma Getränk & 1000 & 3001 & 2.25 & CASH\\
+2025-01-27 & TYNTF7QQC9 & 1 x Eintritt Kind (5-15), 1 x Begleitperson &  & 3001 & 28.0 & POS\\
+2025-01-27 & TYNTF7QQC9 & Bank payout & 1020 &  & 27.3 & 942516\\
+2025-01-27 & TYNTF7QQC9 & Fee & 4001 &  & 0.7 & \\
+2025-01-26 & TE44RELFAE & 1 x Snack 2.- &  & 3001 & 2.0 & POS\\
+2025-01-26 & TE44RELFAE & Bank payout & 1020 &  & 1.97 & 940880\\
+2025-01-26 & TE44RELFAE & Fee & 4001 &  & 0.03 & \\
+2025-01-26 & TE4GTH27Z4 & 1 x Individueller Betrag &  & 3001 & 7.0 & POS\\
+2025-01-26 & TE4GTH27Z4 & Bank payout & 1020 &  & 6.89 & 940880\\
+2025-01-26 & TE4GTH27Z4 & Fee & 4001 &  & 0.11 & \\
+2025-01-26 & TAAATKHD3CQ & 1 x Flammkuchen & 1000 & 3001 & 12.0 & CASH\\
+2025-01-26 & TEMFNNEQAT & 1 x Getränk 4.50.- &  & 3001 & 4.5 & POS\\
+2025-01-26 & TEMFNNEQAT & Bank payout & 1020 &  & 4.43 & 940880\\
+2025-01-26 & TEMFNNEQAT & Fee & 4001 &  & 0.07 & \\
+2025-01-26 & TAAATKG69CL & 1 x Snack 2,50.- & 1000 & 3001 & 2.5 & CASH\\
+2025-01-26 & TAAATKG4S3G & 1 x Getränk 4.50.-, 1 x Snack 2,50.- & 1000 & 3001 & 7.0 & CASH\\
+2025-01-26 & TAAATKG4BK3 & 1 x Getränk 4.50.-, 2 x Snack 2,50.- & 1000 & 3001 & 9.5 & CASH\\
+2025-01-26 & TAAATKG3NEF & 1 x Getränk 4.50.-, 1 x Snack 3,50.- & 1000 & 3001 & 8.0 & CASH\\
+2025-01-26 & TAAATKG273N & 1 x Getränk 4.50.-, 1 x Snack 2,50.- & 1000 & 3001 & 7.0 & CASH\\
+2025-01-26 & TAAATKG2YRB & 1 x Snack 3,50.- & 1000 & 3001 & 3.5 & CASH\\
+2025-01-26 & TFPGTP7TR9 & 1 x Begleitperson &  & 3001 & 8.0 & POS\\
+2025-01-26 & TFPGTP7TR9 & Bank payout & 1020 &  & 7.88 & 940880\\
+2025-01-26 & TFPGTP7TR9 & Fee & 4001 &  & 0.12 & \\
+2025-01-26 & TEKHGCTAMM & 2 x Eintritt Adult &  & 3001 & 54.0 & POS\\
+2025-01-26 & TEKHGCTAMM & Bank payout & 1020 &  & 53.19 & 940880\\
+2025-01-26 & TEKHGCTAMM & Fee & 4001 &  & 0.81 & \\
+2025-01-26 & TDDF6METXR & 1 x Individueller Betrag &  & 3001 & 6.0 & POS\\
+2025-01-26 & TDDF6METXR & Bank payout & 1020 &  & 5.85 & 940880\\
+2025-01-26 & TDDF6METXR & Fee & 4001 &  & 0.15 & \\
+2025-01-26 & TD3U27CAQS & 1 x Eintritt Kind FOG, 1 x Individueller Betrag &  & 3001 & 23.0 & POS\\
+2025-01-26 & TD3U27CAQS & Bank payout & 1020 &  & 22.65 & 940880\\
+2025-01-26 & TD3U27CAQS & Fee & 4001 &  & 0.35 & \\
+2025-01-26 & TFP6AMEFD6 & 1 x Getränk 5.- &  & 3001 & 5.0 & POS\\
+2025-01-26 & TFP6AMEFD6 & Bank payout & 1020 &  & 4.92 & 940880\\
+2025-01-26 & TFP6AMEFD6 & Fee & 4001 &  & 0.08 & \\
+2025-01-26 & TEKX4Q9UZP & 2 x Eintritt Kind (5-15) &  & 3001 & 40.0 & POS\\
+2025-01-26 & TEKX4Q9UZP & Bank payout & 1020 &  & 39.4 & 940880\\
+2025-01-26 & TEKX4Q9UZP & Fee & 4001 &  & 0.6 & \\
+2025-01-26 & TAAATKGKY4X & 2 x Eintritt Kind (5-15), 1 x Begleitperson & 1000 & 3001 & 48.0 & CASH\\
+2025-01-26 & TDUZHFFQNQ & 2 x Begleitperson, 1 x Tageseintritt Kind 2-4 &  & 3001 & 22.0 & POS\\
+2025-01-26 & TDUZHFFQNQ & Bank payout & 1020 &  & 21.67 & 940880\\
+2025-01-26 & TDUZHFFQNQ & Fee & 4001 &  & 0.33 & \\
+2025-01-26 & TAAATKGE6SZ & 1 x Eintritt Adult, 4 x Eintritt Kind (5-15) & 1000 & 3001 & 107.0 & CASH\\
+2025-01-26 & TDUN7AHYNV & 1 x Getränk 5.-, 2 x Getränk 4.50.- &  & 3001 & 14.0 & POS\\
+2025-01-26 & TDUN7AHYNV & Bank payout & 1020 &  & 13.65 & 940880\\
+2025-01-26 & TDUN7AHYNV & Fee & 4001 &  & 0.35 & \\
+2025-01-26 & TYMTZMH23D & 2 x Eintritt Adult FOG, 2 x Eintritt Kind FOG &  & 3001 & 80.0 & POS\\
+2025-01-26 & TYMTZMH23D & Bank payout & 1020 &  & 78.8 & 940880\\
+2025-01-26 & TYMTZMH23D & Fee & 4001 &  & 1.2 & \\
+2025-01-26 & TAAATKF7GKB & 1 x Snack 2,50.- & 1000 & 3001 & 2.5 & CASH\\
+2025-01-26 & TAAATKF4HBL & 3 x Snack 2,50.- & 1000 & 3001 & 7.5 & CASH\\
+2025-01-26 & TD64EMMYLG & 2 x Getränk 4.50.-, 2 x Snack 2,50.- &  & 3001 & 14.0 & POS\\
+2025-01-26 & TD64EMMYLG & Bank payout & 1020 &  & 13.79 & 940880\\
+2025-01-26 & TD64EMMYLG & Fee & 4001 &  & 0.21 & \\
+2025-01-26 & TCSNCYRVMQ & 2 x Eintritt Kind (5-15), 2 x Begleitperson &  & 3001 & 56.0 & POS\\
+2025-01-26 & TCSNCYRVMQ & Bank payout & 1020 &  & 55.16 & 940880\\
+2025-01-26 & TCSNCYRVMQ & Fee & 4001 &  & 0.84 & \\
+2025-01-26 & TAAATKFVZYY & 1 x Getränk 4.50.- & 1000 & 3001 & 4.5 & CASH\\
+2025-01-26 & TAAATKFU3YG & 2 x Getränk 5.-, 1 x Snack 2,50.- & 1000 & 3001 & 12.5 & CASH\\
+2025-01-26 & TAAATKFRCV6 & 1 x Getränk 4.50.- & 1000 & 3001 & 4.5 & CASH\\
+2025-01-26 & TAAATKFP2BZ & 1 x Wasser 4.- & 1000 & 3001 & 4.0 & CASH\\
+2025-01-26 & TEKGP7RS3C & 2 x Eintritt Kind (5-15), 2 x Eintritt Adult &  & 3001 & 94.0 & POS\\
+2025-01-26 & TEKGP7RS3C & Bank payout & 1020 &  & 92.59 & 940880\\
+2025-01-26 & TEKGP7RS3C & Fee & 4001 &  & 1.41 & \\
+2025-01-26 & TAAATKFNZ64 & 1 x Getränk 4.50.- & 1000 & 3001 & 4.5 & CASH\\
+2025-01-26 & TDDVZ7STCX & 1 x Flammkuchen, 1 x Pizza Schinken 20cm, 1 x Getränk 4.50.-, 2 x Getränk 6.- &  & 3001 & 36.0 & POS\\
+2025-01-26 & TDDVZ7STCX & Bank payout & 1020 &  & 35.1 & 940880\\
+2025-01-26 & TDDVZ7STCX & Fee & 4001 &  & 0.9 & \\
+2025-01-26 & TDH3Y4KDKU & 1 x Birthday Option 1, 5 x zusätzliche Teilnehmer 13 x Verlängerung 1h pro Teinehmenr &  & 3001 & 565.0 & POS\\
+2025-01-26 & TDH3Y4KDKU & Bank payout & 1020 &  & 556.52 & 940880\\
+2025-01-26 & TDH3Y4KDKU & Fee & 4001 &  & 8.48 & \\
+2025-01-26 & TAAATKFMP7N & 2 x Pizza Margherita 20cm & 1000 & 3001 & 12.0 & CASH\\
+2025-01-26 & TVZN97CMC3 & 1 x Flammkuchen &  & 3001 & 12.0 & POS\\
+2025-01-26 & TVZN97CMC3 & Bank payout & 1020 &  & 11.7 & 940880\\
+2025-01-26 & TVZN97CMC3 & Fee & 4001 &  & 0.3 & \\
+2025-01-26 & TCL9TAKD7F & 1 x Flammkuchen &  & 3001 & 12.0 & POS\\
+2025-01-26 & TCL9TAKD7F & Bank payout & 1020 &  & 11.82 & 940880\\
+2025-01-26 & TCL9TAKD7F & Fee & 4001 &  & 0.18 & \\
+2025-01-26 & TAAATKFFANV & 1 x Snack 2,50.-, 1 x Snack 4,50.- & 1000 & 3001 & 7.0 & CASH\\
+2025-01-26 & TD6PG27C3Z & 4 x Eintritt Kind (5-15), 1 x Tageseintritt Kind 2-4, 1 x Begleitperson &  & 3001 & 94.0 & POS\\
+2025-01-26 & TD6PG27C3Z & Bank payout & 1020 &  & 91.65 & 940880\\
+2025-01-26 & TD6PG27C3Z & Fee & 4001 &  & 2.35 & \\
+2025-01-26 & TDE62EGZ2C & 1 x Eintritt Adult &  & 3001 & 27.0 & POS\\
+2025-01-26 & TDE62EGZ2C & Bank payout & 1020 &  & 26.59 & 940880\\
+2025-01-26 & TDE62EGZ2C & Fee & 4001 &  & 0.41 & \\
+2025-01-26 & TZHUNM33CY & 1 x Birthday Option 1 &  & 3001 & 350.0 & POS\\
+2025-01-26 & TZHUNM33CY & Bank payout & 1020 &  & 344.75 & 940880\\
+2025-01-26 & TZHUNM33CY & Fee & 4001 &  & 5.25 & \\
+2025-01-26 & TDTXC3ESLU & 1 x Snack 2,50.- &  & 3001 & 2.5 & POS\\
+2025-01-26 & TDTXC3ESLU & Bank payout & 1020 &  & 2.46 & 940880\\
+2025-01-26 & TDTXC3ESLU & Fee & 4001 &  & 0.04 & \\
+2025-01-26 & TAAATKE9S3K & 1 x Getränk 4.50.- & 1000 & 3001 & 4.5 & CASH\\
+2025-01-26 & TFDTCZA3NF & 1 x Getränk 5.-, 2 x Snack 2,50.- &  & 3001 & 10.0 & POS\\
+2025-01-26 & TFDTCZA3NF & Bank payout & 1020 &  & 9.85 & 940880\\
+2025-01-26 & TFDTCZA3NF & Fee & 4001 &  & 0.15 & \\
+2025-01-26 & TCC9AARCS2 & 1 x Getränk 5.- &  & 3001 & 5.0 & POS\\
+2025-01-26 & TCC9AARCS2 & Bank payout & 1020 &  & 4.92 & 940880\\
+2025-01-26 & TCC9AARCS2 & Fee & 4001 &  & 0.08 & \\
+2025-01-26 & TFR466RUML & 4 x Eintritt Kind (5-15), 1 x Begleitperson &  & 3001 & 88.0 & POS\\
+2025-01-26 & TFR466RUML & Bank payout & 1020 &  & 86.68 & 940880\\
+2025-01-26 & TFR466RUML & Fee & 4001 &  & 1.32 & \\
+2025-01-26 & TDFFFMMKNP & 1 x Getränk 6.- &  & 3001 & 6.0 & POS\\
+2025-01-26 & TDFFFMMKNP & Bank payout & 1020 &  & 5.91 & 940880\\
+2025-01-26 & TDFFFMMKNP & Fee & 4001 &  & 0.09 & \\
+2025-01-26 & TCDFR9UR2A & 1 x Getränk 6.- &  & 3001 & 6.0 & POS\\
+2025-01-26 & TCDFR9UR2A & Bank payout & 1020 &  & 5.91 & 940880\\
+2025-01-26 & TCDFR9UR2A & Fee & 4001 &  & 0.09 & \\
+2025-01-26 & TEU4CPS9TH & 1 x Getränk 5.- &  & 3001 & 5.0 & POS\\
+2025-01-26 & TEU4CPS9TH & Bank payout & 1020 &  & 4.87 & 940880\\
+2025-01-26 & TEU4CPS9TH & Fee & 4001 &  & 0.13 & \\
+2025-01-26 & TAAATKEYDNP & 1 x Getränk 4.50.- & 1000 & 3001 & 4.5 & CASH\\
+2025-01-26 & TEHNXYM6QM & 1 x Pizza Margherita 20cm, 2 x Snack 2,50.-, 2 x Getränk 4.50.-, 3 x Snack 4,50.- &  & 3001 & 33.5 & POS\\
+2025-01-26 & TEHNXYM6QM & Bank payout & 1020 &  & 32.66 & 946153\\
+2025-01-26 & TEHNXYM6QM & Fee & 4001 &  & 0.84 & \\
+2025-01-26 & TCE67GK9GN & 3 x Getränk 4.50.- &  & 3001 & 13.5 & POS\\
+2025-01-26 & TCE67GK9GN & Bank payout & 1020 &  & 13.3 & 940880\\
+2025-01-26 & TCE67GK9GN & Fee & 4001 &  & 0.2 & \\
+2025-01-26 & TE7NLKEFVS & 1 x Getränk 5.- &  & 3001 & 5.0 & POS\\
+2025-01-26 & TE7NLKEFVS & Bank payout & 1020 &  & 4.92 & 940880\\
+2025-01-26 & TE7NLKEFVS & Fee & 4001 &  & 0.08 & \\
+2025-01-26 & TCKQ96VQ24 & 1 x Eintritt Kind (5-15), 1 x Eintritt Adult, 1 x Begleitperson &  & 3001 & 55.0 & POS\\
+2025-01-26 & TCKQ96VQ24 & Bank payout & 1020 &  & 54.17 & 940880\\
+2025-01-26 & TCKQ96VQ24 & Fee & 4001 &  & 0.83 & \\
+2025-01-26 & TAAATKES3SX & 1 x Getränk 4.50.-, 1 x Snack 2,50.- & 1000 & 3001 & 7.0 & CASH\\
+2025-01-26 & TD6V4TRS4Z & 1 x Eintritt Kind (5-15), 1 x Begleitperson &  & 3001 & 28.0 & POS\\
+2025-01-26 & TD6V4TRS4Z & Bank payout & 1020 &  & 27.58 & 940880\\
+2025-01-26 & TD6V4TRS4Z & Fee & 4001 &  & 0.42 & \\
+2025-01-26 & TAAATKEQQQS & 2 x Getränk 4.50.- & 1000 & 3001 & 9.0 & CASH\\
+2025-01-26 & TC72D67MLL & 1 x Getränk 5.- &  & 3001 & 5.0 & POS\\
+2025-01-26 & TC72D67MLL & Bank payout & 1020 &  & 4.92 & 940880\\
+2025-01-26 & TC72D67MLL & Fee & 4001 &  & 0.08 & \\
+2025-01-26 & TCFV7RHREQ & 1 x Getränk 5.- &  & 3001 & 5.0 & POS\\
+2025-01-26 & TCFV7RHREQ & Bank payout & 1020 &  & 4.92 & 940880\\
+2025-01-26 & TCFV7RHREQ & Fee & 4001 &  & 0.08 & \\
+2025-01-26 & TELFL4L9P6 & 1 x Eintritt Kind (5-15) &  & 3001 & 20.0 & POS\\
+2025-01-26 & TELFL4L9P6 & Bank payout & 1020 &  & 19.5 & 946153\\
+2025-01-26 & TELFL4L9P6 & Fee & 4001 &  & 0.5 & \\
+2025-01-26 & TC2PLDDN3N & 1 x Eintritt Kind (5-15), 1 x Begleitperson &  & 3001 & 28.0 & POS\\
+2025-01-26 & TC2PLDDN3N & Bank payout & 1020 &  & 27.58 & 940880\\
+2025-01-26 & TC2PLDDN3N & Fee & 4001 &  & 0.42 & \\
+2025-01-26 & TK4MKD27UH & 1 x Eintritt Kind (5-15), 1 x Begleitperson &  & 3001 & 28.0 & POS\\
+2025-01-26 & TK4MKD27UH & Bank payout & 1020 &  & 27.58 & 940880\\
+2025-01-26 & TK4MKD27UH & Fee & 4001 &  & 0.42 & \\
+2025-01-26 & TERAZ2C7GF & 1 x Eintritt Kind (5-15), 1 x Begleitperson &  & 3001 & 28.0 & POS\\
+2025-01-26 & TERAZ2C7GF & Bank payout & 1020 &  & 27.3 & 940880\\
+2025-01-26 & TERAZ2C7GF & Fee & 4001 &  & 0.7 & \\
+2025-01-26 & TFNA47MD6X & 2 x Eintritt Kind (5-15), 1 x Begleitperson &  & 3001 & 48.0 & POS\\
+2025-01-26 & TFNA47MD6X & Bank payout & 1020 &  & 46.8 & 940880\\
+2025-01-26 & TFNA47MD6X & Fee & 4001 &  & 1.2 & \\
+2025-01-26 & TAAATKELNCH & 1 x Eintritt Kind (5-15) & 1000 & 3001 & 20.0 & CASH\\
+2025-01-26 & TAAATKELM6M & 1 x Getränk 5.-, 1 x Getränk 4.50.- & 1000 & 3001 & 9.5 & CASH\\
+2025-01-26 & TDL49CDXNP & 1 x Eintritt Adult &  & 3001 & 27.0 & POS\\
+2025-01-26 & TDL49CDXNP & Bank payout & 1020 &  & 26.59 & 940880\\
+2025-01-26 & TDL49CDXNP & Fee & 4001 &  & 0.41 & \\
+2025-01-26 & TCXET7ZK7U & 1 x Eintritt Adult &  & 3001 & 27.0 & POS\\
+2025-01-26 & TCXET7ZK7U & Bank payout & 1020 &  & 26.59 & 940880\\
+2025-01-26 & TCXET7ZK7U & Fee & 4001 &  & 0.41 & \\
+2025-01-26 & TAAATKEKLX6 & 1 x Eintritt Kind (5-15), 1 x Begleitperson & 1000 & 3001 & 28.0 & CASH\\
+2025-01-26 & TEDXVV6CUE & 1 x Wasser 4.- &  & 3001 & 4.0 & POS\\
+2025-01-26 & TEDXVV6CUE & Bank payout & 1020 &  & 3.94 & 940880\\
+2025-01-26 & TEDXVV6CUE & Fee & 4001 &  & 0.06 & \\
+2025-01-26 & TAAATKEGXAN & 1 x Getränk 6.- & 1000 & 3001 & 6.0 & CASH\\
+2025-01-26 & TERSQGCCFE & 1 x Eintritt Adult &  & 3001 & 27.0 & POS\\
+2025-01-26 & TERSQGCCFE & Bank payout & 1020 &  & 26.32 & 940880\\
+2025-01-26 & TERSQGCCFE & Fee & 4001 &  & 0.68 & \\
+2025-01-26 & TCKDRY2X6K & 1 x Eintritt Adult &  & 3001 & 27.0 & POS\\
+2025-01-26 & TCKDRY2X6K & Bank payout & 1020 &  & 26.59 & 940880\\
+2025-01-26 & TCKDRY2X6K & Fee & 4001 &  & 0.41 & \\
+2025-01-26 & TCR2AYU7RD & 1 x Eintritt Kind (5-15), 1 x Eintritt Adult &  & 3001 & 47.0 & POS\\
+2025-01-26 & TCR2AYU7RD & Bank payout & 1020 &  & 46.29 & 940880\\
+2025-01-26 & TCR2AYU7RD & Fee & 4001 &  & 0.71 & \\
+2025-01-26 & TAAATKEE7BG & 2 x Eintritt Kind (5-15), 2 x Begleitperson & 1000 & 3001 & 56.0 & CASH\\
+2025-01-26 & TAAATKEE4DB & 2 x Eintritt Kind (5-15), 2 x Begleitperson & 1000 & 3001 & 56.0 & CASH\\
+2025-01-25 & TECD7QM9EP & 1 x Eintritt Kind (5-15) &  & 3001 & 20.0 & POS\\
+2025-01-25 & TECD7QM9EP & Bank payout & 1020 &  & 19.7 & 940880\\
+2025-01-25 & TECD7QM9EP & Fee & 4001 &  & 0.3 & \\
+2025-01-25 & TDKMXGT2Y2 & 2 x Getränk 4.50.-, 1 x Snack 2,50.- &  & 3001 & 11.5 & POS\\
+2025-01-25 & TDKMXGT2Y2 & Bank payout & 1020 &  & 11.33 & 940880\\
+2025-01-25 & TDKMXGT2Y2 & Fee & 4001 &  & 0.17 & \\
+2025-01-25 & TCLCCNU3YZ & 1 x Snack 2.-, 1 x Snack 2,50.- &  & 3001 & 4.5 & POS\\
+2025-01-25 & TCLCCNU3YZ & Bank payout & 1020 &  & 4.43 & 940880\\
+2025-01-25 & TCLCCNU3YZ & Fee & 4001 &  & 0.07 & \\
+2025-01-25 & TAAATH7APPM & 1 x Getränk 4.50.- & 1000 & 3001 & 4.5 & CASH\\
+2025-01-25 & TAAATH66HFC & 1 x Snack 2,50.- & 1000 & 3001 & 2.5 & CASH\\
+2025-01-25 & TEN9HVGNXX & 1 x Eintritt Kind FOG &  & 3001 & 17.0 & POS\\
+2025-01-25 & TEN9HVGNXX & Bank payout & 1020 &  & 16.74 & 940880\\
+2025-01-25 & TEN9HVGNXX & Fee & 4001 &  & 0.26 & \\
+2025-01-25 & TAAATH6YUS7 & 1 x Wasser 4.-, 1 x Getränk 4.50.- & 1000 & 3001 & 8.5 & CASH\\
+2025-01-25 & TDY7QLDTSA & 1 x Eintritt Kind (5-15), 1 x Begleitperson &  & 3001 & 28.0 & POS\\
+2025-01-25 & TDY7QLDTSA & Bank payout & 1020 &  & 27.58 & 940880\\
+2025-01-25 & TDY7QLDTSA & Fee & 4001 &  & 0.42 & \\
+2025-01-25 & TCDYHT3U6U & 1 x Getränk 4.50.- &  & 3001 & 4.5 & POS\\
+2025-01-25 & TCDYHT3U6U & Bank payout & 1020 &  & 4.43 & 940880\\
+2025-01-25 & TCDYHT3U6U & Fee & 4001 &  & 0.07 & \\
+2025-01-25 & THSMFTTSA2 & 1 x Getränk 4.50.-, 1 x Getränk 5.- &  & 3001 & 9.5 & POS\\
+2025-01-25 & THSMFTTSA2 & Bank payout & 1020 &  & 9.36 & 940880\\
+2025-01-25 & THSMFTTSA2 & Fee & 4001 &  & 0.14 & \\
+2025-01-25 & TAAATH6KFFB & 1 x Getränk 4.50.- & 1000 & 3001 & 4.5 & CASH\\
+2025-01-25 & TDTRSCNSTM & 1 x Eintritt Kind (5-15), 1 x Eintritt Adult &  & 3001 & 47.0 & POS\\
+2025-01-25 & TDTRSCNSTM & Bank payout & 1020 &  & 46.29 & 940880\\
+2025-01-25 & TDTRSCNSTM & Fee & 4001 &  & 0.71 & \\
+2025-01-25 & TAAATH6EBPZ & 1 x Tageseintritt Kind 2-4 & 1000 & 3001 & 6.0 & CASH\\
+2025-01-25 & TAAATH6C2A4 & 1 x Snack 2.- & 1000 & 3001 & 2.0 & CASH\\
+2025-01-25 & TED2MLSVLE & 1 x Getränk 4.50.- &  & 3001 & 4.5 & POS\\
+2025-01-25 & TED2MLSVLE & Bank payout & 1020 &  & 4.43 & 940880\\
+2025-01-25 & TED2MLSVLE & Fee & 4001 &  & 0.07 & \\
+2025-01-25 & TEFH633TGZ & 1 x Getränk 4.50.- &  & 3001 & 4.5 & POS\\
+2025-01-25 & TEFH633TGZ & Bank payout & 1020 &  & 4.43 & 940880\\
+2025-01-25 & TEFH633TGZ & Fee & 4001 &  & 0.07 & \\
+2025-01-25 & TCQCFFKZT9 & 1 x Eintritt Kind (5-15), 1 x Begleitperson &  & 3001 & 28.0 & POS\\
+2025-01-25 & TCQCFFKZT9 & Bank payout & 1020 &  & 27.58 & 940880\\
+2025-01-25 & TCQCFFKZT9 & Fee & 4001 &  & 0.42 & \\
+2025-01-25 & TAAATH49UX6 & 1 x Getränk 6.-, 1 x Snack 2.- & 1000 & 3001 & 8.0 & CASH\\
+2025-01-25 & TAAATH49KGH & 2 x Verlängerung 1h & 1000 & 3001 & 10.0 & CASH\\
+2025-01-25 & TFAR3XYREU & 2 x Eintritt Kind (5-15), 2 x Begleitperson &  & 3001 & 56.0 & POS\\
+2025-01-25 & TFAR3XYREU & Bank payout & 1020 &  & 55.16 & 940880\\
+2025-01-25 & TFAR3XYREU & Fee & 4001 &  & 0.84 & \\
+2025-01-25 & TAAATH433VH & 2 x Eintritt Kind (5-15), 1 x Begleitperson & 1000 & 3001 & 48.0 & CASH\\
+2025-01-25 & TAAATH43L39 & 1 x Eintritt Kind FOG & 1000 & 3001 & 17.0 & CASH\\
+2025-01-25 & TAAATH43FP7 & 1 x Eintritt Kind FOG & 1000 & 3001 & 17.0 & CASH\\
+2025-01-25 & TD9TCMDEL4 & 2 x Verlängerung 1h &  & 3001 & 10.0 & POS\\
+2025-01-25 & TD9TCMDEL4 & Bank payout & 1020 &  & 9.75 & 940880\\
+2025-01-25 & TD9TCMDEL4 & Fee & 4001 &  & 0.25 & \\
+2025-01-25 & TAAATH4LGA3 & 1 x Eintritt Kind (5-15) & 1000 & 3001 & 20.0 & CASH\\
+2025-01-25 & TDUEEMMK3D & 1 x Eintritt Kind (5-15), 1 x Begleitperson &  & 3001 & 28.0 & POS\\
+2025-01-25 & TDUEEMMK3D & Bank payout & 1020 &  & 27.58 & 940880\\
+2025-01-25 & TDUEEMMK3D & Fee & 4001 &  & 0.42 & \\
+2025-01-25 & TE9PLGKMP2 & 1 x Begleitperson, 3 x Eintritt Kind (5-15) &  & 3001 & 68.0 & POS\\
+2025-01-25 & TE9PLGKMP2 & Bank payout & 1020 &  & 66.98 & 940880\\
+2025-01-25 & TE9PLGKMP2 & Fee & 4001 &  & 1.02 & \\
+2025-01-25 & TFSRUSNSKG & 1 x Begleitperson, 1 x Eintritt Kind (5-15) &  & 3001 & 28.0 & POS\\
+2025-01-25 & TFSRUSNSKG & Bank payout & 1020 &  & 27.58 & 940880\\
+2025-01-25 & TFSRUSNSKG & Fee & 4001 &  & 0.42 & \\
+2025-01-25 & TAAATH4ESZQ & 1 x Snack 2.- & 1000 & 3001 & 2.0 & CASH\\
+2025-01-25 & TAAATH4EMLU & 4 x Eintritt Kind (5-15) & 1000 & 3001 & 80.0 & CASH\\
+2025-01-25 & TCZGSULG3P & 1 x Eintritt Kind FOG, 1 x Begleitperson &  & 3001 & 23.0 & POS\\
+2025-01-25 & TCZGSULG3P & Bank payout & 1020 &  & 22.65 & 940880\\
+2025-01-25 & TCZGSULG3P & Fee & 4001 &  & 0.35 & \\
+2025-01-25 & TDVAFEM4P4 & 1 x Snack 2,50.- &  & 3001 & 2.5 & POS\\
+2025-01-25 & TDVAFEM4P4 & Bank payout & 1020 &  & 2.46 & 940880\\
+2025-01-25 & TDVAFEM4P4 & Fee & 4001 &  & 0.04 & \\
+2025-01-25 & TFCAPKHRA6 & 1 x Kaffee plus 1chf Trinkgeld &  & 3001 & 6.0 & POS\\
+2025-01-25 & TFCAPKHRA6 & Bank payout & 1020 &  & 5.85 & 940880\\
+2025-01-25 & TFCAPKHRA6 & Fee & 4001 &  & 0.15 & \\
+2025-01-25 & TQ6GNXCMGL & 1 x Getränk 4.50.- &  & 3001 & 4.5 & POS\\
+2025-01-25 & TQ6GNXCMGL & Bank payout & 1020 &  & 4.43 & 940880\\
+2025-01-25 & TQ6GNXCMGL & Fee & 4001 &  & 0.07 & \\
+2025-01-25 & TAAATH3SMXF & 1 x Eintritt Kind (5-15) & 1000 & 3001 & 20.0 & CASH\\
+2025-01-25 & TDZYEKE4KA & 2 x Eintritt Kind (5-15) &  & 3001 & 40.0 & POS\\
+2025-01-25 & TDZYEKE4KA & Bank payout & 1020 &  & 39.4 & 940880\\
+2025-01-25 & TDZYEKE4KA & Fee & 4001 &  & 0.6 & \\
+2025-01-25 & TEU9KFA6TY & 1 x Geburt 11 kids &  & 3001 & 380.0 & POS\\
+2025-01-25 & TEU9KFA6TY & Bank payout & 1020 &  & 374.3 & 940880\\
+2025-01-25 & TEU9KFA6TY & Fee & 4001 &  & 5.7 & \\
+2025-01-25 & TECYD2NP2S & 2 x Begleitperson, 1 x Eintritt Kind (5-15), 1 x Tageseintritt Kind 2-4 &  & 3001 & 42.0 & POS\\
+2025-01-25 & TECYD2NP2S & Bank payout & 1020 &  & 41.37 & 940880\\
+2025-01-25 & TECYD2NP2S & Fee & 4001 &  & 0.63 & \\
+2025-01-25 & TESKPXT7DU & 2 x Schnupperkurs &  & 3001 & 50.0 & POS\\
+2025-01-25 & TESKPXT7DU & Bank payout & 1020 &  & 49.25 & 940880\\
+2025-01-25 & TESKPXT7DU & Fee & 4001 &  & 0.75 & \\
+2025-01-25 & THR6MNZSUP & 1 x Getränk 5.-, 1 x Getränk 4.50.- &  & 3001 & 9.5 & POS\\
+2025-01-25 & THR6MNZSUP & Bank payout & 1020 &  & 9.36 & 940880\\
+2025-01-25 & THR6MNZSUP & Fee & 4001 &  & 0.14 & \\
+2025-01-25 & TC64CR6XCA & 1 x Getränk 6.-, 1 x Getränk 5.-, 2 x Getränk 4.50.-, 1 x Snack 2,50.-, 1 x Flammkuchen &  & 3001 & 34.5 & POS\\
+2025-01-25 & TC64CR6XCA & Bank payout & 1020 &  & 33.98 & 940880\\
+2025-01-25 & TC64CR6XCA & Fee & 4001 &  & 0.52 & \\
+2025-01-25 & TAAATH3KVYE & 1 x Getränk 4.50.- & 1000 & 3001 & 4.5 & CASH\\
+2025-01-25 & TE3XZMPVE6 & 1 x Eintritt Adult, 2 x Eintritt Kind (5-15) &  & 3001 & 67.0 & POS\\
+2025-01-25 & TE3XZMPVE6 & Bank payout & 1020 &  & 65.99 & 940880\\
+2025-01-25 & TE3XZMPVE6 & Fee & 4001 &  & 1.01 & \\
+2025-01-25 & TAAATH3KSH9 & 1 x Pizza Schinken 20cm, 2 x Getränk 4.50.-, 1 x Snack 2,50.- & 1000 & 3001 & 19.0 & CASH\\
+2025-01-25 & TDDTML3ALH & 1 x Individueller Betrag &  & 3001 & 3.75 & POS\\
+2025-01-25 & TDDTML3ALH & Bank payout & 1020 &  & 3.69 & 940880\\
+2025-01-25 & TDDTML3ALH & Fee & 4001 &  & 0.06 & \\
+2025-01-25 & TCX6H77FHA & 1 x Eintritt Kind (5-15), 1 x Begleitperson &  & 3001 & 28.0 & POS\\
+2025-01-25 & TCX6H77FHA & Bank payout & 1020 &  & 27.3 & 946153\\
+2025-01-25 & TCX6H77FHA & Fee & 4001 &  & 0.7 & \\
+2025-01-25 & TAAATH3DZZR & 1 x Getränk 6.- & 1000 & 3001 & 6.0 & CASH\\
+2025-01-25 & TAAATH3DLCV & 2 x Flammkuchen, 1 x Getränk 4.50.- & 1000 & 3001 & 28.5 & CASH\\
+2025-01-25 & TSAAZHXFQP & 1 x Getränk 4.50.-, 1 x Getränk 5.- &  & 3001 & 9.5 & POS\\
+2025-01-25 & TSAAZHXFQP & Bank payout & 1020 &  & 9.36 & 940880\\
+2025-01-25 & TSAAZHXFQP & Fee & 4001 &  & 0.14 & \\
+2025-01-25 & T7G6LU3Q42 & 2 x Getränk 4.50.- &  & 3001 & 9.0 & POS\\
+2025-01-25 & T7G6LU3Q42 & Bank payout & 1020 &  & 8.77 & 940880\\
+2025-01-25 & T7G6LU3Q42 & Fee & 4001 &  & 0.23 & \\
+2025-01-25 & TLKSA444L3 & 1 x Getränk 4.50.-, 1 x Getränk 5.- &  & 3001 & 9.5 & POS\\
+2025-01-25 & TLKSA444L3 & Bank payout & 1020 &  & 9.36 & 940880\\
+2025-01-25 & TLKSA444L3 & Fee & 4001 &  & 0.14 & \\
+2025-01-25 & T24PVQ6CSE & 1 x Getränk 1.5L 8.- &  & 3001 & 8.0 & POS\\
+2025-01-25 & T24PVQ6CSE & Bank payout & 1020 &  & 7.8 & 940880\\
+2025-01-25 & T24PVQ6CSE & Fee & 4001 &  & 0.2 & \\
+2025-01-25 & TAAATH2USBQ & 1 x Eintritt Adult & 1000 & 3001 & 27.0 & CASH\\
+2025-01-25 & TFQL2AFCDL & 1 x Eintritt Adult, 1 x Eintritt Kind (5-15) &  & 3001 & 47.0 & POS\\
+2025-01-25 & TFQL2AFCDL & Bank payout & 1020 &  & 46.29 & 940880\\
+2025-01-25 & TFQL2AFCDL & Fee & 4001 &  & 0.71 & \\
+2025-01-25 & TELTZEAPAY & 1 x Eintritt Kind (5-15) &  & 3001 & 20.0 & POS\\
+2025-01-25 & TELTZEAPAY & Bank payout & 1020 &  & 19.5 & 940880\\
+2025-01-25 & TELTZEAPAY & Fee & 4001 &  & 0.5 & \\
+2025-01-25 & TEX6E32DLU & 1 x Getränk 4.50.- &  & 3001 & 4.5 & POS\\
+2025-01-25 & TEX6E32DLU & Bank payout & 1020 &  & 4.39 & 940880\\
+2025-01-25 & TEX6E32DLU & Fee & 4001 &  & 0.11 & \\
+2025-01-25 & TAAATH2A46Q & 1 x Getränk 4.50.- & 1000 & 3001 & 4.5 & CASH\\
+2025-01-25 & TFK4G7YC6V & 3 x Getränk 4.50.- &  & 3001 & 13.5 & POS\\
+2025-01-25 & TFK4G7YC6V & Bank payout & 1020 &  & 13.16 & 940880\\
+2025-01-25 & TFK4G7YC6V & Fee & 4001 &  & 0.34 & \\
+2025-01-25 & TCQQKFXKDF & 2 x Getränk 4.50.-, 1 x Snack 2.- &  & 3001 & 11.0 & POS\\
+2025-01-25 & TCQQKFXKDF & Bank payout & 1020 &  & 10.83 & 940880\\
+2025-01-25 & TCQQKFXKDF & Fee & 4001 &  & 0.17 & \\
+2025-01-25 & TAAATHZ7PGK & 2 x Getränk 4.50.- & 1000 & 3001 & 9.0 & CASH\\
+2025-01-25 & TELMPHF42C & 1 x Getränk 4.50.- &  & 3001 & 4.5 & POS\\
+2025-01-25 & TELMPHF42C & Bank payout & 1020 &  & 4.43 & 940880\\
+2025-01-25 & TELMPHF42C & Fee & 4001 &  & 0.07 & \\
+2025-01-25 & TAAATHZLNHY & 1 x Begleitperson, 2 x Eintritt Kind (5-15) & 1000 & 3001 & 48.0 & CASH\\
+2025-01-25 & TCAA64FNGD & 1 x Getränk 5.- &  & 3001 & 5.0 & POS\\
+2025-01-25 & TCAA64FNGD & Bank payout & 1020 &  & 4.92 & 940880\\
+2025-01-25 & TCAA64FNGD & Fee & 4001 &  & 0.08 & \\
+2025-01-25 & TPZKPMKA6S & 1 x Getränk 6.- &  & 3001 & 6.0 & POS\\
+2025-01-25 & TPZKPMKA6S & Bank payout & 1020 &  & 5.91 & 940880\\
+2025-01-25 & TPZKPMKA6S & Fee & 4001 &  & 0.09 & \\
+2025-01-25 & TAAATHZGHBZ & 1 x Snack 4,50.- & 1000 & 3001 & 4.5 & CASH\\
+2025-01-25 & TDQ2GXTMLL & 1 x Henry Friberg Semesterkurs &  & 3001 & 430.0 & POS\\
+2025-01-25 & TDQ2GXTMLL & Bank payout & 1020 &  & 419.25 & 940880\\
+2025-01-25 & TDQ2GXTMLL & Fee & 4001 &  & 10.75 & \\
+2025-01-25 & TAAATHZFRXV & 2 x Eintritt Kind (5-15) & 1000 & 3001 & 40.0 & CASH\\
+2025-01-25 & TAAATHZFCVB & 1 x Getränk 4.50.-, 1 x Getränk 5.-, 1 x Snack 4,50.- & 1000 & 3001 & 14.0 & CASH\\
+2025-01-25 & TCLQNDDFXQ & 1 x Lio Roth Semesterkurs &  & 3001 & 430.0 & POS\\
+2025-01-25 & TCLQNDDFXQ & Bank payout & 1020 &  & 419.25 & 940880\\
+2025-01-25 & TCLQNDDFXQ & Fee & 4001 &  & 10.75 & \\
+2025-01-25 & TCQECT9RN6 & 1 x Getränk 4.50.- &  & 3001 & 4.5 & POS\\
+2025-01-25 & TCQECT9RN6 & Bank payout & 1020 &  & 4.39 & 940880\\
+2025-01-25 & TCQECT9RN6 & Fee & 4001 &  & 0.11 & \\
+2025-01-25 & TEX69PSU6Z & 2 x Snack 2.-, 1 x Getränk 5.- &  & 3001 & 9.0 & POS\\
+2025-01-25 & TEX69PSU6Z & Bank payout & 1020 &  & 8.86 & 940880\\
+2025-01-25 & TEX69PSU6Z & Fee & 4001 &  & 0.14 & \\
+2025-01-25 & TAAATHZBGXT & 1 x Eintritt Kind (5-15), 1 x Tageseintritt Kind 2-4, 1 x Begleitperson & 1000 & 3001 & 34.0 & CASH\\
+2025-01-25 & TDATUMC2HH & 2 x Eintritt Kind (5-15), 1 x Begleitperson &  & 3001 & 48.0 & POS\\
+2025-01-25 & TDATUMC2HH & Bank payout & 1020 &  & 46.8 & 940880\\
+2025-01-25 & TDATUMC2HH & Fee & 4001 &  & 1.2 & \\
+2025-01-25 & T4RF22PE3C & 1 x Getränk 4.50.- &  & 3001 & 4.5 & POS\\
+2025-01-25 & T4RF22PE3C & Bank payout & 1020 &  & 4.39 & 940880\\
+2025-01-25 & T4RF22PE3C & Fee & 4001 &  & 0.11 & \\
+2025-01-24 & TEZ7SG6KNC & 1 x MA getränk &  & 3001 & 2.25 & POS\\
+2025-01-24 & TEZ7SG6KNC & Bank payout & 1020 &  & 2.22 & 940880\\
+2025-01-24 & TEZ7SG6KNC & Fee & 4001 &  & 0.03 & \\
+2025-01-24 & T6ZXMHRCL9 & 1 x Getränk 5.- &  & 3001 & 5.0 & POS\\
+2025-01-24 & T6ZXMHRCL9 & Bank payout & 1020 &  & 4.92 & 940880\\
+2025-01-24 & T6ZXMHRCL9 & Fee & 4001 &  & 0.08 & \\
+2025-01-24 & TE4LCHD277 & 1 x Snack 2,50.- &  & 3001 & 2.5 & POS\\
+2025-01-24 & TE4LCHD277 & Bank payout & 1020 &  & 2.46 & 940880\\
+2025-01-24 & TE4LCHD277 & Fee & 4001 &  & 0.04 & \\
+2025-01-24 & TFCEAFRZVK & 5 x Eintritt Adult &  & 3001 & 135.0 & POS\\
+2025-01-24 & TFCEAFRZVK & Bank payout & 1020 &  & 132.97 & 940880\\
+2025-01-24 & TFCEAFRZVK & Fee & 4001 &  & 2.03 & \\
+2025-01-24 & TAAATHTMXXY & 2 x Snack 2,50.- & 1000 & 3001 & 5.0 & CASH\\
+2025-01-24 & TP6FFU74XK & 1 x Semesterkurs Lewin Rufer &  & 3001 & 430.0 & POS\\
+2025-01-24 & TP6FFU74XK & Bank payout & 1020 &  & 423.55 & 940880\\
+2025-01-24 & TP6FFU74XK & Fee & 4001 &  & 6.45 & \\
+2025-01-24 & TAAATHTDDKS & 1 x Snack 2,50.- & 1000 & 3001 & 2.5 & CASH\\
+2025-01-24 & T4TMPEK3DF & 1 x Tageseintritt Kind 2-4 &  & 3001 & 6.0 & POS\\
+2025-01-24 & T4TMPEK3DF & Bank payout & 1020 &  & 5.91 & 940880\\
+2025-01-24 & T4TMPEK3DF & Fee & 4001 &  & 0.09 & \\
+2025-01-24 & TAAATHS3TZY & 2 x Snack 2,50.- & 1000 & 3001 & 5.0 & CASH\\
+2025-01-24 & TCRGA74PZT & 1 x Getränk 5.- &  & 3001 & 5.0 & POS\\
+2025-01-24 & TCRGA74PZT & Bank payout & 1020 &  & 4.92 & 940880\\
+2025-01-24 & TCRGA74PZT & Fee & 4001 &  & 0.08 & \\
+2025-01-24 & TCZYDQYZ7G & 1 x Semesterkurs Aarit Karkara FrC1 &  & 3001 & 430.0 & POS\\
+2025-01-24 & TCZYDQYZ7G & Bank payout & 1020 &  & 423.55 & 940880\\
+2025-01-24 & TCZYDQYZ7G & Fee & 4001 &  & 6.45 & \\
+2025-01-24 & TAAATHSYGSM & 1 x Getränk 4.50.-, 1 x Getränk 5.- & 1000 & 3001 & 9.5 & CASH\\
+2025-01-24 & TC2YTXNTV4 & 1 x Getränk 4.50.- &  & 3001 & 4.5 & POS\\
+2025-01-24 & TC2YTXNTV4 & Bank payout & 1020 &  & 4.39 & 940880\\
+2025-01-24 & TC2YTXNTV4 & Fee & 4001 &  & 0.11 & \\
+2025-01-24 & T9H7CS27VK & 1 x Getränk 5.-, 2 x Snack 2,50.- &  & 3001 & 10.0 & POS\\
+2025-01-24 & T9H7CS27VK & Bank payout & 1020 &  & 9.85 & 940880\\
+2025-01-24 & T9H7CS27VK & Fee & 4001 &  & 0.15 & \\
+2025-01-24 & TK22VCAYCV & 2 x Getränk 4.50.-, 1 x Getränk 6.- &  & 3001 & 15.0 & POS\\
+2025-01-24 & TK22VCAYCV & Bank payout & 1020 &  & 14.77 & 940880\\
+2025-01-24 & TK22VCAYCV & Fee & 4001 &  & 0.23 & \\
+2025-01-24 & TAAATHSMNYU & 1 x Verlängerung 1h & 1000 & 3001 & 5.0 & CASH\\
+2025-01-24 & TDXKUYHDAC & 3 x Verlängerung 1h &  & 3001 & 15.0 & POS\\
+2025-01-24 & TDXKUYHDAC & Bank payout & 1020 &  & 14.77 & 940880\\
+2025-01-24 & TDXKUYHDAC & Fee & 4001 &  & 0.23 & \\
+2025-01-24 & TXXCZE79DD & 1 x Verlängerung 1h &  & 3001 & 5.0 & POS\\
+2025-01-24 & TXXCZE79DD & Bank payout & 1020 &  & 4.92 & 940880\\
+2025-01-24 & TXXCZE79DD & Fee & 4001 &  & 0.08 & \\
+2025-01-24 & TAAATHSFEL3 & 1 x Pizza Schinken 20cm & 1000 & 3001 & 7.5 & CASH\\
+2025-01-24 & TFQVX77HRC & 1 x Getränk 5.-, 2 x Getränk 4.50.- &  & 3001 & 14.0 & POS\\
+2025-01-24 & TFQVX77HRC & Bank payout & 1020 &  & 13.79 & 940880\\
+2025-01-24 & TFQVX77HRC & Fee & 4001 &  & 0.21 & \\
+2025-01-24 & TC2CAHLR3N & 2 x Verlängerung 1h &  & 3001 & 10.0 & POS\\
+2025-01-24 & TC2CAHLR3N & Bank payout & 1020 &  & 9.85 & 940880\\
+2025-01-24 & TC2CAHLR3N & Fee & 4001 &  & 0.15 & \\
+2025-01-24 & TD4R7NQD37 & 1 x Eintritt Adult &  & 3001 & 27.0 & POS\\
+2025-01-24 & TD4R7NQD37 & Bank payout & 1020 &  & 26.59 & 940880\\
+2025-01-24 & TD4R7NQD37 & Fee & 4001 &  & 0.41 & \\
+2025-01-24 & TFGUUP7AZU & 2 x Verlängerung 1h &  & 3001 & 10.0 & POS\\
+2025-01-24 & TFGUUP7AZU & Bank payout & 1020 &  & 9.85 & 940880\\
+2025-01-24 & TFGUUP7AZU & Fee & 4001 &  & 0.15 & \\
+2025-01-24 & TCSVXSKUTA & 1 x Begleitperson, 1 x Drop In Kurs, 1 x Eintritt 4jährig &  & 3001 & 39.0 & POS\\
+2025-01-24 & TCSVXSKUTA & Bank payout & 1020 &  & 38.41 & 940880\\
+2025-01-24 & TCSVXSKUTA & Fee & 4001 &  & 0.59 & \\
+2025-01-24 & TEFR7MG4QX & 1 x Semesterkurs FrB1: Stella Ewald &  & 3001 & 430.0 & POS\\
+2025-01-24 & TEFR7MG4QX & Bank payout & 1020 &  & 419.25 & 940880\\
+2025-01-24 & TEFR7MG4QX & Fee & 4001 &  & 10.75 & \\
+2025-01-24 & TAAATHR3S9M & 2 x Wasser 4.-, 1 x Getränk 4.50.-, 1 x Snack 4,50.- & 1000 & 3001 & 17.0 & CASH\\
+2025-01-24 & TAAATHRZMYL & 2 x Begleitperson, 2 x Eintritt Kind (5-15) & 1000 & 3001 & 56.0 & CASH\\
+2025-01-24 & TDLRMD4SXS & 1 x Eintritt Adult, 1 x Eintritt Kind (5-15) &  & 3001 & 47.0 & POS\\
+2025-01-24 & TDLRMD4SXS & Bank payout & 1020 &  & 45.82 & 940880\\
+2025-01-24 & TDLRMD4SXS & Fee & 4001 &  & 1.18 & \\
+2025-01-24 & TEFZYPHUYX & 2 x Eintritt Adult &  & 3001 & 54.0 & POS\\
+2025-01-24 & TEFZYPHUYX & Bank payout & 1020 &  & 53.19 & 940880\\
+2025-01-24 & TEFZYPHUYX & Fee & 4001 &  & 0.81 & \\
+2025-01-23 & TCTNFSQ7A6 & 1 x Ma Flammkuchen &  & 3001 & 6.0 & POS\\
+2025-01-23 & TCTNFSQ7A6 & Bank payout & 1020 &  & 5.91 & 936196\\
+2025-01-23 & TCTNFSQ7A6 & Fee & 4001 &  & 0.09 & \\
+2025-01-23 & TD79FCSFTN & 1 x MA Flammkuchen &  & 3001 & 6.0 & POS\\
+2025-01-23 & TD79FCSFTN & Bank payout & 1020 &  & 5.91 & 936196\\
+2025-01-23 & TD79FCSFTN & Fee & 4001 &  & 0.09 & \\
+2025-01-23 & TFDUFTFMSA & 1 x Getränk 5.-, 1 x Snack 4,50.- &  & 3001 & 9.5 & POS\\
+2025-01-23 & TFDUFTFMSA & Bank payout & 1020 &  & 9.36 & 936196\\
+2025-01-23 & TFDUFTFMSA & Fee & 4001 &  & 0.14 & \\
+2025-01-23 & T4VGVGC3G6 & 1 x Getränk 4.50.- &  & 3001 & 4.5 & POS\\
+2025-01-23 & T4VGVGC3G6 & Bank payout & 1020 &  & 4.39 & 936196\\
+2025-01-23 & T4VGVGC3G6 & Fee & 4001 &  & 0.11 & \\
+2025-01-23 & TAAATHHR2DM & 2 x Verlängerung 1h & 1000 & 3001 & 10.0 & CASH\\
+2025-01-23 & T6TQXH9ZVR & 1 x Eintritt Adult &  & 3001 & 27.0 & POS\\
+2025-01-23 & T6TQXH9ZVR & Bank payout & 1020 &  & 26.59 & 936196\\
+2025-01-23 & T6TQXH9ZVR & Fee & 4001 &  & 0.41 & \\
+2025-01-23 & TFA9XELNS4 & 1 x Eintritt Adult &  & 3001 & 27.0 & POS\\
+2025-01-23 & TFA9XELNS4 & Bank payout & 1020 &  & 26.59 & 936196\\
+2025-01-23 & TFA9XELNS4 & Fee & 4001 &  & 0.41 & \\
+2025-01-23 & TFLUMZH64F & 1 x Eintritt Adult &  & 3001 & 27.0 & POS\\
+2025-01-23 & TFLUMZH64F & Bank payout & 1020 &  & 26.59 & 936196\\
+2025-01-23 & TFLUMZH64F & Fee & 4001 &  & 0.41 & \\
+2025-01-23 & TD6DLX47U7 & 1 x Eintritt Adult &  & 3001 & 27.0 & POS\\
+2025-01-23 & TD6DLX47U7 & Bank payout & 1020 &  & 26.59 & 936196\\
+2025-01-23 & TD6DLX47U7 & Fee & 4001 &  & 0.41 & \\
+2025-01-23 & TETP6ESRV2 & 1 x Eintritt Adult &  & 3001 & 27.0 & POS\\
+2025-01-23 & TETP6ESRV2 & Bank payout & 1020 &  & 26.59 & 936196\\
+2025-01-23 & TETP6ESRV2 & Fee & 4001 &  & 0.41 & \\
+2025-01-23 & TDN39GAGM9 & 1 x Eintritt Adult &  & 3001 & 27.0 & POS\\
+2025-01-23 & TDN39GAGM9 & Bank payout & 1020 &  & 26.59 & 936196\\
+2025-01-23 & TDN39GAGM9 & Fee & 4001 &  & 0.41 & \\
+2025-01-23 & TFPDYF9Y4C & 1 x Begleitperson, 1 x Eintritt Kind (5-15) &  & 3001 & 28.0 & POS\\
+2025-01-23 & TFPDYF9Y4C & Bank payout & 1020 &  & 27.3 & 936196\\
+2025-01-23 & TFPDYF9Y4C & Fee & 4001 &  & 0.7 & \\
+2025-01-23 & TAAATHGQVD3 & 1 x Eintritt Kind (5-15) & 1000 & 3001 & 20.0 & CASH\\
+2025-01-23 & TE2HAQSALP & 1 x Schulklasse münsterplatz &  & 3001 & 240.0 & POS\\
+2025-01-23 & TE2HAQSALP & Bank payout & 1020 &  & 236.4 & 936196\\
+2025-01-23 & TE2HAQSALP & Fee & 4001 &  & 3.6 & \\
+2025-01-23 & TV3PMR97AY & 1 x Tee, 1 x Getränk 5.-, 1 x Snack 3,50.- &  & 3001 & 12.0 & POS\\
+2025-01-23 & TV3PMR97AY & Bank payout & 1020 &  & 11.7 & 936196\\
+2025-01-23 & TV3PMR97AY & Fee & 4001 &  & 0.3 & \\
+2025-01-23 & TDT3X7ZYSE & 2 x Tee, 1 x Getränk 5.- &  & 3001 & 12.0 & POS\\
+2025-01-23 & TDT3X7ZYSE & Bank payout & 1020 &  & 11.7 & 936196\\
+2025-01-23 & TDT3X7ZYSE & Fee & 4001 &  & 0.3 & \\
+2025-01-22 & TEFGXZK2HK & 1 x Happy Hour/ Ninja Night 18+ &  & 3001 & 13.5 & POS\\
+2025-01-22 & TEFGXZK2HK & Bank payout & 1020 &  & 13.3 & 934219\\
+2025-01-22 & TEFGXZK2HK & Fee & 4001 &  & 0.2 & \\
+2025-01-22 & TFDKFPVT3D & 1 x Getränk 4.50.-, 1 x Snack 2,50.- &  & 3001 & 7.0 & POS\\
+2025-01-22 & TFDKFPVT3D & Bank payout & 1020 &  & 6.89 & 934219\\
+2025-01-22 & TFDKFPVT3D & Fee & 4001 &  & 0.11 & \\
+2025-01-22 & TFRUTPSMTP & 1 x Happy Hour/ Ninja Night 18+ &  & 3001 & 13.5 & POS\\
+2025-01-22 & TFRUTPSMTP & Bank payout & 1020 &  & 13.3 & 934219\\
+2025-01-22 & TFRUTPSMTP & Fee & 4001 &  & 0.2 & \\
+2025-01-22 & TDDCD62FGT & 1 x Happy Hour/ Ninja Night 18+ &  & 3001 & 13.5 & POS\\
+2025-01-22 & TDDCD62FGT & Bank payout & 1020 &  & 13.3 & 934219\\
+2025-01-22 & TDDCD62FGT & Fee & 4001 &  & 0.2 & \\
+2025-01-22 & T9STHPMQ9F & 2 x Verlängerung 1h &  & 3001 & 10.0 & POS\\
+2025-01-22 & T9STHPMQ9F & Bank payout & 1020 &  & 9.85 & 934219\\
+2025-01-22 & T9STHPMQ9F & Fee & 4001 &  & 0.15 & \\
+2025-01-22 & TD69FCQZ4Y & 1 x Eintritt Adult, 1 x Eintritt Kind (5-15) &  & 3001 & 47.0 & POS\\
+2025-01-22 & TD69FCQZ4Y & Bank payout & 1020 &  & 46.29 & 934219\\
+2025-01-22 & TD69FCQZ4Y & Fee & 4001 &  & 0.71 & \\
+2025-01-22 & TEY2UYLUDV & 1 x Getränk 4.50.-, 2 x Snack 2,50.-, 1 x Pizza Schinken 20cm &  & 3001 & 17.0 & POS\\
+2025-01-22 & TEY2UYLUDV & Bank payout & 1020 &  & 16.74 & 934219\\
+2025-01-22 & TEY2UYLUDV & Fee & 4001 &  & 0.26 & \\
+2025-01-22 & T2LK7UZ3Z2 & 2 x Pizza Margherita 20cm, 1 x Getränk 5.- &  & 3001 & 17.0 & POS\\
+2025-01-22 & T2LK7UZ3Z2 & Bank payout & 1020 &  & 16.74 & 934219\\
+2025-01-22 & T2LK7UZ3Z2 & Fee & 4001 &  & 0.26 & \\
+2025-01-22 & TAAATG9US3T & 1 x Getränk 4.50.- & 1000 & 3001 & 4.5 & CASH\\
+2025-01-22 & TEMQLDKSEG & 1 x MA getränk &  & 3001 & 2.25 & POS\\
+2025-01-22 & TEMQLDKSEG & Bank payout & 1020 &  & 2.22 & 934219\\
+2025-01-22 & TEMQLDKSEG & Fee & 4001 &  & 0.03 & \\
+2025-01-22 & TDLKUTR4HT & 1 x Getränk 4.50.-, 1 x Getränk 5.- &  & 3001 & 9.5 & POS\\
+2025-01-22 & TDLKUTR4HT & Bank payout & 1020 &  & 9.36 & 934219\\
+2025-01-22 & TDLKUTR4HT & Fee & 4001 &  & 0.14 & \\
+2025-01-22 & T273HNMS7X & 1 x Semesterkurs Ethan Schmitt &  & 3001 & 430.0 & POS\\
+2025-01-22 & T273HNMS7X & Bank payout & 1020 &  & 423.55 & 934219\\
+2025-01-22 & T273HNMS7X & Fee & 4001 &  & 6.45 & \\
+2025-01-22 & TAAATG9HHYM & 1 x Getränk 5.- & 1000 & 3001 & 5.0 & CASH\\
+2025-01-22 & TCGM94L3HQ & 3 x Getränk 4.50.- &  & 3001 & 13.5 & POS\\
+2025-01-22 & TCGM94L3HQ & Bank payout & 1020 &  & 13.3 & 934219\\
+2025-01-22 & TCGM94L3HQ & Fee & 4001 &  & 0.2 & \\
+2025-01-22 & TAAATG9GBXC & 1 x Snack 4,50.- & 1000 & 3001 & 4.5 & CASH\\
+2025-01-22 & TESQU6DNUC & 2 x Eintritt Kind FOG, 1 x Eintritt Kind (5-15), 1 x FOG Begleitperson &  & 3001 & 60.0 & POS\\
+2025-01-22 & TESQU6DNUC & Bank payout & 1020 &  & 59.1 & 934219\\
+2025-01-22 & TESQU6DNUC & Fee & 4001 &  & 0.9 & \\
+2025-01-22 & TXF7MTNVTF & 2 x Getränk 5.-, 1 x Tee &  & 3001 & 13.5 & POS\\
+2025-01-22 & TXF7MTNVTF & Bank payout & 1020 &  & 13.3 & 934219\\
+2025-01-22 & TXF7MTNVTF & Fee & 4001 &  & 0.2 & \\
+2025-01-22 & TAAATG9C7V4 & 1 x Getränk 4.50.- & 1000 & 3001 & 4.5 & CASH\\
+2025-01-22 & TCVTF7R7LF & 1 x Getränk 4.50.- &  & 3001 & 4.5 & POS\\
+2025-01-22 & TCVTF7R7LF & Bank payout & 1020 &  & 4.39 & 934219\\
+2025-01-22 & TCVTF7R7LF & Fee & 4001 &  & 0.11 & \\
+2025-01-22 & TAAATG79YVH & 1 x Getränk 4.50.-, 1 x Wasser 4.- & 1000 & 3001 & 8.5 & CASH\\
+2025-01-22 & TAAATG77Q6D & 1 x Getränk 5.- & 1000 & 3001 & 5.0 & CASH\\
+2025-01-22 & TES4XQ9DEM & 2 x Getränk 4.50.-, 1 x Getränk 5.- &  & 3001 & 14.0 & POS\\
+2025-01-22 & TES4XQ9DEM & Bank payout & 1020 &  & 13.79 & 934219\\
+2025-01-22 & TES4XQ9DEM & Fee & 4001 &  & 0.21 & \\
+2025-01-22 & TAAATG74LAE & 1 x Verlängerung 1h & 1000 & 3001 & 5.0 & CASH\\
+2025-01-22 & TDZ2H3LC92 & 1 x Getränk 4.50.- &  & 3001 & 4.5 & POS\\
+2025-01-22 & TDZ2H3LC92 & Bank payout & 1020 &  & 4.43 & 934219\\
+2025-01-22 & TDZ2H3LC92 & Fee & 4001 &  & 0.07 & \\
+2025-01-22 & TFKUGSZSKL & 1 x Schnupperkurs Cassia &  & 3001 & 25.0 & POS\\
+2025-01-22 & TFKUGSZSKL & Bank payout & 1020 &  & 24.62 & 934219\\
+2025-01-22 & TFKUGSZSKL & Fee & 4001 &  & 0.38 & \\
+2025-01-22 & TCVC6T9G3R & 1 x Getränk 4.50.-, 2 x Snack 3,50.- &  & 3001 & 11.5 & POS\\
+2025-01-22 & TCVC6T9G3R & Bank payout & 1020 &  & 11.33 & 934219\\
+2025-01-22 & TCVC6T9G3R & Fee & 4001 &  & 0.17 & \\
+2025-01-22 & TDA9Z49XQA & 3 x Eintritt Kind (5-15), 1 x Begleitperson, 1 x Schüsselanhänger &  & 3001 & 70.5 & POS\\
+2025-01-22 & TDA9Z49XQA & Bank payout & 1020 &  & 69.44 & 934219\\
+2025-01-22 & TDA9Z49XQA & Fee & 4001 &  & 1.06 & \\
+2025-01-22 & TE4CCCCGAC & 1 x Eintritt Kind FOG, 1 x Eintritt Adult FOG &  & 3001 & 40.0 & POS\\
+2025-01-22 & TE4CCCCGAC & Bank payout & 1020 &  & 39.4 & 934219\\
+2025-01-22 & TE4CCCCGAC & Fee & 4001 &  & 0.6 & \\
+2025-01-22 & TAAATG7TT6P & 1 x Begleitperson, 1 x Eintritt Adult, 1 x Eintritt Kind (5-15), 1 x Tageseintritt Kind 2-4 & 1000 & 3001 & 61.0 & CASH\\
+2025-01-22 & TAAATG7QPXS & 2 x Eintritt Kind (5-15), 1 x Begleitperson & 1000 & 3001 & 48.0 & CASH\\
+2025-01-22 & TDRHLQL6M9 & 2 x Verlängerung 1h &  & 3001 & 10.0 & POS\\
+2025-01-22 & TDRHLQL6M9 & Bank payout & 1020 &  & 9.85 & 934219\\
+2025-01-22 & TDRHLQL6M9 & Fee & 4001 &  & 0.15 & \\
+2025-01-22 & TAAATG7PRMR & 1 x Eintritt Kind FOG, 1 x Begl & 1000 & 3001 & 23.0 & CASH\\
+2025-01-22 & TAAATG7PERX & 1 x Eintritt Kind (5-15) & 1000 & 3001 & 20.0 & CASH\\
+2025-01-21 & TENKC74P79 & 1 x Getränk 4.50.- &  & 3001 & 4.5 & POS\\
+2025-01-21 & TENKC74P79 & Bank payout & 1020 &  & 4.39 & 932314\\
+2025-01-21 & TENKC74P79 & Fee & 4001 &  & 0.11 & \\
+2025-01-21 & TAAATGY42PT & 1 x Shirt Flohmi & 1000 & 3001 & 5.0 & CASH\\
+2025-01-21 & T66P4KS7Y4 & 1 x Verlängerung 1h &  & 3001 & 5.0 & POS\\
+2025-01-21 & T66P4KS7Y4 & Bank payout & 1020 &  & 4.92 & 932314\\
+2025-01-21 & T66P4KS7Y4 & Fee & 4001 &  & 0.08 & \\
+2025-01-21 & TAAATGYNUP6 & 1 x Tee, 1 x Snack 4,50.- & 1000 & 3001 & 8.0 & CASH\\
+2025-01-21 & TEQPKC2EEH & 1 x Getränk 4.50.- &  & 3001 & 4.5 & POS\\
+2025-01-21 & TEQPKC2EEH & Bank payout & 1020 &  & 4.43 & 932314\\
+2025-01-21 & TEQPKC2EEH & Fee & 4001 &  & 0.07 & \\
+2025-01-21 & TCDZXXV3AV & 1 x Semesterkurs Selia, 1 x FOG Selia &  & 3001 & 405.5 & POS\\
+2025-01-21 & TCDZXXV3AV & Bank payout & 1020 &  & 399.42 & 932314\\
+2025-01-21 & TCDZXXV3AV & Fee & 4001 &  & 6.08 & \\
+2025-01-21 & TAAATGXZRZN & 2 x Begleitperson, 1 x Eintritt Kind (5-15) & 1000 & 3001 & 36.0 & CASH\\
+2025-01-21 & TAAATGXXSA6 & 1 x Eintritt Kind (5-15) & 1000 & 3001 & 20.0 & CASH\\
+2025-01-21 & TD9Z7DN4XQ & 1 x Verlängerung 1h &  & 3001 & 5.0 & POS\\
+2025-01-21 & TD9Z7DN4XQ & Bank payout & 1020 &  & 4.87 & 932314\\
+2025-01-21 & TD9Z7DN4XQ & Fee & 4001 &  & 0.13 & \\
+2025-01-21 & TQL46AC2UY & 1 x 90min Privatstunde BASIC, 1 x 20 Schülrt unter 18 &  & 3001 & 350.0 & POS\\
+2025-01-21 & TQL46AC2UY & Bank payout & 1020 &  & 344.75 & 932314\\
+2025-01-21 & TQL46AC2UY & Fee & 4001 &  & 5.25 & \\
+2025-01-20 & TAAATGRF2ZT & 1 x Getränk 4.50.- & 1000 & 3001 & 4.5 & CASH\\
+2025-01-20 & TEM99DX7R7 & 1 x Getränk 5.- &  & 3001 & 5.0 & POS\\
+2025-01-20 & TEM99DX7R7 & Bank payout & 1020 &  & 4.92 & 930432\\
+2025-01-20 & TEM99DX7R7 & Fee & 4001 &  & 0.08 & \\
+2025-01-20 & TEHEKFN9HF & 1 x Tee, 1 x Getränk 4.50.- &  & 3001 & 8.0 & POS\\
+2025-01-20 & TEHEKFN9HF & Bank payout & 1020 &  & 7.88 & 930432\\
+2025-01-20 & TEHEKFN9HF & Fee & 4001 &  & 0.12 & \\
+2025-01-20 & TED47UEZFE & 1 x Verlängerung 1h &  & 3001 & 5.0 & POS\\
+2025-01-20 & TED47UEZFE & Bank payout & 1020 &  & 4.92 & 930432\\
+2025-01-20 & TED47UEZFE & Fee & 4001 &  & 0.08 & \\
+2025-01-20 & TAAATGQSZ6X & 1 x Verlängerung 1h, 3 x Schüsselanhänger & 1000 & 3001 & 12.5 & CASH\\
+2025-01-20 & TKVC6U4FDE & 1 x MiB1 Hermon Semesterkurs &  & 3001 & 430.0 & POS\\
+2025-01-20 & TKVC6U4FDE & Bank payout & 1020 &  & 419.25 & 934219\\
+2025-01-20 & TKVC6U4FDE & Fee & 4001 &  & 10.75 & \\
+2025-01-20 & TE6DT9PLMZ & 1 x Snack 4,50.- &  & 3001 & 4.5 & POS\\
+2025-01-20 & TE6DT9PLMZ & Bank payout & 1020 &  & 4.39 & 934219\\
+2025-01-20 & TE6DT9PLMZ & Fee & 4001 &  & 0.11 & \\
+2025-01-20 & TAAATGQPPGQ & 1 x Flammkuchen & 1000 & 3001 & 12.0 & CASH\\
+2025-01-20 & TAAATGQKFHG & 1 x Snack 3,50.- & 1000 & 3001 & 3.5 & CASH\\
+2025-01-20 & TAAATGQHZFG & 1 x Snack 2,50.- & 1000 & 3001 & 2.5 & CASH\\
+2025-01-20 & TAAATGQHS4C & 1 x Verlängerung 1h & 1000 & 3001 & 5.0 & CASH\\
+2025-01-20 & TE94CQYXH3 & 1 x Pizza Margherita 20cm, 3 x Snack 2,50.- &  & 3001 & 13.5 & POS\\
+2025-01-20 & TE94CQYXH3 & Bank payout & 1020 &  & 13.3 & 930432\\
+2025-01-20 & TE94CQYXH3 & Fee & 4001 &  & 0.2 & \\
+2025-01-20 & TE9XTVKNUC & 1 x Getränk 4.50.-, 1 x Verlängerung 1h &  & 3001 & 9.5 & POS\\
+2025-01-20 & TE9XTVKNUC & Bank payout & 1020 &  & 9.36 & 930432\\
+2025-01-20 & TE9XTVKNUC & Fee & 4001 &  & 0.14 & \\
+2025-01-20 & TEHYGZUMVQ & 1 x Getränk 4.50.- &  & 3001 & 4.5 & POS\\
+2025-01-20 & TEHYGZUMVQ & Bank payout & 1020 &  & 4.43 & 930432\\
+2025-01-20 & TEHYGZUMVQ & Fee & 4001 &  & 0.07 & \\
+2025-01-20 & TDGZNMSY9T & 1 x Getränk 4.50.- &  & 3001 & 4.5 & POS\\
+2025-01-20 & TDGZNMSY9T & Bank payout & 1020 &  & 4.43 & 930432\\
+2025-01-20 & TDGZNMSY9T & Fee & 4001 &  & 0.07 & \\
+2025-01-20 & TCN4QL2RHX & 1 x Kursgebühr Damian Pappas MoB1( FOG) &  & 3001 & 365.5 & POS\\
+2025-01-20 & TCN4QL2RHX & Bank payout & 1020 &  & 356.36 & 930432\\
+2025-01-20 & TCN4QL2RHX & Fee & 4001 &  & 9.14 & \\
+2025-01-20 & TD96PT6N7Q & 1 x Begleitperson &  & 3001 & 8.0 & POS\\
+2025-01-20 & TD96PT6N7Q & Bank payout & 1020 &  & 7.8 & 930432\\
+2025-01-20 & TD96PT6N7Q & Fee & 4001 &  & 0.2 & \\
+2025-01-20 & TDE7UK2YHP & 1 x MA Wasser &  & 3001 & 2.0 & POS\\
+2025-01-20 & TDE7UK2YHP & Bank payout & 1020 &  & 1.97 & 930432\\
+2025-01-20 & TDE7UK2YHP & Fee & 4001 &  & 0.03 & \\
+2025-01-19 & T7PP6E7QTG & 1 x Getränk 4.50.- &  & 3001 & 4.5 & POS\\
+2025-01-19 & T7PP6E7QTG & Bank payout & 1020 &  & 4.43 & 928703\\
+2025-01-19 & T7PP6E7QTG & Fee & 4001 &  & 0.07 & \\
+2025-01-19 & TFQRFEYNSE & 1 x Getränk 4.50.- &  & 3001 & 4.5 & POS\\
+2025-01-19 & TFQRFEYNSE & Bank payout & 1020 &  & 4.43 & 928703\\
+2025-01-19 & TFQRFEYNSE & Fee & 4001 &  & 0.07 & \\
+2025-01-19 & TM9V4XYFPA & 2 x Snack 2,50.- &  & 3001 & 5.0 & POS\\
+2025-01-19 & TM9V4XYFPA & Bank payout & 1020 &  & 4.92 & 928703\\
+2025-01-19 & TM9V4XYFPA & Fee & 4001 &  & 0.08 & \\
+2025-01-19 & TC49TQKR93 & 1 x Snack 2,50.- &  & 3001 & 2.5 & POS\\
+2025-01-19 & TC49TQKR93 & Bank payout & 1020 &  & 2.46 & 928703\\
+2025-01-19 & TC49TQKR93 & Fee & 4001 &  & 0.04 & \\
+2025-01-19 & T7QMAXKAMH & 1 x Eintritt Kind (5-15), 1 x Begleitperson &  & 3001 & 28.0 & POS\\
+2025-01-19 & T7QMAXKAMH & Bank payout & 1020 &  & 27.58 & 928703\\
+2025-01-19 & T7QMAXKAMH & Fee & 4001 &  & 0.42 & \\
+2025-01-19 & TC6EGYCRNP & 2 x Snack 4,50.- &  & 3001 & 9.0 & POS\\
+2025-01-19 & TC6EGYCRNP & Bank payout & 1020 &  & 8.86 & 928703\\
+2025-01-19 & TC6EGYCRNP & Fee & 4001 &  & 0.14 & \\
+2025-01-19 & TCYMP4H23T & 1 x Snack 3,50.-, 1 x Flammkuchen &  & 3001 & 15.5 & POS\\
+2025-01-19 & TCYMP4H23T & Bank payout & 1020 &  & 15.27 & 928703\\
+2025-01-19 & TCYMP4H23T & Fee & 4001 &  & 0.23 & \\
+2025-01-19 & TCGY4S4T7R & 1 x Eintritt Kind (5-15), 1 x Begleitperson &  & 3001 & 28.0 & POS\\
+2025-01-19 & TCGY4S4T7R & Bank payout & 1020 &  & 27.3 & 928703\\
+2025-01-19 & TCGY4S4T7R & Fee & 4001 &  & 0.7 & \\
+2025-01-19 & TAAATGGG2QN & 1 x Eintritt Kind (5-15) & 1000 & 3001 & 20.0 & CASH\\
+2025-01-19 & TFHUSSET2Z & 1 x Snack 2,50.-, 1 x Getränk 4.50.- &  & 3001 & 7.0 & POS\\
+2025-01-19 & TFHUSSET2Z & Bank payout & 1020 &  & 6.89 & 928703\\
+2025-01-19 & TFHUSSET2Z & Fee & 4001 &  & 0.11 & \\
+2025-01-19 & TC3TRK2H79 & 3 x Eintritt Kind (5-15), 2 x Begleitperson &  & 3001 & 76.0 & POS\\
+2025-01-19 & TC3TRK2H79 & Bank payout & 1020 &  & 74.86 & 928703\\
+2025-01-19 & TC3TRK2H79 & Fee & 4001 &  & 1.14 & \\
+2025-01-19 & TFEVFSSHV3 & 1 x Eintritt Kind (5-15) &  & 3001 & 20.0 & POS\\
+2025-01-19 & TFEVFSSHV3 & Bank payout & 1020 &  & 19.7 & 928703\\
+2025-01-19 & TFEVFSSHV3 & Fee & 4001 &  & 0.3 & \\
+2025-01-19 & TFGSQELU4R & 1 x Getränk 4.50.- &  & 3001 & 4.5 & POS\\
+2025-01-19 & TFGSQELU4R & Bank payout & 1020 &  & 4.43 & 928703\\
+2025-01-19 & TFGSQELU4R & Fee & 4001 &  & 0.07 & \\
+2025-01-19 & TAAATGGB6NN & 2 x Getränk 4.50.- & 1000 & 3001 & 9.0 & CASH\\
+2025-01-19 & TCD4G3KYC9 & 3 x Eintritt Kind (5-15), 1 x Begleitperson &  & 3001 & 68.0 & POS\\
+2025-01-19 & TCD4G3KYC9 & Bank payout & 1020 &  & 66.3 & 928703\\
+2025-01-19 & TCD4G3KYC9 & Fee & 4001 &  & 1.7 & \\
+2025-01-19 & TLYHVEYQCX & 1 x Flammkuchen MA &  & 3001 & 6.0 & POS\\
+2025-01-19 & TLYHVEYQCX & Bank payout & 1020 &  & 5.91 & 928703\\
+2025-01-19 & TLYHVEYQCX & Fee & 4001 &  & 0.09 & \\
+2025-01-19 & TAAATGF73X6 & 2 x Snack 2,50.-, 1 x Getränk 4.50.- & 1000 & 3001 & 9.5 & CASH\\
+2025-01-19 & TAAATGF4QDZ & 1 x Getränk 6.- & 1000 & 3001 & 6.0 & CASH\\
+2025-01-19 & TDRLLKSZ7M & 2 x Eintritt Kind (5-15), 1 x Begleitperson &  & 3001 & 48.0 & POS\\
+2025-01-19 & TDRLLKSZ7M & Bank payout & 1020 &  & 47.28 & 928703\\
+2025-01-19 & TDRLLKSZ7M & Fee & 4001 &  & 0.72 & \\
+2025-01-19 & TCHVMZUQ33 & 2 x Eintritt Kind (5-15), 1 x Begleitperson &  & 3001 & 48.0 & POS\\
+2025-01-19 & TCHVMZUQ33 & Bank payout & 1020 &  & 46.8 & 928703\\
+2025-01-19 & TCHVMZUQ33 & Fee & 4001 &  & 1.2 & \\
+2025-01-19 & TEDMD4U39V & 1 x Getränk 4.50.- &  & 3001 & 4.5 & POS\\
+2025-01-19 & TEDMD4U39V & Bank payout & 1020 &  & 4.43 & 928703\\
+2025-01-19 & TEDMD4U39V & Fee & 4001 &  & 0.07 & \\
+2025-01-19 & TC3RSCSXDH & 2 x Getränk 4.50.- &  & 3001 & 9.0 & POS\\
+2025-01-19 & TC3RSCSXDH & Bank payout & 1020 &  & 8.77 & 928703\\
+2025-01-19 & TC3RSCSXDH & Fee & 4001 &  & 0.23 & \\
+2025-01-19 & TAAATGFVBTX & 1 x Pizza Schinken 20cm & 1000 & 3001 & 7.5 & CASH\\
+2025-01-19 & TAAATGFUVC6 & 1 x Snack 2,50.- & 1000 & 3001 & 2.5 & CASH\\
+2025-01-19 & TEVZ7HCVL3 & 2 x Snack 2,50.- &  & 3001 & 5.0 & POS\\
+2025-01-19 & TEVZ7HCVL3 & Bank payout & 1020 &  & 4.92 & 928703\\
+2025-01-19 & TEVZ7HCVL3 & Fee & 4001 &  & 0.08 & \\
+2025-01-19 & TAAATGFUC2K & 1 x Snack 4,50.- & 1000 & 3001 & 4.5 & CASH\\
+2025-01-19 & TSCMREXDHR & 1 x Getränk 5.- &  & 3001 & 5.0 & POS\\
+2025-01-19 & TSCMREXDHR & Bank payout & 1020 &  & 4.92 & 928703\\
+2025-01-19 & TSCMREXDHR & Fee & 4001 &  & 0.08 & \\
+2025-01-19 & TCAKRFQ6V3 & 1 x Eintritt Adult &  & 3001 & 27.0 & POS\\
+2025-01-19 & TCAKRFQ6V3 & Bank payout & 1020 &  & 26.59 & 928703\\
+2025-01-19 & TCAKRFQ6V3 & Fee & 4001 &  & 0.41 & \\
+2025-01-19 & TD239YRX67 & 2 x Eintritt Kind (5-15), 1 x Eintritt Adult &  & 3001 & 67.0 & POS\\
+2025-01-19 & TD239YRX67 & Bank payout & 1020 &  & 65.99 & 928703\\
+2025-01-19 & TD239YRX67 & Fee & 4001 &  & 1.01 & \\
+2025-01-19 & TZ9DT6FSEF & 1 x Begleitperson, 2 x Eintritt Kind (5-15) &  & 3001 & 48.0 & POS\\
+2025-01-19 & TZ9DT6FSEF & Bank payout & 1020 &  & 47.28 & 928703\\
+2025-01-19 & TZ9DT6FSEF & Fee & 4001 &  & 0.72 & \\
+2025-01-19 & TCQCYHMLAS & 1 x Begleitperson, 1 x Eintritt Kind (5-15) &  & 3001 & 28.0 & POS\\
+2025-01-19 & TCQCYHMLAS & Bank payout & 1020 &  & 27.58 & 928703\\
+2025-01-19 & TCQCYHMLAS & Fee & 4001 &  & 0.42 & \\
+2025-01-19 & TCXZ24FHPD & 1 x Birthday Option 1, 9 x Verlängerung 1h pro Teinehmenr &  & 3001 & 395.0 & POS\\
+2025-01-19 & TCXZ24FHPD & Bank payout & 1020 &  & 389.07 & 928703\\
+2025-01-19 & TCXZ24FHPD & Fee & 4001 &  & 5.93 & \\
+2025-01-19 & TAAATGFEM9V & 2 x Schüsselanhänger & 1000 & 3001 & 5.0 & CASH\\
+2025-01-19 & TDK7GL6FHT & 1 x Getränk 4.50.-, 1 x Getränk 6.- &  & 3001 & 10.5 & POS\\
+2025-01-19 & TDK7GL6FHT & Bank payout & 1020 &  & 10.34 & 928703\\
+2025-01-19 & TDK7GL6FHT & Fee & 4001 &  & 0.16 & \\
+2025-01-19 & TEZ474YCLZ & 1 x Begleitperson, 1 x Eintritt Adult, 2 x Eintritt Kind (5-15) &  & 3001 & 75.0 & POS\\
+2025-01-19 & TEZ474YCLZ & Bank payout & 1020 &  & 73.87 & 928703\\
+2025-01-19 & TEZ474YCLZ & Fee & 4001 &  & 1.13 & \\
+2025-01-19 & TAAATGFB3S4 & 1 x Individueller Betrag & 1000 & 3001 & 8.0 & CASH\\
+2025-01-19 & TDPCZN4CYH & 1 x Birthday Option 2, 1 x zusätzliche Teilnehmer &  & 3001 & 430.0 & POS\\
+2025-01-19 & TDPCZN4CYH & Bank payout & 1020 &  & 419.25 & 928703\\
+2025-01-19 & TDPCZN4CYH & Fee & 4001 &  & 10.75 & \\
+2025-01-19 & TDE6KLTALD & 2 x Snack 2,50.- &  & 3001 & 5.0 & POS\\
+2025-01-19 & TDE6KLTALD & Bank payout & 1020 &  & 4.92 & 928703\\
+2025-01-19 & TDE6KLTALD & Fee & 4001 &  & 0.08 & \\
+2025-01-19 & TAAATGFBEYM & 1 x Snack 2,50.- & 1000 & 3001 & 2.5 & CASH\\
+2025-01-19 & T9GL9U974H & 1 x Getränk 5.- &  & 3001 & 5.0 & POS\\
+2025-01-19 & T9GL9U974H & Bank payout & 1020 &  & 4.92 & 928703\\
+2025-01-19 & T9GL9U974H & Fee & 4001 &  & 0.08 & \\
+2025-01-19 & TAAATGE7VVM & 1 x Begleitperson, 1 x Eintritt Kind (5-15) & 1000 & 3001 & 28.0 & CASH\\
+2025-01-19 & TL9FTKR2KL & 1 x Snack 2,50.-, 2 x Getränk 4.50.- &  & 3001 & 11.5 & POS\\
+2025-01-19 & TL9FTKR2KL & Bank payout & 1020 &  & 11.33 & 928703\\
+2025-01-19 & TL9FTKR2KL & Fee & 4001 &  & 0.17 & \\
+2025-01-19 & TAAATGEV6HX & 1 x Tee & 1000 & 3001 & 3.5 & CASH\\
+2025-01-19 & TAAATGEQKUS & 2 x Eintritt Kind (5-15), 1 x Begleitperson, 1 x Getränk 6.- & 1000 & 3001 & 54.0 & CASH\\
+2025-01-19 & TAAATGENAYV & 1 x Eintritt Kind (5-15) & 1000 & 3001 & 20.0 & CASH\\
+2025-01-19 & TAAATGEM24Y & 1 x Getränk 4.50.-, 2 x Flammkuchen & 1000 & 3001 & 28.5 & CASH\\
+2025-01-19 & TAAATGEMKD3 & 1 x Begleitperson, 2 x Eintritt Kind (5-15) & 1000 & 3001 & 48.0 & CASH\\
+2025-01-19 & TAAATGELQ77 & 1 x Getränk 4.50.-, 1 x Snack 4,50.- & 1000 & 3001 & 9.0 & CASH\\
+2025-01-19 & TAAATGEGBZF & 1 x Getränk 4.50.- & 1000 & 3001 & 4.5 & CASH\\
+2025-01-19 & TAAATGEEFRM & 2 x Getränk 4.50.-, 1 x Snack 2,50.- & 1000 & 3001 & 11.5 & CASH\\
+2025-01-19 & TAAATGEATAD & 1 x Snack 2,50.- & 1000 & 3001 & 2.5 & CASH\\
+2025-01-19 & TAAATGEAFLB & 1 x Wasser 4.- & 1000 & 3001 & 4.0 & CASH\\
+2025-01-19 & TAAATGD9ZBB & 1 x Eintritt Kind (5-15) & 1000 & 3001 & 20.0 & CASH\\
+2025-01-19 & TAAATGD9YGP & 1 x Getränk 4.50.-, 1 x Snack 2,50.- & 1000 & 3001 & 7.0 & CASH\\
+2025-01-19 & TAAATGD7HZT & 2 x Eintritt Kind (5-15), 1 x Begleitperson & 1000 & 3001 & 48.0 & CASH\\
+2025-01-19 & T9XKPUZLED & 5 x Eintritt Kind (5-15), 3 x Begleitperson &  & 3001 & 124.0 & POS\\
+2025-01-19 & T9XKPUZLED & Bank payout & 1020 &  & 122.14 & 928703\\
+2025-01-19 & T9XKPUZLED & Fee & 4001 &  & 1.86 & \\
+2025-01-19 & TAAATGD4DZQ & 1 x Eintritt Adult, 2 x Eintritt Kind (5-15) & 1000 & 3001 & 67.0 & CASH\\
+2025-01-19 & TAAATGD36D3 & 2 x Eintritt Kind (5-15), 1 x Eintritt Adult & 1000 & 3001 & 67.0 & CASH\\
+2025-01-19 & TEC4V4PT96 & 2 x Begleitperson, 1 x Privat Training Maria &  & 3001 & 166.0 & POS\\
+2025-01-19 & TEC4V4PT96 & Bank payout & 1020 &  & 163.51 & 928703\\
+2025-01-19 & TEC4V4PT96 & Fee & 4001 &  & 2.49 & \\
+2025-01-19 & TEV22T9TE2 & 1 x Begleitperson, 2 x Eintritt Kind (5-15) &  & 3001 & 48.0 & POS\\
+2025-01-19 & TEV22T9TE2 & Bank payout & 1020 &  & 46.8 & 928703\\
+2025-01-19 & TEV22T9TE2 & Fee & 4001 &  & 1.2 & \\
+2025-01-19 & TAAATGDZL6V & 1 x Eintritt Adult & 1000 & 3001 & 27.0 & CASH\\
+2025-01-19 & TD2XZFD3SM & 1 x Individueller Betrag &  & 3001 & 2.25 & POS\\
+2025-01-19 & TD2XZFD3SM & Bank payout & 1020 &  & 2.22 & 928703\\
+2025-01-19 & TD2XZFD3SM & Fee & 4001 &  & 0.03 & \\
+2025-01-18 & TNLNRG2Z3T & 1 x Verlängerung 1h &  & 3001 & 5.0 & POS\\
+2025-01-18 & TNLNRG2Z3T & Bank payout & 1020 &  & 4.92 & 928703\\
+2025-01-18 & TNLNRG2Z3T & Fee & 4001 &  & 0.08 & \\
+2025-01-18 & TCXUEP6Q94 & 3 x Snack 2,50.- &  & 3001 & 7.5 & POS\\
+2025-01-18 & TCXUEP6Q94 & Bank payout & 1020 &  & 7.31 & 928703\\
+2025-01-18 & TCXUEP6Q94 & Fee & 4001 &  & 0.19 & \\
+2025-01-18 & TMH7P9AGRM & 2 x Snack 2,50.- &  & 3001 & 5.0 & POS\\
+2025-01-18 & TMH7P9AGRM & Bank payout & 1020 &  & 4.92 & 928703\\
+2025-01-18 & TMH7P9AGRM & Fee & 4001 &  & 0.08 & \\
+2025-01-18 & TCFZGGHMZH & 2 x Snack 2,50.- &  & 3001 & 5.0 & POS\\
+2025-01-18 & TCFZGGHMZH & Bank payout & 1020 &  & 4.87 & 928703\\
+2025-01-18 & TCFZGGHMZH & Fee & 4001 &  & 0.13 & \\
+2025-01-18 & TD9THN4KTH & 1 x Snack 2,50.- &  & 3001 & 2.5 & POS\\
+2025-01-18 & TD9THN4KTH & Bank payout & 1020 &  & 2.46 & 928703\\
+2025-01-18 & TD9THN4KTH & Fee & 4001 &  & 0.04 & \\
+2025-01-18 & TSS2CSRAXT & 1 x Eintritt Adult &  & 3001 & 27.0 & POS\\
+2025-01-18 & TSS2CSRAXT & Bank payout & 1020 &  & 26.59 & 928703\\
+2025-01-18 & TSS2CSRAXT & Fee & 4001 &  & 0.41 & \\
+2025-01-18 & TAAATF62MCL & 1 x Snack 3,50.- & 1000 & 3001 & 3.5 & CASH\\
+2025-01-18 & TEEFNQNSLC & 1 x Snack 4,50.-, 1 x Snack 2,50.-, 2 x Snack 3,50.-, 1 x Getränk 4.50.- &  & 3001 & 18.5 & POS\\
+2025-01-18 & TEEFNQNSLC & Bank payout & 1020 &  & 18.04 & 928703\\
+2025-01-18 & TEEFNQNSLC & Fee & 4001 &  & 0.46 & \\
+2025-01-18 & TEKK3DRXEQ & 1 x Snack 4,50.- &  & 3001 & 4.5 & POS\\
+2025-01-18 & TEKK3DRXEQ & Bank payout & 1020 &  & 4.43 & 928703\\
+2025-01-18 & TEKK3DRXEQ & Fee & 4001 &  & 0.07 & \\
+2025-01-18 & TEQ6PETA4L & 1 x Getränk 4.50.-, 1 x Snack 2.- &  & 3001 & 6.5 & POS\\
+2025-01-18 & TEQ6PETA4L & Bank payout & 1020 &  & 6.4 & 928703\\
+2025-01-18 & TEQ6PETA4L & Fee & 4001 &  & 0.1 & \\
+2025-01-18 & T7EKFA342P & 1 x Snack 2,50.- &  & 3001 & 2.5 & POS\\
+2025-01-18 & T7EKFA342P & Bank payout & 1020 &  & 2.46 & 928703\\
+2025-01-18 & T7EKFA342P & Fee & 4001 &  & 0.04 & \\
+2025-01-18 & TAAATF6NENH & 1 x Snack 2,50.- & 1000 & 3001 & 2.5 & CASH\\
+2025-01-18 & TC9U6V73XM & 4 x Eintritt Kind (5-15), 4 x Begleitperson &  & 3001 & 112.0 & POS\\
+2025-01-18 & TC9U6V73XM & Bank payout & 1020 &  & 110.32 & 928703\\
+2025-01-18 & TC9U6V73XM & Fee & 4001 &  & 1.68 & \\
+2025-01-18 & TFNALE44PP & 1 x Eintritt Kind (5-15), 1 x Begleitperson &  & 3001 & 28.0 & POS\\
+2025-01-18 & TFNALE44PP & Bank payout & 1020 &  & 27.58 & 928703\\
+2025-01-18 & TFNALE44PP & Fee & 4001 &  & 0.42 & \\
+2025-01-18 & TEGMKXE7A3 & 2 x Eintritt Kind (5-15), 1 x Eintritt Adult &  & 3001 & 67.0 & POS\\
+2025-01-18 & TEGMKXE7A3 & Bank payout & 1020 &  & 65.32 & 928703\\
+2025-01-18 & TEGMKXE7A3 & Fee & 4001 &  & 1.68 & \\
+2025-01-18 & TDHSDY6L7G & 2 x Getränk 4.50.- &  & 3001 & 9.0 & POS\\
+2025-01-18 & TDHSDY6L7G & Bank payout & 1020 &  & 8.86 & 928703\\
+2025-01-18 & TDHSDY6L7G & Fee & 4001 &  & 0.14 & \\
+2025-01-18 & TAAATF6CVM2 & 1 x Getränk 4.50.- & 1000 & 3001 & 4.5 & CASH\\
+2025-01-18 & TDYXUMRP46 & 1 x Eintritt Kind (5-15), 1 x Begleitperson &  & 3001 & 28.0 & POS\\
+2025-01-18 & TDYXUMRP46 & Bank payout & 1020 &  & 27.58 & 928703\\
+2025-01-18 & TDYXUMRP46 & Fee & 4001 &  & 0.42 & \\
+2025-01-18 & TS3YKUDAMF & 1 x Getränk 4.50.-, 1 x Snack 2,50.- &  & 3001 & 7.0 & POS\\
+2025-01-18 & TS3YKUDAMF & Bank payout & 1020 &  & 6.89 & 928703\\
+2025-01-18 & TS3YKUDAMF & Fee & 4001 &  & 0.11 & \\
+2025-01-18 & TFQPE4V4LR & 1 x Eintritt Adult, 1 x Eintritt Kind (5-15) &  & 3001 & 47.0 & POS\\
+2025-01-18 & TFQPE4V4LR & Bank payout & 1020 &  & 46.29 & 928703\\
+2025-01-18 & TFQPE4V4LR & Fee & 4001 &  & 0.71 & \\
+2025-01-18 & TEUQH6X6VQ & 3 x Eintritt Kind (5-15), 1 x Begleitperson &  & 3001 & 68.0 & POS\\
+2025-01-18 & TEUQH6X6VQ & Bank payout & 1020 &  & 66.98 & 928703\\
+2025-01-18 & TEUQH6X6VQ & Fee & 4001 &  & 1.02 & \\
+2025-01-18 & T3XSCDZQZ9 & 2 x Getränk 5.- &  & 3001 & 10.0 & POS\\
+2025-01-18 & T3XSCDZQZ9 & Bank payout & 1020 &  & 9.85 & 928703\\
+2025-01-18 & T3XSCDZQZ9 & Fee & 4001 &  & 0.15 & \\
+2025-01-18 & TCTENTFK4P & 1 x Getränk 5.-, 1 x Getränk 4.50.- &  & 3001 & 9.5 & POS\\
+2025-01-18 & TCTENTFK4P & Bank payout & 1020 &  & 9.36 & 928703\\
+2025-01-18 & TCTENTFK4P & Fee & 4001 &  & 0.14 & \\
+2025-01-18 & TPXDVUCNCX & 2 x Eintritt Kind (5-15), 1 x Begleitperson &  & 3001 & 48.0 & POS\\
+2025-01-18 & TPXDVUCNCX & Bank payout & 1020 &  & 47.28 & 928703\\
+2025-01-18 & TPXDVUCNCX & Fee & 4001 &  & 0.72 & \\
+2025-01-18 & TC77M6VTVU & 1 x Snack 4,50.-, 1 x Snack 2,50.-, 2 x Wasser 4.-, 1 x Snack 3,50.- &  & 3001 & 18.5 & POS\\
+2025-01-18 & TC77M6VTVU & Bank payout & 1020 &  & 18.04 & 928703\\
+2025-01-18 & TC77M6VTVU & Fee & 4001 &  & 0.46 & \\
+2025-01-18 & TDM6MAU477 & 1 x Getränk 4.50.- &  & 3001 & 4.5 & POS\\
+2025-01-18 & TDM6MAU477 & Bank payout & 1020 &  & 4.43 & 928703\\
+2025-01-18 & TDM6MAU477 & Fee & 4001 &  & 0.07 & \\
+2025-01-18 & TFKZ4E3SZZ & 1 x Getränk 5.- &  & 3001 & 5.0 & POS\\
+2025-01-18 & TFKZ4E3SZZ & Bank payout & 1020 &  & 4.87 & 928703\\
+2025-01-18 & TFKZ4E3SZZ & Fee & 4001 &  & 0.13 & \\
+2025-01-18 & TDACEKQ2NG & 2 x Eintritt Kind (5-15), 1 x Begleitperson &  & 3001 & 48.0 & POS\\
+2025-01-18 & TDACEKQ2NG & Bank payout & 1020 &  & 47.28 & 928703\\
+2025-01-18 & TDACEKQ2NG & Fee & 4001 &  & 0.72 & \\
+2025-01-18 & TEKYK4UQH9 & 2 x Eintritt Kind (5-15), 1 x Begleitperson &  & 3001 & 48.0 & POS\\
+2025-01-18 & TEKYK4UQH9 & Bank payout & 1020 &  & 47.28 & 928703\\
+2025-01-18 & TEKYK4UQH9 & Fee & 4001 &  & 0.72 & \\
+2025-01-18 & TEPYK6LFZ4 & 1 x Birthday Option 1 &  & 3001 & 350.0 & POS\\
+2025-01-18 & TEPYK6LFZ4 & Bank payout & 1020 &  & 344.75 & 928703\\
+2025-01-18 & TEPYK6LFZ4 & Fee & 4001 &  & 5.25 & \\
+2025-01-18 & TAAATF3CUKS & 1 x Getränk 4.50.- & 1000 & 3001 & 4.5 & CASH\\
+2025-01-18 & TCC46VGC76 & 1 x Getränk 4.50.- &  & 3001 & 4.5 & POS\\
+2025-01-18 & TCC46VGC76 & Bank payout & 1020 &  & 4.43 & 928703\\
+2025-01-18 & TCC46VGC76 & Fee & 4001 &  & 0.07 & \\
+2025-01-18 & TDQVHXGPMN & 1 x Begleitperson &  & 3001 & 8.0 & POS\\
+2025-01-18 & TDQVHXGPMN & Bank payout & 1020 &  & 7.88 & 928703\\
+2025-01-18 & TDQVHXGPMN & Fee & 4001 &  & 0.12 & \\
+2025-01-18 & TD6TL2A73A & 1 x Eintritt Adult, 1 x Eintritt Kind (5-15), 1 x Tageseintritt Kind 2-4 &  & 3001 & 53.0 & POS\\
+2025-01-18 & TD6TL2A73A & Bank payout & 1020 &  & 51.67 & 928703\\
+2025-01-18 & TD6TL2A73A & Fee & 4001 &  & 1.33 & \\
+2025-01-18 & TNMTDSR2DQ & 3 x Eintritt Kind (5-15), 1 x Begleitperson &  & 3001 & 68.0 & POS\\
+2025-01-18 & TNMTDSR2DQ & Bank payout & 1020 &  & 66.3 & 928703\\
+2025-01-18 & TNMTDSR2DQ & Fee & 4001 &  & 1.7 & \\
+2025-01-18 & TDT2TQHNYD & 1 x Eintritt Kind (5-15), 1 x Tageseintritt Kind 2-4, 1 x Begleitperson &  & 3001 & 34.0 & POS\\
+2025-01-18 & TDT2TQHNYD & Bank payout & 1020 &  & 33.15 & 928703\\
+2025-01-18 & TDT2TQHNYD & Fee & 4001 &  & 0.85 & \\
+2025-01-18 & TAAATF2GS76 & 1 x Getränk 4.50.- & 1000 & 3001 & 4.5 & CASH\\
+2025-01-18 & TDRPDPN3YN & 1 x Snack 2,50.- &  & 3001 & 2.5 & POS\\
+2025-01-18 & TDRPDPN3YN & Bank payout & 1020 &  & 2.44 & 928703\\
+2025-01-18 & TDRPDPN3YN & Fee & 4001 &  & 0.06 & \\
+2025-01-18 & TAAATFZ9X36 & 1 x Verlängerung 1h & 1000 & 3001 & 5.0 & CASH\\
+2025-01-18 & TDYTNXVXFM & 1 x Eintritt Kind (5-15), 1 x Begleitperson &  & 3001 & 28.0 & POS\\
+2025-01-18 & TDYTNXVXFM & Bank payout & 1020 &  & 27.58 & 928703\\
+2025-01-18 & TDYTNXVXFM & Fee & 4001 &  & 0.42 & \\
+2025-01-18 & TAAATFZRCKT & 1 x Eintritt Kind (5-15), 1 x Begleitperson & 1000 & 3001 & 28.0 & CASH\\
+2025-01-18 & TFPH39U99E & 1 x Getränk 4.50.- &  & 3001 & 4.5 & POS\\
+2025-01-18 & TFPH39U99E & Bank payout & 1020 &  & 4.43 & 928703\\
+2025-01-18 & TFPH39U99E & Fee & 4001 &  & 0.07 & \\
+2025-01-18 & TDTZAU9GK3 & 2 x Getränk 5.- &  & 3001 & 10.0 & POS\\
+2025-01-18 & TDTZAU9GK3 & Bank payout & 1020 &  & 9.85 & 928703\\
+2025-01-18 & TDTZAU9GK3 & Fee & 4001 &  & 0.15 & \\
+2025-01-18 & TAAATFZNURC & 1 x Getränk 5.- & 1000 & 3001 & 5.0 & CASH\\
+2025-01-18 & TEQYRGRCX2 & 1 x Eintritt Adult &  & 3001 & 27.0 & POS\\
+2025-01-18 & TEQYRGRCX2 & Bank payout & 1020 &  & 26.32 & 928703\\
+2025-01-18 & TEQYRGRCX2 & Fee & 4001 &  & 0.68 & \\
+2025-01-18 & TAAATFZLD2E & 2 x Eintritt Adult & 1000 & 3001 & 54.0 & CASH\\
+2025-01-18 & TLRGCS7DG6 & 1 x Getränk 6.- &  & 3001 & 6.0 & POS\\
+2025-01-18 & TLRGCS7DG6 & Bank payout & 1020 &  & 5.91 & 928703\\
+2025-01-18 & TLRGCS7DG6 & Fee & 4001 &  & 0.09 & \\
+2025-01-18 & TDT4CQ43EU & 1 x Getränk 4.50.-, 1 x Getränk 6.- &  & 3001 & 10.5 & POS\\
+2025-01-18 & TDT4CQ43EU & Bank payout & 1020 &  & 10.34 & 928703\\
+2025-01-18 & TDT4CQ43EU & Fee & 4001 &  & 0.16 & \\
+2025-01-18 & TAAATFZF2EN & 1 x Privattraining & 1000 & 3001 & 210.0 & CASH\\
+2025-01-18 & TE3Q6P6SFL & 7 x Eintritt Kind (5-15), 2 x Begleitperson &  & 3001 & 156.0 & POS\\
+2025-01-18 & TE3Q6P6SFL & Bank payout & 1020 &  & 152.1 & 928703\\
+2025-01-18 & TE3Q6P6SFL & Fee & 4001 &  & 3.9 & \\
+2025-01-18 & TE9TTM94PF & 3 x Eintritt Adult &  & 3001 & 81.0 & POS\\
+2025-01-18 & TE9TTM94PF & Bank payout & 1020 &  & 79.78 & 928703\\
+2025-01-18 & TE9TTM94PF & Fee & 4001 &  & 1.22 & \\
+2025-01-17 & TAAATFUSBFR & 1 x Snack 3,50.- & 1000 & 3001 & 3.5 & CASH\\
+2025-01-17 & TCV9YE76YU & 1 x Snack 4,50.- &  & 3001 & 4.5 & POS\\
+2025-01-17 & TCV9YE76YU & Bank payout & 1020 &  & 4.43 & 928703\\
+2025-01-17 & TCV9YE76YU & Fee & 4001 &  & 0.07 & \\
+2025-01-17 & TC3E2N4FT3 & 1 x Semesterbeitrag Haris Paracha &  & 3001 & 430.0 & POS\\
+2025-01-17 & TC3E2N4FT3 & Bank payout & 1020 &  & 419.25 & 934219\\
+2025-01-17 & TC3E2N4FT3 & Fee & 4001 &  & 10.75 & \\
+2025-01-17 & TCR3SE9QEX & 1 x Getränk 4.50.-, 1 x Snack 2,50.- &  & 3001 & 7.0 & POS\\
+2025-01-17 & TCR3SE9QEX & Bank payout & 1020 &  & 6.82 & 928703\\
+2025-01-17 & TCR3SE9QEX & Fee & 4001 &  & 0.18 & \\
+2025-01-17 & TC99UAQR4S & 1 x Getränk 4.50.- &  & 3001 & 4.5 & POS\\
+2025-01-17 & TC99UAQR4S & Bank payout & 1020 &  & 4.43 & 928703\\
+2025-01-17 & TC99UAQR4S & Fee & 4001 &  & 0.07 & \\
+2025-01-17 & TCYCNQHDZG & 1 x Getränk 4.50.-, 1 x Snack 2,50.- &  & 3001 & 7.0 & POS\\
+2025-01-17 & TCYCNQHDZG & Bank payout & 1020 &  & 6.89 & 928703\\
+2025-01-17 & TCYCNQHDZG & Fee & 4001 &  & 0.11 & \\
+2025-01-17 & TAAATFTU4ZR & 1 x Snack 2.- & 1000 & 3001 & 2.0 & CASH\\
+2025-01-17 & TAAATFTUYG3 & 1 x Getränk 4.50.- & 1000 & 3001 & 4.5 & CASH\\
+2025-01-17 & TAAATFTUTAX & 1 x Getränk 4.50.- & 1000 & 3001 & 4.5 & CASH\\
+2025-01-17 & TAAATFTTGRU & 1 x Snack 2,50.- & 1000 & 3001 & 2.5 & CASH\\
+2025-01-17 & TER4ASE66T & 2 x Snack 2.- &  & 3001 & 4.0 & POS\\
+2025-01-17 & TER4ASE66T & Bank payout & 1020 &  & 3.94 & 928703\\
+2025-01-17 & TER4ASE66T & Fee & 4001 &  & 0.06 & \\
+2025-01-17 & TAAATFTQQPF & 1 x Individueller Betrag & 1000 & 3001 & 2.25 & CASH\\
+2025-01-17 & TAAATFTQMFN & 1 x Tee & 1000 & 3001 & 3.5 & CASH\\
+2025-01-17 & TDAFZXZHFY & 1 x Getränk 5.- &  & 3001 & 5.0 & POS\\
+2025-01-17 & TDAFZXZHFY & Bank payout & 1020 &  & 4.87 & 928703\\
+2025-01-17 & TDAFZXZHFY & Fee & 4001 &  & 0.13 & \\
+2025-01-17 & TECCL2MKVF & 1 x Getränk 4.50.- &  & 3001 & 4.5 & POS\\
+2025-01-17 & TECCL2MKVF & Bank payout & 1020 &  & 4.43 & 928703\\
+2025-01-17 & TECCL2MKVF & Fee & 4001 &  & 0.07 & \\
+2025-01-17 & TAAATFTH7S9 & 1 x Getränk 4.50.- & 1000 & 3001 & 4.5 & CASH\\
+2025-01-17 & TDDD9VHHEQ & 1 x Tshirt &  & 3001 & 20.0 & POS\\
+2025-01-17 & TDDD9VHHEQ & Bank payout & 1020 &  & 19.5 & 928703\\
+2025-01-17 & TDDD9VHHEQ & Fee & 4001 &  & 0.5 & \\
+2025-01-17 & TEFL2ZKVLA & 1 x Individueller Betrag &  & 3001 & 8.25 & POS\\
+2025-01-17 & TEFL2ZKVLA & Bank payout & 1020 &  & 8.13 & 928703\\
+2025-01-17 & TEFL2ZKVLA & Fee & 4001 &  & 0.12 & \\
+2025-01-17 & TCA2FDPMUH & 1 x Snack 2,50.- &  & 3001 & 2.5 & POS\\
+2025-01-17 & TCA2FDPMUH & Bank payout & 1020 &  & 2.46 & 928703\\
+2025-01-17 & TCA2FDPMUH & Fee & 4001 &  & 0.04 & \\
+2025-01-17 & TCLFMLT3HK & 1 x Snack 2,50.- &  & 3001 & 2.5 & POS\\
+2025-01-17 & TCLFMLT3HK & Bank payout & 1020 &  & 2.44 & 928703\\
+2025-01-17 & TCLFMLT3HK & Fee & 4001 &  & 0.06 & \\
+2025-01-17 & TFF26Z7XUM & 2 x Getränk 4.50.- &  & 3001 & 9.0 & POS\\
+2025-01-17 & TFF26Z7XUM & Bank payout & 1020 &  & 8.77 & 928703\\
+2025-01-17 & TFF26Z7XUM & Fee & 4001 &  & 0.23 & \\
+2025-01-17 & TVU7GQQ2G3 & 1 x Verlängerung 1h &  & 3001 & 5.0 & POS\\
+2025-01-17 & TVU7GQQ2G3 & Bank payout & 1020 &  & 4.87 & 928703\\
+2025-01-17 & TVU7GQQ2G3 & Fee & 4001 &  & 0.13 & \\
+2025-01-17 & TDCUV4UUNN & 1 x Getränk 4.50.- &  & 3001 & 4.5 & POS\\
+2025-01-17 & TDCUV4UUNN & Bank payout & 1020 &  & 4.43 & 928703\\
+2025-01-17 & TDCUV4UUNN & Fee & 4001 &  & 0.07 & \\
+2025-01-17 & TCZ9EQU97V & 2 x Getränk 4.50.- &  & 3001 & 9.0 & POS\\
+2025-01-17 & TCZ9EQU97V & Bank payout & 1020 &  & 8.86 & 928703\\
+2025-01-17 & TCZ9EQU97V & Fee & 4001 &  & 0.14 & \\
+2025-01-17 & THKT4YA3V9 & 1 x DropIn &  & 3001 & 25.0 & POS\\
+2025-01-17 & THKT4YA3V9 & Bank payout & 1020 &  & 24.37 & 928703\\
+2025-01-17 & THKT4YA3V9 & Fee & 4001 &  & 0.63 & \\
+2025-01-17 & TZ6Z2R4N29 & 2 x Snack 2,50.- &  & 3001 & 5.0 & POS\\
+2025-01-17 & TZ6Z2R4N29 & Bank payout & 1020 &  & 4.87 & 928703\\
+2025-01-17 & TZ6Z2R4N29 & Fee & 4001 &  & 0.13 & \\
+2025-01-17 & TC4497MKKA & 1 x Snack 2,50.- &  & 3001 & 2.5 & POS\\
+2025-01-17 & TC4497MKKA & Bank payout & 1020 &  & 2.46 & 928703\\
+2025-01-17 & TC4497MKKA & Fee & 4001 &  & 0.04 & \\
+2025-01-17 & TCXZEMCL7A & 1 x Verlängerung 1h &  & 3001 & 5.0 & POS\\
+2025-01-17 & TCXZEMCL7A & Bank payout & 1020 &  & 4.87 & 928703\\
+2025-01-17 & TCXZEMCL7A & Fee & 4001 &  & 0.13 & \\
+2025-01-17 & TDZVGKQMT7 & 1 x Verlängerung 1h &  & 3001 & 5.0 & POS\\
+2025-01-17 & TDZVGKQMT7 & Bank payout & 1020 &  & 4.87 & 928703\\
+2025-01-17 & TDZVGKQMT7 & Fee & 4001 &  & 0.13 & \\
+2025-01-17 & TM9S9KXTN6 & 2 x Snack 2,50.- &  & 3001 & 5.0 & POS\\
+2025-01-17 & TM9S9KXTN6 & Bank payout & 1020 &  & 4.92 & 928703\\
+2025-01-17 & TM9S9KXTN6 & Fee & 4001 &  & 0.08 & \\
+2025-01-17 & TEU9QVLPCV & 1 x Verlängerung 1h &  & 3001 & 5.0 & POS\\
+2025-01-17 & TEU9QVLPCV & Bank payout & 1020 &  & 4.87 & 928703\\
+2025-01-17 & TEU9QVLPCV & Fee & 4001 &  & 0.13 & \\
+2025-01-17 & TAAATFSXK4E & 1 x Birthday Option 1 & 1000 & 3001 & 350.0 & CASH\\
+2025-01-17 & TAAATFSVMTS & 1 x Getränk 4.50.- & 1000 & 3001 & 4.5 & CASH\\
+2025-01-17 & TAAATFSVC4N & 1 x Getränk 4.50.- & 1000 & 3001 & 4.5 & CASH\\
+2025-01-17 & TFLE4LZCCH & 1 x Getränk 5.- &  & 3001 & 5.0 & POS\\
+2025-01-17 & TFLE4LZCCH & Bank payout & 1020 &  & 4.92 & 928703\\
+2025-01-17 & TFLE4LZCCH & Fee & 4001 &  & 0.08 & \\
+2025-01-17 & TAAATFSSL4Z & 1 x Begleitperson & 1000 & 3001 & 8.0 & CASH\\
+2025-01-17 & TDC2QF7Q39 & 2 x Snack 2,50.- &  & 3001 & 5.0 & POS\\
+2025-01-17 & TDC2QF7Q39 & Bank payout & 1020 &  & 4.92 & 928703\\
+2025-01-17 & TDC2QF7Q39 & Fee & 4001 &  & 0.08 & \\
+2025-01-17 & TDZN6FNELL & 1 x Verlängerung 1h &  & 3001 & 5.0 & POS\\
+2025-01-17 & TDZN6FNELL & Bank payout & 1020 &  & 4.92 & 928703\\
+2025-01-17 & TDZN6FNELL & Fee & 4001 &  & 0.08 & \\
+2025-01-17 & TCRC3CVCDX & 1 x Snack 2,50.- &  & 3001 & 2.5 & POS\\
+2025-01-17 & TCRC3CVCDX & Bank payout & 1020 &  & 2.46 & 928703\\
+2025-01-17 & TCRC3CVCDX & Fee & 4001 &  & 0.04 & \\
+2025-01-17 & TDHHXFE6VP & 1 x Kursbetrag Ryan &  & 3001 & 711.85 & POS\\
+2025-01-17 & TDHHXFE6VP & Bank payout & 1020 &  & 694.05 & 928703\\
+2025-01-17 & TDHHXFE6VP & Fee & 4001 &  & 17.8 & \\
+2025-01-17 & TECSUEXQQR & 1 x Getränk 4.50.- &  & 3001 & 4.5 & POS\\
+2025-01-17 & TECSUEXQQR & Bank payout & 1020 &  & 4.43 & 928703\\
+2025-01-17 & TECSUEXQQR & Fee & 4001 &  & 0.07 & \\
+2025-01-17 & TCQMEMEGKQ & 2 x Verlängerung 1h, 1 x Tee &  & 3001 & 13.5 & POS\\
+2025-01-17 & TCQMEMEGKQ & Bank payout & 1020 &  & 13.3 & 928703\\
+2025-01-17 & TCQMEMEGKQ & Fee & 4001 &  & 0.2 & \\
+2025-01-17 & TAAATFSDCYX & 2 x Verlängerung 1h & 1000 & 3001 & 10.0 & CASH\\
+2025-01-17 & TFL7E46DHZ & 2 x Verlängerung 1h &  & 3001 & 10.0 & POS\\
+2025-01-17 & TFL7E46DHZ & Bank payout & 1020 &  & 9.85 & 928703\\
+2025-01-17 & TFL7E46DHZ & Fee & 4001 &  & 0.15 & \\
+2025-01-17 & TFK3DPVANQ & 1 x Begleitperson &  & 3001 & 8.0 & POS\\
+2025-01-17 & TFK3DPVANQ & Bank payout & 1020 &  & 7.88 & 928703\\
+2025-01-17 & TFK3DPVANQ & Fee & 4001 &  & 0.12 & \\
+2025-01-17 & TAAATFR7GKB & 1 x Snack 2,50.- & 1000 & 3001 & 2.5 & CASH\\
+2025-01-17 & TE4M7KNCFN & 1 x Snack 2,50.- &  & 3001 & 2.5 & POS\\
+2025-01-17 & TE4M7KNCFN & Bank payout & 1020 &  & 2.46 & 928703\\
+2025-01-17 & TE4M7KNCFN & Fee & 4001 &  & 0.04 & \\
+2025-01-17 & TAAATFR3MQA & 2 x Eintritt Kind (5-15) & 1000 & 3001 & 40.0 & CASH\\
+2025-01-16 & TFQYAPZERV & 1 x MA Flammkuchen + Getränke &  & 3001 & 22.5 & POS\\
+2025-01-16 & TFQYAPZERV & Bank payout & 1020 &  & 22.16 & 923803\\
+2025-01-16 & TFQYAPZERV & Fee & 4001 &  & 0.34 & \\
+2025-01-16 & TDMNMYX9KA & 1 x Getränk 4.50.- &  & 3001 & 4.5 & POS\\
+2025-01-16 & TDMNMYX9KA & Bank payout & 1020 &  & 4.39 & 923803\\
+2025-01-16 & TDMNMYX9KA & Fee & 4001 &  & 0.11 & \\
+2025-01-16 & TFPPUGHQZP & 1 x 2 Flammkuchen Ma &  & 3001 & 12.0 & POS\\
+2025-01-16 & TFPPUGHQZP & Bank payout & 1020 &  & 11.82 & 923803\\
+2025-01-16 & TFPPUGHQZP & Fee & 4001 &  & 0.18 & \\
+2025-01-16 & TPAS2767LM & 3 x Ninja Night 18+/ Happy Hour (15\%) &  & 3001 & 34.5 & POS\\
+2025-01-16 & TPAS2767LM & Bank payout & 1020 &  & 33.98 & 923803\\
+2025-01-16 & TPAS2767LM & Fee & 4001 &  & 0.52 & \\
+2025-01-16 & TCDXUNYAPK & 1 x Snack 4,50.- &  & 3001 & 4.5 & POS\\
+2025-01-16 & TCDXUNYAPK & Bank payout & 1020 &  & 4.43 & 923803\\
+2025-01-16 & TCDXUNYAPK & Fee & 4001 &  & 0.07 & \\
+2025-01-16 & TAAATFHXXT2 & 1 x Tee & 1000 & 3001 & 3.5 & CASH\\
+2025-01-16 & TCPTVVLQDG & 1 x Getränk 4.50.-, 1 x Snack 4,50.- &  & 3001 & 9.0 & POS\\
+2025-01-16 & TCPTVVLQDG & Bank payout & 1020 &  & 8.86 & 923803\\
+2025-01-16 & TCPTVVLQDG & Fee & 4001 &  & 0.14 & \\
+2025-01-16 & TENPR92F97 & 1 x DoB2b Lewin Campiche &  & 3001 & 430.0 & POS\\
+2025-01-16 & TENPR92F97 & Bank payout & 1020 &  & 423.55 & 923803\\
+2025-01-16 & TENPR92F97 & Fee & 4001 &  & 6.45 & \\
+2025-01-16 & TAAATFHBQCQ & 1 x Snack 2.- & 1000 & 3001 & 2.0 & CASH\\
+2025-01-16 & TCER6GXQNK & 1 x Getränk 4.50.-, 2 x Snack 4,50.- &  & 3001 & 13.5 & POS\\
+2025-01-16 & TCER6GXQNK & Bank payout & 1020 &  & 13.3 & 923803\\
+2025-01-16 & TCER6GXQNK & Fee & 4001 &  & 0.2 & \\
+2025-01-16 & TCQ4VR9FQX & 1 x Eintritt Adult, 1 x Eintritt Kind (5-15) &  & 3001 & 47.0 & POS\\
+2025-01-16 & TCQ4VR9FQX & Bank payout & 1020 &  & 45.82 & 923803\\
+2025-01-16 & TCQ4VR9FQX & Fee & 4001 &  & 1.18 & \\
+2025-01-16 & TF6RUPDUE9 & 1 x Flammkuchen MA &  & 3001 & 6.0 & POS\\
+2025-01-16 & TF6RUPDUE9 & Bank payout & 1020 &  & 5.91 & 923803\\
+2025-01-16 & TF6RUPDUE9 & Fee & 4001 &  & 0.09 & \\
+2025-01-16 & TAAATFE9SKA & 1 x MA getränk & 1000 & 3001 & 2.25 & CASH\\
+2025-01-16 & TAAATFD3GKQ & 1 x Getränk 4.50.-, 1 x Snack 3,50.- & 1000 & 3001 & 8.0 & CASH\\
+2025-01-15 & TDPSYF72KT & 1 x Getränk 4.50.- &  & 3001 & 4.5 & POS\\
+2025-01-15 & TDPSYF72KT & Bank payout & 1020 &  & 4.43 & 921926\\
+2025-01-15 & TDPSYF72KT & Fee & 4001 &  & 0.07 & \\
+2025-01-15 & TER4ZGXLHH & 1 x Happy Hour/ Ninja Night 18+ &  & 3001 & 13.5 & POS\\
+2025-01-15 & TER4ZGXLHH & Bank payout & 1020 &  & 13.3 & 921926\\
+2025-01-15 & TER4ZGXLHH & Fee & 4001 &  & 0.2 & \\
+2025-01-15 & TYXXDZF477 & 1 x Og Games Start ticket &  & 3001 & 67.15 & POS\\
+2025-01-15 & TYXXDZF477 & Bank payout & 1020 &  & 66.14 & 921926\\
+2025-01-15 & TYXXDZF477 & Fee & 4001 &  & 1.01 & \\
+2025-01-15 & TY6E3SUKRF & 1 x Happy Hour/ Ninja Night 18+ &  & 3001 & 13.5 & POS\\
+2025-01-15 & TY6E3SUKRF & Bank payout & 1020 &  & 13.3 & 921926\\
+2025-01-15 & TY6E3SUKRF & Fee & 4001 &  & 0.2 & \\
+2025-01-15 & TDRKR99FXV & 1 x Ninja Night 18+/ Happy Hour (15\%) &  & 3001 & 11.5 & POS\\
+2025-01-15 & TDRKR99FXV & Bank payout & 1020 &  & 11.33 & 921926\\
+2025-01-15 & TDRKR99FXV & Fee & 4001 &  & 0.17 & \\
+2025-01-15 & TFHQN3UYXE & 1 x MA Getränk &  & 3001 & 2.25 & POS\\
+2025-01-15 & TFHQN3UYXE & Bank payout & 1020 &  & 2.22 & 921926\\
+2025-01-15 & TFHQN3UYXE & Fee & 4001 &  & 0.03 & \\
+2025-01-15 & TE2EKVZHYD & 1 x Getränk 4.50.- &  & 3001 & 4.5 & POS\\
+2025-01-15 & TE2EKVZHYD & Bank payout & 1020 &  & 4.43 & 921926\\
+2025-01-15 & TE2EKVZHYD & Fee & 4001 &  & 0.07 & \\
+2025-01-15 & TE7YL32RTH & 1 x Getränk 4.50.- &  & 3001 & 4.5 & POS\\
+2025-01-15 & TE7YL32RTH & Bank payout & 1020 &  & 4.39 & 921926\\
+2025-01-15 & TE7YL32RTH & Fee & 4001 &  & 0.11 & \\
+2025-01-15 & TCGVUHPAFV & 1 x Semesterkurs DiC2 Noel Mathys &  & 3001 & 430.0 & POS\\
+2025-01-15 & TCGVUHPAFV & Bank payout & 1020 &  & 419.25 & 921926\\
+2025-01-15 & TCGVUHPAFV & Fee & 4001 &  & 10.75 & \\
+2025-01-15 & TCD247QZC6 & 1 x Semesterkurs Emil Losch MiC2 &  & 3001 & 365.5 & POS\\
+2025-01-15 & TCD247QZC6 & Bank payout & 1020 &  & 360.02 & 921926\\
+2025-01-15 & TCD247QZC6 & Fee & 4001 &  & 5.48 & \\
+2025-01-15 & TCKF9C4QZU & 1 x Getränk 4.50.- &  & 3001 & 4.5 & POS\\
+2025-01-15 & TCKF9C4QZU & Bank payout & 1020 &  & 4.39 & 921926\\
+2025-01-15 & TCKF9C4QZU & Fee & 4001 &  & 0.11 & \\
+2025-01-15 & TAAATE92XHH & 2 x Snack 2,50.- & 1000 & 3001 & 5.0 & CASH\\
+2025-01-15 & TAAATE92K9N & 1 x Snack 2,50.- & 1000 & 3001 & 2.5 & CASH\\
+2025-01-15 & TENC2LCEKC & 1 x Begleitperson, 1 x Eintritt Kind FOG &  & 3001 & 25.0 & POS\\
+2025-01-15 & TENC2LCEKC & Bank payout & 1020 &  & 24.37 & 921926\\
+2025-01-15 & TENC2LCEKC & Fee & 4001 &  & 0.63 & \\
+2025-01-15 & TAAATE9XTNS & 1 x Getränk 4.50.- & 1000 & 3001 & 4.5 & CASH\\
+2025-01-15 & TCMQNYNSVU & 1 x 3 Getränke MA &  & 3001 & 6.75 & POS\\
+2025-01-15 & TCMQNYNSVU & Bank payout & 1020 &  & 6.65 & 921926\\
+2025-01-15 & TCMQNYNSVU & Fee & 4001 &  & 0.1 & \\
+2025-01-15 & TCSY26XT7D & 2 x Getränk 4.50.- &  & 3001 & 9.0 & POS\\
+2025-01-15 & TCSY26XT7D & Bank payout & 1020 &  & 8.77 & 921926\\
+2025-01-15 & TCSY26XT7D & Fee & 4001 &  & 0.23 & \\
+2025-01-15 & TERQXU449S & 1 x Semesterkurs Maxime Häsler MiC2 &  & 3001 & 430.0 & POS\\
+2025-01-15 & TERQXU449S & Bank payout & 1020 &  & 423.55 & 921926\\
+2025-01-15 & TERQXU449S & Fee & 4001 &  & 6.45 & \\
+2025-01-15 & TEGX3MDC9K & 2 x Getränk 5.-, 1 x Tee &  & 3001 & 13.5 & POS\\
+2025-01-15 & TEGX3MDC9K & Bank payout & 1020 &  & 13.16 & 921926\\
+2025-01-15 & TEGX3MDC9K & Fee & 4001 &  & 0.34 & \\
+2025-01-15 & TCUG46U44E & 1 x Getränk 4.50.-, 1 x Snack 2,50.- &  & 3001 & 7.0 & POS\\
+2025-01-15 & TCUG46U44E & Bank payout & 1020 &  & 6.89 & 921926\\
+2025-01-15 & TCUG46U44E & Fee & 4001 &  & 0.11 & \\
+2025-01-15 & T34YSN9FLG & 1 x Verlängerung 1h &  & 3001 & 5.0 & POS\\
+2025-01-15 & T34YSN9FLG & Bank payout & 1020 &  & 4.92 & 921926\\
+2025-01-15 & T34YSN9FLG & Fee & 4001 &  & 0.08 & \\
+2025-01-15 & TAAATE74CLG & 1 x Schnupperkurs Harvey R. MiB1a & 1000 & 3001 & 25.0 & CASH\\
+2025-01-15 & TAAATE72TBE & 1 x Wasser 4.- & 1000 & 3001 & 4.0 & CASH\\
+2025-01-15 & TEQEXLFXT3 & 1 x Getränk 4.50.- &  & 3001 & 4.5 & POS\\
+2025-01-15 & TEQEXLFXT3 & Bank payout & 1020 &  & 4.39 & 921926\\
+2025-01-15 & TEQEXLFXT3 & Fee & 4001 &  & 0.11 & \\
+2025-01-15 & TAAATE7V72S & 1 x Getränk 4.50.- & 1000 & 3001 & 4.5 & CASH\\
+2025-01-15 & TAAATE7VSSB & 2 x Eintritt Adult & 1000 & 3001 & 54.0 & CASH\\
+2025-01-15 & TAAATE7KYFB & 1 x Kurs MoC2 Nora Römer & 1000 & 3001 & 365.0 & CASH\\
+2025-01-15 & TEKNM39KHV & 1 x Geb opt 1 FOG &  & 3001 & 340.0 & POS\\
+2025-01-15 & TEKNM39KHV & Bank payout & 1020 &  & 334.9 & 921926\\
+2025-01-15 & TEKNM39KHV & Fee & 4001 &  & 5.1 & \\
+2025-01-15 & TCX6XRVRFY & 1 x Geburtstag Option 1 &  & 3001 & 297.5 & POS\\
+2025-01-15 & TCX6XRVRFY & Bank payout & 1020 &  & 293.04 & 921926\\
+2025-01-15 & TCX6XRVRFY & Fee & 4001 &  & 4.46 & \\
+2025-01-14 & TFAX6TK6VN & 1 x Getränk 4.50.-, 1 x Wasser 4.- &  & 3001 & 8.5 & POS\\
+2025-01-14 & TFAX6TK6VN & Bank payout & 1020 &  & 8.37 & 920107\\
+2025-01-14 & TFAX6TK6VN & Fee & 4001 &  & 0.13 & \\
+2025-01-14 & TAAATEZLMSH & 2 x Eintritt Kind (5-15) & 1000 & 3001 & 40.0 & CASH\\
+2025-01-14 & TAAATEZB7SE & 1 x Getränk 5.- & 1000 & 3001 & 5.0 & CASH\\
+2025-01-14 & TMP4F6U7AF & 1 x Ninja Night 18+/ Happy Hour (15\%) &  & 3001 & 11.5 & POS\\
+2025-01-14 & TMP4F6U7AF & Bank payout & 1020 &  & 11.33 & 920107\\
+2025-01-14 & TMP4F6U7AF & Fee & 4001 &  & 0.17 & \\
+2025-01-14 & TAAATEYMENQ & 1 x Getränk 4.50.- & 1000 & 3001 & 4.5 & CASH\\
+2025-01-14 & TEP4E93N2Z & 2 x Verlängerung 1h &  & 3001 & 10.0 & POS\\
+2025-01-14 & TEP4E93N2Z & Bank payout & 1020 &  & 9.85 & 920107\\
+2025-01-14 & TEP4E93N2Z & Fee & 4001 &  & 0.15 & \\
+2025-01-14 & TQXSYHEFM9 & 2 x Eintritt Adult, 3 x Eintritt Kind (5-15) &  & 3001 & 114.0 & POS\\
+2025-01-14 & TQXSYHEFM9 & Bank payout & 1020 &  & 112.29 & 920107\\
+2025-01-14 & TQXSYHEFM9 & Fee & 4001 &  & 1.71 & \\
+2025-01-13 & TAAATERQB6E & 2 x Snack 2,50.-, 1 x Getränk & 1000 & 3001 & 8.5 & CASH\\
+2025-01-13 & TEKGR2D4AG & 2 x Getränk 4.50.- &  & 3001 & 9.0 & POS\\
+2025-01-13 & TEKGR2D4AG & Bank payout & 1020 &  & 8.86 & 918328\\
+2025-01-13 & TEKGR2D4AG & Fee & 4001 &  & 0.14 & \\
+2025-01-13 & TEZM3YDSDS & 1 x Getränk 4.50.- &  & 3001 & 4.5 & POS\\
+2025-01-13 & TEZM3YDSDS & Bank payout & 1020 &  & 4.43 & 918328\\
+2025-01-13 & TEZM3YDSDS & Fee & 4001 &  & 0.07 & \\
+2025-01-13 & TAAATEREEB6 & 1 x Snack 2,50.- & 1000 & 3001 & 2.5 & CASH\\
+2025-01-13 & TAAATERD6KX & 1 x Snack 2,50.- & 1000 & 3001 & 2.5 & CASH\\
+2025-01-13 & TCR7LN3YAF & 1 x Getränk 4.50.- &  & 3001 & 4.5 & POS\\
+2025-01-13 & TCR7LN3YAF & Bank payout & 1020 &  & 4.43 & 918328\\
+2025-01-13 & TCR7LN3YAF & Fee & 4001 &  & 0.07 & \\
+2025-01-13 & TDADQ4K6V3 & 1 x Eintritt Adult &  & 3001 & 27.0 & POS\\
+2025-01-13 & TDADQ4K6V3 & Bank payout & 1020 &  & 26.59 & 918328\\
+2025-01-13 & TDADQ4K6V3 & Fee & 4001 &  & 0.41 & \\
+2025-01-13 & TEZ4LNKCHL & 1 x Begleitperson &  & 3001 & 8.0 & POS\\
+2025-01-13 & TEZ4LNKCHL & Bank payout & 1020 &  & 7.88 & 918328\\
+2025-01-13 & TEZ4LNKCHL & Fee & 4001 &  & 0.12 & \\
+2025-01-13 & TCZP7NVUPQ & 1 x Wasser 4.- &  & 3001 & 4.0 & POS\\
+2025-01-13 & TCZP7NVUPQ & Bank payout & 1020 &  & 3.9 & 918328\\
+2025-01-13 & TCZP7NVUPQ & Fee & 4001 &  & 0.1 & \\
+2025-01-13 & TCU96Q2GY3 & 2 x Getränk 4.50.-, 1 x Snack 2,50.- &  & 3001 & 11.5 & POS\\
+2025-01-13 & TCU96Q2GY3 & Bank payout & 1020 &  & 11.33 & 918328\\
+2025-01-13 & TCU96Q2GY3 & Fee & 4001 &  & 0.17 & \\
+2025-01-13 & TAAATEQUVR4 & 1 x Snack 2,50.- & 1000 & 3001 & 2.5 & CASH\\
+2025-01-13 & TEQURDQLXG & 1 x Getränk 4.50.-, 1 x Verlängerung 1h &  & 3001 & 9.5 & POS\\
+2025-01-13 & TEQURDQLXG & Bank payout & 1020 &  & 9.36 & 918328\\
+2025-01-13 & TEQURDQLXG & Fee & 4001 &  & 0.14 & \\
+2025-01-13 & TDYDXQH76F & 4 x Snack 2,50.-, 3 x Getränk 4.50.-, 1 x Getränk 5.- &  & 3001 & 28.5 & POS\\
+2025-01-13 & TDYDXQH76F & Bank payout & 1020 &  & 27.79 & 918328\\
+2025-01-13 & TDYDXQH76F & Fee & 4001 &  & 0.71 & \\
+2025-01-13 & TAAATEQPRKK & 1 x Getränk 4.50.-, 1 x Begleitperson & 1000 & 3001 & 12.5 & CASH\\
+2025-01-13 & TAAATEQPHGK & 1 x Tageseintritt Kind 2-4 & 1000 & 3001 & 6.0 & CASH\\
+2025-01-13 & TCADAFNYT7 & 1 x Getränk 6.-, 1 x Obst 1.- &  & 3001 & 7.0 & POS\\
+2025-01-13 & TCADAFNYT7 & Bank payout & 1020 &  & 6.89 & 918328\\
+2025-01-13 & TCADAFNYT7 & Fee & 4001 &  & 0.11 & \\
+2025-01-13 & TDQ3H3HX3G & 2 x Getränk 4.50.-, 2 x Snack 2,50.- &  & 3001 & 14.0 & POS\\
+2025-01-13 & TDQ3H3HX3G & Bank payout & 1020 &  & 13.79 & 918328\\
+2025-01-13 & TDQ3H3HX3G & Fee & 4001 &  & 0.21 & \\
+2025-01-13 & TAAATEQGYS2 & 1 x Begleitperson, 1 x Tageseintritt Kind 2-4 & 1000 & 3001 & 14.0 & CASH\\
+2025-01-13 & TAAATEQF6GM & 1 x Getränk 6.-, 2 x Babyjno & 1000 & 3001 & 10.0 & CASH\\
+2025-01-13 & TAAATEQFT3E & 1 x Getränk 4.50.-, 1 x Snack 2,50.- & 1000 & 3001 & 7.0 & CASH\\
+2025-01-13 & TFKMAAAVZK & 10 x Schüsselanhänger &  & 3001 & 25.0 & POS\\
+2025-01-13 & TFKMAAAVZK & Bank payout & 1020 &  & 24.62 & 918328\\
+2025-01-13 & TFKMAAAVZK & Fee & 4001 &  & 0.38 & \\
+2025-01-13 & TEAE6LAQKL & 3 x Getränk 4.50.-, 1 x Snack 2,50.- &  & 3001 & 16.0 & POS\\
+2025-01-13 & TEAE6LAQKL & Bank payout & 1020 &  & 15.76 & 918328\\
+2025-01-13 & TEAE6LAQKL & Fee & 4001 &  & 0.24 & \\
+2025-01-13 & TCDDUXLLZX & 1 x Verlängerung 1h &  & 3001 & 5.0 & POS\\
+2025-01-13 & TCDDUXLLZX & Bank payout & 1020 &  & 4.92 & 918328\\
+2025-01-13 & TCDDUXLLZX & Fee & 4001 &  & 0.08 & \\
+2025-01-13 & TDLXPAHVS2 & 1 x Birthday Option 1, 7 x Verlängerung 1h &  & 3001 & 385.0 & POS\\
+2025-01-13 & TDLXPAHVS2 & Bank payout & 1020 &  & 379.22 & 918328\\
+2025-01-13 & TDLXPAHVS2 & Fee & 4001 &  & 5.78 & \\
+2025-01-13 & TFARCRG2S9 & 2 x Eintritt Adult, 3 x Eintritt Kind (5-15), 1 x Tageseintritt Kind 2-4 &  & 3001 & 120.0 & POS\\
+2025-01-13 & TFARCRG2S9 & Bank payout & 1020 &  & 117.0 & 918328\\
+2025-01-13 & TFARCRG2S9 & Fee & 4001 &  & 3.0 & \\
+2025-01-13 & TEMA4VY9TT & 1 x Getränk 1.5L 8.- &  & 3001 & 8.0 & POS\\
+2025-01-13 & TEMA4VY9TT & Bank payout & 1020 &  & 7.88 & 918328\\
+2025-01-13 & TEMA4VY9TT & Fee & 4001 &  & 0.12 & \\
+2025-01-13 & TMQ3LSR9MK & 1 x, 5 x Pizza MA &  & 3001 & 18.75 & POS\\
+2025-01-13 & TMQ3LSR9MK & Bank payout & 1020 &  & 18.47 & 918328\\
+2025-01-13 & TMQ3LSR9MK & Fee & 4001 &  & 0.28 & \\
+2025-01-12 & TAAATEKNABT & 1 x Zum Ausgleich im Sumup & 1000 & 3001 & 0.3 & CASH\\
+2025-01-12 & TAAATEHZEPN & 1 x Snack 2,50.- & 1000 & 3001 & 2.5 & CASH\\
+2025-01-12 & TAAATEHXCTG & 1 x Wasser 4.- & 1000 & 3001 & 4.0 & CASH\\
+2025-01-12 & TFE99D2KXN & 1 x Wasser 4.-, 1 x Tee &  & 3001 & 7.5 & POS\\
+2025-01-12 & TFE99D2KXN & Bank payout & 1020 &  & 7.39 & 916725\\
+2025-01-12 & TFE99D2KXN & Fee & 4001 &  & 0.11 & \\
+2025-01-12 & TAAATEHUACR & 1 x 2x Kaffee 1 Cappuccino 1 Getränk \& 1Chf Trinkgeld (wusste nicht wie ich's Trinkgeld eintippen soll) & 1000 & 3001 & 19.0 & CASH\\
+2025-01-12 & TC3ZX4FD6F & 3 x Snack 2,50.- &  & 3001 & 7.5 & POS\\
+2025-01-12 & TC3ZX4FD6F & Bank payout & 1020 &  & 7.31 & 916725\\
+2025-01-12 & TC3ZX4FD6F & Fee & 4001 &  & 0.19 & \\
+2025-01-12 & TDGMAR4Y4N & 2 x Happy Hour/ Ninja Night 18+ &  & 3001 & 27.0 & POS\\
+2025-01-12 & TDGMAR4Y4N & Bank payout & 1020 &  & 26.59 & 916725\\
+2025-01-12 & TDGMAR4Y4N & Fee & 4001 &  & 0.41 & \\
+2025-01-12 & T6ELDDF2QT & 2 x Begleitperson, 1 x Eintritt Kind (5-15) &  & 3001 & 36.0 & POS\\
+2025-01-12 & T6ELDDF2QT & Bank payout & 1020 &  & 35.46 & 916725\\
+2025-01-12 & T6ELDDF2QT & Fee & 4001 &  & 0.54 & \\
+2025-01-12 & TCVEF2DCFA & 2 x Getränk 4.50.- &  & 3001 & 9.0 & POS\\
+2025-01-12 & TCVEF2DCFA & Bank payout & 1020 &  & 8.86 & 916725\\
+2025-01-12 & TCVEF2DCFA & Fee & 4001 &  & 0.14 & \\
+2025-01-12 & TERTU64NSA & 2 x Getränk 4.50.- &  & 3001 & 9.0 & POS\\
+2025-01-12 & TERTU64NSA & Bank payout & 1020 &  & 8.86 & 916725\\
+2025-01-12 & TERTU64NSA & Fee & 4001 &  & 0.14 & \\
+2025-01-12 & TE999VTNRS & 2 x Snack 2,50.-, 1 x Getränk 4.50.-, 1 x Wasser 4.- &  & 3001 & 13.5 & POS\\
+2025-01-12 & TE999VTNRS & Bank payout & 1020 &  & 13.3 & 916725\\
+2025-01-12 & TE999VTNRS & Fee & 4001 &  & 0.2 & \\
+2025-01-12 & TE3UVTRR9T & 2 x Eintritt Kind (5-15), 1 x Begleitperson &  & 3001 & 48.0 & POS\\
+2025-01-12 & TE3UVTRR9T & Bank payout & 1020 &  & 47.28 & 916725\\
+2025-01-12 & TE3UVTRR9T & Fee & 4001 &  & 0.72 & \\
+2025-01-12 & TAAATEHBZKS & 1 x Wasser 4.- & 1000 & 3001 & 4.0 & CASH\\
+2025-01-12 & TAAATEHBPHS & 2 x Snack 2.-, 1 x Getränk 4.50.- & 1000 & 3001 & 8.5 & CASH\\
+2025-01-12 & TD4AMH7CMQ & 1 x Getränk 4.50.- &  & 3001 & 4.5 & POS\\
+2025-01-12 & TD4AMH7CMQ & Bank payout & 1020 &  & 4.43 & 916725\\
+2025-01-12 & TD4AMH7CMQ & Fee & 4001 &  & 0.07 & \\
+2025-01-12 & TAAATEG4E36 & 2 x Begleitperson, 2 x Eintritt Kind (5-15) & 1000 & 3001 & 56.0 & CASH\\
+2025-01-12 & TAAATEGXNQ2 & 2 x Eintritt Kind (5-15) & 1000 & 3001 & 40.0 & CASH\\
+2025-01-12 & TEFP6PRUQP & 1 x Begleitperson, 1 x Eintritt Kind (5-15) &  & 3001 & 28.0 & POS\\
+2025-01-12 & TEFP6PRUQP & Bank payout & 1020 &  & 27.58 & 916725\\
+2025-01-12 & TEFP6PRUQP & Fee & 4001 &  & 0.42 & \\
+2025-01-12 & TAAATEGS93S & 1 x Getränk 4.50.- & 1000 & 3001 & 4.5 & CASH\\
+2025-01-12 & TC6EMURTMY & 1 x Begleitperson &  & 3001 & 8.0 & POS\\
+2025-01-12 & TC6EMURTMY & Bank payout & 1020 &  & 7.88 & 916725\\
+2025-01-12 & TC6EMURTMY & Fee & 4001 &  & 0.12 & \\
+2025-01-12 & TL6GFE4MEA & 4 x Eintritt Kind (5-15), 1 x Begleitperson &  & 3001 & 88.0 & POS\\
+2025-01-12 & TL6GFE4MEA & Bank payout & 1020 &  & 86.68 & 916725\\
+2025-01-12 & TL6GFE4MEA & Fee & 4001 &  & 1.32 & \\
+2025-01-12 & TAAATEGQD9F & 2 x Getränk 4.50.- & 1000 & 3001 & 9.0 & CASH\\
+2025-01-12 & TTR2NHKDFQ & 2 x Snack 2,50.- &  & 3001 & 5.0 & POS\\
+2025-01-12 & TTR2NHKDFQ & Bank payout & 1020 &  & 4.92 & 916725\\
+2025-01-12 & TTR2NHKDFQ & Fee & 4001 &  & 0.08 & \\
+2025-01-12 & TAAATEGLQDV & 1 x Wasser 4.- & 1000 & 3001 & 4.0 & CASH\\
+2025-01-12 & TAAATEGKSU6 & 1 x Getränk 4.50.- & 1000 & 3001 & 4.5 & CASH\\
+2025-01-12 & TAAATEGKM3L & 1 x Snack 2,50.- & 1000 & 3001 & 2.5 & CASH\\
+2025-01-12 & TAAATEGH7BL & 1 x Snack 2,50.-, 1 x Getränk 4.50.- & 1000 & 3001 & 7.0 & CASH\\
+2025-01-12 & TEALD72GAD & 1 x Snack 2,50.- &  & 3001 & 2.5 & POS\\
+2025-01-12 & TEALD72GAD & Bank payout & 1020 &  & 2.46 & 916725\\
+2025-01-12 & TEALD72GAD & Fee & 4001 &  & 0.04 & \\
+2025-01-12 & TFKPLYPE3S & 1 x Eintritt Adult, 3 x Eintritt Kind (5-15) &  & 3001 & 87.0 & POS\\
+2025-01-12 & TFKPLYPE3S & Bank payout & 1020 &  & 85.69 & 916725\\
+2025-01-12 & TFKPLYPE3S & Fee & 4001 &  & 1.31 & \\
+2025-01-12 & TC6MC3627Z & 1 x Begleitperson, 3 x Eintritt Kind (5-15), 1 x Eintritt Adult &  & 3001 & 95.0 & POS\\
+2025-01-12 & TC6MC3627Z & Bank payout & 1020 &  & 93.57 & 916725\\
+2025-01-12 & TC6MC3627Z & Fee & 4001 &  & 1.43 & \\
+2025-01-12 & TE4CYNRSKD & 3 x Eintritt Kind (5-15), 1 x Begleitperson &  & 3001 & 68.0 & POS\\
+2025-01-12 & TE4CYNRSKD & Bank payout & 1020 &  & 66.98 & 916725\\
+2025-01-12 & TE4CYNRSKD & Fee & 4001 &  & 1.02 & \\
+2025-01-12 & TDNZS4CLVC & 1 x Tageseintritt Kind 2-4, 1 x Begleitperson &  & 3001 & 14.0 & POS\\
+2025-01-12 & TDNZS4CLVC & Bank payout & 1020 &  & 13.79 & 916725\\
+2025-01-12 & TDNZS4CLVC & Fee & 4001 &  & 0.21 & \\
+2025-01-12 & TFLLSU3MFG & 1 x Eintritt Kind (5-15), 1 x Begleitperson &  & 3001 & 28.0 & POS\\
+2025-01-12 & TFLLSU3MFG & Bank payout & 1020 &  & 27.58 & 916725\\
+2025-01-12 & TFLLSU3MFG & Fee & 4001 &  & 0.42 & \\
+2025-01-12 & TK33VPQFMK & 2 x Eintritt Kind (5-15), 1 x Begleitperson &  & 3001 & 48.0 & POS\\
+2025-01-12 & TK33VPQFMK & Bank payout & 1020 &  & 47.28 & 916725\\
+2025-01-12 & TK33VPQFMK & Fee & 4001 &  & 0.72 & \\
+2025-01-12 & TCK7VLU6U4 & 2 x Eintritt Kind (5-15), 1 x Eintritt Adult &  & 3001 & 67.0 & POS\\
+2025-01-12 & TCK7VLU6U4 & Bank payout & 1020 &  & 65.32 & 916725\\
+2025-01-12 & TCK7VLU6U4 & Fee & 4001 &  & 1.68 & \\
+2025-01-12 & TDPEZ3STUG & 1 x Pizza Schinken 20cm, 2 x Snack 2,50.- &  & 3001 & 12.5 & POS\\
+2025-01-12 & TDPEZ3STUG & Bank payout & 1020 &  & 12.31 & 916725\\
+2025-01-12 & TDPEZ3STUG & Fee & 4001 &  & 0.19 & \\
+2025-01-12 & TDG4P6MURR & 2 x Eintritt Kind (5-15), 2 x Begleitperson &  & 3001 & 56.0 & POS\\
+2025-01-12 & TDG4P6MURR & Bank payout & 1020 &  & 55.16 & 916725\\
+2025-01-12 & TDG4P6MURR & Fee & 4001 &  & 0.84 & \\
+2025-01-12 & TAAATEF33G3 & 1 x Eintritt Kind (5-15), 2 x Begleitperson & 1000 & 3001 & 36.0 & CASH\\
+2025-01-12 & TCDFMA3NU4 & 1 x Birthday Option 1 &  & 3001 & 350.0 & POS\\
+2025-01-12 & TCDFMA3NU4 & Bank payout & 1020 &  & 341.25 & 916725\\
+2025-01-12 & TCDFMA3NU4 & Fee & 4001 &  & 8.75 & \\
+2025-01-12 & TE3ATUCCMM & 1 x Pizza Margherita 20cm, 1 x Pizza Schinken 20cm &  & 3001 & 13.5 & POS\\
+2025-01-12 & TE3ATUCCMM & Bank payout & 1020 &  & 13.16 & 916725\\
+2025-01-12 & TE3ATUCCMM & Fee & 4001 &  & 0.34 & \\
+2025-01-12 & TAAATEFQGH6 & 3 x Eintritt Kind (5-15), 1 x Begleitperson & 1000 & 3001 & 68.0 & CASH\\
+2025-01-12 & TFRAC46FHX & 1 x Begleitperson &  & 3001 & 8.0 & POS\\
+2025-01-12 & TFRAC46FHX & Bank payout & 1020 &  & 7.88 & 916725\\
+2025-01-12 & TFRAC46FHX & Fee & 4001 &  & 0.12 & \\
+2025-01-12 & TFSZDTETUR & 3 x Eintritt Kind (5-15), 1 x Begleitperson &  & 3001 & 68.0 & POS\\
+2025-01-12 & TFSZDTETUR & Bank payout & 1020 &  & 66.3 & 916725\\
+2025-01-12 & TFSZDTETUR & Fee & 4001 &  & 1.7 & \\
+2025-01-12 & TAAATEFD64F & 2 x Eintritt Kind (5-15), 1 x Begleitperson, 1 x Eintritt Adult & 1000 & 3001 & 75.0 & CASH\\
+2025-01-12 & TAAATEFDF94 & 3 x Snack 2,50.- & 1000 & 3001 & 7.5 & CASH\\
+2025-01-12 & TD6MY3RY46 & 1 x Tageseintritt Kind 2-4 &  & 3001 & 6.0 & POS\\
+2025-01-12 & TD6MY3RY46 & Bank payout & 1020 &  & 5.91 & 916725\\
+2025-01-12 & TD6MY3RY46 & Fee & 4001 &  & 0.09 & \\
+2025-01-12 & TCZLC4E7LV & 1 x Getränk 4.50.- &  & 3001 & 4.5 & POS\\
+2025-01-12 & TCZLC4E7LV & Bank payout & 1020 &  & 4.43 & 916725\\
+2025-01-12 & TCZLC4E7LV & Fee & 4001 &  & 0.07 & \\
+2025-01-12 & TEKDCXFNX6 & 2 x Eintritt Kind (5-15), 1 x Begleitperson &  & 3001 & 48.0 & POS\\
+2025-01-12 & TEKDCXFNX6 & Bank payout & 1020 &  & 47.28 & 916725\\
+2025-01-12 & TEKDCXFNX6 & Fee & 4001 &  & 0.72 & \\
+2025-01-12 & TFP64Q6KVR & 2 x Eintritt Adult &  & 3001 & 54.0 & POS\\
+2025-01-12 & TFP64Q6KVR & Bank payout & 1020 &  & 52.65 & 916725\\
+2025-01-12 & TFP64Q6KVR & Fee & 4001 &  & 1.35 & \\
+2025-01-12 & TAAATEEYTGK & 1 x Tageseintritt Kind 2-4, 2 x Eintritt Kind (5-15), 1 x Begleitperson & 1000 & 3001 & 54.0 & CASH\\
+2025-01-12 & TU4R4VLAS9 & 1 x Eintritt Adult &  & 3001 & 27.0 & POS\\
+2025-01-12 & TU4R4VLAS9 & Bank payout & 1020 &  & 26.59 & 916725\\
+2025-01-12 & TU4R4VLAS9 & Fee & 4001 &  & 0.41 & \\
+2025-01-11 & TAAATD96DQP & 1 x Snack 2,50.- & 1000 & 3001 & 2.5 & CASH\\
+2025-01-11 & TE9VDXNDEA & 2 x Getränk 4.50.- &  & 3001 & 9.0 & POS\\
+2025-01-11 & TE9VDXNDEA & Bank payout & 1020 &  & 8.86 & 916725\\
+2025-01-11 & TE9VDXNDEA & Fee & 4001 &  & 0.14 & \\
+2025-01-11 & TCS7FS4QQ7 & 1 x Snack 2,50.- &  & 3001 & 2.5 & POS\\
+2025-01-11 & TCS7FS4QQ7 & Bank payout & 1020 &  & 2.46 & 916725\\
+2025-01-11 & TCS7FS4QQ7 & Fee & 4001 &  & 0.04 & \\
+2025-01-11 & TE43RPTN97 & 2 x Eintritt Kind (5-15), 1 x Begleitperson &  & 3001 & 48.0 & POS\\
+2025-01-11 & TE43RPTN97 & Bank payout & 1020 &  & 47.28 & 916725\\
+2025-01-11 & TE43RPTN97 & Fee & 4001 &  & 0.72 & \\
+2025-01-11 & TEXF4A4A2R & 1 x Snack 2,50.- &  & 3001 & 2.5 & POS\\
+2025-01-11 & TEXF4A4A2R & Bank payout & 1020 &  & 2.46 & 916725\\
+2025-01-11 & TEXF4A4A2R & Fee & 4001 &  & 0.04 & \\
+2025-01-11 & TCMYUDKF7G & 1 x Getränk 5.- &  & 3001 & 5.0 & POS\\
+2025-01-11 & TCMYUDKF7G & Bank payout & 1020 &  & 4.92 & 916725\\
+2025-01-11 & TCMYUDKF7G & Fee & 4001 &  & 0.08 & \\
+2025-01-11 & TDUMY4VDZE & 1 x Eintritt Kind (5-15), 2 x Begleitperson &  & 3001 & 36.0 & POS\\
+2025-01-11 & TDUMY4VDZE & Bank payout & 1020 &  & 35.46 & 916725\\
+2025-01-11 & TDUMY4VDZE & Fee & 4001 &  & 0.54 & \\
+2025-01-11 & TDTEYYF2AQ & 2 x Eintritt Kind (5-15), 1 x Begleitperson &  & 3001 & 48.0 & POS\\
+2025-01-11 & TDTEYYF2AQ & Bank payout & 1020 &  & 47.28 & 916725\\
+2025-01-11 & TDTEYYF2AQ & Fee & 4001 &  & 0.72 & \\
+2025-01-11 & TDY6UCREQR & 1 x Snack 2,50.-, 1 x Getränk 4.50.- &  & 3001 & 7.0 & POS\\
+2025-01-11 & TDY6UCREQR & Bank payout & 1020 &  & 6.89 & 916725\\
+2025-01-11 & TDY6UCREQR & Fee & 4001 &  & 0.11 & \\
+2025-01-11 & TE9FAKZQ7G & 1 x Getränk 4.50.- &  & 3001 & 4.5 & POS\\
+2025-01-11 & TE9FAKZQ7G & Bank payout & 1020 &  & 4.43 & 916725\\
+2025-01-11 & TE9FAKZQ7G & Fee & 4001 &  & 0.07 & \\
+2025-01-11 & TFETQQKYD4 & 1 x Getränk 4.50.- &  & 3001 & 4.5 & POS\\
+2025-01-11 & TFETQQKYD4 & Bank payout & 1020 &  & 4.43 & 916725\\
+2025-01-11 & TFETQQKYD4 & Fee & 4001 &  & 0.07 & \\
+2025-01-11 & TDX2ERN6DL & 1 x Geburtstagsoption 1 &  & 3001 & 350.0 & POS\\
+2025-01-11 & TDX2ERN6DL & Bank payout & 1020 &  & 341.25 & 916725\\
+2025-01-11 & TDX2ERN6DL & Fee & 4001 &  & 8.75 & \\
+2025-01-11 & TDFFGCZEEX & 1 x Pizza Margherita 20cm, 1 x Pizza Schinken 20cm &  & 3001 & 13.5 & POS\\
+2025-01-11 & TDFFGCZEEX & Bank payout & 1020 &  & 13.3 & 916725\\
+2025-01-11 & TDFFGCZEEX & Fee & 4001 &  & 0.2 & \\
+2025-01-11 & TEAAM6STSF & 1 x Snack 2,50.- &  & 3001 & 2.5 & POS\\
+2025-01-11 & TEAAM6STSF & Bank payout & 1020 &  & 2.44 & 916725\\
+2025-01-11 & TEAAM6STSF & Fee & 4001 &  & 0.06 & \\
+2025-01-11 & TDSN9CD9FT & 1 x Eintritt Kind (5-15) &  & 3001 & 20.0 & POS\\
+2025-01-11 & TDSN9CD9FT & Bank payout & 1020 &  & 19.7 & 916725\\
+2025-01-11 & TDSN9CD9FT & Fee & 4001 &  & 0.3 & \\
+2025-01-11 & TAAATD7C6VM & 4 x Snack 2,50.- & 1000 & 3001 & 10.0 & CASH\\
+2025-01-11 & TDAR96RKMM & 1 x Eintritt Kind (5-15), 1 x Begleitperson &  & 3001 & 28.0 & POS\\
+2025-01-11 & TDAR96RKMM & Bank payout & 1020 &  & 27.58 & 916725\\
+2025-01-11 & TDAR96RKMM & Fee & 4001 &  & 0.42 & \\
+2025-01-11 & TFRQXH27QP & 1 x Getränk 6.-, 2 x Getränk 4.50.-, 1 x Getränk 5.- &  & 3001 & 20.0 & POS\\
+2025-01-11 & TFRQXH27QP & Bank payout & 1020 &  & 19.7 & 916725\\
+2025-01-11 & TFRQXH27QP & Fee & 4001 &  & 0.3 & \\
+2025-01-11 & TEKZASTFQ7 & 1 x Getränk 4.50.-, 1 x Pizza Margherita 20cm, 1 x Pizza Schinken 20cm &  & 3001 & 18.0 & POS\\
+2025-01-11 & TEKZASTFQ7 & Bank payout & 1020 &  & 17.73 & 916725\\
+2025-01-11 & TEKZASTFQ7 & Fee & 4001 &  & 0.27 & \\
+2025-01-11 & TAAATD6YYRH & 1 x Getränk 4.50.- & 1000 & 3001 & 4.5 & CASH\\
+2025-01-11 & TCMDUT43TY & 2 x Getränk 1.5L 8.-, 1 x Getränk 4.50.-, 1 x Getränk 5.- &  & 3001 & 25.5 & POS\\
+2025-01-11 & TCMDUT43TY & Bank payout & 1020 &  & 25.12 & 916725\\
+2025-01-11 & TCMDUT43TY & Fee & 4001 &  & 0.38 & \\
+2025-01-11 & TDRSKX4EVU & 2 x Snack 2,50.- &  & 3001 & 5.0 & POS\\
+2025-01-11 & TDRSKX4EVU & Bank payout & 1020 &  & 4.92 & 916725\\
+2025-01-11 & TDRSKX4EVU & Fee & 4001 &  & 0.08 & \\
+2025-01-11 & TDG27U3L3T & 2 x Eintritt Kind (5-15), 1 x Begleitperson &  & 3001 & 48.0 & POS\\
+2025-01-11 & TDG27U3L3T & Bank payout & 1020 &  & 46.8 & 916725\\
+2025-01-11 & TDG27U3L3T & Fee & 4001 &  & 1.2 & \\
+2025-01-11 & TDY9VRA3RC & 4 x Eintritt Kind (5-15), 1 x Begleitperson &  & 3001 & 88.0 & POS\\
+2025-01-11 & TDY9VRA3RC & Bank payout & 1020 &  & 86.68 & 916725\\
+2025-01-11 & TDY9VRA3RC & Fee & 4001 &  & 1.32 & \\
+2025-01-11 & TAAATD6PYR2 & 1 x Eintritt Kind (5-15) & 1000 & 3001 & 20.0 & CASH\\
+2025-01-11 & TFQLMZF3KY & 2 x Eintritt Kind (5-15), 1 x Begleitperson &  & 3001 & 48.0 & POS\\
+2025-01-11 & TFQLMZF3KY & Bank payout & 1020 &  & 47.28 & 916725\\
+2025-01-11 & TFQLMZF3KY & Fee & 4001 &  & 0.72 & \\
+2025-01-11 & TLLFKVA47S & 1 x Eintritt Kind (5-15), 1 x Begleitperson &  & 3001 & 28.0 & POS\\
+2025-01-11 & TLLFKVA47S & Bank payout & 1020 &  & 27.58 & 916725\\
+2025-01-11 & TLLFKVA47S & Fee & 4001 &  & 0.42 & \\
+2025-01-11 & TDDUVGTR6M & 2 x Getränk 4.50.- &  & 3001 & 9.0 & POS\\
+2025-01-11 & TDDUVGTR6M & Bank payout & 1020 &  & 8.77 & 916725\\
+2025-01-11 & TDDUVGTR6M & Fee & 4001 &  & 0.23 & \\
+2025-01-11 & TDXSAPDKSD & 2 x Eintritt Adult &  & 3001 & 54.0 & POS\\
+2025-01-11 & TDXSAPDKSD & Bank payout & 1020 &  & 52.65 & 916725\\
+2025-01-11 & TDXSAPDKSD & Fee & 4001 &  & 1.35 & \\
+2025-01-11 & TDP3UH9MLA & 1 x Verlängerung 1h &  & 3001 & 5.0 & POS\\
+2025-01-11 & TDP3UH9MLA & Bank payout & 1020 &  & 4.92 & 916725\\
+2025-01-11 & TDP3UH9MLA & Fee & 4001 &  & 0.08 & \\
+2025-01-11 & TDZAQK6379 & 1 x Getränk 5.-, 1 x Snack 2,50.- &  & 3001 & 7.5 & POS\\
+2025-01-11 & TDZAQK6379 & Bank payout & 1020 &  & 7.31 & 916725\\
+2025-01-11 & TDZAQK6379 & Fee & 4001 &  & 0.19 & \\
+2025-01-11 & TDKGXL4C27 & 1 x Pizza Margherita 20cm, 1 x Pizza Schinken 20cm, 1 x Getränk 4.50.- &  & 3001 & 18.0 & POS\\
+2025-01-11 & TDKGXL4C27 & Bank payout & 1020 &  & 17.73 & 916725\\
+2025-01-11 & TDKGXL4C27 & Fee & 4001 &  & 0.27 & \\
+2025-01-11 & TCAQ2G27XZ & 2 x Verlängerung 1h &  & 3001 & 10.0 & POS\\
+2025-01-11 & TCAQ2G27XZ & Bank payout & 1020 &  & 9.85 & 916725\\
+2025-01-11 & TCAQ2G27XZ & Fee & 4001 &  & 0.15 & \\
+2025-01-11 & TD3PQ3KXRD & 2 x Pizza Margherita 20cm &  & 3001 & 12.0 & POS\\
+2025-01-11 & TD3PQ3KXRD & Bank payout & 1020 &  & 11.82 & 916725\\
+2025-01-11 & TD3PQ3KXRD & Fee & 4001 &  & 0.18 & \\
+2025-01-11 & TAAATD6B6EB & 1 x Getränk 5.- & 1000 & 3001 & 5.0 & CASH\\
+2025-01-11 & TCCDVZ3L2E & 2 x Eintritt Kind FOG, 1 x Eintritt vergünstigt &  & 3001 & 46.0 & POS\\
+2025-01-11 & TCCDVZ3L2E & Bank payout & 1020 &  & 45.31 & 916725\\
+2025-01-11 & TCCDVZ3L2E & Fee & 4001 &  & 0.69 & \\
+2025-01-11 & TAAATD6AG2B & 1 x Getränk 5.- & 1000 & 3001 & 5.0 & CASH\\
+2025-01-11 & TEE3SLMG3Q & 1 x Eintritt Kind (5-15), 1 x Tageseintritt Kind 2-4, 1 x Begleitperson &  & 3001 & 34.0 & POS\\
+2025-01-11 & TEE3SLMG3Q & Bank payout & 1020 &  & 33.49 & 916725\\
+2025-01-11 & TEE3SLMG3Q & Fee & 4001 &  & 0.51 & \\
+2025-01-11 & TFFLGUKZDF & 1 x Kindergeburtstag &  & 3001 & 250.0 & POS\\
+2025-01-11 & TFFLGUKZDF & Bank payout & 1020 &  & 246.25 & 916725\\
+2025-01-11 & TFFLGUKZDF & Fee & 4001 &  & 3.75 & \\
+2025-01-11 & TEV7DPK6PY & 2 x Getränk 5.-, 1 x Getränk 4.50.- &  & 3001 & 14.5 & POS\\
+2025-01-11 & TEV7DPK6PY & Bank payout & 1020 &  & 14.28 & 916725\\
+2025-01-11 & TEV7DPK6PY & Fee & 4001 &  & 0.22 & \\
+2025-01-11 & TAAATD4TAAY & 1 x Eintritt Kind (5-15) & 1000 & 3001 & 20.0 & CASH\\
+2025-01-11 & TFDKGLU9MU & 1 x Tee &  & 3001 & 3.5 & POS\\
+2025-01-11 & TFDKGLU9MU & Bank payout & 1020 &  & 3.45 & 916725\\
+2025-01-11 & TFDKGLU9MU & Fee & 4001 &  & 0.05 & \\
+2025-01-11 & TECHAGHPQT & 1 x Ratenzahlung Semesterkurs &  & 3001 & 107.5 & POS\\
+2025-01-11 & TECHAGHPQT & Bank payout & 1020 &  & 105.89 & 916725\\
+2025-01-11 & TECHAGHPQT & Fee & 4001 &  & 1.61 & \\
+2025-01-11 & TAAATD4N3H2 & 1 x Individueller Betrag & 1000 & 3001 & 2.0 & CASH\\
+2025-01-11 & TEP7L74F36 & 1 x Snack 4,50.-, 1 x Snack 3,50.- &  & 3001 & 8.0 & POS\\
+2025-01-11 & TEP7L74F36 & Bank payout & 1020 &  & 7.88 & 916725\\
+2025-01-11 & TEP7L74F36 & Fee & 4001 &  & 0.12 & \\
+2025-01-11 & TAAATD4MEB7 & 1 x Tageseintritt Kind 2-4, 1 x Schnupperkurs & 1000 & 3001 & 31.0 & CASH\\
+2025-01-11 & TAAATD4GBT7 & 2 x Tee, 1 x Snack 4,50.- & 1000 & 3001 & 11.5 & CASH\\
+2025-01-11 & TAAATD37KDB & 1 x Snack 3,50.- & 1000 & 3001 & 3.5 & CASH\\
+2025-01-11 & TESDNFPAT6 & 2 x Eintritt Kind (5-15) &  & 3001 & 40.0 & POS\\
+2025-01-11 & TESDNFPAT6 & Bank payout & 1020 &  & 39.4 & 916725\\
+2025-01-11 & TESDNFPAT6 & Fee & 4001 &  & 0.6 & \\
+2025-01-11 & TAAATD33YYA & 1 x Getränk 6.- & 1000 & 3001 & 6.0 & CASH\\
+2025-01-11 & TEQE97DZQL & 1 x Getränk 6.- &  & 3001 & 6.0 & POS\\
+2025-01-11 & TEQE97DZQL & Bank payout & 1020 &  & 5.91 & 916725\\
+2025-01-11 & TEQE97DZQL & Fee & 4001 &  & 0.09 & \\
+2025-01-11 & TEEZMV9GLH & 1 x Getränk &  & 3001 & 3.5 & POS\\
+2025-01-11 & TEEZMV9GLH & Bank payout & 1020 &  & 3.45 & 916725\\
+2025-01-11 & TEEZMV9GLH & Fee & 4001 &  & 0.05 & \\
+2025-01-11 & TAAATD3ZVPM & 1 x Getränk 4.50.-, 1 x Snack 2,50.-, 1 x Getränk 5.- & 1000 & 3001 & 12.0 & CASH\\
+2025-01-11 & TAAATD3YRV9 & 1 x Verlängerung 1h & 1000 & 3001 & 5.0 & CASH\\
+2025-01-11 & TCRQRDDURY & 1 x Verlängerung 1h &  & 3001 & 5.0 & POS\\
+2025-01-11 & TCRQRDDURY & Bank payout & 1020 &  & 4.92 & 916725\\
+2025-01-11 & TCRQRDDURY & Fee & 4001 &  & 0.08 & \\
+2025-01-11 & TE9692CVK9 & 2 x Getränk 4.50.- &  & 3001 & 9.0 & POS\\
+2025-01-11 & TE9692CVK9 & Bank payout & 1020 &  & 8.86 & 916725\\
+2025-01-11 & TE9692CVK9 & Fee & 4001 &  & 0.14 & \\
+2025-01-11 & TAAATD3V7FN & 1 x Verlängerung 1h & 1000 & 3001 & 5.0 & CASH\\
+2025-01-11 & TEHQEXA4G3 & 2 x Eintritt Kind (5-15), 2 x Begleitperson &  & 3001 & 56.0 & POS\\
+2025-01-11 & TEHQEXA4G3 & Bank payout & 1020 &  & 55.16 & 916725\\
+2025-01-11 & TEHQEXA4G3 & Fee & 4001 &  & 0.84 & \\
+2025-01-11 & TAAATD3MLC6 & 1 x Eintritt Kind (5-15) & 1000 & 3001 & 20.0 & CASH\\
+2025-01-11 & TAAATD3MF7A & 1 x Eintritt Kind (5-15) & 1000 & 3001 & 20.0 & CASH\\
+2025-01-11 & TFEF6SA9FY & 1 x Eintritt Kind (5-15), 1 x Tageseintritt Kind 2-4, 2 x Begleitperson &  & 3001 & 42.0 & POS\\
+2025-01-11 & TFEF6SA9FY & Bank payout & 1020 &  & 40.95 & 916725\\
+2025-01-11 & TFEF6SA9FY & Fee & 4001 &  & 1.05 & \\
+2025-01-11 & TCDSPL4NVG & 1 x Getränk 5.-, 1 x Semester Kurs Lenny Born &  & 3001 & 370.5 & POS\\
+2025-01-11 & TCDSPL4NVG & Bank payout & 1020 &  & 364.94 & 916725\\
+2025-01-11 & TCDSPL4NVG & Fee & 4001 &  & 5.56 & \\
+2025-01-11 & TAAATD3D2L7 & 2 x Getränk 6.- & 1000 & 3001 & 12.0 & CASH\\
+2025-01-11 & TAAATD3DULN & 1 x Getränk 5.- & 1000 & 3001 & 5.0 & CASH\\
+2025-01-11 & TAAATD3AKGK & 1 x Verlängerung 1h & 1000 & 3001 & 5.0 & CASH\\
+2025-01-11 & TAAATD3AGHU & 1 x Verlängerung 1h & 1000 & 3001 & 5.0 & CASH\\
+2025-01-11 & TCKD3LPS6S & 2 x Eintritt Kind (5-15), 1 x Begleitperson &  & 3001 & 48.0 & POS\\
+2025-01-11 & TCKD3LPS6S & Bank payout & 1020 &  & 46.8 & 916725\\
+2025-01-11 & TCKD3LPS6S & Fee & 4001 &  & 1.2 & \\
+2025-01-11 & TEGQT94DDY & 1 x Begleitperson, 1 x Eintritt Adult, 1 x Eintritt Kind (5-15) &  & 3001 & 55.0 & POS\\
+2025-01-11 & TEGQT94DDY & Bank payout & 1020 &  & 54.17 & 916725\\
+2025-01-11 & TEGQT94DDY & Fee & 4001 &  & 0.83 & \\
+2025-01-10 & TAAATDXRABL & 1 x Getränk 4.50.- & 1000 & 3001 & 4.5 & CASH\\
+2025-01-10 & TELS44TQUU & 2 x Getränk 4.50.-, 1 x Snack 2,50.- &  & 3001 & 11.5 & POS\\
+2025-01-10 & TELS44TQUU & Bank payout & 1020 &  & 11.21 & 916725\\
+2025-01-10 & TELS44TQUU & Fee & 4001 &  & 0.29 & \\
+2025-01-10 & TNA2XPTYF7 & 1 x Kurs Enya &  & 3001 & 450.0 & POS\\
+2025-01-10 & TNA2XPTYF7 & Bank payout & 1020 &  & 443.25 & 916725\\
+2025-01-10 & TNA2XPTYF7 & Fee & 4001 &  & 6.75 & \\
+2025-01-10 & TAAATDV4FG6 & 2 x Getränk 4.50.- & 1000 & 3001 & 9.0 & CASH\\
+2025-01-10 & TEMMLMHUCH & 1 x Getränk 4.50.-, 1 x Snack 4,50.- &  & 3001 & 9.0 & POS\\
+2025-01-10 & TEMMLMHUCH & Bank payout & 1020 &  & 8.86 & 916725\\
+2025-01-10 & TEMMLMHUCH & Fee & 4001 &  & 0.14 & \\
+2025-01-10 & TCQ7SE7XMR & 2 x Getränk 4.50.- &  & 3001 & 9.0 & POS\\
+2025-01-10 & TCQ7SE7XMR & Bank payout & 1020 &  & 8.86 & 916725\\
+2025-01-10 & TCQ7SE7XMR & Fee & 4001 &  & 0.14 & \\
+2025-01-10 & TC7FAQMHGC & 2 x Getränk 4.50.- &  & 3001 & 9.0 & POS\\
+2025-01-10 & TC7FAQMHGC & Bank payout & 1020 &  & 8.86 & 916725\\
+2025-01-10 & TC7FAQMHGC & Fee & 4001 &  & 0.14 & \\
+2025-01-10 & TDPY4MMADE & 1 x Snack 2,50.- &  & 3001 & 2.5 & POS\\
+2025-01-10 & TDPY4MMADE & Bank payout & 1020 &  & 2.44 & 916725\\
+2025-01-10 & TDPY4MMADE & Fee & 4001 &  & 0.06 & \\
+2025-01-10 & TAAATDVLANF & 1 x Getränk 4.50.- & 1000 & 3001 & 4.5 & CASH\\
+2025-01-10 & TAAATDVHKHS & 1 x Getränk 4.50.- & 1000 & 3001 & 4.5 & CASH\\
+2025-01-10 & TDTGL6ZZ6H & 1 x Getränk 4.50.- &  & 3001 & 4.5 & POS\\
+2025-01-10 & TDTGL6ZZ6H & Bank payout & 1020 &  & 4.39 & 916725\\
+2025-01-10 & TDTGL6ZZ6H & Fee & 4001 &  & 0.11 & \\
+2025-01-10 & TUKGC3VDHK & 1 x Getränk 4.50.- &  & 3001 & 4.5 & POS\\
+2025-01-10 & TUKGC3VDHK & Bank payout & 1020 &  & 4.39 & 916725\\
+2025-01-10 & TUKGC3VDHK & Fee & 4001 &  & 0.11 & \\
+2025-01-10 & TFCUC2LUHL & 1 x Snack 2,50.- &  & 3001 & 2.5 & POS\\
+2025-01-10 & TFCUC2LUHL & Bank payout & 1020 &  & 2.46 & 916725\\
+2025-01-10 & TFCUC2LUHL & Fee & 4001 &  & 0.04 & \\
+2025-01-10 & TXGZTRSZ7Q & 1 x Getränk 4.50.- &  & 3001 & 4.5 & POS\\
+2025-01-10 & TXGZTRSZ7Q & Bank payout & 1020 &  & 4.43 & 916725\\
+2025-01-10 & TXGZTRSZ7Q & Fee & 4001 &  & 0.07 & \\
+2025-01-10 & TELVLKKKMR & 1 x Verlängerung 1h &  & 3001 & 5.0 & POS\\
+2025-01-10 & TELVLKKKMR & Bank payout & 1020 &  & 4.87 & 916725\\
+2025-01-10 & TELVLKKKMR & Fee & 4001 &  & 0.13 & \\
+2025-01-10 & TD9UE437CE & 1 x Verlängerung 1h &  & 3001 & 5.0 & POS\\
+2025-01-10 & TD9UE437CE & Bank payout & 1020 &  & 4.87 & 916725\\
+2025-01-10 & TD9UE437CE & Fee & 4001 &  & 0.13 & \\
+2025-01-10 & TAAATDU3LSL & 1 x Verlängerung 1h & 1000 & 3001 & 5.0 & CASH\\
+2025-01-10 & TAAATDUZNR4 & 1 x Verlängerung 1h & 1000 & 3001 & 5.0 & CASH\\
+2025-01-10 & TCR2HKYSS2 & 4 x Eintritt Kind (5-15), 1 x Begleitperson &  & 3001 & 88.0 & POS\\
+2025-01-10 & TCR2HKYSS2 & Bank payout & 1020 &  & 86.68 & 916725\\
+2025-01-10 & TCR2HKYSS2 & Fee & 4001 &  & 1.32 & \\
+2025-01-10 & TAAATDUZGU2 & 1 x Getränk 4.50.-, 1 x Snack 2,50.- & 1000 & 3001 & 7.0 & CASH\\
+2025-01-10 & TAAATDUZAEC & 1 x Snack 2,50.- & 1000 & 3001 & 2.5 & CASH\\
+2025-01-10 & TAAATDUYYSH & 1 x Getränk 4.50.- & 1000 & 3001 & 4.5 & CASH\\
+2025-01-10 & TFMCEFEA9V & 1 x Getränk 4.50.- &  & 3001 & 4.5 & POS\\
+2025-01-10 & TFMCEFEA9V & Bank payout & 1020 &  & 4.43 & 916725\\
+2025-01-10 & TFMCEFEA9V & Fee & 4001 &  & 0.07 & \\
+2025-01-10 & TCGKGGRG4Q & 1 x Getränk 4.50.- &  & 3001 & 4.5 & POS\\
+2025-01-10 & TCGKGGRG4Q & Bank payout & 1020 &  & 4.43 & 916725\\
+2025-01-10 & TCGKGGRG4Q & Fee & 4001 &  & 0.07 & \\
+2025-01-10 & TAAATDURLLC & 1 x Getränk 6.-, 1 x Getränk 4.50.- & 1000 & 3001 & 10.5 & CASH\\
+2025-01-10 & TECYG24DZZ & 1 x Verlängerung &  & 3001 & 5.0 & POS\\
+2025-01-10 & TECYG24DZZ & Bank payout & 1020 &  & 4.92 & 916725\\
+2025-01-10 & TECYG24DZZ & Fee & 4001 &  & 0.08 & \\
+2025-01-10 & TFNMAZEVLA & 1 x Tee &  & 3001 & 3.5 & POS\\
+2025-01-10 & TFNMAZEVLA & Bank payout & 1020 &  & 3.45 & 916725\\
+2025-01-10 & TFNMAZEVLA & Fee & 4001 &  & 0.05 & \\
+2025-01-10 & TESEYGAG36 & 1 x Verlängerung 1h &  & 3001 & 5.0 & POS\\
+2025-01-10 & TESEYGAG36 & Bank payout & 1020 &  & 4.92 & 916725\\
+2025-01-10 & TESEYGAG36 & Fee & 4001 &  & 0.08 & \\
+2025-01-10 & TK9HYEGXPC & 2 x Getränk 4.50.-, 1 x Getränk 5.- &  & 3001 & 14.0 & POS\\
+2025-01-10 & TK9HYEGXPC & Bank payout & 1020 &  & 13.79 & 916725\\
+2025-01-10 & TK9HYEGXPC & Fee & 4001 &  & 0.21 & \\
+2025-01-10 & TDQVY7DDFE & 2 x Getränk 5.- &  & 3001 & 10.0 & POS\\
+2025-01-10 & TDQVY7DDFE & Bank payout & 1020 &  & 9.85 & 916725\\
+2025-01-10 & TDQVY7DDFE & Fee & 4001 &  & 0.15 & \\
+2025-01-10 & TAAATDUKU3M & 1 x Snack 2,50.-, 1 x Snack 4,50.- & 1000 & 3001 & 7.0 & CASH\\
+2025-01-10 & TAAATDUHSX7 & 1 x Getränk 4.50.-, 2 x Snack 2,50.- & 1000 & 3001 & 9.5 & CASH\\
+2025-01-10 & TFKMKTPMEM & 1 x Eintritt Kind (5-15) &  & 3001 & 20.0 & POS\\
+2025-01-10 & TFKMKTPMEM & Bank payout & 1020 &  & 19.7 & 916725\\
+2025-01-10 & TFKMKTPMEM & Fee & 4001 &  & 0.3 & \\
+2025-01-10 & TLDH7GNMLL & 2 x Verlängerung 1h &  & 3001 & 10.0 & POS\\
+2025-01-10 & TLDH7GNMLL & Bank payout & 1020 &  & 9.85 & 916725\\
+2025-01-10 & TLDH7GNMLL & Fee & 4001 &  & 0.15 & \\
+2025-01-10 & TDRM6FQYC7 & 1 x Getränk 4.50.-, 1 x Snack 2,50.- &  & 3001 & 7.0 & POS\\
+2025-01-10 & TDRM6FQYC7 & Bank payout & 1020 &  & 6.89 & 916725\\
+2025-01-10 & TDRM6FQYC7 & Fee & 4001 &  & 0.11 & \\
+2025-01-10 & TAAATDTYAFF & 1 x Getränk 4.50.- & 1000 & 3001 & 4.5 & CASH\\
+2025-01-10 & TCE3GV3F24 & 1 x Verlängerung 1h &  & 3001 & 5.0 & POS\\
+2025-01-10 & TCE3GV3F24 & Bank payout & 1020 &  & 4.87 & 916725\\
+2025-01-10 & TCE3GV3F24 & Fee & 4001 &  & 0.13 & \\
+2025-01-10 & TAAATDTUTDQ & 2 x Eintritt Kind (5-15) & 1000 & 3001 & 40.0 & CASH\\
+2025-01-10 & TCQKDYD9YD & 1 x 90min Privatstunde BASIC, 1 x Individueller Betrag &  & 3001 & 187.5 & POS\\
+2025-01-10 & TCQKDYD9YD & Bank payout & 1020 &  & 184.69 & 916725\\
+2025-01-10 & TCQKDYD9YD & Fee & 4001 &  & 2.81 & \\
+2025-01-09 & TC9DXYTXV9 & 1 x Drop In &  & 3001 & 35.0 & POS\\
+2025-01-09 & TC9DXYTXV9 & Bank payout & 1020 &  & 34.47 & 911889\\
+2025-01-09 & TC9DXYTXV9 & Fee & 4001 &  & 0.53 & \\
+2025-01-09 & TFFKVCEQTN & 1 x Snack 4,50.- &  & 3001 & 4.5 & POS\\
+2025-01-09 & TFFKVCEQTN & Bank payout & 1020 &  & 4.43 & 911889\\
+2025-01-09 & TFFKVCEQTN & Fee & 4001 &  & 0.07 & \\
+2025-01-09 & TAAATDMNZVY & 1 x Getränk 6.- & 1000 & 3001 & 6.0 & CASH\\
+2025-01-09 & TLX6L6YHCD & 1 x Snack 2,50.- &  & 3001 & 2.5 & POS\\
+2025-01-09 & TLX6L6YHCD & Bank payout & 1020 &  & 2.46 & 911889\\
+2025-01-09 & TLX6L6YHCD & Fee & 4001 &  & 0.04 & \\
+2025-01-09 & TAAATDL6LU2 & 1 x Snack 2.- & 1000 & 3001 & 2.0 & CASH\\
+2025-01-09 & TCF2VEPR3E & 2 x Getränk 4.50.-, 1 x Snack 2,50.- &  & 3001 & 11.5 & POS\\
+2025-01-09 & TCF2VEPR3E & Bank payout & 1020 &  & 11.33 & 911889\\
+2025-01-09 & TCF2VEPR3E & Fee & 4001 &  & 0.17 & \\
+2025-01-09 & TDDAGCVDED & 1 x Getränk 4.50.- &  & 3001 & 4.5 & POS\\
+2025-01-09 & TDDAGCVDED & Bank payout & 1020 &  & 4.39 & 911889\\
+2025-01-09 & TDDAGCVDED & Fee & 4001 &  & 0.11 & \\
+2025-01-09 & TVGMCD9SQ9 & 1 x Getränk 5.- &  & 3001 & 5.0 & POS\\
+2025-01-09 & TVGMCD9SQ9 & Bank payout & 1020 &  & 4.87 & 911889\\
+2025-01-09 & TVGMCD9SQ9 & Fee & 4001 &  & 0.13 & \\
+2025-01-09 & TEERG64Q4G & 1 x MA Getränk &  & 3001 & 2.25 & POS\\
+2025-01-09 & TEERG64Q4G & Bank payout & 1020 &  & 2.22 & 911889\\
+2025-01-09 & TEERG64Q4G & Fee & 4001 &  & 0.03 & \\
+2025-01-09 & TAAATDLPPVG & 1 x Getränk 4.50.- & 1000 & 3001 & 4.5 & CASH\\
+2025-01-09 & TFSCKZREDM & 1 x Getränk 5.- &  & 3001 & 5.0 & POS\\
+2025-01-09 & TFSCKZREDM & Bank payout & 1020 &  & 4.92 & 911889\\
+2025-01-09 & TFSCKZREDM & Fee & 4001 &  & 0.08 & \\
+2025-01-09 & TZ2MGRVAMC & 2 x Getränk 4.50.- &  & 3001 & 9.0 & POS\\
+2025-01-09 & TZ2MGRVAMC & Bank payout & 1020 &  & 8.77 & 911889\\
+2025-01-09 & TZ2MGRVAMC & Fee & 4001 &  & 0.23 & \\
+2025-01-09 & TAAATDKYKHN & 1 x Eintritt Adult & 1000 & 3001 & 27.0 & CASH\\
+2025-01-09 & TCNVYVMCPU & 2 x Eintritt Kind (5-15), 1 x Begleitperson &  & 3001 & 48.0 & POS\\
+2025-01-09 & TCNVYVMCPU & Bank payout & 1020 &  & 46.8 & 911889\\
+2025-01-09 & TCNVYVMCPU & Fee & 4001 &  & 1.2 & \\
+2025-01-08 & TFE9LVXLET & 1 x Snack 2,50.- &  & 3001 & 2.5 & POS\\
+2025-01-08 & TFE9LVXLET & Bank payout & 1020 &  & 2.46 & 909891\\
+2025-01-08 & TFE9LVXLET & Fee & 4001 &  & 0.04 & \\
+2025-01-08 & TSSULPZLFE & 1 x Getränk 4.50.- &  & 3001 & 4.5 & POS\\
+2025-01-08 & TSSULPZLFE & Bank payout & 1020 &  & 4.43 & 909891\\
+2025-01-08 & TSSULPZLFE & Fee & 4001 &  & 0.07 & \\
+2025-01-08 & TAAATDDFERN & 1 x 1hour & 1000 & 3001 & 5.0 & CASH\\
+2025-01-08 & TDCG373TKY & 1 x Semesterkurs &  & 3001 & 430.0 & POS\\
+2025-01-08 & TDCG373TKY & Bank payout & 1020 &  & 419.25 & 909891\\
+2025-01-08 & TDCG373TKY & Fee & 4001 &  & 10.75 & \\
+2025-01-08 & TAAATDDEAT6 & 1 x Snack 3,50.- & 1000 & 3001 & 3.5 & CASH\\
+2025-01-08 & TC93HUC9SE & 1 x Getränk 4.50.-, 2 x Getränk 5.- &  & 3001 & 14.5 & POS\\
+2025-01-08 & TC93HUC9SE & Bank payout & 1020 &  & 14.14 & 909891\\
+2025-01-08 & TC93HUC9SE & Fee & 4001 &  & 0.36 & \\
+2025-01-08 & TUHG4ZQDUD & 1 x Getränk 4.50.- &  & 3001 & 4.5 & POS\\
+2025-01-08 & TUHG4ZQDUD & Bank payout & 1020 &  & 4.39 & 909891\\
+2025-01-08 & TUHG4ZQDUD & Fee & 4001 &  & 0.11 & \\
+2025-01-08 & TFND3H4TUR & 3 x Eintritt Kind (5-15) &  & 3001 & 60.0 & POS\\
+2025-01-08 & TFND3H4TUR & Bank payout & 1020 &  & 59.1 & 909891\\
+2025-01-08 & TFND3H4TUR & Fee & 4001 &  & 0.9 & \\
+2025-01-08 & TE6RKL3DZ7 & 1 x Snack 3,50.- &  & 3001 & 3.5 & POS\\
+2025-01-08 & TE6RKL3DZ7 & Bank payout & 1020 &  & 3.41 & 909891\\
+2025-01-08 & TE6RKL3DZ7 & Fee & 4001 &  & 0.09 & \\
+2025-01-08 & T9HY2SR7L6 & 1 x Getränk 4.50.- &  & 3001 & 4.5 & POS\\
+2025-01-08 & T9HY2SR7L6 & Bank payout & 1020 &  & 4.43 & 909891\\
+2025-01-08 & T9HY2SR7L6 & Fee & 4001 &  & 0.07 & \\
+2025-01-08 & TDPRNR9T2P & 1 x Getränk 5.-, 1 x Getränk 4.50.- &  & 3001 & 9.5 & POS\\
+2025-01-08 & TDPRNR9T2P & Bank payout & 1020 &  & 9.36 & 909891\\
+2025-01-08 & TDPRNR9T2P & Fee & 4001 &  & 0.14 & \\
+2025-01-08 & TCLQKKEHSL & 2 x Getränk 4.50.- &  & 3001 & 9.0 & POS\\
+2025-01-08 & TCLQKKEHSL & Bank payout & 1020 &  & 8.86 & 909891\\
+2025-01-08 & TCLQKKEHSL & Fee & 4001 &  & 0.14 & \\
+2025-01-08 & TCUDKUTX9S & 2 x Snack 4,50.- &  & 3001 & 9.0 & POS\\
+2025-01-08 & TCUDKUTX9S & Bank payout & 1020 &  & 8.77 & 909891\\
+2025-01-08 & TCUDKUTX9S & Fee & 4001 &  & 0.23 & \\
+2025-01-08 & TAAATDCBAZT & 1 x Getränk 4.50.- & 1000 & 3001 & 4.5 & CASH\\
+2025-01-08 & TCVUZ94YXR & 1 x Getränk 4.50.-, 1 x Wasser 4.-, 1 x Snack 2,50.- &  & 3001 & 11.0 & POS\\
+2025-01-08 & TCVUZ94YXR & Bank payout & 1020 &  & 10.83 & 909891\\
+2025-01-08 & TCVUZ94YXR & Fee & 4001 &  & 0.17 & \\
+2025-01-08 & TAAATDB947N & 1 x Getränk 5.- & 1000 & 3001 & 5.0 & CASH\\
+2025-01-08 & TD2GPDFP2A & 2 x Getränk 5.- &  & 3001 & 10.0 & POS\\
+2025-01-08 & TD2GPDFP2A & Bank payout & 1020 &  & 9.85 & 909891\\
+2025-01-08 & TD2GPDFP2A & Fee & 4001 &  & 0.15 & \\
+2025-01-08 & TAAATDB6H6H & 1 x Getränk 4.50.- & 1000 & 3001 & 4.5 & CASH\\
+2025-01-08 & TAAATDB2E3T & 1 x Getränk 4.50.- & 1000 & 3001 & 4.5 & CASH\\
+2025-01-08 & TPKPL29RHM & 1 x Getränk 5.- &  & 3001 & 5.0 & POS\\
+2025-01-08 & TPKPL29RHM & Bank payout & 1020 &  & 4.92 & 909891\\
+2025-01-08 & TPKPL29RHM & Fee & 4001 &  & 0.08 & \\
+2025-01-08 & TAAATDBREL4 & 1 x Verlängerung 1h & 1000 & 3001 & 5.0 & CASH\\
+2025-01-08 & TKHEVATHZC & 1 x Kurs &  & 3001 & 430.0 & POS\\
+2025-01-08 & TKHEVATHZC & Bank payout & 1020 &  & 423.55 & 909891\\
+2025-01-08 & TKHEVATHZC & Fee & 4001 &  & 6.45 & \\
+2025-01-08 & TZEU7TUZEU & 1 x Verlängerung 1h &  & 3001 & 5.0 & POS\\
+2025-01-08 & TZEU7TUZEU & Bank payout & 1020 &  & 4.92 & 909891\\
+2025-01-08 & TZEU7TUZEU & Fee & 4001 &  & 0.08 & \\
+2025-01-08 & TCZKSD34FU & 1 x Eintritt Adult FOG &  & 3001 & 23.0 & POS\\
+2025-01-08 & TCZKSD34FU & Bank payout & 1020 &  & 22.42 & 909891\\
+2025-01-08 & TCZKSD34FU & Fee & 4001 &  & 0.58 & \\
+2025-01-08 & TECU2TYVG3 & 1 x Eintritt Adult FOG &  & 3001 & 23.0 & POS\\
+2025-01-08 & TECU2TYVG3 & Bank payout & 1020 &  & 22.65 & 909891\\
+2025-01-08 & TECU2TYVG3 & Fee & 4001 &  & 0.35 & \\
+2025-01-07 & TAAATC4AKTR & 1 x Snack 2,50.-, 1 x Snack 4,50.- & 1000 & 3001 & 7.0 & CASH\\
+2025-01-07 & TCZT9ZXVVH & 1 x Eintritt Adult &  & 3001 & 27.0 & POS\\
+2025-01-07 & TCZT9ZXVVH & Bank payout & 1020 &  & 26.59 & 908092\\
+2025-01-07 & TCZT9ZXVVH & Fee & 4001 &  & 0.41 & \\
+2025-01-07 & TDCNXTX4K6 & 1 x Individueller Betrag &  & 3001 & 2.25 & POS\\
+2025-01-07 & TDCNXTX4K6 & Bank payout & 1020 &  & 2.22 & 908092\\
+2025-01-07 & TDCNXTX4K6 & Fee & 4001 &  & 0.03 & \\
+2025-01-07 & TU9QF9G6VX & 2 x Snack 2,50.- &  & 3001 & 5.0 & POS\\
+2025-01-07 & TU9QF9G6VX & Bank payout & 1020 &  & 4.92 & 908092\\
+2025-01-07 & TU9QF9G6VX & Fee & 4001 &  & 0.08 & \\
+2025-01-07 & TDV6CA9EXT & 1 x Getränk 4.50.- &  & 3001 & 4.5 & POS\\
+2025-01-07 & TDV6CA9EXT & Bank payout & 1020 &  & 4.43 & 908092\\
+2025-01-07 & TDV6CA9EXT & Fee & 4001 &  & 0.07 & \\
+2025-01-07 & TAAATC3SU9Z & 1 x Wasser 4.-, 1 x Snack 2,50.- & 1000 & 3001 & 6.5 & CASH\\
+2025-01-07 & TAAATC3NRL7 & 1 x Snack 2,50.- & 1000 & 3001 & 2.5 & CASH\\
+2025-01-07 & TAAATC3F4NM & 1 x Getränk 4.50.- & 1000 & 3001 & 4.5 & CASH\\
+2025-01-07 & TAAATC3F2GA & 1 x Snack 2,50.-, 1 x Getränk 4.50.- & 1000 & 3001 & 7.0 & CASH\\
+2025-01-07 & TAAATC26EBH & 1 x Eintritt Kind FOG, 1 x Eintritt Kind (5-15) & 1000 & 3001 & 37.0 & CASH\\
+2025-01-07 & T7AF26XTXP & 1 x Tageseintritt Kind 2-4, 1 x Begleitperson &  & 3001 & 14.0 & POS\\
+2025-01-07 & T7AF26XTXP & Bank payout & 1020 &  & 13.79 & 908092\\
+2025-01-07 & T7AF26XTXP & Fee & 4001 &  & 0.21 & \\
+2025-01-06 & TAAATCU9N2S & 1 x Hatte 2,4 Chf zu wenig im System & 1000 & 3001 & 2.4 & CASH\\
+2025-01-06 & TAAATCUT29V & 1 x Snack 3,50.- & 1000 & 3001 & 3.5 & CASH\\
+2025-01-06 & TEHGS9XKH2 & 1 x Getränk 4.50.- &  & 3001 & 4.5 & POS\\
+2025-01-06 & TEHGS9XKH2 & Bank payout & 1020 &  & 4.43 & 906343\\
+2025-01-06 & TEHGS9XKH2 & Fee & 4001 &  & 0.07 & \\
+2025-01-06 & TE4PYQ2322 & 2 x Getränk 4.50.- &  & 3001 & 9.0 & POS\\
+2025-01-06 & TE4PYQ2322 & Bank payout & 1020 &  & 8.86 & 906343\\
+2025-01-06 & TE4PYQ2322 & Fee & 4001 &  & 0.14 & \\
+2025-01-06 & T7G49GU493 & 1 x Getränk 5.- &  & 3001 & 5.0 & POS\\
+2025-01-06 & T7G49GU493 & Bank payout & 1020 &  & 4.92 & 906343\\
+2025-01-06 & T7G49GU493 & Fee & 4001 &  & 0.08 & \\
+2025-01-06 & TDFYL6CLFU & 1 x Gutscheine &  & 3001 & 150.0 & POS\\
+2025-01-06 & TDFYL6CLFU & Bank payout & 1020 &  & 147.75 & 906343\\
+2025-01-06 & TDFYL6CLFU & Fee & 4001 &  & 2.25 & \\
+2025-01-06 & TE6RXCECEV & 1 x Getränk 4.50.-, 2 x Verlängerung 1h &  & 3001 & 14.5 & POS\\
+2025-01-06 & TE6RXCECEV & Bank payout & 1020 &  & 14.28 & 906343\\
+2025-01-06 & TE6RXCECEV & Fee & 4001 &  & 0.22 & \\
+2025-01-06 & TXPDSEQHN6 & 1 x Eintritt Kind (5-15) &  & 3001 & 20.0 & POS\\
+2025-01-06 & TXPDSEQHN6 & Bank payout & 1020 &  & 19.7 & 906343\\
+2025-01-06 & TXPDSEQHN6 & Fee & 4001 &  & 0.3 & \\
+2025-01-06 & TEFGUAGTK6 & 1 x Getränk 4.50.-, 1 x Tee, 1 x Snack 2,50.- &  & 3001 & 10.5 & POS\\
+2025-01-06 & TEFGUAGTK6 & Bank payout & 1020 &  & 10.34 & 906343\\
+2025-01-06 & TEFGUAGTK6 & Fee & 4001 &  & 0.16 & \\
+2025-01-06 & TAAATCTVAAE & 2 x Snack 2,50.-, 2 x Getränk 4.50.- & 1000 & 3001 & 14.0 & CASH\\
+2025-01-06 & TE9FTHC4QL & 2 x Eintritt Kind (5-15) &  & 3001 & 40.0 & POS\\
+2025-01-06 & TE9FTHC4QL & Bank payout & 1020 &  & 39.0 & 906343\\
+2025-01-06 & TE9FTHC4QL & Fee & 4001 &  & 1.0 & \\
+2025-01-06 & TCUHPPFTML & 3 x Snack 2,50.-, 1 x Getränk 4.50.- &  & 3001 & 12.0 & POS\\
+2025-01-06 & TCUHPPFTML & Bank payout & 1020 &  & 11.82 & 906343\\
+2025-01-06 & TCUHPPFTML & Fee & 4001 &  & 0.18 & \\
+2025-01-06 & TAAATCTTPPF & 1 x Begleitperson, 2 x Eintritt Kind (5-15) & 1000 & 3001 & 48.0 & CASH\\
+2025-01-06 & TAAATCTSS7L & 1 x Snack 2,50.- & 1000 & 3001 & 2.5 & CASH\\
+2025-01-06 & TAAATCTSGYB & 1 x Verlängerung 1h & 1000 & 3001 & 5.0 & CASH\\
+2025-01-06 & TFFU6UK4QQ & 1 x Eintritt Kind (5-15), 3 x Eintritt Adult &  & 3001 & 101.0 & POS\\
+2025-01-06 & TFFU6UK4QQ & Bank payout & 1020 &  & 98.47 & 906343\\
+2025-01-06 & TFFU6UK4QQ & Fee & 4001 &  & 2.53 & \\
+2025-01-06 & TC7PT9RFAA & 1 x Begleitperson, 1 x Eintritt Kind (5-15) &  & 3001 & 28.0 & POS\\
+2025-01-06 & TC7PT9RFAA & Bank payout & 1020 &  & 27.58 & 906343\\
+2025-01-06 & TC7PT9RFAA & Fee & 4001 &  & 0.42 & \\
+2025-01-06 & TTXVXRD9FS & 2 x Getränk 6.- &  & 3001 & 12.0 & POS\\
+2025-01-06 & TTXVXRD9FS & Bank payout & 1020 &  & 11.7 & 906343\\
+2025-01-06 & TTXVXRD9FS & Fee & 4001 &  & 0.3 & \\
+2025-01-06 & TFG9TLUFZK & 2 x Eintritt Kind (5-15), 1 x Begleitperson &  & 3001 & 48.0 & POS\\
+2025-01-06 & TFG9TLUFZK & Bank payout & 1020 &  & 47.28 & 906343\\
+2025-01-06 & TFG9TLUFZK & Fee & 4001 &  & 0.72 & \\
+2025-01-06 & TAAATCS9GKH & 2 x Begleitperson, 2 x Eintritt Kind (5-15) & 1000 & 3001 & 56.0 & CASH\\
+2025-01-06 & TDDYPQMPHP & 3 x Snack 2,50.- &  & 3001 & 3.75 & POS\\
+2025-01-06 & TDDYPQMPHP & Bank payout & 1020 &  & 3.69 & 906343\\
+2025-01-06 & TDDYPQMPHP & Fee & 4001 &  & 0.06 & \\
+2025-01-05 & TE3VEX2LVF & 1 x Begleitperson, 1 x Eintritt Kind (5-15) &  & 3001 & 14.0 & POS\\
+2025-01-05 & TE3VEX2LVF & Bank payout & 1020 &  & 13.65 & 904540\\
+2025-01-05 & TE3VEX2LVF & Fee & 4001 &  & 0.35 & \\
+2025-01-05 & TDU6ULKXHF & 2 x Eintritt Kind (5-15), 1 x Begleitperson &  & 3001 & 24.0 & POS\\
+2025-01-05 & TDU6ULKXHF & Bank payout & 1020 &  & 23.4 & 904540\\
+2025-01-05 & TDU6ULKXHF & Fee & 4001 &  & 0.6 & \\
+2025-01-05 & TEQZTDHUQS & 1 x Rolly Bar Challenge &  & 3001 & 5.0 & POS\\
+2025-01-05 & TEQZTDHUQS & Bank payout & 1020 &  & 4.92 & 904540\\
+2025-01-05 & TEQZTDHUQS & Fee & 4001 &  & 0.08 & \\
+2025-01-05 & TAAATCNCVRY & 1 x Getränk 4.50.- & 1000 & 3001 & 4.5 & CASH\\
+2025-01-05 & TAAATCM2696 & 1 x Begleitperson & 1000 & 3001 & 8.0 & CASH\\
+2025-01-05 & TAAATCM2NG7 & 1 x Eintritt Kind (5-15) & 1000 & 3001 & 20.0 & CASH\\
+2025-01-05 & TAAATCM2CY7 & 1 x Getränk 4.50.- & 1000 & 3001 & 4.5 & CASH\\
+2025-01-05 & TAAATCMZLSF & 1 x Obst 1.- & 1000 & 3001 & 1.0 & CASH\\
+2025-01-05 & TU36YCQY37 & 1 x Pizza Schinken 20cm &  & 3001 & 7.5 & POS\\
+2025-01-05 & TU36YCQY37 & Bank payout & 1020 &  & 7.31 & 904540\\
+2025-01-05 & TU36YCQY37 & Fee & 4001 &  & 0.19 & \\
+2025-01-05 & TCDUX76NER & 2 x Begleitperson, 1 x Eintritt Kind (5-15) &  & 3001 & 36.0 & POS\\
+2025-01-05 & TCDUX76NER & Bank payout & 1020 &  & 35.46 & 904540\\
+2025-01-05 & TCDUX76NER & Fee & 4001 &  & 0.54 & \\
+2025-01-05 & TE2FLNCSM2 & 2 x Getränk 4.50.- &  & 3001 & 9.0 & POS\\
+2025-01-05 & TE2FLNCSM2 & Bank payout & 1020 &  & 8.77 & 904540\\
+2025-01-05 & TE2FLNCSM2 & Fee & 4001 &  & 0.23 & \\
+2025-01-05 & TDSQKAHA7U & 3 x Eintritt Kind (5-15), 2 x Begleitperson &  & 3001 & 76.0 & POS\\
+2025-01-05 & TDSQKAHA7U & Bank payout & 1020 &  & 74.86 & 904540\\
+2025-01-05 & TDSQKAHA7U & Fee & 4001 &  & 1.14 & \\
+2025-01-05 & TD32AAH7C9 & 1 x Snack 2,50.-, 1 x Getränk 4.50.- &  & 3001 & 7.0 & POS\\
+2025-01-05 & TD32AAH7C9 & Bank payout & 1020 &  & 6.89 & 904540\\
+2025-01-05 & TD32AAH7C9 & Fee & 4001 &  & 0.11 & \\
+2025-01-05 & TAAATCMPG3E & 3 x Getränk 4.50.- & 1000 & 3001 & 13.5 & CASH\\
+2025-01-05 & TAAATCMN6P7 & 2 x Schüsselanhänger & 1000 & 3001 & 5.0 & CASH\\
+2025-01-05 & TAAATCMN3CT & 1 x Eintritt Kind (5-15), 1 x Begleitperson & 1000 & 3001 & 28.0 & CASH\\
+2025-01-05 & TAAATCMNFMC & 1 x Eintritt Kind (5-15) & 1000 & 3001 & 10.0 & CASH\\
+2025-01-05 & TC3S44RP3E & 1 x Eintritt Kind (5-15) &  & 3001 & 10.0 & POS\\
+2025-01-05 & TC3S44RP3E & Bank payout & 1020 &  & 9.85 & 904540\\
+2025-01-05 & TC3S44RP3E & Fee & 4001 &  & 0.15 & \\
+2025-01-05 & TCHCY4NTRP & 1 x Begleitperson, 1 x Tageseintritt Kind 2-4 &  & 3001 & 14.0 & POS\\
+2025-01-05 & TCHCY4NTRP & Bank payout & 1020 &  & 13.65 & 904540\\
+2025-01-05 & TCHCY4NTRP & Fee & 4001 &  & 0.35 & \\
+2025-01-05 & TCPYPHZK2N & 2 x Begleitperson, 2 x Tageseintritt Kind 2-4 &  & 3001 & 28.0 & POS\\
+2025-01-05 & TCPYPHZK2N & Bank payout & 1020 &  & 27.58 & 904540\\
+2025-01-05 & TCPYPHZK2N & Fee & 4001 &  & 0.42 & \\
+2025-01-05 & TDL9LMMNRA & 1 x Snack 2.-, 2 x Snack 2,50.- &  & 3001 & 7.0 & POS\\
+2025-01-05 & TDL9LMMNRA & Bank payout & 1020 &  & 6.89 & 904540\\
+2025-01-05 & TDL9LMMNRA & Fee & 4001 &  & 0.11 & \\
+2025-01-05 & TAAATCMEVRE & 2 x Eintritt Kind (5-15), 1 x Begleitperson & 1000 & 3001 & 48.0 & CASH\\
+2025-01-05 & TDGUGVVEHC & 1 x Eintritt Kind (5-15), 1 x Begleitperson &  & 3001 & 28.0 & POS\\
+2025-01-05 & TDGUGVVEHC & Bank payout & 1020 &  & 27.3 & 904540\\
+2025-01-05 & TDGUGVVEHC & Fee & 4001 &  & 0.7 & \\
+2025-01-05 & TDFMGSDRLA & 1 x Eintritt Adult, 3 x Eintritt Kind (5-15) &  & 3001 & 87.0 & POS\\
+2025-01-05 & TDFMGSDRLA & Bank payout & 1020 &  & 85.69 & 904540\\
+2025-01-05 & TDFMGSDRLA & Fee & 4001 &  & 1.31 & \\
+2025-01-05 & TCRKXPR3UC & 2 x Snack 2,50.-, 1 x Getränk 4.50.- &  & 3001 & 9.5 & POS\\
+2025-01-05 & TCRKXPR3UC & Bank payout & 1020 &  & 9.36 & 904540\\
+2025-01-05 & TCRKXPR3UC & Fee & 4001 &  & 0.14 & \\
+2025-01-05 & TFMSK7R4SE & 1 x Begleitperson, 1 x Tageseintritt Kind 2-4, 1 x Eintritt Kind (5-15) &  & 3001 & 34.0 & POS\\
+2025-01-05 & TFMSK7R4SE & Bank payout & 1020 &  & 33.49 & 904540\\
+2025-01-05 & TFMSK7R4SE & Fee & 4001 &  & 0.51 & \\
+2025-01-05 & TDTRPPQZE7 & 2 x Eintritt Adult &  & 3001 & 54.0 & POS\\
+2025-01-05 & TDTRPPQZE7 & Bank payout & 1020 &  & 52.65 & 904540\\
+2025-01-05 & TDTRPPQZE7 & Fee & 4001 &  & 1.35 & \\
+2025-01-05 & TAAATCMB7AC & 1 x Wasser 4.-, 2 x Getränk 4.50.-, 1 x Snack 2,50.- & 1000 & 3001 & 15.5 & CASH\\
+2025-01-05 & TAAATCMB423 & 1 x Eintritt Kind (5-15) & 1000 & 3001 & 20.0 & CASH\\
+2025-01-05 & TE4M3VGHLF & 1 x Eintritt Kind (5-15), 2 x Begleitperson &  & 3001 & 36.0 & POS\\
+2025-01-05 & TE4M3VGHLF & Bank payout & 1020 &  & 35.46 & 904540\\
+2025-01-05 & TE4M3VGHLF & Fee & 4001 &  & 0.54 & \\
+2025-01-05 & TFATSA3C69 & 1 x Getränk 4.50.-, 1 x Wasser 4.- &  & 3001 & 8.5 & POS\\
+2025-01-05 & TFATSA3C69 & Bank payout & 1020 &  & 8.37 & 904540\\
+2025-01-05 & TFATSA3C69 & Fee & 4001 &  & 0.13 & \\
+2025-01-05 & T7MX47QDQ4 & 2 x Eintritt Kind (5-15), 1 x Begleitperson &  & 3001 & 48.0 & POS\\
+2025-01-05 & T7MX47QDQ4 & Bank payout & 1020 &  & 46.8 & 904540\\
+2025-01-05 & T7MX47QDQ4 & Fee & 4001 &  & 1.2 & \\
+2025-01-05 & TAAATCL9XRV & 1 x Tageseintritt Kind 2-4, 2 x Eintritt Kind FOG & 1000 & 3001 & 40.0 & CASH\\
+2025-01-05 & TAAATCL9CHQ & 1 x Eintritt Kind (5-15) & 1000 & 3001 & 20.0 & CASH\\
+2025-01-05 & TAAATCL7SYR & 2 x Eintritt Kind (5-15) & 1000 & 3001 & 40.0 & CASH\\
+2025-01-05 & TFHVNF6NUK & 1 x Begleitperson, 1 x Eintritt Kind (5-15) &  & 3001 & 28.0 & POS\\
+2025-01-05 & TFHVNF6NUK & Bank payout & 1020 &  & 27.58 & 904540\\
+2025-01-05 & TFHVNF6NUK & Fee & 4001 &  & 0.42 & \\
+2025-01-05 & TXSE3KDLND & 1 x Eintritt Kind (5-15), 1 x Begleitperson &  & 3001 & 28.0 & POS\\
+2025-01-05 & TXSE3KDLND & Bank payout & 1020 &  & 27.3 & 904540\\
+2025-01-05 & TXSE3KDLND & Fee & 4001 &  & 0.7 & \\
+2025-01-05 & TVASMFEFK4 & 2 x Eintritt Kind (5-15), 2 x Begleitperson &  & 3001 & 56.0 & POS\\
+2025-01-05 & TVASMFEFK4 & Bank payout & 1020 &  & 55.16 & 904540\\
+2025-01-05 & TVASMFEFK4 & Fee & 4001 &  & 0.84 & \\
+2025-01-05 & TCC9UK42FL & 2 x Eintritt Kind (5-15), 2 x Begleitperson &  & 3001 & 56.0 & POS\\
+2025-01-05 & TCC9UK42FL & Bank payout & 1020 &  & 54.6 & 904540\\
+2025-01-05 & TCC9UK42FL & Fee & 4001 &  & 1.4 & \\
+2025-01-05 & TAAATCL4DX7 & 1 x Eintritt Kind (5-15) & 1000 & 3001 & 20.0 & CASH\\
+2025-01-05 & TGSAUKZUQ2 & 2 x Eintritt Kind (5-15), 1 x Begleitperson &  & 3001 & 48.0 & POS\\
+2025-01-05 & TGSAUKZUQ2 & Bank payout & 1020 &  & 47.28 & 904540\\
+2025-01-05 & TGSAUKZUQ2 & Fee & 4001 &  & 0.72 & \\
+2025-01-05 & TNHSNYU97R & 2 x Tageseintritt Kind 2-4, 1 x Begleitperson &  & 3001 & 20.0 & POS\\
+2025-01-05 & TNHSNYU97R & Bank payout & 1020 &  & 19.7 & 904540\\
+2025-01-05 & TNHSNYU97R & Fee & 4001 &  & 0.3 & \\
+2025-01-05 & TD3XS4HAHD & 1 x Getränk 1.5L 8.- &  & 3001 & 8.0 & POS\\
+2025-01-05 & TD3XS4HAHD & Bank payout & 1020 &  & 7.8 & 904540\\
+2025-01-05 & TD3XS4HAHD & Fee & 4001 &  & 0.2 & \\
+2025-01-05 & TAAATCLYL6H & 1 x Begleitperson & 1000 & 3001 & 8.0 & CASH\\
+2025-01-05 & TAAATCLV9E4 & 2 x Begleitperson & 1000 & 3001 & 16.0 & CASH\\
+2025-01-05 & TVXYFGLUPK & 1 x Eintritt Kind (5-15) &  & 3001 & 20.0 & POS\\
+2025-01-05 & TVXYFGLUPK & Bank payout & 1020 &  & 19.5 & 904540\\
+2025-01-05 & TVXYFGLUPK & Fee & 4001 &  & 0.5 & \\
+2025-01-05 & TFHTMSN3TZ & 2 x Eintritt Kind (5-15), 1 x Begleitperson &  & 3001 & 48.0 & POS\\
+2025-01-05 & TFHTMSN3TZ & Bank payout & 1020 &  & 46.8 & 904540\\
+2025-01-05 & TFHTMSN3TZ & Fee & 4001 &  & 1.2 & \\
+2025-01-05 & TDE6VP6URF & 2 x Eintritt Kind (5-15), 1 x Tageseintritt Kind 2-4, 1 x Begleitperson &  & 3001 & 54.0 & POS\\
+2025-01-05 & TDE6VP6URF & Bank payout & 1020 &  & 53.19 & 904540\\
+2025-01-05 & TDE6VP6URF & Fee & 4001 &  & 0.81 & \\
+2025-01-05 & TDSCCPFD99 & 1 x Begleitperson &  & 3001 & 8.0 & POS\\
+2025-01-05 & TDSCCPFD99 & Bank payout & 1020 &  & 7.88 & 904540\\
+2025-01-05 & TDSCCPFD99 & Fee & 4001 &  & 0.12 & \\
+2025-01-05 & TEG6KEC26L & 1 x Begleitperson, 2 x Eintritt Kind (5-15) &  & 3001 & 48.0 & POS\\
+2025-01-05 & TEG6KEC26L & Bank payout & 1020 &  & 47.28 & 904540\\
+2025-01-05 & TEG6KEC26L & Fee & 4001 &  & 0.72 & \\
+2025-01-05 & TDHEQDYKT2 & 2 x Getränk 4.50.- &  & 3001 & 9.0 & POS\\
+2025-01-05 & TDHEQDYKT2 & Bank payout & 1020 &  & 8.86 & 904540\\
+2025-01-05 & TDHEQDYKT2 & Fee & 4001 &  & 0.14 & \\
+2025-01-05 & TDK6XNX2MS & 1 x Begleitperson, 2 x Eintritt Kind (5-15) &  & 3001 & 48.0 & POS\\
+2025-01-05 & TDK6XNX2MS & Bank payout & 1020 &  & 47.28 & 904540\\
+2025-01-05 & TDK6XNX2MS & Fee & 4001 &  & 0.72 & \\
+2025-01-05 & TCURVYZ6K3 & 2 x Eintritt Kind (5-15), 2 x Begleitperson &  & 3001 & 56.0 & POS\\
+2025-01-05 & TCURVYZ6K3 & Bank payout & 1020 &  & 55.16 & 904540\\
+2025-01-05 & TCURVYZ6K3 & Fee & 4001 &  & 0.84 & \\
+2025-01-05 & TCYPASRKLD & 2 x Begleitperson, 1 x Eintritt Kind (5-15) &  & 3001 & 36.0 & POS\\
+2025-01-05 & TCYPASRKLD & Bank payout & 1020 &  & 35.46 & 904540\\
+2025-01-05 & TCYPASRKLD & Fee & 4001 &  & 0.54 & \\
+2025-01-05 & TQV6R3LZR7 & 1 x Begleitperson, 1 x Eintritt Kind (5-15) &  & 3001 & 28.0 & POS\\
+2025-01-05 & TQV6R3LZR7 & Bank payout & 1020 &  & 27.58 & 904540\\
+2025-01-05 & TQV6R3LZR7 & Fee & 4001 &  & 0.42 & \\
+2025-01-05 & TCM4KURK2V & 1 x Eintritt Kind (5-15), 1 x Begleitperson &  & 3001 & 28.0 & POS\\
+2025-01-05 & TCM4KURK2V & Bank payout & 1020 &  & 27.58 & 904540\\
+2025-01-05 & TCM4KURK2V & Fee & 4001 &  & 0.42 & \\
+2025-01-05 & TFF7VXV7EP & 1 x Eintritt Kind (5-15), 1 x Eintritt Adult &  & 3001 & 47.0 & POS\\
+2025-01-05 & TFF7VXV7EP & Bank payout & 1020 &  & 46.29 & 904540\\
+2025-01-05 & TFF7VXV7EP & Fee & 4001 &  & 0.71 & \\
+2025-01-05 & TFLAVTHCH9 & 1 x Begleitperson &  & 3001 & 8.0 & POS\\
+2025-01-05 & TFLAVTHCH9 & Bank payout & 1020 &  & 7.88 & 904540\\
+2025-01-05 & TFLAVTHCH9 & Fee & 4001 &  & 0.12 & \\
+2025-01-04 & TZA9ESNC3E & 1 x Snack 2.-, 1 x Getränk 4.50.- &  & 3001 & 6.5 & POS\\
+2025-01-04 & TZA9ESNC3E & Bank payout & 1020 &  & 6.4 & 904540\\
+2025-01-04 & TZA9ESNC3E & Fee & 4001 &  & 0.1 & \\
+2025-01-04 & TEUMSYG3T7 & 1 x Getränk 4.50.- &  & 3001 & 4.5 & POS\\
+2025-01-04 & TEUMSYG3T7 & Bank payout & 1020 &  & 4.43 & 904540\\
+2025-01-04 & TEUMSYG3T7 & Fee & 4001 &  & 0.07 & \\
+2025-01-04 & TAAATCEX7B7 & 1 x Individueller Betrag, 1 x Happy Hour Begleitperson & 1000 & 3001 & 24.0 & CASH\\
+2025-01-04 & TH9AZDSLR3 & 1 x Schüsselanhänger &  & 3001 & 2.5 & POS\\
+2025-01-04 & TH9AZDSLR3 & Bank payout & 1020 &  & 2.46 & 904540\\
+2025-01-04 & TH9AZDSLR3 & Fee & 4001 &  & 0.04 & \\
+2025-01-04 & TAAATCEVF6H & 2 x Wasser 4.-, 2 x Snack 2,50.- & 1000 & 3001 & 13.0 & CASH\\
+2025-01-04 & TAAATCEUQZ6 & 2 x Getränk 4.50.- & 1000 & 3001 & 9.0 & CASH\\
+2025-01-04 & TZMS9KAT9P & 1 x Schüsselanhänger, 1 x Snack 2,50.- &  & 3001 & 5.0 & POS\\
+2025-01-04 & TZMS9KAT9P & Bank payout & 1020 &  & 4.92 & 904540\\
+2025-01-04 & TZMS9KAT9P & Fee & 4001 &  & 0.08 & \\
+2025-01-04 & TDHQQ277DY & 1 x Eintritt Kind (5-15) &  & 3001 & 20.0 & POS\\
+2025-01-04 & TDHQQ277DY & Bank payout & 1020 &  & 19.7 & 904540\\
+2025-01-04 & TDHQQ277DY & Fee & 4001 &  & 0.3 & \\
+2025-01-04 & TCVVQ479MN & 1 x Getränk 4.50.- &  & 3001 & 4.5 & POS\\
+2025-01-04 & TCVVQ479MN & Bank payout & 1020 &  & 4.43 & 904540\\
+2025-01-04 & TCVVQ479MN & Fee & 4001 &  & 0.07 & \\
+2025-01-04 & TECLXXCN4M & 1 x Snack 2,50.- &  & 3001 & 2.5 & POS\\
+2025-01-04 & TECLXXCN4M & Bank payout & 1020 &  & 2.46 & 904540\\
+2025-01-04 & TECLXXCN4M & Fee & 4001 &  & 0.04 & \\
+2025-01-04 & TCRDUXGEAZ & 1 x Getränk 4.50.- &  & 3001 & 4.5 & POS\\
+2025-01-04 & TCRDUXGEAZ & Bank payout & 1020 &  & 4.43 & 904540\\
+2025-01-04 & TCRDUXGEAZ & Fee & 4001 &  & 0.07 & \\
+2025-01-04 & TRUDSFXF6Q & 4 x Getränk 4.50.-, 1 x Schüsselanhänger &  & 3001 & 20.5 & POS\\
+2025-01-04 & TRUDSFXF6Q & Bank payout & 1020 &  & 20.19 & 904540\\
+2025-01-04 & TRUDSFXF6Q & Fee & 4001 &  & 0.31 & \\
+2025-01-04 & TEQMN4AN42 & 2 x Getränk 4.50.- &  & 3001 & 9.0 & POS\\
+2025-01-04 & TEQMN4AN42 & Bank payout & 1020 &  & 8.86 & 904540\\
+2025-01-04 & TEQMN4AN42 & Fee & 4001 &  & 0.14 & \\
+2025-01-04 & TC6C3H9VU6 & 1 x Getränk 4.50.- &  & 3001 & 4.5 & POS\\
+2025-01-04 & TC6C3H9VU6 & Bank payout & 1020 &  & 4.43 & 904540\\
+2025-01-04 & TC6C3H9VU6 & Fee & 4001 &  & 0.07 & \\
+2025-01-04 & TAAATCEEVA9 & 2 x Getränk 4.50.- & 1000 & 3001 & 9.0 & CASH\\
+2025-01-04 & TFG7UFTRU7 & 1 x Getränk 4.50.- &  & 3001 & 4.5 & POS\\
+2025-01-04 & TFG7UFTRU7 & Bank payout & 1020 &  & 4.39 & 904540\\
+2025-01-04 & TFG7UFTRU7 & Fee & 4001 &  & 0.11 & \\
+2025-01-04 & TDUGV9TC29 & 1 x Eintritt Kind (5-15), 1 x Begleitperson &  & 3001 & 28.0 & POS\\
+2025-01-04 & TDUGV9TC29 & Bank payout & 1020 &  & 27.58 & 904540\\
+2025-01-04 & TDUGV9TC29 & Fee & 4001 &  & 0.42 & \\
+2025-01-04 & TAAATCDUHVE & 2 x Pizza Margherita 20cm & 1000 & 3001 & 12.0 & CASH\\
+2025-01-04 & TAAATCDPLUB & 1 x Getränk 1.5L 8.- & 1000 & 3001 & 8.0 & CASH\\
+2025-01-04 & TFLXFZ43RF & 1 x Getränk 4.50.- &  & 3001 & 4.5 & POS\\
+2025-01-04 & TFLXFZ43RF & Bank payout & 1020 &  & 4.43 & 904540\\
+2025-01-04 & TFLXFZ43RF & Fee & 4001 &  & 0.07 & \\
+2025-01-04 & TFRFRECTF9 & 1 x Getränk 6.-, 2 x Getränk 4.50.-, 1 x Snack 2,50.- &  & 3001 & 17.5 & POS\\
+2025-01-04 & TFRFRECTF9 & Bank payout & 1020 &  & 17.06 & 904540\\
+2025-01-04 & TFRFRECTF9 & Fee & 4001 &  & 0.44 & \\
+2025-01-04 & TE3SRH66XF & 1 x Getränk 5.- &  & 3001 & 5.0 & POS\\
+2025-01-04 & TE3SRH66XF & Bank payout & 1020 &  & 4.92 & 904540\\
+2025-01-04 & TE3SRH66XF & Fee & 4001 &  & 0.08 & \\
+2025-01-04 & TAAATCDEHNG & 1 x Eintritt Kind (5-15) & 1000 & 3001 & 20.0 & CASH\\
+2025-01-04 & TD4Y32ZNLC & 1 x Tee, 1 x Getränk 6.- &  & 3001 & 9.5 & POS\\
+2025-01-04 & TD4Y32ZNLC & Bank payout & 1020 &  & 9.36 & 904540\\
+2025-01-04 & TD4Y32ZNLC & Fee & 4001 &  & 0.14 & \\
+2025-01-04 & TAAATCDDKH3 & 1 x Snack 2,50.- & 1000 & 3001 & 2.5 & CASH\\
+2025-01-04 & TAAATCC9RZD & 3 x Getränk 6.-, 1 x Wasser 4.-, 6 x Snack 2,50.- & 1000 & 3001 & 37.0 & CASH\\
+2025-01-04 & TDZ2MV3A42 & 1 x Eintritt Kind (5-15), 1 x Begleitperson &  & 3001 & 28.0 & POS\\
+2025-01-04 & TDZ2MV3A42 & Bank payout & 1020 &  & 27.58 & 904540\\
+2025-01-04 & TDZ2MV3A42 & Fee & 4001 &  & 0.42 & \\
+2025-01-04 & TAAATCC9MHF & 1 x Eintritt Kind (5-15), 1 x Begleitperson & 1000 & 3001 & 28.0 & CASH\\
+2025-01-04 & TAAATCC6QNV & 1 x Eintritt Kind (5-15) & 1000 & 3001 & 20.0 & CASH\\
+2025-01-04 & TAAATCC3BVZ & 1 x Eintritt Kind (5-15) & 1000 & 3001 & 20.0 & CASH\\
+2025-01-04 & TAAATCCYZYG & 1 x Getränk 4.50.- & 1000 & 3001 & 4.5 & CASH\\
+2025-01-04 & T3AY2F7TK2 & 2 x Eintritt Kind FOG, 1 x Begleitperson &  & 3001 & 42.0 & POS\\
+2025-01-04 & T3AY2F7TK2 & Bank payout & 1020 &  & 41.37 & 904540\\
+2025-01-04 & T3AY2F7TK2 & Fee & 4001 &  & 0.63 & \\
+2025-01-04 & TD66PGX2PS & 1 x Getränk 4.50.- &  & 3001 & 4.5 & POS\\
+2025-01-04 & TD66PGX2PS & Bank payout & 1020 &  & 4.43 & 904540\\
+2025-01-04 & TD66PGX2PS & Fee & 4001 &  & 0.07 & \\
+2025-01-04 & TETUD37G26 & 1 x Eintritt Kind (5-15), 1 x Eintritt Adult &  & 3001 & 47.0 & POS\\
+2025-01-04 & TETUD37G26 & Bank payout & 1020 &  & 45.82 & 904540\\
+2025-01-04 & TETUD37G26 & Fee & 4001 &  & 1.18 & \\
+2025-01-04 & TE6ZHZU6LK & 2 x Eintritt Kind (5-15), 2 x Begleitperson &  & 3001 & 56.0 & POS\\
+2025-01-04 & TE6ZHZU6LK & Bank payout & 1020 &  & 54.6 & 904540\\
+2025-01-04 & TE6ZHZU6LK & Fee & 4001 &  & 1.4 & \\
+2025-01-04 & TFQYTS62CZ & 2 x Eintritt Kind (5-15), 1 x Begleitperson &  & 3001 & 48.0 & POS\\
+2025-01-04 & TFQYTS62CZ & Bank payout & 1020 &  & 47.28 & 904540\\
+2025-01-04 & TFQYTS62CZ & Fee & 4001 &  & 0.72 & \\
+2025-01-04 & TAAATCCRLFE & 1 x Pizza Schinken 20cm & 1000 & 3001 & 7.5 & CASH\\
+2025-01-04 & TDCTHAAQDQ & 1 x Eintritt Kind (5-15), 1 x Eintritt Adult &  & 3001 & 47.0 & POS\\
+2025-01-04 & TDCTHAAQDQ & Bank payout & 1020 &  & 46.29 & 904540\\
+2025-01-04 & TDCTHAAQDQ & Fee & 4001 &  & 0.71 & \\
+2025-01-04 & TUXNTTDHX9 & 1 x Pizza Schinken 20cm &  & 3001 & 7.5 & POS\\
+2025-01-04 & TUXNTTDHX9 & Bank payout & 1020 &  & 7.39 & 904540\\
+2025-01-04 & TUXNTTDHX9 & Fee & 4001 &  & 0.11 & \\
+2025-01-04 & TAAATCCF6UE & 1 x Verlängerung 1h & 1000 & 3001 & 5.0 & CASH\\
+2025-01-04 & TDMKQDDER2 & 1 x Verlängerung 1h &  & 3001 & 5.0 & POS\\
+2025-01-04 & TDMKQDDER2 & Bank payout & 1020 &  & 4.92 & 904540\\
+2025-01-04 & TDMKQDDER2 & Fee & 4001 &  & 0.08 & \\
+2025-01-04 & TDKHLN66M4 & 2 x Begleitperson, 2 x Eintritt Kind (5-15) &  & 3001 & 56.0 & POS\\
+2025-01-04 & TDKHLN66M4 & Bank payout & 1020 &  & 54.6 & 904540\\
+2025-01-04 & TDKHLN66M4 & Fee & 4001 &  & 1.4 & \\
+2025-01-04 & TD9D9ESESF & 3 x Eintritt Kind (5-15), 1 x Begleitperson &  & 3001 & 68.0 & POS\\
+2025-01-04 & TD9D9ESESF & Bank payout & 1020 &  & 66.98 & 904540\\
+2025-01-04 & TD9D9ESESF & Fee & 4001 &  & 1.02 & \\
+2025-01-04 & TEV2VQ7K3T & 1 x Getränk 5.- &  & 3001 & 5.0 & POS\\
+2025-01-04 & TEV2VQ7K3T & Bank payout & 1020 &  & 4.92 & 904540\\
+2025-01-04 & TEV2VQ7K3T & Fee & 4001 &  & 0.08 & \\
+2025-01-04 & TFPT62SRTF & 1 x Getränk 1.5L 8.-, 1 x Snack 2,50.- &  & 3001 & 10.5 & POS\\
+2025-01-04 & TFPT62SRTF & Bank payout & 1020 &  & 10.34 & 904540\\
+2025-01-04 & TFPT62SRTF & Fee & 4001 &  & 0.16 & \\
+2025-01-04 & TAAATCB94XB & 1 x Pizza Schinken 20cm, 1 x Pizza Margherita 20cm & 1000 & 3001 & 13.5 & CASH\\
+2025-01-04 & TDMZHT6PPA & 1 x Birthday Option 1 &  & 3001 & 350.0 & POS\\
+2025-01-04 & TDMZHT6PPA & Bank payout & 1020 &  & 341.25 & 904540\\
+2025-01-04 & TDMZHT6PPA & Fee & 4001 &  & 8.75 & \\
+2025-01-04 & TEVFZVNPZN & 2 x Begleitperson, 1 x Eintritt Adult, 3 x Eintritt Kind (5-15) &  & 3001 & 103.0 & POS\\
+2025-01-04 & TEVFZVNPZN & Bank payout & 1020 &  & 101.45 & 904540\\
+2025-01-04 & TEVFZVNPZN & Fee & 4001 &  & 1.55 & \\
+2025-01-04 & TAAATCBUYCX & 1 x Getränk 4.50.-, 1 x Wasser 4.- & 1000 & 3001 & 8.5 & CASH\\
+2025-01-04 & THUVXV9P3N & 1 x Begleitperson, 2 x Eintritt Kind (5-15) &  & 3001 & 48.0 & POS\\
+2025-01-04 & THUVXV9P3N & Bank payout & 1020 &  & 47.28 & 904540\\
+2025-01-04 & THUVXV9P3N & Fee & 4001 &  & 0.72 & \\
+2025-01-04 & TEHTAAKCMP & 2 x Eintritt Adult &  & 3001 & 54.0 & POS\\
+2025-01-04 & TEHTAAKCMP & Bank payout & 1020 &  & 53.19 & 904540\\
+2025-01-04 & TEHTAAKCMP & Fee & 4001 &  & 0.81 & \\
+2025-01-04 & TFGXMKZ92V & 1 x Pappas Schnupperkurs &  & 3001 & 25.0 & POS\\
+2025-01-04 & TFGXMKZ92V & Bank payout & 1020 &  & 24.37 & 904540\\
+2025-01-04 & TFGXMKZ92V & Fee & 4001 &  & 0.63 & \\
+2025-01-04 & TE32TNC4Y6 & 1 x Snack 2,50.-, 1 x Getränk 5.- &  & 3001 & 7.5 & POS\\
+2025-01-04 & TE32TNC4Y6 & Bank payout & 1020 &  & 7.39 & 904540\\
+2025-01-04 & TE32TNC4Y6 & Fee & 4001 &  & 0.11 & \\
+2025-01-04 & TDMYEMLCAN & 2 x Snack 4,50.- &  & 3001 & 9.0 & POS\\
+2025-01-04 & TDMYEMLCAN & Bank payout & 1020 &  & 8.86 & 904540\\
+2025-01-04 & TDMYEMLCAN & Fee & 4001 &  & 0.14 & \\
+2025-01-04 & TAAATCBFXLC & 1 x Getränk 4.50.-, 1 x Wasser 4.-, 1 x Schnuperstdunde & 1000 & 3001 & 33.5 & CASH\\
+2025-01-04 & TFAUY9LNV2 & 1 x Eintritt Kind (5-15) &  & 3001 & 20.0 & POS\\
+2025-01-04 & TFAUY9LNV2 & Bank payout & 1020 &  & 19.7 & 904540\\
+2025-01-04 & TFAUY9LNV2 & Fee & 4001 &  & 0.3 & \\
+2025-01-04 & TDK4UHL9QD & 1 x Eintritt Kind (5-15) &  & 3001 & 20.0 & POS\\
+2025-01-04 & TDK4UHL9QD & Bank payout & 1020 &  & 19.7 & 904540\\
+2025-01-04 & TDK4UHL9QD & Fee & 4001 &  & 0.3 & \\
+2025-01-04 & THPXY4ZT72 & 3 x Eintritt Kind (5-15), 1 x Begleitperson &  & 3001 & 68.0 & POS\\
+2025-01-04 & THPXY4ZT72 & Bank payout & 1020 &  & 66.98 & 904540\\
+2025-01-04 & THPXY4ZT72 & Fee & 4001 &  & 1.02 & \\
+2025-01-04 & TAAATCA3HQ9 & 1 x Eintritt Adult & 1000 & 3001 & 27.0 & CASH\\
+2025-01-04 & TZ6STVSMPK & 1 x Eintritt Adult &  & 3001 & 27.0 & POS\\
+2025-01-04 & TZ6STVSMPK & Bank payout & 1020 &  & 26.59 & 904540\\
+2025-01-04 & TZ6STVSMPK & Fee & 4001 &  & 0.41 & \\
+2025-01-04 & TDNC3MKVUF & 1 x Eintritt Adult &  & 3001 & 27.0 & POS\\
+2025-01-04 & TDNC3MKVUF & Bank payout & 1020 &  & 26.59 & 904540\\
+2025-01-04 & TDNC3MKVUF & Fee & 4001 &  & 0.41 & \\
+2025-01-04 & TCH9HQM4DY & 1 x Eintritt Adult &  & 3001 & 27.0 & POS\\
+2025-01-04 & TCH9HQM4DY & Bank payout & 1020 &  & 26.59 & 904540\\
+2025-01-04 & TCH9HQM4DY & Fee & 4001 &  & 0.41 & \\
+2025-01-04 & TAAATCA29TY & 1 x Eintritt Adult & 1000 & 3001 & 27.0 & CASH\\
+2025-01-04 & TENPKVRTE7 & 1 x Eintritt Adult &  & 3001 & 27.0 & POS\\
+2025-01-04 & TENPKVRTE7 & Bank payout & 1020 &  & 26.59 & 904540\\
+2025-01-04 & TENPKVRTE7 & Fee & 4001 &  & 0.41 & \\
+2025-01-04 & TCEKMFZAQF & 2 x Getränk 5.- &  & 3001 & 10.0 & POS\\
+2025-01-04 & TCEKMFZAQF & Bank payout & 1020 &  & 9.85 & 904540\\
+2025-01-04 & TCEKMFZAQF & Fee & 4001 &  & 0.15 & \\
+2025-01-04 & TEG42Y4SCP & 1 x Eintritt Adult &  & 3001 & 27.0 & POS\\
+2025-01-04 & TEG42Y4SCP & Bank payout & 1020 &  & 26.59 & 904540\\
+2025-01-04 & TEG42Y4SCP & Fee & 4001 &  & 0.41 & \\
+2025-01-04 & TDYMGDQL4T & 1 x Eintritt Adult &  & 3001 & 27.0 & POS\\
+2025-01-04 & TDYMGDQL4T & Bank payout & 1020 &  & 26.59 & 904540\\
+2025-01-04 & TDYMGDQL4T & Fee & 4001 &  & 0.41 & \\
+2025-01-04 & TDK2N27DFL & 1 x Eintritt Adult &  & 3001 & 27.0 & POS\\
+2025-01-04 & TDK2N27DFL & Bank payout & 1020 &  & 26.59 & 904540\\
+2025-01-04 & TDK2N27DFL & Fee & 4001 &  & 0.41 & \\
+2025-01-04 & TECPDHEMPG & 1 x Eintritt Adult &  & 3001 & 27.0 & POS\\
+2025-01-04 & TECPDHEMPG & Bank payout & 1020 &  & 26.59 & 904540\\
+2025-01-04 & TECPDHEMPG & Fee & 4001 &  & 0.41 & \\
+2025-01-04 & TCPENUU9UY & 1 x Eintritt Adult &  & 3001 & 27.0 & POS\\
+2025-01-04 & TCPENUU9UY & Bank payout & 1020 &  & 26.59 & 904540\\
+2025-01-04 & TCPENUU9UY & Fee & 4001 &  & 0.41 & \\
+2025-01-04 & TECSMZZCET & 1 x Eintritt Adult &  & 3001 & 27.0 & POS\\
+2025-01-04 & TECSMZZCET & Bank payout & 1020 &  & 26.59 & 904540\\
+2025-01-04 & TECSMZZCET & Fee & 4001 &  & 0.41 & \\
+2025-01-04 & TC66H4P7NA & 2 x Eintritt Kind (5-15), 1 x Begleitperson &  & 3001 & 48.0 & POS\\
+2025-01-04 & TC66H4P7NA & Bank payout & 1020 &  & 46.8 & 904540\\
+2025-01-04 & TC66H4P7NA & Fee & 4001 &  & 1.2 & \\
+2025-01-04 & TDQTGTYEMK & 1 x Begleitperson &  & 3001 & 8.0 & POS\\
+2025-01-04 & TDQTGTYEMK & Bank payout & 1020 &  & 7.88 & 904540\\
+2025-01-04 & TDQTGTYEMK & Fee & 4001 &  & 0.12 & \\
+2025-01-04 & TY4SNDG2YL & 1 x Getränk 5.- &  & 3001 & 5.0 & POS\\
+2025-01-04 & TY4SNDG2YL & Bank payout & 1020 &  & 4.92 & 904540\\
+2025-01-04 & TY4SNDG2YL & Fee & 4001 &  & 0.08 & \\
+2025-01-03 & TAAATB4GBKZ & 1 x Getränk 4.50.- & 1000 & 3001 & 4.5 & CASH\\
+2025-01-03 & TDUDZM2THT & 2 x Snack 2,50.- &  & 3001 & 5.0 & POS\\
+2025-01-03 & TDUDZM2THT & Bank payout & 1020 &  & 4.92 & 904540\\
+2025-01-03 & TDUDZM2THT & Fee & 4001 &  & 0.08 & \\
+2025-01-03 & TKKVML6KDN & 1 x Camp Neujahr Elia Jeltsch &  & 3001 & 480.0 & POS\\
+2025-01-03 & TKKVML6KDN & Bank payout & 1020 &  & 472.8 & 904540\\
+2025-01-03 & TKKVML6KDN & Fee & 4001 &  & 7.2 & \\
+2025-01-03 & TM24KA6HYF & 1 x Snack 2.-, 1 x Snack 2,50.- &  & 3001 & 4.5 & POS\\
+2025-01-03 & TM24KA6HYF & Bank payout & 1020 &  & 4.43 & 904540\\
+2025-01-03 & TM24KA6HYF & Fee & 4001 &  & 0.07 & \\
+2025-01-03 & T73UC3YAMA & 1 x OG Games &  & 3001 & 49.0 & POS\\
+2025-01-03 & T73UC3YAMA & Bank payout & 1020 &  & 48.26 & 904540\\
+2025-01-03 & T73UC3YAMA & Fee & 4001 &  & 0.74 & \\
+2025-01-03 & TDHVDFTKRV & 1 x Eintritt Adult &  & 3001 & 27.0 & POS\\
+2025-01-03 & TDHVDFTKRV & Bank payout & 1020 &  & 26.59 & 904540\\
+2025-01-03 & TDHVDFTKRV & Fee & 4001 &  & 0.41 & \\
+2025-01-03 & TE4PUNA4CL & 2 x Eintritt Kind (5-15), 1 x Begleitperson &  & 3001 & 48.0 & POS\\
+2025-01-03 & TE4PUNA4CL & Bank payout & 1020 &  & 47.28 & 904540\\
+2025-01-03 & TE4PUNA4CL & Fee & 4001 &  & 0.72 & \\
+2025-01-03 & TAAATB3XDPD & 1 x Snack 2,50.- & 1000 & 3001 & 2.5 & CASH\\
+2025-01-03 & TFDAHDVN4M & 1 x Begleitperson, 2 x Eintritt Kind (5-15) &  & 3001 & 48.0 & POS\\
+2025-01-03 & TFDAHDVN4M & Bank payout & 1020 &  & 46.8 & 904540\\
+2025-01-03 & TFDAHDVN4M & Fee & 4001 &  & 1.2 & \\
+2025-01-03 & TAAATB3PD9V & 1 x Eintritt Kind (5-15), 1 x Begleitperson & 1000 & 3001 & 28.0 & CASH\\
+2025-01-03 & TAAATB3N6XE & 1 x Wasser 4.- & 1000 & 3001 & 4.0 & CASH\\
+2025-01-03 & TFFHQKDXUS & 2 x Getränk 4.50.- &  & 3001 & 9.0 & POS\\
+2025-01-03 & TFFHQKDXUS & Bank payout & 1020 &  & 8.77 & 904540\\
+2025-01-03 & TFFHQKDXUS & Fee & 4001 &  & 0.23 & \\
+2025-01-03 & TCMSENN3TH & 1 x Begleitperson, 1 x Schnupperkurs &  & 3001 & 33.0 & POS\\
+2025-01-03 & TCMSENN3TH & Bank payout & 1020 &  & 32.5 & 904540\\
+2025-01-03 & TCMSENN3TH & Fee & 4001 &  & 0.5 & \\
+2025-01-03 & TDPC3PYDD9 & 1 x Begleitperson &  & 3001 & 8.0 & POS\\
+2025-01-03 & TDPC3PYDD9 & Bank payout & 1020 &  & 7.88 & 904540\\
+2025-01-03 & TDPC3PYDD9 & Fee & 4001 &  & 0.12 & \\
+2025-01-03 & TGZEPRGFF4 & 2 x Eintritt Kind (5-15), 1 x Begleitperson &  & 3001 & 48.0 & POS\\
+2025-01-03 & TGZEPRGFF4 & Bank payout & 1020 &  & 47.28 & 904540\\
+2025-01-03 & TGZEPRGFF4 & Fee & 4001 &  & 0.72 & \\
+2025-01-03 & TDX23L49ZG & 2 x Snack 2,50.-, 1 x Snack 3,50.- &  & 3001 & 8.5 & POS\\
+2025-01-03 & TDX23L49ZG & Bank payout & 1020 &  & 8.37 & 904540\\
+2025-01-03 & TDX23L49ZG & Fee & 4001 &  & 0.13 & \\
+2025-01-03 & TTGFTASDQV & 1 x Snack 2,50.-, 1 x Getränk 4.50.- &  & 3001 & 7.0 & POS\\
+2025-01-03 & TTGFTASDQV & Bank payout & 1020 &  & 6.89 & 904540\\
+2025-01-03 & TTGFTASDQV & Fee & 4001 &  & 0.11 & \\
+2025-01-03 & TAAATB3C3RY & 1 x Eintritt Kind (5-15), 1 x Begleitperson & 1000 & 3001 & 28.0 & CASH\\
+2025-01-03 & TM77XYENRA & 1 x Eintritt Adult, 2 x Eintritt Kind (5-15) &  & 3001 & 67.0 & POS\\
+2025-01-03 & TM77XYENRA & Bank payout & 1020 &  & 65.99 & 904540\\
+2025-01-03 & TM77XYENRA & Fee & 4001 &  & 1.01 & \\
+2025-01-03 & TDRMCHQVCL & 1 x 50\% PEAK Punk &  & 3001 & 2.25 & POS\\
+2025-01-03 & TDRMCHQVCL & Bank payout & 1020 &  & 2.22 & 904540\\
+2025-01-03 & TDRMCHQVCL & Fee & 4001 &  & 0.03 & \\
+2025-01-03 & TAAATB3ADX9 & 2 x Eintritt Kind (5-15) & 1000 & 3001 & 40.0 & CASH\\
+2025-01-03 & TDERAXQ3YV & 3 x Eintritt Kind (5-15), 1 x Begleitperson &  & 3001 & 68.0 & POS\\
+2025-01-03 & TDERAXQ3YV & Bank payout & 1020 &  & 66.98 & 904540\\
+2025-01-03 & TDERAXQ3YV & Fee & 4001 &  & 1.02 & \\
+2025-01-03 & TAAATB294XS & 2 x Eintritt Kind (5-15) & 1000 & 3001 & 40.0 & CASH\\
+2025-01-03 & TAAATB2926D & 2 x Eintritt Kind (5-15) & 1000 & 3001 & 40.0 & CASH\\
+2025-01-03 & TAAATB29M7E & 3 x Getränk 4.50.- & 1000 & 3001 & 13.5 & CASH\\
+2025-01-03 & TCSYZ6KZ9N & 2 x Eintritt Kind (5-15), 1 x Begleitperson &  & 3001 & 48.0 & POS\\
+2025-01-03 & TCSYZ6KZ9N & Bank payout & 1020 &  & 47.28 & 904540\\
+2025-01-03 & TCSYZ6KZ9N & Fee & 4001 &  & 0.72 & \\
+2025-01-03 & TEAHQK4XS9 & 3 x Eintritt Kind (5-15), 1 x Begleitperson &  & 3001 & 68.0 & POS\\
+2025-01-03 & TEAHQK4XS9 & Bank payout & 1020 &  & 66.98 & 904540\\
+2025-01-03 & TEAHQK4XS9 & Fee & 4001 &  & 1.02 & \\
+2025-01-03 & TFRUVHTGC3 & 1 x Wasser 4.- &  & 3001 & 4.0 & POS\\
+2025-01-03 & TFRUVHTGC3 & Bank payout & 1020 &  & 3.94 & 904540\\
+2025-01-03 & TFRUVHTGC3 & Fee & 4001 &  & 0.06 & \\
+2025-01-03 & TEQ7K6K4V9 & 2 x Eintritt Kind (5-15), 1 x Begleitperson &  & 3001 & 48.0 & POS\\
+2025-01-03 & TEQ7K6K4V9 & Bank payout & 1020 &  & 47.28 & 904540\\
+2025-01-03 & TEQ7K6K4V9 & Fee & 4001 &  & 0.72 & \\
+2025-01-03 & TC36S3FEMV & 2 x Eintritt Kind (5-15), 1 x Begleitperson &  & 3001 & 24.0 & POS\\
+2025-01-03 & TC36S3FEMV & Bank payout & 1020 &  & 23.64 & 904540\\
+2025-01-03 & TC36S3FEMV & Fee & 4001 &  & 0.36 & \\
+2025-01-03 & TEH37H47QM & 1 x Getränk 4.50.- &  & 3001 & 4.5 & POS\\
+2025-01-03 & TEH37H47QM & Bank payout & 1020 &  & 4.43 & 904540\\
+2025-01-03 & TEH37H47QM & Fee & 4001 &  & 0.07 & \\
+2025-01-03 & TETHZNMXPZ & 8 x Verlängerung 1h &  & 3001 & 40.0 & POS\\
+2025-01-03 & TETHZNMXPZ & Bank payout & 1020 &  & 39.4 & 904540\\
+2025-01-03 & TETHZNMXPZ & Fee & 4001 &  & 0.6 & \\
+2025-01-03 & TAAATB2UMSN & 4 x Eintritt Kind (5-15), 1 x Begleitperson, 1 x Eintritt Adult & 1000 & 3001 & 115.0 & CASH\\
+2025-01-03 & TDTXLQCSUZ & 1 x Getränk 5.- &  & 3001 & 5.0 & POS\\
+2025-01-03 & TDTXLQCSUZ & Bank payout & 1020 &  & 4.92 & 904540\\
+2025-01-03 & TDTXLQCSUZ & Fee & 4001 &  & 0.08 & \\
+2025-01-03 & TCYP37EVQN & 1 x Begleitperson &  & 3001 & 8.0 & POS\\
+2025-01-03 & TCYP37EVQN & Bank payout & 1020 &  & 7.88 & 904540\\
+2025-01-03 & TCYP37EVQN & Fee & 4001 &  & 0.12 & \\
+2025-01-03 & TAAATB2SXSY & 2 x Getränk 4.50.- & 1000 & 3001 & 9.0 & CASH\\
+2025-01-03 & TAAATB2SUUM & 2 x Getränk 5.- & 1000 & 3001 & 10.0 & CASH\\
+2025-01-03 & TFQ9CP3CHP & 2 x Eintritt Kind (5-15), 1 x Begleitperson &  & 3001 & 48.0 & POS\\
+2025-01-03 & TFQ9CP3CHP & Bank payout & 1020 &  & 47.28 & 904540\\
+2025-01-03 & TFQ9CP3CHP & Fee & 4001 &  & 0.72 & \\
+2025-01-03 & TAAATB2RQTN & 3 x Eintritt Kind (5-15), 1 x Begleitperson & 1000 & 3001 & 68.0 & CASH\\
+2025-01-03 & TUTKPN2HUC & 1 x Eintritt Kind (5-15), 1 x Begleitperson &  & 3001 & 28.0 & POS\\
+2025-01-03 & TUTKPN2HUC & Bank payout & 1020 &  & 27.58 & 904540\\
+2025-01-03 & TUTKPN2HUC & Fee & 4001 &  & 0.42 & \\
+2025-01-03 & TAAATB2NZHY & 2 x Eintritt Kind (5-15), 1 x Begleitperson & 1000 & 3001 & 48.0 & CASH\\
+2025-01-03 & TAAATB2NK7D & 2 x Eintritt Kind (5-15), 1 x Begleitperson & 1000 & 3001 & 48.0 & CASH\\
+2025-01-03 & TRADN3QDN4 & 1 x Eintritt Adult, 1 x Eintritt Kind (5-15) &  & 3001 & 47.0 & POS\\
+2025-01-03 & TRADN3QDN4 & Bank payout & 1020 &  & 46.29 & 904540\\
+2025-01-03 & TRADN3QDN4 & Fee & 4001 &  & 0.71 & \\
+2025-01-03 & TAAATB2MCAM & 1 x Getränk 4.50.- & 1000 & 3001 & 4.5 & CASH\\
+2025-01-03 & TAAATB2HFYE & 1 x Begleitperson & 1000 & 3001 & 8.0 & CASH\\
+2025-01-03 & TC4XFAFCM2 & 1 x Eintritt Adult, 2 x Eintritt Kind (5-15) &  & 3001 & 67.0 & POS\\
+2025-01-03 & TC4XFAFCM2 & Bank payout & 1020 &  & 65.32 & 904540\\
+2025-01-03 & TC4XFAFCM2 & Fee & 4001 &  & 1.68 & \\
+2025-01-03 & TCRFURRSXF & 2 x Begleitperson, 3 x Eintritt Kind (5-15) &  & 3001 & 76.0 & POS\\
+2025-01-03 & TCRFURRSXF & Bank payout & 1020 &  & 74.86 & 904540\\
+2025-01-03 & TCRFURRSXF & Fee & 4001 &  & 1.14 & \\
+2025-01-03 & TAAATBZ9BYS & 1 x Eintritt Adult, 2 x Eintritt Kind (5-15), 1 x Begleitperson & 1000 & 3001 & 75.0 & CASH\\
+2025-01-03 & TEXPKG2RL2 & 1 x Eintritt Kind (5-15) &  & 3001 & 20.0 & POS\\
+2025-01-03 & TEXPKG2RL2 & Bank payout & 1020 &  & 19.7 & 904540\\
+2025-01-03 & TEXPKG2RL2 & Fee & 4001 &  & 0.3 & \\
+2025-01-03 & TEFHFMH4AQ & 2 x Begleitperson, 3 x Eintritt Kind (5-15) &  & 3001 & 76.0 & POS\\
+2025-01-03 & TEFHFMH4AQ & Bank payout & 1020 &  & 74.86 & 904540\\
+2025-01-03 & TEFHFMH4AQ & Fee & 4001 &  & 1.14 & \\
+2025-01-03 & TAAATBZ4N3T & 2 x Getränk 4.50.- & 1000 & 3001 & 9.0 & CASH\\
+2025-01-03 & TDMSDXN9P9 & 2 x Getränk 4.50.- &  & 3001 & 9.0 & POS\\
+2025-01-03 & TDMSDXN9P9 & Bank payout & 1020 &  & 8.86 & 904540\\
+2025-01-03 & TDMSDXN9P9 & Fee & 4001 &  & 0.14 & \\
+2025-01-03 & TESD6ZZQPX & 1 x Eintritt Adult, 3 x Eintritt Kind (5-15) &  & 3001 & 87.0 & POS\\
+2025-01-03 & TESD6ZZQPX & Bank payout & 1020 &  & 85.69 & 904540\\
+2025-01-03 & TESD6ZZQPX & Fee & 4001 &  & 1.31 & \\
+2025-01-03 & TFL2UYAHX6 & 1 x Getränk 4.50.- &  & 3001 & 4.5 & POS\\
+2025-01-03 & TFL2UYAHX6 & Bank payout & 1020 &  & 4.43 & 904540\\
+2025-01-03 & TFL2UYAHX6 & Fee & 4001 &  & 0.07 & \\
+2025-01-03 & TAAATBZRHXN & 1 x Snack 2,50.- & 1000 & 3001 & 2.5 & CASH\\
+2025-01-03 & TAAATBZGM2L & 2 x Getränk 4.50.- & 1000 & 3001 & 9.0 & CASH\\
+2025-01-03 & TAAATBZGLHC & 2 x Getränk 4.50.- & 1000 & 3001 & 9.0 & CASH\\
+2025-01-03 & TDPMXLHAQA & 1 x Begleitperson, 5 x Eintritt Kind (5-15) &  & 3001 & 108.0 & POS\\
+2025-01-03 & TDPMXLHAQA & Bank payout & 1020 &  & 105.3 & 904540\\
+2025-01-03 & TDPMXLHAQA & Fee & 4001 &  & 2.7 & \\
+2025-01-03 & TAAATBZAQH6 & 1 x Snack 3,50.- & 1000 & 3001 & 3.5 & CASH\\
+2025-01-03 & TAAATBY9GHR & 3 x Eintritt Kind (5-15), 1 x Tageseintritt Kind 2-4, 1 x Begleitperson & 1000 & 3001 & 74.0 & CASH\\
+2025-01-03 & TAAATBY9BCH & 3 x Eintritt Kind (5-15), 1 x Tageseintritt Kind 2-4, 1 x Begleitperson & 1000 & 3001 & 74.0 & CASH\\
+2025-01-03 & TAAATBY7939 & 3 x Eintritt Kind (5-15), 1 x Tageseintritt Kind 2-4, 1 x Begleitperson & 1000 & 3001 & 74.0 & CASH\\
+2025-01-03 & TAAATBY7ZD7 & 3 x Eintritt Kind (5-15), 1 x Tageseintritt Kind 2-4, 1 x Begleitperson & 1000 & 3001 & 74.0 & CASH\\
+2025-01-03 & TGFR6HCEKV & 1 x Begleitperson, 1 x Eintritt Kind (5-15), 1 x Tageseintritt Kind 2-4 &  & 3001 & 34.0 & POS\\
+2025-01-03 & TGFR6HCEKV & Bank payout & 1020 &  & 33.49 & 904540\\
+2025-01-03 & TGFR6HCEKV & Fee & 4001 &  & 0.51 & \\
+2025-01-03 & TDSZ6GDR96 & 2 x Begleitperson, 2 x Eintritt Kind (5-15) &  & 3001 & 56.0 & POS\\
+2025-01-03 & TDSZ6GDR96 & Bank payout & 1020 &  & 55.16 & 904540\\
+2025-01-03 & TDSZ6GDR96 & Fee & 4001 &  & 0.84 & \\
+2025-01-03 & TDNHT9SRRT & 3 x Eintritt Kind (5-15), 1 x Begleitperson, 1 x Eintritt Adult &  & 3001 & 95.0 & POS\\
+2025-01-03 & TDNHT9SRRT & Bank payout & 1020 &  & 93.57 & 904540\\
+2025-01-03 & TDNHT9SRRT & Fee & 4001 &  & 1.43 & \\
+2025-01-03 & TXAUR2DPUF & 1 x Tageseintritt Kind 2-4, 1 x Begleitperson &  & 3001 & 14.0 & POS\\
+2025-01-03 & TXAUR2DPUF & Bank payout & 1020 &  & 13.79 & 904540\\
+2025-01-03 & TXAUR2DPUF & Fee & 4001 &  & 0.21 & \\
+2025-01-03 & TAAATBY3C3B & 2 x Begleitperson & 1000 & 3001 & 16.0 & CASH\\
+2025-01-03 & TERTZHK4GT & 1 x Getränk 6.-, 1 x Getränk 5.- &  & 3001 & 11.0 & POS\\
+2025-01-03 & TERTZHK4GT & Bank payout & 1020 &  & 10.83 & 904540\\
+2025-01-03 & TERTZHK4GT & Fee & 4001 &  & 0.17 & \\
+2025-01-03 & TSYAL234UR & 1 x Begleitperson, 1 x Eintritt Kind (5-15), 1 x Eintritt Kind (5-15), 1 x Eintritt Adult &  & 3001 & 67.5 & POS\\
+2025-01-03 & TSYAL234UR & Bank payout & 1020 &  & 66.49 & 904540\\
+2025-01-03 & TSYAL234UR & Fee & 4001 &  & 1.01 & \\
+2025-01-03 & TAAATBYVBPE & 1 x Getränk 5.- & 1000 & 3001 & 5.0 & CASH\\
+2025-01-03 & TAAATBYSZ27 & 1 x Eintritt Adult FOG & 1000 & 3001 & 23.0 & CASH\\
+2025-01-03 & TAAATBYSV6H & 1 x Eintritt Adult FOG & 1000 & 3001 & 23.0 & CASH\\
+2025-01-03 & TAAATBYSVEH & 1 x Eintritt Adult FOG & 1000 & 3001 & 23.0 & CASH\\
+2025-01-03 & TCPGMTGD73 & 1 x Eintritt Adult FOG &  & 3001 & 23.0 & POS\\
+2025-01-03 & TCPGMTGD73 & Bank payout & 1020 &  & 22.65 & 904540\\
+2025-01-03 & TCPGMTGD73 & Fee & 4001 &  & 0.35 & \\
+2025-01-03 & TAAATBYSM3U & 1 x Eintritt Adult FOG & 1000 & 3001 & 23.0 & CASH\\
+2025-01-03 & TEEAP6MLKV & 2 x Eintritt Kind (5-15), 1 x Begleitperson &  & 3001 & 48.0 & POS\\
+2025-01-03 & TEEAP6MLKV & Bank payout & 1020 &  & 47.28 & 904540\\
+2025-01-03 & TEEAP6MLKV & Fee & 4001 &  & 0.72 & \\
+2025-01-02 & TAAATBVCY6P & 13 x Eintritt Kind (5-15), 3 x Eintritt Adult & 1000 & 3001 & 341.0 & CASH\\
+2025-01-02 & TAAATBVCNUU & 11 x Eintritt Kind (5-15) & 1000 & 3001 & 220.0 & CASH\\
+2025-01-02 & TAAATBU942H & 7 x Begleitperson & 1000 & 3001 & 56.0 & CASH\\
+2025-01-02 & TC2M9SS26D & 1 x T-Shirt &  & 3001 & 39.0 & POS\\
+2025-01-02 & TC2M9SS26D & Bank payout & 1020 &  & 38.41 & 900045\\
+2025-01-02 & TC2M9SS26D & Fee & 4001 &  & 0.59 & \\
+2025-01-02 & TAAATBUSFHL & 1 x Getränk 4.50.- & 1000 & 3001 & 4.5 & CASH\\
+2025-01-02 & TAAATBUR7H3 & 1 x Snack 2,50.- & 1000 & 3001 & 2.5 & CASH\\
+2025-01-02 & TEY3RT6L9V & 1 x Snack 2,50.-, 1 x Getränk 4.50.- &  & 3001 & 7.0 & POS\\
+2025-01-02 & TEY3RT6L9V & Bank payout & 1020 &  & 6.89 & 900045\\
+2025-01-02 & TEY3RT6L9V & Fee & 4001 &  & 0.11 & \\
+2025-01-02 & TFNN9QRZF2 & 1 x Getränk 4.50.- &  & 3001 & 4.5 & POS\\
+2025-01-02 & TFNN9QRZF2 & Bank payout & 1020 &  & 4.43 & 900045\\
+2025-01-02 & TFNN9QRZF2 & Fee & 4001 &  & 0.07 & \\
+2025-01-02 & TAAATBUF9XS & 1 x Getränk 4.50.- & 1000 & 3001 & 4.5 & CASH\\
+2025-01-02 & TAAATBUFFHT & 1 x Snack 2,50.- & 1000 & 3001 & 2.5 & CASH\\
+2025-01-02 & TEKXXASNNH & 2 x Getränk 4.50.-, 1 x Snack 2,50.- &  & 3001 & 11.5 & POS\\
+2025-01-02 & TEKXXASNNH & Bank payout & 1020 &  & 11.33 & 900045\\
+2025-01-02 & TEKXXASNNH & Fee & 4001 &  & 0.17 & \\
+2025-01-02 & TEMML6ZG9V & 1 x Snack 2,50.-, 1 x Snack 3,50.- &  & 3001 & 6.0 & POS\\
+2025-01-02 & TEMML6ZG9V & Bank payout & 1020 &  & 5.91 & 900045\\
+2025-01-02 & TEMML6ZG9V & Fee & 4001 &  & 0.09 & \\
+2025-01-02 & TAAATBUEG42 & 1 x Snack 2.- & 1000 & 3001 & 2.0 & CASH\\
+2025-01-02 & TAAATBUBDSR & 3 x Eintritt Kind (5-15), 1 x Begleitperson & 1000 & 3001 & 68.0 & CASH\\
+2025-01-02 & TDY7KX2MZC & 2 x Getränk 4.50.-, 1 x Getränk 5.- &  & 3001 & 14.0 & POS\\
+2025-01-02 & TDY7KX2MZC & Bank payout & 1020 &  & 13.79 & 900045\\
+2025-01-02 & TDY7KX2MZC & Fee & 4001 &  & 0.21 & \\
+2025-01-02 & TAAATBT6LY7 & 2 x Snack 2,50.- & 1000 & 3001 & 5.0 & CASH\\
+2025-01-02 & TCACCAHEN3 & 1 x Eintritt Kind (5-15), 2 x Begleitperson &  & 3001 & 36.0 & POS\\
+2025-01-02 & TCACCAHEN3 & Bank payout & 1020 &  & 35.46 & 900045\\
+2025-01-02 & TCACCAHEN3 & Fee & 4001 &  & 0.54 & \\
+2025-01-02 & TEDTACSVF3 & 6 x Eintritt Adult &  & 3001 & 162.0 & POS\\
+2025-01-02 & TEDTACSVF3 & Bank payout & 1020 &  & 157.95 & 900045\\
+2025-01-02 & TEDTACSVF3 & Fee & 4001 &  & 4.05 & \\
+2025-01-02 & TYMMYPGDDQ & 1 x Tee, 1 x Snack 2,50.-, 1 x Getränk 4.50.- &  & 3001 & 10.5 & POS\\
+2025-01-02 & TYMMYPGDDQ & Bank payout & 1020 &  & 10.24 & 900045\\
+2025-01-02 & TYMMYPGDDQ & Fee & 4001 &  & 0.26 & \\
+2025-01-02 & TAAATBTVSPL & 1 x Snack 2,50.- & 1000 & 3001 & 2.5 & CASH\\
+2025-01-02 & TAAATBTU6QC & 1 x Pizza Margherita 20cm & 1000 & 3001 & 6.0 & CASH\\
+2025-01-02 & TEPFH69HZ7 & 1 x Begleitperson &  & 3001 & 8.0 & POS\\
+2025-01-02 & TEPFH69HZ7 & Bank payout & 1020 &  & 7.88 & 900045\\
+2025-01-02 & TEPFH69HZ7 & Fee & 4001 &  & 0.12 & \\
+2025-01-02 & TAAATBTT2X2 & 3 x Getränk 4.50.- & 1000 & 3001 & 13.5 & CASH\\
+2025-01-02 & TFGG7PK3Q7 & 1 x Eintritt Kind (5-15) &  & 3001 & 20.0 & POS\\
+2025-01-02 & TFGG7PK3Q7 & Bank payout & 1020 &  & 19.7 & 900045\\
+2025-01-02 & TFGG7PK3Q7 & Fee & 4001 &  & 0.3 & \\
+2025-01-02 & TD66KKYZF9 & 2 x Tee &  & 3001 & 7.0 & POS\\
+2025-01-02 & TD66KKYZF9 & Bank payout & 1020 &  & 6.82 & 900045\\
+2025-01-02 & TD66KKYZF9 & Fee & 4001 &  & 0.18 & \\
+2025-01-02 & TAAATBTRFKS & 4 x Getränk 4.50.- & 1000 & 3001 & 18.0 & CASH\\
+2025-01-02 & TFDGTFGZ22 & 2 x Eintritt Kind (5-15), 2 x Begleitperson &  & 3001 & 56.0 & POS\\
+2025-01-02 & TFDGTFGZ22 & Bank payout & 1020 &  & 55.16 & 900045\\
+2025-01-02 & TFDGTFGZ22 & Fee & 4001 &  & 0.84 & \\
+2025-01-02 & TD6KQ37VS7 & 3 x Eintritt Kind (5-15), 2 x Begleitperson &  & 3001 & 76.0 & POS\\
+2025-01-02 & TD6KQ37VS7 & Bank payout & 1020 &  & 74.1 & 908092\\
+2025-01-02 & TD6KQ37VS7 & Fee & 4001 &  & 1.9 & \\
+2025-01-02 & TRG4ZNGD3Y & 3 x Eintritt Kind (5-15), 2 x Begleitperson &  & 3001 & 76.0 & POS\\
+2025-01-02 & TRG4ZNGD3Y & Bank payout & 1020 &  & 74.86 & 900045\\
+2025-01-02 & TRG4ZNGD3Y & Fee & 4001 &  & 1.14 & \\
+2025-01-02 & TFNAA4RC3K & 3 x Eintritt Kind (5-15), 1 x Begleitperson &  & 3001 & 68.0 & POS\\
+2025-01-02 & TFNAA4RC3K & Bank payout & 1020 &  & 66.3 & 900045\\
+2025-01-02 & TFNAA4RC3K & Fee & 4001 &  & 1.7 & \\
+2025-01-02 & TRGVVRV3DY & 2 x Eintritt Kind FOG, 1 x Begleitperson &  & 3001 & 42.0 & POS\\
+2025-01-02 & TRGVVRV3DY & Bank payout & 1020 &  & 41.37 & 900045\\
+2025-01-02 & TRGVVRV3DY & Fee & 4001 &  & 0.63 & \\
+2025-01-02 & TAAATBTNXN3 & 2 x Eintritt Kind (5-15), 1 x Begleitperson, 1 x Eintritt Kind FOG & 1000 & 3001 & 65.0 & CASH\\
+2025-01-02 & TC9ETZ37YU & 1 x Snack 4,50.-, 3 x Snack 2,50.-, 1 x Getränk 4.50.- &  & 3001 & 16.5 & POS\\
+2025-01-02 & TC9ETZ37YU & Bank payout & 1020 &  & 16.09 & 900045\\
+2025-01-02 & TC9ETZ37YU & Fee & 4001 &  & 0.41 & \\
+2025-01-02 & TDHP6LKSDX & 1 x Eintritt Adult, 2 x Begleitperson, 3 x Eintritt Kind (5-15) &  & 3001 & 103.0 & POS\\
+2025-01-02 & TDHP6LKSDX & Bank payout & 1020 &  & 100.42 & 900045\\
+2025-01-02 & TDHP6LKSDX & Fee & 4001 &  & 2.58 & \\
+2025-01-02 & TDSPYYVF7Y & 1 x Eintritt Kind (5-15), 1 x Eintritt Adult &  & 3001 & 47.0 & POS\\
+2025-01-02 & TDSPYYVF7Y & Bank payout & 1020 &  & 46.29 & 900045\\
+2025-01-02 & TDSPYYVF7Y & Fee & 4001 &  & 0.71 & \\
+2025-01-02 & TFD4SH9UTN & 1 x Eintritt Kind (5-15), 1 x Begleitperson &  & 3001 & 28.0 & POS\\
+2025-01-02 & TFD4SH9UTN & Bank payout & 1020 &  & 27.58 & 900045\\
+2025-01-02 & TFD4SH9UTN & Fee & 4001 &  & 0.42 & \\
+2025-01-02 & TAAATBTKBT2 & 1 x Eintritt Kind (5-15), 1 x Begleitperson & 1000 & 3001 & 28.0 & CASH\\
+2025-01-02 & TE4MKGMY4Y & 1 x Eintritt Kind (5-15), 1 x Eintritt Adult &  & 3001 & 47.0 & POS\\
+2025-01-02 & TE4MKGMY4Y & Bank payout & 1020 &  & 45.82 & 900045\\
+2025-01-02 & TE4MKGMY4Y & Fee & 4001 &  & 1.18 & \\
+2025-01-02 & TFPKFL7NSG & 2 x Eintritt Kind (5-15), 2 x Begleitperson &  & 3001 & 56.0 & POS\\
+2025-01-02 & TFPKFL7NSG & Bank payout & 1020 &  & 55.16 & 900045\\
+2025-01-02 & TFPKFL7NSG & Fee & 4001 &  & 0.84 & \\
+2025-01-02 & TAAATBTFTEL & 1 x Getränk 4.50.- & 1000 & 3001 & 4.5 & CASH\\
+2025-01-02 & TAAATBS9D6K & 1 x Getränk 5.- & 1000 & 3001 & 5.0 & CASH\\
+2025-01-02 & TK4A6T4P3X & 2 x Eintritt Kind (5-15), 2 x Begleitperson &  & 3001 & 56.0 & POS\\
+2025-01-02 & TK4A6T4P3X & Bank payout & 1020 &  & 54.6 & 900045\\
+2025-01-02 & TK4A6T4P3X & Fee & 4001 &  & 1.4 & \\
+2025-01-02 & TAAATBS77M6 & 2 x Eintritt Kind (5-15), 2 x Begleitperson & 1000 & 3001 & 56.0 & CASH\\
+2025-01-02 & TCEFXMUEY4 & 1 x Begleitperson &  & 3001 & 8.0 & POS\\
+2025-01-02 & TCEFXMUEY4 & Bank payout & 1020 &  & 7.88 & 900045\\
+2025-01-02 & TCEFXMUEY4 & Fee & 4001 &  & 0.12 & \\
+2025-01-02 & TAAATBS7PTY & 1 x Snack 2,50.- & 1000 & 3001 & 2.5 & CASH\\
+2025-01-02 & TD9D4FMZ62 & 2 x Begleitperson, 1 x Eintritt Kind (5-15) &  & 3001 & 36.0 & POS\\
+2025-01-02 & TD9D4FMZ62 & Bank payout & 1020 &  & 35.46 & 900045\\
+2025-01-02 & TD9D4FMZ62 & Fee & 4001 &  & 0.54 & \\
+2025-01-02 & TAAATBS6YQD & 1 x Tageseintritt Kind 2-4 & 1000 & 3001 & 6.0 & CASH\\
+2025-01-02 & TXDZ7PZRG3 & 1 x Begleitperson, 3 x Eintritt Kind (5-15) &  & 3001 & 68.0 & POS\\
+2025-01-02 & TXDZ7PZRG3 & Bank payout & 1020 &  & 66.3 & 908092\\
+2025-01-02 & TXDZ7PZRG3 & Fee & 4001 &  & 1.7 & \\
+2025-01-02 & TAAATBS33SX & 1 x Eintritt Kind (5-15) & 1000 & 3001 & 20.0 & CASH\\
+2025-01-02 & TAAATBS3D6L & 1 x Getränk 4.50.- & 1000 & 3001 & 4.5 & CASH\\
+2025-01-02 & TAAATBSY4KC & 1 x Snack 2,50.- & 1000 & 3001 & 2.5 & CASH\\
+2025-01-02 & TAAATBSV34R & 2 x Getränk 6.- & 1000 & 3001 & 12.0 & CASH\\
+2025-01-02 & TFRNXZEQFR & 1 x Tageseintritt Kind 2-4, 1 x Eintritt Kind (5-15), 2 x Begleitperson &  & 3001 & 42.0 & POS\\
+2025-01-02 & TFRNXZEQFR & Bank payout & 1020 &  & 41.37 & 900045\\
+2025-01-02 & TFRNXZEQFR & Fee & 4001 &  & 0.63 & \\
+2025-01-02 & TAAATBSVSXG & 1 x Begleitperson, 1 x Eintritt Kind (5-15) & 1000 & 3001 & 28.0 & CASH\\
+2025-01-02 & TAAATBSVL7S & 1 x Snack 3,50.-, 1 x Getränk 6.- & 1000 & 3001 & 9.5 & CASH\\
+2025-01-02 & TFDYFA7G4V & 1 x Pizza Margherita 20cm &  & 3001 & 6.0 & POS\\
+2025-01-02 & TFDYFA7G4V & Bank payout & 1020 &  & 5.91 & 900045\\
+2025-01-02 & TFDYFA7G4V & Fee & 4001 &  & 0.09 & \\
+2025-01-02 & TCQ9EPNNTS & 1 x Pizza Margherita 20cm &  & 3001 & 6.0 & POS\\
+2025-01-02 & TCQ9EPNNTS & Bank payout & 1020 &  & 5.91 & 900045\\
+2025-01-02 & TCQ9EPNNTS & Fee & 4001 &  & 0.09 & \\
+2025-01-02 & TEVFTGF4U4 & 1 x Begleitperson &  & 3001 & 8.0 & POS\\
+2025-01-02 & TEVFTGF4U4 & Bank payout & 1020 &  & 7.8 & 900045\\
+2025-01-02 & TEVFTGF4U4 & Fee & 4001 &  & 0.2 & \\
+2025-01-02 & TNZQXAY2Y2 & 1 x Camp Felix &  & 3001 & 327.25 & POS\\
+2025-01-02 & TNZQXAY2Y2 & Bank payout & 1020 &  & 322.34 & 900045\\
+2025-01-02 & TNZQXAY2Y2 & Fee & 4001 &  & 4.91 & \\
+2025-01-02 & TAAATBSSTLE & 1 x Betrag Sandro von Felix & 1000 & 3001 & 21.0 & CASH\\
+2025-01-02 & TAAATBSPXRF & 1 x Pizza Margherita 20cm & 1000 & 3001 & 6.0 & CASH\\
+2025-01-02 & TEA2QQVK2E & 1 x Betrag für Sandro (Abby) &  & 3001 & 21.0 & POS\\
+2025-01-02 & TEA2QQVK2E & Bank payout & 1020 &  & 20.68 & 900045\\
+2025-01-02 & TEA2QQVK2E & Fee & 4001 &  & 0.32 & \\
+2025-01-02 & TAAATBSM3XK & 1 x Eintritt Adult, 1 x Eintritt Kind (5-15) & 1000 & 3001 & 47.0 & CASH\\
+2025-01-02 & TCPEUF4EKV & 1 x Snack 2,50.-, 1 x Snack 4,50.-, 1 x Getränk 4.50.-, 1 x Pizza Margherita 20cm &  & 3001 & 17.5 & POS\\
+2025-01-02 & TCPEUF4EKV & Bank payout & 1020 &  & 17.24 & 900045\\
+2025-01-02 & TCPEUF4EKV & Fee & 4001 &  & 0.26 & \\
+2025-01-02 & TAAATBSLN6S & 1 x Snack 3,50.- & 1000 & 3001 & 3.5 & CASH\\
+2025-01-02 & TAAATBSH3FD & 1 x Getränk 4.50.- & 1000 & 3001 & 4.5 & CASH\\
+2025-01-02 & TAAATBSGZR3 & 1 x Getränk 4.50.- & 1000 & 3001 & 4.5 & CASH\\
+2025-01-02 & TD9DAN69U2 & 3 x Getränk 4.50.- &  & 3001 & 13.5 & POS\\
+2025-01-02 & TD9DAN69U2 & Bank payout & 1020 &  & 13.3 & 900045\\
+2025-01-02 & TD9DAN69U2 & Fee & 4001 &  & 0.2 & \\
+2025-01-02 & TFNHPL3VEQ & 3 x Eintritt Adult &  & 3001 & 81.0 & POS\\
+2025-01-02 & TFNHPL3VEQ & Bank payout & 1020 &  & 79.78 & 900045\\
+2025-01-02 & TFNHPL3VEQ & Fee & 4001 &  & 1.22 & \\
+2025-01-02 & TCPZYSXXCV & 1 x Eintritt Adult, 1 x Begleitperson, 3 x Eintritt Kind (5-15) &  & 3001 & 95.0 & POS\\
+2025-01-02 & TCPZYSXXCV & Bank payout & 1020 &  & 92.62 & 900045\\
+2025-01-02 & TCPZYSXXCV & Fee & 4001 &  & 2.38 & \\
+2025-01-02 & TAAATBR4S9V & 2 x Snack 2,50.- & 1000 & 3001 & 5.0 & CASH\\
+2025-01-02 & TDU72YCC9Z & 1 x Begleitperson, 2 x Eintritt Kind (5-15) &  & 3001 & 48.0 & POS\\
+2025-01-02 & TDU72YCC9Z & Bank payout & 1020 &  & 47.28 & 900045\\
+2025-01-02 & TDU72YCC9Z & Fee & 4001 &  & 0.72 & \\
+2025-01-02 & TAAATBR3MD2 & 7 x Begleitperson, 6 x Eintritt Kind (5-15) & 1000 & 3001 & 176.0 & CASH\\
+2025-01-02 & TFDVYVZQHQ & 2 x Eintritt Adult &  & 3001 & 54.0 & POS\\
+2025-01-02 & TFDVYVZQHQ & Bank payout & 1020 &  & 53.19 & 900045\\
+2025-01-02 & TFDVYVZQHQ & Fee & 4001 &  & 0.81 & \\
+2025-01-02 & TAAATBRSMX6 & 2 x Wasser 4.- & 1000 & 3001 & 8.0 & CASH\\
+2025-01-02 & TCTTTC9DUT & 1 x Eintritt Adult, 1 x Eintritt Kind (5-15), 2 x Begleitperson &  & 3001 & 63.0 & POS\\
+2025-01-02 & TCTTTC9DUT & Bank payout & 1020 &  & 61.42 & 900045\\
+2025-01-02 & TCTTTC9DUT & Fee & 4001 &  & 1.58 & \\
+2025-01-02 & TEFNY77GRS & 1 x Eintritt Kind FOG, 1 x Verlängerung 1h, 1 x Begleitperson &  & 3001 & 29.0 & POS\\
+2025-01-02 & TEFNY77GRS & Bank payout & 1020 &  & 28.27 & 900045\\
+2025-01-02 & TEFNY77GRS & Fee & 4001 &  & 0.73 & \\
+2025-01-02 & TFKMN2FHNH & 1 x Eintritt Kind FOG &  & 3001 & 17.0 & POS\\
+2025-01-02 & TFKMN2FHNH & Bank payout & 1020 &  & 16.57 & 900045\\
+2025-01-02 & TFKMN2FHNH & Fee & 4001 &  & 0.43 & \\
+2025-01-02 & TECG43YZFN & 1 x Eintritt Kind FOG &  & 3001 & 17.0 & POS\\
+2025-01-02 & TECG43YZFN & Bank payout & 1020 &  & 16.74 & 900045\\
+2025-01-02 & TECG43YZFN & Fee & 4001 &  & 0.26 & \\
+2025-01-02 & TESFU726V3 & 1 x Begleitperson, 1 x Eintritt Kind FOG &  & 3001 & 23.8 & POS\\
+2025-01-02 & TESFU726V3 & Bank payout & 1020 &  & 23.44 & 900045\\
+2025-01-02 & TESFU726V3 & Fee & 4001 &  & 0.36 & \\
+2025-01-02 & TD3LCN9Q93 & 1 x Begleitperson, 1 x Eintritt Kind FOG &  & 3001 & 23.8 & POS\\
+2025-01-02 & TD3LCN9Q93 & Bank payout & 1020 &  & 23.2 & 900045\\
+2025-01-02 & TD3LCN9Q93 & Fee & 4001 &  & 0.6 & \\
+2025-01-02 & TCD4TN6XLK & 2 x Begleitperson, 1 x Eintritt Adult &  & 3001 & 43.0 & POS\\
+2025-01-02 & TCD4TN6XLK & Bank payout & 1020 &  & 42.35 & 900045\\
+2025-01-02 & TCD4TN6XLK & Fee & 4001 &  & 0.65 & \\
+2025-01-02 & TEMHSCH4DF & 2 x Begleitperson, 2 x Eintritt Kind (5-15) &  & 3001 & 56.0 & POS\\
+2025-01-02 & TEMHSCH4DF & Bank payout & 1020 &  & 55.16 & 900045\\
+2025-01-02 & TEMHSCH4DF & Fee & 4001 &  & 0.84 & \\
+2025-01-02 & TCYLHC9N3Q & 1 x Eintritt Adult, 2 x Eintritt Kind (5-15) &  & 3001 & 67.0 & POS\\
+2025-01-02 & TCYLHC9N3Q & Bank payout & 1020 &  & 65.32 & 900045\\
+2025-01-02 & TCYLHC9N3Q & Fee & 4001 &  & 1.68 & \\
+2025-01-02 & TCU73PEDAS & 1 x Getränk 5.- &  & 3001 & 5.0 & POS\\
+2025-01-02 & TCU73PEDAS & Bank payout & 1020 &  & 4.92 & 900045\\
+2025-01-02 & TCU73PEDAS & Fee & 4001 &  & 0.08 & \\
+2025-01-02 & TDDPVZHSRA & 1 x Getränk 6.- &  & 3001 & 6.0 & POS\\
+2025-01-02 & TDDPVZHSRA & Bank payout & 1020 &  & 5.91 & 900045\\
+2025-01-02 & TDDPVZHSRA & Fee & 4001 &  & 0.09 & \\
+\\
+\end{tablevalue}
+\end{document}
