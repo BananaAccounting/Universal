@@ -932,7 +932,10 @@ function validateParams(params) {
 
    let texts = getTexts(banDoc);
    for (var i = 1; i < params.data.length; i++) { // We skip the first one as it is the date format.
-      if (!accountExists(banDoc, params.data[i].value)) {
+      if (!params.data[i].value) {
+         params.data[i].errorMsg = texts.accountMissing;
+         return false;
+      } else if (!accountExists(banDoc, params.data[i].value)) {
          params.data[i].errorMsg = texts.accountErrorMsg + ": " + params.data[i].value;
          return false;
       }
