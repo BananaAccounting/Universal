@@ -1,0 +1,77 @@
+%%info_test_name{Income & Expense;csv_example_format1_20240215}
+\documentclass{report}
+\usepackage{longtable}
+\usepackage{color}
+\usepackage{listings}
+\usepackage[margin=1cm]{geometry}
+\begin{document}
+\newenvironment{tablevalue}[2]{\textbf{Table: #1}\begin{longtable}[l]{#2}}{\end{longtable}}
+\newenvironment{reportvalue}[1]{\textbf{Report: #1}\\}{}
+\lstnewenvironment{jsonvalue}[1]{\textbf{Json: #1}\lstset{language=Java}}{}
+\lstnewenvironment{xmlvalue}[1]{\textbf{Xml: #1}\lstset{language=Xml}}{}
+\newcommand{\info}[2]{\textit{#1: #2}\\}
+\newcommand{\fatalerror}[1]{\textbf{\textcolor[rgb]{1,0,0}{Fatal error: #1}}\\}
+\newcommand{\keyvalue}[2]{\textbf{Keyvalue: #1} #2\\}
+\newcommand{\textvalue}[1]{#1\\}
+\newcommand{\excltest}[1]{\\Excluded from compare: #1}
+\newcommand{\lognewpage}{\newpage}
+\newenvironment{testcase}[1]{\section*{Test: #1}}{\newpage}
+\newenvironment{test}[1]{\section*{Test case: #1}}{}
+%Begin test data
+\begin{tablevalue}{}{ l  l  l  l  l  l  l  l }
+Date & ExternalReference & Description & Income & Expenses & Account & Category & Notes\\
+2023-12-23 & CD4MQ4JRRM & Pagamento online &  & 12.08 &  & 3000 & Test\\
+2023-12-22 & C9E6QPVQW3 & Pagamento da SumUp & 34.35 &  &  & 3000 & Test\\
+2023-12-19 & CDWM4ZYZXN & Pagamento da SumUp & 34.32 &  &  & 3000 & Test\\
+2023-12-19 & CDVYJLP55W & Bonifico bancario in entrata & 35.00 &  &  & 3000 & Test\\
+2023-12-12 & CD27XM6M7G & Pagamento da SumUp & 53.93 &  &  & 3000 & Test\\
+2023-12-08 & CD272EWGRR & Bonifico bancario in entrata & 75.00 &  &  & 3000 & Test\\
+2023-12-07 & CDWMXXKEWN & Bonifico bancario in uscita &  & 400.00 &  & 3000 & Test\\
+2023-12-07 & CO3ZNNW5M6 & Prelievo allo sportello ATM &  & 300.00 &  & 3000 & Test\\
+2023-12-07 & C9Q6774B2N & Pagamento POS &  & 119.00 &  & 3000 & Test\\
+2023-12-05 & CD4MGPB34Q & Bonifico bancario in uscita &  & 100.00 &  & 3000 & Test\\
+2023-12-05 & CO4MGJE2BV & Pagamento da SumUp & 147.07 &  &  & 3000 & Test\\
+2023-12-05 & C9ZN4B4KYN & Bonifico bancario in entrata & 135.00 &  &  & 3000 & Test\\
+2023-12-05 & CD4MGJ5EGV & Addebito diretto &  & 54.60 &  & 3000 & Test\\
+2023-12-02 & CO6GR7KM2X & Pagamento da SumUp & 122.56 &  &  & 3000 & Test\\
+2023-11-30 & C93ZN5E3WB & Pagamento da SumUp & 166.68 &  &  & 3000 & Test\\
+2023-11-23 & C9WM74PRG3 & Pagamento da SumUp & 34.32 &  &  & 3000 & Test\\
+2023-11-17 & C9VYZ76XYW & Pagamento da SumUp & 44.12 &  &  & 3000 & Test\\
+2023-11-17 & CDJKNQWVLR & Bonifico bancario in entrata & 35.00 &  &  & 3000 & Test\\
+2023-11-15 & CDZN5RMMMW & Pagamento da SumUp & 122.56 &  &  & 3000 & Test\\
+2023-11-15 & C9XK2355PE & Prelievo allo sportello ATM &  & 300.00 &  & 3000 & Test\\
+2023-11-10 & C9YJ2XK44Q & Pagamento da SumUp & 34.32 &  &  & 3000 & Test\\
+2023-11-10 & C9PNQMG674 & Rimborso & 101.00 &  &  & 3000 & Test\\
+2023-11-10 & CDBEQNRMK2 & Pagamento online &  & 60.02 &  & 3000 & Test\\
+2023-11-10 & C9BEQNRP5L & Pagamento POS &  & 101.00 &  & 3000 & Test\\
+2023-11-09 & C9K523PXNM & Pagamento POS &  & 116.00 &  & 3000 & Test\\
+2023-11-08 & C9PNQZ4ZEL & Prelievo allo sportello ATM &  & 300.00 &  & 3000 & Test\\
+2023-11-08 & C9PNQZE7GL & Bonifico bancario in entrata & 150.00 &  &  & 3000 & Test\\
+2023-11-08 & C977PXGKG2 & Addebito diretto &  & 46.46 &  & 3000 & Test\\
+2023-11-07 & C9ZNG5G5N3 & Pagamento da SumUp & 161.78 &  &  & 3000 & Test\\
+2023-11-07 & CDJK7NPNZ2 & Bonifico bancario in entrata & 95.00 &  &  & 3000 & Test\\
+2023-11-06 & COPNQ3ZPEK & Bonifico bancario in uscita &  & 400.00 &  & 3000 & Test\\
+2023-11-04 & CD275YLE24 & Pagamento da SumUp & 210.81 &  &  & 3000 & Test\\
+2023-11-01 & C9WMZ6J7BP & Pagamento da SumUp & 176.49 &  &  & 3000 & Test\\
+2023-10-29 & COE63YJMJ2 & Prelievo allo sportello ATM &  & 300.00 &  & 3000 & Test\\
+2023-10-29 & CDJK75G6KR & Rimborso & 101.00 &  &  & 3000 & Test\\
+2023-10-29 & COE63YKPY2 & Pagamento online &  & 30.08 &  & 3000 & Test\\
+2023-10-29 & CO5XPZ36Y4 & Pagamento POS &  & 101.00 &  & 3000 & Test\\
+2023-10-21 & C9K5XXP447 & Pagamento da SumUp & 53.93 &  &  & 3000 & Test\\
+2023-10-20 & C9VYB2ZGML & Pagamento da SumUp & 107.85 &  &  & 3000 & Test\\
+2023-10-18 & C9R5M76RL3 & Bonifico bancario in entrata & 35.00 &  &  & 3000 & Test\\
+2023-10-17 & C9XKBQQ6Z5 & Pagamento da SumUp & 132.37 &  &  & 3000 & Test\\
+2023-10-13 & CDWMBMWWER & Prelievo allo sportello ATM &  & 300.00 &  & 3000 & Test\\
+2023-10-10 & CDYJMBMPQY & Bonifico bancario in uscita &  & 197.00 &  & 3000 & Test\\
+2023-10-10 & CONEB355BV & Pagamento da SumUp & 34.32 &  &  & 3000 & Test\\
+2023-10-06 & CD27WW4P74 & Bonifico bancario in entrata & 150.00 &  &  & 3000 & Test\\
+2023-10-05 & COQ6RJZ35N & Bonifico bancario in entrata & 95.00 &  &  & 3000 & Test\\
+2023-10-04 & C9L2BVKZVY & Pagamento da SumUp & 58.83 &  &  & 3000 & Test\\
+2023-10-04 & CDZNL3L4BN & Addebito diretto &  & 28.69 &  & 3000 & Test\\
+2023-10-03 & CDR5X7EPPV & Pagamento da SumUp & 220.62 &  &  & 3000 & Test\\
+2023-10-02 & CO5XMQYP4V & Bonifico bancario in uscita &  & 400.00 &  & 3000 & Test\\
+2023-10-02 & CDZNLW53M2 & Bonifico bancario in uscita &  & 75.00 &  & 3000 & Test\\
+2023-10-02 & CD5XMQYNZG & Bonifico bancario in uscita &  & 380.00 &  & 3000 & Test\\
+\\
+\end{tablevalue}
+\end{document}

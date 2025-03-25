@@ -1,4 +1,4 @@
-// Copyright [2024] [Banana.ch SA - Lugano Switzerland]
+// Copyright [2025] [Banana.ch SA - Lugano Switzerland]
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
 
 // @id = ch.banana.uni.import.sumup
 // @api = 1.0
-// @pubdate = 2024-03-01
+// @pubdate = 2025-03-25
 // @publisher = Banana.ch SA
 // @description = SumUp - Import movements .csv (Banana+ Advanced)
 // @description.it = SumUp - Importa movimenti .csv (Banana+ Advanced)
@@ -45,6 +45,14 @@ const SUMUP_FEE = "stripefee"
 const DOUBLE_ENTRY_TYPE = "100";
 const INCOME_EXPENSES_TYPE = "110";
 
+// Tables
+const ACCOUNTS_TABLE = "Accounts"
+const CATEGORIES_TABLE = "Categories"
+
+//Columns
+const CATEGORY_COLUMN = "Category"
+const ACCOUNT_COLUMN = "Account"
+
 /**
  * Parse the data and return the data to be imported as a tab separated file.
  */
@@ -60,14 +68,16 @@ function exec(inData, isTest) {
    if (isTest !== true && !importUtilities.verifyBananaAdvancedVersion())
       return "";
 
-   userParam = settingsDialog();
+   userParam = settingsDialog(banDoc);
    if (!userParam) {
       return "";
    }
 
    let transactions = processSumUpTransactions(inData, userParam, banDoc);
-   if (!transactions)
+   if (!transactions) {
       importUtilities.getUnknownFormatError();
+      return "";
+   }
 
    return transactions;
 
@@ -423,7 +433,7 @@ var SumupFormat2 = class SumupFormat2 extends ImportUtilities {
       let trRow = initTrRowObjectStructure_IncomeExpenses();
       trRow.Date = Banana.Converter.toInternalDateFormat(row["Transaction Date"], this.params.dateFormat);
       trRow.ExternalReference = row["Transaction Id"];
-      trRow.Description = this.texts.sumUpFee;
+      trRow.Description = this.texts.fee;
       trRow.Income = "";
       trRow.Expenses = row["Fee"];
       trRow.Account = "";
@@ -463,7 +473,7 @@ var SumupFormat2 = class SumupFormat2 extends ImportUtilities {
       let trRow = initTrRowObjectStructure_DoubleEntry();
       trRow.Date = Banana.Converter.toInternalDateFormat(row["Transaction Date"], this.params.dateFormat);
       trRow.ExternalReference = row["Transaction Id"];
-      trRow.Description = this.texts.sumUpFee;
+      trRow.Description = this.texts.fee;
       trRow.AccountDebit = this.params.sumUpFee;
       trRow.AccountCredit = "";
       trRow.Amount = row["Fee"];
@@ -782,7 +792,7 @@ function initTrRowObjectStructure_IncomeExpenses() {
 }
 
 
-function settingsDialog() {
+function settingsDialog(banDoc) {
 
    let dialogParam = {};
    let savedDlgParam = Banana.document.getScriptSettings("sumupImportDlgParams");
@@ -800,7 +810,7 @@ function settingsDialog() {
    var pageAnchor = 'sumupImportDlgParams';
    var convertedParam = {};
 
-   convertedParam = convertParam(dialogParam);
+   convertedParam = convertParam(banDoc, dialogParam);
    if (!Banana.Ui.openPropertyEditor(dialogTitle, convertedParam, pageAnchor))
       return false;
    for (var i = 0; i < convertedParam.data.length; i++) {
@@ -827,9 +837,9 @@ function initParam() {
 
 }
 
-function convertParam(userParam) {
+function convertParam(banDoc, userParam) {
    var paramList = {};
-   let texts = getTexts();
+   let texts = getTexts(banDoc);
    var defaultParam = initParam();
    paramList.version = '1.0';
    paramList.data = [];
@@ -914,7 +924,51 @@ function verifyParam(dialogParam) {
 }
 
 function validateParams(params) {
+
+   let banDoc = Banana.document;
+
+   if (!banDoc)
+      return false;
+
+   let texts = getTexts(banDoc);
+   for (var i = 1; i < params.data.length; i++) { // We skip the first one as it is the date format.
+      if (!accountExists(banDoc, params.data[i].value)) {
+         params.data[i].errorMsg = texts.accountErrorMsg + ": " + params.data[i].value;
+         return false;
+      }
+   }
    return true;
+}
+
+function accountExists(banDoc, account) {
+   let accoutingType = banDoc.info("Base", "FileTypeGroup");
+
+   if (banDoc && account) {
+      let accountsTable = banDoc.table(ACCOUNTS_TABLE);
+      if (!accountsTable)
+         return false;
+      //check in the chart of accounts.
+      for (var i = 0; i < accountsTable.rowCount; i++) {
+         var tRow = accountsTable.row(i);
+         // Check if the account is present in the chart of accounts.
+         if (account == tRow.value(ACCOUNT_COLUMN)) {
+            return true;
+         }
+      }
+      //check also in the category table
+      if (accoutingType == INCOME_EXPENSES_TYPE) {
+         let categoriesTable = banDoc.table(CATEGORIES_TABLE);
+         for (var i = 0; i < categoriesTable.rowCount; i++) {
+            var tRow = categoriesTable.row(i);
+            // Check if the account is present in the chart of accounts.
+            if (account == tRow.value(CATEGORY_COLUMN)) {
+               return true;
+            }
+         }
+      }
+   }
+   return false;
+
 }
 
 function getTexts(banDocument) {
@@ -941,11 +995,11 @@ function getTextsDe() {
    let texts = {};
 
    texts.dateFormat = "Datumsformat";
-   texts.bankPayout_de = "Bankauszahlung";
+   texts.bankPayout = "Bankauszahlung";
    texts.sumUpAccount = "Bankkonto";
-   texts.sumUpIn = "Sumup Einnahmen";
+   texts.sumUpIn = "SumUp-Ertragskonto";
    texts.sumUpCash = "Kassenkonto";
-   texts.sumUpFee = "SumUp-Gebühr";
+   texts.sumUpFee = "SumUp-Gebührenkonto";
    texts.accountMissing = "Fehlendes Konto";
    texts.accountErrorMsg = "Dieses Konto existiert nicht in Ihrem Kontenplan";
    texts.net = "Netto";
@@ -961,9 +1015,9 @@ function getTextsIt() {
    texts.dateFormat = "Formato data";
    texts.bankPayout = "Pagamento alla banca";
    texts.sumUpAccount = "Conto bancario";
-   texts.sumUpIn = "Entrate Sumup";
+   texts.sumUpIn = "Conto entrate Sumup";
    texts.sumUpCash = "Conto cassa";
-   texts.sumUpFee = "Commissione SumUp";
+   texts.sumUpFee = "Conto commissione SumUp";
    texts.accountMissing = "Conto mancante";
    texts.accountErrorMsg = "Questo conto non esiste nel tuo piano dei conti";
    texts.net = "Netto";
@@ -977,11 +1031,11 @@ function getTextsFr() {
    let texts = {};
 
    texts.dateFormat = "Format de date";
-   texts.bankPayout_fr = "Paiement bancaire";
+   texts.bankPayout = "Paiement bancaire";
    texts.sumUpAccount = "Compte bancaire";
-   texts.sumUpIn = "Entrées Sumup";
-   texts.sumUpCash = "Compte caisse";
-   texts.sumUpFee = "Frais SumUp";
+   texts.sumUpIn = "Compte des recettes SumUp";
+   texts.sumUpCash = "Compte de caisse";
+   texts.sumUpFee = "Compte des frais SumUp";
    texts.accountMissing = "Compte manquant";
    texts.accountErrorMsg = "Ce compte n'existe pas dans votre plan comptable";
    texts.net = "Net";
@@ -993,12 +1047,12 @@ function getTextsFr() {
 function getTextsEn() {
    let texts = {};
 
-   texts.dateFormat = "Date Format";
-   texts.bankPayout = "Bank Payout";
-   texts.sumUpAccount = "Bank Account";
-   texts.sumUpIn = "SumUp In";
-   texts.sumUpCash = "Cash Account";
-   texts.sumUpFee = "SumUp Fee";
+   texts.dateFormat = "Date format";
+   texts.bankPayout = "Bank payout";
+   texts.sumUpAccount = "Bank account";
+   texts.sumUpIn = "SumUp income account";
+   texts.sumUpCash = "Cash account";
+   texts.sumUpFee = "SumUp fee account";
    texts.accountMissing = "Missing account";
    texts.accountErrorMsg = "This account does not exists in your chart of accounts";
    texts.net = "Net";
