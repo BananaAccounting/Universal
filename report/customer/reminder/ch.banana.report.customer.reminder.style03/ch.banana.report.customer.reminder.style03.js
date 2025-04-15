@@ -1,4 +1,4 @@
-// Copyright [2023] [Banana.ch SA - Lugano Switzerland]
+// Copyright [2025] [Banana.ch SA - Lugano Switzerland]
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.report.customer.reminder.style03.js
 // @api = 1.0
-// @pubdate = 2023-02-28
+// @pubdate = 2025-04-15
 // @publisher = Banana.ch SA
 // @description = Payment reminder (Banana+)
 // @description.it = Richiamo di pagamento (Banana+)
@@ -119,6 +119,21 @@ function convertParam(param) {
    currentParam.defaultvalue = "Logo";
    currentParam.readValue = function() {
       param.logo_name = this.value;
+   }
+   convertedParam.data.push(currentParam);
+
+
+   /**
+    * File path
+    */
+   currentParam = {};
+   currentParam.name = 'print_file_path';
+   currentParam.title = texts.param_print_file_path;
+   currentParam.type = 'bool';
+   currentParam.value = param.print_file_path ? true : false;
+   currentParam.defaultvalue = true;
+   currentParam.readValue = function() {
+      param.print_file_path = this.value;
    }
    convertedParam.data.push(currentParam);
 
@@ -378,7 +393,6 @@ function convertParam(param) {
    convertedParam.data.push(currentParam);
 
 
-
    /**
     * Styles
     */
@@ -412,6 +426,7 @@ function initParam() {
    param.print_header = true;
    param.print_logo = true;
    param.logo_name = 'Logo';
+   param.print_file_path = true;
    param.texts = '';
    param.text_title_it = '';
    param.text_begin_it = '';
@@ -442,6 +457,9 @@ function verifyParam(param) {
    }
    if (!param.logo_name) {
       param.logo_name = 'Logo';
+   }
+   if (!param.print_file_path) {
+      param.print_file_path = false;
    }
    if (!param.texts) {
       param.texts = '';
@@ -1006,6 +1024,12 @@ function setVariables(variables, param) {
   */
   variables.$font_family = param.font_family;
   variables.$color_2 = param.color_2;
+  variables.$color_file_path = "black";
+  
+  //Hide the file path when user doesn't want it
+  if (!param.print_file_path) {
+   variables.$color_file_path = "transparent";
+  }
 }
 
 function replaceVariables(cssText, variables) {
@@ -1132,6 +1156,7 @@ function setTexts(language) {
       texts.error_address = "Indirizzo: indirizzo mancante";
       texts.error_address_zip = "Indirizzo: CAP mancante";
       texts.error_address_locality = "Indirizzo: località mancante";
+      texts.param_print_file_path = "Mostra percorso file";
    } 
    else if (language == 'de') {
       texts.customer = 'Kunde-Nr';
@@ -1159,6 +1184,7 @@ function setTexts(language) {
       texts.error_address = "Adresse: Adresse fehlt";
       texts.error_address_zip = "Adresse: PLZ fehlt";
       texts.error_address_locality = "Adresse: Ort fehlt";
+      texts.param_print_file_path = "Dateipfad anzeigen";
    }
    else if (language == 'fr') {
       texts.customer = 'No Client';
@@ -1186,6 +1212,7 @@ function setTexts(language) {
       texts.error_address = "Adresse: adresse manquante";
       texts.error_address_zip = "Adresse: code postal NPA manquant";
       texts.error_address_locality = "Adresse: localité manquante";
+      texts.param_print_file_path = "Afficher chemin d'accès au fichier";
    }
    else if (language == 'nl') {
       texts.customer = 'Klantennummer';
@@ -1213,6 +1240,7 @@ function setTexts(language) {
       texts.error_address = "Address: missing address";
       texts.error_address_zip = "Address: missing ZIP code";
       texts.error_address_locality = "Address: missing locality";
+      texts.param_print_file_path = "Bestandspad tonen";
    } 
    else {
       texts.customer = 'Customer No';
@@ -1240,6 +1268,7 @@ function setTexts(language) {
       texts.error_address = "Address: missing address";
       texts.error_address_zip = "Address: missing ZIP code";
       texts.error_address_locality = "Address: missing locality";
+      texts.param_print_file_path = "Show file path";
    }
    return texts;
 }
