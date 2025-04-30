@@ -128,9 +128,9 @@ function getAdjustmentTransactionsRows(banDoc, savedMarketValuesParams, savedAcc
             row.fields["AccountCredit"] = savedAccountsParams.valueChangingcontraAccounts.unrealizedGainAccount || texts.otherValChangeIncomePlaceHolder;
         }
         if (docInfo.isMultiCurrency)
-            row.fields["AmountCurrency"] = Banana.Converter.toInternalNumberFormat(adjustmentResult);
+            row.fields["AmountCurrency"] = Banana.Converter.toInternalNumberFormat(adjustmentResult, ".");
         else
-            row.fields["Amount"] = Banana.Converter.toInternalNumberFormat(adjustmentResult);
+            row.fields["Amount"] = Banana.Converter.toInternalNumberFormat(adjustmentResult, ".");
         if (docInfo.isMultiCurrency)
             row.fields["ExchangeCurrency"] = getItemCurrency(itemId, banDoc);
 
