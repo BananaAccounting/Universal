@@ -205,15 +205,14 @@ function printReport(banDoc, docInfo, itemCardData, itemDescription) {
         tableOpeningRow.addCell(Banana.Converter.toLocaleDateFormat(itemCardData.data.openingData.itemOpeningDate), '');
         tableOpeningRow.addCell("", "", 1);
         tableOpeningRow.addCell(itemCardData.data.openingData.itemOpeningDescription, '');
-        tableOpeningRow.addCell("", "", 2);
-        if (docInfo.isMultiCurrency) {
-            tableOpeningRow.addCell(Banana.Converter.toLocaleNumberFormat(itemCardData.data.openingData.itemValueBeginCurrency, 2, true), "styleNormalAmount");
-            tableOpeningRow.addCell("", "", 2);
-        }
+        tableOpeningRow.addCell("", "", 4);
         tableOpeningRow.addCell(Banana.Converter.toLocaleNumberFormat(itemCardData.data.openingData.itemValueBegin, 2, true), "styleNormalAmount");
-        tableOpeningRow.addCell("", "", 2);
         tableOpeningRow.addCell(Banana.Converter.toLocaleNumberFormat(itemCardData.data.openingData.itemQuantityBegin, 0, true), "styleNormalAmount");
         tableOpeningRow.addCell(Banana.Converter.toLocaleNumberFormat(itemCardData.data.openingData.itemUnitPriceBegin, decimals, false), "styleNormalAmount");
+        if (docInfo.isMultiCurrency) {
+            tableOpeningRow.addCell("", "", 2);
+            tableOpeningRow.addCell(Banana.Converter.toLocaleNumberFormat(itemCardData.data.openingData.itemValueBeginCurrency, 2, true), "styleNormalAmount");
+        }
     }
 
     //Add the movements data.
