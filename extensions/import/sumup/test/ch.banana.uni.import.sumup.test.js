@@ -16,7 +16,7 @@
 
 // @id = ch.banana.uni.import.sumup.test
 // @api = 1.0
-// @pubdate = 2024-03-25
+// @pubdate = 2024-05-20
 // @publisher = Banana.ch SA
 // @description = <TEST ch.banana.uni.import.sumup.test>
 // @task = app.command
@@ -43,6 +43,7 @@ TestImportSumupTrans.prototype.initTestCase = function () {
    this.fileNameList = [];
 
    this.fileNameList.push("file:script/../test/testcases/csv_example_format1_20240215.csv");
+   this.fileNameList.push("file:script/../test/testcases/csv_example_format1_20250520.csv");
    this.fileNameList.push("file:script/../test/testcases/csv_example_format2_20250324.csv");
 }
 
@@ -124,10 +125,17 @@ TestImportSumupTrans.prototype.testImportIncomeExpenses = function () {
 function getUserParam_DoubleEntry(index) {
    var params = {};
 
-   if (index === 0)
-      params.dateFormat = "dd/mm/yyyy";
-   else
-      params.dateFormat = "yyyy-mm-dd";
+   switch (index) {
+      case 0:
+         params.dateFormat = "dd/mm/yyyy";
+         break;
+      case 1:
+         params.dateFormat = "dd/mm/yy";
+         break;
+      case 2:
+         params.dateFormat = "yyyy-mm-dd";
+         break;
+   }
 
    params.bankAccount = "1020";
    params.sumUpIn = "3001";
@@ -141,10 +149,17 @@ function getUserParam_DoubleEntry(index) {
 function getUserParam_IncomeExpenses(index) {
    var params = {};
 
-   if (index === 0)
-      params.dateFormat = "dd/mm/yyyy";
-   else
-      params.dateFormat = "yyyy-mm-dd";
+   switch (index) {
+      case 0:
+         params.dateFormat = "dd/mm/yyyy";
+         break;
+      case 1:
+         params.dateFormat = "dd/mm/yy";
+         break;
+      case 2:
+         params.dateFormat = "yyyy-mm-dd";
+         break;
+   }
 
    params.bankAccount = "1020";
    params.sumUpIn = "3000";
