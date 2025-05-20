@@ -14,7 +14,7 @@
 
 // @id = ch.banana.uni.import.sumup
 // @api = 1.0
-// @pubdate = 2025-03-25
+// @pubdate = 2025-05-20
 // @publisher = Banana.ch SA
 // @description = SumUp - Import movements .csv (Banana+ Advanced)
 // @description.it = SumUp - Importa movimenti .csv (Banana+ Advanced)
@@ -659,8 +659,9 @@ var SumupFormat1 = class SumupFormat1 extends ImportUtilities {
          var transaction = transactionsData[i];
          var formatMatched = true;
 
-         if (formatMatched && transaction["Transaction Date"] && transaction["Transaction Date"].length >= 16 &&
-            transaction["Transaction Date"].match(/^[0-9]+\/[0-9]+\/[0-9]+\s[0-9]+\:[0-9]+$/))
+         if (formatMatched && transaction["Transaction Date"] && transaction["Transaction Date"].length >= 15 &&
+            (transaction["Transaction Date"].match(/^[0-9]+\/[0-9]+\/[0-9]+\s[0-9]+\:[0-9]+$/) ||
+               transaction["Transaction Date"].match(/^\d{2}\/\d{2}\/\d{2},\s\d{2}:\d{2}$/)))
             formatMatched = true;
          else
             formatMatched = false;

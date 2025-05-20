@@ -1,0 +1,4 @@
+Data transazione,Codice transazione,Tipo transazione,Riferimento,Causale pagamento,Stato,Importo di fatturazione in uscita,Importo di fatturazione in entrata,Valuta della carta,Importo transazione in uscita,Importo transazione in entrata,Valuta della transazione,Tasso di cambio,Commissione,Saldo disponibile
+"30/12/24, 14:42",C9W5GZXGBX,Bonifico bancario in uscita,RIF,TEST,Approvato,1300.00,0.00,EUR,1300.00,0.00,EUR,1.00,0.00,2285.69
+"30/12/24, 14:33",C9YKR2NLNR,Bonifico bancario in uscita,RIF,TEST,Approvato,1500.00,0.00,EUR,1500.00,0.00,EUR,1.00,0.00,3585.69
+"16/12/24, 10:08",COKN45JQW2,Bonifico bancario in entrata,RIF,TEST ,Approvato,0.00,55.00,EUR,0.00,55.00,EUR,1.00,0.00,5123.45
