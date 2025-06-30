@@ -1,6 +1,6 @@
 // @id = ch.banana.application.invoice.tools
 // @api = 1.0
-// @pubdate = 2022-10-24
+// @pubdate = 2025-06-30
 // @publisher = Banana.ch SA
 // @description = Export contacts
 // @description.de = Kontakte exportieren
@@ -59,6 +59,7 @@ function generateCsvContacts(contactsTable) {
                 let first_name = row.value("FirstName");
                 let last_name = row.value("FamilyName");
                 let street = row.value("Street");
+                let buildingNumber = row.value("BuildingNumber");
                 let extraAddress = row.value("AddressExtra");
                 let poBox = row.value("POBox");
                 let postalCode = row.value("PostalCode");
@@ -111,7 +112,14 @@ function generateCsvContacts(contactsTable) {
                     row.addMessage(qsTr("%1 is a required field").arg("CountryCode"), "CountryCode", "missing_field");
                     rowMatched = false;
                 }
-                csv += `${getValue(id)},${getValue(organisation)},${getValue(organisationUnit)},${getValue(namePrefix)},${getValue(first_name)},${getValue(last_name)},${getValue(street)},${getValue(extraAddress)},${getValue(poBox)},${getValue(postalCode)},${getValue(locality)},${getValue(countryCode)},${getValue(languageCode)},${getValue(workEmail)},${getValue(discount)} \n`;
+
+                // only the new version of Banana has the BuildingNumber column
+                if (getValue(buildingNumber)) {
+                    csv += `${getValue(id)},${getValue(organisation)},${getValue(organisationUnit)},${getValue(namePrefix)},${getValue(first_name)},${getValue(last_name)},${getValue(street)},${getValue(buildingNumber)},${getValue(extraAddress)},${getValue(poBox)},${getValue(postalCode)},${getValue(locality)},${getValue(countryCode)},${getValue(languageCode)},${getValue(workEmail)},${getValue(discount)} \n`;
+                }
+                else {
+                    csv += `${getValue(id)},${getValue(organisation)},${getValue(organisationUnit)},${getValue(namePrefix)},${getValue(first_name)},${getValue(last_name)},${getValue(street)},${getValue(extraAddress)},${getValue(poBox)},${getValue(postalCode)},${getValue(locality)},${getValue(countryCode)},${getValue(languageCode)},${getValue(workEmail)},${getValue(discount)} \n`;
+                }
             }
             catch(e) {
                 row.addMessage(qsTr("Contact not valid.\nError: %1").arg(e), "RowId", "internal_error");
