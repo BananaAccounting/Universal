@@ -1,6 +1,6 @@
 // @id = ch.banana.application.invoice.tools
 // @api = 1.0
-// @pubdate = 2024-04-02
+// @pubdate = 2025-06-30
 // @publisher = Banana.ch SA
 // @description = Import estimates
 // @description.de = Offerten importieren
@@ -289,6 +289,7 @@ function exec(string) {
          let customer_info = this.getContactAddress(invoiceTransaction["CustomerNumber"], invoiceTransaction["CustomerName"]);
    
          invoiceObj_customerInfo.address1 = customer_info.address1;
+         invoiceObj_customerInfo.building_number = customer_info.building_number;
          invoiceObj_customerInfo.address2 = customer_info.address2;
          invoiceObj_customerInfo.address3 = "";
          invoiceObj_customerInfo.balance = "";
@@ -324,6 +325,7 @@ function exec(string) {
             'first_name': '',
             'last_name': '',
             'address1': '',
+            'building_number': '',
             'address2': '',
             'address3': '',
             'postal_code': '',
@@ -343,6 +345,7 @@ function exec(string) {
                  customer_info.first_name = contactRow.value('FirstName');
                  customer_info.last_name = contactRow.value('FamilyName');
                  customer_info.address1 = contactRow.value('Street');
+                 customer_info.building_number = contactRow.value('BuildingNumber');
                  customer_info.address2 = contactRow.value('AddressExtra');
                  customer_info.address3 = "";
                  customer_info.postal_code = contactRow.value('PostalCode');
@@ -546,6 +549,7 @@ function exec(string) {
      let docInfo = {};
      if (Banana.document){
         docInfo.address1 = Banana.document.info("AccountingDataBase","Address1");
+        docInfo.building_number = Banana.document.info("AccountingDataBase","BuildingNumber");
         docInfo.address2 = Banana.document.info("AccountingDataBase","Address2");
         docInfo.business_name = Banana.document.info("AccountingDataBase","Company");
         docInfo.city = Banana.document.info("AccountingDataBase","City");

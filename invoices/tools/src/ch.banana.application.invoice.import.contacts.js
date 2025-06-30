@@ -1,6 +1,6 @@
 // @id = ch.banana.application.invoice.tools
 // @api = 1.0
-// @pubdate = 2023-01-05
+// @pubdate = 2025-06-30
 // @publisher = Banana.ch SA
 // @description = Import contacts
 // @description.de = Kontakte importieren
@@ -115,6 +115,7 @@ class formatCnt {
             row.fields["FirstName"] = transaction["FirstName"];
             row.fields["FamilyName"] = transaction["LastName"];
             row.fields["Street"] = transaction["Street"];
+            row.fields["BuildingNumber"] = transaction["BuildingNumber"];
             row.fields["AddressExtra"] = transaction["AddressExtra"];
             row.fields["POBox"] = transaction["POBox"];
             row.fields["PostalCode"] = transaction["PostalCode"];

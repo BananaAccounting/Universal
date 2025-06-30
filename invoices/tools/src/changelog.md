@@ -1,5 +1,9 @@
 # Changelog
 
+## 2025-06-30
+
+- Added Building Number for contacts.
+
 ## 2024-02-27
 
 - Bug fixes and improvements.
