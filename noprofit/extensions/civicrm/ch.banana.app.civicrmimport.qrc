@@ -1,0 +1,6 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource prefix="/">
+<file>ch.banana.app.civicrmimport.js</file>
+<file>ch.banana.app.functions.js</file>
+</qresource>
+</RCC>
