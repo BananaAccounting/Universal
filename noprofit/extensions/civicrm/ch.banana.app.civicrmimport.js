@@ -3,11 +3,11 @@
 // @api = 1.0
 // @pubdate = 2025-07-08
 // @publisher = Banana.ch SA
-// @description = Import transactions from CiviCRM CSV file
-// @description.en = Import transactions from CiviCRM CSV file
-// @description.it = Importa transazioni da file CSV CiviCRM
-// @description.fr = Importer des transactions à partir d'un fichier CSV CiviCRM
-// @description.de = CiviCRM CSV-Datei-Import
+// @description = Import transactions from CiviCRM CSV file [BETA]
+// @description.en = Import transactions from CiviCRM CSV file [BETA]
+// @description.it = Importa transazioni da file CSV CiviCRM [BETA]
+// @description.fr = Importer des transactions à partir d'un fichier CSV CiviCRM [BETA]
+// @description.de = CiviCRM CSV-Datei-Import [BETA]
 // @task = import.transactions
 // @doctype = 100.*; 110.*; 130.*
 // @docproperties = 
