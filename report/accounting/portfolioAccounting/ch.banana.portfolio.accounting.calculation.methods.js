@@ -1064,7 +1064,7 @@ function getItemsTableData(banDoc) {
         itemData.rowNr = tRow.rowNr;
         itemData.item = tRow.value("ItemsId");
         itemData.description = tRow.value("Description");
-        itemData.account = tRow.value("Account");
+        itemData.account = tRow.value("InvestmentAccount");
         itemData.currentQt = tRow.value("QuantityCurrent");
         itemData.valueCurrent = tRow.value("ValueCurrent");
         itemData.valueCurrentCurrency = tRow.value("CurrencyCurrentValue");
