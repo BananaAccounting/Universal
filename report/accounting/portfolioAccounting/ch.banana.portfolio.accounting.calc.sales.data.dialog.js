@@ -164,9 +164,9 @@ class DlgCalculateSaleDataManager {
         let currentItem = this.cmbItems.currentText;
         let itemsData = getItemsTableData(this.banDoc, this.docInfo);
         let itemObj = itemsData.find(obj => obj.item === currentItem);
-        if (itemObj && itemObj.type == "S")
+        if (itemObj && itemObj.type == "1")
             type = "Stock";
-        if (itemObj && itemObj.type == "B")
+        if (itemObj && itemObj.type == "2")
             type = "Bond";
         this.labelType.setText(type);
     }
@@ -175,7 +175,7 @@ class DlgCalculateSaleDataManager {
         let currentItem = this.cmbItems.currentText;
         let itemsData = getItemsTableData(this.banDoc, this.docInfo);
         let itemObj = itemsData.find(obj => obj.item === currentItem);
-        if (itemObj && itemObj.type == "B") {
+        if (itemObj && itemObj.type == "2") {
             this.lineEditAccruedInterests.enabled = true;
         } else {
             this.lineEditAccruedInterests.enabled = false;

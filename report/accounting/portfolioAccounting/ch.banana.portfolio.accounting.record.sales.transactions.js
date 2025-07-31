@@ -48,10 +48,10 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         if (!this.salesData || !this.currentSelectedRowIsValid())
             return {};
         /**
-         * In the “ReferenceUnit” column of the items table, 
+         * In the “InvestmentAccount” column of the items table, 
          * we request to indicate the type of Title that is being used:
-         * - S: Stock
-         * - B: Bond
+         * - 1: Stocks
+         * - 2: Bonds
          */
         this.saleTrRef = this.currentRowObj.value("ExternalReference"); // By default.
 
@@ -63,10 +63,10 @@ var RecordSalesTransactions = class RecordSalesTransactions {
          * */
 
         switch (this.itemObject.type) {
-            case "B":
+            case "2":
                 jsonDoc["data"] = this.getBondSaleResultDocChangeTransaction();
                 break;
-            case "S":
+            case "1":
                 jsonDoc["data"] = this.getStockSaleResultDocChangeTransaction();
                 break;
             default:

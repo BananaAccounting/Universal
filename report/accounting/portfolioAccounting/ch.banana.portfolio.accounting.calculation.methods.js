@@ -407,7 +407,7 @@ function calculateStockSaleData(banDoc, docInfo, itemObj, dlgParams, currentRowN
     exRateResult = getExchangeResult(totalSharesValue, saleResult, dlgParams.currExRate, accExRate);
 
     // only for bonds
-    if (itemObj.type === "B") {
+    if (itemObj.type === "2") {
         accruedInterests = dlgParams.accruedInterests; //calculateAccruedInterests(dlgParams, itemObj);
     }
 
@@ -1074,7 +1074,7 @@ function getItemsTableData(banDoc) {
         itemData.interestRate = tRow.value("Notes");
         itemData.unitPriceCurrent = tRow.value("UnitPriceCurrent");
         itemData.currency = tRow.value("Currency");
-        itemData.type = tRow.value("ReferenceUnit");
+        itemData.type = tRow.value("InvestmentType");
         itemData.unitPriceBegin = tRow.value("UnitPriceBegin");
         itemData.valueBegin = tRow.value("ValueBegin");
         itemData.beginQt = tRow.value("QuantityBegin");
