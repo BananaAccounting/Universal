@@ -619,9 +619,10 @@ This structure has been designed to allow saving separately the data related to 
 those related to its evolution (transactions), and the current values (the latest transaction( or transaction x if a currentRowNr is defined) resulting data).
  */
 function getItemCardDataList(docInfo, itemObj, accountCardData, journalData, unitPriceColDecimals, currentRowNr) {
+    /* !! Valutare se il giornale serve ancora o se possiamo fare solo con i dati della scheda conto*/
     let itemCardData = {};
     let openingData = getItemOpeningDataObj(docInfo, itemObj);
-    setSoldData(accountCardData, journalData);
+    //setSoldData(accountCardData, journalData); // sembra non serva.
     setQuantityBalance(openingData, accountCardData);
     setCurrentAccAvgCost(accountCardData, unitPriceColDecimals);
 

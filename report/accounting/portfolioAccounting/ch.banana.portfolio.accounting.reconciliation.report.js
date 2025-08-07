@@ -216,12 +216,12 @@ function printReport(banDoc, reconciliationData, docInfo) {
                 tableOpeningRow.addCell("", "", 1);
                 tableOpeningRow.addCell(itemOpeningData.itemOpeningDescription, '');
                 tableOpeningRow.addCell("", "", 4);
-                tableOpeningRow.addCell(Banana.Converter.toLocaleNumberFormat(itemOpeningData.itemValueBegin, 2, true), "styleNormalAmount");
+                tableOpeningRow.addCell(Banana.Converter.toLocaleNumberFormat(itemOpeningData.itemValueBeginCurrency, 2, true), "styleNormalAmount");
                 tableOpeningRow.addCell(Banana.Converter.toLocaleNumberFormat(itemOpeningData.itemQuantityBegin, 0, true), "styleNormalAmount");
                 tableOpeningRow.addCell(Banana.Converter.toLocaleNumberFormat(itemOpeningData.itemUnitPriceBegin, decimals, false), "styleNormalAmount");
                 if (docInfo.isMultiCurrency) {
                     tableOpeningRow.addCell("", "", 2);
-                    tableOpeningRow.addCell(Banana.Converter.toLocaleNumberFormat(itemOpeningData.itemValueBeginCurrency, 2, true), "styleNormalAmount");
+                    tableOpeningRow.addCell(Banana.Converter.toLocaleNumberFormat(itemOpeningData.itemValueBegin, 2, true), "styleNormalAmount");
                 }
 
             }
