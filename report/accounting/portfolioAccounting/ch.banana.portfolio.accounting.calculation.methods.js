@@ -153,17 +153,20 @@ function getJournalDataArrayOfObjects(docInfo, journal) {
     for (var i = 0; i < journal.rowCount; i++) {
         var tRow = journal.row(i);
         var jrRow = {};
+        jRow.operationType = tRow.value("JOperationType");
         jrRow.date = tRow.value("JDate");
         jrRow.doc = tRow.value("Doc");
         jrRow.trId = tRow.value("JContraAccountGroup");
         jrRow.item = tRow.value("ItemsId");
         jrRow.description = tRow.value("Description");
+        jrRow.amount = tRow.value("JAmount");
         jrRow.debitBase = tRow.value("JDebitAmount"); //debit value in base currency
         jrRow.creditBase = tRow.value("JCreditAmount"); //credit value base currency
         jrRow.balanceBase = tRow.value("JBalance"); //credit value base currency
         jrRow.qt = tRow.value("Quantity"); //credit value base currency
         jrRow.unitPrice = tRow.value("UnitPrice"); //credit value base currency
         if (docInfo.isMultiCurrency) {
+            jrRow.amountCurr = tRow.value("JAmountAccountCurrency");
             jrRow.debitCurr = tRow.value("JDebitAmountCurrency"); //debit value in base currency
             jrRow.creditCurr = tRow.value("JCreditAmountCurrency"); //credit value base currency
             jrRow.balanceCurr = tRow.value("JBalanceAccountCurrency"); //credit value base currency
