@@ -232,7 +232,7 @@ function getAppraisalDataList(banDoc, docInfo, accountsList, itemsData) {
   let accountsData = [];
   let portfolioTotals = [];
   let journal = banDoc.journal(banDoc.ORIGINTYPE_CURRENT, banDoc.ACCOUNTTYPE_NONE);
-  let journalData = getJournalData(docInfo, journal);
+  let journalData = getJournalDataArrayOfObjects(docInfo, journal);
 
   //Get the transactions data for every item.
   for (var i = 0; i < accountsList.length; i++) {

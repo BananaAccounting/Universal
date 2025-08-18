@@ -75,7 +75,7 @@ TestSecurityCardReport.prototype.testDataStructure = function () {
             let itemObject = itemsData.find(itemsData => itemsData.item === selectedItem)
             let itemAccount = getItemAccount(selectedItem, banDoc);
             let journal = banDoc.journal(banDoc.ORIGINTYPE_CURRENT, banDoc.ACCOUNTTYPE_NONE);
-            let journalData = getJournalData(docInfo, journal);
+            let journalData = getJournalDataArrayOfObjects(docInfo, journal);
             let accountCard = banDoc.currentCard(itemAccount);
             let accountCardData = getAccountCardDataAdapted(itemObject, accountCard);
             let itemCardData = getItemCardData(banDoc, docInfo, accountCardData, journalData, itemObject);

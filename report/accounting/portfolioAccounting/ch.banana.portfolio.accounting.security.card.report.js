@@ -71,7 +71,7 @@ function exec() {
 
     //get the journal data and creates an array of objects containing the transactions data
     journal = banDoc.journal(banDoc.ORIGINTYPE_CURRENT, banDoc.ACCOUNTTYPE_NONE);
-    journalData = getJournalData(docInfo, journal);
+    journalData = getJournalDataArrayOfObjects(docInfo, journal);
 
     //get the account card, filter the result by item and return an array of objects containing the transactions data
     accountCard = banDoc.currentCard(itemObject.account);

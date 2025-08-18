@@ -147,7 +147,7 @@ function getDocumentInfo(banDoc) {
  * Reads the journal data and returns an array of objects with the information we need
  * @param {*} journal journal table
  */
-function getJournalData(docInfo, journal) {
+function getJournalDataArrayOfObjects(docInfo, journal) {
     var journalData = [];
 
     for (var i = 0; i < journal.rowCount; i++) {
@@ -388,7 +388,7 @@ function calculateStockSaleData(banDoc, docInfo, itemObj, dlgParams, currentRowN
     }
     //Get item card data to find the current average cost
     journal = banDoc.journal(banDoc.ORIGINTYPE_CURRENT, banDoc.ACCOUNTTYPE_NONE);
-    journalData = getJournalData(docInfo, journal);
+    journalData = getJournalDataArrayOfObjects(docInfo, journal);
     accountCard = banDoc.currentCard(itemAccount);
     accountCardData = getAccountCardDataAdapted(itemObj, accountCard);
     itemCardData = getItemCardDataList(docInfo, itemObj, accountCardData, journalData, unitPriceColDecimals, currentRowNr);

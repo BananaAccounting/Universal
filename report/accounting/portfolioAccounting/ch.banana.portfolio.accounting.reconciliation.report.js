@@ -401,7 +401,7 @@ function getAccountsDataList(banDoc, docInfo, accountsList) {
     let trIdList = "";
 
     journal = banDoc.journal(banDoc.ORIGINTYPE_CURRENT, banDoc.ACCOUNTTYPE_NONE);
-    journalData = getJournalData(docInfo, journal);
+    journalData = getJournalDataArrayOfObjects(docInfo, journal);
     trIdList = getTransactionsIdList(journalData);
 
 

@@ -204,7 +204,7 @@ function getSecuritiesDataObjList(banDoc, docInfo, account) {
   let itemsTableData = getItemsTableData(banDoc);
   let accountCard = banDoc.currentCard(account);
   let journal = banDoc.journal(banDoc.ORIGINTYPE_CURRENT, banDoc.ACCOUNTTYPE_NONE);
-  let journalData = getJournalData(docInfo, journal);
+  let journalData = getJournalDataArrayOfObjects(docInfo, journal);
   let unitPriceColumn = banDoc.table("Transactions").column("UnitPrice", "Base");
   let unitPriceColDecimals = unitPriceColumn.decimal;
 

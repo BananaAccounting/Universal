@@ -167,7 +167,7 @@ function getItemBookValue(banDoc, docInfo, itemRowObj, unitPriceColDecimals) {
         return result;
 
     let journal = banDoc.journal(banDoc.ORIGINTYPE_CURRENT, banDoc.ACCOUNTTYPE_NONE);
-    journalData = getJournalData(docInfo, journal);
+    journalData = getJournalDataArrayOfObjects(docInfo, journal);
     accountCard = banDoc.currentCard(itemRowObj.account);
     accountCardData = getAccountCardDataAdapted(itemRowObj, accountCard);
 
