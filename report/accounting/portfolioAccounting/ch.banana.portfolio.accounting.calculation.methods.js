@@ -153,7 +153,7 @@ function getJournalDataArrayOfObjects(docInfo, journal) {
     for (var i = 0; i < journal.rowCount; i++) {
         var tRow = journal.row(i);
         var jrRow = {};
-        jRow.operationType = tRow.value("JOperationType");
+        jrRow.operationType = tRow.value("JOperationType");
         jrRow.date = tRow.value("JDate");
         jrRow.doc = tRow.value("Doc");
         jrRow.trId = tRow.value("JContraAccountGroup");
@@ -393,7 +393,7 @@ function calculateStockSaleData(banDoc, docInfo, itemObj, dlgParams, currentRowN
     journal = banDoc.journal(banDoc.ORIGINTYPE_CURRENT, banDoc.ACCOUNTTYPE_NONE);
     journalData = getJournalDataArrayOfObjects(docInfo, journal);
     accountCard = banDoc.currentCard(itemAccount);
-    accountCardData = getAccountCardDataAdapted(itemObj, accountCard);
+    accountCardData = getAccCardDataArrayOfObjects(itemObj, accountCard);
     itemCardData = getItemCardDataList(docInfo, itemObj, accountCardData, journalData, unitPriceColDecimals, currentRowNr);
 
     if (!itemCardData || isObjectEmpty(itemCardData))
@@ -453,20 +453,16 @@ function getClosestPreviousObjByRowNr(accountCardData, currentRowNr) {
 }
 
 /**
- * Given an account card, it filters the transactions by item and adds values useful for creating
- * of an account card by returning a new account card adapted to the creation of a
- * item card. (see getItemCardDataList()). We may combine the two methods in the future.
+ * Returns an array of objects containing the data of the rows 
+ * from the account card of the account referenced by the item. 
+ * Only the rows related to the specified item are stored in the array. 
+ * The balance is calculated manually, starting from the opening value of the security.
  */
-function getAccountCardDataAdapted(itemObj, accountCard) { // Il problema del bilancio è qui... 18.08.2025, Da rivedere anche ripresa opening values
+function getAccCardDataArrayOfObjects(itemObj, accountCard) { // Il problema del bilancio è qui... 18.08.2025, Da rivedere anche ripresa opening values
     let transactions = [];
     let accBalance = "";
     let accBalanceCurr = "";
-    /**
-     * When creating the account card, before calculating the balance manually using the debit and credit columns, 
-     * we must take into account, if any, the opening balance of the security found in the ‘ValueBegin’ ( or ‘ValueBeginCurrency’) column
-     * and use it as a starting point for the balance calculation. New options could be considered in the future, for now it seems 
-     * the only way to start from the correct initial balance of the security (and not of the account, which may consist of several securities).
-     */
+
     let itemName = itemObj.item;
     let itemValueBegin = itemObj.valueBegin;
     let itemValueBeginCurrency = itemObj.valueBeginCurrency;
@@ -550,7 +546,7 @@ function accountIsInForeignCurrency(banDoc, docInfo, account) {
 }
 
 /**
- * Starting from the adapted account card data (see method: getAccountCardDataAdapted), adds:
+ * Starting from the adapted account card data (see method: getAccCardDataArrayOfObjects), adds:
  * - A new object in the first position of the array that contains the opening data (if found) of the security.
  * Then for each transaction add:
  * - The quantity change (if present)

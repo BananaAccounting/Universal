@@ -376,7 +376,7 @@ function getItemsDataList(banDoc, docInfo, accountCard, journalData, account) {
         //set the item values
         if (itemsData[key].account == account) {
             let itemData = {};
-            accountCardData = getAccountCardDataAdapted(itemsData[key], accountCard);
+            accountCardData = getAccCardDataArrayOfObjects(itemsData[key], accountCard);
             itemData = getItemCardDataList(docInfo, itemsData[key], accountCardData, journalData, unitPriceColDecimals);
             // We expand the object by adding the calculated sum of debit and credit columns (just for build the security card).
             itemData.totalDebitBase = getSum(accountCardData, "debitBase");

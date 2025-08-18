@@ -266,7 +266,7 @@ function getAppraisalDataList_transactions(banDoc, docInfo, itemsData, journalDa
       let itemId = itemsData[key].item;
       let itemObj = itemsData.find(obj => obj.item === itemId);
       accountCard = banDoc.currentCard(account);
-      let accountCardData = getAccountCardDataAdapted(itemObj, accountCard);
+      let accountCardData = getAccCardDataArrayOfObjects(itemObj, accountCard);
       let appraisalData = {};
       appraisalData.item = itemId;
       appraisalData.description = itemsData[key].description;
