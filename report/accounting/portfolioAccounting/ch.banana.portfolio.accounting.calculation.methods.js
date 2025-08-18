@@ -454,7 +454,7 @@ function getClosestPreviousObjByRowNr(accountCardData, currentRowNr) {
  * of an account card by returning a new account card adapted to the creation of a
  * item card. (see getItemCardDataList()). We may combine the two methods in the future.
  */
-function getAccountCardDataAdapted(itemObj, accountCard) {
+function getAccountCardDataAdapted(itemObj, accountCard) { // Il problema del bilancio è qui... 18.08.2025, Da rivedere anche ripresa opening values
     let transactions = [];
     let accBalance = "";
     let accBalanceCurr = "";

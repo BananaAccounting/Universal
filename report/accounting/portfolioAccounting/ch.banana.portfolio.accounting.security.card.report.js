@@ -198,20 +198,31 @@ function printReport(banDoc, docInfo, itemCardData, itemDescription) {
 
     //add item card table
     var tabItemCard = getItemCardTable(report, docInfo, currentDate, docInfo.baseCurrency, itemCardData, itemDescription);
+    let itemOpeningData = itemCardData.data.openingData;
 
     //Add the opening data (if present)
-    if (itemCardData.data.openingData.itemValueBegin || itemCardData.data.openingData.itemValueBeginCurrency) {
+    if (itemOpeningData.itemValueBegin || itemOpeningData.itemValueBeginCurrency) {
+
+        let itemCurrValue = ""; // value in the security currency
+        let itemBaseValue = ""; // value in the base currency
+        if (itemOpeningData.itemValueBeginCurrency) {
+            itemCurrValue = itemOpeningData.itemValueBeginCurrency;
+            itemBaseValue = itemOpeningData.itemValueBegin;
+        } else {
+            itemCurrValue = itemOpeningData.itemValueBegin;
+        }
+
         var tableOpeningRow = tabItemCard.addRow("styleOddRows");
-        tableOpeningRow.addCell(Banana.Converter.toLocaleDateFormat(itemCardData.data.openingData.itemOpeningDate), '');
+        tableOpeningRow.addCell(Banana.Converter.toLocaleDateFormat(itemOpeningData.itemOpeningDate), '');
         tableOpeningRow.addCell("", "", 1);
-        tableOpeningRow.addCell(itemCardData.data.openingData.itemOpeningDescription, '');
+        tableOpeningRow.addCell(itemOpeningData.itemOpeningDescription, '');
         tableOpeningRow.addCell("", "", 4);
-        tableOpeningRow.addCell(Banana.Converter.toLocaleNumberFormat(itemCardData.data.openingData.itemValueBeginCurrency, 2, true), "styleNormalAmount");
-        tableOpeningRow.addCell(Banana.Converter.toLocaleNumberFormat(itemCardData.data.openingData.itemQuantityBegin, 0, true), "styleNormalAmount");
-        tableOpeningRow.addCell(Banana.Converter.toLocaleNumberFormat(itemCardData.data.openingData.itemUnitPriceBegin, decimals, false), "styleNormalAmount");
+        tableOpeningRow.addCell(Banana.Converter.toLocaleNumberFormat(itemCurrValue, 2, true), "styleNormalAmount");
+        tableOpeningRow.addCell(Banana.Converter.toLocaleNumberFormat(itemOpeningData.itemQuantityBegin, 0, true), "styleNormalAmount");
+        tableOpeningRow.addCell(Banana.Converter.toLocaleNumberFormat(itemOpeningData.itemUnitPriceBegin, decimals, false), "styleNormalAmount");
         if (docInfo.isMultiCurrency) {
             tableOpeningRow.addCell("", "", 2);
-            tableOpeningRow.addCell(Banana.Converter.toLocaleNumberFormat(itemCardData.data.openingData.itemValueBegin, 2, true), "styleNormalAmount");
+            tableOpeningRow.addCell(Banana.Converter.toLocaleNumberFormat(itemBaseValue, 2, true), "styleNormalAmount");
         }
     }
 

@@ -210,18 +210,28 @@ function printReport(banDoc, reconciliationData, docInfo) {
             tableRow.addCell(itemData.itemId, '', spanObj.itemId);
             //Add the opening data (if present)
             if (itemOpeningData.itemValueBegin || itemOpeningData.itemValueBeginCurrency) {
+
+                let itemCurrValue = "";
+                let itemBaseValue = "";
+                if (itemOpeningData.itemValueBeginCurrency) {
+                    itemCurrValue = itemOpeningData.itemValueBeginCurrency;
+                    itemBaseValue = itemOpeningData.itemValueBegin;
+                } else {
+                    itemCurrValue = itemOpeningData.itemValueBegin;
+                }
+
                 let tableOpeningRow = tabConc.addRow("styleOddRows");
                 tableOpeningRow.addCell("", "", 2);
                 tableOpeningRow.addCell(Banana.Converter.toLocaleDateFormat(itemOpeningData.itemOpeningDate), '');
                 tableOpeningRow.addCell("", "", 1);
                 tableOpeningRow.addCell(itemOpeningData.itemOpeningDescription, '');
                 tableOpeningRow.addCell("", "", 4);
-                tableOpeningRow.addCell(Banana.Converter.toLocaleNumberFormat(itemOpeningData.itemValueBeginCurrency, 2, true), "styleNormalAmount");
+                tableOpeningRow.addCell(Banana.Converter.toLocaleNumberFormat(itemCurrValue, 2, true), "styleNormalAmount");
                 tableOpeningRow.addCell(Banana.Converter.toLocaleNumberFormat(itemOpeningData.itemQuantityBegin, 0, true), "styleNormalAmount");
                 tableOpeningRow.addCell(Banana.Converter.toLocaleNumberFormat(itemOpeningData.itemUnitPriceBegin, decimals, false), "styleNormalAmount");
                 if (docInfo.isMultiCurrency) {
                     tableOpeningRow.addCell("", "", 2);
-                    tableOpeningRow.addCell(Banana.Converter.toLocaleNumberFormat(itemOpeningData.itemValueBegin, 2, true), "styleNormalAmount");
+                    tableOpeningRow.addCell(Banana.Converter.toLocaleNumberFormat(itemBaseValue, 2, true), "styleNormalAmount");
                 }
 
             }
