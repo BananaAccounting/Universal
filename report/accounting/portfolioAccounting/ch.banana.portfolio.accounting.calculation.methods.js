@@ -346,7 +346,6 @@ function getDateObject(dateString, format) {
 function calculateStockSaleData(banDoc, docInfo, itemObj, dlgParams, currentRowNr) {
 
     let saleData = {};
-    let journal = "";
     let quantity = "";
     let accExRate = ""; //Accounting exchange rate.
     let currentQt = "";
@@ -355,7 +354,6 @@ function calculateStockSaleData(banDoc, docInfo, itemObj, dlgParams, currentRowN
     let totalSharesValue = "";
     let saleResult = "";
     let exRateResult = "";
-    let accountCard = "";
     let accountCardData = "";
     let accruedInterests = "";
     let itemAccount = "";
@@ -371,9 +369,9 @@ function calculateStockSaleData(banDoc, docInfo, itemObj, dlgParams, currentRowN
         banDoc.addMessage(msg, ITEM_WITHOUT_ACCOUNT);
         return "";
     }
+
     //Get item card data to find the current average cost
-    accountCard = banDoc.currentCard(itemAccount);
-    accountCardData = getAccCardDataArrayOfObjects(itemObj, accountCard);
+    accountCardData = getAccCardDataArrayOfObjects(banDoc, itemObj);
     itemCardData = getItemCardDataList(docInfo, itemObj, accountCardData, unitPriceColDecimals, currentRowNr);
 
     if (!itemCardData || isObjectEmpty(itemCardData))
@@ -438,19 +436,26 @@ function getClosestPreviousObjByRowNr(accountCardData, currentRowNr) {
  * Only the rows related to the specified item are stored in the array. 
  * The balance is calculated manually, starting from the opening value of the security.
  */
-function getAccCardDataArrayOfObjects(itemObj, accountCard) { // Il problema del bilancio è qui... 18.08.2025, Da rivedere anche ripresa opening values
+function getAccCardDataArrayOfObjects(banDoc, itemObj) { // Il problema del bilancio è qui... 18.08.2025, Da rivedere anche ripresa opening values
 
     //journal = banDoc.journal(banDoc.ORIGINTYPE_CURRENT, banDoc.ACCOUNTTYPE_NONE);
     //journalData = getJournalDataArrayOfObjects(docInfo, journal);
-
-
-    let transactions = [];
-    let accBalance = "";
-    let accBalanceCurr = "";
+    if (!banDoc) {
+        return [];
+    }
 
     let itemName = itemObj.item;
     let itemValueBegin = itemObj.valueBegin;
     let itemValueBeginCurrency = itemObj.valueBeginCurrency;
+    let itemAccount = itemObj.account;
+    let transactions = [];
+    let accBalance = "";
+    let accBalanceCurr = "";
+
+    let accountCard = banDoc.currentCard(itemAccount);
+
+    if (!accountCard)
+        return transactions;
 
     if (itemValueBegin)
         accBalance = itemValueBegin;

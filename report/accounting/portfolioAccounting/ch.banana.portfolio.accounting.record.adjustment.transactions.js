@@ -166,8 +166,7 @@ function getItemBookValue(banDoc, docInfo, itemRowObj, unitPriceColDecimals) {
     if (!itemRowObj || isObjectEmpty(itemRowObj))
         return result;
 
-    accountCard = banDoc.currentCard(itemRowObj.account);
-    accountCardData = getAccCardDataArrayOfObjects(itemRowObj, accountCard);
+    accountCardData = getAccCardDataArrayOfObjects(banDoc, itemRowObj);
 
     let itemCardData = getItemCardDataList(docInfo, itemRowObj, accountCardData, unitPriceColDecimals);
 

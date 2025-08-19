@@ -67,9 +67,7 @@ function exec() {
         return "";
     }
 
-    //get the account card, filter the result by item and return an array of objects containing the transactions data
-    accountCard = banDoc.currentCard(itemObject.account);
-    accountCardData = getAccCardDataArrayOfObjects(itemObject, accountCard);
+    accountCardData = getAccCardDataArrayOfObjects(banDoc, itemObject);
 
     //get the calculated data and the totals
     itemCardData = getItemCardData(banDoc, docInfo, accountCardData, itemObject);

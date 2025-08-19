@@ -202,7 +202,6 @@ function getAccountsDataObjList(banDoc, docInfo) {
 function getSecuritiesDataObjList(banDoc, docInfo, account) {
   let securitiesList = [];
   let itemsTableData = getItemsTableData(banDoc);
-  let accountCard = banDoc.currentCard(account);
   let unitPriceColumn = banDoc.table("Transactions").column("UnitPrice", "Base");
   let unitPriceColDecimals = unitPriceColumn.decimal;
 
@@ -218,7 +217,7 @@ function getSecuritiesDataObjList(banDoc, docInfo, account) {
       let secBalance = "";
       let secBalanceCurrency = "";
 
-      let accountCardAdpt = getAccCardDataArrayOfObjects(itemObj, accountCard);
+      let accountCardAdpt = getAccCardDataArrayOfObjects(banDoc, itemObj);
       let itemCardData = getItemCardDataList(docInfo, itemObj, accountCardAdpt, unitPriceColDecimals, null);
 
       if (!itemCardData || isObjectEmpty(itemCardData))
