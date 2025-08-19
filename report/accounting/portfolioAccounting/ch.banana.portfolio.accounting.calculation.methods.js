@@ -438,8 +438,6 @@ function getClosestPreviousObjByRowNr(accountCardData, currentRowNr) {
  */
 function getAccCardDataArrayOfObjects(banDoc, itemObj) { // Il problema del bilancio è qui... 18.08.2025, Da rivedere anche ripresa opening values
 
-    //journal = banDoc.journal(banDoc.ORIGINTYPE_CURRENT, banDoc.ACCOUNTTYPE_NONE);
-    //journalData = getJournalDataArrayOfObjects(docInfo, journal);
     if (!banDoc) {
         return [];
     }
@@ -451,6 +449,9 @@ function getAccCardDataArrayOfObjects(banDoc, itemObj) { // Il problema del bila
     let transactions = [];
     let accBalance = "";
     let accBalanceCurr = "";
+
+    //journal = banDoc.journal(banDoc.ORIGINTYPE_CURRENT, banDoc.ACCOUNTTYPE_NONE);
+    //journalData = getJournalDataArrayOfObjects(docInfo, journal);
 
     let accountCard = banDoc.currentCard(itemAccount);
 
