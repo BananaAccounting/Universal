@@ -73,8 +73,7 @@ TestSecurityCardReport.prototype.testDataStructure = function () {
             let selectedItem = getItemForTest(i);
             let itemsData = getItemsTableData(banDoc, docInfo);
             let itemObject = itemsData.find(itemsData => itemsData.item === selectedItem)
-            let accountCardData = getAccCardDataArrayOfObjects(banDoc, itemObject);
-            let itemCardData = getItemCardData(banDoc, docInfo, accountCardData, itemObject);
+            let itemCardData = getItemCardData(banDoc, docInfo, itemObject);
             let reportName = "FILENAME: " + fileName;
             let itemDescription = getItemDescription(selectedItem, banDoc);
             let report = printReport(banDoc, docInfo, itemCardData, itemDescription);

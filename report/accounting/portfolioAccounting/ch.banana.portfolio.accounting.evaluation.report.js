@@ -263,7 +263,6 @@ function getAppraisalDataList_transactions(banDoc, docInfo, itemsData, account) 
     if (itemsData[key].account === account) {
       let itemId = itemsData[key].item;
       let itemObj = itemsData.find(obj => obj.item === itemId);
-      let accountCardData = getAccCardDataArrayOfObjects(banDoc, itemObj);
       let appraisalData = {};
       appraisalData.item = itemId;
       appraisalData.description = itemsData[key].description;
@@ -271,7 +270,7 @@ function getAppraisalDataList_transactions(banDoc, docInfo, itemsData, account) 
       appraisalData.currentQt = itemsData[key].currentQt;
       //get the average cost
       appraisalData.avgCost = "";
-      let itemCardData = getItemCardDataList(docInfo, itemObj, accountCardData, unitPriceColDecimals);
+      let itemCardData = getItemCardDataList(banDoc, docInfo, itemObj, unitPriceColDecimals);
       if (itemCardData && itemCardData.currentValues) {
         appraisalData.avgCost = itemCardData.currentValues.itemAvgCost;
       }

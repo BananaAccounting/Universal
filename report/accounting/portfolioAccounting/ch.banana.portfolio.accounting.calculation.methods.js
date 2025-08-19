@@ -354,7 +354,6 @@ function calculateStockSaleData(banDoc, docInfo, itemObj, dlgParams, currentRowN
     let totalSharesValue = "";
     let saleResult = "";
     let exRateResult = "";
-    let accountCardData = "";
     let accruedInterests = "";
     let itemAccount = "";
     let itemCardData = [];
@@ -371,8 +370,7 @@ function calculateStockSaleData(banDoc, docInfo, itemObj, dlgParams, currentRowN
     }
 
     //Get item card data to find the current average cost
-    accountCardData = getAccCardDataArrayOfObjects(banDoc, itemObj);
-    itemCardData = getItemCardDataList(docInfo, itemObj, accountCardData, unitPriceColDecimals, currentRowNr);
+    itemCardData = getItemCardDataList(banDoc, docInfo, itemObj, unitPriceColDecimals, currentRowNr);
 
     if (!itemCardData || isObjectEmpty(itemCardData))
         return saleData;
@@ -537,7 +535,7 @@ function accountIsInForeignCurrency(banDoc, docInfo, account) {
 }
 
 /**
- * Starting from the adapted account card data (see method: getAccCardDataArrayOfObjects), adds:
+ * Starting from the adapted account card data adds:
  * - A new object in the first position of the array that contains the opening data (if found) of the security.
  * Then for each transaction add:
  * - The quantity change (if present)
@@ -608,7 +606,8 @@ function accountIsInForeignCurrency(banDoc, docInfo, account) {
 This structure has been designed to allow saving separately the data related to the opening of the security, 
 those related to its evolution (transactions), and the current values (the latest transaction( or transaction x if a currentRowNr is defined) resulting data).
  */
-function getItemCardDataList(docInfo, itemObj, accountCardData, unitPriceColDecimals, currentRowNr) {
+function getItemCardDataList(banDoc, docInfo, itemObj, unitPriceColDecimals, currentRowNr) {
+    let accountCardData = getAccCardDataArrayOfObjects(banDoc, itemObj);
     let itemCardData = {};
     let openingData = getItemOpeningDataObj(docInfo, itemObj);
     setQuantityBalance(openingData, accountCardData);
@@ -731,7 +730,7 @@ function getSum(itemCardData, ref) {
     var sum = "";
     if (ref) {
         for (var key in itemCardData) {
-            sum = Banana.SDecimal.add(sum, itemCardData[key][ref]);
+            sum = Banana.SDecimal.add(sum, itemCardData[key][ref]); // Vedere se somma ancora beneee con i dati del itemcarddata e non accountcarddata 19.08.
         }
     }
     return sum;

@@ -38,8 +38,6 @@ function exec() {
     const dlgTitle = "Security ISIN";
     const dlgLabel = "Enter the ISIN number of the security";
     const scriptId = "ch.banana.portfolio.accounting.security.card.report.js";
-    let accountCard = ""; //hold the account card table
-    let accountCardData = "";
     let itemCardData = {};
     itemCardData.date = new Date();
 
@@ -67,10 +65,8 @@ function exec() {
         return "";
     }
 
-    accountCardData = getAccCardDataArrayOfObjects(banDoc, itemObject);
-
     //get the calculated data and the totals
-    itemCardData = getItemCardData(banDoc, docInfo, accountCardData, itemObject);
+    itemCardData = getItemCardData(banDoc, docInfo, itemObject);
 
     let itemDescription = itemObject.description;
     let report = printReport(banDoc, docInfo, itemCardData, itemDescription);
@@ -102,18 +98,18 @@ function getSelectedItem(banDoc, scriptId, dlgTitle, dlgLabel) {
     return itemSelected;
 }
 
-function getItemCardData(banDoc, docInfo, accountCardData, itemObject) {
+function getItemCardData(banDoc, docInfo, itemObject) {
     let itemCardData = {};
     let unitPriceColumn = banDoc.table("Transactions").column("UnitPrice", "Base");
     let unitPriceColDecimals = unitPriceColumn.decimal; // we want to use the same decimals as defined in the unit price column.
 
-    itemCardData.data = getItemCardDataList(docInfo, itemObject, accountCardData, unitPriceColDecimals);
+    itemCardData.data = getItemCardDataList(banDoc, docInfo, itemObject, unitPriceColDecimals);
     // We expand the object by adding the calculated sum of debit and credit columns (just for build the security card).
-    itemCardData.totalDebitBase = getSum(accountCardData, "debitBase");
-    itemCardData.totalCreditBase = getSum(accountCardData, "creditBase");
+    itemCardData.totalDebitBase = getSum(itemCardData.data.transactionsData, "debitBase");
+    itemCardData.totalCreditBase = getSum(itemCardData.data.transactionsData, "creditBase");
     if (docInfo.isMultiCurrency) {
-        itemCardData.totalDebitCurr = getSum(accountCardData, "debitCurr");
-        itemCardData.totalCreditCurr = getSum(accountCardData, "creditCurr");
+        itemCardData.totalDebitCurr = getSum(itemCardData.data.transactionsData, "debitCurr");
+        itemCardData.totalCreditCurr = getSum(itemCardData.data.transactionsData, "creditCurr");
     }
 
     return itemCardData;

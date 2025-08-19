@@ -368,7 +368,6 @@ function getItemsDataList(banDoc, docInfo, account) {
 
     let itemsData = getItemsTableData(banDoc, docInfo);
     let itemsDataList = [];//list of item cards
-    let accountCardData = "";
     let unitPriceColumn = banDoc.table("Transactions").column("UnitPrice", "Base");
     let unitPriceColDecimals = unitPriceColumn.decimal; // we want to use the same decimals as defined in the unit price column.
 
@@ -376,13 +375,12 @@ function getItemsDataList(banDoc, docInfo, account) {
         //set the item values
         if (itemsData[key].account == account) {
             let itemData = {};
-            accountCardData = getAccCardDataArrayOfObjects(banDoc, itemsData[key]);
-            itemData = getItemCardDataList(docInfo, itemsData[key], accountCardData, unitPriceColDecimals);
+            itemData = getItemCardDataList(banDoc, docInfo, itemsData[key], unitPriceColDecimals);
             // We expand the object by adding the calculated sum of debit and credit columns (just for build the security card).
-            itemData.totalDebitBase = getSum(accountCardData, "debitBase");
-            itemData.totalCreditBase = getSum(accountCardData, "creditBase");
-            itemData.totalDebitCurr = getSum(accountCardData, "debitCurr");
-            itemData.totalCreditCurr = getSum(accountCardData, "creditCurr");
+            itemData.totalDebitBase = getSum(itemData.transactionsData, "debitBase");
+            itemData.totalCreditBase = getSum(itemData.transactionsData, "creditBase");
+            itemData.totalDebitCurr = getSum(itemData.transactionsData, "debitCurr");
+            itemData.totalCreditCurr = getSum(itemData.transactionsData, "creditCurr");
             itemsDataList.push(itemData);
         }
     }
