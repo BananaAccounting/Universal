@@ -396,14 +396,6 @@ function getItemsDataList(banDoc, docInfo, accountCard, account) {
  */
 function getAccountsDataList(banDoc, docInfo, accountsList) {
     var accDataList = [];
-    let journal = "";
-    let journalData = "";
-    let trIdList = "";
-
-    journal = banDoc.journal(banDoc.ORIGINTYPE_CURRENT, banDoc.ACCOUNTTYPE_NONE);
-    journalData = getJournalDataArrayOfObjects(docInfo, journal);
-    trIdList = getTransactionsIdList(journalData);
-
 
     for (var i = 0; i < accountsList.length; i++) {
         let account = accountsList[i];

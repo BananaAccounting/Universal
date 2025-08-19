@@ -189,24 +189,6 @@ function getFormattedSavedParams(banDoc, paramsId) {
 }
 
 /**
- * saves the list of ids of all registrations in an array. each id is saved only once
- * @param {*} journalData 
- */
-function getTransactionsIdList(journalData) {
-    var trIdElements = new Set();
-    var trIdList = [];
-
-    for (var key in journalData) {
-        trIdElements.add(journalData[key].trId);
-    }
-
-    trIdList = Array.from(trIdElements);
-
-    return trIdList;
-
-}
-
-/**
  * 08.01.2025, currently disabled and specific parameters deleted:
  * - currSettlementDate
  * - accruedInterests
@@ -390,8 +372,6 @@ function calculateStockSaleData(banDoc, docInfo, itemObj, dlgParams, currentRowN
         return "";
     }
     //Get item card data to find the current average cost
-    journal = banDoc.journal(banDoc.ORIGINTYPE_CURRENT, banDoc.ACCOUNTTYPE_NONE);
-    journalData = getJournalDataArrayOfObjects(docInfo, journal);
     accountCard = banDoc.currentCard(itemAccount);
     accountCardData = getAccCardDataArrayOfObjects(itemObj, accountCard);
     itemCardData = getItemCardDataList(docInfo, itemObj, accountCardData, unitPriceColDecimals, currentRowNr);
@@ -459,6 +439,11 @@ function getClosestPreviousObjByRowNr(accountCardData, currentRowNr) {
  * The balance is calculated manually, starting from the opening value of the security.
  */
 function getAccCardDataArrayOfObjects(itemObj, accountCard) { // Il problema del bilancio è qui... 18.08.2025, Da rivedere anche ripresa opening values
+
+    //journal = banDoc.journal(banDoc.ORIGINTYPE_CURRENT, banDoc.ACCOUNTTYPE_NONE);
+    //journalData = getJournalDataArrayOfObjects(docInfo, journal);
+
+
     let transactions = [];
     let accBalance = "";
     let accBalanceCurr = "";
@@ -618,7 +603,6 @@ This structure has been designed to allow saving separately the data related to 
 those related to its evolution (transactions), and the current values (the latest transaction( or transaction x if a currentRowNr is defined) resulting data).
  */
 function getItemCardDataList(docInfo, itemObj, accountCardData, unitPriceColDecimals, currentRowNr) {
-    /* !! Valutare se il giornale serve ancora o se possiamo fare solo con i dati della scheda conto*/
     let itemCardData = {};
     let openingData = getItemOpeningDataObj(docInfo, itemObj);
     setQuantityBalance(openingData, accountCardData);

@@ -38,8 +38,6 @@ function exec() {
     const dlgTitle = "Security ISIN";
     const dlgLabel = "Enter the ISIN number of the security";
     const scriptId = "ch.banana.portfolio.accounting.security.card.report.js";
-    let journal = ""; //hold the journal table
-    let journalData = [];
     let accountCard = ""; //hold the account card table
     let accountCardData = "";
     let itemCardData = {};
@@ -68,10 +66,6 @@ function exec() {
         banDoc.addMessage(msg, ITEM_NOT_FOUND);
         return "";
     }
-
-    //get the journal data and creates an array of objects containing the transactions data
-    journal = banDoc.journal(banDoc.ORIGINTYPE_CURRENT, banDoc.ACCOUNTTYPE_NONE);
-    journalData = getJournalDataArrayOfObjects(docInfo, journal);
 
     //get the account card, filter the result by item and return an array of objects containing the transactions data
     accountCard = banDoc.currentCard(itemObject.account);
