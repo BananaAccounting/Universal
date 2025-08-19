@@ -364,7 +364,7 @@ function getDifferenceAmountStyle(diffAmount) {
  * Creates an array with all the data of all the items that are registered under this account 
  */
 
-function getItemsDataList(banDoc, docInfo, accountCard, journalData, account) {
+function getItemsDataList(banDoc, docInfo, accountCard, account) {
 
     let itemsData = getItemsTableData(banDoc, docInfo);
     let itemsDataList = [];//list of item cards
@@ -377,7 +377,7 @@ function getItemsDataList(banDoc, docInfo, accountCard, journalData, account) {
         if (itemsData[key].account == account) {
             let itemData = {};
             accountCardData = getAccCardDataArrayOfObjects(itemsData[key], accountCard);
-            itemData = getItemCardDataList(docInfo, itemsData[key], accountCardData, journalData, unitPriceColDecimals);
+            itemData = getItemCardDataList(docInfo, itemsData[key], accountCardData, unitPriceColDecimals);
             // We expand the object by adding the calculated sum of debit and credit columns (just for build the security card).
             itemData.totalDebitBase = getSum(accountCardData, "debitBase");
             itemData.totalCreditBase = getSum(accountCardData, "creditBase");
@@ -426,7 +426,7 @@ function getAccountsDataList(banDoc, docInfo, accountsList) {
         accData.balanceDiffCurr = Banana.SDecimal.subtract(accBalance.balanceCurrency, accBalance.openingCurrency);
 
         //get the items data.
-        itemsDataList = getItemsDataList(banDoc, docInfo, accountCard, journalData, account);
+        itemsDataList = getItemsDataList(banDoc, docInfo, accountCard, account);
         //Banana.Ui.showText(JSON.stringify(itemsDataList));
         accData.items = itemsDataList;
 

@@ -221,7 +221,7 @@ function getSecuritiesDataObjList(banDoc, docInfo, account) {
       let secBalanceCurrency = "";
 
       let accountCardAdpt = getAccCardDataArrayOfObjects(itemObj, accountCard);
-      let itemCardData = getItemCardDataList(docInfo, itemObj, accountCardAdpt, journalData, unitPriceColDecimals, null);
+      let itemCardData = getItemCardDataList(docInfo, itemObj, accountCardAdpt, unitPriceColDecimals, null);
 
       if (!itemCardData || isObjectEmpty(itemCardData))
         return;

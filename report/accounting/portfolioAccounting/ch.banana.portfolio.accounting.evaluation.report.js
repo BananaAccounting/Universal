@@ -241,7 +241,7 @@ function getAppraisalDataList(banDoc, docInfo, accountsList, itemsData) {
     secAccountData.account = {};
     secAccountData.account.name = account;
     secAccountData.account.data = {};
-    secAccountData.account.data.items = getAppraisalDataList_transactions(banDoc, docInfo, itemsData, journalData, account);
+    secAccountData.account.data.items = getAppraisalDataList_transactions(banDoc, docInfo, itemsData, account);
     accountsData.push(secAccountData);
   }
 
@@ -256,7 +256,7 @@ function getAppraisalDataList(banDoc, docInfo, accountsList, itemsData) {
   return appraisalDataList;
 }
 
-function getAppraisalDataList_transactions(banDoc, docInfo, itemsData, journalData, account) {
+function getAppraisalDataList_transactions(banDoc, docInfo, itemsData, account) {
   let appraisalDataListTrans = [];
   let unitPriceColumn = banDoc.table("Transactions").column("UnitPrice", "Base");
   let unitPriceColDecimals = unitPriceColumn.decimal; // we want to use the same decimals as defined in the unit price column.
@@ -274,7 +274,7 @@ function getAppraisalDataList_transactions(banDoc, docInfo, itemsData, journalDa
       appraisalData.currentQt = itemsData[key].currentQt;
       //get the average cost
       appraisalData.avgCost = "";
-      let itemCardData = getItemCardDataList(docInfo, itemObj, accountCardData, journalData, unitPriceColDecimals);
+      let itemCardData = getItemCardDataList(docInfo, itemObj, accountCardData, unitPriceColDecimals);
       if (itemCardData && itemCardData.currentValues) {
         appraisalData.avgCost = itemCardData.currentValues.itemAvgCost;
       }

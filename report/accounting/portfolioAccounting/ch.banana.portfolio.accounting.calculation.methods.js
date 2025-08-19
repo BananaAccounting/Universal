@@ -394,7 +394,7 @@ function calculateStockSaleData(banDoc, docInfo, itemObj, dlgParams, currentRowN
     journalData = getJournalDataArrayOfObjects(docInfo, journal);
     accountCard = banDoc.currentCard(itemAccount);
     accountCardData = getAccCardDataArrayOfObjects(itemObj, accountCard);
-    itemCardData = getItemCardDataList(docInfo, itemObj, accountCardData, journalData, unitPriceColDecimals, currentRowNr);
+    itemCardData = getItemCardDataList(docInfo, itemObj, accountCardData, unitPriceColDecimals, currentRowNr);
 
     if (!itemCardData || isObjectEmpty(itemCardData))
         return saleData;
@@ -617,11 +617,10 @@ function accountIsInForeignCurrency(banDoc, docInfo, account) {
 This structure has been designed to allow saving separately the data related to the opening of the security, 
 those related to its evolution (transactions), and the current values (the latest transaction( or transaction x if a currentRowNr is defined) resulting data).
  */
-function getItemCardDataList(docInfo, itemObj, accountCardData, journalData, unitPriceColDecimals, currentRowNr) {
+function getItemCardDataList(docInfo, itemObj, accountCardData, unitPriceColDecimals, currentRowNr) {
     /* !! Valutare se il giornale serve ancora o se possiamo fare solo con i dati della scheda conto*/
     let itemCardData = {};
     let openingData = getItemOpeningDataObj(docInfo, itemObj);
-    //setSoldData(accountCardData, journalData); // sembra non serva.
     setQuantityBalance(openingData, accountCardData);
     setCurrentAccAvgCost(accountCardData, unitPriceColDecimals);
 
@@ -764,30 +763,6 @@ function getBalance(itemCardData, debRef, credRef) {
         }
     }
     return balance;
-}
-
-/**
- * Sets the quantity and the price to the sales records in the accountCard by taking the data from the journal lines
- * If the accountCard line does not have the item, it means that the  
- * represents the sales amount. To this amount I add the quantity that I retrieve from the journal, 
- * I retrieve it by going to the only line that contains a reference to the quantity of the record with the same id.
- * @param {*} accountCardData 
- * @param {*} journalData 
- */
-function setSoldData(accountCardData, journalData) {
-
-    if (accountCardData.length < 1)
-        return accountCardData;
-
-    for (var key in accountCardData) {
-        let trId = "";
-        trId = accountCardData[key].trId;
-        if (trId && trId !== "") {
-            accountCardData[key].qt = getJournalValueFiltered(journalData, trId, "qt",);
-            accountCardData[key].unitPrice = getJournalValueFiltered(journalData, trId, "unitPrice");
-        }
-    }
-    return accountCardData
 }
 
 /**

@@ -78,7 +78,7 @@ function exec() {
     accountCardData = getAccCardDataArrayOfObjects(itemObject, accountCard);
 
     //get the calculated data and the totals
-    itemCardData = getItemCardData(banDoc, docInfo, accountCardData, journalData, itemObject);
+    itemCardData = getItemCardData(banDoc, docInfo, accountCardData, itemObject);
 
     let itemDescription = itemObject.description;
     let report = printReport(banDoc, docInfo, itemCardData, itemDescription);
@@ -110,12 +110,12 @@ function getSelectedItem(banDoc, scriptId, dlgTitle, dlgLabel) {
     return itemSelected;
 }
 
-function getItemCardData(banDoc, docInfo, accountCardData, journalData, itemObject) {
+function getItemCardData(banDoc, docInfo, accountCardData, itemObject) {
     let itemCardData = {};
     let unitPriceColumn = banDoc.table("Transactions").column("UnitPrice", "Base");
     let unitPriceColDecimals = unitPriceColumn.decimal; // we want to use the same decimals as defined in the unit price column.
 
-    itemCardData.data = getItemCardDataList(docInfo, itemObject, accountCardData, journalData, unitPriceColDecimals);
+    itemCardData.data = getItemCardDataList(docInfo, itemObject, accountCardData, unitPriceColDecimals);
     // We expand the object by adding the calculated sum of debit and credit columns (just for build the security card).
     itemCardData.totalDebitBase = getSum(accountCardData, "debitBase");
     itemCardData.totalCreditBase = getSum(accountCardData, "creditBase");
