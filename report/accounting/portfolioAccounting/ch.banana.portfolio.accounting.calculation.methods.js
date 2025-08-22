@@ -1270,6 +1270,59 @@ function isBananaAdvanced() {
     return false;
 }
 
+// REPORTS FUNCTIONS (Used in security card and reconciliation reports)
+function addItemOpeningTableRow(tableRow, itemOpeningData, decimals, styleNormalAmount) {
+    tableRow.addCell(Banana.Converter.toLocaleDateFormat(itemOpeningData.date), '');
+    tableRow.addCell("", "", 1);
+    tableRow.addCell(itemOpeningData.description, '');
+    tableRow.addCell("", "", 4);
+    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemOpeningData.amount, 2, true), styleNormalAmount);
+    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemOpeningData.qt, 0, true), styleNormalAmount);
+    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemOpeningData.unitPrice, decimals, false), styleNormalAmount);
+}
+
+function addItemOpeningTableRowMultiCurrency(tableRow, itemOpeningData, decimals, styleNormalAmount) {
+
+    tableRow.addCell(Banana.Converter.toLocaleDateFormat(itemOpeningData.date), '');
+    tableRow.addCell("", "", 1);
+    tableRow.addCell(itemOpeningData.description, '');
+    tableRow.addCell("", "", 4);
+    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemOpeningData.amountCurr, 2, true), styleNormalAmount);
+    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemOpeningData.qt, 0, true), styleNormalAmount);
+    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemOpeningData.unitPrice, decimals, false), styleNormalAmount);
+    tableRow.addCell("", "", 2);
+    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemOpeningData.amount, 2, true), styleNormalAmount);
+}
+
+function addItemTransactionTableRow(tableRow, itCardRow, decimals, styleNormalAmount) {
+    tableRow.addCell(Banana.Converter.toLocaleDateFormat(itCardRow.date), '');
+    tableRow.addCell(itCardRow.doc, 'styleAlignCenter');
+    tableRow.addCell(itCardRow.description, '');
+    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.qt, 0, false), styleNormalAmount);
+    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.unitPrice, decimals, false), styleNormalAmount);
+    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.debitBase, 2, false), styleNormalAmount);
+    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.creditBase, 2, false), styleNormalAmount);
+    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.balanceBase, 2, true), styleNormalAmount);
+    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.qtBalance, 0, true), styleNormalAmount);
+    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.accAvgCost, decimals, false), styleNormalAmount);
+}
+
+function addItemTransactionTableRowMultiCurrency(tableRow, itCardRow, decimals, styleNormalAmount) {
+    tableRow.addCell(Banana.Converter.toLocaleDateFormat(itCardRow.date), '');
+    tableRow.addCell(itCardRow.doc, 'styleAlignCenter');
+    tableRow.addCell(itCardRow.description, '');
+    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.qt, 0, false), styleNormalAmount);
+    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.unitPrice, decimals, false), styleNormalAmount);
+    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.debitCurr, 2, false), styleNormalAmount);
+    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.creditCurr, 2, false), styleNormalAmount);
+    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.balanceCurr, 2, true), styleNormalAmount);
+    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.qtBalance, 0, true), styleNormalAmount);
+    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.accAvgCost, decimals, false), styleNormalAmount);
+    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.debitBase, 2, false), styleNormalAmount);
+    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.creditBase, 2, false), styleNormalAmount);
+    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.balanceBase, 2, true), styleNormalAmount);
+}
+
 //STYLESHEET
 function getReportStyle() {
     //CREATE THE STYLE FOR THE REPORT
