@@ -237,7 +237,7 @@ function printReport(banDoc, reconciliationData, docInfo) {
             }
             // Add the movements
             for (var t in itemTrData) {
-                isEven = checkIfNumberisEven(rowColorIndex);
+                isEven = checkIfNumberIsEven(rowColorIndex);
                 if (isEven)
                     rowStyle = "styleEvenRows";
                 else

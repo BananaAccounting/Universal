@@ -124,7 +124,7 @@ function printReport(banDoc, docInfo, appraisalDataList, portfolioTrData) {
     //Print account data.
     itemsData.forEach(itemData => {
       //Defines style for alternating rows 
-      isEven = checkIfNumberisEven(rowColorIndex);
+      isEven = checkIfNumberIsEven(rowColorIndex);
       if (isEven)
         rowStyle = "styleEvenRows";
       else
@@ -187,7 +187,7 @@ function printReport(banDoc, docInfo, appraisalDataList, portfolioTrData) {
       tableRow.addCell(trElement.item, 'styleDescrTotals');
       tableRow.addCell('', '', 8);
       for (var e in trElement.transactions) {
-        isEven = checkIfNumberisEven(rowColorIndex);
+        isEven = checkIfNumberIsEven(rowColorIndex);
         if (isEven)
           rowStyle = "styleEvenRows";
         else

@@ -1136,7 +1136,7 @@ function getColors(HexColor) {
     return colors;
 }
 
-function checkIfNumberisEven(number) {
+function checkIfNumberIsEven(number) {
     isEven = false;
 
     if (number % 2 == 0)
