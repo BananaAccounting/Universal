@@ -189,25 +189,25 @@ function printReport(banDoc, docInfo, itemCardData, itemDescription) {
     let itemOpeningData = itemCardData.data.openingData;
 
     //Add the opening data (if present)
-    if (itemOpeningData.itemValueBegin || itemOpeningData.itemValueBeginCurrency) {
+    if (itemOpeningData.amount || itemOpeningData.amountCurr) {
 
         let itemCurrValue = ""; // value in the security currency
         let itemBaseValue = ""; // value in the base currency
-        if (itemOpeningData.itemValueBeginCurrency) {
-            itemCurrValue = itemOpeningData.itemValueBeginCurrency;
-            itemBaseValue = itemOpeningData.itemValueBegin;
+        if (itemOpeningData.amountCurr) {
+            itemCurrValue = itemOpeningData.amountCurr;
+            itemBaseValue = itemOpeningData.amount;
         } else {
-            itemCurrValue = itemOpeningData.itemValueBegin;
+            itemCurrValue = itemOpeningData.amount;
         }
 
         var tableOpeningRow = tabItemCard.addRow("styleOddRows");
-        tableOpeningRow.addCell(Banana.Converter.toLocaleDateFormat(itemOpeningData.itemOpeningDate), '');
+        tableOpeningRow.addCell(Banana.Converter.toLocaleDateFormat(itemOpeningData.date), '');
         tableOpeningRow.addCell("", "", 1);
-        tableOpeningRow.addCell(itemOpeningData.itemOpeningDescription, '');
+        tableOpeningRow.addCell(itemOpeningData.description, '');
         tableOpeningRow.addCell("", "", 4);
         tableOpeningRow.addCell(Banana.Converter.toLocaleNumberFormat(itemCurrValue, 2, true), "styleNormalAmount");
-        tableOpeningRow.addCell(Banana.Converter.toLocaleNumberFormat(itemOpeningData.itemQuantityBegin, 0, true), "styleNormalAmount");
-        tableOpeningRow.addCell(Banana.Converter.toLocaleNumberFormat(itemOpeningData.itemUnitPriceBegin, decimals, false), "styleNormalAmount");
+        tableOpeningRow.addCell(Banana.Converter.toLocaleNumberFormat(itemOpeningData.qt, 0, true), "styleNormalAmount");
+        tableOpeningRow.addCell(Banana.Converter.toLocaleNumberFormat(itemOpeningData.unitPrice, decimals, false), "styleNormalAmount");
         if (docInfo.isMultiCurrency) {
             tableOpeningRow.addCell("", "", 2);
             tableOpeningRow.addCell(Banana.Converter.toLocaleNumberFormat(itemBaseValue, 2, true), "styleNormalAmount");

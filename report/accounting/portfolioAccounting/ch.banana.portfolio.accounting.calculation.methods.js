@@ -157,16 +157,17 @@ function getItemOpeningValuesFromJournal(docInfo, journal, itemId) {
     for (var i = 0; i < journal.rowCount; i++) {
         var tRow = journal.row(i);
         if (tRow.value("JOperationType") === "1" && tRow.value("ItemsId") === itemId) {
-            openingValues.qt = tRow.value("Qt");
+            openingValues.qt = tRow.value("Quantity");
+            openingValues.unitPrice = tRow.value("UnitPrice");
+            openingValues.date = tRow.value("JDate");
+            openingValues.description = tRow.value("JDescription");
             openingValues.amount = tRow.value("JAmount");
             openingValues.debitBase = tRow.value("JDebitAmount"); //debit value in base currency
             openingValues.creditBase = tRow.value("JCreditAmount"); //credit value base currency
-            openingValues.balanceBase = tRow.value("JBalance");
             if (docInfo.isMultiCurrency) {
                 openingValues.amountCurr = tRow.value("JAmountAccountCurrency");
-                openingValues.debitCurr = tRow.value("JDebitAmountCurrency"); //debit value in base currency
-                openingValues.creditCurr = tRow.value("JCreditAmountCurrency"); //credit value base currency
-                openingValues.balanceCurr = tRow.value("JBalanceAccountCurrency"); //credit value base currency
+                openingValues.debitCurr = tRow.value("JDebitAmountAccountCurrency"); //debit value in base currency
+                openingValues.creditCurr = tRow.value("JCreditAmountAccountCurrency"); //credit value base currency
             }
             break;
         }
@@ -495,76 +496,8 @@ function accountIsInForeignCurrency(banDoc, docInfo, account) {
 }
 
 /**
- * Starting from the adapted account card data adds:
- * - A new object in the first position of the array that contains the opening data (if found) of the security.
- * Then for each transaction add:
- * - The quantity change (if present)
- * - The unit price (if present)
- * - The balance of the quantity (updated for each movement)
- * - The book value (updated with each movement)
- * At the end add a new object containing the resulting values in the last transaction, these
- * values rapresent the current situation for the quantity balance and the book value.
- * If no transaction is found, the values are directly taken form the opening data.
- * The returned structure looks like this:
-{
-  "itemId": "CH002775224",
-  "openingData": {
-    "itemUnitPriceBegin": "5.9998",
-    "itemValueBeginCurrency": "1499.95",
-    "itemValueBegin": "1499.95",
-    "itemExchangeBegin": "",
-    "itemQuantityBegin": "250.0000"
-  },
-  "transactionsData": [
-    {
-      "rowNr": 3,
-      "originTable": "Transactions",
-      "originRow": "8",
-      "rowType": "3",
-      "doc": "2",
-      "date": "2025-01-31",
-      "trId": "8",
-      "item": "CH002775224",
-      "description": "Shares BancaStato",
-      "qt": "-200.0000",
-      "currency": "CHF",
-      "unitPrice": "6.0201",
-      "debitBase": "",
-      "creditBase": "1204.02",
-      "balanceBase": "295.93",
-      "qtBalance": "50.0000",
-      "accAvgCost": "5.9186"
-    },
-    {
-      "rowNr": 4,
-      "originTable": "Transactions",
-      "originRow": "11",
-      "rowType": "3",
-      "doc": "2",
-      "date": "2025-01-31",
-      "trId": "11",
-      "item": "CH002775224",
-      "description": "Shares BancaStato Result on sale",
-      "qt": "",
-      "currency": "CHF",
-      "unitPrice": "",
-      "debitBase": "4.06",
-      "creditBase": "",
-      "balanceBase": "299.99",
-      "qtBalance": "50.0000",
-      "accAvgCost": "5.9998"
-    }
-  ],
-  "currentValues": {
-    "itemAvgCost": "5.9998",
-    "itemQtBalance": "50.0000",
-    "itemBalanceBase": "299.99",
-    "itemBalanceCurr": "",
-    "itemExchangeRate": ""
-  }
-}
-This structure has been designed to allow saving separately the data related to the opening of the security, 
-those related to its evolution (transactions), and the current values (the latest transaction( or transaction x if a currentRowNr is defined) resulting data).
+ * Creates an item card taking the opening values from the journal, filtering the transactions from the account card
+ *  and calculating the progressive values.
  */
 function getItemCardDataList(banDoc, docInfo, itemObj, unitPriceColDecimals, currentRowNr) {
     // Get the Journal list
@@ -576,8 +509,6 @@ function getItemCardDataList(banDoc, docInfo, itemObj, unitPriceColDecimals, cur
     // Create the item card data object.
     let itemCardData = {};
     setItemCard_ProgressiveValues(docInfo, accountCardData, itemOpeningValues, unitPriceColDecimals);
-
-    Banana.Ui.showText(JSON.stringify(accountCardData)); // controllare le differenze nei test da
 
     itemCardData.itemId = itemObj.item;
     itemCardData.itemCurrency = itemObj.currency;
@@ -680,11 +611,11 @@ function getItemCurrentValues(openingData, accountCardData, currentRowNr) {
 }
 
 function setOpeningValues(currentValuesObj, openingData) {
-    currentValuesObj.itemAvgCost = openingData.itemUnitPriceBegin;
-    currentValuesObj.itemQtBalance = openingData.itemQuantityBegin;
-    currentValuesObj.itemBalanceBase = openingData.itemValueBegin;
-    currentValuesObj.itemBalanceCurr = openingData.itemValueBeginCurrency;
-    currentValuesObj.itemExchangeRate = openingData.itemExchangeBegin;
+    currentValuesObj.itemAvgCost = openingData.unitPrice;
+    currentValuesObj.itemQtBalance = openingData.qt;
+    currentValuesObj.itemBalanceBase = openingData.amount;
+    currentValuesObj.itemBalanceCurr = openingData.amountCurr;
+    currentValuesObj.itemExchangeRate = "";
 }
 
 function isObjectEmpty(obj) {

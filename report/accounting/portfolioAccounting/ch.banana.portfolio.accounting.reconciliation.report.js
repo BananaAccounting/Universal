@@ -209,26 +209,26 @@ function printReport(banDoc, reconciliationData, docInfo) {
             tableRow.addCell("", "");
             tableRow.addCell(itemData.itemId, '', spanObj.itemId);
             //Add the opening data (if present)
-            if (itemOpeningData.itemValueBegin || itemOpeningData.itemValueBeginCurrency) {
+            if (itemOpeningData.amount || itemOpeningData.amountCurr) {
 
                 let itemCurrValue = "";
                 let itemBaseValue = "";
-                if (itemOpeningData.itemValueBeginCurrency) {
-                    itemCurrValue = itemOpeningData.itemValueBeginCurrency;
-                    itemBaseValue = itemOpeningData.itemValueBegin;
+                if (itemOpeningData.amountCurr) {
+                    itemCurrValue = itemOpeningData.amountCurr;
+                    itemBaseValue = itemOpeningData.amount;
                 } else {
-                    itemCurrValue = itemOpeningData.itemValueBegin;
+                    itemCurrValue = itemOpeningData.amount;
                 }
 
                 let tableOpeningRow = tabConc.addRow("styleOddRows");
                 tableOpeningRow.addCell("", "", 2);
-                tableOpeningRow.addCell(Banana.Converter.toLocaleDateFormat(itemOpeningData.itemOpeningDate), '');
+                tableOpeningRow.addCell(Banana.Converter.toLocaleDateFormat(itemOpeningData.date), '');
                 tableOpeningRow.addCell("", "", 1);
-                tableOpeningRow.addCell(itemOpeningData.itemOpeningDescription, '');
+                tableOpeningRow.addCell(itemOpeningData.description, '');
                 tableOpeningRow.addCell("", "", 4);
                 tableOpeningRow.addCell(Banana.Converter.toLocaleNumberFormat(itemCurrValue, 2, true), "styleNormalAmount");
-                tableOpeningRow.addCell(Banana.Converter.toLocaleNumberFormat(itemOpeningData.itemQuantityBegin, 0, true), "styleNormalAmount");
-                tableOpeningRow.addCell(Banana.Converter.toLocaleNumberFormat(itemOpeningData.itemUnitPriceBegin, decimals, false), "styleNormalAmount");
+                tableOpeningRow.addCell(Banana.Converter.toLocaleNumberFormat(itemOpeningData.qt, 0, true), "styleNormalAmount");
+                tableOpeningRow.addCell(Banana.Converter.toLocaleNumberFormat(itemOpeningData.unitPrice, decimals, false), "styleNormalAmount");
                 if (docInfo.isMultiCurrency) {
                     tableOpeningRow.addCell("", "", 2);
                     tableOpeningRow.addCell(Banana.Converter.toLocaleNumberFormat(itemBaseValue, 2, true), "styleNormalAmount");
@@ -416,11 +416,10 @@ function getAccountsDataList(banDoc, docInfo, accountsList) {
 
         //get the items data.
         itemsDataList = getItemsDataList(banDoc, docInfo, account);
-        //Banana.Ui.showText(JSON.stringify(itemsDataList));
         accData.items = itemsDataList;
 
         //Get total movements from the securities
-        let itemsTotalBalance = sumItemsBalances(itemsDataList);
+        let itemsTotalBalance = getItemsMovementsTotal(itemsDataList);
         accData.securityTrAmountBase = itemsTotalBalance.movTotalBase;
         accData.securityTrAmountCurrency = itemsTotalBalance.movTotalCurrency;
 
@@ -429,20 +428,22 @@ function getAccountsDataList(banDoc, docInfo, accountsList) {
         accData.differenceCurr = Banana.SDecimal.subtract(accData.securityTrAmountCurrency, accData.balanceDiffCurr);
 
         accDataList.push(accData);
-
     }
 
     return accDataList;
 }
 
-function sumItemsBalances(itemsDataList) {
+/** Calculate the difference between the opening anc current balance of each items and sum the value found for each item.
+ * The returned value is the total movements amount calculated from the items.
+*/
+function getItemsMovementsTotal(itemsDataList) {
     let itemsTotalMovements = {};
-    let itemTotalMov = "";
-    let itemTotalMovCurrency = "";
+    let itemTotalMov = "0";
+    let itemTotalMovCurrency = "0";
 
     itemsDataList.forEach(item => {
-        let itemOpBalance = item.openingData.itemValueBegin;
-        let itemOpBalanceCurr = item.openingData.itemValueBeginCurrency;
+        let itemOpBalance = item.openingData.amount;
+        let itemOpBalanceCurr = item.openingData.amountCurr;
         let itemCurrBalance = item.currentValues.itemBalanceBase;
         let itemCurrBalanceCurr = item.currentValues.itemBalanceCurr;
 
@@ -455,132 +456,3 @@ function sumItemsBalances(itemsDataList) {
 
     return itemsTotalMovements;
 }
-
-
-/*example data structure
-var reconciliationData={
-    "date":"date",
-    "data":[
-        {
-            "account":"1400",
-            "accountOpeningBase":"500.00",
-            "accountBalanceBase":"500.00",
-            "accountOpeningCurr":"500.00",
-            "accountBalanceCurr":"500.00",
-            "currency":"CHF",
-            "items":[// list of the item cards
-                {
-                "item":"IT0005239360",
-                "itemCardData":[
-                    {
-                    "TransactionType":"Purchase",
-                    "date":"",
-                    "Description":"",
-                    "debit (baseCurr)":"",
-                    "credit (baseCurr)":"",
-                    "balance (baseCurr)":"",
-                    "Curr. acc. exchange rate":"",
-                    "debit (itemCurr)":"",
-                    "credit (itemCurr)":"",
-                    "balance (itemCurr)":"",
-                    "Quantity Balance":"",
-                    "Current Average Cost":"",
-                    },
-                    {
-                    "TransactionType":"Purchase",
-                    "date":"",
-                    "Description":"",
-                    "debit (baseCurr)":"",
-                    "credit (baseCurr)":"",
-                    "balance (baseCurr)":"",
-                    "Curr. acc. exchange rate":"",
-                    "debit (itemCurr)":"",
-                    "credit (itemCurr)":"",
-                    "balance (itemCurr)":"",
-                    "Quantity Balance":"",
-                    "Current Average Cost":"",
-                    },
-                ],
-                "TotalDebit (baseCurr)":"",
-                "TotalCredit (baseCurr)":"",
-                "TotalBalance (baseCurr)":"",
-                "TotalDebit (itemCurr)":"",
-                "TotalCredit (itemCurr)":"",
-                "TotalBalance (itemCurr)":"",
-                "TotalQtBalance (itemCurr)":"",//the last value calculated in the column: Quantity Balance
-                "TotalCurrAvgCost (itemCurr)":"",//the last value calculated in the column: Current Average Cost
-                },
-                {
-                "item":"IT0005239360",
-                "itemCardData":[
-                    {
-                    "TransactionType":"Purchase",
-                    "date":"",
-                    "Description":"",
-                    "debit (baseCurr)":"",
-                    "credit (baseCurr)":"",
-                    "balance (baseCurr)":"",
-                    "Curr. acc. exchange rate":"",
-                    "debit (itemCurr)":"",
-                    "credit (itemCurr)":"",
-                    "balance (itemCurr)":"",
-                    "Quantity Balance":"",
-                    "Current Average Cost":"",
-                    },
-                    {
-                    "TransactionType":"Purchase",
-                    "date":"",
-                    "Description":"",
-                    "debit (baseCurr)":"",
-                    "credit (baseCurr)":"",
-                    "balance (baseCurr)":"",
-                    "Curr. acc. exchange rate":"",
-                    "debit (itemCurr)":"",
-                    "credit (itemCurr)":"",
-                    "balance (itemCurr)":"",
-                    "Quantity Balance":"",
-                    "Current Average Cost":"",
-                    },
-                ],
-                "TotalDebit (baseCurr)":"",
-                "TotalCredit (baseCurr)":"",
-                "TotalBalance (baseCurr)":"",
-                "TotalDebit (itemCurr)":"",
-                "TotalCredit (itemCurr)":"",
-                "TotalBalance (itemCurr)":"",
-                "TotalQtBalance (itemCurr)":"",//the last value calculated in the column: Quantity Balance
-                "TotalCurrAvgCost (itemCurr)":"",//the last value calculated in the column: Current Average Cost
-
-                }
-            ],
-            "securitiesTransactionsAmount":"500",
-            "difference":"" //should be zero.
-        },
-        {
-            "account":"1401",
-            "opening":"0.00",
-            "accountBalance":"200.00",
-            "currency":"EUR",
-            "items":[
-                {
-                    "item":"IT0005239360",
-                    "transactions":[
-                        {
-                        "description":"",
-                        "qt":"",
-                        "price":"",//in the account currency
-                        "amountBase":"",
-                        "balanceBase":"",
-                        "amountCurr":"",
-                        "balanceCurr":"",
-                        "qtBalance":"",
-                        }
-                    ]
-
-                }
-            ],
-            "securitiesTransactionsAmount":"1000"
-        }
-    ]
-
-}*/
