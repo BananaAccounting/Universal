@@ -213,6 +213,7 @@ function printReport(banDoc, reconciliationData, docInfo) {
                 tableOpeningRow.addCell("", "", 2);
                 addItemOpeningTableRowMultiCurrency(tableOpeningRow, itemOpeningData, decimals, styleNormalAmount);
             } else if (!isMulti && itemOpeningData && itemOpeningData.amount) {
+                let tableOpeningRow = tabConc.addRow("styleOddRows");
                 tableOpeningRow.addCell("", "", 2);
                 addItemOpeningTableRow(tableOpeningRow, itemOpeningData, decimals, styleNormalAmount)
             }
@@ -310,7 +311,7 @@ function addItemTotalTableRow(tableRow, itemCardData, decimals, styleTotalAmount
     tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemCardData.currentValues.itemAvgCost, decimals, true), styleTotalAmount);
 }
 
-function addAccountOpeningTableRow() {
+function addAccountOpeningTableRow(tableRow, accData, currentDate) {
     let cellDateOpBal = tableRow.addCell(Banana.Converter.toLocaleDateFormat(currentDate), 'styleAlignCenter');
     cellDateOpBal.excludeFromTest();
     tableRow.addCell("", "", 1);
@@ -368,22 +369,25 @@ function addAccountTransTotalTableRowMultiCurrency(tableRow, concData, currentDa
 }
 
 function addAccountDifferenceslTableRow(tableRow, concData, currentDate) {
+    var diffStyleBase = getDifferenceAmountStyle(concData.differenceBase);
     let cellDateDiff = tableRow.addCell(Banana.Converter.toLocaleDateFormat(currentDate), 'styleAlignCenter');
     cellDateDiff.excludeFromTest();
     tableRow.addCell("", "", 1);
     tableRow.addCell("Differences", "styleDescrTotals", 5);
-    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(concData.differenceBase, 2, true), concData.differenceCurr);
+    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(concData.differenceBase, 2, true), diffStyleBase);
     tableRow.addCell("", "", 2);
 }
 
 function addAccountDfferencesTableRowMultiCurrency(tableRow, concData, currentDate) {
+    var diffStyleBase = getDifferenceAmountStyle(concData.differenceBase);
+    var diffStyleCurr = getDifferenceAmountStyle(concData.differenceCurr);
     let cellDateDiff = tableRow.addCell(Banana.Converter.toLocaleDateFormat(currentDate), 'styleAlignCenter');
     cellDateDiff.excludeFromTest();
     tableRow.addCell("", "", 1);
     tableRow.addCell("Differences", "styleDescrTotals", 5);
-    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(concData.differenceCurr, 2, true), concData.differenceCurr);
+    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(concData.differenceCurr, 2, true), diffStyleCurr);
     tableRow.addCell("", "", 4);
-    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(concData.differenceBase, 2, true), concData.differenceBase);
+    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(concData.differenceBase, 2, true), diffStyleBase);
 }
 
 function getDifferenceAmountStyle(diffAmount) {
