@@ -20,6 +20,12 @@
  * INVESTMENT ACCOUNTING METHODS
  * 
  *********************************************************/
+const PLUSMINUS_SIGN = "\u00B1";
+
+/** To get the sign outside the file */
+function getPlusMinusSign() {
+    return PLUSMINUS_SIGN;
+}
 
 function initJsonDoc() {
     var jsonDoc = {};
@@ -545,7 +551,7 @@ function setItemCard_ProgressiveValues(docInfo, itemTransactions, itemOpeningVal
 
         // Quantity progressive
         const rawQt = tx.qt;
-        const hasQt = !(rawQt == null || String(rawQt).trim() === "");
+        const hasQt = !(rawQt == null || String(rawQt).trim() === "" || qtyIsNeutral(rawQt));
         if (hasQt) {
             // Keep the sign exactly as provided: "-5" subtract, "5" add
             const qtyDelta = String(rawQt).trim();
@@ -577,6 +583,13 @@ function setItemCard_ProgressiveValues(docInfo, itemTransactions, itemOpeningVal
             tx.accAvgCost = "0";
         }
     }
+}
+
+function qtyIsNeutral(qty) {
+    if (qty.indexOf(PLUSMINUS_SIGN) >= 0) {
+        return true;
+    }
+    return false;
 }
 
 /**
@@ -1290,7 +1303,7 @@ function addItemOpeningTableRowMultiCurrency(tableRow, itemOpeningData, decimals
     tableRow.addCell(itemOpeningData.description, '');
     tableRow.addCell("", "", 4);
     tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemOpeningData.amountCurr, 2, true), styleNormalAmount);
-    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemOpeningData.qt, 0, true), styleNormalAmount);
+    tableRow.addCell(formatQty(itemOpeningData.qt), styleNormalAmount);
     tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemOpeningData.unitPrice, decimals, false), styleNormalAmount);
     tableRow.addCell("", "", 2);
     tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemOpeningData.amount, 2, true), styleNormalAmount);
@@ -1300,7 +1313,7 @@ function addItemTransactionTableRow(tableRow, itCardRow, decimals, styleNormalAm
     tableRow.addCell(Banana.Converter.toLocaleDateFormat(itCardRow.date), '');
     tableRow.addCell(itCardRow.doc, 'styleAlignCenter');
     tableRow.addCell(itCardRow.description, '');
-    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.qt, 0, false), styleNormalAmount);
+    tableRow.addCell(formatQty(itCardRow.qt), styleNormalAmount);
     tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.unitPrice, decimals, false), styleNormalAmount);
     tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.debitBase, 2, false), styleNormalAmount);
     tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.creditBase, 2, false), styleNormalAmount);
@@ -1313,7 +1326,7 @@ function addItemTransactionTableRowMultiCurrency(tableRow, itCardRow, decimals, 
     tableRow.addCell(Banana.Converter.toLocaleDateFormat(itCardRow.date), '');
     tableRow.addCell(itCardRow.doc, 'styleAlignCenter');
     tableRow.addCell(itCardRow.description, '');
-    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.qt, 0, false), styleNormalAmount);
+    tableRow.addCell(formatQty(itCardRow.qt), styleNormalAmount);
     tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.unitPrice, decimals, false), styleNormalAmount);
     tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.debitCurr, 2, false), styleNormalAmount);
     tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.creditCurr, 2, false), styleNormalAmount);
@@ -1323,6 +1336,19 @@ function addItemTransactionTableRowMultiCurrency(tableRow, itCardRow, decimals, 
     tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.debitBase, 2, false), styleNormalAmount);
     tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.creditBase, 2, false), styleNormalAmount);
     tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.balanceBase, 2, true), styleNormalAmount);
+}
+
+function formatQty(qty) {
+    if (!qty || qty.length < 1)
+        return "";
+    //remove the negative sign if present
+    if (qtyIsNeutral(qty)) {
+        let cleanQty = qty.replace(PLUSMINUS_SIGN, "");
+        let formattedQty = Banana.Converter.toLocaleNumberFormat(cleanQty, 0, false);
+        return PLUSMINUS_SIGN + formattedQty;
+    } else {
+        return Banana.Converter.toLocaleNumberFormat(qty, 0, false);
+    }
 }
 
 //STYLESHEET

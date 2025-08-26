@@ -18,8 +18,6 @@
 // @includejs = ch.banana.portfolio.accounting.calculation.methods.js
 // @includejs = ch.banana.portfolio.accounting.errormessagges.handler.js
 
-const PLUSMINUS_SIGN = "\u00B1";
-
 /** We must use the class declaration using "var" to be able to correctly use this class outside this file. */
 var RecordSalesTransactions = class RecordSalesTransactions {
     constructor(banDoc, docInfo, salesData, dlgParams, itemsData, currItemObj, currentRowObj, showMsgDlg) {
@@ -487,7 +485,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         row.fields["ItemsId"] = this.itemObject.item;
         row.fields["ExternalReference"] = this.saleTrRef + ".5";
         row.fields["Description"] = this.itemObject.description + " " + this.texts.resultOnSale;
-        row.fields["Quantity"] = PLUSMINUS_SIGN + Banana.Converter.toInternalNumberFormat(Banana.SDecimal.abs(this.saleQty));
+        row.fields["Quantity"] = getPlusMinusSign() + Banana.Converter.toInternalNumberFormat(Banana.SDecimal.abs(this.saleQty));
         row.fields["UnitPrice"] = Banana.Converter.toInternalNumberFormat(
             Banana.SDecimal.divide(this.salesData.saleResult, this.saleQty, this.getUnitPriceRoundingContext()));
         if (isLossOnSale) {
@@ -519,7 +517,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         row.fields["ItemsId"] = this.itemObject.item;
         row.fields["ExternalReference"] = this.saleTrRef + ".5";
         row.fields["Description"] = this.itemObject.description.trim() + " " + this.texts.resultOnSale;
-        row.fields["Quantity"] = PLUSMINUS_SIGN + Banana.Converter.toInternalNumberFormat(Banana.SDecimal.abs(this.saleQty));
+        row.fields["Quantity"] = getPlusMinusSign() + Banana.Converter.toInternalNumberFormat(Banana.SDecimal.abs(this.saleQty));
         row.fields["UnitPrice"] = Banana.Converter.toInternalNumberFormat(
             Banana.SDecimal.divide(this.salesData.saleResult, this.saleQty, this.getUnitPriceRoundingContext()));
         if (isLossOnSale) {
@@ -722,7 +720,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         row.fields["ItemsId"] = this.itemObject.item;
         row.fields["ExternalReference"] = this.saleTrRef + ".4";
         row.fields["Description"] = this.itemObject.description.trim() + " " + this.texts.resultOnSale;
-        row.fields["Quantity"] = PLUSMINUS_SIGN + Banana.Converter.toInternalNumberFormat(Banana.SDecimal.abs(this.saleQty));
+        row.fields["Quantity"] = getPlusMinusSign() + Banana.Converter.toInternalNumberFormat(Banana.SDecimal.abs(this.saleQty));
         row.fields["UnitPrice"] = Banana.Converter.toInternalNumberFormat(
             Banana.SDecimal.divide(this.salesData.saleResult, this.saleQty, this.getUnitPriceRoundingContext()));
         if (isLossOnSale) {
@@ -793,7 +791,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         row.fields["ItemsId"] = this.itemObject.item;
         row.fields["ExternalReference"] = this.saleTrRef + ".4";
         row.fields["Description"] = this.itemObject.description.trim() + " " + this.texts.resultOnSale;
-        row.fields["Quantity"] = PLUSMINUS_SIGN + Banana.Converter.toInternalNumberFormat(Banana.SDecimal.abs(this.saleQty));
+        row.fields["Quantity"] = getPlusMinusSign() + Banana.Converter.toInternalNumberFormat(Banana.SDecimal.abs(this.saleQty));
         row.fields["UnitPrice"] = Banana.Converter.toInternalNumberFormat(
             Banana.SDecimal.divide(this.salesData.saleResult, this.saleQty, this.getUnitPriceRoundingContext()));
         if (isLossOnSale) {
