@@ -41,6 +41,7 @@ TestSecurityCardReport.prototype.initTestCase = function () {
     this.fileNameList = [];
 
     this.fileNameList.push("file:script/../test/testcases/portfolio_accounting_double_entry_tutorial_2022.ac2");
+    this.fileNameList.push("file:script/../test/testcases/portfolio_accounting_double_entry_tutorial_2025_withopenings.ac2");
     this.fileNameList.push("file:script/../test/testcases/portfolio_accounting_double_entry_multi_currency_tutorial.ac2");
     this.fileNameList.push("file:script/../test/testcases/portfolio_accounting_double_entry_multi_currency_tutorial_unitprofitlosstest_2025.ac2");
 }
@@ -87,9 +88,9 @@ TestSecurityCardReport.prototype.testDataStructure = function () {
 
 function getItemForTest(index) {
     item = "";
-    if (index == 0)
+    if (index == 0 || index == 1)
         item = "CH003886335";
-    else if (index == 1 || index == 2)
+    else if (index == 2 || index == 3)
         item = "IT0005239360";
 
     return item;

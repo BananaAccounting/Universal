@@ -41,6 +41,7 @@ TestReconciliationReport.prototype.initTestCase = function () {
     this.fileNameList = [];
 
     this.fileNameList.push("file:script/../test/testcases/portfolio_accounting_double_entry_tutorial_2022.ac2");
+    this.fileNameList.push("file:script/../test/testcases/portfolio_accounting_double_entry_tutorial_2025_withopenings.ac2");
     this.fileNameList.push("file:script/../test/testcases/portfolio_accounting_double_entry_multi_currency_tutorial.ac2");
     this.fileNameList.push("file:script/../test/testcases/portfolio_accounting_double_entry_multi_currency_tutorial_unitprofitlosstest_2025.ac2");
 }
@@ -87,11 +88,11 @@ TestReconciliationReport.prototype.testDataStructure = function () {
 
 function getAccountList(index) {
     accountList = [];
-    if (index == 0)
+    if (index == 0 || index == 1)
         accountList = ['Shares', 'Bonds'];
-    else if (index == 1)
-        accountList = ['Shares EUR', 'Shares CHF', 'Bonds EUR'];
     else if (index == 2)
+        accountList = ['Shares EUR', 'Shares CHF', 'Bonds EUR'];
+    else if (index == 3)
         accountList = ['Shares Unicredit', 'Shares CHF', 'Shares Netflix', 'Bonds EUR'];
     return accountList;
 }
