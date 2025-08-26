@@ -138,6 +138,8 @@ function getDocumentInfo(banDoc) {
     docInfo.zip = banDoc.info("AccountingDataBase", "Zip");
     docInfo.city = banDoc.info("AccountingDataBase", "City");
 
+    // get the decimals used in the unit price columns
+    docInfo.unitPriceColDecimals = banDoc.info("AccountingDataBase", "DecimalsColumnsUnitPrice");
 
     return docInfo;
 
