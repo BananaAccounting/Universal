@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.portfolio.accounting.accounts.dialog.js
 // @api = 1.0
-// @pubdate = 2025-01-22
+// @pubdate = 2025-08-25
 // @publisher = Banana.ch SA
 // @description = 1. Accounts settings
 // @task = app.command

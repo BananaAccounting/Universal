@@ -19,7 +19,7 @@
 // @inputdatasource = openfiledialog
 // @doctype = 100.*
 // @publisher = Banana.ch SA
-// @pubdate = 2025-02-13
+// @pubdate = 2025-08-25
 // @inputdatasource = none
 // @timeout = -1
 // @inputfilefilter = Text files (*.txt *.csv);;All files (*.*)

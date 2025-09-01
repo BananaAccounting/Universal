@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-// @pubdate = 2025-01-09
+// @pubdate = 2025-08-25
 // @publisher = Banana.ch SA
 // @includejs = ch.banana.portfolio.accounting.accounts.dialog.js
 // @includejs = ch.banana.portfolio.accounting.calculation.methods.js

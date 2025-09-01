@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.portfolio.accounting.calc.sales.data.dialog.js
 // @api = 1.0
-// @pubdate = 2024-12-23
+// @pubdate = 2025-08-25
 // @publisher = Banana.ch SA
 // @description = 4. Calculate sales data
 // @task = app.command
