@@ -355,7 +355,7 @@ var ImportRevolutPrivateFormat1 = class ImportRevolutPrivateFormat1 extends Impo
             }
 
             //18 as the format is YYYY-MM-DD HH:MM:SS -> 2022-01-01 00:00:00
-            if (this.datesAreValid(transaction["Date"], transaction["DateValue"]))
+            if (this.dateIsValid(transaction["Date"]))
                 formatMatched = true;
             else
                 formatMatched = false;
@@ -366,14 +366,10 @@ var ImportRevolutPrivateFormat1 = class ImportRevolutPrivateFormat1 extends Impo
         return false;
     }
 
-    datesAreValid(date, dateValue) {
+    dateIsValid(date) {
         let isValid = false;
-        if (date
-            && date.length > 18
-            && date.match(/^[0-9]+(\-|\.)[0-9]+(\-|\.)[0-9]+\s[0-9]+\:[0-9]+(\:[0-9]+)?$/)
-            && dateValue
-            && dateValue.length > 18
-            && dateValue.match(/^[0-9]+(\-|\.)[0-9]+(\-|\.)[0-9]+\s[0-9]+\:[0-9]+(\:[0-9]+)?$/)) {
+        if (date && date.length > 18
+            && date.match(/^[0-9]+(\-|\.)[0-9]+(\-|\.)[0-9]+\s[0-9]+\:[0-9]+(\:[0-9]+)?$/)) {
             isValid = true;
         }
         return isValid
@@ -389,7 +385,7 @@ var ImportRevolutPrivateFormat1 = class ImportRevolutPrivateFormat1 extends Impo
 
         for (var i = 0; i < sortedTransactions.length; i++) {
             let tr = sortedTransactions[i];
-            if (this.datesAreValid(tr["Date"], tr["DateValue"])) {
+            if (this.dateIsValid(tr["Date"])) {
                 transactionsToImport.push(this.mapTransaction(sortedTransactions[i]));
             }
         }
