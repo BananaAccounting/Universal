@@ -1,4 +1,4 @@
-%%info_test_name{ch.banana.revolut.transactions.private1_20222609}
+%%info_test_name{ch.banana.revolut.transactions.private1_20250922_it}
 \documentclass{report}
 \usepackage{longtable}
 \usepackage{color}
@@ -20,15 +20,9 @@
 %Begin test data
 \begin{tablevalue}{}{ l  l  l  l  l  l }
 Date & DateValue & Doc & Description & Income & Expenses\\
-2022-01-30 & 2022-01-31 &  & Description, Product ABCD CARD\_PAYMENT &  & 1.22\\
-2022-01-31 & 2022-02-01 &  & Description , Product ABCD CARD\_PAYMENT &  & 15.70\\
-2022-02-03 & 2022-02-04 &  & Description, Product ABCD CARD\_PAYMENT &  & 14.91\\
-2022-02-04 & 2022-02-05 &  & Description, Product ABCD CARD\_PAYMENT &  & 5.75\\
-2022-02-04 & 2022-02-05 &  & Description, Product ABCD CARD\_PAYMENT &  & 23.00\\
-2022-03-16 & 2022-03-17 &  & Description, Product ABCD CARD\_PAYMENT &  & 17.73\\
-2022-08-16 & 2022-08-16 &  & Description, Product ABCD CARD\_PAYMENT & 10.00 & \\
-2022-10-09 & 2022-10-10 &  & Description, Product ABCD CARD\_PAYMENT &  & 18.34\\
-2022-12-31 & 2022-12-31 &  & Description, Product ABCD CARD\_PAYMENT &  & 0.99\\
+2025-07-31 & 2025-08-01 &  & Test, Attuale Pagamento con carta &  & 27.00\\
+2025-08-01 & 2025-08-01 &  & Test, Attuale Pagamento &  & 160.00\\
+2025-08-03 & 2025-08-04 &  & Test, Attuale Rimborso su carta & 0.81 & \\
 \\
 \end{tablevalue}
 \end{document}

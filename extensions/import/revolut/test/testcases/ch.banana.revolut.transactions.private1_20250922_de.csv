@@ -1,0 +1,4 @@
+Art,Produkt,Datum des Beginns,Datum des Abschlusses,Beschreibung,Betrag,Gebühr,Währung,Status,Kontostand
+Kartenbezahlung,Giro,2025-08-20 22:40:53,2025-08-21 15:43:25,PariAE,-64.23,3.85,CHF,ABGESCHLOSSEN,8802.69
+Kartenbezahlung,Giro,2025-08-22 19:04:02,2025-08-23 13:12:52,Rea Quor Os,-1516.58,3.85,CHF,ABGESCHLOSSEN,7034.37
+Kartenbezahlung,Giro,2025-08-28 21:55:51,2025-08-29 10:12:32,Rea Quor Os,-4512.28,3.85,CHF,ABGESCHLOSSEN,4286.25
