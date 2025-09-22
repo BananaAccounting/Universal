@@ -1,4 +1,4 @@
-// Copyright [2024] [Banana.ch SA - Lugano Switzerland]
+// Copyright [2025] [Banana.ch SA - Lugano Switzerland]
 //
 // Licensed under the Apache License, Version 2.0 (the 'License');
 // you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
 //
 // @id = ch.banana.uni.import.revolut
 // @api = 1.0
-// @pubdate = 2024-07-24
+// @pubdate = 2025-09-22
 // @publisher = Banana.ch SA
 // @description = Revolut - Import movements .csv (Banana+ Advanced)
 // @doctype = 100.*; 110.*; 130.*
@@ -62,14 +62,14 @@ function exec(inData, isTest) {
     }
 
     transactions = Banana.Converter.csvToArray(inData, convertionParam.separator, convertionParam.textDelim);
-    let transactionsData = getFormattedData(transactions, convertionParam, importUtilities);
+    let transactionsData = [];
 
     // Format Private 1. (All transactions)
     var importRevolutPrivateFormat1 = new ImportRevolutPrivateFormat1(Banana.document);
-    if (importRevolutPrivateFormat1.match(transactions)) {
-        var intermediaryData = importRevolutPrivateFormat1.convertCsvToIntermediaryData(transactions, convertionParam);
-        intermediaryData = importRevolutPrivateFormat1.sortData(intermediaryData, convertionParam);
-        return importRevolutPrivateFormat1.convertToBananaFormat(intermediaryData);
+    transactionsData = importRevolutPrivateFormat1.getFormattedData(transactions, convertionParam, importUtilities);
+    if (importRevolutPrivateFormat1.match(transactionsData)) {
+        var intermediaryData = importRevolutPrivateFormat1.convertCsvToIntermediaryData(transactionsData, convertionParam);
+        return Banana.Converter.arrayToTsv(intermediaryData);
     }
 
     // Format Business 1. (All transactions)
@@ -90,6 +90,7 @@ function exec(inData, isTest) {
 
     // Format Business 3. Works with column headers (All transactions)
     var importRevolutBusinessFormat3 = new ImportRevolutBusinessFormat3(Banana.document);
+    transactionsData = importRevolutBusinessFormat3.getFormattedData(transactions, convertionParam, importUtilities);
     if (importRevolutBusinessFormat3.match(transactionsData)) {
         let intermediaryData = importRevolutBusinessFormat3.convertCsvToIntermediaryData(transactionsData);
         return Banana.Converter.arrayToTsv(intermediaryData);
@@ -97,6 +98,7 @@ function exec(inData, isTest) {
 
     // Format Business Expenses 1. Works with column headers.
     var importRevolutBusinessExpensesFormat1 = new ImportRevolutBusinessExpensesFormat1(Banana.document);
+    transactionsData = importRevolutBusinessExpensesFormat1.getFormattedData(transactions, convertionParam, importUtilities);
     if (importRevolutBusinessExpensesFormat1.match(transactionsData)) {
         let intermediaryData = importRevolutBusinessExpensesFormat1.convertCsvToIntermediaryData(transactionsData);
         return Banana.Converter.arrayToTsv(intermediaryData);
@@ -119,31 +121,241 @@ function exec(inData, isTest) {
 var ImportRevolutPrivateFormat1 = class ImportRevolutPrivateFormat1 extends ImportUtilities {
     constructor(banDocument) {
         super(banDocument);
+    }
 
-        this.colBalance = 9;
-        this.colStartedDate = 2;
+    getFormattedData(transactions, convertionParam, importUtilities) {
+        let transactionsCopy = JSON.parse(JSON.stringify(transactions)); //To not modifiy the original array we make a deep copy of the array.
+        var columns = importUtilities.getHeaderData(transactionsCopy, convertionParam.headerLineStart); //array
+        var rows = importUtilities.getRowData(transactionsCopy, convertionParam.dataLineStart); //array of array
+        let form = [];
+        let convertedColumns = [];
 
-        this.dateFormat = "";
+        convertedColumns = this.convertHeaderEn(columns);
+        //Load the form with data taken from the array. Create objects
+        if (convertedColumns.length > 0) {
+            importUtilities.loadForm(form, convertedColumns, rows);
+            return form;
+        }
+
+        convertedColumns = this.convertHeaderDe(columns);
+        //Load the form with data taken from the array. Create objects
+        if (convertedColumns.length > 0) {
+            importUtilities.loadForm(form, convertedColumns, rows);
+            return form;
+        }
+
+        convertedColumns = this.convertHeaderIt(columns);
+        //Load the form with data taken from the array. Create objects
+        if (convertedColumns.length > 0) {
+            importUtilities.loadForm(form, convertedColumns, rows);
+            return form;
+        }
+
+        convertedColumns = this.convertHeaderFr(columns);
+        //Load the form with data taken from the array. Create objects
+        if (convertedColumns.length > 0) {
+            importUtilities.loadForm(form, convertedColumns, rows);
+            return form;
+        }
+        return [];
+    }
+
+    convertHeaderEn(columns) {
+        let convertedColumns = [];
+
+        for (var i = 0; i < columns.length; i++) {
+            switch (columns[i]) {
+                case "Type":
+                    convertedColumns[i] = "Type";
+                    break;
+                case "Product":
+                    convertedColumns[i] = "Product";
+                    break;
+                /**
+                * Actually we use Started Date as the Completed Date is not Always present
+                * Could be possible to check the state of the transaction using the field "State" to 
+                * define wich date to use, as far we know a transaction can have two main states: COMPLETED 
+                * and PENDING.
+                */
+                case "Started Date":
+                    convertedColumns[i] = "Date";
+                    break;
+                case "Completed Date":
+                    convertedColumns[i] = "DateValue";
+                    break;
+                case "Description":
+                    convertedColumns[i] = "Description";
+                    break;
+                case "Amount":
+                    convertedColumns[i] = "Amount";
+                    break;
+                case "Fee":
+                    convertedColumns[i] = "Fee";
+                    break;
+                case "Currency":
+                    convertedColumns[i] = "Currency";
+                    break;
+                case "State":
+                    convertedColumns[i] = "State";
+                    break;
+                case "Balance":
+                    convertedColumns[i] = "Balance";
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        // all fields must be present (even if empty)
+        if (convertedColumns.indexOf("Date") < 0
+            || convertedColumns.indexOf("DateValue") < 0
+            || convertedColumns.indexOf("Amount") < 0) {
+            return [];
+        }
+
+        return convertedColumns;
+    }
+
+    convertHeaderDe(columns) {
+        let convertedColumns = [];
+
+        for (var i = 0; i < columns.length; i++) {
+            switch (columns[i]) {
+                case "Art":
+                    convertedColumns[i] = "Type";
+                    break;
+                case "Produkt":
+                    convertedColumns[i] = "Product";
+                    break;
+                /**
+                * Actually we use Datum des Beginns as the Datum des Abschlusses is not Always present
+                * Could be possible to check the state of the transaction using the field "State" to 
+                * define wich date to use, as far we know a transaction can have two main states: COMPLETED 
+                * and PENDING.
+                */
+                case "Datum des Beginns":
+                    convertedColumns[i] = "Date";
+                    break;
+                case "Datum des Abschlusses":
+                    convertedColumns[i] = "DateValue";
+                    break;
+                case "Beschreibung":
+                    convertedColumns[i] = "Description";
+                    break;
+                case "Betrag":
+                    convertedColumns[i] = "Amount";
+                    break;
+                case "Gebühr":
+                    convertedColumns[i] = "Fee";
+                    break;
+                case "Währung":
+                    convertedColumns[i] = "Currency";
+                    break;
+                case "Status":
+                    convertedColumns[i] = "State";
+                    break;
+                case "Kontostand":
+                    convertedColumns[i] = "Balance";
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        // all fields must be present (even if empty)
+        if (convertedColumns.indexOf("Date") < 0
+            || convertedColumns.indexOf("DateValue") < 0
+            || convertedColumns.indexOf("Amount") < 0) {
+            return [];
+        }
+
+        return convertedColumns;
+    }
+
+    convertHeaderFr(columns) {
+        let convertedColumns = [];
+        return convertedColumns;
+    }
+
+    convertHeaderIt(columns) {
+        let convertedColumns = [];
+
+        for (var i = 0; i < columns.length; i++) {
+            switch (columns[i]) {
+                case "Tipo":
+                    convertedColumns[i] = "Type";
+                    break;
+                case "Prodotto":
+                    convertedColumns[i] = "Product";
+                    break;
+                /**
+                * Actually we use Data di inizio as the Data di completamento is not Always present
+                * Could be possible to check the state of the transaction using the field "State" to 
+                * define wich date to use, as far we know a transaction can have two main states: COMPLETED 
+                * and PENDING.
+                */
+                case "Data di inizio":
+                    convertedColumns[i] = "Date";
+                    break;
+                case "Data di completamento":
+                    convertedColumns[i] = "DateValue";
+                    break;
+                case "Descrizione":
+                    convertedColumns[i] = "Description";
+                    break;
+                case "Importo":
+                    convertedColumns[i] = "Amount";
+                    break;
+                case "Costo":
+                    convertedColumns[i] = "Fee";
+                    break;
+                case "Valuta":
+                    convertedColumns[i] = "Currency";
+                    break;
+                case "State":
+                    convertedColumns[i] = "State";
+                    break;
+                case "Saldo":
+                    convertedColumns[i] = "Balance";
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        // all fields must be present (even if empty)
+        if (convertedColumns.indexOf("Date") < 0
+            || convertedColumns.indexOf("DateValue") < 0
+            || convertedColumns.indexOf("Amount") < 0) {
+            return [];
+        }
+
+        return convertedColumns;
     }
 
     match(transactions) {
 
-        if (transactions.length === 0)
+        if (transactions.length === 0) {
             return false;
+        }
+
         for (var i = 0; i < transactions.length; i++) {
             var transaction = transactions[i];
 
+            if (!transaction || typeof transaction !== 'object') {
+                return false;
+            }
+
             var formatMatched = false;
 
-            /* array should have all columns */
-            if (transaction.length === (this.colBalance + 1))
+            if (transaction["Type"] && transaction["Type"].length > 0) {
                 formatMatched = true;
-            else
+            } else {
                 formatMatched = false;
+            }
 
             //18 as the format is YYYY-MM-DD HH:MM:SS -> 2022-01-01 00:00:00
-            if (formatMatched && transaction[this.colStartedDate].length > 18 &&
-                transaction[this.colStartedDate].match(/^[0-9]+(\-|\.)[0-9]+(\-|\.)[0-9]+\s[0-9]+\:[0-9]+(\:[0-9]+)?$/))
+            if (this.datesAreValid(transaction["Date"], transaction["DateValue"]))
                 formatMatched = true;
             else
                 formatMatched = false;
@@ -154,111 +366,68 @@ var ImportRevolutPrivateFormat1 = class ImportRevolutPrivateFormat1 extends Impo
         return false;
     }
 
-    formatColumnsNames(columnsTemps) {
-        let columns = [];
-        for (var i = 0; i <= columnsTemps.length; i++) {
-            var colName = columnsTemps[i];
-            /**
-             * Actually we use Started Date as the Completed Date is not Always present
-             * Could be possible to check the state of the transaction using the field "State" to 
-             * define wich date to use, as far we know a transaction can have two main states: COMPLETED 
-             * and PENDING.
-             */
-            switch (colName) {
-                case "Started Date":
-                    colName = "Date";
-                    break;
-            }
-            columns.push(colName);
+    datesAreValid(date, dateValue) {
+        let isValid = false;
+        if (date
+            && date.length > 18
+            && date.match(/^[0-9]+(\-|\.)[0-9]+(\-|\.)[0-9]+\s[0-9]+\:[0-9]+(\:[0-9]+)?$/)
+            && dateValue
+            && dateValue.length > 18
+            && dateValue.match(/^[0-9]+(\-|\.)[0-9]+(\-|\.)[0-9]+\s[0-9]+\:[0-9]+(\:[0-9]+)?$/)) {
+            isValid = true;
         }
-
-        return columns;
+        return isValid
     }
 
     //Override the utilities method by adding language control
     convertCsvToIntermediaryData(transactions, convertionParam) {
-        var form = [];
-        var intermediaryData = [];
 
-        //Variables used to save the columns titles and the rows values
-        var columnsTemps = this.getHeaderData(transactions, convertionParam.headerLineStart); //array
-        var rows = this.getRowData(transactions, convertionParam.dataLineStart); //array of array
-        let columns = [];
+        let transactionsToImport = [];
 
-        //format the columns
-        columns = this.formatColumnsNames(columnsTemps);
+        // Sort rows by date
+        let sortedTransactions = this.sortData(transactions, convertionParam);
 
-        //Load the form with data taken from the array. Create objects
-        this.loadForm(form, columns, rows);
-
-        //For each row of the form, we call the rowConverter() function and we save the converted data
-        for (var i = 0; i < form.length; i++) {
-            let convertedRow = {};
-            convertedRow = this.translateHeader(form[i], convertedRow);
-            intermediaryData.push(convertedRow);
+        for (var i = 0; i < sortedTransactions.length; i++) {
+            let tr = sortedTransactions[i];
+            if (this.datesAreValid(tr["Date"], tr["DateValue"])) {
+                transactionsToImport.push(this.mapTransaction(sortedTransactions[i]));
+            }
         }
 
-        return intermediaryData;
+        // Add header and return
+        var header = [["Date", "DateValue", "Doc", "Description", "Income", "Expenses"]];
+        return header.concat(transactionsToImport);
     }
 
-    translateHeader(inputRow, convertedRow) {
-        //get the Banana Columns Name from csv file columns name
+    mapTransaction(transaction) {
+        let mappedLine = [];
         let descText = "";
         let amountValue = "";
         let feeValue = "";
         let totAmount = "";
 
-        let dateText = inputRow["Date"].substring(0, 10);
+        let dateText = transaction["Date"].substring(0, 10);
+        let dateValueText = transaction["DateValue"].substring(0, 10);
 
-        convertedRow['Date'] = Banana.Converter.toInternalDateFormat(dateText, "yyyy-mm-dd");
-        descText = inputRow["Description"] + ", " + inputRow["Product"] + " " + inputRow["Type"];
-        convertedRow["Description"] = descText;
+        mappedLine.push(Banana.Converter.toInternalDateFormat(dateText, "yyyy-mm-dd"));
+        mappedLine.push(Banana.Converter.toInternalDateFormat(dateValueText, "yyyy-mm-dd"));
+        mappedLine.push("");
+        descText = transaction["Description"] + ", " + transaction["Product"] + " " + transaction["Type"];
+        mappedLine.push(descText);
 
         //get the total amount
-        amountValue = inputRow["Amount"];
-        feeValue = inputRow["Fee"];
+        amountValue = transaction["Amount"];
+        feeValue = transaction["Fee"];
         totAmount = calculateAmount(amountValue, feeValue);
         //define if the amount is an income or an expenses.
-        convertedRow["Expenses"] = "";
-        convertedRow["Income"] = "";
-
-        if (inputRow["Amount"].indexOf("-") == -1) {
-            convertedRow["Income"] = totAmount;
+        if (transaction["Amount"].indexOf("-") == -1) {
+            mappedLine.push(totAmount);
+            mappedLine.push("");
         } else {
-            convertedRow["Expenses"] = totAmount;
+            mappedLine.push("");
+            mappedLine.push(totAmount);
         }
-
-        return convertedRow;
-    }
-
-    //The purpose of this function is to let the user specify how to convert the categories
-    postProcessIntermediaryData(intermediaryData) {
-        /** INSERT HERE THE LIST OF ACCOUNTS NAME AND THE CONVERSION NUMBER 
-         *   If the content of "Account" is the same of the text 
-         *   it will be replaced by the account number given */
-        //Accounts conversion
-        var accounts = {
-            //...
-        }
-
-        /** INSERT HERE THE LIST OF CATEGORIES NAME AND THE CONVERSION NUMBER 
-         *   If the content of "ContraAccount" is the same of the text 
-         *   it will be replaced by the account number given */
-
-        //Categories conversion
-        var categories = {
-            //...
-        }
-
-        //Apply the conversions
-        for (var i = 0; i < intermediaryData.length; i++) {
-            var convertedData = intermediaryData[i];
-
-            //Invert values
-            if (convertedData["Expenses"]) {
-                convertedData["Expenses"] = Banana.SDecimal.invert(convertedData["Expenses"]);
-            }
-        }
+        return mappedLine;
     }
 }
 
@@ -594,6 +763,16 @@ var ImportRevolutBusinessFormat3 = class ImportRevolutBusinessFormat3 extends Im
         super(banDocument);
     }
 
+    getFormattedData(transactions, convertionParam, importUtilities) {
+        let transactionsCopy = JSON.parse(JSON.stringify(transactions));; //To not modifiy the original array we make a deep copy of the array.
+        var columns = importUtilities.getHeaderData(transactionsCopy, convertionParam.headerLineStart); //array
+        var rows = importUtilities.getRowData(transactionsCopy, convertionParam.dataLineStart); //array of array
+        let form = [];
+        //Load the form with data taken from the array. Create objects
+        importUtilities.loadForm(form, columns, rows);
+        return form;
+    }
+
     match(transactionsData) {
         if (transactionsData.length === 0)
             return false;
@@ -680,6 +859,17 @@ var ImportRevolutBusinessFormat3 = class ImportRevolutBusinessFormat3 extends Im
 var ImportRevolutBusinessExpensesFormat1 = class ImportRevolutBusinessExpensesFormat1 extends ImportUtilities {
     constructor(banDocument) {
         super(banDocument);
+    }
+
+
+    getFormattedData(transactions, convertionParam, importUtilities) {
+        let transactionsCopy = JSON.parse(JSON.stringify(transactions));; //To not modifiy the original array we make a deep copy of the array.
+        var columns = importUtilities.getHeaderData(transactionsCopy, convertionParam.headerLineStart); //array
+        var rows = importUtilities.getRowData(transactionsCopy, convertionParam.dataLineStart); //array of array
+        let form = [];
+        //Load the form with data taken from the array. Create objects
+        importUtilities.loadForm(form, columns, rows);
+        return form;
     }
 
     match(transactionsData) {
@@ -778,15 +968,6 @@ var ImportRevolutBusinessExpensesFormat1 = class ImportRevolutBusinessExpensesFo
             }
         }
     }
-}
-
-function getFormattedData(inData, convertionParam, importUtilities) {
-    var columns = importUtilities.getHeaderData(inData, convertionParam.headerLineStart); //array
-    var rows = importUtilities.getRowData(inData, convertionParam.dataLineStart); //array of array
-    let form = [];
-    //Load the form with data taken from the array. Create objects
-    importUtilities.loadForm(form, columns, rows);
-    return form;
 }
 
 function defineConversionParam(inData) {
