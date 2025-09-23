@@ -50,7 +50,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
             return {};
 
         /**
-         * In the “InvestmentAccount” column of the items table, 
+         * In the “AssetAccount” column of the items table, 
          * we request to indicate the type of Title that is being used:
          * - 1: Stocks
          * - 2: Bonds

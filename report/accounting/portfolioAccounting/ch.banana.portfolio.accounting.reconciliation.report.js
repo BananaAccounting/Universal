@@ -81,10 +81,10 @@ function getSelectedAccounts(banDoc, scriptId, dlgTitle, dlgLabel) {
     if (savedAccList && savedAccList.length >= 1) {
         accountsListSaved = savedAccList;
     }
-    let invAccounts = getInvestmentsAccountsFormatted(banDoc);
+    let invAccounts = getAssetAccountsFormatted(banDoc);
     if (!invAccounts || invAccounts.length < 0) {
-        let msg = getErrorMessage_MissingElements("NO_INVESTMENTS_ACCOUNTS_FOUND");
-        banDoc.addMessage(msg, "NO_INVESTMENTS_ACCOUNTS_FOUND");
+        let msg = getErrorMessage_MissingElements("NO_ASSET_ACCOUNTS_FOUND");
+        banDoc.addMessage(msg, "NO_ASSET_ACCOUNTS_FOUND");
         return accountsListSelected;
     }
 

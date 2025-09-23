@@ -66,7 +66,7 @@ function initAccountsDialogParams(banDoc) {
 
     // Balance Accounts
     dialogParam.balanceAccounts = {};
-    dialogParam.balanceAccounts.investmentsAccount = getInvestmentsAccountsFormatted(banDoc);
+    dialogParam.balanceAccounts.investmentsAccount = getAssetAccountsFormatted(banDoc);
     dialogParam.balanceAccounts.assetsAccount = "";
     dialogParam.balanceAccounts.liabilitiesAccount = "";
 

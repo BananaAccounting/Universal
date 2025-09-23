@@ -50,7 +50,7 @@ function getReportHeader(report, docInfo) {
     headerParagraph.addParagraph("", "");
 }
 
-function getInvestmentsAccountsFormatted(banDoc) {
+function getAssetAccountsFormatted(banDoc) {
     const accountsList = getItemsAccounts(banDoc);
     if (!accountsList || accountsList.length === 0)
         return "";
@@ -918,7 +918,7 @@ function getItemsTableData(banDoc) {
         itemData.rowNr = tRow.rowNr;
         itemData.item = tRow.value("ItemsId");
         itemData.description = tRow.value("Description");
-        itemData.account = tRow.value("InvestmentAccount");
+        itemData.account = tRow.value("AssetAccount");
         itemData.currentQt = tRow.value("QuantityCurrent");
         itemData.valueCurrent = tRow.value("ValueCurrent");
         itemData.valueCurrentCurrency = tRow.value("CurrencyCurrentValue");
@@ -928,7 +928,7 @@ function getItemsTableData(banDoc) {
         itemData.interestRate = tRow.value("Notes");
         itemData.unitPriceCurrent = tRow.value("UnitPriceCurrent");
         itemData.currency = tRow.value("Currency");
-        itemData.type = tRow.value("InvestmentType");
+        itemData.type = tRow.value("AssetType");
         itemData.unitPriceBegin = tRow.value("UnitPriceBegin");
         itemData.valueBegin = tRow.value("ValueBegin");
         itemData.beginQt = tRow.value("QuantityBegin");
