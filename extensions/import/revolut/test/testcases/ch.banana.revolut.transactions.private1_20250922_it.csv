@@ -1,0 +1,4 @@
+Tipo,Prodotto,Data di inizio,Data di completamento,Descrizione,Importo,Costo,Valuta,State,Saldo
+Pagamento con carta,Attuale,2025-07-31 13:33:15,2025-08-01 07:16:26,Test,-27.00,0.00,CHF,COMPLETATO,687.36
+Pagamento,Attuale,2025-08-01 16:06:07,2025-08-01 16:06:08,Test,-160.00,0.00,CHF,COMPLETATO,527.36
+Rimborso su carta,Attuale,2025-08-03 02:00:00,2025-08-04 03:34:10,Test,0.81,0.00,CHF,COMPLETATO,528.17

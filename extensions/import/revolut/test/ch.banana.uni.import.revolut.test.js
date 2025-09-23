@@ -1,4 +1,4 @@
-// Copyright [2022] [Banana.ch SA - Lugano Switzerland]
+// Copyright [2025] [Banana.ch SA - Lugano Switzerland]
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 // @id = ch.banana.uni.import.revolut.test
 // @api = 1.0
-// @pubdate = 2021-03-08
+// @pubdate = 2025-09-22
 // @publisher = Banana.ch SA
 // @description = <TEST ch.banana.uni.import.revolut.test>
 // @task = app.command
@@ -61,6 +61,8 @@ TestImportRevolutTrans.prototype.testImport = function () {
 
    fileNameList.push("file:script/../test/testcases/ch.banana.revolut.transactions.business1_20222609.csv");
    fileNameList.push("file:script/../test/testcases/ch.banana.revolut.transactions.private1_20222609.csv");
+   fileNameList.push("file:script/../test/testcases/ch.banana.revolut.transactions.private1_20250922_de.csv");
+   fileNameList.push("file:script/../test/testcases/ch.banana.revolut.transactions.private1_20250922_it.csv");
    fileNameList.push("file:script/../test/testcases/ch.banana.revolut.transactions.business2_20222410.csv");
    fileNameList.push("file:script/../test/testcases/ch.banana.revolut.transactions.business3_20240724.csv");
    fileNameList.push("file:script/../test/testcases/ch.banana.revolut.transactions.business_exp1_EUR_20240131.csv");
