@@ -1237,7 +1237,7 @@ function verifyBananaVersion(banDoc) {
     if (!banDoc)
         return false;
 
-    let BAN_VERSION_MIN = "10.2.0.65535";
+    let BAN_VERSION_MIN = "10.2.1.65535";
     let BAN_DEV_VERSION_MIN = "";
     let ID_ERR_VERSION_NOTSUPPORTED = "ID_ERR_VERSION_NOTSUPPORTED";
     let ID_ERR_LICENSE_NOTVALID = "ID_ERR_LICENSE_NOTVALID";
