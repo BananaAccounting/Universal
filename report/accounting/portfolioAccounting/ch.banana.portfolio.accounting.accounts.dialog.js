@@ -36,6 +36,10 @@ function exec() {
 
     if (!banDoc)
         return;
+
+    if (!verifyBananaVersion(banDoc))
+        return "@Cancel";
+
     let userParam = initAccountsDialogParams(banDoc);
     let settingsId = "ch.banana.portfolio.accounting.accounts.dialog";
 

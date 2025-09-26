@@ -40,6 +40,9 @@ function exec() {
   if (!banDoc)
     return;
 
+  if (!verifyBananaVersion(banDoc))
+    return "@Cancel";
+
   let docInfo = getDocumentInfo(banDoc);
 
   let checkBalancesObj = {};

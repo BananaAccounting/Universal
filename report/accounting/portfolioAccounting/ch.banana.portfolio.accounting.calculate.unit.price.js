@@ -178,35 +178,3 @@ function findSeparator(inData) {
 
     return ',';
 }
-
-function getUnknownFormatError(banDoc) {
-    let errId = "ID_ERR_FORMAT_UNKNOWN";
-    let lang = getLang();
-    let msg = getErrorMessage(errId, lang);
-    banDoc.addMessage(msg, errId);
-}
-
-function getLang() {
-    var lang = 'en';
-    if (Banana.application.locale)
-        lang = Banana.application.locale;
-    if (lang.length > 2)
-        lang = lang.substring(0, 2);
-    return lang;
-}
-function getErrorMessage(errorId, lang) {
-    if (!lang)
-        lang = 'en';
-    switch (errorId) {
-        case "ID_ERR_FORMAT_UNKNOWN":
-            if (lang == 'it')
-                return "Formato del file *.csv non riconosciuto";
-            else if (lang == 'fr')
-                return "Format de fichier *.csv non reconnu";
-            else if (lang == 'de')
-                return "Unerkanntes *.csv-Dateiformat";
-            else
-                return "Unrecognised *.csv file format";
-    }
-    return '';
-}
