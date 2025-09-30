@@ -78,9 +78,11 @@ function exec(inData) {
 }
 
 /**
- * CSV  structure details: (Insert example rows)
+ * ImportBalanceChangeFromActivityFormat1
+ * Report with only the payments amount (Menu Reports->Balance->Balance change from activity (All 63 columns)).
+ * See readme file for more information about the content of this format.
  */
-var ImportPaymentsTransactionsFormat1 = class ImportPaymentsTransactionsFormat1 extends ImportUtilities {
+var ImportBalanceChangeFromActivityFormat1 = class ImportBalanceChangeFromActivityFormat1 extends ImportUtilities {
     constructor(banDocument, userParam) {
         super(banDocument, userParam);
 
@@ -232,10 +234,11 @@ var ImportPaymentsTransactionsFormat1 = class ImportPaymentsTransactionsFormat1 
 }
 
 /**
- * CSV  structure details: (Insert example rows)
- * @param {*} banDocument 
+ * ImportPaymentsTransactionsFormat1
+ * Report with all the transactions (Menu Payments->All Transactions->Export).
+ * See readme file for more information about the content of this format.
  */
-var ImportStripeAllTransactionsFormat1 = class ImportStripeAllTransactionsFormat1 extends ImportUtilities {
+var ImportPaymentsTransactionsFormat1 = class ImportPaymentsTransactionsFormat1 extends ImportUtilities {
     constructor(banDocument, userParam) {
         super(banDocument, userParam);
 
@@ -583,14 +586,14 @@ function processStripeTransactions(inData, userParam, banDoc) {
     csvData = Banana.Converter.csvToArray(inData, convertionParam.separator, convertionParam.textDelim);
     transactionsData = getformattedData(csvData, convertionParam);
 
-    let stripeAllTransactionsFormat1 = new ImportStripeAllTransactionsFormat1(banDoc, userParam);
-    if (stripeAllTransactionsFormat1.match(transactionsData)) {
-        return stripeAllTransactionsFormat1.processTransactions(transactionsData, banDoc);
-    }
-
-    let stripeBalanceChangeFormat1 = new ImportPaymentsTransactionsFormat1(banDoc, userParam);
+    let stripeBalanceChangeFormat1 = new ImportBalanceChangeFromActivityFormat1(banDoc, userParam);
     if (stripeBalanceChangeFormat1.match(transactionsData)) {
         return stripeBalanceChangeFormat1.processTransactions(transactionsData, banDoc);
+    }
+
+    let stripePaymentsFormat1 = new ImportPaymentsTransactionsFormat1(banDoc, userParam);
+    if (stripePaymentsFormat1.match(transactionsData)) {
+        return stripePaymentsFormat1.processTransactions(transactionsData, banDoc);
     }
 
     return "";
