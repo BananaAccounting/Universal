@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.uni.invoice.uni11
 // @api = 1.0
-// @pubdate = 2025-02-04
+// @pubdate = 2025-10-01
 // @publisher = Banana.ch SA
 // @description = [UNI11] Programmable Invoice layout
 // @description.it = [UNI11] Layout Fattura Programmabile
@@ -1740,6 +1740,7 @@ function columnNamesToValues(invoiceObj, text) {
   var firstName = invoiceObj.customer_info.first_name;
   var lastName = invoiceObj.customer_info.last_name;
   var address1 = invoiceObj.customer_info.address1;
+  var buildingNumber = invoiceObj.customer_info.building_number;
   var address2 = invoiceObj.customer_info.address2;
   var address3 = invoiceObj.customer_info.address3;
   var postalCode = invoiceObj.customer_info.postal_code;
@@ -1800,6 +1801,11 @@ function columnNamesToValues(invoiceObj, text) {
       text = text.replace(/<Street>/g, address1.trim());
     } else {
       text = text.replace(/<Street>/g, "<>");
+    }
+    if (buildingNumber && text.indexOf("<BuildingNumber>") > -1) {
+      text = text.replace(/<BuildingNumber>/g, buildingNumber.trim());
+    } else {
+      text = text.replace(/<BuildingNumber>/g, "<>");
     }
     if (address2 && text.indexOf("<AddressExtra>") > -1) {
       text = text.replace(/<AddressExtra>/g, address2.trim());
@@ -2031,6 +2037,7 @@ function getInvoiceAddress(invoiceAddress, userParam) {
   var firstName = invoiceAddress.first_name;
   var lastName = invoiceAddress.last_name;
   var address1 = invoiceAddress.address1;
+  var buildingNumber = invoiceAddress.building_number;
   var address2 = invoiceAddress.address2;
   var address3 = invoiceAddress.address3;
   var postalCode = invoiceAddress.postal_code;
@@ -2081,6 +2088,10 @@ function getInvoiceAddress(invoiceAddress, userParam) {
     address = address.replace(/<Street>/g, address1.trim());
   }
   
+  if (address.indexOf("<BuildingNumber>") > -1 && buildingNumber) {
+    address = address.replace(/<BuildingNumber>/g, buildingNumber.trim());
+  }
+
   if (address.indexOf("<AddressExtra>") > -1 && address2) {
     address = address.replace(/<AddressExtra>/g, address2.trim());
   }
@@ -2152,8 +2163,14 @@ function getInvoiceSupplier(invoiceSupplier, userParam, texts) {
   if (invoiceSupplier.address1) {
     supplierAddress += invoiceSupplier.address1;
   }
-  if (invoiceSupplier.address2) {
+  if (invoiceSupplier.building_number) {
     if (invoiceSupplier.address1) {
+      supplierAddress += " ";
+    }
+    supplierAddress += invoiceSupplier.building_number;
+  }
+  if (invoiceSupplier.address2) {
+    if (invoiceSupplier.address1 || invoiceSupplier.building_number) {
       supplierAddress += ", ";
     }
     supplierAddress += invoiceSupplier.address2;
