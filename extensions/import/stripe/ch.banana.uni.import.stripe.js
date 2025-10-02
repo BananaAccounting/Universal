@@ -78,11 +78,11 @@ function exec(inData) {
 }
 
 /**
- * ImportBalanceChangeFromActivityFormat1
- * Report with balance change operations (Menu Reports->Balance->Balance change from activity (All 63 columns)).
+ * ImportBalanceSummaryReportFormat1
+ * Go to Report->Summary Balance-> Export. In the dialog select All columns.
  * See readme file for more information about the content of this format.
  */
-var ImportBalanceChangeFromActivityFormat1 = class ImportBalanceChangeFromActivityFormat1 extends ImportUtilities {
+var ImportBalanceSummaryReportFormat1 = class ImportBalanceSummaryReportFormat1 extends ImportUtilities {
     constructor(banDocument, userParam) {
         super(banDocument, userParam);
 
@@ -307,11 +307,11 @@ var ImportBalanceChangeFromActivityFormat1 = class ImportBalanceChangeFromActivi
 }
 
 /**
- * ImportPaymentsTransactionsFormat1
- * Report with all the transactions or just payments transactions (Menu Payments->All Transactions->Export).
+ * ImportTransactionsAllActivityFormat1
+ * Go to Transactions → All activity → Export. In the export dialog, select All columns
  * See readme file for more information about the content of this format.
  */
-var ImportPaymentsTransactionsFormat1 = class ImportPaymentsTransactionsFormat1 extends ImportUtilities {
+var ImportTransactionsAllActivityFormat1 = class ImportTransactionsAllActivityFormat1 extends ImportUtilities {
     constructor(banDocument, userParam) {
         super(banDocument, userParam);
 
@@ -732,13 +732,13 @@ function processStripeTransactions(inData, userParam, banDoc, importUtilities) {
 
     csvData = Banana.Converter.csvToArray(inData, convertionParam.separator, convertionParam.textDelim);
 
-    let stripeBalanceChangeFormat1 = new ImportBalanceChangeFromActivityFormat1(banDoc, userParam);
+    let stripeBalanceChangeFormat1 = new ImportBalanceSummaryReportFormat1(banDoc, userParam);
     transactionsData = stripeBalanceChangeFormat1.getFormattedData(csvData, importUtilities, convertionParam);
     if (stripeBalanceChangeFormat1.match(transactionsData)) {
         return stripeBalanceChangeFormat1.processTransactions(transactionsData, banDoc);
     }
 
-    let stripePaymentsFormat1 = new ImportPaymentsTransactionsFormat1(banDoc, userParam);
+    let stripePaymentsFormat1 = new ImportTransactionsAllActivityFormat1(banDoc, userParam);
     transactionsData = stripePaymentsFormat1.getFormattedData(csvData, importUtilities, convertionParam);
     if (stripePaymentsFormat1.match(transactionsData)) {
         return stripePaymentsFormat1.processTransactions(transactionsData, banDoc);
