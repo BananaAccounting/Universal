@@ -59,8 +59,8 @@ TestImportStripeTrans.prototype.testImportDoubleEntry = function () {
    let fileNameList = [];
    let ac2File = "file:script/../test/testcases/Double-entry Stripe.ac2";
 
-   fileNameList.push("file:script/../test/testcases/ch.banana.filter.import.stripe.balance_change_20231010.csv");
-   fileNameList.push("file:script/../test/testcases/ch.banana.filter.import.stripe.balance_history_20231004.csv");
+   fileNameList.push("file:script/../test/testcases/ch.banana.filter.import.stripe.balance_summary_format1_20231010.csv");
+   fileNameList.push("file:script/../test/testcases/ch.banana.filter.import.stripe.transactions_all_format1_20231004.csv");
 
    let parentLogger = this.testLogger;
    this.progressBar.start(fileNameList.length);
@@ -94,8 +94,8 @@ TestImportStripeTrans.prototype.testImportIncomeExpenses = function () {
    let fileNameList = [];
    let ac2File = "file:script/../test/testcases/Income & Expense accounting Stripe.ac2";
 
-   fileNameList.push("file:script/../test/testcases/ch.banana.filter.import.stripe.balance_change_20231010.csv");
-   fileNameList.push("file:script/../test/testcases/ch.banana.filter.import.stripe.balance_history_20231004.csv");
+   fileNameList.push("file:script/../test/testcases/ch.banana.filter.import.stripe.balance_summary_format1_20231010.csv");
+   fileNameList.push("file:script/../test/testcases/ch.banana.filter.import.stripe.transactions_all_format1_20231004.csv");
 
    let parentLogger = this.testLogger;
    this.progressBar.start(fileNameList.length);

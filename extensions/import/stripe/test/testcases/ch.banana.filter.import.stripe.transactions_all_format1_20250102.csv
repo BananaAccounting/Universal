@@ -1,0 +1,3 @@
+"automatic_payout_id","automatic_payout_effective_at","balance_transaction_id","created","available_on","currency","gross","fee","net","reporting_category","description","customer_email","customer_name","order_id","invoice_id","invoice_number","subscription_id","statement_descriptor"
+"po_1Qe4AXA0IpYVNU1u4vYVbjHd","2025-01-07 00:00:00","txn_3QcrImA0IpYVNU1u0wNC3kOh","2025-01-02 16:31:18","2025-01-07 00:00:00","chf","102.00","2.95","99.05","charge","Gutschein","info@hotmail.com","User1",,,,,
+"po_1Qjs87A0IpYVNU1uQv6fHNME","2025-01-23 00:00:00","txn_3QjQOCA0IpYVNU1u1gGTNduY","2025-01-20 19:12:34","2025-01-23 00:00:00","chf","406.00","13.50","392.50","charge","Gutschein","info@hotmail.com","User2",,,,,"Test"
