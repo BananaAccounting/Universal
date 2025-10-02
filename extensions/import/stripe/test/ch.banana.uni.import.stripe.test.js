@@ -61,6 +61,7 @@ TestImportStripeTrans.prototype.testImportDoubleEntry = function () {
 
    fileNameList.push("file:script/../test/testcases/ch.banana.filter.import.stripe.balance_summary_format1_20231010.csv");
    fileNameList.push("file:script/../test/testcases/ch.banana.filter.import.stripe.transactions_all_format1_20231004.csv");
+   fileNameList.push("file:script/../test/testcases/ch.banana.filter.import.stripe..balance_summary_format1_20250102.csv");
 
    let parentLogger = this.testLogger;
    this.progressBar.start(fileNameList.length);
@@ -96,6 +97,7 @@ TestImportStripeTrans.prototype.testImportIncomeExpenses = function () {
 
    fileNameList.push("file:script/../test/testcases/ch.banana.filter.import.stripe.balance_summary_format1_20231010.csv");
    fileNameList.push("file:script/../test/testcases/ch.banana.filter.import.stripe.transactions_all_format1_20231004.csv");
+   fileNameList.push("file:script/../test/testcases/ch.banana.filter.import.stripe..balance_summary_format1_20250102.csv");
 
    let parentLogger = this.testLogger;
    this.progressBar.start(fileNameList.length);
