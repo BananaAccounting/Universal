@@ -69,6 +69,8 @@ TestImportStripeTrans.prototype.testImportDoubleEntry = function () {
    if (!banDocument)
       parentLogger.addFatalError("File not found: " + ac2File);
 
+   let importUtilities = new ImportUtilities(banDocument);
+
    for (let i = 0; i < fileNameList.length; i++) {
       let fileName = fileNameList[i];
       let loggerName = Banana.IO.fileCompleteBaseName(ac2File) + ";" + Banana.IO.fileCompleteBaseName(fileName);
@@ -79,7 +81,7 @@ TestImportStripeTrans.prototype.testImportDoubleEntry = function () {
       let fileContent = file.read();
       Test.assert(fileContent);
       let userParam = getUserParam_DoubleEntry();
-      let transactions = processStripeTransactions(fileContent, userParam, banDocument);
+      let transactions = processStripeTransactions(fileContent, userParam, banDocument, importUtilities);
       this.testLogger.addCsv('', transactions);
 
       if (!this.progressBar.step())
@@ -102,6 +104,8 @@ TestImportStripeTrans.prototype.testImportIncomeExpenses = function () {
    if (!banDocument)
       parentLogger.addFatalError("File not found: " + ac2File);
 
+   let importUtilities = new ImportUtilities(banDocument);
+
    for (let i = 0; i < fileNameList.length; i++) {
 
       let fileName = fileNameList[i];
@@ -113,7 +117,7 @@ TestImportStripeTrans.prototype.testImportIncomeExpenses = function () {
       let fileContent = file.read();
       Test.assert(fileContent);
       let userParam = getUserParam_IncomeExpenses();
-      let transactions = processStripeTransactions(fileContent, userParam, banDocument);
+      let transactions = processStripeTransactions(fileContent, userParam, banDocument, importUtilities);
       this.testLogger.addCsv('', transactions);
 
       if (!this.progressBar.step())
