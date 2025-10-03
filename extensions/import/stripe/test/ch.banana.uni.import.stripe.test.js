@@ -59,8 +59,9 @@ TestImportStripeTrans.prototype.testImportDoubleEntry = function () {
    let fileNameList = [];
    let ac2File = "file:script/../test/testcases/Double-entry Stripe.ac2";
 
-   fileNameList.push("file:script/../test/testcases/ch.banana.filter.import.stripe.balance_change_20231010.csv");
-   fileNameList.push("file:script/../test/testcases/ch.banana.filter.import.stripe.balance_history_20231004.csv");
+   fileNameList.push("file:script/../test/testcases/ch.banana.filter.import.stripe.balance_summary_format1_20231010.csv");
+   fileNameList.push("file:script/../test/testcases/ch.banana.filter.import.stripe.transactions_all_format1_20231004.csv");
+   fileNameList.push("file:script/../test/testcases/ch.banana.filter.import.stripe..balance_summary_format1_20250102.csv");
 
    let parentLogger = this.testLogger;
    this.progressBar.start(fileNameList.length);
@@ -68,6 +69,8 @@ TestImportStripeTrans.prototype.testImportDoubleEntry = function () {
 
    if (!banDocument)
       parentLogger.addFatalError("File not found: " + ac2File);
+
+   let importUtilities = new ImportUtilities(banDocument);
 
    for (let i = 0; i < fileNameList.length; i++) {
       let fileName = fileNameList[i];
@@ -79,7 +82,7 @@ TestImportStripeTrans.prototype.testImportDoubleEntry = function () {
       let fileContent = file.read();
       Test.assert(fileContent);
       let userParam = getUserParam_DoubleEntry();
-      let transactions = processStripeTransactions(fileContent, userParam, banDocument);
+      let transactions = processStripeTransactions(fileContent, userParam, banDocument, importUtilities);
       this.testLogger.addCsv('', transactions);
 
       if (!this.progressBar.step())
@@ -92,8 +95,9 @@ TestImportStripeTrans.prototype.testImportIncomeExpenses = function () {
    let fileNameList = [];
    let ac2File = "file:script/../test/testcases/Income & Expense accounting Stripe.ac2";
 
-   fileNameList.push("file:script/../test/testcases/ch.banana.filter.import.stripe.balance_change_20231010.csv");
-   fileNameList.push("file:script/../test/testcases/ch.banana.filter.import.stripe.balance_history_20231004.csv");
+   fileNameList.push("file:script/../test/testcases/ch.banana.filter.import.stripe.balance_summary_format1_20231010.csv");
+   fileNameList.push("file:script/../test/testcases/ch.banana.filter.import.stripe.transactions_all_format1_20231004.csv");
+   fileNameList.push("file:script/../test/testcases/ch.banana.filter.import.stripe..balance_summary_format1_20250102.csv");
 
    let parentLogger = this.testLogger;
    this.progressBar.start(fileNameList.length);
@@ -101,6 +105,8 @@ TestImportStripeTrans.prototype.testImportIncomeExpenses = function () {
 
    if (!banDocument)
       parentLogger.addFatalError("File not found: " + ac2File);
+
+   let importUtilities = new ImportUtilities(banDocument);
 
    for (let i = 0; i < fileNameList.length; i++) {
 
@@ -113,7 +119,7 @@ TestImportStripeTrans.prototype.testImportIncomeExpenses = function () {
       let fileContent = file.read();
       Test.assert(fileContent);
       let userParam = getUserParam_IncomeExpenses();
-      let transactions = processStripeTransactions(fileContent, userParam, banDocument);
+      let transactions = processStripeTransactions(fileContent, userParam, banDocument, importUtilities);
       this.testLogger.addCsv('', transactions);
 
       if (!this.progressBar.step())
