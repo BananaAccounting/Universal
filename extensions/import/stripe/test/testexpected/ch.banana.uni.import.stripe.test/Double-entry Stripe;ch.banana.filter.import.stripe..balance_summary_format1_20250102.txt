@@ -1,4 +1,4 @@
-%%info_test_name{Double-entry Stripe;ch.banana.filter.import.stripe.balance_change_20231010}
+%%info_test_name{Double-entry Stripe;ch.banana.filter.import.stripe..balance_summary_format1_20250102}
 \documentclass{report}
 \usepackage{longtable}
 \usepackage{color}
@@ -20,12 +20,8 @@
 %Begin test data
 \begin{tablevalue}{}{ l  l  l  l  l  l  l }
 Date & ExternalReference & Description & AccountDebit & AccountCredit & Amount & Notes\\
-2023-10-04 & txn\_3NxTlcKh5QAlWt1C19hNW8yk & seriples et antes.pia Colvero brae cogino.inimanes@cabular.vi, Net & 1001 & 3000 & 95.00 & po\_1Nzr7YKh5QAlWt1CBKvGMVAL\\
-2023-10-08 & txn\_3NyzC9Kh5QAlWt1C0rnawqnl & seriples et antes.pia Colvero brae shabultianimum@opror.cut, Net & 1001 & 3000 & 303.15 & po\_1Nzr7YKh5QAlWt1CBKvGMVAL\\
-2023-10-09 & txn\_3NzOetKh5QAlWt1C1zI5rLBs & seriples et antes.pia Colvero brae sufer.t@vit.pia, Net & 1001 & 3000 & 101.07 & po\_1Nzr7YKh5QAlWt1CBKvGMVAL\\
-2023-10-10 & txn\_3Nzb5hKh5QAlWt1C0AghLph4 & seriples et antes.pia Colvero brae vine.sentinto@t-virura.ex, Net & 1001 & 3000 & 24.07 & \\
-2023-10-10 & txn\_3Nzm0oKh5QAlWt1C1HNxilhZ & seriples et antes.pia Colvero brae ciptumn@me.cut, Net & 1001 & 3000 & 49.48 & \\
-2023-10-11 & txn\_3NytKnKh5QAlWt1C09qR6XZ2 & seriples et antes.pia Colvero brae orunnecurunime@vit.et, Net & 1001 & 3000 & 24.60 & \\
+2025-01-02 & txn\_3QcrImA0IpYVNU1u0wNC3kOh & Gutschein, Net & 1001 & 3000 & 99.05 & po\_1Qe4AXA0IpYVNU1u4vYVbjHd\\
+2025-01-20 & txn\_3QjQOCA0IpYVNU1u1gGTNduY & Gutschein, Net & 1001 & 3000 & 392.50 & po\_1Qjs87A0IpYVNU1uQv6fHNME\\
 \\
 \end{tablevalue}
 \end{document}

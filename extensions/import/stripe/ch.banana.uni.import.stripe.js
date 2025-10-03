@@ -70,7 +70,7 @@ function exec(inData) {
         return "";
     }
 
-    let transactions = processStripeTransactions(inData, userParam, banDoc);
+    let transactions = processStripeTransactions(inData, userParam, banDoc, importUtilities);
     if (!transactions)
         importUtilities.getUnknownFormatError();
 
@@ -78,9 +78,11 @@ function exec(inData) {
 }
 
 /**
- * CSV  structure details: (Insert example rows)
+ * ImportBalanceSummaryReportFormat1
+ * Go to Report->Summary Balance-> Export. In the dialog select All columns.
+ * See readme file for more information about the content of this format.
  */
-var ImportPaymentsTransactionsFormat1 = class ImportPaymentsTransactionsFormat1 extends ImportUtilities {
+var ImportBalanceSummaryReportFormat1 = class ImportBalanceSummaryReportFormat1 extends ImportUtilities {
     constructor(banDocument, userParam) {
         super(banDocument, userParam);
 
@@ -121,6 +123,79 @@ var ImportPaymentsTransactionsFormat1 = class ImportPaymentsTransactionsFormat1 
         }
 
         return false;
+    }
+
+    getFormattedData(csvData, importUtilities, convertionParam) {
+
+        // We do a copy as the getHeaderData modifies the content and we need to keep the original version clean.
+        let transactionsCopy = JSON.parse(JSON.stringify(csvData));
+
+        let columns = importUtilities.getHeaderData(transactionsCopy, convertionParam.headerLineStart); //array
+        let rows = importUtilities.getRowData(transactionsCopy, convertionParam.dataLineStart); //array of array
+        let form = [];
+
+        /** We convert the original headers into a custom format to be able to work with the same
+        * format regardless of original's headers language or the position of the header column. */
+        let convertedColumns = [];
+        convertedColumns = this.convertHeaderEn(columns, convertedColumns);
+        if (convertedColumns.length > 0) {
+            importUtilities.loadForm(form, convertedColumns, rows);
+            return form;
+        }
+
+        convertedColumns = this.convertHeaderIt(columns, convertedColumns);
+        if (convertedColumns.length > 0) {
+            importUtilities.loadForm(form, convertedColumns, rows);
+            return form;
+        }
+
+        convertedColumns = this.convertHeaderDe(columns, convertedColumns);
+        if (convertedColumns.length > 0) {
+            importUtilities.loadForm(form, convertedColumns, rows);
+            return form;
+        }
+
+        convertedColumns = this.convertHeaderFr(columns, convertedColumns);
+        if (convertedColumns.length > 0) {
+            importUtilities.loadForm(form, convertedColumns, rows);
+            return form;
+        }
+
+        //Load the form with data taken from the array. Create objects
+        this.loadForm(form, columns, rows);
+        return [];
+    }
+
+    convertHeaderEn(columns) {
+        let convertedColumns = columns.slice(); // Copy array
+        for (var i = 0; i < columns.length; i++) {
+            //...
+        }
+        return convertedColumns;
+    }
+
+    convertHeaderIt(columns) {
+        let convertedColumns = columns.slice(); // Copy array
+        for (var i = 0; i < columns.length; i++) {
+            //...
+        }
+        return convertedColumns;
+    }
+
+    convertHeaderDe(columns) {
+        let convertedColumns = columns.slice(); // Copy array
+        for (var i = 0; i < columns.length; i++) {
+            //...
+        }
+        return convertedColumns;
+    }
+
+    convertHeaderFr(columns) {
+        let convertedColumns = columns.slice(); // Copy array
+        for (var i = 0; i < columns.length; i++) {
+            //...
+        }
+        return convertedColumns;
     }
 
     processTransactions(transactions, banDoc) {
@@ -232,10 +307,11 @@ var ImportPaymentsTransactionsFormat1 = class ImportPaymentsTransactionsFormat1 
 }
 
 /**
- * CSV  structure details: (Insert example rows)
- * @param {*} banDocument 
+ * ImportTransactionsAllActivityFormat1
+ * Go to Transactions → All activity → Export. In the export dialog, select All columns
+ * See readme file for more information about the content of this format.
  */
-var ImportStripeAllTransactionsFormat1 = class ImportStripeAllTransactionsFormat1 extends ImportUtilities {
+var ImportTransactionsAllActivityFormat1 = class ImportTransactionsAllActivityFormat1 extends ImportUtilities {
     constructor(banDocument, userParam) {
         super(banDocument, userParam);
 
@@ -276,6 +352,79 @@ var ImportStripeAllTransactionsFormat1 = class ImportStripeAllTransactionsFormat
         }
 
         return false;
+    }
+
+    getFormattedData(csvData, importUtilities, convertionParam) {
+
+        // We do a copy as the getHeaderData modifies the content and we need to keep the original version clean.
+        let transactionsCopy = JSON.parse(JSON.stringify(csvData));
+
+        let columns = importUtilities.getHeaderData(transactionsCopy, convertionParam.headerLineStart); //array
+        let rows = importUtilities.getRowData(transactionsCopy, convertionParam.dataLineStart); //array of array
+        let form = [];
+
+        /** We convert the original headers into a custom format to be able to work with the same
+        * format regardless of original's headers language or the position of the header column. */
+        let convertedColumns = [];
+        convertedColumns = this.convertHeaderEn(columns, convertedColumns);
+        if (convertedColumns.length > 0) {
+            importUtilities.loadForm(form, convertedColumns, rows);
+            return form;
+        }
+
+        convertedColumns = this.convertHeaderIt(columns, convertedColumns);
+        if (convertedColumns.length > 0) {
+            importUtilities.loadForm(form, convertedColumns, rows);
+            return form;
+        }
+
+        convertedColumns = this.convertHeaderDe(columns, convertedColumns);
+        if (convertedColumns.length > 0) {
+            importUtilities.loadForm(form, convertedColumns, rows);
+            return form;
+        }
+
+        convertedColumns = this.convertHeaderFr(columns, convertedColumns);
+        if (convertedColumns.length > 0) {
+            importUtilities.loadForm(form, convertedColumns, rows);
+            return form;
+        }
+
+        //Load the form with data taken from the array. Create objects
+        this.loadForm(form, columns, rows);
+        return [];
+    }
+
+    convertHeaderEn(columns) {
+        let convertedColumns = columns.slice(); // Copy array
+        for (var i = 0; i < columns.length; i++) {
+            //...
+        }
+        return convertedColumns;
+    }
+
+    convertHeaderIt(columns) {
+        let convertedColumns = columns.slice(); // Copy array
+        for (var i = 0; i < columns.length; i++) {
+            //...
+        }
+        return convertedColumns;
+    }
+
+    convertHeaderDe(columns) {
+        let convertedColumns = columns.slice(); // Copy array
+        for (var i = 0; i < columns.length; i++) {
+            //...
+        }
+        return convertedColumns;
+    }
+
+    convertHeaderFr(columns) {
+        let convertedColumns = columns.slice(); // Copy array
+        for (var i = 0; i < columns.length; i++) {
+            //...
+        }
+        return convertedColumns;
     }
 
     processTransactions(transactions, banDoc) {
@@ -573,24 +722,26 @@ var ImportStripeAllTransactionsFormat1 = class ImportStripeAllTransactionsFormat
 /**
  * Method created to access the data correctly trough the tests.
  */
-function processStripeTransactions(inData, userParam, banDoc) {
+function processStripeTransactions(inData, userParam, banDoc, importUtilities) {
     let convertionParam = defineConversionParam(inData);
     let csvData = "";
+    let transactionsData = [];
 
     if (!banDoc)
         return "";
 
     csvData = Banana.Converter.csvToArray(inData, convertionParam.separator, convertionParam.textDelim);
-    transactionsData = getformattedData(csvData, convertionParam);
 
-    let stripeAllTransactionsFormat1 = new ImportStripeAllTransactionsFormat1(banDoc, userParam);
-    if (stripeAllTransactionsFormat1.match(transactionsData)) {
-        return stripeAllTransactionsFormat1.processTransactions(transactionsData, banDoc);
-    }
-
-    let stripeBalanceChangeFormat1 = new ImportPaymentsTransactionsFormat1(banDoc, userParam);
+    let stripeBalanceChangeFormat1 = new ImportBalanceSummaryReportFormat1(banDoc, userParam);
+    transactionsData = stripeBalanceChangeFormat1.getFormattedData(csvData, importUtilities, convertionParam);
     if (stripeBalanceChangeFormat1.match(transactionsData)) {
         return stripeBalanceChangeFormat1.processTransactions(transactionsData, banDoc);
+    }
+
+    let stripePaymentsFormat1 = new ImportTransactionsAllActivityFormat1(banDoc, userParam);
+    transactionsData = stripePaymentsFormat1.getFormattedData(csvData, importUtilities, convertionParam);
+    if (stripePaymentsFormat1.match(transactionsData)) {
+        return stripePaymentsFormat1.processTransactions(transactionsData, banDoc);
     }
 
     return "";
@@ -731,83 +882,6 @@ function getDecimalSeparator(amount) {
         } else if (parts.length === 2 && !isNaN(parts[1])) {
             return '.';
         }
-    }
-}
-/** 
- * Set headers to English.
-*/
-function getformattedData(csvData, convertionParam) {
-    let columns = this.getHeaderData(csvData, convertionParam); //array
-    let rows = this.getRowData(csvData, convertionParam); //array of array
-    let form = [];
-
-    //We pass them all so as not to have to guess the language of the header.
-    columns = this.convertHeaderIt(columns); // Convert headers from italian to english.
-    columns = this.convertHeaderDe(columns); // Convert headers from german to english.
-    columns = this.convertHeaderFr(columns); // Convert headers from french to english.
-
-    //Load the form with data taken from the array. Create objects
-    this.loadForm(form, columns, rows);
-    return form;
-}
-
-function convertHeaderIt(columns) {
-    for (var i = 0; i < columns.length; i++) {
-        // Convert headers...
-    }
-
-    return columns;
-}
-
-function convertHeaderDe(columns) {
-    for (var i = 0; i < columns.length; i++) {
-        // Convert headers...
-    }
-
-    return columns;
-}
-
-function convertHeaderFr(columns) {
-    for (var i = 0; i < columns.length; i++) {
-        // Convert headers...
-    }
-
-    return columns;
-}
-
-function getHeaderData(csvData, convertionParam) {
-    var headerData = csvData[convertionParam.headerLineStart];
-    for (var i = 0; i < headerData.length; i++) {
-
-        headerData[i] = headerData[i].trim();
-
-        if (!headerData[i]) {
-            headerData[i] = i;
-        }
-    }
-    return headerData;
-}
-
-function getRowData(csvData, convertionParam) {
-    var rowData = [];
-    for (var i = convertionParam.dataLineStart; i < csvData.length; i++) {
-        rowData.push(csvData[i]);
-    }
-    return rowData;
-}
-
-//The purpose of this function is to load all the data (titles of the columns and rows) and create a list of objects.
-//Each object represents a row of the csv file
-function loadForm(form, columns, rows) {
-    var obj = new Object;
-
-    for (var j = 0; j < rows.length; j++) {
-        var obj = {};
-
-        for (var i = 0; i < columns.length; i++) {
-            obj[columns[i]] = rows[j][i];
-        }
-        form.push(obj);
     }
 }
 
