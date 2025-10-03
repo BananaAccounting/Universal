@@ -8,7 +8,11 @@ Stripe offers multiple reports. For convenience, we allow the import of two type
 
 It allows you to obtain all customer payments, including fees and collected transfers, and their corresponding status.
 
-Go to Transactions → All activity → Export. In the export dialog, select All columns.
+Go to Transactions → All activity → Export. 
+
+In the export dialog select:
+
+* Columns: All columns.
 
 Stripe also lets you export only payments, payouts, or top-ups. For simplicity, we choose to export All activity — otherwise it would be too burdensome to map every case, since the exported format changes for each option.
 
@@ -20,7 +24,12 @@ with those transactions. All transactions are shown in your settlement currency 
 
 There are 3 summary balances, we use the: Balance change from activity, which includes changes to Stripe balance from activity (payments, refunds, transfers, etc.), excluding payouts, as well as itemised downloads.
 
-Go to Report->Summary Balance->Balance change from activity-> Download. In the dialog select All columns.
+Go to Report->Summary Balance->Balance change from activity-> Download. 
+
+In the dialog select: 
+
+* Report format: Itemied.
+* Columns: All columns.
 
 ## Links
 
