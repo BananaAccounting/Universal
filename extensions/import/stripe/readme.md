@@ -2,30 +2,37 @@
 
 ## Description
 
-This extension allows to import more than one type of Stripe report, but it basically works in two ways: 
+Stripe offers multiple reports. For convenience, we allow the import of two types of reports, which are in fact the ones our users have provided to us, and which we therefore believe are the most commonly used and most useful for accounting purposes.
 
-1. Import a report with all the transactions (Menu Payments->All Transactions->Export):
-   This report contains multiple transaction rows for the same operation, to record correctly all
-   these transactions, the user must indicate the accounts to be used in the dialogue proposed by the extension.
-   transactions can be of the following types:
-   * Payments - Transactions received from paying customers
-   * Charges - Equal to the payments, are made not with credit cards but through an external platform connected to stripe.
-   * Payouts - Funds transferred from Stripe to the bank account
-   * Fees - Fees paid to Stripe, or to the Connect Platform in the form of Application Fees
-   * Refunds - Funds returned to customers, if the credit card payment is disputed or withdrawn by the payer, reserved funds may also not be present, these funds are only taken from stripe in certain cases, depending on who is making the payment.
-2. Import a report with only the payments amount (Menu Reports->Balance->Balance change from activity (All 63 columns)).
-   This report contains only two types of movement:
-   * risk_reserved_funds - Funds returned to customers, if the credit card payment is disputed or withdrawn by the payer
-   * charge - Transactions received from paying customers
-    We only work with the amount in **charge**, i.e. the amount that should eventually be credited to the stripe account holder.
-    If the user uses this method, he must be sure that he has been re-credited with Refunds and that the amount he cashes in at the bank is therefore the full amount.
-    If desired, the user can also import the transactions from the menu Payout reconciliation->Payout reconciliation (All 65 columns), the generated report contains the same information.
+### 1 Transactions report
 
-As an external reference we always use the **balance id** since all movements have it regardless of type. In this way, by selecting 'Do not import if the same reference, date and amount already exists', no duplicate entries are created whatever file is imported.
+It allows you to obtain all customer payments, including fees and collected transfers, and their corresponding status.
+
+Go to Transactions → All activity → Export. 
+
+In the export dialog select:
+
+* Columns: All columns.
+
+Stripe also lets you export only payments, payouts, or top-ups. For simplicity, we choose to export All activity — otherwise it would be too burdensome to map every case, since the exported format changes for each option.
+
+### 2 Balance summary report.
+
+is similar to a bank statement, helping you to reconcile your Stripe balance at the end of the month. 
+It provides an itemized CSV export of your complete transaction history and any custom metadata associated 
+with those transactions. All transactions are shown in your settlement currency (after any foreign currency conversion).
+
+There are 3 summary balances, we use the: Balance change from activity, which includes changes to Stripe balance from activity (payments, refunds, transfers, etc.), excluding payouts, as well as itemised downloads.
+
+Go to Report->Summary Balance->Balance change from activity-> Download. 
+
+In the dialog select: 
+
+* Report format: Itemied.
+* Columns: All columns.
 
 ## Links
 
 Useful links:
- * [Payment reports] https://support.stripe.com/questions/exporting-payment-reports.
  * [Balance report] https://stripe.com/docs/reports/balance
- * [General documentation] https://support.stripe.com/questions/reserves-frequently-asked-questions?locale=en-GB)
+ * [General documentation] https://support.stripe.com/questions/reserves-frequently-asked-questions?locale=en-GB

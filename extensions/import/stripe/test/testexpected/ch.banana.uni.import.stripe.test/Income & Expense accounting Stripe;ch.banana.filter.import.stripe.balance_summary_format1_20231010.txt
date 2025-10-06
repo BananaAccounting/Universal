@@ -1,4 +1,4 @@
-%%info_test_name{Income & Expense accounting Stripe;ch.banana.filter.import.stripe.balance_change_20231010}
+%%info_test_name{Income & Expense accounting Stripe;ch.banana.filter.import.stripe.balance_summary_format1_20231010}
 \documentclass{report}
 \usepackage{longtable}
 \usepackage{color}

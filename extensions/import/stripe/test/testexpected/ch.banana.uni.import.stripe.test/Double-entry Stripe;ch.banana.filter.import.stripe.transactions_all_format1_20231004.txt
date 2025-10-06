@@ -1,4 +1,4 @@
-%%info_test_name{Double-entry Stripe;ch.banana.filter.import.stripe.balance_history_20231004}
+%%info_test_name{Double-entry Stripe;ch.banana.filter.import.stripe.transactions_all_format1_20231004}
 \documentclass{report}
 \usepackage{longtable}
 \usepackage{color}
