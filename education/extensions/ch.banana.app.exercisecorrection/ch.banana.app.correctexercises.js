@@ -1,6 +1,6 @@
 // @id = ch.banana.app.correctexercises
 // @api = 1.0
-// @pubdate = 2025-02-26
+// @pubdate = 2025-07-29
 // @publisher = Banana.ch SA
 // @description = 1. Correct the exercises
 // @description.it = 1. Correggi gli esercizi
@@ -30,12 +30,12 @@ function exec() {
   }
 
   let printreport = new CorrectDoc(Banana.document, Banana.document, false);
-
   return printreport.result();
+
 }
 
 /**
- * Questa classe gestisce la logica ed i metodi per la creazione del report 
+ * This class manages the logic and methods for exercise correction.
  * @param {*} banDocument 
  */
 
@@ -46,10 +46,12 @@ var CorrectDoc = class CorrectDoc {
     this.isTest = isTest;
   }
 
+
   result(param) {
 
     let lang = this.studentDoc.info("Base", "Language");
-
+    let FileNumberStudent = this.studentDoc.info("Base", "FileTypeNumber");
+    // Save updated script's parameters
     let printsettings = new PrintSettings(this.studentDoc, this.isTest);
     // Load the texts based on the language code
     let texts = printsettings.loadTexts(lang);
@@ -59,7 +61,7 @@ var CorrectDoc = class CorrectDoc {
     let teachertransactions;
     let paramcorrections = {};
 
-    if (this.isTest) {
+    if (this.isTest === true) {
       teacherfile = this.teacherDoc;
       paramcorrections = param;
     }
@@ -68,44 +70,61 @@ var CorrectDoc = class CorrectDoc {
 
       let studentrow = this.studentDoc.table("Transactions").findRowByValue("Doc", "Student");
       // if the import file is not a teacher file, show a error message
-      if (studentrow === "undefined" || !studentrow) {
+      if (!studentrow) {
         Banana.application.addMessage(texts.isnotstudentfile);
         return;
       }
 
       let flag = false;
 
-        for (let i = 0; i < this.studentDoc.table("Transactions").rowCount; i++) {
-            if (this.studentDoc.table("Transactions").row(i).value("TAuto") === "automaticcorrection") {
-                flag = true;
-                continue;
-            }
+      for (let i = 0; i < this.studentDoc.table("Transactions").rowCount; i++) {
+        if (this.studentDoc.table("Transactions").row(i).value("TAuto") === "automaticcorrection") {
+          flag = true;
+          continue;
+        }
+      }
+
+      if (!flag) {
+
+        //Open the file
+        teacherfile = Banana.application.openDocument("*.*");
+        if (!teacherfile) {
+          return;
         }
 
-        if (!flag) {
+        // Readscript settings
+        paramcorrections = this.result_readsettings(teacherfile);
 
-      //Open the file
-      teacherfile = Banana.application.openDocument("*.*");
-      if (!teacherfile) {
-        return;
+        let FileNumberTeacher = teacherfile.info("Base", "FileTypeNumber");
+
+        if (FileNumberStudent !== FileNumberTeacher) {
+          return Banana.application.addMessage(texts.filenumbermismatch);
+        }
+        // Verify the settings
+        let printsettings = new PrintSettings(this.studentDoc, this.isTest);
+
+        printsettings.verifyparam(paramcorrections);
       }
-      // Readscript settings
-      paramcorrections = this.result_readsettings(teacherfile);
 
-      // Verify the settings
-      let printsettings = new PrintSettings(Banana.document, false);
-
-      printsettings.verifyparam(paramcorrections);
-    }
-
-    else {
-      return Banana.application.addMessage(texts.alreadycorrected);
-    }
+      else {
+        return Banana.application.addMessage(texts.alreadycorrected);
+      }
 
     }
 
     // this.teacherDoc = teacherfile;
     teachertransactions = teacherfile.table('Transactions');
+
+    let vatcodeflag = false;
+    // let vatcodeflag if there is the VatCode column in the Teacher transactions table
+    if (teachertransactions.column("VatCode")) {
+      vatcodeflag = true;
+    }
+
+    let multicurrencyflag = false;
+    if (teachertransactions.column("AmountCurrency")) {
+      multicurrencyflag = true;
+    }
 
     let teacherrowvalue = this.result_readproperty(teacherfile);
 
@@ -121,31 +140,64 @@ var CorrectDoc = class CorrectDoc {
 
     let fullscore = 0;
 
-    if (paramcorrections.datescore !== '0' && paramcorrections.amountscore !== '0') {
-      fullscore = Number(paramcorrections.debitaccountscore) + Number(paramcorrections.creditaccountscore) + Number(paramcorrections.amountscore) + Number(paramcorrections.datescore);
-    }
-    else if (paramcorrections.datescore !== '0' && paramcorrections.amountscore === '0') {
-      fullscore = Number(paramcorrections.debitaccountscore) + Number(paramcorrections.creditaccountscore) + Number(paramcorrections.datescore);
-    }
-    else if (paramcorrections.datescore === '0' && paramcorrections.amountscore !== '0') {
-      fullscore = Number(paramcorrections.debitaccountscore) + Number(paramcorrections.creditaccountscore) + Number(paramcorrections.amountscore);
-    }
-    else {
-      fullscore = Number(paramcorrections.debitaccountscore) + Number(paramcorrections.creditaccountscore);
+    // Leggo i parametri di correzione
+    const {
+      datescore,
+      amountscore,
+      vatcodescore,
+      amountcurrencyscore,
+      exchangeratescore,
+      exchangecurrencyscore,
+      debitaccountscore,
+      creditaccountscore
+    } = paramcorrections;
+
+    // Converto in numeri e applico i flag
+    const d = Number(debitaccountscore);
+    const c = Number(creditaccountscore);
+    const ds = Number(datescore);
+    const as = multicurrencyflag ? 0 : Number(amountscore);
+    const vs = vatcodeflag ? Number(vatcodescore) : 0;
+    const amcs = Number(amountcurrencyscore);
+    const ers = Number(exchangeratescore);
+    const ecs = Number(exchangecurrencyscore);
+
+    // Somma base
+    fullscore = d + c;
+
+    // Aggiungo i valori se sono attivi
+    if (ds !== 0) fullscore += ds;
+    if (as !== 0) fullscore += as;
+    if (vs !== 0) fullscore += vs;
+    if (amcs !== 0) fullscore += amcs;
+    if (ers !== 0) fullscore += ers;
+    if (ecs !== 0) fullscore += ecs;
+
+
+
+    if (paramcorrections.score === false) {
+      fullscore = 0;
     }
 
     // Check if the Student file has all the exercise numbers
     this.result_check(studenttransactions, teachertransactions);
+    // Check if the Teacher file has accounts present in the Accounts table
+    if (!this.result_checkaccounts(teachertransactions)) {
+      return;
+    }
+    // Create the arrays for the transactions
     let teacherarray = this.result_createarrayteacher(teachertransactions, fullscore);
     let teachertransactionsArray = teacherarray[0];
     let docArray = teacherarray[1];
     let studenttransactionsArray = this.result_createarraystudent(studenttransactions, docArray, fullscore);
+    // Calculate the score and insert the transactions
     let transactions = new CorrectDoc(this.studentDoc, this.teacherDoc, this.isTest);
-    transactions.result_calculatescore(studenttransactionsArray, teachertransactionsArray, paramcorrections, fullscore);
+    transactions.result_calculatescore(teachertransactions, studenttransactionsArray, teachertransactionsArray, paramcorrections, fullscore);
     let jsonDoc = transactions.result_inserttransactions(studenttransactionsArray, teachertransactionsArray, paramcorrections, fullscore);
 
     return jsonDoc;
   }
+
 
   result_readsettings(teacherfile) {
 
@@ -175,83 +227,352 @@ var CorrectDoc = class CorrectDoc {
 
   }
 
-  result_calculatescore(studenttransactionsArray, teachertransactionsArray, paramcorrections, fullscore) {
+  getNextPositionForDoc(doc) {
+    let max = 0;
 
-    for (let i = 0; i < studenttransactionsArray.length; i++) {
+    const transactions = this.studentDoc.table("Transactions");
+    for (let i = 0; i < transactions.rowCount; i++) {
+      const row = transactions.row(i);
 
-      let n = 0;
-      let bestscore = [];
-      let textscore = [];
-
-      for (let k = 0; k < teachertransactionsArray.length; k++) {
-
-        if (studenttransactionsArray[i].doc !== teachertransactionsArray[k].doc) {
-          studenttransactionsArray[i].automaticscore = fullscore;
-          studenttransactionsArray[i].scoreinfo = "Exercise rows number doesn't match";
-          continue;
+      if (row.value("Doc") === doc &&
+        row.value("TAuto") !== "automaticcorrection" &&
+        (row.value("AccountDebit") || row.value("AccountCredit"))) {
+        if (i > max) {
+          max = i;
         }
-
-        else {
-          studenttransactionsArray[i].automaticscore = fullscore;
-          bestscore[n] = fullscore;
-          textscore[n] = { "debit": "", "credit": "", "amount": "", "date": "" };
-
-          if (paramcorrections.debitcreditaccountsscore === false && (studenttransactionsArray[i].accountdebit !== teachertransactionsArray[k].accountdebit || studenttransactionsArray[i].accountcredit !== teachertransactionsArray[k].accountcredit)) {
-            bestscore[n] = Number(bestscore[n]) - Number(paramcorrections.debitaccountscore) - Number(paramcorrections.creditaccountscore);
-            studenttransactionsArray[i].automaticscore = bestscore[n];
-            textscore[n].debit = "Debit and/or Credit Account; ";
-          }
-          else {
-
-            if (studenttransactionsArray[i].accountdebit !== teachertransactionsArray[k].accountdebit) {
-              if (paramcorrections.debitcreditaccountsscore) {
-                bestscore[n] = Number(bestscore[n]) - Number(paramcorrections.debitaccountscore);
-              }
-              else {
-                bestscore[n] = Number(bestscore[n]) - Number(paramcorrections.debitaccountscore) - Number(paramcorrections.creditaccountscore);
-              }
-              studenttransactionsArray[i].automaticscore = bestscore[n];
-              textscore[n].debit = "Debit Account; ";
-            }
-            if (studenttransactionsArray[i].accountcredit !== teachertransactionsArray[k].accountcredit) {
-              if (paramcorrections.debitcreditaccountsscore) {
-                bestscore[n] = Number(bestscore[n]) - Number(paramcorrections.creditaccountscore);
-              }
-              else {
-                bestscore[n] = Number(bestscore[n]) - Number(paramcorrections.debitaccountscore) - Number(paramcorrections.creditaccountscore);
-              }
-              studenttransactionsArray[i].automaticscore = bestscore[n];
-              textscore[n].credit = "Credit Account; ";
-            }
-          }
-          if (studenttransactionsArray[i].amount !== teachertransactionsArray[k].amount && paramcorrections.amountscore !== '0') {
-            bestscore[n] = Number(bestscore[n]) - Number(paramcorrections.amountscore);
-            studenttransactionsArray[i].automaticscore = bestscore[n];
-            textscore[n].amount = "Amount; ";
-          }
-          if (studenttransactionsArray[i].date !== teachertransactionsArray[k].date && paramcorrections.datescore !== '0') {
-            bestscore[n] = Number(bestscore[n]) - Number(paramcorrections.datescore);
-            studenttransactionsArray[i].automaticscore = bestscore[n];
-            textscore[n].date = "Date; ";
-          }
-          n++;
-        }
-
       }
-      // find out the higher number in the array bestscore
-      studenttransactionsArray[i].automaticscore = Math.max(...bestscore);
-      // find out first n index of the minimum number in the array bestscore
-      let index = bestscore.indexOf(Math.max(...bestscore));
-      // Concatenate the textscore[index] to the scoreinfo and trim the string
-      studenttransactionsArray[i].scoreinfo = textscore[index].debit + textscore[index].credit + textscore[index].amount + textscore[index].date;
-      studenttransactionsArray[i].scoreinfo = studenttransactionsArray[i].scoreinfo.trim();
+    }
+
+    return max + 1;
+  }
+
+
+
+  result_calculatescore(
+    teachertransactions,
+    studenttransactionsArray,
+    teachertransactionsArray,
+    paramcorrections,
+    fullscore
+  ) {
+    this._studenttransactionsArray = studenttransactionsArray;
+
+    // Flag di presenza colonne
+    const vatcodeflag = !!teachertransactions.column("VatCode", "Base");
+    const multicurrencyflag = !!teachertransactions.column("AmountCurrency", "Base");
+
+    // Helper: sottrae in modo sicuro un numero (stringhe accettate)
+    function subNum(fromValue, maybeNumberLike) {
+      return fromValue - Number(maybeNumberLike);
+    }
+
+    // Precompute: conteggio righe del teacher per doc (O(n))
+    const teacherDocCount = {};
+    for (let i = 0; i < teachertransactionsArray.length; i++) {
+      const doc = teachertransactionsArray[i].doc;
+      if (!teacherDocCount[doc]) teacherDocCount[doc] = 0;
+      teacherDocCount[doc]++;
+    }
+
+    // Precompute: conteggio righe dello studente per doc (O(n))
+    const studentDocCount = {};
+    for (let i = 0; i < studenttransactionsArray.length; i++) {
+      const doc = studenttransactionsArray[i].doc;
+      if (!studentDocCount[doc]) studentDocCount[doc] = 0;
+      studentDocCount[doc]++;
+    }
+
+    const matches = [];
+
+    // Step 1: genera tutte le coppie possibili con stesso Doc
+    for (let sIndex = 0; sIndex < studenttransactionsArray.length; sIndex++) {
+      const s = studenttransactionsArray[sIndex];
+
+      for (let tIndex = 0; tIndex < teachertransactionsArray.length; tIndex++) {
+        const t = teachertransactionsArray[tIndex];
+
+        if (s.doc !== t.doc) continue; // vincolo di Doc
+
+        let score = fullscore;
+        const scoreinfo = [];
+
+        // 1) Debit/Credit: gestione distinta e “solo if”, niente ternari
+        const sameDebit = (s.accountdebit === t.accountdebit);
+        const sameCredit = (s.accountcredit === t.accountcredit);
+        const bothSame = (sameDebit && sameCredit);
+
+        if (paramcorrections.debitcreditaccountsscore === false && !bothSame) {
+          // penalità per entrambi i conti
+          score = subNum(score, paramcorrections.debitaccountscore);
+          score = subNum(score, paramcorrections.creditaccountscore);
+          scoreinfo.push("Debit and/or Credit Account");
+        } else {
+          if (!sameDebit && !sameCredit) {
+            score = subNum(score, paramcorrections.debitaccountscore);
+            score = subNum(score, paramcorrections.creditaccountscore);
+            scoreinfo.push("Debit and Credit Account");
+          }
+          // penalità debit isolata
+          if (!sameDebit && sameCredit) {
+            if (paramcorrections.debitcreditaccountsscore) {
+              score = subNum(score, paramcorrections.debitaccountscore);
+            } else {
+              score = subNum(score, paramcorrections.debitaccountscore);
+              score = subNum(score, paramcorrections.creditaccountscore);
+            }
+            scoreinfo.push("Debit Account");
+          }
+          // penalità credit isolata
+          if (!sameCredit && sameDebit) {
+            if (paramcorrections.debitcreditaccountsscore) {
+              score = subNum(score, paramcorrections.creditaccountscore);
+            } else {
+              score = subNum(score, paramcorrections.debitaccountscore);
+              score = subNum(score, paramcorrections.creditaccountscore);
+            }
+            scoreinfo.push("Credit Account");
+          }
+        }
+
+        // 2) Date
+        if (s.date !== t.date) {
+          if (paramcorrections.datescore !== '0') {
+            score = subNum(score, paramcorrections.datescore);
+            scoreinfo.push("Date");
+          }
+        }
+
+        // 3) Multicurrency: amountcurrency, exchangecurrency, exchangerate
+        if (multicurrencyflag) {
+          if (s.amountcurrency !== t.amountcurrency) {
+            if (paramcorrections.amountcurrencyscore !== '0') {
+              score = subNum(score, paramcorrections.amountcurrencyscore);
+              scoreinfo.push("Amount Currency");
+            }
+          }
+          if (s.exchangecurrency !== t.exchangecurrency) {
+            if (paramcorrections.exchangecurrencyscore !== '0') {
+              score = subNum(score, paramcorrections.exchangecurrencyscore);
+              scoreinfo.push("Exchange Currency");
+            }
+          }
+          if (s.exchangerate !== t.exchangerate) {
+            if (paramcorrections.exchangeratescore !== '0') {
+              score = subNum(score, paramcorrections.exchangeratescore);
+              scoreinfo.push("Exchange Rate");
+            }
+          }
+        } else {
+          // 4) Amount (solo se NON multicurrency)
+          if (s.amount !== t.amount) {
+            if (paramcorrections.amountscore !== '0') {
+              score = subNum(score, paramcorrections.amountscore);
+              scoreinfo.push("Amount");
+            }
+          }
+        }
+
+        // 5) VAT
+        if (vatcodeflag) {
+          if (s.vatcode !== t.vatcode) {
+            if (paramcorrections.vatcodescore !== '0') {
+              score = subNum(score, paramcorrections.vatcodescore);
+              scoreinfo.push("VAT Code");
+            }
+          }
+        }
+
+        // Priority (1=match, 0=no match)
+        const priority = [];
+
+        // 1) accountdebit
+        if (s.accountdebit === t.accountdebit) {
+          priority.push(1);
+        } else {
+          priority.push(0);
+        }
+
+        // 2) accountcredit
+        if (s.accountcredit === t.accountcredit) {
+          priority.push(1);
+        } else {
+          priority.push(0);
+        }
+
+        // 3) amount (se multicurrency → amountcurrency, altrimenti amount)
+        if (multicurrencyflag) {
+          if (s.amountcurrency === t.amountcurrency) {
+            priority.push(1);
+          } else {
+            priority.push(0);
+          }
+        } else {
+          if (s.amount === t.amount) {
+            priority.push(1);
+          } else {
+            priority.push(0);
+          }
+        }
+
+        // 4) exchangerate (solo se multicurrency attivo)
+        if (multicurrencyflag) {
+          if (s.exchangerate === t.exchangerate) {
+            priority.push(1);
+          } else {
+            priority.push(0);
+          }
+        } else {
+          priority.push(0);
+        }
+
+        // 5) exchangecurrency (solo se multicurrency attivo)
+        if (multicurrencyflag) {
+          if (s.exchangecurrency === t.exchangecurrency) {
+            priority.push(1);
+          } else {
+            priority.push(0);
+          }
+        } else {
+          priority.push(0);
+        }
+
+        // 6) vatcode (solo se flag attivo)
+        if (vatcodeflag) {
+          if (s.vatcode === t.vatcode) {
+            priority.push(1);
+          } else {
+            priority.push(0);
+          }
+        } else {
+          priority.push(0);
+        }
+
+        // 7) date
+        if (s.date === t.date) {
+          priority.push(1);
+        } else {
+          priority.push(0);
+        }
+
+
+        // Aggiunge la coppia candidata
+        matches.push({
+          studentIndex: sIndex,
+          teacherIndex: tIndex,
+          doc: s.doc,
+          score,
+          scoreinfo: scoreinfo.join("; "),
+          priority
+        });
+      }
+    }
+
+    // Step 2: ordina per score e poi per priority
+    matches.sort((a, b) => {
+      if (b.score !== a.score) return b.score - a.score;
+      for (let i = 0; i < a.priority.length; i++) {
+        if (b.priority[i] !== a.priority[i]) return b.priority[i] - a.priority[i];
+      }
+      return 0;
+    });
+
+    const matchedStudents = new Set();
+    const matchedTeachers = new Set();
+
+    // Conteggio match per doc (lato teacher) ottenuti
+    const matchedTeacherByDoc = {};
+
+    // Step 3: scegli le migliori coppie non ancora usate
+    for (let i = 0; i < matches.length; i++) {
+      const { studentIndex, teacherIndex, doc, score, scoreinfo } = matches[i];
+
+      if (matchedStudents.has(studentIndex)) continue;
+      if (matchedTeachers.has(teacherIndex)) continue;
+
+      if (!matchedTeacherByDoc[doc]) matchedTeacherByDoc[doc] = 0;
+
+      const sCount = studentDocCount[doc] || 0;
+      const tCount = teacherDocCount[doc] || 0;
+
+      // Se lo studente ha più righe del teacher, limita i match al numero del teacher
+      if (sCount > tCount && matchedTeacherByDoc[doc] >= tCount) continue;
+
+      matchedStudents.add(studentIndex);
+      matchedTeachers.add(teacherIndex);
+      matchedTeacherByDoc[doc]++;
+
+      studenttransactionsArray[studentIndex].automaticscore = score;
+      studenttransactionsArray[studentIndex].scoreinfo = scoreinfo ? ("Wrong: " + scoreinfo) : "";
+    }
+
+    // Step 3B: righe studente rimaste senza match ⇒ errore
+    for (let sIndex = 0; sIndex < studenttransactionsArray.length; sIndex++) {
+      if (!matchedStudents.has(sIndex)) {
+        studenttransactionsArray[sIndex].automaticscore = 0;
+        studenttransactionsArray[sIndex].scoreinfo = "Extra or unmatched transaction from student";
+      }
+    }
+
+    // Step 4: se il teacher ha più righe senza nessun possibile match ⇒ aggiungi errori allo studente
+    for (let tIndex = 0; tIndex < teachertransactionsArray.length; tIndex++) {
+      const t = teachertransactionsArray[tIndex];
+
+      // “possibile match” = esiste almeno una candidate pair per quel teacherIndex
+      let hasMatch = false;
+      for (let i = 0; i < matches.length; i++) {
+        if (matches[i].teacherIndex === tIndex) {
+          hasMatch = true;
+          break;
+        }
+      }
+
+      const wasMatched = matchedTeachers.has(tIndex);
+
+      if (!wasMatched && !hasMatch) {
+        const newEntry = {
+          auto: "automaticcorrection",
+          position: this.getNextPositionForDoc(t.doc),
+          date: t.date,
+          doc: t.doc,
+          description: t.description,
+          accountdebit: t.accountdebit,
+          accountcredit: t.accountcredit,
+          amountcurrency: t.amountcurrency,
+          exchangecurrency: t.exchangecurrency,
+          exchangerate: t.exchangerate,
+          vatcode: t.vatcode,
+          automaticscore: 0,
+          maxscore: fullscore,
+          scoreinfo: "Missing transaction for teacher row"
+        };
+
+        const FileNumber = this.studentDoc.info("Base", "FileTypeNumber");
+
+        if (FileNumber === "110" || FileNumber === "100") {
+          newEntry.amount = t.amount;
+        }
+        if (FileNumber === "110") {
+          delete newEntry.amountcurrency;
+          delete newEntry.exchangecurrency;
+          delete newEntry.exchangerate;
+        }
+        if (FileNumber === "120") {
+          delete newEntry.amount;
+          delete newEntry.vatcode;
+        }
+
+        studenttransactionsArray.push(newEntry);
+      }
     }
 
     return studenttransactionsArray;
   }
 
+
   //Function to write the ac2 file
   result_inserttransactions(studenttransactionsArray, teachertransactionsArray, paramcorrections, fullscore) {
+
+    let FileNumber = this.studentDoc.info("Base", "FileTypeNumber");
 
     let documentChange = { "format": "documentChange", "error": "", "data": [] };
 
@@ -261,12 +582,6 @@ var CorrectDoc = class CorrectDoc {
     let row = {};
     //rows
     let rows = [];
-
-    for (let i = 0; i < this.studentDoc.table("Transactions").rowCount; i++) {
-      if (this.studentDoc.table("Transactions").row(i).value("TAuto") === "automaticcorrection") {
-        return;
-      }
-    }
 
     for (let i = 0; i < studenttransactionsArray.length; i++) {
       // modify row to add the score and the maxscore to the transactions
@@ -288,21 +603,69 @@ var CorrectDoc = class CorrectDoc {
       else {
         // red
         row.style = { "background-color": "#ff8198" };
-        if (!paramcorrections.noscore) {
-          row.fields["TCorrectionsNotes"] = "Wrong: ";
-        }
+        row.fields["TCorrectionsNotes"] = "";
       }
 
-      row.fields["Date"] = studenttransactionsArray[i].date;
-      row.fields["Doc"] = studenttransactionsArray[i].doc;
-      row.fields["Description"] = studenttransactionsArray[i].description;
-      row.fields["AccountDebit"] = studenttransactionsArray[i].accountdebit;
-      row.fields["AccountCredit"] = studenttransactionsArray[i].accountcredit;
-      row.fields["Amount"] = studenttransactionsArray[i].amount;
-      if (!paramcorrections.noscore) {
-        row.fields["TAutoScore"] = Banana.Converter.toInternalNumberFormat(studenttransactionsArray[i].automaticscore);
-        row.fields["TMaxScore"] = Banana.Converter.toInternalNumberFormat(studenttransactionsArray[i].maxscore);
-        row.fields["TAdjustedScore"] = Banana.Converter.toInternalNumberFormat(studenttransactionsArray[i].automaticscore);
+      if (FileNumber === "130") {
+        row.fields["Date"] = studenttransactionsArray[i].date;
+        row.fields["Doc"] = studenttransactionsArray[i].doc;
+        row.fields["Description"] = studenttransactionsArray[i].description;
+        row.fields["AccountDebit"] = studenttransactionsArray[i].accountdebit;
+        row.fields["AccountCredit"] = studenttransactionsArray[i].accountcredit;
+        row.fields["AmountCurrency"] = studenttransactionsArray[i].amountcurrency;
+        row.fields["ExchangeCurrency"] = studenttransactionsArray[i].exchangecurrency;
+        row.fields["ExchangeRate"] = studenttransactionsArray[i].exchangerate;
+        row.fields["VatCode"] = studenttransactionsArray[i].vatcode;
+        if (paramcorrections.score) {
+          row.fields["TAutoScore"] = Banana.Converter.toInternalNumberFormat(studenttransactionsArray[i].automaticscore);
+          row.fields["TMaxScore"] = Banana.Converter.toInternalNumberFormat(studenttransactionsArray[i].maxscore);
+          row.fields["TAdjustedScore"] = Banana.Converter.toInternalNumberFormat(studenttransactionsArray[i].automaticscore);
+        }
+        row.fields["TCorrectionsNotes"] = row.fields["TCorrectionsNotes"] + studenttransactionsArray[i].scoreinfo;
+      }
+      else if (FileNumber === "110") {
+        row.fields["Date"] = studenttransactionsArray[i].date;
+        row.fields["Doc"] = studenttransactionsArray[i].doc;
+        row.fields["Description"] = studenttransactionsArray[i].description;
+        row.fields["AccountDebit"] = studenttransactionsArray[i].accountdebit;
+        row.fields["AccountCredit"] = studenttransactionsArray[i].accountcredit;
+        row.fields["Amount"] = studenttransactionsArray[i].amount;
+        row.fields["VatCode"] = studenttransactionsArray[i].vatcode;
+        if (paramcorrections.score) {
+          row.fields["TAutoScore"] = Banana.Converter.toInternalNumberFormat(studenttransactionsArray[i].automaticscore);
+          row.fields["TMaxScore"] = Banana.Converter.toInternalNumberFormat(studenttransactionsArray[i].maxscore);
+          row.fields["TAdjustedScore"] = Banana.Converter.toInternalNumberFormat(studenttransactionsArray[i].automaticscore);
+        }
+        row.fields["TCorrectionsNotes"] = row.fields["TCorrectionsNotes"] + studenttransactionsArray[i].scoreinfo;
+      }
+      else if (FileNumber === "120") {
+        row.fields["Date"] = studenttransactionsArray[i].date;
+        row.fields["Doc"] = studenttransactionsArray[i].doc;
+        row.fields["Description"] = studenttransactionsArray[i].description;
+        row.fields["AccountDebit"] = studenttransactionsArray[i].accountdebit;
+        row.fields["AccountCredit"] = studenttransactionsArray[i].accountcredit;
+        row.fields["AmountCurrency"] = studenttransactionsArray[i].amountcurrency;
+        row.fields["ExchangeCurrency"] = studenttransactionsArray[i].exchangecurrency;
+        row.fields["ExchangeRate"] = studenttransactionsArray[i].exchangerate;
+        if (paramcorrections.score) {
+          row.fields["TAutoScore"] = Banana.Converter.toInternalNumberFormat(studenttransactionsArray[i].automaticscore);
+          row.fields["TMaxScore"] = Banana.Converter.toInternalNumberFormat(studenttransactionsArray[i].maxscore);
+          row.fields["TAdjustedScore"] = Banana.Converter.toInternalNumberFormat(studenttransactionsArray[i].automaticscore);
+        }
+        row.fields["TCorrectionsNotes"] = row.fields["TCorrectionsNotes"] + studenttransactionsArray[i].scoreinfo;
+      }
+      else {
+        row.fields["Date"] = studenttransactionsArray[i].date;
+        row.fields["Doc"] = studenttransactionsArray[i].doc;
+        row.fields["Description"] = studenttransactionsArray[i].description;
+        row.fields["AccountDebit"] = studenttransactionsArray[i].accountdebit;
+        row.fields["AccountCredit"] = studenttransactionsArray[i].accountcredit;
+        row.fields["Amount"] = studenttransactionsArray[i].amount;
+        if (paramcorrections.score) {
+          row.fields["TAutoScore"] = Banana.Converter.toInternalNumberFormat(studenttransactionsArray[i].automaticscore);
+          row.fields["TMaxScore"] = Banana.Converter.toInternalNumberFormat(studenttransactionsArray[i].maxscore);
+          row.fields["TAdjustedScore"] = Banana.Converter.toInternalNumberFormat(studenttransactionsArray[i].automaticscore);
+        }
         row.fields["TCorrectionsNotes"] = row.fields["TCorrectionsNotes"] + studenttransactionsArray[i].scoreinfo;
       }
       rows.push(row);
@@ -352,19 +715,55 @@ var CorrectDoc = class CorrectDoc {
 
           //row fields
           row.fields = {};
-          row.fields["Date"] = teachertransactionsArray[k].date;
-          row.fields["TAuto"] = "automaticcorrection";
-          row.fields["Doc"] = teachertransactionsArray[k].doc;
-          row.fields["Description"] = teachertransactionsArray[k].description;
-          row.fields["AccountDebit"] = "[" + teachertransactionsArray[k].accountdebit + "]";
-          row.fields["AccountCredit"] = "[" + teachertransactionsArray[k].accountcredit + "]";
-          row.fields["Amount"] = teachertransactionsArray[k].amount;
+          if (FileNumber === "130") {
+            row.fields["Date"] = teachertransactionsArray[k].date;
+            row.fields["TAuto"] = "automaticcorrection";
+            row.fields["Doc"] = teachertransactionsArray[k].doc;
+            row.fields["Description"] = teachertransactionsArray[k].description;
+            row.fields["AccountDebit"] = "[" + teachertransactionsArray[k].accountdebit + "]";
+            row.fields["AccountCredit"] = "[" + teachertransactionsArray[k].accountcredit + "]";
+            row.fields["AmountCurrency"] = teachertransactionsArray[k].amountcurrency;
+            row.fields["ExchangeCurrency"] = teachertransactionsArray[k].exchangecurrency;
+            row.fields["ExchangeRate"] = teachertransactionsArray[k].exchangerate;
+            row.fields["VatCode"] = "[" + teachertransactionsArray[k].vatcode + "]";
+          }
+          else if (FileNumber === "110") {
+            row.fields["Date"] = teachertransactionsArray[k].date;
+            row.fields["TAuto"] = "automaticcorrection";
+            row.fields["Doc"] = teachertransactionsArray[k].doc;
+            row.fields["Description"] = teachertransactionsArray[k].description;
+            row.fields["AccountDebit"] = "[" + teachertransactionsArray[k].accountdebit + "]";
+            row.fields["AccountCredit"] = "[" + teachertransactionsArray[k].accountcredit + "]";
+            row.fields["Amount"] = teachertransactionsArray[k].amount;
+            row.fields["VatCode"] = "[" + teachertransactionsArray[k].vatcode + "]";
+          }
+          else if (FileNumber === "120") {
+            row.fields["Date"] = teachertransactionsArray[k].date;
+            row.fields["TAuto"] = "automaticcorrection";
+            row.fields["Doc"] = teachertransactionsArray[k].doc;
+            row.fields["Description"] = teachertransactionsArray[k].description;
+            row.fields["AccountDebit"] = "[" + teachertransactionsArray[k].accountdebit + "]";
+            row.fields["AccountCredit"] = "[" + teachertransactionsArray[k].accountcredit + "]";
+            row.fields["AmountCurrency"] = teachertransactionsArray[k].amountcurrency;
+            row.fields["ExchangeCurrency"] = teachertransactionsArray[k].exchangecurrency;
+            row.fields["ExchangeRate"] = teachertransactionsArray[k].exchangerate;
+          }
+          else {
+            row.fields["Date"] = teachertransactionsArray[k].date;
+            row.fields["TAuto"] = "automaticcorrection";
+            row.fields["Doc"] = teachertransactionsArray[k].doc;
+            row.fields["Description"] = teachertransactionsArray[k].description;
+            row.fields["AccountDebit"] = "[" + teachertransactionsArray[k].accountdebit + "]";
+            row.fields["AccountCredit"] = "[" + teachertransactionsArray[k].accountcredit + "]";
+            row.fields["Amount"] = teachertransactionsArray[k].amount;
+          }
           rows.push(row);
         }
       }
     }
 
-    if (!paramcorrections.noscore) {
+
+    if (paramcorrections.score) {
       // Sum all the scores array
       let score = 0;
       for (let i = 0; i < studenttransactionsArray.length; i++) {
@@ -442,20 +841,69 @@ var CorrectDoc = class CorrectDoc {
     let k = 0;
     let j = 0;
     let n;
+    let FileNumber = this.studentDoc.info("Base", "FileTypeNumber");
 
     // Filter the Teacher transactions rows if they have a Doc and AccountDebit or AccountCredit
     for (let i = 0; i < teachertransactions.rowCount; i++) {
       if (teachertransactions.row(i).value("Doc") !== "" && teachertransactions.row(i).value("Doc") !== "#" && (teachertransactions.row(i).value("AccountDebit") != "" || teachertransactions.row(i).value("AccountCredit") != "")) {
-        teachertransactionsArray[k] = {
-          "position": i,
-          "date": teachertransactions.row(i).value("Date"),
-          "doc": teachertransactions.row(i).value("Doc"),
-          "description": teachertransactions.row(i).value("Description"),
-          "accountdebit": teachertransactions.row(i).value("AccountDebit"),
-          "accountcredit": teachertransactions.row(i).value("AccountCredit"),
-          "amount": teachertransactions.row(i).value("Amount"),
-          "maxscore": fullscore
-        };
+
+        if (FileNumber === "130") {
+          teachertransactionsArray[k] = {
+            "position": i,
+            "date": teachertransactions.row(i).value("Date"),
+            "doc": teachertransactions.row(i).value("Doc"),
+            "description": teachertransactions.row(i).value("Description"),
+            "accountdebit": teachertransactions.row(i).value("AccountDebit"),
+            "accountcredit": teachertransactions.row(i).value("AccountCredit"),
+            "amountcurrency": teachertransactions.row(i).value("AmountCurrency"),
+            "exchangecurrency": teachertransactions.row(i).value("ExchangeCurrency"),
+            "exchangerate": Number(teachertransactions.row(i).value("ExchangeRate")).toFixed(12),
+            "amount": teachertransactions.row(i).value("Amount"),
+            "vatcode": teachertransactions.row(i).value("VatCode"),
+            "maxscore": fullscore
+          };
+
+        }
+        else if (FileNumber === "110") {
+          teachertransactionsArray[k] = {
+            "position": i,
+            "date": teachertransactions.row(i).value("Date"),
+            "doc": teachertransactions.row(i).value("Doc"),
+            "description": teachertransactions.row(i).value("Description"),
+            "accountdebit": teachertransactions.row(i).value("AccountDebit"),
+            "accountcredit": teachertransactions.row(i).value("AccountCredit"),
+            "amount": teachertransactions.row(i).value("Amount"),
+            "vatcode": teachertransactions.row(i).value("VatCode"),
+            "maxscore": fullscore
+          };
+        }
+        else if (FileNumber === "120") {
+          teachertransactionsArray[k] = {
+            "position": i,
+            "date": teachertransactions.row(i).value("Date"),
+            "doc": teachertransactions.row(i).value("Doc"),
+            "description": teachertransactions.row(i).value("Description"),
+            "accountdebit": teachertransactions.row(i).value("AccountDebit"),
+            "accountcredit": teachertransactions.row(i).value("AccountCredit"),
+            "amountcurrency": teachertransactions.row(i).value("AmountCurrency"),
+            "exchangecurrency": teachertransactions.row(i).value("ExchangeCurrency"),
+            "exchangerate": Number(teachertransactions.row(i).value("ExchangeRate")).toFixed(12),
+            "amount": teachertransactions.row(i).value("Amount"),
+            "maxscore": fullscore
+          };
+        }
+        else {
+          teachertransactionsArray[k] = {
+            "position": i,
+            "date": teachertransactions.row(i).value("Date"),
+            "doc": teachertransactions.row(i).value("Doc"),
+            "description": teachertransactions.row(i).value("Description"),
+            "accountdebit": teachertransactions.row(i).value("AccountDebit"),
+            "accountcredit": teachertransactions.row(i).value("AccountCredit"),
+            "amount": teachertransactions.row(i).value("Amount"),
+            "maxscore": fullscore
+          };
+        }
 
         // Manage the max rows allowed for each exercise number
         n = i + 1;
@@ -478,30 +926,67 @@ var CorrectDoc = class CorrectDoc {
   }
 
   result_createarraystudent(studenttransactions, docArray, fullscore) {
-
     let studenttransactionsArray = [];
     let k = 0;
-    let j = 0;
+    let FileNumber = this.studentDoc.info("Base", "FileTypeNumber");
 
     for (let i = 0; i < studenttransactions.rowCount; i++) {
-      if (studenttransactions.row(i).value("Doc") === docArray[j] && j < docArray.length) {
-        studenttransactionsArray[k] = {
-          "position": i,
-          "date": studenttransactions.row(i).value("Date"),
-          "doc": studenttransactions.row(i).value("Doc"),
-          "description": studenttransactions.row(i).value("Description"),
-          "accountdebit": studenttransactions.row(i).value("AccountDebit"),
-          "accountcredit": studenttransactions.row(i).value("AccountCredit"),
-          "amount": studenttransactions.row(i).value("Amount"),
-          "automaticscore": fullscore,
-          "maxscore": fullscore,
-          "CorrectionsNotes": ""
-        };
-        k++;
-        j++;
+      const doc = studenttransactions.row(i).value("Doc");
+
+      if (!docArray.includes(doc)) continue; // Considera solo Doc presenti nel docente
+      if (doc === "" || doc === "#") continue;
+
+      let entry = {
+        "position": i,
+        "date": studenttransactions.row(i).value("Date"),
+        "doc": doc,
+        "description": studenttransactions.row(i).value("Description"),
+        "accountdebit": studenttransactions.row(i).value("AccountDebit"),
+        "accountcredit": studenttransactions.row(i).value("AccountCredit"),
+        "automaticscore": fullscore,
+        "maxscore": fullscore,
+        "CorrectionsNotes": ""
+      };
+
+      if (FileNumber === "130" || FileNumber === "120") {
+        entry.amountcurrency = studenttransactions.row(i).value("AmountCurrency");
+        entry.exchangecurrency = studenttransactions.row(i).value("ExchangeCurrency");
+        entry.exchangerate = Number(studenttransactions.row(i).value("ExchangeRate")).toFixed(12);
+      }
+
+      if (FileNumber === "110" || FileNumber === "130" || FileNumber === "100") {
+        entry.amount = studenttransactions.row(i).value("Amount");
+      }
+
+      if (FileNumber === "110" || FileNumber === "130") {
+        entry.vatcode = studenttransactions.row(i).value("VatCode");
+      }
+
+      studenttransactionsArray[k++] = entry;
+    }
+
+    return studenttransactionsArray;
+  }
+
+
+  result_checkaccounts(teachertransactions) {
+    // Check if the Teacher transactions table has the correct accounts present in the Accounts table
+    let accounts = this.teacherDoc.table("Accounts");
+    let accountsArray = [];
+    for (let i = 0; i < accounts.rowCount; i++) {
+      accountsArray.push(accounts.row(i).value("Account"));
+    }
+    for (let i = 0; i < teachertransactions.rowCount; i++) {
+      if (!accountsArray.includes(teachertransactions.row(i).value("AccountDebit"))) {
+        this.teacherDoc.addMessage("The account " + teachertransactions.row(i).value("AccountDebit") + " is not present in the Accounts table of the Teacher File.");
+        return false;
+      }
+      if (!accountsArray.includes(teachertransactions.row(i).value("AccountCredit"))) {
+        this.teacherDoc.addMessage("The account " + teachertransactions.row(i).value("AccountCredit") + " is not present in the Accounts table of the Teacher File.");
+        return false;
       }
     }
-    return studenttransactionsArray;
+    return true;
   }
 
 }

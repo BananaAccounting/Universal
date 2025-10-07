@@ -20,29 +20,9 @@
 %Begin test data
 %%SCRIPT{C:/Users/patrick.pasquillo/Documents/GitHub/Universal/education/extensions/ch.banana.app.exercisecorrection/test/ch.banana.app.documentation.test.js}
 %
-\begin{testcase}{TestImportFile}
+\begin{testcase}{TestDocumentationSelectedFiles}
 \begin{test}{testImportFile}
-\textvalue{TestDocumentation 0}\\
-\begin{jsonvalue}{TestDocumentation}
-\end{jsonvalue}
-\textvalue{TestDocumentation 1}\\
-\begin{jsonvalue}{TestDocumentation}
-\end{jsonvalue}
-\textvalue{TestDocumentation 2}\\
-\begin{jsonvalue}{TestDocumentation}
-\end{jsonvalue}
-\textvalue{TestDocumentation 3}\\
-\begin{jsonvalue}{TestDocumentation}
-\end{jsonvalue}
-\textvalue{TestDocumentation 4}\\
-\begin{jsonvalue}{TestDocumentation}
-\end{jsonvalue}
-\textvalue{TestDocumentation 5}\\
-\begin{jsonvalue}{TestDocumentation}
-\end{jsonvalue}
-\textvalue{TestDocumentation 6}\\
-\begin{jsonvalue}{TestDocumentation}
-\end{jsonvalue}
+\textvalue{}\\
 \keyvalue{Result}{Passed}
 \end{test}
 \end{testcase}

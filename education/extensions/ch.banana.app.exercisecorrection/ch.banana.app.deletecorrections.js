@@ -31,44 +31,50 @@ function exec() {
     }
 
     let printsettings = new PrintSettings(Banana.document, false);
-    let correctdoc = new CorrectDoc(Banana.document, Banana.document, false);
 
-    let execute = new DeleteCorrections(Banana.document, false, correctdoc, printsettings);
+    let execute = new DeleteCorrections(Banana.document, false, printsettings);
+
     return execute.deletecorrections();
 }
 
 /**
- * Questa classe gestisce la logica ed i metodi per la creazione del report 
+ * This class handles the logic and methods required to generate reports.
  * @param {*} banDocument 
  */
 
 var DeleteCorrections = class DeleteCorrections {
-    constructor(banDocument, isTest, correctdoc, printsettings) {
+    constructor(banDocument, isTest, printsettings) {
         this.banDoc = banDocument;
         this.isTest = isTest;
-        this.correctdoc = correctdoc;
         this.printsettings = printsettings;
     }
 
     deletecorrections() {
 
+        let lang;
+        lang = this.banDoc.info("Base", "Language");
 
-        let lang = this.banDoc.info("Base", "Language");
 
         // Load the texts based on the language code
         let texts = this.printsettings.loadTexts(lang);
 
-        let studentrow = this.banDoc.table("Transactions").findRowByValue("Doc", "Student");
+        let flag = false;
+        let studentfile = this.banDoc;
+
+        // if the file is not a test, check if it is a student file
+
+        var studentrow = studentfile.table("Transactions").findRowByValue("Doc", "Student");
+
         // if the import file is not a teacher file, show a error message
         if (studentrow === "undefined" || !studentrow) {
             Banana.application.addMessage(texts.isnotstudentfile);
             return;
         }
 
-        let flag = false;
+        // check if there are corrections to delete
 
-        for (let i = 0; i < this.banDoc.table("Transactions").rowCount; i++) {
-            if (this.banDoc.table("Transactions").row(i).value("TAuto") === "automaticcorrection") {
+        for (let i = 0; i < studentfile.table("Transactions").rowCount; i++) {
+            if (studentfile.table("Transactions").row(i).value("TAuto") === "automaticcorrection") {
                 flag = true;
                 continue;
             }
@@ -85,14 +91,14 @@ var DeleteCorrections = class DeleteCorrections {
             let rowsdelete = [];
             let rowsmodify = [];
 
-            for (let i = 0; i < this.banDoc.table("Transactions").rowCount; i++) {
+            for (let i = 0; i < studentfile.table("Transactions").rowCount; i++) {
 
                 //row operation
                 row = {};
                 row.operation = {};
 
 
-                if (this.banDoc.table("Transactions").row(i).value("TAuto") === "automaticcorrection") {
+                if (studentfile.table("Transactions").row(i).value("TAuto") === "automaticcorrection") {
 
                     // delete row to add the score and the maxscore to the transactions
 
@@ -102,19 +108,19 @@ var DeleteCorrections = class DeleteCorrections {
                     rowsdelete.push(row);
                 }
                 else {
-                    if (this.banDoc.table("Transactions").row(i).value("Doc") !== "Student") {
+                    if (studentfile.table("Transactions").row(i).value("Doc") !== "Student") {
                         row.style = { "fontSize": 0, "bold": false, "background-color": "#ffffff" };
                     }
                     row.operation.name = 'modify';
                     row.operation.sequence = i.toString();
                     row.fields = {};
-                    row.fields["TAuto"] = this.banDoc.table("Transactions").row(i).value("TAuto");
-                    row.fields["Date"] = this.banDoc.table("Transactions").row(i).value("Date");
-                    row.fields["Doc"] = this.banDoc.table("Transactions").row(i).value("Doc");
-                    row.fields["Description"] = this.banDoc.table("Transactions").row(i).value("Description");
-                    row.fields["AccountDebit"] = this.banDoc.table("Transactions").row(i).value("AccountDebit");
-                    row.fields["AccountCredit"] = this.banDoc.table("Transactions").row(i).value("AccountCredit");
-                    row.fields["Amount"] = this.banDoc.table("Transactions").row(i).value("Amount");
+                    row.fields["TAuto"] = studentfile.table("Transactions").row(i).value("TAuto");
+                    row.fields["Date"] = studentfile.table("Transactions").row(i).value("Date");
+                    row.fields["Doc"] = studentfile.table("Transactions").row(i).value("Doc");
+                    row.fields["Description"] = studentfile.table("Transactions").row(i).value("Description");
+                    row.fields["AccountDebit"] = studentfile.table("Transactions").row(i).value("AccountDebit");
+                    row.fields["AccountCredit"] = studentfile.table("Transactions").row(i).value("AccountCredit");
+                    row.fields["Amount"] = studentfile.table("Transactions").row(i).value("Amount");
                     row.fields["TMaxScore"] = "";
                     row.fields["TAutoScore"] = "";
                     row.fields["TAdjustedScore"] = "";
@@ -124,6 +130,7 @@ var DeleteCorrections = class DeleteCorrections {
                     rowsmodify.push(row);
                 }
             }
+
 
             //table for the operations
             let dataUnitTransactions = {};
@@ -146,9 +153,8 @@ var DeleteCorrections = class DeleteCorrections {
             return documentChange;
         }
 
-    else {
-        return Banana.application.addMessage(texts.nocorrections);
+        else {
+            return Banana.application.addMessage(texts.nocorrections);
+        }
     }
-}
-
 }
