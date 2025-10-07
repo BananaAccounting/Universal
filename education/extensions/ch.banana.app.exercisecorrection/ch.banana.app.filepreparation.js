@@ -35,7 +35,7 @@ function exec() {
 }
 
 /**
- * Questa classe gestisce la logica ed i metodi per la creazione del report 
+ * This class handles the logic and methods required to generate reports.
  * @param {*} banDocument 
  */
 
@@ -49,7 +49,7 @@ var CreateDoc = class CreateDoc {
 
     let lang = this.banDoc.info("Base", "Language");
 
-    let printsettings = new PrintSettings(this.banDoc1, this.isTest);
+    let printsettings = new PrintSettings(this.banDoc, this.isTest);
 
     // Load the texts based on the language code
     let texts = printsettings.loadTexts(lang);
@@ -57,49 +57,116 @@ var CreateDoc = class CreateDoc {
     let documentChange = { "format": "documentChange", "error": "", "data": [] };
 
     let jsonDocColumns = initDocument(this.isTest);
-
-    // Add the columns Score and MaxScore to the transactions if they don't exist
-
-    //table for the operations
-    let dataUnitTransactions = {};
-    dataUnitTransactions.nameXml = 'Transactions';
-
-    //data for columns
-    dataUnitTransactions.data = {};
-    dataUnitTransactions.data.viewList = {};
-    dataUnitTransactions.data.viewList.views = [];
+    let jsonDocRows = initDocument(this.isTest);
 
     //column operation
     let column = {};
+    // row operation
+    let row = {};
     //columns
     let columns = [];
+    // rows
+    let rows = [];
+    let rowDocteacher = false;
+    let rowDocstudent = false;
+    let rowData = '';
+    let rowDescription = '';
+    let filetype = '';
+
+    // Ask to the user if he wants to add the rows for the teacher or student
+
+    if (this.isTest) {
+      // For testing purposes, we can simulate the user input
+      filetype = texts.teacher; // Simulating teacher selection
+    } else {
+      filetype = Banana.Ui.getItem(texts.preparefile, texts.choosefile, [texts.teacher, texts.student]);
+    }
+    if (filetype === texts.teacher) {
+
+      for (let i = 0; i < this.banDoc.table('Transactions').rowCount; i++) {
+        rowData = this.banDoc.table('Transactions').row(i).value('Doc');
+        rowDescription = this.banDoc.table('Transactions').row(i).value('Description');
+        if (rowData === '#' && rowDescription === 'teacherfile') {
+          rowDocteacher = true;
+          break;
+        }
+      }
+
+      for (let i = 0; i < this.banDoc.table('Transactions').rowCount; i++) {
+        rowData = this.banDoc.table('Transactions').row(i).value('Doc');
+        if (rowData === 'Student') {
+          rowDocstudent = true;
+          break;
+        }
+      }
+
+      if (!rowDocteacher && !rowDocstudent) {
+        row = {};
+        row.operation = {};
+        row.operation.name = 'add';
+        row.operation.sequence = '-1';
+        row.style = { "color": "#FFFFFF", "background-color": "#0055ff", "bold": true };
+        row.fields = {};
+        row.fields['Doc'] = '#';
+        row.fields['Description'] = 'teacherfile';
+        //row parameters
+        rows.push(row);
+      }
+
+    } else {
+      for (let i = 0; i < this.banDoc.table('Transactions').rowCount; i++) {
+        rowData = this.banDoc.table('Transactions').row(i).value('Doc');
+        rowDescription = this.banDoc.table('Transactions').row(i).value('Description');
+        if (rowData === '#' && rowDescription === 'teacherfile') {
+          rowDocteacher = true;
+          break;
+        }
+      }
+
+      for (let i = 0; i < this.banDoc.table('Transactions').rowCount; i++) {
+        rowData = this.banDoc.table('Transactions').row(i).value('Doc');
+        if (rowData === 'Student') {
+          rowDocstudent = true;
+          break;
+        }
+      }
+
+      if (!rowDocteacher && !rowDocstudent) {
+        row = {};
+        row.operation = {};
+        row.operation.name = 'add';
+        row.style = { "color": "#FFFFFF", "background-color": "#0055ff", "bold": true };
+        row.operation.sequence = '-1';
+        row.fields = {};
+        row.fields['Doc'] = 'Student';
+        row.fields['Description'] = 'Student Name-Family Name';
+        rows.push(row);
+      }
+    }
 
     if (!this.banDoc.table('Transactions').column('TAuto')) {
       //column operation
       column = {};
-      column.operation = {};
-      column.operation.name = 'add';
       //column parameters
+      column.name = texts.auto;
       column.nameXml = 'TAuto';
       column.width = '200';
-      column.description = 'Auto';
-      column.header1 = 'Auto';
+      column.description = texts.auto;
+      column.header1 = texts.auto;
       column.definition = { "type": "text" };
-      column.operation = { "name": "add" };
-      column.operation.sequence = '0';
+      column.operation = { "name": "add", "sequence": '0' };
       columns.push(column);
     }
 
     if (!this.banDoc.table('Transactions').column('TMaxScore')) {
       //column operation
       column = {};
-      column.operation = {};
-      column.operation.name = 'add';
       //column parameters
+      column.name = texts.maxscore;
       column.nameXml = 'TMaxScore';
       column.width = '200';
-      column.description = 'Max Score';
-      column.header1 = 'Max Score';
+      column.description = texts.maxscore;
+      column.header1 = texts.maxscore;
       column.definition = { "type": "number", "decimals": '2' };
       column.operation = { "name": "add" };
       columns.push(column);
@@ -108,13 +175,12 @@ var CreateDoc = class CreateDoc {
     if (!this.banDoc.table('Transactions').column('TAutoScore')) {
       //column operation
       column = {};
-      column.operation = {};
-      column.operation.name = 'add';
       //column parameters
+      column.name = texts.autoscore;
       column.nameXml = 'TAutoScore';
       column.width = '200';
-      column.description = 'Auto Score';
-      column.header1 = 'Auto Score';
+      column.description = texts.autoscore;
+      column.header1 = texts.autoscore;
       column.definition = { "type": "number", "decimals": '2' };
       column.operation = { "name": "add" };
       columns.push(column);
@@ -123,13 +189,12 @@ var CreateDoc = class CreateDoc {
     if (!this.banDoc.table('Transactions').column('TAdjustedScore')) {
       //column operation
       column = {};
-      column.operation = {};
-      column.operation.name = 'add';
       //column parameters
+      column.name = texts.adjustedscore;
       column.nameXml = 'TAdjustedScore';
       column.width = '200';
-      column.description = 'Adjusted Score';
-      column.header1 = 'Adjusted Score';
+      column.description = texts.adjustedscore;
+      column.header1 = texts.adjustedscore;
       column.definition = { "type": "number", "decimals": '2' };
       column.operation = { "name": "add" };
       columns.push(column);
@@ -138,22 +203,45 @@ var CreateDoc = class CreateDoc {
     if (!this.banDoc.table('Transactions').column('TCorrectionsNotes')) {
       //column operation
       column = {};
-      column.operation = {};
-      column.operation.name = 'add';
       //column parameters
+      column.name = texts.correctionsnotes;
       column.nameXml = 'TCorrectionsNotes';
       column.width = '200';
-      column.description = 'Corrections Notes';
-      column.header1 = 'Corrections Notes';
+      column.description = texts.correctionsnotes;
+      column.header1 = texts.correctionsnotes;
       column.definition = { "type": "text" };
       column.operation = { "name": "add" };
       columns.push(column);
     }
 
-    if (columns.length > 0) {
-      dataUnitTransactions.data.viewList.views.push({ 'columns': columns });
-      jsonDocColumns.document.dataUnits.push(dataUnitTransactions);
-      documentChange["data"].push(jsonDocColumns);
+
+    if (rows.length > 0 || columns.length > 0) {
+
+      if (rows.length > 0) {
+        //table for the operations
+        let dataUnitTransactionsRows = {};
+        dataUnitTransactionsRows.nameXml = 'Transactions';
+        dataUnitTransactionsRows.data = {};
+        //data for rows
+        dataUnitTransactionsRows.data.rowLists = [];
+        dataUnitTransactionsRows.data.rowLists.push({ 'rows': rows });
+        jsonDocRows.document.dataUnits.push(dataUnitTransactionsRows);
+        Banana.console.log("jsonDocRows: " + JSON.stringify(jsonDocRows));
+        documentChange["data"].push(jsonDocRows);
+      }
+
+      if (columns.length > 0) {
+        //table for the operations
+        let dataUnitTransactionsColumns = {};
+        dataUnitTransactionsColumns.nameXml = 'Transactions';
+        dataUnitTransactionsColumns.data = {};
+        //data for columns
+        dataUnitTransactionsColumns.data.viewList = {};
+        dataUnitTransactionsColumns.data.viewList.views = [];
+        dataUnitTransactionsColumns.data.viewList.views.push({ 'columns': columns });
+        jsonDocColumns.document.dataUnits.push(dataUnitTransactionsColumns);
+        documentChange["data"].push(jsonDocColumns);
+      }
 
       return documentChange;
     }
