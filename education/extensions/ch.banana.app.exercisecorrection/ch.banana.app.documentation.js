@@ -30,7 +30,7 @@ function exec() {
 }
 
 /**
- * Questa classe gestisce la logica ed i metodi per la creazione del report 
+ * This class handles the logic and methods required to generate reports.
  * @param {*} banDocument 
  */
 
@@ -42,7 +42,8 @@ var PrintDoc = class PrintDoc {
 
     documentation() {
 
-        let lang = this.banDoc.info("Base", "Language");
+        let lang;
+        lang = this.banDoc.info("Base", "Language");
 
         let printsettings = new PrintSettings(this.banDoc1, this.isTest);
         // Load the texts based on the language code
