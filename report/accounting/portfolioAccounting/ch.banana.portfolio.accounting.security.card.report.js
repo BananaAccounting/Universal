@@ -15,7 +15,7 @@
 //
 // @api = 1.0
 // @id = ch.banana.portfolio.accounting.security.card.report.js
-// @description = 8. Security card report
+// @description = 7. Security card report
 // @task = app.command
 // @doctype = 100.*
 // @publisher = Banana.ch SA
