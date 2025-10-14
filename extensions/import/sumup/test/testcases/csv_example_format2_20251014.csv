@@ -1,0 +1,3 @@
+E-Mail,Datum,Transaktions-ID,Transaktionsart,Status,Kartentyp,Letzte 4 Ziffern,Durchgeführt mit,Zahlungsmethode,Eingabemodus,Autorisierungscode,Beschreibung,Betrag inkl. MwSt.,Netto,Steuerbetrag,Trinkgeldbetrag,Gebühr,Auszahlung,Auszahlungsdatum,Auszahlungs-ID,Referenz
+info@mail.ch,2025-10-12 17:04:11,TAAAX2Y2Q2G,Umsatz,Erfolgreich,MASTERCARD,**** **** **** 1111,DEBIT,POS,CONTACTLESS,5dxbNB,2 x test 1.-,2.0,1.85,0.15,0.0,0.02,1.98,,,
+,2025-10-12 17:04:18,TAAAX2Y2Q2G,Auszahlung,Gezahlt,,,,,,,,2.0,,,,0.02,1.98,2025-10-13,1234567,

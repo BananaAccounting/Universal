@@ -16,7 +16,7 @@
 
 // @id = ch.banana.uni.import.sumup.test
 // @api = 1.0
-// @pubdate = 2024-05-20
+// @pubdate = 2025-10-14
 // @publisher = Banana.ch SA
 // @description = <TEST ch.banana.uni.import.sumup.test>
 // @task = app.command
@@ -45,6 +45,7 @@ TestImportSumupTrans.prototype.initTestCase = function () {
    this.fileNameList.push("file:script/../test/testcases/csv_example_format1_20240215.csv");
    this.fileNameList.push("file:script/../test/testcases/csv_example_format1_20250520.csv");
    this.fileNameList.push("file:script/../test/testcases/csv_example_format2_20250324.csv");
+   this.fileNameList.push("file:script/../test/testcases/csv_example_format2_20251014.csv");
 }
 
 // This method will be called at the end of the test case
