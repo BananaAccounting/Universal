@@ -1,6 +1,6 @@
 // @id = ch.banana.app.recalculatetotal
 // @api = 1.0
-// @pubdate = 2025-02-26
+// @pubdate = 2025-10-07
 // @publisher = Banana.ch SA
 // @description = 2. Recalculate the total
 // @description.it = 2. Ricalcola il totale

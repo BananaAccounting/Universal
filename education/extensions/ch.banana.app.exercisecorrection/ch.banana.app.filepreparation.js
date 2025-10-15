@@ -1,6 +1,6 @@
 // @id = ch.banana.app.filepreparation
 // @api = 1.0
-// @pubdate = 2025-02-26
+// @pubdate = 2025-10-07
 // @publisher = Banana.ch SA
 // @description = 0. File Preparation
 // @description.it = 0. Preparazione file
