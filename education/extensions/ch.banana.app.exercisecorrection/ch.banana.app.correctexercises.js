@@ -1,6 +1,6 @@
 // @id = ch.banana.app.correctexercises
 // @api = 1.0
-// @pubdate = 2025-07-29
+// @pubdate = 2025-10-07
 // @publisher = Banana.ch SA
 // @description = 1. Correct the exercises
 // @description.it = 1. Correggi gli esercizi

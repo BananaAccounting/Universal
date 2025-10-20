@@ -1,6 +1,6 @@
 // @id = ch.banana.app.settings
 // @api = 1.0
-// @pubdate = 2025-07-29
+// @pubdate = 2025-10-07
 // @publisher = Banana.ch SA
 // @description = 4. Settings
 // @description.it = 4. Impostazioni
