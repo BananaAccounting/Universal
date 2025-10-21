@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-// @pubdate = 2025-01-09
+// @pubdate = 2025-08-25
 // @publisher = Banana.ch SA
 // @includejs = ch.banana.portfolio.accounting.accounts.dialog.js
 // @includejs = ch.banana.portfolio.accounting.calculation.methods.js
@@ -36,6 +36,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         this.trTableData = getTransactionsTableData(this.banDoc, this.docInfo);
         this.transactionsType = this.getTransactionsType();
         this.saleTrRef = ""; // In ExternalReference column of the transactions table.
+        this.saleQty = ""; // Quantity of the sale;
         this.showMsgDlg = showMsgDlg; // To show messages to the user. Disabled during tests.
     }
 
@@ -47,13 +48,17 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         let jsonDoc = { "format": "documentChange", "error": "" };
         if (!this.salesData || !this.currentSelectedRowIsValid())
             return {};
+
         /**
-         * In the “ReferenceUnit” column of the items table, 
+         * In the “AssetAccount” column of the items table, 
          * we request to indicate the type of Title that is being used:
-         * - S: Stock
-         * - B: Bond
+         * - 1: Stocks
+         * - 2: Bonds
          */
         this.saleTrRef = this.currentRowObj.value("ExternalReference"); // By default.
+        /** Sold quantity. We need to save this information to be able tu calculate the
+         * sale result per unit.*/
+        this.saleQty = Banana.SDecimal.abs(this.currentRowObj.value("Quantity"));
 
         /**Notes: 
          * -To properly set up the document change with the changes, the modification of the main sale row and the addition
@@ -63,10 +68,10 @@ var RecordSalesTransactions = class RecordSalesTransactions {
          * */
 
         switch (this.itemObject.type) {
-            case "B":
+            case "2":
                 jsonDoc["data"] = this.getBondSaleResultDocChangeTransaction();
                 break;
-            case "S":
+            case "1":
                 jsonDoc["data"] = this.getStockSaleResultDocChangeTransaction();
                 break;
             default:
@@ -480,6 +485,9 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         row.fields["ItemsId"] = this.itemObject.item;
         row.fields["ExternalReference"] = this.saleTrRef + ".5";
         row.fields["Description"] = this.itemObject.description + " " + this.texts.resultOnSale;
+        row.fields["Quantity"] = getPlusMinusSign() + Banana.Converter.toInternalNumberFormat(Banana.SDecimal.abs(this.saleQty));
+        row.fields["UnitPrice"] = Banana.Converter.toInternalNumberFormat(
+            Banana.SDecimal.divide(this.salesData.saleResult, this.saleQty, this.getUnitPriceRoundingContext()));
         if (isLossOnSale) {
             row.fields["AccountDebit"] = this.savedAccountsParams.valueChangingcontraAccounts.realizedLossAccount
                 || this.texts.realizedLossAccountPlaceHolder;
@@ -509,6 +517,9 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         row.fields["ItemsId"] = this.itemObject.item;
         row.fields["ExternalReference"] = this.saleTrRef + ".5";
         row.fields["Description"] = this.itemObject.description.trim() + " " + this.texts.resultOnSale;
+        row.fields["Quantity"] = getPlusMinusSign() + Banana.Converter.toInternalNumberFormat(Banana.SDecimal.abs(this.saleQty));
+        row.fields["UnitPrice"] = Banana.Converter.toInternalNumberFormat(
+            Banana.SDecimal.divide(this.salesData.saleResult, this.saleQty, this.getUnitPriceRoundingContext()));
         if (isLossOnSale) {
             row.fields["AccountDebit"] = this.savedAccountsParams.valueChangingcontraAccounts.realizedLossAccount
                 || this.texts.realizedLossAccountPlaceHolder;
@@ -709,6 +720,9 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         row.fields["ItemsId"] = this.itemObject.item;
         row.fields["ExternalReference"] = this.saleTrRef + ".4";
         row.fields["Description"] = this.itemObject.description.trim() + " " + this.texts.resultOnSale;
+        row.fields["Quantity"] = getPlusMinusSign() + Banana.Converter.toInternalNumberFormat(Banana.SDecimal.abs(this.saleQty));
+        row.fields["UnitPrice"] = Banana.Converter.toInternalNumberFormat(
+            Banana.SDecimal.divide(this.salesData.saleResult, this.saleQty, this.getUnitPriceRoundingContext()));
         if (isLossOnSale) {
             row.fields["AccountDebit"] = this.savedAccountsParams.valueChangingcontraAccounts.realizedLossAccount
                 || this.texts.realizedLossAccountPlaceHolder;
@@ -777,6 +791,9 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         row.fields["ItemsId"] = this.itemObject.item;
         row.fields["ExternalReference"] = this.saleTrRef + ".4";
         row.fields["Description"] = this.itemObject.description.trim() + " " + this.texts.resultOnSale;
+        row.fields["Quantity"] = getPlusMinusSign() + Banana.Converter.toInternalNumberFormat(Banana.SDecimal.abs(this.saleQty));
+        row.fields["UnitPrice"] = Banana.Converter.toInternalNumberFormat(
+            Banana.SDecimal.divide(this.salesData.saleResult, this.saleQty, this.getUnitPriceRoundingContext()));
         if (isLossOnSale) {
             row.fields["AccountDebit"] = this.savedAccountsParams.valueChangingcontraAccounts.realizedLossAccount
                 || this.texts.realizedLossAccountPlaceHolder;
@@ -1128,5 +1145,10 @@ var RecordSalesTransactions = class RecordSalesTransactions {
 
         return jsonDoc;
 
+    }
+
+    getUnitPriceRoundingContext() {
+        let unitPriceDecimals = this.docInfo.unitPriceColDecimals;
+        return { 'decimals': unitPriceDecimals, 'mode': Banana.SDecimal.HALF_UP };
     }
 }

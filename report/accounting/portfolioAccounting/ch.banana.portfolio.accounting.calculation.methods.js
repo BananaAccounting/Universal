@@ -20,6 +20,12 @@
  * INVESTMENT ACCOUNTING METHODS
  * 
  *********************************************************/
+const PLUSMINUS_SIGN = "\u00B1";
+
+/** To get the sign outside the file */
+function getPlusMinusSign() {
+    return PLUSMINUS_SIGN;
+}
 
 function initJsonDoc() {
     var jsonDoc = {};
@@ -44,7 +50,7 @@ function getReportHeader(report, docInfo) {
     headerParagraph.addParagraph("", "");
 }
 
-function getInvestmentsAccountsFormatted(banDoc) {
+function getAssetAccountsFormatted(banDoc) {
     const accountsList = getItemsAccounts(banDoc);
     if (!accountsList || accountsList.length === 0)
         return "";
@@ -138,41 +144,44 @@ function getDocumentInfo(banDoc) {
     docInfo.zip = banDoc.info("AccountingDataBase", "Zip");
     docInfo.city = banDoc.info("AccountingDataBase", "City");
 
+    // get the decimals used in the unit price columns
+    docInfo.unitPriceColDecimals = banDoc.info("AccountingDataBase", "DecimalsColumnsUnitPrice");
 
     return docInfo;
 
 }
 
 /**
- * Reads the journal data and returns an array of objects with the information we need
- * @param {*} journal journal table
+ * Reads the journal data and returns an object containing the opening values of the item, if present.
  */
-function getJournalData(docInfo, journal) {
-    var journalData = [];
+function getItemOpeningValuesFromJournal(docInfo, journal, itemId) {
+
+    var openingValues = {};
+
+    if (!journal || !journal.rowCount || !itemId) {
+        return openingValues;
+    }
 
     for (var i = 0; i < journal.rowCount; i++) {
         var tRow = journal.row(i);
-        var jrRow = {};
-        jrRow.date = tRow.value("JDate");
-        jrRow.doc = tRow.value("Doc");
-        jrRow.trId = tRow.value("JContraAccountGroup");
-        jrRow.item = tRow.value("ItemsId");
-        jrRow.description = tRow.value("Description");
-        jrRow.debitBase = tRow.value("JDebitAmount"); //debit value in base currency
-        jrRow.creditBase = tRow.value("JCreditAmount"); //credit value base currency
-        jrRow.balanceBase = tRow.value("JBalance"); //credit value base currency
-        jrRow.qt = tRow.value("Quantity"); //credit value base currency
-        jrRow.unitPrice = tRow.value("UnitPrice"); //credit value base currency
-        if (docInfo.isMultiCurrency) {
-            jrRow.debitCurr = tRow.value("JDebitAmountCurrency"); //debit value in base currency
-            jrRow.creditCurr = tRow.value("JCreditAmountCurrency"); //credit value base currency
-            jrRow.balanceCurr = tRow.value("JBalanceAccountCurrency"); //credit value base currency
+        if (tRow.value("JOperationType") === "1" && tRow.value("ItemsId") === itemId) {
+            openingValues.qt = tRow.value("Quantity");
+            openingValues.unitPrice = tRow.value("UnitPrice");
+            openingValues.date = tRow.value("JDate");
+            openingValues.description = tRow.value("JDescription");
+            openingValues.amount = tRow.value("JAmount");
+            openingValues.debitBase = tRow.value("JDebitAmount"); //debit value in base currency
+            openingValues.creditBase = tRow.value("JCreditAmount"); //credit value base currency
+            if (docInfo.isMultiCurrency) {
+                openingValues.amountCurr = tRow.value("JAmountAccountCurrency");
+                openingValues.debitCurr = tRow.value("JDebitAmountAccountCurrency"); //debit value in base currency
+                openingValues.creditCurr = tRow.value("JCreditAmountAccountCurrency"); //credit value base currency
+            }
+            break;
         }
-
-        journalData.push(jrRow);
     }
 
-    return journalData;
+    return openingValues;
 
 }
 
@@ -183,24 +192,6 @@ function getFormattedSavedParams(banDoc, paramsId) {
         userParam = JSON.parse(savedParam);
     }
     return userParam;
-}
-
-/**
- * saves the list of ids of all registrations in an array. each id is saved only once
- * @param {*} journalData 
- */
-function getTransactionsIdList(journalData) {
-    var trIdElements = new Set();
-    var trIdList = [];
-
-    for (var key in journalData) {
-        trIdElements.add(journalData[key].trId);
-    }
-
-    trIdList = Array.from(trIdElements);
-
-    return trIdList;
-
 }
 
 /**
@@ -361,7 +352,6 @@ function getDateObject(dateString, format) {
 function calculateStockSaleData(banDoc, docInfo, itemObj, dlgParams, currentRowNr) {
 
     let saleData = {};
-    let journal = "";
     let quantity = "";
     let accExRate = ""; //Accounting exchange rate.
     let currentQt = "";
@@ -370,8 +360,6 @@ function calculateStockSaleData(banDoc, docInfo, itemObj, dlgParams, currentRowN
     let totalSharesValue = "";
     let saleResult = "";
     let exRateResult = "";
-    let accountCard = "";
-    let accountCardData = "";
     let accruedInterests = "";
     let itemAccount = "";
     let itemCardData = [];
@@ -386,12 +374,9 @@ function calculateStockSaleData(banDoc, docInfo, itemObj, dlgParams, currentRowN
         banDoc.addMessage(msg, ITEM_WITHOUT_ACCOUNT);
         return "";
     }
+
     //Get item card data to find the current average cost
-    journal = banDoc.journal(banDoc.ORIGINTYPE_CURRENT, banDoc.ACCOUNTTYPE_NONE);
-    journalData = getJournalData(docInfo, journal);
-    accountCard = banDoc.currentCard(itemAccount);
-    accountCardData = getAccountCardDataAdapted(itemObj, accountCard);
-    itemCardData = getItemCardDataList(docInfo, itemObj, accountCardData, journalData, unitPriceColDecimals, currentRowNr);
+    itemCardData = getItemCardDataList(banDoc, docInfo, itemObj, unitPriceColDecimals, currentRowNr);
 
     if (!itemCardData || isObjectEmpty(itemCardData))
         return saleData;
@@ -407,7 +392,7 @@ function calculateStockSaleData(banDoc, docInfo, itemObj, dlgParams, currentRowN
     exRateResult = getExchangeResult(totalSharesValue, saleResult, dlgParams.currExRate, accExRate);
 
     // only for bonds
-    if (itemObj.type === "B") {
+    if (itemObj.type === "2") {
         accruedInterests = dlgParams.accruedInterests; //calculateAccruedInterests(dlgParams, itemObj);
     }
 
@@ -450,33 +435,27 @@ function getClosestPreviousObjByRowNr(accountCardData, currentRowNr) {
 }
 
 /**
- * Given an account card, it filters the transactions by item and adds values useful for creating
- * of an account card by returning a new account card adapted to the creation of a
- * item card. (see getItemCardDataList()). We may combine the two methods in the future.
+ * Ritorna un array di oggetti contenente i movimenti del conto inerenti al titolo passato come parametro.
  */
-function getAccountCardDataAdapted(itemObj, accountCard) {
-    let transactions = [];
-    let accBalance = "";
-    let accBalanceCurr = "";
-    /**
-     * When creating the account card, before calculating the balance manually using the debit and credit columns, 
-     * we must take into account, if any, the opening balance of the security found in the ‘ValueBegin’ ( or ‘ValueBeginCurrency’) column
-     * and use it as a starting point for the balance calculation. New options could be considered in the future, for now it seems 
-     * the only way to start from the correct initial balance of the security (and not of the account, which may consist of several securities).
-     */
-    let itemName = itemObj.item;
-    let itemValueBegin = itemObj.valueBegin;
-    let itemValueBeginCurrency = itemObj.valueBeginCurrency;
+function getAccCardDataArrayOfObjects(banDoc, docInfo, itemObj) {
 
-    if (itemValueBegin)
-        accBalance = itemValueBegin;
-    if (itemValueBeginCurrency)
-        accBalanceCurr = itemValueBeginCurrency;
+    if (!banDoc) {
+        return [];
+    }
+
+    let itemName = itemObj.item;
+    let itemAccount = itemObj.account;
+    let transactions = [];
+
+    let accountCard = banDoc.currentCard(itemAccount);
+
+    if (!accountCard)
+        return transactions;
 
     for (var i = 0; i < accountCard.rowCount; i++) {
         let tRow = accountCard.row(i);
         let trType = tRow.value("JOperationType");
-        if (tRow.value("ItemsId") == itemName) {
+        if (tRow.value("ItemsId") == itemName && trType == "3") { // 3 = Transaction
             let trData = {};
             trData.rowNr = tRow.rowNr;
             trData.originTable = tRow.value("JTableOrigin");
@@ -484,43 +463,21 @@ function getAccountCardDataAdapted(itemObj, accountCard) {
             trData.rowType = trType;
             trData.doc = tRow.value("Doc");
             trData.date = tRow.value("Date");
-            trData.trId = tRow.value("JContraAccountGroup");
             trData.item = tRow.value("ItemsId");
             trData.description = tRow.value("Description");
             trData.qt = tRow.value("Quantity");
-            trData.currency = tRow.value("ExchangeCurrency");
-            //trData.balanceBase = tRow.value("JBalance"); //Se il conto è usato per più items, il bilancio deve essere ripreso in altro modo.
             trData.unitPrice = tRow.value("UnitPrice");
-            trData.debitBase = tRow.value("JDebitAmount"); //debit value in base currency
-            trData.creditBase = tRow.value("JCreditAmount"); //credit value base currency
-            /** 
-             * Calculate the balances manually, as an account can include more items, 
-             * we need to calculate the balance only for the current item.
-             * */
-            if (trData.debitBase !== "") {
-                accBalance = Banana.SDecimal.add(accBalance, trData.debitBase);
+            trData.debitBase = tRow.value("JDebitAmount"); //Debit value in base currency
+            trData.creditBase = tRow.value("JCreditAmount"); //Credit value base currency
+            if (docInfo.isMultiCurrency) {
+                trData.debitCurr = tRow.value("JDebitAmountAccountCurrency");
+                trData.creditCurr = tRow.value("JCreditAmountAccountCurrency");
+                trData.currency = tRow.value("ExchangeCurrency");
             }
-            if (trData.creditBase !== "") {
-                accBalance = Banana.SDecimal.subtract(accBalance, trData.creditBase);
-            }
-            trData.balanceBase = accBalance;
-            trData.debitCurr = tRow.value("JDebitAmountAccountCurrency");
-            trData.creditCurr = tRow.value("JCreditAmountAccountCurrency");
-            if (trData.debitCurr !== "") {
-                accBalanceCurr = Banana.SDecimal.add(accBalanceCurr, trData.debitCurr);
-            }
-            if (trData.creditCurr !== "") {
-                accBalanceCurr = Banana.SDecimal.subtract(accBalanceCurr, trData.creditCurr);
-            }
-            trData.balanceCurr = accBalanceCurr;
-
             transactions.push(trData);
         }
     }
-    if (transactions.length > 0)
-        return transactions;
-    else
-        return [];
+    return transactions;
 }
 
 function getAccountCurrency(accountName, banDoc) {
@@ -547,91 +504,92 @@ function accountIsInForeignCurrency(banDoc, docInfo, account) {
 }
 
 /**
- * Starting from the adapted account card data (see method: getAccountCardDataAdapted), adds:
- * - A new object in the first position of the array that contains the opening data (if found) of the security.
- * Then for each transaction add:
- * - The quantity change (if present)
- * - The unit price (if present)
- * - The balance of the quantity (updated for each movement)
- * - The book value (updated with each movement)
- * At the end add a new object containing the resulting values in the last transaction, these
- * values rapresent the current situation for the quantity balance and the book value.
- * If no transaction is found, the values are directly taken form the opening data.
- * The returned structure looks like this:
-{
-  "itemId": "CH002775224",
-  "openingData": {
-    "itemUnitPriceBegin": "5.9998",
-    "itemValueBeginCurrency": "1499.95",
-    "itemValueBegin": "1499.95",
-    "itemExchangeBegin": "",
-    "itemQuantityBegin": "250.0000"
-  },
-  "transactionsData": [
-    {
-      "rowNr": 3,
-      "originTable": "Transactions",
-      "originRow": "8",
-      "rowType": "3",
-      "doc": "2",
-      "date": "2025-01-31",
-      "trId": "8",
-      "item": "CH002775224",
-      "description": "Shares BancaStato",
-      "qt": "-200.0000",
-      "currency": "CHF",
-      "unitPrice": "6.0201",
-      "debitBase": "",
-      "creditBase": "1204.02",
-      "balanceBase": "295.93",
-      "qtBalance": "50.0000",
-      "accAvgCost": "5.9186"
-    },
-    {
-      "rowNr": 4,
-      "originTable": "Transactions",
-      "originRow": "11",
-      "rowType": "3",
-      "doc": "2",
-      "date": "2025-01-31",
-      "trId": "11",
-      "item": "CH002775224",
-      "description": "Shares BancaStato Result on sale",
-      "qt": "",
-      "currency": "CHF",
-      "unitPrice": "",
-      "debitBase": "4.06",
-      "creditBase": "",
-      "balanceBase": "299.99",
-      "qtBalance": "50.0000",
-      "accAvgCost": "5.9998"
-    }
-  ],
-  "currentValues": {
-    "itemAvgCost": "5.9998",
-    "itemQtBalance": "50.0000",
-    "itemBalanceBase": "299.99",
-    "itemBalanceCurr": "",
-    "itemExchangeRate": ""
-  }
-}
-This structure has been designed to allow saving separately the data related to the opening of the security, 
-those related to its evolution (transactions), and the current values (the latest transaction( or transaction x if a currentRowNr is defined) resulting data).
+ * Creates an item card taking the opening values from the journal, filtering the transactions from the account card
+ *  and calculating the progressive values.
  */
-function getItemCardDataList(docInfo, itemObj, accountCardData, journalData, unitPriceColDecimals, currentRowNr) {
+function getItemCardDataList(banDoc, docInfo, itemObj, unitPriceColDecimals, currentRowNr) {
+    // Get the Journal list
+    journal = banDoc.journal(banDoc.ORIGINTYPE_CURRENT, banDoc.ACCOUNTTYPE_NORMAL);
+    // From the journal we get an object containing the opening values of the item (operations type = 1).
+    let itemOpeningValues = getItemOpeningValuesFromJournal(docInfo, journal, itemObj.item);
+    // From the account card we get the transactions related to the item (operations type = 3).
+    let accountCardData = getAccCardDataArrayOfObjects(banDoc, docInfo, itemObj);
+    // Create the item card data object.
     let itemCardData = {};
-    let openingData = getItemOpeningDataObj(docInfo, itemObj);
-    setSoldData(accountCardData, journalData);
-    setQuantityBalance(openingData, accountCardData);
-    setCurrentAccAvgCost(accountCardData, unitPriceColDecimals);
+    setItemCard_ProgressiveValues(docInfo, accountCardData, itemOpeningValues, unitPriceColDecimals);
 
     itemCardData.itemId = itemObj.item;
     itemCardData.itemCurrency = itemObj.currency;
-    itemCardData.openingData = openingData;
+    itemCardData.openingData = itemOpeningValues;
     itemCardData.transactionsData = accountCardData;
-    itemCardData.currentValues = getItemCurrentValues(openingData, accountCardData, currentRowNr);
+    itemCardData.currentValues = getItemCurrentValues(itemOpeningValues, accountCardData, currentRowNr);
 
     return itemCardData;
+}
+
+function setItemCard_ProgressiveValues(docInfo, itemTransactions, itemOpeningValues, unitPriceColDecimals) {
+    if (!Array.isArray(itemTransactions) || itemTransactions.length === 0) return;
+
+    // Helpers to work always with valid values.
+    const Dec = {
+        to: v => (v == null || v === "" ? "0" : String(v)),
+        add: (a, b) => Banana.SDecimal.add(Dec.to(a), Dec.to(b)),
+        sub: (a, b) => Banana.SDecimal.subtract(Dec.to(a), Dec.to(b)),
+        cmp: (a, b) => Banana.SDecimal.compare(Dec.to(a), Dec.to(b))
+    };
+
+    const ov = itemOpeningValues || {};
+    const isMultiCurrency = !!(docInfo && docInfo.isMultiCurrency);
+
+    // Opening values
+    let runningQty = Dec.to(ov.qt);
+    let runningBalanceBase = Dec.to(ov.amount);
+    let runningBalanceCurr = isMultiCurrency ? Dec.to(ov.amountCurr) : "0";
+
+    for (let i = 0; i < itemTransactions.length; i++) {
+        const tx = itemTransactions[i];
+
+        // Quantity progressive
+        const rawQt = tx.qt;
+        const hasQt = !(rawQt == null || String(rawQt).trim() === "" || qtyIsNeutral(rawQt));
+        if (hasQt) {
+            // Keep the sign exactly as provided: "-5" subtract, "5" add
+            const qtyDelta = String(rawQt).trim();
+            runningQty = Dec.add(runningQty, qtyDelta);
+        }
+        tx.qtBalance = runningQty; // cumulative quantity
+
+        // Balance progressive base currency: delta = debit - credit
+        const rowDeltaBase = Dec.sub(tx.debitBase, tx.creditBase);
+        runningBalanceBase = Dec.add(runningBalanceBase, rowDeltaBase);
+        tx.amountBase = rowDeltaBase;      // per-row delta
+        tx.balanceBase = runningBalanceBase; // running balance
+
+        // Balance progressive in account currency (if multi-currency)
+        if (isMultiCurrency) {
+            const rowDeltaCurr = Dec.sub(tx.debitCurr, tx.creditCurr);
+            runningBalanceCurr = Dec.add(runningBalanceCurr, rowDeltaCurr);
+            tx.amountCurr = rowDeltaCurr;       // per-row delta
+            tx.balanceCurr = runningBalanceCurr; // running balance
+        }
+
+        // --- Average accounting cost (weighted moving average) ---
+        // accAvgCost = (running balance in item currency if available, else base) / runningQty
+        const numerator = isMultiCurrency ? runningBalanceCurr : runningBalanceBase;
+        if (Dec.cmp(runningQty, "0") !== 0) {
+            tx.accAvgCost = Banana.SDecimal.divide(numerator, runningQty, { decimals: unitPriceColDecimals });
+        } else {
+            // Qty = 0 -> costo medio non definito: lasciamo vuoto (evita divisione per zero)
+            tx.accAvgCost = "0";
+        }
+    }
+}
+
+function qtyIsNeutral(qty) {
+    if (qty.indexOf(PLUSMINUS_SIGN) >= 0) {
+        return true;
+    }
+    return false;
 }
 
 /**
@@ -668,69 +626,15 @@ function getItemCurrentValues(openingData, accountCardData, currentRowNr) {
 }
 
 function setOpeningValues(currentValuesObj, openingData) {
-    currentValuesObj.itemAvgCost = openingData.itemUnitPriceBegin;
-    currentValuesObj.itemQtBalance = openingData.itemQuantityBegin;
-    currentValuesObj.itemBalanceBase = openingData.itemValueBegin;
-    currentValuesObj.itemBalanceCurr = openingData.itemValueBeginCurrency;
-    currentValuesObj.itemExchangeRate = openingData.itemExchangeBegin;
-}
-
-/**
- * The opening data of an object can be found in the table ‘Items’ in the columns:
- * - UnitPriceBegin: Opening price of the security.
- * - ValueBeginCurrency: Opening Balance of the security. 
- * - ValueBegin: Opening Balance of the security in the base currency
- * - QuantityBegin: Opening Quantity of the security.
- * - ExchangeBegin: Opening exchange rate.
- * When the user creates a new year and wants to report the data correctly 
- * as described above, he must have the following values in the table ‘Items’ after the adjustment
- * - PriceCurrent: Current price of the security (resulting book value after settlement).
- * - QuantityCurrent: Current quantity of the security (automatically calculated by Banana).
- * - CurrentValue (or CurrencyCurrentValue): Current balance of the security (automatically calculated by Banana if given quantity and price).
- * This data will then serve as the opening data for the new year.
- */
-function getItemOpeningDataObj(docInfo, itemObj) {
-    let openingDataObj = {};
-
-    openingDataObj.itemOpeningDate = docInfo.openingDate;
-    openingDataObj.itemOpeningDescription = "Initial balance";
-    openingDataObj.itemUnitPriceBegin = itemObj.unitPriceBegin;
-    openingDataObj.itemValueBeginCurrency = itemObj.valueBeginCurrency;
-    openingDataObj.itemValueBegin = itemObj.valueBegin;
-    openingDataObj.itemExchangeBegin = itemObj.exchangeBeginCurrency;
-    openingDataObj.itemQuantityBegin = itemObj.beginQt;
-
-    return openingDataObj;
+    currentValuesObj.itemAvgCost = openingData.unitPrice;
+    currentValuesObj.itemQtBalance = openingData.qt;
+    currentValuesObj.itemBalanceBase = openingData.amount;
+    currentValuesObj.itemBalanceCurr = openingData.amountCurr;
+    currentValuesObj.itemExchangeRate = "";
 }
 
 function isObjectEmpty(obj) {
     return Object.keys(obj).length === 0;
-}
-
-/**
- * Calculates how the average accounting cost of the security is updated after each movement.
- * The accounting average cost is calculated by doing: Balance (in the item currency)/Quantity balance.
- * Calculates for each line of the card the average accounting purchase price.
- * @param {*} accountCardData 
- * @param {*} balanceCol 
- */
-function setCurrentAccAvgCost(accountCardData, unitPriceColDecimals) {
-
-    if (accountCardData.length < 1)
-        return accountCardData;
-
-    for (var key in accountCardData) {
-        let trId = "";
-        trId = accountCardData[key].trId;
-        if (trId && trId !== "") {
-            if (accountCardData[key].balanceCurr)
-                accountCardData[key].accAvgCost = Banana.SDecimal.divide(accountCardData[key].balanceCurr, accountCardData[key].qtBalance, { 'decimals': unitPriceColDecimals });
-            else
-                accountCardData[key].accAvgCost = Banana.SDecimal.divide(accountCardData[key].balanceBase, accountCardData[key].qtBalance, { 'decimals': unitPriceColDecimals });
-        }
-    }
-
-    return accountCardData;
 }
 
 /**
@@ -742,7 +646,7 @@ function getSum(itemCardData, ref) {
     var sum = "";
     if (ref) {
         for (var key in itemCardData) {
-            sum = Banana.SDecimal.add(sum, itemCardData[key][ref]);
+            sum = Banana.SDecimal.add(sum, itemCardData[key][ref]); // Vedere se somma ancora beneee con i dati del itemcarddata e non accountcarddata 19.08.
         }
     }
     return sum;
@@ -764,56 +668,6 @@ function getBalance(itemCardData, debRef, credRef) {
         }
     }
     return balance;
-}
-
-/**
- * Sets the quantity and the price to the sales records in the accountCard by taking the data from the journal lines
- * If the accountCard line does not have the item, it means that the  
- * represents the sales amount. To this amount I add the quantity that I retrieve from the journal, 
- * I retrieve it by going to the only line that contains a reference to the quantity of the record with the same id.
- * @param {*} accountCardData 
- * @param {*} journalData 
- */
-function setSoldData(accountCardData, journalData) {
-
-    if (accountCardData.length < 1)
-        return accountCardData;
-
-    for (var key in accountCardData) {
-        let trId = "";
-        trId = accountCardData[key].trId;
-        if (trId && trId !== "") {
-            accountCardData[key].qt = getJournalValueFiltered(journalData, trId, "qt",);
-            accountCardData[key].unitPrice = getJournalValueFiltered(journalData, trId, "unitPrice");
-        }
-    }
-    return accountCardData
-}
-
-/**
- * Calculates for each line of the card the cumulative quantity
- * @param {*} accountCardData 
- * @returns 
- */
-function setQuantityBalance(openingData, accountCardData) {
-
-    let quantityBalance = "";
-
-    if (accountCardData.length < 1)
-        return accountCardData;
-
-    if (openingData.itemQuantityBegin)
-        quantityBalance = openingData.itemQuantityBegin;
-
-    for (var key in accountCardData) {
-        let quantity = "";
-        quantity = accountCardData[key].qt;
-        if (quantity && quantity !== "")
-            quantityBalance = Banana.SDecimal.add(quantityBalance, accountCardData[key].qt);
-
-        accountCardData[key].qtBalance = quantityBalance;
-    }
-    return accountCardData;
 }
 
 function getJournalValueFiltered(journalData, trId, objProp) {
@@ -1064,7 +918,7 @@ function getItemsTableData(banDoc) {
         itemData.rowNr = tRow.rowNr;
         itemData.item = tRow.value("ItemsId");
         itemData.description = tRow.value("Description");
-        itemData.account = tRow.value("Account");
+        itemData.account = tRow.value("AssetAccount");
         itemData.currentQt = tRow.value("QuantityCurrent");
         itemData.valueCurrent = tRow.value("ValueCurrent");
         itemData.valueCurrentCurrency = tRow.value("CurrencyCurrentValue");
@@ -1074,7 +928,7 @@ function getItemsTableData(banDoc) {
         itemData.interestRate = tRow.value("Notes");
         itemData.unitPriceCurrent = tRow.value("UnitPriceCurrent");
         itemData.currency = tRow.value("Currency");
-        itemData.type = tRow.value("ReferenceUnit");
+        itemData.type = tRow.value("AssetType");
         itemData.unitPriceBegin = tRow.value("UnitPriceBegin");
         itemData.valueBegin = tRow.value("ValueBegin");
         itemData.beginQt = tRow.value("QuantityBegin");
@@ -1297,7 +1151,7 @@ function getColors(HexColor) {
     return colors;
 }
 
-function checkIfNumberisEven(number) {
+function checkIfNumberIsEven(number) {
     isEven = false;
 
     if (number % 2 == 0)
@@ -1383,7 +1237,7 @@ function verifyBananaVersion(banDoc) {
     if (!banDoc)
         return false;
 
-    let BAN_VERSION_MIN = "10.0.10";
+    let BAN_VERSION_MIN = "10.2.1.25281";
     let BAN_DEV_VERSION_MIN = "";
     let ID_ERR_VERSION_NOTSUPPORTED = "ID_ERR_VERSION_NOTSUPPORTED";
     let ID_ERR_LICENSE_NOTVALID = "ID_ERR_LICENSE_NOTVALID";
@@ -1429,6 +1283,72 @@ function isBananaAdvanced() {
     }
 
     return false;
+}
+
+// REPORTS FUNCTIONS (Used in security card and reconciliation reports)
+function addItemOpeningTableRow(tableRow, itemOpeningData, decimals, styleNormalAmount) {
+    tableRow.addCell(Banana.Converter.toLocaleDateFormat(itemOpeningData.date), '');
+    tableRow.addCell("", "", 1);
+    tableRow.addCell(itemOpeningData.description, '');
+    tableRow.addCell("", "", 4);
+    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemOpeningData.amount, 2, true), styleNormalAmount);
+    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemOpeningData.qt, 0, true), styleNormalAmount);
+    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemOpeningData.unitPrice, decimals, false), styleNormalAmount);
+}
+
+function addItemOpeningTableRowMultiCurrency(tableRow, itemOpeningData, decimals, styleNormalAmount) {
+
+    tableRow.addCell(Banana.Converter.toLocaleDateFormat(itemOpeningData.date), '');
+    tableRow.addCell("", "", 1);
+    tableRow.addCell(itemOpeningData.description, '');
+    tableRow.addCell("", "", 4);
+    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemOpeningData.amountCurr, 2, true), styleNormalAmount);
+    tableRow.addCell(formatQty(itemOpeningData.qt), styleNormalAmount);
+    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemOpeningData.unitPrice, decimals, false), styleNormalAmount);
+    tableRow.addCell("", "", 2);
+    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itemOpeningData.amount, 2, true), styleNormalAmount);
+}
+
+function addItemTransactionTableRow(tableRow, itCardRow, decimals, styleNormalAmount) {
+    tableRow.addCell(Banana.Converter.toLocaleDateFormat(itCardRow.date), '');
+    tableRow.addCell(itCardRow.doc, 'styleAlignCenter');
+    tableRow.addCell(itCardRow.description, '');
+    tableRow.addCell(formatQty(itCardRow.qt), styleNormalAmount);
+    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.unitPrice, decimals, false), styleNormalAmount);
+    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.debitBase, 2, false), styleNormalAmount);
+    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.creditBase, 2, false), styleNormalAmount);
+    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.balanceBase, 2, true), styleNormalAmount);
+    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.qtBalance, 0, true), styleNormalAmount);
+    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.accAvgCost, decimals, false), styleNormalAmount);
+}
+
+function addItemTransactionTableRowMultiCurrency(tableRow, itCardRow, decimals, styleNormalAmount) {
+    tableRow.addCell(Banana.Converter.toLocaleDateFormat(itCardRow.date), '');
+    tableRow.addCell(itCardRow.doc, 'styleAlignCenter');
+    tableRow.addCell(itCardRow.description, '');
+    tableRow.addCell(formatQty(itCardRow.qt), styleNormalAmount);
+    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.unitPrice, decimals, false), styleNormalAmount);
+    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.debitCurr, 2, false), styleNormalAmount);
+    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.creditCurr, 2, false), styleNormalAmount);
+    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.balanceCurr, 2, true), styleNormalAmount);
+    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.qtBalance, 0, true), styleNormalAmount);
+    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.accAvgCost, decimals, false), styleNormalAmount);
+    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.debitBase, 2, false), styleNormalAmount);
+    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.creditBase, 2, false), styleNormalAmount);
+    tableRow.addCell(Banana.Converter.toLocaleNumberFormat(itCardRow.balanceBase, 2, true), styleNormalAmount);
+}
+
+function formatQty(qty) {
+    if (!qty || qty.length < 1)
+        return "";
+    //remove the negative sign if present
+    if (qtyIsNeutral(qty)) {
+        let cleanQty = qty.replace(PLUSMINUS_SIGN, "");
+        let formattedQty = Banana.Converter.toLocaleNumberFormat(cleanQty, 0, false);
+        return PLUSMINUS_SIGN + formattedQty;
+    } else {
+        return Banana.Converter.toLocaleNumberFormat(qty, 0, false);
+    }
 }
 
 //STYLESHEET

@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.portfolio.accounting.accounts.dialog.js
 // @api = 1.0
-// @pubdate = 2025-01-22
+// @pubdate = 2025-08-25
 // @publisher = Banana.ch SA
 // @description = 1. Accounts settings
 // @task = app.command
@@ -36,6 +36,10 @@ function exec() {
 
     if (!banDoc)
         return;
+
+    if (!verifyBananaVersion(banDoc))
+        return "@Cancel";
+
     let userParam = initAccountsDialogParams(banDoc);
     let settingsId = "ch.banana.portfolio.accounting.accounts.dialog";
 
@@ -58,6 +62,18 @@ function verifyAccountsParams(banDoc, userParam) {
     if (!userParam || Object.keys(userParam).length === 0) {
         userParam = initAccountsDialogParams(banDoc);
     }
+    /* Transfer the saved accounts from: investmentsAccount to assetsAccount
+        InvestmentsAccount field was used in the first version of the extension, then
+        has been removed, in his place we use the AssetsAccount field.
+    */
+    if (userParam.balanceAccounts && userParam.balanceAccounts.investmentsAccount
+        && (!userParam.balanceAccounts.assetsAccount || userParam.balanceAccounts.assetsAccount === "")) {
+        userParam.balanceAccounts.assetsAccount = userParam.balanceAccounts.investmentsAccount;
+        userParam.balanceAccounts.investmentsAccount = "";
+        //Delete the investmentsAccount field
+        delete userParam.balanceAccounts.investmentsAccount;
+    }
+
     return userParam;
 }
 
@@ -66,8 +82,7 @@ function initAccountsDialogParams(banDoc) {
 
     // Balance Accounts
     dialogParam.balanceAccounts = {};
-    dialogParam.balanceAccounts.investmentsAccount = getInvestmentsAccountsFormatted(banDoc);
-    dialogParam.balanceAccounts.assetsAccount = "";
+    dialogParam.balanceAccounts.assetsAccount = getAssetAccountsFormatted(banDoc);
     dialogParam.balanceAccounts.liabilitiesAccount = "";
 
     // Value Changing Contra Accounts
@@ -129,19 +144,6 @@ function convertParam(banDoc, userParam) {
     convertedParam.data.push(currentParam);
 
     // Balance accounts elements
-
-    //InvestmentsAccount 
-    var currentParam = {};
-    currentParam.name = 'investmentsaccount';
-    currentParam.title = "Investments";
-    currentParam.type = 'string';
-    currentParam.defaultvalue = defaultParam.balanceAccounts.investmentsAccount;
-    currentParam.value = userParam.balanceAccounts.investmentsAccount ? userParam.balanceAccounts.investmentsAccount : '';
-    currentParam.parentObject = 'balanceaccounts';
-    currentParam.readValue = function () {
-        userParam.balanceAccounts.investmentsAccount = this.value; // values separated by ";"
-    }
-    convertedParam.data.push(currentParam);
 
     // Assests
     var currentParam = {};

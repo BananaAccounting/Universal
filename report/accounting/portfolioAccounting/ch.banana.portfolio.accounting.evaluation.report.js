@@ -14,11 +14,11 @@
 //
 // @api = 1.0
 // @id = ch.banana.portfolio.accounting.evaluation.report
-// @description = 9. Evaluation of investments report
+// @description = 8. Evaluation of investments report
 // @task = app.command
 // @doctype = 100.*
 // @publisher = Banana.ch SA
-// @pubdate = 2023-12-11
+// @pubdate = 2025-08-25
 // @inputdatasource = none
 // @timeout = -1
 // @includejs = ch.banana.portfolio.accounting.calculation.methods.js
@@ -124,7 +124,7 @@ function printReport(banDoc, docInfo, appraisalDataList, portfolioTrData) {
     //Print account data.
     itemsData.forEach(itemData => {
       //Defines style for alternating rows 
-      isEven = checkIfNumberisEven(rowColorIndex);
+      isEven = checkIfNumberIsEven(rowColorIndex);
       if (isEven)
         rowStyle = "styleEvenRows";
       else
@@ -187,7 +187,7 @@ function printReport(banDoc, docInfo, appraisalDataList, portfolioTrData) {
       tableRow.addCell(trElement.item, 'styleDescrTotals');
       tableRow.addCell('', '', 8);
       for (var e in trElement.transactions) {
-        isEven = checkIfNumberisEven(rowColorIndex);
+        isEven = checkIfNumberIsEven(rowColorIndex);
         if (isEven)
           rowStyle = "styleEvenRows";
         else
@@ -231,8 +231,6 @@ function getAppraisalDataList(banDoc, docInfo, accountsList, itemsData) {
   let appraisalDataList = {};
   let accountsData = [];
   let portfolioTotals = [];
-  let journal = banDoc.journal(banDoc.ORIGINTYPE_CURRENT, banDoc.ACCOUNTTYPE_NONE);
-  let journalData = getJournalData(docInfo, journal);
 
   //Get the transactions data for every item.
   for (var i = 0; i < accountsList.length; i++) {
@@ -241,7 +239,7 @@ function getAppraisalDataList(banDoc, docInfo, accountsList, itemsData) {
     secAccountData.account = {};
     secAccountData.account.name = account;
     secAccountData.account.data = {};
-    secAccountData.account.data.items = getAppraisalDataList_transactions(banDoc, docInfo, itemsData, journalData, account);
+    secAccountData.account.data.items = getAppraisalDataList_transactions(banDoc, docInfo, itemsData, account);
     accountsData.push(secAccountData);
   }
 
@@ -256,7 +254,7 @@ function getAppraisalDataList(banDoc, docInfo, accountsList, itemsData) {
   return appraisalDataList;
 }
 
-function getAppraisalDataList_transactions(banDoc, docInfo, itemsData, journalData, account) {
+function getAppraisalDataList_transactions(banDoc, docInfo, itemsData, account) {
   let appraisalDataListTrans = [];
   let unitPriceColumn = banDoc.table("Transactions").column("UnitPrice", "Base");
   let unitPriceColDecimals = unitPriceColumn.decimal; // we want to use the same decimals as defined in the unit price column.
@@ -265,8 +263,6 @@ function getAppraisalDataList_transactions(banDoc, docInfo, itemsData, journalDa
     if (itemsData[key].account === account) {
       let itemId = itemsData[key].item;
       let itemObj = itemsData.find(obj => obj.item === itemId);
-      accountCard = banDoc.currentCard(account);
-      let accountCardData = getAccountCardDataAdapted(itemObj, accountCard);
       let appraisalData = {};
       appraisalData.item = itemId;
       appraisalData.description = itemsData[key].description;
@@ -274,7 +270,7 @@ function getAppraisalDataList_transactions(banDoc, docInfo, itemsData, journalDa
       appraisalData.currentQt = itemsData[key].currentQt;
       //get the average cost
       appraisalData.avgCost = "";
-      let itemCardData = getItemCardDataList(docInfo, itemObj, accountCardData, journalData, unitPriceColDecimals);
+      let itemCardData = getItemCardDataList(banDoc, docInfo, itemObj, unitPriceColDecimals);
       if (itemCardData && itemCardData.currentValues) {
         appraisalData.avgCost = itemCardData.currentValues.itemAvgCost;
       }

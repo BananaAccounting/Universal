@@ -20,7 +20,7 @@
 %Begin test data
 \begin{reportvalue}{FILENAME: file:script/../test/testcases/portfolio\_accounting\_double\_entry\_tutorial\_2022.ac2}
 \begin{longtable}[l]{ l  l  l  l  l  l  l  l  l  l }
-\excltest{Security Card: CH003886335 Shares UBS CHF, Data as of: 03.03.2025} Date  & Doc  & Description  & Quantity   & Unit Price\P CHF  & Debit CHF  & Credit CHF  & Balance CHF  & Quantity\P Balance  & Book value \P  per unit\P CHF \\
+\excltest{Security Card: CH003886335 Shares UBS CHF, Data as of: 26.08.2025} Date  & Doc  & Description  & Quantity   & Unit Price\P CHF  & Debit CHF  & Credit CHF  & Balance CHF  & Quantity\P Balance  & Book value \P  per unit\P CHF \\
 20.02.2022  & 1  & Shares UBS Purchase  & 100  & 11.0000  & 1'100.00  &  & 1'100.00  & 100  & 11.0000 \\
 20.03.2022  & 2  & Shares UBS Total Sale  & -15  & 11.5000  &  & 172.50  & 927.50  & 85  & 10.9118 \\
 20.03.2022  & 2  & Shares UBS Profit on Sale  &  &  & 7.50  &  & 935.00  & 85  & 11.0000 \\
@@ -30,7 +30,7 @@
 20.05.2022  & 5  & Shares UBS Total Sale  & -15  & 11.2000  &  & 168.00  & 1'182.00  & 110  & 10.7455 \\
 20.05.2022  & 5  & Shares UBS Profit on Sale  &  &  & 5.55  &  & 1'187.55  & 110  & 10.7959 \\
 31.12.2022  &  & Shares UBS Market Price Adjustment (10.85)  &  &  & 5.95  &  & 1'193.50  & 110  & 10.8500 \\
-\excltest{03.03.2025}  &  & Total transactions  & \multicolumn{2}{l}{} &  &  & 1'193.50  & 110  & 10.8500 \\
+\excltest{26.08.2025}  &  & Total transactions  & \multicolumn{2}{l}{} & 1'644.00  & 450.50  & 1'193.50  & 110  & 10.8500 \\
 \end{longtable}
 \end{reportvalue}
 \end{document}

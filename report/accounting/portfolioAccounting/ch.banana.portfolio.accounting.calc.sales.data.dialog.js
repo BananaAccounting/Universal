@@ -14,9 +14,9 @@
 //
 // @id = ch.banana.portfolio.accounting.calc.sales.data.dialog.js
 // @api = 1.0
-// @pubdate = 2024-12-23
+// @pubdate = 2025-08-25
 // @publisher = Banana.ch SA
-// @description = 4. Calculate sales data
+// @description = 3. Calculate sales data
 // @task = app.command
 // @doctype = 100.*
 // @docproperties =
@@ -164,9 +164,9 @@ class DlgCalculateSaleDataManager {
         let currentItem = this.cmbItems.currentText;
         let itemsData = getItemsTableData(this.banDoc, this.docInfo);
         let itemObj = itemsData.find(obj => obj.item === currentItem);
-        if (itemObj && itemObj.type == "S")
+        if (itemObj && itemObj.type == "1")
             type = "Stock";
-        if (itemObj && itemObj.type == "B")
+        if (itemObj && itemObj.type == "2")
             type = "Bond";
         this.labelType.setText(type);
     }
@@ -175,7 +175,7 @@ class DlgCalculateSaleDataManager {
         let currentItem = this.cmbItems.currentText;
         let itemsData = getItemsTableData(this.banDoc, this.docInfo);
         let itemObj = itemsData.find(obj => obj.item === currentItem);
-        if (itemObj && itemObj.type == "B") {
+        if (itemObj && itemObj.type == "2") {
             this.lineEditAccruedInterests.enabled = true;
         } else {
             this.lineEditAccruedInterests.enabled = false;
