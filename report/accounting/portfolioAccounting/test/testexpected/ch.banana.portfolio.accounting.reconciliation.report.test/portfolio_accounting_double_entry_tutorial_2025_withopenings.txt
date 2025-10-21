@@ -1,0 +1,64 @@
+%%info_test_name{portfolio_accounting_double_entry_tutorial_2025_withopenings}
+\documentclass{report}
+\usepackage{longtable}
+\usepackage{color}
+\usepackage{listings}
+\usepackage[margin=1cm]{geometry}
+\begin{document}
+\newenvironment{tablevalue}[2]{\textbf{Table: #1}\begin{longtable}[l]{#2}}{\end{longtable}}
+\newenvironment{reportvalue}[1]{\textbf{Report: #1}\\}{}
+\lstnewenvironment{jsonvalue}[1]{\textbf{Json: #1}\lstset{language=Java}}{}
+\lstnewenvironment{xmlvalue}[1]{\textbf{Xml: #1}\lstset{language=Xml}}{}
+\newcommand{\info}[2]{\textit{#1: #2}\\}
+\newcommand{\fatalerror}[1]{\textbf{\textcolor[rgb]{1,0,0}{Fatal error: #1}}\\}
+\newcommand{\keyvalue}[2]{\textbf{Keyvalue: #1} #2\\}
+\newcommand{\textvalue}[1]{#1\\}
+\newcommand{\excltest}[1]{\\Excluded from compare: #1}
+\newcommand{\lognewpage}{\newpage}
+\newenvironment{testcase}[1]{\section*{Test: #1}}{\newpage}
+\newenvironment{test}[1]{\section*{Test case: #1}}{}
+%Begin test data
+\begin{reportvalue}{FILENAME: file:script/../test/testcases/portfolio\_accounting\_double\_entry\_tutorial\_2025\_withopenings.ac2}
+\begin{longtable}[l]{ l  l  l  l  l  l  l  l  l  l  l  l }
+\excltest{Securities Reconciliation Report, Data as of: 26.08.2025} Account  & Security  & Date  & Doc  & Description  & Quantity   & Unit Price   & Debit\P CHF  & Credit\P CHF  & Balance\P CHF  & Quantity balance  & Book value \P  per unit\P  \\
+\multicolumn{12}{l}{Shares }\\
+ & \multicolumn{11}{l}{CH003886335 }\\
+\multicolumn{2}{l}{} & 01.01.2025  &  & Anfangssaldo  & \multicolumn{4}{l}{} & 1'279.20  & 120  & 10.6600 \\
+ &  & 20.02.2025  & 1  & Shares UBS Purchase  & 100  & 11.0000  & 1'100.00  &  & 2'379.20  & 220  & 10.8145 \\
+ &  & 20.03.2025  & 2  & Shares UBS Total Sale  & -15  & 11.5000  &  & 172.50  & 2'206.70  & 205  & 10.7644 \\
+ &  & 20.03.2025  & 2  & Shares UBS Profit on Sale  &  &  & 7.50  &  & 2'214.20  & 205  & 10.8010 \\
+ &  & 22.03.2025  & 3  & Shares UBS Total Sale  & -10  & 9.5000  &  & 95.00  & 2'119.20  & 195  & 10.8677 \\
+ &  & 22.03.2025  & 3  & Shares UBS Loss on Sale  &  &  &  & 15.00  & 2'104.20  & 195  & 10.7908 \\
+ &  & 20.04.2025  & 4  & Shares UBS Purchase  & 50  & 10.5000  & 525.00  &  & 2'629.20  & 245  & 10.7314 \\
+ &  & 20.05.2025  & 5  & Shares UBS Total Sale  & -15  & 11.2000  &  & 168.00  & 2'461.20  & 230  & 10.7009 \\
+ &  & 20.05.2025  & 5  & Shares UBS Profit on Sale  &  &  & 5.55  &  & 2'466.75  & 230  & 10.7250 \\
+ &  & 31.12.2025  &  & Shares UBS Market Price Adjustment (10.85)  &  &  & 5.95  &  & 2'472.70  & 230  & 10.7509 \\
+\multicolumn{2}{l}{} & \excltest{26.08.2025}  &  & Balance CH003886335  & \multicolumn{2}{l}{} & 1'644.00  & 450.50  & 2'472.70  & 230  & 10.7509 \\
+\multicolumn{12}{l}{}\\
+ & \multicolumn{11}{l}{CH012775214 }\\
+\multicolumn{2}{l}{} & 01.01.2025  &  & Anfangssaldo  & \multicolumn{4}{l}{} & 385.82  & 35  & 11.0234 \\
+ &  & 20.02.2025  & 6  & Shares Nestlè Purchase  & 100  & 10.0000  & 1'000.00  &  & 1'385.82  & 135  & 10.2653 \\
+ &  & 20.03.2025  & 7  & Shares Nestle Total Sale  & -50  & 9.5000  &  & 475.00  & 910.82  & 85  & 10.7155 \\
+ &  & 20.03.2025  & 7  & Shares Nestle Loss on Sale  &  &  &  & 25.00  & 885.82  & 85  & 10.4214 \\
+ &  & 31.12.2025  &  & Shares Nestlè Market Price Adjustment (11.00)  &  &  & 50.00  &  & 935.82  & 85  & 11.0096 \\
+\multicolumn{2}{l}{} & \excltest{26.08.2025}  &  & Balance CH012775214  & \multicolumn{2}{l}{} & 1'050.00  & 500.00  & 935.82  & 85  & 11.0096 \\
+\multicolumn{12}{l}{}\\
+\multicolumn{2}{l}{} & \excltest{26.08.2025}  &  & \multicolumn{5}{l}{Opening Balance Shares } & 1'665.02  & \multicolumn{2}{l}{}\\
+\multicolumn{2}{l}{} & \excltest{26.08.2025}  &  & \multicolumn{5}{l}{Current Balance Shares } & 3'408.52  & \multicolumn{2}{l}{}\\
+\multicolumn{2}{l}{} & \excltest{26.08.2025}  &  & \multicolumn{5}{l}{Total securities movements } & 1'743.50  & \multicolumn{2}{l}{}\\
+\multicolumn{2}{l}{} & \excltest{26.08.2025}  &  & \multicolumn{5}{l}{Differences } & 0.00  & \multicolumn{2}{l}{}\\
+\multicolumn{12}{l}{Bonds }\\
+ & \multicolumn{11}{l}{CH135792468 }\\
+\multicolumn{2}{l}{} & 01.01.2025  &  & Anfangssaldo  & \multicolumn{4}{l}{} & 1'012.00  & 1'000  & 1.0120 \\
+ &  & 25.03.2025  & 8  & Bonds Holcim Purchase  & 5'000  & 0.9800  & 4'900.00  &  & 5'912.00  & 6'000  & 0.9853 \\
+ &  & 31.10.2025  & 10  & Bonds Holcim Total Sale  & -5'000  & 1.0250  &  & 5'125.00  & 787.00  & 1'000  & 0.7870 \\
+ &  & 31.10.2025  & 10  & Bonds Holcim Profit on Sale  &  &  & 225.00  &  & 1'012.00  & 1'000  & 1.0120 \\
+\multicolumn{2}{l}{} & \excltest{26.08.2025}  &  & Balance CH135792468  & \multicolumn{2}{l}{} & 5'125.00  & 5'125.00  & 1'012.00  & 1'000  & 1.0120 \\
+\multicolumn{12}{l}{}\\
+\multicolumn{2}{l}{} & \excltest{26.08.2025}  &  & \multicolumn{5}{l}{Opening Balance Bonds } & 1'012.00  & \multicolumn{2}{l}{}\\
+\multicolumn{2}{l}{} & \excltest{26.08.2025}  &  & \multicolumn{5}{l}{Current Balance Bonds } & 1'012.00  & \multicolumn{2}{l}{}\\
+\multicolumn{2}{l}{} & \excltest{26.08.2025}  &  & \multicolumn{5}{l}{Total securities movements } & 0.00  & \multicolumn{2}{l}{}\\
+\multicolumn{2}{l}{} & \excltest{26.08.2025}  &  & \multicolumn{5}{l}{Differences } & 0.00  & \multicolumn{2}{l}{}\\
+\end{longtable}
+\end{reportvalue}
+\end{document}
