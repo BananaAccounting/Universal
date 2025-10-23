@@ -110,6 +110,9 @@ class DlgCalculateSaleDataManager {
 
     init() {
 
+        if (!this.banDoc)
+            return;
+
         /** We currently hide the Accrued Interest Group Box as we just want to make the user inserting the amount of
          * the accrued interest avoiding all the complex calculations, as those could be much more complex than expected.*/
 
@@ -137,6 +140,26 @@ class DlgCalculateSaleDataManager {
         this.buttonShowResults = this.dialog.findChild('showResultsPreview_button');
         this.buttonCreateSalesRecord = this.dialog.findChild('createSaleRecord_button');
 
+        // Others
+        let unitPriceColumn = this.banDoc.table("Transactions").column("UnitPrice", "Base");
+        let quantityColumn = this.banDoc.table("Transactions").column("Quantity", "Base");
+        let exRateColumn = this.banDoc.table("Transactions").column("ExchangeRate", "Base");
+        let currentPriceColumn = this.banDoc.table("Items").column("UnitPriceCurrent", "Base");
+        let amtColumn = this.banDoc.table("Transactions").column("Amount", "Base");
+        let amtCurrColumn = this.banDoc.table("Transactions").column("AmountCurrency", "Base");
+        this.unitPriceColDecimals = unitPriceColumn.decimal; // we want to use the same decimals as defined in the unit price column.
+        this.quantityColDecimals = quantityColumn.decimal;
+        this.currentPriceColDecimals = currentPriceColumn.decimal;
+        // We check the correct column to get the amount decimals although normally it should be the same for both.
+        if (amtCurrColumn && amtCurrColumn.decimal) {
+            this.amtColumnDecimals = amtCurrColumn.decimal;
+        } else {
+            this.amtColumnDecimals = amtColumn.decimal;
+        }
+
+        if (exRateColumn)
+            this.exRateColDecimals = exRateColumn.decimal;
+
         // Displayed values
         this.insertItemsComboBoxElements(this.banDoc, this.docInfo);
         this.setCurrentItem();
@@ -148,15 +171,6 @@ class DlgCalculateSaleDataManager {
         // Disable the Accrued Interest Group Box if the selected item is not a bond.
         this.setAccruedInterestsElementsEnabled();
         this.setSecurityTypeLabel();
-
-        // Others
-        let unitPriceColumn = this.banDoc.table("Transactions").column("UnitPrice", "Base");
-        let currentPriceColumn = this.banDoc.table("Items").column("UnitPriceCurrent", "Base");
-        let exRateColumn = this.banDoc.table("Transactions").column("ExchangeRate", "Base");
-        this.unitPriceColDecimals = unitPriceColumn.decimal; // we want to use the same decimals as defined in the unit price column.
-        this.currentPriceColDecimals = currentPriceColumn.decimal;
-        if (exRateColumn)
-            this.exRateColDecimals = exRateColumn.decimal;
     }
 
     setSecurityTypeLabel() {
@@ -196,24 +210,24 @@ class DlgCalculateSaleDataManager {
         if (!this.currentRowObj)
             return;
         let quantity = this.currentRowObj.value("Quantity");
-        let absQuantity = Banana.SDecimal.abs(quantity, { 'decimals': 0 });
+        let absQuantity = Banana.SDecimal.abs(quantity, { 'decimals': this.quantityColDecimals });
         if (Banana.SDecimal.isZero(absQuantity))
             absQuantity = "";
-        this.lineEditQt.setText(absQuantity);
+        this.lineEditQt.setText(Banana.Converter.toLocaleNumberFormat(absQuantity, this.quantityColDecimals, true));
     }
 
     setCurrentPrice() {
         if (!this.currentRowObj)
             return;
         let currPrice = this.currentRowObj.value("UnitPrice");
-        this.lineEditMarketPrice.setText(currPrice);
+        this.lineEditMarketPrice.setText(Banana.Converter.toLocaleNumberFormat(currPrice, this.unitPriceColDecimals, true));
     }
 
     setCurrentExchangeRate() {
         if (!this.currentRowObj || !this.docInfo.isMultiCurrency)
             return;
         let exRate = this.currentRowObj.value("ExchangeRate");
-        this.lineEditCurrentExRate.setText(exRate);
+        this.lineEditCurrentExRate.setText(Banana.Converter.toLocaleNumberFormat(exRate, this.exRateColDecimals, true));
     }
 
     createDocChangeSaleRecord() {
@@ -232,22 +246,26 @@ class DlgCalculateSaleDataManager {
             return {};
         }
 
+        this.convertDlgParamsToInternalFormat(dlgParams);
         salesData = calculateStockSaleData(this.banDoc, this.docInfo, itemObj, dlgParams, this.currentRowNr);
         const recordSalesTransactions = new RecordSalesTransactions(this.banDoc, this.docInfo, salesData,
             dlgParams, itemsData, itemObj, this.currentRowObj, true);
         return recordSalesTransactions.getRecordSalesTransactions();
 
     }
+    convertSalesDataToLocaleFormat(salesData) {
+        salesData.currentQt = Banana.Converter.toLocaleNumberFormat(salesData.currentQt, this.quantityColDecimals, true);
+        salesData.avgCost = Banana.Converter.toLocaleNumberFormat(salesData.avgCost, this.unitPriceColDecimals, true);
+        salesData.saleResult = Banana.Converter.toLocaleNumberFormat(salesData.saleResult, this.amtColumnDecimals, true);
+        salesData.exRateResult = Banana.Converter.toLocaleNumberFormat(salesData.exRateResult, this.exRateColDecimals, true);
+        salesData.avgSharesValue = Banana.Converter.toLocaleNumberFormat(salesData.avgSharesValue, this.unitPriceColDecimals, true);
+        salesData.totalSharesvalue = Banana.Converter.toLocaleNumberFormat(salesData.totalSharesvalue, this.currentPriceColDecimals, true);
+        salesData.accruedInterests = Banana.Converter.toLocaleNumberFormat(salesData.accruedInterests, this.unitPriceColDecimals, true);
+    }
 
     updateDialogData() {
-        let exRateResult = "";
-        let currentQt = "";
-        let avgCost = "";
         let baseCurr = "";
         let assetCurr = "";
-        let saleResult = "";
-        let avgSharesValue = "";
-        let totalSharesvalue = "";
         let itemsData = [];
         let dlgParams = {};
         let salesData = {};
@@ -260,31 +278,28 @@ class DlgCalculateSaleDataManager {
         if (!isValidItemSelected(item, itemObj, this.banDoc))
             return;
 
+        this.convertDlgParamsToInternalFormat(dlgParams);
+
         salesData = calculateStockSaleData(this.banDoc, this.docInfo, itemObj, dlgParams, this.currentRowNr);
         assetCurr = itemObj.currency;
         baseCurr = this.docInfo.baseCurrency;
 
-        currentQt = Banana.Converter.toLocaleNumberFormat(salesData.currentQt, 0, true);
-        avgCost = Banana.Converter.toLocaleNumberFormat(salesData.avgCost, this.unitPriceColDecimals, true);
-        saleResult = Banana.Converter.toLocaleNumberFormat(salesData.saleResult, 2, true);
-        exRateResult = Banana.Converter.toLocaleNumberFormat(salesData.exRateResult, this.exRateColDecimals, true);
-        avgSharesValue = Banana.Converter.toLocaleNumberFormat(salesData.avgSharesValue, this.unitPriceColDecimals, true);
-        totalSharesvalue = Banana.Converter.toLocaleNumberFormat(salesData.totalSharesvalue, this.currentPriceColDecimals, true);
+        this.convertSalesDataToLocaleFormat(salesData);
 
-        this.labelActualQuantityPrev.setText(currentQt);
+        this.labelActualQuantityPrev.setText(salesData.currentQt);
 
         if (this.docInfo.isMultiCurrency) {
-            this.labelAvgCostPrev.setText(avgCost + " (" + assetCurr + ")");
-            this.labelSaleResultPrev.setText(saleResult + " (" + assetCurr + ")");
-            this.labelExcResultPrev.setText(exRateResult + " (" + baseCurr + ")");
-            this.AvgValSharesPrev.setText(avgSharesValue + " (" + assetCurr + ")");
-            this.labelTotValSharesPrev.setText(totalSharesvalue + " (" + assetCurr + ")");
+            this.labelAvgCostPrev.setText(salesData.avgCost + " (" + assetCurr + ")");
+            this.labelSaleResultPrev.setText(salesData.saleResult + " (" + assetCurr + ")");
+            this.labelExcResultPrev.setText(salesData.exRateResult + " (" + baseCurr + ")");
+            this.AvgValSharesPrev.setText(salesData.avgSharesValue + " (" + assetCurr + ")");
+            this.labelTotValSharesPrev.setText(salesData.totalSharesvalue + " (" + assetCurr + ")");
         } else {
-            this.labelAvgCostPrev.setText(avgCost);
-            this.labelSaleResultPrev.setText(saleResult);
-            this.labelExcResultPrev.setText(exRateResult);
-            this.AvgValSharesPrev.setText(avgSharesValue);
-            this.labelTotValSharesPrev.setText(totalSharesvalue);
+            this.labelAvgCostPrev.setText(salesData.avgCost);
+            this.labelSaleResultPrev.setText(salesData.saleResult);
+            this.labelExcResultPrev.setText(salesData.exRateResult);
+            this.AvgValSharesPrev.setText(salesData.avgSharesValue);
+            this.labelTotValSharesPrev.setText(salesData.totalSharesvalue);
         }
     }
 
@@ -301,6 +316,19 @@ class DlgCalculateSaleDataManager {
 
         return userParam;
 
+    }
+
+    /* Convert the dialog parameters to the internal format for the calculations.
+    * User must use the locale format to enter the numbers in the dialog.
+    * Let the API define the decimal separator based on the locale of the document. 
+    * */
+    convertDlgParamsToInternalFormat(dlgParams) {
+        dlgParams.marketPrice = Banana.Converter.toInternalNumberFormat(dlgParams.marketPrice);
+        dlgParams.currExRate = Banana.Converter.toInternalNumberFormat(dlgParams.currExRate);
+        dlgParams.bankCharges = Banana.Converter.toInternalNumberFormat(dlgParams.bankCharges);
+        dlgParams.otherCharges = Banana.Converter.toInternalNumberFormat(dlgParams.otherCharges);
+        dlgParams.quantity = Banana.Converter.toInternalNumberFormat(dlgParams.quantity);
+        dlgParams.accruedInterests = Banana.Converter.toInternalNumberFormat(dlgParams.accruedInterests);
     }
 
     insertItemsComboBoxElements(banDoc, docInfo) {
