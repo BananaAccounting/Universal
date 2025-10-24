@@ -27,7 +27,7 @@ function getErrorMessage(errorId) {
     lang = 'en';
     switch (errorId) {
         case "ID_ERR_VERSION_NOTSUPPORTED":
-            return "This script does not run with your current version of Banana Accounting.\nMinimum version required: %1.\nTo update or for more information click on Help";
+            return "This script is not compatible with your current version of Banana Accounting.\nPlease update to the latest version.";
         case "ID_ERR_LICENSE_NOTVALID":
             return "This extension requires Banana Accounting+ Advanced";
         case "NOT_AVAILABLE_WITH_MULTI_CURRENCY":
