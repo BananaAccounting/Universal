@@ -1245,9 +1245,17 @@ function verifyBananaVersion(banDoc) {
     let CURR_LICENSE = isBananaAdvanced();
 
     if (!CURR_VERSION) {
+        /* Anchor to link the message to the compatibility section in the documentation.
+         * This way the user can directly access the information to update Banana.
+         * Name must be the same as the one used in the documentation paragraph title anchor.
+         * To build the anchor reference, Drupal transfrorms spaces into underscores and sets all characters to lowercase.
+         * So the title "Compatibility Version" becomes "compatibility_version".
+         * Currently works with title h2.
+        */
+        let comp_version_anchor = "compatibility_version";
         let msg = getErrorMessage(ID_ERR_VERSION_NOTSUPPORTED);
         msg = msg.replace("%1", BAN_VERSION_MIN);
-        banDoc.addMessage(msg, ID_ERR_VERSION_NOTSUPPORTED);
+        banDoc.addMessage(msg, comp_version_anchor);
         return false;
     }
     if (!CURR_LICENSE) {
