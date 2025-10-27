@@ -364,7 +364,7 @@ function exec() {
 
     if (!tableExists(banDoc, "Items")) {
         let msg = getErrorMessage_MissingElements("NO_ITEMS_TABLE", "");
-        banDoc.addMessage(msg, "NO_ITEMS_TABLE");
+        banDoc.addMessage(msg, getErrorMessageReferenceAnchor());
         return "@Cancel";
     }
 

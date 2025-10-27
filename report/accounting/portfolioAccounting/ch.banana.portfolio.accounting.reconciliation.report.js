@@ -37,7 +37,7 @@ function exec() {
 
     if (!tableExists(banDoc, "Items")) {
         let msg = getErrorMessage_MissingElements("NO_ITEMS_TABLE", "");
-        banDoc.addMessage(msg, "NO_ITEMS_TABLE");
+        banDoc.addMessage(msg, getErrorMessageReferenceAnchor());
         return "@Cancel";
     }
 
@@ -84,7 +84,7 @@ function getSelectedAccounts(banDoc, scriptId, dlgTitle, dlgLabel) {
     let invAccounts = getAssetAccountsFormatted(banDoc);
     if (!invAccounts || invAccounts.length < 0) {
         let msg = getErrorMessage_MissingElements("NO_ASSET_ACCOUNTS_FOUND");
-        banDoc.addMessage(msg, "NO_ASSET_ACCOUNTS_FOUND");
+        banDoc.addMessage(msg, getErrorMessageReferenceAnchor());
         return accountsListSelected;
     }
 
@@ -405,6 +405,13 @@ function getDifferenceAmountStyle(diffAmount) {
 function getItemsDataList(banDoc, docInfo, account) {
 
     let itemsData = getItemsTableData(banDoc, docInfo);
+
+    if (itemsData.length < 1) {
+        let msg = getErrorMessage_MissingElements("NO_ASSETS_FOUND", "");
+        banDoc.addMessage(msg, getErrorMessageReferenceAnchor());
+        return [];
+    }
+
     let itemsDataList = [];//list of item cards
     let unitPriceColumn = banDoc.table("Transactions").column("UnitPrice", "Base");
     let unitPriceColDecimals = unitPriceColumn.decimal; // we want to use the same decimals as defined in the unit price column.
