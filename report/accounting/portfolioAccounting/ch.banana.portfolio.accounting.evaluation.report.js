@@ -488,7 +488,7 @@ function exec() {
 
   if (!tableExists(banDoc, "Items")) {
     let msg = getErrorMessage_MissingElements("NO_ITEMS_TABLE", "");
-    banDoc.addMessage(msg, "NO_ITEMS_TABLE");
+    banDoc.addMessage(msg, getErrorMessageReferenceAnchor());
     return "@Cancel";;
   }
 
@@ -496,8 +496,8 @@ function exec() {
   let itemsData = getItemsTableData(banDoc);
 
   if (itemsData.length < 1) {
-    let msg = getErrorMessage_MissingElements("NO_SECURITIES_FOUND", "");
-    banDoc.addMessage(msg, "NO_SECURITIES_FOUND");
+    let msg = getErrorMessage_MissingElements("NO_ASSETS_FOUND", "");
+    banDoc.addMessage(msg, getErrorMessageReferenceAnchor());
     return "@Cancel";
   }
 

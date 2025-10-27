@@ -46,8 +46,10 @@ function exec() {
     userParam = getFormattedSavedParams(banDoc, settingsId);
     userParam = verifyAccountsParams(banDoc, userParam);
     let dlgTitle = 'Account Settings';
+    /* Anchor to the documentation page paragraph: Error Messages.*/
+    let anchor = getErrorMessageReferenceAnchor();
     let convertedParam = convertParam(banDoc, userParam);
-    if (!Banana.Ui.openPropertyEditor(dlgTitle, convertedParam))
+    if (!Banana.Ui.openPropertyEditor(dlgTitle, convertedParam, anchor))
         return false;
     for (var i = 0; i < convertedParam.data.length; i++) {
         // Read values to dialogparam (through the readValue function)

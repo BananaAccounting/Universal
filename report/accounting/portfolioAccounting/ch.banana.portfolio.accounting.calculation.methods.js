@@ -369,9 +369,9 @@ function calculateStockSaleData(banDoc, docInfo, itemObj, dlgParams, currentRowN
     //Get the account of the item
     itemAccount = itemObj.account;
     if (itemAccount === "") {
-        const ITEM_WITHOUT_ACCOUNT = "ITEM_WITHOUT_ACCOUNT";
-        let msg = getErrorMessage_MissingElements(ITEM_WITHOUT_ACCOUNT, itemObj.item);
-        banDoc.addMessage(msg, ITEM_WITHOUT_ACCOUNT);
+        const ASSET_WITHOUT_ACCOUNT = "ASSET_WITHOUT_ACCOUNT";
+        let msg = getErrorMessage_MissingElements(ASSET_WITHOUT_ACCOUNT, itemObj.item);
+        banDoc.addMessage(msg, getErrorMessageReferenceAnchor());
         return "";
     }
 
@@ -967,9 +967,9 @@ function getItemRowNr(refGroup, tabItemsData) {
 
 function isValidItemSelected(selectedItem, itemObj, banDoc) {
     if (!itemObj || isObjectEmpty(itemObj) || !selectedItem) {
-        const ITEM_NOT_FOUND = "ITEM_NOT_FOUND";
-        let msg = getErrorMessage_MissingElements(ITEM_NOT_FOUND, selectedItem);
-        banDoc.addMessage(msg, ITEM_NOT_FOUND);
+        const ASSET_NOT_FOUND = "ASSET_NOT_FOUND";
+        let msg = getErrorMessage_MissingElements(ASSET_NOT_FOUND, selectedItem);
+        banDoc.addMessage(msg, getErrorMessageReferenceAnchor());
         return false;
     }
 

@@ -51,7 +51,7 @@ function exec(inData) {
 
     if (!tableExists(banDoc, "Items")) {
         let msg = getErrorMessage_MissingElements("NO_ITEMS_TABLE", "");
-        banDoc.addMessage(msg, "NO_ITEMS_TABLE");
+        banDoc.addMessage(msg, getErrorMessageReferenceAnchor());
         return "";
     }
 
@@ -197,7 +197,7 @@ function getUnknownFormatError(banDoc) {
     let errId = "ID_ERR_FORMAT_UNKNOWN";
     let lang = getLang();
     let msg = getFormatErrorMessage(errId, lang);
-    banDoc.addMessage(msg, errId);
+    banDoc.addMessage(msg, getErrorMessageReferenceAnchor());
 }
 
 function getLang() {

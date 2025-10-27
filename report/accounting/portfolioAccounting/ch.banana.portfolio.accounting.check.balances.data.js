@@ -43,6 +43,12 @@ function exec() {
   if (!verifyBananaVersion(banDoc))
     return "@Cancel";
 
+  if (!tableExists(banDoc, "Items")) {
+    let msg = getErrorMessage_MissingElements("NO_ITEMS_TABLE", "");
+    banDoc.addMessage(msg, getErrorMessageReferenceAnchor());
+    return "@Cancel";
+  }
+
   let docInfo = getDocumentInfo(banDoc);
 
   let checkBalancesObj = {};
@@ -170,6 +176,12 @@ function getAccountsDataObjList(banDoc, docInfo) {
   const accountsData = getAccountsTableData(banDoc);
   let accountsList = getItemsAccounts(banDoc);
 
+  if (!accountsList || accountsList.length === 0) {
+    let msg = getErrorMessage_MissingElements("NO_ASSET_ACCOUNTS_FOUND");
+    banDoc.addMessage(msg, getErrorMessageReferenceAnchor());
+    return accountsList;
+  }
+
   for (const account of accountsList) {
     accCheckBalancesObj = {};
     accTableObj = accountsData.find(obj => obj.account === account); // Find the account in the Account table.
@@ -205,6 +217,13 @@ function getAccountsDataObjList(banDoc, docInfo) {
 function getSecuritiesDataObjList(banDoc, docInfo, account) {
   let securitiesList = [];
   let itemsTableData = getItemsTableData(banDoc);
+
+  if (itemsTableData.length < 1) {
+    let msg = getErrorMessage_MissingElements("NO_ASSETS_FOUND", "");
+    banDoc.addMessage(msg, getErrorMessageReferenceAnchor());
+    return "@Cancel";
+  }
+
   let unitPriceColumn = banDoc.table("Transactions").column("UnitPrice", "Base");
   let unitPriceColDecimals = unitPriceColumn.decimal;
 

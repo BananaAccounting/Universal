@@ -77,8 +77,8 @@ var RecordSalesTransactions = class RecordSalesTransactions {
                 jsonDoc["data"] = this.getStockSaleResultDocChangeTransaction();
                 break;
             default:
-                let msg = getErrorMessage_MissingElements("ITEM_WITHOUT_TYPE", this.itemObject.item);
-                this.banDoc.addMessage(msg, "ITEM_WITHOUT_TYPE");
+                let msg = getErrorMessage_MissingElements("ASSET_WITHOUT_TYPE", this.itemObject.item);
+                this.banDoc.addMessage(msg, getErrorMessageReferenceAnchor());
                 return {};
         }
         return jsonDoc;
@@ -101,8 +101,8 @@ var RecordSalesTransactions = class RecordSalesTransactions {
             // Check if the row contains the item id and if the item exists in the items table.
             if (!this.currentRowObj.value("ItemsId") || this.currentRowObj.value("ItemsId") === ""
                 || !itemIdList.includes(this.currentRowObj.value("ItemsId"))) {
-                let msg = getErrorMessage_MissingElements("ITEM_ID_MISSING_IN_ROW");
-                this.banDoc.addMessage(msg, "ITEM_ID_MISSING_IN_ROW");
+                let msg = getErrorMessage_MissingElements("ASSET_ID_MISSING_IN_ROW");
+                this.banDoc.addMessage(msg, getErrorMessageReferenceAnchor());
                 return false;
             }
 
@@ -110,20 +110,20 @@ var RecordSalesTransactions = class RecordSalesTransactions {
             if (!this.currentRowObj.value("Quantity") || this.currentRowObj.value("Quantity") === ""
                 || this.currentRowObj.value("Quantity").indexOf("-") < 0) {
                 let msg = getErrorMessage_MissingElements("QTY_MISSING_IN_ROW");
-                this.banDoc.addMessage(msg, "QTY_MISSING_IN_ROW");
+                this.banDoc.addMessage(msg, getErrorMessageReferenceAnchor());
                 return false;
             }
 
             // Check if the row contains the unit price.
             if (!this.currentRowObj.value("UnitPrice") || this.currentRowObj.value("UnitPrice") === "") {
                 let msg = getErrorMessage_MissingElements("UNITPRICE_MISSING_IN_ROW");
-                this.banDoc.addMessage(msg, "UNITPRICE_MISSING_IN_ROW");
+                this.banDoc.addMessage(msg, getErrorMessageReferenceAnchor());
                 return false;
             }
 
         } else {
             let msg = getErrorMessage_MissingElements("SELECTED_ROW_NOT_VALID");
-            this.banDoc.addMessage(msg, "SELECTED_ROW_NOT_VALID");
+            this.banDoc.addMessage(msg, getErrorMessageReferenceAnchor());
             return false;
         }
         return true;
@@ -250,7 +250,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
             return rowSaleObj;
         } else if (this.salesCodesRegex.test(this.saleTrRef) && this.saleTrRef.indexOf(".") > -1) { // User selected a child row.
             let msg = getErrorMessage_MissingElements("CHILD_ROW_SELECTED");
-            banDoc.addMessage(msg, "CHILD_ROW_SELECTED");
+            banDoc.addMessage(msg, getErrorMessageReferenceAnchor());
             return rowSaleObj;
         } else {
             return rowSaleObj; // The row already contains a valid code, we return an empty object as we dont need any change

@@ -46,7 +46,7 @@ function exec() {
 
     if (!tableExists(banDoc, "Items")) {
         let msg = getErrorMessage_MissingElements("NO_ITEMS_TABLE", "");
-        banDoc.addMessage(msg, "NO_ITEMS_TABLE");
+        banDoc.addMessage(msg, getErrorMessageReferenceAnchor());
         return "@Cancel";
     }
 
@@ -59,9 +59,9 @@ function exec() {
 
     const itemObject = itemsData.find(itemsData => itemsData.item === selectedItem)
     if (!itemObject) {
-        const ITEM_NOT_FOUND = "ITEM_NOT_FOUND";
-        let msg = getErrorMessage_MissingElements(ITEM_NOT_FOUND, selectedItem);
-        banDoc.addMessage(msg, ITEM_NOT_FOUND);
+        const ASSET_NOT_FOUND = "ASSET_NOT_FOUND";
+        let msg = getErrorMessage_MissingElements(ASSET_NOT_FOUND, selectedItem);
+        banDoc.addMessage(msg, getErrorMessageReferenceAnchor());
         return "";
     }
 
@@ -83,8 +83,8 @@ function getSelectedItem(banDoc, scriptId, dlgTitle, dlgLabel) {
     itemSaved = banDoc.getScriptSettings(scriptId);
     let itemSavedIdx = itemsListAvailable = getItemsIds(banDoc);
     if (!itemsListAvailable || itemsListAvailable.length < 1) {
-        let msg = getErrorMessage_MissingElements("NO_SECURITIES_FOUND");
-        banDoc.addMessage(msg, "NO_SECURITIES_FOUND");
+        let msg = getErrorMessage_MissingElements("NO_ASSETS_FOUND");
+        banDoc.addMessage(msg, getErrorMessageReferenceAnchor());
         return itemSelected;
     }
 
