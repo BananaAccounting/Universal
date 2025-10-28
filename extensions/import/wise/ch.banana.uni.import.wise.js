@@ -749,7 +749,7 @@ var ImportWiseBusinessFormat2 = class ImportWiseBusinessFormat2 extends ImportUt
 
     getDescription(transaction) {
         if (!transaction) return "";
-        const { "Target name": rName, "Category": category, "Referenz": reference } = transaction;
+        const { "Target name": rName, "Category": category, "Reference": reference } = transaction;
         return [rName, category, reference]
             .filter(value => value && typeof value === "string" && value.trim() !== "")
             .join(", ");
