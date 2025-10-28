@@ -18,11 +18,11 @@
 \newenvironment{testcase}[1]{\section*{Test: #1}}{\newpage}
 \newenvironment{test}[1]{\section*{Test case: #1}}{}
 %Begin test data
-\begin{tablevalue}{}{ l  l  l  l  l  l }
-Date & Description & ExternalReference & Notes & Expenses & Income\\
-2024-04-04 & ZZZ In, AB-TNTHQSI & TRANSFER-1023612560 & 0.00 &  & 2500.0\\
-2024-04-10 & cybovate, Rechnung Nr 200506 & TRANSFER-1030251410 & 12.38 & 13819.77 & \\
-2024-04-12 & XXX SCHWEIZ AG, CH24Q2 002 & TRANSFER-1033053142 & 4.14 &  & 35797.44\\
+\begin{tablevalue}{}{ l  l  l  l  l  l  l }
+Date & DateValue & Description & ExternalReference & Notes & Expenses & Income\\
+2024-04-04 & 2024-04-04 & cybovate & TRANSFER-1023612560 & COMPLETED &  & 2500.0\\
+2024-04-10 & 2024-04-10 & YYY AG & TRANSFER-1030251410 & COMPLETED & 13819.77 & \\
+2024-04-12 & 2024-04-12 & cybovate & TRANSFER-1033053142 & COMPLETED &  & 35797.44\\
 \\
 \end{tablevalue}
 \end{document}
