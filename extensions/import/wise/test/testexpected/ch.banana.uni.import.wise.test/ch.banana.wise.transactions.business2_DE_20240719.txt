@@ -18,13 +18,13 @@
 \newenvironment{testcase}[1]{\section*{Test: #1}}{\newpage}
 \newenvironment{test}[1]{\section*{Test case: #1}}{}
 %Begin test data
-\begin{tablevalue}{}{ l  l  l  l  l  l }
-Date & Description & ExternalReference & Notes & Expenses & Income\\
-2023-12-27 & Steve,  & TRANSFER-22222222 & 1.73 & 131.26 & \\
-2023-12-28 & Steve,  & CARD\_TRANSACTION-1111111114 & 0.00 & 48.56 & \\
-2023-12-28 & Steve,  & CARD\_TRANSACTION-1111111113 & 0.00 & 7.47 & \\
-2023-12-30 & Steve,  & CARD\_TRANSACTION-1111111112 & 0.00 & 36.52 & \\
-2023-12-30 & Steve,  & CARD\_TRANSACTION-1111111111 & 0.00 & 58.19 & \\
+\begin{tablevalue}{}{ l  l  l  l  l  l  l }
+Date & DateValue & Description & ExternalReference & Notes & Expenses & Income\\
+2023-12-27 & 2023-12-27 & Receiver SA & TRANSFER-22222222 & COMPLETED & 131.26 & \\
+2023-12-28 & 2023-12-28 & Receiver SA & CARD\_TRANSACTION-1111111114 & COMPLETED & 48.56 & \\
+2023-12-28 & 2023-12-28 & Receiver SA & CARD\_TRANSACTION-1111111113 & COMPLETED & 7.47 & \\
+2023-12-30 & 2023-12-30 & Receiver SA & CARD\_TRANSACTION-1111111112 & COMPLETED & 36.52 & \\
+2023-12-30 & 2023-12-30 & Receiver SA & CARD\_TRANSACTION-1111111111 & COMPLETED & 58.19 & \\
 \\
 \end{tablevalue}
 \end{document}
