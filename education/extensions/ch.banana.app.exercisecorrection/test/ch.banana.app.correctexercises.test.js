@@ -65,12 +65,39 @@ TestFullCorrectExercises.prototype.testFullCorrectExercises = function () {
     const teacherFile = this.fileAC2Path[i][1];
     const banDoc1 = Banana.application.openDocument(studentFile);
     const banDoc2 = Banana.application.openDocument(teacherFile);
+    //creates a folder for each file tested
+    //log name student file
+    let studentFileName = '';
+    const matchStudent = studentFile.match(/([^/\\]+)(?=\.ac2$)/);
+    if (matchStudent) {
+      studentFileName += matchStudent[1];
+    }
+    //log name teacher file
+    let teacherFileName = '';
+    const matchTeacher = teacherFile.match(/([^/\\]+)(?=\.ac2$)/);
+    if (matchTeacher) {
+      teacherFileName += matchTeacher[1];
+    }
+    //folder Test0, Test1,...
+    this.testLogger = Test.logger.newGroupLogger("Test" + i.toString());
+
+    let index = 0;
     let printreport = new CorrectDoc(banDoc1, banDoc2, true);
     for (const param of combineParams(this.paramOptions)) {
-      printreport.result(param);
+      let parentLogger = this.testLogger;
+      //test filename param0, param1, ...
+      this.testLogger = parentLogger.newLogger("param" + index.toString());
+      // let printresults = printreport.result(param);
+      // this.testLogger.addJson("CorrectDocResults", JSON.stringify(printresults, null, 3));
+      this.testLogger.addKeyValue("StudentFileName", studentFileName);
+      this.testLogger.addKeyValue("TeacherFileName", teacherFileName);
       this.testLogger.addSection(this.fileAC2Path[i][0] + " vs " + this.fileAC2Path[i][1] + " with parameters: " + JSON.stringify(param));
-      this.testLogger.addTable("Transactions", banDoc1.table("Transactions"));
-      this.testLogger.addTable("Transactions", banDoc2.table("Transactions"));
-  }
+      this.testLogger.addTable("TransactionsStudentFile", banDoc1.table("Transactions"));
+      this.testLogger.addTable("TransactionsTeacherFile", banDoc2.table("Transactions"));
+      index++;
+    }
+
+    this.testLogger.close();
+    this.testLogger = Test.logger;
   }
 }
