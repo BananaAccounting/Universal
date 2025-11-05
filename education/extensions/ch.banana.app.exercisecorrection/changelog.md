@@ -5,7 +5,7 @@ All notable changes to the [Accounting Automatic Corrections](https://www.banana
 ## 2025-10-07
 - Added a priority score for transaction matching
 - Added handling for the number of student transactions.
-- Added tests for all parameter and file combinations (large test suite, ~81 minutes to run)
+- Added tests for all parameter and file combinations (large test suite, ~6 minutes to run)
 
 ## 2025-08-19
 - Updated texts in settings.
