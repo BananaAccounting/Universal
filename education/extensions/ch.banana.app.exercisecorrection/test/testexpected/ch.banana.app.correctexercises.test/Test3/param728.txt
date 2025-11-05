@@ -1,0 +1,1041 @@
+%%info_test_name{param728}
+\documentclass{report}
+\usepackage{longtable}
+\usepackage{color}
+\usepackage{listings}
+\usepackage[margin=1cm]{geometry}
+\begin{document}
+\newenvironment{tablevalue}[2]{\textbf{Table: #1}\begin{longtable}[l]{#2}}{\end{longtable}}
+\newenvironment{reportvalue}[1]{\textbf{Report: #1}\\}{}
+\lstnewenvironment{jsonvalue}[1]{\textbf{Json: #1}\lstset{language=Java}}{}
+\lstnewenvironment{xmlvalue}[1]{\textbf{Xml: #1}\lstset{language=Xml}}{}
+\newcommand{\info}[2]{\textit{#1: #2}\\}
+\newcommand{\fatalerror}[1]{\textbf{\textcolor[rgb]{1,0,0}{Fatal error: #1}}\\}
+\newcommand{\keyvalue}[2]{\textbf{Keyvalue: #1} #2\\}
+\newcommand{\textvalue}[1]{#1\\}
+\newcommand{\excltest}[1]{\\Excluded from compare: #1}
+\newcommand{\lognewpage}{\newpage}
+\newenvironment{testcase}[1]{\section*{Test: #1}}{\newpage}
+\newenvironment{test}[1]{\section*{Test case: #1}}{}
+%Begin test data
+\begin{jsonvalue}{CorrectDocResults}
+{
+   "format": "documentChange",
+   "error": "",
+   "data": [
+      {
+         "document": {
+            "fileVersion": "1.0.0",
+            "dataUnits": [
+               {
+                  "nameXml": "Transactions",
+                  "data": {
+                     "rowLists": [
+                        {
+                           "rows": [
+                              {
+                                 "operation": {
+                                    "name": "modify",
+                                    "sequence": "2"
+                                 },
+                                 "fields": {
+                                    "TCorrectionsNotes": "Wrong: Debit and/or Credit Account; Date; Amount Currency",
+                                    "Date": "2025-01-04",
+                                    "Doc": "1",
+                                    "Description": "Fatture ai clienti per servizi eseguiti",
+                                    "AccountDebit": "Crediti",
+                                    "AccountCredit": "Stipendi",
+                                    "AmountCurrency": "4000.00",
+                                    "ExchangeCurrency": "EUR",
+                                    "ExchangeRate": "1.000000000000"
+                                 },
+                                 "style": {
+                                    "background-color": "#ff8198"
+                                 }
+                              },
+                              {
+                                 "operation": {
+                                    "name": "modify",
+                                    "sequence": "5"
+                                 },
+                                 "fields": {
+                                    "TCorrectionsNotes": "Wrong: Debit and/or Credit Account",
+                                    "Date": "2025-01-01",
+                                    "Doc": "2",
+                                    "Description": "Fatture dai fornitori per acquisti di piante",
+                                    "AccountDebit": "Ricavi dalle vendite",
+                                    "AccountCredit": "Debiti",
+                                    "AmountCurrency": "1500.00",
+                                    "ExchangeCurrency": "USD",
+                                    "ExchangeRate": "1.123456000000"
+                                 },
+                                 "style": {
+                                    "background-color": "#ff8198"
+                                 }
+                              },
+                              {
+                                 "operation": {
+                                    "name": "modify",
+                                    "sequence": "8"
+                                 },
+                                 "fields": {
+                                    "TCorrectionsNotes": "",
+                                    "Date": "2025-01-01",
+                                    "Doc": "3",
+                                    "Description": "Fatture ai clienti per vendite di piante",
+                                    "AccountDebit": "Crediti",
+                                    "AccountCredit": "Ricavi dalle vendite",
+                                    "AmountCurrency": "3000.00",
+                                    "ExchangeCurrency": "EUR",
+                                    "ExchangeRate": "1.000000000000"
+                                 },
+                                 "style": {
+                                    "background-color": "#afffaf"
+                                 }
+                              },
+                              {
+                                 "operation": {
+                                    "name": "modify",
+                                    "sequence": "12"
+                                 },
+                                 "fields": {
+                                    "TCorrectionsNotes": "",
+                                    "Date": "2025-01-02",
+                                    "Doc": "4",
+                                    "Description": "Bonifico bancario per spese varie",
+                                    "AccountDebit": "",
+                                    "AccountCredit": "Banca",
+                                    "AmountCurrency": "1500.00",
+                                    "ExchangeCurrency": "EUR",
+                                    "ExchangeRate": "1.000000000000"
+                                 },
+                                 "style": {
+                                    "background-color": "#afffaf"
+                                 }
+                              },
+                              {
+                                 "operation": {
+                                    "name": "modify",
+                                    "sequence": "13"
+                                 },
+                                 "fields": {
+                                    "TCorrectionsNotes": "",
+                                    "Date": "2025-01-02",
+                                    "Doc": "4",
+                                    "Description": "Pagamento degli stipendi dei lavoratori",
+                                    "AccountDebit": "Stipendi",
+                                    "AccountCredit": "",
+                                    "AmountCurrency": "1000.00",
+                                    "ExchangeCurrency": "EUR",
+                                    "ExchangeRate": "1.000000000000"
+                                 },
+                                 "style": {
+                                    "background-color": "#afffaf"
+                                 }
+                              },
+                              {
+                                 "operation": {
+                                    "name": "modify",
+                                    "sequence": "14"
+                                 },
+                                 "fields": {
+                                    "TCorrectionsNotes": "",
+                                    "Date": "2025-01-02",
+                                    "Doc": "4",
+                                    "Description": "Pagamento degli interessi bancari",
+                                    "AccountDebit": "Altri costi",
+                                    "AccountCredit": "",
+                                    "AmountCurrency": "50.00",
+                                    "ExchangeCurrency": "USD",
+                                    "ExchangeRate": "1.200000000000"
+                                 },
+                                 "style": {
+                                    "background-color": "#afffaf"
+                                 }
+                              },
+                              {
+                                 "operation": {
+                                    "name": "modify",
+                                    "sequence": "15"
+                                 },
+                                 "fields": {
+                                    "TCorrectionsNotes": "Wrong: Debit and/or Credit Account",
+                                    "Date": "2025-01-02",
+                                    "Doc": "4",
+                                    "Description": "Pagamento dell'attrezzatura per ufficio",
+                                    "AccountDebit": "Acquisti",
+                                    "AccountCredit": "",
+                                    "AmountCurrency": "50.00",
+                                    "ExchangeCurrency": "USD",
+                                    "ExchangeRate": "1.200000000000"
+                                 },
+                                 "style": {
+                                    "background-color": "#ff8198"
+                                 }
+                              },
+                              {
+                                 "operation": {
+                                    "name": "modify",
+                                    "sequence": "16"
+                                 },
+                                 "fields": {
+                                    "TCorrectionsNotes": "",
+                                    "Date": "2025-01-02",
+                                    "Doc": "4",
+                                    "Description": "Pagamento della fattura dell'elettricità",
+                                    "AccountDebit": "Energia",
+                                    "AccountCredit": "",
+                                    "AmountCurrency": "300.00",
+                                    "ExchangeCurrency": "EUR",
+                                    "ExchangeRate": "1.000000000000"
+                                 },
+                                 "style": {
+                                    "background-color": "#afffaf"
+                                 }
+                              },
+                              {
+                                 "operation": {
+                                    "name": "modify",
+                                    "sequence": "17"
+                                 },
+                                 "fields": {
+                                    "TCorrectionsNotes": "",
+                                    "Date": "2025-01-02",
+                                    "Doc": "4",
+                                    "Description": "Pagamento della fattura dell'agenzia pubblicitaria",
+                                    "AccountDebit": "Pubblicità",
+                                    "AccountCredit": "",
+                                    "AmountCurrency": "100.00",
+                                    "ExchangeCurrency": "EUR",
+                                    "ExchangeRate": "1.000000000000"
+                                 },
+                                 "style": {
+                                    "background-color": "#afffaf"
+                                 }
+                              },
+                              {
+                                 "operation": {
+                                    "name": "modify",
+                                    "sequence": "20"
+                                 },
+                                 "fields": {
+                                    "TCorrectionsNotes": "Wrong: Date",
+                                    "Date": "2025-01-04",
+                                    "Doc": "5",
+                                    "Description": "Nota di credito (motivo: nostro errore)",
+                                    "AccountDebit": "Ricavi dai servizi",
+                                    "AccountCredit": "Crediti",
+                                    "AmountCurrency": "300.00",
+                                    "ExchangeCurrency": "EUR",
+                                    "ExchangeRate": "1.000000000000"
+                                 },
+                                 "style": {
+                                    "background-color": "#ff8198"
+                                 }
+                              },
+                              {
+                                 "operation": {
+                                    "name": "modify",
+                                    "sequence": "23"
+                                 },
+                                 "fields": {
+                                    "TCorrectionsNotes": "",
+                                    "Date": "2025-01-04",
+                                    "Doc": "6",
+                                    "Description": "Prelievo di fondi",
+                                    "AccountDebit": "Cassa",
+                                    "AccountCredit": "Banca",
+                                    "AmountCurrency": "1000.00",
+                                    "ExchangeCurrency": "EUR",
+                                    "ExchangeRate": "1.000000000000"
+                                 },
+                                 "style": {
+                                    "background-color": "#afffaf"
+                                 }
+                              },
+                              {
+                                 "operation": {
+                                    "name": "modify",
+                                    "sequence": "26"
+                                 },
+                                 "fields": {
+                                    "TCorrectionsNotes": "",
+                                    "Date": "2025-01-05",
+                                    "Doc": "7",
+                                    "Description": "Bonifico bancario dal cliente (pagamento fattura)",
+                                    "AccountDebit": "Banca",
+                                    "AccountCredit": "Crediti",
+                                    "AmountCurrency": "2000.00",
+                                    "ExchangeCurrency": "EUR",
+                                    "ExchangeRate": "1.000000000000"
+                                 },
+                                 "style": {
+                                    "background-color": "#afffaf"
+                                 }
+                              },
+                              {
+                                 "operation": {
+                                    "name": "modify",
+                                    "sequence": "29"
+                                 },
+                                 "fields": {
+                                    "TCorrectionsNotes": "",
+                                    "Date": "2025-01-06",
+                                    "Doc": "8",
+                                    "Description": "Pagamento in contanti al fornitore (pagamento fattura)",
+                                    "AccountDebit": "Debiti",
+                                    "AccountCredit": "Cassa",
+                                    "AmountCurrency": "1000.00",
+                                    "ExchangeCurrency": "EUR",
+                                    "ExchangeRate": "1.000000000000"
+                                 },
+                                 "style": {
+                                    "background-color": "#afffaf"
+                                 }
+                              },
+                              {
+                                 "operation": {
+                                    "name": "modify",
+                                    "sequence": "32"
+                                 },
+                                 "fields": {
+                                    "TCorrectionsNotes": "",
+                                    "Date": "2025-01-07",
+                                    "Doc": "9",
+                                    "Description": "Incasso per lavori eseguiti e vendite di fiori",
+                                    "AccountDebit": "Cassa",
+                                    "AccountCredit": "",
+                                    "AmountCurrency": "500.00",
+                                    "ExchangeCurrency": "EUR",
+                                    "ExchangeRate": "1.000000000000"
+                                 },
+                                 "style": {
+                                    "background-color": "#afffaf"
+                                 }
+                              },
+                              {
+                                 "operation": {
+                                    "name": "modify",
+                                    "sequence": "33"
+                                 },
+                                 "fields": {
+                                    "TCorrectionsNotes": "",
+                                    "Date": "2025-01-07",
+                                    "Doc": "9",
+                                    "Description": "Servizi eseguiti per il cliente",
+                                    "AccountDebit": "",
+                                    "AccountCredit": "Ricavi dai servizi",
+                                    "AmountCurrency": "400.00",
+                                    "ExchangeCurrency": "EUR",
+                                    "ExchangeRate": "1.000000000000"
+                                 },
+                                 "style": {
+                                    "background-color": "#afffaf"
+                                 }
+                              },
+                              {
+                                 "operation": {
+                                    "name": "modify",
+                                    "sequence": "34"
+                                 },
+                                 "fields": {
+                                    "TCorrectionsNotes": "",
+                                    "Date": "2025-01-07",
+                                    "Doc": "9",
+                                    "Description": "Vendita di fiori al cliente",
+                                    "AccountDebit": "",
+                                    "AccountCredit": "Ricavi dalle vendite",
+                                    "AmountCurrency": "100.00",
+                                    "ExchangeCurrency": "EUR",
+                                    "ExchangeRate": "1.000000000000"
+                                 },
+                                 "style": {
+                                    "background-color": "#afffaf"
+                                 }
+                              },
+                              {
+                                 "operation": {
+                                    "name": "add",
+                                    "sequence": "1.0"
+                                 },
+                                 "style": {
+                                    "fontSize": 0,
+                                    "bold": true
+                                 },
+                                 "fields": {
+                                    "TAuto": "automaticcorrection"
+                                 }
+                              },
+                              {
+                                 "operation": {
+                                    "name": "add",
+                                    "sequence": "1.0"
+                                 },
+                                 "style": {
+                                    "fontSize": 0,
+                                    "bold": true
+                                 },
+                                 "fields": {
+                                    "TAuto": "automaticcorrection",
+                                    "Doc": "1",
+                                    "Description": "# 1"
+                                 }
+                              },
+                              {
+                                 "operation": {
+                                    "name": "add",
+                                    "sequence": "2.0"
+                                 },
+                                 "style": {
+                                    "fontSize": 0,
+                                    "bold": true
+                                 },
+                                 "fields": {
+                                    "Date": "2025-01-01",
+                                    "TAuto": "automaticcorrection",
+                                    "Doc": "1",
+                                    "Description": "Fatture ai clienti per servizi eseguiti",
+                                    "AccountDebit": "[Crediti]",
+                                    "AccountCredit": "[Ricavi dai servizi]",
+                                    "AmountCurrency": "5000.00",
+                                    "ExchangeCurrency": "EUR",
+                                    "ExchangeRate": "1.000000000000"
+                                 }
+                              },
+                              {
+                                 "operation": {
+                                    "name": "add",
+                                    "sequence": "4.0"
+                                 },
+                                 "style": {
+                                    "fontSize": 0,
+                                    "bold": true
+                                 },
+                                 "fields": {
+                                    "TAuto": "automaticcorrection"
+                                 }
+                              },
+                              {
+                                 "operation": {
+                                    "name": "add",
+                                    "sequence": "4.0"
+                                 },
+                                 "style": {
+                                    "fontSize": 0,
+                                    "bold": true
+                                 },
+                                 "fields": {
+                                    "TAuto": "automaticcorrection",
+                                    "Doc": "2",
+                                    "Description": "# 2"
+                                 }
+                              },
+                              {
+                                 "operation": {
+                                    "name": "add",
+                                    "sequence": "5.0"
+                                 },
+                                 "style": {
+                                    "fontSize": 0,
+                                    "bold": true
+                                 },
+                                 "fields": {
+                                    "Date": "2025-01-01",
+                                    "TAuto": "automaticcorrection",
+                                    "Doc": "2",
+                                    "Description": "Fatture dai fornitori per acquisti di piante",
+                                    "AccountDebit": "[Acquisti]",
+                                    "AccountCredit": "[Debiti]",
+                                    "AmountCurrency": "1500.00",
+                                    "ExchangeCurrency": "USD",
+                                    "ExchangeRate": "1.123456000000"
+                                 }
+                              },
+                              {
+                                 "operation": {
+                                    "name": "add",
+                                    "sequence": "7.0"
+                                 },
+                                 "style": {
+                                    "fontSize": 0,
+                                    "bold": true
+                                 },
+                                 "fields": {
+                                    "TAuto": "automaticcorrection"
+                                 }
+                              },
+                              {
+                                 "operation": {
+                                    "name": "add",
+                                    "sequence": "7.0"
+                                 },
+                                 "style": {
+                                    "fontSize": 0,
+                                    "bold": true
+                                 },
+                                 "fields": {
+                                    "TAuto": "automaticcorrection",
+                                    "Doc": "3",
+                                    "Description": "# 3"
+                                 }
+                              },
+                              {
+                                 "operation": {
+                                    "name": "add",
+                                    "sequence": "8.0"
+                                 },
+                                 "style": {
+                                    "fontSize": 0,
+                                    "bold": true
+                                 },
+                                 "fields": {
+                                    "Date": "2025-01-01",
+                                    "TAuto": "automaticcorrection",
+                                    "Doc": "3",
+                                    "Description": "Fatture ai clienti per vendite di piante",
+                                    "AccountDebit": "[Crediti]",
+                                    "AccountCredit": "[Ricavi dalle vendite]",
+                                    "AmountCurrency": "3000.00",
+                                    "ExchangeCurrency": "EUR",
+                                    "ExchangeRate": "1.000000000000"
+                                 }
+                              },
+                              {
+                                 "operation": {
+                                    "name": "add",
+                                    "sequence": "11.0"
+                                 },
+                                 "style": {
+                                    "fontSize": 0,
+                                    "bold": true
+                                 },
+                                 "fields": {
+                                    "TAuto": "automaticcorrection"
+                                 }
+                              },
+                              {
+                                 "operation": {
+                                    "name": "add",
+                                    "sequence": "11.0"
+                                 },
+                                 "style": {
+                                    "fontSize": 0,
+                                    "bold": true
+                                 },
+                                 "fields": {
+                                    "TAuto": "automaticcorrection",
+                                    "Doc": "4",
+                                    "Description": "# 4"
+                                 }
+                              },
+                              {
+                                 "operation": {
+                                    "name": "add",
+                                    "sequence": "17.0"
+                                 },
+                                 "style": {
+                                    "fontSize": 0,
+                                    "bold": true
+                                 },
+                                 "fields": {
+                                    "Date": "2025-01-02",
+                                    "TAuto": "automaticcorrection",
+                                    "Doc": "4",
+                                    "Description": "Bonifico bancario per spese varie",
+                                    "AccountDebit": "[]",
+                                    "AccountCredit": "[Banca]",
+                                    "AmountCurrency": "1500.00",
+                                    "ExchangeCurrency": "EUR",
+                                    "ExchangeRate": "1.000000000000"
+                                 }
+                              },
+                              {
+                                 "operation": {
+                                    "name": "add",
+                                    "sequence": "17.0"
+                                 },
+                                 "style": {
+                                    "fontSize": 0,
+                                    "bold": true
+                                 },
+                                 "fields": {
+                                    "Date": "2025-01-02",
+                                    "TAuto": "automaticcorrection",
+                                    "Doc": "4",
+                                    "Description": "Pagamento degli stipendi dei lavoratori",
+                                    "AccountDebit": "[Stipendi]",
+                                    "AccountCredit": "[]",
+                                    "AmountCurrency": "1000.00",
+                                    "ExchangeCurrency": "EUR",
+                                    "ExchangeRate": "1.000000000000"
+                                 }
+                              },
+                              {
+                                 "operation": {
+                                    "name": "add",
+                                    "sequence": "17.0"
+                                 },
+                                 "style": {
+                                    "fontSize": 0,
+                                    "bold": true
+                                 },
+                                 "fields": {
+                                    "Date": "2025-01-02",
+                                    "TAuto": "automaticcorrection",
+                                    "Doc": "4",
+                                    "Description": "Pagamento degli interessi bancari",
+                                    "AccountDebit": "[Interessi]",
+                                    "AccountCredit": "[]",
+                                    "AmountCurrency": "50.00",
+                                    "ExchangeCurrency": "EUR",
+                                    "ExchangeRate": "1.000000000000"
+                                 }
+                              },
+                              {
+                                 "operation": {
+                                    "name": "add",
+                                    "sequence": "17.0"
+                                 },
+                                 "style": {
+                                    "fontSize": 0,
+                                    "bold": true
+                                 },
+                                 "fields": {
+                                    "Date": "2025-01-02",
+                                    "TAuto": "automaticcorrection",
+                                    "Doc": "4",
+                                    "Description": "Pagamento dell'attrezzatura per ufficio",
+                                    "AccountDebit": "[Altri costi]",
+                                    "AccountCredit": "[]",
+                                    "AmountCurrency": "50.00",
+                                    "ExchangeCurrency": "EUR",
+                                    "ExchangeRate": "1.000000000000"
+                                 }
+                              },
+                              {
+                                 "operation": {
+                                    "name": "add",
+                                    "sequence": "17.0"
+                                 },
+                                 "style": {
+                                    "fontSize": 0,
+                                    "bold": true
+                                 },
+                                 "fields": {
+                                    "Date": "2025-01-02",
+                                    "TAuto": "automaticcorrection",
+                                    "Doc": "4",
+                                    "Description": "Pagamento della fattura dell'elettricità",
+                                    "AccountDebit": "[Energia]",
+                                    "AccountCredit": "[]",
+                                    "AmountCurrency": "300.00",
+                                    "ExchangeCurrency": "EUR",
+                                    "ExchangeRate": "1.000000000000"
+                                 }
+                              },
+                              {
+                                 "operation": {
+                                    "name": "add",
+                                    "sequence": "17.0"
+                                 },
+                                 "style": {
+                                    "fontSize": 0,
+                                    "bold": true
+                                 },
+                                 "fields": {
+                                    "Date": "2025-01-02",
+                                    "TAuto": "automaticcorrection",
+                                    "Doc": "4",
+                                    "Description": "Pagamento della fattura dell'agenzia pubblicitaria",
+                                    "AccountDebit": "[Pubblicità]",
+                                    "AccountCredit": "[]",
+                                    "AmountCurrency": "100.00",
+                                    "ExchangeCurrency": "EUR",
+                                    "ExchangeRate": "1.000000000000"
+                                 }
+                              },
+                              {
+                                 "operation": {
+                                    "name": "add",
+                                    "sequence": "19.0"
+                                 },
+                                 "style": {
+                                    "fontSize": 0,
+                                    "bold": true
+                                 },
+                                 "fields": {
+                                    "TAuto": "automaticcorrection"
+                                 }
+                              },
+                              {
+                                 "operation": {
+                                    "name": "add",
+                                    "sequence": "19.0"
+                                 },
+                                 "style": {
+                                    "fontSize": 0,
+                                    "bold": true
+                                 },
+                                 "fields": {
+                                    "TAuto": "automaticcorrection",
+                                    "Doc": "5",
+                                    "Description": "# 5"
+                                 }
+                              },
+                              {
+                                 "operation": {
+                                    "name": "add",
+                                    "sequence": "20.0"
+                                 },
+                                 "style": {
+                                    "fontSize": 0,
+                                    "bold": true
+                                 },
+                                 "fields": {
+                                    "Date": "2025-01-03",
+                                    "TAuto": "automaticcorrection",
+                                    "Doc": "5",
+                                    "Description": "Nota di credito (motivo: nostro errore)",
+                                    "AccountDebit": "[Ricavi dai servizi]",
+                                    "AccountCredit": "[Crediti]",
+                                    "AmountCurrency": "300.00",
+                                    "ExchangeCurrency": "EUR",
+                                    "ExchangeRate": "1.000000000000"
+                                 }
+                              },
+                              {
+                                 "operation": {
+                                    "name": "add",
+                                    "sequence": "22.0"
+                                 },
+                                 "style": {
+                                    "fontSize": 0,
+                                    "bold": true
+                                 },
+                                 "fields": {
+                                    "TAuto": "automaticcorrection"
+                                 }
+                              },
+                              {
+                                 "operation": {
+                                    "name": "add",
+                                    "sequence": "22.0"
+                                 },
+                                 "style": {
+                                    "fontSize": 0,
+                                    "bold": true
+                                 },
+                                 "fields": {
+                                    "TAuto": "automaticcorrection",
+                                    "Doc": "6",
+                                    "Description": "# 6"
+                                 }
+                              },
+                              {
+                                 "operation": {
+                                    "name": "add",
+                                    "sequence": "23.0"
+                                 },
+                                 "style": {
+                                    "fontSize": 0,
+                                    "bold": true
+                                 },
+                                 "fields": {
+                                    "Date": "2025-01-04",
+                                    "TAuto": "automaticcorrection",
+                                    "Doc": "6",
+                                    "Description": "Prelievo di fondi",
+                                    "AccountDebit": "[Cassa]",
+                                    "AccountCredit": "[Banca]",
+                                    "AmountCurrency": "1000.00",
+                                    "ExchangeCurrency": "EUR",
+                                    "ExchangeRate": "1.000000000000"
+                                 }
+                              },
+                              {
+                                 "operation": {
+                                    "name": "add",
+                                    "sequence": "25.0"
+                                 },
+                                 "style": {
+                                    "fontSize": 0,
+                                    "bold": true
+                                 },
+                                 "fields": {
+                                    "TAuto": "automaticcorrection"
+                                 }
+                              },
+                              {
+                                 "operation": {
+                                    "name": "add",
+                                    "sequence": "25.0"
+                                 },
+                                 "style": {
+                                    "fontSize": 0,
+                                    "bold": true
+                                 },
+                                 "fields": {
+                                    "TAuto": "automaticcorrection",
+                                    "Doc": "7",
+                                    "Description": "# 7"
+                                 }
+                              },
+                              {
+                                 "operation": {
+                                    "name": "add",
+                                    "sequence": "26.0"
+                                 },
+                                 "style": {
+                                    "fontSize": 0,
+                                    "bold": true
+                                 },
+                                 "fields": {
+                                    "Date": "2025-01-05",
+                                    "TAuto": "automaticcorrection",
+                                    "Doc": "7",
+                                    "Description": "Bonifico bancario dal cliente (pagamento fattura)",
+                                    "AccountDebit": "[Banca]",
+                                    "AccountCredit": "[Crediti]",
+                                    "AmountCurrency": "2000.00",
+                                    "ExchangeCurrency": "EUR",
+                                    "ExchangeRate": "1.000000000000"
+                                 }
+                              },
+                              {
+                                 "operation": {
+                                    "name": "add",
+                                    "sequence": "28.0"
+                                 },
+                                 "style": {
+                                    "fontSize": 0,
+                                    "bold": true
+                                 },
+                                 "fields": {
+                                    "TAuto": "automaticcorrection"
+                                 }
+                              },
+                              {
+                                 "operation": {
+                                    "name": "add",
+                                    "sequence": "28.0"
+                                 },
+                                 "style": {
+                                    "fontSize": 0,
+                                    "bold": true
+                                 },
+                                 "fields": {
+                                    "TAuto": "automaticcorrection",
+                                    "Doc": "8",
+                                    "Description": "# 8"
+                                 }
+                              },
+                              {
+                                 "operation": {
+                                    "name": "add",
+                                    "sequence": "29.0"
+                                 },
+                                 "style": {
+                                    "fontSize": 0,
+                                    "bold": true
+                                 },
+                                 "fields": {
+                                    "Date": "2025-01-06",
+                                    "TAuto": "automaticcorrection",
+                                    "Doc": "8",
+                                    "Description": "Pagamento in contanti al fornitore (pagamento fattura)",
+                                    "AccountDebit": "[Debiti]",
+                                    "AccountCredit": "[Cassa]",
+                                    "AmountCurrency": "1000.00",
+                                    "ExchangeCurrency": "EUR",
+                                    "ExchangeRate": "1.000000000000"
+                                 }
+                              },
+                              {
+                                 "operation": {
+                                    "name": "add",
+                                    "sequence": "31.0"
+                                 },
+                                 "style": {
+                                    "fontSize": 0,
+                                    "bold": true
+                                 },
+                                 "fields": {
+                                    "TAuto": "automaticcorrection"
+                                 }
+                              },
+                              {
+                                 "operation": {
+                                    "name": "add",
+                                    "sequence": "31.0"
+                                 },
+                                 "style": {
+                                    "fontSize": 0,
+                                    "bold": true
+                                 },
+                                 "fields": {
+                                    "TAuto": "automaticcorrection",
+                                    "Doc": "9",
+                                    "Description": "# 9"
+                                 }
+                              },
+                              {
+                                 "operation": {
+                                    "name": "add",
+                                    "sequence": "34.0"
+                                 },
+                                 "style": {
+                                    "fontSize": 0,
+                                    "bold": true
+                                 },
+                                 "fields": {
+                                    "Date": "2025-01-07",
+                                    "TAuto": "automaticcorrection",
+                                    "Doc": "9",
+                                    "Description": "Incasso per lavori eseguiti e vendite di fiori",
+                                    "AccountDebit": "[Cassa]",
+                                    "AccountCredit": "[]",
+                                    "AmountCurrency": "500.00",
+                                    "ExchangeCurrency": "EUR",
+                                    "ExchangeRate": "1.000000000000"
+                                 }
+                              },
+                              {
+                                 "operation": {
+                                    "name": "add",
+                                    "sequence": "34.0"
+                                 },
+                                 "style": {
+                                    "fontSize": 0,
+                                    "bold": true
+                                 },
+                                 "fields": {
+                                    "Date": "2025-01-07",
+                                    "TAuto": "automaticcorrection",
+                                    "Doc": "9",
+                                    "Description": "Servizi eseguiti per il cliente",
+                                    "AccountDebit": "[]",
+                                    "AccountCredit": "[Ricavi dai servizi]",
+                                    "AmountCurrency": "400.00",
+                                    "ExchangeCurrency": "EUR",
+                                    "ExchangeRate": "1.000000000000"
+                                 }
+                              },
+                              {
+                                 "operation": {
+                                    "name": "add",
+                                    "sequence": "34.0"
+                                 },
+                                 "style": {
+                                    "fontSize": 0,
+                                    "bold": true
+                                 },
+                                 "fields": {
+                                    "Date": "2025-01-07",
+                                    "TAuto": "automaticcorrection",
+                                    "Doc": "9",
+                                    "Description": "Vendita di fiori al cliente",
+                                    "AccountDebit": "[]",
+                                    "AccountCredit": "[Ricavi dalle vendite]",
+                                    "AmountCurrency": "100.00",
+                                    "ExchangeCurrency": "EUR",
+                                    "ExchangeRate": "1.000000000000"
+                                 }
+                              }
+                           ]
+                        }
+                     ]
+                  }
+               }
+            ]
+         },
+         "creator": {
+            "executionDate": "",
+            "executionTime": "",
+            "name": "ch.banana.app.correctexercises.fulltest",
+            "version": "1.0"
+         }
+      }
+   ]
+}\end{jsonvalue}
+\keyvalue{StudentFileName}{11310-student-file-result-multi-currency}
+\keyvalue{TeacherFileName}{11311-teacher-file-solution-multi-currency}
+\section{file:script/../test/testcases/11310-student-file-result-multi-currency.ac2 vs file:script/../test/testcases/11311-teacher-file-solution-multi-currency.ac2 with parameters: \{"datescore":"1","debitaccountscore":"0","creditaccountscore":"1","amountscore":"1","debitcreditaccountsscore":false,"vatcodescore":"1","amountcurrencyscore":"1","exchangecurrencyscore":"0","exchangeratescore":"0","totalscore":"0"\}}
+\begin{tablevalue}{TransactionsStudentFile}{ l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l }
+SysCod & Section & Date & DateDocument & DateValue & Doc & DocProtocol & DocType & DocOriginal & DocInvoice & InvoicePrinted & DocLink & ExternalReference & Description & Notes & AccountDebit & AccountDebitDes & AccountCredit & AccountCreditDes & AmountCurrency & ExchangeCurrency & ExchangeRate & ExchangeMultiplier & Amount & Balance & Cc1 & Cc1Des & Cc2 & Cc2Des & Cc3 & Cc3Des & Segment & DateExpiration & DateExpected & DatePayment & LockNumber & LockAmount & LockProgressive & LockLine & TAuto & TMaxScore & TAutoScore & TAdjustedScore & TCorrectionsNotes\\
+ &  &  &  &  & Student &  &  &  &  &  &  &  & John White &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  &  &  &  &  &  &  &  &  &  &  &  & Esercizio 1 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  & 2025-01-04 &  &  & 1 &  &  &  &  &  &  &  & Fatture ai clienti per servizi eseguiti &  & Crediti & Crediti vari & Stipendi & Stipendi & 4000.00 & EUR & 1.000000000000 &  & 4000.00 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  &  &  &  &  &  &  &  &  &  &  &  & Esercizio 2 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  & 2025-01-01 &  &  & 2 &  &  &  &  &  &  &  & Fatture dai fornitori per acquisti di piante &  & Ricavi dalle vendite & Ricavi dalle vendite di prodotti & Debiti & Debiti vari & 1500.00 & USD & 1.123456000000 &  & 1335.17 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  &  &  &  &  &  &  &  &  &  &  &  & Esercizio 3 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  & 2025-01-01 &  &  & 3 &  &  &  &  &  &  &  & Fatture ai clienti per vendite di piante &  & Crediti & Crediti vari & Ricavi dalle vendite & Ricavi dalle vendite di prodotti & 3000.00 & EUR & 1.000000000000 &  & 3000.00 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  &  &  &  &  &  &  &  &  &  &  &  & Esercizio 4 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  &  &  &  &  &  &  &  &  &  &  &  & Note dello studente &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  & 2025-01-02 &  &  & 4 &  &  &  &  &  &  &  & Bonifico bancario per spese varie &  &  &  & Banca & Conto bancario & 1500.00 & EUR & 1.000000000000 &  & 1500.00 & -1500.00 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  & 2025-01-02 &  &  & 4 &  &  &  &  &  &  &  & Pagamento degli stipendi dei lavoratori &  & Stipendi & Stipendi &  &  & 1000.00 & EUR & 1.000000000000 &  & 1000.00 & -500.00 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  & 2025-01-02 &  &  & 4 &  &  &  &  &  &  &  & Pagamento degli interessi bancari &  & Altri costi & Altri costi &  &  & 50.00 & USD & 1.200000000000 &  & 41.67 & -458.33 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  & 2025-01-02 &  &  & 4 &  &  &  &  &  &  &  & Pagamento dell'attrezzatura per ufficio &  & Acquisti & Acquisti di prodotti &  &  & 50.00 & USD & 1.200000000000 &  & 41.67 & -416.66 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  & 2025-01-02 &  &  & 4 &  &  &  &  &  &  &  & Pagamento della fattura dell'elettricità &  & Energia & Costi energetici e di smaltimento &  &  & 300.00 & EUR & 1.000000000000 &  & 300.00 & -116.66 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  & 2025-01-02 &  &  & 4 &  &  &  &  &  &  &  & Pagamento della fattura dell'agenzia pubblicitaria &  & Pubblicità & Pubblicità &  &  & 100.00 & EUR & 1.000000000000 &  & 100.00 & -16.66 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  &  &  &  &  &  &  &  &  &  &  &  & Esercizio 5 &  &  &  &  &  &  &  &  &  &  & -16.66 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  & 2025-01-04 &  &  & 5 &  &  &  &  &  &  &  & Nota di credito (motivo: nostro errore) &  & Ricavi dai servizi & Ricavi da servizi resi & Crediti & Crediti vari & 300.00 & EUR & 1.000000000000 &  & 300.00 & -16.66 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  &  &  &  &  &  &  &  &  &  &  &  & Esercizio 6 &  &  &  &  &  &  &  &  &  &  & -16.66 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  & 2025-01-04 &  &  & 6 &  &  &  &  &  &  &  & Prelievo di fondi &  & Cassa & Denaro contante & Banca & Conto bancario & 1000.00 & EUR & 1.000000000000 &  & 1000.00 & -16.66 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  &  &  &  &  &  &  &  &  &  &  &  & Esercizio 7 &  &  &  &  &  &  &  &  &  &  & -16.66 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  & 2025-01-05 &  &  & 7 &  &  &  &  &  &  &  & Bonifico bancario dal cliente (pagamento fattura) &  & Banca & Conto bancario & Crediti & Crediti vari & 2000.00 & EUR & 1.000000000000 &  & 2000.00 & -16.66 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  &  &  &  &  &  &  &  &  &  &  &  & Esercizio 8 &  &  &  &  &  &  &  &  &  &  & -16.66 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  & 2025-01-06 &  &  & 8 &  &  &  &  &  &  &  & Pagamento in contanti al fornitore (pagamento fattura) &  & Debiti & Debiti vari & Cassa & Denaro contante & 1000.00 & EUR & 1.000000000000 &  & 1000.00 & -16.66 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  &  &  &  &  &  &  &  &  &  &  &  & Esercizio 9 &  &  &  &  &  &  &  &  &  &  & -16.66 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  & 2025-01-07 &  &  & 9 &  &  &  &  &  &  &  & Incasso per lavori eseguiti e vendite di fiori &  & Cassa & Denaro contante &  &  & 500.00 & EUR & 1.000000000000 &  & 500.00 & 483.34 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  & 2025-01-07 &  &  & 9 &  &  &  &  &  &  &  & Servizi eseguiti per il cliente &  &  &  & Ricavi dai servizi & Ricavi da servizi resi & 400.00 & EUR & 1.000000000000 &  & 400.00 & 83.34 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  & 2025-01-07 &  &  & 9 &  &  &  &  &  &  &  & Vendita di fiori al cliente &  &  &  & Ricavi dalle vendite & Ricavi dalle vendite di prodotti & 100.00 & EUR & 1.000000000000 &  & 100.00 & -16.66 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+\end{tablevalue}
+\begin{tablevalue}{TransactionsTeacherFile}{ l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l }
+SysCod & Section & Date & DateDocument & DateValue & Doc & DocProtocol & DocType & DocOriginal & DocInvoice & InvoicePrinted & DocLink & ExternalReference & Description & Notes & AccountDebit & AccountDebitDes & AccountCredit & AccountCreditDes & AmountCurrency & ExchangeCurrency & ExchangeRate & ExchangeMultiplier & Amount & Balance & Cc1 & Cc1Des & Cc2 & Cc2Des & Cc3 & Cc3Des & Segment & DateExpiration & DateExpected & DatePayment & LockNumber & LockAmount & LockProgressive & LockLine & TAuto & TMaxScore & TAutoScore & TAdjustedScore & TCorrectionsNotes\\
+ &  &  &  &  &  &  &  &  &  &  &  &  & Esercizio in classe 21.02.2025 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  &  &  &  & \# &  &  &  &  &  &  &  & teacherfile &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  &  &  &  &  &  &  &  &  &  &  &  & Esercizio 1 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  & 2025-01-01 &  &  & 1 &  &  &  &  &  &  &  & Fatture ai clienti per servizi eseguiti &  & Crediti & Crediti vari & Ricavi dai servizi & Ricavi da servizi resi & 5000.00 & EUR & 1 &  & 5000.00 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  &  &  &  &  &  &  &  &  &  &  &  & Esercizio 2 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  & 2025-01-01 &  &  & 2 &  &  &  &  &  &  &  & Fatture dai fornitori per acquisti di piante &  & Acquisti & Acquisti di prodotti & Debiti & Debiti vari & 1500.00 & USD & 1.123456000000 &  & 1335.17 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  &  &  &  &  &  &  &  &  &  &  &  & Esercizio 3 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  & 2025-01-01 &  &  & 3 &  &  &  &  &  &  &  & Fatture ai clienti per vendite di piante &  & Crediti & Crediti vari & Ricavi dalle vendite & Ricavi dalle vendite di prodotti & 3000.00 & EUR & 1.00 &  & 3000.00 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  &  &  &  &  &  &  &  &  &  &  &  & Esercizio 4 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  & 2025-01-02 &  &  & 4 &  &  &  &  &  &  &  & Bonifico bancario per spese varie &  &  &  & Banca & Conto bancario & 1500.00 & EUR & 1.00 &  & 1500.00 & -1500.00 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  & 2025-01-02 &  &  & 4 &  &  &  &  &  &  &  & Pagamento degli stipendi dei lavoratori &  & Stipendi & Stipendi &  &  & 1000.00 & EUR & 1.00 &  & 1000.00 & -500.00 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  & 2025-01-02 &  &  & 4 &  &  &  &  &  &  &  & Pagamento degli interessi bancari &  & Interessi & Interessi bancari &  &  & 50.00 & EUR & 1 &  & 50.00 & -450.00 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  & 2025-01-02 &  &  & 4 &  &  &  &  &  &  &  & Pagamento dell'attrezzatura per ufficio &  & Altri costi & Altri costi &  &  & 50.00 & EUR & 1.00 &  & 50.00 & -400.00 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  & 2025-01-02 &  &  & 4 &  &  &  &  &  &  &  & Pagamento della fattura dell'elettricità &  & Energia & Costi energetici e di smaltimento &  &  & 300.00 & EUR & 1.00 &  & 300.00 & -100.00 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  & 2025-01-02 &  &  & 4 &  &  &  &  &  &  &  & Pagamento della fattura dell'agenzia pubblicitaria &  & Pubblicità & Pubblicità &  &  & 100.00 & EUR & 1.00 &  & 100.00 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  &  &  &  &  &  &  &  &  &  &  &  & Esercizio 5 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  & 2025-01-03 &  &  & 5 &  &  &  &  &  &  &  & Nota di credito (motivo: nostro errore) &  & Ricavi dai servizi & Ricavi da servizi resi & Crediti & Crediti vari & 300.00 & EUR & 1.00 &  & 300.00 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  &  &  &  &  &  &  &  &  &  &  &  & Esercizio 6 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  & 2025-01-04 &  &  & 6 &  &  &  &  &  &  &  & Prelievo di fondi &  & Cassa & Denaro contante & Banca & Conto bancario & 1000.00 & EUR & 1.00 &  & 1000.00 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  &  &  &  &  &  &  &  &  &  &  &  & Esercizio 7 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  & 2025-01-05 &  &  & 7 &  &  &  &  &  &  &  & Bonifico bancario dal cliente (pagamento fattura) &  & Banca & Conto bancario & Crediti & Crediti vari & 2000.00 & EUR & 1.00 &  & 2000.00 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  &  &  &  &  &  &  &  &  &  &  &  & Esercizio 8 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  & 2025-01-06 &  &  & 8 &  &  &  &  &  &  &  & Pagamento in contanti al fornitore (pagamento fattura) &  & Debiti & Debiti vari & Cassa & Denaro contante & 1000.00 & EUR & 1.00 &  & 1000.00 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  &  &  &  &  &  &  &  &  &  &  &  & Esercizio 9 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  & 2025-01-07 &  &  & 9 &  &  &  &  &  &  &  & Incasso per lavori eseguiti e vendite di fiori &  & Cassa & Denaro contante &  &  & 500.00 & EUR & 1.00 &  & 500.00 & 500.00 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  & 2025-01-07 &  &  & 9 &  &  &  &  &  &  &  & Servizi eseguiti per il cliente &  &  &  & Ricavi dai servizi & Ricavi da servizi resi & 400.00 & EUR & 1.00 &  & 400.00 & 100.00 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  & 2025-01-07 &  &  & 9 &  &  &  &  &  &  &  & Vendita di fiori al cliente &  &  &  & Ricavi dalle vendite & Ricavi dalle vendite di prodotti & 100.00 & EUR & 1.00 &  & 100.00 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+\end{tablevalue}
+\end{document}

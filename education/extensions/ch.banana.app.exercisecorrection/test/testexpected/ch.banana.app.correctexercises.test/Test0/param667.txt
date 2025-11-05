@@ -1,0 +1,975 @@
+%%info_test_name{param667}
+\documentclass{report}
+\usepackage{longtable}
+\usepackage{color}
+\usepackage{listings}
+\usepackage[margin=1cm]{geometry}
+\begin{document}
+\newenvironment{tablevalue}[2]{\textbf{Table: #1}\begin{longtable}[l]{#2}}{\end{longtable}}
+\newenvironment{reportvalue}[1]{\textbf{Report: #1}\\}{}
+\lstnewenvironment{jsonvalue}[1]{\textbf{Json: #1}\lstset{language=Java}}{}
+\lstnewenvironment{xmlvalue}[1]{\textbf{Xml: #1}\lstset{language=Xml}}{}
+\newcommand{\info}[2]{\textit{#1: #2}\\}
+\newcommand{\fatalerror}[1]{\textbf{\textcolor[rgb]{1,0,0}{Fatal error: #1}}\\}
+\newcommand{\keyvalue}[2]{\textbf{Keyvalue: #1} #2\\}
+\newcommand{\textvalue}[1]{#1\\}
+\newcommand{\excltest}[1]{\\Excluded from compare: #1}
+\newcommand{\lognewpage}{\newpage}
+\newenvironment{testcase}[1]{\section*{Test: #1}}{\newpage}
+\newenvironment{test}[1]{\section*{Test case: #1}}{}
+%Begin test data
+\begin{jsonvalue}{CorrectDocResults}
+{
+   "format": "documentChange",
+   "error": "",
+   "data": [
+      {
+         "document": {
+            "fileVersion": "1.0.0",
+            "dataUnits": [
+               {
+                  "nameXml": "Transactions",
+                  "data": {
+                     "rowLists": [
+                        {
+                           "rows": [
+                              {
+                                 "operation": {
+                                    "name": "modify",
+                                    "sequence": "2"
+                                 },
+                                 "fields": {
+                                    "TCorrectionsNotes": "Wrong: Debit and/or Credit Account; Date",
+                                    "Date": "2025-01-04",
+                                    "Doc": "1",
+                                    "Description": "Invoices to customers for executed services",
+                                    "AccountDebit": "Debts",
+                                    "AccountCredit": "Salaries",
+                                    "Amount": "4000.00"
+                                 },
+                                 "style": {
+                                    "background-color": "#ff8198"
+                                 }
+                              },
+                              {
+                                 "operation": {
+                                    "name": "modify",
+                                    "sequence": "5"
+                                 },
+                                 "fields": {
+                                    "TCorrectionsNotes": "Wrong: Debit and/or Credit Account",
+                                    "Date": "2025-01-01",
+                                    "Doc": "2",
+                                    "Description": "Invoices from suppliers for plants purchases",
+                                    "AccountDebit": "Earnings Sales",
+                                    "AccountCredit": "Debts",
+                                    "Amount": "1500.00"
+                                 },
+                                 "style": {
+                                    "background-color": "#ff8198"
+                                 }
+                              },
+                              {
+                                 "operation": {
+                                    "name": "modify",
+                                    "sequence": "8"
+                                 },
+                                 "fields": {
+                                    "TCorrectionsNotes": "",
+                                    "Date": "2025-01-01",
+                                    "Doc": "3",
+                                    "Description": "Invoices to customers for plants sales",
+                                    "AccountDebit": "Credits",
+                                    "AccountCredit": "Earnings Sales",
+                                    "Amount": "3000.00"
+                                 },
+                                 "style": {
+                                    "background-color": "#afffaf"
+                                 }
+                              },
+                              {
+                                 "operation": {
+                                    "name": "modify",
+                                    "sequence": "12"
+                                 },
+                                 "fields": {
+                                    "TCorrectionsNotes": "",
+                                    "Date": "2025-01-02",
+                                    "Doc": "4",
+                                    "Description": "Bank transfer for miscellaneous expenses",
+                                    "AccountDebit": "",
+                                    "AccountCredit": "Bank",
+                                    "Amount": "1500.00"
+                                 },
+                                 "style": {
+                                    "background-color": "#afffaf"
+                                 }
+                              },
+                              {
+                                 "operation": {
+                                    "name": "modify",
+                                    "sequence": "13"
+                                 },
+                                 "fields": {
+                                    "TCorrectionsNotes": "",
+                                    "Date": "2025-01-02",
+                                    "Doc": "4",
+                                    "Description": "Payment of workers' salaries",
+                                    "AccountDebit": "Salaries",
+                                    "AccountCredit": "",
+                                    "Amount": "1000.00"
+                                 },
+                                 "style": {
+                                    "background-color": "#afffaf"
+                                 }
+                              },
+                              {
+                                 "operation": {
+                                    "name": "modify",
+                                    "sequence": "14"
+                                 },
+                                 "fields": {
+                                    "TCorrectionsNotes": "",
+                                    "Date": "2025-01-02",
+                                    "Doc": "4",
+                                    "Description": "Payment of bank interest",
+                                    "AccountDebit": "Other Costs",
+                                    "AccountCredit": "",
+                                    "Amount": "50.00"
+                                 },
+                                 "style": {
+                                    "background-color": "#afffaf"
+                                 }
+                              },
+                              {
+                                 "operation": {
+                                    "name": "modify",
+                                    "sequence": "15"
+                                 },
+                                 "fields": {
+                                    "TCorrectionsNotes": "Wrong: Debit and/or Credit Account",
+                                    "Date": "2025-01-02",
+                                    "Doc": "4",
+                                    "Description": "Payment of office equipment",
+                                    "AccountDebit": "Purchases",
+                                    "AccountCredit": "",
+                                    "Amount": "50.00"
+                                 },
+                                 "style": {
+                                    "background-color": "#ff8198"
+                                 }
+                              },
+                              {
+                                 "operation": {
+                                    "name": "modify",
+                                    "sequence": "16"
+                                 },
+                                 "fields": {
+                                    "TCorrectionsNotes": "",
+                                    "Date": "2025-01-02",
+                                    "Doc": "4",
+                                    "Description": "Payment of electricity invoice",
+                                    "AccountDebit": "Energy",
+                                    "AccountCredit": "",
+                                    "Amount": "300.00"
+                                 },
+                                 "style": {
+                                    "background-color": "#afffaf"
+                                 }
+                              },
+                              {
+                                 "operation": {
+                                    "name": "modify",
+                                    "sequence": "17"
+                                 },
+                                 "fields": {
+                                    "TCorrectionsNotes": "",
+                                    "Date": "2025-01-02",
+                                    "Doc": "4",
+                                    "Description": "Payment of advertising agency invoice",
+                                    "AccountDebit": "Advertising",
+                                    "AccountCredit": "",
+                                    "Amount": "100.00"
+                                 },
+                                 "style": {
+                                    "background-color": "#afffaf"
+                                 }
+                              },
+                              {
+                                 "operation": {
+                                    "name": "modify",
+                                    "sequence": "20"
+                                 },
+                                 "fields": {
+                                    "TCorrectionsNotes": "Wrong: Date",
+                                    "Date": "2025-01-04",
+                                    "Doc": "5",
+                                    "Description": "Credit note (reason: our mistake)",
+                                    "AccountDebit": "Earnings Services",
+                                    "AccountCredit": "Credits",
+                                    "Amount": "300.00"
+                                 },
+                                 "style": {
+                                    "background-color": "#ff8198"
+                                 }
+                              },
+                              {
+                                 "operation": {
+                                    "name": "modify",
+                                    "sequence": "23"
+                                 },
+                                 "fields": {
+                                    "TCorrectionsNotes": "",
+                                    "Date": "2025-01-04",
+                                    "Doc": "6",
+                                    "Description": "Fund withdrawal",
+                                    "AccountDebit": "Cash",
+                                    "AccountCredit": "Bank",
+                                    "Amount": "1000.00"
+                                 },
+                                 "style": {
+                                    "background-color": "#afffaf"
+                                 }
+                              },
+                              {
+                                 "operation": {
+                                    "name": "modify",
+                                    "sequence": "26"
+                                 },
+                                 "fields": {
+                                    "TCorrectionsNotes": "",
+                                    "Date": "2025-01-05",
+                                    "Doc": "7",
+                                    "Description": "Bank transfer from customer (invoice payment)",
+                                    "AccountDebit": "Bank",
+                                    "AccountCredit": "Credits",
+                                    "Amount": "2000.00"
+                                 },
+                                 "style": {
+                                    "background-color": "#afffaf"
+                                 }
+                              },
+                              {
+                                 "operation": {
+                                    "name": "modify",
+                                    "sequence": "29"
+                                 },
+                                 "fields": {
+                                    "TCorrectionsNotes": "",
+                                    "Date": "2025-01-06",
+                                    "Doc": "8",
+                                    "Description": "Cash transfer to supplier (invoice payment)",
+                                    "AccountDebit": "Debts",
+                                    "AccountCredit": "Cash",
+                                    "Amount": "1000.00"
+                                 },
+                                 "style": {
+                                    "background-color": "#afffaf"
+                                 }
+                              },
+                              {
+                                 "operation": {
+                                    "name": "modify",
+                                    "sequence": "32"
+                                 },
+                                 "fields": {
+                                    "TCorrectionsNotes": "",
+                                    "Date": "2025-01-07",
+                                    "Doc": "9",
+                                    "Description": "Cash receipt for work performed and flower sales",
+                                    "AccountDebit": "Cash",
+                                    "AccountCredit": "",
+                                    "Amount": "500.00"
+                                 },
+                                 "style": {
+                                    "background-color": "#afffaf"
+                                 }
+                              },
+                              {
+                                 "operation": {
+                                    "name": "modify",
+                                    "sequence": "33"
+                                 },
+                                 "fields": {
+                                    "TCorrectionsNotes": "",
+                                    "Date": "2025-01-07",
+                                    "Doc": "9",
+                                    "Description": "Services performed to customer",
+                                    "AccountDebit": "",
+                                    "AccountCredit": "Earnings Services",
+                                    "Amount": "400.00"
+                                 },
+                                 "style": {
+                                    "background-color": "#afffaf"
+                                 }
+                              },
+                              {
+                                 "operation": {
+                                    "name": "modify",
+                                    "sequence": "34"
+                                 },
+                                 "fields": {
+                                    "TCorrectionsNotes": "",
+                                    "Date": "2025-01-07",
+                                    "Doc": "9",
+                                    "Description": "Flower sales to customer",
+                                    "AccountDebit": "",
+                                    "AccountCredit": "Earnings Sales",
+                                    "Amount": "100.00"
+                                 },
+                                 "style": {
+                                    "background-color": "#afffaf"
+                                 }
+                              },
+                              {
+                                 "operation": {
+                                    "name": "add",
+                                    "sequence": "1.0"
+                                 },
+                                 "style": {
+                                    "fontSize": 0,
+                                    "bold": true
+                                 },
+                                 "fields": {
+                                    "TAuto": "automaticcorrection"
+                                 }
+                              },
+                              {
+                                 "operation": {
+                                    "name": "add",
+                                    "sequence": "1.0"
+                                 },
+                                 "style": {
+                                    "fontSize": 0,
+                                    "bold": true
+                                 },
+                                 "fields": {
+                                    "TAuto": "automaticcorrection",
+                                    "Doc": "1",
+                                    "Description": "# 1"
+                                 }
+                              },
+                              {
+                                 "operation": {
+                                    "name": "add",
+                                    "sequence": "2.0"
+                                 },
+                                 "style": {
+                                    "fontSize": 0,
+                                    "bold": true
+                                 },
+                                 "fields": {
+                                    "Date": "2025-01-01",
+                                    "TAuto": "automaticcorrection",
+                                    "Doc": "1",
+                                    "Description": "Invoices to customers for executed services",
+                                    "AccountDebit": "[Credits]",
+                                    "AccountCredit": "[Earnings Services]",
+                                    "Amount": "5000.00"
+                                 }
+                              },
+                              {
+                                 "operation": {
+                                    "name": "add",
+                                    "sequence": "4.0"
+                                 },
+                                 "style": {
+                                    "fontSize": 0,
+                                    "bold": true
+                                 },
+                                 "fields": {
+                                    "TAuto": "automaticcorrection"
+                                 }
+                              },
+                              {
+                                 "operation": {
+                                    "name": "add",
+                                    "sequence": "4.0"
+                                 },
+                                 "style": {
+                                    "fontSize": 0,
+                                    "bold": true
+                                 },
+                                 "fields": {
+                                    "TAuto": "automaticcorrection",
+                                    "Doc": "2",
+                                    "Description": "# 2"
+                                 }
+                              },
+                              {
+                                 "operation": {
+                                    "name": "add",
+                                    "sequence": "5.0"
+                                 },
+                                 "style": {
+                                    "fontSize": 0,
+                                    "bold": true
+                                 },
+                                 "fields": {
+                                    "Date": "2025-01-01",
+                                    "TAuto": "automaticcorrection",
+                                    "Doc": "2",
+                                    "Description": "Invoices from suppliers for plants purchases",
+                                    "AccountDebit": "[Purchases]",
+                                    "AccountCredit": "[Debts]",
+                                    "Amount": "1500.00"
+                                 }
+                              },
+                              {
+                                 "operation": {
+                                    "name": "add",
+                                    "sequence": "7.0"
+                                 },
+                                 "style": {
+                                    "fontSize": 0,
+                                    "bold": true
+                                 },
+                                 "fields": {
+                                    "TAuto": "automaticcorrection"
+                                 }
+                              },
+                              {
+                                 "operation": {
+                                    "name": "add",
+                                    "sequence": "7.0"
+                                 },
+                                 "style": {
+                                    "fontSize": 0,
+                                    "bold": true
+                                 },
+                                 "fields": {
+                                    "TAuto": "automaticcorrection",
+                                    "Doc": "3",
+                                    "Description": "# 3"
+                                 }
+                              },
+                              {
+                                 "operation": {
+                                    "name": "add",
+                                    "sequence": "8.0"
+                                 },
+                                 "style": {
+                                    "fontSize": 0,
+                                    "bold": true
+                                 },
+                                 "fields": {
+                                    "Date": "2025-01-01",
+                                    "TAuto": "automaticcorrection",
+                                    "Doc": "3",
+                                    "Description": "Invoices to customers for plants sales",
+                                    "AccountDebit": "[Credits]",
+                                    "AccountCredit": "[Earnings Sales]",
+                                    "Amount": "3000.00"
+                                 }
+                              },
+                              {
+                                 "operation": {
+                                    "name": "add",
+                                    "sequence": "11.0"
+                                 },
+                                 "style": {
+                                    "fontSize": 0,
+                                    "bold": true
+                                 },
+                                 "fields": {
+                                    "TAuto": "automaticcorrection"
+                                 }
+                              },
+                              {
+                                 "operation": {
+                                    "name": "add",
+                                    "sequence": "11.0"
+                                 },
+                                 "style": {
+                                    "fontSize": 0,
+                                    "bold": true
+                                 },
+                                 "fields": {
+                                    "TAuto": "automaticcorrection",
+                                    "Doc": "4",
+                                    "Description": "# 4"
+                                 }
+                              },
+                              {
+                                 "operation": {
+                                    "name": "add",
+                                    "sequence": "17.0"
+                                 },
+                                 "style": {
+                                    "fontSize": 0,
+                                    "bold": true
+                                 },
+                                 "fields": {
+                                    "Date": "2025-01-02",
+                                    "TAuto": "automaticcorrection",
+                                    "Doc": "4",
+                                    "Description": "Bank transfer for miscellaneous expenses",
+                                    "AccountDebit": "[]",
+                                    "AccountCredit": "[Bank]",
+                                    "Amount": "1500.00"
+                                 }
+                              },
+                              {
+                                 "operation": {
+                                    "name": "add",
+                                    "sequence": "17.0"
+                                 },
+                                 "style": {
+                                    "fontSize": 0,
+                                    "bold": true
+                                 },
+                                 "fields": {
+                                    "Date": "2025-01-02",
+                                    "TAuto": "automaticcorrection",
+                                    "Doc": "4",
+                                    "Description": "Payment of workers' salaries",
+                                    "AccountDebit": "[Salaries]",
+                                    "AccountCredit": "[]",
+                                    "Amount": "1000.00"
+                                 }
+                              },
+                              {
+                                 "operation": {
+                                    "name": "add",
+                                    "sequence": "17.0"
+                                 },
+                                 "style": {
+                                    "fontSize": 0,
+                                    "bold": true
+                                 },
+                                 "fields": {
+                                    "Date": "2025-01-02",
+                                    "TAuto": "automaticcorrection",
+                                    "Doc": "4",
+                                    "Description": "Payment of bank interest",
+                                    "AccountDebit": "[Interests]",
+                                    "AccountCredit": "[]",
+                                    "Amount": "50.00"
+                                 }
+                              },
+                              {
+                                 "operation": {
+                                    "name": "add",
+                                    "sequence": "17.0"
+                                 },
+                                 "style": {
+                                    "fontSize": 0,
+                                    "bold": true
+                                 },
+                                 "fields": {
+                                    "Date": "2025-01-02",
+                                    "TAuto": "automaticcorrection",
+                                    "Doc": "4",
+                                    "Description": "Payment of office equipment",
+                                    "AccountDebit": "[Other Costs]",
+                                    "AccountCredit": "[]",
+                                    "Amount": "50.00"
+                                 }
+                              },
+                              {
+                                 "operation": {
+                                    "name": "add",
+                                    "sequence": "17.0"
+                                 },
+                                 "style": {
+                                    "fontSize": 0,
+                                    "bold": true
+                                 },
+                                 "fields": {
+                                    "Date": "2025-01-02",
+                                    "TAuto": "automaticcorrection",
+                                    "Doc": "4",
+                                    "Description": "Payment of electricity invoice",
+                                    "AccountDebit": "[Energy]",
+                                    "AccountCredit": "[]",
+                                    "Amount": "300.00"
+                                 }
+                              },
+                              {
+                                 "operation": {
+                                    "name": "add",
+                                    "sequence": "17.0"
+                                 },
+                                 "style": {
+                                    "fontSize": 0,
+                                    "bold": true
+                                 },
+                                 "fields": {
+                                    "Date": "2025-01-02",
+                                    "TAuto": "automaticcorrection",
+                                    "Doc": "4",
+                                    "Description": "Payment of advertising agency invoice",
+                                    "AccountDebit": "[Advertising]",
+                                    "AccountCredit": "[]",
+                                    "Amount": "100.00"
+                                 }
+                              },
+                              {
+                                 "operation": {
+                                    "name": "add",
+                                    "sequence": "19.0"
+                                 },
+                                 "style": {
+                                    "fontSize": 0,
+                                    "bold": true
+                                 },
+                                 "fields": {
+                                    "TAuto": "automaticcorrection"
+                                 }
+                              },
+                              {
+                                 "operation": {
+                                    "name": "add",
+                                    "sequence": "19.0"
+                                 },
+                                 "style": {
+                                    "fontSize": 0,
+                                    "bold": true
+                                 },
+                                 "fields": {
+                                    "TAuto": "automaticcorrection",
+                                    "Doc": "5",
+                                    "Description": "# 5"
+                                 }
+                              },
+                              {
+                                 "operation": {
+                                    "name": "add",
+                                    "sequence": "20.0"
+                                 },
+                                 "style": {
+                                    "fontSize": 0,
+                                    "bold": true
+                                 },
+                                 "fields": {
+                                    "Date": "2025-01-03",
+                                    "TAuto": "automaticcorrection",
+                                    "Doc": "5",
+                                    "Description": "Credit note (reason: our mistake)",
+                                    "AccountDebit": "[Earnings Services]",
+                                    "AccountCredit": "[Credits]",
+                                    "Amount": "300.00"
+                                 }
+                              },
+                              {
+                                 "operation": {
+                                    "name": "add",
+                                    "sequence": "22.0"
+                                 },
+                                 "style": {
+                                    "fontSize": 0,
+                                    "bold": true
+                                 },
+                                 "fields": {
+                                    "TAuto": "automaticcorrection"
+                                 }
+                              },
+                              {
+                                 "operation": {
+                                    "name": "add",
+                                    "sequence": "22.0"
+                                 },
+                                 "style": {
+                                    "fontSize": 0,
+                                    "bold": true
+                                 },
+                                 "fields": {
+                                    "TAuto": "automaticcorrection",
+                                    "Doc": "6",
+                                    "Description": "# 6"
+                                 }
+                              },
+                              {
+                                 "operation": {
+                                    "name": "add",
+                                    "sequence": "23.0"
+                                 },
+                                 "style": {
+                                    "fontSize": 0,
+                                    "bold": true
+                                 },
+                                 "fields": {
+                                    "Date": "2025-01-04",
+                                    "TAuto": "automaticcorrection",
+                                    "Doc": "6",
+                                    "Description": "Fund withdrawal",
+                                    "AccountDebit": "[Cash]",
+                                    "AccountCredit": "[Bank]",
+                                    "Amount": "1000.00"
+                                 }
+                              },
+                              {
+                                 "operation": {
+                                    "name": "add",
+                                    "sequence": "25.0"
+                                 },
+                                 "style": {
+                                    "fontSize": 0,
+                                    "bold": true
+                                 },
+                                 "fields": {
+                                    "TAuto": "automaticcorrection"
+                                 }
+                              },
+                              {
+                                 "operation": {
+                                    "name": "add",
+                                    "sequence": "25.0"
+                                 },
+                                 "style": {
+                                    "fontSize": 0,
+                                    "bold": true
+                                 },
+                                 "fields": {
+                                    "TAuto": "automaticcorrection",
+                                    "Doc": "7",
+                                    "Description": "# 7"
+                                 }
+                              },
+                              {
+                                 "operation": {
+                                    "name": "add",
+                                    "sequence": "26.0"
+                                 },
+                                 "style": {
+                                    "fontSize": 0,
+                                    "bold": true
+                                 },
+                                 "fields": {
+                                    "Date": "2025-01-05",
+                                    "TAuto": "automaticcorrection",
+                                    "Doc": "7",
+                                    "Description": "Bank transfer from customer (invoice payment)",
+                                    "AccountDebit": "[Bank]",
+                                    "AccountCredit": "[Credits]",
+                                    "Amount": "2000.00"
+                                 }
+                              },
+                              {
+                                 "operation": {
+                                    "name": "add",
+                                    "sequence": "28.0"
+                                 },
+                                 "style": {
+                                    "fontSize": 0,
+                                    "bold": true
+                                 },
+                                 "fields": {
+                                    "TAuto": "automaticcorrection"
+                                 }
+                              },
+                              {
+                                 "operation": {
+                                    "name": "add",
+                                    "sequence": "28.0"
+                                 },
+                                 "style": {
+                                    "fontSize": 0,
+                                    "bold": true
+                                 },
+                                 "fields": {
+                                    "TAuto": "automaticcorrection",
+                                    "Doc": "8",
+                                    "Description": "# 8"
+                                 }
+                              },
+                              {
+                                 "operation": {
+                                    "name": "add",
+                                    "sequence": "29.0"
+                                 },
+                                 "style": {
+                                    "fontSize": 0,
+                                    "bold": true
+                                 },
+                                 "fields": {
+                                    "Date": "2025-01-06",
+                                    "TAuto": "automaticcorrection",
+                                    "Doc": "8",
+                                    "Description": "Cash transfer to supplier (invoice payment)",
+                                    "AccountDebit": "[Debts]",
+                                    "AccountCredit": "[Cash]",
+                                    "Amount": "1000.00"
+                                 }
+                              },
+                              {
+                                 "operation": {
+                                    "name": "add",
+                                    "sequence": "31.0"
+                                 },
+                                 "style": {
+                                    "fontSize": 0,
+                                    "bold": true
+                                 },
+                                 "fields": {
+                                    "TAuto": "automaticcorrection"
+                                 }
+                              },
+                              {
+                                 "operation": {
+                                    "name": "add",
+                                    "sequence": "31.0"
+                                 },
+                                 "style": {
+                                    "fontSize": 0,
+                                    "bold": true
+                                 },
+                                 "fields": {
+                                    "TAuto": "automaticcorrection",
+                                    "Doc": "9",
+                                    "Description": "# 9"
+                                 }
+                              },
+                              {
+                                 "operation": {
+                                    "name": "add",
+                                    "sequence": "34.0"
+                                 },
+                                 "style": {
+                                    "fontSize": 0,
+                                    "bold": true
+                                 },
+                                 "fields": {
+                                    "Date": "2025-01-07",
+                                    "TAuto": "automaticcorrection",
+                                    "Doc": "9",
+                                    "Description": "Cash receipt for work performed and flower sales",
+                                    "AccountDebit": "[Cash]",
+                                    "AccountCredit": "[]",
+                                    "Amount": "500.00"
+                                 }
+                              },
+                              {
+                                 "operation": {
+                                    "name": "add",
+                                    "sequence": "34.0"
+                                 },
+                                 "style": {
+                                    "fontSize": 0,
+                                    "bold": true
+                                 },
+                                 "fields": {
+                                    "Date": "2025-01-07",
+                                    "TAuto": "automaticcorrection",
+                                    "Doc": "9",
+                                    "Description": "Services performed to customer",
+                                    "AccountDebit": "[]",
+                                    "AccountCredit": "[Earnings Services]",
+                                    "Amount": "400.00"
+                                 }
+                              },
+                              {
+                                 "operation": {
+                                    "name": "add",
+                                    "sequence": "34.0"
+                                 },
+                                 "style": {
+                                    "fontSize": 0,
+                                    "bold": true
+                                 },
+                                 "fields": {
+                                    "Date": "2025-01-07",
+                                    "TAuto": "automaticcorrection",
+                                    "Doc": "9",
+                                    "Description": "Flower sales to customer",
+                                    "AccountDebit": "[]",
+                                    "AccountCredit": "[Earnings Sales]",
+                                    "Amount": "100.00"
+                                 }
+                              }
+                           ]
+                        }
+                     ]
+                  }
+               }
+            ]
+         },
+         "creator": {
+            "executionDate": "",
+            "executionTime": "",
+            "name": "ch.banana.app.correctexercises.fulltest",
+            "version": "1.0"
+         }
+      }
+   ]
+}\end{jsonvalue}
+\keyvalue{StudentFileName}{student-result-file-1}
+\keyvalue{TeacherFileName}{teacher-solution-file-1}
+\section{file:script/../test/testcases/student-result-file-1.ac2 vs file:script/../test/testcases/teacher-solution-file-1.ac2 with parameters: \{"datescore":"1","debitaccountscore":"0","creditaccountscore":"1","amountscore":"0","debitcreditaccountsscore":false,"vatcodescore":"1","amountcurrencyscore":"1","exchangecurrencyscore":"0","exchangeratescore":"1","totalscore":"1"\}}
+\begin{tablevalue}{TransactionsStudentFile}{ l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l }
+SysCod & Section & Date & DateDocument & DateValue & Doc & DocProtocol & DocType & DocOriginal & DocInvoice & InvoicePrinted & DocLink & ExternalReference & Description & Notes & AccountDebit & AccountDebitDes & AccountCredit & AccountCreditDes & Amount & Balance & Cc1 & Cc1Des & Cc2 & Cc2Des & Cc3 & Cc3Des & Segment & DateExpiration & DateExpected & DatePayment & LockNumber & LockAmount & LockProgressive & LockLine & TAutoScore & TAdjustedScore & TMaxScore & TCorrectionsNotes & TAuto\\
+ &  &  &  &  & Student &  &  &  &  &  &  &  & John White &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  &  &  &  &  &  &  &  &  &  &  &  & Exercise 1 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  & 2025-01-04 &  &  & 1 &  &  &  &  &  &  &  & Invoices to customers for executed services &  & Debts & Various debts & Salaries & Salaries  & 4000.00 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  &  &  &  &  &  &  &  &  &  &  &  & Exercise 2 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  & 2025-01-01 &  &  & 2 &  &  &  &  &  &  &  & Invoices from suppliers for plants purchases &  & Earnings Sales & Earnings from products sales & Debts & Various debts & 1500.00 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  &  &  &  &  &  &  &  &  &  &  &  & Exercise 3 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  & 2025-01-01 &  &  & 3 &  &  &  &  &  &  &  & Invoices to customers for plants sales &  & Credits & Various credits & Earnings Sales & Earnings from products sales & 3000.00 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  &  &  &  &  &  &  &  &  &  &  &  & Exercise 4 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  &  &  &  &  &  &  &  &  &  &  &  & Student notes &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  & 2025-01-02 &  &  & 4 &  &  &  &  &  &  &  & Bank transfer for miscellaneous expenses &  &  &  & Bank & Bank account & 1500.00 & -1500.00 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  & 2025-01-02 &  &  & 4 &  &  &  &  &  &  &  & Payment of workers' salaries &  & Salaries & Salaries  &  &  & 1000.00 & -500.00 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  & 2025-01-02 &  &  & 4 &  &  &  &  &  &  &  & Payment of bank interest &  & Other Costs & Other costs &  &  & 50.00 & -450.00 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  & 2025-01-02 &  &  & 4 &  &  &  &  &  &  &  & Payment of office equipment &  & Purchases & Products purchases &  &  & 50.00 & -400.00 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  & 2025-01-02 &  &  & 4 &  &  &  &  &  &  &  & Payment of electricity invoice &  & Energy & Energy and disposal costs &  &  & 300.00 & -100.00 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  & 2025-01-02 &  &  & 4 &  &  &  &  &  &  &  & Payment of advertising agency invoice &  & Advertising & Advertising &  &  & 100.00 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  &  &  &  &  &  &  &  &  &  &  &  & Exercise 5 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  & 2025-01-04 &  &  & 5 &  &  &  &  &  &  &  & Credit note (reason: our mistake) &  & Earnings Services & Earnings from services rendered & Credits & Various credits & 300.00 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  &  &  &  &  &  &  &  &  &  &  &  & Exercise 6 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  & 2025-01-04 &  &  & 6 &  &  &  &  &  &  &  & Fund withdrawal &  & Cash & Cash on hand & Bank & Bank account & 1000.00 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  &  &  &  &  &  &  &  &  &  &  &  & Exercise 7 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  & 2025-01-05 &  &  & 7 &  &  &  &  &  &  &  & Bank transfer from customer (invoice payment) &  & Bank & Bank account & Credits & Various credits & 2000.00 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  &  &  &  &  &  &  &  &  &  &  &  & Exercise 8 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  & 2025-01-06 &  &  & 8 &  &  &  &  &  &  &  & Cash transfer to supplier (invoice payment) &  & Debts & Various debts & Cash & Cash on hand & 1000.00 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  &  &  &  &  &  &  &  &  &  &  &  & Exercise 9 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  & 2025-01-07 &  &  & 9 &  &  &  &  &  &  &  & Cash receipt for work performed and flower sales &  & Cash & Cash on hand &  &  & 500.00 & 500.00 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  & 2025-01-07 &  &  & 9 &  &  &  &  &  &  &  & Services performed to customer &  &  &  & Earnings Services & Earnings from services rendered & 400.00 & 100.00 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  & 2025-01-07 &  &  & 9 &  &  &  &  &  &  &  & Flower sales to customer &  &  &  & Earnings Sales & Earnings from products sales & 100.00 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+\end{tablevalue}
+\begin{tablevalue}{TransactionsTeacherFile}{ l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l }
+SysCod & Section & Date & DateDocument & DateValue & Doc & DocProtocol & DocType & DocOriginal & DocInvoice & InvoicePrinted & DocLink & ExternalReference & Description & Notes & AccountDebit & AccountDebitDes & AccountCredit & AccountCreditDes & Amount & Balance & Cc1 & Cc1Des & Cc2 & Cc2Des & Cc3 & Cc3Des & Segment & DateExpiration & DateExpected & DatePayment & LockNumber & LockAmount & LockProgressive & LockLine & TAutoScore & TAdjustedScore & TMaxScore & TCorrectionsNotes & TAuto\\
+ &  &  &  &  &  &  &  &  &  &  &  &  & Classroom Exercise 21.02.2025 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  &  &  &  & \# &  &  &  &  &  &  &  & teacherfile &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  &  &  &  &  &  &  &  &  &  &  &  & Exercise 1 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  & 2025-01-01 &  &  & 1 &  &  &  &  &  &  &  & Invoices to customers for executed services &  & Credits & Various credits & Earnings Services & Earnings from services rendered & 5000.00 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  &  &  &  &  &  &  &  &  &  &  &  & Exercise 2 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  & 2025-01-01 &  &  & 2 &  &  &  &  &  &  &  & Invoices from suppliers for plants purchases &  & Purchases & Products purchases & Debts & Various debts & 1500.00 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  &  &  &  &  &  &  &  &  &  &  &  & Exercise 3 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  & 2025-01-01 &  &  & 3 &  &  &  &  &  &  &  & Invoices to customers for plants sales &  & Credits & Various credits & Earnings Sales & Earnings from products sales & 3000.00 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  &  &  &  &  &  &  &  &  &  &  &  & Exercise 4 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  & 2025-01-02 &  &  & 4 &  &  &  &  &  &  &  & Bank transfer for miscellaneous expenses &  &  &  & Bank & Bank account & 1500.00 & -1500.00 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  & 2025-01-02 &  &  & 4 &  &  &  &  &  &  &  & Payment of workers' salaries &  & Salaries & Salaries  &  &  & 1000.00 & -500.00 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  & 2025-01-02 &  &  & 4 &  &  &  &  &  &  &  & Payment of bank interest &  & Interests & Bank interests &  &  & 50.00 & -450.00 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  & 2025-01-02 &  &  & 4 &  &  &  &  &  &  &  & Payment of office equipment &  & Other Costs & Other Costs &  &  & 50.00 & -400.00 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  & 2025-01-02 &  &  & 4 &  &  &  &  &  &  &  & Payment of electricity invoice &  & Energy & Energy and disposal costs &  &  & 300.00 & -100.00 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  & 2025-01-02 &  &  & 4 &  &  &  &  &  &  &  & Payment of advertising agency invoice &  & Advertising & Advertising &  &  & 100.00 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  &  &  &  &  &  &  &  &  &  &  &  & Exercise 5 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  & 2025-01-03 &  &  & 5 &  &  &  &  &  &  &  & Credit note (reason: our mistake) &  & Earnings Services & Earnings from services rendered & Credits & Various credits & 300.00 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  &  &  &  &  &  &  &  &  &  &  &  & Exercise 6 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  & 2025-01-04 &  &  & 6 &  &  &  &  &  &  &  & Fund withdrawal &  & Cash & Cash on hand & Bank & Bank account & 1000.00 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  &  &  &  &  &  &  &  &  &  &  &  & Exercise 7 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  & 2025-01-05 &  &  & 7 &  &  &  &  &  &  &  & Bank transfer from customer (invoice payment) &  & Bank & Bank account & Credits & Various credits & 2000.00 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  &  &  &  &  &  &  &  &  &  &  &  & Exercise 8 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  & 2025-01-06 &  &  & 8 &  &  &  &  &  &  &  & Cash transfer to supplier (invoice payment) &  & Debts & Various debts & Cash & Cash on hand & 1000.00 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  &  &  &  &  &  &  &  &  &  &  &  & Exercise 9 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  & 2025-01-07 &  &  & 9 &  &  &  &  &  &  &  & Cash receipt for work performed and flower sales &  & Cash & Cash on hand &  &  & 500.00 & 500.00 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  & 2025-01-07 &  &  & 9 &  &  &  &  &  &  &  & Services performed to customer &  &  &  & Earnings Services & Earnings from services rendered & 400.00 & 100.00 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  & 2025-01-07 &  &  & 9 &  &  &  &  &  &  &  & Flower sales to customer &  &  &  & Earnings Sales & Earnings from products sales & 100.00 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+\end{tablevalue}
+\end{document}

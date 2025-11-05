@@ -87,8 +87,8 @@ TestFullCorrectExercises.prototype.testFullCorrectExercises = function () {
       let parentLogger = this.testLogger;
       //test filename param0, param1, ...
       this.testLogger = parentLogger.newLogger("param" + index.toString());
-      // let printresults = printreport.result(param);
-      // this.testLogger.addJson("CorrectDocResults", JSON.stringify(printresults, null, 3));
+      let printresults = printreport.result(param);
+      this.testLogger.addJson("CorrectDocResults", JSON.stringify(printresults, null, 3));
       this.testLogger.addKeyValue("StudentFileName", studentFileName);
       this.testLogger.addKeyValue("TeacherFileName", teacherFileName);
       this.testLogger.addSection(this.fileAC2Path[i][0] + " vs " + this.fileAC2Path[i][1] + " with parameters: " + JSON.stringify(param));
