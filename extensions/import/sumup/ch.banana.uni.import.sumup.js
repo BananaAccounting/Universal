@@ -14,7 +14,7 @@
 
 // @id = ch.banana.uni.import.sumup
 // @api = 1.0
-// @pubdate = 2025-05-20
+// @pubdate = 2025-10-14
 // @publisher = Banana.ch SA
 // @description = SumUp - Import movements .csv (Banana+ Advanced)
 // @description.it = SumUp - Importa movimenti .csv (Banana+ Advanced)
@@ -184,6 +184,7 @@ var SumupFormat2 = class SumupFormat2 extends ImportUtilities {
                convertedColumns[i] = "Transaction Id";
                break;
             case "Zahlungsart":
+            case "Transaktionsart":
                convertedColumns[i] = "Payment type";
                break;
             case "Status":

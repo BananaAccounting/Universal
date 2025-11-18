@@ -1,109 +1,103 @@
-// @id = ch.banana.app.exercisecorrection.test
+// @id = ch.banana.app.correctexercises.fulltest
 // @api = 1.0
-// @pubdate = 2025-02-06
+// @pubdate = 2025-07-29
 // @publisher = Banana.ch SA
-// @description = <TEST ch.banana.app.exercisecorrection.test>
+// @description = <TEST ch.banana.app.correctexercises.full-combination>
 // @task = app.command
 // @doctype = *.*
-// @docproperties =
 // @outputformat = none
 // @inputdataform = none
 // @timeout = -1
 // @includejs = ../ch.banana.app.exercisecorrection.sbaa/ch.banana.app.correctexercises.js
 
+Test.registerTestCase(new TestFullCorrectExercises());
 
-// Register this test case to be executed
-Test.registerTestCase(new TestImportFile());
+function TestFullCorrectExercises() { }
 
-// Define the test class, the name of the class is not important
-function TestImportFile() {
-}
-
-// This method will be called at the beginning of the test case
-TestImportFile.prototype.initTestCase = function () {
-
+TestFullCorrectExercises.prototype.initTestCase = function () {
   this.testLogger = Test.logger;
-  this.fileAC2Path = [];
-  this.fileAC2Path.push("file:script/../test/testcases/student-result-file-1.ac2");
-  this.fileAC2Path.push("file:script/../test/testcases/teacher-solution-file-1.ac2");
-  this.fileAC2Path.push("file:script/../test/testcases/student-result-file-2.ac2");
-  this.fileAC2Path.push("file:script/../test/testcases/teacher-solution-file-2.ac2");
-  this.fileAC2Path.push("file:script/../test/testcases/student-result-file-3.ac2");
-  this.fileAC2Path.push("file:script/../test/testcases/teacher-solution-file-3.ac2");
-  this.fileAC2Path.push("file:script/../test/testcases/DoubleEntry.ac2");
-  this.fileAC2Path.push("file:script/../test/testcases/DoubleEntry.ac2");
-}
 
-// This method will be called at the end of the test case
-TestImportFile.prototype.cleanupTestCase = function () {
-}
+  this.fileAC2Path = [
+    ["file:script/../test/testcases/student-result-file-1.ac2", "file:script/../test/testcases/teacher-solution-file-1.ac2"],
+    // ["file:script/../test/testcases/student-result-file-2.ac2", "file:script/../test/testcases/teacher-solution-file-2.ac2"],
+    // ["file:script/../test/testcases/student-result-file-3.ac2", "file:script/../test/testcases/teacher-solution-file-3.ac2"],
+    ["file:script/../test/testcases/11310-student-file-result-iva.ac2", "file:script/../test/testcases/11311-teacher-file-solution-iva.ac2"],
+    ["file:script/../test/testcases/11310-student-file-result-iva-multi-currency.ac2", "file:script/../test/testcases/11311-teacher-file-solution-iva-multi-currency.ac2"],
+    ["file:script/../test/testcases/11310-student-file-result-multi-currency.ac2", "file:script/../test/testcases/11311-teacher-file-solution-multi-currency.ac2"]
+  ];
 
-// This method will be called before every test method is executed
-TestImportFile.prototype.init = function () {
-}
+  this.paramOptions = {
+    datescore: ["0", "1"],
+    debitaccountscore: ["0", "1"],
+    creditaccountscore: ["0", "1"],
+    amountscore: ["0", "1"],
+    debitcreditaccountsscore: [false, true],
+    vatcodescore: ["0", "1"],
+    amountcurrencyscore: ["0", "1"],
+    exchangecurrencyscore: ["0", "1"],
+    exchangeratescore: ["0", "1"],
+    totalscore: ["0", "1"]
+  };
+};
 
-// This method will be called after every test method is executed
-TestImportFile.prototype.cleanup = function () {
-}
+TestFullCorrectExercises.prototype.cleanupTestCase = function () { };
+TestFullCorrectExercises.prototype.init = function () { };
+TestFullCorrectExercises.prototype.cleanup = function () {};
 
-TestImportFile.prototype.testImportFile = function () {
+TestFullCorrectExercises.prototype.testFullCorrectExercises = function () {
 
-
-  for (let i = 0; i < this.fileAC2Path.length; i++) {
-
-    let banDoc1 = Banana.application.openDocument(this.fileAC2Path[i]);
-    let banDoc2 = Banana.application.openDocument(this.fileAC2Path[i + 1]);
-    let isTest = true;
-
-    let paramcorrections = {};
-    paramcorrections.score = true;
-    paramcorrections.datescore = "1";
-    paramcorrections.amountscore = "1";
-    paramcorrections.debitaccountscore = "1";
-    paramcorrections.creditaccountscore = "1";
-    paramcorrections.debitcreditaccountsscore = false;
-
-    if (banDoc1 && banDoc2) {
-
-      let test = new CorrectDoc(banDoc1, banDoc2, isTest);
-      let result = test.result(paramcorrections);
-      this.testLogger.addText("TestExerciseCorrection " + i);
-      this.testLogger.addJson("TestExerciseCorrection", JSON.stringify(result));
-      i++;
+  var currentCombination = {};
+  function combineParams(paramOptions, index = 0) {
+    if (index === Object.keys(paramOptions).length) {
+      return [Object.assign({}, currentCombination)];
     }
-    else {
-
-      this.testLogger.addFatalError("No valid file ac2 found in this directory: " + this.fileAC2Path[i] + " and/or " + this.fileAC2Path[i + 1]);
-
+    const paramName = Object.keys(paramOptions)[index];
+    const combinations = [];
+    for (const value of paramOptions[paramName]) {
+      currentCombination[paramName] = value;
+      combinations.push(...combineParams(paramOptions, index + 1));
     }
+    return combinations;
   }
-  
+
   for (let i = 0; i < this.fileAC2Path.length; i++) {
-
-    let banDoc1 = Banana.application.openDocument(this.fileAC2Path[i + 1]);
-    let banDoc2 = Banana.application.openDocument(this.fileAC2Path[i]);
-    let isTest = true;
-
-    let paramcorrections = {};
-    paramcorrections.score = true;
-    paramcorrections.datescore = "1";
-    paramcorrections.amountscore = "1";
-    paramcorrections.debitaccountscore = "1";
-    paramcorrections.creditaccountscore = "1";
-    paramcorrections.debitcreditaccountsscore = false;
-
-    if (banDoc1 && banDoc2) {
-
-      let test = new CorrectDoc(banDoc1, banDoc2, isTest);
-      let result = test.result(paramcorrections);
-      this.testLogger.addText("TestExerciseCorrection Bad Workflow" + i);
-      this.testLogger.addJson("TestExerciseCorrection Bad Workflow", JSON.stringify(result));
-      i++;
+    const studentFile = this.fileAC2Path[i][0];
+    const teacherFile = this.fileAC2Path[i][1];
+    const banDoc1 = Banana.application.openDocument(studentFile);
+    const banDoc2 = Banana.application.openDocument(teacherFile);
+    //creates a folder for each file tested
+    //log name student file
+    let studentFileName = '';
+    const matchStudent = studentFile.match(/([^/\\]+)(?=\.ac2$)/);
+    if (matchStudent) {
+      studentFileName += matchStudent[1];
     }
-    else {
-
-      this.testLogger.addFatalError("No valid file ac2 found in this directory: " + this.fileAC2Path[i] + " and/or " + this.fileAC2Path[i + 1]);
-
+    //log name teacher file
+    let teacherFileName = '';
+    const matchTeacher = teacherFile.match(/([^/\\]+)(?=\.ac2$)/);
+    if (matchTeacher) {
+      teacherFileName += matchTeacher[1];
     }
+    //folder Test0, Test1,...
+    this.testLogger = Test.logger.newGroupLogger("Test" + i.toString());
+
+    let index = 0;
+    let printreport = new CorrectDoc(banDoc1, banDoc2, true);
+    for (const param of combineParams(this.paramOptions)) {
+      let parentLogger = this.testLogger;
+      //test filename param0, param1, ...
+      this.testLogger = parentLogger.newLogger("param" + index.toString());
+      let printresults = printreport.result(param);
+      this.testLogger.addJson("CorrectDocResults", JSON.stringify(printresults, null, 3));
+      this.testLogger.addKeyValue("StudentFileName", studentFileName);
+      this.testLogger.addKeyValue("TeacherFileName", teacherFileName);
+      this.testLogger.addSection(this.fileAC2Path[i][0] + " vs " + this.fileAC2Path[i][1] + " with parameters: " + JSON.stringify(param));
+      this.testLogger.addTable("TransactionsStudentFile", banDoc1.table("Transactions"));
+      this.testLogger.addTable("TransactionsTeacherFile", banDoc2.table("Transactions"));
+      index++;
+    }
+
+    this.testLogger.close();
+    this.testLogger = Test.logger;
   }
 }

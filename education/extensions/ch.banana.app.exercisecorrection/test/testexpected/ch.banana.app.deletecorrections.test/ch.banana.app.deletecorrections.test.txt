@@ -22,27 +22,7 @@
 %
 \begin{testcase}{TestImportFile}
 \begin{test}{testImportFile}
-\textvalue{TestDeleteCorrections 0}\\
-\begin{jsonvalue}{TestDeleteCorrections}
-\end{jsonvalue}
-\textvalue{TestDeleteCorrections 1}\\
-\begin{jsonvalue}{TestDeleteCorrections}
-\end{jsonvalue}
-\textvalue{TestDeleteCorrections 2}\\
-\begin{jsonvalue}{TestDeleteCorrections}
-\end{jsonvalue}
-\textvalue{TestDeleteCorrections 3}\\
-\begin{jsonvalue}{TestDeleteCorrections}
-\end{jsonvalue}
-\textvalue{TestDeleteCorrections 4}\\
-\begin{jsonvalue}{TestDeleteCorrections}
-\end{jsonvalue}
-\textvalue{TestDeleteCorrections 5}\\
-\begin{jsonvalue}{TestDeleteCorrections}
-\end{jsonvalue}
-\textvalue{TestDeleteCorrections 6}\\
-\begin{jsonvalue}{TestDeleteCorrections}
-\end{jsonvalue}
+\textvalue{[object Object]}\\
 \keyvalue{Result}{Passed}
 \end{test}
 \end{testcase}

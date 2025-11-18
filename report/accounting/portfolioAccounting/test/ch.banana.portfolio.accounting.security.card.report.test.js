@@ -41,7 +41,9 @@ TestSecurityCardReport.prototype.initTestCase = function () {
     this.fileNameList = [];
 
     this.fileNameList.push("file:script/../test/testcases/portfolio_accounting_double_entry_tutorial_2022.ac2");
+    this.fileNameList.push("file:script/../test/testcases/portfolio_accounting_double_entry_tutorial_2025_withopenings.ac2");
     this.fileNameList.push("file:script/../test/testcases/portfolio_accounting_double_entry_multi_currency_tutorial.ac2");
+    this.fileNameList.push("file:script/../test/testcases/portfolio_accounting_double_entry_multi_currency_tutorial_unitprofitlosstest_2025.ac2");
 }
 
 // This method will be called at the end of the test case
@@ -73,12 +75,7 @@ TestSecurityCardReport.prototype.testDataStructure = function () {
             let selectedItem = getItemForTest(i);
             let itemsData = getItemsTableData(banDoc, docInfo);
             let itemObject = itemsData.find(itemsData => itemsData.item === selectedItem)
-            let itemAccount = getItemAccount(selectedItem, banDoc);
-            let journal = banDoc.journal(banDoc.ORIGINTYPE_CURRENT, banDoc.ACCOUNTTYPE_NONE);
-            let journalData = getJournalData(docInfo, journal);
-            let accountCard = banDoc.currentCard(itemAccount);
-            let accountCardData = getAccountCardDataAdapted(itemObject, accountCard);
-            let itemCardData = getItemCardData(banDoc, docInfo, accountCardData, journalData, itemObject);
+            let itemCardData = getItemCardData(banDoc, docInfo, itemObject);
             let reportName = "FILENAME: " + fileName;
             let itemDescription = getItemDescription(selectedItem, banDoc);
             let report = printReport(banDoc, docInfo, itemCardData, itemDescription);
@@ -91,9 +88,9 @@ TestSecurityCardReport.prototype.testDataStructure = function () {
 
 function getItemForTest(index) {
     item = "";
-    if (index == 0)
+    if (index == 0 || index == 1)
         item = "CH003886335";
-    else if (index == 1)
+    else if (index == 2 || index == 3)
         item = "IT0005239360";
 
     return item;

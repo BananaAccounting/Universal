@@ -1,6 +1,6 @@
 // @id = ch.banana.app.settings
 // @api = 1.0
-// @pubdate = 2025-02-26
+// @pubdate = 2025-10-07
 // @publisher = Banana.ch SA
 // @description = 4. Settings
 // @description.it = 4. Impostazioni
@@ -33,7 +33,7 @@ function exec() {
 }
 
 /**
- * Questa classe gestisce la logica ed i metodi per la creazione del report 
+ * This class handles the logic and methods required to generate reports.
  * @param {*} banDocument 
  */
 
@@ -66,8 +66,8 @@ var PrintSettings = class PrintSettings {
         this.verifyparam(paramcorrections);
 
         if (!this.isTest) {
-        // Open the dialog and read the user parameters
-        this.settingsDialog(texts, paramcorrections);
+            // Open the dialog and read the user parameters
+            this.settingsDialog(texts, paramcorrections);
         }
 
         return;
@@ -76,36 +76,60 @@ var PrintSettings = class PrintSettings {
 
     verifyparam(userParam) {
 
-        if (!userParam.score) {
+        if (typeof userParam.score === undefined) {
             userParam.score = true;
         }
         if (!userParam.datescore) {
             userParam.datescore = '1';
         }
-        // verifica che è un numero
-        if (!userParam.datescore.match(/^\d+$/)) {
+        // Verify that the value is a number
+        if (!userParam.datescore.match(/^\d+(\.\d+)?$/)) {
             userParam.datescore = '1';
         }
         if (!userParam.debitaccountscore) {
             userParam.debitaccountscore = '1';
         }
-        if (!userParam.debitaccountscore.match(/^\d+$/)) {
+        if (!userParam.debitaccountscore.match(/^\d+(\.\d+)?$/)) {
             userParam.debitaccountscore = '1';
         }
         if (!userParam.creditaccountscore) {
             userParam.creditaccountscore = '1';
         }
-        if (!userParam.creditaccountscore.match(/^\d+$/)) {
+        if (!userParam.creditaccountscore.match(/^\d+(\.\d+)?$/)) {
             userParam.creditaccountscore = '1';
+        }
+        if (typeof userParam.debitcreditaccountsscore === undefined) {
+            userParam.debitcreditaccountsscore = false;
         }
         if (!userParam.amountscore) {
             userParam.amountscore = '1';
         }
-        if (!userParam.amountscore.match(/^\d+$/)) {
+        if (!userParam.amountscore.match(/^\d+(\.\d+)?$/)) {
             userParam.amountscore = '1';
         }
-        if (!userParam.debitcreditaccountsscore) {
-            userParam.debitcreditaccountsscore = false;
+        if (!userParam.vatcodescore) {
+            userParam.vatcodescore = '0';
+        }
+        if (!userParam.vatcodescore.match(/^\d+(\.\d+)?$/)) {
+            userParam.vatcodescore = '0';
+        }
+        if (!userParam.amountcurrencyscore) {
+            userParam.amountcurrencyscore = '0';
+        }
+        if (!userParam.amountcurrencyscore.match(/^\d+(\.\d+)?$/)) {
+            userParam.amountcurrencyscore = '0';
+        }
+        if (!userParam.exchangecurrencyscore) {
+            userParam.exchangecurrencyscore = '0';
+        }
+        if (!userParam.exchangecurrencyscore.match(/^\d+(\.\d+)?$/)) {
+            userParam.exchangecurrencyscore = '0';
+        }
+        if (!userParam.exchangeratescore) {
+            userParam.exchangeratescore = '0';
+        }
+        if (!userParam.exchangeratescore.match(/^\d+(\.\d+)?$/)) {
+            userParam.exchangeratescore = '0';
         }
 
         return userParam;
@@ -116,7 +140,7 @@ var PrintSettings = class PrintSettings {
 
         let convertedParam = {};
         convertedParam.version = '1.0';
-        convertedParam.data = []; /* array dei parametri dello script */
+        convertedParam.data = []; /* Array containing the script parameters */
 
         //Score
         let currentParam = {};
@@ -166,18 +190,6 @@ var PrintSettings = class PrintSettings {
         }
         convertedParam.data.push(currentParam);
 
-        //Amount Score
-        currentParam = {};
-        currentParam.name = 'amountpoints';
-        currentParam.title = texts.amountscore;
-        currentParam.type = 'string';
-        currentParam.value = userParam.amountscore ? userParam.amountscore : '1';
-        currentParam.defaultvalue = '1';
-        currentParam.readValue = function () {
-            userParam.amountscore = this.value;
-        }
-        convertedParam.data.push(currentParam);
-
         //Debit/Credit Score
         currentParam = {};
         currentParam.name = 'debitcreditaccountsscore';
@@ -187,6 +199,66 @@ var PrintSettings = class PrintSettings {
         currentParam.defaultvalue = true;
         currentParam.readValue = function () {
             userParam.debitcreditaccountsscore = this.value;
+        }
+        convertedParam.data.push(currentParam);
+
+        //Amount Score
+        currentParam = {};
+        currentParam.name = 'amountscore';
+        currentParam.title = texts.amountscore;
+        currentParam.type = 'string';
+        currentParam.value = userParam.amountscore ? userParam.amountscore : '1';
+        currentParam.defaultvalue = '1';
+        currentParam.readValue = function () {
+            userParam.amountscore = this.value;
+        }
+        convertedParam.data.push(currentParam);
+
+        //VAT Code Score
+        currentParam = {};
+        currentParam.name = 'vatcodescore';
+        currentParam.title = texts.vatcodescore;
+        currentParam.type = 'string';
+        currentParam.value = userParam.vatcodescore ? userParam.vatcodescore : '0';
+        currentParam.defaultvalue = '0';
+        currentParam.readValue = function () {
+            userParam.vatcodescore = this.value;
+        }
+        convertedParam.data.push(currentParam);
+
+        //Amount Currency Score
+        currentParam = {};
+        currentParam.name = 'amountcurrencyscore';
+        currentParam.title = texts.amountcurrencyscore;
+        currentParam.type = 'string';
+        currentParam.value = userParam.amountcurrencyscore ? userParam.amountcurrencyscore : '0';
+        currentParam.defaultvalue = '0';
+        currentParam.readValue = function () {
+            userParam.amountcurrencyscore = this.value;
+        }
+        convertedParam.data.push(currentParam);
+
+        //Exchange Currency Score
+        currentParam = {};
+        currentParam.name = 'exchangecurrencyscore';
+        currentParam.title = texts.exchangecurrencyscore;
+        currentParam.type = 'string';
+        currentParam.value = userParam.exchangecurrencyscore ? userParam.exchangecurrencyscore : '0';
+        currentParam.defaultvalue = '0';
+        currentParam.readValue = function () {
+            userParam.exchangecurrencyscore = this.value;
+        }
+        convertedParam.data.push(currentParam);
+
+        //Exchange Rate Score
+        currentParam = {};
+        currentParam.name = 'exchangeratescore';
+        currentParam.title = texts.exchangeratescore;
+        currentParam.type = 'string';
+        currentParam.value = userParam.exchangeratescore ? userParam.exchangeratescore : '0';
+        currentParam.defaultvalue = '0';
+        currentParam.readValue = function () {
+            userParam.exchangeratescore = this.value;
         }
         convertedParam.data.push(currentParam);
 
@@ -200,13 +272,15 @@ var PrintSettings = class PrintSettings {
         userParam.datescore = '1';
         userParam.debitaccountscore = '1';
         userParam.creditaccountscore = '1';
-        userParam.amountscore = '1';
         userParam.debitcreditaccountsscore = true;
+        userParam.amountscore = '1';
+        userParam.vatcodescore = '0';
+        userParam.amountcurrencyscore = '0';
+        userParam.exchangecurrencyscore = '0';
+        userParam.exchangeratescore = '0';
 
         return userParam;
     }
-
-    // AGGIUNTO PARTE PER IMPOSTAZIONI CON PROPERTY SHEET
 
     /*Update script's parameters*/
     settingsDialog(texts, paramcorrections) {
@@ -238,8 +312,6 @@ var PrintSettings = class PrintSettings {
         var value = this.banDoc.setScriptSettings("paramcorrections", paramToString);
     }
 
-    // FINE PARTE PER IMPOSTAZIONI CON PROPERTY SHEET
-
     /* Function that loads all the default texts used for the dialog and the report  */
     loadTexts(lang) {
 
@@ -247,71 +319,131 @@ var PrintSettings = class PrintSettings {
 
         if (lang === "deu") {
             texts.language = "Sprache";
-            texts.datescore = "Datum Punkte";
-            texts.debitaccountscore = "Sollkonto Punkte";
-            texts.creditaccountscore = "Habenkonto Punkte";
-            texts.amountscore = "Betrag Punkte";
-            texts.debitcreditaccountsscore = "Soll- und Habenkonto separat berechnen?";
-            texts.noscore = "Punkte";
+            texts.datescore = "Punkte für korrektes Datum";
+            texts.debitaccountscore = "Punkte für korrektes Sollkonto";
+            texts.creditaccountscore = "Punkte für korrektes Habenkonto";
+            texts.amountscore = "Punkte für korrekten Betrag";
+            texts.debitcreditaccountsscore = "Falls Soll- oder Habenkonto nicht korrekt keine Punkte vergeben";
+            texts.noscore = "Punktebewertung aktivieren";
             texts.changesettingsteacherfile = "Dieser Befehl kann nur in der Lehrerdatei verwendet werden.";
             texts.isnotteacherfile = "Die zu importierende Datei ist keine Lehrerdatei. Bitte wählen Sie für den Import in die Schülerdatei eine Lehrdatei aus.";
             texts.isnotstudentfile = "Die Ausgangsdatei ist keine Schülerdatei. Bitte öffnen Sie eine Schülerdatei.";
             texts.isnotfile = "Die Datei wurde noch nicht angepasst. Bitte öffnen Sie eine bereits angepasste Datei.";
             texts.nocorrections = "Es gibt keine Korrekturen zum Löschen";
             texts.noautomaticcorrection = "Es gibt keine automatischen Korrekturen zum Neuberechnen";
-            texts.nochanges = "Es gibt keine Änderungen zum Anwenden";
+            texts.nochanges = "Die Datei ist bereits für einen bestimmten Zweck konfiguriert.";
             texts.alreadycorrected = "Die Datei wurde bereits korrigiert";
+            texts.vatcodescore = "MwSt. Code Punkte";
+            texts.filenumbermismatch = "Die Dateitypen des Lehrer- und Schülerdokuments stimmen nicht überein (MwSt., Mehrwährung). Bitte verwenden Sie die gleichen Dateitypen.";
+            texts.exchangeratescore = "Wechselkurs Punkte";
+            texts.amountcurrencyscore = "Betrag Währung Punkte";
+            texts.exchangecurrencyscore = "Währung Punkte";
+            texts.student = "Schüler";
+            texts.teacher = "Lehrer";
+            texts.preparefile = "Datei Vorbereitung";
+            texts.choosefile = "Datei zum Vorbereiten auswählen";
+            texts.auto = "Auto";
+            texts.maxscore = "Maximale Punktzahl";
+            texts.autoscore = "Automatische Punktzahl";
+            texts.adjustedscore = "Angepasste Punktzahl";
+            texts.correctionsnotes = "Korrekturanmerkungen";
+            texts.nototalscore = "Die Datei enthält keine Punkte.";
         }
         else if (lang === "fra") {
             texts.language = "Langue";
-            texts.datescore = "Date Score";
-            texts.debitaccountscore = "Compte débiteur Score";
-            texts.creditaccountscore = "Compte créditeur Score";
-            texts.amountscore = "Montant Score";
-            texts.debitcreditaccountsscore = "Comptes débiteur/créditeur calculés séparément?";
-            texts.noscore = "Score";
+            texts.datescore = "Points pour la date correcte";
+            texts.debitaccountscore = "Points pour le compte débité correct";
+            texts.creditaccountscore = "Points pour le compte crédité correct";
+            texts.amountscore = "Points pour le montant correct";
+            texts.debitcreditaccountsscore = "Comptes débité et crédité séparés ?";
+            texts.noscore = "Évaluation par points";
             texts.changesettingsteacherfile = "Cette commande ne peut être utilisée que dans le fichier enseignant.";
-            texts.isnotteacherfile = "Le fichier à importer n'est pas un fichier enseignant. Veuillez sélectionner un fichier enseignant à importer dans le fichier étudiant";
-            texts.isnotstudentfile = "Le fichier initial n'est pas le fichier de l'étudiant. Veuillez ouvrir un fichier d'étudiant.";
+            texts.isnotteacherfile = "Le fichier à importer n'est pas un fichier enseignant. Veuillez sélectionner un fichier enseignant pour l'importation dans le fichier étudiant.";
+            texts.isnotstudentfile = "Le fichier source n'est pas un fichier étudiant. Veuillez ouvrir un fichier étudiant.";
             texts.isnotfile = "Le fichier n'a pas encore été adapté. Veuillez ouvrir un fichier déjà adapté.";
             texts.nocorrections = "Il n'y a pas de corrections à supprimer";
             texts.noautomaticcorrection = "Il n'y a pas de corrections automatiques à recalculer";
-            texts.nochanges = "Il n'y a pas de modifications à appliquer";
+            texts.nochanges = "Le fichier est déjà configuré pour un usage spécifique.";
             texts.alreadycorrected = "Le fichier a déjà été corrigé";
+            texts.vatcodescore = "Points pour le code TVA";
+            texts.filenumbermismatch = "Les types de fichiers des documents enseignant et étudiant ne correspondent pas (TVA, multi-devises). Veuillez utiliser les mêmes types de fichiers.";
+            texts.exchangeratescore = "Points pour le taux de change";
+            texts.amountcurrencyscore = "Points pour le montant de la devise";
+            texts.exchangecurrencyscore = "Points pour la devise";
+            texts.student = "Étudiant";
+            texts.teacher = "Enseignant";
+            texts.preparefile = "Préparation du fichier";
+            texts.choosefile = "Choisir le fichier à préparer";
+            texts.auto = "Auto";
+            texts.maxscore = "Score Maximal";
+            texts.autoscore = "Score Automatique";
+            texts.adjustedscore = "Score Ajusté";
+            texts.correctionsnotes = "Notes Corrections";
+            texts.nototalscore = "Le fichier ne contient pas de scores";
         }
         else if (lang === "ita") {
             texts.language = "Lingua";
-            texts.datescore = "Data Punteggio";
-            texts.debitaccountscore = "Conto Debitore Punteggio";
-            texts.creditaccountscore = "Conto Creditore Punteggio";
-            texts.amountscore = "Importo Punteggio";
-            texts.debitcreditaccountsscore = "Conti Debitore/Creditore calcolati separati?";
-            texts.noscore = "Punteggio";
+            texts.datescore = "Punti per la data corretta";
+            texts.debitaccountscore = "Punti per il conto addebitato corretto";
+            texts.creditaccountscore = "Punti per il conto accreditato corretto";
+            texts.amountscore = "Punti per l'importo corretto";
+            texts.debitcreditaccountsscore = "Conti debitati e accreditati separati?";
+            texts.noscore = "Valutazione per punti";
             texts.changesettingsteacherfile = "Questo comando può essere utilizzato solo nel file dell'insegnante.";
-            texts.isnotteacherfile = "Il file da importare non è un file dell'insegnante. Selezionare un file dell'insegnante da importare nel file dello studente.";
-            texts.isnotstudentfile = "Il file iniziale non è il file dello studente. Si prega di aprire un file studente.";
-            texts.isnotfile = "Il file non è stato ancora adattato. Si prega di aprire un file già adattato.";
+            texts.isnotteacherfile = "Il file da importare non è un file dell'insegnante. Selezionare un file dell'insegnante per l'importazione nel file dello studente.";
+            texts.isnotstudentfile = "Il file sorgente non è un file dello studente. Aprire un file dello studente.";
+            texts.isnotfile = "Il file non è ancora stato adattato. Aprire un file già adattato.";
             texts.nocorrections = "Non ci sono correzioni da eliminare";
             texts.noautomaticcorrection = "Non ci sono correzioni automatiche da ricalcolare";
-            texts.nochanges = "Non ci sono modifiche da applicare";
+            texts.nochanges = "Il file è già stato settato per un uso specifico.";
             texts.alreadycorrected = "Il file è già stato corretto";
+            texts.vatcodescore = "Punti per il codice IVA";
+            texts.filenumbermismatch = "I tipi di file dei documenti dell'insegnante e dello studente non corrispondono (IVA, multi-valuta). Utilizzare gli stessi tipi di file.";
+            texts.exchangeratescore = "Punti per il tasso di cambio";
+            texts.amountcurrencyscore = "Punti per l'importo della valuta";
+            texts.exchangecurrencyscore = "Punti per la valuta";
+            texts.student = "Studente";
+            texts.teacher = "Insegnante";
+            texts.preparefile = "Preparazione del file";
+            texts.choosefile = "Scegliere il file da preparare";
+            texts.auto = "Auto";
+            texts.maxscore = "Punteggio Massimo";
+            texts.autoscore = "Punteggio Automatico";
+            texts.adjustedscore = "Punteggio Rettificato";
+            texts.correctionsnotes = "Note Correzioni";
+            texts.nototalscore = "Il file non contiene punteggi";
         }
         else { //lang === enu
             texts.language = "Language";
-            texts.datescore = "Date Score";
-            texts.debitaccountscore = "Debit Account Score";
-            texts.creditaccountscore = "Credit Account Score";
-            texts.amountscore = "Amount Score";
-            texts.debitcreditaccountsscore = "Debit/Credit Accounts calculated separately?";
-            texts.noscore = "Score";
+            texts.datescore = "Points for correct date";
+            texts.debitaccountscore = "Points for correct debit account";
+            texts.creditaccountscore = "Points for correct credit account";
+            texts.amountscore = "Points for correct amount";
+            texts.debitcreditaccountsscore = "Separate debit and credit accounts?";
+            texts.noscore = "Point-based assessment";
             texts.changesettingsteacherfile = "This command can only be used in the teacher file.";
-            texts.isnotteacherfile = "The file to be imported is not a teacher file. Please select a teacher file to import in the student file.";
-            texts.isnotstudentfile = "The initial file is not the student file. Please open a student file.";
-            texts.isnotfile = "The file has not been adapted yet. Please open an already adapted file.";
+            texts.isnotteacherfile = "The file to import is not a teacher file. Please select a teacher file for import into the student file.";
+            texts.isnotstudentfile = "The source file is not a student file. Please open a student file.";
+            texts.isnotfile = "The file has not yet been adapted. Please open an already adapted file.";
             texts.nocorrections = "There are no corrections to delete";
             texts.noautomaticcorrection = "There are no automatic corrections to recalculate";
-            texts.nochanges = "There are no changes to apply";
+            texts.nochanges = "The file has already been set for a specific use.";
             texts.alreadycorrected = "The file has already been corrected";
+            texts.vatcodescore = "Points for VAT code";
+            texts.filenumbermismatch = "The file types of the teacher and student documents do not match (VAT, multi-currency). Please use the same file types.";
+            texts.exchangeratescore = "Points for exchange rate";
+            texts.amountcurrencyscore = "Points for currency amount";
+            texts.exchangecurrencyscore = "Points for currency";
+            texts.student = "Student";
+            texts.teacher = "Teacher";
+            texts.preparefile = "Preparing file";
+            texts.choosefile = "Choose file to prepare";
+            texts.auto = "Auto";
+            texts.maxscore = "Max Score";
+            texts.autoscore = "Auto Score";
+            texts.adjustedscore = "Adjusted Score";
+            texts.correctionsnotes = "Corrections Notes";
+            texts.nototalscore = "The file does not contain scores";
         }
 
         return texts;

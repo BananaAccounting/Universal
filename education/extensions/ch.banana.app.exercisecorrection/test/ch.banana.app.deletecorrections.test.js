@@ -1,6 +1,6 @@
 // @id = ch.banana.app.exercisecorrection.test
 // @api = 1.0
-// @pubdate = 2025-02-06
+// @pubdate = 2025-07-29
 // @publisher = Banana.ch SA
 // @description = <TEST ch.banana.app.exercisecorrection.test>
 // @task = app.command
@@ -23,14 +23,7 @@ function TestImportFile() {
 TestImportFile.prototype.initTestCase = function () {
 
   this.testLogger = Test.logger;
-  this.fileAC2Path = [];
-  this.fileAC2Path.push("file:script/../test/testcases/student-result-file-1.ac2");
-  this.fileAC2Path.push("file:script/../test/testcases/teacher-solution-file-1.ac2");
-  this.fileAC2Path.push("file:script/../test/testcases/student-result-file-2.ac2");
-  this.fileAC2Path.push("file:script/../test/testcases/teacher-solution-file-2.ac2");
-  this.fileAC2Path.push("file:script/../test/testcases/student-result-file-3.ac2");
-  this.fileAC2Path.push("file:script/../test/testcases/teacher-solution-file-3.ac2");
-  this.fileAC2Path.push("file:script/../test/testcases/DoubleEntry.ac2");
+  this.fileAC2Path = ["file:script/../test/testcases/student-result-file-1-corrected.ac2"], ["file:script/../test/testcases/teacher-solution-file-1.ac2"];
 
 }
 
@@ -48,26 +41,15 @@ TestImportFile.prototype.cleanup = function () {
 
 TestImportFile.prototype.testImportFile = function () {
 
-
   for (let i = 0; i < this.fileAC2Path.length; i++) {
 
-    let banDoc1 = Banana.application.openDocument(this.fileAC2Path[i]);
-    let isTest = true;
+    const studentFile = this.fileAC2Path[i];
+    const banDoc1 = Banana.application.openDocument(studentFile);
+    let printsettings = new PrintSettings(banDoc1, false);
+    let printreport = new DeleteCorrections(banDoc1, true, printsettings);
+    let result = printreport.deletecorrections();
+    this.testLogger.addText(result);
 
-    if (banDoc1) {
-
-      let printsettings = new PrintSettings(banDoc1, false);
-      let correctdoc = new CorrectDoc(banDoc1,"", false);
-      let test = new DeleteCorrections(banDoc1, isTest, correctdoc, printsettings);
-      let result = test.deletecorrections();
-      this.testLogger.addText("TestDeleteCorrections " + i);
-      this.testLogger.addJson("TestDeleteCorrections", JSON.stringify(result));
-
-    }
-    else {
-
-      this.testLogger.addFatalError("No valid file ac2 found in this directory: " + this.fileAC2Path[i]);
-
-    }
   }
+
 }

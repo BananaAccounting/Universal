@@ -19,7 +19,7 @@
 // @inputdatasource = openfiledialog
 // @doctype = 100.*
 // @publisher = Banana.ch SA
-// @pubdate = 2025-02-13
+// @pubdate = 2025-08-25
 // @inputdatasource = none
 // @timeout = -1
 // @inputfilefilter = Text files (*.txt *.csv);;All files (*.*)
@@ -47,11 +47,11 @@ function exec(inData) {
         return;
 
     if (!verifyBananaVersion(banDoc))
-        return "";
+        return "@Cancel";
 
     if (!tableExists(banDoc, "Items")) {
         let msg = getErrorMessage_MissingElements("NO_ITEMS_TABLE", "");
-        banDoc.addMessage(msg, "NO_ITEMS_TABLE");
+        banDoc.addMessage(msg, getErrorMessageReferenceAnchor());
         return "";
     }
 
@@ -196,8 +196,8 @@ function findSeparator(inData) {
 function getUnknownFormatError(banDoc) {
     let errId = "ID_ERR_FORMAT_UNKNOWN";
     let lang = getLang();
-    let msg = getErrorMessage(errId, lang);
-    banDoc.addMessage(msg, errId);
+    let msg = getFormatErrorMessage(errId, lang);
+    banDoc.addMessage(msg, getErrorMessageReferenceAnchor());
 }
 
 function getLang() {
@@ -208,7 +208,7 @@ function getLang() {
         lang = lang.substring(0, 2);
     return lang;
 }
-function getErrorMessage(errorId, lang) {
+function getFormatErrorMessage(errorId, lang) {
     if (!lang)
         lang = 'en';
     switch (errorId) {

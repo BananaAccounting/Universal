@@ -34,9 +34,9 @@
                 "accountTotalMovementsCurrency": "0"
             },
             "discrepancies": {
-                "balanceCurrencyDifference": "550.00",
+                "balanceCurrencyDifference": "",
                 "balanceDifference": "",
-                "movementsCurrencyDifference": "550.00",
+                "movementsCurrencyDifference": "",
                 "movementsDifference": "",
                 "openingBalanceCurrencyDifference": "",
                 "openingBalanceDifference": ""
@@ -54,20 +54,20 @@
                 },
                 {
                     "securityBalance": "0",
-                    "securityBalanceCurrency": "-550.00",
+                    "securityBalanceCurrency": "",
                     "securityId": "CH012775214",
                     "securityName": "Shares Nestlè",
                     "securityOpening": "550.00",
                     "securityOpeningCurrency": "",
                     "securityTotalMovements": "-550.00",
-                    "securityTotalMovementsCurrency": "-550.00"
+                    "securityTotalMovementsCurrency": "0"
                 }
             ],
             "securitiesTotals": {
                 "secTotalBalance": "1193.50",
-                "secTotalBalanceCurrency": "-550.00",
+                "secTotalBalanceCurrency": "0",
                 "secTotalMovements": "-550.00",
-                "secTotalMovementsCurrency": "-550.00",
+                "secTotalMovementsCurrency": "0",
                 "secTotalOpening": "1743.50",
                 "secTotalOpeningCurrency": "0"
             }

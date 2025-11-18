@@ -98,7 +98,9 @@
                                                 "ExchangeCurrency": "EUR",
                                                 "ExchangeRate": "1.150000",
                                                 "ExternalReference": "inv_sale_1.4",
-                                                "ItemsId": "IT0005239360"
+                                                "ItemsId": "IT0005239360",
+                                                "Quantity": "±100.0000",
+                                                "UnitPrice": "-0.5000"
                                             },
                                             "operation": {
                                                 "name": "modify",
@@ -246,7 +248,9 @@
                                                 "ExchangeCurrency": "USD",
                                                 "ExchangeRate": "0.970000",
                                                 "ExternalReference": "inv_sale_3.4",
-                                                "ItemsId": "US123456789"
+                                                "ItemsId": "US123456789",
+                                                "Quantity": "±100.0000",
+                                                "UnitPrice": "0.5000"
                                             },
                                             "operation": {
                                                 "name": "add",
@@ -394,7 +398,9 @@
                                                 "ExchangeCurrency": "USD",
                                                 "ExchangeRate": "0.945",
                                                 "ExternalReference": "inv_sale_3.4",
-                                                "ItemsId": "US123456789"
+                                                "ItemsId": "US123456789",
+                                                "Quantity": "±100.0000",
+                                                "UnitPrice": "0.5562"
                                             },
                                             "operation": {
                                                 "name": "add",
@@ -559,7 +565,9 @@
                                                 "ExchangeCurrency": "EUR",
                                                 "ExchangeRate": "1.13",
                                                 "ExternalReference": "inv_sale_3.5",
-                                                "ItemsId": "IT000792468"
+                                                "ItemsId": "IT000792468",
+                                                "Quantity": "±5000.0000",
+                                                "UnitPrice": "0.0450"
                                             },
                                             "operation": {
                                                 "name": "add",
@@ -674,7 +682,9 @@
                                                 "ExchangeCurrency": "CHF",
                                                 "ExchangeRate": "1.00",
                                                 "ExternalReference": "inv_sale_2.4",
-                                                "ItemsId": "CH002775224"
+                                                "ItemsId": "CH002775224",
+                                                "Quantity": "±150.0000",
+                                                "UnitPrice": "-0.1932"
                                             },
                                             "operation": {
                                                 "name": "modify",
@@ -772,7 +782,9 @@
                                                 "ExchangeCurrency": "CHF",
                                                 "ExchangeRate": "1.00",
                                                 "ExternalReference": "inv_sale_1.4",
-                                                "ItemsId": "CH003886335"
+                                                "ItemsId": "CH003886335",
+                                                "Quantity": "±200.0000",
+                                                "UnitPrice": "-0.0501"
                                             },
                                             "operation": {
                                                 "name": "modify",
@@ -870,7 +882,9 @@
                                                 "ExchangeCurrency": "CHF",
                                                 "ExchangeRate": "1.00",
                                                 "ExternalReference": "inv_sale_2.4",
-                                                "ItemsId": "CH002775224"
+                                                "ItemsId": "CH002775224",
+                                                "Quantity": "±200.0000",
+                                                "UnitPrice": "0.0203"
                                             },
                                             "operation": {
                                                 "name": "modify",

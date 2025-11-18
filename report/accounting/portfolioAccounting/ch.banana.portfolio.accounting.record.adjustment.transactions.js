@@ -14,11 +14,11 @@
 //
 // @api = 1.0
 // @id = ch.banana.portfolio.accounting.record.adjustment.transactions
-// @description = 5. Create adjustment transactions 
+// @description = 4. Create adjustment transactions 
 // @task = app.command
 // @doctype = 100.*
 // @publisher = Banana.ch SA
-// @pubdate = 2025-02-06
+// @pubdate = 2025-08-25
 // @inputdatasource = none
 // @timeout = -1
 // @includejs = ch.banana.portfolio.accounting.accounts.dialog.js
@@ -43,7 +43,7 @@ function exec() {
 
     if (!tableExists(banDoc, "Items")) {
         let msg = getErrorMessage_MissingElements("NO_ITEMS_TABLE", "");
-        banDoc.addMessage(msg, "NO_ITEMS_TABLE");
+        banDoc.addMessage(msg, getErrorMessageReferenceAnchor());
         return "@Cancel";
     }
 
@@ -166,12 +166,7 @@ function getItemBookValue(banDoc, docInfo, itemRowObj, unitPriceColDecimals) {
     if (!itemRowObj || isObjectEmpty(itemRowObj))
         return result;
 
-    let journal = banDoc.journal(banDoc.ORIGINTYPE_CURRENT, banDoc.ACCOUNTTYPE_NONE);
-    journalData = getJournalData(docInfo, journal);
-    accountCard = banDoc.currentCard(itemRowObj.account);
-    accountCardData = getAccountCardDataAdapted(itemRowObj, accountCard);
-
-    let itemCardData = getItemCardDataList(docInfo, itemRowObj, accountCardData, journalData, unitPriceColDecimals);
+    let itemCardData = getItemCardDataList(banDoc, docInfo, itemRowObj, unitPriceColDecimals);
 
     if (!itemCardData || isObjectEmpty(itemCardData) || !itemCardData.currentValues.itemAvgCost)
         return "";
@@ -297,8 +292,8 @@ function settingsDialog() {
     let itemsData = getItemsTableData(banDoc);
 
     if (itemsData.length < 1) {
-        let msg = getErrorMessage_MissingElements("NO_SECURITIES_FOUND", "");
-        banDoc.addMessage(msg, "NO_SECURITIES_FOUND");
+        let msg = getErrorMessage_MissingElements("NO_ASSETS_FOUND", "");
+        banDoc.addMessage(msg, getErrorMessageReferenceAnchor());
         return "@Cancel";
     }
 

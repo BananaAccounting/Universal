@@ -1,0 +1,3 @@
+Date started (UTC),Date completed (UTC),ID,Type,State,Description,Reference,Description,Payer,Card number,Card label,Card state,Orig currency,Orig amount,Payment currency,Amount,Total amount,Exchange rate,Fee,Fee currency,Balance,Account,Beneficiary account number,Beneficiary sort code or routing number,Beneficiary IBAN,Beneficiary BIC,MCC,Related transaction id,Spend program
+30/09/2025,30/09/2025,68dc33bb-3f94-a267-aade-0dfc20a122d0,TRANSFER,COMPLETED,Test,Test,Test,Test,,,,EUR,2921.97,EUR,-2921.97,-2921.97,,0,EUR,101577.66,EUR Test,,,,,,,
+30/09/2025,30/09/2025,68db957b-c70f-a818-a233-07f37c670544,CARD_PAYMENT,COMPLETED,Test,,Test ,Test,XXXX,Test,ACTIVE,EUR,149.98,EUR,-149.98,-149.98,,0,EUR,104499.63,EUR Test,,,,,5999,,

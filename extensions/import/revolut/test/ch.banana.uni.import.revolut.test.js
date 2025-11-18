@@ -16,7 +16,7 @@
 
 // @id = ch.banana.uni.import.revolut.test
 // @api = 1.0
-// @pubdate = 2025-09-22
+// @pubdate = 2025-10-16
 // @publisher = Banana.ch SA
 // @description = <TEST ch.banana.uni.import.revolut.test>
 // @task = app.command
@@ -65,6 +65,7 @@ TestImportRevolutTrans.prototype.testImport = function () {
    fileNameList.push("file:script/../test/testcases/ch.banana.revolut.transactions.private1_20250922_it.csv");
    fileNameList.push("file:script/../test/testcases/ch.banana.revolut.transactions.business2_20222410.csv");
    fileNameList.push("file:script/../test/testcases/ch.banana.revolut.transactions.business3_20240724.csv");
+   fileNameList.push("file:script/../test/testcases/ch.banana.revolut.transactions.business3_20251016.csv");
    fileNameList.push("file:script/../test/testcases/ch.banana.revolut.transactions.business_exp1_EUR_20240131.csv");
    fileNameList.push("file:script/../test/testcases/ch.banana.revolut.transactions.business_exp1_USD_20240131.csv");
 

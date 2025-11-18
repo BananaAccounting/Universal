@@ -1,6 +1,6 @@
 // @id = ch.banana.app.recalculatetotal
 // @api = 1.0
-// @pubdate = 2025-02-26
+// @pubdate = 2025-10-07
 // @publisher = Banana.ch SA
 // @description = 2. Recalculate the total
 // @description.it = 2. Ricalcola il totale
@@ -40,7 +40,7 @@ function exec() {
 }
 
 /**
- * Questa classe gestisce la logica ed i metodi per la creazione del report 
+ * This class handles the logic and methods required to generate reports.
  * @param {*} banDocument 
  */
 
@@ -86,12 +86,18 @@ var PrintReport = class PrintReport {
                 if (this.banDoc.table("Transactions").row(i).value("Description") === "Total score:") {
                     continue;
                 }
+                if (this.banDoc.table("Transactions").row(i).value("TAdjustedScore") === "") {
+                    continue;
+                }
                 score = Number(score) + Number(this.banDoc.table("Transactions").row(i).value("TAdjustedScore"));
             }
 
             //rows operation for adding the total of the scores at the end of the document
 
             let totalscorerow = this.banDoc.table("Transactions").findRowByValue("Description", "Total score:");
+            if (!totalscorerow) {
+                return Banana.application.addMessage(texts.nototalscore);
+            }
             let totalrow;
             if (this.isTest) {
                 totalrow = '0';
@@ -130,7 +136,7 @@ var PrintReport = class PrintReport {
         }
 
         else {
-           return Banana.application.addMessage(texts.noautomaticcorrection);
+            return Banana.application.addMessage(texts.noautomaticcorrection);
         }
     }
 }

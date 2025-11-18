@@ -89,10 +89,3 @@ TestCheckBalancesData.prototype.testRecordSalesTransactions = function () {
 
 
 }
-
-/**
- * Generate adjustment transactions. The current data is:
- */
-function getTestAccountsDataObj(banDoc, docInfo) {
-
-}
