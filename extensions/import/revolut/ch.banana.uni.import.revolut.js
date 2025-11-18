@@ -15,7 +15,7 @@
 //
 // @id = ch.banana.uni.import.revolut
 // @api = 1.0
-// @pubdate = 2025-09-22
+// @pubdate = 2025-10-16
 // @publisher = Banana.ch SA
 // @description = Revolut - Import movements .csv (Banana+ Advanced)
 // @doctype = 100.*; 110.*; 130.*
@@ -757,6 +757,7 @@ var ImportRevolutBusinessFormat2 = class ImportRevolutBusinessFormat2 extends Im
 var ImportRevolutBusinessFormat3 = class ImportRevolutBusinessFormat3 extends ImportUtilities {
     constructor(banDocument) {
         super(banDocument);
+        this.dateFormat = ""; // base format.
     }
 
     getFormattedData(transactions, convertionParam, importUtilities) {
@@ -774,19 +775,19 @@ var ImportRevolutBusinessFormat3 = class ImportRevolutBusinessFormat3 extends Im
             return false;
         for (var i = 0; i < transactionsData.length; i++) {
             var transaction = transactionsData[i];
-            var formatMatched = true;
+            var formatMatched = false;
 
-            if (formatMatched && transaction["Date started (UTC)"] && transaction["Date started (UTC)"].length >= 10 &&
-                transaction["Date started (UTC)"].match(/^[0-9]+(\-|\.)[0-9]+(\-|\.)[0-9]/))
+            if (this.dateFormatIsValid(transaction["Date started (UTC)"])) {
                 formatMatched = true;
-            else
+            } else {
                 formatMatched = false;
+            }
 
-            if (formatMatched && transaction["Date completed (UTC)"] && transaction["Date completed (UTC)"].length >= 10 &&
-                transaction["Date completed (UTC)"].match(/^[0-9]+(\-|\.)[0-9]+(\-|\.)[0-9]/))
+            if (formatMatched && this.dateFormatIsValid(transaction["Date completed (UTC)"])) {
                 formatMatched = true;
-            else
+            } else {
                 formatMatched = false;
+            }
 
             if (formatMatched)
                 return true;
@@ -794,12 +795,33 @@ var ImportRevolutBusinessFormat3 = class ImportRevolutBusinessFormat3 extends Im
         return false;
     }
 
+    dateFormatIsValid(dateString) {
+        if (!dateString || dateString.length < 10) {
+            return false;
+        }
+
+        if (dateString.match(/^\d{4}-\d{2}-\d{2}$/)) {
+            // format: YYYY-MM-DD
+            if (!this.dateFormat) {
+                this.dateFormat = "yyyy-mm-dd";
+            }
+            return true;
+        } else if (dateString.match(/^\d{2}\/\d{2}\/\d{4}$/)) {
+            // format: DD/MM/YYYY
+            if (!this.dateFormat) {
+                this.dateFormat = "dd/mm/yyyy";
+            }
+            return true;
+        }
+
+        return false;
+    }
+
     //Override the utilities method by adding language control
     convertCsvToIntermediaryData(transactionsData) {
         var transactionsToImport = [];
         for (var i = 0; i < transactionsData.length; i++) {
-            if (transactionsData[i]["Date started (UTC)"] && transactionsData[i]["Date started (UTC)"].length >= 10 &&
-                transactionsData[i]["Date started (UTC)"].match(/^[0-9]+(\-|\.)[0-9]+(\-|\.)[0-9]/)) {
+            if (this.dateFormatIsValid(transactionsData[i]["Date started (UTC)"])) {
                 transactionsToImport.push(this.mapTransaction(transactionsData[i]));
             }
         }
@@ -822,8 +844,8 @@ var ImportRevolutBusinessFormat3 = class ImportRevolutBusinessFormat3 extends Im
         let absAmount = "";
         let totAmount = "";
 
-        mappedLine.push(Banana.Converter.toInternalDateFormat(transaction["Date started (UTC)"], "yyyy-mm-dd"));
-        mappedLine.push(Banana.Converter.toInternalDateFormat(transaction["Date completed (UTC)"], "yyyy-mm-dd"));
+        mappedLine.push(Banana.Converter.toInternalDateFormat(transaction["Date started (UTC)"], this.dateFormat));
+        mappedLine.push(Banana.Converter.toInternalDateFormat(transaction["Date completed (UTC)"], this.dateFormat));
         mappedLine.push("");
         mappedLine.push(transaction["ID"]);
         descText = transaction["Type"] + ", " + transaction["Description"] + " " + transaction["Payer"];

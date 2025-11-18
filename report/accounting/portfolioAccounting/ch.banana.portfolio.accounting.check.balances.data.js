@@ -14,11 +14,11 @@
 //
 // @api = 1.0
 // @id = ch.banana.portfolio.accounting.check.balances.data
-// @description = 6. Check balances report
+// @description = 5. Check balances report
 // @task = app.command
 // @doctype = 100.*
 // @publisher = Banana.ch SA
-// @pubdate = 2025-02-07
+// @pubdate = 2025-08-25
 // @inputdatasource = none
 // @timeout = -1
 // @includejs = ch.banana.portfolio.accounting.calculation.methods.js
@@ -39,6 +39,15 @@ function exec() {
 
   if (!banDoc)
     return;
+
+  if (!verifyBananaVersion(banDoc))
+    return "@Cancel";
+
+  if (!tableExists(banDoc, "Items")) {
+    let msg = getErrorMessage_MissingElements("NO_ITEMS_TABLE", "");
+    banDoc.addMessage(msg, getErrorMessageReferenceAnchor());
+    return "@Cancel";
+  }
 
   let docInfo = getDocumentInfo(banDoc);
 
@@ -167,6 +176,12 @@ function getAccountsDataObjList(banDoc, docInfo) {
   const accountsData = getAccountsTableData(banDoc);
   let accountsList = getItemsAccounts(banDoc);
 
+  if (!accountsList || accountsList.length === 0) {
+    let msg = getErrorMessage_MissingElements("NO_ASSET_ACCOUNTS_FOUND");
+    banDoc.addMessage(msg, getErrorMessageReferenceAnchor());
+    return accountsList;
+  }
+
   for (const account of accountsList) {
     accCheckBalancesObj = {};
     accTableObj = accountsData.find(obj => obj.account === account); // Find the account in the Account table.
@@ -202,9 +217,13 @@ function getAccountsDataObjList(banDoc, docInfo) {
 function getSecuritiesDataObjList(banDoc, docInfo, account) {
   let securitiesList = [];
   let itemsTableData = getItemsTableData(banDoc);
-  let accountCard = banDoc.currentCard(account);
-  let journal = banDoc.journal(banDoc.ORIGINTYPE_CURRENT, banDoc.ACCOUNTTYPE_NONE);
-  let journalData = getJournalData(docInfo, journal);
+
+  if (itemsTableData.length < 1) {
+    let msg = getErrorMessage_MissingElements("NO_ASSETS_FOUND", "");
+    banDoc.addMessage(msg, getErrorMessageReferenceAnchor());
+    return "@Cancel";
+  }
+
   let unitPriceColumn = banDoc.table("Transactions").column("UnitPrice", "Base");
   let unitPriceColDecimals = unitPriceColumn.decimal;
 
@@ -220,8 +239,7 @@ function getSecuritiesDataObjList(banDoc, docInfo, account) {
       let secBalance = "";
       let secBalanceCurrency = "";
 
-      let accountCardAdpt = getAccountCardDataAdapted(itemObj, accountCard);
-      let itemCardData = getItemCardDataList(docInfo, itemObj, accountCardAdpt, journalData, unitPriceColDecimals, null);
+      let itemCardData = getItemCardDataList(banDoc, docInfo, itemObj, unitPriceColDecimals, null);
 
       if (!itemCardData || isObjectEmpty(itemCardData))
         return;

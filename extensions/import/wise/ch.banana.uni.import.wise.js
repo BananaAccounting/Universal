@@ -1,4 +1,4 @@
-// Copyright [2024] [Banana.ch SA - Lugano Switzerland]
+// Copyright [2025] [Banana.ch SA - Lugano Switzerland]
 //
 // Licensed under the Apache License, Version 2.0 (the 'License');
 // you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
 //
 // @id = ch.banana.uni.import.wise
 // @api = 1.0
-// @pubdate = 2024-04-26
+// @pubdate = 2025-10-28
 // @publisher = Banana.ch SA
 // @description = Wise - Import movements .csv (Banana+ Advanced)
 // @doctype = 100.*; 110.*; 130.*
@@ -57,22 +57,24 @@ function exec(inData, isTest) {
     }
 
     transactions = Banana.Converter.csvToArray(inData, convertionParam.separator, convertionParam.textDelim);
-    let transactionsData = getFormattedData(transactions, convertionParam, importUtilities);
 
 
     let importWisePersonalFormat1 = new ImportWisePersonalFormat1(Banana.document);
+    let transactionsData = importWisePersonalFormat1.getFormattedData(transactions, convertionParam, importUtilities);
     if (importWisePersonalFormat1.match(transactionsData)) {
         let intermediaryData = importWisePersonalFormat1.convertCsvToIntermediaryData(transactionsData);
         return Banana.Converter.arrayToTsv(intermediaryData);
     }
 
     let importWiseBusinessFormat1 = new ImportWiseBusinessFormat1(Banana.document);
+    transactionsData = importWiseBusinessFormat1.getFormattedData(transactions, convertionParam, importUtilities);
     if (importWiseBusinessFormat1.match(transactionsData)) {
         let intermediaryData = importWiseBusinessFormat1.convertCsvToIntermediaryData(transactionsData);
         return Banana.Converter.arrayToTsv(intermediaryData);
     }
 
     let importWiseBusinessFormat2 = new ImportWiseBusinessFormat2(Banana.document);
+    transactionsData = importWiseBusinessFormat2.getFormattedData(transactions, convertionParam, importUtilities);
     if (importWiseBusinessFormat2.match(transactionsData)) {
         let intermediaryData = importWiseBusinessFormat2.convertCsvToIntermediaryData(transactionsData);
         return Banana.Converter.arrayToTsv(intermediaryData);
@@ -99,6 +101,131 @@ var ImportWisePersonalFormat1 = class ImportWisePersonalFormat1 extends ImportUt
         super(banDocument);
 
         this.decimalSeparator = ".";
+    }
+
+    getFormattedData(inData, convertionParam, importUtilities) {
+        let transactionsCopy = JSON.parse(JSON.stringify(inData)); //To not modifiy the original array we make a deep copy of the array.
+        var columns = importUtilities.getHeaderData(transactionsCopy, convertionParam.headerLineStart); //array
+        var rows = importUtilities.getRowData(transactionsCopy, convertionParam.dataLineStart); //array of array
+        let form = [];
+
+        let convertedColumns = [];
+
+        convertedColumns = this.convertHeaderDe(columns);
+        // Load the form with data taken from the array. Create objects
+        if (convertedColumns.length > 0) {
+            importUtilities.loadForm(form, convertedColumns, rows);
+            return form;
+        }
+
+        convertedColumns = this.convertHeaderEn(columns);
+
+        if (convertedColumns.length > 0) {
+            importUtilities.loadForm(form, convertedColumns, rows);
+            return form;
+        }
+
+        return [];
+    }
+
+    convertHeaderDe(columns) {
+        let convertedColumns = [];
+
+        for (var i = 0; i < columns.length; i++) {
+            switch (columns[i]) {
+                case "ID":
+                    convertedColumns[i] = "ID";
+                    break;
+                case "Status":
+                    convertedColumns[i] = "Status";
+                    break;
+                case "Erstellt am":
+                    convertedColumns[i] = "Created on";
+                    break;
+                case "Abgeschlossen am":
+                    convertedColumns[i] = "Finished on";
+                    break;
+                case "Quellenname":
+                    convertedColumns[i] = "Source name";
+                    break;
+                case "Referenz":
+                    convertedColumns[i] = "Reference";
+                    break;
+                case "Betrag der Ausgangsgebühr":
+                    convertedColumns[i] = "Source fee amount";
+                    break;
+                case "Richtung":
+                    convertedColumns[i] = "Direction";
+                    break;
+                case "Ausgangsbetrag (nach Gebühren)":
+                    convertedColumns[i] = "Source amount (after fees)";
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        if (convertedColumns.indexOf("Created on") < 0) {
+            return [];
+        }
+
+        return convertedColumns;
+    }
+
+    convertHeaderEn(columns) {
+        let convertedColumns = [];
+
+        for (var i = 0; i < columns.length; i++) {
+            switch (columns[i]) {
+                case "TransferWise ID":
+                    convertedColumns[i] = "TransferWise ID";
+                    break;
+                case "ID":
+                    convertedColumns[i] = "ID";
+                    break;
+                case "Date":
+                    convertedColumns[i] = "Date";
+                    break;
+                case "Amount":
+                    convertedColumns[i] = "Amount";
+                    break;
+                case "Description":
+                    convertedColumns[i] = "Description";
+                    break;
+                case "Note":
+                    convertedColumns[i] = "Note";
+                    break;
+                case "Created on":
+                    convertedColumns[i] = "Created on";
+                    break;
+                case "Finished on":
+                    convertedColumns[i] = "Finished on";
+                    break;
+                case "Source name":
+                    convertedColumns[i] = "Source name";
+                    break;
+                case "Reference":
+                    convertedColumns[i] = "Reference";
+                    break;
+                case "Source fee amount":
+                    convertedColumns[i] = "Source fee amount";
+                    break;
+                case "Direction":
+                    convertedColumns[i] = "Direction";
+                    break;
+                case "Source amount (after fees)":
+                    convertedColumns[i] = "Source amount (after fees)";
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        if (convertedColumns.indexOf("Created on") < 0 && convertedColumns.indexOf("Date") < 0) {
+            return [];
+        }
+
+        return convertedColumns;
     }
 
     match(transactions) {
@@ -187,6 +314,131 @@ var ImportWiseBusinessFormat1 = class ImportWiseBusinessFormat1 extends ImportUt
 
     }
 
+    getFormattedData(inData, convertionParam, importUtilities) {
+        let transactionsCopy = JSON.parse(JSON.stringify(inData)); //To not modifiy the original array we make a deep copy of the array.
+        var columns = importUtilities.getHeaderData(transactionsCopy, convertionParam.headerLineStart); //array
+        var rows = importUtilities.getRowData(transactionsCopy, convertionParam.dataLineStart); //array of array
+        let form = [];
+
+        let convertedColumns = [];
+
+        convertedColumns = this.convertHeaderDe(columns);
+        // Load the form with data taken from the array. Create objects
+        if (convertedColumns.length > 0) {
+            importUtilities.loadForm(form, convertedColumns, rows);
+            return form;
+        }
+
+        convertedColumns = this.convertHeaderEn(columns);
+
+        if (convertedColumns.length > 0) {
+            importUtilities.loadForm(form, convertedColumns, rows);
+            return form;
+        }
+
+        return [];
+    }
+
+    convertHeaderDe(columns) {
+        let convertedColumns = [];
+
+        for (var i = 0; i < columns.length; i++) {
+            switch (columns[i]) {
+                case "ID":
+                    convertedColumns[i] = "ID";
+                    break;
+                case "Status":
+                    convertedColumns[i] = "Status";
+                    break;
+                case "Erstellt am":
+                    convertedColumns[i] = "Created on";
+                    break;
+                case "Abgeschlossen am":
+                    convertedColumns[i] = "Finished on";
+                    break;
+                case "Quellenname":
+                    convertedColumns[i] = "Source name";
+                    break;
+                case "Referenz":
+                    convertedColumns[i] = "Reference";
+                    break;
+                case "Betrag der Ausgangsgebühr":
+                    convertedColumns[i] = "Source fee amount";
+                    break;
+                case "Richtung":
+                    convertedColumns[i] = "Direction";
+                    break;
+                case "Ausgangsbetrag (nach Gebühren)":
+                    convertedColumns[i] = "Source amount (after fees)";
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        if (convertedColumns.indexOf("Created on") < 0) {
+            return [];
+        }
+
+        return convertedColumns;
+    }
+
+    convertHeaderEn(columns) {
+        let convertedColumns = [];
+
+        for (var i = 0; i < columns.length; i++) {
+            switch (columns[i]) {
+                case "TransferWise ID":
+                    convertedColumns[i] = "TransferWise ID";
+                    break;
+                case "ID":
+                    convertedColumns[i] = "ID";
+                    break;
+                case "Date":
+                    convertedColumns[i] = "Date";
+                    break;
+                case "Amount":
+                    convertedColumns[i] = "Amount";
+                    break;
+                case "Description":
+                    convertedColumns[i] = "Description";
+                    break;
+                case "Note":
+                    convertedColumns[i] = "Note";
+                    break;
+                case "Created on":
+                    convertedColumns[i] = "Created on";
+                    break;
+                case "Finished on":
+                    convertedColumns[i] = "Finished on";
+                    break;
+                case "Source name":
+                    convertedColumns[i] = "Source name";
+                    break;
+                case "Reference":
+                    convertedColumns[i] = "Reference";
+                    break;
+                case "Source fee amount":
+                    convertedColumns[i] = "Source fee amount";
+                    break;
+                case "Direction":
+                    convertedColumns[i] = "Direction";
+                    break;
+                case "Source amount (after fees)":
+                    convertedColumns[i] = "Source amount (after fees)";
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        if (convertedColumns.indexOf("Created on") < 0 && convertedColumns.indexOf("Date") < 0) {
+            return [];
+        }
+
+        return convertedColumns;
+    }
+
     match(transactions) {
 
         if (transactions.length === 0)
@@ -261,6 +513,17 @@ var ImportWiseBusinessFormat1 = class ImportWiseBusinessFormat1 extends ImportUt
  * TRANSFER-1033053142,COMPLETED,IN,"2024-04-12 14:00:47","2024-04-12 14:01:05",4.14,USD,,,"XXX SCHWEIZ AG",35797.44,USD,cybovate,35797.44,USD,1.0,"CH24Q2 002",
  * TRANSFER-1030251410,COMPLETED,OUT,"2024-04-10 08:26:47","2024-04-10 08:50:23",12.38,USD,,,cybovate,13819.77,USD,"YYY AG",13819.77,USD,1.0,"Rechnung Nr 200506",
  * TRANSFER-1023612560,COMPLETED,IN,"2024-04-04 13:48:40","2024-04-04 13:49:06",0.00,USD,,,"ZZZ In",2500.0,USD,cybovate,2500.0,USD,1.0,AB-TNTHQSI,
+ * 
+ * Update: 28.10.2025
+ * -- Currencies --
+ * There could be files using multiple currencies but this format does not implement a columns with the base currency. 
+ * This is a problem as we need to work with amounts in the base currency.
+ * Actually clients with files containing transactions in multiple currencies are not able to import correctly the transactions.
+ * -- Direction --
+ * There are transactions with direction IN and OUT, but there are also transactions with direction NEUTRAL.
+ * Is not clear how to handle this kind of transactions yet.
+ * 
+ * 
  * @param {*} banDocument 
  */
 var ImportWiseBusinessFormat2 = class ImportWiseBusinessFormat2 extends ImportUtilities {
@@ -269,6 +532,143 @@ var ImportWiseBusinessFormat2 = class ImportWiseBusinessFormat2 extends ImportUt
 
         this.decimalSeparator = ".";
 
+    }
+
+    getFormattedData(inData, convertionParam, importUtilities) {
+        let transactionsCopy = JSON.parse(JSON.stringify(inData)); //To not modifiy the original array we make a deep copy of the array.
+        var columns = importUtilities.getHeaderData(transactionsCopy, convertionParam.headerLineStart); //array
+        var rows = importUtilities.getRowData(transactionsCopy, convertionParam.dataLineStart); //array of array
+        let form = [];
+
+        let convertedColumns = [];
+
+        convertedColumns = this.convertHeaderDe(columns);
+        // Load the form with data taken from the array. Create objects
+        if (convertedColumns.length > 0) {
+            importUtilities.loadForm(form, convertedColumns, rows);
+            return form;
+        }
+
+        convertedColumns = this.convertHeaderEn(columns);
+
+        if (convertedColumns.length > 0) {
+            importUtilities.loadForm(form, convertedColumns, rows);
+            return form;
+        }
+
+        return [];
+    }
+
+    convertHeaderDe(columns) {
+        let convertedColumns = [];
+
+        for (var i = 0; i < columns.length; i++) {
+            switch (columns[i]) {
+                case "ID":
+                    convertedColumns[i] = "ID";
+                    break;
+                case "Status":
+                    convertedColumns[i] = "Status";
+                    break;
+                case "Erstellt am":
+                    convertedColumns[i] = "Created on";
+                    break;
+                case "Abgeschlossen am":
+                    convertedColumns[i] = "Finished on";
+                    break;
+                case "Quellenname":
+                    convertedColumns[i] = "Source name";
+                    break;
+                case "Name des Empfängers":
+                    convertedColumns[i] = "Target name";
+                    break;
+                case "Kategorie":
+                    convertedColumns[i] = "Category";
+                    break;
+                case "Referenz":
+                    convertedColumns[i] = "Reference";
+                    break;
+                case "Betrag der Ausgangsgebühr":
+                    convertedColumns[i] = "Source fee amount";
+                    break;
+                case "Richtung":
+                    convertedColumns[i] = "Direction";
+                    break;
+                case "Ausgangsbetrag (nach Gebühren)":
+                    convertedColumns[i] = "Source amount (after fees)";
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        if (convertedColumns.indexOf("Created on") < 0) {
+            return [];
+        }
+
+        return convertedColumns;
+    }
+
+    convertHeaderEn(columns) {
+        let convertedColumns = [];
+
+        for (var i = 0; i < columns.length; i++) {
+            switch (columns[i]) {
+                case "TransferWise ID":
+                    convertedColumns[i] = "TransferWise ID";
+                    break;
+                case "ID":
+                    convertedColumns[i] = "ID";
+                    break;
+                case "Status":
+                    convertedColumns[i] = "Status";
+                    break;
+                case "Date":
+                    convertedColumns[i] = "Date";
+                    break;
+                case "Amount":
+                    convertedColumns[i] = "Amount";
+                    break;
+                case "Description":
+                    convertedColumns[i] = "Description";
+                    break;
+                case "Note":
+                    convertedColumns[i] = "Note";
+                    break;
+                case "Created on":
+                    convertedColumns[i] = "Created on";
+                    break;
+                case "Finished on":
+                    convertedColumns[i] = "Finished on";
+                    break;
+                case "Source name":
+                    convertedColumns[i] = "Source name";
+                    break;
+                case "Target name":
+                    convertedColumns[i] = "Target name";
+                    break;
+                case "Reference":
+                    convertedColumns[i] = "Reference";
+                    break;
+                case "Source fee amount":
+                    convertedColumns[i] = "Source fee amount";
+                    break;
+                case "Direction":
+                    convertedColumns[i] = "Direction";
+                    break;
+                case "Source amount (after fees)":
+                    convertedColumns[i] = "Source amount (after fees)";
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        if (convertedColumns.indexOf("Created on") < 0 && convertedColumns.indexOf("Date") < 0) {
+            return [];
+        }
+
+        return convertedColumns;
     }
 
     match(transactions) {
@@ -319,7 +719,7 @@ var ImportWiseBusinessFormat2 = class ImportWiseBusinessFormat2 extends ImportUt
 
         // Add header and return
         var header = [
-            ["Date", "Description", "ExternalReference", "Notes", "Expenses", "Income"]
+            ["Date", "DateValue", "Description", "ExternalReference", "Notes", "Expenses", "Income"]
         ];
         return header.concat(transactionsToImport);
     }
@@ -327,12 +727,14 @@ var ImportWiseBusinessFormat2 = class ImportWiseBusinessFormat2 extends ImportUt
     mapTransaction(transaction) {
         var mappedLine = [];
 
-        let dateText = transaction["Finished on"].substring(0, 10);
+        let dateText = transaction["Created on"].substring(0, 10);
+        let dateValueText = transaction["Finished on"].substring(0, 10);
         mappedLine.push(Banana.Converter.toInternalDateFormat(dateText, "yyyy-mm-dd"));
-        let description = transaction["Source name"] + ", " + transaction["Reference"];
+        mappedLine.push(Banana.Converter.toInternalDateFormat(dateValueText, "yyyy-mm-dd"));
+        let description = this.getDescription(transaction);
         mappedLine.push(description);
         mappedLine.push(transaction["ID"]);
-        mappedLine.push(transaction["Source fee amount"]);
+        mappedLine.push(transaction["Status"]);
 
         if (transaction["Direction"] == "IN") {
             mappedLine.push("");
@@ -343,6 +745,14 @@ var ImportWiseBusinessFormat2 = class ImportWiseBusinessFormat2 extends ImportUt
             mappedLine.push("");
         }
         return mappedLine;
+    }
+
+    getDescription(transaction) {
+        if (!transaction) return "";
+        const { "Target name": rName, "Category": category, "Reference": reference } = transaction;
+        return [rName, category, reference]
+            .filter(value => value && typeof value === "string" && value.trim() !== "")
+            .join(", ");
     }
 }
 
@@ -373,125 +783,4 @@ function defineConversionParam(inData) {
     convertionParam.sortDescending = false;
 
     return convertionParam;
-}
-
-function getFormattedData(inData, convertionParam, importUtilities) {
-    var columns = importUtilities.getHeaderData(inData, convertionParam.headerLineStart); //array
-    var rows = importUtilities.getRowData(inData, convertionParam.dataLineStart); //array of array
-    let form = [];
-
-    let convertedColumns = [];
-
-    convertedColumns = convertHeaderDe(columns);
-    // Load the form with data taken from the array. Create objects
-    if (convertedColumns.length > 0) {
-        importUtilities.loadForm(form, convertedColumns, rows);
-        return form;
-    }
-
-    convertedColumns = convertHeaderEn(columns);
-
-    if (convertedColumns.length > 0) {
-        importUtilities.loadForm(form, convertedColumns, rows);
-        return form;
-    }
-
-    return [];
-}
-
-function convertHeaderDe(columns) {
-    let convertedColumns = [];
-
-    for (var i = 0; i < columns.length; i++) {
-        switch (columns[i]) {
-            case "ID":
-                convertedColumns[i] = "ID";
-                break;
-            case "Erstellt am":
-                convertedColumns[i] = "Created on";
-                break;
-            case "Abgeschlossen am":
-                convertedColumns[i] = "Finished on";
-                break;
-            case "Quellenname":
-                convertedColumns[i] = "Source name";
-                break;
-            case "Referenz":
-                convertedColumns[i] = "Reference";
-                break;
-            case "Betrag der Ausgangsgebühr":
-                convertedColumns[i] = "Source fee amount";
-                break;
-            case "Richtung":
-                convertedColumns[i] = "Direction";
-                break;
-            case "Ausgangsbetrag (nach Gebühren)":
-                convertedColumns[i] = "Source amount (after fees)";
-                break;
-            default:
-                break;
-        }
-    }
-
-    if (convertedColumns.indexOf("Created on") < 0) {
-        return [];
-    }
-
-    return convertedColumns;
-}
-
-function convertHeaderEn(columns) {
-    let convertedColumns = [];
-
-    for (var i = 0; i < columns.length; i++) {
-        switch (columns[i]) {
-            case "TransferWise ID":
-                convertedColumns[i] = "TransferWise ID";
-                break;
-            case "ID":
-                convertedColumns[i] = "ID";
-                break;
-            case "Date":
-                convertedColumns[i] = "Date";
-                break;
-            case "Amount":
-                convertedColumns[i] = "Amount";
-                break;
-            case "Description":
-                convertedColumns[i] = "Description";
-                break;
-            case "Note":
-                convertedColumns[i] = "Note";
-                break;
-            case "Created on":
-                convertedColumns[i] = "Created on";
-                break;
-            case "Finished on":
-                convertedColumns[i] = "Finished on";
-                break;
-            case "Source name":
-                convertedColumns[i] = "Source name";
-                break;
-            case "Reference":
-                convertedColumns[i] = "Reference";
-                break;
-            case "Source fee amount":
-                convertedColumns[i] = "Source fee amount";
-                break;
-            case "Direction":
-                convertedColumns[i] = "Direction";
-                break;
-            case "Source amount (after fees)":
-                convertedColumns[i] = "Source amount (after fees)";
-                break;
-            default:
-                break;
-        }
-    }
-
-    if (convertedColumns.indexOf("Created on") < 0 && convertedColumns.indexOf("Date") < 0) {
-        return [];
-    }
-
-    return convertedColumns;
 }

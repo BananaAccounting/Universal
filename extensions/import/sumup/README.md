@@ -14,11 +14,11 @@ You can install the extension from the menu Extensions -> [Manage Extensions](ht
 
 Export your transactions from the SumUp platform in CSV format. 
 
-- On your [SumUp profile](https://me.sumup.com/login), click on the "Home" tab.
-- Then choose "All Reports".
-- Select a timeframe using the date filter.
-- Select "Transactions".
-- Confirm the export by clicking on "Export" to download the CSV file.
+* Login on your SumUp profile.
+* Click on Home
+* Click on Download Center
+* Go to the Accounting section
+*  Download Transactions and select the CSV (current format) option.
 
 The transaction report lists all your transactions, including card payments, cash payments, and refunds.
 

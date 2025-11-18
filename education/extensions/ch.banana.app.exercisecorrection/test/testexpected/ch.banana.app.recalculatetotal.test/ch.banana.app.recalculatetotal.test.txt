@@ -20,29 +20,13 @@
 %Begin test data
 %%SCRIPT{C:/Users/patrick.pasquillo/Documents/GitHub/Universal/education/extensions/ch.banana.app.exercisecorrection/test/ch.banana.app.recalculatetotal.test.js}
 %
-\begin{testcase}{TestImportFile}
+\begin{testcase}{TestRecalculateTotalFull}
 \begin{test}{testImportFile}
-\textvalue{TestRecalculateTotal 0}\\
-\begin{jsonvalue}{TestRecalculateTotal}
-\end{jsonvalue}
-\textvalue{TestRecalculateTotal 1}\\
-\begin{jsonvalue}{TestRecalculateTotal}
-\end{jsonvalue}
-\textvalue{TestRecalculateTotal 2}\\
-\begin{jsonvalue}{TestRecalculateTotal}
-\end{jsonvalue}
-\textvalue{TestRecalculateTotal 3}\\
-\begin{jsonvalue}{TestRecalculateTotal}
-\end{jsonvalue}
-\textvalue{TestRecalculateTotal 4}\\
-\begin{jsonvalue}{TestRecalculateTotal}
-\end{jsonvalue}
-\textvalue{TestRecalculateTotal 5}\\
-\begin{jsonvalue}{TestRecalculateTotal}
-\end{jsonvalue}
-\textvalue{TestRecalculateTotal 6}\\
-\begin{jsonvalue}{TestRecalculateTotal}
-\end{jsonvalue}
+\textvalue{}\\
+\textvalue{}\\
+\textvalue{}\\
+\textvalue{}\\
+\textvalue{}\\
 \keyvalue{Result}{Passed}
 \end{test}
 \end{testcase}
