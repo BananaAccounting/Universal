@@ -1,4 +1,4 @@
-/* Update 2025-11-17 */
+/* Update 2025-11-21 */
 
 @page {
    margin-top: 1.0cm;
@@ -41,6 +41,10 @@ body {
    text-align: right;
 }
 
+.description {
+  font-size: 8pt;
+}
+
 .table_quick_sum {
   width: 100%;
 }
@@ -77,7 +81,7 @@ body {
   padding-right: 0px;
 }
 
-/* table.table_quick_sum td {
+/*table.table_quick_sum td {
    border-top: thin solid black;
    border-bottom: thin solid black;
    border-left: thin solid black;
@@ -98,48 +102,53 @@ body {
    border-right: thin solid black;
 } */
 
+/*Item*/
 .col_capitolato_1 {
   width: 8%;
 }
 
+/*Description*/
 .col_capitolato_2 {
-  width: 58%;
+  width: 48%;
 }
 
+/*Quantity*/
 .col_capitolato_3 {
   width: 10%;
 }
 
+/*Unit*/
 .col_capitolato_4 {
-  width: 12%;
+  width: 10%;
 }
 
+/*UnitPrice*/
 .col_capitolato_5 {
   width: 12%;
 }
 
-/* .col_capitolato_6 {
-  width: 10%;
-} */
+/*AmountTotal*/
+.col_capitolato_6 {
+  width: 12%;
+} 
 
+/*Item*/
 .col_summary_1 {
   width: 10%;
 }
 
+/*Description*/
 .col_summary_2 {
   width: 60%;
 }
 
+/*AmountTotal*/
 .col_summary_3 {
   width: 15%;
 }
 
 .col_summary_4 {
   width: 15%;
-}
-
-.group {
-   font-weight: bold;
 }
 
 .total {
