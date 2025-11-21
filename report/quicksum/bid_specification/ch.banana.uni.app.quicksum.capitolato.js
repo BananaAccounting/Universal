@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.uni.app.quicksum.capitolato
 // @api = 1.0
-// @pubdate = 2025-11-17
+// @pubdate = 2025-11-21
 // @publisher = Banana.ch SA
 // @description = QuickSum Bid Specification
 // @description.de = QuickSum Angebotsspezifikationen
@@ -91,6 +91,30 @@ function convertParam(userParam) {
   convertedParam.data.push(currentParam);
 
   var currentParam = {};
+  currentParam.name = 'param_regex_exclude_itemid_cell';
+  currentParam.parentObject = '';
+  currentParam.title = texts.param_regex_exclude_itemid_cell;
+  currentParam.type = 'string';
+  currentParam.value = userParam.param_regex_exclude_itemid_cell ? userParam.param_regex_exclude_itemid_cell : '';
+  currentParam.defaultvalue = '';
+  currentParam.readValue = function () {
+    userParam.param_regex_exclude_itemid_cell = this.value;
+  }
+  convertedParam.data.push(currentParam);
+
+  var currentParam = {};
+  currentParam.name = 'param_max_description_lenght';
+  currentParam.parentObject = '';
+  currentParam.title = texts.param_max_description_lenght;
+  currentParam.type = 'string';
+  currentParam.value = userParam.param_max_description_lenght ? userParam.param_max_description_lenght : '58';
+  currentParam.defaultvalue = '58';
+  currentParam.readValue = function () {
+    userParam.param_max_description_lenght = this.value;
+  }
+  convertedParam.data.push(currentParam);
+
+  var currentParam = {};
   currentParam.name = 'param_quantity_decimals';
   currentParam.parentObject = '';
   currentParam.title = texts.param_quantity_decimals;
@@ -99,6 +123,18 @@ function convertParam(userParam) {
   currentParam.defaultvalue = '2';
   currentParam.readValue = function () {
     userParam.param_quantity_decimals = this.value;
+  }
+  convertedParam.data.push(currentParam);
+
+  var currentParam = {};
+  currentParam.name = 'param_print_carryforward';
+  currentParam.parentObject = '';
+  currentParam.title = texts.param_print_carryforward;
+  currentParam.type = 'bool';
+  currentParam.value = userParam.param_print_carryforward ? true : false;
+  currentParam.defaultvalue = true;
+  currentParam.readValue = function() {
+    userParam.param_print_carryforward = this.value;
   }
   convertedParam.data.push(currentParam);
 
@@ -125,7 +161,10 @@ function initUserParam() {
   userParam.param_print_header_logo = false;
   userParam.param_header_logo_name = 'Logo';
   userParam.param_print_header_address = false;
+  userParam.param_regex_exclude_itemid_cell = '';
+  userParam.param_max_description_lenght = '58';
   userParam.param_quantity_decimals = '2';
+  userParam.param_print_carryforward = true;
   userParam.param_print_summary = true;
   return userParam;
 }
@@ -328,15 +367,24 @@ function printReportTable(banDoc, report, userParam) {
   var lang = getLang(banDoc);
   var texts = loadTexts(banDoc,lang);
 
-  // Defines the max rows allowed per page
-  // Used to print the total AmountCumulated carried over
-  var rowsPerPageBase = 72; // rows per page when no header logo/address is printed
+  /*
+    Configuration variables.
+    Defines the max rows allowed per page, used to print the total AmountCumulated carried over.
+    Defines the max description characters allowed per row.
+  */
+  var rowsPerPageBase = 72; // without logo/address
   var tableClass = "table_quick_sum";
   if (userParam.param_print_header_address || userParam.param_print_header_logo) {
-    rowsPerPageBase = 66; // rows per page when header logo/address is printed
+    rowsPerPageBase = 66; // with logo/address
     tableClass = "table_quick_sum_2";
   }
+  var maxDescriptionLength = 58;
+  if (userParam.param_max_description_lenght) {
+    maxDescriptionLength = userParam.param_max_description_lenght;
+  }
 
+
+  var printedItemIdCalc = {}; // keep track of already printed ItemIdCalc
   var pageRowCount = 0; // counter to keep track of the lines printed on the page
   var printedOnFirstPage = false; // if first page or not
   var lastAmountCumulated = ""; // last AmountCumulated value
@@ -348,15 +396,16 @@ function printReportTable(banDoc, report, userParam) {
   var colCapitolato3 = table.addColumn("col_capitolato_3");
   var colCapitolato4 = table.addColumn("col_capitolato_4");
   var colCapitolato5 = table.addColumn("col_capitolato_5");
-  // var colCapitolato6 = table.addColumn("col_capitolato_6");
+  var colCapitolato6 = table.addColumn("col_capitolato_6");
 
   var header = table.getHeader();
   var row = header.addRow();
-  row.addCell(texts.itemId, "table_quick_sum_header");
-  row.addCell(texts.description, "table_quick_sum_header");
-  row.addCell(texts.quantity, "table_quick_sum_header right");
-  row.addCell(texts.unitPrice, "table_quick_sum_header right");
-  row.addCell(texts.amountTotal, "table_quick_sum_header right");
+  row.addCell(texts.itemId, "table_quick_sum_header", 1);
+  row.addCell(texts.description, "table_quick_sum_header", 1);
+  row.addCell(texts.quantity, "table_quick_sum_header right", 1);
+  row.addCell(texts.unit, "table_quick_sum_header center", 1);
+  row.addCell(texts.unitPrice, "table_quick_sum_header right", 1);
+  row.addCell(texts.amountTotal, "table_quick_sum_header right", 1);
   // row.addCell(texts.amountCumulated, "table_quick_sum_header right");
 
   for (var i = 0; i < quicksumTable.rowCount; i++) {
@@ -375,109 +424,204 @@ function printReportTable(banDoc, report, userParam) {
     /**
      * (1) Row with AmountCalculated at the begin of the page (from second page only)
      */
-    if (pageRowCount === 0 && printedOnFirstPage) {
+    if (userParam.param_print_carryforward && pageRowCount <= 1 && printedOnFirstPage) {
       var r = table.addRow();
-      r.addCell(" ", "", 5);
+      r.addCell(" ", "", 6);
       var r = table.addRow();
       if (lastAmountCumulated) {
-        r.addCell("","",3);
+        r.addCell("","",4);
         r.addCell(texts.carryforward + ": ", "carry_label",1);
-        r.addCell(Banana.Converter.toLocaleNumberFormat(lastAmountCumulated, 2, false), "carry_label dashed");
+        r.addCell(Banana.Converter.toLocaleNumberFormat(lastAmountCumulated, 2, true), "carry_label dashed");
       } else {
-        r.addCell(" ", "",5);
+        r.addCell(" ", "",6);
       }
       //r.addCell(lastAmountCumulated ? texts.carryforward + ": " + Banana.Converter.toLocaleNumberFormat(lastAmountCumulated, 2, false) : " ", "right", 5);
       var r = table.addRow();
-      r.addCell(" ", "", 5);
+      r.addCell(" ", "", 6);
       pageRowCount += 3; // 1 empty row, 1 row with AmountCalculated, 1 empty row
     }
 
     /**
-     * (2) Normal rows of the table
-     * Defines the rows css class names
-     * Prints the rows
+     * (2) Normal rows
      */
-    var className = "";
-    // group rows
-    if (quicksumRow.value("ItemId") && quicksumRow.value("ItemId").indexOf("T:") < 0) {
-      className = "group";
+    var itemIdValue = quicksumRow.value("ItemIdCalc") || "";
+    var cleanItemId = itemIdValue.replace(/^T:/, ""); //exclude prefix T: from the check
+
+    // Regex to exclude ItemId cell
+    var containsRegex = false;
+    var regexString = String(userParam.param_regex_exclude_itemid_cell).trim();
+    if (regexString) {
+      regexString = regexString.replace(/^\/|\/$/g, ""); // remove first and last slash /.../
+      var regexExclude = new RegExp(regexString);
+      containsRegex = regexExclude.test(cleanItemId); //return TRUE if contains regex
     }
-    // total rows
-    if (quicksumRow.value("ItemId") && quicksumRow.value("ItemId").indexOf("T:") > -1) {
+
+    var className = "";
+    if (itemIdValue && itemIdValue.indexOf("T:") > -1) {
       className = "total";
+    }
+
+    // Skip total rows containing letters
+    if (className === "total" && containsRegex) {
+      continue;
+    }
+
+    // If contains regex never register as printed
+    var isFirstOccurrence = false;
+    if (!containsRegex) {
+      isFirstOccurrence = !printedItemIdCalc[itemIdValue];
+    }
+    
+    // First row bold
+    var rowClass = className;
+    if (isFirstOccurrence) {
+      rowClass += " bold";
     }
 
     var row = table.addRow();
 
     // ItemId
-    if (quicksumRow.value("ItemId")) {
-      row.addCell(extractNumbers(quicksumRow.value("ItemId"),true), className);
+    if (containsRegex) {
+        row.addCell(" ", className, 1); // never print letters
     } else {
-      row.addCell(" ", className);
+
+        if (!printedItemIdCalc[itemIdValue]) {
+            // first time, print
+            row.addCell(extractNumbers(itemIdValue, true), rowClass, 1);
+            // Register only non-letter ItemIdCalc
+            printedItemIdCalc[itemIdValue] = true;
+        } else {
+            // empty, already printed
+            row.addCell(" ", className, 1);
+        }
     }
 
-    // Description
-    if (quicksumRow.value("Description")) {
-      row.addCell(quicksumRow.value("Description"), className);
-    } else {
-      row.addCell(" ", className);
-    }
+    // Description (first line only)
+    var description = quicksumRow.value("Description") || "";
+    var descriptionLines = splitTextByLength(description, maxDescriptionLength);
+    row.addCell(descriptionLines[0], rowClass + " description", 1);
+    //Banana.console.log(descriptionLines[0] + " ==> " +  descriptionLines[0].length);
 
     // Quantity
     if (quicksumRow.value("Quantity")) {
-      row.addCell(Banana.Converter.toLocaleNumberFormat(quicksumRow.value("Quantity"), userParam.param_quantity_decimals, false), className + " right");
+      row.addCell(Banana.Converter.toLocaleNumberFormat(quicksumRow.value("Quantity"), userParam.param_quantity_decimals, false), className + " right", 1);
     } else {
-      row.addCell(" ", className);
+      row.addCell(" ", className, 1);
+    }
+
+    // Unit
+    if (quicksumRow.value("Unit")) {
+      row.addCell(quicksumRow.value("Unit"), className + " center", 1);
+    } else {
+      row.addCell(" ", className, 1);
     }
   
     // UnitPrice
     if (quicksumRow.value("UnitPrice")) {
-      row.addCell(Banana.Converter.toLocaleNumberFormat(quicksumRow.value("UnitPrice"), 2, false), className + " dashed right");
+      row.addCell(Banana.Converter.toLocaleNumberFormat(quicksumRow.value("UnitPrice"), 2, false), className + " dashed right", 1);
     } else {
-      row.addCell(" ", className);
+      row.addCell(" ", className, 1);
     }
 
     // AmountTotal
     if (quicksumRow.value("AmountTotal")) {
 
       if (className === "total") {
-        row.addCell(Banana.Converter.toLocaleNumberFormat(quicksumRow.value("AmountTotal"), 2, true), className + " double right");
+        row.addCell(Banana.Converter.toLocaleNumberFormat(quicksumRow.value("AmountTotal"), 2, true), className + " double right", 1);
       }
       else {
-        row.addCell(Banana.Converter.toLocaleNumberFormat(quicksumRow.value("AmountTotal"), 2, false), className + " dashed right");
+        row.addCell(Banana.Converter.toLocaleNumberFormat(quicksumRow.value("AmountTotal"), 2, false), className + " dashed right", 1);
       }
     }
     else {
       if (className === "total") {
-        row.addCell(Banana.Converter.toLocaleNumberFormat(quicksumRow.value("AmountTotal"), 2, true), className + " double right");
+        row.addCell(Banana.Converter.toLocaleNumberFormat(quicksumRow.value("AmountTotal"), 2, true), className + " double right", 1);
       }
       else {
-        row.addCell(" ", className);
+        row.addCell(" ", className, 1);
       }
     }
 
 
     printedOnFirstPage = true;
-    lastAmountCumulated = quicksumRow.value("AmountCumulated") || lastAmountCumulated;
+    if (quicksumRow.value("AmountCumulated")) {
+        lastAmountCumulated = quicksumRow.value("AmountCumulated");
+    }
     pageRowCount += 1;
+
+
+
+    // Additional description lines when description length > maxDescriptionLength
+    if (descriptionLines.length > 1) {
+
+      var extraLines = descriptionLines.length - 1;
+
+      if (pageRowCount + extraLines > rowsPerPageBase) {
+
+        // close current page
+        if (userParam.param_print_carryforward) {
+          var cf = table.addRow();
+          cf.addCell(" ", "", 6);
+          cf = table.addRow();
+          cf.addCell("", "", 4);
+          cf.addCell(texts.carryforward + ": ", "carry_label", 1);
+          cf.addCell(Banana.Converter.toLocaleNumberFormat(lastAmountCumulated, 2, false), "carry_label dashed",1);
+        }
+
+        // new page
+        pageRowCount = 0;
+        printedOnFirstPage = true;
+      }
+
+      // Prints split rows
+      for (var d = 1; d < descriptionLines.length; d++) {
+        var r2 = table.addRow();
+        r2.addCell(" ", className, 1);
+        r2.addCell(descriptionLines[d], className + " description", 1);
+        r2.addCell(" ", className, 1);
+        r2.addCell(" ", className, 1);
+        r2.addCell(" ", className, 1);
+        r2.addCell(" ", className, 1);
+        pageRowCount += 1;
+
+        if (pageRowCount === rowsPerPageBase) {
+          if (userParam.param_print_carryforward) {
+            var c = table.addRow();
+            c.addCell(" ", "", 6);
+            c = table.addRow();
+            c.addCell("", "", 4);
+            c.addCell(texts.carryforward + ": ", "carry_label", 1);
+            c.addCell(Banana.Converter.toLocaleNumberFormat(lastAmountCumulated, 2, false), "carry_label dashed",1);
+          }
+          pageRowCount = 0;
+          printedOnFirstPage = true;
+        }
+      }
+    }
+
+
 
     /**
      * (3) Row with AmountCalculated at the end of the page
      */
     if (pageRowCount === rowsPerPageBase) {
-      var r = table.addRow();
-      r.addCell(" ","",5);
-      r = table.addRow();
-      if (lastAmountCumulated) {
-        r.addCell("","",3);
-        r.addCell(texts.carryforward + ": ", "carry_label", 1);
-        r.addCell(Banana.Converter.toLocaleNumberFormat(lastAmountCumulated, 2, false), "carry_label dashed", 1);
-      } else {
-        r.addCell(" ", "", 5);
+      if (userParam.param_print_carryforward) {
+        var r = table.addRow();
+        r.addCell(" ","",6);
+
+        r = table.addRow();
+        if (lastAmountCumulated) {
+          r.addCell("","",4);
+          r.addCell(texts.carryforward + ": ", "carry_label", 1);
+          r.addCell(Banana.Converter.toLocaleNumberFormat(lastAmountCumulated, 2, false), "carry_label dashed", 1);
+        } else {
+          r.addCell(" ", "", 6);
+        }
       }
-      //r.addCell(lastAmountCumulated ? texts.carryforward + ": " + Banana.Converter.toLocaleNumberFormat(lastAmountCumulated, 2, false) : " ", "right", 5);
-      pageRowCount = 0; // new page
+      pageRowCount = 0;
+      printedOnFirstPage = true;
     }
+
   }
 }
 
@@ -528,12 +672,23 @@ function printReportTotals(banDoc, report, userParam) {
       continue;
     }
 
+    // // Regex to exclude row
+    // var itemIdValue = quicksumRow.value("ItemIdCalc");
+    // var regexString = String(userParam.param_regex_exclude_itemid_cell).trim();
+    // var containsRegex = false;
+    // if (regexString) {
+    //   regexString = regexString.replace(/^\/|\/$/g, ""); // remove first and last slash /.../
+    //   var regexExclude = new RegExp(regexString);
+    //   containsRegex = regexExclude.test(itemIdValue); //return TRUE if contains regex
+    // }
+    // if (containsRegex) {
+    //   continue;
+    // }
+
     var row = table.addRow();
-    //row.addCell(quicksumRow.value("ItemId"), "");
-    row.addCell(extractNumbers(quicksumRow.value("ItemId"),true), "");
+    row.addCell(extractNumbers(quicksumRow.value("ItemIdCalc"),true), "");
     row.addCell(quicksumRow.value("Description"), "");
     row.addCell(Banana.Converter.toLocaleNumberFormat(quicksumRow.value("AmountTotal"),2,true), "dashed right");
-    // row.addCell(Banana.Converter.toLocaleNumberFormat(quicksumRow.value("AmountTotal"),2,true), "right");
   }
 }
 
@@ -575,6 +730,17 @@ function extractNumbers(str, remove00) {
   }
 
   return cleanStr;
+}
+
+/** Function that splits the text by the defined max length */
+function splitTextByLength(text, maxLen) {
+  var result = [];
+  while (text.length > maxLen) {
+    result.push(text.substring(0, maxLen));
+    text = text.substring(maxLen).replace(/^\s+/, ""); // removes all blanc spaces at the beginning of the new line
+  }
+  result.push(text); //last piece of text
+  return result;
 }
 
 
@@ -680,14 +846,14 @@ function setCss(banDoc, repStyleObj, userParam, variables) {
 //===========================================================================
 /* Function that takes the document language */
 function getLang(banDoc) {
-    var lang = "en";
-    if (banDoc.locale) {
-        lang = banDoc.locale;
-    }
-    if (lang && lang.length > 2) {
-        lang = lang.substr(0, 2);
-    }
-    return lang;
+  var lang = "en";
+  if (banDoc.locale) {
+    lang = banDoc.locale;
+  }
+  if (lang && lang.length > 2) {
+    lang = lang.substr(0, 2);
+  }
+  return lang;
 }
 
 /* Function that loads all the default texts used for the dialog and the report  */
@@ -699,10 +865,11 @@ function loadTexts(banDoc,lang) {
     texts.itemId = "Art.-Nr.";
     texts.description = "Beschreibung";
     texts.quantity = "Menge";
+    texts.unit = "Einheit";
     texts.unitPrice = "Einheitsp.";
     texts.amountTotal = "Ges.-Betr.";
     texts.amountCumulated = "Kum.-Betr.";
-    texts.carryforward = "Übertragung";
+    texts.carryforward = "Gesamtübertrag";
     texts.summary = "Zusammenfassung"; 
     texts.amount = "Betrag";
 
@@ -710,7 +877,10 @@ function loadTexts(banDoc,lang) {
     texts.param_header_logo_name = "Logo-Name";
     texts.param_print_header_address = "Adresse in der Kopfzeile";    
     texts.param_report_name = "Name des Berichts";
+    texts.param_regex_exclude_itemid_cell = "Regex, um die ItemIdCalc-Zelle nicht zu drucken";
+    texts.param_max_description_lenght = "Maximale Beschreibungslänge pro Zeile (Zeichen)";
     texts.param_quantity_decimals = "Dezimalstellen in der Spalte Menge";
+    texts.param_print_carryforward = "Gesamtübertrag auf den Seiten einfügen";
     texts.param_print_summary = "Includi riepilogo";
     texts.param_print_summary = "Zusammenfassung einfügen";
   }
@@ -720,10 +890,11 @@ function loadTexts(banDoc,lang) {
     texts.itemId = "No. art.";
     texts.description = "Libellé";
     texts.quantity = "Quantité";
+    texts.unit = "Unité";
     texts.unitPrice = "Prix unit.";
     texts.amountTotal = "Total";
     texts.amountCumulated = "Total cumulé";
-    texts.carryforward = "Report";
+    texts.carryforward = "Total report";
     texts.summary = "Récapitulation"; 
     texts.amount = "Montant";
 
@@ -731,7 +902,10 @@ function loadTexts(banDoc,lang) {
     texts.param_header_logo_name = "Logo nom";
     texts.param_print_header_address = "Adresse en-tête";
     texts.param_report_name = "Nom du rapport";
+    texts.param_regex_exclude_itemid_cell = "Regex pour ne pas imprimer la cellule ItemIdCalc";
+    texts.param_max_description_lenght = "Longueur maximale de la description par ligne (caractères)";
     texts.param_quantity_decimals = "Décimales colonne Quantité";
+    texts.param_print_carryforward = "Inclure le total reporté sur les pages";
     texts.param_print_summary = "Inclure le récapitulation";
   }
   else if (lang === "it") {
@@ -740,10 +914,11 @@ function loadTexts(banDoc,lang) {
     texts.itemId = "N. art.";
     texts.description = "Descrizione";
     texts.quantity = "Quantità";
+    texts.unit = "Unità";
     texts.unitPrice = "Prezzo unit.";
     texts.amountTotal = "Totale";
     texts.amountCumulated = "Tot. cumul.";
-    texts.carryforward = "Riporto";
+    texts.carryforward = "Riporto totale";
     texts.summary = "Riepilogo"; 
     texts.amount = "Importo";
 
@@ -751,7 +926,10 @@ function loadTexts(banDoc,lang) {
     texts.param_header_logo_name = "Nome logo";
     texts.param_print_header_address = "Indirizzo intestazione";
     texts.param_report_name = "Nome report";
+    texts.param_regex_exclude_itemid_cell = "Regex per non stampare la cella ItemIdCalc";
+    texts.param_max_description_lenght = "Lunghezza massima descrizione per riga (caratteri)";
     texts.param_quantity_decimals = "Decimali colonna Quantità";
+    texts.param_print_carryforward = "Includi riporto totale sulle pagine";
     texts.param_print_summary = "Includi riepilogo";
   }
   else {
@@ -760,10 +938,11 @@ function loadTexts(banDoc,lang) {
     texts.itemId = "Item No.";
     texts.description = "Description";
     texts.quantity = "Qty";
+    texts.unit = "Unit";
     texts.unitPrice = "Unit price";
     texts.amountTotal = "Total";
     texts.amountCumulated = "Cum. total";
-    texts.carryforward = "Carry forward";
+    texts.carryforward = "Carried forward total";
     texts.summary = "Summary";
     texts.amount = "Amount";
 
@@ -771,7 +950,10 @@ function loadTexts(banDoc,lang) {
     texts.param_header_logo_name = "Logo name";
     texts.param_print_header_address = "Header address";
     texts.param_report_name = "Nome report";
+    texts.param_regex_exclude_itemid_cell = "Regex to prevent printing the ItemIdCalc cell";
+    texts.param_max_description_lenght = "Maximum description length per line (characters)";
     texts.param_quantity_decimals = "Decimals Quantity column";
+    texts.param_print_carryforward = "Include total carry forward on pages";
     texts.param_print_summary = "Include summary";
   }
   return texts;
