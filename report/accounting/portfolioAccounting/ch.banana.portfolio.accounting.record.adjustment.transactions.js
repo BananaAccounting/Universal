@@ -164,7 +164,7 @@ function calculateAdjustmentResult(banDoc, docInfo, itemId, itemUnitMarketValue,
 function getItemBookValue(banDoc, docInfo, itemRowObj, unitPriceColDecimals) {
 
     if (!itemRowObj || isObjectEmpty(itemRowObj))
-        return result;
+        return "";
 
     let itemCardData = getItemCardDataList(banDoc, docInfo, itemRowObj, unitPriceColDecimals);
 
