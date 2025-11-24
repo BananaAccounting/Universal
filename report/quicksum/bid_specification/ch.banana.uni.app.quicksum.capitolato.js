@@ -461,7 +461,7 @@ function printReportTable(banDoc, report, userParam) {
       className = "total";
     }
 
-    // Skip total rows containing letters
+    // Skip total rows containing the regex
     if (className === "total" && containsRegex) {
       continue;
     }
@@ -469,7 +469,9 @@ function printReportTable(banDoc, report, userParam) {
     // If contains regex never register as printed
     var isFirstOccurrence = false;
     if (!containsRegex) {
-      isFirstOccurrence = !printedItemIdCalc[itemIdValue];
+      if (!printedItemIdCalc[itemIdValue]) { // itemIdValue NOT present in printedItemIdCalc
+        isFirstOccurrence = true;
+      }
     }
     
     // First row bold
@@ -487,7 +489,7 @@ function printReportTable(banDoc, report, userParam) {
 
         if (!printedItemIdCalc[itemIdValue]) {
             // first time, print
-            row.addCell(extractNumbers(itemIdValue, true), rowClass, 1);
+            row.addCell(formatItemId(itemIdValue), rowClass, 1);
             // Register only non-letter ItemIdCalc
             printedItemIdCalc[itemIdValue] = true;
         } else {
@@ -686,7 +688,7 @@ function printReportTotals(banDoc, report, userParam) {
     // }
 
     var row = table.addRow();
-    row.addCell(extractNumbers(quicksumRow.value("ItemIdCalc"),true), "");
+    row.addCell(formatItemId(quicksumRow.value("ItemIdCalc")), "");
     row.addCell(quicksumRow.value("Description"), "");
     row.addCell(Banana.Converter.toLocaleNumberFormat(quicksumRow.value("AmountTotal"),2,true), "dashed right");
   }
@@ -706,26 +708,18 @@ function printReportFooter(report) {
 // UTILITIES
 //===========================================================================
 /** Function that extracts the number from a string */
-function extractNumbers(str, remove00) {
+function formatItemId(str) {
   if (!str) {
     return "";
   }
 
-  // Remove spaces
   let cleanStr = str.trim();
 
-  // Removes everything up to and including the last ":" (if present)
+  // Removes everything up to and including the last ":" (if present), i.e. T: S:
   cleanStr = cleanStr.replace(/^.*:/, "");
-
-  if (remove00) {
-    // If "00" return empty string
-    if (cleanStr === "00") {
-      return "";
-    }
-  }
-
-  // If empty return empty string
-  if (cleanStr.trim() === "") {
+  
+  // If "00" return empty string
+  if (cleanStr === "00") {
     return "";
   }
 
