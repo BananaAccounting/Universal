@@ -354,7 +354,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
 
     getBondDocChangeRow_otherCharges() {
         let row = {};
-        let otherChargesAmount = this.dlgParams.otherCahrges;
+        let otherChargesAmount = this.dlgParams.otherCharges;
         if (!otherChargesAmount)
             return row;
         row.operation = {};
@@ -367,7 +367,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         row.fields["ItemsId"] = this.itemObject.item;
         row.fields["ExternalReference"] = this.saleTrRef + ".2";
         row.fields["Description"] = this.itemObject.description + " " + this.texts.otherCharges;
-        row.fields["AccountDebit"] = this.savedAccountsParams.profitAndLossAccounts.otherCostsAccount;
+        row.fields["AccountDebit"] = this.savedAccountsParams.profitAndLossAccounts.otherCostsAccount || this.texts.otherChargesPlaceHolder;
         row.fields["Amount"] = otherChargesAmount;
 
         return row;
@@ -375,7 +375,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
 
     getBondDocChangeRow_otherChargesMulti() {
         let row = {};
-        let otherChargesAmount = this.dlgParams.otherCahrges;
+        let otherChargesAmount = this.dlgParams.otherCharges;
         if (!otherChargesAmount)
             return row;
         row.operation = {};
@@ -388,7 +388,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         row.fields["ItemsId"] = this.itemObject.item;
         row.fields["ExternalReference"] = this.saleTrRef + ".2";
         row.fields["Description"] = this.itemObject.description.trim() + " " + this.texts.otherCharges;
-        row.fields["AccountDebit"] = this.savedAccountsParams.profitAndLossAccounts.otherCostsAccount;
+        row.fields["AccountDebit"] = this.savedAccountsParams.profitAndLossAccounts.otherCostsAccount || this.texts.otherChargesPlaceHolder;
         row.fields["AmountCurrency"] = otherChargesAmount;
         row.fields["ExchangeCurrency"] = this.itemObject.currency;
         row.fields["ExchangeRate"] = this.dlgParams.currExRate;
@@ -571,7 +571,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
 
     getBondCashedNetAmount() {
         let netCashedAmount = Banana.SDecimal.subtract(this.salesData.totalSharesvalue, this.dlgParams.bankCharges);
-        netCashedAmount = Banana.SDecimal.subtract(netCashedAmount, this.dlgParams.otherCahrges);
+        netCashedAmount = Banana.SDecimal.subtract(netCashedAmount, this.dlgParams.otherCharges);
         netCashedAmount = Banana.SDecimal.add(netCashedAmount, this.salesData.accruedInterests);
         return netCashedAmount;
     }
@@ -670,7 +670,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
 
     getStockDocChangeRow_otherCharges() {
         let row = {};
-        let otherChargesAmount = this.dlgParams.otherCahrges;
+        let otherChargesAmount = this.dlgParams.otherCharges;
         if (!otherChargesAmount)
             return row;
         row.operation = {};
@@ -683,7 +683,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         row.fields["ItemsId"] = this.itemObject.item;
         row.fields["ExternalReference"] = this.saleTrRef + ".2";
         row.fields["Description"] = this.itemObject.description.trim() + " " + this.texts.otherCharges;
-        row.fields["AccountDebit"] = this.savedAccountsParams.profitAndLossAccounts.otherCostsAccount;
+        row.fields["AccountDebit"] = this.savedAccountsParams.profitAndLossAccounts.otherCostsAccount || this.texts.otherChargesPlaceHolder;
         row.fields["Amount"] = otherChargesAmount;
 
         return row;
@@ -842,7 +842,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
 
     getStockCashedNetAmount() {
         let netCashedAmount = Banana.SDecimal.subtract(this.salesData.totalSharesvalue, this.dlgParams.bankCharges);
-        netCashedAmount = Banana.SDecimal.subtract(netCashedAmount, this.dlgParams.otherCahrges);
+        netCashedAmount = Banana.SDecimal.subtract(netCashedAmount, this.dlgParams.otherCharges);
         return netCashedAmount;
     }
 
@@ -871,7 +871,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
 
     getStockDocChangeRow_otherChargesMulti() {
         let row = {};
-        let otherChargesAmount = this.dlgParams.otherCahrges;
+        let otherChargesAmount = this.dlgParams.otherCharges;
         if (!otherChargesAmount)
             return row;
         row.operation = {};
@@ -884,7 +884,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         row.fields["ItemsId"] = this.itemObject.item;
         row.fields["ExternalReference"] = this.saleTrRef + ".2";
         row.fields["Description"] = this.itemObject.description.trim() + " " + this.texts.otherCharges;
-        row.fields["AccountDebit"] = this.savedAccountsParams.profitAndLossAccounts.otherCostsAccount;
+        row.fields["AccountDebit"] = this.savedAccountsParams.profitAndLossAccounts.otherCostsAccount || this.texts.otherChargesPlaceHolder;
         row.fields["AmountCurrency"] = otherChargesAmount;
         row.fields["ExchangeCurrency"] = this.itemObject.currency;
         row.fields["ExchangeRate"] = this.dlgParams.currExRate;
@@ -1062,6 +1062,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         texts.realizedGainAccountPlaceHolder = "[Realized profit account]";
         texts.bankAccountPlaceHolder = "[Bank account]";
         texts.bankChargesPlaceHolder = "[Bank charges account]";
+        texts.otherChargesPlaceHolder = "[Other charges account]";
         texts.accruedInterestsPlaceHolder = "[Accrued interests account]";
 
         return texts;
@@ -1082,7 +1083,8 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         texts.realizedLossAccountPlaceHolder = "[Conto perdite realizzate]";
         texts.realizedGainAccountPlaceHolder = "[Conto profitti realizzati]";
         texts.bankAccountPlaceHolder = "[Conto bancario]";
-        texts.bankCharges = "[Conto spese bancarie]";
+        texts.bankChargesPlaceHolder = "[Conto spese bancarie]";
+        texts.otherChargesPlaceHolder = "[Conto altre spese]";
         texts.accruedInterestsPlaceHolder = "[Conto interessi maturati]";
 
         return texts;
@@ -1092,7 +1094,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         let texts = {};
 
         texts.bankCharges = "Bankspesen";
-        texts.otherCharges = "Sonstige Gebühren";
+        texts.otherCharges = "Sonstige Spesen";
         texts.cashedNet = "Netto eingelöst";
         texts.resultOnSale = "Verkaufsergebnis";
         texts.resultExchange = "Ergebnis des Wechselkurses";
@@ -1104,6 +1106,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         texts.realizedGainAccountPlaceHolder = "[Konto für realisierte Gewinne]";
         texts.bankAccountPlaceHolder = "[Bankkonto]";
         texts.bankChargesPlaceHolder = "[Konto für Bankspesen]";
+        texts.otherChargesPlaceHolder = "[Konto für sonstige Spesen]";
         texts.accruedInterestsPlaceHolder = "[Konto für aufgelaufene Zinsen]";
 
         return texts;
@@ -1125,6 +1128,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         texts.realizedGainAccountPlaceHolder = "[Compte des gains réalisés]";
         texts.bankAccountPlaceHolder = "[Compte bancaire]";
         texts.bankChargesPlaceHolder = "[Compte des frais bancaires]";
+        texts.otherChargesPlaceHolder = "[Compte pour frais divers]";
         texts.accruedInterestsPlaceHolder = "[Compte d’intérêts courus]"
 
         return texts;
