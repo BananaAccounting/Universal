@@ -47,8 +47,26 @@ function exec() {
         return "@Cancel";
     }
 
-    if (!settingsDialog())
-        return;
+    let itemsData = getItemsTableData(banDoc);
+    let decimals = banDoc.table("Items").column("UnitPriceCurrent", "Base");
+
+    if (itemsData.length < 1) {
+        let msg = getErrorMessage_MissingElements("NO_ASSETS_FOUND", "");
+        banDoc.addMessage(msg, getErrorMessageReferenceAnchor());
+        return false;
+    }
+
+    // Read data from Items table and prepare the dialog parameters
+    let dlgParams = initAdjustmentDialogParams(itemsData, decimals.decimal);
+
+    if (isObjectEmpty(dlgParams)) {
+        let msg = getErrorMessage_MissingElements("NO_ASSET_WITH_CURRENT_PRICE", "");
+        banDoc.addMessage(msg, getErrorMessageReferenceAnchor());
+        return false;
+    }
+
+    if (!settingsDialog(banDoc, dlgParams))
+        return "@Cancel";
 
     /** Recupero i parametri definiti dall'utente nel dialogo corrente e nel dialogo dei conti.*/
     let savedAccountsParams = getFormattedSavedParams(banDoc, dlgAccountsSettingsId);
@@ -56,142 +74,283 @@ function exec() {
 
     let savedMarketValuesParams = getFormattedSavedParams(banDoc, adjustmentSettingsId);
     if (!savedMarketValuesParams || isObjectEmpty(savedMarketValuesParams))
-        return;
+        return "@Cancel";
 
-
-    let docChange = { "format": "documentChange", "error": "", "data": [] };
-    let jsonDoc = getDocChangeAdjustmentTransactions(banDoc, savedMarketValuesParams, savedAccountsParams, false);
-    docChange["data"].push(jsonDoc);
-    return docChange;
+    const adjustmentTransactionsManager = new AdjustmentTransactionsManager(banDoc, itemsData,
+        savedMarketValuesParams, savedAccountsParams, false);
+    return adjustmentTransactionsManager.getDocumentChangeObject();
 }
 
-/**
- * Transactions to adjust the security to the market price usually take place at the end of the year and are arranged on a single line.
- * The settlement can lead to a settlement income or a settlement cost that changes the value of the security account.
- * In the example case, a security settlement income is shown:
- * |                   DESCRIPTION                   |                 DEBIT                  |                  CREDIT                |
- *     Shares Netflix Adjustment at market price                    Shares Netflix                   Other value changing income        
- */
-function getDocChangeAdjustmentTransactions(banDoc, savedMarketValuesParams, savedAccountsParams, isTest) {
-    let docChangeObj = getDocumentChangeInit();
-    let rows = getAdjustmentTransactionsRows(banDoc, savedMarketValuesParams, savedAccountsParams, isTest);
+var AdjustmentTransactionsManager = class AdjustmentTransactionsManager {
+    constructor(banDoc, itemsData, savedMarketValuesParams, savedAccountsParams, isTest) {
+        this.banDoc = banDoc;
+        this.itemsTableData = itemsData;
+        this.docChangeObj = { "format": "documentChange", "error": "", "data": [] };
+        this.savedMarketValuesParams = savedMarketValuesParams;
+        this.savedAccountsParams = savedAccountsParams;
+        this.isTest = isTest;
 
-    var dataUnitTransactionsTable = {};
-    dataUnitTransactionsTable.nameXml = "Transactions";
-    dataUnitTransactionsTable.data = {};
-    dataUnitTransactionsTable.data.rowLists = [];
-    dataUnitTransactionsTable.data.rowLists.push({ "rows": rows });
-
-    docChangeObj.document.dataUnits.push(dataUnitTransactionsTable);
-
-    return docChangeObj;
-}
-
-/**
- * Creates the row to add if the result is not zero.
- * If a security does not have a current book value as all the stocks has been sell, we do not
- * create the transaction.
- */
-function getAdjustmentTransactionsRows(banDoc, savedMarketValuesParams, savedAccountsParams, isTest) {
-    let rows = [];
-    let texts = getTransactionsTexts(banDoc);
-
-    let docInfo = getDocumentInfo(banDoc);
-    let unitPriceColumn = banDoc.table("Transactions").column("UnitPrice", "Base");
-    let unitPriceColDecimals = unitPriceColumn.decimal;
-
-    for (const param in savedMarketValuesParams) {
-        let itemId = param;
-        let itemUnitMarketValue = Banana.Converter.toInternalNumberFormat(savedMarketValuesParams[param], ".");
-        let adjustmentResult = calculateAdjustmentResult(banDoc, docInfo, itemId, itemUnitMarketValue, unitPriceColDecimals);
-
-        if (!adjustmentResult || Banana.SDecimal.isZero(adjustmentResult))
-            continue;
-
-        let currentDate = "";
-        if (!isTest)
-            currentDate = getCurrentDate();
-
-        let row = {};
-        row.operation = {};
-        row.operation.name = "add";
-        row.fields = {};
-        row.fields["Date"] = currentDate;
-        row.fields["Doc"] = "";
-        row.fields["ItemsId"] = itemId;
-        row.fields["Description"] = getItemDescription(itemId, banDoc) + " " + texts.adjustmentTxt + " (" + itemUnitMarketValue + ")";
-        if (adjustmentResult.indexOf("-") >= 0) {
-            row.fields["AccountDebit"] = savedAccountsParams.valueChangingcontraAccounts.unrealizedLossAccount || texts.otherValChangeCostPlaceHolder;
-            row.fields["AccountCredit"] = getItemAccount(itemId, banDoc);
-        } else {
-            row.fields["AccountDebit"] = getItemAccount(itemId, banDoc);
-            row.fields["AccountCredit"] = savedAccountsParams.valueChangingcontraAccounts.unrealizedGainAccount || texts.otherValChangeIncomePlaceHolder;
-        }
-        if (docInfo.isMultiCurrency)
-            row.fields["AmountCurrency"] = Banana.Converter.toInternalNumberFormat(adjustmentResult, ".");
-        else
-            row.fields["Amount"] = Banana.Converter.toInternalNumberFormat(adjustmentResult, ".");
-        if (docInfo.isMultiCurrency)
-            row.fields["ExchangeCurrency"] = getItemCurrency(itemId, banDoc);
-
-        rows.push(row);
     }
 
-    return rows;
+    getDocumentChangeObject() {
+        let jsonDoc = this.getDocChangeAdjustment();
+        this.docChangeObj["data"].push(jsonDoc);
+        return this.docChangeObj;
+    }
+
+    getDocChangeAdjustment() {
+        let docChangeObj = this.getDocumentChangeInit();
+
+        docChangeObj.document.dataUnits.push(
+            this.getDocChangeAdjustment_ItemsUnit());
+        docChangeObj.document.dataUnits.push(
+            this.getDocChangeAdjustment_TransactionsUnit());
+        return docChangeObj;
+    }
+
+    /* If any price has been changed, we must update the Items table.*/
+    getDocChangeAdjustment_ItemsUnit() {
+
+        let rows = this.getAdjustmentItemsRows();
+
+        var dataUnitItemsTable = {};
+        dataUnitItemsTable.nameXml = "Items";
+        dataUnitItemsTable.data = {};
+        dataUnitItemsTable.data.rowLists = [];
+        dataUnitItemsTable.data.rowLists.push({ "rows": rows });
+
+        return dataUnitItemsTable
+    }
+
+    /**
+     * Returns rows to be modified in the Items table.
+     * Only field: UnitPriceCurrent, if the user changed the value in the dialog.
+     */
+    getAdjustmentItemsRows() {
+        let rows = [];
+        for (var key in this.savedMarketValuesParams) {
+            let itemId = key;
+            let dlgItemCurrentP = Banana.Converter.toInternalNumberFormat(this.savedMarketValuesParams[key]);
+            let objFound = this.itemsTableData.find(o => o.item === itemId);
+            if (objFound) {
+                let tabItemsCurrentP = objFound.unitPriceCurrent || "";
+                let tabItemsRowNr = String(objFound.rowNr);
+                if (dlgItemCurrentP !== tabItemsCurrentP) {
+                    let row = {};
+                    row.operation = {};
+                    row.operation.name = "modify";
+                    row.operation.sequence = tabItemsRowNr;
+                    row.fields = {};
+                    row.fields["UnitPriceCurrent"] = dlgItemCurrentP;
+                    rows.push(row);
+                }
+            }
+        }
+        return rows;
+    }
+
+
+    /**
+     * Transactions to adjust the security to the market price usually take place at the end of the year and are arranged on a single line.
+     * The settlement can lead to a settlement income or a settlement cost that changes the value of the security account.
+     * In the example case, a security settlement income is shown:
+     * |                   DESCRIPTION                   |                 DEBIT                  |                  CREDIT                |
+     *     Shares Netflix Adjustment at market price                    Shares Netflix                   Other value changing income        
+     */
+    getDocChangeAdjustment_TransactionsUnit() {
+        let rows = this.getAdjustmentTransactionsRows();
+
+        var dataUnitTransactionsTable = {};
+        dataUnitTransactionsTable.nameXml = "Transactions";
+        dataUnitTransactionsTable.data = {};
+        dataUnitTransactionsTable.data.rowLists = [];
+        dataUnitTransactionsTable.data.rowLists.push({ "rows": rows });
+
+        return dataUnitTransactionsTable;
+    }
+
+    /**
+    * Creates the row to add if the result is not zero.
+    * If a security does not have a current book value as all the stocks has been sell, we do not
+    * create the transaction.
+    */
+    getAdjustmentTransactionsRows() {
+        let rows = [];
+        let texts = getTransactionsTexts();
+
+        let docInfo = getDocumentInfo(this.banDoc);
+        let unitPriceColumn = this.banDoc.table("Transactions").column("UnitPrice", "Base");
+        let unitPriceColDecimals = unitPriceColumn.decimal;
+
+        for (const param in this.savedMarketValuesParams) {
+            let itemId = param;
+            // User must use the locale format to enter the numbers in the dialog.
+            let itemUnitMarketValueLocale = this.savedMarketValuesParams[param];
+            let itemUnitMarketValue = Banana.Converter.toInternalNumberFormat(itemUnitMarketValueLocale);
+            let adjustmentResult = this.calculateAdjustmentResult(docInfo, itemId, itemUnitMarketValue, unitPriceColDecimals);
+
+            if (!adjustmentResult || Banana.SDecimal.isZero(adjustmentResult))
+                continue;
+
+            let currentDate = "";
+            if (!this.isTest)
+                currentDate = getCurrentDate();
+
+            let row = {};
+            row.operation = {};
+            row.operation.name = "add";
+            row.fields = {};
+            row.fields["Date"] = currentDate;
+            row.fields["Doc"] = "";
+            row.fields["ItemsId"] = itemId;
+            row.fields["Description"] = getItemDescription(itemId, this.banDoc) + " " + texts.adjustmentTxt + " (" + itemUnitMarketValueLocale + ")";
+            if (adjustmentResult.indexOf("-") >= 0) {
+                row.fields["AccountDebit"] = this.savedAccountsParams.valueChangingcontraAccounts.unrealizedLossAccount || texts.otherValChangeCostPlaceHolder;
+                row.fields["AccountCredit"] = getItemAccount(itemId, this.banDoc);
+            } else {
+                row.fields["AccountDebit"] = getItemAccount(itemId, this.banDoc);
+                row.fields["AccountCredit"] = this.savedAccountsParams.valueChangingcontraAccounts.unrealizedGainAccount || texts.otherValChangeIncomePlaceHolder;
+            }
+            if (docInfo.isMultiCurrency)
+                row.fields["AmountCurrency"] = Banana.Converter.toInternalNumberFormat(adjustmentResult, ".");
+            else
+                row.fields["Amount"] = Banana.Converter.toInternalNumberFormat(adjustmentResult, ".");
+            if (docInfo.isMultiCurrency)
+                row.fields["ExchangeCurrency"] = getItemCurrency(itemId, this.banDoc);
+
+            rows.push(row);
+        }
+
+        return rows;
+    }
+    /**
+     * To calculate the adjustment result we must:
+     * 1) Calculate the current value: multiply the current quantity of a security by its book value.
+     * 2) Calculate the market value: multiply the current quantity of a security by its market value.
+     * 3) Subtract the market value from the current value.
+     */
+    calculateAdjustmentResult(docInfo, itemId, itemUnitMarketValue, unitPriceColDecimals) {
+        let itemRowObj = getItemRowObj(itemId, this.banDoc);
+        let itemCurrentQt = itemRowObj.currentQt;
+        let itemUnitBookValue = this.getItemBookValue(docInfo, itemRowObj, unitPriceColDecimals);
+
+        if (!itemUnitBookValue || Banana.SDecimal.isZero(itemUnitBookValue)
+            || !itemUnitMarketValue || Banana.SDecimal.isZero(itemUnitMarketValue))
+            return "";
+
+        let marketValue = Banana.SDecimal.multiply(itemUnitMarketValue, itemCurrentQt);
+        let bookValue = Banana.SDecimal.multiply(itemUnitBookValue, itemCurrentQt);
+
+        return Banana.SDecimal.subtract(marketValue, bookValue);
+    }
+
+    getItemBookValue(docInfo, itemRowObj, unitPriceColDecimals) {
+
+        if (!itemRowObj || isObjectEmpty(itemRowObj))
+            return "";
+
+        let itemCardData = getItemCardDataList(this.banDoc, docInfo, itemRowObj, unitPriceColDecimals);
+
+        if (!itemCardData || isObjectEmpty(itemCardData) || !itemCardData.currentValues.itemAvgCost)
+            return "";
+        else
+            return itemCardData.currentValues.itemAvgCost;
+    }
+
+    getDocumentChangeInit() {
+
+        let jsonDoc = {};
+        jsonDoc.document = {};
+        jsonDoc.document.dataUnitsfileVersion = "1.0.0";
+        jsonDoc.document.dataUnits = [];
+        jsonDoc.document.cursorPosition = {};
+
+        jsonDoc.creator = {};
+        var d = new Date();
+        //jsonDoc.creator.executionDate = Banana.Converter.toInternalDateFormat(datestring, "yyyymmdd");
+        //jsonDoc.creator.executionTime = Banana.Converter.toInternalTimeFormat(timestring, "hh:mm");
+        jsonDoc.creator.name = Banana.script.getParamValue('id');
+        jsonDoc.creator.version = "1.0";
+
+        return jsonDoc;
+
+    }
 }
 
-/**
- * To calculate the adjustment result we must:
- * 1) Calculate the current value: multiply the current quantity of a security by its book value.
- * 2) Calculate the market value: multiply the current quantity of a security by its market value.
- * 3) Subtract the market value from the current value.
- */
-function calculateAdjustmentResult(banDoc, docInfo, itemId, itemUnitMarketValue, unitPriceColDecimals) {
-    let itemRowObj = getItemRowObj(itemId, banDoc);
-    let itemCurrentQt = itemRowObj.currentQt;
-    let itemUnitBookValue = getItemBookValue(banDoc, docInfo, itemRowObj, unitPriceColDecimals);
+function settingsDialog(banDoc, dlgParams) {
 
-    if (!itemUnitBookValue || Banana.SDecimal.isZero(itemUnitBookValue)
-        || !itemUnitMarketValue || Banana.SDecimal.isZero(itemUnitMarketValue))
-        return "";
+    //BanDoc and settings id to define also inside this method to be correctly called from Manage extension dialog-->Settings button.
+    let adjustmentSettingsId = "ch.banana.portfolio.accounting.record.adjustment.transactions";
 
-    let marketValue = Banana.SDecimal.multiply(itemUnitMarketValue, itemCurrentQt);
-    let bookValue = Banana.SDecimal.multiply(itemUnitBookValue, itemCurrentQt);
-
-    return Banana.SDecimal.subtract(marketValue, bookValue);
+    let dlgTitle = 'Create adjustment transactions';
+    let convertedParam = convertParam(banDoc, dlgParams);
+    if (!Banana.Ui.openPropertyEditor(dlgTitle, convertedParam))
+        return false;
+    for (var i = 0; i < convertedParam.data.length; i++) {
+        // Read values to dialogparam (through the readValue function)
+        if (typeof (convertedParam.data[i].readValue) == "function")
+            convertedParam.data[i].readValue();
+    }
+    var paramToString = JSON.stringify(dlgParams);
+    banDoc.setScriptSettings(adjustmentSettingsId, paramToString);
+    return true;
 }
 
-function getItemBookValue(banDoc, docInfo, itemRowObj, unitPriceColDecimals) {
+function initAdjustmentDialogParams(itemsData, decimals) {
+    let dialogParam = {};
+    // We want just the items that have a current unit price defined.
+    itemsData.forEach(item => {
+        if (item.unitPriceCurrent !== undefined && item.unitPriceCurrent !== null && item.unitPriceCurrent !== "") {
+            dialogParam[item.item] = Banana.Converter.toLocaleNumberFormat(item.unitPriceCurrent, decimals) || "";
+        }
 
-    if (!itemRowObj || isObjectEmpty(itemRowObj))
-        return "";
+    });
 
-    let itemCardData = getItemCardDataList(banDoc, docInfo, itemRowObj, unitPriceColDecimals);
-
-    if (!itemCardData || isObjectEmpty(itemCardData) || !itemCardData.currentValues.itemAvgCost)
-        return "";
-    else
-        return itemCardData.currentValues.itemAvgCost;
+    return dialogParam;
 }
 
-function getTransactionsTexts(banDoc) {
+function convertParam(banDoc, baseParams) {
+    var convertedParam = {};
+    convertedParam.version = '1.0';
+    convertedParam.data = [];
+    let texts = getTransactionsTexts(banDoc);
+
+    for (const param in baseParams) {
+        let itemDescription = getItemDescription(param, banDoc);
+        var currentParam = {};
+        currentParam.name = param; // item id.
+        currentParam.title = itemDescription;
+        currentParam.type = 'string';
+        currentParam.defaultvalue = "";
+        currentParam.tooltip = texts.tooltipdialog;
+        currentParam.value = baseParams[param] ? baseParams[param] : '';
+        currentParam.readValue = function () {
+            baseParams[param] = this.value;
+        }
+        convertedParam.data.push(currentParam);
+    }
+
+    return convertedParam;
+}
+
+function getTransactionsTexts() {
 
     let text = {};
-    let lang = getCurrentLang(banDoc);
+    let lang = getCurrentLang(this.banDoc);
 
     switch (lang) {
         case "it":
-            text = getTransactionsTexts_it();
+            text = this.getTransactionsTexts_it();
             break;
         case "de":
-            text = getTransactionsTexts_de();
+            text = this.getTransactionsTexts_de();
             break;
         case "fr":
-            text = getTransactionsTexts_fr();
+            text = this.getTransactionsTexts_fr();
             break;
         case "en":
         default:
-            text = getTransactionsTexts_en();
+            text = this.getTransactionsTexts_en();
             break;
     }
 
@@ -262,124 +421,4 @@ function getTransactionsTexts_en() {
 
     return texts;
 
-}
-
-function getDocumentChangeInit() {
-
-    let jsonDoc = {};
-    jsonDoc.document = {};
-    jsonDoc.document.dataUnitsfileVersion = "1.0.0";
-    jsonDoc.document.dataUnits = [];
-    jsonDoc.document.cursorPosition = {};
-
-    jsonDoc.creator = {};
-    var d = new Date();
-    //jsonDoc.creator.executionDate = Banana.Converter.toInternalDateFormat(datestring, "yyyymmdd");
-    //jsonDoc.creator.executionTime = Banana.Converter.toInternalTimeFormat(timestring, "hh:mm");
-    jsonDoc.creator.name = Banana.script.getParamValue('id');
-    jsonDoc.creator.version = "1.0";
-
-    return jsonDoc;
-
-}
-
-function settingsDialog() {
-
-    //BanDoc and settings id to define also inside this method to be correctly called from Manage extension dialog-->Settings button.
-    let adjustmentSettingsId = "ch.banana.portfolio.accounting.record.adjustment.transactions";
-    let banDoc = Banana.document;
-
-    let itemsData = getItemsTableData(banDoc);
-
-    if (itemsData.length < 1) {
-        let msg = getErrorMessage_MissingElements("NO_ASSETS_FOUND", "");
-        banDoc.addMessage(msg, getErrorMessageReferenceAnchor());
-        return "@Cancel";
-    }
-
-    let baseParams = initAdjustmentDialogParams(itemsData);
-    let savedParams = getFormattedSavedParams(banDoc, adjustmentSettingsId);
-    userParam = verifyAdjustmentParams(baseParams, savedParams);
-    let dlgTitle = 'Create adjustment transactions';
-    let convertedParam = convertParam(banDoc, userParam);
-    if (!Banana.Ui.openPropertyEditor(dlgTitle, convertedParam))
-        return false;
-    for (var i = 0; i < convertedParam.data.length; i++) {
-        // Read values to dialogparam (through the readValue function)
-        if (typeof (convertedParam.data[i].readValue) == "function")
-            convertedParam.data[i].readValue();
-    }
-    var paramToString = JSON.stringify(userParam);
-    banDoc.setScriptSettings(adjustmentSettingsId, paramToString);
-    return true;
-}
-
-function initAdjustmentDialogParams(itemsData) {
-    let dialogParam = {};
-
-    itemsData.forEach(item => {
-        dialogParam[item.item] = item.unitPriceCurrent || "";
-    });
-
-    return dialogParam;
-}
-
-/**
- * Add new items to the savedParams if has been added (baseParams), and delete those removed.
- */
-function verifyAdjustmentParams(baseParams, savedParams) {
-
-    const result = {};
-
-    for (const key in baseParams) {
-        const baseVal = baseParams[key];
-        const savedVal = savedParams[key];
-
-        // Case 1: the item does not exist in savedParams → use baseParams
-        if (savedVal === undefined) {
-            result[key] = baseVal;
-            continue;
-        }
-
-        // Case 2: savedParams has an empty value and baseParams has a value → use baseParams
-        if (!savedVal && baseVal) {
-            result[key] = baseVal;
-            continue;
-        }
-
-        // Case 3: values are different → baseParams wins
-        if (savedVal !== baseVal) {
-            result[key] = baseVal;
-            continue;
-        }
-
-        // Case 4: values are equal → keep savedParams
-        result[key] = savedVal;
-    }
-
-    return result;
-}
-
-function convertParam(banDoc, userParam) {
-    var convertedParam = {};
-    convertedParam.version = '1.0';
-    convertedParam.data = [];
-    let texts = getTransactionsTexts(banDoc);
-
-    for (const param in userParam) {
-        let itemDescription = getItemDescription(param, banDoc);
-        var currentParam = {};
-        currentParam.name = param; // item id.
-        currentParam.title = itemDescription;
-        currentParam.type = 'string';
-        currentParam.defaultvalue = "";
-        currentParam.tooltip = texts.tooltipdialog;
-        currentParam.value = userParam[param] ? userParam[param] : '';
-        currentParam.readValue = function () {
-            userParam[param] = this.value;
-        }
-        convertedParam.data.push(currentParam);
-    }
-
-    return convertedParam;
 }
