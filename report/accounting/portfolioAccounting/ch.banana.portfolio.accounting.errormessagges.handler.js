@@ -70,6 +70,8 @@ function getErrorMessage_MissingElements(errorId, missingElement) {
             return "Asset: " + missingElement + " without assigned type. Define the type in the Items table";
         case "NO_ASSET_ACCOUNTS_FOUND":
             return "No Asset Accounts found in the Items table";
+        case "NO_ASSET_WITH_CURRENT_PRICE": // Market price missing.
+            return "No Asset with current price found in the Items table";
     }
 }
 

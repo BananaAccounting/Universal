@@ -83,24 +83,25 @@ TestAdjustmentTransactions.prototype.testRecordSalesTransactions = function () {
 function getTestData(banDoc) {
     let dlgAccountsSettingsId = "ch.banana.portfolio.accounting.accounts.dialog";
 
+    let itemsData = getItemsTableData(banDoc);
+
     let savedAccountsParams = getFormattedSavedParams(banDoc, dlgAccountsSettingsId);
     savedAccountsParams = verifyAccountsParams(banDoc, savedAccountsParams);
 
     let savedMarketValuesParams = getUserParams();
 
-    let docChange = { "format": "documentChange", "error": "", "data": [] };
-    let jsonDoc = getDocChangeAdjustmentTransactions(banDoc, savedMarketValuesParams, savedAccountsParams, true);
-    docChange["data"].push(jsonDoc);
-    return docChange;
+    const adjustmentTransactionsManager = new AdjustmentTransactionsManager(banDoc, itemsData,
+        savedMarketValuesParams, savedAccountsParams, true);
+    return adjustmentTransactionsManager.getDocumentChangeObject();
 }
 
 function getUserParams() {
     params = {};
     params["CH003886335"] = "12.8001";
     params["CH002775224"] = "5.9998";
-    params["IT0005239360"] = "9.50";
+    params["IT0005239360"] = "9.5000";
     params["US123456789"] = "11.5562";
-    params["IT000792468"] = "1.025";
+    params["IT000792468"] = "1.0250";
     return params;
 
 }

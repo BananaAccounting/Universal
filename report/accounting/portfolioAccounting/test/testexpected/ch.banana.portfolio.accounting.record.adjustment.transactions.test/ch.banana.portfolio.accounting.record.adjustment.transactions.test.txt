@@ -40,6 +40,17 @@
                             "rowLists": [
                                 {
                                     "rows": [
+                                    ]
+                                }
+                            ]
+                        },
+                        "nameXml": "Items"
+                    },
+                    {
+                        "data": {
+                            "rowLists": [
+                                {
+                                    "rows": [
                                         {
                                             "fields": {
                                                 "AccountCredit": "Shares CHF",
@@ -76,7 +87,7 @@
                                                 "AccountDebit": "[Account for unrealized losses]",
                                                 "AmountCurrency": "-50.00000000",
                                                 "Date": "",
-                                                "Description": "Shares Unicredit Market Price Adjustment (9.50)",
+                                                "Description": "Shares Unicredit Market Price Adjustment (9.5000)",
                                                 "Doc": "",
                                                 "ExchangeCurrency": "EUR",
                                                 "ItemsId": "IT0005239360"
@@ -106,7 +117,7 @@
                                                 "AccountDebit": "Bonds EUR",
                                                 "AmountCurrency": "225.00000000",
                                                 "Date": "",
-                                                "Description": "Bonds Bnp Paribas Market Price Adjustment (1.025)",
+                                                "Description": "Bonds Bnp Paribas Market Price Adjustment (1.0250)",
                                                 "Doc": "",
                                                 "ExchangeCurrency": "EUR",
                                                 "ItemsId": "IT000792468"
