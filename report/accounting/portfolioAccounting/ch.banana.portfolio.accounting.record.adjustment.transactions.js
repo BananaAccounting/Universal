@@ -328,28 +328,36 @@ function initAdjustmentDialogParams(itemsData) {
  * Add new items to the savedParams if has been added (baseParams), and delete those removed.
  */
 function verifyAdjustmentParams(baseParams, savedParams) {
-    // Add new items from baseParams if they are missing in savedParams
+
+    const result = {};
+
     for (const key in baseParams) {
-        if (!savedParams.hasOwnProperty(key)) {
-            savedParams[key] = baseParams[key];
+        const baseVal = baseParams[key];
+        const savedVal = savedParams[key];
+
+        // Case 1: the item does not exist in savedParams → use baseParams
+        if (savedVal === undefined) {
+            result[key] = baseVal;
+            continue;
         }
+
+        // Case 2: savedParams has an empty value and baseParams has a value → use baseParams
+        if (!savedVal && baseVal) {
+            result[key] = baseVal;
+            continue;
+        }
+
+        // Case 3: values are different → baseParams wins
+        if (savedVal !== baseVal) {
+            result[key] = baseVal;
+            continue;
+        }
+
+        // Case 4: values are equal → keep savedParams
+        result[key] = savedVal;
     }
 
-    // Remove items from savedParams if they do not exist in baseParams
-    for (const key in savedParams) {
-        if (!baseParams.hasOwnProperty(key)) {
-            delete savedParams[key];
-        }
-    }
-
-    // if savedParams has an item without value, check in baseParams if it has a value and add it to savedParams
-    for (const key in savedParams) {
-        if (!savedParams[key]) {
-            savedParams[key] = baseParams[key];
-        }
-    }
-
-    return savedParams;
+    return result;
 }
 
 function convertParam(banDoc, userParam) {
