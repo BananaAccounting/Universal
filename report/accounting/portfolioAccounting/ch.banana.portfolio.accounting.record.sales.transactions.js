@@ -398,6 +398,9 @@ var RecordSalesTransactions = class RecordSalesTransactions {
 
     getBondDocChangeRow_accruedInterests() {
         let row = {};
+        let accruedInterests = this.salesData.accruedInterests;
+        if (!accruedInterests)
+            return row;
         row.operation = {};
         row.operation.name = "add";
         row.operation.sequence = this.banDoc.cursor.rowNr + ".3";
@@ -409,13 +412,16 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         row.fields["ExternalReference"] = this.saleTrRef + ".3";
         row.fields["Description"] = this.itemObject.description + " " + this.texts.accruedInterests;
         row.fields["AccountCredit"] = this.savedAccountsParams.profitAndLossAccounts.interestEarnedAccount || this.texts.accruedInterestsPlaceHolder;
-        row.fields["Amount"] = this.salesData.accruedInterests;
+        row.fields["Amount"] = accruedInterests;
 
         return row;
     }
 
     getBondDocChangeRow_accruedInterestsMulti() {
         let row = {};
+        let accruedInterests = this.salesData.accruedInterests;
+        if (!accruedInterests)
+            return row;
         row.operation = {};
         row.operation.name = "add";
         row.operation.sequence = this.banDoc.cursor.rowNr + ".3";
@@ -427,7 +433,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         row.fields["ExternalReference"] = this.saleTrRef + ".3";
         row.fields["Description"] = this.itemObject.description.trim() + " " + this.texts.accruedInterests;
         row.fields["AccountCredit"] = this.savedAccountsParams.profitAndLossAccounts.interestEarnedAccount || this.texts.accruedInterestsPlaceHolder;
-        row.fields["AmountCurrency"] = this.salesData.accruedInterests;
+        row.fields["AmountCurrency"] = accruedInterests;
         row.fields["ExchangeCurrency"] = this.itemObject.currency;
         row.fields["ExchangeRate"] = this.dlgParams.currExRate;
 
