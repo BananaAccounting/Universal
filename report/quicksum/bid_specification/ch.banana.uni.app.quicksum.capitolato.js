@@ -14,13 +14,13 @@
 //
 // @id = ch.banana.uni.app.quicksum.capitolato
 // @api = 1.0
-// @pubdate = 2025-11-21
+// @pubdate = 2025-12-12
 // @publisher = Banana.ch SA
-// @description = QuickSum Bid Specification
-// @description.de = QuickSum Angebotsspezifikationen
+// @description = QuickSum Technical Proposal
+// @description.de = QuickSum Technisches Angebot
 // @description.it = QuickSum Capitolato d’offerta
-// @description.fr = QuickSum Spécifications de l’offre
-// @description.en = QuickSum Bid Specification
+// @description.fr = QuickSum Offre technique
+// @description.en = QuickSum Technical Proposal
 // @doctype = 400.100
 // @task = app.command
 // @timeout = -1
@@ -43,14 +43,41 @@ function convertParam(userParam) {
   convertedParam.data = [];
 
   var currentParam = {};
-  currentParam.name = 'param_1';
+  currentParam.name = 'param_print_technical_proposal';
+  currentParam.parentObject = '';
+  currentParam.title = texts.param_print_technical_proposal;
+  currentParam.type = 'bool';
+  currentParam.value = userParam.param_print_technical_proposal ? true : false;
+  currentParam.defaultvalue = true;
+  currentParam.tooltip = texts.tooltip_param_print_technical_proposal;
+  currentParam.readValue = function() {
+    userParam.param_print_technical_proposal = this.value;
+  }
+  convertedParam.data.push(currentParam);
+
+  var currentParam = {};
+  currentParam.name = 'param_print_summary';
+  currentParam.parentObject = '';
+  currentParam.title = texts.param_print_summary;
+  currentParam.type = 'bool';
+  currentParam.value = userParam.param_print_summary ? true : false;
+  currentParam.defaultvalue = true;
+  currentParam.tooltip = texts.tooltip_param_print_summary;
+  currentParam.readValue = function() {
+    userParam.param_print_summary = this.value;
+  }
+  convertedParam.data.push(currentParam);
+
+  var currentParam = {};
+  currentParam.name = 'param_report_name';
   currentParam.parentObject = '';
   currentParam.title = texts.param_report_name;
   currentParam.type = 'string';
-  currentParam.value = userParam.param_1 ? userParam.param_1 : '';
+  currentParam.value = userParam.param_report_name ? userParam.param_report_name : '';
   currentParam.defaultvalue = '';
+  currentParam.tooltip = texts.tooltip_param_report_name;
   currentParam.readValue = function () {
-    userParam.param_1 = this.value;
+    userParam.param_report_name = this.value;
   }
   convertedParam.data.push(currentParam);
 
@@ -61,6 +88,7 @@ function convertParam(userParam) {
   currentParam.type = 'bool';
   currentParam.value = userParam.param_print_header_logo ? true : false;
   currentParam.defaultvalue = false;
+  currentParam.tooltip = texts.tooltip_param_print_header_logo;
   currentParam.readValue = function() {
     userParam.param_print_header_logo = this.value;
   }
@@ -73,6 +101,7 @@ function convertParam(userParam) {
   currentParam.type = 'string';
   currentParam.value = userParam.param_header_logo_name ? userParam.param_header_logo_name : 'Logo';
   currentParam.defaultvalue = 'Logo';
+  currentParam.tooltip = texts.tooltip_param_header_logo_name;
   currentParam.readValue = function() {
     userParam.param_header_logo_name = this.value;
   }
@@ -85,6 +114,7 @@ function convertParam(userParam) {
   currentParam.type = 'bool';
   currentParam.value = userParam.param_print_header_address ? true : false;
   currentParam.defaultvalue = false;
+  currentParam.tooltip = texts.tooltip_param_print_header_address;
   currentParam.readValue = function() {
     userParam.param_print_header_address = this.value;
   }
@@ -97,6 +127,7 @@ function convertParam(userParam) {
   currentParam.type = 'string';
   currentParam.value = userParam.param_regex_exclude_itemid_cell ? userParam.param_regex_exclude_itemid_cell : '';
   currentParam.defaultvalue = '';
+  currentParam.tooltip = texts.tooltip_param_regex_exclude_itemid_cell;
   currentParam.readValue = function () {
     userParam.param_regex_exclude_itemid_cell = this.value;
   }
@@ -109,6 +140,7 @@ function convertParam(userParam) {
   currentParam.type = 'string';
   currentParam.value = userParam.param_max_description_lenght ? userParam.param_max_description_lenght : '58';
   currentParam.defaultvalue = '58';
+  currentParam.tooltip = texts.tooltip_param_max_description_lenght;
   currentParam.readValue = function () {
     userParam.param_max_description_lenght = this.value;
   }
@@ -121,6 +153,7 @@ function convertParam(userParam) {
   currentParam.type = 'string';
   currentParam.value = userParam.param_quantity_decimals ? userParam.param_quantity_decimals : '2';
   currentParam.defaultvalue = '2';
+  currentParam.tooltip = texts.tooltip_param_quantity_decimals;
   currentParam.readValue = function () {
     userParam.param_quantity_decimals = this.value;
   }
@@ -133,20 +166,9 @@ function convertParam(userParam) {
   currentParam.type = 'bool';
   currentParam.value = userParam.param_print_carryforward ? true : false;
   currentParam.defaultvalue = true;
+  currentParam.tooltip = texts.tooltip_param_print_carryforward;
   currentParam.readValue = function() {
     userParam.param_print_carryforward = this.value;
-  }
-  convertedParam.data.push(currentParam);
-
-  var currentParam = {};
-  currentParam.name = 'param_print_summary';
-  currentParam.parentObject = '';
-  currentParam.title = texts.param_print_summary;
-  currentParam.type = 'bool';
-  currentParam.value = userParam.param_print_summary ? true : false;
-  currentParam.defaultvalue = true;
-  currentParam.readValue = function() {
-    userParam.param_print_summary = this.value;
   }
   convertedParam.data.push(currentParam);
 
@@ -157,7 +179,9 @@ function convertParam(userParam) {
 function initUserParam() {
   var userParam = {};
   userParam.version = '1.0';
-  userParam.param_1 = '';
+  userParam.param_print_technical_proposal = true;
+  userParam.param_print_summary = true;
+  userParam.param_report_name = '';
   userParam.param_print_header_logo = false;
   userParam.param_header_logo_name = 'Logo';
   userParam.param_print_header_address = false;
@@ -165,7 +189,6 @@ function initUserParam() {
   userParam.param_max_description_lenght = '58';
   userParam.param_quantity_decimals = '2';
   userParam.param_print_carryforward = true;
-  userParam.param_print_summary = true;
   return userParam;
 }
 
@@ -243,7 +266,7 @@ function exec(inData, options) {
     return "@Cancel";
   }
 
-  var report = Banana.Report.newReport(userParam.param_1 || texts.reportTitle);
+  var report = Banana.Report.newReport(userParam.param_report_name || texts.reportTitle);
   var stylesheet = Banana.Report.newStyleSheet();
   
   var variables = {};
@@ -253,7 +276,6 @@ function exec(inData, options) {
   
   setCss(Banana.document, stylesheet, userParam, variables);
   Banana.Report.preview(report, stylesheet);
-
 }
 
 /** Function that prints the report */
@@ -358,6 +380,10 @@ function printReportHeader(banDoc, report, userParam, stylesheet) {
 
 /** Function that prints the Quicksum table */
 function printReportTable(banDoc, report, userParam) {
+
+  if (!userParam.param_print_technical_proposal) {
+    return;
+  }
 
   var quicksumTable = banDoc.table("Quicksum");
   if (!quicksumTable) {
@@ -687,10 +713,15 @@ function printReportTotals(banDoc, report, userParam) {
     //   continue;
     // }
 
+    var className = "";
+    if (quicksumRow.value("ItemIdCalc") === "T:00") {
+      className = " total";
+    }
+
     var row = table.addRow();
-    row.addCell(formatItemId(quicksumRow.value("ItemIdCalc")), "");
-    row.addCell(quicksumRow.value("Description"), "");
-    row.addCell(Banana.Converter.toLocaleNumberFormat(quicksumRow.value("AmountTotal"),2,true), "dashed right");
+    row.addCell(formatItemIdTotals(quicksumRow.value("ItemIdCalc")), "" + className);
+    row.addCell(quicksumRow.value("Description"), "" + className);
+    row.addCell(Banana.Converter.toLocaleNumberFormat(quicksumRow.value("AmountTotal"),2,true), "dashed right" + className);
   }
 }
 
@@ -723,6 +754,19 @@ function formatItemId(str) {
     return "";
   }
 
+  return cleanStr;
+}
+
+function formatItemIdTotals(str) {
+  if (!str) {
+    return "";
+  }
+  
+  let cleanStr = str.trim();
+  
+  // Removes everything up to and including the last ":" (if present), i.e. T: S:
+  cleanStr = cleanStr.replace(/^.*:/, "");
+  
   return cleanStr;
 }
 
@@ -854,7 +898,7 @@ function getLang(banDoc) {
 function loadTexts(banDoc,lang) {
   var texts = {};
   if (lang === "de") {
-    texts.reportTitle = "Capitolato";
+    texts.reportTitle = "Technisches Angebot";
     texts.dialogTitle = "Einstellungen";
     texts.itemId = "Art.-Nr.";
     texts.description = "Beschreibung";
@@ -867,19 +911,30 @@ function loadTexts(banDoc,lang) {
     texts.summary = "Zusammenfassung"; 
     texts.amount = "Betrag";
 
-    texts.param_print_header_logo = "Logo in der Kopfzeile";
-    texts.param_header_logo_name = "Logo-Name";
-    texts.param_print_header_address = "Adresse in der Kopfzeile";    
+    texts.param_print_technical_proposal = "Technisches Angebot drucken";
+    texts.param_print_summary = "Zusammenfassung drucken";
     texts.param_report_name = "Name des Berichts";
-    texts.param_regex_exclude_itemid_cell = "Regex, um die ItemIdCalc-Zelle nicht zu drucken";
-    texts.param_max_description_lenght = "Maximale Beschreibungslänge pro Zeile (Zeichen)";
+    texts.param_print_header_logo = "Logo in der Kopfzeile anzeigen";
+    texts.param_header_logo_name = "Name der Logo-Anpassung";
+    texts.param_print_header_address = "Adresse in der Kopfzeile anzeigen";    
+    texts.param_regex_exclude_itemid_cell = "ItemId ausschließen (Regex)";
+    texts.param_max_description_lenght = "Maximale Beschreibungslänge pro Zeile";
     texts.param_quantity_decimals = "Dezimalstellen in der Spalte Menge";
-    texts.param_print_carryforward = "Gesamtübertrag auf den Seiten einfügen";
-    texts.param_print_summary = "Includi riepilogo";
-    texts.param_print_summary = "Zusammenfassung einfügen";
+    texts.param_print_carryforward = "Kumulierte Summe auf den Seiten anzeigen";
+
+    texts.tooltip_param_print_technical_proposal = "Schließt das technische Angebot in den Ausdruck ein";
+    texts.tooltip_param_print_summary = "Schließt ein Übersichtsblatt mit allen Gesamtsummen in den Ausdruck ein";
+    texts.tooltip_param_report_name = "Name, der für die Druckvorschau und für die gespeicherte Datei verwendet wird";
+    texts.tooltip_param_print_header_logo = "Schließt das Logo in der Kopfzeile des Dokuments ein";
+    texts.tooltip_param_header_logo_name = "Name der zu verwendenden Logo-Anpassung";
+    texts.tooltip_param_print_header_address = "Schließt die Adresse in der Kopfzeile des Dokuments ein";    
+    texts.tooltip_param_regex_exclude_itemid_cell = "Definiert eine Regel (Regex), um bestimmte Werte aus der Spalte ItemId auszuschließen";
+    texts.tooltip_param_max_description_lenght = "Maximale Anzahl von Zeichen pro Beschreibungszeile";
+    texts.tooltip_param_quantity_decimals = "Anzahl der in der Spalte „Menge“ angezeigten Dezimalstellen";
+    texts.tooltip_param_print_carryforward = "Schließt die kumulierte Gesamtsumme am Seitenende und am Anfang der nächsten Seite ein";
   }
   else if (lang === "fr") {
-    texts.reportTitle = "Capitolato";
+    texts.reportTitle = "Offre technique";
     texts.dialogTitle = "Paramètres";
     texts.itemId = "No. art.";
     texts.description = "Libellé";
@@ -892,18 +947,30 @@ function loadTexts(banDoc,lang) {
     texts.summary = "Récapitulation"; 
     texts.amount = "Montant";
 
-    texts.param_print_header_logo = "Logo en-tête";
-    texts.param_header_logo_name = "Logo nom";
-    texts.param_print_header_address = "Adresse en-tête";
+    texts.param_print_technical_proposal = "Imprimer l’offre technique";
+    texts.param_print_summary = "Imprimer le récapitulatif";
     texts.param_report_name = "Nom du rapport";
-    texts.param_regex_exclude_itemid_cell = "Regex pour ne pas imprimer la cellule ItemIdCalc";
-    texts.param_max_description_lenght = "Longueur maximale de la description par ligne (caractères)";
+    texts.param_print_header_logo = "Afficher le logo d’en-tête";
+    texts.param_header_logo_name = "Nom de la personnalisation du logo";
+    texts.param_print_header_address = "Afficher l’adresse d’en-tête";
+    texts.param_regex_exclude_itemid_cell = "Exclure ItemId (regex)";
+    texts.param_max_description_lenght = "Longueur maximale de la description par ligne";
     texts.param_quantity_decimals = "Décimales colonne Quantité";
-    texts.param_print_carryforward = "Inclure le total reporté sur les pages";
-    texts.param_print_summary = "Inclure le récapitulation";
+    texts.param_print_carryforward = "Afficher le total cumulatif sur les pages";
+
+    texts.tooltip_param_print_technical_proposal = "Inclut l’offre technique dans l’impression";
+    texts.tooltip_param_print_summary = "Inclut une feuille de récapitulatif avec tous les totaux dans l’impression";
+    texts.tooltip_param_report_name = "Nom utilisé pour l’aperçu avant impression et pour le fichier enregistré";
+    texts.tooltip_param_print_header_logo = "Inclut le logo dans l’en-tête du document";
+    texts.tooltip_param_header_logo_name = "Nom de la personnalisation du logo à utiliser";
+    texts.tooltip_param_print_header_address = "Inclut l’adresse dans l’en-tête du document";    
+    texts.tooltip_param_regex_exclude_itemid_cell = "Définit une règle (regex) pour exclure certaines valeurs de la colonne ItemId";
+    texts.tooltip_param_max_description_lenght = "Nombre maximal de caractères par ligne de description";
+    texts.tooltip_param_quantity_decimals = "Nombre de décimales affichées dans la colonne Quantité";
+    texts.tooltip_param_print_carryforward = "Inclut le total cumulé en fin de page et au début de la page suivante";
   }
   else if (lang === "it") {
-    texts.reportTitle = "Capitolato";
+    texts.reportTitle = "Capitolato d'offerta";
     texts.dialogTitle = "Impostazioni";
     texts.itemId = "N. art.";
     texts.description = "Descrizione";
@@ -916,18 +983,30 @@ function loadTexts(banDoc,lang) {
     texts.summary = "Riepilogo"; 
     texts.amount = "Importo";
 
-    texts.param_print_header_logo = "Logo intestazione";
-    texts.param_header_logo_name = "Nome logo";
-    texts.param_print_header_address = "Indirizzo intestazione";
+    texts.param_print_technical_proposal = "Stampa capitolato d'offerta";
+    texts.param_print_summary = "Stampa riepilogo";
     texts.param_report_name = "Nome report";
-    texts.param_regex_exclude_itemid_cell = "Regex per non stampare la cella ItemIdCalc";
-    texts.param_max_description_lenght = "Lunghezza massima descrizione per riga (caratteri)";
+    texts.param_print_header_logo = "Mostra logo intestazione";
+    texts.param_header_logo_name = "Nome personalizzazione logo";
+    texts.param_print_header_address = "Mostra Indirizzo intestazione";
+    texts.param_regex_exclude_itemid_cell = "Escludi ItemId (regex)";
+    texts.param_max_description_lenght = "Lunghezza massima descrizione per riga";
     texts.param_quantity_decimals = "Decimali colonna Quantità";
-    texts.param_print_carryforward = "Includi riporto totale sulle pagine";
-    texts.param_print_summary = "Includi riepilogo";
+    texts.param_print_carryforward = "Mostra totale cumulativo sulle pagine";
+
+    texts.tooltip_param_print_technical_proposal = "Include il capitolato d’offerta nella stampa";
+    texts.tooltip_param_print_summary = "Include il foglio di riepilogo con tutti i totali nella stampa";
+    texts.tooltip_param_report_name = "Nome utilizzato per l’anteprima di stampa e per il file salvato";
+    texts.tooltip_param_print_header_logo = "Include il logo nell’intestazione del documento";
+    texts.tooltip_param_header_logo_name = "Nome della personalizzazione del logo da utilizzare";
+    texts.tooltip_param_print_header_address = "Include l’indirizzo nell’intestazione del documento";    
+    texts.tooltip_param_regex_exclude_itemid_cell = "Definisce una regola (regex) per non stampare alcuni valori della colonna ItemId";
+    texts.tooltip_param_max_description_lenght = "Numero massimo di caratteri per ogni riga di descrizione";
+    texts.tooltip_param_quantity_decimals = "Numero di decimali visualizzati nella colonna Quantità";
+    texts.tooltip_param_print_carryforward = "Include il totale cumulato a fine pagina e all’inizio della successiva";
   }
   else {
-    texts.reportTitle = "Capitolato";
+    texts.reportTitle = "Technical proposal";
     texts.dialogTitle = "Settings";
     texts.itemId = "Item No.";
     texts.description = "Description";
@@ -940,15 +1019,27 @@ function loadTexts(banDoc,lang) {
     texts.summary = "Summary";
     texts.amount = "Amount";
 
-    texts.param_print_header_logo = "Header logo";
-    texts.param_header_logo_name = "Logo name";
-    texts.param_print_header_address = "Header address";
+    texts.param_print_technical_proposal = "Print technical proposal";
+    texts.param_print_summary = "Print summary";
     texts.param_report_name = "Nome report";
-    texts.param_regex_exclude_itemid_cell = "Regex to prevent printing the ItemIdCalc cell";
-    texts.param_max_description_lenght = "Maximum description length per line (characters)";
+    texts.param_print_header_logo = "Show header logo";
+    texts.param_header_logo_name = "Logo customization name";
+    texts.param_print_header_address = "Show header address";
+    texts.param_regex_exclude_itemid_cell = "Exclude ItemId (regex)";
+    texts.param_max_description_lenght = "Maximum description length per line";
     texts.param_quantity_decimals = "Decimals Quantity column";
-    texts.param_print_carryforward = "Include total carry forward on pages";
-    texts.param_print_summary = "Include summary";
+    texts.param_print_carryforward = "Show cumulative total on pages";
+
+    texts.tooltip_param_print_technical_proposal = "Includes the technical proposal in the printout";
+    texts.tooltip_param_print_summary = "Includes a summary sheet with all totals in the printout";
+    texts.tooltip_param_report_name = "Name used for print preview and for the saved file.";
+    texts.tooltip_param_print_header_logo = "Includes the logo in the document header";
+    texts.tooltip_param_header_logo_name = "Name of the logo customization to use";
+    texts.tooltip_param_print_header_address = "Includes the address in the document header";    
+    texts.tooltip_param_regex_exclude_itemid_cell = "Defines a rule (regex) to exclude certain values from the ItemId column";
+    texts.tooltip_param_max_description_lenght = "Maximum number of characters per description line";
+    texts.tooltip_param_quantity_decimals = "Number of decimal places displayed in the Quantity column";
+    texts.tooltip_param_print_carryforward = "Includes the cumulative total at the end of the page and at the beginning of the next one";
   }
   return texts;
 }
