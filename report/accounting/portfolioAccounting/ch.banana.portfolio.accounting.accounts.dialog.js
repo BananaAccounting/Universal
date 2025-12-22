@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.portfolio.accounting.accounts.dialog.js
 // @api = 1.0
-// @pubdate = 2025-08-25
+// @pubdate = 2025-12-22
 // @publisher = Banana.ch SA
 // @description = 1. Accounts settings
 // @task = app.command
@@ -431,30 +431,35 @@ function convertParam(banDoc, userParam) {
 function validateParams(params) {
 
     let texts = getTexts();
-    let paramsOk = true;
     const data = params.data;
+    let validate = true;
     const accountsTable = Banana.document.table("Accounts");
     if (!accountsTable)
-        return paramsOk;
+        return false;
 
     data.forEach(item => {
         if (["balanceaccounts", "valuechangingaccounts", "profitandlossaccounts"].includes(item.parentObject)) {
             if (item.value.indexOf(";") > 0) { // Could happen with "balanceaccounts".
                 const accounts = item.value.split(";");
                 for (var i = 0; i < accounts.length; i++) {
-                    if (!accountExists(accountsTable, accounts[i]))
-                        paramsOk = false;
+                    const cleanAccount = accounts[i].trim();
+                    if (!accountExists(accountsTable, cleanAccount)) {
+                        Banana.console.debug(cleanAccount + ": non esiste");
+                        item.errorMsg = texts.nonExistentAccount.replace("%1", cleanAccount);
+                        validate = false;
+                    }
                 }
             } else {
-                if (!accountExists(accountsTable, item.value)) {
-                    item.errorMsg = texts.nonExistentAccount.replace("%1", item.value);
-                    paramsOk = false;
+                const cleanAccount = item.value.trim();
+                if (!accountExists(accountsTable, cleanAccount)) {
+                    item.errorMsg = texts.nonExistentAccount.replace("%1", cleanAccount);
+                    validate = false;
                 }
             }
         }
     });
 
-    return paramsOk;
+    return validate;
 }
 
 function accountExists(accountsTable, account) {
