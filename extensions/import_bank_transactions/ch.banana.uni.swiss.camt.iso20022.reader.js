@@ -231,6 +231,7 @@ var ISO20022_Swiss_JSONConverter = class ISO20022_Swiss_JSONConverter {
     getCamt052RefSchemas() {
         return [
             "urn:iso:std:iso:20022:tech:xsd:camt.052.001.02",
+            "urn:iso:std:iso:20022:tech:xsd:camt.052.001.03",
             "urn:iso:std:iso:20022:tech:xsd:camt.052.001.04",
             "urn:iso:std:iso:20022:tech:xsd:camt.052.001.08",
         ];
