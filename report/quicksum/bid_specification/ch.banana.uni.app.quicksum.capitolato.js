@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.uni.app.quicksum.capitolato
 // @api = 1.0
-// @pubdate = 2025-12-12
+// @pubdate = 2025-12-31
 // @publisher = Banana.ch SA
 // @description = QuickSum Technical Proposal
 // @description.de = QuickSum Technisches Angebot
@@ -526,47 +526,130 @@ function printReportTable(banDoc, report, userParam) {
 
     // Description (first line only)
     var description = quicksumRow.value("Description") || "";
+
+    // Checks text for suspicious characters that may cause PDF export errors
+    // then normalizes the text
+    var suspiciousChars = findSuspiciousCharacters(description);
+    if (suspiciousChars) {
+      var msg = texts.suspiciousCharactersWarning;
+      msg = msg.replace(/{DESCRIPTION}/g, description);
+      msg = msg.replace(/{CHARACTER}/g, suspiciousChars);
+      
+      Banana.application.showMessages(false);
+      quicksumRow.addMessage(msg);
+
+      description = normalizeText(description);
+    }
+
     var descriptionLines = splitTextByLength(description, maxDescriptionLength);
     row.addCell(descriptionLines[0], rowClass + " description", 1);
     //Banana.console.log(descriptionLines[0] + " ==> " +  descriptionLines[0].length);
 
-    // Quantity
+
+    // Verify qty, unit, unitprice, totalamout
+    var hasQuantity = false;
     if (quicksumRow.value("Quantity")) {
-      row.addCell(Banana.Converter.toLocaleNumberFormat(quicksumRow.value("Quantity"), userParam.param_quantity_decimals, false), className + " right", 1);
+      hasQuantity = true;
+    }
+
+    var hasUnit = false;
+    if (quicksumRow.value("Unit")) {
+      hasUnit = true;
+    }
+
+    var hasUnitPrice = false;
+    if (quicksumRow.value("UnitPrice")) {
+      hasUnitPrice = true;
+    }
+
+    var hasAmountTotal = false;
+    if (quicksumRow.value("AmountTotal")) {
+      hasAmountTotal = true;
+    }
+
+    // Active row if there is one of the four values
+    var isActiveRow = false;
+    if (hasQuantity || hasUnit || hasUnitPrice || hasAmountTotal) {
+      isActiveRow = true;
+    }
+
+    // Apply dashed bottom border to all the non-total rows
+    var applyDashed = false;
+    if (isActiveRow && className !== "total") {
+      applyDashed = true;
+    }
+
+    // Quantity
+    if (hasQuantity) {
+      var quantityText = Banana.Converter.toLocaleNumberFormat(quicksumRow.value("Quantity"), userParam.param_quantity_decimals, false);
+      if (applyDashed) {
+        row.addCell(quantityText, className + " dashed right", 1);
+      } else {
+        row.addCell(quantityText, className + " right", 1);
+      }
     } else {
-      row.addCell(" ", className, 1);
+      if (applyDashed) {
+        row.addCell(" ", className + " dashed right", 1);
+      } else {
+        row.addCell(" ", className, 1);
+      }
     }
 
     // Unit
-    if (quicksumRow.value("Unit")) {
-      row.addCell(quicksumRow.value("Unit"), className + " center", 1);
+    if (hasUnit) {
+      if (applyDashed) {
+        row.addCell(quicksumRow.value("Unit"), className + " dashed center", 1);
+      } else {
+        row.addCell(quicksumRow.value("Unit"), className + " center", 1);
+      }
     } else {
-      row.addCell(" ", className, 1);
+      if (applyDashed) {
+        row.addCell(" ", className + " dashed center", 1);
+      } else {
+        row.addCell(" ", className, 1);
+      }
     }
-  
+
     // UnitPrice
-    if (quicksumRow.value("UnitPrice")) {
-      row.addCell(Banana.Converter.toLocaleNumberFormat(quicksumRow.value("UnitPrice"), 2, false), className + " dashed right", 1);
+    if (hasUnitPrice) {
+      var unitPriceText = Banana.Converter.toLocaleNumberFormat(quicksumRow.value("UnitPrice"),2,false);
+      if (applyDashed) {
+        row.addCell(unitPriceText, className + " dashed right", 1);
+      } else {
+        row.addCell(unitPriceText, className + " right", 1);
+      }
     } else {
-      row.addCell(" ", className, 1);
+      if (applyDashed) {
+        row.addCell(" ", className + " dashed right", 1);
+      } else {
+        row.addCell(" ", className, 1);
+      }
     }
 
     // AmountTotal
-    if (quicksumRow.value("AmountTotal")) {
+    if (hasAmountTotal) {
 
       if (className === "total") {
         row.addCell(Banana.Converter.toLocaleNumberFormat(quicksumRow.value("AmountTotal"), 2, true), className + " double right", 1);
+      } else {
+        var amountText = Banana.Converter.toLocaleNumberFormat(quicksumRow.value("AmountTotal"), 2, false);
+        if (applyDashed) {
+          row.addCell(amountText, className + " dashed right", 1);
+        } else {
+          row.addCell(amountText, className + " right", 1);
+        }
       }
-      else {
-        row.addCell(Banana.Converter.toLocaleNumberFormat(quicksumRow.value("AmountTotal"), 2, false), className + " dashed right", 1);
-      }
-    }
-    else {
+
+    } else {
+
       if (className === "total") {
         row.addCell(Banana.Converter.toLocaleNumberFormat(quicksumRow.value("AmountTotal"), 2, true), className + " double right", 1);
-      }
-      else {
-        row.addCell(" ", className, 1);
+      } else {
+        if (applyDashed) {
+          row.addCell(" ", className + " dashed right", 1);
+        } else {
+          row.addCell(" ", className, 1);
+        }
       }
     }
 
@@ -781,6 +864,58 @@ function splitTextByLength(text, maxLen) {
   return result;
 }
 
+/** 
+ * Function that returns all suspicious characters found in the text.
+ * The result is a string like "ﬁ, ﬂ" or null if none are found.
+ */
+function findSuspiciousCharacters(text) {
+
+  if (!text) {
+    return null;
+  }
+
+  var found = {};
+  var characters = [];
+
+  for (var i = 0; i < text.length; i++) {
+
+    var charCode = text.charCodeAt(i);
+
+    // typographic ligatures (ﬁ ﬂ ﬃ ﬄ ﬀ ﬅ ﬆ)
+    if (charCode >= 64256 && charCode <= 64262) {
+
+      var ch = text.charAt(i);
+
+      // avoid duplicates
+      if (!found[ch]) {
+        found[ch] = true;
+        characters.push(ch);
+      }
+    }
+  }
+
+  if (characters.length === 0) {
+    return null;
+  }
+
+  return characters.join(", ");
+}
+
+/** Function that normalize the text removing ligatures */
+function normalizeText(text) {
+
+  if (!text) {
+    return "";
+  }
+
+  // NFKC: remove ligatures (ﬁ ﬂ ﬃ ﬄ ﬀ ﬅ ﬆ), keep accents
+  text = text.normalize("NFKC");
+
+  return text;
+}
+
+
+
 
 
 //===========================================================================
@@ -910,6 +1045,7 @@ function loadTexts(banDoc,lang) {
     texts.carryforward = "Gesamtübertrag";
     texts.summary = "Zusammenfassung"; 
     texts.amount = "Betrag";
+    texts.suspiciousCharactersWarning = "Achtung: Die Beschreibung '{DESCRIPTION}' enthält verdächtige Zeichen '{CHARACTER}'.";
 
     texts.param_print_technical_proposal = "Technisches Angebot drucken";
     texts.param_print_summary = "Zusammenfassung drucken";
@@ -946,6 +1082,7 @@ function loadTexts(banDoc,lang) {
     texts.carryforward = "Total report";
     texts.summary = "Récapitulation"; 
     texts.amount = "Montant";
+    texts.suspiciousCharactersWarning = "Attention : la description '{DESCRIPTION}' contient des caractères suspects '{CHARACTER}'.";
 
     texts.param_print_technical_proposal = "Imprimer l’offre technique";
     texts.param_print_summary = "Imprimer le récapitulatif";
@@ -982,6 +1119,7 @@ function loadTexts(banDoc,lang) {
     texts.carryforward = "Riporto totale";
     texts.summary = "Riepilogo"; 
     texts.amount = "Importo";
+    texts.suspiciousCharactersWarning = "Attenzione: la descrizione '{DESCRIPTION}' contiene caratteri sospetti '{CHARACTER}'.";
 
     texts.param_print_technical_proposal = "Stampa capitolato d'offerta";
     texts.param_print_summary = "Stampa riepilogo";
@@ -1018,6 +1156,7 @@ function loadTexts(banDoc,lang) {
     texts.carryforward = "Carried forward total";
     texts.summary = "Summary";
     texts.amount = "Amount";
+    texts.suspiciousCharactersWarning = "Warning: the description '{DESCRIPTION}' contains suspicious characters '{CHARACTER}'.";
 
     texts.param_print_technical_proposal = "Print technical proposal";
     texts.param_print_summary = "Print summary";
