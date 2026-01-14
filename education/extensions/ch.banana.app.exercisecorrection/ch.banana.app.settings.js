@@ -131,6 +131,9 @@ var PrintSettings = class PrintSettings {
         if (!userParam.exchangeratescore.match(/^\d+(\.\d+)?$/)) {
             userParam.exchangeratescore = '0';
         }
+        if (typeof userParam.amountonlyifaccountsok === undefined) {
+            userParam.amountonlyifaccountsok = false;
+        }
 
         return userParam;
     }
@@ -262,6 +265,18 @@ var PrintSettings = class PrintSettings {
         }
         convertedParam.data.push(currentParam);
 
+        //Amount only if Debit e Credit accounts are correct
+        currentParam = {};
+        currentParam.name = 'amountonlyifaccountsok';
+        currentParam.title = texts.amountonlyifaccountsok;
+        currentParam.type = 'bool';
+        currentParam.value = userParam.amountonlyifaccountsok ? true : false;
+        currentParam.defaultvalue = false;
+        currentParam.readValue = function () {
+            userParam.amountonlyifaccountsok = this.value;
+        }
+        convertedParam.data.push(currentParam);
+
         return convertedParam;
     }
 
@@ -278,6 +293,7 @@ var PrintSettings = class PrintSettings {
         userParam.amountcurrencyscore = '0';
         userParam.exchangecurrencyscore = '0';
         userParam.exchangeratescore = '0';
+        userParam.amountonlyifaccountsok = false;
 
         return userParam;
     }
@@ -348,6 +364,7 @@ var PrintSettings = class PrintSettings {
             texts.adjustedscore = "Angepasste Punktzahl";
             texts.correctionsnotes = "Korrekturanmerkungen";
             texts.nototalscore = "Die Datei enthält keine Punkte.";
+            texts.amountonlyifaccountsok = "Der Strafbetrag wird nur dann erhoben, wenn Soll und Haben korrekt sind.";
         }
         else if (lang === "fra") {
             texts.language = "Langue";
@@ -380,6 +397,8 @@ var PrintSettings = class PrintSettings {
             texts.adjustedscore = "Score Ajusté";
             texts.correctionsnotes = "Notes Corrections";
             texts.nototalscore = "Le fichier ne contient pas de scores";
+            texts.amountonlyifaccountsok ="N'appliquez une pénalité que si le débit et le crédit sont corrects.";
+
         }
         else if (lang === "ita") {
             texts.language = "Lingua";
@@ -412,6 +431,7 @@ var PrintSettings = class PrintSettings {
             texts.adjustedscore = "Punteggio Rettificato";
             texts.correctionsnotes = "Note Correzioni";
             texts.nototalscore = "Il file non contiene punteggi";
+            texts.amountonlyifaccountsok ="Penalizza l’importo solo se Dare e Avere sono corretti";
         }
         else { //lang === enu
             texts.language = "Language";
@@ -444,6 +464,7 @@ var PrintSettings = class PrintSettings {
             texts.adjustedscore = "Adjusted Score";
             texts.correctionsnotes = "Corrections Notes";
             texts.nototalscore = "The file does not contain scores";
+            texts.amountonlyifaccountsok ="Penalize the amount only if Debit and Credit are correct";
         }
 
         return texts;

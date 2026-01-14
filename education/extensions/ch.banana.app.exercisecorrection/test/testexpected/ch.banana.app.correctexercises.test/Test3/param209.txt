@@ -125,7 +125,7 @@
                                     "Description": "Pagamento degli stipendi dei lavoratori",
                                     "AccountDebit": "Stipendi",
                                     "AccountCredit": "",
-                                    "AmountCurrency": "1000.00",
+                                    "AmountCurrency": "800.00",
                                     "ExchangeCurrency": "EUR",
                                     "ExchangeRate": "1.000000000000"
                                  },
@@ -975,28 +975,28 @@ SysCod & Section & Date & DateDocument & DateValue & Doc & DocProtocol & DocType
  &  &  &  &  &  &  &  &  &  &  &  &  & Esercizio 4 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
  &  &  &  &  &  &  &  &  &  &  &  &  & Note dello studente &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
  &  & 2025-01-02 &  &  & 4 &  &  &  &  &  &  &  & Bonifico bancario per spese varie &  &  &  & Banca & Conto bancario & 1500.00 & EUR & 1.000000000000 &  & 1500.00 & -1500.00 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
- &  & 2025-01-02 &  &  & 4 &  &  &  &  &  &  &  & Pagamento degli stipendi dei lavoratori &  & Stipendi & Stipendi &  &  & 1000.00 & EUR & 1.000000000000 &  & 1000.00 & -500.00 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
- &  & 2025-01-02 &  &  & 4 &  &  &  &  &  &  &  & Pagamento degli interessi bancari &  & Altri costi & Altri costi &  &  & 50.00 & USD & 1.200000000000 &  & 41.67 & -458.33 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
- &  & 2025-01-02 &  &  & 4 &  &  &  &  &  &  &  & Pagamento dell'attrezzatura per ufficio &  & Acquisti & Acquisti di prodotti &  &  & 50.00 & USD & 1.200000000000 &  & 41.67 & -416.66 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
- &  & 2025-01-02 &  &  & 4 &  &  &  &  &  &  &  & Pagamento della fattura dell'elettricità &  & Energia & Costi energetici e di smaltimento &  &  & 300.00 & EUR & 1.000000000000 &  & 300.00 & -116.66 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
- &  & 2025-01-02 &  &  & 4 &  &  &  &  &  &  &  & Pagamento della fattura dell'agenzia pubblicitaria &  & Pubblicità & Pubblicità &  &  & 100.00 & EUR & 1.000000000000 &  & 100.00 & -16.66 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  & 2025-01-02 &  &  & 4 &  &  &  &  &  &  &  & Pagamento degli stipendi dei lavoratori &  & Stipendi & Stipendi &  &  & 800.00 & EUR & 1 &  & 800.00 & -700.00 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  & 2025-01-02 &  &  & 4 &  &  &  &  &  &  &  & Pagamento degli interessi bancari &  & Altri costi & Altri costi &  &  & 50.00 & USD & 1.200000000000 &  & 41.67 & -658.33 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  & 2025-01-02 &  &  & 4 &  &  &  &  &  &  &  & Pagamento dell'attrezzatura per ufficio &  & Acquisti & Acquisti di prodotti &  &  & 50.00 & USD & 1.200000000000 &  & 41.67 & -616.66 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  & 2025-01-02 &  &  & 4 &  &  &  &  &  &  &  & Pagamento della fattura dell'elettricità &  & Energia & Costi energetici e di smaltimento &  &  & 300.00 & EUR & 1.000000000000 &  & 300.00 & -316.66 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  & 2025-01-02 &  &  & 4 &  &  &  &  &  &  &  & Pagamento della fattura dell'agenzia pubblicitaria &  & Pubblicità & Pubblicità &  &  & 100.00 & EUR & 1.000000000000 &  & 100.00 & -216.66 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
- &  &  &  &  &  &  &  &  &  &  &  &  & Esercizio 5 &  &  &  &  &  &  &  &  &  &  & -16.66 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
- &  & 2025-01-04 &  &  & 5 &  &  &  &  &  &  &  & Nota di credito (motivo: nostro errore) &  & Ricavi dai servizi & Ricavi da servizi resi & Crediti & Crediti vari & 300.00 & EUR & 1.000000000000 &  & 300.00 & -16.66 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  &  &  &  &  &  &  &  &  &  &  &  & Esercizio 5 &  &  &  &  &  &  &  &  &  &  & -216.66 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  & 2025-01-04 &  &  & 5 &  &  &  &  &  &  &  & Nota di credito (motivo: nostro errore) &  & Ricavi dai servizi & Ricavi da servizi resi & Crediti & Crediti vari & 300.00 & EUR & 1.000000000000 &  & 300.00 & -216.66 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
- &  &  &  &  &  &  &  &  &  &  &  &  & Esercizio 6 &  &  &  &  &  &  &  &  &  &  & -16.66 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
- &  & 2025-01-04 &  &  & 6 &  &  &  &  &  &  &  & Prelievo di fondi &  & Cassa & Denaro contante & Banca & Conto bancario & 1000.00 & EUR & 1.000000000000 &  & 1000.00 & -16.66 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  &  &  &  &  &  &  &  &  &  &  &  & Esercizio 6 &  &  &  &  &  &  &  &  &  &  & -216.66 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  & 2025-01-04 &  &  & 6 &  &  &  &  &  &  &  & Prelievo di fondi &  & Cassa & Denaro contante & Banca & Conto bancario & 1000.00 & EUR & 1.000000000000 &  & 1000.00 & -216.66 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
- &  &  &  &  &  &  &  &  &  &  &  &  & Esercizio 7 &  &  &  &  &  &  &  &  &  &  & -16.66 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
- &  & 2025-01-05 &  &  & 7 &  &  &  &  &  &  &  & Bonifico bancario dal cliente (pagamento fattura) &  & Banca & Conto bancario & Crediti & Crediti vari & 2000.00 & EUR & 1.000000000000 &  & 2000.00 & -16.66 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  &  &  &  &  &  &  &  &  &  &  &  & Esercizio 7 &  &  &  &  &  &  &  &  &  &  & -216.66 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  & 2025-01-05 &  &  & 7 &  &  &  &  &  &  &  & Bonifico bancario dal cliente (pagamento fattura) &  & Banca & Conto bancario & Crediti & Crediti vari & 2000.00 & EUR & 1.000000000000 &  & 2000.00 & -216.66 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
- &  &  &  &  &  &  &  &  &  &  &  &  & Esercizio 8 &  &  &  &  &  &  &  &  &  &  & -16.66 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
- &  & 2025-01-06 &  &  & 8 &  &  &  &  &  &  &  & Pagamento in contanti al fornitore (pagamento fattura) &  & Debiti & Debiti vari & Cassa & Denaro contante & 1000.00 & EUR & 1.000000000000 &  & 1000.00 & -16.66 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  &  &  &  &  &  &  &  &  &  &  &  & Esercizio 8 &  &  &  &  &  &  &  &  &  &  & -216.66 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  & 2025-01-06 &  &  & 8 &  &  &  &  &  &  &  & Pagamento in contanti al fornitore (pagamento fattura) &  & Debiti & Debiti vari & Cassa & Denaro contante & 1000.00 & EUR & 1.000000000000 &  & 1000.00 & -216.66 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
- &  &  &  &  &  &  &  &  &  &  &  &  & Esercizio 9 &  &  &  &  &  &  &  &  &  &  & -16.66 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
- &  & 2025-01-07 &  &  & 9 &  &  &  &  &  &  &  & Incasso per lavori eseguiti e vendite di fiori &  & Cassa & Denaro contante &  &  & 500.00 & EUR & 1.000000000000 &  & 500.00 & 483.34 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
- &  & 2025-01-07 &  &  & 9 &  &  &  &  &  &  &  & Servizi eseguiti per il cliente &  &  &  & Ricavi dai servizi & Ricavi da servizi resi & 400.00 & EUR & 1.000000000000 &  & 400.00 & 83.34 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
- &  & 2025-01-07 &  &  & 9 &  &  &  &  &  &  &  & Vendita di fiori al cliente &  &  &  & Ricavi dalle vendite & Ricavi dalle vendite di prodotti & 100.00 & EUR & 1.000000000000 &  & 100.00 & -16.66 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  &  &  &  &  &  &  &  &  &  &  &  & Esercizio 9 &  &  &  &  &  &  &  &  &  &  & -216.66 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  & 2025-01-07 &  &  & 9 &  &  &  &  &  &  &  & Incasso per lavori eseguiti e vendite di fiori &  & Cassa & Denaro contante &  &  & 500.00 & EUR & 1.000000000000 &  & 500.00 & 283.34 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  & 2025-01-07 &  &  & 9 &  &  &  &  &  &  &  & Servizi eseguiti per il cliente &  &  &  & Ricavi dai servizi & Ricavi da servizi resi & 400.00 & EUR & 1.000000000000 &  & 400.00 & -116.66 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  & 2025-01-07 &  &  & 9 &  &  &  &  &  &  &  & Vendita di fiori al cliente &  &  &  & Ricavi dalle vendite & Ricavi dalle vendite di prodotti & 100.00 & EUR & 1.000000000000 &  & 100.00 & -216.66 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
 \end{tablevalue}
 \begin{tablevalue}{TransactionsTeacherFile}{ l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l  l }
