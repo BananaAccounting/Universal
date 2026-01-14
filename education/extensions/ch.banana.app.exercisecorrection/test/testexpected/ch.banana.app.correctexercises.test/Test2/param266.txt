@@ -45,7 +45,7 @@
                                     "Description": "Fatture ai clienti per servizi eseguiti",
                                     "AccountDebit": "Crediti",
                                     "AccountCredit": "Stipendi",
-                                    "AmountCurrency": "4000.00",
+                                    "AmountCurrency": "1000.00",
                                     "ExchangeCurrency": "EUR",
                                     "ExchangeRate": "1.000000000000",
                                     "VatCode": "V0"
@@ -186,19 +186,19 @@
                                     "sequence": "20"
                                  },
                                  "fields": {
-                                    "TCorrectionsNotes": "",
+                                    "TCorrectionsNotes": "Wrong: Amount Currency",
                                     "Date": "2025-01-04",
                                     "Doc": "6",
                                     "Description": "Prelievo di fondi",
                                     "AccountDebit": "Cassa",
                                     "AccountCredit": "Banca",
-                                    "AmountCurrency": "1000.00",
+                                    "AmountCurrency": "1200.00",
                                     "ExchangeCurrency": "EUR",
                                     "ExchangeRate": "1.000000000000",
                                     "VatCode": ""
                                  },
                                  "style": {
-                                    "background-color": "#afffaf"
+                                    "background-color": "#ff8198"
                                  }
                               },
                               {
@@ -933,7 +933,7 @@
 SysCod & Section & Date & DateDocument & DateValue & Doc & DocProtocol & DocType & DocOriginal & DocInvoice & InvoicePrinted & DocLink & ExternalReference & Description & Notes & AccountDebit & AccountDebitDes & AccountCredit & AccountCreditDes & AmountCurrency & ExchangeCurrency & ExchangeRate & ExchangeMultiplier & Amount & Balance & VatCode & VatAmountType & VatExtraInfo & VatRate & VatRateEffective & VatTaxable & VatAmount & VatAccount & VatAccountDes & VatPercentNonDeductible & VatNonDeductible & VatPosted & VatNumber & Cc1 & Cc1Des & Cc2 & Cc2Des & Cc3 & Cc3Des & Segment & DateExpiration & DateExpected & DatePayment & LockNumber & LockAmount & LockProgressive & LockLine & TAuto & TMaxScore & TAutoScore & TAdjustedScore & TCorrectionsNotes\\
  &  &  &  &  & Student &  &  &  &  &  &  &  & John White &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
  &  &  &  &  &  &  &  &  &  &  &  &  & Esercizio 1 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
- &  & 2025-01-04 &  &  & 1 &  &  &  &  &  &  &  & Fatture ai clienti per servizi eseguiti &  & Crediti & Crediti vari & Stipendi & Stipendi & 4000.00 & EUR & 1.000000000000 &  & 4000.00 &  & V0 &  &  &  &  & 4000.00 &  & Iva & IVA &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  & 2025-01-04 &  &  & 1 &  &  &  &  &  &  &  & Fatture ai clienti per servizi eseguiti &  & Crediti & Crediti vari & Stipendi & Stipendi & 1000.00 & EUR & 1 &  & 1000.00 &  & V0 &  &  &  &  & 1000.00 &  & Iva & IVA &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
  &  &  &  &  &  &  &  &  &  &  &  &  & Esercizio 2 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
  &  & 2025-01-01 &  &  & 2 &  &  &  &  &  &  &  & Fatture dai fornitori per acquisti di piante &  & Ricavi dalle vendite & Ricavi dalle vendite di prodotti & Debiti & Debiti vari & 1500.00 & EUR & 1.000000000000 &  & 1500.00 &  & M81 &  &  & 8.10 & 8.10 & 1387.60 & 112.40 & Iva & IVA &  &  & 112.40 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
@@ -951,7 +951,7 @@ SysCod & Section & Date & DateDocument & DateValue & Doc & DocProtocol & DocType
  &  & 2025-01-04 &  &  & 5 &  &  &  &  &  &  &  & Nota di credito (motivo: nostro errore) &  & Ricavi dai servizi & Ricavi da servizi resi & Crediti & Crediti vari & 300.00 & EUR & 1.000000000000 &  & 300.00 & -650.00 & M81 &  &  & 8.10 & 8.10 & 277.52 & 22.48 & Iva & IVA &  &  & 22.48 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
  &  &  &  &  &  &  &  &  &  &  &  &  & Esercizio 6 &  &  &  &  &  &  &  &  &  &  & -650.00 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
- &  & 2025-01-04 &  &  & 6 &  &  &  &  &  &  &  & Prelievo di fondi &  & Cassa & Denaro contante & Banca & Conto bancario & 1000.00 & EUR & 1.000000000000 &  & 1000.00 & -650.00 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
+ &  & 2025-01-04 &  &  & 6 &  &  &  &  &  &  &  & Prelievo di fondi &  & Cassa & Denaro contante & Banca & Conto bancario & 1200.00 & EUR & 1 &  & 1200.00 & -650.00 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
  &  &  &  &  &  &  &  &  &  &  &  &  & Esercizio 7 &  &  &  &  &  &  &  &  &  &  & -650.00 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\
  &  & 2025-01-05 &  &  & 7 &  &  &  &  &  &  &  & Bonifico bancario dal cliente (pagamento fattura) &  & Banca & Conto bancario & Crediti & Crediti vari & 2000.00 & EUR & 1.000000000000 &  & 2000.00 & -650.00 & V81 &  &  & -8.10 & -8.10 & 1850.14 & -149.86 & Iva & IVA &  &  & -149.86 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & \\

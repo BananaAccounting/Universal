@@ -149,7 +149,8 @@ var CorrectDoc = class CorrectDoc {
       exchangeratescore,
       exchangecurrencyscore,
       debitaccountscore,
-      creditaccountscore
+      creditaccountscore,
+      amountonlyifaccountsok
     } = paramcorrections;
 
     // Converto in numeri e applico i flag
@@ -247,6 +248,320 @@ var CorrectDoc = class CorrectDoc {
   }
 
 
+  /* Metodi creati per ogni singolo controllo
+
+checkDebitCreditAccounts()
+
+    Controlla se accountdebit e accountcredit coincidono.
+
+    Applica penalità secondo la configurazione paramcorrections.
+
+checkDate()
+
+    Confronta s.date con t.date.
+
+    Penalità controllata da paramcorrections.datescore.
+
+checkAmountCurrency()
+
+    Solo se multicurrencyflag === true.
+
+    Confronta amountcurrency, penalità da paramcorrections.amountcurrencyscore.
+
+checkExchangeCurrency()
+
+    Solo se multicurrencyflag === true.
+
+    Confronta exchangecurrency, penalità da paramcorrections.exchangecurrencyscore.
+
+checkExchangeRate()
+
+    Solo se multicurrencyflag === true.
+
+    Confronta exchangerate, penalità da paramcorrections.exchangeratescore.
+
+checkAmount()
+
+    Solo se multicurrencyflag === false.
+
+    Confronta amount, penalità da paramcorrections.amountscore.
+
+checkVatCode()
+
+    Solo se vatcodeflag === true.
+
+    Confronta vatcode, penalità da paramcorrections.vatcodescore.
+
+buildPriority (Gestione delle priorità nell'associazione - match delle registrazioni dello studente con quelle del docente):
+
+    Calcola l’array priority con confronti booleani sui seguenti campi:
+
+        accountdebit
+
+        accountcredit
+
+        amountcurrency o amount (a seconda di multicurrency)
+
+        exchangerate (se multicurrency)
+
+        exchangecurrency (se multicurrency)
+
+        vatcode (se vatcodeflag attivo)
+
+        date
+        
+  */
+
+  applyAllChecks(
+    s,
+    t,
+    paramcorrections,
+    fullscore,
+    flags // { multicurrencyflag, vatcodeflag }
+  ) {
+    let score = fullscore;
+    const scoreinfo = [];
+
+    let bothAccountsCorrect;
+
+    if (paramcorrections.amountonlyifaccountsok === true) {
+      bothAccountsCorrect =
+        (s.accountdebit === t.accountdebit) &&
+        (s.accountcredit === t.accountcredit);
+    }
+    else {
+      bothAccountsCorrect = true;
+    }
+
+    // 1) Debit / Credit
+    ({ score } = this.checkDebitCreditAccounts(
+      s, t, paramcorrections, score, scoreinfo
+    ));
+
+    // 2) Date
+    ({ score } = this.checkDate(
+      s, t, paramcorrections, score, scoreinfo
+    ));
+
+    // 3) Multicurrency
+    if (flags.multicurrencyflag) {
+      ({ score } = this.checkAmountCurrency(
+        s, t, paramcorrections, score, scoreinfo, bothAccountsCorrect
+      ));
+      ({ score } = this.checkExchangeCurrency(
+        s, t, paramcorrections, score, scoreinfo
+      ));
+      ({ score } = this.checkExchangeRate(
+        s, t, paramcorrections, score, scoreinfo
+      ));
+    } else {
+      // 4) Amount (no multicurrency)
+      ({ score } = this.checkAmount(
+        s, t, paramcorrections, score, scoreinfo, bothAccountsCorrect
+      ));
+    }
+
+    // 5) VAT
+    if (flags.vatcodeflag) {
+      ({ score } = this.checkVatCode(
+        s, t, paramcorrections, score, scoreinfo
+      ));
+    }
+
+    return {
+      score,
+      scoreinfo: scoreinfo.join("; ")
+    };
+  }
+
+
+  checkDebitCreditAccounts(s, t, paramcorrections, score, scoreinfo) {
+    const sameDebit = (s.accountdebit === t.accountdebit);
+    const sameCredit = (s.accountcredit === t.accountcredit);
+    const bothSame = (sameDebit && sameCredit);
+
+    const subNum = (fromValue, maybeNumberLike) =>
+      fromValue - Number(maybeNumberLike);
+
+    if (paramcorrections.debitcreditaccountsscore === false && !bothSame) {
+      score = subNum(score, paramcorrections.debitaccountscore);
+      score = subNum(score, paramcorrections.creditaccountscore);
+      scoreinfo.push("Debit and/or Credit Account");
+    } else {
+      if (!sameDebit && !sameCredit) {
+        score = subNum(score, paramcorrections.debitaccountscore);
+        score = subNum(score, paramcorrections.creditaccountscore);
+        scoreinfo.push("Debit and Credit Account");
+      }
+
+      if (!sameDebit && sameCredit) {
+        if (paramcorrections.debitcreditaccountsscore) {
+          score = subNum(score, paramcorrections.debitaccountscore);
+        } else {
+          score = subNum(score, paramcorrections.debitaccountscore);
+          score = subNum(score, paramcorrections.creditaccountscore);
+        }
+        scoreinfo.push("Debit Account");
+      }
+
+      if (!sameCredit && sameDebit) {
+        if (paramcorrections.debitcreditaccountsscore) {
+          score = subNum(score, paramcorrections.creditaccountscore);
+        } else {
+          score = subNum(score, paramcorrections.debitaccountscore);
+          score = subNum(score, paramcorrections.creditaccountscore);
+        }
+        scoreinfo.push("Credit Account");
+      }
+    }
+
+    return { score };
+  }
+
+  checkDate(s, t, paramcorrections, score, scoreinfo) {
+    if (s.date !== t.date) {
+      if (paramcorrections.datescore !== '0') {
+        score = score - Number(paramcorrections.datescore);
+        scoreinfo.push("Date");
+      }
+    }
+    return { score };
+  }
+
+  checkAmountCurrency(s, t, paramcorrections, score, scoreinfo, bothAccountsCorrect) {
+    // Applica penalità amountcurrency SOLO se entrambi i conti sono corretti
+    if (!bothAccountsCorrect) return { score };
+
+    if (s.amountcurrency !== t.amountcurrency) {
+      if (paramcorrections.amountcurrencyscore !== '0') {
+        score = score - Number(paramcorrections.amountcurrencyscore);
+        scoreinfo.push("Amount Currency");
+      }
+    }
+    return { score };
+  }
+
+
+  checkExchangeCurrency(s, t, paramcorrections, score, scoreinfo) {
+    if (s.exchangecurrency !== t.exchangecurrency) {
+      if (paramcorrections.exchangecurrencyscore !== '0') {
+        score = score - Number(paramcorrections.exchangecurrencyscore);
+        scoreinfo.push("Exchange Currency");
+      }
+    }
+    return { score };
+  }
+
+  checkExchangeRate(s, t, paramcorrections, score, scoreinfo) {
+    if (s.exchangerate !== t.exchangerate) {
+      if (paramcorrections.exchangeratescore !== '0') {
+        score = score - Number(paramcorrections.exchangeratescore);
+        scoreinfo.push("Exchange Rate");
+      }
+    }
+    return { score };
+  }
+
+  checkAmount(s, t, paramcorrections, score, scoreinfo, bothAccountsCorrect) {
+    // Applica penalità importo SOLO se entrambi i conti sono corretti
+    if (!bothAccountsCorrect) return { score };
+
+    if (s.amount !== t.amount) {
+      if (paramcorrections.amountscore !== '0') {
+        score = score - Number(paramcorrections.amountscore);
+        scoreinfo.push("Amount");
+      }
+    }
+    return { score };
+  }
+
+
+  checkVatCode(s, t, paramcorrections, score, scoreinfo) {
+    if (s.vatcode !== t.vatcode) {
+      if (paramcorrections.vatcodescore !== '0') {
+        score = score - Number(paramcorrections.vatcodescore);
+        scoreinfo.push("VAT Code");
+      }
+    }
+    return { score };
+  }
+
+  buildPriority(s, t, flags) {
+    const priority = [];
+
+    // 1) accountdebit
+    if (s.accountdebit === t.accountdebit) {
+      priority.push(1);
+    } else {
+      priority.push(0);
+    }
+
+    // 2) accountcredit
+    if (s.accountcredit === t.accountcredit) {
+      priority.push(1);
+    } else {
+      priority.push(0);
+    }
+
+    // 3) amount (se multicurrency → amountcurrency, altrimenti amount)
+    if (flags.multicurrencyflag) {
+      if (s.amountcurrency === t.amountcurrency) {
+        priority.push(1);
+      } else {
+        priority.push(0);
+      }
+    } else {
+      if (s.amount === t.amount) {
+        priority.push(1);
+      } else {
+        priority.push(0);
+      }
+    }
+
+    // 4) exchangerate (solo se multicurrency attivo)
+    if (flags.multicurrencyflag) {
+      if (s.exchangerate === t.exchangerate) {
+        priority.push(1);
+      } else {
+        priority.push(0);
+      }
+    } else {
+      priority.push(0);
+    }
+
+    // 5) exchangecurrency (solo se multicurrency attivo)
+    if (flags.multicurrencyflag) {
+      if (s.exchangecurrency === t.exchangecurrency) {
+        priority.push(1);
+      } else {
+        priority.push(0);
+      }
+    } else {
+      priority.push(0);
+    }
+
+    // 6) vatcode (solo se flag attivo)
+    if (flags.vatcodeflag) {
+      if (s.vatcode === t.vatcode) {
+        priority.push(1);
+      } else {
+        priority.push(0);
+      }
+    } else {
+      priority.push(0);
+    }
+
+    // 7) date
+    if (s.date === t.date) {
+      priority.push(1);
+    } else {
+      priority.push(0);
+    }
+
+    return priority;
+  }
+
+
 
   result_calculatescore(
     teachertransactions,
@@ -260,11 +575,6 @@ var CorrectDoc = class CorrectDoc {
     // Flag di presenza colonne
     const vatcodeflag = !!teachertransactions.column("VatCode", "Base");
     const multicurrencyflag = !!teachertransactions.column("AmountCurrency", "Base");
-
-    // Helper: sottrae in modo sicuro un numero (stringhe accettate)
-    function subNum(fromValue, maybeNumberLike) {
-      return fromValue - Number(maybeNumberLike);
-    }
 
     // Precompute: conteggio righe del teacher per doc (O(n))
     const teacherDocCount = {};
@@ -284,6 +594,11 @@ var CorrectDoc = class CorrectDoc {
 
     const matches = [];
 
+    const flags = {
+      multicurrencyflag,
+      vatcodeflag
+    };
+
     // Step 1: genera tutte le coppie possibili con stesso Doc
     for (let sIndex = 0; sIndex < studenttransactionsArray.length; sIndex++) {
       const s = studenttransactionsArray[sIndex];
@@ -293,175 +608,25 @@ var CorrectDoc = class CorrectDoc {
 
         if (s.doc !== t.doc) continue; // vincolo di Doc
 
-        let score = fullscore;
-        const scoreinfo = [];
+        // 1) Calcola score e scoreinfo usando i metodi 1-7
+        const { score, scoreinfo } = this.applyAllChecks(
+          s,
+          t,
+          paramcorrections,
+          fullscore,
+          flags
+        );
 
-        // 1) Debit/Credit: gestione distinta e “solo if”, niente ternari
-        const sameDebit = (s.accountdebit === t.accountdebit);
-        const sameCredit = (s.accountcredit === t.accountcredit);
-        const bothSame = (sameDebit && sameCredit);
+        // 2) Calcola la priorità (serve per match su più righe a parità di score)
+        const priority = this.buildPriority(s, t, flags);
 
-        if (paramcorrections.debitcreditaccountsscore === false && !bothSame) {
-          // penalità per entrambi i conti
-          score = subNum(score, paramcorrections.debitaccountscore);
-          score = subNum(score, paramcorrections.creditaccountscore);
-          scoreinfo.push("Debit and/or Credit Account");
-        } else {
-          if (!sameDebit && !sameCredit) {
-            score = subNum(score, paramcorrections.debitaccountscore);
-            score = subNum(score, paramcorrections.creditaccountscore);
-            scoreinfo.push("Debit and Credit Account");
-          }
-          // penalità debit isolata
-          if (!sameDebit && sameCredit) {
-            if (paramcorrections.debitcreditaccountsscore) {
-              score = subNum(score, paramcorrections.debitaccountscore);
-            } else {
-              score = subNum(score, paramcorrections.debitaccountscore);
-              score = subNum(score, paramcorrections.creditaccountscore);
-            }
-            scoreinfo.push("Debit Account");
-          }
-          // penalità credit isolata
-          if (!sameCredit && sameDebit) {
-            if (paramcorrections.debitcreditaccountsscore) {
-              score = subNum(score, paramcorrections.creditaccountscore);
-            } else {
-              score = subNum(score, paramcorrections.debitaccountscore);
-              score = subNum(score, paramcorrections.creditaccountscore);
-            }
-            scoreinfo.push("Credit Account");
-          }
-        }
-
-        // 2) Date
-        if (s.date !== t.date) {
-          if (paramcorrections.datescore !== '0') {
-            score = subNum(score, paramcorrections.datescore);
-            scoreinfo.push("Date");
-          }
-        }
-
-        // 3) Multicurrency: amountcurrency, exchangecurrency, exchangerate
-        if (multicurrencyflag) {
-          if (s.amountcurrency !== t.amountcurrency) {
-            if (paramcorrections.amountcurrencyscore !== '0') {
-              score = subNum(score, paramcorrections.amountcurrencyscore);
-              scoreinfo.push("Amount Currency");
-            }
-          }
-          if (s.exchangecurrency !== t.exchangecurrency) {
-            if (paramcorrections.exchangecurrencyscore !== '0') {
-              score = subNum(score, paramcorrections.exchangecurrencyscore);
-              scoreinfo.push("Exchange Currency");
-            }
-          }
-          if (s.exchangerate !== t.exchangerate) {
-            if (paramcorrections.exchangeratescore !== '0') {
-              score = subNum(score, paramcorrections.exchangeratescore);
-              scoreinfo.push("Exchange Rate");
-            }
-          }
-        } else {
-          // 4) Amount (solo se NON multicurrency)
-          if (s.amount !== t.amount) {
-            if (paramcorrections.amountscore !== '0') {
-              score = subNum(score, paramcorrections.amountscore);
-              scoreinfo.push("Amount");
-            }
-          }
-        }
-
-        // 5) VAT
-        if (vatcodeflag) {
-          if (s.vatcode !== t.vatcode) {
-            if (paramcorrections.vatcodescore !== '0') {
-              score = subNum(score, paramcorrections.vatcodescore);
-              scoreinfo.push("VAT Code");
-            }
-          }
-        }
-
-        // Priority (1=match, 0=no match)
-        const priority = [];
-
-        // 1) accountdebit
-        if (s.accountdebit === t.accountdebit) {
-          priority.push(1);
-        } else {
-          priority.push(0);
-        }
-
-        // 2) accountcredit
-        if (s.accountcredit === t.accountcredit) {
-          priority.push(1);
-        } else {
-          priority.push(0);
-        }
-
-        // 3) amount (se multicurrency → amountcurrency, altrimenti amount)
-        if (multicurrencyflag) {
-          if (s.amountcurrency === t.amountcurrency) {
-            priority.push(1);
-          } else {
-            priority.push(0);
-          }
-        } else {
-          if (s.amount === t.amount) {
-            priority.push(1);
-          } else {
-            priority.push(0);
-          }
-        }
-
-        // 4) exchangerate (solo se multicurrency attivo)
-        if (multicurrencyflag) {
-          if (s.exchangerate === t.exchangerate) {
-            priority.push(1);
-          } else {
-            priority.push(0);
-          }
-        } else {
-          priority.push(0);
-        }
-
-        // 5) exchangecurrency (solo se multicurrency attivo)
-        if (multicurrencyflag) {
-          if (s.exchangecurrency === t.exchangecurrency) {
-            priority.push(1);
-          } else {
-            priority.push(0);
-          }
-        } else {
-          priority.push(0);
-        }
-
-        // 6) vatcode (solo se flag attivo)
-        if (vatcodeflag) {
-          if (s.vatcode === t.vatcode) {
-            priority.push(1);
-          } else {
-            priority.push(0);
-          }
-        } else {
-          priority.push(0);
-        }
-
-        // 7) date
-        if (s.date === t.date) {
-          priority.push(1);
-        } else {
-          priority.push(0);
-        }
-
-
-        // Aggiunge la coppia candidata
+        // 3) Aggiunge la coppia candidata
         matches.push({
           studentIndex: sIndex,
           teacherIndex: tIndex,
           doc: s.doc,
           score,
-          scoreinfo: scoreinfo.join("; "),
+          scoreinfo,
           priority
         });
       }

@@ -2,10 +2,15 @@
 
 All notable changes to the [Accounting Automatic Corrections](https://www.banana.ch/apps/en/node/9761) extension are documented in this file.
 
+## 2026-01-14
+- Added an option to calculate amount errors only when both debit and credit accounts are correct.
+- Tests: ~28 minutes ro run (without added option).
+
 ## 2025-10-07
-- Added a priority score for transaction matching
+- Added a priority score for transaction matching.
 - Added handling for the number of student transactions.
-- Added tests for all parameter and file combinations (large test suite, ~6 minutes to run)
+- Added tests for all parameter and file combinations (large test suite, ~6 minutes to run).
+- Updated tests.
 
 ## 2025-08-19
 - Updated texts in settings.
