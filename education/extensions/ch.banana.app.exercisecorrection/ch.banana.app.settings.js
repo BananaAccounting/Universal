@@ -80,56 +80,56 @@ var PrintSettings = class PrintSettings {
             userParam.score = true;
         }
         if (!userParam.datescore) {
-            userParam.datescore = '1';
+            userParam.datescore = '1.0';
         }
         // Verify that the value is a number
         if (!userParam.datescore.match(/^\d+(\.\d+)?$/)) {
-            userParam.datescore = '1';
+            userParam.datescore = '1.0';
         }
         if (!userParam.debitaccountscore) {
-            userParam.debitaccountscore = '1';
+            userParam.debitaccountscore = '1.0';
         }
         if (!userParam.debitaccountscore.match(/^\d+(\.\d+)?$/)) {
-            userParam.debitaccountscore = '1';
+            userParam.debitaccountscore = '1.0';
         }
         if (!userParam.creditaccountscore) {
-            userParam.creditaccountscore = '1';
+            userParam.creditaccountscore = '1.0';
         }
         if (!userParam.creditaccountscore.match(/^\d+(\.\d+)?$/)) {
-            userParam.creditaccountscore = '1';
+            userParam.creditaccountscore = '1.0';
         }
         if (typeof userParam.debitcreditaccountsscore === undefined) {
             userParam.debitcreditaccountsscore = false;
         }
         if (!userParam.amountscore) {
-            userParam.amountscore = '1';
+            userParam.amountscore = '1.0';
         }
         if (!userParam.amountscore.match(/^\d+(\.\d+)?$/)) {
-            userParam.amountscore = '1';
+            userParam.amountscore = '1.0';
         }
         if (!userParam.vatcodescore) {
-            userParam.vatcodescore = '0';
+            userParam.vatcodescore = '0.0';
         }
         if (!userParam.vatcodescore.match(/^\d+(\.\d+)?$/)) {
-            userParam.vatcodescore = '0';
+            userParam.vatcodescore = '0.0';
         }
         if (!userParam.amountcurrencyscore) {
-            userParam.amountcurrencyscore = '0';
+            userParam.amountcurrencyscore = '0.0';
         }
         if (!userParam.amountcurrencyscore.match(/^\d+(\.\d+)?$/)) {
-            userParam.amountcurrencyscore = '0';
+            userParam.amountcurrencyscore = '0.0';
         }
         if (!userParam.exchangecurrencyscore) {
-            userParam.exchangecurrencyscore = '0';
+            userParam.exchangecurrencyscore = '0.0';
         }
         if (!userParam.exchangecurrencyscore.match(/^\d+(\.\d+)?$/)) {
-            userParam.exchangecurrencyscore = '0';
+            userParam.exchangecurrencyscore = '0.0';
         }
         if (!userParam.exchangeratescore) {
-            userParam.exchangeratescore = '0';
+            userParam.exchangeratescore = '0.0';
         }
         if (!userParam.exchangeratescore.match(/^\d+(\.\d+)?$/)) {
-            userParam.exchangeratescore = '0';
+            userParam.exchangeratescore = '0.0';
         }
         if (typeof userParam.amountonlyifaccountsok === undefined) {
             userParam.amountonlyifaccountsok = false;
@@ -163,7 +163,7 @@ var PrintSettings = class PrintSettings {
         currentParam.title = texts.datescore;
         currentParam.type = 'string';
         currentParam.value = userParam.datescore ? userParam.datescore : '1';
-        currentParam.defaultvalue = '1';
+        currentParam.defaultvalue = '1.0';
         currentParam.readValue = function () {
             userParam.datescore = this.value;
         }
@@ -175,7 +175,7 @@ var PrintSettings = class PrintSettings {
         currentParam.title = texts.debitaccountscore;
         currentParam.type = 'string';
         currentParam.value = userParam.debitaccountscore ? userParam.debitaccountscore : '1';
-        currentParam.defaultvalue = '1';
+        currentParam.defaultvalue = '1.0';
         currentParam.readValue = function () {
             userParam.debitaccountscore = this.value;
         }
@@ -187,7 +187,7 @@ var PrintSettings = class PrintSettings {
         currentParam.title = texts.creditaccountscore;
         currentParam.type = 'string';
         currentParam.value = userParam.creditaccountscore ? userParam.creditaccountscore : '1';
-        currentParam.defaultvalue = '1';
+        currentParam.defaultvalue = '1.0';
         currentParam.readValue = function () {
             userParam.creditaccountscore = this.value;
         }
@@ -211,7 +211,7 @@ var PrintSettings = class PrintSettings {
         currentParam.title = texts.amountscore;
         currentParam.type = 'string';
         currentParam.value = userParam.amountscore ? userParam.amountscore : '1';
-        currentParam.defaultvalue = '1';
+        currentParam.defaultvalue = '1.0';
         currentParam.readValue = function () {
             userParam.amountscore = this.value;
         }
@@ -223,7 +223,7 @@ var PrintSettings = class PrintSettings {
         currentParam.title = texts.vatcodescore;
         currentParam.type = 'string';
         currentParam.value = userParam.vatcodescore ? userParam.vatcodescore : '0';
-        currentParam.defaultvalue = '0';
+        currentParam.defaultvalue = '0.0';
         currentParam.readValue = function () {
             userParam.vatcodescore = this.value;
         }
@@ -235,7 +235,7 @@ var PrintSettings = class PrintSettings {
         currentParam.title = texts.amountcurrencyscore;
         currentParam.type = 'string';
         currentParam.value = userParam.amountcurrencyscore ? userParam.amountcurrencyscore : '0';
-        currentParam.defaultvalue = '0';
+        currentParam.defaultvalue = '0.0';
         currentParam.readValue = function () {
             userParam.amountcurrencyscore = this.value;
         }
@@ -247,7 +247,7 @@ var PrintSettings = class PrintSettings {
         currentParam.title = texts.exchangecurrencyscore;
         currentParam.type = 'string';
         currentParam.value = userParam.exchangecurrencyscore ? userParam.exchangecurrencyscore : '0';
-        currentParam.defaultvalue = '0';
+        currentParam.defaultvalue = '0.0';
         currentParam.readValue = function () {
             userParam.exchangecurrencyscore = this.value;
         }
@@ -259,7 +259,7 @@ var PrintSettings = class PrintSettings {
         currentParam.title = texts.exchangeratescore;
         currentParam.type = 'string';
         currentParam.value = userParam.exchangeratescore ? userParam.exchangeratescore : '0';
-        currentParam.defaultvalue = '0';
+        currentParam.defaultvalue = '0.0';
         currentParam.readValue = function () {
             userParam.exchangeratescore = this.value;
         }
@@ -284,15 +284,15 @@ var PrintSettings = class PrintSettings {
     initParam(paramcorrections) {
         let userParam = {};
         userParam.score = true;
-        userParam.datescore = '1';
-        userParam.debitaccountscore = '1';
-        userParam.creditaccountscore = '1';
+        userParam.datescore = '1.0';
+        userParam.debitaccountscore = '1.0';
+        userParam.creditaccountscore = '1.0';
         userParam.debitcreditaccountsscore = true;
-        userParam.amountscore = '1';
-        userParam.vatcodescore = '0';
-        userParam.amountcurrencyscore = '0';
-        userParam.exchangecurrencyscore = '0';
-        userParam.exchangeratescore = '0';
+        userParam.amountscore = '1.0';
+        userParam.vatcodescore = '0.0';
+        userParam.amountcurrencyscore = '0.0';
+        userParam.exchangecurrencyscore = '0.0';
+        userParam.exchangeratescore = '0.0';
         userParam.amountonlyifaccountsok = false;
 
         return userParam;
