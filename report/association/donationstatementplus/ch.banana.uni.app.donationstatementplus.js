@@ -1,4 +1,4 @@
-// Copyright [2024] [Banana.ch SA - Lugano Switzerland]
+// Copyright [2026] [Banana.ch SA - Lugano Switzerland]
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.uni.app.donationstatementplus.js
 // @api = 1.0
-// @pubdate = 2024-09-13
+// @pubdate = 2026-01-21
 // @publisher = Banana.ch SA
 // @description = Donation Statement for Associations (Banana+)
 // @description.de = Spendenbescheinigung für Vereine (Banana+)
@@ -631,6 +631,7 @@ function printReportHeader(report, banDoc, userParam, stylesheet) {
     var name = banDoc.info("AccountingDataBase","Name");
     var familyName = banDoc.info("AccountingDataBase","FamilyName");
     var address1 = banDoc.info("AccountingDataBase","Address1");
+    var buildingnumber = banDoc.info("AccountingDataBase","BuildingNumber");
     var address2 = banDoc.info("AccountingDataBase","Address2");
     var zip = banDoc.info("AccountingDataBase","Zip");
     var city = banDoc.info("AccountingDataBase","City");
@@ -650,7 +651,11 @@ function printReportHeader(report, banDoc, userParam, stylesheet) {
         headerParagraph.addParagraph(name, "header_address");
     }
     if (address1) {
-        headerParagraph.addParagraph(address1, "header_address");
+        if (buildingnumber) {
+            headerParagraph.addParagraph(address1 + " " + buildingnumber, "header_address");
+        } else {
+            headerParagraph.addParagraph(address1, "header_address");
+        }
     }
     if (address2) {
         headerParagraph.addParagraph(address2, "header_address");
@@ -692,6 +697,10 @@ function printReportAddress(report, banDoc, account) {
         row = tableAddress.addRow();
         row.addCell(address.nameprefix, "", 1);
     }
+    if (address.organisationname) {
+        var row = tableAddress.addRow();
+        row.addCell(address.organisationname, "", 1);
+    }
     if (address.firstname && address.familyname) {
         row = tableAddress.addRow();
         row.addCell(address.firstname + " " + address.familyname, "", 1);
@@ -701,7 +710,11 @@ function printReportAddress(report, banDoc, account) {
     }
     if (address.street) {
         row = tableAddress.addRow();
-        row.addCell(address.street, "", 1);
+        if (address.buildingnumber) {
+            row.addCell(address.street + " " + address.buildingnumber, "", 1);
+        } else {
+            row.addCell(address.street, "", 1);
+        }
     }
     if (address.addressextra) {
         row = tableAddress.addRow();
@@ -922,9 +935,13 @@ function convertFields(banDoc, userParam, account, text) {
     if (text.indexOf("<FamilyName>") > -1) {
         var familyname = address.familyname;
         text = text.replace(/<FamilyName>/g,familyname);
-    }    
+    }
     if (text.indexOf("<Address>") > -1) {
-        var addressstring = address.street + ", " + address.postalcode + " " + address.locality;
+        if (address.buildingnumber) {
+            var addressstring = address.street + " " + address.buildingnumber + ", " + address.postalcode + " " + address.locality;
+        } else {
+            var addressstring = address.street + ", " + address.postalcode + " " + address.locality;
+        }
         text = text.replace(/<Address>/g,addressstring);
     }
     if (text.indexOf("<TrDate>") > -1) {
@@ -993,7 +1010,11 @@ function convertFieldsMarkdown(banDoc, userParam, account, text) {
         text = text.replace(/{{FamilyName}}/g,familyname);
     }    
     if (text.indexOf("{{Address}}") > -1) {
-        var addressstring = address.street + ", " + address.postalcode + " " + address.locality;
+        if (address.buildingnumber) {
+            var addressstring = address.street + " " + address.buildingnumber + ", " + address.postalcode + " " + address.locality;
+        } else {
+            var addressstring = address.street + ", " + address.postalcode + " " + address.locality;
+        }
         text = text.replace(/{{Address}}/g,addressstring);
     }
     if (text.indexOf("{{TrDate}}") > -1) {
@@ -1646,27 +1667,18 @@ function getPeriod(banDoc, startDate, endDate) {
 /* Function that retrieves the address of the given account */
 function getAddress(banDoc, accountNumber) {
     var address = {};
-    var table = banDoc.table("Accounts");
-    var tableLength = table.rowCount;
-    for (var i = 0; i < tableLength; i++) {
-        var tRow = table.row(i);
-        var account = tRow.value("Account");
-
-        if (accountNumber === account) {
-
-            address.nameprefix = tRow.value("NamePrefix");
-            address.firstname = tRow.value("FirstName");
-            address.familyname = tRow.value("FamilyName");
-            address.street = tRow.value("Street");
-            address.postalcode = tRow.value("PostalCode");
-            address.locality = tRow.value("Locality");
-            address.organisationname = tRow.value("OrganisationName");
-            address.addressextra = tRow.value("AddressExtra");
-            address.pobox = tRow.value("POBox");
-            address.region = tRow.value("Region");
-            address.country = tRow.value("Country");
-        }
-    }
+    address.nameprefix = banDoc.table('Accounts').findRowByValue('Account', accountNumber).value('NamePrefix');
+    address.organisationname = banDoc.table('Accounts').findRowByValue('Account', accountNumber).value('OrganisationName');
+    address.firstname = banDoc.table('Accounts').findRowByValue('Account', accountNumber).value('FirstName');
+    address.familyname = banDoc.table('Accounts').findRowByValue('Account', accountNumber).value('FamilyName');
+    address.street = banDoc.table('Accounts').findRowByValue('Account', accountNumber).value('Street');
+    address.buildingnumber = banDoc.table('Accounts').findRowByValue('Account', accountNumber).value('BuildingNumber');
+    address.addressextra = banDoc.table('Accounts').findRowByValue('Account', accountNumber).value('AddressExtra');
+    address.postalcode = banDoc.table('Accounts').findRowByValue('Account', accountNumber).value('PostalCode');
+    address.locality = banDoc.table('Accounts').findRowByValue('Account', accountNumber).value('Locality');
+    address.pobox = banDoc.table('Accounts').findRowByValue('Account', accountNumber).value('POBox');
+    address.region = banDoc.table('Accounts').findRowByValue('Account', accountNumber).value('Region');
+    address.country = banDoc.table('Accounts').findRowByValue('Account', accountNumber).value('Country');
     return address;
 }
 
