@@ -1,4 +1,4 @@
-/* Update 2025-12-24 */
+/* Update 2026-01-30 */
 
 @page {
    margin-top: 1.0cm;
@@ -37,8 +37,8 @@ body {
 }
 
 .carry_label {
-   font-style: italic;
-   text-align: right;
+  font-style: italic;
+  text-align: right;
 }
 
 .description {
@@ -134,12 +134,12 @@ body {
 
 /*Item*/
 .col_summary_1 {
-  width: 10%;
+  width: 15%;
 }
 
 /*Description*/
 .col_summary_2 {
-  width: 60%;
+  width: 40%;
 }
 
 /*AmountTotal*/
@@ -147,18 +147,26 @@ body {
   width: 15%;
 }
 
-.col_summary_4 {
+/*.col_summary_4 {
   width: 15%;
 }
 
-.total {
-   background-color: lightgrey;
-   font-weight: bold;
+.col_summary_5 {
+  width: 15%;
+}*/
+
+.subtotal_border {
+   border-top: 1px solid black;
 }
 
-/* .total_border {
-   border-bottom: thin solid black;
-} */
+.total_border {
+   border-bottom: 1px double black;
+} 
+
+.total {
+  background-color: lightgrey;
+  font-weight: bold;
+}
 
 .logo {
   margin-top: 0.0cm;
@@ -176,25 +184,33 @@ body {
 }
 
 .header_address {
-   font-family: Helvetica;
-   font-size: 7pt;
+  font-family: Helvetica;
+  font-size: 7pt;
 }
 
 .footer {
-   text-align: center;
-   font-size:8px;
+  text-align: center;
+  font-size:8px;
 }
 
 .margin_top {
-   margin-top: 3.0cm;
+  margin-top: 2.5cm;
+  position: absolute;
 }
 
 .table_summary {
-   width: 100%;
+  width: 100%;
+  font-size: 10pt;
+}
+
+.table_summary_2 {
+  width: 100%;
+  font-size: 10pt;
+  margin-top: 3.0cm;
 }
 
 .table_summary_header {
-  font-size:8pt;
+  font-size:10pt;
   font-weight:bold;
   color:black;
   /* background-color:lightblue; */
@@ -210,7 +226,14 @@ body {
 }
 
 .table_summary td {
-  padding-top: 1px;
+  padding-top: 5px;
+  padding-bottom: 0px;
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
+.table_summary_2 td {
+  padding-top: 5px;
   padding-bottom: 0px;
   padding-left: 0px;
   padding-right: 0px;
