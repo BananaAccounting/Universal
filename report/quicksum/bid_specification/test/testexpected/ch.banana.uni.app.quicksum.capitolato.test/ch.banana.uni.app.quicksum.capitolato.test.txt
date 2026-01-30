@@ -1,0 +1,464 @@
+%%info_test_name{ch.banana.uni.app.quicksum.capitolato.test}
+\documentclass{report}
+\usepackage{longtable}
+\usepackage{color}
+\usepackage{listings}
+\usepackage[margin=1cm]{geometry}
+\begin{document}
+\newenvironment{tablevalue}[2]{\textbf{Table: #1}\begin{longtable}[l]{#2}}{\end{longtable}}
+\newenvironment{reportvalue}[1]{\textbf{Report: #1}\\}{}
+\lstnewenvironment{jsonvalue}[1]{\textbf{Json: #1}\lstset{language=Java}}{}
+\lstnewenvironment{xmlvalue}[1]{\textbf{Xml: #1}\lstset{language=Xml}}{}
+\newcommand{\info}[2]{\textit{#1: #2}\\}
+\newcommand{\fatalerror}[1]{\textbf{\textcolor[rgb]{1,0,0}{Fatal error: #1}}\\}
+\newcommand{\keyvalue}[2]{\textbf{Keyvalue: #1} #2\\}
+\newcommand{\textvalue}[1]{#1\\}
+\newcommand{\excltest}[1]{\\Excluded from compare: #1}
+\newcommand{\lognewpage}{\newpage}
+\newenvironment{testcase}[1]{\section*{Test: #1}}{\newpage}
+\newenvironment{test}[1]{\section*{Test case: #1}}{}
+%Begin test data
+%%SCRIPT{/Users/ivan/GitHub/BananaAccounting/Universal/report/quicksum/bid_specification/test/ch.banana.uni.app.quicksum.capitolato.test.js}
+%
+\begin{testcase}{ReportTest}
+\begin{test}{testBananaExtension}
+%****************************************************************************** TEST #1 ******************************************************************************
+\begin{reportvalue}{Technical proposal}
+\begin{longtable}[l]{ l  l  l  l  l  l }
+Item No.  & Description  & Qty  & Unit  & Unit price  & Total \\
+00  & Home restructuring  &    &    &    &   \\
+1  & Finishing Works  &    &    &    &   \\
+ &  &    &    &    &   \\
+1.1  & Painting works  &    &    &    &   \\
+1.1.1  & Surface preparation (cleaning, sanding, minor repairs)  & 120.00  & m²  & 5.00  & 600.00 \\
+1.1.2  & Application of primer coat  & 120.00  & m²  & 4.00  & 480.00 \\
+1.1.3  & Application of two finishing coats  & 120.00  & m²  & 9.50  & 1'140.00 \\
+1.1  & Total [Painting works]  &    &    &    & 2'220.00 \\
+   &  &    &    &    &   \\
+1.2  & Minor surface repairs  &    &    &    &   \\
+1.2.1  & Filling and leveling small cracks  & 15.00  & h  & 45.00  & 675.00 \\
+1.2.2  & Local surface corrections  & 10.00  & h  & 45.00  & 450.00 \\
+1.2.90  & Site protection (5\% of all repaires)  & 5.00  & \%  & 1'125.00  & 56.25 \\
+1.2  & Total [Minor surface repairs]  &    &    &    & 1'181.25 \\
+   &  &    &    &    &   \\
+1  & Total [Finishing Works]  &    &    &    & 3'401.25 \\
+9.1.2  & Setup  & 1.00  &    & 200.00  & 200.00 \\
+S:00  & Subtotal [Home restructuring]  &    &    &    & 3'601.25 \\
+9.1.3  & VAT  & 10.00  & \%  & 3'601.25  & 360.13 \\
+T:00  & Total [Home restructuring]  &    &    &    & 3'961.38 \\
+\end{longtable}
+Summary \\
+  \\
+\begin{longtable}[l]{ l  l  l }
+Item No.  & Description  & Amount CHF \\
+1.1  & Total [Painting works]  & 2'220.00 \\
+1.2  & Total [Minor surface repairs]  & 1'181.25 \\
+1  & Total [Finishing Works]  & 3'401.25 \\
+S:00  & Subtotal [Home restructuring]  & 3'601.25 \\
+T:00  & Total [Home restructuring]  & 3'961.38 \\
+\end{longtable}
+-  \#page-nr  - \\
+\end{reportvalue}
+%****************************************************************************** TEST #2 ******************************************************************************
+\begin{reportvalue}{ABcd123}
+\begin{longtable}[l]{ l  l  l  l  l  l }
+Item No.  & Description  & Qty  & Unit  & Unit price  & Total \\
+00  & Home restructuring  &    &    &    &   \\
+1  & Finishing Works  &    &    &    &   \\
+ &  &    &    &    &   \\
+1.1  & Painting works  &    &    &    &   \\
+1.1.1  & Surface preparation (cleaning, sanding, minor repairs)  & 120.0  & m²  & 5.00  & 600.00 \\
+1.1.2  & Application of primer coat  & 120.0  & m²  & 4.00  & 480.00 \\
+1.1.3  & Application of two finishing coats  & 120.0  & m²  & 9.50  & 1'140.00 \\
+1.1  & Total [Painting works]  &    &    &    & 2'220.00 \\
+   &  &    &    &    &   \\
+1.2  & Minor surface repairs  &    &    &    &   \\
+1.2.1  & Filling and leveling small cracks  & 15.0  & h  & 45.00  & 675.00 \\
+1.2.2  & Local surface corrections  & 10.0  & h  & 45.00  & 450.00 \\
+1.2.90  & Site protection (5\% of all repaires)  & 5.0  & \%  & 1'125.00  & 56.25 \\
+1.2  & Total [Minor surface repairs]  &    &    &    & 1'181.25 \\
+   &  &    &    &    &   \\
+1  & Total [Finishing Works]  &    &    &    & 3'401.25 \\
+9.1.2  & Setup  & 1.0  &    & 200.00  & 200.00 \\
+S:00  & Subtotal [Home restructuring]  &    &    &    & 3'601.25 \\
+9.1.3  & VAT  & 10.0  & \%  & 3'601.25  & 360.13 \\
+T:00  & Total [Home restructuring]  &    &    &    & 3'961.38 \\
+\end{longtable}
+Summary \\
+  \\
+\begin{longtable}[l]{ l  l  l }
+Item No.  & Description  & Amount CHF \\
+1.1  & Total [Painting works]  & 2'220.00 \\
+1.2  & Total [Minor surface repairs]  & 1'181.25 \\
+1  & Total [Finishing Works]  & 3'401.25 \\
+9.1.2  & Setup  & 200.00 \\
+S:00  & Subtotal [Home restructuring]  & 3'601.25 \\
+9.1.3  & VAT  & 360.13 \\
+T:00  & Total [Home restructuring]  & 3'961.38 \\
+\end{longtable}
+-  \#page-nr  - \\
+\end{reportvalue}
+%****************************************************************************** TEST #1 ******************************************************************************
+\begin{reportvalue}{Technical proposal}
+\begin{longtable}[l]{ l  l  l  l  l  l }
+Item No.  & Description  & Qty  & Unit  & Unit price  & Total \\
+00  & Home restructuring  &    &    &    &   \\
+1  & Finishing Works  &    &    &    &   \\
+ &  &    &    &    &   \\
+1.1  & Painting works  &    &    &    &   \\
+1.1.1.a  & Surface preparation (cleaning, sanding, minor repairs)  & 120.00  & m²  & 5.00  & 600.00 \\
+1.1.2.b  & Application of primer coat  & 120.00  & m²  & 4.00  & 480.00 \\
+1.1.3.c  & Application of two finishing coats  & 120.00  & m²  & 9.50  & 1'140.00 \\
+1.1  & Total [Painting works]  &    &    &    & 2'220.00 \\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{3}{l}{} & \multicolumn{2}{l}{Carried forward total:  } & 2'220.00 \\
+\end{longtable}
+\begin{longtable}[l]{ l  l  l  l  l  l }
+Item No.  & Description  & Qty  & Unit  & Unit price  & Total \\
+\multicolumn{6}{l}{  }\\
+\multicolumn{3}{l}{} & \multicolumn{2}{l}{Carried forward total:  } & 2'220.00 \\
+\multicolumn{6}{l}{  }\\
+1.2  & Minor surface repairs  &    &    &    &   \\
+1.2.1  & Filling and leveling small cracks  & 15.00  & h  & 45.00  & 675.00 \\
+1.2.2  & Local surface corrections  & 10.00  & h  & 45.00  & 450.00 \\
+1.2.90  & Site protection (5\% of all repaires)  & 5.00  & \%  & 1'125.00  & 56.25 \\
+1.2  & Total [Minor surface repairs]  &    &    &    & 1'181.25 \\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{3}{l}{} & \multicolumn{2}{l}{Carried forward total:  } & 3'401.25 \\
+\end{longtable}
+\begin{longtable}[l]{ l  l  l  l  l  l }
+Item No.  & Description  & Qty  & Unit  & Unit price  & Total \\
+\multicolumn{6}{l}{  }\\
+\multicolumn{3}{l}{} & \multicolumn{2}{l}{Carried forward total:  } & 3'401.25 \\
+\multicolumn{6}{l}{  }\\
+1  & Total [Finishing Works]  &    &    &    & 3'401.25 \\
+9.1.2  & Setup  & 1.00  &    & 200.00  & 200.00 \\
+S:00  & Subtotal [Home restructuring]  &    &    &    & 3'601.25 \\
+9.1.3  & VAT  & 10.00  & \%  & 3'601.25  & 360.13 \\
+T:00  & Total [Home restructuring]  &    &    &    & 3'961.38 \\
+\end{longtable}
+Summary \\
+  \\
+\begin{longtable}[l]{ l  l  l }
+Item No.  & Description  & Amount CHF \\
+1.1  & Total [Painting works]  & 2'220.00 \\
+1.2  & Total [Minor surface repairs]  & 1'181.25 \\
+1  & Total [Finishing Works]  & 3'401.25 \\
+S:00  & Subtotal [Home restructuring]  & 3'601.25 \\
+T:00  & Total [Home restructuring]  & 3'961.38 \\
+\end{longtable}
+-  \#page-nr  - \\
+\end{reportvalue}
+%****************************************************************************** TEST #2 ******************************************************************************
+\begin{reportvalue}{ABcd123}
+\begin{longtable}[l]{ l  l  l  l  l  l }
+Item No.  & Description  & Qty  & Unit  & Unit price  & Total \\
+00  & Home restructuring  &    &    &    &   \\
+1  & Finishing Works  &    &    &    &   \\
+ &  &    &    &    &   \\
+1.1  & Painting works  &    &    &    &   \\
+   & Surface preparation (cleaning, sanding, minor repairs)  & 120.0  & m²  & 5.00  & 600.00 \\
+   & Application of primer coat  & 120.0  & m²  & 4.00  & 480.00 \\
+   & Application of two finishing coats  & 120.0  & m²  & 9.50  & 1'140.00 \\
+1.1  & Total [Painting works]  &    &    &    & 2'220.00 \\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{3}{l}{} & \multicolumn{2}{l}{Carried forward total:  } & 2'220.00 \\
+\end{longtable}
+\begin{longtable}[l]{ l  l  l  l  l  l }
+Item No.  & Description  & Qty  & Unit  & Unit price  & Total \\
+\multicolumn{6}{l}{  }\\
+\multicolumn{3}{l}{} & \multicolumn{2}{l}{Carried forward total:  } & 2'220.00 \\
+\multicolumn{6}{l}{  }\\
+1.2  & Minor surface repairs  &    &    &    &   \\
+1.2.1  & Filling and leveling small cracks  & 15.0  & h  & 45.00  & 675.00 \\
+1.2.2  & Local surface corrections  & 10.0  & h  & 45.00  & 450.00 \\
+1.2.90  & Site protection (5\% of all repaires)  & 5.0  & \%  & 1'125.00  & 56.25 \\
+1.2  & Total [Minor surface repairs]  &    &    &    & 1'181.25 \\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{6}{l}{  }\\
+\multicolumn{3}{l}{} & \multicolumn{2}{l}{Carried forward total:  } & 3'401.25 \\
+\end{longtable}
+\begin{longtable}[l]{ l  l  l  l  l  l }
+Item No.  & Description  & Qty  & Unit  & Unit price  & Total \\
+\multicolumn{6}{l}{  }\\
+\multicolumn{3}{l}{} & \multicolumn{2}{l}{Carried forward total:  } & 3'401.25 \\
+\multicolumn{6}{l}{  }\\
+1  & Total [Finishing Works]  &    &    &    & 3'401.25 \\
+9.1.2  & Setup  & 1.0  &    & 200.00  & 200.00 \\
+S:00  & Subtotal [Home restructuring]  &    &    &    & 3'601.25 \\
+9.1.3  & VAT  & 10.0  & \%  & 3'601.25  & 360.13 \\
+T:00  & Total [Home restructuring]  &    &    &    & 3'961.38 \\
+\end{longtable}
+Summary \\
+  \\
+\begin{longtable}[l]{ l  l  l }
+Item No.  & Description  & Amount CHF \\
+1.1  & Total [Painting works]  & 2'220.00 \\
+1.2  & Total [Minor surface repairs]  & 1'181.25 \\
+1  & Total [Finishing Works]  & 3'401.25 \\
+9.1.2  & Setup  & 200.00 \\
+S:00  & Subtotal [Home restructuring]  & 3'601.25 \\
+9.1.3  & VAT  & 360.13 \\
+T:00  & Total [Home restructuring]  & 3'961.38 \\
+\end{longtable}
+-  \#page-nr  - \\
+\end{reportvalue}
+\keyvalue{Result}{Passed}
+\end{test}
+\end{testcase}
+\end{document}

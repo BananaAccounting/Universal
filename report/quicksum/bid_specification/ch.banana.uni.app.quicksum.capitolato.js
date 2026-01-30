@@ -1,4 +1,4 @@
-// Copyright [2025] [Banana.ch SA - Lugano Switzerland]
+// Copyright [2026] [Banana.ch SA - Lugano Switzerland]
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.uni.app.quicksum.capitolato
 // @api = 1.0
-// @pubdate = 2025-12-31
+// @pubdate = 2026-01-30
 // @publisher = Banana.ch SA
 // @description = QuickSum Technical Proposal
 // @description.de = QuickSum Technisches Angebot
@@ -42,6 +42,88 @@ function convertParam(userParam) {
   convertedParam.version = '1.0';
   convertedParam.data = [];
 
+  //
+  // Report group
+  //
+  var currentParam = {};
+  currentParam.name = 'param_report';
+  currentParam.title = texts.param_report;
+  currentParam.type = 'string';
+  currentParam.value = '';
+  currentParam.editable = false;
+  currentParam.readValue = function() {
+    userParam.param_report = this.value;
+  }
+  convertedParam.data.push(currentParam);
+
+  var currentParam = {};
+  currentParam.name = 'param_report_name';
+  currentParam.parentObject = 'param_report';
+  currentParam.title = texts.param_report_name;
+  currentParam.type = 'string';
+  currentParam.value = userParam.param_report_name ? userParam.param_report_name : '';
+  currentParam.defaultvalue = '';
+  currentParam.tooltip = texts.tooltip_param_report_name;
+  currentParam.readValue = function () {
+    userParam.param_report_name = this.value;
+  }
+  convertedParam.data.push(currentParam);
+
+  var currentParam = {};
+  currentParam.name = 'param_report_currency';
+  currentParam.parentObject = 'param_report';
+  currentParam.title = texts.param_report_currency;
+  currentParam.type = 'string';
+  currentParam.value = userParam.param_report_currency ? userParam.param_report_currency : '';
+  currentParam.defaultvalue = 'CHF';
+  currentParam.tooltip = texts.tooltip_param_report_currency;
+  currentParam.readValue = function () {
+    userParam.param_report_currency = this.value;
+  }
+  convertedParam.data.push(currentParam);
+
+  var currentParam = {};
+  currentParam.name = 'param_print_header_logo';
+  currentParam.parentObject = 'param_report';
+  currentParam.title = texts.param_print_header_logo;
+  currentParam.type = 'bool';
+  currentParam.value = userParam.param_print_header_logo ? true : false;
+  currentParam.defaultvalue = false;
+  currentParam.tooltip = texts.tooltip_param_print_header_logo;
+  currentParam.readValue = function() {
+    userParam.param_print_header_logo = this.value;
+  }
+  convertedParam.data.push(currentParam);
+
+  var currentParam = {};
+  currentParam.name = 'param_header_logo_name';
+  currentParam.parentObject = 'param_report'
+  currentParam.title = texts.param_header_logo_name;
+  currentParam.type = 'string';
+  currentParam.value = userParam.param_header_logo_name ? userParam.param_header_logo_name : 'Logo';
+  currentParam.defaultvalue = 'Logo';
+  currentParam.tooltip = texts.tooltip_param_header_logo_name;
+  currentParam.readValue = function() {
+    userParam.param_header_logo_name = this.value;
+  }
+  convertedParam.data.push(currentParam);
+
+  var currentParam = {};
+  currentParam.name = 'param_print_header_address';
+  currentParam.parentObject = 'param_report';
+  currentParam.title = texts.param_print_header_address;
+  currentParam.type = 'bool';
+  currentParam.value = userParam.param_print_header_address ? true : false;
+  currentParam.defaultvalue = false;
+  currentParam.tooltip = texts.tooltip_param_print_header_address;
+  currentParam.readValue = function() {
+    userParam.param_print_header_address = this.value;
+  }
+  convertedParam.data.push(currentParam);
+
+  //
+  // Technical proposal group
+  //
   var currentParam = {};
   currentParam.name = 'param_print_technical_proposal';
   currentParam.parentObject = '';
@@ -56,6 +138,61 @@ function convertParam(userParam) {
   convertedParam.data.push(currentParam);
 
   var currentParam = {};
+  currentParam.name = 'param_regex_exclude_itemid_cell';
+  currentParam.parentObject = 'param_print_technical_proposal';
+  currentParam.title = texts.param_regex_exclude_itemid_cell;
+  currentParam.type = 'string';
+  currentParam.value = userParam.param_regex_exclude_itemid_cell ? userParam.param_regex_exclude_itemid_cell : '';
+  currentParam.defaultvalue = '';
+  currentParam.tooltip = texts.tooltip_param_regex_exclude_itemid_cell;
+  currentParam.readValue = function () {
+    userParam.param_regex_exclude_itemid_cell = this.value;
+  }
+  convertedParam.data.push(currentParam);
+
+  var currentParam = {};
+  currentParam.name = 'param_max_description_lenght';
+  currentParam.parentObject = 'param_print_technical_proposal';
+  currentParam.title = texts.param_max_description_lenght;
+  currentParam.type = 'string';
+  currentParam.value = userParam.param_max_description_lenght ? userParam.param_max_description_lenght : '58';
+  currentParam.defaultvalue = '58';
+  currentParam.tooltip = texts.tooltip_param_max_description_lenght;
+  currentParam.readValue = function () {
+    userParam.param_max_description_lenght = this.value;
+  }
+  convertedParam.data.push(currentParam);
+
+  var currentParam = {};
+  currentParam.name = 'param_quantity_decimals';
+  currentParam.parentObject = 'param_print_technical_proposal';
+  currentParam.title = texts.param_quantity_decimals;
+  currentParam.type = 'string';
+  currentParam.value = userParam.param_quantity_decimals ? userParam.param_quantity_decimals : '2';
+  currentParam.defaultvalue = '2';
+  currentParam.tooltip = texts.tooltip_param_quantity_decimals;
+  currentParam.readValue = function () {
+    userParam.param_quantity_decimals = this.value;
+  }
+  convertedParam.data.push(currentParam);
+
+  var currentParam = {};
+  currentParam.name = 'param_print_carryforward';
+  currentParam.parentObject = 'param_print_technical_proposal';
+  currentParam.title = texts.param_print_carryforward;
+  currentParam.type = 'bool';
+  currentParam.value = userParam.param_print_carryforward ? true : false;
+  currentParam.defaultvalue = true;
+  currentParam.tooltip = texts.tooltip_param_print_carryforward;
+  currentParam.readValue = function() {
+    userParam.param_print_carryforward = this.value;
+  }
+  convertedParam.data.push(currentParam);
+
+  //
+  // Summary group
+  //
+  var currentParam = {};
   currentParam.name = 'param_print_summary';
   currentParam.parentObject = '';
   currentParam.title = texts.param_print_summary;
@@ -69,106 +206,15 @@ function convertParam(userParam) {
   convertedParam.data.push(currentParam);
 
   var currentParam = {};
-  currentParam.name = 'param_report_name';
-  currentParam.parentObject = '';
-  currentParam.title = texts.param_report_name;
+  currentParam.name = 'param_summary_print_other_positions';
+  currentParam.parentObject = 'param_print_summary';
+  currentParam.title = texts.param_summary_print_other_positions;
   currentParam.type = 'string';
-  currentParam.value = userParam.param_report_name ? userParam.param_report_name : '';
+  currentParam.value = userParam.param_summary_print_other_positions ? userParam.param_summary_print_other_positions : '';
   currentParam.defaultvalue = '';
-  currentParam.tooltip = texts.tooltip_param_report_name;
+  currentParam.tooltip = texts.tooltip_param_summary_print_other_positions;
   currentParam.readValue = function () {
-    userParam.param_report_name = this.value;
-  }
-  convertedParam.data.push(currentParam);
-
-  var currentParam = {};
-  currentParam.name = 'param_print_header_logo';
-  currentParam.parentObject = '';
-  currentParam.title = texts.param_print_header_logo;
-  currentParam.type = 'bool';
-  currentParam.value = userParam.param_print_header_logo ? true : false;
-  currentParam.defaultvalue = false;
-  currentParam.tooltip = texts.tooltip_param_print_header_logo;
-  currentParam.readValue = function() {
-    userParam.param_print_header_logo = this.value;
-  }
-  convertedParam.data.push(currentParam);
-
-  var currentParam = {};
-  currentParam.name = 'param_header_logo_name';
-  currentParam.parentObject = ''
-  currentParam.title = texts.param_header_logo_name;
-  currentParam.type = 'string';
-  currentParam.value = userParam.param_header_logo_name ? userParam.param_header_logo_name : 'Logo';
-  currentParam.defaultvalue = 'Logo';
-  currentParam.tooltip = texts.tooltip_param_header_logo_name;
-  currentParam.readValue = function() {
-    userParam.param_header_logo_name = this.value;
-  }
-  convertedParam.data.push(currentParam);
-
-  var currentParam = {};
-  currentParam.name = 'param_print_header_address';
-  currentParam.parentObject = '';
-  currentParam.title = texts.param_print_header_address;
-  currentParam.type = 'bool';
-  currentParam.value = userParam.param_print_header_address ? true : false;
-  currentParam.defaultvalue = false;
-  currentParam.tooltip = texts.tooltip_param_print_header_address;
-  currentParam.readValue = function() {
-    userParam.param_print_header_address = this.value;
-  }
-  convertedParam.data.push(currentParam);
-
-  var currentParam = {};
-  currentParam.name = 'param_regex_exclude_itemid_cell';
-  currentParam.parentObject = '';
-  currentParam.title = texts.param_regex_exclude_itemid_cell;
-  currentParam.type = 'string';
-  currentParam.value = userParam.param_regex_exclude_itemid_cell ? userParam.param_regex_exclude_itemid_cell : '';
-  currentParam.defaultvalue = '';
-  currentParam.tooltip = texts.tooltip_param_regex_exclude_itemid_cell;
-  currentParam.readValue = function () {
-    userParam.param_regex_exclude_itemid_cell = this.value;
-  }
-  convertedParam.data.push(currentParam);
-
-  var currentParam = {};
-  currentParam.name = 'param_max_description_lenght';
-  currentParam.parentObject = '';
-  currentParam.title = texts.param_max_description_lenght;
-  currentParam.type = 'string';
-  currentParam.value = userParam.param_max_description_lenght ? userParam.param_max_description_lenght : '58';
-  currentParam.defaultvalue = '58';
-  currentParam.tooltip = texts.tooltip_param_max_description_lenght;
-  currentParam.readValue = function () {
-    userParam.param_max_description_lenght = this.value;
-  }
-  convertedParam.data.push(currentParam);
-
-  var currentParam = {};
-  currentParam.name = 'param_quantity_decimals';
-  currentParam.parentObject = '';
-  currentParam.title = texts.param_quantity_decimals;
-  currentParam.type = 'string';
-  currentParam.value = userParam.param_quantity_decimals ? userParam.param_quantity_decimals : '2';
-  currentParam.defaultvalue = '2';
-  currentParam.tooltip = texts.tooltip_param_quantity_decimals;
-  currentParam.readValue = function () {
-    userParam.param_quantity_decimals = this.value;
-  }
-  convertedParam.data.push(currentParam);
-
-  var currentParam = {};
-  currentParam.name = 'param_print_carryforward';
-  currentParam.parentObject = '';
-  currentParam.title = texts.param_print_carryforward;
-  currentParam.type = 'bool';
-  currentParam.value = userParam.param_print_carryforward ? true : false;
-  currentParam.defaultvalue = true;
-  currentParam.tooltip = texts.tooltip_param_print_carryforward;
-  currentParam.readValue = function() {
-    userParam.param_print_carryforward = this.value;
+    userParam.param_summary_print_other_positions = this.value;
   }
   convertedParam.data.push(currentParam);
 
@@ -189,6 +235,8 @@ function initUserParam() {
   userParam.param_max_description_lenght = '58';
   userParam.param_quantity_decimals = '2';
   userParam.param_print_carryforward = true;
+  userParam.param_summary_print_other_positions = '';
+  userParam.param_report_currency = 'CHF';
   return userParam;
 }
 
@@ -415,49 +463,84 @@ function printReportTable(banDoc, report, userParam) {
   var printedOnFirstPage = false; // if first page or not
   var lastAmountCumulated = ""; // last AmountCumulated value
 
-  // Define table columns and headers
-  var table = report.addTable(tableClass);
-  var colCapitolato1 = table.addColumn("col_capitolato_1");
-  var colCapitolato2 = table.addColumn("col_capitolato_2");
-  var colCapitolato3 = table.addColumn("col_capitolato_3");
-  var colCapitolato4 = table.addColumn("col_capitolato_4");
-  var colCapitolato5 = table.addColumn("col_capitolato_5");
-  var colCapitolato6 = table.addColumn("col_capitolato_6");
-
-  var header = table.getHeader();
-  var row = header.addRow();
-  row.addCell(texts.itemId, "table_quick_sum_header", 1);
-  row.addCell(texts.description, "table_quick_sum_header", 1);
-  row.addCell(texts.quantity, "table_quick_sum_header right", 1);
-  row.addCell(texts.unit, "table_quick_sum_header center", 1);
-  row.addCell(texts.unitPrice, "table_quick_sum_header right", 1);
-  row.addCell(texts.amountTotal, "table_quick_sum_header right", 1);
-  // row.addCell(texts.amountCumulated, "table_quick_sum_header right");
+  var table = createQuicksumTable(report, tableClass, texts);
 
   for (var i = 0; i < quicksumTable.rowCount; i++) {
     var quicksumRow = quicksumTable.row(i);
 
-    // column ItemIdCalc: excludes rows starting with X, V, #
+    // column ItemIdCalc: excludes rows starting with X, V, # and commented ItemID [..]
     // column Description: excludes comments rows starting with //
     if (!quicksumRow 
         || quicksumRow.value("ItemIdCalc").startsWith("X") 
         || quicksumRow.value("ItemIdCalc").startsWith("V")
         || quicksumRow.value("ItemIdCalc").startsWith("#")
+        || quicksumRow.value("ItemIdCalc").startsWith("[") && quicksumRow.value("ItemIdCalc").endsWith("]")
         || quicksumRow.value("Description").startsWith("//")) {
       continue;
     }
 
+
+    /**
+     * Forced page break command row (#pagebreak) - do not print the row
+     * 
+     * #pagebreak logic:
+     * content → #pagebreak => the page is closed and carryforward at the bottom of the page
+     * #pagebreak → #pagebreak => the second one is ignored
+     * #pagebreak as first usable row => it is ignored
+     */
+    var styleValue = (quicksumRow.value("Style") || "").trim();
+    if (styleValue === "#pagebreak") {
+
+      // Page already empty or just closed, ignore duplicate pagebreak
+      if (pageRowCount === 0) {
+        continue;
+      }
+
+      // Fill the page until the last available row
+      while (pageRowCount < rowsPerPageBase) {
+        var r = table.addRow();
+        r.addCell(" ", "", 6);
+        pageRowCount += 1;
+      }
+
+      // Prints the carryforward at the end of the page (if enabled)
+      if (userParam.param_print_carryforward) {
+        var r = table.addRow();
+        r.addCell(" ", "", 6);
+
+        r = table.addRow();
+        if (lastAmountCumulated) {
+          r.addCell("", "", 3);
+          r.addCell(texts.carryforward + ": ", "carry_label", 2);
+          r.addCell(Banana.Converter.toLocaleNumberFormat(lastAmountCumulated, 2, false),"carry_label dashed",1);
+        } else {
+          r.addCell(" ", "", 6);
+        }
+      }
+
+      // Reset of counters for the new page after pagebreak
+      pageRowCount = 0;
+      printedOnFirstPage = true;
+
+      report.addPageBreak();
+      table = createQuicksumTable(report, tableClass, texts);
+
+      // Do not print this row
+      continue;
+    }
+
+
     /**
      * (1) Row with AmountCalculated at the begin of the page (from second page only)
      */
-    if (userParam.param_print_carryforward && pageRowCount <= 1 && printedOnFirstPage) {
+    if (userParam.param_print_carryforward && pageRowCount === 0 && printedOnFirstPage) {
       var r = table.addRow();
       r.addCell(" ", "", 6);
       var r = table.addRow();
       if (lastAmountCumulated) {
-        r.addCell("","",4);
-        r.addCell(texts.carryforward + ": ", "carry_label",1);
-        r.addCell(Banana.Converter.toLocaleNumberFormat(lastAmountCumulated, 2, true), "carry_label dashed");
+        r.addCell("","",3);
+        r.addCell(texts.carryforward + ": ", "carry_label",2);
+        r.addCell(Banana.Converter.toLocaleNumberFormat(lastAmountCumulated, 2, true), "carry_label dashed",1);
       } else {
         r.addCell(" ", "",6);
       }
@@ -548,8 +631,13 @@ function printReportTable(banDoc, report, userParam) {
 
     // Verify qty, unit, unitprice, totalamout
     var hasQuantity = false;
-    if (quicksumRow.value("Quantity")) {
-      hasQuantity = true;
+    var quantityValue = quicksumRow.value("Quantity");
+    if (quantityValue) {
+      // If Quantity is commented (between square brackets) treat it as empty
+      var q = quantityValue.trim();
+      if (!(q.startsWith("[") && q.endsWith("]"))) {
+        hasQuantity = true;
+      }
     }
 
     var hasUnit = false;
@@ -567,91 +655,68 @@ function printReportTable(banDoc, report, userParam) {
       hasAmountTotal = true;
     }
 
-    // Active row if there is one of the four values
-    var isActiveRow = false;
-    if (hasQuantity || hasUnit || hasUnitPrice || hasAmountTotal) {
-      isActiveRow = true;
-    }
+    // Dashed based on ModifyCode column
+    var modifyCodes = { D:false, N:false, Q:false, P:false }; //D,N never used, always false
 
-    // Apply dashed bottom border to all the non-total rows
-    var applyDashed = false;
-    if (isActiveRow && className !== "total") {
-      applyDashed = true;
+    if (className !== "total") {
+      var modifyCodeValue = quicksumRow.value("ModifyCode");
+      modifyCodes = getModifyCode(modifyCodeValue);
     }
 
     // Quantity
-    if (hasQuantity) {
-      var quantityText = Banana.Converter.toLocaleNumberFormat(quicksumRow.value("Quantity"), userParam.param_quantity_decimals, false);
-      if (applyDashed) {
-        row.addCell(quantityText, className + " dashed right", 1);
-      } else {
-        row.addCell(quantityText, className + " right", 1);
-      }
-    } else {
-      if (applyDashed) {
-        row.addCell(" ", className + " dashed right", 1);
-      } else {
-        row.addCell(" ", className, 1);
-      }
+    var qtyClass = className + " right";
+    if (modifyCodes.Q) {
+      qtyClass = className + " dashed right";
     }
 
-    // Unit
-    if (hasUnit) {
-      if (applyDashed) {
-        row.addCell(quicksumRow.value("Unit"), className + " dashed center", 1);
-      } else {
-        row.addCell(quicksumRow.value("Unit"), className + " center", 1);
-      }
+    if (hasQuantity) {
+      var quantityText = Banana.Converter.toLocaleNumberFormat(quicksumRow.value("Quantity"),userParam.param_quantity_decimals,false);
+      row.addCell(quantityText, qtyClass, 1);
     } else {
-      if (applyDashed) {
-        row.addCell(" ", className + " dashed center", 1);
-      } else {
-        row.addCell(" ", className, 1);
-      }
+      row.addCell(" ", qtyClass, 1);
     }
+
+
+    // Unit (never dashed)
+    if (hasUnit) {
+      row.addCell(quicksumRow.value("Unit"), className + " center", 1);
+    } else {
+      row.addCell(" ", className + " center", 1);
+    }
+
 
     // UnitPrice
+    var unitPriceClass = className + " right";
+    if (modifyCodes.P) {
+      unitPriceClass = className + " dashed right";
+    }
+
     if (hasUnitPrice) {
       var unitPriceText = Banana.Converter.toLocaleNumberFormat(quicksumRow.value("UnitPrice"),2,false);
-      if (applyDashed) {
-        row.addCell(unitPriceText, className + " dashed right", 1);
-      } else {
-        row.addCell(unitPriceText, className + " right", 1);
-      }
+      row.addCell(unitPriceText, unitPriceClass, 1);
     } else {
-      if (applyDashed) {
-        row.addCell(" ", className + " dashed right", 1);
-      } else {
-        row.addCell(" ", className, 1);
-      }
+      row.addCell(" ", unitPriceClass, 1);
     }
+
 
     // AmountTotal
-    if (hasAmountTotal) {
-
-      if (className === "total") {
-        row.addCell(Banana.Converter.toLocaleNumberFormat(quicksumRow.value("AmountTotal"), 2, true), className + " double right", 1);
-      } else {
-        var amountText = Banana.Converter.toLocaleNumberFormat(quicksumRow.value("AmountTotal"), 2, false);
-        if (applyDashed) {
-          row.addCell(amountText, className + " dashed right", 1);
-        } else {
-          row.addCell(amountText, className + " right", 1);
-        }
+    if (className === "total") {
+      row.addCell(Banana.Converter.toLocaleNumberFormat(quicksumRow.value("AmountTotal"), 2, true),className + " double right",1);
+    } else {
+      // Normal rows: dashed only if Quantity and/or UnitPrice are dashed
+      var amountTotalClass = className + " right";
+      if (modifyCodes.Q || modifyCodes.P) {
+        amountTotalClass = className + " dashed right";
       }
 
-    } else {
-
-      if (className === "total") {
-        row.addCell(Banana.Converter.toLocaleNumberFormat(quicksumRow.value("AmountTotal"), 2, true), className + " double right", 1);
+      if (hasAmountTotal) {
+        var amountText = Banana.Converter.toLocaleNumberFormat(quicksumRow.value("AmountTotal"), 2, false);
+        row.addCell(amountText, amountTotalClass, 1);
       } else {
-        if (applyDashed) {
-          row.addCell(" ", className + " dashed right", 1);
-        } else {
-          row.addCell(" ", className, 1);
-        }
+        row.addCell(" ", amountTotalClass, 1);
       }
     }
+
 
 
     printedOnFirstPage = true;
@@ -674,8 +739,8 @@ function printReportTable(banDoc, report, userParam) {
           var cf = table.addRow();
           cf.addCell(" ", "", 6);
           cf = table.addRow();
-          cf.addCell("", "", 4);
-          cf.addCell(texts.carryforward + ": ", "carry_label", 1);
+          cf.addCell("", "", 3);
+          cf.addCell(texts.carryforward + ": ", "carry_label", 2);
           cf.addCell(Banana.Converter.toLocaleNumberFormat(lastAmountCumulated, 2, false), "carry_label dashed",1);
         }
 
@@ -722,9 +787,9 @@ function printReportTable(banDoc, report, userParam) {
 
         r = table.addRow();
         if (lastAmountCumulated) {
-          r.addCell("","",4);
-          r.addCell(texts.carryforward + ": ", "carry_label", 1);
-          r.addCell(Banana.Converter.toLocaleNumberFormat(lastAmountCumulated, 2, false), "carry_label dashed", 1);
+          r.addCell("","",3);
+          r.addCell(texts.carryforward + ": ", "carry_label",2);
+          r.addCell(Banana.Converter.toLocaleNumberFormat(lastAmountCumulated, 2, false), "carry_label dashed",1);
         } else {
           r.addCell(" ", "", 6);
         }
@@ -749,62 +814,109 @@ function printReportTotals(banDoc, report, userParam) {
   }
 
   var lang = getLang(banDoc);
-  var texts = loadTexts(banDoc,lang);
+  var texts = loadTexts(banDoc, lang);
+  var currency = userParam.param_report_currency;
 
-  // Defines the title class name and prints it
   report.addPageBreak();
-  var className = "h2";
+
+  var tableClass = "table_summary";
+  var titleClassName = "h2";
   if (userParam.param_print_header_logo || userParam.param_print_header_address) {
-    className = "h2 margin_top";
+    tableClass = "table_summary_2";
+    titleClassName = "h2 margin_top";
   }
-  report.addParagraph(texts.summary, className);
-  report.addParagraph(" ","");
+
+  report.addParagraph(texts.summary, titleClassName);
+  report.addParagraph(" ", "");
 
   // Defines table columns and headers
-  var table = report.addTable("table_summary");
-  var colSummary1 = table.addColumn("col_summary_1");
-  var colSummary2 = table.addColumn("col_summary_2");
-  var colSummary3 = table.addColumn("col_summary_3");
-  // var colSummary4 = table.addColumn("col_summary_4");
+  var table = report.addTable(tableClass);
+  table.addColumn("col_summary_1");
+  table.addColumn("col_summary_2");
+  table.addColumn("col_summary_3");
+  // table.addColumn("col_summary_4");
+  // table.addColumn("col_summary_5");
 
   var header = table.getHeader();
-  var row = header.addRow();
-  row.addCell(texts.itemId, "table_summary_header");
-  row.addCell(texts.description, "table_summary_header");
-  row.addCell(texts.amount, "table_summary_header right");
-  // row.addCell(texts.amount, "table_summary_header right");
+  var headerRow = header.addRow();
+  headerRow.addCell(texts.itemId, "table_summary_header");
+  headerRow.addCell(texts.description, "table_summary_header");
+  // headerRow.addCell("", "table_summary_header right");
+  // headerRow.addCell("", "table_summary_header right");
+  headerRow.addCell(texts.amount + " " + currency, "table_summary_header right");
+
+
+  var otherPositions = getOtherPositionsList(userParam);
+
+  // Save last printed included row
+  var previousPrintedIdCalc = "";
 
   for (var i = 0; i < quicksumTable.rowCount; i++) {
     var quicksumRow = quicksumTable.row(i);
-    
-    //excludes rows not starting with T and S (totals and subtotal)
-    if (!quicksumRow 
-      || !quicksumRow.value("ItemIdCalc").startsWith("T") ) {
+
+    if (!quicksumRow) {
       continue;
     }
 
-    // // Regex to exclude row
-    // var itemIdValue = quicksumRow.value("ItemIdCalc");
-    // var regexString = String(userParam.param_regex_exclude_itemid_cell).trim();
-    // var containsRegex = false;
-    // if (regexString) {
-    //   regexString = regexString.replace(/^\/|\/$/g, ""); // remove first and last slash /.../
-    //   var regexExclude = new RegExp(regexString);
-    //   containsRegex = regexExclude.test(itemIdValue); //return TRUE if contains regex
-    // }
-    // if (containsRegex) {
-    //   continue;
-    // }
+    var itemIdCalc = quicksumRow.value("ItemIdCalc");
+    if (!itemIdCalc) {
+      continue;
+    }
 
+    // Includes totals/subtotals and user defined IDs
+    var isIncluded = false;
+    if (itemIdCalc.startsWith("T")) {
+      isIncluded = true;
+    } else if (itemIdCalc.startsWith("S")) {
+      isIncluded = true;
+    } else if (isInOtherPositions(itemIdCalc, otherPositions)) {
+      isIncluded = true;
+    }
+
+    if (!isIncluded) {
+      continue;
+    }
+
+    // find parent
+    var isTotalParent = false;
+    if (previousPrintedIdCalc) {
+      var currentIdForCompare = formatItemId(itemIdCalc);
+      var previousIdForCompare = formatItemId(previousPrintedIdCalc);
+
+      // If the previously printed row is a child of the current one, then the current one is the parent
+      if (previousIdForCompare.startsWith(currentIdForCompare + ".")) {
+        isTotalParent = true;
+      }
+    }
+
+    var isSubtotal = false;
+    var isTotal = false;
     var className = "";
-    if (quicksumRow.value("ItemIdCalc") === "T:00") {
-      className = " total";
+    var classNameAmount = "";
+
+    if (isTotalParent) {
+      className += " bold";
+    }
+
+    if (itemIdCalc === "S:00") {
+      className += " bold";
+      classNameAmount += " subtotal_border";
+      isSubtotal = true;
+    }
+
+    if (itemIdCalc === "T:00") {
+      className += " bold";
+      classNameAmount += " total_border";
+      isTotal = true;
     }
 
     var row = table.addRow();
-    row.addCell(formatItemIdTotals(quicksumRow.value("ItemIdCalc")), "" + className);
+    row.addCell(formatItemId(itemIdCalc), "" + className);
     row.addCell(quicksumRow.value("Description"), "" + className);
-    row.addCell(Banana.Converter.toLocaleNumberFormat(quicksumRow.value("AmountTotal"),2,true), "dashed right" + className);
+    row.addCell(Banana.Converter.toLocaleNumberFormat(quicksumRow.value("AmountTotal"), 2, true),"dashed right" + className + classNameAmount);
+
+    // Update last printed row
+    previousPrintedIdCalc = itemIdCalc;
   }
 }
 
@@ -821,6 +933,29 @@ function printReportFooter(report) {
 //===========================================================================
 // UTILITIES
 //===========================================================================
+/** Creates the quicksum table with headers */
+function createQuicksumTable(report, tableClass, texts) {
+  var t = report.addTable(tableClass);
+
+  t.addColumn("col_capitolato_1");
+  t.addColumn("col_capitolato_2");
+  t.addColumn("col_capitolato_3");
+  t.addColumn("col_capitolato_4");
+  t.addColumn("col_capitolato_5");
+  t.addColumn("col_capitolato_6");
+
+  var h = t.getHeader();
+  var hr = h.addRow();
+  hr.addCell(texts.itemId, "table_quick_sum_header", 1);
+  hr.addCell(texts.description, "table_quick_sum_header", 1);
+  hr.addCell(texts.quantity, "table_quick_sum_header right", 1);
+  hr.addCell(texts.unit, "table_quick_sum_header center", 1);
+  hr.addCell(texts.unitPrice, "table_quick_sum_header right", 1);
+  hr.addCell(texts.amountTotal, "table_quick_sum_header right", 1);
+
+  return t;
+}
+
 /** Function that extracts the number from a string */
 function formatItemId(str) {
   if (!str) {
@@ -829,27 +964,21 @@ function formatItemId(str) {
 
   let cleanStr = str.trim();
 
-  // Removes everything up to and including the last ":" (if present), i.e. T: S:
-  cleanStr = cleanStr.replace(/^.*:/, "");
-  
-  // If "00" return empty string
-  if (cleanStr === "00") {
-    return "";
+  // Do NOT remove prefix for S:00 and T:00
+  if (cleanStr === "S:00" || cleanStr === "T:00") {
+    return cleanStr;
   }
 
-  return cleanStr;
-}
-
-function formatItemIdTotals(str) {
-  if (!str) {
-    return "";
+  // Removes everything up to and including the last ":" (i.e. T: S:)
+  if (cleanStr.indexOf(":") >= 0) {
+    cleanStr = cleanStr.replace(/^.*:/, "");
   }
-  
-  let cleanStr = str.trim();
-  
-  // Removes everything up to and including the last ":" (if present), i.e. T: S:
-  cleanStr = cleanStr.replace(/^.*:/, "");
-  
+
+  // // If "00" return empty string
+  // if (cleanStr === "00") {
+  //   return "";
+  // }
+
   return cleanStr;
 }
 
@@ -914,6 +1043,105 @@ function normalizeText(text) {
   return text;
 }
 
+/** Get a list of all ItemIds entered by the user as "other positions" */
+function getOtherPositionsList(userParam) {
+
+  var list = [];
+
+  if (!userParam || !userParam.param_summary_print_other_positions) {
+    return list;
+  }
+
+  var text = userParam.param_summary_print_other_positions.trim();
+  if (!text) {
+    return list;
+  }
+
+  var parts = text.split(";");
+
+  for (var i = 0; i < parts.length; i++) {
+    var id = parts[i].trim();
+    if (id) {
+      list.push(id);
+    }
+  }
+
+  return list;
+}
+
+/** Checks if the row’s ItemId is one of those defined by the user as "other positions" */
+function isInOtherPositions(itemIdCalc, otherPositions) {
+
+  if (!itemIdCalc) {
+    return false;
+  }
+
+  for (var i = 0; i < otherPositions.length; i++) {
+    if (itemIdCalc === otherPositions[i]) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+/** Checks if a value is between brackets [] or {} */
+function isBracketComment(value) {
+  if (!value) {
+    return false;
+  }
+
+  var s = String(value).trim();
+  if (!s) {
+    return false;
+  }
+
+  // Commented value: [QP] or {P}
+  if ((s.startsWith("[") && s.endsWith("]")) || (s.startsWith("{") && s.endsWith("}"))) {
+    return true;
+  }
+
+  return false;
+}
+
+/** Get the modify codes from the ModifyCode column */
+function getModifyCode(modifyCodeValue) {
+
+  // Used to determine which columns the user needs to fill in (codes in ModifyColumn column).
+  // Adds a dashed bottom border to the values in the specified columns.
+  // Only the Q (Quantity) and P (Unit Price) columns are checked.
+  // The D (Description) and N (Notes) columns are never checked, no need to add a dashed border below those values.
+
+  var codes = {
+    //D: false,
+    //N: false,
+    Q: false,
+    P: false
+  };
+
+  if (!modifyCodeValue) {
+    return codes;
+  }
+
+  var s = String(modifyCodeValue).trim();
+  if (!s) {
+    return codes;
+  }
+
+  // Exclude any value between square brackets
+  if (isBracketComment(s)) {
+    return codes;
+  }
+
+  s = s.toUpperCase();
+
+  //codes.D = (s.indexOf("D") >= 0);
+  //codes.N = (s.indexOf("N") >= 0);
+  codes.Q = (s.indexOf("Q") >= 0);
+  codes.P = (s.indexOf("P") >= 0);
+
+  return codes;
+}
 
 
 
@@ -1057,6 +1285,9 @@ function loadTexts(banDoc,lang) {
     texts.param_max_description_lenght = "Maximale Beschreibungslänge pro Zeile";
     texts.param_quantity_decimals = "Dezimalstellen in der Spalte Menge";
     texts.param_print_carryforward = "Kumulierte Summe auf den Seiten anzeigen";
+    texts.param_report = "Berichts";
+    texts.param_summary_print_other_positions = "Weitere Positionen zum Drucken";
+    texts.param_report_currency = "Währung";
 
     texts.tooltip_param_print_technical_proposal = "Schließt das technische Angebot in den Ausdruck ein";
     texts.tooltip_param_print_summary = "Schließt ein Übersichtsblatt mit allen Gesamtsummen in den Ausdruck ein";
@@ -1068,6 +1299,8 @@ function loadTexts(banDoc,lang) {
     texts.tooltip_param_max_description_lenght = "Maximale Anzahl von Zeichen pro Beschreibungszeile";
     texts.tooltip_param_quantity_decimals = "Anzahl der in der Spalte „Menge“ angezeigten Dezimalstellen";
     texts.tooltip_param_print_carryforward = "Schließt die kumulierte Gesamtsumme am Seitenende und am Anfang der nächsten Seite ein";
+    texts.tooltip_param_summary_print_other_positions = "Geben Sie die Artikel-IDs ein, die in die Zusammenfassung aufgenommen werden sollen, getrennt durch ; (z. B. 123;abc;Z012)";
+    texts.tooltip_param_report_currency = "Geben Sie das Währungskürzel ein";
   }
   else if (lang === "fr") {
     texts.reportTitle = "Offre technique";
@@ -1094,6 +1327,9 @@ function loadTexts(banDoc,lang) {
     texts.param_max_description_lenght = "Longueur maximale de la description par ligne";
     texts.param_quantity_decimals = "Décimales colonne Quantité";
     texts.param_print_carryforward = "Afficher le total cumulatif sur les pages";
+    texts.param_report = "Rapport";
+    texts.param_summary_print_other_positions = "Autres positions à imprimer";
+    texts.param_report_currency = "Devise";
 
     texts.tooltip_param_print_technical_proposal = "Inclut l’offre technique dans l’impression";
     texts.tooltip_param_print_summary = "Inclut une feuille de récapitulatif avec tous les totaux dans l’impression";
@@ -1105,6 +1341,8 @@ function loadTexts(banDoc,lang) {
     texts.tooltip_param_max_description_lenght = "Nombre maximal de caractères par ligne de description";
     texts.tooltip_param_quantity_decimals = "Nombre de décimales affichées dans la colonne Quantité";
     texts.tooltip_param_print_carryforward = "Inclut le total cumulé en fin de page et au début de la page suivante";
+    texts.tooltip_param_summary_print_other_positions = "Saisissez les identifiants des articles à inclure dans le récapitulatif, séparés par ; (ex. 123;abc;Z012)";
+    texts.tooltip_param_report_currency = "Saisissez le code de la devise";
   }
   else if (lang === "it") {
     texts.reportTitle = "Capitolato d'offerta";
@@ -1131,6 +1369,9 @@ function loadTexts(banDoc,lang) {
     texts.param_max_description_lenght = "Lunghezza massima descrizione per riga";
     texts.param_quantity_decimals = "Decimali colonna Quantità";
     texts.param_print_carryforward = "Mostra totale cumulativo sulle pagine";
+    texts.param_report = "Report";
+    texts.param_summary_print_other_positions = "Altre posizioni da stampare";
+    texts.param_report_currency = "Moneta";
 
     texts.tooltip_param_print_technical_proposal = "Include il capitolato d’offerta nella stampa";
     texts.tooltip_param_print_summary = "Include il foglio di riepilogo con tutti i totali nella stampa";
@@ -1142,6 +1383,8 @@ function loadTexts(banDoc,lang) {
     texts.tooltip_param_max_description_lenght = "Numero massimo di caratteri per ogni riga di descrizione";
     texts.tooltip_param_quantity_decimals = "Numero di decimali visualizzati nella colonna Quantità";
     texts.tooltip_param_print_carryforward = "Include il totale cumulato a fine pagina e all’inizio della successiva";
+    texts.tooltip_param_summary_print_other_positions = "Inserisci ID di articoli da includere nel riepilogo, separati da ; (es. 123;abc;Z012)";
+    texts.tooltip_param_report_currency = "Inserisci la sigla della moneta";
   }
   else {
     texts.reportTitle = "Technical proposal";
@@ -1168,6 +1411,9 @@ function loadTexts(banDoc,lang) {
     texts.param_max_description_lenght = "Maximum description length per line";
     texts.param_quantity_decimals = "Decimals Quantity column";
     texts.param_print_carryforward = "Show cumulative total on pages";
+    texts.param_report = "Report";
+    texts.param_summary_print_other_positions = "Other positions to print";
+    texts.param_report_currency = "Currency";
 
     texts.tooltip_param_print_technical_proposal = "Includes the technical proposal in the printout";
     texts.tooltip_param_print_summary = "Includes a summary sheet with all totals in the printout";
@@ -1179,6 +1425,8 @@ function loadTexts(banDoc,lang) {
     texts.tooltip_param_max_description_lenght = "Maximum number of characters per description line";
     texts.tooltip_param_quantity_decimals = "Number of decimal places displayed in the Quantity column";
     texts.tooltip_param_print_carryforward = "Includes the cumulative total at the end of the page and at the beginning of the next one";
+    texts.tooltip_param_summary_print_other_positions = "Enter item IDs to include in the summary, separated by ; (e.g. 123;abc;Z012)";
+    texts.tooltip_param_report_currency = "Enter the currency code";
   }
   return texts;
 }
