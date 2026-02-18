@@ -614,7 +614,7 @@
     "avgCost": "5.9876",
     "avgSharesValue": "898.1400",
     "currentQt": "400.0000",
-    "exRateResult": "0",
+    "exRateResult": "0.00",
     "saleResult": "-28.9800",
     "totalSharesvalue": "869.1600"
 }
@@ -714,7 +714,7 @@
     "avgCost": "12.8001",
     "avgSharesValue": "2560.0200",
     "currentQt": "200.0000",
-    "exRateResult": "0",
+    "exRateResult": "0.00",
     "saleResult": "-10.0200",
     "totalSharesvalue": "2550.00"
 }
@@ -814,7 +814,7 @@
     "avgCost": "5.9998",
     "avgSharesValue": "1199.9600",
     "currentQt": "250.0000",
-    "exRateResult": "0",
+    "exRateResult": "0.00",
     "saleResult": "4.0600",
     "totalSharesvalue": "1204.0200"
 }

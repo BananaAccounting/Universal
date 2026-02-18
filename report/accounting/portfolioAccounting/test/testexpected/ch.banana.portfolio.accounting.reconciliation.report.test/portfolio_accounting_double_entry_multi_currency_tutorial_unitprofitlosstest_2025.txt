@@ -20,7 +20,7 @@
 %Begin test data
 \begin{reportvalue}{FILENAME: file:script/../test/testcases/portfolio\_accounting\_double\_entry\_multi\_currency\_tutorial\_unitprofitlosstest\_2025.ac2}
 \begin{longtable}[l]{ l  l  l  l  l  l  l  l  l  l  l  l  l  l  l }
-\excltest{Securities Reconciliation Report, Data as of: 26.08.2025} Account  & Security  & Date  & Doc  & Description  & Quantity   & Unit Price   & Debit\P Security Currency  & Credit\P Security Currency  & Balance\P Security Currency  & Quantity balance  & Book value \P  per unit\P   & Debit CHF  & Credit CHF  & Balance CHF \\
+\excltest{Securities Reconciliation Report, Data as of: 18.02.2026} Account  & Security  & Date  & Doc  & Description  & Quantity   & Unit Price   & Debit\P Security Currency  & Credit\P Security Currency  & Balance\P Security Currency  & Quantity balance  & Book value \P  per unit\P   & Debit CHF  & Credit CHF  & Balance CHF \\
 \multicolumn{15}{l}{Shares Unicredit }\\
  & \multicolumn{14}{l}{IT0005239360 }\\
 \multicolumn{2}{l}{} & 01.01.2025  &  & Anfangssaldo  & \multicolumn{4}{l}{} & 632.40  & 60  & 10.5400  & \multicolumn{2}{l}{} & 695.64 \\
@@ -28,18 +28,18 @@
  &  & 02.01.2025  & 2  & Shares Unicredit Total Sale  & -160  & 9.5000  &  & 1'520.00  & 112.40  & 0  &  &  & 1'748.00  & 47.64 \\
  &  & 02.01.2025  & 2  & Shares Unicredit Verkaufsergebnis  & ±160  & -0.7025  &  & 112.40  & 0.00  & 0  &  &  & 129.26  & -81.62 \\
  &  & 02.01.2025  & 2  & Shares Unicredit Ergebnis des Wechselkurses  &  &  &  &  & 0.00  & 0  &  & 81.62  &  & 0.00 \\
-\multicolumn{2}{l}{} & \excltest{26.08.2025}  &  & Balance IT0005239360  & \multicolumn{2}{l}{} & 1'000.00  & 1'632.40  & 0.00  & 0  & 0.0000  & 1'181.62  & 1'877.26  & 0.00 \\
+\multicolumn{2}{l}{} & \excltest{18.02.2026}  &  & Balance IT0005239360  & \multicolumn{2}{l}{} & 1'000.00  & 1'632.40  & 0.00  & 0  & 0.0000  & 1'181.62  & 1'877.26  & 0.00 \\
 \multicolumn{15}{l}{}\\
-\multicolumn{2}{l}{} & \excltest{26.08.2025}  &  & \multicolumn{5}{l}{Opening Balance Shares Unicredit } & 632.40  & \multicolumn{4}{l}{} & 695.64 \\
-\multicolumn{2}{l}{} & \excltest{26.08.2025}  &  & \multicolumn{5}{l}{Current Balance Shares Unicredit } & 0.00  & \multicolumn{4}{l}{} & 0.00 \\
-\multicolumn{2}{l}{} & \excltest{26.08.2025}  &  & \multicolumn{5}{l}{Total securities movements } & -632.40  & \multicolumn{4}{l}{} & -695.64 \\
-\multicolumn{2}{l}{} & \excltest{26.08.2025}  &  & \multicolumn{5}{l}{Differences } & 0.00  & \multicolumn{4}{l}{} & 0.00 \\
+\multicolumn{2}{l}{} & \excltest{18.02.2026}  &  & \multicolumn{5}{l}{Opening Balance Shares Unicredit } & 632.40  & \multicolumn{4}{l}{} & 695.64 \\
+\multicolumn{2}{l}{} & \excltest{18.02.2026}  &  & \multicolumn{5}{l}{Current Balance Shares Unicredit } & 0.00  & \multicolumn{4}{l}{} & 0.00 \\
+\multicolumn{2}{l}{} & \excltest{18.02.2026}  &  & \multicolumn{5}{l}{Total securities movements } & -632.40  & \multicolumn{4}{l}{} & -695.64 \\
+\multicolumn{2}{l}{} & \excltest{18.02.2026}  &  & \multicolumn{5}{l}{Differences } & 0.00  & \multicolumn{4}{l}{} & 0.00 \\
 \multicolumn{15}{l}{Shares CHF }\\
  & \multicolumn{14}{l}{CH003886335 }\\
 \multicolumn{2}{l}{} & 01.01.2025  &  & Anfangssaldo  & \multicolumn{4}{l}{} & 2'560.02  & 200  & 12.8001  & \multicolumn{2}{l}{} & 2'560.02 \\
  &  & 31.01.2025  & 3  & Shares UBS  & -200  & 12.7500  &  & 2'550.00  & 10.02  & 0  &  &  & 2'550.00  & 10.02 \\
  &  & 31.01.2025  & 3  & Shares UBS Verkaufsergebnis  & ±200  & -0.0501  &  & 10.02  & 0.00  & 0  &  &  & 10.02  & 0.00 \\
-\multicolumn{2}{l}{} & \excltest{26.08.2025}  &  & Balance CH003886335  & \multicolumn{2}{l}{} & 0.00  & 2'560.02  & 0.00  & 0  & 0.0000  & 0.00  & 2'560.02  & 0.00 \\
+\multicolumn{2}{l}{} & \excltest{18.02.2026}  &  & Balance CH003886335  & \multicolumn{2}{l}{} & 0.00  & 2'560.02  & 0.00  & 0  & 0.0000  & 0.00  & 2'560.02  & 0.00 \\
 \multicolumn{15}{l}{}\\
  & \multicolumn{14}{l}{CH002775224 }\\
 \multicolumn{2}{l}{} & 01.01.2025  &  & Anfangssaldo  & \multicolumn{4}{l}{} & 1'499.95  & 250  & 5.9998  & \multicolumn{2}{l}{} & 1'499.95 \\
@@ -47,28 +47,28 @@
  &  & 31.01.2025  & 4  & Shares BancaStato Verkaufsergebnis  & ±200  & 0.0203  & 4.06  &  & 299.99  & 50  & 5.9998  & 4.06  &  & 299.99 \\
  &  & 31.01.2025  & 5  & Shares BancaStato  & -50  & 6.2000  &  & 310.00  & -10.01  & 0  &  &  & 310.00  & -10.01 \\
  &  & 31.01.2025  & 5  & Shares BancaStato Verkaufsergebnis  & ±50  & 0.2002  & 10.01  &  & 0.00  & 0  &  & 10.01  &  & 0.00 \\
-\multicolumn{2}{l}{} & \excltest{26.08.2025}  &  & Balance CH002775224  & \multicolumn{2}{l}{} & 14.07  & 1'514.02  & 0.00  & 0  & 0.0000  & 14.07  & 1'514.02  & 0.00 \\
+\multicolumn{2}{l}{} & \excltest{18.02.2026}  &  & Balance CH002775224  & \multicolumn{2}{l}{} & 14.07  & 1'514.02  & 0.00  & 0  & 0.0000  & 14.07  & 1'514.02  & 0.00 \\
 \multicolumn{15}{l}{}\\
-\multicolumn{2}{l}{} & \excltest{26.08.2025}  &  & \multicolumn{5}{l}{Opening Balance Shares CHF } & 4'059.97  & \multicolumn{4}{l}{} & 4'059.97 \\
-\multicolumn{2}{l}{} & \excltest{26.08.2025}  &  & \multicolumn{5}{l}{Current Balance Shares CHF } & 0.00  & \multicolumn{4}{l}{} & 0.00 \\
-\multicolumn{2}{l}{} & \excltest{26.08.2025}  &  & \multicolumn{5}{l}{Total securities movements } & -4'059.97  & \multicolumn{4}{l}{} & -4'059.97 \\
-\multicolumn{2}{l}{} & \excltest{26.08.2025}  &  & \multicolumn{5}{l}{Differences } & 0.00  & \multicolumn{4}{l}{} & 0.00 \\
+\multicolumn{2}{l}{} & \excltest{18.02.2026}  &  & \multicolumn{5}{l}{Opening Balance Shares CHF } & 4'059.97  & \multicolumn{4}{l}{} & 4'059.97 \\
+\multicolumn{2}{l}{} & \excltest{18.02.2026}  &  & \multicolumn{5}{l}{Current Balance Shares CHF } & 0.00  & \multicolumn{4}{l}{} & 0.00 \\
+\multicolumn{2}{l}{} & \excltest{18.02.2026}  &  & \multicolumn{5}{l}{Total securities movements } & -4'059.97  & \multicolumn{4}{l}{} & -4'059.97 \\
+\multicolumn{2}{l}{} & \excltest{18.02.2026}  &  & \multicolumn{5}{l}{Differences } & 0.00  & \multicolumn{4}{l}{} & 0.00 \\
 \multicolumn{15}{l}{Shares Netflix }\\
  & \multicolumn{14}{l}{US123456789 }\\
-\multicolumn{2}{l}{} & \excltest{26.08.2025}  &  & Balance US123456789  & \multicolumn{2}{l}{} & 0.00  & 0.00  &  &  &  & 0.00  & 0.00  & \\
+\multicolumn{2}{l}{} & \excltest{18.02.2026}  &  & Balance US123456789  & \multicolumn{2}{l}{} & 0.00  & 0.00  & 0.00  & 0  & 0.0000  & 0.00  & 0.00  & 0.00 \\
 \multicolumn{15}{l}{}\\
-\multicolumn{2}{l}{} & \excltest{26.08.2025}  &  & \multicolumn{5}{l}{Opening Balance Shares Netflix } & 0.00  & \multicolumn{4}{l}{} & 0.00 \\
-\multicolumn{2}{l}{} & \excltest{26.08.2025}  &  & \multicolumn{5}{l}{Current Balance Shares Netflix } & 0.00  & \multicolumn{4}{l}{} & 0.00 \\
-\multicolumn{2}{l}{} & \excltest{26.08.2025}  &  & \multicolumn{5}{l}{Total securities movements } & 0.00  & \multicolumn{4}{l}{} & 0.00 \\
-\multicolumn{2}{l}{} & \excltest{26.08.2025}  &  & \multicolumn{5}{l}{Differences } & 0.00  & \multicolumn{4}{l}{} & 0.00 \\
+\multicolumn{2}{l}{} & \excltest{18.02.2026}  &  & \multicolumn{5}{l}{Opening Balance Shares Netflix } & 0.00  & \multicolumn{4}{l}{} & 0.00 \\
+\multicolumn{2}{l}{} & \excltest{18.02.2026}  &  & \multicolumn{5}{l}{Current Balance Shares Netflix } & 0.00  & \multicolumn{4}{l}{} & 0.00 \\
+\multicolumn{2}{l}{} & \excltest{18.02.2026}  &  & \multicolumn{5}{l}{Total securities movements } & 0.00  & \multicolumn{4}{l}{} & 0.00 \\
+\multicolumn{2}{l}{} & \excltest{18.02.2026}  &  & \multicolumn{5}{l}{Differences } & 0.00  & \multicolumn{4}{l}{} & 0.00 \\
 \multicolumn{15}{l}{Bonds EUR }\\
  & \multicolumn{14}{l}{IT000792468 }\\
-\multicolumn{2}{l}{} & \excltest{26.08.2025}  &  & Balance IT000792468  & \multicolumn{2}{l}{} & 0.00  & 0.00  &  &  &  & 0.00  & 0.00  & \\
+\multicolumn{2}{l}{} & \excltest{18.02.2026}  &  & Balance IT000792468  & \multicolumn{2}{l}{} & 0.00  & 0.00  & 0.00  & 0  & 0.0000  & 0.00  & 0.00  & 0.00 \\
 \multicolumn{15}{l}{}\\
-\multicolumn{2}{l}{} & \excltest{26.08.2025}  &  & \multicolumn{5}{l}{Opening Balance Bonds EUR } & 0.00  & \multicolumn{4}{l}{} & 0.00 \\
-\multicolumn{2}{l}{} & \excltest{26.08.2025}  &  & \multicolumn{5}{l}{Current Balance Bonds EUR } & 0.00  & \multicolumn{4}{l}{} & 0.00 \\
-\multicolumn{2}{l}{} & \excltest{26.08.2025}  &  & \multicolumn{5}{l}{Total securities movements } & 0.00  & \multicolumn{4}{l}{} & 0.00 \\
-\multicolumn{2}{l}{} & \excltest{26.08.2025}  &  & \multicolumn{5}{l}{Differences } & 0.00  & \multicolumn{4}{l}{} & 0.00 \\
+\multicolumn{2}{l}{} & \excltest{18.02.2026}  &  & \multicolumn{5}{l}{Opening Balance Bonds EUR } & 0.00  & \multicolumn{4}{l}{} & 0.00 \\
+\multicolumn{2}{l}{} & \excltest{18.02.2026}  &  & \multicolumn{5}{l}{Current Balance Bonds EUR } & 0.00  & \multicolumn{4}{l}{} & 0.00 \\
+\multicolumn{2}{l}{} & \excltest{18.02.2026}  &  & \multicolumn{5}{l}{Total securities movements } & 0.00  & \multicolumn{4}{l}{} & 0.00 \\
+\multicolumn{2}{l}{} & \excltest{18.02.2026}  &  & \multicolumn{5}{l}{Differences } & 0.00  & \multicolumn{4}{l}{} & 0.00 \\
 \end{longtable}
 \end{reportvalue}
 \end{document}

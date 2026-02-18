@@ -99,6 +99,13 @@ function getCurrentRowObj(banDoc, currentRowNr, tableName) {
     return table.row(currentRowNr);
 }
 
+function getCurrentRowObjValue(banDoc, currentRowNr, tableName, columnName) {
+    var table = banDoc.table(tableName);
+    if (!table)
+        return {};
+    return table.row(currentRowNr).value(columnName);
+}
+
 function getCurrentRowData(banDoc, transList) {
     var currRowNr = banDoc.cursor.rowNr;
 
@@ -353,7 +360,6 @@ function calculateStockSaleData(banDoc, docInfo, itemObj, dlgParams, currentRowN
 
     let saleData = {};
     let quantity = "";
-    let accExRate = ""; //Accounting exchange rate.
     let currentQt = "";
     let avgCost = "";
     let avgSharesValue = "";
@@ -384,12 +390,13 @@ function calculateStockSaleData(banDoc, docInfo, itemObj, dlgParams, currentRowN
     currentQt = itemCardData.currentValues.itemQtBalance;
     avgCost = itemCardData.currentValues.itemAvgCost;
     quantity = Banana.SDecimal.abs(dlgParams.quantity);
-    accExRate = Banana.SDecimal.divide(itemCardData.currentValues.itemBalanceBase, itemCardData.currentValues.itemBalanceCurr);
 
     avgSharesValue = getSharesAvgValue(quantity, avgCost);
     totalSharesValue = getSharesTotalValue(quantity, dlgParams.marketPrice);
     saleResult = getSaleResult(avgSharesValue, totalSharesValue);
-    exRateResult = getExchangeResult(totalSharesValue, saleResult, dlgParams.currExRate, accExRate);
+    if (docInfo.isMultiCurrency) {
+        exRateResult = getExchangeResult(totalSharesValue, saleResult, dlgParams.currExRate, itemCardData.currentValues);
+    }
 
     // only for bonds
     if (itemObj.type === "2") {
@@ -437,7 +444,7 @@ function getClosestPreviousObjByRowNr(accountCardData, currentRowNr) {
 /**
  * Ritorna un array di oggetti contenente i movimenti del conto inerenti al titolo passato come parametro.
  */
-function getAccCardDataArrayOfObjects(banDoc, docInfo, itemObj) {
+function getAccCardDataArrayOfObjects(banDoc, docInfo, itemObj, currentRowNr) {
 
     if (!banDoc) {
         return [];
@@ -467,12 +474,24 @@ function getAccCardDataArrayOfObjects(banDoc, docInfo, itemObj) {
             trData.description = tRow.value("Description");
             trData.qt = tRow.value("Quantity");
             trData.unitPrice = tRow.value("UnitPrice");
-            trData.debitBase = tRow.value("JDebitAmount"); //Debit value in base currency
-            trData.creditBase = tRow.value("JCreditAmount"); //Credit value base currency
+            trData.debitBase = tRow.value("JDebitAmount"); // Debit value in base currency
+            trData.creditBase = tRow.value("JCreditAmount"); // Credit value base currency
             if (docInfo.isMultiCurrency) {
                 trData.debitCurr = tRow.value("JDebitAmountAccountCurrency");
                 trData.creditCurr = tRow.value("JCreditAmountAccountCurrency");
                 trData.currency = tRow.value("ExchangeCurrency");
+                /**
+                * In some operations such as:
+                * - Openings
+                * - Exchange rate profit/loss postings
+                * - Exchange rate adjustments
+                * - ...
+                * The multiplier is not specified in the transaction; for this reason,
+                * we retrieve it from the currently selected row in the transactions table.
+                 */
+                let multiplier = tRow.value("ExchangeMultiplier") != "" ?
+                    tRow.value("ExchangeMultiplier") : getCurrentRowObjValue(banDoc, currentRowNr, "Transactions", "ExchangeMultiplier");
+                trData.multiplier = multiplier;
             }
             transactions.push(trData);
         }
@@ -513,7 +532,7 @@ function getItemCardDataList(banDoc, docInfo, itemObj, unitPriceColDecimals, cur
     // From the journal we get an object containing the opening values of the item (operations type = 1).
     let itemOpeningValues = getItemOpeningValuesFromJournal(docInfo, journal, itemObj.item);
     // From the account card we get the transactions related to the item (operations type = 3).
-    let accountCardData = getAccCardDataArrayOfObjects(banDoc, docInfo, itemObj);
+    let accountCardData = getAccCardDataArrayOfObjects(banDoc, docInfo, itemObj, currentRowNr);
     // Create the item card data object.
     let itemCardData = {};
     setItemCard_ProgressiveValues(docInfo, accountCardData, itemOpeningValues, unitPriceColDecimals);
@@ -621,6 +640,7 @@ function getItemCurrentValues(openingData, accountCardData, currentRowNr) {
     currentValuesObj.itemBalanceBase = trObj.balanceBase;
     currentValuesObj.itemBalanceCurr = trObj.balanceCurr;
     currentValuesObj.itemExchangeRate = "";
+    currentValuesObj.itemOpMultiplier = trObj.multiplier; // Exchange rate multiplier
 
     return currentValuesObj;
 }
@@ -766,7 +786,73 @@ function getSaleResult(avgSharesValue, totalSharesvalue) {
     return saleResult;
 }
 
-function getExchangeResult(totalSharesValue, saleResult, currExRate, accExRate) {
+/** Returns the calculated exchange rate result, 
+ * calculated based on the multiplier defined for the currency
+*/
+function getExchangeResult(totalSharesValue, saleResult, currExRate, itemCurrValues) {
+
+    let mult = itemCurrValues.itemOpMultiplier;
+
+    if (mult && mult.indexOf("-") > -1) {
+        return getExchangeResult_negativeMultiplier(totalSharesValue, saleResult, currExRate, itemCurrValues);
+    } else if (mult && mult.indexOf("-") == -1) {
+        return getExchangeResult_positiveMultiplier(totalSharesValue, saleResult, currExRate, itemCurrValues);
+    } else {
+        return Banana.Converter.toLocaleNumberFormat("0.00"); //... No multiplier ? (In future in income/expenses accounting ?)
+    }
+}
+
+/** 
+* If the multiplier is positive, we divide the balance
+* in account currency by the balance in base currency to find the
+* account’s average exchange rate, following the accounting logic used in transactions, where:
+* CurrencyAmt / exchangeRate = BaseAmt.
+* For the same reason, we then use division to calculate the exchange difference.
+*/
+function getExchangeResult_positiveMultiplier(totalSharesValue, saleResult, currExRate, itemCurrValues) {
+
+    const itemBaseBal = itemCurrValues.itemBalanceBase;
+    const itemCurrBal = itemCurrValues.itemBalanceCurr;
+    const accExRate = Banana.SDecimal.divide(itemCurrBal, itemBaseBal);
+
+    if (!accExRate || accExRate.length < 1)
+        return Banana.Converter.toLocaleNumberFormat("0.00");
+
+    // Default to accExRate if currExRate is not provided
+    if (!currExRate) {
+        currExRate = accExRate;
+    }
+
+    // Calculate the realized exchange (theorical result)
+    let realizedExchangeResult = Banana.SDecimal.subtract(
+        Banana.SDecimal.divide(totalSharesValue, currExRate),
+        Banana.SDecimal.divide(totalSharesValue, accExRate)
+    );
+
+    // Calculate the unrealized exchange profit/loss based on saleResult
+    let unrealizedExchangeProfitLoss = Banana.SDecimal.subtract(
+        Banana.SDecimal.divide(saleResult, currExRate),
+        Banana.SDecimal.divide(saleResult, accExRate)
+    );
+
+    // Calculate the effective exchange result by adding realized and unrealized components
+    let effectiveExchangeResult = Banana.SDecimal.subtract(realizedExchangeResult, unrealizedExchangeProfitLoss);
+
+    // Return the total effective exchange result
+    return effectiveExchangeResult;
+}
+/** 
+* If the multiplier is negative, we divide the balance
+* in base currency by the balance in account currency to find the
+* account’s average exchange rate, following the accounting logic used in transactions, where:
+* CurrencyAmt * exchangeRate = BaseAmt.
+* For the same reason, we then use multiplication to calculate the exchange difference.
+*/
+function getExchangeResult_negativeMultiplier(totalSharesValue, saleResult, currExRate, itemCurrValues) {
+
+    const itemBaseBal = itemCurrValues.itemBalanceBase;
+    const itemCurrBal = itemCurrValues.itemBalanceCurr;
+    const accExRate = Banana.SDecimal.divide(itemBaseBal, itemCurrBal);
 
     if (!accExRate || accExRate.length < 1)
         return Banana.Converter.toLocaleNumberFormat("0.00");
