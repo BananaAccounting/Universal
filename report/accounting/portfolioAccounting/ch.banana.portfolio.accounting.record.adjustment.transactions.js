@@ -187,9 +187,11 @@ var AdjustmentTransactionsManager = class AdjustmentTransactionsManager {
             // User must use the locale format to enter the numbers in the dialog.
             let itemUnitMarketValueLocale = this.savedMarketValuesParams[param];
             let itemUnitMarketValue = Banana.Converter.toInternalNumberFormat(itemUnitMarketValueLocale);
-            let adjustmentResult = this.calculateAdjustmentResult(docInfo, itemId, itemUnitMarketValue, unitPriceColDecimals);
+            let adjustmentResults = this.calculateAdjustmentResults(docInfo, itemId, itemUnitMarketValue, unitPriceColDecimals);
+            const priceAdj = adjustmentResults[0];
+            const exchRateAdj = adjustmentResults[1];
 
-            if (!adjustmentResult || Banana.SDecimal.isZero(adjustmentResult))
+            if (!priceAdj || Banana.SDecimal.isZero(priceAdj))
                 continue;
 
             let currentDate = "";
@@ -204,7 +206,7 @@ var AdjustmentTransactionsManager = class AdjustmentTransactionsManager {
             row.fields["Doc"] = "";
             row.fields["ItemsId"] = itemId;
             row.fields["Description"] = getItemDescription(itemId, this.banDoc) + " " + texts.adjustmentTxt + " (" + itemUnitMarketValueLocale + ")";
-            if (adjustmentResult.indexOf("-") >= 0) {
+            if (priceAdj.indexOf("-") >= 0) {
                 row.fields["AccountDebit"] = this.savedAccountsParams.valueChangingcontraAccounts.unrealizedLossAccount || texts.otherValChangeCostPlaceHolder;
                 row.fields["AccountCredit"] = getItemAccount(itemId, this.banDoc);
             } else {
@@ -212,9 +214,9 @@ var AdjustmentTransactionsManager = class AdjustmentTransactionsManager {
                 row.fields["AccountCredit"] = this.savedAccountsParams.valueChangingcontraAccounts.unrealizedGainAccount || texts.otherValChangeIncomePlaceHolder;
             }
             if (docInfo.isMultiCurrency)
-                row.fields["AmountCurrency"] = Banana.Converter.toInternalNumberFormat(adjustmentResult, ".");
+                row.fields["AmountCurrency"] = Banana.Converter.toInternalNumberFormat(priceAdj, ".");
             else
-                row.fields["Amount"] = Banana.Converter.toInternalNumberFormat(adjustmentResult, ".");
+                row.fields["Amount"] = Banana.Converter.toInternalNumberFormat(priceAdj, ".");
             if (docInfo.isMultiCurrency)
                 row.fields["ExchangeCurrency"] = getItemCurrency(itemId, this.banDoc);
 
@@ -224,37 +226,101 @@ var AdjustmentTransactionsManager = class AdjustmentTransactionsManager {
         return rows;
     }
     /**
-     * To calculate the adjustment result we must:
-     * 1) Calculate the current value: multiply the current quantity of a security by its book value.
-     * 2) Calculate the market value: multiply the current quantity of a security by its market value.
-     * 3) Subtract the market value from the current value.
+     * A year-end valuation adjustment normally consists of two entries:
+     *  1) Price adjustment to align the security to its market price.
+     *  2) FX adjustment to align the carrying amount to the closing exchange rate.
      */
-    calculateAdjustmentResult(docInfo, itemId, itemUnitMarketValue, unitPriceColDecimals) {
-        let itemRowObj = getItemRowObj(itemId, this.banDoc);
-        let itemCurrentQt = itemRowObj.currentQt;
-        let itemUnitBookValue = this.getItemBookValue(docInfo, itemRowObj, unitPriceColDecimals);
+    calculateAdjustmentResults(docInfo, itemId, itemUnitMarketPrice, unitPriceColDecimals) {
+        const itemRowObj = getItemRowObj(itemId, this.banDoc);
+        const itemCurrentQt = itemRowObj.currentQt;
+        const itemCurrentValues = this.getItemCurrentValues(docInfo, itemRowObj, unitPriceColDecimals);
+        let adjResults = [];
 
-        if (!itemUnitBookValue || Banana.SDecimal.isZero(itemUnitBookValue)
-            || !itemUnitMarketValue || Banana.SDecimal.isZero(itemUnitMarketValue))
-            return "";
+        if (!itemCurrentValues)
+            return adjResults;
 
-        let marketValue = Banana.SDecimal.multiply(itemUnitMarketValue, itemCurrentQt);
-        let bookValue = Banana.SDecimal.multiply(itemUnitBookValue, itemCurrentQt);
+        adjResults.push(this.calculateAdjustmentResults_PriceAdj(itemCurrentQt, itemCurrentValues.itemAvgCost, itemUnitMarketPrice));
+        if (docInfo.isMultiCurrency && (1 == 2)) {
+            adjResults.push(this.calculateAdjustmentResults_ExchRateAdj(itemCurrentQt, itemCurrentValues));
+        }
+        return adjResults;
+    }
 
+    /**
+     * The price adjustment is calculated as:
+     *
+     *    Qty × (MarketPrice − AverageBookPrice)
+     *
+     * The resulting difference represents the variation in the account currency.
+     *
+     * If the account is denominated in a foreign currency, the price adjustment
+     * must be converted using the account’s implicit book rate.
+     * This isolates the pure price effect,
+     * keeping the FX component unchanged.
+     * @itemCurrentQt Actual Item current quanity.
+     * @itemUnitMarketPrice Actual Item book price.
+     * @itemUnitMarketPrice Actual market price.
+     */
+    calculateAdjustmentResults_PriceAdj(itemCurrentQt, itemUnitBookPrice, itemUnitMarketPrice) {
+        let marketValue = Banana.SDecimal.multiply(itemUnitMarketPrice, itemCurrentQt);
+        let bookValue = Banana.SDecimal.multiply(itemUnitBookPrice, itemCurrentQt);
         return Banana.SDecimal.subtract(marketValue, bookValue);
     }
 
-    getItemBookValue(docInfo, itemRowObj, unitPriceColDecimals) {
+    /**
+     * * After the price adjustment, the account currency balance
+     * is correct, but the base currency balance is still
+     * valued using the implicit book rate.
+     *
+     * To obtain the fair value at period end, the foreign currency balance
+     * must be converted at the closing rate.
+     *
+     * The FX adjustment is calculated as:
+     *
+     *    (CurrencyBalance / ClosingRate) - CurrentBaseBalance
+     *
+     * (CurrentBaseBalance refers to the updated base balance after step 1.)
+     * 
+     * As we do not have the updated balance yet, 
+     * we get the value doing the following calculation:
+     * 
+     * (MarketValue '*' or '/' closingRate) - (MarketValue '*' or '/' bookRate)
+     *
+     * This entry affects only the base currency (CurrencyAmount = 0)
+     * and represents the unrealized gain or loss arising exclusively
+     * from the exchange rate movement.
+     * @itemCurrentQt Actual Item current quanity.
+     * @itemCurrentValues Actual Item current values taken from the Item card.
+     */
+    calculateAdjustmentResults_ExchRateAdj(itemCurrentQt, itemCurrentValues) {
+        const marketPrice = Banana.SDecimal.multiply(itemCurrentValues.itemAvgCost, itemCurrentQt);
+        const bookRate = getCurrentBookingRate(itemCurrentValues);
+        const mult = itemCurrentValues.itemOpMultiplier;
+        if (mult && mult.indexOf("-") > -1) {
+            return Banana.SDecimal.subtract
+                (Banana.SDecimal.multiply(marketPrice, closingRate),
+                    Banana.SDecimal.multiply(marketPrice, bookRate));
+        } else if (mult && mult.indexOf("-") == -1) {
+            return Banana.SDecimal.subtract
+                (Banana.SDecimal.divide(marketPrice, closingRate),
+                    Banana.SDecimal.divide(marketPrice, bookRate));
+        } else {
+            return Banana.Converter.toLocaleNumberFormat("0.00"); //... No multiplier ? (In future in income/expenses accounting ?)
+        }
+    }
+
+    getItemCurrentValues(docInfo, itemRowObj, unitPriceColDecimals) {
 
         if (!itemRowObj || isObjectEmpty(itemRowObj))
             return "";
 
-        let itemCardData = getItemCardDataList(this.banDoc, docInfo, itemRowObj, unitPriceColDecimals);
+        const invalidRow = -1;
+        let itemCardData = getItemCardDataList(this.banDoc, docInfo, itemRowObj, unitPriceColDecimals, invalidRow);
 
-        if (!itemCardData || isObjectEmpty(itemCardData) || !itemCardData.currentValues.itemAvgCost)
+        if (!itemCardData || isObjectEmpty(itemCardData) || !itemCardData.currentValues)
             return "";
         else
-            return itemCardData.currentValues.itemAvgCost;
+            return itemCardData.currentValues;
     }
 
     getDocumentChangeInit() {

@@ -480,6 +480,7 @@ function getAccCardDataArrayOfObjects(banDoc, docInfo, itemObj, currentRowNr) {
                 trData.debitCurr = tRow.value("JDebitAmountAccountCurrency");
                 trData.creditCurr = tRow.value("JCreditAmountAccountCurrency");
                 trData.currency = tRow.value("ExchangeCurrency");
+                let multiplier = "";
                 /**
                 * In some operations such as:
                 * - Openings
@@ -488,15 +489,46 @@ function getAccCardDataArrayOfObjects(banDoc, docInfo, itemObj, currentRowNr) {
                 * - ...
                 * The multiplier is not specified in the transaction; for this reason,
                 * we retrieve it from the currently selected row in the transactions table.
+                * 
+                * When we create adjustments, we may not have the multiplier in the 
+                * account card and we don have niether a selected row in the transactions table,
+                * in that case we check the multiplier used in the ExchangeRate table for the first
+                * exchange rate that refers to the item currency, as the multiplier must be always of the
+                * same type for each exchange row.
                  */
-                let multiplier = tRow.value("ExchangeMultiplier") != "" ?
-                    tRow.value("ExchangeMultiplier") : getCurrentRowObjValue(banDoc, currentRowNr, "Transactions", "ExchangeMultiplier");
+                if (itemObj.currency != docInfo.baseCurrency) { // We are sure item has ALWAYS the same currency as the account used.
+                    multiplier = tRow.value("ExchangeMultiplier") != "" ?
+                        tRow.value("ExchangeMultiplier") : getCurrentRowObjValue(banDoc, currentRowNr, "Transactions", "ExchangeMultiplier");
+                    if (!multiplier) {
+                        multiplier = findFirstOccurencyMultiplierForCurr(banDoc, trData.currency);
+                    }
+                }
                 trData.multiplier = multiplier;
             }
             transactions.push(trData);
         }
     }
     return transactions;
+}
+
+/**
+ * Given a currency, searches the ExchangeRates table for the first
+ * row referencing that currency and returns its multiplier.
+ */
+function findFirstOccurencyMultiplierForCurr(banDoc, refCurr) {
+    var exchangeRateTable = banDoc.table("ExchangeRates");
+    if (!exchangeRateTable)
+        return "";
+
+    for (var i = 0; i < exchangeRateTable.rowCount; i++) {
+        var tRow = exchangeRateTable.row(i);
+        let currency = tRow.value("Currency");
+        let currencyRef = tRow.value("CurrencyReference");
+        if (currency == refCurr || currencyRef == refCurr) {
+            return tRow.value("Multiplier");
+        }
+    }
+    return "";
 }
 
 function getAccountCurrency(accountName, banDoc) {
@@ -811,9 +843,7 @@ function getExchangeResult(totalSharesValue, saleResult, currExRate, itemCurrVal
 */
 function getExchangeResult_positiveMultiplier(totalSharesValue, saleResult, currExRate, itemCurrValues) {
 
-    const itemBaseBal = itemCurrValues.itemBalanceBase;
-    const itemCurrBal = itemCurrValues.itemBalanceCurr;
-    const accExRate = Banana.SDecimal.divide(itemCurrBal, itemBaseBal);
+    const accExRate = getCurrentBookingRate(itemCurrValues);
 
     if (!accExRate || accExRate.length < 1)
         return Banana.Converter.toLocaleNumberFormat("0.00");
@@ -850,12 +880,11 @@ function getExchangeResult_positiveMultiplier(totalSharesValue, saleResult, curr
 */
 function getExchangeResult_negativeMultiplier(totalSharesValue, saleResult, currExRate, itemCurrValues) {
 
-    const itemBaseBal = itemCurrValues.itemBalanceBase;
-    const itemCurrBal = itemCurrValues.itemBalanceCurr;
-    const accExRate = Banana.SDecimal.divide(itemBaseBal, itemCurrBal);
+    const accExRate = getCurrentBookingRate(itemCurrValues);
 
-    if (!accExRate || accExRate.length < 1)
+    if (!accExRate || accExRate.length < 1) {
         return Banana.Converter.toLocaleNumberFormat("0.00");
+    }
 
     // Default to accExRate if currExRate is not provided
     if (!currExRate) {
@@ -879,6 +908,28 @@ function getExchangeResult_negativeMultiplier(totalSharesValue, saleResult, curr
 
     // Return the total effective exchange result
     return effectiveExchangeResult;
+}
+
+/**
+ * Given the current values row of a security retrieved
+ * from the security card, returns the implicit
+ * accounting average exchange rate calculated
+ * from the balances resulting at the provided row.
+ *
+ * The calculation direction depends on the multiplier:
+ *  - positive (1):  CurrencyBalance / BaseBalance
+ *  - negative (-1): BaseBalance / CurrencyBalance
+ */
+function getCurrentBookingRate(itemCurrValues) {
+    const itemBaseBal = itemCurrValues.itemBalanceBase;
+    const itemCurrBal = itemCurrValues.itemBalanceCurr;
+    const multiplier = itemCurrValues.itemOpMultiplier;
+    if (multiplier.indexOf("-") == -1) {
+        return Banana.SDecimal.divide(itemCurrBal, itemBaseBal);
+    } else if (multiplier.indexOf("-") > -1) {
+        return Banana.SDecimal.divide(itemBaseBal, itemCurrBal);
+    }
+    return "";
 }
 
 /**
