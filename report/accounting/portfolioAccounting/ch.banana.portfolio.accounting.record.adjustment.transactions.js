@@ -41,6 +41,8 @@ function exec() {
     if (!verifyBananaVersion(banDoc))
         return "@Cancel";
 
+    const docInfo = getDocumentInfo(banDoc);
+
     if (!tableExists(banDoc, "Items")) {
         let msg = getErrorMessage_MissingElements("NO_ITEMS_TABLE", "");
         banDoc.addMessage(msg, getErrorMessageReferenceAnchor());
@@ -56,7 +58,7 @@ function exec() {
     }
 
     // Read data from Items table and prepare the dialog parameters
-    let dlgParams = initAdjustmentDialogParams(banDoc, itemsData);
+    let dlgParams = initAdjustmentDialogParams(banDoc, docInfo, itemsData);
 
     if (isObjectEmpty(dlgParams)) {
         let msg = getErrorMessage_MissingElements("NO_ASSET_WITH_CURRENT_PRICE", "");
@@ -69,24 +71,45 @@ function exec() {
 
     /** Recupero i parametri definiti dall'utente nel dialogo corrente e nel dialogo dei conti.*/
     let savedAccountsParams = getFormattedSavedParams(banDoc, dlgAccountsSettingsId);
-    //savedAccountsParams = verifyAccountsParams(banDoc, savedAccountsParams);
+    savedAccountsParams = verifyAccountsParams(banDoc, savedAccountsParams);
 
     let savedValuesParams = getFormattedSavedParams(banDoc, adjustmentSettingsId);
     if (!savedValuesParams || isObjectEmpty(savedValuesParams))
         return "@Cancel";
 
-    const adjustmentTransactionsManager = new AdjustmentTransactionsManager(banDoc, itemsData,
+    const adjustmentTransactionsManager = new AdjustmentTransactionsManager(banDoc, docInfo, itemsData,
         savedValuesParams, savedAccountsParams);
     return adjustmentTransactionsManager.getDocumentChangeObject();
 }
 
 var AdjustmentTransactionsManager = class AdjustmentTransactionsManager {
-    constructor(banDoc, itemsData, savedValuesParams, savedAccountsParams) {
-        this.banDoc = banDoc;
-        this.itemsTableData = itemsData;
+    constructor(banDoc, docInfo, itemsData, savedValuesParams, savedAccountsParams) {
+        this.initValues(banDoc, docInfo, itemsData, savedValuesParams, savedAccountsParams);
+    }
+
+    initValues(banDoc, docInfo, itemsData, savedValuesParams, savedAccountsParams) {
+        this.banDoc = {};
+        this.docInfo = {};
+        this.itemsTableData = {};
         this.docChangeObj = { "format": "documentChange", "error": "", "data": [] };
-        this.savedValuesParams = savedValuesParams;
-        this.savedAccountsParams = savedAccountsParams;
+        this.savedValuesParams = {};
+        this.savedAccountsParams = {};
+
+        if (banDoc) {
+            this.banDoc = banDoc;
+        }
+        if (docInfo) {
+            this.docInfo = docInfo;
+        }
+        if (itemsData) {
+            this.itemsTableData = itemsData;
+        }
+        if (savedValuesParams) {
+            this.savedValuesParams = savedValuesParams;
+        }
+        if (savedAccountsParams) {
+            this.savedAccountsParams = savedAccountsParams;
+        }
     }
 
     getDocumentChangeObject() {
@@ -175,7 +198,6 @@ var AdjustmentTransactionsManager = class AdjustmentTransactionsManager {
         let rows = [];
         let texts = getTransactionsTexts();
 
-        let docInfo = getDocumentInfo(this.banDoc);
         let unitPriceColumn = this.banDoc.table("Transactions").column("UnitPrice", "Base");
         let unitPriceColDecimals = unitPriceColumn.decimal;
         let transactionsDate = this.savedValuesParams.date;
@@ -191,26 +213,26 @@ var AdjustmentTransactionsManager = class AdjustmentTransactionsManager {
             // Get item card data.
             const itemRowObj = getItemRowObj(itemId, this.banDoc);
             const itemCurrentQt = itemRowObj.currentQt;
-            const itemCurrentValues = this.getItemCurrentValues(docInfo, itemRowObj, unitPriceColDecimals);
+            const itemCurrentValues = this.getItemCurrentValues(itemRowObj, unitPriceColDecimals);
             const itemCurrBookRate = getCurrentBookingRate(itemCurrentValues);
 
-            let adjustmentResults = this.calculateAdjustmentResults(docInfo, itemCurrentValues, itemCurrentQt, itemUnitMarketPrice, itemCurrBookRate, itemExRateCurrent);
+            let adjustmentResults = this.calculateAdjustmentResults(itemCurrentValues, itemCurrentQt, itemUnitMarketPrice, itemCurrBookRate, itemExRateCurrent);
             const priceAdj = adjustmentResults[0];
             const exchRateAdj = adjustmentResults[1];
 
             if (!priceAdj || Banana.SDecimal.isZero(priceAdj))
                 continue;
 
-            rows.push(this.getAdjustmentTransactionsRows_PriceAdj(docInfo, itemId, transactionsDate, priceAdj, itemCurrBookRate, itemUnitMarketPriceLocale, texts));
-            if (docInfo.isMultiCurrency && exchRateAdj) {
-                rows.push(this.getAdjustmentTransactionsRows_ExRateAdj(docInfo, itemId, transactionsDate, exchRateAdj, itemExRateCurrent, texts));
+            rows.push(this.getAdjustmentTransactionsRows_PriceAdj(itemId, transactionsDate, priceAdj, itemCurrBookRate, itemUnitMarketPriceLocale, texts));
+            if (this.docInfo.isMultiCurrency && exchRateAdj && !Banana.SDecimal.isZero(exchRateAdj)) {
+                rows.push(this.getAdjustmentTransactionsRows_ExRateAdj(itemId, transactionsDate, exchRateAdj, itemExRateCurrent, texts));
             }
         }
 
         return rows;
     }
 
-    getAdjustmentTransactionsRows_PriceAdj(docInfo, itemId, transactionsDate, priceAdj, itemCurrBookRate, itemUnitMarketPriceLocale, texts) {
+    getAdjustmentTransactionsRows_PriceAdj(itemId, transactionsDate, priceAdj, itemCurrBookRate, itemUnitMarketPriceLocale, texts) {
 
         let row = {};
         row.operation = {};
@@ -227,19 +249,19 @@ var AdjustmentTransactionsManager = class AdjustmentTransactionsManager {
             row.fields["AccountDebit"] = getItemAccount(itemId, this.banDoc);
             row.fields["AccountCredit"] = this.savedAccountsParams.valueChangingcontraAccounts.unrealizedGainAccount || texts.otherValChangeIncomePlaceHolder;
         }
-        if (docInfo.isMultiCurrency)
+        if (this.docInfo.isMultiCurrency)
             row.fields["AmountCurrency"] = Banana.Converter.toInternalNumberFormat(priceAdj, ".");
         else
             row.fields["Amount"] = Banana.Converter.toInternalNumberFormat(priceAdj, ".");
-        if (docInfo.isMultiCurrency) {
-            row.fields["ExchangeCurrency"] = docInfo.baseCurrency;
+        if (this.docInfo.isMultiCurrency) {
+            row.fields["ExchangeCurrency"] = this.docInfo.baseCurrency;
             row.fields["ExchangeRate"] = itemCurrBookRate;
         }
 
         return row;
 
     }
-    getAdjustmentTransactionsRows_ExRateAdj(docInfo, itemId, transactionsDate, exchRateAdj, itemExRateCurrent, texts) {
+    getAdjustmentTransactionsRows_ExRateAdj(itemId, transactionsDate, exchRateAdj, itemExRateCurrent, texts) {
 
         let row = {};
         row.operation = {};
@@ -256,7 +278,7 @@ var AdjustmentTransactionsManager = class AdjustmentTransactionsManager {
             row.fields["AccountDebit"] = getItemAccount(itemId, this.banDoc);
             row.fields["AccountCredit"] = this.savedAccountsParams.valueChangingcontraAccounts.unrealizedExRateGainAccount || texts.otherValChangeExRateIncomePlaceHolder;
         }
-        row.fields["ExchangeCurrency"] = docInfo.baseCurrency;
+        row.fields["ExchangeCurrency"] = this.docInfo.baseCurrency;
         row.fields["Amount"] = Banana.Converter.toInternalNumberFormat(exchRateAdj, ".");
 
         return row;
@@ -267,7 +289,7 @@ var AdjustmentTransactionsManager = class AdjustmentTransactionsManager {
      *  1) Price adjustment to align the security to its market price.
      *  2) FX adjustment to align the carrying amount to the closing exchange rate.
      */
-    calculateAdjustmentResults(docInfo, itemCurrentValues, itemCurrentQt, itemUnitMarketPrice, itemCurrBookRate, itemExRateCurrent) {
+    calculateAdjustmentResults(itemCurrentValues, itemCurrentQt, itemUnitMarketPrice, itemCurrBookRate, itemExRateCurrent) {
 
         let adjResults = [];
 
@@ -275,7 +297,7 @@ var AdjustmentTransactionsManager = class AdjustmentTransactionsManager {
             return adjResults;
 
         adjResults.push(this.calculateAdjustmentResults_PriceAdj(itemCurrentQt, itemCurrentValues.itemAvgCost, itemUnitMarketPrice));
-        if (docInfo.isMultiCurrency) {
+        if (this.docInfo.isMultiCurrency) {
             adjResults.push(this.calculateAdjustmentResults_ExRateAdj(itemCurrentQt, itemCurrentValues, itemUnitMarketPrice, itemCurrBookRate, itemExRateCurrent));
         }
         return adjResults;
@@ -344,13 +366,13 @@ var AdjustmentTransactionsManager = class AdjustmentTransactionsManager {
         }
     }
 
-    getItemCurrentValues(docInfo, itemRowObj, unitPriceColDecimals) {
+    getItemCurrentValues(itemRowObj, unitPriceColDecimals) {
 
         if (!itemRowObj || isObjectEmpty(itemRowObj))
             return "";
 
         const invalidRow = -1;
-        let itemCardData = getItemCardDataList(this.banDoc, docInfo, itemRowObj, unitPriceColDecimals, invalidRow);
+        let itemCardData = getItemCardDataList(this.banDoc, this.docInfo, itemRowObj, unitPriceColDecimals, invalidRow);
 
         if (!itemCardData || isObjectEmpty(itemCardData) || !itemCardData.currentValues)
             return "";
@@ -397,16 +419,18 @@ function settingsDialog(banDoc, dlgParams) {
     return true;
 }
 
-function initAdjustmentDialogParams(banDoc, itemsData) {
+function initAdjustmentDialogParams(banDoc, docInfo, itemsData) {
 
-    if (!banDoc)
+    if (!banDoc) {
         return;
+    }
 
     const unitPriceColSettings = banDoc.table("Items").column("UnitPriceCurrent", "Base");
     const exRateColSettings = banDoc.table("Transactions").column("ExchangeRate", "Base");
     let dialogParam = {};
     dialogParam.items = {};
     let mult = "";
+    let exRateCurr = "";
     // We want just the items that have a current unit price defined.
     itemsData.forEach(item => {
         if (item.unitPriceCurrent !== undefined && item.unitPriceCurrent !== null && item.unitPriceCurrent !== "") {
@@ -420,15 +444,18 @@ function initAdjustmentDialogParams(banDoc, itemsData) {
              * - if it is -1, the value is already correct;
              * - if it is 1, we calculate the inverse rate.
              */
-            mult = findFirstOccurencyMultiplierForCurr(banDoc, item.currency);
-            let currentExchangeRate = banDoc.exchangeRate(item.currency).exchangeRate;
-            if (mult.indexOf("-") == -1) {
-                dialogParam.items[item.item].exRateCurrent = Banana.Converter.toLocaleNumberFormat(
-                    Banana.SDecimal.divide(1, currentExchangeRate), exRateColSettings.decimal);
-            } else {
-                dialogParam.items[item.item].exRateCurrent = Banana.Converter.toLocaleNumberFormat(
-                    currentExchangeRate, exRateColSettings.decimal);
+            if (docInfo.isMultiCurrency) {
+                mult = findFirstOccurencyMultiplierForCurr(banDoc, item.currency);
+                let currentExchangeRate = banDoc.exchangeRate(item.currency).exchangeRate;
+                if (mult && mult.indexOf("-") == -1) {
+                    exRateCurr = Banana.Converter.toLocaleNumberFormat(
+                        Banana.SDecimal.divide(1, currentExchangeRate), exRateColSettings.decimal);
+                } else {
+                    exRateCurr = Banana.Converter.toLocaleNumberFormat(
+                        currentExchangeRate, exRateColSettings.decimal);
+                }
             }
+            dialogParam.items[item.item].exRateCurrent = exRateCurr;
         }
 
     });
@@ -469,11 +496,12 @@ function convertParam(banDoc, baseParams) {
         currentParam.parentObject = param;
         convertedParam.data.push(currentParam);
 
-        // Add the exchange rate row.
+        // Add the exchange rate row (only in multi-currencies files).
         var currentParam = {};
         currentParam.name = param; // item id.
         currentParam.title = texts.currentExRateDlg;
         currentParam.type = 'string';
+        currentParam.enabled = baseParams.items[param].exRateCurrent;
         currentParam.defaultvalue = "";
         currentParam.tooltip = texts.tooltipExrateDialog;
         currentParam.value = baseParams.items[param].exRateCurrent ? baseParams.items[param].exRateCurrent : '';
@@ -620,12 +648,12 @@ function getTransactionsTexts_en() {
     // Dialog texts
     texts.currentPriceDlg = "Current price";
     texts.currentExRateDlg = "Current exchange rate";
-    texts.operationDate = "Transaction date";
+    texts.operationDate = "Operation date";
 
     //tooltip
     texts.tooltipPriceDialog = "Enter the current market price for this security";
     texts.tooltipExrateDialog = "Enter the current exchange rate for the currency in which this security is denominated.";
-    texts.tooltipRefDateDialog = "Enter the transaction date.";
+    texts.tooltipRefDateDialog = "Enter the operation date.";
 
     return texts;
 

@@ -924,9 +924,9 @@ function getCurrentBookingRate(itemCurrValues) {
     const itemBaseBal = itemCurrValues.itemBalanceBase;
     const itemCurrBal = itemCurrValues.itemBalanceCurr;
     const multiplier = itemCurrValues.itemOpMultiplier;
-    if (multiplier.indexOf("-") == -1) {
+    if (multiplier && multiplier.indexOf("-") == -1) {
         return Banana.SDecimal.divide(itemCurrBal, itemBaseBal);
-    } else if (multiplier.indexOf("-") > -1) {
+    } else if (multiplier && multiplier.indexOf("-") > -1) {
         return Banana.SDecimal.divide(itemBaseBal, itemCurrBal);
     }
     return "";

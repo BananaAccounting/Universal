@@ -82,6 +82,7 @@ TestAdjustmentTransactions.prototype.testRecordSalesTransactions = function () {
  */
 function getTestData(banDoc) {
     let dlgAccountsSettingsId = "ch.banana.portfolio.accounting.accounts.dialog";
+    const docInfo = getDocumentInfo(banDoc);
 
     let itemsData = getItemsTableData(banDoc);
 
@@ -90,7 +91,7 @@ function getTestData(banDoc) {
 
     let savedMarketValuesParams = getUserParams();
 
-    const adjustmentTransactionsManager = new AdjustmentTransactionsManager(banDoc, itemsData,
+    const adjustmentTransactionsManager = new AdjustmentTransactionsManager(banDoc, docInfo, itemsData,
         savedMarketValuesParams, savedAccountsParams);
     return adjustmentTransactionsManager.getDocumentChangeObject();
 }
