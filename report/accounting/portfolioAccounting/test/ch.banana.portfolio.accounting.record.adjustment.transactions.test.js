@@ -91,7 +91,7 @@ function getTestData(banDoc) {
     let savedMarketValuesParams = getUserParams();
 
     const adjustmentTransactionsManager = new AdjustmentTransactionsManager(banDoc, itemsData,
-        savedMarketValuesParams, savedAccountsParams, true);
+        savedMarketValuesParams, savedAccountsParams);
     return adjustmentTransactionsManager.getDocumentChangeObject();
 }
 

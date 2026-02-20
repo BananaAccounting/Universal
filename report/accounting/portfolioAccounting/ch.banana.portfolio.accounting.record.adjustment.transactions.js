@@ -48,7 +48,6 @@ function exec() {
     }
 
     let itemsData = getItemsTableData(banDoc);
-    let decimals = banDoc.table("Items").column("UnitPriceCurrent", "Base");
 
     if (itemsData.length < 1) {
         let msg = getErrorMessage_MissingElements("NO_ASSETS_FOUND", "");
@@ -57,7 +56,7 @@ function exec() {
     }
 
     // Read data from Items table and prepare the dialog parameters
-    let dlgParams = initAdjustmentDialogParams(itemsData, decimals.decimal);
+    let dlgParams = initAdjustmentDialogParams(banDoc, itemsData);
 
     if (isObjectEmpty(dlgParams)) {
         let msg = getErrorMessage_MissingElements("NO_ASSET_WITH_CURRENT_PRICE", "");
@@ -70,26 +69,24 @@ function exec() {
 
     /** Recupero i parametri definiti dall'utente nel dialogo corrente e nel dialogo dei conti.*/
     let savedAccountsParams = getFormattedSavedParams(banDoc, dlgAccountsSettingsId);
-    savedAccountsParams = verifyAccountsParams(banDoc, savedAccountsParams);
+    //savedAccountsParams = verifyAccountsParams(banDoc, savedAccountsParams);
 
-    let savedMarketValuesParams = getFormattedSavedParams(banDoc, adjustmentSettingsId);
-    if (!savedMarketValuesParams || isObjectEmpty(savedMarketValuesParams))
+    let savedValuesParams = getFormattedSavedParams(banDoc, adjustmentSettingsId);
+    if (!savedValuesParams || isObjectEmpty(savedValuesParams))
         return "@Cancel";
 
     const adjustmentTransactionsManager = new AdjustmentTransactionsManager(banDoc, itemsData,
-        savedMarketValuesParams, savedAccountsParams, false);
+        savedValuesParams, savedAccountsParams);
     return adjustmentTransactionsManager.getDocumentChangeObject();
 }
 
 var AdjustmentTransactionsManager = class AdjustmentTransactionsManager {
-    constructor(banDoc, itemsData, savedMarketValuesParams, savedAccountsParams, isTest) {
+    constructor(banDoc, itemsData, savedValuesParams, savedAccountsParams) {
         this.banDoc = banDoc;
         this.itemsTableData = itemsData;
         this.docChangeObj = { "format": "documentChange", "error": "", "data": [] };
-        this.savedMarketValuesParams = savedMarketValuesParams;
+        this.savedValuesParams = savedValuesParams;
         this.savedAccountsParams = savedAccountsParams;
-        this.isTest = isTest;
-
     }
 
     getDocumentChangeObject() {
@@ -128,9 +125,9 @@ var AdjustmentTransactionsManager = class AdjustmentTransactionsManager {
      */
     getAdjustmentItemsRows() {
         let rows = [];
-        for (var key in this.savedMarketValuesParams) {
+        for (var key in this.savedValuesParams) {
             let itemId = key;
-            let dlgItemCurrentP = Banana.Converter.toInternalNumberFormat(this.savedMarketValuesParams[key]);
+            let dlgItemCurrentP = Banana.Converter.toInternalNumberFormat(this.savedValuesParams[key]);
             let objFound = this.itemsTableData.find(o => o.item === itemId);
             if (objFound) {
                 let tabItemsCurrentP = objFound.unitPriceCurrent || "";
@@ -181,67 +178,105 @@ var AdjustmentTransactionsManager = class AdjustmentTransactionsManager {
         let docInfo = getDocumentInfo(this.banDoc);
         let unitPriceColumn = this.banDoc.table("Transactions").column("UnitPrice", "Base");
         let unitPriceColDecimals = unitPriceColumn.decimal;
+        let transactionsDate = this.savedValuesParams.date;
 
-        for (const param in this.savedMarketValuesParams) {
+        for (const param in this.savedValuesParams.items) {
             let itemId = param;
             // User must use the locale format to enter the numbers in the dialog.
-            let itemUnitMarketValueLocale = this.savedMarketValuesParams[param];
-            let itemUnitMarketValue = Banana.Converter.toInternalNumberFormat(itemUnitMarketValueLocale);
-            let adjustmentResults = this.calculateAdjustmentResults(docInfo, itemId, itemUnitMarketValue, unitPriceColDecimals);
+            const itemUnitMarketPriceLocale = this.savedValuesParams.items[param].priceCurrent;
+            const itemExRateCurrentLocale = this.savedValuesParams.items[param].exRateCurrent;
+            const itemUnitMarketPrice = Banana.Converter.toInternalNumberFormat(itemUnitMarketPriceLocale);
+            const itemExRateCurrent = Banana.Converter.toInternalNumberFormat(itemExRateCurrentLocale);
+
+            // Get item card data.
+            const itemRowObj = getItemRowObj(itemId, this.banDoc);
+            const itemCurrentQt = itemRowObj.currentQt;
+            const itemCurrentValues = this.getItemCurrentValues(docInfo, itemRowObj, unitPriceColDecimals);
+            const itemCurrBookRate = getCurrentBookingRate(itemCurrentValues);
+
+            let adjustmentResults = this.calculateAdjustmentResults(docInfo, itemCurrentValues, itemCurrentQt, itemUnitMarketPrice, itemCurrBookRate, itemExRateCurrent);
             const priceAdj = adjustmentResults[0];
             const exchRateAdj = adjustmentResults[1];
 
             if (!priceAdj || Banana.SDecimal.isZero(priceAdj))
                 continue;
 
-            let currentDate = "";
-            if (!this.isTest)
-                currentDate = getCurrentDate();
-
-            let row = {};
-            row.operation = {};
-            row.operation.name = "add";
-            row.fields = {};
-            row.fields["Date"] = currentDate;
-            row.fields["Doc"] = "";
-            row.fields["ItemsId"] = itemId;
-            row.fields["Description"] = getItemDescription(itemId, this.banDoc) + " " + texts.adjustmentTxt + " (" + itemUnitMarketValueLocale + ")";
-            if (priceAdj.indexOf("-") >= 0) {
-                row.fields["AccountDebit"] = this.savedAccountsParams.valueChangingcontraAccounts.unrealizedLossAccount || texts.otherValChangeCostPlaceHolder;
-                row.fields["AccountCredit"] = getItemAccount(itemId, this.banDoc);
-            } else {
-                row.fields["AccountDebit"] = getItemAccount(itemId, this.banDoc);
-                row.fields["AccountCredit"] = this.savedAccountsParams.valueChangingcontraAccounts.unrealizedGainAccount || texts.otherValChangeIncomePlaceHolder;
+            rows.push(this.getAdjustmentTransactionsRows_PriceAdj(docInfo, itemId, transactionsDate, priceAdj, itemCurrBookRate, itemUnitMarketPriceLocale, texts));
+            if (docInfo.isMultiCurrency && exchRateAdj) {
+                rows.push(this.getAdjustmentTransactionsRows_ExRateAdj(docInfo, itemId, transactionsDate, exchRateAdj, itemExRateCurrent, texts));
             }
-            if (docInfo.isMultiCurrency)
-                row.fields["AmountCurrency"] = Banana.Converter.toInternalNumberFormat(priceAdj, ".");
-            else
-                row.fields["Amount"] = Banana.Converter.toInternalNumberFormat(priceAdj, ".");
-            if (docInfo.isMultiCurrency)
-                row.fields["ExchangeCurrency"] = getItemCurrency(itemId, this.banDoc);
-
-            rows.push(row);
         }
 
         return rows;
     }
+
+    getAdjustmentTransactionsRows_PriceAdj(docInfo, itemId, transactionsDate, priceAdj, itemCurrBookRate, itemUnitMarketPriceLocale, texts) {
+
+        let row = {};
+        row.operation = {};
+        row.operation.name = "add";
+        row.fields = {};
+        row.fields["Date"] = Banana.Converter.toInternalDateFormat(transactionsDate);
+        row.fields["Doc"] = "";
+        row.fields["ItemsId"] = itemId;
+        row.fields["Description"] = getItemDescription(itemId, this.banDoc) + " " + texts.priceAdjustmentTxt + " (" + itemUnitMarketPriceLocale + ")";
+        if (priceAdj.indexOf("-") >= 0) {
+            row.fields["AccountDebit"] = this.savedAccountsParams.valueChangingcontraAccounts.unrealizedLossAccount || texts.otherValChangeCostPlaceHolder;
+            row.fields["AccountCredit"] = getItemAccount(itemId, this.banDoc);
+        } else {
+            row.fields["AccountDebit"] = getItemAccount(itemId, this.banDoc);
+            row.fields["AccountCredit"] = this.savedAccountsParams.valueChangingcontraAccounts.unrealizedGainAccount || texts.otherValChangeIncomePlaceHolder;
+        }
+        if (docInfo.isMultiCurrency)
+            row.fields["AmountCurrency"] = Banana.Converter.toInternalNumberFormat(priceAdj, ".");
+        else
+            row.fields["Amount"] = Banana.Converter.toInternalNumberFormat(priceAdj, ".");
+        if (docInfo.isMultiCurrency) {
+            row.fields["ExchangeCurrency"] = docInfo.baseCurrency;
+            row.fields["ExchangeRate"] = itemCurrBookRate;
+        }
+
+        return row;
+
+    }
+    getAdjustmentTransactionsRows_ExRateAdj(docInfo, itemId, transactionsDate, exchRateAdj, itemExRateCurrent, texts) {
+
+        let row = {};
+        row.operation = {};
+        row.operation.name = "add";
+        row.fields = {};
+        row.fields["Date"] = Banana.Converter.toInternalDateFormat(transactionsDate);
+        row.fields["Doc"] = "";
+        row.fields["ItemsId"] = itemId;
+        row.fields["Description"] = getItemDescription(itemId, this.banDoc) + " " + texts.exRateAdjustmentTxt + " (" + itemExRateCurrent + ")";
+        if (exchRateAdj.indexOf("-") >= 0) {
+            row.fields["AccountDebit"] = this.savedAccountsParams.valueChangingcontraAccounts.unrealizedExRateLossAccount || texts.otherValChangeExRateCostPlaceHolder;
+            row.fields["AccountCredit"] = getItemAccount(itemId, this.banDoc);
+        } else {
+            row.fields["AccountDebit"] = getItemAccount(itemId, this.banDoc);
+            row.fields["AccountCredit"] = this.savedAccountsParams.valueChangingcontraAccounts.unrealizedExRateGainAccount || texts.otherValChangeExRateIncomePlaceHolder;
+        }
+        row.fields["ExchangeCurrency"] = docInfo.baseCurrency;
+        row.fields["Amount"] = Banana.Converter.toInternalNumberFormat(exchRateAdj, ".");
+
+        return row;
+    }
+
     /**
      * A year-end valuation adjustment normally consists of two entries:
      *  1) Price adjustment to align the security to its market price.
      *  2) FX adjustment to align the carrying amount to the closing exchange rate.
      */
-    calculateAdjustmentResults(docInfo, itemId, itemUnitMarketPrice, unitPriceColDecimals) {
-        const itemRowObj = getItemRowObj(itemId, this.banDoc);
-        const itemCurrentQt = itemRowObj.currentQt;
-        const itemCurrentValues = this.getItemCurrentValues(docInfo, itemRowObj, unitPriceColDecimals);
+    calculateAdjustmentResults(docInfo, itemCurrentValues, itemCurrentQt, itemUnitMarketPrice, itemCurrBookRate, itemExRateCurrent) {
+
         let adjResults = [];
 
         if (!itemCurrentValues)
             return adjResults;
 
         adjResults.push(this.calculateAdjustmentResults_PriceAdj(itemCurrentQt, itemCurrentValues.itemAvgCost, itemUnitMarketPrice));
-        if (docInfo.isMultiCurrency && (1 == 2)) {
-            adjResults.push(this.calculateAdjustmentResults_ExchRateAdj(itemCurrentQt, itemCurrentValues));
+        if (docInfo.isMultiCurrency) {
+            adjResults.push(this.calculateAdjustmentResults_ExRateAdj(itemCurrentQt, itemCurrentValues, itemUnitMarketPrice, itemCurrBookRate, itemExRateCurrent));
         }
         return adjResults;
     }
@@ -291,19 +326,19 @@ var AdjustmentTransactionsManager = class AdjustmentTransactionsManager {
      * from the exchange rate movement.
      * @itemCurrentQt Actual Item current quanity.
      * @itemCurrentValues Actual Item current values taken from the Item card.
+     * @itemCurrBookRate Actual book rate of the item (calculated based on current balances)
      */
-    calculateAdjustmentResults_ExchRateAdj(itemCurrentQt, itemCurrentValues) {
-        const marketPrice = Banana.SDecimal.multiply(itemCurrentValues.itemAvgCost, itemCurrentQt);
-        const bookRate = getCurrentBookingRate(itemCurrentValues);
+    calculateAdjustmentResults_ExRateAdj(itemCurrentQt, itemCurrentValues, itemUnitMarketPrice, itemCurrBookRate, itemExRateCurrent) {
+        const marketValue = Banana.SDecimal.multiply(itemUnitMarketPrice, itemCurrentQt);
         const mult = itemCurrentValues.itemOpMultiplier;
         if (mult && mult.indexOf("-") > -1) {
             return Banana.SDecimal.subtract
-                (Banana.SDecimal.multiply(marketPrice, closingRate),
-                    Banana.SDecimal.multiply(marketPrice, bookRate));
+                (Banana.SDecimal.multiply(marketValue, itemExRateCurrent),
+                    Banana.SDecimal.multiply(marketValue, itemCurrBookRate));
         } else if (mult && mult.indexOf("-") == -1) {
             return Banana.SDecimal.subtract
-                (Banana.SDecimal.divide(marketPrice, closingRate),
-                    Banana.SDecimal.divide(marketPrice, bookRate));
+                (Banana.SDecimal.divide(marketValue, itemExRateCurrent),
+                    Banana.SDecimal.divide(marketValue, itemCurrBookRate));
         } else {
             return Banana.Converter.toLocaleNumberFormat("0.00"); //... No multiplier ? (In future in income/expenses accounting ?)
         }
@@ -362,15 +397,43 @@ function settingsDialog(banDoc, dlgParams) {
     return true;
 }
 
-function initAdjustmentDialogParams(itemsData, decimals) {
+function initAdjustmentDialogParams(banDoc, itemsData) {
+
+    if (!banDoc)
+        return;
+
+    const unitPriceColSettings = banDoc.table("Items").column("UnitPriceCurrent", "Base");
+    const exRateColSettings = banDoc.table("Transactions").column("ExchangeRate", "Base");
     let dialogParam = {};
+    dialogParam.items = {};
+    let mult = "";
     // We want just the items that have a current unit price defined.
     itemsData.forEach(item => {
         if (item.unitPriceCurrent !== undefined && item.unitPriceCurrent !== null && item.unitPriceCurrent !== "") {
-            dialogParam[item.item] = Banana.Converter.toLocaleNumberFormat(item.unitPriceCurrent, decimals) || "";
+            dialogParam.items[item.item] = {};
+            dialogParam.items[item.item].priceCurrent = Banana.Converter.toLocaleNumberFormat(item.unitPriceCurrent, unitPriceColSettings.decimal) || "";
+            /*
+             * We use Banana.Document.exchangeRate to get the default rate,
+             * which already includes the multiplier.
+             * To display it in the same direction defined by the user in the
+             * exchange rates table, we check the multiplier:
+             * - if it is -1, the value is already correct;
+             * - if it is 1, we calculate the inverse rate.
+             */
+            mult = findFirstOccurencyMultiplierForCurr(banDoc, item.currency);
+            let currentExchangeRate = banDoc.exchangeRate(item.currency).exchangeRate;
+            if (mult.indexOf("-") == -1) {
+                dialogParam.items[item.item].exRateCurrent = Banana.Converter.toLocaleNumberFormat(
+                    Banana.SDecimal.divide(1, currentExchangeRate), exRateColSettings.decimal);
+            } else {
+                dialogParam.items[item.item].exRateCurrent = Banana.Converter.toLocaleNumberFormat(
+                    currentExchangeRate, exRateColSettings.decimal);
+            }
         }
 
     });
+
+    dialogParam.date = getCurrentDate();
 
     return dialogParam;
 }
@@ -381,20 +444,58 @@ function convertParam(banDoc, baseParams) {
     convertedParam.data = [];
     let texts = getTransactionsTexts(banDoc);
 
-    for (const param in baseParams) {
+    for (const param in baseParams.items) {
+
+        // Create a group for each item
+        var currentParam = {};
         let itemDescription = getItemDescription(param, banDoc);
+        currentParam.name = param;
+        currentParam.title = itemDescription;
+        currentParam.editable = false;
+
+        convertedParam.data.push(currentParam);
+
+        // Add the price row.
         var currentParam = {};
         currentParam.name = param; // item id.
-        currentParam.title = itemDescription;
+        currentParam.title = texts.currentPriceDlg;
         currentParam.type = 'string';
         currentParam.defaultvalue = "";
-        currentParam.tooltip = texts.tooltipdialog;
-        currentParam.value = baseParams[param] ? baseParams[param] : '';
+        currentParam.tooltip = texts.tooltipPriceDialog;
+        currentParam.value = baseParams.items[param].priceCurrent ? baseParams.items[param].priceCurrent : '';
         currentParam.readValue = function () {
-            baseParams[param] = this.value;
+            baseParams.items[param].priceCurrent = this.value;
         }
+        currentParam.parentObject = param;
+        convertedParam.data.push(currentParam);
+
+        // Add the exchange rate row.
+        var currentParam = {};
+        currentParam.name = param; // item id.
+        currentParam.title = texts.currentExRateDlg;
+        currentParam.type = 'string';
+        currentParam.defaultvalue = "";
+        currentParam.tooltip = texts.tooltipExrateDialog;
+        currentParam.value = baseParams.items[param].exRateCurrent ? baseParams.items[param].exRateCurrent : '';
+        currentParam.readValue = function () {
+            baseParams.items[param].exRateCurrent = this.value;
+        }
+        currentParam.parentObject = param;
         convertedParam.data.push(currentParam);
     }
+
+    // Add current date row
+    var currentParam = {};
+    currentParam.name = 'Date';
+    currentParam.title = texts.operationDate;
+    currentParam.type = 'date';
+    currentParam.defaultvalue = "";
+    currentParam.tooltip = texts.tooltipRefDateDialog;
+    currentParam.value = baseParams.date ? baseParams.date : '';
+    currentParam.readValue = function () {
+        baseParams.date = this.value;
+    }
+    convertedParam.data.push(currentParam);
 
     return convertedParam;
 }
@@ -427,14 +528,24 @@ function getTransactionsTexts_it() {
     let texts = {};
 
     // Normal texts
-    texts.adjustmentTxt = "Assestamento al prezzo di mercato";
+    texts.priceAdjustmentTxt = "Assestamento al prezzo di mercato";
+    texts.exRateAdjustmentTxt = "Assestamento al tasso di cambio alla data di valutazione";
 
     // Placeholder for accounts
     texts.otherValChangeIncomePlaceHolder = "[Conto per utili non realizzati]";
     texts.otherValChangeCostPlaceHolder = "[Conto per perdite non realizzate]";
+    texts.otherValChangeExRateIncomePlaceHolder = "[Conto per utili di cambio non realizzati]";
+    texts.otherValChangeExRateCostPlaceHolder = "[Conto per perdite di cambio non realizzate]";
 
-    // tooltips
-    texts.tooltipdialog = "Inserire il prezzo di mercato attuale per questo titolo";
+    // Dialog texts
+    texts.currentPriceDlg = "Prezzo corrente";
+    texts.currentExRateDlg = "Tasso di cambio corrente";
+    texts.operationDate = "Data dell’operazione";
+
+    // Dialog tooltips
+    texts.tooltipPriceDialog = "Inserire il prezzo di mercato attuale per questo titolo";
+    texts.tooltipExrateDialog = "Inserire il tasso di cambio corrente della valuta in cui è espresso questo titolo.";
+    texts.tooltipRefDateDialog = "Inserire la data dell'operazione";
 
     return texts;
 }
@@ -443,14 +554,24 @@ function getTransactionsTexts_de() {
     let texts = {};
 
     // Normal texts
-    texts.adjustmentTxt = "Anpassung zum Marktpreis";
+    texts.priceAdjustmentTxt = "Anpassung zum Marktpreis";
+    texts.exRateAdjustmentTxt = "Anpassung zum Wechselkurs am Bewertungsdatum";
 
     // Placeholder for accounts
     texts.otherValChangeIncomePlaceHolder = "[Konto für unrealisierte Gewinne]";
     texts.otherValChangeCostPlaceHolder = "[Konto für unrealisierte Verluste]";
+    texts.otherValChangeExRateIncomePlaceHolder = "[Konto für nicht realisierte Wechselkursgewinne]";
+    texts.otherValChangeExRateCostPlaceHolder = "[Konto für nicht realisierte Wechselkursverluste]";
+
+    // Dialog texts
+    texts.currentPriceDlg = "Aktueller Preis";
+    texts.currentExRateDlg = "Aktueller Wechselkurs";
+    texts.operationDate = "Buchungsdatum";
 
     // Tooltip
-    texts.tooltipdialog = "Geben Sie den aktuellen Marktpreis für dieses Wertpapier ein";
+    texts.tooltipPriceDialog = "Geben Sie den aktuellen Marktpreis für dieses Wertpapier ein";
+    texts.tooltipExrateDialog = "Geben Sie den aktuellen Wechselkurs der Währung ein, in der dieses Wertpapier denominiert ist.";
+    texts.tooltipRefDateDialog = "Geben Sie das Buchungsdatum ein.";
 
 
     return texts;
@@ -460,14 +581,24 @@ function getTransactionsTexts_fr() {
     let texts = {};
 
     // Normal texts
-    texts.adjustmentTxt = "Ajustement au prix du marché";
+    texts.priceAdjustmentTxt = "Ajustement au prix du marché";
+    texts.exRateAdjustmentTxt = "Ajustement au taux de change à la date d’évaluation";
 
     // Placeholder for accounts
     texts.otherValChangeIncomePlaceHolder = "[Compte pour les gains latents]";
     texts.otherValChangeCostPlaceHolder = "[Compte pour les pertes latentes]";
+    texts.otherValChangeExRateIncomePlaceHolder = "[Compte pour gains de change non réalisés]";
+    texts.otherValChangeExRateCostPlaceHolder = "[Compte pour pertes de change non réalisées]";
+
+    // Dialog texts
+    texts.currentPriceDlg = "Prix actuel";
+    texts.currentExRateDlg = "Taux de change actuel";
+    texts.operationDate = "Date de l’opération";
 
     // tooltip
-    texts.tooltipdialog = "Saisissez le prix du marché actuel pour ce titre";
+    texts.tooltipPriceDialog = "Saisissez le prix du marché actuel pour ce titre";
+    texts.tooltipExrateDialog = "Saisissez le taux de change actuel de la devise dans laquelle ce titre est libellé.";
+    texts.tooltipRefDateDialog = "Saisissez la date de l’opération.";
 
     return texts;
 }
@@ -476,14 +607,25 @@ function getTransactionsTexts_en() {
     let texts = {};
 
     // Normal texts
-    texts.adjustmentTxt = "Market Price Adjustment";
+    texts.priceAdjustmentTxt = "Market Price Adjustment";
+    texts.exRateAdjustmentTxt = "Adjustment at exchange rate on valuation date";
+
 
     // Placeholder for accounts
     texts.otherValChangeIncomePlaceHolder = "[Account for unrealized gains]";
     texts.otherValChangeCostPlaceHolder = "[Account for unrealized losses]";
+    texts.otherValChangeExRateIncomePlaceHolder = "[Account for unrealized foreign exchange gains]";
+    texts.otherValChangeExRateCostPlaceHolder = "[Account for unrealized foreign exchange losses]";
+
+    // Dialog texts
+    texts.currentPriceDlg = "Current price";
+    texts.currentExRateDlg = "Current exchange rate";
+    texts.operationDate = "Transaction date";
 
     //tooltip
-    texts.tooltipdialog = "Enter the current market price for this security";
+    texts.tooltipPriceDialog = "Enter the current market price for this security";
+    texts.tooltipExrateDialog = "Enter the current exchange rate for the currency in which this security is denominated.";
+    texts.tooltipRefDateDialog = "Enter the transaction date.";
 
     return texts;
 
