@@ -54,16 +54,16 @@ function exec() {
     if (itemsData.length < 1) {
         let msg = getErrorMessage_MissingElements("NO_ASSETS_FOUND", "");
         banDoc.addMessage(msg, getErrorMessageReferenceAnchor());
-        return false;
+        return "@Cancel";
     }
 
     // Read data from Items table and prepare the dialog parameters
     let dlgParams = initAdjustmentDialogParams(banDoc, docInfo, itemsData);
 
-    if (isObjectEmpty(dlgParams)) {
+    if (isObjectEmpty(dlgParams.items)) {
         let msg = getErrorMessage_MissingElements("NO_ASSET_WITH_CURRENT_PRICE", "");
         banDoc.addMessage(msg, getErrorMessageReferenceAnchor());
-        return false;
+        return "@Cancel";
     }
 
     if (!settingsDialog(banDoc, dlgParams))
@@ -223,16 +223,16 @@ var AdjustmentTransactionsManager = class AdjustmentTransactionsManager {
             if (!priceAdj || Banana.SDecimal.isZero(priceAdj))
                 continue;
 
-            rows.push(this.getAdjustmentTransactionsRows_PriceAdj(itemId, transactionsDate, priceAdj, itemCurrBookRate, itemUnitMarketPriceLocale, texts));
+            rows.push(this.getAdjustmentTransactionsRows_PriceAdj(itemRowObj, transactionsDate, priceAdj, itemCurrBookRate, itemUnitMarketPriceLocale, texts));
             if (this.docInfo.isMultiCurrency && exchRateAdj && !Banana.SDecimal.isZero(exchRateAdj)) {
-                rows.push(this.getAdjustmentTransactionsRows_ExRateAdj(itemId, transactionsDate, exchRateAdj, itemExRateCurrent, texts));
+                rows.push(this.getAdjustmentTransactionsRows_ExRateAdj(itemRowObj, transactionsDate, exchRateAdj, itemExRateCurrent, texts));
             }
         }
 
         return rows;
     }
 
-    getAdjustmentTransactionsRows_PriceAdj(itemId, transactionsDate, priceAdj, itemCurrBookRate, itemUnitMarketPriceLocale, texts) {
+    getAdjustmentTransactionsRows_PriceAdj(itemRowObj, transactionsDate, priceAdj, itemCurrBookRate, itemUnitMarketPriceLocale, texts) {
 
         let row = {};
         row.operation = {};
@@ -240,13 +240,13 @@ var AdjustmentTransactionsManager = class AdjustmentTransactionsManager {
         row.fields = {};
         row.fields["Date"] = Banana.Converter.toInternalDateFormat(transactionsDate);
         row.fields["Doc"] = "";
-        row.fields["ItemsId"] = itemId;
-        row.fields["Description"] = getItemDescription(itemId, this.banDoc) + " " + texts.priceAdjustmentTxt + " (" + itemUnitMarketPriceLocale + ")";
+        row.fields["ItemsId"] = itemRowObj.item;
+        row.fields["Description"] = itemRowObj.description + " " + texts.priceAdjustmentTxt + " (" + itemUnitMarketPriceLocale + ")";
         if (priceAdj.indexOf("-") >= 0) {
             row.fields["AccountDebit"] = this.savedAccountsParams.valueChangingcontraAccounts.unrealizedLossAccount || texts.otherValChangeCostPlaceHolder;
-            row.fields["AccountCredit"] = getItemAccount(itemId, this.banDoc);
+            row.fields["AccountCredit"] = itemRowObj.account;
         } else {
-            row.fields["AccountDebit"] = getItemAccount(itemId, this.banDoc);
+            row.fields["AccountDebit"] = itemRowObj.account;
             row.fields["AccountCredit"] = this.savedAccountsParams.valueChangingcontraAccounts.unrealizedGainAccount || texts.otherValChangeIncomePlaceHolder;
         }
         if (this.docInfo.isMultiCurrency)
@@ -254,14 +254,14 @@ var AdjustmentTransactionsManager = class AdjustmentTransactionsManager {
         else
             row.fields["Amount"] = Banana.Converter.toInternalNumberFormat(priceAdj, ".");
         if (this.docInfo.isMultiCurrency) {
-            row.fields["ExchangeCurrency"] = this.docInfo.baseCurrency;
+            row.fields["ExchangeCurrency"] = itemRowObj.currency;
             row.fields["ExchangeRate"] = itemCurrBookRate;
         }
 
         return row;
 
     }
-    getAdjustmentTransactionsRows_ExRateAdj(itemId, transactionsDate, exchRateAdj, itemExRateCurrent, texts) {
+    getAdjustmentTransactionsRows_ExRateAdj(itemRowObj, transactionsDate, exchRateAdj, itemExRateCurrent, texts) {
 
         let row = {};
         row.operation = {};
@@ -269,13 +269,13 @@ var AdjustmentTransactionsManager = class AdjustmentTransactionsManager {
         row.fields = {};
         row.fields["Date"] = Banana.Converter.toInternalDateFormat(transactionsDate);
         row.fields["Doc"] = "";
-        row.fields["ItemsId"] = itemId;
-        row.fields["Description"] = getItemDescription(itemId, this.banDoc) + " " + texts.exRateAdjustmentTxt + " (" + itemExRateCurrent + ")";
+        row.fields["ItemsId"] = itemRowObj.item;
+        row.fields["Description"] = itemRowObj.description + " " + texts.exRateAdjustmentTxt + " (" + itemExRateCurrent + ")";
         if (exchRateAdj.indexOf("-") >= 0) {
             row.fields["AccountDebit"] = this.savedAccountsParams.valueChangingcontraAccounts.unrealizedExRateLossAccount || texts.otherValChangeExRateCostPlaceHolder;
-            row.fields["AccountCredit"] = getItemAccount(itemId, this.banDoc);
+            row.fields["AccountCredit"] = itemRowObj.account;
         } else {
-            row.fields["AccountDebit"] = getItemAccount(itemId, this.banDoc);
+            row.fields["AccountDebit"] = itemRowObj.account;
             row.fields["AccountCredit"] = this.savedAccountsParams.valueChangingcontraAccounts.unrealizedExRateGainAccount || texts.otherValChangeExRateIncomePlaceHolder;
         }
         row.fields["ExchangeCurrency"] = this.docInfo.baseCurrency;
@@ -353,6 +353,13 @@ var AdjustmentTransactionsManager = class AdjustmentTransactionsManager {
     calculateAdjustmentResults_ExRateAdj(itemCurrentQt, itemCurrentValues, itemUnitMarketPrice, itemCurrBookRate, itemExRateCurrent) {
         const marketValue = Banana.SDecimal.multiply(itemUnitMarketPrice, itemCurrentQt);
         const mult = itemCurrentValues.itemOpMultiplier;
+        /*Banana.console.debug("**inizio***");
+        Banana.console.debug("mult: " + marketValue);
+        Banana.console.debug("mult: " + mult);
+        Banana.console.debug("itemUnitMarketPrice: " + itemUnitMarketPrice);
+        Banana.console.debug("itemCurrBookRate: " + itemCurrBookRate);
+        Banana.console.debug("itemExRateCurrent: " + itemExRateCurrent);
+        Banana.console.debug("**fine***");*/
         if (mult && mult.indexOf("-") > -1) {
             return Banana.SDecimal.subtract
                 (Banana.SDecimal.multiply(marketValue, itemExRateCurrent),
@@ -437,8 +444,10 @@ function initAdjustmentDialogParams(banDoc, docInfo, itemsData) {
             dialogParam.items[item.item] = {};
             dialogParam.items[item.item].priceCurrent = Banana.Converter.toLocaleNumberFormat(item.unitPriceCurrent, unitPriceColSettings.decimal) || "";
             /*
-             * We use Banana.Document.exchangeRate to get the default rate,
-             * which already includes the multiplier.
+             * We use Banana.Document.exchangeRate to retrieve the default rate (without a date),
+             * which already includes the multiplier. This must be the same rate used in the Items
+             * table to calculate ValueCurrent in the base currency; otherwise, the item's
+             * ValueCurrent and the account balance will not match, even after the adjustments.
              * To display it in the same direction defined by the user in the
              * exchange rates table, we check the multiplier:
              * - if it is -1, the value is already correct;

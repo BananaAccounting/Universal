@@ -89,20 +89,10 @@ function getTestData(banDoc) {
     let savedAccountsParams = getFormattedSavedParams(banDoc, dlgAccountsSettingsId);
     savedAccountsParams = verifyAccountsParams(banDoc, savedAccountsParams);
 
-    let savedMarketValuesParams = getUserParams();
+    let savedMarketValuesParams = initAdjustmentDialogParams(banDoc, docInfo, itemsData);
+    savedMarketValuesParams.date = ""; // we dont want to test the date as would change each time.
 
     const adjustmentTransactionsManager = new AdjustmentTransactionsManager(banDoc, docInfo, itemsData,
         savedMarketValuesParams, savedAccountsParams);
     return adjustmentTransactionsManager.getDocumentChangeObject();
-}
-
-function getUserParams() {
-    params = {};
-    params["CH003886335"] = "12.8001";
-    params["CH002775224"] = "5.9998";
-    params["IT0005239360"] = "9.5000";
-    params["US123456789"] = "11.5562";
-    params["IT000792468"] = "1.0250";
-    return params;
-
 }
