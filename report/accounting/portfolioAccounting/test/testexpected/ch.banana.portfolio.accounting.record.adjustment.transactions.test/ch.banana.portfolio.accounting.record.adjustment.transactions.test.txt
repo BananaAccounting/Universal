@@ -60,6 +60,7 @@
                                                 "Description": "Shares UBS Market Price Adjustment (12.8001)",
                                                 "Doc": "",
                                                 "ExchangeCurrency": "CHF",
+                                                "ExchangeRate": "",
                                                 "ItemsId": "CH003886335"
                                             },
                                             "operation": {
@@ -75,6 +76,7 @@
                                                 "Description": "Shares BancaStato Market Price Adjustment (5.9998)",
                                                 "Doc": "",
                                                 "ExchangeCurrency": "CHF",
+                                                "ExchangeRate": "",
                                                 "ItemsId": "CH002775224"
                                             },
                                             "operation": {
@@ -90,6 +92,7 @@
                                                 "Description": "Shares Unicredit Market Price Adjustment (9.5000)",
                                                 "Doc": "",
                                                 "ExchangeCurrency": "EUR",
+                                                "ExchangeRate": "1.1",
                                                 "ItemsId": "IT0005239360"
                                             },
                                             "operation": {
@@ -105,6 +108,7 @@
                                                 "Description": "Shares Netflix Market Price Adjustment (11.5562)",
                                                 "Doc": "",
                                                 "ExchangeCurrency": "USD",
+                                                "ExchangeRate": "0.95",
                                                 "ItemsId": "US123456789"
                                             },
                                             "operation": {
@@ -120,6 +124,7 @@
                                                 "Description": "Bonds Bnp Paribas Market Price Adjustment (1.0250)",
                                                 "Doc": "",
                                                 "ExchangeCurrency": "EUR",
+                                                "ExchangeRate": "1.1",
                                                 "ItemsId": "IT000792468"
                                             },
                                             "operation": {
