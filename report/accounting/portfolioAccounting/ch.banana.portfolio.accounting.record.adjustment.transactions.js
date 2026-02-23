@@ -79,7 +79,9 @@ function exec() {
 
     const adjustmentTransactionsManager = new AdjustmentTransactionsManager(banDoc, docInfo, itemsData,
         savedValuesParams, savedAccountsParams);
-    return adjustmentTransactionsManager.getDocumentChangeObject();
+    const obj = adjustmentTransactionsManager.getDocumentChangeObject();
+    Banana.Ui.showText(JSON.stringify(obj));
+    return obj;
 }
 
 var AdjustmentTransactionsManager = class AdjustmentTransactionsManager {
