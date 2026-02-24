@@ -92,6 +92,19 @@ TestAdjustmentTransactions.prototype.testRecordSalesTransactions = function () {
     docChange = getTestData(banDoc);
     this.testLogger.addSection("Adjustment transactions document change 2.");
     this.testLogger.addJson("Doc Change object", JSON.stringify(docChange));
+
+    /** Test 3
+     * Generate adjustment transactions, single currency file.
+     * The current data is:
+     * - CH003886335: Book value: 11.00, Market value: 12.10, Qt 5, -> price un.profit
+     * - CH012775214: Book value: 10.00, Market value: 9.15, Qt 50, price un.loss
+ */
+    fileName = "file:script/../test/testcases/portfolio_accounting_double_entry_tutorial_adjustmenttest_2026.ac2";
+    banDoc = Banana.application.openDocument(fileName);
+    Test.assert(banDoc);
+    docChange = getTestData(banDoc);
+    this.testLogger.addSection("Adjustment transactions document change 3.");
+    this.testLogger.addJson("Doc Change object", JSON.stringify(docChange));
 }
 
 function getTestData(banDoc) {

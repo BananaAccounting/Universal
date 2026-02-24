@@ -237,6 +237,78 @@
     "format": "documentChange"
 }
 \end{jsonvalue}
+\section{Adjustment transactions document change 3.}
+\begin{jsonvalue}{Doc Change object}
+{
+    "data": [
+        {
+            "creator": {
+                "name": "ch.banana.portfolio.accounting.record.adjustment.transactions.test",
+                "version": "1.0"
+            },
+            "document": {
+                "cursorPosition": {
+                },
+                "dataUnits": [
+                    {
+                        "data": {
+                            "rowLists": [
+                                {
+                                    "rows": [
+                                    ]
+                                }
+                            ]
+                        },
+                        "nameXml": "Items"
+                    },
+                    {
+                        "data": {
+                            "rowLists": [
+                                {
+                                    "rows": [
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "[Account for unrealized gains]",
+                                                "AccountDebit": "Shares",
+                                                "Amount": "5.50000000",
+                                                "Date": "",
+                                                "Description": "Shares UBS Market Price Adjustment (12.1000)",
+                                                "Doc": "",
+                                                "ItemsId": "CH003886335"
+                                            },
+                                            "operation": {
+                                                "name": "add"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "Shares",
+                                                "AccountDebit": "[Account for unrealized losses]",
+                                                "Amount": "-42.50000000",
+                                                "Date": "",
+                                                "Description": "Shares Nestlè Market Price Adjustment (9.1500)",
+                                                "Doc": "",
+                                                "ItemsId": "CH012775214"
+                                            },
+                                            "operation": {
+                                                "name": "add"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        "nameXml": "Transactions"
+                    }
+                ],
+                "dataUnitsfileVersion": "1.0.0"
+            }
+        }
+    ],
+    "error": "",
+    "format": "documentChange"
+}
+\end{jsonvalue}
 \keyvalue{Result}{Passed}
 \end{test}
 \end{testcase}
