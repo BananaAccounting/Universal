@@ -81,6 +81,7 @@ TestAdjustmentTransactions.prototype.testRecordSalesTransactions = function () {
     this.testLogger.addJson("Doc Change object", JSON.stringify(docChange));
 
     /** Test 2
+     * !!! This test could give differences if runned with a Banana version lower than: 10.2.6.65535 as a different API method is used. !!!
      * Generate adjustment transactions. 
      * The current data is:
      * - QQQ: Book value: 400.00, Market value: 380.00, Qt 50, Acc ExRate: 1.42, Actual ExRate: 1.175  -> price un.loss, ExRate profit
