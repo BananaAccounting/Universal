@@ -438,7 +438,6 @@ function initAdjustmentDialogParams(banDoc, docInfo, itemsData) {
     const exRateColSettings = banDoc.table("Transactions").column("ExchangeRate", "Base");
     let dialogParam = {};
     dialogParam.items = {};
-    let mult = "";
     let exRateCurr = "";
     // We want just the items that have a current unit price defined.
     itemsData.forEach(item => {
@@ -450,21 +449,10 @@ function initAdjustmentDialogParams(banDoc, docInfo, itemsData) {
              * which already includes the multiplier. This must be the same rate used in the Items
              * table to calculate ValueCurrent in the base currency; otherwise, the item's
              * ValueCurrent and the account balance will not match, even after the adjustments.
-             * To display it in the same direction defined by the user in the
-             * exchange rates table, we check the multiplier:
-             * - if it is -1, the value is already correct;
-             * - if it is 1, we calculate the inverse rate.
              */
             if (docInfo.isMultiCurrency) {
-                mult = findFirstOccurencyMultiplierForCurr(banDoc, item.currency);
-                let currentExchangeRate = banDoc.exchangeRate(item.currency).exchangeRate;
-                if (mult && mult.indexOf("-") == -1) {
-                    exRateCurr = Banana.Converter.toLocaleNumberFormat(
-                        Banana.SDecimal.divide(1, currentExchangeRate), exRateColSettings.decimal);
-                } else {
-                    exRateCurr = Banana.Converter.toLocaleNumberFormat(
-                        currentExchangeRate, exRateColSettings.decimal);
-                }
+                let currentExchangeRate = banDoc.exchangeRateRaw(item.currency).exchangeRate;
+                exRateCurr = Banana.Converter.toLocaleNumberFormat(currentExchangeRate, exRateColSettings.decimal);
             }
             dialogParam.items[item.item].exRateCurrent = exRateCurr;
         }
