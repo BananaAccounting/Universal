@@ -1,4 +1,4 @@
-// Copyright [2025] [Banana.ch SA - Lugano Switzerland]
+// Copyright [2026] [Banana.ch SA - Lugano Switzerland]
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@
 // @task = app.command
 // @doctype = 100.*
 // @publisher = Banana.ch SA
-// @pubdate = 2025-11-27
+// @pubdate = 2026-02-24
 // @inputdatasource = none
 // @timeout = -1
 // @includejs = ch.banana.portfolio.accounting.accounts.dialog.js
@@ -354,13 +354,6 @@ var AdjustmentTransactionsManager = class AdjustmentTransactionsManager {
     calculateAdjustmentResults_ExRateAdj(itemCurrentQt, itemCurrentValues, itemUnitMarketPrice, itemCurrBookRate, itemExRateCurrent) {
         const marketValue = Banana.SDecimal.multiply(itemUnitMarketPrice, itemCurrentQt);
         const mult = itemCurrentValues.itemOpMultiplier;
-        /*Banana.console.debug("**inizio***");
-        Banana.console.debug("mult: " + marketValue);
-        Banana.console.debug("mult: " + mult);
-        Banana.console.debug("itemUnitMarketPrice: " + itemUnitMarketPrice);
-        Banana.console.debug("itemCurrBookRate: " + itemCurrBookRate);
-        Banana.console.debug("itemExRateCurrent: " + itemExRateCurrent);
-        Banana.console.debug("**fine***");*/
         if (mult && mult.indexOf("-") > -1) {
             return Banana.SDecimal.subtract
                 (Banana.SDecimal.multiply(marketValue, itemExRateCurrent),
@@ -443,14 +436,8 @@ function initAdjustmentDialogParams(banDoc, docInfo, itemsData) {
         if (item.unitPriceCurrent !== undefined && item.unitPriceCurrent !== null && item.unitPriceCurrent !== "") {
             dialogParam.items[item.item] = {};
             dialogParam.items[item.item].priceCurrent = Banana.Converter.toLocaleNumberFormat(item.unitPriceCurrent, unitPriceColSettings.decimal) || "";
-            /*
-             * We use Banana.Document.exchangeRate to retrieve the default rate (without a date),
-             * which already includes the multiplier. This must be the same rate used in the Items
-             * table to calculate ValueCurrent in the base currency; otherwise, the item's
-             * ValueCurrent and the account balance will not match, even after the adjustments.
-             */
             if (docInfo.isMultiCurrency) {
-                let currentExchangeRate = banDoc.exchangeRateRaw(item.currency).exchangeRate;
+                let currentExchangeRate = getCurrentExchangeRate(banDoc, item.currency);
                 exRateCurr = Banana.Converter.toLocaleNumberFormat(currentExchangeRate, exRateColSettings.decimal);
             }
             dialogParam.items[item.item].exRateCurrent = exRateCurr;
@@ -461,6 +448,27 @@ function initAdjustmentDialogParams(banDoc, docInfo, itemsData) {
     dialogParam.date = getCurrentDate();
 
     return dialogParam;
+}
+
+/**
+ * Returns the current exchange rate taken from the ExchangeRate table.
+ * Check the program versione to decide wich API to call.
+ * API method: exchangeRateRaw() has been added in version 10.2.6.65535,
+ * for older versions, we call the API method: exchangeRate(), which returns
+ * the exchange rate already considering the multiplier.
+ */
+function getCurrentExchangeRate(banDoc, currency) {
+    if (!banDoc) {
+        return "";
+    }
+
+    if (Banana.application.version >= "10.2.6.65535") {
+        // Raw exchange rate exactly as stored in the Exchange Rates table (multiplier not applied).
+        return banDoc.exchangeRateRaw(currency).exchangeRate;
+    } else {
+        // The returned exchange rate already includes the multiplier (normalized value).
+        return banDoc.exchangeRate(currency).exchangeRate;
+    }
 }
 
 function convertParam(banDoc, baseParams) {

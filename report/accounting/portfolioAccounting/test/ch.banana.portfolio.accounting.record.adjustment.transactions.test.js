@@ -1,4 +1,4 @@
-// Copyright [2025] [Banana.ch SA - Lugano Switzerland]
+// Copyright [2026] [Banana.ch SA - Lugano Switzerland]
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
 
 // @id = ch.banana.portfolio.accounting.record.adjustment.transactions.test
 // @api = 1.0
-// @pubdate = 2025-01-22
+// @pubdate = 2026-02-24
 // @publisher = Banana.ch SA
 // @description = <TEST ch.banana.portfolio.accounting.record.adjustment.transactions.test>
 // @task = app.command
@@ -98,7 +98,7 @@ TestAdjustmentTransactions.prototype.testRecordSalesTransactions = function () {
      * The current data is:
      * - CH003886335: Book value: 11.00, Market value: 12.10, Qt 5, -> price un.profit
      * - CH012775214: Book value: 10.00, Market value: 9.15, Qt 50, price un.loss
- */
+     * */
     fileName = "file:script/../test/testcases/portfolio_accounting_double_entry_tutorial_adjustmenttest_2026.ac2";
     banDoc = Banana.application.openDocument(fileName);
     Test.assert(banDoc);
@@ -117,13 +117,12 @@ function getTestData(banDoc) {
     savedAccountsParams = verifyAccountsParams(banDoc, savedAccountsParams);
 
     let savedMarketValuesParams = initAdjustmentDialogParams(banDoc, docInfo, itemsData);
-    savedMarketValuesParams.date = ""; // we dont want to test the date as would change each time.
+    savedMarketValuesParams.date = ""; // Date remains empty.
 
     const adjustmentTransactionsManager = new AdjustmentTransactionsManager(banDoc, docInfo, itemsData,
         savedMarketValuesParams, savedAccountsParams);
 
     const docObj = adjustmentTransactionsManager.getDocumentChangeObject();
 
-    // Ritorniamo l'oggetto
     return docObj;
 }
