@@ -72,6 +72,8 @@ function getErrorMessage_MissingElements(errorId, missingElement) {
             return "No Asset Accounts found in the Items table";
         case "NO_ASSET_WITH_CURRENT_PRICE": // Market price missing.
             return "No Asset with current price found in the Items table";
+        case "NO_ADJUSTMENT_OPERATION_FOUND":
+            return "The carrying amounts are already aligned with the current market prices and exchange rates. \n No unrealized gains or losses have been generated."
     }
 }
 

@@ -79,8 +79,7 @@ function exec() {
 
     const adjustmentTransactionsManager = new AdjustmentTransactionsManager(banDoc, docInfo, itemsData,
         savedValuesParams, savedAccountsParams);
-    const obj = adjustmentTransactionsManager.getDocumentChangeObject();
-    return obj;
+    return adjustmentTransactionsManager.getDocumentChangeObject();
 }
 
 var AdjustmentTransactionsManager = class AdjustmentTransactionsManager {
@@ -122,10 +121,12 @@ var AdjustmentTransactionsManager = class AdjustmentTransactionsManager {
     getDocChangeAdjustment() {
         let docChangeObj = this.getDocumentChangeInit();
 
-        docChangeObj.document.dataUnits.push(
-            this.getDocChangeAdjustment_ItemsUnit());
-        docChangeObj.document.dataUnits.push(
-            this.getDocChangeAdjustment_TransactionsUnit());
+        let itDataUnitObj = this.getDocChangeAdjustment_ItemsUnit();
+        let trDataUnitObj = this.getDocChangeAdjustment_TransactionsUnit();
+
+        docChangeObj.document.dataUnits.push(itDataUnitObj);
+        docChangeObj.document.dataUnits.push(trDataUnitObj);
+
         return docChangeObj;
     }
 
@@ -181,6 +182,20 @@ var AdjustmentTransactionsManager = class AdjustmentTransactionsManager {
     getDocChangeAdjustment_TransactionsUnit() {
         let rows = this.getAdjustmentTransactionsRows();
 
+        /**
+         * Checks whether any valuation adjustment entries need to be created.
+         * 
+         * If no rows are generated, it means that:
+         * - the securities have already been adjusted, or
+         * - the market price and exchange rate have not changed since the last adjustment.
+         * 
+         * In this case, the current carrying amount is already aligned
+         * with the latest market price and exchange rate.
+         */
+        if (rows.length < 1) {
+            let msg = getErrorMessage_MissingElements("NO_ADJUSTMENT_OPERATION_FOUND", "");
+            this.banDoc.addMessage(msg, getErrorMessageReferenceAnchor());
+        }
         var dataUnitTransactionsTable = {};
         dataUnitTransactionsTable.nameXml = "Transactions";
         dataUnitTransactionsTable.data = {};
