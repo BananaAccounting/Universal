@@ -40,13 +40,6 @@ TestAdjustmentTransactions.prototype.initTestCase = function () {
     this.testLogger = Test.logger;
     this.progressBar = Banana.application.progressBar;
 
-    let fileName = "file:script/../test/testcases/portfolio_accounting_double_entry_multi_currency_tutorial_adjustmenttest_2024.ac2";
-    this.banDoc = Banana.application.openDocument(fileName);
-    if (!this.banDoc) {
-        this.testLogger.addFatalError("File not found: " + fileName);
-        return;
-    }
-
 }
 
 // This method will be called at the end of the test case
@@ -66,23 +59,41 @@ TestAdjustmentTransactions.prototype.cleanup = function () {
 
 TestAdjustmentTransactions.prototype.testRecordSalesTransactions = function () {
 
-    let docChange = {}
-    docChange = getTestData(this.banDoc);
-    this.testLogger.addSection("Adjustment transactions document change.");
+    let docChange = {};
+    let fileName = "";
+    let banDoc = {};
+    /** Test 1
+     * Generate adjustment transactions. 
+     * In this test case, are always used the same exchange rate for each transaction, that means,
+     * adjustment are created only for the price.
+     * The current data is:
+     * - CH003886335: Book value: 12.8226, Market value: 12.8001, Qt 200 -> price un.loss
+     * - CH002775224: Book value: 5.9876, Market value: 5.9998, Qt 250 -> price un.profit
+     * - IT0005239360: Book value: 10.0000, Market value: 9.50, Qt 100 -> price un.loss
+     * - US123456789: Book value: 11.0000, Market value: 11.5562, Qt 100 -> price un.profit
+     * - IT000792468: Book value: 0.9800, Market value: 1.025, Qt 5000 -> price un.profit
+     */
+    fileName = "file:script/../test/testcases/portfolio_accounting_double_entry_multi_currency_tutorial_adjustmenttest_2024.ac2";
+    banDoc = Banana.application.openDocument(fileName);
+    Test.assert(banDoc);
+    docChange = getTestData(banDoc);
+    this.testLogger.addSection("Adjustment transactions document change 1.");
+    this.testLogger.addJson("Doc Change object", JSON.stringify(docChange));
+
+    /** Test 2
+     * Generate adjustment transactions. 
+     * The current data is:
+     * - QQQ: Book value: 400.00, Market value: 380.00, Qt 50, Acc ExRate: 1.42, Actual ExRate: 1.175  -> price un.loss, ExRate profit
+     * - IBB1: Book value: 5.9876, Market value: 5.9998, Qt 250, Acc ExRate: 1.00, Actual ExRate: 1.00 -> price un.profit
+     */
+    fileName = "file:script/../test/testcases/portfolio_accounting_double_entry_multi_currency_tutorial_adjustmenttest_2026.ac2";
+    banDoc = Banana.application.openDocument(fileName);
+    Test.assert(banDoc);
+    docChange = getTestData(banDoc);
+    this.testLogger.addSection("Adjustment transactions document change 2.");
     this.testLogger.addJson("Doc Change object", JSON.stringify(docChange));
 }
 
-/**
- * Generate adjustment transactions. 
- * In this test case, are always used the same exchange rate for each transaction, that means,
- * adjustment are created only for the price.
- * The current data is:
- * - CH003886335: Book value: 12.8226, Market value: 12.8001, Qt 200 -> cost
- * - CH002775224: Book value: 5.9876, Market value: 5.9998, Qt 250 -> income
- * - IT0005239360: Book value: 10.0000, Market value: 9.50, Qt 100 -> cost
- * - US123456789: Book value: 11.0000, Market value: 11.5562, Qt 100 -> income
- * - IT000792468: Book value: 0.9800, Market value: 1.025, Qt 5000 -> income
- */
 function getTestData(banDoc) {
     let dlgAccountsSettingsId = "ch.banana.portfolio.accounting.accounts.dialog";
     const docInfo = getDocumentInfo(banDoc);

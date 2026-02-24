@@ -22,7 +22,7 @@
 %
 \begin{testcase}{TestAdjustmentTransactions}
 \begin{test}{testRecordSalesTransactions}
-\section{Adjustment transactions document change.}
+\section{Adjustment transactions document change 1.}
 \begin{jsonvalue}{Doc Change object}
 {
     "data": [
@@ -126,6 +126,97 @@
                                                 "ExchangeCurrency": "EUR",
                                                 "ExchangeRate": "1.1",
                                                 "ItemsId": "IT000792468"
+                                            },
+                                            "operation": {
+                                                "name": "add"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        "nameXml": "Transactions"
+                    }
+                ],
+                "dataUnitsfileVersion": "1.0.0"
+            }
+        }
+    ],
+    "error": "",
+    "format": "documentChange"
+}
+\end{jsonvalue}
+\section{Adjustment transactions document change 2.}
+\begin{jsonvalue}{Doc Change object}
+{
+    "data": [
+        {
+            "creator": {
+                "name": "ch.banana.portfolio.accounting.record.adjustment.transactions.test",
+                "version": "1.0"
+            },
+            "document": {
+                "cursorPosition": {
+                },
+                "dataUnits": [
+                    {
+                        "data": {
+                            "rowLists": [
+                                {
+                                    "rows": [
+                                    ]
+                                }
+                            ]
+                        },
+                        "nameXml": "Items"
+                    },
+                    {
+                        "data": {
+                            "rowLists": [
+                                {
+                                    "rows": [
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "508103",
+                                                "AccountDebit": "[Account for unrealized losses]",
+                                                "AmountCurrency": "-1000.00000000",
+                                                "Date": "",
+                                                "Description": "QQQ Test Market Price Adjustment (380.0000)",
+                                                "Doc": "",
+                                                "ExchangeCurrency": "USD",
+                                                "ExchangeRate": "1.041999889548011707910758961459550",
+                                                "ItemsId": "QQQ"
+                                            },
+                                            "operation": {
+                                                "name": "add"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "508103",
+                                                "AccountDebit": "[Account for unrealized foreign exchange losses]",
+                                                "Amount": "-2063.95423404255319148936170212766",
+                                                "Date": "",
+                                                "Description": "QQQ Test Adjustment at exchange rate on valuation date (1.175000000000)",
+                                                "Doc": "",
+                                                "ExchangeCurrency": "EUR",
+                                                "ItemsId": "QQQ"
+                                            },
+                                            "operation": {
+                                                "name": "add"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "[Account for unrealized gains]",
+                                                "AccountDebit": "508101",
+                                                "AmountCurrency": "5000.00000000",
+                                                "Date": "",
+                                                "Description": "IBB1 Test Market Price Adjustment (5.0000)",
+                                                "Doc": "",
+                                                "ExchangeCurrency": "EUR",
+                                                "ExchangeRate": "",
+                                                "ItemsId": "IBB1"
                                             },
                                             "operation": {
                                                 "name": "add"
