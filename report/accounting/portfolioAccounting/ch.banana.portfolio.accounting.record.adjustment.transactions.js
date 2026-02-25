@@ -150,9 +150,9 @@ var AdjustmentTransactionsManager = class AdjustmentTransactionsManager {
      */
     getAdjustmentItemsRows() {
         let rows = [];
-        for (var key in this.savedValuesParams) {
+        for (var key in this.savedValuesParams.items) {
             let itemId = key;
-            let dlgItemCurrentP = Banana.Converter.toInternalNumberFormat(this.savedValuesParams[key]);
+            let dlgItemCurrentP = Banana.Converter.toInternalNumberFormat(this.savedValuesParams.items[key].priceCurrent);
             let objFound = this.itemsTableData.find(o => o.item === itemId);
             if (objFound) {
                 let tabItemsCurrentP = objFound.unitPriceCurrent || "";
