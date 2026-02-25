@@ -110,15 +110,15 @@ TestAdjustmentTransactions.prototype.testRecordSalesTransactions = function () {
 
 function getTestData(banDoc) {
     let dlgAccountsSettingsId = "ch.banana.portfolio.accounting.accounts.dialog";
-    const docInfo = getDocumentInfo(banDoc);
-
-    let itemsData = getItemsTableData(banDoc);
 
     let savedAccountsParams = getFormattedSavedParams(banDoc, dlgAccountsSettingsId);
     savedAccountsParams = verifyAccountsParams(banDoc, savedAccountsParams);
 
-    let savedMarketValuesParams = initAdjustmentDialogParams(banDoc, docInfo, itemsData);
+    let savedMarketValuesParams = initAdjustmentDialogParams();
     savedMarketValuesParams.date = ""; // Date remains empty.
+
+    const docInfo = getDocumentInfo(banDoc);
+    let itemsData = getItemsTableData(banDoc);
 
     const adjustmentTransactionsManager = new AdjustmentTransactionsManager(banDoc, docInfo, itemsData,
         savedMarketValuesParams, savedAccountsParams);

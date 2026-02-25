@@ -40,17 +40,6 @@
                             "rowLists": [
                                 {
                                     "rows": [
-                                    ]
-                                }
-                            ]
-                        },
-                        "nameXml": "Items"
-                    },
-                    {
-                        "data": {
-                            "rowLists": [
-                                {
-                                    "rows": [
                                         {
                                             "fields": {
                                                 "AccountCredit": "Shares CHF",
@@ -164,17 +153,6 @@
                             "rowLists": [
                                 {
                                     "rows": [
-                                    ]
-                                }
-                            ]
-                        },
-                        "nameXml": "Items"
-                    },
-                    {
-                        "data": {
-                            "rowLists": [
-                                {
-                                    "rows": [
                                         {
                                             "fields": {
                                                 "AccountCredit": "508103",
@@ -250,17 +228,6 @@
                 "cursorPosition": {
                 },
                 "dataUnits": [
-                    {
-                        "data": {
-                            "rowLists": [
-                                {
-                                    "rows": [
-                                    ]
-                                }
-                            ]
-                        },
-                        "nameXml": "Items"
-                    },
                     {
                         "data": {
                             "rowLists": [
