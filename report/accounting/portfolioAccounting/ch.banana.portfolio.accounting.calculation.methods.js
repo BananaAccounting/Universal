@@ -919,6 +919,12 @@ function getExchangeResult_negativeMultiplier(totalSharesValue, saleResult, curr
  * The calculation direction depends on the multiplier:
  *  - positive (1):  CurrencyBalance / BaseBalance
  *  - negative (-1): BaseBalance / CurrencyBalance
+ * 
+ * !!! Modificare questo metodo in maniera che faccia
+ * sempre lo stesso calcolo, e facendo gestire poi il 
+ * resto al C++ con l' API, quindi ritorna il cambio calcolato
+ * sempre nella stessa maniera indipendentemente dalla direzione.
+ * calcolo currency/base
  */
 function getCurrentBookingRate(itemCurrValues) {
     const itemBaseBal = itemCurrValues.itemBalanceBase;

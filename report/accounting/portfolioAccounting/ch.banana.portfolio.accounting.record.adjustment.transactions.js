@@ -164,31 +164,24 @@ var AdjustmentTransactionsManager = class AdjustmentTransactionsManager {
 
         let unitPriceColumn = this.banDoc.table("Transactions").column("UnitPrice", "Base");
         let unitPriceColDecimals = unitPriceColumn.decimal;
-        let transactionsDate = this.savedValuesParams.date;
 
         this.itemsTableData.forEach(item => {
             if (item && item.unitPriceCurrent !== undefined && item.unitPriceCurrent !== null && item.unitPriceCurrent !== "") {
                 const itemId = item.item;
                 const itemUnitMarketPrice = item.unitPriceCurrent;
-                const itemExRateCurrent = getCurrentExchangeRate(this.banDoc, this.docInfo, item.currency);
 
                 // Get item card data.
                 const itemRowObj = getItemRowObj(itemId, this.banDoc);
                 const itemCurrentQt = itemRowObj.currentQt;
                 const itemCurrentValues = this.getItemCurrentValues(itemRowObj, unitPriceColDecimals);
-                const itemCurrBookRate = getCurrentBookingRate(itemCurrentValues);
+                const bookCurrExRate = getCurrentBookingRate(itemCurrentValues);
 
-                let adjustmentResults = this.calculateAdjustmentResults(itemCurrentValues, itemCurrentQt, itemUnitMarketPrice, itemCurrBookRate, itemExRateCurrent);
-                const priceAdj = adjustmentResults[0];
-                const exchRateAdj = adjustmentResults[1];
+                const priceAdj = this.calculatePriceAdjustmentResult(itemCurrentValues, itemCurrentQt, itemUnitMarketPrice);
 
                 if (!priceAdj || Banana.SDecimal.isZero(priceAdj))
                     return;
 
-                rows.push(this.getAdjustmentTransactionsRows_PriceAdj(itemRowObj, transactionsDate, priceAdj, itemCurrBookRate, itemUnitMarketPrice, texts));
-                if (this.docInfo.isMultiCurrency && exchRateAdj && !Banana.SDecimal.isZero(exchRateAdj)) {
-                    rows.push(this.getAdjustmentTransactionsRows_ExRateAdj(itemRowObj, transactionsDate, exchRateAdj, itemExRateCurrent, texts));
-                }
+                rows.push(this.getAdjustmentTransactionsRows_PriceAdj(itemRowObj, priceAdj, itemUnitMarketPrice, bookCurrExRate, texts));
 
             }
         });
@@ -196,13 +189,13 @@ var AdjustmentTransactionsManager = class AdjustmentTransactionsManager {
         return rows;
     }
 
-    getAdjustmentTransactionsRows_PriceAdj(itemRowObj, transactionsDate, priceAdj, itemCurrBookRate, itemUnitMarketPrice, texts) {
+    getAdjustmentTransactionsRows_PriceAdj(itemRowObj, priceAdj, itemUnitMarketPrice, bookCurrExRate, texts) {
 
         let row = {};
         row.operation = {};
         row.operation.name = "add";
         row.fields = {};
-        row.fields["Date"] = Banana.Converter.toInternalDateFormat(transactionsDate);
+        row.fields["Date"] = Banana.Converter.toInternalDateFormat(this.savedValuesParams.date);
         row.fields["Doc"] = "";
         row.fields["ItemsId"] = itemRowObj.item;
         row.fields["Description"] = itemRowObj.description + " " + texts.priceAdjustmentTxt + " (" + itemUnitMarketPrice + ")";
@@ -213,58 +206,26 @@ var AdjustmentTransactionsManager = class AdjustmentTransactionsManager {
             row.fields["AccountDebit"] = itemRowObj.account;
             row.fields["AccountCredit"] = this.savedAccountsParams.valueChangingcontraAccounts.unrealizedGainAccount || texts.otherValChangeIncomePlaceHolder;
         }
-        if (this.docInfo.isMultiCurrency)
-            row.fields["AmountCurrency"] = Banana.Converter.toInternalNumberFormat(priceAdj, ".");
-        else
-            row.fields["Amount"] = Banana.Converter.toInternalNumberFormat(priceAdj, ".");
         if (this.docInfo.isMultiCurrency) {
-            row.fields["ExchangeCurrency"] = itemRowObj.currency;
-            row.fields["ExchangeRate"] = itemCurrBookRate;
+            const baseAmt = Banana.SDecimal.abs(Banana.document.changeAmountInBaseCurrency(itemRowObj.currency, priceAdj, bookCurrExRate));
+            Banana.console.debug(baseAmt);
+            row.fields["AmountCurrency"] = Banana.Converter.toInternalNumberFormat(priceAdj, ".");
+            row.fields["Amount"] = Banana.Converter.toInternalNumberFormat(baseAmt, ".");
+        }
+        else {
+            row.fields["Amount"] = Banana.Converter.toInternalNumberFormat(priceAdj, ".");
         }
 
         return row;
 
     }
-    getAdjustmentTransactionsRows_ExRateAdj(itemRowObj, transactionsDate, exchRateAdj, itemExRateCurrent, texts) {
 
-        let row = {};
-        row.operation = {};
-        row.operation.name = "add";
-        row.fields = {};
-        row.fields["Date"] = Banana.Converter.toInternalDateFormat(transactionsDate);
-        row.fields["Doc"] = "";
-        row.fields["ItemsId"] = itemRowObj.item;
-        row.fields["Description"] = itemRowObj.description + " " + texts.exRateAdjustmentTxt + " (" + itemExRateCurrent + ")";
-        if (exchRateAdj.indexOf("-") >= 0) {
-            row.fields["AccountDebit"] = this.savedAccountsParams.valueChangingcontraAccounts.unrealizedExRateLossAccount || texts.otherValChangeExRateCostPlaceHolder;
-            row.fields["AccountCredit"] = itemRowObj.account;
-        } else {
-            row.fields["AccountDebit"] = itemRowObj.account;
-            row.fields["AccountCredit"] = this.savedAccountsParams.valueChangingcontraAccounts.unrealizedExRateGainAccount || texts.otherValChangeExRateIncomePlaceHolder;
-        }
-        row.fields["ExchangeCurrency"] = this.docInfo.baseCurrency;
-        row.fields["Amount"] = Banana.Converter.toInternalNumberFormat(exchRateAdj, ".");
-
-        return row;
-    }
-
-    /**
-     * A year-end valuation adjustment normally consists of two entries:
-     *  1) Price adjustment to align the security to its market price.
-     *  2) FX adjustment to align the carrying amount to the closing exchange rate.
-     */
-    calculateAdjustmentResults(itemCurrentValues, itemCurrentQt, itemUnitMarketPrice, itemCurrBookRate, itemExRateCurrent) {
-
-        let adjResults = [];
+    calculatePriceAdjustmentResult(itemCurrentValues, itemCurrentQt, itemUnitMarketPrice) {
 
         if (!itemCurrentValues)
-            return adjResults;
+            return "";
 
-        adjResults.push(this.calculateAdjustmentResults_PriceAdj(itemCurrentQt, itemCurrentValues.itemAvgCost, itemUnitMarketPrice));
-        if (this.docInfo.isMultiCurrency) {
-            adjResults.push(this.calculateAdjustmentResults_ExRateAdj(itemCurrentQt, itemCurrentValues, itemUnitMarketPrice, itemCurrBookRate, itemExRateCurrent));
-        }
-        return adjResults;
+        return this.calculateAdjustmentResults_PriceAdj(itemCurrentQt, itemCurrentValues.itemAvgCost, itemUnitMarketPrice);
     }
 
     /**
@@ -286,51 +247,6 @@ var AdjustmentTransactionsManager = class AdjustmentTransactionsManager {
         let marketValue = Banana.SDecimal.multiply(itemUnitMarketPrice, itemCurrentQt);
         let bookValue = Banana.SDecimal.multiply(itemUnitBookPrice, itemCurrentQt);
         return Banana.SDecimal.subtract(marketValue, bookValue);
-    }
-
-    /**
-     * * After the price adjustment, the account currency balance
-     * is correct, but the base currency balance is still
-     * valued using the implicit book rate.
-     *
-     * To obtain the fair value at period end, the foreign currency balance
-     * must be converted at the closing rate.
-     *
-     * The FX adjustment is calculated as:
-     *
-     *    (CurrencyBalance / ClosingRate) - CurrentBaseBalance
-     *
-     * (CurrentBaseBalance refers to the updated base balance after step 1.)
-     * 
-     * As we do not have the updated balance yet, 
-     * we get the value doing the following calculation:
-     * 
-     * (MarketValue '*' or '/' closingRate) - (MarketValue '*' or '/' bookRate)
-     *
-     * This entry affects only the base currency (CurrencyAmount = 0)
-     * and represents the unrealized gain or loss arising exclusively
-     * from the exchange rate movement.
-     * @itemCurrentQt Actual Item current quanity.
-     * @itemCurrentValues Actual Item current values taken from the Item card.
-     * @itemCurrBookRate Actual book rate of the item (calculated based on current balances)
-     */
-    calculateAdjustmentResults_ExRateAdj(itemCurrentQt, itemCurrentValues, itemUnitMarketPrice, itemCurrBookRate, itemExRateCurrent) {
-        const marketValue = Banana.SDecimal.multiply(itemUnitMarketPrice, itemCurrentQt);
-        const mult = itemCurrentValues.itemOpMultiplier;
-        if (mult && mult.indexOf("-") > -1) {
-            /*Banana.console.debug("market value: " + marketValue);
-            Banana.console.debug("itemExRateCurrent: " + itemExRateCurrent);
-            Banana.console.debug("itemCurrBookRate: " + itemCurrBookRate);*/
-            return Banana.SDecimal.subtract
-                (Banana.SDecimal.multiply(marketValue, itemExRateCurrent),
-                    Banana.SDecimal.multiply(marketValue, itemCurrBookRate));
-        } else if (mult && mult.indexOf("-") == -1) {
-            return Banana.SDecimal.subtract
-                (Banana.SDecimal.divide(marketValue, itemExRateCurrent),
-                    Banana.SDecimal.divide(marketValue, itemCurrBookRate));
-        } else {
-            return Banana.Converter.toLocaleNumberFormat("0.00"); //... No multiplier ? (In future in income/expenses accounting ?)
-        }
     }
 
     getItemCurrentValues(itemRowObj, unitPriceColDecimals) {
@@ -392,37 +308,6 @@ function initAdjustmentDialogParams() {
     dialogParam.date = getCurrentDate();
 
     return dialogParam;
-}
-
-/**
- * Returns the current exchange rate taken from the ExchangeRate table.
- * Check the program versione to decide wich API to call.
- * API method: exchangeRateRaw() has been added in version 10.2.6.65535,
- * for older versions, we call the API method: exchangeRate(), which returns
- * the exchange rate already considering the multiplier.
- */
-function getCurrentExchangeRate(banDoc, docInfo, currency) {
-    let exRateCurr = "";
-    let exDataObj = {};
-
-    if (!banDoc || !docInfo || !docInfo.isMultiCurrency) {
-        return exRateCurr;
-    }
-
-    if (Banana.application.version >= "10.2.6.65535") {
-        // Raw exchange rate exactly as stored in the Exchange Rates table (multiplier not applied).
-        exDataObj = banDoc.exchangeRateRaw(currency);
-        if (exDataObj && exDataObj.exchangeRate) {
-            exRateCurr = exDataObj.exchangeRate;
-        }
-    } else {
-        // The returned exchange rate already includes the multiplier (normalized value).
-        exDataObj = banDoc.exchangeRate(currency);
-        if (exDataObj && exDataObj.exchangeRate) {
-            exRateCurr = exDataObj.exchangeRate;
-        }
-    }
-    return exRateCurr;
 }
 
 function convertParam(banDoc, baseParams) {
