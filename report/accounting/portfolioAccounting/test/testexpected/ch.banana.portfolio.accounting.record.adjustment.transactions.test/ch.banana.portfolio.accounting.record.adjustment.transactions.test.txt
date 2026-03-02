@@ -44,12 +44,11 @@
                                             "fields": {
                                                 "AccountCredit": "Shares CHF",
                                                 "AccountDebit": "[Account for unrealized losses]",
+                                                "Amount": "4.50",
                                                 "AmountCurrency": "-4.50000000",
                                                 "Date": "",
                                                 "Description": "Shares UBS Market Price Adjustment (12.8001)",
                                                 "Doc": "",
-                                                "ExchangeCurrency": "CHF",
-                                                "ExchangeRate": "",
                                                 "ItemsId": "CH003886335"
                                             },
                                             "operation": {
@@ -60,12 +59,11 @@
                                             "fields": {
                                                 "AccountCredit": "[Account for unrealized gains]",
                                                 "AccountDebit": "Shares CHF",
+                                                "Amount": "3.05",
                                                 "AmountCurrency": "3.05000000",
                                                 "Date": "",
                                                 "Description": "Shares BancaStato Market Price Adjustment (5.9998)",
                                                 "Doc": "",
-                                                "ExchangeCurrency": "CHF",
-                                                "ExchangeRate": "",
                                                 "ItemsId": "CH002775224"
                                             },
                                             "operation": {
@@ -76,12 +74,11 @@
                                             "fields": {
                                                 "AccountCredit": "Shares Unicredit",
                                                 "AccountDebit": "[Account for unrealized losses]",
+                                                "Amount": "55.00",
                                                 "AmountCurrency": "-50.00000000",
                                                 "Date": "",
                                                 "Description": "Shares Unicredit Market Price Adjustment (9.5000)",
                                                 "Doc": "",
-                                                "ExchangeCurrency": "EUR",
-                                                "ExchangeRate": "1.1",
                                                 "ItemsId": "IT0005239360"
                                             },
                                             "operation": {
@@ -92,12 +89,11 @@
                                             "fields": {
                                                 "AccountCredit": "[Account for unrealized gains]",
                                                 "AccountDebit": "Shares Netflix",
+                                                "Amount": "52.84",
                                                 "AmountCurrency": "55.62000000",
                                                 "Date": "",
                                                 "Description": "Shares Netflix Market Price Adjustment (11.5562)",
                                                 "Doc": "",
-                                                "ExchangeCurrency": "USD",
-                                                "ExchangeRate": "0.95",
                                                 "ItemsId": "US123456789"
                                             },
                                             "operation": {
@@ -108,12 +104,11 @@
                                             "fields": {
                                                 "AccountCredit": "[Account for unrealized gains]",
                                                 "AccountDebit": "Bonds EUR",
+                                                "Amount": "247.50",
                                                 "AmountCurrency": "225.00000000",
                                                 "Date": "",
                                                 "Description": "Bonds Bnp Paribas Market Price Adjustment (1.0250)",
                                                 "Doc": "",
-                                                "ExchangeCurrency": "EUR",
-                                                "ExchangeRate": "1.1",
                                                 "ItemsId": "IT000792468"
                                             },
                                             "operation": {
@@ -157,27 +152,11 @@
                                             "fields": {
                                                 "AccountCredit": "508103",
                                                 "AccountDebit": "[Account for unrealized losses]",
+                                                "Amount": "959.69",
                                                 "AmountCurrency": "-1000.00000000",
                                                 "Date": "",
                                                 "Description": "QQQ Test Market Price Adjustment (380.0000)",
                                                 "Doc": "",
-                                                "ExchangeCurrency": "USD",
-                                                "ExchangeRate": "1.041999889548011707910758961459550",
-                                                "ItemsId": "QQQ"
-                                            },
-                                            "operation": {
-                                                "name": "add"
-                                            }
-                                        },
-                                        {
-                                            "fields": {
-                                                "AccountCredit": "508103",
-                                                "AccountDebit": "[Account for unrealized foreign exchange losses]",
-                                                "Amount": "-2063.95423404255319148936170212766",
-                                                "Date": "",
-                                                "Description": "QQQ Test Adjustment at exchange rate on valuation date (1.175000000000)",
-                                                "Doc": "",
-                                                "ExchangeCurrency": "EUR",
                                                 "ItemsId": "QQQ"
                                             },
                                             "operation": {
@@ -188,12 +167,11 @@
                                             "fields": {
                                                 "AccountCredit": "[Account for unrealized gains]",
                                                 "AccountDebit": "508101",
+                                                "Amount": "5000.00",
                                                 "AmountCurrency": "5000.00000000",
                                                 "Date": "",
                                                 "Description": "IBB1 Test Market Price Adjustment (5.0000)",
                                                 "Doc": "",
-                                                "ExchangeCurrency": "EUR",
-                                                "ExchangeRate": "",
                                                 "ItemsId": "IBB1"
                                             },
                                             "operation": {
