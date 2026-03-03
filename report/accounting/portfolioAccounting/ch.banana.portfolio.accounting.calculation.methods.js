@@ -395,7 +395,9 @@ function calculateStockSaleData(banDoc, docInfo, itemObj, dlgParams, currentRowN
     totalSharesValue = getSharesTotalValue(quantity, dlgParams.marketPrice);
     saleResult = getSaleResult(avgSharesValue, totalSharesValue);
     if (docInfo.isMultiCurrency) {
-        exRateResult = getExchangeResult(totalSharesValue, saleResult, dlgParams.currExRate, itemCardData.currentValues);
+        const itemCurrency = itemObj.currency;
+        const currExrate = dlgParams.currExRate;
+        exRateResult = getExchangeResult(banDoc, totalSharesValue, saleResult, itemCardData.currentValues, currExrate, itemCurrency);
     }
 
     // only for bonds
@@ -791,7 +793,7 @@ function getTransactionsTableData(banDoc, docInfo) {
 
 /**
  * 
- * Ritorna il valore medio di un azione.
+ * Returns the book value of an asset in the asset currency
  */
 function getSharesAvgValue(quantity, avgCost) {
     var avgValue = "";
@@ -801,7 +803,7 @@ function getSharesAvgValue(quantity, avgCost) {
 
 /**
  * 
- * Ritorna il valore totale di un azione.
+ * Returns the market value of an asset in the asset currency
  */
 function getSharesTotalValue(quantity, marketPrice) {
     var totalValue = "";
@@ -818,115 +820,43 @@ function getSaleResult(avgSharesValue, totalSharesvalue) {
     return saleResult;
 }
 
-/** Returns the calculated exchange rate result, 
- * calculated based on the multiplier defined for the currency
+/** Returns the calculated exchange rate result.
 */
-function getExchangeResult(totalSharesValue, saleResult, currExRate, itemCurrValues) {
+function getExchangeResult(banDoc, totalSharesValue, saleResult, itemCurrValues, currExRate, itemCurrency) {
 
-    let mult = itemCurrValues.itemOpMultiplier;
-
-    if (mult && mult.indexOf("-") > -1) {
-        return getExchangeResult_negativeMultiplier(totalSharesValue, saleResult, currExRate, itemCurrValues);
-    } else if (mult && mult.indexOf("-") == -1) {
-        return getExchangeResult_positiveMultiplier(totalSharesValue, saleResult, currExRate, itemCurrValues);
-    } else {
-        return Banana.Converter.toLocaleNumberFormat("0.00"); //... No multiplier ? (In future in income/expenses accounting ?)
-    }
-}
-
-/** 
-* If the multiplier is positive, we divide the balance
-* in account currency by the balance in base currency to find the
-* account’s average exchange rate, following the accounting logic used in transactions, where:
-* CurrencyAmt / exchangeRate = BaseAmt.
-* For the same reason, we then use division to calculate the exchange difference.
-*/
-function getExchangeResult_positiveMultiplier(totalSharesValue, saleResult, currExRate, itemCurrValues) {
+    if (!banDoc)
+        return "";
 
     const accExRate = getCurrentBookingRate(itemCurrValues);
+    Banana.console.debug(accExRate);
+    Banana.console.debug(totalSharesValue);
+    // Get del valore attuale delle estensioni al netto del risultato di vendita
+    // Usando direttamente il valore al netto del risultato, posso calcolare direttamente
+    // il risultato realizzato sul cambio pratico, ovvero scorporato il cambio gia calcolato per il risultato di vendita.
+    const totalSharesValue_netOfSaleResult = Banana.SDecimal.subtract(totalSharesValue, saleResult);
+    Banana.console.debug(totalSharesValue_netOfSaleResult);
+    // Get the values in the base currencies using the market exchange rate and the book exchange rate.
+    const baseCurrValue_marketExRate = banDoc.changeAmountInBaseCurrency(itemCurrency, totalSharesValue_netOfSaleResult, currExRate);
+    Banana.console.debug(baseCurrValue_marketExRate);
+    const baseCurrValue_bookingExRate = banDoc.changeAmountInBaseCurrency(itemCurrency, totalSharesValue_netOfSaleResult, accExRate);     // riprendere da qui e vedere come mai il risultato è sbagliato 03.03.
+    Banana.console.debug(baseCurrValue_bookingExRate);
+    // Get the realized exchange (theorical result)
+    const baseCurrValue_difference = Banana.SDecimal.subtract(baseCurrValue_marketExRate, baseCurrValue_bookingExRate);
 
-    if (!accExRate || accExRate.length < 1)
-        return Banana.Converter.toLocaleNumberFormat("0.00");
-
-    // Default to accExRate if currExRate is not provided
-    if (!currExRate) {
-        currExRate = accExRate;
-    }
-
-    // Calculate the realized exchange (theorical result)
-    let realizedExchangeResult = Banana.SDecimal.subtract(
-        Banana.SDecimal.divide(totalSharesValue, currExRate),
-        Banana.SDecimal.divide(totalSharesValue, accExRate)
-    );
-
-    // Calculate the unrealized exchange profit/loss based on saleResult
-    let unrealizedExchangeProfitLoss = Banana.SDecimal.subtract(
-        Banana.SDecimal.divide(saleResult, currExRate),
-        Banana.SDecimal.divide(saleResult, accExRate)
-    );
-
-    // Calculate the effective exchange result by adding realized and unrealized components
-    let effectiveExchangeResult = Banana.SDecimal.subtract(realizedExchangeResult, unrealizedExchangeProfitLoss);
-
-    // Return the total effective exchange result
-    return effectiveExchangeResult;
+    return baseCurrValue_difference;
 }
-/** 
-* If the multiplier is negative, we divide the balance
-* in base currency by the balance in account currency to find the
-* account’s average exchange rate, following the accounting logic used in transactions, where:
-* CurrencyAmt * exchangeRate = BaseAmt.
-* For the same reason, we then use multiplication to calculate the exchange difference.
-*/
-function getExchangeResult_negativeMultiplier(totalSharesValue, saleResult, currExRate, itemCurrValues) {
-
-    const accExRate = getCurrentBookingRate(itemCurrValues);
-
-    if (!accExRate || accExRate.length < 1) {
-        return Banana.Converter.toLocaleNumberFormat("0.00");
-    }
-
-    // Default to accExRate if currExRate is not provided
-    if (!currExRate) {
-        currExRate = accExRate;
-    }
-
-    // Calculate the realized exchange (theorical result)
-    let realizedExchangeResult = Banana.SDecimal.subtract(
-        Banana.SDecimal.multiply(totalSharesValue, currExRate),
-        Banana.SDecimal.multiply(totalSharesValue, accExRate)
-    );
-
-    // Calculate the unrealized exchange profit/loss based on saleResult
-    let unrealizedExchangeProfitLoss = Banana.SDecimal.subtract(
-        Banana.SDecimal.multiply(saleResult, accExRate),
-        Banana.SDecimal.multiply(saleResult, currExRate)
-    );
-
-    // Calculate the effective exchange result by adding realized and unrealized components
-    let effectiveExchangeResult = Banana.SDecimal.add(realizedExchangeResult, unrealizedExchangeProfitLoss);
-
-    // Return the total effective exchange result
-    return effectiveExchangeResult;
-}
-
 /**
  * Given the current values row of a security retrieved
  * from the security card, returns the implicit
  * accounting average exchange rate calculated
  * from the balances resulting at the provided row.
- *
- * The calculation direction depends on the multiplier:
- *  - positive (1):  CurrencyBalance / BaseBalance
- *  - negative (-1): BaseBalance / CurrencyBalance
  * 
- * !!! Modificare questo metodo in maniera che faccia
- * sempre lo stesso calcolo, e facendo gestire poi il 
- * resto al C++ con l' API, quindi ritorna il cambio calcolato
- * sempre nella stessa maniera indipendentemente dalla direzione.
- * calcolo currency/base
+ * The calculation is always performed based on the Assets:
+ * asset balance in foreign currency / asset balance in base currency
  */
 function getCurrentBookingRate(itemCurrValues) {
+    if (!itemCurrValues)
+        return "";
     const itemBaseBal = itemCurrValues.itemBalanceBase;
     const itemCurrBal = itemCurrValues.itemBalanceCurr;
     const multiplier = itemCurrValues.itemOpMultiplier;
@@ -935,7 +865,6 @@ function getCurrentBookingRate(itemCurrValues) {
     } else if (multiplier && multiplier.indexOf("-") > -1) {
         return Banana.SDecimal.divide(itemBaseBal, itemCurrBal);
     }
-    return "";
 }
 
 /**
