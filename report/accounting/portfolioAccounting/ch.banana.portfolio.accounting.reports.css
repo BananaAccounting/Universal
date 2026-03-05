@@ -98,7 +98,6 @@ Styles for the texts
     text-align: left;
     font-weight: bold;
     background-color:  #cad2ff
-
 }
 
 .styleSortedByColumn{
@@ -122,6 +121,16 @@ Styles for the texts
     border-bottom: solid;
     border-bottom-style:double;
     border-color: rgb(0, 0, 0);
+}
+.styleTableReconciliationSummaryTitle {
+    background-color: #eeeff3;
+    font-size: 11pt;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+.styleTableReconciliationSummaryColumns {
+    text-align: center;
+    font-weight: bold;
 }
 /**************************
 styles for the headers
