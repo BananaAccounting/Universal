@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>PDF → EML Generator</title>
+
+<script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+
+<style>
+
+body{
+font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial;
+background:#f6f7f9;
+margin:0;
+padding:30px;
+color:#333;
+}
+
+.container{
+max-width:1000px;
+margin:auto;
+}
+
+header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:20px;
+}
+
+.card{
+background:white;
+padding:20px;
+border-radius:8px;
+box-shadow:0 2px 8px rgba(0,0,0,0.08);
+margin-bottom:20px;
+}
+
+.info{
+background:#e7f0ff;
+padding:12px;
+border-radius:6px;
+line-height:1.5;
+}
+
+#drop{
+border:2px dashed #aaa;
+padding:30px;
+text-align:center;
+border-radius:6px;
+background:#fafafa;
+margin-top:10px;
+}
+
+#fileList,#log,#preview{
+background:#fafafa;
+padding:10px;
+border-radius:6px;
+font-family:monospace;
+max-height:200px;
+overflow:auto;
+white-space:pre;
+}
+
+button{
+padding:8px 14px;
+border:none;
+background:#2b6cb0;
+color:white;
+border-radius:5px;
+cursor:pointer;
+}
+
+button.secondary{
+background:#888;
+}
+
+progress{
+width:100%;
+margin-top:10px;
+}
+
+/* -------- FORM LAYOUT -------- */
+
+.form-row{
+display:flex;
+gap:20px;
+margin-bottom:12px;
+}
+
+.form-field{
+flex:1;
+display:flex;
+flex-direction:column;
+}
+
+.form-field label{
+margin-bottom:4px;
+font-weight:600;
+}
+
+.form-option{
+margin-top:10px;
+}
+
+input[type=text], textarea{
+width:100%;
+padding:8px;
+border:1px solid #ccc;
+border-radius:4px;
+font-size:14px;
+}
+
+textarea{
+height:120px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<header>
+<h2 id="title"></h2>
+<select id="lang"></select>
+</header>
+
+<div class="card info" id="intro"></div>
+
+<div class="card form-card">
+
+<div class="form-row">
+
+<div class="form-field">
+<label id="fromLabel"></label>
+<input id="fromEmail" placeholder="email@example.com">
+</div>
+
+<div class="form-field">
+<label id="subjectLabel"></label>
+<input id="subject">
+</div>
+
+</div>
+
+<div class="form-field">
+<label id="bodyLabel"></label>
+<textarea id="body"></textarea>
+</div>
+
+<div class="form-option">
+<label>
+<input type="checkbox" id="groupEmails">
+<span id="groupLabel"></span>
+</label>
+</div>
+
+</div>
+
+<div class="card">
+
+<button onclick="fileInput.click()" id="browseBtn"></button>
+<button onclick="clearFiles()" class="secondary" id="clearBtn"></button>
+
+<input id="fileInput" type="file" accept=".pdf" multiple webkitdirectory hidden>
+
+<div id="drop"></div>
+
+</div>
+
+<div class="card">
+
+<h3 id="loadedFilesLabel"></h3>
+
+<div id="fileList"></div>
+
+<div id="emailCount"></div>
+
+</div>
+
+<div class="card">
+
+<button onclick="downloadZip()" id="downloadBtn"></button>
+
+<progress id="progress" value="0" max="100"></progress>
+
+</div>
+
+<div class="card">
+
+<h3 id="previewLabel"></h3>
+<div id="preview"></div>
+
+</div>
+
+<div class="card">
+
+<h3 id="logLabel"></h3>
+<div id="log"></div>
+
+</div>
+
+</div>
+
+<script>
+
+/* ---------- TRANSLATIONS ---------- */
+
+const translations = {
+
+en:{
+title:"PDF → EML Generator",
+
+intro:`<b>What this tool does</b><br>
+This application converts PDF files into email files (.eml). Each PDF becomes an email with the PDF attached.<br><br>
+
+<b>File name format</b><br>
+Each PDF file name must start with the recipient email address.<br>
+Example:<br>
+<code>john@example.com;1;Invoice.pdf</code><br><br>
+
+<b>How to use</b><br>
+1. Enter the sender email, subject and message text.<br>
+2. Drag PDF files or folders into the drop area.<br>
+3. Download the ZIP file containing the generated emails.<br><br>
+
+<b>Sending the emails</b><br>
+1. Extract the ZIP file.<br>
+2. You will obtain multiple <code>.eml</code> email files.<br><br>
+
+<b>Outlook</b><br>
+Open Outlook and drag the .eml files into the <b>Drafts</b> folder.  
+You can then review the messages and send them normally.<br><br>
+
+<b>Thunderbird</b><br>
+Drag the .eml files into the <b>Drafts</b> folder in Thunderbird.  
+Open them and click Send.<br><br>
+
+<b>Apple Mail</b><br>
+Drag the .eml files into the Drafts mailbox.  
+Open each message and send it.<br><br>
+
+<b>Gmail</b><br>
+Gmail does not support importing .eml files directly.  
+Open the .eml file to copy the message text and attach the PDF manually.`,
+
+from:"Sender email",
+subject:"Email subject",
+body:"Email message",
+browse:"Browse files / folders",
+clear:"Clear",
+drop:"Drag PDF files or folders here",
+loaded:"Loaded files",
+download:"Download ZIP with EML files",
+log:"Log",
+preview:"Email preview",
+group:"Group attachments for same recipient",
+defaultBody:"Please find the attached document."
+},
+
+it:{
+title:"Generatore PDF → EML",
+
+intro:`<b>Cosa fa questo strumento</b><br>
+Questa applicazione converte file PDF in email (.eml). Ogni PDF diventa una email con il documento allegato.<br><br>
+
+<b>Formato del nome file</b><br>
+Il nome del file deve iniziare con l'indirizzo email del destinatario.<br>
+Esempio:<br>
+<code>mario@example.com;1;Fattura.pdf</code><br><br>
+
+<b>Come usarlo</b><br>
+1. Inserisci email mittente, oggetto e testo del messaggio.<br>
+2. Trascina i file PDF o le cartelle nell'area indicata.<br>
+3. Scarica il file ZIP contenente le email generate.<br><br>
+
+<b>Inviare le email</b><br>
+1. Estrai i file dal file ZIP scaricato.<br>
+2. Otterrai diversi file email con estensione <code>.eml</code>.<br><br>
+
+<b>Outlook</b><br>
+Apri Outlook e trascina i file .eml nella cartella <b>Bozze</b>.  
+Potrai poi controllare i messaggi e inviarli normalmente.<br><br>
+
+<b>Thunderbird</b><br>
+Trascina i file .eml nella cartella <b>Bozze</b> di Thunderbird.  
+Apri ogni messaggio e clicca Invia.<br><br>
+
+<b>Apple Mail</b><br>
+Trascina i file .eml nella cartella Bozze e inviali dopo averli controllati.<br><br>
+
+<b>Gmail</b><br>
+Gmail non supporta direttamente i file .eml.  
+Apri il file .eml per copiare il testo e allega manualmente il PDF in Gmail.`,
+
+from:"Email mittente",
+subject:"Oggetto email",
+body:"Testo email",
+browse:"Seleziona file / cartelle",
+clear:"Cancella",
+drop:"Trascina qui PDF o cartelle",
+loaded:"File caricati",
+download:"Scarica ZIP con le email",
+log:"Log",
+preview:"Anteprima email",
+group:"Raggruppa allegati per destinatario",
+defaultBody:"In allegato il documento."
+},
+
+de:{
+title:"PDF → EML Generator",
+
+intro:`<b>Was dieses Tool macht</b><br>
+Dieses Programm erstellt aus PDF-Dateien E-Mail-Dateien (.eml). Jede PDF-Datei wird zu einer E-Mail mit dem PDF als Anhang.<br><br>
+
+<b>Dateinamensformat</b><br>
+Der Dateiname muss mit der Empfänger-E-Mail-Adresse beginnen.<br>
+Beispiel:<br>
+<code>max@example.com;1;Rechnung.pdf</code><br><br>
+
+<b>Verwendung</b><br>
+1. Absenderadresse, Betreff und Nachricht eingeben.<br>
+2. PDF-Dateien oder Ordner in den Bereich ziehen.<br>
+3. ZIP-Datei mit den erzeugten E-Mails herunterladen.<br><br>
+
+<b>E-Mails senden</b><br>
+1. ZIP-Datei entpacken.<br>
+2. Sie erhalten mehrere <code>.eml</code> Dateien.<br><br>
+
+<b>Outlook</b><br>
+Die .eml Dateien in den Ordner <b>Entwürfe</b> ziehen und anschließend senden.<br><br>
+
+<b>Thunderbird</b><br>
+Die .eml Dateien in den Ordner <b>Entwürfe</b> ziehen und senden.<br><br>
+
+<b>Apple Mail</b><br>
+Die .eml Dateien in den Entwürfe-Ordner ziehen und anschließend senden.<br><br>
+
+<b>Gmail</b><br>
+Gmail unterstützt das direkte Importieren von .eml Dateien nicht.`,
+
+from:"Absender E-Mail",
+subject:"Betreff",
+body:"E-Mail Text",
+browse:"Dateien / Ordner wählen",
+clear:"Löschen",
+drop:"PDF Dateien hierher ziehen",
+loaded:"Geladene Dateien",
+download:"ZIP herunterladen",
+log:"Log",
+preview:"E-Mail Vorschau",
+group:"Anhänge pro Empfänger gruppieren",
+defaultBody:"Im Anhang finden Sie das Dokument."
+},
+
+fr:{
+title:"Générateur PDF → EML",
+
+intro:`<b>Fonction de cet outil</b><br>
+Cette application convertit des fichiers PDF en emails (.eml). Chaque PDF devient un email avec le document en pièce jointe.<br><br>
+
+<b>Format du nom de fichier</b><br>
+Le nom du fichier doit commencer par l'adresse email du destinataire.<br>
+Exemple :<br>
+<code>jean@example.com;1;Facture.pdf</code><br><br>
+
+<b>Utilisation</b><br>
+1. Saisir l'email expéditeur, le sujet et le texte du message.<br>
+2. Glisser les fichiers PDF ou les dossiers dans la zone prévue.<br>
+3. Télécharger le fichier ZIP contenant les emails générés.<br><br>
+
+<b>Envoyer les emails</b><br>
+1. Extraire les fichiers du ZIP téléchargé.<br>
+2. Vous obtiendrez des fichiers email avec extension <code>.eml</code>.<br><br>
+
+<b>Outlook</b><br>
+Glisser les fichiers .eml dans le dossier <b>Brouillons</b> puis envoyer les messages.<br><br>
+
+<b>Thunderbird</b><br>
+Glisser les fichiers .eml dans le dossier Brouillons puis envoyer.<br><br>
+
+<b>Apple Mail</b><br>
+Glisser les fichiers .eml dans la boîte Brouillons et envoyer les messages.<br><br>
+
+<b>Gmail</b><br>
+Gmail ne supporte pas directement les fichiers .eml.`,
+
+from:"Email expéditeur",
+subject:"Sujet",
+body:"Texte de l'email",
+browse:"Choisir fichiers / dossiers",
+clear:"Effacer",
+drop:"Glissez les PDF ici",
+loaded:"Fichiers chargés",
+download:"Télécharger ZIP",
+log:"Log",
+preview:"Aperçu de l'email",
+group:"Regrouper les pièces jointes",
+defaultBody:"Veuillez trouver le document en pièce jointe."
+}
+
+}
+
+/* ---------- STATE ---------- */
+
+let attachmentsByEmail={}
+let loadedFiles=[]
+
+const logArea=document.getElementById("log")
+const preview=document.getElementById("preview")
+
+/* ---------- UI ---------- */
+
+function log(msg){
+logArea.textContent+=msg+"\n"
+}
+
+function updateLoadedFilesLabel(){
+loadedFilesLabel.innerText=
+translations[lang.value].loaded+" ("+loadedFiles.length+")"
+}
+
+function updateEmailCount(){
+
+let emails=0
+
+for(const email in attachmentsByEmail){
+
+if(groupEmails.checked)
+emails++
+else
+emails+=attachmentsByEmail[email].length
+
+}
+
+emailCount.innerText=
+"Emails to generate: "+emails+
+" ("+loadedFiles.length+" attachments)"
+
+}
+
+function updatePreview(){
+
+preview.textContent=
+`From: ${fromEmail.value}
+To: example@example.com
+Subject: ${subject.value}
+
+${body.value}
+
+Attachment: example.pdf`
+
+}
+
+/* ---------- FILE NAME CLEAN ---------- */
+
+function cleanAttachmentName(fileName,subject){
+
+const parts=fileName.split(";")
+parts.shift()
+
+let name=parts.join(" ").replace(".pdf","").trim()
+
+if(!name) name=subject
+
+return name+".pdf"
+
+}
+
+/* ---------- FILE PROCESS ---------- */
+
+async function processFiles(files){
+
+for(const file of files){
+
+if(!file.name.endsWith(".pdf")) continue
+
+const email=file.name.split(";")[0]
+
+const buffer=await file.arrayBuffer()
+
+const base64=btoa(
+new Uint8Array(buffer)
+.reduce((d,b)=>d+String.fromCharCode(b),'')
+)
+
+const cleanName=cleanAttachmentName(file.name,subject.value)
+
+if(!attachmentsByEmail[email])
+attachmentsByEmail[email]=[]
+
+const list=attachmentsByEmail[email]
+
+const existing=list.find(a=>a.name===cleanName)
+
+if(existing){
+
+existing.base64=base64
+log("Replaced "+file.name)
+
+}else{
+
+list.push({name:cleanName,base64:base64})
+
+}
+
+if(!loadedFiles.includes(file.name))
+loadedFiles.push(file.name)
+
+}
+
+updateFileList()
+
+}
+
+/* ---------- LIST ---------- */
+
+function updateFileList(){
+
+fileList.innerHTML=[...loadedFiles].sort().join("\n")
+
+updateLoadedFilesLabel()
+updateEmailCount()
+
+}
+
+function clearFiles(){
+
+attachmentsByEmail={}
+loadedFiles=[]
+fileList.innerHTML=""
+logArea.textContent=""
+
+updateLoadedFilesLabel()
+updateEmailCount()
+
+}
+
+/* ---------- EMAIL ---------- */
+
+function buildEml(from,to,subject,body,attachments){
+
+const boundary="----=_Boundary_"+Math.random()
+
+let eml=
+`From: ${from}
+To: ${to}
+Subject: ${subject}
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="${boundary}"
+
+--${boundary}
+Content-Type: text/plain
+
+${body}
+
+`
+
+for(const att of attachments){
+
+eml+=`--${boundary}
+Content-Type: application/pdf; name="${att.name}"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="${att.name}"
+
+${att.base64}
+
+`
+
+}
+
+eml+=`--${boundary}--`
+
+return eml
+
+}
+
+/* ---------- ZIP ---------- */
+
+async function downloadZip(){
+
+const zip=new JSZip()
+
+for(const email in attachmentsByEmail){
+
+const list=attachmentsByEmail[email]
+
+if(groupEmails.checked){
+
+zip.file(email+".eml",
+buildEml(fromEmail.value,email,subject.value,body.value,list))
+
+}else{
+
+for(const att of list){
+
+zip.file(att.name+".eml",
+buildEml(fromEmail.value,email,subject.value,body.value,[att]))
+
+}
+
+}
+
+}
+
+const blob=await zip.generateAsync({type:"blob"})
+
+const a=document.createElement("a")
+a.href=URL.createObjectURL(blob)
+a.download="emails.zip"
+a.click()
+
+}
+
+/* ---------- EVENTS ---------- */
+
+fileInput.addEventListener("change",e=>processFiles(e.target.files))
+
+drop.addEventListener("dragover",e=>e.preventDefault())
+
+drop.addEventListener("drop",e=>{
+e.preventDefault()
+processFiles(e.dataTransfer.files)
+})
+
+/* ---------- LANGUAGE ---------- */
+
+function setLanguage(langCode){
+
+const t=translations[langCode]
+
+title.innerText=t.title
+intro.innerHTML=t.intro
+fromLabel.innerText=t.from
+subjectLabel.innerText=t.subject
+bodyLabel.innerText=t.body
+browseBtn.innerText=t.browse
+clearBtn.innerText=t.clear
+drop.innerText=t.drop
+downloadBtn.innerText=t.download
+previewLabel.innerText=t.preview
+logLabel.innerText=t.log
+groupLabel.innerText=t.group
+
+updateLoadedFilesLabel()
+
+}
+
+/* ---------- INIT ---------- */
+
+for(const k in translations){
+
+const opt=document.createElement("option")
+opt.value=k
+opt.textContent=k.toUpperCase()
+lang.appendChild(opt)
+
+}
+
+lang.value="en"
+
+lang.addEventListener("change",()=>setLanguage(lang.value))
+
+setLanguage("en")
+
+updateLoadedFilesLabel()
+updateEmailCount()
+updatePreview()
+
+</script>
+</body>
+</html>
