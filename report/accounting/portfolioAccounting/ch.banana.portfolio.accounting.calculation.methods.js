@@ -572,6 +572,7 @@ function getItemCardDataList(banDoc, docInfo, itemObj, unitPriceColDecimals, cur
     setItemCard_ProgressiveValues(docInfo, accountCardData, itemOpeningValues, unitPriceColDecimals);
 
     itemCardData.itemId = itemObj.item;
+    itemCardData.description = itemObj.description;
     itemCardData.itemCurrency = itemObj.currency;
     itemCardData.openingData = itemOpeningValues;
     itemCardData.transactionsData = accountCardData;
@@ -1449,12 +1450,7 @@ function getReportStyle() {
     var stylesheet = Banana.Report.newStyleSheet();
     // Parse the CSS text
     stylesheet.parse(textCSS);
-
-    var style = stylesheet;
-
-
-    //Create a table style adding the border
-    style = stylesheet.addStyle("table_bas_transactions");
+    stylesheet.addStyle("@page").setAttribute("size", "landscape");
 
     return stylesheet;
 }
