@@ -356,7 +356,7 @@ function getDateObject(dateString, format) {
     return dateObj;
 }
 
-function calculateStockSaleData(banDoc, docInfo, itemObj, dlgParams, currentRowNr) {
+function calculateStockSaleData(banDoc, docInfo, itemObj, dlgParams, currentRowNr, multiplier) {
 
     let saleData = {};
     let quantity = "";
@@ -395,9 +395,7 @@ function calculateStockSaleData(banDoc, docInfo, itemObj, dlgParams, currentRowN
     totalSharesValue = getSharesTotalValue(quantity, dlgParams.marketPrice);
     saleResult = getSaleResult(avgSharesValue, totalSharesValue);
     if (docInfo.isMultiCurrency) {
-        const itemCurrency = itemObj.currency;
-        const currExrate = dlgParams.currExRate;
-        exRateResult = getExchangeResult(banDoc, totalSharesValue, saleResult, itemCardData.currentValues, currExrate, itemCurrency);
+        exRateResult = getExchangeResult(itemCardData, totalSharesValue, saleResult, dlgParams.currExrate, multiplier);
     }
 
     // only for bonds
@@ -821,30 +819,75 @@ function getSaleResult(avgSharesValue, totalSharesvalue) {
     return saleResult;
 }
 
-/** Returns the calculated exchange rate result.
-*/
-function getExchangeResult(banDoc, totalSharesValue, saleResult, itemCurrValues, currExRate, itemCurrency) {
+/**
+ * Returns the effective FX result to be posted separately,
+ * net of the FX component already embedded in the sale result.
+ */
+function getExchangeResult(itemCardData, totalSharesValue, saleResult, currExRate, multiplier) {
 
-    if (!banDoc)
-        return "";
+    let accExRate = "";
+    const negativeMult = multiplier.indexOf("-") > -1;
+    const absMult = Banana.SDecimal.abs(multiplier);
+    let theoreticalFxResult = "";
+    let sellResultFxResult = "";
 
-    const accExRate = getCurrentBookingRate(itemCurrValues);
-    Banana.console.debug(accExRate);
-    Banana.console.debug(totalSharesValue);
-    // Get del valore attuale delle estensioni al netto del risultato di vendita
-    // Usando direttamente il valore al netto del risultato, posso calcolare direttamente
-    // il risultato realizzato sul cambio pratico, ovvero scorporato il cambio gia calcolato per il risultato di vendita.
-    const totalSharesValue_netOfSaleResult = Banana.SDecimal.subtract(totalSharesValue, saleResult);
-    Banana.console.debug(totalSharesValue_netOfSaleResult);
-    // Get the values in the base currencies using the market exchange rate and the book exchange rate.
-    const baseCurrValue_marketExRate = banDoc.changeAmountInBaseCurrency(itemCurrency, totalSharesValue_netOfSaleResult, currExRate);
-    Banana.console.debug(baseCurrValue_marketExRate);
-    const baseCurrValue_bookingExRate = banDoc.changeAmountInBaseCurrency(itemCurrency, totalSharesValue_netOfSaleResult, accExRate);     // riprendere da qui e vedere come mai il risultato è sbagliato 03.03.
-    Banana.console.debug(baseCurrValue_bookingExRate);
-    // Get the realized exchange (theorical result)
-    const baseCurrValue_difference = Banana.SDecimal.subtract(baseCurrValue_marketExRate, baseCurrValue_bookingExRate);
+    if (!itemCardData || !itemCardData.currentValues) {
+        return Banana.Converter.toLocaleNumberFormat("0.00");
+    }
 
-    return baseCurrValue_difference;
+    if (negativeMult) {
+        accExRate = Banana.SDecimal.divide(
+            itemCardData.currentValues.itemBalanceBase,
+            itemCardData.currentValues.itemBalanceCurr
+        );
+    } else {
+        accExRate = Banana.SDecimal.divide(
+            itemCardData.currentValues.itemBalanceCurr,
+            itemCardData.currentValues.itemBalanceBase
+        );
+    }
+
+    if (!accExRate || accExRate.length < 1)
+        return Banana.Converter.toLocaleNumberFormat("0.00");
+
+    // Default to accExRate if currExRate is not provided
+    if (!currExRate) {
+        currExRate = accExRate;
+    }
+
+    // Calculate the theoretical FX result on the position
+    if (negativeMult) {
+        theoreticalFxResult = Banana.SDecimal.subtract(
+            Banana.SDecimal.multiply(totalSharesValue, Banana.SDecimal.divide(currExRate, absMult)),
+            Banana.SDecimal.multiply(totalSharesValue, Banana.SDecimal.divide(accExRate, absMult))
+        );
+    } else {
+        theoreticalFxResult = Banana.SDecimal.subtract(
+            Banana.SDecimal.divide(totalSharesValue, Banana.SDecimal.divide(currExRate, absMult)),
+            Banana.SDecimal.divide(totalSharesValue, Banana.SDecimal.divide(accExRate, absMult))
+        );
+    }
+
+    // Calculate the FX component already embedded in the sale result
+    if (negativeMult) {
+        sellResultFxResult = Banana.SDecimal.subtract(
+            Banana.SDecimal.multiply(saleResult, Banana.SDecimal.divide(currExRate, absMult)),
+            Banana.SDecimal.multiply(saleResult, Banana.SDecimal.divide(accExRate, absMult))
+        );
+    } else {
+        sellResultFxResult = Banana.SDecimal.subtract(
+            Banana.SDecimal.divide(saleResult, Banana.SDecimal.divide(currExRate, absMult)),
+            Banana.SDecimal.divide(saleResult, Banana.SDecimal.divide(accExRate, absMult))
+        );
+    }
+
+    Banana.console.debug(theoreticalFxResult);
+    Banana.console.debug(sellResultFxResult);
+
+    // Calculate the effective FX result to be posted separately
+    let effectiveFxResult = Banana.SDecimal.subtract(theoreticalFxResult, sellResultFxResult);
+
+    return effectiveFxResult;
 }
 /**
  * Given the current values row of a security retrieved

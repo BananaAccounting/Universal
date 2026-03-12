@@ -174,7 +174,8 @@ function getTestData_1(banDoc, docInfo, itemsData) {
     itemObj = itemsData.find(obj => obj.item === userParams.selectedItem);
     currentRowNr = 7;
     currentRowObj = getCurrentRowObj(banDoc, currentRowNr, "Transactions");
-    calcSaleData = calculateStockSaleData(banDoc, docInfo, itemObj, userParams, currentRowNr);
+    const mult = currentRowObj.value("ExchangeRate");
+    calcSaleData = calculateStockSaleData(banDoc, docInfo, itemObj, userParams, currentRowNr, mult);
     const recordSalesTransactions = new RecordSalesTransactions(banDoc, docInfo, calcSaleData,
         userParams, itemsData, itemObj, currentRowObj, false);
 
@@ -213,7 +214,8 @@ function getTestData_2(banDoc, docInfo, itemsData) {
     itemObj = itemsData.find(obj => obj.item === userParams.selectedItem);
     currentRowNr = 21;
     currentRowObj = getCurrentRowObj(banDoc, currentRowNr, "Transactions");
-    calcSaleData = calculateStockSaleData(banDoc, docInfo, itemObj, userParams, currentRowNr);
+    const mult = currentRowObj.value("ExchangeRate");
+    calcSaleData = calculateStockSaleData(banDoc, docInfo, itemObj, userParams, currentRowNr, mult);
     const recordSalesTransactions = new RecordSalesTransactions(banDoc, docInfo, calcSaleData,
         userParams, itemsData, itemObj, currentRowObj, false);
 
@@ -253,7 +255,8 @@ function getTestData_3(banDoc, docInfo, itemsData) {
     itemObj = itemsData.find(obj => obj.item === userParams.selectedItem);
     currentRowNr = 28;
     currentRowObj = getCurrentRowObj(banDoc, currentRowNr, "Transactions");
-    calcSaleData = calculateStockSaleData(banDoc, docInfo, itemObj, userParams, currentRowNr);
+    const mult = currentRowObj.value("ExchangeRate");
+    calcSaleData = calculateStockSaleData(banDoc, docInfo, itemObj, userParams, currentRowNr, mult);
     const recordSalesTransactions = new RecordSalesTransactions(banDoc, docInfo, calcSaleData,
         userParams, itemsData, itemObj, currentRowObj, false);
 
@@ -294,7 +297,8 @@ function getTestData_4(banDoc, docInfo, itemsData) {
     itemObj = itemsData.find(obj => obj.item === userParams.selectedItem);
     currentRowNr = 47;
     currentRowObj = getCurrentRowObj(banDoc, currentRowNr, "Transactions");
-    calcSaleData = calculateStockSaleData(banDoc, docInfo, itemObj, userParams, currentRowNr);
+    const mult = currentRowObj.value("ExchangeRate");
+    calcSaleData = calculateStockSaleData(banDoc, docInfo, itemObj, userParams, currentRowNr, mult);
     const recordSalesTransactions = new RecordSalesTransactions(banDoc, docInfo, calcSaleData,
         userParams, itemsData, itemObj, currentRowObj, false);
 
@@ -334,7 +338,8 @@ function getTestData_5(banDoc, docInfo, itemsData) {
     itemObj = itemsData.find(obj => obj.item === userParams.selectedItem);
     currentRowNr = 68;
     currentRowObj = getCurrentRowObj(banDoc, currentRowNr, "Transactions");
-    calcSaleData = calculateStockSaleData(banDoc, docInfo, itemObj, userParams, currentRowNr);
+    const mult = currentRowObj.value("ExchangeRate");
+    calcSaleData = calculateStockSaleData(banDoc, docInfo, itemObj, userParams, currentRowNr, mult);
     const recordSalesTransactions = new RecordSalesTransactions(banDoc, docInfo, calcSaleData,
         userParams, itemsData, itemObj, currentRowObj, false);
 
@@ -374,7 +379,8 @@ function getTestData_6(banDoc, docInfo, itemsData) {
     itemObj = itemsData.find(obj => obj.item === userParams.selectedItem);
     currentRowNr = 3;
     currentRowObj = getCurrentRowObj(banDoc, currentRowNr, "Transactions");
-    calcSaleData = calculateStockSaleData(banDoc, docInfo, itemObj, userParams, currentRowNr);
+    const mult = currentRowObj.value("ExchangeRate");
+    calcSaleData = calculateStockSaleData(banDoc, docInfo, itemObj, userParams, currentRowNr, mult);
     const recordSalesTransactions = new RecordSalesTransactions(banDoc, docInfo, calcSaleData,
         userParams, itemsData, itemObj, currentRowObj, false);
 
@@ -414,7 +420,8 @@ function getTestData_7(banDoc, docInfo, itemsData) {
     itemObj = itemsData.find(obj => obj.item === userParams.selectedItem);
     currentRowNr = 8;
     currentRowObj = getCurrentRowObj(banDoc, currentRowNr, "Transactions");
-    calcSaleData = calculateStockSaleData(banDoc, docInfo, itemObj, userParams, currentRowNr);
+    const mult = currentRowObj.value("ExchangeRate");
+    calcSaleData = calculateStockSaleData(banDoc, docInfo, itemObj, userParams, currentRowNr, mult);
     const recordSalesTransactions = new RecordSalesTransactions(banDoc, docInfo, calcSaleData,
         userParams, itemsData, itemObj, currentRowObj, false);
 
