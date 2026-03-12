@@ -30,7 +30,7 @@
     "avgCost": "10.0000",
     "avgSharesValue": "1000.0000",
     "currentQt": "100.0000",
-    "exRateResult": "50.0000000000",
+    "exRateResult": "50.00",
     "saleResult": "-50.0000",
     "totalSharesvalue": "950.0000"
 }
@@ -111,7 +111,7 @@
                                             "fields": {
                                                 "AccountCredit": "[Realized exchange profit account]",
                                                 "AccountDebit": "Shares Unicredit",
-                                                "Amount": "50.0000000000",
+                                                "Amount": "50.00",
                                                 "Date": "2024-03-20",
                                                 "Description": "Shares Unicredit Result on exchange",
                                                 "Doc": "2",
@@ -147,7 +147,7 @@
     "avgCost": "11.0000",
     "avgSharesValue": "1100.0000",
     "currentQt": "200.0000",
-    "exRateResult": "22.0000000000",
+    "exRateResult": "22.00",
     "saleResult": "50.0000",
     "totalSharesvalue": "1150.0000"
 }
@@ -261,7 +261,7 @@
                                             "fields": {
                                                 "AccountCredit": "[Realized exchange profit account]",
                                                 "AccountDebit": "Shares Netflix",
-                                                "Amount": "22.0000000000",
+                                                "Amount": "22.00",
                                                 "Date": "2024-03-26",
                                                 "Description": "Shares Netflix Result on exchange",
                                                 "Doc": "4",
@@ -297,7 +297,7 @@
     "avgCost": "11.0000",
     "avgSharesValue": "1100.0000",
     "currentQt": "100.0000",
-    "exRateResult": "-5.5000000",
+    "exRateResult": "-5.50",
     "saleResult": "55.6200",
     "totalSharesvalue": "1155.6200"
 }
@@ -411,7 +411,7 @@
                                             "fields": {
                                                 "AccountCredit": "Shares Netflix",
                                                 "AccountDebit": "[Realized exchange loss account]",
-                                                "Amount": "-5.5000000",
+                                                "Amount": "-5.50",
                                                 "Date": "2024-04-26",
                                                 "Description": "Shares Netflix Result on exchange",
                                                 "Doc": "5",
@@ -447,7 +447,7 @@
     "avgCost": "0.9800",
     "avgSharesValue": "4900.0000",
     "currentQt": "5000.0000",
-    "exRateResult": "147.000000",
+    "exRateResult": "147.00",
     "saleResult": "225.0000",
     "totalSharesvalue": "5125.000"
 }
@@ -578,7 +578,7 @@
                                             "fields": {
                                                 "AccountCredit": "[Realized exchange profit account]",
                                                 "AccountDebit": "Bonds EUR",
-                                                "Amount": "147.000000",
+                                                "Amount": "147.00",
                                                 "Date": "2024-10-31",
                                                 "Description": "Bonds Bnp Paribas Result on exchange",
                                                 "Doc": "8",
@@ -614,7 +614,7 @@
     "avgCost": "5.9876",
     "avgSharesValue": "898.1400",
     "currentQt": "400.0000",
-    "exRateResult": "0.00",
+    "exRateResult": "0",
     "saleResult": "-28.9800",
     "totalSharesvalue": "869.1600"
 }
@@ -714,7 +714,7 @@
     "avgCost": "12.8001",
     "avgSharesValue": "2560.0200",
     "currentQt": "200.0000",
-    "exRateResult": "0.00",
+    "exRateResult": "0",
     "saleResult": "-10.0200",
     "totalSharesvalue": "2550.00"
 }
@@ -814,7 +814,7 @@
     "avgCost": "5.9998",
     "avgSharesValue": "1199.9600",
     "currentQt": "250.0000",
-    "exRateResult": "0.00",
+    "exRateResult": "0",
     "saleResult": "4.0600",
     "totalSharesvalue": "1204.0200"
 }
