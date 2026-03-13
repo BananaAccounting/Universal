@@ -207,9 +207,8 @@ var AdjustmentTransactionsManager = class AdjustmentTransactionsManager {
             row.fields["AccountCredit"] = this.savedAccountsParams.valueChangingcontraAccounts.unrealizedGainAccount || texts.otherValChangeIncomePlaceHolder;
         }
         if (this.docInfo.isMultiCurrency) {
-            const baseAmt = Banana.SDecimal.abs(this.banDoc.changeAmountInBaseCurrency(itemRowObj.currency, priceAdj, bookCurrExRate));
             row.fields["AmountCurrency"] = Banana.Converter.toInternalNumberFormat(priceAdj, ".");
-            row.fields["Amount"] = Banana.Converter.toInternalNumberFormat(baseAmt, ".");
+            row.fields["ExchangeRate"] = Banana.Converter.toInternalNumberFormat(bookCurrExRate, ".");
         }
         else {
             row.fields["Amount"] = Banana.Converter.toInternalNumberFormat(priceAdj, ".");
