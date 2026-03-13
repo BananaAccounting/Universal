@@ -258,7 +258,7 @@ class DlgCalculateSaleDataManager {
     getExchangeRateMultiplierFromCurrentRow() {
         if (!this.currentRowObj || !this.docInfo.isMultiCurrency)
             return;
-        return this.currentRowObj.value("ExchangeRate");
+        return this.currentRowObj.value("ExchangeMultiplier");
     }
     convertSalesDataToLocaleFormat(salesData) {
         salesData.currentQt = Banana.Converter.toLocaleNumberFormat(salesData.currentQt, this.quantityColDecimals, true);
@@ -287,7 +287,8 @@ class DlgCalculateSaleDataManager {
 
         this.convertDlgParamsToInternalFormat(dlgParams);
 
-        salesData = calculateStockSaleData(this.banDoc, this.docInfo, itemObj, dlgParams, this.currentRowNr);
+        const multiplier = this.getExchangeRateMultiplierFromCurrentRow();
+        salesData = calculateStockSaleData(this.banDoc, this.docInfo, itemObj, dlgParams, this.currentRowNr, multiplier);
         assetCurr = itemObj.currency;
         baseCurr = this.docInfo.baseCurrency;
 

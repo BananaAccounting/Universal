@@ -395,7 +395,7 @@ function calculateStockSaleData(banDoc, docInfo, itemObj, dlgParams, currentRowN
     totalSharesValue = getSharesTotalValue(quantity, dlgParams.marketPrice);
     saleResult = getSaleResult(avgSharesValue, totalSharesValue);
     if (docInfo.isMultiCurrency) {
-        exRateResult = getExchangeResult(itemCardData, totalSharesValue, saleResult, dlgParams.currExrate, multiplier);
+        exRateResult = getExchangeResult(itemCardData, totalSharesValue, saleResult, dlgParams.currExRate, multiplier);
     }
 
     // only for bonds
@@ -826,6 +826,10 @@ function getSaleResult(avgSharesValue, totalSharesvalue) {
 function getExchangeResult(itemCardData, totalSharesValue, saleResult, currExRate, multiplier) {
 
     let accExRate = "";
+
+    if (!multiplier) {
+        multiplier = "-1";
+    }
     const negativeMult = multiplier.indexOf("-") > -1;
     const absMult = Banana.SDecimal.abs(multiplier);
     let theoreticalFxResult = "";
@@ -880,9 +884,6 @@ function getExchangeResult(itemCardData, totalSharesValue, saleResult, currExRat
             Banana.SDecimal.divide(saleResult, Banana.SDecimal.divide(accExRate, absMult))
         );
     }
-
-    Banana.console.debug(theoreticalFxResult);
-    Banana.console.debug(sellResultFxResult);
 
     // Calculate the effective FX result to be posted separately
     let effectiveFxResult = Banana.SDecimal.subtract(theoreticalFxResult, sellResultFxResult);
