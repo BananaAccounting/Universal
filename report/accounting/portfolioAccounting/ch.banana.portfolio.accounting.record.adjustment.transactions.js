@@ -218,14 +218,6 @@ var AdjustmentTransactionsManager = class AdjustmentTransactionsManager {
 
     }
 
-    calculatePriceAdjustmentResult(itemCurrentValues, itemCurrentQt, itemUnitMarketPrice) {
-
-        if (!itemCurrentValues)
-            return "";
-
-        return this.calculateAdjustmentResults_PriceAdj(itemCurrentQt, itemCurrentValues.itemAvgCost, itemUnitMarketPrice);
-    }
-
     /**
      * The price adjustment is calculated as:
      *
@@ -241,7 +233,12 @@ var AdjustmentTransactionsManager = class AdjustmentTransactionsManager {
      * @itemUnitMarketPrice Actual Item book price.
      * @itemUnitMarketPrice Actual market price.
      */
-    calculateAdjustmentResults_PriceAdj(itemCurrentQt, itemUnitBookPrice, itemUnitMarketPrice) {
+    calculatePriceAdjustmentResult(itemCurrentValues, itemCurrentQt, itemUnitMarketPrice) {
+
+        if (!itemCurrentValues)
+            return "";
+
+        const itemUnitBookPrice = itemCurrentValues.itemAvgCost;
         let marketValue = Banana.SDecimal.multiply(itemUnitMarketPrice, itemCurrentQt);
         let bookValue = Banana.SDecimal.multiply(itemUnitBookPrice, itemCurrentQt);
         return Banana.SDecimal.subtract(marketValue, bookValue);
