@@ -60,6 +60,15 @@ TestCalcSalesDialog.prototype.initTestCase = function () {
     this.docInfo2025 = getDocumentInfo(this.banDoc2025);
     this.itemsData2025 = getItemsTableData(this.banDoc2025, this.docInfo2025);
 
+    // File multiplier 100 Japanese Yen
+    let fileNameJPY = "file:script/../test/testcases/portfolio_accounting_double_entry_multi_currency_salesrecordtest_jpy_sale.ac2";
+    this.banDocJPY = Banana.application.openDocument(fileNameJPY);
+    if (!this.banDocJPY) {
+        this.testLogger.addFatalError("File not found: " + fileNameJPY);
+        return;
+    }
+    this.docInfoJPY = getDocumentInfo(this.banDocJPY);
+    this.itemsDataJPY = getItemsTableData(this.banDocJPY, this.docInfoJPY);
 }
 
 // This method will be called at the end of the test case
@@ -142,6 +151,21 @@ TestCalcSalesDialog.prototype.testRecordSalesTransactions = function () {
     this.testLogger.addJson("Test 7", JSON.stringify(testDataObj.calcSaleData));
     this.testLogger.addSubSection("Test 7: Recorded Data");
     this.testLogger.addJson("Test 7", JSON.stringify(testDataObj.recordsSalesTransactions));
+    // Test 8, Share
+    testDataObj = getTestData_8(this.banDocJPY, this.docInfoJPY, this.itemsDataJPY);
+    this.testLogger.addSection("Test 8: Sell part of JP1234567899.");
+    this.testLogger.addSubSection("Test 8: Calculated Data");
+    this.testLogger.addJson("Test 8", JSON.stringify(testDataObj.calcSaleData));
+    this.testLogger.addSubSection("Test 8: Recorded Data");
+    this.testLogger.addJson("Test 8", JSON.stringify(testDataObj.recordsSalesTransactions));
+
+    // Test 9, Share
+    testDataObj = getTestData_9(this.banDocJPY, this.docInfoJPY, this.itemsDataJPY);
+    this.testLogger.addSection("Test 9: Sell all of JP0000000112.");
+    this.testLogger.addSubSection("Test 9: Calculated Data");
+    this.testLogger.addJson("Test 9", JSON.stringify(testDataObj.calcSaleData));
+    this.testLogger.addSubSection("Test 9: Recorded Data");
+    this.testLogger.addJson("Test 9", JSON.stringify(testDataObj.recordsSalesTransactions));
 
 }
 
@@ -432,8 +456,83 @@ function getTestData_7(banDoc, docInfo, itemsData) {
     return testDataObj;
 }
 
+/**
+ * Test 8. (Accounting JPY)
+ * Sell a part of 
+ * - ISIN: JP1234567899
+ * - Qt : -50.00
+ * - Current (Market) Price: 10’502.0000
+ * - Exhange rate: 0.006000
+ * - Bank Charges: No
+ * Profit on sale
+ * Profit on FX
+ */
+function getTestData_8(banDoc, docInfo, itemsData) {
+    let testDataObj = {};
+    testDataObj.calcSaleData = {};
+    testDataObj.recordsSalesTransactions = {};
 
+    let userParams = {};
+    let itemObj = {};
+    let calcSaleData = {};
+    let currentRowNr = -1;
+    let currentRowObj = {};
 
+    // Calculate Data
+    userParams = getUserParams("8");
+    itemObj = itemsData.find(obj => obj.item === userParams.selectedItem);
+    currentRowNr = 9;
+    currentRowObj = getCurrentRowObj(banDoc, currentRowNr, "Transactions");
+    const mult = currentRowObj.value("ExchangeMultiplier");
+    calcSaleData = calculateStockSaleData(banDoc, docInfo, itemObj, userParams, currentRowNr, mult);
+    const recordSalesTransactions = new RecordSalesTransactions(banDoc, docInfo, calcSaleData,
+        userParams, itemsData, itemObj, currentRowObj, false);
+
+    //Save the data into test object
+    testDataObj.calcSaleData = calcSaleData;
+    testDataObj.recordsSalesTransactions = recordSalesTransactions.getRecordSalesTransactions();
+
+    return testDataObj;
+}
+
+/**
+ * Test 9. (Accounting JPY)
+ * Sell All
+ * - ISIN: JP0000000112
+ * - Qt : -700.00
+ * - Current (Market) Price: 20’005.0000
+ * - Exhange rate: 0.006500
+ * - Bank Charges: No
+ * Profit on sale
+ * Profit on FX
+ */
+function getTestData_9(banDoc, docInfo, itemsData) {
+    let testDataObj = {};
+    testDataObj.calcSaleData = {};
+    testDataObj.recordsSalesTransactions = {};
+
+    let userParams = {};
+    let itemObj = {};
+    let calcSaleData = {};
+    let currentRowNr = -1;
+    let currentRowObj = {};
+
+    // Calculate Data
+    userParams = getUserParams("9");
+    itemObj = itemsData.find(obj => obj.item === userParams.selectedItem);
+    currentRowNr = 14;
+    currentRowObj = getCurrentRowObj(banDoc, currentRowNr, "Transactions");
+    const mult = currentRowObj.value("ExchangeMultiplier");
+    calcSaleData = calculateStockSaleData(banDoc, docInfo, itemObj, userParams, currentRowNr, mult);
+    const recordSalesTransactions = new RecordSalesTransactions(banDoc, docInfo, calcSaleData,
+        userParams, itemsData, itemObj, currentRowObj, false);
+
+    //Save the data into test object
+    testDataObj.calcSaleData = calcSaleData;
+    testDataObj.recordsSalesTransactions = recordSalesTransactions.getRecordSalesTransactions();
+
+    return testDataObj;
+}
 
 /**
  * Params object should have the following properties:
@@ -496,6 +595,20 @@ function getUserParams(testNr) {
             params.marketPrice = "6.0201";
             params.currExRate = "1.00";
             params.bankCharges = "22.00";
+            return params;
+        case "8":
+            params.selectedItem = "JP1234567899";
+            params.quantity = "50";
+            params.marketPrice = "10502.0000";
+            params.currExRate = "0.006000";
+            params.bankCharges = "";
+            return params;
+        case "9":
+            params.selectedItem = "JP0000000112";
+            params.quantity = "700";
+            params.marketPrice = "20005.0000";
+            params.currExRate = "0.006500";
+            params.bankCharges = "";
             return params;
         default:
             return params;
