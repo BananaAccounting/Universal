@@ -168,20 +168,25 @@ var AdjustmentTransactionsManager = class AdjustmentTransactionsManager {
         this.itemsTableData.forEach(item => {
             if (item && item.unitPriceCurrent !== undefined && item.unitPriceCurrent !== null && item.unitPriceCurrent !== "") {
                 const itemId = item.item;
+                const itemDescr = item.description;
+                const itemAccount = item.account;
+                const itemCurrentQt = item.currentQt;
                 const itemUnitMarketPrice = item.unitPriceCurrent;
-
-                // Get item card data.
-                const itemRowObj = getItemRowObj(itemId, this.banDoc);
-                const itemCurrentQt = itemRowObj.currentQt;
-                const itemCurrentValues = this.getItemCurrentValues(itemRowObj, unitPriceColDecimals);
+                const itemCurrentValues = this.getItemCurrentValues(item, unitPriceColDecimals);
                 const bookCurrExRate = getCurrentBookingRate(itemCurrentValues);
-
                 const priceAdj = this.calculatePriceAdjustmentResult(itemCurrentValues, itemCurrentQt, itemUnitMarketPrice);
-
+                /**
+                 * Calculate the FX variation. This could be done directly using the command “Create transactions for exchange rate differences”. 
+                 * While this would produce correct balances in the accounting, it generates only one transaction per account. 
+                 * As a result, the operation would not be properly reflected in the investment reports, 
+                 * since no Item ID is automatically assigned to the transaction. Moreover, only a single Item ID can be specified, 
+                 * which makes this approach unsuitable for accounts containing multiple items.
+                 */
+                const fxAdj = this.calculateFXAdjustmentResult(itemCurrentValues, item, priceAdj, bookCurrExRate);
                 if (!priceAdj || Banana.SDecimal.isZero(priceAdj))
                     return;
 
-                rows.push(this.getAdjustmentTransactionsRows_PriceAdj(itemRowObj, priceAdj, itemUnitMarketPrice, bookCurrExRate, texts));
+                rows.push(this.getAdjustmentTransactionsRows_PriceAdj(itemId, itemDescr, itemAccount, priceAdj, itemUnitMarketPrice, bookCurrExRate, texts));
 
             }
         });
@@ -189,7 +194,7 @@ var AdjustmentTransactionsManager = class AdjustmentTransactionsManager {
         return rows;
     }
 
-    getAdjustmentTransactionsRows_PriceAdj(itemRowObj, priceAdj, itemUnitMarketPrice, bookCurrExRate, texts) {
+    getAdjustmentTransactionsRows_PriceAdj(itemId, itemDescr, itemAccount, priceAdj, itemUnitMarketPrice, bookCurrExRate, texts) {
 
         let row = {};
         row.operation = {};
@@ -197,13 +202,13 @@ var AdjustmentTransactionsManager = class AdjustmentTransactionsManager {
         row.fields = {};
         row.fields["Date"] = Banana.Converter.toInternalDateFormat(this.savedValuesParams.date);
         row.fields["Doc"] = "";
-        row.fields["ItemsId"] = itemRowObj.item;
-        row.fields["Description"] = itemRowObj.description + " " + texts.priceAdjustmentTxt + " (" + itemUnitMarketPrice + ")";
+        row.fields["ItemsId"] = itemId;
+        row.fields["Description"] = itemDescr + " " + texts.priceAdjustmentTxt + " (" + itemUnitMarketPrice + ")";
         if (priceAdj.indexOf("-") >= 0) {
             row.fields["AccountDebit"] = this.savedAccountsParams.valueChangingcontraAccounts.unrealizedLossAccount || texts.otherValChangeCostPlaceHolder;
-            row.fields["AccountCredit"] = itemRowObj.account;
+            row.fields["AccountCredit"] = itemAccount;
         } else {
-            row.fields["AccountDebit"] = itemRowObj.account;
+            row.fields["AccountDebit"] = itemAccount;
             row.fields["AccountCredit"] = this.savedAccountsParams.valueChangingcontraAccounts.unrealizedGainAccount || texts.otherValChangeIncomePlaceHolder;
         }
         if (this.docInfo.isMultiCurrency) {
@@ -242,6 +247,31 @@ var AdjustmentTransactionsManager = class AdjustmentTransactionsManager {
         let marketValue = Banana.SDecimal.multiply(itemUnitMarketPrice, itemCurrentQt);
         let bookValue = Banana.SDecimal.multiply(itemUnitBookPrice, itemCurrentQt);
         return Banana.SDecimal.subtract(marketValue, bookValue);
+    }
+
+    /**
+     * L'assestamento della variazione del tasso di cambio viene calcolato
+     * sulla base del valore attuale del bilancio, se è presente un aggiustamento
+     * del prezzo, è necessario aggiornare il bilancio in moneta del conto tenendo conto
+     * dell'assestamento.
+     *
+     */
+    calculateFXAdjustmentResult(itemCurrentValues, itemObj, priceAdj, bookCurrExRate) {
+        if (!this.docInfo.isMultiCurrency)
+            return "";
+        let accBalCurrency = "";
+        let accBalBase = "";
+        let marketBalCurr = itemObj.valueCurrent;
+
+        if (priceAdj) {
+            const multiplier = itemCurrentValues.itemOpMultiplier;
+            const negativeMult = multiplier.indexOf("-") > -1;
+            const absMult = Banana.SDecimal.abs(multiplier);
+            accBalCurrency = Banana.SDecimal.add(itemCurrentValues.itemBalanceCurr, priceAdj);
+            accBalBase = ""; // Riprendere da qui... 18.03
+        }
+
+        return "";
     }
 
     getItemCurrentValues(itemRowObj, unitPriceColDecimals) {

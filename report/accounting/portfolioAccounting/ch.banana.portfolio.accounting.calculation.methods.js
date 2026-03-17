@@ -871,35 +871,42 @@ function getExchangeResult(itemCardData, totalSharesValue, saleResult, currExRat
     const accExRateAdjusted = Banana.SDecimal.multiply(accExRate, absMult);
 
     // Calculate the theoretical FX result on the position
-    if (negativeMult) {
-        theoreticalFxResult = Banana.SDecimal.subtract(
-            Banana.SDecimal.multiply(totalSharesValue, Banana.SDecimal.divide(currExRate, absMult)),
-            Banana.SDecimal.multiply(totalSharesValue, Banana.SDecimal.divide(accExRateAdjusted, absMult))
-        );
-    } else {
-        theoreticalFxResult = Banana.SDecimal.subtract(
-            Banana.SDecimal.divide(totalSharesValue, Banana.SDecimal.divide(currExRate, absMult)),
-            Banana.SDecimal.divide(totalSharesValue, Banana.SDecimal.divide(accExRateAdjusted, absMult))
-        );
-    }
+    theoreticalFxResult = Banana.SDecimal.subtract(
+        getAmountInBaseCurrency(totalSharesValue, absMult, negativeMult, currExRate),
+        getAmountInBaseCurrency(totalSharesValue, absMult, negativeMult, accExRateAdjusted)
+    );
 
     // Calculate the FX component already embedded in the sale result
-    if (negativeMult) {
-        sellResultFxResult = Banana.SDecimal.subtract(
-            Banana.SDecimal.multiply(saleResult, Banana.SDecimal.divide(currExRate, absMult)),
-            Banana.SDecimal.multiply(saleResult, Banana.SDecimal.divide(accExRateAdjusted, absMult))
-        );
-    } else {
-        sellResultFxResult = Banana.SDecimal.subtract(
-            Banana.SDecimal.divide(saleResult, Banana.SDecimal.divide(currExRate, absMult)),
-            Banana.SDecimal.divide(saleResult, Banana.SDecimal.divide(accExRateAdjusted, absMult))
-        );
-    }
+    sellResultFxResult = Banana.SDecimal.subtract(
+        getAmountInBaseCurrency(saleResult, absMult, negativeMult, currExRate),
+        getAmountInBaseCurrency(saleResult, absMult, negativeMult, accExRateAdjusted),
+    );
 
     // Calculate the effective FX result to be posted separately
     let effectiveFxResult = Banana.SDecimal.subtract(theoreticalFxResult, sellResultFxResult);
-
     return effectiveFxResult;
+}
+
+/**
+ * Ritorna l'importo convertito in moneta base sulla base del cambio e della
+ * del moltiplicatore passati come parametro.
+ * "internalExRate" è il cambio così come usato nella tabella registrazioni (direzione).
+ * Se viene passato un cambio contabile puro, assicurarsi di averlo prima normalizzato
+ * sulla base del moltiplicatore utilizzato, in maniera di passare al metodo direttamente
+ * il cambio cosi come verrebbe utilizzato nella tabella registrazioni.
+ */
+function getAmountInBaseCurrency(currencyAmt, absMult, isNegativeMult, internalExRate) {
+    let baseAmt = "";
+    if (isNegativeMult) {
+        baseAmt = Banana.SDecimal.multiply(currencyAmt, Banana.SDecimal.divide(internalExRate, absMult));
+    } else {
+        baseAmt = Banana.SDecimal.divide(currencyAmt, Banana.SDecimal.divide(internalExRate, absMult))
+    }
+
+    Banana.console.debug(baseAmt); // riprendere da qui...
+
+    return baseAmt;
+
 }
 /**
  * Given the current values row of a security retrieved
