@@ -61,7 +61,7 @@ TestCalcSalesDialog.prototype.initTestCase = function () {
     this.itemsData2025 = getItemsTableData(this.banDoc2025, this.docInfo2025);
 
     // File multiplier 100 Japanese Yen
-    let fileNameJPY = "file:script/../test/testcases/portfolio_accounting_double_entry_multi_currency_salesrecordtest_jpy_sale.ac2";
+    let fileNameJPY = "file:script/../test/testcases/portfolio_accounting_double_entry_multi_currency_salesrecordtest_jpy.ac2";
     this.banDocJPY = Banana.application.openDocument(fileNameJPY);
     if (!this.banDocJPY) {
         this.testLogger.addFatalError("File not found: " + fileNameJPY);
