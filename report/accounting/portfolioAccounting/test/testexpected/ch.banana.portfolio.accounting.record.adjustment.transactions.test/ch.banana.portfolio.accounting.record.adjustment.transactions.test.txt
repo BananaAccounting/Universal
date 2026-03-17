@@ -78,7 +78,7 @@
                                                 "Date": "",
                                                 "Description": "Shares Unicredit Market Price Adjustment (9.5000)",
                                                 "Doc": "",
-                                                "ExchangeRate": "1.1",
+                                                "ExchangeRate": "1.1000000000000",
                                                 "ItemsId": "IT0005239360"
                                             },
                                             "operation": {
@@ -93,7 +93,7 @@
                                                 "Date": "",
                                                 "Description": "Shares Netflix Market Price Adjustment (11.5562)",
                                                 "Doc": "",
-                                                "ExchangeRate": "0.95",
+                                                "ExchangeRate": "0.95000000000000",
                                                 "ItemsId": "US123456789"
                                             },
                                             "operation": {
@@ -108,7 +108,7 @@
                                                 "Date": "",
                                                 "Description": "Bonds Bnp Paribas Market Price Adjustment (1.0250)",
                                                 "Doc": "",
-                                                "ExchangeRate": "1.1",
+                                                "ExchangeRate": "1.1000000000000",
                                                 "ItemsId": "IT000792468"
                                             },
                                             "operation": {

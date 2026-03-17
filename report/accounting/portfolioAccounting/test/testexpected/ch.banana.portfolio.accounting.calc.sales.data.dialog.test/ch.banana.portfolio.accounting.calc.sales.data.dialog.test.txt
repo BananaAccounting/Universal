@@ -411,7 +411,7 @@
                                             "fields": {
                                                 "AccountCredit": "Shares Netflix",
                                                 "AccountDebit": "[Realized exchange loss account]",
-                                                "Amount": "-5.5000000",
+                                                "Amount": "5.5000000",
                                                 "Date": "2024-04-26",
                                                 "Description": "Shares Netflix Result on exchange",
                                                 "Doc": "5",

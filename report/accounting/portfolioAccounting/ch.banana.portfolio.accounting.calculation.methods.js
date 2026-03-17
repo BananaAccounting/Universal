@@ -450,8 +450,9 @@ function getAccCardDataArrayOfObjects(banDoc, docInfo, itemObj, currentRowNr) {
         return [];
     }
 
-    let itemName = itemObj.item;
-    let itemAccount = itemObj.account;
+    const itemName = itemObj.item;
+    const itemAccount = itemObj.account;
+    const itemCurrency = itemObj.currency;
     let transactions = [];
 
     let accountCard = banDoc.currentCard(itemAccount);
@@ -496,11 +497,11 @@ function getAccCardDataArrayOfObjects(banDoc, docInfo, itemObj, currentRowNr) {
                 * exchange rate that refers to the item currency, as the multiplier must be always of the
                 * same type for each exchange row.
                  */
-                if (itemObj.currency != docInfo.baseCurrency) { // We are sure item has ALWAYS the same currency as the account used.
+                if (itemCurrency != docInfo.baseCurrency) { // We are sure item has ALWAYS the same currency as the account used.
                     multiplier = tRow.value("ExchangeMultiplier") != "" ?
                         tRow.value("ExchangeMultiplier") : getCurrentRowObjValue(banDoc, currentRowNr, "Transactions", "ExchangeMultiplier");
                     if (!multiplier) {
-                        multiplier = findFirstOccurencyMultiplierForCurr(banDoc, trData.currency);
+                        multiplier = findFirstOccurencyMultiplierForCurr(banDoc, itemCurrency);
                     }
                 }
                 trData.multiplier = multiplier;
@@ -859,16 +860,26 @@ function getExchangeResult(itemCardData, totalSharesValue, saleResult, currExRat
         currExRate = accExRate;
     }
 
+    /**
+     * The accounting exchange rate "accExRate" already embeds the multiplier,
+     * as it is computed from the ratio between base and currency balances.
+     *
+     * As the multiplier effect is already reflected in this rate,
+     * it must be normalized to the raw exchange rate before being used
+     * in subsequent calculations.
+     */
+    const accExRateAdjusted = Banana.SDecimal.multiply(accExRate, absMult);
+
     // Calculate the theoretical FX result on the position
     if (negativeMult) {
         theoreticalFxResult = Banana.SDecimal.subtract(
             Banana.SDecimal.multiply(totalSharesValue, Banana.SDecimal.divide(currExRate, absMult)),
-            Banana.SDecimal.multiply(totalSharesValue, Banana.SDecimal.divide(accExRate, absMult))
+            Banana.SDecimal.multiply(totalSharesValue, Banana.SDecimal.divide(accExRateAdjusted, absMult))
         );
     } else {
         theoreticalFxResult = Banana.SDecimal.subtract(
             Banana.SDecimal.divide(totalSharesValue, Banana.SDecimal.divide(currExRate, absMult)),
-            Banana.SDecimal.divide(totalSharesValue, Banana.SDecimal.divide(accExRate, absMult))
+            Banana.SDecimal.divide(totalSharesValue, Banana.SDecimal.divide(accExRateAdjusted, absMult))
         );
     }
 
@@ -876,12 +887,12 @@ function getExchangeResult(itemCardData, totalSharesValue, saleResult, currExRat
     if (negativeMult) {
         sellResultFxResult = Banana.SDecimal.subtract(
             Banana.SDecimal.multiply(saleResult, Banana.SDecimal.divide(currExRate, absMult)),
-            Banana.SDecimal.multiply(saleResult, Banana.SDecimal.divide(accExRate, absMult))
+            Banana.SDecimal.multiply(saleResult, Banana.SDecimal.divide(accExRateAdjusted, absMult))
         );
     } else {
         sellResultFxResult = Banana.SDecimal.subtract(
             Banana.SDecimal.divide(saleResult, Banana.SDecimal.divide(currExRate, absMult)),
-            Banana.SDecimal.divide(saleResult, Banana.SDecimal.divide(accExRate, absMult))
+            Banana.SDecimal.divide(saleResult, Banana.SDecimal.divide(accExRateAdjusted, absMult))
         );
     }
 
@@ -905,11 +916,26 @@ function getCurrentBookingRate(itemCurrValues) {
     const itemBaseBal = itemCurrValues.itemBalanceBase;
     const itemCurrBal = itemCurrValues.itemBalanceCurr;
     const multiplier = itemCurrValues.itemOpMultiplier;
-    if (multiplier && multiplier.indexOf("-") == -1) {
-        return Banana.SDecimal.divide(itemCurrBal, itemBaseBal);
-    } else if (multiplier && multiplier.indexOf("-") > -1) {
-        return Banana.SDecimal.divide(itemBaseBal, itemCurrBal);
+    let accExRate = "";
+    let accExRateAdusted = "";
+
+    if (multiplier) {
+        /**
+        * The accounting exchange rate "accExRate" already embeds the multiplier,
+        * as it is computed from the ratio between base and currency balances.
+        * As the multiplier effect is already reflected in this rate,
+        * it must be normalized to be used in the transaction table.
+        * */
+        if (multiplier.indexOf("-") == -1) {
+            accExRate = Banana.SDecimal.divide(itemCurrBal, itemBaseBal);
+        } else if (multiplier.indexOf("-") > -1) {
+            accExRate = Banana.SDecimal.divide(itemBaseBal, itemCurrBal);
+        }
+        const absMult = Banana.SDecimal.abs(multiplier);
+        accExRateAdusted = Banana.SDecimal.multiply(accExRate, absMult);
     }
+
+    return accExRateAdusted;
 }
 
 /**
