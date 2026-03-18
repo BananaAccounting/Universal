@@ -233,7 +233,7 @@ function printReport(banDoc, docInfo, itemCardData, itemDescription) {
 }
 
 function addItemTotalTableRowMultiCurrency(tableRow, itemCardData, decimals, styleTotalAmount, currentDate) {
-    let dateCell = tableRow.addCell(Banana.Converter.toLocaleDateFormat(currentDate), 'styleAlignCenter');
+    let dateCell = tableRow.addCell(Banana.Converter.toLocaleDateFormat(currentDate), "");
     dateCell.excludeFromTest();
     tableRow.addCell("", "", 1);
     tableRow.addCell("Total transactions", 'styleDescrTotals');
@@ -249,7 +249,7 @@ function addItemTotalTableRowMultiCurrency(tableRow, itemCardData, decimals, sty
 }
 
 function addItemTotalTableRow(tableRow, itemCardData, decimals, styleTotalAmount, currentDate) {
-    let dateCell = tableRow.addCell(Banana.Converter.toLocaleDateFormat(currentDate), 'styleAlignCenter');
+    let dateCell = tableRow.addCell(Banana.Converter.toLocaleDateFormat(currentDate), "");
     dateCell.excludeFromTest();
     tableRow.addCell("", "", 1);
     tableRow.addCell("Total transactions", 'styleDescrTotals');
