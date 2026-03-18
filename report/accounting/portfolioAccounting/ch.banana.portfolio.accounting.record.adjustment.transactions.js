@@ -184,13 +184,14 @@ var AdjustmentTransactionsManager = class AdjustmentTransactionsManager {
                  */
                 const fxAdj = this.calculateFXAdjustmentResult(itemCurrentValues, item, priceAdj, bookCurrExRate);
 
-                /**If no valid amount is found, we do not create any transaction. */
-                if ((!priceAdj || Banana.SDecimal.isZero(priceAdj)) && (!fxAdj || Banana.SDecimal.isZero(fxAdj)))
-                    return;
+                /**Add price adjustment transaction */
+                if ((priceAdj && !Banana.SDecimal.isZero(priceAdj))) {
+                    rows.push(this.getAdjustmentTransactionsRows_PriceAdj(itemId, itemDescr, itemAccount, priceAdj, itemUnitMarketPrice, bookCurrExRate, texts));
+                }
 
-                rows.push(this.getAdjustmentTransactionsRows_PriceAdj(itemId, itemDescr, itemAccount, priceAdj, itemUnitMarketPrice, bookCurrExRate, texts));
-                if (this.docInfo.isMultiCurrency) {
-                    //rows.push(this.getAdjustmentTransactionsRows_FXAdj(itemId, itemDescr, itemAccount, fxAdj, texts))
+                /** Add FX adjustment transaction */
+                if (this.docInfo.isMultiCurrency && (fxAdj && !Banana.SDecimal.isZero(fxAdj))) {
+                    rows.push(this.getAdjustmentTransactionsRows_FXAdj(itemId, itemDescr, itemAccount, fxAdj, texts))
                 }
 
             }
@@ -302,21 +303,18 @@ var AdjustmentTransactionsManager = class AdjustmentTransactionsManager {
         if (priceAdj) {
             // Adjust the current balance then calculate the difference.
             const multiplier = itemCurrentValues.itemOpMultiplier;
+
+            // Item in base currencies does not have multiplier
+            if (!multiplier)
+                return "";
+
             const negativeMult = multiplier.indexOf("-") > -1;
             const absMult = Banana.SDecimal.abs(multiplier);
-            const accExRateAdjusted = getFXRateAdjustedFromMultiplier(bookCurrExRate, absMult);
 
             // Calculate balance adjusted on priceAdj.
             accBalCurrency = Banana.SDecimal.add(itemCurrentValues.itemBalanceCurr, priceAdj);
-            accBalanceBase = getAmountInBaseCurrency(accBalCurrency, absMult, negativeMult, accExRateAdjusted);
+            accBalanceBase = getAmountInBaseCurrency(accBalCurrency, absMult, negativeMult, bookCurrExRate);
 
-            Banana.console.debug("bookCurrExRate: " + bookCurrExRate);
-            Banana.console.debug("accBalanceBase: " + accBalanceBase);
-            Banana.console.debug("marketBalBase: " + marketBalBase);
-
-            // No Fx adjustment needed.
-            /*if (marketBalBase == accBalanceBase)
-                return;*/
             fxAdjust = Banana.SDecimal.subtract(marketBalBase, accBalanceBase);
         } else {
             // Calculate the difference using the current values as no price adjustment has been found.

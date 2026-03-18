@@ -875,24 +875,14 @@ function getExchangeResult(itemCardData, totalSharesValue, saleResult, currExRat
  */
 function getAmountInBaseCurrency(currencyAmt, absMult, isNegativeMult, internalExRate) {
     let baseAmt = "";
+    if (!internalExRate)
+        internalExRate = "1.00";
     if (isNegativeMult) {
         baseAmt = Banana.SDecimal.multiply(currencyAmt, Banana.SDecimal.divide(internalExRate, absMult));
     } else {
         baseAmt = Banana.SDecimal.divide(currencyAmt, Banana.SDecimal.divide(internalExRate, absMult))
     }
     return baseAmt;
-}
-/**
- * The accounting exchange rate "accExRate" already embeds the multiplier,
- * as it is computed from the ratio between base and currency balances.
- *
- * As the multiplier effect is already reflected in this rate,
- * it must be normalized to the raw exchange rate before being used
- * in subsequent calculations.
- * absMult is the multiplier without any sign.
- */
-function getFXRateAdjustedFromMultiplier(accExRate, absMult) {
-    return Banana.SDecimal.multiply(accExRate, absMult);
 }
 /**
  * Given the current values row of a security retrieved
