@@ -165,6 +165,21 @@
                                         },
                                         {
                                             "fields": {
+                                                "AccountCredit": "508103",
+                                                "AccountDebit": "[Account for unrealized foreign exchange losses]",
+                                                "Amount": "-2063.95700000000000000000000000000",
+                                                "Date": "",
+                                                "Description": "QQQ Test Adjustment at exchange rate on valuation date",
+                                                "Doc": "",
+                                                "ExchangeCurrency": "EUR",
+                                                "ItemsId": "QQQ"
+                                            },
+                                            "operation": {
+                                                "name": "add"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
                                                 "AccountCredit": "[Account for unrealized gains]",
                                                 "AccountDebit": "508101",
                                                 "AmountCurrency": "5000.00000000",

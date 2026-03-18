@@ -321,6 +321,10 @@ var AdjustmentTransactionsManager = class AdjustmentTransactionsManager {
             fxAdjust = Banana.SDecimal.subtract(marketBalBase, itemCurrentValues.itemBalanceBase);
         }
 
+        //Ignore differences minor than 0.01 as those are not writable in the Amounts column.
+        if (Banana.SDecimal.compare(Banana.SDecimal.abs(fxAdjust), "0.01") == -1)
+            fxAdjust = "";
+
         return fxAdjust;
     }
 
