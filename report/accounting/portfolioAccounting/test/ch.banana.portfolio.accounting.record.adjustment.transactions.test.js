@@ -106,6 +106,21 @@ TestAdjustmentTransactions.prototype.testRecordSalesTransactions = function () {
     docChange = getTestData(banDoc);
     this.testLogger.addSection("Adjustment transactions document change 3.");
     this.testLogger.addJson("Doc Change object", JSON.stringify(docChange));
+
+
+    /** Test 4
+    * Generate adjustment transactions, multi currency file using Japanese Yen, 
+    * where the multiplier used is: "100".
+    * The current data is:
+    * JP0000000112: All sold, no adjustment should be created.
+    * JP1234567899: Book value: 10'001.80, Maket value: 11'000.00, Qt 350, Acc ExRate: 0.005029, Actual ExRate: 0.005000, price un.rpofit, ExRate loss
+    * */
+    fileName = "file:script/../test/testcases/portfolio_accounting_double_entry_multi_currency_adjustmenttest_jpy.ac2";
+    banDoc = Banana.application.openDocument(fileName);
+    Test.assert(banDoc);
+    docChange = getTestData(banDoc);
+    this.testLogger.addSection("Adjustment transactions document change 4.");
+    this.testLogger.addJson("Doc Change object", JSON.stringify(docChange));
 }
 
 function getTestData(banDoc) {

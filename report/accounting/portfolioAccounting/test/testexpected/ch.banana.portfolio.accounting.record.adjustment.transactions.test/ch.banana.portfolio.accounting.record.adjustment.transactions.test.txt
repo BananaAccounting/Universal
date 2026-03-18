@@ -269,6 +269,69 @@
     "format": "documentChange"
 }
 \end{jsonvalue}
+\section{Adjustment transactions document change 4.}
+\begin{jsonvalue}{Doc Change object}
+{
+    "data": [
+        {
+            "creator": {
+                "name": "ch.banana.portfolio.accounting.record.adjustment.transactions.test",
+                "version": "1.0"
+            },
+            "document": {
+                "cursorPosition": {
+                },
+                "dataUnits": [
+                    {
+                        "data": {
+                            "rowLists": [
+                                {
+                                    "rows": [
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "[Account for unrealized gains]",
+                                                "AccountDebit": "Shares JPY",
+                                                "AmountCurrency": "249550.0000000000000000",
+                                                "Date": "",
+                                                "Description": "Japanese share 1 Market Price Adjustment (11000.000000000000)",
+                                                "Doc": "",
+                                                "ExchangeRate": "0.005028694834929712651722689915815153",
+                                                "ItemsId": "JP1234567899"
+                                            },
+                                            "operation": {
+                                                "name": "add"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "Shares JPY",
+                                                "AccountDebit": "[Account for unrealized foreign exchange losses]",
+                                                "Amount": "-0.7891079605670979223739726849167",
+                                                "Date": "",
+                                                "Description": "Japanese share 1 Adjustment at exchange rate on valuation date",
+                                                "Doc": "",
+                                                "ExchangeCurrency": "CHF",
+                                                "ItemsId": "JP1234567899"
+                                            },
+                                            "operation": {
+                                                "name": "add"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        "nameXml": "Transactions"
+                    }
+                ],
+                "dataUnitsfileVersion": "1.0.0"
+            }
+        }
+    ],
+    "error": "",
+    "format": "documentChange"
+}
+\end{jsonvalue}
 \keyvalue{Result}{Passed}
 \end{test}
 \end{testcase}
