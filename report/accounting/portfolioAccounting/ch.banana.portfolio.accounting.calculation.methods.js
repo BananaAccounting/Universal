@@ -868,7 +868,7 @@ function getExchangeResult(itemCardData, totalSharesValue, saleResult, currExRat
      * it must be normalized to the raw exchange rate before being used
      * in subsequent calculations.
      */
-    const accExRateAdjusted = Banana.SDecimal.multiply(accExRate, absMult);
+    const accExRateAdjusted = getFXRateAdjustedFromMultiplier(accExRate, absMult);
 
     // Calculate the theoretical FX result on the position
     theoreticalFxResult = Banana.SDecimal.subtract(
@@ -888,12 +888,10 @@ function getExchangeResult(itemCardData, totalSharesValue, saleResult, currExRat
 }
 
 /**
- * Ritorna l'importo convertito in moneta base sulla base del cambio e della
- * del moltiplicatore passati come parametro.
- * "internalExRate" è il cambio così come usato nella tabella registrazioni (direzione).
- * Se viene passato un cambio contabile puro, assicurarsi di averlo prima normalizzato
- * sulla base del moltiplicatore utilizzato, in maniera di passare al metodo direttamente
- * il cambio cosi come verrebbe utilizzato nella tabella registrazioni.
+ * Returns the amount converted into the base currency based on the exchange rate and the multiplier provided as parameters.
+ * "internalExRate" is the exchange rate as used in the transactions table (direction).
+ * If a raw accounting exchange rate is provided, make sure it has been normalized first according to the multiplier used, 
+ * so that the method receives the rate exactly as it would be used in the transactions table.
  */
 function getAmountInBaseCurrency(currencyAmt, absMult, isNegativeMult, internalExRate) {
     let baseAmt = "";
@@ -902,11 +900,19 @@ function getAmountInBaseCurrency(currencyAmt, absMult, isNegativeMult, internalE
     } else {
         baseAmt = Banana.SDecimal.divide(currencyAmt, Banana.SDecimal.divide(internalExRate, absMult))
     }
-
-    Banana.console.debug(baseAmt); // riprendere da qui...
-
     return baseAmt;
-
+}
+/**
+ * The accounting exchange rate "accExRate" already embeds the multiplier,
+ * as it is computed from the ratio between base and currency balances.
+ *
+ * As the multiplier effect is already reflected in this rate,
+ * it must be normalized to the raw exchange rate before being used
+ * in subsequent calculations.
+ * absMult is the multiplier without any sign.
+ */
+function getFXRateAdjustedFromMultiplier(accExRate, absMult) {
+    return Banana.SDecimal.multiply(accExRate, absMult);
 }
 /**
  * Given the current values row of a security retrieved
