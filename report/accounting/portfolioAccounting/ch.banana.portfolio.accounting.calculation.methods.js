@@ -840,17 +840,7 @@ function getExchangeResult(itemCardData, totalSharesValue, saleResult, currExRat
         return Banana.Converter.toLocaleNumberFormat("0.00");
     }
 
-    if (negativeMult) {
-        accExRate = Banana.SDecimal.divide(
-            itemCardData.currentValues.itemBalanceBase,
-            itemCardData.currentValues.itemBalanceCurr
-        );
-    } else {
-        accExRate = Banana.SDecimal.divide(
-            itemCardData.currentValues.itemBalanceCurr,
-            itemCardData.currentValues.itemBalanceBase
-        );
-    }
+    accExRate = getCurrentBookingRate(itemCardData.currentValues);
 
     if (!accExRate || accExRate.length < 1)
         return Banana.Converter.toLocaleNumberFormat("0.00");
@@ -860,26 +850,16 @@ function getExchangeResult(itemCardData, totalSharesValue, saleResult, currExRat
         currExRate = accExRate;
     }
 
-    /**
-     * The accounting exchange rate "accExRate" already embeds the multiplier,
-     * as it is computed from the ratio between base and currency balances.
-     *
-     * As the multiplier effect is already reflected in this rate,
-     * it must be normalized to the raw exchange rate before being used
-     * in subsequent calculations.
-     */
-    const accExRateAdjusted = getFXRateAdjustedFromMultiplier(accExRate, absMult);
-
     // Calculate the theoretical FX result on the position
     theoreticalFxResult = Banana.SDecimal.subtract(
         getAmountInBaseCurrency(totalSharesValue, absMult, negativeMult, currExRate),
-        getAmountInBaseCurrency(totalSharesValue, absMult, negativeMult, accExRateAdjusted)
+        getAmountInBaseCurrency(totalSharesValue, absMult, negativeMult, accExRate)
     );
 
     // Calculate the FX component already embedded in the sale result
     sellResultFxResult = Banana.SDecimal.subtract(
         getAmountInBaseCurrency(saleResult, absMult, negativeMult, currExRate),
-        getAmountInBaseCurrency(saleResult, absMult, negativeMult, accExRateAdjusted),
+        getAmountInBaseCurrency(saleResult, absMult, negativeMult, accExRate),
     );
 
     // Calculate the effective FX result to be posted separately

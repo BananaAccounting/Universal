@@ -189,6 +189,9 @@ var AdjustmentTransactionsManager = class AdjustmentTransactionsManager {
                     return;
 
                 rows.push(this.getAdjustmentTransactionsRows_PriceAdj(itemId, itemDescr, itemAccount, priceAdj, itemUnitMarketPrice, bookCurrExRate, texts));
+                if (this.docInfo.isMultiCurrency) {
+                    //rows.push(this.getAdjustmentTransactionsRows_FXAdj(itemId, itemDescr, itemAccount, fxAdj, texts))
+                }
 
             }
         });
@@ -220,6 +223,30 @@ var AdjustmentTransactionsManager = class AdjustmentTransactionsManager {
         else {
             row.fields["Amount"] = Banana.Converter.toInternalNumberFormat(priceAdj, ".");
         }
+
+        return row;
+
+    }
+
+    getAdjustmentTransactionsRows_FXAdj(itemId, itemDescr, itemAccount, fxAdj, texts) {
+
+        let row = {};
+        row.operation = {};
+        row.operation.name = "add";
+        row.fields = {};
+        row.fields["Date"] = Banana.Converter.toInternalDateFormat(this.savedValuesParams.date);
+        row.fields["Doc"] = "";
+        row.fields["ItemsId"] = itemId;
+        row.fields["Description"] = itemDescr + " " + texts.exRateAdjustmentTxt;
+        if (fxAdj.indexOf("-") >= 0) {
+            row.fields["AccountDebit"] = this.savedAccountsParams.valueChangingcontraAccounts.unrealizedExRateLossAccount || texts.otherValChangeExRateCostPlaceHolder;
+            row.fields["AccountCredit"] = itemAccount;
+        } else {
+            row.fields["AccountDebit"] = itemAccount;
+            row.fields["AccountCredit"] = this.savedAccountsParams.valueChangingcontraAccounts.unrealizedExRateGainAccount || texts.otherValChangeExRateIncomePlaceHolder;
+        }
+        row.fields["ExchangeCurrency"] = this.docInfo.baseCurrency;
+        row.fields["Amount"] = Banana.Converter.toInternalNumberFormat(fxAdj, ".");
 
         return row;
 
@@ -264,23 +291,33 @@ var AdjustmentTransactionsManager = class AdjustmentTransactionsManager {
             return "";
 
         let accBalCurrency = "";
-        let accBalBase = "";
-        let marketBalBase = itemObj.valueCurrent;
         let fxAdjust = "";
+        let accBalanceBase = "";
 
-        if (!marketBalBase)
-            return "";
+        if (!itemObj || !itemObj.valueCurrent)
+            return;
+
+        const marketBalBase = itemObj.valueCurrent;
 
         if (priceAdj) {
             // Adjust the current balance then calculate the difference.
             const multiplier = itemCurrentValues.itemOpMultiplier;
             const negativeMult = multiplier.indexOf("-") > -1;
             const absMult = Banana.SDecimal.abs(multiplier);
-            // Adjust
             const accExRateAdjusted = getFXRateAdjustedFromMultiplier(bookCurrExRate, absMult);
+
+            // Calculate balance adjusted on priceAdj.
             accBalCurrency = Banana.SDecimal.add(itemCurrentValues.itemBalanceCurr, priceAdj);
-            accBalBase = getAmountInBaseCurrency(accBalCurrency, absMult, negativeMult, accExRateAdjusted);
-            fxAdjust = Banana.SDecimal.subtract(marketBalBase, accBalBase);
+            accBalanceBase = getAmountInBaseCurrency(accBalCurrency, absMult, negativeMult, accExRateAdjusted);
+
+            Banana.console.debug("bookCurrExRate: " + bookCurrExRate);
+            Banana.console.debug("accBalanceBase: " + accBalanceBase);
+            Banana.console.debug("marketBalBase: " + marketBalBase);
+
+            // No Fx adjustment needed.
+            /*if (marketBalBase == accBalanceBase)
+                return;*/
+            fxAdjust = Banana.SDecimal.subtract(marketBalBase, accBalanceBase);
         } else {
             // Calculate the difference using the current values as no price adjustment has been found.
             fxAdjust = Banana.SDecimal.subtract(marketBalBase, itemCurrentValues.itemBalanceBase);
