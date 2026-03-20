@@ -840,6 +840,14 @@ function getExchangeResult(itemCardData, totalSharesValue, saleResult, currExRat
         return Banana.Converter.toLocaleNumberFormat("0.00");
     }
 
+    /**
+     * The multiplier may be empty if the first operation for this item is a sale,
+     * since no multiplier information is available in the opening data.
+     * In such cases, the multiplier is derived from the current transaction.
+     */
+    if (!itemCardData.currentValues.itemOpMultiplier)
+        itemCardData.currentValues.itemOpMultiplier = multiplier;
+
     accExRate = getCurrentBookingRate(itemCardData.currentValues);
 
     if (!accExRate || accExRate.length < 1)
