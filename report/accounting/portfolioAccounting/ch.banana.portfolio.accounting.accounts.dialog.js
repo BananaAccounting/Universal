@@ -178,7 +178,7 @@ function convertParam(banDoc, userParam) {
     //Realized gain account.
     var currentParam = {};
     currentParam.name = 'realizedgainaccount';
-    currentParam.title = "Realized gain";
+    currentParam.title = "Realized Gain";
     currentParam.type = 'string';
     currentParam.defaultvalue = defaultParam.valueChangingcontraAccounts.realizedGainAccount;
     currentParam.value = userParam.valueChangingcontraAccounts.realizedGainAccount ? userParam.valueChangingcontraAccounts.realizedGainAccount : '';
@@ -191,7 +191,7 @@ function convertParam(banDoc, userParam) {
     //Unrealized gain account.
     var currentParam = {};
     currentParam.name = 'unrealizedgainaccount';
-    currentParam.title = "Unrealized gain";
+    currentParam.title = "Unrealized Gain";
     currentParam.type = 'string';
     currentParam.defaultvalue = defaultParam.valueChangingcontraAccounts.unrealizedGainAccount;
     currentParam.value = userParam.valueChangingcontraAccounts.unrealizedGainAccount ? userParam.valueChangingcontraAccounts.unrealizedGainAccount : '';
@@ -204,7 +204,7 @@ function convertParam(banDoc, userParam) {
     // Realized loss account.
     var currentParam = {};
     currentParam.name = 'realizedlossaccount';
-    currentParam.title = "Realized loss";
+    currentParam.title = "Realized Loss";
     currentParam.type = 'string';
     currentParam.defaultvalue = defaultParam.valueChangingcontraAccounts.realizedLossAccount;
     currentParam.value = userParam.valueChangingcontraAccounts.realizedLossAccount ? userParam.valueChangingcontraAccounts.realizedLossAccount : '';
@@ -217,7 +217,7 @@ function convertParam(banDoc, userParam) {
     // Unrealized loss account.
     var currentParam = {};
     currentParam.name = 'unrealizedlossaccount';
-    currentParam.title = "Unrealized loss";
+    currentParam.title = "Unrealized Loss";
     currentParam.type = 'string';
     currentParam.defaultvalue = defaultParam.valueChangingcontraAccounts.unrealizedLossAccount;
     currentParam.value = userParam.valueChangingcontraAccounts.unrealizedLossAccount ? userParam.valueChangingcontraAccounts.unrealizedLossAccount : '';
@@ -271,11 +271,11 @@ function convertParam(banDoc, userParam) {
     currentParam.name = 'unrealizedexratelossaccount';
     currentParam.title = "Unrealized Exchange Rate Loss";
     currentParam.type = 'string';
-    currentParam.defaultvalue = defaultParam.valueChangingcontraAccounts.unrealizedExRateGainAccount;
-    currentParam.value = userParam.valueChangingcontraAccounts.unrealizedExRateGainAccount ? userParam.valueChangingcontraAccounts.unrealizedExRateGainAccount : '';
+    currentParam.defaultvalue = defaultParam.valueChangingcontraAccounts.unrealizedExRateLossAccount;
+    currentParam.value = userParam.valueChangingcontraAccounts.unrealizedExRateLossAccount ? userParam.valueChangingcontraAccounts.unrealizedExRateLossAccount : '';
     currentParam.parentObject = 'valuechangingaccounts';
     currentParam.readValue = function () {
-        userParam.valueChangingcontraAccounts.unrealizedExRateGainAccount = this.value;
+        userParam.valueChangingcontraAccounts.unrealizedExRateLossAccount = this.value;
     }
     convertedParam.data.push(currentParam);
 
