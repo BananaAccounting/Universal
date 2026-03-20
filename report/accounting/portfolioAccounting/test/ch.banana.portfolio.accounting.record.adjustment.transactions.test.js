@@ -1,4 +1,4 @@
-// Copyright [2025] [Banana.ch SA - Lugano Switzerland]
+// Copyright [2026] [Banana.ch SA - Lugano Switzerland]
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
 
 // @id = ch.banana.portfolio.accounting.record.adjustment.transactions.test
 // @api = 1.0
-// @pubdate = 2025-01-22
+// @pubdate = 2026-02-24
 // @publisher = Banana.ch SA
 // @description = <TEST ch.banana.portfolio.accounting.record.adjustment.transactions.test>
 // @task = app.command
@@ -40,13 +40,6 @@ TestAdjustmentTransactions.prototype.initTestCase = function () {
     this.testLogger = Test.logger;
     this.progressBar = Banana.application.progressBar;
 
-    let fileName = "file:script/../test/testcases/portfolio_accounting_double_entry_multi_currency_tutorial_adjustmenttest_2024.ac2";
-    this.banDoc = Banana.application.openDocument(fileName);
-    if (!this.banDoc) {
-        this.testLogger.addFatalError("File not found: " + fileName);
-        return;
-    }
-
 }
 
 // This method will be called at the end of the test case
@@ -66,42 +59,86 @@ TestAdjustmentTransactions.prototype.cleanup = function () {
 
 TestAdjustmentTransactions.prototype.testRecordSalesTransactions = function () {
 
-    let docChange = {}
-    docChange = getTestData(this.banDoc);
-    this.testLogger.addSection("Adjustment transactions document change.");
+    let docChange = {};
+    let fileName = "";
+    let banDoc = {};
+    /** Test 1
+     * Generate adjustment transactions. 
+     * In this test case, are always used the same exchange rate for each transaction, that means,
+     * adjustment are created only for the price.
+     * The current data is:
+     * - CH003886335: Book value: 12.8226, Market value: 12.8001, Qt 200 -> price un.loss
+     * - CH002775224: Book value: 5.9876, Market value: 5.9998, Qt 250 -> price un.profit
+     * - IT0005239360: Book value: 10.0000, Market value: 9.50, Qt 100 -> price un.loss
+     * - US123456789: Book value: 11.0000, Market value: 11.5562, Qt 100 -> price un.profit
+     * - IT000792468: Book value: 0.9800, Market value: 1.025, Qt 5000 -> price un.profit
+     */
+    fileName = "file:script/../test/testcases/portfolio_accounting_double_entry_multi_currency_tutorial_adjustmenttest_2024.ac2";
+    banDoc = Banana.application.openDocument(fileName);
+    Test.assert(banDoc);
+    docChange = getTestData(banDoc);
+    this.testLogger.addSection("Adjustment transactions document change 1.");
+    this.testLogger.addJson("Doc Change object", JSON.stringify(docChange));
+
+    /** Test 2
+     * !!! This test could give differences if runned with a Banana version lower than: 10.2.6.65535 as a different API method is used. !!!
+     * Generate adjustment transactions. 
+     * The current data is:
+     * - QQQ: Book value: 400.00, Market value: 380.00, Qt 50, Acc ExRate: 1.42, Actual ExRate: 1.175  -> price un.loss, ExRate profit
+     * - IBB1: Book value: 5.9876, Market value: 5.9998, Qt 250, Acc ExRate: 1.00, Actual ExRate: 1.00 -> price un.profit
+     */
+    fileName = "file:script/../test/testcases/portfolio_accounting_double_entry_multi_currency_tutorial_adjustmenttest_2026.ac2";
+    banDoc = Banana.application.openDocument(fileName);
+    Test.assert(banDoc);
+    docChange = getTestData(banDoc);
+    this.testLogger.addSection("Adjustment transactions document change 2.");
+    this.testLogger.addJson("Doc Change object", JSON.stringify(docChange));
+
+    /** Test 3
+     * Generate adjustment transactions, single currency file.
+     * The current data is:
+     * - CH003886335: Book value: 11.00, Market value: 12.10, Qt 5, -> price un.profit
+     * - CH012775214: Book value: 10.00, Market value: 9.15, Qt 50, price un.loss
+     * */
+    fileName = "file:script/../test/testcases/portfolio_accounting_double_entry_tutorial_adjustmenttest_2026.ac2";
+    banDoc = Banana.application.openDocument(fileName);
+    Test.assert(banDoc);
+    docChange = getTestData(banDoc);
+    this.testLogger.addSection("Adjustment transactions document change 3.");
+    this.testLogger.addJson("Doc Change object", JSON.stringify(docChange));
+
+
+    /** Test 4
+    * Generate adjustment transactions, multi currency file using Japanese Yen, 
+    * where the multiplier used is: "100".
+    * The current data is:
+    * JP0000000112: All sold, no adjustment should be created.
+    * JP1234567899: Book value: 10'001.80, Maket value: 11'000.00, Qt 350, Acc ExRate: 0.005029, Actual ExRate: 0.005000, price un.rpofit, ExRate loss
+    * */
+    fileName = "file:script/../test/testcases/portfolio_accounting_double_entry_multi_currency_adjustmenttest_jpy.ac2";
+    banDoc = Banana.application.openDocument(fileName);
+    Test.assert(banDoc);
+    docChange = getTestData(banDoc);
+    this.testLogger.addSection("Adjustment transactions document change 4.");
     this.testLogger.addJson("Doc Change object", JSON.stringify(docChange));
 }
 
-/**
- * Generate adjustment transactions. The current data is:
- * - CH003886335: Book value: 12.8226, Market value: 12.8001, Qt 200 -> cost
- * - CH002775224: Book value: 5.9876, Market value: 5.9998, Qt 250 -> income
- * - IT0005239360: Book value: 10.0000, Market value: 9.50, Qt 100 -> cost
- * - US123456789: Book value: 11.0000, Market value: 11.5562, Qt 100 -> income
- * - IT000792468: Book value: 0.9800, Market value: 1.025, Qt 5000 -> income
- */
 function getTestData(banDoc) {
     let dlgAccountsSettingsId = "ch.banana.portfolio.accounting.accounts.dialog";
-
-    let itemsData = getItemsTableData(banDoc);
 
     let savedAccountsParams = getFormattedSavedParams(banDoc, dlgAccountsSettingsId);
     savedAccountsParams = verifyAccountsParams(banDoc, savedAccountsParams);
 
-    let savedMarketValuesParams = getUserParams();
+    let savedMarketValuesParams = initAdjustmentDialogParams();
+    savedMarketValuesParams.date = ""; // Date remains empty.
 
-    const adjustmentTransactionsManager = new AdjustmentTransactionsManager(banDoc, itemsData,
-        savedMarketValuesParams, savedAccountsParams, true);
-    return adjustmentTransactionsManager.getDocumentChangeObject();
-}
+    const docInfo = getDocumentInfo(banDoc);
+    let itemsData = getItemsTableData(banDoc);
 
-function getUserParams() {
-    params = {};
-    params["CH003886335"] = "12.8001";
-    params["CH002775224"] = "5.9998";
-    params["IT0005239360"] = "9.5000";
-    params["US123456789"] = "11.5562";
-    params["IT000792468"] = "1.0250";
-    return params;
+    const adjustmentTransactionsManager = new AdjustmentTransactionsManager(banDoc, docInfo, itemsData,
+        savedMarketValuesParams, savedAccountsParams);
 
+    const docObj = adjustmentTransactionsManager.getDocumentChangeObject();
+
+    return docObj;
 }

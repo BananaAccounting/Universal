@@ -769,9 +769,8 @@ var RecordSalesTransactions = class RecordSalesTransactions {
             row.fields["AccountCredit"] = this.savedAccountsParams.valueChangingcontraAccounts.realizedExRateGainAccount
                 || this.texts.exRateGainAccounPlaceHolder;
         }
-
         row.fields["ExchangeCurrency"] = this.docInfo.baseCurrency;
-        row.fields["Amount"] = this.salesData.exRateResult;
+        row.fields["Amount"] = Banana.SDecimal.abs(this.salesData.exRateResult);
 
         return row;
     }

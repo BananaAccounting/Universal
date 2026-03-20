@@ -30,7 +30,7 @@
     "avgCost": "10.0000",
     "avgSharesValue": "1000.0000",
     "currentQt": "100.0000",
-    "exRateResult": "50.0000000000",
+    "exRateResult": "50.000000",
     "saleResult": "-50.0000",
     "totalSharesvalue": "950.0000"
 }
@@ -111,7 +111,7 @@
                                             "fields": {
                                                 "AccountCredit": "[Realized exchange profit account]",
                                                 "AccountDebit": "Shares Unicredit",
-                                                "Amount": "50.0000000000",
+                                                "Amount": "50.000000",
                                                 "Date": "2024-03-20",
                                                 "Description": "Shares Unicredit Result on exchange",
                                                 "Doc": "2",
@@ -147,7 +147,7 @@
     "avgCost": "11.0000",
     "avgSharesValue": "1100.0000",
     "currentQt": "200.0000",
-    "exRateResult": "22.0000000000",
+    "exRateResult": "22.000000",
     "saleResult": "50.0000",
     "totalSharesvalue": "1150.0000"
 }
@@ -261,7 +261,7 @@
                                             "fields": {
                                                 "AccountCredit": "[Realized exchange profit account]",
                                                 "AccountDebit": "Shares Netflix",
-                                                "Amount": "22.0000000000",
+                                                "Amount": "22.000000",
                                                 "Date": "2024-03-26",
                                                 "Description": "Shares Netflix Result on exchange",
                                                 "Doc": "4",
@@ -411,7 +411,7 @@
                                             "fields": {
                                                 "AccountCredit": "Shares Netflix",
                                                 "AccountDebit": "[Realized exchange loss account]",
-                                                "Amount": "-5.5000000",
+                                                "Amount": "5.5000000",
                                                 "Date": "2024-04-26",
                                                 "Description": "Shares Netflix Result on exchange",
                                                 "Doc": "5",
@@ -889,6 +889,206 @@
                                             "operation": {
                                                 "name": "modify",
                                                 "sequence": "11"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        "nameXml": "Transactions"
+                    }
+                ],
+                "dataUnitsfileVersion": "1.0.0"
+            }
+        }
+    ],
+    "error": "",
+    "format": "documentChange"
+}
+\end{jsonvalue}
+\section{Test 8: Sell part of JP1234567899.}
+\subsection{Test 8: Calculated Data}
+\begin{jsonvalue}{Test 8}
+{
+    "accruedInterests": "",
+    "avgCost": "10001.800000000000",
+    "avgSharesValue": "500090.000000000000",
+    "currentQt": "300.0000",
+    "exRateResult": "4.857066666666666666666666666666666",
+    "saleResult": "25010.000000000000",
+    "totalSharesvalue": "525100.0000"
+}
+\end{jsonvalue}
+\subsection{Test 8: Recorded Data}
+\begin{jsonvalue}{Test 8}
+{
+    "data": [
+        {
+            "creator": {
+                "name": "ch.banana.portfolio.accounting.calc.sales.data.dialog.test",
+                "version": "1.0"
+            },
+            "document": {
+                "cursorPosition": {
+                },
+                "dataUnits": [
+                    {
+                        "data": {
+                            "rowLists": [
+                                {
+                                    "rows": [
+                                        {
+                                            "fields": {
+                                                "AccountDebit": "[Bank account]",
+                                                "AmountCurrency": "525100.0000",
+                                                "Date": "2024-02-02",
+                                                "Description": "Japanese share 1 Cashed Net",
+                                                "Doc": "",
+                                                "ExchangeCurrency": "JPY",
+                                                "ExchangeRate": "0.006000",
+                                                "ExternalReference": "inv_sale_1.3",
+                                                "ItemsId": "JP1234567899"
+                                            },
+                                            "operation": {
+                                                "name": "modify",
+                                                "sequence": "10"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "[Realized profit account]",
+                                                "AccountDebit": "Shares JPY",
+                                                "AmountCurrency": "25010.000000000000",
+                                                "Date": "2024-02-02",
+                                                "Description": "Japanese share 1 Result on sale",
+                                                "Doc": "",
+                                                "ExchangeCurrency": "JPY",
+                                                "ExchangeRate": "0.006000",
+                                                "ExternalReference": "inv_sale_1.4",
+                                                "ItemsId": "JP1234567899",
+                                                "Quantity": "±50.0000",
+                                                "UnitPrice": "500.200000000000"
+                                            },
+                                            "operation": {
+                                                "name": "modify",
+                                                "sequence": "11"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "[Realized exchange profit account]",
+                                                "AccountDebit": "Shares JPY",
+                                                "Amount": "4.857066666666666666666666666666666",
+                                                "Date": "2024-02-02",
+                                                "Description": "Japanese share 1 Result on exchange",
+                                                "Doc": "",
+                                                "ExchangeCurrency": "CHF",
+                                                "ExternalReference": "inv_sale_1.5",
+                                                "ItemsId": "JP1234567899"
+                                            },
+                                            "operation": {
+                                                "name": "modify",
+                                                "sequence": "12"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        "nameXml": "Transactions"
+                    }
+                ],
+                "dataUnitsfileVersion": "1.0.0"
+            }
+        }
+    ],
+    "error": "",
+    "format": "documentChange"
+}
+\end{jsonvalue}
+\section{Test 9: Sell all of JP0000000112.}
+\subsection{Test 9: Calculated Data}
+\begin{jsonvalue}{Test 9}
+{
+    "accruedInterests": "",
+    "avgCost": "19997.142857142857",
+    "avgSharesValue": "13997999.999999999900",
+    "currentQt": "700.0000",
+    "exRateResult": "206.5199999999999985246463780540077",
+    "saleResult": "5500.000000000100",
+    "totalSharesvalue": "14003500.0000"
+}
+\end{jsonvalue}
+\subsection{Test 9: Recorded Data}
+\begin{jsonvalue}{Test 9}
+{
+    "data": [
+        {
+            "creator": {
+                "name": "ch.banana.portfolio.accounting.calc.sales.data.dialog.test",
+                "version": "1.0"
+            },
+            "document": {
+                "cursorPosition": {
+                },
+                "dataUnits": [
+                    {
+                        "data": {
+                            "rowLists": [
+                                {
+                                    "rows": [
+                                        {
+                                            "fields": {
+                                                "AccountDebit": "[Bank account]",
+                                                "AmountCurrency": "14003500.0000",
+                                                "Date": "2024-02-03",
+                                                "Description": "Japanese share 2 Cashed Net",
+                                                "Doc": "",
+                                                "ExchangeCurrency": "JPY",
+                                                "ExchangeRate": "0.006500",
+                                                "ExternalReference": "inv_sale_2.3",
+                                                "ItemsId": "JP0000000112"
+                                            },
+                                            "operation": {
+                                                "name": "modify",
+                                                "sequence": "15"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "[Realized profit account]",
+                                                "AccountDebit": "Shares JPY",
+                                                "AmountCurrency": "5500.000000000100",
+                                                "Date": "2024-02-03",
+                                                "Description": "Japanese share 2 Result on sale",
+                                                "Doc": "",
+                                                "ExchangeCurrency": "JPY",
+                                                "ExchangeRate": "0.006500",
+                                                "ExternalReference": "inv_sale_2.4",
+                                                "ItemsId": "JP0000000112",
+                                                "Quantity": "±700.0000",
+                                                "UnitPrice": "7.857142857143"
+                                            },
+                                            "operation": {
+                                                "name": "modify",
+                                                "sequence": "16"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "[Realized exchange profit account]",
+                                                "AccountDebit": "Shares JPY",
+                                                "Amount": "206.5199999999999985246463780540077",
+                                                "Date": "2024-02-03",
+                                                "Description": "Japanese share 2 Result on exchange",
+                                                "Doc": "",
+                                                "ExchangeCurrency": "CHF",
+                                                "ExternalReference": "inv_sale_2.5",
+                                                "ItemsId": "JP0000000112"
+                                            },
+                                            "operation": {
+                                                "name": "modify",
+                                                "sequence": "17"
                                             }
                                         }
                                     ]

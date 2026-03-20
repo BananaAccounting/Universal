@@ -22,7 +22,7 @@
 %
 \begin{testcase}{TestAdjustmentTransactions}
 \begin{test}{testRecordSalesTransactions}
-\section{Adjustment transactions document change.}
+\section{Adjustment transactions document change 1.}
 \begin{jsonvalue}{Doc Change object}
 {
     "data": [
@@ -40,17 +40,6 @@
                             "rowLists": [
                                 {
                                     "rows": [
-                                    ]
-                                }
-                            ]
-                        },
-                        "nameXml": "Items"
-                    },
-                    {
-                        "data": {
-                            "rowLists": [
-                                {
-                                    "rows": [
                                         {
                                             "fields": {
                                                 "AccountCredit": "Shares CHF",
@@ -59,7 +48,7 @@
                                                 "Date": "",
                                                 "Description": "Shares UBS Market Price Adjustment (12.8001)",
                                                 "Doc": "",
-                                                "ExchangeCurrency": "CHF",
+                                                "ExchangeRate": "",
                                                 "ItemsId": "CH003886335"
                                             },
                                             "operation": {
@@ -74,7 +63,7 @@
                                                 "Date": "",
                                                 "Description": "Shares BancaStato Market Price Adjustment (5.9998)",
                                                 "Doc": "",
-                                                "ExchangeCurrency": "CHF",
+                                                "ExchangeRate": "",
                                                 "ItemsId": "CH002775224"
                                             },
                                             "operation": {
@@ -89,7 +78,7 @@
                                                 "Date": "",
                                                 "Description": "Shares Unicredit Market Price Adjustment (9.5000)",
                                                 "Doc": "",
-                                                "ExchangeCurrency": "EUR",
+                                                "ExchangeRate": "1.1000000000000",
                                                 "ItemsId": "IT0005239360"
                                             },
                                             "operation": {
@@ -104,7 +93,7 @@
                                                 "Date": "",
                                                 "Description": "Shares Netflix Market Price Adjustment (11.5562)",
                                                 "Doc": "",
-                                                "ExchangeCurrency": "USD",
+                                                "ExchangeRate": "0.95000000000000",
                                                 "ItemsId": "US123456789"
                                             },
                                             "operation": {
@@ -119,8 +108,210 @@
                                                 "Date": "",
                                                 "Description": "Bonds Bnp Paribas Market Price Adjustment (1.0250)",
                                                 "Doc": "",
-                                                "ExchangeCurrency": "EUR",
+                                                "ExchangeRate": "1.1000000000000",
                                                 "ItemsId": "IT000792468"
+                                            },
+                                            "operation": {
+                                                "name": "add"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        "nameXml": "Transactions"
+                    }
+                ],
+                "dataUnitsfileVersion": "1.0.0"
+            }
+        }
+    ],
+    "error": "",
+    "format": "documentChange"
+}
+\end{jsonvalue}
+\section{Adjustment transactions document change 2.}
+\begin{jsonvalue}{Doc Change object}
+{
+    "data": [
+        {
+            "creator": {
+                "name": "ch.banana.portfolio.accounting.record.adjustment.transactions.test",
+                "version": "1.0"
+            },
+            "document": {
+                "cursorPosition": {
+                },
+                "dataUnits": [
+                    {
+                        "data": {
+                            "rowLists": [
+                                {
+                                    "rows": [
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "508103",
+                                                "AccountDebit": "[Account for unrealized losses]",
+                                                "AmountCurrency": "-1000.00000000",
+                                                "Date": "",
+                                                "Description": "QQQ Test Market Price Adjustment (380.0000)",
+                                                "Doc": "",
+                                                "ExchangeRate": "1.041999889548011707910758961459550",
+                                                "ItemsId": "QQQ"
+                                            },
+                                            "operation": {
+                                                "name": "add"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "508103",
+                                                "AccountDebit": "[Account for unrealized foreign exchange losses]",
+                                                "Amount": "-2063.95700000000000000000000000000",
+                                                "Date": "",
+                                                "Description": "QQQ Test Adjustment at exchange rate on valuation date",
+                                                "Doc": "",
+                                                "ExchangeCurrency": "EUR",
+                                                "ItemsId": "QQQ"
+                                            },
+                                            "operation": {
+                                                "name": "add"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "[Account for unrealized gains]",
+                                                "AccountDebit": "508101",
+                                                "AmountCurrency": "5000.00000000",
+                                                "Date": "",
+                                                "Description": "IBB1 Test Market Price Adjustment (5.0000)",
+                                                "Doc": "",
+                                                "ExchangeRate": "",
+                                                "ItemsId": "IBB1"
+                                            },
+                                            "operation": {
+                                                "name": "add"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        "nameXml": "Transactions"
+                    }
+                ],
+                "dataUnitsfileVersion": "1.0.0"
+            }
+        }
+    ],
+    "error": "",
+    "format": "documentChange"
+}
+\end{jsonvalue}
+\section{Adjustment transactions document change 3.}
+\begin{jsonvalue}{Doc Change object}
+{
+    "data": [
+        {
+            "creator": {
+                "name": "ch.banana.portfolio.accounting.record.adjustment.transactions.test",
+                "version": "1.0"
+            },
+            "document": {
+                "cursorPosition": {
+                },
+                "dataUnits": [
+                    {
+                        "data": {
+                            "rowLists": [
+                                {
+                                    "rows": [
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "[Account for unrealized gains]",
+                                                "AccountDebit": "Shares",
+                                                "Amount": "5.50000000",
+                                                "Date": "",
+                                                "Description": "Shares UBS Market Price Adjustment (12.1000)",
+                                                "Doc": "",
+                                                "ItemsId": "CH003886335"
+                                            },
+                                            "operation": {
+                                                "name": "add"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "Shares",
+                                                "AccountDebit": "[Account for unrealized losses]",
+                                                "Amount": "-42.50000000",
+                                                "Date": "",
+                                                "Description": "Shares Nestlè Market Price Adjustment (9.1500)",
+                                                "Doc": "",
+                                                "ItemsId": "CH012775214"
+                                            },
+                                            "operation": {
+                                                "name": "add"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        "nameXml": "Transactions"
+                    }
+                ],
+                "dataUnitsfileVersion": "1.0.0"
+            }
+        }
+    ],
+    "error": "",
+    "format": "documentChange"
+}
+\end{jsonvalue}
+\section{Adjustment transactions document change 4.}
+\begin{jsonvalue}{Doc Change object}
+{
+    "data": [
+        {
+            "creator": {
+                "name": "ch.banana.portfolio.accounting.record.adjustment.transactions.test",
+                "version": "1.0"
+            },
+            "document": {
+                "cursorPosition": {
+                },
+                "dataUnits": [
+                    {
+                        "data": {
+                            "rowLists": [
+                                {
+                                    "rows": [
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "[Account for unrealized gains]",
+                                                "AccountDebit": "Shares JPY",
+                                                "AmountCurrency": "249550.0000000000000000",
+                                                "Date": "",
+                                                "Description": "Japanese share 1 Market Price Adjustment (11000.000000000000)",
+                                                "Doc": "",
+                                                "ExchangeRate": "0.005028694834929712651722689915815153",
+                                                "ItemsId": "JP1234567899"
+                                            },
+                                            "operation": {
+                                                "name": "add"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "Shares JPY",
+                                                "AccountDebit": "[Account for unrealized foreign exchange losses]",
+                                                "Amount": "-0.7891079605670979223739726849167",
+                                                "Date": "",
+                                                "Description": "Japanese share 1 Adjustment at exchange rate on valuation date",
+                                                "Doc": "",
+                                                "ExchangeCurrency": "CHF",
+                                                "ItemsId": "JP1234567899"
                                             },
                                             "operation": {
                                                 "name": "add"
