@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.uni.app.donationstatementplus.js
 // @api = 1.0
-// @pubdate = 2026-01-21
+// @pubdate = 2026-03-30
 // @publisher = Banana.ch SA
 // @description = Donation Statement for Associations (Banana+)
 // @description.de = Spendenbescheinigung für Vereine (Banana+)
@@ -22,7 +22,7 @@
 // @description.fr = Certificat de don pour Associations (Banana+)
 // @description.en = Donation Statement for Associations (Banana+)
 // @description.nl = Kwitantie voor giften (Banana+)
-// @doctype = 100.*;110.*;130.*
+// @doctype = 100.*;110.*;130.*;400.*
 // @task = app.command
 // @timeout = -1
 
@@ -44,6 +44,9 @@ var mimimunAmountDonation = "";
 //===========================================================================
 /* Function that converts parameters of the dialog */
 function convertParam(userParam) {
+
+    var lang = getLang(Banana.document);
+    var texts = loadTexts(Banana.document, lang);
 
     var convertedParam = {};
     convertedParam.version = '1.0';
@@ -448,7 +451,7 @@ function initUserParam(banDoc, lang) {
 }
 
 /* Function that shows the dialog window and let user to modify the parameters */
-function parametersDialog(userParam) {
+function parametersDialog(userParam, texts) {
 
     if (typeof(Banana.Ui.openPropertyEditor) !== 'undefined') {
         var dialogTitle = texts.dialogTitle;
@@ -470,8 +473,8 @@ function parametersDialog(userParam) {
 function settingsDialog() {
 
     var lang = getLang(Banana.document);
-    texts = loadTexts(Banana.document,lang);
-    var scriptform = initUserParam(Banana.document,lang);
+    var texts = loadTexts(Banana.document, lang);
+    var scriptform = initUserParam(Banana.document, lang);
     
     // Retrieve saved param
     var savedParam = Banana.document.getScriptSettings();
@@ -480,8 +483,27 @@ function settingsDialog() {
     }
 
     //We take the accounting "starting date" and "ending date" from the document. These will be used as default dates
-    var docStartDate = Banana.document.startPeriod();
-    var docEndDate = Banana.document.endPeriod();   
+    var docStartDate = "";
+    var docEndDate = "";
+    if (isEstimatesAndInvoicesFile(Banana.document)) {
+        var invoicesTable = Banana.document.table("Invoices");
+        if (invoicesTable && invoicesTable.rowCount > 0) {
+            //takes first and last row
+            var startDate = invoicesTable.row(0).value("InvoiceDate");
+            var endDate = invoicesTable.row(invoicesTable.rowCount - 1).value("InvoiceDate");
+            if (startDate && endDate) {
+                if (endDate >= startDate) {
+                    docStartDate = startDate;
+                    docEndDate = endDate;
+                }
+            }
+        }
+    }
+    else {
+        docStartDate = Banana.document.startPeriod();
+        docEndDate = Banana.document.endPeriod();
+    }
+
     
     //A dialog window is opened asking the user to insert the desired period. By default is the accounting period
     var selectedDates = Banana.Ui.getPeriod(texts.reportTitle, docStartDate, docEndDate, 
@@ -498,7 +520,7 @@ function settingsDialog() {
         return null;
     }
 
-    scriptform = parametersDialog(scriptform); // From propertiess
+    scriptform = parametersDialog(scriptform, texts); // From propertiess
     if (scriptform) {
         var paramToString = JSON.stringify(scriptform);
         Banana.document.setScriptSettings(paramToString);
@@ -551,7 +573,7 @@ function exec(inData, options) {
     fillTransactionStructure(Banana.document, userParam, texts);
 
     // Creates the report
-    var accounts = getListOfAccountsToPrint(userParam);
+    var accounts = getListOfAccountsToPrint(Banana.document, userParam);
     if (accounts.length > 0) {
 
         // CSS variable starts with $
@@ -809,7 +831,7 @@ function printReportDetailsTransaction(report, banDoc, userParam, account, texts
 
             if (account && account === cc3) {
                 rowCnt++;
-                tableRow = table.addRow();
+                var tableRow = table.addRow();
                 tableRow.addCell(rowCnt, "transactions_rows", 1); //sequencial numbers
                 tableRow.addCell(" ", "transactions_rows");
                 tableRow.addCell(Banana.Converter.toLocaleDateFormat(date), "transactions_rows", 1);
@@ -825,7 +847,7 @@ function printReportDetailsTransaction(report, banDoc, userParam, account, texts
         }
 
         if (total > 0) {
-            tableRow = table.addRow();
+            var tableRow = table.addRow();
             tableRow.addCell("", "transactions_total", 1);
             tableRow.addCell(" ", "transactions_total", 1);
             tableRow.addCell(texts.total, "transactions_total", 1);
@@ -1073,25 +1095,41 @@ function getTransactionsData(banDoc, userParam, account) {
     var transactions = userParam.transactions;
     var startDate = userParam.selectionStartDate;
     var endDate = userParam.selectionEndDate;
-    var transTab = banDoc.table("Transactions");
-    var tableLength = transTab.rowCount;
-    account = account.substring(1); //remove first character ;
-    
-    for (var i = 0; i < tableLength; i++) {
-        var tRow = transTab.row(i);
-        var date = tRow.value("Date");
-        var cc3 = tRow.value("Cc3");
-        var description = tRow.value("Description");
-        
-        var amount = "";
-        if (banDoc.table('Categories')) {
-            amount = tRow.value("Income");
-        } else {
-            amount = tRow.value("Amount");
-        }
 
-        if (cc3 && cc3 === account && date >= startDate && date <= endDate && Banana.SDecimal.compare(amount, userParam.minimumAmount) > -1) {
-            transactions.push({"cc3":cc3, "date":date, "description":description, "amount":amount});
+    if (isEstimatesAndInvoicesFile(banDoc)) {
+        var transTab = banDoc.table("Invoices");
+        var tableLength = transTab.rowCount;
+        for (var i = 0; i < tableLength; i++) {
+            var tRow = transTab.row(i);
+            var date = tRow.value("InvoiceDate");
+            var cc3 = tRow.value("ContactsId");
+            var amount = tRow.value("InvoiceTotalAmount");
+
+            if (cc3 && cc3 === account && date >= startDate && date <= endDate && Banana.SDecimal.compare(amount, userParam.minimumAmount) > -1) {
+                transactions.push({ "cc3": cc3, "date": date, "description": "", "amount": amount });
+            }
+        }
+    }
+    else {
+        var transTab = banDoc.table("Transactions");
+        var tableLength = transTab.rowCount;
+        account = account.substring(1); //remove first character ;
+        for (var i = 0; i < tableLength; i++) {
+            var tRow = transTab.row(i);
+            var date = tRow.value("Date");
+            var cc3 = tRow.value("Cc3");
+            var description = tRow.value("Description");
+
+            var amount = "";
+            if (banDoc.table('Categories')) {
+                amount = tRow.value("Income");
+            } else {
+                amount = tRow.value("Amount");
+            }
+
+            if (cc3 && cc3 === account && date >= startDate && date <= endDate && Banana.SDecimal.compare(amount, userParam.minimumAmount) > -1) {
+                transactions.push({ "cc3": cc3, "date": date, "description": description, "amount": amount });
+            }
         }
     }
 }
@@ -1112,6 +1150,17 @@ function onlyMinimunAmountTableAccounts(row, rowNr, table) {
     return false;
 }
 
+/* This function returns true only if the row has the amount >= userParam.minimumAmount */
+function onlyMinimunAmountTableInvoices(row) {
+    if (!mimimunAmountDonation) {
+        return true;
+    }
+    else if (row && Banana.SDecimal.compare(row.value('InvoiceTotalAmount'), mimimunAmountDonation) > -1) {
+        return true;
+    }
+    return false;
+}
+
 /* This function fill the data structure with the transactions data taken with getTransactionsData() */
 function fillTransactionStructure(banDoc, userParam, texts) {
 
@@ -1123,8 +1172,13 @@ function fillTransactionStructure(banDoc, userParam, texts) {
         for (var i = 0; i < list.length; i++) {
             list[i] = list[i].trim();
             
+            // The inserted Cc3 exists
+            if (membershipList.indexOf(list[i]) > -1) {
+                getTransactionsData(banDoc, userParam, list[i]);
+                return;
+            }
             // If user insert the Cc3 account without ";" we add it
-            if (list[i].substring(0,1) !== ";") {
+            else if (list[i].substring(0,1) !== ";") {
                 list[i] = ";"+list[i];
             }
 
@@ -1146,14 +1200,20 @@ function fillTransactionStructure(banDoc, userParam, texts) {
 }
 
 /* This function renturns a list of all the cc3 accounts contained in data structure */
-function getListOfAccountsToPrint(userParam) {
+function getListOfAccountsToPrint(banDoc, userParam) {
     
     var accounts = [];
+
     var transactionsLength = userParam.transactions.length;
 
     for (var i = 0; i < transactionsLength; i++) {
         var account = userParam.transactions[i].cc3;
-        accounts.push(";"+account);
+        if (isEstimatesAndInvoicesFile(banDoc)) {
+            accounts.push(account);
+        }
+        else {
+            accounts.push(";" + account);
+        }
     }
 
     //Remove duplicates
@@ -1172,6 +1232,11 @@ function getListOfAccountsToPrint(userParam) {
 /* This function returns the total amount for a specific account and period */
 function calculateTotalAmount(banDoc, userParam, account) {
 
+    if (isEstimatesAndInvoicesFile(banDoc)) {
+        var transactionsObj = calculateTotalInvoiceAmount(banDoc, userParam, account);
+        return transactionsObj.total;
+    }
+
     var startDate = userParam.selectionStartDate;
     var endDate = userParam.selectionEndDate;
     if (banDoc.table('Categories')) {
@@ -1187,6 +1252,12 @@ function calculateTotalAmount(banDoc, userParam, account) {
 function getCC3Accounts(banDoc, userParam, texts) {
     
     var membershipList = [];
+
+    if (isEstimatesAndInvoicesFile(banDoc)) {
+        membershipList = getContacts(banDoc);
+        return membershipList;
+    }
+
     var tableName = "Accounts";
     
     // When the Extract Rows is used, we take all the cc3 accounts from the extracted rows only => table Extract
@@ -1206,8 +1277,10 @@ function getCC3Accounts(banDoc, userParam, texts) {
     for (var i = 0; i < tableLength; i++) {
         var tRow = bantable.row(i);
         var account = tRow.value("Account");
-        if (account.substring(0,1) === ";" && account.substring(1,2)) {
-            membershipList.push(account);
+        if (account && account.length > 1) {
+            if (account.substring(0, 1) === ";" && account.substring(1, 2)) {
+                membershipList.push(account);
+            }
         }
     }
 
@@ -1667,18 +1740,25 @@ function getPeriod(banDoc, startDate, endDate) {
 /* Function that retrieves the address of the given account */
 function getAddress(banDoc, accountNumber) {
     var address = {};
-    address.nameprefix = banDoc.table('Accounts').findRowByValue('Account', accountNumber).value('NamePrefix');
-    address.organisationname = banDoc.table('Accounts').findRowByValue('Account', accountNumber).value('OrganisationName');
-    address.firstname = banDoc.table('Accounts').findRowByValue('Account', accountNumber).value('FirstName');
-    address.familyname = banDoc.table('Accounts').findRowByValue('Account', accountNumber).value('FamilyName');
-    address.street = banDoc.table('Accounts').findRowByValue('Account', accountNumber).value('Street');
-    address.buildingnumber = banDoc.table('Accounts').findRowByValue('Account', accountNumber).value('BuildingNumber');
-    address.addressextra = banDoc.table('Accounts').findRowByValue('Account', accountNumber).value('AddressExtra');
-    address.postalcode = banDoc.table('Accounts').findRowByValue('Account', accountNumber).value('PostalCode');
-    address.locality = banDoc.table('Accounts').findRowByValue('Account', accountNumber).value('Locality');
-    address.pobox = banDoc.table('Accounts').findRowByValue('Account', accountNumber).value('POBox');
-    address.region = banDoc.table('Accounts').findRowByValue('Account', accountNumber).value('Region');
-    address.country = banDoc.table('Accounts').findRowByValue('Account', accountNumber).value('Country');
+
+    if (isEstimatesAndInvoicesFile(banDoc)) {
+        return getContactAddress(banDoc, accountNumber);
+    }
+
+    if (banDoc.table('Accounts').findRowByValue('Account', accountNumber)) {
+        address.nameprefix = banDoc.table('Accounts').findRowByValue('Account', accountNumber).value('NamePrefix');
+        address.organisationname = banDoc.table('Accounts').findRowByValue('Account', accountNumber).value('OrganisationName');
+        address.firstname = banDoc.table('Accounts').findRowByValue('Account', accountNumber).value('FirstName');
+        address.familyname = banDoc.table('Accounts').findRowByValue('Account', accountNumber).value('FamilyName');
+        address.street = banDoc.table('Accounts').findRowByValue('Account', accountNumber).value('Street');
+        address.buildingnumber = banDoc.table('Accounts').findRowByValue('Account', accountNumber).value('BuildingNumber');
+        address.addressextra = banDoc.table('Accounts').findRowByValue('Account', accountNumber).value('AddressExtra');
+        address.postalcode = banDoc.table('Accounts').findRowByValue('Account', accountNumber).value('PostalCode');
+        address.locality = banDoc.table('Accounts').findRowByValue('Account', accountNumber).value('Locality');
+        address.pobox = banDoc.table('Accounts').findRowByValue('Account', accountNumber).value('POBox');
+        address.region = banDoc.table('Accounts').findRowByValue('Account', accountNumber).value('Region');
+        address.country = banDoc.table('Accounts').findRowByValue('Account', accountNumber).value('Country');
+    }
     return address;
 }
 
@@ -1697,6 +1777,8 @@ function getTransactionDate(userParam, costcenter) {
 /* Function that takes the locale language of Banana */
 function getLang(banDoc) {
     var lang = "";
+    if (!banDoc)
+        return lang;
     if (banDoc.locale) {
         lang = banDoc.locale;
     }
@@ -2097,3 +2179,111 @@ function bananaRequiredVersion(requiredVersion) {
     return true;
 }
 
+//===========================================================================
+// ADDTIONAL METHODS FOR ESTIMATES&INVOICES
+//===========================================================================
+function calculateTotalInvoiceAmount(banDoc, userParam, accountId) {
+    var startDate = userParam.selectionStartDate;
+    var endDate = userParam.selectionEndDate;
+    
+    var transactionsObj = {
+        date: "",
+        total: "0",
+        numberOfTransactions: 0
+    };
+
+    if (!banDoc || !accountId || !startDate || !endDate)
+        return transactionsObj;
+
+    var transTab = banDoc.table("Invoices");
+    if (!transTab || transTab.rowCount <= 0)
+        return transactionsObj;
+
+    var total = "0";
+    var numberOfTransactions = 0;
+
+    for (var i = 0; i < transTab.rowCount; i++) {
+        var tRow = transTab.row(i);
+        var account = tRow.value("ContactsId");
+        var date = tRow.value("InvoiceDate");
+
+        if (date && date >= startDate && date <= endDate) {
+            if (account && account === accountId) {
+                if (onlyMinimunAmountTableInvoices(tRow)) {
+                    var amount = tRow.value("InvoiceTotalAmount");
+                    total = Banana.SDecimal.add(total, amount);
+                    numberOfTransactions++;
+                    transactionsObj.date = date;
+                }
+            }
+        }
+    }
+    transactionsObj.total = total;
+    transactionsObj.numberOfTransactions = numberOfTransactions;
+    
+    return transactionsObj;
+}
+
+/* Function that retrieves in a list all the CC3 accounts */
+function getContacts(banDoc) {
+    var membershipList = [];
+    if (!banDoc)
+        return membershipList;
+
+    var contactsTable = banDoc.table("Contacts");
+    if (!contactsTable || contactsTable.rowCount <= 0)
+        return membershipList;
+
+    for (var i = 0; i < contactsTable.rowCount; i++) {
+        var tRow = contactsTable.row(i);
+        var account = tRow.value("RowId");
+        //var memberFee = tRow.value("MemberFee");
+        if (account && account.length > 0) {
+            membershipList.push(account);
+        }
+    }
+    return membershipList;
+}
+
+function getContactAddress(banDoc, accountId) {
+    var addressObj = {};
+
+    if (!banDoc || !accountId)
+        return addressObj;
+
+    var contactsTable = banDoc.table("Contacts");
+    if (!contactsTable)
+        return addressObj;
+
+    for (var i = 0; i < contactsTable.rowCount; i++) {
+        var tRow = contactsTable.row(i);
+        var account = tRow.value("RowId");
+        if (account && account === accountId) {
+            addressObj.nameprefix = tRow.value("NamePrefix");
+            addressObj.organisationname = tRow.value("OrganisationName");
+            addressObj.firstname = tRow.value("FirstName");
+            addressObj.familyname = tRow.value("FamilyName");
+            addressObj.street = tRow.value("Street");
+            addressObj.buildingnumber = tRow.value("BuildingNumber");
+            addressObj.addressextra = tRow.value("AddressExtra");
+            addressObj.postalcode = tRow.value("PostalCode");
+            addressObj.locality = tRow.value("Locality");
+            addressObj.pobox = tRow.value("POBox");
+            addressObj.region = tRow.value("Region");
+            addressObj.country = tRow.value("Country");
+        
+        }
+    }
+    return addressObj;
+}
+
+function isEstimatesAndInvoicesFile(banDoc) {
+    var isEstimatesAndInvoices = false;
+    if (banDoc && banDoc.info) {
+        var fileTypeGroup = banDoc.info("Base", "FileTypeGroup");
+        if (fileTypeGroup === "400") {
+            isEstimatesAndInvoices = true;
+        }
+    }
+    return isEstimatesAndInvoices;
+}
