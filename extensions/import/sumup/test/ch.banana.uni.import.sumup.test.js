@@ -46,6 +46,7 @@ TestImportSumupTrans.prototype.initTestCase = function () {
    this.fileNameList.push("file:script/../test/testcases/csv_example_format1_20250520.csv");
    this.fileNameList.push("file:script/../test/testcases/csv_example_format2_20250324.csv");
    this.fileNameList.push("file:script/../test/testcases/csv_example_format2_20251014.csv");
+   this.fileNameList.push("file:script/../test/testcases/csv_example_format2_fr_20260310.csv");
 }
 
 // This method will be called at the end of the test case
