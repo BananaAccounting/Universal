@@ -445,8 +445,10 @@ var SumupFormat2 = class SumupFormat2 extends ImportUtilities {
             /** The transaction is a valid payout (normal or refund adjustment).
              * As the payouts row do not have the description and other useful data, 
              * We search for the corresponding POS or ECOM payment to get description and payment method.
-             * For refund adjustments the Virement row carries Fee=0 and Payout=gross;
-             * buildPayoutRow substitutes the Sale row's correct Fee and Payout amounts. */
+             * For refund, we first record the sale transaction as normal row;
+             * buildPayoutRow substitutes the Sale row's correct Fee and Payout amounts. 
+             * Then we book the refunded transaction as a single reversal line.
+             */
             let paymentRow = paymentTransactions[trId] || null;
             let paymentDescription = paymentRow ? paymentRow["Description"] : "";
             let paymentMethod = paymentRow ? paymentRow["Payment method"] : "";
