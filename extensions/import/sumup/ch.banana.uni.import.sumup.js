@@ -164,11 +164,26 @@ var SumupFormat2 = class SumupFormat2 extends ImportUtilities {
       var rows = getRowData(csvData, convertionParam); //array of array
       let form = [];
 
-      columns = this.convertHeaderDe(columns);
-      //Load the form with data taken from the array. Create objects
-      loadForm(form, columns, rows);
+      let convertedColumns = [];
 
-      return form;
+      convertedColumns = this.convertHeaderDe(columns);
+      if (convertedColumns.length > 0) {
+         //Load the form with data taken from the array. Create objects
+         loadForm(form, convertedColumns, rows);
+
+         return form;
+      }
+
+      convertedColumns = this.convertHeaderFr(columns);
+      // Banana.console.log("Converted Columns FR: " + JSON.stringify(convertedColumns));
+      if (convertedColumns.length > 0) {
+         //Load the form with data taken from the array. Create objects
+         loadForm(form, convertedColumns, rows);
+
+         return form;
+      }
+
+      return [];
    }
    convertHeaderDe(columns) {
       let convertedColumns = [];
@@ -257,6 +272,92 @@ var SumupFormat2 = class SumupFormat2 extends ImportUtilities {
       return convertedColumns;
    }
 
+   convertHeaderFr(columns) {
+      let convertedColumns = [];
+
+      for (var i = 0; i < columns.length; i++) {
+         switch (columns[i]) {
+            case "Email":
+               convertedColumns[i] = "Email";
+               break;
+            case "Date":
+               convertedColumns[i] = "Transaction Date";
+               break;
+            case "Réf. transaction":
+               convertedColumns[i] = "Transaction Id";
+               break;
+            case "Type de transaction":
+               convertedColumns[i] = "Payment type";
+               break;
+            case "Status":
+               convertedColumns[i] = "Status";
+               break;
+            case "Type de carte":
+               convertedColumns[i] = "Card type";
+               break;
+            case "4 derniers chiffres":
+               convertedColumns[i] = "Last 4 digits";
+               break;
+            case "Traiter en tant que":
+               convertedColumns[i] = "Processed by";
+               break;
+            case "Méthode de paiement":
+               convertedColumns[i] = "Payment method";
+               break;
+            case "Entry mode":
+               convertedColumns[i] = "Entry mode";
+               break;
+            case "Auth code":
+               convertedColumns[i] = "Authorization code";
+               break;
+            case "Description":
+               convertedColumns[i] = "Description";
+               break;
+            case "Montant total":
+               convertedColumns[i] = "Amount incl. VAT";
+               break;
+            case "Prix net":
+               convertedColumns[i] = "Net amount";
+               break;
+            case "Tax amount":
+               convertedColumns[i] = "Tax amount";
+               break;
+            case "Tip amount":
+               convertedColumns[i] = "Tip amount";
+               break;
+            case "Frais":
+               convertedColumns[i] = "Fee";
+               break;
+            case "Virement":
+               convertedColumns[i] = "Payout";
+               break;
+            case "Date du virement":
+               convertedColumns[i] = "Payout date";
+               break;
+            case "Payout ID":
+               convertedColumns[i] = "Payout ID";
+               break;
+            case "Reference":
+               convertedColumns[i] = "Reference";
+               break;
+            default:
+               convertedColumns[i] = columns[i]; // Mantiene il valore originale se non è nella lista
+               break;
+         }
+      }
+
+      if (convertedColumns.indexOf("Transaction Date") < 0
+         || convertedColumns.indexOf("Description") < 0
+         || convertedColumns.indexOf("Net amount") < 0
+         || convertedColumns.indexOf("Fee") < 0
+         || convertedColumns.indexOf("Reference") < 0) {
+         return [];
+      }
+
+      this.csvLanguage = "fr";
+      return convertedColumns;
+   }
+
    /** Return true if the transactions match this format */
    match(transactionsData) {
       if (transactionsData.length === 0)
@@ -325,23 +426,34 @@ var SumupFormat2 = class SumupFormat2 extends ImportUtilities {
          }
 
          // Check if transactions is canceled or failed
-         if (trStatus === controlTerms.paymentStatusFailed || trStatus === controlTerms.paymentStatusCanceled) {
+         // Guard against empty-string terms (FR leaves these blank) accidentally matching rows with empty Status.
+         if ((controlTerms.paymentStatusFailed && trStatus === controlTerms.paymentStatusFailed)
+            || (controlTerms.paymentStatusCanceled && trStatus === controlTerms.paymentStatusCanceled)) {
             Banana.console.debug("Skipping canceled/failed transaction: " + trId);
             continue;
          }
 
          if (trType === controlTerms.paymentTypeTransaction
             && trStatus === controlTerms.paymentStatusSuccessful
-            && trPaymentMethod == controlTerms.paymentMethodPos) {
-            paymentTransactions[trId] = row; // The transaction is a valid POS payment.
-         } else if (trType === controlTerms.paymentTypePayout && trStatus === controlTerms.paymentStatusPaid) {
-            /** The transaction is a valid payout.
+            && (trPaymentMethod == controlTerms.paymentMethodPos
+               || trPaymentMethod === controlTerms.paymentMethodEcom)) {
+            paymentTransactions[trId] = row; // The transaction is a valid POS or ECOM payment.
+         } else if (trType === controlTerms.paymentTypePayout
+            && (trStatus === controlTerms.paymentStatusPaid
+               || (controlTerms.paymentStatusRefunded && trStatus === controlTerms.paymentStatusRefunded))) {
+            /** The transaction is a valid payout (normal or refund adjustment).
              * As the payouts row do not have the description and other useful data, 
-             * We search for the corresponding POS payment to get description and payment method. */
+             * We search for the corresponding POS or ECOM payment to get description and payment method.
+             * For refund adjustments the Virement row carries Fee=0 and Payout=gross;
+             * buildPayoutRow substitutes the Sale row's correct Fee and Payout amounts. */
             let paymentRow = paymentTransactions[trId] || null;
             let paymentDescription = paymentRow ? paymentRow["Description"] : "";
             let paymentMethod = paymentRow ? paymentRow["Payment method"] : "";
-            this.mapBankPayoutTransactions(accoutingType, row, transactionsMapped, paymentDescription, paymentMethod);
+            let payoutRow = this.buildPayoutRow(row, paymentRow, controlTerms, trStatus);
+            this.mapBankPayoutTransactions(accoutingType, payoutRow, transactionsMapped, paymentDescription, paymentMethod);
+         } else if (trType === controlTerms.paymentTypeRefunded) {
+            // Refunded row: book as a single reversal line.
+            this.mapRefundedTransaction(accoutingType, row, transactionsMapped);
          } else if (trType === controlTerms.paymentTypeTransaction
             && trStatus === controlTerms.paymentStatusSuccessful
             && trPaymentMethod == controlTerms.paymentMethodCash) {
@@ -352,6 +464,23 @@ var SumupFormat2 = class SumupFormat2 extends ImportUtilities {
       }
 
       return transactionsMapped;
+   }
+
+   /**
+    * For regular payouts returns the Virement row unchanged.
+    * For refund adjustments the Virement row carries Fee=0 and Payout=gross amount;
+    * returns a merged row using the Sale row's Amount, Payout and Fee so that
+    * gross=2.60, payout=2.53, fee=0.07 are booked correctly.
+    */
+   buildPayoutRow(virementRow, saleRow, controlTerms, trStatus) {
+      if (controlTerms.paymentStatusRefunded && trStatus === controlTerms.paymentStatusRefunded && saleRow) {
+         return Object.assign({}, virementRow, {
+            "Amount incl. VAT": saleRow["Amount incl. VAT"],
+            "Payout": saleRow["Payout"],
+            "Fee": saleRow["Fee"]
+         });
+      }
+      return virementRow;
    }
 
    mapCashPaymentTransactions(accoutingType, row, transactionsMapped) {
@@ -483,10 +612,45 @@ var SumupFormat2 = class SumupFormat2 extends ImportUtilities {
       transactionsMapped.push(trRow);
    }
 
+   mapRefundedTransaction(accoutingType, row, transactionsMapped) {
+      if (accoutingType == DOUBLE_ENTRY_TYPE) {
+         this.mapRefundedDoubleEntry(row, transactionsMapped);
+      } else if (accoutingType == INCOME_EXPENSES_TYPE) {
+         this.mapRefundedIncomeExpenses(row, transactionsMapped);
+      }
+   }
+
+   mapRefundedDoubleEntry(row, transactionsMapped) {
+      let trRow = initTrRowObjectStructure_DoubleEntry();
+      trRow.Date = Banana.Converter.toInternalDateFormat(row["Transaction Date"], this.params.dateFormat);
+      trRow.ExternalReference = row["Transaction Id"];
+      trRow.Description = this.texts.refund;
+      trRow.AccountDebit = this.params.sumUpIn;
+      trRow.AccountCredit = this.params.bankAccount;
+      trRow.Amount = Math.abs(row["Amount incl. VAT"]);
+      trRow.Notes = row["Payment method"];
+      transactionsMapped.push(trRow);
+   }
+
+   mapRefundedIncomeExpenses(row, transactionsMapped) {
+      let trRow = initTrRowObjectStructure_IncomeExpenses();
+      trRow.Date = Banana.Converter.toInternalDateFormat(row["Transaction Date"], this.params.dateFormat);
+      trRow.ExternalReference = row["Transaction Id"];
+      trRow.Description = this.texts.refund;
+      trRow.Income = "";
+      trRow.Expenses = Math.abs(row["Amount incl. VAT"]);
+      trRow.Account = this.params.bankAccount;
+      trRow.Category = this.params.sumUpIn;
+      trRow.Notes = row["Payment method"];
+      transactionsMapped.push(trRow);
+   }
+
    getControlTerms() {
       switch (this.csvLanguage) {
          case "de":
             return this.getControlTermsDE();
+         case "fr":
+            return this.getControlTermsFR();
          default:
             Banana.console.debug("*.csv headers language not recognized.");
             return {};
@@ -536,12 +700,15 @@ var SumupFormat2 = class SumupFormat2 extends ImportUtilities {
       let terms = {};
       terms.paymentStatusFailed = "";
       terms.paymentStatusCanceled = "";
-      terms.paymentStatusSuccessful = "";
-      terms.paymentStatusPaid = "";
-      terms.paymentMethodPos = "";
+      terms.paymentStatusSuccessful = "Accepté";
+      terms.paymentStatusPaid = "Paid";
+      terms.paymentStatusRefunded = "Refund adjustment";
+      terms.paymentMethodPos = "POS";
       terms.paymentMethodCash = "";
-      terms.paymentTypeTransaction = "";
-      terms.paymentTypePayout = "";
+      terms.paymentMethodEcom = "ECOM";
+      terms.paymentTypeTransaction = "Sale";
+      terms.paymentTypePayout = "Virement";
+      terms.paymentTypeRefunded = "Remboursé";
       return terms;
    }
 }
@@ -1009,6 +1176,7 @@ function getTextsDe() {
    texts.accountErrorMsg = "Dieses Konto existiert nicht in Ihrem Kontenplan";
    texts.net = "Netto";
    texts.fee = "Gebühr";
+   texts.refund = "Rückerstattung";
 
 
    return texts;
@@ -1027,6 +1195,7 @@ function getTextsIt() {
    texts.accountErrorMsg = "Questo conto non esiste nel tuo piano dei conti";
    texts.net = "Netto";
    texts.fee = "Commissione";
+   texts.refund = "Rimborso";
 
 
    return texts;
@@ -1045,6 +1214,7 @@ function getTextsFr() {
    texts.accountErrorMsg = "Ce compte n'existe pas dans votre plan comptable";
    texts.net = "Net";
    texts.fee = "Frais";
+   texts.refund = "Remboursement";
 
    return texts;
 }
@@ -1062,6 +1232,7 @@ function getTextsEn() {
    texts.accountErrorMsg = "This account does not exists in your chart of accounts";
    texts.net = "Net";
    texts.fee = "Fee";
+   texts.refund = "Refund";
 
    return texts;
 }
