@@ -437,7 +437,8 @@ var SumupFormat2 = class SumupFormat2 extends ImportUtilities {
             && trStatus === controlTerms.paymentStatusSuccessful
             && (trPaymentMethod == controlTerms.paymentMethodPos
                || trPaymentMethod === controlTerms.paymentMethodEcom)) {
-            paymentTransactions[trId] = row; // The transaction is a valid POS or ECOM payment.
+            // The transaction is a valid POS or ECOM payment. (ECOM is eCommerce payment and is treated the same as POS in our mapping)
+            paymentTransactions[trId] = row; 
          } else if (trType === controlTerms.paymentTypePayout
             && (trStatus === controlTerms.paymentStatusPaid
                || (controlTerms.paymentStatusRefunded && trStatus === controlTerms.paymentStatusRefunded))) {
