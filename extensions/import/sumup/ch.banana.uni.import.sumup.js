@@ -438,7 +438,7 @@ var SumupFormat2 = class SumupFormat2 extends ImportUtilities {
             && (trPaymentMethod == controlTerms.paymentMethodPos
                || trPaymentMethod === controlTerms.paymentMethodEcom)) {
             // The transaction is a valid POS or ECOM payment. (ECOM is eCommerce payment and is treated the same as POS in our mapping)
-            paymentTransactions[trId] = row; 
+            paymentTransactions[trId] = row;
          } else if (trType === controlTerms.paymentTypePayout
             && (trStatus === controlTerms.paymentStatusPaid
                || (controlTerms.paymentStatusRefunded && trStatus === controlTerms.paymentStatusRefunded))) {
@@ -470,20 +470,20 @@ var SumupFormat2 = class SumupFormat2 extends ImportUtilities {
    }
 
    /**
-    * For regular payouts returns the Virement row unchanged.
-    * For refund adjustments the Virement row carries Fee=0 and Payout=gross amount;
+    * For regular payouts returns the Payout row unchanged.
+    * For refund adjustments the Payout row carries Fee=0 and Payout=gross amount;
     * returns a merged row using the Sale row's Amount, Payout and Fee so that
     * gross=2.60, payout=2.53, fee=0.07 are booked correctly.
     */
-   buildPayoutRow(virementRow, saleRow, controlTerms, trStatus) {
+   buildPayoutRow(payoutRow, saleRow, controlTerms, trStatus) {
       if (controlTerms.paymentStatusRefunded && trStatus === controlTerms.paymentStatusRefunded && saleRow) {
-         return Object.assign({}, virementRow, {
+         return Object.assign({}, payoutRow, {
             "Amount incl. VAT": saleRow["Amount incl. VAT"],
             "Payout": saleRow["Payout"],
             "Fee": saleRow["Fee"]
          });
       }
-      return virementRow;
+      return payoutRow;
    }
 
    mapCashPaymentTransactions(accoutingType, row, transactionsMapped) {
