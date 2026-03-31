@@ -16,7 +16,7 @@
 
 // @id = ch.banana.uni.app.donationstatementplus.test
 // @api = 1.0
-// @pubdate = 2024-09-10
+// @pubdate = 2026-03-30
 // @publisher = Banana.ch SA
 // @description = <TEST ch.banana.uni.app.donationstatementplus.js>
 // @task = app.command
@@ -235,7 +235,7 @@ ReportTest.prototype.report_test = function(banDoc, startDate, endDate, userPara
   texts = loadTexts(banDoc,lang);
 
   fillTransactionStructure(banDoc, userParam, texts);
-  var accounts = getListOfAccountsToPrint(userParam);
+  var accounts = getListOfAccountsToPrint(banDoc, userParam);
 
   printReport(banDoc, userParam, accounts, texts, "", docs, styles);
   for (var i = 0; i < docs.length; i++) {
