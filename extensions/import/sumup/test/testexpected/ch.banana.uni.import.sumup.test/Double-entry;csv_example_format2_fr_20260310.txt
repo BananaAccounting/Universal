@@ -29,6 +29,10 @@ Date & ExternalReference & Description & AccountDebit & AccountCredit & Amount &
 2020-12-20 & XXXXX3 & personnalisé &  & 3001 & 80.6 & POS\\
 2020-12-20 & XXXXX3 & Bank payout & 1020 &  & 79.39 & 1234569\\
 2020-12-20 & XXXXX3 & Fee & 4001 &  & 1.21 & \\
+2031-07-20 & XXXXX4 & Refund & 3001 & 1020 & 2.6 & ECOM\\
+2030-07-20 & XXXXX4 & personnalisé &  & 3001 & 2.6 & ECOM\\
+2030-07-20 & XXXXX4 & Bank payout & 1020 &  & 2.53 & \\
+2030-07-20 & XXXXX4 & Fee & 4001 &  & 0.07 & \\
 \\
 \end{tablevalue}
 \end{document}
