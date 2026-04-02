@@ -393,10 +393,10 @@ var SumupFormat2 = class SumupFormat2 extends ImportUtilities {
 
       if (accoutingType == INCOME_EXPENSES_TYPE) {
          processedTrans = this.getprocessedTransactions(transactionsData, accoutingType);
-         headers = ["Date", "ExternalReference", "Description", "Income", "Expenses", "Account", "Category", "Notes"];
+         headers = ["Date", "DateValue", "ExternalReference", "Description", "Income", "Expenses", "Account", "Category", "Notes"];
       } else if (accoutingType == DOUBLE_ENTRY_TYPE) {
          processedTrans = this.getprocessedTransactions(transactionsData, accoutingType);
-         headers = ["Date", "ExternalReference", "Description", "AccountDebit", "AccountCredit", "Amount", "Notes"];
+         headers = ["Date", "DateValue", "ExternalReference", "Description", "AccountDebit", "AccountCredit", "Amount", "Notes"];
       }
 
       objectArrayToCsv = Banana.Converter.objectArrayToCsv(headers, processedTrans, ";");
@@ -497,6 +497,7 @@ var SumupFormat2 = class SumupFormat2 extends ImportUtilities {
    mapCashPaymentDoubleEntry(row, transactionsMapped) {
       let trRow = initTrRowObjectStructure_DoubleEntry();
       trRow.Date = Banana.Converter.toInternalDateFormat(row["Transaction Date"], this.params.dateFormat);
+      trRow.DateValue = Banana.Converter.toInternalDateFormat(row["Payout date"], this.params.dateFormat);
       trRow.ExternalReference = row["Transaction Id"];
       trRow.Description = row["Description"];
       trRow.AccountDebit = this.params.cashAccount;
@@ -510,6 +511,7 @@ var SumupFormat2 = class SumupFormat2 extends ImportUtilities {
    mapCashPaymentIncomeExpenses(row, transactionsMapped) {
       let trRow = initTrRowObjectStructure_IncomeExpenses();
       trRow.Date = Banana.Converter.toInternalDateFormat(row["Transaction Date"], this.params.dateFormat);
+      trRow.DateValue = Banana.Converter.toInternalDateFormat(row["Payout date"], this.params.dateFormat);
       trRow.ExternalReference = row["Transaction Id"];
       trRow.Description = row["Description"];
       trRow.Income = row["Amount incl. VAT"];
@@ -537,6 +539,7 @@ var SumupFormat2 = class SumupFormat2 extends ImportUtilities {
    mapGrossPaymentIncomeExpenses(row, transactionsMapped, paymentDescription, paymentMethod) {
       let trRow = initTrRowObjectStructure_IncomeExpenses();
       trRow.Date = Banana.Converter.toInternalDateFormat(row["Transaction Date"], this.params.dateFormat);
+      trRow.DateValue = Banana.Converter.toInternalDateFormat(row["Payout date"], this.params.dateFormat);
       trRow.ExternalReference = row["Transaction Id"];
       trRow.Description = paymentDescription;
       trRow.Income = row["Amount incl. VAT"];
@@ -551,6 +554,7 @@ var SumupFormat2 = class SumupFormat2 extends ImportUtilities {
    mapPayoutIncomeExpenses(row, transactionsMapped) {
       let trRow = initTrRowObjectStructure_IncomeExpenses();
       trRow.Date = Banana.Converter.toInternalDateFormat(row["Transaction Date"], this.params.dateFormat);
+      trRow.DateValue = Banana.Converter.toInternalDateFormat(row["Payout date"], this.params.dateFormat);
       trRow.ExternalReference = row["Transaction Id"];
       trRow.Description = this.texts.bankPayout;
       trRow.Income = row["Payout"];
@@ -565,6 +569,7 @@ var SumupFormat2 = class SumupFormat2 extends ImportUtilities {
    mapFeeIncomeExpenses(row, transactionsMapped) {
       let trRow = initTrRowObjectStructure_IncomeExpenses();
       trRow.Date = Banana.Converter.toInternalDateFormat(row["Transaction Date"], this.params.dateFormat);
+      trRow.DateValue = Banana.Converter.toInternalDateFormat(row["Payout date"], this.params.dateFormat);
       trRow.ExternalReference = row["Transaction Id"];
       trRow.Description = this.texts.fee;
       trRow.Income = "";
@@ -579,6 +584,7 @@ var SumupFormat2 = class SumupFormat2 extends ImportUtilities {
    mapGrossPaymentDoubleEntry(row, transactionsMapped, paymentDescription, paymentMethod) {
       let trRow = initTrRowObjectStructure_DoubleEntry();
       trRow.Date = Banana.Converter.toInternalDateFormat(row["Transaction Date"], this.params.dateFormat);
+      trRow.DateValue = Banana.Converter.toInternalDateFormat(row["Payout date"], this.params.dateFormat);
       trRow.ExternalReference = row["Transaction Id"];
       trRow.Description = paymentDescription
       trRow.AccountDebit = "";
@@ -592,6 +598,7 @@ var SumupFormat2 = class SumupFormat2 extends ImportUtilities {
    mapPayoutDoubleEntry(row, transactionsMapped) {
       let trRow = initTrRowObjectStructure_DoubleEntry();
       trRow.Date = Banana.Converter.toInternalDateFormat(row["Transaction Date"], this.params.dateFormat);
+      trRow.DateValue = Banana.Converter.toInternalDateFormat(row["Payout date"], this.params.dateFormat);
       trRow.ExternalReference = row["Transaction Id"];
       trRow.Description = this.texts.bankPayout;
       trRow.AccountDebit = this.params.bankAccount;
@@ -605,6 +612,7 @@ var SumupFormat2 = class SumupFormat2 extends ImportUtilities {
    mapFeeDoubleEntry(row, transactionsMapped) {
       let trRow = initTrRowObjectStructure_DoubleEntry();
       trRow.Date = Banana.Converter.toInternalDateFormat(row["Transaction Date"], this.params.dateFormat);
+      trRow.DateValue = Banana.Converter.toInternalDateFormat(row["Payout date"], this.params.dateFormat);
       trRow.ExternalReference = row["Transaction Id"];
       trRow.Description = this.texts.fee;
       trRow.AccountDebit = this.params.sumUpFee;
@@ -626,6 +634,7 @@ var SumupFormat2 = class SumupFormat2 extends ImportUtilities {
    mapRefundedDoubleEntry(row, transactionsMapped) {
       let trRow = initTrRowObjectStructure_DoubleEntry();
       trRow.Date = Banana.Converter.toInternalDateFormat(row["Transaction Date"], this.params.dateFormat);
+      trRow.DateValue = Banana.Converter.toInternalDateFormat(row["Payout date"], this.params.dateFormat);
       trRow.ExternalReference = row["Transaction Id"];
       trRow.Description = this.texts.refund;
       trRow.AccountDebit = this.params.sumUpIn;
@@ -638,6 +647,7 @@ var SumupFormat2 = class SumupFormat2 extends ImportUtilities {
    mapRefundedIncomeExpenses(row, transactionsMapped) {
       let trRow = initTrRowObjectStructure_IncomeExpenses();
       trRow.Date = Banana.Converter.toInternalDateFormat(row["Transaction Date"], this.params.dateFormat);
+      trRow.DateValue = Banana.Converter.toInternalDateFormat(row["Payout date"], this.params.dateFormat);
       trRow.ExternalReference = row["Transaction Id"];
       trRow.Description = this.texts.refund;
       trRow.Income = "";
@@ -938,6 +948,7 @@ function initTrRowObjectStructure_DoubleEntry() {
    let trRow = {};
 
    trRow.Date = "";
+   trRow.DateValue = "";
    trRow.ExternalReference = "";
    trRow.Description = "";
    trRow.AccountDebit = "";
@@ -952,6 +963,7 @@ function initTrRowObjectStructure_IncomeExpenses() {
    let trRow = {};
 
    trRow.Date = "";
+   trRow.DateValue = "";
    trRow.ExternalReference = "";
    trRow.Description = "";
    trRow.Income = "";
