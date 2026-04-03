@@ -1,0 +1,10 @@
+Email,Date,Réf. transaction,Type de transaction,Status,Type de carte,4 derniers chiffres,Traiter en tant que,Méthode de paiement,Entry mode,Auth code,Description,Montant total,Prix net,Tax amount,Tip amount,Frais,Virement,Date du virement,Payout ID,Reference
+info@test.ch,2025-12-23 11:44:43,XXXXX1,Sale,Accepté,VISA,**** **** **** 1111,CREDIT,POS,CONTACTLESS,U00000,personnalisé,22.65,20.95,1.7,0.0,0.57,22.08,,,
+,2025-12-23 11:45:02,XXXXX1,Virement,Paid,,,,,,,,22.65,,,,0.57,22.08,2025-12-24,1234567,
+info@test.ch,2025-12-20 11:49:58,XXXXX2,Sale,Accepté,MASTERCARD,**** **** **** 2222,CREDIT,POS,CONTACTLESS,U11111,personnalisé,45.0,41.63,3.37,0.0,1.13,43.87,,,
+,2025-12-20 11:50:11,XXXXX2,Virement,Paid,,,,,,,,45.0,,,,1.13,43.87,2025-12-22,1234568,
+info@test.ch,2025-12-20 10:25:48,XXXXX3,Sale,Accepté,VISA,**** **** **** 3333,DEBIT,POS,CONTACTLESS,U22222,personnalisé,80.6,74.56,6.04,0.0,1.21,79.39,,,
+,2025-12-20 10:26:21,XXXXX3,Virement,Paid,,,,,,,,80.6,,,,1.21,79.39,2025-12-22,1234569,
+info@test.ch,2025-07-31 10:34:09,XXXXX4,Remboursé,,,,,ECOM,,,,-2.6,,,,,,,,
+info@test.ch,2025-07-30 10:56:03,XXXXX4,Sale,Accepté,VISA,**** **** **** 4444,CREDIT,ECOM,CUSTOMER_ENTRY,U33333,personnalisé,2.6,2.6,0.0,0.0,0.07,2.53,,,
+,2025-07-30 10:56:10,XXXXX4,Virement,Refund adjustment,,,,,,,,2.6,,,,0.0,2.6,2025-07-31,,XXXXX4

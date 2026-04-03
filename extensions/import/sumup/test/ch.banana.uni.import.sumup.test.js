@@ -1,4 +1,4 @@
-// Copyright [2025] [Banana.ch SA - Lugano Switzerland]
+// Copyright [2026] [Banana.ch SA - Lugano Switzerland]
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 // @id = ch.banana.uni.import.sumup.test
 // @api = 1.0
-// @pubdate = 2025-10-14
+// @pubdate = 2026-04-03
 // @publisher = Banana.ch SA
 // @description = <TEST ch.banana.uni.import.sumup.test>
 // @task = app.command
@@ -46,6 +46,7 @@ TestImportSumupTrans.prototype.initTestCase = function () {
    this.fileNameList.push("file:script/../test/testcases/csv_example_format1_20250520.csv");
    this.fileNameList.push("file:script/../test/testcases/csv_example_format2_20250324.csv");
    this.fileNameList.push("file:script/../test/testcases/csv_example_format2_20251014.csv");
+   this.fileNameList.push("file:script/../test/testcases/csv_example_format2_fr_20260310.csv");
 }
 
 // This method will be called at the end of the test case
