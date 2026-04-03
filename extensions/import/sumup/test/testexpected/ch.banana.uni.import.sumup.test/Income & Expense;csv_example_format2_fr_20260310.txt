@@ -1,4 +1,4 @@
-%%info_test_name{Income & Expense;csv_example_format2_20251014}
+%%info_test_name{Income & Expense;csv_example_format2_fr_20260310}
 \documentclass{report}
 \usepackage{longtable}
 \usepackage{color}
@@ -20,9 +20,19 @@
 %Begin test data
 \begin{tablevalue}{}{ l  l  l  l  l  l  l  l  l }
 Date & DateValue & ExternalReference & Description & Income & Expenses & Account & Category & Notes\\
-2012-10-20 & 2025-10-13 & TAAAX2Y2Q2G & 2 x test 1.- & 2.0 &  &  & 3000 & POS\\
-2012-10-20 & 2025-10-13 & TAAAX2Y2Q2G & Bank payout & 1.98 &  & 1020 &  & 1234567\\
-2012-10-20 & 2025-10-13 & TAAAX2Y2Q2G & Fee &  & 0.02 &  & 5001 & \\
+2023-12-20 & 2025-12-24 & XXXXX1 & personnalisé & 22.65 &  &  & 3000 & POS\\
+2023-12-20 & 2025-12-24 & XXXXX1 & Bank payout & 22.08 &  & 1020 &  & 1234567\\
+2023-12-20 & 2025-12-24 & XXXXX1 & Fee &  & 0.57 &  & 5001 & \\
+2020-12-20 & 2025-12-22 & XXXXX2 & personnalisé & 45.0 &  &  & 3000 & POS\\
+2020-12-20 & 2025-12-22 & XXXXX2 & Bank payout & 43.87 &  & 1020 &  & 1234568\\
+2020-12-20 & 2025-12-22 & XXXXX2 & Fee &  & 1.13 &  & 5001 & \\
+2020-12-20 & 2025-12-22 & XXXXX3 & personnalisé & 80.6 &  &  & 3000 & POS\\
+2020-12-20 & 2025-12-22 & XXXXX3 & Bank payout & 79.39 &  & 1020 &  & 1234569\\
+2020-12-20 & 2025-12-22 & XXXXX3 & Fee &  & 1.21 &  & 5001 & \\
+2031-07-20 & 2025-07-31 & XXXXX4 & Refund &  & 2.6 & 1020 & 3000 & ECOM\\
+2030-07-20 & 2025-07-31 & XXXXX4 & personnalisé & 2.6 &  &  & 3000 & ECOM\\
+2030-07-20 & 2025-07-31 & XXXXX4 & Bank payout & 2.53 &  & 1020 &  & \\
+2030-07-20 & 2025-07-31 & XXXXX4 & Fee &  & 0.07 &  & 5001 & \\
 \\
 \end{tablevalue}
 \end{document}
