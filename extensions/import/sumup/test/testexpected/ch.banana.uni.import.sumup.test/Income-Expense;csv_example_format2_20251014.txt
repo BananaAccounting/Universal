@@ -1,4 +1,4 @@
-%%info_test_name{Income & Expense;csv_example_format1_20250520}
+%%info_test_name{Income-Expense;csv_example_format2_20251014}
 \documentclass{report}
 \usepackage{longtable}
 \usepackage{color}
@@ -18,11 +18,11 @@
 \newenvironment{testcase}[1]{\section*{Test: #1}}{\newpage}
 \newenvironment{test}[1]{\section*{Test case: #1}}{}
 %Begin test data
-\begin{tablevalue}{}{ l  l  l  l  l  l  l  l }
-Date & ExternalReference & Description & Income & Expenses & Account & Category & Notes\\
-2024-12-30 & C9W5GZXGBX & Bonifico bancario in uscita &  & 1300.00 &  & 3000 & RIF\\
-2024-12-30 & C9YKR2NLNR & Bonifico bancario in uscita &  & 1500.00 &  & 3000 & RIF\\
-2024-12-16 & COKN45JQW2 & Bonifico bancario in entrata & 55.00 &  &  & 3000 & RIF\\
+\begin{tablevalue}{}{ l  l  l  l  l  l  l  l  l }
+Date & DateValue & ExternalReference & Description & Income & Expenses & Account & Category & Notes\\
+2012-10-20 & 2025-10-13 & TAAAX2Y2Q2G & 2 x test 1.- & 2.0 &  &  & 3000 & POS\\
+2012-10-20 & 2025-10-13 & TAAAX2Y2Q2G & Bank payout & 1.98 &  & 1020 &  & 1234567\\
+2012-10-20 & 2025-10-13 & TAAAX2Y2Q2G & Fee &  & 0.02 &  & 5001 & \\
 \\
 \end{tablevalue}
 \end{document}

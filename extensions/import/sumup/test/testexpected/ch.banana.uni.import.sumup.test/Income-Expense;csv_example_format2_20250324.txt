@@ -1,4 +1,4 @@
-%%info_test_name{Income & Expense;csv_example_format2_20250324}
+%%info_test_name{Income-Expense;csv_example_format2_20250324}
 \documentclass{report}
 \usepackage{longtable}
 \usepackage{color}

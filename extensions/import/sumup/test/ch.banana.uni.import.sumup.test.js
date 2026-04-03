@@ -94,7 +94,7 @@ TestImportSumupTrans.prototype.testImportDoubleEntry = function () {
    this.progressBar.finish();
 }
 TestImportSumupTrans.prototype.testImportIncomeExpenses = function () {
-   let ac2File = "file:script/../test/testcases/Income & Expense.ac2";
+   let ac2File = "file:script/../test/testcases/Income-Expense.ac2";
 
    let parentLogger = this.testLogger;
    this.progressBar.start(this.fileNameList.length);
