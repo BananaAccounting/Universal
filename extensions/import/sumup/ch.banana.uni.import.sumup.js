@@ -151,8 +151,10 @@ function processSumUpTransactions(inData, userParam = {}, banDoc = {}) {
  * 4001->SumUp Fee
  * 1001->Cash account
  * 
- * We book the payouts and the cashed amounts and ignore the payments from the client that are not yet credited to the bank account.
- * In the example in our hands we do not have any example about eventual refunds or chargebacks. 24.03.2025.
+ * We book the payouts (which could include refunds) and the cashed amounts.
+ * we ignore the payments from the client that are not yet credited to the bank account,
+ * so that dont have a payout.
+ * 
  * 
 */
 var SumupFormat2 = class SumupFormat2 extends ImportUtilities {
@@ -560,17 +562,21 @@ var SumupFormat2 = class SumupFormat2 extends ImportUtilities {
                case TRANSACTION_TYPE_PAYOUT:
                   const payoutRow = this.buildPayoutRow(row, operation);
                   this.mapBankPayoutTransactions(accoutingType, payoutRow, transactionsMapped);
+                  break;
                case TRANSACTION_TYPE_REFUND:
                   const dateValue = this.getPayoutDateValue(operation);
                   this.mapRefundedTransaction(accoutingType, row, dateValue, transactionsMapped);
-               case TRANSACTION_TYPE_PAYMENT:
+                  break;
                case TRANSACTION_TYPE_CASH_PAYMENT:
                   this.mapCashPaymentTransactions(accoutingType, row, transactionsMapped);
+                  break;
                default:
                   break;
             }
          }
       }
+
+      Banana.Ui.showText(JSON.stringify(transactionsMapped));
 
       return transactionsMapped;
    }
