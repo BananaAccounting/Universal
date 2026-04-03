@@ -53,6 +53,15 @@ const CATEGORIES_TABLE = "Categories"
 const CATEGORY_COLUMN = "Category"
 const ACCOUNT_COLUMN = "Account"
 
+// Operation types
+const TRANSACTION_TYPE_PAYMENT = "payment";
+const TRANSACTION_TYPE_PAYOUT = "payout";
+const TRANSACTION_TYPE_REFUND = "refund";
+const TRANSACTION_TYPE_CASH_PAYMENT = "cash_payment";
+const TRANSACTION_TYPE_IGNORED_CANCELED_OR_FAILED = "ignored_canceled_or_failed";
+const TRANSACTION_TYPE_IGNORED_MISSING_ID = "ignored_missing_id";
+const TRANSACTION_TYPE_UNKNOWN = "unknown";
+
 /**
  * Parse the data and return the data to be imported as a tab separated file.
  */
@@ -386,16 +395,22 @@ var SumupFormat2 = class SumupFormat2 extends ImportUtilities {
    }
 
    processTransactions(transactionsData) {
+
+      /** First we pre process the transactions, we build a custom structure to be able
+       * to manage easily all the transactions type. */
+      let processedDataCustom = this.buildTransactionsDataCustom(transactionsData);
+      processedDataCustom = this.classifyGroupedTransactions(processedDataCustom);
+
       let accoutingType = this.banDoc.info("Base", "FileTypeGroup");
       let headers = [];
       let objectArrayToCsv = [];
       let processedTrans = {};
 
       if (accoutingType == INCOME_EXPENSES_TYPE) {
-         processedTrans = this.getprocessedTransactions(transactionsData, accoutingType);
+         processedTrans = this.mapTransactionsToImport(processedDataCustom, accoutingType);
          headers = ["Date", "DateValue", "ExternalReference", "Description", "Income", "Expenses", "Account", "Category", "Notes"];
       } else if (accoutingType == DOUBLE_ENTRY_TYPE) {
-         processedTrans = this.getprocessedTransactions(transactionsData, accoutingType);
+         processedTrans = this.mapTransactionsToImport(processedDataCustom, accoutingType);
          headers = ["Date", "DateValue", "ExternalReference", "Description", "AccountDebit", "AccountCredit", "Amount", "Notes"];
       }
 
@@ -404,65 +419,156 @@ var SumupFormat2 = class SumupFormat2 extends ImportUtilities {
       return objectArrayToCsv;
    }
 
-   getprocessedTransactions(transactionsData, accoutingType) {
+   /**
+    * Process and return the transactions data by grouping the entries by "Transaction Id".
+    * @param {*} transactionsData array of objects
+    * @returns custom object with transactions data.
+    */
+   buildTransactionsDataCustom(transactionsData) {
+      const processedData = {};
+
+      if (!Array.isArray(transactionsData)) {
+         return processedData;
+      }
+
+      for (const entry of transactionsData) {
+         if (!entry || typeof entry !== "object") {
+            continue;
+         }
+
+         const operationId = entry["Transaction Id"];
+         if (!operationId) {
+            continue;
+         }
+
+         if (!processedData[operationId]) {
+            processedData[operationId] = {
+               operationId: operationId,
+               transactions: []
+            };
+         }
+
+         processedData[operationId].transactions.push(entry);
+      }
+
+      return processedData;
+   }
+
+   /**
+    * Classifies the various operations
+    * @param {*} processedData 
+    */
+   classifyGroupedTransactions(processedDataCustom) {
+      if (!processedDataCustom || typeof processedDataCustom !== "object") {
+         return processedDataCustom;
+      }
+
+      for (const operationId in processedDataCustom) {
+         const operation = processedDataCustom[operationId];
+         if (!operation || !Array.isArray(operation.transactions)) {
+            continue;
+         }
+
+         for (const row of operation.transactions) {
+            row.c_transactionType = this.getTransactionType(row);
+         }
+      }
+
+      return processedDataCustom;
+   }
+
+   /**
+    * Return the transaction type.
+    * @param {*} row 
+    * @returns 
+    */
+   getTransactionType(row) {
+      const controlTerms = this.getControlTerms();
+      if (!row || typeof row !== "object") {
+         return TRANSACTION_TYPE_UNKNOWN;
+      }
+
+      const trType = row["Payment type"];
+      const trStatus = row["Status"];
+      const trPaymentMethod = row["Payment method"];
+      const trId = row["Transaction Id"];
+
+      if (!trId || trId.trim() === "") {
+         Banana.console.debug("Skipping row with missing Transaction Id.");
+         return TRANSACTION_TYPE_IGNORED_MISSING_ID;
+      }
+
+      if (this.isCanceledOrFailed(trStatus, controlTerms)) {
+         Banana.console.debug("Skipping canceled/failed transaction: " + trId);
+         return TRANSACTION_TYPE_IGNORED_CANCELED_OR_FAILED;
+      }
+
+      if (trType === controlTerms.paymentTypeTransaction
+         && trStatus === controlTerms.paymentStatusSuccessful
+         && (trPaymentMethod === controlTerms.paymentMethodPos
+            || trPaymentMethod === controlTerms.paymentMethodEcom)) {
+         return TRANSACTION_TYPE_PAYMENT;
+      }
+
+      if (trType === controlTerms.paymentTypePayout
+         && (trStatus === controlTerms.paymentStatusPaid
+            || (controlTerms.paymentStatusRefunded && trStatus === controlTerms.paymentStatusRefunded))) {
+         return TRANSACTION_TYPE_PAYOUT;
+      }
+
+      if (trType === controlTerms.paymentTypeRefunded) {
+         return TRANSACTION_TYPE_REFUND;
+      }
+
+      if (trType === controlTerms.paymentTypeTransaction
+         && trStatus === controlTerms.paymentStatusSuccessful
+         && trPaymentMethod === controlTerms.paymentMethodCash) {
+         return TRANSACTION_TYPE_CASH_PAYMENT;
+      }
+
+      Banana.console.debug("Transaction type not recognised: " + trId);
+      return TRANSACTION_TYPE_UNKNOWN;
+   }
+
+   isCanceledOrFailed(status, controlTerms) {
+      return (controlTerms.paymentStatusFailed && status === controlTerms.paymentStatusFailed)
+         || (controlTerms.paymentStatusCanceled && status === controlTerms.paymentStatusCanceled);
+   }
+
+   /**
+    * Map transactions to be imported
+    * @param {*} processedDataCustom 
+    * @param {*} accoutingType 
+    * @returns 
+    */
+   mapTransactionsToImport(processedDataCustom, accoutingType) {
 
       let transactionsMapped = [];
-      let paymentTransactions = {};
-      let controlTerms = this.getControlTerms();
 
-      if (transactionsData.length === 0)
+      if (processedDataCustom.length === 0)
          return transactionsMapped;
 
-      for (let row of transactionsData) {
-
-         let trType = row["Payment type"];
-         let trStatus = row["Status"];
-         let trPaymentMethod = row["Payment method"];
-         let trId = row["Transaction Id"];
-
-         if (!trId || trId.trim() === "") {
-            Banana.console.debug("Skipping row with missing Transaction Id.");
+      for (const operationId in processedDataCustom) {
+         const operation = processedDataCustom[operationId];
+         if (!operation || !Array.isArray(operation.transactions)) {
             continue;
          }
 
-         // Check if transactions is canceled or failed
-         // Guard against empty-string terms (FR leaves these blank) accidentally matching rows with empty Status.
-         if ((controlTerms.paymentStatusFailed && trStatus === controlTerms.paymentStatusFailed)
-            || (controlTerms.paymentStatusCanceled && trStatus === controlTerms.paymentStatusCanceled)) {
-            Banana.console.debug("Skipping canceled/failed transaction: " + trId);
-            continue;
-         }
-
-         if (trType === controlTerms.paymentTypeTransaction
-            && trStatus === controlTerms.paymentStatusSuccessful
-            && (trPaymentMethod == controlTerms.paymentMethodPos
-               || trPaymentMethod === controlTerms.paymentMethodEcom)) {
-            // The transaction is a valid POS or ECOM payment. (ECOM is eCommerce payment and is treated the same as POS in our mapping)
-            paymentTransactions[trId] = row;
-         } else if (trType === controlTerms.paymentTypePayout
-            && (trStatus === controlTerms.paymentStatusPaid
-               || (controlTerms.paymentStatusRefunded && trStatus === controlTerms.paymentStatusRefunded))) {
-            /** The transaction is a valid payout (normal or refund adjustment).
-             * As the payouts row do not have the description and other useful data, 
-             * We search for the corresponding POS or ECOM payment to get description and payment method.
-             * For refund, we first record the sale transaction as normal row;
-             * buildPayoutRow substitutes the Sale row's correct Fee and Payout amounts. 
-             * Then we book the refunded transaction as a single reversal line.
-             */
-            let paymentRow = paymentTransactions[trId] || null;
-            let paymentDescription = paymentRow ? paymentRow["Description"] : "";
-            let paymentMethod = paymentRow ? paymentRow["Payment method"] : "";
-            let payoutRow = this.buildPayoutRow(row, paymentRow, controlTerms, trStatus);
-            this.mapBankPayoutTransactions(accoutingType, payoutRow, transactionsMapped, paymentDescription, paymentMethod);
-         } else if (trType === controlTerms.paymentTypeRefunded) {
-            // Refunded row: book as a single reversal line.
-            this.mapRefundedTransaction(accoutingType, row, transactionsMapped);
-         } else if (trType === controlTerms.paymentTypeTransaction
-            && trStatus === controlTerms.paymentStatusSuccessful
-            && trPaymentMethod == controlTerms.paymentMethodCash) {
-            this.mapCashPaymentTransactions(accoutingType, row, transactionsMapped); // The transaction is a valid cash payment.
-         } else {
-            Banana.console.debug("Transaction type not recognised: " + row["Transaction Id"]);
+         for (const row of operation.transactions) {
+            const trType = row.c_transactionType;
+            switch (trType) {
+               case TRANSACTION_TYPE_PAYOUT:
+                  const payoutRow = this.buildPayoutRow(row, operation);
+                  this.mapBankPayoutTransactions(accoutingType, payoutRow, transactionsMapped);
+               case TRANSACTION_TYPE_REFUND:
+                  const dateValue = this.getPayoutDateValue(operation);
+                  this.mapRefundedTransaction(accoutingType, row, dateValue, transactionsMapped);
+               case TRANSACTION_TYPE_PAYMENT:
+               case TRANSACTION_TYPE_CASH_PAYMENT:
+                  this.mapCashPaymentTransactions(accoutingType, row, transactionsMapped);
+               default:
+                  break;
+            }
          }
       }
 
@@ -470,20 +576,57 @@ var SumupFormat2 = class SumupFormat2 extends ImportUtilities {
    }
 
    /**
-    * For regular payouts returns the Payout row unchanged.
-    * For refund adjustments the Payout row carries Fee=0 and Payout=gross amount;
-    * returns a merged row using the Sale row's Amount, Payout and Fee so that
-    * gross=2.60, payout=2.53, fee=0.07 are booked correctly.
+    * Returns the "Payout date" from the payout row.
+    * Mainly used for refund transactions, where this value is not present.
     */
-   buildPayoutRow(payoutRow, saleRow, controlTerms, trStatus) {
-      if (controlTerms.paymentStatusRefunded && trStatus === controlTerms.paymentStatusRefunded && saleRow) {
-         return Object.assign({}, payoutRow, {
-            "Amount incl. VAT": saleRow["Amount incl. VAT"],
-            "Payout": saleRow["Payout"],
-            "Fee": saleRow["Fee"]
+   getPayoutDateValue(operation) {
+      if (!operation || !Array.isArray(operation.transactions)) {
+         return "";
+      }
+
+      const payoutRow = operation.transactions.find(
+         row => row && row.c_transactionType === "payout"
+      );
+
+      return payoutRow ? payoutRow["Payout date"] || "" : "";
+   }
+
+   /**
+    * For regular payouts we add Description and Payment method retrieved from the payment row.
+    * For refund adjustments the payout row does not have fees and gross amount ah happen for 
+    * normal payouts, in that case we return a merged row using the payment row's original Amount, 
+    * Payout and Fee so that the accounting entry is created with the original sale values.
+    */
+   buildPayoutRow(payoutRow, operation) {
+      const controlTerms = this.getControlTerms();
+      if (!payoutRow || !operation || !Array.isArray(operation.transactions)) {
+         return payoutRow;
+      }
+
+      const paymentRow = operation.transactions.find(row => row && row.c_transactionType === "payment") || null;
+      const refundRow = operation.transactions.find(row => row && row.c_transactionType === "refund") || null;
+
+      const paymentDescription = paymentRow ? paymentRow["Description"] || "" : "";
+      const paymentMethod = paymentRow ? paymentRow["Payment method"] || "" : "";
+
+      const mergedPayoutRow = Object.assign({}, payoutRow, {
+         "Description": paymentDescription,
+         "Payment method": paymentMethod
+      });
+
+      // Refund adjustment payout:
+      // keep Description / Payment method from the payment row,
+      // but use the original sale values for Amount / Payout / Fee.
+      const trStatus = payoutRow["Status"];
+      if (controlTerms.paymentStatusRefunded && trStatus === controlTerms.paymentStatusRefunded && paymentRow && refundRow) {
+         return Object.assign({}, mergedPayoutRow, {
+            "Amount incl. VAT": paymentRow["Amount incl. VAT"],
+            "Payout": paymentRow["Payout"],
+            "Fee": paymentRow["Fee"]
          });
       }
-      return payoutRow;
+
+      return mergedPayoutRow;
    }
 
    mapCashPaymentTransactions(accoutingType, row, transactionsMapped) {
@@ -523,30 +666,30 @@ var SumupFormat2 = class SumupFormat2 extends ImportUtilities {
       transactionsMapped.push(trRow);
    }
 
-   mapBankPayoutTransactions(accoutingType, row, transactionsMapped, paymentDescription, paymentMethod) {
+   mapBankPayoutTransactions(accoutingType, row, transactionsMapped) {
 
       if (accoutingType == DOUBLE_ENTRY_TYPE) {
-         this.mapGrossPaymentDoubleEntry(row, transactionsMapped, paymentDescription, paymentMethod);
+         this.mapGrossPaymentDoubleEntry(row, transactionsMapped);
          this.mapPayoutDoubleEntry(row, transactionsMapped);
          this.mapFeeDoubleEntry(row, transactionsMapped);
       } else if (accoutingType == INCOME_EXPENSES_TYPE) {
-         this.mapGrossPaymentIncomeExpenses(row, transactionsMapped, paymentDescription, paymentMethod);
+         this.mapGrossPaymentIncomeExpenses(row, transactionsMapped);
          this.mapPayoutIncomeExpenses(row, transactionsMapped);
          this.mapFeeIncomeExpenses(row, transactionsMapped);
       }
    }
 
-   mapGrossPaymentIncomeExpenses(row, transactionsMapped, paymentDescription, paymentMethod) {
+   mapGrossPaymentIncomeExpenses(row, transactionsMapped) {
       let trRow = initTrRowObjectStructure_IncomeExpenses();
       trRow.Date = Banana.Converter.toInternalDateFormat(row["Transaction Date"], this.params.dateFormat);
       trRow.DateValue = Banana.Converter.toInternalDateFormat(row["Payout date"], this.params.dateFormat);
       trRow.ExternalReference = row["Transaction Id"];
-      trRow.Description = paymentDescription;
+      trRow.Description = row["Description"];
       trRow.Income = row["Amount incl. VAT"];
       trRow.Expenses = "";
       trRow.Account = "";
       trRow.Category = this.params.sumUpIn;
-      trRow.Notes = paymentMethod;
+      trRow.Notes = row["Payment method"];
 
       transactionsMapped.push(trRow);
    }
@@ -581,16 +724,16 @@ var SumupFormat2 = class SumupFormat2 extends ImportUtilities {
       transactionsMapped.push(trRow);
    }
 
-   mapGrossPaymentDoubleEntry(row, transactionsMapped, paymentDescription, paymentMethod) {
+   mapGrossPaymentDoubleEntry(row, transactionsMapped) {
       let trRow = initTrRowObjectStructure_DoubleEntry();
       trRow.Date = Banana.Converter.toInternalDateFormat(row["Transaction Date"], this.params.dateFormat);
       trRow.DateValue = Banana.Converter.toInternalDateFormat(row["Payout date"], this.params.dateFormat);
       trRow.ExternalReference = row["Transaction Id"];
-      trRow.Description = paymentDescription
+      trRow.Description = row["Description"];
       trRow.AccountDebit = "";
       trRow.AccountCredit = this.params.sumUpIn;
       trRow.Amount = row["Amount incl. VAT"];
-      trRow.Notes = paymentMethod;
+      trRow.Notes = row["Payment method"];
 
       transactionsMapped.push(trRow);
    }
@@ -623,18 +766,18 @@ var SumupFormat2 = class SumupFormat2 extends ImportUtilities {
       transactionsMapped.push(trRow);
    }
 
-   mapRefundedTransaction(accoutingType, row, transactionsMapped) {
+   mapRefundedTransaction(accoutingType, row, dateValue, transactionsMapped) {
       if (accoutingType == DOUBLE_ENTRY_TYPE) {
-         this.mapRefundedDoubleEntry(row, transactionsMapped);
+         this.mapRefundedDoubleEntry(row, dateValue, transactionsMapped);
       } else if (accoutingType == INCOME_EXPENSES_TYPE) {
-         this.mapRefundedIncomeExpenses(row, transactionsMapped);
+         this.mapRefundedIncomeExpenses(row, dateValue, transactionsMapped);
       }
    }
 
-   mapRefundedDoubleEntry(row, transactionsMapped) {
+   mapRefundedDoubleEntry(row, dateValue, transactionsMapped) {
       let trRow = initTrRowObjectStructure_DoubleEntry();
       trRow.Date = Banana.Converter.toInternalDateFormat(row["Transaction Date"], this.params.dateFormat);
-      trRow.DateValue = Banana.Converter.toInternalDateFormat(row["Payout date"], this.params.dateFormat);
+      trRow.DateValue = Banana.Converter.toInternalDateFormat(dateValue, this.params.dateFormat);
       trRow.ExternalReference = row["Transaction Id"];
       trRow.Description = this.texts.refund;
       trRow.AccountDebit = this.params.sumUpIn;
@@ -644,10 +787,10 @@ var SumupFormat2 = class SumupFormat2 extends ImportUtilities {
       transactionsMapped.push(trRow);
    }
 
-   mapRefundedIncomeExpenses(row, transactionsMapped) {
+   mapRefundedIncomeExpenses(row, dateValue, transactionsMapped) {
       let trRow = initTrRowObjectStructure_IncomeExpenses();
       trRow.Date = Banana.Converter.toInternalDateFormat(row["Transaction Date"], this.params.dateFormat);
-      trRow.DateValue = Banana.Converter.toInternalDateFormat(row["Payout date"], this.params.dateFormat);
+      trRow.DateValue = Banana.Converter.toInternalDateFormat(dateValue, this.params.dateFormat);
       trRow.ExternalReference = row["Transaction Id"];
       trRow.Description = this.texts.refund;
       trRow.Income = "";
