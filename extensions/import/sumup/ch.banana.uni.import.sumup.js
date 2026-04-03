@@ -1,4 +1,4 @@
-// Copyright [2025] [Banana.ch SA - Lugano Switzerland]
+// Copyright [2026] [Banana.ch SA - Lugano Switzerland]
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
 
 // @id = ch.banana.uni.import.sumup
 // @api = 1.0
-// @pubdate = 2025-10-14
+// @pubdate = 2026-04-03
 // @publisher = Banana.ch SA
 // @description = SumUp - Import movements .csv (Banana+ Advanced)
 // @description.it = SumUp - Importa movimenti .csv (Banana+ Advanced)
