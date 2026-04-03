@@ -576,8 +576,6 @@ var SumupFormat2 = class SumupFormat2 extends ImportUtilities {
          }
       }
 
-      Banana.Ui.showText(JSON.stringify(transactionsMapped));
-
       return transactionsMapped;
    }
 
