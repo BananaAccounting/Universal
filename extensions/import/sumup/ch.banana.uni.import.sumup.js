@@ -14,7 +14,7 @@
 
 // @id = ch.banana.uni.import.sumup
 // @api = 1.0
-// @pubdate = 2026-04-03
+// @pubdate = 2026-04-07
 // @publisher = Banana.ch SA
 // @description = SumUp - Import movements .csv (Banana+ Advanced)
 // @description.it = SumUp - Importa movimenti .csv (Banana+ Advanced)
