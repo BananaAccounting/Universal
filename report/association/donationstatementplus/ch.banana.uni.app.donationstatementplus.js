@@ -2206,8 +2206,8 @@ function loadTexts(banDoc,lang) {
         texts.printText = "Text ausdrucken";
         texts.begin = "Header";
         texts.doc_period = "Periode";
-        texts.customerAddress = "Customer address";
-        texts.addressComposition = "Address composition";
+        texts.customerAddress = "Kundenadresse";
+        texts.addressComposition = "Adresszusammenstellung";
     }
     else if (lang === "fr") {
         texts.reportTitle = "Certificat de don";
@@ -2245,10 +2245,10 @@ function loadTexts(banDoc,lang) {
         texts.textEmbedded = "Texte tableau Documents (.txt / .md)";
         texts.accountsToPrint = "Sélectionner les adresses à imprimer";
         texts.printText = "Imprimer le texte";
-        texts.begin = "Header";
+        texts.begin = "En-tête";
         texts.doc_period = "Période";
-        texts.customerAddress = "Customer address";
-        texts.addressComposition = "Address composition";
+        texts.customerAddress = "Adresse du client";
+        texts.addressComposition = "Composition de l'adresse";
     }
     else if (lang === "it") {
         texts.reportTitle = "Attestato di donazione";
@@ -2286,10 +2286,10 @@ function loadTexts(banDoc,lang) {
         texts.textEmbedded = "Testo tabella Documenti (.txt / .md)";
         texts.accountsToPrint = "Seleziona gli indirizzi da stampare";
         texts.printText = "Stampa testo";
-        texts.begin = "Header";
+        texts.begin = "Intestazione";
         texts.doc_period = "Periodo";
-        texts.customerAddress = "Customer address";
-        texts.addressComposition = "Address composition";
+        texts.customerAddress = "Indirizzo cliente";
+        texts.addressComposition = "Composizione dell'indirizzo";
     }
     else if (lang === "nl") {
         texts.reportTitle = "Kwitantie voor giften";
@@ -2329,8 +2329,8 @@ function loadTexts(banDoc,lang) {
         texts.printText = "Tekst afdrukken";
         texts.begin = "Header";
         texts.doc_period = "Periode";
-        texts.customerAddress = "Customer address";
-        texts.addressComposition = "Address composition";
+        texts.customerAddress = "Klantadres";
+        texts.addressComposition = "Adresopbouw";
     }
     else { //lang == en
         texts.reportTitle = "Donation Statement";
