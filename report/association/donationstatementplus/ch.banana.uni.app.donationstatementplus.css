@@ -22,9 +22,16 @@ body {
    text-align: center;
 }
 
-.header_address {
+.header_address_row_1 {
+   font-family: $font_family;
+   font-size: $font_size_header;
+   font-weight: bold;
+}
+
+.header_address_row_2_to_5 {
    font-family: $font_family;
    font-size: $font_size;
+   font-weight: bold;
 }
 
 .header_text {

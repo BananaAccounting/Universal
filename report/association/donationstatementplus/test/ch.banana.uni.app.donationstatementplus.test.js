@@ -95,6 +95,7 @@ ReportTest.prototype.testBananaApp = function() {
   userParam.fontFamily = 'Helvetica';
   userParam.fontSize = '10';
   userParam.css = '';
+  verifyUserParam(userParam, banDoc, lang);
   this.report_test(banDoc, "2023-01-01", "2023-12-31", userParam, lang, "year report");
   this.report_test(banDoc, "2023-01-01", "2023-06-30", userParam, lang, "1. semester report");
   this.report_test(banDoc, "2023-01-01", "2023-03-31", userParam, lang, "1. quarter report");
@@ -126,6 +127,7 @@ ReportTest.prototype.testBananaApp = function() {
   userParam.fontFamily = 'Helvetica';
   userParam.fontSize = '10';
   userParam.css = '';
+  verifyUserParam(userParam, banDoc, lang);
   this.report_test(banDoc, "2023-01-01", "2023-12-31", userParam, lang, "year report");
   this.report_test(banDoc, "2023-01-01", "2023-06-30", userParam, lang, "1. semester report");
   this.report_test(banDoc, "2023-01-01", "2023-03-31", userParam, lang, "1. quarter report");
@@ -156,6 +158,7 @@ ReportTest.prototype.testBananaApp = function() {
   userParam.fontFamily = 'Helvetica';
   userParam.fontSize = '10';
   userParam.css = '';
+  verifyUserParam(userParam, banDoc, lang);
   this.report_test(banDoc, "2023-01-01", "2023-12-31", userParam, lang, "year report");
   this.report_test(banDoc, "2023-01-01", "2023-06-30", userParam, lang, "1. semester report");
   this.report_test(banDoc, "2023-01-01", "2023-03-31", userParam, lang, "1. quarter report");
@@ -187,6 +190,7 @@ ReportTest.prototype.testBananaApp = function() {
   userParam.fontFamily = 'Helvetica';
   userParam.fontSize = '10';
   userParam.css = '';
+  verifyUserParam(userParam, banDoc, lang);
   this.report_test(banDoc, "2023-01-01", "2023-12-31", userParam, lang, "year report");
   this.report_test(banDoc, "2023-01-01", "2023-06-30", userParam, lang, "1. semester report");
   this.report_test(banDoc, "2023-01-01", "2023-03-31", userParam, lang, "1. quarter report");

@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.uni.app.donationstatementplus.js
 // @api = 1.0
-// @pubdate = 2026-03-30
+// @pubdate = 2026-04-08
 // @publisher = Banana.ch SA
 // @description = Donation Statement for Associations (Banana+)
 // @description.de = Spendenbescheinigung für Vereine (Banana+)
@@ -154,6 +154,32 @@ function convertParam(userParam) {
     currentParam.defaultvalue = texts.localityAndDate;
     currentParam.readValue = function() {
         userParam.localityAndDate = this.value;
+    }
+    convertedParam.data.push(currentParam);
+
+    /**
+     * CUSTOMER ADDRESS GROUP
+     */
+    currentParam = {};
+    currentParam.name = 'customerAddress';
+    currentParam.title = texts.customerAddress;
+    currentParam.type = 'string';
+    currentParam.value = '';
+    currentParam.editable = false;
+    currentParam.readValue = function() {
+        userParam.customerAddress = this.value;
+    }
+    convertedParam.data.push(currentParam);
+
+    currentParam = {};
+    currentParam.name = 'addressComposition';
+    currentParam.parentObject = 'customerAddress';
+    currentParam.title = texts.addressComposition;
+    currentParam.type = 'multilinestring';
+    currentParam.value = userParam.addressComposition ? userParam.addressComposition : '';
+    currentParam.defaultvalue = '<OrganisationName>\n<NamePrefix>\n<FirstName> <FamilyName>\n<Street> <BuildingNumber>\n<AddressExtra>\n<POBox>\n<PostalCode> <Locality>';
+    currentParam.readValue = function () {
+        userParam.addressComposition = this.value;
     }
     convertedParam.data.push(currentParam);
 
@@ -443,10 +469,66 @@ function initUserParam(banDoc, lang) {
     userParam.description = false;
     userParam.printHeaderLogo = false;
     userParam.headerLogoName = 'Logo';
+    userParam.addressComposition = '<OrganisationName>\n<NamePrefix>\n<FirstName> <FamilyName>\n<Street> <BuildingNumber>\n<AddressExtra>\n<POBox>\n<PostalCode> <Locality>';
     userParam.fontFamily = 'Helvetica';
     userParam.fontSize = '10';
     userParam.css = '';
     
+    return userParam;
+}
+
+function verifyUserParam(userParam, banDoc, lang) {
+    var texts = loadTexts(banDoc, lang);
+    if (!userParam) {
+        return initUserParam(banDoc, lang);
+    }
+    if (!userParam.version)
+        userParam.version = '1.0';
+    if (!userParam.costcenter)
+        userParam.costcenter = '';
+    if (!userParam.minimumAmount)
+        userParam.minimumAmount = '1.00';
+    if (!userParam.useExtractTable)
+        userParam.useExtractTable = false;
+    if (!userParam.textToUse)
+        userParam.textToUse = texts.text1;
+    if (!userParam.text1)
+        userParam.text1 = texts.predefinedText;
+    if (!userParam.text2)
+        userParam.text2 = '';
+    if (!userParam.text3)
+        userParam.text3 = '';
+    if (!userParam.text4)
+        userParam.text4 = '';
+    if (!userParam.embeddedTextFile)
+        userParam.embeddedTextFile = '';
+    if (!userParam.useMarkdown)
+        userParam.useMarkdown = false;
+    if (!userParam.details)
+        userParam.details = false;
+    if (!userParam.textSignature)
+        userParam.textSignature = '';
+    if (!userParam.localityAndDate)
+        userParam.localityAndDate = texts.localityAndDate;
+    if (!userParam.printSignatureImage)
+        userParam.printSignatureImage = false;
+    if (!userParam.nameSignatureImage)
+        userParam.nameSignatureImage = '';
+    if (!userParam.description)
+        userParam.description = false;
+    if (!userParam.printHeaderLogo)
+        userParam.printHeaderLogo = false;
+    if (!userParam.headerLogoName)
+        userParam.headerLogoName = 'Logo';
+    if (!userParam.addressComposition)
+        userParam.addressComposition = '<OrganisationName>\n<NamePrefix>\n<FirstName> <FamilyName>\n<Street> <BuildingNumber>\n<AddressExtra>\n<POBox>\n<PostalCode> <Locality>';
+    if (!userParam.fontFamily)
+        userParam.fontFamily = 'Helvetica';
+    if (!userParam.fontSize)
+        userParam.fontSize = '10';
+    if (!userParam.css)
+        userParam.css = '';
+
     return userParam;
 }
 
@@ -480,6 +562,7 @@ function settingsDialog() {
     var savedParam = Banana.document.getScriptSettings();
     if (savedParam && savedParam.length > 0) {
         scriptform = JSON.parse(savedParam);
+        scriptform = verifyUserParam(scriptform, Banana.document, lang);
     }
 
     //We take the accounting "starting date" and "ending date" from the document. These will be used as default dates
@@ -619,7 +702,7 @@ function printReport(banDoc, userParam, accounts, texts, stylesheet, docs, style
         var report = Banana.Report.newReport(texts.reportTitle);
         
         printReportHeader(report, banDoc, userParam, stylesheet);
-        printReportAddress(report, banDoc, accounts[k]);
+        printReportAddress(report, banDoc, userParam, accounts[k]);
         printReportLetter(report, banDoc, userParam, accounts[k], texts);
         printReportDetailsTransaction(report, banDoc, userParam, accounts[k], texts);
         printReportSignature(report, banDoc, userParam);
@@ -662,60 +745,175 @@ function printReportHeader(report, banDoc, userParam, stylesheet) {
     var web = banDoc.info("AccountingDataBase","Web");
     var email = banDoc.info("AccountingDataBase","Email");
 
+    var paragraph = headerParagraph.addParagraph("", "header_address_row_1");
     if (company) {
-        headerParagraph.addParagraph(company, "header_address");
+        paragraph.addText(company + "\n");
     }
-    if (name && familyName) {
-        headerParagraph.addParagraph(name + " " + familyName, "header_address");
-    } else if (!name && familyName) {
-        headerParagraph.addParagraph(familyName, "header_address");
-    } else if (name && !familyName) {
-        headerParagraph.addParagraph(name, "header_address");
+    if (name || familyName) {
+        if (name && familyName) {
+            paragraph.addText(name + " " + familyName);
+        } else if (!name && familyName) {
+            paragraph.addText(familyName);
+        } else if (name && !familyName) {
+            paragraph.addText(name);
+        }
+        paragraph.addText("\n");
     }
+
+    paragraph = headerParagraph.addParagraph("", "header_address_row_2_to_5");
     if (address1) {
         if (buildingnumber) {
-            headerParagraph.addParagraph(address1 + " " + buildingnumber, "header_address");
+            paragraph.addText(address1 + " " + buildingnumber);
         } else {
-            headerParagraph.addParagraph(address1, "header_address");
+            paragraph.addText(address1);
         }
     }
     if (address2) {
-        headerParagraph.addParagraph(address2, "header_address");
-    }
-    if (zip && city) {
-        headerParagraph.addParagraph(zip + " " + city, "header_address");
+        if (address1) {
+            paragraph.addText(", ");
+        }   
+        paragraph.addText(address2);
     }
 
-    var paragraph = headerParagraph.addParagraph("","header_address");
+    if (zip) {
+        if (address1 || address2) {
+            paragraph.addText(", ");
+        }  
+        paragraph.addText(zip);
+    }
+    if (city) {
+        if (zip) {
+            paragraph.addText(" ");
+        }
+        paragraph.addText(city);
+    }
+    paragraph.addText("\n");
+
+    paragraph = headerParagraph.addParagraph("", "header_address_row_2_to_5");
     if (phone) {
-        paragraph.addText("Tel. " + phone);
+        paragraph.addText(phone + "\n");
     }
     if (web) {
-        if (phone) {
-            paragraph.addText(", ");
-        } 
         paragraph.addText(web);
     }
     if (email) {
-        if (phone || web) {
+        if (web) {
             paragraph.addText(", ");
         }
         paragraph.addText(email);
     }
+    paragraph.addText("\n");
 }
 
 /* Function that prints the address of the report */
-function printReportAddress(report, banDoc, account) {
+function printReportAddress(report, banDoc, userParam, account) {
 
     /**
      * Print the address of the membership (CC3 account)
      */
 
     var address = getAddress(banDoc, account);
-    var tableAddress = report.addTable("address");
-    var row;
+    if (!address)
+        return;
 
-    if (address.nameprefix) {
+    // User parameter values
+    var addressComposition = userParam.addressComposition;
+    if (!addressComposition)
+        return;
+
+    if (addressComposition.indexOf("<NamePrefix>") > -1 && address.nameprefix) {
+        addressComposition = addressComposition.replace(/<NamePrefix>/g, address.nameprefix.trim());
+    }
+
+    if (addressComposition.indexOf("<OrganisationName>") > -1 && address.organisationname) {
+        addressComposition = addressComposition.replace(/<OrganisationName>/g, address.organisationname.trim());
+    }
+
+    if (addressComposition.indexOf("<OrganisationUnit>") > -1 && address.businessunit) {
+        addressComposition = addressComposition.replace(/<OrganisationUnit>/g, address.businessunit.trim());
+    }
+
+    if (addressComposition.indexOf("<OrganisationUnit2>") > -1 && address.businessunit2) {
+        addressComposition = addressComposition.replace(/<OrganisationUnit2>/g, address.businessunit2.trim());
+    }
+
+    if (addressComposition.indexOf("<OrganisationUnit3>") > -1 && address.businessunit3) {
+        addressComposition = addressComposition.replace(/<OrganisationUnit3>/g, address.businessunit3.trim());
+    }
+
+    if (addressComposition.indexOf("<OrganisationUnit4>") > -1 && address.businessunit4) {
+        addressComposition = addressComposition.replace(/<OrganisationUnit4>/g, address.businessunit4.trim());
+    }
+
+    if (addressComposition.indexOf("<FirstName>") > -1 && address.firstname) {
+        addressComposition = addressComposition.replace(/<FirstName>/g, address.firstname.trim());
+    }
+
+    if (addressComposition.indexOf("<FamilyName>") > -1 && address.familyname) {
+        addressComposition = addressComposition.replace(/<FamilyName>/g, address.familyname.trim());
+    }
+
+    if (addressComposition.indexOf("<Street>") > -1 && address.street) {
+        addressComposition = addressComposition.replace(/<Street>/g, address.street.trim());
+    }
+
+    if (addressComposition.indexOf("<BuildingNumber>") > -1 && address.buildingnumber) {
+        addressComposition = addressComposition.replace(/<BuildingNumber>/g, address.buildingnumber.trim());
+    }
+
+    if (addressComposition.indexOf("<AddressExtra>") > -1 && address.addressextra) {
+        addressComposition = addressComposition.replace(/<AddressExtra>/g, address.addressextra.trim());
+    }
+
+    if (addressComposition.indexOf("<POBox>") > -1 && address.pobox) {
+        addressComposition = addressComposition.replace(/<POBox>/g, address.pobox.trim());
+    }
+
+    if (addressComposition.indexOf("<PostalCode>") > -1 && address.postalcode) {
+        addressComposition = addressComposition.replace(/<PostalCode>/g, address.postalcode.trim());
+    }
+
+    if (addressComposition.indexOf("<Locality>") > -1 && address.locality) {
+        addressComposition = addressComposition.replace(/<Locality>/g, address.locality.trim());
+    }
+
+    if (addressComposition.indexOf("<Region>") > -1 && address.region) {
+        addressComposition = addressComposition.replace(/<Region>/g, address.region.trim());
+    }
+
+    if (addressComposition.indexOf("<Country>") > -1 && address.country) {
+        addressComposition = addressComposition.replace(/<Country>/g, address.country.trim());
+    }
+
+    if (addressComposition.indexOf("<CountryCode>") > -1 && address.countrycode) {
+        addressComposition = addressComposition.replace(/<CountryCode>/g, address.countrycode.trim());
+    }
+
+    if (addressComposition.indexOf("<EmailWork>") > -1 && address.emailwork) {
+        addressComposition = addressComposition.replace(/<EmailWork>/g, address.emailwork.trim());
+    }
+
+    //replace all tags not replaced ("<text>") with an empty string
+    addressComposition = addressComposition.replace(/<\w+>/g, "");
+
+    //create an array and remove the empty elements (rows/tags not used)
+    var rows = addressComposition.split("\n");
+    for (var i = rows.length - 1; i >= 0; i--) {
+        rows[i] = rows[i].trim();
+        if (rows[i] === "") {
+            rows.splice(i, 1);
+        }
+    }
+
+    //create the final address string with '\n' as separator
+    //the string now does not have any space or empty row
+    addressComposition = rows.join("\n");
+
+    var tableAddress = report.addTable("address");
+    var row = tableAddress.addRow();
+    row.addCell(addressComposition, "", 1);
+
+    /*if (address.nameprefix) {
         row = tableAddress.addRow();
         row.addCell(address.nameprefix, "", 1);
     }
@@ -749,7 +947,7 @@ function printReportAddress(report, banDoc, account) {
     if (address.postalcode && address.locality) {
         row = tableAddress.addRow();
         row.addCell(address.postalcode + " " + address.locality, "", 1);
-    }
+    }*/
 }
 
 /* Function that prints the letter of the report */
@@ -1758,7 +1956,50 @@ function getAddress(banDoc, accountNumber) {
         address.pobox = banDoc.table('Accounts').findRowByValue('Account', accountNumber).value('POBox');
         address.region = banDoc.table('Accounts').findRowByValue('Account', accountNumber).value('Region');
         address.country = banDoc.table('Accounts').findRowByValue('Account', accountNumber).value('Country');
+        address.countrycode = banDoc.table('Accounts').findRowByValue('Account', accountNumber).value('CountryCode');
+        address.emailwork = banDoc.table('Accounts').findRowByValue('Account', accountNumber).value('EmailWork');
+        address.businessunit = banDoc.table('Accounts').findRowByValue('Account', accountNumber).value('OrganisationUnit');
+        address.businessunit2 = banDoc.table('Accounts').findRowByValue('Account', accountNumber).value('OrganisationUnit2');
+        address.businessunit3 = banDoc.table('Accounts').findRowByValue('Account', accountNumber).value('OrganisationUnit3');
+        address.businessunit4 = banDoc.table('Accounts').findRowByValue('Account', accountNumber).value('OrganisationUnit4');
     }
+    //verify address
+    if (!address.nameprefix)
+        address.nameprefix = "";
+    if (!address.organisationname)
+        address.organisationname = "";
+    if (!address.firstname)
+        address.firstname = "";
+    if (!address.familyname)
+        address.familyname = "";
+    if (!address.street)
+        address.street = "";
+    if (!address.buildingnumber)
+        address.buildingnumber = "";
+    if (!address.addressextra)
+        address.addressextra = "";
+    if (!address.postalcode)
+        address.postalcode = "";
+    if (!address.locality)
+        address.locality = "";
+    if (!address.pobox)
+        address.pobox = "";
+    if (!address.region)
+        address.region = "";
+    if (!address.country)
+        address.country = "";
+    if (!address.countrycode)
+        address.countrycode = "";
+    if (!address.emailwork)
+        address.emailwork = "";
+    if (!address.businessunit)
+        address.businessunit = "";
+    if (!address.businessunit2)
+        address.businessunit2 = "";
+    if (!address.businessunit3)
+        address.businessunit3 = "";
+    if (!address.businessunit4)
+        address.businessunit4 = "";
     return address;
 }
 
@@ -1829,6 +2070,7 @@ function set_variables(variables, userParam) {
 
     variables.$font_family = userParam.fontFamily;
     variables.$font_size = userParam.fontSize+"pt";
+    variables.$font_size_header = userParam.fontSize*1.2 +"pt";
 }
 
 /* Function that replaces all the css variables inside of the given cssText with their values.
@@ -1962,8 +2204,10 @@ function loadTexts(banDoc,lang) {
         texts.textEmbedded = "Text Tabelle Dokumente (.txt / .md)";
         texts.accountsToPrint = "Adressen für den Ausdruck auswählen";
         texts.printText = "Text ausdrucken";
-        texts.begin = "Beginn";
+        texts.begin = "Header";
         texts.doc_period = "Periode";
+        texts.customerAddress = "Customer address";
+        texts.addressComposition = "Address composition";
     }
     else if (lang === "fr") {
         texts.reportTitle = "Certificat de don";
@@ -2001,8 +2245,10 @@ function loadTexts(banDoc,lang) {
         texts.textEmbedded = "Texte tableau Documents (.txt / .md)";
         texts.accountsToPrint = "Sélectionner les adresses à imprimer";
         texts.printText = "Imprimer le texte";
-        texts.begin = "Début";
+        texts.begin = "Header";
         texts.doc_period = "Période";
+        texts.customerAddress = "Customer address";
+        texts.addressComposition = "Address composition";
     }
     else if (lang === "it") {
         texts.reportTitle = "Attestato di donazione";
@@ -2040,8 +2286,10 @@ function loadTexts(banDoc,lang) {
         texts.textEmbedded = "Testo tabella Documenti (.txt / .md)";
         texts.accountsToPrint = "Seleziona gli indirizzi da stampare";
         texts.printText = "Stampa testo";
-        texts.begin = "Inizio";
+        texts.begin = "Header";
         texts.doc_period = "Periodo";
+        texts.customerAddress = "Customer address";
+        texts.addressComposition = "Address composition";
     }
     else if (lang === "nl") {
         texts.reportTitle = "Kwitantie voor giften";
@@ -2079,8 +2327,10 @@ function loadTexts(banDoc,lang) {
         texts.textEmbedded = "Teksttabel Documenten (.txt / .md)";
         texts.accountsToPrint = "Selecteer adressen om af te drukken";
         texts.printText = "Tekst afdrukken";
-        texts.begin = "Start";
+        texts.begin = "Header";
         texts.doc_period = "Periode";
+        texts.customerAddress = "Customer address";
+        texts.addressComposition = "Address composition";
     }
     else { //lang == en
         texts.reportTitle = "Donation Statement";
@@ -2118,8 +2368,10 @@ function loadTexts(banDoc,lang) {
         texts.textEmbedded = "Text from Documents table (.txt / .md)";
         texts.accountsToPrint = "Select addresses to print";
         texts.printText = "Print text";
-        texts.begin = "Start";
+        texts.begin = "Header";
         texts.doc_period = "Period";
+        texts.customerAddress = "Customer address";
+        texts.addressComposition = "Address composition";
     }
 
     return texts;
@@ -2271,7 +2523,50 @@ function getContactAddress(banDoc, accountId) {
             addressObj.pobox = tRow.value("POBox");
             addressObj.region = tRow.value("Region");
             addressObj.country = tRow.value("Country");
-        
+            addressObj.countrycode = tRow.value("CountryCode");
+            addressObj.emailwork = tRow.value("EmailWork");
+            addressObj.businessunit = tRow.value("OrganisationUnit");
+            addressObj.businessunit2 = tRow.value("OrganisationUnit2");
+            addressObj.businessunit3 = tRow.value("OrganisationUnit3");
+            addressObj.businessunit4 = tRow.value("OrganisationUnit4");
+
+            //verify address
+            if (!addressObj.nameprefix)
+                addressObj.nameprefix = "";
+            if (!addressObj.organisationname)
+                addressObj.organisationname = "";
+            if (!addressObj.firstname)
+                addressObj.firstname = "";
+            if (!addressObj.familyname)
+                addressObj.familyname = "";
+            if (!addressObj.street)
+                addressObj.street = "";
+            if (!addressObj.buildingnumber)
+                addressObj.buildingnumber = "";
+            if (!addressObj.addressextra)
+                addressObj.addressextra = "";
+            if (!addressObj.postalcode)
+                addressObj.postalcode = "";
+            if (!addressObj.locality)
+                addressObj.locality = "";
+            if (!addressObj.pobox)
+                addressObj.pobox = "";
+            if (!addressObj.region)
+                addressObj.region = "";
+            if (!addressObj.country)
+                addressObj.country = "";
+            if (!addressObj.countrycode)
+                addressObj.countrycode = "";
+            if (!addressObj.emailwork)
+                addressObj.emailwork = "";
+            if (!addressObj.businessunit)
+                addressObj.businessunit = "";
+            if (!addressObj.businessunit2)
+                addressObj.businessunit2 = "";
+            if (!addressObj.businessunit3)
+                addressObj.businessunit3 = "";
+            if (!addressObj.businessunit4)
+                addressObj.businessunit4 = "";
         }
     }
     return addressObj;

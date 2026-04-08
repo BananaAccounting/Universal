@@ -18,22 +18,17 @@
 \newenvironment{testcase}[1]{\section*{Test: #1}}{\newpage}
 \newenvironment{test}[1]{\section*{Test case: #1}}{}
 %Begin test data
-%%SCRIPT{/Users/ivan/GitHub/BananaAccounting/Universal/report/association/donationstatementplus/test/ch.banana.uni.app.donationstatementplus.test.js}
+%%SCRIPT{C:/p/GitHub/BananaAccounting/Universal/report/association/donationstatementplus/test/ch.banana.uni.app.donationstatementplus.test.js}
 %
 \begin{testcase}{ReportTest}
 \begin{test}{testBananaApp}
 %****************************************************************************** TEST #1 ******************************************************************************
 \begin{reportvalue}{year report}
-Associazione Sportiva xyz \\
-Pinco Pallino \\
-Via Boschetto 34 \\
-6900 Lugano \\
-Tel. 1112223344 ,  www.banana.ch ,  info@banana.ch \\
+Associazione Sportiva xyz\P  Pinco Pallino \P  \\
+Via Boschetto 34 ,  6900   Lugano \P  \\
+1112223344\P  www.banana.ch ,  info@banana.ch \P  \\
 \begin{longtable}[l]{ l }
-Sig. \\
-Gianpaolo Bianchi \\
-Via Beltramina \\
-6962 Viganello \\
+Sig.\P Gianpaolo Bianchi\P Via Beltramina\P 6962 Viganello \\
 \end{longtable}
 Lugano, 2 ottobre 2023 \\
 Statement of donation 2023 \\
@@ -47,16 +42,11 @@ We hereby declare that  Gianpaolo Bianchi, Via Beltramina, 6962 Viganello  betwe
 Pinco Pallino \P Associazione Sportiva xyz \\
 \end{reportvalue}
 \begin{reportvalue}{year report}
-Associazione Sportiva xyz \\
-Pinco Pallino \\
-Via Boschetto 34 \\
-6900 Lugano \\
-Tel. 1112223344 ,  www.banana.ch ,  info@banana.ch \\
+Associazione Sportiva xyz\P  Pinco Pallino \P  \\
+Via Boschetto 34 ,  6900   Lugano \P  \\
+1112223344\P  www.banana.ch ,  info@banana.ch \P  \\
 \begin{longtable}[l]{ l }
-Sig. \\
-Mario Rossi \\
-Via abc 12 \\
-6500 Bellinzona \\
+Sig.\P Mario Rossi\P Via abc 12\P 6500 Bellinzona \\
 \end{longtable}
 Lugano, 2 ottobre 2023 \\
 Statement of donation 2023 \\
@@ -81,16 +71,11 @@ We hereby declare that  Mario Rossi, Via abc 12, 6500 Bellinzona  between  01.01
 Pinco Pallino \P Associazione Sportiva xyz \\
 \end{reportvalue}
 \begin{reportvalue}{year report}
-Associazione Sportiva xyz \\
-Pinco Pallino \\
-Via Boschetto 34 \\
-6900 Lugano \\
-Tel. 1112223344 ,  www.banana.ch ,  info@banana.ch \\
+Associazione Sportiva xyz\P  Pinco Pallino \P  \\
+Via Boschetto 34 ,  6900   Lugano \P  \\
+1112223344\P  www.banana.ch ,  info@banana.ch \P  \\
 \begin{longtable}[l]{ l }
-Signora \\
-Sara Guidi \\
-Via Boschetto 45 \\
-6901 Lugano \\
+Signora\P Sara Guidi\P Via Boschetto 45\P 6901 Lugano \\
 \end{longtable}
 Lugano, 2 ottobre 2023 \\
 Statement of donation 2023 \\
@@ -105,16 +90,11 @@ We hereby declare that  Sara Guidi, Via Boschetto 45, 6901 Lugano  between  01.0
 Pinco Pallino \P Associazione Sportiva xyz \\
 \end{reportvalue}
 \begin{reportvalue}{year report}
-Associazione Sportiva xyz \\
-Pinco Pallino \\
-Via Boschetto 34 \\
-6900 Lugano \\
-Tel. 1112223344 ,  www.banana.ch ,  info@banana.ch \\
+Associazione Sportiva xyz\P  Pinco Pallino \P  \\
+Via Boschetto 34 ,  6900   Lugano \P  \\
+1112223344\P  www.banana.ch ,  info@banana.ch \P  \\
 \begin{longtable}[l]{ l }
-Sig. \\
-Voit Ulrich \\
-Via alla Chiesa \\
-6800 Mendrisio \\
+Sig.\P Voit Ulrich\P Via alla Chiesa\P 6800 Mendrisio \\
 \end{longtable}
 Lugano, 2 ottobre 2023 \\
 Statement of donation 2023 \\
@@ -129,16 +109,11 @@ We hereby declare that  Voit Ulrich, Via alla Chiesa, 6800 Mendrisio  between  0
 Pinco Pallino \P Associazione Sportiva xyz \\
 \end{reportvalue}
 \begin{reportvalue}{1. semester report}
-Associazione Sportiva xyz \\
-Pinco Pallino \\
-Via Boschetto 34 \\
-6900 Lugano \\
-Tel. 1112223344 ,  www.banana.ch ,  info@banana.ch \\
+Associazione Sportiva xyz\P  Pinco Pallino \P  \\
+Via Boschetto 34 ,  6900   Lugano \P  \\
+1112223344\P  www.banana.ch ,  info@banana.ch \P  \\
 \begin{longtable}[l]{ l }
-Sig. \\
-Gianpaolo Bianchi \\
-Via Beltramina \\
-6962 Viganello \\
+Sig.\P Gianpaolo Bianchi\P Via Beltramina\P 6962 Viganello \\
 \end{longtable}
 Lugano, 2 ottobre 2023 \\
 Statement of donation 1. Semester 2023 \\
@@ -152,16 +127,11 @@ We hereby declare that  Gianpaolo Bianchi, Via Beltramina, 6962 Viganello  betwe
 Pinco Pallino \P Associazione Sportiva xyz \\
 \end{reportvalue}
 \begin{reportvalue}{1. semester report}
-Associazione Sportiva xyz \\
-Pinco Pallino \\
-Via Boschetto 34 \\
-6900 Lugano \\
-Tel. 1112223344 ,  www.banana.ch ,  info@banana.ch \\
+Associazione Sportiva xyz\P  Pinco Pallino \P  \\
+Via Boschetto 34 ,  6900   Lugano \P  \\
+1112223344\P  www.banana.ch ,  info@banana.ch \P  \\
 \begin{longtable}[l]{ l }
-Sig. \\
-Mario Rossi \\
-Via abc 12 \\
-6500 Bellinzona \\
+Sig.\P Mario Rossi\P Via abc 12\P 6500 Bellinzona \\
 \end{longtable}
 Lugano, 2 ottobre 2023 \\
 Statement of donation 1. Semester 2023 \\
@@ -180,16 +150,11 @@ We hereby declare that  Mario Rossi, Via abc 12, 6500 Bellinzona  between  01.01
 Pinco Pallino \P Associazione Sportiva xyz \\
 \end{reportvalue}
 \begin{reportvalue}{1. semester report}
-Associazione Sportiva xyz \\
-Pinco Pallino \\
-Via Boschetto 34 \\
-6900 Lugano \\
-Tel. 1112223344 ,  www.banana.ch ,  info@banana.ch \\
+Associazione Sportiva xyz\P  Pinco Pallino \P  \\
+Via Boschetto 34 ,  6900   Lugano \P  \\
+1112223344\P  www.banana.ch ,  info@banana.ch \P  \\
 \begin{longtable}[l]{ l }
-Signora \\
-Sara Guidi \\
-Via Boschetto 45 \\
-6901 Lugano \\
+Signora\P Sara Guidi\P Via Boschetto 45\P 6901 Lugano \\
 \end{longtable}
 Lugano, 2 ottobre 2023 \\
 Statement of donation 1. Semester 2023 \\
@@ -203,16 +168,11 @@ We hereby declare that  Sara Guidi, Via Boschetto 45, 6901 Lugano  between  01.0
 Pinco Pallino \P Associazione Sportiva xyz \\
 \end{reportvalue}
 \begin{reportvalue}{1. semester report}
-Associazione Sportiva xyz \\
-Pinco Pallino \\
-Via Boschetto 34 \\
-6900 Lugano \\
-Tel. 1112223344 ,  www.banana.ch ,  info@banana.ch \\
+Associazione Sportiva xyz\P  Pinco Pallino \P  \\
+Via Boschetto 34 ,  6900   Lugano \P  \\
+1112223344\P  www.banana.ch ,  info@banana.ch \P  \\
 \begin{longtable}[l]{ l }
-Sig. \\
-Voit Ulrich \\
-Via alla Chiesa \\
-6800 Mendrisio \\
+Sig.\P Voit Ulrich\P Via alla Chiesa\P 6800 Mendrisio \\
 \end{longtable}
 Lugano, 2 ottobre 2023 \\
 Statement of donation 1. Semester 2023 \\
@@ -226,16 +186,11 @@ We hereby declare that  Voit Ulrich, Via alla Chiesa, 6800 Mendrisio  between  0
 Pinco Pallino \P Associazione Sportiva xyz \\
 \end{reportvalue}
 \begin{reportvalue}{1. quarter report}
-Associazione Sportiva xyz \\
-Pinco Pallino \\
-Via Boschetto 34 \\
-6900 Lugano \\
-Tel. 1112223344 ,  www.banana.ch ,  info@banana.ch \\
+Associazione Sportiva xyz\P  Pinco Pallino \P  \\
+Via Boschetto 34 ,  6900   Lugano \P  \\
+1112223344\P  www.banana.ch ,  info@banana.ch \P  \\
 \begin{longtable}[l]{ l }
-Sig. \\
-Gianpaolo Bianchi \\
-Via Beltramina \\
-6962 Viganello \\
+Sig.\P Gianpaolo Bianchi\P Via Beltramina\P 6962 Viganello \\
 \end{longtable}
 Lugano, 2 ottobre 2023 \\
 Statement of donation 1. Quarter 2023 \\
@@ -249,16 +204,11 @@ We hereby declare that  Gianpaolo Bianchi, Via Beltramina, 6962 Viganello  betwe
 Pinco Pallino \P Associazione Sportiva xyz \\
 \end{reportvalue}
 \begin{reportvalue}{1. quarter report}
-Associazione Sportiva xyz \\
-Pinco Pallino \\
-Via Boschetto 34 \\
-6900 Lugano \\
-Tel. 1112223344 ,  www.banana.ch ,  info@banana.ch \\
+Associazione Sportiva xyz\P  Pinco Pallino \P  \\
+Via Boschetto 34 ,  6900   Lugano \P  \\
+1112223344\P  www.banana.ch ,  info@banana.ch \P  \\
 \begin{longtable}[l]{ l }
-Sig. \\
-Mario Rossi \\
-Via abc 12 \\
-6500 Bellinzona \\
+Sig.\P Mario Rossi\P Via abc 12\P 6500 Bellinzona \\
 \end{longtable}
 Lugano, 2 ottobre 2023 \\
 Statement of donation 1. Quarter 2023 \\
@@ -274,16 +224,11 @@ We hereby declare that  Mario Rossi, Via abc 12, 6500 Bellinzona  between  01.01
 Pinco Pallino \P Associazione Sportiva xyz \\
 \end{reportvalue}
 \begin{reportvalue}{january report}
-Associazione Sportiva xyz \\
-Pinco Pallino \\
-Via Boschetto 34 \\
-6900 Lugano \\
-Tel. 1112223344 ,  www.banana.ch ,  info@banana.ch \\
+Associazione Sportiva xyz\P  Pinco Pallino \P  \\
+Via Boschetto 34 ,  6900   Lugano \P  \\
+1112223344\P  www.banana.ch ,  info@banana.ch \P  \\
 \begin{longtable}[l]{ l }
-Sig. \\
-Mario Rossi \\
-Via abc 12 \\
-6500 Bellinzona \\
+Sig.\P Mario Rossi\P Via abc 12\P 6500 Bellinzona \\
 \end{longtable}
 Lugano, 2 ottobre 2023 \\
 Statement of donation January 2023 \\
@@ -298,16 +243,11 @@ Pinco Pallino \P Associazione Sportiva xyz \\
 \end{reportvalue}
 %****************************************************************************** TEST #2 ******************************************************************************
 \begin{reportvalue}{year report}
-Associazione Sportiva xyz \\
-Pinco Pallino \\
-Via Boschetto 34 \\
-6900 Lugano \\
-Tel. 1112223344 ,  www.banana.ch ,  info@banana.ch \\
+Associazione Sportiva xyz\P  Pinco Pallino \P  \\
+Via Boschetto 34 ,  6900   Lugano \P  \\
+1112223344\P  www.banana.ch ,  info@banana.ch \P  \\
 \begin{longtable}[l]{ l }
-Sig. \\
-Gianpaolo Bianchi \\
-Via Beltramina \\
-6962 Viganello \\
+Sig.\P Gianpaolo Bianchi\P Via Beltramina\P 6962 Viganello \\
 \end{longtable}
 Lugano, dicembre 2023 \\
 TEXT2 - Donazioni \#;10001: 2023 \\
@@ -320,16 +260,11 @@ Ringraziamo cordialmente. \\
 Pinco Pallino \P Associazione Sportiva xyz \\
 \end{reportvalue}
 \begin{reportvalue}{year report}
-Associazione Sportiva xyz \\
-Pinco Pallino \\
-Via Boschetto 34 \\
-6900 Lugano \\
-Tel. 1112223344 ,  www.banana.ch ,  info@banana.ch \\
+Associazione Sportiva xyz\P  Pinco Pallino \P  \\
+Via Boschetto 34 ,  6900   Lugano \P  \\
+1112223344\P  www.banana.ch ,  info@banana.ch \P  \\
 \begin{longtable}[l]{ l }
-Sig. \\
-Mario Rossi \\
-Via abc 12 \\
-6500 Bellinzona \\
+Sig.\P Mario Rossi\P Via abc 12\P 6500 Bellinzona \\
 \end{longtable}
 Lugano, dicembre 2023 \\
 TEXT2 - Donazioni \#;10002: 2023 \\
@@ -342,16 +277,11 @@ Ringraziamo cordialmente. \\
 Pinco Pallino \P Associazione Sportiva xyz \\
 \end{reportvalue}
 \begin{reportvalue}{year report}
-Associazione Sportiva xyz \\
-Pinco Pallino \\
-Via Boschetto 34 \\
-6900 Lugano \\
-Tel. 1112223344 ,  www.banana.ch ,  info@banana.ch \\
+Associazione Sportiva xyz\P  Pinco Pallino \P  \\
+Via Boschetto 34 ,  6900   Lugano \P  \\
+1112223344\P  www.banana.ch ,  info@banana.ch \P  \\
 \begin{longtable}[l]{ l }
-Signora \\
-Sara Guidi \\
-Via Boschetto 45 \\
-6901 Lugano \\
+Signora\P Sara Guidi\P Via Boschetto 45\P 6901 Lugano \\
 \end{longtable}
 Lugano, dicembre 2023 \\
 TEXT2 - Donazioni \#;10003: 2023 \\
@@ -364,16 +294,11 @@ Ringraziamo cordialmente. \\
 Pinco Pallino \P Associazione Sportiva xyz \\
 \end{reportvalue}
 \begin{reportvalue}{year report}
-Associazione Sportiva xyz \\
-Pinco Pallino \\
-Via Boschetto 34 \\
-6900 Lugano \\
-Tel. 1112223344 ,  www.banana.ch ,  info@banana.ch \\
+Associazione Sportiva xyz\P  Pinco Pallino \P  \\
+Via Boschetto 34 ,  6900   Lugano \P  \\
+1112223344\P  www.banana.ch ,  info@banana.ch \P  \\
 \begin{longtable}[l]{ l }
-Sig. \\
-Voit Ulrich \\
-Via alla Chiesa \\
-6800 Mendrisio \\
+Sig.\P Voit Ulrich\P Via alla Chiesa\P 6800 Mendrisio \\
 \end{longtable}
 Lugano, dicembre 2023 \\
 TEXT2 - Donazioni \#;10004: 2023 \\
@@ -386,16 +311,11 @@ Ringraziamo cordialmente. \\
 Pinco Pallino \P Associazione Sportiva xyz \\
 \end{reportvalue}
 \begin{reportvalue}{1. semester report}
-Associazione Sportiva xyz \\
-Pinco Pallino \\
-Via Boschetto 34 \\
-6900 Lugano \\
-Tel. 1112223344 ,  www.banana.ch ,  info@banana.ch \\
+Associazione Sportiva xyz\P  Pinco Pallino \P  \\
+Via Boschetto 34 ,  6900   Lugano \P  \\
+1112223344\P  www.banana.ch ,  info@banana.ch \P  \\
 \begin{longtable}[l]{ l }
-Sig. \\
-Gianpaolo Bianchi \\
-Via Beltramina \\
-6962 Viganello \\
+Sig.\P Gianpaolo Bianchi\P Via Beltramina\P 6962 Viganello \\
 \end{longtable}
 Lugano, dicembre 2023 \\
 TEXT2 - Donazioni \#;10001: 1. Semester 2023 \\
@@ -408,16 +328,11 @@ Ringraziamo cordialmente. \\
 Pinco Pallino \P Associazione Sportiva xyz \\
 \end{reportvalue}
 \begin{reportvalue}{1. semester report}
-Associazione Sportiva xyz \\
-Pinco Pallino \\
-Via Boschetto 34 \\
-6900 Lugano \\
-Tel. 1112223344 ,  www.banana.ch ,  info@banana.ch \\
+Associazione Sportiva xyz\P  Pinco Pallino \P  \\
+Via Boschetto 34 ,  6900   Lugano \P  \\
+1112223344\P  www.banana.ch ,  info@banana.ch \P  \\
 \begin{longtable}[l]{ l }
-Sig. \\
-Mario Rossi \\
-Via abc 12 \\
-6500 Bellinzona \\
+Sig.\P Mario Rossi\P Via abc 12\P 6500 Bellinzona \\
 \end{longtable}
 Lugano, dicembre 2023 \\
 TEXT2 - Donazioni \#;10002: 1. Semester 2023 \\
@@ -430,16 +345,11 @@ Ringraziamo cordialmente. \\
 Pinco Pallino \P Associazione Sportiva xyz \\
 \end{reportvalue}
 \begin{reportvalue}{1. semester report}
-Associazione Sportiva xyz \\
-Pinco Pallino \\
-Via Boschetto 34 \\
-6900 Lugano \\
-Tel. 1112223344 ,  www.banana.ch ,  info@banana.ch \\
+Associazione Sportiva xyz\P  Pinco Pallino \P  \\
+Via Boschetto 34 ,  6900   Lugano \P  \\
+1112223344\P  www.banana.ch ,  info@banana.ch \P  \\
 \begin{longtable}[l]{ l }
-Signora \\
-Sara Guidi \\
-Via Boschetto 45 \\
-6901 Lugano \\
+Signora\P Sara Guidi\P Via Boschetto 45\P 6901 Lugano \\
 \end{longtable}
 Lugano, dicembre 2023 \\
 TEXT2 - Donazioni \#;10003: 1. Semester 2023 \\
@@ -452,16 +362,11 @@ Ringraziamo cordialmente. \\
 Pinco Pallino \P Associazione Sportiva xyz \\
 \end{reportvalue}
 \begin{reportvalue}{1. semester report}
-Associazione Sportiva xyz \\
-Pinco Pallino \\
-Via Boschetto 34 \\
-6900 Lugano \\
-Tel. 1112223344 ,  www.banana.ch ,  info@banana.ch \\
+Associazione Sportiva xyz\P  Pinco Pallino \P  \\
+Via Boschetto 34 ,  6900   Lugano \P  \\
+1112223344\P  www.banana.ch ,  info@banana.ch \P  \\
 \begin{longtable}[l]{ l }
-Sig. \\
-Voit Ulrich \\
-Via alla Chiesa \\
-6800 Mendrisio \\
+Sig.\P Voit Ulrich\P Via alla Chiesa\P 6800 Mendrisio \\
 \end{longtable}
 Lugano, dicembre 2023 \\
 TEXT2 - Donazioni \#;10004: 1. Semester 2023 \\
@@ -474,16 +379,11 @@ Ringraziamo cordialmente. \\
 Pinco Pallino \P Associazione Sportiva xyz \\
 \end{reportvalue}
 \begin{reportvalue}{1. quarter report}
-Associazione Sportiva xyz \\
-Pinco Pallino \\
-Via Boschetto 34 \\
-6900 Lugano \\
-Tel. 1112223344 ,  www.banana.ch ,  info@banana.ch \\
+Associazione Sportiva xyz\P  Pinco Pallino \P  \\
+Via Boschetto 34 ,  6900   Lugano \P  \\
+1112223344\P  www.banana.ch ,  info@banana.ch \P  \\
 \begin{longtable}[l]{ l }
-Sig. \\
-Gianpaolo Bianchi \\
-Via Beltramina \\
-6962 Viganello \\
+Sig.\P Gianpaolo Bianchi\P Via Beltramina\P 6962 Viganello \\
 \end{longtable}
 Lugano, dicembre 2023 \\
 TEXT2 - Donazioni \#;10001: 1. Quarter 2023 \\
@@ -496,16 +396,11 @@ Ringraziamo cordialmente. \\
 Pinco Pallino \P Associazione Sportiva xyz \\
 \end{reportvalue}
 \begin{reportvalue}{1. quarter report}
-Associazione Sportiva xyz \\
-Pinco Pallino \\
-Via Boschetto 34 \\
-6900 Lugano \\
-Tel. 1112223344 ,  www.banana.ch ,  info@banana.ch \\
+Associazione Sportiva xyz\P  Pinco Pallino \P  \\
+Via Boschetto 34 ,  6900   Lugano \P  \\
+1112223344\P  www.banana.ch ,  info@banana.ch \P  \\
 \begin{longtable}[l]{ l }
-Sig. \\
-Mario Rossi \\
-Via abc 12 \\
-6500 Bellinzona \\
+Sig.\P Mario Rossi\P Via abc 12\P 6500 Bellinzona \\
 \end{longtable}
 Lugano, dicembre 2023 \\
 TEXT2 - Donazioni \#;10002: 1. Quarter 2023 \\
@@ -518,16 +413,11 @@ Ringraziamo cordialmente. \\
 Pinco Pallino \P Associazione Sportiva xyz \\
 \end{reportvalue}
 \begin{reportvalue}{january report}
-Associazione Sportiva xyz \\
-Pinco Pallino \\
-Via Boschetto 34 \\
-6900 Lugano \\
-Tel. 1112223344 ,  www.banana.ch ,  info@banana.ch \\
+Associazione Sportiva xyz\P  Pinco Pallino \P  \\
+Via Boschetto 34 ,  6900   Lugano \P  \\
+1112223344\P  www.banana.ch ,  info@banana.ch \P  \\
 \begin{longtable}[l]{ l }
-Sig. \\
-Mario Rossi \\
-Via abc 12 \\
-6500 Bellinzona \\
+Sig.\P Mario Rossi\P Via abc 12\P 6500 Bellinzona \\
 \end{longtable}
 Lugano, dicembre 2023 \\
 TEXT2 - Donazioni \#;10002: January 2023 \\
@@ -541,16 +431,11 @@ Pinco Pallino \P Associazione Sportiva xyz \\
 \end{reportvalue}
 %****************************************************************************** TEST #3 ******************************************************************************
 \begin{reportvalue}{year report}
-Associazione Sportiva xyz \\
-Pinco Pallino \\
-Via Boschetto 34 \\
-6900 Lugano \\
-Tel. 1112223344 ,  www.banana.ch ,  info@banana.ch \\
+Associazione Sportiva xyz\P  Pinco Pallino \P  \\
+Via Boschetto 34 ,  6900   Lugano \P  \\
+1112223344\P  www.banana.ch ,  info@banana.ch \P  \\
 \begin{longtable}[l]{ l }
-Sig. \\
-Gianpaolo Bianchi \\
-Via Beltramina \\
-6962 Viganello \\
+Sig.\P Gianpaolo Bianchi\P Via Beltramina\P 6962 Viganello \\
 \end{longtable}
 Lugano, december 2023 \\
 Statement of donation 2023 \\
@@ -567,16 +452,11 @@ Thank you very much! \\
 Pinco Pallino \P Associazione Sportiva xyz \\
 \end{reportvalue}
 \begin{reportvalue}{year report}
-Associazione Sportiva xyz \\
-Pinco Pallino \\
-Via Boschetto 34 \\
-6900 Lugano \\
-Tel. 1112223344 ,  www.banana.ch ,  info@banana.ch \\
+Associazione Sportiva xyz\P  Pinco Pallino \P  \\
+Via Boschetto 34 ,  6900   Lugano \P  \\
+1112223344\P  www.banana.ch ,  info@banana.ch \P  \\
 \begin{longtable}[l]{ l }
-Sig. \\
-Mario Rossi \\
-Via abc 12 \\
-6500 Bellinzona \\
+Sig.\P Mario Rossi\P Via abc 12\P 6500 Bellinzona \\
 \end{longtable}
 Lugano, december 2023 \\
 Statement of donation 2023 \\
@@ -604,16 +484,11 @@ Thank you very much! \\
 Pinco Pallino \P Associazione Sportiva xyz \\
 \end{reportvalue}
 \begin{reportvalue}{year report}
-Associazione Sportiva xyz \\
-Pinco Pallino \\
-Via Boschetto 34 \\
-6900 Lugano \\
-Tel. 1112223344 ,  www.banana.ch ,  info@banana.ch \\
+Associazione Sportiva xyz\P  Pinco Pallino \P  \\
+Via Boschetto 34 ,  6900   Lugano \P  \\
+1112223344\P  www.banana.ch ,  info@banana.ch \P  \\
 \begin{longtable}[l]{ l }
-Signora \\
-Sara Guidi \\
-Via Boschetto 45 \\
-6901 Lugano \\
+Signora\P Sara Guidi\P Via Boschetto 45\P 6901 Lugano \\
 \end{longtable}
 Lugano, december 2023 \\
 Statement of donation 2023 \\
@@ -631,16 +506,11 @@ Thank you very much! \\
 Pinco Pallino \P Associazione Sportiva xyz \\
 \end{reportvalue}
 \begin{reportvalue}{year report}
-Associazione Sportiva xyz \\
-Pinco Pallino \\
-Via Boschetto 34 \\
-6900 Lugano \\
-Tel. 1112223344 ,  www.banana.ch ,  info@banana.ch \\
+Associazione Sportiva xyz\P  Pinco Pallino \P  \\
+Via Boschetto 34 ,  6900   Lugano \P  \\
+1112223344\P  www.banana.ch ,  info@banana.ch \P  \\
 \begin{longtable}[l]{ l }
-Sig. \\
-Voit Ulrich \\
-Via alla Chiesa \\
-6800 Mendrisio \\
+Sig.\P Voit Ulrich\P Via alla Chiesa\P 6800 Mendrisio \\
 \end{longtable}
 Lugano, december 2023 \\
 Statement of donation 2023 \\
@@ -658,16 +528,11 @@ Thank you very much! \\
 Pinco Pallino \P Associazione Sportiva xyz \\
 \end{reportvalue}
 \begin{reportvalue}{1. semester report}
-Associazione Sportiva xyz \\
-Pinco Pallino \\
-Via Boschetto 34 \\
-6900 Lugano \\
-Tel. 1112223344 ,  www.banana.ch ,  info@banana.ch \\
+Associazione Sportiva xyz\P  Pinco Pallino \P  \\
+Via Boschetto 34 ,  6900   Lugano \P  \\
+1112223344\P  www.banana.ch ,  info@banana.ch \P  \\
 \begin{longtable}[l]{ l }
-Sig. \\
-Gianpaolo Bianchi \\
-Via Beltramina \\
-6962 Viganello \\
+Sig.\P Gianpaolo Bianchi\P Via Beltramina\P 6962 Viganello \\
 \end{longtable}
 Lugano, december 2023 \\
 Statement of donation 1. Semester 2023 \\
@@ -684,16 +549,11 @@ Thank you very much! \\
 Pinco Pallino \P Associazione Sportiva xyz \\
 \end{reportvalue}
 \begin{reportvalue}{1. semester report}
-Associazione Sportiva xyz \\
-Pinco Pallino \\
-Via Boschetto 34 \\
-6900 Lugano \\
-Tel. 1112223344 ,  www.banana.ch ,  info@banana.ch \\
+Associazione Sportiva xyz\P  Pinco Pallino \P  \\
+Via Boschetto 34 ,  6900   Lugano \P  \\
+1112223344\P  www.banana.ch ,  info@banana.ch \P  \\
 \begin{longtable}[l]{ l }
-Sig. \\
-Mario Rossi \\
-Via abc 12 \\
-6500 Bellinzona \\
+Sig.\P Mario Rossi\P Via abc 12\P 6500 Bellinzona \\
 \end{longtable}
 Lugano, december 2023 \\
 Statement of donation 1. Semester 2023 \\
@@ -715,16 +575,11 @@ Thank you very much! \\
 Pinco Pallino \P Associazione Sportiva xyz \\
 \end{reportvalue}
 \begin{reportvalue}{1. semester report}
-Associazione Sportiva xyz \\
-Pinco Pallino \\
-Via Boschetto 34 \\
-6900 Lugano \\
-Tel. 1112223344 ,  www.banana.ch ,  info@banana.ch \\
+Associazione Sportiva xyz\P  Pinco Pallino \P  \\
+Via Boschetto 34 ,  6900   Lugano \P  \\
+1112223344\P  www.banana.ch ,  info@banana.ch \P  \\
 \begin{longtable}[l]{ l }
-Signora \\
-Sara Guidi \\
-Via Boschetto 45 \\
-6901 Lugano \\
+Signora\P Sara Guidi\P Via Boschetto 45\P 6901 Lugano \\
 \end{longtable}
 Lugano, december 2023 \\
 Statement of donation 1. Semester 2023 \\
@@ -741,16 +596,11 @@ Thank you very much! \\
 Pinco Pallino \P Associazione Sportiva xyz \\
 \end{reportvalue}
 \begin{reportvalue}{1. semester report}
-Associazione Sportiva xyz \\
-Pinco Pallino \\
-Via Boschetto 34 \\
-6900 Lugano \\
-Tel. 1112223344 ,  www.banana.ch ,  info@banana.ch \\
+Associazione Sportiva xyz\P  Pinco Pallino \P  \\
+Via Boschetto 34 ,  6900   Lugano \P  \\
+1112223344\P  www.banana.ch ,  info@banana.ch \P  \\
 \begin{longtable}[l]{ l }
-Sig. \\
-Voit Ulrich \\
-Via alla Chiesa \\
-6800 Mendrisio \\
+Sig.\P Voit Ulrich\P Via alla Chiesa\P 6800 Mendrisio \\
 \end{longtable}
 Lugano, december 2023 \\
 Statement of donation 1. Semester 2023 \\
@@ -767,16 +617,11 @@ Thank you very much! \\
 Pinco Pallino \P Associazione Sportiva xyz \\
 \end{reportvalue}
 \begin{reportvalue}{1. quarter report}
-Associazione Sportiva xyz \\
-Pinco Pallino \\
-Via Boschetto 34 \\
-6900 Lugano \\
-Tel. 1112223344 ,  www.banana.ch ,  info@banana.ch \\
+Associazione Sportiva xyz\P  Pinco Pallino \P  \\
+Via Boschetto 34 ,  6900   Lugano \P  \\
+1112223344\P  www.banana.ch ,  info@banana.ch \P  \\
 \begin{longtable}[l]{ l }
-Sig. \\
-Gianpaolo Bianchi \\
-Via Beltramina \\
-6962 Viganello \\
+Sig.\P Gianpaolo Bianchi\P Via Beltramina\P 6962 Viganello \\
 \end{longtable}
 Lugano, december 2023 \\
 Statement of donation 1. Quarter 2023 \\
@@ -793,16 +638,11 @@ Thank you very much! \\
 Pinco Pallino \P Associazione Sportiva xyz \\
 \end{reportvalue}
 \begin{reportvalue}{1. quarter report}
-Associazione Sportiva xyz \\
-Pinco Pallino \\
-Via Boschetto 34 \\
-6900 Lugano \\
-Tel. 1112223344 ,  www.banana.ch ,  info@banana.ch \\
+Associazione Sportiva xyz\P  Pinco Pallino \P  \\
+Via Boschetto 34 ,  6900   Lugano \P  \\
+1112223344\P  www.banana.ch ,  info@banana.ch \P  \\
 \begin{longtable}[l]{ l }
-Sig. \\
-Mario Rossi \\
-Via abc 12 \\
-6500 Bellinzona \\
+Sig.\P Mario Rossi\P Via abc 12\P 6500 Bellinzona \\
 \end{longtable}
 Lugano, december 2023 \\
 Statement of donation 1. Quarter 2023 \\
@@ -821,16 +661,11 @@ Thank you very much! \\
 Pinco Pallino \P Associazione Sportiva xyz \\
 \end{reportvalue}
 \begin{reportvalue}{january report}
-Associazione Sportiva xyz \\
-Pinco Pallino \\
-Via Boschetto 34 \\
-6900 Lugano \\
-Tel. 1112223344 ,  www.banana.ch ,  info@banana.ch \\
+Associazione Sportiva xyz\P  Pinco Pallino \P  \\
+Via Boschetto 34 ,  6900   Lugano \P  \\
+1112223344\P  www.banana.ch ,  info@banana.ch \P  \\
 \begin{longtable}[l]{ l }
-Sig. \\
-Mario Rossi \\
-Via abc 12 \\
-6500 Bellinzona \\
+Sig.\P Mario Rossi\P Via abc 12\P 6500 Bellinzona \\
 \end{longtable}
 Lugano, december 2023 \\
 Statement of donation January 2023 \\
@@ -848,16 +683,11 @@ Pinco Pallino \P Associazione Sportiva xyz \\
 \end{reportvalue}
 %****************************************************************************** TEST #4 ******************************************************************************
 \begin{reportvalue}{year report}
-Associazione Sportiva xyz \\
-Pinco Pallino \\
-Via Boschetto 34 \\
-6900 Lugano \\
-Tel. 1112223344 ,  www.banana.ch ,  info@banana.ch \\
+Associazione Sportiva xyz\P  Pinco Pallino \P  \\
+Via Boschetto 34 ,  6900   Lugano \P  \\
+1112223344\P  www.banana.ch ,  info@banana.ch \P  \\
 \begin{longtable}[l]{ l }
-Sig. \\
-Gianpaolo Bianchi \\
-Via Beltramina \\
-6962 Viganello \\
+Sig.\P Gianpaolo Bianchi\P Via Beltramina\P 6962 Viganello \\
 \end{longtable}
 Lugano 2023 \\
 Statement of donation 2023 \\
@@ -871,16 +701,11 @@ We hereby declare that  Gianpaolo Bianchi, Via Beltramina, 6962 Viganello  betwe
 Pinco Pallino \P Associazione Sportiva xyz \\
 \end{reportvalue}
 \begin{reportvalue}{year report}
-Associazione Sportiva xyz \\
-Pinco Pallino \\
-Via Boschetto 34 \\
-6900 Lugano \\
-Tel. 1112223344 ,  www.banana.ch ,  info@banana.ch \\
+Associazione Sportiva xyz\P  Pinco Pallino \P  \\
+Via Boschetto 34 ,  6900   Lugano \P  \\
+1112223344\P  www.banana.ch ,  info@banana.ch \P  \\
 \begin{longtable}[l]{ l }
-Sig. \\
-Voit Ulrich \\
-Via alla Chiesa \\
-6800 Mendrisio \\
+Sig.\P Voit Ulrich\P Via alla Chiesa\P 6800 Mendrisio \\
 \end{longtable}
 Lugano 2023 \\
 Statement of donation 2023 \\
@@ -895,16 +720,11 @@ We hereby declare that  Voit Ulrich, Via alla Chiesa, 6800 Mendrisio  between  0
 Pinco Pallino \P Associazione Sportiva xyz \\
 \end{reportvalue}
 \begin{reportvalue}{1. semester report}
-Associazione Sportiva xyz \\
-Pinco Pallino \\
-Via Boschetto 34 \\
-6900 Lugano \\
-Tel. 1112223344 ,  www.banana.ch ,  info@banana.ch \\
+Associazione Sportiva xyz\P  Pinco Pallino \P  \\
+Via Boschetto 34 ,  6900   Lugano \P  \\
+1112223344\P  www.banana.ch ,  info@banana.ch \P  \\
 \begin{longtable}[l]{ l }
-Sig. \\
-Gianpaolo Bianchi \\
-Via Beltramina \\
-6962 Viganello \\
+Sig.\P Gianpaolo Bianchi\P Via Beltramina\P 6962 Viganello \\
 \end{longtable}
 Lugano 2023 \\
 Statement of donation 1. Semester 2023 \\
@@ -918,16 +738,11 @@ We hereby declare that  Gianpaolo Bianchi, Via Beltramina, 6962 Viganello  betwe
 Pinco Pallino \P Associazione Sportiva xyz \\
 \end{reportvalue}
 \begin{reportvalue}{1. semester report}
-Associazione Sportiva xyz \\
-Pinco Pallino \\
-Via Boschetto 34 \\
-6900 Lugano \\
-Tel. 1112223344 ,  www.banana.ch ,  info@banana.ch \\
+Associazione Sportiva xyz\P  Pinco Pallino \P  \\
+Via Boschetto 34 ,  6900   Lugano \P  \\
+1112223344\P  www.banana.ch ,  info@banana.ch \P  \\
 \begin{longtable}[l]{ l }
-Sig. \\
-Voit Ulrich \\
-Via alla Chiesa \\
-6800 Mendrisio \\
+Sig.\P Voit Ulrich\P Via alla Chiesa\P 6800 Mendrisio \\
 \end{longtable}
 Lugano 2023 \\
 Statement of donation 1. Semester 2023 \\
@@ -941,16 +756,11 @@ We hereby declare that  Voit Ulrich, Via alla Chiesa, 6800 Mendrisio  between  0
 Pinco Pallino \P Associazione Sportiva xyz \\
 \end{reportvalue}
 \begin{reportvalue}{1. quarter report}
-Associazione Sportiva xyz \\
-Pinco Pallino \\
-Via Boschetto 34 \\
-6900 Lugano \\
-Tel. 1112223344 ,  www.banana.ch ,  info@banana.ch \\
+Associazione Sportiva xyz\P  Pinco Pallino \P  \\
+Via Boschetto 34 ,  6900   Lugano \P  \\
+1112223344\P  www.banana.ch ,  info@banana.ch \P  \\
 \begin{longtable}[l]{ l }
-Sig. \\
-Gianpaolo Bianchi \\
-Via Beltramina \\
-6962 Viganello \\
+Sig.\P Gianpaolo Bianchi\P Via Beltramina\P 6962 Viganello \\
 \end{longtable}
 Lugano 2023 \\
 Statement of donation 1. Quarter 2023 \\
