@@ -907,7 +907,7 @@ function printReportAddress(report, banDoc, userParam, account) {
 
     //create the final address string with '\n' as separator
     //the string now does not have any space or empty row
-    addressComposition = rows.join("\n");
+    addressComposition = rows.join("\r\n");
 
     var tableAddress = report.addTable("address");
     var row = tableAddress.addRow();
