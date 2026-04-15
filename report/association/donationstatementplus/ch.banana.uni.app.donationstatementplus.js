@@ -805,13 +805,15 @@ function printReportHeader(report, banDoc, userParam, stylesheet) {
     }
 
     // row
-    if (email) {
-        paragraph = headerParagraph.addParagraph(email, className);
-    }
-
-    // row
-    if (web) {
-        paragraph = headerParagraph.addParagraph(web, className);
+    if (email || web) {
+        paragraph = headerParagraph.addParagraph("", className);
+        if (email && web) {
+            paragraph.addText(email + ", " + web);
+        } else if (!email && web) {
+            paragraph.addText(web);
+        } else if (email && !web) {
+            paragraph.addText(email);
+        }
     }
     
 }
