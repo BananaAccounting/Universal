@@ -28,7 +28,9 @@ Associazione Sportiva xyz \\
 Pinco Pallino \\
 Via Boschetto 34 \\
 6900 Lugano \\
-1112223344 / info@banana.ch \\
+1112223344 \\
+info@banana.ch \\
+www.banana.ch \\
 \begin{longtable}[l]{ l }
 Sig.\P Gianpaolo Bianchi\P Via Beltramina\P 6962 Viganello \\
 \end{longtable}
@@ -48,7 +50,9 @@ Associazione Sportiva xyz \\
 Pinco Pallino \\
 Via Boschetto 34 \\
 6900 Lugano \\
-1112223344 / info@banana.ch \\
+1112223344 \\
+info@banana.ch \\
+www.banana.ch \\
 \begin{longtable}[l]{ l }
 Sig.\P Mario Rossi\P Via abc 12\P 6500 Bellinzona \\
 \end{longtable}
@@ -79,7 +83,9 @@ Associazione Sportiva xyz \\
 Pinco Pallino \\
 Via Boschetto 34 \\
 6900 Lugano \\
-1112223344 / info@banana.ch \\
+1112223344 \\
+info@banana.ch \\
+www.banana.ch \\
 \begin{longtable}[l]{ l }
 Signora\P Sara Guidi\P Via Boschetto 45\P 6901 Lugano \\
 \end{longtable}
@@ -100,7 +106,9 @@ Associazione Sportiva xyz \\
 Pinco Pallino \\
 Via Boschetto 34 \\
 6900 Lugano \\
-1112223344 / info@banana.ch \\
+1112223344 \\
+info@banana.ch \\
+www.banana.ch \\
 \begin{longtable}[l]{ l }
 Sig.\P Voit Ulrich\P Via alla Chiesa\P 6800 Mendrisio \\
 \end{longtable}
@@ -121,7 +129,9 @@ Associazione Sportiva xyz \\
 Pinco Pallino \\
 Via Boschetto 34 \\
 6900 Lugano \\
-1112223344 / info@banana.ch \\
+1112223344 \\
+info@banana.ch \\
+www.banana.ch \\
 \begin{longtable}[l]{ l }
 Sig.\P Gianpaolo Bianchi\P Via Beltramina\P 6962 Viganello \\
 \end{longtable}
@@ -141,7 +151,9 @@ Associazione Sportiva xyz \\
 Pinco Pallino \\
 Via Boschetto 34 \\
 6900 Lugano \\
-1112223344 / info@banana.ch \\
+1112223344 \\
+info@banana.ch \\
+www.banana.ch \\
 \begin{longtable}[l]{ l }
 Sig.\P Mario Rossi\P Via abc 12\P 6500 Bellinzona \\
 \end{longtable}
@@ -166,7 +178,9 @@ Associazione Sportiva xyz \\
 Pinco Pallino \\
 Via Boschetto 34 \\
 6900 Lugano \\
-1112223344 / info@banana.ch \\
+1112223344 \\
+info@banana.ch \\
+www.banana.ch \\
 \begin{longtable}[l]{ l }
 Signora\P Sara Guidi\P Via Boschetto 45\P 6901 Lugano \\
 \end{longtable}
@@ -186,7 +200,9 @@ Associazione Sportiva xyz \\
 Pinco Pallino \\
 Via Boschetto 34 \\
 6900 Lugano \\
-1112223344 / info@banana.ch \\
+1112223344 \\
+info@banana.ch \\
+www.banana.ch \\
 \begin{longtable}[l]{ l }
 Sig.\P Voit Ulrich\P Via alla Chiesa\P 6800 Mendrisio \\
 \end{longtable}
@@ -206,7 +222,9 @@ Associazione Sportiva xyz \\
 Pinco Pallino \\
 Via Boschetto 34 \\
 6900 Lugano \\
-1112223344 / info@banana.ch \\
+1112223344 \\
+info@banana.ch \\
+www.banana.ch \\
 \begin{longtable}[l]{ l }
 Sig.\P Gianpaolo Bianchi\P Via Beltramina\P 6962 Viganello \\
 \end{longtable}
@@ -226,7 +244,9 @@ Associazione Sportiva xyz \\
 Pinco Pallino \\
 Via Boschetto 34 \\
 6900 Lugano \\
-1112223344 / info@banana.ch \\
+1112223344 \\
+info@banana.ch \\
+www.banana.ch \\
 \begin{longtable}[l]{ l }
 Sig.\P Mario Rossi\P Via abc 12\P 6500 Bellinzona \\
 \end{longtable}
@@ -248,7 +268,9 @@ Associazione Sportiva xyz \\
 Pinco Pallino \\
 Via Boschetto 34 \\
 6900 Lugano \\
-1112223344 / info@banana.ch \\
+1112223344 \\
+info@banana.ch \\
+www.banana.ch \\
 \begin{longtable}[l]{ l }
 Sig.\P Mario Rossi\P Via abc 12\P 6500 Bellinzona \\
 \end{longtable}
@@ -269,7 +291,9 @@ Associazione Sportiva xyz \\
 Pinco Pallino \\
 Via Boschetto 34 \\
 6900 Lugano \\
-1112223344 / info@banana.ch \\
+1112223344 \\
+info@banana.ch \\
+www.banana.ch \\
 \begin{longtable}[l]{ l }
 Sig.\P Gianpaolo Bianchi\P Via Beltramina\P 6962 Viganello \\
 \end{longtable}
@@ -288,7 +312,9 @@ Associazione Sportiva xyz \\
 Pinco Pallino \\
 Via Boschetto 34 \\
 6900 Lugano \\
-1112223344 / info@banana.ch \\
+1112223344 \\
+info@banana.ch \\
+www.banana.ch \\
 \begin{longtable}[l]{ l }
 Sig.\P Mario Rossi\P Via abc 12\P 6500 Bellinzona \\
 \end{longtable}
@@ -307,7 +333,9 @@ Associazione Sportiva xyz \\
 Pinco Pallino \\
 Via Boschetto 34 \\
 6900 Lugano \\
-1112223344 / info@banana.ch \\
+1112223344 \\
+info@banana.ch \\
+www.banana.ch \\
 \begin{longtable}[l]{ l }
 Signora\P Sara Guidi\P Via Boschetto 45\P 6901 Lugano \\
 \end{longtable}
@@ -326,7 +354,9 @@ Associazione Sportiva xyz \\
 Pinco Pallino \\
 Via Boschetto 34 \\
 6900 Lugano \\
-1112223344 / info@banana.ch \\
+1112223344 \\
+info@banana.ch \\
+www.banana.ch \\
 \begin{longtable}[l]{ l }
 Sig.\P Voit Ulrich\P Via alla Chiesa\P 6800 Mendrisio \\
 \end{longtable}
@@ -345,7 +375,9 @@ Associazione Sportiva xyz \\
 Pinco Pallino \\
 Via Boschetto 34 \\
 6900 Lugano \\
-1112223344 / info@banana.ch \\
+1112223344 \\
+info@banana.ch \\
+www.banana.ch \\
 \begin{longtable}[l]{ l }
 Sig.\P Gianpaolo Bianchi\P Via Beltramina\P 6962 Viganello \\
 \end{longtable}
@@ -364,7 +396,9 @@ Associazione Sportiva xyz \\
 Pinco Pallino \\
 Via Boschetto 34 \\
 6900 Lugano \\
-1112223344 / info@banana.ch \\
+1112223344 \\
+info@banana.ch \\
+www.banana.ch \\
 \begin{longtable}[l]{ l }
 Sig.\P Mario Rossi\P Via abc 12\P 6500 Bellinzona \\
 \end{longtable}
@@ -383,7 +417,9 @@ Associazione Sportiva xyz \\
 Pinco Pallino \\
 Via Boschetto 34 \\
 6900 Lugano \\
-1112223344 / info@banana.ch \\
+1112223344 \\
+info@banana.ch \\
+www.banana.ch \\
 \begin{longtable}[l]{ l }
 Signora\P Sara Guidi\P Via Boschetto 45\P 6901 Lugano \\
 \end{longtable}
@@ -402,7 +438,9 @@ Associazione Sportiva xyz \\
 Pinco Pallino \\
 Via Boschetto 34 \\
 6900 Lugano \\
-1112223344 / info@banana.ch \\
+1112223344 \\
+info@banana.ch \\
+www.banana.ch \\
 \begin{longtable}[l]{ l }
 Sig.\P Voit Ulrich\P Via alla Chiesa\P 6800 Mendrisio \\
 \end{longtable}
@@ -421,7 +459,9 @@ Associazione Sportiva xyz \\
 Pinco Pallino \\
 Via Boschetto 34 \\
 6900 Lugano \\
-1112223344 / info@banana.ch \\
+1112223344 \\
+info@banana.ch \\
+www.banana.ch \\
 \begin{longtable}[l]{ l }
 Sig.\P Gianpaolo Bianchi\P Via Beltramina\P 6962 Viganello \\
 \end{longtable}
@@ -440,7 +480,9 @@ Associazione Sportiva xyz \\
 Pinco Pallino \\
 Via Boschetto 34 \\
 6900 Lugano \\
-1112223344 / info@banana.ch \\
+1112223344 \\
+info@banana.ch \\
+www.banana.ch \\
 \begin{longtable}[l]{ l }
 Sig.\P Mario Rossi\P Via abc 12\P 6500 Bellinzona \\
 \end{longtable}
@@ -459,7 +501,9 @@ Associazione Sportiva xyz \\
 Pinco Pallino \\
 Via Boschetto 34 \\
 6900 Lugano \\
-1112223344 / info@banana.ch \\
+1112223344 \\
+info@banana.ch \\
+www.banana.ch \\
 \begin{longtable}[l]{ l }
 Sig.\P Mario Rossi\P Via abc 12\P 6500 Bellinzona \\
 \end{longtable}
@@ -479,7 +523,9 @@ Associazione Sportiva xyz \\
 Pinco Pallino \\
 Via Boschetto 34 \\
 6900 Lugano \\
-1112223344 / info@banana.ch \\
+1112223344 \\
+info@banana.ch \\
+www.banana.ch \\
 \begin{longtable}[l]{ l }
 Sig.\P Gianpaolo Bianchi\P Via Beltramina\P 6962 Viganello \\
 \end{longtable}
@@ -502,7 +548,9 @@ Associazione Sportiva xyz \\
 Pinco Pallino \\
 Via Boschetto 34 \\
 6900 Lugano \\
-1112223344 / info@banana.ch \\
+1112223344 \\
+info@banana.ch \\
+www.banana.ch \\
 \begin{longtable}[l]{ l }
 Sig.\P Mario Rossi\P Via abc 12\P 6500 Bellinzona \\
 \end{longtable}
@@ -536,7 +584,9 @@ Associazione Sportiva xyz \\
 Pinco Pallino \\
 Via Boschetto 34 \\
 6900 Lugano \\
-1112223344 / info@banana.ch \\
+1112223344 \\
+info@banana.ch \\
+www.banana.ch \\
 \begin{longtable}[l]{ l }
 Signora\P Sara Guidi\P Via Boschetto 45\P 6901 Lugano \\
 \end{longtable}
@@ -560,7 +610,9 @@ Associazione Sportiva xyz \\
 Pinco Pallino \\
 Via Boschetto 34 \\
 6900 Lugano \\
-1112223344 / info@banana.ch \\
+1112223344 \\
+info@banana.ch \\
+www.banana.ch \\
 \begin{longtable}[l]{ l }
 Sig.\P Voit Ulrich\P Via alla Chiesa\P 6800 Mendrisio \\
 \end{longtable}
@@ -584,7 +636,9 @@ Associazione Sportiva xyz \\
 Pinco Pallino \\
 Via Boschetto 34 \\
 6900 Lugano \\
-1112223344 / info@banana.ch \\
+1112223344 \\
+info@banana.ch \\
+www.banana.ch \\
 \begin{longtable}[l]{ l }
 Sig.\P Gianpaolo Bianchi\P Via Beltramina\P 6962 Viganello \\
 \end{longtable}
@@ -607,7 +661,9 @@ Associazione Sportiva xyz \\
 Pinco Pallino \\
 Via Boschetto 34 \\
 6900 Lugano \\
-1112223344 / info@banana.ch \\
+1112223344 \\
+info@banana.ch \\
+www.banana.ch \\
 \begin{longtable}[l]{ l }
 Sig.\P Mario Rossi\P Via abc 12\P 6500 Bellinzona \\
 \end{longtable}
@@ -635,7 +691,9 @@ Associazione Sportiva xyz \\
 Pinco Pallino \\
 Via Boschetto 34 \\
 6900 Lugano \\
-1112223344 / info@banana.ch \\
+1112223344 \\
+info@banana.ch \\
+www.banana.ch \\
 \begin{longtable}[l]{ l }
 Signora\P Sara Guidi\P Via Boschetto 45\P 6901 Lugano \\
 \end{longtable}
@@ -658,7 +716,9 @@ Associazione Sportiva xyz \\
 Pinco Pallino \\
 Via Boschetto 34 \\
 6900 Lugano \\
-1112223344 / info@banana.ch \\
+1112223344 \\
+info@banana.ch \\
+www.banana.ch \\
 \begin{longtable}[l]{ l }
 Sig.\P Voit Ulrich\P Via alla Chiesa\P 6800 Mendrisio \\
 \end{longtable}
@@ -681,7 +741,9 @@ Associazione Sportiva xyz \\
 Pinco Pallino \\
 Via Boschetto 34 \\
 6900 Lugano \\
-1112223344 / info@banana.ch \\
+1112223344 \\
+info@banana.ch \\
+www.banana.ch \\
 \begin{longtable}[l]{ l }
 Sig.\P Gianpaolo Bianchi\P Via Beltramina\P 6962 Viganello \\
 \end{longtable}
@@ -704,7 +766,9 @@ Associazione Sportiva xyz \\
 Pinco Pallino \\
 Via Boschetto 34 \\
 6900 Lugano \\
-1112223344 / info@banana.ch \\
+1112223344 \\
+info@banana.ch \\
+www.banana.ch \\
 \begin{longtable}[l]{ l }
 Sig.\P Mario Rossi\P Via abc 12\P 6500 Bellinzona \\
 \end{longtable}
@@ -729,7 +793,9 @@ Associazione Sportiva xyz \\
 Pinco Pallino \\
 Via Boschetto 34 \\
 6900 Lugano \\
-1112223344 / info@banana.ch \\
+1112223344 \\
+info@banana.ch \\
+www.banana.ch \\
 \begin{longtable}[l]{ l }
 Sig.\P Mario Rossi\P Via abc 12\P 6500 Bellinzona \\
 \end{longtable}
@@ -753,7 +819,9 @@ Associazione Sportiva xyz \\
 Pinco Pallino \\
 Via Boschetto 34 \\
 6900 Lugano \\
-1112223344 / info@banana.ch \\
+1112223344 \\
+info@banana.ch \\
+www.banana.ch \\
 \begin{longtable}[l]{ l }
 Sig.\P Gianpaolo Bianchi\P Via Beltramina\P 6962 Viganello \\
 \end{longtable}
@@ -773,7 +841,9 @@ Associazione Sportiva xyz \\
 Pinco Pallino \\
 Via Boschetto 34 \\
 6900 Lugano \\
-1112223344 / info@banana.ch \\
+1112223344 \\
+info@banana.ch \\
+www.banana.ch \\
 \begin{longtable}[l]{ l }
 Sig.\P Voit Ulrich\P Via alla Chiesa\P 6800 Mendrisio \\
 \end{longtable}
@@ -794,7 +864,9 @@ Associazione Sportiva xyz \\
 Pinco Pallino \\
 Via Boschetto 34 \\
 6900 Lugano \\
-1112223344 / info@banana.ch \\
+1112223344 \\
+info@banana.ch \\
+www.banana.ch \\
 \begin{longtable}[l]{ l }
 Sig.\P Gianpaolo Bianchi\P Via Beltramina\P 6962 Viganello \\
 \end{longtable}
@@ -814,7 +886,9 @@ Associazione Sportiva xyz \\
 Pinco Pallino \\
 Via Boschetto 34 \\
 6900 Lugano \\
-1112223344 / info@banana.ch \\
+1112223344 \\
+info@banana.ch \\
+www.banana.ch \\
 \begin{longtable}[l]{ l }
 Sig.\P Voit Ulrich\P Via alla Chiesa\P 6800 Mendrisio \\
 \end{longtable}
@@ -834,7 +908,9 @@ Associazione Sportiva xyz \\
 Pinco Pallino \\
 Via Boschetto 34 \\
 6900 Lugano \\
-1112223344 / info@banana.ch \\
+1112223344 \\
+info@banana.ch \\
+www.banana.ch \\
 \begin{longtable}[l]{ l }
 Sig.\P Gianpaolo Bianchi\P Via Beltramina\P 6962 Viganello \\
 \end{longtable}

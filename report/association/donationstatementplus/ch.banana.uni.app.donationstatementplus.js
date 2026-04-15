@@ -732,10 +732,9 @@ function printReportHeader(report, banDoc, userParam, stylesheet) {
     }
 
     // Address of the sender (Organization)
-    // max 5 rows
-    var printedAddressRows = 0;
 
     var company = banDoc.info("AccountingDataBase","Company");
+    var courtesy = banDoc.info("AccountingDataBase","Courtesy");
     var name = banDoc.info("AccountingDataBase","Name");
     var familyName = banDoc.info("AccountingDataBase","FamilyName");
     var address1 = banDoc.info("AccountingDataBase","Address1");
@@ -748,15 +747,21 @@ function printReportHeader(report, banDoc, userParam, stylesheet) {
     var web = banDoc.info("AccountingDataBase","Web");
     var email = banDoc.info("AccountingDataBase","Email");
 
-    // row 1
+    // row
     var className = "header_address_row_1";
     var paragraph = headerParagraph.addParagraph("", className);
     if (company) {
         paragraph.addText(company);
         className = "header_address_row_2_to_5";
-        printedAddressRows++;
     }
 
+    // row
+    if (courtesy) {
+        className = "header_address_row_2_to_5";
+        paragraph = headerParagraph.addParagraph(courtesy, className);
+    }
+
+    // row
     if (name || familyName) {
         paragraph = headerParagraph.addParagraph("", className);
         if (name && familyName) {
@@ -766,10 +771,9 @@ function printReportHeader(report, banDoc, userParam, stylesheet) {
         } else if (name && !familyName) {
             paragraph.addText(name);
         }
-        printedAddressRows++;
     }
 
-    // row 2
+    // row 
     className = "header_address_row_2_to_5";
     if (address1) {
         paragraph = headerParagraph.addParagraph("", className);
@@ -778,15 +782,14 @@ function printReportHeader(report, banDoc, userParam, stylesheet) {
         } else {
             paragraph.addText(address1);
         }
-        printedAddressRows++;
     }
 
+    // row
     if (address2) {
         paragraph = headerParagraph.addParagraph(address2, className);
-        printedAddressRows++;
     }
 
-    // row 3
+    // row
     if (city) {
         paragraph = headerParagraph.addParagraph("", className);
         if (zip) {
@@ -794,31 +797,23 @@ function printReportHeader(report, banDoc, userParam, stylesheet) {
         } else {
             paragraph.addText(city);
         }
-        printedAddressRows++;
     }
 
-    // row 4
-    if (printedAddressRows < 5) {
-        if (phone || email) {
-            paragraph = headerParagraph.addParagraph("", className);
-            if (phone && email) {
-                paragraph.addText(phone + " / " + email);
-            } else if (!phone && email) {
-                paragraph.addText(email);
-            } else if (phone && !email) {
-                paragraph.addText(phone);
-            }
-            printedAddressRows++;
-        }
+    // row
+    if (phone) {
+        paragraph = headerParagraph.addParagraph(phone, className);
     }
 
-    // row 5
-    if (printedAddressRows < 5) {
-        if (web) {
-            paragraph = headerParagraph.addParagraph(web, className);
-        }
+    // row
+    if (email) {
+        paragraph = headerParagraph.addParagraph(email, className);
     }
 
+    // row
+    if (web) {
+        paragraph = headerParagraph.addParagraph(web, className);
+    }
+    
 }
 
 /* Function that prints the address of the report */
@@ -1195,6 +1190,9 @@ function convertFields(banDoc, userParam, account, text) {
     }
     if (text.indexOf("<Currency>") > -1) {
         var currency = banDoc.info("AccountingDataBase", "BasicCurrency");
+        if (!currency && address.currency ) {
+            currency = address.currency;
+        }
         text = text.replace(/<Currency>/g,currency);
     }
     if (text.indexOf("<Amount>") > -1) {
@@ -2545,6 +2543,7 @@ function getContactAddress(banDoc, accountId) {
             addressObj.businessunit2 = tRow.value("OrganisationUnit2");
             addressObj.businessunit3 = tRow.value("OrganisationUnit3");
             addressObj.businessunit4 = tRow.value("OrganisationUnit4");
+            addressObj.currency = tRow.value("Currency");
 
             //verify address
             if (!addressObj.nameprefix)
@@ -2583,6 +2582,8 @@ function getContactAddress(banDoc, accountId) {
                 addressObj.businessunit3 = "";
             if (!addressObj.businessunit4)
                 addressObj.businessunit4 = "";
+            if (!addressObj.currency)
+                addressObj.currency = "";
         }
     }
     return addressObj;
