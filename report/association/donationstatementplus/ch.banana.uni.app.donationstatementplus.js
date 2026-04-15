@@ -572,8 +572,24 @@ function settingsDialog() {
         var invoicesTable = Banana.document.table("Invoices");
         if (invoicesTable && invoicesTable.rowCount > 0) {
             //takes first and last row
-            var startDate = invoicesTable.row(0).value("InvoiceDate");
-            var endDate = invoicesTable.row(invoicesTable.rowCount - 1).value("InvoiceDate");
+            var startDate = '';
+            var endDate = '';
+            // find the first valid startDate starting from the beginning
+            for (var i = 0; i < invoicesTable.rowCount; i++) {
+                var tempDateStart = invoicesTable.row(i).value("InvoiceDate");
+                if (tempDateStart) {
+                    startDate = tempDateStart;
+                    break;
+                }
+            }
+            // find the first valid lastDate starting from the end
+            for (var j = invoicesTable.rowCount - 1; j >= 0; j--) {
+                var tempDateEnd = invoicesTable.row(j).value("InvoiceDate");
+                if (tempDateEnd) {
+                    endDate = tempDateEnd;
+                    break;
+                }
+            }
             if (startDate && endDate) {
                 if (endDate >= startDate) {
                     docStartDate = startDate;
@@ -590,14 +606,14 @@ function settingsDialog() {
     
     //A dialog window is opened asking the user to insert the desired period. By default is the accounting period
     var selectedDates = Banana.Ui.getPeriod(texts.reportTitle, docStartDate, docEndDate, 
-        scriptform.selectionStartDate, scriptform.selectionEndDate, scriptform.selectionChecked);
+        docStartDate, docEndDate, scriptform.selectionChecked);
         
     //We take the values entered by the user and save them as "new default" values.
     //This because the next time the script will be executed, the dialog window will contains the new values.
     if (selectedDates) {
         scriptform["selectionStartDate"] = selectedDates.startDate;
         scriptform["selectionEndDate"] = selectedDates.endDate;
-        scriptform["selectionChecked"] = selectedDates.hasSelection;    
+        scriptform["selectionChecked"] = selectedDates.hasSelection;
     } else {
         //User clicked cancel
         return null;
