@@ -732,6 +732,9 @@ function printReportHeader(report, banDoc, userParam, stylesheet) {
     }
 
     // Address of the sender (Organization)
+    // max 5 rows
+    var printedAddressRows = 0;
+
     var company = banDoc.info("AccountingDataBase","Company");
     var name = banDoc.info("AccountingDataBase","Name");
     var familyName = banDoc.info("AccountingDataBase","FamilyName");
@@ -745,11 +748,17 @@ function printReportHeader(report, banDoc, userParam, stylesheet) {
     var web = banDoc.info("AccountingDataBase","Web");
     var email = banDoc.info("AccountingDataBase","Email");
 
-    var paragraph = headerParagraph.addParagraph("", "header_address_row_1");
+    // row 1
+    var className = "header_address_row_1";
+    var paragraph = headerParagraph.addParagraph("", className);
     if (company) {
-        paragraph.addText(company + "\n");
+        paragraph.addText(company);
+        className = "header_address_row_2_to_5";
+        printedAddressRows++;
     }
+
     if (name || familyName) {
+        paragraph = headerParagraph.addParagraph("", className);
         if (name && familyName) {
             paragraph.addText(name + " " + familyName);
         } else if (!name && familyName) {
@@ -757,52 +766,59 @@ function printReportHeader(report, banDoc, userParam, stylesheet) {
         } else if (name && !familyName) {
             paragraph.addText(name);
         }
-        paragraph.addText("\n");
+        printedAddressRows++;
     }
 
-    paragraph = headerParagraph.addParagraph("", "header_address_row_2_to_5");
+    // row 2
+    className = "header_address_row_2_to_5";
     if (address1) {
+        paragraph = headerParagraph.addParagraph("", className);
         if (buildingnumber) {
             paragraph.addText(address1 + " " + buildingnumber);
         } else {
             paragraph.addText(address1);
         }
+        printedAddressRows++;
     }
+
     if (address2) {
-        if (address1) {
-            paragraph.addText(", ");
-        }   
-        paragraph.addText(address2);
+        paragraph = headerParagraph.addParagraph(address2, className);
+        printedAddressRows++;
     }
 
-    if (zip) {
-        if (address1 || address2) {
-            paragraph.addText(", ");
-        }  
-        paragraph.addText(zip);
-    }
+    // row 3
     if (city) {
+        paragraph = headerParagraph.addParagraph("", className);
         if (zip) {
-            paragraph.addText(" ");
+            paragraph.addText(zip + " " + city);
+        } else {
+            paragraph.addText(city);
         }
-        paragraph.addText(city);
+        printedAddressRows++;
     }
-    paragraph.addText("\n");
 
-    paragraph = headerParagraph.addParagraph("", "header_address_row_2_to_5");
-    if (phone) {
-        paragraph.addText(phone + "\n");
-    }
-    if (web) {
-        paragraph.addText(web);
-    }
-    if (email) {
-        if (web) {
-            paragraph.addText(", ");
+    // row 4
+    if (printedAddressRows < 5) {
+        if (phone || email) {
+            paragraph = headerParagraph.addParagraph("", className);
+            if (phone && email) {
+                paragraph.addText(phone + " / " + email);
+            } else if (!phone && email) {
+                paragraph.addText(email);
+            } else if (phone && !email) {
+                paragraph.addText(phone);
+            }
+            printedAddressRows++;
         }
-        paragraph.addText(email);
     }
-    paragraph.addText("\n");
+
+    // row 5
+    if (printedAddressRows < 5) {
+        if (web) {
+            paragraph = headerParagraph.addParagraph(web, className);
+        }
+    }
+
 }
 
 /* Function that prints the address of the report */
