@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.uni.app.donationstatementplus.js
 // @api = 1.0
-// @pubdate = 2026-04-08
+// @pubdate = 2026-04-16
 // @publisher = Banana.ch SA
 // @description = Donation Statement for Associations (Banana+)
 // @description.de = Spendenbescheinigung für Vereine (Banana+)
@@ -606,7 +606,7 @@ function settingsDialog() {
     
     //A dialog window is opened asking the user to insert the desired period. By default is the accounting period
     var selectedDates = Banana.Ui.getPeriod(texts.reportTitle, docStartDate, docEndDate, 
-        docStartDate, docEndDate, scriptform.selectionChecked);
+        scriptform.selectionStartDate, scriptform.selectionEndDate, scriptform.selectionChecked);
         
     //We take the values entered by the user and save them as "new default" values.
     //This because the next time the script will be executed, the dialog window will contains the new values.
