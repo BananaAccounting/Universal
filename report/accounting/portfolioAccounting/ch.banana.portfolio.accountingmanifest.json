@@ -1,7 +1,7 @@
 {
     "category": "productivity",
     "country": "universal",
-    "countryCode": "un",
+    "countryCode": "",
     "description": "Investment Accounting",
     "description.en": "Investment Accounting",
     "id": "ch.banana.portfolio.accounting",
