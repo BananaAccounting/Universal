@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.uni.app.donationstatementplus.js
 // @api = 1.0
-// @pubdate = 2026-04-16
+// @pubdate = 2026-04-20
 // @publisher = Banana.ch SA
 // @description = Donation Statement for Associations (Banana+)
 // @description.de = Spendenbescheinigung für Vereine (Banana+)
@@ -38,6 +38,7 @@
 */
 
 var mimimunAmountDonation = "";
+var accountDonation = "";
 
 //===========================================================================
 // PARAMETERS
@@ -76,6 +77,19 @@ function convertParam(userParam) {
     currentParam.defaultvalue = '';
     currentParam.readValue = function() {
         userParam.costcenter = this.value;
+    }
+    convertedParam.data.push(currentParam);
+
+    //Account/Category to filter the transactions
+    var currentParam = {};
+    currentParam.name = 'accountDonation';
+    currentParam.parentObject = 'accountsToPrint';
+    currentParam.title = texts.accountDonation;
+    currentParam.type = 'string';
+    currentParam.value = userParam.accountDonation ? userParam.accountDonation : '';
+    currentParam.defaultvalue = "";
+    currentParam.readValue = function() {
+        userParam.accountDonation = this.value;
     }
     convertedParam.data.push(currentParam);
 
@@ -452,6 +466,7 @@ function initUserParam(banDoc, lang) {
     var userParam = {};
     userParam.version = '1.0';
     userParam.costcenter = '';
+    userParam.accountDonation = '';
     userParam.minimumAmount = '1.00';
     userParam.useExtractTable = false;
     userParam.textToUse = texts.text1;
@@ -486,6 +501,8 @@ function verifyUserParam(userParam, banDoc, lang) {
         userParam.version = '1.0';
     if (!userParam.costcenter)
         userParam.costcenter = '';
+    if (!userParam.accountDonation)
+        userParam.accountDonation = '';
     if (!userParam.minimumAmount)
         userParam.minimumAmount = '1.00';
     if (!userParam.useExtractTable)
@@ -666,6 +683,9 @@ function exec(inData, options) {
 
     // Get the minimum donation amount entered by the user
     mimimunAmountDonation = userParam.minimumAmount;
+
+    // Get the account donation entered by the user
+    accountDonation = userParam.accountDonation;
 
     // Add a transactions property to userParam object, and fill it with transactions data
     userParam.transactions = [];
@@ -934,13 +954,12 @@ function printReportAddress(report, banDoc, userParam, account) {
         }
     }
 
-    //create the final address string with '\n' as separator
-    //the string now does not have any space or empty row
-    addressComposition = rows.join("\r\n");
-
     var tableAddress = report.addTable("address");
-    var row = tableAddress.addRow();
-    row.addCell(addressComposition, "", 1);
+    for (var i = 0; i < rows.length; i++) {
+        var row = tableAddress.addRow();
+        row.addCell(rows[i], "", 1);
+    }
+
 
     /*if (address.nameprefix) {
         row = tableAddress.addRow();
@@ -1349,6 +1368,7 @@ function getTransactionsData(banDoc, userParam, account) {
             var date = tRow.value("Date");
             var cc3 = tRow.value("Cc3");
             var description = tRow.value("Description");
+            var accountCheck = banDoc.table('Categories') ? tRow.value("Category") : tRow.value("AccountCredit");
 
             var amount = "";
             if (banDoc.table('Categories')) {
@@ -1357,8 +1377,20 @@ function getTransactionsData(banDoc, userParam, account) {
                 amount = tRow.value("Amount");
             }
 
-            if (cc3 && cc3 === account && date >= startDate && date <= endDate && Banana.SDecimal.compare(amount, userParam.minimumAmount) > -1) {
-                transactions.push({ "cc3": cc3, "date": date, "description": description, "amount": amount });
+            var accountsDonation = accountDonation.split(";");
+            if (accountsDonation.length > 0) {
+                    for (var j = 0; j < accountsDonation.length; j++) {
+                        if (cc3 && cc3 === account && date >= startDate && date <= endDate && Banana.SDecimal.compare(amount, userParam.minimumAmount) > -1) {
+                            if (accountsDonation[j] === accountCheck || accountCheck.startsWith(accountsDonation[j])) {
+                            transactions.push({ "cc3": cc3, "date": date, "description": description, "amount": amount });
+                        }
+                    }
+                }
+            }
+            else {
+                if (cc3 && cc3 === account && date >= startDate && date <= endDate && Banana.SDecimal.compare(amount, userParam.minimumAmount) > -1) {
+                    transactions.push({ "cc3": cc3, "date": date, "description": description, "amount": amount });
+                }
             }
         }
     }
@@ -1366,17 +1398,45 @@ function getTransactionsData(banDoc, userParam, account) {
 
 /* This function returns true only if the row has the amount >= userParam.minimumAmount */
 function onlyMinimunAmountTableCategories(row, rowNr, table) {
-    if (Banana.SDecimal.compare(row.value('Income'), mimimunAmountDonation) > -1) {
-        return true;
+
+    var accountsDonation = accountDonation.split(";");
+    if (accountsDonation.length > 0) {
+        for (var j = 0; j < accountsDonation.length; j++) {
+            if (row.value('Category') === accountsDonation[j] || row.value('Category').startsWith(accountsDonation[j])) {
+                if (Banana.SDecimal.compare(row.value('Income'), mimimunAmountDonation) > -1) {
+                    return true;
+                }
+            }
+        }
     }
+    else {
+        if (Banana.SDecimal.compare(row.value('Income'), mimimunAmountDonation) > -1) {
+            return true;
+        }
+    }
+
     return false;
 }
 
 /* This function returns true only if the row has the amount >= userParam.minimumAmount */
 function onlyMinimunAmountTableAccounts(row, rowNr, table) {
-    if (Banana.SDecimal.compare(row.value('Amount'), mimimunAmountDonation) > -1) {
-        return true;
+
+    var accountsDonation = accountDonation.split(";");
+    if (accountsDonation.length > 0) {
+        for (var j = 0; j < accountsDonation.length; j++) {
+            if (row.value('AccountCredit') === accountsDonation[j] || row.value('AccountCredit').startsWith(accountsDonation[j])) {
+                if (Banana.SDecimal.compare(row.value('Amount'), mimimunAmountDonation) > -1) {
+                    return true;
+                }
+            }
+        }
     }
+    else {
+        if (Banana.SDecimal.compare(row.value('Amount'), mimimunAmountDonation) > -1) {
+            return true;
+        }
+    }
+
     return false;
 }
 
@@ -2205,6 +2265,7 @@ function loadTexts(banDoc,lang) {
         texts.dialogTitle = "Einstellungen";
         texts.warningMessage = "Ungültiges Mitgliedkonto Konto";
         texts.accountNumber = "Mitgliedskonto eingeben (leer = alle ausdrucken)";
+        texts.accountDonation = "Konten/Kategorien der einzuschließenden Buchungen angeben (leer = alle Buchungen)";
         texts.localityAndDate = "Ort und Datum";
         texts.signature = "Unterschrift";
         texts.printSignatureImage = "Digitale Unterschrift";
@@ -2246,6 +2307,7 @@ function loadTexts(banDoc,lang) {
         texts.dialogTitle = "Paramètres";
         texts.warningMessage = "Compte de membre non valide";
         texts.accountNumber = "Entrer le compte du membre (vide = imprimer tout)";
+        texts.accountDonation = "Indiquer les comptes/catégories des écritures à inclure (vide = toutes les écritures)";
         texts.localityAndDate = "Lieu et date";
         texts.signature = "Signature";
         texts.printSignatureImage = "Signature digitale";
@@ -2287,6 +2349,7 @@ function loadTexts(banDoc,lang) {
         texts.dialogTitle = "Impostazioni";
         texts.warningMessage = "Conto membro non valido";
         texts.accountNumber = "Indica il conto del membro (vuoto = stampa tutti)";
+        texts.accountDonation = "Indicare conti/categorie delle registrazioni da includere (vuoto = tutte le registrazioni)";
         texts.localityAndDate = "Località e data";
         texts.signature = "Firma";
         texts.printSignatureImage = "Firma digitale";
@@ -2328,6 +2391,7 @@ function loadTexts(banDoc,lang) {
         texts.dialogTitle = "Instellingen";
         texts.warningMessage = "Ongeldige rekening gever";
         texts.accountNumber = "Rekening gever invoeren (leeg = alles afdrukken)";
+        texts.accountDonation = "Geef de rekeningen/categorieën op van de boekingen die moeten worden opgenomen (leeg = alle boekingen)";
         texts.localityAndDate = "Plaats en datum";
         texts.signature = "Handtekening";
         texts.printSignatureImage = "Handtekening met afbeelding";
@@ -2369,6 +2433,7 @@ function loadTexts(banDoc,lang) {
         texts.dialogTitle = "Settings";
         texts.warningMessage = "Invalid member account";
         texts.accountNumber = "Enter member's account (empty = print all)";
+        texts.accountDonation = "Enter accounts/categories of transactions to include (empty = all transactions)";
         texts.localityAndDate = "Place and date";
         texts.signature = "Signature";
         texts.printSignatureImage = "Digital signature";
