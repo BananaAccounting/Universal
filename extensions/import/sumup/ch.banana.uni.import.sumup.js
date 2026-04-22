@@ -949,6 +949,9 @@ var SumupFormat1 = class SumupFormat1 extends ImportUtilities {
             case "Importo transazione in entrata":
                convertedColumns[i] = "Transaction Amount In";
                break;
+            case "Importo":
+               convertedColumns[i] = "Amount";
+               break;
             case "Valuta della transazione":
                convertedColumns[i] = "Transaction Currency";
                break;
@@ -969,9 +972,8 @@ var SumupFormat1 = class SumupFormat1 extends ImportUtilities {
 
       // Verifica la presenza delle colonne necessarie per l'elaborazione
       if (convertedColumns.indexOf("Transaction Date") < 0
-         || convertedColumns.indexOf("Reference") < 0
-         || convertedColumns.indexOf("Transaction Amount In") < 0
-         || convertedColumns.indexOf("Fee") < 0) {
+         || convertedColumns.indexOf("Transaction Code") < 0
+         || convertedColumns.indexOf("Reference") < 0) {
          return [];
       }
 
@@ -987,9 +989,12 @@ var SumupFormat1 = class SumupFormat1 extends ImportUtilities {
          var transaction = transactionsData[i];
          var formatMatched = true;
 
-         if (formatMatched && transaction["Transaction Date"] && transaction["Transaction Date"].length >= 15 &&
-            (transaction["Transaction Date"].match(/^[0-9]+\/[0-9]+\/[0-9]+\s[0-9]+\:[0-9]+$/) ||
-               transaction["Transaction Date"].match(/^\d{2}\/\d{2}\/\d{2},\s\d{2}:\d{2}$/)))
+         const transactionDate = transaction["Transaction Date"];
+
+         if (formatMatched && transactionDate &&
+            (transactionDate.match(/^[0-9]+\/[0-9]+\/[0-9]+\s[0-9]+\:[0-9]+$/) || // d/m/yyyy h:mm
+               transactionDate.match(/^\d{2}\/\d{2}\/\d{2},\s\d{2}:\d{2}$/) || // dd/mm/yy, hh:mm
+               transactionDate.match(/^\d{4}-\d{2}-\d{2}$/))) // ISO format: YYYY-MM-DD
             formatMatched = true;
          else
             formatMatched = false;
@@ -1051,20 +1056,18 @@ var SumupFormat1 = class SumupFormat1 extends ImportUtilities {
       let trRow = initTrRowObjectStructure_DoubleEntry();
       trRow.Date = Banana.Converter.toInternalDateFormat(row["Transaction Date"], this.params.dateFormat);
       trRow.ExternalReference = row["Transaction Code"];
-      trRow.Description = row["Transaction Type"];
-      if (row["Transaction Amount In"] > 0
-         && row["Transaction Amount Out"] == 0) {
+      trRow.Description = this.getDescription(row);
+      const amount = this.getAmountToSave(row);
+      const isIncome = amount && amount.indexOf("-") < 0;
+      if (isIncome) {
          trRow.AccountDebit = this.params.bankAccount;
          trRow.AccountCredit = this.params.sumUpIn;
-         trRow.Amount = row["Transaction Amount In"];
-      } else if (row["Transaction Amount Out"] > 0
-         && row["Transaction Amount In"] == 0) {
+         trRow.Amount = amount;
+      } else {
          trRow.AccountDebit = this.params.sumUpIn;
          trRow.AccountCredit = this.params.bankAccount;
-         trRow.Amount = row["Transaction Amount Out"];
+         trRow.Amount = amount.replace("-", "");
       }
-
-      trRow.Notes = row["Reference"];
       transactionsMapped.push(trRow);
    }
 
@@ -1072,23 +1075,78 @@ var SumupFormat1 = class SumupFormat1 extends ImportUtilities {
       let trRow = initTrRowObjectStructure_IncomeExpenses();
       trRow.Date = Banana.Converter.toInternalDateFormat(row["Transaction Date"], this.params.dateFormat);
       trRow.ExternalReference = row["Transaction Code"];
-      trRow.Description = row["Transaction Type"];
-      if (row["Transaction Amount In"] > 0
-         && row["Transaction Amount Out"] == 0) {
-         trRow.Income = row["Transaction Amount In"];
+      trRow.Description = this.getDescription(row);
+      const amount = this.getAmountToSave(row);
+      const isIncome = amount && amount.indexOf("-") < 0;
+      if (isIncome) {
+         trRow.Income = amount;
          trRow.Expenses = "";
          trRow.Category = this.params.sumUpIn;
-      } else if (row["Transaction Amount Out"] > 0
-         && row["Transaction Amount In"] == 0) {
+      } else {
          trRow.Income = "";
-         trRow.Expenses = row["Transaction Amount Out"];
+         trRow.Expenses = amount.replace("-", "");
          trRow.Category = this.params.sumUpIn;
       }
-
-      trRow.Notes = row["Reference"];
       transactionsMapped.push(trRow);
    }
 
+   getDescription(row) {
+      if (!row)
+         return "";
+
+      const { "Transaction Type": type, "Reference": ref } = row;
+
+      function clean(value) {
+         return value.trim().replace(/\s+/g, " ");
+      }
+
+      return [type, ref].filter(value => typeof value === "string" && value.trim() !== "")
+         .map(clean)
+         .join(", ");
+   }
+
+   /**
+    * Returns the transaction amount to save, normalized as a signed value.
+    *
+    * Supported formats:
+    * 1. Split columns:
+    *    - "Transaction Amount In"
+    *    - "Transaction Amount Out"
+    *    Income is returned as positive, expense as negative.
+    *
+    * 2. Single column:
+    *    - "Amount"
+    *    Returned as is.
+    */
+   getAmountToSave(row) {
+      const hasAmountIn = row.hasOwnProperty("Transaction Amount In");
+      const hasAmountOut = row.hasOwnProperty("Transaction Amount Out");
+      const hasAmount = row.hasOwnProperty("Amount");
+
+      if (hasAmountIn && hasAmountOut) {
+         const amountIn = row["Transaction Amount In"];
+         const amountOut = row["Transaction Amount Out"];
+
+         const isAmountInZero = Banana.SDecimal.isZero(amountIn);
+         const isAmountOutZero = Banana.SDecimal.isZero(amountOut);
+
+         if (!isAmountInZero && isAmountOutZero)
+            return amountIn;
+
+         if (isAmountInZero && !isAmountOutZero)
+            return Banana.SDecimal.invert(amountOut);
+
+         Banana.console.debug("Invalid split amount format");
+         return "";
+      }
+
+      if (hasAmount) {
+         return String(row["Amount"]).trim();
+      }
+
+      Banana.console.debug("Amount type undefined");
+      return "";
+   }
 }
 
 function initTrRowObjectStructure_DoubleEntry() {

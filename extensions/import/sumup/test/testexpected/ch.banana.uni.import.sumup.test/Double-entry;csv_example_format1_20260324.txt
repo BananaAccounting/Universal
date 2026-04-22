@@ -1,4 +1,4 @@
-%%info_test_name{Double-entry;csv_example_format1_20250520}
+%%info_test_name{Double-entry;csv_example_format1_20260324}
 \documentclass{report}
 \usepackage{longtable}
 \usepackage{color}
@@ -20,9 +20,10 @@
 %Begin test data
 \begin{tablevalue}{}{ l  l  l  l  l  l  l }
 Date & ExternalReference & Description & AccountDebit & AccountCredit & Amount & Notes\\
-2024-12-30 & C9W5GZXGBX & Bonifico bancario in uscita, RIF & 3001 & 1020 & 1300.00 & \\
-2024-12-30 & C9YKR2NLNR & Bonifico bancario in uscita, RIF & 3001 & 1020 & 1500.00 & \\
-2024-12-16 & COKN45JQW2 & Bonifico bancario in entrata, RIF & 1020 & 3001 & 55.00 & \\
+2025-12-23 & CDKKXXXXXX & Descr1 & 1020 & 3001 & 405.00 & \\
+2025-12-23 & COGJG3XXXX & Descr2 & 1020 & 3001 & 234.29 & \\
+2025-12-22 & CO37VXXXXX & Descr3 Descr3.1 & 1020 & 3001 & 400.00 & \\
+2025-12-22 & COR6MLXXXX & Descr4 & 1020 & 3001 & 5.00 & \\
 \\
 \end{tablevalue}
 \end{document}
