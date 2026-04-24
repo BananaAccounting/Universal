@@ -189,6 +189,18 @@ function convertParam(userParam) {
   }
   convertedParam.data.push(currentParam);
 
+  var currentParam = {};
+  currentParam.name = 'param_use_row_style';
+  currentParam.parentObject = 'param_print_technical_proposal';
+  currentParam.title = texts.param_use_row_style;
+  currentParam.type = 'bool';
+  currentParam.value = userParam.param_use_row_style ? true : false;
+  currentParam.defaultvalue = false;
+  currentParam.readValue = function() {
+    userParam.param_use_row_style = this.value;
+  }
+  convertedParam.data.push(currentParam);
+
   //
   // Summary group
   //
@@ -235,6 +247,7 @@ function initUserParam() {
   userParam.param_max_description_lenght = '58';
   userParam.param_quantity_decimals = '2';
   userParam.param_print_carryforward = true;
+  userParam.param_use_row_style = false;
   userParam.param_summary_print_other_positions = '';
   userParam.param_report_currency = 'CHF';
   return userParam;
@@ -589,21 +602,51 @@ function printReportTable(banDoc, report, userParam) {
       rowClass += " bold";
     }
 
+
+
+    // Get row styles
+    var rowStyle = quicksumRow.style;
+    var isBold = rowStyle.bold;
+    var isItalic = rowStyle.italic;
+    var color = rowStyle.color;
+    var backgroundColor = rowStyle.backgroundColor;
+
+    var boldAttribute = "";
+    var italicAttribute = "";
+    var colorAttribute = "";
+    var backgroundColorAttribute = "";
+
+    if(userParam.param_use_row_style) {
+      if (isBold) {
+        boldAttribute = "font-weight: bold";
+      }
+      if (isItalic) {
+        italicAttribute = "font-style: italic;"
+      }
+      if (color) {
+        colorAttribute = "color: " + color;
+      }
+      if (backgroundColor) {
+        backgroundColorAttribute = "background-color:" + backgroundColor;
+      }
+    }
+
+
     var row = table.addRow();
 
     // ItemId
     if (containsRegex) {
-        row.addCell(" ", className, 1); // never print letters
+        row.addCell(" ", className, 1).setStyleAttributes(boldAttribute + ";" + italicAttribute + ";" + colorAttribute + ";" + backgroundColorAttribute); // never print letters
     } else {
 
         if (!printedItemIdCalc[itemIdValue]) {
             // first time, print
-            row.addCell(formatItemId(itemIdValue), rowClass, 1);
+            row.addCell(formatItemId(itemIdValue), rowClass, 1).setStyleAttributes(boldAttribute + ";" + italicAttribute + ";" + colorAttribute + ";" + backgroundColorAttribute);
             // Register only non-letter ItemIdCalc
             printedItemIdCalc[itemIdValue] = true;
         } else {
             // empty, already printed
-            row.addCell(" ", className, 1);
+            row.addCell(" ", className, 1).setStyleAttributes(boldAttribute + ";" + italicAttribute + ";" + colorAttribute + ";" + backgroundColorAttribute);
         }
     }
 
@@ -625,7 +668,7 @@ function printReportTable(banDoc, report, userParam) {
     }
 
     var descriptionLines = splitTextByLength(description, maxDescriptionLength);
-    row.addCell(descriptionLines[0], rowClass + " description", 1);
+    row.addCell(descriptionLines[0], rowClass + " description", 1).setStyleAttributes(boldAttribute + ";" + italicAttribute + ";" + colorAttribute + ";" + backgroundColorAttribute);
     //Banana.console.log(descriptionLines[0] + " ==> " +  descriptionLines[0].length);
 
 
@@ -671,17 +714,17 @@ function printReportTable(banDoc, report, userParam) {
 
     if (hasQuantity) {
       var quantityText = Banana.Converter.toLocaleNumberFormat(quicksumRow.value("Quantity"),userParam.param_quantity_decimals,false);
-      row.addCell(quantityText, qtyClass, 1);
+      row.addCell(quantityText, qtyClass, 1).setStyleAttributes(boldAttribute + ";" + italicAttribute + ";" + colorAttribute + ";" + backgroundColorAttribute);
     } else {
-      row.addCell(" ", qtyClass, 1);
+      row.addCell(" ", qtyClass, 1).setStyleAttributes(boldAttribute + ";" + italicAttribute + ";" + colorAttribute + ";" + backgroundColorAttribute);
     }
 
 
     // Unit (never dashed)
     if (hasUnit) {
-      row.addCell(quicksumRow.value("Unit"), className + " center", 1);
+      row.addCell(quicksumRow.value("Unit"), className + " center", 1).setStyleAttributes(boldAttribute + ";" + italicAttribute + ";" + colorAttribute + ";" + backgroundColorAttribute);
     } else {
-      row.addCell(" ", className + " center", 1);
+      row.addCell(" ", className + " center", 1).setStyleAttributes(boldAttribute + ";" + italicAttribute + ";" + colorAttribute + ";" + backgroundColorAttribute);
     }
 
 
@@ -693,15 +736,15 @@ function printReportTable(banDoc, report, userParam) {
 
     if (hasUnitPrice) {
       var unitPriceText = Banana.Converter.toLocaleNumberFormat(quicksumRow.value("UnitPrice"),2,false);
-      row.addCell(unitPriceText, unitPriceClass, 1);
+      row.addCell(unitPriceText, unitPriceClass, 1).setStyleAttributes(boldAttribute + ";" + italicAttribute + ";" + colorAttribute + ";" + backgroundColorAttribute);
     } else {
-      row.addCell(" ", unitPriceClass, 1);
+      row.addCell(" ", unitPriceClass, 1).setStyleAttributes(boldAttribute + ";" + italicAttribute + ";" + colorAttribute + ";" + backgroundColorAttribute);
     }
 
 
     // AmountTotal
     if (className === "total") {
-      row.addCell(Banana.Converter.toLocaleNumberFormat(quicksumRow.value("AmountTotal"), 2, true),className + " double right",1);
+      row.addCell(Banana.Converter.toLocaleNumberFormat(quicksumRow.value("AmountTotal"), 2, true),className + " double right",1).setStyleAttributes(boldAttribute + ";" + italicAttribute + ";" + colorAttribute + ";" + backgroundColorAttribute);
     } else {
       // Normal rows: dashed only if Quantity and/or UnitPrice are dashed
       var amountTotalClass = className + " right";
@@ -711,9 +754,9 @@ function printReportTable(banDoc, report, userParam) {
 
       if (hasAmountTotal) {
         var amountText = Banana.Converter.toLocaleNumberFormat(quicksumRow.value("AmountTotal"), 2, false);
-        row.addCell(amountText, amountTotalClass, 1);
+        row.addCell(amountText, amountTotalClass, 1).setStyleAttributes(boldAttribute + ";" + italicAttribute + ";" + colorAttribute + ";" + backgroundColorAttribute);
       } else {
-        row.addCell(" ", amountTotalClass, 1);
+        row.addCell(" ", amountTotalClass, 1).setStyleAttributes(boldAttribute + ";" + italicAttribute + ";" + colorAttribute + ";" + backgroundColorAttribute);
       }
     }
 
@@ -737,11 +780,11 @@ function printReportTable(banDoc, report, userParam) {
         // close current page
         if (userParam.param_print_carryforward) {
           var cf = table.addRow();
-          cf.addCell(" ", "", 6);
+          cf.addCell(" ", "", 6).setStyleAttributes(boldAttribute + ";" + italicAttribute + ";" + colorAttribute + ";" + backgroundColorAttribute);
           cf = table.addRow();
-          cf.addCell("", "", 3);
-          cf.addCell(texts.carryforward + ": ", "carry_label", 2);
-          cf.addCell(Banana.Converter.toLocaleNumberFormat(lastAmountCumulated, 2, false), "carry_label dashed",1);
+          cf.addCell("", "", 3).setStyleAttributes(boldAttribute + ";" + italicAttribute + ";" + colorAttribute + ";" + backgroundColorAttribute);
+          cf.addCell(texts.carryforward + ": ", "carry_label", 2).setStyleAttributes(boldAttribute + ";" + italicAttribute + ";" + colorAttribute + ";" + backgroundColorAttribute);
+          cf.addCell(Banana.Converter.toLocaleNumberFormat(lastAmountCumulated, 2, false), "carry_label dashed",1).setStyleAttributes(boldAttribute + ";" + italicAttribute + ";" + colorAttribute + ";" + backgroundColorAttribute);
         }
 
         // new page
@@ -752,22 +795,22 @@ function printReportTable(banDoc, report, userParam) {
       // Prints split rows
       for (var d = 1; d < descriptionLines.length; d++) {
         var r2 = table.addRow();
-        r2.addCell(" ", className, 1);
+        r2.addCell(" ", className, 1).setStyleAttributes(boldAttribute + ";" + italicAttribute + ";" + colorAttribute + ";" + backgroundColorAttribute);
         r2.addCell(descriptionLines[d], className + " description", 1);
-        r2.addCell(" ", className, 1);
-        r2.addCell(" ", className, 1);
-        r2.addCell(" ", className, 1);
-        r2.addCell(" ", className, 1);
+        r2.addCell(" ", className, 1).setStyleAttributes(boldAttribute + ";" + italicAttribute + ";" + colorAttribute + ";" + backgroundColorAttribute);
+        r2.addCell(" ", className, 1).setStyleAttributes(boldAttribute + ";" + italicAttribute + ";" + colorAttribute + ";" + backgroundColorAttribute);
+        r2.addCell(" ", className, 1).setStyleAttributes(boldAttribute + ";" + italicAttribute + ";" + colorAttribute + ";" + backgroundColorAttribute);
+        r2.addCell(" ", className, 1).setStyleAttributes(boldAttribute + ";" + italicAttribute + ";" + colorAttribute + ";" + backgroundColorAttribute);
         pageRowCount += 1;
 
         if (pageRowCount === rowsPerPageBase) {
           if (userParam.param_print_carryforward) {
             var c = table.addRow();
-            c.addCell(" ", "", 6);
+            c.addCell(" ", "", 6).setStyleAttributes(boldAttribute + ";" + italicAttribute + ";" + colorAttribute + ";" + backgroundColorAttribute);
             c = table.addRow();
-            c.addCell("", "", 4);
-            c.addCell(texts.carryforward + ": ", "carry_label", 1);
-            c.addCell(Banana.Converter.toLocaleNumberFormat(lastAmountCumulated, 2, false), "carry_label dashed",1);
+            c.addCell("", "", 4).setStyleAttributes(boldAttribute + ";" + italicAttribute + ";" + colorAttribute + ";" + backgroundColorAttribute);
+            c.addCell(texts.carryforward + ": ", "carry_label", 1).setStyleAttributes(boldAttribute + ";" + italicAttribute + ";" + colorAttribute + ";" + backgroundColorAttribute);
+            c.addCell(Banana.Converter.toLocaleNumberFormat(lastAmountCumulated, 2, false), "carry_label dashed",1).setStyleAttributes(boldAttribute + ";" + italicAttribute + ";" + colorAttribute + ";" + backgroundColorAttribute);
           }
           pageRowCount = 0;
           printedOnFirstPage = true;
@@ -783,15 +826,15 @@ function printReportTable(banDoc, report, userParam) {
     if (pageRowCount === rowsPerPageBase) {
       if (userParam.param_print_carryforward) {
         var r = table.addRow();
-        r.addCell(" ","",6);
+        r.addCell(" ","",6).setStyleAttributes(boldAttribute + ";" + italicAttribute + ";" + colorAttribute + ";" + backgroundColorAttribute);
 
         r = table.addRow();
         if (lastAmountCumulated) {
-          r.addCell("","",3);
-          r.addCell(texts.carryforward + ": ", "carry_label",2);
-          r.addCell(Banana.Converter.toLocaleNumberFormat(lastAmountCumulated, 2, false), "carry_label dashed",1);
+          r.addCell("","",3).setStyleAttributes(boldAttribute + ";" + italicAttribute + ";" + colorAttribute + ";" + backgroundColorAttribute);
+          r.addCell(texts.carryforward + ": ", "carry_label",2).setStyleAttributes(boldAttribute + ";" + italicAttribute + ";" + colorAttribute + ";" + backgroundColorAttribute);
+          r.addCell(Banana.Converter.toLocaleNumberFormat(lastAmountCumulated, 2, false), "carry_label dashed",1).setStyleAttributes(boldAttribute + ";" + italicAttribute + ";" + colorAttribute + ";" + backgroundColorAttribute);
         } else {
-          r.addCell(" ", "", 6);
+          r.addCell(" ", "", 6).setStyleAttributes(boldAttribute + ";" + italicAttribute + ";" + colorAttribute + ";" + backgroundColorAttribute);
         }
       }
       pageRowCount = 0;
@@ -1288,6 +1331,7 @@ function loadTexts(banDoc,lang) {
     texts.param_report = "Berichts";
     texts.param_summary_print_other_positions = "Weitere Positionen zum Drucken";
     texts.param_report_currency = "Währung";
+    texts.param_use_row_style = "Verwende die Zeilenstile";
 
     texts.tooltip_param_print_technical_proposal = "Schließt das technische Angebot in den Ausdruck ein";
     texts.tooltip_param_print_summary = "Schließt ein Übersichtsblatt mit allen Gesamtsummen in den Ausdruck ein";
@@ -1330,6 +1374,7 @@ function loadTexts(banDoc,lang) {
     texts.param_report = "Rapport";
     texts.param_summary_print_other_positions = "Autres positions à imprimer";
     texts.param_report_currency = "Devise";
+    texts.param_use_row_style = "Utiliser les styles de ligne";
 
     texts.tooltip_param_print_technical_proposal = "Inclut l’offre technique dans l’impression";
     texts.tooltip_param_print_summary = "Inclut une feuille de récapitulatif avec tous les totaux dans l’impression";
@@ -1372,6 +1417,7 @@ function loadTexts(banDoc,lang) {
     texts.param_report = "Report";
     texts.param_summary_print_other_positions = "Altre posizioni da stampare";
     texts.param_report_currency = "Moneta";
+    texts.param_use_row_style = "Utilizza gli stili delle righe";
 
     texts.tooltip_param_print_technical_proposal = "Include il capitolato d’offerta nella stampa";
     texts.tooltip_param_print_summary = "Include il foglio di riepilogo con tutti i totali nella stampa";
@@ -1414,6 +1460,7 @@ function loadTexts(banDoc,lang) {
     texts.param_report = "Report";
     texts.param_summary_print_other_positions = "Other positions to print";
     texts.param_report_currency = "Currency";
+    texts.param_use_row_style = "Use row styles";
 
     texts.tooltip_param_print_technical_proposal = "Includes the technical proposal in the printout";
     texts.tooltip_param_print_summary = "Includes a summary sheet with all totals in the printout";
