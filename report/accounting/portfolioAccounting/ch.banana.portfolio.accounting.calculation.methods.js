@@ -1515,3 +1515,48 @@ function getReportStyle() {
 
     return stylesheet;
 }
+
+/** Returns the list of currencies the Assets refers to */
+function getCurrenciesList(banDoc) {
+    let itemTableData = getItemsTableData(banDoc);
+
+    if (!itemTableData)
+        return [];
+
+    let currList = new Set();
+    for (let i = 0; i < itemTableData.length; i++) {
+        let item = itemTableData[i];
+        if (item.currency)
+            currList.add(item.currency);
+    }
+
+    // Convert Set -> Array
+    return Array.from(currList);
+}
+
+/**
+ * Returns the total current value of the assets
+ * having the currency equal to "assetCurrency".
+ * If assetCurrency is not provided, we perform the calculation
+ * taking values in base currency, otherwise, values in the currency
+ * of the Asset are taken.
+ */
+function getTotalAssetCurrentValue(banDoc, assetCurrency) {
+    Banana.console.log(assetCurrency);
+    let itemTableData = getItemsTableData(banDoc);
+    if (!itemTableData)
+        return [];
+
+    let total = "0";
+    for (let i = 0; i < itemTableData.length; i++) {
+        let item = itemTableData[i];
+        if (assetCurrency) {
+            if (item.currency === assetCurrency && item.valueCurrentCurrency) {
+                total = Banana.SDecimal.add(total, item.valueCurrentCurrency);
+            }
+        } else if (item.valueCurrent) {
+            total = Banana.SDecimal.add(total, item.valueCurrent);
+        }
+    }
+    return total;
+}
