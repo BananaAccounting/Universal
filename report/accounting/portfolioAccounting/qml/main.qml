@@ -1,6 +1,7 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
+import QtCharts
 
 Item {
     id: root
@@ -653,13 +654,18 @@ Item {
         }
     }
 
-    // Canvas line chart that draws the average book cost over time.
-    component AverageCostChart: Canvas {
+    // ChartView line chart that draws the average book cost over time.
+    component AverageCostChart: ChartView {
         property var historyData
 
-        onHistoryDataChanged: requestPaint()
-        onWidthChanged: requestPaint()
-        onHeightChanged: requestPaint()
+        antialiasing: true
+        legend.visible: false
+        backgroundColor: "#f8fafb"
+        plotAreaColor: "#f8fafb"
+        margins.top: 10
+        margins.bottom: 4
+        margins.left: 4
+        margins.right: 4
 
         function chartPoints() {
             if (!historyData || !historyData.points)
@@ -667,34 +673,12 @@ Item {
             return historyData.points
         }
 
-        onPaint: {
-            var ctx = getContext("2d")
-            ctx.clearRect(0, 0, width, height)
-
+        function refreshChart() {
             var points = chartPoints()
-            var leftPad = 54
-            var rightPad = 18
-            var topPad = 24
-            var bottomPad = 46
-            var chartW = width - leftPad - rightPad
-            var chartH = height - topPad - bottomPad
-
-            ctx.fillStyle = "#f8fafb"
-            ctx.fillRect(0, 0, width, height)
-
-            ctx.strokeStyle = "#d8dee6"
-            ctx.lineWidth = 1
-            ctx.beginPath()
-            ctx.moveTo(leftPad, topPad)
-            ctx.lineTo(leftPad, topPad + chartH)
-            ctx.lineTo(leftPad + chartW, topPad + chartH)
-            ctx.stroke()
-
-            ctx.fillStyle = root.textSoft
-            ctx.font = "11px sans-serif"
+            avgCostSeries.clear()
 
             if (points.length < 1) {
-                ctx.fillText("No average cost history available", leftPad, topPad + 28)
+                chartTitle.text = "No average cost history available"
                 return
             }
 
@@ -705,66 +689,76 @@ Item {
                 minV = Math.max(0, minV - 1)
             }
 
-            for (var g = 0; g <= 4; g++) {
-                var y = topPad + chartH * g / 4
-                ctx.strokeStyle = "#e8edf1"
-                ctx.beginPath()
-                ctx.moveTo(leftPad, y)
-                ctx.lineTo(leftPad + chartW, y)
-                ctx.stroke()
-            }
-
-            ctx.fillStyle = root.textSoft
-            ctx.fillText(safeText(historyData.maxValueFmt, ""), 4, topPad + 4)
-            ctx.fillText(safeText(historyData.minValueFmt, ""), 4, topPad + chartH)
-
-            function xFor(index) {
-                if (points.length === 1)
-                    return leftPad + chartW / 2
-                return leftPad + chartW * index / (points.length - 1)
-            }
-
-            function yFor(value) {
-                return topPad + chartH - ((Number(value) - minV) / (maxV - minV)) * chartH
-            }
-
-            ctx.strokeStyle = root.accent
-            ctx.lineWidth = 2
-            ctx.beginPath()
             for (var i = 0; i < points.length; i++) {
-                var x = xFor(i)
-                var yPoint = yFor(points[i].value)
-                if (i === 0)
-                    ctx.moveTo(x, yPoint)
-                else
-                    ctx.lineTo(x, yPoint)
-            }
-            ctx.stroke()
-
-            for (var p = 0; p < points.length; p++) {
-                var px = xFor(p)
-                var py = yFor(points[p].value)
-                ctx.fillStyle = root.panelBg
-                ctx.strokeStyle = root.accent
-                ctx.lineWidth = 2
-                ctx.beginPath()
-                ctx.arc(px, py, 4, 0, Math.PI * 2)
-                ctx.fill()
-                ctx.stroke()
+                avgCostSeries.append(i + 1, Number(points[i].value || 0))
             }
 
-            var first = points[0]
-            var last = points[points.length - 1]
-            ctx.fillStyle = root.textSoft
-            ctx.font = "11px sans-serif"
-            ctx.fillText(safeText(first.dateFmt, ""), leftPad, height - 18)
-            var lastLabel = safeText(last.dateFmt, "")
-            ctx.fillText(lastLabel, leftPad + chartW - ctx.measureText(lastLabel).width, height - 18)
+            axisX.min = 1
+            axisX.max = Math.max(points.length, 2)
+            axisX.tickCount = Math.min(Math.max(points.length, 2), 6)
+            axisY.min = minV
+            axisY.max = maxV
+            chartTitle.text = "Latest: " + safeText(points[points.length - 1].valueFmt, "-") + " " + safeText(historyData.currency, "")
+            firstDateLabel.text = safeText(points[0].dateFmt, "")
+            lastDateLabel.text = safeText(points[points.length - 1].dateFmt, "")
+        }
 
-            ctx.fillStyle = root.textStrong
-            ctx.font = "12px sans-serif"
-            var latestText = "Latest: " + safeText(last.valueFmt, "-") + " " + safeText(historyData.currency, "")
-            ctx.fillText(latestText, leftPad, topPad - 7)
+        onHistoryDataChanged: refreshChart()
+        Component.onCompleted: refreshChart()
+
+        ValueAxis {
+            id: axisX
+            min: 1
+            max: 2
+            labelsVisible: false
+            gridVisible: false
+        }
+
+        ValueAxis {
+            id: axisY
+            min: 0
+            max: 1
+            labelFormat: "%.2f"
+            labelsColor: root.textSoft
+            gridLineColor: "#e8edf1"
+        }
+
+        LineSeries {
+            id: avgCostSeries
+            axisX: axisX
+            axisY: axisY
+            color: root.accent
+            width: 3
+            pointsVisible: true
+        }
+
+        Label {
+            id: chartTitle
+            x: 12
+            y: 8
+            color: root.textStrong
+            font.pixelSize: 12
+            font.bold: true
+        }
+
+        Label {
+            id: firstDateLabel
+            anchors.left: parent.left
+            anchors.bottom: parent.bottom
+            anchors.leftMargin: 18
+            anchors.bottomMargin: 4
+            color: root.textSoft
+            font.pixelSize: 11
+        }
+
+        Label {
+            id: lastDateLabel
+            anchors.right: parent.right
+            anchors.bottom: parent.bottom
+            anchors.rightMargin: 18
+            anchors.bottomMargin: 4
+            color: root.textSoft
+            font.pixelSize: 11
         }
     }
 }
