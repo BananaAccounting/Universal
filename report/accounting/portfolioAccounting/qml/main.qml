@@ -118,6 +118,12 @@ Item {
                             Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
                             spacing: 4
 
+                            Button {
+                                Layout.alignment: Qt.AlignRight
+                                text: "PDF report"
+                                onClicked: previewPortfolioDashboardReport(Banana.document)
+                            }
+
                             Label {
                                 Layout.alignment: Qt.AlignRight
                                 text: safeText(root.dashboard.totals.marketValueFmt, "0")
