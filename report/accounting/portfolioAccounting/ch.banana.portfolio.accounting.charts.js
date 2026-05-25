@@ -77,25 +77,22 @@ function addDashboardKpiReportTable(report, dashboard) {
 
 /**
  * Adds either the currency or account allocation table.
- * The chart column uses an ASCII bar so it remains printable in Banana reports.
  */
 function addDashboardAllocationReportTable(report, data, title) {
     let table = report.addTable(title.replace(/\s/g, ""));
     table.getCaption().addText(title, "styleTitles");
-    table.addColumn("Name").setStyleAttributes("width:20%");
-    table.addColumn("Weight").setStyleAttributes("width:12%");
-    table.addColumn("Chart").setStyleAttributes("width:28%");
-    table.addColumn("Market value").setStyleAttributes("width:20%");
-    table.addColumn("Unrealized G/L").setStyleAttributes("width:20%");
+    table.addColumn("Name").setStyleAttributes("width:25%");
+    table.addColumn("Weight").setStyleAttributes("width:15%");
+    table.addColumn("Market value").setStyleAttributes("width:30%");
+    table.addColumn("Unrealized G/L").setStyleAttributes("width:30%");
 
-    addDashboardReportHeaderRow(table, ["Name", "Weight", "Chart", "Market value", "Unrealized G/L"]);
+    addDashboardReportHeaderRow(table, ["Name", "Weight", "Market value", "Unrealized G/L"]);
 
     for (let i = 0; i < data.length; i++) {
         const rowData = data[i];
         addDashboardReportRow(table, [
             rowData.name,
             rowData.weightPercentFmt,
-            getDashboardAsciiBar(rowData.weightPercent, 24),
             rowData.marketValueFmt,
             rowData.unrealizedGainLossFmt + " (" + rowData.gainLossPercentFmt + ")"
         ]);
@@ -132,7 +129,7 @@ function addDashboardTopHoldingsReportTable(report, dashboard) {
 
 /**
  * Adds the printable average-cost history for a single security.
- * This mirrors the QML chart data but uses rows and bars for reliable PDF output.
+ * The visual chart is inserted above this table as an SVG image.
  */
 function addAverageCostHistoryReportTable(report, history) {
     let chartImage = getAverageCostHistorySvgDataUri(history, 900, 360);
@@ -142,13 +139,12 @@ function addAverageCostHistoryReportTable(report, history) {
 
     let table = report.addTable("avgCostHistory_" + history.item);
     table.getCaption().addText("Average cost history - " + history.description + " (" + history.item + ")", "styleTitles");
-    table.addColumn("Date").setStyleAttributes("width:15%");
-    table.addColumn("Average cost").setStyleAttributes("width:15%");
-    table.addColumn("Quantity").setStyleAttributes("width:15%");
-    table.addColumn("Chart").setStyleAttributes("width:35%");
-    table.addColumn("Description").setStyleAttributes("width:20%");
+    table.addColumn("Date").setStyleAttributes("width:20%");
+    table.addColumn("Average cost").setStyleAttributes("width:20%");
+    table.addColumn("Quantity").setStyleAttributes("width:20%");
+    table.addColumn("Description").setStyleAttributes("width:40%");
 
-    addDashboardReportHeaderRow(table, ["Date", "Average cost", "Quantity", "Chart", "Description"]);
+    addDashboardReportHeaderRow(table, ["Date", "Average cost", "Quantity", "Description"]);
 
     for (let i = 0; i < history.points.length; i++) {
         const point = history.points[i];
@@ -156,7 +152,6 @@ function addAverageCostHistoryReportTable(report, history) {
             point.dateFmt,
             point.valueFmt + " " + history.currency,
             point.quantityFmt,
-            getDashboardValueBar(point.value, history.minValue, history.maxValue, 30),
             point.description
         ]);
     }
@@ -273,33 +268,6 @@ function addDashboardReportRow(table, values) {
     let row = table.addRow();
     for (let i = 0; i < values.length; i++)
         row.addCell(values[i] || "", i > 0 ? "styleNormalAmount" : "");
-}
-
-/**
- * Converts a percentage into a fixed-width ASCII allocation bar.
- */
-function getDashboardAsciiBar(percent, length) {
-    let value = parseFloat(percent || "0");
-    if (value < 0)
-        value = 0;
-    if (value > 100)
-        value = 100;
-
-    let filled = Math.round(value * length / 100);
-    let bar = "";
-    for (let i = 0; i < length; i++)
-        bar += i < filled ? "#" : ".";
-    return bar;
-}
-
-/**
- * Converts a value inside a min/max range into a fixed-width ASCII bar.
- */
-function getDashboardValueBar(value, minValue, maxValue, length) {
-    if (maxValue === minValue)
-        return getDashboardAsciiBar(100, length);
-    let percent = ((value - minValue) / (maxValue - minValue)) * 100;
-    return getDashboardAsciiBar(percent, length);
 }
 
 /**
