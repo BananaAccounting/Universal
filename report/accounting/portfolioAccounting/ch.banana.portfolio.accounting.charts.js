@@ -1,6 +1,6 @@
 // @api = 1.0
-// @id = ch.banana.uni.investment.accounting.chart
-// @description = Charts
+// @id = ch.banana.portfolio.accounting.dashboard
+// @description = Portfolio Dashboard
 // @task = app.command
 // @doctype = 100.*
 // @publisher = Aaron Ploszaj
@@ -9,12 +9,19 @@
 // @timeout = -1
 // @includejs = ch.banana.portfolio.accounting.calculation.methods.js
 
+/**
+ * Entry point registered in Banana. It opens the QML dashboard dialog.
+ */
 function exec() {
     Banana.console.debug("exec called");
     var dialog = Banana.Ui.createQml("Portfolio dashboard", "qml/main.qml");
     dialog.exec();
 }
 
+/**
+ * Builds the printable dashboard report and opens the Banana report preview.
+ * From the preview the user can print or export the report as PDF.
+ */
 function previewPortfolioDashboardReport(banDoc) {
     if (!banDoc)
         return;
@@ -41,6 +48,9 @@ function previewPortfolioDashboardReport(banDoc) {
     Banana.Report.preview(report, getDashboardReportStyle());
 }
 
+/**
+ * Adds a compact title row with report date and base currency.
+ */
 function addDashboardReportTitle(report, dashboard) {
     let table = report.addTable("dashboardTitleTable");
     table.addColumn("Title");
@@ -48,6 +58,9 @@ function addDashboardReportTitle(report, dashboard) {
     row.addCell("Portfolio dashboard - " + dashboard.asOfDate + " - " + dashboard.baseCurrency, "styleDashboardTitle");
 }
 
+/**
+ * Adds the main KPI grid: market value, book value, G/L, counts and missing prices.
+ */
 function addDashboardKpiReportTable(report, dashboard) {
     let table = report.addTable("dashboardKpiTable");
     table.addColumn("Metric").setStyleAttributes("width:25%");
@@ -62,6 +75,10 @@ function addDashboardKpiReportTable(report, dashboard) {
     addDashboardReportRow(table, ["Currencies", String(dashboard.totals.currenciesCount), "Accounts", String(dashboard.totals.accountsCount)]);
 }
 
+/**
+ * Adds either the currency or account allocation table.
+ * The chart column uses an ASCII bar so it remains printable in Banana reports.
+ */
 function addDashboardAllocationReportTable(report, data, title) {
     let table = report.addTable(title.replace(/\s/g, ""));
     table.getCaption().addText(title, "styleTitles");
@@ -85,6 +102,9 @@ function addDashboardAllocationReportTable(report, data, title) {
     }
 }
 
+/**
+ * Adds the largest holdings currently shown in the QML dashboard.
+ */
 function addDashboardTopHoldingsReportTable(report, dashboard) {
     let table = report.addTable("dashboardTopHoldingsTable");
     table.getCaption().addText("Top holdings", "styleTitles");
@@ -110,7 +130,16 @@ function addDashboardTopHoldingsReportTable(report, dashboard) {
     }
 }
 
+/**
+ * Adds the printable average-cost history for a single security.
+ * This mirrors the QML chart data but uses rows and bars for reliable PDF output.
+ */
 function addAverageCostHistoryReportTable(report, history) {
+    let chartImage = getAverageCostHistorySvgDataUri(history, 900, 360);
+    if (chartImage) {
+        report.addImage(chartImage, "18cm", "7.2cm", "styleDashboardChart");
+    }
+
     let table = report.addTable("avgCostHistory_" + history.item);
     table.getCaption().addText("Average cost history - " + history.description + " (" + history.item + ")", "styleTitles");
     table.addColumn("Date").setStyleAttributes("width:15%");
@@ -133,18 +162,122 @@ function addAverageCostHistoryReportTable(report, history) {
     }
 }
 
+/**
+ * Creates an inline SVG data URI with the average-cost line chart.
+ * Banana.Report.addImage() can embed svg images from data URI strings.
+ */
+function getAverageCostHistorySvgDataUri(history, width, height) {
+    if (!history || !history.points || history.points.length < 1)
+        return "";
+
+    let svg = getAverageCostHistorySvg(history, width, height);
+    return "data:image/svg+xml;utf8," + encodeURIComponent(svg);
+}
+
+/**
+ * Builds the SVG markup for the average-cost line chart.
+ */
+function getAverageCostHistorySvg(history, width, height) {
+    const points = history.points || [];
+    const leftPad = 70;
+    const rightPad = 28;
+    const topPad = 44;
+    const bottomPad = 54;
+    const chartW = width - leftPad - rightPad;
+    const chartH = height - topPad - bottomPad;
+    let minValue = parseFloat(history.minValue || "0");
+    let maxValue = parseFloat(history.maxValue || "0");
+
+    if (maxValue === minValue) {
+        maxValue = maxValue + 1;
+        minValue = Math.max(0, minValue - 1);
+    }
+
+    let polyline = "";
+    let circles = "";
+    for (let i = 0; i < points.length; i++) {
+        const x = getAverageCostChartX(i, points.length, leftPad, chartW);
+        const y = getAverageCostChartY(points[i].value, minValue, maxValue, topPad, chartH);
+        polyline += x + "," + y + " ";
+        circles += "<circle cx=\"" + x + "\" cy=\"" + y + "\" r=\"4\" fill=\"#ffffff\" stroke=\"#147d7e\" stroke-width=\"2\"/>";
+    }
+
+    const first = points[0];
+    const last = points[points.length - 1];
+    const title = "Average cost history - " + history.description + " (" + history.item + ")";
+    const latest = "Latest: " + history.latestValueFmt + " - Qty " + history.latestQuantityFmt;
+
+    let grid = "";
+    for (let g = 0; g <= 4; g++) {
+        const y = topPad + chartH * g / 4;
+        grid += "<line x1=\"" + leftPad + "\" y1=\"" + y + "\" x2=\"" + (leftPad + chartW) + "\" y2=\"" + y + "\" stroke=\"#e8edf1\" stroke-width=\"1\"/>";
+    }
+
+    return "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"" + width + "\" height=\"" + height + "\" viewBox=\"0 0 " + width + " " + height + "\">"
+        + "<rect width=\"100%\" height=\"100%\" fill=\"#f8fafb\"/>"
+        + "<text x=\"" + leftPad + "\" y=\"24\" font-family=\"Arial, sans-serif\" font-size=\"18\" font-weight=\"700\" fill=\"#17202a\">" + escapeSvgText(title) + "</text>"
+        + "<text x=\"" + leftPad + "\" y=\"40\" font-family=\"Arial, sans-serif\" font-size=\"12\" fill=\"#687385\">" + escapeSvgText(latest) + "</text>"
+        + grid
+        + "<line x1=\"" + leftPad + "\" y1=\"" + topPad + "\" x2=\"" + leftPad + "\" y2=\"" + (topPad + chartH) + "\" stroke=\"#d8dee6\" stroke-width=\"1\"/>"
+        + "<line x1=\"" + leftPad + "\" y1=\"" + (topPad + chartH) + "\" x2=\"" + (leftPad + chartW) + "\" y2=\"" + (topPad + chartH) + "\" stroke=\"#d8dee6\" stroke-width=\"1\"/>"
+        + "<text x=\"8\" y=\"" + (topPad + 4) + "\" font-family=\"Arial, sans-serif\" font-size=\"11\" fill=\"#687385\">" + escapeSvgText(history.maxValueFmt) + "</text>"
+        + "<text x=\"8\" y=\"" + (topPad + chartH) + "\" font-family=\"Arial, sans-serif\" font-size=\"11\" fill=\"#687385\">" + escapeSvgText(history.minValueFmt) + "</text>"
+        + "<polyline points=\"" + polyline + "\" fill=\"none\" stroke=\"#147d7e\" stroke-width=\"3\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/>"
+        + circles
+        + "<text x=\"" + leftPad + "\" y=\"" + (height - 18) + "\" font-family=\"Arial, sans-serif\" font-size=\"11\" fill=\"#687385\">" + escapeSvgText(first.dateFmt || "") + "</text>"
+        + "<text x=\"" + (leftPad + chartW - 90) + "\" y=\"" + (height - 18) + "\" font-family=\"Arial, sans-serif\" font-size=\"11\" fill=\"#687385\">" + escapeSvgText(last.dateFmt || "") + "</text>"
+        + "</svg>";
+}
+
+/**
+ * Calculates the x coordinate for one chart point.
+ */
+function getAverageCostChartX(index, pointsCount, leftPad, chartW) {
+    if (pointsCount <= 1)
+        return leftPad + chartW / 2;
+    return leftPad + chartW * index / (pointsCount - 1);
+}
+
+/**
+ * Calculates the y coordinate for one chart point.
+ */
+function getAverageCostChartY(value, minValue, maxValue, topPad, chartH) {
+    return topPad + chartH - ((parseFloat(value || "0") - minValue) / (maxValue - minValue)) * chartH;
+}
+
+/**
+ * Escapes values written into SVG text nodes.
+ */
+function escapeSvgText(value) {
+    return String(value || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&apos;");
+}
+
+/**
+ * Adds a standard report header row with the extension table header style.
+ */
 function addDashboardReportHeaderRow(table, labels) {
     let row = table.getHeader().addRow();
     for (let i = 0; i < labels.length; i++)
         row.addCell(labels[i], "styleTablesHeaderText");
 }
 
+/**
+ * Adds a standard report data row and right-aligns value columns.
+ */
 function addDashboardReportRow(table, values) {
     let row = table.addRow();
     for (let i = 0; i < values.length; i++)
         row.addCell(values[i] || "", i > 0 ? "styleNormalAmount" : "");
 }
 
+/**
+ * Converts a percentage into a fixed-width ASCII allocation bar.
+ */
 function getDashboardAsciiBar(percent, length) {
     let value = parseFloat(percent || "0");
     if (value < 0)
@@ -159,6 +292,9 @@ function getDashboardAsciiBar(percent, length) {
     return bar;
 }
 
+/**
+ * Converts a value inside a min/max range into a fixed-width ASCII bar.
+ */
 function getDashboardValueBar(value, minValue, maxValue, length) {
     if (maxValue === minValue)
         return getDashboardAsciiBar(100, length);
@@ -166,12 +302,16 @@ function getDashboardValueBar(value, minValue, maxValue, length) {
     return getDashboardAsciiBar(percent, length);
 }
 
+/**
+ * Extends the shared report stylesheet with styles specific to the dashboard PDF.
+ */
 function getDashboardReportStyle() {
     let stylesheet = getReportStyle();
     stylesheet.addStyle(".styleDashboardTitle").setAttribute("font-weight", "bold");
     stylesheet.addStyle(".styleDashboardTitle").setAttribute("font-size", "14pt");
     stylesheet.addStyle(".styleDashboardTitle").setAttribute("color", "#17313b");
     stylesheet.addStyle(".styleDashboardTitle").setAttribute("padding-bottom", "6px");
+    stylesheet.addStyle(".styleDashboardChart").setAttribute("margin-bottom", "6px");
     stylesheet.addStyle("table.dashboardKpiTable").setAttribute("padding-bottom", "8px");
     return stylesheet;
 }

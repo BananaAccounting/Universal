@@ -1561,6 +1561,10 @@ function getTotalAssetCurrentValue(banDoc, assetCurrency) {
     return total;
 }
 
+/**
+ * Prepares all data needed by the QML portfolio dashboard.
+ * It aggregates securities by currency and account and formats the main KPIs.
+ */
 function getPortfolioDashboardData(banDoc) {
     let dashboard = {
         baseCurrency: "",
@@ -1651,6 +1655,10 @@ function getPortfolioDashboardData(banDoc) {
     return dashboard;
 }
 
+/**
+ * Returns the historical average book cost for one security.
+ * The values are based on the progressive item card calculated by getItemCardDataList().
+ */
 function getSecurityAverageCostHistory(banDoc, itemId) {
     let history = {
         item: itemId || "",
@@ -1738,6 +1746,9 @@ function getSecurityAverageCostHistory(banDoc, itemId) {
     return history;
 }
 
+/**
+ * Creates a normalized point for the average-cost chart/report.
+ */
 function getSecurityAverageCostPoint(date, avgCost, quantity, description, decimals) {
     const numericValue = parseFloat(avgCost || "0");
     return {
@@ -1752,11 +1763,16 @@ function getSecurityAverageCostPoint(date, avgCost, quantity, description, decim
     };
 }
 
+/**
+ * Builds the dashboard payload for one security, including book value,
+ * market value and unrealized gain/loss in base currency.
+ */
 function getDashboardItemData(banDoc, docInfo, item, unitPriceDecimals) {
     if (!item || !item.item || !item.account)
         return null;
 
     let cardData = getItemCardDataList(banDoc, docInfo, item, unitPriceDecimals);
+    /** If there are not current values, the Investment is not taken into account. */
     if (!cardData || !cardData.currentValues)
         return null;
 
@@ -1795,6 +1811,10 @@ function getDashboardItemData(banDoc, docInfo, item, unitPriceDecimals) {
     };
 }
 
+/**
+ * Converts an item-currency amount to base currency using the current book ratio.
+ * For non-multi-currency files the amount is already in base currency.
+ */
 function convertDashboardAmountToBase(docInfo, currentValues, amountCurrency, bookValueCurrency) {
     if (!docInfo || !docInfo.isMultiCurrency)
         return amountCurrency;
@@ -1807,6 +1827,9 @@ function convertDashboardAmountToBase(docInfo, currentValues, amountCurrency, bo
     return Banana.SDecimal.multiply(amountCurrency, conversionRate);
 }
 
+/**
+ * Creates an empty aggregation bucket used for currencies and accounts.
+ */
 function getDashboardGroup(name, currency) {
     return {
         name: name,
@@ -1820,6 +1843,9 @@ function getDashboardGroup(name, currency) {
     };
 }
 
+/**
+ * Adds a security payload to a currency/account aggregation bucket.
+ */
 function addDashboardItemToGroup(group, itemData) {
     group.marketValueBase = Banana.SDecimal.add(group.marketValueBase, itemData.marketValueBase);
     group.bookValueBase = Banana.SDecimal.add(group.bookValueBase, itemData.bookValueBase);
@@ -1829,6 +1855,9 @@ function addDashboardItemToGroup(group, itemData) {
         group.missingPricesCount++;
 }
 
+/**
+ * Converts grouped dashboard data into a sorted array and adds formatted totals.
+ */
 function sortDashboardGroups(groupMap, portfolioMarketValue, baseCurrency) {
     let groups = [];
     for (let key in groupMap) {
@@ -1848,6 +1877,9 @@ function sortDashboardGroups(groupMap, portfolioMarketValue, baseCurrency) {
     return groups;
 }
 
+/**
+ * Sorts holdings by market value and adds formatted values for QML/report output.
+ */
 function sortDashboardItems(items, portfolioMarketValue, baseCurrency) {
     items.forEach(function (item) {
         item.weightPercent = getDashboardPercent(item.marketValueBase, portfolioMarketValue);
@@ -1863,16 +1895,25 @@ function sortDashboardItems(items, portfolioMarketValue, baseCurrency) {
     return items;
 }
 
+/**
+ * Returns value / total as a percentage, guarding against division by zero.
+ */
 function getDashboardPercent(value, total) {
     if (!total || Banana.SDecimal.isZero(total))
         return "0";
     return Banana.SDecimal.multiply(Banana.SDecimal.divide(value || "0", total), "100");
 }
 
+/**
+ * Formats a number using the current Banana locale.
+ */
 function formatDashboardAmount(value, decimals) {
     return Banana.Converter.toLocaleNumberFormat(value || "0", decimals, true);
 }
 
+/**
+ * Formats a number with an explicit plus/minus sign when it is not zero.
+ */
 function formatDashboardSignedAmount(value, decimals) {
     let formatted = formatDashboardAmount(Banana.SDecimal.abs(value || "0"), decimals);
     if (value && String(value).indexOf("-") === 0)
@@ -1882,10 +1923,16 @@ function formatDashboardSignedAmount(value, decimals) {
     return formatted;
 }
 
+/**
+ * Formats a percentage using one decimal.
+ */
 function formatDashboardPercent(value) {
     return Banana.Converter.toLocaleNumberFormat(value || "0", 1, true) + "%";
 }
 
+/**
+ * Formats a percentage with an explicit plus/minus sign when it is not zero.
+ */
 function formatDashboardSignedPercent(value) {
     let formatted = Banana.Converter.toLocaleNumberFormat(Banana.SDecimal.abs(value || "0"), 1, true) + "%";
     if (value && String(value).indexOf("-") === 0)

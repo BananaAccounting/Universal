@@ -45,11 +45,13 @@ Item {
         return width * value / 100
     }
 
+    // Opens the modal chart for a single security using data prepared in methods.js.
     function openSecurityChart(itemId) {
         selectedSecurityHistory = getSecurityAverageCostHistory(Banana.document, itemId)
         securityChartVisible = true
     }
 
+    // Closes the security detail modal and clears its transient data.
     function closeSecurityChart() {
         securityChartVisible = false
         selectedSecurityHistory = ({})
@@ -121,6 +123,7 @@ Item {
                             Button {
                                 Layout.alignment: Qt.AlignRight
                                 text: "PDF report"
+                                // Opens a Banana report preview that can be exported as PDF.
                                 onClicked: previewPortfolioDashboardReport(Banana.document)
                             }
 
@@ -385,6 +388,7 @@ Item {
         }
     }
 
+    // Small label/value pair used in the dark dashboard header.
     component SmallFact: ColumnLayout {
         property string label: ""
         property string value: ""
@@ -404,6 +408,7 @@ Item {
         }
     }
 
+    // KPI tile used for the primary portfolio metrics.
     component KpiCard: Rectangle {
         property string title: ""
         property string value: ""
@@ -446,6 +451,7 @@ Item {
         }
     }
 
+    // Generic white panel with a title; content is provided by the caller.
     component Panel: Rectangle {
         property string heading: ""
 
@@ -464,6 +470,7 @@ Item {
         }
     }
 
+    // Allocation row with a proportional bar for currencies and accounts.
     component AllocationRow: Item {
         property var rowData
         property color barColor: root.accent
@@ -530,6 +537,7 @@ Item {
         }
     }
 
+    // Header label used in compact table-like sections.
     component HeaderCell: Label {
         color: root.textSoft
         font.pixelSize: 11
@@ -537,6 +545,7 @@ Item {
         elide: Text.ElideRight
     }
 
+    // Clickable holding row; selecting it opens the average-cost chart.
     component HoldingRow: Item {
         property var rowData
         signal clicked
@@ -609,6 +618,7 @@ Item {
         }
     }
 
+    // Small metric tile inside the security detail modal.
     component DetailMetric: Rectangle {
         property string title: ""
         property string value: ""
@@ -643,6 +653,7 @@ Item {
         }
     }
 
+    // Canvas line chart that draws the average book cost over time.
     component AverageCostChart: Canvas {
         property var historyData
 
