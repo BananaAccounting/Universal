@@ -2,7 +2,7 @@
 // @id = ch.banana.uni.investment.accounting.chart
 // @description = Charts
 // @task = app.command
-// @doctype = *
+// @doctype = 100.*
 // @publisher = Aaron Ploszaj
 // @pubdate = 2026-05-14
 // @inputdatasource = none
@@ -11,6 +11,6 @@
 
 function exec() {
     Banana.console.debug("exec called");
-    var dialog = Banana.Ui.createQml("Test", "qml/main.qml");
+    var dialog = Banana.Ui.createQml("Portfolio dashboard", "qml/main.qml");
     dialog.exec();
 }

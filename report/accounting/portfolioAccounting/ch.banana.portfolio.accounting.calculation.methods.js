@@ -1560,3 +1560,337 @@ function getTotalAssetCurrentValue(banDoc, assetCurrency) {
     }
     return total;
 }
+
+function getPortfolioDashboardData(banDoc) {
+    let dashboard = {
+        baseCurrency: "",
+        asOfDate: "",
+        totals: {
+            marketValue: "0",
+            bookValue: "0",
+            unrealizedGainLoss: "0",
+            unrealizedGainLossPercent: "0",
+            securitiesCount: 0,
+            currenciesCount: 0,
+            accountsCount: 0,
+            missingPricesCount: 0
+        },
+        currencies: [],
+        accounts: [],
+        topHoldings: []
+    };
+
+    if (!banDoc || !tableExists(banDoc, "Items") || !tableExists(banDoc, "Transactions"))
+        return dashboard;
+
+    const docInfo = getDocumentInfo(banDoc);
+    const itemsData = getItemsTableData(banDoc);
+    if (!docInfo || !itemsData || itemsData.length < 1)
+        return dashboard;
+
+    dashboard.baseCurrency = docInfo.baseCurrency || "";
+    dashboard.asOfDate = Banana.Converter.toLocaleDateFormat(getCurrentDate());
+
+    let unitPriceDecimals = 2;
+    let unitPriceColumn = banDoc.table("Transactions").column("UnitPrice", "Base");
+    if (unitPriceColumn && unitPriceColumn.decimal !== undefined)
+        unitPriceDecimals = unitPriceColumn.decimal;
+
+    let currencyMap = {};
+    let accountMap = {};
+    let portfolioMarketValue = "0";
+    let portfolioBookValue = "0";
+    let portfolioUnrealizedGainLoss = "0";
+    let activeSecuritiesCount = 0;
+    let missingPricesCount = 0;
+
+    for (let i = 0; i < itemsData.length; i++) {
+        const item = itemsData[i];
+        const itemData = getDashboardItemData(banDoc, docInfo, item, unitPriceDecimals);
+        if (!itemData)
+            continue;
+
+        activeSecuritiesCount++;
+        portfolioMarketValue = Banana.SDecimal.add(portfolioMarketValue, itemData.marketValueBase);
+        portfolioBookValue = Banana.SDecimal.add(portfolioBookValue, itemData.bookValueBase);
+        portfolioUnrealizedGainLoss = Banana.SDecimal.add(portfolioUnrealizedGainLoss, itemData.unrealizedGainLossBase);
+
+        if (itemData.priceMissing)
+            missingPricesCount++;
+
+        const currKey = itemData.currency || dashboard.baseCurrency || "N/A";
+        if (!currencyMap[currKey])
+            currencyMap[currKey] = getDashboardGroup(currKey, itemData.currency);
+        addDashboardItemToGroup(currencyMap[currKey], itemData);
+
+        const accountKey = itemData.account || "N/A";
+        if (!accountMap[accountKey])
+            accountMap[accountKey] = getDashboardGroup(accountKey, itemData.currency);
+        addDashboardItemToGroup(accountMap[accountKey], itemData);
+
+        dashboard.topHoldings.push(itemData);
+    }
+
+    dashboard.currencies = sortDashboardGroups(currencyMap, portfolioMarketValue, dashboard.baseCurrency);
+    dashboard.accounts = sortDashboardGroups(accountMap, portfolioMarketValue, dashboard.baseCurrency);
+    dashboard.topHoldings = sortDashboardItems(dashboard.topHoldings, portfolioMarketValue, dashboard.baseCurrency).slice(0, 6);
+
+    dashboard.totals.marketValue = portfolioMarketValue;
+    dashboard.totals.bookValue = portfolioBookValue;
+    dashboard.totals.unrealizedGainLoss = portfolioUnrealizedGainLoss;
+    dashboard.totals.unrealizedGainLossPercent = getDashboardPercent(portfolioUnrealizedGainLoss, portfolioBookValue);
+    dashboard.totals.securitiesCount = activeSecuritiesCount;
+    dashboard.totals.currenciesCount = dashboard.currencies.length;
+    dashboard.totals.accountsCount = dashboard.accounts.length;
+    dashboard.totals.missingPricesCount = missingPricesCount;
+    dashboard.totals.marketValueFmt = formatDashboardAmount(portfolioMarketValue, 2) + " " + dashboard.baseCurrency;
+    dashboard.totals.bookValueFmt = formatDashboardAmount(portfolioBookValue, 2) + " " + dashboard.baseCurrency;
+    dashboard.totals.unrealizedGainLossFmt = formatDashboardSignedAmount(portfolioUnrealizedGainLoss, 2) + " " + dashboard.baseCurrency;
+    dashboard.totals.unrealizedGainLossPercentFmt = formatDashboardSignedPercent(dashboard.totals.unrealizedGainLossPercent);
+
+    return dashboard;
+}
+
+function getSecurityAverageCostHistory(banDoc, itemId) {
+    let history = {
+        item: itemId || "",
+        description: "",
+        currency: "",
+        account: "",
+        points: [],
+        minValue: 0,
+        maxValue: 0,
+        minValueFmt: "",
+        maxValueFmt: "",
+        latestValueFmt: "",
+        latestDateFmt: "",
+        latestQuantityFmt: "",
+        hasData: false
+    };
+
+    if (!banDoc || !itemId || !tableExists(banDoc, "Items") || !tableExists(banDoc, "Transactions"))
+        return history;
+
+    const docInfo = getDocumentInfo(banDoc);
+    const itemObj = getItemRowObj(itemId, banDoc);
+    if (!docInfo || !itemObj || isObjectEmpty(itemObj))
+        return history;
+
+    let unitPriceDecimals = 2;
+    let unitPriceColumn = banDoc.table("Transactions").column("UnitPrice", "Base");
+    if (unitPriceColumn && unitPriceColumn.decimal !== undefined)
+        unitPriceDecimals = unitPriceColumn.decimal;
+
+    const itemCardData = getItemCardDataList(banDoc, docInfo, itemObj, unitPriceDecimals);
+    history.description = itemObj.description || itemObj.item;
+    history.currency = itemObj.currency || getAccountCurrency(itemObj.account, banDoc) || docInfo.baseCurrency;
+    history.account = itemObj.account || "";
+
+    if (itemCardData.openingData && itemCardData.openingData.unitPrice && !Banana.SDecimal.isZero(itemCardData.openingData.qt || "0")) {
+        history.points.push(getSecurityAverageCostPoint(
+            itemCardData.openingData.date || docInfo.openingDate,
+            itemCardData.openingData.unitPrice,
+            itemCardData.openingData.qt,
+            "Opening",
+            unitPriceDecimals
+        ));
+    }
+
+    const transactions = itemCardData.transactionsData || [];
+    for (let i = 0; i < transactions.length; i++) {
+        const tr = transactions[i];
+        if (!tr || !tr.accAvgCost || Banana.SDecimal.isZero(tr.qtBalance || "0"))
+            continue;
+
+        history.points.push(getSecurityAverageCostPoint(
+            tr.date,
+            tr.accAvgCost,
+            tr.qtBalance,
+            tr.description || "",
+            unitPriceDecimals
+        ));
+    }
+
+    history.points = history.points.filter(function (point) {
+        return point && point.value !== undefined && point.value !== null && !isNaN(point.value);
+    });
+
+    if (history.points.length < 1)
+        return history;
+
+    let minValue = history.points[0].value;
+    let maxValue = history.points[0].value;
+    for (let p = 0; p < history.points.length; p++) {
+        minValue = Math.min(minValue, history.points[p].value);
+        maxValue = Math.max(maxValue, history.points[p].value);
+    }
+
+    const latest = history.points[history.points.length - 1];
+    history.minValue = minValue;
+    history.maxValue = maxValue;
+    history.minValueFmt = Banana.Converter.toLocaleNumberFormat(String(minValue), unitPriceDecimals, true) + " " + history.currency;
+    history.maxValueFmt = Banana.Converter.toLocaleNumberFormat(String(maxValue), unitPriceDecimals, true) + " " + history.currency;
+    history.latestValueFmt = latest.valueFmt + " " + history.currency;
+    history.latestDateFmt = latest.dateFmt;
+    history.latestQuantityFmt = latest.quantityFmt;
+    history.hasData = true;
+
+    return history;
+}
+
+function getSecurityAverageCostPoint(date, avgCost, quantity, description, decimals) {
+    const numericValue = parseFloat(avgCost || "0");
+    return {
+        date: date || "",
+        dateFmt: date ? Banana.Converter.toLocaleDateFormat(date) : "",
+        value: numericValue,
+        valueRaw: avgCost || "0",
+        valueFmt: Banana.Converter.toLocaleNumberFormat(avgCost || "0", decimals, true),
+        quantity: quantity || "0",
+        quantityFmt: Banana.Converter.toLocaleNumberFormat(quantity || "0", 0, true),
+        description: description || ""
+    };
+}
+
+function getDashboardItemData(banDoc, docInfo, item, unitPriceDecimals) {
+    if (!item || !item.item || !item.account)
+        return null;
+
+    let cardData = getItemCardDataList(banDoc, docInfo, item, unitPriceDecimals);
+    if (!cardData || !cardData.currentValues)
+        return null;
+
+    const currentValues = cardData.currentValues;
+    const quantity = currentValues.itemQtBalance || item.currentQt || "0";
+    if (Banana.SDecimal.isZero(quantity))
+        return null;
+
+    const avgCost = currentValues.itemAvgCost || "0";
+    const priceMissing = !item.unitPriceCurrent;
+    const marketPrice = item.unitPriceCurrent || avgCost;
+    const currency = item.currency || getAccountCurrency(item.account, banDoc) || docInfo.baseCurrency;
+    const marketValueCurrency = Banana.SDecimal.multiply(quantity, marketPrice);
+    const bookValueCurrency = currentValues.itemBalanceCurr || currentValues.itemBalanceBase || "0";
+    const bookValueBase = currentValues.itemBalanceBase || bookValueCurrency;
+    const marketValueBase = convertDashboardAmountToBase(docInfo, currentValues, marketValueCurrency, bookValueCurrency);
+    const unrealizedGainLossBase = Banana.SDecimal.subtract(marketValueBase, bookValueBase);
+    const unrealizedGainLossCurrency = Banana.SDecimal.subtract(marketValueCurrency, bookValueCurrency);
+
+    return {
+        item: item.item,
+        description: item.description || item.item,
+        account: item.account,
+        currency: currency,
+        quantity: quantity,
+        avgCost: avgCost,
+        marketPrice: marketPrice,
+        marketValueCurrency: marketValueCurrency,
+        marketValueBase: marketValueBase,
+        bookValueCurrency: bookValueCurrency,
+        bookValueBase: bookValueBase,
+        unrealizedGainLossCurrency: unrealizedGainLossCurrency,
+        unrealizedGainLossBase: unrealizedGainLossBase,
+        unrealizedGainLossPercent: getDashboardPercent(unrealizedGainLossBase, bookValueBase),
+        priceMissing: priceMissing
+    };
+}
+
+function convertDashboardAmountToBase(docInfo, currentValues, amountCurrency, bookValueCurrency) {
+    if (!docInfo || !docInfo.isMultiCurrency)
+        return amountCurrency;
+
+    const bookValueBase = currentValues.itemBalanceBase || "0";
+    if (!bookValueCurrency || Banana.SDecimal.isZero(bookValueCurrency))
+        return bookValueBase;
+
+    const conversionRate = Banana.SDecimal.divide(bookValueBase, bookValueCurrency);
+    return Banana.SDecimal.multiply(amountCurrency, conversionRate);
+}
+
+function getDashboardGroup(name, currency) {
+    return {
+        name: name,
+        currency: currency || "",
+        marketValueBase: "0",
+        bookValueBase: "0",
+        unrealizedGainLossBase: "0",
+        securitiesCount: 0,
+        missingPricesCount: 0,
+        weightPercent: "0"
+    };
+}
+
+function addDashboardItemToGroup(group, itemData) {
+    group.marketValueBase = Banana.SDecimal.add(group.marketValueBase, itemData.marketValueBase);
+    group.bookValueBase = Banana.SDecimal.add(group.bookValueBase, itemData.bookValueBase);
+    group.unrealizedGainLossBase = Banana.SDecimal.add(group.unrealizedGainLossBase, itemData.unrealizedGainLossBase);
+    group.securitiesCount++;
+    if (itemData.priceMissing)
+        group.missingPricesCount++;
+}
+
+function sortDashboardGroups(groupMap, portfolioMarketValue, baseCurrency) {
+    let groups = [];
+    for (let key in groupMap) {
+        let group = groupMap[key];
+        group.weightPercent = getDashboardPercent(group.marketValueBase, portfolioMarketValue);
+        group.gainLossPercent = getDashboardPercent(group.unrealizedGainLossBase, group.bookValueBase);
+        group.marketValueFmt = formatDashboardAmount(group.marketValueBase, 2) + " " + baseCurrency;
+        group.bookValueFmt = formatDashboardAmount(group.bookValueBase, 2) + " " + baseCurrency;
+        group.unrealizedGainLossFmt = formatDashboardSignedAmount(group.unrealizedGainLossBase, 2) + " " + baseCurrency;
+        group.weightPercentFmt = formatDashboardPercent(group.weightPercent);
+        group.gainLossPercentFmt = formatDashboardSignedPercent(group.gainLossPercent);
+        groups.push(group);
+    }
+    groups.sort(function (a, b) {
+        return parseFloat(b.marketValueBase || "0") - parseFloat(a.marketValueBase || "0");
+    });
+    return groups;
+}
+
+function sortDashboardItems(items, portfolioMarketValue, baseCurrency) {
+    items.forEach(function (item) {
+        item.weightPercent = getDashboardPercent(item.marketValueBase, portfolioMarketValue);
+        item.marketValueBaseFmt = formatDashboardAmount(item.marketValueBase, 2) + " " + baseCurrency;
+        item.marketValueCurrencyFmt = formatDashboardAmount(item.marketValueCurrency, 2) + " " + item.currency;
+        item.unrealizedGainLossBaseFmt = formatDashboardSignedAmount(item.unrealizedGainLossBase, 2) + " " + baseCurrency;
+        item.unrealizedGainLossPercentFmt = formatDashboardSignedPercent(item.unrealizedGainLossPercent);
+        item.weightPercentFmt = formatDashboardPercent(item.weightPercent);
+    });
+    items.sort(function (a, b) {
+        return parseFloat(b.marketValueBase || "0") - parseFloat(a.marketValueBase || "0");
+    });
+    return items;
+}
+
+function getDashboardPercent(value, total) {
+    if (!total || Banana.SDecimal.isZero(total))
+        return "0";
+    return Banana.SDecimal.multiply(Banana.SDecimal.divide(value || "0", total), "100");
+}
+
+function formatDashboardAmount(value, decimals) {
+    return Banana.Converter.toLocaleNumberFormat(value || "0", decimals, true);
+}
+
+function formatDashboardSignedAmount(value, decimals) {
+    let formatted = formatDashboardAmount(Banana.SDecimal.abs(value || "0"), decimals);
+    if (value && String(value).indexOf("-") === 0)
+        return "-" + formatted;
+    if (!Banana.SDecimal.isZero(value || "0"))
+        return "+" + formatted;
+    return formatted;
+}
+
+function formatDashboardPercent(value) {
+    return Banana.Converter.toLocaleNumberFormat(value || "0", 1, true) + "%";
+}
+
+function formatDashboardSignedPercent(value) {
+    let formatted = Banana.Converter.toLocaleNumberFormat(Banana.SDecimal.abs(value || "0"), 1, true) + "%";
+    if (value && String(value).indexOf("-") === 0)
+        return "-" + formatted;
+    if (!Banana.SDecimal.isZero(value || "0"))
+        return "+" + formatted;
+    return formatted;
+}
