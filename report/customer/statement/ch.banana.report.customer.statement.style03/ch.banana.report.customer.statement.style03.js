@@ -1,4 +1,4 @@
-// Copyright [2023] [Banana.ch SA - Lugano Switzerland]
+// Copyright [2026] [Banana.ch SA - Lugano Switzerland]
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.report.customer.statement.style03.js
 // @api = 1.0
-// @pubdate = 2023-09-13
+// @pubdate = 2026-05-13
 // @publisher = Banana.ch SA
 // @description = Customer Statement (Banana+)
 // @description.it = Estratto cliente (Banana+)
@@ -681,9 +681,8 @@ function printInvoiceStatement_Items(statementObj, repDocObj, texts) {
   //Items
   for (var i = 0; i < statementObj.items.length; i++) {
 
-   rowNumber = printInvoiceStatement_checkFileLength(statementObj, repDocObj, texts);
-
    var item = statementObj.items[i];
+   rowNumber = printInvoiceStatement_checkFileLength(statementObj, repDocObj, texts, item);
    var classRow = "item_row";
    if (item.item_type && item.item_type.indexOf("total") === 0) {
       classRow = "item_total";
@@ -771,7 +770,30 @@ function printInvoiceStatement_FinalText(statementObj, param) {
    }
 }
 
-function printInvoiceStatement_checkFileLength(statementObj, repDocObj, texts) {
+function estimateRowHeight(item) {
+   // Estimate the visual height of a row in "row units" to account for text wrapping.
+   // A4 (210mm) minus 2x1.2cm margins = 18.6cm table width.
+   // Col1 (invoice_no, 9%): ~16.7mm usable → ~7 chars/line at 10pt Helvetica.
+   // Col10 (last_reminder, 13%): ~24mm usable → ~11 chars/line at 10pt Helvetica.
+   var height = 1;
+
+   var invoiceNo = item.number ? item.number.toString() : "";
+   if (invoiceNo.length > 7) {
+      height = Math.max(height, Math.ceil(invoiceNo.length / 7));
+   }
+
+   var lastReminderDate = Banana.Converter.toLocaleDateFormat(item.last_reminder_date);
+   if (lastReminderDate.length > 0) {
+      var fullReminder = lastReminderDate + " (" + item.last_reminder + ".)";
+      if (fullReminder.length > 11) {
+         height = Math.max(height, Math.ceil(fullReminder.length / 11));
+      }
+   }
+
+   return height;
+}
+
+function printInvoiceStatement_checkFileLength(statementObj, repDocObj, texts, item) {
 
    if (rowNumber >= 39 && pageNr == 1) {
       //first page of reminder, max 33 rows (items + begin text + final text)
@@ -790,7 +812,8 @@ function printInvoiceStatement_checkFileLength(statementObj, repDocObj, texts) {
       return 0;
    }
 
-  rowNumber++;
+  var rowHeight = item ? estimateRowHeight(item) : 1;
+  rowNumber += rowHeight;
   return rowNumber;
 }
 
