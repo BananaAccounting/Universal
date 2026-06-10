@@ -1773,8 +1773,6 @@ function getPortfolioDashboardData(banDoc) {
     dashboard.totals.unrealizedGainLossFmt = formatDashboardSignedAmount(portfolioUnrealizedGainLoss, 2) + " " + dashboard.baseCurrency;
     dashboard.totals.unrealizedGainLossPercentFmt = formatDashboardSignedPercent(dashboard.totals.unrealizedGainLossPercent);
 
-    Banana.Ui.showText(JSON.stringify(dashboard));
-
     return dashboard;
 }
 

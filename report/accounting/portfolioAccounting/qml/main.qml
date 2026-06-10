@@ -123,7 +123,7 @@ Item {
 
                             Button {
                                 Layout.alignment: Qt.AlignRight
-                                text: "PDF report"
+                                text: "Export report"
                                 // Opens a Banana report preview that can be exported as PDF.
                                 onClicked: previewPortfolioDashboardReport(Banana.document)
                             }
@@ -655,7 +655,7 @@ Item {
     }
 
     // ChartView line chart that draws the average book cost over time.
-    component AverageCostChart: ChartView {
+    component AverageCostChart: ChartView { // Usa ChartView che fa parte di Qt Charts, valutare se usare invece Qt Graphs
         property var historyData
 
         antialiasing: true
