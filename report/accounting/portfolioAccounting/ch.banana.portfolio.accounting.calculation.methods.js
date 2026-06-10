@@ -1516,54 +1516,167 @@ function getReportStyle() {
     return stylesheet;
 }
 
-/** Returns the list of currencies the Assets refers to */
-function getCurrenciesList(banDoc) {
-    let itemTableData = getItemsTableData(banDoc);
-
-    if (!itemTableData)
-        return [];
-
-    let currList = new Set();
-    for (let i = 0; i < itemTableData.length; i++) {
-        let item = itemTableData[i];
-        if (item.currency)
-            currList.add(item.currency);
-    }
-
-    // Convert Set -> Array
-    return Array.from(currList);
-}
-
-/**
- * Returns the total current value of the assets
- * having the currency equal to "assetCurrency".
- * If assetCurrency is not provided, we perform the calculation
- * taking values in base currency, otherwise, values in the currency
- * of the Asset are taken.
- */
-function getTotalAssetCurrentValue(banDoc, assetCurrency) {
-    Banana.console.log(assetCurrency);
-    let itemTableData = getItemsTableData(banDoc);
-    if (!itemTableData)
-        return [];
-
-    let total = "0";
-    for (let i = 0; i < itemTableData.length; i++) {
-        let item = itemTableData[i];
-        if (assetCurrency) {
-            if (item.currency === assetCurrency && item.valueCurrentCurrency) {
-                total = Banana.SDecimal.add(total, item.valueCurrentCurrency);
-            }
-        } else if (item.valueCurrent) {
-            total = Banana.SDecimal.add(total, item.valueCurrent);
-        }
-    }
-    return total;
-}
-
 /**
  * Prepares all data needed by the QML portfolio dashboard.
  * It aggregates securities by currency and account and formats the main KPIs.
+ * Generates an object with a structure similar to that one
+ * {
+    "baseCurrency": "CHF",
+    "asOfDate": "10.06.2026",
+    "totals": {
+        "marketValue": "7037.810000000000000000000000000000",
+        "bookValue": "7037.81",
+        "unrealizedGainLoss": "0",
+        "unrealizedGainLossPercent": "0",
+        "securitiesCount": 3,
+        "currenciesCount": 2,
+        "accountsCount": 2,
+        "missingPricesCount": 1,
+        "marketValueFmt": "7’037.81 CHF",
+        "bookValueFmt": "7’037.81 CHF",
+        "unrealizedGainLossFmt": "0.00 CHF",
+        "unrealizedGainLossPercentFmt": "0.0%"
+    },
+    "currencies": [
+        {
+        "name": "CHF",
+        "currency": "CHF",
+        "marketValueBase": "6010.00000000",
+        "bookValueBase": "6010.00",
+        "unrealizedGainLossBase": "0",
+        "securitiesCount": 2,
+        "missingPricesCount": 1,
+        "weightPercent": "85.39588309431485078454803411856813",
+        "gainLossPercent": "0",
+        "marketValueFmt": "6’010.00 CHF",
+        "bookValueFmt": "6’010.00 CHF",
+        "unrealizedGainLossFmt": "0.00 CHF",
+        "weightPercentFmt": "85.4%",
+        "gainLossPercentFmt": "0.0%"
+        },
+        {
+        "name": "EUR",
+        "currency": "EUR",
+        "marketValueBase": "1027.810000000000000000000000000000",
+        "bookValueBase": "1027.81",
+        "unrealizedGainLossBase": "0",
+        "securitiesCount": 1,
+        "missingPricesCount": 0,
+        "weightPercent": "14.60411690568514921545196588143187",
+        "gainLossPercent": "0",
+        "marketValueFmt": "1’027.81 CHF",
+        "bookValueFmt": "1’027.81 CHF",
+        "unrealizedGainLossFmt": "0.00 CHF",
+        "weightPercentFmt": "14.6%",
+        "gainLossPercentFmt": "0.0%"
+        }
+    ],
+    "accounts": [
+        {
+        "name": "Private Equity CHF",
+        "currency": "CHF",
+        "marketValueBase": "6010.00000000",
+        "bookValueBase": "6010.00",
+        "unrealizedGainLossBase": "0",
+        "securitiesCount": 2,
+        "missingPricesCount": 1,
+        "weightPercent": "85.39588309431485078454803411856813",
+        "gainLossPercent": "0",
+        "marketValueFmt": "6’010.00 CHF",
+        "bookValueFmt": "6’010.00 CHF",
+        "unrealizedGainLossFmt": "0.00 CHF",
+        "weightPercentFmt": "85.4%",
+        "gainLossPercentFmt": "0.0%"
+        },
+        {
+        "name": "Private Equity EUR",
+        "currency": "EUR",
+        "marketValueBase": "1027.810000000000000000000000000000",
+        "bookValueBase": "1027.81",
+        "unrealizedGainLossBase": "0",
+        "securitiesCount": 1,
+        "missingPricesCount": 0,
+        "weightPercent": "14.60411690568514921545196588143187",
+        "gainLossPercent": "0",
+        "marketValueFmt": "1’027.81 CHF",
+        "bookValueFmt": "1’027.81 CHF",
+        "unrealizedGainLossFmt": "0.00 CHF",
+        "weightPercentFmt": "14.6%",
+        "gainLossPercentFmt": "0.0%"
+        }
+    ],
+    "topHoldings": [
+        {
+        "item": "CHxxxxxxxxx",
+        "description": "Swiss Global Services SA",
+        "account": "Private Equity CHF",
+        "currency": "CHF",
+        "quantity": "55.0000",
+        "avgCost": "100.0000",
+        "marketPrice": "100.0000",
+        "marketValueCurrency": "5500.00000000",
+        "marketValueBase": "5500.00000000",
+        "bookValueCurrency": "5500.00",
+        "bookValueBase": "5500.00",
+        "unrealizedGainLossCurrency": "0",
+        "unrealizedGainLossBase": "0",
+        "unrealizedGainLossPercent": "0",
+        "priceMissing": true,
+        "weightPercent": "78.14931065203522118386259361932192",
+        "marketValueBaseFmt": "5’500.00 CHF",
+        "marketValueCurrencyFmt": "5’500.00 CHF",
+        "unrealizedGainLossBaseFmt": "0.00 CHF",
+        "unrealizedGainLossPercentFmt": "0.0%",
+        "weightPercentFmt": "78.1%"
+        },
+        {
+        "item": "Planet",
+        "description": "Planet",
+        "account": "Private Equity EUR",
+        "currency": "EUR",
+        "quantity": "50.0000",
+        "avgCost": "22.0000",
+        "marketPrice": "22.0000",
+        "marketValueCurrency": "1100.00000000",
+        "marketValueBase": "1027.810000000000000000000000000000",
+        "bookValueCurrency": "1100.00",
+        "bookValueBase": "1027.81",
+        "unrealizedGainLossCurrency": "0",
+        "unrealizedGainLossBase": "0",
+        "unrealizedGainLossPercent": "0",
+        "priceMissing": false,
+        "weightPercent": "14.60411690568514921545196588143187",
+        "marketValueBaseFmt": "1’027.81 CHF",
+        "marketValueCurrencyFmt": "1’100.00 EUR",
+        "unrealizedGainLossBaseFmt": "0.00 CHF",
+        "unrealizedGainLossPercentFmt": "0.0%",
+        "weightPercentFmt": "14.6%"
+        },
+        {
+        "item": "Sun Press SA",
+        "description": "Sun Press SA",
+        "account": "Private Equity CHF",
+        "currency": "CHF",
+        "quantity": "5.0000",
+        "avgCost": "102.0000",
+        "marketPrice": "102.0000",
+        "marketValueCurrency": "510.00000000",
+        "marketValueBase": "510.00000000",
+        "bookValueCurrency": "510.00",
+        "bookValueBase": "510.00",
+        "unrealizedGainLossCurrency": "0",
+        "unrealizedGainLossBase": "0",
+        "unrealizedGainLossPercent": "0",
+        "priceMissing": false,
+        "weightPercent": "7.246572442279629600685440499246214",
+        "marketValueBaseFmt": "510.00 CHF",
+        "marketValueCurrencyFmt": "510.00 CHF",
+        "unrealizedGainLossBaseFmt": "0.00 CHF",
+        "unrealizedGainLossPercentFmt": "0.0%",
+        "weightPercentFmt": "7.2%"
+        }
+    ]
+}
  */
 function getPortfolioDashboardData(banDoc) {
     let dashboard = {
@@ -1622,16 +1735,23 @@ function getPortfolioDashboardData(banDoc) {
         if (itemData.priceMissing)
             missingPricesCount++;
 
+        /** Create grouped data for each currency found used by an item
+         * "addDashboardItemToGroup" sum values to calculate the total value
+         * for the same currency. See "currencies" property in the generated Json Object.*/
         const currKey = itemData.currency || dashboard.baseCurrency || "N/A";
         if (!currencyMap[currKey])
             currencyMap[currKey] = getDashboardGroup(currKey, itemData.currency);
         addDashboardItemToGroup(currencyMap[currKey], itemData);
 
+        /** Create grouped data for each account found used by an item
+         * "addDashboardItemToGroup" sum values to calculate the total value
+         * for the same account. See "accounts" property in the generated Json Object.*/
         const accountKey = itemData.account || "N/A";
         if (!accountMap[accountKey])
             accountMap[accountKey] = getDashboardGroup(accountKey, itemData.currency);
         addDashboardItemToGroup(accountMap[accountKey], itemData);
 
+        /** Save the list of the items*/
         dashboard.topHoldings.push(itemData);
     }
 
@@ -1639,6 +1759,7 @@ function getPortfolioDashboardData(banDoc) {
     dashboard.accounts = sortDashboardGroups(accountMap, portfolioMarketValue, dashboard.baseCurrency);
     dashboard.topHoldings = sortDashboardItems(dashboard.topHoldings, portfolioMarketValue, dashboard.baseCurrency).slice(0, 6);
 
+    /**Save the totals calculated */
     dashboard.totals.marketValue = portfolioMarketValue;
     dashboard.totals.bookValue = portfolioBookValue;
     dashboard.totals.unrealizedGainLoss = portfolioUnrealizedGainLoss;
@@ -1651,6 +1772,8 @@ function getPortfolioDashboardData(banDoc) {
     dashboard.totals.bookValueFmt = formatDashboardAmount(portfolioBookValue, 2) + " " + dashboard.baseCurrency;
     dashboard.totals.unrealizedGainLossFmt = formatDashboardSignedAmount(portfolioUnrealizedGainLoss, 2) + " " + dashboard.baseCurrency;
     dashboard.totals.unrealizedGainLossPercentFmt = formatDashboardSignedPercent(dashboard.totals.unrealizedGainLossPercent);
+
+    Banana.Ui.showText(JSON.stringify(dashboard));
 
     return dashboard;
 }
@@ -1694,6 +1817,7 @@ function getSecurityAverageCostHistory(banDoc, itemId) {
     history.currency = itemObj.currency || getAccountCurrency(itemObj.account, banDoc) || docInfo.baseCurrency;
     history.account = itemObj.account || "";
 
+    /** Insert as first point, the average cost value at opening, if present. */
     if (itemCardData.openingData && itemCardData.openingData.unitPrice && !Banana.SDecimal.isZero(itemCardData.openingData.qt || "0")) {
         history.points.push(getSecurityAverageCostPoint(
             itemCardData.openingData.date || docInfo.openingDate,
@@ -1704,6 +1828,7 @@ function getSecurityAverageCostHistory(banDoc, itemId) {
         ));
     }
 
+    /**Insert other variations of the average cost as points. */
     const transactions = itemCardData.transactionsData || [];
     for (let i = 0; i < transactions.length; i++) {
         const tr = transactions[i];
@@ -1785,10 +1910,10 @@ function getDashboardItemData(banDoc, docInfo, item, unitPriceDecimals) {
     const priceMissing = !item.unitPriceCurrent;
     const marketPrice = item.unitPriceCurrent || avgCost;
     const currency = item.currency || getAccountCurrency(item.account, banDoc) || docInfo.baseCurrency;
-    const marketValueCurrency = Banana.SDecimal.multiply(quantity, marketPrice);
+    const marketValueCurrency = item.valueCurrentCurrency;
     const bookValueCurrency = currentValues.itemBalanceCurr || currentValues.itemBalanceBase || "0";
     const bookValueBase = currentValues.itemBalanceBase || bookValueCurrency;
-    const marketValueBase = convertDashboardAmountToBase(docInfo, currentValues, marketValueCurrency, bookValueCurrency);
+    const marketValueBase = item.valueCurrent;
     const unrealizedGainLossBase = Banana.SDecimal.subtract(marketValueBase, bookValueBase);
     const unrealizedGainLossCurrency = Banana.SDecimal.subtract(marketValueCurrency, bookValueCurrency);
 
@@ -1809,22 +1934,6 @@ function getDashboardItemData(banDoc, docInfo, item, unitPriceDecimals) {
         unrealizedGainLossPercent: getDashboardPercent(unrealizedGainLossBase, bookValueBase),
         priceMissing: priceMissing
     };
-}
-
-/**
- * Converts an item-currency amount to base currency using the current book ratio.
- * For non-multi-currency files the amount is already in base currency.
- */
-function convertDashboardAmountToBase(docInfo, currentValues, amountCurrency, bookValueCurrency) {
-    if (!docInfo || !docInfo.isMultiCurrency)
-        return amountCurrency;
-
-    const bookValueBase = currentValues.itemBalanceBase || "0";
-    if (!bookValueCurrency || Banana.SDecimal.isZero(bookValueCurrency))
-        return bookValueBase;
-
-    const conversionRate = Banana.SDecimal.divide(bookValueBase, bookValueCurrency);
-    return Banana.SDecimal.multiply(amountCurrency, conversionRate);
 }
 
 /**
