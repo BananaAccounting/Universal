@@ -1,7 +1,7 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
-import QtCharts
+import QtGraphs
 
 Item {
     id: root
@@ -654,51 +654,82 @@ Item {
         }
     }
 
-    // ChartView line chart that draws the average book cost over time.
-    component AverageCostChart: ChartView { // Usa ChartView che fa parte di Qt Charts, valutare se usare invece Qt Graphs
+    // GraphsView line chart that draws the average book cost over time.
+    component AverageCostChart: Item {
         property var historyData
 
-        antialiasing: true
-        legend.visible: false
-        backgroundColor: "#f8fafb"
-        plotAreaColor: "#f8fafb"
-        margins.top: 10
-        margins.bottom: 4
-        margins.left: 4
-        margins.right: 4
-
+        // Returns the normalized point list prepared by calculation.methods.js.
         function chartPoints() {
             if (!historyData || !historyData.points)
                 return []
             return historyData.points
         }
 
+        // Keeps labels inside the chart container when points are close to an edge.
+        function clamp(value, minValue, maxValue) {
+            return Math.max(minValue, Math.min(maxValue, value))
+        }
+
+        // Converts a point index to the corresponding pixel x-coordinate in graph.plotArea.
+        function pointPlotX(index) {
+            var span = axisX.max - axisX.min
+            if (span <= 0 || graph.plotArea.width <= 0)
+                return graph.plotArea.x
+            return graph.plotArea.x + (((index + 1) - axisX.min) / span) * graph.plotArea.width
+        }
+
+        // Converts the average-cost value to the corresponding pixel y-coordinate in graph.plotArea.
+        function pointPlotY(value) {
+            var span = axisY.max - axisY.min
+            if (span <= 0 || graph.plotArea.height <= 0)
+                return graph.plotArea.y + graph.plotArea.height
+            return graph.plotArea.y + (1 - ((Number(value || 0) - axisY.min) / span)) * graph.plotArea.height
+        }
+
+        // Rebuilds the line series and axes whenever a different security is selected.
         function refreshChart() {
             var points = chartPoints()
             avgCostSeries.clear()
 
+            // Reset to a harmless default range when there is no chart data.
             if (points.length < 1) {
-                chartTitle.text = "No average cost history available"
+                firstDateLabel.text = ""
+                lastDateLabel.text = ""
+
+                axisX.min = 1
+                axisX.max = 2
+                axisY.min = 0
+                axisY.max = 1
+
                 return
             }
 
             var minV = Number(historyData.minValue || 0)
             var maxV = Number(historyData.maxValue || 0)
+
+            // Avoid a zero-height y-axis when all points have the same value.
             if (maxV === minV) {
                 maxV = maxV + 1
                 minV = Math.max(0, minV - 1)
             }
 
+            // The x value is the 1-based ordinal position of each historical point.
             for (var i = 0; i < points.length; i++) {
                 avgCostSeries.append(i + 1, Number(points[i].value || 0))
             }
 
             axisX.min = 1
             axisX.max = Math.max(points.length, 2)
-            axisX.tickCount = Math.min(Math.max(points.length, 2), 6)
-            axisY.min = minV
-            axisY.max = maxV
-            chartTitle.text = "Latest: " + safeText(points[points.length - 1].valueFmt, "-") + " " + safeText(historyData.currency, "")
+            axisX.subTickCount = 0
+
+            /*
+            Aggiungo un piccolo margine verticale, così le label sopra i punti
+            hanno più spazio e non vengono tagliate.
+            */
+            var yPadding = (maxV - minV) * 0.12
+            axisY.min = Math.max(0, minV - yPadding)
+            axisY.max = maxV + yPadding
+
             firstDateLabel.text = safeText(points[0].dateFmt, "")
             lastDateLabel.text = safeText(points[points.length - 1].dateFmt, "")
         }
@@ -706,59 +737,153 @@ Item {
         onHistoryDataChanged: refreshChart()
         Component.onCompleted: refreshChart()
 
-        ValueAxis {
-            id: axisX
-            min: 1
-            max: 2
-            labelsVisible: false
-            gridVisible: false
+        Rectangle {
+            anchors.fill: parent
+            color: "#f8fafb"
         }
 
-        ValueAxis {
-            id: axisY
-            min: 0
-            max: 1
-            labelFormat: "%.2f"
-            labelsColor: root.textSoft
-            gridLineColor: "#e8edf1"
-        }
+        Column {
+            anchors.fill: parent
+            anchors.margins: 8
+            spacing: 4
 
-        LineSeries {
-            id: avgCostSeries
-            axisX: axisX
-            axisY: axisY
-            color: root.accent
-            width: 3
-            pointsVisible: true
-        }
+            Item {
+                width: parent.width
+                height: parent.height - parent.spacing
 
-        Label {
-            id: chartTitle
-            x: 12
-            y: 8
-            color: root.textStrong
-            font.pixelSize: 12
-            font.bold: true
-        }
+                GraphsView {
+                    id: graph
+                    anchors.fill: parent
 
-        Label {
-            id: firstDateLabel
-            anchors.left: parent.left
-            anchors.bottom: parent.bottom
-            anchors.leftMargin: 18
-            anchors.bottomMargin: 4
-            color: root.textSoft
-            font.pixelSize: 11
-        }
+                    /*
+                    marginTop maggiore perché i valori dei punti vengono
+                    disegnati sopra i marker.
+                    */
+                    marginTop: 26
+                    marginBottom: 18
+                    marginLeft: 4
+                    marginRight: 4
 
-        Label {
-            id: lastDateLabel
-            anchors.right: parent.right
-            anchors.bottom: parent.bottom
-            anchors.rightMargin: 18
-            anchors.bottomMargin: 4
-            color: root.textSoft
-            font.pixelSize: 11
+                    axisX: ValueAxis {
+                        id: axisX
+                        min: 1
+                        max: 2
+
+                        labelsVisible: false
+                        lineVisible: false
+                        gridVisible: false
+                    }
+
+                    axisY: ValueAxis {
+                        id: axisY
+                        min: 0
+                        max: 1
+
+                        labelFormat: "%.2f"
+                    }
+
+                    theme: GraphsTheme {
+                        theme: GraphsTheme.Theme.UserDefined
+
+                        backgroundVisible: false
+
+                        plotAreaBackgroundVisible: true
+                        plotAreaBackgroundColor: "#f8fafb"
+
+                        gridVisible: false
+                        labelsVisible: true
+                        labelTextColor: root.textSoft
+                        labelBackgroundVisible: false
+                        labelBorderVisible: false
+
+                        seriesColors: [root.accent]
+                    }
+
+                    LineSeries {
+                        id: avgCostSeries
+
+                        color: root.accent
+                        width: 3
+                    }
+                }
+
+                // QtGraphs pointDelegate does not expose point values in this runtime.
+                // This overlay draws markers and value labels from historyData.points instead.
+                Item {
+                    anchors.fill: graph
+                    z: 2
+
+                    // Marker dots aligned with the line-series points.
+                    Repeater {
+                        model: chartPoints()
+
+                        Rectangle {
+                            width: 7
+                            height: 7
+                            radius: 3.5
+
+                            x: pointPlotX(index) - width / 2
+                            y: pointPlotY(modelData.value) - height / 2
+
+                            color: root.accent
+                            border.color: "#ffffff"
+                            border.width: 1
+                        }
+                    }
+
+                    // Value badges shown above each point; clamped to avoid clipping at edges.
+                    Repeater {
+                        model: chartPoints()
+
+                        Rectangle {
+                            width: Math.max(pointValueText.implicitWidth + 8, 34)
+                            height: 18
+                            radius: 3
+
+                            x: clamp(pointPlotX(index) - width / 2, 0, parent.width - width)
+                            y: clamp(pointPlotY(modelData.value) - height - 8, 0, parent.height - height)
+
+                            color: "#f8fafb"
+                            border.color: root.lineColor
+                            border.width: 1
+
+                            Text {
+                                id: pointValueText
+
+                                anchors.centerIn: parent
+                                text: modelData.valueFmt || Number(modelData.value || 0).toFixed(2)
+
+                                color: root.textStrong
+                                font.pixelSize: 10
+                            }
+                        }
+                    }
+                }
+
+                Label {
+                    id: firstDateLabel
+
+                    anchors.left: parent.left
+                    anchors.bottom: parent.bottom
+                    anchors.leftMargin: 18
+                    anchors.bottomMargin: 0
+
+                    color: root.textSoft
+                    font.pixelSize: 11
+                }
+
+                Label {
+                    id: lastDateLabel
+
+                    anchors.right: parent.right
+                    anchors.bottom: parent.bottom
+                    anchors.rightMargin: 18
+                    anchors.bottomMargin: 0
+
+                    color: root.textSoft
+                    font.pixelSize: 11
+                }
+            }
         }
     }
 }
