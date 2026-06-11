@@ -790,7 +790,7 @@ Item {
                         plotAreaBackgroundVisible: true
                         plotAreaBackgroundColor: "#f8fafb"
 
-                        gridVisible: false
+                        gridVisible: true
                         labelsVisible: true
                         labelTextColor: root.textSoft
                         labelBackgroundVisible: false

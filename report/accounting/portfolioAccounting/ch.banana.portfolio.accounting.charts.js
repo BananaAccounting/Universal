@@ -188,13 +188,36 @@ function getAverageCostHistorySvg(history, width, height) {
         minValue = Math.max(0, minValue - 1);
     }
 
+    const yPadding = (maxValue - minValue) * 0.12;
+    const axisYMin = Math.max(0, minValue - yPadding);
+    const axisYMax = maxValue + yPadding;
+    const axisXMin = 1;
+    const axisXMax = Math.max(points.length, 2);
+
     let polyline = "";
+    let yGrid = "";
     let circles = "";
+    let valueBadges = "";
+
+    for (let g = 0; g <= 4; g++) {
+        const y = topPad + chartH * g / 4;
+        const value = axisYMax - ((axisYMax - axisYMin) * g / 4);
+        yGrid += "<line x1=\"" + leftPad + "\" y1=\"" + y + "\" x2=\"" + (leftPad + chartW) + "\" y2=\"" + y + "\" stroke=\"#d8dee6\" stroke-width=\"1\" opacity=\"0.65\"/>";
+        yGrid += "<text x=\"" + (leftPad - 10) + "\" y=\"" + (y + 4) + "\" font-family=\"Arial, sans-serif\" font-size=\"10\" text-anchor=\"end\" fill=\"#687385\">" + escapeSvgText(formatAverageCostChartAxisValue(value)) + "</text>";
+    }
+
     for (let i = 0; i < points.length; i++) {
-        const x = getAverageCostChartX(i, points.length, leftPad, chartW);
-        const y = getAverageCostChartY(points[i].value, minValue, maxValue, topPad, chartH);
+        const x = getAverageCostChartX(i, points.length, leftPad, chartW, axisXMin, axisXMax);
+        const y = getAverageCostChartY(points[i].value, axisYMin, axisYMax, topPad, chartH);
+        const label = points[i].valueFmt || String(points[i].value || "0");
+        const badgeW = Math.max(34, label.length * 6 + 8);
+        const badgeX = Math.max(0, Math.min(width - badgeW, x - badgeW / 2));
+        const badgeY = Math.max(2, y - 30);
+
         polyline += x + "," + y + " ";
-        circles += "<circle cx=\"" + x + "\" cy=\"" + y + "\" r=\"4\" fill=\"#ffffff\" stroke=\"#147d7e\" stroke-width=\"2\"/>";
+        circles += "<circle cx=\"" + x + "\" cy=\"" + y + "\" r=\"3.5\" fill=\"#147d7e\" stroke=\"#ffffff\" stroke-width=\"1\"/>";
+        valueBadges += "<rect x=\"" + badgeX + "\" y=\"" + badgeY + "\" width=\"" + badgeW + "\" height=\"18\" rx=\"3\" fill=\"#f8fafb\" stroke=\"#d8dee6\" stroke-width=\"1\"/>";
+        valueBadges += "<text x=\"" + (badgeX + badgeW / 2) + "\" y=\"" + (badgeY + 12) + "\" font-family=\"Arial, sans-serif\" font-size=\"10\" text-anchor=\"middle\" fill=\"#17202a\">" + escapeSvgText(label) + "</text>";
     }
 
     const first = points[0];
@@ -202,35 +225,37 @@ function getAverageCostHistorySvg(history, width, height) {
     const title = "Average cost history - " + history.description + " (" + history.item + ")";
     const latest = "Latest: " + history.latestValueFmt + " - Qty " + history.latestQuantityFmt;
 
-    let grid = "";
-    for (let g = 0; g <= 4; g++) {
-        const y = topPad + chartH * g / 4;
-        grid += "<line x1=\"" + leftPad + "\" y1=\"" + y + "\" x2=\"" + (leftPad + chartW) + "\" y2=\"" + y + "\" stroke=\"#e8edf1\" stroke-width=\"1\"/>";
-    }
-
     return "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"" + width + "\" height=\"" + height + "\" viewBox=\"0 0 " + width + " " + height + "\">"
         + "<rect width=\"100%\" height=\"100%\" fill=\"#f8fafb\"/>"
         + "<text x=\"" + leftPad + "\" y=\"24\" font-family=\"Arial, sans-serif\" font-size=\"18\" font-weight=\"700\" fill=\"#17202a\">" + escapeSvgText(title) + "</text>"
         + "<text x=\"" + leftPad + "\" y=\"40\" font-family=\"Arial, sans-serif\" font-size=\"12\" fill=\"#687385\">" + escapeSvgText(latest) + "</text>"
-        + grid
+        + "<rect x=\"" + leftPad + "\" y=\"" + topPad + "\" width=\"" + chartW + "\" height=\"" + chartH + "\" fill=\"#f8fafb\"/>"
+        + yGrid
         + "<line x1=\"" + leftPad + "\" y1=\"" + topPad + "\" x2=\"" + leftPad + "\" y2=\"" + (topPad + chartH) + "\" stroke=\"#d8dee6\" stroke-width=\"1\"/>"
         + "<line x1=\"" + leftPad + "\" y1=\"" + (topPad + chartH) + "\" x2=\"" + (leftPad + chartW) + "\" y2=\"" + (topPad + chartH) + "\" stroke=\"#d8dee6\" stroke-width=\"1\"/>"
-        + "<text x=\"8\" y=\"" + (topPad + 4) + "\" font-family=\"Arial, sans-serif\" font-size=\"11\" fill=\"#687385\">" + escapeSvgText(history.maxValueFmt) + "</text>"
-        + "<text x=\"8\" y=\"" + (topPad + chartH) + "\" font-family=\"Arial, sans-serif\" font-size=\"11\" fill=\"#687385\">" + escapeSvgText(history.minValueFmt) + "</text>"
         + "<polyline points=\"" + polyline + "\" fill=\"none\" stroke=\"#147d7e\" stroke-width=\"3\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/>"
         + circles
+        + valueBadges
         + "<text x=\"" + leftPad + "\" y=\"" + (height - 18) + "\" font-family=\"Arial, sans-serif\" font-size=\"11\" fill=\"#687385\">" + escapeSvgText(first.dateFmt || "") + "</text>"
-        + "<text x=\"" + (leftPad + chartW - 90) + "\" y=\"" + (height - 18) + "\" font-family=\"Arial, sans-serif\" font-size=\"11\" fill=\"#687385\">" + escapeSvgText(last.dateFmt || "") + "</text>"
+        + "<text x=\"" + (leftPad + chartW) + "\" y=\"" + (height - 18) + "\" font-family=\"Arial, sans-serif\" font-size=\"11\" text-anchor=\"end\" fill=\"#687385\">" + escapeSvgText(last.dateFmt || "") + "</text>"
         + "</svg>";
 }
 
 /**
- * Calculates the x coordinate for one chart point.
+ * Calculates the x coordinate using the same ordinal x-axis used by the QML chart.
  */
-function getAverageCostChartX(index, pointsCount, leftPad, chartW) {
-    if (pointsCount <= 1)
+function getAverageCostChartX(index, pointsCount, leftPad, chartW, axisMin, axisMax) {
+    const xValue = index + 1;
+    if (axisMax <= axisMin)
         return leftPad + chartW / 2;
-    return leftPad + chartW * index / (pointsCount - 1);
+    return leftPad + ((xValue - axisMin) / (axisMax - axisMin)) * chartW;
+}
+
+/**
+ * Formats y-axis values similarly to the QML chart labels.
+ */
+function formatAverageCostChartAxisValue(value) {
+    return Banana.Converter.toLocaleNumberFormat(String(value || "0"), 2, true);
 }
 
 /**
