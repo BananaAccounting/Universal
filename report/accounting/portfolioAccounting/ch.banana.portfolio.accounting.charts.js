@@ -197,7 +197,7 @@ function getAverageCostHistorySvg(history, width, height) {
     let polyline = "";
     let yGrid = "";
     let circles = "";
-    let valueBadges = "";
+    let valueLabels = "";
 
     for (let g = 0; g <= 4; g++) {
         const y = topPad + chartH * g / 4;
@@ -210,14 +210,14 @@ function getAverageCostHistorySvg(history, width, height) {
         const x = getAverageCostChartX(i, points.length, leftPad, chartW, axisXMin, axisXMax);
         const y = getAverageCostChartY(points[i].value, axisYMin, axisYMax, topPad, chartH);
         const label = points[i].valueFmt || String(points[i].value || "0");
-        const badgeW = Math.max(34, label.length * 6 + 8);
-        const badgeX = Math.max(0, Math.min(width - badgeW, x - badgeW / 2));
-        const badgeY = Math.max(2, y - 30);
+        let labelY = y - 10;
+        if (labelY < topPad + 10)
+            labelY = y + 18;
+        labelY = Math.min(topPad + chartH - 4, labelY);
 
         polyline += x + "," + y + " ";
         circles += "<circle cx=\"" + x + "\" cy=\"" + y + "\" r=\"3.5\" fill=\"#147d7e\" stroke=\"#ffffff\" stroke-width=\"1\"/>";
-        valueBadges += "<rect x=\"" + badgeX + "\" y=\"" + badgeY + "\" width=\"" + badgeW + "\" height=\"18\" rx=\"3\" fill=\"#f8fafb\" stroke=\"#d8dee6\" stroke-width=\"1\"/>";
-        valueBadges += "<text x=\"" + (badgeX + badgeW / 2) + "\" y=\"" + (badgeY + 12) + "\" font-family=\"Arial, sans-serif\" font-size=\"10\" text-anchor=\"middle\" fill=\"#17202a\">" + escapeSvgText(label) + "</text>";
+        valueLabels += "<text x=\"" + x + "\" y=\"" + labelY + "\" font-family=\"Arial, sans-serif\" font-size=\"10\" text-anchor=\"middle\" fill=\"#17202a\">" + escapeSvgText(label) + "</text>";
     }
 
     const first = points[0];
@@ -226,16 +226,14 @@ function getAverageCostHistorySvg(history, width, height) {
     const latest = "Latest: " + history.latestValueFmt + " - Qty " + history.latestQuantityFmt;
 
     return "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"" + width + "\" height=\"" + height + "\" viewBox=\"0 0 " + width + " " + height + "\">"
-        + "<rect width=\"100%\" height=\"100%\" fill=\"#f8fafb\"/>"
         + "<text x=\"" + leftPad + "\" y=\"24\" font-family=\"Arial, sans-serif\" font-size=\"18\" font-weight=\"700\" fill=\"#17202a\">" + escapeSvgText(title) + "</text>"
         + "<text x=\"" + leftPad + "\" y=\"40\" font-family=\"Arial, sans-serif\" font-size=\"12\" fill=\"#687385\">" + escapeSvgText(latest) + "</text>"
-        + "<rect x=\"" + leftPad + "\" y=\"" + topPad + "\" width=\"" + chartW + "\" height=\"" + chartH + "\" fill=\"#f8fafb\"/>"
         + yGrid
         + "<line x1=\"" + leftPad + "\" y1=\"" + topPad + "\" x2=\"" + leftPad + "\" y2=\"" + (topPad + chartH) + "\" stroke=\"#d8dee6\" stroke-width=\"1\"/>"
         + "<line x1=\"" + leftPad + "\" y1=\"" + (topPad + chartH) + "\" x2=\"" + (leftPad + chartW) + "\" y2=\"" + (topPad + chartH) + "\" stroke=\"#d8dee6\" stroke-width=\"1\"/>"
         + "<polyline points=\"" + polyline + "\" fill=\"none\" stroke=\"#147d7e\" stroke-width=\"3\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/>"
         + circles
-        + valueBadges
+        + valueLabels
         + "<text x=\"" + leftPad + "\" y=\"" + (height - 18) + "\" font-family=\"Arial, sans-serif\" font-size=\"11\" fill=\"#687385\">" + escapeSvgText(first.dateFmt || "") + "</text>"
         + "<text x=\"" + (leftPad + chartW) + "\" y=\"" + (height - 18) + "\" font-family=\"Arial, sans-serif\" font-size=\"11\" text-anchor=\"end\" fill=\"#687385\">" + escapeSvgText(last.dateFmt || "") + "</text>"
         + "</svg>";
