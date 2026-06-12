@@ -1,0 +1,167 @@
+%%info_test_name{testReportDashboardData}
+\documentclass{report}
+\usepackage{longtable}
+\usepackage{color}
+\usepackage{listings}
+\usepackage[margin=1cm]{geometry}
+\begin{document}
+\newenvironment{tablevalue}[2]{\textbf{Table: #1}\begin{longtable}[l]{#2}}{\end{longtable}}
+\newenvironment{reportvalue}[1]{\textbf{Report: #1}\\}{}
+\lstnewenvironment{jsonvalue}[1]{\textbf{Json: #1}\lstset{language=Java}}{}
+\lstnewenvironment{xmlvalue}[1]{\textbf{Xml: #1}\lstset{language=Xml}}{}
+\newcommand{\info}[2]{\textit{#1: #2}\\}
+\newcommand{\fatalerror}[1]{\textbf{\textcolor[rgb]{1,0,0}{Fatal error: #1}}\\}
+\newcommand{\keyvalue}[2]{\textbf{Keyvalue: #1} #2\\}
+\newcommand{\textvalue}[1]{#1\\}
+\newcommand{\excltest}[1]{\\Excluded from compare: #1}
+\newcommand{\lognewpage}{\newpage}
+\newenvironment{testcase}[1]{\section*{Test: #1}}{\newpage}
+\newenvironment{test}[1]{\section*{Test case: #1}}{}
+%Begin test data
+\section{Test 1.}
+\begin{reportvalue}{Portfolio dashboard}
+\begin{longtable}[l]{ l }
+Portfolio dashboard - 12.06.2026 - CHF \\
+\end{longtable}
+\begin{longtable}[l]{ l  l  l  l }
+Metric  & Value  & Metric  & Value \\
+Market value  & 6'747.40 CHF  & Book value  & 6'109.86 CHF \\
+Unrealized G/L  & +637.54 CHF  & Unrealized G/L \%  & +10.4\% \\
+Securities  & 13  & Missing prices  & 10 \\
+Currencies  & 3  & Accounts  & 8 \\
+\end{longtable}
+\begin{longtable}[l]{ l  l  l  l }
+Currency allocation Name  & Weight  & Market value  & Unrealized G/L \\
+CHF  & 84.8\%  & 5'720.00 CHF  & +120.00 CHF (+2.1\%) \\
+EUR  & 15.2\%  & 1'027.40 CHF  & +517.54 CHF (+101.5\%) \\
+USD  & 0.0\%  & 0.00 CHF  & 0.00 CHF (0.0\%) \\
+\end{longtable}
+\begin{longtable}[l]{ l  l  l  l }
+Account allocation Name  & Weight  & Market value  & Unrealized G/L \\
+Private Equity CHF  & 84.8\%  & 5'720.00 CHF  & +120.00 CHF (+2.1\%) \\
+Private Equity EUR  & 15.2\%  & 1'027.40 CHF  & +517.54 CHF (+101.5\%) \\
+UBS Securities USD  & 0.0\%  & 0.00 CHF  & 0.00 CHF (0.0\%) \\
+Fund Plus UBS CHF  & 0.0\%  & 0.00 CHF  & 0.00 CHF (0.0\%) \\
+Fund Plus CB CHF  & 0.0\%  & 0.00 CHF  & 0.00 CHF (0.0\%) \\
+Investiments Others CHF  & 0.0\%  & 0.00 CHF  & 0.00 CHF (0.0\%) \\
+Private Equity USD  & 0.0\%  & 0.00 CHF  & 0.00 CHF (0.0\%) \\
+UBS Securities CHF  & 0.0\%  & 0.00 CHF  & 0.00 CHF (0.0\%) \\
+\end{longtable}
+\begin{longtable}[l]{ l  l  l  l  l  l }
+Holdings Security  & Currency  & Weight  & Market value  & Base value  & Unrealized G/L \\
+Swiss Global Services SA (CHxxxxxxxxx)  & CHF  & 83.1\%  & 5'610.00 CHF  & 5'610.00 CHF  & +110.00 CHF (+2.0\%) \\
+Planet (Planet)  & EUR  & 15.2\%  & 1'100.00 EUR  & 1'027.40 CHF  & +517.54 CHF (+101.5\%) \\
+Sun Press SA (Sun Press SA)  & CHF  & 1.6\%  & 110.00 CHF  & 110.00 CHF  & +10.00 CHF (+10.0\%) \\
+Fund Plus 2 (Fund Plus 2)  & CHF  & 0.0\%  & 0.00 CHF  & 0.00 CHF  & 0.00 CHF (0.0\%) \\
+XX Props S.A. 2024/26 (XX)  & USD  & 0.0\%  & 0.00 USD  & 0.00 CHF  & 0.00 CHF (0.0\%) \\
+Fund Plus 1 (Fund Plus 1)  & CHF  & 0.0\%  & 0.00 CHF  & 0.00 CHF  & 0.00 CHF (0.0\%) \\
+YYY NV (YYY)  & USD  & 0.0\%  & 0.00 USD  & 0.00 CHF  & 0.00 CHF (0.0\%) \\
+Immo Plaz  AG (Immo Platz  AG)  & CHF  & 0.0\%  & 0.00 CHF  & 0.00 CHF  & 0.00 CHF (0.0\%) \\
+Sunjob (Sunjob)  & EUR  & 0.0\%  & 0.00 EUR  & 0.00 CHF  & 0.00 CHF (0.0\%) \\
+Lemaed SA (Lemaed SA)  & CHF  & 0.0\%  & 0.00 CHF  & 0.00 CHF  & 0.00 CHF (0.0\%) \\
+Loan Home Partners SA (Loan Home Partners SA)  & CHF  & 0.0\%  & 0.00 CHF  & 0.00 CHF  & 0.00 CHF (0.0\%) \\
+UBS Deposit ZZZ (ZZZ)  & CHF  & 0.0\%  & 0.00 CHF  & 0.00 CHF  & 0.00 CHF (0.0\%) \\
+Firedrop USD (Firedrop)  & USD  & 0.0\%  & 0.00 USD  & 0.00 CHF  & 0.00 CHF (0.0\%) \\
+\end{longtable}
+\begin{longtable}[l]{ l  l  l  l }
+Average cost history - Swiss Global Services SA (CHxxxxxxxxx) Date  & Average cost  & Quantity  & Description \\
+01.01.2026  & 100.0000 CHF  & 25  & Opening \\
+20.02.2026  & 100.0000 CHF  & 85  & Shares Swiss Global Services SA Purchase \\
+20.03.2026  & 98.9091 CHF  & 55  & Shares Swiss Global Services SA Sale \\
+20.03.2026  & 100.0000 CHF  & 55  & Swiss Global Services SA Result on sale (Profit) \\
+\end{longtable}
+\begin{longtable}[l]{ l  l  l  l }
+Average cost history - Planet (Planet) Date  & Average cost  & Quantity  & Description \\
+01.01.2026  & 20.0000 EUR  & 10  & Opening \\
+01.02.2026  & 10.9091 EUR  & 110  & Shares Planet Purchase \\
+20.03.2026  & 9.6000 EUR  & 50  & Shares Planet Sale \\
+20.03.2026  & 10.9090 EUR  & 50  & Planet Result on sale (Profit) \\
+20.03.2026  & 10.9090 EUR  & 50  & Planet Result on exchange (Loss) \\
+\end{longtable}
+\begin{longtable}[l]{ l  l  l  l }
+Average cost history - Sun Press SA (Sun Press SA) Date  & Average cost  & Quantity  & Description \\
+01.01.2026  & 20.0000 CHF  & 5  & Opening \\
+\end{longtable}
+\begin{longtable}[l]{ l  l  l  l }
+Average cost history - Loan Home Partners SA (Loan Home Partners SA) Date  & Average cost  & Quantity  & Description \\
+25.03.2026  & 0.9800 CHF  & 5'000  & Bonds Loan Home Partners SA Purchase \\
+31.10.2026  & 0.0000 CHF  & 0  & Bonds Loan Home Partners SA Sale \\
+31.10.2026  & 0.0000 CHF  & 0  & Loan Home Partners SA Result on sale (Profit) \\
+\end{longtable}
+\end{reportvalue}
+\section{Test 2.}
+\begin{reportvalue}{Portfolio dashboard}
+\begin{longtable}[l]{ l }
+Portfolio dashboard - 12.06.2026 - CHF \\
+\end{longtable}
+\begin{longtable}[l]{ l  l  l  l }
+Metric  & Value  & Metric  & Value \\
+Market value  & 6'747.40 CHF  & Book value  & 6'747.40 CHF \\
+Unrealized G/L  & 0.00 CHF  & Unrealized G/L \%  & 0.0\% \\
+Securities  & 13  & Missing prices  & 10 \\
+Currencies  & 3  & Accounts  & 8 \\
+\end{longtable}
+\begin{longtable}[l]{ l  l  l  l }
+Currency allocation Name  & Weight  & Market value  & Unrealized G/L \\
+CHF  & 84.8\%  & 5'720.00 CHF  & 0.00 CHF (0.0\%) \\
+EUR  & 15.2\%  & 1'027.40 CHF  & 0.00 CHF (0.0\%) \\
+USD  & 0.0\%  & 0.00 CHF  & 0.00 CHF (0.0\%) \\
+\end{longtable}
+\begin{longtable}[l]{ l  l  l  l }
+Account allocation Name  & Weight  & Market value  & Unrealized G/L \\
+Private Equity CHF  & 84.8\%  & 5'720.00 CHF  & 0.00 CHF (0.0\%) \\
+Private Equity EUR  & 15.2\%  & 1'027.40 CHF  & 0.00 CHF (0.0\%) \\
+UBS Securities USD  & 0.0\%  & 0.00 CHF  & 0.00 CHF (0.0\%) \\
+Fund Plus UBS CHF  & 0.0\%  & 0.00 CHF  & 0.00 CHF (0.0\%) \\
+Fund Plus CB CHF  & 0.0\%  & 0.00 CHF  & 0.00 CHF (0.0\%) \\
+Investiments Others CHF  & 0.0\%  & 0.00 CHF  & 0.00 CHF (0.0\%) \\
+Private Equity USD  & 0.0\%  & 0.00 CHF  & 0.00 CHF (0.0\%) \\
+UBS Securities CHF  & 0.0\%  & 0.00 CHF  & 0.00 CHF (0.0\%) \\
+\end{longtable}
+\begin{longtable}[l]{ l  l  l  l  l  l }
+Holdings Security  & Currency  & Weight  & Market value  & Base value  & Unrealized G/L \\
+Swiss Global Services SA (CHxxxxxxxxx)  & CHF  & 83.1\%  & 5'610.00 CHF  & 5'610.00 CHF  & 0.00 CHF (0.0\%) \\
+Planet (Planet)  & EUR  & 15.2\%  & 1'100.00 EUR  & 1'027.40 CHF  & 0.00 CHF (0.0\%) \\
+Sun Press SA (Sun Press SA)  & CHF  & 1.6\%  & 110.00 CHF  & 110.00 CHF  & 0.00 CHF (0.0\%) \\
+Fund Plus 2 (Fund Plus 2)  & CHF  & 0.0\%  & 0.00 CHF  & 0.00 CHF  & 0.00 CHF (0.0\%) \\
+XX Props S.A. 2024/26 (XX)  & USD  & 0.0\%  & 0.00 USD  & 0.00 CHF  & 0.00 CHF (0.0\%) \\
+Fund Plus 1 (Fund Plus 1)  & CHF  & 0.0\%  & 0.00 CHF  & 0.00 CHF  & 0.00 CHF (0.0\%) \\
+YYY NV (YYY)  & USD  & 0.0\%  & 0.00 USD  & 0.00 CHF  & 0.00 CHF (0.0\%) \\
+Immo Plaz  AG (Immo Platz  AG)  & CHF  & 0.0\%  & 0.00 CHF  & 0.00 CHF  & 0.00 CHF (0.0\%) \\
+Sunjob (Sunjob)  & EUR  & 0.0\%  & 0.00 EUR  & 0.00 CHF  & 0.00 CHF (0.0\%) \\
+Lemaed SA (Lemaed SA)  & CHF  & 0.0\%  & 0.00 CHF  & 0.00 CHF  & 0.00 CHF (0.0\%) \\
+Loan Home Partners SA (Loan Home Partners SA)  & CHF  & 0.0\%  & 0.00 CHF  & 0.00 CHF  & 0.00 CHF (0.0\%) \\
+UBS Deposit ZZZ (ZZZ)  & CHF  & 0.0\%  & 0.00 CHF  & 0.00 CHF  & 0.00 CHF (0.0\%) \\
+Firedrop USD (Firedrop)  & USD  & 0.0\%  & 0.00 USD  & 0.00 CHF  & 0.00 CHF (0.0\%) \\
+\end{longtable}
+\begin{longtable}[l]{ l  l  l  l }
+Average cost history - Swiss Global Services SA (CHxxxxxxxxx) Date  & Average cost  & Quantity  & Description \\
+01.01.2026  & 100.0000 CHF  & 25  & Opening \\
+20.02.2026  & 100.0000 CHF  & 85  & Shares Swiss Global Services SA Purchase \\
+20.03.2026  & 98.9091 CHF  & 55  & Shares Swiss Global Services SA Sale \\
+20.03.2026  & 100.0000 CHF  & 55  & Swiss Global Services SA Result on sale (Profit) \\
+11.06.2026  & 102.0000 CHF  & 55  & Swiss Global Services SA Assestamento al prezzo di mercato (102.0000) \\
+\end{longtable}
+\begin{longtable}[l]{ l  l  l  l }
+Average cost history - Planet (Planet) Date  & Average cost  & Quantity  & Description \\
+01.01.2026  & 20.0000 EUR  & 10  & Opening \\
+01.02.2026  & 10.9091 EUR  & 110  & Shares Planet Purchase \\
+20.03.2026  & 9.6000 EUR  & 50  & Shares Planet Sale \\
+20.03.2026  & 10.9090 EUR  & 50  & Planet Result on sale (Profit) \\
+20.03.2026  & 10.9090 EUR  & 50  & Planet Result on exchange (Loss) \\
+11.06.2026  & 22.0000 EUR  & 50  & Planet Assestamento al prezzo di mercato (22.0000) \\
+11.06.2026  & 22.0000 EUR  & 50  & Planet Assestamento al tasso di cambio alla data di valutazione \\
+\end{longtable}
+\begin{longtable}[l]{ l  l  l  l }
+Average cost history - Sun Press SA (Sun Press SA) Date  & Average cost  & Quantity  & Description \\
+01.01.2026  & 20.0000 CHF  & 5  & Opening \\
+11.06.2026  & 22.0000 CHF  & 5  & Sun Press SA Assestamento al prezzo di mercato (22.0000) \\
+\end{longtable}
+\begin{longtable}[l]{ l  l  l  l }
+Average cost history - Loan Home Partners SA (Loan Home Partners SA) Date  & Average cost  & Quantity  & Description \\
+25.03.2026  & 0.9800 CHF  & 5'000  & Bonds Loan Home Partners SA Purchase \\
+31.10.2026  & 0.0000 CHF  & 0  & Bonds Loan Home Partners SA Sale \\
+31.10.2026  & 0.0000 CHF  & 0  & Loan Home Partners SA Result on sale (Profit) \\
+\end{longtable}
+\end{reportvalue}
+\end{document}

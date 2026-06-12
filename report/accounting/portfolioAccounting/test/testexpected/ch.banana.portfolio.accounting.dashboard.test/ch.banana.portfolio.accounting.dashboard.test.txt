@@ -27,5 +27,8 @@
 \begin{test}{testSecurityAverageCostHistory}
 \keyvalue{Result}{Passed}
 \end{test}
+\begin{test}{testReportDashboardData}
+\keyvalue{Result}{Passed}
+\end{test}
 \end{testcase}
 \end{document}

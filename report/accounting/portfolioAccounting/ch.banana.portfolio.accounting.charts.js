@@ -28,6 +28,11 @@ function previewPortfolioDashboardReport(banDoc) {
 
     let dashboard = getPortfolioDashboardData(banDoc);
     let report = Banana.Report.newReport("Portfolio dashboard");
+    previewPortfolioDashboardReportPrepare(banDoc,report,dashboard);
+    Banana.Report.preview(report, getDashboardReportStyle());
+}
+
+function previewPortfolioDashboardReportPrepare(banDoc, report, dashboard){
     getReportHeader(report, getDocumentInfo(banDoc));
 
     addDashboardReportTitle(report, dashboard);
@@ -44,8 +49,6 @@ function previewPortfolioDashboardReport(banDoc) {
             addAverageCostHistoryReportTable(report, history);
         }
     }
-
-    Banana.Report.preview(report, getDashboardReportStyle());
 }
 
 /**
