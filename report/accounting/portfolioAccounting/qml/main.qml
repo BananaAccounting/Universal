@@ -535,6 +535,7 @@ Item {
                     text: rowData.weightPercentFmt
                     color: root.textSoft
                     font.pixelSize: 12
+                    Layout.preferredWidth: 54
                     elide: Text.ElideRight
                     horizontalAlignment: Text.AlignRight
                 }
@@ -570,7 +571,7 @@ Item {
                     text: rowData.unrealizedGainLossFmt + " (" + rowData.gainLossPercentFmt + ")"
                     color: root.metricColor(rowData.unrealizedGainLossFmt)
                     font.pixelSize: 11
-                    Layout.maximumWidth: parent.width * 0.55
+                    Layout.preferredWidth: 170
                     elide: Text.ElideRight
                     horizontalAlignment: Text.AlignRight
                 }
