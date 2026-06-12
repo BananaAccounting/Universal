@@ -72,6 +72,7 @@ TestDashboard.prototype.testDashBoardData = function () {
     banDoc = Banana.application.openDocument(fileName);
     Test.assert(banDoc);
     dashboardData = getPortfolioDashboardData(banDoc);
+    dashboardData.asOfDate =  "11.06.2026"; // Set fix date.
     this.testLogger.addSection("Test 1.");
     this.testLogger.addJson("Dashboard data", JSON.stringify(dashboardData));
 
@@ -82,6 +83,7 @@ TestDashboard.prototype.testDashBoardData = function () {
     banDoc = Banana.application.openDocument(fileName);
     Test.assert(banDoc);
     dashboardData = getPortfolioDashboardData(banDoc);
+    dashboardData.asOfDate =  "11.06.2026"; // Set fix date.
     this.testLogger.addSection("Test 2.");
     this.testLogger.addJson("Dashboard data", JSON.stringify(dashboardData));
 }
