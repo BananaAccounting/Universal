@@ -1757,7 +1757,7 @@ function getPortfolioDashboardData(banDoc) {
 
     dashboard.currencies = sortDashboardGroups(currencyMap, portfolioMarketValue, dashboard.baseCurrency);
     dashboard.accounts = sortDashboardGroups(accountMap, portfolioMarketValue, dashboard.baseCurrency);
-    dashboard.topHoldings = sortDashboardItems(dashboard.topHoldings, portfolioMarketValue, dashboard.baseCurrency).slice(0, 6);
+    dashboard.topHoldings = sortDashboardItems(dashboard.topHoldings, portfolioMarketValue, dashboard.baseCurrency);
 
     /**Save the totals calculated */
     dashboard.totals.marketValue = portfolioMarketValue;

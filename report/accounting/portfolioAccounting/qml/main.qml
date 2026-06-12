@@ -46,6 +46,18 @@ Item {
         return width * value / 100
     }
 
+    function allocationPanelHeight(countA, countB) {
+        var rowsA = Math.max(0, Number(countA || 0))
+        var rowsB = Math.max(0, Number(countB || 0))
+        var rows = Math.max(rowsA, rowsB)
+        return Math.max(150, Math.min(320, 66 + rows * 48 + Math.max(0, rows - 1) * 10))
+    }
+
+    function holdingsPanelHeight(count) {
+        var rows = Math.max(0, Number(count || 0))
+        return Math.max(170, Math.min(430, 97 + rows * 34))
+    }
+
     // Opens the modal chart for a single security using data prepared in methods.js.
     function openSecurityChart(itemId) {
         selectedSecurityHistory = getSecurityAverageCostHistory(Banana.document, itemId)
@@ -193,44 +205,56 @@ Item {
 
                     Panel {
                         Layout.fillWidth: true
-                        Layout.preferredHeight: 320
+                        Layout.preferredHeight: root.allocationPanelHeight(root.dashboard.currencies ? root.dashboard.currencies.length : 0, root.dashboard.accounts ? root.dashboard.accounts.length : 0)
                         heading: "Currency allocation"
 
-                        ColumnLayout {
+                        ListView {
+                            id: currencyAllocationList
+
                             anchors.fill: parent
                             anchors.margins: 16
                             anchors.topMargin: 50
+                            clip: true
+                            boundsBehavior: Flickable.StopAtBounds
                             spacing: 10
+                            model: root.dashboard.currencies
 
-                            Repeater {
-                                model: root.dashboard.currencies
+                            ScrollBar.vertical: ScrollBar {
+                                policy: ScrollBar.AsNeeded
+                            }
 
-                                AllocationRow {
-                                    rowData: modelData
-                                    barColor: root.accent
-                                }
+                            delegate: AllocationRow {
+                                width: currencyAllocationList.width
+                                rowData: modelData
+                                barColor: root.accent
                             }
                         }
                     }
 
                     Panel {
                         Layout.fillWidth: true
-                        Layout.preferredHeight: 320
+                        Layout.preferredHeight: root.allocationPanelHeight(root.dashboard.currencies ? root.dashboard.currencies.length : 0, root.dashboard.accounts ? root.dashboard.accounts.length : 0)
                         heading: "Account allocation"
 
-                        ColumnLayout {
+                        ListView {
+                            id: accountAllocationList
+
                             anchors.fill: parent
                             anchors.margins: 16
                             anchors.topMargin: 50
+                            clip: true
+                            boundsBehavior: Flickable.StopAtBounds
                             spacing: 10
+                            model: root.dashboard.accounts
 
-                            Repeater {
-                                model: root.dashboard.accounts
+                            ScrollBar.vertical: ScrollBar {
+                                policy: ScrollBar.AsNeeded
+                            }
 
-                                AllocationRow {
-                                    rowData: modelData
-                                    barColor: "#5f6f89"
-                                }
+                            delegate: AllocationRow {
+                                width: accountAllocationList.width
+                                rowData: modelData
+                                barColor: "#5f6f89"
                             }
                         }
                     }
@@ -240,8 +264,8 @@ Item {
                     Layout.fillWidth: true
                     Layout.leftMargin: 16
                     Layout.rightMargin: 16
-                    Layout.preferredHeight: 270
-                    heading: "Top holdings"
+                    Layout.preferredHeight: root.holdingsPanelHeight(root.dashboard.topHoldings ? root.dashboard.topHoldings.length : 0)
+                    heading: "Holdings"
 
                     ColumnLayout {
                         anchors.fill: parent
@@ -266,11 +290,21 @@ Item {
                             Layout.preferredHeight: 1
                             color: root.lineColor
                         }
+                        ListView {
+                            id: holdingsList
 
-                        Repeater {
+                            Layout.fillWidth: true
+                            Layout.fillHeight: true
+                            clip: true
+                            boundsBehavior: Flickable.StopAtBounds
                             model: root.dashboard.topHoldings
 
-                            HoldingRow {
+                            ScrollBar.vertical: ScrollBar {
+                                policy: ScrollBar.AsNeeded
+                            }
+
+                            delegate: HoldingRow {
+                                width: holdingsList.width
                                 rowData: modelData
                                 onClicked: root.openSecurityChart(rowData.item)
                             }
@@ -455,7 +489,7 @@ Item {
     // Generic white panel with a title; content is provided by the caller.
     component Panel: Rectangle {
         property string heading: ""
-
+        clip: true
         radius: 7
         color: root.panelBg
         border.width: 1
@@ -475,9 +509,10 @@ Item {
     component AllocationRow: Item {
         property var rowData
         property color barColor: root.accent
-
+        implicitHeight: 48
+        height: implicitHeight
         Layout.fillWidth: true
-        Layout.preferredHeight: 48
+        Layout.preferredHeight: implicitHeight
 
         ColumnLayout {
             anchors.fill: parent
@@ -500,6 +535,8 @@ Item {
                     text: rowData.weightPercentFmt
                     color: root.textSoft
                     font.pixelSize: 12
+                    elide: Text.ElideRight
+                    horizontalAlignment: Text.AlignRight
                 }
             }
 
@@ -533,6 +570,9 @@ Item {
                     text: rowData.unrealizedGainLossFmt + " (" + rowData.gainLossPercentFmt + ")"
                     color: root.metricColor(rowData.unrealizedGainLossFmt)
                     font.pixelSize: 11
+                    Layout.maximumWidth: parent.width * 0.55
+                    elide: Text.ElideRight
+                    horizontalAlignment: Text.AlignRight
                 }
             }
         }
@@ -551,8 +591,10 @@ Item {
         property var rowData
         signal clicked
 
+        implicitHeight: 34
+        height: implicitHeight
         Layout.fillWidth: true
-        Layout.preferredHeight: 34
+        Layout.preferredHeight: implicitHeight
 
         Rectangle {
             anchors.fill: parent
@@ -571,7 +613,7 @@ Item {
                 text: rowData.description + " (" + rowData.item + ")"
                 color: root.textStrong
                 font.pixelSize: 12
-                elide: Text.ElideRight
+                    elide: Text.ElideRight
             }
 
             Label {

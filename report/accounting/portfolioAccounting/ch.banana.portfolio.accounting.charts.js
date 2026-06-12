@@ -100,11 +100,11 @@ function addDashboardAllocationReportTable(report, data, title) {
 }
 
 /**
- * Adds the largest holdings currently shown in the QML dashboard.
+ * Adds all holdings currently shown in the QML dashboard.
  */
 function addDashboardTopHoldingsReportTable(report, dashboard) {
     let table = report.addTable("dashboardTopHoldingsTable");
-    table.getCaption().addText("Top holdings", "styleTitles");
+    table.getCaption().addText("Holdings", "styleTitles");
     table.addColumn("Security").setStyleAttributes("width:28%");
     table.addColumn("Currency").setStyleAttributes("width:10%");
     table.addColumn("Weight").setStyleAttributes("width:10%");
