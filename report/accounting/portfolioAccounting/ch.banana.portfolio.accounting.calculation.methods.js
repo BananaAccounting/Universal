@@ -1830,7 +1830,7 @@ function getSecurityAverageCostHistory(banDoc, itemId) {
     const transactions = itemCardData.transactionsData || [];
     for (let i = 0; i < transactions.length; i++) {
         const tr = transactions[i];
-        if (!tr || !tr.accAvgCost || Banana.SDecimal.isZero(tr.qtBalance || "0"))
+        if (!tr)
             continue;
 
         history.points.push(getSecurityAverageCostPoint(
@@ -1901,8 +1901,6 @@ function getDashboardItemData(banDoc, docInfo, item, unitPriceDecimals) {
 
     const currentValues = cardData.currentValues;
     const quantity = currentValues.itemQtBalance || item.currentQt || "0";
-    if (Banana.SDecimal.isZero(quantity))
-        return null;
 
     const avgCost = currentValues.itemAvgCost || "0";
     const priceMissing = !item.unitPriceCurrent;

@@ -123,7 +123,7 @@ Item {
 
                             Button {
                                 Layout.alignment: Qt.AlignRight
-                                text: "Export report"
+                                text: "Export data"
                                 // Opens a Banana report preview that can be exported as PDF.
                                 onClicked: previewPortfolioDashboardReport(Banana.document)
                             }

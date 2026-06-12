@@ -76,7 +76,7 @@ TestDashboard.prototype.testDashBoardData = function () {
     this.testLogger.addJson("Dashboard data", JSON.stringify(dashboardData));
 
     /**Test 2.
-     * In the accounting file adjustments are registered. No unrealized gain or losses must be visible.
+     * Same accounting data as Test 1 but adjustments are registered. Unrealized gain or losses must be 0.
      */
     fileName = "file:script/../test/testcases/dashboard/portfolio_accounting_double_entry_multi_currency_tutorial_withadjustments.ac2";
     banDoc = Banana.application.openDocument(fileName);
