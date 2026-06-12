@@ -1,0 +1,791 @@
+%%info_test_name{testSecurityAverageCostHistory}
+\documentclass{report}
+\usepackage{longtable}
+\usepackage{color}
+\usepackage{listings}
+\usepackage[margin=1cm]{geometry}
+\begin{document}
+\newenvironment{tablevalue}[2]{\textbf{Table: #1}\begin{longtable}[l]{#2}}{\end{longtable}}
+\newenvironment{reportvalue}[1]{\textbf{Report: #1}\\}{}
+\lstnewenvironment{jsonvalue}[1]{\textbf{Json: #1}\lstset{language=Java}}{}
+\lstnewenvironment{xmlvalue}[1]{\textbf{Xml: #1}\lstset{language=Xml}}{}
+\newcommand{\info}[2]{\textit{#1: #2}\\}
+\newcommand{\fatalerror}[1]{\textbf{\textcolor[rgb]{1,0,0}{Fatal error: #1}}\\}
+\newcommand{\keyvalue}[2]{\textbf{Keyvalue: #1} #2\\}
+\newcommand{\textvalue}[1]{#1\\}
+\newcommand{\excltest}[1]{\\Excluded from compare: #1}
+\newcommand{\lognewpage}{\newpage}
+\newenvironment{testcase}[1]{\section*{Test: #1}}{\newpage}
+\newenvironment{test}[1]{\section*{Test case: #1}}{}
+%Begin test data
+\section{Test 1.}
+\begin{jsonvalue}{Item history data}
+{
+    "account": "Private Equity EUR",
+    "currency": "EUR",
+    "description": "Planet",
+    "hasData": true,
+    "item": "Planet",
+    "latestDateFmt": "20.03.2026",
+    "latestQuantityFmt": "50",
+    "latestValueFmt": "10.9090 EUR",
+    "maxValue": 20,
+    "maxValueFmt": "20.0000 EUR",
+    "minValue": 9.6,
+    "minValueFmt": "9.6000 EUR",
+    "points": [
+        {
+            "date": "2026-01-01",
+            "dateFmt": "01.01.2026",
+            "description": "Opening",
+            "quantity": "10.0000",
+            "quantityFmt": "10",
+            "value": 20,
+            "valueFmt": "20.0000",
+            "valueRaw": "20.0000"
+        },
+        {
+            "date": "2026-02-01",
+            "dateFmt": "01.02.2026",
+            "description": "Shares Planet Purchase",
+            "quantity": "110.0000",
+            "quantityFmt": "110",
+            "value": 10.9091,
+            "valueFmt": "10.9091",
+            "valueRaw": "10.9091"
+        },
+        {
+            "date": "2026-03-20",
+            "dateFmt": "20.03.2026",
+            "description": "Shares Planet Sale",
+            "quantity": "50.0000",
+            "quantityFmt": "50",
+            "value": 9.6,
+            "valueFmt": "9.6000",
+            "valueRaw": "9.6000"
+        },
+        {
+            "date": "2026-03-20",
+            "dateFmt": "20.03.2026",
+            "description": "Planet Result on sale (Profit)",
+            "quantity": "50.0000",
+            "quantityFmt": "50",
+            "value": 10.909,
+            "valueFmt": "10.9090",
+            "valueRaw": "10.9090"
+        },
+        {
+            "date": "2026-03-20",
+            "dateFmt": "20.03.2026",
+            "description": "Planet Result on exchange (Loss)",
+            "quantity": "50.0000",
+            "quantityFmt": "50",
+            "value": 10.909,
+            "valueFmt": "10.9090",
+            "valueRaw": "10.9090"
+        }
+    ]
+}
+\end{jsonvalue}
+\begin{jsonvalue}{Item history data}
+{
+    "account": "Private Equity EUR",
+    "currency": "EUR",
+    "description": "Sunjob",
+    "hasData": false,
+    "item": "Sunjob",
+    "latestDateFmt": "",
+    "latestQuantityFmt": "",
+    "latestValueFmt": "",
+    "maxValue": 0,
+    "maxValueFmt": "",
+    "minValue": 0,
+    "minValueFmt": "",
+    "points": [
+    ]
+}
+\end{jsonvalue}
+\begin{jsonvalue}{Item history data}
+{
+    "account": "Private Equity CHF",
+    "currency": "CHF",
+    "description": "Sun Press SA",
+    "hasData": true,
+    "item": "Sun Press SA",
+    "latestDateFmt": "01.01.2026",
+    "latestQuantityFmt": "5",
+    "latestValueFmt": "20.0000 CHF",
+    "maxValue": 20,
+    "maxValueFmt": "20.0000 CHF",
+    "minValue": 20,
+    "minValueFmt": "20.0000 CHF",
+    "points": [
+        {
+            "date": "2026-01-01",
+            "dateFmt": "01.01.2026",
+            "description": "Opening",
+            "quantity": "5.0000",
+            "quantityFmt": "5",
+            "value": 20,
+            "valueFmt": "20.0000",
+            "valueRaw": "20.0000"
+        }
+    ]
+}
+\end{jsonvalue}
+\begin{jsonvalue}{Item history data}
+{
+    "account": "Private Equity CHF",
+    "currency": "CHF",
+    "description": "Swiss Global Services SA",
+    "hasData": true,
+    "item": "CHxxxxxxxxx",
+    "latestDateFmt": "20.03.2026",
+    "latestQuantityFmt": "55",
+    "latestValueFmt": "100.0000 CHF",
+    "maxValue": 100,
+    "maxValueFmt": "100.0000 CHF",
+    "minValue": 98.9091,
+    "minValueFmt": "98.9091 CHF",
+    "points": [
+        {
+            "date": "2026-01-01",
+            "dateFmt": "01.01.2026",
+            "description": "Opening",
+            "quantity": "25.0000",
+            "quantityFmt": "25",
+            "value": 100,
+            "valueFmt": "100.0000",
+            "valueRaw": "100.0000"
+        },
+        {
+            "date": "2026-02-20",
+            "dateFmt": "20.02.2026",
+            "description": "Shares Swiss Global Services SA Purchase",
+            "quantity": "85.0000",
+            "quantityFmt": "85",
+            "value": 100,
+            "valueFmt": "100.0000",
+            "valueRaw": "100.0000"
+        },
+        {
+            "date": "2026-03-20",
+            "dateFmt": "20.03.2026",
+            "description": "Shares Swiss Global Services SA Sale",
+            "quantity": "55.0000",
+            "quantityFmt": "55",
+            "value": 98.9091,
+            "valueFmt": "98.9091",
+            "valueRaw": "98.9091"
+        },
+        {
+            "date": "2026-03-20",
+            "dateFmt": "20.03.2026",
+            "description": "Swiss Global Services SA Result on sale (Profit)",
+            "quantity": "55.0000",
+            "quantityFmt": "55",
+            "value": 100,
+            "valueFmt": "100.0000",
+            "valueRaw": "100.0000"
+        }
+    ]
+}
+\end{jsonvalue}
+\begin{jsonvalue}{Item history data}
+{
+    "account": "Private Equity CHF",
+    "currency": "CHF",
+    "description": "Loan Home Partners SA",
+    "hasData": true,
+    "item": "Loan Home Partners SA",
+    "latestDateFmt": "31.10.2026",
+    "latestQuantityFmt": "0",
+    "latestValueFmt": "0.0000 CHF",
+    "maxValue": 0.98,
+    "maxValueFmt": "0.9800 CHF",
+    "minValue": 0,
+    "minValueFmt": "0.0000 CHF",
+    "points": [
+        {
+            "date": "2026-03-25",
+            "dateFmt": "25.03.2026",
+            "description": "Bonds Loan Home Partners SA Purchase",
+            "quantity": "5000.0000",
+            "quantityFmt": "5'000",
+            "value": 0.98,
+            "valueFmt": "0.9800",
+            "valueRaw": "0.9800"
+        },
+        {
+            "date": "2026-10-31",
+            "dateFmt": "31.10.2026",
+            "description": "Bonds Loan Home Partners SA Sale",
+            "quantity": "0",
+            "quantityFmt": "0",
+            "value": 0,
+            "valueFmt": "0.0000",
+            "valueRaw": "0"
+        },
+        {
+            "date": "2026-10-31",
+            "dateFmt": "31.10.2026",
+            "description": "Loan Home Partners SA Result on sale (Profit)",
+            "quantity": "0",
+            "quantityFmt": "0",
+            "value": 0,
+            "valueFmt": "0.0000",
+            "valueRaw": "0"
+        }
+    ]
+}
+\end{jsonvalue}
+\begin{jsonvalue}{Item history data}
+{
+    "account": "Private Equity USD",
+    "currency": "USD",
+    "description": "Firedrop USD",
+    "hasData": false,
+    "item": "Firedrop",
+    "latestDateFmt": "",
+    "latestQuantityFmt": "",
+    "latestValueFmt": "",
+    "maxValue": 0,
+    "maxValueFmt": "",
+    "minValue": 0,
+    "minValueFmt": "",
+    "points": [
+    ]
+}
+\end{jsonvalue}
+\begin{jsonvalue}{Item history data}
+{
+    "account": "Investiments Others CHF",
+    "currency": "CHF",
+    "description": "Immo Plaz  AG",
+    "hasData": false,
+    "item": "Immo Platz  AG",
+    "latestDateFmt": "",
+    "latestQuantityFmt": "",
+    "latestValueFmt": "",
+    "maxValue": 0,
+    "maxValueFmt": "",
+    "minValue": 0,
+    "minValueFmt": "",
+    "points": [
+    ]
+}
+\end{jsonvalue}
+\begin{jsonvalue}{Item history data}
+{
+    "account": "Investiments Others CHF",
+    "currency": "CHF",
+    "description": "Lemaed SA",
+    "hasData": false,
+    "item": "Lemaed SA",
+    "latestDateFmt": "",
+    "latestQuantityFmt": "",
+    "latestValueFmt": "",
+    "maxValue": 0,
+    "maxValueFmt": "",
+    "minValue": 0,
+    "minValueFmt": "",
+    "points": [
+    ]
+}
+\end{jsonvalue}
+\begin{jsonvalue}{Item history data}
+{
+    "account": "Fund Plus CB CHF",
+    "currency": "CHF",
+    "description": "Fund Plus 1",
+    "hasData": false,
+    "item": "Fund Plus 1",
+    "latestDateFmt": "",
+    "latestQuantityFmt": "",
+    "latestValueFmt": "",
+    "maxValue": 0,
+    "maxValueFmt": "",
+    "minValue": 0,
+    "minValueFmt": "",
+    "points": [
+    ]
+}
+\end{jsonvalue}
+\begin{jsonvalue}{Item history data}
+{
+    "account": "Fund Plus UBS CHF",
+    "currency": "CHF",
+    "description": "Fund Plus 2",
+    "hasData": false,
+    "item": "Fund Plus 2",
+    "latestDateFmt": "",
+    "latestQuantityFmt": "",
+    "latestValueFmt": "",
+    "maxValue": 0,
+    "maxValueFmt": "",
+    "minValue": 0,
+    "minValueFmt": "",
+    "points": [
+    ]
+}
+\end{jsonvalue}
+\begin{jsonvalue}{Item history data}
+{
+    "account": "UBS Securities USD",
+    "currency": "USD",
+    "description": "XX Props S.A. 2024/26",
+    "hasData": false,
+    "item": "XX",
+    "latestDateFmt": "",
+    "latestQuantityFmt": "",
+    "latestValueFmt": "",
+    "maxValue": 0,
+    "maxValueFmt": "",
+    "minValue": 0,
+    "minValueFmt": "",
+    "points": [
+    ]
+}
+\end{jsonvalue}
+\begin{jsonvalue}{Item history data}
+{
+    "account": "UBS Securities USD",
+    "currency": "USD",
+    "description": "YYY NV",
+    "hasData": false,
+    "item": "YYY",
+    "latestDateFmt": "",
+    "latestQuantityFmt": "",
+    "latestValueFmt": "",
+    "maxValue": 0,
+    "maxValueFmt": "",
+    "minValue": 0,
+    "minValueFmt": "",
+    "points": [
+    ]
+}
+\end{jsonvalue}
+\begin{jsonvalue}{Item history data}
+{
+    "account": "UBS Securities CHF",
+    "currency": "CHF",
+    "description": "UBS Deposit ZZZ",
+    "hasData": false,
+    "item": "ZZZ",
+    "latestDateFmt": "",
+    "latestQuantityFmt": "",
+    "latestValueFmt": "",
+    "maxValue": 0,
+    "maxValueFmt": "",
+    "minValue": 0,
+    "minValueFmt": "",
+    "points": [
+    ]
+}
+\end{jsonvalue}
+\section{Test 2.}
+\begin{jsonvalue}{Item history data}
+{
+    "account": "Private Equity EUR",
+    "currency": "EUR",
+    "description": "Planet",
+    "hasData": true,
+    "item": "Planet",
+    "latestDateFmt": "11.06.2026",
+    "latestQuantityFmt": "50",
+    "latestValueFmt": "22.0000 EUR",
+    "maxValue": 22,
+    "maxValueFmt": "22.0000 EUR",
+    "minValue": 9.6,
+    "minValueFmt": "9.6000 EUR",
+    "points": [
+        {
+            "date": "2026-01-01",
+            "dateFmt": "01.01.2026",
+            "description": "Opening",
+            "quantity": "10.0000",
+            "quantityFmt": "10",
+            "value": 20,
+            "valueFmt": "20.0000",
+            "valueRaw": "20.0000"
+        },
+        {
+            "date": "2026-02-01",
+            "dateFmt": "01.02.2026",
+            "description": "Shares Planet Purchase",
+            "quantity": "110.0000",
+            "quantityFmt": "110",
+            "value": 10.9091,
+            "valueFmt": "10.9091",
+            "valueRaw": "10.9091"
+        },
+        {
+            "date": "2026-03-20",
+            "dateFmt": "20.03.2026",
+            "description": "Shares Planet Sale",
+            "quantity": "50.0000",
+            "quantityFmt": "50",
+            "value": 9.6,
+            "valueFmt": "9.6000",
+            "valueRaw": "9.6000"
+        },
+        {
+            "date": "2026-03-20",
+            "dateFmt": "20.03.2026",
+            "description": "Planet Result on sale (Profit)",
+            "quantity": "50.0000",
+            "quantityFmt": "50",
+            "value": 10.909,
+            "valueFmt": "10.9090",
+            "valueRaw": "10.9090"
+        },
+        {
+            "date": "2026-03-20",
+            "dateFmt": "20.03.2026",
+            "description": "Planet Result on exchange (Loss)",
+            "quantity": "50.0000",
+            "quantityFmt": "50",
+            "value": 10.909,
+            "valueFmt": "10.9090",
+            "valueRaw": "10.9090"
+        },
+        {
+            "date": "2026-06-11",
+            "dateFmt": "11.06.2026",
+            "description": "Planet Assestamento al prezzo di mercato (22.0000)",
+            "quantity": "50.0000",
+            "quantityFmt": "50",
+            "value": 22,
+            "valueFmt": "22.0000",
+            "valueRaw": "22.0000"
+        },
+        {
+            "date": "2026-06-11",
+            "dateFmt": "11.06.2026",
+            "description": "Planet Assestamento al tasso di cambio alla data di valutazione",
+            "quantity": "50.0000",
+            "quantityFmt": "50",
+            "value": 22,
+            "valueFmt": "22.0000",
+            "valueRaw": "22.0000"
+        }
+    ]
+}
+\end{jsonvalue}
+\begin{jsonvalue}{Item history data}
+{
+    "account": "Private Equity EUR",
+    "currency": "EUR",
+    "description": "Sunjob",
+    "hasData": false,
+    "item": "Sunjob",
+    "latestDateFmt": "",
+    "latestQuantityFmt": "",
+    "latestValueFmt": "",
+    "maxValue": 0,
+    "maxValueFmt": "",
+    "minValue": 0,
+    "minValueFmt": "",
+    "points": [
+    ]
+}
+\end{jsonvalue}
+\begin{jsonvalue}{Item history data}
+{
+    "account": "Private Equity CHF",
+    "currency": "CHF",
+    "description": "Sun Press SA",
+    "hasData": true,
+    "item": "Sun Press SA",
+    "latestDateFmt": "11.06.2026",
+    "latestQuantityFmt": "5",
+    "latestValueFmt": "22.0000 CHF",
+    "maxValue": 22,
+    "maxValueFmt": "22.0000 CHF",
+    "minValue": 20,
+    "minValueFmt": "20.0000 CHF",
+    "points": [
+        {
+            "date": "2026-01-01",
+            "dateFmt": "01.01.2026",
+            "description": "Opening",
+            "quantity": "5.0000",
+            "quantityFmt": "5",
+            "value": 20,
+            "valueFmt": "20.0000",
+            "valueRaw": "20.0000"
+        },
+        {
+            "date": "2026-06-11",
+            "dateFmt": "11.06.2026",
+            "description": "Sun Press SA Assestamento al prezzo di mercato (22.0000)",
+            "quantity": "5.0000",
+            "quantityFmt": "5",
+            "value": 22,
+            "valueFmt": "22.0000",
+            "valueRaw": "22.0000"
+        }
+    ]
+}
+\end{jsonvalue}
+\begin{jsonvalue}{Item history data}
+{
+    "account": "Private Equity CHF",
+    "currency": "CHF",
+    "description": "Swiss Global Services SA",
+    "hasData": true,
+    "item": "CHxxxxxxxxx",
+    "latestDateFmt": "11.06.2026",
+    "latestQuantityFmt": "55",
+    "latestValueFmt": "102.0000 CHF",
+    "maxValue": 102,
+    "maxValueFmt": "102.0000 CHF",
+    "minValue": 98.9091,
+    "minValueFmt": "98.9091 CHF",
+    "points": [
+        {
+            "date": "2026-01-01",
+            "dateFmt": "01.01.2026",
+            "description": "Opening",
+            "quantity": "25.0000",
+            "quantityFmt": "25",
+            "value": 100,
+            "valueFmt": "100.0000",
+            "valueRaw": "100.0000"
+        },
+        {
+            "date": "2026-02-20",
+            "dateFmt": "20.02.2026",
+            "description": "Shares Swiss Global Services SA Purchase",
+            "quantity": "85.0000",
+            "quantityFmt": "85",
+            "value": 100,
+            "valueFmt": "100.0000",
+            "valueRaw": "100.0000"
+        },
+        {
+            "date": "2026-03-20",
+            "dateFmt": "20.03.2026",
+            "description": "Shares Swiss Global Services SA Sale",
+            "quantity": "55.0000",
+            "quantityFmt": "55",
+            "value": 98.9091,
+            "valueFmt": "98.9091",
+            "valueRaw": "98.9091"
+        },
+        {
+            "date": "2026-03-20",
+            "dateFmt": "20.03.2026",
+            "description": "Swiss Global Services SA Result on sale (Profit)",
+            "quantity": "55.0000",
+            "quantityFmt": "55",
+            "value": 100,
+            "valueFmt": "100.0000",
+            "valueRaw": "100.0000"
+        },
+        {
+            "date": "2026-06-11",
+            "dateFmt": "11.06.2026",
+            "description": "Swiss Global Services SA Assestamento al prezzo di mercato (102.0000)",
+            "quantity": "55.0000",
+            "quantityFmt": "55",
+            "value": 102,
+            "valueFmt": "102.0000",
+            "valueRaw": "102.0000"
+        }
+    ]
+}
+\end{jsonvalue}
+\begin{jsonvalue}{Item history data}
+{
+    "account": "Private Equity CHF",
+    "currency": "CHF",
+    "description": "Loan Home Partners SA",
+    "hasData": true,
+    "item": "Loan Home Partners SA",
+    "latestDateFmt": "31.10.2026",
+    "latestQuantityFmt": "0",
+    "latestValueFmt": "0.0000 CHF",
+    "maxValue": 0.98,
+    "maxValueFmt": "0.9800 CHF",
+    "minValue": 0,
+    "minValueFmt": "0.0000 CHF",
+    "points": [
+        {
+            "date": "2026-03-25",
+            "dateFmt": "25.03.2026",
+            "description": "Bonds Loan Home Partners SA Purchase",
+            "quantity": "5000.0000",
+            "quantityFmt": "5'000",
+            "value": 0.98,
+            "valueFmt": "0.9800",
+            "valueRaw": "0.9800"
+        },
+        {
+            "date": "2026-10-31",
+            "dateFmt": "31.10.2026",
+            "description": "Bonds Loan Home Partners SA Sale",
+            "quantity": "0",
+            "quantityFmt": "0",
+            "value": 0,
+            "valueFmt": "0.0000",
+            "valueRaw": "0"
+        },
+        {
+            "date": "2026-10-31",
+            "dateFmt": "31.10.2026",
+            "description": "Loan Home Partners SA Result on sale (Profit)",
+            "quantity": "0",
+            "quantityFmt": "0",
+            "value": 0,
+            "valueFmt": "0.0000",
+            "valueRaw": "0"
+        }
+    ]
+}
+\end{jsonvalue}
+\begin{jsonvalue}{Item history data}
+{
+    "account": "Private Equity USD",
+    "currency": "USD",
+    "description": "Firedrop USD",
+    "hasData": false,
+    "item": "Firedrop",
+    "latestDateFmt": "",
+    "latestQuantityFmt": "",
+    "latestValueFmt": "",
+    "maxValue": 0,
+    "maxValueFmt": "",
+    "minValue": 0,
+    "minValueFmt": "",
+    "points": [
+    ]
+}
+\end{jsonvalue}
+\begin{jsonvalue}{Item history data}
+{
+    "account": "Investiments Others CHF",
+    "currency": "CHF",
+    "description": "Immo Plaz  AG",
+    "hasData": false,
+    "item": "Immo Platz  AG",
+    "latestDateFmt": "",
+    "latestQuantityFmt": "",
+    "latestValueFmt": "",
+    "maxValue": 0,
+    "maxValueFmt": "",
+    "minValue": 0,
+    "minValueFmt": "",
+    "points": [
+    ]
+}
+\end{jsonvalue}
+\begin{jsonvalue}{Item history data}
+{
+    "account": "Investiments Others CHF",
+    "currency": "CHF",
+    "description": "Lemaed SA",
+    "hasData": false,
+    "item": "Lemaed SA",
+    "latestDateFmt": "",
+    "latestQuantityFmt": "",
+    "latestValueFmt": "",
+    "maxValue": 0,
+    "maxValueFmt": "",
+    "minValue": 0,
+    "minValueFmt": "",
+    "points": [
+    ]
+}
+\end{jsonvalue}
+\begin{jsonvalue}{Item history data}
+{
+    "account": "Fund Plus CB CHF",
+    "currency": "CHF",
+    "description": "Fund Plus 1",
+    "hasData": false,
+    "item": "Fund Plus 1",
+    "latestDateFmt": "",
+    "latestQuantityFmt": "",
+    "latestValueFmt": "",
+    "maxValue": 0,
+    "maxValueFmt": "",
+    "minValue": 0,
+    "minValueFmt": "",
+    "points": [
+    ]
+}
+\end{jsonvalue}
+\begin{jsonvalue}{Item history data}
+{
+    "account": "Fund Plus UBS CHF",
+    "currency": "CHF",
+    "description": "Fund Plus 2",
+    "hasData": false,
+    "item": "Fund Plus 2",
+    "latestDateFmt": "",
+    "latestQuantityFmt": "",
+    "latestValueFmt": "",
+    "maxValue": 0,
+    "maxValueFmt": "",
+    "minValue": 0,
+    "minValueFmt": "",
+    "points": [
+    ]
+}
+\end{jsonvalue}
+\begin{jsonvalue}{Item history data}
+{
+    "account": "UBS Securities USD",
+    "currency": "USD",
+    "description": "XX Props S.A. 2024/26",
+    "hasData": false,
+    "item": "XX",
+    "latestDateFmt": "",
+    "latestQuantityFmt": "",
+    "latestValueFmt": "",
+    "maxValue": 0,
+    "maxValueFmt": "",
+    "minValue": 0,
+    "minValueFmt": "",
+    "points": [
+    ]
+}
+\end{jsonvalue}
+\begin{jsonvalue}{Item history data}
+{
+    "account": "UBS Securities USD",
+    "currency": "USD",
+    "description": "YYY NV",
+    "hasData": false,
+    "item": "YYY",
+    "latestDateFmt": "",
+    "latestQuantityFmt": "",
+    "latestValueFmt": "",
+    "maxValue": 0,
+    "maxValueFmt": "",
+    "minValue": 0,
+    "minValueFmt": "",
+    "points": [
+    ]
+}
+\end{jsonvalue}
+\begin{jsonvalue}{Item history data}
+{
+    "account": "UBS Securities CHF",
+    "currency": "CHF",
+    "description": "UBS Deposit ZZZ",
+    "hasData": false,
+    "item": "ZZZ",
+    "latestDateFmt": "",
+    "latestQuantityFmt": "",
+    "latestValueFmt": "",
+    "maxValue": 0,
+    "maxValueFmt": "",
+    "minValue": 0,
+    "minValueFmt": "",
+    "points": [
+    ]
+}
+\end{jsonvalue}
+\end{document}

@@ -64,6 +64,7 @@ TestDashboard.prototype.cleanup = function () {
 TestDashboard.prototype.testDashBoardData = function () {
 
     let dashboardData = "";
+    let logger = this.testLogger.newLogger("testDashBoardData");
 
     /**Test 1.
      * In the accounting file, end year adjustments are not registered yet.
@@ -73,8 +74,8 @@ TestDashboard.prototype.testDashBoardData = function () {
     Test.assert(banDoc);
     dashboardData = getPortfolioDashboardData(banDoc);
     dashboardData.asOfDate =  "11.06.2026"; // Set fix date.
-    this.testLogger.addSection("Test 1.");
-    this.testLogger.addJson("Dashboard data", JSON.stringify(dashboardData));
+    logger.addSection("Test 1.");
+    logger.addJson("Dashboard data", JSON.stringify(dashboardData));
 
     /**Test 2.
      * Same accounting data as Test 1 but adjustments are registered. Unrealized gain or losses must be 0.
@@ -84,6 +85,55 @@ TestDashboard.prototype.testDashBoardData = function () {
     Test.assert(banDoc);
     dashboardData = getPortfolioDashboardData(banDoc);
     dashboardData.asOfDate =  "11.06.2026"; // Set fix date.
-    this.testLogger.addSection("Test 2.");
-    this.testLogger.addJson("Dashboard data", JSON.stringify(dashboardData));
+    logger.addSection("Test 2.");
+    logger.addJson("Dashboard data", JSON.stringify(dashboardData));
+
+    logger.close();
+}
+
+/**
+ * Test methods from: ch.banana.portfolio.accounting.calculation.methods.js that
+ * returns the history of average cost for each security, data shown in the 
+ * Graphs.
+ */
+TestDashboard.prototype.testSecurityAverageCostHistory = function () {
+
+    let dashboardData = "";
+    let logger = this.testLogger.newLogger("testSecurityAverageCostHistory");
+    let itemsData = {};
+
+    /**Test 1.
+     * In the accounting file, end year adjustments are not registered yet.
+     */
+    fileName = "file:script/../test/testcases/dashboard/portfolio_accounting_double_entry_multi_currency_tutorial_withoutadjustments.ac2";
+    banDoc = Banana.application.openDocument(fileName);
+    Test.assert(banDoc);
+    itemsData = getItemsTableData(banDoc);
+    Test.assert(itemsData);
+    logger.addSection("Test 1.");
+    for (let i = 0; i < itemsData.length; i++) {
+        const item = itemsData[i];
+        Test.assert(item);
+        let itemId = item.item;
+        let historyData = getSecurityAverageCostHistory(banDoc, itemId);
+        logger.addJson("Item history data", JSON.stringify(historyData));
+    }
+
+    /**Test 2.
+     * Same accounting data as Test 1 but adjustments are registered. Unrealized gain or losses must be 0.
+     */
+    fileName = "file:script/../test/testcases/dashboard/portfolio_accounting_double_entry_multi_currency_tutorial_withadjustments.ac2";
+    banDoc = Banana.application.openDocument(fileName);
+    Test.assert(banDoc);
+    itemsData = getItemsTableData(banDoc);
+    Test.assert(itemsData);
+    logger.addSection("Test 2.");
+    for (let i = 0; i < itemsData.length; i++) {
+        const item = itemsData[i];
+        Test.assert(item);
+        let itemId = item.item;
+        let historyData = getSecurityAverageCostHistory(banDoc, itemId);
+        logger.addJson("Item history data", JSON.stringify(historyData));
+    }
+    logger.close();
 }
