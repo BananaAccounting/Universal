@@ -1,0 +1,9 @@
+﻿<!DOCTYPE RCC><RCC version="1.0">
+    <qresource>
+        <file>ch.banana.uni.stockohada.manifest.json</file>
+        <file>ch.banana.uni.stockohada.fifo.js</file>
+        <file>ch.banana.uni.stockohada.lifo.js</file>
+        <file>ch.banana.uni.stockohada.cump.apres.chaque.entree.js</file>
+        <file>ch.banana.uni.stockohada.cump.fin.periode.js</file>
+    </qresource>
+</RCC>
