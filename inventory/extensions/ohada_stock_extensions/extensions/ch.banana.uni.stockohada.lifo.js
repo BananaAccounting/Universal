@@ -1,7 +1,7 @@
 ﻿// @id = ch.banana.uni.stockohada.lifo
 // @api = 1.0
 // @pubdate = 2026-05-19
-// @publisher = KIKSOFT ONLINE ACADEMY
+// @publisher = Paulin KIKUAKUA MALANGU/KIKSOFT ONLINE ACADEMY
 // @description = 2. Fiche de stock OHADA - LIFO
 // @description.en = 2. OHADA stock card - LIFO
 // @description.fr = 2. Fiche de stock OHADA - LIFO

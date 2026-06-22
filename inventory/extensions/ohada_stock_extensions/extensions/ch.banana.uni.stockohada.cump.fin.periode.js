@@ -1,7 +1,7 @@
 ﻿// @id = ch.banana.uni.stockohada.cump.endperiod
 // @api = 1.0
 // @pubdate = 2026-05-19
-// @publisher = KIKSOFT ONLINE ACADEMY
+// @publisher = Paulin KIKUAKUA MALANGU/KIKSOFT ONLINE ACADEMY
 // @description = 4. Gestion de stock OHADA - CUMP fin de période
 // @description.en = 4. OHADA inventory management - Weighted average end of period
 // @description.fr = 4. Gestion de stock OHADA - CUMP fin de période

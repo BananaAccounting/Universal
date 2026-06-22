@@ -1,7 +1,7 @@
 ﻿// @id = ch.banana.uni.stockohada.cump.afterentry
 // @api = 1.0
 // @pubdate = 2026-05-19
-// @publisher = KIKSOFT ONLINE ACADEMY
+// @publisher = Paulin KIKUAKUA MALANGU/KIKSOFT ONLINE ACADEMY
 // @description = 3. Gestion de stock OHADA - CUMP après chaque entrée
 // @description.en = 3. OHADA inventory management - Weighted average after each entry
 // @description.fr = 3. Gestion de stock OHADA - CUMP après chaque entrée
