@@ -16,9 +16,13 @@
 // @api = 1.0
 // @pubdate = 2026-06-03
 // @publisher = Banana.ch SA
-// @description = [DEV] Import invoices from CSV
+// @description = [DEV] Import invoices from CSV (documentchange)
+// @description.en = [DEV] Import invoices from CSV (documentchange)
+// @description.it = [DEV] Importa fatture da CSV (documentchange)
+// @description.fr = [DEV] Importer des factures depuis un fichier CSV (documentchange)
+// @description.de = [DEV] Rechnungen aus CSV importieren (documentchange)
 // @task = app.command
-// @doctype = *.*
+// @doctype = 100.100;100.110
 // @docproperties =
 // @outputformat = none
 // @inputdataform = none

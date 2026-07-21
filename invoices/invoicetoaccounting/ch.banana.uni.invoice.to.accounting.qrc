@@ -1,0 +1,8 @@
+<!DOCTYPE RCC><RCC version="1.0">
+  <qresource>
+    <file>ch.banana.uni.invoice.to.accounting.manifest.json</file>
+    <file>ch.banana.uni.export.invoices.js</file>
+    <file>ch.banana.uni.import.invoices.documentchange.js</file>
+    <file>ch.banana.uni.import.invoices.transactions.js</file>
+  </qresource>
+</RCC>

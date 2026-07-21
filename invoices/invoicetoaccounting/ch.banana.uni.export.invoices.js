@@ -17,8 +17,12 @@
 // @pubdate = 2026-07-15
 // @publisher = Banana.ch SA
 // @description = [DEV] Export invoices to CSV
+// @description.en = [DEV] Export invoices to CSV
+// @description.it = [DEV] Esporta fatture in CSV
+// @description.fr = [DEV] Exporter les factures au format CSV
+// @description.de = [DEV] Rechnungen als CSV exportieren
 // @task = app.command
-// @doctype = *
+// @doctype = 400.400
 // @docproperties =
 // @outputformat = none
 // @inputdataform = none
@@ -27,11 +31,13 @@
 
 /**
  * Main entry point of the extension.
- * Opens the source .ac2 file, reads the invoices directly from their JSON
- * data (no intermediate CSV step), displays the settings dialog, filters
- * by period, builds the transaction rows and writes them to a CSV file
- * chosen by the user (columns: Date, DocInvoice, Description,
- * DebitAmount, CreditAmount, VatCode, VatAmountType,
+ * Reads the invoices directly from their JSON data (no intermediate CSV
+ * step) out of the currently open document (Banana.document — the
+ * extension is meant to be run with the "Estimates and Invoices" file
+ * already open, no source file is selected), displays the settings
+ * dialog, filters by period, builds the transaction rows and writes them
+ * to a CSV file chosen by the user (columns: Date, DocInvoice,
+ * Description, DebitAmount, CreditAmount, VatCode, VatAmountType,
  * IsDetail — the last one marks "S" on the invoice's summary/total row and
  * "D" on every detail row tied to that same invoice, for easy
  * identification. The summary row's amount and every detail row's amount
@@ -50,20 +56,9 @@ function exec() {
 
    var texts = loadTexts(Banana.document);
 
-   // Step 1: select and open the source .ac2 file
-   var ac2FileName = Banana.IO.getOpenFileName(texts.selectSourceFile, "", texts.fileType);
-   if (!ac2FileName || !ac2FileName.length) {
-      Banana.Ui.showInformation(texts.info, texts.noFileSelected);
-      return "@Cancel";
-   }
+   // Step 1: read the invoices data directly from the currently open document
+   var sourceDoc = Banana.document;
 
-   var sourceDoc = Banana.application.openDocument(ac2FileName);
-   if (!sourceDoc) {
-      Banana.application.addMessage(texts.impossibleOpenFile + " " + ac2FileName);
-      return "@Cancel";
-   }
-
-   // Step 2: read the invoices data directly from the source document
    var isSourceDocEstimatesInvoices = isEstimatesInvoices(sourceDoc);
    if (!isSourceDocEstimatesInvoices) {
       Banana.application.addMessage(texts.errorFileSelected);
@@ -76,27 +71,34 @@ function exec() {
       return "@Cancel";
    }
 
-   // Step 3: show settings dialog
+   // Step 2: select the period (the checkbox settings - insertDocLink,
+   // groupByVatCode - are NOT asked here: they are loaded as-is from the
+   // saved settings, and are only editable through Extensions > Manage
+   // Extensions > select this extension > Settings button, which Banana
+   // wires up automatically to the settingsDialog() function below)
    var params = loadSettings();
-   if (!settingsDialog(params))
+   if (!selectPeriodDialog(params))
       return "@Cancel";
    saveSettings(params);
 
-   // Step 4: build the transaction rows from the invoices data
+   // Step 3: build the transaction rows from the invoices data
    var rows = buildTransactionsRows(invoices, params, texts);
    if (!rows || !rows.length) {
       Banana.application.addMessage(texts.errorGeneratingDataFromSourceFile);
       return "@Cancel";
    }
 
-   // Step 5: ask the user where to save the CSV file
-   var csvFileName = Banana.IO.getSaveFileName(texts.selectCsvDestination, "", texts.csvFileType);
+   // Step 4: ask the user where to save the CSV file, suggesting a name
+   // built from the selected period so nothing has to be typed unless a
+   // different name/location is wanted
+   var suggestedFileName = buildCsvFileName(params);
+   var csvFileName = Banana.IO.getSaveFileName(texts.selectCsvDestination, suggestedFileName, texts.csvFileType);
    if (!csvFileName || !csvFileName.length) {
       Banana.Ui.showInformation(texts.info, texts.noFileSelected);
       return "@Cancel";
    }
 
-   // Step 6: build the CSV content and write it to disk
+   // Step 5: build the CSV content and write it to disk
    var csvContent = rowsToCsv(rows);
    var csvFile = Banana.IO.getLocalFile(csvFileName);
    var writeOk = csvFile.write(csvContent);
@@ -626,6 +628,29 @@ function resolveDocLink(template, invoiceNumber, customerName) {
 }
 
 /**
+ * Builds a suggested CSV file name from the selected period, so the save
+ * dialog is pre-filled and the user doesn't have to type anything unless
+ * a different name is wanted.
+ * Format: "<start>_<end>_invoices.csv", with dates as YYYYMMDD (no
+ * separators) - e.g. "20260101_20260630_invoices.csv". Dates first so
+ * that exports sort chronologically in a file browser, instead of all
+ * clumping together under "invoices" with the date hidden at the end.
+ * Falls back to "invoices.csv" if no period was selected.
+ */
+function buildCsvFileName(params) {
+   var startDate = params.selectionStartDate;
+   var endDate = params.selectionEndDate;
+
+   if (!startDate || !endDate)
+      return "invoices.csv";
+
+   var startCompact = startDate.replace(/-/g, "");
+   var endCompact = endDate.replace(/-/g, "");
+
+   return startCompact + "_" + endCompact + "_invoices.csv";
+}
+
+/**
  * Converts a flat array of {operation, fields} rows into a CSV string with
  * columns: Date, DocInvoice, Description,
  * DebitAmount, CreditAmount, VatCode, VatAmountType, IsDetail. The DocLink
@@ -760,7 +785,7 @@ function convertParam(userParam) {
    currentParam.title = texts.groupByVatCode;
    currentParam.type = 'bool';
    currentParam.value = userParam.groupByVatCode ? true : false;
-   currentParam.defaultvalue = false;
+   currentParam.defaultvalue = true;
    currentParam.readValue = function() {
       userParam.groupByVatCode = this.value;
    }
@@ -770,24 +795,52 @@ function convertParam(userParam) {
 }
 
 /**
- * Displays the settings dialog using openPropertyEditor and then the period
- * selection dialog using getPeriod. Updates the userParam object with the
- * values chosen by the user. Returns false if the user cancels.
+ * Settings entry point recognized by Banana Accounting itself: it is
+ * called automatically when the user clicks the "Settings" button in
+ * Extensions > Manage Extensions > (select this extension), NOT when
+ * exec() runs. It shows only the checkbox panel (insertDocLink +
+ * docLinkTemplate, groupByVatCode) - the period is not part of it, since
+ * that is chosen fresh on every run inside exec() via selectPeriodDialog().
+ * Returns null if the user cancels, or the (JSON-stringified, though the
+ * return value itself is not used by exec()) saved settings otherwise, per
+ * the convention documented for this function.
  */
-function settingsDialog(userParam) {
+function settingsDialog() {
 
    var texts = loadTexts(Banana.document);
+   var userParam = loadSettings();
 
-   if (typeof Banana.Ui.openPropertyEditor !== 'undefined') {
-      var dialogTitle = texts.settingsTitle;
-      var convertedParam = convertParam(userParam);
-      var pageAnchor = 'dlgSettings';
-      if (!Banana.Ui.openPropertyEditor(dialogTitle, convertedParam, pageAnchor))
-         return false;
-      for (var i = 0; i < convertedParam.data.length; i++) {
-         convertedParam.data[i].readValue();
-      }
+   if (typeof Banana.Ui.openPropertyEditor === 'undefined')
+      return null;
+
+   var dialogTitle = texts.settingsTitle;
+   var convertedParam = convertParam(userParam);
+   var pageAnchor = 'dlgSettings';
+   if (!Banana.Ui.openPropertyEditor(dialogTitle, convertedParam, pageAnchor))
+      return null;
+
+   for (var i = 0; i < convertedParam.data.length; i++) {
+      convertedParam.data[i].readValue();
    }
+
+   saveSettings(userParam);
+
+   return JSON.stringify(userParam);
+}
+
+/**
+ * Displays the period selection dialog using getPeriod. Updates the
+ * userParam object with the period chosen by the user. Returns false if
+ * the user cancels.
+ * The checkbox settings panel (insertDocLink, groupByVatCode) is
+ * intentionally not shown: those two values are taken as-is from
+ * userParam (i.e. whatever loadSettings() returned - the last saved
+ * values, or the defaults from initUserParam() on first run) and can
+ * only be changed by editing the saved settings directly.
+ */
+function selectPeriodDialog(userParam) {
+
+   var texts = loadTexts(Banana.document);
 
    // Period selection
    var docStartDate = "";
@@ -830,11 +883,8 @@ function loadTexts(banDoc) {
    var texts = {};
 
    if (lang === "de") {
-      texts.selectSourceFile = "Quelldatei auswählen (.ac2)";
-      texts.fileType = "Banana-Datei (*.ac2);;Alle Dateien (*.*)";
       texts.info = "Info";
       texts.noFileSelected = "Keine Datei ausgewählt";
-      texts.impossibleOpenFile = "Datei kann nicht geöffnet werden";
       texts.errorGeneratingDataFromSourceFile = "Fehler beim Generieren der Daten aus der Quelldatei. Bitte überprüfen Sie die Fehlermeldungen.";
       texts.selectCsvDestination = "CSV-Datei speichern unter";
       texts.csvFileType = "CSV-Datei (*.csv);;Alle Dateien (*)";
@@ -843,23 +893,20 @@ function loadTexts(banDoc) {
       texts.errorFileSelected = "Die ausgewählte Datei ist kein Angebote- und Rechnungstyp.";
       texts.insertDocLink = "PDF-Namen in der Spalte Link einfügen";
       texts.invoice = "Rechnung";
-      texts.settingsTitle = "Einstellungen Rechnungsimport (Artikeldetail)";
+      texts.settingsTitle = "Einstellungen Rechnungsexport (Artikeldetail)";
+      texts.docLinkTemplate = "Dateiname (verwende <DocInvoice> und <CustomerName>)";
+      texts.groupByVatCode = "Registrierungen nach MwSt-Code gruppieren";
       texts.selectPeriod = "Importzeitraum auswählen";
       texts.invoiceTableNotFound = "Tabelle 'Invoices' nicht in der Quelldatei gefunden.";
       texts.rowFieldMissing = "Zeile %1: Pflichtfeld '%2' fehlt.";
       texts.rowItemFieldMissing = "Zeile %1, Artikel %2: Pflichtfeld '%3' fehlt.";
       texts.rowInvalidInvoice = "Zeile %1: Rechnung ungültig. Fehler: %2";
       texts.someRecordsHaveErrors = "Einige Datensätze enthalten Fehler und wurden übersprungen. Bitte überprüfen Sie die obigen Meldungen.";
-      texts.docLinkTemplate = "Dateiname (verwende <DocInvoice> und <CustomerName>)";
-      texts.groupByVatCode = "Registrierungen nach MwSt-Code gruppieren";
       texts.rounding = "Rundung";
    }
    else if (lang === "fr") {
-      texts.selectSourceFile = "Sélectionner le fichier source (.ac2)";
-      texts.fileType = "Fichier Banana (*.ac2);;Tous les fichiers (*.*)";
       texts.info = "Info";
       texts.noFileSelected = "Aucun fichier sélectionné";
-      texts.impossibleOpenFile = "Impossible d'ouvrir le fichier";
       texts.errorGeneratingDataFromSourceFile = "Erreur lors de la génération des données depuis le fichier source. Vérifiez les messages d'erreur.";
       texts.selectCsvDestination = "Enregistrer le fichier CSV sous";
       texts.csvFileType = "Fichier CSV (*.csv);;Tous les fichiers (*)";
@@ -868,23 +915,20 @@ function loadTexts(banDoc) {
       texts.errorFileSelected = "Le fichier sélectionné n'est pas de type Offres et Factures.";
       texts.insertDocLink = "Insérer le nom du PDF dans la colonne Lien";
       texts.invoice = "Facture";
-      texts.settingsTitle = "Paramètres d'import des factures (détail articles)";
+      texts.settingsTitle = "Paramètres d'export des factures (détail articles)";
+      texts.docLinkTemplate = "Nom du fichier (utilise <DocInvoice> et <CustomerName>)";
+      texts.groupByVatCode = "Regrouper les enregistrements par code TVA";
       texts.selectPeriod = "Sélectionner la période à importer";
       texts.invoiceTableNotFound = "Table 'Invoices' introuvable dans le fichier source.";
       texts.rowFieldMissing = "Ligne %1 : champ obligatoire '%2' manquant.";
       texts.rowItemFieldMissing = "Ligne %1, article %2 : champ obligatoire '%3' manquant.";
       texts.rowInvalidInvoice = "Ligne %1 : facture invalide. Erreur : %2";
       texts.someRecordsHaveErrors = "Certains enregistrements contiennent des erreurs et ont été ignorés. Vérifiez les messages ci-dessus.";
-      texts.docLinkTemplate = "Nom du fichier (utilise <DocInvoice> et <CustomerName>)";
-      texts.groupByVatCode = "Regrouper les enregistrements par code TVA";
       texts.rounding = "Arrondi";
    }
    else if (lang === "it") {
-      texts.selectSourceFile = "Seleziona il file sorgente (.ac2)";
-      texts.fileType = "File Banana (*.ac2);;Tutti i files (*.*)";
       texts.info = "Info";
       texts.noFileSelected = "Nessun file selezionato";
-      texts.impossibleOpenFile = "Impossibile aprire il file";
       texts.errorGeneratingDataFromSourceFile = "Errore durante la generazione dei dati dal file sorgente. Verificare i messaggi di errore.";
       texts.selectCsvDestination = "Salva file CSV con nome";
       texts.csvFileType = "File CSV (*.csv);;Tutti i file (*)";
@@ -893,23 +937,20 @@ function loadTexts(banDoc) {
       texts.errorFileSelected = "Il file selezionato non è di tipo Offerte e Fatture.";
       texts.insertDocLink = "Inserisci il nome del PDF nella colonna Link";
       texts.invoice = "Fattura";
-      texts.settingsTitle = "Impostazioni importazione fatture (dettaglio articoli)";
+      texts.settingsTitle = "Impostazioni esportazione fatture (dettaglio articoli)";
+      texts.docLinkTemplate = "Nome del file (usa <DocInvoice> e <CustomerName>)";
+      texts.groupByVatCode = "Raggruppa registrazioni per codice IVA";
       texts.selectPeriod = "Seleziona il periodo da importare";
       texts.invoiceTableNotFound = "Tabella 'Invoices' non trovata nel file sorgente.";
       texts.rowFieldMissing = "Riga %1: campo '%2' obbligatorio mancante.";
       texts.rowItemFieldMissing = "Riga %1, item %2: campo '%3' obbligatorio mancante.";
       texts.rowInvalidInvoice = "Riga %1: fattura non valida. Errore: %2";
       texts.someRecordsHaveErrors = "Alcuni record presentano errori e sono stati saltati. Verificare i messaggi sopra.";
-      texts.docLinkTemplate = "Nome del file (usa <DocInvoice> e <CustomerName>)";
-      texts.groupByVatCode = "Raggruppa registrazioni per codice IVA";
       texts.rounding = "Arrotondamento";
    }
    else { // lang === "en"
-      texts.selectSourceFile = "Select the source file (.ac2)";
-      texts.fileType = "Banana file (*.ac2);;All files (*.*)";
       texts.info = "Info";
       texts.noFileSelected = "No file selected";
-      texts.impossibleOpenFile = "Unable to open file";
       texts.errorGeneratingDataFromSourceFile = "Error generating data from the source file. Please check the error messages.";
       texts.selectCsvDestination = "Save CSV file as";
       texts.csvFileType = "CSV file (*.csv);;All files (*)";
@@ -918,15 +959,15 @@ function loadTexts(banDoc) {
       texts.errorFileSelected = "The selected file is not of type Estimates and Invoices.";
       texts.insertDocLink = "Insert PDF name in the Link column";
       texts.invoice = "Invoice";
-      texts.settingsTitle = "Invoice import settings (item detail)";
+      texts.settingsTitle = "Invoice export settings (item detail)";
+      texts.docLinkTemplate = "File name (use <DocInvoice> and <CustomerName>)";
+      texts.groupByVatCode = "Group transaction rows by VAT code";
       texts.selectPeriod = "Select the period to import";
       texts.invoiceTableNotFound = "Table 'Invoices' not found in the source file.";
       texts.rowFieldMissing = "Row %1: required field '%2' missing.";
       texts.rowItemFieldMissing = "Row %1, item %2: required field '%3' missing.";
       texts.rowInvalidInvoice = "Row %1: invalid invoice. Error: %2";
       texts.someRecordsHaveErrors = "Some records have errors and were skipped. Please check the messages above.";
-      texts.docLinkTemplate = "File name (use <DocInvoice> and <CustomerName>)";
-      texts.groupByVatCode = "Group transaction rows by VAT code";
       texts.rounding = "Rounding";
    }
 

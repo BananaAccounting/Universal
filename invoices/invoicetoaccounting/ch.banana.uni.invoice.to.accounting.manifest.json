@@ -1,0 +1,18 @@
+{
+    "category": "productivity",
+    "country":"universal",
+    "countryCode":"",
+    "description": "[DEV] Import invoices to accounting",
+    "description.en": "[DEV] Import invoices to accounting",
+    "description.it": "[DEV] Importa fatture in contabilità",
+    "description.fr": "[DEV] Importer les factures en comptabilité",
+    "description.de": "[DEV] Rechnungen in die Buchhaltung importieren",
+    "language":"",
+    "publisher": "Banana.ch",
+    "title": "[DEV] Import invoices to accounting",
+    "title.en": "[DEV] Import invoices to accounting",
+    "title.it": "[DEV] Importa fatture in contabilità",
+    "title.fr": "[DEV] Importer les factures en comptabilité",
+    "title.de": "[DEV] Rechnungen in die Buchhaltung importieren",
+    "version": "1.0"
+}

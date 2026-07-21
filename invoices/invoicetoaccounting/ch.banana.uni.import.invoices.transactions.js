@@ -17,8 +17,12 @@
 // @pubdate = 2026-07-17
 // @publisher = Banana.ch SA
 // @description = [DEV] Import invoices from CSV
+// @description.en = [DEV] Import invoices from CSV
+// @description.it = [DEV] Importa fatture da CSV
+// @description.fr = [DEV] Importer des factures depuis un fichier CSV
+// @description.de = [DEV] Rechnungen aus CSV importieren
 // @task = import.transactions
-// @doctype = *
+// @doctype = 100.100;100.110
 // @docproperties =
 // @outputformat = transactions.simple
 // @inputdatasource = openfiledialog
