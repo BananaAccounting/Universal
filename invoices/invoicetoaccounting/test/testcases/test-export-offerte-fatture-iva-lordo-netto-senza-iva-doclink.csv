@@ -1,0 +1,53 @@
+Date,DocInvoice,Description,Amount,VatCode,VatAmountType,IsDetail,RowKind,CustomerNumber,CustomerFirstName,CustomerLastName,CustomerAddress,CustomerBuildingNumber,CustomerPostalCode,CustomerCity,CustomerCountryCode,CustomerLanguage,RoundingRawAmount,DocLink
+2026-06-10,1,Fattura 1 - senza IVA - Pinco Pallino,32.50,,,S,header,1,Pinco,Pallino,Via ai Salici,12,6900,Lugano,CH,,,Invoice 1 - Pinco Pallino.pdf
+2026-06-10,1,Fattura 1 - senza IVA - Pinco Pallino,25.00,,,D,item,,,,,,,,,,,
+2026-06-10,1,Fattura 1 - senza IVA - Pinco Pallino,7.50,,,D,item,,,,,,,,,,,
+2026-06-20,2,Fattura 2 - IVA al netto - Pinco Pallino,118.50,,,S,header,1,Pinco,Pallino,Via ai Salici,12,6900,Lugano,CH,,,Invoice 2 - Pinco Pallino.pdf
+2026-06-20,2,Fattura 2 - IVA al netto - Pinco Pallino,50.00,V81,1,D,item,,,,,,,,,,,
+2026-06-20,2,Fattura 2 - IVA al netto - Pinco Pallino,50.00,V81,1,D,item,,,,,,,,,,,
+2026-06-20,2,Fattura 2 - IVA al netto - Pinco Pallino,10.00,V38,1,D,item,,,,,,,,,,,
+2026-06-20,2,Fattura 2 - IVA al netto - Pinco Pallino (Arrotondamento),0.02,,,D,rounding,,,,,,,,,,0.02,
+2026-06-30,3,Fattura 3 - IVA al lordo - Pinco Pallino,110.00,,,S,header,1,Pinco,Pallino,Via ai Salici,12,6900,Lugano,CH,,,Invoice 3 - Pinco Pallino.pdf
+2026-06-30,3,Fattura 3 - IVA al lordo - Pinco Pallino,50.00,V81,,D,item,,,,,,,,,,,
+2026-06-30,3,Fattura 3 - IVA al lordo - Pinco Pallino,50.00,V81,,D,item,,,,,,,,,,,
+2026-06-30,3,Fattura 3 - IVA al lordo - Pinco Pallino,10.00,V38,,D,item,,,,,,,,,,,
+2026-06-30,5,Fattura 5 - IVA al netto aliquota V0 - Mario Rossi,65.00,,,S,header,2,Mario,Rossi,Via abc,4,6500,Bellinzona,CH,,,Invoice 5 - Mario Rossi.pdf
+2026-06-30,5,Fattura 5 - IVA al netto aliquota V0 - Mario Rossi,25.00,,,D,item,,,,,,,,,,,
+2026-06-30,5,Fattura 5 - IVA al netto aliquota V0 - Mario Rossi,7.50,,,D,item,,,,,,,,,,,
+2026-06-30,5,Fattura 5 - IVA al netto aliquota V0 - Mario Rossi,25.00,V0,,D,item,,,,,,,,,,,
+2026-06-30,5,Fattura 5 - IVA al netto aliquota V0 - Mario Rossi,7.50,V0,,D,item,,,,,,,,,,,
+2026-06-30,6,Fattura 6 - IVA al lordo aliquota V0 - Mario Rossi,65.00,,,S,header,2,Mario,Rossi,Via abc,4,6500,Bellinzona,CH,,,Invoice 6 - Mario Rossi.pdf
+2026-06-30,6,Fattura 6 - IVA al lordo aliquota V0 - Mario Rossi,25.00,,,D,item,,,,,,,,,,,
+2026-06-30,6,Fattura 6 - IVA al lordo aliquota V0 - Mario Rossi,7.50,,,D,item,,,,,,,,,,,
+2026-06-30,6,Fattura 6 - IVA al lordo aliquota V0 - Mario Rossi,25.00,V0,,D,item,,,,,,,,,,,
+2026-06-30,6,Fattura 6 - IVA al lordo aliquota V0 - Mario Rossi,7.50,V0,,D,item,,,,,,,,,,,
+2026-07-10,7,Fattura 7 - senza IVA con sconto - Pinco Pallino,30.00,,,S,header,1,Pinco,Pallino,Via ai Salici,12,6900,Lugano,CH,,,Invoice 7 - Pinco Pallino.pdf
+2026-07-10,7,Fattura 7 - senza IVA con sconto - Pinco Pallino,25.00,,,D,item,,,,,,,,,,,
+2026-07-10,7,Fattura 7 - senza IVA con sconto - Pinco Pallino,7.50,,,D,item,,,,,,,,,,,
+2026-07-10,7,Fattura 7 - senza IVA con sconto - Pinco Pallino,-2.5,,,D,discount,,,,,,,,,,,
+2026-07-20,8,Fattura 8 - IVA al netto con sconto - Pinco Pallino,107.70,,,S,header,1,Pinco,Pallino,Via ai Salici,12,6900,Lugano,CH,,,Invoice 8 - Pinco Pallino.pdf
+2026-07-20,8,Fattura 8 - IVA al netto con sconto - Pinco Pallino,50.00,V81,1,D,item,,,,,,,,,,,
+2026-07-20,8,Fattura 8 - IVA al netto con sconto - Pinco Pallino,50.00,V81,1,D,item,,,,,,,,,,,
+2026-07-20,8,Fattura 8 - IVA al netto con sconto - Pinco Pallino,10.00,V38,1,D,item,,,,,,,,,,,
+2026-07-20,8,Fattura 8 - IVA al netto con sconto - Pinco Pallino,-9.09,-V81,1,D,discount,,,,,,,,,,,
+2026-07-20,8,Fattura 8 - IVA al netto con sconto - Pinco Pallino,-0.91,-V38,1,D,discount,,,,,,,,,,,
+2026-07-20,8,Fattura 8 - IVA al netto con sconto - Pinco Pallino (Arrotondamento),0.01,,,D,rounding,,,,,,,,,,-0.01,
+2026-07-30,9,Fattura 9 - IVA al lordo - Pinco Pallino,100.00,,,S,header,1,Pinco,Pallino,Via ai Salici,12,6900,Lugano,CH,,,Invoice 9 - Pinco Pallino.pdf
+2026-07-30,9,Fattura 9 - IVA al lordo - Pinco Pallino,50.00,V81,,D,item,,,,,,,,,,,
+2026-07-30,9,Fattura 9 - IVA al lordo - Pinco Pallino,50.00,V81,,D,item,,,,,,,,,,,
+2026-07-30,9,Fattura 9 - IVA al lordo - Pinco Pallino,10.00,V38,,D,item,,,,,,,,,,,
+2026-07-30,9,Fattura 9 - IVA al lordo - Pinco Pallino,-9.09,-V81,,D,discount,,,,,,,,,,,
+2026-07-30,9,Fattura 9 - IVA al lordo - Pinco Pallino,-0.91,-V38,,D,discount,,,,,,,,,,,
+2026-07-14,10,Fattura 10 - senza IVA - Pinco Pallino,127.50,,,S,header,1,Pinco,Pallino,Via ai Salici,12,6900,Lugano,CH,,,Invoice 10 - Pinco Pallino.pdf
+2026-07-14,10,Fattura 10 - senza IVA - Pinco Pallino,20.00,,,D,item,,,,,,,,,,,
+2026-07-14,10,Fattura 10 - senza IVA - Pinco Pallino,40.00,,,D,item,,,,,,,,,,,
+2026-07-14,10,Fattura 10 - senza IVA - Pinco Pallino,67.50,,,D,item,,,,,,,,,,,
+2026-07-14,11,Fattura 11 - IVA al netto - Pinco Pallino,134.95,,,S,header,1,Pinco,Pallino,Via ai Salici,12,6900,Lugano,CH,,,Invoice 11 - Pinco Pallino.pdf
+2026-07-14,11,Fattura 11 - IVA al netto - Pinco Pallino,20.00,V81,1,D,item,,,,,,,,,,,
+2026-07-14,11,Fattura 11 - IVA al netto - Pinco Pallino,40.00,V81,1,D,item,,,,,,,,,,,
+2026-07-14,11,Fattura 11 - IVA al netto - Pinco Pallino,67.50,V38,1,D,item,,,,,,,,,,,
+2026-07-14,11,Fattura 11 - IVA al netto - Pinco Pallino (Arrotondamento),0.02,,,D,rounding,,,,,,,,,,0.02,
+2026-07-14,12,Fattura 12 - IVA al lordo - Pinco Pallino,127.50,,,S,header,1,Pinco,Pallino,Via ai Salici,12,6900,Lugano,CH,,,Invoice 12 - Pinco Pallino.pdf
+2026-07-14,12,Fattura 12 - IVA al lordo - Pinco Pallino,20.00,V81,,D,item,,,,,,,,,,,
+2026-07-14,12,Fattura 12 - IVA al lordo - Pinco Pallino,40.00,V81,,D,item,,,,,,,,,,,
+2026-07-14,12,Fattura 12 - IVA al lordo - Pinco Pallino,67.50,V38,,D,item,,,,,,,,,,,

@@ -157,7 +157,7 @@
                            "fields": {
                               "Date": "2026-06-20",
                               "DocInvoice": "2",
-                              "Description": "Fattura 2 - IVA al netto - Pinco Pallino (Rounding)",
+                              "Description": "Fattura 2 - IVA al netto - Pinco Pallino (Arrotondamento)",
                               "AccountDebit": "",
                               "AccountCredit": "[CA]",
                               "Cc3": "",
@@ -576,7 +576,7 @@
                            "fields": {
                               "Date": "2026-07-20",
                               "DocInvoice": "8",
-                              "Description": "Fattura 8 - IVA al netto con sconto - Pinco Pallino (Rounding)",
+                              "Description": "Fattura 8 - IVA al netto con sconto - Pinco Pallino (Arrotondamento)",
                               "AccountDebit": "",
                               "AccountCredit": "[CA]",
                               "Cc3": "",
@@ -827,7 +827,7 @@
                            "fields": {
                               "Date": "2026-07-14",
                               "DocInvoice": "11",
-                              "Description": "Fattura 11 - IVA al netto - Pinco Pallino (Rounding)",
+                              "Description": "Fattura 11 - IVA al netto - Pinco Pallino (Arrotondamento)",
                               "AccountDebit": "",
                               "AccountCredit": "[CA]",
                               "Cc3": "",
@@ -1055,7 +1055,7 @@
                            "fields": {
                               "Date": "2026-06-20",
                               "DocInvoice": "2",
-                              "Description": "Fattura 2 - IVA al netto - Pinco Pallino (Rounding)",
+                              "Description": "Fattura 2 - IVA al netto - Pinco Pallino (Arrotondamento)",
                               "AccountDebit": "",
                               "AccountCredit": "[CA]",
                               "Cc3": "",
@@ -1474,7 +1474,7 @@
                            "fields": {
                               "Date": "2026-07-20",
                               "DocInvoice": "8",
-                              "Description": "Fattura 8 - IVA al netto con sconto - Pinco Pallino (Rounding)",
+                              "Description": "Fattura 8 - IVA al netto con sconto - Pinco Pallino (Arrotondamento)",
                               "AccountDebit": "",
                               "AccountCredit": "[CA]",
                               "Cc3": "",
@@ -1725,7 +1725,7 @@
                            "fields": {
                               "Date": "2026-07-14",
                               "DocInvoice": "11",
-                              "Description": "Fattura 11 - IVA al netto - Pinco Pallino (Rounding)",
+                              "Description": "Fattura 11 - IVA al netto - Pinco Pallino (Arrotondamento)",
                               "AccountDebit": "",
                               "AccountCredit": "[CA]",
                               "Cc3": "",
@@ -1953,7 +1953,7 @@
                            "fields": {
                               "Date": "2026-06-20",
                               "DocInvoice": "2",
-                              "Description": "Fattura 2 - IVA al netto - Pinco Pallino (Rounding)",
+                              "Description": "Fattura 2 - IVA al netto - Pinco Pallino (Arrotondamento)",
                               "AccountDebit": "",
                               "AccountCredit": "[CA]",
                               "Cc3": "",
@@ -2372,7 +2372,7 @@
                            "fields": {
                               "Date": "2026-07-20",
                               "DocInvoice": "8",
-                              "Description": "Fattura 8 - IVA al netto con sconto - Pinco Pallino (Rounding)",
+                              "Description": "Fattura 8 - IVA al netto con sconto - Pinco Pallino (Arrotondamento)",
                               "AccountDebit": "",
                               "AccountCredit": "[CA]",
                               "Cc3": "",
@@ -2623,7 +2623,7 @@
                            "fields": {
                               "Date": "2026-07-14",
                               "DocInvoice": "11",
-                              "Description": "Fattura 11 - IVA al netto - Pinco Pallino (Rounding)",
+                              "Description": "Fattura 11 - IVA al netto - Pinco Pallino (Arrotondamento)",
                               "AccountDebit": "",
                               "AccountCredit": "[CA]",
                               "Cc3": "",
@@ -2817,7 +2817,7 @@
                            "fields": {
                               "Date": "2026-06-20",
                               "DocInvoice": "2",
-                              "Description": "Fattura 2 - IVA al netto - Pinco Pallino (Rounding)",
+                              "Description": "Fattura 2 - IVA al netto - Pinco Pallino (Arrotondamento)",
                               "AccountDebit": "",
                               "AccountCredit": "[CA]",
                               "Cc3": "",
@@ -3134,7 +3134,7 @@
                            "fields": {
                               "Date": "2026-07-20",
                               "DocInvoice": "8",
-                              "Description": "Fattura 8 - IVA al netto con sconto - Pinco Pallino (Rounding)",
+                              "Description": "Fattura 8 - IVA al netto con sconto - Pinco Pallino (Arrotondamento)",
                               "AccountDebit": "",
                               "AccountCredit": "[CA]",
                               "Cc3": "",
@@ -3334,7 +3334,7 @@
                            "fields": {
                               "Date": "2026-07-14",
                               "DocInvoice": "11",
-                              "Description": "Fattura 11 - IVA al netto - Pinco Pallino (Rounding)",
+                              "Description": "Fattura 11 - IVA al netto - Pinco Pallino (Arrotondamento)",
                               "AccountDebit": "",
                               "AccountCredit": "[CA]",
                               "Cc3": "",
@@ -3562,7 +3562,7 @@
                            "fields": {
                               "Date": "2026-06-20",
                               "DocInvoice": "2",
-                              "Description": "Fattura 2 - IVA al netto - Pinco Pallino (Rounding)",
+                              "Description": "Fattura 2 - IVA al netto - Pinco Pallino (Arrotondamento)",
                               "AccountDebit": "",
                               "AccountCredit": "[CA]",
                               "Cc3": "",

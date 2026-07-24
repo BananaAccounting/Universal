@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.uni.import.invoices.transactions
 // @api = 1.0
-// @pubdate = 2026-07-17
+// @pubdate = 2026-07-24
 // @publisher = Banana.ch SA
 // @description = [DEV] Import invoices from CSV
 // @description.en = [DEV] Import invoices from CSV
@@ -22,7 +22,7 @@
 // @description.fr = [DEV] Importer des factures depuis un fichier CSV
 // @description.de = [DEV] Rechnungen aus CSV importieren
 // @task = import.transactions
-// @doctype = 100.100;100.110
+// @doctype = 100.*;110.*
 // @docproperties =
 // @outputformat = transactions.simple
 // @inputdatasource = openfiledialog
@@ -35,13 +35,14 @@
  * Receives the raw content of the file chosen by the user (via the
  * "Import to accounting > Transactions" dialog) and converts it from the
  * CSV produced by the companion export extension (comma-separated,
- * quoted fields, columns: Date, DocInvoice, Description, DebitAmount,
- * CreditAmount, VatCode, VatAmountType, IsDetail) into the tab-separated
- * "transactions.simple" format Banana expects. DebitAmount is written out
- * as Income, and CreditAmount as Expenses — matching the convention used
- * by Banana's own official import extensions (e.g. the UBS one). No
- * account columns (Account/ContraAccount) are produced: account
- * assignment is left entirely to Banana / to a manual step after import.
+ * quoted fields, columns: Date, DocInvoice, Description, Amount, VatCode,
+ * VatAmountType, IsDetail) into the tab-separated "transactions.simple"
+ * format Banana expects. The single signed Amount column from the CSV is
+ * split by sign into Income (Amount >= 0) and Expenses (Amount < 0,
+ * written as a positive value) — matching the convention used by
+ * Banana's own official import extensions (e.g. the UBS one). No account
+ * columns (Account/ContraAccount) are produced: account assignment is
+ * left entirely to Banana / to a manual step after import.
  * IsDetail is written out as-is: unlike a plain "tablewithheaders" import
  * (where IsDetail is inert, just along for the ride since that format
  * doesn't recognize the column), here Banana actually reads it to know
@@ -63,11 +64,11 @@ function exec(inText) {
    var header = rows[0];
    var idx = mapHeaderIndex(header);
 
-   if (idx.Date < 0 || idx.Description < 0 || (idx.DebitAmount < 0 && idx.CreditAmount < 0)) {
+   if (idx.Date < 0 || idx.Description < 0 || idx.Amount < 0) {
       // Required columns missing: nothing usable to import.
       if (typeof Banana !== "undefined" && Banana.application && Banana.application.addMessage) {
          Banana.application.addMessage("Import invoices: required column(s) missing in the source file " +
-            "(Date, Description and at least one of DebitAmount/CreditAmount are mandatory).");
+            "(Date, Description and Amount are mandatory).");
       }
       return "";
    }
@@ -81,12 +82,15 @@ function exec(inText) {
       if (!r || r.length === 0)
          continue;
 
+      var amount = toInternalAmount(tabSafe(getValue(r, idx.Amount)));
+      var amountNum = parseFloat(amount) || 0;
+
       var rowValues = {
          "Date": toInternalDate(tabSafe(getValue(r, idx.Date))),
          "DocInvoice": tabSafe(getValue(r, idx.DocInvoice)),
          "Description": tabSafe(getValue(r, idx.Description)),
-         "Income": toInternalAmount(tabSafe(getValue(r, idx.DebitAmount))),
-         "Expenses": toInternalAmount(tabSafe(getValue(r, idx.CreditAmount))),
+         "Income": amount && amountNum >= 0 ? amount : "",
+         "Expenses": amount && amountNum < 0 ? negateAmountString(amount) : "",
          "VatCode": tabSafe(getValue(r, idx.VatCode)),
          "VatAmountType": tabSafe(getValue(r, idx.VatAmountType)),
          "IsDetail": tabSafe(getValue(r, idx.IsDetail))
@@ -115,6 +119,15 @@ function getValue(row, index) {
    if (index < 0 || !row || index >= row.length)
       return "";
    return row[index] ? row[index] : "";
+}
+
+/**
+ * Negates an already-internal-format (dot decimal) amount string, used to
+ * turn a negative Amount into a positive Expenses value.
+ */
+function negateAmountString(amountStr) {
+   var n = parseFloat(("" + amountStr).replace(",", ".")) || 0;
+   return (-n).toString();
 }
 
 /**
@@ -203,8 +216,7 @@ function mapHeaderIndex(headerRow) {
       Date: -1,
       DocInvoice: -1,
       Description: -1,
-      DebitAmount: -1,
-      CreditAmount: -1,
+      Amount: -1,
       VatCode: -1,
       VatAmountType: -1,
       IsDetail: -1
@@ -219,10 +231,8 @@ function mapHeaderIndex(headerRow) {
          idx.DocInvoice = i;
       else if (h === "description")
          idx.Description = i;
-      else if (h === "debitamount")
-         idx.DebitAmount = i;
-      else if (h === "creditamount")
-         idx.CreditAmount = i;
+      else if (h === "amount")
+         idx.Amount = i;
       else if (h === "vatcode")
          idx.VatCode = i;
       else if (h === "vatamounttype")

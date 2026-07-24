@@ -14,7 +14,7 @@
 //
 // @id = ch.banana.uni.export.invoices
 // @api = 1.0
-// @pubdate = 2026-07-15
+// @pubdate = 2026-07-24
 // @publisher = Banana.ch SA
 // @description = [DEV] Export invoices to CSV
 // @description.en = [DEV] Export invoices to CSV
@@ -34,18 +34,29 @@
  * Reads the invoices directly from their JSON data (no intermediate CSV
  * step) out of the currently open document (Banana.document — the
  * extension is meant to be run with the "Estimates and Invoices" file
- * already open, no source file is selected), displays the settings
- * dialog, filters by period, builds the transaction rows and writes them
- * to a CSV file chosen by the user (columns: Date, DocInvoice,
- * Description, DebitAmount, CreditAmount, VatCode, VatAmountType,
- * IsDetail — the last one marks "S" on the invoice's summary/total row and
- * "D" on every detail row tied to that same invoice, for easy
- * identification. The summary row's amount and every detail row's amount
- * are always in DebitAmount (using a negative value for the discount row,
- * since it reduces rather than adds to the total) — detail rows sit in
- * the same Debit/Credit column as their summary row, not the opposite
- * one, matching the convention used by Banana's own official import
- * extensions (e.g. the UBS one).
+ * already open, no source file is selected), lets the user pick the
+ * period, builds the transaction rows and writes them to a CSV file
+ * chosen by the user (columns: Date, DocInvoice, Description,
+ * Amount, VatCode, VatAmountType, IsDetail, RowKind,
+ * CustomerNumber, CustomerFirstName, CustomerLastName, CustomerAddress,
+ * CustomerBuildingNumber, CustomerPostalCode, CustomerCity,
+ * CustomerCountryCode, CustomerLanguage, DocLink).
+ * IsDetail marks "S" on the invoice's summary/total row and "D" on every
+ * detail row tied to that same invoice, for easy identification/grouping
+ * - this is what Banana's own transactions.simple import relies on.
+ * RowKind is a finer-grained tag (header/item/discount/rounding) meant for
+ * other, non-CSV-import consumers of this same file (e.g. an extension
+ * that needs to know which side of a double-entry posting a row belongs
+ * to) - Banana's transactions.simple import ignores it.
+ * The Customer* columns and DocLink are only populated on the header row
+ * of each invoice (empty on item/discount/rounding rows), since they are
+ * invoice-level, not row-level, data.
+ * A single Amount column holds every row's signed value (negative for the
+ * discount row, since it reduces rather than adds to the total, positive
+ * otherwise) - there is no separate Debit/Credit pair, since one of the
+ * two would always be empty anyway. transactions.simple supports this
+ * single-column "Amount" convention natively (income positive, expenses
+ * negative).
  * No account columns are included: account assignment is left entirely to
  * Banana / to a manual step after import.
  */
@@ -188,6 +199,14 @@ function readInvoicesFromSource(sourceDoc, texts) {
             invoiceAmountType: getVal(invoiceObj.document_info.vat_mode),
             customerNumber: getVal(invoiceObj.customer_info.number),
             customerName: customerName,
+            customerFirstName: getVal(invoiceObj.customer_info.first_name),
+            customerLastName: getVal(invoiceObj.customer_info.last_name),
+            customerAddress: getVal(invoiceObj.customer_info.address1),
+            customerBuildingNumber: getVal(invoiceObj.customer_info.building_number),
+            customerPostalCode: getVal(invoiceObj.customer_info.postal_code),
+            customerCity: getVal(invoiceObj.customer_info.city),
+            customerCountryCode: getVal(invoiceObj.customer_info.country_code),
+            customerLanguage: getVal(invoiceObj.customer_info.lang),
             items: []
          };
 
@@ -272,12 +291,12 @@ function isEstimatesInvoices(sourceDoc) {
  * invoices data (same row structure/logic used by the import extension).
  * For each invoice creates:
  * - one summary row (IsDetail "S") with the total invoice amount in
- *   DebitAmount
+ *   Amount
  * - one detail row (IsDetail "D") per item (or per VatCode group, depending
  *   on groupByVatCode and the vat_rate-based grouping rules) with the item
- *   amount in DebitAmount
+ *   amount in Amount
  * - discount rows (IsDetail "D"), split proportionally by VatCode, with a
- *   negative DebitAmount, if a discount is present
+ *   negative Amount, if a discount is present
  * - one optional rounding row (IsDetail "D")
  * No account columns (AccountDebit/AccountCredit) are produced: account
  * assignment is left entirely to Banana / to a manual step after import.
@@ -313,10 +332,19 @@ function buildTransactionsRows(invoices, params, texts) {
       headerRow.fields["Date"] = invoice.invoiceDate;
       headerRow.fields["DocInvoice"] = invoice.invoiceNumber;
       headerRow.fields["Description"] = invoice.invoiceDescription;
-      headerRow.fields["DebitAmount"] = invoice.invoiceTotalToPay;
-      headerRow.fields["CreditAmount"] = "";
+      headerRow.fields["Amount"] = invoice.invoiceTotalToPay;
       headerRow.fields["VatCode"] = "";
       headerRow.fields["IsDetail"] = "S";
+      headerRow.fields["RowKind"] = "header";
+      headerRow.fields["CustomerNumber"] = invoice.customerNumber;
+      headerRow.fields["CustomerFirstName"] = invoice.customerFirstName;
+      headerRow.fields["CustomerLastName"] = invoice.customerLastName;
+      headerRow.fields["CustomerAddress"] = invoice.customerAddress;
+      headerRow.fields["CustomerBuildingNumber"] = invoice.customerBuildingNumber;
+      headerRow.fields["CustomerPostalCode"] = invoice.customerPostalCode;
+      headerRow.fields["CustomerCity"] = invoice.customerCity;
+      headerRow.fields["CustomerCountryCode"] = invoice.customerCountryCode;
+      headerRow.fields["CustomerLanguage"] = invoice.customerLanguage;
       headerRow.fields["DocLink"] = insertDocLink ? resolveDocLink(docLinkTemplate, invoice.invoiceNumber, invoice.customerName) : "";
       rows.push(headerRow);
 
@@ -430,12 +458,8 @@ function isZeroOrEmptyVatRate(vatRateStr) {
 
 /**
  * Builds a single item detail transaction row ("D"). The amount is
- * written to DebitAmount — the same column used by the invoice's "S"
- * row — since detail rows must sit in the same Debit/Credit column as
- * their summary row (CreditAmount stays empty), matching the convention
- * used by Banana's own official import extensions (e.g. the UBS one,
- * where a detail row's amount is written to whichever of Debit/Credit the
- * parent row used). No account column is produced.
+ * written to the single Amount column, positive, same as the invoice's
+ * "S" row. No account column is produced.
  * VatAmountType is set to "1" only when the invoice is at net (vat_excl)
  * AND the row's vat_rate is not empty/0.00 — rows with no VAT rate never
  * get "1", regardless of the invoice amount type.
@@ -451,8 +475,8 @@ function buildItemRow(invoiceDate, invoiceNumber, invoiceDescription, vatCode, a
    row.fields["VatCode"] = vatCode;
    row.fields["VatAmountType"] = (invoiceAmountType === "vat_excl" && !isZeroOrEmptyVatRate(vatRate)) ? "1" : "";
    row.fields["IsDetail"] = "D";
-   row.fields["DebitAmount"] = amount;
-   row.fields["CreditAmount"] = "";
+   row.fields["RowKind"] = "item";
+   row.fields["Amount"] = amount;
    row.fields["DocLink"] = "";
    return row;
 }
@@ -531,18 +555,17 @@ function addInvoiceDiscountRowsIfNeeded(rows, invoice) {
       row.fields["Date"] = invoice.invoiceDate;
       row.fields["DocInvoice"] = invoice.invoiceNumber;
       row.fields["Description"] = invoice.invoiceDescription;
-      // The discount reduces the total being accumulated in DebitAmount
-      // by the item rows above, so it is written here as a *negative*
-      // DebitAmount (CreditAmount stays empty) — this row is still an
-      // "IsDetail = D" row like the item rows, using the same DebitAmount
-      // column, but with a sign that subtracts instead of adding, so that
-      // the sum of all DebitAmount detail rows still matches the total
-      // booked as DebitAmount on the invoice's "S" row.
-      row.fields["DebitAmount"] = negateAmountString(portion.toString());
-      row.fields["CreditAmount"] = "";
+      // The discount reduces the total being accumulated in Amount by the
+      // item rows above, so it is written here as a *negative* Amount -
+      // this row is still an "IsDetail = D" row like the item rows, using
+      // the same Amount column, but with a sign that subtracts instead of
+      // adding, so that the sum of all detail rows' Amount still matches
+      // the total booked as Amount on the invoice's "S" row.
+      row.fields["Amount"] = negateAmountString(portion.toString());
       row.fields["VatCode"] = vatCode ? ("-" + vatCode) : "";
       row.fields["VatAmountType"] = (isVatExcl && !isZeroOrEmptyVatRate(groups[vatCode].vatRate)) ? "1" : "";
       row.fields["IsDetail"] = "D";
+      row.fields["RowKind"] = "discount";
       row.fields["DocLink"] = "";
 
       rows.push(row);
@@ -593,8 +616,13 @@ function addRoundingRowIfNeeded(rows, invoiceDate, invoiceNumber, roundingDiffer
    row.fields["Description"] = invoiceDescription + " (" + texts.rounding + ")";
    row.fields["VatCode"] = "";
    row.fields["IsDetail"] = "D";
-   row.fields["DebitAmount"] = roundingAmount;
-   row.fields["CreditAmount"] = "";
+   row.fields["RowKind"] = "rounding";
+   row.fields["Amount"] = roundingAmount;
+   // Raw value, sign never forced - only used by
+   // ch.banana.uni.import.invoices.documentchange.js, which (unlike the
+   // transactions.simple import) does not gross up VatAmountType=1 rows on
+   // import, so it must use the original sign instead of Amount above.
+   row.fields["RoundingRawAmount"] = roundingDifferenceStr;
    row.fields["DocLink"] = "";
 
    rows.push(row);
@@ -651,14 +679,33 @@ function buildCsvFileName(params) {
 }
 
 /**
- * Converts a flat array of {operation, fields} rows into a CSV string with
- * columns: Date, DocInvoice, Description,
- * DebitAmount, CreditAmount, VatCode, VatAmountType, IsDetail. The DocLink
- * field present on the rows is not part of this export.
+ * Converts a flat array of {operation, fields} rows into a CSV string.
+ * Columns: Date, DocInvoice, Description, Amount,
+ * VatCode, VatAmountType, IsDetail, RowKind, CustomerNumber,
+ * CustomerFirstName, CustomerLastName, CustomerAddress,
+ * CustomerBuildingNumber, CustomerPostalCode, CustomerCity,
+ * CustomerCountryCode, CustomerLanguage, RoundingRawAmount, DocLink.
+ * A single signed Amount column is used instead of a Debit/Credit pair,
+ * since one of the two would always be empty anyway (see exec()'s doc
+ * comment). RowKind (header/item/discount/rounding) and the Customer*
+ * columns are only populated on the header row of each invoice - they are
+ * the same for every row of that invoice, so repeating them on every
+ * detail row would be redundant; consumers that need them (e.g. an import
+ * extension building account postings) read them off the header row they
+ * already grouped by DocInvoice. RoundingRawAmount is only populated on
+ * the rounding row and carries its value with the sign never forced to
+ * positive - see addRoundingRowIfNeeded() for why Amount and
+ * RoundingRawAmount can differ on that one row. IsDetail (S/D) is kept
+ * exactly as before, since Banana's own transactions.simple import
+ * relies on it for grouping.
  * Comma-separated, values wrapped in double quotes when needed.
  */
 function rowsToCsv(rows) {
-   var columns = ["Date", "DocInvoice", "Description", "DebitAmount", "CreditAmount", "VatCode", "VatAmountType", "IsDetail"];
+   var columns = ["Date", "DocInvoice", "Description", "Amount",
+      "VatCode", "VatAmountType", "IsDetail", "RowKind", "CustomerNumber",
+      "CustomerFirstName", "CustomerLastName", "CustomerAddress", "CustomerBuildingNumber",
+      "CustomerPostalCode", "CustomerCity", "CustomerCountryCode", "CustomerLanguage",
+      "RoundingRawAmount", "DocLink"];
    var lines = [];
 
    lines.push(columns.join(","));
@@ -785,7 +832,7 @@ function convertParam(userParam) {
    currentParam.title = texts.groupByVatCode;
    currentParam.type = 'bool';
    currentParam.value = userParam.groupByVatCode ? true : false;
-   currentParam.defaultvalue = true;
+   currentParam.defaultvalue = false;
    currentParam.readValue = function() {
       userParam.groupByVatCode = this.value;
    }

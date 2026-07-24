@@ -28,40 +28,40 @@
 /**
  * Test case for ch.banana.uni.import.invoices.documentchange.
  *
- * Opens a real "Estimates and Invoices" .ac2 fixture once, reads its
- * invoices, then for each interesting combination of settings generates
- * the documentChange JSON (via buildTransactionsAddDocumentChange) and
- * logs it with Test.logger.addJson. No row-by-row assertions: the JSON
- * itself is the test result, checked manually on the first run and then
- * diffed automatically against test/testexpected on every following run.
+ * Each test method loads its OWN CSV fixture (via loadInvoiceGroups),
+ * instead of sharing a single one across the whole test case. Fill in
+ * the CSV_* constants below with the file names you want each method to
+ * use (all expected in test/testcases/, next to this file) - everything
+ * else is already wired up.
  *
- * exec() itself is never called, since it opens file/UI dialogs and
- * cannot run unattended.
+ * Reminder: documentchange.js itself no longer computes anything from the
+ * invoice data (no VAT grouping, no discount split, no period filter, no
+ * doc link resolution) - all of that already happened once, when the CSV
+ * was exported by ch.banana.uni.export.invoices.js. Only customerIsCc3/
+ * insertCustomer are still read from params here. So for
+ * testInsertDocLink/testGroupByVatCode/testPeriodFilter to actually
+ * exercise something different, CSV_INSERT_DOC_LINK/CSV_GROUP_BY_VAT_CODE/
+ * CSV_PERIOD_FILTER need to point at CSVs that were exported WITH that
+ * setting active (via ch.banana.uni.export.invoices.js) - if you point
+ * them at the same CSV as testDefaultParams, they will just produce the
+ * same output, since documentchange.js can't tell the difference.
  *
- * NOTE: jsonDoc.creator.executionDate/executionTime come from new Date()
- * and would differ on every run, so they are normalized to a fixed
- * placeholder before logging.
- *
- * Rename AC2_FILE below if your fixture file has a different name,
- * and make sure it sits in test/testcases/ next to this test file.
+ * exec() itself is never called (it opens a file-selection dialog, which
+ * cannot run unattended). Instead each test method calls the same two
+ * functions exec() calls internally:
+ *   - parseCsvIntoInvoiceGroups(csvContent, texts)
+ *   - buildTransactionRowsFromCsv(invoiceGroups, params)
+ * and logs the resulting rows (wrapped the same way exec() wraps them
+ * into a documentChange) with Test.logger.addJson.
  */
-
-var AC2_FILE = "file:script/../test/testcases/test-export-offerte-fatture-iva-lordo-netto-senza-iva.ac2";
 
 Test.registerTestCase(new TestImportInvoicesDocumentChange());
 
 function TestImportInvoicesDocumentChange() {
 }
 
-// Opens the file once for the whole test case (all test* methods share it).
 TestImportInvoicesDocumentChange.prototype.initTestCase = function () {
-   this.sourceDoc = Banana.application.openDocument(AC2_FILE);
-   Test.assert(this.sourceDoc, "Unable to open fixture file: " + AC2_FILE);
-
    this.texts = loadTexts({ locale: "en" });
-
-   this.invoices = readInvoicesFromSource(this.sourceDoc, this.texts);
-   Test.assert(this.invoices && this.invoices.length > 0, "Fixture file contains no usable invoices");
 };
 
 TestImportInvoicesDocumentChange.prototype.cleanupTestCase = function () {
@@ -80,59 +80,105 @@ TestImportInvoicesDocumentChange.prototype.cleanup = function () {
 function defaultParams() {
    return {
       customerIsCc3: false,
-      insertCustomer: false,
-      insertDocLink: false,
-      docLinkTemplate: "",
-      groupByVatCode: false,
-      selectionStartDate: "2026-01-01",
-      selectionEndDate: "2026-12-31"
+      insertCustomer: false
    };
 }
 
 /**
- * Builds the documentChange JSON for the given invoices/params, normalizes
- * the volatile creator fields and logs it with Test.logger.addJson.
+ * Reads and parses the given CSV fixture file (a path relative to the
+ * test folder, e.g. "file:script/../test/testcases/xxx.csv").
  */
-function buildAndLog(testCase, logKey, invoices, params) {
-   var jsonDoc = buildTransactionsAddDocumentChange(invoices, params, testCase.texts);
+function loadInvoiceGroups(testCase, csvFileName) {
+   var csvFile = Banana.IO.getLocalFile(csvFileName);
+   Test.assert(csvFile, "Unable to access fixture file: " + csvFileName);
+
+   var csvContent = csvFile.read();
+   Test.assert(csvContent && csvContent.length > 0,
+      "Fixture file is empty or unreadable: " + csvFileName +
+      (csvFile.errorString ? (" - " + csvFile.errorString) : ""));
+
+   var invoiceGroups = parseCsvIntoInvoiceGroups(csvContent, testCase.texts);
+   Test.assert(invoiceGroups && invoiceGroups.length > 0,
+      "Fixture CSV contains no usable invoices (check it has RowKind, Date, DocInvoice columns): " + csvFileName);
+
+   return invoiceGroups;
+}
+
+/**
+ * Builds the documentChange rows from the parsed CSV invoice groups
+ * (same call exec() makes), wraps them the same way exec() does, and
+ * logs the JSON with Test.logger.addJson.
+ */
+function buildAndLog(testCase, logKey, invoiceGroups, params) {
+   var rows = buildTransactionRowsFromCsv(invoiceGroups, params);
+
+   var dataUnitTransactions = {};
+   dataUnitTransactions.nameXml = "Transactions";
+   dataUnitTransactions.data = {};
+   dataUnitTransactions.data.rowLists = [];
+   dataUnitTransactions.data.rowLists.push({ "rows": rows });
+
+   var jsonDoc = initDocument();
+   jsonDoc.document.dataUnits.push(dataUnitTransactions);
 
    jsonDoc.creator.executionDate = "<normalized>";
    jsonDoc.creator.executionTime = "<normalized>";
 
    Test.logger.addJson(logKey, JSON.stringify(jsonDoc, null, 3));
+
+   return rows;
 }
 
 // ---------------------------------------------------------------------
-// Test methods - one per settings combination worth checking
+// CSV fixtures - one per test method, fill in the file names
+// (all expected in test/testcases/)
+// ---------------------------------------------------------------------
+
+var CSV_DEFAULT_PARAMS = "file:script/../test/testcases/test-export-offerte-fatture-iva-lordo-netto-senza-iva-non-raggruppato.csv";
+var CSV_INSERT_DOC_LINK = "file:script/../test/testcases/test-export-offerte-fatture-iva-lordo-netto-senza-iva-doclink.csv";
+var CSV_GROUP_BY_VAT_CODE = "file:script/../test/testcases/test-export-offerte-fatture-iva-lordo-netto-senza-iva-raggruppato.csv";
+var CSV_PERIOD_FILTER = "file:script/../test/testcases/test-export-offerte-fatture-iva-lordo-netto-senza-iva-giugno.csv";
+
+// ---------------------------------------------------------------------
+// Test methods
 // ---------------------------------------------------------------------
 
 TestImportInvoicesDocumentChange.prototype.testDefaultParams = function () {
-   buildAndLog(this, "Default params", this.invoices, defaultParams());
+   var invoiceGroups = loadInvoiceGroups(this, CSV_DEFAULT_PARAMS);
+   buildAndLog(this, "Default params", invoiceGroups, defaultParams());
 };
 
 TestImportInvoicesDocumentChange.prototype.testCustomerAsCc3WithRealCustomer = function () {
+   var invoiceGroups = loadInvoiceGroups(this, CSV_DEFAULT_PARAMS);
+
    var params = defaultParams();
    params.customerIsCc3 = true;
    params.insertCustomer = true;
-   buildAndLog(this, "Customer as Cc3 - real customer inserted", this.invoices, params);
+
+   buildAndLog(this, "Customer as Cc3 - real customer inserted", invoiceGroups, params);
 };
 
+// NOTE: for this to actually differ from testDefaultParams, CSV_INSERT_DOC_LINK
+// must be a CSV exported from ch.banana.uni.export.invoices.js with
+// insertDocLink = true - documentchange.js just passes DocLink through as-is.
 TestImportInvoicesDocumentChange.prototype.testInsertDocLink = function () {
-   var params = defaultParams();
-   params.insertDocLink = true;
-   params.docLinkTemplate = "Invoice <DocInvoice> - <CustomerName>.pdf";
-   buildAndLog(this, "Insert DocLink", this.invoices, params);
+   var invoiceGroups = loadInvoiceGroups(this, CSV_INSERT_DOC_LINK);
+   buildAndLog(this, "Insert DocLink", invoiceGroups, defaultParams());
 };
 
+// NOTE: for this to actually differ from testDefaultParams, CSV_GROUP_BY_VAT_CODE
+// must be a CSV exported from ch.banana.uni.export.invoices.js with
+// groupByVatCode = true - the grouping itself happens at export time.
 TestImportInvoicesDocumentChange.prototype.testGroupByVatCode = function () {
-   var params = defaultParams();
-   params.groupByVatCode = true;
-   buildAndLog(this, "Group by VAT code", this.invoices, params);
+   var invoiceGroups = loadInvoiceGroups(this, CSV_GROUP_BY_VAT_CODE);
+   buildAndLog(this, "Group by VAT code", invoiceGroups, defaultParams());
 };
 
+// NOTE: for this to actually differ from testDefaultParams, CSV_PERIOD_FILTER
+// must be a CSV exported from ch.banana.uni.export.invoices.js with a
+// narrower selectionStartDate/selectionEndDate - the filtering itself
+// happens at export time (fewer invoices end up in the CSV at all).
 TestImportInvoicesDocumentChange.prototype.testPeriodFilter = function () {
-   var params = defaultParams();
-   params.selectionStartDate = "2026-06-01";
-   params.selectionEndDate = "2026-06-30";
-   buildAndLog(this, "Period filter - June 2026", this.invoices, params);
+   var invoiceGroups = loadInvoiceGroups(this, CSV_PERIOD_FILTER);
+   buildAndLog(this, "Period filter - June 2026", invoiceGroups, defaultParams());
 };
