@@ -80,6 +80,15 @@ function exec() {
       return "@Cancel";
    }
 
+   // Step 2: show the settings panel (customerIsCc3, insertCustomer)
+   // immediately - not just via the Manage Extensions > Settings button
+   // (settingsDialog() further below remains available too, as an
+   // alternate entry point to change the settings without running a full
+   // import).
+   if (!showSettingsDialog(params))
+      return "@Cancel";
+   saveSettings(params);
+
    var csvFile = Banana.IO.getLocalFile(csvFileName);
    var csvContent = csvFile.read();
    if (!csvContent || !csvContent.length) {
@@ -88,14 +97,14 @@ function exec() {
       return "@Cancel";
    }
 
-   // Step 2: parse the CSV, grouping its rows by invoice
+   // Step 3: parse the CSV, grouping its rows by invoice
    var invoiceGroups = parseCsvIntoInvoiceGroups(csvContent, texts);
    if (!invoiceGroups || !invoiceGroups.length) {
       Banana.application.addMessage(texts.errorGeneratingDataFromSourceFile);
       return "@Cancel";
    }
 
-   // Step 3: remap every CSV row into a documentChange row
+   // Step 4: remap every CSV row into a documentChange row
    var rows = buildTransactionRowsFromCsv(invoiceGroups, params);
    if (!rows || !rows.length) {
       Banana.application.addMessage(texts.errorGeneratingDataFromSourceFile);
@@ -496,18 +505,6 @@ function convertParam(userParam) {
    convertedParam.data = [];
 
    var currentParam = {};
-   currentParam.name = 'customerIsCc3';
-   currentParam.parentObject = '';
-   currentParam.title = texts.customerIsCc3;
-   currentParam.type = 'bool';
-   currentParam.value = userParam.customerIsCc3 ? true : false;
-   currentParam.defaultvalue = false;
-   currentParam.readValue = function() {
-      userParam.customerIsCc3 = this.value;
-   }
-   convertedParam.data.push(currentParam);
-
-   currentParam = {};
    currentParam.name = 'insertCustomer';
    currentParam.parentObject = '';
    currentParam.title = texts.insertCustomer;
@@ -519,17 +516,57 @@ function convertParam(userParam) {
    }
    convertedParam.data.push(currentParam);
 
+   currentParam = {};
+   currentParam.name = 'customerIsCc3';
+   currentParam.parentObject = '';
+   currentParam.title = texts.customerIsCc3;
+   currentParam.type = 'bool';
+   currentParam.value = userParam.customerIsCc3 ? true : false;
+   currentParam.defaultvalue = false;
+   currentParam.readValue = function() {
+      userParam.customerIsCc3 = this.value;
+   }
+   convertedParam.data.push(currentParam);
+
    return convertedParam;
+}
+
+/**
+ * Displays the settings panel (customerIsCc3, insertCustomer) via
+ * openPropertyEditor. Updates the userParam object with what the user
+ * chose. Returns false if the user cancels, true otherwise (including
+ * when openPropertyEditor isn't available - keeps working with whatever
+ * was already in userParam).
+ */
+function showSettingsDialog(userParam) {
+
+   var texts = loadTexts(Banana.document);
+
+   if (typeof Banana.Ui.openPropertyEditor === 'undefined')
+      return true;
+
+   var dialogTitle = texts.settingsTitle;
+   var convertedParam = convertParam(userParam);
+   var pageAnchor = 'dlgSettings';
+   if (!Banana.Ui.openPropertyEditor(dialogTitle, convertedParam, pageAnchor))
+      return false;
+
+   for (var i = 0; i < convertedParam.data.length; i++) {
+      convertedParam.data[i].readValue();
+   }
+
+   return true;
 }
 
 /**
  * Settings entry point recognized by Banana Accounting itself: called
  * automatically when the user clicks the "Settings" button in
- * Extensions > Manage Extensions > (select this extension), NOT when
- * exec() runs (matching the same pattern used in
- * ch.banana.uni.export.invoices.js). Shows the two remaining checkboxes
- * (customerIsCc3, insertCustomer). Returns null if the user cancels, or
- * the JSON-stringified saved settings otherwise.
+ * Extensions > Manage Extensions > (select this extension). This is now
+ * just an alternate way to change customerIsCc3/insertCustomer without
+ * running a full import - exec() itself already shows the same checkbox
+ * panel every time it runs (see showSettingsDialog()).
+ * Returns null if the user cancels, or the JSON-stringified saved
+ * settings otherwise.
  */
 function settingsDialog() {
 

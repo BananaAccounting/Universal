@@ -82,13 +82,14 @@ function exec() {
       return "@Cancel";
    }
 
-   // Step 2: select the period (the checkbox settings - insertDocLink,
-   // groupByVatCode - are NOT asked here: they are loaded as-is from the
-   // saved settings, and are only editable through Extensions > Manage
-   // Extensions > select this extension > Settings button, which Banana
-   // wires up automatically to the settingsDialog() function below)
+   // Step 2: show the settings panel (insertDocLink + docLinkTemplate,
+   // groupByVatCode) and the period selection - both shown immediately
+   // when the extension is run, not just via the Manage Extensions >
+   // Settings button (settingsDialog() below remains available too, as
+   // an alternate entry point to change the settings without running a
+   // full export).
    var params = loadSettings();
-   if (!selectPeriodDialog(params))
+   if (!settingsAndPeriodDialog(params))
       return "@Cancel";
    saveSettings(params);
 
@@ -100,9 +101,9 @@ function exec() {
    }
 
    // Step 4: ask the user where to save the CSV file, suggesting a name
-   // built from the selected period so nothing has to be typed unless a
-   // different name/location is wanted
-   var suggestedFileName = buildCsvFileName(params);
+   // built from the selected period and the source .ac2 file name so
+   // nothing has to be typed unless a different name/location is wanted
+   var suggestedFileName = buildCsvFileName(params, sourceDoc);
    var csvFileName = Banana.IO.getSaveFileName(texts.selectCsvDestination, suggestedFileName, texts.csvFileType);
    if (!csvFileName || !csvFileName.length) {
       Banana.Ui.showInformation(texts.info, texts.noFileSelected);
@@ -656,26 +657,54 @@ function resolveDocLink(template, invoiceNumber, customerName) {
 }
 
 /**
- * Builds a suggested CSV file name from the selected period, so the save
- * dialog is pre-filled and the user doesn't have to type anything unless
- * a different name is wanted.
- * Format: "<start>_<end>_invoices.csv", with dates as YYYYMMDD (no
- * separators) - e.g. "20260101_20260630_invoices.csv". Dates first so
- * that exports sort chronologically in a file browser, instead of all
- * clumping together under "invoices" with the date hidden at the end.
- * Falls back to "invoices.csv" if no period was selected.
+ * Builds a suggested CSV file name from the selected period and the
+ * source .ac2 file name, so the save dialog is pre-filled and the user
+ * doesn't have to type anything unless a different name is wanted.
+ * Format: "<start>_<end>_invoices_<ac2name>.csv", with dates as YYYYMMDD
+ * (no separators) - e.g. "20260101_20260630_invoices_MyCompany2026.csv".
+ * Dates first so that exports sort chronologically in a file browser,
+ * instead of all clumping together under "invoices" with the date hidden
+ * at the end.
+ * Falls back to "invoices.csv" if no period was selected, and drops the
+ * "_<ac2name>" part if the source file name can't be determined.
  */
-function buildCsvFileName(params) {
+function buildCsvFileName(params, sourceDoc) {
    var startDate = params.selectionStartDate;
    var endDate = params.selectionEndDate;
 
+   var ac2Name = getSourceAc2BaseName(sourceDoc);
+   var suffix = ac2Name ? ("_" + ac2Name) : "";
+
    if (!startDate || !endDate)
-      return "invoices.csv";
+      return "invoices" + suffix + ".csv";
 
    var startCompact = startDate.replace(/-/g, "");
    var endCompact = endDate.replace(/-/g, "");
 
-   return startCompact + "_" + endCompact + "_invoices.csv";
+   return startCompact + "_" + endCompact + "_invoices" + suffix + ".csv";
+}
+
+/**
+ * Returns the source document's file name without path or extension
+ * (e.g. "/Users/me/Accounting/MyCompany2026.ac2" -> "MyCompany2026"),
+ * sanitized to only contain characters safe in a file name. Returns ""
+ * if it can't be determined (e.g. the document was never saved).
+ */
+function getSourceAc2BaseName(sourceDoc) {
+   if (!sourceDoc || typeof sourceDoc.info !== "function")
+      return "";
+
+   var fileName = sourceDoc.info("Base", "FileName");
+   if (!fileName)
+      return "";
+
+   // Keep only the base name: strip any directory path and extension.
+   var baseName = ("" + fileName).replace(/^.*[\\\/]/, "").replace(/\.[^.]+$/, "");
+
+   // Sanitize: replace anything that isn't a safe file name character.
+   baseName = baseName.replace(/[^A-Za-z0-9_-]+/g, "_");
+
+   return baseName;
 }
 
 /**
@@ -842,12 +871,13 @@ function convertParam(userParam) {
 }
 
 /**
- * Settings entry point recognized by Banana Accounting itself: it is
- * called automatically when the user clicks the "Settings" button in
- * Extensions > Manage Extensions > (select this extension), NOT when
- * exec() runs. It shows only the checkbox panel (insertDocLink +
- * docLinkTemplate, groupByVatCode) - the period is not part of it, since
- * that is chosen fresh on every run inside exec() via selectPeriodDialog().
+ * Settings entry point recognized by Banana Accounting itself: called
+ * automatically when the user clicks the "Settings" button in
+ * Extensions > Manage Extensions > (select this extension). This is now
+ * just an alternate way to change insertDocLink/docLinkTemplate/
+ * groupByVatCode without running a full export - exec() itself already
+ * shows the same checkbox panel every time it runs (see
+ * settingsAndPeriodDialog()).
  * Returns null if the user cancels, or the (JSON-stringified, though the
  * return value itself is not used by exec()) saved settings otherwise, per
  * the convention documented for this function.
@@ -876,18 +906,26 @@ function settingsDialog() {
 }
 
 /**
- * Displays the period selection dialog using getPeriod. Updates the
- * userParam object with the period chosen by the user. Returns false if
- * the user cancels.
- * The checkbox settings panel (insertDocLink, groupByVatCode) is
- * intentionally not shown: those two values are taken as-is from
- * userParam (i.e. whatever loadSettings() returned - the last saved
- * values, or the defaults from initUserParam() on first run) and can
- * only be changed by editing the saved settings directly.
+ * Displays the settings panel (insertDocLink + docLinkTemplate,
+ * groupByVatCode) via openPropertyEditor, then the period selection
+ * dialog via getPeriod. Updates the userParam object with everything the
+ * user chose. Returns false if the user cancels either dialog.
  */
-function selectPeriodDialog(userParam) {
+function settingsAndPeriodDialog(userParam) {
 
    var texts = loadTexts(Banana.document);
+
+   // Checkbox settings panel
+   if (typeof Banana.Ui.openPropertyEditor !== 'undefined') {
+      var dialogTitle = texts.settingsTitle;
+      var convertedParam = convertParam(userParam);
+      var pageAnchor = 'dlgSettings';
+      if (!Banana.Ui.openPropertyEditor(dialogTitle, convertedParam, pageAnchor))
+         return false;
+      for (var i = 0; i < convertedParam.data.length; i++) {
+         convertedParam.data[i].readValue();
+      }
+   }
 
    // Period selection
    var docStartDate = "";
