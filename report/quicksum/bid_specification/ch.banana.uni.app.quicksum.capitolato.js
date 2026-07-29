@@ -230,6 +230,19 @@ function convertParam(userParam) {
   }
   convertedParam.data.push(currentParam);
 
+  var currentParam = {};
+  currentParam.name = 'param_print_hashes';
+  currentParam.parentObject = '';
+  currentParam.title = texts.param_print_hashes;
+  currentParam.type = 'bool';
+  currentParam.value = userParam.param_print_hashes ? true : false;
+  currentParam.defaultvalue = false;
+  currentParam.tooltip = texts.param_print_hashes;
+  currentParam.readValue = function() {
+    userParam.param_print_hashes = this.value;
+  }
+  convertedParam.data.push(currentParam);
+
   return convertedParam;
 }
 
@@ -250,6 +263,7 @@ function initUserParam() {
   userParam.param_use_row_style = false;
   userParam.param_summary_print_other_positions = '';
   userParam.param_report_currency = 'CHF';
+  userParam.param_print_hashes = false;
   return userParam;
 }
 
@@ -344,6 +358,7 @@ function printReport(banDoc, report, userParam, stylesheet) {
   printReportHeader(banDoc, report, userParam, stylesheet);
   printReportTable(banDoc, report, userParam);
   printReportTotals(banDoc, report, userParam);
+  printReportHashes(banDoc, report, userParam);
   printReportFooter(report);
 }
 
@@ -963,6 +978,47 @@ function printReportTotals(banDoc, report, userParam) {
   }
 }
 
+/** Function that prints the hashes codes */
+function printReportHashes(banDoc, report, userParam) {
+
+  if (!userParam.param_print_hashes) {
+    return;
+  }
+
+  var quicksumTable = banDoc.table("Quicksum");
+  if (!quicksumTable) {
+    return;
+  }
+
+  //var lang = getLang(banDoc);
+  //var texts = loadTexts(banDoc, lang);
+  //report.addPageBreak();
+  report.addParagraph(" ","");
+  report.addParagraph(" ","");
+
+  for (var i = 0; i < quicksumTable.rowCount; i++) {
+    var quicksumRow = quicksumTable.row(i);
+
+    if (!quicksumRow) {
+      continue;
+    }
+
+    var itemIdCalc = quicksumRow.value("ItemIdCalc");
+    var description = quicksumRow.value("Description");
+    if (!itemIdCalc) {
+      continue;
+    }
+
+    if (itemIdCalc === "#hash-base" && description) {
+      report.addParagraph("hash-base: " + description);
+    }
+
+    if (itemIdCalc === "#hash-all" && description) {
+      report.addParagraph("hash-all: " + description);
+    }
+  }
+}
+
 /** Function that prints the footer */
 function printReportFooter(report) {
   report.getFooter().addClass("footer");
@@ -1332,6 +1388,7 @@ function loadTexts(banDoc,lang) {
     texts.param_summary_print_other_positions = "Weitere Positionen zum Drucken";
     texts.param_report_currency = "Währung";
     texts.param_use_row_style = "Verwende die Zeilenstile";
+    texts.param_print_hashes = "Hash-Prüfzeilen drucken";
 
     texts.tooltip_param_print_technical_proposal = "Schließt das technische Angebot in den Ausdruck ein";
     texts.tooltip_param_print_summary = "Schließt ein Übersichtsblatt mit allen Gesamtsummen in den Ausdruck ein";
@@ -1375,6 +1432,7 @@ function loadTexts(banDoc,lang) {
     texts.param_summary_print_other_positions = "Autres positions à imprimer";
     texts.param_report_currency = "Devise";
     texts.param_use_row_style = "Utiliser les styles de ligne";
+    texts.param_print_hashes = "Imprimer les lignes de vérification hash";
 
     texts.tooltip_param_print_technical_proposal = "Inclut l’offre technique dans l’impression";
     texts.tooltip_param_print_summary = "Inclut une feuille de récapitulatif avec tous les totaux dans l’impression";
@@ -1418,6 +1476,7 @@ function loadTexts(banDoc,lang) {
     texts.param_summary_print_other_positions = "Altre posizioni da stampare";
     texts.param_report_currency = "Moneta";
     texts.param_use_row_style = "Utilizza gli stili delle righe";
+    texts.param_print_hashes = "Stampa righe di verifica hash";
 
     texts.tooltip_param_print_technical_proposal = "Include il capitolato d’offerta nella stampa";
     texts.tooltip_param_print_summary = "Include il foglio di riepilogo con tutti i totali nella stampa";
@@ -1461,6 +1520,7 @@ function loadTexts(banDoc,lang) {
     texts.param_summary_print_other_positions = "Other positions to print";
     texts.param_report_currency = "Currency";
     texts.param_use_row_style = "Use row styles";
+    texts.param_print_hashes = "Print hash verification lines";
 
     texts.tooltip_param_print_technical_proposal = "Includes the technical proposal in the printout";
     texts.tooltip_param_print_summary = "Includes a summary sheet with all totals in the printout";
