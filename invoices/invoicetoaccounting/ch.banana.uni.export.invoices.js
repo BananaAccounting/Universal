@@ -832,6 +832,18 @@ function convertParam(userParam) {
    convertedParam.data = [];
 
    var currentParam = {};
+   currentParam.name = 'groupByVatCode';
+   currentParam.parentObject = '';
+   currentParam.title = texts.groupByVatCode;
+   currentParam.type = 'bool';
+   currentParam.value = userParam.groupByVatCode ? true : false;
+   currentParam.defaultvalue = false;
+   currentParam.readValue = function() {
+      userParam.groupByVatCode = this.value;
+   }
+   convertedParam.data.push(currentParam);
+
+   currentParam = {};
    currentParam.name = 'insertDocLink';
    currentParam.parentObject = '';
    currentParam.title = texts.insertDocLink;
@@ -852,18 +864,6 @@ function convertParam(userParam) {
    currentParam.defaultvalue = texts.invoice + ' <DocInvoice>.pdf';
    currentParam.readValue = function() {
       userParam.docLinkTemplate = this.value;
-   }
-   convertedParam.data.push(currentParam);
-
-   currentParam = {};
-   currentParam.name = 'groupByVatCode';
-   currentParam.parentObject = '';
-   currentParam.title = texts.groupByVatCode;
-   currentParam.type = 'bool';
-   currentParam.value = userParam.groupByVatCode ? true : false;
-   currentParam.defaultvalue = false;
-   currentParam.readValue = function() {
-      userParam.groupByVatCode = this.value;
    }
    convertedParam.data.push(currentParam);
 

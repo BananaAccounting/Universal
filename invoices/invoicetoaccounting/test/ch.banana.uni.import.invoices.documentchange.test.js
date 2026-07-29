@@ -109,8 +109,39 @@ function loadInvoiceGroups(testCase, csvFileName) {
  * (same call exec() makes), wraps them the same way exec() does, and
  * logs the JSON with Test.logger.addJson.
  */
-function buildAndLog(testCase, logKey, invoiceGroups, params) {
-   var rows = buildTransactionRowsFromCsv(invoiceGroups, params);
+function buildAndLog_doubleEntryAccounting(testCase, logKey, invoiceGroups, params) {
+
+   var banDoc = Banana.application.openDocument("file:script/../test/testcases/double-entry-accounting.ac2");
+
+   var rows = buildTransactionRowsFromCsv(banDoc, invoiceGroups, params);
+
+   var dataUnitTransactions = {};
+   dataUnitTransactions.nameXml = "Transactions";
+   dataUnitTransactions.data = {};
+   dataUnitTransactions.data.rowLists = [];
+   dataUnitTransactions.data.rowLists.push({ "rows": rows });
+
+   var jsonDoc = initDocument();
+   jsonDoc.document.dataUnits.push(dataUnitTransactions);
+
+   jsonDoc.creator.executionDate = "<normalized>";
+   jsonDoc.creator.executionTime = "<normalized>";
+
+   Test.logger.addJson(logKey, JSON.stringify(jsonDoc, null, 3));
+
+   return rows;
+}
+
+/**
+ * Builds the documentChange rows from the parsed CSV invoice groups
+ * (same call exec() makes), wraps them the same way exec() does, and
+ * logs the JSON with Test.logger.addJson.
+ */
+function buildAndLog_incomeExpenseAccounting(testCase, logKey, invoiceGroups, params) {
+
+   var banDoc = Banana.application.openDocument("file:script/../test/testcases/income-expense-accounting.ac2");
+
+   var rows = buildTransactionRowsFromCsv(banDoc, invoiceGroups, params);
 
    var dataUnitTransactions = {};
    dataUnitTransactions.nameXml = "Transactions";
@@ -140,22 +171,20 @@ var CSV_GROUP_BY_VAT_CODE = "file:script/../test/testcases/test-export-offerte-f
 var CSV_PERIOD_FILTER = "file:script/../test/testcases/test-export-offerte-fatture-iva-lordo-netto-senza-iva-giugno.csv";
 
 // ---------------------------------------------------------------------
-// Test methods
+// Test methods for Double-entry accounting
 // ---------------------------------------------------------------------
 
 TestImportInvoicesDocumentChange.prototype.testDefaultParams = function () {
    var invoiceGroups = loadInvoiceGroups(this, CSV_DEFAULT_PARAMS);
-   buildAndLog(this, "Default params", invoiceGroups, defaultParams());
+   buildAndLog_doubleEntryAccounting(this, "Default params", invoiceGroups, defaultParams());
 };
 
 TestImportInvoicesDocumentChange.prototype.testCustomerAsCc3WithRealCustomer = function () {
    var invoiceGroups = loadInvoiceGroups(this, CSV_DEFAULT_PARAMS);
-
    var params = defaultParams();
    params.customerIsCc3 = true;
    params.insertCustomer = true;
-
-   buildAndLog(this, "Customer as Cc3 - real customer inserted", invoiceGroups, params);
+   buildAndLog_doubleEntryAccounting(this, "Customer as Cc3 - real customer inserted", invoiceGroups, params);
 };
 
 // NOTE: for this to actually differ from testDefaultParams, CSV_INSERT_DOC_LINK
@@ -163,7 +192,7 @@ TestImportInvoicesDocumentChange.prototype.testCustomerAsCc3WithRealCustomer = f
 // insertDocLink = true - documentchange.js just passes DocLink through as-is.
 TestImportInvoicesDocumentChange.prototype.testInsertDocLink = function () {
    var invoiceGroups = loadInvoiceGroups(this, CSV_INSERT_DOC_LINK);
-   buildAndLog(this, "Insert DocLink", invoiceGroups, defaultParams());
+   buildAndLog_doubleEntryAccounting(this, "Insert DocLink", invoiceGroups, defaultParams());
 };
 
 // NOTE: for this to actually differ from testDefaultParams, CSV_GROUP_BY_VAT_CODE
@@ -171,7 +200,7 @@ TestImportInvoicesDocumentChange.prototype.testInsertDocLink = function () {
 // groupByVatCode = true - the grouping itself happens at export time.
 TestImportInvoicesDocumentChange.prototype.testGroupByVatCode = function () {
    var invoiceGroups = loadInvoiceGroups(this, CSV_GROUP_BY_VAT_CODE);
-   buildAndLog(this, "Group by VAT code", invoiceGroups, defaultParams());
+   buildAndLog_doubleEntryAccounting(this, "Group by VAT code", invoiceGroups, defaultParams());
 };
 
 // NOTE: for this to actually differ from testDefaultParams, CSV_PERIOD_FILTER
@@ -180,5 +209,48 @@ TestImportInvoicesDocumentChange.prototype.testGroupByVatCode = function () {
 // happens at export time (fewer invoices end up in the CSV at all).
 TestImportInvoicesDocumentChange.prototype.testPeriodFilter = function () {
    var invoiceGroups = loadInvoiceGroups(this, CSV_PERIOD_FILTER);
-   buildAndLog(this, "Period filter - June 2026", invoiceGroups, defaultParams());
+   buildAndLog_doubleEntryAccounting(this, "Period filter - June 2026", invoiceGroups, defaultParams());
+};
+
+
+// ---------------------------------------------------------------------
+// Test methods for Income & Expense accounting
+// ---------------------------------------------------------------------
+
+TestImportInvoicesDocumentChange.prototype.testDefaultParams_incomeExpenseAccounting = function () {
+   var invoiceGroups = loadInvoiceGroups(this, CSV_DEFAULT_PARAMS);
+   buildAndLog_incomeExpenseAccounting(this, "Default params", invoiceGroups, defaultParams());
+};
+
+TestImportInvoicesDocumentChange.prototype.testCustomerAsCc3WithRealCustomer_incomeExpenseAccounting = function () {
+   var invoiceGroups = loadInvoiceGroups(this, CSV_DEFAULT_PARAMS);
+   var params = defaultParams();
+   params.customerIsCc3 = true;
+   params.insertCustomer = true;
+   buildAndLog_incomeExpenseAccounting(this, "Customer as Cc3 - real customer inserted", invoiceGroups, params);
+};
+
+// NOTE: for this to actually differ from testDefaultParams, CSV_INSERT_DOC_LINK
+// must be a CSV exported from ch.banana.uni.export.invoices.js with
+// insertDocLink = true - documentchange.js just passes DocLink through as-is.
+TestImportInvoicesDocumentChange.prototype.testInsertDocLink_incomeExpenseAccounting = function () {
+   var invoiceGroups = loadInvoiceGroups(this, CSV_INSERT_DOC_LINK);
+   buildAndLog_incomeExpenseAccounting(this, "Insert DocLink", invoiceGroups, defaultParams());
+};
+
+// NOTE: for this to actually differ from testDefaultParams, CSV_GROUP_BY_VAT_CODE
+// must be a CSV exported from ch.banana.uni.export.invoices.js with
+// groupByVatCode = true - the grouping itself happens at export time.
+TestImportInvoicesDocumentChange.prototype.testGroupByVatCode_incomeExpenseAccounting = function () {
+   var invoiceGroups = loadInvoiceGroups(this, CSV_GROUP_BY_VAT_CODE);
+   buildAndLog_incomeExpenseAccounting(this, "Group by VAT code", invoiceGroups, defaultParams());
+};
+
+// NOTE: for this to actually differ from testDefaultParams, CSV_PERIOD_FILTER
+// must be a CSV exported from ch.banana.uni.export.invoices.js with a
+// narrower selectionStartDate/selectionEndDate - the filtering itself
+// happens at export time (fewer invoices end up in the CSV at all).
+TestImportInvoicesDocumentChange.prototype.testPeriodFilter_incomeExpenseAccounting = function () {
+   var invoiceGroups = loadInvoiceGroups(this, CSV_PERIOD_FILTER);
+   buildAndLog_incomeExpenseAccounting(this, "Period filter - June 2026", invoiceGroups, defaultParams());
 };

@@ -3822,5 +3822,4005 @@
 }\end{jsonvalue}
 \keyvalue{Result}{Passed}
 \end{test}
+\begin{test}{testDefaultParams\_incomeExpenseAccounting}
+\begin{jsonvalue}{Default params}
+{
+   "document": {
+      "fileVersion": "1.0.0",
+      "dataUnits": [
+         {
+            "nameXml": "Transactions",
+            "data": {
+               "rowLists": [
+                  {
+                     "rows": [
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-10",
+                              "DocInvoice": "1",
+                              "Description": "Fattura 1 - senza IVA - Pinco Pallino",
+                              "Account": "[A]",
+                              "Cc3": "",
+                              "Category": "",
+                              "Income": "32.50",
+                              "Expenses": "",
+                              "VatCode": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-10",
+                              "DocInvoice": "1",
+                              "Description": "Fattura 1 - senza IVA - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "",
+                              "VatAmountType": "",
+                              "Income": "25.00",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-10",
+                              "DocInvoice": "1",
+                              "Description": "Fattura 1 - senza IVA - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "",
+                              "VatAmountType": "",
+                              "Income": "7.50",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-20",
+                              "DocInvoice": "2",
+                              "Description": "Fattura 2 - IVA al netto - Pinco Pallino",
+                              "Account": "[A]",
+                              "Cc3": "",
+                              "Category": "",
+                              "Income": "118.50",
+                              "Expenses": "",
+                              "VatCode": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-20",
+                              "DocInvoice": "2",
+                              "Description": "Fattura 2 - IVA al netto - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "V81",
+                              "VatAmountType": "1",
+                              "Income": "50.00",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-20",
+                              "DocInvoice": "2",
+                              "Description": "Fattura 2 - IVA al netto - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "V81",
+                              "VatAmountType": "1",
+                              "Income": "50.00",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-20",
+                              "DocInvoice": "2",
+                              "Description": "Fattura 2 - IVA al netto - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "V38",
+                              "VatAmountType": "1",
+                              "Income": "10.00",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-20",
+                              "DocInvoice": "2",
+                              "Description": "Fattura 2 - IVA al netto - Pinco Pallino (Arrotondamento)",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "",
+                              "Income": "0.02",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-30",
+                              "DocInvoice": "3",
+                              "Description": "Fattura 3 - IVA al lordo - Pinco Pallino",
+                              "Account": "[A]",
+                              "Cc3": "",
+                              "Category": "",
+                              "Income": "110.00",
+                              "Expenses": "",
+                              "VatCode": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-30",
+                              "DocInvoice": "3",
+                              "Description": "Fattura 3 - IVA al lordo - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "V81",
+                              "VatAmountType": "",
+                              "Income": "50.00",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-30",
+                              "DocInvoice": "3",
+                              "Description": "Fattura 3 - IVA al lordo - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "V81",
+                              "VatAmountType": "",
+                              "Income": "50.00",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-30",
+                              "DocInvoice": "3",
+                              "Description": "Fattura 3 - IVA al lordo - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "V38",
+                              "VatAmountType": "",
+                              "Income": "10.00",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-30",
+                              "DocInvoice": "5",
+                              "Description": "Fattura 5 - IVA al netto aliquota V0 - Mario Rossi",
+                              "Account": "[A]",
+                              "Cc3": "",
+                              "Category": "",
+                              "Income": "65.00",
+                              "Expenses": "",
+                              "VatCode": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-30",
+                              "DocInvoice": "5",
+                              "Description": "Fattura 5 - IVA al netto aliquota V0 - Mario Rossi",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "",
+                              "VatAmountType": "",
+                              "Income": "25.00",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-30",
+                              "DocInvoice": "5",
+                              "Description": "Fattura 5 - IVA al netto aliquota V0 - Mario Rossi",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "",
+                              "VatAmountType": "",
+                              "Income": "7.50",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-30",
+                              "DocInvoice": "5",
+                              "Description": "Fattura 5 - IVA al netto aliquota V0 - Mario Rossi",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "V0",
+                              "VatAmountType": "",
+                              "Income": "25.00",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-30",
+                              "DocInvoice": "5",
+                              "Description": "Fattura 5 - IVA al netto aliquota V0 - Mario Rossi",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "V0",
+                              "VatAmountType": "",
+                              "Income": "7.50",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-30",
+                              "DocInvoice": "6",
+                              "Description": "Fattura 6 - IVA al lordo aliquota V0 - Mario Rossi",
+                              "Account": "[A]",
+                              "Cc3": "",
+                              "Category": "",
+                              "Income": "65.00",
+                              "Expenses": "",
+                              "VatCode": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-30",
+                              "DocInvoice": "6",
+                              "Description": "Fattura 6 - IVA al lordo aliquota V0 - Mario Rossi",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "",
+                              "VatAmountType": "",
+                              "Income": "25.00",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-30",
+                              "DocInvoice": "6",
+                              "Description": "Fattura 6 - IVA al lordo aliquota V0 - Mario Rossi",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "",
+                              "VatAmountType": "",
+                              "Income": "7.50",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-30",
+                              "DocInvoice": "6",
+                              "Description": "Fattura 6 - IVA al lordo aliquota V0 - Mario Rossi",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "V0",
+                              "VatAmountType": "",
+                              "Income": "25.00",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-30",
+                              "DocInvoice": "6",
+                              "Description": "Fattura 6 - IVA al lordo aliquota V0 - Mario Rossi",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "V0",
+                              "VatAmountType": "",
+                              "Income": "7.50",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-10",
+                              "DocInvoice": "7",
+                              "Description": "Fattura 7 - senza IVA con sconto - Pinco Pallino",
+                              "Account": "[A]",
+                              "Cc3": "",
+                              "Category": "",
+                              "Income": "30.00",
+                              "Expenses": "",
+                              "VatCode": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-10",
+                              "DocInvoice": "7",
+                              "Description": "Fattura 7 - senza IVA con sconto - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "",
+                              "VatAmountType": "",
+                              "Income": "25.00",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-10",
+                              "DocInvoice": "7",
+                              "Description": "Fattura 7 - senza IVA con sconto - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "",
+                              "VatAmountType": "",
+                              "Income": "7.50",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-10",
+                              "DocInvoice": "7",
+                              "Description": "Fattura 7 - senza IVA con sconto - Pinco Pallino",
+                              "Cc3": "",
+                              "Category": "[CA]",
+                              "Income": "",
+                              "Expenses": "2.5",
+                              "VatCode": "",
+                              "VatAmountType": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-20",
+                              "DocInvoice": "8",
+                              "Description": "Fattura 8 - IVA al netto con sconto - Pinco Pallino",
+                              "Account": "[A]",
+                              "Cc3": "",
+                              "Category": "",
+                              "Income": "107.70",
+                              "Expenses": "",
+                              "VatCode": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-20",
+                              "DocInvoice": "8",
+                              "Description": "Fattura 8 - IVA al netto con sconto - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "V81",
+                              "VatAmountType": "1",
+                              "Income": "50.00",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-20",
+                              "DocInvoice": "8",
+                              "Description": "Fattura 8 - IVA al netto con sconto - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "V81",
+                              "VatAmountType": "1",
+                              "Income": "50.00",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-20",
+                              "DocInvoice": "8",
+                              "Description": "Fattura 8 - IVA al netto con sconto - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "V38",
+                              "VatAmountType": "1",
+                              "Income": "10.00",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-20",
+                              "DocInvoice": "8",
+                              "Description": "Fattura 8 - IVA al netto con sconto - Pinco Pallino",
+                              "Cc3": "",
+                              "Category": "[CA]",
+                              "Income": "",
+                              "Expenses": "9.09",
+                              "VatCode": "-V81",
+                              "VatAmountType": "1",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-20",
+                              "DocInvoice": "8",
+                              "Description": "Fattura 8 - IVA al netto con sconto - Pinco Pallino",
+                              "Cc3": "",
+                              "Category": "[CA]",
+                              "Income": "",
+                              "Expenses": "0.91",
+                              "VatCode": "-V38",
+                              "VatAmountType": "1",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-20",
+                              "DocInvoice": "8",
+                              "Description": "Fattura 8 - IVA al netto con sconto - Pinco Pallino (Arrotondamento)",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "",
+                              "Income": "0.01",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-30",
+                              "DocInvoice": "9",
+                              "Description": "Fattura 9 - IVA al lordo - Pinco Pallino",
+                              "Account": "[A]",
+                              "Cc3": "",
+                              "Category": "",
+                              "Income": "100.00",
+                              "Expenses": "",
+                              "VatCode": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-30",
+                              "DocInvoice": "9",
+                              "Description": "Fattura 9 - IVA al lordo - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "V81",
+                              "VatAmountType": "",
+                              "Income": "50.00",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-30",
+                              "DocInvoice": "9",
+                              "Description": "Fattura 9 - IVA al lordo - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "V81",
+                              "VatAmountType": "",
+                              "Income": "50.00",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-30",
+                              "DocInvoice": "9",
+                              "Description": "Fattura 9 - IVA al lordo - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "V38",
+                              "VatAmountType": "",
+                              "Income": "10.00",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-30",
+                              "DocInvoice": "9",
+                              "Description": "Fattura 9 - IVA al lordo - Pinco Pallino",
+                              "Cc3": "",
+                              "Category": "[CA]",
+                              "Income": "",
+                              "Expenses": "9.09",
+                              "VatCode": "-V81",
+                              "VatAmountType": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-30",
+                              "DocInvoice": "9",
+                              "Description": "Fattura 9 - IVA al lordo - Pinco Pallino",
+                              "Cc3": "",
+                              "Category": "[CA]",
+                              "Income": "",
+                              "Expenses": "0.91",
+                              "VatCode": "-V38",
+                              "VatAmountType": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-14",
+                              "DocInvoice": "10",
+                              "Description": "Fattura 10 - senza IVA - Pinco Pallino",
+                              "Account": "[A]",
+                              "Cc3": "",
+                              "Category": "",
+                              "Income": "127.50",
+                              "Expenses": "",
+                              "VatCode": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-14",
+                              "DocInvoice": "10",
+                              "Description": "Fattura 10 - senza IVA - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "",
+                              "VatAmountType": "",
+                              "Income": "20.00",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-14",
+                              "DocInvoice": "10",
+                              "Description": "Fattura 10 - senza IVA - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "",
+                              "VatAmountType": "",
+                              "Income": "40.00",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-14",
+                              "DocInvoice": "10",
+                              "Description": "Fattura 10 - senza IVA - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "",
+                              "VatAmountType": "",
+                              "Income": "67.50",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-14",
+                              "DocInvoice": "11",
+                              "Description": "Fattura 11 - IVA al netto - Pinco Pallino",
+                              "Account": "[A]",
+                              "Cc3": "",
+                              "Category": "",
+                              "Income": "134.95",
+                              "Expenses": "",
+                              "VatCode": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-14",
+                              "DocInvoice": "11",
+                              "Description": "Fattura 11 - IVA al netto - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "V81",
+                              "VatAmountType": "1",
+                              "Income": "20.00",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-14",
+                              "DocInvoice": "11",
+                              "Description": "Fattura 11 - IVA al netto - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "V81",
+                              "VatAmountType": "1",
+                              "Income": "40.00",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-14",
+                              "DocInvoice": "11",
+                              "Description": "Fattura 11 - IVA al netto - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "V38",
+                              "VatAmountType": "1",
+                              "Income": "67.50",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-14",
+                              "DocInvoice": "11",
+                              "Description": "Fattura 11 - IVA al netto - Pinco Pallino (Arrotondamento)",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "",
+                              "Income": "0.02",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-14",
+                              "DocInvoice": "12",
+                              "Description": "Fattura 12 - IVA al lordo - Pinco Pallino",
+                              "Account": "[A]",
+                              "Cc3": "",
+                              "Category": "",
+                              "Income": "127.50",
+                              "Expenses": "",
+                              "VatCode": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-14",
+                              "DocInvoice": "12",
+                              "Description": "Fattura 12 - IVA al lordo - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "V81",
+                              "VatAmountType": "",
+                              "Income": "20.00",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-14",
+                              "DocInvoice": "12",
+                              "Description": "Fattura 12 - IVA al lordo - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "V81",
+                              "VatAmountType": "",
+                              "Income": "40.00",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-14",
+                              "DocInvoice": "12",
+                              "Description": "Fattura 12 - IVA al lordo - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "V38",
+                              "VatAmountType": "",
+                              "Income": "67.50",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        }
+                     ]
+                  }
+               ]
+            }
+         }
+      ]
+   },
+   "creator": {
+      "executionDate": "<normalized>",
+      "executionTime": "<normalized>",
+      "name": "ch.banana.uni.import.invoices.documentchange.test",
+      "version": "1.0"
+   }
+}\end{jsonvalue}
+\keyvalue{Result}{Passed}
+\end{test}
+\begin{test}{testCustomerAsCc3WithRealCustomer\_incomeExpenseAccounting}
+\begin{jsonvalue}{Customer as Cc3 - real customer inserted}
+{
+   "document": {
+      "fileVersion": "1.0.0",
+      "dataUnits": [
+         {
+            "nameXml": "Transactions",
+            "data": {
+               "rowLists": [
+                  {
+                     "rows": [
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-10",
+                              "DocInvoice": "1",
+                              "Description": "Fattura 1 - senza IVA - Pinco Pallino",
+                              "Account": "",
+                              "Cc3": "1",
+                              "Category": "",
+                              "Income": "32.50",
+                              "Expenses": "",
+                              "VatCode": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-10",
+                              "DocInvoice": "1",
+                              "Description": "Fattura 1 - senza IVA - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "",
+                              "VatAmountType": "",
+                              "Income": "25.00",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-10",
+                              "DocInvoice": "1",
+                              "Description": "Fattura 1 - senza IVA - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "",
+                              "VatAmountType": "",
+                              "Income": "7.50",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-20",
+                              "DocInvoice": "2",
+                              "Description": "Fattura 2 - IVA al netto - Pinco Pallino",
+                              "Account": "",
+                              "Cc3": "1",
+                              "Category": "",
+                              "Income": "118.50",
+                              "Expenses": "",
+                              "VatCode": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-20",
+                              "DocInvoice": "2",
+                              "Description": "Fattura 2 - IVA al netto - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "V81",
+                              "VatAmountType": "1",
+                              "Income": "50.00",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-20",
+                              "DocInvoice": "2",
+                              "Description": "Fattura 2 - IVA al netto - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "V81",
+                              "VatAmountType": "1",
+                              "Income": "50.00",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-20",
+                              "DocInvoice": "2",
+                              "Description": "Fattura 2 - IVA al netto - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "V38",
+                              "VatAmountType": "1",
+                              "Income": "10.00",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-20",
+                              "DocInvoice": "2",
+                              "Description": "Fattura 2 - IVA al netto - Pinco Pallino (Arrotondamento)",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "",
+                              "Income": "0.02",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-30",
+                              "DocInvoice": "3",
+                              "Description": "Fattura 3 - IVA al lordo - Pinco Pallino",
+                              "Account": "",
+                              "Cc3": "1",
+                              "Category": "",
+                              "Income": "110.00",
+                              "Expenses": "",
+                              "VatCode": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-30",
+                              "DocInvoice": "3",
+                              "Description": "Fattura 3 - IVA al lordo - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "V81",
+                              "VatAmountType": "",
+                              "Income": "50.00",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-30",
+                              "DocInvoice": "3",
+                              "Description": "Fattura 3 - IVA al lordo - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "V81",
+                              "VatAmountType": "",
+                              "Income": "50.00",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-30",
+                              "DocInvoice": "3",
+                              "Description": "Fattura 3 - IVA al lordo - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "V38",
+                              "VatAmountType": "",
+                              "Income": "10.00",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-30",
+                              "DocInvoice": "5",
+                              "Description": "Fattura 5 - IVA al netto aliquota V0 - Mario Rossi",
+                              "Account": "",
+                              "Cc3": "2",
+                              "Category": "",
+                              "Income": "65.00",
+                              "Expenses": "",
+                              "VatCode": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-30",
+                              "DocInvoice": "5",
+                              "Description": "Fattura 5 - IVA al netto aliquota V0 - Mario Rossi",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "",
+                              "VatAmountType": "",
+                              "Income": "25.00",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-30",
+                              "DocInvoice": "5",
+                              "Description": "Fattura 5 - IVA al netto aliquota V0 - Mario Rossi",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "",
+                              "VatAmountType": "",
+                              "Income": "7.50",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-30",
+                              "DocInvoice": "5",
+                              "Description": "Fattura 5 - IVA al netto aliquota V0 - Mario Rossi",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "V0",
+                              "VatAmountType": "",
+                              "Income": "25.00",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-30",
+                              "DocInvoice": "5",
+                              "Description": "Fattura 5 - IVA al netto aliquota V0 - Mario Rossi",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "V0",
+                              "VatAmountType": "",
+                              "Income": "7.50",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-30",
+                              "DocInvoice": "6",
+                              "Description": "Fattura 6 - IVA al lordo aliquota V0 - Mario Rossi",
+                              "Account": "",
+                              "Cc3": "2",
+                              "Category": "",
+                              "Income": "65.00",
+                              "Expenses": "",
+                              "VatCode": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-30",
+                              "DocInvoice": "6",
+                              "Description": "Fattura 6 - IVA al lordo aliquota V0 - Mario Rossi",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "",
+                              "VatAmountType": "",
+                              "Income": "25.00",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-30",
+                              "DocInvoice": "6",
+                              "Description": "Fattura 6 - IVA al lordo aliquota V0 - Mario Rossi",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "",
+                              "VatAmountType": "",
+                              "Income": "7.50",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-30",
+                              "DocInvoice": "6",
+                              "Description": "Fattura 6 - IVA al lordo aliquota V0 - Mario Rossi",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "V0",
+                              "VatAmountType": "",
+                              "Income": "25.00",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-30",
+                              "DocInvoice": "6",
+                              "Description": "Fattura 6 - IVA al lordo aliquota V0 - Mario Rossi",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "V0",
+                              "VatAmountType": "",
+                              "Income": "7.50",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-10",
+                              "DocInvoice": "7",
+                              "Description": "Fattura 7 - senza IVA con sconto - Pinco Pallino",
+                              "Account": "",
+                              "Cc3": "1",
+                              "Category": "",
+                              "Income": "30.00",
+                              "Expenses": "",
+                              "VatCode": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-10",
+                              "DocInvoice": "7",
+                              "Description": "Fattura 7 - senza IVA con sconto - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "",
+                              "VatAmountType": "",
+                              "Income": "25.00",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-10",
+                              "DocInvoice": "7",
+                              "Description": "Fattura 7 - senza IVA con sconto - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "",
+                              "VatAmountType": "",
+                              "Income": "7.50",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-10",
+                              "DocInvoice": "7",
+                              "Description": "Fattura 7 - senza IVA con sconto - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Income": "",
+                              "Expenses": "2.5",
+                              "VatCode": "",
+                              "VatAmountType": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-20",
+                              "DocInvoice": "8",
+                              "Description": "Fattura 8 - IVA al netto con sconto - Pinco Pallino",
+                              "Account": "",
+                              "Cc3": "1",
+                              "Category": "",
+                              "Income": "107.70",
+                              "Expenses": "",
+                              "VatCode": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-20",
+                              "DocInvoice": "8",
+                              "Description": "Fattura 8 - IVA al netto con sconto - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "V81",
+                              "VatAmountType": "1",
+                              "Income": "50.00",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-20",
+                              "DocInvoice": "8",
+                              "Description": "Fattura 8 - IVA al netto con sconto - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "V81",
+                              "VatAmountType": "1",
+                              "Income": "50.00",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-20",
+                              "DocInvoice": "8",
+                              "Description": "Fattura 8 - IVA al netto con sconto - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "V38",
+                              "VatAmountType": "1",
+                              "Income": "10.00",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-20",
+                              "DocInvoice": "8",
+                              "Description": "Fattura 8 - IVA al netto con sconto - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Income": "",
+                              "Expenses": "9.09",
+                              "VatCode": "-V81",
+                              "VatAmountType": "1",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-20",
+                              "DocInvoice": "8",
+                              "Description": "Fattura 8 - IVA al netto con sconto - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Income": "",
+                              "Expenses": "0.91",
+                              "VatCode": "-V38",
+                              "VatAmountType": "1",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-20",
+                              "DocInvoice": "8",
+                              "Description": "Fattura 8 - IVA al netto con sconto - Pinco Pallino (Arrotondamento)",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "",
+                              "Income": "0.01",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-30",
+                              "DocInvoice": "9",
+                              "Description": "Fattura 9 - IVA al lordo - Pinco Pallino",
+                              "Account": "",
+                              "Cc3": "1",
+                              "Category": "",
+                              "Income": "100.00",
+                              "Expenses": "",
+                              "VatCode": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-30",
+                              "DocInvoice": "9",
+                              "Description": "Fattura 9 - IVA al lordo - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "V81",
+                              "VatAmountType": "",
+                              "Income": "50.00",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-30",
+                              "DocInvoice": "9",
+                              "Description": "Fattura 9 - IVA al lordo - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "V81",
+                              "VatAmountType": "",
+                              "Income": "50.00",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-30",
+                              "DocInvoice": "9",
+                              "Description": "Fattura 9 - IVA al lordo - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "V38",
+                              "VatAmountType": "",
+                              "Income": "10.00",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-30",
+                              "DocInvoice": "9",
+                              "Description": "Fattura 9 - IVA al lordo - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Income": "",
+                              "Expenses": "9.09",
+                              "VatCode": "-V81",
+                              "VatAmountType": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-30",
+                              "DocInvoice": "9",
+                              "Description": "Fattura 9 - IVA al lordo - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Income": "",
+                              "Expenses": "0.91",
+                              "VatCode": "-V38",
+                              "VatAmountType": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-14",
+                              "DocInvoice": "10",
+                              "Description": "Fattura 10 - senza IVA - Pinco Pallino",
+                              "Account": "",
+                              "Cc3": "1",
+                              "Category": "",
+                              "Income": "127.50",
+                              "Expenses": "",
+                              "VatCode": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-14",
+                              "DocInvoice": "10",
+                              "Description": "Fattura 10 - senza IVA - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "",
+                              "VatAmountType": "",
+                              "Income": "20.00",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-14",
+                              "DocInvoice": "10",
+                              "Description": "Fattura 10 - senza IVA - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "",
+                              "VatAmountType": "",
+                              "Income": "40.00",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-14",
+                              "DocInvoice": "10",
+                              "Description": "Fattura 10 - senza IVA - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "",
+                              "VatAmountType": "",
+                              "Income": "67.50",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-14",
+                              "DocInvoice": "11",
+                              "Description": "Fattura 11 - IVA al netto - Pinco Pallino",
+                              "Account": "",
+                              "Cc3": "1",
+                              "Category": "",
+                              "Income": "134.95",
+                              "Expenses": "",
+                              "VatCode": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-14",
+                              "DocInvoice": "11",
+                              "Description": "Fattura 11 - IVA al netto - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "V81",
+                              "VatAmountType": "1",
+                              "Income": "20.00",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-14",
+                              "DocInvoice": "11",
+                              "Description": "Fattura 11 - IVA al netto - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "V81",
+                              "VatAmountType": "1",
+                              "Income": "40.00",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-14",
+                              "DocInvoice": "11",
+                              "Description": "Fattura 11 - IVA al netto - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "V38",
+                              "VatAmountType": "1",
+                              "Income": "67.50",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-14",
+                              "DocInvoice": "11",
+                              "Description": "Fattura 11 - IVA al netto - Pinco Pallino (Arrotondamento)",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "",
+                              "Income": "0.02",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-14",
+                              "DocInvoice": "12",
+                              "Description": "Fattura 12 - IVA al lordo - Pinco Pallino",
+                              "Account": "",
+                              "Cc3": "1",
+                              "Category": "",
+                              "Income": "127.50",
+                              "Expenses": "",
+                              "VatCode": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-14",
+                              "DocInvoice": "12",
+                              "Description": "Fattura 12 - IVA al lordo - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "V81",
+                              "VatAmountType": "",
+                              "Income": "20.00",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-14",
+                              "DocInvoice": "12",
+                              "Description": "Fattura 12 - IVA al lordo - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "V81",
+                              "VatAmountType": "",
+                              "Income": "40.00",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-14",
+                              "DocInvoice": "12",
+                              "Description": "Fattura 12 - IVA al lordo - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "V38",
+                              "VatAmountType": "",
+                              "Income": "67.50",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        }
+                     ]
+                  }
+               ]
+            }
+         }
+      ]
+   },
+   "creator": {
+      "executionDate": "<normalized>",
+      "executionTime": "<normalized>",
+      "name": "ch.banana.uni.import.invoices.documentchange.test",
+      "version": "1.0"
+   }
+}\end{jsonvalue}
+\keyvalue{Result}{Passed}
+\end{test}
+\begin{test}{testInsertDocLink\_incomeExpenseAccounting}
+\begin{jsonvalue}{Insert DocLink}
+{
+   "document": {
+      "fileVersion": "1.0.0",
+      "dataUnits": [
+         {
+            "nameXml": "Transactions",
+            "data": {
+               "rowLists": [
+                  {
+                     "rows": [
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-10",
+                              "DocInvoice": "1",
+                              "Description": "Fattura 1 - senza IVA - Pinco Pallino",
+                              "Account": "[A]",
+                              "Cc3": "",
+                              "Category": "",
+                              "Income": "32.50",
+                              "Expenses": "",
+                              "VatCode": "",
+                              "DocLink": "Invoice 1 - Pinco Pallino.pdf"
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-10",
+                              "DocInvoice": "1",
+                              "Description": "Fattura 1 - senza IVA - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "",
+                              "VatAmountType": "",
+                              "Income": "25.00",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-10",
+                              "DocInvoice": "1",
+                              "Description": "Fattura 1 - senza IVA - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "",
+                              "VatAmountType": "",
+                              "Income": "7.50",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-20",
+                              "DocInvoice": "2",
+                              "Description": "Fattura 2 - IVA al netto - Pinco Pallino",
+                              "Account": "[A]",
+                              "Cc3": "",
+                              "Category": "",
+                              "Income": "118.50",
+                              "Expenses": "",
+                              "VatCode": "",
+                              "DocLink": "Invoice 2 - Pinco Pallino.pdf"
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-20",
+                              "DocInvoice": "2",
+                              "Description": "Fattura 2 - IVA al netto - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "V81",
+                              "VatAmountType": "1",
+                              "Income": "50.00",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-20",
+                              "DocInvoice": "2",
+                              "Description": "Fattura 2 - IVA al netto - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "V81",
+                              "VatAmountType": "1",
+                              "Income": "50.00",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-20",
+                              "DocInvoice": "2",
+                              "Description": "Fattura 2 - IVA al netto - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "V38",
+                              "VatAmountType": "1",
+                              "Income": "10.00",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-20",
+                              "DocInvoice": "2",
+                              "Description": "Fattura 2 - IVA al netto - Pinco Pallino (Arrotondamento)",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "",
+                              "Income": "0.02",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-30",
+                              "DocInvoice": "3",
+                              "Description": "Fattura 3 - IVA al lordo - Pinco Pallino",
+                              "Account": "[A]",
+                              "Cc3": "",
+                              "Category": "",
+                              "Income": "110.00",
+                              "Expenses": "",
+                              "VatCode": "",
+                              "DocLink": "Invoice 3 - Pinco Pallino.pdf"
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-30",
+                              "DocInvoice": "3",
+                              "Description": "Fattura 3 - IVA al lordo - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "V81",
+                              "VatAmountType": "",
+                              "Income": "50.00",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-30",
+                              "DocInvoice": "3",
+                              "Description": "Fattura 3 - IVA al lordo - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "V81",
+                              "VatAmountType": "",
+                              "Income": "50.00",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-30",
+                              "DocInvoice": "3",
+                              "Description": "Fattura 3 - IVA al lordo - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "V38",
+                              "VatAmountType": "",
+                              "Income": "10.00",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-30",
+                              "DocInvoice": "5",
+                              "Description": "Fattura 5 - IVA al netto aliquota V0 - Mario Rossi",
+                              "Account": "[A]",
+                              "Cc3": "",
+                              "Category": "",
+                              "Income": "65.00",
+                              "Expenses": "",
+                              "VatCode": "",
+                              "DocLink": "Invoice 5 - Mario Rossi.pdf"
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-30",
+                              "DocInvoice": "5",
+                              "Description": "Fattura 5 - IVA al netto aliquota V0 - Mario Rossi",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "",
+                              "VatAmountType": "",
+                              "Income": "25.00",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-30",
+                              "DocInvoice": "5",
+                              "Description": "Fattura 5 - IVA al netto aliquota V0 - Mario Rossi",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "",
+                              "VatAmountType": "",
+                              "Income": "7.50",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-30",
+                              "DocInvoice": "5",
+                              "Description": "Fattura 5 - IVA al netto aliquota V0 - Mario Rossi",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "V0",
+                              "VatAmountType": "",
+                              "Income": "25.00",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-30",
+                              "DocInvoice": "5",
+                              "Description": "Fattura 5 - IVA al netto aliquota V0 - Mario Rossi",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "V0",
+                              "VatAmountType": "",
+                              "Income": "7.50",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-30",
+                              "DocInvoice": "6",
+                              "Description": "Fattura 6 - IVA al lordo aliquota V0 - Mario Rossi",
+                              "Account": "[A]",
+                              "Cc3": "",
+                              "Category": "",
+                              "Income": "65.00",
+                              "Expenses": "",
+                              "VatCode": "",
+                              "DocLink": "Invoice 6 - Mario Rossi.pdf"
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-30",
+                              "DocInvoice": "6",
+                              "Description": "Fattura 6 - IVA al lordo aliquota V0 - Mario Rossi",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "",
+                              "VatAmountType": "",
+                              "Income": "25.00",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-30",
+                              "DocInvoice": "6",
+                              "Description": "Fattura 6 - IVA al lordo aliquota V0 - Mario Rossi",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "",
+                              "VatAmountType": "",
+                              "Income": "7.50",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-30",
+                              "DocInvoice": "6",
+                              "Description": "Fattura 6 - IVA al lordo aliquota V0 - Mario Rossi",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "V0",
+                              "VatAmountType": "",
+                              "Income": "25.00",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-30",
+                              "DocInvoice": "6",
+                              "Description": "Fattura 6 - IVA al lordo aliquota V0 - Mario Rossi",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "V0",
+                              "VatAmountType": "",
+                              "Income": "7.50",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-10",
+                              "DocInvoice": "7",
+                              "Description": "Fattura 7 - senza IVA con sconto - Pinco Pallino",
+                              "Account": "[A]",
+                              "Cc3": "",
+                              "Category": "",
+                              "Income": "30.00",
+                              "Expenses": "",
+                              "VatCode": "",
+                              "DocLink": "Invoice 7 - Pinco Pallino.pdf"
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-10",
+                              "DocInvoice": "7",
+                              "Description": "Fattura 7 - senza IVA con sconto - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "",
+                              "VatAmountType": "",
+                              "Income": "25.00",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-10",
+                              "DocInvoice": "7",
+                              "Description": "Fattura 7 - senza IVA con sconto - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "",
+                              "VatAmountType": "",
+                              "Income": "7.50",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-10",
+                              "DocInvoice": "7",
+                              "Description": "Fattura 7 - senza IVA con sconto - Pinco Pallino",
+                              "Cc3": "",
+                              "Category": "[CA]",
+                              "Income": "",
+                              "Expenses": "2.5",
+                              "VatCode": "",
+                              "VatAmountType": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-20",
+                              "DocInvoice": "8",
+                              "Description": "Fattura 8 - IVA al netto con sconto - Pinco Pallino",
+                              "Account": "[A]",
+                              "Cc3": "",
+                              "Category": "",
+                              "Income": "107.70",
+                              "Expenses": "",
+                              "VatCode": "",
+                              "DocLink": "Invoice 8 - Pinco Pallino.pdf"
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-20",
+                              "DocInvoice": "8",
+                              "Description": "Fattura 8 - IVA al netto con sconto - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "V81",
+                              "VatAmountType": "1",
+                              "Income": "50.00",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-20",
+                              "DocInvoice": "8",
+                              "Description": "Fattura 8 - IVA al netto con sconto - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "V81",
+                              "VatAmountType": "1",
+                              "Income": "50.00",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-20",
+                              "DocInvoice": "8",
+                              "Description": "Fattura 8 - IVA al netto con sconto - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "V38",
+                              "VatAmountType": "1",
+                              "Income": "10.00",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-20",
+                              "DocInvoice": "8",
+                              "Description": "Fattura 8 - IVA al netto con sconto - Pinco Pallino",
+                              "Cc3": "",
+                              "Category": "[CA]",
+                              "Income": "",
+                              "Expenses": "9.09",
+                              "VatCode": "-V81",
+                              "VatAmountType": "1",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-20",
+                              "DocInvoice": "8",
+                              "Description": "Fattura 8 - IVA al netto con sconto - Pinco Pallino",
+                              "Cc3": "",
+                              "Category": "[CA]",
+                              "Income": "",
+                              "Expenses": "0.91",
+                              "VatCode": "-V38",
+                              "VatAmountType": "1",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-20",
+                              "DocInvoice": "8",
+                              "Description": "Fattura 8 - IVA al netto con sconto - Pinco Pallino (Arrotondamento)",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "",
+                              "Income": "0.01",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-30",
+                              "DocInvoice": "9",
+                              "Description": "Fattura 9 - IVA al lordo - Pinco Pallino",
+                              "Account": "[A]",
+                              "Cc3": "",
+                              "Category": "",
+                              "Income": "100.00",
+                              "Expenses": "",
+                              "VatCode": "",
+                              "DocLink": "Invoice 9 - Pinco Pallino.pdf"
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-30",
+                              "DocInvoice": "9",
+                              "Description": "Fattura 9 - IVA al lordo - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "V81",
+                              "VatAmountType": "",
+                              "Income": "50.00",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-30",
+                              "DocInvoice": "9",
+                              "Description": "Fattura 9 - IVA al lordo - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "V81",
+                              "VatAmountType": "",
+                              "Income": "50.00",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-30",
+                              "DocInvoice": "9",
+                              "Description": "Fattura 9 - IVA al lordo - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "V38",
+                              "VatAmountType": "",
+                              "Income": "10.00",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-30",
+                              "DocInvoice": "9",
+                              "Description": "Fattura 9 - IVA al lordo - Pinco Pallino",
+                              "Cc3": "",
+                              "Category": "[CA]",
+                              "Income": "",
+                              "Expenses": "9.09",
+                              "VatCode": "-V81",
+                              "VatAmountType": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-30",
+                              "DocInvoice": "9",
+                              "Description": "Fattura 9 - IVA al lordo - Pinco Pallino",
+                              "Cc3": "",
+                              "Category": "[CA]",
+                              "Income": "",
+                              "Expenses": "0.91",
+                              "VatCode": "-V38",
+                              "VatAmountType": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-14",
+                              "DocInvoice": "10",
+                              "Description": "Fattura 10 - senza IVA - Pinco Pallino",
+                              "Account": "[A]",
+                              "Cc3": "",
+                              "Category": "",
+                              "Income": "127.50",
+                              "Expenses": "",
+                              "VatCode": "",
+                              "DocLink": "Invoice 10 - Pinco Pallino.pdf"
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-14",
+                              "DocInvoice": "10",
+                              "Description": "Fattura 10 - senza IVA - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "",
+                              "VatAmountType": "",
+                              "Income": "20.00",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-14",
+                              "DocInvoice": "10",
+                              "Description": "Fattura 10 - senza IVA - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "",
+                              "VatAmountType": "",
+                              "Income": "40.00",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-14",
+                              "DocInvoice": "10",
+                              "Description": "Fattura 10 - senza IVA - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "",
+                              "VatAmountType": "",
+                              "Income": "67.50",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-14",
+                              "DocInvoice": "11",
+                              "Description": "Fattura 11 - IVA al netto - Pinco Pallino",
+                              "Account": "[A]",
+                              "Cc3": "",
+                              "Category": "",
+                              "Income": "134.95",
+                              "Expenses": "",
+                              "VatCode": "",
+                              "DocLink": "Invoice 11 - Pinco Pallino.pdf"
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-14",
+                              "DocInvoice": "11",
+                              "Description": "Fattura 11 - IVA al netto - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "V81",
+                              "VatAmountType": "1",
+                              "Income": "20.00",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-14",
+                              "DocInvoice": "11",
+                              "Description": "Fattura 11 - IVA al netto - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "V81",
+                              "VatAmountType": "1",
+                              "Income": "40.00",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-14",
+                              "DocInvoice": "11",
+                              "Description": "Fattura 11 - IVA al netto - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "V38",
+                              "VatAmountType": "1",
+                              "Income": "67.50",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-14",
+                              "DocInvoice": "11",
+                              "Description": "Fattura 11 - IVA al netto - Pinco Pallino (Arrotondamento)",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "",
+                              "Income": "0.02",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-14",
+                              "DocInvoice": "12",
+                              "Description": "Fattura 12 - IVA al lordo - Pinco Pallino",
+                              "Account": "[A]",
+                              "Cc3": "",
+                              "Category": "",
+                              "Income": "127.50",
+                              "Expenses": "",
+                              "VatCode": "",
+                              "DocLink": "Invoice 12 - Pinco Pallino.pdf"
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-14",
+                              "DocInvoice": "12",
+                              "Description": "Fattura 12 - IVA al lordo - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "V81",
+                              "VatAmountType": "",
+                              "Income": "20.00",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-14",
+                              "DocInvoice": "12",
+                              "Description": "Fattura 12 - IVA al lordo - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "V81",
+                              "VatAmountType": "",
+                              "Income": "40.00",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-14",
+                              "DocInvoice": "12",
+                              "Description": "Fattura 12 - IVA al lordo - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "V38",
+                              "VatAmountType": "",
+                              "Income": "67.50",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        }
+                     ]
+                  }
+               ]
+            }
+         }
+      ]
+   },
+   "creator": {
+      "executionDate": "<normalized>",
+      "executionTime": "<normalized>",
+      "name": "ch.banana.uni.import.invoices.documentchange.test",
+      "version": "1.0"
+   }
+}\end{jsonvalue}
+\keyvalue{Result}{Passed}
+\end{test}
+\begin{test}{testGroupByVatCode\_incomeExpenseAccounting}
+\begin{jsonvalue}{Group by VAT code}
+{
+   "document": {
+      "fileVersion": "1.0.0",
+      "dataUnits": [
+         {
+            "nameXml": "Transactions",
+            "data": {
+               "rowLists": [
+                  {
+                     "rows": [
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-10",
+                              "DocInvoice": "1",
+                              "Description": "Fattura 1 - senza IVA - Pinco Pallino",
+                              "Account": "[A]",
+                              "Cc3": "",
+                              "Category": "",
+                              "Income": "32.50",
+                              "Expenses": "",
+                              "VatCode": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-10",
+                              "DocInvoice": "1",
+                              "Description": "Fattura 1 - senza IVA - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "",
+                              "VatAmountType": "",
+                              "Income": "32.5",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-20",
+                              "DocInvoice": "2",
+                              "Description": "Fattura 2 - IVA al netto - Pinco Pallino",
+                              "Account": "[A]",
+                              "Cc3": "",
+                              "Category": "",
+                              "Income": "118.50",
+                              "Expenses": "",
+                              "VatCode": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-20",
+                              "DocInvoice": "2",
+                              "Description": "Fattura 2 - IVA al netto - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "V81",
+                              "VatAmountType": "1",
+                              "Income": "100",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-20",
+                              "DocInvoice": "2",
+                              "Description": "Fattura 2 - IVA al netto - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "V38",
+                              "VatAmountType": "1",
+                              "Income": "10",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-20",
+                              "DocInvoice": "2",
+                              "Description": "Fattura 2 - IVA al netto - Pinco Pallino (Arrotondamento)",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "",
+                              "Income": "0.02",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-30",
+                              "DocInvoice": "3",
+                              "Description": "Fattura 3 - IVA al lordo - Pinco Pallino",
+                              "Account": "[A]",
+                              "Cc3": "",
+                              "Category": "",
+                              "Income": "110.00",
+                              "Expenses": "",
+                              "VatCode": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-30",
+                              "DocInvoice": "3",
+                              "Description": "Fattura 3 - IVA al lordo - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "V81",
+                              "VatAmountType": "",
+                              "Income": "50.00",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-30",
+                              "DocInvoice": "3",
+                              "Description": "Fattura 3 - IVA al lordo - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "V81",
+                              "VatAmountType": "",
+                              "Income": "50.00",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-30",
+                              "DocInvoice": "3",
+                              "Description": "Fattura 3 - IVA al lordo - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "V38",
+                              "VatAmountType": "",
+                              "Income": "10.00",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-30",
+                              "DocInvoice": "5",
+                              "Description": "Fattura 5 - IVA al netto aliquota V0 - Mario Rossi",
+                              "Account": "[A]",
+                              "Cc3": "",
+                              "Category": "",
+                              "Income": "65.00",
+                              "Expenses": "",
+                              "VatCode": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-30",
+                              "DocInvoice": "5",
+                              "Description": "Fattura 5 - IVA al netto aliquota V0 - Mario Rossi",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "",
+                              "VatAmountType": "",
+                              "Income": "32.5",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-30",
+                              "DocInvoice": "5",
+                              "Description": "Fattura 5 - IVA al netto aliquota V0 - Mario Rossi",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "V0",
+                              "VatAmountType": "",
+                              "Income": "32.5",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-30",
+                              "DocInvoice": "6",
+                              "Description": "Fattura 6 - IVA al lordo aliquota V0 - Mario Rossi",
+                              "Account": "[A]",
+                              "Cc3": "",
+                              "Category": "",
+                              "Income": "65.00",
+                              "Expenses": "",
+                              "VatCode": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-30",
+                              "DocInvoice": "6",
+                              "Description": "Fattura 6 - IVA al lordo aliquota V0 - Mario Rossi",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "",
+                              "VatAmountType": "",
+                              "Income": "32.5",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-30",
+                              "DocInvoice": "6",
+                              "Description": "Fattura 6 - IVA al lordo aliquota V0 - Mario Rossi",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "V0",
+                              "VatAmountType": "",
+                              "Income": "32.5",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-10",
+                              "DocInvoice": "7",
+                              "Description": "Fattura 7 - senza IVA con sconto - Pinco Pallino",
+                              "Account": "[A]",
+                              "Cc3": "",
+                              "Category": "",
+                              "Income": "30.00",
+                              "Expenses": "",
+                              "VatCode": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-10",
+                              "DocInvoice": "7",
+                              "Description": "Fattura 7 - senza IVA con sconto - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "",
+                              "VatAmountType": "",
+                              "Income": "32.5",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-10",
+                              "DocInvoice": "7",
+                              "Description": "Fattura 7 - senza IVA con sconto - Pinco Pallino",
+                              "Cc3": "",
+                              "Category": "[CA]",
+                              "Income": "",
+                              "Expenses": "2.5",
+                              "VatCode": "",
+                              "VatAmountType": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-20",
+                              "DocInvoice": "8",
+                              "Description": "Fattura 8 - IVA al netto con sconto - Pinco Pallino",
+                              "Account": "[A]",
+                              "Cc3": "",
+                              "Category": "",
+                              "Income": "107.70",
+                              "Expenses": "",
+                              "VatCode": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-20",
+                              "DocInvoice": "8",
+                              "Description": "Fattura 8 - IVA al netto con sconto - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "V81",
+                              "VatAmountType": "1",
+                              "Income": "100",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-20",
+                              "DocInvoice": "8",
+                              "Description": "Fattura 8 - IVA al netto con sconto - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "V38",
+                              "VatAmountType": "1",
+                              "Income": "10",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-20",
+                              "DocInvoice": "8",
+                              "Description": "Fattura 8 - IVA al netto con sconto - Pinco Pallino",
+                              "Cc3": "",
+                              "Category": "[CA]",
+                              "Income": "",
+                              "Expenses": "9.09",
+                              "VatCode": "-V81",
+                              "VatAmountType": "1",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-20",
+                              "DocInvoice": "8",
+                              "Description": "Fattura 8 - IVA al netto con sconto - Pinco Pallino",
+                              "Cc3": "",
+                              "Category": "[CA]",
+                              "Income": "",
+                              "Expenses": "0.91",
+                              "VatCode": "-V38",
+                              "VatAmountType": "1",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-20",
+                              "DocInvoice": "8",
+                              "Description": "Fattura 8 - IVA al netto con sconto - Pinco Pallino (Arrotondamento)",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "",
+                              "Income": "0.01",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-30",
+                              "DocInvoice": "9",
+                              "Description": "Fattura 9 - IVA al lordo - Pinco Pallino",
+                              "Account": "[A]",
+                              "Cc3": "",
+                              "Category": "",
+                              "Income": "100.00",
+                              "Expenses": "",
+                              "VatCode": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-30",
+                              "DocInvoice": "9",
+                              "Description": "Fattura 9 - IVA al lordo - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "V81",
+                              "VatAmountType": "",
+                              "Income": "50.00",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-30",
+                              "DocInvoice": "9",
+                              "Description": "Fattura 9 - IVA al lordo - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "V81",
+                              "VatAmountType": "",
+                              "Income": "50.00",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-30",
+                              "DocInvoice": "9",
+                              "Description": "Fattura 9 - IVA al lordo - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "V38",
+                              "VatAmountType": "",
+                              "Income": "10.00",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-30",
+                              "DocInvoice": "9",
+                              "Description": "Fattura 9 - IVA al lordo - Pinco Pallino",
+                              "Cc3": "",
+                              "Category": "[CA]",
+                              "Income": "",
+                              "Expenses": "9.09",
+                              "VatCode": "-V81",
+                              "VatAmountType": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-30",
+                              "DocInvoice": "9",
+                              "Description": "Fattura 9 - IVA al lordo - Pinco Pallino",
+                              "Cc3": "",
+                              "Category": "[CA]",
+                              "Income": "",
+                              "Expenses": "0.91",
+                              "VatCode": "-V38",
+                              "VatAmountType": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-14",
+                              "DocInvoice": "10",
+                              "Description": "Fattura 10 - senza IVA - Pinco Pallino",
+                              "Account": "[A]",
+                              "Cc3": "",
+                              "Category": "",
+                              "Income": "127.50",
+                              "Expenses": "",
+                              "VatCode": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-14",
+                              "DocInvoice": "10",
+                              "Description": "Fattura 10 - senza IVA - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "",
+                              "VatAmountType": "",
+                              "Income": "127.5",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-14",
+                              "DocInvoice": "11",
+                              "Description": "Fattura 11 - IVA al netto - Pinco Pallino",
+                              "Account": "[A]",
+                              "Cc3": "",
+                              "Category": "",
+                              "Income": "134.95",
+                              "Expenses": "",
+                              "VatCode": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-14",
+                              "DocInvoice": "11",
+                              "Description": "Fattura 11 - IVA al netto - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "V81",
+                              "VatAmountType": "1",
+                              "Income": "60",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-14",
+                              "DocInvoice": "11",
+                              "Description": "Fattura 11 - IVA al netto - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "V38",
+                              "VatAmountType": "1",
+                              "Income": "67.5",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-14",
+                              "DocInvoice": "11",
+                              "Description": "Fattura 11 - IVA al netto - Pinco Pallino (Arrotondamento)",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "",
+                              "Income": "0.02",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-14",
+                              "DocInvoice": "12",
+                              "Description": "Fattura 12 - IVA al lordo - Pinco Pallino",
+                              "Account": "[A]",
+                              "Cc3": "",
+                              "Category": "",
+                              "Income": "127.50",
+                              "Expenses": "",
+                              "VatCode": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-14",
+                              "DocInvoice": "12",
+                              "Description": "Fattura 12 - IVA al lordo - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "V81",
+                              "VatAmountType": "",
+                              "Income": "20.00",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-14",
+                              "DocInvoice": "12",
+                              "Description": "Fattura 12 - IVA al lordo - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "V81",
+                              "VatAmountType": "",
+                              "Income": "40.00",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-07-14",
+                              "DocInvoice": "12",
+                              "Description": "Fattura 12 - IVA al lordo - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "V38",
+                              "VatAmountType": "",
+                              "Income": "67.50",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        }
+                     ]
+                  }
+               ]
+            }
+         }
+      ]
+   },
+   "creator": {
+      "executionDate": "<normalized>",
+      "executionTime": "<normalized>",
+      "name": "ch.banana.uni.import.invoices.documentchange.test",
+      "version": "1.0"
+   }
+}\end{jsonvalue}
+\keyvalue{Result}{Passed}
+\end{test}
+\begin{test}{testPeriodFilter\_incomeExpenseAccounting}
+\begin{jsonvalue}{Period filter - June 2026}
+{
+   "document": {
+      "fileVersion": "1.0.0",
+      "dataUnits": [
+         {
+            "nameXml": "Transactions",
+            "data": {
+               "rowLists": [
+                  {
+                     "rows": [
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-10",
+                              "DocInvoice": "1",
+                              "Description": "Fattura 1 - senza IVA - Pinco Pallino",
+                              "Account": "[A]",
+                              "Cc3": "",
+                              "Category": "",
+                              "Income": "32.50",
+                              "Expenses": "",
+                              "VatCode": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-10",
+                              "DocInvoice": "1",
+                              "Description": "Fattura 1 - senza IVA - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "",
+                              "VatAmountType": "",
+                              "Income": "25.00",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-10",
+                              "DocInvoice": "1",
+                              "Description": "Fattura 1 - senza IVA - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "",
+                              "VatAmountType": "",
+                              "Income": "7.50",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-20",
+                              "DocInvoice": "2",
+                              "Description": "Fattura 2 - IVA al netto - Pinco Pallino",
+                              "Account": "[A]",
+                              "Cc3": "",
+                              "Category": "",
+                              "Income": "118.50",
+                              "Expenses": "",
+                              "VatCode": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-20",
+                              "DocInvoice": "2",
+                              "Description": "Fattura 2 - IVA al netto - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "V81",
+                              "VatAmountType": "1",
+                              "Income": "50.00",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-20",
+                              "DocInvoice": "2",
+                              "Description": "Fattura 2 - IVA al netto - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "V81",
+                              "VatAmountType": "1",
+                              "Income": "50.00",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-20",
+                              "DocInvoice": "2",
+                              "Description": "Fattura 2 - IVA al netto - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "V38",
+                              "VatAmountType": "1",
+                              "Income": "10.00",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-20",
+                              "DocInvoice": "2",
+                              "Description": "Fattura 2 - IVA al netto - Pinco Pallino (Arrotondamento)",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "",
+                              "Income": "0.02",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-30",
+                              "DocInvoice": "3",
+                              "Description": "Fattura 3 - IVA al lordo - Pinco Pallino",
+                              "Account": "[A]",
+                              "Cc3": "",
+                              "Category": "",
+                              "Income": "110.00",
+                              "Expenses": "",
+                              "VatCode": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-30",
+                              "DocInvoice": "3",
+                              "Description": "Fattura 3 - IVA al lordo - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "V81",
+                              "VatAmountType": "",
+                              "Income": "50.00",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-30",
+                              "DocInvoice": "3",
+                              "Description": "Fattura 3 - IVA al lordo - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "V81",
+                              "VatAmountType": "",
+                              "Income": "50.00",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-30",
+                              "DocInvoice": "3",
+                              "Description": "Fattura 3 - IVA al lordo - Pinco Pallino",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "V38",
+                              "VatAmountType": "",
+                              "Income": "10.00",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-30",
+                              "DocInvoice": "5",
+                              "Description": "Fattura 5 - IVA al netto aliquota V0 - Mario Rossi",
+                              "Account": "[A]",
+                              "Cc3": "",
+                              "Category": "",
+                              "Income": "65.00",
+                              "Expenses": "",
+                              "VatCode": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-30",
+                              "DocInvoice": "5",
+                              "Description": "Fattura 5 - IVA al netto aliquota V0 - Mario Rossi",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "",
+                              "VatAmountType": "",
+                              "Income": "25.00",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-30",
+                              "DocInvoice": "5",
+                              "Description": "Fattura 5 - IVA al netto aliquota V0 - Mario Rossi",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "",
+                              "VatAmountType": "",
+                              "Income": "7.50",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-30",
+                              "DocInvoice": "5",
+                              "Description": "Fattura 5 - IVA al netto aliquota V0 - Mario Rossi",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "V0",
+                              "VatAmountType": "",
+                              "Income": "25.00",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-30",
+                              "DocInvoice": "5",
+                              "Description": "Fattura 5 - IVA al netto aliquota V0 - Mario Rossi",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "V0",
+                              "VatAmountType": "",
+                              "Income": "7.50",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-30",
+                              "DocInvoice": "6",
+                              "Description": "Fattura 6 - IVA al lordo aliquota V0 - Mario Rossi",
+                              "Account": "[A]",
+                              "Cc3": "",
+                              "Category": "",
+                              "Income": "65.00",
+                              "Expenses": "",
+                              "VatCode": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-30",
+                              "DocInvoice": "6",
+                              "Description": "Fattura 6 - IVA al lordo aliquota V0 - Mario Rossi",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "",
+                              "VatAmountType": "",
+                              "Income": "25.00",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-30",
+                              "DocInvoice": "6",
+                              "Description": "Fattura 6 - IVA al lordo aliquota V0 - Mario Rossi",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "",
+                              "VatAmountType": "",
+                              "Income": "7.50",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-30",
+                              "DocInvoice": "6",
+                              "Description": "Fattura 6 - IVA al lordo aliquota V0 - Mario Rossi",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "V0",
+                              "VatAmountType": "",
+                              "Income": "25.00",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        },
+                        {
+                           "operation": {
+                              "name": "add"
+                           },
+                           "fields": {
+                              "Date": "2026-06-30",
+                              "DocInvoice": "6",
+                              "Description": "Fattura 6 - IVA al lordo aliquota V0 - Mario Rossi",
+                              "Account": "",
+                              "Category": "[CA]",
+                              "Cc3": "",
+                              "VatCode": "V0",
+                              "VatAmountType": "",
+                              "Income": "7.50",
+                              "Expenses": "",
+                              "DocLink": ""
+                           }
+                        }
+                     ]
+                  }
+               ]
+            }
+         }
+      ]
+   },
+   "creator": {
+      "executionDate": "<normalized>",
+      "executionTime": "<normalized>",
+      "name": "ch.banana.uni.import.invoices.documentchange.test",
+      "version": "1.0"
+   }
+}\end{jsonvalue}
+\keyvalue{Result}{Passed}
+\end{test}
 \end{testcase}
 \end{document}

@@ -22,7 +22,7 @@
 // @description.fr = [DEV] Importer des factures depuis un fichier CSV (documentchange)
 // @description.de = [DEV] Rechnungen aus CSV importieren (documentchange)
 // @task = app.command
-// @doctype = 100.100;100.110
+// @doctype = 100.*;110.*
 // @docproperties =
 // @outputformat = none
 // @inputdataform = none
@@ -105,7 +105,7 @@ function exec() {
    }
 
    // Step 4: remap every CSV row into a documentChange row
-   var rows = buildTransactionRowsFromCsv(invoiceGroups, params);
+   var rows = buildTransactionRowsFromCsv(Banana.document, invoiceGroups, params);
    if (!rows || !rows.length) {
       Banana.application.addMessage(texts.errorGeneratingDataFromSourceFile);
       return "@Cancel";
@@ -381,12 +381,123 @@ function buildDocumentChangeRowFromCsvRow(csvRow, customerIsCc3, insertCustomer,
 }
 
 /**
+ * Splits a signed amount string into Income (value, if >= 0) / Expenses
+ * (absolute value, if < 0) - the convention used by the Income & Expense
+ * accounting's Transactions table (and by Cash Manager), which has no
+ * single signed Amount column, unlike double-entry's documentChange rows.
+ */
+function splitIncomeExpenses(amountStr) {
+   if (!amountStr)
+      return { income: "", expenses: "" };
+   var n = parseFloat(("" + amountStr).replace(",", ".")) || 0;
+   if (n >= 0)
+      return { income: amountStr, expenses: "" };
+   return { income: "", expenses: (-n).toString() };
+}
+
+/**
+ * Same remapping as buildDocumentChangeRowFromCsvRow(), but for Income &
+ * Expense accounting (including Cash Manager) instead of double-entry.
+ * That accounting type's Transactions table has a single Account column
+ * plus a Category column (no AccountDebit/AccountCredit pair), and two
+ * separate Income/Expenses amount columns instead of one signed Amount -
+ * so every row's CSV amount is split by sign via splitIncomeExpenses()
+ * instead of being written to a single Amount field.
+ * There is only one placeholder slot to fill per row ("[CA]", on
+ * Category) - unlike the double-entry version, the discount row does not
+ * need to move to an "opposite column": the sign split into Income vs
+ * Expenses already encodes the direction on its own.
+ */
+function buildDocumentChangeRowFromCsvRow_IncomeExpenseAccounting(csvRow, customerIsCc3, insertCustomer, invoiceCustomerNumber) {
+   var row = {};
+   row.operation = {};
+   row.operation.name = "add";
+   row.fields = {};
+   row.fields["Date"] = csvRow.date;
+   row.fields["DocInvoice"] = csvRow.docInvoice;
+   row.fields["Description"] = csvRow.description;
+
+   if (csvRow.rowKind === "header") {
+      var customerValue = insertCustomer ? invoiceCustomerNumber : "[A]";
+      if (customerIsCc3) {
+         row.fields["Account"] = "";
+         row.fields["Cc3"] = customerValue;
+      } else {
+         row.fields["Account"] = customerValue;
+         row.fields["Cc3"] = "";
+      }
+      row.fields["Category"] = "";
+      var headerSplit = splitIncomeExpenses(csvRow.amount);
+      row.fields["Income"] = headerSplit.income;
+      row.fields["Expenses"] = headerSplit.expenses;
+      row.fields["VatCode"] = "";
+      row.fields["DocLink"] = csvRow.docLink;
+   } else if (csvRow.rowKind === "item") {
+      row.fields["Account"] = "";
+      row.fields["Category"] = "[CA]";
+      row.fields["Cc3"] = "";
+      row.fields["VatCode"] = csvRow.vatCode;
+      row.fields["VatAmountType"] = csvRow.vatAmountType;
+      var itemSplit = splitIncomeExpenses(csvRow.amount);
+      row.fields["Income"] = itemSplit.income;
+      row.fields["Expenses"] = itemSplit.expenses;
+      row.fields["DocLink"] = "";
+   } else if (csvRow.rowKind === "rounding") {
+      row.fields["Account"] = "";
+      row.fields["Category"] = "[CA]";
+      row.fields["Cc3"] = "";
+      row.fields["VatCode"] = "";
+      // Raw, never-forced-positive value, same reasoning as the
+      // double-entry version - see buildDocumentChangeRowFromCsvRow().
+      var roundingSplit = splitIncomeExpenses(csvRow.amount);
+      row.fields["Income"] = roundingSplit.income;
+      row.fields["Expenses"] = roundingSplit.expenses;
+      row.fields["DocLink"] = "";
+   } else if (csvRow.rowKind === "discount") {
+      if (customerIsCc3) {
+         row.fields["Account"] = "";
+         row.fields["Cc3"] = customerValue;
+      } else {
+         row.fields["Account"] = customerValue;
+         row.fields["Cc3"] = "";
+      }
+      row.fields["Category"] = "[CA]";
+      row.fields["Income"] = "";
+      row.fields["Expenses"] = absAmountString(csvRow.amount);
+      row.fields["VatCode"] = csvRow.vatCode;
+      row.fields["VatAmountType"] = csvRow.vatAmountType;
+      row.fields["DocLink"] = "";
+   } else {
+      return null;
+   }
+
+   return row;
+}
+
+/**
+ * Returns true if doc is an Income & Expense accounting file (or Cash
+ * Manager), false for double-entry (or if it can't be determined). The
+ * Categories table only exists in that accounting type - double-entry
+ * files have no such table at all.
+ */
+function isIncomeExpenseAccounting(doc) {
+   if (!doc || typeof doc.table !== "function")
+      return false;
+   return !!doc.table("Categories");
+}
+
+/**
  * Builds the full flat array of documentChange rows from the CSV invoice
  * groups, applying customerIsCc3/insertCustomer to every header row.
+ * Detects once (not per row - the accounting type doesn't change mid-way)
+ * whether Banana.document is double-entry or Income & Expense accounting,
+ * and dispatches every row to the matching builder function accordingly.
  */
-function buildTransactionRowsFromCsv(invoiceGroups, params) {
+function buildTransactionRowsFromCsv(banDoc, invoiceGroups, params) {
    var customerIsCc3 = params.customerIsCc3;
    var insertCustomer = params.insertCustomer;
+
+   var useIncomeExpense = isIncomeExpenseAccounting(banDoc);
 
    var rows = [];
 
@@ -405,7 +516,9 @@ function buildTransactionRowsFromCsv(invoiceGroups, params) {
       }
 
       for (var i = 0; i < csvRows.length; i++) {
-         var row = buildDocumentChangeRowFromCsvRow(csvRows[i], customerIsCc3, insertCustomer, invoiceCustomerNumber);
+         var row = useIncomeExpense
+            ? buildDocumentChangeRowFromCsvRow_IncomeExpenseAccounting(csvRows[i], customerIsCc3, insertCustomer, invoiceCustomerNumber)
+            : buildDocumentChangeRowFromCsvRow(csvRows[i], customerIsCc3, insertCustomer, invoiceCustomerNumber);
          if (row)
             rows.push(row);
       }
