@@ -200,6 +200,7 @@ function readInvoicesFromSource(sourceDoc, texts) {
             invoiceAmountType: getVal(invoiceObj.document_info.vat_mode),
             customerNumber: getVal(invoiceObj.customer_info.number),
             customerName: customerName,
+            customerOrganisationName: getVal(invoiceObj.customer_info.business_name),
             customerFirstName: getVal(invoiceObj.customer_info.first_name),
             customerLastName: getVal(invoiceObj.customer_info.last_name),
             customerAddress: getVal(invoiceObj.customer_info.address1),
@@ -207,7 +208,7 @@ function readInvoicesFromSource(sourceDoc, texts) {
             customerPostalCode: getVal(invoiceObj.customer_info.postal_code),
             customerCity: getVal(invoiceObj.customer_info.city),
             customerCountryCode: getVal(invoiceObj.customer_info.country_code),
-            customerLanguage: getVal(invoiceObj.customer_info.lang),
+            customerLanguage: getVal(invoiceObj.document_info.locale),
             items: []
          };
 
@@ -338,6 +339,7 @@ function buildTransactionsRows(invoices, params, texts) {
       headerRow.fields["IsDetail"] = "S";
       headerRow.fields["RowKind"] = "header";
       headerRow.fields["CustomerNumber"] = invoice.customerNumber;
+      headerRow.fields["CustomerOrganisationName"] = invoice.customerOrganisationName;
       headerRow.fields["CustomerFirstName"] = invoice.customerFirstName;
       headerRow.fields["CustomerLastName"] = invoice.customerLastName;
       headerRow.fields["CustomerAddress"] = invoice.customerAddress;
@@ -731,7 +733,7 @@ function getSourceAc2BaseName(sourceDoc) {
  */
 function rowsToCsv(rows) {
    var columns = ["Date", "DocInvoice", "Description", "Amount",
-      "VatCode", "VatAmountType", "IsDetail", "RowKind", "CustomerNumber",
+      "VatCode", "VatAmountType", "IsDetail", "RowKind", "CustomerNumber", "CustomerOrganisationName",
       "CustomerFirstName", "CustomerLastName", "CustomerAddress", "CustomerBuildingNumber",
       "CustomerPostalCode", "CustomerCity", "CustomerCountryCode", "CustomerLanguage",
       "RoundingRawAmount", "DocLink"];

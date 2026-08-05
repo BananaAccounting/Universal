@@ -2,7 +2,7 @@
   <qresource>
     <file>ch.banana.uni.invoice.to.accounting.manifest.json</file>
     <file>ch.banana.uni.export.invoices.js</file>
-    <file>ch.banana.uni.import.invoices.documentchange.js</file>
     <file>ch.banana.uni.import.invoices.transactions.js</file>
+    <file>ch.banana.uni.import.invoices.accounts.js</file>
   </qresource>
 </RCC>
