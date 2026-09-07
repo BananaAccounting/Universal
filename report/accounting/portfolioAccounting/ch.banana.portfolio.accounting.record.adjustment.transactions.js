@@ -171,6 +171,7 @@ var AdjustmentTransactionsManager = class AdjustmentTransactionsManager {
                 const itemDescr = item.description;
                 const itemAccount = item.account;
                 const itemCurrentQt = item.currentQt;
+                const itemCurrency = item.currency;
                 const itemUnitMarketPrice = item.unitPriceCurrent;
                 const itemCurrentValues = this.getItemCurrentValues(item, unitPriceColDecimals);
                 const bookCurrExRate = getCurrentBookingRate(itemCurrentValues);
@@ -186,7 +187,8 @@ var AdjustmentTransactionsManager = class AdjustmentTransactionsManager {
 
                 /**Add price adjustment transaction */
                 if ((priceAdj && !Banana.SDecimal.isZero(priceAdj))) {
-                    rows.push(this.getAdjustmentTransactionsRows_PriceAdj(itemId, itemDescr, itemAccount, priceAdj, itemUnitMarketPrice, bookCurrExRate, texts));
+                    rows.push(this.getAdjustmentTransactionsRows_PriceAdj(itemId, itemDescr, itemAccount, itemCurrency, 
+                        priceAdj, itemUnitMarketPrice, bookCurrExRate, texts));
                 }
 
                 /** Add FX adjustment transaction */
@@ -200,7 +202,8 @@ var AdjustmentTransactionsManager = class AdjustmentTransactionsManager {
         return rows;
     }
 
-    getAdjustmentTransactionsRows_PriceAdj(itemId, itemDescr, itemAccount, priceAdj, itemUnitMarketPrice, bookCurrExRate, texts) {
+    getAdjustmentTransactionsRows_PriceAdj(itemId, itemDescr, itemAccount, itemCurrency,
+        priceAdj, itemUnitMarketPrice, bookCurrExRate, texts) {
 
         let row = {};
         row.operation = {};
@@ -220,6 +223,7 @@ var AdjustmentTransactionsManager = class AdjustmentTransactionsManager {
         if (this.docInfo.isMultiCurrency) {
             row.fields["AmountCurrency"] = Banana.Converter.toInternalNumberFormat(priceAdj, ".");
             row.fields["ExchangeRate"] = Banana.Converter.toInternalNumberFormat(bookCurrExRate, ".");
+            row.fields["ExchangeCurrency"] = itemCurrency;
         }
         else {
             row.fields["Amount"] = Banana.Converter.toInternalNumberFormat(priceAdj, ".");
@@ -335,8 +339,6 @@ var AdjustmentTransactionsManager = class AdjustmentTransactionsManager {
 
         const invalidRow = -1;
         let itemCardData = getItemCardDataList(this.banDoc, this.docInfo, itemRowObj, unitPriceColDecimals, invalidRow);
-
-        Banana.Ui.showText(JSON.stringify(itemCardData));
 
         if (!itemCardData || isObjectEmpty(itemCardData) || !itemCardData.currentValues)
             return "";
