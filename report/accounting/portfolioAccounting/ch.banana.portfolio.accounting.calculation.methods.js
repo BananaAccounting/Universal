@@ -563,8 +563,8 @@ function getAccCardDataArrayOfObjects(banDoc, docInfo, itemObj, currentRowNr) {
 
                 // Scegliamo il valore giusto in base a quale moneta coincide con quella dell'item
                 if (itemCurrency === transCurrency) {
-                    trData.debitItemCurr = trData.debitTransCurr;
-                    trData.creditItemCurr = trData.creditTransCurr;
+                    trData.debitItemCurr = Banana.SDecimal.abs(trData.debitTransCurr);
+                    trData.creditItemCurr = Banana.SDecimal.abs(trData.creditTransCurr);
                 } else if (itemCurrency === trData.accountCurrency) {
                     trData.debitItemCurr = trData.debitAccountCurr;
                     trData.creditItemCurr = trData.creditAccountCurr;
