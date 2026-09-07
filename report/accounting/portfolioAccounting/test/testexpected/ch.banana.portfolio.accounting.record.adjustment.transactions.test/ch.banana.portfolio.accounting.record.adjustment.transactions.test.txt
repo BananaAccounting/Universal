@@ -18,7 +18,7 @@
 \newenvironment{testcase}[1]{\section*{Test: #1}}{\newpage}
 \newenvironment{test}[1]{\section*{Test case: #1}}{}
 %Begin test data
-%%SCRIPT{C:/P/Universal Images/Universal/report/accounting/portfolioAccounting/test/ch.banana.portfolio.accounting.record.adjustment.transactions.test.js}
+%%SCRIPT{C:/P/Universal/report/accounting/portfolioAccounting/test/ch.banana.portfolio.accounting.record.adjustment.transactions.test.js}
 %
 \begin{testcase}{TestAdjustmentTransactions}
 \begin{test}{testRecordSalesTransactions}
@@ -48,6 +48,7 @@
                                                 "Date": "",
                                                 "Description": "Shares UBS Market Price Adjustment (12.8001)",
                                                 "Doc": "",
+                                                "ExchangeCurrency": "CHF",
                                                 "ExchangeRate": "",
                                                 "ItemsId": "CH003886335"
                                             },
@@ -63,6 +64,7 @@
                                                 "Date": "",
                                                 "Description": "Shares BancaStato Market Price Adjustment (5.9998)",
                                                 "Doc": "",
+                                                "ExchangeCurrency": "CHF",
                                                 "ExchangeRate": "",
                                                 "ItemsId": "CH002775224"
                                             },
@@ -78,6 +80,7 @@
                                                 "Date": "",
                                                 "Description": "Shares Unicredit Market Price Adjustment (9.5000)",
                                                 "Doc": "",
+                                                "ExchangeCurrency": "EUR",
                                                 "ExchangeRate": "1.1000000000000",
                                                 "ItemsId": "IT0005239360"
                                             },
@@ -93,6 +96,7 @@
                                                 "Date": "",
                                                 "Description": "Shares Netflix Market Price Adjustment (11.5562)",
                                                 "Doc": "",
+                                                "ExchangeCurrency": "USD",
                                                 "ExchangeRate": "0.95000000000000",
                                                 "ItemsId": "US123456789"
                                             },
@@ -108,6 +112,7 @@
                                                 "Date": "",
                                                 "Description": "Bonds Bnp Paribas Market Price Adjustment (1.0250)",
                                                 "Doc": "",
+                                                "ExchangeCurrency": "EUR",
                                                 "ExchangeRate": "1.1000000000000",
                                                 "ItemsId": "IT000792468"
                                             },
@@ -156,6 +161,7 @@
                                                 "Date": "",
                                                 "Description": "QQQ Test Market Price Adjustment (380.0000)",
                                                 "Doc": "",
+                                                "ExchangeCurrency": "USD",
                                                 "ExchangeRate": "1.041999889548011707910758961459550",
                                                 "ItemsId": "QQQ"
                                             },
@@ -186,6 +192,7 @@
                                                 "Date": "",
                                                 "Description": "IBB1 Test Market Price Adjustment (5.0000)",
                                                 "Doc": "",
+                                                "ExchangeCurrency": "EUR",
                                                 "ExchangeRate": "",
                                                 "ItemsId": "IBB1"
                                             },
@@ -295,6 +302,7 @@
                                                 "Date": "",
                                                 "Description": "Japanese share 1 Market Price Adjustment (11000.000000000000)",
                                                 "Doc": "",
+                                                "ExchangeCurrency": "JPY",
                                                 "ExchangeRate": "0.005028694834929712651722689915815153",
                                                 "ItemsId": "JP1234567899"
                                             },
