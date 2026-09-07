@@ -210,7 +210,7 @@ function printReport(banDoc, reconciliationData, docInfo) {
             var tableRow = tabConc.addRow("styleTableRows");
             tableRow.addCell(itemData.itemId + " - " + itemData.description, '', spanObj.allTable);
             //Add the opening data (if present)
-            if (isMulti && itemOpeningData && itemOpeningData.amountCurr) {
+            if (isMulti && itemOpeningData && itemOpeningData.amountItemCurr) {
                 let tableOpeningRow = tabConc.addRow("styleOddRows");
                 tableOpeningRow.addCell("", "", 1);
                 addItemOpeningTableRowMultiCurrency(tableOpeningRow, itemOpeningData, decimals, styleNormalAmount);
@@ -483,8 +483,8 @@ function getItemsDataList(banDoc, docInfo, account) {
             // We expand the object by adding the calculated sum of debit and credit columns (just for build the security card).
             itemData.totalDebitBase = getSum(itemData.transactionsData, "debitBase");
             itemData.totalCreditBase = getSum(itemData.transactionsData, "creditBase");
-            itemData.totalDebitCurr = getSum(itemData.transactionsData, "debitCurr");
-            itemData.totalCreditCurr = getSum(itemData.transactionsData, "creditCurr");
+            itemData.totalDebitCurr = getSum(itemData.transactionsData, "debitItemCurr");
+            itemData.totalCreditCurr = getSum(itemData.transactionsData, "creditItemCurr");
             itemsDataList.push(itemData);
         }
     }
@@ -603,7 +603,7 @@ function getItemsTotalInitialBalance(itemsDataList) {
             return;
 
         totalBase = Banana.SDecimal.add(totalBase, item.openingData.amount);
-        totalSecurity = Banana.SDecimal.add(totalSecurity, item.openingData.amountCurr);
+        totalSecurity = Banana.SDecimal.add(totalSecurity, item.openingData.amountItemCurr);
     });
 
     return {
@@ -622,7 +622,7 @@ function getItemsMovementsTotal(itemsDataList) {
 
     itemsDataList.forEach(item => {
         let itemOpBalance = item.openingData.amount;
-        let itemOpBalanceCurr = item.openingData.amountCurr;
+        let itemOpBalanceCurr = item.openingData.amountItemCurr;
         let itemCurrBalance = item.currentValues.itemBalanceBase;
         let itemCurrBalanceCurr = item.currentValues.itemBalanceCurr;
 

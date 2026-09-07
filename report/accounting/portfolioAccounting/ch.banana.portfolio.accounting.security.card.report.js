@@ -108,8 +108,8 @@ function getItemCardData(banDoc, docInfo, itemObject) {
     itemCardData.totalDebitBase = getSum(itemCardData.data.transactionsData, "debitBase");
     itemCardData.totalCreditBase = getSum(itemCardData.data.transactionsData, "creditBase");
     if (docInfo.isMultiCurrency) {
-        itemCardData.totalDebitCurr = getSum(itemCardData.data.transactionsData, "debitCurr");
-        itemCardData.totalCreditCurr = getSum(itemCardData.data.transactionsData, "creditCurr");
+        itemCardData.totalDebitCurr = getSum(itemCardData.data.transactionsData, "debitItemCurr");
+        itemCardData.totalCreditCurr = getSum(itemCardData.data.transactionsData, "creditItemCurr");
     }
 
     return itemCardData;
@@ -192,7 +192,7 @@ function printReport(banDoc, docInfo, itemCardData, itemDescription) {
     *  base currency, if is not, we show only the values in the base currency.*/
 
     //Add the opening data (if present)
-    if (isMulti && itemOpeningData && itemOpeningData.amountCurr) {
+    if (isMulti && itemOpeningData && itemOpeningData.amountItemCurr) {
         var tableOpeningRow = tabItemCard.addRow("styleOddRows");
         addItemOpeningTableRowMultiCurrency(tableOpeningRow, itemOpeningData, decimals, styleNormalAmount);
     } else if (!isMulti && itemOpeningData && itemOpeningData.amount) {

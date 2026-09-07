@@ -336,6 +336,8 @@ var AdjustmentTransactionsManager = class AdjustmentTransactionsManager {
         const invalidRow = -1;
         let itemCardData = getItemCardDataList(this.banDoc, this.docInfo, itemRowObj, unitPriceColDecimals, invalidRow);
 
+        Banana.Ui.showText(JSON.stringify(itemCardData));
+
         if (!itemCardData || isObjectEmpty(itemCardData) || !itemCardData.currentValues)
             return "";
         else
