@@ -503,17 +503,21 @@ function getAccCardDataArrayOfObjects(banDoc, docInfo, itemObj, currentRowNr) {
                  * the progressive value for the reports using always the security currency amouunt
                  * and not the amount in the account currency, which could be different in that case.
                  */
-                let transCurrAmount = Banana.SDecimal.abs(tRow.value("JAmountTransactionCurrency"));
                 let transCurrency = tRow.value("JTransactionCurrency");
-                trData.debitItemCurr = isDebitRow ? transCurrAmount : "";
-                trData.creditItemCurr = !isDebitRow ? transCurrAmount : "";
                 trData.currency = transCurrency;
 
-                if (itemCurrency != transCurrency){
-                    /** The currencies must match; otherwise, the program reports an error.
-                     * Therefore, this condition should normally never be reached, but we keep it
-                     * as a safeguard for possible edge cases that are not yet known.*/
-                    Banana.console.log("Item currency and transaction currency are different");
+                /**
+                * We only get the amount if the transaction currency is the same as the item currency.
+                * This check allows us to ignore amounts from entries that only modify the Asset
+                * account's base currency value, in particular exchange rate adjustments. By ignoring
+                * these values, we avoid the balance calculated in the item's currency being "distorted",
+                * because although these values are saved as "JAmountTransactionCurrency", they are not
+                * actually in the item's currency but in the account's currency.
+                 */
+                if (itemCurrency == transCurrency){
+                    let transCurrAmount = Banana.SDecimal.abs(tRow.value("JAmountTransactionCurrency"));
+                    trData.debitItemCurr = isDebitRow ? transCurrAmount : "";
+                    trData.creditItemCurr = !isDebitRow ? transCurrAmount : "";
                 }
 
                 let multiplier = "";
