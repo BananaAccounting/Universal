@@ -20,7 +20,7 @@
 %Begin test data
 \begin{reportvalue}{FILENAME: file:script/../test/testcases/portfolio\_accounting\_double\_entry\_tutorial\_2022.ac2}
 \begin{longtable}[l]{ l  l  l  l  l  l  l  l  l  l  l }
-\excltest{Account Reconciliation Report – Shares, Data as of: 04.03.2026} Asset  & Date  & Doc  & Description  & Quantity   & Unit Price   & Debit\P CHF  & Credit\P CHF  & Balance\P CHF  & Quantity balance  & Book value \P  per unit\P  \\
+\excltest{Account Reconciliation Report – Shares, Data as of: 10.09.2026} Asset  & Date  & Doc  & Description  & Quantity   & Unit Price   & Debit\P CHF  & Credit\P CHF  & Balance\P CHF  & Quantity balance  & Book value \P  per unit\P  \\
 \multicolumn{11}{l}{CH003886335 - Shares UBS }\\
  & 20.02.2022  & 1  & Shares UBS Purchase  & 100  & 11.0000  & 1'100.00  &  & 1'100.00  & 100  & 11.0000 \\
  & 20.03.2022  & 2  & Shares UBS Total Sale  & -15  & 11.5000  &  & 172.50  & 927.50  & 85  & 10.9118 \\
@@ -31,14 +31,14 @@
  & 20.05.2022  & 5  & Shares UBS Total Sale  & -15  & 11.2000  &  & 168.00  & 1'182.00  & 110  & 10.7455 \\
  & 20.05.2022  & 5  & Shares UBS Profit on Sale  &  &  & 5.55  &  & 1'187.55  & 110  & 10.7959 \\
  & 31.12.2022  &  & Shares UBS Market Price Adjustment (10.85)  &  &  & 5.95  &  & 1'193.50  & 110  & 10.8500 \\
- & \excltest{04.03.2026}  &  & Balance CH003886335  & \multicolumn{2}{l}{} & 1'644.00  & 450.50  & 1'193.50  & 110  & 10.8500 \\
+ & \excltest{10.09.2026}  &  & Balance CH003886335  & \multicolumn{2}{l}{} & 1'644.00  & 450.50  & 1'193.50  & 110  & 10.8500 \\
 \multicolumn{11}{l}{}\\
 \multicolumn{11}{l}{CH012775214 - Shares Nestlè }\\
  & 20.02.2022  & 6  & Shares Nestlè Purchase  & 100  & 10.0000  & 1'000.00  &  & 1'000.00  & 100  & 10.0000 \\
  & 20.03.2022  & 7  & Shares Nestle Total Sale  & -50  & 9.5000  &  & 475.00  & 525.00  & 50  & 10.5000 \\
  & 20.03.2022  & 7  & Shares Nestle Loss on Sale  &  &  &  & 25.00  & 500.00  & 50  & 10.0000 \\
  & 31.12.2022  &  & Shares Nestlè Market Price Adjustment (11.00)  &  &  & 50.00  &  & 550.00  & 50  & 11.0000 \\
- & \excltest{04.03.2026}  &  & Balance CH012775214  & \multicolumn{2}{l}{} & 1'050.00  & 500.00  & 550.00  & 50  & 11.0000 \\
+ & \excltest{10.09.2026}  &  & Balance CH012775214  & \multicolumn{2}{l}{} & 1'050.00  & 500.00  & 550.00  & 50  & 11.0000 \\
 \multicolumn{11}{l}{}\\
 Reconciliation Summary  & \multicolumn{10}{l}{}\\
  & Account Currency (CHF)  & \multicolumn{9}{l}{}\\
@@ -53,12 +53,12 @@ Actual Balance (Securities)  & 1'743.50  & \multicolumn{9}{l}{}\\
 Current difference (should be zero)  & 0.00  & \multicolumn{9}{l}{}\\
 \end{longtable}
 \begin{longtable}[l]{ l  l  l  l  l  l  l  l  l  l  l }
-\excltest{Account Reconciliation Report – Bonds, Data as of: 04.03.2026} Asset  & Date  & Doc  & Description  & Quantity   & Unit Price   & Debit\P CHF  & Credit\P CHF  & Balance\P CHF  & Quantity balance  & Book value \P  per unit\P  \\
+\excltest{Account Reconciliation Report – Bonds, Data as of: 10.09.2026} Asset  & Date  & Doc  & Description  & Quantity   & Unit Price   & Debit\P CHF  & Credit\P CHF  & Balance\P CHF  & Quantity balance  & Book value \P  per unit\P  \\
 \multicolumn{11}{l}{CH135792468 - Bonds  Holcim  }\\
  & 25.03.2022  & 8  & Bonds Holcim Purchase  & 5'000  & 0.9800  & 4'900.00  &  & 4'900.00  & 5'000  & 0.9800 \\
  & 31.10.2022  & 10  & Bonds Holcim Total Sale  & -5'000  & 1.0250  &  & 5'125.00  & -225.00  & 0  & \\
  & 31.10.2022  & 10  & Bonds Holcim Profit on Sale  &  &  & 225.00  &  & 0.00  & 0  & \\
- & \excltest{04.03.2026}  &  & Balance CH135792468  & \multicolumn{2}{l}{} & 5'125.00  & 5'125.00  & 0.00  & 0  & 0.0000 \\
+ & \excltest{10.09.2026}  &  & Balance CH135792468  & \multicolumn{2}{l}{} & 5'125.00  & 5'125.00  & 0.00  & 0  & 0.0000 \\
 \multicolumn{11}{l}{}\\
 Reconciliation Summary  & \multicolumn{10}{l}{}\\
  & Account Currency (CHF)  & \multicolumn{9}{l}{}\\

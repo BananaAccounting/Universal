@@ -159,8 +159,14 @@ function getDocumentInfo(banDoc) {
 }
 
 /**
- * Reads the journal data and returns an object containing the opening values of the item, if present.
- */
+ * Reads the journal data and returns an object containing the item's opening values, if available.
+* As with normal transactions, the value is read from "JAmountTransactionCurrency".
+* For compatibility with the journal logic, item opening values are stored in the
+* journal using the account currency, since the item currency cannot be stored there directly.
+* The corresponding value in the item currency is therefore stored in
+* "JAmountTransactionCurrency".
+  */
+
 function getItemOpeningValuesFromJournal(docInfo, journal, itemId, itemCurrency) {
 
     var openingValues = {};
@@ -182,43 +188,15 @@ function getItemOpeningValuesFromJournal(docInfo, journal, itemId, itemCurrency)
             openingValues.amount = tRow.value("JAmount");
             openingValues.debitBase = tRow.value("JDebitAmount");
             openingValues.creditBase = tRow.value("JCreditAmount");
+            let isDebitRow = tRow.value("JDebitAmount") !== "";
 
             if (docInfo.isMultiCurrency) {
-
-                let isDebitRow = tRow.value("JDebitAmount") !== "";
-
-                // Account currency amounts
-                openingValues.accountCurrency = tRow.value("JAccountCurrency");
-                openingValues.debitAccountCurr = tRow.value("JDebitAmountAccountCurrency");
-                openingValues.creditAccountCurr = tRow.value("JCreditAmountAccountCurrency");
-
                 // Transaction currency
-                let transCurrAmount = tRow.value("JAmountTransactionCurrency");
-                let transCurrency = tRow.value("JTransactionCurrency");
-                let debitTransCurr = isDebitRow ? transCurrAmount : "";
-                let creditTransCurr = !isDebitRow ? transCurrAmount : "";
-
-                openingValues.transactionCurrency = transCurrency;
-
-                // We choose the right value based on the Ite currency
-                if (itemCurrency === transCurrency) {
-                    openingValues.debitItemCurr = debitTransCurr;
-                    openingValues.creditItemCurr = creditTransCurr;
-                    openingValues.amountItemCurr = transCurrAmount;
-                } else if (itemCurrency === openingValues.accountCurrency) {
-                    openingValues.debitItemCurr = openingValues.debitAccountCurr;
-                    openingValues.creditItemCurr = openingValues.creditAccountCurr;
-                    openingValues.amountItemCurr = tRow.value("JAmountAccountCurrency");
-                } else if (itemCurrency === docInfo.baseCurrency) {
-                    openingValues.debitItemCurr = openingValues.debitBase;
-                    openingValues.creditItemCurr = openingValues.creditBase;
-                    openingValues.amountItemCurr = openingValues.amount;
-                } else {
-                    // Nessuna moneta disponibile sulla riga coincide con quella dell'item
-                    openingValues.debitItemCurr = "";
-                    openingValues.creditItemCurr = "";
-                    openingValues.amountItemCurr = "";
-                }
+                let transCurrAmount = Banana.SDecimal.abs(tRow.value("JAmountTransactionCurrency"));
+                openingValues.debitItemCurr = isDebitRow ? transCurrAmount : "";
+                openingValues.creditItemCurr = !isDebitRow ? transCurrAmount : "";
+                openingValues.amountItemCurr = transCurrAmount;
+                openingValues.transactionCurrency = itemCurrency;
             }
 
             break;
@@ -518,23 +496,24 @@ function getAccCardDataArrayOfObjects(banDoc, docInfo, itemObj, currentRowNr) {
             let isDebitRow = tRow.value("JDebitAmount") !== "";
 
             if (docInfo.isMultiCurrency) {
-
-                // Amounts in amount currency
-                trData.debitAccountCurr = tRow.value("JDebitAmountAccountCurrency");
-                trData.creditAccountCurr = tRow.value("JCreditAmountAccountCurrency");
-                trData.accountCurrency = tRow.value("JAccountCurrency");
-
-                // Amounts in transaction currency
-                // (può essere diversa sia dalla moneta base, sia dalla moneta del conto)
-                // Caso pratico: Conto in moneta X, item in moneta Y, così salviamo gli importi in entrambe le valute.
-                let transCurrAmount = tRow.value("JAmountTransactionCurrency");
+                /** We use the currency amount following the transaction currency.
+                 * Using this value, we are able to manage Asset accounts in base
+                 * currency with multiple currencies securities because we can calculate
+                 * the progressive value for the reports using always the security currency amouunt
+                 * and not the amount in the account currency, which could be different in that case.
+                 */
+                let transCurrAmount = Banana.SDecimal.abs(tRow.value("JAmountTransactionCurrency"));
                 let transCurrency = tRow.value("JTransactionCurrency");
+                trData.debitItemCurr = isDebitRow ? transCurrAmount : "";
+                trData.creditItemCurr = !isDebitRow ? transCurrAmount : "";
+                trData.currency = transCurrency;
 
-                trData.debitTransCurr = isDebitRow ? transCurrAmount : "";
-                trData.creditTransCurr = !isDebitRow ? transCurrAmount : "";
-                trData.transactionCurrency = transCurrency;
-
-                trData.currency = tRow.value("ExchangeCurrency");
+                if (itemCurrency != transCurrency){
+                    /** The currencies must match; otherwise, the program reports an error.
+                     * Therefore, this condition should normally never be reached, but we keep it
+                     * as a safeguard for possible edge cases that are not yet known.*/
+                    Banana.console.log("Item currency and transaction currency are different");
+                }
 
                 let multiplier = "";
                 /**
@@ -560,24 +539,6 @@ function getAccCardDataArrayOfObjects(banDoc, docInfo, itemObj, currentRowNr) {
                     }
                 }
                 trData.multiplier = multiplier;
-
-                // Scegliamo il valore giusto in base a quale moneta coincide con quella dell'item
-                if (itemCurrency === transCurrency) {
-                    trData.debitItemCurr = Banana.SDecimal.abs(trData.debitTransCurr);
-                    trData.creditItemCurr = Banana.SDecimal.abs(trData.creditTransCurr);
-                } else if (itemCurrency === trData.accountCurrency) {
-                    trData.debitItemCurr = trData.debitAccountCurr;
-                    trData.creditItemCurr = trData.creditAccountCurr;
-                } else if (itemCurrency === docInfo.baseCurrency) {
-                    trData.debitItemCurr = trData.debitBase;
-                    trData.creditItemCurr = trData.creditBase;
-                } else {
-                    // Nessuna delle monete disponibili sulla riga coincide con quella dell'item:
-                    // qui andrebbe gestita una conversione manuale (caso raro, es. item in una
-                    // terza moneta rispetto a conto e transazione).
-                    trData.debitItemCurr = "";
-                    trData.creditItemCurr = "";
-                }
             }
 
             transactions.push(trData);
