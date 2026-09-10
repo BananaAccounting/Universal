@@ -507,19 +507,20 @@ function getAccountsDataList(banDoc, docInfo, accountsList) {
 
         accBalance = banDoc.currentBalance(account);
 
-        accData.account = account
-        accData.currency = getAccountCurrency(account, banDoc);
+        accData.account = account;
+        const accCurrency = getAccountCurrency(account, banDoc);
+        accData.currency = accCurrency;
 
         //get the items data.
         itemsDataList = getItemsDataList(banDoc, docInfo, account);
         accData.items = itemsDataList;
 
         // Get items total initial balances
-        const itemsTotalInitialBalance = getItemsTotalInitialBalance(itemsDataList);
+        const itemsTotalInitialBalance = getItemsTotalInitialBalance(itemsDataList, accCurrency);
         // Set initial balances data
         setInitalBalancesData(accData, accBalance, itemsTotalInitialBalance);
         // Get items total current balance
-        const itemsTotalCurrentBalance = getItemsTotalCurrentBalance(itemsDataList);
+        const itemsTotalCurrentBalance = getItemsTotalCurrentBalance(itemsDataList, accCurrency);
         // Set current balances data
         setCurrentBalancesData(accData, accBalance, itemsTotalCurrentBalance);
 
@@ -568,7 +569,7 @@ function setInitalBalancesData(accDataObj, accBalance, itemsTotalInitialBalance)
         Banana.SDecimal.subtract(accBalance.openingCurrency, itemsTotalInitialBalance.totalSecurity));
 }
 
-function getItemsTotalCurrentBalance(itemsDataList) {
+function getItemsTotalCurrentBalance(itemsDataList, accCurrency) {
     let totalBase;
     let totalSecurity;
 
@@ -581,7 +582,13 @@ function getItemsTotalCurrentBalance(itemsDataList) {
             return;
 
         totalBase = Banana.SDecimal.add(totalBase, item.currentValues.itemBalanceBase);
-        totalSecurity = Banana.SDecimal.add(totalSecurity, item.currentValues.itemBalanceCurr);
+        if (item.itemCurrency == accCurrency){
+            totalSecurity = Banana.SDecimal.add(totalSecurity, item.currentValues.itemBalanceCurr);
+        } else {
+            /* Calculate again the base total*/
+            totalSecurity = Banana.SDecimal.add(totalSecurity, item.currentValues.itemBalanceBase);
+        }
+        
     });
 
     return {
@@ -590,7 +597,7 @@ function getItemsTotalCurrentBalance(itemsDataList) {
     };
 }
 
-function getItemsTotalInitialBalance(itemsDataList) {
+function getItemsTotalInitialBalance(itemsDataList, accCurrency) {
     let totalBase;
     let totalSecurity;
 
@@ -603,7 +610,12 @@ function getItemsTotalInitialBalance(itemsDataList) {
             return;
 
         totalBase = Banana.SDecimal.add(totalBase, item.openingData.amount);
-        totalSecurity = Banana.SDecimal.add(totalSecurity, item.openingData.amountItemCurr);
+        if (item.itemCurrency == accCurrency){
+            totalSecurity = Banana.SDecimal.add(totalSecurity, item.openingData.amountItemCurr);
+        } else {
+            /* Calculate again the base total*/
+            totalSecurity = Banana.SDecimal.add(totalSecurity, item.openingData.amount);
+        }
     });
 
     return {

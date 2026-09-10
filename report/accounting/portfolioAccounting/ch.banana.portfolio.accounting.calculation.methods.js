@@ -518,6 +518,9 @@ function getAccCardDataArrayOfObjects(banDoc, docInfo, itemObj, currentRowNr) {
                     let transCurrAmount = Banana.SDecimal.abs(tRow.value("JAmountTransactionCurrency"));
                     trData.debitItemCurr = isDebitRow ? transCurrAmount : "";
                     trData.creditItemCurr = !isDebitRow ? transCurrAmount : "";
+                } else {
+                    trData.debitItemCurr = "";
+                    trData.creditItemCurr = "";
                 }
 
                 let multiplier = "";
