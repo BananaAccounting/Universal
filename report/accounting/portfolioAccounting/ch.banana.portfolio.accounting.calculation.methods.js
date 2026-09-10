@@ -167,7 +167,7 @@ function getDocumentInfo(banDoc) {
 * "JAmountTransactionCurrency".
   */
 
-function getItemOpeningValuesFromJournal(docInfo, journal, itemId, itemCurrency) {
+function getItemOpeningValuesFromJournal(banDoc, docInfo, journal, itemId, itemCurrency) {
 
     var openingValues = {};
 
@@ -197,6 +197,7 @@ function getItemOpeningValuesFromJournal(docInfo, journal, itemId, itemCurrency)
                 openingValues.creditItemCurr = !isDebitRow ? transCurrAmount : "";
                 openingValues.amountItemCurr = transCurrAmount;
                 openingValues.transactionCurrency = itemCurrency;
+                openingValues.multiplier = findFirstOccurencyMultiplierForCurr(banDoc, itemCurrency);
             }
 
             break;
@@ -598,7 +599,7 @@ function getItemCardDataList(banDoc, docInfo, itemObj, unitPriceColDecimals, cur
     // Get the Journal list
     journal = banDoc.journal(banDoc.ORIGINTYPE_CURRENT, banDoc.ACCOUNTTYPE_NORMAL);
     // From the journal we get an object containing the opening values of the item (operations type = 1).
-    let itemOpeningValues = getItemOpeningValuesFromJournal(docInfo, journal, itemObj.item, itemObj.currency);
+    let itemOpeningValues = getItemOpeningValuesFromJournal(banDoc, docInfo, journal, itemObj.item, itemObj.currency);
     // From the account card we get the transactions related to the item (operations type = 3).
     let accountCardData = getAccCardDataArrayOfObjects(banDoc, docInfo, itemObj, currentRowNr);
     // Create the item card data object.
@@ -719,6 +720,7 @@ function setOpeningValues(currentValuesObj, openingData) {
     currentValuesObj.itemQtBalance = openingData.qt;
     currentValuesObj.itemBalanceBase = openingData.amount;
     currentValuesObj.itemBalanceCurr = openingData.amountItemCurr;
+    currentValuesObj.itemOpMultiplier = openingData.multiplier;
     currentValuesObj.itemExchangeRate = "";
 }
 
