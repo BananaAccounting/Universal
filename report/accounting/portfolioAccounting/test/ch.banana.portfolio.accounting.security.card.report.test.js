@@ -44,6 +44,7 @@ TestSecurityCardReport.prototype.initTestCase = function () {
     this.fileNameList.push("file:script/../test/testcases/portfolio_accounting_double_entry_tutorial_2025_withopenings.ac2");
     this.fileNameList.push("file:script/../test/testcases/portfolio_accounting_double_entry_multi_currency_tutorial.ac2");
     this.fileNameList.push("file:script/../test/testcases/portfolio_accounting_double_entry_multi_currency_tutorial_unitprofitlosstest_2025.ac2");
+    this.fileNameList.push("file:script/../test/testcases/portfolio_accounting_double_entry_multi_currency_tutorial_assets_with_multiple_currencies1.ac2");
 }
 
 // This method will be called at the end of the test case
@@ -92,6 +93,7 @@ function getItemForTest(index) {
         item = "CH003886335";
     else if (index == 2 || index == 3)
         item = "IT0005239360";
-
+    else if (index == 4)
+        item = "Planet"
     return item;
 }

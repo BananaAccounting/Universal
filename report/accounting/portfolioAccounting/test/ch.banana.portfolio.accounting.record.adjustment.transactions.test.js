@@ -121,6 +121,23 @@ TestAdjustmentTransactions.prototype.testRecordSalesTransactions = function () {
     docChange = getTestData(banDoc);
     this.testLogger.addSection("Adjustment transactions document change 4.");
     this.testLogger.addJson("Doc Change object", JSON.stringify(docChange));
+
+    /**Test 5
+     * Generate adjustment transactions, multi currency file containing an asset account in base currency with
+     * securities in multiple currencies and other normal accounts
+     * Planet: Book value: 10.9090, Maket value: 22.0000, Qt 50, Acc ExRate: 0.934751122926, Actual ExRate: 0.934, price un.profit, ExRate loss
+     * Sun Press SA: Book value: 20.0000, Maket value: 21.0000, Qt 5, price un.profit
+     * CHxxxxxxxxx: Book value: 100.0000, Maket value: 102.0000, Qt 55, price un.profit
+     * XX: Book value: 19.8637, Maket value: 18.3000, Qt 60, Acc ExRate: 0.80533973251, Actual ExRate: 0.796, price un.loss, ExRate loss
+     * ZZZ:Book value: 7.0500, Maket value: 7.8000, Qt 30, price un.profit
+     * Other securities are present in the Items table but not used.
+     */
+    fileName = "file:script/../test/testcases/portfolio_accounting_double_entry_multi_currency_tutorial_assets_with_multiple_currencies1_without_adjustments.ac2";
+    banDoc = Banana.application.openDocument(fileName);
+    Test.assert(banDoc);
+    docChange = getTestData(banDoc);
+    this.testLogger.addSection("Adjustment transactions document change 5.");
+    this.testLogger.addJson("Doc Change object", JSON.stringify(docChange));
 }
 
 function getTestData(banDoc) {

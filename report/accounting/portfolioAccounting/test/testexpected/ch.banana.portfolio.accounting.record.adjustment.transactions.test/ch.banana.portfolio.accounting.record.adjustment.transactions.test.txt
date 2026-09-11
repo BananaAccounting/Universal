@@ -360,6 +360,159 @@
     "format": "documentChange"
 }
 \end{jsonvalue}
+\section{Adjustment transactions document change 5.}
+\begin{jsonvalue}{Doc Change object}
+{
+    "data": [
+        {
+            "creator": {
+                "name": "ch.banana.portfolio.accounting.record.adjustment.transactions.test",
+                "version": "1.0"
+            },
+            "document": {
+                "cursorPosition": {
+                },
+                "dataUnits": [
+                    {
+                        "data": {
+                            "rowLists": [
+                                {
+                                    "rows": [
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "INV-Investment Adjustments",
+                                                "AccountDebit": "Private Equity",
+                                                "AmountCurrency": "554.55000000",
+                                                "Date": "",
+                                                "Description": "Planet Market Price Adjustment (22.0000)",
+                                                "Doc": "",
+                                                "ExchangeCurrency": "EUR",
+                                                "ExchangeRate": "0.9347511229260243835365294710789257",
+                                                "ItemsId": "Planet",
+                                                "Quantity": "±50.0000",
+                                                "UnitPrice": "11.0910"
+                                            },
+                                            "operation": {
+                                                "name": "add"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "Private Equity",
+                                                "AccountDebit": "[Account for unrealized foreign exchange losses]",
+                                                "Amount": "-0.826235218626821890182418186818",
+                                                "Date": "",
+                                                "Description": "Planet Adjustment at exchange rate on valuation date",
+                                                "Doc": "",
+                                                "ExchangeCurrency": "CHF",
+                                                "ItemsId": "Planet"
+                                            },
+                                            "operation": {
+                                                "name": "add"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "INV-Investment Adjustments",
+                                                "AccountDebit": "Private Equity",
+                                                "AmountCurrency": "5.00000000",
+                                                "Date": "",
+                                                "Description": "Sun Press SA Market Price Adjustment (21.0000)",
+                                                "Doc": "",
+                                                "ExchangeCurrency": "CHF",
+                                                "ExchangeRate": "1.000000000000",
+                                                "ItemsId": "Sun Press SA",
+                                                "Quantity": "±5.0000",
+                                                "UnitPrice": "1.0000"
+                                            },
+                                            "operation": {
+                                                "name": "add"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "INV-Investment Adjustments",
+                                                "AccountDebit": "Private Equity",
+                                                "AmountCurrency": "110.00000000",
+                                                "Date": "",
+                                                "Description": "Swiss Global Services SA Market Price Adjustment (102.0000)",
+                                                "Doc": "",
+                                                "ExchangeCurrency": "CHF",
+                                                "ExchangeRate": "",
+                                                "ItemsId": "CHxxxxxxxxx",
+                                                "Quantity": "±55.0000",
+                                                "UnitPrice": "2.0000"
+                                            },
+                                            "operation": {
+                                                "name": "add"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "UBS Securities USD",
+                                                "AccountDebit": "INV-Investment Adjustments",
+                                                "AmountCurrency": "-93.82200000",
+                                                "Date": "",
+                                                "Description": "XX Props S.A. 2024/26 Market Price Adjustment (18.3000)",
+                                                "Doc": "",
+                                                "ExchangeCurrency": "USD",
+                                                "ExchangeRate": "0.8053397325099427765937809400748435",
+                                                "ItemsId": "XX",
+                                                "Quantity": "±60.0000",
+                                                "UnitPrice": "-1.5637"
+                                            },
+                                            "operation": {
+                                                "name": "add"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "UBS Securities USD",
+                                                "AccountDebit": "[Account for unrealized foreign exchange losses]",
+                                                "Amount": "-10.2514156164521488144182846402980",
+                                                "Date": "",
+                                                "Description": "XX Props S.A. 2024/26 Adjustment at exchange rate on valuation date",
+                                                "Doc": "",
+                                                "ExchangeCurrency": "CHF",
+                                                "ItemsId": "XX"
+                                            },
+                                            "operation": {
+                                                "name": "add"
+                                            }
+                                        },
+                                        {
+                                            "fields": {
+                                                "AccountCredit": "INV-Investment Adjustments",
+                                                "AccountDebit": "UBS Securities CHF",
+                                                "AmountCurrency": "22.50000000",
+                                                "Date": "",
+                                                "Description": "UBS Deposit ZZZ Market Price Adjustment (7.8000)",
+                                                "Doc": "",
+                                                "ExchangeCurrency": "CHF",
+                                                "ExchangeRate": "",
+                                                "ItemsId": "ZZZ",
+                                                "Quantity": "±30.0000",
+                                                "UnitPrice": "0.7500"
+                                            },
+                                            "operation": {
+                                                "name": "add"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        "nameXml": "Transactions"
+                    }
+                ],
+                "dataUnitsfileVersion": "1.0.0"
+            }
+        }
+    ],
+    "error": "",
+    "format": "documentChange"
+}
+\end{jsonvalue}
 \keyvalue{Result}{Passed}
 \end{test}
 \end{testcase}
