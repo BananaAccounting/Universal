@@ -69,6 +69,16 @@ TestCalcSalesDialog.prototype.initTestCase = function () {
     }
     this.docInfoJPY = getDocumentInfo(this.banDocJPY);
     this.itemsDataJPY = getItemsTableData(this.banDocJPY, this.docInfoJPY);
+
+    // File AMC = Asset with Multiple Currencies
+    let fileNameAMC = "file:script/../test/testcases/portfolio_accounting_double_entry_multi_currency_tutorial_assets_with_multiple_currencies1.ac2";
+    this.banDocAMC = Banana.application.openDocument(fileNameAMC);
+    if (!this.banDocAMC) {
+        this.testLogger.addFatalError("File not found: " + banDocAMC);
+        return;
+    }
+    this.docInfoAMC = getDocumentInfo(this.banDocAMC);
+    this.itemsDataAMC = getItemsTableData(this.banDocAMC, this.docInfoAMC);
 }
 
 // This method will be called at the end of the test case
@@ -166,6 +176,30 @@ TestCalcSalesDialog.prototype.testRecordSalesTransactions = function () {
     this.testLogger.addJson("Test 9", JSON.stringify(testDataObj.calcSaleData));
     this.testLogger.addSubSection("Test 9: Recorded Data");
     this.testLogger.addJson("Test 9", JSON.stringify(testDataObj.recordsSalesTransactions));
+
+    // Test 10, Share in EUR with an Asset account in CHF
+    testDataObj = getTestData_10(this.banDocAMC, this.docInfoAMC, this.itemsDataAMC);
+    this.testLogger.addSection("Test 10: Sell part of Planet");
+    this.testLogger.addSubSection("Test 10: Calculated Data");
+    this.testLogger.addJson("Test 10", JSON.stringify(testDataObj.calcSaleData));
+    this.testLogger.addSubSection("Test 10: Recorded Data");
+    this.testLogger.addJson("Test 10", JSON.stringify(testDataObj.recordsSalesTransactions));
+
+    // Test 11, Share in CHF  with an Asset account in CHF
+    testDataObj = getTestData_11(this.banDocAMC, this.docInfoAMC, this.itemsDataAMC);
+    this.testLogger.addSection("Test 11: Sell part of CHxxxxxxxxx");
+    this.testLogger.addSubSection("Test 11: Calculated Data");
+    this.testLogger.addJson("Test 11", JSON.stringify(testDataObj.calcSaleData));
+    this.testLogger.addSubSection("Test 11: Recorded Data");
+    this.testLogger.addJson("Test 11", JSON.stringify(testDataObj.recordsSalesTransactions));
+
+    // Test 12, Share in USD  with an Asset account in USD
+    testDataObj = getTestData_12(this.banDocAMC, this.docInfoAMC, this.itemsDataAMC);
+    this.testLogger.addSection("Test 12: Sell part of XX");
+    this.testLogger.addSubSection("Test 12: Calculated Data");
+    this.testLogger.addJson("Test 12", JSON.stringify(testDataObj.calcSaleData));
+    this.testLogger.addSubSection("Test 12: Recorded Data");
+    this.testLogger.addJson("Test 12", JSON.stringify(testDataObj.recordsSalesTransactions));
 
 }
 
@@ -535,6 +569,128 @@ function getTestData_9(banDoc, docInfo, itemsData) {
 }
 
 /**
+ * Test 10. (Planet)
+ * Sell Part of Planet shares.
+ * Planet shares are in EUR but uses an Asset account in CHF used
+ * by multiple shares in multiple currencies
+ * - ISIN: Planet
+ * - Qt : -760.00
+ * - Current (Market) Price: 12.0000
+ * - Exhange rate: 0.930000
+ * - Bank Charges: 5.00
+ * Profit on sale
+ * Loss on FX
+ */
+function getTestData_10(banDoc, docInfo, itemsData) {
+    let testDataObj = {};
+    testDataObj.calcSaleData = {};
+    testDataObj.recordsSalesTransactions = {};
+
+    let userParams = {};
+    let itemObj = {};
+    let calcSaleData = {};
+    let currentRowNr = -1;
+    let currentRowObj = {};
+
+    // Calculate Data
+    userParams = getUserParams("10");
+    itemObj = itemsData.find(obj => obj.item === userParams.selectedItem);
+    currentRowNr = 20;
+    currentRowObj = getCurrentRowObj(banDoc, currentRowNr, "Transactions");
+    const mult = currentRowObj.value("ExchangeMultiplier");
+    calcSaleData = calculateStockSaleData(banDoc, docInfo, itemObj, userParams, currentRowNr, mult);
+    const recordSalesTransactions = new RecordSalesTransactions(banDoc, docInfo, calcSaleData,
+        userParams, itemsData, itemObj, currentRowObj, false);
+
+    //Save the data into test object
+    testDataObj.calcSaleData = calcSaleData;
+    testDataObj.recordsSalesTransactions = recordSalesTransactions.getRecordSalesTransactions();
+
+    return testDataObj;
+}
+
+/**
+ * Test 11. (Planet)
+ * Sell Part of CHxxxxxxxxx shares.
+ * Planet shares are in CHF and uses an Asset account in CHF used
+ * by multiple shares in multiple currencies
+ * - ISIN: CHxxxxxxxxx
+ * - Qt : -30.00
+ * - Current (Market) Price: 102.0000
+ * - Exhange rate: 1.000000
+ * - Bank Charges: 5.00
+ * Profit on sale
+ */
+function getTestData_11(banDoc, docInfo, itemsData) {
+    let testDataObj = {};
+    testDataObj.calcSaleData = {};
+    testDataObj.recordsSalesTransactions = {};
+
+    let userParams = {};
+    let itemObj = {};
+    let calcSaleData = {};
+    let currentRowNr = -1;
+    let currentRowObj = {};
+
+    // Calculate Data
+    userParams = getUserParams("11");
+    itemObj = itemsData.find(obj => obj.item === userParams.selectedItem);
+    currentRowNr = 27;
+    currentRowObj = getCurrentRowObj(banDoc, currentRowNr, "Transactions");
+    const mult = currentRowObj.value("ExchangeMultiplier");
+    calcSaleData = calculateStockSaleData(banDoc, docInfo, itemObj, userParams, currentRowNr, mult);
+    const recordSalesTransactions = new RecordSalesTransactions(banDoc, docInfo, calcSaleData,
+        userParams, itemsData, itemObj, currentRowObj, false);
+
+    //Save the data into test object
+    testDataObj.calcSaleData = calcSaleData;
+    testDataObj.recordsSalesTransactions = recordSalesTransactions.getRecordSalesTransactions();
+
+    return testDataObj;
+}
+
+/**
+ * Test 12. (XX)
+ * Sell Part of XX shares.
+ * Planet shares are in USD and uses an Asset account in USD
+ * - ISIN: XX
+ * - Qt : -50.00
+ * - Current (Market) Price: 19.5000
+ * - Exhange rate: 0.800000
+ * - Bank Charges: 7.00
+ * Loss on sale
+ * Loss on FX
+ */
+function getTestData_12(banDoc, docInfo, itemsData) {
+    let testDataObj = {};
+    testDataObj.calcSaleData = {};
+    testDataObj.recordsSalesTransactions = {};
+
+    let userParams = {};
+    let itemObj = {};
+    let calcSaleData = {};
+    let currentRowNr = -1;
+    let currentRowObj = {};
+
+    // Calculate Data
+    userParams = getUserParams("12");
+    itemObj = itemsData.find(obj => obj.item === userParams.selectedItem);
+    currentRowNr = 32;
+    currentRowObj = getCurrentRowObj(banDoc, currentRowNr, "Transactions");
+    const mult = currentRowObj.value("ExchangeMultiplier");
+    calcSaleData = calculateStockSaleData(banDoc, docInfo, itemObj, userParams, currentRowNr, mult);
+    const recordSalesTransactions = new RecordSalesTransactions(banDoc, docInfo, calcSaleData,
+        userParams, itemsData, itemObj, currentRowObj, false);
+
+    //Save the data into test object
+    testDataObj.calcSaleData = calcSaleData;
+    testDataObj.recordsSalesTransactions = recordSalesTransactions.getRecordSalesTransactions();
+
+    return testDataObj;
+}
+
+
+/**
  * Params object should have the following properties:
  * .selectedItem--> item selected by the user
  * .quantity--> sale qt
@@ -609,6 +765,27 @@ function getUserParams(testNr) {
             params.marketPrice = "20005.0000";
             params.currExRate = "0.006500";
             params.bankCharges = "";
+            return params;
+        case "10":
+            params.selectedItem = "Planet";
+            params.quantity = "60";
+            params.marketPrice = "12.00";
+            params.currExRate = "0.930000";
+            params.bankCharges = "5.00";
+            return params;
+        case "11":
+            params.selectedItem = "CHxxxxxxxxx";
+            params.quantity = "30";
+            params.marketPrice = "102.0000";
+            params.currExRate = "1.00";
+            params.bankCharges = "5.00";
+            return params;
+        case "12":
+            params.selectedItem = "XX";
+            params.quantity = "50";
+            params.marketPrice = "19.5000";
+            params.currExRate = "0.80000";
+            params.bankCharges = "7.00";
             return params;
         default:
             return params;
