@@ -187,7 +187,7 @@ var AdjustmentTransactionsManager = class AdjustmentTransactionsManager {
 
                 /**Add price adjustment transaction */
                 if ((priceAdj && !Banana.SDecimal.isZero(priceAdj))) {
-                    rows.push(this.getAdjustmentTransactionsRows_PriceAdj(itemId, itemDescr, itemAccount, itemCurrency, 
+                    rows.push(this.getAdjustmentTransactionsRows_PriceAdj(itemId, itemDescr, itemCurrentQt, itemAccount, itemCurrency, 
                         priceAdj, itemUnitMarketPrice, bookCurrExRate, texts));
                 }
 
@@ -202,7 +202,7 @@ var AdjustmentTransactionsManager = class AdjustmentTransactionsManager {
         return rows;
     }
 
-    getAdjustmentTransactionsRows_PriceAdj(itemId, itemDescr, itemAccount, itemCurrency,
+    getAdjustmentTransactionsRows_PriceAdj(itemId, itemDescr, itemCurrentQt, itemAccount, itemCurrency,
         priceAdj, itemUnitMarketPrice, bookCurrExRate, texts) {
 
         let row = {};
@@ -213,6 +213,9 @@ var AdjustmentTransactionsManager = class AdjustmentTransactionsManager {
         row.fields["Doc"] = "";
         row.fields["ItemsId"] = itemId;
         row.fields["Description"] = itemDescr + " " + texts.priceAdjustmentTxt + " (" + itemUnitMarketPrice + ")";
+        row.fields["Quantity"] = getPlusMinusSign() + itemCurrentQt;
+        row.fields["UnitPrice"] = Banana.SDecimal.divide(priceAdj,
+            itemCurrentQt, getUnitPriceRoundingContext(this.docInfo));
         if (priceAdj.indexOf("-") >= 0) {
             row.fields["AccountDebit"] = this.savedAccountsParams.valueChangingcontraAccounts.unrealizedLossAccount || texts.otherValChangeCostPlaceHolder;
             row.fields["AccountCredit"] = itemAccount;

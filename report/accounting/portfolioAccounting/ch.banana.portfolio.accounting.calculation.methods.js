@@ -27,6 +27,15 @@ function getPlusMinusSign() {
     return PLUSMINUS_SIGN;
 }
 
+function getUnitPriceRoundingContext(docInfo) {
+    
+    if (!docInfo)
+        return { 'decimals': "2", 'mode': Banana.SDecimal.HALF_UP };
+
+        let unitPriceDecimals = docInfo.unitPriceColDecimals;
+        return { 'decimals': unitPriceDecimals, 'mode': Banana.SDecimal.HALF_UP };
+    }
+
 function initJsonDoc() {
     var jsonDoc = {};
     jsonDoc.document = {};

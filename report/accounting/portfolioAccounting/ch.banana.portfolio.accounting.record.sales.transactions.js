@@ -495,7 +495,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         row.fields["Description"] = this.itemObject.description + " " + this.texts.resultOnSale;
         row.fields["Quantity"] = getPlusMinusSign() + this.saleQty;
         row.fields["UnitPrice"] = Banana.SDecimal.divide(this.salesData.saleResult,
-            this.saleQty, this.getUnitPriceRoundingContext());
+            this.saleQty, getUnitPriceRoundingContext(this.docInfo));
         if (isLossOnSale) {
             row.fields["AccountDebit"] = this.savedAccountsParams.valueChangingcontraAccounts.realizedLossAccount
                 || this.texts.realizedLossAccountPlaceHolder;
@@ -527,7 +527,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         row.fields["Description"] = this.itemObject.description.trim() + " " + this.texts.resultOnSale;
         row.fields["Quantity"] = getPlusMinusSign() + this.saleQty;
         row.fields["UnitPrice"] = Banana.SDecimal.divide(this.salesData.saleResult,
-            this.saleQty, this.getUnitPriceRoundingContext());
+            this.saleQty, getUnitPriceRoundingContext(this.docInfo));
         if (isLossOnSale) {
             row.fields["AccountDebit"] = this.savedAccountsParams.valueChangingcontraAccounts.realizedLossAccount
                 || this.texts.realizedLossAccountPlaceHolder;
@@ -730,7 +730,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         row.fields["Description"] = this.itemObject.description.trim() + " " + this.texts.resultOnSale;
         row.fields["Quantity"] = getPlusMinusSign() + this.saleQty;
         row.fields["UnitPrice"] = Banana.SDecimal.divide(this.salesData.saleResult,
-            this.saleQty, this.getUnitPriceRoundingContext());
+            this.saleQty, getUnitPriceRoundingContext(this.docInfo));
         if (isLossOnSale) {
             row.fields["AccountDebit"] = this.savedAccountsParams.valueChangingcontraAccounts.realizedLossAccount
                 || this.texts.realizedLossAccountPlaceHolder;
@@ -800,7 +800,7 @@ var RecordSalesTransactions = class RecordSalesTransactions {
         row.fields["Description"] = this.itemObject.description.trim() + " " + this.texts.resultOnSale;
         row.fields["Quantity"] = getPlusMinusSign() + this.saleQty;
         row.fields["UnitPrice"] = Banana.SDecimal.divide(this.salesData.saleResult,
-            this.saleQty, this.getUnitPriceRoundingContext());
+            this.saleQty, getUnitPriceRoundingContext(this.docInfo));
         if (isLossOnSale) {
             row.fields["AccountDebit"] = this.savedAccountsParams.valueChangingcontraAccounts.realizedLossAccount
                 || this.texts.realizedLossAccountPlaceHolder;
@@ -1156,10 +1156,5 @@ var RecordSalesTransactions = class RecordSalesTransactions {
 
         return jsonDoc;
 
-    }
-
-    getUnitPriceRoundingContext() {
-        let unitPriceDecimals = this.docInfo.unitPriceColDecimals;
-        return { 'decimals': unitPriceDecimals, 'mode': Banana.SDecimal.HALF_UP };
     }
 }
