@@ -96,6 +96,9 @@ function getAccountList(index) {
     else if (index == 3)
         accountList = ['Shares Unicredit', 'Shares CHF', 'Shares Netflix', 'Bonds EUR'];
     else if (index == 4)
+        /** This test could give differences if runned with a version Previous to 10.2.13 due to a previous bug.
+         * Test expected are based on result generated with 10.2.13 or later.
+         * */
         accountList = ['Private Equity', 'Investments Others CHF', 'Investments Others USD', 'Fund Plus CB CHF', 'Fund Plus UBS CHF', 'UBS Securities USD', 'UBS Securities CHF'];
     return accountList;
 }
