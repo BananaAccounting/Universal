@@ -1,0 +1,13 @@
+Konto,Zeitstempel,Transaktionscode,Transaktionsart,Status,Referenz,Kartensystem,Letzte 4 Ziffern der Karte,Kartentyp,Zahlungsmethode,Eingabemodus,Autorisierungscode,Beschreibung,Betrag,Gebührenbetrag,Auszahlungsbetrag,Auszahlungsdatum,Auszahlungs-ID
+info@gmail.ch,2026-09-06 16:59:00,XXXXXX,Zahlung,Erfolgreich,,CARD,1234,DEBIT,POS,CONTACTLESS,00000,"TEST, TEST",11.0,0.11,10.89,,
+,2026-09-06 16:59:06,XXXXXX,Auszahlung,Geplant,,,,,,,,,11.0,0.11,10.89,,
+info@gmail.ch,2026-09-06 16:58:15,XXXXXX0,Zahlung,Erfolgreich,,CARD,1234,DEBIT,POS,CONTACTLESS,010101,"TEST, TEST",62.0,0.61,61.39,,
+,2026-09-06 16:58:25,XXXXXX0,Auszahlung,Geplant,,,,,,,,,62.0,0.61,61.39,,
+info@gmail.ch,2026-08-31 16:10:03,XXXXXX1,Zahlung,Erfolgreich,,CARD,1234,CREDIT,POS,CONTACTLESS,11111,TEST,5.0,0.1,4.9,,
+,2026-08-31 16:10:20,XXXXXX1,Auszahlung,Gezahlt,,,,,,,,,5.0,0.1,4.9,2026-09-01,SUMUP 1
+info@gmail.ch,2026-08-31 15:31:57,XXXXXX2,Zahlung,Erfolgreich,,CARD,1234,DEBIT,POS,CONTACTLESS,22222,"TEST2,TEST2",176.0,1.74,174.26,,
+,2026-08-31 15:32:10,XXXXXX2,Auszahlung,Gezahlt,,,,,,,,,176.0,1.74,174.26,2026-09-01,SUMUP 2
+info@gmail.ch,2026-08-31 13:47:10,XXXXXX3,Zahlung,Erfolgreich,,CARD,1234,CREDIT,POS,CONTACTLESS,33333,TEST3,2.5,0.02,2.48,,
+,2026-08-31 13:47:19,XXXXXX3,Auszahlung,Gezahlt,,,,,,,,,2.5,0.02,2.48,2026-09-01,SUMUP 3
+info@gmail.ch,2026-08-31 13:09:08,XXXXXX4,Zahlung,Erfolgreich,,CARD,1234,CREDIT,POS,CONTACTLESS,44444,"TEST4, TEST4",7.0,0.07,6.93,,
+,2026-08-31 13:09:30,XXXXXX4,Auszahlung,Gezahlt,,,,,,,,,7.0,0.07,6.93,2026-09-01,SUMUP 4
