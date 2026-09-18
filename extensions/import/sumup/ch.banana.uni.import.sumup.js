@@ -60,6 +60,7 @@ const TRANSACTION_TYPE_REFUND = "refund";
 const TRANSACTION_TYPE_CASH_PAYMENT = "cash_payment";
 const TRANSACTION_TYPE_IGNORED_CANCELED_OR_FAILED = "ignored_canceled_or_failed";
 const TRANSACTION_TYPE_IGNORED_MISSING_ID = "ignored_missing_id";
+const TRANSACTION_TYPE_IGNORED_PENDING_PAYOUT = "ignored_pending_payout";
 const TRANSACTION_TYPE_UNKNOWN = "unknown";
 
 /**
@@ -113,6 +114,12 @@ function processSumUpTransactions(inData, userParam = {}, banDoc = {}) {
       return sumUpFormat2.processTransactions(transactionsData);
    }
 
+   // Format3
+   let sumUpFormat3 = new SumupFormat3(banDoc, userParam);
+    transactionsData = sumUpFormat3.getFormattedData(csvData, convertionParam);
+    if (sumUpFormat3.match(transactionsData)) {
+        return sumUpFormat3.processTransactions(transactionsData);
+    }
 }
 
 /**
@@ -870,6 +877,205 @@ var SumupFormat2 = class SumupFormat2 extends ImportUtilities {
       terms.paymentTypePayout = "Virement";
       terms.paymentTypeRefunded = "Remboursé";
       return terms;
+   }
+}
+
+/**
+ * SumUp Format 3
+ * Nuovo formato di esportazione SumUp (2026), header di esempio:
+ * Konto,Zeitstempel,Transaktionscode,Transaktionsart,Status,Referenz,Kartensystem,
+ * Letzte 4 Ziffern der Karte,Kartentyp,Zahlungsmethode,Eingabemodus,Autorisierungscode,
+ * Beschreibung,Betrag,Gebührenbetrag,Auszahlungsbetrag,Auszahlungsdatum,Auszahlungs-ID
+ *
+ * La logica di classificazione/mapping delle transazioni (payment, payout, refund, cash)
+ * è identica al Format 2, quindi viene ereditata senza modifiche.
+ */
+var SumupFormat3 = class SumupFormat3 extends SumupFormat2 {
+    constructor(banDocument, userParam) {
+        super(banDocument, userParam);
+   }
+
+   getFormattedData(csvData, convertionParam) {
+      var columns = getHeaderData(csvData, convertionParam); //array
+      var rows = getRowData(csvData, convertionParam); //array of array
+      let form = [];
+      let convertedColumns = [];
+
+      convertedColumns = this.convertHeaderDe(columns);
+      if (convertedColumns.length > 0) {
+         loadForm(form, convertedColumns, rows);
+         return form;
+      }
+
+      return [];
+   }
+
+    /**
+     * Converte l'header del nuovo formato DE.
+     * Sovrascrive il convertHeaderDe di SumupFormat2 (non lo chiama con super,
+     * perché le colonne obbligatorie e i nomi sorgente sono diversi).
+     */
+   convertHeaderDe(columns) {
+      let convertedColumns = [];
+
+      for (var i = 0; i < columns.length; i++) {
+         switch (columns[i]) {
+               case "Konto":
+                  convertedColumns[i] = "Account";
+                  break;
+               case "Zeitstempel":
+                  convertedColumns[i] = "Transaction Date";
+                  break;
+               case "Transaktionscode":
+                  convertedColumns[i] = "Transaction Id";
+                  break;
+               case "Transaktionsart":
+                  convertedColumns[i] = "Payment type";
+                  break;
+               case "Status":
+                  convertedColumns[i] = "Status";
+                  break;
+               case "Referenz":
+                  convertedColumns[i] = "Reference";
+                  break;
+               case "Kartensystem":
+                  convertedColumns[i] = "Card brand";
+                  break;
+               case "Letzte 4 Ziffern der Karte":
+                  convertedColumns[i] = "Last 4 digits";
+                  break;
+               case "Kartentyp":
+                  convertedColumns[i] = "Card type";
+                  break;
+               case "Zahlungsmethode":
+                  convertedColumns[i] = "Payment method";
+                  break;
+               case "Eingabemodus":
+                  convertedColumns[i] = "Entry mode";
+                  break;
+               case "Autorisierungscode":
+                  convertedColumns[i] = "Authorization code";
+                  break;
+               case "Beschreibung":
+                  convertedColumns[i] = "Description";
+                  break;
+               case "Betrag":
+                  convertedColumns[i] = "Amount incl. VAT";
+                  break;
+               case "Gebührenbetrag":
+                  convertedColumns[i] = "Fee";
+                  break;
+               case "Auszahlungsbetrag":
+                  convertedColumns[i] = "Payout";
+                  break;
+               case "Auszahlungsdatum":
+                  convertedColumns[i] = "Payout date";
+                  break;
+               case "Auszahlungs-ID":
+                  convertedColumns[i] = "Payout ID";
+                  break;
+               default:
+                  convertedColumns[i] = columns[i]; // Mantiene il valore originale se non è nella lista
+                  break;
+         }
+      }
+
+      // Nota: "Net amount" NON è più richiesto, perché la colonna "Netto" non esiste
+      // più in questo formato. Restano obbligatorie solo le colonne effettivamente
+      // usate nella logica di elaborazione.
+      if (convertedColumns.indexOf("Transaction Date") < 0
+         || convertedColumns.indexOf("Transaction Id") < 0
+         || convertedColumns.indexOf("Payment type") < 0
+         || convertedColumns.indexOf("Description") < 0
+         || convertedColumns.indexOf("Fee") < 0
+         || convertedColumns.indexOf("Reference") < 0) {
+         return [];
+      }
+
+      this.csvLanguage = "de";
+      return convertedColumns;
+   }
+
+   /**
+     * Sovrascrive getTransactionType per gestire il nuovo status "Geplant"
+     * sulle righe di payout: vengono ignorate esplicitamente (non è ancora
+     * stato accreditato nulla in banca) invece di finire nel generico "unknown".
+     */
+   getTransactionType(row) {
+      const controlTerms = this.getControlTerms();
+
+      if (!row || typeof row !== "object") {
+         return TRANSACTION_TYPE_UNKNOWN;
+      }
+
+      const trType = row["Payment type"];
+      const trStatus = row["Status"];
+      const trPaymentMethod = row["Payment method"];
+      const trId = row["Transaction Id"];
+
+      if (!trId || trId.trim() === "") {
+         Banana.console.debug("Skipping row with missing Transaction Id.");
+         return TRANSACTION_TYPE_IGNORED_MISSING_ID;
+      }
+
+      if (this.isCanceledOrFailed(trStatus, controlTerms)) {
+         Banana.console.debug("Skipping canceled/failed transaction: " + trId);
+         return TRANSACTION_TYPE_IGNORED_CANCELED_OR_FAILED;
+      }
+
+      // Payout pianificato ma non ancora accreditato: si ignora finché non
+      // passa a "Gezahlt" in un export successivo.
+      if (trType === controlTerms.paymentTypePayout
+         && controlTerms.paymentStatusPending
+         && trStatus === controlTerms.paymentStatusPending) {
+         Banana.console.debug("Skipping planned payout not yet credited: " + trId);
+         return TRANSACTION_TYPE_IGNORED_PENDING_PAYOUT;
+      }
+
+      if (trType === controlTerms.paymentTypeTransaction
+         && trStatus === controlTerms.paymentStatusSuccessful
+         && (trPaymentMethod === controlTerms.paymentMethodPos
+               || trPaymentMethod === controlTerms.paymentMethodEcom)) {
+         return TRANSACTION_TYPE_PAYMENT;
+      }
+
+      if (trType === controlTerms.paymentTypePayout
+         && (trStatus === controlTerms.paymentStatusPaid
+               || (controlTerms.paymentStatusRefunded && trStatus === controlTerms.paymentStatusRefunded))) {
+         return TRANSACTION_TYPE_PAYOUT;
+      }
+
+      if (trType === controlTerms.paymentTypeRefunded) {
+         return TRANSACTION_TYPE_REFUND;
+      }
+
+      if (trType === controlTerms.paymentTypeTransaction
+         && trStatus === controlTerms.paymentStatusSuccessful
+         && trPaymentMethod === controlTerms.paymentMethodCash) {
+         return TRANSACTION_TYPE_CASH_PAYMENT;
+      }
+
+      Banana.console.debug("Transaction type not recognised: " + trId);
+      return TRANSACTION_TYPE_UNKNOWN;
+   }
+
+   /**
+   * Termini di controllo per il nuovo formato DE (2026).
+   * Nota: "Zahlung" ha sostituito "Umsatz" come Payment type, ed è stato
+   * aggiunto "Geplant" come status intermedio del payout.
+   */
+   getControlTermsDE() {
+        let terms = {};
+        terms.paymentStatusFailed = "Fehlgeschlagen";       // da confermare, non presente nel campione
+        terms.paymentStatusCanceled = "Abgebrochen";        // da confermare, non presente nel campione
+        terms.paymentStatusSuccessful = "Erfolgreich";
+        terms.paymentStatusPaid = "Gezahlt";
+        terms.paymentStatusPending = "Geplant";
+        terms.paymentMethodPos = "POS";                     // da confermare col valore reale ("EAT" anonimizzato)
+        terms.paymentMethodCash = "CASH";
+        terms.paymentTypeTransaction = "Zahlung";
+        terms.paymentTypePayout = "Auszahlung";
+        return terms;
    }
 }
 /**
