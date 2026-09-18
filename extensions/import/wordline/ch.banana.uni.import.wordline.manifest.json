@@ -1,0 +1,19 @@
+{
+    "category": "Import",
+    "country": "universal",
+    "countryCode": "un",
+    "description": "Worldline - Import movements .csv (Banana+ Advanced)",
+    "description.en": "Worldline - Import movements .csv (Banana+ Advanced)",
+    "description.it": "Worldline - Importa movimenti .csv (Banana+ Advanced)",
+    "description.de": "Worldline - Bewegungen importieren .csv (Banana+ Advanced)",
+    "description.fr": "Worldline - Importer mouvements .csv (Banana+ Advanced)",
+    "id": "ch.banana.uni.import.wordline",
+    "language": "en",
+    "publisher": "Banana.ch",
+    "title": "Worldline - Import movements .csv (Banana+ Advanced)",
+    "title.en": "Worldline - Import movements .csv (Banana+ Advanced)",
+    "title.it": "Worldline - Importa movimenti .csv (Banana+ Advanced)",
+    "title.de": "Worldline - Bewegungen importieren .csv (Banana+ Advanced)",
+    "title.fr": "Worldline - Importer mouvements .csv (Banana+ Advanced)",
+    "version": "1.0"
+}
