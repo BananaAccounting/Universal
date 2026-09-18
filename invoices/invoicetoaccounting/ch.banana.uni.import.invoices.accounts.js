@@ -164,7 +164,7 @@ function exec(inText) {
       existingAccounts[accountNumber] = true;
 
       var description = customer.businessName || joinName(customer.firstName, customer.lastName) || customer.customerNumber;
-      var street = joinStreetAndNumber(customer.address, customer.buildingNumber);
+      //var street = joinStreetAndNumber(customer.address, customer.buildingNumber);
 
       var row = {};
       row.operation = {};
@@ -181,7 +181,8 @@ function exec(inText) {
       row.fields["FirstName"] = tabSafe(customer.firstName);
       row.fields["FamilyName"] = tabSafe(customer.lastName);
       row.fields["OrganisationName"] = tabSafe(customer.businessName);
-      row.fields["Street"] = tabSafe(street);
+      row.fields["Street"] = tabSafe(customer.address);
+      row.fields["BuildingNumber"] = tabSafe(customer.buildingNumber);
       row.fields["PostalCode"] = tabSafe(customer.postalCode);
       row.fields["Locality"] = tabSafe(customer.city);
       row.fields["CountryCode"] = tabSafe(customer.countryCode);
@@ -380,18 +381,18 @@ function joinName(firstName, lastName) {
    return parts.join(" ");
 }
 
-/**
- * Joins the street and building number into a single value for the
- * Street column, since the Accounts table has no separate building
- * number column.
- */
-function joinStreetAndNumber(street, buildingNumber) {
-   if (!street)
-      return buildingNumber || "";
-   if (!buildingNumber)
-      return street;
-   return street + " " + buildingNumber;
-}
+// /**
+//  * Joins the street and building number into a single value for the
+//  * Street column, since the Accounts table has no separate building
+//  * number column.
+//  */
+// function joinStreetAndNumber(street, buildingNumber) {
+//    if (!street)
+//       return buildingNumber || "";
+//    if (!buildingNumber)
+//       return street;
+//    return street + " " + buildingNumber;
+// }
 
 /**
  * Returns a set (object used as a hash set) of every non-empty value
@@ -476,7 +477,7 @@ function makeUniqueAccountNumber(baseAccountNumber, existingAccounts) {
 function initUserParam() {
    var userParam = {};
    userParam.version = '1.0';
-   userParam.accountType = "Account";
+   userParam.accountType = "Cc3";
    userParam.group = '';
    return userParam;
 }
@@ -543,7 +544,7 @@ function convertParam(userParam) {
    if (currentCodeIndex < 0)
       currentCodeIndex = 0;
    currentParam.value = accountTypeLabels[currentCodeIndex];
-   currentParam.defaultvalue = accountTypeLabels[0];
+   currentParam.defaultvalue = accountTypeLabels[1];
    currentParam.readValue = function () {
       var selectedIndex = accountTypeLabels.indexOf(this.value);
       userParam.accountType = accountTypeCodes[selectedIndex < 0 ? 0 : selectedIndex];
